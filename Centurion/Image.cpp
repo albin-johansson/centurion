@@ -1,11 +1,16 @@
 #include "Image.h"
 #include <SDL_image.h>
+#include <stdexcept>
 
 namespace ctn = centurion;
 
 ctn::Image::Image(std::string path, SDL_Renderer* renderer)
 {
-	texture = createTexture(path, renderer);
+	SDL_Surface* surface = IMG_Load(path.c_str());
+	texture = createTexture(surface, renderer);
+	width = surface->w;
+	height = surface->h;
+	SDL_FreeSurface(surface);
 }
 
 ctn::Image::~Image()
@@ -13,18 +18,14 @@ ctn::Image::~Image()
 	SDL_DestroyTexture(texture);
 }
 
-SDL_Texture* ctn::Image::createTexture(std::string path, SDL_Renderer* renderer)
+SDL_Texture* ctn::Image::createTexture(SDL_Surface* surface, SDL_Renderer* renderer)
 {
-	SDL_Texture* texture = NULL;
-	SDL_Surface* surface = IMG_Load(path.c_str());
-	if (surface == NULL) {
-		SDL_Log("Failed to create surface!");
-	} else {
-		texture = SDL_CreateTextureFromSurface(renderer, surface);
-		if (texture == NULL) {
-			SDL_Log("Failed to create texture from surface!");
-		}
-		SDL_FreeSurface(surface);
+	if (surface == NULL || renderer == NULL) {
+		throw std::invalid_argument("Null renderer when creating texture!");
+	}
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	if (texture == NULL) {
+		SDL_Log("Failed to create texture from surface!");
 	}
 	return texture;
 }
@@ -39,7 +40,7 @@ int ctn::Image::getHeight()
 	return height;
 }
 
-SDL_Texture * centurion::Image::getTexture()
+SDL_Texture* ctn::Image::getTexture()
 {
 	return texture;
 }

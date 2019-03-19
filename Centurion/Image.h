@@ -14,7 +14,7 @@ private:
 	int width;
 	int height;
 
-	SDL_Texture* createTexture(std::string path, SDL_Renderer* renderer);
+	SDL_Texture* createTexture(SDL_Surface* surface, SDL_Renderer* renderer);
 
 public:
 	Image(std::string path, SDL_Renderer* renderer);

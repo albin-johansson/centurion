@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Image.h"
 #include <stdexcept>
 
 namespace ctn = centurion;
@@ -35,7 +36,7 @@ void ctn::Window::hide()
 	SDL_HideWindow(window);
 }
 
-void centurion::Window::update()
+void ctn::Window::update()
 {
 	graphics->update();
 }
@@ -44,4 +45,9 @@ void ctn::Window::setResizable(bool resizable)
 {
 	SDL_bool b = (resizable) ? SDL_TRUE : SDL_FALSE;
 	SDL_SetWindowResizable(window, b);
+}
+
+ctn::Image * ctn::Window::createImage(std::string path)
+{
+	return new ctn::Image(path, graphics->getRenderer());
 }

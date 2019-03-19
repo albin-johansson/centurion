@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <string>
-#include "Graphics.h"
+#include "Image.h"
 
 namespace centurion
 {
@@ -11,8 +11,28 @@ namespace centurion
 class centurion::Window {
 
 private:
+
+	class Graphics {
+
+	private:
+		SDL_Renderer* renderer = nullptr;
+
+	public:
+		Graphics(SDL_Renderer* renderer);
+
+		~Graphics();
+
+		void update();
+
+		void render(Image& img, int x, int y);
+
+		void render(Image& img, int x, int y, int w, int h);
+
+		SDL_Renderer* getRenderer();
+	};
+
 	SDL_Window* window;
-	Graphics*  graphics;
+	Graphics* graphics;
 
 public:
 
@@ -27,4 +47,6 @@ public:
 	void update();
 
 	void setResizable(bool resizable);
+
+	Image* createImage(std::string path);
 };

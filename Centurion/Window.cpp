@@ -13,7 +13,7 @@ ctn::Window::Window(std::string& title, int width, int height)
 
 	Uint32 winFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, winFlags);
-	
+
 	Uint32 rendererFlags = SDL_RENDERER_ACCELERATED;
 	graphics = new Graphics(SDL_CreateRenderer(window, -1, rendererFlags));
 }
@@ -56,16 +56,18 @@ void ctn::Window::setResizable(bool resizable)
 
 int ctn::Window::getWidth()
 {
-	SDL_DisplayMode dm;
-	SDL_GetDesktopDisplayMode(0, &dm);
-	return dm.w;
+	int w = -1;
+	int h = -1;
+	SDL_GetWindowSize(window, &w, &h);
+	return w;
 }
 
 int ctn::Window::getHeight()
 {
-	SDL_DisplayMode dm;
-	SDL_GetDesktopDisplayMode(0, &dm);
-	return dm.h;
+	int w = -1;
+	int h = -1;
+	SDL_GetWindowSize(window, &w, &h);
+	return h;
 }
 
 void ctn::Window::update()

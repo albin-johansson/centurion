@@ -29,11 +29,14 @@ void ctn::Window::Graphics::render(Image& img, int x, int y)
 
 void ctn::Window::Graphics::render(Image& img, int x, int y, int w, int h)
 {
+	if (w < 1 || h < 1) {
+		throw std::invalid_argument("Invalid dimensions for rendering an image!");
+	}
 	SDL_Rect rect = { x, y, w, h };
 	SDL_RenderCopy(renderer, img.getTexture(), NULL, &rect);
 }
 
-SDL_Renderer * centurion::Window::Graphics::getRenderer()
+SDL_Renderer* ctn::Window::Graphics::getRenderer()
 {
 	return renderer;
 }

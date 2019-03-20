@@ -1,7 +1,12 @@
 #pragma once
 #include <SDL.h>
 
-class Screen final {
+namespace centurion
+{
+	class Screen;
+}
+
+class centurion::Screen final {
 
 public:
 	Screen() = delete;

@@ -62,7 +62,7 @@ int c::Window::getWidth()
 	return w;
 }
 
-int ctn::Window::getHeight()
+int c::Window::getHeight()
 {
 	int w = -1;
 	int h = -1;
@@ -70,22 +70,22 @@ int ctn::Window::getHeight()
 	return h;
 }
 
-void ctn::Window::update()
+void c::Window::update()
 {
 	graphics->update();
 }
 
-void ctn::Window::render(Image& img, int x, int y)
+void c::Window::render(c::Image& img, int x, int y)
 {
 	graphics->render(img, x, y);
 }
 
-void ctn::Window::render(Image& img, int x, int y, int w, int h)
+void c::Window::render(c::Image& img, int x, int y, int w, int h)
 {
 	graphics->render(img, x, y, w, h);
 }
 
-ctn::Image* ctn::Window::createImage(std::string path)
+c::Image* c::Window::createImage(std::string path)
 {
-	return ctn::Image::create(path, graphics->renderer);
+	return c::Image::create(path, graphics->renderer);
 }

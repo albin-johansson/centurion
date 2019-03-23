@@ -1,8 +1,6 @@
 #pragma once
 #include <SDL.h>
 #include <string>
-#include "Image.h"
-#include "Graphics.h"
 #include "Centurion.h"
 
 class centurion::Window {
@@ -11,7 +9,7 @@ private:
 	SDL_Window* window;
 	centurion::Graphics* graphics;
 
-	void initComps(std::string title, int w, int h, Uint32 flags);
+	void initComps(const std::string& title, int w, int h, Uint32 flags);
 
 public:
 	/*
@@ -21,14 +19,14 @@ public:
 	\param	width the width of the window.
 	\param	height the height of the window.
 	*/
-	Window(std::string& title, int width, int height);
+	Window(const std::string& title, int width, int height);
 
 	/*
 	\brief	Creates a fullscreen window.
 
 	\param	title the title of the window
 	*/
-	Window(std::string& title);
+	Window(const std::string& title);
 
 	~Window();
 

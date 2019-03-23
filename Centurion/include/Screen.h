@@ -1,5 +1,4 @@
 #pragma once
-#include <SDL.h>
 #include "Centurion.h"
 
 class centurion::Screen final {

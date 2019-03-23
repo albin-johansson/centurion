@@ -1,15 +1,16 @@
 #include "Screen.h"
+#include <SDL.h>
 
-namespace c = centurion;
+using centurion::Screen;
 
-int c::Screen::getWidth()
+int Screen::getWidth()
 {
 	SDL_DisplayMode dm;
 	SDL_GetDesktopDisplayMode(0, &dm);
 	return dm.w;
 }
 
-int c::Screen::getHeight()
+int Screen::getHeight()
 {
 	SDL_DisplayMode dm;
 	SDL_GetDesktopDisplayMode(0, &dm);

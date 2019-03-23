@@ -1,60 +1,63 @@
 #include "Window.h"
-#include "Image.h"
+#include "Graphics.h"
 #include "Screen.h"
+#include "Image.h"
 #include <stdexcept>
 
-namespace c = centurion;
+using centurion::Window;
+using centurion::Graphics;
+using centurion::Screen;
+using centurion::Image;
 
-c::Window::Window(std::string& title, int width, int height)
+Window::Window(const std::string& title, int width, int height)
 {
-	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
+	Uint32 flags = SDL_WindowFlags::SDL_WINDOW_OPENGL | SDL_WindowFlags::SDL_WINDOW_HIDDEN;
 	initComps(title, width, height, flags);
 }
 
-c::Window::Window(std::string & title)
+Window::Window(const std::string& title)
 {
-	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_HIDDEN;
-	initComps(title, c::Screen::getWidth(), c::Screen::getHeight(), flags);
+	Uint32 flags = SDL_WindowFlags::SDL_WINDOW_OPENGL |
+		SDL_WindowFlags::SDL_WINDOW_FULLSCREEN |
+		SDL_WindowFlags::SDL_WINDOW_HIDDEN;
+	initComps(title, Screen::getWidth(), Screen::getHeight(), flags);
 }
 
-c::Window::~Window()
+Window::~Window()
 {
 	SDL_HideWindow(window);
 	SDL_Delay(1);
-
 	delete graphics;
 	SDL_DestroyWindow(window);
 }
 
-void centurion::Window::initComps(std::string title, int w, int h, Uint32 flags)
+void Window::initComps(const std::string& title, int w, int h, Uint32 flags)
 {
 	if (w < 1 || h < 1) {
 		throw std::invalid_argument("Invalid dimensions for window!");
 	}
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags);
-
-	Uint32 rendererFlags = SDL_RENDERER_ACCELERATED;
-	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, rendererFlags);
-	graphics = new c::Graphics(renderer);
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RendererFlags::SDL_RENDERER_ACCELERATED);
+	graphics = new Graphics(renderer);
 }
 
-void c::Window::show()
+void Window::show()
 {
 	SDL_ShowWindow(window);
 }
 
-void c::Window::hide()
+void Window::hide()
 {
 	SDL_HideWindow(window);
 }
 
-void c::Window::setResizable(bool resizable)
+void Window::setResizable(bool resizable)
 {
 	SDL_bool b = (resizable) ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE;
 	SDL_SetWindowResizable(window, b);
 }
 
-int c::Window::getWidth()
+int Window::getWidth()
 {
 	int w = -1;
 	int h = -1;
@@ -62,7 +65,7 @@ int c::Window::getWidth()
 	return w;
 }
 
-int c::Window::getHeight()
+int Window::getHeight()
 {
 	int w = -1;
 	int h = -1;
@@ -70,22 +73,22 @@ int c::Window::getHeight()
 	return h;
 }
 
-void c::Window::update()
+void Window::update()
 {
 	graphics->update();
 }
 
-void c::Window::render(c::Image& img, int x, int y)
+void Window::render(Image& img, int x, int y)
 {
 	graphics->render(img, x, y);
 }
 
-void c::Window::render(c::Image& img, int x, int y, int w, int h)
+void Window::render(Image& img, int x, int y, int w, int h)
 {
 	graphics->render(img, x, y, w, h);
 }
 
-c::Image* c::Window::createImage(std::string path)
+Image* Window::createImage(std::string path)
 {
-	return c::Image::create(path, *graphics);
+	return Image::create(path, *graphics);
 }

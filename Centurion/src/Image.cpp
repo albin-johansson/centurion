@@ -1,10 +1,12 @@
 #include "Image.h"
+#include "Graphics.h"
 #include <SDL_image.h>
 #include <stdexcept>
 
-namespace c = centurion;
+using centurion::Image;
+using centurion::Graphics;
 
-c::Image::Image(std::string path, c::Graphics& graphics)
+Image::Image(const std::string& path, Graphics& graphics)
 {
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	texture = createTexture(surface, graphics.renderer);
@@ -13,12 +15,12 @@ c::Image::Image(std::string path, c::Graphics& graphics)
 	SDL_FreeSurface(surface);
 }
 
-c::Image::~Image()
+Image::~Image()
 {
 	SDL_DestroyTexture(texture);
 }
 
-SDL_Texture* c::Image::createTexture(SDL_Surface* surface, SDL_Renderer* renderer)
+SDL_Texture* Image::createTexture(SDL_Surface* surface, SDL_Renderer* renderer)
 {
 	if (surface == NULL || renderer == NULL) {
 		throw std::invalid_argument("Null renderer when creating texture!");
@@ -30,27 +32,27 @@ SDL_Texture* c::Image::createTexture(SDL_Surface* surface, SDL_Renderer* rendere
 	return texture;
 }
 
-int c::Image::getWidth()
+int Image::getWidth()
 {
 	return width;
 }
 
-int c::Image::getHeight()
+int Image::getHeight()
 {
 	return height;
 }
 
-SDL_Texture* c::Image::getTexture()
+SDL_Texture* Image::getTexture()
 {
 	return texture;
 }
 
-c::Image* c::Image::create(std::string path, c::Graphics& graphics)
+Image* Image::create(const std::string& path, Graphics& graphics)
 {
-	return new c::Image(path, graphics);
+	return new Image(path, graphics);
 }
 
-void c::Image::destroy(c::Image* img)
+void Image::destroy(Image* img)
 {
 	delete img;
 }

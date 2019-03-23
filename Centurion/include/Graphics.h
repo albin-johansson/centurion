@@ -1,8 +1,6 @@
 #pragma once
 #include <SDL.h>
 #include "Centurion.h"
-#include "Image.h"
-#include "Window.h"
 
 class centurion::Graphics {
 
@@ -22,5 +20,4 @@ private:
 
 public:
 	~Graphics();
-
 };

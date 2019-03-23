@@ -2,7 +2,6 @@
 #include <SDL.h>
 #include <string>
 #include "Centurion.h"
-#include "Graphics.h"
 
 class centurion::Image {
 
@@ -10,10 +9,10 @@ private:
 	int width;
 	int height;
 	SDL_Texture* texture = nullptr;
-	
+
 	SDL_Texture* createTexture(SDL_Surface* surface, SDL_Renderer* renderer);
 
-	Image(std::string path, centurion::Graphics& graphics);
+	Image(const std::string& path, centurion::Graphics& graphics);
 
 public:
 	~Image();
@@ -24,7 +23,7 @@ public:
 
 	SDL_Texture* getTexture();
 
-	static centurion::Image* create(std::string path, centurion::Graphics& graphics);
+	static centurion::Image* create(const std::string& path, centurion::Graphics& graphics);
 
 	static void destroy(centurion::Image* img);
 };

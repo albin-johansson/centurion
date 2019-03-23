@@ -4,9 +4,9 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-namespace c = centurion;
+using centurion::Centurion;
 
-void c::Centurion::init()
+void Centurion::init()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_InitFlags::IMG_INIT_PNG | IMG_InitFlags::IMG_INIT_JPG);
@@ -14,7 +14,7 @@ void c::Centurion::init()
 	TTF_Init();
 }
 
-void c::Centurion::close()
+void Centurion::close()
 {
 	IMG_Quit();
 	TTF_Quit();

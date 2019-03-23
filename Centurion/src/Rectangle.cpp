@@ -53,3 +53,13 @@ int Rectangle::getY()
 {
 	return rect.y;
 }
+
+int Rectangle::getWidth()
+{
+	return rect.w;
+}
+
+int Rectangle::getHeight()
+{
+	return rect.h;
+}

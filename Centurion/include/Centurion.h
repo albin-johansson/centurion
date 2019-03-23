@@ -9,6 +9,7 @@ namespace centurion
 	class Image;
 	class Rectangle;
 	class Point;
+	class Color;
 }
 
 class centurion::Centurion final {

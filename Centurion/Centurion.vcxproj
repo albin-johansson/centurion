@@ -187,6 +187,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\BooleanConverter.cpp" />
+    <ClCompile Include="src\Color.cpp" />
     <ClCompile Include="src\Point.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\Centurion.cpp" />
@@ -198,6 +199,7 @@
   <ItemGroup>
     <ClInclude Include="include\BooleanConverter.h" />
     <ClInclude Include="include\Centurion.h" />
+    <ClInclude Include="include\Color.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\Image.h" />
     <ClInclude Include="include\Point.h" />

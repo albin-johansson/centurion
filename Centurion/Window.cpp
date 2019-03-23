@@ -7,26 +7,14 @@ namespace ctn = centurion;
 
 ctn::Window::Window(std::string& title, int width, int height)
 {
-	if (width < 1 || height < 1) {
-		throw std::invalid_argument("Invalid dimensions for window!");
-	}
-
-	Uint32 winFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
-	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, winFlags);
-
-	Uint32 rendererFlags = SDL_RENDERER_ACCELERATED;
-	graphics = new Graphics(SDL_CreateRenderer(window, -1, rendererFlags));
+	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
+	initComps(title, width, height, flags);
 }
 
 ctn::Window::Window(std::string & title)
 {
-	int w = Screen::getWidth();
-	int h = Screen::getHeight();
-	Uint32 winFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN | SDL_WINDOW_FULLSCREEN;
-	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, winFlags);
-
-	Uint32 rendererFlags = SDL_RENDERER_ACCELERATED;
-	graphics = new Graphics(SDL_CreateRenderer(window, -1, rendererFlags));
+	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_HIDDEN;
+	initComps(title, ctn::Screen::getWidth(), ctn::Screen::getHeight(), flags);
 }
 
 ctn::Window::~Window()
@@ -36,6 +24,18 @@ ctn::Window::~Window()
 
 	delete graphics;
 	SDL_DestroyWindow(window);
+}
+
+void centurion::Window::initComps(std::string title, int w, int h, Uint32 flags)
+{
+	if (w < 1 || h < 1) {
+		throw std::invalid_argument("Invalid dimensions for window!");
+	}
+	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags);
+
+	Uint32 rendererFlags = SDL_RENDERER_ACCELERATED;
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, rendererFlags);
+	graphics = new ctn::Graphics(renderer);
 }
 
 void ctn::Window::show()
@@ -50,7 +50,7 @@ void ctn::Window::hide()
 
 void ctn::Window::setResizable(bool resizable)
 {
-	SDL_bool b = (resizable) ? SDL_TRUE : SDL_FALSE;
+	SDL_bool b = (resizable) ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE;
 	SDL_SetWindowResizable(window, b);
 }
 
@@ -87,5 +87,5 @@ void ctn::Window::render(Image& img, int x, int y, int w, int h)
 
 ctn::Image* ctn::Window::createImage(std::string path)
 {
-	return new ctn::Image(path, graphics->getRenderer());
+	return ctn::Image::create(path, graphics->renderer);
 }

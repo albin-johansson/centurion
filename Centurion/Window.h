@@ -2,40 +2,18 @@
 #include <SDL.h>
 #include <string>
 #include "Image.h"
-
-namespace centurion
-{
-	class Window;
-}
+#include "Graphics.h"
+#include "Centurion.h"
 
 class centurion::Window {
 
 private:
-
-	class Graphics {
-
-	private:
-		SDL_Renderer* renderer = nullptr;
-
-	public:
-		Graphics(SDL_Renderer* renderer);
-
-		~Graphics();
-
-		void update();
-
-		void render(Image& img, int x, int y);
-
-		void render(Image& img, int x, int y, int w, int h);
-
-		SDL_Renderer* getRenderer();
-	};
-
 	SDL_Window* window;
-	Graphics* graphics;
+	centurion::Graphics* graphics;
+
+	void initComps(std::string title, int w, int h, Uint32 flags);
 
 public:
-
 	/*
 	\brief	Creates a window with the supplied dimensions.
 
@@ -77,9 +55,9 @@ public:
 
 	void update();
 
-	void render(Image& img, int x, int y);
+	void render(centurion::Image& img, int x, int y);
 
-	void render(Image& img, int x, int y, int w, int h);
+	void render(centurion::Image& img, int x, int y, int w, int h);
 
-	Image* createImage(std::string path);
+	centurion::Image* createImage(std::string path);
 };

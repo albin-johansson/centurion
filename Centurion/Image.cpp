@@ -44,3 +44,13 @@ SDL_Texture* ctn::Image::getTexture()
 {
 	return texture;
 }
+
+centurion::Image* centurion::Image::create(std::string path, SDL_Renderer * renderer)
+{
+	return new centurion::Image(path, renderer);
+}
+
+void centurion::Image::destroy(centurion::Image * img)
+{
+	delete img;
+}

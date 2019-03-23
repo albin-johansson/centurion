@@ -1,16 +1,13 @@
 #pragma once
 #include <SDL.h>
-
-namespace centurion
-{
-	class Screen;
-}
+#include "Centurion.h"
 
 class centurion::Screen final {
 
-public:
+private:
 	Screen() = delete;
 
+public:
 	~Screen() = default;
 
 	static int getWidth();

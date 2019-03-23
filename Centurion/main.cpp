@@ -13,9 +13,9 @@ int main(int argc, char** argv)
 	Centurion::init();
 
 	std::string s = "HelloWorld";
-	Window window = Window(s, 800, 600);
-
+	Window window = Window(s);
 	Image* img = window.createImage("player_ph.png");
+
 	window.setResizable(false);
 	window.show();
 
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 	printf("Window width: %i\n", window.getWidth());
 	printf("Window height: %i\n", window.getHeight());
 
-	delete img;
+	Image::destroy(img);
 	Centurion::close();
 	return 0;
 }

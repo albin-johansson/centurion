@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Centurion.h" />
+    <ClInclude Include="Graphics.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Window.h" />

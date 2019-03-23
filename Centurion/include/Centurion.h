@@ -8,6 +8,7 @@ namespace centurion
 	class Screen;
 	class Image;
 	class Rectangle;
+	class Point;
 }
 
 class centurion::Centurion final {

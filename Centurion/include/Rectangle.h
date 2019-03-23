@@ -24,6 +24,8 @@ public:
 
 	bool contains(int x, int y);
 
+	bool contains(Point& point);
+
 	int getX();
 
 	int getY();

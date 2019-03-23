@@ -1,8 +1,10 @@
 #include "Rectangle.h"
 #include "BooleanConverter.h"
+#include "Point.h"
 #include <stdexcept>
 
 using centurion::Rectangle;
+using centurion::Point;
 
 Rectangle::Rectangle(int x, int y, int w, int h)
 {
@@ -42,6 +44,11 @@ bool Rectangle::contains(int x, int y)
 	SDL_Point point = { x, y };
 	SDL_bool result = SDL_PointInRect(&point, &this->rect);
 	return BooleanConverter::convert(result);
+}
+
+bool Rectangle::contains(Point& point)
+{
+	return contains(point.getX(), point.getY());
 }
 
 int Rectangle::getX()

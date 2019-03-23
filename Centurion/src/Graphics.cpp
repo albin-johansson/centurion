@@ -7,7 +7,7 @@ using centurion::Image;
 
 Graphics::Graphics(SDL_Renderer* renderer)
 {
-	if (renderer == NULL) {
+	if (renderer == NULL || renderer == nullptr) {
 		throw std::invalid_argument("Null renderer!");
 	}
 	this->renderer = renderer;

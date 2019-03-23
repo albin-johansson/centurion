@@ -7,6 +7,7 @@ namespace centurion
 	class Graphics;
 	class Screen;
 	class Image;
+	class Rectangle;
 }
 
 class centurion::Centurion final {

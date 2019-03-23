@@ -186,6 +186,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\BooleanConverter.cpp" />
+    <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\Centurion.cpp" />
     <ClCompile Include="src\Graphics.cpp" />
     <ClCompile Include="src\Image.cpp" />
@@ -193,11 +195,13 @@
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\BooleanConverter.h" />
     <ClInclude Include="include\Centurion.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\Image.h" />
     <ClInclude Include="include\Screen.h" />
     <ClInclude Include="include\Window.h" />
+    <ClInclude Include="include\Rectangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

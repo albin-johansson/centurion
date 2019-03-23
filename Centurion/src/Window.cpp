@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include "Screen.h"
 #include "Image.h"
+#include "BooleanConverter.h"
 #include <stdexcept>
 
 using centurion::Window;
@@ -53,7 +54,7 @@ void Window::hide()
 
 void Window::setResizable(bool resizable)
 {
-	SDL_bool b = (resizable) ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE;
+	SDL_bool b = BooleanConverter::convert(resizable);
 	SDL_SetWindowResizable(window, b);
 }
 

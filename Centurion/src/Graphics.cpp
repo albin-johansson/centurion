@@ -23,6 +23,11 @@ void Graphics::update()
 	SDL_RenderPresent(renderer);
 }
 
+void Graphics::clear()
+{
+	SDL_RenderClear(renderer);
+}
+
 void Graphics::render(Image& img, int x, int y)
 {
 	render(img, x, y, img.getWidth(), img.getHeight());

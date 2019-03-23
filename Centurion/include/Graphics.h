@@ -14,6 +14,8 @@ private:
 
 	void update();
 
+	void clear();
+
 	void render(centurion::Image& img, int x, int y);
 
 	void render(centurion::Image& img, int x, int y, int w, int h);

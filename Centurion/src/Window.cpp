@@ -3,21 +3,21 @@
 #include "Screen.h"
 #include <stdexcept>
 
-namespace ctn = centurion;
+namespace c = centurion;
 
-ctn::Window::Window(std::string& title, int width, int height)
+c::Window::Window(std::string& title, int width, int height)
 {
 	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
 	initComps(title, width, height, flags);
 }
 
-ctn::Window::Window(std::string & title)
+c::Window::Window(std::string & title)
 {
 	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN | SDL_WINDOW_HIDDEN;
-	initComps(title, ctn::Screen::getWidth(), ctn::Screen::getHeight(), flags);
+	initComps(title, c::Screen::getWidth(), c::Screen::getHeight(), flags);
 }
 
-ctn::Window::~Window()
+c::Window::~Window()
 {
 	SDL_HideWindow(window);
 	SDL_Delay(1);
@@ -35,26 +35,26 @@ void centurion::Window::initComps(std::string title, int w, int h, Uint32 flags)
 
 	Uint32 rendererFlags = SDL_RENDERER_ACCELERATED;
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, rendererFlags);
-	graphics = new ctn::Graphics(renderer);
+	graphics = new c::Graphics(renderer);
 }
 
-void ctn::Window::show()
+void c::Window::show()
 {
 	SDL_ShowWindow(window);
 }
 
-void ctn::Window::hide()
+void c::Window::hide()
 {
 	SDL_HideWindow(window);
 }
 
-void ctn::Window::setResizable(bool resizable)
+void c::Window::setResizable(bool resizable)
 {
 	SDL_bool b = (resizable) ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE;
 	SDL_SetWindowResizable(window, b);
 }
 
-int ctn::Window::getWidth()
+int c::Window::getWidth()
 {
 	int w = -1;
 	int h = -1;

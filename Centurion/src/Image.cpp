@@ -2,9 +2,9 @@
 #include <SDL_image.h>
 #include <stdexcept>
 
-namespace ctn = centurion;
+namespace c = centurion;
 
-ctn::Image::Image(std::string path, SDL_Renderer* renderer)
+c::Image::Image(std::string path, SDL_Renderer* renderer)
 {
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	texture = createTexture(surface, renderer);
@@ -13,12 +13,12 @@ ctn::Image::Image(std::string path, SDL_Renderer* renderer)
 	SDL_FreeSurface(surface);
 }
 
-ctn::Image::~Image()
+c::Image::~Image()
 {
 	SDL_DestroyTexture(texture);
 }
 
-SDL_Texture* ctn::Image::createTexture(SDL_Surface* surface, SDL_Renderer* renderer)
+SDL_Texture* c::Image::createTexture(SDL_Surface* surface, SDL_Renderer* renderer)
 {
 	if (surface == NULL || renderer == NULL) {
 		throw std::invalid_argument("Null renderer when creating texture!");
@@ -30,17 +30,17 @@ SDL_Texture* ctn::Image::createTexture(SDL_Surface* surface, SDL_Renderer* rende
 	return texture;
 }
 
-int ctn::Image::getWidth()
+int c::Image::getWidth()
 {
 	return width;
 }
 
-int ctn::Image::getHeight()
+int c::Image::getHeight()
 {
 	return height;
 }
 
-SDL_Texture* ctn::Image::getTexture()
+SDL_Texture* c::Image::getTexture()
 {
 	return texture;
 }

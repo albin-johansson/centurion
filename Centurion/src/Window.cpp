@@ -87,5 +87,5 @@ void c::Window::render(c::Image& img, int x, int y, int w, int h)
 
 c::Image* c::Window::createImage(std::string path)
 {
-	return c::Image::create(path, graphics->renderer);
+	return c::Image::create(path, *graphics);
 }

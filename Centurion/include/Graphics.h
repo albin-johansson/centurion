@@ -8,17 +8,19 @@ class centurion::Graphics {
 
 private:
 	friend class centurion::Window;
+	friend class centurion::Image;
 
 	SDL_Renderer* renderer = nullptr;
 
 	Graphics(SDL_Renderer* renderer);
 
-public:
-	~Graphics();
-
 	void update();
 
 	void render(centurion::Image& img, int x, int y);
-	
+
 	void render(centurion::Image& img, int x, int y, int w, int h);
+
+public:
+	~Graphics();
+
 };

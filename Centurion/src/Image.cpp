@@ -4,10 +4,10 @@
 
 namespace c = centurion;
 
-c::Image::Image(std::string path, SDL_Renderer* renderer)
+c::Image::Image(std::string path, c::Graphics& graphics)
 {
 	SDL_Surface* surface = IMG_Load(path.c_str());
-	texture = createTexture(surface, renderer);
+	texture = createTexture(surface, graphics.renderer);
 	width = surface->w;
 	height = surface->h;
 	SDL_FreeSurface(surface);
@@ -45,12 +45,12 @@ SDL_Texture* c::Image::getTexture()
 	return texture;
 }
 
-centurion::Image* centurion::Image::create(std::string path, SDL_Renderer * renderer)
+c::Image* c::Image::create(std::string path, c::Graphics& graphics)
 {
-	return new centurion::Image(path, renderer);
+	return new c::Image(path, graphics);
 }
 
-void centurion::Image::destroy(centurion::Image * img)
+void c::Image::destroy(c::Image* img)
 {
 	delete img;
 }

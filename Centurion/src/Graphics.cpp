@@ -28,7 +28,7 @@ void ctn::Graphics::render(Image& img, int x, int y)
 	render(img, x, y, img.getWidth(), img.getHeight());
 }
 
-//TODO add 
+//TODO add render(Image& img, ISprite sprite)
 
 void ctn::Graphics::render(Image& img, int x, int y, int w, int h)
 {

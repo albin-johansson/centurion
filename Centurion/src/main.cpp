@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 	Centurion::init();
 
 	std::string s = "HelloWorld";
-	Window window = Window(s);
+	Window window = Window(s, 800, 600);
 	Image* img = window.createImage("player_ph.png");
 
 	window.setResizable(false);

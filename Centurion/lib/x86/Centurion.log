@@ -1,4 +1,5 @@
-﻿  Color.cpp
+﻿  BooleanConverter.cpp
+  Color.cpp
   KeyStroke.cpp
   Point.cpp
   Rectangle.cpp

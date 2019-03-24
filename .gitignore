@@ -377,11 +377,3 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
-
-Centurion/lib/x86/Centurion.log
-Centurion/lib/x64/Centurion.tlog/CL.write.1.tlog
-Centurion/lib/x64/Centurion.tlog/CL.read.1.tlog
-Centurion/lib/x64/Centurion.tlog/CL.command.1.tlog
-Centurion/lib/x64/Centurion.tlog/Lib.command.1.tlog
-Centurion/lib/x64/Centurion.tlog/Lib-link.write.1.tlog
-Centurion/lib/x64/Centurion.tlog/Lib-link.read.1.tlog

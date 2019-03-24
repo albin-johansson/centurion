@@ -1,9 +1,11 @@
 #include "Graphics.h"
 #include "Image.h"
+#include "Color.h"
 #include <stdexcept>
 
 using centurion::Graphics;
 using centurion::Image;
+using centurion::Color;
 
 Graphics::Graphics(SDL_Renderer* renderer)
 {
@@ -42,4 +44,9 @@ void Graphics::render(Image& img, int x, int y, int w, int h)
 	}
 	SDL_Rect rect = { x, y, w, h };
 	SDL_RenderCopy(renderer, img.getTexture(), NULL, &rect);
+}
+
+void Graphics::setColor(Color color)
+{
+	SDL_SetRenderDrawColor(renderer, color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 }

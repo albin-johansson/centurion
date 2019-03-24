@@ -20,6 +20,8 @@ private:
 
 	void render(centurion::Image& img, int x, int y, int w, int h);
 
+	void setColor(centurion::Color color);
+
 public:
 	~Graphics();
 };

@@ -33,4 +33,6 @@ public:
 	int getWidth();
 
 	int getHeight();
+
+	SDL_Rect createSDLRect();
 };

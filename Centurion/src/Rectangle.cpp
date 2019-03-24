@@ -70,3 +70,8 @@ int Rectangle::getHeight()
 {
 	return rect.h;
 }
+
+SDL_Rect Rectangle::createSDLRect()
+{
+	return rect;
+}

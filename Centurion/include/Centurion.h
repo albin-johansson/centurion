@@ -3,7 +3,6 @@
 namespace centurion
 {
 	class Centurion;
-
 	class Window;
 	class Graphics;
 	class Screen;
@@ -12,6 +11,7 @@ namespace centurion
 	class Point;
 	class Color;
 	class KeyStroke;
+	class IAction;
 }
 
 class centurion::Centurion final {

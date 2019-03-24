@@ -1,6 +1,7 @@
 #pragma once
+#include "Centurion.h"
 
-class IAction {
+class centurion::IAction {
 
 protected:
 	IAction() = default;
@@ -8,8 +9,8 @@ protected:
 public:
 	virtual ~IAction() = 0;
 
-	/*
-	\brief Executes the action represented by this IAction. 
+	/**
+	\brief Executes the action represented by this IAction.
 	*/
 	virtual void execute() = 0;
 };

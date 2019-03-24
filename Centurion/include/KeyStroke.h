@@ -7,10 +7,13 @@ class centurion::KeyStroke {
 private:
 	SDL_Keycode keycode;
 	SDL_EventType eventType;
+	centurion::IAction& action;
 
 public:
-	KeyStroke(SDL_Keycode keycode, SDL_EventType type); //TODO enum for key values, enum for event type
+	//TODO enum for key values, enum for event types
+	KeyStroke(SDL_Keycode keycode, SDL_EventType type, centurion::IAction& action);
 
 	~KeyStroke();
 
+	void check(SDL_Event& e);
 };

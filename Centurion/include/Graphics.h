@@ -16,9 +16,11 @@ private:
 
 	void clear();
 
+	void render(centurion::Image& img, int x, int y, int w, int h);
+
 	void render(centurion::Image& img, int x, int y);
 
-	void render(centurion::Image& img, int x, int y, int w, int h);
+	void render(centurion::Image& img, centurion::Rectangle rect);
 
 	void setColor(centurion::Color color);
 

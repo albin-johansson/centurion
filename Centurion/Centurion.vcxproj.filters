@@ -71,5 +71,8 @@
     <ClInclude Include="include\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\KeyStroke.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -202,6 +202,7 @@
     <ClInclude Include="include\Color.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\Image.h" />
+    <ClInclude Include="include\KeyStroke.h" />
     <ClInclude Include="include\Point.h" />
     <ClInclude Include="include\Screen.h" />
     <ClInclude Include="include\Window.h" />

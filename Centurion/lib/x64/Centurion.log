@@ -1,4 +1,6 @@
-﻿  Point.cpp
+﻿  BooleanConverter.cpp
+  Color.cpp
+  Point.cpp
   Rectangle.cpp
   Centurion.cpp
   Graphics.cpp

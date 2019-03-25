@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using centurion::Color;
+using centurion::visuals::Color;
 using centurion::Centurion;
 
 namespace CenturionTest

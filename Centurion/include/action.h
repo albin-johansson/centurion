@@ -1,7 +1,7 @@
 #pragma once
 #include "centurion.h"
 
-class centurion::Action {
+class centurion::events::Action {
 
 protected:
 	Action() = default;

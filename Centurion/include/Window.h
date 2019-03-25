@@ -1,17 +1,13 @@
 #pragma once
 #include <SDL.h>
 #include <string>
-#include <memory>
 #include "centurion.h"
-
-using centurion::Graphics;
-using std::unique_ptr;
 
 class centurion::Window {
 
 private:
 	SDL_Window* window;
-	unique_ptr<Graphics> graphics;
+	std::unique_ptr<centurion::visuals::Graphics> graphics;
 
 	void InitComps(const std::string& title, int w, int h, Uint32 flags);
 
@@ -57,17 +53,17 @@ public:
 
 	void Update();
 
-	void AddKeyListener(centurion::KeyListener& kl);
+	void AddKeyListener(centurion::events::KeyListener& kl);
 
 	// TODO add listener methods
 
 	void ClearWindow();
 
-	void Render(centurion::Image& img, int x, int y);
+	void Render(centurion::visuals::Image& img, int x, int y);
 
-	void Render(centurion::Image& img, int x, int y, int w, int h);
+	void Render(centurion::visuals::Image& img, int x, int y, int w, int h);
 
-	void Render(centurion::Image& img, centurion::Rectangle rect);
+	void Render(centurion::visuals::Image& img, centurion::geo::Rectangle rect);
 
 	void RenderFilledRect(int x, int y, int w, int h);
 
@@ -75,9 +71,9 @@ public:
 
 	void RenderLine(int x1, int y1, int x2, int y2);
 
-	void RenderLine(centurion::Point p1, centurion::Point p2);
+	void RenderLine(centurion::geo::Point p1, centurion::geo::Point p2);
 
-	void SetRenderingColor(centurion::Color color);
+	void SetRenderingColor(centurion::visuals::Color color);
 
-	centurion::Image* CreateImage(std::string path);
+	centurion::visuals::Image* CreateImage(std::string path);
 };

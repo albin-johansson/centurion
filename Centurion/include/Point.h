@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include "centurion.h"
 
-class centurion::Point {
+class centurion::geo::Point {
 
 private:
 	SDL_Point point;

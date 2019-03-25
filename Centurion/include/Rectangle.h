@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include "centurion.h"
 
-class centurion::Rectangle {
+class centurion::geo::Rectangle {
 
 private:
 	SDL_Rect rect;
@@ -20,7 +20,7 @@ public:
 
 	void SetY(int y);
 
-	bool Intersects(centurion::Rectangle& rect);
+	bool Intersects(centurion::geo::Rectangle& rect);
 
 	bool Contains(int x, int y);
 

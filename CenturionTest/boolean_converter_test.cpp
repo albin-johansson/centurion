@@ -2,7 +2,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using centurion::Centurion;
-using centurion::BooleanConverter;
+using centurion::tools::BooleanConverter;
 
 namespace CenturionTest
 {

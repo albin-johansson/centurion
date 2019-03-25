@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include "Centurion.h"
 
-class centurion::BooleanConverter final {
+class centurion::tools::BooleanConverter final {
 
 private:
 	BooleanConverter() = delete;

@@ -3,9 +3,9 @@
 #include "point.h"
 #include <stdexcept>
 
-using centurion::Rectangle;
-using centurion::Point;
-using centurion::BooleanConverter;
+using centurion::geo::Rectangle;
+using centurion::geo::Point;
+using centurion::tools::BooleanConverter;
 
 Rectangle::Rectangle(int x, int y, int w, int h)
 {

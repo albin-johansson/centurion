@@ -3,8 +3,8 @@
 #include <SDL_image.h>
 #include <stdexcept>
 
-using centurion::Image;
-using centurion::Graphics;
+using centurion::visuals::Image;
+using centurion::visuals::Graphics;
 
 Image::Image(const std::string& path, Graphics& graphics)
 {

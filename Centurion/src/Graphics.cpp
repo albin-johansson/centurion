@@ -5,11 +5,11 @@
 #include "point.h"
 #include <stdexcept>
 
-using centurion::Graphics;
-using centurion::Image;
-using centurion::Color;
-using centurion::Rectangle;
-using centurion::Point;
+using centurion::visuals::Graphics;
+using centurion::visuals::Image;
+using centurion::visuals::Color;
+using centurion::geo::Rectangle;
+using centurion::geo::Point;
 
 Graphics::Graphics(SDL_Renderer* renderer)
 {

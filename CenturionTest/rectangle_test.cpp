@@ -2,8 +2,8 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using centurion::Centurion;
-using centurion::Rectangle;
-using centurion::Point;
+using centurion::geo::Rectangle;
+using centurion::geo::Point;
 
 namespace CenturionTest
 {

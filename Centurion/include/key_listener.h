@@ -1,7 +1,7 @@
 #pragma once
 #include "centurion.h"
 
-class centurion::KeyListener {
+class centurion::events::KeyListener {
 
 protected:
 	KeyListener() = default;

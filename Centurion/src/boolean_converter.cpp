@@ -1,6 +1,6 @@
 #include "boolean_converter.h"
 
-using centurion::BooleanConverter;
+using centurion::tools::BooleanConverter;
 
 bool BooleanConverter::Convert(SDL_bool b)
 {

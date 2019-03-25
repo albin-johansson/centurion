@@ -8,17 +8,18 @@
 #include "color.h"
 #include "key_listener.h"
 #include <stdexcept>
+#include <memory>
 
 namespace ctn = centurion;
 using ctn::Window;
-using ctn::Graphics;
 using ctn::Screen;
-using ctn::Image;
-using ctn::Rectangle;
-using ctn::Point;
-using ctn::Color;
-using ctn::BooleanConverter;
-using ctn::KeyListener;
+using ctn::visuals::Graphics;
+using ctn::visuals::Image;
+using ctn::visuals::Color;
+using ctn::geo::Rectangle;
+using ctn::geo::Point;
+using ctn::tools::BooleanConverter;
+using ctn::events::KeyListener;
 
 Window::Window(const std::string& title, int width, int height)
 {

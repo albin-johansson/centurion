@@ -1,6 +1,6 @@
 #include "point.h"
 
-using centurion::Point;
+using centurion::geo::Point;
 
 Point::Point(int x, int y)
 {

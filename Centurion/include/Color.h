@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "centurion.h"
 
-class centurion::Color {
+class centurion::visuals::Color {
 
 private:
 	SDL_Color color;

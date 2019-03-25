@@ -2,7 +2,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using centurion::Centurion;
-using centurion::Point;
+using centurion::geo::Point;
 
 namespace CenturionTest
 {

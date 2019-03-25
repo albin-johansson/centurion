@@ -1,10 +1,12 @@
-#include "KeyStroke.h"
-#include "IAction.h"
+#include "key_stroke.h"
+#include "action.h"
 
 using centurion::CTN_KeyStroke;
 using centurion::CTN_Action;
 
-CTN_KeyStroke::CTN_KeyStroke(SDL_Keycode keycode, SDL_EventType eventType, CTN_Action& action)
+CTN_KeyStroke::CTN_KeyStroke(SDL_Keycode keycode,
+							 SDL_EventType eventType,
+							 CTN_Action& action)
 	: action(action)
 {
 	this->keycode = keycode;

@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL.h>
-#include "Centurion.h"
+#include "centurion.h"
 
 class centurion::CTN_Graphics {
 
@@ -11,8 +11,8 @@ private:
 	SDL_Renderer* renderer = nullptr;
 
 	void Update();
-
-	void clear();
+	
+	void Clear();
 
 	void Render(centurion::CTN_Image& img, centurion::CTN_Rectangle rect);
 
@@ -28,9 +28,9 @@ private:
 
 	void RenderLine(centurion::CTN_Point p1, centurion::CTN_Point p2);
 
-	void setColor(centurion::CTN_Color color);
+	void SetColor(centurion::CTN_Color color);
 
-	void checkRenderDimensions(int width, int height);
+	void CheckRenderDimensions(int width, int height);
 	
 public:
 	CTN_Graphics(SDL_Renderer* renderer);

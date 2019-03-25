@@ -1,8 +1,8 @@
 #pragma once
 #include <SDL.h>
 #include <string>
-#include "Centurion.h"
 #include <memory>
+#include "centurion.h"
 
 using centurion::CTN_Graphics;
 using std::unique_ptr;

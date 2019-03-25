@@ -26,19 +26,19 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ColorTest.cpp">
+    <ClCompile Include="boolean_converter_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RectangleTest.cpp">
+    <ClCompile Include="color_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PointTest.cpp">
+    <ClCompile Include="point_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BooleanConverterTest.cpp">
+    <ClCompile Include="rectangle_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScreenTest.cpp">
+    <ClCompile Include="screen_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

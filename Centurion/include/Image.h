@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <string>
-#include "Centurion.h"
+#include "centurion.h"
 
 class centurion::CTN_Image {
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "Centurion.h"
 #include <SDL.h>
+#include "centurion.h"
 
 class centurion::CTN_Point {
 

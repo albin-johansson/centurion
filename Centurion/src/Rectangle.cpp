@@ -1,6 +1,6 @@
-#include "Rectangle.h"
-#include "BooleanConverter.h"
-#include "Point.h"
+#include "rectangle.h"
+#include "boolean_converter.h"
+#include "point.h"
 #include <stdexcept>
 
 using centurion::CTN_Rectangle;

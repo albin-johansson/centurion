@@ -1,5 +1,5 @@
-#include "Image.h"
-#include "Graphics.h"
+#include "image.h"
+#include "graphics.h"
 #include <SDL_image.h>
 #include <stdexcept>
 

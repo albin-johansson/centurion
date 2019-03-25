@@ -164,11 +164,11 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BooleanConverterTest.cpp" />
-    <ClCompile Include="ColorTest.cpp" />
-    <ClCompile Include="PointTest.cpp" />
-    <ClCompile Include="RectangleTest.cpp" />
-    <ClCompile Include="ScreenTest.cpp" />
+    <ClCompile Include="boolean_converter_test.cpp" />
+    <ClCompile Include="color_test.cpp" />
+    <ClCompile Include="point_test.cpp" />
+    <ClCompile Include="rectangle_test.cpp" />
+    <ClCompile Include="screen_test.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

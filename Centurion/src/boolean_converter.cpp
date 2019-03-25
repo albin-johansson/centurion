@@ -1,5 +1,4 @@
-#include "BooleanConverter.h"
-#include <SDL.h>
+#include "boolean_converter.h"
 
 using centurion::CTN_BooleanConverter;
 

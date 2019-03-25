@@ -1,7 +1,7 @@
-#include "Screen.h"
+#include "screen.h"
 #include <SDL.h>
 #include <stdexcept>
-#include <Windows.h>
+#include <windows.h>
 
 using centurion::CTN_Screen;
 

@@ -1,8 +1,8 @@
-#include "Graphics.h"
-#include "Image.h"
-#include "Color.h"
-#include "Rectangle.h"
-#include "Point.h"
+#include "graphics.h"
+#include "image.h"
+#include "color.h"
+#include "rectangle.h"
+#include "point.h"
 #include <stdexcept>
 
 using centurion::CTN_Graphics;
@@ -29,20 +29,20 @@ void CTN_Graphics::Update()
 	SDL_RenderPresent(renderer);
 }
 
-void CTN_Graphics::clear()
+void CTN_Graphics::Clear()
 {
 	SDL_RenderClear(renderer);
 }
 
 void CTN_Graphics::Render(CTN_Image& img, CTN_Rectangle rect)
 {
-	checkRenderDimensions(rect.getWidth(), rect.getHeight());
+	CheckRenderDimensions(rect.getWidth(), rect.getHeight());
 	SDL_RenderCopy(renderer, img.getTexture(), NULL, &rect.createSDLRect());
 }
 
 void CTN_Graphics::Render(CTN_Image& img, int x, int y, int w, int h)
 {
-	checkRenderDimensions(w, h);
+	CheckRenderDimensions(w, h);
 	SDL_Rect rect = { x, y, w, h };
 	SDL_RenderCopy(renderer, img.getTexture(), NULL, &rect);
 }
@@ -74,12 +74,12 @@ void CTN_Graphics::RenderLine(CTN_Point p1, CTN_Point p2)
 	SDL_RenderDrawLine(renderer, p1.getX(), p1.getY(), p2.getX(), p2.getY());
 }
 
-void CTN_Graphics::setColor(CTN_Color color)
+void CTN_Graphics::SetColor(CTN_Color color)
 {
 	SDL_SetRenderDrawColor(renderer, color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 }
 
-void CTN_Graphics::checkRenderDimensions(int width, int height)
+void CTN_Graphics::CheckRenderDimensions(int width, int height)
 {
 	if (width < 1 || height < 1) {
 		throw std::invalid_argument("Invalid rendering dimensions!");

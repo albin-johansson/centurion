@@ -1,23 +1,24 @@
-#include "Window.h"
-#include "Graphics.h"
-#include "Screen.h"
-#include "Image.h"
-#include "BooleanConverter.h"
-#include "Rectangle.h"
-#include "Point.h"
-#include "Color.h"
+#include "window.h"
+#include "graphics.h"
+#include "screen.h"
+#include "image.h"
+#include "boolean_converter.h"
+#include "rectangle.h"
+#include "point.h"
+#include "color.h"
 #include "key_listener.h"
 #include <stdexcept>
 
-using centurion::CTN_Window;
-using centurion::CTN_Graphics;
-using centurion::CTN_Screen;
-using centurion::CTN_Image;
-using centurion::CTN_Rectangle;
-using centurion::CTN_Point;
-using centurion::CTN_Color;
-using centurion::CTN_BooleanConverter;
-using centurion::CTN_KeyListener;
+namespace ctn = centurion;
+using ctn::CTN_Window;
+using ctn::CTN_Graphics;
+using ctn::CTN_Screen;
+using ctn::CTN_Image;
+using ctn::CTN_Rectangle;
+using ctn::CTN_Point;
+using ctn::CTN_Color;
+using ctn::CTN_BooleanConverter;
+using ctn::CTN_KeyListener;
 
 CTN_Window::CTN_Window(const std::string& title, int width, int height)
 {
@@ -98,7 +99,7 @@ void CTN_Window::AddKeyListener(CTN_KeyListener& kl)
 
 void centurion::CTN_Window::ClearWindow()
 {
-	graphics->clear();
+	graphics->Clear();
 }
 
 void CTN_Window::Render(CTN_Image& img, int x, int y)
@@ -138,7 +139,7 @@ void CTN_Window::RenderLine(CTN_Point p1, CTN_Point p2)
 
 void CTN_Window::SetRenderingColor(CTN_Color color)
 {
-	graphics->setColor(color);
+	graphics->SetColor(color);
 }
 
 CTN_Image* CTN_Window::CreateImage(std::string path)

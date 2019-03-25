@@ -1,7 +1,7 @@
 #pragma once
-#include "Centurion.h"
 #include <SDL.h>
 #include <stdint.h>
+#include "centurion.h"
 
 class centurion::CTN_Color {
 

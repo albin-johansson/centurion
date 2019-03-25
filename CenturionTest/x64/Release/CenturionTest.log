@@ -1,9 +1,9 @@
 ﻿  stdafx.cpp
-  BooleanConverterTest.cpp
-  ColorTest.cpp
-  PointTest.cpp
-  RectangleTest.cpp
-  ScreenTest.cpp
+  boolean_converter_test.cpp
+  color_test.cpp
+  point_test.cpp
+  rectangle_test.cpp
+  screen_test.cpp
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
      Creating library C:\Users\albin\Documents\GitHub\Centurion\CenturionTest\x64\Release\CenturionTest.lib and object C:\Users\albin\Documents\GitHub\Centurion\CenturionTest\x64\Release\CenturionTest.exp
   Generating code

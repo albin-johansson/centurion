@@ -1,4 +1,4 @@
-#include "Centurion.h"
+#include "centurion.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>

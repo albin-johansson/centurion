@@ -6,7 +6,7 @@
 // TODO make classes as independent as possible (don't use friend classes)
 namespace centurion
 {
-	class Centurion;
+	class Centurion; //TODO rename
 	
 	class CTN_Window;
 	class CTN_Graphics;

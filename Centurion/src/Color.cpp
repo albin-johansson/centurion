@@ -1,6 +1,4 @@
-#include "Color.h"
-#include <stdint.h>
-#include <stdexcept>
+#include "color.h"
 
 using centurion::CTN_Color;
 const CTN_Color CTN_Color::RED = CTN_Color(CTN_Color::MAX_VAL, CTN_Color::MIN_VAL, CTN_Color::MIN_VAL, CTN_Color::MAX_VAL);

@@ -11,12 +11,12 @@
 #include "CppUnitTest.h"
 
 // TODO: reference additional headers your program requires here
-#include "../Centurion/include/Color.h"
-#include "../Centurion/include/Centurion.h"
-#include "../Centurion/include/Rectangle.h"
-#include "../Centurion/include/Point.h"
-#include "../Centurion/include/BooleanConverter.h"
-#include "../Centurion/include/Screen.h"
+#include "../Centurion/include/color.h"
+#include "../Centurion/include/centurion.h"
+#include "../Centurion/include/rectangle.h"
+#include "../Centurion/include/point.h"
+#include "../Centurion/include/boolean_converter.h"
+#include "../Centurion/include/screen.h"
 
 #include <SDL.h>
 #include <SDL_image.h>

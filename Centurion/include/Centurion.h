@@ -12,6 +12,7 @@ namespace centurion
 	class Color;
 	class KeyStroke;
 	class IAction;
+	class BooleanConverter;
 }
 
 class centurion::Centurion final {

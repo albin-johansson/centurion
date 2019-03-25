@@ -5,6 +5,7 @@
 
 using centurion::Rectangle;
 using centurion::Point;
+using centurion::BooleanConverter;
 
 Rectangle::Rectangle(int x, int y, int w, int h)
 {

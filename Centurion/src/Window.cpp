@@ -15,6 +15,7 @@ using centurion::Image;
 using centurion::Rectangle;
 using centurion::Point;
 using centurion::Color;
+using centurion::BooleanConverter;
 
 Window::Window(const std::string& title, int width, int height)
 {

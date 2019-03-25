@@ -15,6 +15,7 @@
 #include "../Centurion/include/Centurion.h"
 #include "../Centurion/include/Rectangle.h"
 #include "../Centurion/include/Point.h"
+#include "../Centurion/include/BooleanConverter.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>

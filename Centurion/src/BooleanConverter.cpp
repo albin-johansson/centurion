@@ -1,6 +1,8 @@
 #include "BooleanConverter.h"
 #include <SDL.h>
 
+using centurion::BooleanConverter;
+
 bool BooleanConverter::convert(SDL_bool b)
 {
 	return (b) ? true : false;

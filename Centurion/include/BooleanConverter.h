@@ -1,7 +1,8 @@
 #pragma once
 #include <SDL.h>
+#include "Centurion.h"
 
-class BooleanConverter final {
+class centurion::BooleanConverter final {
 
 private:
 	BooleanConverter() = delete;

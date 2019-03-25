@@ -164,6 +164,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BooleanConverterTest.cpp" />
     <ClCompile Include="ColorTest.cpp" />
     <ClCompile Include="PointTest.cpp" />
     <ClCompile Include="RectangleTest.cpp" />

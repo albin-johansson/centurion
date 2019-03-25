@@ -1,18 +1,25 @@
 #include "Screen.h"
 #include <SDL.h>
+#include <stdexcept>
+#include <Windows.h>
 
 using centurion::Screen;
 
 int Screen::getWidth()
 {
-	SDL_DisplayMode dm;
-	SDL_GetDesktopDisplayMode(0, &dm);
-	return dm.w;
+	DPI_AWARENESS_CONTEXT context = GetThreadDpiAwarenessContext();
+	if (context != DPI_AWARENESS_CONTEXT_SYSTEM_AWARE) {
+		SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
+	}
+	return GetSystemMetrics(SM_CXSCREEN);
+
 }
 
 int Screen::getHeight()
 {
-	SDL_DisplayMode dm;
-	SDL_GetDesktopDisplayMode(0, &dm);
-	return dm.h;
+	DPI_AWARENESS_CONTEXT context = GetThreadDpiAwarenessContext();
+	if (context != DPI_AWARENESS_CONTEXT_SYSTEM_AWARE) {
+		SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
+	}
+	return GetSystemMetrics(SM_CYSCREEN);
 }

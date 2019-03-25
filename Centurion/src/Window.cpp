@@ -3,12 +3,18 @@
 #include "Screen.h"
 #include "Image.h"
 #include "BooleanConverter.h"
+#include "Rectangle.h"
+#include "Point.h"
+#include "Color.h"
 #include <stdexcept>
 
 using centurion::Window;
 using centurion::Graphics;
 using centurion::Screen;
 using centurion::Image;
+using centurion::Rectangle;
+using centurion::Point;
+using centurion::Color;
 
 Window::Window(const std::string& title, int width, int height)
 {
@@ -79,6 +85,11 @@ void Window::update()
 	graphics->update();
 }
 
+void centurion::Window::clearWindow()
+{
+	graphics->clear();
+}
+
 void Window::render(Image& img, int x, int y)
 {
 	graphics->render(img, x, y);
@@ -87,6 +98,36 @@ void Window::render(Image& img, int x, int y)
 void Window::render(Image& img, int x, int y, int w, int h)
 {
 	graphics->render(img, x, y, w, h);
+}
+
+void Window::render(Image& img, Rectangle rect)
+{
+	graphics->render(img, rect);
+}
+
+void Window::renderFilledRect(int x, int y, int w, int h)
+{
+	graphics->renderFilledRect(x, y, w, h);
+}
+
+void Window::renderOutlinedRect(int x, int y, int w, int h)
+{
+	graphics->renderOutlinedRect(x, y, w, h);
+}
+
+void Window::renderLine(int x1, int y1, int x2, int y2)
+{
+	graphics->renderLine(x1, y1, x2, y2);
+}
+
+void Window::renderLine(Point p1, Point p2)
+{
+	graphics->renderLine(p1, p2);
+}
+
+void Window::setRenderingColor(Color color)
+{
+	graphics->setColor(color);
 }
 
 Image* Window::createImage(std::string path)

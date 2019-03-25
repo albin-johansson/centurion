@@ -11,11 +11,11 @@ private:
 public:
 	const static uint8_t MAX_VAL = 255;
 	const static uint8_t MIN_VAL = 0;
-	const static centurion::Color RED;
-	const static centurion::Color GREEN;
-	const static centurion::Color BLUE;
-	const static centurion::Color WHITE;
-	const static centurion::Color BLACK;
+	const static Color RED;
+	const static Color GREEN;
+	const static Color BLUE;
+	const static Color WHITE;
+	const static Color BLACK;
 
 	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 

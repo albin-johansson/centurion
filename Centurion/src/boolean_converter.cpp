@@ -1,13 +1,13 @@
 #include "boolean_converter.h"
 
-using centurion::CTN_BooleanConverter;
+using centurion::BooleanConverter;
 
-bool CTN_BooleanConverter::convert(SDL_bool b)
+bool BooleanConverter::convert(SDL_bool b)
 {
 	return (b) ? true : false;
 }
 
-SDL_bool CTN_BooleanConverter::convert(bool b)
+SDL_bool BooleanConverter::convert(bool b)
 {
 	return (b) ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE;
 }

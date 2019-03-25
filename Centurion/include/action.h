@@ -1,13 +1,13 @@
 #pragma once
 #include "centurion.h"
 
-class centurion::CTN_Action {
+class centurion::Action {
 
 protected:
-	CTN_Action() = default;
+	Action() = default;
 
 public:
-	virtual ~CTN_Action() = 0;
+	virtual ~Action() = 0;
 
 	/**
 	\brief Executes the action represented by this IAction.

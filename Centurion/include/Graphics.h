@@ -2,11 +2,11 @@
 #include <SDL.h>
 #include "centurion.h"
 
-class centurion::CTN_Graphics {
+class centurion::Graphics {
 
 private:
-	friend class centurion::CTN_Window;
-	friend class centurion::CTN_Image;
+	friend class centurion::Window;
+	friend class centurion::Image;
 
 	SDL_Renderer* renderer = nullptr;
 
@@ -14,11 +14,11 @@ private:
 	
 	void Clear();
 
-	void Render(centurion::CTN_Image& img, centurion::CTN_Rectangle rect);
+	void Render(centurion::Image& img, centurion::Rectangle rect);
 
-	void Render(centurion::CTN_Image& img, int x, int y, int w, int h);
+	void Render(centurion::Image& img, int x, int y, int w, int h);
 
-	void Render(centurion::CTN_Image& img, int x, int y);
+	void Render(centurion::Image& img, int x, int y);
 
 	void RenderFilledRect(int x, int y, int w, int h);
 
@@ -26,14 +26,14 @@ private:
 	
 	void RenderLine(int x1, int y1, int x2, int y2);
 
-	void RenderLine(centurion::CTN_Point p1, centurion::CTN_Point p2);
+	void RenderLine(centurion::Point p1, centurion::Point p2);
 
-	void SetColor(centurion::CTN_Color color);
+	void SetColor(centurion::Color color);
 
 	void CheckRenderDimensions(int width, int height);
 	
 public:
-	CTN_Graphics(SDL_Renderer* renderer);
+	Graphics(SDL_Renderer* renderer);
 
-	~CTN_Graphics();
+	~Graphics();
 };

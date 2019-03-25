@@ -2,18 +2,18 @@
 #include <SDL.h>
 #include "centurion.h"
 
-class centurion::CTN_KeyStroke {
+class centurion::KeyStroke {
 
 private:
 	SDL_Keycode keycode;
 	SDL_EventType eventType;
-	centurion::CTN_Action& action;
+	centurion::Action& action;
 
 public:
 	//TODO enum for key values, enum for event types
-	CTN_KeyStroke(SDL_Keycode keycode, SDL_EventType type, centurion::CTN_Action& action);
+	KeyStroke(SDL_Keycode keycode, SDL_EventType type, centurion::Action& action);
 
-	~CTN_KeyStroke();
+	~KeyStroke();
 
 	void check(SDL_Event& e);
 };

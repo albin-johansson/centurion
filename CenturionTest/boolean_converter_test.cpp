@@ -2,7 +2,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using centurion::Centurion;
-using centurion::CTN_BooleanConverter;
+using centurion::BooleanConverter;
 
 namespace CenturionTest
 {
@@ -24,8 +24,8 @@ namespace CenturionTest
 			SDL_bool t = SDL_bool::SDL_TRUE;
 			SDL_bool f = SDL_bool::SDL_FALSE;
 
-			bool tConverted = CTN_BooleanConverter::convert(t);
-			bool fConverted = CTN_BooleanConverter::convert(f);
+			bool tConverted = BooleanConverter::convert(t);
+			bool fConverted = BooleanConverter::convert(f);
 
 			Assert::IsTrue(tConverted);
 			Assert::IsFalse(fConverted);
@@ -36,8 +36,8 @@ namespace CenturionTest
 			bool t = true;
 			bool f = false;
 
-			SDL_bool tConverted = CTN_BooleanConverter::convert(t);
-			SDL_bool fConverted = CTN_BooleanConverter::convert(f);
+			SDL_bool tConverted = BooleanConverter::convert(t);
+			SDL_bool fConverted = BooleanConverter::convert(f);
 
 			Assert::IsTrue(tConverted);
 			Assert::IsFalse(fConverted);

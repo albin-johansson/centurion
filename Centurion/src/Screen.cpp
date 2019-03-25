@@ -3,9 +3,9 @@
 #include <stdexcept>
 #include <windows.h>
 
-using centurion::CTN_Screen;
+using centurion::Screen;
 
-int CTN_Screen::getWidth()
+int Screen::getWidth()
 {
 	DPI_AWARENESS_CONTEXT context = GetThreadDpiAwarenessContext();
 	if (context != DPI_AWARENESS_CONTEXT_SYSTEM_AWARE) {
@@ -15,7 +15,7 @@ int CTN_Screen::getWidth()
 
 }
 
-int CTN_Screen::getHeight()
+int Screen::getHeight()
 {
 	DPI_AWARENESS_CONTEXT context = GetThreadDpiAwarenessContext();
 	if (context != DPI_AWARENESS_CONTEXT_SYSTEM_AWARE) {

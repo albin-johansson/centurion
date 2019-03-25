@@ -1,34 +1,34 @@
 #include "point.h"
 
-using centurion::CTN_Point;
+using centurion::Point;
 
-CTN_Point::CTN_Point(int x, int y)
+Point::Point(int x, int y)
 {
 	point = { x, y };
 }
 
-void CTN_Point::setLocation(int x, int y)
+void Point::setLocation(int x, int y)
 {
 	setX(x);
 	setY(y);
 }
 
-void CTN_Point::setX(int x)
+void Point::setX(int x)
 {
 	point.x = x;
 }
 
-void CTN_Point::setY(int y)
+void Point::setY(int y)
 {
 	point.y = y;
 }
 
-int CTN_Point::getX()
+int Point::getX()
 {
 	return point.x;
 }
 
-int CTN_Point::getY()
+int Point::getY()
 {
 	return point.y;
 }

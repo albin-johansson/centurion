@@ -1,13 +1,13 @@
 #pragma once
 #include "centurion.h"
 
-class centurion::CTN_KeyListener {
+class centurion::KeyListener {
 
 protected:
-	CTN_KeyListener() = default;
+	KeyListener() = default;
 
 public:
-	virtual ~CTN_KeyListener() = default;
+	virtual ~KeyListener() = default;
 
 	virtual void KeyPressed() = 0;
 

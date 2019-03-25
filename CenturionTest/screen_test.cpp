@@ -2,7 +2,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using centurion::Centurion;
-using centurion::CTN_Screen;
+using centurion::Screen;
 
 namespace CenturionTest
 {
@@ -21,14 +21,14 @@ namespace CenturionTest
 
 		TEST_METHOD(GetWidth)
 		{
-			int w = CTN_Screen::getWidth();
+			int w = Screen::getWidth();
 			int expected = 1920;
 			Assert::AreEqual(expected, w);
 		}
 
 		TEST_METHOD(GetHeight)
 		{
-			int h = CTN_Screen::getHeight();
+			int h = Screen::getHeight();
 			int expected = 1080;
 			Assert::AreEqual(expected, h);
 		}

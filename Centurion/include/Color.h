@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "centurion.h"
 
-class centurion::CTN_Color {
+class centurion::Color {
 
 private:
 	SDL_Color color;
@@ -11,15 +11,15 @@ private:
 public:
 	const static uint8_t MAX_VAL = 255;
 	const static uint8_t MIN_VAL = 0;
-	const static CTN_Color RED;
-	const static CTN_Color GREEN;
-	const static CTN_Color BLUE;
-	const static CTN_Color WHITE;
-	const static CTN_Color BLACK;
+	const static Color RED;
+	const static Color GREEN;
+	const static Color BLUE;
+	const static Color WHITE;
+	const static Color BLACK;
 
-	CTN_Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-	~CTN_Color() = default;
+	~Color() = default;
 
 	uint8_t getRed();
 

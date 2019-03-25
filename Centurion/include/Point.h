@@ -2,15 +2,15 @@
 #include <SDL.h>
 #include "centurion.h"
 
-class centurion::CTN_Point {
+class centurion::Point {
 
 private:
 	SDL_Point point;
 
 public:
-	CTN_Point(int x, int y);
+	Point(int x, int y);
 
-	~CTN_Point() = default;
+	~Point() = default;
 
 	void setLocation(int x, int y);
 

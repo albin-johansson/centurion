@@ -2,17 +2,17 @@
 #include <SDL.h>
 #include "centurion.h"
 
-class centurion::CTN_Rectangle {
+class centurion::Rectangle {
 
 private:
 	SDL_Rect rect;
 
 public:
-	CTN_Rectangle(int x, int y, int w, int h);
+	Rectangle(int x, int y, int w, int h);
 
-	CTN_Rectangle(int w, int h);
+	Rectangle(int w, int h);
 
-	~CTN_Rectangle() = default;
+	~Rectangle() = default;
 
 	void setLocation(int x, int y);
 
@@ -20,11 +20,11 @@ public:
 
 	void setY(int y);
 
-	bool intersects(centurion::CTN_Rectangle& rect);
+	bool intersects(centurion::Rectangle& rect);
 
 	bool contains(int x, int y);
 
-	bool contains(CTN_Point& point);
+	bool contains(Point& point);
 
 	int getX();
 

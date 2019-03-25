@@ -3,7 +3,7 @@
 #include <string>
 #include "centurion.h"
 
-class centurion::CTN_Image {
+class centurion::Image {
 
 private:
 	int width;
@@ -12,10 +12,10 @@ private:
 
 	SDL_Texture* createTexture(SDL_Surface* surface, SDL_Renderer* renderer);
 
-	CTN_Image(const std::string& path, centurion::CTN_Graphics& graphics);
+	Image(const std::string& path, centurion::Graphics& graphics);
 	
 public:
-	~CTN_Image();
+	~Image();
 
 	int getWidth();
 
@@ -23,7 +23,7 @@ public:
 
 	SDL_Texture* getTexture();
 
-	static centurion::CTN_Image* create(const std::string& path, centurion::CTN_Graphics& graphics);
+	static centurion::Image* create(const std::string& path, centurion::Graphics& graphics);
 
-	static void destroy(centurion::CTN_Image* img);
+	static void destroy(centurion::Image* img);
 };

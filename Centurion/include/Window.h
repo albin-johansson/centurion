@@ -4,14 +4,14 @@
 #include <memory>
 #include "centurion.h"
 
-using centurion::CTN_Graphics;
+using centurion::Graphics;
 using std::unique_ptr;
 
-class centurion::CTN_Window {
+class centurion::Window {
 
 private:
 	SDL_Window* window;
-	unique_ptr<CTN_Graphics> graphics;
+	unique_ptr<Graphics> graphics;
 
 	void InitComps(const std::string& title, int w, int h, Uint32 flags);
 
@@ -23,16 +23,16 @@ public:
 	\param	width the width of the window.
 	\param	height the height of the window.
 	*/
-	CTN_Window(const std::string& title, int width, int height);
+	Window(const std::string& title, int width, int height);
 
 	/*
 	\brief	Creates a fullscreen window.
 
 	\param	title the title of the window
 	*/
-	CTN_Window(const std::string& title);
+	Window(const std::string& title);
 
-	~CTN_Window();
+	~Window();
 
 	/*
 	\brief	Makes this window visible.
@@ -57,17 +57,17 @@ public:
 
 	void Update();
 
-	void AddKeyListener(centurion::CTN_KeyListener& kl);
+	void AddKeyListener(centurion::KeyListener& kl);
 
 	// TODO add listener methods
 
 	void ClearWindow();
 
-	void Render(centurion::CTN_Image& img, int x, int y);
+	void Render(centurion::Image& img, int x, int y);
 
-	void Render(centurion::CTN_Image& img, int x, int y, int w, int h);
+	void Render(centurion::Image& img, int x, int y, int w, int h);
 
-	void Render(centurion::CTN_Image& img, centurion::CTN_Rectangle rect);
+	void Render(centurion::Image& img, centurion::Rectangle rect);
 
 	void RenderFilledRect(int x, int y, int w, int h);
 
@@ -75,9 +75,9 @@ public:
 
 	void RenderLine(int x1, int y1, int x2, int y2);
 
-	void RenderLine(centurion::CTN_Point p1, centurion::CTN_Point p2);
+	void RenderLine(centurion::Point p1, centurion::Point p2);
 
-	void SetRenderingColor(centurion::CTN_Color color);
+	void SetRenderingColor(centurion::Color color);
 
-	centurion::CTN_Image* CreateImage(std::string path);
+	centurion::Image* CreateImage(std::string path);
 };

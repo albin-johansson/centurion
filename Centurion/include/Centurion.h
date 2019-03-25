@@ -8,23 +8,23 @@ namespace centurion
 {
 	class Centurion; //TODO rename
 	
-	class CTN_Window;
-	class CTN_Graphics;
-	class CTN_Image;
-	class CTN_Color;
-	class CTN_Screen;
+	class Window;
+	class Graphics;
+	class Image;
+	class Color;
+	class Screen;
 
 	//geo
-	class CTN_Rectangle;
-	class CTN_Point;
+	class Rectangle;
+	class Point;
 
 	//input
-	class CTN_KeyListener;
-	class CTN_KeyStroke;
-	class CTN_Action;
+	class KeyListener;
+	class KeyStroke;
+	class Action;
 
 	//tools
-	class CTN_BooleanConverter;
+	class BooleanConverter;
 }
 
 class centurion::Centurion final {

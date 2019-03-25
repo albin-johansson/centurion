@@ -14,25 +14,25 @@ public:
 
 	~Rectangle() = default;
 
-	void setLocation(int x, int y);
+	void SetLocation(int x, int y);
 
-	void setX(int x);
+	void SetX(int x);
 
-	void setY(int y);
+	void SetY(int y);
 
-	bool intersects(centurion::Rectangle& rect);
+	bool Intersects(centurion::Rectangle& rect);
 
-	bool contains(int x, int y);
+	bool Contains(int x, int y);
 
-	bool contains(Point& point);
+	bool Contains(Point& point);
 
-	int getX();
+	int GetX();
 
-	int getY();
+	int GetY();
 
-	int getWidth();
+	int GetWidth();
 
-	int getHeight();
+	int GetHeight();
 
-	SDL_Rect createSDLRect();
+	SDL_Rect CreateSDLRect();
 };

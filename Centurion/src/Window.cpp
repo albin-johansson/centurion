@@ -31,7 +31,7 @@ Window::Window(const std::string& title)
 	Uint32 flags = SDL_WindowFlags::SDL_WINDOW_OPENGL |
 		SDL_WindowFlags::SDL_WINDOW_FULLSCREEN |
 		SDL_WindowFlags::SDL_WINDOW_HIDDEN;
-	InitComps(title, Screen::getWidth(), Screen::getHeight(), flags);
+	InitComps(title, Screen::GetWidth(), Screen::GetHeight(), flags);
 }
 
 Window::~Window()
@@ -63,7 +63,7 @@ void Window::Hide()
 
 void Window::SetResizable(bool resizable)
 {
-	SDL_bool b = BooleanConverter::convert(resizable);
+	SDL_bool b = BooleanConverter::Convert(resizable);
 	SDL_SetWindowResizable(window, b);
 }
 
@@ -144,5 +144,5 @@ void Window::SetRenderingColor(Color color)
 
 Image* Window::CreateImage(std::string path)
 {
-	return Image::create(path, *graphics);
+	return Image::Create(path, *graphics);
 }

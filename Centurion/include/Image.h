@@ -10,20 +10,20 @@ private:
 	int height;
 	SDL_Texture* texture = nullptr;
 
-	SDL_Texture* createTexture(SDL_Surface* surface, SDL_Renderer* renderer);
+	SDL_Texture* CreateTexture(SDL_Surface* surface, SDL_Renderer* renderer);
 
 	Image(const std::string& path, centurion::Graphics& graphics);
 	
 public:
 	~Image();
 
-	int getWidth();
+	int GetWidth();
 
-	int getHeight();
+	int GetHeight();
 
-	SDL_Texture* getTexture();
+	SDL_Texture* GetTexture();
 
-	static centurion::Image* create(const std::string& path, centurion::Graphics& graphics);
+	static centurion::Image* Create(const std::string& path, centurion::Graphics& graphics);
 
-	static void destroy(centurion::Image* img);
+	static void Destroy(centurion::Image* img);
 };

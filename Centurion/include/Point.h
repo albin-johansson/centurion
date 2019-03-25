@@ -12,13 +12,13 @@ public:
 
 	~Point() = default;
 
-	void setLocation(int x, int y);
+	void SetLocation(int x, int y);
 
-	void setX(int x);
+	void SetX(int x);
 
-	void setY(int y);
+	void SetY(int y);
 
-	int getX();
+	int GetX();
 
-	int getY();
+	int GetY();
 };

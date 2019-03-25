@@ -15,5 +15,5 @@ public:
 
 	~KeyStroke();
 
-	void check(SDL_Event& e);
+	void Check(SDL_Event& e);
 };

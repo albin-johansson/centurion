@@ -10,7 +10,7 @@ private:
 public:
 	~BooleanConverter() = default;
 	
-	static bool convert(SDL_bool b);
+	static bool Convert(SDL_bool b);
 
-	static SDL_bool convert(bool b);
+	static SDL_bool Convert(bool b);
 };

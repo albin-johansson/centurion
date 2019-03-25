@@ -9,7 +9,7 @@ private:
 public:
 	~Screen() = default;
 
-	static int getWidth();
+	static int GetWidth();
 
-	static int getHeight();
+	static int GetHeight();
 };

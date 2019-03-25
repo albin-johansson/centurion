@@ -18,61 +18,61 @@ Rectangle::Rectangle(int x, int y, int w, int h)
 Rectangle::Rectangle(int w, int h) : Rectangle(0, 0, w, h)
 {}
 
-void Rectangle::setLocation(int x, int y)
+void Rectangle::SetLocation(int x, int y)
 {
-	setX(x);
-	setY(y);
+	SetX(x);
+	SetY(y);
 }
 
-void Rectangle::setX(int x)
+void Rectangle::SetX(int x)
 {
 	rect.x = x;
 }
 
-void Rectangle::setY(int y)
+void Rectangle::SetY(int y)
 {
 	rect.y = y;
 }
 
-bool Rectangle::intersects(Rectangle& otherRect)
+bool Rectangle::Intersects(Rectangle& otherRect)
 {
 	SDL_bool result = SDL_HasIntersection(&this->rect, &otherRect.rect);
-	return BooleanConverter::convert(result);
+	return BooleanConverter::Convert(result);
 }
 
-bool Rectangle::contains(int x, int y)
+bool Rectangle::Contains(int x, int y)
 {
 	SDL_Point point = { x, y };
 	SDL_bool result = SDL_PointInRect(&point, &this->rect);
-	return BooleanConverter::convert(result);
+	return BooleanConverter::Convert(result);
 }
 
-bool Rectangle::contains(Point& point)
+bool Rectangle::Contains(Point& point)
 {
-	return contains(point.getX(), point.getY());
+	return Contains(point.GetX(), point.GetY());
 }
 
-int Rectangle::getX()
+int Rectangle::GetX()
 {
 	return rect.x;
 }
 
-int Rectangle::getY()
+int Rectangle::GetY()
 {
 	return rect.y;
 }
 
-int Rectangle::getWidth()
+int Rectangle::GetWidth()
 {
 	return rect.w;
 }
 
-int Rectangle::getHeight()
+int Rectangle::GetHeight()
 {
 	return rect.h;
 }
 
-SDL_Rect Rectangle::createSDLRect()
+SDL_Rect Rectangle::CreateSDLRect()
 {
 	return rect;
 }

@@ -25,8 +25,8 @@ namespace CenturionTest
 			int y = 118;
 			Point p = Point(x, y);
 
-			Assert::AreEqual(x, p.getX());
-			Assert::AreEqual(y, p.getY());
+			Assert::AreEqual(x, p.GetX());
+			Assert::AreEqual(y, p.GetY());
 		}
 
 		TEST_METHOD(SetLocation)
@@ -34,40 +34,40 @@ namespace CenturionTest
 			Point p = Point(0, 0);
 			int x = 8502;
 			int y = 1202;
-			p.setLocation(x, y);
+			p.SetLocation(x, y);
 
-			Assert::AreEqual(x, p.getX());
-			Assert::AreEqual(y, p.getY());
+			Assert::AreEqual(x, p.GetX());
+			Assert::AreEqual(y, p.GetY());
 		}
 
 		TEST_METHOD(SetX)
 		{
 			Point p = Point(0, 0);
 			int x = 1250;
-			p.setX(x);
-			Assert::AreEqual(x, p.getX());
+			p.SetX(x);
+			Assert::AreEqual(x, p.GetX());
 		}
 
 		TEST_METHOD(SetY)
 		{
 			Point p = Point(0, 0);
 			int y = 9386;
-			p.setY(y);
-			Assert::AreEqual(y, p.getY());
+			p.SetY(y);
+			Assert::AreEqual(y, p.GetY());
 		}
 
 		TEST_METHOD(GetX)
 		{
 			int x = 48301;
 			Point p = Point(x, 0);
-			Assert::AreEqual(x, p.getX());
+			Assert::AreEqual(x, p.GetX());
 		}
 
 		TEST_METHOD(GetY)
 		{
 			int y = 12859;
 			Point p = Point(0, y);
-			Assert::AreEqual(y, p.getY());
+			Assert::AreEqual(y, p.GetY());
 		}
 	};
 }

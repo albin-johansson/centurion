@@ -21,11 +21,11 @@ public:
 
 	~Color() = default;
 
-	uint8_t getRed();
+	uint8_t GetRed();
 
-	uint8_t getGreen();
+	uint8_t GetGreen();
 
-	uint8_t getBlue();
+	uint8_t GetBlue();
 
-	uint8_t getAlpha();
+	uint8_t GetAlpha();
 };

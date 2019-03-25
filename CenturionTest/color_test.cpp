@@ -19,32 +19,32 @@ namespace CenturionTest
 			Centurion::Close();
 		}
 
-		TEST_METHOD(getRed)
+		TEST_METHOD(GetRed)
 		{
 			int r = 128;
 			Color c = Color(r, 0, 0, 0);
-			Assert::AreEqual(r, (int) c.getRed());
+			Assert::AreEqual(r, (int) c.GetRed());
 		}
 		
-		TEST_METHOD(getGreen)
+		TEST_METHOD(GetGreen)
 		{
 			int g = 27;
 			Color c = Color(0, g, 0, 0);
-			Assert::AreEqual(g, (int) c.getGreen());
+			Assert::AreEqual(g, (int) c.GetGreen());
 		}
 
-		TEST_METHOD(getBlue)
+		TEST_METHOD(GetBlue)
 		{
 			int b = 27;
 			Color c = Color(0, 0, b, 0);
-			Assert::AreEqual(b, (int) c.getBlue());
+			Assert::AreEqual(b, (int) c.GetBlue());
 		}
 
-		TEST_METHOD(getAlpha)
+		TEST_METHOD(GetAlpha)
 		{
 			int a = 219;
 			Color c = Color(0, 0, 0, a);
-			Assert::AreEqual(a, (int) c.getAlpha());
+			Assert::AreEqual(a, (int) c.GetAlpha());
 		}
 
 		TEST_METHOD(Constants)
@@ -75,10 +75,10 @@ namespace CenturionTest
 
 		void compare(Color& c1, Color& c2)
 		{
-			Assert::AreEqual((int) c1.getRed(), (int) c2.getRed());
-			Assert::AreEqual((int) c1.getGreen(), (int) c2.getGreen());
-			Assert::AreEqual((int) c1.getBlue(), (int) c2.getBlue());
-			Assert::AreEqual((int) c1.getAlpha(), (int) c2.getAlpha());
+			Assert::AreEqual((int) c1.GetRed(), (int) c2.GetRed());
+			Assert::AreEqual((int) c1.GetGreen(), (int) c2.GetGreen());
+			Assert::AreEqual((int) c1.GetBlue(), (int) c2.GetBlue());
+			Assert::AreEqual((int) c1.GetAlpha(), (int) c2.GetAlpha());
 		}
 	};
 }

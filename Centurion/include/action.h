@@ -12,5 +12,5 @@ public:
 	/**
 	\brief Executes the action represented by this IAction.
 	*/
-	virtual void execute() = 0;
+	virtual void Execute() = 0;
 };

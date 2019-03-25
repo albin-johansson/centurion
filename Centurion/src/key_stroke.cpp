@@ -15,13 +15,13 @@ KeyStroke::KeyStroke(SDL_Keycode keycode,
 
 KeyStroke::~KeyStroke() = default;
 
-void KeyStroke::check(SDL_Event& e)
+void KeyStroke::Check(SDL_Event& e)
 {
 	if (e.type != eventType) {
 		return;
 	} else {
 		if (e.key.keysym.sym == keycode) {
-			action.execute();
+			action.Execute();
 		}
 	}
 }

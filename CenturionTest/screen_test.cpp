@@ -21,14 +21,14 @@ namespace CenturionTest
 
 		TEST_METHOD(GetWidth)
 		{
-			int w = Screen::getWidth();
+			int w = Screen::GetWidth();
 			int expected = 1920;
 			Assert::AreEqual(expected, w);
 		}
 
 		TEST_METHOD(GetHeight)
 		{
-			int h = Screen::getHeight();
+			int h = Screen::GetHeight();
 			int expected = 1080;
 			Assert::AreEqual(expected, h);
 		}

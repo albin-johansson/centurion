@@ -5,7 +5,7 @@
 
 using centurion::Screen;
 
-int Screen::getWidth()
+int Screen::GetWidth()
 {
 	DPI_AWARENESS_CONTEXT context = GetThreadDpiAwarenessContext();
 	if (context != DPI_AWARENESS_CONTEXT_SYSTEM_AWARE) {
@@ -15,7 +15,7 @@ int Screen::getWidth()
 
 }
 
-int Screen::getHeight()
+int Screen::GetHeight()
 {
 	DPI_AWARENESS_CONTEXT context = GetThreadDpiAwarenessContext();
 	if (context != DPI_AWARENESS_CONTEXT_SYSTEM_AWARE) {

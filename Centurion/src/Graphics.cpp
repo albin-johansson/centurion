@@ -36,20 +36,20 @@ void Graphics::Clear()
 
 void Graphics::Render(Image& img, Rectangle rect)
 {
-	CheckRenderDimensions(rect.getWidth(), rect.getHeight());
-	SDL_RenderCopy(renderer, img.getTexture(), NULL, &rect.createSDLRect());
+	CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
+	SDL_RenderCopy(renderer, img.GetTexture(), NULL, &rect.CreateSDLRect());
 }
 
 void Graphics::Render(Image& img, int x, int y, int w, int h)
 {
 	CheckRenderDimensions(w, h);
 	SDL_Rect rect = { x, y, w, h };
-	SDL_RenderCopy(renderer, img.getTexture(), NULL, &rect);
+	SDL_RenderCopy(renderer, img.GetTexture(), NULL, &rect);
 }
 
 void Graphics::Render(Image& img, int x, int y)
 {
-	Render(img, x, y, img.getWidth(), img.getHeight());
+	Render(img, x, y, img.GetWidth(), img.GetHeight());
 }
 
 void Graphics::RenderFilledRect(int x, int y, int w, int h)
@@ -71,12 +71,12 @@ void Graphics::RenderLine(int x1, int y1, int x2, int y2)
 
 void Graphics::RenderLine(Point p1, Point p2)
 {
-	SDL_RenderDrawLine(renderer, p1.getX(), p1.getY(), p2.getX(), p2.getY());
+	SDL_RenderDrawLine(renderer, p1.GetX(), p1.GetY(), p2.GetX(), p2.GetY());
 }
 
 void Graphics::SetColor(Color color)
 {
-	SDL_SetRenderDrawColor(renderer, color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+	SDL_SetRenderDrawColor(renderer, color.GetRed(), color.GetGreen(), color.GetBlue(), color.GetAlpha());
 }
 
 void Graphics::CheckRenderDimensions(int width, int height)

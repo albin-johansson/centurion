@@ -1,6 +1,5 @@
 #include "image.h"
 #include "graphics.h"
-#include <SDL_image.h>
 #include <stdexcept>
 
 using centurion::visuals::Image;
@@ -49,10 +48,10 @@ SDL_Texture* Image::GetTexture()
 
 Image* Image::Create(const std::string& path, Graphics& graphics)
 {
-	return new Image(path, graphics);
+	return new Image(path, graphics);//FIXME don't use raw pointer
 }
 
 void Image::Destroy(Image* img)
 {
-	delete img;
+	delete img; //This should be unnecessary
 }

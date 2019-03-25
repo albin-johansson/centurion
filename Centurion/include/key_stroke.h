@@ -1,6 +1,6 @@
 #pragma once
-#include <SDL.h>
 #include "centurion.h"
+#include <SDL_events.h>
 
 class centurion::events::KeyStroke {
 

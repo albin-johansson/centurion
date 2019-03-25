@@ -1,6 +1,6 @@
 #pragma once
-#include <SDL.h>
 #include "centurion.h"
+#include <SDL_rect.h>
 
 class centurion::geo::Point {
 

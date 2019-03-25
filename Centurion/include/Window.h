@@ -1,7 +1,7 @@
 #pragma once
-#include <SDL.h>
-#include <string>
 #include "centurion.h"
+#include <SDL_video.h>
+#include <string>
 
 class centurion::Window {
 

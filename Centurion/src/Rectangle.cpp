@@ -1,6 +1,6 @@
 #include "rectangle.h"
-#include "boolean_converter.h"
 #include "point.h"
+#include "boolean_converter.h"
 #include <stdexcept>
 
 using centurion::geo::Rectangle;

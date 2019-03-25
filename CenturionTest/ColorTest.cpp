@@ -1,7 +1,4 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include "../Centurion/include/Color.h"
-#include "../Centurion/include/Centurion.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using centurion::Color;

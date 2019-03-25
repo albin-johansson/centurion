@@ -3,10 +3,10 @@
 #include <SDL_image.h>
 #include <stdexcept>
 
-using centurion::Image;
-using centurion::Graphics;
+using centurion::CTN_Image;
+using centurion::CTN_Graphics;
 
-Image::Image(const std::string& path, Graphics& graphics)
+CTN_Image::CTN_Image(const std::string& path, CTN_Graphics& graphics)
 {
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	texture = createTexture(surface, graphics.renderer);
@@ -15,12 +15,12 @@ Image::Image(const std::string& path, Graphics& graphics)
 	SDL_FreeSurface(surface);
 }
 
-Image::~Image()
+CTN_Image::~CTN_Image()
 {
 	SDL_DestroyTexture(texture);
 }
 
-SDL_Texture* Image::createTexture(SDL_Surface* surface, SDL_Renderer* renderer)
+SDL_Texture* CTN_Image::createTexture(SDL_Surface* surface, SDL_Renderer* renderer)
 {
 	if (surface == NULL || renderer == NULL) {
 		throw std::invalid_argument("Null renderer when creating texture!");
@@ -32,27 +32,27 @@ SDL_Texture* Image::createTexture(SDL_Surface* surface, SDL_Renderer* renderer)
 	return texture;
 }
 
-int Image::getWidth()
+int CTN_Image::getWidth()
 {
 	return width;
 }
 
-int Image::getHeight()
+int CTN_Image::getHeight()
 {
 	return height;
 }
 
-SDL_Texture* Image::getTexture()
+SDL_Texture* CTN_Image::getTexture()
 {
 	return texture;
 }
 
-Image* Image::create(const std::string& path, Graphics& graphics)
+CTN_Image* CTN_Image::create(const std::string& path, CTN_Graphics& graphics)
 {
-	return new Image(path, graphics);
+	return new CTN_Image(path, graphics);
 }
 
-void Image::destroy(Image* img)
+void CTN_Image::destroy(CTN_Image* img)
 {
 	delete img;
 }

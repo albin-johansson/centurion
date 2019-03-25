@@ -1,19 +1,19 @@
 #include "KeyStroke.h"
 #include "IAction.h"
 
-using centurion::KeyStroke;
-using centurion::IAction;
+using centurion::CTN_KeyStroke;
+using centurion::CTN_Action;
 
-KeyStroke::KeyStroke(SDL_Keycode keycode, SDL_EventType eventType, IAction& action)
+CTN_KeyStroke::CTN_KeyStroke(SDL_Keycode keycode, SDL_EventType eventType, CTN_Action& action)
 	: action(action)
 {
 	this->keycode = keycode;
 	this->eventType = eventType;
 }
 
-KeyStroke::~KeyStroke() = default;
+CTN_KeyStroke::~CTN_KeyStroke() = default;
 
-void KeyStroke::check(SDL_Event& e)
+void CTN_KeyStroke::check(SDL_Event& e)
 {
 	if (e.type != eventType) {
 		return;

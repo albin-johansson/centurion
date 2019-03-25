@@ -80,6 +80,9 @@
     <ClInclude Include="include\IAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\key_listener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

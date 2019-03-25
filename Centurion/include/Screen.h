@@ -1,13 +1,13 @@
 #pragma once
 #include "Centurion.h"
 
-class centurion::Screen final {
+class centurion::CTN_Screen final {
 
 private:
-	Screen() = delete;
+	CTN_Screen() = delete;
 
 public:
-	~Screen() = default;
+	~CTN_Screen() = default;
 
 	static int getWidth();
 

@@ -2,14 +2,18 @@
 #include <SDL.h>
 #include <string>
 #include "Centurion.h"
+#include <memory>
 
-class centurion::Window {
+using centurion::CTN_Graphics;
+using std::unique_ptr;
+
+class centurion::CTN_Window {
 
 private:
 	SDL_Window* window;
-	centurion::Graphics* graphics;
+	unique_ptr<CTN_Graphics> graphics;
 
-	void initComps(const std::string& title, int w, int h, Uint32 flags);
+	void InitComps(const std::string& title, int w, int h, Uint32 flags);
 
 public:
 	/*
@@ -19,57 +23,61 @@ public:
 	\param	width the width of the window.
 	\param	height the height of the window.
 	*/
-	Window(const std::string& title, int width, int height);
+	CTN_Window(const std::string& title, int width, int height);
 
 	/*
 	\brief	Creates a fullscreen window.
 
 	\param	title the title of the window
 	*/
-	Window(const std::string& title);
+	CTN_Window(const std::string& title);
 
-	~Window();
+	~CTN_Window();
 
 	/*
 	\brief	Makes this window visible.
 	*/
-	void show();
+	void Show();
 
 	/*
 	\brief	Makes this window invisible.
 	*/
-	void hide();
+	void Hide();
 
 	/*
 	\brief	Sets whether this window is resizable or not.
 
 	\param	resizable true if the window is resizable, false otherwise.
 	*/
-	void setResizable(bool resizable);
+	void SetResizable(bool resizable);
 
-	int getWidth();
+	int GetWidth();
 
-	int getHeight();
+	int GetHeight();
 
-	void update();
+	void Update();
 
-	void clearWindow();
+	void AddKeyListener(centurion::CTN_KeyListener& kl);
 
-	void render(centurion::Image& img, int x, int y);
+	// TODO add listener methods
 
-	void render(centurion::Image& img, int x, int y, int w, int h);
+	void ClearWindow();
 
-	void render(centurion::Image& img, centurion::Rectangle rect);
+	void Render(centurion::CTN_Image& img, int x, int y);
 
-	void renderFilledRect(int x, int y, int w, int h);
+	void Render(centurion::CTN_Image& img, int x, int y, int w, int h);
 
-	void renderOutlinedRect(int x, int y, int w, int h);
+	void Render(centurion::CTN_Image& img, centurion::CTN_Rectangle rect);
 
-	void renderLine(int x1, int y1, int x2, int y2);
+	void RenderFilledRect(int x, int y, int w, int h);
 
-	void renderLine(centurion::Point p1, centurion::Point p2);
+	void RenderOutlinedRect(int x, int y, int w, int h);
 
-	void setRenderingColor(centurion::Color color);
+	void RenderLine(int x1, int y1, int x2, int y2);
 
-	centurion::Image* createImage(std::string path);
+	void RenderLine(centurion::CTN_Point p1, centurion::CTN_Point p2);
+
+	void SetRenderingColor(centurion::CTN_Color color);
+
+	centurion::CTN_Image* CreateImage(std::string path);
 };

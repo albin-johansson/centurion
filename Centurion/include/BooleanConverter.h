@@ -2,13 +2,13 @@
 #include <SDL.h>
 #include "Centurion.h"
 
-class centurion::BooleanConverter final {
+class centurion::CTN_BooleanConverter final {
 
 private:
-	BooleanConverter() = delete;
+	CTN_BooleanConverter() = delete;
 
 public:
-	~BooleanConverter() = default;
+	~CTN_BooleanConverter() = default;
 	
 	static bool convert(SDL_bool b);
 

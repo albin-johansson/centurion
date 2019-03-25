@@ -6,66 +6,67 @@
 #include "Rectangle.h"
 #include "Point.h"
 #include "Color.h"
+#include "key_listener.h"
 #include <stdexcept>
 
-using centurion::Window;
-using centurion::Graphics;
-using centurion::Screen;
-using centurion::Image;
-using centurion::Rectangle;
-using centurion::Point;
-using centurion::Color;
-using centurion::BooleanConverter;
+using centurion::CTN_Window;
+using centurion::CTN_Graphics;
+using centurion::CTN_Screen;
+using centurion::CTN_Image;
+using centurion::CTN_Rectangle;
+using centurion::CTN_Point;
+using centurion::CTN_Color;
+using centurion::CTN_BooleanConverter;
+using centurion::CTN_KeyListener;
 
-Window::Window(const std::string& title, int width, int height)
+CTN_Window::CTN_Window(const std::string& title, int width, int height)
 {
 	Uint32 flags = SDL_WindowFlags::SDL_WINDOW_OPENGL | SDL_WindowFlags::SDL_WINDOW_HIDDEN;
-	initComps(title, width, height, flags);
+	InitComps(title, width, height, flags);
 }
 
-Window::Window(const std::string& title)
+CTN_Window::CTN_Window(const std::string& title)
 {
 	Uint32 flags = SDL_WindowFlags::SDL_WINDOW_OPENGL |
 		SDL_WindowFlags::SDL_WINDOW_FULLSCREEN |
 		SDL_WindowFlags::SDL_WINDOW_HIDDEN;
-	initComps(title, Screen::getWidth(), Screen::getHeight(), flags);
+	InitComps(title, CTN_Screen::getWidth(), CTN_Screen::getHeight(), flags);
 }
 
-Window::~Window()
+CTN_Window::~CTN_Window()
 {
 	SDL_HideWindow(window);
 	SDL_Delay(1);
-	delete graphics;
 	SDL_DestroyWindow(window);
 }
 
-void Window::initComps(const std::string& title, int w, int h, Uint32 flags)
+void CTN_Window::InitComps(const std::string& title, int w, int h, Uint32 flags)
 {
 	if (w < 1 || h < 1) {
 		throw std::invalid_argument("Invalid dimensions for window!");
 	}
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RendererFlags::SDL_RENDERER_ACCELERATED);
-	graphics = new Graphics(renderer);
+	graphics = std::make_unique<CTN_Graphics>(renderer);
 }
 
-void Window::show()
+void CTN_Window::Show()
 {
 	SDL_ShowWindow(window);
 }
 
-void Window::hide()
+void CTN_Window::Hide()
 {
 	SDL_HideWindow(window);
 }
 
-void Window::setResizable(bool resizable)
+void CTN_Window::SetResizable(bool resizable)
 {
-	SDL_bool b = BooleanConverter::convert(resizable);
+	SDL_bool b = CTN_BooleanConverter::convert(resizable);
 	SDL_SetWindowResizable(window, b);
 }
 
-int Window::getWidth()
+int CTN_Window::GetWidth()
 {
 	int w = -1;
 	int h = -1;
@@ -73,7 +74,7 @@ int Window::getWidth()
 	return w;
 }
 
-int Window::getHeight()
+int CTN_Window::GetHeight()
 {
 	int w = -1;
 	int h = -1;
@@ -81,57 +82,66 @@ int Window::getHeight()
 	return h;
 }
 
-void Window::update()
+void CTN_Window::Update()
 {
-	graphics->update();
+	//SDL_Event e;
+	//while (SDL_PollEvent(&e)) {
+	//
+	//}
+	graphics->Update();
 }
 
-void centurion::Window::clearWindow()
+void CTN_Window::AddKeyListener(CTN_KeyListener& kl)
+{
+	//TODO
+}
+
+void centurion::CTN_Window::ClearWindow()
 {
 	graphics->clear();
 }
 
-void Window::render(Image& img, int x, int y)
+void CTN_Window::Render(CTN_Image& img, int x, int y)
 {
-	graphics->render(img, x, y);
+	graphics->Render(img, x, y);
 }
 
-void Window::render(Image& img, int x, int y, int w, int h)
+void CTN_Window::Render(CTN_Image& img, int x, int y, int w, int h)
 {
-	graphics->render(img, x, y, w, h);
+	graphics->Render(img, x, y, w, h);
 }
 
-void Window::render(Image& img, Rectangle rect)
+void CTN_Window::Render(CTN_Image& img, CTN_Rectangle rect)
 {
-	graphics->render(img, rect);
+	graphics->Render(img, rect);
 }
 
-void Window::renderFilledRect(int x, int y, int w, int h)
+void CTN_Window::RenderFilledRect(int x, int y, int w, int h)
 {
-	graphics->renderFilledRect(x, y, w, h);
+	graphics->RenderFilledRect(x, y, w, h);
 }
 
-void Window::renderOutlinedRect(int x, int y, int w, int h)
+void CTN_Window::RenderOutlinedRect(int x, int y, int w, int h)
 {
-	graphics->renderOutlinedRect(x, y, w, h);
+	graphics->RenderOutlinedRect(x, y, w, h);
 }
 
-void Window::renderLine(int x1, int y1, int x2, int y2)
+void CTN_Window::RenderLine(int x1, int y1, int x2, int y2)
 {
-	graphics->renderLine(x1, y1, x2, y2);
+	graphics->RenderLine(x1, y1, x2, y2);
 }
 
-void Window::renderLine(Point p1, Point p2)
+void CTN_Window::RenderLine(CTN_Point p1, CTN_Point p2)
 {
-	graphics->renderLine(p1, p2);
+	graphics->RenderLine(p1, p2);
 }
 
-void Window::setRenderingColor(Color color)
+void CTN_Window::SetRenderingColor(CTN_Color color)
 {
 	graphics->setColor(color);
 }
 
-Image* Window::createImage(std::string path)
+CTN_Image* CTN_Window::CreateImage(std::string path)
 {
-	return Image::create(path, *graphics);
+	return CTN_Image::create(path, *graphics);
 }

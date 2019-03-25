@@ -6,7 +6,7 @@
 
 using centurion::Centurion;
 
-void Centurion::init()
+void Centurion::Init()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_InitFlags::IMG_INIT_PNG | IMG_InitFlags::IMG_INIT_JPG);
@@ -14,7 +14,7 @@ void Centurion::init()
 	TTF_Init();
 }
 
-void Centurion::close()
+void Centurion::Close()
 {
 	IMG_Quit();
 	TTF_Quit();

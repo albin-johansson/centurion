@@ -1,4 +1,4 @@
-#include "color.h"
+#include "color1.h"
 
 using centurion::visuals::Color;
 const Color Color::RED = Color(Color::MAX_VAL, Color::MIN_VAL, Color::MIN_VAL, Color::MAX_VAL);

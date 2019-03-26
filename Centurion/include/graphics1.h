@@ -1,8 +1,8 @@
 #pragma once
 #include <SDL.h>
-#include "centurion.h"
+#include "centurion1.h"
 #include "font.h"
-#include "color.h"
+#include "color1.h"
 #include <memory>
 #include <string>
 

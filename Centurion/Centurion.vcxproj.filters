@@ -53,12 +53,6 @@
     <ClInclude Include="include\key_listener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\centurion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,6 +81,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\centurion1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\color1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

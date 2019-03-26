@@ -5,7 +5,7 @@
 #include "boolean_converter.h"
 #include "rectangle.h"
 #include "point.h"
-#include "color.h"
+#include "color1.h"
 #include "key_listener.h"
 #include <stdexcept>
 #include <memory>

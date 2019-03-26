@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "renderer.h"
 #include "texture.h"
 #include "color.h"
 #include "rectangle.h"
@@ -6,7 +6,7 @@
 #include "font.h"
 #include <stdexcept>
 
-using centurion::visuals::Graphics;
+using centurion::visuals::Renderer;
 using centurion::visuals::Texture;
 using centurion::visuals::Color;
 using centurion::geo::Rectangle;
@@ -14,7 +14,7 @@ using centurion::geo::Point;
 using centurion::Font;
 using std::shared_ptr;
 
-Graphics::Graphics(SDL_Renderer* renderer)
+Renderer::Renderer(SDL_Renderer* renderer)
 {
 	if (renderer == NULL || renderer == nullptr) {
 		throw std::invalid_argument("Null renderer!");
@@ -22,38 +22,38 @@ Graphics::Graphics(SDL_Renderer* renderer)
 	this->renderer = renderer;
 }
 
-Graphics::~Graphics()
+Renderer::~Renderer()
 {
 	SDL_DestroyRenderer(renderer);
 }
 
-void Graphics::Update()
+void Renderer::Update()
 {
 	SDL_RenderPresent(renderer);
 }
 
-void Graphics::Clear()
+void Renderer::Clear()
 {
 	SDL_RenderClear(renderer);
 }
 
-void Graphics::Render(Texture& img, Rectangle rect)
+void Renderer::Render(Texture& img, Rectangle rect)
 {
 	CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
 	SDL_RenderCopy(renderer, img.GetTexture(), NULL, &rect.CreateSDLRect());
 }
 
-void Graphics::Render(Texture& img, int x, int y, int w, int h)
+void Renderer::Render(Texture& img, int x, int y, int w, int h)
 {
 	Render(img.GetTexture(), x, y, w, h);
 }
 
-void Graphics::Render(Texture& img, int x, int y)
+void Renderer::Render(Texture& img, int x, int y)
 {
 	Render(img, x, y, img.GetWidth(), img.GetHeight());
 }
 
-void Graphics::Render(SDL_Texture* texture, int x, int y, int w, int h)
+void Renderer::Render(SDL_Texture* texture, int x, int y, int w, int h)
 {
 	if (texture == nullptr || texture == NULL) {
 		throw std::invalid_argument("Null texture when rendering!");
@@ -63,62 +63,62 @@ void Graphics::Render(SDL_Texture* texture, int x, int y, int w, int h)
 	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
 
-void Graphics::RenderFilledRect(int x, int y, int w, int h)
+void Renderer::RenderFilledRect(int x, int y, int w, int h)
 {
 	SDL_Rect rect = { x, y, w, h };
 	SDL_RenderFillRect(renderer, &rect);
 }
 
-void Graphics::RenderOutlinedRect(int x, int y, int w, int h)
+void Renderer::RenderOutlinedRect(int x, int y, int w, int h)
 {
 	SDL_Rect rect = { x, y, w, h };
 	SDL_RenderDrawRect(renderer, &rect);
 }
 
-void Graphics::RenderLine(int x1, int y1, int x2, int y2)
+void Renderer::RenderLine(int x1, int y1, int x2, int y2)
 {
 	SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 
-void Graphics::RenderLine(Point p1, Point p2)
+void Renderer::RenderLine(Point p1, Point p2)
 {
 	SDL_RenderDrawLine(renderer, p1.GetX(), p1.GetY(), p2.GetX(), p2.GetY());
 }
 
-void Graphics::RenderText(const std::string& text, int x, int y, int w, int h)
+void Renderer::RenderText(const std::string& text, int x, int y, int w, int h)
 {
 
-	SDL_Surface* surf = TTF_RenderText_Solid(font->GetSDLFont(), text.c_str(), color.CreateSDLColor());
+	SDL_Surface* surf = TTF_RenderText_Solid(font->GetSDLVersion(), text.c_str(), color.GetSDLVersion());
 	SDL_Texture* texture = Texture::CreateTexture(surf, renderer);
 	Render(texture, x, y, w, h);
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(surf);
 }
 
-void Graphics::SetFont(const std::shared_ptr<centurion::Font>& font)
+void Renderer::SetFont(const std::shared_ptr<centurion::Font>& font)
 {
 	this->font = font;
 }
 
-void Graphics::SetColor(Color color)
+void Renderer::SetColor(Color color)
 {
 	this->color = color;
 	UpdateColor();
 }
 
-void Graphics::UpdateColor()
+void Renderer::UpdateColor()
 {
 	SDL_SetRenderDrawColor(renderer, color.GetRed(), color.GetGreen(), color.GetBlue(), color.GetAlpha());
 }
 
-void Graphics::CheckRenderDimensions(int width, int height)
+void Renderer::CheckRenderDimensions(int width, int height)
 {
 	if (width < 1 || height < 1) {
 		throw std::invalid_argument("Invalid rendering dimensions!");
 	}
 }
 
-SDL_Renderer* Graphics::GetRenderer()
+SDL_Renderer* Renderer::GetRenderer()
 {
 	return renderer;
 }

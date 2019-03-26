@@ -18,7 +18,7 @@ namespace centurion
 
 	namespace visuals
 	{
-		class Graphics;
+		class Renderer;
 		class Texture;
 		class Color;
 	}

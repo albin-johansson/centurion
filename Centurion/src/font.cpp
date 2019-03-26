@@ -13,12 +13,12 @@ Font::~Font()
 	TTF_CloseFont(font);
 }
 
-int Font::getSize()
+int Font::GetSize()
 {
 	return size;
 }
 
-TTF_Font* Font::GetSDLFont()
+TTF_Font* Font::GetSDLVersion()
 {
 	return font;
 }

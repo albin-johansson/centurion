@@ -1,11 +1,11 @@
 #include "texture.h"
-#include "graphics.h"
+#include "renderer.h"
 #include <stdexcept>
 
 using centurion::visuals::Texture;
-using centurion::visuals::Graphics;
+using centurion::visuals::Renderer;
 
-Texture::Texture(const std::string& path, Graphics& graphics)
+Texture::Texture(const std::string& path, Renderer& graphics)
 {
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	texture = CreateTexture(surface, graphics.GetRenderer());
@@ -46,7 +46,7 @@ SDL_Texture* Texture::GetTexture()
 	return texture;
 }
 
-Texture* Texture::Create(const std::string& path, Graphics& graphics)
+Texture* Texture::Create(const std::string& path, Renderer& graphics)
 {
 	return new Texture(path, graphics);//FIXME don't use raw pointer
 }

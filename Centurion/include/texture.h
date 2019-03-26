@@ -11,7 +11,7 @@ private:
 	int height;
 	SDL_Texture* texture = nullptr;
 
-	Texture(const std::string& path, centurion::visuals::Graphics& graphics);
+	Texture(const std::string& path, centurion::visuals::Renderer& graphics);
 	
 public:
 	~Texture();
@@ -24,7 +24,7 @@ public:
 
 	static SDL_Texture* CreateTexture(SDL_Surface* surface, SDL_Renderer* renderer);
 
-	static centurion::visuals::Texture* Create(const std::string& path, centurion::visuals::Graphics& graphics);
+	static centurion::visuals::Texture* Create(const std::string& path, centurion::visuals::Renderer& graphics);
 
 	static centurion::visuals::Texture* Create(SDL_Texture* texture);
 

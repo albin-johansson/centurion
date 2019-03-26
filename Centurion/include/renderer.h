@@ -6,8 +6,11 @@
 #include <memory>
 #include <string>
 
-class centurion::visuals::Graphics {
-
+/**
+\brief The Graphics class provides rendering functionality.
+*/
+class centurion::visuals::Renderer {
+	
 private:
 	SDL_Renderer* renderer = nullptr;
 	std::shared_ptr<centurion::Font> font;
@@ -18,9 +21,9 @@ private:
 	void UpdateColor();
 
 public:
-	Graphics(SDL_Renderer* renderer);
+	Renderer(SDL_Renderer* renderer);
 
-	~Graphics();
+	~Renderer();
 
 	void Update();
 	

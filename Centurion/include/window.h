@@ -7,7 +7,7 @@ class centurion::Window {
 
 private:
 	SDL_Window* window;
-	std::unique_ptr<centurion::visuals::Graphics> graphics;
+	std::unique_ptr<centurion::visuals::Renderer> graphics;
 
 	void InitComps(const std::string& title, int w, int h, Uint32 flags);
 

@@ -1,5 +1,5 @@
 #include "window.h"
-#include "graphics.h"
+#include "renderer.h"
 #include "screen.h"
 #include "texture.h"
 #include "boolean_converter.h"
@@ -13,7 +13,7 @@
 namespace ctn = centurion;
 using ctn::Window;
 using ctn::Screen;
-using ctn::visuals::Graphics;
+using ctn::visuals::Renderer;
 using ctn::visuals::Texture;
 using ctn::visuals::Color;
 using ctn::geo::Rectangle;
@@ -49,7 +49,7 @@ void Window::InitComps(const std::string& title, int w, int h, Uint32 flags)
 	}
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RendererFlags::SDL_RENDERER_ACCELERATED);
-	graphics = std::make_unique<Graphics>(renderer);
+	graphics = std::make_unique<Renderer>(renderer);
 }
 
 void Window::Show()

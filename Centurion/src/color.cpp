@@ -12,6 +12,8 @@ Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 	color = { r, g, b, a };
 }
 
+Color::~Color() = default;
+
 uint8_t Color::GetRed()
 {
 	return color.r;
@@ -32,7 +34,7 @@ uint8_t Color::GetAlpha()
 	return color.a;
 }
 
-SDL_Color centurion::visuals::Color::CreateSDLColor()
+SDL_Color centurion::visuals::Color::GetSDLVersion()
 {
 	return color;
 }

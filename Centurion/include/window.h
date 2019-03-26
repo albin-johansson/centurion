@@ -59,11 +59,11 @@ public:
 
 	void ClearWindow();
 
-	void Render(centurion::visuals::Image& img, int x, int y);
+	void Render(centurion::visuals::Texture& img, int x, int y);
 
-	void Render(centurion::visuals::Image& img, int x, int y, int w, int h);
+	void Render(centurion::visuals::Texture& img, int x, int y, int w, int h);
 
-	void Render(centurion::visuals::Image& img, centurion::geo::Rectangle rect);
+	void Render(centurion::visuals::Texture& img, centurion::geo::Rectangle rect);
 
 	void RenderFilledRect(int x, int y, int w, int h);
 
@@ -75,5 +75,5 @@ public:
 
 	void SetRenderingColor(centurion::visuals::Color color);
 
-	centurion::visuals::Image* CreateImage(std::string path);
+	centurion::visuals::Texture* CreateImage(std::string path);
 };

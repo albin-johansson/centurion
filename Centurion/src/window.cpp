@@ -1,7 +1,7 @@
 #include "window.h"
 #include "graphics.h"
 #include "screen.h"
-#include "image.h"
+#include "texture.h"
 #include "boolean_converter.h"
 #include "rectangle.h"
 #include "point.h"
@@ -14,7 +14,7 @@ namespace ctn = centurion;
 using ctn::Window;
 using ctn::Screen;
 using ctn::visuals::Graphics;
-using ctn::visuals::Image;
+using ctn::visuals::Texture;
 using ctn::visuals::Color;
 using ctn::geo::Rectangle;
 using ctn::geo::Point;
@@ -103,17 +103,17 @@ void centurion::Window::ClearWindow()
 	graphics->Clear();
 }
 
-void Window::Render(Image& img, int x, int y)
+void Window::Render(Texture& img, int x, int y)
 {
 	graphics->Render(img, x, y);
 }
 
-void Window::Render(Image& img, int x, int y, int w, int h)
+void Window::Render(Texture& img, int x, int y, int w, int h)
 {
 	graphics->Render(img, x, y, w, h);
 }
 
-void Window::Render(Image& img, Rectangle rect)
+void Window::Render(Texture& img, Rectangle rect)
 {
 	graphics->Render(img, rect);
 }
@@ -143,7 +143,7 @@ void Window::SetRenderingColor(Color color)
 	graphics->SetColor(color);
 }
 
-Image* Window::CreateImage(std::string path)
+Texture* Window::CreateImage(std::string path)
 {
-	return Image::Create(path, *graphics);
+	return Texture::Create(path, *graphics);
 }

@@ -10,7 +10,7 @@ class centurion::visuals::Graphics {
 
 private:
 	friend class centurion::Window; //FIXME
-	friend class centurion::visuals::Image; //FIXME
+	friend class centurion::visuals::Texture; //FIXME
 
 	SDL_Renderer* renderer = nullptr;
 	std::shared_ptr<centurion::Font> font;
@@ -20,11 +20,11 @@ private:
 	
 	void Clear();
 
-	void Render(centurion::visuals::Image& img, centurion::geo::Rectangle rect);
+	void Render(centurion::visuals::Texture& img, centurion::geo::Rectangle rect);
 
-	void Render(centurion::visuals::Image& img, int x, int y, int w, int h);
+	void Render(centurion::visuals::Texture& img, int x, int y, int w, int h);
 
-	void Render(centurion::visuals::Image& img, int x, int y);
+	void Render(centurion::visuals::Texture& img, int x, int y);
 
 	void Render(SDL_Texture* texture, int x, int y, int w, int h);
 

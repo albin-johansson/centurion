@@ -195,7 +195,7 @@
     <ClCompile Include="src\rectangle.cpp" />
     <ClCompile Include="src\centurion.cpp" />
     <ClCompile Include="src\graphics.cpp" />
-    <ClCompile Include="src\image.cpp" />
+    <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\screen.cpp" />
     <ClCompile Include="src\window.cpp" />
   </ItemGroup>
@@ -206,7 +206,7 @@
     <ClInclude Include="include\font.h" />
     <ClInclude Include="include\graphics.h" />
     <ClInclude Include="include\action.h" />
-    <ClInclude Include="include\image.h" />
+    <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\key_listener.h" />
     <ClInclude Include="include\key_stroke.h" />
     <ClInclude Include="include\point.h" />

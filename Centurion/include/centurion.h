@@ -19,7 +19,7 @@ namespace centurion
 	namespace visuals
 	{
 		class Graphics;
-		class Image;
+		class Texture;
 		class Color;
 	}
 

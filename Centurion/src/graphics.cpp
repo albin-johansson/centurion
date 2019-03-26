@@ -1,5 +1,5 @@
 #include "graphics.h"
-#include "image.h"
+#include "texture.h"
 #include "color.h"
 #include "rectangle.h"
 #include "point.h"
@@ -7,7 +7,7 @@
 #include <stdexcept>
 
 using centurion::visuals::Graphics;
-using centurion::visuals::Image;
+using centurion::visuals::Texture;
 using centurion::visuals::Color;
 using centurion::geo::Rectangle;
 using centurion::geo::Point;
@@ -37,18 +37,18 @@ void Graphics::Clear()
 	SDL_RenderClear(renderer);
 }
 
-void Graphics::Render(Image& img, Rectangle rect)
+void Graphics::Render(Texture& img, Rectangle rect)
 {
 	CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
 	SDL_RenderCopy(renderer, img.GetTexture(), NULL, &rect.CreateSDLRect());
 }
 
-void Graphics::Render(Image& img, int x, int y, int w, int h)
+void Graphics::Render(Texture& img, int x, int y, int w, int h)
 {
 	Render(img.GetTexture(), x, y, w, h);
 }
 
-void Graphics::Render(Image& img, int x, int y)
+void Graphics::Render(Texture& img, int x, int y)
 {
 	Render(img, x, y, img.GetWidth(), img.GetHeight());
 }
@@ -89,7 +89,7 @@ void Graphics::RenderText(const std::string& text, int x, int y, int w, int h)
 {
 
 	SDL_Surface* surf = TTF_RenderText_Solid(font->GetSDLFont(), text.c_str(), color.CreateSDLColor());
-	SDL_Texture* texture = Image::CreateTexture(surf, renderer);
+	SDL_Texture* texture = Texture::CreateTexture(surf, renderer);
 	Render(texture, x, y, w, h);
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(surf);

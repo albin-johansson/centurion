@@ -21,6 +21,9 @@ private:
 	void UpdateColor();
 
 public:
+	/**
+	\param renderer - a pointer to the SDL_Renderer that the Renderer will be based upon.
+	*/
 	Renderer(SDL_Renderer* renderer);
 
 	~Renderer();

@@ -16,9 +16,6 @@ using std::shared_ptr;
 
 //FIXME fix doc comments refering textures as "images"
 
-/**
-\param renderer - a pointer to the SDL_Renderer that the Renderer will be based upon.
-*/
 Renderer::Renderer(SDL_Renderer* renderer)
 {
 	if (renderer == NULL || renderer == nullptr) {

@@ -3,6 +3,9 @@
 #include <SDL_video.h>
 #include <string>
 
+/**
+\brief The Window class represents a top-level frame.
+*/
 class centurion::Window {
 
 private:

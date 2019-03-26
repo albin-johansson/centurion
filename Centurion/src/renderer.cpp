@@ -14,6 +14,11 @@ using centurion::geo::Point;
 using centurion::Font;
 using std::shared_ptr;
 
+//FIXME fix doc comments refering textures as "images"
+
+/**
+\param renderer - a pointer to the SDL_Renderer that the Renderer will be based upon.
+*/
 Renderer::Renderer(SDL_Renderer* renderer)
 {
 	if (renderer == NULL || renderer == nullptr) {
@@ -85,9 +90,9 @@ void Renderer::RenderLine(Point p1, Point p2)
 	SDL_RenderDrawLine(renderer, p1.GetX(), p1.GetY(), p2.GetX(), p2.GetY());
 }
 
+//TODO don't keep this method, instead use method that converts a string into a texture
 void Renderer::RenderText(const std::string& text, int x, int y, int w, int h)
 {
-
 	SDL_Surface* surf = TTF_RenderText_Solid(font->GetSDLVersion(), text.c_str(), color.GetSDLVersion());
 	SDL_Texture* texture = Texture::CreateTexture(surf, renderer);
 	Render(texture, x, y, w, h);
@@ -95,7 +100,7 @@ void Renderer::RenderText(const std::string& text, int x, int y, int w, int h)
 	SDL_FreeSurface(surf);
 }
 
-void Renderer::SetFont(const std::shared_ptr<centurion::Font>& font)
+void Renderer::SetFont(const std::shared_ptr<centurion::Font>& font) //TODO Keep?
 {
 	this->font = font;
 }

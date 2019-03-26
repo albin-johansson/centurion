@@ -189,6 +189,7 @@
   <ItemGroup>
     <ClCompile Include="src\boolean_converter.cpp" />
     <ClCompile Include="src\color.cpp" />
+    <ClCompile Include="src\font.cpp" />
     <ClCompile Include="src\key_stroke.cpp" />
     <ClCompile Include="src\point.cpp" />
     <ClCompile Include="src\rectangle.cpp" />
@@ -200,8 +201,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\boolean_converter.h" />
-    <ClInclude Include="include\centurion.h" />
-    <ClInclude Include="include\color.h" />
+    <ClInclude Include="include\centurion1.h" />
+    <ClInclude Include="include\color1.h" />
+    <ClInclude Include="include\font.h" />
     <ClInclude Include="include\graphics.h" />
     <ClInclude Include="include\action.h" />
     <ClInclude Include="include\image.h" />

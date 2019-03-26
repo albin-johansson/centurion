@@ -7,6 +7,7 @@ namespace centurion
 	class Centurion; //TODO rename
 	class Window;
 	class Screen;
+	class Font;
 
 	namespace events
 	{

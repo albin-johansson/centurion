@@ -3,6 +3,7 @@
 #include "color.h"
 #include "rectangle.h"
 #include "point.h"
+#include "font.h"
 #include <stdexcept>
 
 using centurion::visuals::Graphics;
@@ -10,6 +11,8 @@ using centurion::visuals::Image;
 using centurion::visuals::Color;
 using centurion::geo::Rectangle;
 using centurion::geo::Point;
+using centurion::Font;
+using std::shared_ptr;
 
 Graphics::Graphics(SDL_Renderer* renderer)
 {
@@ -42,14 +45,22 @@ void Graphics::Render(Image& img, Rectangle rect)
 
 void Graphics::Render(Image& img, int x, int y, int w, int h)
 {
-	CheckRenderDimensions(w, h);
-	SDL_Rect rect = { x, y, w, h };
-	SDL_RenderCopy(renderer, img.GetTexture(), NULL, &rect);
+	Render(img.GetTexture(), x, y, w, h);
 }
 
 void Graphics::Render(Image& img, int x, int y)
 {
 	Render(img, x, y, img.GetWidth(), img.GetHeight());
+}
+
+void Graphics::Render(SDL_Texture* texture, int x, int y, int w, int h)
+{
+	if (texture == nullptr || texture == NULL) {
+		throw std::invalid_argument("Null texture when rendering!");
+	}
+	CheckRenderDimensions(w, h);
+	SDL_Rect rect = { x, y, w, h };
+	SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
 
 void Graphics::RenderFilledRect(int x, int y, int w, int h)
@@ -74,7 +85,28 @@ void Graphics::RenderLine(Point p1, Point p2)
 	SDL_RenderDrawLine(renderer, p1.GetX(), p1.GetY(), p2.GetX(), p2.GetY());
 }
 
+void Graphics::RenderText(const std::string& text, int x, int y, int w, int h)
+{
+
+	SDL_Surface* surf = TTF_RenderText_Solid(font->GetSDLFont(), text.c_str(), color.CreateSDLColor());
+	SDL_Texture* texture = Image::CreateTexture(surf, renderer);
+	Render(texture, x, y, w, h);
+	SDL_DestroyTexture(texture);
+	SDL_FreeSurface(surf);
+}
+
+void Graphics::SetFont(const std::shared_ptr<centurion::Font>& font)
+{
+	this->font = font;
+}
+
 void Graphics::SetColor(Color color)
+{
+	this->color = color;
+	UpdateColor();
+}
+
+void Graphics::UpdateColor()
 {
 	SDL_SetRenderDrawColor(renderer, color.GetRed(), color.GetGreen(), color.GetBlue(), color.GetAlpha());
 }

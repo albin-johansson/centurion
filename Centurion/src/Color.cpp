@@ -31,3 +31,8 @@ uint8_t Color::GetAlpha()
 {
 	return color.a;
 }
+
+SDL_Color centurion::visuals::Color::CreateSDLColor()
+{
+	return color;
+}

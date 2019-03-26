@@ -27,4 +27,6 @@ public:
 	uint8_t GetBlue();
 
 	uint8_t GetAlpha();
+
+	SDL_Color CreateSDLColor();
 };

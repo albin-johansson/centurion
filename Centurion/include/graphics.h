@@ -34,8 +34,6 @@ public:
 
 	void Render(SDL_Texture* texture, int x, int y, int w, int h);
 
-	void Render(SDL_Texture* texture, int x, int y);
-
 	void RenderFilledRect(int x, int y, int w, int h);
 
 	void RenderOutlinedRect(int x, int y, int w, int h);

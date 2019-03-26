@@ -8,7 +8,7 @@ using centurion::visuals::Graphics;
 Texture::Texture(const std::string& path, Graphics& graphics)
 {
 	SDL_Surface* surface = IMG_Load(path.c_str());
-	texture = CreateTexture(surface, graphics.renderer);
+	texture = CreateTexture(surface, graphics.GetRenderer());
 	width = surface->w;
 	height = surface->h;
 	SDL_FreeSurface(surface);

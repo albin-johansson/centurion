@@ -9,12 +9,18 @@
 class centurion::visuals::Graphics {
 
 private:
-	friend class centurion::Window; //FIXME
-	friend class centurion::visuals::Texture; //FIXME
-
 	SDL_Renderer* renderer = nullptr;
 	std::shared_ptr<centurion::Font> font;
 	centurion::visuals::Color color = Color::WHITE;
+	
+	void CheckRenderDimensions(int width, int height);
+
+	void UpdateColor();
+
+public:
+	Graphics(SDL_Renderer* renderer);
+
+	~Graphics();
 
 	void Update();
 	
@@ -44,12 +50,5 @@ private:
 
 	void SetColor(centurion::visuals::Color color);
 
-	void UpdateColor();
-
-	void CheckRenderDimensions(int width, int height);
-	
-public:
-	Graphics(SDL_Renderer* renderer);
-
-	~Graphics();
+	SDL_Renderer* GetRenderer();
 };

@@ -117,3 +117,8 @@ void Graphics::CheckRenderDimensions(int width, int height)
 		throw std::invalid_argument("Invalid rendering dimensions!");
 	}
 }
+
+SDL_Renderer* Graphics::GetRenderer()
+{
+	return renderer;
+}

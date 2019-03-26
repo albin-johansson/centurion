@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL_video.h>
-#include "centurion1.h"
+#include "centurion.h"
 
 class centurion::visuals::Color {
 

@@ -1,6 +1,6 @@
 #include "graphics.h"
 #include "image.h"
-#include "color1.h"
+#include "color.h"
 #include "rectangle.h"
 #include "point.h"
 #include "font.h"

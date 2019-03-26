@@ -201,8 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\boolean_converter.h" />
-    <ClInclude Include="include\centurion1.h" />
-    <ClInclude Include="include\color1.h" />
+    <ClInclude Include="include\centurion.h" />
+    <ClInclude Include="include\color.h" />
     <ClInclude Include="include\font.h" />
     <ClInclude Include="include\graphics.h" />
     <ClInclude Include="include\action.h" />

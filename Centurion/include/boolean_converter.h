@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL.h>
-#include "centurion1.h"
+#include "centurion.h"
 
 class centurion::tools::BooleanConverter final {
 

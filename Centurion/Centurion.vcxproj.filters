@@ -18,6 +18,12 @@
     <ClCompile Include="src\boolean_converter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\key_stroke.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\centurion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -28,9 +34,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\image.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\key_stroke.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\point.cpp">
@@ -45,27 +48,36 @@
     <ClCompile Include="src\window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\key_listener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\graphics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\action.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\boolean_converter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\key_stroke.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\centurion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\rectangle.h">
@@ -75,18 +87,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\point.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\centurion1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\color1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

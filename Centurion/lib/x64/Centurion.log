@@ -1,5 +1,6 @@
 ﻿  boolean_converter.cpp
   color.cpp
+  font.cpp
   key_stroke.cpp
   point.cpp
   rectangle.cpp

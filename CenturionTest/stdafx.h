@@ -11,8 +11,8 @@
 #include "CppUnitTest.h"
 
 // TODO: reference additional headers your program requires here
-#include "../Centurion/include/color1.h"
-#include "../Centurion/include/centurion1.h"
+#include "../Centurion/include/color.h"
+#include "../Centurion/include/centurion.h"
 #include "../Centurion/include/rectangle.h"
 #include "../Centurion/include/point.h"
 #include "../Centurion/include/boolean_converter.h"

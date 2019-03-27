@@ -43,6 +43,8 @@ namespace centurion
 class centurion::Centurion final {
 
 private:
+	static bool initialized;
+
 	Centurion() = delete;
 
 public:
@@ -51,4 +53,6 @@ public:
 	static void Init();
 
 	static void Close();
+
+	static bool IsInitialized();
 };

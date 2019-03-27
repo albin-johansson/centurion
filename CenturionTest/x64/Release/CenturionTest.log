@@ -1,5 +1,6 @@
 ﻿  stdafx.cpp
   boolean_converter_test.cpp
+  centurion_test.cpp
   color_test.cpp
   null_checker_test.cpp
   point_test.cpp
@@ -8,6 +9,8 @@
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
      Creating library C:\Users\albin\Documents\GitHub\Centurion\CenturionTest\x64\Release\CenturionTest.lib and object C:\Users\albin\Documents\GitHub\Centurion\CenturionTest\x64\Release\CenturionTest.exp
   Generating code
-  All 323 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  16 of 339 functions ( 4.7%) were compiled, the rest were copied from previous compilation.
+    16 functions were new in current compilation
+    49 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   CenturionTest.vcxproj -> C:\Users\albin\Documents\GitHub\Centurion\CenturionTest\x64\Release\CenturionTest.dll

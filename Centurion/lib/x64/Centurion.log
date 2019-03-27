@@ -1,14 +1,4 @@
-﻿  boolean_converter.cpp
-  centurion.cpp
-  color.cpp
-  font.cpp
-  key_stroke.cpp
-  point.cpp
-  rectangle.cpp
-  renderer.cpp
-  screen.cpp
-  texture.cpp
-  window.cpp
+﻿  window.cpp
 C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(1397,5): warning MSB8012: TargetPath(C:\Users\albin\Documents\GitHub\Centurion\Centurion\.\lib\Centurion.lib) does not match the Library's OutputFile property value (C:\Users\albin\Documents\GitHub\Centurion\Centurion\lib\x64\Centurion.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
 SDL2_image.lib(SDL2_image.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 SDL2_ttf.lib(SDL2_ttf.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored

@@ -2,6 +2,7 @@
 
 // TODO avoid new/delete, use std::unique_ptr and std::shared_ptr with std::make_unique and std::make_shared
 // TODO make classes as independent as possible (don't use friend classes)
+// TODO fix duplicated functionality
 namespace centurion
 {
 	class Centurion; //TODO rename

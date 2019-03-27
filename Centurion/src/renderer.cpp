@@ -120,7 +120,7 @@ void Renderer::CheckRenderDimensions(int width, int height)
 	}
 }
 
-SDL_Renderer* Renderer::GetRenderer()
+SDL_Renderer* Renderer::GetSDLRenderer()
 {
 	return renderer;
 }

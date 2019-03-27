@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="boolean_converter_test.cpp" />
     <ClCompile Include="color_test.cpp" />
+    <ClCompile Include="null_checker_test.cpp" />
     <ClCompile Include="point_test.cpp" />
     <ClCompile Include="rectangle_test.cpp" />
     <ClCompile Include="screen_test.cpp" />

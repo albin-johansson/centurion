@@ -92,6 +92,12 @@
     <ClInclude Include="include\drawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\null_checker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\positionable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -7,6 +7,8 @@ Point::Point(int x, int y)
 	point = { x, y };
 }
 
+Point::~Point() = default;
+
 void Point::SetLocation(int x, int y)
 {
 	SetX(x);

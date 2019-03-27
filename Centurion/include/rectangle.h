@@ -1,11 +1,12 @@
 #pragma once
 #include "centurion.h"
+#include "positionable.h"
 #include <SDL_rect.h>
 
 /**
 \brief The Rectangle class quite simply represents a rectangle.
 */
-class centurion::geo::Rectangle {
+class centurion::geo::Rectangle : public centurion::Positionable {
 
 private:
 	SDL_Rect rect;
@@ -25,26 +26,26 @@ public:
 	*/
 	Rectangle(int w, int h);
 
-	~Rectangle() = default;
+	~Rectangle() override;
 
 	/**
 	\brief Assigns the location of this rectangle.
 	\param x - the new x-coordinate.
 	\param y - the new y-coordinate.
 	*/
-	void SetLocation(int x, int y);
+	void SetLocation(int x, int y) override;
 
 	/**
 	\brief Assigns the x-coordinate of this rectangle.
 	\param x - the new x-coordinate.
 	*/
-	void SetX(int x);
+	void SetX(int x) override;
 
 	/**
 	\brief Assigns the y-coordinate of this rectangle.
 	\param y - the new y-coordinate.
 	*/
-	void SetY(int y);
+	void SetY(int y) override;
 
 	/**
 	\brief Indicates whether or not this rectangle intersects another rectangle. Returns true if
@@ -71,12 +72,12 @@ public:
 	/**
 	\brief Returns the x-coordinate of this rectangle.
 	*/
-	int GetX();
+	int GetX() override;
 
 	/**
 	\brief Returns the y-coordinate of this rectangle.
 	*/
-	int GetY();
+	int GetY() override;
 
 	/**
 	\brief Returns the width of this rectangle.

@@ -16,7 +16,9 @@
 #include "../Centurion/include/rectangle.h"
 #include "../Centurion/include/point.h"
 #include "../Centurion/include/boolean_converter.h"
+#include "../Centurion/include/null_checker.h"
 #include "../Centurion/include/screen.h"
+#include "../Centurion/include/positionable.h"
 
 #include <SDL.h>
 #include <SDL_image.h>

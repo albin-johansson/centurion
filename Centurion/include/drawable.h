@@ -10,11 +10,11 @@ protected:
 	Drawable() = default;
 
 public:
-	virtual ~Drawable() = 0;
+	virtual ~Drawable() = default;
 
 	/**
 	\brief Performs the rendering operations specified by this Drawable.
 	\param renderer - The Renderer that will be used for the rendering.
 	*/
-	virtual void draw(const centurion::visuals::Renderer& renderer) = 0;
+	virtual void Draw(const centurion::visuals::Renderer& renderer) = 0;
 };

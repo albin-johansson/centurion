@@ -12,7 +12,6 @@
 
 namespace ctn = centurion;
 using ctn::Window;
-using ctn::Screen;
 using ctn::visuals::Renderer;
 using ctn::visuals::Texture;
 using ctn::visuals::Color;
@@ -22,6 +21,7 @@ using ctn::tools::BooleanConverter;
 using ctn::events::KeyListener;
 
 Window::Window(const std::string& title, int width, int height, Uint32 flags)
+	: width(width), height(height)
 {
 	CheckWindowDimensions(width, height);
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -60,20 +60,22 @@ void Window::SetResizable(bool resizable)
 	SDL_SetWindowResizable(window, b);
 }
 
-int Window::GetWidth()
+int Window::GetWidth() //FIXME Window width is specified in constructor
 {
-	int w = -1;
-	int h = -1;
-	SDL_GetWindowSize(window, &w, &h);
-	return w;
+	//int w = -1;
+	//int h = -1;
+	//SDL_GetWindowSize(window, &w, &h);
+	//return w;
+	return width;
 }
 
-int Window::GetHeight()
+int Window::GetHeight() //FIXME Window height is specified in constructor
 {
-	int w = -1;
-	int h = -1;
-	SDL_GetWindowSize(window, &w, &h);
-	return h;
+	//int w = -1;
+	//int h = -1;
+	//SDL_GetWindowSize(window, &w, &h);
+	//return h;
+	return height;
 }
 
 void Window::Update()
@@ -135,7 +137,7 @@ void Window::SetRenderingColor(Color color)
 	renderer->SetColor(color);
 }
 
-Texture* Window::CreateImage(std::string path)
-{
-	return Texture::Create(path, *renderer);
-}
+//Texture* Window::CreateImage(std::string path)
+//{
+//	return Texture::Create(path, *renderer);
+//}

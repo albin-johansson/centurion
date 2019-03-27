@@ -41,5 +41,8 @@
     <ClCompile Include="screen_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="null_checker_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

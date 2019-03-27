@@ -10,7 +10,7 @@ protected:
 	Action() = default;
 
 public:
-	virtual ~Action() = 0;
+	virtual ~Action() = default;
 
 	/**
 	\brief Executes the action represented by this action object.

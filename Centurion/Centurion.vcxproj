@@ -205,6 +205,8 @@
     <ClInclude Include="include\color.h" />
     <ClInclude Include="include\drawable.h" />
     <ClInclude Include="include\font.h" />
+    <ClInclude Include="include\null_checker.h" />
+    <ClInclude Include="include\positionable.h" />
     <ClInclude Include="include\renderer.h" />
     <ClInclude Include="include\action.h" />
     <ClInclude Include="include\texture.h" />

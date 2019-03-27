@@ -4,21 +4,24 @@
 #include "rectangle.h"
 #include "point.h"
 #include "font.h"
+#include "null_checker.h"
 #include <stdexcept>
 
-using centurion::visuals::Renderer;
-using centurion::visuals::Texture;
-using centurion::visuals::Color;
-using centurion::geo::Rectangle;
-using centurion::geo::Point;
-using centurion::Font;
+namespace ctn = centurion;
+using ctn::visuals::Renderer;
+using ctn::visuals::Texture;
+using ctn::visuals::Color;
+using ctn::tools::NullChecker;
+using ctn::geo::Rectangle;
+using ctn::geo::Point;
+using ctn::Font;
 using std::shared_ptr;
 
 //FIXME fix doc comments refering textures as "images"
 
 Renderer::Renderer(SDL_Renderer* renderer)
 {
-	if (renderer == NULL || renderer == nullptr) {
+	if (NullChecker::IsNull(renderer)) {
 		throw std::invalid_argument("Null renderer!");
 	}
 	this->renderer = renderer;
@@ -55,9 +58,9 @@ void Renderer::Render(Texture& img, int x, int y)
 	Render(img, x, y, img.GetWidth(), img.GetHeight());
 }
 
-void Renderer::Render(SDL_Texture* texture, int x, int y, int w, int h)
+void Renderer::Render(SDL_Texture* texture, int x, int y, int w, int h) //FIXME don't take pointer to texture
 {
-	if (texture == nullptr || texture == NULL) {
+	if (NullChecker::IsNull(texture)) {
 		throw std::invalid_argument("Null texture when rendering!");
 	}
 	CheckRenderDimensions(w, h);
@@ -91,7 +94,7 @@ void Renderer::RenderLine(Point p1, Point p2)
 void Renderer::RenderText(const std::string& text, int x, int y, int w, int h)
 {
 	SDL_Surface* surf = TTF_RenderText_Solid(font->GetSDLVersion(), text.c_str(), color.GetSDLVersion());
-	SDL_Texture* texture = Texture::CreateTexture(surf, renderer);
+	SDL_Texture* texture = Texture::CreateSDLTexture(surf, renderer);
 	Render(texture, x, y, w, h);
 	SDL_DestroyTexture(texture);
 	SDL_FreeSurface(surf);

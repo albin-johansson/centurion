@@ -10,6 +10,8 @@ namespace centurion
 	class Screen;
 	class Font;
 
+	class Positionable;
+
 	namespace events
 	{
 		class Action;
@@ -34,6 +36,7 @@ namespace centurion
 	namespace tools
 	{
 		class BooleanConverter;
+		class NullChecker;
 	}
 }
 

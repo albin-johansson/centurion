@@ -39,23 +39,5 @@ public:
 	\param surface - the SDL_Surface to base the texture on.
 	\param renderer - the SDL_Renderer used to create the texture.
 	*/
-	static SDL_Texture* CreateTexture(SDL_Surface* surface, SDL_Renderer* renderer);
-
-	/**
-	\brief Returns a pointer to a Texture, based on the image at the specified path.
-	\param path - the path to the image file which the texture will be based on.
-	\param renderer - the Renderer used to create the texture.
-	*/
-	static centurion::visuals::Texture* Create(const std::string& path, centurion::visuals::Renderer& renderer);
-
-	/**
-	\brief Returns a pointer to a Texture, based on the supplied SDL_Texture.
-	\param texture - the SDL_Texture to base the Texture on.
-	*/
-	static centurion::visuals::Texture* Create(SDL_Texture* texture);
-
-	/**
-	\brief Destroys a Texture.
-	*/
-	static void Destroy(centurion::visuals::Texture* img);
+	static SDL_Texture* CreateSDLTexture(SDL_Surface* surface, SDL_Renderer* renderer);
 };

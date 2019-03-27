@@ -10,8 +10,9 @@ class centurion::Window {
 
 private:
 	SDL_Window* window;
-
 	std::unique_ptr<centurion::visuals::Renderer> renderer;
+	const int width;
+	const int height;
 
 	void CheckWindowDimensions(int width, int height);
 
@@ -71,6 +72,4 @@ public:
 	void RenderLine(centurion::geo::Point p1, centurion::geo::Point p2);
 
 	void SetRenderingColor(centurion::visuals::Color color);
-
-	centurion::visuals::Texture* CreateImage(std::string path);
 };

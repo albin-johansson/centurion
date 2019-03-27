@@ -1,6 +1,7 @@
 #include "rectangle.h"
 #include "point.h"
 #include "boolean_converter.h"
+#include "positionable.h"
 #include <stdexcept>
 
 using centurion::geo::Rectangle;
@@ -17,6 +18,8 @@ Rectangle::Rectangle(int x, int y, int w, int h)
 
 Rectangle::Rectangle(int w, int h) : Rectangle(0, 0, w, h)
 {}
+
+centurion::geo::Rectangle::~Rectangle() = default;
 
 void Rectangle::SetLocation(int x, int y)
 {

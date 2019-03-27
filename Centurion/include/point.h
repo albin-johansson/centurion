@@ -1,11 +1,12 @@
 #pragma once
 #include "centurion.h"
+#include "positionable.h"
 #include <SDL_rect.h>
 
 /**
 \brief The Point class represents a two-dimensional point.
 */
-class centurion::geo::Point {
+class centurion::geo::Point : public centurion::Positionable {
 
 private:
 	SDL_Point point;
@@ -17,34 +18,34 @@ public:
 	*/
 	Point(int x, int y);
 
-	~Point() = default;
+	~Point() override;
 
 	/**
 	\brief Assigns the location of this point.
 	\param x - the new x-coordinate.
 	\param y - the new y-coordinate.
 	*/
-	void SetLocation(int x, int y);
+	void SetLocation(int x, int y) override;
 
 	/**
 	\brief Assigns the x-coordinate of this point.
 	\param x - the new x-coordinate.
 	*/
-	void SetX(int x);
+	void SetX(int x) override;
 
 	/**
 	\brief Assigns the y-coordinate of this point.
 	\param y - the new y-coordinate.
 	*/
-	void SetY(int y);
+	void SetY(int y) override;
 
 	/**
 	\brief Returns the x-coordinate of this point.
 	*/
-	int GetX();
+	int GetX() override;
 
 	/**
 	\brief Returns the y-coordinate of this point.
 	*/
-	int GetY();
+	int GetY() override;
 };

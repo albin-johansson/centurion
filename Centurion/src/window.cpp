@@ -72,7 +72,7 @@ void Window::Render()
 	renderer->Update();
 }
 
-void Window::SetDrawable(shared_ptr<Drawable>& drawable)
+void Window::SetDrawable(const shared_ptr<Drawable> drawable)
 {
 	this->drawable = drawable;
 }

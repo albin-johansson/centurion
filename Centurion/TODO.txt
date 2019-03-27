@@ -2,3 +2,5 @@
 - Complete README.md
 - Implement audio components
 - Implement input components
+- Check #include-statements for both header and source files
+- Mark functions as const when possible

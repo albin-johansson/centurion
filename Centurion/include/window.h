@@ -51,7 +51,7 @@ public:
 	\brief Assigns the Drawable that will be invoked whenever the Render() method is called.
 	\param drawable - the Drawable that will be used.
 	*/
-	void SetDrawable(std::shared_ptr<centurion::visuals::Drawable>& drawable);
+	void SetDrawable(const std::shared_ptr<centurion::visuals::Drawable> drawable);
 
 	/**
 	\brief Sets whether this window is resizable or not.

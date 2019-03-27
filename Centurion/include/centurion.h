@@ -21,6 +21,7 @@ namespace centurion
 		class Renderer;
 		class Texture;
 		class Color;
+		class Drawable;
 	}
 
 	namespace geo

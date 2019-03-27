@@ -203,6 +203,7 @@
     <ClInclude Include="include\boolean_converter.h" />
     <ClInclude Include="include\centurion.h" />
     <ClInclude Include="include\color.h" />
+    <ClInclude Include="include\drawable.h" />
     <ClInclude Include="include\font.h" />
     <ClInclude Include="include\renderer.h" />
     <ClInclude Include="include\action.h" />

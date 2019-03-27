@@ -10,31 +10,25 @@ class centurion::Window {
 
 private:
 	SDL_Window* window;
-	std::unique_ptr<centurion::visuals::Renderer> graphics;
 
-	void InitComps(const std::string& title, int w, int h, Uint32 flags);
+	std::unique_ptr<centurion::visuals::Renderer> renderer;
+
+	void CheckWindowDimensions(int width, int height);
 
 public:
-	/*
-	\brief	Creates a window with the supplied dimensions.
-
-	\param	title the title of the window
-	\param	width the width of the window.
-	\param	height the height of the window.
+	/**
+	\param title - the title of the window.
+	\param width - the desired width of the window.
+	\param height - the desired height of the window.
+	\param flags - flags providing information about the window to be created, the flag values
+				   are specified by SDL_WindowFlags. For example, SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
 	*/
-	Window(const std::string& title, int width, int height);
-
-	/*
-	\brief	Creates a fullscreen window.
-
-	\param	title the title of the window
-	*/
-	Window(const std::string& title);
+	Window(const std::string& title, int width, int height, Uint32 flags);
 
 	~Window();
 
 	/*
-	\brief	Makes this window visible.
+	\brief Makes this window visible.
 	*/
 	void Show();
 

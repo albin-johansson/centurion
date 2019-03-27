@@ -5,10 +5,10 @@
 using centurion::visuals::Texture;
 using centurion::visuals::Renderer;
 
-Texture::Texture(const std::string& path, Renderer& graphics)
+Texture::Texture(const std::string& path, Renderer& renderer)
 {
 	SDL_Surface* surface = IMG_Load(path.c_str());
-	texture = CreateTexture(surface, graphics.GetRenderer());
+	texture = CreateTexture(surface, renderer.GetRenderer());
 	width = surface->w;
 	height = surface->h;
 	SDL_FreeSurface(surface);
@@ -46,9 +46,9 @@ SDL_Texture* Texture::GetTexture()
 	return texture;
 }
 
-Texture* Texture::Create(const std::string& path, Renderer& graphics)
+Texture* Texture::Create(const std::string& path, Renderer& renderer)
 {
-	return new Texture(path, graphics);//FIXME don't use raw pointer
+	return new Texture(path, renderer);//FIXME don't use raw pointer
 }
 
 void Texture::Destroy(Texture* img)

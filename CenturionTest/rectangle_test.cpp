@@ -15,7 +15,7 @@ namespace CenturionTest
 			Centurion::Init();
 		}
 
-		TEST_CLASS_CLEANUP(cleanup)
+		TEST_CLASS_CLEANUP(Cleanup)
 		{
 			Centurion::Close();
 		}

@@ -125,5 +125,5 @@ public:
 	/**
 	\brief Returns a pointer to the internal SDL_Renderer of this Renderer.
 	*/
-	SDL_Renderer* GetRenderer(); //FIXME avoid having to keep this method
+	SDL_Renderer* GetSDLRenderer(); //FIXME avoid having to keep this method
 };

@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 
+*.filters
 *.vcxproj
 *.sln
 

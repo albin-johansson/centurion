@@ -15,7 +15,7 @@ public:
 
 	virtual void SetLocation(int x, int y) = 0;
 
-	virtual int GetX() = 0;
+	virtual int GetX() const = 0;
 
-	virtual int GetY() = 0;
+	virtual int GetY() const = 0;
 };

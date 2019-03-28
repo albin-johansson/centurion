@@ -2,6 +2,7 @@
 #include "centurion.h"
 #include "renderer.h"
 #include "drawable.h"
+#include "dimensioned.h"
 #include <SDL_video.h>
 #include <string>
 #include <memory>
@@ -9,7 +10,7 @@
 /**
 \brief The Window class represents a top-level frame.
 */
-class centurion::Window {
+class centurion::Window : public centurion::Dimensioned {
 
 private:
 	SDL_Window* window;
@@ -62,12 +63,12 @@ public:
 	/**
 	\brief Returns the width of this window.
 	*/
-	int GetWidth();
+	int GetWidth() const override;
 
 	/**
 	\brief Returns the height of this window.
 	*/
-	int GetHeight();
+	int GetHeight() const override;
 
 	// TODO add listener methods
 };

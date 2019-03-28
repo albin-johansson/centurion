@@ -7,11 +7,12 @@
 using centurion::geo::Rectangle;
 using centurion::geo::Point;
 using centurion::tools::BooleanConverter;
+using std::invalid_argument;
 
 Rectangle::Rectangle(int x, int y, int w, int h)
 {
 	if (w < 1 || h < 1) {
-		throw std::invalid_argument("Invalid dimensions for rectangle!");
+		throw invalid_argument("Invalid dimensions for rectangle!");
 	}
 	rect = { x, y, w, h };
 }
@@ -19,7 +20,7 @@ Rectangle::Rectangle(int x, int y, int w, int h)
 Rectangle::Rectangle(int w, int h) : Rectangle(0, 0, w, h)
 {}
 
-centurion::geo::Rectangle::~Rectangle() = default;
+Rectangle::~Rectangle() = default;
 
 void Rectangle::SetLocation(int x, int y)
 {
@@ -37,45 +38,45 @@ void Rectangle::SetY(int y)
 	rect.y = y;
 }
 
-bool Rectangle::Intersects(Rectangle& otherRect)
+bool Rectangle::Intersects(const Rectangle& otherRect) const
 {
 	SDL_bool result = SDL_HasIntersection(&this->rect, &otherRect.rect);
 	return BooleanConverter::Convert(result);
 }
 
-bool Rectangle::Contains(int x, int y)
+bool Rectangle::Contains(int x, int y) const
 {
 	SDL_Point point = { x, y };
 	SDL_bool result = SDL_PointInRect(&point, &this->rect);
 	return BooleanConverter::Convert(result);
 }
 
-bool Rectangle::Contains(Point& point)
+bool Rectangle::Contains(const Point& point) const
 {
 	return Contains(point.GetX(), point.GetY());
 }
 
-int Rectangle::GetX()
+int Rectangle::GetX() const
 {
 	return rect.x;
 }
 
-int Rectangle::GetY()
+int Rectangle::GetY() const
 {
 	return rect.y;
 }
 
-int Rectangle::GetWidth()
+int Rectangle::GetWidth() const
 {
 	return rect.w;
 }
 
-int Rectangle::GetHeight()
+int Rectangle::GetHeight() const
 {
 	return rect.h;
 }
 
-SDL_Rect Rectangle::CreateSDLRect()
+SDL_Rect Rectangle::GetSDLVersion() const
 {
 	return rect;
 }

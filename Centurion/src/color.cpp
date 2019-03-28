@@ -14,27 +14,27 @@ Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 
 Color::~Color() = default;
 
-uint8_t Color::GetRed()
+uint8_t Color::GetRed() const
 {
 	return color.r;
 }
 
-uint8_t Color::GetGreen()
+uint8_t Color::GetGreen() const
 {
 	return color.g;
 }
 
-uint8_t Color::GetBlue()
+uint8_t Color::GetBlue() const
 {
 	return color.b;
 }
 
-uint8_t Color::GetAlpha()
+uint8_t Color::GetAlpha() const
 {
 	return color.a;
 }
 
-SDL_Color centurion::visuals::Color::GetSDLVersion()
+SDL_Color Color::GetSDLVersion() const
 {
 	return color;
 }

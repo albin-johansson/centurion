@@ -9,7 +9,7 @@ class centurion::visuals::Color {
 
 private:
 	SDL_Color color;
-	
+
 public:
 	/**
 	\brief The highest possible value for the red, green, blue and alpha components.
@@ -45,7 +45,7 @@ public:
 	\brief A constant that represents the color black.
 	*/
 	const static Color BLACK;
-	
+
 	/**
 	\param r - the red component of the color in the range [MIN_VAL, MAX_VAL].
 	\param g - the green component of the color in the range [MIN_VAL, MAX_VAL].
@@ -55,29 +55,29 @@ public:
 	Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 	~Color();
-	
+
 	/**
 	\brief Returns the red component of this color.
 	*/
-	uint8_t GetRed();
+	uint8_t GetRed() const;
 
 	/**
 	\brief Returns the green component of this color.
 	*/
-	uint8_t GetGreen();
+	uint8_t GetGreen() const;
 
 	/**
 	\brief Returns the blue component of this color.
 	*/
-	uint8_t GetBlue();
+	uint8_t GetBlue() const;
 
 	/**
 	\brief Returns the alpha component of this color.
 	*/
-	uint8_t GetAlpha();
+	uint8_t GetAlpha() const;
 
 	/**
 	\brief Returns an SDL_Color instance that represents this Color.
 	*/
-	SDL_Color GetSDLVersion();
+	SDL_Color GetSDLVersion() const;
 };

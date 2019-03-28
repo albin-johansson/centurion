@@ -2,5 +2,9 @@
 - Complete README.md
 - Implement audio components
 - Implement input components
+- Event-dispatch system with window, possibility to add listeners to it.
 - Check #include-statements for both header and source files
-- Mark functions as const when possible
+- Mark functions as const whereve possible
+- Improve error handling (Use SDL_GetError(), IMG_GetError(), etc...)
+- Add text rendering (generate texture based on string and font)
+- Consider reducing the amount of header files, maybe use one header file for each subnamespace?

@@ -13,7 +13,7 @@ Font::~Font()
 	TTF_CloseFont(font);
 }
 
-int Font::GetSize()
+int Font::GetSize() const
 {
 	return size;
 }

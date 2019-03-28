@@ -9,6 +9,6 @@
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
      Creating library C:\Users\albin\Documents\GitHub\Centurion\CenturionTest\x64\Release\CenturionTest.lib and object C:\Users\albin\Documents\GitHub\Centurion\CenturionTest\x64\Release\CenturionTest.exp
   Generating code
-  All 339 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 343 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   CenturionTest.vcxproj -> C:\Users\albin\Documents\GitHub\Centurion\CenturionTest\x64\Release\CenturionTest.dll

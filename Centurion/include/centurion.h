@@ -11,6 +11,7 @@ namespace centurion
 	class Font;
 
 	class Positionable;
+	class Dimensioned;
 
 	namespace events
 	{
@@ -23,6 +24,8 @@ namespace centurion
 	{
 		class Renderer;
 		class Texture;
+		class TextureFactory;
+
 		class Color;
 		class Drawable;
 	}

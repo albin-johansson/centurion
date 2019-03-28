@@ -42,10 +42,10 @@ public:
 	/**
 	\brief Returns the x-coordinate of this point.
 	*/
-	int GetX() override;
+	int GetX() const override;
 
 	/**
 	\brief Returns the y-coordinate of this point.
 	*/
-	int GetY() override;
+	int GetY() const override;
 };

@@ -3,6 +3,7 @@
 #include "centurion.h"
 #include "font.h"
 #include "color.h"
+#include "texture_factory.h"
 #include <memory>
 #include <string>
 
@@ -12,7 +13,7 @@
 class centurion::visuals::Renderer {
 
 private:
-	SDL_Renderer* renderer = nullptr;
+	SDL_Renderer* sdl_renderer;
 	std::shared_ptr<centurion::Font> font;
 	centurion::visuals::Color color = Color::WHITE;
 
@@ -21,6 +22,8 @@ private:
 	void UpdateColor();
 
 public:
+	friend class centurion::visuals::TextureFactory; //FIXME only allow the TextureFactory::CreateTexture function to be a friend
+
 	/**
 	\param renderer - a pointer to the SDL_Renderer that the Renderer will be based upon.
 	*/
@@ -108,7 +111,7 @@ public:
 	*/
 	void RenderLine(centurion::geo::Point p1, centurion::geo::Point p2);
 
-	void RenderText(const std::string& text, int x, int y, int w, int h); //FIXME
+	//void RenderText(const std::string& text, int x, int y, int w, int h); //FIXME
 
 	/**
 	\brief Assigns the currently active font.
@@ -121,9 +124,4 @@ public:
 	\param color - the color that will be used.
 	*/
 	void SetColor(centurion::visuals::Color color);
-
-	/**
-	\brief Returns a pointer to the internal SDL_Renderer of this Renderer.
-	*/
-	SDL_Renderer* GetSDLRenderer(); //FIXME avoid having to keep this method
 };

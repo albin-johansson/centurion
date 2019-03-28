@@ -53,27 +53,22 @@ namespace CenturionTest
 			Assert::AreEqual(0, (int) Color::MIN_VAL);
 
 			Color red = Color(255, 0, 0, 255);
-			Color redConst = Color::RED;
-			compare(red, redConst);
+			compare(red, Color::RED);
 
 			Color green = Color(0, 255, 0, 255);
-			Color greenConst = Color::GREEN;
-			compare(green, greenConst);
+			compare(green, Color::GREEN);
 
 			Color blue = Color(0, 0, 255, 255);
-			Color blueConst = Color::BLUE;
-			compare(blue, blueConst);
+			compare(blue, Color::BLUE);
 
 			Color white = Color(255, 255, 255, 255);
-			Color whiteConst = Color::WHITE;
-			compare(white, whiteConst);
+			compare(white, Color::WHITE);
 
 			Color black = Color(0, 0, 0, 255);
-			Color blackConst = Color::BLACK;
-			compare(black, blackConst);
+			compare(black, Color::BLACK);
 		}
 
-		void compare(Color& c1, Color& c2)
+		void compare(const Color& c1, const Color& c2)
 		{
 			Assert::AreEqual((int) c1.GetRed(), (int) c2.GetRed());
 			Assert::AreEqual((int) c1.GetGreen(), (int) c2.GetGreen());

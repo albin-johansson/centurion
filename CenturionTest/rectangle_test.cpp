@@ -127,14 +127,14 @@ namespace CenturionTest
 			Assert::AreEqual(h, rect.GetHeight());
 		}
 
-		TEST_METHOD(CreateSDLRect)
+		TEST_METHOD(GetSDLVersion)
 		{
 			int x = 123;
 			int y = 456;
 			int w = 789;
 			int h = 912;
 			Rectangle rect = Rectangle(x, y, w, h);
-			SDL_Rect sdlRect = rect.CreateSDLRect();
+			SDL_Rect sdlRect = rect.GetSDLVersion();
 
 			Assert::AreEqual(x, sdlRect.x);
 			Assert::AreEqual(y, sdlRect.y);

@@ -11,6 +11,7 @@ using centurion::visuals::Renderer;
 using centurion::tools::BooleanConverter;
 using std::make_unique;
 using std::shared_ptr;
+using std::invalid_argument;
 
 Window::Window(const std::string& title, int width, int height, Uint32 flags)
 	: width(width), height(height)
@@ -33,7 +34,7 @@ Window::~Window()
 void Window::CheckWindowDimensions(int width, int height)
 {
 	if (width < 1 || height < 1) {
-		throw std::invalid_argument("Invalid dimensions for window!");
+		throw invalid_argument("Invalid dimensions for window!");
 	}
 }
 
@@ -53,12 +54,12 @@ void Window::SetResizable(bool resizable)
 	SDL_SetWindowResizable(window, b);
 }
 
-int Window::GetWidth()
+int Window::GetWidth() const
 {
 	return width;
 }
 
-int Window::GetHeight()
+int Window::GetHeight() const
 {
 	return height;
 }

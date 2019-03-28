@@ -197,18 +197,21 @@
     <ClCompile Include="src\renderer.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\screen.cpp" />
+    <ClCompile Include="src\texture_factory.cpp" />
     <ClCompile Include="src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\boolean_converter.h" />
     <ClInclude Include="include\centurion.h" />
     <ClInclude Include="include\color.h" />
+    <ClInclude Include="include\dimensioned.h" />
     <ClInclude Include="include\drawable.h" />
     <ClInclude Include="include\font.h" />
     <ClInclude Include="include\null_checker.h" />
     <ClInclude Include="include\positionable.h" />
     <ClInclude Include="include\renderer.h" />
     <ClInclude Include="include\action.h" />
+    <ClInclude Include="include\texture_factory.h" />
     <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\key_listener.h" />
     <ClInclude Include="include\key_stroke.h" />

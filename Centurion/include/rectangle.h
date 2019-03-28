@@ -1,12 +1,13 @@
 #pragma once
 #include "centurion.h"
 #include "positionable.h"
+#include "dimensioned.h"
 #include <SDL_rect.h>
 
 /**
 \brief The Rectangle class quite simply represents a rectangle.
 */
-class centurion::geo::Rectangle : public centurion::Positionable {
+class centurion::geo::Rectangle : public centurion::Positionable, public centurion::Dimensioned {
 
 private:
 	SDL_Rect rect;
@@ -52,7 +53,7 @@ public:
 	 the supplied rectangle intersects this rectangle, returns false otherwise.
 	\param rect - the rectangle that will be checked with this rectangle.
 	*/
-	bool Intersects(centurion::geo::Rectangle& rect);
+	bool Intersects(const centurion::geo::Rectangle& rect) const;
 
 	/**
 	\brief Indicates whether or not this rectangle contains the specified point. Returns true if
@@ -60,37 +61,37 @@ public:
 	\param x - the x-coordinate of the point to check.
 	\param y - the y-coordinate of the point to check.
 	*/
-	bool Contains(int x, int y);
+	bool Contains(int x, int y) const;
 
 	/**
 	\brief Indicates whether or not this rectangle contains the specified point. Returns true if
 	 the point is contained in this rectangle, returns false otherwise.
 	\param point - the point that will be checked.
 	*/
-	bool Contains(Point& point);
+	bool Contains(const Point& point) const;
 
 	/**
 	\brief Returns the x-coordinate of this rectangle.
 	*/
-	int GetX() override;
+	int GetX() const override;
 
 	/**
 	\brief Returns the y-coordinate of this rectangle.
 	*/
-	int GetY() override;
+	int GetY() const override;
 
 	/**
 	\brief Returns the width of this rectangle.
 	*/
-	int GetWidth();
+	int GetWidth() const override;
 
 	/**
 	\brief Returns the height of this rectangle.
 	*/
-	int GetHeight();
+	int GetHeight() const override;
 
 	/**
 	\brief Creates and returns an SDL_Rect that represents this rectangle.
 	*/
-	SDL_Rect CreateSDLRect();
+	SDL_Rect GetSDLVersion() const;
 };

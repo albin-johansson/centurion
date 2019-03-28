@@ -1,10 +1,13 @@
 # Prerequisites
 *.d
 
+*.log
+*.tlog
 *.filters
 *.vcxproj
 *.sln
 *.user
+packages/
 
 # Compiled Object files
 *.slo

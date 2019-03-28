@@ -4,6 +4,7 @@
 *.filters
 *.vcxproj
 *.sln
+*.user
 
 # Compiled Object files
 *.slo

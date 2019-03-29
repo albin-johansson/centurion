@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 namespace centurion {
 class Centurion;  // TODO rename
@@ -41,6 +42,16 @@ class centurion::Centurion final {
 
   Centurion() = delete;
 
+  static void InitCore();
+
+  static void InitSDLImage();
+
+  static void InitSDLTTF();
+
+  static void InitSDLMixer();
+
+  static void ThrowInitializationException(const std::string& error);
+
  public:
   ~Centurion() = default;
 
@@ -48,5 +59,5 @@ class centurion::Centurion final {
 
   static void Close();
 
-  static bool IsInitialized();
+  static bool IsInitialized() { return initialized; }
 };

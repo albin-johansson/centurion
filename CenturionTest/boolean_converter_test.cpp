@@ -4,43 +4,37 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using centurion::Centurion;
 using centurion::tools::BooleanConverter;
 
-namespace CenturionTest
-{
-	TEST_CLASS(BooleanConverterTest)
-	{
-	public:
-		TEST_CLASS_INITIALIZE(Init)
-		{
-			Centurion::Init();
-		}
+namespace CenturionTest {
 
-		TEST_CLASS_CLEANUP(cleanup)
-		{
-			Centurion::Close();
-		}
+TEST_CLASS(BooleanConverterTest){
+  public :
 
-		TEST_METHOD(convert1)
-		{
-			SDL_bool t = SDL_bool::SDL_TRUE;
-			SDL_bool f = SDL_bool::SDL_FALSE;
+      TEST_CLASS_INITIALIZE(Init){Centurion::Init();
+}
 
-			bool tConverted = BooleanConverter::Convert(t);
-			bool fConverted = BooleanConverter::Convert(f);
+TEST_CLASS_CLEANUP(cleanup) { Centurion::Close(); }
 
-			Assert::IsTrue(tConverted);
-			Assert::IsFalse(fConverted);
-		}
+TEST_METHOD(convert1) {
+  SDL_bool t = SDL_bool::SDL_TRUE;
+  SDL_bool f = SDL_bool::SDL_FALSE;
 
-		TEST_METHOD(convert2)
-		{
-			bool t = true;
-			bool f = false;
+  bool tConverted = BooleanConverter::Convert(t);
+  bool fConverted = BooleanConverter::Convert(f);
 
-			SDL_bool tConverted = BooleanConverter::Convert(t);
-			SDL_bool fConverted = BooleanConverter::Convert(f);
+  Assert::IsTrue(tConverted);
+  Assert::IsFalse(fConverted);
+}
 
-			Assert::IsTrue(tConverted);
-			Assert::IsFalse(fConverted);
-		}
-	};
+TEST_METHOD(convert2) {
+  bool t = true;
+  bool f = false;
+
+  SDL_bool tConverted = BooleanConverter::Convert(t);
+  SDL_bool fConverted = BooleanConverter::Convert(f);
+
+  Assert::IsTrue(tConverted);
+  Assert::IsFalse(fConverted);
+}
+}
+;
 }

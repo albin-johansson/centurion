@@ -1,82 +1,47 @@
 #include "rectangle.h"
-#include "point.h"
-#include "boolean_converter.h"
-#include "positionable.h"
 #include <stdexcept>
+#include "boolean_converter.h"
+#include "point.h"
+#include "positionable.h"
 
-using centurion::geo::Rectangle;
 using centurion::geo::Point;
+using centurion::geo::Rectangle;
 using centurion::tools::BooleanConverter;
 using std::invalid_argument;
 
-Rectangle::Rectangle(int x, int y, int w, int h)
-{
-	if (w < 1 || h < 1) {
-		throw invalid_argument("Invalid dimensions for rectangle!");
-	}
-	rect = { x, y, w, h };
+Rectangle::Rectangle(int x, int y, int w, int h) {
+  if (w < 1 || h < 1) {
+    throw invalid_argument("Invalid dimensions for rectangle!");
+  }
+  rect = {x, y, w, h};
 }
 
-Rectangle::Rectangle(int w, int h) : Rectangle(0, 0, w, h)
-{}
+Rectangle::Rectangle(int w, int h) : Rectangle(0, 0, w, h) {}
 
 Rectangle::~Rectangle() = default;
 
-void Rectangle::SetLocation(int x, int y)
-{
-	SetX(x);
-	SetY(y);
+void Rectangle::SetLocation(int x, int y) {
+  SetX(x);
+  SetY(y);
 }
 
-void Rectangle::SetX(int x)
-{
-	rect.x = x;
+void Rectangle::SetX(int x) { rect.x = x; }
+
+void Rectangle::SetY(int y) { rect.y = y; }
+
+bool Rectangle::Intersects(const Rectangle& otherRect) const {
+  SDL_bool result = SDL_HasIntersection(&this->rect, &otherRect.rect);
+  return BooleanConverter::Convert(result);
 }
 
-void Rectangle::SetY(int y)
-{
-	rect.y = y;
+bool Rectangle::Contains(int x, int y) const {
+  SDL_Point point = {x, y};
+  SDL_bool result = SDL_PointInRect(&point, &this->rect);
+  return BooleanConverter::Convert(result);
 }
 
-bool Rectangle::Intersects(const Rectangle& otherRect) const
-{
-	SDL_bool result = SDL_HasIntersection(&this->rect, &otherRect.rect);
-	return BooleanConverter::Convert(result);
+bool Rectangle::Contains(const Point& point) const {
+  return Contains(point.GetX(), point.GetY());
 }
 
-bool Rectangle::Contains(int x, int y) const
-{
-	SDL_Point point = { x, y };
-	SDL_bool result = SDL_PointInRect(&point, &this->rect);
-	return BooleanConverter::Convert(result);
-}
-
-bool Rectangle::Contains(const Point& point) const
-{
-	return Contains(point.GetX(), point.GetY());
-}
-
-int Rectangle::GetX() const
-{
-	return rect.x;
-}
-
-int Rectangle::GetY() const
-{
-	return rect.y;
-}
-
-int Rectangle::GetWidth() const
-{
-	return rect.w;
-}
-
-int Rectangle::GetHeight() const
-{
-	return rect.h;
-}
-
-SDL_Rect Rectangle::GetSDLVersion() const
-{
-	return rect;
-}
+SDL_Rect Rectangle::GetSDLVersion() const { return rect; }

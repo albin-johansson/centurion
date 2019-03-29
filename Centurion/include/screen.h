@@ -5,20 +5,19 @@
 \brief The Screen class provides information about the system display.
 */
 class centurion::Screen final {
+ private:
+  Screen() = delete;
 
-private:
-	Screen() = delete;
+ public:
+  ~Screen() = default;
 
-public:
-	~Screen() = default;
+  /**
+  \brief Returns the width of the screen.
+  */
+  static int GetWidth();
 
-	/**
-	\brief Returns the width of the screen.
-	*/
-	static int GetWidth();
-
-	/**
-	\brief Returns the height of the screen.
-	*/
-	static int GetHeight();
+  /**
+  \brief Returns the height of the screen.
+  */
+  static int GetHeight();
 };

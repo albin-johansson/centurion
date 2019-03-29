@@ -8,3 +8,6 @@
 - Improve error handling (Use SDL_GetError(), IMG_GetError(), etc...)
 - Add text rendering (generate texture based on string and font)
 - Consider reducing the amount of header files, maybe use one header file for each subnamespace?
+- Avoid new/delete, use std::unique_ptr and std::shared_ptr with std::make_unique and std::make_shared
+- Make classes as independent as possible (don't use friend classes)
+- Fix duplicated functionality

@@ -55,30 +55,22 @@ void Renderer::Clear()
 	SDL_RenderClear(sdl_renderer);
 }
 
+void Renderer::Render(Texture& img, int x, int y, int w, int h)
+{
+	CheckRenderDimensions(w, h);
+	SDL_Rect rect = { x, y, w, h };
+	SDL_RenderCopy(sdl_renderer, &img.GetSDLTexture(), NULL, &rect);
+}
+
 void Renderer::Render(Texture& img, Rectangle rect)
 {
 	CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
-	SDL_RenderCopy(sdl_renderer, img.GetTexture(), NULL, &rect.GetSDLVersion());
-}
-
-void Renderer::Render(Texture& img, int x, int y, int w, int h)
-{
-	Render(img.GetTexture(), x, y, w, h);
+	SDL_RenderCopy(sdl_renderer, &img.GetSDLTexture(), NULL, &rect.GetSDLVersion());
 }
 
 void Renderer::Render(Texture& img, int x, int y)
 {
 	Render(img, x, y, img.GetWidth(), img.GetHeight());
-}
-
-void Renderer::Render(SDL_Texture* texture, int x, int y, int w, int h) //FIXME don't take pointer to texture
-{
-	if (NullChecker::IsNull(texture)) {
-		throw std::invalid_argument("Null texture when rendering!");
-	}
-	CheckRenderDimensions(w, h);
-	SDL_Rect rect = { x, y, w, h };
-	SDL_RenderCopy(sdl_renderer, texture, NULL, &rect);
 }
 
 void Renderer::RenderFilledRect(int x, int y, int w, int h)

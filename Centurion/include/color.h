@@ -60,25 +60,25 @@ class centurion::visuals::Color {
   /**
   \brief Returns an SDL_Color instance that represents this Color.
   */
-  SDL_Color GetSDLVersion() const;
+  SDL_Color GetSDLVersion() const { return color; }
 
   /**
   \brief Returns the red component of this color.
   */
-  uint8_t GetRed() const { return color.r; };
+  uint8_t GetRed() const { return color.r; }
 
   /**
   \brief Returns the green component of this color.
   */
-  uint8_t GetGreen() const { return color.g; };
+  uint8_t GetGreen() const { return color.g; }
 
   /**
   \brief Returns the blue component of this color.
   */
-  uint8_t GetBlue() const { return color.b; };
+  uint8_t GetBlue() const { return color.b; }
 
   /**
   \brief Returns the alpha component of this color.
   */
-  uint8_t GetAlpha() const { return color.a; };
+  uint8_t GetAlpha() const { return color.a; }
 };

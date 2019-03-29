@@ -11,3 +11,4 @@
 - Avoid new/delete, use std::unique_ptr and std::shared_ptr with std::make_unique and std::make_shared
 - Make classes as independent as possible (don't use friend classes)
 - Fix duplicated functionality
+- Avoid raw pointers

@@ -94,5 +94,5 @@ class centurion::geo::Rectangle : public centurion::Positionable,
   /**
   \brief Creates and returns an SDL_Rect that represents this rectangle.
   */
-  SDL_Rect GetSDLVersion() const;
+  SDL_Rect GetSDLVersion() const { return rect; };
 };

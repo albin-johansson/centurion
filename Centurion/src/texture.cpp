@@ -18,7 +18,3 @@ Texture::Texture(SDL_Texture* texture, int width, int height)
 Texture::~Texture() { SDL_DestroyTexture(sdl_texture); }
 
 SDL_Texture& Texture::GetSDLTexture() { return *sdl_texture; }
-
-int Texture::GetWidth() const { return width; }
-
-int Texture::GetHeight() const { return height; }

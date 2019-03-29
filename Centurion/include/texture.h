@@ -22,10 +22,10 @@ class centurion::visuals::Texture : public centurion::Dimensioned {
   /**
   \brief Returns the width of this texture.
   */
-  int GetWidth() const override;
+  int GetWidth() const override { return width; };
 
   /**
   \brief Returns the height of this texture.
   */
-  int GetHeight() const override;
+  int GetHeight() const override { return height; };
 };

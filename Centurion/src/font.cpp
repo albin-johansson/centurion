@@ -8,7 +8,3 @@ Font::Font(const std::string& path, const int size) {
 }
 
 Font::~Font() { TTF_CloseFont(font); }
-
-int Font::GetSize() const { return size; }
-
-TTF_Font* Font::GetSDLVersion() { return font; }

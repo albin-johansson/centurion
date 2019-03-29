@@ -21,13 +21,13 @@ class centurion::Font {
   ~Font();
 
   /**
-  \brief Returns the point size of the font that this Font instacne represents.
-  */
-  int GetSize() const;
-
-  /**
   \brief Returns a raw pointer to the SDL_font which this Font object
   represents. DO NOT use the returned pointer to call TTF_CloseFont().
   */
-  TTF_Font* GetSDLVersion();
+  TTF_Font* GetSDLVersion() { return font; }  // FIXME avoid raw pointers
+
+  /**
+  \brief Returns the point size of the font that this Font instacne represents.
+  */
+  int GetSize() const { return size; }
 };

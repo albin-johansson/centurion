@@ -45,10 +45,6 @@ void Window::SetResizable(bool resizable) {
   SDL_SetWindowResizable(window, b);
 }
 
-int Window::GetWidth() const { return width; }
-
-int Window::GetHeight() const { return height; }
-
 void Window::Render() {
   renderer->Clear();
   if (drawable != nullptr) {

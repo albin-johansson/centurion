@@ -16,15 +16,6 @@ class KeyListener;
 class KeyStroke;
 }  // namespace events
 
-namespace visuals {
-class Renderer;
-class Texture;
-class TextureFactory;
-
-class Color;
-class Drawable;
-}  // namespace visuals
-
 namespace geo {
 class Rectangle;
 class Point;

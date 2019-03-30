@@ -3,10 +3,13 @@
 #include "centurion.h"
 #include "dimensioned.h"
 
+namespace centurion {
+namespace visuals {
+
 /**
 \brief The Texture class represents textures such as images.
 */
-class centurion::visuals::Texture : public centurion::Dimensioned {
+class Texture : public centurion::Dimensioned {
  private:
   SDL_Texture* sdl_texture;
   const int width;
@@ -29,3 +32,6 @@ class centurion::visuals::Texture : public centurion::Dimensioned {
   */
   int GetHeight() const override { return height; };
 };
+
+}  // namespace visuals
+}  // namespace centurion

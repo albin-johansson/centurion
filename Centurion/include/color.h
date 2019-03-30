@@ -1,11 +1,13 @@
 #pragma once
 #include <SDL_video.h>
-#include "centurion.h"
+
+namespace centurion {
+namespace visuals {
 
 /**
 \brief The Color class simply represents a color.
 */
-class centurion::visuals::Color {
+class Color {
  private:
   SDL_Color color;
 
@@ -82,3 +84,6 @@ class centurion::visuals::Color {
   */
   uint8_t GetAlpha() const { return color.a; }
 };
+
+}  // namespace visuals
+}  // namespace centurion

@@ -1,11 +1,14 @@
 #pragma once
-#include "centurion.h"
+#include "renderer.h"
+
+namespace centurion {
+namespace visuals {
 
 /**
 \brief The Drawable class provides an interface for objects that may perform
 rendering with a Renderer.
 */
-class centurion::visuals::Drawable {
+class Drawable {
  protected:
   Drawable() = default;
 
@@ -18,3 +21,6 @@ class centurion::visuals::Drawable {
   */
   virtual void Draw(centurion::visuals::Renderer& renderer) = 0;
 };
+
+}  // namespace visuals
+}  // namespace centurion

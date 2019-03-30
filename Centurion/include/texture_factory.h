@@ -2,11 +2,14 @@
 #include <SDL_video.h>
 #include <memory>
 #include <string>
-#include "centurion.h"
 #include "renderer.h"
 #include "texture.h"
+#include "centurion.h"
 
-class centurion::visuals::TextureFactory final {
+namespace centurion {
+namespace visuals {
+
+class TextureFactory final {
  private:
   TextureFactory() = delete;
 
@@ -16,9 +19,12 @@ class centurion::visuals::TextureFactory final {
  public:
   ~TextureFactory() = default;
 
-  static std::shared_ptr<Texture> CreateTexture(const std::string& path,
-                                                SDL_Renderer* renderer);
+  static std::shared_ptr<centurion::visuals::Texture> CreateTexture(
+      const std::string& path, SDL_Renderer* renderer);
 
-  static std::shared_ptr<Texture> CreateTexture(
+  static std::shared_ptr<centurion::visuals::Texture> CreateTexture(
       const std::string& path, const centurion::visuals::Renderer& renderer);
 };
+
+}  // namespace visuals
+}  // namespace centurion

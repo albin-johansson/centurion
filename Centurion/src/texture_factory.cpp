@@ -40,5 +40,5 @@ shared_ptr<Texture> TextureFactory::CreateTexture(const string& path,
 
 shared_ptr<Texture> TextureFactory::CreateTexture(const string& path,
                                                   const Renderer& renderer) {
-  return TextureFactory::CreateTexture(path, renderer.sdl_renderer);
+  return TextureFactory::CreateTexture(path, renderer.GetSDLRenderer());
 }

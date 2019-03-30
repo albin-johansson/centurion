@@ -5,12 +5,15 @@
 #include "centurion.h"
 #include "color.h"
 #include "font.h"
-#include "texture_factory.h"
+#include "texture.h"
+
+namespace centurion {
+namespace visuals {
 
 /**
 \brief The Graphics class provides rendering functionality.
 */
-class centurion::visuals::Renderer {
+class Renderer {
  private:
   SDL_Renderer* sdl_renderer;
   std::shared_ptr<centurion::Font> font;
@@ -21,10 +24,10 @@ class centurion::visuals::Renderer {
   void UpdateColor();
 
  public:
-  friend class centurion::visuals::
-      TextureFactory;  // FIXME only allow the
-                       // TextureFactory::CreateTexture
-                       // function to be a friend
+  // friend class centurion::visuals::
+  //    TextureFactory;  // FIXME only allow the
+  //                     // TextureFactory::CreateTexture
+  //                     // function to be a friend
 
   /**
   \param renderer - a pointer to the SDL_Renderer that the Renderer will be
@@ -119,4 +122,9 @@ class centurion::visuals::Renderer {
   \param color - the color that will be used.
   */
   void SetColor(centurion::visuals::Color color);
+
+  SDL_Renderer* GetSDLRenderer() const { return sdl_renderer; }  // FIXME
 };
+
+}  // namespace visuals
+}  // namespace centurion

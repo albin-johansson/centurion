@@ -1,6 +1,6 @@
 #include "rectangle.h"
 #include <stdexcept>
-#include "boolean_converter.h"
+#include "ctn_tools.h"
 #include "point.h"
 #include "positionable.h"
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "centurion.h"
 
-class centurion::Dimensioned {
+class centurion::geo::Dimensioned {
  protected:
   Dimensioned() = default;
 

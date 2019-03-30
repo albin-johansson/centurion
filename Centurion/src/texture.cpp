@@ -1,6 +1,6 @@
 #include "texture.h"
 #include <stdexcept>
-#include "null_checker.h"
+#include "ctn_tools.h"
 
 using centurion::tools::NullChecker;
 using centurion::visuals::Texture;
@@ -17,4 +17,4 @@ Texture::Texture(SDL_Texture* texture, int width, int height)
 
 Texture::~Texture() { SDL_DestroyTexture(sdl_texture); }
 
-SDL_Texture& Texture::GetSDLTexture() { return *sdl_texture; }
+// SDL_Texture& Texture::GetSDLTexture() { return *sdl_texture; }

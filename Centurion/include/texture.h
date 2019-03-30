@@ -6,7 +6,7 @@
 /**
 \brief The Texture class represents textures such as images.
 */
-class centurion::visuals::Texture : public centurion::Dimensioned {
+class centurion::visuals::Texture : public centurion::geo::Dimensioned {
  private:
   SDL_Texture* sdl_texture;
   const int width;
@@ -17,15 +17,15 @@ class centurion::visuals::Texture : public centurion::Dimensioned {
 
   ~Texture();
 
-  SDL_Texture& GetSDLTexture();
+  SDL_Texture& GetSDLTexture() { return *sdl_texture; }
 
   /**
   \brief Returns the width of this texture.
   */
-  int GetWidth() const override { return width; };
+  int GetWidth() const override { return width; }
 
   /**
   \brief Returns the height of this texture.
   */
-  int GetHeight() const override { return height; };
+  int GetHeight() const override { return height; }
 };

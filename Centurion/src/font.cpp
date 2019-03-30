@@ -1,6 +1,6 @@
 #include "font.h"
 
-using centurion::Font;
+using centurion::visuals::Font;
 
 Font::Font(const std::string& path, const int size) {
   font = TTF_OpenFont(path.c_str(), size);

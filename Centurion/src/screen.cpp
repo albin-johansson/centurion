@@ -1,9 +1,9 @@
-#include "screen.h"
 #include <SDL.h>
 #include <windows.h>
 #include <stdexcept>
+#include "ctn_tools.h"
 
-using centurion::Screen;
+using centurion::tools::Screen;
 
 int Screen::GetWidth() {
   DPI_AWARENESS_CONTEXT context = GetThreadDpiAwarenessContext();

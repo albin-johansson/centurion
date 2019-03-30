@@ -7,8 +7,8 @@
 /**
 \brief The Rectangle class quite simply represents a rectangle.
 */
-class centurion::geo::Rectangle : public centurion::Positionable,
-                                  public centurion::Dimensioned {
+class centurion::geo::Rectangle : public centurion::geo::Positionable,
+                                  public centurion::geo::Dimensioned {
  private:
   SDL_Rect rect;
 

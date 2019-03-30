@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <stdexcept>
 
-using centurion::Screen;
+using centurion::tools::Screen;
 
 int Screen::GetWidth() {
   DPI_AWARENESS_CONTEXT context = GetThreadDpiAwarenessContext();

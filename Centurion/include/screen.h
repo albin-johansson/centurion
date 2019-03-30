@@ -1,10 +1,12 @@
 #pragma once
-#include "centurion.h"
+
+namespace centurion {
+namespace tools {
 
 /**
 \brief The Screen class provides information about the system display.
 */
-class centurion::Screen final {
+class Screen final {
  private:
   Screen() = delete;
 
@@ -21,3 +23,6 @@ class centurion::Screen final {
   */
   static int GetHeight();
 };
+
+}  // namespace tools
+}  // namespace centurion

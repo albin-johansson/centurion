@@ -17,7 +17,7 @@ namespace visuals {
 class Renderer {
  private:
   SDL_Renderer* sdl_renderer;
-  std::shared_ptr<centurion::Font> font;
+  std::shared_ptr<centurion::visuals::Font> font;
   centurion::visuals::Color color = Color::WHITE;
 
   void CheckRenderDimensions(int width, int height);
@@ -116,7 +116,7 @@ class Renderer {
   \brief Assigns the currently active font.
   \param font - the font that will be used.
   */
-  void SetFont(const std::shared_ptr<centurion::Font>& font);
+  void SetFont(const std::shared_ptr<centurion::visuals::Font>& font);
 
   /**
   \brief Assigns the active color.

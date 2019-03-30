@@ -5,10 +5,10 @@
 #include "drawable.h"
 #include "renderer.h"
 
-using centurion::Window;
 using centurion::tools::BooleanConverter;
 using centurion::visuals::Drawable;
 using centurion::visuals::Renderer;
+using centurion::visuals::Window;
 using std::invalid_argument;
 using std::make_unique;
 using std::shared_ptr;

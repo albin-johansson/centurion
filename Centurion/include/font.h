@@ -3,10 +3,13 @@
 #include <string>
 #include "centurion.h"
 
+namespace centurion {
+namespace visuals {
+
 /**
 \brief The Font class serves as a representation of a True Type font.
 */
-class centurion::Font {
+class Font {
  private:
   TTF_Font* font;
   int size;
@@ -31,3 +34,6 @@ class centurion::Font {
   */
   int GetSize() const { return size; }
 };
+
+}  // namespace visuals
+}  // namespace centurion

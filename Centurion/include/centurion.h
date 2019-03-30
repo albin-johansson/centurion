@@ -3,19 +3,7 @@
 
 namespace centurion {
 
-class Centurion;  // TODO rename
-class Window;
-class Font;
-
-namespace events {
-class Action;
-class KeyListener;
-class KeyStroke;
-}  // namespace events
-
-}  // namespace centurion
-
-class centurion::Centurion final {
+class Centurion final {
  private:
   static bool initialized;
 
@@ -40,3 +28,5 @@ class centurion::Centurion final {
 
   static bool IsInitialized() { return initialized; }
 };
+
+}  // namespace centurion

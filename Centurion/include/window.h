@@ -7,10 +7,13 @@
 #include "drawable.h"
 #include "renderer.h"
 
+namespace centurion {
+namespace visuals {
+
 /**
 \brief The Window class represents a top-level frame.
 */
-class centurion::Window : public centurion::geo::Dimensioned {
+class Window : public centurion::geo::Dimensioned {
  private:
   SDL_Window* window;
   std::unique_ptr<centurion::visuals::Renderer> renderer;
@@ -73,3 +76,6 @@ class centurion::Window : public centurion::geo::Dimensioned {
 
   // TODO add listener methods
 };
+
+}  // namespace visuals
+}  // namespace centurion

@@ -1,8 +1,11 @@
 #pragma once
 #include <SDL_events.h>
-#include "centurion.h"
+#include "action.h"
 
-class centurion::events::KeyStroke {
+namespace centurion {
+namespace events {
+
+class KeyStroke {
  private:
   SDL_Keycode keycode;
   SDL_EventType eventType;
@@ -17,3 +20,6 @@ class centurion::events::KeyStroke {
 
   void Check(SDL_Event& e);
 };
+
+}  // namespace events
+}  // namespace centurion

@@ -7,11 +7,11 @@
 #include "rectangle.h"
 #include "texture.h"
 
-using centurion::Font;
 using centurion::geo::Point;
 using centurion::geo::Rectangle;
 using centurion::tools::NullChecker;
 using centurion::visuals::Color;
+using centurion::visuals::Font;
 using centurion::visuals::Renderer;
 using centurion::visuals::Texture;
 using std::invalid_argument;
@@ -78,7 +78,7 @@ void Renderer::RenderLine(Point p1, Point p2) {
 }
 
 void Renderer::SetFont(
-    const std::shared_ptr<centurion::Font>& font)  // TODO Keep?
+    const std::shared_ptr<centurion::visuals::Font>& font)  // TODO Keep?
 {
   this->font = font;
 }

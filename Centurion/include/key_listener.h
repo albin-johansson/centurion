@@ -1,7 +1,9 @@
 #pragma once
-#include "centurion.h"
 
-class centurion::events::KeyListener {
+namespace centurion {
+namespace events {
+
+class KeyListener {
  protected:
   KeyListener() = default;
 
@@ -12,3 +14,6 @@ class centurion::events::KeyListener {
 
   virtual void KeyReleased() = 0;
 };
+
+}  // namespace events
+}  // namespace centurion

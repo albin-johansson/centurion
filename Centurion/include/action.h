@@ -1,11 +1,13 @@
 #pragma once
-#include "centurion.h"
+
+namespace centurion {
+namespace events {
 
 /**
 \brief The Action class serves as an interface for objects that represent
 various actions.
 */
-class centurion::events::Action {
+class Action {
  protected:
   Action() = default;
 
@@ -17,3 +19,6 @@ class centurion::events::Action {
   */
   virtual void Execute() = 0;
 };
+
+}  // namespace events
+}  // namespace centurion

@@ -3,12 +3,16 @@
 #include "centurion.h"
 #include "dimensioned.h"
 #include "positionable.h"
+#include "point.h"
+
+namespace centurion {
+namespace geo {
 
 /**
 \brief The Rectangle class quite simply represents a rectangle.
 */
-class centurion::geo::Rectangle : public centurion::Positionable,
-                                  public centurion::Dimensioned {
+class Rectangle : public centurion::geo::Positionable,
+                  public centurion::geo::Dimensioned {
  private:
   SDL_Rect rect;
 
@@ -96,3 +100,6 @@ class centurion::geo::Rectangle : public centurion::Positionable,
   */
   SDL_Rect GetSDLVersion() const { return rect; };
 };
+
+}  // namespace geo
+}  // namespace centurion

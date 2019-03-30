@@ -10,7 +10,7 @@
 /**
 \brief The Window class represents a top-level frame.
 */
-class centurion::Window : public centurion::Dimensioned {
+class centurion::Window : public centurion::geo::Dimensioned {
  private:
   SDL_Window* window;
   std::unique_ptr<centurion::visuals::Renderer> renderer;

@@ -1,7 +1,9 @@
 #pragma once
-#include "centurion.h"
 
-class centurion::Positionable {
+namespace centurion {
+namespace geo {
+
+class Positionable {
  protected:
   Positionable() = default;
 
@@ -18,3 +20,6 @@ class centurion::Positionable {
 
   virtual int GetY() const = 0;
 };
+
+}  // namespace geo
+}  // namespace centurion

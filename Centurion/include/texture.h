@@ -9,7 +9,7 @@ namespace visuals {
 /**
 \brief The Texture class represents textures such as images.
 */
-class Texture : public centurion::Dimensioned {
+class Texture : public centurion::geo::Dimensioned {
  private:
   SDL_Texture* sdl_texture;
   const int width;

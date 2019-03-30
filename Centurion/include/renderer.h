@@ -5,6 +5,7 @@
 #include "centurion.h"
 #include "color.h"
 #include "font.h"
+#include "rectangle.h"
 #include "texture.h"
 
 namespace centurion {

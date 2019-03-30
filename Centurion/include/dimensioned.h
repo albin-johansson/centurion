@@ -1,7 +1,9 @@
 #pragma once
-#include "centurion.h"
 
-class centurion::Dimensioned {
+namespace centurion {
+namespace geo {
+
+class Dimensioned {
  protected:
   Dimensioned() = default;
 
@@ -12,3 +14,6 @@ class centurion::Dimensioned {
 
   virtual int GetHeight() const = 0;
 };
+
+}  // namespace geo
+}  // namespace centurion

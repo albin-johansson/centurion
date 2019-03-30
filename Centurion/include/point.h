@@ -3,10 +3,13 @@
 #include "centurion.h"
 #include "positionable.h"
 
+namespace centurion {
+namespace geo {
+
 /**
 \brief The Point class represents a two-dimensional point.
 */
-class centurion::geo::Point : public centurion::Positionable {
+class Point : public centurion::geo::Positionable {
  private:
   SDL_Point point;
 
@@ -48,3 +51,6 @@ class centurion::geo::Point : public centurion::Positionable {
   */
   int GetY() const override { return point.y; };
 };
+
+}  // namespace geo
+}  // namespace centurion

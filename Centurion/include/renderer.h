@@ -51,29 +51,34 @@ class Renderer {
 
   /**
   \brief Renders a texture to the rendering target.
-  \param img - the texture that will be rendered.
+  \param texture - the texture that will be rendered.
   \param x - the desired x-coordinate.
   \param y - the desired y-coordinate.
   \param w - the desired width of the image.
   \param h - the desired height of the image.
   */
-  void Render(centurion::visuals::Texture& img, int x, int y, int w, int h);
+  void Render(centurion::visuals::Texture& texture, int x, int y, int w, int h);
 
   /**
   \brief Renders a texture to the rendering target.
-  \param img - the texture that will be rendered.
+  \param texture - the texture that will be rendered.
   \param rect - the Rectangle that provides the dimensions for the rendered
   image.
   */
-  void Render(centurion::visuals::Texture& img, centurion::geo::Rectangle rect);
+  void Render(centurion::visuals::Texture& texture,
+              const centurion::geo::Rectangle& rect);
 
   /**
   \brief Renders a texture to the rendering target.
-  \param img - the texture that will be rendered.
+  \param texture - the texture that will be rendered.
   \param x - the desired x-coordinate.
   \param y - the desired y-coordinate.
   */
-  void Render(centurion::visuals::Texture& img, int x, int y);
+  void Render(centurion::visuals::Texture& texture, int x, int y);
+
+  void Render(centurion::visuals::Texture& texture,
+              const centurion::geo::Positionable& posit,
+              const centurion::geo::Dimensioned& dimensioned);
 
   /**
   \brief Renders a filled rectangle with the currently selected color.
@@ -124,7 +129,7 @@ class Renderer {
   */
   void SetColor(centurion::visuals::Color color);
 
-  SDL_Renderer* GetSDLRenderer() const { return sdl_renderer; }  // FIXME
+  SDL_Renderer* const GetSDLRenderer() const { return sdl_renderer; }  // FIXME
 };
 
 }  // namespace visuals

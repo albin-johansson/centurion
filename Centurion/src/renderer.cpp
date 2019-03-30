@@ -1,13 +1,17 @@
 #include "renderer.h"
 #include <stdexcept>
 #include "color.h"
+#include "dimensioned.h"
 #include "font.h"
 #include "null_checker.h"
 #include "point.h"
+#include "positionable.h"
 #include "rectangle.h"
 #include "texture.h"
 
+using centurion::geo::Dimensioned;
 using centurion::geo::Point;
+using centurion::geo::Positionable;
 using centurion::geo::Rectangle;
 using centurion::tools::NullChecker;
 using centurion::visuals::Color;
@@ -49,10 +53,17 @@ void Renderer::Render(Texture& img, int x, int y, int w, int h) {
   SDL_RenderCopy(sdl_renderer, &img.GetSDLTexture(), NULL, &rect);
 }
 
-void Renderer::Render(Texture& img, Rectangle rect) {
+void Renderer::Render(Texture& img, const Rectangle& rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
   SDL_RenderCopy(sdl_renderer, &img.GetSDLTexture(), NULL,
                  &rect.GetSDLVersion());
+}
+
+void Renderer::Render(Texture& texture, const Positionable& pos,
+                      const Dimensioned& dim) {
+  CheckRenderDimensions(dim.GetWidth(), dim.GetHeight());
+  SDL_Rect rect = {pos.GetX(), pos.GetY(), dim.GetWidth(), dim.GetHeight()};
+  SDL_RenderCopy(sdl_renderer, &texture.GetSDLTexture(), NULL, &rect);
 }
 
 void Renderer::Render(Texture& img, int x, int y) {

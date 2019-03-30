@@ -12,3 +12,4 @@
 - Make classes as independent as possible (don't use friend classes)
 - Fix duplicated functionality
 - Avoid raw pointers
+- Use consistent types (Rectangle or Rectangle&, Point or Point&, ...)

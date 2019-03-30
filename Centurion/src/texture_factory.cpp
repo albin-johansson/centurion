@@ -1,6 +1,6 @@
 #include "texture_factory.h"
 #include <stdexcept>
-#include "ctn_tools.h"
+#include "null_checker.h"
 
 using centurion::tools::NullChecker;
 using centurion::visuals::Renderer;

@@ -6,7 +6,7 @@
 /**
 \brief The Point class represents a two-dimensional point.
 */
-class centurion::geo::Point : public centurion::geo::Positionable {
+class centurion::geo::Point : public centurion::Positionable {
  private:
   SDL_Point point;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "centurion.h"
 
-class centurion::geo::Positionable {
+class centurion::Positionable {
  protected:
   Positionable() = default;
 

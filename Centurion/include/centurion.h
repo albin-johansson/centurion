@@ -3,6 +3,12 @@
 
 namespace centurion {
 class Centurion;  // TODO rename
+class Window;
+class Screen;
+class Font;
+
+class Positionable;
+class Dimensioned;
 
 namespace events {
 class Action;
@@ -11,33 +17,23 @@ class KeyStroke;
 }  // namespace events
 
 namespace visuals {
-class Window;
 class Renderer;
 class Texture;
 class TextureFactory;
-class Font;
+
 class Color;
 class Drawable;
 }  // namespace visuals
 
-namespace audio {
-class SoundEffect;
-class Music;
-//class Jukebox;
-}  // namespace audio
-
 namespace geo {
-class Positionable;
-class Dimensioned;
 class Rectangle;
 class Point;
 }  // namespace geo
 
-//namespace tools {
-//class BooleanConverter;
-//class NullChecker;
-//class Screen;
-//}  // namespace tools
+namespace tools {
+class BooleanConverter;
+class NullChecker;
+}  // namespace tools
 }  // namespace centurion
 
 class centurion::Centurion final {

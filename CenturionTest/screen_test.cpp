@@ -2,7 +2,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using centurion::Centurion;
-using centurion::tools::Screen;
+using centurion::Screen;
 
 namespace CenturionTest {
 TEST_CLASS(ScreenTest){public : TEST_CLASS_INITIALIZE(Init){Centurion::Init();

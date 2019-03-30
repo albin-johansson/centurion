@@ -6,7 +6,7 @@
 /**
 \brief The Font class serves as a representation of a True Type font.
 */
-class centurion::visuals::Font {
+class centurion::Font {
  private:
   TTF_Font* font;
   int size;

@@ -5,7 +5,6 @@
 #include <SDL_ttf.h>
 #include <string>
 
-// FIXME don't use defines
 #define SDL_MIXER_ERROR_CODE 0
 #define SDL_IMAGE_ERROR_CODE 0
 #define SDL_TTF_ERROR_CODE -1
@@ -36,9 +35,6 @@ void Centurion::InitSDLMixer() {
       Mix_Init(MIX_InitFlags::MIX_INIT_MP3 | MIX_InitFlags::MIX_INIT_OGG |
                MIX_InitFlags::MIX_INIT_FLAC);
   if (result == SDL_MIXER_ERROR_CODE) {
-    Centurion::ThrowInitializationException(Mix_GetError());
-  }
-  if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
     Centurion::ThrowInitializationException(Mix_GetError());
   }
 }

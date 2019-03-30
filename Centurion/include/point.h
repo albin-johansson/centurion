@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL_rect.h>
-#include "centurion.h"
 #include "positionable.h"
 
 namespace centurion {
@@ -20,7 +19,7 @@ class Point : public centurion::geo::Positionable {
   */
   Point(int x, int y);
 
-  ~Point() override;
+  ~Point() override = default;
 
   /**
   \brief Assigns the location of this point.
@@ -50,6 +49,8 @@ class Point : public centurion::geo::Positionable {
   \brief Returns the y-coordinate of this point.
   */
   int GetY() const override { return point.y; };
+
+  SDL_Point GetSDLVersion() const { return point; }
 };
 
 }  // namespace geo

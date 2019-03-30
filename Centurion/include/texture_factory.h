@@ -4,7 +4,6 @@
 #include <string>
 #include "renderer.h"
 #include "texture.h"
-#include "centurion.h"
 
 namespace centurion {
 namespace visuals {

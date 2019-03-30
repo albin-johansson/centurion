@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL_ttf.h>
 #include <string>
-#include "centurion.h"
 
 namespace centurion {
 namespace visuals {

@@ -2,7 +2,6 @@
 #include <stdexcept>
 #include "boolean_converter.h"
 #include "point.h"
-#include "positionable.h"
 
 using centurion::geo::Point;
 using centurion::geo::Rectangle;
@@ -34,12 +33,16 @@ bool Rectangle::Intersects(const Rectangle& otherRect) const {
   return BooleanConverter::Convert(result);
 }
 
-bool Rectangle::Contains(int x, int y) const {
-  SDL_Point point = {x, y};
-  SDL_bool result = SDL_PointInRect(&point, &this->rect);
+bool Rectangle::Contains(SDL_Point point) const {
+  SDL_bool result = SDL_PointInRect(&point, &rect);
   return BooleanConverter::Convert(result);
 }
 
+bool Rectangle::Contains(int x, int y) const {
+  SDL_Point point = {x, y};
+  return Contains(point);
+}
+
 bool Rectangle::Contains(const Point& point) const {
-  return Contains(point.GetX(), point.GetY());
+  return Contains(point.GetSDLVersion());
 }

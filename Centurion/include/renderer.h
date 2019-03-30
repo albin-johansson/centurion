@@ -2,9 +2,9 @@
 #include <SDL.h>
 #include <memory>
 #include <string>
-#include "centurion.h"
 #include "color.h"
 #include "font.h"
+#include "point.h"
 #include "rectangle.h"
 #include "texture.h"
 

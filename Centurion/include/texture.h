@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL_image.h>
-#include "centurion.h"
 #include "dimensioned.h"
 
 namespace centurion {

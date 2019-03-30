@@ -1,9 +1,8 @@
 #pragma once
 #include <SDL_rect.h>
-#include "centurion.h"
 #include "dimensioned.h"
-#include "positionable.h"
 #include "point.h"
+#include "positionable.h"
 
 namespace centurion {
 namespace geo {
@@ -15,6 +14,8 @@ class Rectangle : public centurion::geo::Positionable,
                   public centurion::geo::Dimensioned {
  private:
   SDL_Rect rect;
+
+  bool Contains(SDL_Point point) const;
 
  public:
   /**
@@ -73,7 +74,7 @@ class Rectangle : public centurion::geo::Positionable,
   Returns true if the point is contained in this rectangle, returns false
   otherwise. \param point - the point that will be checked.
   */
-  bool Contains(const Point& point) const;
+  bool Contains(const centurion::geo::Point& point) const;
 
   /**
   \brief Returns the x-coordinate of this rectangle.

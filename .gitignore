@@ -8,6 +8,7 @@
 *.sln
 *.user
 packages/
+CenturionUsageExamples/
 
 # Compiled Object files
 *.slo

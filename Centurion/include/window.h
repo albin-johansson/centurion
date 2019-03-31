@@ -74,6 +74,10 @@ class Window : public centurion::geo::Dimensioned {
   */
   int GetHeight() const override { return height; };
 
+  std::unique_ptr<centurion::visuals::Renderer>& GetRenderer() {
+    return renderer;
+  }
+
   // TODO add listener methods
 };
 

@@ -3,7 +3,8 @@
 #include <windows.h>
 #include <stdexcept>
 
-using centurion::tools::Screen;
+namespace centurion {
+namespace tools {
 
 int Screen::GetWidth() {
   DPI_AWARENESS_CONTEXT context = GetThreadDpiAwarenessContext();
@@ -20,3 +21,6 @@ int Screen::GetHeight() {
   }
   return GetSystemMetrics(SM_CYSCREEN);
 }
+
+}  // namespace tools
+}  // namespace centurion

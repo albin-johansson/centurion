@@ -2,7 +2,9 @@
 #include "action.h"
 
 using centurion::events::Action;
-using centurion::events::KeyStroke;
+
+namespace centurion {
+namespace events {
 
 KeyStroke::KeyStroke(SDL_Keycode keycode, SDL_EventType eventType,
                      Action& action)
@@ -22,3 +24,6 @@ void KeyStroke::Check(SDL_Event& e) {
     }
   }
 }
+
+}  // namespace events
+}  // namespace centurion

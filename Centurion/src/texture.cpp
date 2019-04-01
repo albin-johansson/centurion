@@ -3,8 +3,10 @@
 #include "null_checker.h"
 
 using centurion::tools::NullChecker;
-using centurion::visuals::Texture;
 using std::invalid_argument;
+
+namespace centurion {
+namespace visuals {
 
 Texture::Texture(SDL_Texture* texture, int width, int height)
     : width(width), height(height) {
@@ -18,3 +20,6 @@ Texture::Texture(SDL_Texture* texture, int width, int height)
 Texture::~Texture() { SDL_DestroyTexture(sdl_texture); }
 
 SDL_Texture& Texture::GetSDLTexture() { return *sdl_texture; }
+
+}  // namespace visuals
+}  // namespace centurion

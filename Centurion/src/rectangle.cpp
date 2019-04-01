@@ -43,6 +43,6 @@ bool Rectangle::Contains(int x, int y) const {
   return Contains(point);
 }
 
-bool Rectangle::Contains(const Point& point) const {
+bool Rectangle::Contains(const Point point) const {
   return Contains(point.GetSDLVersion());
 }

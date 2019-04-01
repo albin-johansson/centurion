@@ -1,6 +1,8 @@
 #include "color.h"
 
-using centurion::visuals::Color;
+namespace centurion {
+namespace visuals {
+
 const Color Color::RED =
     Color(Color::MAX_VAL, Color::MIN_VAL, Color::MIN_VAL, Color::MAX_VAL);
 const Color Color::GREEN =
@@ -17,3 +19,6 @@ Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
 }
 
 Color::~Color() = default;
+
+}  // namespace visuals
+}  // namespace centurion

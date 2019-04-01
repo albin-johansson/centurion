@@ -74,7 +74,7 @@ class Rectangle : public centurion::geo::Positionable,
   Returns true if the point is contained in this rectangle, returns false
   otherwise. \param point - the point that will be checked.
   */
-  bool Contains(const centurion::geo::Point& point) const;
+  bool Contains(centurion::geo::Point point) const;
 
   /**
   \brief Returns the x-coordinate of this rectangle.

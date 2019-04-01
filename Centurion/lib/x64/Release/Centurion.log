@@ -1,15 +1,5 @@
-﻿  application_path.cpp
+﻿  centurion.cpp
   color.cpp
-  font.cpp
-  key_stroke.cpp
-  point.cpp
-  rectangle.cpp
-  centurion.cpp
-  renderer.cpp
-  texture.cpp
-  screen.cpp
-  texture_factory.cpp
-  window.cpp
 SDL2_image.lib(SDL2_image.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 SDL2_ttf.lib(SDL2_ttf.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 SDL2_mixer.lib(SDL2_mixer.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored

@@ -60,11 +60,6 @@ class Color {
   ~Color();
 
   /**
-  \brief Returns an SDL_Color instance that represents this Color.
-  */
-  SDL_Color GetSDLVersion() const { return color; }
-
-  /**
   \brief Returns the red component of this color.
   */
   uint8_t GetRed() const { return color.r; }
@@ -83,6 +78,11 @@ class Color {
   \brief Returns the alpha component of this color.
   */
   uint8_t GetAlpha() const { return color.a; }
+
+  /**
+  \brief Returns an SDL_Color instance that represents this Color.
+  */
+  SDL_Color GetSDLVersion() const { return color; }
 };
 
 }  // namespace visuals

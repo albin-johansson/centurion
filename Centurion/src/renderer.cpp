@@ -15,14 +15,13 @@ using centurion::geo::Point;
 using centurion::geo::Positionable;
 using centurion::geo::Rectangle;
 using centurion::tools::NullChecker;
-using centurion::visuals::Color;
-using centurion::visuals::Font;
-using centurion::visuals::Renderer;
-using centurion::visuals::Texture;
 using std::invalid_argument;
 using std::shared_ptr;
 
 // FIXME fix doc comments refering textures as "images"
+
+namespace centurion {
+namespace visuals {
 
 Renderer::Renderer(SDL_Renderer* renderer) {
   if (NullChecker::IsNull(renderer)) {
@@ -124,3 +123,6 @@ void Renderer::SetColor(Color color) {
 //	SDL_DestroyTexture(texture);
 //	SDL_FreeSurface(surf);
 //}
+
+}  // namespace visuals
+}  // namespace centurion

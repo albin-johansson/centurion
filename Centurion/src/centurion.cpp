@@ -9,9 +9,10 @@
 #define SDL_IMAGE_ERROR_CODE 0
 #define SDL_TTF_ERROR_CODE -1
 
-using centurion::Centurion;
 using std::exception;
 using std::string;
+
+namespace centurion {
 
 bool Centurion::initialized = false;
 
@@ -70,3 +71,5 @@ void Centurion::Close() {
     initialized = false;
   }
 }
+
+}  // namespace centurion

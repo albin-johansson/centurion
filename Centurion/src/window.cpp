@@ -46,7 +46,7 @@ void Window::SetResizable(bool resizable) {
 }
 
 void Window::Render() {
-  renderer->Clear();
+  // renderer->Clear();
   if (drawable != nullptr) {
     drawable->Draw(*renderer);
   }
@@ -55,4 +55,54 @@ void Window::Render() {
 
 void Window::SetDrawable(const shared_ptr<Drawable> drawable) {
   this->drawable = drawable;
+}
+
+void Window::Clear() { renderer->Clear(); }
+
+void Window::Render(centurion::visuals::Texture& texture, int x, int y, int w,
+                    int h) {
+  renderer->Render(texture, x, y, w, h);
+}
+
+void Window::Render(centurion::visuals::Texture& texture,
+                    const centurion::geo::Rectangle& rect) {
+  renderer->Render(texture, rect);
+}
+
+void Window::Render(centurion::visuals::Texture& texture, int x, int y) {
+  renderer->Render(texture, x, y);
+}
+
+void Window::Render(centurion::visuals::Texture& texture,
+                    const centurion::geo::Positionable& posit,
+                    const centurion::geo::Dimensioned& dimensioned) {
+  renderer->Render(texture, posit, dimensioned);
+}
+
+void Window::RenderFilledRect(int x, int y, int w, int h) {
+  renderer->RenderFilledRect(x, y, w, h);
+}
+
+void Window::RenderOutlinedRect(int x, int y, int w, int h) {
+  renderer->RenderOutlinedRect(x, y, w, h);
+}
+
+void Window::RenderLine(int x1, int y1, int x2, int y2) {
+  renderer->RenderLine(x1, y1, x2, y2);
+}
+
+void Window::RenderLine(centurion::geo::Point p1, centurion::geo::Point p2) {
+  renderer->RenderLine(p1, p2);
+}
+
+void Window::RenderText(const std::string& text, int x, int y) {
+  renderer->RenderText(text, x, y);
+}
+
+void Window::SetFont(const std::shared_ptr<centurion::visuals::Font> font) {
+  renderer->SetFont(font);
+}
+
+void Window::SetColor(centurion::visuals::Color color) {
+  renderer->SetColor(color);
 }

@@ -29,7 +29,7 @@ shared_ptr<Texture> TextureFactory::CreateTexture(const string& path,
   if (NullChecker::IsNull(renderer)) {
     throw invalid_argument("Null SDL_Renderer when creating Texture!");
   } else {
-    SDL_Surface* surface = IMG_Load(path.c_str());
+    SDL_Surface* surface = IMG_Load(path.c_str()); //TODO error msg when invalid path is used
     SDL_Texture* texture = TextureFactory::CreateSDLTexture(surface, renderer);
     int width = surface->w;
     int height = surface->h;

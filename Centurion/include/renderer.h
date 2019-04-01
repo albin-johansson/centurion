@@ -117,11 +117,13 @@ class Renderer {
   // void RenderText(const std::string& text, int x, int y, int w, int h);
   // //FIXME
 
+  void RenderText(const std::string& text, int x, int y);
+
   /**
   \brief Assigns the currently active font.
   \param font - the font that will be used.
   */
-  void SetFont(const std::shared_ptr<centurion::visuals::Font>& font);
+  void SetFont(const std::shared_ptr<centurion::visuals::Font> font);
 
   /**
   \brief Assigns the active color.

@@ -1,5 +1,6 @@
 #include "renderer.h"
 #include <stdexcept>
+#include <string>
 #include "color.h"
 #include "dimensioned.h"
 #include "font.h"
@@ -88,8 +89,22 @@ void Renderer::RenderLine(Point p1, Point p2) {
   SDL_RenderDrawLine(sdl_renderer, p1.GetX(), p1.GetY(), p2.GetX(), p2.GetY());
 }
 
+// FIXME There is some sort of memory error with this
+void Renderer::RenderText(const std::string& text, int x, int y) {
+  if (font == nullptr) {
+    return;  // perhaps throw exception
+  } else {
+    SDL_Surface* surface = TTF_RenderText_Solid(
+        font->GetSDLVersion(), text.c_str(), color.GetSDLVersion());
+    SDL_Texture* tmp = SDL_CreateTextureFromSurface(GetSDLRenderer(), surface);
+    Texture texture = Texture(tmp, surface->w, surface->h);
+    Render(texture, x, y);
+    SDL_FreeSurface(surface);
+  }
+}
+
 void Renderer::SetFont(
-    const std::shared_ptr<centurion::visuals::Font>& font)  // TODO Keep?
+    const std::shared_ptr<centurion::visuals::Font> font)  // TODO Keep?
 {
   this->font = font;
 }

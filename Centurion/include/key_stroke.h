@@ -1,24 +1,43 @@
 #pragma once
 #include <SDL_events.h>
+#include <memory>
 #include "action.h"
 
 namespace centurion {
 namespace events {
 
+/**
+\brief The Keycode enum is equivalent to the SDL_Keycode enum. It provides the
+possible keycode values.
+*/
+typedef SDL_Keycode Keycode;
+
+/**
+\brief The KeyTrigger enum specifies when a KeyStroke is activated.
+*/
+enum KeyTrigger { IMMEDIATE = SDL_KEYDOWN, RELEASE = SDL_KEYUP };
+
 class KeyStroke {
  private:
-  SDL_Keycode keycode;
-  SDL_EventType eventType;
-  centurion::events::Action& action;
+  std::shared_ptr<centurion::events::Action> action;
+  KeyTrigger trigger;
+  Keycode keycode;
+
+  inline bool shouldExecute(const SDL_Event& e) {
+    bool isKeyEvent = (e.type == SDL_KEYUP) || (e.type == SDL_KEYDOWN);
+    bool isMatching = (e.key.keysym.sym == keycode) && (e.key.type == trigger);
+    return isKeyEvent && isMatching;
+  }
 
  public:
-  // TODO enum for key values, enum for event types
-  KeyStroke(SDL_Keycode keycode, SDL_EventType type,
-            centurion::events::Action& action);
+  KeyStroke(Keycode keycode, std::shared_ptr<centurion::events::Action> action,
+            KeyTrigger trigger);
 
   ~KeyStroke();
 
-  void Check(SDL_Event& e);
+  void Update(const SDL_Event& e);
+
+  void Trigger();
 };
 
 }  // namespace events

@@ -1,29 +1,35 @@
 #include "key_stroke.h"
+#include <memory>
+#include <stdexcept>
 #include "action.h"
 
 using centurion::events::Action;
+using std::invalid_argument;
+using std::shared_ptr;
 
 namespace centurion {
 namespace events {
 
-KeyStroke::KeyStroke(SDL_Keycode keycode, SDL_EventType eventType,
-                     Action& action)
-    : action(action) {
-  this->keycode = keycode;
-  this->eventType = eventType;
+KeyStroke::KeyStroke(Keycode keycode, shared_ptr<Action> action,
+                     KeyTrigger trigger) {
+  if (action == nullptr) {
+    throw invalid_argument("Null action parameter when creating KeyStroke!");
+  } else {
+    this->keycode = keycode;
+    this->action = action;
+    this->trigger = trigger;
+  }
 }
 
 KeyStroke::~KeyStroke() = default;
 
-void KeyStroke::Check(SDL_Event& e) {
-  if (e.type != eventType) {
-    return;
-  } else {
-    if (e.key.keysym.sym == keycode) {
-      action.Execute();
-    }
+void KeyStroke::Update(const SDL_Event& e) {
+  if (shouldExecute(e)) {
+    action->Execute();
   }
 }
+
+void KeyStroke::Trigger() { action->Execute(); }
 
 }  // namespace events
 }  // namespace centurion

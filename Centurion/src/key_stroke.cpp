@@ -18,6 +18,7 @@ KeyStroke::KeyStroke(Keycode keycode, shared_ptr<Action> action,
     this->keycode = keycode;
     this->action = action;
     this->trigger = trigger;
+    isRepeatable = false;
   }
 }
 
@@ -30,6 +31,10 @@ void KeyStroke::Update(const SDL_Event& e) {
 }
 
 void KeyStroke::Trigger() { action->Execute(); }
+
+void KeyStroke::SetRepeatable(bool isRepeatable) {
+  this->isRepeatable = isRepeatable;
+}
 
 }  // namespace events
 }  // namespace centurion

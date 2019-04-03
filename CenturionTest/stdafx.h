@@ -14,6 +14,7 @@
 #include "../Centurion/include/boolean_converter.h"
 #include "../Centurion/include/centurion.h"
 #include "../Centurion/include/color.h"
+#include "../Centurion/include/key_stroke.h"
 #include "../Centurion/include/null_checker.h"
 #include "../Centurion/include/point.h"
 #include "../Centurion/include/positionable.h"

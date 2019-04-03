@@ -50,6 +50,11 @@ class Color {
   const static Color BLACK;
 
   /**
+  \brief A constant that represents the color gray.
+  */
+  const static Color GRAY;
+
+  /**
   \param r - the red component of the color in the range [MIN_VAL, MAX_VAL].
   \param g - the green component of the color in the range [MIN_VAL, MAX_VAL].
   \param b - the blue component of the color in the range [MIN_VAL, MAX_VAL].

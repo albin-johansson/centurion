@@ -70,6 +70,11 @@ class KeyStroke {
   KeyStroke is repeatable.
   */
   void SetRepeatable(bool isRepeatable);
+
+  /**
+  \brief Indicates whether or not this KeyStroke is repeatable.
+  */
+  bool IsRepeatable() { return isRepeatable; }
 };
 
 }  // namespace events

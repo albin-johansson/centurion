@@ -1,7 +1,14 @@
-﻿  font.cpp
+﻿  application_path.cpp
+  color.cpp
+  font.cpp
   key_stroke.cpp
   key_stroke_composite.cpp
+  point.cpp
+  rectangle.cpp
+  centurion.cpp
   renderer.cpp
+  texture.cpp
+  screen.cpp
   texture_factory.cpp
   window.cpp
   Generating Code...

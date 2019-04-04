@@ -50,15 +50,15 @@ class Font {
   int GetSize() const { return size; }
 
   /**
-  \brief Calculates and returns the width of the supplied string, if it were to
-  be rendered in this font.
+  \brief Calculates and returns the width of the supplied string, if it was
+  rendered in this font.
   \param text - the string that will be measured.
   */
   int GetStringWidth(const std::string& text) const;
 
   /**
-  \brief Calculates and returns the height of the supplied string, if it were to
-  be rendered in this font.
+  \brief Calculates and returns the height of the supplied string, if it was
+  rendered in this font.
   \param text - the string that will be measured.
   */
   int GetStringHeight(const std::string& text) const;

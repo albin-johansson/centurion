@@ -1,6 +1,8 @@
 ﻿  application_path.cpp
   color.cpp
+  event.cpp
   font.cpp
+  font_factory.cpp
   key_stroke.cpp
   key_stroke_composite.cpp
   point.cpp

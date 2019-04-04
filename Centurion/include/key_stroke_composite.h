@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include "event.h"
 #include "key_stroke.h"
 
 namespace centurion {
@@ -15,7 +16,7 @@ class KeyStrokeComposite final {  // FIXME should extend KeyStroke interface
 
   ~KeyStrokeComposite();
 
-  void Update(const SDL_Event& event);
+  void Update(const Event& event);
 
   void Add(std::shared_ptr<centurion::events::KeyStroke> keyStroke);
 

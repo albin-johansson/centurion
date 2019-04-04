@@ -11,7 +11,7 @@ KeyStrokeComposite::KeyStrokeComposite() {
 
 KeyStrokeComposite::~KeyStrokeComposite() { Clear(); }
 
-void KeyStrokeComposite::Update(const SDL_Event& event) {
+void KeyStrokeComposite::Update(const Event& event) {
   for (shared_ptr<KeyStroke> keyStroke : keyStrokes) {
     if (keyStroke != nullptr) {
       keyStroke->Update(event);

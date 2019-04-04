@@ -88,10 +88,9 @@ void Renderer::RenderLine(Point p1, Point p2) {
   SDL_RenderDrawLine(sdl_renderer, p1.GetX(), p1.GetY(), p2.GetX(), p2.GetY());
 }
 
-// FIXME There is some sort of memory error with this
 void Renderer::RenderText(const std::string& text, int x, int y) {
   if (font == nullptr) {
-    return;  // perhaps throw exception
+    return;  // TODO perhaps throw exception
   } else {
     SDL_Surface* surface = TTF_RenderText_Solid(
         font->GetSDLVersion(), text.c_str(), color.GetSDLVersion());

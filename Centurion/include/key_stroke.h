@@ -2,6 +2,7 @@
 #include <SDL_events.h>
 #include <memory>
 #include "action.h"
+#include "event.h"
 
 namespace centurion {
 namespace events {
@@ -27,7 +28,7 @@ class KeyStroke {
   Keycode keycode;
   bool isRepeatable;
 
-  bool ShouldExecute(const SDL_Event& e);
+  bool ShouldExecute(const Event& e);
 
  public:
   /**
@@ -43,9 +44,9 @@ class KeyStroke {
 
   /**
   \brief Updates this KeyStroke by comparing it to the supplied event.
-  \param e - The event that will be checked.
+  \param event - The event that will be checked.
   */
-  void Update(const SDL_Event& e); //FIXME use custom event?
+  void Update(const Event& event);
 
   /**
   \brief Programmatically triggers the Action related to this KeyStroke.

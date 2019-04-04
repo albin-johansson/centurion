@@ -24,6 +24,9 @@ class Renderer {
 
   void UpdateColor();
 
+  SDL_Texture* CreateSDLTextureFromString(const std::string& str, int* width,
+                                          int* height);
+
  public:
   /**
   \param renderer - a pointer to the SDL_Renderer that the Renderer will be
@@ -122,6 +125,9 @@ class Renderer {
   \param color - the color that will be used.
   */
   void SetColor(centurion::visuals::Color color);
+
+  std::shared_ptr<centurion::visuals::Texture> CreateTextureFromString(
+      const std::string& str);
 
   SDL_Renderer* const GetSDLRenderer() const { return sdl_renderer; }  // FIXME
 };

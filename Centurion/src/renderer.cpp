@@ -16,7 +16,9 @@ using centurion::geo::Positionable;
 using centurion::geo::Rectangle;
 using centurion::tools::NullChecker;
 using std::invalid_argument;
+using std::make_shared;
 using std::shared_ptr;
+using std::string;
 
 // FIXME fix doc comments refering textures as "images"
 
@@ -25,7 +27,7 @@ namespace visuals {
 
 Renderer::Renderer(SDL_Renderer* renderer) {
   if (NullChecker::IsNull(renderer)) {
-    throw std::invalid_argument("Null renderer!");
+    throw invalid_argument("Null renderer!");
   }
   this->sdl_renderer = renderer;
 }
@@ -88,21 +90,43 @@ void Renderer::RenderLine(Point p1, Point p2) {
   SDL_RenderDrawLine(sdl_renderer, p1.GetX(), p1.GetY(), p2.GetX(), p2.GetY());
 }
 
-void Renderer::RenderText(const std::string& text, int x, int y) {
-  if (font == nullptr) {
-    return;  // TODO perhaps throw exception
+SDL_Texture* Renderer::CreateSDLTextureFromString(const string& str, int* width,
+                                                  int* height) {
+  if (font == nullptr || width == nullptr || height == nullptr) {
+    throw invalid_argument("Failed to create texture from string!");
   } else {
     SDL_Surface* surface = TTF_RenderText_Solid(
-        font->GetSDLVersion(), text.c_str(), color.GetSDLVersion());
+        font->GetSDLVersion(), str.c_str(), color.GetSDLVersion());
     SDL_Texture* tmp = SDL_CreateTextureFromSurface(GetSDLRenderer(), surface);
-    Texture texture = Texture(tmp, surface->w, surface->h);
-    Render(texture, x, y);
+    *width = surface->w;
+    *height = surface->h;
     SDL_FreeSurface(surface);
+    return tmp;
   }
 }
 
-void Renderer::SetFont(
-    const std::shared_ptr<centurion::visuals::Font> font)  // TODO Keep?
+void Renderer::RenderText(const string& text, int x, int y) {
+  if (font == nullptr) {
+    throw invalid_argument("Failed to render tetx!");
+  } else {
+    int w, h;
+    SDL_Texture* t = CreateSDLTextureFromString(text, &w, &h);
+    Texture texture = Texture(t, w, h);
+    Render(texture, x, y);
+  }
+}
+
+shared_ptr<Texture> Renderer::CreateTextureFromString(const string& str) {
+  if (font == nullptr) {
+    throw invalid_argument("Failed to render tetx!");
+  } else {
+    int w, h;
+    SDL_Texture* t = CreateSDLTextureFromString(str, &w, &h);
+    return make_shared<Texture>(t, w, h);
+  }
+}
+
+void Renderer::SetFont(const shared_ptr<Font> font)  // TODO Keep?
 {
   this->font = font;
 }
@@ -111,17 +135,6 @@ void Renderer::SetColor(Color color) {
   this->color = color;
   UpdateColor();
 }
-
-// TODO don't keep this method, instead use method that converts a string into a
-// texture void Renderer::RenderText(const std::string& text, int x, int y, int
-// w, int h)
-//{
-//	SDL_Surface* surf = TTF_RenderText_Solid(font->GetSDLVersion(),
-// text.c_str(), color.GetSDLVersion()); 	SDL_Texture* texture =
-// Texture::CreateSDLTexture(surf, renderer); 	Render(texture, x, y, w, h);
-//	SDL_DestroyTexture(texture);
-//	SDL_FreeSurface(surf);
-//}
 
 }  // namespace visuals
 }  // namespace centurion

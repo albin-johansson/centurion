@@ -25,11 +25,6 @@ class Renderer {
   void UpdateColor();
 
  public:
-  // friend class centurion::visuals::
-  //    TextureFactory;  // FIXME only allow the
-  //                     // TextureFactory::CreateTexture
-  //                     // function to be a friend
-
   /**
   \param renderer - a pointer to the SDL_Renderer that the Renderer will be
   based upon.
@@ -113,9 +108,6 @@ class Renderer {
   \param p2 - the second point.
   */
   void RenderLine(centurion::geo::Point p1, centurion::geo::Point p2);
-
-  // void RenderText(const std::string& text, int x, int y, int w, int h);
-  // //FIXME
 
   void RenderText(const std::string& text, int x, int y);
 

@@ -24,8 +24,19 @@ KeyStroke::KeyStroke(Keycode keycode, shared_ptr<Action> action,
 
 KeyStroke::~KeyStroke() = default;
 
+bool KeyStroke::ShouldExecute(const SDL_Event& e) {
+  if (!isRepeatable && e.key.repeat) {
+    return false;
+  }
+
+  bool isKeyEvent = (e.type == SDL_KEYUP) || (e.type == SDL_KEYDOWN);
+  bool isMatching = (e.key.keysym.sym == keycode) && (e.key.type == trigger);
+  bool b = isRepeatable && e.key.repeat;
+  return isKeyEvent && isMatching;
+}
+
 void KeyStroke::Update(const SDL_Event& e) {
-  if (shouldExecute(e)) {
+  if (ShouldExecute(e)) {
     action->Execute();
   }
 }

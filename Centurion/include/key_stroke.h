@@ -27,16 +27,7 @@ class KeyStroke {
   Keycode keycode;
   bool isRepeatable;
 
-  inline bool shouldExecute(const SDL_Event& e) {
-    if (!isRepeatable && e.key.repeat) {
-      return false;
-    }
-
-    bool isKeyEvent = (e.type == SDL_KEYUP) || (e.type == SDL_KEYDOWN);
-    bool isMatching = (e.key.keysym.sym == keycode) && (e.key.type == trigger);
-    bool b = isRepeatable && e.key.repeat;
-    return isKeyEvent && isMatching;
-  }
+  bool ShouldExecute(const SDL_Event& e);
 
  public:
   /**

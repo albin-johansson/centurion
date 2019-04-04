@@ -164,7 +164,6 @@ class Window : public centurion::geo::Dimensioned {
   */
   void SetColor(centurion::visuals::Color color);
 
-  // TODO add listener methods
 };
 
 }  // namespace visuals

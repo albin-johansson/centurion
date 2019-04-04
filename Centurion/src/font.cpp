@@ -10,6 +10,8 @@ Font::Font(const std::string& path, const int size) {
     throw std::exception("Failed to located font!");
   } else {
     this->size = size;
+    SetStyle(TTF_STYLE_NORMAL);
+    SetOutlined(false);
   }
 }
 

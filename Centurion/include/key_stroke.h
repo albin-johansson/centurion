@@ -45,7 +45,7 @@ class KeyStroke {
   \brief Updates this KeyStroke by comparing it to the supplied event.
   \param e - The event that will be checked.
   */
-  void Update(const SDL_Event& e);
+  void Update(const SDL_Event& e); //FIXME use custom event?
 
   /**
   \brief Programmatically triggers the Action related to this KeyStroke.

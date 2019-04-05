@@ -36,12 +36,8 @@ void Centurion::InitSDLMixer() {
       Mix_Init(MIX_InitFlags::MIX_INIT_MP3 | MIX_InitFlags::MIX_INIT_OGG |
                MIX_InitFlags::MIX_INIT_FLAC);
 
-  if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-    printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n",
-           Mix_GetError());
-  }
-
-  if (result == SDL_MIXER_ERROR_CODE) {
+  if ((Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) ||
+      (result == SDL_MIXER_ERROR_CODE)) {
     Centurion::ThrowInitializationException(Mix_GetError());
   }
 }
@@ -80,3 +76,7 @@ void Centurion::Close() {
 }
 
 }  // namespace centurion
+
+#undef SDL_MIXER_ERROR_CODE
+#undef SDL_IMAGE_ERROR_CODE
+#undef SDL_TTF_ERROR_CODE

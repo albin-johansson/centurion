@@ -23,6 +23,8 @@ class Event {
     return event.button;
   }
 
+  inline SDL_MouseWheelEvent GetMouseWheelInfo() const { return event.wheel; }
+
   inline bool IsKeyEvent() const {
     return (event.type == SDL_KEYUP) || (event.type == SDL_KEYDOWN);
   }

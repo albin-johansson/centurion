@@ -1,19 +1,4 @@
-﻿  application_path.cpp
-  color.cpp
-  event.cpp
-  font.cpp
-  font_factory.cpp
-  key_stroke.cpp
-  key_stroke_composite.cpp
-  point.cpp
-  rectangle.cpp
-  centurion.cpp
-  renderer.cpp
-  texture.cpp
-  screen.cpp
-  texture_factory.cpp
-  window.cpp
-  Generating Code...
+﻿  sound_effect.cpp
 SDL2_image.lib(SDL2_image.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored
 SDL2_image.lib(SDL2_image.dll) : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
 SDL2_ttf.lib(SDL2_ttf.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored

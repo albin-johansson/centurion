@@ -52,16 +52,16 @@ class Font {
   /**
   \brief Calculates and returns the width of the supplied string, if it was
   rendered in this font.
-  \param text - the string that will be measured.
+  \param str - the string that will be measured.
   */
-  int GetStringWidth(const std::string& text) const;
+  int GetStringWidth(const std::string& str) const;
 
   /**
   \brief Calculates and returns the height of the supplied string, if it was
   rendered in this font.
-  \param text - the string that will be measured.
+  \param str - the string that will be measured.
   */
-  int GetStringHeight(const std::string& text) const;
+  int GetStringHeight(const std::string& str) const;
 };
 
 }  // namespace visuals

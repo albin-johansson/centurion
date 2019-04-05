@@ -1,6 +1,17 @@
-﻿  font.cpp
+﻿  application_path.cpp
+  color.cpp
+  event.cpp
+  font.cpp
   font_factory.cpp
+  key_stroke.cpp
+  key_stroke_composite.cpp
+  point.cpp
+  rectangle.cpp
+  centurion.cpp
   renderer.cpp
+  sound_effect.cpp
+  texture.cpp
+  screen.cpp
   texture_factory.cpp
   window.cpp
 SDL2_image.lib(SDL2_image.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR already defined in SDL2.lib(SDL2.dll); second definition ignored

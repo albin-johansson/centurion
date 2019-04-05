@@ -95,8 +95,8 @@ void Window::RenderLine(int x1, int y1, int x2, int y2) {
 
 void Window::RenderLine(Point p1, Point p2) { renderer->RenderLine(p1, p2); }
 
-void Window::RenderText(const std::string& text, int x, int y) {
-  renderer->RenderText(text, x, y);
+void Window::RenderString(const std::string& text, int x, int y) {
+  renderer->RenderString(text, x, y);
 }
 
 void Window::SetFont(const std::shared_ptr<Font> font) {

@@ -150,7 +150,7 @@ class Window : public centurion::geo::Dimensioned {
   */
   void RenderLine(centurion::geo::Point p1, centurion::geo::Point p2);
 
-  void RenderText(const std::string& text, int x, int y);
+  void RenderString(const std::string& text, int x, int y);
 
   /**
   \brief Assigns the currently active font.

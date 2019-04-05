@@ -9,6 +9,7 @@
   rectangle.cpp
   centurion.cpp
   renderer.cpp
+  sound_effect.cpp
   texture.cpp
   screen.cpp
   texture_factory.cpp

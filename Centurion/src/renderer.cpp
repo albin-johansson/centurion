@@ -1,4 +1,5 @@
 #include "renderer.h"
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include "color.h"
@@ -105,9 +106,9 @@ SDL_Texture* Renderer::CreateSDLTextureFromString(const string& str, int* width,
   }
 }
 
-void Renderer::RenderText(const string& text, int x, int y) {
+void Renderer::RenderString(const string& text, int x, int y) {
   if (font == nullptr) {
-    throw invalid_argument("Failed to render tetx!");
+    throw invalid_argument("Failed to render text!");
   } else {
     int w, h;
     SDL_Texture* t = CreateSDLTextureFromString(text, &w, &h);
@@ -118,7 +119,7 @@ void Renderer::RenderText(const string& text, int x, int y) {
 
 shared_ptr<Texture> Renderer::CreateTextureFromString(const string& str) {
   if (font == nullptr) {
-    throw invalid_argument("Failed to render tetx!");
+    throw invalid_argument("Failed to render text!");
   } else {
     int w, h;
     SDL_Texture* t = CreateSDLTextureFromString(str, &w, &h);

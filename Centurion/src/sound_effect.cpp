@@ -17,6 +17,7 @@ SoundEffect::SoundEffect(const std::string& path) {
     throw std::invalid_argument("Null sound effect!");
   } else {
     channel = UNDEFINED_CHANNEL;
+    SetVolume(MIX_MAX_VOLUME);
   }
 }
 
@@ -46,6 +47,16 @@ void SoundEffect::Stop() {
     channel = UNDEFINED_CHANNEL;
   }
 }
+
+void SoundEffect::SetVolume(int volume) {
+  if (volume < 0 || volume > MIX_MAX_VOLUME) {
+    throw std::invalid_argument("Invalid volume argument!");
+  } else {
+    Mix_VolumeChunk(sound, volume);
+  }
+}
+
+int SoundEffect::GetVolume() const { return sound->volume; }
 
 }  // namespace audio
 }  // namespace centurion

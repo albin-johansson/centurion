@@ -22,6 +22,10 @@ class SoundEffect {
   void Loop(int nLoops);
 
   void Stop();
+
+  void SetVolume(int volume);
+
+  int GetVolume() const;
 };
 
 }  // namespace audio

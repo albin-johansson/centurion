@@ -14,7 +14,7 @@ namespace visuals {
 /**
 \brief The Graphics class provides rendering functionality.
 */
-class Renderer {
+class Renderer {  // FIXME replace const Texture& with const shared_ptr<Texture>
  private:
   SDL_Renderer* sdl_renderer;
   std::shared_ptr<centurion::visuals::Font> font;
@@ -112,7 +112,15 @@ class Renderer {
   */
   void RenderLine(centurion::geo::Point p1, centurion::geo::Point p2);
 
-  void RenderText(const std::string& text, int x, int y);
+  /**
+  \brief Renders the supplied string to the rendering target. This function is
+  quite expensive, prefer to use CreateTextureFromString-function instead.
+  \param str - the string that will be rendered.
+  \param x - the
+  x-coordinate of the rendered text.
+  \param y - the y-coordinate of the rendered text.
+  */
+  void RenderString(const std::string& str, int x, int y);
 
   /**
   \brief Assigns the currently active font.
@@ -126,6 +134,11 @@ class Renderer {
   */
   void SetColor(centurion::visuals::Color color);
 
+  /**
+  \brief Creates a texture of the supplied string, using the currently selected
+  font.
+  \param str - the string that the created texture will represent.
+  */
   std::shared_ptr<centurion::visuals::Texture> CreateTextureFromString(
       const std::string& str);
 

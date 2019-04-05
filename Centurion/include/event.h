@@ -15,6 +15,14 @@ class Event {
 
   inline SDL_KeyboardEvent GetKeyInfo() const { return event.key; }
 
+  inline SDL_MouseMotionEvent GetMouseMotionInfo() const {
+    return event.motion;
+  }
+
+  inline SDL_MouseButtonEvent GetMouseButtonInfo() const {
+    return event.button;
+  }
+
   inline bool IsKeyEvent() const {
     return (event.type == SDL_KEYUP) || (event.type == SDL_KEYDOWN);
   }

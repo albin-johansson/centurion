@@ -17,16 +17,16 @@ Music::Music(const std::string& path) {
   }
 }
 
-Music::~Music() { Mix_FreeMusic(music); }
-
-void Music::ApplyVolume() { Mix_VolumeMusic(volume); }
+Music::~Music() {
+  Stop();
+  Mix_FreeMusic(music);
+}
 
 void Music::Play() {
   if (IsMusicPlaying()) {
     Stop();
   }
   Mix_PlayMusic(music, -1);
-  ApplyVolume();
 }
 
 void Music::FadeIn(int ms) {
@@ -37,7 +37,6 @@ void Music::FadeIn(int ms) {
       Stop();
     }
     Mix_FadeInMusic(music, -1, ms);
-    ApplyVolume();
   }
 }
 
@@ -61,9 +60,12 @@ void Music::SetVolume(int volume) {
   if (volume < 0 || volume > MIX_MAX_VOLUME) {
     throw std::invalid_argument("Invalid music volume argument!");
   } else {
+    Mix_VolumeMusic(volume);
     this->volume = volume;
   }
 }
+
+int Music::GetVolume() const { return volume; }
 
 }  // namespace audio
 }  // namespace centurion

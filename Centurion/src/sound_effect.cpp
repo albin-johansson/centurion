@@ -21,7 +21,10 @@ SoundEffect::SoundEffect(const std::string& path) {
   }
 }
 
-SoundEffect::~SoundEffect() { Mix_FreeChunk(sound); }
+SoundEffect::~SoundEffect() {
+  Stop();
+  Mix_FreeChunk(sound);
+}
 
 void SoundEffect::Activate(int nLoops) {
   if (channel != UNDEFINED_CHANNEL) {

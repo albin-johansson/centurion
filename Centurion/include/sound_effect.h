@@ -1,11 +1,12 @@
 #pragma once
 #include <SDL_mixer.h>
 #include <string>
+#include "audio_component.h"
 
 namespace centurion {
 namespace audio {
 
-class SoundEffect {
+class SoundEffect : public AudioComponent {
  private:
   int channel;
   Mix_Chunk* sound;
@@ -17,15 +18,15 @@ class SoundEffect {
 
   ~SoundEffect();
 
-  void Play();
-
   void Loop(int nLoops);
 
-  void Stop();
+  void Play() override;
 
-  void SetVolume(int volume);
+  void Stop() override;
 
-  int GetVolume() const;
+  void SetVolume(int volume) override;
+
+  int GetVolume() const override;
 };
 
 }  // namespace audio

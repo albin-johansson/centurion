@@ -1,37 +1,36 @@
 #pragma once
 #include <SDL_mixer.h>
 #include <string>
+#include "audio_component.h"
 
 // TODO possibly use Jukebox class since only one Music instance can be used at
 // a time
 namespace centurion {
 namespace audio {
 
-class Music {
+class Music : public AudioComponent {
  private:
   Mix_Music* music;
   int volume;
 
   inline bool IsMusicPlaying() { return Mix_PlayingMusic(); }
 
-  void ApplyVolume();
-
  public:
   explicit Music(const std::string& path);
 
   ~Music();
 
-  void Play();
-
-  void Stop();
-
   void FadeIn(int ms);
 
   void FadeOut(int ms);
 
-  void SetVolume(int volume);
+  void Play() override;
 
-  inline int GetVolume() const { return volume; }
+  void Stop() override;
+
+  void SetVolume(int volume) override;
+
+  inline int GetVolume() const override;
 };
 
 }  // namespace audio

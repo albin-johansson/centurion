@@ -10,19 +10,13 @@ namespace centurion {
 namespace events {
 
 /**
-\brief The Keycode enum is equivalent to the SDL_Keycode enum. It provides the
-possible keycode values.
-*/
-typedef SDL_Keycode Keycode;  // TODO perhaps remove this
-
-/**
 \brief The KeyStroke class represents an key controlled action.
 */
 class KeyStroke {
  private:
   std::shared_ptr<centurion::events::Action> action;
   KeyTrigger trigger;
-  Keycode keycode;
+  SDL_Keycode keycode;
   bool isRepeatable;
 
   bool ShouldExecute(const Event& e);
@@ -34,7 +28,8 @@ class KeyStroke {
   pressed/released. \param trigger - the KeyTrigger value which specifies the
   preferred moment of activation.
   */
-  KeyStroke(Keycode keycode, std::shared_ptr<centurion::events::Action> action,
+  KeyStroke(SDL_Keycode keycode,
+            std::shared_ptr<centurion::events::Action> action,
             KeyTrigger trigger);
 
   ~KeyStroke();

@@ -53,20 +53,13 @@ void Renderer::Clear() { SDL_RenderClear(sdl_renderer); }
 void Renderer::Render(Texture& img, int x, int y, int w, int h) {
   CheckRenderDimensions(w, h);
   SDL_Rect rect = {x, y, w, h};
-  SDL_RenderCopy(sdl_renderer, &img.GetSDLTexture(), NULL, &rect);
+  SDL_RenderCopy(sdl_renderer, &img.GetSDLVersion(), NULL, &rect);
 }
 
 void Renderer::Render(Texture& img, const Rectangle& rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
-  SDL_RenderCopy(sdl_renderer, &img.GetSDLTexture(), NULL,
+  SDL_RenderCopy(sdl_renderer, &img.GetSDLVersion(), NULL,
                  &rect.GetSDLVersion());
-}
-
-void Renderer::Render(Texture& texture, const Positionable& pos,
-                      const Dimensioned& dim) {
-  CheckRenderDimensions(dim.GetWidth(), dim.GetHeight());
-  SDL_Rect rect = {pos.GetX(), pos.GetY(), dim.GetWidth(), dim.GetHeight()};
-  SDL_RenderCopy(sdl_renderer, &texture.GetSDLTexture(), NULL, &rect);
 }
 
 void Renderer::Render(Texture& img, int x, int y) {
@@ -78,9 +71,17 @@ void Renderer::RenderFilledRect(int x, int y, int w, int h) {
   SDL_RenderFillRect(sdl_renderer, &rect);
 }
 
+void Renderer::RenderFilledRect(Rectangle rect) {
+  SDL_RenderFillRect(sdl_renderer, &rect.GetSDLVersion());
+}
+
 void Renderer::RenderOutlinedRect(int x, int y, int w, int h) {
   SDL_Rect rect = {x, y, w, h};
   SDL_RenderDrawRect(sdl_renderer, &rect);
+}
+
+void Renderer::RenderOutlinedRect(Rectangle rect) {
+  SDL_RenderDrawRect(sdl_renderer, &rect.GetSDLVersion());
 }
 
 void Renderer::RenderLine(int x1, int y1, int x2, int y2) {
@@ -98,7 +99,7 @@ SDL_Texture* Renderer::CreateSDLTextureFromString(const string& str, int* width,
   } else {
     SDL_Surface* surface = TTF_RenderText_Solid(
         font->GetSDLVersion(), str.c_str(), color.GetSDLVersion());
-    SDL_Texture* tmp = SDL_CreateTextureFromSurface(GetSDLRenderer(), surface);
+    SDL_Texture* tmp = SDL_CreateTextureFromSurface(GetSDLVersion(), surface);
     *width = surface->w;
     *height = surface->h;
     SDL_FreeSurface(surface);

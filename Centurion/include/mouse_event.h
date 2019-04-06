@@ -13,23 +13,23 @@ class MouseEvent {
 
   ~MouseEvent();
 
-  int GetMousePressedX();
+  int GetMousePressedX() const;
 
-  int GetMousePressedY();
+  int GetMousePressedY() const;
 
-  int GetPressedButtonID();
+  int GetPressedButtonID() const;
 
-  bool WasButtonReleased();
+  bool WasButtonReleased() const;
 
-  bool WasButtonPressed();
+  bool WasButtonPressed() const;
 
-  bool WasDoubleClick();
+  bool WasDoubleClick() const;
 
-  bool IsMousePressedEvent();
+  bool IsMouseButtonEvent() const;
 
-  bool IsMouseMotionEvent();
+  bool IsMouseMotionEvent() const;
 
-  bool IsMouseWheelEvent();
+  bool IsMouseWheelEvent() const;
 };
 
 }  // namespace events

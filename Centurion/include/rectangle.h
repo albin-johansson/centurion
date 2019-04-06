@@ -59,7 +59,7 @@ class Rectangle : public centurion::geo::Positionable,
   false otherwise. \param rect - the rectangle that will be checked with this
   rectangle.
   */
-  bool Intersects(const centurion::geo::Rectangle& rect) const;
+  bool Intersects(const centurion::geo::Rectangle rect) const;
 
   /**
   \brief Indicates whether or not this rectangle contains the specified point.

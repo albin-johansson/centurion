@@ -7,6 +7,7 @@
 #include "drawable.h"
 #include "font.h"
 #include "point.h"
+#include "rectangle.h"
 #include "renderer.h"
 
 // TODO delegatation functions to Renderer
@@ -101,7 +102,7 @@ class Window : public centurion::geo::Dimensioned {
   image.
   */
   void Render(centurion::visuals::Texture& texture,
-              const centurion::geo::Rectangle& rect);
+              const centurion::geo::Rectangle rect);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -110,10 +111,6 @@ class Window : public centurion::geo::Dimensioned {
   \param y - the desired y-coordinate.
   */
   void Render(centurion::visuals::Texture& texture, int x, int y);
-
-  void Render(centurion::visuals::Texture& texture,
-              const centurion::geo::Positionable& posit,
-              const centurion::geo::Dimensioned& dimensioned);
 
   /**
   \brief Renders a filled rectangle with the currently selected color.
@@ -125,6 +122,12 @@ class Window : public centurion::geo::Dimensioned {
   void RenderFilledRect(int x, int y, int w, int h);
 
   /**
+  \brief Renders a filled rectangle with the currently selected color.
+  \param rect - the rectangle that will be rendered.
+  */
+  void RenderFilledRect(centurion::geo::Rectangle rect);
+
+  /**
   \brief Renders an outlined rectangle with the currently selected color.
   \param x - the desired x-coordinate.
   \param y - the desired y-coordinate.
@@ -132,6 +135,12 @@ class Window : public centurion::geo::Dimensioned {
   \param h - the desired height of the rectangle.
   */
   void RenderOutlinedRect(int x, int y, int w, int h);
+
+  /**
+  \brief Renders an outlined rectangle with the currently selected color.
+  \param rect - the rectangle that will be rendered.
+  */
+  void RenderOutlinedRect(centurion::geo::Rectangle rect);
 
   /**
   \brief Renders a line between two points with the currently selected color.

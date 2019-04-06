@@ -7,29 +7,33 @@ MouseEvent::MouseEvent(SDL_Event event) { this->event = event; }
 
 MouseEvent::~MouseEvent() = default;
 
-int MouseEvent::GetMousePressedX() { return event.button.x; }
+int MouseEvent::GetMousePressedX() const { return event.button.x; }
 
-int MouseEvent::GetMousePressedY() { return event.button.y; }
+int MouseEvent::GetMousePressedY() const { return event.button.y; }
 
-int MouseEvent::GetPressedButtonID() { return event.button.button; }
+int MouseEvent::GetPressedButtonID() const { return event.button.button; }
 
-bool MouseEvent::WasButtonReleased() {
+bool MouseEvent::WasButtonReleased() const {
   return event.button.state == SDL_PRESSED;
 }
 
-bool MouseEvent::WasButtonPressed() {
+bool MouseEvent::WasButtonPressed() const {
   return event.button.state == SDL_RELEASED;
 }
 
-bool MouseEvent::WasDoubleClick() { return event.button.clicks == 2; }
+bool MouseEvent::WasDoubleClick() const { return event.button.clicks == 2; }
 
-bool MouseEvent::IsMousePressedEvent() {
+bool MouseEvent::IsMouseButtonEvent() const {
   return event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP;
 }
 
-bool MouseEvent::IsMouseMotionEvent() { return event.type == SDL_MOUSEMOTION; }
+bool MouseEvent::IsMouseMotionEvent() const {
+  return event.type == SDL_MOUSEMOTION;
+}
 
-bool MouseEvent::IsMouseWheelEvent() { return event.type == SDL_MOUSEWHEEL; }
+bool MouseEvent::IsMouseWheelEvent() const {
+  return event.type == SDL_MOUSEWHEEL;
+}
 
 }  // namespace events
 }  // namespace centurion

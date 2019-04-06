@@ -68,7 +68,7 @@ void Window::Render(Texture& texture, int x, int y, int w, int h) {
   renderer->Render(texture, x, y, w, h);
 }
 
-void Window::Render(Texture& texture, const Rectangle& rect) {
+void Window::Render(Texture& texture, const Rectangle rect) {
   renderer->Render(texture, rect);
 }
 
@@ -76,17 +76,20 @@ void Window::Render(Texture& texture, int x, int y) {
   renderer->Render(texture, x, y);
 }
 
-void Window::Render(Texture& texture, const Positionable& posit,
-                    const Dimensioned& dimensioned) {
-  renderer->Render(texture, posit, dimensioned);
-}
-
 void Window::RenderFilledRect(int x, int y, int w, int h) {
   renderer->RenderFilledRect(x, y, w, h);
 }
 
+void Window::RenderFilledRect(Rectangle rect) {
+  renderer->RenderFilledRect(rect);
+}
+
 void Window::RenderOutlinedRect(int x, int y, int w, int h) {
   renderer->RenderOutlinedRect(x, y, w, h);
+}
+
+void Window::RenderOutlinedRect(Rectangle rect) {
+  renderer->RenderOutlinedRect(rect);
 }
 
 void Window::RenderLine(int x1, int y1, int x2, int y2) {

@@ -30,7 +30,7 @@ class Music : public AudioComponent {
 
   void SetVolume(int volume) override;
 
-  inline int GetVolume() const override;
+  int GetVolume() const override;
 };
 
 }  // namespace audio

@@ -19,7 +19,7 @@ Texture::Texture(SDL_Texture* texture, int width, int height)
 
 Texture::~Texture() { SDL_DestroyTexture(sdl_texture); }
 
-SDL_Texture& Texture::GetSDLTexture() { return *sdl_texture; }
+SDL_Texture& Texture::GetSDLVersion() { return *sdl_texture; }
 
 }  // namespace visuals
 }  // namespace centurion

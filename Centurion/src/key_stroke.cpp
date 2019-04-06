@@ -10,7 +10,7 @@ using std::shared_ptr;
 namespace centurion {
 namespace events {
 
-KeyStroke::KeyStroke(Keycode keycode, shared_ptr<Action> action,
+KeyStroke::KeyStroke(SDL_Keycode keycode, shared_ptr<Action> action,
                      KeyTrigger trigger) {
   if (action == nullptr) {
     throw invalid_argument("Null action parameter when creating KeyStroke!");
@@ -30,7 +30,8 @@ bool KeyStroke::ShouldExecute(const Event& e) {
   if (!isRepeatable && kEvent.IsRepeated()) {
     return false;
   }
-
+  // TODO fix repeatable issue when one key is held and another one is then
+  // pressed
   bool down = ((trigger == KeyTrigger::IMMEDIATE) &&
                (kEvent.GetKeyEventType() == SDL_KEYDOWN));
   bool up = ((trigger == KeyTrigger::RELEASE) &&

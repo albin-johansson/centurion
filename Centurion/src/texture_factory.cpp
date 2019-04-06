@@ -39,7 +39,7 @@ std::shared_ptr<Texture> TextureFactory::CreateTexture(const std::string& path,
 
 std::shared_ptr<Texture> TextureFactory::CreateTexture(
     const std::string& path, const Renderer& renderer) {
-  return TextureFactory::CreateTexture(path, renderer.GetSDLRenderer());
+  return TextureFactory::CreateTexture(path, renderer.GetSDLVersion());
 }
 
 }  // namespace visuals

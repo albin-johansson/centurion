@@ -28,7 +28,7 @@ void Rectangle::SetX(int x) { rect.x = x; }
 
 void Rectangle::SetY(int y) { rect.y = y; }
 
-bool Rectangle::Intersects(const Rectangle& otherRect) const {
+bool Rectangle::Intersects(const Rectangle otherRect) const {
   SDL_bool result = SDL_HasIntersection(&this->rect, &otherRect.rect);
   return BooleanConverter::Convert(result);
 }

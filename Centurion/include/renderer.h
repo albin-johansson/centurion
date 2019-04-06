@@ -76,10 +76,6 @@ class Renderer {  // FIXME replace const Texture& with const shared_ptr<Texture>
   */
   void Render(centurion::visuals::Texture& texture, int x, int y);
 
-  void Render(centurion::visuals::Texture& texture,
-              const centurion::geo::Positionable& posit,
-              const centurion::geo::Dimensioned& dimensioned);
-
   /**
   \brief Renders a filled rectangle with the currently selected color.
   \param x - the desired x-coordinate.
@@ -88,6 +84,12 @@ class Renderer {  // FIXME replace const Texture& with const shared_ptr<Texture>
   \param h - the desired height of the rectangle.
   */
   void RenderFilledRect(int x, int y, int w, int h);
+
+  /**
+  \brief Renders a filled rectangle with the currently selected color.
+  \param rect - the rectangle that will be rendered.
+  */
+  void RenderFilledRect(centurion::geo::Rectangle rect);
 
   /**
   \brief Renders an outlined rectangle with the currently selected color.
@@ -99,11 +101,16 @@ class Renderer {  // FIXME replace const Texture& with const shared_ptr<Texture>
   void RenderOutlinedRect(int x, int y, int w, int h);
 
   /**
-  \brief Renders a line between two points with the currently selected color.
-  \param x1 - the x-coordinate of the first point.
-  \param y1 - the y-coordinate of the first point.
-  \param x2 - the x-coordinate of the second point.
-  \param y2 - the y-coordinate of the second point.
+  \brief Renders an outlined rectangle with the currently selected color.
+  \param rect - the rectangle that will be rendered.
+  */
+  void RenderOutlinedRect(centurion::geo::Rectangle rect);
+
+  /**
+  \brief Renders a line between two points with the currently selected
+  color. \param x1 - the x-coordinate of the first point. \param y1 - the
+  y-coordinate of the first point. \param x2 - the x-coordinate of the
+  second point. \param y2 - the y-coordinate of the second point.
   */
   void RenderLine(int x1, int y1, int x2, int y2);
 
@@ -144,7 +151,7 @@ class Renderer {  // FIXME replace const Texture& with const shared_ptr<Texture>
   std::shared_ptr<centurion::visuals::Texture> CreateTextureFromString(
       const std::string& str);
 
-  SDL_Renderer* const GetSDLRenderer() const { return sdl_renderer; }  // FIXME
+  SDL_Renderer* const GetSDLVersion() const { return sdl_renderer; }  // FIXME
 };
 
 }  // namespace visuals

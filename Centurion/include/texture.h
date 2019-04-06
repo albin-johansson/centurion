@@ -19,7 +19,7 @@ class Texture : public centurion::geo::Dimensioned {
 
   ~Texture();
 
-  SDL_Texture& GetSDLTexture();
+  SDL_Texture& GetSDLVersion();
 
   /**
   \brief Returns the width of this texture.

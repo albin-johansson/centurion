@@ -5,6 +5,7 @@
   font_factory.cpp
   key_stroke.cpp
   key_stroke_composite.cpp
+  music.cpp
   point.cpp
   rectangle.cpp
   centurion.cpp

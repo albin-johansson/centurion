@@ -17,7 +17,7 @@ SoundEffect::SoundEffect(const std::string& path) {
     throw std::invalid_argument("Null sound effect!");
   } else {
     channel = UNDEFINED_CHANNEL;
-    SetVolume(MIX_MAX_VOLUME);
+    SetVolume(MIX_MAX_VOLUME / 2);
   }
 }
 

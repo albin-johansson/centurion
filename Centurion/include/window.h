@@ -163,7 +163,6 @@ class Window : public centurion::geo::Dimensioned {
   \param color - the color that will be used.
   */
   void SetColor(centurion::visuals::Color color);
-
 };
 
 }  // namespace visuals

@@ -32,7 +32,7 @@ class Renderer {  // FIXME replace const Texture& with const shared_ptr<Texture>
   \param renderer - a pointer to the SDL_Renderer that the Renderer will be
   based upon.
   */
-  Renderer(SDL_Renderer* renderer);
+  explicit Renderer(SDL_Renderer* renderer);
 
   ~Renderer();
 

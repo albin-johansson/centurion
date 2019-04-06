@@ -13,7 +13,7 @@ class SoundEffect {
   void Activate(int nLoops);
 
  public:
-  SoundEffect(const std::string& path);
+  explicit SoundEffect(const std::string& path);
 
   ~SoundEffect();
 

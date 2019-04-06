@@ -12,7 +12,7 @@ class Event {
   explicit Event(SDL_Event event);
 
   ~Event();
-
+  //TODO separate events for mouse and key events
   inline SDL_KeyboardEvent GetKeyInfo() const { return event.key; }
 
   inline SDL_MouseMotionEvent GetMouseMotionInfo() const {

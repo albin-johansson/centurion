@@ -2,7 +2,8 @@
 #include <SDL_mixer.h>
 #include <string>
 
-//TODO possibly use Jukebox class since only one Music instance can be used at a time
+// TODO possibly use Jukebox class since only one Music instance can be used at
+// a time
 namespace centurion {
 namespace audio {
 

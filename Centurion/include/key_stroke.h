@@ -4,6 +4,7 @@
 #include <memory>
 #include "action.h"
 #include "event.h"
+#include "key_trigger.h"
 
 namespace centurion {
 namespace events {
@@ -13,11 +14,6 @@ namespace events {
 possible keycode values.
 */
 typedef SDL_Keycode Keycode;  // TODO perhaps remove this
-
-/**
-\brief The KeyTrigger enum specifies when a KeyStroke is activated.
-*/
-enum KeyTrigger { IMMEDIATE = SDL_KEYDOWN, RELEASE = SDL_KEYUP };
 
 /**
 \brief The KeyStroke class represents an key controlled action.

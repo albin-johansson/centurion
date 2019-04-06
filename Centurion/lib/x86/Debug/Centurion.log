@@ -1,8 +1,11 @@
-﻿  application_path.cpp
+﻿  key_trigger.cpp
+  mouse_event.cpp
+  application_path.cpp
   color.cpp
   event.cpp
   font.cpp
   font_factory.cpp
+  keyboard_event.cpp
   key_stroke.cpp
   key_stroke_composite.cpp
   music.cpp

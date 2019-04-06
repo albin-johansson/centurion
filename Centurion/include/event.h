@@ -1,5 +1,7 @@
 #pragma once
 #include <SDL_events.h>
+#include "keyboard_event.h"
+#include "mouse_event.h"
 
 namespace centurion {
 namespace events {
@@ -7,32 +9,24 @@ namespace events {
 class Event {
  private:
   SDL_Event event;
+  centurion::events::MouseEvent mouseEvent;
+  centurion::events::KeyboardEvent keyEvent;
 
  public:
   explicit Event(SDL_Event event);
 
   ~Event();
-  // TODO separate events for mouse and key events
-  inline SDL_KeyboardEvent GetKeyInfo() const { return event.key; }
 
-  inline SDL_MouseMotionEvent GetMouseMotionInfo() const {
-    return event.motion;
+  bool IsKeyEvent() const;
+
+  bool IsMouseEvent() const;
+
+  inline centurion::events::MouseEvent GetMouseInfo() const {
+    return mouseEvent;
   }
 
-  inline SDL_MouseButtonEvent GetMouseButtonInfo() const {
-    return event.button;
-  }
-
-  inline SDL_MouseWheelEvent GetMouseWheelInfo() const { return event.wheel; }
-
-  inline bool IsKeyEvent() const {
-    return (event.type == SDL_KEYUP) || (event.type == SDL_KEYDOWN);
-  }
-
-  inline bool IsMouseEvent() const {
-    return (event.type == SDL_MOUSEMOTION) ||
-           (event.type == SDL_MOUSEBUTTONUP) ||
-           (event.type == SDL_MOUSEWHEEL) || (event.type == SDL_MOUSEMOTION);
+  inline centurion::events::KeyboardEvent GetKeyboardInfo() const {
+    return keyEvent;
   }
 
   inline SDL_Event GetSDLVersion() const { return event; }

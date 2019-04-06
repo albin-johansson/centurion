@@ -25,18 +25,19 @@ KeyStroke::KeyStroke(Keycode keycode, shared_ptr<Action> action,
 KeyStroke::~KeyStroke() = default;
 
 bool KeyStroke::ShouldExecute(const Event& e) {
-  SDL_KeyboardEvent keyInfo = e.GetKeyInfo();
+  KeyboardEvent kEvent = e.GetKeyboardInfo();
 
-  if (!isRepeatable && keyInfo.repeat) {
+  if (!isRepeatable && kEvent.IsRepeated()) {
     return false;
   }
 
-  bool isKeyEvent =
-      (keyInfo.type == SDL_KEYUP) || (keyInfo.type == SDL_KEYDOWN);
+  bool down = ((trigger == KeyTrigger::IMMEDIATE) &&
+               (kEvent.GetKeyEventType() == SDL_KEYDOWN));
+  bool up = ((trigger == KeyTrigger::RELEASE) &&
+             (kEvent.GetKeyEventType() == SDL_KEYUP));
+  bool match = (kEvent.GetKeycode() == keycode) && (down || up);
 
-  bool match = (keyInfo.keysym.sym == keycode) && (keyInfo.type == trigger);
-
-  return isKeyEvent && match;
+  return e.IsKeyEvent() && match;
 }
 
 void KeyStroke::Update(const Event& e) {

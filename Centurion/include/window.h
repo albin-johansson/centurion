@@ -36,8 +36,7 @@ class Window : public centurion::geo::Dimensioned {
   flag values are specified by SDL_WindowFlags. For example,
   SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
   */
-  Window(const std::string& title, int width, int height,
-         Uint32 flags);  // FIXME use uint32_t rather than Uint32
+  Window(const std::string& title, int width, int height, uint32_t flags);
 
   ~Window();
 

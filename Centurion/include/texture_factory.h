@@ -1,5 +1,6 @@
 #pragma once
-#include <SDL_video.h>
+#include <SDL_render.h>
+#include <SDL_surface.h>
 #include <memory>
 #include <string>
 #include "renderer.h"

@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_events.h>
+#include <SDL_keycode.h>
 #include <memory>
 #include "action.h"
 #include "event.h"
@@ -11,7 +12,7 @@ namespace events {
 \brief The Keycode enum is equivalent to the SDL_Keycode enum. It provides the
 possible keycode values.
 */
-typedef SDL_Keycode Keycode;
+typedef SDL_Keycode Keycode;  // TODO perhaps remove this
 
 /**
 \brief The KeyTrigger enum specifies when a KeyStroke is activated.

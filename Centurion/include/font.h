@@ -33,13 +33,13 @@ class Font {
   void SetStyle(int style);
 
   // TODO implement in later versions
-  //void SetBold(bool isBold);
+  // void SetBold(bool isBold);
   //
-  //void SetItalic(bool isItalic);
+  // void SetItalic(bool isItalic);
   //
-  //void SetUnderlined(bool isUnderlined);
+  // void SetUnderlined(bool isUnderlined);
   //
-  //void SetStrikethrough(bool isStrikethrough);
+  // void SetStrikethrough(bool isStrikethrough);
 
   /**
   \brief Assigns whether or not this is an outlined font.

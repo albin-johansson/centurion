@@ -1,5 +1,6 @@
 #pragma once
-#include <SDL_video.h>
+#include <SDL_pixels.h>
+#include <stdint.h>
 
 namespace centurion {
 namespace visuals {

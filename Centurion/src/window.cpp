@@ -18,7 +18,7 @@ using centurion::visuals::Font;
 namespace centurion {
 namespace visuals {
 
-Window::Window(const std::string& title, int width, int height, Uint32 flags)
+Window::Window(const std::string& title, int width, int height, uint32_t flags)
     : width(width), height(height) {
   CheckWindowDimensions(width, height);
   window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,

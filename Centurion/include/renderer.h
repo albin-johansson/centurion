@@ -1,10 +1,12 @@
 #pragma once
-#include <SDL.h>
+#include <SDL_render.h>
 #include <memory>
 #include <string>
 #include "color.h"
+#include "dimensioned.h"
 #include "font.h"
 #include "point.h"
+#include "positionable.h"
 #include "rectangle.h"
 #include "texture.h"
 

@@ -1,6 +1,6 @@
 # Centurion
 
-Centurion is a small wrapper library for [SDL2](https://www.libsdl.org/index.php), written in C++. The main purpose of Centurion is to provide an object-oriented take on SDL2, which is originally a C library.
+Centurion is a small wrapper library for [SDL2](https://www.libsdl.org/index.php), written in C++. The main purpose of Centurion is to provide an object-oriented take on SDL2, which is originally a C library. However, it's important to note that Centurion is __not__ meant to cover the entire SDL2 library, but instead Centurion is designed to be used alongside with SDL2.
 
 ## Getting Started
 
@@ -15,7 +15,7 @@ Centurion is a small wrapper library for [SDL2](https://www.libsdl.org/index.php
 * **[Visual Studio 2017](https://visualstudio.microsoft.com/)** (should work with other versions). If you'd like to use Centurion   outside of Visual Studio, you'll have to compile the library by yourself.
 
 ### Installing Centurion (with Visual Studio 2017)
-If you haven't got SDL2, you'll need to download SDL2 and its extension libraries (SDL2_image, SDL2_mixer and SDL2_ttf). Use the links found under "prerequisites", and download the correct versions. The following images show the download links that you should use. 
+If you haven't got SDL2, you'll need to download SDL2 and its extension libraries (SDL2_image, SDL2_mixer and SDL2_ttf). Use the links found under __dependencies__, and download the correct versions. The following images show the download links that you should use. 
 
 <p align="center">
 <img src="/readme-files/centurion_sdl2_link.PNG" alt="" width="350">

@@ -83,7 +83,7 @@ class Color {
   /**
   \brief Returns the alpha component of this color.
   */
-  inline inline uint8_t GetAlpha() const { return color.a; }
+  inline uint8_t GetAlpha() const { return color.a; }
 
   /**
   \brief Returns an SDL_Color instance that represents this Color.

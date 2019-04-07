@@ -15,11 +15,11 @@ namespace events {
 class KeyStroke {
  private:
   std::shared_ptr<centurion::events::Action> action;
-  KeyTrigger trigger;
+  centurion::events::KeyTrigger trigger;
   SDL_Keycode keycode;
   bool isRepeatable;
 
-  bool ShouldExecute(const Event& e);
+  bool ShouldExecute(const centurion::events::Event& e);
 
  public:
   /**
@@ -30,7 +30,7 @@ class KeyStroke {
   */
   KeyStroke(SDL_Keycode keycode,
             std::shared_ptr<centurion::events::Action> action,
-            KeyTrigger trigger);
+            centurion::events::KeyTrigger trigger);
 
   ~KeyStroke();
 
@@ -38,7 +38,7 @@ class KeyStroke {
   \brief Updates this KeyStroke by comparing it to the supplied event.
   \param event - The event that will be checked.
   */
-  void Update(const Event& event);
+  void Update(const centurion::events::Event& event);
 
   /**
   \brief Programmatically triggers the Action related to this KeyStroke.
@@ -58,7 +58,7 @@ class KeyStroke {
   /**
   \brief Indicates whether or not this KeyStroke is repeatable.
   */
-  bool IsRepeatable() { return isRepeatable; }
+  inline bool IsRepeatable() const { return isRepeatable; }
 };
 
 }  // namespace events

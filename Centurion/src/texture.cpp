@@ -14,6 +14,7 @@ Texture::Texture(SDL_Texture* texture, int width, int height)
     throw invalid_argument("Null SDL_Texture!");
   } else {
     this->sdl_texture = texture;
+    
   }
 }
 

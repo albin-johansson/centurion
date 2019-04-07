@@ -49,7 +49,8 @@ class Font {
 
   /**
   \brief Returns a raw pointer to the SDL_font which this Font object
-  represents. DO NOT use the returned pointer to call TTF_CloseFont().
+  represents.
+  DO NOT use the returned pointer to call TTF_CloseFont().
   */
   TTF_Font* GetSDLVersion() { return font; }
 

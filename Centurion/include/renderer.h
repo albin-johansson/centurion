@@ -14,9 +14,9 @@ namespace centurion {
 namespace visuals {
 
 /**
-\brief The Graphics class provides rendering functionality.
+\brief The Renderer class provides rendering functionality for a Window.
 */
-class Renderer {  // FIXME replace const Texture& with const shared_ptr<Texture>
+class Renderer {
  private:
   SDL_Renderer* sdl_renderer;
   std::shared_ptr<centurion::visuals::Font> font;
@@ -108,9 +108,11 @@ class Renderer {  // FIXME replace const Texture& with const shared_ptr<Texture>
 
   /**
   \brief Renders a line between two points with the currently selected
-  color. \param x1 - the x-coordinate of the first point. \param y1 - the
-  y-coordinate of the first point. \param x2 - the x-coordinate of the
-  second point. \param y2 - the y-coordinate of the second point.
+  color.
+  \param x1 - the x-coordinate of the first point.
+  \param y1 - the y-coordinate of the first point.
+  \param x2 - the x-coordinate of the second point.
+  \param y2 - the y-coordinate of the second point.
   */
   void RenderLine(int x1, int y1, int x2, int y2);
 
@@ -123,10 +125,10 @@ class Renderer {  // FIXME replace const Texture& with const shared_ptr<Texture>
 
   /**
   \brief Renders the supplied string to the rendering target. This function is
-  quite expensive, prefer to use CreateTextureFromString-function instead.
+  quite expensive, it's preferable to use the CreateTextureFromString()-method
+  instead.
   \param str - the string that will be rendered.
-  \param x - the
-  x-coordinate of the rendered text.
+  \param x - the x-coordinate of the rendered text.
   \param y - the y-coordinate of the rendered text.
   */
   void RenderString(const std::string& str, int x, int y);
@@ -151,7 +153,12 @@ class Renderer {  // FIXME replace const Texture& with const shared_ptr<Texture>
   std::shared_ptr<centurion::visuals::Texture> CreateTextureFromString(
       const std::string& str);
 
-  SDL_Renderer* const GetSDLVersion() const { return sdl_renderer; }  // FIXME
+  /**
+  *UNSAFE*
+  \brief Returns the internal representation of this Renderer. DO NOT use the
+  returned pointer to call SDL_DestroyRenderer().
+  */
+  inline SDL_Renderer* const GetSDLVersion() const { return sdl_renderer; }
 };
 
 }  // namespace visuals

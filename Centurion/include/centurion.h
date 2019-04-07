@@ -3,6 +3,10 @@
 
 namespace centurion {
 
+/**
+\brief The Centurion class is responsible for the initialization and
+deinitialization of the Centurion library.
+ */
 class Centurion final {
  private:
   static bool initialized;
@@ -22,11 +26,22 @@ class Centurion final {
  public:
   ~Centurion() = default;
 
+  /**
+  \brief Initializes the Centurion library. This method MUST be called before
+  using ANY other Centurion components.
+  */
   static void Init();
 
+  /**
+  \brief Closes the Centurion library.
+  */
   static void Close();
 
-  static bool IsInitialized() { return initialized; }
+  /**
+  \brief Indicates whether or not the Centurion library is initialized or not.
+  Returns true if the library is initialized, false otherwise.
+  */
+  inline static bool IsInitialized() { return initialized; }
 };
 
 }  // namespace centurion

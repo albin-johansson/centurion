@@ -18,7 +18,7 @@ class KeyStrokeComposite final {  // FIXME should extend KeyStroke interface
 
   void Update(const Event& event);
 
-  void Add(std::shared_ptr<centurion::events::KeyStroke> keyStroke);
+  void AddKeyStroke(std::shared_ptr<centurion::events::KeyStroke> keyStroke);
 
   void Clear();
 };

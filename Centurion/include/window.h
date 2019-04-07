@@ -3,14 +3,11 @@
 #include <memory>
 #include <string>
 #include "color.h"
-#include "dimensioned.h"
 #include "drawable.h"
 #include "font.h"
 #include "point.h"
 #include "rectangle.h"
 #include "renderer.h"
-
-// TODO delegatation functions to Renderer
 
 namespace centurion {
 namespace visuals {
@@ -47,43 +44,21 @@ class Window : public centurion::geo::Dimensioned {
   void Show();
 
   /*
-  \brief	Makes this window invisible.
+  \brief Makes this window invisible.
   */
   void Hide();
 
   /**
-  \brief Renders this window.
+  \brief Applies any previous rendering operations to this window. If the
+  Drawable instance has been set, using the SetDrawable()-method, then it will
+  be called by this method.
   */
   void Render();
 
+  /**
+  \brief Clears the rendering area of this window.
+  */
   void Clear();
-
-  /**
-  \brief Assigns the Drawable that will be invoked whenever the Render() method
-  is called. \param drawable - the Drawable that will be used.
-  */
-  void SetDrawable(
-      const std::shared_ptr<centurion::visuals::Drawable> drawable);
-
-  /**
-  \brief Sets whether this window is resizable or not.
-  \param resizable true if the window is resizable, false otherwise.
-  */
-  void SetResizable(bool resizable);
-
-  /**
-  \brief Returns the width of this window.
-  */
-  int GetWidth() const override { return width; };
-
-  /**
-  \brief Returns the height of this window.
-  */
-  int GetHeight() const override { return height; };
-
-  std::unique_ptr<centurion::visuals::Renderer>& GetRenderer() {
-    return renderer;
-  }
 
   /**
   \brief Renders a texture to the rendering target.
@@ -158,7 +133,28 @@ class Window : public centurion::geo::Dimensioned {
   */
   void RenderLine(centurion::geo::Point p1, centurion::geo::Point p2);
 
-  void RenderString(const std::string& text, int x, int y);
+  /**
+  \brief Renders the supplied string using the currently selected font and
+  color.
+  \param str - the string that will be rendered.
+  \param x - the x-coordinate of the rendered string.
+  \param y - the y-coordinate of the rendered string.
+  */
+  void RenderString(const std::string& str, int x, int y);
+
+  /**
+  \brief Assigns the Drawable that will be invoked whenever the Render() method
+  is called.
+  \param drawable - the Drawable that will be used.
+  */
+  void SetDrawable(
+      const std::shared_ptr<centurion::visuals::Drawable> drawable);
+
+  /**
+  \brief Sets whether this window is resizable or not.
+  \param resizable true if the window is resizable, false otherwise.
+  */
+  void SetResizable(bool resizable);
 
   /**
   \brief Assigns the currently active font.
@@ -171,6 +167,32 @@ class Window : public centurion::geo::Dimensioned {
   \param color - the color that will be used.
   */
   void SetColor(centurion::visuals::Color color);
+
+  /**
+  \brief Returns the width of this window.
+  */
+  inline int GetWidth() const override { return width; };
+
+  /**
+  \brief Returns the height of this window.
+  */
+  inline int GetHeight() const override { return height; };
+
+  /**
+  \brief Creates and returns a Texture that visually represents the supplied
+  string. This method provides a more efficient way to render strings than the
+  RenderString()-method.
+  \param str - the string that the texture will represent.
+  */
+  std::shared_ptr<centurion::visuals::Texture> CreateTextureFromString(
+      const std::string& str) const;
+
+  /**
+  \brief Creates and returns a Texture found at the supplied path.
+  \param path - the path of the image in the file system.
+  */
+  std::shared_ptr<centurion::visuals::Texture> CreateTexture(
+      const std::string& path) const;
 };
 
 }  // namespace visuals

@@ -19,7 +19,7 @@ class Color {
   */
   const static uint8_t MAX_VAL = 255;
 
-  /**s
+  /**
   \brief The lowest possible value for the red, green, blue and alpha
   components.
   */
@@ -68,27 +68,27 @@ class Color {
   /**
   \brief Returns the red component of this color.
   */
-  uint8_t GetRed() const { return color.r; }
+  inline uint8_t GetRed() const { return color.r; }
 
   /**
   \brief Returns the green component of this color.
   */
-  uint8_t GetGreen() const { return color.g; }
+  inline uint8_t GetGreen() const { return color.g; }
 
   /**
   \brief Returns the blue component of this color.
   */
-  uint8_t GetBlue() const { return color.b; }
+  inline uint8_t GetBlue() const { return color.b; }
 
   /**
   \brief Returns the alpha component of this color.
   */
-  uint8_t GetAlpha() const { return color.a; }
+  inline inline uint8_t GetAlpha() const { return color.a; }
 
   /**
   \brief Returns an SDL_Color instance that represents this Color.
   */
-  SDL_Color GetSDLVersion() const { return color; }
+  inline SDL_Color GetSDLVersion() const { return color; }
 };
 
 }  // namespace visuals

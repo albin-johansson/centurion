@@ -3,11 +3,13 @@
 #include <string>
 #include "audio_component.h"
 
-// TODO possibly use Jukebox class since only one Music instance can be used at
-// a time
 namespace centurion {
 namespace audio {
 
+/**
+\brief The Music class represents a music clip. The music clips must be of the
+.WAV-format.
+*/
 class Music : public AudioComponent {
  private:
   Mix_Music* music;
@@ -16,20 +18,45 @@ class Music : public AudioComponent {
   inline bool IsMusicPlaying() { return Mix_PlayingMusic(); }
 
  public:
+  /**
+  \param path - the path of the .WAV-file that the Music instance will
+  represent.
+  */
   explicit Music(const std::string& path);
 
   ~Music();
 
+  /**
+  \brief Starts playing the music file by fading it in.
+  \param ms - the duration of the fade, in milliseconds.
+  */
   void FadeIn(int ms);
 
+  /**
+  \brief Stops playing the music file by fading it out.
+  \param ms - the duration of the fade, in milliseconds.
+  */
   void FadeOut(int ms);
 
+  /**
+  \brief Starts playing the music file.
+  */
   void Play() override;
 
+  /**
+  \brief Stops playing the music file.
+  */
   void Stop() override;
 
+  /**
+  \brief Assigns the volume of the music file.
+  \param volume - the desired volume of the music file, in the range [0, 128].
+  */
   void SetVolume(int volume) override;
 
+  /**
+  \brief Returns the current volume of the music file.
+  */
   int GetVolume() const override;
 };
 

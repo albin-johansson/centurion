@@ -1,19 +1,15 @@
 #include "window.h"
-#include <memory>
 #include <stdexcept>
-#include <string>
 #include "boolean_converter.h"
-#include "drawable.h"
-#include "font.h"
 #include "positionable.h"
-#include "rectangle.h"
-#include "renderer.h"
+#include "texture_factory.h"
 
 using centurion::geo::Point;
 using centurion::geo::Positionable;
 using centurion::geo::Rectangle;
 using centurion::tools::BooleanConverter;
 using centurion::visuals::Font;
+using centurion::visuals::TextureFactory;
 
 namespace centurion {
 namespace visuals {
@@ -31,7 +27,6 @@ Window::Window(const std::string& title, int width, int height, uint32_t flags)
 
 Window::~Window() {
   SDL_HideWindow(window);
-  SDL_Delay(1);
   SDL_DestroyWindow(window);
 }
 
@@ -51,7 +46,6 @@ void Window::SetResizable(bool resizable) {
 }
 
 void Window::Render() {
-  // renderer->Clear();
   if (drawable != nullptr) {
     drawable->Draw(*renderer);
   }
@@ -107,6 +101,15 @@ void Window::SetFont(const std::shared_ptr<Font> font) {
 }
 
 void Window::SetColor(Color color) { renderer->SetColor(color); }
+
+std::shared_ptr<Texture> Window::CreateTextureFromString(
+    const std::string& str) const {
+  return renderer->CreateTextureFromString(str);
+}
+
+std::shared_ptr<Texture> Window::CreateTexture(const std::string& path) const {
+  return TextureFactory::CreateTexture(path, *renderer);
+}
 
 }  // namespace visuals
 }  // namespace centurion

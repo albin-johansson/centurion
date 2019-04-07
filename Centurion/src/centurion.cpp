@@ -18,7 +18,7 @@ bool Centurion::initialized = false;
 
 void Centurion::InitCore() {
   int result = SDL_Init(SDL_INIT_EVERYTHING);
-  if (result < 0) {  // FIXME what value is returned upon failure?
+  if (result < 0) {
     Centurion::ThrowInitializationException(SDL_GetError());
   }
 }

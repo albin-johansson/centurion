@@ -56,23 +56,25 @@ class Rectangle : public centurion::geo::Positionable,
   /**
   \brief Indicates whether or not this rectangle intersects another rectangle.
   Returns true if the supplied rectangle intersects this rectangle, returns
-  false otherwise. \param rect - the rectangle that will be checked with this
-  rectangle.
+  false otherwise.
+  \param rect - the rectangle that will be checked with this rectangle.
   */
   bool Intersects(const centurion::geo::Rectangle rect) const;
 
   /**
   \brief Indicates whether or not this rectangle contains the specified point.
   Returns true if the point is contained in this rectangle, returns false
-  otherwise. \param x - the x-coordinate of the point to check. \param y - the
-  y-coordinate of the point to check.
+  otherwise.
+  \param x - the x-coordinate of the point to check.
+  \param y - the y-coordinate of the point to check.
   */
   bool Contains(int x, int y) const;
 
   /**
   \brief Indicates whether or not this rectangle contains the specified point.
   Returns true if the point is contained in this rectangle, returns false
-  otherwise. \param point - the point that will be checked.
+  otherwise.
+  \param point - the point that will be checked.
   */
   bool Contains(centurion::geo::Point point) const;
 

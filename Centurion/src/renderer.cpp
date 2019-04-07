@@ -1,34 +1,19 @@
 #include "renderer.h"
-#include <memory>
 #include <stdexcept>
-#include <string>
-#include "color.h"
-#include "dimensioned.h"
-#include "font.h"
 #include "null_checker.h"
-#include "point.h"
-#include "positionable.h"
-#include "rectangle.h"
-#include "texture.h"
 
 using centurion::geo::Dimensioned;
 using centurion::geo::Point;
 using centurion::geo::Positionable;
 using centurion::geo::Rectangle;
 using centurion::tools::NullChecker;
-using std::invalid_argument;
-using std::make_shared;
-using std::shared_ptr;
-using std::string;
-
-// FIXME fix doc comments refering textures as "images"
 
 namespace centurion {
 namespace visuals {
 
 Renderer::Renderer(SDL_Renderer* renderer) {
   if (NullChecker::IsNull(renderer)) {
-    throw invalid_argument("Null renderer!");
+    throw std::invalid_argument("Null renderer!");
   }
   this->sdl_renderer = renderer;
 }
@@ -37,7 +22,7 @@ Renderer::~Renderer() { SDL_DestroyRenderer(sdl_renderer); }
 
 void Renderer::CheckRenderDimensions(int width, int height) {
   if (width < 1 || height < 1) {
-    throw invalid_argument("Invalid rendering dimensions!");
+    throw std::invalid_argument("Invalid rendering dimensions!");
   }
 }
 
@@ -92,10 +77,10 @@ void Renderer::RenderLine(Point p1, Point p2) {
   SDL_RenderDrawLine(sdl_renderer, p1.GetX(), p1.GetY(), p2.GetX(), p2.GetY());
 }
 
-SDL_Texture* Renderer::CreateSDLTextureFromString(const string& str, int* width,
-                                                  int* height) {
+SDL_Texture* Renderer::CreateSDLTextureFromString(const std::string& str,
+                                                  int* width, int* height) {
   if (font == nullptr || width == nullptr || height == nullptr) {
-    throw invalid_argument("Failed to create texture from string!");
+    throw std::invalid_argument("Failed to create texture from string!");
   } else {
     SDL_Surface* surface = TTF_RenderText_Solid(
         font->GetSDLVersion(), str.c_str(), color.GetSDLVersion());
@@ -107,9 +92,9 @@ SDL_Texture* Renderer::CreateSDLTextureFromString(const string& str, int* width,
   }
 }
 
-void Renderer::RenderString(const string& text, int x, int y) {
+void Renderer::RenderString(const std::string& text, int x, int y) {
   if (font == nullptr) {
-    throw invalid_argument("Failed to render text!");
+    throw std::invalid_argument("Failed to render text!");
   } else {
     int w, h;
     SDL_Texture* t = CreateSDLTextureFromString(text, &w, &h);
@@ -118,20 +103,18 @@ void Renderer::RenderString(const string& text, int x, int y) {
   }
 }
 
-shared_ptr<Texture> Renderer::CreateTextureFromString(const string& str) {
+std::shared_ptr<Texture> Renderer::CreateTextureFromString(
+    const std::string& str) {
   if (font == nullptr) {
-    throw invalid_argument("Failed to render text!");
+    throw std::invalid_argument("Failed to render text!");
   } else {
     int w, h;
     SDL_Texture* t = CreateSDLTextureFromString(str, &w, &h);
-    return make_shared<Texture>(t, w, h);
+    return std::make_shared<Texture>(t, w, h);
   }
 }
 
-void Renderer::SetFont(const shared_ptr<Font> font)  // TODO Keep?
-{
-  this->font = font;
-}
+void Renderer::SetFont(const std::shared_ptr<Font> font) { this->font = font; }
 
 void Renderer::SetColor(Color color) {
   this->color = color;

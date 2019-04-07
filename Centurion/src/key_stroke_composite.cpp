@@ -1,12 +1,13 @@
 #include "key_stroke_composite.h"
 
 using std::shared_ptr;
+using std::vector;
 
 namespace centurion {
 namespace events {
 
 KeyStrokeComposite::KeyStrokeComposite() {
-  keyStrokes = std::vector<shared_ptr<KeyStroke>>();
+  keyStrokes = vector<shared_ptr<KeyStroke>>();
 }
 
 KeyStrokeComposite::~KeyStrokeComposite() { Clear(); }
@@ -19,7 +20,7 @@ void KeyStrokeComposite::Update(const Event& event) {
   }
 }
 
-void KeyStrokeComposite::Add(shared_ptr<KeyStroke> keyStroke) {
+void KeyStrokeComposite::AddKeyStroke(shared_ptr<KeyStroke> keyStroke) {
   keyStrokes.push_back(keyStroke);
   keyStrokes.shrink_to_fit();
 }

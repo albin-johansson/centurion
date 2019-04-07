@@ -43,14 +43,17 @@ class Point : public centurion::geo::Positionable {
   /**
   \brief Returns the x-coordinate of this point.
   */
-  int GetX() const override { return point.x; };
+  inline int GetX() const override { return point.x; };
 
   /**
   \brief Returns the y-coordinate of this point.
   */
-  int GetY() const override { return point.y; };
+  inline int GetY() const override { return point.y; };
 
-  SDL_Point GetSDLVersion() const { return point; }
+  /**
+  \brief Returns a copy of the internal representation of this Point.
+  */
+  inline SDL_Point GetSDLVersion() const { return point; }
 };
 
 }  // namespace geo

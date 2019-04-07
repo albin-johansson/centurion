@@ -9,6 +9,7 @@
 *.user
 packages/
 CenturionUsageExamples/
+CenturionTest/
 
 # Compiled Object files
 *.slo

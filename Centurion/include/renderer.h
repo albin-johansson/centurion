@@ -39,6 +39,14 @@ class Renderer {
   ~Renderer();
 
   /**
+  \brief Creates and returns a heap allocated Renderer instance.
+  \param renderer - a pointer to the SDL_Renderer that the Renderer will be
+  based upon.
+  */
+  static std::shared_ptr<centurion::visuals::Renderer> Create(
+      SDL_Renderer* renderer);
+
+  /**
   \brief Updates the state of this Renderer. This method has to be called in
   order to apply any previous rendering operations.
   */

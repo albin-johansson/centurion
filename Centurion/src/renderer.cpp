@@ -20,6 +20,10 @@ Renderer::Renderer(SDL_Renderer* renderer) {
 
 Renderer::~Renderer() { SDL_DestroyRenderer(sdl_renderer); }
 
+std::shared_ptr<Renderer> Renderer::Create(SDL_Renderer* renderer) {
+  return std::make_shared<Renderer>(renderer);
+}
+
 void Renderer::CheckRenderDimensions(int width, int height) {
   if (width < 1 || height < 1) {
     throw std::invalid_argument("Invalid rendering dimensions!");

@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_mixer.h>
+#include <memory>
 #include <string>
 #include "audio_component.h"
 
@@ -25,6 +26,14 @@ class Music : public AudioComponent {
   explicit Music(const std::string& path);
 
   ~Music();
+
+  /**
+  \brief Creates and returns a heap allocated Music instance.
+  \param path - the path of the .WAV-file that the Music instance will
+  represent.
+  */
+  static std::shared_ptr<centurion::audio::Music> Create(
+      const std::string& path);
 
   /**
   \brief Starts playing the music file by fading it in.

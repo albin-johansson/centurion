@@ -26,6 +26,10 @@ SoundEffect::~SoundEffect() {
   Mix_FreeChunk(sound);
 }
 
+std::shared_ptr<SoundEffect> SoundEffect::Create(const std::string& path) {
+  return std::make_shared<SoundEffect>(path);
+}
+
 void SoundEffect::Activate(int nLoops) {
   if (channel != UNDEFINED_CHANNEL) {
     Mix_PlayChannel(channel, sound, nLoops);

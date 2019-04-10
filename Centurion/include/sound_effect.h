@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_mixer.h>
+#include <memory>
 #include <string>
 #include "audio_component.h"
 
@@ -24,6 +25,13 @@ class SoundEffect : public AudioComponent {
   explicit SoundEffect(const std::string& path);
 
   ~SoundEffect();
+
+  /**
+  \brief Creates and returns a heap allocated SoundEffect instance.
+  \param path - the path of the sound effect file.
+  */
+  static std::shared_ptr<centurion::audio::SoundEffect> Create(
+      const std::string& path);
 
   /**
   \brief Plays the sound effect and loops it by the specified number of times.

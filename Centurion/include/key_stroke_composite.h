@@ -21,6 +21,11 @@ class KeyStrokeComposite final {  // FIXME should extend KeyStroke interface
   ~KeyStrokeComposite();
 
   /**
+  \brief Creates and returns a heap allocated KeyStrokeComposite instance.
+  */
+  static std::shared_ptr<centurion::events::KeyStrokeComposite> Create();
+
+  /**
   \brief Updates all held KeyStrokes with the supplied Event.
   \param event - the Event that will be dispatched to all KeyStroke instances.
   */

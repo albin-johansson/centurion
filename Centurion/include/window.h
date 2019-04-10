@@ -38,6 +38,18 @@ class Window : public centurion::geo::Dimensioned {
 
   ~Window();
 
+  /**
+  \brief Creates and returns a heap allocated Window instance.
+  \param title - the title of the window.
+  \param width - the desired width of the window.
+  \param height - the desired height of the window.
+  \param flags - flags providing information about the window to be created, the
+  flag values are specified by SDL_WindowFlags. For example,
+  SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
+  */
+  static std::shared_ptr<centurion::visuals::Window> Create(
+      const std::string& title, int width, int height, uint32_t flags);
+
   /*
   \brief Makes this window visible.
   */

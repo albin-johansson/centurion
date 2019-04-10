@@ -24,6 +24,12 @@ KeyStroke::KeyStroke(SDL_Keycode keycode, shared_ptr<Action> action,
 
 KeyStroke::~KeyStroke() = default;
 
+shared_ptr<KeyStroke> KeyStroke::Create(SDL_Keycode keycode,
+                                        shared_ptr<Action> action,
+                                        KeyTrigger trigger) {
+  return std::make_shared<KeyStroke>(keycode, action, trigger);
+}
+
 bool KeyStroke::ShouldExecute(const Event& e) {
   KeyboardEvent kEvent = e.GetKeyboardInfo();
 

@@ -7,6 +7,7 @@ namespace centurion {
 namespace visuals {
 
 /**
+* DEPRECATED *
 \brief The FontFactory class is a factory for creating instances of the Font
 class.
 */

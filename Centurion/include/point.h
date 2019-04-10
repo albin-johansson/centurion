@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_rect.h>
+#include <memory>
 #include "positionable.h"
 
 namespace centurion {
@@ -20,6 +21,13 @@ class Point : public centurion::geo::Positionable {
   Point(int x, int y);
 
   ~Point() override = default;
+
+  /**
+  \brief Creates and returns a heap allocated Point instance.
+  \param x - the desired initial x-coordinate.
+  \param y - the desired initial y-coordinate.
+  */
+  static std::shared_ptr<centurion::geo::Point> Create(int x, int y);
 
   /**
   \brief Assigns the location of this point.

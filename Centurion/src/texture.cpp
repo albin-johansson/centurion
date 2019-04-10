@@ -14,11 +14,15 @@ Texture::Texture(SDL_Texture* texture, int width, int height)
     throw invalid_argument("Null SDL_Texture!");
   } else {
     this->sdl_texture = texture;
-    
   }
 }
 
 Texture::~Texture() { SDL_DestroyTexture(sdl_texture); }
+
+std::shared_ptr<Texture> Texture::Create(SDL_Texture* texture, int width,
+                                         int height) {
+  return std::make_shared<Texture>(texture, width, height);
+}
 
 SDL_Texture& Texture::GetSDLVersion() { return *sdl_texture; }
 

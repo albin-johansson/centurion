@@ -12,6 +12,10 @@ KeyStrokeComposite::KeyStrokeComposite() {
 
 KeyStrokeComposite::~KeyStrokeComposite() { Clear(); }
 
+std::shared_ptr<KeyStrokeComposite> KeyStrokeComposite::Create() {
+  return std::make_shared<KeyStrokeComposite>();
+}
+
 void KeyStrokeComposite::Update(const Event& event) {
   for (shared_ptr<KeyStroke> keyStroke : keyStrokes) {
     if (keyStroke != nullptr) {

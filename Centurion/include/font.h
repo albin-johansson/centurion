@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_ttf.h>
+#include <memory>
 #include <string>
 
 namespace centurion {
@@ -23,6 +24,14 @@ class Font {
   Font(const std::string& path, int size);
 
   ~Font();
+
+  /**
+  \brief Creates and returns a heap allocated Font instance.
+  \param path - the path of the True Type Font (.ttf) file.
+  \param size - the point size of the font.
+  */
+  static std::shared_ptr<centurion::visuals::Font> Create(
+      const std::string& path, int size);
 
   /**
   \brief Sets the styling of this font. The possible values are

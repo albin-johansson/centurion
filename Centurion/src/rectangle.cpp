@@ -19,6 +19,14 @@ Rectangle::Rectangle(int w, int h) : Rectangle(0, 0, w, h) {}
 
 Rectangle::~Rectangle() = default;
 
+std::shared_ptr<Rectangle> Rectangle::Create(int x, int y, int w, int h) {
+  return std::make_shared<Rectangle>(x, y, w, h);
+}
+
+std::shared_ptr<Rectangle> Rectangle::Create(int w, int h) {
+  return std::make_shared<Rectangle>(w, h);
+}
+
 void Rectangle::SetLocation(int x, int y) {
   SetX(x);
   SetY(y);

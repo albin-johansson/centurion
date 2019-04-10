@@ -22,6 +22,10 @@ Music::~Music() {
   Mix_FreeMusic(music);
 }
 
+std::shared_ptr<Music> Music::Create(const std::string& path) {
+  return std::make_shared<Music>(path);
+}
+
 void Music::Play() {
   if (IsMusicPlaying()) {
     Stop();

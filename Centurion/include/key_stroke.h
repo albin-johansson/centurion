@@ -24,8 +24,9 @@ class KeyStroke {
  public:
   /**
   \param keycode - the key code of the key that will trigger the KeyStroke.
-  \param action - the Action that will be executed when the related key is
-  pressed/released. \param trigger - the KeyTrigger value which specifies the
+  \param action - the Action that will be executed when the related key
+  is pressed/released.
+  \param trigger - the KeyTrigger value which specifies the
   preferred moment of activation.
   */
   KeyStroke(SDL_Keycode keycode,
@@ -33,6 +34,18 @@ class KeyStroke {
             centurion::events::KeyTrigger trigger);
 
   ~KeyStroke();
+
+  /**
+  \brief Creates and returns a heap allocated KeyStroke instance.
+  \param keycode - the key code of the key that will trigger the KeyStroke.
+  \param action - the Action that will be executed when the related key
+  is pressed/released.
+  \param trigger - the KeyTrigger value which specifies the
+  preferred moment of activation.
+  */
+  static std::shared_ptr<centurion::events::KeyStroke> Create(
+      SDL_Keycode, std::shared_ptr<centurion::events::Action> action,
+      centurion::events::KeyTrigger trigger);
 
   /**
   \brief Updates this KeyStroke by comparing it to the supplied event.

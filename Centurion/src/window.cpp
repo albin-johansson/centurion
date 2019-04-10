@@ -30,6 +30,11 @@ Window::~Window() {
   SDL_DestroyWindow(window);
 }
 
+std::shared_ptr<Window> Window::Create(const std::string& title, int width,
+                                       int height, uint32_t flags) {
+  return std::make_shared<Window>(title, width, height, flags);
+}
+
 void Window::CheckWindowDimensions(int width, int height) {
   if (width < 1 || height < 1) {
     throw std::invalid_argument("Invalid dimensions for window!");

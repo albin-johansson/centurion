@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_rect.h>
+#include <memory>
 #include "dimensioned.h"
 #include "point.h"
 #include "positionable.h"
@@ -33,6 +34,22 @@ class Rectangle : public centurion::geo::Positionable,
   Rectangle(int w, int h);
 
   ~Rectangle() override;
+
+  /**
+  \brief Creates and returns a heap allocated Rectangle instance.
+  \param x - the desired initial x-coordinate.
+  \param y - the desired initial y-coordinate.
+  \param w - the width of the rectangle.
+  \param h - the height of the rectangle.
+  */
+  static std::shared_ptr<centurion::geo::Rectangle> Create(int x, int y, int w,
+                                                           int h);
+  /**
+  \brief Creates and returns a heap allocated Rectangle instance.
+  \param x - the desired initial x-coordinate.
+  \param y - the desired initial y-coordinate.
+  */
+  static std::shared_ptr<centurion::geo::Rectangle> Create(int x, int y);
 
   /**
   \brief Assigns the location of this rectangle.

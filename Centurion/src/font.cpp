@@ -17,6 +17,10 @@ Font::Font(const std::string& path, const int size) {
 
 Font::~Font() { TTF_CloseFont(font); }
 
+std::shared_ptr<Font> Font::Create(const std::string& path, int size) {
+  return std::make_shared<Font>(path, size);
+}
+
 void Font::SetStyle(int style) {
   if (IsValidStyle(style)) {
     TTF_SetFontStyle(font, style);

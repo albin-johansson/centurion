@@ -207,5 +207,9 @@ class Window : public centurion::geo::Dimensioned {
       const std::string& path) const;
 };
 
+typedef std::shared_ptr<centurion::visuals::Window> Window_sptr;
+typedef std::unique_ptr<centurion::visuals::Window> Window_uptr;
+typedef std::weak_ptr<centurion::visuals::Window> Window_wptr;
+
 }  // namespace visuals
 }  // namespace centurion

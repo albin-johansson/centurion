@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 namespace centurion {
 namespace audio {
@@ -34,6 +35,10 @@ class AudioComponent {
   */
   virtual int GetVolume() const = 0;
 };
+
+typedef std::shared_ptr<centurion::audio::AudioComponent> AudioComponent_sptr;
+typedef std::unique_ptr<centurion::audio::AudioComponent> AudioComponent_uptr;
+typedef std::weak_ptr<centurion::audio::AudioComponent> AudioComponent_wptr;
 
 }  // namespace audio
 }  // namespace centurion

@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 namespace centurion {
 namespace geo {
@@ -24,6 +25,10 @@ class Dimensioned {
   */
   virtual int GetHeight() const = 0;
 };
+
+typedef std::shared_ptr<centurion::geo::Dimensioned> Dimensioned_sptr;
+typedef std::unique_ptr<centurion::geo::Dimensioned> Dimensioned_uptr;
+typedef std::weak_ptr<centurion::geo::Dimensioned> Dimensioned_wptr;
 
 }  // namespace geo
 }  // namespace centurion

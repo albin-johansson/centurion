@@ -61,5 +61,9 @@ class SoundEffect : public AudioComponent {
   int GetVolume() const override;
 };
 
+typedef std::shared_ptr<centurion::audio::SoundEffect> SoundEffect_sptr;
+typedef std::unique_ptr<centurion::audio::SoundEffect> SoundEffect_uptr;
+typedef std::weak_ptr<centurion::audio::SoundEffect> SoundEffect_wptr;
+
 }  // namespace audio
 }  // namespace centurion

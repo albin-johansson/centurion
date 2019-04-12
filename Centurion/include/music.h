@@ -69,5 +69,9 @@ class Music : public AudioComponent {
   int GetVolume() const override;
 };
 
+typedef std::shared_ptr<centurion::audio::Music> Music_sptr;
+typedef std::unique_ptr<centurion::audio::Music> Music_uptr;
+typedef std::weak_ptr<centurion::audio::Music> Music_wptr;
+
 }  // namespace audio
 }  // namespace centurion

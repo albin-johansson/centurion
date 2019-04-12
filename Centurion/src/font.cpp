@@ -57,3 +57,12 @@ int Font::GetStringHeight(const std::string& text) const {
 
 }  // namespace visuals
 }  // namespace centurion
+
+// TODO implement in later versions
+// void SetBold(bool isBold);
+//
+// void SetItalic(bool isItalic);
+//
+// void SetUnderlined(bool isUnderlined);
+//
+// void SetStrikethrough(bool isStrikethrough);

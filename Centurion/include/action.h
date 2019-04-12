@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 namespace centurion {
 namespace events {
@@ -19,6 +20,10 @@ class Action {
   */
   virtual void Execute() = 0;
 };
+
+typedef std::shared_ptr<centurion::events::Action> Action_sptr;
+typedef std::unique_ptr<centurion::events::Action> Action_uptr;
+typedef std::weak_ptr<centurion::events::Action> Action_wptr;
 
 }  // namespace events
 }  // namespace centurion

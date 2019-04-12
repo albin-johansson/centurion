@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_events.h>
+#include <memory>
 
 namespace centurion {
 namespace events {
@@ -68,6 +69,10 @@ class MouseEvent {
   */
   bool IsMouseWheelEvent() const;
 };
+
+typedef std::shared_ptr<centurion::events::MouseEvent> MouseEvent_sptr;
+typedef std::unique_ptr<centurion::events::MouseEvent> MouseEvent_uptr;
+typedef std::weak_ptr<centurion::events::MouseEvent> MouseEvent_wptr;
 
 }  // namespace events
 }  // namespace centurion

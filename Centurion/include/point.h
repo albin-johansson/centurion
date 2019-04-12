@@ -64,5 +64,9 @@ class Point : public centurion::geo::Positionable {
   inline SDL_Point GetSDLVersion() const { return point; }
 };
 
+typedef std::shared_ptr<centurion::geo::Point> Point_sptr;
+typedef std::unique_ptr<centurion::geo::Point> Point_uptr;
+typedef std::weak_ptr<centurion::geo::Point> Point_wptr;
+
 }  // namespace geo
 }  // namespace centurion

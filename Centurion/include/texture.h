@@ -52,5 +52,9 @@ class Texture : public centurion::geo::Dimensioned {
   inline int GetHeight() const override { return height; };
 };
 
+typedef std::shared_ptr<centurion::visuals::Texture> Texture_sptr;
+typedef std::unique_ptr<centurion::visuals::Texture> Texture_uptr;
+typedef std::weak_ptr<centurion::visuals::Texture> Texture_wptr;
+
 }  // namespace visuals
 }  // namespace centurion

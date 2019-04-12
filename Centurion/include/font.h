@@ -41,15 +41,6 @@ class Font {
   */
   void SetStyle(int style);
 
-  // TODO implement in later versions
-  // void SetBold(bool isBold);
-  //
-  // void SetItalic(bool isItalic);
-  //
-  // void SetUnderlined(bool isUnderlined);
-  //
-  // void SetStrikethrough(bool isStrikethrough);
-
   /**
   \brief Assigns whether or not this is an outlined font.
   \param isOutlined - should be true if the font should only be outlined.
@@ -61,12 +52,12 @@ class Font {
   represents.
   DO NOT use the returned pointer to call TTF_CloseFont().
   */
-  TTF_Font* GetSDLVersion() { return font; }
+  inline TTF_Font* GetSDLVersion() { return font; }
 
   /**
   \brief Returns the point size of the font that this Font instacne represents.
   */
-  int GetSize() const { return size; }
+  inline int GetSize() const { return size; }
 
   /**
   \brief Calculates and returns the width of the supplied string, if it was
@@ -82,6 +73,10 @@ class Font {
   */
   int GetStringHeight(const std::string& str) const;
 };
+
+typedef std::shared_ptr<centurion::visuals::Font> Font_sptr;
+typedef std::unique_ptr<centurion::visuals::Font> Font_uptr;
+typedef std::weak_ptr<centurion::visuals::Font> Font_wptr;
 
 }  // namespace visuals
 }  // namespace centurion

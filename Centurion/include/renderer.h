@@ -169,5 +169,9 @@ class Renderer {
   inline SDL_Renderer* const GetSDLVersion() const { return sdl_renderer; }
 };
 
+typedef std::shared_ptr<centurion::visuals::Renderer> Renderer_sptr;
+typedef std::unique_ptr<centurion::visuals::Renderer> Renderer_uptr;
+typedef std::weak_ptr<centurion::visuals::Renderer> Renderer_wptr;
+
 }  // namespace visuals
 }  // namespace centurion

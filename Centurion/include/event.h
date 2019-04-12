@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_events.h>
+#include <memory>
 #include "keyboard_event.h"
 #include "mouse_event.h"
 
@@ -56,6 +57,10 @@ class Event {
   */
   inline SDL_Event GetSDLVersion() const { return event; }
 };
+
+typedef std::shared_ptr<centurion::events::Event> Event_sptr;
+typedef std::unique_ptr<centurion::events::Event> Event_uptr;
+typedef std::weak_ptr<centurion::events::Event> Event_wptr;
 
 }  // namespace events
 }  // namespace centurion

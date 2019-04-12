@@ -74,5 +74,9 @@ class KeyStroke {
   inline bool IsRepeatable() const { return isRepeatable; }
 };
 
+typedef std::shared_ptr<centurion::events::KeyStroke> KeyStroke_sptr;
+typedef std::unique_ptr<centurion::events::KeyStroke> KeyStroke_uptr;
+typedef std::weak_ptr<centurion::events::KeyStroke> KeyStroke_wptr;
+
 }  // namespace events
 }  // namespace centurion

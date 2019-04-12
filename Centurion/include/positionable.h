@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 
 namespace centurion {
 namespace geo {
@@ -43,6 +44,10 @@ class Positionable {
   */
   virtual int GetY() const = 0;
 };
+
+typedef std::shared_ptr<centurion::geo::Positionable> Positionable_sptr;
+typedef std::unique_ptr<centurion::geo::Positionable> Positionable_uptr;
+typedef std::weak_ptr<centurion::geo::Positionable> Positionable_wptr;
 
 }  // namespace geo
 }  // namespace centurion

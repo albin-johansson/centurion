@@ -121,5 +121,9 @@ class Rectangle : public centurion::geo::Positionable,
   SDL_Rect GetSDLVersion() const { return rect; };
 };
 
+typedef std::shared_ptr<centurion::geo::Rectangle> Rectangle_sptr;
+typedef std::unique_ptr<centurion::geo::Rectangle> Rectangle_uptr;
+typedef std::weak_ptr<centurion::geo::Rectangle> Rectangle_wptr;
+
 }  // namespace geo
 }  // namespace centurion

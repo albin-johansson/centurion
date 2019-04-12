@@ -2,7 +2,7 @@
 
 /*
   This header file includes all of the components located in the
-  centurion::audio namespace. Last updated: 2019-14-10.
+  centurion::audio namespace. Last updated: 2019-04-10.
 */
 
 #include "audio_component.h"

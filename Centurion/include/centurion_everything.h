@@ -2,7 +2,7 @@
 
 /*
   This header file includes ALL of the components located in the Centurion
-  library. Last updated: 2019-14-10.
+  library. Last updated: 2019-04-10.
 */
 
 #include "centurion.h"

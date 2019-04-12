@@ -8,7 +8,7 @@ namespace io {
 
 class FileWriter {
  private:
-  std::unique_ptr<centurion::io::File> file;
+  centurion::io::File_uptr file;
 
  public:
   FileWriter();

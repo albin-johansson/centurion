@@ -1,4 +1,5 @@
 #include "window.h"
+#include <SDL_video.h>
 #include <stdexcept>
 #include "boolean_converter.h"
 #include "positionable.h"
@@ -113,7 +114,7 @@ std::shared_ptr<Texture> Window::CreateTextureFromString(
 }
 
 std::shared_ptr<Texture> Window::CreateTexture(const std::string& path) const {
-  return TextureFactory::CreateTexture(path, *renderer);
+  return TextureFactory::CreateTexture(path, renderer->GetSDLVersion());
 }
 
 }  // namespace visuals

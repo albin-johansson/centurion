@@ -32,6 +32,7 @@ class TextureFactory final {
       const std::string& path, SDL_Renderer* renderer);
 
   /**
+	* DEPRECATED *
   \brief Creates and returns a Texture instance.
   \param path - the path of the image file that the Texture will represent.
   \param renderer - the Renderer instance used to create the Texture.

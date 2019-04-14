@@ -20,7 +20,6 @@ bool KeyHandler::ShouldTriggerKeyAction(const Key_sptr key) const {
   if (key == nullptr) {
     throw std::invalid_argument("Null key pointer!");
   }
-
   SDL_Scancode code = key->GetScancode();
   if (stateArr[code]) {
     return (key->GetKeyTrigger() == KeyTrigger::IMMEDIATE);

@@ -38,7 +38,7 @@ void SoundEffect::Activate(int nLoops) {
   }
 }
 
-void SoundEffect::Play() { Activate(0); }
+void SoundEffect::Play() noexcept { Activate(0); }
 
 void SoundEffect::Loop(int nLoops) {
   if (nLoops < -1) {
@@ -48,7 +48,7 @@ void SoundEffect::Loop(int nLoops) {
   }
 }
 
-void SoundEffect::Stop() {
+void SoundEffect::Stop() noexcept {
   if ((channel != UNDEFINED_CHANNEL) && Mix_Playing(channel)) {
     Mix_Pause(channel);
     channel = UNDEFINED_CHANNEL;
@@ -63,7 +63,7 @@ void SoundEffect::SetVolume(int volume) {
   }
 }
 
-int SoundEffect::GetVolume() const { return sound->volume; }
+int SoundEffect::GetVolume() const noexcept { return sound->volume; }
 
 }  // namespace audio
 }  // namespace centurion

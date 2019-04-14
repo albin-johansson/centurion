@@ -24,7 +24,7 @@ std::shared_ptr<Texture> Texture::Create(SDL_Texture* texture, int width,
   return std::make_shared<Texture>(texture, width, height);
 }
 
-SDL_Texture& Texture::GetSDLVersion() { return *sdl_texture; }
+SDL_Texture& Texture::GetSDLVersion() noexcept { return *sdl_texture; }
 
 }  // namespace visuals
 }  // namespace centurion

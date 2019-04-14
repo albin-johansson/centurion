@@ -42,12 +42,12 @@ class SoundEffect : public AudioComponent {
   /**
   \brief Plays the sound effect.
   */
-  void Play() override;
+  void Play() noexcept override;
 
   /**
   \brief Stops playing the sound effect.
   */
-  void Stop() override;
+  void Stop() noexcept override;
 
   /**
   \brief Sets the volume of the sound effect.
@@ -58,7 +58,7 @@ class SoundEffect : public AudioComponent {
   /**
   \brief Returns the current volume of the sound effect.
   */
-  int GetVolume() const override;
+  int GetVolume() const noexcept override;
 };
 
 typedef std::shared_ptr<centurion::audio::SoundEffect> SoundEffect_sptr;

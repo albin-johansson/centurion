@@ -39,17 +39,17 @@ class Texture : public centurion::geo::Dimensioned {
   /**
   \brief Returns a referene to the internal represenation of this Texture.
   */
-  SDL_Texture& GetSDLVersion();
+  SDL_Texture& GetSDLVersion() noexcept;
 
   /**
   \brief Returns the width of this texture.
   */
-  inline int GetWidth() const override { return width; };
+  inline int GetWidth() const noexcept override { return width; };
 
   /**
   \brief Returns the height of this texture.
   */
-  inline int GetHeight() const override { return height; };
+  inline int GetHeight() const noexcept override { return height; };
 };
 
 typedef std::shared_ptr<centurion::visuals::Texture> Texture_sptr;

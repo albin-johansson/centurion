@@ -21,9 +21,9 @@ class Key {
 
   void Trigger();
 
-  inline SDL_Scancode GetScancode() const { return scancode; }
+  inline SDL_Scancode GetScancode() const noexcept { return scancode; }
 
-  inline centurion::events::KeyTrigger GetKeyTrigger() const {
+  inline centurion::events::KeyTrigger GetKeyTrigger() const noexcept {
     return keyTrigger;
   }
 };

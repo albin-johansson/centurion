@@ -34,34 +34,34 @@ class Point : public centurion::geo::Positionable {
   \param x - the new x-coordinate.
   \param y - the new y-coordinate.
   */
-  void SetLocation(int x, int y) override;
+  void SetLocation(int x, int y) noexcept override;
 
   /**
   \brief Assigns the x-coordinate of this point.
   \param x - the new x-coordinate.
   */
-  void SetX(int x) override;
+  void SetX(int x) noexcept override;
 
   /**
   \brief Assigns the y-coordinate of this point.
   \param y - the new y-coordinate.
   */
-  void SetY(int y) override;
+  void SetY(int y) noexcept override;
 
   /**
   \brief Returns the x-coordinate of this point.
   */
-  inline int GetX() const override { return point.x; };
+  inline int GetX() const noexcept override { return point.x; };
 
   /**
   \brief Returns the y-coordinate of this point.
   */
-  inline int GetY() const override { return point.y; };
+  inline int GetY() const noexcept override { return point.y; };
 
   /**
   \brief Returns a copy of the internal representation of this Point.
   */
-  inline SDL_Point GetSDLVersion() const { return point; }
+  inline SDL_Point GetSDLVersion() const noexcept { return point; }
 };
 
 typedef std::shared_ptr<centurion::geo::Point> Point_sptr;

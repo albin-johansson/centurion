@@ -9,14 +9,14 @@ std::shared_ptr<Point> Point::Create(int x, int y) {
   return std::make_shared<Point>(x, y);
 }
 
-void Point::SetLocation(int x, int y) {
+void Point::SetLocation(int x, int y) noexcept {
   SetX(x);
   SetY(y);
 }
 
-void Point::SetX(int x) { point.x = x; }
+void Point::SetX(int x) noexcept { point.x = x; }
 
-void Point::SetY(int y) { point.y = y; }
+void Point::SetY(int y) noexcept { point.y = y; }
 
 }  // namespace geo
 }  // namespace centurion

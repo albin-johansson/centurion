@@ -10,11 +10,11 @@ Event::Event(SDL_Event event)
 
 Event::~Event() = default;
 
-bool Event::IsKeyEvent() const {
+bool Event::IsKeyEvent() const noexcept {
   return (event.type == SDL_KEYUP) || (event.type == SDL_KEYDOWN);
 }
 
-bool Event::IsMouseEvent() const {
+bool Event::IsMouseEvent() const noexcept {
   return event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP ||
          event.type == SDL_MOUSEMOTION || event.type == SDL_MOUSEWHEEL;
 }

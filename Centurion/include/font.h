@@ -15,11 +15,11 @@ class Font {
   int styleMask;
   int size;
 
-  bool IsValidStyle(int style);
+  bool IsValidStyle(int style) noexcept;
 
-  void RemoveStyle(int mask);
+  void RemoveStyle(int mask) noexcept;
 
-  void ApplyStyle(int mask);
+  void ApplyStyle(int mask) noexcept;
 
  public:
   /**
@@ -42,7 +42,7 @@ class Font {
   \brief Resets the style of this font, so that the style is equivalent to the
   style used when this font was first created.
   */
-  void ResetStyle();
+  void ResetStyle() noexcept;
 
   /**
   \brief Sets the styling of this font. The possible values are
@@ -50,84 +50,84 @@ class Font {
   TTF_STYLE_STRIKETHROUGH. These values may be OR'd together.
   \param style - the mask specifying the desired styling of this font.
   */
-  void SetStyle(int style);
+  void SetStyle(int style) noexcept;
 
   /**
   \brief Assigns whether or not this font should be bold.
   \param isBold - true if this font should be bold, false otherwise.
   */
-  void SetBold(bool isBold);
+  void SetBold(bool isBold) noexcept;
 
   /**
   \brief Assigns whether or not this font should be italic.
   \param isItalic - true if this font should be italic, false otherwise.
   */
-  void SetItalic(bool isItalic);
+  void SetItalic(bool isItalic) noexcept;
 
   /**
   \brief Assigns whether or not this font should be underlined.
   \param isUnderlined - true if this font should be underlined, false otherwise.
   */
-  void SetUnderlined(bool isUnderlined);
+  void SetUnderlined(bool isUnderlined) noexcept;
 
   /**
   \brief Assigns whether or not this font should use a strikethrough.
   \param isStrikethrough - true if this font should be a strikethrough font,
   false otherwise.
   */
-  void SetStrikethrough(bool isStrikethrough);
+  void SetStrikethrough(bool isStrikethrough) noexcept;
 
   /**
   \brief Assigns whether or not this is an outlined font.
   \param isOutlined - should be true if the font should only be outlined.
   */
-  void SetOutlined(bool isOutlined);
+  void SetOutlined(bool isOutlined) noexcept;
 
   /**
   \brief Returns a raw pointer to the SDL_font which this Font object
   represents.
   DO NOT use the returned pointer to call TTF_CloseFont().
   */
-  inline TTF_Font* GetSDLVersion() { return font; }
+  inline TTF_Font* GetSDLVersion() noexcept { return font; }
 
   /**
   \brief Returns the point size of the font that this Font instacne represents.
   */
-  inline int GetSize() const { return size; }
+  inline int GetSize() const noexcept { return size; }
 
   /**
   \brief Returns true if this font is bold, false otherwise.
   */
-  bool IsBold() const;
+  bool IsBold() const noexcept;
 
   /**
   \brief Returns true if this font is italic, false otherwise.
   */
-  bool IsItalic() const;
+  bool IsItalic() const noexcept;
 
   /**
   \brief Returns true if this font is underlined, false otherwise.
   */
-  bool IsUnderlined() const;
+  bool IsUnderlined() const noexcept;
 
   /**
   \brief Returns true if this font uses a strikethrough, false otherwise.
   */
-  bool IsStrikethrough() const;
+  bool IsStrikethrough() const noexcept;
 
   /**
   \brief Calculates and returns the width of the supplied string, if it was
   rendered in this font.
   \param str - the string that will be measured.
   */
-  int GetStringWidth(const std::string& str) const;
+  int GetStringWidth(const std::string& str) const noexcept;
 
   /**
   \brief Calculates and returns the height of the supplied string, if it was
   rendered in this font.
   \param str - the string that will be measured.
   */
-  int GetStringHeight(const std::string& str) const;
+  int GetStringHeight(const std::string& str) const noexcept;
 };
 
 typedef std::shared_ptr<centurion::visuals::Font> Font_sptr;

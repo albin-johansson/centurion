@@ -16,7 +16,7 @@ class Rectangle : public centurion::geo::Positionable,
  private:
   SDL_Rect rect;
 
-  bool Contains(SDL_Point point) const;
+  bool Contains(SDL_Point point) const noexcept;
 
  public:
   /**
@@ -56,19 +56,19 @@ class Rectangle : public centurion::geo::Positionable,
   \param x - the new x-coordinate.
   \param y - the new y-coordinate.
   */
-  void SetLocation(int x, int y) override;
+  void SetLocation(int x, int y) noexcept override;
 
   /**
   \brief Assigns the x-coordinate of this rectangle.
   \param x - the new x-coordinate.
   */
-  void SetX(int x) override;
+  void SetX(int x) noexcept override;
 
   /**
   \brief Assigns the y-coordinate of this rectangle.
   \param y - the new y-coordinate.
   */
-  void SetY(int y) override;
+  void SetY(int y) noexcept override;
 
   /**
   \brief Indicates whether or not this rectangle intersects another rectangle.
@@ -76,7 +76,7 @@ class Rectangle : public centurion::geo::Positionable,
   false otherwise.
   \param rect - the rectangle that will be checked with this rectangle.
   */
-  bool Intersects(const centurion::geo::Rectangle rect) const;
+  bool Intersects(const centurion::geo::Rectangle rect) const noexcept;
 
   /**
   \brief Indicates whether or not this rectangle contains the specified point.
@@ -85,7 +85,7 @@ class Rectangle : public centurion::geo::Positionable,
   \param x - the x-coordinate of the point to check.
   \param y - the y-coordinate of the point to check.
   */
-  bool Contains(int x, int y) const;
+  bool Contains(int x, int y) const noexcept;
 
   /**
   \brief Indicates whether or not this rectangle contains the specified point.
@@ -93,32 +93,32 @@ class Rectangle : public centurion::geo::Positionable,
   otherwise.
   \param point - the point that will be checked.
   */
-  bool Contains(centurion::geo::Point point) const;
+  bool Contains(centurion::geo::Point point) const noexcept;
 
   /**
   \brief Returns the x-coordinate of this rectangle.
   */
-  int GetX() const override { return rect.x; };
+  int GetX() const noexcept override { return rect.x; };
 
   /**
   \brief Returns the y-coordinate of this rectangle.
   */
-  int GetY() const override { return rect.y; };
+  int GetY() const noexcept override { return rect.y; };
 
   /**
   \brief Returns the width of this rectangle.
   */
-  int GetWidth() const override { return rect.w; };
+  int GetWidth() const noexcept override { return rect.w; };
 
   /**
   \brief Returns the height of this rectangle.
   */
-  int GetHeight() const override { return rect.h; };
+  int GetHeight() const noexcept override { return rect.h; };
 
   /**
   \brief Creates and returns an SDL_Rect that represents this rectangle.
   */
-  SDL_Rect GetSDLVersion() const { return rect; };
+  SDL_Rect GetSDLVersion() const noexcept { return rect; };
 };
 
 typedef std::shared_ptr<centurion::geo::Rectangle> Rectangle_sptr;

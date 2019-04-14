@@ -26,7 +26,7 @@ std::shared_ptr<Music> Music::Create(const std::string& path) {
   return std::make_shared<Music>(path);
 }
 
-void Music::Play() {
+void Music::Play() noexcept {
   if (IsMusicPlaying()) {
     Stop();
   }
@@ -44,7 +44,7 @@ void Music::FadeIn(int ms) {
   }
 }
 
-void Music::Stop() {
+void Music::Stop() noexcept {
   if (IsMusicPlaying()) {
     Mix_PauseMusic();
   }
@@ -69,7 +69,7 @@ void Music::SetVolume(int volume) {
   }
 }
 
-int Music::GetVolume() const { return volume; }
+int Music::GetVolume() const noexcept { return volume; }
 
 }  // namespace audio
 }  // namespace centurion

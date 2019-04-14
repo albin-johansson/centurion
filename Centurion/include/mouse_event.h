@@ -24,50 +24,50 @@ class MouseEvent {
   /**
   \brief Returns the x-coordinate of the mouse press.
   */
-  int GetMousePressedX() const;
+  int GetMousePressedX() const noexcept;
 
   /**
   \brief Returns the y-coordinate of the mouse press.
   */
-  int GetMousePressedY() const;
+  int GetMousePressedY() const noexcept;
 
   /**
   \brief Returns the ID of the pressed mouse button.
   */
-  int GetPressedButtonID() const;
+  int GetPressedButtonID() const noexcept;
 
   /**
   \brief Indicates whether the MouseEvent was triggered by a released mouse
   button.
   */
-  bool WasButtonReleased() const;
+  bool WasButtonReleased() const noexcept;
 
   /**
   \brief Indicates whether the MouseEvent was triggered by a pressed mouse
   button.
   */
-  bool WasButtonPressed() const;
+  bool WasButtonPressed() const noexcept;
 
   /**
   \brief Indicates whether the MouseEvent was triggered by a double click of a
   mouse button.
   */
-  bool WasDoubleClick() const;
+  bool WasDoubleClick() const noexcept;
 
   /**
   \brief Indicates whether the MouseEvent was triggered by a mouse button event.
   */
-  bool IsMouseButtonEvent() const;
+  bool IsMouseButtonEvent() const noexcept;
 
   /**
   \brief Indicates whether the MouseEvent was triggered by a mouse motion event.
   */
-  bool IsMouseMotionEvent() const;
+  bool IsMouseMotionEvent() const noexcept;
 
   /**
   \brief Indicates whether the MouseEvent was triggered by a mouse wheel event.
   */
-  bool IsMouseWheelEvent() const;
+  bool IsMouseWheelEvent() const noexcept;
 };
 
 typedef std::shared_ptr<centurion::events::MouseEvent> MouseEvent_sptr;

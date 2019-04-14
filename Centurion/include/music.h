@@ -16,7 +16,7 @@ class Music : public AudioComponent {
   Mix_Music* music;
   int volume;
 
-  inline bool IsMusicPlaying() { return Mix_PlayingMusic(); }
+  inline bool IsMusicPlaying() const noexcept { return Mix_PlayingMusic(); }
 
  public:
   /**
@@ -50,12 +50,12 @@ class Music : public AudioComponent {
   /**
   \brief Starts playing the music file.
   */
-  void Play() override;
+  void Play() noexcept override;
 
   /**
   \brief Stops playing the music file.
   */
-  void Stop() override;
+  void Stop() noexcept override;
 
   /**
   \brief Assigns the volume of the music file.
@@ -66,7 +66,7 @@ class Music : public AudioComponent {
   /**
   \brief Returns the current volume of the music file.
   */
-  int GetVolume() const override;
+  int GetVolume() const noexcept override;
 };
 
 typedef std::shared_ptr<centurion::audio::Music> Music_sptr;

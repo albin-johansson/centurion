@@ -30,32 +30,32 @@ class Event {
   \brief Indicates whether the type of this Event is primarily a key based
   event. Returns true if this is the case, false otherwise.
   */
-  bool IsKeyEvent() const;
+  bool IsKeyEvent() const noexcept;
 
   /**
   \brief Indicates whether the type of this Event is primarily a mouse based
   event. Returns true if this is the case, false otherwise.
   */
-  bool IsMouseEvent() const;
+  bool IsMouseEvent() const noexcept;
 
   /**
   \brief Returns a MouseEvent that holds information about the mouse.
   */
-  inline centurion::events::MouseEvent GetMouseInfo() const {
+  inline centurion::events::MouseEvent GetMouseInfo() const noexcept {
     return mouseEvent;
   }
 
   /**
   \brief Returns a KeyboardEvent that holds information about the mouse.
   */
-  inline centurion::events::KeyboardEvent GetKeyboardInfo() const {
+  inline centurion::events::KeyboardEvent GetKeyboardInfo() const noexcept {
     return keyEvent;
   }
 
   /**
   \brief Returns a copy of the internal representation of this Event.
   */
-  inline SDL_Event GetSDLVersion() const { return event; }
+  inline SDL_Event GetSDLVersion() const noexcept { return event; }
 };
 
 typedef std::shared_ptr<centurion::events::Event> Event_sptr;

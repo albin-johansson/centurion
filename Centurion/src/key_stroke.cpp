@@ -55,7 +55,7 @@ void KeyStroke::Update(const Event& e) {
 
 void KeyStroke::Trigger() { action->Execute(); }
 
-void KeyStroke::SetRepeatable(bool isRepeatable) {
+void KeyStroke::SetRepeatable(bool isRepeatable) noexcept {
   this->isRepeatable = isRepeatable;
 }
 

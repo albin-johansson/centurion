@@ -69,27 +69,27 @@ class Color {
   /**
   \brief Returns the red component of this color.
   */
-  inline uint8_t GetRed() const { return color.r; }
+  inline uint8_t GetRed() const noexcept { return color.r; }
 
   /**
   \brief Returns the green component of this color.
   */
-  inline uint8_t GetGreen() const { return color.g; }
+  inline uint8_t GetGreen() const noexcept { return color.g; }
 
   /**
   \brief Returns the blue component of this color.
   */
-  inline uint8_t GetBlue() const { return color.b; }
+  inline uint8_t GetBlue() const noexcept { return color.b; }
 
   /**
   \brief Returns the alpha component of this color.
   */
-  inline uint8_t GetAlpha() const { return color.a; }
+  inline uint8_t GetAlpha() const noexcept { return color.a; }
 
   /**
   \brief Returns an SDL_Color instance that represents this Color.
   */
-  inline SDL_Color GetSDLVersion() const { return color; }
+  inline SDL_Color GetSDLVersion() const noexcept { return color; }
 };
 
 typedef std::shared_ptr<centurion::visuals::Color> Color_sptr;

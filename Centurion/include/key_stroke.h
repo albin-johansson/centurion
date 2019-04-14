@@ -66,12 +66,12 @@ class KeyStroke {
   \param isRepeatable - the new value dictating whether this
   KeyStroke is repeatable.
   */
-  void SetRepeatable(bool isRepeatable);
+  void SetRepeatable(bool isRepeatable) noexcept;
 
   /**
   \brief Indicates whether or not this KeyStroke is repeatable.
   */
-  inline bool IsRepeatable() const { return isRepeatable; }
+  inline bool IsRepeatable() const noexcept { return isRepeatable; }
 };
 
 typedef std::shared_ptr<centurion::events::KeyStroke> KeyStroke_sptr;

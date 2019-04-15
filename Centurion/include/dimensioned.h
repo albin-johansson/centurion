@@ -7,6 +7,7 @@ namespace geo {
 /**
 \brief The Dimensioned class acts as an interface for objects that have both
 width and height.
+\since 1.0.0
 */
 class Dimensioned {
  protected:

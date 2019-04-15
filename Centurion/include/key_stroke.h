@@ -11,6 +11,7 @@ namespace events {
 
 /**
 \brief The KeyStroke class represents an key controlled action.
+\since 1.0.0
 */
 class KeyStroke {
  private:

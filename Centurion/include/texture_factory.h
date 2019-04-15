@@ -12,6 +12,7 @@ namespace visuals {
 /**
 \brief The TextureFactory class provides factory methods for creating instances
 of the Texture class.
+\since 1.0.0
 */
 class TextureFactory final {
  private:
@@ -32,7 +33,7 @@ class TextureFactory final {
       const std::string& path, SDL_Renderer* renderer);
 
   /**
-	* DEPRECATED *
+        * DEPRECATED *
   \brief Creates and returns a Texture instance.
   \param path - the path of the image file that the Texture will represent.
   \param renderer - the Renderer instance used to create the Texture.

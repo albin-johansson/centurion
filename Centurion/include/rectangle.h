@@ -10,6 +10,7 @@ namespace geo {
 
 /**
 \brief The Rectangle class quite simply represents a rectangle.
+\since 1.0.0
 */
 class Rectangle : public centurion::geo::Positionable,
                   public centurion::geo::Dimensioned {

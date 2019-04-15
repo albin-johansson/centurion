@@ -8,6 +8,7 @@ namespace visuals {
 
 /**
 \brief The Font class serves as a representation of a True Type font.
+\since 1.0.0
 */
 class Font {
  private:

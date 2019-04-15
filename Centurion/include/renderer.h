@@ -15,6 +15,7 @@ namespace visuals {
 
 /**
 \brief The Renderer class provides rendering functionality for a Window.
+\since 1.0.0
 */
 class Renderer {
  private:

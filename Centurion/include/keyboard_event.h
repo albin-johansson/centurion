@@ -9,6 +9,7 @@ namespace events {
 
 /**
 \brief The KeyboardEvent class provides information about a keyboard event.
+\since 1.0.0
 */
 class KeyboardEvent {
  private:

@@ -10,6 +10,7 @@ namespace events {
 /**
 \brief The KeyStrokeComposite is a convenience class designed to hold multiple
 KeyStroke instances.
+\since 1.0.0
 */
 class KeyStrokeComposite final {  // FIXME should extend KeyStroke interface
  private:

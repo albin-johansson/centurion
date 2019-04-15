@@ -14,6 +14,7 @@ namespace visuals {
 
 /**
 \brief The Window class represents a top-level frame.
+\since 1.0.0
 */
 class Window : public centurion::geo::Dimensioned {
  private:

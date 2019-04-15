@@ -7,6 +7,7 @@ namespace events {
 /**
 \brief The Action class serves as an interface for objects that represent
 various actions.
+\since 1.0.0
 */
 class Action {
  protected:

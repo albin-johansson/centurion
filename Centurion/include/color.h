@@ -8,6 +8,7 @@ namespace visuals {
 
 /**
 \brief The Color class simply represents a color.
+\since 1.0.0
 */
 class Color {
  private:

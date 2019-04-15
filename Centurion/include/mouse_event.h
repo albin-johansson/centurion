@@ -7,6 +7,7 @@ namespace events {
 
 /**
 \brief The MouseEvent class provides information about a mouse event.
+\since 1.0.0
 */
 class MouseEvent {
  private:

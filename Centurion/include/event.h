@@ -10,6 +10,7 @@ namespace events {
 /**
 \brief The Event class represents an event which holds various information about
 components like the mouse and keyboard.
+\since 1.0.0
 */
 class Event {
  private:

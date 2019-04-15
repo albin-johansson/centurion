@@ -6,6 +6,7 @@ namespace audio {
 
 /**
 \brief The AudioComponent class represents some sort of audio file.
+\since 1.0.0
 */
 class AudioComponent {
  protected:

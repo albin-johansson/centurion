@@ -3,6 +3,7 @@
 /*
   This header file includes all of the components located in the
   centurion::tools namespace. Last updated: 2019-04-10.
+  \since 1.0.0
 */
 
 #include "application_path.h"

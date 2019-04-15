@@ -10,6 +10,7 @@ namespace audio {
 /**
 \brief The SoundEffect class represents a sound effect. The supported file
 extensions are MP3, OGG and FLAC.
+\since 1.0.0
 */
 class SoundEffect : public AudioComponent {
  private:

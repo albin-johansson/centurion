@@ -10,6 +10,7 @@ namespace visuals {
 * DEPRECATED *
 \brief The FontFactory class is a factory for creating instances of the Font
 class.
+\since 1.0.0
 */
 class FontFactory final {
  private:

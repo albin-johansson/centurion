@@ -5,6 +5,7 @@ namespace tools {
 
 /**
 \brief The Screen class provides information about the system display.
+\since 1.0.0
 */
 class Screen final {
  private:

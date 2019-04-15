@@ -7,6 +7,7 @@ namespace geo {
 /**
 \brief The Positionable class provides an interface for objects that are
 positionable (in two dimensions).
+\since 1.0.0
 */
 class Positionable {
  protected:

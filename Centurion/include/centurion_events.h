@@ -3,6 +3,7 @@
 /*
   This header file includes all of the components located in the
   centurion::events namespace. Last updated: 2019-14-10.
+  \since 1.0.0
 */
 
 #include "event.h"

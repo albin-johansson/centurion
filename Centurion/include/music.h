@@ -10,6 +10,7 @@ namespace audio {
 /**
 \brief The Music class represents a music clip. The music clips must be of the
 .WAV-format.
+\since 1.0.0
 */
 class Music : public AudioComponent {
  private:

@@ -8,6 +8,7 @@ namespace visuals {
 
 /**
 \brief The Texture class represents textures such as images.
+\since 1.0.0
 */
 class Texture : public centurion::geo::Dimensioned {
  private:

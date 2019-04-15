@@ -7,6 +7,7 @@ namespace tools {
 /**
 \brief The NullChecker class is a simple class that checks whether or not
 pointers are null pointers.
+\since 1.0.0
 */
 class NullChecker {
  public:

@@ -6,7 +6,8 @@ namespace centurion {
 /**
 \brief The Centurion class is responsible for the initialization and
 deinitialization of the Centurion library.
- */
+\since 1.0.0
+*/
 class Centurion final {
  private:
   static bool initialized;

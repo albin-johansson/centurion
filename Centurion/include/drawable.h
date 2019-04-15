@@ -8,6 +8,7 @@ namespace visuals {
 /**
 \brief The Drawable class provides an interface for objects that may perform
 rendering with a Renderer.
+\since 1.0.0
 */
 class Drawable {
  protected:

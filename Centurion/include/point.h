@@ -8,6 +8,7 @@ namespace geo {
 
 /**
 \brief The Point class represents a two-dimensional point.
+\since 1.0.0
 */
 class Point : public centurion::geo::Positionable {
  private:

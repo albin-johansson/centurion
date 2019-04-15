@@ -6,7 +6,9 @@ namespace tools {
 
 /**
 \brief The ApplicationPath class represents the file path of the application
-executable. It's useful for things such as locating resources.*/
+executable. It's useful for things such as locating resources.
+\since 1.0.0
+*/
 class ApplicationPath final {
  private:
   char* path_cstr = nullptr;

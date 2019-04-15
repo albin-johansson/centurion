@@ -7,6 +7,7 @@ namespace tools {
 /**
 \brief The BooleanConverter class is a conversion tool between values of bool
 and SDL_bool.
+\since 1.0.0
 */
 class BooleanConverter final {
  private:

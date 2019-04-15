@@ -6,6 +6,9 @@
 namespace centurion {
 namespace io {
 
+/**
+\since 1.1.0
+*/
 class FileWriter {
  private:
   centurion::io::File_uptr file;

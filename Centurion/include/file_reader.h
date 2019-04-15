@@ -7,6 +7,9 @@
 namespace centurion {
 namespace io {
 
+/**
+\since 1.1.0
+*/
 class FileReader {
  private:
   centurion::io::File_uptr file;
@@ -16,7 +19,12 @@ class FileReader {
 
   ~FileReader();
 
-  void ReadFile(const std::string path);
+  void OpenFile(const std::string path);
+
+  void OpenBinaryFile(const std::string path);
+
+  template <class T>
+  void Read(T target[], int nItems, int elementByteSize);
 
   // TODO how does the actual obtaining of data work?
 };

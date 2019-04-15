@@ -2,10 +2,14 @@
 #include <SDL_rwops.h>
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace centurion {
 namespace io {
 
+/**
+\since 1.1.0
+*/
 class File final {
  private:
   SDL_RWops* file;
@@ -16,6 +20,17 @@ class File final {
 
   ~File();
 
+  /**
+  \brief Reads the content of the file and stores it in the supplied vector.
+  \since 1.1.0
+  */
+  template <class T>
+  void Read(std::vector<T>& target);
+
+  /**
+  \brief Returns true if the file is open, returns false otherwise.
+  \since 1.1.0
+  */
   inline bool IsOpen() const { return file != nullptr; }
 };
 

@@ -18,6 +18,7 @@ class Action {
 
   /**
   \brief Executes the action represented by this action object.
+  \since 1.0.0
   */
   virtual void Execute() = 0;
 };

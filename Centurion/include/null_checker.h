@@ -13,9 +13,10 @@ class NullChecker {
  public:
   /**
   \brief Indicates whether the supplied pointer is a null pointer.
+  \since 1.0.0
   */
   template <class T>
-  inline static bool IsNull(T* arg) {
+  inline static bool IsNull(T* arg) noexcept {
     return arg == nullptr || arg == NULL;
   }
 };

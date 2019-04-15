@@ -21,6 +21,7 @@ class ApplicationPath final {
 
   /**
   \brief Returns the absolute path of the application executable.
+  \since 1.0.0
   */
   inline const std::string GetAbsolutePath() const { return path_cpp; }
 
@@ -29,6 +30,7 @@ class ApplicationPath final {
   executable.
   \param path - the target path, relative to the application
   location.
+  \since 1.0.0
   Example:
   Application location: ".../MyProjects/HelloWorld/app.exe"
   Relative path: "resources/image.png"

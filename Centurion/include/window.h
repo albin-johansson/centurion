@@ -184,12 +184,12 @@ class Window : public centurion::geo::Dimensioned {
   /**
   \brief Returns the width of this window.
   */
-  inline int GetWidth() const override { return width; };
+  inline int GetWidth() const noexcept override { return width; };
 
   /**
   \brief Returns the height of this window.
   */
-  inline int GetHeight() const override { return height; };
+  inline int GetHeight() const noexcept override { return height; };
 
   /**
   \brief Creates and returns a Texture that visually represents the supplied

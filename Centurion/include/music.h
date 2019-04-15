@@ -32,6 +32,7 @@ class Music : public AudioComponent {
   \brief Creates and returns a heap allocated Music instance.
   \param path - the path of the .WAV-file that the Music instance will
   represent.
+  \since ? // FIXME
   */
   static std::shared_ptr<centurion::audio::Music> Create(
       const std::string& path);
@@ -39,33 +40,39 @@ class Music : public AudioComponent {
   /**
   \brief Starts playing the music file by fading it in.
   \param ms - the duration of the fade, in milliseconds.
+  \since 1.0.0
   */
   void FadeIn(int ms);
 
   /**
   \brief Stops playing the music file by fading it out.
   \param ms - the duration of the fade, in milliseconds.
+  \since 1.0.0
   */
   void FadeOut(int ms);
 
   /**
   \brief Starts playing the music file.
+  \since 1.0.0
   */
   void Play() noexcept override;
 
   /**
   \brief Stops playing the music file.
+  \since 1.0.0
   */
   void Stop() noexcept override;
 
   /**
   \brief Assigns the volume of the music file.
   \param volume - the desired volume of the music file, in the range [0, 128].
+  \since 1.0.0
   */
   void SetVolume(int volume) override;
 
   /**
   \brief Returns the current volume of the music file.
+  \since 1.0.0
   */
   int GetVolume() const noexcept override;
 };

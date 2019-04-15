@@ -17,22 +17,26 @@ class AudioComponent {
 
   /**
   \brief Start playing the audio file.
+  \since 1.0.0
   */
   virtual void Play() = 0;
 
   /**
   \brief Stop playing the audio file.
+  \since 1.0.0
   */
   virtual void Stop() = 0;
 
   /**
   \brief Assigns the volume of the audio file.
   \param volume - the desired volume of the audio file, in the range [0, 128].
+  \since 1.0.0
   */
   virtual void SetVolume(int volume) = 0;
 
   /**
   \brief Returns the current volume of the audio file.
+  \since 1.0.0
   */
   virtual int GetVolume() const = 0;
 };

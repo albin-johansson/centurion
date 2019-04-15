@@ -30,6 +30,7 @@ class SoundEffect : public AudioComponent {
   /**
   \brief Creates and returns a heap allocated SoundEffect instance.
   \param path - the path of the sound effect file.
+  \since ? // FIXME
   */
   static std::shared_ptr<centurion::audio::SoundEffect> Create(
       const std::string& path);
@@ -37,27 +38,32 @@ class SoundEffect : public AudioComponent {
   /**
   \brief Plays the sound effect and loops it by the specified number of times.
   \param nLoops - the number of loops that will be played.
+  \since 1.0.0
   */
   void Loop(int nLoops);
 
   /**
   \brief Plays the sound effect.
+  \since 1.0.0
   */
   void Play() noexcept override;
 
   /**
   \brief Stops playing the sound effect.
+  \since 1.0.0
   */
   void Stop() noexcept override;
 
   /**
   \brief Sets the volume of the sound effect.
   \param volume - the desired volume, in the range [0, 128].
+  \since 1.0.0
   */
   void SetVolume(int volume) override;
 
   /**
   \brief Returns the current volume of the sound effect.
+  \since 1.0.0
   */
   int GetVolume() const noexcept override;
 };

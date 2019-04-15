@@ -20,6 +20,7 @@ class Drawable {
   /**
   \brief Performs the rendering operations specified by this Drawable.
   \param renderer - The Renderer that will be used for the rendering.
+  \since 1.0.0
   */
   virtual void Draw(centurion::visuals::Renderer& renderer) = 0;
 };

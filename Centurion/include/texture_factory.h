@@ -28,15 +28,17 @@ class TextureFactory final {
   \brief Creates and returns a Texture instance.
   \param path - the path of the image file that the Texture will represent.
   \param renderer - the SDL_Renderer instance used to create the Texture.
+  \since 1.0.0
   */
   static std::shared_ptr<centurion::visuals::Texture> CreateTexture(
       const std::string& path, SDL_Renderer* renderer);
 
   /**
-        * DEPRECATED *
+   * DEPRECATED *
   \brief Creates and returns a Texture instance.
   \param path - the path of the image file that the Texture will represent.
   \param renderer - the Renderer instance used to create the Texture.
+  \since 1.0.0
   */
   static std::shared_ptr<centurion::visuals::Texture> CreateTexture(
       const std::string& path, const centurion::visuals::Renderer& renderer);

@@ -39,16 +39,19 @@ class Texture : public centurion::geo::Dimensioned {
 
   /**
   \brief Returns a referene to the internal represenation of this Texture.
+  \since 1.0.0
   */
   SDL_Texture& GetSDLVersion() noexcept;
 
   /**
   \brief Returns the width of this texture.
+  \since 1.0.0
   */
   inline int GetWidth() const noexcept override { return width; };
 
   /**
   \brief Returns the height of this texture.
+  \since 1.0.0
   */
   inline int GetHeight() const noexcept override { return height; };
 };

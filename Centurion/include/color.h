@@ -18,17 +18,20 @@ class Color {
   /**
   \brief The highest possible value for the red, green, blue and alpha
   components.
+  \since 1.0.0
   */
   const static uint8_t MAX_VAL = 255;
 
   /**
   \brief The lowest possible value for the red, green, blue and alpha
   components.
+  \since 1.0.0
   */
   const static uint8_t MIN_VAL = 0;
 
   /**
   \brief A constant that represents the color red.
+  \since 1.0.0
   */
   const static Color RED;
 
@@ -39,21 +42,25 @@ class Color {
 
   /**
   \brief A constant that represents the color blue.
+  \since 1.0.0
   */
   const static Color BLUE;
 
   /**
   \brief A constant that represents the color white.
+  \since 1.0.0
   */
   const static Color WHITE;
 
   /**
   \brief A constant that represents the color black.
+  \since 1.0.0
   */
   const static Color BLACK;
 
   /**
   \brief A constant that represents the color gray.
+  \since 1.0.0
   */
   const static Color GRAY;
 
@@ -69,26 +76,31 @@ class Color {
 
   /**
   \brief Returns the red component of this color.
+  \since 1.0.0
   */
   inline uint8_t GetRed() const noexcept { return color.r; }
 
   /**
   \brief Returns the green component of this color.
+  \since 1.0.0
   */
   inline uint8_t GetGreen() const noexcept { return color.g; }
 
   /**
   \brief Returns the blue component of this color.
+  \since 1.0.0
   */
   inline uint8_t GetBlue() const noexcept { return color.b; }
 
   /**
   \brief Returns the alpha component of this color.
+  \since 1.0.0
   */
   inline uint8_t GetAlpha() const noexcept { return color.a; }
 
   /**
   \brief Returns an SDL_Color instance that represents this Color.
+  \since 1.0.0
   */
   inline SDL_Color GetSDLVersion() const noexcept { return color; }
 };

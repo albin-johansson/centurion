@@ -53,11 +53,13 @@ class Window : public centurion::geo::Dimensioned {
 
   /*
   \brief Makes this window visible.
+  \since 1.0.0
   */
   void Show();
 
   /*
   \brief Makes this window invisible.
+  \since 1.0.0
   */
   void Hide();
 
@@ -65,11 +67,13 @@ class Window : public centurion::geo::Dimensioned {
   \brief Applies any previous rendering operations to this window. If the
   Drawable instance has been set, using the SetDrawable()-method, then it will
   be called by this method.
+  \since 1.0.0
   */
   void Render();
 
   /**
   \brief Clears the rendering area of this window.
+  \since 1.0.0
   */
   void Clear();
 
@@ -80,6 +84,7 @@ class Window : public centurion::geo::Dimensioned {
   \param y - the desired y-coordinate.
   \param w - the desired width of the image.
   \param h - the desired height of the image.
+  \since 1.0.0
   */
   void Render(centurion::visuals::Texture& texture, int x, int y, int w, int h);
 
@@ -88,6 +93,7 @@ class Window : public centurion::geo::Dimensioned {
   \param texture - the texture that will be rendered.
   \param rect - the Rectangle that provides the dimensions for the rendered
   image.
+  \since 1.0.0
   */
   void Render(centurion::visuals::Texture& texture,
               const centurion::geo::Rectangle rect);
@@ -97,6 +103,7 @@ class Window : public centurion::geo::Dimensioned {
   \param texture - the texture that will be rendered.
   \param x - the desired x-coordinate.
   \param y - the desired y-coordinate.
+  \since 1.0.0
   */
   void Render(centurion::visuals::Texture& texture, int x, int y);
 
@@ -106,12 +113,14 @@ class Window : public centurion::geo::Dimensioned {
   \param y - the desired y-coordinate.
   \param w - the desired width of the rectangle.
   \param h - the desired height of the rectangle.
+  \since 1.0.0
   */
   void RenderFilledRect(int x, int y, int w, int h);
 
   /**
   \brief Renders a filled rectangle with the currently selected color.
   \param rect - the rectangle that will be rendered.
+  \since 1.0.0
   */
   void RenderFilledRect(centurion::geo::Rectangle rect);
 
@@ -121,12 +130,14 @@ class Window : public centurion::geo::Dimensioned {
   \param y - the desired y-coordinate.
   \param w - the desired width of the rectangle.
   \param h - the desired height of the rectangle.
+  \since 1.0.0
   */
   void RenderOutlinedRect(int x, int y, int w, int h);
 
   /**
   \brief Renders an outlined rectangle with the currently selected color.
   \param rect - the rectangle that will be rendered.
+  \since 1.0.0
   */
   void RenderOutlinedRect(centurion::geo::Rectangle rect);
 
@@ -136,6 +147,7 @@ class Window : public centurion::geo::Dimensioned {
   \param y1 - the y-coordinate of the first point.
   \param x2 - the x-coordinate of the second point.
   \param y2 - the y-coordinate of the second point.
+  \since 1.0.0
   */
   void RenderLine(int x1, int y1, int x2, int y2);
 
@@ -143,6 +155,7 @@ class Window : public centurion::geo::Dimensioned {
   \brief Renders a line between two points with the currently selected color.
   \param p1 - the first point.
   \param p2 - the second point.
+  \since 1.0.0
   */
   void RenderLine(centurion::geo::Point p1, centurion::geo::Point p2);
 
@@ -152,6 +165,7 @@ class Window : public centurion::geo::Dimensioned {
   \param str - the string that will be rendered.
   \param x - the x-coordinate of the rendered string.
   \param y - the y-coordinate of the rendered string.
+  \since 1.0.0
   */
   void RenderString(const std::string& str, int x, int y);
 
@@ -159,6 +173,7 @@ class Window : public centurion::geo::Dimensioned {
   \brief Assigns the Drawable that will be invoked whenever the Render() method
   is called.
   \param drawable - the Drawable that will be used.
+  \since 1.0.0
   */
   void SetDrawable(
       const std::shared_ptr<centurion::visuals::Drawable> drawable);
@@ -166,28 +181,33 @@ class Window : public centurion::geo::Dimensioned {
   /**
   \brief Sets whether this window is resizable or not.
   \param resizable true if the window is resizable, false otherwise.
+  \since 1.0.0
   */
   void SetResizable(bool resizable);
 
   /**
   \brief Assigns the currently active font.
   \param font - the font that will be used.
+  \since 1.0.0
   */
   void SetFont(const std::shared_ptr<centurion::visuals::Font> font);
 
   /**
   \brief Assigns the active color.
   \param color - the color that will be used.
+  \since 1.0.0
   */
   void SetColor(centurion::visuals::Color color);
 
   /**
   \brief Returns the width of this window.
+  \since 1.0.0
   */
   inline int GetWidth() const noexcept override { return width; };
 
   /**
   \brief Returns the height of this window.
+  \since 1.0.0
   */
   inline int GetHeight() const noexcept override { return height; };
 
@@ -196,6 +216,7 @@ class Window : public centurion::geo::Dimensioned {
   string. This method provides a more efficient way to render strings than the
   RenderString()-method.
   \param str - the string that the texture will represent.
+  \since 1.0.0
   */
   std::shared_ptr<centurion::visuals::Texture> CreateTextureFromString(
       const std::string& str) const;
@@ -203,6 +224,7 @@ class Window : public centurion::geo::Dimensioned {
   /**
   \brief Creates and returns a Texture found at the supplied path.
   \param path - the path of the image in the file system.
+  \since 1.0.0
   */
   std::shared_ptr<centurion::visuals::Texture> CreateTexture(
       const std::string& path) const;

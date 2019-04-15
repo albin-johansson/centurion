@@ -6,6 +6,14 @@
 namespace centurion {
 namespace tools {
 
+void Screen::SetScreenSaverEnabled(bool enabled) noexcept {
+  if (enabled) {
+    SDL_EnableScreenSaver();
+  } else {
+    SDL_DisableScreenSaver();
+  }
+}
+
 int Screen::GetWidth() {
   DPI_AWARENESS_CONTEXT context = GetThreadDpiAwarenessContext();
   if (context != DPI_AWARENESS_CONTEXT_SYSTEM_AWARE) {

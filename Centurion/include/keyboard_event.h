@@ -27,27 +27,32 @@ class KeyboardEvent {
   /**
   \brief Indicates whether the keyboard event was triggered by a repeated key. A
   key is usually repeated when it's continously held down.
+  \since 1.0.0
   */
   bool IsRepeated() const noexcept;
 
   /**
   \brief Indicates whether the keyboard event was triggered by a pressed key.
+  \since 1.0.0
   */
   bool WasPressed() const noexcept;
 
   /**
   \brief Indicates whether the keyboard event was triggered by a released key.
+  \since 1.0.0
   */
   bool WasReleased() const noexcept;
 
   /**
   \brief Returns the keycode of the key that triggered this KeyboardEvent.
+  \since 1.0.0
   */
   SDL_Keycode GetKeycode() const noexcept;
 
   /**
   \brief Returns the event type of this KeyboardEvent. The possible return
   values are either SDL_KEYDOWN or SDL_KEYUP.
+  \since 1.0.0
   */
   uint32_t GetKeyEventType() const noexcept;
 };

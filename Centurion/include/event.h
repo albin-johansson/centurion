@@ -30,17 +30,20 @@ class Event {
   /**
   \brief Indicates whether the type of this Event is primarily a key based
   event. Returns true if this is the case, false otherwise.
+  \since 1.0.0
   */
   bool IsKeyEvent() const noexcept;
 
   /**
   \brief Indicates whether the type of this Event is primarily a mouse based
   event. Returns true if this is the case, false otherwise.
+  \since 1.0.0
   */
   bool IsMouseEvent() const noexcept;
 
   /**
   \brief Returns a MouseEvent that holds information about the mouse.
+  \since 1.0.0
   */
   inline centurion::events::MouseEvent GetMouseInfo() const noexcept {
     return mouseEvent;
@@ -48,6 +51,7 @@ class Event {
 
   /**
   \brief Returns a KeyboardEvent that holds information about the mouse.
+  \since 1.0.0
   */
   inline centurion::events::KeyboardEvent GetKeyboardInfo() const noexcept {
     return keyEvent;
@@ -55,6 +59,7 @@ class Event {
 
   /**
   \brief Returns a copy of the internal representation of this Event.
+  \since 1.0.0
   */
   inline SDL_Event GetSDLVersion() const noexcept { return event; }
 };

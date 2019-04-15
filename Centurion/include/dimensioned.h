@@ -18,11 +18,13 @@ class Dimensioned {
 
   /**
   \brief Returns the width of this object.
+  \since 1.0.0
   */
   virtual int GetWidth() const = 0;
 
   /**
   \brief Returns the height of this object.
+  \since 1.0.0
   */
   virtual int GetHeight() const = 0;
 };

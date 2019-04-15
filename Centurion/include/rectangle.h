@@ -42,6 +42,7 @@ class Rectangle : public centurion::geo::Positionable,
   \param y - the desired initial y-coordinate.
   \param w - the width of the rectangle.
   \param h - the height of the rectangle.
+  \since 1.0.0 // FIXME
   */
   static std::shared_ptr<centurion::geo::Rectangle> Create(int x, int y, int w,
                                                            int h);
@@ -49,6 +50,7 @@ class Rectangle : public centurion::geo::Positionable,
   \brief Creates and returns a heap allocated Rectangle instance.
   \param x - the desired initial x-coordinate.
   \param y - the desired initial y-coordinate.
+  \since 1.0.0 // FIXME
   */
   static std::shared_ptr<centurion::geo::Rectangle> Create(int x, int y);
 
@@ -56,18 +58,21 @@ class Rectangle : public centurion::geo::Positionable,
   \brief Assigns the location of this rectangle.
   \param x - the new x-coordinate.
   \param y - the new y-coordinate.
+  \since 1.0.0
   */
   void SetLocation(int x, int y) noexcept override;
 
   /**
   \brief Assigns the x-coordinate of this rectangle.
   \param x - the new x-coordinate.
+  \since 1.0.0
   */
   void SetX(int x) noexcept override;
 
   /**
   \brief Assigns the y-coordinate of this rectangle.
   \param y - the new y-coordinate.
+  \since 1.0.0
   */
   void SetY(int y) noexcept override;
 
@@ -76,6 +81,7 @@ class Rectangle : public centurion::geo::Positionable,
   Returns true if the supplied rectangle intersects this rectangle, returns
   false otherwise.
   \param rect - the rectangle that will be checked with this rectangle.
+  \since 1.0.0
   */
   bool Intersects(const centurion::geo::Rectangle rect) const noexcept;
 
@@ -85,6 +91,7 @@ class Rectangle : public centurion::geo::Positionable,
   otherwise.
   \param x - the x-coordinate of the point to check.
   \param y - the y-coordinate of the point to check.
+  \since 1.0.0
   */
   bool Contains(int x, int y) const noexcept;
 
@@ -93,31 +100,37 @@ class Rectangle : public centurion::geo::Positionable,
   Returns true if the point is contained in this rectangle, returns false
   otherwise.
   \param point - the point that will be checked.
+  \since 1.0.0
   */
   bool Contains(centurion::geo::Point point) const noexcept;
 
   /**
   \brief Returns the x-coordinate of this rectangle.
+  \since 1.0.0
   */
   int GetX() const noexcept override { return rect.x; };
 
   /**
   \brief Returns the y-coordinate of this rectangle.
+  \since 1.0.0
   */
   int GetY() const noexcept override { return rect.y; };
 
   /**
   \brief Returns the width of this rectangle.
+  \since 1.0.0
   */
   int GetWidth() const noexcept override { return rect.w; };
 
   /**
   \brief Returns the height of this rectangle.
+  \since 1.0.0
   */
   int GetHeight() const noexcept override { return rect.h; };
 
   /**
   \brief Creates and returns an SDL_Rect that represents this rectangle.
+  \since 1.0.0
   */
   SDL_Rect GetSDLVersion() const noexcept { return rect; };
 };

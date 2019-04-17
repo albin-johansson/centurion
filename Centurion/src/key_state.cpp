@@ -8,12 +8,15 @@ KeyState::KeyState() {
   nKeys = 0;
   stateArr = SDL_GetKeyboardState(&nKeys);
   prevStates = std::vector<Uint8>(nKeys);
+  for (int i = 0; i < nKeys; i++) {
+    prevStates[i] = 0;
+  }
 }
 
 KeyState::~KeyState() { prevStates.clear(); }
 
 void KeyState::CopyStates() noexcept {
-  for (Uint8 i = 0; i < nKeys; i++) {
+  for (int i = 0; i < nKeys; i++) {
     prevStates.at(i) = stateArr[i];
   }
 }

@@ -10,7 +10,7 @@ namespace visuals {
 
 SDL_Texture* TextureFactory::CreateSDLTexture(SDL_Surface* surface,
                                               SDL_Renderer* renderer) {
-  if (NullChecker::IsNull(surface) || NullChecker::IsNull(renderer)) {
+  if (surface == nullptr || renderer == nullptr) {
     throw std::invalid_argument(
         "Null renderer or surface when creating texture!");
   } else {
@@ -24,7 +24,7 @@ SDL_Texture* TextureFactory::CreateSDLTexture(SDL_Surface* surface,
 
 std::shared_ptr<Texture> TextureFactory::CreateTexture(const std::string& path,
                                                        SDL_Renderer* renderer) {
-  if (NullChecker::IsNull(renderer)) {
+  if (renderer == nullptr) {
     throw std::invalid_argument("Null SDL_Renderer when creating Texture!");
   } else {
     SDL_Surface* surface =

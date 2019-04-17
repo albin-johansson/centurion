@@ -10,7 +10,7 @@ namespace visuals {
 
 Texture::Texture(SDL_Texture* texture, int width, int height)
     : width(width), height(height) {
-  if (NullChecker::IsNull(texture)) {
+  if (texture == nullptr) {
     throw invalid_argument("Null SDL_Texture!");
   } else {
     this->sdl_texture = texture;

@@ -12,7 +12,7 @@ namespace audio {
 
 SoundEffect::SoundEffect(const std::string& path) {
   sound = Mix_LoadWAV(path.c_str());
-  if (NullChecker::IsNull(sound)) {
+  if (sound == nullptr) {
     printf("%s", Mix_GetError());
     throw std::invalid_argument("Null sound effect!");
   } else {

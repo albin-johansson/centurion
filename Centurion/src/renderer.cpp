@@ -12,7 +12,7 @@ namespace centurion {
 namespace visuals {
 
 Renderer::Renderer(SDL_Renderer* renderer) {
-  if (NullChecker::IsNull(renderer)) {
+  if (renderer == nullptr) {
     throw std::invalid_argument("Null renderer!");
   }
   this->sdl_renderer = renderer;

@@ -1,7 +1,12 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "centurion_input.h"
+#include "key_listener.h"
+#include "key_listener_composite.h"
+#include "key_state.h"
+#include "mouse_listener.h"
+#include "mouse_listener_composite.h"
+#include "mouse_state.h"
 
 namespace centurion {
 namespace input {
@@ -14,7 +19,6 @@ class InputDispatcher final {
  private:
   centurion::input::KeyListenerComposite_uptr keyListenerComposite;
   centurion::input::KeyState_uptr keyState;
-
   centurion::input::MouseListenerComposite_uptr mouseListenerComposite;
   centurion::input::MouseState_uptr mouseState;
 

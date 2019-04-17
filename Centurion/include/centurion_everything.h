@@ -11,6 +11,5 @@
 #include "centurion_events.h"
 #include "centurion_geo.h"
 #include "centurion_input.h"
-#include "centurion_io.h"
 #include "centurion_tools.h"
 #include "centurion_visuals.h"

@@ -23,7 +23,7 @@ class ApplicationPath final {
   \brief Returns the absolute path of the application executable.
   \since 1.0.0
   */
-  const std::string GetAbsolutePath() const;
+  const std::string GetAbsolutePath() const noexcept;
 
   /**
   \brief Creates and returns a path based on the path of the application
@@ -37,7 +37,7 @@ class ApplicationPath final {
   CreateRelativePath( *Relative path* ) =>
   ".../MyProjects/HelloWorld/resources/image.png"
   */
-  const std::string CreateRelativePath(const std::string& path) const;
+  const std::string CreateRelativePath(const std::string& path) const noexcept;
 };
 
 }  // namespace tools

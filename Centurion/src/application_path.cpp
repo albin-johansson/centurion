@@ -15,9 +15,12 @@ ApplicationPath::ApplicationPath() {
 
 ApplicationPath::~ApplicationPath() { SDL_free(path_cstr); }
 
-const string ApplicationPath::GetAbsolutePath() const { return path_cpp; }
+const string ApplicationPath::GetAbsolutePath() const noexcept {
+  return path_cpp;
+}
 
-const string ApplicationPath::CreateRelativePath(const string& path) const {
+const string ApplicationPath::CreateRelativePath(const string& path) const
+    noexcept {
   return string(path_cpp + path);
 }
 

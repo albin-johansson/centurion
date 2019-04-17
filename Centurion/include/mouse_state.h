@@ -94,7 +94,30 @@ class MouseState {
   */
   inline int GetY() const noexcept { return y; }
 
+  /**
+  \brief Returns a Point instance that holds the x- and y-coordinate of the
+  mouse.
+  \since 1.1.0
+  */
   centurion::geo::Point GetPoint() const noexcept;
+
+  /**
+  \brief Returns a shared_ptr that points to a MouseState.
+  \since 1.1.0
+  */
+  static std::shared_ptr<centurion::input::MouseState> CreateShared();
+
+  /**
+  \brief Returns a unique_ptr that points to a MouseState.
+  \since 1.1.0
+  */
+  static std::unique_ptr<centurion::input::MouseState> CreateUnique();
+
+  /**
+  \brief Returns a weak_ptr that points to a MouseState.
+  \since 1.1.0
+  */
+  static std::weak_ptr<centurion::input::MouseState> CreateWeak();
 };
 
 typedef std::shared_ptr<centurion::input::MouseState> MouseState_sptr;

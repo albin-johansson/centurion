@@ -54,5 +54,15 @@ bool MouseState::WasRightButtonReleased() const noexcept {
 // TODO does this work?
 Point MouseState::GetPoint() const noexcept { return Point(x, y); }
 
+std::shared_ptr<MouseState> MouseState::CreateShared() {
+  return std::make_shared<MouseState>();
+}
+
+std::unique_ptr<MouseState> MouseState::CreateUnique() {
+  return std::make_unique<MouseState>();
+}
+
+std::weak_ptr<MouseState> MouseState::CreateWeak() { return CreateShared(); }
+
 }  // namespace input
 }  // namespace centurion

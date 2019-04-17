@@ -10,7 +10,7 @@ KeyState::KeyState() {
   prevStates = std::vector<Uint8>(nKeys);
 }
 
-KeyState::~KeyState() {}
+KeyState::~KeyState() { prevStates.clear(); }
 
 void KeyState::CopyStates() noexcept {
   for (Uint8 i = 0; i < nKeys; i++) {

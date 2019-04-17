@@ -13,9 +13,12 @@ ApplicationPath::ApplicationPath() {
   path_cpp = string(path_cstr);
 }
 
-ApplicationPath::~ApplicationPath() {
-  //path_cpp.~string();
-  SDL_free(path_cstr);
+ApplicationPath::~ApplicationPath() { SDL_free(path_cstr); }
+
+const string ApplicationPath::GetAbsolutePath() const { return path_cpp; }
+
+const string ApplicationPath::CreateRelativePath(const string& path) const {
+  return string(path_cpp + path);
 }
 
 }  // namespace tools

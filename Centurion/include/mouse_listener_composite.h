@@ -43,6 +43,24 @@ class MouseListenerComposite final : public centurion::input::MouseListener {
   \since 1.1.0
   */
   void AddChild(centurion::input::MouseListener_sptr ml);
+
+  /**
+  \brief Returns a shared_ptr that points to a MouseListenerComposite.
+  \since 1.1.0
+  */
+  static std::shared_ptr<MouseListenerComposite> CreateShared();
+
+  /**
+  \brief Returns a unique_ptr that points to a MouseListenerComposite.
+  \since 1.1.0
+  */
+  static std::unique_ptr<MouseListenerComposite> CreateUnique();
+
+  /**
+  \brief Returns a weak_ptr that points to a MouseListenerComposite.
+  \since 1.1.0
+  */
+  static std::weak_ptr<MouseListenerComposite> CreateWeak();
 };
 
 typedef std::shared_ptr<centurion::input::MouseListenerComposite>

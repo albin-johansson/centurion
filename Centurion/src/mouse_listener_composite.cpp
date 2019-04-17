@@ -33,5 +33,17 @@ void MouseListenerComposite::AddChild(MouseListener_sptr ml) {
   }
 }
 
+std::shared_ptr<MouseListenerComposite> MouseListenerComposite::CreateShared() {
+  return std::make_shared<MouseListenerComposite>();
+}
+
+std::unique_ptr<MouseListenerComposite> MouseListenerComposite::CreateUnique() {
+  return std::make_unique<MouseListenerComposite>();
+}
+
+std::weak_ptr<MouseListenerComposite> MouseListenerComposite::CreateWeak() {
+  return CreateShared();
+}
+
 }  // namespace input
 }  // namespace centurion

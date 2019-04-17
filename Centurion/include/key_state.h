@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL_scancode.h>
-#include <SDL_stdinc.h>
 #include <memory>
 #include <vector>
 

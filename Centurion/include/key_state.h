@@ -17,7 +17,7 @@ class KeyState final {
   const Uint8* stateArr;
   std::vector<Uint8> prevStates;
 
-  void CopyStates();
+  void CopyStates() noexcept;
 
  public:
   KeyState();
@@ -29,7 +29,7 @@ class KeyState final {
   call SDL_PumpEvents().
   \since 1.1.0
   */
-  void Update();
+  void Update() noexcept;
 
   /**
   \brief Returns true if the key associated with the supplied SDL_Scancode is

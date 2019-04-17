@@ -12,13 +12,13 @@ KeyState::KeyState() {
 
 KeyState::~KeyState() {}
 
-void KeyState::CopyStates() {
-  for (int i = 0; i < nKeys; i++) {
+void KeyState::CopyStates() noexcept {
+  for (Uint8 i = 0; i < nKeys; i++) {
     prevStates.at(i) = stateArr[i];
   }
 }
 
-void KeyState::Update() { CopyStates(); }
+void KeyState::Update() noexcept { CopyStates(); }
 
 bool KeyState::IsPressed(const SDL_Scancode code) const {
   return stateArr[code];

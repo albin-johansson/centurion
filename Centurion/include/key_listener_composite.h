@@ -37,21 +37,19 @@ class KeyListenerComposite final : public centurion::input::KeyListener {
   void RemoveChildren();
 
   /**
-  \brief Returns an instance of shared_ptr that points to a
-  KeyListenerComposite.
+  \brief Returns a shared_ptr that points to a KeyListenerComposite.
   \since 1.1.0
   */
   static std::shared_ptr<centurion::input::KeyListenerComposite> CreateShared();
 
   /**
-  \brief Returns an instance of unique_ptr that points to a
-  KeyListenerComposite.
+  \brief Returns a unique_ptr that points to a KeyListenerComposite.
   \since 1.1.0
   */
   static std::unique_ptr<centurion::input::KeyListenerComposite> CreateUnique();
 
   /**
-  \brief Returns an instance of weak_ptr that points to a KeyListenerComposite.
+  \brief Returns a weak_ptr that points to a KeyListenerComposite.
   \since 1.1.0
   */
   static std::weak_ptr<centurion::input::KeyListenerComposite> CreateWeak();

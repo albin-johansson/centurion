@@ -58,6 +58,24 @@ class InputDispatcher final {
   \since 1.1.0
   */
   bool ReceivedQuit() const { return shouldQuit; }
+
+  /**
+  \brief Returns a shared_ptr that points to a InputDispatcher.
+  \since 1.1.0
+  */
+  static std::shared_ptr<InputDispatcher> CreateShared();
+
+  /**
+  \brief Returns a unique_ptr that points to a InputDispatcher.
+  \since 1.1.0
+  */
+  static std::unique_ptr<InputDispatcher> CreateUnique();
+
+  /**
+  \brief Returns a weak_ptr that points to a InputDispatcher.
+  \since 1.1.0
+  */
+  static std::weak_ptr<InputDispatcher> CreateWeak();
 };
 
 }  // namespace input

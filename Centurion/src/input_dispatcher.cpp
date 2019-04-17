@@ -5,10 +5,10 @@ namespace centurion {
 namespace input {
 
 InputDispatcher::InputDispatcher() {
-  mouseListenerComposite = std::make_unique<MouseListenerComposite>();
+  mouseListenerComposite = MouseListenerComposite::CreateUnique();
   keyListenerComposite = KeyListenerComposite::CreateUnique();
-  mouseState = std::make_unique<MouseState>();
-  keyState = std::make_unique<KeyState>();
+  mouseState = MouseState::CreateUnique();
+  keyState = KeyState::CreateUnique();
   shouldQuit = false;
 }
 
@@ -46,6 +46,18 @@ void InputDispatcher::AddMouseListener(MouseListener_sptr ml) {
 
 void InputDispatcher::AddKeyListener(KeyListener_sptr kl) {
   keyListenerComposite->AddChild(kl);
+}
+
+std::shared_ptr<InputDispatcher> InputDispatcher::CreateShared() {
+  return std::make_shared<InputDispatcher>();
+}
+
+std::unique_ptr<InputDispatcher> InputDispatcher::CreateUnique() {
+  return std::make_unique<InputDispatcher>();
+}
+
+std::weak_ptr<InputDispatcher> InputDispatcher::CreateWeak() {
+  return CreateShared();
 }
 
 }  // namespace input

@@ -69,6 +69,24 @@ class KeyState final {
   \since 1.1.0
   */
   inline int GetNumberOfKeys() const noexcept { return nKeys; }
+
+  /**
+  \brief Returns a shared_ptr that points to a KeyState.
+  \since 1.1.0
+  */
+  static std::shared_ptr<KeyState> CreateShared();
+
+  /**
+  \brief Returns a unique_ptr that points to a KeyState.
+  \since 1.1.0
+  */
+  static std::unique_ptr<KeyState> CreateUnique();
+
+  /**
+  \brief Returns a weak_ptr that points to a KeyState.
+  \since 1.1.0
+  */
+  static std::weak_ptr<KeyState> CreateWeak();
 };
 
 typedef std::shared_ptr<centurion::input::KeyState> KeyState_sptr;

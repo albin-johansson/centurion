@@ -36,5 +36,17 @@ bool KeyState::IsFirstTrigger(const SDL_Scancode code) const {
   return stateArr[code] && !prevStates.at(code);
 }
 
+std::shared_ptr<KeyState> KeyState::CreateShared() {
+  return std::shared_ptr<KeyState>();
+}
+
+std::unique_ptr<KeyState> KeyState::CreateUnique() {
+  return std::make_unique<KeyState>();
+}
+
+std::weak_ptr<KeyState> KeyState::CreateWeak() {
+  return std::make_shared<KeyState>();
+}
+
 }  // namespace input
 }  // namespace centurion

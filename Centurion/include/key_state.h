@@ -64,6 +64,10 @@ class KeyState final {
   */
   bool IsFirstTrigger(const SDL_Scancode code) const;
 
+  /**
+  \brief Returns the number of possible keys.
+  \since 1.1.0
+  */
   inline int GetNumberOfKeys() const noexcept { return nKeys; }
 };
 

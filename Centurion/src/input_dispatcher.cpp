@@ -6,15 +6,17 @@ namespace input {
 
 InputDispatcher::InputDispatcher() {
   mouseListenerComposite = std::make_unique<MouseListenerComposite>();
-  keyListenerComposite = std::make_unique<KeyListenerComposite>();
+  keyListenerComposite = KeyListenerComposite::CreateUnique();
   mouseState = std::make_unique<MouseState>();
   keyState = std::make_unique<KeyState>();
+  shouldQuit = false;
 }
 
 InputDispatcher::~InputDispatcher() = default;
 
 void InputDispatcher::Update() {
   SDL_PumpEvents();
+  shouldQuit = SDL_QuitRequested();
 
   keyState->Update();
   NotifyKeyListeners();
@@ -24,7 +26,9 @@ void InputDispatcher::Update() {
 }
 
 void InputDispatcher::NotifyKeyListeners() {
-  // TODO
+  // TODO should probably be optimized, if possible.
+  keyListenerComposite->KeyPressed(*keyState);
+  keyListenerComposite->KeyReleased(*keyState);
 }
 
 void InputDispatcher::NotifyMouseListeners() {

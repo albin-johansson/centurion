@@ -21,6 +21,7 @@ class InputDispatcher final {
   centurion::input::KeyState_uptr keyState;
   centurion::input::MouseListenerComposite_uptr mouseListenerComposite;
   centurion::input::MouseState_uptr mouseState;
+  bool shouldQuit;
 
   void NotifyKeyListeners();
 
@@ -50,6 +51,13 @@ class InputDispatcher final {
   \since 1.1.0
   */
   void AddKeyListener(centurion::input::KeyListener_sptr kl);
+
+  /**
+  \brief Returns true if the user has requested a termination of the
+  application. This is usually done by pressing the "x"-button on a window.
+  \since 1.1.0
+  */
+  bool ReceivedQuit() const { return shouldQuit; }
 };
 
 }  // namespace input

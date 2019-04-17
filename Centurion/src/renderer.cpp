@@ -56,20 +56,24 @@ void Renderer::Render(Texture& img, int x, int y) {
 }
 
 void Renderer::RenderFilledRect(int x, int y, int w, int h) {
+  CheckRenderDimensions(w, h);
   SDL_Rect rect = {x, y, w, h};
   SDL_RenderFillRect(sdl_renderer, &rect);
 }
 
 void Renderer::RenderFilledRect(Rectangle rect) {
+  CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
   SDL_RenderFillRect(sdl_renderer, &rect.GetSDLVersion());
 }
 
 void Renderer::RenderOutlinedRect(int x, int y, int w, int h) {
+  CheckRenderDimensions(w, h);
   SDL_Rect rect = {x, y, w, h};
   SDL_RenderDrawRect(sdl_renderer, &rect);
 }
 
 void Renderer::RenderOutlinedRect(Rectangle rect) {
+  CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
   SDL_RenderDrawRect(sdl_renderer, &rect.GetSDLVersion());
 }
 

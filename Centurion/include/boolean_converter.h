@@ -30,7 +30,7 @@ class BooleanConverter final {
   \since 1.0.0
   */
   inline static SDL_bool Convert(bool b) noexcept {
-    return (b) ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE;
+    return (b) ? (SDL_bool::SDL_TRUE) : (SDL_bool::SDL_FALSE);
   }
 };
 

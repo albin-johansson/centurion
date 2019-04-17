@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 
 namespace centurion {
@@ -39,6 +40,10 @@ class ApplicationPath final {
   */
   const std::string CreateRelativePath(const std::string& path) const noexcept;
 };
+
+typedef std::shared_ptr<centurion::tools::ApplicationPath> ApplicationPath_sptr;
+typedef std::unique_ptr<centurion::tools::ApplicationPath> ApplicationPath_uptr;
+typedef std::weak_ptr<centurion::tools::ApplicationPath> ApplicationPath_wptr;
 
 }  // namespace tools
 }  // namespace centurion

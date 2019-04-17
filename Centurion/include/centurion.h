@@ -29,7 +29,7 @@ class Centurion final {
 
   /**
   \brief Initializes the Centurion library. This method MUST be called before
-  using ANY other Centurion components.
+  using ANY other Centurion component.
   */
   static void Init();
 

@@ -33,5 +33,17 @@ void KeyListenerComposite::AddChild(KeyListener_sptr kl) {
 
 void KeyListenerComposite::RemoveChildren() { listeners.clear(); }
 
+std::shared_ptr<KeyListenerComposite> KeyListenerComposite::CreateShared() {
+  return std::make_shared<KeyListenerComposite>();
+}
+
+std::unique_ptr<KeyListenerComposite> KeyListenerComposite::CreateUnique() {
+  return std::make_unique<KeyListenerComposite>();
+}
+
+std::weak_ptr<KeyListenerComposite> KeyListenerComposite::CreateWeak() {
+  return CreateShared();
+}
+
 }  // namespace input
 }  // namespace centurion

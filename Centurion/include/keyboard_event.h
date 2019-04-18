@@ -57,9 +57,9 @@ class KeyboardEvent {
   uint32_t GetKeyEventType() const noexcept;
 };
 
-typedef std::shared_ptr<centurion::events::KeyboardEvent> KeyboardEvent_sptr;
-typedef std::unique_ptr<centurion::events::KeyboardEvent> KeyboardEvent_uptr;
-typedef std::weak_ptr<centurion::events::KeyboardEvent> KeyboardEvent_wptr;
+typedef std::shared_ptr<KeyboardEvent> KeyboardEvent_sptr;
+typedef std::unique_ptr<KeyboardEvent> KeyboardEvent_uptr;
+typedef std::weak_ptr<KeyboardEvent> KeyboardEvent_wptr;
 
 }  // namespace events
 }  // namespace centurion

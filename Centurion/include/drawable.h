@@ -25,9 +25,9 @@ class Drawable {
   virtual void Draw(centurion::visuals::Renderer& renderer) = 0;
 };
 
-typedef std::shared_ptr<centurion::visuals::Drawable> Drawable_sptr;
-typedef std::unique_ptr<centurion::visuals::Drawable> Drawable_uptr;
-typedef std::weak_ptr<centurion::visuals::Drawable> Drawable_wptr;
+typedef std::shared_ptr<Drawable> Drawable_sptr;
+typedef std::unique_ptr<Drawable> Drawable_uptr;
+typedef std::weak_ptr<Drawable> Drawable_wptr;
 
 }  // namespace visuals
 }  // namespace centurion

@@ -105,9 +105,9 @@ class Color {
   inline SDL_Color GetSDLVersion() const noexcept { return color; }
 };
 
-typedef std::shared_ptr<centurion::visuals::Color> Color_sptr;
-typedef std::unique_ptr<centurion::visuals::Color> Color_uptr;
-typedef std::weak_ptr<centurion::visuals::Color> Color_wptr;
+typedef std::shared_ptr<Color> Color_sptr;
+typedef std::unique_ptr<Color> Color_uptr;
+typedef std::weak_ptr<Color> Color_wptr;
 
 }  // namespace visuals
 }  // namespace centurion

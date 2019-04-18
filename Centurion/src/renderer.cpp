@@ -2,10 +2,7 @@
 #include <stdexcept>
 #include "null_checker.h"
 
-using centurion::geo::Dimensioned;
-using centurion::geo::Point;
-using centurion::geo::Positionable;
-using centurion::geo::Rectangle;
+using namespace centurion::geo;
 using centurion::tools::NullChecker;
 
 namespace centurion {
@@ -19,10 +16,6 @@ Renderer::Renderer(SDL_Renderer* renderer) {
 }
 
 Renderer::~Renderer() { SDL_DestroyRenderer(sdl_renderer); }
-
-std::shared_ptr<Renderer> Renderer::Create(SDL_Renderer* renderer) {
-  return std::make_shared<Renderer>(renderer);
-}
 
 void Renderer::CheckRenderDimensions(int width, int height) {
   if (width < 1 || height < 1) {
@@ -127,6 +120,18 @@ void Renderer::SetFont(const std::shared_ptr<Font> font) { this->font = font; }
 void Renderer::SetColor(Color color) {
   this->color = color;
   UpdateColor();
+}
+
+Renderer_sptr Renderer::CreateShared(SDL_Renderer* renderer) {
+  return std::make_shared<Renderer>(renderer);
+}
+
+Renderer_uptr Renderer::CreateUnique(SDL_Renderer* renderer) {
+  return std::make_unique<Renderer>(renderer);
+}
+
+Renderer_wptr Renderer::CreateWeak(SDL_Renderer* renderer) {
+  return CreateShared(renderer);
 }
 
 }  // namespace visuals

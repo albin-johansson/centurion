@@ -22,10 +22,6 @@ Music::~Music() {
   Mix_FreeMusic(music);
 }
 
-std::shared_ptr<Music> Music::Create(const std::string& path) {
-  return std::make_shared<Music>(path);
-}
-
 void Music::Play() noexcept {
   if (IsMusicPlaying()) {
     Stop();
@@ -70,6 +66,18 @@ void Music::SetVolume(int volume) {
 }
 
 int Music::GetVolume() const noexcept { return volume; }
+
+Music_sptr Music::CreateShared(const std::string& path) {
+  return std::make_shared<Music>(path);
+}
+
+Music_uptr Music::CreateUnique(const std::string& path) {
+  return std::make_unique<Music>(path);
+}
+
+Music_wptr Music::CreateWeak(const std::string& path) {
+  return CreateShared(path);
+}
 
 }  // namespace audio
 }  // namespace centurion

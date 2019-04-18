@@ -51,18 +51,17 @@ bool MouseState::WasRightButtonReleased() const noexcept {
   return !(currentMask & SDL_BUTTON_RMASK) && (prevMask | SDL_BUTTON_RMASK);
 }
 
-// TODO does this work?
 Point MouseState::GetPoint() const noexcept { return Point(x, y); }
 
-std::shared_ptr<MouseState> MouseState::CreateShared() {
+MouseState_sptr MouseState::CreateShared() {
   return std::make_shared<MouseState>();
 }
 
-std::unique_ptr<MouseState> MouseState::CreateUnique() {
+MouseState_uptr MouseState::CreateUnique() {
   return std::make_unique<MouseState>();
 }
 
-std::weak_ptr<MouseState> MouseState::CreateWeak() { return CreateShared(); }
+MouseState_wptr MouseState::CreateWeak() { return CreateShared(); }
 
 }  // namespace input
 }  // namespace centurion

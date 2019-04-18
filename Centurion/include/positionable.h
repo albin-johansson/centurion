@@ -51,9 +51,9 @@ class Positionable {
   virtual int GetY() const = 0;
 };
 
-typedef std::shared_ptr<centurion::geo::Positionable> Positionable_sptr;
-typedef std::unique_ptr<centurion::geo::Positionable> Positionable_uptr;
-typedef std::weak_ptr<centurion::geo::Positionable> Positionable_wptr;
+typedef std::shared_ptr<Positionable> Positionable_sptr;
+typedef std::unique_ptr<Positionable> Positionable_uptr;
+typedef std::weak_ptr<Positionable> Positionable_wptr;
 
 }  // namespace geo
 }  // namespace centurion

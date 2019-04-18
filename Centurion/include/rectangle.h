@@ -8,6 +8,11 @@
 namespace centurion {
 namespace geo {
 
+class Rectangle;
+typedef std::shared_ptr<Rectangle> Rectangle_sptr;
+typedef std::unique_ptr<Rectangle> Rectangle_uptr;
+typedef std::weak_ptr<Rectangle> Rectangle_wptr;
+
 /**
 \brief The Rectangle class quite simply represents a rectangle.
 \since 1.0.0
@@ -35,24 +40,6 @@ class Rectangle : public centurion::geo::Positionable,
   Rectangle(int w, int h);
 
   ~Rectangle() override;
-
-  /**
-  \brief Creates and returns a heap allocated Rectangle instance.
-  \param x - the desired initial x-coordinate.
-  \param y - the desired initial y-coordinate.
-  \param w - the width of the rectangle.
-  \param h - the height of the rectangle.
-  \since 1.0.0 // FIXME
-  */
-  static std::shared_ptr<centurion::geo::Rectangle> Create(int x, int y, int w,
-                                                           int h);
-  /**
-  \brief Creates and returns a heap allocated Rectangle instance.
-  \param x - the desired initial x-coordinate.
-  \param y - the desired initial y-coordinate.
-  \since 1.0.0 // FIXME
-  */
-  static std::shared_ptr<centurion::geo::Rectangle> Create(int x, int y);
 
   /**
   \brief Assigns the location of this rectangle.
@@ -133,11 +120,61 @@ class Rectangle : public centurion::geo::Positionable,
   \since 1.0.0
   */
   SDL_Rect GetSDLVersion() const noexcept { return rect; };
-};
 
-typedef std::shared_ptr<centurion::geo::Rectangle> Rectangle_sptr;
-typedef std::unique_ptr<centurion::geo::Rectangle> Rectangle_uptr;
-typedef std::weak_ptr<centurion::geo::Rectangle> Rectangle_wptr;
+  /**
+  \brief Returns a shared pointer that points to a Rectangle.
+  \param x - the initial x-coordinate of the rectangle.
+  \param y - the initial y-coordinate of the rectangle.
+  \param w - the width of the rectangle.
+  \param h - the height of the rectangle.
+  \since 1.1.0
+  */
+  static Rectangle_sptr CreateShared(int x, int y, int w, int h);
+
+  /**
+  \brief Returns a shared pointer that points to a Rectangle.
+  \param x - the initial x-coordinate of the rectangle.
+  \param y - the initial y-coordinate of the rectangle.
+  \since 1.1.0
+  */
+  static Rectangle_sptr CreateShared(int x, int y);
+
+  /**
+  \brief Returns a unique pointer that points to a Rectangle.
+  \param x - the initial x-coordinate of the rectangle.
+  \param y - the initial y-coordinate of the rectangle.
+  \param w - the width of the rectangle.
+  \param h - the height of the rectangle.
+  \since 1.1.0
+  */
+  static Rectangle_uptr CreateUnique(int x, int y, int w, int h);
+
+  /**
+  \brief Returns a unique pointer that points to a Rectangle.
+  \param x - the initial x-coordinate of the rectangle.
+  \param y - the initial y-coordinate of the rectangle.
+  \since 1.1.0
+  */
+  static Rectangle_uptr CreateUnique(int x, int y);
+
+  /**
+  \brief Returns a weak pointer that points to a Rectangle.
+  \param x - the initial x-coordinate of the rectangle.
+  \param y - the initial y-coordinate of the rectangle.
+  \param w - the width of the rectangle.
+  \param h - the height of the rectangle.
+  \since 1.1.0
+  */
+  static Rectangle_wptr CreateWeak(int x, int y, int w, int h);
+
+  /**
+  \brief Returns a weak pointer that points to a Rectangle.
+  \param x - the initial x-coordinate of the rectangle.
+  \param y - the initial y-coordinate of the rectangle.
+  \since 1.1.0
+  */
+  static Rectangle_wptr CreateWeak(int x, int y);
+};
 
 }  // namespace geo
 }  // namespace centurion

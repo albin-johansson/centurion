@@ -6,6 +6,11 @@
 namespace centurion {
 namespace input {
 
+class MouseState;
+typedef std::shared_ptr<MouseState> MouseState_sptr;
+typedef std::unique_ptr<MouseState> MouseState_uptr;
+typedef std::weak_ptr<MouseState> MouseState_wptr;
+
 /**
 \brief The MouseState class holds information about the mouse state.
 \since 1.1.0
@@ -102,27 +107,23 @@ class MouseState {
   centurion::geo::Point GetPoint() const noexcept;
 
   /**
-  \brief Returns a shared_ptr that points to a MouseState.
+  \brief Returns a shared pointer that points to a MouseState.
   \since 1.1.0
   */
-  static std::shared_ptr<centurion::input::MouseState> CreateShared();
+  static MouseState_sptr CreateShared();
 
   /**
-  \brief Returns a unique_ptr that points to a MouseState.
+  \brief Returns a unique pointer that points to a MouseState.
   \since 1.1.0
   */
-  static std::unique_ptr<centurion::input::MouseState> CreateUnique();
+  static MouseState_uptr CreateUnique();
 
   /**
-  \brief Returns a weak_ptr that points to a MouseState.
+  \brief Returns a weak pointer that points to a MouseState.
   \since 1.1.0
   */
-  static std::weak_ptr<centurion::input::MouseState> CreateWeak();
+  static MouseState_wptr CreateWeak();
 };
-
-typedef std::shared_ptr<centurion::input::MouseState> MouseState_sptr;
-typedef std::unique_ptr<centurion::input::MouseState> MouseState_uptr;
-typedef std::weak_ptr<centurion::input::MouseState> MouseState_wptr;
 
 }  // namespace input
 }  // namespace centurion

@@ -31,11 +31,6 @@ Window::~Window() {
   SDL_DestroyWindow(window);
 }
 
-std::shared_ptr<Window> Window::Create(const std::string& title, int width,
-                                       int height, uint32_t flags) {
-  return std::make_shared<Window>(title, width, height, flags);
-}
-
 void Window::CheckWindowDimensions(int width, int height) {
   if (width < 1 || height < 1) {
     throw std::invalid_argument("Invalid dimensions for window!");
@@ -103,7 +98,7 @@ void Window::RenderString(const std::string& text, int x, int y) {
 }
 
 void Window::SetFont(const std::shared_ptr<Font> font) {
-  renderer->SetFont(font);
+  renderer->SetFont(font);  // TODO change signature to Font_sptr
 }
 
 void Window::SetColor(Color color) { renderer->SetColor(color); }
@@ -115,6 +110,21 @@ std::shared_ptr<Texture> Window::CreateTextureFromString(
 
 std::shared_ptr<Texture> Window::CreateTexture(const std::string& path) const {
   return TextureFactory::CreateTexture(path, renderer->GetSDLVersion());
+}
+
+Window_sptr Window::CreateShared(const std::string& title, int width,
+                                 int height, uint32_t flags) {
+  return std::make_shared<Window>(title, width, height, flags);
+}
+
+Window_uptr Window::CreateUnique(const std::string& title, int width,
+                                 int height, uint32_t flags) {
+  return std::make_unique<Window>(title, width, height, flags);
+}
+
+Window_wptr Window::CreateWeak(const std::string& title, int width, int height,
+                               uint32_t flags) {
+  return CreateShared(title, width, height, flags);
 }
 
 }  // namespace visuals

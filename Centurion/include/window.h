@@ -12,6 +12,11 @@
 namespace centurion {
 namespace visuals {
 
+class Window;
+typedef std::shared_ptr<Window> Window_sptr;
+typedef std::unique_ptr<Window> Window_uptr;
+typedef std::weak_ptr<Window> Window_wptr;
+
 /**
 \brief The Window class represents a top-level frame.
 \since 1.0.0
@@ -19,8 +24,8 @@ namespace visuals {
 class Window : public centurion::geo::Dimensioned {
  private:
   SDL_Window* window;
-  std::unique_ptr<centurion::visuals::Renderer> renderer;
-  std::shared_ptr<centurion::visuals::Drawable> drawable;
+  Renderer_uptr renderer;
+  Drawable_sptr drawable;
   const int width;
   const int height;
 
@@ -38,18 +43,6 @@ class Window : public centurion::geo::Dimensioned {
   Window(const std::string& title, int width, int height, uint32_t flags);
 
   ~Window();
-
-  /**
-  \brief Creates and returns a heap allocated Window instance.
-  \param title - the title of the window.
-  \param width - the desired width of the window.
-  \param height - the desired height of the window.
-  \param flags - flags providing information about the window to be created, the
-  flag values are specified by SDL_WindowFlags. For example,
-  SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
-  */
-  static std::shared_ptr<centurion::visuals::Window> Create(
-      const std::string& title, int width, int height, uint32_t flags);
 
   /*
   \brief Makes this window visible.
@@ -228,11 +221,46 @@ class Window : public centurion::geo::Dimensioned {
   */
   std::shared_ptr<centurion::visuals::Texture> CreateTexture(
       const std::string& path) const;
-};
 
-typedef std::shared_ptr<centurion::visuals::Window> Window_sptr;
-typedef std::unique_ptr<centurion::visuals::Window> Window_uptr;
-typedef std::weak_ptr<centurion::visuals::Window> Window_wptr;
+  /**
+  \brief Returns a shared pointer that points to a Window instance.
+  \param title - the title of the window.
+  \param width - the width of the window.
+  \param height - the height of the window.
+  \param flags - flags providing information about the window to be created, the
+  flag values are specified by SDL_WindowFlags. For example,
+  SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
+  \since 1.1.0
+  */
+  static Window_sptr CreateShared(const std::string& title, int width,
+                                  int height, uint32_t flags);
+
+  /**
+  \brief Returns a unique pointer that points to a Window instance.
+  \param title - the title of the window.
+  \param width - the width of the window.
+  \param height - the height of the window.
+  \param flags - flags providing information about the window to be created, the
+  flag values are specified by SDL_WindowFlags. For example,
+  SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
+  \since 1.1.0
+  */
+  static Window_uptr CreateUnique(const std::string& title, int width,
+                                  int height, uint32_t flags);
+
+  /**
+  \brief Returns a weak pointer that points to a Window instance.
+  \param title - the title of the window.
+  \param width - the width of the window.
+  \param height - the height of the window.
+  \param flags - flags providing information about the window to be created, the
+  flag values are specified by SDL_WindowFlags. For example,
+  SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
+  \since 1.1.0
+  */
+  static Window_wptr CreateWeak(const std::string& title, int width, int height,
+                                uint32_t flags);
+};
 
 }  // namespace visuals
 }  // namespace centurion

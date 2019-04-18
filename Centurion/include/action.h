@@ -23,9 +23,9 @@ class Action {
   virtual void Execute() = 0;
 };
 
-typedef std::shared_ptr<centurion::events::Action> Action_sptr;
-typedef std::unique_ptr<centurion::events::Action> Action_uptr;
-typedef std::weak_ptr<centurion::events::Action> Action_wptr;
+typedef std::shared_ptr<Action> Action_sptr;
+typedef std::unique_ptr<Action> Action_uptr;
+typedef std::weak_ptr<Action> Action_wptr;
 
 }  // namespace events
 }  // namespace centurion

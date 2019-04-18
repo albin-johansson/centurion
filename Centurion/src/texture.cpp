@@ -19,12 +19,19 @@ Texture::Texture(SDL_Texture* texture, int width, int height)
 
 Texture::~Texture() { SDL_DestroyTexture(sdl_texture); }
 
-std::shared_ptr<Texture> Texture::Create(SDL_Texture* texture, int width,
-                                         int height) {
-  return std::make_shared<Texture>(texture, width, height);
+SDL_Texture& Texture::GetSDLVersion() noexcept { return *sdl_texture; }
+
+Texture_sptr Texture::CreateShared(SDL_Texture* texture, int w, int h) {
+  return std::make_shared<Texture>(texture, w, h);
 }
 
-SDL_Texture& Texture::GetSDLVersion() noexcept { return *sdl_texture; }
+Texture_uptr Texture::CreateUnique(SDL_Texture* texture, int w, int h) {
+  return std::make_unique<Texture>(texture, w, h);
+}
+
+Texture_wptr Texture::CreateWeak(SDL_Texture* texture, int width, int height) {
+  return CreateShared(texture, width, height);
+}
 
 }  // namespace visuals
 }  // namespace centurion

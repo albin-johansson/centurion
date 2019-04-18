@@ -6,6 +6,11 @@
 namespace centurion {
 namespace visuals {
 
+class Texture;
+typedef std::shared_ptr<Texture> Texture_sptr;
+typedef std::unique_ptr<Texture> Texture_uptr;
+typedef std::weak_ptr<Texture> Texture_wptr;
+
 /**
 \brief The Texture class represents textures such as images.
 \since 1.0.0
@@ -28,16 +33,6 @@ class Texture : public centurion::geo::Dimensioned {
   ~Texture();
 
   /**
-  \brief Creates and returns a heap allocated Texture instance.
-  \param texture - a pointer to the SDL_Texture that will be the internal
-  representation of the Texture.
-  \param width - the width of the Texture.
-  \param height - the height of the Texture.
-  */
-  static std::shared_ptr<centurion::visuals::Texture> Create(
-      SDL_Texture* texture, int width, int height);
-
-  /**
   \brief Returns a referene to the internal represenation of this Texture.
   \since 1.0.0
   */
@@ -54,11 +49,34 @@ class Texture : public centurion::geo::Dimensioned {
   \since 1.0.0
   */
   inline int GetHeight() const noexcept override { return height; };
-};
 
-typedef std::shared_ptr<centurion::visuals::Texture> Texture_sptr;
-typedef std::unique_ptr<centurion::visuals::Texture> Texture_uptr;
-typedef std::weak_ptr<centurion::visuals::Texture> Texture_wptr;
+  /**
+  \brief Returns a shared pointer to a Texture instance.
+  \param texture - a pointer to the SDL_Texture that will be the internal
+  representation of the Texture.
+  \param width - the width of the Texture.
+  \param height - the height of the Texture.
+  */
+  static Texture_sptr CreateShared(SDL_Texture* texture, int width, int height);
+
+  /**
+  \brief Returns a unique pointer to a Texture instance.
+  \param texture - a pointer to the SDL_Texture that will be the internal
+  representation of the Texture.
+  \param width - the width of the Texture.
+  \param height - the height of the Texture.
+  */
+  static Texture_uptr CreateUnique(SDL_Texture* texture, int width, int height);
+
+  /**
+  \brief Returns a weak pointer to a Texture instance.
+  \param texture - a pointer to the SDL_Texture that will be the internal
+  representation of the Texture.
+  \param width - the width of the Texture.
+  \param height - the height of the Texture.
+  */
+  static Texture_wptr CreateWeak(SDL_Texture* texture, int width, int height);
+};
 
 }  // namespace visuals
 }  // namespace centurion

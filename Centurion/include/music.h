@@ -7,6 +7,11 @@
 namespace centurion {
 namespace audio {
 
+class Music;
+typedef std::shared_ptr<Music> Music_sptr;
+typedef std::unique_ptr<Music> Music_uptr;
+typedef std::weak_ptr<Music> Music_wptr;
+
 /**
 \brief The Music class represents a music clip. The music clips must be of the
 .WAV-format.
@@ -27,15 +32,6 @@ class Music : public AudioComponent {
   explicit Music(const std::string& path);
 
   ~Music();
-
-  /**
-  \brief Creates and returns a heap allocated Music instance.
-  \param path - the path of the .WAV-file that the Music instance will
-  represent.
-  \since ? // FIXME
-  */
-  static std::shared_ptr<centurion::audio::Music> Create(
-      const std::string& path);
 
   /**
   \brief Starts playing the music file by fading it in.
@@ -75,11 +71,31 @@ class Music : public AudioComponent {
   \since 1.0.0
   */
   int GetVolume() const noexcept override;
-};
 
-typedef std::shared_ptr<centurion::audio::Music> Music_sptr;
-typedef std::unique_ptr<centurion::audio::Music> Music_uptr;
-typedef std::weak_ptr<centurion::audio::Music> Music_wptr;
+  /**
+  \brief Returns a shared pointer that points to a Music instance.
+  \param path - the path of the .WAV-file that the Music instance will
+  represent.
+  \since 1.1.0
+  */
+  static Music_sptr CreateShared(const std::string& path);
+
+  /**
+  \brief Returns a unique pointer that points to a Music instance.
+  \param path - the path of the .WAV-file that the Music instance will
+  represent.
+  \since 1.1.0
+  */
+  static Music_uptr CreateUnique(const std::string& path);
+
+  /**
+  \brief Returns a weak pointer that points to a Music instance.
+  \param path - the path of the .WAV-file that the Music instance will
+  represent.
+  \since 1.1.0
+  */
+  static Music_wptr CreateWeak(const std::string& path);
+};
 
 }  // namespace audio
 }  // namespace centurion

@@ -7,6 +7,11 @@
 namespace centurion {
 namespace audio {
 
+class SoundEffect;
+typedef std::shared_ptr<SoundEffect> SoundEffect_sptr;
+typedef std::unique_ptr<SoundEffect> SoundEffect_uptr;
+typedef std::weak_ptr<SoundEffect> SoundEffect_wptr;
+
 /**
 \brief The SoundEffect class represents a sound effect. The supported file
 extensions are MP3, OGG and FLAC.
@@ -26,14 +31,6 @@ class SoundEffect : public AudioComponent {
   explicit SoundEffect(const std::string& path);
 
   ~SoundEffect();
-
-  /**
-  \brief Creates and returns a heap allocated SoundEffect instance.
-  \param path - the path of the sound effect file.
-  \since ? // FIXME
-  */
-  static std::shared_ptr<centurion::audio::SoundEffect> Create(
-      const std::string& path);
 
   /**
   \brief Plays the sound effect and loops it by the specified number of times.
@@ -66,11 +63,28 @@ class SoundEffect : public AudioComponent {
   \since 1.0.0
   */
   int GetVolume() const noexcept override;
-};
 
-typedef std::shared_ptr<centurion::audio::SoundEffect> SoundEffect_sptr;
-typedef std::unique_ptr<centurion::audio::SoundEffect> SoundEffect_uptr;
-typedef std::weak_ptr<centurion::audio::SoundEffect> SoundEffect_wptr;
+  /**
+  \brief Returns a shared pointer that points to a SoundEffect instance.
+  \param path - the path of the sound effect file.
+  \since 1.1.0
+  */
+  static SoundEffect_sptr CreateShared(const std::string& path);
+
+  /**
+  \brief Returns a unique pointer that points to a SoundEffect instance.
+  \param path - the path of the sound effect file.
+  \since 1.1.0
+  */
+  static SoundEffect_uptr CreateUnique(const std::string& path);
+
+  /**
+  \brief Returns a weak pointer that points to a SoundEffect instance.
+  \param path - the path of the sound effect file.
+  \since 1.1.0
+  */
+  static SoundEffect_wptr CreateWeak(const std::string& path);
+};
 
 }  // namespace audio
 }  // namespace centurion

@@ -13,6 +13,11 @@
 namespace centurion {
 namespace visuals {
 
+class Renderer;
+typedef std::shared_ptr<Renderer> Renderer_sptr;
+typedef std::unique_ptr<Renderer> Renderer_uptr;
+typedef std::weak_ptr<Renderer> Renderer_wptr;
+
 /**
 \brief The Renderer class provides rendering functionality for a Window.
 \since 1.0.0
@@ -38,15 +43,6 @@ class Renderer {
   explicit Renderer(SDL_Renderer* renderer);
 
   ~Renderer();
-
-  /**
-  \brief Creates and returns a heap allocated Renderer instance.
-  \param renderer - a pointer to the SDL_Renderer that the Renderer will be
-  based upon.
-  \since FIXME
-  */
-  static std::shared_ptr<centurion::visuals::Renderer> Create(
-      SDL_Renderer* renderer);
 
   /**
   \brief Updates the state of this Renderer. This method has to be called in
@@ -185,11 +181,31 @@ class Renderer {
   \since 1.0.0
   */
   inline SDL_Renderer* const GetSDLVersion() const { return sdl_renderer; }
-};
 
-typedef std::shared_ptr<centurion::visuals::Renderer> Renderer_sptr;
-typedef std::unique_ptr<centurion::visuals::Renderer> Renderer_uptr;
-typedef std::weak_ptr<centurion::visuals::Renderer> Renderer_wptr;
+  /**
+  \brief Returns a shared pointer to a Renderer instance.
+  \param renderer - a pointer to the SDL_Renderer that the Renderer will be
+  based upon.
+  \since 1.1.0
+  */
+  static Renderer_sptr CreateShared(SDL_Renderer* renderer);
+
+  /**
+  \brief Returns a unique pointer to a Renderer instance.
+  \param renderer - a pointer to the SDL_Renderer that the Renderer will be
+  based upon.
+  \since 1.1.0
+  */
+  static Renderer_uptr CreateUnique(SDL_Renderer* renderer);
+
+  /**
+  \brief Returns a weak pointer to a Renderer instance.
+  \param renderer - a pointer to the SDL_Renderer that the Renderer will be
+  based upon.
+  \since 1.1.0
+  */
+  static Renderer_wptr CreateWeak(SDL_Renderer* renderer);
+};
 
 }  // namespace visuals
 }  // namespace centurion

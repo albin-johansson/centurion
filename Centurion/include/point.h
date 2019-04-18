@@ -6,6 +6,11 @@
 namespace centurion {
 namespace geo {
 
+class Point;
+typedef std::shared_ptr<Point> Point_sptr;
+typedef std::unique_ptr<Point> Point_uptr;
+typedef std::weak_ptr<Point> Point_wptr;
+
 /**
 \brief The Point class represents a two-dimensional point.
 \since 1.0.0
@@ -21,15 +26,7 @@ class Point : public centurion::geo::Positionable {
   */
   Point(int x, int y);
 
-  ~Point() override = default;
-
-  /**
-  \brief Creates and returns a heap allocated Point instance.
-  \param x - the desired initial x-coordinate.
-  \param y - the desired initial y-coordinate.
-  \since 1.0.0 ? // FIXME
-  */
-  static std::shared_ptr<centurion::geo::Point> Create(int x, int y);
+  ~Point() = default;
 
   /**
   \brief Assigns the location of this point.
@@ -70,11 +67,31 @@ class Point : public centurion::geo::Positionable {
   \since 1.0.0
   */
   inline SDL_Point GetSDLVersion() const noexcept { return point; }
-};
 
-typedef std::shared_ptr<centurion::geo::Point> Point_sptr;
-typedef std::unique_ptr<centurion::geo::Point> Point_uptr;
-typedef std::weak_ptr<centurion::geo::Point> Point_wptr;
+  /**
+  \brief Returns a shared pointer to a Point instance.
+  \param x - the initial x-coordinate of the point.
+  \param y - the initial y-coordinate of the point.
+  \since 1.1.0
+  */
+  static Point_sptr CreateShared(int x, int y);
+
+  /**
+  \brief Returns a unique pointer to a Point instance.
+  \param x - the initial x-coordinate of the point.
+  \param y - the initial y-coordinate of the point.
+  \since 1.1.0
+  */
+  static Point_uptr CreateUnique(int x, int y);
+
+  /**
+  \brief Returns a weak pointer to a Point instance.
+  \param x - the initial x-coordinate of the point.
+  \param y - the initial y-coordinate of the point.
+  \since 1.1.0
+  */
+  static Point_wptr CreateWeak(int x, int y);
+};
 
 }  // namespace geo
 }  // namespace centurion

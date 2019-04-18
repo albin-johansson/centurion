@@ -18,10 +18,6 @@ Font::Font(const std::string& path, const int size) {
 
 Font::~Font() { TTF_CloseFont(font); }
 
-std::shared_ptr<Font> Font::Create(const std::string& path, int size) {
-  return std::make_shared<Font>(path, size);
-}
-
 void Font::ApplyStyle(int style) noexcept { styleMask |= style; }
 
 void Font::RemoveStyle(int style) noexcept { styleMask &= ~style; }
@@ -106,6 +102,18 @@ int Font::GetStringHeight(const std::string& text) const noexcept {
   int h = 0;
   TTF_SizeText(font, text.c_str(), &w, &h);
   return h;
+}
+
+Font_sptr Font::CreateShared(const std::string& path, int size) {
+  return std::make_shared<Font>(path, size);
+}
+
+Font_uptr Font::CreateUnique(const std::string& path, int size) {
+  return std::make_unique<Font>(path, size);
+}
+
+Font_wptr Font::CreateWeak(const std::string& path, int size) {
+  return CreateShared(path, size);
 }
 
 }  // namespace visuals

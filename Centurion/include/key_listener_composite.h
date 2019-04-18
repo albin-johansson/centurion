@@ -7,6 +7,11 @@
 namespace centurion {
 namespace input {
 
+class KeyListenerComposite;
+typedef std::shared_ptr<KeyListenerComposite> KeyListenerComposite_sptr;
+typedef std::unique_ptr<KeyListenerComposite> KeyListenerComposite_uptr;
+typedef std::weak_ptr<KeyListenerComposite> KeyListenerComposite_wptr;
+
 /**
 \brief The KeyListenerComposite class holds instances of KeyListener.
 \since 1.1.0
@@ -37,30 +42,23 @@ class KeyListenerComposite final : public centurion::input::KeyListener {
   void RemoveChildren();
 
   /**
-  \brief Returns a shared_ptr that points to a KeyListenerComposite.
+  \brief Returns a shared pointer that points to a KeyListenerComposite.
   \since 1.1.0
   */
-  static std::shared_ptr<centurion::input::KeyListenerComposite> CreateShared();
+  static KeyListenerComposite_sptr CreateShared();
 
   /**
-  \brief Returns a unique_ptr that points to a KeyListenerComposite.
+  \brief Returns a unique pointer that points to a KeyListenerComposite.
   \since 1.1.0
   */
-  static std::unique_ptr<centurion::input::KeyListenerComposite> CreateUnique();
+  static KeyListenerComposite_uptr CreateUnique();
 
   /**
-  \brief Returns a weak_ptr that points to a KeyListenerComposite.
+  \brief Returns a weak pointer that points to a KeyListenerComposite.
   \since 1.1.0
   */
-  static std::weak_ptr<centurion::input::KeyListenerComposite> CreateWeak();
+  static KeyListenerComposite_wptr CreateWeak();
 };
-
-typedef std::shared_ptr<centurion::input::KeyListenerComposite>
-    KeyListenerComposite_sptr;
-typedef std::unique_ptr<centurion::input::KeyListenerComposite>
-    KeyListenerComposite_uptr;
-typedef std::weak_ptr<centurion::input::KeyListenerComposite>
-    KeyListenerComposite_wptr;
 
 }  // namespace input
 }  // namespace centurion

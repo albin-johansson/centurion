@@ -11,6 +11,11 @@
 namespace centurion {
 namespace input {
 
+class InputDispatcher;
+typedef std::shared_ptr<InputDispatcher> InputDispatcher_sptr;
+typedef std::unique_ptr<InputDispatcher> InputDispatcher_uptr;
+typedef std::weak_ptr<InputDispatcher> InputDispatcher_wptr;
+
 /**
 \brief The InputDispatcher class manages state based input.
 \since 1.1.0
@@ -60,22 +65,22 @@ class InputDispatcher final {
   bool ReceivedQuit() const { return shouldQuit; }
 
   /**
-  \brief Returns a shared_ptr that points to a InputDispatcher.
+  \brief Returns a shared pointer that points to a InputDispatcher.
   \since 1.1.0
   */
-  static std::shared_ptr<InputDispatcher> CreateShared();
+  static InputDispatcher_sptr CreateShared();
 
   /**
-  \brief Returns a unique_ptr that points to a InputDispatcher.
+  \brief Returns a unique pointer that points to a InputDispatcher.
   \since 1.1.0
   */
-  static std::unique_ptr<InputDispatcher> CreateUnique();
+  static InputDispatcher_uptr CreateUnique();
 
   /**
-  \brief Returns a weak_ptr that points to a InputDispatcher.
+  \brief Returns a weak pointer that points to a InputDispatcher.
   \since 1.1.0
   */
-  static std::weak_ptr<InputDispatcher> CreateWeak();
+  static InputDispatcher_wptr CreateWeak();
 };
 
 }  // namespace input

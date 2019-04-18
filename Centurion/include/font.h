@@ -6,6 +6,11 @@
 namespace centurion {
 namespace visuals {
 
+class Font;
+typedef std::shared_ptr<Font> Font_sptr;
+typedef std::unique_ptr<Font> Font_uptr;
+typedef std::weak_ptr<Font> Font_wptr;
+
 /**
 \brief The Font class serves as a representation of a True Type font.
 \since 1.0.0
@@ -31,15 +36,6 @@ class Font {
   Font(const std::string& path, int size);
 
   ~Font();
-
-  /**
-  \brief Creates and returns a heap allocated Font instance.
-  \param path - the path of the True Type Font (.ttf) file.
-  \param size - the point size of the font.
-  \since FIXME
-  */
-  static std::shared_ptr<centurion::visuals::Font> Create(
-      const std::string& path, int size);
 
   /**
   \brief Resets the style of this font, so that the style is equivalent to the
@@ -146,11 +142,31 @@ class Font {
   \since 1.0.0
   */
   int GetStringHeight(const std::string& str) const noexcept;
-};
 
-typedef std::shared_ptr<centurion::visuals::Font> Font_sptr;
-typedef std::unique_ptr<centurion::visuals::Font> Font_uptr;
-typedef std::weak_ptr<centurion::visuals::Font> Font_wptr;
+  /**
+  \brief Creates and returns a shared pointer that points to a Font instance.
+  \param path - the path of the True Type Font (.ttf) file.
+  \param size - the point size of the font.
+  \since 1.1.0
+  */
+  static Font_sptr CreateShared(const std::string& path, int size);
+
+  /**
+  \brief Creates and returns an unique pointer that points to a Font instance.
+  \param path - the path of the True Type Font (.ttf) file.
+  \param size - the point size of the font.
+  \since 1.1.0
+  */
+  static Font_uptr CreateUnique(const std::string& path, int size);
+
+  /**
+  \brief Creates and returns a weak pointer that points to a Font instance.
+  \param path - the path of the True Type Font (.ttf) file.
+  \param size - the point size of the font.
+  \since 1.1.0
+  */
+  static Font_wptr CreateWeak(const std::string& path, int size);
+};
 
 }  // namespace visuals
 }  // namespace centurion

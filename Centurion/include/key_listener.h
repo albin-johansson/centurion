@@ -34,9 +34,9 @@ class KeyListener {
   virtual void KeyReleased(const centurion::input::KeyState& state) = 0;
 };
 
-typedef std::shared_ptr<centurion::input::KeyListener> KeyListener_sptr;
-typedef std::unique_ptr<centurion::input::KeyListener> KeyListener_uptr;
-typedef std::weak_ptr<centurion::input::KeyListener> KeyListener_wptr;
+typedef std::shared_ptr<KeyListener> KeyListener_sptr;
+typedef std::unique_ptr<KeyListener> KeyListener_uptr;
+typedef std::weak_ptr<KeyListener> KeyListener_wptr;
 
 }  // namespace input
 }  // namespace centurion

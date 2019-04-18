@@ -41,9 +41,9 @@ class AudioComponent {
   virtual int GetVolume() const = 0;
 };
 
-typedef std::shared_ptr<centurion::audio::AudioComponent> AudioComponent_sptr;
-typedef std::unique_ptr<centurion::audio::AudioComponent> AudioComponent_uptr;
-typedef std::weak_ptr<centurion::audio::AudioComponent> AudioComponent_wptr;
+typedef std::shared_ptr<AudioComponent> AudioComponent_sptr;
+typedef std::unique_ptr<AudioComponent> AudioComponent_uptr;
+typedef std::weak_ptr<AudioComponent> AudioComponent_wptr;
 
 }  // namespace audio
 }  // namespace centurion

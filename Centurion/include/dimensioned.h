@@ -29,9 +29,9 @@ class Dimensioned {
   virtual int GetHeight() const = 0;
 };
 
-typedef std::shared_ptr<centurion::geo::Dimensioned> Dimensioned_sptr;
-typedef std::unique_ptr<centurion::geo::Dimensioned> Dimensioned_uptr;
-typedef std::weak_ptr<centurion::geo::Dimensioned> Dimensioned_wptr;
+typedef std::shared_ptr<Dimensioned> Dimensioned_sptr;
+typedef std::unique_ptr<Dimensioned> Dimensioned_uptr;
+typedef std::weak_ptr<Dimensioned> Dimensioned_wptr;
 
 }  // namespace geo
 }  // namespace centurion

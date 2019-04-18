@@ -64,9 +64,9 @@ class Event {
   inline SDL_Event GetSDLVersion() const noexcept { return event; }
 };
 
-typedef std::shared_ptr<centurion::events::Event> Event_sptr;
-typedef std::unique_ptr<centurion::events::Event> Event_uptr;
-typedef std::weak_ptr<centurion::events::Event> Event_wptr;
+typedef std::shared_ptr<Event> Event_sptr;
+typedef std::unique_ptr<Event> Event_uptr;
+typedef std::weak_ptr<Event> Event_wptr;
 
 }  // namespace events
 }  // namespace centurion

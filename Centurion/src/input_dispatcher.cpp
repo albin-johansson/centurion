@@ -18,11 +18,11 @@ void InputDispatcher::Update() {
   SDL_PumpEvents();
   shouldQuit = SDL_QuitRequested();
 
-  keyState->Update();
   NotifyKeyListeners();
+  keyState->Update();
 
-  mouseState->Update();
   NotifyMouseListeners();
+  mouseState->Update();
 }
 
 void InputDispatcher::NotifyKeyListeners() {
@@ -48,17 +48,15 @@ void InputDispatcher::AddKeyListener(KeyListener_sptr kl) {
   keyListenerComposite->AddChild(kl);
 }
 
-std::shared_ptr<InputDispatcher> InputDispatcher::CreateShared() {
+InputDispatcher_sptr InputDispatcher::CreateShared() {
   return std::make_shared<InputDispatcher>();
 }
 
-std::unique_ptr<InputDispatcher> InputDispatcher::CreateUnique() {
+InputDispatcher_uptr InputDispatcher::CreateUnique() {
   return std::make_unique<InputDispatcher>();
 }
 
-std::weak_ptr<InputDispatcher> InputDispatcher::CreateWeak() {
-  return CreateShared();
-}
+InputDispatcher_wptr InputDispatcher::CreateWeak() { return CreateShared(); }
 
 }  // namespace input
 }  // namespace centurion

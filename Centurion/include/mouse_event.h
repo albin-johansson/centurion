@@ -80,9 +80,9 @@ class MouseEvent {
   bool IsMouseWheelEvent() const noexcept;
 };
 
-typedef std::shared_ptr<centurion::events::MouseEvent> MouseEvent_sptr;
-typedef std::unique_ptr<centurion::events::MouseEvent> MouseEvent_uptr;
-typedef std::weak_ptr<centurion::events::MouseEvent> MouseEvent_wptr;
+typedef std::shared_ptr<MouseEvent> MouseEvent_sptr;
+typedef std::unique_ptr<MouseEvent> MouseEvent_uptr;
+typedef std::weak_ptr<MouseEvent> MouseEvent_wptr;
 
 }  // namespace events
 }  // namespace centurion

@@ -33,15 +33,15 @@ void MouseListenerComposite::AddChild(MouseListener_sptr ml) {
   }
 }
 
-std::shared_ptr<MouseListenerComposite> MouseListenerComposite::CreateShared() {
+MouseListenerComposite_sptr MouseListenerComposite::CreateShared() {
   return std::make_shared<MouseListenerComposite>();
 }
 
-std::unique_ptr<MouseListenerComposite> MouseListenerComposite::CreateUnique() {
+MouseListenerComposite_uptr MouseListenerComposite::CreateUnique() {
   return std::make_unique<MouseListenerComposite>();
 }
 
-std::weak_ptr<MouseListenerComposite> MouseListenerComposite::CreateWeak() {
+MouseListenerComposite_wptr MouseListenerComposite::CreateWeak() {
   return CreateShared();
 }
 

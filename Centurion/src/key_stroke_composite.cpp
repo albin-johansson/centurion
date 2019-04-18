@@ -12,10 +12,6 @@ KeyStrokeComposite::KeyStrokeComposite() {
 
 KeyStrokeComposite::~KeyStrokeComposite() { Clear(); }
 
-std::shared_ptr<KeyStrokeComposite> KeyStrokeComposite::Create() {
-  return std::make_shared<KeyStrokeComposite>();
-}
-
 void KeyStrokeComposite::Update(const Event& event) {
   for (shared_ptr<KeyStroke> keyStroke : keyStrokes) {
     if (keyStroke != nullptr) {
@@ -30,6 +26,18 @@ void KeyStrokeComposite::AddKeyStroke(shared_ptr<KeyStroke> keyStroke) {
 }
 
 void KeyStrokeComposite::Clear() { keyStrokes.clear(); }
+
+KeyStrokeComposite_sptr KeyStrokeComposite::CreateShared() {
+  return std::shared_ptr<KeyStrokeComposite>();
+}
+
+KeyStrokeComposite_uptr KeyStrokeComposite::CreateUnique() {
+  return std::unique_ptr<KeyStrokeComposite>();
+}
+
+KeyStrokeComposite_wptr KeyStrokeComposite::CreateWeak() {
+  return CreateShared();
+}
 
 }  // namespace events
 }  // namespace centurion

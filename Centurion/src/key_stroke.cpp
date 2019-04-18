@@ -24,12 +24,6 @@ KeyStroke::KeyStroke(SDL_Keycode keycode, shared_ptr<Action> action,
 
 KeyStroke::~KeyStroke() = default;
 
-shared_ptr<KeyStroke> KeyStroke::Create(SDL_Keycode keycode,
-                                        shared_ptr<Action> action,
-                                        KeyTrigger trigger) {
-  return std::make_shared<KeyStroke>(keycode, action, trigger);
-}
-
 bool KeyStroke::ShouldExecute(const Event& e) {
   KeyboardEvent kEvent = e.GetKeyboardInfo();
 
@@ -57,6 +51,21 @@ void KeyStroke::Trigger() { action->Execute(); }
 
 void KeyStroke::SetRepeatable(bool isRepeatable) noexcept {
   this->isRepeatable = isRepeatable;
+}
+
+KeyStroke_sptr KeyStroke::CreateShared(SDL_Keycode keycode, Action_sptr action,
+                                       KeyTrigger trigger) {
+  return std::make_shared<KeyStroke>(keycode, action, trigger);
+}
+
+KeyStroke_uptr KeyStroke::CreateUnique(SDL_Keycode keycode, Action_sptr action,
+                                       KeyTrigger trigger) {
+  return std::make_unique<KeyStroke>(keycode, action, trigger);
+}
+
+KeyStroke_wptr KeyStroke::CreateWeak(SDL_Keycode keycode, Action_sptr action,
+                                     KeyTrigger trigger) {
+  return CreateShared(keycode, action, trigger);
 }
 
 }  // namespace events

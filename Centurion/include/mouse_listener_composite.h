@@ -7,6 +7,11 @@
 namespace centurion {
 namespace input {
 
+class MouseListenerComposite;
+typedef std::shared_ptr<MouseListenerComposite> MouseListenerComposite_sptr;
+typedef std::unique_ptr<MouseListenerComposite> MouseListenerComposite_uptr;
+typedef std::weak_ptr<MouseListenerComposite> MouseListenerComposite_wptr;
+
 /**
 \brief The MouseListenerComposite class holds instances of MouseListener.
 \since 1.1.0
@@ -45,30 +50,23 @@ class MouseListenerComposite final : public centurion::input::MouseListener {
   void AddChild(centurion::input::MouseListener_sptr ml);
 
   /**
-  \brief Returns a shared_ptr that points to a MouseListenerComposite.
+  \brief Returns a shared pinter that points to a MouseListenerComposite.
   \since 1.1.0
   */
-  static std::shared_ptr<MouseListenerComposite> CreateShared();
+  static MouseListenerComposite_sptr CreateShared();
 
   /**
-  \brief Returns a unique_ptr that points to a MouseListenerComposite.
+  \brief Returns a unique pointer that points to a MouseListenerComposite.
   \since 1.1.0
   */
-  static std::unique_ptr<MouseListenerComposite> CreateUnique();
+  static MouseListenerComposite_uptr CreateUnique();
 
   /**
-  \brief Returns a weak_ptr that points to a MouseListenerComposite.
+  \brief Returns a weak pointer that points to a MouseListenerComposite.
   \since 1.1.0
   */
-  static std::weak_ptr<MouseListenerComposite> CreateWeak();
+  static MouseListenerComposite_wptr CreateWeak();
 };
-
-typedef std::shared_ptr<centurion::input::MouseListenerComposite>
-    MouseListenerComposite_sptr;
-typedef std::unique_ptr<centurion::input::MouseListenerComposite>
-    MouseListenerComposite_uptr;
-typedef std::weak_ptr<centurion::input::MouseListenerComposite>
-    MouseListenerComposite_wptr;
 
 }  // namespace input
 }  // namespace centurion

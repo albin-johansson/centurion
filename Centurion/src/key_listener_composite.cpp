@@ -33,15 +33,15 @@ void KeyListenerComposite::AddChild(KeyListener_sptr kl) {
 
 void KeyListenerComposite::RemoveChildren() { listeners.clear(); }
 
-std::shared_ptr<KeyListenerComposite> KeyListenerComposite::CreateShared() {
+KeyListenerComposite_sptr KeyListenerComposite::CreateShared() {
   return std::make_shared<KeyListenerComposite>();
 }
 
-std::unique_ptr<KeyListenerComposite> KeyListenerComposite::CreateUnique() {
+KeyListenerComposite_uptr KeyListenerComposite::CreateUnique() {
   return std::make_unique<KeyListenerComposite>();
 }
 
-std::weak_ptr<KeyListenerComposite> KeyListenerComposite::CreateWeak() {
+KeyListenerComposite_wptr KeyListenerComposite::CreateWeak() {
   return CreateShared();
 }
 

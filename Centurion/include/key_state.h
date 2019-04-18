@@ -6,6 +6,11 @@
 namespace centurion {
 namespace input {
 
+class KeyState;
+typedef std::shared_ptr<KeyState> KeyState_sptr;
+typedef std::unique_ptr<KeyState> KeyState_uptr;
+typedef std::weak_ptr<KeyState> KeyState_wptr;
+
 /**
 \brief The KeyState class provides information about the keyboard state.
 \since 1.1.0
@@ -71,27 +76,23 @@ class KeyState final {
   inline int GetNumberOfKeys() const noexcept { return nKeys; }
 
   /**
-  \brief Returns a shared_ptr that points to a KeyState.
+  \brief Returns a shared pointer that points to a KeyState.
   \since 1.1.0
   */
-  static std::shared_ptr<KeyState> CreateShared();
+  static KeyState_sptr CreateShared();
 
   /**
-  \brief Returns a unique_ptr that points to a KeyState.
+  \brief Returns a unique pointer that points to a KeyState.
   \since 1.1.0
   */
-  static std::unique_ptr<KeyState> CreateUnique();
+  static KeyState_uptr CreateUnique();
 
   /**
-  \brief Returns a weak_ptr that points to a KeyState.
+  \brief Returns a weak pointer that points to a KeyState.
   \since 1.1.0
   */
-  static std::weak_ptr<KeyState> CreateWeak();
+  static KeyState_wptr CreateWeak();
 };
-
-typedef std::shared_ptr<centurion::input::KeyState> KeyState_sptr;
-typedef std::unique_ptr<centurion::input::KeyState> KeyState_uptr;
-typedef std::weak_ptr<centurion::input::KeyState> KeyState_wptr;
 
 }  // namespace input
 }  // namespace centurion

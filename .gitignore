@@ -34,6 +34,7 @@
 # Custom stuff
 .vs/
 out/
+Centurion/lib/
 lib/
 CenturionTest/
 *.idb

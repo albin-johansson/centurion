@@ -6,6 +6,8 @@ using std::vector;
 namespace centurion {
 namespace events {
 
+// FIXME should extend KeyStroke interface
+
 KeyStrokeComposite::KeyStrokeComposite() {
   keyStrokes = vector<shared_ptr<KeyStroke>>();
 }

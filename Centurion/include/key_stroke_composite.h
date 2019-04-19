@@ -17,7 +17,7 @@ typedef std::weak_ptr<KeyStrokeComposite> KeyStrokeComposite_wptr;
 KeyStroke instances.
 \since 1.0.0
 */
-class KeyStrokeComposite final {  // FIXME should extend KeyStroke interface
+class KeyStrokeComposite final {
  private:
   std::vector<std::shared_ptr<centurion::events::KeyStroke>> keyStrokes;
 

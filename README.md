@@ -57,6 +57,7 @@ All of the classes in Centurion reside in the `centurion` namespace. Furthermore
 
 * `centurion::visuals` - contains components mainly related to visuals such as windows and renderers.
 * `centurion::events` - contains components related to various forms of input such as the keyboard and mouse.
+* `centurion::input` - contains input components that are state based (and not event based).
 * `centurion::geo` - contains components related to geometry such as rectangles and points.
 * `centurion::audio` - contains audio components related to both music and sound effects.
 * `centurion::tools` - contains various useful tools, not necessarily related to the SDL library.

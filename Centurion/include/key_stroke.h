@@ -31,9 +31,9 @@ class KeyStroke {
   /**
   \param keycode - the key code of the key that will trigger the KeyStroke.
   \param action - the Action that will be executed when the related key
-  is pressed/released.
-  \param trigger - the KeyTrigger value which specifies the
-  preferred moment of activation.
+  is pressed or released.
+  \param trigger - the KeyTrigger value specifies the moment of activation.
+  \since 1.0.0
   */
   KeyStroke(SDL_Keycode keycode,
             std::shared_ptr<centurion::events::Action> action,
@@ -44,11 +44,13 @@ class KeyStroke {
   /**
   \brief Updates this KeyStroke by comparing it to the supplied event.
   \param event - The event that will be checked.
+  \since 1.0.0
   */
   void Update(const centurion::events::Event& event);
 
   /**
   \brief Programmatically triggers the Action related to this KeyStroke.
+  \since 1.0.0
   */
   void Trigger();
 
@@ -59,11 +61,13 @@ class KeyStroke {
   this set to FALSE.
   \param isRepeatable - the new value dictating whether this
   KeyStroke is repeatable.
+  \since 1.0.0
   */
   void SetRepeatable(bool isRepeatable) noexcept;
 
   /**
   \brief Indicates whether or not this KeyStroke is repeatable.
+  \since 1.0.0
   */
   inline bool IsRepeatable() const noexcept { return isRepeatable; }
 
@@ -73,8 +77,8 @@ class KeyStroke {
   \param keycode - the key code of the key that will trigger the KeyStroke.
   \param action - the Action that will be executed when the related key is
   pressed/released.
-  \param trigger - the KeyTrigger value which specifies the preferred moment of
-  activation.
+  \param trigger - the KeyTrigger value specifies the moment of activation.
+  \since 1.1.0
   */
   static KeyStroke_sptr CreateShared(SDL_Keycode keycode,
                                      centurion::events::Action_sptr action,
@@ -85,8 +89,8 @@ class KeyStroke {
   \param keycode - the key code of the key that will trigger the KeyStroke.
   \param action - the Action that will be executed when the related key is
   pressed/released.
-  \param trigger - the KeyTrigger value which specifies the preferred moment of
-  activation.
+  \param trigger - the KeyTrigger value specifies the moment of activation.
+  \since 1.1.0
   */
   static KeyStroke_uptr CreateUnique(SDL_Keycode keycode,
                                      centurion::events::Action_sptr action,
@@ -97,8 +101,8 @@ class KeyStroke {
   \param keycode - the key code of the key that will trigger the KeyStroke.
   \param action - the Action that will be executed when the related key is
   pressed/released.
-  \param trigger - the KeyTrigger value which specifies the preferred moment of
-  activation.
+  \param trigger - the KeyTrigger value specifies the moment of activation.
+  \since 1.1.0
   */
   static KeyStroke_wptr CreateWeak(SDL_Keycode keycode,
                                    centurion::events::Action_sptr action,

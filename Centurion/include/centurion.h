@@ -10,7 +10,7 @@ deinitialization of the Centurion library.
 */
 class Centurion final {
  private:
-  static bool initialized;
+  static bool isInit;
 
   Centurion() = delete;
 
@@ -22,7 +22,7 @@ class Centurion final {
 
   static void InitSDLMixer();
 
-  static void ThrowInitializationException(const std::string& error);
+  static void ThrowInitializationException(const std::string error);
 
  public:
   ~Centurion() = default;
@@ -30,19 +30,21 @@ class Centurion final {
   /**
   \brief Initializes the Centurion library. This method MUST be called before
   using ANY other Centurion component.
+  \since 1.0.0
   */
   static void Init();
 
   /**
   \brief Closes the Centurion library.
+  \since 1.0.0
   */
-  static void Close();
+  static void Close() noexcept;
 
   /**
-  \brief Indicates whether or not the Centurion library is initialized or not.
-  Returns true if the library is initialized, false otherwise.
+  \brief Returns true if the library is initialized, returns false otherwise.
+  \since 1.0.0
   */
-  inline static bool IsInitialized() { return initialized; }
+  inline static bool IsInitialized() noexcept { return isInit; }
 };
 
 }  // namespace centurion

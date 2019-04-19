@@ -14,7 +14,7 @@ using std::string;
 
 namespace centurion {
 
-bool Centurion::initialized = false;
+bool Centurion::isInit = false;
 
 void Centurion::InitCore() {
   int result = SDL_Init(SDL_INIT_EVERYTHING);
@@ -49,29 +49,29 @@ void Centurion::InitSDLTTF() {
   }
 }
 
-void Centurion::ThrowInitializationException(const string& error) {
+void Centurion::ThrowInitializationException(const string error) {
   string str = "Failed to initialize Centurion! Error: " + error;
   throw exception(str.c_str());
 }
 
 void Centurion::Init() {
-  if (!initialized) {
+  if (!isInit) {
     Centurion::InitCore();
     Centurion::InitSDLImage();
     Centurion::InitSDLMixer();
     Centurion::InitSDLTTF();
-    initialized = true;
+    isInit = true;
   }
 }
 
-void Centurion::Close() {
-  if (initialized) {
+void Centurion::Close() noexcept {
+  if (isInit) {
     IMG_Quit();
     TTF_Quit();
     Mix_CloseAudio();
     Mix_Quit();
     SDL_Quit();
-    initialized = false;
+    isInit = false;
   }
 }
 

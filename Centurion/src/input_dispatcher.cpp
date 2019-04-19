@@ -26,9 +26,7 @@ void InputDispatcher::Update() {
 }
 
 void InputDispatcher::NotifyKeyListeners() {
-  // TODO should probably be optimized, if possible.
-  keyListenerComposite->KeyPressed(*keyState);
-  keyListenerComposite->KeyReleased(*keyState);
+  keyListenerComposite->StateUpdated(*keyState);
 }
 
 void InputDispatcher::NotifyMouseListeners() {

@@ -9,18 +9,10 @@ KeyListenerComposite::KeyListenerComposite() {
 
 KeyListenerComposite::~KeyListenerComposite() { RemoveChildren(); }
 
-void KeyListenerComposite::KeyPressed(const KeyState& state) {
+void KeyListenerComposite::StateUpdated(const KeyState& state) {
   for (KeyListener_sptr kl : listeners) {
     if (kl != nullptr) {
-      kl->KeyPressed(state);
-    }
-  }
-}
-
-void KeyListenerComposite::KeyReleased(const KeyState& state) {
-  for (KeyListener_sptr kl : listeners) {
-    if (kl != nullptr) {
-      kl->KeyReleased(state);
+      kl->StateUpdated(state);
     }
   }
 }

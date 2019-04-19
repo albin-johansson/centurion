@@ -18,20 +18,12 @@ class KeyListener {
   virtual ~KeyListener() = default;
 
   /**
-  \brief Invoked when a key has been pressed.
+  \brief Invoked when the key state has been updated.
   \param state - a reference to the KeyState instance holding information about
   the key state.
   \since 1.1.0
   */
-  virtual void KeyPressed(const centurion::input::KeyState& state) = 0;
-
-  /**
-  \brief Invoked when a key has been released.
-  \param state - a reference to the KeyState instance holding information
-  about the key state.
-  \since 1.1.0
-  */
-  virtual void KeyReleased(const centurion::input::KeyState& state) = 0;
+  virtual void StateUpdated(const centurion::input::KeyState& state) = 0;
 };
 
 typedef std::shared_ptr<KeyListener> KeyListener_sptr;

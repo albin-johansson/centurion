@@ -25,9 +25,13 @@ class KeyListenerComposite final : public centurion::input::KeyListener {
 
   ~KeyListenerComposite();
 
-  void KeyPressed(const centurion::input::KeyState& state) override;
-
-  void KeyReleased(const centurion::input::KeyState& state) override;
+  /**
+  \brief Notifies all of the children of an updated key state.
+  \param state - a reference to the KeyState that provides the information about
+  the key state.
+  \since 1.1.0
+  */
+  void StateUpdated(const centurion::input::KeyState& state) override;
 
   /**
   \brief Adds a KeyListener instance to this LeyListenerComposite.

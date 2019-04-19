@@ -6,6 +6,11 @@
 namespace centurion {
 namespace visuals {
 
+class Color;
+typedef std::shared_ptr<Color> Color_sptr;
+typedef std::unique_ptr<Color> Color_uptr;
+typedef std::weak_ptr<Color> Color_wptr;
+
 /**
 \brief The Color class simply represents a color.
 \since 1.0.0
@@ -37,6 +42,7 @@ class Color {
 
   /**
   \brief A constant that represents the color green.
+  \since 1.0.0
   */
   const static Color GREEN;
 
@@ -103,11 +109,37 @@ class Color {
   \since 1.0.0
   */
   inline SDL_Color GetSDLVersion() const noexcept { return color; }
-};
 
-typedef std::shared_ptr<Color> Color_sptr;
-typedef std::unique_ptr<Color> Color_uptr;
-typedef std::weak_ptr<Color> Color_wptr;
+  /**
+  \brief Returns a shared pointer that points to a Color instance.
+  \param r - the red component of the color in the range [MIN_VAL, MAX_VAL].
+  \param g - the green component of the color in the range [MIN_VAL, MAX_VAL].
+  \param b - the blue component of the color in the range [MIN_VAL, MAX_VAL].
+  \param a - the alpha component of the color in the range [MIN_VAL, MAX_VAL].
+  \since 1.1.0
+  */
+  static Color_sptr CreateShared(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+
+  /**
+  \brief Returns a unique pointer that points to a Color instance.
+  \param r - the red component of the color in the range [MIN_VAL, MAX_VAL].
+  \param g - the green component of the color in the range [MIN_VAL, MAX_VAL].
+  \param b - the blue component of the color in the range [MIN_VAL, MAX_VAL].
+  \param a - the alpha component of the color in the range [MIN_VAL, MAX_VAL].
+  \since 1.1.0
+  */
+  static Color_uptr CreateUnique(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+
+  /**
+  \brief Returns a weak pointer that points to a Color instance.
+  \param r - the red component of the color in the range [MIN_VAL, MAX_VAL].
+  \param g - the green component of the color in the range [MIN_VAL, MAX_VAL].
+  \param b - the blue component of the color in the range [MIN_VAL, MAX_VAL].
+  \param a - the alpha component of the color in the range [MIN_VAL, MAX_VAL].
+  \since 1.1.0
+  */
+  static Color_wptr CreateWeak(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+};
 
 }  // namespace visuals
 }  // namespace centurion

@@ -24,6 +24,7 @@ class FontFactory final {
   \param path - the path of the font file. The file must have the
   .TTF-extension.
   \param size - the desired font size.
+  \since 1.0.0
   */
   static std::shared_ptr<centurion::visuals::Font> CreateFont(
       const std::string& path, int size);

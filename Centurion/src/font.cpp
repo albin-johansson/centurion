@@ -39,7 +39,6 @@ void Font::SetOutlined(bool isOutlined) noexcept {
   }
 }
 
-// TODO implement
 void Font::SetBold(bool isBold) noexcept {
   if (isBold) {
     ApplyStyle(TTF_STYLE_BOLD);

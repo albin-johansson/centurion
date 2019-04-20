@@ -1,4 +1,5 @@
 #include "window.h"
+#include <SDL_stdinc.h>
 #include <SDL_video.h>
 #include <stdexcept>
 #include "boolean_converter.h"
@@ -110,6 +111,11 @@ std::shared_ptr<Texture> Window::CreateTextureFromString(
 
 std::shared_ptr<Texture> Window::CreateTexture(const std::string& path) const {
   return TextureFactory::CreateTexture(path, renderer->GetSDLVersion());
+}
+
+Texture_sptr Window::CreateSubtexture(Texture_sptr base, Rectangle rect) {
+  Uint32 format = SDL_GetWindowPixelFormat(window);
+  return renderer->CreateSubtexture(base, rect, format);
 }
 
 Window_sptr Window::CreateShared(const std::string& title, int width,

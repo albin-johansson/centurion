@@ -104,6 +104,13 @@ void Renderer::RenderString(const std::string& text, int x, int y) {
   }
 }
 
+void Renderer::SetFont(const std::shared_ptr<Font> font) { this->font = font; }
+
+void Renderer::SetColor(Color color) {
+  this->color = color;
+  UpdateColor();
+}
+
 std::shared_ptr<Texture> Renderer::CreateTextureFromString(
     const std::string& str) {
   if (font == nullptr) {
@@ -115,11 +122,22 @@ std::shared_ptr<Texture> Renderer::CreateTextureFromString(
   }
 }
 
-void Renderer::SetFont(const std::shared_ptr<Font> font) { this->font = font; }
+Texture_sptr Renderer::CreateSubtexture(Texture_sptr base, Rectangle rect,
+                                        Uint32 pixelFormat) {
+  if (!SDL_RenderTargetSupported(sdl_renderer)) {
+    throw std::exception("Subtextures are not available!");
+  }
 
-void Renderer::SetColor(Color color) {
-  this->color = color;
-  UpdateColor();
+  SDL_Texture* result =
+      SDL_CreateTexture(sdl_renderer, pixelFormat, SDL_TEXTUREACCESS_TARGET,
+                        rect.GetWidth(), rect.GetHeight());
+
+  SDL_SetRenderTarget(sdl_renderer, result);
+  SDL_RenderCopy(sdl_renderer, &base->GetSDLVersion(), &rect.GetSDLVersion(),
+                 NULL);
+  SDL_SetRenderTarget(sdl_renderer, NULL);
+
+  return Texture::CreateShared(result, rect.GetWidth(), rect.GetHeight());
 }
 
 Renderer_sptr Renderer::CreateShared(SDL_Renderer* renderer) {

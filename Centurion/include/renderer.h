@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL_pixels.h>
 #include <SDL_render.h>
 #include <memory>
 #include <string>
@@ -173,6 +174,17 @@ class Renderer {
   */
   std::shared_ptr<centurion::visuals::Texture> CreateTextureFromString(
       const std::string& str);
+
+  /**
+  \brief Creates and returns a subtexture from the supplied texture.
+  \param base - a pointer to the texture that the subtexture will be based on.
+  \param rect - the rectangle that provides the dimensions for the subtexture.
+  \param pixelFormat - the pixel format used for the subtexture.
+  \since 1.2.0
+  */
+  Texture_sptr CreateSubtexture(Texture_sptr base,
+                                centurion::geo::Rectangle rect,
+                                Uint32 pixelFormat);
 
   /**
   *UNSAFE*

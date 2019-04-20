@@ -223,6 +223,15 @@ class Window : public centurion::geo::Dimensioned {
       const std::string& path) const;
 
   /**
+  \brief Creates and returns a subtexture from the supplied texture.
+  \param base - a pointer to the texture that the subtexture will be based on.
+  \param rect - the rectangle that provides the dimensions for the subtexture.
+  \since 1.2.0
+  */
+  Texture_sptr CreateSubtexture(Texture_sptr base,
+                                centurion::geo::Rectangle rect);
+
+  /**
   \brief Returns a shared pointer that points to a Window instance.
   \param title - the title of the window.
   \param width - the width of the window.

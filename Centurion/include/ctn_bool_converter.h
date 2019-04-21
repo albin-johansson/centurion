@@ -1,20 +1,20 @@
 #pragma once
-#include <SDL_types.h>
+#include <SDL_stdinc.h>
 
 namespace centurion {
 namespace tools {
 
 /**
-\brief The BooleanConverter class is a conversion tool between values of bool
+\brief The BoolConverter class is a conversion tool between values of bool
 and SDL_bool.
 \since 1.0.0
 */
-class BooleanConverter final {
+class BoolConverter final {
  private:
-  BooleanConverter() = delete;
+  BoolConverter() = delete;
 
  public:
-  ~BooleanConverter() = default;
+  ~BoolConverter() = default;
 
   /**
   \brief Converts an SDL_bool value and returns the corresponding default C++

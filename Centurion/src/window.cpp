@@ -2,14 +2,14 @@
 #include <SDL_stdinc.h>
 #include <SDL_video.h>
 #include <stdexcept>
-#include "boolean_converter.h"
+#include "ctn_bool_converter.h"
 #include "positionable.h"
 #include "texture_factory.h"
 
 using centurion::geo::Point;
 using centurion::geo::Positionable;
 using centurion::geo::Rectangle;
-using centurion::tools::BooleanConverter;
+using centurion::tools::BoolConverter;
 using centurion::visuals::Font;
 using centurion::visuals::TextureFactory;
 
@@ -43,7 +43,7 @@ void Window::Show() { SDL_ShowWindow(window); }
 void Window::Hide() { SDL_HideWindow(window); }
 
 void Window::SetResizable(bool resizable) {
-  SDL_bool b = BooleanConverter::Convert(resizable);
+  SDL_bool b = BoolConverter::Convert(resizable);
   SDL_SetWindowResizable(window, b);
 }
 

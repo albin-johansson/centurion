@@ -1,9 +1,9 @@
 #include "rectangle.h"
 #include <stdexcept>
-#include "boolean_converter.h"
+#include "ctn_bool_converter.h"
 #include "point.h"
 
-using centurion::tools::BooleanConverter;
+using centurion::tools::BoolConverter;
 using std::invalid_argument;
 
 namespace centurion {
@@ -31,12 +31,12 @@ void Rectangle::SetY(int y) noexcept { rect.y = y; }
 
 bool Rectangle::Intersects(const Rectangle otherRect) const noexcept {
   SDL_bool result = SDL_HasIntersection(&this->rect, &otherRect.rect);
-  return BooleanConverter::Convert(result);
+  return BoolConverter::Convert(result);
 }
 
 bool Rectangle::Contains(SDL_Point point) const noexcept {
   SDL_bool result = SDL_PointInRect(&point, &rect);
-  return BooleanConverter::Convert(result);
+  return BoolConverter::Convert(result);
 }
 
 bool Rectangle::Contains(int x, int y) const noexcept {

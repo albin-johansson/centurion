@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_scancode.h>
+#include <SDL_stdinc.h>
 #include <memory>
 #include <vector>
 
@@ -44,10 +45,9 @@ class KeyState final {
   bool IsPressed(const SDL_Scancode code) const;
 
   /**
-  \brief Returns true if the key associated with the supplied SDL_Scancode is
-  currently held down.
-  \param code - the SDL_Scancode that corresponds to the
-  desired key to check.
+  \brief Returns true if the key associated with the supplied SDL_Scancode has
+  been continously held down.
+  \param code - the SDL_Scancode that corresponds to the desired key to check.
   \since 1.1.0
   */
   bool IsHeldDown(const SDL_Scancode code) const;
@@ -62,8 +62,7 @@ class KeyState final {
 
   /**
   \brief Returns true if the key associated with the supplied SDL_Scancode is
-  being pressed and triggered for the first time, since it was pressed. Returns
-  false otherwise.
+  triggered for the first time, since it was pressed. Returns false otherwise.
   \param code - the SDL_Scancode that corresponds to the desired key to check.
   \since 1.1.0
   */

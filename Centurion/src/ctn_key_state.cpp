@@ -1,4 +1,4 @@
-#include "key_state.h"
+#include "ctn_key_state.h"
 #include <SDL_keyboard.h>
 
 namespace centurion {

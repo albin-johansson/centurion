@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "key_state.h"
+#include "ctn_key_state.h"
 
 namespace centurion {
 namespace input {

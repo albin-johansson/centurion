@@ -7,5 +7,5 @@
 */
 
 #include "ctn_audio_component.h"
-#include "music.h"
+#include "ctn_music.h"
 #include "sound_effect.h"

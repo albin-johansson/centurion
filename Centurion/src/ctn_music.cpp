@@ -1,9 +1,6 @@
-#include "music.h"
+#include "ctn_music.h"
 #include <stdexcept>
 #include <string>
-#include "null_checker.h"
-
-using centurion::tools::NullChecker;
 
 namespace centurion {
 namespace audio {

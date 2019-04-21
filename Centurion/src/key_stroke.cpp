@@ -1,16 +1,16 @@
 #include "key_stroke.h"
 #include <memory>
 #include <stdexcept>
-#include "action.h"
+#include "ctn_action.h"
 
-using centurion::events::Action;
+using centurion::events::IAction;
 using std::invalid_argument;
 using std::shared_ptr;
 
 namespace centurion {
 namespace events {
 
-KeyStroke::KeyStroke(SDL_Keycode keycode, shared_ptr<Action> action,
+KeyStroke::KeyStroke(SDL_Keycode keycode, shared_ptr<IAction> action,
                      KeyTrigger trigger) {
   if (action == nullptr) {
     throw invalid_argument("Null action parameter when creating KeyStroke!");

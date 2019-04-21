@@ -5,16 +5,16 @@ namespace centurion {
 namespace events {
 
 /**
-\brief The Action class serves as an interface for objects that represent
+\brief The IAction class serves as an interface for objects that represent
 various actions.
 \since 1.0.0
 */
-class Action {
+class IAction {
  protected:
-  Action() = default;
+  IAction() = default;
 
  public:
-  virtual ~Action() = default;
+  virtual ~IAction() = default;
 
   /**
   \brief Executes the action represented by this action object.
@@ -23,9 +23,9 @@ class Action {
   virtual void Execute() = 0;
 };
 
-typedef std::shared_ptr<Action> Action_sptr;
-typedef std::unique_ptr<Action> Action_uptr;
-typedef std::weak_ptr<Action> Action_wptr;
+typedef std::shared_ptr<IAction> Action_sptr;
+typedef std::unique_ptr<IAction> Action_uptr;
+typedef std::weak_ptr<IAction> Action_wptr;
 
 }  // namespace events
 }  // namespace centurion

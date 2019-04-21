@@ -2,7 +2,7 @@
 #include <SDL_events.h>
 #include <SDL_keycode.h>
 #include <memory>
-#include "action.h"
+#include "ctn_action.h"
 #include "event.h"
 #include "key_trigger.h"
 
@@ -20,7 +20,7 @@ typedef std::weak_ptr<KeyStroke> KeyStroke_wptr;
 */
 class KeyStroke {
  private:
-  std::shared_ptr<centurion::events::Action> action;
+  std::shared_ptr<centurion::events::IAction> action;
   centurion::events::KeyTrigger trigger;
   SDL_Keycode keycode;
   bool isRepeatable;
@@ -30,13 +30,13 @@ class KeyStroke {
  public:
   /**
   \param keycode - the key code of the key that will trigger the KeyStroke.
-  \param action - the Action that will be executed when the related key
+  \param action - the IAction that will be executed when the related key
   is pressed or released.
   \param trigger - the KeyTrigger value specifies the moment of activation.
   \since 1.0.0
   */
   KeyStroke(SDL_Keycode keycode,
-            std::shared_ptr<centurion::events::Action> action,
+            std::shared_ptr<centurion::events::IAction> action,
             centurion::events::KeyTrigger trigger);
 
   ~KeyStroke();
@@ -49,7 +49,7 @@ class KeyStroke {
   void Update(const centurion::events::Event& event);
 
   /**
-  \brief Programmatically triggers the Action related to this KeyStroke.
+  \brief Programmatically triggers the IAction related to this KeyStroke.
   \since 1.0.0
   */
   void Trigger();
@@ -75,7 +75,7 @@ class KeyStroke {
   \brief Creates and returns a shared pointer that points to a KeyStroke
   instance.
   \param keycode - the key code of the key that will trigger the KeyStroke.
-  \param action - the Action that will be executed when the related key is
+  \param action - the IAction that will be executed when the related key is
   pressed/released.
   \param trigger - the KeyTrigger value specifies the moment of activation.
   \since 1.1.0
@@ -87,7 +87,7 @@ class KeyStroke {
   \brief Creates and returns a unique pointer that points to a KeyStroke
   instance.
   \param keycode - the key code of the key that will trigger the KeyStroke.
-  \param action - the Action that will be executed when the related key is
+  \param action - the IAction that will be executed when the related key is
   pressed/released.
   \param trigger - the KeyTrigger value specifies the moment of activation.
   \since 1.1.0
@@ -99,7 +99,7 @@ class KeyStroke {
   \brief Creates and returns a weak pointer that points to a KeyStroke
   instance.
   \param keycode - the key code of the key that will trigger the KeyStroke.
-  \param action - the Action that will be executed when the related key is
+  \param action - the IAction that will be executed when the related key is
   pressed/released.
   \param trigger - the KeyTrigger value specifies the moment of activation.
   \since 1.1.0

@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include "ctn_color.h"
-#include "drawable.h"
+#include "ctn_drawable.h"
 #include "font.h"
 #include "point.h"
 #include "rectangle.h"
@@ -25,7 +25,7 @@ class Window : public centurion::geo::IDimensioned {
  private:
   SDL_Window* window;
   Renderer_uptr renderer;
-  Drawable_sptr drawable;
+  IDrawable_sptr drawable;
   const int width;
   const int height;
 
@@ -58,7 +58,7 @@ class Window : public centurion::geo::IDimensioned {
 
   /**
   \brief Applies any previous rendering operations to this window. If the
-  Drawable instance has been set, using the SetDrawable()-method, then it will
+  IDrawable instance has been set, using the SetDrawable()-method, then it will
   be called by this method.
   \since 1.0.0
   */
@@ -163,13 +163,13 @@ class Window : public centurion::geo::IDimensioned {
   void RenderString(const std::string& str, int x, int y);
 
   /**
-  \brief Assigns the Drawable that will be invoked whenever the Render() method
+  \brief Assigns the IDrawable that will be invoked whenever the Render() method
   is called.
-  \param drawable - the Drawable that will be used.
+  \param drawable - the IDrawable that will be used.
   \since 1.0.0
   */
   void SetDrawable(
-      const std::shared_ptr<centurion::visuals::Drawable> drawable);
+      const std::shared_ptr<centurion::visuals::IDrawable> drawable);
 
   /**
   \brief Sets whether this window is resizable or not.

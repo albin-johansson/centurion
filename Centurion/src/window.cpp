@@ -54,7 +54,7 @@ void Window::Render() {
   renderer->Update();
 }
 
-void Window::SetDrawable(const std::shared_ptr<Drawable> drawable) {
+void Window::SetDrawable(const std::shared_ptr<IDrawable> drawable) {
   this->drawable = drawable;
 }
 

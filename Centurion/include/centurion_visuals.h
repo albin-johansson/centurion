@@ -7,7 +7,7 @@
 */
 
 #include "ctn_color.h"
-#include "drawable.h"
+#include "ctn_drawable.h"
 #include "font.h"
 #include "font_factory.h"
 #include "renderer.h"

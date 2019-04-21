@@ -2,7 +2,7 @@
 
 /*
   This header file includes all of the components located in the
-  centurion::events namespace. Last updated: 2019-14-21.
+  centurion::events namespace. Last updated: 2019-04-21.
   \since 1.0.0
 */
 

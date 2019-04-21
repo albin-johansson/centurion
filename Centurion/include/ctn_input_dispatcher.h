@@ -22,10 +22,10 @@ typedef std::weak_ptr<InputDispatcher> InputDispatcher_wptr;
 */
 class InputDispatcher final {
  private:
-  centurion::input::KeyListenerComposite_uptr keyListenerComposite;
-  centurion::input::KeyState_uptr keyState;
-  centurion::input::MouseListenerComposite_uptr mouseListenerComposite;
-  centurion::input::MouseState_uptr mouseState;
+  KeyListenerComposite_uptr keyListenerComposite;
+  KeyState_uptr keyState;
+  MouseListenerComposite_uptr mouseListenerComposite;
+  MouseState_uptr mouseState;
   bool shouldQuit;
 
   void NotifyKeyListeners();
@@ -48,36 +48,36 @@ class InputDispatcher final {
   \param ml - a pointer to the MouseListener that will be added.
   \since 1.1.0
   */
-  void AddMouseListener(centurion::input::MouseListener_sptr ml);
+  void AddMouseListener(MouseListener_sptr ml);
 
   /**
   \brief Adds a KeyListener instance to this input dispatcher.
   \param kl - a pointer to the KeyListener instance that will be added.
   \since 1.1.0
   */
-  void AddKeyListener(centurion::input::KeyListener_sptr kl);
+  void AddKeyListener(KeyListener_sptr kl);
 
   /**
   \brief Returns true if the user has requested a termination of the
   application. This is usually done by pressing the "x"-button on a window.
   \since 1.1.0
   */
-  bool ReceivedQuit() const { return shouldQuit; }
+  inline bool ReceivedQuit() const { return shouldQuit; }
 
   /**
-  \brief Returns a shared pointer that points to a InputDispatcher.
+  \brief Returns a shared pointer that points to an InputDispatcher instance.
   \since 1.1.0
   */
   static InputDispatcher_sptr CreateShared();
 
   /**
-  \brief Returns a unique pointer that points to a InputDispatcher.
+  \brief Returns a unique pointer that points to an InputDispatcher instance.
   \since 1.1.0
   */
   static InputDispatcher_uptr CreateUnique();
 
   /**
-  \brief Returns a weak pointer that points to a InputDispatcher.
+  \brief Returns a weak pointer that points to an InputDispatcher instance.
   \since 1.1.0
   */
   static InputDispatcher_wptr CreateWeak();

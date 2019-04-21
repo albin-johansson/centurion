@@ -1,4 +1,4 @@
-#include "input_dispatcher.h"
+#include "ctn_input_dispatcher.h"
 #include <SDL_events.h>
 
 namespace centurion {

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "key_listener.h"
+#include "ctn_key_listener.h"
 #include "key_state.h"
 
 namespace centurion {
@@ -13,12 +13,12 @@ typedef std::unique_ptr<KeyListenerComposite> KeyListenerComposite_uptr;
 typedef std::weak_ptr<KeyListenerComposite> KeyListenerComposite_wptr;
 
 /**
-\brief The KeyListenerComposite class holds instances of KeyListener.
+\brief The KeyListenerComposite class holds instances of IKeyListener.
 \since 1.1.0
 */
-class KeyListenerComposite final : public centurion::input::KeyListener {
+class KeyListenerComposite final : public centurion::input::IKeyListener {
  private:
-  std::vector<centurion::input::KeyListener_sptr> listeners;
+  std::vector<centurion::input::IKeyListener_sptr> listeners;
 
  public:
   KeyListenerComposite();
@@ -34,10 +34,10 @@ class KeyListenerComposite final : public centurion::input::KeyListener {
   void StateUpdated(const centurion::input::KeyState& state) override;
 
   /**
-  \brief Adds a KeyListener instance to this KeyListenerComposite.
+  \brief Adds a IKeyListener instance to this KeyListenerComposite.
   \since 1.1.0
   */
-  void AddChild(centurion::input::KeyListener_sptr kl);
+  void AddChild(centurion::input::IKeyListener_sptr kl);
 
   /**
   \brief Removes all of this KeyListenerComposite's children.

@@ -42,7 +42,7 @@ void InputDispatcher::AddMouseListener(MouseListener_sptr ml) {
   mouseListenerComposite->AddChild(ml);
 }
 
-void InputDispatcher::AddKeyListener(KeyListener_sptr kl) {
+void InputDispatcher::AddKeyListener(IKeyListener_sptr kl) {
   keyListenerComposite->AddChild(kl);
 }
 

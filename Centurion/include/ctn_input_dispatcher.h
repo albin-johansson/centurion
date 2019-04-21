@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "key_listener.h"
+#include "ctn_key_listener.h"
 #include "key_listener_composite.h"
 #include "key_state.h"
 #include "mouse_listener.h"
@@ -51,11 +51,11 @@ class InputDispatcher final {
   void AddMouseListener(MouseListener_sptr ml);
 
   /**
-  \brief Adds a KeyListener instance to this input dispatcher.
-  \param kl - a pointer to the KeyListener instance that will be added.
+  \brief Adds a IKeyListener instance to this input dispatcher.
+  \param kl - a pointer to the IKeyListener instance that will be added.
   \since 1.1.0
   */
-  void AddKeyListener(KeyListener_sptr kl);
+  void AddKeyListener(IKeyListener_sptr kl);
 
   /**
   \brief Returns true if the user has requested a termination of the

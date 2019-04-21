@@ -4,20 +4,20 @@ namespace centurion {
 namespace input {
 
 KeyListenerComposite::KeyListenerComposite() {
-  listeners = std::vector<KeyListener_sptr>(10);
+  listeners = std::vector<IKeyListener_sptr>(10);
 }
 
 KeyListenerComposite::~KeyListenerComposite() { RemoveChildren(); }
 
 void KeyListenerComposite::StateUpdated(const KeyState& state) {
-  for (KeyListener_sptr kl : listeners) {
+  for (IKeyListener_sptr kl : listeners) {
     if (kl != nullptr) {
       kl->StateUpdated(state);
     }
   }
 }
 
-void KeyListenerComposite::AddChild(KeyListener_sptr kl) {
+void KeyListenerComposite::AddChild(IKeyListener_sptr kl) {
   if (kl != nullptr) {
     listeners.push_back(kl);
   }

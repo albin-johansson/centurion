@@ -2,7 +2,7 @@
 #include <SDL_mixer.h>
 #include <memory>
 #include <string>
-#include "audio_component.h"
+#include "ctn_audio_component.h"
 
 namespace centurion {
 namespace audio {
@@ -17,7 +17,7 @@ typedef std::weak_ptr<Music> Music_wptr;
 .WAV-format.
 \since 1.0.0
 */
-class Music : public AudioComponent {
+class Music : public IAudioComponent {
  private:
   Mix_Music* music;
   int volume;

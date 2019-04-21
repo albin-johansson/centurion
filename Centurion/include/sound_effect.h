@@ -2,7 +2,7 @@
 #include <SDL_mixer.h>
 #include <memory>
 #include <string>
-#include "audio_component.h"
+#include "ctn_audio_component.h"
 
 namespace centurion {
 namespace audio {
@@ -17,7 +17,7 @@ typedef std::weak_ptr<SoundEffect> SoundEffect_wptr;
 extensions are MP3, OGG and FLAC.
 \since 1.0.0
 */
-class SoundEffect : public AudioComponent {
+class SoundEffect : public IAudioComponent {
  private:
   int channel;
   Mix_Chunk* sound;

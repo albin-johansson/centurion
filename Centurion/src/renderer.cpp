@@ -12,10 +12,10 @@ Renderer::Renderer(SDL_Renderer* renderer) {
   if (renderer == nullptr) {
     throw std::invalid_argument("Null renderer!");
   }
-  this->sdl_renderer = renderer;
+  this->sdlRenderer = renderer;
 }
 
-Renderer::~Renderer() { SDL_DestroyRenderer(sdl_renderer); }
+Renderer::~Renderer() { SDL_DestroyRenderer(sdlRenderer); }
 
 void Renderer::CheckRenderDimensions(int width, int height) {
   if (width < 1 || height < 1) {
@@ -24,23 +24,23 @@ void Renderer::CheckRenderDimensions(int width, int height) {
 }
 
 void Renderer::UpdateColor() {
-  SDL_SetRenderDrawColor(sdl_renderer, color.GetRed(), color.GetGreen(),
+  SDL_SetRenderDrawColor(sdlRenderer, color.GetRed(), color.GetGreen(),
                          color.GetBlue(), color.GetAlpha());
 }
 
-void Renderer::Update() { SDL_RenderPresent(sdl_renderer); }
+void Renderer::Update() { SDL_RenderPresent(sdlRenderer); }
 
-void Renderer::Clear() { SDL_RenderClear(sdl_renderer); }
+void Renderer::Clear() { SDL_RenderClear(sdlRenderer); }
 
 void Renderer::Render(Texture& img, int x, int y, int w, int h) {
   CheckRenderDimensions(w, h);
   SDL_Rect rect = {x, y, w, h};
-  SDL_RenderCopy(sdl_renderer, &img.GetSDLVersion(), NULL, &rect);
+  SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL, &rect);
 }
 
 void Renderer::Render(Texture& img, const Rectangle& rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
-  SDL_RenderCopy(sdl_renderer, &img.GetSDLVersion(), NULL,
+  SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL,
                  &rect.GetSDLVersion());
 }
 
@@ -51,31 +51,31 @@ void Renderer::Render(Texture& img, int x, int y) {
 void Renderer::RenderFilledRect(int x, int y, int w, int h) {
   CheckRenderDimensions(w, h);
   SDL_Rect rect = {x, y, w, h};
-  SDL_RenderFillRect(sdl_renderer, &rect);
+  SDL_RenderFillRect(sdlRenderer, &rect);
 }
 
 void Renderer::RenderFilledRect(Rectangle rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
-  SDL_RenderFillRect(sdl_renderer, &rect.GetSDLVersion());
+  SDL_RenderFillRect(sdlRenderer, &rect.GetSDLVersion());
 }
 
 void Renderer::RenderOutlinedRect(int x, int y, int w, int h) {
   CheckRenderDimensions(w, h);
   SDL_Rect rect = {x, y, w, h};
-  SDL_RenderDrawRect(sdl_renderer, &rect);
+  SDL_RenderDrawRect(sdlRenderer, &rect);
 }
 
 void Renderer::RenderOutlinedRect(Rectangle rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
-  SDL_RenderDrawRect(sdl_renderer, &rect.GetSDLVersion());
+  SDL_RenderDrawRect(sdlRenderer, &rect.GetSDLVersion());
 }
 
 void Renderer::RenderLine(int x1, int y1, int x2, int y2) {
-  SDL_RenderDrawLine(sdl_renderer, x1, y1, x2, y2);
+  SDL_RenderDrawLine(sdlRenderer, x1, y1, x2, y2);
 }
 
 void Renderer::RenderLine(Point p1, Point p2) {
-  SDL_RenderDrawLine(sdl_renderer, p1.GetX(), p1.GetY(), p2.GetX(), p2.GetY());
+  SDL_RenderDrawLine(sdlRenderer, p1.GetX(), p1.GetY(), p2.GetX(), p2.GetY());
 }
 
 SDL_Texture* Renderer::CreateSDLTextureFromString(const std::string& str,
@@ -111,6 +111,14 @@ void Renderer::SetColor(Color color) {
   UpdateColor();
 }
 
+void Renderer::SetRenderTarget(Texture_sptr texture) {
+  if (texture == nullptr) {
+    SDL_SetRenderTarget(sdlRenderer, NULL);
+  } else {
+    SDL_SetRenderTarget(sdlRenderer, &texture->GetSDLVersion());
+  }
+}
+
 std::shared_ptr<Texture> Renderer::CreateTextureFromString(
     const std::string& str) {
   if (font == nullptr) {
@@ -122,22 +130,44 @@ std::shared_ptr<Texture> Renderer::CreateTextureFromString(
   }
 }
 
+/*
+void Renderer::Render(Texture& img, int x, int y, int w, int h) {
+  CheckRenderDimensions(w, h);
+  SDL_Rect rect = {x, y, w, h};
+  SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL, &rect);
+}
+*/
+
 Texture_sptr Renderer::CreateSubtexture(Texture_sptr base, Rectangle rect,
+                                        int width, int height,
                                         Uint32 pixelFormat) {
-  if (!SDL_RenderTargetSupported(sdl_renderer)) {
+  if (!SDL_RenderTargetSupported(sdlRenderer)) {
     throw std::exception("Subtextures are not available!");
   }
+  Texture_sptr target =
+      CreateRawTexture(width, height, SDL_TEXTUREACCESS_TARGET);
+  SetRenderTarget(target);
+  SDL_Rect src = rect.GetSDLVersion();
+  SDL_Rect dst = {0, 0, width, height};
+  SDL_RenderCopy(sdlRenderer, &base->GetSDLVersion(), &src, &dst);
+  Update();
+  SetRenderTarget(nullptr);
+  return target;
+}
 
-  SDL_Texture* result =
-      SDL_CreateTexture(sdl_renderer, pixelFormat, SDL_TEXTUREACCESS_TARGET,
-                        rect.GetWidth(), rect.GetHeight());
-
-  SDL_SetRenderTarget(sdl_renderer, result);
-  SDL_RenderCopy(sdl_renderer, &base->GetSDLVersion(), &rect.GetSDLVersion(),
-                 NULL);
-  SDL_SetRenderTarget(sdl_renderer, NULL);
-
-  return Texture::CreateShared(result, rect.GetWidth(), rect.GetHeight());
+Texture_sptr Renderer::CreateRawTexture(int width, int height,
+                                        SDL_TextureAccess access) {
+  if (width < 1 || height < 1) {
+    throw std::invalid_argument("Invalid dimensions for raw texture!");
+  } else {
+    Uint32 format = SDL_PIXELFORMAT_ABGR8888;
+    SDL_Texture* t =
+        SDL_CreateTexture(sdlRenderer, format, access, width, height);
+    if (t == nullptr) {
+      throw std::exception("Failed to create texture!");
+    }
+    return Texture::CreateShared(t, width, height);
+  }
 }
 
 Renderer_sptr Renderer::CreateShared(SDL_Renderer* renderer) {

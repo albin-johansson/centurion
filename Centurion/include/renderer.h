@@ -25,7 +25,7 @@ typedef std::weak_ptr<Renderer> Renderer_wptr;
 */
 class Renderer {
  private:
-  SDL_Renderer* sdl_renderer;
+  SDL_Renderer* sdlRenderer;
   std::shared_ptr<centurion::visuals::Font> font;
   centurion::visuals::Color color = Color::WHITE;
 
@@ -167,6 +167,14 @@ class Renderer {
   void SetColor(centurion::visuals::Color color);
 
   /**
+  \brief Assigns a Texture instance as the rendering target.
+  \param texture - the texture that will be the new rendering target, nullptr
+  resets the rendering target.
+  \since 1.2.0
+  */
+  void SetRenderTarget(Texture_sptr texture);
+
+  /**
   \brief Creates a texture of the supplied string, using the currently selected
   font.
   \param str - the string that the created texture will represent.
@@ -183,8 +191,18 @@ class Renderer {
   \since 1.2.0
   */
   Texture_sptr CreateSubtexture(Texture_sptr base,
-                                centurion::geo::Rectangle rect,
-                                Uint32 pixelFormat);
+                                centurion::geo::Rectangle rect, int width,
+                                int height, Uint32 pixelFormat);
+
+  /**
+  \brief Creates and returns an empty texture.
+  \param width - the width of the created texture.
+  \param height - the height of the created texture.
+  \param access - the access of the created texture.
+  \since 1.2.0
+  */
+  Texture_sptr CreateRawTexture(int width, int height,
+                                SDL_TextureAccess access);
 
   /**
   *UNSAFE*
@@ -192,7 +210,7 @@ class Renderer {
   returned pointer to call SDL_DestroyRenderer().
   \since 1.0.0
   */
-  inline SDL_Renderer* const GetSDLVersion() const { return sdl_renderer; }
+  inline SDL_Renderer* const GetSDLVersion() const { return sdlRenderer; }
 
   /**
   \brief Returns a shared pointer to a Renderer instance.

@@ -193,6 +193,14 @@ class Window : public centurion::geo::Dimensioned {
   void SetColor(centurion::visuals::Color color);
 
   /**
+  \brief Assigns a Texture instance as the rendering target.
+  \param texture - the texture that will be the new rendering target, nullptr
+  resets the rendering target.
+  \since 1.2.0
+  */
+  void SetRenderTarget(centurion::visuals::Texture_sptr texture);
+
+  /**
   \brief Returns the width of this window.
   \since 1.0.0
   */
@@ -223,13 +231,27 @@ class Window : public centurion::geo::Dimensioned {
       const std::string& path) const;
 
   /**
+  \brief Creates and returns an empty texture.
+  \param width - the width of the created texture.
+  \param height - the height of the created texture.
+  \param access - the access of the created texture.
+  \since 1.2.0
+  */
+  Texture_sptr CreateRawTexture(int width, int height,
+                                SDL_TextureAccess access);
+
+  /**
   \brief Creates and returns a subtexture from the supplied texture.
   \param base - a pointer to the texture that the subtexture will be based on.
-  \param rect - the rectangle that provides the dimensions for the subtexture.
+  \param cutout - the rectangle that provides the dimensions for the subtexture.
+  \param width - the final width of the subtexture.
+  \param height - the final height of the subtexture.
+  \param pixelFormat - the pixel format used for the subtexture.
   \since 1.2.0
   */
   Texture_sptr CreateSubtexture(Texture_sptr base,
-                                centurion::geo::Rectangle rect);
+                                centurion::geo::Rectangle cutout, int width,
+                                int height, Uint32 pixelFormat);
 
   /**
   \brief Returns a shared pointer that points to a Window instance.

@@ -104,6 +104,10 @@ void Window::SetFont(const std::shared_ptr<Font> font) {
 
 void Window::SetColor(Color color) { renderer->SetColor(color); }
 
+void Window::SetRenderTarget(Texture_sptr texture) {
+  renderer->SetRenderTarget(texture);
+}
+
 std::shared_ptr<Texture> Window::CreateTextureFromString(
     const std::string& str) const {
   return renderer->CreateTextureFromString(str);
@@ -113,9 +117,16 @@ std::shared_ptr<Texture> Window::CreateTexture(const std::string& path) const {
   return TextureFactory::CreateTexture(path, renderer->GetSDLVersion());
 }
 
-Texture_sptr Window::CreateSubtexture(Texture_sptr base, Rectangle rect) {
-  Uint32 format = SDL_GetWindowPixelFormat(window);
-  return renderer->CreateSubtexture(base, rect, format);
+Texture_sptr Window::CreateRawTexture(int width, int height,
+                                      SDL_TextureAccess access) {
+  return renderer->CreateRawTexture(width, height, access);
+}
+
+Texture_sptr Window::CreateSubtexture(Texture_sptr base, Rectangle rect,
+                                      int width, int height,
+                                      Uint32 pixelFormat) {
+  // Uint32 format = SDL_GetWindowPixelFormat(window);
+  return renderer->CreateSubtexture(base, rect, width, height, pixelFormat);
 }
 
 Window_sptr Window::CreateShared(const std::string& title, int width,

@@ -1,28 +1,28 @@
 #pragma once
-#include <SDL_config.h>
 #include <SDL_events.h>
+#include <SDL_keycode.h>
+#include <SDL_stdinc.h>
 #include <memory>
-#include "ctn_key_trigger.h"
 
 namespace centurion {
 namespace events {
 
 /**
-\brief The KeyboardEvent class provides information about a keyboard event.
+\brief The KeyEvent class provides information about a keyboard event.
 \since 1.0.0
 */
-class KeyboardEvent {
+class KeyEvent {
  private:
   SDL_Event event;
 
  public:
   /**
   \param event - the SDL_Event that will serve as the internal representation of
-  the KeyboardEvent.
+  the KeyEvent.
   */
-  explicit KeyboardEvent(SDL_Event event);
+  explicit KeyEvent(SDL_Event event);
 
-  ~KeyboardEvent();
+  ~KeyEvent();
 
   /**
   \brief Indicates whether the keyboard event was triggered by a repeated key. A
@@ -44,22 +44,22 @@ class KeyboardEvent {
   bool WasReleased() const noexcept;
 
   /**
-  \brief Returns the keycode of the key that triggered this KeyboardEvent.
+  \brief Returns the keycode of the key that triggered this KeyEvent.
   \since 1.0.0
   */
   SDL_Keycode GetKeycode() const noexcept;
 
   /**
-  \brief Returns the event type of this KeyboardEvent. The possible return
+  \brief Returns the event type of this KeyEvent. The possible return
   values are either SDL_KEYDOWN or SDL_KEYUP.
   \since 1.0.0
   */
-  uint32_t GetKeyEventType() const noexcept;
+  Uint32 GetKeyEventType() const noexcept;
 };
 
-typedef std::shared_ptr<KeyboardEvent> KeyboardEvent_sptr;
-typedef std::unique_ptr<KeyboardEvent> KeyboardEvent_uptr;
-typedef std::weak_ptr<KeyboardEvent> KeyboardEvent_wptr;
+typedef std::shared_ptr<KeyEvent> KeyboardEvent_sptr;
+typedef std::unique_ptr<KeyEvent> KeyboardEvent_uptr;
+typedef std::weak_ptr<KeyEvent> KeyboardEvent_wptr;
 
 }  // namespace events
 }  // namespace centurion

@@ -4,7 +4,7 @@ namespace centurion {
 namespace events {
 
 Event::Event(SDL_Event event)
-    : mouseEvent(MouseEvent(event)), keyEvent(KeyboardEvent(event)) {
+    : mouseEvent(MouseEvent(event)), keyEvent(KeyEvent(event)) {
   this->event = event;
 }
 

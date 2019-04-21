@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL_events.h>
 #include <memory>
-#include "keyboard_event.h"
+#include "ctn_key_event.h"
 #include "mouse_event.h"
 
 namespace centurion {
@@ -16,7 +16,7 @@ class Event {
  private:
   SDL_Event event;
   MouseEvent mouseEvent;
-  KeyboardEvent keyEvent;
+  KeyEvent keyEvent;
 
  public:
   /**
@@ -48,10 +48,10 @@ class Event {
   inline MouseEvent GetMouseInfo() const noexcept { return mouseEvent; }
 
   /**
-  \brief Returns a KeyboardEvent that holds information about the mouse.
+  \brief Returns a KeyEvent that holds information about the mouse.
   \since 1.0.0
   */
-  inline KeyboardEvent GetKeyboardInfo() const noexcept { return keyEvent; }
+  inline KeyEvent GetKeyboardInfo() const noexcept { return keyEvent; }
 
   /**
   \brief Returns a copy of the internal representation of this Event.

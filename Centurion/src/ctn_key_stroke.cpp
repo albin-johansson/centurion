@@ -21,7 +21,7 @@ KeyStroke::KeyStroke(SDL_Keycode keycode, IAction_sptr action,
 KeyStroke::~KeyStroke() = default;
 
 bool KeyStroke::ShouldExecute(const Event& e) {
-  KeyboardEvent kEvent = e.GetKeyboardInfo();
+  KeyEvent kEvent = e.GetKeyboardInfo();
 
   if (!isRepeatable && kEvent.IsRepeated()) {
     return false;

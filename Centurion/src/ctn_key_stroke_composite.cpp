@@ -1,7 +1,4 @@
-#include "key_stroke_composite.h"
-
-using std::shared_ptr;
-using std::vector;
+#include "ctn_key_stroke_composite.h"
 
 namespace centurion {
 namespace events {
@@ -9,25 +6,25 @@ namespace events {
 // FIXME should extend KeyStroke interface
 
 KeyStrokeComposite::KeyStrokeComposite() {
-  keyStrokes = vector<shared_ptr<KeyStroke>>();
+  keyStrokes = std::vector<KeyStroke_sptr>(10);
 }
 
 KeyStrokeComposite::~KeyStrokeComposite() { Clear(); }
 
 void KeyStrokeComposite::Update(const Event& event) {
-  for (shared_ptr<KeyStroke> keyStroke : keyStrokes) {
+  for (KeyStroke_sptr keyStroke : keyStrokes) {
     if (keyStroke != nullptr) {
       keyStroke->Update(event);
     }
   }
 }
 
-void KeyStrokeComposite::AddKeyStroke(shared_ptr<KeyStroke> keyStroke) {
+void KeyStrokeComposite::AddKeyStroke(KeyStroke_sptr keyStroke) {
   keyStrokes.push_back(keyStroke);
   keyStrokes.shrink_to_fit();
 }
 
-void KeyStrokeComposite::Clear() { keyStrokes.clear(); }
+void KeyStrokeComposite::Clear() noexcept { keyStrokes.clear(); }
 
 KeyStrokeComposite_sptr KeyStrokeComposite::CreateShared() {
   return std::shared_ptr<KeyStrokeComposite>();

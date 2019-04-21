@@ -9,7 +9,7 @@
 #include "ctn_action.h"
 #include "ctn_event.h"
 #include "ctn_key_stroke.h"
-#include "key_stroke_composite.h"
+#include "ctn_key_stroke_composite.h"
 #include "key_trigger.h"
 #include "keyboard_event.h"
 #include "mouse_event.h"

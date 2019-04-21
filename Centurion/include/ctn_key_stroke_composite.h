@@ -13,13 +13,14 @@ typedef std::unique_ptr<KeyStrokeComposite> KeyStrokeComposite_uptr;
 typedef std::weak_ptr<KeyStrokeComposite> KeyStrokeComposite_wptr;
 
 /**
+* DEPRECATED *
 \brief The KeyStrokeComposite is a convenience class designed to hold multiple
 KeyStroke instances.
 \since 1.0.0
 */
 class KeyStrokeComposite final {
  private:
-  std::vector<std::shared_ptr<centurion::events::KeyStroke>> keyStrokes;
+  std::vector<KeyStroke_sptr> keyStrokes;
 
  public:
   KeyStrokeComposite();
@@ -38,13 +39,13 @@ class KeyStrokeComposite final {
   \param keyStroke - the KeyStroke instance that will be added.
   \since 1.0.0
   */
-  void AddKeyStroke(std::shared_ptr<centurion::events::KeyStroke> keyStroke);
+  void AddKeyStroke(KeyStroke_sptr keyStroke);
 
   /**
   \brief Clears the composite of all KeyStroke instances.
   \since 1.0.0
   */
-  void Clear();
+  void Clear() noexcept;
 
   /**
   \brief Returns a shared pointer that points to a KeyStrokeComposite instance.

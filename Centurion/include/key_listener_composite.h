@@ -34,7 +34,7 @@ class KeyListenerComposite final : public centurion::input::KeyListener {
   void StateUpdated(const centurion::input::KeyState& state) override;
 
   /**
-  \brief Adds a KeyListener instance to this LeyListenerComposite.
+  \brief Adds a KeyListener instance to this KeyListenerComposite.
   \since 1.1.0
   */
   void AddChild(centurion::input::KeyListener_sptr kl);

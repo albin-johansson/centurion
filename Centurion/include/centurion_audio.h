@@ -8,4 +8,4 @@
 
 #include "ctn_audio_component.h"
 #include "ctn_music.h"
-#include "sound_effect.h"
+#include "ctn_sound_effect.h"

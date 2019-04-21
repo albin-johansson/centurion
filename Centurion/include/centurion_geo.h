@@ -7,6 +7,6 @@
 */
 
 #include "ctn_dimensioned.h"
-#include "point.h"
+#include "ctn_point.h"
 #include "positionable.h"
 #include "rectangle.h"

@@ -15,7 +15,7 @@ typedef std::weak_ptr<Point> Point_wptr;
 \brief The Point class represents a two-dimensional point.
 \since 1.0.0
 */
-class Point : public centurion::geo::Positionable {
+class Point : public Positionable {
  private:
   SDL_Point point;
 

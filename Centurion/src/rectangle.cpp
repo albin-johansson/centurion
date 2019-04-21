@@ -1,7 +1,7 @@
 #include "rectangle.h"
 #include <stdexcept>
 #include "ctn_bool_converter.h"
-#include "point.h"
+#include "ctn_point.h"
 
 using centurion::tools::BoolConverter;
 using std::invalid_argument;

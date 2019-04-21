@@ -8,5 +8,4 @@
 
 #include "ctn_application_path.h"
 #include "ctn_bool_converter.h"
-#include "null_checker.h"
 #include "screen.h"

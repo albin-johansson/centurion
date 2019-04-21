@@ -2,7 +2,7 @@
 #include <SDL_mouse.h>
 #include <SDL_stdinc.h>
 #include <memory>
-#include "point.h"
+#include "ctn_point.h"
 
 namespace centurion {
 namespace input {

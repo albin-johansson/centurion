@@ -2,7 +2,7 @@
 #include <SDL_rect.h>
 #include <memory>
 #include "ctn_dimensioned.h"
-#include "point.h"
+#include "ctn_point.h"
 #include "positionable.h"
 
 namespace centurion {

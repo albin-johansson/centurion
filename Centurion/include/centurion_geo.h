@@ -9,4 +9,4 @@
 #include "ctn_dimensioned.h"
 #include "ctn_point.h"
 #include "ctn_positionable.h"
-#include "rectangle.h"
+#include "ctn_rectangle.h"

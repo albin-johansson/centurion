@@ -17,8 +17,7 @@ typedef std::weak_ptr<Rectangle> Rectangle_wptr;
 \brief The Rectangle class quite simply represents a rectangle.
 \since 1.0.0
 */
-class Rectangle : public centurion::geo::IPositionable,
-                  public centurion::geo::IDimensioned {
+class Rectangle : public IPositionable, public IDimensioned {
  private:
   SDL_Rect rect;
 
@@ -70,7 +69,7 @@ class Rectangle : public centurion::geo::IPositionable,
   \param rect - the rectangle that will be checked with this rectangle.
   \since 1.0.0
   */
-  bool Intersects(const centurion::geo::Rectangle rect) const noexcept;
+  bool Intersects(Rectangle rect) const noexcept;
 
   /**
   \brief Indicates whether or not this rectangle contains the specified point.
@@ -89,7 +88,7 @@ class Rectangle : public centurion::geo::IPositionable,
   \param point - the point that will be checked.
   \since 1.0.0
   */
-  bool Contains(centurion::geo::Point point) const noexcept;
+  bool Contains(Point point) const noexcept;
 
   /**
   \brief Returns the x-coordinate of this rectangle.

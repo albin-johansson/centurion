@@ -1,4 +1,4 @@
-#include "rectangle.h"
+#include "ctn_rectangle.h"
 #include <stdexcept>
 #include "ctn_bool_converter.h"
 #include "ctn_point.h"
@@ -29,7 +29,7 @@ void Rectangle::SetX(int x) noexcept { rect.x = x; }
 
 void Rectangle::SetY(int y) noexcept { rect.y = y; }
 
-bool Rectangle::Intersects(const Rectangle otherRect) const noexcept {
+bool Rectangle::Intersects(Rectangle otherRect) const noexcept {
   SDL_bool result = SDL_HasIntersection(&this->rect, &otherRect.rect);
   return BoolConverter::Convert(result);
 }

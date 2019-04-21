@@ -6,7 +6,7 @@
 #include "ctn_drawable.h"
 #include "ctn_font.h"
 #include "ctn_point.h"
-#include "rectangle.h"
+#include "ctn_rectangle.h"
 #include "renderer.h"
 
 namespace centurion {

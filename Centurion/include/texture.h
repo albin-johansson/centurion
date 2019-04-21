@@ -56,6 +56,7 @@ class Texture : public centurion::geo::Dimensioned {
   representation of the Texture.
   \param width - the width of the Texture.
   \param height - the height of the Texture.
+  \since 1.1.0
   */
   static Texture_sptr CreateShared(SDL_Texture* texture, int width, int height);
 
@@ -65,6 +66,7 @@ class Texture : public centurion::geo::Dimensioned {
   representation of the Texture.
   \param width - the width of the Texture.
   \param height - the height of the Texture.
+  \since 1.1.0
   */
   static Texture_uptr CreateUnique(SDL_Texture* texture, int width, int height);
 
@@ -74,6 +76,7 @@ class Texture : public centurion::geo::Dimensioned {
   representation of the Texture.
   \param width - the width of the Texture.
   \param height - the height of the Texture.
+  \since 1.1.0
   */
   static Texture_wptr CreateWeak(SDL_Texture* texture, int width, int height);
 };

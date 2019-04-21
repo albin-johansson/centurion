@@ -4,7 +4,7 @@
 #include <memory>
 #include "ctn_action.h"
 #include "ctn_event.h"
-#include "key_trigger.h"
+#include "ctn_key_trigger.h"
 
 namespace centurion {
 namespace events {

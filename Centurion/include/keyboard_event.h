@@ -2,7 +2,7 @@
 #include <SDL_config.h>
 #include <SDL_events.h>
 #include <memory>
-#include "key_trigger.h"
+#include "ctn_key_trigger.h"
 
 namespace centurion {
 namespace events {

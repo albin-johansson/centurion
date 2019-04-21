@@ -5,7 +5,7 @@
 #include <string>
 #include "ctn_color.h"
 #include "ctn_dimensioned.h"
-#include "font.h"
+#include "ctn_font.h"
 #include "point.h"
 #include "positionable.h"
 #include "rectangle.h"

@@ -2,7 +2,7 @@
 #include <memory>
 #include <vector>
 #include "ctn_event.h"
-#include "key_stroke.h"
+#include "ctn_key_stroke.h"
 
 namespace centurion {
 namespace events {

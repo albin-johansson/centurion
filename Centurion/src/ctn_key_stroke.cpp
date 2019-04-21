@@ -1,19 +1,15 @@
-#include "key_stroke.h"
+#include "ctn_key_stroke.h"
 #include <memory>
 #include <stdexcept>
 #include "ctn_action.h"
 
-using centurion::events::IAction;
-using std::invalid_argument;
-using std::shared_ptr;
-
 namespace centurion {
 namespace events {
 
-KeyStroke::KeyStroke(SDL_Keycode keycode, shared_ptr<IAction> action,
+KeyStroke::KeyStroke(SDL_Keycode keycode, IAction_sptr action,
                      KeyTrigger trigger) {
   if (action == nullptr) {
-    throw invalid_argument("Null action parameter when creating KeyStroke!");
+    throw std::invalid_argument("Null action parameter!");
   } else {
     this->keycode = keycode;
     this->action = action;
@@ -53,17 +49,17 @@ void KeyStroke::SetRepeatable(bool isRepeatable) noexcept {
   this->isRepeatable = isRepeatable;
 }
 
-KeyStroke_sptr KeyStroke::CreateShared(SDL_Keycode keycode, Action_sptr action,
+KeyStroke_sptr KeyStroke::CreateShared(SDL_Keycode keycode, IAction_sptr action,
                                        KeyTrigger trigger) {
   return std::make_shared<KeyStroke>(keycode, action, trigger);
 }
 
-KeyStroke_uptr KeyStroke::CreateUnique(SDL_Keycode keycode, Action_sptr action,
+KeyStroke_uptr KeyStroke::CreateUnique(SDL_Keycode keycode, IAction_sptr action,
                                        KeyTrigger trigger) {
   return std::make_unique<KeyStroke>(keycode, action, trigger);
 }
 
-KeyStroke_wptr KeyStroke::CreateWeak(SDL_Keycode keycode, Action_sptr action,
+KeyStroke_wptr KeyStroke::CreateWeak(SDL_Keycode keycode, IAction_sptr action,
                                      KeyTrigger trigger) {
   return CreateShared(keycode, action, trigger);
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "mouse_listener.h"
+#include "ctn_mouse_listener.h"
 #include "mouse_state.h"
 
 namespace centurion {
@@ -13,12 +13,12 @@ typedef std::unique_ptr<MouseListenerComposite> MouseListenerComposite_uptr;
 typedef std::weak_ptr<MouseListenerComposite> MouseListenerComposite_wptr;
 
 /**
-\brief The MouseListenerComposite class holds instances of MouseListener.
+\brief The MouseListenerComposite class holds instances of IMouseListener.
 \since 1.1.0
 */
-class MouseListenerComposite final : public centurion::input::MouseListener {
+class MouseListenerComposite final : public centurion::input::IMouseListener {
  private:
-  std::vector<centurion::input::MouseListener_sptr> listeners;
+  std::vector<centurion::input::IMouseListener_sptr> listeners;
 
  public:
   MouseListenerComposite();
@@ -44,10 +44,10 @@ class MouseListenerComposite final : public centurion::input::MouseListener {
   void RemoveChildren() noexcept;
 
   /**
-  \brief Adds a MouseListener instance to this MouseListenerComposite.
+  \brief Adds a IMouseListener instance to this MouseListenerComposite.
   \since 1.1.0
   */
-  void AddChild(centurion::input::MouseListener_sptr ml);
+  void AddChild(centurion::input::IMouseListener_sptr ml);
 
   /**
   \brief Returns a shared pinter that points to a MouseListenerComposite.

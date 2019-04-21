@@ -4,7 +4,7 @@
 #include "ctn_key_listener.h"
 #include "ctn_key_listener_composite.h"
 #include "ctn_key_state.h"
-#include "mouse_listener.h"
+#include "ctn_mouse_listener.h"
 #include "mouse_listener_composite.h"
 #include "mouse_state.h"
 
@@ -44,11 +44,11 @@ class InputDispatcher final {
   void Update();
 
   /**
-  \brief Adds a MouseListener instance to this input dispatcher.
-  \param ml - a pointer to the MouseListener that will be added.
+  \brief Adds a IMouseListener instance to this input dispatcher.
+  \param ml - a pointer to the IMouseListener that will be added.
   \since 1.1.0
   */
-  void AddMouseListener(MouseListener_sptr ml);
+  void AddMouseListener(IMouseListener_sptr ml);
 
   /**
   \brief Adds a IKeyListener instance to this input dispatcher.

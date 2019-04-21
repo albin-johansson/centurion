@@ -38,7 +38,7 @@ void InputDispatcher::NotifyMouseListeners() {
   }
 }
 
-void InputDispatcher::AddMouseListener(MouseListener_sptr ml) {
+void InputDispatcher::AddMouseListener(IMouseListener_sptr ml) {
   mouseListenerComposite->AddChild(ml);
 }
 

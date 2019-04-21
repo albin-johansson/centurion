@@ -4,14 +4,12 @@
 #include <stdexcept>
 #include "ctn_bool_converter.h"
 #include "ctn_positionable.h"
-#include "texture_factory.h"
+#include "ctn_texture_factory.h"
 
 using centurion::geo::IPositionable;
 using centurion::geo::Point;
 using centurion::geo::Rectangle;
 using centurion::tools::BoolConverter;
-using centurion::visuals::Font;
-using centurion::visuals::TextureFactory;
 
 namespace centurion {
 namespace visuals {

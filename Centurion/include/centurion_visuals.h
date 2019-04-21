@@ -11,5 +11,5 @@
 #include "ctn_font.h"
 #include "ctn_renderer.h"
 #include "ctn_texture.h"
-#include "texture_factory.h"
+#include "ctn_texture_factory.h"
 #include "window.h"

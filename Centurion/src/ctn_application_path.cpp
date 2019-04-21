@@ -1,4 +1,4 @@
-#include "application_path.h"
+#include "ctn_application_path.h"
 #include <SDL_filesystem.h>
 #include <SDL_stdinc.h>
 #include <string>
@@ -23,6 +23,16 @@ const string ApplicationPath::CreateRelativePath(const string& path) const
     noexcept {
   return string(path_cpp + path);
 }
+
+ApplicationPath_sptr ApplicationPath::CreateShared() {
+  return std::make_shared<ApplicationPath>();
+}
+
+ApplicationPath_uptr ApplicationPath::CreateUnique() {
+  return std::make_unique<ApplicationPath>();
+}
+
+ApplicationPath_wptr ApplicationPath::CreateWeak() { return CreateShared(); }
 
 }  // namespace tools
 }  // namespace centurion

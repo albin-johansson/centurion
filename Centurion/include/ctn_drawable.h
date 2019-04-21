@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "renderer.h"
+#include "ctn_renderer.h"
 
 namespace centurion {
 namespace visuals {

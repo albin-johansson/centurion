@@ -7,7 +7,7 @@
 #include "ctn_font.h"
 #include "ctn_point.h"
 #include "ctn_rectangle.h"
-#include "renderer.h"
+#include "ctn_renderer.h"
 
 namespace centurion {
 namespace visuals {

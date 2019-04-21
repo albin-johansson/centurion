@@ -3,7 +3,7 @@
 #include <SDL_surface.h>
 #include <memory>
 #include <string>
-#include "renderer.h"
+#include "ctn_renderer.h"
 #include "texture.h"
 
 namespace centurion {

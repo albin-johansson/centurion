@@ -26,8 +26,8 @@ typedef std::weak_ptr<Renderer> Renderer_wptr;
 class Renderer {
  private:
   SDL_Renderer* sdlRenderer;
-  std::shared_ptr<centurion::visuals::Font> font;
-  centurion::visuals::Color color;
+  Font_sptr font;
+  Color color;
 
   void CheckRenderDimensions(int width, int height);
 
@@ -67,7 +67,7 @@ class Renderer {
   \param h - the desired height of the image.
   \since 1.0.0
   */
-  void Render(centurion::visuals::Texture& texture, int x, int y, int w, int h);
+  void Render(Texture& texture, int x, int y, int w, int h);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -76,8 +76,7 @@ class Renderer {
   image.
   \since 1.0.0
   */
-  void Render(centurion::visuals::Texture& texture,
-              const centurion::geo::Rectangle& rect);
+  void Render(Texture& texture, centurion::geo::Rectangle rect);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -86,7 +85,7 @@ class Renderer {
   \param y - the desired y-coordinate.
   \since 1.0.0
   */
-  void Render(centurion::visuals::Texture& texture, int x, int y);
+  void Render(Texture& texture, int x, int y);
 
   /**
   \brief Renders a filled rectangle with the currently selected color.
@@ -154,17 +153,17 @@ class Renderer {
 
   /**
   \brief Assigns the currently active font.
-  \param font - the font that will be used.
+  \param font - a pointer to the font instance that will be used.
   \since 1.0.0
   */
-  void SetFont(const std::shared_ptr<centurion::visuals::Font> font);
+  void SetFont(Font_sptr font);
 
   /**
   \brief Assigns the active color.
   \param color - the color that will be used.
   \since 1.0.0
   */
-  void SetColor(centurion::visuals::Color color) noexcept;
+  void SetColor(Color color) noexcept;
 
   /**
   \brief Assigns a Texture instance as the rendering target.
@@ -180,8 +179,7 @@ class Renderer {
   \param str - the string that the created texture will represent.
   \since 1.0.0
   */
-  std::shared_ptr<centurion::visuals::Texture> CreateTextureFromString(
-      const std::string& str);
+  Texture_sptr CreateTextureFromString(const std::string& str);
 
   /**
   \brief Creates and returns a subtexture from the supplied texture.
@@ -207,12 +205,11 @@ class Renderer {
                                 SDL_TextureAccess access);
 
   /**
-  *UNSAFE*
   \brief Returns the internal representation of this Renderer. DO NOT use the
   returned pointer to call SDL_DestroyRenderer().
   \since 1.0.0
   */
-  inline SDL_Renderer* const GetSDLVersion() const { return sdlRenderer; }
+  inline SDL_Renderer* GetSDLVersion() const { return sdlRenderer; }
 
   /**
   \brief Returns a shared pointer to a Renderer instance.

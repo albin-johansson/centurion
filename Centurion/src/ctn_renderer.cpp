@@ -1,4 +1,4 @@
-#include "renderer.h"
+#include "ctn_renderer.h"
 #include <stdexcept>
 
 using namespace centurion::geo;
@@ -38,7 +38,7 @@ void Renderer::Render(Texture& img, int x, int y, int w, int h) {
 }
 
 // FIXME no need for reference to the Rectangle
-void Renderer::Render(Texture& img, const Rectangle& rect) {
+void Renderer::Render(Texture& img, Rectangle rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
   SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL,
                  &rect.GetSDLVersion());
@@ -104,7 +104,7 @@ void Renderer::RenderString(const std::string& text, int x, int y) {
   }
 }
 
-void Renderer::SetFont(const std::shared_ptr<Font> font) { this->font = font; }
+void Renderer::SetFont(Font_sptr font) { this->font = font; }
 
 void Renderer::SetColor(Color color) noexcept {
   this->color = color;
@@ -119,8 +119,7 @@ void Renderer::SetRenderTarget(Texture_sptr texture) noexcept {
   }
 }
 
-std::shared_ptr<Texture> Renderer::CreateTextureFromString(
-    const std::string& str) {
+Texture_sptr Renderer::CreateTextureFromString(const std::string& str) {
   if (font == nullptr) {
     throw std::invalid_argument("Failed to render text!");
   } else {

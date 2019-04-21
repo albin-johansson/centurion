@@ -186,13 +186,15 @@ class Renderer {
   /**
   \brief Creates and returns a subtexture from the supplied texture.
   \param base - a pointer to the texture that the subtexture will be based on.
-  \param rect - the rectangle that provides the dimensions for the subtexture.
+  \param src - the source rectangle.
+  \param dst - the destination rectangle.
   \param pixelFormat - the pixel format used for the subtexture.
   \since 1.2.0
   */
   Texture_sptr CreateSubtexture(Texture_sptr base,
-                                centurion::geo::Rectangle rect, int width,
-                                int height, Uint32 pixelFormat);
+                                centurion::geo::Rectangle src,
+                                centurion::geo::Rectangle dst,
+                                Uint32 pixelFormat);
 
   /**
   \brief Creates and returns an empty texture.
@@ -201,7 +203,7 @@ class Renderer {
   \param access - the access of the created texture.
   \since 1.2.0
   */
-  Texture_sptr CreateRawTexture(int width, int height,
+  Texture_sptr CreateRawTexture(int width, int height, Uint32 pixelFormat,
                                 SDL_TextureAccess access);
 
   /**

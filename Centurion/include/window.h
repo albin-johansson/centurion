@@ -243,15 +243,15 @@ class Window : public centurion::geo::Dimensioned {
   /**
   \brief Creates and returns a subtexture from the supplied texture.
   \param base - a pointer to the texture that the subtexture will be based on.
-  \param cutout - the rectangle that provides the dimensions for the subtexture.
-  \param width - the final width of the subtexture.
-  \param height - the final height of the subtexture.
-  \param pixelFormat - the pixel format used for the subtexture.
+  \param src - the source rectangle, specifies the bounds of the subtexture in
+  relation to the base texture.
+  \param width - the width of the created texture.
+  \param height - the height of the created texture.
   \since 1.2.0
   */
   Texture_sptr CreateSubtexture(Texture_sptr base,
-                                centurion::geo::Rectangle cutout, int width,
-                                int height, Uint32 pixelFormat);
+                                centurion::geo::Rectangle src, int width,
+                                int height);
 
   /**
   \brief Returns a shared pointer that points to a Window instance.

@@ -13,6 +13,7 @@ Renderer::Renderer(SDL_Renderer* renderer) {
     throw std::invalid_argument("Null renderer!");
   }
   this->sdlRenderer = renderer;
+  SDL_SetRenderDrawBlendMode(sdlRenderer, SDL_BLENDMODE_BLEND);
 }
 
 Renderer::~Renderer() { SDL_DestroyRenderer(sdlRenderer); }
@@ -38,7 +39,7 @@ void Renderer::Render(Texture& img, int x, int y, int w, int h) {
   SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL, &rect);
 }
 
-void Renderer::Render(Texture& img, const Rectangle& rect) {
+void Renderer::Render(Texture& img, const Rectangle& rect) { // FIXME no need for reference to the Rectangle
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
   SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL,
                  &rect.GetSDLVersion());
@@ -130,39 +131,30 @@ std::shared_ptr<Texture> Renderer::CreateTextureFromString(
   }
 }
 
-/*
-void Renderer::Render(Texture& img, int x, int y, int w, int h) {
-  CheckRenderDimensions(w, h);
-  SDL_Rect rect = {x, y, w, h};
-  SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL, &rect);
-}
-*/
-
-Texture_sptr Renderer::CreateSubtexture(Texture_sptr base, Rectangle rect,
-                                        int width, int height,
-                                        Uint32 pixelFormat) {
+Texture_sptr Renderer::CreateSubtexture(Texture_sptr base, Rectangle src,
+                                        Rectangle dst, Uint32 pixelFormat) {
   if (!SDL_RenderTargetSupported(sdlRenderer)) {
     throw std::exception("Subtextures are not available!");
   }
-  Texture_sptr target =
-      CreateRawTexture(width, height, SDL_TEXTUREACCESS_TARGET);
+  Texture_sptr target = CreateRawTexture(dst.GetWidth(), dst.GetHeight(),
+                                         pixelFormat, SDL_TEXTUREACCESS_TARGET);
   SetRenderTarget(target);
-  SDL_Rect src = rect.GetSDLVersion();
-  SDL_Rect dst = {0, 0, width, height};
-  SDL_RenderCopy(sdlRenderer, &base->GetSDLVersion(), &src, &dst);
+  SDL_RenderCopy(sdlRenderer, &base->GetSDLVersion(), &src.GetSDLVersion(),
+                 &dst.GetSDLVersion());
   Update();
   SetRenderTarget(nullptr);
   return target;
 }
 
 Texture_sptr Renderer::CreateRawTexture(int width, int height,
+                                        Uint32 pixelFormat,
                                         SDL_TextureAccess access) {
   if (width < 1 || height < 1) {
     throw std::invalid_argument("Invalid dimensions for raw texture!");
   } else {
-    Uint32 format = SDL_PIXELFORMAT_ABGR8888;
     SDL_Texture* t =
-        SDL_CreateTexture(sdlRenderer, format, access, width, height);
+        SDL_CreateTexture(sdlRenderer, pixelFormat, access, width, height);
+    SDL_SetTextureBlendMode(t, SDL_BLENDMODE_BLEND);
     if (t == nullptr) {
       throw std::exception("Failed to create texture!");
     }

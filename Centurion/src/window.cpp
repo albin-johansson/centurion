@@ -119,14 +119,15 @@ std::shared_ptr<Texture> Window::CreateTexture(const std::string& path) const {
 
 Texture_sptr Window::CreateRawTexture(int width, int height,
                                       SDL_TextureAccess access) {
-  return renderer->CreateRawTexture(width, height, access);
+  Uint32 pixelFormat = SDL_GetWindowPixelFormat(window);
+  return renderer->CreateRawTexture(width, height, pixelFormat, access);
 }
 
-Texture_sptr Window::CreateSubtexture(Texture_sptr base, Rectangle rect,
-                                      int width, int height,
-                                      Uint32 pixelFormat) {
-  // Uint32 format = SDL_GetWindowPixelFormat(window);
-  return renderer->CreateSubtexture(base, rect, width, height, pixelFormat);
+Texture_sptr Window::CreateSubtexture(Texture_sptr base, Rectangle src,
+                                      int width, int height) {
+  Uint32 pixelFormat = SDL_GetWindowPixelFormat(window);
+  Rectangle dst = Rectangle(0, 0, width, height);
+  return renderer->CreateSubtexture(base, src, dst, pixelFormat);
 }
 
 Window_sptr Window::CreateShared(const std::string& title, int width,

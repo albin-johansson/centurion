@@ -16,6 +16,7 @@ class Screen final {
 
   /**
   \brief Assigns whether the screen saver is enabled.
+  \param enabled - true if the screen saver should be enabled, false otherwise.
   \since 1.1.0
   */
   static void SetScreenSaverEnabled(bool enabled) noexcept;

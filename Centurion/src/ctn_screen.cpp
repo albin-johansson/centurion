@@ -1,4 +1,4 @@
-#include "screen.h"
+#include "ctn_screen.h"
 #include <SDL.h>
 #include <windows.h>
 #include <stdexcept>

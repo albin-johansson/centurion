@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_mouse.h>
+#include <SDL_stdinc.h>
 #include <memory>
 #include "point.h"
 

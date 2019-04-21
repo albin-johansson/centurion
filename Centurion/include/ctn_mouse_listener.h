@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "mouse_state.h"
+#include "ctn_mouse_state.h"
 
 namespace centurion {
 namespace input {

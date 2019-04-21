@@ -2,7 +2,7 @@
 #include <memory>
 #include <vector>
 #include "ctn_mouse_listener.h"
-#include "mouse_state.h"
+#include "ctn_mouse_state.h"
 
 namespace centurion {
 namespace input {

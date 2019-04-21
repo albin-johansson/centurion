@@ -16,9 +16,9 @@ typedef std::weak_ptr<KeyListenerComposite> KeyListenerComposite_wptr;
 \brief The KeyListenerComposite class holds instances of IKeyListener.
 \since 1.1.0
 */
-class KeyListenerComposite final : public centurion::input::IKeyListener {
+class KeyListenerComposite final : public IKeyListener {
  private:
-  std::vector<centurion::input::IKeyListener_sptr> listeners;
+  std::vector<IKeyListener_sptr> children;
 
  public:
   KeyListenerComposite();
@@ -31,19 +31,20 @@ class KeyListenerComposite final : public centurion::input::IKeyListener {
   the key state.
   \since 1.1.0
   */
-  void StateUpdated(const centurion::input::KeyState& state) override;
+  void StateUpdated(const KeyState& state) override;
 
   /**
   \brief Adds a IKeyListener instance to this KeyListenerComposite.
+  \param child - a pointer to the IKeyListener instance that will be added.
   \since 1.1.0
   */
-  void AddChild(centurion::input::IKeyListener_sptr kl);
+  void AddChild(IKeyListener_sptr child);
 
   /**
   \brief Removes all of this KeyListenerComposite's children.
   \since 1.1.0
   */
-  void RemoveChildren();
+  void RemoveChildren() noexcept;
 
   /**
   \brief Returns a shared pointer that points to a KeyListenerComposite.

@@ -1,16 +1,16 @@
-#include "mouse_listener_composite.h"
+#include "ctn_mouse_listener_composite.h"
 
 namespace centurion {
 namespace input {
 
 MouseListenerComposite::MouseListenerComposite() {
-  listeners = std::vector<IMouseListener_sptr>(10);
+  children = std::vector<IMouseListener_sptr>(10);
 }
 
 MouseListenerComposite::~MouseListenerComposite() { RemoveChildren(); }
 
 void MouseListenerComposite::MousePressed(const MouseState& mouse) {
-  for (IMouseListener_sptr ml : listeners) {
+  for (IMouseListener_sptr ml : children) {
     if (ml != nullptr) {
       ml->MousePressed(mouse);
     }
@@ -18,18 +18,18 @@ void MouseListenerComposite::MousePressed(const MouseState& mouse) {
 }
 
 void MouseListenerComposite::MouseReleased(const MouseState& mouse) {
-  for (IMouseListener_sptr ml : listeners) {
+  for (IMouseListener_sptr ml : children) {
     if (ml != nullptr) {
       ml->MouseReleased(mouse);
     }
   }
 }
 
-void MouseListenerComposite::RemoveChildren() noexcept { listeners.clear(); }
+void MouseListenerComposite::RemoveChildren() noexcept { children.clear(); }
 
-void MouseListenerComposite::AddChild(IMouseListener_sptr ml) {
-  if (ml != nullptr) {
-    listeners.push_back(ml);
+void MouseListenerComposite::AddChild(IMouseListener_sptr child) {
+  if (child != nullptr) {
+    children.push_back(child);
   }
 }
 

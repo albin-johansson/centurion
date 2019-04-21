@@ -16,9 +16,9 @@ typedef std::weak_ptr<MouseListenerComposite> MouseListenerComposite_wptr;
 \brief The MouseListenerComposite class holds instances of IMouseListener.
 \since 1.1.0
 */
-class MouseListenerComposite final : public centurion::input::IMouseListener {
+class MouseListenerComposite final : public IMouseListener {
  private:
-  std::vector<centurion::input::IMouseListener_sptr> listeners;
+  std::vector<IMouseListener_sptr> children;
 
  public:
   MouseListenerComposite();
@@ -27,15 +27,19 @@ class MouseListenerComposite final : public centurion::input::IMouseListener {
 
   /**
   \brief Invokes the MousePressed()-method on all of the children.
+  \param state - a reference to the MouseState instance holding information
+  about the mouse state.
   \since 1.1.0
   */
-  void MousePressed(const centurion::input::MouseState& mouse) override;
+  void MousePressed(const MouseState& state) override;
 
   /**
   \brief Invokes the MouseReleased()-method on all of the children.
+  \param state - a reference to the MouseState instance holding information
+  about the mouse state.
   \since 1.1.0
   */
-  void MouseReleased(const centurion::input::MouseState& mouse) override;
+  void MouseReleased(const MouseState& state) override;
 
   /**
   \brief Removes all of the children from this MouseListenerComposite.
@@ -45,9 +49,10 @@ class MouseListenerComposite final : public centurion::input::IMouseListener {
 
   /**
   \brief Adds a IMouseListener instance to this MouseListenerComposite.
+  \param child - the IMouseListener instance that will be added.
   \since 1.1.0
   */
-  void AddChild(centurion::input::IMouseListener_sptr ml);
+  void AddChild(IMouseListener_sptr child);
 
   /**
   \brief Returns a shared pinter that points to a MouseListenerComposite.

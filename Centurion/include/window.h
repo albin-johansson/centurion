@@ -21,7 +21,7 @@ typedef std::weak_ptr<Window> Window_wptr;
 \brief The Window class represents a top-level frame.
 \since 1.0.0
 */
-class Window : public centurion::geo::Dimensioned {
+class Window : public centurion::geo::IDimensioned {
  private:
   SDL_Window* window;
   Renderer_uptr renderer;

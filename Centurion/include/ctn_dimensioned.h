@@ -5,16 +5,16 @@ namespace centurion {
 namespace geo {
 
 /**
-\brief The Dimensioned class acts as an interface for objects that have both
-width and height.
+\brief The IDimensioned class is an interface for objects that have both width
+and height.
 \since 1.0.0
 */
-class Dimensioned {
+class IDimensioned {
  protected:
-  Dimensioned() = default;
+  IDimensioned() = default;
 
  public:
-  virtual ~Dimensioned() = default;
+  virtual ~IDimensioned() = default;
 
   /**
   \brief Returns the width of this object.
@@ -29,9 +29,9 @@ class Dimensioned {
   virtual int GetHeight() const = 0;
 };
 
-typedef std::shared_ptr<Dimensioned> Dimensioned_sptr;
-typedef std::unique_ptr<Dimensioned> Dimensioned_uptr;
-typedef std::weak_ptr<Dimensioned> Dimensioned_wptr;
+typedef std::shared_ptr<IDimensioned> IDimensioned_sptr;
+typedef std::unique_ptr<IDimensioned> IDimensioned_uptr;
+typedef std::weak_ptr<IDimensioned> IDimensioned_wptr;
 
 }  // namespace geo
 }  // namespace centurion

@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL_render.h>
 #include <memory>
-#include "dimensioned.h"
+#include "ctn_dimensioned.h"
 
 namespace centurion {
 namespace visuals {
@@ -15,7 +15,7 @@ typedef std::weak_ptr<Texture> Texture_wptr;
 \brief The Texture class represents textures such as images.
 \since 1.0.0
 */
-class Texture : public centurion::geo::Dimensioned {
+class Texture : public centurion::geo::IDimensioned {
  private:
   SDL_Texture* sdl_texture;
   const int width;

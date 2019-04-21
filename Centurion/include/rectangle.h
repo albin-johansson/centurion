@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL_rect.h>
 #include <memory>
-#include "dimensioned.h"
+#include "ctn_dimensioned.h"
 #include "point.h"
 #include "positionable.h"
 
@@ -18,7 +18,7 @@ typedef std::weak_ptr<Rectangle> Rectangle_wptr;
 \since 1.0.0
 */
 class Rectangle : public centurion::geo::Positionable,
-                  public centurion::geo::Dimensioned {
+                  public centurion::geo::IDimensioned {
  private:
   SDL_Rect rect;
 

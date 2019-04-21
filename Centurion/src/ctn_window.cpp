@@ -1,20 +1,15 @@
-#include "window.h"
-#include <SDL_stdinc.h>
-#include <SDL_video.h>
+#include "ctn_window.h"
 #include <stdexcept>
 #include "ctn_bool_converter.h"
-#include "ctn_positionable.h"
 #include "ctn_texture_factory.h"
 
-using centurion::geo::IPositionable;
-using centurion::geo::Point;
-using centurion::geo::Rectangle;
+using namespace centurion::geo;
 using centurion::tools::BoolConverter;
 
 namespace centurion {
 namespace visuals {
 
-Window::Window(const std::string& title, int width, int height, uint32_t flags)
+Window::Window(const std::string& title, int width, int height, Uint32 flags)
     : width(width), height(height) {
   CheckWindowDimensions(width, height);
   window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
@@ -52,7 +47,7 @@ void Window::Render() {
   renderer->Update();
 }
 
-void Window::SetDrawable(const std::shared_ptr<IDrawable> drawable) {
+void Window::SetDrawable(const IDrawable_sptr drawable) {
   this->drawable = drawable;
 }
 
@@ -96,9 +91,7 @@ void Window::RenderString(const std::string& text, int x, int y) {
   renderer->RenderString(text, x, y);
 }
 
-void Window::SetFont(const std::shared_ptr<Font> font) {
-  renderer->SetFont(font);  // TODO change signature to Font_sptr
-}
+void Window::SetFont(const Font_sptr font) { renderer->SetFont(font); }
 
 void Window::SetColor(Color color) { renderer->SetColor(color); }
 
@@ -106,12 +99,11 @@ void Window::SetRenderTarget(Texture_sptr texture) {
   renderer->SetRenderTarget(texture);
 }
 
-std::shared_ptr<Texture> Window::CreateTextureFromString(
-    const std::string& str) const {
+Texture_sptr Window::CreateTextureFromString(const std::string& str) const {
   return renderer->CreateTextureFromString(str);
 }
 
-std::shared_ptr<Texture> Window::CreateTexture(const std::string& path) const {
+Texture_sptr Window::CreateTexture(const std::string& path) const {
   return TextureFactory::CreateTexture(path, renderer->GetSDLVersion());
 }
 

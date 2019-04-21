@@ -12,4 +12,4 @@
 #include "ctn_renderer.h"
 #include "ctn_texture.h"
 #include "ctn_texture_factory.h"
-#include "window.h"
+#include "ctn_window.h"

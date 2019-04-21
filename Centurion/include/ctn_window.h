@@ -1,8 +1,10 @@
 #pragma once
+#include <SDL_stdinc.h>
 #include <SDL_video.h>
 #include <memory>
 #include <string>
 #include "ctn_color.h"
+#include "ctn_dimensioned.h"
 #include "ctn_drawable.h"
 #include "ctn_font.h"
 #include "ctn_point.h"
@@ -40,7 +42,7 @@ class Window : public centurion::geo::IDimensioned {
   flag values are specified by SDL_WindowFlags. For example,
   SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
   */
-  Window(const std::string& title, int width, int height, uint32_t flags);
+  Window(const std::string& title, int width, int height, Uint32 flags);
 
   ~Window();
 
@@ -79,7 +81,7 @@ class Window : public centurion::geo::IDimensioned {
   \param h - the desired height of the image.
   \since 1.0.0
   */
-  void Render(centurion::visuals::Texture& texture, int x, int y, int w, int h);
+  void Render(Texture& texture, int x, int y, int w, int h);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -88,8 +90,7 @@ class Window : public centurion::geo::IDimensioned {
   image.
   \since 1.0.0
   */
-  void Render(centurion::visuals::Texture& texture,
-              const centurion::geo::Rectangle rect);
+  void Render(Texture& texture, const centurion::geo::Rectangle rect);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -98,7 +99,7 @@ class Window : public centurion::geo::IDimensioned {
   \param y - the desired y-coordinate.
   \since 1.0.0
   */
-  void Render(centurion::visuals::Texture& texture, int x, int y);
+  void Render(Texture& texture, int x, int y);
 
   /**
   \brief Renders a filled rectangle with the currently selected color.
@@ -165,11 +166,10 @@ class Window : public centurion::geo::IDimensioned {
   /**
   \brief Assigns the IDrawable that will be invoked whenever the Render() method
   is called.
-  \param drawable - the IDrawable that will be used.
+  \param drawable - a pointer to the IDrawable instance that will be used.
   \since 1.0.0
   */
-  void SetDrawable(
-      const std::shared_ptr<centurion::visuals::IDrawable> drawable);
+  void SetDrawable(const IDrawable_sptr drawable);
 
   /**
   \brief Sets whether this window is resizable or not.
@@ -180,17 +180,17 @@ class Window : public centurion::geo::IDimensioned {
 
   /**
   \brief Assigns the currently active font.
-  \param font - the font that will be used.
+  \param font - a pointer to the font that will be used.
   \since 1.0.0
   */
-  void SetFont(const std::shared_ptr<centurion::visuals::Font> font);
+  void SetFont(const Font_sptr font);
 
   /**
   \brief Assigns the active color.
   \param color - the color that will be used.
   \since 1.0.0
   */
-  void SetColor(centurion::visuals::Color color);
+  void SetColor(Color color);
 
   /**
   \brief Assigns a Texture instance as the rendering target.
@@ -198,7 +198,7 @@ class Window : public centurion::geo::IDimensioned {
   resets the rendering target.
   \since 1.2.0
   */
-  void SetRenderTarget(centurion::visuals::Texture_sptr texture);
+  void SetRenderTarget(Texture_sptr texture);
 
   /**
   \brief Returns the width of this window.
@@ -219,16 +219,14 @@ class Window : public centurion::geo::IDimensioned {
   \param str - the string that the texture will represent.
   \since 1.0.0
   */
-  std::shared_ptr<centurion::visuals::Texture> CreateTextureFromString(
-      const std::string& str) const;
+  Texture_sptr CreateTextureFromString(const std::string& str) const;
 
   /**
   \brief Creates and returns a Texture found at the supplied path.
   \param path - the path of the image in the file system.
   \since 1.0.0
   */
-  std::shared_ptr<centurion::visuals::Texture> CreateTexture(
-      const std::string& path) const;
+  Texture_sptr CreateTexture(const std::string& path) const;
 
   /**
   \brief Creates and returns an empty texture.

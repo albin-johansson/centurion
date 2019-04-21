@@ -27,11 +27,11 @@ class Renderer {
  private:
   SDL_Renderer* sdlRenderer;
   std::shared_ptr<centurion::visuals::Font> font;
-  centurion::visuals::Color color = Color::WHITE;
+  centurion::visuals::Color color;
 
   void CheckRenderDimensions(int width, int height);
 
-  void UpdateColor();
+  void UpdateColor() noexcept;
 
   SDL_Texture* CreateSDLTextureFromString(const std::string& str, int* width,
                                           int* height);
@@ -50,13 +50,13 @@ class Renderer {
   order to apply any previous rendering operations.
   \since 1.0.0
   */
-  void Update();
+  void Update() noexcept;
 
   /**
   \brief Clears the rendering target with the currently selected color.
   \since 1.0.0
   */
-  void Clear();
+  void Clear() noexcept;
 
   /**
   \brief Renders a texture to the rendering target.
@@ -164,7 +164,7 @@ class Renderer {
   \param color - the color that will be used.
   \since 1.0.0
   */
-  void SetColor(centurion::visuals::Color color);
+  void SetColor(centurion::visuals::Color color) noexcept;
 
   /**
   \brief Assigns a Texture instance as the rendering target.
@@ -172,7 +172,7 @@ class Renderer {
   resets the rendering target.
   \since 1.2.0
   */
-  void SetRenderTarget(Texture_sptr texture);
+  void SetRenderTarget(Texture_sptr texture) noexcept;
 
   /**
   \brief Creates a texture of the supplied string, using the currently selected

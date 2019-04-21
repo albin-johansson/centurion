@@ -8,7 +8,7 @@ using centurion::tools::NullChecker;
 namespace centurion {
 namespace visuals {
 
-Renderer::Renderer(SDL_Renderer* renderer) {
+Renderer::Renderer(SDL_Renderer* renderer) : color(Color::WHITE) {
   if (renderer == nullptr) {
     throw std::invalid_argument("Null renderer!");
   }
@@ -24,14 +24,14 @@ void Renderer::CheckRenderDimensions(int width, int height) {
   }
 }
 
-void Renderer::UpdateColor() {
+void Renderer::UpdateColor() noexcept {
   SDL_SetRenderDrawColor(sdlRenderer, color.GetRed(), color.GetGreen(),
                          color.GetBlue(), color.GetAlpha());
 }
 
-void Renderer::Update() { SDL_RenderPresent(sdlRenderer); }
+void Renderer::Update() noexcept { SDL_RenderPresent(sdlRenderer); }
 
-void Renderer::Clear() { SDL_RenderClear(sdlRenderer); }
+void Renderer::Clear() noexcept { SDL_RenderClear(sdlRenderer); }
 
 void Renderer::Render(Texture& img, int x, int y, int w, int h) {
   CheckRenderDimensions(w, h);
@@ -39,7 +39,8 @@ void Renderer::Render(Texture& img, int x, int y, int w, int h) {
   SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL, &rect);
 }
 
-void Renderer::Render(Texture& img, const Rectangle& rect) { // FIXME no need for reference to the Rectangle
+// FIXME no need for reference to the Rectangle
+void Renderer::Render(Texture& img, const Rectangle& rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
   SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL,
                  &rect.GetSDLVersion());
@@ -107,12 +108,12 @@ void Renderer::RenderString(const std::string& text, int x, int y) {
 
 void Renderer::SetFont(const std::shared_ptr<Font> font) { this->font = font; }
 
-void Renderer::SetColor(Color color) {
+void Renderer::SetColor(Color color) noexcept {
   this->color = color;
   UpdateColor();
 }
 
-void Renderer::SetRenderTarget(Texture_sptr texture) {
+void Renderer::SetRenderTarget(Texture_sptr texture) noexcept {
   if (texture == nullptr) {
     SDL_SetRenderTarget(sdlRenderer, NULL);
   } else {

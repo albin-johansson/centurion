@@ -10,6 +10,6 @@
 #include "ctn_drawable.h"
 #include "ctn_font.h"
 #include "ctn_renderer.h"
-#include "texture.h"
+#include "ctn_texture.h"
 #include "texture_factory.h"
 #include "window.h"

@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 #include "ctn_renderer.h"
-#include "texture.h"
+#include "ctn_texture.h"
 
 namespace centurion {
 namespace visuals {

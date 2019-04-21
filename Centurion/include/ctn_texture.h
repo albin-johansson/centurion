@@ -17,7 +17,7 @@ typedef std::weak_ptr<Texture> Texture_wptr;
 */
 class Texture : public centurion::geo::IDimensioned {
  private:
-  SDL_Texture* sdl_texture;
+  SDL_Texture* sdlTexture;
   const int width;
   const int height;
 
@@ -33,10 +33,10 @@ class Texture : public centurion::geo::IDimensioned {
   ~Texture();
 
   /**
-  \brief Returns a referene to the internal represenation of this Texture.
+  \brief Returns a pointer to the internal represenation of this Texture.
   \since 1.0.0
   */
-  SDL_Texture& GetSDLVersion() noexcept;
+  SDL_Texture* GetSDLVersion() noexcept;
 
   /**
   \brief Returns the width of this texture.

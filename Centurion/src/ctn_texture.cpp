@@ -1,7 +1,5 @@
-#include "texture.h"
+#include "ctn_texture.h"
 #include <stdexcept>
-
-using std::invalid_argument;
 
 namespace centurion {
 namespace visuals {
@@ -9,15 +7,15 @@ namespace visuals {
 Texture::Texture(SDL_Texture* texture, int width, int height)
     : width(width), height(height) {
   if (texture == nullptr) {
-    throw invalid_argument("Null SDL_Texture!");
+    throw std::invalid_argument("Null SDL_Texture!");
   } else {
-    this->sdl_texture = texture;
+    this->sdlTexture = texture;
   }
 }
 
-Texture::~Texture() { SDL_DestroyTexture(sdl_texture); }
+Texture::~Texture() { SDL_DestroyTexture(sdlTexture); }
 
-SDL_Texture& Texture::GetSDLVersion() noexcept { return *sdl_texture; }
+SDL_Texture* Texture::GetSDLVersion() noexcept { return sdlTexture; }
 
 Texture_sptr Texture::CreateShared(SDL_Texture* texture, int w, int h) {
   return std::make_shared<Texture>(texture, w, h);

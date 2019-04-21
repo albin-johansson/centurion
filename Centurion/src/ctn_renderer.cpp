@@ -34,14 +34,12 @@ void Renderer::Clear() noexcept { SDL_RenderClear(sdlRenderer); }
 void Renderer::Render(Texture& img, int x, int y, int w, int h) {
   CheckRenderDimensions(w, h);
   SDL_Rect rect = {x, y, w, h};
-  SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL, &rect);
+  SDL_RenderCopy(sdlRenderer, img.GetSDLVersion(), NULL, &rect);
 }
 
-// FIXME no need for reference to the Rectangle
 void Renderer::Render(Texture& img, Rectangle rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
-  SDL_RenderCopy(sdlRenderer, &img.GetSDLVersion(), NULL,
-                 &rect.GetSDLVersion());
+  SDL_RenderCopy(sdlRenderer, img.GetSDLVersion(), NULL, &rect.GetSDLVersion());
 }
 
 void Renderer::Render(Texture& img, int x, int y) {
@@ -115,7 +113,7 @@ void Renderer::SetRenderTarget(Texture_sptr texture) noexcept {
   if (texture == nullptr) {
     SDL_SetRenderTarget(sdlRenderer, NULL);
   } else {
-    SDL_SetRenderTarget(sdlRenderer, &texture->GetSDLVersion());
+    SDL_SetRenderTarget(sdlRenderer, texture->GetSDLVersion());
   }
 }
 
@@ -137,7 +135,7 @@ Texture_sptr Renderer::CreateSubtexture(Texture_sptr base, Rectangle src,
   Texture_sptr target = CreateRawTexture(dst.GetWidth(), dst.GetHeight(),
                                          pixelFormat, SDL_TEXTUREACCESS_TARGET);
   SetRenderTarget(target);
-  SDL_RenderCopy(sdlRenderer, &base->GetSDLVersion(), &src.GetSDLVersion(),
+  SDL_RenderCopy(sdlRenderer, base->GetSDLVersion(), &src.GetSDLVersion(),
                  &dst.GetSDLVersion());
   Update();
   SetRenderTarget(nullptr);

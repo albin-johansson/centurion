@@ -9,7 +9,7 @@
 #include "ctn_point.h"
 #include "ctn_positionable.h"
 #include "ctn_rectangle.h"
-#include "texture.h"
+#include "ctn_texture.h"
 
 namespace centurion {
 namespace visuals {

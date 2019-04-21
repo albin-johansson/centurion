@@ -1,9 +1,7 @@
 #include "renderer.h"
 #include <stdexcept>
-#include "null_checker.h"
 
 using namespace centurion::geo;
-using centurion::tools::NullChecker;
 
 namespace centurion {
 namespace visuals {

@@ -1,8 +1,6 @@
 #include "texture.h"
 #include <stdexcept>
-#include "null_checker.h"
 
-using centurion::tools::NullChecker;
 using std::invalid_argument;
 
 namespace centurion {
@@ -14,7 +12,6 @@ Texture::Texture(SDL_Texture* texture, int width, int height)
     throw invalid_argument("Null SDL_Texture!");
   } else {
     this->sdl_texture = texture;
-    
   }
 }
 

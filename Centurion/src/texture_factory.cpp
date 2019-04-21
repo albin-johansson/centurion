@@ -1,9 +1,6 @@
 #include "texture_factory.h"
 #include <SDL_image.h>
 #include <stdexcept>
-#include "null_checker.h"
-
-using centurion::tools::NullChecker;
 
 namespace centurion {
 namespace visuals {

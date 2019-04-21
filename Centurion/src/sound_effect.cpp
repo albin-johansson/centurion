@@ -1,11 +1,8 @@
 #include "sound_effect.h"
 #include <stdio.h>
 #include <stdexcept>
-#include "null_checker.h"
 
 #define UNDEFINED_CHANNEL ((int)(-1))
-
-using centurion::tools::NullChecker;
 
 namespace centurion {
 namespace audio {

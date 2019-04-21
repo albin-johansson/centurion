@@ -1,16 +1,12 @@
-#include "centurion.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
-#include <string>
+#include "ctn_centurion.h"
 
 #define SDL_MIXER_ERROR_CODE 0
 #define SDL_IMAGE_ERROR_CODE 0
 #define SDL_TTF_ERROR_CODE -1
-
-using std::exception;
-using std::string;
 
 namespace centurion {
 
@@ -49,9 +45,9 @@ void Centurion::InitSDLTTF() {
   }
 }
 
-void Centurion::ThrowInitializationException(const string error) {
-  string str = "Failed to initialize Centurion! Error: " + error;
-  throw exception(str.c_str());
+void Centurion::ThrowInitializationException(const std::string error) {
+  std::string str = "Failed to initialize Centurion! Error: " + error;
+  throw std::exception(str.c_str());
 }
 
 void Centurion::Init() {

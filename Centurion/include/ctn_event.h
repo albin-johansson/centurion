@@ -15,8 +15,8 @@ components like the mouse and keyboard.
 class Event {
  private:
   SDL_Event event;
-  centurion::events::MouseEvent mouseEvent;
-  centurion::events::KeyboardEvent keyEvent;
+  MouseEvent mouseEvent;
+  KeyboardEvent keyEvent;
 
  public:
   /**
@@ -45,17 +45,13 @@ class Event {
   \brief Returns a MouseEvent that holds information about the mouse.
   \since 1.0.0
   */
-  inline centurion::events::MouseEvent GetMouseInfo() const noexcept {
-    return mouseEvent;
-  }
+  inline MouseEvent GetMouseInfo() const noexcept { return mouseEvent; }
 
   /**
   \brief Returns a KeyboardEvent that holds information about the mouse.
   \since 1.0.0
   */
-  inline centurion::events::KeyboardEvent GetKeyboardInfo() const noexcept {
-    return keyEvent;
-  }
+  inline KeyboardEvent GetKeyboardInfo() const noexcept { return keyEvent; }
 
   /**
   \brief Returns a copy of the internal representation of this Event.

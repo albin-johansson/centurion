@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
-#include "event.h"
+#include "ctn_event.h"
 #include "key_stroke.h"
 
 namespace centurion {

@@ -3,7 +3,7 @@
 #include <SDL_keycode.h>
 #include <memory>
 #include "ctn_action.h"
-#include "event.h"
+#include "ctn_event.h"
 #include "key_trigger.h"
 
 namespace centurion {

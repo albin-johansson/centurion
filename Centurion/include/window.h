@@ -2,7 +2,7 @@
 #include <SDL_video.h>
 #include <memory>
 #include <string>
-#include "color.h"
+#include "ctn_color.h"
 #include "drawable.h"
 #include "font.h"
 #include "point.h"

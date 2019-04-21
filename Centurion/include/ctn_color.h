@@ -1,6 +1,6 @@
 #pragma once
-#include <SDL_config.h>
 #include <SDL_pixels.h>
+#include <SDL_stdinc.h>
 #include <memory>
 
 namespace centurion {
@@ -25,14 +25,14 @@ class Color {
   components.
   \since 1.0.0
   */
-  const static uint8_t MAX_VAL = 255;
+  const static Uint8 MAX_VAL = 255;
 
   /**
   \brief The lowest possible value for the red, green, blue and alpha
   components.
   \since 1.0.0
   */
-  const static uint8_t MIN_VAL = 0;
+  const static Uint8 MIN_VAL = 0;
 
   /**
   \brief A constant that represents the color red.
@@ -76,7 +76,7 @@ class Color {
   \param b - the blue component of the color in the range [MIN_VAL, MAX_VAL].
   \param a - the alpha component of the color in the range [MIN_VAL, MAX_VAL].
   */
-  Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+  Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
   ~Color();
 
@@ -84,25 +84,25 @@ class Color {
   \brief Returns the red component of this color.
   \since 1.0.0
   */
-  inline uint8_t GetRed() const noexcept { return color.r; }
+  inline Uint8 GetRed() const noexcept { return color.r; }
 
   /**
   \brief Returns the green component of this color.
   \since 1.0.0
   */
-  inline uint8_t GetGreen() const noexcept { return color.g; }
+  inline Uint8 GetGreen() const noexcept { return color.g; }
 
   /**
   \brief Returns the blue component of this color.
   \since 1.0.0
   */
-  inline uint8_t GetBlue() const noexcept { return color.b; }
+  inline Uint8 GetBlue() const noexcept { return color.b; }
 
   /**
   \brief Returns the alpha component of this color.
   \since 1.0.0
   */
-  inline uint8_t GetAlpha() const noexcept { return color.a; }
+  inline Uint8 GetAlpha() const noexcept { return color.a; }
 
   /**
   \brief Returns an SDL_Color instance that represents this Color.
@@ -118,7 +118,7 @@ class Color {
   \param a - the alpha component of the color in the range [MIN_VAL, MAX_VAL].
   \since 1.1.0
   */
-  static Color_sptr CreateShared(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+  static Color_sptr CreateShared(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
   /**
   \brief Returns a unique pointer that points to a Color instance.
@@ -128,7 +128,7 @@ class Color {
   \param a - the alpha component of the color in the range [MIN_VAL, MAX_VAL].
   \since 1.1.0
   */
-  static Color_uptr CreateUnique(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+  static Color_uptr CreateUnique(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
   /**
   \brief Returns a weak pointer that points to a Color instance.
@@ -138,7 +138,7 @@ class Color {
   \param a - the alpha component of the color in the range [MIN_VAL, MAX_VAL].
   \since 1.1.0
   */
-  static Color_wptr CreateWeak(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+  static Color_wptr CreateWeak(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 };
 
 }  // namespace visuals

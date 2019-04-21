@@ -1,4 +1,4 @@
-#include "color.h"
+#include "ctn_color.h"
 
 namespace centurion {
 namespace visuals {
@@ -20,21 +20,19 @@ const Color Color::BLACK =
 
 const Color Color::GRAY = Color(70, 70, 70, Color::MAX_VAL);
 
-Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-  color = {r, g, b, a};
-}
+Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) { color = {r, g, b, a}; }
 
 Color::~Color() = default;
 
-Color_sptr Color::CreateShared(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+Color_sptr Color::CreateShared(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
   return std::make_shared<Color>(r, g, b, a);
 }
 
-Color_uptr Color::CreateUnique(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+Color_uptr Color::CreateUnique(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
   return std::make_unique<Color>(r, g, b, a);
 }
 
-Color_wptr Color::CreateWeak(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+Color_wptr Color::CreateWeak(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
   return CreateShared(r, g, b, a);
 }
 

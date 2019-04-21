@@ -3,7 +3,7 @@
 #include <memory>
 #include "ctn_dimensioned.h"
 #include "ctn_point.h"
-#include "positionable.h"
+#include "ctn_positionable.h"
 
 namespace centurion {
 namespace geo {
@@ -17,7 +17,7 @@ typedef std::weak_ptr<Rectangle> Rectangle_wptr;
 \brief The Rectangle class quite simply represents a rectangle.
 \since 1.0.0
 */
-class Rectangle : public centurion::geo::Positionable,
+class Rectangle : public centurion::geo::IPositionable,
                   public centurion::geo::IDimensioned {
  private:
   SDL_Rect rect;

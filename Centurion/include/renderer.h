@@ -7,7 +7,7 @@
 #include "ctn_dimensioned.h"
 #include "ctn_font.h"
 #include "ctn_point.h"
-#include "positionable.h"
+#include "ctn_positionable.h"
 #include "rectangle.h"
 #include "texture.h"
 

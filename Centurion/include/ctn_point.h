@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL_rect.h>
 #include <memory>
-#include "positionable.h"
+#include "ctn_positionable.h"
 
 namespace centurion {
 namespace geo {
@@ -15,7 +15,7 @@ typedef std::weak_ptr<Point> Point_wptr;
 \brief The Point class represents a two-dimensional point.
 \since 1.0.0
 */
-class Point : public Positionable {
+class Point : public IPositionable {
  private:
   SDL_Point point;
 

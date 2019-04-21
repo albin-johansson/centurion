@@ -5,16 +5,16 @@ namespace centurion {
 namespace geo {
 
 /**
-\brief The Positionable class provides an interface for objects that are
-positionable (in two dimensions).
+\brief The IPositionable class is an interface for objects that are positionable
+(in two dimensions).
 \since 1.0.0
 */
-class Positionable {
+class IPositionable {
  protected:
-  Positionable() = default;
+  IPositionable() = default;
 
  public:
-  virtual ~Positionable() = default;
+  virtual ~IPositionable() = default;
 
   /**
   \brief Sets the x-coordinate of this object.
@@ -51,9 +51,9 @@ class Positionable {
   virtual int GetY() const = 0;
 };
 
-typedef std::shared_ptr<Positionable> Positionable_sptr;
-typedef std::unique_ptr<Positionable> Positionable_uptr;
-typedef std::weak_ptr<Positionable> Positionable_wptr;
+typedef std::shared_ptr<IPositionable> IPositionable_sptr;
+typedef std::unique_ptr<IPositionable> IPositionable_uptr;
+typedef std::weak_ptr<IPositionable> IPositionable_wptr;
 
 }  // namespace geo
 }  // namespace centurion

@@ -3,11 +3,11 @@
 #include <SDL_video.h>
 #include <stdexcept>
 #include "ctn_bool_converter.h"
-#include "positionable.h"
+#include "ctn_positionable.h"
 #include "texture_factory.h"
 
+using centurion::geo::IPositionable;
 using centurion::geo::Point;
-using centurion::geo::Positionable;
 using centurion::geo::Rectangle;
 using centurion::tools::BoolConverter;
 using centurion::visuals::Font;

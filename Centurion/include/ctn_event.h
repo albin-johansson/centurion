@@ -2,7 +2,7 @@
 #include <SDL_events.h>
 #include <memory>
 #include "ctn_key_event.h"
-#include "mouse_event.h"
+#include "ctn_mouse_event.h"
 
 namespace centurion {
 namespace events {

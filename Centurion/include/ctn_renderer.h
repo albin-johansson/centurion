@@ -6,10 +6,10 @@
 #include "ctn_color.h"
 #include "ctn_dimensioned.h"
 #include "ctn_font.h"
+#include "ctn_image.h"
 #include "ctn_point.h"
 #include "ctn_positionable.h"
 #include "ctn_rectangle.h"
-#include "ctn_texture.h"
 
 namespace centurion {
 namespace visuals {
@@ -59,6 +59,17 @@ class Renderer {
   void Clear() noexcept;
 
   /**
+  \brief Renders an SDL_Texture.
+  \param texture - a pointer to the SDL_Texture to render.
+  \param x - the x-coordinate of the rendered SDL_Texture.
+  \param y - the y-coordinate of the rendered SDL_Texture.
+  \param w - the width of the rendered SDL_Texture.
+  \param h - the height of the rendered SDL_Texture.
+  \since 2.0.0
+  */
+  void Render(SDL_Texture* texture, int x, int y, int w, int h);
+
+  /**
   \brief Renders a texture to the rendering target.
   \param texture - the texture that will be rendered.
   \param x - the desired x-coordinate.
@@ -67,7 +78,7 @@ class Renderer {
   \param h - the desired height of the image.
   \since 1.0.0
   */
-  void Render(Texture& texture, int x, int y, int w, int h);
+  void Render(Image& texture, int x, int y, int w, int h);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -76,7 +87,7 @@ class Renderer {
   image.
   \since 1.0.0
   */
-  void Render(Texture& texture, centurion::geo::Rectangle rect);
+  void Render(Image& texture, centurion::geo::Rectangle rect);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -85,7 +96,7 @@ class Renderer {
   \param y - the desired y-coordinate.
   \since 1.0.0
   */
-  void Render(Texture& texture, int x, int y);
+  void Render(Image& texture, int x, int y);
 
   /**
   \brief Renders a filled rectangle with the currently selected color.
@@ -166,7 +177,7 @@ class Renderer {
   void SetColor(Color color) noexcept;
 
   /**
-  \brief Assigns a Texture instance as the rendering target.
+  \brief Assigns a Image instance as the rendering target.
   \param texture - the texture that will be the new rendering target, nullptr
   resets the rendering target.
   \since 1.2.0

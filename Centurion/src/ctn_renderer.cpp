@@ -31,18 +31,24 @@ void Renderer::Update() noexcept { SDL_RenderPresent(sdlRenderer); }
 
 void Renderer::Clear() noexcept { SDL_RenderClear(sdlRenderer); }
 
-void Renderer::Render(Texture& img, int x, int y, int w, int h) {
+void Renderer::Render(SDL_Texture* texture, int x, int y, int w, int h) {
+  CheckRenderDimensions(w, h);
+  SDL_Rect rect = {x, y, w, h};
+  SDL_RenderCopy(sdlRenderer, texture, NULL, &rect);
+}
+
+void Renderer::Render(Image& img, int x, int y, int w, int h) {
   CheckRenderDimensions(w, h);
   SDL_Rect rect = {x, y, w, h};
   SDL_RenderCopy(sdlRenderer, img.GetSDLVersion(), NULL, &rect);
 }
 
-void Renderer::Render(Texture& img, Rectangle rect) {
+void Renderer::Render(Image& img, Rectangle rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
   SDL_RenderCopy(sdlRenderer, img.GetSDLVersion(), NULL, &rect.GetSDLVersion());
 }
 
-void Renderer::Render(Texture& img, int x, int y) {
+void Renderer::Render(Image& img, int x, int y) {
   Render(img, x, y, img.GetWidth(), img.GetHeight());
 }
 
@@ -97,8 +103,7 @@ void Renderer::RenderString(const std::string& text, int x, int y) {
   } else {
     int w, h;
     SDL_Texture* t = CreateSDLTextureFromString(text, &w, &h);
-    Texture texture = Texture(t, w, h);
-    Render(texture, x, y);
+    Render(t, x, y, w, h);
   }
 }
 
@@ -117,13 +122,14 @@ void Renderer::SetRenderTarget(Texture_sptr texture) noexcept {
   }
 }
 
+// Move to font class
 Texture_sptr Renderer::CreateTextureFromString(const std::string& str) {
   if (font == nullptr) {
     throw std::invalid_argument("Failed to render text!");
   } else {
     int w, h;
     SDL_Texture* t = CreateSDLTextureFromString(str, &w, &h);
-    return std::make_shared<Texture>(t, w, h);
+    return std::make_shared<Image>(t, w, h);
   }
 }
 
@@ -154,7 +160,8 @@ Texture_sptr Renderer::CreateRawTexture(int width, int height,
     if (t == nullptr) {
       throw std::exception("Failed to create texture!");
     }
-    return Texture::CreateShared(t, width, height);
+    // FIXME 
+    return Image::CreateShared(t, width, height);
   }
 }
 

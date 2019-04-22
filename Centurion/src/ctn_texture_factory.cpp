@@ -21,7 +21,7 @@ SDL_Texture* TextureFactory::CreateSDLTexture(SDL_Surface* surface,
 Texture_sptr TextureFactory::CreateTexture(const std::string& path,
                                            SDL_Renderer* renderer) {
   if (renderer == nullptr) {
-    throw std::invalid_argument("Null SDL_Renderer when creating Texture!");
+    throw std::invalid_argument("Null SDL_Renderer when creating Image!");
   } else {
     // TODO error msg when invalid path is used
     SDL_Surface* surface = IMG_Load(path.c_str());
@@ -29,7 +29,7 @@ Texture_sptr TextureFactory::CreateTexture(const std::string& path,
     int width = surface->w;
     int height = surface->h;
     SDL_FreeSurface(surface);
-    return Texture::CreateShared(texture, width, height);
+    return Image::CreateShared(texture, width, height);
   }
 }
 

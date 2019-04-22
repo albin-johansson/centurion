@@ -59,7 +59,7 @@ class InputDispatcher final {
 
   /**
   \brief Returns true if the user has requested a termination of the
-  application. This is usually done by pressing the "x"-button on a window.
+  application. This is usually done by pressing the "x"-button on a sdlWindow.
   \since 1.1.0
   */
   inline bool ReceivedQuit() const { return shouldQuit; }

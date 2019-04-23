@@ -11,6 +11,9 @@ namespace visuals {
 
 Texture::Texture(SDL_Texture* texture) : AbstractTexture(texture) {}
 
+Texture::Texture(const std::string& path, SDL_Renderer* renderer)
+    : AbstractTexture(AbstractTexture::CreateTextureFromPath(path, renderer)) {}
+
 Texture::~Texture() = default;
 
 Texture_sptr Texture::CreateShared(SDL_Texture* texture) {

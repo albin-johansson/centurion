@@ -28,6 +28,13 @@ class Texture final : public AbstractTexture {
   */
   Texture(SDL_Texture* texture);
 
+  /**
+  \param path - the file path of the texture that the texture will represent.
+  \param renderer - a pointer to the SDL_Renderer used to create the texture.
+  \since 2.0.0
+  */
+  Texture(const std::string& path, SDL_Renderer* renderer);
+
   ~Texture();
 
   /**

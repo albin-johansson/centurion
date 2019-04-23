@@ -30,6 +30,13 @@ class DynamicTexture final : public AbstractTexture {
   */
   DynamicTexture(SDL_Surface* sdlSurface, SDL_Renderer* renderer);
 
+  /**
+  \param path - the file path of the texture that the texture will represent.
+  \param renderer - a pointer to the SDL_Renderer used to create the texture.
+  \since 2.0.0
+  */
+  DynamicTexture(const std::string& path, SDL_Renderer* renderer);
+
   ~DynamicTexture();
 
   /**
@@ -53,6 +60,15 @@ class DynamicTexture final : public AbstractTexture {
                                           SDL_Renderer* renderer);
 
   /**
+  \brief Returns a shared pointer to a DynamicTexture instance.
+  \param path - the file path of the texture that the texture will represent.
+  \param renderer - a pointer to the SDL_Renderer used to create the texture.
+  \since 2.0.0
+  */
+  static DynamicTexture_sptr CreateShared(const std::string& path,
+                                          SDL_Renderer* renderer);
+
+  /**
   \brief Returns a unique pointer that points to a DynamicTexture instance.
   \param sdlSurface - a pointer to the SDL_Surface that the DynamicTexture will
   represent.
@@ -63,6 +79,15 @@ class DynamicTexture final : public AbstractTexture {
                                           SDL_Renderer* renderer);
 
   /**
+  \brief Returns a unique pointer to a DynamicTexture instance.
+  \param path - the file path of the texture that the texture will represent.
+  \param renderer - a pointer to the SDL_Renderer used to create the texture.
+  \since 2.0.0
+  */
+  static DynamicTexture_uptr CreateUnique(const std::string& path,
+                                          SDL_Renderer* renderer);
+
+  /**
   \brief Returns a weak pointer that points to a DynamicTexture instance.
   \param sdlSurface - a pointer to the SDL_Surface that the DynamicTexture will
   represent.
@@ -70,6 +95,15 @@ class DynamicTexture final : public AbstractTexture {
   \since 2.0.0
   */
   static DynamicTexture_wptr CreateWeak(SDL_Surface* sdlSurface,
+                                        SDL_Renderer* renderer);
+
+  /**
+  \brief Returns a weak pointer to a DynamicTexture instance.
+  \param path - the file path of the texture that the texture will represent.
+  \param renderer - a pointer to the SDL_Renderer used to create the texture.
+  \since 2.0.0
+  */
+  static DynamicTexture_wptr CreateWeak(const std::string& path,
                                         SDL_Renderer* renderer);
 };
 

@@ -37,18 +37,18 @@ void Renderer::Render(SDL_Texture* texture, int x, int y, int w, int h) {
   SDL_RenderCopy(sdlRenderer, texture, NULL, &rect);
 }
 
-void Renderer::Render(Image& img, int x, int y, int w, int h) {
+void Renderer::Render(Texture& img, int x, int y, int w, int h) {
   CheckRenderDimensions(w, h);
   SDL_Rect rect = {x, y, w, h};
   SDL_RenderCopy(sdlRenderer, img.GetSDLVersion(), NULL, &rect);
 }
 
-void Renderer::Render(Image& img, Rectangle rect) {
+void Renderer::Render(Texture& img, Rectangle rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
   SDL_RenderCopy(sdlRenderer, img.GetSDLVersion(), NULL, &rect.GetSDLVersion());
 }
 
-void Renderer::Render(Image& img, int x, int y) {
+void Renderer::Render(Texture& img, int x, int y) {
   Render(img, x, y, img.GetWidth(), img.GetHeight());
 }
 
@@ -87,12 +87,13 @@ SDL_Texture* Renderer::CreateSDLTextureFromString(const std::string& str,
   if (font == nullptr || width == nullptr || height == nullptr) {
     throw std::invalid_argument("Failed to create texture from string!");
   } else {
-    SDL_Surface* surface = TTF_RenderText_Solid(
+    SDL_Surface* sdlSurface = TTF_RenderText_Solid(
         font->GetSDLVersion(), str.c_str(), color.GetSDLVersion());
-    SDL_Texture* tmp = SDL_CreateTextureFromSurface(GetSDLVersion(), surface);
-    *width = surface->w;
-    *height = surface->h;
-    SDL_FreeSurface(surface);
+    SDL_Texture* tmp =
+        SDL_CreateTextureFromSurface(GetSDLVersion(), sdlSurface);
+    *width = sdlSurface->w;
+    *height = sdlSurface->h;
+    SDL_FreeSurface(sdlSurface);
     return tmp;
   }
 }
@@ -127,9 +128,10 @@ Texture_sptr Renderer::CreateTextureFromString(const std::string& str) {
   if (font == nullptr) {
     throw std::invalid_argument("Failed to render text!");
   } else {
-    int w, h;
-    SDL_Texture* t = CreateSDLTextureFromString(str, &w, &h);
-    return std::make_shared<Image>(t, w, h);
+    int w = 0;
+    int h = 0;
+    SDL_Texture* tex = CreateSDLTextureFromString(str, &w, &h);
+    return std::make_shared<Texture>(tex);
   }
 }
 
@@ -160,8 +162,9 @@ Texture_sptr Renderer::CreateRawTexture(int width, int height,
     if (t == nullptr) {
       throw std::exception("Failed to create texture!");
     }
-    // FIXME 
-    return Image::CreateShared(t, width, height);
+    // FIXME
+    return nullptr;
+    // return Texture::CreateShared(t, width, height);
   }
 }
 

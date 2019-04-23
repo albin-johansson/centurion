@@ -1,7 +1,6 @@
 #include "ctn_window.h"
 #include <stdexcept>
 #include "ctn_bool_converter.h"
-#include "ctn_texture_factory.h"
 
 using namespace centurion::geo;
 using centurion::tools::BoolConverter;
@@ -116,15 +115,15 @@ void Window::SetDrawable(const IDrawable_sptr drawable) {
 
 void Window::Clear() { renderer->Clear(); }
 
-void Window::Render(Image& texture, int x, int y, int w, int h) {
+void Window::Render(Texture& texture, int x, int y, int w, int h) {
   renderer->Render(texture, x, y, w, h);
 }
 
-void Window::Render(Image& texture, const Rectangle rect) {
+void Window::Render(Texture& texture, const Rectangle rect) {
   renderer->Render(texture, rect);
 }
 
-void Window::Render(Image& texture, int x, int y) {
+void Window::Render(Texture& texture, int x, int y) {
   renderer->Render(texture, x, y);
 }
 
@@ -167,7 +166,7 @@ Texture_sptr Window::CreateTextureFromString(const std::string& str) const {
 }
 
 Texture_sptr Window::CreateTexture(const std::string& path) const {
-  return TextureFactory::CreateTexture(path, renderer->GetSDLVersion());
+  return Texture::CreateShared(path, renderer->GetSDLVersion());
 }
 
 Texture_sptr Window::CreateRawTexture(int width, int height,

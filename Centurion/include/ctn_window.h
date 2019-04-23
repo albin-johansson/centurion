@@ -78,7 +78,7 @@ class Window : public centurion::geo::IDimensioned {
   \param h - the desired height of the image.
   \since 1.0.0
   */
-  void Render(Image& texture, int x, int y, int w, int h);
+  void Render(Texture& texture, int x, int y, int w, int h);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -87,7 +87,7 @@ class Window : public centurion::geo::IDimensioned {
   image.
   \since 1.0.0
   */
-  void Render(Image& texture, const centurion::geo::Rectangle rect);
+  void Render(Texture& texture, const centurion::geo::Rectangle rect);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -96,7 +96,7 @@ class Window : public centurion::geo::IDimensioned {
   \param y - the desired y-coordinate.
   \since 1.0.0
   */
-  void Render(Image& texture, int x, int y);
+  void Render(Texture& texture, int x, int y);
 
   /**
   \brief Renders a filled rectangle with the currently selected color.
@@ -249,7 +249,7 @@ class Window : public centurion::geo::IDimensioned {
   void SetColor(Color color);
 
   /**
-  \brief Assigns a Image instance as the rendering target.
+  \brief Assigns a Texture instance as the rendering target.
   \param texture - the texture that will be the new rendering target, nullptr
   resets the rendering target.
   \since 1.2.0
@@ -275,7 +275,7 @@ class Window : public centurion::geo::IDimensioned {
   inline int GetHeight() const noexcept override { return height; };
 
   /**
-  \brief Creates and returns a Image that visually represents the supplied
+  \brief Creates and returns a Texture that visually represents the supplied
   string. This method provides a more efficient way to render strings than the
   RenderString()-method.
   \param str - the string that the texture will represent.
@@ -284,7 +284,7 @@ class Window : public centurion::geo::IDimensioned {
   Texture_sptr CreateTextureFromString(const std::string& str) const;
 
   /**
-  \brief Creates and returns a Image found at the supplied path.
+  \brief Creates and returns a Texture found at the supplied path.
   \param path - the path of the image in the file system.
   \since 1.0.0
   */

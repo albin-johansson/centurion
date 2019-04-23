@@ -1,4 +1,5 @@
 #include "ctn_font.h"
+#include <SDL_ttf.h>
 #include <stdexcept>
 
 namespace centurion {
@@ -7,7 +8,7 @@ namespace visuals {
 Font::Font(const std::string& path, const int size) {
   font = TTF_OpenFont(path.c_str(), size);
   if (font == nullptr) {
-    throw std::exception("Failed to located font!");
+    throw std::exception(TTF_GetError());
   } else {
     this->size = size;
     styleMask = 0;
@@ -89,17 +90,17 @@ bool Font::IsStrikethrough() const noexcept {
   return styleMask | TTF_STYLE_STRIKETHROUGH;
 }
 
-int Font::GetStringWidth(const std::string& text) const noexcept {
+int Font::GetStringWidth(const std::string& str) const noexcept {
   int w = 0;
   int h = 0;
-  TTF_SizeText(font, text.c_str(), &w, &h);
+  TTF_SizeText(font, str.c_str(), &w, &h);
   return w;
 }
 
-int Font::GetStringHeight(const std::string& text) const noexcept {
+int Font::GetStringHeight(const std::string& str) const noexcept {
   int w = 0;
   int h = 0;
-  TTF_SizeText(font, text.c_str(), &w, &h);
+  TTF_SizeText(font, str.c_str(), &w, &h);
   return h;
 }
 

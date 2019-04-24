@@ -1,5 +1,6 @@
 #include "ctn_renderer.h"
 #include <stdexcept>
+#include "ctn_texture.h"
 
 using namespace centurion::geo;
 
@@ -37,19 +38,19 @@ void Renderer::Render(SDL_Texture* texture, int x, int y, int w, int h) {
   SDL_RenderCopy(sdlRenderer, texture, NULL, &rect);
 }
 
-void Renderer::Render(Texture& img, int x, int y, int w, int h) {
+void Renderer::Render(ITexture& tex, int x, int y, int w, int h) {
   CheckRenderDimensions(w, h);
   SDL_Rect rect = {x, y, w, h};
-  SDL_RenderCopy(sdlRenderer, img.GetSDLVersion(), NULL, &rect);
+  SDL_RenderCopy(sdlRenderer, tex.GetSDLTexture(), NULL, &rect);
 }
 
-void Renderer::Render(Texture& img, Rectangle rect) {
+void Renderer::Render(ITexture& tex, Rectangle rect) {
   CheckRenderDimensions(rect.GetWidth(), rect.GetHeight());
-  SDL_RenderCopy(sdlRenderer, img.GetSDLVersion(), NULL, &rect.GetSDLVersion());
+  SDL_RenderCopy(sdlRenderer, tex.GetSDLTexture(), NULL, &rect.GetSDLVersion());
 }
 
-void Renderer::Render(Texture& img, int x, int y) {
-  Render(img, x, y, img.GetWidth(), img.GetHeight());
+void Renderer::Render(ITexture& tex, int x, int y) {
+  Render(tex, x, y, tex.GetWidth(), tex.GetHeight());
 }
 
 void Renderer::RenderFilledRect(int x, int y, int w, int h) {
@@ -115,44 +116,43 @@ void Renderer::SetColor(Color color) noexcept {
   UpdateColor();
 }
 
-void Renderer::SetRenderTarget(Texture_sptr texture) noexcept {
+void Renderer::SetRenderTarget(ITexture_sptr texture) noexcept {
   if (texture == nullptr) {
     SDL_SetRenderTarget(sdlRenderer, NULL);
   } else {
-    SDL_SetRenderTarget(sdlRenderer, texture->GetSDLVersion());
+    SDL_SetRenderTarget(sdlRenderer, texture->GetSDLTexture());
   }
 }
 
-// Move to font class
-Texture_sptr Renderer::CreateTextureFromString(const std::string& str) {
+ITexture_sptr Renderer::CreateTextureFromString(const std::string& str) {
   if (font == nullptr) {
     throw std::invalid_argument("Failed to render text!");
   } else {
     int w = 0;
     int h = 0;
     SDL_Texture* tex = CreateSDLTextureFromString(str, &w, &h);
-    return std::make_shared<Texture>(tex);
+    return Texture::CreateShared(tex);
   }
 }
 
-Texture_sptr Renderer::CreateSubtexture(Texture_sptr base, Rectangle src,
-                                        Rectangle dst, Uint32 pixelFormat) {
+ITexture_sptr Renderer::CreateSubtexture(ITexture_sptr base, Rectangle src,
+                                         Rectangle dst, Uint32 pixelFormat) {
   if (!SDL_RenderTargetSupported(sdlRenderer)) {
     throw std::exception("Subtextures are not available!");
   }
-  Texture_sptr target = CreateRawTexture(dst.GetWidth(), dst.GetHeight(),
-                                         pixelFormat, SDL_TEXTUREACCESS_TARGET);
+  ITexture_sptr target = CreateRawTexture(
+      dst.GetWidth(), dst.GetHeight(), pixelFormat, SDL_TEXTUREACCESS_TARGET);
   SetRenderTarget(target);
-  SDL_RenderCopy(sdlRenderer, base->GetSDLVersion(), &src.GetSDLVersion(),
+  SDL_RenderCopy(sdlRenderer, base->GetSDLTexture(), &src.GetSDLVersion(),
                  &dst.GetSDLVersion());
   Update();
   SetRenderTarget(nullptr);
   return target;
 }
 
-Texture_sptr Renderer::CreateRawTexture(int width, int height,
-                                        Uint32 pixelFormat,
-                                        SDL_TextureAccess access) {
+ITexture_sptr Renderer::CreateRawTexture(int width, int height,
+                                         Uint32 pixelFormat,
+                                         SDL_TextureAccess access) {
   if (width < 1 || height < 1) {
     throw std::invalid_argument("Invalid dimensions for raw texture!");
   } else {
@@ -162,9 +162,7 @@ Texture_sptr Renderer::CreateRawTexture(int width, int height,
     if (t == nullptr) {
       throw std::exception("Failed to create texture!");
     }
-    // FIXME
-    return nullptr;
-    // return Texture::CreateShared(t, width, height);
+    return Texture::CreateShared(t);
   }
 }
 

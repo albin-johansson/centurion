@@ -6,10 +6,10 @@
 #include "ctn_color.h"
 #include "ctn_dimensioned.h"
 #include "ctn_font.h"
-#include "ctn_texture.h"
 #include "ctn_point.h"
 #include "ctn_positionable.h"
 #include "ctn_rectangle.h"
+#include "ctn_texture_interface.h"
 
 namespace centurion {
 namespace visuals {
@@ -78,7 +78,7 @@ class Renderer {
   \param h - the desired height of the image.
   \since 1.0.0
   */
-  void Render(Texture& texture, int x, int y, int w, int h);
+  void Render(ITexture& texture, int x, int y, int w, int h);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -87,7 +87,7 @@ class Renderer {
   image.
   \since 1.0.0
   */
-  void Render(Texture& texture, centurion::geo::Rectangle rect);
+  void Render(ITexture& texture, centurion::geo::Rectangle rect);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -96,7 +96,7 @@ class Renderer {
   \param y - the desired y-coordinate.
   \since 1.0.0
   */
-  void Render(Texture& texture, int x, int y);
+  void Render(ITexture& texture, int x, int y);
 
   /**
   \brief Renders a filled rectangle with the currently selected color.
@@ -182,7 +182,7 @@ class Renderer {
   resets the rendering target.
   \since 1.2.0
   */
-  void SetRenderTarget(Texture_sptr texture) noexcept;
+  void SetRenderTarget(ITexture_sptr texture) noexcept;
 
   /**
   \brief Creates a texture of the supplied string, using the currently selected
@@ -190,7 +190,7 @@ class Renderer {
   \param str - the string that the created texture will represent.
   \since 1.0.0
   */
-  Texture_sptr CreateTextureFromString(const std::string& str);
+  ITexture_sptr CreateTextureFromString(const std::string& str);
 
   /**
   \brief Creates and returns a subtexture from the supplied texture.
@@ -200,10 +200,10 @@ class Renderer {
   \param pixelFormat - the pixel format used for the subtexture.
   \since 1.2.0
   */
-  Texture_sptr CreateSubtexture(Texture_sptr base,
-                                centurion::geo::Rectangle src,
-                                centurion::geo::Rectangle dst,
-                                Uint32 pixelFormat);
+  ITexture_sptr CreateSubtexture(ITexture_sptr base,
+                                 centurion::geo::Rectangle src,
+                                 centurion::geo::Rectangle dst,
+                                 Uint32 pixelFormat);
 
   /**
   \brief Creates and returns an empty texture.
@@ -212,8 +212,8 @@ class Renderer {
   \param access - the access of the created texture.
   \since 1.2.0
   */
-  Texture_sptr CreateRawTexture(int width, int height, Uint32 pixelFormat,
-                                SDL_TextureAccess access);
+  ITexture_sptr CreateRawTexture(int width, int height, Uint32 pixelFormat,
+                                 SDL_TextureAccess access);
 
   /**
   \brief Returns the internal representation of this Renderer. DO NOT use the

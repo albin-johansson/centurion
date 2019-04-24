@@ -10,6 +10,8 @@
 #include "ctn_point.h"
 #include "ctn_rectangle.h"
 #include "ctn_renderer.h"
+#include "ctn_surface.h"
+#include "ctn_texture_interface.h"
 
 namespace centurion {
 namespace visuals {
@@ -28,35 +30,31 @@ class Window : public centurion::geo::IDimensioned {
   SDL_Window* sdlWindow;
   Renderer_uptr renderer;
   IDrawable_sptr drawable = nullptr;
-  const int width;
-  const int height;
+  int windowedWidth;
+  int windowedHeight;
+  bool isFullscreen;
 
   void CheckWindowDimensions(int width, int height);
 
  public:
-  /**
-  \param title - the title of the sdlWindow.
-  \param width - the desired width of the sdlWindow.
-  \param height - the desired height of the sdlWindow.
-  */
-  Window(const std::string& title, int width, int height);
+  Window();
 
   ~Window();
 
   /*
-  \brief Makes this sdlWindow visible.
+  \brief Makes this window visible.
   \since 1.0.0
   */
   void Show();
 
   /*
-  \brief Makes this sdlWindow invisible.
+  \brief Makes this window invisible.
   \since 1.0.0
   */
   void Hide();
 
   /**
-  \brief Applies any previous rendering operations to this sdlWindow. If the
+  \brief Applies any previous rendering operations to this window. If the
   IDrawable instance has been set, using the SetDrawable()-method, then it will
   be called by this method.
   \since 1.0.0
@@ -64,7 +62,7 @@ class Window : public centurion::geo::IDimensioned {
   void ApplyRendering();
 
   /**
-  \brief Clears the rendering area of this sdlWindow.
+  \brief Clears the rendering area of this window.
   \since 1.0.0
   */
   void Clear();
@@ -78,7 +76,7 @@ class Window : public centurion::geo::IDimensioned {
   \param h - the desired height of the image.
   \since 1.0.0
   */
-  void Render(Texture& texture, int x, int y, int w, int h);
+  void Render(ITexture& texture, int x, int y, int w, int h);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -87,7 +85,7 @@ class Window : public centurion::geo::IDimensioned {
   image.
   \since 1.0.0
   */
-  void Render(Texture& texture, const centurion::geo::Rectangle rect);
+  void Render(ITexture& texture, const centurion::geo::Rectangle rect);
 
   /**
   \brief Renders a texture to the rendering target.
@@ -96,7 +94,7 @@ class Window : public centurion::geo::IDimensioned {
   \param y - the desired y-coordinate.
   \since 1.0.0
   */
-  void Render(Texture& texture, int x, int y);
+  void Render(ITexture& texture, int x, int y);
 
   /**
   \brief Renders a filled rectangle with the currently selected color.
@@ -162,77 +160,79 @@ class Window : public centurion::geo::IDimensioned {
 
   /**
   \brief Assigns the IDrawable that will be invoked whenever the
-  ApplyRendering() method is called. \param drawable - a pointer to the
-  IDrawable instance that will be used. \since 1.0.0
+  ApplyRendering() method is called.
+  \param drawable - a pointer to the IDrawable instance that will be used.
+  \since 1.0.0
   */
   void SetDrawable(const IDrawable_sptr drawable);
 
   /**
-  \brief Sets whether or not this sdlWindow is resizable.
-  \param resizable - true if the sdlWindow is resizable, false otherwise.
+  \brief Sets whether or not this window is resizable.
+  \param resizable - true if the window is resizable, false otherwise.
   \since 1.0.0
   */
   void SetResizable(bool resizable);
 
   /**
-  \brief Assigns whether or not this sdlWindow is in fullscreen mode.
-  \param fullscreen - true if the sdlWindow will be a fullscreen sdlWindow,
-  false otherwise. \since 2.0.0
+  \brief Assigns whether or not this window is in fullscreen mode.
+  \param fullscreen - true if the window will be a fullscreen window,
+  false otherwise.
+  \since 2.0.0
   */
   void SetFullscreen(bool fullscreen);
 
   /**
-  \brief Assigns whether or not this sdlWindow is bordered.
-  \param bordered - true if the sdlWindow should be bordered, false otherwise.
+  \brief Assigns whether or not this window is bordered.
+  \param bordered - true if the window should be bordered, false otherwise.
   \since 2.0.0
   */
   void SetBordered(bool bordered);
 
   /**
-  \brief Sets the sdlWindow icon.
-  \param icon - the texture that will be used as the sdlWindow icon.
+  \brief Sets the window icon.
+  \param icon - the surface that will be used as the window icon.
   \since 2.0.0
   */
-  void SetWindowIcon(Texture_sptr icon);
+  void SetWindowIcon(Surface_sptr icon);
 
   /**
-  \brief Sets the location of this sdlWindow.
-  \param x - the x-coordinate of the sdlWindow.
-  \param y - the y-coordinate of the sdlWindow.
+  \brief Sets the location of this window.
+  \param x - the x-coordinate of the window.
+  \param y - the y-coordinate of the window.
   \since 2.0.0
   */
   void SetLocation(int x, int y);
 
   /**
-  \brief Sets the maximum size of this sdlWindow.
-  \param width - the maximum width of this sdlWindow.
-  \param height - the maximum height of this sdlWindow.
+  \brief Sets the maximum size of this window.
+  \param width - the maximum width of this window.
+  \param height - the maximum height of this window.
   \since 2.0.0
   */
   void SetMaximumSize(int width, int height);
 
   /**
-  \brief Sets the minimum size of this sdlWindow.
-  \param width - the minimum width of this sdlWindow.
-  \param height - the minimum height of this sdlWindow.
+  \brief Sets the minimum size of this window.
+  \param width - the minimum width of this window.
+  \param height - the minimum height of this window.
   \since 2.0.0
   */
   void SetMinimumSize(int width, int height);
 
   /**
-  \brief Sets the title text of this sdlWindow.
-  \param title - the new title of the sdlWindow.
+  \brief Sets the title text of this window.
+  \param title - the new title of the window.
   \since 2.0.0
   */
   void SetTitle(std::string title);
 
   /**
-  \brief Sets the size of this sdlWindow.
-  \param width - the new width of this sdlWindow.
-  \param height - the new height of this sdlWindow.
+  \brief Sets the size of this window, when in windowed mode.
+  \param width - the new width of this window.
+  \param height - the new height of this window.
   \since 2.0.0
   */
-  void SetSize(int width, int height);
+  void SetWindowedSize(int width, int height);
 
   /**
   \brief Assigns the currently active font.
@@ -254,7 +254,7 @@ class Window : public centurion::geo::IDimensioned {
   resets the rendering target.
   \since 1.2.0
   */
-  void SetRenderTarget(Texture_sptr texture);
+  void SetRenderTarget(ITexture_sptr texture) noexcept;
 
   /**
   \brief Returns a pointer to the internal representation of this window.
@@ -263,16 +263,16 @@ class Window : public centurion::geo::IDimensioned {
   inline SDL_Window* GetSDLVersion() noexcept { return sdlWindow; }
 
   /**
-  \brief Returns the width of this sdlWindow.
+  \brief Returns the width of this window.
   \since 1.0.0
   */
-  inline int GetWidth() const noexcept override { return width; };
+  int GetWidth() const noexcept override;
 
   /**
-  \brief Returns the height of this sdlWindow.
+  \brief Returns the height of this window.
   \since 1.0.0
   */
-  inline int GetHeight() const noexcept override { return height; };
+  int GetHeight() const noexcept override;
 
   /**
   \brief Creates and returns a Texture that visually represents the supplied
@@ -281,14 +281,14 @@ class Window : public centurion::geo::IDimensioned {
   \param str - the string that the texture will represent.
   \since 1.0.0
   */
-  Texture_sptr CreateTextureFromString(const std::string& str) const;
+  ITexture_sptr CreateTextureFromString(const std::string& str) const;
 
   /**
   \brief Creates and returns a Texture found at the supplied path.
   \param path - the path of the image in the file system.
   \since 1.0.0
   */
-  Texture_sptr CreateTexture(const std::string& path) const;
+  ITexture_sptr CreateTexture(const std::string& path) const;
 
   /**
   \brief Creates and returns an empty texture.
@@ -297,8 +297,8 @@ class Window : public centurion::geo::IDimensioned {
   \param access - the access of the created texture.
   \since 1.2.0
   */
-  Texture_sptr CreateRawTexture(int width, int height,
-                                SDL_TextureAccess access);
+  ITexture_sptr CreateRawTexture(int width, int height,
+                                 SDL_TextureAccess access);
 
   /**
   \brief Creates and returns a subtexture from the supplied texture.
@@ -309,48 +309,27 @@ class Window : public centurion::geo::IDimensioned {
   \param height - the height of the created texture.
   \since 1.2.0
   */
-  Texture_sptr CreateSubtexture(Texture_sptr base,
-                                centurion::geo::Rectangle src, int width,
-                                int height);
+  ITexture_sptr CreateSubtexture(ITexture_sptr base,
+                                 centurion::geo::Rectangle src, int width,
+                                 int height);
 
   /**
   \brief Returns a shared pointer that points to a Window instance.
-  \param title - the title of the sdlWindow.
-  \param width - the width of the sdlWindow.
-  \param height - the height of the sdlWindow.
-  \param flags - flags providing information about the sdlWindow to be created,
-  the flag values are specified by SDL_WindowFlags. For example,
-  SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
   \since 1.1.0
   */
-  static Window_sptr CreateShared(const std::string& title, int width,
-                                  int height);
+  static Window_sptr CreateShared();
 
   /**
   \brief Returns a unique pointer that points to a Window instance.
-  \param title - the title of the sdlWindow.
-  \param width - the width of the sdlWindow.
-  \param height - the height of the sdlWindow.
-  \param flags - flags providing information about the sdlWindow to be created,
-  the flag values are specified by SDL_WindowFlags. For example,
-  SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
   \since 1.1.0
   */
-  static Window_uptr CreateUnique(const std::string& title, int width,
-                                  int height);
+  static Window_uptr CreateUnique();
 
   /**
   \brief Returns a weak pointer that points to a Window instance.
-  \param title - the title of the sdlWindow.
-  \param width - the width of the sdlWindow.
-  \param height - the height of the sdlWindow.
-  \param flags - flags providing information about the sdlWindow to be created,
-  the flag values are specified by SDL_WindowFlags. For example,
-  SDL_WindowFlags::SDL_WINDOW_FULLSCREEN.
   \since 1.1.0
   */
-  static Window_wptr CreateWeak(const std::string& title, int width,
-                                int height);
+  static Window_wptr CreateWeak();
 };
 
 }  // namespace visuals

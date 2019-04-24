@@ -1,14 +1,13 @@
 #pragma once
 #include <SDL_render.h>
-#include <SDL_stdinc.h>
 #include <memory>
 
 namespace centurion {
 namespace visuals {
 
 /**
-\brief The ITexture class is an interface for objects that represent some sort
-of texture.
+\brief The ITexture class is an interface for objects that represent an
+hardware-accelerated image.
 \since 2.0.0
 */
 class ITexture {
@@ -19,36 +18,22 @@ class ITexture {
   virtual ~ITexture() = default;
 
   /**
-  \brief Returns the width of the texture.
+  \brief Returns the width of this texture.
   \since 2.0.0
   */
   virtual int GetWidth() const = 0;
 
   /**
-  \brief Returns the height of the texture.
+  \brief Returns the height of this texture.
   \since 2.0.0
   */
   virtual int GetHeight() const = 0;
 
   /**
-  \brief Returns the access of this texture, see SDL_TEXTUREACCESS_x for
-  possible values.
+  \brief Returns a pointer to the internal SDL_Texture of this texture.
   \since 2.0.0
   */
-  virtual int GetAccess() const = 0;
-
-  /**
-  \brief Returns the pixel format of this texture, see SDL_PIXELFORMAT_x for
-  possible values.
-  \since 2.0.0
-  */
-  virtual Uint32 GetFormat() const = 0;
-
-  /**
-  \brief Returns a pointer to the internal SDL_Texture instance.
-  \since 2.0.0
-  */
-  virtual SDL_Texture* GetSDLVersion() = 0;
+  virtual SDL_Texture* GetSDLTexture() = 0;
 };
 
 typedef std::shared_ptr<ITexture> ITexture_sptr;

@@ -12,14 +12,16 @@ namespace visuals {
 
 Window::Window() {
   Uint32 flags = SDL_WINDOW_HIDDEN;
-  int width = 800;
-  int height = 600;
+  windowedWidth = 800;
+  windowedHeight = 600;
   sdlWindow = SDL_CreateWindow("Centurion window", SDL_WINDOWPOS_CENTERED,
-                               SDL_WINDOWPOS_CENTERED, width, height, flags);
+                               SDL_WINDOWPOS_CENTERED, windowedWidth,
+                               windowedHeight, flags);
   Uint32 rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE |
                          SDL_RENDERER_SOFTWARE;
   SDL_Renderer* sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, rendererFlags);
   renderer = Renderer::CreateUnique(sdlRenderer);
+  isFullscreen = false;
 }
 
 Window::~Window() {

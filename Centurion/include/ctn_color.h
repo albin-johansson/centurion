@@ -78,6 +78,14 @@ class Color {
   */
   Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
+  /**
+  \param r - the red component of the color in the range [MIN_VAL, MAX_VAL].
+  \param g - the green component of the color in the range [MIN_VAL, MAX_VAL].
+  \param b - the blue component of the color in the range [MIN_VAL, MAX_VAL].
+  \since 2.0.0
+  */
+  Color(Uint8 r, Uint8 g, Uint8 b);
+
   ~Color();
 
   /**

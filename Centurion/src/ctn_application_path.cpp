@@ -8,6 +8,8 @@ using std::string;
 namespace centurion {
 namespace tools {
 
+// ----------------------------------- Public ----------------------------------
+
 ApplicationPath::ApplicationPath() {
   path_cstr = SDL_GetBasePath();
   path_cpp = string(path_cstr);
@@ -33,6 +35,8 @@ ApplicationPath_uptr ApplicationPath::CreateUnique() {
 }
 
 ApplicationPath_wptr ApplicationPath::CreateWeak() { return CreateShared(); }
+
+// --------------------------------- End public --------------------------------
 
 }  // namespace tools
 }  // namespace centurion

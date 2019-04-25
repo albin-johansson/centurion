@@ -1,14 +1,16 @@
+#include "ctn_centurion.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
-#include "ctn_centurion.h"
 
 #define SDL_MIXER_ERROR_CODE 0
 #define SDL_IMAGE_ERROR_CODE 0
 #define SDL_TTF_ERROR_CODE -1
 
 namespace centurion {
+
+// ---------------------------------- Private ----------------------------------
 
 bool Centurion::isInit = false;
 
@@ -50,6 +52,10 @@ void Centurion::ThrowInitializationException(const std::string error) {
   throw std::exception(str.c_str());
 }
 
+// -------------------------------- End private --------------------------------
+
+// ----------------------------------- Public ----------------------------------
+
 void Centurion::Init() {
   if (!isInit) {
     Centurion::InitCore();
@@ -70,6 +76,8 @@ void Centurion::Close() noexcept {
     isInit = false;
   }
 }
+
+// --------------------------------- End public --------------------------------
 
 }  // namespace centurion
 

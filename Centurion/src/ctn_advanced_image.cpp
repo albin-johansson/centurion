@@ -1,4 +1,7 @@
 #include "ctn_advanced_image.h"
+#include <SDL_image.h>
+#include <stdio.h>
+#include <stdexcept>
 
 using centurion::geo::Rectangle;
 
@@ -22,6 +25,9 @@ void AdvancedImage::Unlock() {
 AdvancedImage::AdvancedImage(const std::string& path, SDL_Renderer* renderer,
                              Uint32 pixelFormat)
     : modColor(Color(255, 255, 255)) {
+  if (renderer == nullptr) {
+    throw std::invalid_argument("Null SDL_Renderer pointer!");
+  }
   this->pixelFormat = pixelFormat;
   this->blendMode = SDL_BLENDMODE_BLEND;
   this->alpha = 255;
@@ -31,29 +37,15 @@ AdvancedImage::AdvancedImage(const std::string& path, SDL_Renderer* renderer,
 
   surface = SDL_ConvertSurfaceFormat(src, pixelFormat, NULL);
   SDL_FreeSurface(src);
-
   SDL_SetSurfaceBlendMode(surface, blendMode);
 
   width = surface->w;
   height = surface->h;
   Reset(renderer);
-  // texture = SDL_CreateTexture(renderer, pixelFormat,
-  //                            SDL_TEXTUREACCESS_STREAMING, width, height);
-  // SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
-  //
-  // Lock();
-  // if (pixels != nullptr) {
-  //  memcpy(pixels, surface->pixels, surface->pitch * surface->h);
-  //}
-  // Unlock();
 }
 
-// AdvancedImage::AdvancedImage(SDL_Texture* texture) {
-//  this->texture = texture;
-//  Uint32 format = 0;
-//  int access = 0;
-//  SDL_QueryTexture(texture, &format, &access, &width, &height);
-//}
+AdvancedImage::AdvancedImage(const std::string& path, SDL_Renderer* renderer)
+    : AdvancedImage(path, renderer, SDL_PIXELFORMAT_RGBA8888) {}
 
 AdvancedImage::~AdvancedImage() {
   SDL_FreeSurface(surface);
@@ -61,6 +53,10 @@ AdvancedImage::~AdvancedImage() {
 }
 
 void AdvancedImage::Reset(SDL_Renderer* renderer) {
+  if (renderer == nullptr) {
+    return;
+  }
+
   if (texture != nullptr) {
     SDL_DestroyTexture(texture);
   }
@@ -76,25 +72,16 @@ void AdvancedImage::Reset(SDL_Renderer* renderer) {
 }
 
 void AdvancedImage::Revalidate(SDL_Renderer* renderer) {
-  // if (texture != nullptr) {
-  //  SDL_DestroyTexture(texture);
-  //}
-  //
-  // texture = SDL_CreateTexture(renderer, pixelFormat,
-  //                            SDL_TEXTUREACCESS_STREAMING, width, height);
-  // SDL_SetTextureBlendMode(texture, blendMode);
-  // Lock();
-  // if (pixels != nullptr) {
-  //  memcpy(pixels, surface->pixels, surface->pitch * surface->h);
-  //}
-  // Unlock();
+  if (renderer == nullptr) {
+    return;
+  }
   Reset(renderer);
   ModulateColor(modColor);
   SetAlpha(alpha);
   SetBlendMode(blendMode);
 }
 
-void AdvancedImage::ModulateColor(Color c) {
+void AdvancedImage::ModulateColor(Color c) noexcept {
   this->modColor = c;
   SDL_SetTextureColorMod(texture, c.GetRed(), c.GetGreen(), c.GetBlue());
 }
@@ -102,49 +89,96 @@ void AdvancedImage::ModulateColor(Color c) {
 void AdvancedImage::SetPixel(int x, int y, Color color) {
   Lock();
 
-  // TODO ...
+  int nPixels = (pitch / 4) * height;
+  int index = (y * width) + x;
+  if ((index >= 0) && (index < nPixels)) {
+    SDL_PixelFormat* pixFormat = SDL_AllocFormat(pixelFormat);
 
+    Uint8 r = color.GetRed();
+    Uint8 g = color.GetGreen();
+    Uint8 b = color.GetBlue();
+    Uint8 a = color.GetAlpha();
+    Uint32 colorKey = SDL_MapRGBA(pixFormat, r, g, b, a);
+
+    Uint32* pixelArr = (Uint32*)pixels;
+
+    pixelArr[index] = colorKey;
+
+    SDL_FreeFormat(pixFormat);
+  }
   Unlock();
 }
 
-void AdvancedImage::SetAlpha(Uint8 alpha) {
+void AdvancedImage::SetAlpha(Uint8 alpha) noexcept {
   this->alpha = alpha;
   SDL_SetTextureAlphaMod(texture, alpha);
 }
 
-void AdvancedImage::SetBlendMode(SDL_BlendMode blendMode) {
+void AdvancedImage::SetBlendMode(SDL_BlendMode blendMode) noexcept {
   this->blendMode = blendMode;
   SDL_SetTextureBlendMode(texture, blendMode);
 }
 
-// AdvancedImage_sptr AdvancedImage::CreateSubimage(SDL_Renderer* renderer,
-//                                                 Rectangle src, Rectangle dst)
-//                                                 {
-//  if (!SDL_RenderTargetSupported(renderer)) {
-//    throw std::exception("Subimages are not available!");
-//  }
-//
-//  Uint32 format = SDL_PIXELFORMAT_RGBA8888;
-//  int access = SDL_TEXTUREACCESS_TARGET;
-//
-//  SDL_Texture* texture =
-//      SDL_CreateTexture(renderer, format, access, width, height);
-//  SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
-//
-//  SDL_SetRenderTarget(renderer, texture);
-//  SDL_RenderCopy(renderer, texture, &src.GetSDLVersion(),
-//  &dst.GetSDLVersion()); SDL_RenderPresent(renderer);
-//  SDL_SetRenderTarget(renderer, nullptr);
-//
-//  return std::make_shared<AdvancedImage>(texture);
-//}
+AdvancedImage_sptr AdvancedImage::CreateShared(const std::string& path,
+                                               SDL_Renderer* renderer,
+                                               Uint32 pixelFormat) {
+  return std::make_shared<AdvancedImage>(path, renderer, pixelFormat);
+}
 
-// AdvancedImage_sptr AdvancedImage::CreateRawImage(SDL_Renderer* renderer) {
-//  // TODO ...
-//  return nullptr;
-//}
+AdvancedImage_sptr AdvancedImage::CreateShared(const std::string& path,
+                                               SDL_Renderer* renderer) {
+  return std::make_shared<AdvancedImage>(path, renderer);
+}
+
+AdvancedImage_uptr AdvancedImage::CreateUnique(const std::string& path,
+                                               SDL_Renderer* renderer,
+                                               Uint32 pixelFormat) {
+  return std::make_unique<AdvancedImage>(path, renderer, pixelFormat);
+}
+
+AdvancedImage_uptr AdvancedImage::CreateUnique(const std::string& path,
+                                               SDL_Renderer* renderer) {
+  return std::make_unique<AdvancedImage>(path, renderer);
+}
+
+AdvancedImage_wptr AdvancedImage::CreateWeak(const std::string& path,
+                                             SDL_Renderer* renderer,
+                                             Uint32 pixelFormat) {
+  return CreateShared(path, renderer, pixelFormat);
+}
+
+AdvancedImage_wptr AdvancedImage::CreateWeak(const std::string& path,
+                                             SDL_Renderer* renderer) {
+  return CreateShared(path, renderer);
+}
 
 // --------------------------------- End public --------------------------------
 
 }  // namespace visuals
 }  // namespace centurion
+
+// AdvancedImage_sptr AdvancedImage::CreateSubimage(SDL_Renderer* renderer,
+//                                                 Rectangle src, int width,
+//                                                 int height) {
+//  if (!SDL_RenderTargetSupported(renderer)) {
+//    throw std::exception("Subimages are not available!");
+//  }
+//
+//  if (renderer == nullptr) {
+//    throw std::invalid_argument("Null SDL_Renderer pointer!");
+//  }
+//
+//  int access = SDL_TEXTUREACCESS_TARGET;
+//  SDL_Texture* result =
+//      SDL_CreateTexture(renderer, pixelFormat, access, width, height);
+//  SDL_SetTextureBlendMode(result, SDL_BLENDMODE_BLEND);
+//
+//  SDL_Rect dst = {0, 0, width, height};
+//
+//  SDL_SetRenderTarget(renderer, result);
+//  SDL_RenderCopy(renderer, result, &src.GetSDLVersion(), &dst);
+//  SDL_RenderPresent(renderer);
+//  SDL_SetRenderTarget(renderer, nullptr);
+//
+//  return std::make_shared<AdvancedImage>(result);
+//}

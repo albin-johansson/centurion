@@ -24,10 +24,6 @@ void Image::Revalidate(SDL_Renderer* renderer) {
   }
 }
 
-void Image::SetPixel(int x, int y, Color color) {
-  // FIXME
-}
-
 int Image::GetWidth() const { return texture->GetWidth(); }
 
 int Image::GetHeight() const { return texture->GetHeight(); }

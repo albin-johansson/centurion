@@ -6,13 +6,16 @@
   \since 1.0.0
 */
 
+#include "ctn_abstract_window.h"
 #include "ctn_advanced_image.h"
 #include "ctn_color.h"
 #include "ctn_drawable.h"
 #include "ctn_font.h"
+#include "ctn_fullscreen_window.h"
 #include "ctn_image_interface.h"
 #include "ctn_renderer.h"
 #include "ctn_surface.h"
 #include "ctn_texture.h"
 #include "ctn_texture_interface.h"
 #include "ctn_window.h"
+#include "ctn_window_interface.h"

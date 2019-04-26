@@ -17,8 +17,7 @@ Window::Window() {
   sdlWindow = SDL_CreateWindow("Centurion window", SDL_WINDOWPOS_CENTERED,
                                SDL_WINDOWPOS_CENTERED, windowedWidth,
                                windowedHeight, flags);
-  Uint32 rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE |
-                         SDL_RENDERER_SOFTWARE;
+  Uint32 rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE;
   SDL_Renderer* sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, rendererFlags);
   renderer = Renderer::CreateUnique(sdlRenderer);
   isFullscreen = false;
@@ -44,17 +43,17 @@ void Window::SetResizable(bool resizable) {
   SDL_SetWindowResizable(sdlWindow, b);
 }
 
+// FIXME SetFullscreen is broken
 void Window::SetFullscreen(bool fullscreen) {
-  SDL_SetRelativeMouseMode(SDL_TRUE);
+  // SDL_SetRelativeMouseMode(SDL_TRUE);
   if (fullscreen) {
     SDL_SetWindowFullscreen(sdlWindow, SDL_WINDOW_FULLSCREEN);
-    SetWindowedSize(Screen::GetWidth(), Screen::GetHeight());
   } else {
     SDL_SetWindowFullscreen(sdlWindow, 0);
-    SetWindowedSize(windowedWidth, windowedHeight);
+    SDL_SetWindowSize(sdlWindow, windowedWidth, windowedHeight);
   }
   isFullscreen = !isFullscreen;
-  SDL_SetRelativeMouseMode(SDL_FALSE);
+  // SDL_SetRelativeMouseMode(SDL_FALSE);
 }
 
 void Window::SetBordered(bool bordered) {

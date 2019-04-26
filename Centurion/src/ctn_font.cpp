@@ -19,9 +19,15 @@ Font::Font(const std::string& path, const int size) {
 
 Font::~Font() { TTF_CloseFont(font); }
 
-void Font::ApplyStyle(int style) noexcept { styleMask |= style; }
+void Font::ApplyStyle(int style) noexcept {
+  styleMask |= style;
+  SetStyle(styleMask);
+}
 
-void Font::RemoveStyle(int style) noexcept { styleMask &= ~style; }
+void Font::RemoveStyle(int style) noexcept {
+  styleMask &= ~style;
+  SetStyle(styleMask);
+}
 
 void Font::ResetStyle() noexcept { SetStyle(TTF_STYLE_NORMAL); }
 

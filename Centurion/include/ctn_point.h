@@ -17,7 +17,7 @@ typedef std::weak_ptr<Point> Point_wptr;
 */
 class Point : public IPositionable {
  private:
-  SDL_Point point;
+  SDL_Point point = {0, 0};
 
  public:
   /**
@@ -26,7 +26,9 @@ class Point : public IPositionable {
   */
   Point(int x, int y);
 
-  ~Point() = default;
+  Point();
+
+  ~Point();
 
   /**
   \brief Assigns the location of this point.

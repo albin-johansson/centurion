@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "ctn_renderer.h"
+#include "ctn_renderer_interface.h"
 
 namespace centurion {
 namespace visuals {
@@ -19,10 +19,10 @@ class IDrawable {
 
   /**
   \brief Performs the rendering operations specified by this IDrawable.
-  \param renderer - The Renderer that will be used for the rendering.
+  \param renderer - The renderer used for the rendering.
   \since 1.0.0
   */
-  virtual void Draw(centurion::visuals::Renderer& renderer) = 0;
+  virtual void Draw(IRenderer& renderer) = 0;
 };
 
 typedef std::shared_ptr<IDrawable> IDrawable_sptr;

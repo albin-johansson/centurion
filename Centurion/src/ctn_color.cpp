@@ -21,6 +21,8 @@ Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) { color = {r, g, b, a}; }
 
 Color::Color(Uint8 r, Uint8 g, Uint8 b) : Color(r, g, b, MAX_VAL) {}
 
+Color::Color() : Color(0, 0, 0, MAX_VAL) {}
+
 Color::~Color() = default;
 
 Color_sptr Color::CreateShared(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {

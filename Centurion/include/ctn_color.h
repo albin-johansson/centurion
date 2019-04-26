@@ -17,7 +17,7 @@ typedef std::weak_ptr<Color> Color_wptr;
 */
 class Color {
  private:
-  SDL_Color color;
+  SDL_Color color = {0, 0, 0, 0};
 
  public:
   /**
@@ -85,6 +85,8 @@ class Color {
   \since 2.0.0
   */
   Color(Uint8 r, Uint8 g, Uint8 b);
+
+  Color();
 
   ~Color();
 

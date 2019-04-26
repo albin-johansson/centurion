@@ -1,62 +1,38 @@
 #pragma once
-#include <SDL_pixels.h>
-#include <SDL_render.h>
 #include <memory>
 #include <string>
 #include "ctn_color.h"
-#include "ctn_dimensioned.h"
 #include "ctn_font.h"
 #include "ctn_point.h"
-#include "ctn_positionable.h"
 #include "ctn_rectangle.h"
-#include "ctn_renderer_interface.h"
 #include "ctn_texture_interface.h"
 
 namespace centurion {
 namespace visuals {
 
-class Renderer;
-typedef std::shared_ptr<Renderer> Renderer_sptr;
-typedef std::unique_ptr<Renderer> Renderer_uptr;
-typedef std::weak_ptr<Renderer> Renderer_wptr;
+class IRenderer;
+typedef std::shared_ptr<IRenderer> IRenderer_sptr;
+typedef std::unique_ptr<IRenderer> IRenderer_uptr;
+typedef std::weak_ptr<IRenderer> IRenderer_wptr;
 
-/**
-\brief The Renderer class provides rendering functionality for a Window.
-\since 1.0.0
-*/
-class Renderer : public IRenderer {
- private:
-  SDL_Renderer* sdlRenderer = nullptr;
-  Font_sptr font = nullptr;
-  Color color = Color::WHITE;
-
-  SDL_Texture* CreateSDLTextureFromString(const std::string& str);
-
-  inline bool IsValid(int width, int height) const noexcept {
-    return (width > 0) && (height > 0);
-  }
+class IRenderer {
+ protected:
+  IRenderer() = default;
 
  public:
-  /**
-  \param renderer - a pointer to an SDL_Renderer that will be the internal
-  representation of the renderer.
-  \throws invalid_argument if the supplied pointer is null.
-  */
-  explicit Renderer(SDL_Renderer* renderer);
-
-  ~Renderer();
+  virtual ~IRenderer() = default;
 
   /**
   \brief Applies previous rendering operations.
   \since 2.0.0
   */
-  void ApplyRendering() noexcept override;
+  virtual void ApplyRendering() = 0;
 
   /**
   \brief Clears the rendering target with the selected color.
   \since 2.0.0
   */
-  void RenderClear() noexcept override;
+  virtual void RenderClear() = 0;
 
   /**
   \brief Renders a texture.
@@ -65,11 +41,9 @@ class Renderer : public IRenderer {
   \param y - the y-coordinate of the texture.
   \param w - the width of the rendered texture.
   \param h - the height of the rendered texture.
-  \note if the supplied width and height is less than 1, this method has no
-  effect.
   \since 2.0.0
   */
-  void Render(ITexture& texture, int x, int y, int w, int h) noexcept override;
+  virtual void Render(ITexture& texture, int x, int y, int w, int h) = 0;
 
   /**
   \brief Renders a texture.
@@ -78,8 +52,8 @@ class Renderer : public IRenderer {
   \param dst - the destination rectangle.
   \since 2.0.0
   */
-  void Render(ITexture& texture, centurion::geo::Rectangle src,
-              centurion::geo::Rectangle dst) noexcept override;
+  virtual void Render(ITexture& texture, centurion::geo::Rectangle src,
+                      centurion::geo::Rectangle dst) = 0;
 
   /**
   \brief Renders a texture.
@@ -88,7 +62,7 @@ class Renderer : public IRenderer {
   \param y - the y-coordinate of the texture.
   \since 2.0.0
   */
-  void Render(ITexture& texture, int x, int y) noexcept override;
+  virtual void Render(ITexture& texture, int x, int y) = 0;
 
   /**
   \brief Renders a texture.
@@ -99,8 +73,8 @@ class Renderer : public IRenderer {
   \param flip - the value describing the flipping of the texture.
   \since 2.0.0
   */
-  void Render(ITexture& texture, int x, int y, int angle,
-              SDL_RendererFlip flip) noexcept override;
+  virtual void Render(ITexture& texture, int x, int y, int angle,
+                      SDL_RendererFlip flip) = 0;
 
   /**
   \brief Renders a texture.
@@ -110,8 +84,8 @@ class Renderer : public IRenderer {
   \param flip - the value describing the flipping of the texture.
   \since 2.0.0
   */
-  void Render(ITexture& texture, int x, int y,
-              SDL_RendererFlip flip) noexcept override;
+  virtual void Render(ITexture& texture, int x, int y,
+                      SDL_RendererFlip flip) = 0;
 
   /**
   \brief Renders a texture.
@@ -121,21 +95,21 @@ class Renderer : public IRenderer {
   \param angle - the angle of the rendered texture.
   \since 2.0.0
   */
-  void Render(ITexture& texture, int x, int y, int angle) noexcept override;
+  virtual void Render(ITexture& texture, int x, int y, int angle) = 0;
 
   /**
   \brief Renders an outlined rectangle.
   \param rect - the rectangle that will be rendered.
   \since 2.0.0
   */
-  void RenderOutlinedRect(centurion::geo::Rectangle rect) noexcept override;
+  virtual void RenderOutlinedRect(centurion::geo::Rectangle rect) = 0;
 
   /**
   \brief Renders a filled rectangle.
   \param rect - the rectangle that will be rendered.
   \since 2.0.0
   */
-  void RenderFilledRect(centurion::geo::Rectangle rect) noexcept override;
+  virtual void RenderFilledRect(centurion::geo::Rectangle rect) = 0;
 
   /**
   \brief Renders a line.
@@ -143,8 +117,8 @@ class Renderer : public IRenderer {
   \param p2 - the end point of the line.
   \since 2.0.0
   */
-  void RenderLine(centurion::geo::Point p1,
-                  centurion::geo::Point p2) noexcept override;
+  virtual void RenderLine(centurion::geo::Point p1,
+                          centurion::geo::Point p2) = 0;
 
   /**
   \brief Renders the supplied string, using the previously selected font.
@@ -152,10 +126,9 @@ class Renderer : public IRenderer {
   \param x - the x-coordinate of the rendered string.
   \param y - the y-coordinate of the rendered string.
   \note If no font is available, this method has no effect.
-  \note Avoid using this method if possible, as it's quite slow.
   \since 2.0.0
   */
-  void RenderString(const std::string& str, int x, int y) override;
+  virtual void RenderString(const std::string& str, int x, int y) = 0;
 
   /**
   \brief Assigns the rendering target for subsequent rendering operations.
@@ -165,21 +138,21 @@ class Renderer : public IRenderer {
   \note If the supplied argument is nullptr, the rendering target is reset.
   \since 2.0.0
   */
-  void SetRenderTarget(ITexture_sptr texture) noexcept override;
+  virtual void SetRenderTarget(ITexture_sptr texture) = 0;
 
   /**
   \brief Sets the font to be used when rendering text.
   \param font - a pointer to the font instance that will be used.
   \since 2.0.0
   */
-  void SetFont(Font_sptr font) noexcept override;
+  virtual void SetFont(Font_sptr font) = 0;
 
   /**
   \brief Sets the rendering color.
   \param color - the color that will be used.
   \since 2.0.0
   */
-  void SetColor(Color color) noexcept override;
+  virtual void SetColor(Color color) = 0;
 
   /**
   \brief Creates a texture of the supplied string, using the currently selected
@@ -188,7 +161,7 @@ class Renderer : public IRenderer {
   \throws exception if there isn't a font to use.
   \since 1.0.0
   */
-  ITexture_sptr CreateTextureFromString(const std::string& str) override;
+  virtual ITexture_sptr CreateTextureFromString(const std::string& str) = 0;
 
   /**
   \brief Creates and returns a subtexture from the supplied texture.
@@ -200,9 +173,9 @@ class Renderer : public IRenderer {
   \throws exception if the creation of subtextures isn't supported.
   \since 1.2.0
   */
-  ITexture_sptr CreateSubtexture(ITexture_sptr base,
-                                 centurion::geo::Rectangle cutout, int w, int h,
-                                 Uint32 format) override;
+  virtual ITexture_sptr CreateSubtexture(ITexture_sptr base,
+                                         centurion::geo::Rectangle cutout,
+                                         int w, int h, Uint32 format) = 0;
 
   /**
   \brief Creates and returns an empty texture.
@@ -213,8 +186,8 @@ class Renderer : public IRenderer {
   \throws exception if the operation is unsuccessful.
   \since 1.2.0
   */
-  ITexture_sptr CreateEmptyTexture(int width, int height, Uint32 format,
-                                   SDL_TextureAccess access) override;
+  virtual ITexture_sptr CreateEmptyTexture(int width, int height, Uint32 format,
+                                           SDL_TextureAccess access) = 0;
 
   /**
   \brief Creates and returns a texture that may be used as a render target.
@@ -224,38 +197,13 @@ class Renderer : public IRenderer {
   \throws exception if the operation is unsuccessful.
   \since 2.0.0
   */
-  ITexture_sptr CreateRenderTarget(int width, int height) override;
+  virtual ITexture_sptr CreateRenderTarget(int width, int height) = 0;
 
   /**
-  \brief Returns the internal representation of this Renderer. DO NOT use the
-  returned pointer to call SDL_DestroyRenderer().
-  \since 1.0.0
+  \brief Returns a pointer to the internal SDL_Renderer instance.
+  \since 2.0.0
   */
-  inline SDL_Renderer* GetSDLVersion() noexcept override { return sdlRenderer; }
-
-  /**
-  \brief Returns a shared pointer to a renderer instance.
-  \param renderer - a pointer to the SDL_Renderer that the renderer will be
-  based on.
-  \since 1.1.0
-  */
-  static IRenderer_sptr CreateShared(SDL_Renderer* renderer);
-
-  /**
-  \brief Returns a unique pointer to a renderer instance.
-  \param renderer - a pointer to the SDL_Renderer that the renderer will be
-  based on.
-  \since 1.1.0
-  */
-  static IRenderer_uptr CreateUnique(SDL_Renderer* renderer);
-
-  /**
-  \brief Returns a weak pointer to a renderer instance.
-  \param renderer - a pointer to the SDL_Renderer that the renderer will be
-  based on.
-  \since 1.1.0
-  */
-  static IRenderer_wptr CreateWeak(SDL_Renderer* renderer);
+  virtual SDL_Renderer* GetSDLVersion() = 0;
 };
 
 }  // namespace visuals

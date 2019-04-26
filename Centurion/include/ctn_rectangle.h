@@ -19,7 +19,7 @@ typedef std::weak_ptr<Rectangle> Rectangle_wptr;
 */
 class Rectangle : public IPositionable, public IDimensioned {
  private:
-  SDL_Rect rect;
+  SDL_Rect rect = {0, 0, 1, 1};
 
   bool Contains(SDL_Point point) const noexcept;
 
@@ -38,7 +38,9 @@ class Rectangle : public IPositionable, public IDimensioned {
   */
   Rectangle(int w, int h);
 
-  ~Rectangle() override;
+  Rectangle();
+
+  ~Rectangle();
 
   /**
   \brief Assigns the location of this rectangle.

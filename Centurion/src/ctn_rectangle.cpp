@@ -18,6 +18,8 @@ Rectangle::Rectangle(int x, int y, int w, int h) {
 
 Rectangle::Rectangle(int w, int h) : Rectangle(0, 0, w, h) {}
 
+Rectangle::Rectangle() = default;
+
 Rectangle::~Rectangle() = default;
 
 void Rectangle::SetLocation(int x, int y) noexcept {

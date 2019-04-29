@@ -34,9 +34,9 @@ class IMouseListener {
   virtual void MouseReleased(const MouseState& mouse) = 0;
 };
 
-typedef std::shared_ptr<IMouseListener> IMouseListener_sptr;
-typedef std::unique_ptr<IMouseListener> IMouseListener_uptr;
-typedef std::weak_ptr<IMouseListener> IMouseListener_wptr;
+using IMouseListener_sptr = std::shared_ptr<IMouseListener>;
+using IMouseListener_uptr = std::unique_ptr<IMouseListener>;
+using IMouseListener_wptr = std::weak_ptr<IMouseListener>;
 
 }  // namespace input
 }  // namespace centurion

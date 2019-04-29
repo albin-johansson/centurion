@@ -4,10 +4,8 @@
 #include <memory>
 #include <string>
 #include "ctn_color.h"
-#include "ctn_dimensioned.h"
 #include "ctn_font.h"
 #include "ctn_point.h"
-#include "ctn_positionable.h"
 #include "ctn_rectangle.h"
 #include "ctn_renderer_interface.h"
 #include "ctn_texture_interface.h"
@@ -15,16 +13,11 @@
 namespace centurion {
 namespace visuals {
 
-class Renderer;
-typedef std::shared_ptr<Renderer> Renderer_sptr;
-typedef std::unique_ptr<Renderer> Renderer_uptr;
-typedef std::weak_ptr<Renderer> Renderer_wptr;
-
 /**
 \brief The Renderer class provides rendering functionality for a Window.
 \since 1.0.0
 */
-class Renderer : public IRenderer {
+class Renderer final : public IRenderer {
  private:
   SDL_Renderer* sdlRenderer = nullptr;
   Font_sptr font = nullptr;

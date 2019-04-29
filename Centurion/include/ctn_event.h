@@ -12,7 +12,7 @@ namespace events {
 components like the mouse and keyboard.
 \since 1.0.0
 */
-class Event {
+class Event final {
  private:
   SDL_Event event;
   MouseEvent mouseEvent;
@@ -60,9 +60,9 @@ class Event {
   inline SDL_Event GetSDLVersion() const noexcept { return event; }
 };
 
-typedef std::shared_ptr<Event> Event_sptr;
-typedef std::unique_ptr<Event> Event_uptr;
-typedef std::weak_ptr<Event> Event_wptr;
+using Event_sptr = std::shared_ptr<Event>;
+using Event_uptr = std::unique_ptr<Event>;
+using Event_wptr = std::weak_ptr<Event>;
 
 }  // namespace events
 }  // namespace centurion

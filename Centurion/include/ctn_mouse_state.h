@@ -8,15 +8,15 @@ namespace centurion {
 namespace input {
 
 class MouseState;
-typedef std::shared_ptr<MouseState> MouseState_sptr;
-typedef std::unique_ptr<MouseState> MouseState_uptr;
-typedef std::weak_ptr<MouseState> MouseState_wptr;
+using MouseState_sptr = std::shared_ptr<MouseState>;
+using MouseState_uptr = std::unique_ptr<MouseState>;
+using MouseState_wptr = std::weak_ptr<MouseState>;
 
 /**
 \brief The MouseState class holds information about the mouse state.
 \since 1.1.0
 */
-class MouseState {
+class MouseState final {
  private:
   int x;
   int y;

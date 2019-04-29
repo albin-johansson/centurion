@@ -12,9 +12,9 @@ namespace centurion {
 namespace input {
 
 class InputDispatcher;
-typedef std::shared_ptr<InputDispatcher> InputDispatcher_sptr;
-typedef std::unique_ptr<InputDispatcher> InputDispatcher_uptr;
-typedef std::weak_ptr<InputDispatcher> InputDispatcher_wptr;
+using InputDispatcher_sptr = std::shared_ptr<InputDispatcher>;
+using InputDispatcher_uptr = std::unique_ptr<InputDispatcher>;
+using InputDispatcher_wptr = std::weak_ptr<InputDispatcher>;
 
 /**
 \brief The InputDispatcher class manages state based input.

@@ -4,14 +4,13 @@
 #include "ctn_point.h"
 
 using centurion::tools::BoolConverter;
-using std::invalid_argument;
 
 namespace centurion {
 namespace geo {
 
 Rectangle::Rectangle(int x, int y, int w, int h) {
   if (w < 1 || h < 1) {
-    throw invalid_argument("Invalid dimensions for rectangle!");
+    throw std::invalid_argument("Invalid dimensions for rectangle!");
   }
   rect = {x, y, w, h};
 }
@@ -21,11 +20,6 @@ Rectangle::Rectangle(int w, int h) : Rectangle(0, 0, w, h) {}
 Rectangle::Rectangle() = default;
 
 Rectangle::~Rectangle() = default;
-
-void Rectangle::SetLocation(int x, int y) noexcept {
-  SetX(x);
-  SetY(y);
-}
 
 void Rectangle::SetX(int x) noexcept { rect.x = x; }
 

@@ -8,9 +8,9 @@ namespace centurion {
 namespace input {
 
 class MouseListenerComposite;
-typedef std::shared_ptr<MouseListenerComposite> MouseListenerComposite_sptr;
-typedef std::unique_ptr<MouseListenerComposite> MouseListenerComposite_uptr;
-typedef std::weak_ptr<MouseListenerComposite> MouseListenerComposite_wptr;
+using MouseListenerComposite_sptr = std::shared_ptr<MouseListenerComposite>;
+using MouseListenerComposite_uptr = std::unique_ptr<MouseListenerComposite>;
+using MouseListenerComposite_wptr = std::weak_ptr<MouseListenerComposite>;
 
 /**
 \brief The MouseListenerComposite class holds instances of IMouseListener.

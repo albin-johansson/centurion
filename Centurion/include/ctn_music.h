@@ -8,16 +8,16 @@ namespace centurion {
 namespace audio {
 
 class Music;
-typedef std::shared_ptr<Music> Music_sptr;
-typedef std::unique_ptr<Music> Music_uptr;
-typedef std::weak_ptr<Music> Music_wptr;
+using Music_sptr = std::shared_ptr<Music>;
+using Music_uptr = std::unique_ptr<Music>;
+using Music_wptr = std::weak_ptr<Music>;
 
 /**
 \brief The Music class represents a music clip. The music clips must be of the
 .WAV-format.
 \since 1.0.0
 */
-class Music : public IAudioComponent {
+class Music final : public IAudioComponent {
  private:
   Mix_Music* music;
   int volume;

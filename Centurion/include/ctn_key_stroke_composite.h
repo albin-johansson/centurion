@@ -8,9 +8,9 @@ namespace centurion {
 namespace events {
 
 class KeyStrokeComposite;
-typedef std::shared_ptr<KeyStrokeComposite> KeyStrokeComposite_sptr;
-typedef std::unique_ptr<KeyStrokeComposite> KeyStrokeComposite_uptr;
-typedef std::weak_ptr<KeyStrokeComposite> KeyStrokeComposite_wptr;
+using KeyStrokeComposite_sptr = std::shared_ptr<KeyStrokeComposite>;
+using KeyStrokeComposite_uptr = std::unique_ptr<KeyStrokeComposite>;
+using KeyStrokeComposite_wptr = std::weak_ptr<KeyStrokeComposite>;
 
 /**
 * DEPRECATED *

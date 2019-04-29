@@ -10,15 +10,15 @@ namespace centurion {
 namespace events {
 
 class KeyStroke;
-typedef std::shared_ptr<KeyStroke> KeyStroke_sptr;
-typedef std::unique_ptr<KeyStroke> KeyStroke_uptr;
-typedef std::weak_ptr<KeyStroke> KeyStroke_wptr;
+using KeyStroke_sptr = std::shared_ptr<KeyStroke>;
+using KeyStroke_uptr = std::unique_ptr<KeyStroke>;
+using KeyStroke_wptr = std::weak_ptr<KeyStroke>;
 
 /**
 \brief The KeyStroke class represents an key controlled action.
 \since 1.0.0
 */
-class KeyStroke {
+class KeyStroke final {
  private:
   IAction_sptr action;
   KeyTrigger trigger;

@@ -7,9 +7,9 @@ namespace centurion {
 namespace visuals {
 
 class Color;
-typedef std::shared_ptr<Color> Color_sptr;
-typedef std::unique_ptr<Color> Color_uptr;
-typedef std::weak_ptr<Color> Color_wptr;
+using Color_sptr = std::shared_ptr<Color>;
+using Color_uptr = std::unique_ptr<Color>;
+using Color_wptr = std::weak_ptr<Color>;
 
 /**
 \brief The Color class simply represents a color.

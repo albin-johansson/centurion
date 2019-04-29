@@ -6,9 +6,9 @@ namespace centurion {
 namespace tools {
 
 class ApplicationPath;
-typedef std::shared_ptr<ApplicationPath> ApplicationPath_sptr;
-typedef std::unique_ptr<ApplicationPath> ApplicationPath_uptr;
-typedef std::weak_ptr<ApplicationPath> ApplicationPath_wptr;
+using ApplicationPath_sptr = std::shared_ptr<ApplicationPath>;
+using ApplicationPath_uptr = std::unique_ptr<ApplicationPath>;
+using ApplicationPath_wptr = std::weak_ptr<ApplicationPath>;
 
 /**
 \brief The ApplicationPath class represents the file path of the application

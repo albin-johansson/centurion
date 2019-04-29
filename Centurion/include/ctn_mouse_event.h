@@ -9,7 +9,7 @@ namespace events {
 \brief The MouseEvent class provides information about a mouse event.
 \since 1.0.0
 */
-class MouseEvent {
+class MouseEvent final {
  private:
   SDL_Event event;
 
@@ -80,9 +80,9 @@ class MouseEvent {
   bool IsMouseWheelEvent() const noexcept;
 };
 
-typedef std::shared_ptr<MouseEvent> MouseEvent_sptr;
-typedef std::unique_ptr<MouseEvent> MouseEvent_uptr;
-typedef std::weak_ptr<MouseEvent> MouseEvent_wptr;
+using MouseEvent_sptr = std::shared_ptr<MouseEvent>;
+using MouseEvent_uptr = std::unique_ptr<MouseEvent>;
+using MouseEvent_wptr = std::weak_ptr<MouseEvent>;
 
 }  // namespace events
 }  // namespace centurion

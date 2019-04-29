@@ -7,15 +7,15 @@ namespace centurion {
 namespace visuals {
 
 class Font;
-typedef std::shared_ptr<Font> Font_sptr;
-typedef std::unique_ptr<Font> Font_uptr;
-typedef std::weak_ptr<Font> Font_wptr;
+using Font_sptr = std::shared_ptr<Font>;
+using Font_uptr = std::unique_ptr<Font>;
+using Font_wptr = std::weak_ptr<Font>;
 
 /**
 \brief The Font class serves as a representation of a True Type font.
 \since 1.0.0
 */
-class Font {
+class Font final {
  private:
   TTF_Font* font;
   int styleMask;

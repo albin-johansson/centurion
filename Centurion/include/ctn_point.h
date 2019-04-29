@@ -1,21 +1,20 @@
 #pragma once
 #include <SDL_rect.h>
 #include <memory>
-#include "ctn_positionable.h"
 
 namespace centurion {
 namespace geo {
 
 class Point;
-typedef std::shared_ptr<Point> Point_sptr;
-typedef std::unique_ptr<Point> Point_uptr;
-typedef std::weak_ptr<Point> Point_wptr;
+using Point_sptr = std::shared_ptr<Point>;
+using Point_uptr = std::unique_ptr<Point>;
+using Point_wptr = std::weak_ptr<Point>;
 
 /**
 \brief The Point class represents a two-dimensional point.
 \since 1.0.0
 */
-class Point : public IPositionable {
+class Point final {
  private:
   SDL_Point point = {0, 0};
 
@@ -31,38 +30,30 @@ class Point : public IPositionable {
   ~Point();
 
   /**
-  \brief Assigns the location of this point.
-  \param x - the new x-coordinate.
-  \param y - the new y-coordinate.
-  \since 1.0.0
-  */
-  void SetLocation(int x, int y) noexcept override;
-
-  /**
   \brief Assigns the x-coordinate of this point.
   \param x - the new x-coordinate.
   \since 1.0.0
   */
-  void SetX(int x) noexcept override;
+  void SetX(int x) noexcept;
 
   /**
   \brief Assigns the y-coordinate of this point.
   \param y - the new y-coordinate.
   \since 1.0.0
   */
-  void SetY(int y) noexcept override;
+  void SetY(int y) noexcept;
 
   /**
   \brief Returns the x-coordinate of this point.
   \since 1.0.0
   */
-  inline int GetX() const noexcept override { return point.x; };
+  inline int GetX() const noexcept { return point.x; };
 
   /**
   \brief Returns the y-coordinate of this point.
   \since 1.0.0
   */
-  inline int GetY() const noexcept override { return point.y; };
+  inline int GetY() const noexcept { return point.y; };
 
   /**
   \brief Returns a copy of the internal representation of this Point.

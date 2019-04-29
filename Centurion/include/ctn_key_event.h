@@ -11,7 +11,7 @@ namespace events {
 \brief The KeyEvent class provides information about a keyboard event.
 \since 1.0.0
 */
-class KeyEvent {
+class KeyEvent final {
  private:
   SDL_Event event;
 
@@ -57,9 +57,9 @@ class KeyEvent {
   Uint32 GetKeyEventType() const noexcept;
 };
 
-typedef std::shared_ptr<KeyEvent> KeyboardEvent_sptr;
-typedef std::unique_ptr<KeyEvent> KeyboardEvent_uptr;
-typedef std::weak_ptr<KeyEvent> KeyboardEvent_wptr;
+using KeyEvent_sptr = std::shared_ptr<KeyEvent>;
+using KeyEvent_uptr = std::unique_ptr<KeyEvent>;
+using KeyEvent_wptr = std::weak_ptr<KeyEvent>;
 
 }  // namespace events
 }  // namespace centurion

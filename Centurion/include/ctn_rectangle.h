@@ -1,23 +1,21 @@
 #pragma once
 #include <SDL_rect.h>
 #include <memory>
-#include "ctn_dimensioned.h"
 #include "ctn_point.h"
-#include "ctn_positionable.h"
 
 namespace centurion {
 namespace geo {
 
 class Rectangle;
-typedef std::shared_ptr<Rectangle> Rectangle_sptr;
-typedef std::unique_ptr<Rectangle> Rectangle_uptr;
-typedef std::weak_ptr<Rectangle> Rectangle_wptr;
+using Rectangle_sptr = std::shared_ptr<Rectangle>;
+using Rectangle_uptr = std::unique_ptr<Rectangle>;
+using Rectangle_wptr = std::weak_ptr<Rectangle>;
 
 /**
 \brief The Rectangle class quite simply represents a rectangle.
 \since 1.0.0
 */
-class Rectangle : public IPositionable, public IDimensioned {
+class Rectangle final {
  private:
   SDL_Rect rect = {0, 0, 1, 1};
 
@@ -43,26 +41,18 @@ class Rectangle : public IPositionable, public IDimensioned {
   ~Rectangle();
 
   /**
-  \brief Assigns the location of this rectangle.
-  \param x - the new x-coordinate.
-  \param y - the new y-coordinate.
-  \since 1.0.0
-  */
-  void SetLocation(int x, int y) noexcept override;
-
-  /**
   \brief Assigns the x-coordinate of this rectangle.
   \param x - the new x-coordinate.
   \since 1.0.0
   */
-  void SetX(int x) noexcept override;
+  void SetX(int x) noexcept;
 
   /**
   \brief Assigns the y-coordinate of this rectangle.
   \param y - the new y-coordinate.
   \since 1.0.0
   */
-  void SetY(int y) noexcept override;
+  void SetY(int y) noexcept;
 
   /**
   \brief Indicates whether or not this rectangle intersects another rectangle.
@@ -96,31 +86,43 @@ class Rectangle : public IPositionable, public IDimensioned {
   \brief Returns the x-coordinate of this rectangle.
   \since 1.0.0
   */
-  int GetX() const noexcept override { return rect.x; };
+  inline int GetX() const noexcept { return rect.x; }
 
   /**
   \brief Returns the y-coordinate of this rectangle.
   \since 1.0.0
   */
-  int GetY() const noexcept override { return rect.y; };
+  inline int GetY() const noexcept { return rect.y; }
+
+  /**
+  \brief Returns the maximum x-coordinate of this rectangle.
+  \since 2.0.0
+  */
+  inline int GetMaxX() const noexcept { return (rect.x + rect.w); }
+
+  /**
+  \brief Returns the maximum y-coordinate of this rectangle.
+  \since 2.0.0
+  */
+  inline int GetMaxY() const noexcept { return (rect.y + rect.h); }
 
   /**
   \brief Returns the width of this rectangle.
   \since 1.0.0
   */
-  int GetWidth() const noexcept override { return rect.w; };
+  inline int GetWidth() const noexcept { return rect.w; }
 
   /**
   \brief Returns the height of this rectangle.
   \since 1.0.0
   */
-  int GetHeight() const noexcept override { return rect.h; };
+  inline int GetHeight() const noexcept { return rect.h; }
 
   /**
   \brief Creates and returns an SDL_Rect that represents this rectangle.
   \since 1.0.0
   */
-  SDL_Rect GetSDLVersion() const noexcept { return rect; };
+  inline SDL_Rect GetSDLVersion() const noexcept { return rect; }
 
   /**
   \brief Returns a shared pointer that points to a Rectangle.

@@ -42,9 +42,9 @@ class IAudioComponent {
   virtual int GetVolume() const = 0;
 };
 
-typedef std::shared_ptr<IAudioComponent> IAudioComponent_sptr;
-typedef std::unique_ptr<IAudioComponent> IAudioComponent_uptr;
-typedef std::weak_ptr<IAudioComponent> IAudioComponent_wptr;
+using IAudioComponent_sptr = std::shared_ptr<IAudioComponent>;
+using IAudioComponent_uptr = std::unique_ptr<IAudioComponent>;
+using IAudioComponent_wptr = std::weak_ptr<IAudioComponent>;
 
 }  // namespace audio
 }  // namespace centurion

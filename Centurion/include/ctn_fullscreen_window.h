@@ -6,9 +6,9 @@ namespace centurion {
 namespace visuals {
 
 class FullscreenWindow;
-typedef std::shared_ptr<FullscreenWindow> FullscreenWindow_sptr;
-typedef std::unique_ptr<FullscreenWindow> FullscreenWindow_uptr;
-typedef std::weak_ptr<FullscreenWindow> FullscreenWindow_wptr;
+using FullscreenWindow_sptr = std::shared_ptr<FullscreenWindow>;
+using FullscreenWindow_uptr = std::unique_ptr<FullscreenWindow>;
+using FullscreenWindow_wptr = std::weak_ptr<FullscreenWindow>;
 
 class FullscreenWindow final : public AbstractWindow {
  private:

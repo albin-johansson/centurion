@@ -9,11 +9,6 @@ Point::Point() = default;
 
 Point::~Point() = default;
 
-void Point::SetLocation(int x, int y) noexcept {
-  SetX(x);
-  SetY(y);
-}
-
 void Point::SetX(int x) noexcept { point.x = x; }
 
 void Point::SetY(int y) noexcept { point.y = y; }

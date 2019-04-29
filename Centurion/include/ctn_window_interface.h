@@ -8,9 +8,9 @@ namespace centurion {
 namespace visuals {
 
 class IWindow;
-typedef std::shared_ptr<IWindow> IWindow_sptr;
-typedef std::unique_ptr<IWindow> IWindow_uptr;
-typedef std::weak_ptr<IWindow> IWindow_wptr;
+using IWindow_sptr = std::shared_ptr<IWindow>;
+using IWindow_uptr = std::unique_ptr<IWindow>;
+using IWindow_wptr = std::weak_ptr<IWindow>;
 
 /**
 \brief The IWindow class is an interface for objects that represent a top-level

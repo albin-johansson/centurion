@@ -26,9 +26,9 @@ class IKeyListener {
   virtual void StateUpdated(const KeyState& state) = 0;
 };
 
-typedef std::shared_ptr<IKeyListener> IKeyListener_sptr;
-typedef std::unique_ptr<IKeyListener> IKeyListener_uptr;
-typedef std::weak_ptr<IKeyListener> IKeyListener_wptr;
+using IKeyListener_sptr = std::shared_ptr<IKeyListener>;
+using IKeyListener_uptr = std::unique_ptr<IKeyListener>;
+using IKeyListener_wptr = std::weak_ptr<IKeyListener>;
 
 }  // namespace input
 }  // namespace centurion

@@ -36,9 +36,9 @@ class ITexture {
   virtual SDL_Texture* GetSDLTexture() = 0;
 };
 
-typedef std::shared_ptr<ITexture> ITexture_sptr;
-typedef std::unique_ptr<ITexture> ITexture_uptr;
-typedef std::weak_ptr<ITexture> ITexture_wptr;
+using ITexture_sptr = std::shared_ptr<ITexture>;
+using ITexture_uptr = std::unique_ptr<ITexture>;
+using ITexture_wptr = std::weak_ptr<ITexture>;
 
 }  // namespace visuals
 }  // namespace centurion

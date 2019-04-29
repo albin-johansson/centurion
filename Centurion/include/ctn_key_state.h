@@ -8,9 +8,9 @@ namespace centurion {
 namespace input {
 
 class KeyState;
-typedef std::shared_ptr<KeyState> KeyState_sptr;
-typedef std::unique_ptr<KeyState> KeyState_uptr;
-typedef std::weak_ptr<KeyState> KeyState_wptr;
+using KeyState_sptr = std::shared_ptr<KeyState>;
+using KeyState_uptr = std::unique_ptr<KeyState>;
+using KeyState_wptr = std::weak_ptr<KeyState>;
 
 /**
 \brief The KeyState class provides information about the keyboard state.

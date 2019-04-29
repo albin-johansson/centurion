@@ -8,16 +8,16 @@ namespace centurion {
 namespace audio {
 
 class SoundEffect;
-typedef std::shared_ptr<SoundEffect> SoundEffect_sptr;
-typedef std::unique_ptr<SoundEffect> SoundEffect_uptr;
-typedef std::weak_ptr<SoundEffect> SoundEffect_wptr;
+using SoundEffect_sptr = std::shared_ptr<SoundEffect>;
+using SoundEffect_uptr = std::unique_ptr<SoundEffect>;
+using SoundEffect_wptr = std::weak_ptr<SoundEffect>;
 
 /**
 \brief The SoundEffect class represents a sound effect. The supported file
 extensions are MP3, OGG and FLAC.
 \since 1.0.0
 */
-class SoundEffect : public IAudioComponent {
+class SoundEffect final : public IAudioComponent {
  private:
   int channel;
   Mix_Chunk* sound;

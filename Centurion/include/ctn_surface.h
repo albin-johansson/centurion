@@ -6,15 +6,15 @@ namespace centurion {
 namespace visuals {
 
 class Surface;
-typedef std::shared_ptr<Surface> Surface_sptr;
-typedef std::unique_ptr<Surface> Surface_uptr;
-typedef std::weak_ptr<Surface> Surface_wptr;
+using Surface_sptr = std::shared_ptr<Surface>;
+using Surface_uptr = std::unique_ptr<Surface>;
+using Surface_wptr = std::weak_ptr<Surface>;
 
 /**
 \brief The Surface class is based on the SDL_Surface struct.
 \since 2.0.0
 */
-class Surface {
+class Surface final {
  private:
   SDL_Surface* sdlSurface;
 

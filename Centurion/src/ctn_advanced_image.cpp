@@ -1,14 +1,11 @@
 #include "ctn_advanced_image.h"
 #include <SDL_image.h>
-#include <stdio.h>
 #include <stdexcept>
 
 using centurion::geo::Rectangle;
 
 namespace centurion {
 namespace visuals {
-
-// ---------------------------------- Private ----------------------------------
 
 void AdvancedImage::Lock() { SDL_LockTexture(texture, NULL, &pixels, &pitch); }
 
@@ -17,10 +14,6 @@ void AdvancedImage::Unlock() {
   pixels = nullptr;
   pitch = 0;
 }
-
-// -------------------------------- End private --------------------------------
-
-// ----------------------------------- Public ----------------------------------
 
 AdvancedImage::AdvancedImage(const std::string& path, SDL_Renderer* renderer,
                              Uint32 pixelFormat)
@@ -119,66 +112,38 @@ void AdvancedImage::SetBlendMode(SDL_BlendMode blendMode) noexcept {
   SDL_SetTextureBlendMode(texture, blendMode);
 }
 
-AdvancedImage_sptr AdvancedImage::CreateShared(const std::string& path,
-                                               SDL_Renderer* renderer,
-                                               Uint32 pixelFormat) {
+IImage_sptr AdvancedImage::CreateShared(const std::string& path,
+                                        SDL_Renderer* renderer,
+                                        Uint32 pixelFormat) {
   return std::make_shared<AdvancedImage>(path, renderer, pixelFormat);
 }
 
-AdvancedImage_sptr AdvancedImage::CreateShared(const std::string& path,
-                                               SDL_Renderer* renderer) {
+IImage_sptr AdvancedImage::CreateShared(const std::string& path,
+                                        SDL_Renderer* renderer) {
   return std::make_shared<AdvancedImage>(path, renderer);
 }
 
-AdvancedImage_uptr AdvancedImage::CreateUnique(const std::string& path,
-                                               SDL_Renderer* renderer,
-                                               Uint32 pixelFormat) {
+IImage_uptr AdvancedImage::CreateUnique(const std::string& path,
+                                        SDL_Renderer* renderer,
+                                        Uint32 pixelFormat) {
   return std::make_unique<AdvancedImage>(path, renderer, pixelFormat);
 }
 
-AdvancedImage_uptr AdvancedImage::CreateUnique(const std::string& path,
-                                               SDL_Renderer* renderer) {
+IImage_uptr AdvancedImage::CreateUnique(const std::string& path,
+                                        SDL_Renderer* renderer) {
   return std::make_unique<AdvancedImage>(path, renderer);
 }
 
-AdvancedImage_wptr AdvancedImage::CreateWeak(const std::string& path,
-                                             SDL_Renderer* renderer,
-                                             Uint32 pixelFormat) {
+IImage_wptr AdvancedImage::CreateWeak(const std::string& path,
+                                      SDL_Renderer* renderer,
+                                      Uint32 pixelFormat) {
   return CreateShared(path, renderer, pixelFormat);
 }
 
-AdvancedImage_wptr AdvancedImage::CreateWeak(const std::string& path,
-                                             SDL_Renderer* renderer) {
+IImage_wptr AdvancedImage::CreateWeak(const std::string& path,
+                                      SDL_Renderer* renderer) {
   return CreateShared(path, renderer);
 }
 
-// --------------------------------- End public --------------------------------
-
 }  // namespace visuals
 }  // namespace centurion
-
-// AdvancedImage_sptr AdvancedImage::CreateSubimage(SDL_Renderer* renderer,
-//                                                 Rectangle src, int width,
-//                                                 int height) {
-//  if (!SDL_RenderTargetSupported(renderer)) {
-//    throw std::exception("Subimages are not available!");
-//  }
-//
-//  if (renderer == nullptr) {
-//    throw std::invalid_argument("Null SDL_Renderer pointer!");
-//  }
-//
-//  int access = SDL_TEXTUREACCESS_TARGET;
-//  SDL_Texture* result =
-//      SDL_CreateTexture(renderer, pixelFormat, access, width, height);
-//  SDL_SetTextureBlendMode(result, SDL_BLENDMODE_BLEND);
-//
-//  SDL_Rect dst = {0, 0, width, height};
-//
-//  SDL_SetRenderTarget(renderer, result);
-//  SDL_RenderCopy(renderer, result, &src.GetSDLVersion(), &dst);
-//  SDL_RenderPresent(renderer);
-//  SDL_SetRenderTarget(renderer, nullptr);
-//
-//  return std::make_shared<AdvancedImage>(result);
-//}

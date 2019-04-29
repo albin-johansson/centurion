@@ -11,11 +11,6 @@
 namespace centurion {
 namespace visuals {
 
-class AdvancedImage;
-typedef std::shared_ptr<AdvancedImage> AdvancedImage_sptr;
-typedef std::unique_ptr<AdvancedImage> AdvancedImage_uptr;
-typedef std::weak_ptr<AdvancedImage> AdvancedImage_wptr;
-
 /**
 \brief The AdvancedImage class is an implementation of the IIMage interface.
 \since 2.0.0
@@ -132,9 +127,8 @@ class AdvancedImage final : public IImage {
   \param pixelFormat - the pixel format to be used by the created image.
   \since 2.0.0
   */
-  static AdvancedImage_sptr CreateShared(const std::string& path,
-                                         SDL_Renderer* renderer,
-                                         Uint32 pixelFormat);
+  static IImage_sptr CreateShared(const std::string& path,
+                                  SDL_Renderer* renderer, Uint32 pixelFormat);
 
   /**
   \brief Returns a shared pointer that points at an AdvancedImage instance.
@@ -142,8 +136,8 @@ class AdvancedImage final : public IImage {
   \param renderer - a pointer to the SDL_Renderer used to create the image.
   \since 2.0.0
   */
-  static AdvancedImage_sptr CreateShared(const std::string& path,
-                                         SDL_Renderer* renderer);
+  static IImage_sptr CreateShared(const std::string& path,
+                                  SDL_Renderer* renderer);
 
   /**
   \brief Returns a unique pointer that points at an AdvancedImage instance.
@@ -152,9 +146,8 @@ class AdvancedImage final : public IImage {
   \param pixelFormat - the pixel format to be used by the created image.
   \since 2.0.0
   */
-  static AdvancedImage_uptr CreateUnique(const std::string& path,
-                                         SDL_Renderer* renderer,
-                                         Uint32 pixelFormat);
+  static IImage_uptr CreateUnique(const std::string& path,
+                                  SDL_Renderer* renderer, Uint32 pixelFormat);
 
   /**
   \brief Returns a unique pointer that points at an AdvancedImage instance.
@@ -162,8 +155,8 @@ class AdvancedImage final : public IImage {
   \param renderer - a pointer to the SDL_Renderer used to create the image.
   \since 2.0.0
   */
-  static AdvancedImage_uptr CreateUnique(const std::string& path,
-                                         SDL_Renderer* renderer);
+  static IImage_uptr CreateUnique(const std::string& path,
+                                  SDL_Renderer* renderer);
 
   /**
   \brief Returns a weak pointer that points at an AdvancedImage instance.
@@ -172,9 +165,8 @@ class AdvancedImage final : public IImage {
   \param pixelFormat - the pixel format to be used by the created image.
   \since 2.0.0
   */
-  static AdvancedImage_wptr CreateWeak(const std::string& path,
-                                       SDL_Renderer* renderer,
-                                       Uint32 pixelFormat);
+  static IImage_wptr CreateWeak(const std::string& path, SDL_Renderer* renderer,
+                                Uint32 pixelFormat);
 
   /**
   \brief Returns a weak pointer that points at an AdvancedImage instance.
@@ -182,8 +174,8 @@ class AdvancedImage final : public IImage {
   \param renderer - a pointer to the SDL_Renderer used to create the image.
   \since 2.0.0
   */
-  static AdvancedImage_wptr CreateWeak(const std::string& path,
-                                       SDL_Renderer* renderer);
+  static IImage_wptr CreateWeak(const std::string& path,
+                                SDL_Renderer* renderer);
 };
 
 }  // namespace visuals

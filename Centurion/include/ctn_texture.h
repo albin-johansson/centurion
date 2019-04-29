@@ -8,16 +8,16 @@ namespace centurion {
 namespace visuals {
 
 class Texture;
-typedef std::shared_ptr<Texture> Texture_sptr;
-typedef std::unique_ptr<Texture> Texture_uptr;
-typedef std::weak_ptr<Texture> Texture_wptr;
+using Texture_sptr = std::shared_ptr<Texture>;
+using Texture_uptr = std::unique_ptr<Texture>;
+using Texture_wptr = std::weak_ptr<Texture>;
 
 /**
 \brief The Texture class is based on the SDL_Texture struct.
 * The Texture class is a subclass of ITexture.
 \since 2.0.0  (Overhauled earlier version)
 */
-class Texture : public ITexture {
+class Texture final : public ITexture {
  private:
   SDL_Texture* sdlTexture = nullptr;
   int width = 0;

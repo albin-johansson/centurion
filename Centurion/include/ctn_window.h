@@ -16,9 +16,9 @@ namespace centurion {
 namespace visuals {
 
 class Window;
-typedef std::shared_ptr<Window> Window_sptr;
-typedef std::unique_ptr<Window> Window_uptr;
-typedef std::weak_ptr<Window> Window_wptr;
+using Window_sptr = std::shared_ptr<Window>;
+using Window_uptr = std::unique_ptr<Window>;
+using Window_wptr = std::weak_ptr<Window>;
 
 /**
 \brief The Window class represents a windowed frame.

@@ -8,9 +8,9 @@ namespace centurion {
 namespace input {
 
 class KeyListenerComposite;
-typedef std::shared_ptr<KeyListenerComposite> KeyListenerComposite_sptr;
-typedef std::unique_ptr<KeyListenerComposite> KeyListenerComposite_uptr;
-typedef std::weak_ptr<KeyListenerComposite> KeyListenerComposite_wptr;
+using KeyListenerComposite_sptr = std::shared_ptr<KeyListenerComposite>;
+using KeyListenerComposite_uptr = std::unique_ptr<KeyListenerComposite>;
+using KeyListenerComposite_wptr = std::weak_ptr<KeyListenerComposite>;
 
 /**
 \brief The KeyListenerComposite class holds instances of IKeyListener.

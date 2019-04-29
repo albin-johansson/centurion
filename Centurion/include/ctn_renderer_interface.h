@@ -11,9 +11,9 @@ namespace centurion {
 namespace visuals {
 
 class IRenderer;
-typedef std::shared_ptr<IRenderer> IRenderer_sptr;
-typedef std::unique_ptr<IRenderer> IRenderer_uptr;
-typedef std::weak_ptr<IRenderer> IRenderer_wptr;
+using IRenderer_sptr = std::shared_ptr<IRenderer>;
+using IRenderer_uptr = std::unique_ptr<IRenderer>;
+using IRenderer_wptr = std::weak_ptr<IRenderer>;
 
 class IRenderer {
  protected:

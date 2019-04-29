@@ -69,9 +69,9 @@ class IImage : public ITexture {
   virtual void SetBlendMode(SDL_BlendMode blendMode) = 0;
 };
 
-typedef std::shared_ptr<IImage> IImage_sptr;
-typedef std::unique_ptr<IImage> IImage_uptr;
-typedef std::weak_ptr<IImage> IImage_wptr;
+using IImage_sptr = std::shared_ptr<IImage>;
+using IImage_uptr = std::unique_ptr<IImage>;
+using IImage_wptr = std::weak_ptr<IImage>;
 
 }  // namespace visuals
 }  // namespace centurion

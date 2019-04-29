@@ -11,8 +11,6 @@ using namespace centurion::tools;
 namespace centurion {
 namespace visuals {
 
-// ---------------------------------- Private ----------------------------------
-
 SDL_Window* Window::CreateWindow(int w, int h) {
   Uint32 flags = SDL_WINDOW_HIDDEN;
   std::string title = "Centurion window";
@@ -20,10 +18,6 @@ SDL_Window* Window::CreateWindow(int w, int h) {
                                         SDL_WINDOWPOS_CENTERED, w, h, flags);
   return result;
 }
-
-// -------------------------------- End private --------------------------------
-
-// ----------------------------------- Public ----------------------------------
 
 Window::Window(int w, int h) : AbstractWindow(CreateWindow(w, h)) {}
 
@@ -78,8 +72,6 @@ Window_uptr Window::CreateUnique(int width, int height) {
 Window_wptr Window::CreateWeak(int width, int height) {
   return CreateShared(width, height);
 }
-
-// --------------------------------- End public --------------------------------
 
 }  // namespace visuals
 }  // namespace centurion

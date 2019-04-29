@@ -7,7 +7,14 @@ using namespace centurion::geo;
 namespace centurion {
 namespace visuals {
 
-// ---------------------------------- Private ----------------------------------
+Renderer::Renderer(SDL_Renderer* sdlRenderer) {
+  if (sdlRenderer == nullptr) {
+    throw std::invalid_argument("Null pointer to SDL_Renderer!");
+  }
+  this->sdlRenderer = sdlRenderer;
+}
+
+Renderer::~Renderer() { SDL_DestroyRenderer(sdlRenderer); }
 
 SDL_Texture* Renderer::CreateSDLTextureFromString(const std::string& str) {
   if (font == nullptr) {
@@ -22,19 +29,6 @@ SDL_Texture* Renderer::CreateSDLTextureFromString(const std::string& str) {
 
   return texture;
 }
-
-// -------------------------------- End private --------------------------------
-
-// ----------------------------------- Public ----------------------------------
-
-Renderer::Renderer(SDL_Renderer* sdlRenderer) {
-  if (sdlRenderer == nullptr) {
-    throw std::invalid_argument("Null pointer to SDL_Renderer!");
-  }
-  this->sdlRenderer = sdlRenderer;
-}
-
-Renderer::~Renderer() { SDL_DestroyRenderer(sdlRenderer); }
 
 void Renderer::ApplyRendering() noexcept { SDL_RenderPresent(sdlRenderer); }
 
@@ -171,8 +165,6 @@ IRenderer_uptr Renderer::CreateUnique(SDL_Renderer* renderer) {
 IRenderer_wptr Renderer::CreateWeak(SDL_Renderer* renderer) {
   return CreateShared(renderer);
 }
-
-// --------------------------------- End public --------------------------------
 
 }  // namespace visuals
 }  // namespace centurion

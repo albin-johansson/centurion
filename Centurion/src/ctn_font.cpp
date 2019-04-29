@@ -98,15 +98,13 @@ bool Font::IsStrikethrough() const noexcept {
 
 int Font::GetStringWidth(const std::string& str) const noexcept {
   int w = 0;
-  int h = 0;
-  TTF_SizeText(font, str.c_str(), &w, &h);
+  TTF_SizeText(font, str.c_str(), &w, NULL);
   return w;
 }
 
 int Font::GetStringHeight(const std::string& str) const noexcept {
-  int w = 0;
   int h = 0;
-  TTF_SizeText(font, str.c_str(), &w, &h);
+  TTF_SizeText(font, str.c_str(), NULL, &h);
   return h;
 }
 

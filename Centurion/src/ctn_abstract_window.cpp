@@ -8,8 +8,6 @@ using namespace centurion::geo;
 namespace centurion {
 namespace visuals {
 
-// --------------------------------- Protected ---------------------------------
-
 AbstractWindow::AbstractWindow(SDL_Window* sdlWindow) {
   if (sdlWindow == nullptr) {
     throw std::invalid_argument("Null SDL_Window pointer!");
@@ -19,10 +17,6 @@ AbstractWindow::AbstractWindow(SDL_Window* sdlWindow) {
   SDL_Renderer* sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, flags);
   renderer = Renderer::CreateShared(sdlRenderer);
 }
-
-// ------------------------------- End protected -------------------------------
-
-// ----------------------------------- Public ----------------------------------
 
 AbstractWindow::~AbstractWindow() { SDL_DestroyWindow(sdlWindow); }
 
@@ -122,8 +116,6 @@ int AbstractWindow::GetHeight() const noexcept {
   SDL_GetWindowSize(sdlWindow, NULL, &h);
   return h;
 }
-
-// --------------------------------- End public --------------------------------
 
 }  // namespace visuals
 }  // namespace centurion

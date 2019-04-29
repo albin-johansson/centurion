@@ -6,7 +6,9 @@ using namespace centurion::tools;
 namespace centurion {
 namespace visuals {
 
-// ---------------------------------- Private ----------------------------------
+FullscreenWindow::FullscreenWindow() : AbstractWindow(CreateWindow()) {}
+
+FullscreenWindow::~FullscreenWindow() = default;
 
 SDL_Window* FullscreenWindow::CreateWindow() {
   int w = Screen::GetWidth();
@@ -17,14 +19,6 @@ SDL_Window* FullscreenWindow::CreateWindow() {
   return result;
 }
 
-// -------------------------------- End private --------------------------------
-
-// ----------------------------------- Public ----------------------------------
-
-FullscreenWindow::FullscreenWindow() : AbstractWindow(CreateWindow()) {}
-
-FullscreenWindow::~FullscreenWindow() = default;
-
 FullscreenWindow_sptr FullscreenWindow::CreateShared() {
   return std::make_shared<FullscreenWindow>();
 }
@@ -34,8 +28,6 @@ FullscreenWindow_uptr FullscreenWindow::CreateUnique() {
 }
 
 FullscreenWindow_wptr FullscreenWindow::CreateWeak() { return CreateShared(); }
-
-// --------------------------------- End public --------------------------------
 
 }  // namespace visuals
 }  // namespace centurion

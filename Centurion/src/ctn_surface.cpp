@@ -4,8 +4,6 @@
 namespace centurion {
 namespace visuals {
 
-// ----------------------------------- Public ----------------------------------
-
 Surface::Surface(SDL_Surface* sdlSurface) {
   if (sdlSurface == nullptr) {
     throw std::invalid_argument("Null surface pointer!");
@@ -37,8 +35,6 @@ Surface_uptr Surface::CreateUnique(SDL_Surface* sdlSurface) {
 Surface_wptr Surface::CreateWeak(SDL_Surface* sdlSurface) {
   return CreateShared(sdlSurface);
 }
-
-// --------------------------------- End public --------------------------------
 
 }  // namespace visuals
 }  // namespace centurion

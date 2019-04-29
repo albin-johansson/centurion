@@ -10,8 +10,6 @@
 
 namespace centurion {
 
-// ---------------------------------- Private ----------------------------------
-
 bool Centurion::isInit = false;
 
 void Centurion::InitCore() {
@@ -52,10 +50,6 @@ void Centurion::ThrowInitializationException(const std::string error) {
   throw std::exception(str.c_str());
 }
 
-// -------------------------------- End private --------------------------------
-
-// ----------------------------------- Public ----------------------------------
-
 void Centurion::Init() {
   if (!isInit) {
     Centurion::InitCore();
@@ -76,8 +70,6 @@ void Centurion::Close() noexcept {
     isInit = false;
   }
 }
-
-// --------------------------------- End public --------------------------------
 
 }  // namespace centurion
 

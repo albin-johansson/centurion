@@ -10,8 +10,9 @@ InputDispatcher::InputDispatcher() {
   mouseState = MouseState::CreateUnique();
   keyState = KeyState::CreateUnique();
   shouldQuit = false;
-  
-  // TODO indicator that textures should be recreated using SDL_RENDER_DEVICE_RESET
+
+  // TODO indicator that textures should be recreated using
+  // SDL_RENDER_DEVICE_RESET
 }
 
 InputDispatcher::~InputDispatcher() = default;

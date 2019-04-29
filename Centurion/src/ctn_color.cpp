@@ -3,8 +3,6 @@
 namespace centurion {
 namespace visuals {
 
-// ----------------------------------- Public ----------------------------------
-
 const Color Color::RED = Color(MAX_VAL, MIN_VAL, MIN_VAL, MAX_VAL);
 
 const Color Color::GREEN = Color(MIN_VAL, MAX_VAL, MIN_VAL, MAX_VAL);
@@ -36,8 +34,6 @@ Color_uptr Color::CreateUnique(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 Color_wptr Color::CreateWeak(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
   return CreateShared(r, g, b, a);
 }
-
-// --------------------------------- End public --------------------------------
 
 }  // namespace visuals
 }  // namespace centurion

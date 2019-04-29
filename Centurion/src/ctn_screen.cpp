@@ -6,6 +6,8 @@
 namespace centurion {
 namespace tools {
 
+// TODO platform independent version of this class (GetWidth() and GetHeight())
+
 void Screen::SetScreenSaverEnabled(bool enabled) noexcept {
   if (enabled) {
     SDL_EnableScreenSaver();

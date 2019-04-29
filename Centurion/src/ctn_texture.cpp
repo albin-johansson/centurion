@@ -6,8 +6,6 @@
 namespace centurion {
 namespace visuals {
 
-// ----------------------------------- Public ----------------------------------
-
 Texture::Texture(SDL_Texture* sdlTexture) {
   if (sdlTexture == nullptr) {
     throw std::invalid_argument("Null texture pointer!");
@@ -69,8 +67,6 @@ Texture_wptr Texture::CreateWeak(const std::string& path,
                                  SDL_Renderer* renderer) {
   return CreateShared(path, renderer);
 }
-
-// --------------------------------- End public --------------------------------
 
 }  // namespace visuals
 }  // namespace centurion

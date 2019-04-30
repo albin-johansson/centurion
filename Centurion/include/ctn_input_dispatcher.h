@@ -22,15 +22,20 @@ using InputDispatcher_wptr = std::weak_ptr<InputDispatcher>;
 */
 class InputDispatcher final {
  private:
-  KeyListenerComposite_uptr keyListenerComposite;
-  KeyState_uptr keyState;
-  MouseListenerComposite_uptr mouseListenerComposite;
-  MouseState_uptr mouseState;
-  bool shouldQuit;
+  KeyListenerComposite_uptr keyListenerComposite = nullptr;
+  MouseListenerComposite_uptr mouseListenerComposite = nullptr;
+  KeyState_uptr keyState = nullptr;
+  MouseState_uptr mouseState = nullptr;
+  bool shouldQuit = false;
+  bool shouldRevalidateImages = false;
 
   void NotifyKeyListeners();
 
   void NotifyMouseListeners();
+
+  inline bool IsEventActive(Uint32 type) const noexcept {
+    return SDL_PeepEvents(NULL, 0, SDL_PEEKEVENT, type, type) > 0;
+  }
 
  public:
   InputDispatcher();
@@ -58,11 +63,26 @@ class InputDispatcher final {
   void AddKeyListener(IKeyListener_sptr kl);
 
   /**
+  \brief Deactivates the image revalidation flag. Use this when you've dealt
+  with revalidating your images.
+  \since 2.0.0
+  */
+  void ResetRevalidationFlag() noexcept;
+
+  /**
   \brief Returns true if the user has requested a termination of the
   application. This is usually done by pressing the "x"-button on a sdlWindow.
   \since 1.1.0
   */
-  inline bool ReceivedQuit() const { return shouldQuit; }
+  inline bool ReceivedQuit() const noexcept { return shouldQuit; }
+
+  /**
+  \brief Returns true if images need to be revalidated.
+  \since 2.0.0
+  */
+  inline bool ShouldRevalidateImages() const noexcept {
+    return shouldRevalidateImages;
+  }
 
   /**
   \brief Returns a shared pointer that points to an InputDispatcher instance.

@@ -9,17 +9,14 @@ InputDispatcher::InputDispatcher() {
   keyListenerComposite = KeyListenerComposite::CreateUnique();
   mouseState = MouseState::CreateUnique();
   keyState = KeyState::CreateUnique();
-  shouldQuit = false;
-
-  // TODO indicator that textures should be recreated using
-  // SDL_RENDER_DEVICE_RESET
 }
 
 InputDispatcher::~InputDispatcher() = default;
 
 void InputDispatcher::Update() {
   SDL_PumpEvents();
-  shouldQuit = SDL_QuitRequested();
+  shouldQuit = IsEventActive(SDL_QUIT);
+  shouldRevalidateImages = IsEventActive(SDL_RENDER_DEVICE_RESET);
 
   NotifyKeyListeners();
   keyState->Update();
@@ -47,6 +44,10 @@ void InputDispatcher::AddMouseListener(IMouseListener_sptr ml) {
 
 void InputDispatcher::AddKeyListener(IKeyListener_sptr kl) {
   keyListenerComposite->AddChild(kl);
+}
+
+void InputDispatcher::ResetRevalidationFlag() noexcept {
+  shouldRevalidateImages = false;
 }
 
 InputDispatcher_sptr InputDispatcher::CreateShared() {

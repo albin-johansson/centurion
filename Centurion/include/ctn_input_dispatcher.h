@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL_events.h>
 #include <memory>
 #include <vector>
 #include "ctn_key_listener.h"

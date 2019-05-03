@@ -11,15 +11,22 @@ using namespace centurion::tools;
 namespace centurion {
 namespace visuals {
 
-SDL_Window* Window::CreateWindow(int w, int h) {
-  Uint32 flags = SDL_WINDOW_HIDDEN;
+SDL_Window* Window::CreateWindow(int w, int h, Uint32 flags) {
   std::string title = "Centurion window";
   SDL_Window* result = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
                                         SDL_WINDOWPOS_CENTERED, w, h, flags);
   return result;
 }
 
-Window::Window(int w, int h) : AbstractWindow(CreateWindow(w, h)) {}
+Window::Window(int w, int h)
+    : AbstractWindow(CreateWindow(w, h, SDL_WINDOW_HIDDEN)) {}
+
+Window::Window(int w, int h, Uint32 flags)
+    : AbstractWindow(CreateWindow(w, h, flags)) {
+  if (flags | SDL_WINDOW_FULLSCREEN) {
+    throw std::invalid_argument("Invalid window flag: SDL_WINDOW_FULLSCREEN! ");
+  }
+}
 
 Window::~Window() = default;
 

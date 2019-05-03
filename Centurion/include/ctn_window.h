@@ -26,10 +26,25 @@ using Window_wptr = std::weak_ptr<Window>;
 */
 class Window final : public AbstractWindow {
  private:
-  SDL_Window* CreateWindow(int width, int height);
+  SDL_Window* CreateWindow(int width, int height, Uint32 flags);
 
  public:
+  /**
+  \param width - the width of the window.
+  \param height - the height of the window.
+  \since 2.0.0
+  */
   Window(int width, int height);
+
+  /**
+  \param width - the width of the window.
+  \param height - the height of the window.
+  \param flags - the flags used to create the window, see SDL_WINDOW_x for
+  possible values.
+  \throws invalid_argument if the SDL_WINDOW_FULLSCREEN flag is used.
+  \since 2.0.0
+  */
+  Window(int width, int height, Uint32 flags);
 
   ~Window();
 

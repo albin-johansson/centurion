@@ -16,6 +16,7 @@ AbstractWindow::AbstractWindow(SDL_Window* sdlWindow) {
   Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE |
                  SDL_RENDERER_PRESENTVSYNC;
   SDL_Renderer* sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, flags);
+  SDL_SetRenderDrawBlendMode(sdlRenderer, SDL_BLENDMODE_BLEND);
   renderer = Renderer::CreateShared(sdlRenderer);
 }
 

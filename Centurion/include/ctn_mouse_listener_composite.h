@@ -26,20 +26,12 @@ class MouseListenerComposite final : public IMouseListener {
   ~MouseListenerComposite();
 
   /**
-  \brief Invokes the MousePressed()-method on all of the children.
+  \brief Invokes the MouseStateUpdated()-method on all of the children.
   \param state - a reference to the MouseState instance holding information
   about the mouse state.
   \since 1.1.0
   */
-  void MousePressed(const MouseState& state) override;
-
-  /**
-  \brief Invokes the MouseReleased()-method on all of the children.
-  \param state - a reference to the MouseState instance holding information
-  about the mouse state.
-  \since 1.1.0
-  */
-  void MouseReleased(const MouseState& state) override;
+  void MouseStateUpdated(const MouseState& state) override;
 
   /**
   \brief Removes all of the children from this MouseListenerComposite.
@@ -53,6 +45,8 @@ class MouseListenerComposite final : public IMouseListener {
   \since 1.1.0
   */
   void AddChild(IMouseListener_sptr child);
+
+  void RemoveChild(IMouseListener_sptr child);
 
   /**
   \brief Returns a shared pinter that points to a MouseListenerComposite.

@@ -26,16 +26,11 @@ void InputDispatcher::Update() {
 }
 
 void InputDispatcher::NotifyKeyListeners() {
-  keyListenerComposite->StateUpdated(*keyState);
+  keyListenerComposite->KeyStateUpdated(*keyState);
 }
 
 void InputDispatcher::NotifyMouseListeners() {
-  if (mouseState->IsButtonPressed(MouseState::COMPLETE_MASK)) {
-    mouseListenerComposite->MousePressed(*mouseState);
-  }
-  if (mouseState->WasButtonReleased(MouseState::COMPLETE_MASK)) {
-    mouseListenerComposite->MouseReleased(*mouseState);
-  }
+  mouseListenerComposite->MouseStateUpdated(*mouseState);
 }
 
 void InputDispatcher::AddMouseListener(IMouseListener_sptr ml) {
@@ -44,6 +39,14 @@ void InputDispatcher::AddMouseListener(IMouseListener_sptr ml) {
 
 void InputDispatcher::AddKeyListener(IKeyListener_sptr kl) {
   keyListenerComposite->AddChild(kl);
+}
+
+void InputDispatcher::RemoveMouseListener(IMouseListener_sptr ml) {
+  mouseListenerComposite->RemoveChild(ml);
+}
+
+void InputDispatcher::RemoveKeyListener(IKeyListener_sptr kl) {
+  keyListenerComposite->RemoveChild(kl);
 }
 
 void InputDispatcher::ResetRevalidationFlag() noexcept {

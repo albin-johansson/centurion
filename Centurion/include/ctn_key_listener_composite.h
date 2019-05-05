@@ -31,7 +31,7 @@ class KeyListenerComposite final : public IKeyListener {
   the key state.
   \since 1.1.0
   */
-  void StateUpdated(const KeyState& state) override;
+  void KeyStateUpdated(const KeyState& state) override;
 
   /**
   \brief Adds a IKeyListener instance to this KeyListenerComposite.
@@ -39,6 +39,8 @@ class KeyListenerComposite final : public IKeyListener {
   \since 1.1.0
   */
   void AddChild(IKeyListener_sptr child);
+
+  void RemoveChild(IKeyListener_sptr child); // TODO document
 
   /**
   \brief Removes all of this KeyListenerComposite's children.

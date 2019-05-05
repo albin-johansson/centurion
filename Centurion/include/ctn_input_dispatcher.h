@@ -63,6 +63,10 @@ class InputDispatcher final {
   */
   void AddKeyListener(IKeyListener_sptr kl);
 
+  void RemoveMouseListener(IMouseListener_sptr ml);
+
+  void RemoveKeyListener(IKeyListener_sptr kl);
+
   /**
   \brief Deactivates the image revalidation flag. Use this when you've dealt
   with revalidating your images.

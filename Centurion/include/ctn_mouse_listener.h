@@ -18,20 +18,12 @@ class IMouseListener {
   virtual ~IMouseListener() = default;
 
   /**
-  \brief Invoked when a mouse button has been pressed.
+  \brief Invoked when the mouse state has been updated.
   \param mouse - a reference to the Mouse instance holding information about the
   mouse state.
   \since 1.1.0
   */
-  virtual void MousePressed(const MouseState& mouse) = 0;
-
-  /**
-  \brief Invoked when a mouse button has been released.
-  \param mouse - a reference to the Mouse instance holding information about the
-  mouse state.
-  \since 1.1.0
-  */
-  virtual void MouseReleased(const MouseState& mouse) = 0;
+  virtual void MouseStateUpdated(const MouseState& mouse) = 0;
 };
 
 using IMouseListener_sptr = std::shared_ptr<IMouseListener>;

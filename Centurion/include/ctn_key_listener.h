@@ -23,7 +23,7 @@ class IKeyListener {
   the key state.
   \since 1.1.0
   */
-  virtual void StateUpdated(const KeyState& state) = 0;
+  virtual void KeyStateUpdated(const KeyState& state) = 0;
 };
 
 using IKeyListener_sptr = std::shared_ptr<IKeyListener>;

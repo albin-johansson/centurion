@@ -83,7 +83,7 @@ void Renderer::RenderLine(Point p1, Point p2) noexcept {
 }
 
 void Renderer::RenderString(const std::string& str, int x, int y) {
-  if (font == nullptr) {
+  if ((font == nullptr) || str.empty()) {
     return;
   }
   SDL_Texture* texture = CreateSDLTextureFromString(str);

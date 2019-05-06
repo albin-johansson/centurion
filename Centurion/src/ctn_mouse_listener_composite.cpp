@@ -12,9 +12,7 @@ MouseListenerComposite::~MouseListenerComposite() { RemoveChildren(); }
 
 void MouseListenerComposite::MouseStateUpdated(const MouseState& mouse) {
   for (IMouseListener_sptr ml : children) {
-    // if (ml != nullptr) {
     ml->MouseStateUpdated(mouse);
-    //}
   }
 }
 

@@ -63,8 +63,20 @@ class InputDispatcher final {
   */
   void AddKeyListener(IKeyListener_sptr kl);
 
+  /**
+  \brief Removes a mouse listener from this InputDispatcher.
+  \param ml - a pointer to the instance that will be removed.
+  \note This method has no effect if the supplied pointer is nullptr.
+  \since 2.0.0
+  */
   void RemoveMouseListener(IMouseListener_sptr ml);
 
+  /**
+  \brief Removes a key listener from this InputDispatcher.
+  \param kl - a pointer to the instance that will be removed.
+  \note This method has no effect if the supplied pointer is nullptr.
+  \since 2.0.0
+  */
   void RemoveKeyListener(IKeyListener_sptr kl);
 
   /**

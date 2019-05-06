@@ -13,9 +13,7 @@ KeyListenerComposite::~KeyListenerComposite() { RemoveChildren(); }
 
 void KeyListenerComposite::KeyStateUpdated(const KeyState& state) {
   for (IKeyListener_sptr child : children) {
-    // if (child != nullptr) {
     child->KeyStateUpdated(state);
-    //}
   }
 }
 

@@ -46,6 +46,12 @@ class MouseListenerComposite final : public IMouseListener {
   */
   void AddChild(IMouseListener_sptr child);
 
+  /**
+  \brief Removes a child from this MouseListenerComposite.
+  \param child - a pointer to the child that will be removed.
+  \note this method has no effect if the supplied pointer is nullptr.
+  \since 2.0.0
+  */
   void RemoveChild(IMouseListener_sptr child);
 
   /**

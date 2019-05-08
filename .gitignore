@@ -34,9 +34,11 @@
 # Custom stuff
 .vs/
 out/
-Centurion/lib/
 lib/
-CenturionTest/
+Centurion/lib/
+Centurion/packages/
+CenturionTests/packages/
+*.config
 *.idb
 *.pdb
 *.lastbuildstate

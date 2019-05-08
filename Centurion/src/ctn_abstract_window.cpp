@@ -87,6 +87,16 @@ ITexture_sptr AbstractWindow::CreateTextureFromString(const std::string& str) {
   return renderer->CreateTextureFromString(str);
 }
 
+ITexture_sptr AbstractWindow::CreateTextureFromStringShaded(
+    const std::string& str) {
+  return renderer->CreateTextureFromStringShaded(str);
+}
+
+ITexture_sptr AbstractWindow::CreateTextureFromStringWrapped(
+    const std::string& str, int wrap) {
+  return renderer->CreateTextureFromStringWrapped(str, wrap);
+}
+
 ITexture_sptr AbstractWindow::CreateSubtexture(ITexture_sptr base,
                                                Rectangle cutout, int w, int h,
                                                Uint32 format) {

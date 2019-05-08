@@ -16,17 +16,32 @@ Renderer::Renderer(SDL_Renderer* sdlRenderer) {
 
 Renderer::~Renderer() { SDL_DestroyRenderer(sdlRenderer); }
 
-SDL_Texture* Renderer::CreateSDLTextureFromString(const std::string& str) {
-  if (font == nullptr) {
-    throw std::exception("Failed to create texture!");
-  }
-  TTF_Font* f = font->GetSDLVersion();
-  SDL_Color c = color.GetSDLVersion();
+SDL_Surface* Renderer::GetShadedStringSurface(const std::string& str, Color fg,
+                                              Color bg) {
+  return TTF_RenderText_Shaded(font->GetSDLVersion(), str.c_str(),
+                               fg.GetSDLVersion(), bg.GetSDLVersion());
+}
 
-  SDL_Surface* surface = TTF_RenderText_Solid(f, str.c_str(), c);
+SDL_Surface* Renderer::GetBlendedStringSurface(const std::string& str,
+                                               Color fg) {
+  return TTF_RenderText_Blended(font->GetSDLVersion(), str.c_str(),
+                                fg.GetSDLVersion());
+}
+
+SDL_Surface* Renderer::GetWrappedStringSurface(const std::string& str, Color fg,
+                                               int wrap) {
+  if (wrap <= 0) {
+    throw std::invalid_argument("Invalid wrap parameter!");
+  }
+  Uint32 w = static_cast<Uint32>(wrap);
+  return TTF_RenderText_Blended_Wrapped(font->GetSDLVersion(), str.c_str(),
+                                        fg.GetSDLVersion(), w);
+}
+
+SDL_Texture* Renderer::CreateTextureFromSurface(SDL_Surface* surface) {
   SDL_Texture* texture = SDL_CreateTextureFromSurface(GetSDLVersion(), surface);
   SDL_FreeSurface(surface);
-
+  SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
   return texture;
 }
 
@@ -86,9 +101,8 @@ void Renderer::RenderString(const std::string& str, int x, int y) {
   if ((font == nullptr) || str.empty()) {
     return;
   }
-  SDL_Texture* texture = CreateSDLTextureFromString(str);
-  Texture tmp = Texture(texture);
-  Render(tmp, x, y);
+  ITexture_sptr tmp = CreateTextureFromString(str);
+  Render(*tmp, x, y);
 }
 
 void Renderer::SetRenderTarget(ITexture_sptr texture) noexcept {
@@ -106,8 +120,43 @@ void Renderer::SetColor(Color c) noexcept {
                          c.GetAlpha());
 }
 
+// TODO test CreateTextureFromxxx methods, also add delegations to window
+// interface
+
 ITexture_sptr Renderer::CreateTextureFromString(const std::string& str) {
-  SDL_Texture* texture = CreateSDLTextureFromString(str);
+  if (font == nullptr) {
+    throw std::exception("No font to use!");
+  } else if (str.empty()) {
+    throw std::invalid_argument("Empty string!");
+  }
+  // Color bg = Color(0, 0, 0, 0);
+  SDL_Surface* surface = GetBlendedStringSurface(str, color /*, bg*/);
+  SDL_Texture* texture = CreateTextureFromSurface(surface);
+  return Texture::CreateShared(texture);
+}
+
+// FIXME this method doesn't do what it's expected to do
+ITexture_sptr Renderer::CreateTextureFromStringShaded(const std::string& str) {
+  if (font == nullptr) {
+    throw std::exception("No font to use!");
+  } else if (str.empty()) {
+    throw std::invalid_argument("Empty string!");
+  }
+  Color bg = Color(50, 50, 50, 75);
+  SDL_Surface* surface = GetShadedStringSurface(str, color, bg);
+  SDL_Texture* texture = CreateTextureFromSurface(surface);
+  return Texture::CreateShared(texture);
+}
+
+ITexture_sptr Renderer::CreateTextureFromStringWrapped(const std::string& str,
+                                                       int wrap) {
+  if (font == nullptr) {
+    throw std::exception("No font to use!");
+  } else if (str.empty()) {
+    throw std::invalid_argument("Empty string!");
+  }
+  SDL_Surface* surface = GetWrappedStringSurface(str, color, wrap);
+  SDL_Texture* texture = CreateTextureFromSurface(surface);
   return Texture::CreateShared(texture);
 }
 

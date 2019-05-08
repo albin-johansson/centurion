@@ -4,6 +4,8 @@
 namespace centurion {
 namespace visuals {
 
+// TODO expand this class
+
 Surface::Surface(SDL_Surface* sdlSurface) {
   if (sdlSurface == nullptr) {
     throw std::invalid_argument("Null surface pointer!");

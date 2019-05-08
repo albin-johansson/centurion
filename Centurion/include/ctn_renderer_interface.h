@@ -159,9 +159,34 @@ class IRenderer {
   font.
   \param str - the string that the created texture will represent.
   \throws exception if there isn't a font to use.
+  \throws invalid_argument if the supplied string is empty.
   \since 1.0.0
   */
   virtual ITexture_sptr CreateTextureFromString(const std::string& str) = 0;
+
+  /**
+  \brief Creates a shaded texture of the supplied string, using the currently
+  selected font.
+  \param str - the string that the created texture will represent.
+  \throws exception if there isn't a font to use.
+  \throws invalid_argument if the supplied string is empty.
+  \since 2.0.0
+  */
+  virtual ITexture_sptr CreateTextureFromStringShaded(
+      const std::string& str) = 0;
+
+  /**
+  \brief Creates a shaded texture of a string, using the currently selected
+  font. The string will wrap at the specified wrap value, which is the width
+  in pixels.
+  \param str - the string that the created texture will represent.
+  \param wrap - the amount of pixels to use before wrapping the string.
+  \throws invalid_argument if the wrap argument isn't greater than zero.
+  \throws invalid_argument if the supplied string is empty.
+  \since 2.0.0
+  */
+  virtual ITexture_sptr CreateTextureFromStringWrapped(const std::string& str,
+                                                       int wrap) = 0;
 
   /**
   \brief Creates and returns a subtexture from the supplied texture.

@@ -60,13 +60,5 @@ Rectangle_uptr Rectangle::CreateUnique(int w, int h) {
   return std::make_unique<Rectangle>(w, h);
 }
 
-Rectangle_wptr Rectangle::CreateWeak(int x, int y, int w, int h) {
-  return CreateShared(x, y, w, h);
-}
-
-Rectangle_wptr Rectangle::CreateWeak(int w, int h) {
-  return CreateShared(w, h);
-}
-
 }  // namespace geo
 }  // namespace centurion

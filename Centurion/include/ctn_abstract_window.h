@@ -153,13 +153,37 @@ class AbstractWindow : public IWindow {
   void SetColor(Color color) noexcept override;
 
   /**
-  \brief Creates a texture of the supplied string, using the currently selected
-  font.
+   \brief Creates a texture of the supplied string, using the currently selected
+   font.
+   \param str - the string that the created texture will represent.
+   \throws exception if there isn't a font to use.
+   \throws invalid_argument if the supplied string is empty.
+   \since 1.0.0
+   */
+  ITexture_sptr CreateTextureFromString(const std::string& str) override;
+
+  /**
+  \brief Creates a shaded texture of the supplied string, using the currently
+  selected font.
   \param str - the string that the created texture will represent.
   \throws exception if there isn't a font to use.
-  \since 1.0.0
+  \throws invalid_argument if the supplied string is empty.
+  \since 2.0.0
   */
-  ITexture_sptr CreateTextureFromString(const std::string& str);
+  ITexture_sptr CreateTextureFromStringShaded(const std::string& str) override;
+
+  /**
+  \brief Creates a shaded texture of a string, using the currently selected
+  font. The string will wrap at the specified wrap value, which is the width
+  in pixels.
+  \param str - the string that the created texture will represent.
+  \param wrap - the amount of pixels to use before wrapping the string.
+  \throws invalid_argument if the wrap argument isn't greater than zero.
+  \throws invalid_argument if the supplied string is empty.
+  \since 2.0.0
+  */
+  ITexture_sptr CreateTextureFromStringWrapped(const std::string& str,
+                                               int wrap) override;
 
   /**
   \brief Creates and returns a subtexture from the supplied texture.

@@ -6,6 +6,8 @@
 namespace centurion {
 namespace visuals {
 
+// TODO expand this class
+
 Texture::Texture(SDL_Texture* sdlTexture) {
   if (sdlTexture == nullptr) {
     throw std::invalid_argument("Null texture pointer!");

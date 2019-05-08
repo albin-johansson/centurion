@@ -31,10 +31,10 @@ class Rectangle final {
   Rectangle(int x, int y, int w, int h);
 
   /**
-  \param w - the width of the rectangle.
-  \param h - the height of the rectangle.
+  \param width - the width of the rectangle.
+  \param height - the height of the rectangle.
   */
-  Rectangle(int w, int h);
+  Rectangle(int width, int height);
 
   Rectangle();
 
@@ -136,11 +136,11 @@ class Rectangle final {
 
   /**
   \brief Returns a shared pointer that points to a Rectangle.
-  \param x - the initial x-coordinate of the rectangle.
-  \param y - the initial y-coordinate of the rectangle.
+  \param width - the initial x-coordinate of the rectangle.
+  \param height - the initial y-coordinate of the rectangle.
   \since 1.1.0
   */
-  static Rectangle_sptr CreateShared(int x, int y);
+  static Rectangle_sptr CreateShared(int width, int height);
 
   /**
   \brief Returns a unique pointer that points to a Rectangle.
@@ -154,29 +154,11 @@ class Rectangle final {
 
   /**
   \brief Returns a unique pointer that points to a Rectangle.
-  \param x - the initial x-coordinate of the rectangle.
-  \param y - the initial y-coordinate of the rectangle.
+  \param width - the width of the rectangle.
+  \param height - the height of the rectangle.
   \since 1.1.0
   */
-  static Rectangle_uptr CreateUnique(int x, int y);
-
-  /**
-  \brief Returns a weak pointer that points to a Rectangle.
-  \param x - the initial x-coordinate of the rectangle.
-  \param y - the initial y-coordinate of the rectangle.
-  \param w - the width of the rectangle.
-  \param h - the height of the rectangle.
-  \since 1.1.0
-  */
-  static Rectangle_wptr CreateWeak(int x, int y, int w, int h);
-
-  /**
-  \brief Returns a weak pointer that points to a Rectangle.
-  \param x - the initial x-coordinate of the rectangle.
-  \param y - the initial y-coordinate of the rectangle.
-  \since 1.1.0
-  */
-  static Rectangle_wptr CreateWeak(int x, int y);
+  static Rectangle_uptr CreateUnique(int width, int height);
 };
 
 }  // namespace geo

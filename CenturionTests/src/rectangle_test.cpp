@@ -1,4 +1,5 @@
 #include <pch.h>
+
 TEST(Rectangle, ctor_exceptions) {
   // width, height
   EXPECT_THROW(Rectangle(1, 0), std::invalid_argument);

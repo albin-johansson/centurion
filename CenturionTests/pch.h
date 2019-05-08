@@ -4,7 +4,6 @@
 #undef main  // don't use the SDL main function
 #include "gtest/gtest.h"
 
-// Useful includes
 #include <centurion_everything.h>
 #include <stdio.h>
 #include <stdexcept>

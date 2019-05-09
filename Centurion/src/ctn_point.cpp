@@ -21,7 +21,5 @@ Point_uptr Point::CreateUnique(int x, int y) {
   return std::make_unique<Point>(x, y);
 }
 
-Point_wptr Point::CreateWeak(int x, int y) { return CreateShared(x, y); }
-
 }  // namespace geo
 }  // namespace centurion

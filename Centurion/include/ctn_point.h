@@ -76,14 +76,6 @@ class Point final {
   \since 1.1.0
   */
   static Point_uptr CreateUnique(int x, int y);
-
-  /**
-  \brief Returns a weak pointer to a Point instance.
-  \param x - the initial x-coordinate of the point.
-  \param y - the initial y-coordinate of the point.
-  \since 1.1.0
-  */
-  static Point_wptr CreateWeak(int x, int y);
 };
 
 }  // namespace geo

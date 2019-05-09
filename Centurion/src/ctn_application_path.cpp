@@ -29,7 +29,5 @@ ApplicationPath_uptr ApplicationPath::CreateUnique() {
   return std::make_unique<ApplicationPath>();
 }
 
-ApplicationPath_wptr ApplicationPath::CreateWeak() { return CreateShared(); }
-
 }  // namespace tools
 }  // namespace centurion

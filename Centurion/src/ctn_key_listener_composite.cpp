@@ -43,9 +43,5 @@ KeyListenerComposite_uptr KeyListenerComposite::CreateUnique() {
   return std::make_unique<KeyListenerComposite>();
 }
 
-KeyListenerComposite_wptr KeyListenerComposite::CreateWeak() {
-  return CreateShared();
-}
-
 }  // namespace input
 }  // namespace centurion

@@ -62,14 +62,6 @@ class Surface final {
   \since 2.0.0
   */
   static Surface_uptr CreateUnique(SDL_Surface* sdlSurface);
-
-  /**
-  \brief Creates and returns a weak pointer that points at an SDL_Surface.
-  \param sdlSurface - a pointer to the SDL_Surface instance used as the internal
-  representation of the new Surface instance.
-  \since 2.0.0
-  */
-  static Surface_wptr CreateWeak(SDL_Surface* sdlSurface);
 };
 
 }  // namespace visuals

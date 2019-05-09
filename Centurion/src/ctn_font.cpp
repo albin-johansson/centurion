@@ -116,9 +116,5 @@ Font_uptr Font::CreateUnique(const std::string& path, int size) {
   return std::make_unique<Font>(path, size);
 }
 
-Font_wptr Font::CreateWeak(const std::string& path, int size) {
-  return CreateShared(path, size);
-}
-
 }  // namespace visuals
 }  // namespace centurion

@@ -140,15 +140,6 @@ class Color {
   */
   static Color_uptr CreateUnique(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
-  /**
-  \brief Returns a weak pointer that points to a Color instance.
-  \param r - the red component of the color in the range [MIN_VAL, MAX_VAL].
-  \param g - the green component of the color in the range [MIN_VAL, MAX_VAL].
-  \param b - the blue component of the color in the range [MIN_VAL, MAX_VAL].
-  \param a - the alpha component of the color in the range [MIN_VAL, MAX_VAL].
-  \since 1.1.0
-  */
-  static Color_wptr CreateWeak(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 };
 
 }  // namespace visuals

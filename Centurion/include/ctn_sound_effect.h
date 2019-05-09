@@ -77,13 +77,6 @@ class SoundEffect final : public IAudioComponent {
   \since 1.1.0
   */
   static SoundEffect_uptr CreateUnique(const std::string& path);
-
-  /**
-  \brief Returns a weak pointer that points to a SoundEffect instance.
-  \param path - the path of the sound effect file.
-  \since 1.1.0
-  */
-  static SoundEffect_wptr CreateWeak(const std::string& path);
 };
 
 }  // namespace audio

@@ -61,14 +61,5 @@ Texture_uptr Texture::CreateUnique(const std::string& path,
   return std::make_unique<Texture>(path, renderer);
 }
 
-Texture_wptr Texture::CreateWeak(SDL_Texture* sdlTexture) {
-  return CreateShared(sdlTexture);
-}
-
-Texture_wptr Texture::CreateWeak(const std::string& path,
-                                 SDL_Renderer* renderer) {
-  return CreateShared(path, renderer);
-}
-
 }  // namespace visuals
 }  // namespace centurion

@@ -167,15 +167,6 @@ class AdvancedImage final : public IImage {
   */
   static IImage_wptr CreateWeak(const std::string& path, SDL_Renderer* renderer,
                                 Uint32 pixelFormat);
-
-  /**
-  \brief Returns a weak pointer that points at an AdvancedImage instance.
-  \param path - the file path of the image file.
-  \param renderer - a pointer to the SDL_Renderer used to create the image.
-  \since 2.0.0
-  */
-  static IImage_wptr CreateWeak(const std::string& path,
-                                SDL_Renderer* renderer);
 };
 
 }  // namespace visuals

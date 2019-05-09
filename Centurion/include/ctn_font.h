@@ -158,14 +158,6 @@ class Font final {
   \since 1.1.0
   */
   static Font_uptr CreateUnique(const std::string& path, int size);
-
-  /**
-  \brief Creates and returns a weak pointer that points to a Font instance.
-  \param path - the path of the True Type Font (.ttf) file.
-  \param size - the point size of the font.
-  \since 1.1.0
-  */
-  static Font_wptr CreateWeak(const std::string& path, int size);
 };
 
 }  // namespace visuals

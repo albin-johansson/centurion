@@ -42,9 +42,5 @@ MouseListenerComposite_uptr MouseListenerComposite::CreateUnique() {
   return std::make_unique<MouseListenerComposite>();
 }
 
-MouseListenerComposite_wptr MouseListenerComposite::CreateWeak() {
-  return CreateShared();
-}
-
 }  // namespace input
 }  // namespace centurion

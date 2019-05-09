@@ -53,12 +53,6 @@ class ApplicationPath final {
   \since 2.0.0
   */
   static ApplicationPath_uptr CreateUnique();
-
-  /**
-  \brief Returns a weak pointer that points to an ApplicationPath instance.
-  \since 2.0.0
-  */
-  static ApplicationPath_wptr CreateWeak();
 };
 
 }  // namespace tools

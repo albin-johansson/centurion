@@ -27,7 +27,5 @@ FullscreenWindow_uptr FullscreenWindow::CreateUnique() {
   return std::make_unique<FullscreenWindow>();
 }
 
-FullscreenWindow_wptr FullscreenWindow::CreateWeak() { return CreateShared(); }
-
 }  // namespace visuals
 }  // namespace centurion

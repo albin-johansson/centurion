@@ -140,10 +140,5 @@ IImage_wptr AdvancedImage::CreateWeak(const std::string& path,
   return CreateShared(path, renderer, pixelFormat);
 }
 
-IImage_wptr AdvancedImage::CreateWeak(const std::string& path,
-                                      SDL_Renderer* renderer) {
-  return CreateShared(path, renderer);
-}
-
 }  // namespace visuals
 }  // namespace centurion

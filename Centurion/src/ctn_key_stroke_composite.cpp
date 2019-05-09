@@ -34,9 +34,5 @@ KeyStrokeComposite_uptr KeyStrokeComposite::CreateUnique() {
   return std::unique_ptr<KeyStrokeComposite>();
 }
 
-KeyStrokeComposite_wptr KeyStrokeComposite::CreateWeak() {
-  return CreateShared();
-}
-
 }  // namespace events
 }  // namespace centurion

@@ -31,9 +31,5 @@ Color_uptr Color::CreateUnique(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
   return std::make_unique<Color>(r, g, b, a);
 }
 
-Color_wptr Color::CreateWeak(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
-  return CreateShared(r, g, b, a);
-}
-
 }  // namespace visuals
 }  // namespace centurion

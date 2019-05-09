@@ -130,14 +130,6 @@ class Window final : public AbstractWindow {
   \since 1.1.0
   */
   static Window_uptr CreateUnique(int width, int height);
-
-  /**
-  \brief Returns a weak pointer that points to a Window instance.
-  \param width - the width of the window.
-  \param height - the height of the window.
-  \since 1.1.0
-  */
-  static Window_wptr CreateWeak(int width, int height);
 };
 
 }  // namespace visuals

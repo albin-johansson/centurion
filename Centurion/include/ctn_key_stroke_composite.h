@@ -58,12 +58,6 @@ class KeyStrokeComposite final {
   \since 1.1.0
   */
   static KeyStrokeComposite_uptr CreateUnique();
-
-  /**
-  \brief Returns a weak pointer that points to a KeyStrokeComposite instance.
-  \since 1.1.0
-  */
-  static KeyStrokeComposite_wptr CreateWeak();
 };
 
 }  // namespace events

@@ -65,12 +65,6 @@ class MouseListenerComposite final : public IMouseListener {
   \since 1.1.0
   */
   static MouseListenerComposite_uptr CreateUnique();
-
-  /**
-  \brief Returns a weak pointer that points to a MouseListenerComposite.
-  \since 1.1.0
-  */
-  static MouseListenerComposite_wptr CreateWeak();
 };
 
 }  // namespace input

@@ -85,12 +85,6 @@ class KeyState final {
   \since 1.1.0
   */
   static KeyState_uptr CreateUnique();
-
-  /**
-  \brief Returns a weak pointer that points to a KeyState.
-  \since 1.1.0
-  */
-  static KeyState_wptr CreateWeak();
 };
 
 }  // namespace input

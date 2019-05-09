@@ -211,9 +211,5 @@ IRenderer_uptr Renderer::CreateUnique(SDL_Renderer* renderer) {
   return std::make_unique<Renderer>(renderer);
 }
 
-IRenderer_wptr Renderer::CreateWeak(SDL_Renderer* renderer) {
-  return CreateShared(renderer);
-}
-
 }  // namespace visuals
 }  // namespace centurion

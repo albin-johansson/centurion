@@ -112,12 +112,6 @@ class InputDispatcher final {
   \since 1.1.0
   */
   static InputDispatcher_uptr CreateUnique();
-
-  /**
-  \brief Returns a weak pointer that points to an InputDispatcher instance.
-  \since 1.1.0
-  */
-  static InputDispatcher_wptr CreateWeak();
 };
 
 }  // namespace input

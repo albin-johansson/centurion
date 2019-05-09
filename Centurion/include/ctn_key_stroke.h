@@ -92,17 +92,6 @@ class KeyStroke final {
   */
   static KeyStroke_uptr CreateUnique(SDL_Keycode keycode, IAction_sptr action,
                                      KeyTrigger trigger);
-
-  /**
-  \brief Creates and returns a weak pointer that points to a KeyStroke instance.
-  \param keycode - the key code of the key that will trigger the KeyStroke.
-  \param action - a pointer to the IAction instance that will be associated with
-  the KeyStroke.
-  \param trigger - the value that specifies the moment of activation.
-  \since 1.0.0
-  */
-  static KeyStroke_wptr CreateWeak(SDL_Keycode keycode, IAction_sptr action,
-                                   KeyTrigger trigger);
 };
 
 }  // namespace events

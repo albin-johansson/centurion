@@ -61,7 +61,5 @@ InputDispatcher_uptr InputDispatcher::CreateUnique() {
   return std::make_unique<InputDispatcher>();
 }
 
-InputDispatcher_wptr InputDispatcher::CreateWeak() { return CreateShared(); }
-
 }  // namespace input
 }  // namespace centurion

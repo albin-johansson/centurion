@@ -118,12 +118,6 @@ class MouseState final {
   \since 1.1.0
   */
   static MouseState_uptr CreateUnique();
-
-  /**
-  \brief Returns a weak pointer that points to a MouseState.
-  \since 1.1.0
-  */
-  static MouseState_wptr CreateWeak();
 };
 
 }  // namespace input

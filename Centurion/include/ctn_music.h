@@ -87,14 +87,6 @@ class Music final : public IAudioComponent {
   \since 1.1.0
   */
   static Music_uptr CreateUnique(const std::string& path);
-
-  /**
-  \brief Returns a weak pointer that points to a Music instance.
-  \param path - the path of the .WAV-file that the Music instance will
-  represent.
-  \since 1.1.0
-  */
-  static Music_wptr CreateWeak(const std::string& path);
 };
 
 }  // namespace audio

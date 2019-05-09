@@ -34,12 +34,6 @@ class FullscreenWindow final : public AbstractWindow {  // FIXME document
   \since 2.0.0
   */
   static FullscreenWindow_uptr CreateUnique();
-
-  /**
-  \brief Creates and returns a weak pointer to a FullscreenWindow instance.
-  \since 2.0.0
-  */
-  static FullscreenWindow_wptr CreateWeak();
 };
 
 }  // namespace visuals

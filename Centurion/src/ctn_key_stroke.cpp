@@ -59,10 +59,5 @@ KeyStroke_uptr KeyStroke::CreateUnique(SDL_Keycode keycode, IAction_sptr action,
   return std::make_unique<KeyStroke>(keycode, action, trigger);
 }
 
-KeyStroke_wptr KeyStroke::CreateWeak(SDL_Keycode keycode, IAction_sptr action,
-                                     KeyTrigger trigger) {
-  return CreateShared(keycode, action, trigger);
-}
-
 }  // namespace events
 }  // namespace centurion

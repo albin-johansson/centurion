@@ -276,14 +276,6 @@ class Renderer final : public IRenderer {
   \since 1.1.0
   */
   static IRenderer_uptr CreateUnique(SDL_Renderer* renderer);
-
-  /**
-  \brief Returns a weak pointer to a renderer instance.
-  \param renderer - a pointer to the SDL_Renderer that the renderer will be
-  based on.
-  \since 1.1.0
-  */
-  static IRenderer_wptr CreateWeak(SDL_Renderer* renderer);
 };
 
 }  // namespace visuals

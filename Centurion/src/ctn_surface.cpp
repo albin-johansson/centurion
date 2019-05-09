@@ -34,9 +34,5 @@ Surface_uptr Surface::CreateUnique(SDL_Surface* sdlSurface) {
   return std::make_unique<Surface>(sdlSurface);
 }
 
-Surface_wptr Surface::CreateWeak(SDL_Surface* sdlSurface) {
-  return CreateShared(sdlSurface);
-}
-
 }  // namespace visuals
 }  // namespace centurion

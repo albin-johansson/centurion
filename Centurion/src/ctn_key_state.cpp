@@ -43,7 +43,5 @@ KeyState_sptr KeyState::CreateShared() { return std::shared_ptr<KeyState>(); }
 
 KeyState_uptr KeyState::CreateUnique() { return std::make_unique<KeyState>(); }
 
-KeyState_wptr KeyState::CreateWeak() { return CreateShared(); }
-
 }  // namespace input
 }  // namespace centurion

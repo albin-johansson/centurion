@@ -76,9 +76,5 @@ Window_uptr Window::CreateUnique(int width, int height) {
   return std::make_unique<Window>(width, height);
 }
 
-Window_wptr Window::CreateWeak(int width, int height) {
-  return CreateShared(width, height);
-}
-
 }  // namespace visuals
 }  // namespace centurion

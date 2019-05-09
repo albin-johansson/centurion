@@ -61,7 +61,5 @@ MouseState_uptr MouseState::CreateUnique() {
   return std::make_unique<MouseState>();
 }
 
-MouseState_wptr MouseState::CreateWeak() { return CreateShared(); }
-
 }  // namespace input
 }  // namespace centurion

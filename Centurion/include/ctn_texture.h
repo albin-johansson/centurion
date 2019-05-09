@@ -112,25 +112,6 @@ class Texture final : public ITexture {
   */
   static Texture_uptr CreateUnique(const std::string& path,
                                    SDL_Renderer* renderer);
-
-  /**
-  \brief Creates and returns a weak pointer to a Texture instance.
-  \param sdlTexture - a pointer to the SDL_Texture used as the internal
-  representation of this Texture.
-  \throws invalid_argument if the supplied pointer is null.
-  \since 2.0.0
-  */
-  static Texture_wptr CreateWeak(SDL_Texture* sdlTexture);
-
-  /**
-  \brief Creates and returns a weak pointer to a Texture instance.
-  \param path - the file path of the image file to base the texture on.
-  \param renderer - a pointer to the SDL_Renderer used to create the texture.
-  \throws exception if the creation of the Texture is unsuccessful.
-  \since 2.0.0
-  */
-  static Texture_wptr CreateWeak(const std::string& path,
-                                 SDL_Renderer* renderer);
 };
 
 }  // namespace visuals

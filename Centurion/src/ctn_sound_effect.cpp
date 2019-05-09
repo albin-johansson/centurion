@@ -66,10 +66,6 @@ SoundEffect_uptr SoundEffect::CreateUnique(const std::string& path) {
   return std::make_unique<SoundEffect>(path);
 }
 
-SoundEffect_wptr SoundEffect::CreateWeak(const std::string& path) {
-  return CreateShared(path);
-}
-
 }  // namespace audio
 }  // namespace centurion
 

@@ -72,9 +72,5 @@ Music_uptr Music::CreateUnique(const std::string& path) {
   return std::make_unique<Music>(path);
 }
 
-Music_wptr Music::CreateWeak(const std::string& path) {
-  return CreateShared(path);
-}
-
 }  // namespace audio
 }  // namespace centurion

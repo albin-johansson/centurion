@@ -65,12 +65,6 @@ class KeyListenerComposite final : public IKeyListener {
   \since 1.1.0
   */
   static KeyListenerComposite_uptr CreateUnique();
-
-  /**
-  \brief Returns a weak pointer that points to a KeyListenerComposite.
-  \since 1.1.0
-  */
-  static KeyListenerComposite_wptr CreateWeak();
 };
 
 }  // namespace input

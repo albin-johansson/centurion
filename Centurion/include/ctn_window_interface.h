@@ -167,17 +167,6 @@ class IWindow {
   virtual ITexture_sptr CreateTextureFromString(const std::string& str) = 0;
 
   /**
-  \brief Creates a shaded texture of the supplied string, using the currently
-  selected font.
-  \param str - the string that the created texture will represent.
-  \throws exception if there isn't a font to use.
-  \throws invalid_argument if the supplied string is empty.
-  \since 2.0.0
-  */
-  virtual ITexture_sptr CreateTextureFromStringShaded(
-      const std::string& str) = 0;
-
-  /**
   \brief Creates a shaded texture of a string, using the currently selected
   font. The string will wrap at the specified wrap value, which is the width
   in pixels.

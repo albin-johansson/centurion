@@ -36,13 +36,6 @@ TEST_F(RendererTest, CreateTextureFromString) {
   EXPECT_THROW(renderer->CreateTextureFromString(""), inv_arg);
 }
 
-TEST_F(RendererTest, CreateTextureFromStringShaded) {
-  renderer->SetFont(nullptr);
-  EXPECT_THROW(renderer->CreateTextureFromStringShaded(""), except);
-  renderer->SetFont(font);
-  EXPECT_THROW(renderer->CreateTextureFromStringShaded(""), inv_arg);
-}
-
 TEST_F(RendererTest, CreateTextureFromStringWrapped) {
   renderer->SetFont(nullptr);
   EXPECT_THROW(renderer->CreateTextureFromStringWrapped("", 10),

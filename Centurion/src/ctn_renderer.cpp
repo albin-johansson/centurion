@@ -16,12 +16,6 @@ Renderer::Renderer(SDL_Renderer* sdlRenderer) {
 
 Renderer::~Renderer() { SDL_DestroyRenderer(sdlRenderer); }
 
-SDL_Surface* Renderer::GetShadedStringSurface(const std::string& str, Color fg,
-                                              Color bg) {
-  return TTF_RenderText_Shaded(font->GetSDLVersion(), str.c_str(),
-                               fg.GetSDLVersion(), bg.GetSDLVersion());
-}
-
 SDL_Surface* Renderer::GetBlendedStringSurface(const std::string& str,
                                                Color fg) {
   return TTF_RenderText_Blended(font->GetSDLVersion(), str.c_str(),
@@ -105,6 +99,22 @@ void Renderer::RenderString(const std::string& str, int x, int y) {
   Render(*tmp, x, y);
 }
 
+void Renderer::RenderStringShaded(const std::string& str, int x, int y) {
+  if ((font == nullptr) || str.empty()) {
+    return;
+  }
+  Color previous = color;
+
+  color = Color(100, 100, 100, 100);
+  ITexture_sptr shadow = CreateTextureFromString(str);
+
+  color = previous;
+  ITexture_sptr foreground = CreateTextureFromString(str);
+
+  Render(*shadow, (x + 1), (y + 1));
+  Render(*foreground, x, y);
+}
+
 void Renderer::SetRenderTarget(ITexture_sptr texture) noexcept {
   if (texture == nullptr) {
     SDL_SetRenderTarget(sdlRenderer, NULL);
@@ -120,30 +130,13 @@ void Renderer::SetColor(Color c) noexcept {
                          c.GetAlpha());
 }
 
-// TODO test CreateTextureFromxxx methods, also add delegations to window
-// interface
-
 ITexture_sptr Renderer::CreateTextureFromString(const std::string& str) {
   if (font == nullptr) {
     throw std::exception("No font to use!");
   } else if (str.empty()) {
     throw std::invalid_argument("Empty string!");
   }
-  // Color bg = Color(0, 0, 0, 0);
-  SDL_Surface* surface = GetBlendedStringSurface(str, color /*, bg*/);
-  SDL_Texture* texture = CreateTextureFromSurface(surface);
-  return Texture::CreateShared(texture);
-}
-
-// FIXME this method doesn't do what it's expected to do
-ITexture_sptr Renderer::CreateTextureFromStringShaded(const std::string& str) {
-  if (font == nullptr) {
-    throw std::exception("No font to use!");
-  } else if (str.empty()) {
-    throw std::invalid_argument("Empty string!");
-  }
-  Color bg = Color(50, 50, 50, 75);
-  SDL_Surface* surface = GetShadedStringSurface(str, color, bg);
+  SDL_Surface* surface = GetBlendedStringSurface(str, color);
   SDL_Texture* texture = CreateTextureFromSurface(surface);
   return Texture::CreateShared(texture);
 }

@@ -131,6 +131,17 @@ class IRenderer {
   virtual void RenderString(const std::string& str, int x, int y) = 0;
 
   /**
+  \brief Renders the supplied string with a shadow, using the previously
+  selected font.
+  \param str - the string that will be rendered.
+  \param x - the x-coordinate of the rendered string.
+  \param y - the y-coordinate of the rendered string.
+  \note If no font is available, this method has no effect.
+  \since 2.0.0
+  */
+  virtual void RenderStringShaded(const std::string& str, int x, int y) = 0;
+
+  /**
   \brief Assigns the rendering target for subsequent rendering operations.
   \param texture - the texture that will serve as the rendering target.
   \note If the supplied texture doesn't support being used as a rendering
@@ -163,17 +174,6 @@ class IRenderer {
   \since 1.0.0
   */
   virtual ITexture_sptr CreateTextureFromString(const std::string& str) = 0;
-
-  /**
-  \brief Creates a shaded texture of the supplied string, using the currently
-  selected font.
-  \param str - the string that the created texture will represent.
-  \throws exception if there isn't a font to use.
-  \throws invalid_argument if the supplied string is empty.
-  \since 2.0.0
-  */
-  virtual ITexture_sptr CreateTextureFromStringShaded(
-      const std::string& str) = 0;
 
   /**
   \brief Creates a shaded texture of a string, using the currently selected

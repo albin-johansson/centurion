@@ -17,3 +17,7 @@ using namespace centurion::audio;
 using namespace centurion::input;
 using namespace centurion::tools;
 using namespace centurion::events;
+
+// Useful exception aliases
+using inv_arg = std::invalid_argument;
+using except = std::exception;

@@ -1,25 +1,25 @@
 #include <pch.h>
 
-TEST(Point, defaults) {
-  Point p;
-  EXPECT_EQ(p.GetX(), 0);
-  EXPECT_EQ(p.GetY(), 0);
+TEST(PointTest, defaults) {
+  Point point;
+  EXPECT_EQ(point.GetX(), 0);
+  EXPECT_EQ(point.GetY(), 0);
 }
 
-TEST(Point, setters) {
-  Point p = Point(0, 0);
+TEST(PointTest, setters) {
+  Point point;
 
   int x = 1295012;
   int y = -12499601;
 
-  p.SetX(x);
-  p.SetY(y);
+  point.SetX(x);
+  point.SetY(y);
 
-  EXPECT_EQ(p.GetX(), x);
-  EXPECT_EQ(p.GetY(), y);
+  EXPECT_EQ(point.GetX(), x);
+  EXPECT_EQ(point.GetY(), y);
 }
 
-TEST(Point, getters) {
+TEST(PointTest, getters) {
   int x = 12395;
   int y = 91285;
 

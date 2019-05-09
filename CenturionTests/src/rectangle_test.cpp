@@ -2,12 +2,12 @@
 
 TEST(Rectangle, ctor_exceptions) {
   // width, height
-  EXPECT_THROW(Rectangle(1, 0), std::invalid_argument);
-  EXPECT_THROW(Rectangle(0, 1), std::invalid_argument);
+  EXPECT_THROW(Rectangle(1, 0), inv_arg);
+  EXPECT_THROW(Rectangle(0, 1), inv_arg);
 
   // x, y, width and height
-  EXPECT_THROW(Rectangle(0, 0, 0, 1), std::invalid_argument);
-  EXPECT_THROW(Rectangle(0, 0, 1, 0), std::invalid_argument);
+  EXPECT_THROW(Rectangle(0, 0, 0, 1), inv_arg);
+  EXPECT_THROW(Rectangle(0, 0, 1, 0), inv_arg);
 }
 
 TEST(Rectangle, setters) {

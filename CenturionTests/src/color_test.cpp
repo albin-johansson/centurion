@@ -1,6 +1,6 @@
 #include <pch.h>
 
-TEST(Color, ctor) {
+TEST(ColorTest, ctor) {
   int overflow = Color::MAX_VAL + 11294;
 
   EXPECT_NO_THROW(Color(overflow, 0, 0, 0));
@@ -9,7 +9,23 @@ TEST(Color, ctor) {
   EXPECT_NO_THROW(Color(0, 0, 0, overflow));
 }
 
-TEST(Color, getters) {
+static bool Equal(Color a, Color b) {
+  return (a.GetRed() == b.GetRed()) && (a.GetGreen() == b.GetGreen()) &&
+         (a.GetBlue() == b.GetBlue()) && (a.GetAlpha() == b.GetAlpha());
+}
+
+TEST(ColorTest, constants) {
+  EXPECT_EQ(Color::MAX_VAL, 0xFF);
+  EXPECT_EQ(Color::MIN_VAL, 0);
+
+  EXPECT_TRUE(Equal(Color::RED, Color(0xFF, 0, 0)));
+  EXPECT_TRUE(Equal(Color::GREEN, Color(0, 0xFF, 0)));
+  EXPECT_TRUE(Equal(Color::BLUE, Color(0, 0, 0xFF)));
+  EXPECT_TRUE(Equal(Color::WHITE, Color(0xFF, 0xFF, 0xFF)));
+  EXPECT_TRUE(Equal(Color::BLACK, Color(0, 0, 0)));
+}
+
+TEST(ColorTest, getters) {
   Uint8 red = 0xFD;
   Uint8 green = 0x3A;
   Uint8 blue = 0x8E;

@@ -1,6 +1,6 @@
 #include <pch.h>
 
-TEST(BoolConverter, conversion1) {
+TEST(BoolConverterTest, Convert1) {
   bool t = BoolConverter::Convert(SDL_TRUE);
   EXPECT_TRUE(t);
 
@@ -8,7 +8,7 @@ TEST(BoolConverter, conversion1) {
   EXPECT_FALSE(f);
 }
 
-TEST(BoolConverter, conversion2) {
+TEST(BoolConverterTest, Convert2) {
   SDL_bool t = BoolConverter::Convert(true);
   if (!t) {
     FAIL();

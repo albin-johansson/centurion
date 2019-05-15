@@ -1,5 +1,4 @@
 #include "ctn_font.h"
-#include <SDL_ttf.h>
 #include <stdexcept>
 
 namespace centurion {
@@ -82,18 +81,6 @@ bool Font::IsValidStyle(int style) noexcept {
   return (style & TTF_STYLE_BOLD) || (style & TTF_STYLE_ITALIC) ||
          (style & TTF_STYLE_NORMAL) || (style & TTF_STYLE_STRIKETHROUGH) ||
          (style & TTF_STYLE_UNDERLINE);
-}
-
-bool Font::IsBold() const noexcept { return styleMask & TTF_STYLE_BOLD; }
-
-bool Font::IsItalic() const noexcept { return styleMask & TTF_STYLE_ITALIC; }
-
-bool Font::IsUnderlined() const noexcept {
-  return styleMask & TTF_STYLE_UNDERLINE;
-}
-
-bool Font::IsStrikethrough() const noexcept {
-  return styleMask & TTF_STYLE_STRIKETHROUGH;
 }
 
 int Font::GetStringWidth(const std::string& str) const noexcept {

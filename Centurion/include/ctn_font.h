@@ -113,25 +113,29 @@ class Font final {
   \brief Returns true if this font is bold, false otherwise.
   \since 1.1.0
   */
-  bool IsBold() const noexcept;
+  inline bool IsBold() const noexcept { return styleMask & TTF_STYLE_BOLD; }
 
   /**
   \brief Returns true if this font is italic, false otherwise.
   \since 1.1.0
   */
-  bool IsItalic() const noexcept;
+  inline bool IsItalic() const noexcept { return styleMask & TTF_STYLE_ITALIC; }
 
   /**
   \brief Returns true if this font is underlined, false otherwise.
   \since 1.1.0
   */
-  bool IsUnderlined() const noexcept;
+  inline bool IsUnderlined() const noexcept {
+    return styleMask & TTF_STYLE_UNDERLINE;
+  }
 
   /**
   \brief Returns true if this font uses a strikethrough, false otherwise.
   \since 1.1.0
   */
-  bool IsStrikethrough() const noexcept;
+  inline bool IsStrikethrough() const noexcept {
+    return styleMask & TTF_STYLE_STRIKETHROUGH;
+  }
 
   /**
   \brief Returns true if this font is an outlined font, returns false otherwise.
@@ -139,6 +143,15 @@ class Font final {
   */
   inline bool IsOutlined() const noexcept {
     return TTF_GetFontOutline(font) > 0;
+  }
+
+  /**
+  \brief Returns true if this font is a fixed width font, returns false
+  otherwise.
+  \since 2.0.0
+  */
+  inline bool IsFixedWidth() const noexcept {
+    return TTF_FontFaceIsFixedWidth(font);
   }
 
   /**

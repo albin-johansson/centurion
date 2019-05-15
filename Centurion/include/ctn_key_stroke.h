@@ -3,22 +3,17 @@
 #include <SDL_keycode.h>
 #include <memory>
 #include "ctn_action.h"
-#include "ctn_event.h"
+#include "ctn_key_stroke_interface.h"
 #include "ctn_key_trigger.h"
 
 namespace centurion {
 namespace events {
 
-class KeyStroke;
-using KeyStroke_sptr = std::shared_ptr<KeyStroke>;
-using KeyStroke_uptr = std::unique_ptr<KeyStroke>;
-using KeyStroke_wptr = std::weak_ptr<KeyStroke>;
-
 /**
 \brief The KeyStroke class represents an key controlled action.
 \since 1.0.0
 */
-class KeyStroke final {
+class KeyStroke final : public IKeyStroke {
  private:
   IAction_sptr action;
   KeyTrigger trigger;
@@ -44,13 +39,13 @@ class KeyStroke final {
   \param event - The event that will be checked.
   \since 1.0.0
   */
-  void Update(const Event& event);
+  void Update(const Event& event) override;
 
   /**
   \brief Programmatically triggers the IAction related to this KeyStroke.
   \since 1.0.0
   */
-  void Trigger();
+  void Trigger() override;
 
   /**
   \brief Assigns whether or not this KeyStroke may be continously triggered by
@@ -61,37 +56,35 @@ class KeyStroke final {
   repeatable.
   \since 1.0.0
   */
-  void SetRepeatable(bool isRepeatable) noexcept;
+  void SetRepeatable(bool isRepeatable) noexcept override;
 
   /**
   \brief Indicates whether or not this KeyStroke is repeatable.
   \since 1.0.0
   */
-  inline bool IsRepeatable() const noexcept { return isRepeatable; }
+  inline bool IsRepeatable() const noexcept override { return isRepeatable; }
 
   /**
-  \brief Creates and returns a shared pointer that points to a KeyStroke
-  instance.
-  \param keycode - the key code of the key that will trigger the KeyStroke.
+  \brief Creates and returns a shared pointer to an IKeyStroke instance.
+  \param keycode - the key code of the key that will trigger the IKeyStroke.
   \param action - a pointer to the IAction instance that will be associated with
-  the KeyStroke.
+  the IKeyStroke.
   \param trigger - the value that specifies the moment of activation.
   \since 1.0.0
   */
-  static KeyStroke_sptr CreateShared(SDL_Keycode keycode, IAction_sptr action,
-                                     KeyTrigger trigger);
+  static IKeyStroke_sptr CreateShared(SDL_Keycode keycode, IAction_sptr action,
+                                      KeyTrigger trigger);
 
   /**
-  \brief Creates and returns a unique pointer that points to a KeyStroke
-  instance.
-  \param keycode - the key code of the key that will trigger the KeyStroke.
+  \brief Creates and returns a unique pointer to an IKeyStroke instance.
+  \param keycode - the key code of the key that will trigger the IKeyStroke.
   \param action - a pointer to the IAction instance that will be associated with
-  the KeyStroke.
+  the IKeyStroke.
   \param trigger - the value that specifies the moment of activation.
   \since 1.0.0
   */
-  static KeyStroke_uptr CreateUnique(SDL_Keycode keycode, IAction_sptr action,
-                                     KeyTrigger trigger);
+  static IKeyStroke_uptr CreateUnique(SDL_Keycode keycode, IAction_sptr action,
+                                      KeyTrigger trigger);
 };
 
 }  // namespace events

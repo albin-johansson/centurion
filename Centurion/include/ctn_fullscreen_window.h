@@ -14,7 +14,7 @@ using FullscreenWindow_wptr = std::weak_ptr<FullscreenWindow>;
 \brief The FullscreenWindow class represents a fullscreen top-level frame.
 \since 2.0.0
 */
-class FullscreenWindow final : public AbstractWindow {  // FIXME document
+class FullscreenWindow final : public AbstractWindow {
  private:
   SDL_Window* CreateWindow();
 

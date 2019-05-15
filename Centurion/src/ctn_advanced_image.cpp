@@ -134,11 +134,5 @@ IImage_uptr AdvancedImage::CreateUnique(const std::string& path,
   return std::make_unique<AdvancedImage>(path, renderer);
 }
 
-IImage_wptr AdvancedImage::CreateWeak(const std::string& path,
-                                      SDL_Renderer* renderer,
-                                      Uint32 pixelFormat) {
-  return CreateShared(path, renderer, pixelFormat);
-}
-
 }  // namespace visuals
 }  // namespace centurion

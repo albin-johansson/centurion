@@ -13,14 +13,13 @@ using KeyStrokeComposite_uptr = std::unique_ptr<KeyStrokeComposite>;
 using KeyStrokeComposite_wptr = std::weak_ptr<KeyStrokeComposite>;
 
 /**
-* DEPRECATED *
 \brief The KeyStrokeComposite is a convenience class designed to hold multiple
 KeyStroke instances.
 \since 1.0.0
 */
 class KeyStrokeComposite final {
  private:
-  std::vector<KeyStroke_sptr> keyStrokes;
+  std::vector<IKeyStroke_sptr> keyStrokes;
 
  public:
   KeyStrokeComposite();
@@ -37,9 +36,10 @@ class KeyStrokeComposite final {
   /**
   \brief Adds a KeyStroke instance to the composite.
   \param keyStroke - the KeyStroke instance that will be added.
+  \throws invalid_argument if the supplied pointer is nullptr.
   \since 1.0.0
   */
-  void AddKeyStroke(KeyStroke_sptr keyStroke);
+  void AddKeyStroke(IKeyStroke_sptr keyStroke);
 
   /**
   \brief Clears the composite of all KeyStroke instances.

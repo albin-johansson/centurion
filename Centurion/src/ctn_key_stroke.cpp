@@ -49,13 +49,15 @@ void KeyStroke::SetRepeatable(bool isRepeatable) noexcept {
   this->isRepeatable = isRepeatable;
 }
 
-KeyStroke_sptr KeyStroke::CreateShared(SDL_Keycode keycode, IAction_sptr action,
-                                       KeyTrigger trigger) {
+IKeyStroke_sptr KeyStroke::CreateShared(SDL_Keycode keycode,
+                                        IAction_sptr action,
+                                        KeyTrigger trigger) {
   return std::make_shared<KeyStroke>(keycode, action, trigger);
 }
 
-KeyStroke_uptr KeyStroke::CreateUnique(SDL_Keycode keycode, IAction_sptr action,
-                                       KeyTrigger trigger) {
+IKeyStroke_uptr KeyStroke::CreateUnique(SDL_Keycode keycode,
+                                        IAction_sptr action,
+                                        KeyTrigger trigger) {
   return std::make_unique<KeyStroke>(keycode, action, trigger);
 }
 

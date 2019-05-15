@@ -17,7 +17,7 @@ using Font_wptr = std::weak_ptr<Font>;
 */
 class Font final {
  private:
-  TTF_Font* font;
+  TTF_Font* font = nullptr;
   int styleMask;
   int size;
 
@@ -104,6 +104,12 @@ class Font final {
   inline int GetSize() const noexcept { return size; }
 
   /**
+  \brief Returns the style mask for this font.
+  \since 2.0.0
+  */
+  inline int GetStyleMask() const noexcept { return styleMask; }
+
+  /**
   \brief Returns true if this font is bold, false otherwise.
   \since 1.1.0
   */
@@ -126,6 +132,14 @@ class Font final {
   \since 1.1.0
   */
   bool IsStrikethrough() const noexcept;
+
+  /**
+  \brief Returns true if this font is an outlined font, returns false otherwise.
+  \since 2.0.0
+  */
+  inline bool IsOutlined() const noexcept {
+    return TTF_GetFontOutline(font) > 0;
+  }
 
   /**
   \brief Calculates and returns the width of the supplied string, if it was

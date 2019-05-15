@@ -98,7 +98,7 @@ class Font final {
   inline TTF_Font* GetSDLVersion() noexcept { return font; }
 
   /**
-  \brief Returns the point size of the font that this Font instacne represents.
+  \brief Returns the point size of the font that this Font instance represents.
   \since 1.0.0
   */
   inline int GetSize() const noexcept { return size; }

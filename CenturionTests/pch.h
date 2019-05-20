@@ -1,6 +1,9 @@
 #pragma once
 
 #include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #undef main  // don't use the SDL main function
 #include "gtest/gtest.h"
 

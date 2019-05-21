@@ -11,6 +11,8 @@
 namespace centurion {
 namespace visuals {
 
+// FIXME rename this class
+
 /**
 \brief The AdvancedImage class is an implementation of the IIMage interface.
 \since 2.0.0
@@ -157,16 +159,6 @@ class AdvancedImage final : public IImage {
   */
   static IImage_uptr CreateUnique(const std::string& path,
                                   SDL_Renderer* renderer);
-
-  /**
-  \brief Returns a weak pointer that points at an AdvancedImage instance.
-  \param path - the file path of the image file.
-  \param renderer - a pointer to the SDL_Renderer used to create the image.
-  \param pixelFormat - the pixel format to be used by the created image.
-  \since 2.0.0
-  */
-  static IImage_wptr CreateWeak(const std::string& path, SDL_Renderer* renderer,
-                                Uint32 pixelFormat);
 };
 
 }  // namespace visuals

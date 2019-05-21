@@ -23,6 +23,11 @@ Color::Color() : Color(0, 0, 0, MAX_VAL) {}
 
 Color::~Color() = default;
 
+bool Color::Equals(const Color& c) const noexcept {
+  return (color.r == c.GetRed()) && (color.g == c.GetGreen()) &&
+         (color.b == c.GetBlue()) && (color.a == c.GetAlpha());
+}
+
 Color_sptr Color::CreateShared(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
   return std::make_shared<Color>(r, g, b, a);
 }

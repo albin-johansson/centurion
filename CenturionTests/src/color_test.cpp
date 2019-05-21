@@ -44,3 +44,20 @@ TEST(ColorTest, getters) {
   EXPECT_EQ(color.GetBlue(), sdlColor.b);
   EXPECT_EQ(color.GetAlpha(), sdlColor.a);
 }
+
+TEST(ColorTest, Equals) {
+  Uint8 red = 105;
+  Uint8 green = 28;
+  Uint8 blue = 231;
+  Uint8 alpha = 189;
+
+  Color color1 = Color(red, green, blue, alpha);
+  Color color2 = Color(red, green, blue, alpha);
+
+  EXPECT_TRUE(color1.Equals(color2));
+  EXPECT_TRUE(color2.Equals(color1));
+
+  Color color3 = Color(red / 2, green / 2, blue / 2, alpha / 2);
+  EXPECT_FALSE(color1.Equals(color3));
+  EXPECT_FALSE(color3.Equals(color1));
+}

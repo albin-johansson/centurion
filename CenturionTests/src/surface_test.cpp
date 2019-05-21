@@ -53,15 +53,11 @@ TEST_F(SurfaceTest, Duplicate) {
   EXPECT_EQ(copy->GetAlpha(), surface->GetAlpha());
   EXPECT_EQ(copy->GetBlendMode(), surface->GetBlendMode());
 
-  // TODO equals method for colors
-
   Color copyModColor = copy->GetColorModulation();
   Color originalModColor = surface->GetColorModulation();
 
-  EXPECT_EQ(copyModColor.GetRed(), originalModColor.GetRed());
-  EXPECT_EQ(copyModColor.GetGreen(), originalModColor.GetGreen());
-  EXPECT_EQ(copyModColor.GetBlue(), originalModColor.GetBlue());
-  EXPECT_EQ(copyModColor.GetAlpha(), originalModColor.GetAlpha());
+  EXPECT_TRUE(copyModColor.Equals(originalModColor));
+  EXPECT_TRUE(originalModColor.Equals(copyModColor));
 
   EXPECT_EQ(copy->GetWidth(), surface->GetWidth());
   EXPECT_EQ(copy->GetHeight(), surface->GetHeight());
@@ -87,7 +83,6 @@ TEST_F(SurfaceTest, GetHeight) { EXPECT_EQ(height, surface->GetHeight()); }
 
 TEST_F(SurfaceTest, GetSDLVersion) {
   SDL_Surface* sdlVersion = surface->GetSDLVersion();
-
   ASSERT_NE(sdlVersion, nullptr);
   EXPECT_EQ(sdlVersion->w, surface->GetWidth());
   EXPECT_EQ(sdlVersion->h, surface->GetHeight());

@@ -121,6 +121,15 @@ class Color {
   inline SDL_Color GetSDLVersion() const noexcept { return color; }
 
   /**
+  \brief Returns true if the supplied color is effectively equal to this color,
+  returns false otherwise. A color is considered equal to another color if their
+  red, green, blue and alpha components exactly match.
+  \param color - the color to compare this color to.
+  \since 2.0.0
+  */
+  bool Equals(const Color& color) const noexcept;
+
+  /**
   \brief Returns a shared pointer that points to a Color instance.
   \param r - the red component of the color in the range [MIN_VAL, MAX_VAL].
   \param g - the green component of the color in the range [MIN_VAL, MAX_VAL].
@@ -139,7 +148,6 @@ class Color {
   \since 1.1.0
   */
   static Color_uptr CreateUnique(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-
 };
 
 }  // namespace visuals

@@ -11,13 +11,11 @@
 namespace centurion {
 namespace visuals {
 
-// FIXME rename this class
-
 /**
-\brief The AdvancedImage class is an implementation of the IIMage interface.
+\brief The ImageImpl class is an implementation of the IIMage interface.
 \since 2.0.0
 */
-class AdvancedImage final : public IImage {
+class ImageImpl final : public IImage {
  private:
   SDL_Texture* texture = nullptr;
   SDL_Surface* surface = nullptr;
@@ -44,8 +42,8 @@ class AdvancedImage final : public IImage {
   \throws invalid_argument if the supplied SDL_Renderer pointer is null.
   \since 2.0.0
   */
-  AdvancedImage(const std::string& path, SDL_Renderer* renderer,
-                Uint32 pixelFormat);
+  ImageImpl(const std::string& path, SDL_Renderer* renderer,
+            Uint32 pixelFormat);
 
   /**
   \param path - the file path of the image file.
@@ -53,9 +51,9 @@ class AdvancedImage final : public IImage {
   \throws invalid_argument if the supplied SDL_Renderer pointer is null.
   \since 2.0.0
   */
-  AdvancedImage(const std::string& path, SDL_Renderer* renderer);
+  ImageImpl(const std::string& path, SDL_Renderer* renderer);
 
-  ~AdvancedImage();
+  ~ImageImpl();
 
   /**
   \brief Resets the state of this image to its original state.
@@ -123,7 +121,7 @@ class AdvancedImage final : public IImage {
   inline SDL_Texture* GetSDLTexture() noexcept override { return texture; }
 
   /**
-  \brief Returns a shared pointer that points at an AdvancedImage instance.
+  \brief Returns a shared pointer to an IImage instance.
   \param path - the file path of the image file.
   \param renderer - a pointer to the SDL_Renderer used to create the image.
   \param pixelFormat - the pixel format to be used by the created image.
@@ -133,7 +131,7 @@ class AdvancedImage final : public IImage {
                                   SDL_Renderer* renderer, Uint32 pixelFormat);
 
   /**
-  \brief Returns a shared pointer that points at an AdvancedImage instance.
+  \brief Returns a shared pointer to an IImage instance.
   \param path - the file path of the image file.
   \param renderer - a pointer to the SDL_Renderer used to create the image.
   \since 2.0.0
@@ -142,7 +140,7 @@ class AdvancedImage final : public IImage {
                                   SDL_Renderer* renderer);
 
   /**
-  \brief Returns a unique pointer that points at an AdvancedImage instance.
+  \brief Returns a unique pointer to an IImage instance.
   \param path - the file path of the image file.
   \param renderer - a pointer to the SDL_Renderer used to create the image.
   \param pixelFormat - the pixel format to be used by the created image.
@@ -152,7 +150,7 @@ class AdvancedImage final : public IImage {
                                   SDL_Renderer* renderer, Uint32 pixelFormat);
 
   /**
-  \brief Returns a unique pointer that points at an AdvancedImage instance.
+  \brief Returns a unique pointer to an IImage instance.
   \param path - the file path of the image file.
   \param renderer - a pointer to the SDL_Renderer used to create the image.
   \since 2.0.0

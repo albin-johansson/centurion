@@ -1,4 +1,4 @@
-#include "ctn_advanced_image.h"
+#include "ctn_image_impl.h"
 #include <SDL_image.h>
 #include <stdexcept>
 
@@ -7,16 +7,16 @@ using centurion::geo::Rectangle;
 namespace centurion {
 namespace visuals {
 
-void AdvancedImage::Lock() { SDL_LockTexture(texture, NULL, &pixels, &pitch); }
+void ImageImpl::Lock() { SDL_LockTexture(texture, NULL, &pixels, &pitch); }
 
-void AdvancedImage::Unlock() {
+void ImageImpl::Unlock() {
   SDL_UnlockTexture(texture);
   pixels = nullptr;
   pitch = 0;
 }
 
-AdvancedImage::AdvancedImage(const std::string& path, SDL_Renderer* renderer,
-                             Uint32 pixelFormat)
+ImageImpl::ImageImpl(const std::string& path, SDL_Renderer* renderer,
+                     Uint32 pixelFormat)
     : modColor(Color(255, 255, 255)) {
   if (renderer == nullptr) {
     throw std::invalid_argument("Null SDL_Renderer pointer!");
@@ -37,15 +37,15 @@ AdvancedImage::AdvancedImage(const std::string& path, SDL_Renderer* renderer,
   Reset(renderer);
 }
 
-AdvancedImage::AdvancedImage(const std::string& path, SDL_Renderer* renderer)
-    : AdvancedImage(path, renderer, SDL_PIXELFORMAT_RGBA8888) {}
+ImageImpl::ImageImpl(const std::string& path, SDL_Renderer* renderer)
+    : ImageImpl(path, renderer, SDL_PIXELFORMAT_RGBA8888) {}
 
-AdvancedImage::~AdvancedImage() {
+ImageImpl::~ImageImpl() {
   SDL_FreeSurface(surface);
   SDL_DestroyTexture(texture);
 }
 
-void AdvancedImage::Reset(SDL_Renderer* renderer) {
+void ImageImpl::Reset(SDL_Renderer* renderer) {
   if (renderer == nullptr) {
     return;
   }
@@ -64,7 +64,7 @@ void AdvancedImage::Reset(SDL_Renderer* renderer) {
   Unlock();
 }
 
-void AdvancedImage::Revalidate(SDL_Renderer* renderer) {
+void ImageImpl::Revalidate(SDL_Renderer* renderer) {
   if (renderer == nullptr) {
     return;
   }
@@ -74,12 +74,12 @@ void AdvancedImage::Revalidate(SDL_Renderer* renderer) {
   SetBlendMode(blendMode);
 }
 
-void AdvancedImage::ModulateColor(Color c) noexcept {
+void ImageImpl::ModulateColor(Color c) noexcept {
   this->modColor = c;
   SDL_SetTextureColorMod(texture, c.GetRed(), c.GetGreen(), c.GetBlue());
 }
 
-void AdvancedImage::SetPixel(int x, int y, Color color) {
+void ImageImpl::SetPixel(int x, int y, Color color) {
   Lock();
 
   int nPixels = (pitch / 4) * height;
@@ -102,36 +102,36 @@ void AdvancedImage::SetPixel(int x, int y, Color color) {
   Unlock();
 }
 
-void AdvancedImage::SetAlpha(Uint8 alpha) noexcept {
+void ImageImpl::SetAlpha(Uint8 alpha) noexcept {
   this->alpha = alpha;
   SDL_SetTextureAlphaMod(texture, alpha);
 }
 
-void AdvancedImage::SetBlendMode(SDL_BlendMode blendMode) noexcept {
+void ImageImpl::SetBlendMode(SDL_BlendMode blendMode) noexcept {
   this->blendMode = blendMode;
   SDL_SetTextureBlendMode(texture, blendMode);
 }
 
-IImage_sptr AdvancedImage::CreateShared(const std::string& path,
-                                        SDL_Renderer* renderer,
-                                        Uint32 pixelFormat) {
-  return std::make_shared<AdvancedImage>(path, renderer, pixelFormat);
+IImage_sptr ImageImpl::CreateShared(const std::string& path,
+                                    SDL_Renderer* renderer,
+                                    Uint32 pixelFormat) {
+  return std::make_shared<ImageImpl>(path, renderer, pixelFormat);
 }
 
-IImage_sptr AdvancedImage::CreateShared(const std::string& path,
-                                        SDL_Renderer* renderer) {
-  return std::make_shared<AdvancedImage>(path, renderer);
+IImage_sptr ImageImpl::CreateShared(const std::string& path,
+                                    SDL_Renderer* renderer) {
+  return std::make_shared<ImageImpl>(path, renderer);
 }
 
-IImage_uptr AdvancedImage::CreateUnique(const std::string& path,
-                                        SDL_Renderer* renderer,
-                                        Uint32 pixelFormat) {
-  return std::make_unique<AdvancedImage>(path, renderer, pixelFormat);
+IImage_uptr ImageImpl::CreateUnique(const std::string& path,
+                                    SDL_Renderer* renderer,
+                                    Uint32 pixelFormat) {
+  return std::make_unique<ImageImpl>(path, renderer, pixelFormat);
 }
 
-IImage_uptr AdvancedImage::CreateUnique(const std::string& path,
-                                        SDL_Renderer* renderer) {
-  return std::make_unique<AdvancedImage>(path, renderer);
+IImage_uptr ImageImpl::CreateUnique(const std::string& path,
+                                    SDL_Renderer* renderer) {
+  return std::make_unique<ImageImpl>(path, renderer);
 }
 
 }  // namespace visuals

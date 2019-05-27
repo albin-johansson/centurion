@@ -7,14 +7,6 @@ using centurion::geo::Rectangle;
 namespace centurion {
 namespace visuals {
 
-void ImageImpl::Lock() { SDL_LockTexture(texture, NULL, &pixels, &pitch); }
-
-void ImageImpl::Unlock() {
-  SDL_UnlockTexture(texture);
-  pixels = nullptr;
-  pitch = 0;
-}
-
 ImageImpl::ImageImpl(const std::string& path, SDL_Renderer* renderer,
                      Uint32 pixelFormat)
     : modColor(Color(255, 255, 255)) {
@@ -45,6 +37,14 @@ ImageImpl::~ImageImpl() {
   SDL_DestroyTexture(texture);
 }
 
+void ImageImpl::Lock() { SDL_LockTexture(texture, NULL, &pixels, &pitch); }
+
+void ImageImpl::Unlock() {
+  SDL_UnlockTexture(texture);
+  pixels = nullptr;
+  pitch = 0;
+}
+
 void ImageImpl::Reset(SDL_Renderer* renderer) {
   if (renderer == nullptr) {
     return;
@@ -59,7 +59,7 @@ void ImageImpl::Reset(SDL_Renderer* renderer) {
   SDL_SetTextureBlendMode(texture, blendMode);
   Lock();
   if (pixels != nullptr) {
-    memcpy(pixels, surface->pixels, surface->pitch * surface->h);
+    memcpy(pixels, surface->pixels, (surface->pitch * surface->h));
   }
   Unlock();
 }

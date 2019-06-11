@@ -15,7 +15,7 @@ using Texture_wptr = std::weak_ptr<Texture>;
 /**
 \brief The Texture class is based on the SDL_Texture struct.
 * The Texture class is a subclass of ITexture.
-\since 2.0.0  (Overhauled earlier version)
+\since 2.0.0
 */
 class Texture final : public ITexture {
  private:
@@ -67,13 +67,13 @@ class Texture final : public ITexture {
   \brief Returns the height of this texture.
   \since 2.0.0
   */
-  inline int GetHeight() const override { return height; }
+  inline int GetHeight() const noexcept override { return height; }
 
   /**
   \brief Returns a pointer to the internal representation of this texture.
   \since 2.0.0
   */
-  inline SDL_Texture* GetSDLTexture() override { return sdlTexture; }
+  inline SDL_Texture* GetSDLTexture() noexcept override { return sdlTexture; }
 
   /**
   \brief Creates and returns a shared pointer to a Texture instance.

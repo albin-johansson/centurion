@@ -11,13 +11,6 @@ using namespace centurion::tools;
 namespace centurion {
 namespace visuals {
 
-SDL_Window* Window::CreateWindow(int w, int h, Uint32 flags) {
-  std::string title = "Centurion window";
-  SDL_Window* result = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
-                                        SDL_WINDOWPOS_CENTERED, w, h, flags);
-  return result;
-}
-
 Window::Window(int w, int h)
     : AbstractWindow(CreateWindow(w, h, SDL_WINDOW_HIDDEN)) {}
 
@@ -29,6 +22,13 @@ Window::Window(int w, int h, Uint32 flags)
 }
 
 Window::~Window() = default;
+
+SDL_Window* Window::CreateWindow(int w, int h, Uint32 flags) {
+  std::string title = "Centurion window";
+  SDL_Window* result = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
+                                        SDL_WINDOWPOS_CENTERED, w, h, flags);
+  return result;
+}
 
 void Window::SetResizable(bool resizable) {
   SDL_bool b = BoolConverter::Convert(resizable);

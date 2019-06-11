@@ -33,9 +33,11 @@ Texture::Texture(const std::string& path, SDL_Renderer* renderer) {
   if (sdlTexture == nullptr) {
     throw std::exception(SDL_GetError());
   }
-
+  
   SDL_QueryTexture(sdlTexture, &format, &access, &width, &height);
 }
+
+// TODO alphaMod, blendMode, colorMod
 
 Texture::~Texture() {
   if (sdlTexture != nullptr) {

@@ -4,7 +4,8 @@ namespace centurion {
 namespace tools {
 
 /**
-\brief The Screen class represents the system display.
+\brief The Screen class represents the system display. Note that this class
+utilises the Windows API.
 \since 1.0.0
 */
 class Screen final {

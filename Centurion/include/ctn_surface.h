@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL_render.h>
 #include <SDL_surface.h>
 #include <memory>
 #include "ctn_color.h"
@@ -69,6 +70,15 @@ class Surface final {
   \since 2.0.0
   */
   Surface_uptr Duplicate() const;
+
+  /**
+  \brief Creates and returns a pointer to an SDL_Texture equivalent of this
+  surface.
+  \param renderer - a pointer to the SDL_Renderer used to create the texture.
+  \throws invalid_argument if the supplied pointer is nullptr.
+  \since 2.0.0
+  */
+  SDL_Texture* ToTexture(SDL_Renderer* renderer) const;
 
   /**
   \brief Returns true if this surface is locked, returns false otherwise.

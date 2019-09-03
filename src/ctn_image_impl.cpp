@@ -20,7 +20,7 @@ ImageImpl::ImageImpl(const std::string& path, SDL_Renderer* renderer,
   SDL_Surface* src = IMG_Load(path.c_str());
   SDL_SetSurfaceBlendMode(src, blendMode);
 
-  surface = SDL_ConvertSurfaceFormat(src, pixelFormat, NULL);
+  surface = SDL_ConvertSurfaceFormat(src, pixelFormat, 0);
   SDL_FreeSurface(src);
   SDL_SetSurfaceBlendMode(surface, blendMode);
 

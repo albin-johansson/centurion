@@ -8,7 +8,7 @@ namespace audio {
 Music::Music(const std::string& path) {
   music = Mix_LoadMUS(path.c_str());
   if (music == nullptr) {
-    throw std::exception("Failed to load music!");
+    throw std::exception();
   } else {
     volume = MIX_MAX_VOLUME / 2;
   }

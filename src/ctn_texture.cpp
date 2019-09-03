@@ -19,19 +19,19 @@ Texture::Texture(SDL_Texture* sdlTexture) {
 
 Texture::Texture(const std::string& path, SDL_Renderer* renderer) {
   if (renderer == nullptr) {
-    throw std::exception("Null SDL_Renderer pointer!");
+    throw std::exception();
   }
 
   SDL_Surface* tmpSurf = IMG_Load(path.c_str());
   if (tmpSurf == nullptr) {
-    throw std::exception(IMG_GetError());
+    throw std::exception();
   }
 
   sdlTexture = SDL_CreateTextureFromSurface(renderer, tmpSurf);
   SDL_FreeSurface(tmpSurf);
 
   if (sdlTexture == nullptr) {
-    throw std::exception(SDL_GetError());
+    throw std::exception();
   }
   
   SDL_QueryTexture(sdlTexture, &format, &access, &width, &height);

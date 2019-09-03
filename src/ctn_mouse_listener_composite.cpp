@@ -1,4 +1,5 @@
 #include "ctn_mouse_listener_composite.h"
+#include <algorithm>
 
 namespace centurion {
 namespace input {

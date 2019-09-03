@@ -17,7 +17,7 @@ using Font_wptr = std::weak_ptr<Font>;
 */
 class Font final {
  private:
-  TTF_Font* font = nullptr;
+  TTF_Font *font = nullptr;
   int styleMask;
   int size;
 
@@ -33,7 +33,7 @@ class Font final {
   \param size - the point size of the font.
   \since 1.0.0
   */
-  Font(const std::string& path, int size);
+  Font(const std::string &path, int size);
 
   ~Font();
 
@@ -95,7 +95,7 @@ class Font final {
   DO NOT use the returned pointer to call TTF_CloseFont().
   \since 1.0.0
   */
-  inline TTF_Font* GetSDLVersion() noexcept { return font; }
+  inline TTF_Font *GetSDLVersion() noexcept { return font; }
 
   /**
   \brief Returns the point size of the font that this Font instance represents.
@@ -160,7 +160,7 @@ class Font final {
   \param str - the string that will be measured.
   \since 1.0.0
   */
-  int GetStringWidth(const std::string& str) const noexcept;
+  int GetStringWidth(const std::string &str) const noexcept;
 
   /**
   \brief Calculates and returns the height of the supplied string, if it was
@@ -168,7 +168,7 @@ class Font final {
   \param str - the string that will be measured.
   \since 1.0.0
   */
-  int GetStringHeight(const std::string& str) const noexcept;
+  int GetStringHeight(const std::string &str) const noexcept;
 
   /**
   \brief Creates and returns a shared pointer that points to a Font instance.
@@ -176,7 +176,7 @@ class Font final {
   \param size - the point size of the font.
   \since 1.1.0
   */
-  static Font_sptr CreateShared(const std::string& path, int size);
+  static Font_sptr CreateShared(const std::string &path, int size);
 
   /**
   \brief Creates and returns an unique pointer that points to a Font instance.
@@ -184,7 +184,7 @@ class Font final {
   \param size - the point size of the font.
   \since 1.1.0
   */
-  static Font_uptr CreateUnique(const std::string& path, int size);
+  static Font_uptr CreateUnique(const std::string &path, int size);
 };
 
 }  // namespace visuals

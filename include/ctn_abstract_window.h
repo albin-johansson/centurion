@@ -13,9 +13,9 @@ namespace visuals {
 class AbstractWindow : public IWindow {
  protected:
   IRenderer_sptr renderer = nullptr;
-  SDL_Window* sdlWindow = nullptr;
+  SDL_Window *sdlWindow = nullptr;
 
-  AbstractWindow(SDL_Window* sdlWindow);
+  AbstractWindow(SDL_Window *sdlWindow);
 
  public:
   virtual ~AbstractWindow();
@@ -41,7 +41,7 @@ class AbstractWindow : public IWindow {
   \param h - the height of the rendered texture.
   \since 2.0.0
   */
-  void Render(ITexture& texture, int x, int y, int w, int h) noexcept override;
+  void Render(ITexture &texture, int x, int y, int w, int h) noexcept override;
 
   /**
   \brief Renders a texture.
@@ -50,7 +50,7 @@ class AbstractWindow : public IWindow {
   \param dst - the destination rectangle.
   \since 2.0.0
   */
-  void Render(ITexture& texture, centurion::geo::Rectangle src,
+  void Render(ITexture &texture, centurion::geo::Rectangle src,
               centurion::geo::Rectangle dst) noexcept override;
 
   /**
@@ -60,7 +60,7 @@ class AbstractWindow : public IWindow {
   \param y - the y-coordinate of the texture.
   \since 2.0.0
   */
-  void Render(ITexture& texture, int x, int y) noexcept override;
+  void Render(ITexture &texture, int x, int y) noexcept override;
 
   /**
   \brief Renders a texture.
@@ -71,7 +71,7 @@ class AbstractWindow : public IWindow {
   \param flip - the value describing the flipping of the texture.
   \since 2.0.0
   */
-  void Render(ITexture& texture, int x, int y, int angle,
+  void Render(ITexture &texture, int x, int y, int angle,
               SDL_RendererFlip flip) noexcept override;
 
   /**
@@ -82,7 +82,7 @@ class AbstractWindow : public IWindow {
   \param flip - the value describing the flipping of the texture.
   \since 2.0.0
   */
-  void Render(ITexture& texture, int x, int y,
+  void Render(ITexture &texture, int x, int y,
               SDL_RendererFlip flip) noexcept override;
 
   /**
@@ -93,7 +93,7 @@ class AbstractWindow : public IWindow {
   \param angle - the angle of the rendered texture.
   \since 2.0.0
   */
-  void Render(ITexture& texture, int x, int y, int angle) noexcept override;
+  void Render(ITexture &texture, int x, int y, int angle) noexcept override;
 
   /**
   \brief Renders an outlined rectangle.
@@ -126,7 +126,7 @@ class AbstractWindow : public IWindow {
   \note If no font is available, this method has no effect.
   \since 2.0.0
   */
-  void RenderString(const std::string& str, int x, int y);
+  void RenderString(const std::string &str, int x, int y);
 
   /**
   \brief Assigns the rendering target for subsequent rendering operations.
@@ -160,7 +160,7 @@ class AbstractWindow : public IWindow {
    \throws invalid_argument if the supplied string is empty.
    \since 1.0.0
    */
-  ITexture_sptr CreateTextureFromString(const std::string& str) override;
+  ITexture_sptr CreateTextureFromString(const std::string &str) override;
 
   /**
   \brief Creates a shaded texture of a string, using the currently selected
@@ -172,7 +172,7 @@ class AbstractWindow : public IWindow {
   \throws invalid_argument if the supplied string is empty.
   \since 2.0.0
   */
-  ITexture_sptr CreateTextureFromStringWrapped(const std::string& str,
+  ITexture_sptr CreateTextureFromStringWrapped(const std::string &str,
                                                int wrap) override;
 
   /**
@@ -245,7 +245,7 @@ class AbstractWindow : public IWindow {
   \brief Returns a pointer to the internal representation of this window.
   \since 2.0.0
   */
-  inline SDL_Window* GetSDLVersion() noexcept override { return sdlWindow; }
+  inline SDL_Window *GetSDLVersion() noexcept override { return sdlWindow; }
 };
 
 }  // namespace visuals

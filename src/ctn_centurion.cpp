@@ -46,8 +46,8 @@ void Centurion::InitSDLTTF() {
 }
 
 void Centurion::ThrowInitializationException(const std::string error) {
-  std::string str = "Failed to initialize Centurion! Error: " + error;
-  throw std::exception(str.c_str());
+//  std::string str = "Failed to initialize Centurion! Error: " + error;
+  throw std::exception();
 }
 
 void Centurion::Init() {

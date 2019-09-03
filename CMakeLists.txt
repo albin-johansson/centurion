@@ -49,7 +49,6 @@ set(SOURCE_FILES
         include/ctn_texture_interface.h
         include/ctn_window.h
         include/ctn_window_interface.h
-
         src/ctn_abstract_window.cpp
         src/ctn_application_path.cpp
         src/ctn_centurion.cpp
@@ -86,4 +85,3 @@ include_directories(${SDL2_ROOT}/include/SDL2)
 link_directories(${SDL2_ROOT}/lib)
 
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
-

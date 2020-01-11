@@ -19,7 +19,9 @@ set(SOURCE_FILES
         centurion_exception.cpp
         bool_converter.h
 
-        centurion_api.h)
+        centurion_api.h
+        centurion.cpp
+        centurion.h)
 
 add_library(${CENTURION_LIB} STATIC ${SOURCE_FILES}) # TODO use SHARED instead
 

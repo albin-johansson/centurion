@@ -1,7 +1,19 @@
 #include "sound_effect.h"
+#include <type_traits>
 #include "centurion_exception.h"
 
 namespace centurion {
+
+static_assert(std::has_virtual_destructor_v<SoundEffect>);
+static_assert(!std::is_final_v<SoundEffect>);
+
+static_assert(std::is_nothrow_move_constructible_v<SoundEffect>);
+static_assert(std::is_nothrow_move_assignable_v<SoundEffect>);
+
+static_assert(!std::is_copy_constructible_v<SoundEffect>);
+static_assert(!std::is_copy_assignable_v<SoundEffect>);
+
+static_assert(std::is_convertible_v<SoundEffect, Mix_Chunk*>);
 
 SoundEffect::SoundEffect(const std::string& file) {
   chunk = Mix_LoadWAV(file.c_str());
@@ -11,9 +23,26 @@ SoundEffect::SoundEffect(const std::string& file) {
   set_volume(MIX_MAX_VOLUME / 2);
 }
 
+SoundEffect::SoundEffect(SoundEffect&& other) noexcept
+    : chunk{other.chunk},
+      channel{other.channel} {
+  other.chunk = nullptr;
+}
+
 SoundEffect::~SoundEffect() {
-  stop();
-  Mix_FreeChunk(chunk);
+  if (chunk) {
+    stop();
+    Mix_FreeChunk(chunk);
+  }
+}
+
+SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept {
+  chunk = other.chunk;
+  channel = other.channel;
+
+  other.chunk = nullptr;
+
+  return *this;
 }
 
 void SoundEffect::activate(int nLoops) noexcept {
@@ -68,6 +97,10 @@ int SoundEffect::get_volume() const noexcept {
 
 bool SoundEffect::is_playing() const noexcept {
   return (channel != undefinedChannel) && Mix_Playing(channel);
+}
+
+SoundEffect::operator Mix_Chunk*() const noexcept {
+  return chunk;
 }
 
 }

@@ -10,7 +10,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class SoundEffect final {
+class SoundEffect {
  private:
   static constexpr int undefinedChannel = -1;
 
@@ -41,7 +41,29 @@ class SoundEffect final {
    */
   explicit SoundEffect(const std::string& file);
 
-  ~SoundEffect();
+  /**
+   * Creates a sound effect by moving the contents of the supplied sound effect.
+   *
+   * @param other the sound effect that will be moved.
+   * @since 3.0.0
+   */
+  SoundEffect(SoundEffect&& other) noexcept;
+
+  SoundEffect(const SoundEffect&) noexcept = delete;
+
+  virtual ~SoundEffect();
+
+  SoundEffect& operator=(const SoundEffect&) noexcept = delete;
+
+  /**
+   * Moves the contents of the supplied sound effect into this one.
+   *
+   * @param other the sound effect that will be moved.
+   * @return the changed sound effect.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  SoundEffect& operator=(SoundEffect&& other) noexcept;
 
   /**
    * Plays the sound effect.
@@ -111,6 +133,8 @@ class SoundEffect final {
    */
   [[nodiscard]]
   bool is_playing() const noexcept;
+
+  /*implicit*/ operator Mix_Chunk*() const noexcept;
 };
 
 }

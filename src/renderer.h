@@ -18,7 +18,7 @@ class Font;
  * @see SDL_Renderer
  * @since 3.0.0
  */
-class Renderer final {
+class Renderer {
  private:
   SDL_Renderer* renderer = nullptr;
   SDL_FRect translationViewport = {0, 0, 0, 0};
@@ -58,7 +58,7 @@ class Renderer final {
 
   Renderer& operator=(const Renderer&) noexcept = delete;
 
-  ~Renderer();
+  virtual ~Renderer();
 
   /**
    * Clears the rendering target with the currently selected color.
@@ -307,6 +307,15 @@ class Renderer final {
    */
   [[nodiscard]]
   bool is_using_integer_logical_scaling() const noexcept;
+
+  /**
+   * Returns the currently selected rendering color.
+   *
+   * @return the currently selected rendering color.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  SDL_Color get_color() const noexcept;
 
   /**
    * Attempts to create and return a pointer to an SDL_Texture instance that represents the

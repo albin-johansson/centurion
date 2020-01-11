@@ -175,7 +175,8 @@ class Window {
   void set_height(int height);
 
   /**
-   * Sets the icon that will be used by the window. Triggers a window listener update.
+   * Sets the icon that will be used by the window. Triggers a window listener update. The
+   * supplied pointer should be freed by the caller.
    *
    * @param icon a pointer to the surface that will serve as the icon of the window.
    * @since 3.0.0
@@ -246,6 +247,24 @@ class Window {
   void set_grab_mouse(bool grabMouse) noexcept;
 
   /**
+   * Indicates whether or not the window is decorated. The window is decorated by default.
+   *
+   * @return true if the window is decorated; false otherwise.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  bool is_decorated() const noexcept;
+
+  /**
+   * Indicates whether or not the window is currently grabbing the mouse input.
+   *
+   * @return true if the window is grabbing the mouse; false otherwise.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  bool is_grabbing_mouse() const noexcept;
+
+  /**
    * Indicates whether or not the window is resizable.
    *
    * @return true if the window is resizable; false otherwise.
@@ -272,14 +291,59 @@ class Window {
   [[nodiscard]]
   bool is_visible() const noexcept;
 
+  /**
+   * Returns the opacity of the window.
+   *
+   * @return the opacity of the window, in the range [0, 1].
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  float get_opacity() const noexcept;
+
+  /**
+   * Returns the x-coordinate of the window position.
+   *
+   * @return the x-coordinate of the window position.
+   * @since 3.0.0
+   */
   [[nodiscard]]
   int get_x() const noexcept;
 
+  /**
+   * Returns the y-coordinate of the window position.
+   *
+   * @return the y-coordinate of the window position.
+   * @since 3.0.0
+   */
   [[nodiscard]]
   int get_y() const noexcept;
 
+  /**
+   * Returns the current position of the window.
+   *
+   * @return the current position of the window, in the format (x, y).
+   * @since 3.0.0
+   */
   [[nodiscard]]
   std::pair<int, int> get_position() const noexcept;
+
+  /**
+   * Returns the minimum size of the window.
+   *
+   * @return the minimum size of the window, in the format (width, height).
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  std::pair<int, int> get_min_size() const noexcept;
+
+  /**
+   * Returns the maximum size of the window.
+   *
+   * @return the maximum size of the window, in the format (width, height).
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  std::pair<int, int> get_max_size() const noexcept;
 
   /**
    * Returns the current width of the window.

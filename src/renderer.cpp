@@ -1,11 +1,23 @@
 #include "renderer.h"
 #include <stdexcept>
+#include <type_traits>
 #include <SDL.h>
 #include "image.h"
 #include "font.h"
 #include "bool_converter.h"
 
 namespace centurion {
+
+static_assert(std::has_virtual_destructor_v<Renderer>);
+static_assert(!std::is_final_v<Renderer>);
+
+static_assert(std::is_nothrow_move_constructible_v<Renderer>);
+static_assert(std::is_nothrow_move_assignable_v<Renderer>);
+
+static_assert(!std::is_nothrow_copy_constructible_v<Renderer>);
+static_assert(!std::is_nothrow_copy_assignable_v<Renderer>);
+
+static_assert(std::is_convertible_v<Renderer, SDL_Renderer*>);
 
 Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer) {
   if (!renderer) {
@@ -52,14 +64,14 @@ void Renderer::present() const noexcept {
 }
 
 void Renderer::draw_image(const Image& texture, int x, int y) const noexcept {
-  const SDL_Rect dst{x, y, texture.get_width(), texture.get_height()};
+  const auto dst = SDL_Rect{x, y, texture.get_width(), texture.get_height()};
   SDL_RenderCopy(renderer, texture, nullptr, &dst);
 }
 
 void Renderer::draw_image(const Image& texture, float x, float y) const noexcept {
-  const SDL_FRect dst{x, y,
-                      static_cast<float>(texture.get_width()),
-                      static_cast<float>(texture.get_height())};
+  const auto dst = SDL_FRect{x, y,
+                             static_cast<float>(texture.get_width()),
+                             static_cast<float>(texture.get_height())};
   SDL_RenderCopyF(renderer, texture, nullptr, &dst);
 }
 
@@ -68,7 +80,7 @@ void Renderer::draw_image(const Image& texture,
                           int y,
                           int width,
                           int height) const noexcept {
-  const SDL_Rect dst{x, y, width, height};
+  const auto dst = SDL_Rect{x, y, width, height};
   SDL_RenderCopy(renderer, texture, nullptr, &dst);
 }
 
@@ -77,7 +89,7 @@ void Renderer::draw_image(const Image& texture,
                           float y,
                           float width,
                           float height) const noexcept {
-  const SDL_FRect dst{x, y, width, height};
+  const auto dst = SDL_FRect{x, y, width, height};
   SDL_RenderCopyF(renderer, texture, nullptr, &dst);
 }
 
@@ -98,22 +110,22 @@ void Renderer::draw_image_translated(const Image& texture,
 }
 
 void Renderer::fill_rect(float x, float y, float width, float height) const noexcept {
-  const SDL_FRect rect{x, y, width, height};
+  const auto rect = SDL_FRect{x, y, width, height};
   SDL_RenderFillRectF(renderer, &rect);
 }
 
 void Renderer::fill_rect(int x, int y, int width, int height) const noexcept {
-  const SDL_Rect rect{x, y, width, height};
+  const auto rect = SDL_Rect{x, y, width, height};
   SDL_RenderFillRect(renderer, &rect);
 }
 
 void Renderer::draw_rect(float x, float y, float width, float height) const noexcept {
-  const SDL_FRect rect{x, y, width, height};
+  const auto rect = SDL_FRect{x, y, width, height};
   SDL_RenderDrawRectF(renderer, &rect);
 }
 
 void Renderer::draw_rect(int x, int y, int width, int height) const noexcept {
-  const SDL_Rect rect{x, y, width, height};
+  const auto rect = SDL_Rect{x, y, width, height};
   SDL_RenderDrawRect(renderer, &rect);
 }
 
@@ -161,6 +173,12 @@ void Renderer::set_logical_integer_scale(bool useLogicalIntegerScale) noexcept {
   SDL_RenderSetIntegerScale(renderer, BoolConverter::convert(useLogicalIntegerScale));
 }
 
+SDL_Color Renderer::get_color() const noexcept {
+  uint8_t r = 0, g = 0, b = 0, a = 0;
+  SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+  return {r, g, b, a};
+}
+
 int Renderer::get_logical_width() const noexcept {
   int w = 0;
   SDL_RenderGetLogicalSize(renderer, &w, nullptr);
@@ -204,10 +222,7 @@ std::unique_ptr<Image> Renderer::create_image(const std::string& s, const Font& 
     return nullptr;
   }
 
-  uint8_t r = 0, g = 0, b = 0, a = 0;
-  SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
-  const SDL_Color color{r, g, b, a};
-  SDL_Surface* surface = TTF_RenderText_Blended(font, s.c_str(), color);
+  SDL_Surface* surface = TTF_RenderText_Blended(font, s.c_str(), get_color());
 
   if (!surface) {
     return nullptr;

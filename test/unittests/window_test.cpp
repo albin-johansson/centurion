@@ -109,8 +109,97 @@ TEST_CASE("Window::set_height", "[Window]") {
   CHECK(window.get_height() == height);
 }
 
-TEST_CASE("Window::get_title", "[Window]") {
+TEST_CASE("Window::set_grab_mouse && Window::is_grabbing_mouse", "[Window]") {
+  Window window;
+  window.show();
+
+  CHECK(!window.is_grabbing_mouse());
+
+  window.set_grab_mouse(true);
+  CHECK(window.is_grabbing_mouse());
+
+  window.set_grab_mouse(false);
+  CHECK(!window.is_grabbing_mouse());
+}
+
+TEST_CASE("Window::get_title && Window::set_title", "[Window]") {
   const auto title = "HelloWorld";
   Window window(title);
   CHECK(window.get_title() == title);
+
+  const auto other = "foo";
+  window.set_title(other);
+
+  CHECK(window.get_title() == other);
+}
+
+TEST_CASE("Window::set_opacity && Window::get_opacity", "[Window]") {
+  Window window;
+  CHECK(window.get_opacity() == 1);
+
+  SECTION("Windowed mode") {
+    const auto opacity = 0.4f;
+    window.set_opacity(opacity);
+
+    CHECK(window.get_opacity() == opacity);
+  }
+
+  SECTION("Fullscreen mode") {
+    window.set_opacity(1);
+    window.set_fullscreen(true);
+
+    const auto opacity = 0.75f;
+    window.set_opacity(opacity);
+
+    CHECK(window.get_opacity() == opacity);
+  }
+}
+
+TEST_CASE("Window::get_position && Window::set_position", "[Window]") {
+  const auto x = 467;
+  const auto y = 246;
+
+  Window window;
+  window.set_position(x, y);
+
+  const auto[actualX, actualY] = window.get_position();
+  CHECK(x == actualX);
+  CHECK(y == actualY);
+}
+
+TEST_CASE("Window::set_decorated && Window::is_decorated", "[Window]") {
+  Window window;
+  CHECK(window.is_decorated());
+
+  window.set_decorated(false);
+  CHECK(!window.is_decorated());
+
+  window.set_decorated(true);
+  CHECK(window.is_decorated());
+}
+
+TEST_CASE("Window::set_min_size && Window::get_min_size", "[Window]") {
+  Window window;
+
+  const auto width = 123;
+  const auto height = 496;
+
+  window.set_min_size(width, height);
+
+  const auto[actualWidth, actualHeight] = window.get_min_size();
+  CHECK(width == actualWidth);
+  CHECK(height == actualHeight);
+}
+
+TEST_CASE("Window::set_max_size && Window::get_max_size", "[Window]") {
+  Window window;
+
+  const auto width = 723;
+  const auto height = 813;
+
+  window.set_max_size(width, height);
+
+  const auto[actualWidth, actualHeight] = window.get_max_size();
+  CHECK(width == actualWidth);
+  CHECK(height == actualHeight);
 }

@@ -6,16 +6,17 @@
 
 namespace centurion {
 
-static_assert(std::is_default_constructible_v<Window>, "Window must be default constructible!");
+static_assert(std::has_virtual_destructor_v<Window>);
+static_assert(!std::is_final_v<Window>);
 
-static_assert(std::is_move_assignable_v<Window>, "Window should be move assignable!");
-static_assert(std::is_move_constructible_v<Window>, "Window should feature move constructor!");
+static_assert(std::is_nothrow_move_assignable_v<Window>);
+static_assert(std::is_nothrow_move_constructible_v<Window>);
 
-static_assert(!std::is_copy_assignable_v<Window>, "Window shouldn't be copy assignable!");
-static_assert(!std::is_copy_constructible_v<Window>, "Window shouldn't have copy ctor!");
+static_assert(!std::is_copy_assignable_v<Window>);
+static_assert(!std::is_copy_constructible_v<Window>);
 
-static_assert(std::has_virtual_destructor_v<Window>, "Window requires virtual destructor!");
-static_assert(!std::is_final_v<Window>, "Window can't be final!");
+static_assert(std::is_convertible_v<Window, SDL_Window*>);
+static_assert(std::is_default_constructible_v<Window>);
 
 Window::Window(const std::string& title, int width, int height) {
   if ((width < 1) || (height < 1)) {
@@ -165,6 +166,19 @@ void Window::set_grab_mouse(bool grabMouse) noexcept {
   SDL_SetWindowGrab(window, BoolConverter::convert(grabMouse));
 }
 
+bool Window::is_decorated() const noexcept {
+  int left = 0;
+  int right = 0;
+  int top = 0;
+  int bottom = 0;
+  SDL_GetWindowBordersSize(window, &top, &left, &bottom, &right);
+  return left || right || top || bottom;
+}
+
+bool Window::is_grabbing_mouse() const noexcept {
+  return SDL_GetWindowGrab(window);
+}
+
 bool Window::is_resizable() const noexcept {
   return SDL_GetWindowFlags(window) & SDL_WINDOW_RESIZABLE;
 }
@@ -175,6 +189,12 @@ bool Window::is_fullscreen() const noexcept {
 
 bool Window::is_visible() const noexcept {
   return SDL_GetWindowFlags(window) & SDL_WINDOW_SHOWN;
+}
+
+float Window::get_opacity() const noexcept {
+  float opacity = 1;
+  SDL_GetWindowOpacity(window, &opacity);
+  return opacity;
 }
 
 int Window::get_x() const noexcept {
@@ -194,6 +214,20 @@ std::pair<int, int> Window::get_position() const noexcept {
   int y = 0;
   SDL_GetWindowPosition(window, &x, &y);
   return {x, y};
+}
+
+std::pair<int, int> Window::get_min_size() const noexcept {
+  int w = 0;
+  int h = 0;
+  SDL_GetWindowMinimumSize(window, &w, &h);
+  return {w, h};
+}
+
+std::pair<int, int> Window::get_max_size() const noexcept {
+  int w = 0;
+  int h = 0;
+  SDL_GetWindowMaximumSize(window, &w, &h);
+  return {w, h};
 }
 
 int Window::get_width() const noexcept {

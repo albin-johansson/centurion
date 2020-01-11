@@ -1,8 +1,20 @@
 #include "font.h"
 #include <stdexcept>
+#include <type_traits>
 #include "centurion_exception.h"
 
 namespace centurion {
+
+static_assert(std::has_virtual_destructor_v<Font>);
+static_assert(!std::is_final_v<Font>);
+
+static_assert(std::is_nothrow_move_constructible_v<Font>);
+static_assert(std::is_nothrow_move_assignable_v<Font>);
+
+static_assert(!std::is_copy_constructible_v<Font>);
+static_assert(!std::is_copy_assignable_v<Font>);
+
+static_assert(std::is_convertible_v<Font, TTF_Font*>);
 
 Font::Font(const std::string& file, int size) : size{size} {
   if (size <= 0) {
@@ -131,8 +143,37 @@ int Font::get_size() const noexcept {
   return size;
 }
 
+int Font::get_height() const noexcept {
+  return TTF_FontHeight(font);
+}
+
+int Font::get_descent() const noexcept {
+  return TTF_FontDescent(font);
+}
+
+int Font::get_ascent() const noexcept {
+  return TTF_FontAscent(font);
+}
+
+int Font::get_line_skip() const noexcept {
+  return TTF_FontLineSkip(font);
+}
+
+int Font::get_font_faces() const noexcept {
+  return TTF_FontFaces(font);
+}
+
 std::string Font::get_family_name() const noexcept {
   return TTF_FontFaceFamilyName(font);
+}
+
+std::optional<std::string> Font::get_style_name() const noexcept {
+  const auto* name = TTF_FontFaceStyleName(font);
+  if (name) {
+    return name;
+  } else {
+    return std::nullopt;
+  }
 }
 
 Font::operator TTF_Font*() const noexcept {

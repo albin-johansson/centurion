@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <optional>
 #include <SDL_ttf.h>
 
 namespace centurion {
@@ -9,7 +10,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class Font final {
+class Font {
  private:
   TTF_Font* font = nullptr;
   int style = 0;
@@ -58,7 +59,7 @@ class Font final {
    */
   Font(Font&& other) noexcept;
 
-  ~Font() noexcept;
+  virtual ~Font() noexcept;
 
   /**
    * The copy assignment operator is deleted for font instances.
@@ -134,6 +135,55 @@ class Font final {
   int get_size() const noexcept;
 
   /**
+   * Returns the maximum height of a character in this font. This is usually the same as the
+   * point size.
+   *
+   * @return the maximum height of a character in this font.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  int get_height() const noexcept;
+
+  /**
+   * Returns the offset from the baseline to the bottom of the font characters. The returned
+   * value is negative, relative to the baseline.
+   *
+   * @return the offset from the baseline to the bottom of the font characters.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  int get_descent() const noexcept;
+
+  /**
+   * Returns the offset from the baseline to the top of the font characters. The returned
+   * value is positive, relative to the baseline.
+   *
+   * @return the offset from the baseline to the top of the font characters.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  int get_ascent() const noexcept;
+
+  /**
+   * Returns the recommended pixel height of rendered text in the font. The returned
+   * value is usually larger than the height of the font.
+   *
+   * @return Returns the recommended pixel height of rendered text in the font.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  int get_line_skip() const noexcept;
+
+  /**
+   * Returns the number of available font faces in the font.
+   *
+   * @return the number of available font faces in the font.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  int get_font_faces() const noexcept;
+
+  /**
    * Indicates whether or not the font is bold.
    *
    * @return true if the font is bold; false otherwise.
@@ -197,6 +247,15 @@ class Font final {
   std::string get_family_name() const noexcept;
 
   /**
+   * Returns the font face style name of the font. This information may not be available.
+   *
+   * @return the font face style name of the font.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  std::optional<std::string> get_style_name() const noexcept;
+
+  /**
    * Returns the width of the supplied string, if it was rendered using the font.
    *
    * @param s the string to determine the width of.
@@ -216,7 +275,7 @@ class Font final {
   [[nodiscard]]
   int get_string_height(const std::string& s) const noexcept;
 
-  operator TTF_Font*() const noexcept;
+  /*implicit*/ operator TTF_Font*() const noexcept;
 
 };
 

@@ -52,6 +52,14 @@ Font& Font::operator=(Font&& other) noexcept {
   return *this;
 }
 
+std::unique_ptr<Font> Font::unique(const std::string& file, int size) {
+  return std::make_unique<Font>(file, size);
+}
+
+std::shared_ptr<Font> Font::shared(const std::string& file, int size) {
+  return std::make_shared<Font>(file, size);
+}
+
 void Font::reset() noexcept {
   style = TTF_STYLE_NORMAL;
   TTF_SetFontStyle(font, style);

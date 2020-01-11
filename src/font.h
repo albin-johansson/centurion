@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <optional>
+#include <memory>
 #include <SDL_ttf.h>
 
 namespace centurion {
@@ -77,6 +78,32 @@ class Font {
    */
   [[nodiscard]]
   Font& operator=(Font&& other) noexcept;
+
+  /**
+   * Creates and returns a unique pointer to a font instance.
+   *
+   * @param file the file path of the TrueType font file.
+   * @param size the font size, must be greater than zero.
+   * @return a unique pointer to a font instance.
+   * @throws std::invalid_argument if the supplied size isn't greater than zero.
+   * @throws CenturionException if the font cannot be loaded.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::unique_ptr<Font> unique(const std::string& file, int size);
+
+  /**
+   * Creates and returns a shared pointer to a font instance.
+   *
+   * @param file the file path of the TrueType font file.
+   * @param size the font size, must be greater than zero.
+   * @return a shared pointer to a font instance.
+   * @throws std::invalid_argument if the supplied size isn't greater than zero.
+   * @throws CenturionException if the font cannot be loaded.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::shared_ptr<Font> shared(const std::string& file, int size);
 
   /**
    * Resets the style of the font.

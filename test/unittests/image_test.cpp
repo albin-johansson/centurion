@@ -9,21 +9,21 @@ using namespace centurion;
 static constexpr auto path = "resources/grass.png";
 
 TEST_CASE("Image(string)", "[Image]") {
-  Window window("foo", 10, 10);
-  Renderer renderer(window);
+  Window window;
+  Renderer renderer{window};
 
   CHECK_THROWS_AS(Image(renderer, "badpath"), CenturionException);
 
-  Image img(renderer, path);
+  Image img{renderer, path};
 
   CHECK(img.get_width() == 108);
   CHECK(img.get_height() == 108);
 }
 
 TEST_CASE("Image(Image&&)", "[Image]") {
-  Window window("foo", 10, 10);
-  Renderer renderer(window);
-  Image img(renderer, path);
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, path};
 
   Image moved_img = std::move(img);
 
@@ -31,10 +31,9 @@ TEST_CASE("Image(Image&&)", "[Image]") {
 }
 
 TEST_CASE("Image::GetFormat", "[Image]") {
-  Window window("foo", 10, 10);
-  Renderer renderer(window);
-
-  Image img(renderer, path);
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, path};
   SDL_Texture* texture = img.get_texture();
 
   uint32_t format = 0;
@@ -44,10 +43,9 @@ TEST_CASE("Image::GetFormat", "[Image]") {
 }
 
 TEST_CASE("Image::GetAccess", "[Image]") {
-  Window window("foo", 10, 10);
-  Renderer renderer(window);
-
-  Image img(renderer, path);
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, path};
   SDL_Texture* texture = img.get_texture();
 
   int access = 0;
@@ -57,9 +55,8 @@ TEST_CASE("Image::GetAccess", "[Image]") {
 }
 
 TEST_CASE("Image::GetWidth", "[Image]") {
-  Window window("foo", 10, 10);
-  Renderer renderer(window);
-
+  Window window;
+  Renderer renderer{window};
   Image img(renderer, path);
   SDL_Texture* texture = img.get_texture();
 
@@ -71,10 +68,9 @@ TEST_CASE("Image::GetWidth", "[Image]") {
 }
 
 TEST_CASE("Image::GetHeight", "[Image]") {
-  Window window("foo", 10, 10);
-  Renderer renderer(window);
-
-  Image img(renderer, path);
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, path};
   SDL_Texture* texture = img.get_texture();
 
   CHECK(img.get_height() == 108);

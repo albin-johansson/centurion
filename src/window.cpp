@@ -1,10 +1,21 @@
 #include "window.h"
-#include <cstdint>
 #include <stdexcept>
+#include <type_traits>
 #include "window_listener.h"
 #include "bool_converter.h"
 
 namespace centurion {
+
+static_assert(std::is_default_constructible_v<Window>, "Window must be default constructible!");
+
+static_assert(std::is_move_assignable_v<Window>, "Window should be move assignable!");
+static_assert(std::is_move_constructible_v<Window>, "Window should feature move constructor!");
+
+static_assert(!std::is_copy_assignable_v<Window>, "Window shouldn't be copy assignable!");
+static_assert(!std::is_copy_constructible_v<Window>, "Window shouldn't have copy ctor!");
+
+static_assert(std::has_virtual_destructor_v<Window>, "Window requires virtual destructor!");
+static_assert(!std::is_final_v<Window>, "Window can't be final!");
 
 Window::Window(const std::string& title, int width, int height) {
   if ((width < 1) || (height < 1)) {
@@ -20,6 +31,8 @@ Window::Window(const std::string& title, int width, int height) {
 }
 
 Window::Window(int width, int height) : Window("Centurion window", width, height) {}
+
+Window::Window(const std::string& title) : Window(title, 800, 600) {}
 
 Window::Window() : Window(800, 600) {}
 
@@ -162,6 +175,25 @@ bool Window::is_fullscreen() const noexcept {
 
 bool Window::is_visible() const noexcept {
   return SDL_GetWindowFlags(window) & SDL_WINDOW_SHOWN;
+}
+
+int Window::get_x() const noexcept {
+  int x = 0;
+  SDL_GetWindowPosition(window, &x, nullptr);
+  return x;
+}
+
+int Window::get_y() const noexcept {
+  int y = 0;
+  SDL_GetWindowPosition(window, nullptr, &y);
+  return y;
+}
+
+std::pair<int, int> Window::get_position() const noexcept {
+  int x = 0;
+  int y = 0;
+  SDL_GetWindowPosition(window, &x, &y);
+  return {x, y};
 }
 
 int Window::get_width() const noexcept {

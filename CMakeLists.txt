@@ -3,8 +3,10 @@ project(Centurion)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 set(BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
+set(RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
 
 set(CENTURION_LIB ${PROJECT_NAME}_lib)
+set(CENTURION_TEST ${PROJECT_NAME}_test)
 
 # Checks if an environment variable is defined.
 #   envVar: the name of the actual environment variable.

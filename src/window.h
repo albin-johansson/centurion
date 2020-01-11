@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <utility>
 #include <gsl>
 #include <SDL.h>
 
@@ -9,8 +10,11 @@ namespace centurion {
 class IWindowListener;
 
 /**
- * The Window class is a wrapper around an SDL_Window instance.
+ * The Window class is a wrapper around an SDL_Window instance. Window instances can't be copied.
+ * The class can safely be used as a base class, since it provides a virtual destructor.
+ * Instances of the Window class can be implicitly converted to SDL_Window*.
  *
+ * @see IWindowListener
  * @since 3.0.0
  */
 class Window {
@@ -18,6 +22,11 @@ class Window {
   SDL_Window* window = nullptr;
   std::vector<IWindowListener*> windowListeners;
 
+  /**
+   * Notifies all registered window listeners that the window has been updated.
+   *
+   * @since 3.0.0
+   */
   void notify_window_listeners() noexcept;
 
  public:
@@ -45,6 +54,14 @@ class Window {
   explicit Window(int width, int height);
 
   /**
+   * Creates a 800x600 window with the specified title.
+   *
+   * @param title the title of the window.
+   * @since 3.0.0
+   */
+  explicit Window(const std::string& title);
+
+  /**
    * Creates a 800x600 window. The window will be hidden by default.
    *
    * @since 3.0.0
@@ -61,7 +78,7 @@ class Window {
 
   Window(const Window&) noexcept = delete;
 
-  ~Window();
+  virtual ~Window();
 
   Window& operator=(const Window&) noexcept = delete;
 
@@ -255,6 +272,15 @@ class Window {
   [[nodiscard]]
   bool is_visible() const noexcept;
 
+  [[nodiscard]]
+  int get_x() const noexcept;
+
+  [[nodiscard]]
+  int get_y() const noexcept;
+
+  [[nodiscard]]
+  std::pair<int, int> get_position() const noexcept;
+
   /**
    * Returns the current width of the window.
    *
@@ -288,7 +314,7 @@ class Window {
    * @return a pointer to the SDL_Window representation of the window.
    * @since 3.0.0
    */
-  operator SDL_Window*() const noexcept;
+  /*implicit*/ operator SDL_Window*() const noexcept;
 };
 
 }

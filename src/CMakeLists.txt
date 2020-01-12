@@ -21,7 +21,9 @@ set(SOURCE_FILES
 
         centurion_api.h
         centurion.cpp
-        centurion.h)
+        centurion.h
+
+        colors.h)
 
 add_library(${CENTURION_LIB} STATIC ${SOURCE_FILES}) # TODO use SHARED instead
 

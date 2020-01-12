@@ -145,6 +145,10 @@ void Renderer::set_color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha
   SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
 }
 
+void Renderer::set_color(const SDL_Color& color) const noexcept {
+  SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+}
+
 void Renderer::set_viewport(const SDL_Rect& viewport) noexcept {
   SDL_RenderSetViewport(renderer, &viewport);
 }
@@ -211,6 +215,28 @@ SDL_Rect Renderer::get_viewport() const noexcept {
 
 const SDL_FRect& Renderer::get_translation_viewport() const noexcept {
   return translationViewport;
+}
+
+uint32_t Renderer::get_flags() const noexcept {
+  SDL_RendererInfo info;
+  SDL_GetRendererInfo(renderer, &info);
+  return info.flags;
+}
+
+bool Renderer::is_vsync_enabled() const noexcept {
+  return get_flags() & SDL_RENDERER_PRESENTVSYNC;
+}
+
+bool Renderer::is_accelerated() const noexcept {
+  return get_flags() & SDL_RENDERER_ACCELERATED;
+}
+
+bool Renderer::is_software_based() const noexcept {
+  return get_flags() & SDL_RENDERER_SOFTWARE;
+}
+
+bool Renderer::is_supporting_target_textures() const noexcept {
+  return get_flags() & SDL_RENDERER_TARGETTEXTURE;
 }
 
 bool Renderer::is_using_integer_logical_scaling() const noexcept {

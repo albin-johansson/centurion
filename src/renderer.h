@@ -207,6 +207,8 @@ class Renderer {
                  uint8_t blue,
                  uint8_t alpha = SDL_ALPHA_OPAQUE) const noexcept;
 
+  void set_color(const SDL_Color& color) const noexcept;
+
   /**
    * Sets the viewport that will be used by the renderer.
    *
@@ -297,6 +299,56 @@ class Renderer {
    */
   [[nodiscard]]
   float get_y_scale() const noexcept;
+
+  /**
+   * Returns a bit mask that represents all of flags used when creating the renderer. The
+   * possible values are
+   * <ul>
+   *   <li>a</li>
+   * </ul>
+   *
+   * @return a bit mask that represents all of flags used when creating the renderer.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  uint32_t get_flags() const noexcept;
+
+  /**
+   * Indicates whether or not the <code>present()</code> method is synced with the
+   * refresh rate of the screen.
+   *
+   * @return true if vsync is enabled; false otherwise.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  bool is_vsync_enabled() const noexcept;
+
+  /**
+   * Indicates whether or not the renderer is hardware accelerated.
+   *
+   * @return true if the renderer is hardware accelerated; false otherwise.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  bool is_accelerated() const noexcept;
+
+  /**
+   * Indicates whether or not the renderer is using software rendering.
+   *
+   * @return true if the renderer is software-based; false otherwise.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  bool is_software_based() const noexcept;
+
+  /**
+   * Indicates whether or not the renderer supports rendering to a target texture.
+   *
+   * @return true if the renderer supports target texture rendering; false otherwise.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  bool is_supporting_target_textures() const noexcept;
 
   /**
    * Indicates whether or not the renderer uses integer scaling values for logical viewports. By

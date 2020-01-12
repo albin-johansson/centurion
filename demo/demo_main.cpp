@@ -3,6 +3,7 @@
 #include "window.h"
 #include "window_listener.h"
 #include "renderer.h"
+#include "image.h"
 #include "colors.h"
 
 #include <SDL.h>
@@ -12,6 +13,8 @@ using namespace centurion;
 static void do_stuff() {
   Window window;
   Renderer renderer{window};
+
+  Image image{renderer, "resources/grass.png"};
 
   window.show();
 
@@ -31,8 +34,10 @@ static void do_stuff() {
     renderer.set_color(Colors::indian_red);
     renderer.clear();
 
+    renderer.draw_image(image, 200, 200, 200, 200);
+
     renderer.set_color(Colors::snow);
-    renderer.fill_rect(100 + (x++), 100, 100, 100);
+    renderer.fill_rect(100 + x++, 100, 100, 100);
 
     renderer.present();
   }

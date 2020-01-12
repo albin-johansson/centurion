@@ -7,6 +7,7 @@ set(RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
 
 set(CENTURION_LIB ${PROJECT_NAME}_lib)
 set(CENTURION_TEST ${PROJECT_NAME}_test)
+set(CENTURION_DEMO ${PROJECT_NAME}_demo)
 
 # Checks if an environment variable is defined.
 #   envVar: the name of the actual environment variable.
@@ -31,3 +32,4 @@ find_package(SDL2_ttf REQUIRED)
 
 add_subdirectory(src)
 add_subdirectory(test)
+add_subdirectory(demo)

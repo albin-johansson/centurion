@@ -107,14 +107,14 @@ class Window {
   void hide() noexcept;
 
   /**
-   * Centers the window position relative to the screen.
+   * Centers the window position relative to the screen. Triggers a window listener update.
    *
    * @since 3.0.0
    */
   void center() noexcept;
 
   /**
-   * Raises this window above other windows and requests focus.
+   * Raises this window above other windows and requests focus. Triggers a window listener update.
    *
    * @since 3.0.0
    */
@@ -184,7 +184,7 @@ class Window {
   void set_icon(gsl::not_null<SDL_Surface*> icon) noexcept;
 
   /**
-   * Sets the title of the window.
+   * Sets the title of the window. Triggers a window listener update.
    *
    * @param title the title of the window.
    * @since 3.0.0
@@ -194,6 +194,7 @@ class Window {
   /**
    * Sets the gamma brightness of the window. This operation is only supported if the window is
    * in fullscreen mode. This property will be reset every time the fullscreen mode is exited.
+   * Triggers a window listener update.
    *
    * @param gamma the brightness value, in the range [0, 1].
    * @since 3.0.0
@@ -201,7 +202,7 @@ class Window {
   void set_gamma(float gamma) noexcept;
 
   /**
-   * Sets the opacity of the window.
+   * Sets the opacity of the window. Triggers a window listener update.
    *
    * @param opacity the opacity, in the range [0, 1]. This value will be clamped to a value in
    * the legal range internally.
@@ -210,7 +211,7 @@ class Window {
   void set_opacity(float opacity) noexcept;
 
   /**
-   * Sets the minimum size of the window.
+   * Sets the minimum size of the window. Triggers a window listener update.
    *
    * @param width the minimum width of the window, must be greater than zero.
    * @param height the minimum height of the window, must be greater than zero.
@@ -219,7 +220,7 @@ class Window {
   void set_min_size(int width, int height) noexcept;
 
   /**
-   * Sets the maximum size of the window.
+   * Sets the maximum size of the window. Triggers a window listener update.
    *
    * @param width the maximum width of the window, must be greater than zero.
    * @param height the maximum height of the window, must be greater than zero.
@@ -229,7 +230,7 @@ class Window {
 
   /**
    * Sets the position of the window. Note, it's possible to use SDL_WINDOWPOS_CENTERED or
-   * SDL_WINDOWPOS_UNDEFINED as any of the arguments.
+   * SDL_WINDOWPOS_UNDEFINED as any of the arguments. Triggers a window listener update.
    *
    * @param x the screen x-coordinate that the window will adapt.
    * @param y the screen y-coordinate that the window will adapt.
@@ -239,7 +240,7 @@ class Window {
 
   /**
    * Sets whether or not the mouse should be confined within the window. This property is disabled
-   * by default.
+   * by default. Triggers a window listener update.
    *
    * @param grabMouse true if the mouse should be confined within the window; false otherwise.
    * @since 3.0.0

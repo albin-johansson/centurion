@@ -79,10 +79,12 @@ void Window::hide() noexcept {
 
 void Window::center() noexcept {
   set_position(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+  notify_window_listeners();
 }
 
 void Window::raise() noexcept {
   SDL_RaiseWindow(window);
+  notify_window_listeners();
 }
 
 void Window::add_window_listener(IWindowListener* listener) noexcept {
@@ -138,32 +140,39 @@ void Window::set_icon(gsl::not_null<SDL_Surface*> icon) noexcept {
 
 void Window::set_title(const std::string& title) noexcept {
   SDL_SetWindowTitle(window, title.c_str());
+  notify_window_listeners();
 }
 
 void Window::set_gamma(float gamma) noexcept {
   if (is_fullscreen()) {
     SDL_SetWindowBrightness(window, gamma);
+    notify_window_listeners();
   }
 }
 
 void Window::set_opacity(float opacity) noexcept {
   SDL_SetWindowOpacity(window, opacity);
+  notify_window_listeners();
 }
 
 void Window::set_min_size(int width, int height) noexcept {
   SDL_SetWindowMinimumSize(window, width, height);
+  notify_window_listeners();
 }
 
 void Window::set_max_size(int width, int height) noexcept {
   SDL_SetWindowMaximumSize(window, width, height);
+  notify_window_listeners();
 }
 
 void Window::set_position(int x, int y) noexcept {
   SDL_SetWindowPosition(window, x, y);
+  notify_window_listeners();
 }
 
 void Window::set_grab_mouse(bool grabMouse) noexcept {
   SDL_SetWindowGrab(window, BoolConverter::convert(grabMouse));
+  notify_window_listeners();
 }
 
 bool Window::is_decorated() const noexcept {

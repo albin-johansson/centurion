@@ -24,11 +24,6 @@ class CenturionException final : public std::exception {
    */
   explicit CenturionException(const std::string& msg);
 
-  /**
-   * @param msg the message of the exception.
-   */
-  explicit CenturionException(std::string&& msg);
-
   ~CenturionException() override;
 
   [[nodiscard]]

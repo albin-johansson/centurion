@@ -4,11 +4,11 @@ namespace centurion {
 
 CenturionException::CenturionException() = default;
 
-CenturionException::CenturionException(const char* msg) : msg{msg} {}
+CenturionException::CenturionException(const char* msg)
+    : msg{msg} {}
 
-CenturionException::CenturionException(const std::string& msg) : msg{msg} {}
-
-CenturionException::CenturionException(std::string&& msg) : msg{msg} {}
+CenturionException::CenturionException(const std::string& msg)
+    : msg{msg} {}
 
 CenturionException::~CenturionException() = default;
 

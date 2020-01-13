@@ -31,7 +31,7 @@ install:
   - tar xf cmake-3.16.0.tar.gz
   - mkdir cmakedir
   - cd cmakedir
-  - ./bootstrap --system-curl
+  #- ./bootstrap --system-curl
   - make
   - sudo make install
   - cd ..

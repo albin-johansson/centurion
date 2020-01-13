@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.12)
 project(${CENTURION_TEST})
 
 set(CATCH_INCLUDE_DIR catch2)

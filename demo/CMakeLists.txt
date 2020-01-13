@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.12)
 project(${CENTURION_DEMO})
 
 add_executable(${CENTURION_DEMO} demo_main.cpp)

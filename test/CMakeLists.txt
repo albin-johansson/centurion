@@ -15,7 +15,9 @@ set(TEST_FILES
         unittests/image_generator_test.cpp
         unittests/renderer_test.cpp)
 
+enable_testing()
 add_executable(${CENTURION_TEST} ${TEST_FILES})
+add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
 
 set_target_properties(${CENTURION_TEST} PROPERTIES
         CXX_STANDARD 17)

@@ -234,7 +234,7 @@ class Image {
    * @return a pointer to the internal SDL_Texture.
    * @since 3.0.0
    */
-  operator SDL_Texture*() const noexcept;
+  /*implicit*/ operator SDL_Texture*() const noexcept;
 };
 
 }

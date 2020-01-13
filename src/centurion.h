@@ -12,7 +12,7 @@ class Centurion final {
   static bool wasInit;
 
   /**
-   * Initializes
+   * Initializes the core SDL2 library.
    *
    * @since 3.0.0
    */

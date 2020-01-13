@@ -32,7 +32,7 @@ install:
   - mkdir cmakedir
   - cd cmakedir
   #- ./bootstrap --system-curl
-  - make
+  #- make
   - sudo make install
   - cd ..
 

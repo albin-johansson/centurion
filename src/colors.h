@@ -10,6 +10,7 @@ namespace centurion {
  * <a href=https://www.w3schools.com/colors/colors_names.asp>this</a> list.
  *
  * @since 3.0.0
+ * @author Albin Johansson
  */
 class Colors final {
  public:

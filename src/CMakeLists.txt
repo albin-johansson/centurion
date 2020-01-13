@@ -23,7 +23,14 @@ set(SOURCE_FILES
         centurion.cpp
         centurion.h
 
-        colors.h image_generator.cpp image_generator.h)
+        colors.h
+
+        image_generator.cpp
+        image_generator.h
+
+        paths.cpp
+        paths.h
+        )
 
 add_library(${CENTURION_LIB} STATIC ${SOURCE_FILES}) # TODO use SHARED instead
 

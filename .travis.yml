@@ -26,19 +26,28 @@ before_install:
   - mkdir SDL
   - cd SDL
 
+  # - mkdir sdl
+  # - cd sdl
+  # - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.8.tar.gz | tar xz
+  # - cd SDL2-2.0.8
+  # - ./configure                  > /dev/null 2>&1
+  # - make                         > /dev/null 2>&1
+  # - sudo make install            > /dev/null 2>&1
+  # - cd $goback
+
   # Install core SDL2
   - mkdir SDL2_core
-  - cd SDL2_core
   - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.10.tar.gz | tar xz
+  - cd SDL2_core
   - ./configure
   - make
   - sudo make install
   - cd ..
 
   # Install SDL2_image
-  - mkdir SDL2_image¨
-  - cd SDL2_image
+  - mkdir SDL2_image
   - travis_retry curl -L https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz | tar xz
+  - cd SDL2_image
   - ./configure
   - make
   - sudo make install
@@ -46,8 +55,8 @@ before_install:
 
   # Install SDL2_ttf
   - mkdir SDL2_ttf
-  - cd SDL2_ttf
   - travis_retry curl -L https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.tar.gz | tar xz
+  - cd SDL2_ttf
   - ./configure
   - make
   - sudo make install
@@ -55,8 +64,8 @@ before_install:
 
   # Install SDL2_mixer
   - mkdir SDL2_mixer
-  - cd SDL2_mixer
   - travis_retry curl -L https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.4.tar.gz | tar xz
+  - cd SDL2_mixer
   - ./configure
   - make
   - sudo make install

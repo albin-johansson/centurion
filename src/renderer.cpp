@@ -1,0 +1,312 @@
+#include "renderer.h"
+#include <stdexcept>
+#include <type_traits>
+#include <SDL.h>
+#include "image.h"
+#include "font.h"
+#include "colors.h"
+#include "bool_converter.h"
+
+namespace centurion {
+
+static_assert(std::has_virtual_destructor_v<Renderer>);
+static_assert(!std::is_final_v<Renderer>);
+
+static_assert(std::is_nothrow_move_constructible_v<Renderer>);
+static_assert(std::is_nothrow_move_assignable_v<Renderer>);
+
+static_assert(!std::is_nothrow_copy_constructible_v<Renderer>);
+static_assert(!std::is_nothrow_copy_assignable_v<Renderer>);
+
+static_assert(std::is_convertible_v<Renderer, SDL_Renderer*>);
+
+Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer) {
+  if (!renderer) {
+    throw std::invalid_argument("Can't create renderer from null SDL_Renderer!");
+  }
+  this->renderer = renderer;
+
+  set_color(Colors::black);
+  set_logical_integer_scale(false);
+}
+
+Renderer::Renderer(gsl::not_null<SDL_Window*> window, uint32_t flags) {
+  renderer = SDL_CreateRenderer(window, -1, flags);
+
+  set_blend_mode(SDL_BLENDMODE_BLEND);
+  set_color(Colors::black);
+  set_logical_integer_scale(false);
+}
+
+Renderer::Renderer(Renderer&& other) noexcept
+    : renderer{other.renderer},
+      translationViewport{other.translationViewport} {
+  other.renderer = nullptr;
+}
+
+Renderer::~Renderer() {
+  if (renderer) {
+    SDL_DestroyRenderer(renderer);
+  }
+}
+
+std::unique_ptr<Renderer> Renderer::unique(gsl::owner<SDL_Renderer*> renderer) {
+  return std::make_unique<Renderer>(renderer);
+}
+
+std::unique_ptr<Renderer> Renderer::unique(gsl::not_null<SDL_Window*> window, uint32_t flags) {
+  return std::make_unique<Renderer>(window, flags);
+}
+
+std::shared_ptr<Renderer> Renderer::shared(gsl::owner<SDL_Renderer*> renderer) {
+  return std::make_shared<Renderer>(renderer);
+}
+
+std::shared_ptr<Renderer> Renderer::shared(gsl::not_null<SDL_Window*> window, uint32_t flags) {
+  return std::make_shared<Renderer>(window, flags);
+}
+
+Renderer& Renderer::operator=(Renderer&& other) noexcept {
+  renderer = other.renderer;
+  translationViewport = other.translationViewport;
+
+  other.renderer = nullptr;
+
+  return *this;
+}
+
+void Renderer::clear() const noexcept {
+  SDL_RenderClear(renderer);
+}
+
+void Renderer::present() const noexcept {
+  SDL_RenderPresent(renderer);
+}
+
+void Renderer::draw_image(const Image& texture, int x, int y) const noexcept {
+  const auto dst = SDL_Rect{x, y, texture.get_width(), texture.get_height()};
+  SDL_RenderCopy(renderer, texture, nullptr, &dst);
+}
+
+void Renderer::draw_image(const Image& texture, float x, float y) const noexcept {
+  const auto dst = SDL_FRect{x, y,
+                             static_cast<float>(texture.get_width()),
+                             static_cast<float>(texture.get_height())};
+  SDL_RenderCopyF(renderer, texture, nullptr, &dst);
+}
+
+void Renderer::draw_image(const Image& texture,
+                          int x,
+                          int y,
+                          int width,
+                          int height) const noexcept {
+  const auto dst = SDL_Rect{x, y, width, height};
+  SDL_RenderCopy(renderer, texture, nullptr, &dst);
+}
+
+void Renderer::draw_image(const Image& texture,
+                          float x,
+                          float y,
+                          float width,
+                          float height) const noexcept {
+  const auto dst = SDL_FRect{x, y, width, height};
+  SDL_RenderCopyF(renderer, texture, nullptr, &dst);
+}
+
+void Renderer::draw_image(const Image& texture,
+                          const SDL_Rect& source,
+                          const SDL_FRect& destination) const noexcept {
+  SDL_RenderCopyF(renderer, texture, &source, &destination);
+}
+
+void Renderer::draw_image_translated(const Image& texture,
+                                     const SDL_Rect& source,
+                                     const SDL_FRect& destination) const noexcept {
+  const auto dst = SDL_FRect{destination.x - translationViewport.x,
+                             destination.y - translationViewport.y,
+                             destination.w,
+                             destination.h};
+  SDL_RenderCopyF(renderer, texture, &source, &dst);
+}
+
+void Renderer::fill_rect(float x, float y, float width, float height) const noexcept {
+  const auto rect = SDL_FRect{x, y, width, height};
+  SDL_RenderFillRectF(renderer, &rect);
+}
+
+void Renderer::fill_rect(int x, int y, int width, int height) const noexcept {
+  const auto rect = SDL_Rect{x, y, width, height};
+  SDL_RenderFillRect(renderer, &rect);
+}
+
+void Renderer::draw_rect(float x, float y, float width, float height) const noexcept {
+  const auto rect = SDL_FRect{x, y, width, height};
+  SDL_RenderDrawRectF(renderer, &rect);
+}
+
+void Renderer::draw_rect(int x, int y, int width, int height) const noexcept {
+  const auto rect = SDL_Rect{x, y, width, height};
+  SDL_RenderDrawRect(renderer, &rect);
+}
+
+void Renderer::draw_text(const std::string& text, float x, float y, const Font& font) const {
+  if (!text.empty()) {
+    const auto texture = create_image(text, font);
+
+    if (!texture) {
+      return;
+    }
+
+    draw_image(*texture, x, y);
+  }
+}
+
+void Renderer::set_color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) const noexcept {
+  SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
+}
+
+void Renderer::set_color(const SDL_Color& color) const noexcept {
+  SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+}
+
+void Renderer::set_viewport(const SDL_Rect& viewport) noexcept {
+  SDL_RenderSetViewport(renderer, &viewport);
+}
+
+void Renderer::set_translation_viewport(const SDL_FRect& viewport) noexcept {
+  translationViewport = viewport;
+}
+
+void Renderer::set_blend_mode(const SDL_BlendMode& blendMode) noexcept {
+  SDL_SetRenderDrawBlendMode(renderer, blendMode);
+}
+
+void Renderer::set_scale(float xScale, float yScale) noexcept {
+  if (xScale > 0 && yScale > 0) {
+    SDL_RenderSetScale(renderer, xScale, yScale);
+  }
+}
+
+void Renderer::set_logical_size(int width, int height) noexcept {
+  if (width > 0 && height > 0) {
+    SDL_RenderSetLogicalSize(renderer, width, height);
+  }
+}
+
+void Renderer::set_logical_integer_scale(bool useLogicalIntegerScale) noexcept {
+  SDL_RenderSetIntegerScale(renderer, BoolConverter::convert(useLogicalIntegerScale));
+}
+
+SDL_Color Renderer::get_color() const noexcept {
+  uint8_t r = 0, g = 0, b = 0, a = 0;
+  SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+  return {r, g, b, a};
+}
+
+int Renderer::get_logical_width() const noexcept {
+  int w = 0;
+  SDL_RenderGetLogicalSize(renderer, &w, nullptr);
+  return w;
+}
+
+int Renderer::get_logical_height() const noexcept {
+  int h = 0;
+  SDL_RenderGetLogicalSize(renderer, nullptr, &h);
+  return h;
+}
+
+SDL_RendererInfo Renderer::get_info() const noexcept {
+  SDL_RendererInfo info;
+  SDL_GetRendererInfo(renderer, &info);
+  return info;
+}
+
+int Renderer::get_output_width() const noexcept {
+  int width = 0;
+  SDL_GetRendererOutputSize(renderer, &width, nullptr);
+  return width;
+}
+
+int Renderer::get_output_height() const noexcept {
+  int height = 0;
+  SDL_GetRendererOutputSize(renderer, nullptr, &height);
+  return height;
+}
+
+std::pair<int, int> Renderer::get_output_size() const noexcept {
+  int width = 0;
+  int height = 0;
+  SDL_GetRendererOutputSize(renderer, &width, &height);
+  return {width, height};
+}
+
+float Renderer::get_x_scale() const noexcept {
+  float xScale = 0;
+  SDL_RenderGetScale(renderer, &xScale, nullptr);
+  return xScale;
+}
+
+float Renderer::get_y_scale() const noexcept {
+  float yScale = 0;
+  SDL_RenderGetScale(renderer, nullptr, &yScale);
+  return yScale;
+}
+
+SDL_Rect Renderer::get_viewport() const noexcept {
+  SDL_Rect viewport{0, 0, 0, 0};
+  SDL_RenderGetViewport(renderer, &viewport);
+  return viewport;
+}
+
+const SDL_FRect& Renderer::get_translation_viewport() const noexcept {
+  return translationViewport;
+}
+
+uint32_t Renderer::get_flags() const noexcept {
+  SDL_RendererInfo info;
+  SDL_GetRendererInfo(renderer, &info);
+  return info.flags;
+}
+
+bool Renderer::is_vsync_enabled() const noexcept {
+  return get_flags() & SDL_RENDERER_PRESENTVSYNC;
+}
+
+bool Renderer::is_accelerated() const noexcept {
+  return get_flags() & SDL_RENDERER_ACCELERATED;
+}
+
+bool Renderer::is_software_based() const noexcept {
+  return get_flags() & SDL_RENDERER_SOFTWARE;
+}
+
+bool Renderer::is_supporting_target_textures() const noexcept {
+  return get_flags() & SDL_RENDERER_TARGETTEXTURE;
+}
+
+bool Renderer::is_using_integer_logical_scaling() const noexcept {
+  return SDL_RenderGetIntegerScale(renderer);
+}
+
+std::unique_ptr<Image> Renderer::create_image(const std::string& s, const Font& font) const {
+  if (s.empty()) {
+    return nullptr;
+  }
+
+  SDL_Surface* surface = TTF_RenderText_Blended(font, s.c_str(), get_color());
+
+  if (!surface) {
+    return nullptr;
+  }
+
+  SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+  SDL_FreeSurface(surface);
+
+  return std::make_unique<Image>(texture);
+}
+
+Renderer::operator SDL_Renderer*() const noexcept {
+  return renderer;
+}
+
+}

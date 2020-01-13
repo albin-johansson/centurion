@@ -32,19 +32,14 @@
 *.app
 
 # Custom stuff
-.vs/
-out/
-lib/
-Centurion/lib/
-Centurion/packages/
-CenturionTests/packages/
+cmake-build-debug/
+cmake-build-release/
+SDL2-x64/
+.idea/
 *.config
 *.idb
 *.pdb
-*.lastbuildstate
 *.log
 *.tlog
 *.user
-*.vcxproj
 *.filters
-*.sln

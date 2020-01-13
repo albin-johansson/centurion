@@ -46,31 +46,28 @@ script:
   - export CXX=/usr/bin/g++-8
   - gcc - v && g++ -v && cmake --version
   
-  - mkdir SDL
-  - cd SDL
+  - mkdir sdl
+  - cd sdl
 
   # Install core SDL2
-  - mkdir SDL2_core
   - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.10.tar.gz | tar xz
-  - cd SDL2_core
+  - cd SDL2-2.0.10
   - ./configure
   - make
   - sudo make install
   - cd ..
 
   # Install SDL2_image
-  - mkdir SDL2_image
   - travis_retry curl -L https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz | tar xz
-  - cd SDL2_image
+  - cd SDL2_image-2.0.5
   - ./configure
   - make
   - sudo make install
   - cd ..
 
   # Install SDL2_ttf
-  - mkdir SDL2_ttf
   - travis_retry curl -L https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.tar.gz | tar xz
-  - cd SDL2_ttf
+  - cd SDL2_ttf-2.0.15
   - ./configure
   - make
   - sudo make install
@@ -79,7 +76,7 @@ script:
   # Install SDL2_mixer
   - mkdir SDL2_mixer
   - travis_retry curl -L https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.4.tar.gz | tar xz
-  - cd SDL2_mixer
+  - cd SDL2_mixer-2.0.4
   - ./configure
   - make
   - sudo make install

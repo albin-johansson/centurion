@@ -40,7 +40,7 @@ script:
   - export CXX=g++-8
   - mkdir -p build
   - cd build
-  - cmake ${CMAKE_OPTIONS}
+  - cmake ${CMAKE_OPTIONS} ..
   - make
   - ctest
 

@@ -44,7 +44,9 @@ before_install:
 script:
   - export CC=/usr/bin/gcc-8
   - export CXX=/usr/bin/g++-8
-  - gcc - v && g++ -v && cmake --version
+  - gcc -v
+  - g++ -v
+  - cmake --version
   
   - mkdir sdl
   - cd sdl
@@ -80,6 +82,8 @@ script:
   - ./configure
   - make
   - sudo make install
+  - cd ..
+
   - cd ..
   - cmake .
   - make

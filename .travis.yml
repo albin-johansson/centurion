@@ -41,7 +41,7 @@ script:
   - mkdir -p build
   - cd build
   - cmake ${CMAKE_OPTIONS} ..
-  - make
+  - make Centurion_test
   - ctest
 
   # - cmake --version

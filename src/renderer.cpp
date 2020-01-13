@@ -195,6 +195,31 @@ int Renderer::get_logical_height() const noexcept {
   return h;
 }
 
+SDL_RendererInfo Renderer::get_info() const noexcept {
+  SDL_RendererInfo info;
+  SDL_GetRendererInfo(renderer, &info);
+  return info;
+}
+
+int Renderer::get_output_width() const noexcept {
+  int width = 0;
+  SDL_GetRendererOutputSize(renderer, &width, nullptr);
+  return width;
+}
+
+int Renderer::get_output_height() const noexcept {
+  int height = 0;
+  SDL_GetRendererOutputSize(renderer, nullptr, &height);
+  return height;
+}
+
+std::pair<int, int> Renderer::get_output_size() const noexcept {
+  int width = 0;
+  int height = 0;
+  SDL_GetRendererOutputSize(renderer, &width, &height);
+  return {width, height};
+}
+
 float Renderer::get_x_scale() const noexcept {
   float xScale = 0;
   SDL_RenderGetScale(renderer, &xScale, nullptr);

@@ -124,10 +124,27 @@ class Renderer {
                   float width,
                   float height) const noexcept;
 
+  /**
+   * Renders a part of an image at the specified destination.
+   *
+   * @param texture the source image.
+   * @param source the rectangle that specifies the cutout of the source image.
+   * @param destination the destination of the rendered image.
+   * @since 3.0.0
+   */
   void draw_image(const Image& texture,
                   const SDL_Rect& source,
                   const SDL_FRect& destination) const noexcept;
 
+  /**
+   * Renders a part of an image at the specified destination. The position of the rendered image
+   * is translated using the currently set translation viewport.
+   *
+   * @param texture the source image.
+   * @param source the rectangle that specifies the cutout of the source image.
+   * @param destination the destination of the rendered image.
+   * @since 3.0.0
+   */
   void draw_image_translated(const Image& texture,
                              const SDL_Rect& source,
                              const SDL_FRect& destination) const noexcept;
@@ -299,6 +316,42 @@ class Renderer {
    */
   [[nodiscard]]
   float get_y_scale() const noexcept;
+
+  /**
+   * Returns information about the renderer.
+   *
+   * @return information about the renderer.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  SDL_RendererInfo get_info() const noexcept;
+
+  /**
+   * Returns the output width of the renderer.
+   *
+   * @return the output width of the renderer.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  int get_output_width() const noexcept;
+
+  /**
+   * Returns the output height of the renderer.
+   *
+   * @return the output height of the renderer.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  int get_output_height() const noexcept;
+
+  /**
+   * Returns the output size of the renderer.
+   *
+   * @return the output size of the renderer, in the format (width, height).
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  std::pair<int, int> get_output_size() const noexcept;
 
   /**
    * Returns a bit mask that represents all of flags used when creating the renderer. The

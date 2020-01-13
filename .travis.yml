@@ -22,8 +22,15 @@ addons:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libegl1-mesa-dev libgles2-mesa-dev
-  # - eval "${MATRIX_EVAL}"
+# - sudo apt-get install -qq libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libegl1-mesa-dev libgles2-mesa-dev
+  - |
+  travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.10.tar.gz | tar xz
+  cd SDL2
+  ./configure
+  make
+  sudo make install
+
+# - eval "${MATRIX_EVAL}"
 
 
 install:

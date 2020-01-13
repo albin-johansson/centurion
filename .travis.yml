@@ -28,8 +28,9 @@ before_install:
 install:
   - wget http://cmake.org/files/v3.16/cmake-3.16.0.tar.gz
   #- wget http://www.cmake.org/files/v2.8/cmake-2.8.12.tar.gz
-  - tar xf cmake-2.8.12.tar.gz
-  - cd cmake-2.8.12
+  - tar xf cmake-3.16.0.tar.gz
+  - mk cmakedir
+  - cd cmakedir
   - ./bootstrap --system-curl
   - make
   - sudo make install

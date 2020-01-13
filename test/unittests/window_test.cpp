@@ -203,3 +203,29 @@ TEST_CASE("Window::set_max_size && Window::get_max_size", "[Window]") {
   CHECK(width == actualWidth);
   CHECK(height == actualHeight);
 }
+
+TEST_CASE("Window::set_brightness", "[Window]") {
+  Window window;
+
+  const auto brightness = 0.8f;
+  window.set_brightness(brightness);
+
+  CHECK(window.get_brightness() == brightness);
+
+  SECTION("Test clamping of bad arguments") {
+    const auto tooHigh = 1.7f;
+    window.set_brightness(tooHigh);
+    CHECK(window.get_brightness() == 1);
+
+    const auto tooLow = -1.4f;
+    window.set_brightness(tooLow);
+    CHECK(window.get_brightness() == 0);
+  }
+}
+
+TEST_CASE("Window::get_brightness", "[Window]") {
+  Window window;
+  CHECK(window.get_brightness() == 1);
+}
+
+

@@ -26,9 +26,6 @@ Window::Window(const std::string& title, int width, int height) {
   const auto pos = SDL_WINDOWPOS_CENTERED;
   window = SDL_CreateWindow(title.c_str(), pos, pos, width, height,
                             SDL_WINDOW_HIDDEN);
-
-  // TODO...
-//    SDL_SetWindowDisplayMode(window, ...)
 }
 
 Window::Window(int width, int height) : Window("Centurion window", width, height) {}
@@ -175,6 +172,16 @@ void Window::set_grab_mouse(bool grabMouse) noexcept {
   notify_window_listeners();
 }
 
+void Window::set_brightness(float brightness) noexcept {
+  if (brightness < 0) {
+    brightness = 0;
+  } else if (brightness > 1) {
+    brightness = 1;
+  }
+  SDL_SetWindowBrightness(window, brightness);
+  notify_window_listeners();
+}
+
 bool Window::is_decorated() const noexcept {
   int left = 0;
   int right = 0;
@@ -204,6 +211,14 @@ float Window::get_opacity() const noexcept {
   float opacity = 1;
   SDL_GetWindowOpacity(window, &opacity);
   return opacity;
+}
+
+float Window::get_brightness() const noexcept {
+  return SDL_GetWindowBrightness(window);
+}
+
+int Window::get_id() const noexcept {
+  return SDL_GetWindowID(window);
 }
 
 int Window::get_x() const noexcept {

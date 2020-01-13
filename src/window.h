@@ -248,6 +248,15 @@ class Window {
   void set_grab_mouse(bool grabMouse) noexcept;
 
   /**
+   * Sets the overall brightness of the window. Triggers a window listener update.
+   *
+   * @param brightness the brightness value, in the range [0, 1]. A value outside this range will
+   * be clamped to the closest valid value.
+   * @since 3.0.0
+   */
+  void set_brightness(float brightness) noexcept;
+
+  /**
    * Indicates whether or not the window is decorated. The window is decorated by default.
    *
    * @return true if the window is decorated; false otherwise.
@@ -293,6 +302,15 @@ class Window {
   bool is_visible() const noexcept;
 
   /**
+   * Returns the current brightness value of the window. The default value of this property is 1.
+   *
+   * @return the current brightness of the window, in the range [0, 1].
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  float get_brightness() const noexcept;
+
+  /**
    * Returns the opacity of the window.
    *
    * @return the opacity of the window, in the range [0, 1].
@@ -318,6 +336,15 @@ class Window {
    */
   [[nodiscard]]
   int get_y() const noexcept;
+
+  /**
+   * Returns a numerical ID of the window.
+   *
+   * @return a numerical ID of the window.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  int get_id() const noexcept;
 
   /**
    * Returns the current position of the window.

@@ -22,10 +22,10 @@ set_target_properties(${CENTURION_TEST} PROPERTIES
 
 target_include_directories(${CENTURION_TEST} PUBLIC unittests)
 
-target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_LIBRARY})
-target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_IMAGE_LIBRARIES})
-target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_MIXER_LIBRARIES})
-target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_TTF_LIBRARIES})
+#target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_LIBRARY})
+#target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_IMAGE_LIBRARIES})
+#target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_MIXER_LIBRARIES})
+#target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_TTF_LIBRARIES})
 
 target_link_libraries(${CENTURION_TEST}
         mingw32

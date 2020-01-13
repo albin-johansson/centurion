@@ -48,10 +48,10 @@ target_include_directories(${CENTURION_LIB} PUBLIC ../src)
 target_include_directories(${CENTURION_LIB} PUBLIC lib)
 target_include_directories(${CENTURION_LIB} PUBLIC lib/gsl)
 
-target_link_directories(${CENTURION_LIB} PUBLIC ${SDL2_LIBRARY})
-target_link_directories(${CENTURION_LIB} PUBLIC ${SDL2_IMAGE_LIBRARIES})
-target_link_directories(${CENTURION_LIB} PUBLIC ${SDL2_MIXER_LIBRARIES})
-target_link_directories(${CENTURION_LIB} PUBLIC ${SDL2_TTF_LIBRARIES})
+#target_link_directories(${CENTURION_LIB} PUBLIC ${SDL2_LIBRARY})
+#target_link_directories(${CENTURION_LIB} PUBLIC ${SDL2_IMAGE_LIBRARIES})
+#target_link_directories(${CENTURION_LIB} PUBLIC ${SDL2_MIXER_LIBRARIES})
+#target_link_directories(${CENTURION_LIB} PUBLIC ${SDL2_TTF_LIBRARIES})
 
 # Copies all of the files in the bin folder and puts them next to the executable
 add_custom_command(TARGET ${CENTURION_LIB} POST_BUILD

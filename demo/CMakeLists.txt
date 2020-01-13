@@ -6,10 +6,10 @@ add_executable(${CENTURION_DEMO} demo_main.cpp)
 set_target_properties(${CENTURION_DEMO} PROPERTIES
         CXX_STANDARD 17)
 
-target_link_directories(${CENTURION_DEMO} PUBLIC ${SDL2_LIBRARY})
-target_link_directories(${CENTURION_DEMO} PUBLIC ${SDL2_IMAGE_LIBRARIES})
-target_link_directories(${CENTURION_DEMO} PUBLIC ${SDL2_MIXER_LIBRARIES})
-target_link_directories(${CENTURION_DEMO} PUBLIC ${SDL2_TTF_LIBRARIES})
+#target_link_directories(${CENTURION_DEMO} PUBLIC ${SDL2_LIBRARY})
+#target_link_directories(${CENTURION_DEMO} PUBLIC ${SDL2_IMAGE_LIBRARIES})
+#target_link_directories(${CENTURION_DEMO} PUBLIC ${SDL2_MIXER_LIBRARIES})
+#target_link_directories(${CENTURION_DEMO} PUBLIC ${SDL2_TTF_LIBRARIES})
 
 target_link_libraries(${CENTURION_DEMO}
         mingw32

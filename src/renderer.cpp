@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include "image.h"
 #include "font.h"
+#include "colors.h"
 #include "bool_converter.h"
 
 namespace centurion {
@@ -24,6 +25,8 @@ Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer) {
     throw std::invalid_argument("Can't create renderer from null SDL_Renderer!");
   }
   this->renderer = renderer;
+
+  set_color(Colors::black);
   set_logical_integer_scale(false);
 }
 
@@ -31,6 +34,7 @@ Renderer::Renderer(gsl::not_null<SDL_Window*> window, uint32_t flags) {
   renderer = SDL_CreateRenderer(window, -1, flags);
 
   set_blend_mode(SDL_BLENDMODE_BLEND);
+  set_color(Colors::black);
   set_logical_integer_scale(false);
 }
 
@@ -44,6 +48,22 @@ Renderer::~Renderer() {
   if (renderer) {
     SDL_DestroyRenderer(renderer);
   }
+}
+
+std::unique_ptr<Renderer> Renderer::unique(gsl::owner<SDL_Renderer*> renderer) {
+  return std::make_unique<Renderer>(renderer);
+}
+
+std::unique_ptr<Renderer> Renderer::unique(gsl::not_null<SDL_Window*> window, uint32_t flags) {
+  return std::make_unique<Renderer>(window, flags);
+}
+
+std::shared_ptr<Renderer> Renderer::shared(gsl::owner<SDL_Renderer*> renderer) {
+  return std::make_shared<Renderer>(renderer);
+}
+
+std::shared_ptr<Renderer> Renderer::shared(gsl::not_null<SDL_Window*> window, uint32_t flags) {
+  return std::make_shared<Renderer>(window, flags);
 }
 
 Renderer& Renderer::operator=(Renderer&& other) noexcept {

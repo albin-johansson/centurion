@@ -32,18 +32,18 @@ class Renderer {
    *
    * @param renderer a pointer to the SDL_Renderer that will be used by the
    * renderer.
-   * @throws NullPointerException if the supplied pointer is null.
+   * @throws invalid_argument if the supplied pointer is null.
    * @since 3.0.0
    */
   explicit Renderer(gsl::owner<SDL_Renderer*> renderer);
 
   /**
-   * Creates a renderer based on the supplied SDL_Window. The internal renderer will be created
-   * using the SDL_RENDERER_ACCELERATED and SDL_RENDERER_PRESENTVSYNC flags.
+   * Creates a renderer based on the supplied SDL_Window. By default, the internal renderer will be
+   * created using the SDL_RENDERER_ACCELERATED and SDL_RENDERER_PRESENTVSYNC flags.
    *
    * @param window a pointer to the SDL_Window that will be used to create the
    * renderer.
-   * @param flags the SDL_RENDERER_x flags that will be used.
+   * @param flags the SDL_RENDERER_x flags that will be used (OR'd together).
    * @see SDL_RendererFlags
    * @since 3.0.0
    */
@@ -59,6 +59,64 @@ class Renderer {
   Renderer& operator=(const Renderer&) noexcept = delete;
 
   virtual ~Renderer();
+
+  /**
+   * Creates and returns a unique pointer to a renderer.
+   *
+   * @param renderer a raw pointer to the SDL_Renderer that the created renderer will be based
+   * on, may not be null.
+   * @return a unique pointer to a renderer.
+   * @throws invalid_argument if the supplied renderer is null.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::unique_ptr<Renderer> unique(gsl::owner<SDL_Renderer*> renderer);
+
+  /**
+   * Creates and returns a unique pointer to a renderer based on the supplied SDL_Window. By
+   * default, the internal renderer will be created using the SDL_RENDERER_ACCELERATED and
+   * SDL_RENDERER_PRESENTVSYNC flags.
+   *
+   * @param window a pointer to the SDL_Window that will be used to create the
+   * renderer.
+   * @param flags the SDL_RENDERER_x flags that will be used (OR'd together).
+   * @return a unique pointer to a renderer.
+   * @see SDL_RendererFlags
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::unique_ptr<Renderer> unique(gsl::not_null<SDL_Window*> window,
+                                          uint32_t flags = SDL_RENDERER_ACCELERATED
+                                              | SDL_RENDERER_PRESENTVSYNC);
+
+  /**
+   * Creates and returns a shared pointer to a renderer.
+   *
+   * @param renderer a raw pointer to the SDL_Renderer that the created renderer will be based
+   * on, may not be null.
+   * @return a shared pointer to a renderer.
+   * @throws invalid_argument if the supplied renderer is null.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::shared_ptr<Renderer> shared(gsl::owner<SDL_Renderer*> renderer);
+
+  /**
+   * Creates and returns a shared pointer to a renderer based on the supplied SDL_Window. By
+   * default, the internal renderer will be created using the SDL_RENDERER_ACCELERATED and
+   * SDL_RENDERER_PRESENTVSYNC flags.
+   *
+   * @param window a pointer to the SDL_Window that will be used to create the
+   * renderer.
+   * @param flags the SDL_RENDERER_x flags that will be used (OR'd together).
+   * @return a shared pointer to a renderer.
+   * @see SDL_RendererFlags
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::shared_ptr<Renderer> shared(gsl::not_null<SDL_Window*> window,
+                                          uint32_t flags = SDL_RENDERER_ACCELERATED
+                                              | SDL_RENDERER_PRESENTVSYNC);
 
   /**
    * Clears the rendering target with the currently selected color.
@@ -282,7 +340,7 @@ class Renderer {
   void set_logical_integer_scale(bool useLogicalIntegerScale) noexcept;
 
   /**
-   * Returns the logical width that the renderer uses.
+   * Returns the logical width that the renderer uses. By default, this property is set to 0.
    *
    * @return the logical width that the renderer uses.
    * @since 3.0.0
@@ -291,7 +349,7 @@ class Renderer {
   int get_logical_width() const noexcept;
 
   /**
-   * Returns the logical height that the renderer uses.
+   * Returns the logical height that the renderer uses. By default, this property is set to 0.
    *
    * @return the logical height that the renderer uses.
    * @since 3.0.0
@@ -414,7 +472,7 @@ class Renderer {
   bool is_using_integer_logical_scaling() const noexcept;
 
   /**
-   * Returns the currently selected rendering color.
+   * Returns the currently selected rendering color. Set to black by default.
    *
    * @return the currently selected rendering color.
    * @since 3.0.0
@@ -445,7 +503,7 @@ class Renderer {
   SDL_Rect get_viewport() const noexcept;
 
   /**
-   * Returns the translation viewport that is currently being used.
+   * Returns the translation viewport that is currently being used. Set to (0, 0, 0, 0) by default.
    *
    * @return the translation viewport that is currently being used.
    * @since 3.0.0

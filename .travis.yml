@@ -1,6 +1,6 @@
 language: cpp
 
-dist: trusty
+# dist: trusty
 # sudo: require
 
 compiler: gcc
@@ -16,7 +16,14 @@ addons:
     packages:
       - g++-8
 
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libegl1-mesa-dev libgles2-mesa-dev
+  # - eval "${MATRIX_EVAL}"
+
+
 script:
+  - export CXX=g++-8
   - cmake --version
   - cmake CMakeLists.txt
   - cmake  --build . --target neat
@@ -32,11 +39,6 @@ script:
 #             - g++-8
 #       env:
 #         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
-
-# before_install:
-#   - sudo apt-get update -qq
-#   - sudo apt-get install -qq libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libegl1-mesa-dev libgles2-mesa-dev
-#   - eval "${MATRIX_EVAL}"
 
 # install:
 #   - wget http://cmake.org/files/v3.16/cmake-3.16.0.tar.gz

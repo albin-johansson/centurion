@@ -29,14 +29,24 @@ target_include_directories(${CENTURION_TEST} PUBLIC unittests)
 #target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_MIXER_LIBRARIES})
 #target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_TTF_LIBRARIES})
 
-target_link_libraries(${CENTURION_TEST}
-        mingw32
-        Catch
-        ${CENTURION_LIB}
-        ${SDL2_LIBRARY}
-        ${SDL2_IMAGE_LIBRARIES}
-        ${SDL2_MIXER_LIBRARIES}
-        ${SDL2_TTF_LIBRARIES})
+if (WIN32)
+    target_link_libraries(${CENTURION_TEST}
+            mingw32
+            Catch
+            ${CENTURION_LIB}
+            ${SDL2_LIBRARY}
+            ${SDL2_IMAGE_LIBRARIES}
+            ${SDL2_MIXER_LIBRARIES}
+            ${SDL2_TTF_LIBRARIES})
+else ()
+    target_link_libraries(${CENTURION_TEST}
+            Catch
+            ${CENTURION_LIB}
+            ${SDL2_LIBRARY}
+            ${SDL2_IMAGE_LIBRARIES}
+            ${SDL2_MIXER_LIBRARIES}
+            ${SDL2_TTF_LIBRARIES})
+endif ()
 
 # Copies all of the files in the bin folder and puts them next to the executable
 add_custom_command(TARGET ${CENTURION_TEST} POST_BUILD

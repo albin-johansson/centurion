@@ -1,5 +1,7 @@
 language: cpp
 
+branches: all
+
 dist: trusty
 sudo: require
 

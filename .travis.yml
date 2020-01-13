@@ -23,12 +23,41 @@ addons:
 before_install:
   - sudo apt-get update -qq
 # - sudo apt-get install -qq libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libegl1-mesa-dev libgles2-mesa-dev
-  - |
-  travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.10.tar.gz | tar xz
-  cd SDL2
-  ./configure
-  make
-  sudo make install
+  - mkdir SDL
+  - cd SDL
+
+  # Install core SDL2
+  - mkdir SDL2_core
+  - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.10.tar.gz | tar xz
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+
+  # Install SDL2_image
+  - mkdir SDL2_image
+  - travis_retry curl -L https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz | tar xz
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+
+  # Install SDL2_ttf
+  - mkdir SDL2_ttf
+  - travis_retry curl -L https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.tar.gz | tar xz
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+
+  # Install SDL2_mixer
+  - mkdir SDL2_mixer
+  - travis_retry curl -L https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.4.tar.gz | tar xz
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+
 
 # - eval "${MATRIX_EVAL}"
 

@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <string>
 #include <memory>
+#include <optional>
 #include <gsl>
 #include <SDL.h>
 #include <SDL_image.h>
@@ -280,6 +281,32 @@ class Renderer {
   void draw_rect(int x, int y, int width, int height) const noexcept;
 
   /**
+   * Renders a line in the currently selected color.
+   *
+   * @param start the start of the line.
+   * @param end the end of the line.
+   * @since 3.0.0
+   */
+  void draw_line(const SDL_FPoint& start, const SDL_FPoint& end) const noexcept;
+
+  /**
+   * Renders a line in the currently selected color.
+   *
+   * @param start the start of the line.
+   * @param end the end of the line.
+   * @since 3.0.0
+   */
+  void draw_line(const SDL_Point& start, const SDL_Point& end) const noexcept;
+
+  /**
+   * Renders a sequence of connected lines in the currently selected color.
+   *
+   * @param points the collection of points to draw the lines between.
+   * @since 3.0.0
+   */
+  void draw_lines(const std::vector<SDL_Point>& points) const noexcept;
+
+  /**
    * Renders a string of text. Note that this method is rather inefficient, since it will
    * dynamically allocate a texture based on the supplied string for every call to this method.
    *
@@ -314,6 +341,14 @@ class Renderer {
    * @since 3.0.0
    */
   void set_color(const SDL_Color& color) const noexcept;
+
+  /**
+   * Sets the clipping area rectangle. Clipping is disabled by default.
+   *
+   * @param area the clip area rectangle; or std::nullopt to disable clipping.
+   * @since 3.0.0
+   */
+  void set_clip(std::optional<SDL_Rect> area) noexcept;
 
   /**
    * Sets the viewport that will be used by the renderer.
@@ -405,6 +440,24 @@ class Renderer {
    */
   [[nodiscard]]
   float get_y_scale() const noexcept;
+
+  /**
+   * Indicates whether or not clipping is enabled. This is disabled by default.
+   *
+   * @return true if clipping is enabled; false otherwise.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  bool is_clipping_enabled() const noexcept;
+
+  /**
+   * Returns the current clipping rectangle, if there is one active.
+   *
+   * @return the current clipping rectangle; or std::nullopt if there is none.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  std::optional<SDL_Rect> get_clip() const noexcept;
 
   /**
    * Returns information about the renderer.

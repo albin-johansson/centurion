@@ -215,3 +215,28 @@ TEST_CASE("Renderer::get_translation_viewport", "[Renderer]") {
   CHECK(tviewport.w == 0);
   CHECK(tviewport.h == 0);
 }
+
+TEST_CASE("Renderer clipping", "[Renderer]") {
+  Window window;
+  Renderer renderer{window};
+
+  SECTION("Default values") {
+    CHECK(!renderer.is_clipping_enabled());
+    const auto clip = renderer.get_clip();
+    CHECK(!clip);
+  }
+
+  CHECK_NOTHROW(renderer.set_clip(std::nullopt));
+
+  const SDL_Rect clip{5, 2, 75, 93};
+  renderer.set_clip(clip);
+  CHECK(renderer.is_clipping_enabled());
+
+  CHECK(renderer.get_clip());
+  const auto rclip = *renderer.get_clip();
+
+  CHECK(clip.x == rclip.x);
+  CHECK(clip.y == rclip.y);
+  CHECK(clip.w == rclip.w);
+  CHECK(clip.h == rclip.h);
+}

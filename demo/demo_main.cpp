@@ -9,6 +9,7 @@
 #include "paths.h"
 
 #include <SDL.h>
+#include <vector>
 
 using namespace centurion;
 
@@ -21,6 +22,7 @@ static void do_stuff() {
   const auto image = imageGenerator.unique_img("resources/grass.png");
   const auto appPath = AppPath{};
   const auto prefPath = PrefPath{"albinjohansson", "centurion"};
+  const std::vector<SDL_Point> points{{50, 50}, {60, 40}, {70, 60}, {55, 100}};
 
   if (appPath) {
     SDL_Log("Application path: %s", appPath.get());
@@ -49,6 +51,12 @@ static void do_stuff() {
     renderer->clear();
 
     renderer->draw_image(*image, 200, 200, 200, 200);
+
+    renderer->set_color(Colors::azure);
+    renderer->draw_line(SDL_Point{10, 10}, SDL_Point{300, 300});
+
+    renderer->set_color(Colors::cornflower_blue);
+    renderer->draw_lines(points);
 
     renderer->set_color(Colors::snow);
     renderer->fill_rect(100 + x++, 100, 100, 100);

@@ -149,6 +149,22 @@ void Renderer::draw_rect(int x, int y, int width, int height) const noexcept {
   SDL_RenderDrawRect(renderer, &rect);
 }
 
+void Renderer::draw_line(const SDL_FPoint& start, const SDL_FPoint& end) const noexcept {
+  SDL_RenderDrawLineF(renderer, start.x, start.y, end.x, end.y);
+}
+
+void Renderer::draw_line(const SDL_Point& start, const SDL_Point& end) const noexcept {
+  SDL_RenderDrawLine(renderer, start.x, start.y, end.x, end.y);
+}
+
+void Renderer::draw_lines(const std::vector<SDL_Point>& points) const noexcept {
+  if (points.empty()) {
+    return;
+  } else {
+    SDL_RenderDrawLines(renderer, &points.front(), points.size());
+  }
+}
+
 void Renderer::draw_text(const std::string& text, float x, float y, const Font& font) const {
   if (!text.empty()) {
     const auto texture = create_image(text, font);
@@ -167,6 +183,14 @@ void Renderer::set_color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha
 
 void Renderer::set_color(const SDL_Color& color) const noexcept {
   SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+}
+
+void Renderer::set_clip(std::optional<SDL_Rect> area) noexcept {
+  if (area) {
+    SDL_RenderSetClipRect(renderer, &*area);
+  } else {
+    SDL_RenderSetClipRect(renderer, nullptr);
+  }
 }
 
 void Renderer::set_viewport(const SDL_Rect& viewport) noexcept {
@@ -213,6 +237,20 @@ int Renderer::get_logical_height() const noexcept {
   int h = 0;
   SDL_RenderGetLogicalSize(renderer, nullptr, &h);
   return h;
+}
+
+bool Renderer::is_clipping_enabled() const noexcept {
+  return SDL_RenderIsClipEnabled(renderer);
+}
+
+std::optional<SDL_Rect> Renderer::get_clip() const noexcept {
+  SDL_Rect rect{0, 0, 0, 0};
+  SDL_RenderGetClipRect(renderer, &rect);
+  if (SDL_RectEmpty(&rect)) {
+    return std::nullopt;
+  } else {
+    return rect;
+  }
 }
 
 SDL_RendererInfo Renderer::get_info() const noexcept {

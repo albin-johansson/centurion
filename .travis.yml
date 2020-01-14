@@ -87,3 +87,4 @@ script:
   - cd ..
   - cmake .
   - make
+  - ctest # this may not work

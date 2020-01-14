@@ -5,10 +5,6 @@
 using namespace centurion;
 
 int main(int argc, char** argv) {
-
-  Centurion::init();
-  const auto result = Catch::Session().run(argc, argv);
-  Centurion::quit();
-
-  return result;
+  Centurion c;
+  return Catch::Session().run(argc, argv);
 }

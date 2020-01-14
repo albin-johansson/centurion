@@ -40,24 +40,29 @@ class Centurion final {
   static void init_mix();
 
  public:
-  Centurion() = delete;
-
   /**
-   * Initializes the Centurion library. This method will throw if any of the required SDL
-   * libraries cannot be loaded. Subsequent calls to this method will have no effect.
+   * Initializes the Centurion library. Creating more than one instance of this class is never
+   * necessary, but doing so is safe.
    *
    * @throws CenturionException if any of the SDL libraries can't be loaded.
    * @since 3.0.0
    */
-  static void init();
+  Centurion();
 
   /**
-   * Closes the Centurion library. This method has no effect if the library hasn't been initialized.
+   * Closes the Centurion library.
    *
    * @since 3.0.0
    */
-  static void quit() noexcept;
+  ~Centurion() noexcept;
 
+  Centurion(const Centurion&) = delete;
+
+  Centurion(Centurion&&) = delete;
+
+  Centurion& operator=(const Centurion&) = delete;
+
+  Centurion& operator=(Centurion&&) = delete;
 };
 
 }

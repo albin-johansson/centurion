@@ -16,25 +16,19 @@ static void do_stuff() {
   SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 
   Window window;
-  auto renderer = Renderer::shared(window);
+  const auto renderer = Renderer::shared(window);
+  const auto imageGenerator = ImageGenerator{renderer};
+  const auto image = imageGenerator.unique_img("resources/grass.png");
+  const auto appPath = AppPath{};
+  const auto prefPath = PrefPath{"albinjohansson", "centurion"};
 
-  ImageGenerator imageGenerator{renderer};
-
-  auto image = imageGenerator.unique_img("resources/grass.png");
-
-  AppPath appPath;
   if (appPath) {
     SDL_Log("Application path: %s", appPath.get());
   }
 
-  PrefPath prefPath{"albinjohansson", "centurion"};
   if (prefPath) {
     SDL_Log("Preferred path: %s", prefPath.get());
   }
-
-  const auto info = renderer->get_info();
-
-  SDL_Log("Renderer driver: %s", info.name);
 
   window.show();
 
@@ -66,8 +60,7 @@ static void do_stuff() {
 }
 
 int main(int, char**) {
-  Centurion::init();
+  Centurion c;
   do_stuff();
-  Centurion::quit();
   return 0;
 }

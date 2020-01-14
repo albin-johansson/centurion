@@ -42,7 +42,7 @@ void Centurion::init_mix() {
   }
 }
 
-void Centurion::init() {
+Centurion::Centurion() {
   if (!wasInit) {
     init_sdl();
     init_img();
@@ -52,7 +52,7 @@ void Centurion::init() {
   }
 }
 
-void Centurion::quit() noexcept {
+Centurion::~Centurion() noexcept {
   if (wasInit) {
     IMG_Quit();
     TTF_Quit();

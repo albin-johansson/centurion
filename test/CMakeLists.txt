@@ -18,6 +18,10 @@ set(TEST_FILES
         unittests/renderer_test.cpp)
 
 add_executable(${CENTURION_TEST} ${TEST_FILES})
+
+include(CTest)
+include(Catch)
+
 add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
 
 set_target_properties(${CENTURION_TEST} PROPERTIES
@@ -43,14 +47,6 @@ else ()
             ${SDL2_MIXER_LIBRARIES}
             ${SDL2_TTF_LIBRARIES})
 endif ()
-
-include(CTest)
-include(ParseAndAddCatchTests)
-include(Catch)
-ParseAndAddCatchTests(${CENTURION_TEST})
-catch_discover_tests(${CENTURION_TEST}
-        [WORKING_DIRECTORY unittests]
-        [TEST_SUFFIX _test])
 
 # Copies all of the files in the bin folder and puts them next to the executable
 add_custom_command(TARGET ${CENTURION_TEST} POST_BUILD

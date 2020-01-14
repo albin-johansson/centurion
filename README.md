@@ -27,7 +27,7 @@ TODO...
 ### Using Centurion
 All of the classes in Centurion reside in the `centurion` namespace.
 
-Before you can start using components found in the Centurion library, you must initialize the library! Here's an example of how you would initialize and subsequently deinitialize the library.
+Before you can start using components found in the Centurion library, you must initialise the library! Here's an example of how you would initialise and subsequently close the library.
 ```c++
 // main.cpp
 
@@ -36,11 +36,11 @@ Before you can start using components found in the Centurion library, you must i
 using namespace centurion;
 
 static void run() {
-  // Use Centurion!
+  // ...
 }
 
 int main(int, char**) { // SDL2 requires this signature of main
-  Centurion c;
+  Centurion c; // Centurion is initialised here, automatically closed at the end of main.
   run();
   return 0;
 }

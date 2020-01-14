@@ -1,9 +1,9 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.12)
 project(${CENTURION_TEST})
 
 set(CATCH_INCLUDE_DIR catch2)
-add_library(Catch INTERFACE)
-target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
+add_library(Catch2 INTERFACE)
+target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
 
 set(TEST_FILES
         unittests/test_main.cpp
@@ -15,6 +15,7 @@ set(TEST_FILES
         unittests/image_generator_test.cpp
         unittests/renderer_test.cpp)
 
+enable_testing()
 add_executable(${CENTURION_TEST} ${TEST_FILES})
 
 set_target_properties(${CENTURION_TEST} PROPERTIES
@@ -22,19 +23,30 @@ set_target_properties(${CENTURION_TEST} PROPERTIES
 
 target_include_directories(${CENTURION_TEST} PUBLIC unittests)
 
-target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_LIBRARY})
-target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_IMAGE_LIBRARIES})
-target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_MIXER_LIBRARIES})
-target_link_directories(${CENTURION_TEST} PUBLIC ${SDL2_TTF_LIBRARIES})
+if (WIN32)
+    target_link_libraries(${CENTURION_TEST}
+            mingw32
+            Catch2
+            ${CENTURION_LIB}
+            ${SDL2_LIBRARY}
+            ${SDL2_IMAGE_LIBRARIES}
+            ${SDL2_MIXER_LIBRARIES}
+            ${SDL2_TTF_LIBRARIES})
+else ()
+    target_link_libraries(${CENTURION_TEST}
+            Catch2
+            ${CENTURION_LIB}
+            ${SDL2_LIBRARY}
+            ${SDL2_IMAGE_LIBRARIES}
+            ${SDL2_MIXER_LIBRARIES}
+            ${SDL2_TTF_LIBRARIES})
+endif ()
 
-target_link_libraries(${CENTURION_TEST}
-        mingw32
-        Catch
-        ${CENTURION_LIB}
-        ${SDL2_LIBRARY}
-        ${SDL2_IMAGE_LIBRARIES}
-        ${SDL2_MIXER_LIBRARIES}
-        ${SDL2_TTF_LIBRARIES})
+include(CTest)
+include(Catch)
+
+add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
+catch_discover_tests(${CENTURION_TEST})
 
 # Copies all of the files in the bin folder and puts them next to the executable
 add_custom_command(TARGET ${CENTURION_TEST} POST_BUILD

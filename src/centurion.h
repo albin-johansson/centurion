@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Albin Johansson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 #pragma once
 
 namespace centurion {
@@ -40,24 +64,29 @@ class Centurion final {
   static void init_mix();
 
  public:
-  Centurion() = delete;
-
   /**
-   * Initializes the Centurion library. This method will throw if any of the required SDL
-   * libraries cannot be loaded. Subsequent calls to this method will have no effect.
+   * Initializes the Centurion library. Creating more than one instance of this class is never
+   * necessary, but doing so is safe.
    *
    * @throws CenturionException if any of the SDL libraries can't be loaded.
    * @since 3.0.0
    */
-  static void init();
+  Centurion();
 
   /**
-   * Closes the Centurion library. This method has no effect if the library hasn't been initialized.
+   * Closes the Centurion library.
    *
    * @since 3.0.0
    */
-  static void quit() noexcept;
+  ~Centurion() noexcept;
 
+  Centurion(const Centurion&) = delete;
+
+  Centurion(Centurion&&) = delete;
+
+  Centurion& operator=(const Centurion&) = delete;
+
+  Centurion& operator=(Centurion&&) = delete;
 };
 
 }

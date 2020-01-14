@@ -1,4 +1,4 @@
-# Centurion [![version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://semver.org)
+# Centurion [![version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://semver.org) [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion)
 
 
 Centurion is a small wrapper library for [SDL2](https://www.libsdl.org/index.php), written in C++. The main purpose of Centurion is to provide a modern object-oriented take on SDL2, which is a C library. However, it's important to note that Centurion is __not__ meant to cover the entire SDL2 library. Instead, Centurion is designed to be used and compatible with native SDL2 enums, structs, etc.
@@ -27,7 +27,7 @@ TODO...
 ### Using Centurion
 All of the classes in Centurion reside in the `centurion` namespace.
 
-Before you can start using components found in the Centurion library, you must initialize the library! Here's an example of how you would initialize and subsequently deinitialize the library.
+Before you can start using components found in the Centurion library, you must initialise the library! Here's an example of how you would initialise and subsequently close the library.
 ```c++
 // main.cpp
 
@@ -40,9 +40,8 @@ static void run() {
 }
 
 int main(int, char**) { // SDL2 requires this signature of main
-  Centurion::init();
+  Centurion c; // Centurion is initialised here, automatically closed at the end of main.
   run();
-  Centurion::quit();
   return 0;
 }
 ```

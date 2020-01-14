@@ -1,0 +1,90 @@
+dist: trusty
+sudo: required
+language: cpp
+compiler: gcc
+
+notifications: 
+  email: false
+
+env:
+  global:
+    - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-8
+      - g++-8
+      - cmake
+
+# os: linux
+# addons:
+#   apt:
+#     sources:
+#       - ubuntu-toolchain-r-test
+#     packages:
+#       - g++-8
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev
+
+install:
+  # Download and install recent cmake
+  - |
+    if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
+      CMAKE_URL="http://cmake.org/files/v3.16/cmake-3.16.0-Linux-x86_64.tar.gz"
+      mkdir -p ${DEPS_DIR}/cmake
+      travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
+      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+    fi
+
+script:
+  - export CC=/usr/bin/gcc-8
+  - export CXX=/usr/bin/g++-8
+  - gcc -v
+  - g++ -v
+  - cmake --version
+  
+  - mkdir sdl
+  - cd sdl
+
+  # Install core SDL2
+  - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.10.tar.gz | tar xz
+  - cd SDL2-2.0.10
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+
+  # Install SDL2_image
+  - travis_retry curl -L https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz | tar xz
+  - cd SDL2_image-2.0.5
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+
+  # Install SDL2_ttf
+  - travis_retry curl -L https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.tar.gz | tar xz
+  - cd SDL2_ttf-2.0.15
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+
+  # Install SDL2_mixer
+  - mkdir SDL2_mixer
+  - travis_retry curl -L https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.4.tar.gz | tar xz
+  - cd SDL2_mixer-2.0.4
+  - ./configure
+  - make
+  - sudo make install
+  - cd ..
+
+  - cd ..
+  - cmake .
+  - make
+  - make test

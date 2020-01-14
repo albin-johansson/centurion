@@ -57,7 +57,7 @@ Window& Window::operator=(Window&& other) noexcept {
 
 void Window::notify_window_listeners() noexcept {
   const auto& self = *this;
-  for (auto listener : windowListeners) {
+  for (auto* listener : windowListeners) {
     if (listener) {
       listener->window_updated(self);
     }

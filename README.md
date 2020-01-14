@@ -36,13 +36,12 @@ Before you can start using components found in the Centurion library, you must i
 using namespace centurion;
 
 static void run() {
-  // ...
+  // Use Centurion!
 }
 
 int main(int, char**) { // SDL2 requires this signature of main
-  Centurion::init();
+  Centurion c;
   run();
-  Centurion::quit();
   return 0;
 }
 ```

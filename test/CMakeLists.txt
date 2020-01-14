@@ -45,7 +45,9 @@ else ()
 endif ()
 
 include(CTest)
+include(ParseAndAddCatchTests)
 include(Catch)
+ParseAndAddCatchTests(${CENTURION_TEST})
 catch_discover_tests(${CENTURION_TEST})
 
 # Copies all of the files in the bin folder and puts them next to the executable

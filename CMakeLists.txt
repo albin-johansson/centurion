@@ -31,8 +31,5 @@ find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
 add_subdirectory(src)
-
-enable_testing()
 add_subdirectory(test)
-
 add_subdirectory(demo)

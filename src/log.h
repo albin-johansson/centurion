@@ -41,9 +41,6 @@ enum class Category {
  * @since 3.0.0
  */
 class Log final {
- private:
-  static inline Priority priority = Priority::Info;
-
  public:
   Log() = delete;
 

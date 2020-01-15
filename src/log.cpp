@@ -26,8 +26,6 @@ void Log::set_priority(Category category, Priority prio) noexcept {
 }
 
 void Log::set_priority(Priority prio) noexcept {
-  Log::priority = prio;
-
   const auto p = static_cast<SDL_LogPriority>(prio);
   SDL_LogSetAllPriority(p);
   SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p); // Apparently not set by SDL

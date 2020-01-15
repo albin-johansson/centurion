@@ -11,26 +11,23 @@ set(SOURCE_FILES
         renderer.cpp
         image.h
         image.cpp
-
         sound_effect.h
         sound_effect.cpp
-
         centurion_exception.h
         centurion_exception.cpp
         bool_converter.h
-
         centurion_api.h
         centurion.cpp
         centurion.h
-
         colors.h
-
         image_generator.cpp
         image_generator.h
-
         paths.cpp
         paths.h
-        )
+        system.h
+        system.cpp
+        log.cpp
+        log.h)
 
 add_library(${CENTURION_LIB} STATIC ${SOURCE_FILES}) # TODO use SHARED instead
 

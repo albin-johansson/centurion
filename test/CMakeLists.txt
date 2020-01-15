@@ -13,7 +13,8 @@ set(TEST_FILES
         unittests/image_test.cpp
         unittests/sound_effect_test.cpp
         unittests/image_generator_test.cpp
-        unittests/renderer_test.cpp)
+        unittests/renderer_test.cpp
+        unittests/log_test.cpp)
 
 enable_testing()
 add_executable(${CENTURION_TEST} ${TEST_FILES})

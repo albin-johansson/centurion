@@ -7,6 +7,8 @@
 #include "image_generator.h"
 #include "colors.h"
 #include "paths.h"
+#include "system.h"
+#include "log.h"
 
 #include <SDL.h>
 #include <vector>
@@ -25,12 +27,24 @@ static void do_stuff() {
   const std::vector<SDL_Point> points{{50, 50}, {60, 40}, {70, 60}, {55, 100}};
 
   if (appPath) {
-    SDL_Log("Application path: %s", appPath.get());
+    Log::msg(Category::App, "Application path: %s", appPath.get());
   }
 
   if (prefPath) {
-    SDL_Log("Preferred path: %s", prefPath.get());
+    Log::msg(Category::App, "Preferred path: %s", prefPath.get());
   }
+
+  Log::msg(Category::App, Priority::Info,
+           "CPUs: %i", CPU::get_cores());
+
+  Log::msg(Category::App, Priority::Info,
+           "CPU cache line size: %i bytes", CPU::get_cache_line_size());
+
+  Log::msg(Category::App, Priority::Info,
+           "RAM: %i GB", RAM::get_size_gb());
+
+  Log::msg(Category::App, Priority::Info,
+           "OS: %s", System::get_platform_name()->c_str());
 
   window.show();
 

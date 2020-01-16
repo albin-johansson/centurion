@@ -24,6 +24,7 @@
 
 #pragma once
 #include <optional>
+#include <SDL_power.h>
 
 namespace centurion {
 
@@ -124,6 +125,82 @@ class RAM final {
    */
   [[nodiscard]]
   static int get_size_gb() noexcept;
+};
+
+/**
+ * The PowerState enum class mirrors the values of the SDL_PowerState enum.
+ *
+ * Unknown: Indicates that the power status is unknown.
+ *
+ * <p>
+ * OnBattery: Indicates that the device isn't plugged in and is running on the battery.
+ *
+ * <p>
+ * NoBattery: Indicates that the device is plugged in and no battery is available.
+ *
+ * <p>
+ * Charging: Indicates that the device is plugged in and the battery is charging.
+ *
+ * <p>
+ * Charged: Indicates that the device is plugged in and the battery is charged.
+ *
+ * @since 3.0.0
+ */
+enum class PowerState {
+  Unknown = SDL_POWERSTATE_UNKNOWN,
+  OnBattery = SDL_POWERSTATE_ON_BATTERY,
+  NoBattery = SDL_POWERSTATE_NO_BATTERY,
+  Charging = SDL_POWERSTATE_CHARGING,
+  Charged = SDL_POWERSTATE_CHARGED
+};
+
+/**
+ * The Power class provides utilities related to the battery of the system.
+ *
+ * @since 3.0.0
+ */
+class Power final {
+ public:
+  Power() = delete;
+
+  /**
+   * Returns the seconds of battery life that is remaining.
+   *
+   * @return the seconds of battery life that is remaining; std::nullopt if the value cannot be
+   * computed.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::optional<int> get_battery_seconds_left() noexcept;
+
+  /**
+   * Returns the amount of minutes of battery life that is remaining.
+   *
+   * @return the amount of minutes of battery life that is remaining; std::nullopt if the value
+   * cannot be computed.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::optional<int> get_battery_minutes_left() noexcept;
+
+  /**
+   * Returns the percentage of battery life that is currently left.
+   *
+   * @return the percentage of battery life that is currently left, in the range [0, 100];
+   * std::nullopt if the battery percentage isn't available.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::optional<int> get_battery_percentage() noexcept;
+
+  /**
+   * Returns the current power state.
+   *
+   * @return the current power state.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static PowerState get_state() noexcept;
 };
 
 }

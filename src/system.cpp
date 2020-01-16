@@ -48,4 +48,37 @@ int RAM::get_size_gb() noexcept {
   return get_size_mb() / 1'000;
 }
 
+std::optional<int> Power::get_battery_seconds_left() noexcept {
+  int secondsLeft = -1;
+  SDL_GetPowerInfo(&secondsLeft, nullptr);
+  if (secondsLeft == -1) {
+    return std::nullopt;
+  } else {
+    return secondsLeft;
+  }
+}
+
+std::optional<int> Power::get_battery_minutes_left() noexcept {
+  const auto secondsLeft = get_battery_seconds_left();
+  if (secondsLeft) {
+    return *secondsLeft / 60;
+  } else {
+    return std::nullopt;
+  }
+}
+
+std::optional<int> Power::get_battery_percentage() noexcept {
+  int percentageLeft = -1;
+  SDL_GetPowerInfo(nullptr, &percentageLeft);
+  if (percentageLeft == -1) {
+    return std::nullopt;
+  } else {
+    return percentageLeft;
+  }
+}
+
+PowerState Power::get_state() noexcept {
+  return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
+}
+
 }

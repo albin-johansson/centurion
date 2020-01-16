@@ -9,7 +9,7 @@ notifications:
 env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    - TRAVIS_TEST=false
+#    - TRAVIS_TEST=false
 
 addons:
   apt:

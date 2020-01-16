@@ -81,4 +81,28 @@ PowerState Power::get_state() noexcept {
   return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 }
 
+int Screen::get_width() noexcept {
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  return mode.w;
+}
+
+int Screen::get_height() noexcept {
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  return mode.h;
+}
+
+int Screen::get_refresh_rate() noexcept {
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  return mode.refresh_rate;
+}
+
+uint32_t Screen::get_pixel_format() noexcept {
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  return mode.format;
+}
+
 }

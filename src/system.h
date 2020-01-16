@@ -203,4 +203,50 @@ class Power final {
   static PowerState get_state() noexcept;
 };
 
+/**
+ * The Screen class provides information about the primary screen monitor.
+ *
+ * @since 3.0.0
+ */
+class Screen final {
+ public:
+  Screen() = delete;
+
+  /**
+   * Returns the width of the screen.
+   *
+   * @return the width of the screen.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static int get_width() noexcept;
+
+  /**
+   * Returns the height of the screen.
+   *
+   * @return the height of the screen.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static int get_height() noexcept;
+
+  /**
+   * Returns the refresh rate of the screen.
+   *
+   * @return the refresh rate of the screen.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static int get_refresh_rate() noexcept;
+
+  /**
+   * Returns the pixel format of the desktop display mode.
+   *
+   * @return the pixel format of the desktop display mode.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static uint32_t get_pixel_format() noexcept;
+};
+
 }

@@ -1,8 +1,4 @@
 #include "centurion.h"
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
 #include "centurion_exception.h"
 
 namespace centurion {
@@ -41,21 +37,33 @@ void Centurion::init_mix() {
 }
 
 Centurion::Centurion() {
+  init();
+}
+
+Centurion::~Centurion() noexcept {
+  close();
+}
+
+void Centurion::init() {
   if (!wasInit) {
     init_sdl();
     init_img();
     init_ttf();
+#if !defined(CENTURION_NOAUDIO)
     init_mix();
+#endif
     wasInit = true;
   }
 }
 
-Centurion::~Centurion() noexcept {
+void Centurion::close() noexcept {
   if (wasInit) {
     IMG_Quit();
     TTF_Quit();
+#if !defined(CENTURION_NOAUDIO)
     Mix_CloseAudio();
     Mix_Quit();
+#endif
     SDL_Quit();
     wasInit = false;
   }

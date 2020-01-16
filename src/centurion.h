@@ -24,6 +24,18 @@
 
 #pragma once
 
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+
+#if !defined(CENTURION_NOAUDIO)
+
+#include <SDL_mixer.h>
+
+#endif
+
+// TODO include all centurion files
+
 namespace centurion {
 
 /**
@@ -62,6 +74,10 @@ class Centurion final {
    * @since 3.0.0
    */
   static void init_mix();
+
+  static void init();
+
+  static void close() noexcept;
 
  public:
   /**

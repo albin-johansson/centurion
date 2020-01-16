@@ -1,3 +1,5 @@
+#if !defined(CENTURION_NOAUDIO)
+
 #include "catch.hpp"
 #include "sound_effect.h"
 #include "centurion_exception.h"
@@ -72,3 +74,5 @@ TEST_CASE("SoundEffect::IsPlaying", "[SoundEffect]") {
   sound.loop(2);
   CHECK(sound.is_playing());
 }
+
+#endif

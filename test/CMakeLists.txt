@@ -5,6 +5,13 @@ set(CATCH_INCLUDE_DIR catch2)
 add_library(Catch2 INTERFACE)
 target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
 
+if (DEFINED ENV{TRAVIS_TEST})
+    message("No audio is used, since TRAVIS_TEST was defined!")
+    add_compile_definitions(CENTURION_NOAUDIO)
+else ()
+    message("TRAVIS_TEST isn't defined!")
+endif ()
+
 set(TEST_FILES
         unittests/test_main.cpp
         unittests/window_test.cpp

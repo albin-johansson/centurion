@@ -9,7 +9,7 @@ notifications:
 env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    - TRAVIS_TEST=true
+    - TRAVIS_TEST=false
 
 addons:
   apt:
@@ -44,7 +44,6 @@ script:
   - export CC=/usr/bin/gcc-8
   - export CXX=/usr/bin/g++-8
   - export TRAVIS_TEST=true
-  - export AUDIODEV=null
 
   - gcc -v
   - g++ -v

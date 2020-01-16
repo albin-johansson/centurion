@@ -15,6 +15,32 @@
 
 using namespace centurion;
 
+static void render(Renderer& renderer) {
+  static auto x = 0;
+  static const auto image = Image{renderer, "resources/grass.png"};
+  static const std::vector<SDL_Point> points{
+      {50, 50}, {60, 40}, {70, 60}, {55, 100}
+  };
+
+  renderer.set_color(Colors::black);
+  renderer.clear();
+
+  renderer.draw_image(image,
+                      SDL_Rect{0, 0, 108, 108},
+                      SDL_FRect{200.0f, 200.0f, 108.0f, 108.0f});
+
+  renderer.set_color(Colors::azure);
+  renderer.draw_line(SDL_Point{10, 10}, SDL_Point{300, 300});
+
+  renderer.set_color(Colors::cornflower_blue);
+  renderer.draw_lines(points);
+
+  renderer.set_color(Colors::snow);
+  renderer.fill_rect(100 + x++, 100, 100, 100);
+
+  renderer.present();
+}
+
 static void do_stuff() {
   SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 
@@ -24,12 +50,8 @@ static void do_stuff() {
                                              SDL_RENDERER_PRESENTVSYNC |
                                              SDL_RENDERER_TARGETTEXTURE);
 
-  const auto imageGenerator = ImageGenerator{renderer};
-  const auto image = imageGenerator.unique_img("resources/grass.png");
-
   const AppPath appPath;
   const PrefPath prefPath{"albinjohansson", "centurion"};
-  const std::vector<SDL_Point> points{{50, 50}, {60, 40}, {70, 60}, {55, 100}};
 
   if (appPath) {
     Log::msg(Category::App, "Application path: %s", appPath.get());
@@ -56,56 +78,14 @@ static void do_stuff() {
   bool running = true;
   SDL_Event event;
 
-  const auto renderTarget = Image{*renderer,
-                                  SDL_PIXELFORMAT_RGBA8888,
-                                  TextureAccess::Target,
-                                  200,
-                                  200};
-//  {
-//    renderer->set_target(&renderTarget);
-//
-//    renderer->set_color(Colors::snow);
-//    renderer->clear();
-//
-//    renderer->set_color(Colors::yellow_green);
-//    renderer->fill_rect(100, 100, 100, 100);
-//
-//    renderer->set_color(Colors::sky_blue);
-//    renderer->draw_line(SDL_Point{40, 40}, SDL_Point{200, 325});
-//
-//    renderer->set_target(nullptr);
-//  }
-
   while (running) {
-
     while (SDL_PollEvent(&event)) {
       if (event.type == SDL_QUIT || event.type == SDL_KEYUP) {
         running = false;
       }
     }
 
-    static auto x = 0;
-
-    renderer->set_color(Colors::black);
-    renderer->clear();
-
-    renderer->draw_image(*image,
-                         SDL_Rect{0, 0, 108, 108},
-                         SDL_FRect{200.0f, 200.0f, 108.0f, 108.0f});
-
-    renderer->set_color(Colors::azure);
-    renderer->draw_line(SDL_Point{10, 10}, SDL_Point{300, 300});
-
-    renderer->set_color(Colors::cornflower_blue);
-    renderer->draw_lines(points);
-
-    renderer->set_color(Colors::snow);
-    renderer->fill_rect(100 + x++, 100, 100, 100);
-
-//    renderer->draw_image(renderTarget, 40, 340);
-
-    renderer->present();
-
+    render(*renderer);
   }
 
   window.hide();

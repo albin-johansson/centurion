@@ -5,6 +5,10 @@ set(CATCH_INCLUDE_DIR catch2)
 add_library(Catch2 INTERFACE)
 target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
 
+if (LINUX) # A bit of a hack for Travis CI
+    add_compile_definitions(CENTURION_NOAUDIO)
+endif (LINUX)
+
 set(TEST_FILES
         unittests/test_main.cpp
         unittests/window_test.cpp

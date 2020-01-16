@@ -5,7 +5,7 @@ namespace centurion {
 
 void Centurion::init_sdl() {
   const auto result = SDL_Init(SDL_INIT_EVERYTHING);
-  if (result < 0)   {
+  if (result < 0) {
     throw CenturionException{"Failed to load SDL2! Error: " + std::string{SDL_GetError()}};
   }
 }
@@ -37,21 +37,33 @@ void Centurion::init_mix() {
 }
 
 Centurion::Centurion() {
+  init();
+}
+
+Centurion::~Centurion() noexcept {
+  close();
+}
+
+void Centurion::init() {
   if (!wasInit) {
     init_sdl();
     init_img();
     init_ttf();
+#if !defined(CENTURION_NOAUDIO)
     init_mix();
+#endif
     wasInit = true;
   }
 }
 
-Centurion::~Centurion() noexcept {
+void Centurion::close() noexcept {
   if (wasInit) {
     IMG_Quit();
     TTF_Quit();
+#if !defined(CENTURION_NOAUDIO)
     Mix_CloseAudio();
     Mix_Quit();
+#endif
     SDL_Quit();
     wasInit = false;
   }

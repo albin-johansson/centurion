@@ -70,6 +70,10 @@ class Centurion final {
    */
   static void init_mix();
 
+  static void init();
+
+  static void close() noexcept;
+
  public:
   /**
    * Initializes the Centurion library. Creating more than one instance of this class is never

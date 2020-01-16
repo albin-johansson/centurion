@@ -416,6 +416,15 @@ class Window {
   int get_height() const noexcept;
 
   /**
+   * Returns the pixel format of the window.
+   *
+   * @return the pixel format of the window.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  uint32_t get_pixel_format() const noexcept;
+
+  /**
    * Returns the title of the window.
    *
    * @return the title of the window.

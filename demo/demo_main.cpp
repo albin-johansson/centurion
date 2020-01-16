@@ -4,7 +4,6 @@
 #include "window_listener.h"
 #include "renderer.h"
 #include "image.h"
-#include "image_generator.h"
 #include "colors.h"
 #include "paths.h"
 #include "system.h"

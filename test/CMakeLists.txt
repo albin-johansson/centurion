@@ -22,7 +22,8 @@ set(TEST_FILES
         unittests/image_generator_test.cpp
         unittests/renderer_test.cpp
         unittests/log_test.cpp
-        unittests/power_test.cpp)
+        unittests/power_test.cpp
+        unittests/blend_mode_test.cpp)
 
 enable_testing()
 add_executable(${CENTURION_TEST} ${TEST_FILES})

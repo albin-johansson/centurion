@@ -113,8 +113,8 @@ void Image::set_alpha(uint8_t alpha) noexcept {
   SDL_SetTextureAlphaMod(texture, alpha);
 }
 
-void Image::set_blend_mode(SDL_BlendMode mode) noexcept {
-  SDL_SetTextureBlendMode(texture, mode);
+void Image::set_blend_mode(BlendMode mode) noexcept {
+  SDL_SetTextureBlendMode(texture, static_cast<SDL_BlendMode>(mode));
 }
 
 void Image::set_color_mod(SDL_Color color) noexcept {
@@ -127,10 +127,10 @@ uint32_t Image::get_format() const noexcept {
   return format;
 }
 
-int Image::get_access() const noexcept {
+TextureAccess Image::get_access() const noexcept {
   int access = 0;
   SDL_QueryTexture(texture, nullptr, &access, nullptr, nullptr);
-  return access;
+  return static_cast<TextureAccess>(access);
 }
 
 int Image::get_width() const noexcept {
@@ -146,15 +146,33 @@ int Image::get_height() const noexcept {
 }
 
 bool Image::is_target() const noexcept {
-  return get_access() & SDL_TEXTUREACCESS_TARGET;
+  return get_access() == TextureAccess::Target;
 }
 
 bool Image::is_static() const noexcept {
-  return get_access() & SDL_TEXTUREACCESS_STATIC;
+  return get_access() == TextureAccess::Static;
 }
 
 bool Image::is_streaming() const noexcept {
-  return get_access() & SDL_TEXTUREACCESS_STREAMING;
+  return get_access() == TextureAccess::Streaming;
+}
+
+uint8_t Image::get_alpha() const noexcept {
+  uint8_t alpha;
+  SDL_GetTextureAlphaMod(texture, &alpha);
+  return alpha;
+}
+
+BlendMode Image::get_blend_mode() const noexcept {
+  SDL_BlendMode mode;
+  SDL_GetTextureBlendMode(texture, &mode);
+  return static_cast<BlendMode>(mode);
+}
+
+SDL_Color Image::get_color_mod() const noexcept {
+  uint8_t r = 0, g = 0, b = 0;
+  SDL_GetTextureColorMod(texture, &r, &g, &b);
+  return {r, g, b, 0xFF};
 }
 
 SDL_Texture* Image::get_texture() noexcept {

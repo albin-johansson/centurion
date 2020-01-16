@@ -268,6 +268,10 @@ int Window::get_height() const noexcept {
   return height;
 }
 
+uint32_t Window::get_pixel_format() const noexcept {
+  return SDL_GetWindowPixelFormat(window);
+}
+
 std::string Window::get_title() const noexcept {
   return SDL_GetWindowTitle(window);
 }

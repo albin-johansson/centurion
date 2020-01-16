@@ -1,3 +1,4 @@
+#include <colors.h>
 #include "catch.hpp"
 #include "image.h"
 #include "window.h"
@@ -30,7 +31,7 @@ TEST_CASE("Image(Image&&)", "[Image]") {
   CHECK(!img.get_texture());
 }
 
-TEST_CASE("Image::GetFormat", "[Image]") {
+TEST_CASE("Image::get_format", "[Image]") {
   Window window;
   Renderer renderer{window};
   Image img{renderer, path};
@@ -42,7 +43,7 @@ TEST_CASE("Image::GetFormat", "[Image]") {
   CHECK(img.get_format() == format);
 }
 
-TEST_CASE("Image::GetAccess", "[Image]") {
+TEST_CASE("Image::get_access", "[Image]") {
   Window window;
   Renderer renderer{window};
   Image img{renderer, path};
@@ -51,10 +52,10 @@ TEST_CASE("Image::GetAccess", "[Image]") {
   int access = 0;
   SDL_QueryTexture(texture, nullptr, &access, nullptr, nullptr);
 
-  CHECK(img.get_access() == access);
+  CHECK(img.get_access() == static_cast<TextureAccess>(access));
 }
 
-TEST_CASE("Image::GetWidth", "[Image]") {
+TEST_CASE("Image::get_width", "[Image]") {
   Window window;
   Renderer renderer{window};
   Image img(renderer, path);
@@ -67,7 +68,7 @@ TEST_CASE("Image::GetWidth", "[Image]") {
   CHECK(img.get_width() == width);
 }
 
-TEST_CASE("Image::GetHeight", "[Image]") {
+TEST_CASE("Image::get_height", "[Image]") {
   Window window;
   Renderer renderer{window};
   Image img{renderer, path};
@@ -78,4 +79,62 @@ TEST_CASE("Image::GetHeight", "[Image]") {
   int height = 0;
   SDL_QueryTexture(texture, nullptr, nullptr, nullptr, &height);
   CHECK(img.get_height() == height);
+}
+
+TEST_CASE("Image::set_blend_mode", "[Image]") {
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, path};
+
+  const auto mode = BlendMode::Blend;
+  img.set_blend_mode(mode);
+
+  CHECK(mode == img.get_blend_mode());
+}
+
+TEST_CASE("Image::set_alpha", "[Image]") {
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, path};
+
+  const auto alpha = 0x3A;
+  img.set_alpha(alpha);
+
+  CHECK(alpha == img.get_alpha());
+}
+
+TEST_CASE("Image::set_color_mod", "[Image]") {
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, path};
+
+  const auto color = Colors::misty_rose;
+  img.set_color_mod(color);
+
+  const auto actual = img.get_color_mod();
+  CHECK(color.r == actual.r);
+  CHECK(color.g == actual.g);
+  CHECK(color.b == actual.b);
+  CHECK(color.a == actual.a);
+}
+
+TEST_CASE("Image::is_static", "[Image]") {
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, window.get_pixel_format(), TextureAccess::Static, 10, 10};
+  CHECK(img.is_static());
+}
+
+TEST_CASE("Image::is_streaming", "[Image]") {
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, window.get_pixel_format(), TextureAccess::Streaming, 10, 10};
+  CHECK(img.is_streaming());
+}
+
+TEST_CASE("Image::is_target", "[Image]") {
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, window.get_pixel_format(), TextureAccess::Target, 10, 10};
+  CHECK(img.is_target());
 }

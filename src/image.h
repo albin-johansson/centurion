@@ -28,6 +28,7 @@
 #include <cstdint>
 #include <gsl>
 #include <SDL_render.h>
+#include "blend_mode.h"
 
 namespace centurion {
 
@@ -254,7 +255,7 @@ class Image {
    * @param mode the blend mode that will be used.
    * @since 3.0.0
    */
-  void set_blend_mode(SDL_BlendMode mode) noexcept;
+  void set_blend_mode(BlendMode mode) noexcept;
 
   /**
    * Sets the color modulation of the image. Note, the alpha component in the color struct is
@@ -281,7 +282,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  int get_access() const noexcept;
+  TextureAccess get_access() const noexcept;
 
   /**
    * Returns the width of the image.
@@ -327,6 +328,33 @@ class Image {
    */
   [[nodiscard]]
   bool is_streaming() const noexcept;
+
+  /**
+   * Returns the alpha value of the texture.
+   *
+   * @return the alpha value of the texture.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  uint8_t get_alpha() const noexcept;
+
+  /**
+   * Returns the blend mode of the texture.
+   *
+   * @return the blend mode of the texture.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  BlendMode get_blend_mode() const noexcept;
+
+  /**
+   * Returns the color modulation of the image.
+   *
+   * @return the modulation of the image.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  SDL_Color get_color_mod() const noexcept;
 
   /**
    * Returns a pointer to the internal SDL_Texture of the image.

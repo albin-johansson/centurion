@@ -129,6 +129,74 @@ void Renderer::draw_image_translated(const Image& texture,
   SDL_RenderCopyF(renderer, texture, &source, &dst);
 }
 
+void Renderer::draw_image(const Image& image,
+                          const SDL_Rect& source,
+                          const SDL_Rect& destination,
+                          double angle) const noexcept {
+  SDL_Point center{source.x + (source.w / 2), source.y + (source.h / 2)};
+  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &center, SDL_FLIP_NONE);
+}
+
+void Renderer::draw_image(const Image& image,
+                          const SDL_Rect& source,
+                          const SDL_FRect& destination,
+                          double angle) const noexcept {
+  SDL_FPoint center{static_cast<float>(source.x + (source.w / 2.0)),
+                    static_cast<float>(source.y + (source.h / 2.0))};
+  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &center, SDL_FLIP_NONE);
+}
+
+void Renderer::draw_image(const Image& image,
+                          const SDL_Rect& source,
+                          const SDL_Rect& destination,
+                          const SDL_Point& center,
+                          double angle) const noexcept {
+  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &center, SDL_FLIP_NONE);
+}
+
+void Renderer::draw_image(const Image& image,
+                          const SDL_Rect& source,
+                          const SDL_FRect& destination,
+                          const SDL_FPoint& center,
+                          double angle) const noexcept {
+  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &center, SDL_FLIP_NONE);
+
+}
+
+void Renderer::draw_image(const Image& image,
+                          const SDL_Rect& source,
+                          const SDL_Rect& destination,
+                          double angle,
+                          SDL_RendererFlip flip) const noexcept {
+  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, nullptr, flip);
+}
+
+void Renderer::draw_image(const Image& image,
+                          const SDL_Rect& source,
+                          const SDL_FRect& destination,
+                          double angle,
+                          SDL_RendererFlip flip) const noexcept {
+  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, nullptr, flip);
+}
+
+void Renderer::draw_image(const Image& image,
+                          const SDL_Rect& source,
+                          const SDL_Rect& destination,
+                          double angle,
+                          const SDL_Point& center,
+                          SDL_RendererFlip flip) const noexcept {
+  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &center, flip);
+}
+
+void Renderer::draw_image(const Image& image,
+                          const SDL_Rect& source,
+                          const SDL_FRect& destination,
+                          double angle,
+                          const SDL_FPoint& center,
+                          SDL_RendererFlip flip) const noexcept {
+  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &center, flip);
+}
+
 void Renderer::fill_rect(float x, float y, float width, float height) const noexcept {
   const auto rect = SDL_FRect{x, y, width, height};
   SDL_RenderFillRectF(renderer, &rect);
@@ -203,6 +271,14 @@ void Renderer::set_translation_viewport(const SDL_FRect& viewport) noexcept {
 
 void Renderer::set_blend_mode(const SDL_BlendMode& blendMode) noexcept {
   SDL_SetRenderDrawBlendMode(renderer, blendMode);
+}
+
+void Renderer::set_target(const Image* texture) noexcept {
+  if (texture && texture->is_target()) {
+    SDL_SetRenderTarget(renderer, *texture);
+  } else {
+    SDL_SetRenderTarget(renderer, nullptr);
+  }
 }
 
 void Renderer::set_scale(float xScale, float yScale) noexcept {

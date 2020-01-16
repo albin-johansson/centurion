@@ -233,6 +233,134 @@ class Renderer {
                              const SDL_FRect& destination) const noexcept;
 
   /**
+   * Renders an image.
+   *
+   * @param image the image that will be rendered.
+   * @param source the rectangle that specified the cutout of the source image.
+   * @param destination the destination of the rendered image.
+   * @param angle the angle of the image.
+   * @since 3.0.0
+   */
+  void draw_image(const Image& image,
+                  const SDL_Rect& source,
+                  const SDL_Rect& destination,
+                  double angle) const noexcept;
+
+  /**
+   * Renders an image.
+   *
+   * @param image the image that will be rendered.
+   * @param source the rectangle that specified the cutout of the source image.
+   * @param destination the destination of the rendered image.
+   * @param angle the angle of the image.
+   * @since 3.0.0
+   */
+  void draw_image(const Image& image,
+                  const SDL_Rect& source,
+                  const SDL_FRect& destination,
+                  double angle) const noexcept;
+
+  /**
+   * Renders an image.
+   *
+   * @param image the image that will be rendered.
+   * @param source the rectangle that specifies the cutout of the source image.
+   * @param destination the destination of the rendered image.
+   * @param center the rotation center point.
+   * @param angle the angle of the image.
+   * @since 3.0.0
+   */
+  void draw_image(const Image& image,
+                  const SDL_Rect& source,
+                  const SDL_Rect& destination,
+                  const SDL_Point& center,
+                  double angle) const noexcept;
+
+  /**
+   * Renders an image.
+   *
+   * @param image the image that will be rendered.
+   * @param source the rectangle that specifies the cutout of the source image.
+   * @param destination the destination of the rendered image.
+   * @param center the rotation center point.
+   * @param angle the angle of the image.
+   * @since 3.0.0
+   */
+  void draw_image(const Image& image,
+                  const SDL_Rect& source,
+                  const SDL_FRect& destination,
+                  const SDL_FPoint& center,
+                  double angle) const noexcept;
+
+  /**
+   * Renders an image.
+   *
+   * @param image the image that will be rendered.
+   * @param source the rectangle that specifies the cutout of the source image.
+   * @param destination the destination of the rendered image.
+   * @param angle the angle of the image.
+   * @param flip the value that specifies whether or not the rendered image should be flipped.
+   * @since 3.0.0
+   */
+  void draw_image(const Image& image,
+                  const SDL_Rect& source,
+                  const SDL_Rect& destination,
+                  double angle,
+                  SDL_RendererFlip flip) const noexcept;
+
+  /**
+   * Renders an image.
+   *
+   * @param image the image that will be rendered.
+   * @param source the rectangle that specifies the cutout of the source image.
+   * @param destination the destination of the rendered image.
+   * @param angle the angle of the image.
+   * @param flip the value that specifies whether or not the rendered image should be flipped.
+   * @since 3.0.0
+   */
+  void draw_image(const Image& image,
+                  const SDL_Rect& source,
+                  const SDL_FRect& destination,
+                  double angle,
+                  SDL_RendererFlip flip) const noexcept;
+
+  /**
+   * Renders an image.
+   *
+   * @param image the image that will be rendered.
+   * @param source the rectangle that specifies the cutout of the source image.
+   * @param destination the destination of the rendered image.
+   * @param angle the angle of the image.
+   * @param center the rotation center point.
+   * @param flip the value that specifies whether or not the rendered image should be flipped.
+   * @since 3.0.0
+   */
+  void draw_image(const Image& image,
+                  const SDL_Rect& source,
+                  const SDL_Rect& destination,
+                  double angle,
+                  const SDL_Point& center,
+                  SDL_RendererFlip flip) const noexcept;
+
+  /**
+   * Renders an image.
+   *
+   * @param image the image that will be rendered.
+   * @param source the rectangle that specifies the cutout of the source image.
+   * @param destination the destination of the rendered image.
+   * @param angle the angle of the image.
+   * @param center the rotation center point.
+   * @param flip the value that specifies whether or not the rendered image should be flipped.
+   * @since 3.0.0
+   */
+  void draw_image(const Image& image,
+                  const SDL_Rect& source,
+                  const SDL_FRect& destination,
+                  double angle,
+                  const SDL_FPoint& center,
+                  SDL_RendererFlip flip) const noexcept;
+
+  /**
    * Renders a filled rectangle with the currently selected color. This method has no effect if the
    * supplied width and/or height isn't greater than zero.
    *
@@ -374,6 +502,16 @@ class Renderer {
    * @since 3.0.0
    */
   void set_blend_mode(const SDL_BlendMode& blendMode) noexcept;
+
+  /**
+   * Sets the rendering target of the renderer. The supplied image must support being a render
+   * target. Otherwise, this method will reset the render target.
+   *
+   * @param texture a pointer to the new target texture, can safely be null to indicate that the
+   * default rendering target should be used.
+   * @since 3.0.0
+   */
+  void set_target(const Image* texture) noexcept;
 
   /**
    * Sets the viewport that will be used by the renderer. This method has no effect if any of the
@@ -595,6 +733,9 @@ class Renderer {
   [[nodiscard]]
   const SDL_FRect& get_translation_viewport() const noexcept;
 
+  /**
+   * @since 3.0.0
+   */
   /*implicit*/ operator SDL_Renderer*() const noexcept;
 };
 

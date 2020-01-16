@@ -240,3 +240,9 @@ TEST_CASE("Renderer clipping", "[Renderer]") {
   CHECK(clip.w == rclip.w);
   CHECK(clip.h == rclip.h);
 }
+
+TEST_CASE("Renderer::set_target", "[Renderer]") {
+  Window window;
+  Renderer renderer{window};
+  CHECK_NOTHROW(renderer.set_target(nullptr));
+}

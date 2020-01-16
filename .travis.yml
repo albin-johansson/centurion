@@ -19,14 +19,6 @@ addons:
       - g++-8
       - cmake
 
-# os: linux
-# addons:
-#   apt:
-#     sources:
-#       - ubuntu-toolchain-r-test
-#     packages:
-#       - g++-8
-
 before_install:
   - sudo apt-get update
   - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev
@@ -40,6 +32,11 @@ install:
       travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     fi
+
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
 
 script:
   - export CC=/usr/bin/gcc-8

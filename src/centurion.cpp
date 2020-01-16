@@ -1,15 +1,11 @@
 #include "centurion.h"
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
 #include "centurion_exception.h"
 
 namespace centurion {
 
 void Centurion::init_sdl() {
   const auto result = SDL_Init(SDL_INIT_EVERYTHING);
-  if (result < 0) {
+  if (result < 0)   {
     throw CenturionException{"Failed to load SDL2! Error: " + std::string{SDL_GetError()}};
   }
 }

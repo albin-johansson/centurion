@@ -49,7 +49,9 @@ void Centurion::init() {
     init_sdl();
     init_img();
     init_ttf();
+#ifndef CENTURION_NOAUDIO
     init_mix();
+#endif
     wasInit = true;
   }
 }
@@ -58,8 +60,10 @@ void Centurion::close() noexcept {
   if (wasInit) {
     IMG_Quit();
     TTF_Quit();
+#ifndef CENTURION_NOAUDIO
     Mix_CloseAudio();
     Mix_Quit();
+#endif
     SDL_Quit();
     wasInit = false;
   }

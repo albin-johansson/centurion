@@ -22,6 +22,8 @@
  * SOFTWARE.
  */
 
+#ifndef CENTURION_NOAUDIO
+
 #pragma once
 #include <cstdint>
 #include <string>
@@ -162,3 +164,5 @@ class SoundEffect {
 };
 
 }
+
+#endif

@@ -9,6 +9,7 @@ notifications:
 env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+    - TRAVIS_TEST=true
 
 addons:
   apt:
@@ -42,7 +43,7 @@ before_script:
 script:
   - export CC=/usr/bin/gcc-8
   - export CXX=/usr/bin/g++-8
-  - export AUDIODEV=null # Prevents SDL_mixer failing to initialize
+  - export TRAVIS_TEST=true
 
   - gcc -v
   - g++ -v

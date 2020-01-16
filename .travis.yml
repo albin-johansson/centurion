@@ -44,6 +44,7 @@ script:
   - export CC=/usr/bin/gcc-8
   - export CXX=/usr/bin/g++-8
   - export TRAVIS_TEST=true
+  - export AUDIODEV=null
 
   - gcc -v
   - g++ -v

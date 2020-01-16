@@ -7,8 +7,6 @@
 
 namespace centurion {
 
-bool Centurion::wasInit = false;
-
 void Centurion::init_sdl() {
   const auto result = SDL_Init(SDL_INIT_EVERYTHING);
   if (result < 0) {

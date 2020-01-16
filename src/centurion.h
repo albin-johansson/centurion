@@ -33,7 +33,7 @@ namespace centurion {
  */
 class Centurion final {
  private:
-  static bool wasInit;
+  static inline bool wasInit = false;
 
   /**
    * Initializes the core SDL2 library.

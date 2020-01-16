@@ -32,6 +32,18 @@
 namespace centurion {
 
 /**
+ * The TextureAccess enum mirrors the SDL_TextureAccess enum.
+ *
+ * @see SDL_TextureAccess
+ * @since 3.0.0
+ */
+enum class TextureAccess {
+  Static = SDL_TEXTUREACCESS_STATIC,
+  Streaming = SDL_TEXTUREACCESS_STREAMING,
+  Target = SDL_TEXTUREACCESS_TARGET
+};
+
+/**
  * The Image class represents an image that is hardware-accelerated. Instances of the Image class
  * can be implicitly converted to SDL_Texture*.
  *
@@ -72,6 +84,23 @@ class Image {
    * @since 3.0.0
    */
   Image(gsl::not_null<SDL_Renderer*> renderer, gsl::not_null<SDL_Surface*> surface);
+
+  /**
+   * Creates an image with the specified characteristics.
+   *
+   * @param renderer the associated renderer instance, may not be null.
+   * @param format the format of the created image.
+   * @param access one of the SDL_TextureAccess values.
+   * @param width the width of the created image.
+   * @param height the height of the created image.
+   * @throws CenturionException if the image cannot be created.
+   * @since 3.0.0
+   */
+  Image(gsl::not_null<SDL_Renderer*> renderer,
+        uint32_t format,
+        TextureAccess access,
+        int width,
+        int height);
 
   /**
    * Creates an image by moving the supplied image.
@@ -136,6 +165,25 @@ class Image {
                                        gsl::not_null<SDL_Surface*> surface);
 
   /**
+   * Creates and returns a unique pointer to an image with the specified characteristics.
+   *
+   * @param renderer the associated renderer instance, may not be null.
+   * @param format the format of the created image.
+   * @param access one of the SDL_TextureAccess values.
+   * @param width the width of the created image.
+   * @param height the height of the created image.
+   * @return a unique pointer to an image.
+   * @throws CenturionException if the image cannot be created.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
+                                       uint32_t format,
+                                       TextureAccess access,
+                                       int width,
+                                       int height);
+
+  /**
    * Creates and returns a shared image from a pre-existing SDL texture. The created image WILL
    * claim ownership of the supplied pointer!
    *
@@ -172,6 +220,25 @@ class Image {
   [[nodiscard]]
   static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
                                        gsl::not_null<SDL_Surface*> surface);
+
+  /**
+   * Creates and returns a shared pointer to an image with the specified characteristics.
+   *
+   * @param renderer the associated renderer instance, may not be null.
+   * @param format the format of the created image.
+   * @param access one of the SDL_TextureAccess values.
+   * @param width the width of the created image.
+   * @param height the height of the created image.
+   * @return a shared pointer to an image.
+   * @throws CenturionException if the image cannot be created.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
+                                       uint32_t format,
+                                       TextureAccess access,
+                                       int width,
+                                       int height);
 
   /**
    * Sets the alpha value of the image.
@@ -233,6 +300,33 @@ class Image {
    */
   [[nodiscard]]
   int get_height() const noexcept;
+
+  /**
+   * Indicates whether or not the image is a possible render target.
+   *
+   * @return true if the image is a possible render target; false otherwise.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  bool is_target() const noexcept;
+
+  /**
+   * Indicates whether or not the image has static texture access.
+   *
+   * @return true if the image has static texture access.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  bool is_static() const noexcept;
+
+  /**
+   * Indicates whether or not the image has streaming texture access.
+   *
+   * @return true if the image has streaming texture access; false otherwise.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  bool is_streaming() const noexcept;
 
   /**
    * Returns a pointer to the internal SDL_Texture of the image.

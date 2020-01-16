@@ -25,11 +25,12 @@
 #pragma once
 #include <memory>
 #include <string>
+#include <cstdint>
+#include "image.h"
 
 namespace centurion {
 
 class Renderer;
-class Image;
 
 /**
  * The ImageGenerator class is a utility class designed to make it easier to create instances of
@@ -67,6 +68,23 @@ class ImageGenerator {
   std::unique_ptr<Image> unique_img(const std::string& file) const;
 
   /**
+   * Creates and returns a unique pointer to an image with the specified characteristics.
+   *
+   * @param format the format of the created image.
+   * @param access one of the SDL_TextureAccess values.
+   * @param width the width of the created image.
+   * @param height the height of the created image.
+   * @return a unique pointer to an image.
+   * @throws CenturionException if the image cannot be created.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  std::unique_ptr<Image> unique_img(uint32_t format,
+                                    TextureAccess access,
+                                    int width,
+                                    int height) const;
+
+  /**
    * Creates and returns a shared pointer to an image.
    *
    * @param file the file path of the image that will be loaded.
@@ -76,6 +94,24 @@ class ImageGenerator {
    */
   [[nodiscard]]
   std::shared_ptr<Image> shared_img(const std::string& file) const;
+
+  /**
+   * Creates and returns a shared pointer to an image with the specified characteristics.
+   *
+   * @param format the format of the created image.
+   * @param access one of the SDL_TextureAccess values.
+   * @param width the width of the created image.
+   * @param height the height of the created image.
+   * @return a shared pointer to an image.
+   * @throws CenturionException if the image cannot be created.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  std::shared_ptr<Image> shared_img(uint32_t format,
+                                    TextureAccess access,
+                                    int width,
+                                    int height) const;
+
 };
 
 }

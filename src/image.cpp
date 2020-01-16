@@ -36,6 +36,17 @@ Image::Image(gsl::not_null<SDL_Renderer*> renderer, gsl::not_null<SDL_Surface*> 
   }
 }
 
+Image::Image(gsl::not_null<SDL_Renderer*> renderer,
+             uint32_t format,
+             TextureAccess access,
+             int width,
+             int height) {
+  texture = SDL_CreateTexture(renderer, format, static_cast<int>(access), width, height);
+  if (!texture) {
+    throw CenturionException{"Failed to create image! Error: " + std::string{SDL_GetError()}};
+  }
+}
+
 Image::Image(Image&& other) noexcept
     : texture{other.texture} {
   other.texture = nullptr;
@@ -66,6 +77,22 @@ std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
 std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
                                      gsl::not_null<SDL_Surface*> surface) {
   return std::make_unique<Image>(renderer, surface);
+}
+
+std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
+                                     uint32_t format,
+                                     TextureAccess access,
+                                     int width,
+                                     int height) {
+  return std::make_unique<Image>(renderer, format, access, width, height);
+}
+
+std::shared_ptr<Image> Image::shared(gsl::not_null<SDL_Renderer*> renderer,
+                                     uint32_t format,
+                                     TextureAccess access,
+                                     int width,
+                                     int height) {
+  return std::make_shared<Image>(renderer, format, access, width, height);
 }
 
 std::shared_ptr<Image> Image::shared(gsl::owner<SDL_Texture*> texture) {
@@ -116,6 +143,18 @@ int Image::get_height() const noexcept {
   int height = 0;
   SDL_QueryTexture(texture, nullptr, nullptr, nullptr, &height);
   return height;
+}
+
+bool Image::is_target() const noexcept {
+  return get_access() & SDL_TEXTUREACCESS_TARGET;
+}
+
+bool Image::is_static() const noexcept {
+  return get_access() & SDL_TEXTUREACCESS_STATIC;
+}
+
+bool Image::is_streaming() const noexcept {
+  return get_access() & SDL_TEXTUREACCESS_STREAMING;
 }
 
 SDL_Texture* Image::get_texture() noexcept {

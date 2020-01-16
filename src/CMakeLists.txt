@@ -27,7 +27,9 @@ set(SOURCE_FILES
         system.h
         system.cpp
         log.cpp
-        log.h)
+        log.h
+        timer.cpp
+        timer.h)
 
 add_library(${CENTURION_LIB} STATIC ${SOURCE_FILES}) # TODO use SHARED instead
 

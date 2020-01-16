@@ -19,11 +19,16 @@ static void do_stuff() {
   SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 
   Window window;
-  const auto renderer = Renderer::shared(window);
+  const auto renderer = Renderer::shared(window,
+                                         SDL_RENDERER_ACCELERATED |
+                                             SDL_RENDERER_PRESENTVSYNC |
+                                             SDL_RENDERER_TARGETTEXTURE);
+
   const auto imageGenerator = ImageGenerator{renderer};
   const auto image = imageGenerator.unique_img("resources/grass.png");
-  const auto appPath = AppPath{};
-  const auto prefPath = PrefPath{"albinjohansson", "centurion"};
+
+  const AppPath appPath;
+  const PrefPath prefPath{"albinjohansson", "centurion"};
   const std::vector<SDL_Point> points{{50, 50}, {60, 40}, {70, 60}, {55, 100}};
 
   if (appPath) {
@@ -51,6 +56,26 @@ static void do_stuff() {
   bool running = true;
   SDL_Event event;
 
+  const auto renderTarget = Image{*renderer,
+                                  SDL_PIXELFORMAT_RGBA8888,
+                                  TextureAccess::Target,
+                                  200,
+                                  200};
+//  {
+//    renderer->set_target(&renderTarget);
+//
+//    renderer->set_color(Colors::snow);
+//    renderer->clear();
+//
+//    renderer->set_color(Colors::yellow_green);
+//    renderer->fill_rect(100, 100, 100, 100);
+//
+//    renderer->set_color(Colors::sky_blue);
+//    renderer->draw_line(SDL_Point{40, 40}, SDL_Point{200, 325});
+//
+//    renderer->set_target(nullptr);
+//  }
+
   while (running) {
 
     while (SDL_PollEvent(&event)) {
@@ -61,10 +86,12 @@ static void do_stuff() {
 
     static auto x = 0;
 
-    renderer->set_color(Colors::hot_pink);
+    renderer->set_color(Colors::black);
     renderer->clear();
 
-    renderer->draw_image(*image, 200, 200, 200, 200);
+    renderer->draw_image(*image,
+                         SDL_Rect{0, 0, 108, 108},
+                         SDL_FRect{200.0f, 200.0f, 108.0f, 108.0f});
 
     renderer->set_color(Colors::azure);
     renderer->draw_line(SDL_Point{10, 10}, SDL_Point{300, 300});
@@ -75,7 +102,10 @@ static void do_stuff() {
     renderer->set_color(Colors::snow);
     renderer->fill_rect(100 + x++, 100, 100, 100);
 
+//    renderer->draw_image(renderTarget, 40, 340);
+
     renderer->present();
+
   }
 
   window.hide();

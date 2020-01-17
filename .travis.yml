@@ -44,6 +44,8 @@ script:
   - export CC=/usr/bin/gcc-8
   - export CXX=/usr/bin/g++-8
   - export TRAVIS_TEST=true
+  - export SDL_AUDIODRIVER=alsa
+  - export AUDIODEV=pulse
 
   - gcc -v
   - g++ -v

@@ -44,6 +44,7 @@ static void do_stuff() {
   SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 
   Window window;
+
   const auto renderer = Renderer::shared(window,
                                          SDL_RENDERER_ACCELERATED |
                                              SDL_RENDERER_PRESENTVSYNC |

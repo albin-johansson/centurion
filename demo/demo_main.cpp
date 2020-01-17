@@ -2,6 +2,7 @@
 
 #include "window.h"
 #include "window_listener.h"
+#include "message_box.h"
 #include "renderer.h"
 #include "image.h"
 #include "colors.h"
@@ -13,6 +14,7 @@
 #include <vector>
 
 using namespace centurion;
+using namespace centurion::messagebox;
 
 static void render(Renderer& renderer) {
   static auto x = 0;
@@ -74,6 +76,10 @@ static void do_stuff() {
            "OS: %s", System::get_platform_name()->c_str());
 
   window.show();
+
+  MessageBox messageBox;
+
+  messageBox.show();
 
   bool running = true;
   SDL_Event event;

@@ -138,3 +138,13 @@ TEST_CASE("Image::is_target", "[Image]") {
   Image img{renderer, window.get_pixel_format(), TextureAccess::Target, 10, 10};
   CHECK(img.is_target());
 }
+
+TEST_CASE("TextureAccess enum values", "[TextureAccess]") {
+  CHECK(TextureAccess::Static == SDL_TEXTUREACCESS_STATIC);
+  CHECK(TextureAccess::Streaming == SDL_TEXTUREACCESS_STREAMING);
+  CHECK(TextureAccess::Target == SDL_TEXTUREACCESS_TARGET);
+
+  CHECK(SDL_TEXTUREACCESS_STATIC == TextureAccess::Static);
+  CHECK(SDL_TEXTUREACCESS_STREAMING == TextureAccess::Streaming);
+  CHECK(SDL_TEXTUREACCESS_TARGET == TextureAccess::Target);
+}

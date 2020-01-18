@@ -46,6 +46,30 @@ enum class TextureAccess {
 };
 
 /**
+ * Indicates whether or not the two texture access values are the same.
+ *
+ * @param a the lhs Centurion texture access.
+ * @param b the rhs SDL texture access.
+ * @return true if the texture access values are the same; false otherwise.
+ * @since 3.0.0
+ */
+inline bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept {
+  return static_cast<SDL_TextureAccess>(a) == b;
+}
+
+/**
+ * Indicates whether or not the two texture access values are the same.
+ *
+ * @param a the lhs SDL texture access.
+ * @param b the rhs Centurion texture access.
+ * @return true if the texture access values are the same; false otherwise.
+ * @since 3.0.0
+ */
+inline bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept {
+  return a == static_cast<SDL_TextureAccess>(b);
+}
+
+/**
  * The Image class represents an image that is hardware-accelerated. Instances of the Image class
  * can be implicitly converted to SDL_Texture*.
  *

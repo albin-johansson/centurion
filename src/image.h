@@ -28,6 +28,7 @@
 #include <cstdint>
 #include <gsl>
 #include <SDL_render.h>
+#include "color.h"
 #include "blend_mode.h"
 
 namespace centurion {
@@ -264,7 +265,7 @@ class Image {
    * @param color the color that will be used to modulate the color of the image.
    * @since 3.0.0
    */
-  void set_color_mod(SDL_Color color) noexcept;
+  void set_color_mod(Color color) noexcept;
 
   /**
    * Returns the format of the internal SDL_Texture.
@@ -354,7 +355,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  SDL_Color get_color_mod() const noexcept;
+  Color get_color_mod() const noexcept;
 
   /**
    * Returns a pointer to the internal SDL_Texture of the image.

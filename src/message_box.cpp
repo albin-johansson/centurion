@@ -1,6 +1,7 @@
 #include "message_box.h"
 #include <cstdint>
 #include <SDL.h>
+#include "centurion_exception.h"
 
 namespace centurion::messagebox {
 
@@ -45,44 +46,77 @@ ColorScheme::operator SDL_MessageBoxColorScheme() const noexcept {
  * MESSAGE BOX *************************
  ***************************************/
 
-MessageBox::MessageBox() {
-  buttonData.reserve(3);
-  buttonData.emplace_back(ButtonData::None, 0, "No");
-  buttonData.emplace_back(ButtonData::ReturnKey, 1, "Yes");
-  buttonData.emplace_back(ButtonData::EscapeKey, 2, "Cancel");
-}
+MessageBox::MessageBox(std::string title)
+    : title{std::move(title)} {}
+
+MessageBox::MessageBox(std::string title, std::string message)
+    : title{std::move(title)},
+      message{std::move(message)} {}
 
 MessageBox::~MessageBox() noexcept = default;
 
-void MessageBox::show() {
-  const SDL_MessageBoxColorScheme s = colorScheme;
+std::vector<SDL_MessageBoxButtonData> MessageBox::create_sdl_button_data() const noexcept {
+  std::vector<SDL_MessageBoxButtonData> result;
+  result.reserve(buttons.size());
 
-  auto* d = new SDL_MessageBoxButtonData[buttonData.size()];
-  for (auto i = 0; i < buttonData.size(); i++) {
-    d[i] = buttonData[i];
+  for (const auto& b : buttons) {
+    result.push_back(b);
   }
 
-  data = {
-      SDL_MESSAGEBOX_INFORMATION,
-      nullptr,
-      "Centurion message box",
-      "select a button",
-      static_cast<int>(buttonData.size()),
-      d,
-      &s
+  return result;
+}
+
+int MessageBox::show(SDL_Window* window) {
+  if (buttons.empty()) {
+    buttons.emplace_back(ButtonData::ReturnKey, 0, "OK");
+  }
+
+  const auto sdl_buttonData = create_sdl_button_data();
+  const SDL_MessageBoxColorScheme sdl_colorScheme = colorScheme;
+
+  const SDL_MessageBoxData data{
+      static_cast<SDL_MessageBoxFlags>(type),
+      window,
+      title.c_str(),
+      message.c_str(),
+      static_cast<int>(buttons.size()),
+      &sdl_buttonData.front(),
+      &sdl_colorScheme
   };
 
-  int button;
+  int button = -1;
   if (SDL_ShowMessageBox(&data, &button) < 0) {
-    SDL_Log("error displaying message box");
-  }
-  if (button == -1) {
-    SDL_Log("no selection");
-  } else {
-    SDL_Log("selection was %i", button);
+    throw CenturionException("Failed to show message box! Error: " + std::string{SDL_GetError()});
   }
 
-  delete[] d;
+  return button;
+}
+
+void MessageBox::show(const std::string& title,
+                      const std::string& message,
+                      MessageBoxID type,
+                      SDL_Window* window) noexcept {
+  SDL_ShowSimpleMessageBox(static_cast<uint32_t>(type), title.c_str(), message.c_str(), window);
+}
+
+void MessageBox::add_button(ButtonData data, int id, std::string text) noexcept {
+  buttons.emplace_back(data, id, std::move(text));
+}
+
+void MessageBox::set_title(const std::string& title) noexcept {
+  this->title = title;
+}
+
+void MessageBox::set_message(const std::string& message) noexcept {
+  this->message = message;
+}
+
+void MessageBox::set_type(MessageBoxID type) noexcept {
+  this->type = type;
+}
+
+MessageBoxID MessageBox::get_type() const noexcept {
+  return type;
 }
 
 }

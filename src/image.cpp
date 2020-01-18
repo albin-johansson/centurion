@@ -117,8 +117,8 @@ void Image::set_blend_mode(BlendMode mode) noexcept {
   SDL_SetTextureBlendMode(texture, static_cast<SDL_BlendMode>(mode));
 }
 
-void Image::set_color_mod(SDL_Color color) noexcept {
-  SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
+void Image::set_color_mod(Color color) noexcept {
+  SDL_SetTextureColorMod(texture, color.get_red(), color.get_green(), color.get_blue());
 }
 
 uint32_t Image::get_format() const noexcept {
@@ -169,7 +169,7 @@ BlendMode Image::get_blend_mode() const noexcept {
   return static_cast<BlendMode>(mode);
 }
 
-SDL_Color Image::get_color_mod() const noexcept {
+Color Image::get_color_mod() const noexcept {
   uint8_t r = 0, g = 0, b = 0;
   SDL_GetTextureColorMod(texture, &r, &g, &b);
   return {r, g, b, 0xFF};

@@ -23,7 +23,9 @@ set(TEST_FILES
         unittests/renderer_test.cpp
         unittests/log_test.cpp
         unittests/power_test.cpp
-        unittests/blend_mode_test.cpp)
+        unittests/blend_mode_test.cpp
+        unittests/message_box_test.cpp
+        unittests/color_test.cpp)
 
 enable_testing()
 add_executable(${CENTURION_TEST} ${TEST_FILES})

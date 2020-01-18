@@ -11,6 +11,26 @@ enum class ButtonData {
   EscapeKey = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
 };
 
+[[nodiscard]]
+inline bool operator==(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept {
+  return static_cast<SDL_MessageBoxButtonFlags>(a) == b;
+}
+
+[[nodiscard]]
+inline bool operator==(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept {
+  return a == static_cast<SDL_MessageBoxButtonFlags>(b);
+}
+
+[[nodiscard]]
+inline bool operator!=(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept {
+  return static_cast<SDL_MessageBoxButtonFlags>(a) != b;
+}
+
+[[nodiscard]]
+inline bool operator!=(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept {
+  return a != static_cast<SDL_MessageBoxButtonFlags>(b);
+}
+
 class Button {
  private:
   ButtonData data;
@@ -34,6 +54,26 @@ enum class ColorSchemeType {
   ButtonSelected = SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED,
 };
 
+[[nodiscard]]
+inline bool operator==(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept {
+  return a == static_cast<SDL_MessageBoxColorType>(b);
+}
+
+[[nodiscard]]
+inline bool operator==(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept {
+  return static_cast<SDL_MessageBoxColorType>(a) == b;
+}
+
+[[nodiscard]]
+inline bool operator!=(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept {
+  return a != static_cast<SDL_MessageBoxColorType>(b);
+}
+
+[[nodiscard]]
+inline bool operator!=(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept {
+  return static_cast<SDL_MessageBoxColorType>(a) != b;
+}
+
 class ColorScheme {
  private:
   SDL_MessageBoxColorScheme scheme;
@@ -50,35 +90,141 @@ class ColorScheme {
 
   void set_color(ColorSchemeType type, SDL_MessageBoxColor color) noexcept;
 
-  operator SDL_MessageBoxColorScheme() const noexcept;
+  /*implicit*/ operator SDL_MessageBoxColorScheme() const noexcept;
 };
 
+/**
+ * The MessageBoxID enum class mirrors the values of the SDL_MessageBoxFlags enum. It's safe to
+ * statically cast values of the SDL_MessageBoxFlags to MessageBoxID values. It's also possible
+ * to compare MessageBoxID and SDL_MessageBoxFlags values with the == and != operators.
+ *
+ * @since 3.0.0
+ */
+enum class MessageBoxID {
+  Info = SDL_MESSAGEBOX_INFORMATION,
+  Warning = SDL_MESSAGEBOX_WARNING,
+  Error = SDL_MESSAGEBOX_ERROR
+};
+
+[[nodiscard]]
+inline bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
+  return static_cast<SDL_MessageBoxFlags>(a) == b;
+}
+
+[[nodiscard]]
+inline bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
+  return a == static_cast<SDL_MessageBoxFlags>(b);
+}
+
+[[nodiscard]]
+inline bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
+  return static_cast<SDL_MessageBoxFlags>(a) != b;
+}
+
+[[nodiscard]]
+inline bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
+  return a != static_cast<SDL_MessageBoxFlags>(b);
+}
+
+/**
+ * The MessageBox class represents a modal message box that can be used display information,
+ * warnings and errors.
+ *
+ * @since 3.0.0
+ */
 class MessageBox {
  private:
-  SDL_MessageBoxData data = {};
   ColorScheme colorScheme;
-  std::vector<Button> buttonData;
+  std::vector<Button> buttons;
+  std::string title = "Centurion message box";
+  std::string message = "N/A";
+  MessageBoxID type = MessageBoxID::Info;
+
+  [[nodiscard]]
+  std::vector<SDL_MessageBoxButtonData> create_sdl_button_data() const noexcept;
 
  public:
-  MessageBox();
+  /**
+   * @since 3.0.0
+   */
+  MessageBox() = default;
+
+  explicit MessageBox(std::string title);
+
+  MessageBox(std::string title, std::string message);
 
   virtual ~MessageBox() noexcept;
 
-  void show();
+  /**
+   * Displays the message box. If no buttons have been added, the message box will feature an
+   * "OK" button.
+   *
+   * @param window a pointer to the parent window, can safely be null to indicate no parent.
+   * @return the ID of the pressed button; -1 if no button was pressed.
+   * @throws CenturionException if the message box cannot be displayed.
+   * @since 3.0.0
+   */
+  int show(SDL_Window* window = nullptr);
+
+  /**
+   * Creates and displays a message box. This method provides a simpler way to create
+   * message boxes, compared to creating instances of the MessageBox class.
+   *
+   * @param title the title of the message box window.
+   * @param message the message of the message box window.
+   * @param type the type of the message.
+   * @param window a pointer to the parent window, can safely be null to indicate no parent.
+   * @since 3.0.0
+   */
+  static void show(const std::string& title,
+                   const std::string& message,
+                   MessageBoxID type,
+                   SDL_Window* window = nullptr) noexcept;
+
+  /**
+   * Adds a button to the message box.
+   *
+   * @param data the data of the button.
+   * @param id the ID of the button.
+   * @param text the text of the button.
+   * @since 3.0.0
+   */
+  void add_button(ButtonData data, int id, std::string text) noexcept;
+
+  /**
+   * Sets the title of the message box.
+   *
+   * @param title the title of the message box.
+   * @since 3.0.0
+   */
+  void set_title(const std::string& title) noexcept;
+
+  /**
+   * Sets the message of the message box.
+   *
+   * @param message the message of the message box.
+   * @since 3.0.0
+   */
+  void set_message(const std::string& message) noexcept;
+
+  /**
+   * Sets what kind of message box the message box is. By default, this property is set to
+   * MessageBoxID::Info.
+   *
+   * @param type the type of the message box.
+   * @since 3.0.0
+   */
+  void set_type(MessageBoxID type) noexcept;
+
+  /**
+   * Returns the type of the message box.
+   *
+   * @return the type of the message box.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  MessageBoxID get_type() const noexcept;
 
 };
-
-//typedef struct
-//{
-//  Uint32 flags;                       /**< ::SDL_MessageBoxFlags */
-//  SDL_Window *window;                 /**< Parent window, can be NULL */
-//  const char *title;                  /**< UTF-8 title */
-//  const char *message;                /**< UTF-8 message text */
-//
-//  int numbuttons;
-//  const SDL_MessageBoxButtonData *buttons;
-//
-//  const SDL_MessageBoxColorScheme *colorScheme;   /**< ::SDL_MessageBoxColorScheme, can be NULL to use system settings */
-//} SDL_MessageBoxData;
 
 }

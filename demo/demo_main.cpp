@@ -6,6 +6,7 @@
 #include "renderer.h"
 #include "image.h"
 #include "colors.h"
+#include "color.h"
 #include "paths.h"
 #include "system.h"
 #include "log.h"
@@ -77,9 +78,7 @@ static void do_stuff() {
 
   window.show();
 
-  MessageBox messageBox;
-
-  messageBox.show();
+  MessageBox::show("Hello", "Something", MessageBoxID::Info, window);
 
   bool running = true;
   SDL_Event event;

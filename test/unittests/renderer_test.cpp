@@ -176,10 +176,10 @@ TEST_CASE("Renderer::get_color", "[Renderer]") {
   Renderer renderer{window};
 
   const auto color = renderer.get_color();
-  CHECK(color.r == 0);
-  CHECK(color.g == 0);
-  CHECK(color.b == 0);
-  CHECK(color.a == 0xFF);
+  CHECK(color.get_red() == 0);
+  CHECK(color.get_green() == 0);
+  CHECK(color.get_blue() == 0);
+  CHECK(color.get_alpha() == 0xFF);
 }
 
 TEST_CASE("Renderer::get_viewport", "[Renderer]") {

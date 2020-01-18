@@ -112,10 +112,10 @@ TEST_CASE("Image::set_color_mod", "[Image]") {
   img.set_color_mod(color);
 
   const auto actual = img.get_color_mod();
-  CHECK(color.r == actual.r);
-  CHECK(color.g == actual.g);
-  CHECK(color.b == actual.b);
-  CHECK(color.a == actual.a);
+  CHECK(color.get_red() == actual.get_red());
+  CHECK(color.get_green() == actual.get_green());
+  CHECK(color.get_blue() == actual.get_blue());
+  CHECK(color.get_alpha() == actual.get_alpha());
 }
 
 TEST_CASE("Image::is_static", "[Image]") {

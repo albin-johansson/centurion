@@ -1,0 +1,146 @@
+#include "catch.hpp"
+#include "color.h"
+#include <iostream>
+
+using namespace centurion;
+
+TEST_CASE("Color()", "[Color]") {
+  Color c;
+  CHECK(0 == c.get_red());
+  CHECK(0 == c.get_red());
+  CHECK(0 == c.get_red());
+  CHECK(0xFF == c.get_alpha());
+}
+
+TEST_CASE("Color(uint8_t, uint8_t, uint8_t, uint8_t)", "[Color]") {
+  const auto r = 0xA5;
+  const auto g = 0xB3;
+  const auto b = 0x29;
+  const auto a = 0xCC;
+
+  SECTION("Full ctor") {
+    const Color c{r, g, b, a};
+
+    CHECK(r == c.get_red());
+    CHECK(g == c.get_green());
+    CHECK(b == c.get_blue());
+    CHECK(a == c.get_alpha());
+  }
+
+  SECTION("Defaulted alpha value") {
+    const Color c{r, g, b};
+
+    CHECK(r == c.get_red());
+    CHECK(g == c.get_green());
+    CHECK(b == c.get_blue());
+    CHECK(c.get_alpha() == Color::max);
+  }
+}
+
+TEST_CASE("Color from SDL_Color", "[Color]") {
+  const auto sc = SDL_Color{0x3F, 0x9A, 0xCC, 0x17};
+
+  SECTION("Copy constructor") {
+    const auto c = Color{sc};
+    CHECK(c == sc);
+    CHECK(c.get_red() == sc.r);
+    CHECK(c.get_green() == sc.g);
+    CHECK(c.get_blue() == sc.b);
+    CHECK(c.get_alpha() == sc.a);
+  }
+
+  SECTION("Move constructor") {
+    const auto c = Color{SDL_Color{sc.r, sc.g, sc.b, sc.a}};
+    CHECK(c == sc);
+    CHECK(c.get_red() == sc.r);
+    CHECK(c.get_green() == sc.g);
+    CHECK(c.get_blue() == sc.b);
+    CHECK(c.get_alpha() == sc.a);
+  }
+}
+
+TEST_CASE("Color from SDL_MessageBoxColor", "[Color]") {
+  const auto sc = SDL_MessageBoxColor{0xDA, 0x5E, 0x81};
+
+  SECTION("Copy constructor") {
+    const auto c = Color{sc};
+    CHECK(c == sc);
+    CHECK(c.get_red() == sc.r);
+    CHECK(c.get_green() == sc.g);
+    CHECK(c.get_blue() == sc.b);
+  }
+
+  SECTION("Move constructor") {
+    const auto c = Color{SDL_MessageBoxColor{sc.r, sc.g, sc.b}};
+    CHECK(c == sc);
+    CHECK(c.get_red() == sc.r);
+    CHECK(c.get_green() == sc.g);
+    CHECK(c.get_blue() == sc.b);
+  }
+}
+
+TEST_CASE("Equality operators", "[Color]") {
+  SECTION("Reflexivity") {
+    const auto color = Color{10, 20, 30, 40};
+    CHECK(color == color);
+    CHECK(!(color != color));
+  }
+
+  SECTION("Equal colors") {
+    const auto r = 0x43;
+    const auto g = 0x8A;
+    const auto b = 0x14;
+    const auto a = 0x86;
+
+    const auto sdlColor = SDL_Color{r, g, b, a};
+    const auto msgColor = SDL_MessageBoxColor{r, g, b};
+    const auto color = Color{r, g, b, a};
+
+    CHECK(color == sdlColor);
+    CHECK(sdlColor == color);
+
+    CHECK(color == msgColor);
+    CHECK(msgColor == color);
+  }
+
+  SECTION("Non-equal colors") {
+    const auto color = Color{0x34, 0xD2, 0xCA, 0xDE};
+    const auto sdlColor = SDL_Color{0x84, 0x45, 0x11, 0xFA};
+    const auto msgColor = SDL_MessageBoxColor{0xAA, 0x57, 0x99};
+
+    std::cout << color << "\n";
+
+    CHECK(color != sdlColor);
+    CHECK(sdlColor != color);
+
+    CHECK(color != msgColor);
+    CHECK(msgColor != color);
+  }
+}
+
+TEST_CASE("Color setters", "[Color]") {
+  Color c;
+  SECTION("Red") {
+    const auto r = 0x3C;
+    c.set_red(r);
+    CHECK(r == c.get_red());
+  }
+
+  SECTION("Green") {
+    const auto g = 0x79;
+    c.set_green(g);
+    CHECK(g == c.get_green());
+  }
+
+  SECTION("Blue") {
+    const auto b = 0xEE;
+    c.set_blue(b);
+    CHECK(b == c.get_blue());
+  }
+
+  SECTION("Alpha") {
+    const auto a = 0x28;
+    c.set_alpha(a);
+    CHECK(a == c.get_alpha());
+  }
+}

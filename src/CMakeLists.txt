@@ -30,7 +30,11 @@ set(SOURCE_FILES
         log.h
         timer.cpp
         timer.h
-        blend_mode.h message_box.cpp message_box.h)
+        blend_mode.h
+        message_box.cpp
+        message_box.h
+        color.cpp
+        color.h)
 
 add_library(${CENTURION_LIB} STATIC ${SOURCE_FILES}) # TODO use SHARED instead
 

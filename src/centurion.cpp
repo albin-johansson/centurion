@@ -4,9 +4,15 @@
 namespace centurion {
 
 void Centurion::init_sdl() {
+#ifndef CENTURION_NOAUDIO
   if (const auto result = SDL_Init(SDL_INIT_EVERYTHING); result < 0) {
     throw CenturionException{"Failed to load SDL2! Error: " + std::string{SDL_GetError()}};
   }
+#else
+  if (const auto result = SDL_Init(SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO); result < 0) {
+    throw CenturionException{"Failed to load SDL2! Error: " + std::string{SDL_GetError()}};
+  }
+#endif
 }
 
 void Centurion::init_ttf() {

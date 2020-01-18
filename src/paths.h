@@ -24,6 +24,7 @@
 
 #pragma once
 #include <string>
+#include <memory>
 
 namespace centurion {
 
@@ -52,6 +53,28 @@ class AppPath final {
   ~AppPath() noexcept;
 
   AppPath& operator=(const AppPath&) = delete;
+
+  /**
+   * Creates and returns a unique pointer to an AppPath object that represents the path of the
+   * application executable. Note! This might be an expensive operation, so it is recommended to
+   * create only one instance of this class and cache it.
+   *
+   * @return a unique pointer to an AppPath instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::unique_ptr<AppPath> unique();
+
+  /**
+   * Creates and returns a shared pointer to an AppPath object that represents the path of the
+   * application executable. Note! This might be an expensive operation, so it is recommended to
+   * create only one instance of this class and cache it.
+   *
+   * @return a shared pointer to an AppPath instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::shared_ptr<AppPath> shared();
 
   /**
    * Indicates whether or not there is a non-null string in the app path object.
@@ -97,6 +120,30 @@ class PrefPath final {
   ~PrefPath() noexcept;
 
   PrefPath& operator=(const PrefPath&) = delete;
+
+  /**
+   * Creates and returns a unique pointer to a PrefPath object. Only use letters, numbers, and
+   * spaces in the supplied strings!
+   *
+   * @param org the name of your organization.
+   * @param app the name of your application.
+   * @return a unique pointer to a PrefPath instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::unique_ptr<PrefPath> unique(const std::string& org, const std::string& app);
+
+  /**
+   * Creates and returns a shared pointer to a PrefPath object. Only use letters, numbers, and
+   * spaces in the supplied strings!
+   *
+   * @param org the name of your organization.
+   * @param app the name of your application.
+   * @return a shared pointer to a PrefPath instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  static std::shared_ptr<PrefPath> shared(const std::string& org, const std::string& app);
 
   /**
    * Indicates whether or not the path object holds a non-null path.

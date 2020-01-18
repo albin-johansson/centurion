@@ -155,6 +155,30 @@ enum class PowerState {
 };
 
 /**
+ * Indicates whether or not the power states hold the same values.
+ *
+ * @param a the lhs Centurion power state.
+ * @param b the rhs SDL power state.
+ * @return true if the power states are the same.
+ * @since 3.0.0
+ */
+inline bool operator==(PowerState a, SDL_PowerState b) noexcept {
+  return static_cast<SDL_PowerState>(a) == b;
+}
+
+/**
+ * Indicates whether or not the power states hold the same values.
+ *
+ * @param a the lhs SDL power state.
+ * @param b the rhs Centurion power state.
+ * @return true if the power states are the same.
+ * @since 3.0.0
+ */
+inline bool operator==(SDL_PowerState a, PowerState b) noexcept {
+  return a == static_cast<SDL_PowerState>(b);
+}
+
+/**
  * The Power class provides utilities related to the battery of the system.
  *
  * @since 3.0.0

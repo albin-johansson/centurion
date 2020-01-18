@@ -23,7 +23,6 @@
  */
 
 #pragma once
-#include <SDL_pixels.h>
 #include <cstdint>
 #include "color.h"
 

@@ -67,10 +67,27 @@ void Color::set_alpha(uint8_t a) noexcept {
 }
 
 std::ostream& operator<<(std::ostream& ostream, const Color& color) noexcept {
-  ostream << "(Color | R: " << std::to_string(color.red)
-          << ", G: " << std::to_string(color.green)
-          << ", B: " << std::to_string(color.blue)
-          << ", A: " << std::to_string(color.alpha)
+  ostream << "(Color | R: " << std::to_string(color.get_red())
+          << ", G: " << std::to_string(color.get_green())
+          << ", B: " << std::to_string(color.get_blue())
+          << ", A: " << std::to_string(color.get_alpha())
+          << ")";
+  return ostream;
+}
+
+std::ostream& operator<<(std::ostream& ostream, const SDL_Color& sdlColor) noexcept {
+  ostream << "(SDL_Color | R: " << std::to_string(sdlColor.r)
+          << ", G: " << std::to_string(sdlColor.g)
+          << ", B: " << std::to_string(sdlColor.b)
+          << ", A: " << std::to_string(sdlColor.a)
+          << ")";
+  return ostream;
+}
+
+std::ostream& operator<<(std::ostream& ostream, const SDL_MessageBoxColor& msgColor) noexcept {
+  ostream << "(SDL_MessageBoxColor | R: " << std::to_string(msgColor.r)
+          << ", G: " << std::to_string(msgColor.g)
+          << ", B: " << std::to_string(msgColor.b)
           << ")";
   return ostream;
 }

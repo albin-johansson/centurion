@@ -1,5 +1,6 @@
 #include "catch.hpp"
 #include "color.h"
+#include "colors.h"
 #include <iostream>
 
 using namespace centurion;
@@ -109,6 +110,8 @@ TEST_CASE("Equality operators", "[Color]") {
     const auto msgColor = SDL_MessageBoxColor{0xAA, 0x57, 0x99};
 
     std::cout << color << "\n";
+    std::cout << sdlColor << "\n";
+    std::cout << msgColor << "\n";
 
     CHECK(color != sdlColor);
     CHECK(sdlColor != color);
@@ -142,5 +145,31 @@ TEST_CASE("Color setters", "[Color]") {
     const auto a = 0x28;
     c.set_alpha(a);
     CHECK(a == c.get_alpha());
+  }
+}
+
+TEST_CASE("Color conversions", "[Color]") {
+  const auto& color = Colors::dark_orchid;
+  SECTION("Convert to SDL_Color") {
+    SDL_Color sdlColor = color;
+
+    CHECK(color == sdlColor);
+    CHECK(sdlColor == color);
+
+    CHECK(color.get_red() == sdlColor.r);
+    CHECK(color.get_green() == sdlColor.g);
+    CHECK(color.get_blue() == sdlColor.b);
+    CHECK(color.get_alpha() == sdlColor.a);
+  }
+
+  SECTION("Convert to SDL_MessageBoxColor") {
+    SDL_MessageBoxColor msgColor = color;
+
+    CHECK(color == msgColor);
+    CHECK(msgColor == color);
+
+    CHECK(color.get_red() == msgColor.r);
+    CHECK(color.get_green() == msgColor.g);
+    CHECK(color.get_blue() == msgColor.b);
   }
 }

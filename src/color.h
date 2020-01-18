@@ -277,16 +277,6 @@ class Color final {
   friend bool operator!=(const SDL_MessageBoxColor& msgColor, const Color& color) noexcept;
 
   /**
-   * Displays a textual representation of a color.
-   *
-   * @param ostream the output stream.
-   * @param color the color that will be printed.
-   * @return the output stream.
-   * @since 3.0.0
-   */
-  friend std::ostream& operator<<(std::ostream& ostream, const Color& color) noexcept;
-
-  /**
    * Returns the value of the red component.
    *
    * @return the value of the red component, in the range [0, 255].
@@ -350,7 +340,7 @@ class Color final {
    */
   [[nodiscard]]
   /*implicit*/ operator SDL_MessageBoxColor() const noexcept {
-    return {red, green, alpha};
+    return {red, green, blue};
   }
 };
 
@@ -401,5 +391,35 @@ inline bool operator!=(const Color& color, const SDL_MessageBoxColor& msgColor) 
 inline bool operator!=(const SDL_MessageBoxColor& msgColor, const Color& color) noexcept {
   return !(msgColor == color);
 }
+
+/**
+ * Displays a textual representation of a Centurion color.
+ *
+ * @param ostream the output stream.
+ * @param color the color that will be printed.
+ * @return the output stream.
+ * @since 3.0.0
+ */
+std::ostream& operator<<(std::ostream& ostream, const Color& color) noexcept;
+
+/**
+ * Displays a textual representation of an SDL color.
+ *
+ * @param ostream the output stream.
+ * @param color the color that will be printed.
+ * @return the output stream.
+ * @since 3.0.0
+ */
+std::ostream& operator<<(std::ostream& ostream, const SDL_Color& sdlColor) noexcept;
+
+/**
+ * Displays a textual representation of an SDL message box color.
+ *
+ * @param ostream the output stream.
+ * @param color the color that will be printed.
+ * @return the output stream.
+ * @since 3.0.0
+ */
+std::ostream& operator<<(std::ostream& ostream, const SDL_MessageBoxColor& msgColor) noexcept;
 
 }

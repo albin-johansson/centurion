@@ -48,6 +48,12 @@ class Color final {
   constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF) noexcept
       : red{r}, green{g}, blue{b}, alpha{a} {}
 
+  /**
+   * Creates a color that is a copy of the supplied color.
+   *
+   * @param color the color that will be copied.
+   * @since 3.0.0
+   */
   Color(const Color& other) noexcept = default;
 
   /**

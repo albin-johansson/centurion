@@ -173,8 +173,17 @@ class MessageBox {
    */
   MessageBox() = default;
 
+  /**
+   * @param title the title of the message box.
+   * @since 3.0.0
+   */
   explicit MessageBox(std::string title);
 
+  /**
+   * @param title the title of the message box.
+   * @param message the message of the message box.
+   * @since 3.0.0
+   */
   MessageBox(std::string title, std::string message);
 
   virtual ~MessageBox() noexcept;

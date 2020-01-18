@@ -53,14 +53,11 @@ static void do_stuff() {
                                              SDL_RENDERER_PRESENTVSYNC |
                                              SDL_RENDERER_TARGETTEXTURE);
 
-  const AppPath appPath;
-  const PrefPath prefPath{"albinjohansson", "centurion"};
-
-  if (appPath) {
+  if (const AppPath appPath; appPath) {
     Log::msg(Category::App, "Application path: %s", appPath.get());
   }
 
-  if (prefPath) {
+  if (const PrefPath prefPath{"albinjohansson", "centurion"}; prefPath) {
     Log::msg(Category::App, "Preferred path: %s", prefPath.get());
   }
 
@@ -82,6 +79,11 @@ static void do_stuff() {
 
   bool running = true;
   SDL_Event event;
+
+  if (const auto percentage = Power::get_battery_percentage(); percentage) {
+    Log::msg(Category::App, Priority::Info,
+             "Battery percentage: %i", percentage);
+  }
 
   while (running) {
     while (SDL_PollEvent(&event)) {

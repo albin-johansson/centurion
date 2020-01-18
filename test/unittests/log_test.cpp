@@ -29,3 +29,32 @@ TEST_CASE("Global logging priority", "[Log]") {
   CHECK(priority == Log::get_priority(Category::Test));
   CHECK(priority == Log::get_priority(Category::Misc));
 }
+
+TEST_CASE("Priority enum values", "[Log]") {
+  CHECK(Priority::Info == SDL_LOG_PRIORITY_INFO);
+  CHECK(Priority::Warn == SDL_LOG_PRIORITY_WARN);
+  CHECK(Priority::Debug == SDL_LOG_PRIORITY_DEBUG);
+  CHECK(Priority::Verbose == SDL_LOG_PRIORITY_VERBOSE);
+  CHECK(Priority::Critical == SDL_LOG_PRIORITY_CRITICAL);
+  CHECK(Priority::Error == SDL_LOG_PRIORITY_ERROR);
+
+  CHECK(SDL_LOG_PRIORITY_INFO == Priority::Info);
+  CHECK(SDL_LOG_PRIORITY_WARN == Priority::Warn);
+  CHECK(SDL_LOG_PRIORITY_DEBUG == Priority::Debug);
+  CHECK(SDL_LOG_PRIORITY_VERBOSE == Priority::Verbose);
+  CHECK(SDL_LOG_PRIORITY_CRITICAL == Priority::Critical);
+  CHECK(SDL_LOG_PRIORITY_ERROR == Priority::Error);
+}
+
+TEST_CASE("Category enum values", "[Log]") {
+  CHECK(static_cast<int>(Category::App) == SDL_LOG_CATEGORY_APPLICATION);
+  CHECK(static_cast<int>(Category::Error) == SDL_LOG_CATEGORY_ERROR);
+  CHECK(static_cast<int>(Category::Assert) == SDL_LOG_CATEGORY_ASSERT);
+  CHECK(static_cast<int>(Category::System) == SDL_LOG_CATEGORY_SYSTEM);
+  CHECK(static_cast<int>(Category::Audio) == SDL_LOG_CATEGORY_AUDIO);
+  CHECK(static_cast<int>(Category::Video) == SDL_LOG_CATEGORY_VIDEO);
+  CHECK(static_cast<int>(Category::Render) == SDL_LOG_CATEGORY_RENDER);
+  CHECK(static_cast<int>(Category::Input) == SDL_LOG_CATEGORY_INPUT);
+  CHECK(static_cast<int>(Category::Test) == SDL_LOG_CATEGORY_TEST);
+  CHECK(static_cast<int>(Category::Misc) == SDL_LOG_CATEGORY_CUSTOM);
+}

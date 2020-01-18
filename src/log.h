@@ -42,6 +42,32 @@ enum class Priority {
 };
 
 /**
+ * Indicates whether or not the two log priorities represent the same priority.
+ *
+ * @param a the lhs Centurion priority.
+ * @param b the rhs SDL priority.
+ * @return true if the priorities are the same; false otherwise.
+ * @since 3.0.0
+ */
+[[nodiscard]]
+inline bool operator==(Priority a, SDL_LogPriority b) noexcept {
+  return static_cast<SDL_LogPriority>(a) == b;
+}
+
+/**
+ * Indicates whether or not the two log priorities represent the same priority.
+ *
+ * @param a the lhs SDL priority.
+ * @param b the rhs Centurion priority.
+ * @return true if the priorities are the same; false otherwise.
+ * @since 3.0.0
+ */
+[[nodiscard]]
+inline bool operator==(SDL_LogPriority a, Priority b) noexcept {
+  return a == static_cast<SDL_LogPriority>(b);
+}
+
+/**
  * The Category enum provides values the mirror those of SDL_LOG_CATEGORY_x.
  *
  * @since 3.0.0

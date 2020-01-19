@@ -91,4 +91,7 @@ script:
   - cmake .
   - make
   - make test
-  - ctest Centurion_test
+#  - ctest Centurion_test
+  - cd cmake-build-release
+  - cd test
+  - ctest

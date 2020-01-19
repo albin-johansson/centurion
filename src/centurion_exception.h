@@ -25,33 +25,34 @@
 #pragma once
 #include <stdexcept>
 #include <string>
+#include "centurion_api.h"
 
 namespace centurion {
 
 /**
  * A general exception used by the Centurion library.
  */
-class CenturionException final : public std::exception {
+class CENTURION_API CenturionException final : public std::exception {
  private:
   std::string msg = "";
 
  public:
-  CenturionException();
+  CENTURION_API CenturionException();
 
   /**
    * @param msg the message of the exception.
    */
-  explicit CenturionException(const char* msg);
+  CENTURION_API explicit CenturionException(const char* msg);
 
   /**
    * @param msg the message of the exception.
    */
-  explicit CenturionException(const std::string& msg);
+  CENTURION_API explicit CenturionException(const std::string& msg);
 
-  ~CenturionException() override;
+  CENTURION_API ~CenturionException() override;
 
   [[nodiscard]]
-  const char* what() const noexcept override;
+  CENTURION_API const char* what() const noexcept override;
 };
 
 }

@@ -11,6 +11,10 @@ AppPath::~AppPath() noexcept {
   }
 }
 
+AppPath::operator bool() const noexcept {
+  return path;
+}
+
 PrefPath::PrefPath(const std::string& org, const std::string& app)
     : path{SDL_GetPrefPath(org.c_str(), app.c_str())} {}
 

@@ -27,10 +27,11 @@
 #include <string>
 #include <cstdint>
 #include "image.h"
+#include "centurion_api.h"
 
 namespace centurion {
 
-class Renderer;
+class CENTURION_API Renderer;
 
 /**
  * The ImageGenerator class is a utility class designed to make it easier to create instances of
@@ -42,7 +43,7 @@ class Renderer;
  * @since 3.0.0
  * @author Albin Johansson
  */
-class ImageGenerator {
+class CENTURION_API ImageGenerator {
  private:
   std::shared_ptr<Renderer> renderer;
 
@@ -52,9 +53,9 @@ class ImageGenerator {
    * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
-  explicit ImageGenerator(const std::shared_ptr<Renderer>& renderer);
+  CENTURION_API explicit ImageGenerator(const std::shared_ptr<Renderer>& renderer);
 
-  virtual ~ImageGenerator() noexcept;
+  CENTURION_API virtual ~ImageGenerator() noexcept;
 
   /**
    * Creates and returns a unique pointer to an image.
@@ -65,7 +66,7 @@ class ImageGenerator {
    * @since 3.0.0
    */
   [[nodiscard]]
-  std::unique_ptr<Image> unique_img(const std::string& file) const;
+  CENTURION_API std::unique_ptr<Image> unique_img(const std::string& file) const;
 
   /**
    * Creates and returns a unique pointer to an image with the specified characteristics.
@@ -79,10 +80,10 @@ class ImageGenerator {
    * @since 3.0.0
    */
   [[nodiscard]]
-  std::unique_ptr<Image> unique_img(uint32_t format,
-                                    TextureAccess access,
-                                    int width,
-                                    int height) const;
+  CENTURION_API std::unique_ptr<Image> unique_img(uint32_t format,
+                                                  TextureAccess access,
+                                                  int width,
+                                                  int height) const;
 
   /**
    * Creates and returns a shared pointer to an image.
@@ -93,7 +94,7 @@ class ImageGenerator {
    * @since 3.0.0
    */
   [[nodiscard]]
-  std::shared_ptr<Image> shared_img(const std::string& file) const;
+  CENTURION_API std::shared_ptr<Image> shared_img(const std::string& file) const;
 
   /**
    * Creates and returns a shared pointer to an image with the specified characteristics.
@@ -107,10 +108,10 @@ class ImageGenerator {
    * @since 3.0.0
    */
   [[nodiscard]]
-  std::shared_ptr<Image> shared_img(uint32_t format,
-                                    TextureAccess access,
-                                    int width,
-                                    int height) const;
+  CENTURION_API std::shared_ptr<Image> shared_img(uint32_t format,
+                                                  TextureAccess access,
+                                                  int width,
+                                                  int height) const;
 
 };
 

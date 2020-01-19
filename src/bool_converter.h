@@ -24,6 +24,7 @@
 
 #pragma once
 #include <SDL.h>
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -33,11 +34,11 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class BoolConverter final {
+class CENTURION_API BoolConverter final {
  public:
   BoolConverter() = delete;
 
-  ~BoolConverter() noexcept = default;
+  CENTURION_API ~BoolConverter() noexcept = default;
 
   /**
    * Returns the corresponding SDL_bool value for the supplied boolean value.
@@ -47,7 +48,7 @@ class BoolConverter final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  inline static constexpr SDL_bool convert(bool b) noexcept {
+  CENTURION_API static constexpr SDL_bool convert(bool b) noexcept {
     return b ? SDL_TRUE : SDL_FALSE;
   }
 };

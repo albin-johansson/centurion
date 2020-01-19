@@ -23,6 +23,7 @@
  */
 
 #pragma once
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -34,9 +35,9 @@ class Window;
  *
  * @since 3.0.0
  */
-class IWindowListener {
+class CENTURION_API IWindowListener {
  public:
-  virtual ~IWindowListener() = default;
+  CENTURION_API virtual ~IWindowListener() = default;
 
   /**
    * Invoked when the window is updated.
@@ -44,7 +45,7 @@ class IWindowListener {
    * @param window the window that was updated.
    * @since 3.0.0
    */
-  virtual void window_updated(const Window& window) noexcept = 0;
+  CENTURION_API virtual void window_updated(const Window& window) noexcept = 0;
 };
 
 }

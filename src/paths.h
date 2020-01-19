@@ -24,6 +24,7 @@
 
 #pragma once
 #include <string>
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -33,7 +34,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class AppPath final {
+class CENTURION_API AppPath final {
  private:
   char* path = nullptr;
 
@@ -45,11 +46,11 @@ class AppPath final {
    *
    * @since 3.0.0
    */
-  AppPath() noexcept;
+  CENTURION_API AppPath() noexcept;
 
   AppPath(const AppPath&) = delete;
 
-  ~AppPath() noexcept;
+  CENTURION_API ~AppPath() noexcept;
 
   AppPath& operator=(const AppPath&) = delete;
 
@@ -60,7 +61,7 @@ class AppPath final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  explicit operator bool() const noexcept { return path; }
+  CENTURION_API explicit operator bool() const noexcept;
 
   /**
    * Returns the path of the application executable. The returned pointer might be null!
@@ -78,7 +79,7 @@ class AppPath final {
  *
  * @since 3.0.0
  */
-class PrefPath final {
+class CENTURION_API PrefPath final {
  private:
   char* path = nullptr;
 
@@ -90,11 +91,11 @@ class PrefPath final {
    * @param app the name of your application.
    * @since 3.0.0
    */
-  PrefPath(const std::string& org, const std::string& app);
+  CENTURION_API PrefPath(const std::string& org, const std::string& app);
 
   PrefPath(const PrefPath&) = delete;
 
-  ~PrefPath() noexcept;
+  CENTURION_API ~PrefPath() noexcept;
 
   PrefPath& operator=(const PrefPath&) = delete;
 

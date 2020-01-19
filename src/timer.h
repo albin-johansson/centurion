@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -8,7 +9,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class Timer final {
+class CENTURION_API Timer final {
  public:
   Timer() = delete;
 
@@ -20,7 +21,7 @@ class Timer final {
    * @param ms the minimum amount of time to sleep for, in milliseconds.
    * @since 3.0.0
    */
-  static void sleep(uint32_t ms) noexcept;
+  CENTURION_API static void sleep(uint32_t ms) noexcept;
 
   /**
    * Returns the current value of the system high-performance counter.
@@ -29,7 +30,7 @@ class Timer final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static uint64_t high_res() noexcept;
+  CENTURION_API static uint64_t high_res() noexcept;
 
   /**
    * Returns the frequency of the system high-performance counter.
@@ -38,7 +39,7 @@ class Timer final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static uint64_t high_res_freq() noexcept;
+  CENTURION_API static uint64_t high_res_freq() noexcept;
 
   /**
    * Returns the amount of milliseconds since the library was initialized.
@@ -47,7 +48,7 @@ class Timer final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static uint32_t millis() noexcept;
+  CENTURION_API static uint32_t millis() noexcept;
 
 };
 

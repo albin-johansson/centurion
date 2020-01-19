@@ -30,6 +30,7 @@
 #include <SDL_mixer.h>
 
 // TODO include all centurion files
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -38,7 +39,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class Centurion final {
+class CENTURION_API Centurion final {
  private:
   static inline bool wasInit = false;
 
@@ -47,32 +48,32 @@ class Centurion final {
    *
    * @since 3.0.0
    */
-  static void init_sdl();
+  CENTURION_API static void init_sdl();
 
   /**
    * Initializes the SDL2_ttf library.
    *
    * @since 3.0.0
    */
-  static void init_ttf();
+  CENTURION_API static void init_ttf();
 
   /**
    * Initializes the SDL2_image library.
    *
    * @since 3.0.0
    */
-  static void init_img();
+  CENTURION_API static void init_img();
 
   /**
    * Initializes the SDL2_mixer library.
    *
    * @since 3.0.0
    */
-  static void init_mix();
+  CENTURION_API static void init_mix();
 
-  static void init();
+  CENTURION_API static void init();
 
-  static void close() noexcept;
+  CENTURION_API static void close() noexcept;
 
  public:
   /**
@@ -82,14 +83,14 @@ class Centurion final {
    * @throws CenturionException if any of the SDL libraries can't be loaded.
    * @since 3.0.0
    */
-  Centurion();
+  CENTURION_API Centurion();
 
   /**
    * Closes the Centurion library.
    *
    * @since 3.0.0
    */
-  ~Centurion() noexcept;
+  CENTURION_API ~Centurion() noexcept;
 
   Centurion(const Centurion&) = delete;
 

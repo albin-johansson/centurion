@@ -25,6 +25,7 @@
 #pragma once
 #include <optional>
 #include <SDL_power.h>
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -47,7 +48,7 @@ enum class Platform {
  *
  * @since 3.0.0
  */
-class System final {
+class CENTURION_API System final {
  public:
   System() = delete;
 
@@ -58,7 +59,7 @@ class System final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static Platform get_platform() noexcept;
+  CENTURION_API static Platform get_platform() noexcept;
 
   /**
    * Returns the name of the current platform.
@@ -67,7 +68,7 @@ class System final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::optional<std::string> get_platform_name() noexcept;
+  CENTURION_API static std::optional<std::string> get_platform_name() noexcept;
 };
 
 /**
@@ -75,7 +76,7 @@ class System final {
  *
  * @since 3.0.0
  */
-class CPU final {
+class CENTURION_API CPU final {
  public:
   CPU() = delete;
 
@@ -86,7 +87,7 @@ class CPU final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static int get_cache_line_size() noexcept;
+  CENTURION_API static int get_cache_line_size() noexcept;
 
   /**
    * Returns the amount of cores that the CPU has.
@@ -95,7 +96,7 @@ class CPU final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static int get_cores() noexcept;
+  CENTURION_API static int get_cores() noexcept;
 };
 
 /**
@@ -104,7 +105,7 @@ class CPU final {
  *
  * @since 3.0.0
  */
-class RAM final {
+class CENTURION_API RAM final {
  public:
   RAM() = delete;
 
@@ -115,7 +116,7 @@ class RAM final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static int get_size_mb() noexcept;
+  CENTURION_API static int get_size_mb() noexcept;
 
   /**
    * Returns the total amount of system RAM in gigabytes.
@@ -124,7 +125,7 @@ class RAM final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static int get_size_gb() noexcept;
+  CENTURION_API static int get_size_gb() noexcept;
 };
 
 /**
@@ -159,7 +160,7 @@ enum class PowerState {
  *
  * @since 3.0.0
  */
-class Power final {
+class CENTURION_API Power final {
  public:
   Power() = delete;
 
@@ -171,7 +172,7 @@ class Power final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::optional<int> get_battery_seconds_left() noexcept;
+  CENTURION_API static std::optional<int> get_battery_seconds_left() noexcept;
 
   /**
    * Returns the amount of minutes of battery life that is remaining.
@@ -181,7 +182,7 @@ class Power final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::optional<int> get_battery_minutes_left() noexcept;
+  CENTURION_API static std::optional<int> get_battery_minutes_left() noexcept;
 
   /**
    * Returns the percentage of battery life that is currently left.
@@ -191,7 +192,7 @@ class Power final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::optional<int> get_battery_percentage() noexcept;
+  CENTURION_API static std::optional<int> get_battery_percentage() noexcept;
 
   /**
    * Returns the current power state.
@@ -200,7 +201,7 @@ class Power final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static PowerState get_state() noexcept;
+  CENTURION_API static PowerState get_state() noexcept;
 };
 
 /**
@@ -208,7 +209,7 @@ class Power final {
  *
  * @since 3.0.0
  */
-class Screen final {
+class CENTURION_API Screen final {
  public:
   Screen() = delete;
 
@@ -219,7 +220,7 @@ class Screen final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static int get_width() noexcept;
+  CENTURION_API static int get_width() noexcept;
 
   /**
    * Returns the height of the screen.
@@ -228,7 +229,7 @@ class Screen final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static int get_height() noexcept;
+  CENTURION_API static int get_height() noexcept;
 
   /**
    * Returns the refresh rate of the screen.
@@ -237,7 +238,7 @@ class Screen final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static int get_refresh_rate() noexcept;
+  CENTURION_API static int get_refresh_rate() noexcept;
 
   /**
    * Returns the pixel format of the desktop display mode.
@@ -246,7 +247,7 @@ class Screen final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static uint32_t get_pixel_format() noexcept;
+  CENTURION_API static uint32_t get_pixel_format() noexcept;
 };
 
 }

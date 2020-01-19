@@ -29,6 +29,7 @@
 #include <gsl>
 #include <SDL_render.h>
 #include "blend_mode.h"
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -51,7 +52,7 @@ enum class TextureAccess {
  * @see SDL_Texture
  * @since 3.0.0
  */
-class Image {
+class CENTURION_API Image {
  private:
   SDL_Texture* texture = nullptr;
 
@@ -64,7 +65,7 @@ class Image {
    * @throws NullPointerException if the supplied pointer is null.
    * @since 3.0.0
    */
-  explicit Image(gsl::owner<SDL_Texture*> texture);
+  CENTURION_API explicit Image(gsl::owner<SDL_Texture*> texture);
 
   /**
    * Creates an image by loading it from a file.
@@ -74,7 +75,7 @@ class Image {
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
-  Image(gsl::not_null<SDL_Renderer*> renderer, const std::string& path);
+  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer, const std::string& path);
 
   /**
    * Creates an image that is a copy of the supplied SDL surface.
@@ -84,7 +85,7 @@ class Image {
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
-  Image(gsl::not_null<SDL_Renderer*> renderer, gsl::not_null<SDL_Surface*> surface);
+  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer, gsl::not_null<SDL_Surface*> surface);
 
   /**
    * Creates an image with the specified characteristics.
@@ -97,11 +98,11 @@ class Image {
    * @throws CenturionException if the image cannot be created.
    * @since 3.0.0
    */
-  Image(gsl::not_null<SDL_Renderer*> renderer,
-        uint32_t format,
-        TextureAccess access,
-        int width,
-        int height);
+  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer,
+                      uint32_t format,
+                      TextureAccess access,
+                      int width,
+                      int height);
 
   /**
    * Creates an image by moving the supplied image.
@@ -109,11 +110,11 @@ class Image {
    * @param other the image that will be moved.
    * @since 3.0.0
    */
-  Image(Image&& other) noexcept;
+  CENTURION_API Image(Image&& other) noexcept;
 
   Image(const Image&) noexcept = delete;
 
-  virtual ~Image() noexcept;
+  CENTURION_API virtual ~Image() noexcept;
 
   Image& operator=(const Image&) noexcept = delete;
 
@@ -125,7 +126,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  Image& operator=(Image&& other) noexcept;
+  CENTURION_API Image& operator=(Image&& other) noexcept;
 
   /**
    * Creates and returns a unique image from a pre-existing SDL texture. The created image WILL
@@ -137,7 +138,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::unique_ptr<Image> unique(gsl::owner<SDL_Texture*> texture);
+  CENTURION_API static std::unique_ptr<Image> unique(gsl::owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a unique image by loading it from a file.
@@ -149,8 +150,8 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
-                                       const std::string& path);
+  CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
+                                                     const std::string& path);
 
   /**
    * Creates and returns a unique image that is a copy of the supplied SDL surface.
@@ -162,8 +163,8 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
-                                       gsl::not_null<SDL_Surface*> surface);
+  CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
+                                                     gsl::not_null<SDL_Surface*> surface);
 
   /**
    * Creates and returns a unique pointer to an image with the specified characteristics.
@@ -178,11 +179,11 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
-                                       uint32_t format,
-                                       TextureAccess access,
-                                       int width,
-                                       int height);
+  CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
+                                                     uint32_t format,
+                                                     TextureAccess access,
+                                                     int width,
+                                                     int height);
 
   /**
    * Creates and returns a shared image from a pre-existing SDL texture. The created image WILL
@@ -194,7 +195,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::shared_ptr<Image> shared(gsl::owner<SDL_Texture*> texture);
+  CENTURION_API static std::shared_ptr<Image> shared(gsl::owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a shared image by loading it from a file.
@@ -206,8 +207,8 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
-                                       const std::string& path);
+  CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
+                                                     const std::string& path);
 
   /**
    * Creates and returns a shared image that is a copy of the supplied SDL surface.
@@ -219,8 +220,8 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
-                                       gsl::not_null<SDL_Surface*> surface);
+  CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
+                                                     gsl::not_null<SDL_Surface*> surface);
 
   /**
    * Creates and returns a shared pointer to an image with the specified characteristics.
@@ -235,11 +236,11 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
-                                       uint32_t format,
-                                       TextureAccess access,
-                                       int width,
-                                       int height);
+  CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
+                                                     uint32_t format,
+                                                     TextureAccess access,
+                                                     int width,
+                                                     int height);
 
   /**
    * Sets the alpha value of the image.
@@ -247,7 +248,7 @@ class Image {
    * @param alpha the alpha value, in the range [0, 255].
    * @since 3.0.0
    */
-  void set_alpha(uint8_t alpha) noexcept;
+  CENTURION_API void set_alpha(uint8_t alpha) noexcept;
 
   /**
    * Sets the blend mode that will be used by the image.
@@ -255,7 +256,7 @@ class Image {
    * @param mode the blend mode that will be used.
    * @since 3.0.0
    */
-  void set_blend_mode(BlendMode mode) noexcept;
+  CENTURION_API void set_blend_mode(BlendMode mode) noexcept;
 
   /**
    * Sets the color modulation of the image. Note, the alpha component in the color struct is
@@ -264,7 +265,7 @@ class Image {
    * @param color the color that will be used to modulate the color of the image.
    * @since 3.0.0
    */
-  void set_color_mod(SDL_Color color) noexcept;
+  CENTURION_API void set_color_mod(SDL_Color color) noexcept;
 
   /**
    * Returns the format of the internal SDL_Texture.
@@ -273,7 +274,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  uint32_t get_format() const noexcept;
+  CENTURION_API uint32_t get_format() const noexcept;
 
   /**
    * Returns the texture access of the internal SDL_Texture.
@@ -282,7 +283,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  TextureAccess get_access() const noexcept;
+  CENTURION_API TextureAccess get_access() const noexcept;
 
   /**
    * Returns the width of the image.
@@ -291,7 +292,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  int get_width() const noexcept;
+  CENTURION_API int get_width() const noexcept;
 
   /**
    * Returns the height of the image.
@@ -300,7 +301,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  int get_height() const noexcept;
+  CENTURION_API int get_height() const noexcept;
 
   /**
    * Indicates whether or not the image is a possible render target.
@@ -309,7 +310,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  bool is_target() const noexcept;
+  CENTURION_API bool is_target() const noexcept;
 
   /**
    * Indicates whether or not the image has static texture access.
@@ -318,7 +319,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  bool is_static() const noexcept;
+  CENTURION_API bool is_static() const noexcept;
 
   /**
    * Indicates whether or not the image has streaming texture access.
@@ -327,7 +328,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  bool is_streaming() const noexcept;
+  CENTURION_API bool is_streaming() const noexcept;
 
   /**
    * Returns the alpha value of the texture.
@@ -336,7 +337,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  uint8_t get_alpha() const noexcept;
+  CENTURION_API uint8_t get_alpha() const noexcept;
 
   /**
    * Returns the blend mode of the texture.
@@ -345,7 +346,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  BlendMode get_blend_mode() const noexcept;
+  CENTURION_API BlendMode get_blend_mode() const noexcept;
 
   /**
    * Returns the color modulation of the image.
@@ -354,7 +355,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  SDL_Color get_color_mod() const noexcept;
+  CENTURION_API SDL_Color get_color_mod() const noexcept;
 
   /**
    * Returns a pointer to the internal SDL_Texture of the image.
@@ -363,7 +364,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  SDL_Texture* get_texture() noexcept;
+  CENTURION_API SDL_Texture* get_texture() noexcept;
 
   /**
    * Returns a string representation of the image.
@@ -372,7 +373,7 @@ class Image {
    * @since 3.0.0
    */
   [[nodiscard]]
-  std::string to_string() const;
+  CENTURION_API std::string to_string() const;
 
   /**
    * Returns a pointer to the internal SDL_Texture.
@@ -380,7 +381,7 @@ class Image {
    * @return a pointer to the internal SDL_Texture.
    * @since 3.0.0
    */
-  /*implicit*/ operator SDL_Texture*() const noexcept;
+  CENTURION_API /*implicit*/ operator SDL_Texture*() const noexcept;
 };
 
 }

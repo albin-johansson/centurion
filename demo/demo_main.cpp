@@ -14,31 +14,31 @@
 
 using namespace centurion;
 
-static void render(Renderer& renderer) {
-  static auto x = 0;
-  static const auto image = Image{renderer, "resources/grass.png"};
-  static const std::vector<SDL_Point> points{
-      {50, 50}, {60, 40}, {70, 60}, {55, 100}
-  };
-
-  renderer.set_color(Colors::black);
-  renderer.clear();
-
-  renderer.draw_image(image,
-                      SDL_Rect{0, 0, 108, 108},
-                      SDL_FRect{200.0f, 200.0f, 108.0f, 108.0f});
-
-  renderer.set_color(Colors::azure);
-  renderer.draw_line(SDL_Point{10, 10}, SDL_Point{300, 300});
-
-  renderer.set_color(Colors::cornflower_blue);
-  renderer.draw_lines(points);
-
-  renderer.set_color(Colors::snow);
-  renderer.fill_rect(100 + x++, 100, 100, 100);
-
-  renderer.present();
-}
+//static void render(Renderer& renderer) {
+//  static auto x = 0;
+//  static const auto image = Image{renderer, "resources/grass.png"};
+//  static const std::vector<SDL_Point> points{
+//      {50, 50}, {60, 40}, {70, 60}, {55, 100}
+//  };
+//
+//  renderer.set_color(Colors::black);
+//  renderer.clear();
+//
+//  renderer.draw_image(image,
+//                      SDL_Rect{0, 0, 108, 108},
+//                      SDL_FRect{200.0f, 200.0f, 108.0f, 108.0f});
+//
+//  renderer.set_color(Colors::azure);
+//  renderer.draw_line(SDL_Point{10, 10}, SDL_Point{300, 300});
+//
+//  renderer.set_color(Colors::cornflower_blue);
+//  renderer.draw_lines(points);
+//
+//  renderer.set_color(Colors::snow);
+//  renderer.fill_rect(100 + x++, 100, 100, 100);
+//
+//  renderer.present();
+//}
 
 static void do_stuff() {
   SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
@@ -85,7 +85,7 @@ static void do_stuff() {
       }
     }
 
-    render(*renderer);
+//    render(*renderer);
   }
 
   window.hide();

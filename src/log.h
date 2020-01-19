@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_log.h>
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -40,7 +41,7 @@ enum class Category {
  *
  * @since 3.0.0
  */
-class Log final {
+class CENTURION_API Log final {
  public:
   Log() = delete;
 
@@ -61,7 +62,7 @@ class Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  static void msg(Category category, Priority prio, const char* fmt, ...) noexcept;
+  CENTURION_API static void msg(Category category, Priority prio, const char* fmt, ...) noexcept;
 
   /**
    * Logs a message.
@@ -71,7 +72,7 @@ class Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  static void msg(Category category, const char* fmt, ...) noexcept;
+  CENTURION_API static void msg(Category category, const char* fmt, ...) noexcept;
 
   /**
    * Sets the priority of all categories.
@@ -79,7 +80,7 @@ class Log final {
    * @param prio the priority that will be used.
    * @since 3.0.0
    */
-  static void set_priority(Priority prio) noexcept;
+  CENTURION_API static void set_priority(Priority prio) noexcept;
 
   /**
    * Sets the priority of the specified category.
@@ -88,7 +89,7 @@ class Log final {
    * @param prio the new priority value.
    * @since 3.0.0
    */
-  static void set_priority(Category category, Priority prio) noexcept;
+  CENTURION_API static void set_priority(Category category, Priority prio) noexcept;
 
   /**
    * Returns the priority of the specified category.
@@ -98,7 +99,7 @@ class Log final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  static Priority get_priority(Category category) noexcept;
+  CENTURION_API static Priority get_priority(Category category) noexcept;
 };
 
 }

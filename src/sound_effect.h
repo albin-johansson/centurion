@@ -28,6 +28,7 @@
 #include <cstdint>
 #include <string>
 #include <SDL_mixer.h>
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -36,7 +37,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class SoundEffect {
+class CENTURION_API SoundEffect {
  private:
   static constexpr int undefinedChannel = -1;
 
@@ -49,7 +50,7 @@ class SoundEffect {
    * @param nLoops the amount of times to play the sound effect.
    * @since 3.0.0
    */
-  void activate(int nLoops) noexcept;
+  CENTURION_API void activate(int nLoops) noexcept;
 
  public:
   /**
@@ -58,14 +59,14 @@ class SoundEffect {
    *
    * @since 3.0.0
    */
-  static constexpr int loopIndefinitely = -10;
+  CENTURION_API static constexpr int loopIndefinitely = -10;
 
   /**
    * @param file the file path of the audio file.
    * @throws CenturionException if the audio file cannot be loaded.
    * @since 3.0.0
    */
-  explicit SoundEffect(const std::string& file);
+  CENTURION_API explicit SoundEffect(const std::string& file);
 
   /**
    * Creates a sound effect by moving the contents of the supplied sound effect.
@@ -73,11 +74,11 @@ class SoundEffect {
    * @param other the sound effect that will be moved.
    * @since 3.0.0
    */
-  SoundEffect(SoundEffect&& other) noexcept;
+  CENTURION_API SoundEffect(SoundEffect&& other) noexcept;
 
   SoundEffect(const SoundEffect&) noexcept = delete;
 
-  virtual ~SoundEffect();
+  CENTURION_API virtual ~SoundEffect();
 
   SoundEffect& operator=(const SoundEffect&) noexcept = delete;
 
@@ -89,14 +90,14 @@ class SoundEffect {
    * @since 3.0.0
    */
   [[nodiscard]]
-  SoundEffect& operator=(SoundEffect&& other) noexcept;
+  CENTURION_API SoundEffect& operator=(SoundEffect&& other) noexcept;
 
   /**
    * Plays the sound effect.
    *
    * @since 3.0.0
    */
-  void play() noexcept;
+  CENTURION_API void play() noexcept;
 
   /**
    * Loops the sound effect by the specified amount of times.
@@ -106,14 +107,14 @@ class SoundEffect {
    * @since 3.0.0
    * @see SoundEffect::loopIndefinitely
    */
-  void loop(int nLoops) noexcept;
+  CENTURION_API void loop(int nLoops) noexcept;
 
   /**
    * Stops the sound effect from playing.
    *
    * @since 3.0.0
    */
-  void stop() noexcept;
+  CENTURION_API void stop() noexcept;
 
   /**
    * Fades in the sound effect. This method has no effect if the supplied duration isn't greater
@@ -122,7 +123,7 @@ class SoundEffect {
    * @param ms the duration to fade in, in milliseconds.
    * @since 3.0.0
    */
-  void fade_in(uint32_t ms) noexcept;
+  CENTURION_API void fade_in(uint32_t ms) noexcept;
 
   /**
    * Fades out the sound effect. This method has no effect if the supplied duration isn't greater
@@ -131,7 +132,7 @@ class SoundEffect {
    * @param ms the duration to fade in, in milliseconds.
    * @since 3.0.0
    */
-  void fade_out(uint32_t ms) noexcept;
+  CENTURION_API void fade_out(uint32_t ms) noexcept;
 
   /**
    * Sets the volume of the sound effect. This method will adjust input values outside
@@ -140,7 +141,7 @@ class SoundEffect {
    * @param volume the volume of the sound effect, in the range [0, MIX_MAX_VOLUME].
    * @since 3.0.0
    */
-  void set_volume(int volume) noexcept;
+  CENTURION_API void set_volume(int volume) noexcept;
 
   /**
    * Returns the current volume of the sound effect.
@@ -149,7 +150,7 @@ class SoundEffect {
    * @since 3.0.0
    */
   [[nodiscard]]
-  int get_volume() const noexcept;
+  CENTURION_API int get_volume() const noexcept;
 
   /**
    * Indicates whether or not the sound effect is currently playing.
@@ -158,9 +159,9 @@ class SoundEffect {
    * @since 3.0.0
    */
   [[nodiscard]]
-  bool is_playing() const noexcept;
+  CENTURION_API bool is_playing() const noexcept;
 
-  /*implicit*/ operator Mix_Chunk*() const noexcept;
+  CENTURION_API /*implicit*/ operator Mix_Chunk*() const noexcept;
 };
 
 }

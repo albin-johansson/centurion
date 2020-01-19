@@ -32,12 +32,15 @@ set(SOURCE_FILES
         timer.h
         blend_mode.h)
 
-add_library(${CENTURION_LIB} STATIC ${SOURCE_FILES}) # TODO use SHARED instead
+add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
+add_definitions(-DWIN_EXPORT)
 
 # Specifies C++ version and compiler warning flags.
 target_compile_options(${CENTURION_LIB} PRIVATE -Wall -Wextra -Wpedantic)
 set_target_properties(${CENTURION_LIB} PROPERTIES
-        CXX_STANDARD 17)
+        VERSION 3.0.0
+        CXX_STANDARD 17
+        OUTPUT_NAME "Centurion")
 
 target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_INCLUDE_DIR})
 target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
@@ -47,6 +50,18 @@ target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 target_include_directories(${CENTURION_LIB} PUBLIC ../src)
 target_include_directories(${CENTURION_LIB} PUBLIC lib)
 target_include_directories(${CENTURION_LIB} PUBLIC lib/gsl)
+
+target_link_directories(${CENTURION_LIB}
+        PUBLIC ${SDL2_LIBRARY}
+        PUBLIC ${SDL2_IMAGE_LIBRARIES}
+        PUBLIC ${SDL2_MIXER_LIBRARIES}
+        PUBLIC ${SDL2_TTF_LIBRARIES})
+
+target_link_libraries(${CENTURION_LIB}
+        PUBLIC ${SDL2_LIBRARY}
+        PUBLIC ${SDL2_IMAGE_LIBRARIES}
+        PUBLIC ${SDL2_MIXER_LIBRARIES}
+        PUBLIC ${SDL2_TTF_LIBRARIES})
 
 # Copies all of the files in the bin folder and puts them next to the executable
 add_custom_command(TARGET ${CENTURION_LIB} POST_BUILD

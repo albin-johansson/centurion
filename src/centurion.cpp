@@ -1,6 +1,5 @@
 #include "centurion.h"
 #include "centurion_exception.h"
-#include "log.h"
 
 namespace centurion {
 

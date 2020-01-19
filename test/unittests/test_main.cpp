@@ -1,20 +1,17 @@
 #define CATCH_CONFIG_RUNNER
-#include <log.h>
 #include "catch.hpp"
 #include "centurion.h"
-
-using namespace centurion;
+#include "log.h"
 
 int main(int argc, char** argv) {
+  using namespace centurion;
   Centurion c;
 
-  Log::set_priority(Priority::Info);
-  Log::msg(Category::Test, Priority::Info, "Started running unit tests!");
+#ifdef CENTURION_NOAUDIO
+  Log::msg(Category::App, "No audio!");
+#else
+  Log::msg(Category::App, "Using audio!");
+#endif
 
-  const auto result = Catch::Session().run(argc, argv);
-
-  Log::set_priority(Priority::Info);
-  Log::msg(Category::Test, Priority::Info, "Finished running unit tests!");
-
-  return result;
+  return Catch::Session().run(argc, argv);
 }

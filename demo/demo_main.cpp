@@ -46,6 +46,14 @@ static void render(Renderer& renderer) {
 static void do_stuff() {
   SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 
+#ifdef CENTURION_NOAUDIO
+  Log::msg(Category::App, "No audio!");
+#else
+  Log::msg(Category::App, "Using audio!");
+#endif
+
+  SDL_Log("%i", SDL_WasInit(SDL_INIT_AUDIO) == SDL_INIT_AUDIO);
+
   Window window;
 
   const auto renderer = Renderer::shared(window,

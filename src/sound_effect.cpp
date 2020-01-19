@@ -1,3 +1,5 @@
+#ifndef CENTURION_NOAUDIO
+
 #include "sound_effect.h"
 #include <type_traits>
 #include "centurion_exception.h"
@@ -104,3 +106,5 @@ SoundEffect::operator Mix_Chunk*() const noexcept {
 }
 
 }
+
+#endif

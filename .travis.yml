@@ -91,4 +91,4 @@ script:
   - cmake .
   - make
   - make test
-  - ctest
+  - ctest Centurion_test

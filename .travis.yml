@@ -87,18 +87,7 @@ script:
   - sudo make install
   - cd ..
 
-  - cd ..
-#  - cmake .
-#  - make
-
-  - mkdir -p build
-  - cd build
+  - cd .. # Now we're back in the project directory
+  
   - cmake .
-  - make
-  - ctest
-#  - mkdir -p build
-#  - cd build
-#  - cmake ${CMAKE_OPTIONS} -DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Coverage -DBUILD_TESTS=ON ..
 #  - make
-#  - make project1_coverage
-#  - ctest

@@ -6,7 +6,6 @@
 #include "renderer.h"
 #include "image.h"
 #include "colors.h"
-#include "color.h"
 #include "paths.h"
 #include "system.h"
 #include "log.h"
@@ -83,7 +82,26 @@ static void do_stuff() {
 
   window.show();
 
-  MessageBox::show("Hello", "Something", MessageBoxID::Info, window);
+  const auto mk_scheme = []() noexcept {
+    ColorScheme sc;
+    sc.set_color(ColorSchemeType::Background, Colors::alice_blue);
+    sc.set_color(ColorSchemeType::ButtonBackground, Colors::rebecca_purple);
+    sc.set_color(ColorSchemeType::ButtonBorder, Colors::fuchsia);
+    sc.set_color(ColorSchemeType::ButtonSelected, Colors::tan);
+    return sc;
+  };
+
+  const auto mk_message_box = [&mk_scheme, &window]() noexcept {
+    MessageBox m;
+    m.set_title("Centurion message box");
+    m.set_message("Hello there fellow Centurion user!");
+    m.set_color_scheme(mk_scheme());
+    m.set_type(MessageBoxID::Info);
+    return m;
+  };
+
+  MessageBox mb = mk_message_box();
+  mb.show(window);
 
   bool running = true;
   SDL_Event event;

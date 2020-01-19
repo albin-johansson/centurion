@@ -25,9 +25,13 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <optional>
 #include <SDL_messagebox.h>
+#include "color.h"
 
 namespace centurion::messagebox {
+
+// TODO document
 
 enum class ButtonData {
   None = 0,
@@ -62,9 +66,7 @@ class Button {
   std::string text;
 
  public:
-  Button(ButtonData buttonData, int id, const std::string& text);
-
-  Button(ButtonData buttonData, int id, std::string&& text);
+  Button(ButtonData buttonData, int id, std::string text);
 
   ~Button();
 
@@ -98,23 +100,61 @@ inline bool operator!=(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept {
   return static_cast<SDL_MessageBoxColorType>(a) != b;
 }
 
-class ColorScheme {
+/**
+ * The ColorScheme class is a simple wrapper around an SDL_MessageBoxColorScheme struct.
+ *
+ * @since 3.0.0
+ */
+class ColorScheme final {
  private:
-  SDL_MessageBoxColorScheme scheme;
+  SDL_MessageBoxColorScheme scheme{};
 
+  /**
+   * Returns the array index associated with the supplied color scheme type.
+   *
+   * @param type color scheme type to obtain the index for.
+   * @return the array index associated with the supplied color scheme type.
+   * @since 3.0.0
+   */
   [[nodiscard]]
   int get_index(ColorSchemeType type) const noexcept {
     return static_cast<int>(type);
   }
 
  public:
+  /**
+   * @since 3.0.0
+   */
   ColorScheme();
 
   ~ColorScheme() noexcept;
 
-  void set_color(ColorSchemeType type, SDL_MessageBoxColor color) noexcept;
+  /**
+   * Sets the color of a color scheme component.
+   *
+   * @param type the color scheme component that will be set.
+   * @param color the color that will be used.
+   * @since 3.0.0
+   */
+  void set_color(ColorSchemeType type, const Color& color) noexcept;
 
-  /*implicit*/ operator SDL_MessageBoxColorScheme() const noexcept;
+  /**
+   * Returns the internal SDL_MessageBoxColorScheme.
+   *
+   * @return the internal SDL_MessageBoxColorScheme.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  const SDL_MessageBoxColorScheme& get() const noexcept { return scheme; }
+
+  /**
+   * Converts the ColorScheme to an SDL_MessageBoxColorScheme.
+   *
+   * @return an SDL_MessageBoxColorScheme.
+   * @since 3.0.0
+   */
+  explicit operator SDL_MessageBoxColorScheme() const noexcept;
+
 };
 
 /**
@@ -130,21 +170,53 @@ enum class MessageBoxID {
   Error = SDL_MESSAGEBOX_ERROR
 };
 
+/**
+ * Indicates whether or not two message box flag values are the same.
+ *
+ * @param a the lhs Centurion message box ID value.
+ * @param b the rhs SDL message box flag value.
+ * @return true if the values are the same; false otherwise.
+ * @since 3.0.0
+ */
 [[nodiscard]]
 inline bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
   return static_cast<SDL_MessageBoxFlags>(a) == b;
 }
 
+/**
+ * Indicates whether or not two message box flag values are the same.
+ *
+ * @param a the lhs SDL message box flag value.
+ * @param b the rhs Centurion message box ID value.
+ * @return true if the values are the same; false otherwise.
+ * @since 3.0.0
+ */
 [[nodiscard]]
 inline bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
   return a == static_cast<SDL_MessageBoxFlags>(b);
 }
 
+/**
+ * Indicates whether or not two message box flag values aren't the same.
+ *
+ * @param a the lhs Centurion message box ID value.
+ * @param b the rhs SDL message box flag value.
+ * @return true if the values aren't the same; false otherwise.
+ * @since 3.0.0
+ */
 [[nodiscard]]
 inline bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
   return static_cast<SDL_MessageBoxFlags>(a) != b;
 }
 
+/**
+ * Indicates whether or not two message box flag values aren't the same.
+ *
+ * @param a the lhs SDL message box flag value.
+ * @param b the rhs Centurion message box ID value.
+ * @return true if the values aren't the same; false otherwise.
+ * @since 3.0.0
+ */
 [[nodiscard]]
 inline bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
   return a != static_cast<SDL_MessageBoxFlags>(b);
@@ -158,14 +230,35 @@ inline bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
  */
 class MessageBox {
  private:
-  ColorScheme colorScheme;
+  std::optional<ColorScheme> colorScheme;
   std::vector<Button> buttons;
   std::string title = "Centurion message box";
   std::string message = "N/A";
   MessageBoxID type = MessageBoxID::Info;
 
+  /**
+   * Creates and returns a vector of SDL_MessageBoxButtonData instances.
+   *
+   * @return a vector of SDL_MessageBoxButtonData instances.
+   * @since 3.0.0
+   */
   [[nodiscard]]
   std::vector<SDL_MessageBoxButtonData> create_sdl_button_data() const noexcept;
+
+  /**
+   * Creates and returns an SDL_MessageBoxData based on the MessageBox.
+   *
+   * @param window the parent window, can safely be null.
+   * @param data a pointer to the first element in the array of buttons.
+   * @param scheme a pointer to the color scheme that will be used, set to null by default.
+   * @return an SDL_MessageBoxData based on the MessageBox.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  SDL_MessageBoxData create_sdl_message_box_data(SDL_Window* window,
+                                                 const SDL_MessageBoxButtonData* data,
+                                                 const SDL_MessageBoxColorScheme* scheme =
+                                                 nullptr) const noexcept;
 
  public:
   /**
@@ -248,6 +341,16 @@ class MessageBox {
    * @since 3.0.0
    */
   void set_type(MessageBoxID type) noexcept;
+
+  /**
+   * Sets the color scheme that will be used by the message box. Color schemes aren't supported
+   * on all platforms, so the default value is std::nullopt for the color scheme.
+   *
+   * @param scheme the color scheme that will be used; std::nullopt indicates that the system
+   * defaults should be used.
+   * @since 3.0.0
+   */
+  void set_color_scheme(std::optional<ColorScheme> scheme) noexcept;
 
   /**
    * Returns the type of the message box.

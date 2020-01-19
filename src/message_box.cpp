@@ -1,7 +1,10 @@
 #include "message_box.h"
 #include <cstdint>
+#include <utility>
 #include <SDL.h>
 #include "centurion_exception.h"
+#include "colors.h"
+#include "log.h"
 
 namespace centurion::messagebox {
 
@@ -9,10 +12,7 @@ namespace centurion::messagebox {
  * MESSAGE BOX BUTTON ******************
  ***************************************/
 
-Button::Button(ButtonData buttonData, int id, const std::string& text)
-    : data{buttonData}, id{id}, text{text} {}
-
-Button::Button(ButtonData buttonData, int id, std::string&& text)
+Button::Button(ButtonData buttonData, int id, std::string text)
     : data{buttonData}, id{id}, text{std::move(text)} {}
 
 Button::~Button() = default;
@@ -26,15 +26,15 @@ Button::operator SDL_MessageBoxButtonData() const noexcept {
  ***************************************/
 
 ColorScheme::ColorScheme() {
-  set_color(ColorSchemeType::Background, {0, 0, 0});
-  set_color(ColorSchemeType::ButtonBorder, {0, 0, 0});
-  set_color(ColorSchemeType::ButtonBackground, {0, 0, 0});
-  set_color(ColorSchemeType::ButtonSelected, {0, 0, 0});
+  set_color(ColorSchemeType::Background, Colors::black);
+  set_color(ColorSchemeType::ButtonBorder, Colors::black);
+  set_color(ColorSchemeType::ButtonBackground, Colors::black);
+  set_color(ColorSchemeType::ButtonSelected, Colors::black);
 }
 
 ColorScheme::~ColorScheme() noexcept = default;
 
-void ColorScheme::set_color(ColorSchemeType type, SDL_MessageBoxColor color) noexcept {
+void ColorScheme::set_color(ColorSchemeType type, const Color& color) noexcept {
   scheme.colors[get_index(type)] = color;
 }
 
@@ -66,23 +66,36 @@ std::vector<SDL_MessageBoxButtonData> MessageBox::create_sdl_button_data() const
   return result;
 }
 
+SDL_MessageBoxData MessageBox::create_sdl_message_box_data(SDL_Window* window,
+                                                           const SDL_MessageBoxButtonData* data,
+                                                           const SDL_MessageBoxColorScheme*
+                                                           scheme) const noexcept {
+  return {
+      static_cast<SDL_MessageBoxFlags>(type),
+      window,
+      title.c_str(),
+      message.c_str(),
+      static_cast<int>(buttons.size()),
+      data,
+      scheme
+  };
+}
+
 int MessageBox::show(SDL_Window* window) {
   if (buttons.empty()) {
     buttons.emplace_back(ButtonData::ReturnKey, 0, "OK");
   }
 
   const auto sdl_buttonData = create_sdl_button_data();
-  const SDL_MessageBoxColorScheme sdl_colorScheme = colorScheme;
+  const SDL_MessageBoxButtonData* buttonDataFront = &sdl_buttonData.front();
 
-  const SDL_MessageBoxData data{
-      static_cast<SDL_MessageBoxFlags>(type),
-      window,
-      title.c_str(),
-      message.c_str(),
-      static_cast<int>(buttons.size()),
-      &sdl_buttonData.front(),
-      &sdl_colorScheme
-  };
+  const SDL_MessageBoxColorScheme* sdl_colorScheme = nullptr;
+  if (colorScheme) {
+    auto& scheme = colorScheme.value();
+    sdl_colorScheme = &scheme.get();
+  }
+
+  const auto data = create_sdl_message_box_data(window, buttonDataFront, sdl_colorScheme);
 
   int button = -1;
   if (SDL_ShowMessageBox(&data, &button) < 0) {
@@ -113,6 +126,10 @@ void MessageBox::set_message(const std::string& message) noexcept {
 
 void MessageBox::set_type(MessageBoxID type) noexcept {
   this->type = type;
+}
+
+void MessageBox::set_color_scheme(std::optional<ColorScheme> scheme) noexcept {
+  this->colorScheme = std::move(scheme);
 }
 
 MessageBoxID MessageBox::get_type() const noexcept {

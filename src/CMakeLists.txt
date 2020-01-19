@@ -37,7 +37,11 @@ set(SOURCE_FILES
         color.h)
 
 add_library(${CENTURION_LIB} STATIC ${SOURCE_FILES}) # TODO use SHARED instead
-target_compile_definitions(${CENTURION_LIB} PUBLIC CENTURION_NOAUDIO)
+
+if (DEFINED ENV{TRAVIS_TEST})
+    # The Travis CI virtual machines can't handle the audio stuff
+    target_compile_definitions(${CENTURION_LIB} PUBLIC CENTURION_NOAUDIO)
+endif ()
 
 # Specifies C++ version and compiler warning flags.
 target_compile_options(${CENTURION_LIB} PRIVATE -Wall -Wextra -Wpedantic)

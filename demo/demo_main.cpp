@@ -46,12 +46,10 @@ static void do_stuff() {
   SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
 
 #ifdef CENTURION_NOAUDIO
-  Log::msg(Category::App, "No audio!");
+  Log::msg("No audio!");
 #else
-  Log::msg(Category::App, "Using audio!");
+  Log::msg("Using audio!");
 #endif
-
-  SDL_Log("%i", SDL_WasInit(SDL_INIT_AUDIO) == SDL_INIT_AUDIO);
 
   Window window;
 
@@ -61,24 +59,17 @@ static void do_stuff() {
                                              SDL_RENDERER_TARGETTEXTURE);
 
   if (const AppPath appPath; appPath) {
-    Log::msg(Category::App, "Application path: %s", appPath.get());
+    Log::msg("Application path: %s", appPath.get());
   }
 
   if (const PrefPath prefPath{"albinjohansson", "centurion"}; prefPath) {
-    Log::msg(Category::App, "Preferred path: %s", prefPath.get());
+    Log::msg("Preferred path: %s", prefPath.get());
   }
 
-  Log::msg(Category::App, Priority::Info,
-           "CPUs: %i", CPU::get_cores());
-
-  Log::msg(Category::App, Priority::Info,
-           "CPU cache line size: %i bytes", CPU::get_cache_line_size());
-
-  Log::msg(Category::App, Priority::Info,
-           "RAM: %i GB", RAM::get_size_gb());
-
-  Log::msg(Category::App, Priority::Info,
-           "OS: %s", System::get_platform_name()->c_str());
+  Log::msg("CPUs: %i", CPU::get_cores());
+  Log::msg("CPU cache line size: %i bytes", CPU::get_cache_line_size());
+  Log::msg("RAM: %i GB", RAM::get_size_gb());
+  Log::msg("OS: %s", System::get_platform_name()->c_str());
 
   window.show();
 
@@ -107,8 +98,7 @@ static void do_stuff() {
   SDL_Event event;
 
   if (const auto percentage = Power::get_battery_percentage(); percentage) {
-    Log::msg(Category::App, Priority::Info,
-             "Battery percentage: %i", percentage);
+    Log::msg("Battery percentage: %i", percentage);
   }
 
   while (running) {

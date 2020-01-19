@@ -124,6 +124,15 @@ class Log final {
   static void msg(Category category, const char* fmt, ...) noexcept;
 
   /**
+   * Logs a message with Category::App and Priority::Info.
+   *
+   * @param fmt the formatted string.
+   * @param ... the values that are used by the formatted string.
+   * @since 3.0.0
+   */
+  static void msg(const char* fmt, ...) noexcept;
+
+  /**
    * Sets the priority of all categories.
    *
    * @param prio the priority that will be used.

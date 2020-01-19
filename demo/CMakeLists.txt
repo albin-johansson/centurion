@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.12)
 project(${CENTURION_DEMO})
 
 add_executable(${CENTURION_DEMO} demo_main.cpp)
-#target_compile_definitions(${CENTURION_DEMO} PUBLIC CENTURION_NOAUDIO)
 
 set_target_properties(${CENTURION_DEMO} PROPERTIES
         CXX_STANDARD 17)

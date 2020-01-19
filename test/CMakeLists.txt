@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
 project(${CENTURION_TEST})
 
+enable_testing()
+
 set(CATCH_INCLUDE_DIR catch2)
 add_library(Catch2 INTERFACE)
 target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
@@ -20,10 +22,8 @@ set(TEST_FILES
         unittests/message_box_test.cpp
         unittests/color_test.cpp)
 
-enable_testing()
 add_executable(${CENTURION_TEST} ${TEST_FILES})
-
-target_compile_definitions(${CENTURION_TEST} PUBLIC CENTURION_NOAUDIO)
+add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
 
 set_target_properties(${CENTURION_TEST} PROPERTIES
         CXX_STANDARD 17)
@@ -51,9 +51,7 @@ endif ()
 
 include(CTest)
 include(Catch)
-
-add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
-#catch_discover_tests(${CENTURION_TEST})
+catch_discover_tests(${CENTURION_TEST})
 
 # Copies all of the files in the bin folder and puts them next to the executable
 add_custom_command(TARGET ${CENTURION_TEST} POST_BUILD

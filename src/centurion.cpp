@@ -51,7 +51,6 @@ void Centurion::init() {
     init_img();
     init_ttf();
 #ifndef CENTURION_NOAUDIO
-    Log::msg(Category::App, Priority::Error, "INITIALIZING SDL_MIX!");
     init_mix();
 #endif
     wasInit = true;

@@ -51,7 +51,9 @@ endif ()
 
 include(CTest)
 include(Catch)
-catch_discover_tests(${CENTURION_TEST})
+include(ParseAndAddCatchTests)
+ParseAndAddCatchTests(${CENTURION_TEST})
+#catch_discover_tests(${CENTURION_TEST})
 
 # Copies all of the files in the bin folder and puts them next to the executable
 add_custom_command(TARGET ${CENTURION_TEST} POST_BUILD

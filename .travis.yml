@@ -90,5 +90,5 @@ script:
   - cd ..
   - cmake .
   - make
-  - sleep 5
   - make test
+  - ctest

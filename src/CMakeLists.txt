@@ -50,16 +50,15 @@ target_compile_options(${CENTURION_LIB} PRIVATE -Wall -Wextra -Wpedantic)
 set_target_properties(${CENTURION_LIB} PROPERTIES
         VERSION 3.0.0
         CXX_STANDARD 17
-        OUTPUT_NAME "Centurion")
+        CXX_STANDARD_REQUIRED ON
+        OUTPUT_NAME "libCenturion")
 
 target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_INCLUDE_DIR})
 target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
 target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
-
-target_include_directories(${CENTURION_LIB} PUBLIC ../src)
-target_include_directories(${CENTURION_LIB} PUBLIC lib)
-target_include_directories(${CENTURION_LIB} PUBLIC lib/gsl)
+target_include_directories(${CENTURION_LIB} PUBLIC ${LIBRARY_DIR})
+target_include_directories(${CENTURION_LIB} PUBLIC ${LIBRARY_DIR}/gsl)
 
 target_link_directories(${CENTURION_LIB}
         PUBLIC ${SDL2_LIBRARY}
@@ -74,7 +73,19 @@ target_link_libraries(${CENTURION_LIB}
         PUBLIC ${SDL2_TTF_LIBRARIES})
 
 # Copies all of the files in the bin folder and puts them next to the executable
-add_custom_command(TARGET ${CENTURION_LIB} POST_BUILD
+add_custom_command(
+        TARGET ${CENTURION_LIB} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${BINARIES_DIR}"
+        ${BINARIES_DIR}
         ${CMAKE_BINARY_DIR}/src)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    get_target_property(CTN_OUTPUT_NAME ${CENTURION_LIB} OUTPUT_NAME)
+
+    # Copies the generated Centurion DLL and moves copies it to the binary directory
+    add_custom_command(
+            TARGET ${CENTURION_LIB} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+            ${CMAKE_BINARY_DIR}/src/libCenturion.dll
+            ${BINARIES_DIR}/${CTN_OUTPUT_NAME}.dll)
+endif ()

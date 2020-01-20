@@ -2,14 +2,18 @@ cmake_minimum_required(VERSION 3.12)
 project(Centurion)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
 set(BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
 set(RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
+set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
+set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+set(LIBRARY_DIR ${PROJECT_SOURCE_DIR}/src/lib)
 
 set(CENTURION_LIB ${PROJECT_NAME}_lib)
 set(CENTURION_TEST ${PROJECT_NAME}_test)
 set(CENTURION_DEMO ${PROJECT_NAME}_demo)
 
-message("CMake binary directory: ${CMAKE_BINARY_DIR}")
+set(CENTURION_DLL_PATH ${BINARIES_DIR}/libCenturion.dll)
 
 # Checks if an environment variable is defined.
 #   envVar: the name of the actual environment variable.

@@ -19,7 +19,8 @@ set(TEST_FILES
 add_executable(${CENTURION_TEST} ${TEST_FILES})
 
 set_target_properties(${CENTURION_TEST} PROPERTIES
-        CXX_STANDARD 17)
+        CXX_STANDARD 17
+        CXX_STANDARD_REQUIRED ON)
 
 set(CATCH_INCLUDE_DIR catch2)
 add_library(Catch2 INTERFACE)
@@ -29,21 +30,19 @@ enable_testing()
 add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
 
 target_include_directories(${CENTURION_TEST} PUBLIC unittests)
-
 target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_INCLUDE_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
-
-target_include_directories(${CENTURION_TEST} PUBLIC ../src)
-target_include_directories(${CENTURION_TEST} PUBLIC ../src/lib)
-target_include_directories(${CENTURION_TEST} PUBLIC ../src/lib/gsl)
+target_include_directories(${CENTURION_TEST} PUBLIC ${SOURCE_DIR})
+target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR})
+target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR}/gsl)
 
 if (WIN32)
     target_link_libraries(${CENTURION_TEST}
             mingw32
             Catch2
-            ${PROJECT_BINARY_DIR}/../src/libCenturion.dll
+            ${CENTURION_DLL_PATH}
             ${SDL2_LIBRARY}
             ${SDL2_IMAGE_LIBRARIES}
             ${SDL2_MIXER_LIBRARIES}
@@ -51,7 +50,7 @@ if (WIN32)
 else ()
     target_link_libraries(${CENTURION_TEST}
             Catch2
-            ${CMAKE_BINARY_DIR}/../src/libCenturion.dll
+            ${CENTURION_DLL_PATH}
             ${SDL2_LIBRARY}
             ${SDL2_IMAGE_LIBRARIES}
             ${SDL2_MIXER_LIBRARIES}
@@ -65,13 +64,15 @@ ParseAndAddCatchTests(${CENTURION_TEST})
 #catch_discover_tests(${CENTURION_TEST})
 
 # Copies all of the files in the bin folder and puts them next to the executable
-add_custom_command(TARGET ${CENTURION_TEST} POST_BUILD
+add_custom_command(
+        TARGET ${CENTURION_TEST} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${BINARIES_DIR}"
+        ${BINARIES_DIR}
         ${CMAKE_BINARY_DIR}/test)
 
 # Copies all of the resources and puts the in the build folder
-add_custom_command(TARGET ${CENTURION_TEST} POST_BUILD
+add_custom_command(
+        TARGET ${CENTURION_TEST} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${RESOURCES_DIR}"
+        ${RESOURCES_DIR}
         ${CMAKE_BINARY_DIR}/test/resources)

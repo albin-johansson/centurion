@@ -28,6 +28,7 @@
 #include <optional>
 #include <SDL_messagebox.h>
 #include "color.h"
+#include "centurion_api.h"
 
 namespace centurion::messagebox {
 
@@ -59,18 +60,18 @@ inline bool operator!=(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept {
   return a != static_cast<SDL_MessageBoxButtonFlags>(b);
 }
 
-class Button {
+class CENTURION_API Button {
  private:
   ButtonData data;
   int id;
   std::string text;
 
  public:
-  Button(ButtonData buttonData, int id, std::string text);
+  CENTURION_API Button(ButtonData buttonData, int id, std::string text);
 
-  ~Button();
+  CENTURION_API ~Button();
 
-  /*implicit*/ operator SDL_MessageBoxButtonData() const noexcept;
+  CENTURION_API /*implicit*/ operator SDL_MessageBoxButtonData() const noexcept;
 };
 
 enum class ColorSchemeType {
@@ -105,7 +106,7 @@ inline bool operator!=(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept {
  *
  * @since 3.0.0
  */
-class ColorScheme final {
+class CENTURION_API ColorScheme final {
  private:
   SDL_MessageBoxColorScheme scheme{};
 
@@ -125,9 +126,9 @@ class ColorScheme final {
   /**
    * @since 3.0.0
    */
-  ColorScheme();
+  CENTURION_API ColorScheme();
 
-  ~ColorScheme() noexcept;
+  CENTURION_API ~ColorScheme() noexcept;
 
   /**
    * Sets the color of a color scheme component.
@@ -136,7 +137,7 @@ class ColorScheme final {
    * @param color the color that will be used.
    * @since 3.0.0
    */
-  void set_color(ColorSchemeType type, const Color& color) noexcept;
+  CENTURION_API void set_color(ColorSchemeType type, const Color& color) noexcept;
 
   /**
    * Returns the internal SDL_MessageBoxColorScheme.
@@ -153,7 +154,7 @@ class ColorScheme final {
    * @return an SDL_MessageBoxColorScheme.
    * @since 3.0.0
    */
-  explicit operator SDL_MessageBoxColorScheme() const noexcept;
+  CENTURION_API explicit operator SDL_MessageBoxColorScheme() const noexcept;
 
 };
 
@@ -228,7 +229,7 @@ inline bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
  *
  * @since 3.0.0
  */
-class MessageBox {
+class CENTURION_API MessageBox {
  private:
   std::optional<ColorScheme> colorScheme;
   std::vector<Button> buttons;
@@ -243,7 +244,7 @@ class MessageBox {
    * @since 3.0.0
    */
   [[nodiscard]]
-  std::vector<SDL_MessageBoxButtonData> create_sdl_button_data() const noexcept;
+  CENTURION_API std::vector<SDL_MessageBoxButtonData> create_sdl_button_data() const noexcept;
 
   /**
    * Creates and returns an SDL_MessageBoxData based on the MessageBox.
@@ -255,31 +256,31 @@ class MessageBox {
    * @since 3.0.0
    */
   [[nodiscard]]
-  SDL_MessageBoxData create_sdl_message_box_data(SDL_Window* window,
-                                                 const SDL_MessageBoxButtonData* data,
-                                                 const SDL_MessageBoxColorScheme* scheme =
-                                                 nullptr) const noexcept;
+  CENTURION_API SDL_MessageBoxData create_sdl_message_box_data(SDL_Window* window,
+                                                               const SDL_MessageBoxButtonData* data,
+                                                               const SDL_MessageBoxColorScheme* scheme =
+                                                               nullptr) const noexcept;
 
  public:
   /**
    * @since 3.0.0
    */
-  MessageBox() = default;
+  CENTURION_API MessageBox() = default;
 
   /**
    * @param title the title of the message box.
    * @since 3.0.0
    */
-  explicit MessageBox(std::string title);
+  CENTURION_API explicit MessageBox(std::string title);
 
   /**
    * @param title the title of the message box.
    * @param message the message of the message box.
    * @since 3.0.0
    */
-  MessageBox(std::string title, std::string message);
+  CENTURION_API MessageBox(std::string title, std::string message);
 
-  virtual ~MessageBox() noexcept;
+  CENTURION_API virtual ~MessageBox() noexcept;
 
   /**
    * Displays the message box. If no buttons have been added, the message box will feature an
@@ -290,7 +291,7 @@ class MessageBox {
    * @throws CenturionException if the message box cannot be displayed.
    * @since 3.0.0
    */
-  int show(SDL_Window* window = nullptr);
+  CENTURION_API int show(SDL_Window* window = nullptr);
 
   /**
    * Creates and displays a message box. This method provides a simpler way to create
@@ -302,10 +303,10 @@ class MessageBox {
    * @param window a pointer to the parent window, can safely be null to indicate no parent.
    * @since 3.0.0
    */
-  static void show(const std::string& title,
-                   const std::string& message,
-                   MessageBoxID type,
-                   SDL_Window* window = nullptr) noexcept;
+  CENTURION_API static void show(const std::string& title,
+                                 const std::string& message,
+                                 MessageBoxID type,
+                                 SDL_Window* window = nullptr) noexcept;
 
   /**
    * Adds a button to the message box.
@@ -315,7 +316,7 @@ class MessageBox {
    * @param text the text of the button.
    * @since 3.0.0
    */
-  void add_button(ButtonData data, int id, std::string text) noexcept;
+  CENTURION_API void add_button(ButtonData data, int id, std::string text) noexcept;
 
   /**
    * Sets the title of the message box.
@@ -323,7 +324,7 @@ class MessageBox {
    * @param title the title of the message box.
    * @since 3.0.0
    */
-  void set_title(const std::string& title) noexcept;
+  CENTURION_API void set_title(const std::string& title) noexcept;
 
   /**
    * Sets the message of the message box.
@@ -331,7 +332,7 @@ class MessageBox {
    * @param message the message of the message box.
    * @since 3.0.0
    */
-  void set_message(const std::string& message) noexcept;
+  CENTURION_API void set_message(const std::string& message) noexcept;
 
   /**
    * Sets what kind of message box the message box is. By default, this property is set to
@@ -340,7 +341,7 @@ class MessageBox {
    * @param type the type of the message box.
    * @since 3.0.0
    */
-  void set_type(MessageBoxID type) noexcept;
+  CENTURION_API void set_type(MessageBoxID type) noexcept;
 
   /**
    * Sets the color scheme that will be used by the message box. Color schemes aren't supported
@@ -350,7 +351,7 @@ class MessageBox {
    * defaults should be used.
    * @since 3.0.0
    */
-  void set_color_scheme(std::optional<ColorScheme> scheme) noexcept;
+  CENTURION_API void set_color_scheme(std::optional<ColorScheme> scheme) noexcept;
 
   /**
    * Returns the type of the message box.
@@ -359,7 +360,7 @@ class MessageBox {
    * @since 3.0.0
    */
   [[nodiscard]]
-  MessageBoxID get_type() const noexcept;
+  CENTURION_API MessageBoxID get_type() const noexcept;
 
 };
 

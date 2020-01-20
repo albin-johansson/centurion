@@ -27,6 +27,7 @@
 #include <utility>
 #include <ostream>
 #include <SDL.h>
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -37,7 +38,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class Color final {
+class CENTURION_API Color final {
  private:
   uint8_t red = 0;
   uint8_t green = 0;
@@ -50,7 +51,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  static constexpr uint8_t max = 0xFF;
+  static const uint8_t max;
 
   /**
    * Creates a color. The created color will be equal to #000000FF.
@@ -86,7 +87,7 @@ class Color final {
    * @param other the color that will be moved.
    * @since 3.0.0
    */
-  Color(Color&& other) noexcept;
+  CENTURION_API Color(Color&& other) noexcept;
 
   /**
    * Creates a color that is a copy of the supplied SDL_Color.
@@ -94,7 +95,7 @@ class Color final {
    * @param color the SDL_Color that will be copied.
    * @since 3.0.0
    */
-  explicit Color(const SDL_Color& color) noexcept;
+  CENTURION_API explicit Color(const SDL_Color& color) noexcept;
 
   /**
    * Creates a color by moving the supplied SDL_Color.
@@ -102,7 +103,7 @@ class Color final {
    * @param color the color that will be moved.
    * @since 3.0.0
    */
-  explicit Color(SDL_Color&& color) noexcept;
+  CENTURION_API explicit Color(SDL_Color&& color) noexcept;
 
   /**
    * Creates a color that is a copy of the supplied SDL_MessageBoxColor. Message box colors
@@ -111,7 +112,7 @@ class Color final {
    * @param color the message box color that will be copied.
    * @since 3.0.0
    */
-  explicit Color(const SDL_MessageBoxColor& color) noexcept;
+  CENTURION_API explicit Color(const SDL_MessageBoxColor& color) noexcept;
 
   /**
    * Creates a color by moving the supplied SDL_MessageBoxColor. Message box colors don't have an
@@ -120,7 +121,7 @@ class Color final {
    * @param color the message box color that will be copied.
    * @since 3.0.0
    */
-  explicit Color(SDL_MessageBoxColor&& color) noexcept;
+  CENTURION_API explicit Color(SDL_MessageBoxColor&& color) noexcept;
 
   /**
    * Copies the fields of the supplied color.
@@ -129,7 +130,7 @@ class Color final {
    * @return the modified color.
    * @since 3.0.0
    */
-  Color& operator=(const Color& other) noexcept;
+  CENTURION_API Color& operator=(const Color& other) noexcept;
 
   /**
    * Moves the fields of the supplied color.
@@ -138,7 +139,7 @@ class Color final {
    * @return the modified color.
    * @since 3.0.0
    */
-  Color& operator=(Color&& other) noexcept;
+  CENTURION_API Color& operator=(Color&& other) noexcept;
 
   /**
    * Sets the value of the red component.
@@ -146,7 +147,7 @@ class Color final {
    * @param r the value of the red component.
    * @since 3.0.0
    */
-  void set_red(uint8_t r) noexcept;
+  CENTURION_API void set_red(uint8_t r) noexcept;
 
   /**
    * Sets the value of the green component.
@@ -154,7 +155,7 @@ class Color final {
    * @param g the value of the green component.
    * @since 3.0.0
    */
-  void set_green(uint8_t g) noexcept;
+  CENTURION_API void set_green(uint8_t g) noexcept;
 
   /**
    * Sets the value of the blue component.
@@ -162,7 +163,7 @@ class Color final {
    * @param b the value of the blue component.
    * @since 3.0.0
    */
-  void set_blue(uint8_t b) noexcept;
+  CENTURION_API void set_blue(uint8_t b) noexcept;
 
   /**
    * Sets the value of the alpha component.
@@ -170,7 +171,7 @@ class Color final {
    * @param a the value of the alpha component.
    * @since 3.0.0
    */
-  void set_alpha(uint8_t a) noexcept;
+  CENTURION_API void set_alpha(uint8_t a) noexcept;
 
   /**
    * Indicates whether or not the two colors are considered to be equal.
@@ -211,7 +212,8 @@ class Color final {
    * @return true if the colors feature the same color component values; false otherwise.
    * @since 3.0.0
    */
-  friend bool operator==(const Color& color, const SDL_MessageBoxColor& msgColor) noexcept;
+  friend bool operator==(const Color& color,
+                         const SDL_MessageBoxColor& msgColor) noexcept;
 
   /**
    * Indicates whether or not the two colors are considered to be equal. Note! The alpha
@@ -222,7 +224,8 @@ class Color final {
    * @return true if the colors feature the same color component values; false otherwise.
    * @since 3.0.0
    */
-  friend bool operator==(const SDL_MessageBoxColor& msgColor, const Color& color) noexcept;
+  friend bool operator==(const SDL_MessageBoxColor& msgColor,
+                         const Color& color) noexcept;
 
   /**
    * Indicates whether or not two colors aren't considered to be equal.
@@ -263,7 +266,8 @@ class Color final {
    * @return true if the colors don't feature the same color components; false otherwise.
    * @since 3.0.0
    */
-  friend bool operator!=(const Color& color, const SDL_MessageBoxColor& msgColor) noexcept;
+  friend bool operator!=(const Color& color,
+                         const SDL_MessageBoxColor& msgColor) noexcept;
 
   /**
    * Indicates whether or not two colors aren't considered to be equal. Note! The alpha
@@ -274,7 +278,8 @@ class Color final {
    * @return true if the colors don't feature the same color components; false otherwise.
    * @since 3.0.0
    */
-  friend bool operator!=(const SDL_MessageBoxColor& msgColor, const Color& color) noexcept;
+  friend bool operator!=(const SDL_MessageBoxColor& msgColor,
+                         const Color& color) noexcept;
 
   /**
    * Returns the value of the red component.
@@ -400,7 +405,7 @@ inline bool operator!=(const SDL_MessageBoxColor& msgColor, const Color& color) 
  * @return the output stream.
  * @since 3.0.0
  */
-std::ostream& operator<<(std::ostream& ostream, const Color& color) noexcept;
+CENTURION_API std::ostream& operator<<(std::ostream& ostream, const Color& color) noexcept;
 
 /**
  * Displays a textual representation of an SDL color.
@@ -410,7 +415,7 @@ std::ostream& operator<<(std::ostream& ostream, const Color& color) noexcept;
  * @return the output stream.
  * @since 3.0.0
  */
-std::ostream& operator<<(std::ostream& ostream, const SDL_Color& sdlColor) noexcept;
+CENTURION_API std::ostream& operator<<(std::ostream& ostream, const SDL_Color& sdlColor) noexcept;
 
 /**
  * Displays a textual representation of an SDL message box color.
@@ -420,6 +425,7 @@ std::ostream& operator<<(std::ostream& ostream, const SDL_Color& sdlColor) noexc
  * @return the output stream.
  * @since 3.0.0
  */
-std::ostream& operator<<(std::ostream& ostream, const SDL_MessageBoxColor& msgColor) noexcept;
+CENTURION_API std::ostream& operator<<(std::ostream& ostream,
+                                       const SDL_MessageBoxColor& msgColor) noexcept;
 
 }

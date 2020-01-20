@@ -131,7 +131,7 @@ class CENTURION_API Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  static void msg(const char* fmt, ...) noexcept;
+  CENTURION_API static void msg(const char* fmt, ...) noexcept;
 
   /**
    * Sets the priority of all categories.

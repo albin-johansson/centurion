@@ -59,7 +59,7 @@ class CENTURION_API SoundEffect {
    *
    * @since 3.0.0
    */
-  CENTURION_API static constexpr int loopIndefinitely = -10;
+  static const int loopIndefinitely;
 
   /**
    * @param file the file path of the audio file.

@@ -14,10 +14,7 @@ static_assert(std::is_nothrow_copy_assignable_v<Color>);
 static_assert(std::is_nothrow_move_constructible_v<Color>);
 static_assert(std::is_nothrow_move_assignable_v<Color>);
 
-//Color::Color() noexcept = default;
-//
-//Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) noexcept
-//    : red{r}, green{g}, blue{b}, alpha{a} {}
+const uint8_t Color::max = 0xFF;
 
 Color::Color(Color&& other) noexcept
     : red{other.red}, green{other.green}, blue{other.blue}, alpha{other.alpha} {}

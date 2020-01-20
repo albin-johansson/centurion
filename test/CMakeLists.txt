@@ -1,12 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 project(${CENTURION_TEST})
 
-enable_testing()
-
-set(CATCH_INCLUDE_DIR catch2)
-add_library(Catch2 INTERFACE)
-target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
-
 set(TEST_FILES
         unittests/test_main.cpp
         unittests/window_test.cpp
@@ -23,18 +17,33 @@ set(TEST_FILES
         unittests/color_test.cpp)
 
 add_executable(${CENTURION_TEST} ${TEST_FILES})
-add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
 
 set_target_properties(${CENTURION_TEST} PROPERTIES
         CXX_STANDARD 17)
 
+set(CATCH_INCLUDE_DIR catch2)
+add_library(Catch2 INTERFACE)
+target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
+
+enable_testing()
+add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
+
 target_include_directories(${CENTURION_TEST} PUBLIC unittests)
+
+target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_INCLUDE_DIR})
+target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
+target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
+target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
+
+target_include_directories(${CENTURION_TEST} PUBLIC ../src)
+target_include_directories(${CENTURION_TEST} PUBLIC ../src/lib)
+target_include_directories(${CENTURION_TEST} PUBLIC ../src/lib/gsl)
 
 if (WIN32)
     target_link_libraries(${CENTURION_TEST}
             mingw32
             Catch2
-            ${CENTURION_LIB}
+            ${PROJECT_BINARY_DIR}/../src/libCenturion.dll
             ${SDL2_LIBRARY}
             ${SDL2_IMAGE_LIBRARIES}
             ${SDL2_MIXER_LIBRARIES}
@@ -42,7 +51,7 @@ if (WIN32)
 else ()
     target_link_libraries(${CENTURION_TEST}
             Catch2
-            ${CENTURION_LIB}
+            ${CMAKE_BINARY_DIR}/../src/libCenturion.dll
             ${SDL2_LIBRARY}
             ${SDL2_IMAGE_LIBRARIES}
             ${SDL2_MIXER_LIBRARIES}

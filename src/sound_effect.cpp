@@ -17,6 +17,8 @@ static_assert(!std::is_copy_assignable_v<SoundEffect>);
 
 static_assert(std::is_convertible_v<SoundEffect, Mix_Chunk*>);
 
+const int SoundEffect::loopIndefinitely = -10;
+
 SoundEffect::SoundEffect(const std::string& file) {
   chunk = Mix_LoadWAV(file.c_str());
   if (!chunk) {

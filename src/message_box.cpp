@@ -1,4 +1,4 @@
-#include "new_message_box.h"
+#include "message_box.h"
 #include <cstdint>
 #include <utility>
 #include <SDL.h>
@@ -7,33 +7,25 @@
 
 namespace centurion::messagebox {
 
-/***************************************
- * MESSAGE BOX BUTTON ******************
- ***************************************/
+ButtonData::ButtonData(ButtonDataHint hint, int id, std::string text)
+    : buttonDataHint{hint}, id{id}, text{std::move(text)} {}
 
-Button::Button(ButtonData buttonData, int id, std::string text)
-    : data{buttonData}, id{id}, text{std::move(text)} {}
+ButtonData::~ButtonData() = default;
 
-Button::~Button() = default;
-
-Button::operator SDL_MessageBoxButtonData() const noexcept {
-  return {static_cast<uint32_t>(data), id, text.c_str()};
+ButtonData::operator SDL_MessageBoxButtonData() const noexcept {
+  return {static_cast<uint32_t>(buttonDataHint), id, text.c_str()};
 }
 
-/***************************************
- * COLOR SCHEME ************************
- ***************************************/
-
 ColorScheme::ColorScheme() {
-  set_color(ColorSchemeType::Background, Colors::black);
-  set_color(ColorSchemeType::ButtonBorder, Colors::black);
-  set_color(ColorSchemeType::ButtonBackground, Colors::black);
-  set_color(ColorSchemeType::ButtonSelected, Colors::black);
+  set_color(ColorType::Background, Colors::black);
+  set_color(ColorType::ButtonBorder, Colors::black);
+  set_color(ColorType::ButtonBackground, Colors::black);
+  set_color(ColorType::ButtonSelected, Colors::black);
 }
 
 ColorScheme::~ColorScheme() noexcept = default;
 
-void ColorScheme::set_color(ColorSchemeType type, const Color& color) noexcept {
+void ColorScheme::set_color(ColorType type, const Color& color) noexcept {
   scheme.colors[get_index(type)] = color;
 }
 
@@ -82,7 +74,7 @@ SDL_MessageBoxData MessageBox::create_sdl_message_box_data(SDL_Window* window,
 
 int MessageBox::show(SDL_Window* window) {
   if (buttons.empty()) {
-    buttons.emplace_back(ButtonData::ReturnKey, 0, "OK");
+    buttons.emplace_back(ButtonDataHint::ReturnKey, 0, "OK");
   }
 
   const auto sdl_buttonData = create_sdl_button_data();
@@ -111,8 +103,8 @@ void MessageBox::show(const std::string& title,
   SDL_ShowSimpleMessageBox(static_cast<uint32_t>(type), title.c_str(), message.c_str(), window);
 }
 
-void MessageBox::add_button(ButtonData data, int id, std::string text) noexcept {
-  buttons.emplace_back(data, id, std::move(text));
+void MessageBox::add_button(ButtonDataHint hint, int id, std::string text) noexcept {
+  buttons.emplace_back(hint, id, std::move(text));
 }
 
 void MessageBox::set_title(const std::string& title) noexcept {
@@ -135,35 +127,35 @@ MessageBoxID MessageBox::get_type() const noexcept {
   return type;
 }
 
-bool operator==(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept {
+bool operator==(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept {
   return static_cast<SDL_MessageBoxButtonFlags>(a) == b;
 }
 
-bool operator==(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept {
+bool operator==(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept {
   return a == static_cast<SDL_MessageBoxButtonFlags>(b);
 }
 
-bool operator!=(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept {
+bool operator!=(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept {
   return static_cast<SDL_MessageBoxButtonFlags>(a) != b;
 }
 
-bool operator!=(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept {
+bool operator!=(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept {
   return a != static_cast<SDL_MessageBoxButtonFlags>(b);
 }
 
-bool operator==(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept {
+bool operator==(SDL_MessageBoxColorType a, ColorType b) noexcept {
   return a == static_cast<SDL_MessageBoxColorType>(b);
 }
 
-bool operator==(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept {
+bool operator==(ColorType a, SDL_MessageBoxColorType b) noexcept {
   return static_cast<SDL_MessageBoxColorType>(a) == b;
 }
 
-bool operator!=(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept {
+bool operator!=(SDL_MessageBoxColorType a, ColorType b) noexcept {
   return a != static_cast<SDL_MessageBoxColorType>(b);
 }
 
-bool operator!=(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept {
+bool operator!=(ColorType a, SDL_MessageBoxColorType b) noexcept {
   return static_cast<SDL_MessageBoxColorType>(a) != b;
 }
 

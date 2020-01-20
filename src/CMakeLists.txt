@@ -19,7 +19,7 @@ set(SOURCE_FILES
         ${INCLUDE_DIR}/timer.h
         ${INCLUDE_DIR}/log.h
         ${INCLUDE_DIR}/blend_mode.h
-#        ${INCLUDE_DIR}/message_box.h
+        ${INCLUDE_DIR}/message_box.h
         ${INCLUDE_DIR}/color.h
 
         window.cpp
@@ -36,10 +36,7 @@ set(SOURCE_FILES
         log.cpp
         timer.cpp
         message_box.cpp
-        color.cpp
-        color_scheme.cpp
-
-        ${INCLUDE_DIR}/new_message_box.h)
+        color.cpp)
 
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
 add_definitions(-DWIN_EXPORT)

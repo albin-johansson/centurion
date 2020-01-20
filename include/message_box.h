@@ -32,54 +32,150 @@
 
 namespace centurion::messagebox {
 
-// TODO document
-
-enum class ButtonData {
+/**
+ * The ButtonDataHint enum class mirrors the SDL_MessageBoxButtonFlags enum.
+ *
+ * @since 3.0.0
+ */
+enum class ButtonDataHint {
   None = 0,
   ReturnKey = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
   EscapeKey = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
 };
 
-CENTURION_API bool operator==(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept;
+/**
+ * Indicates whether or not the flags represent the same value.
+ *
+ * @param a the lhs Centurion message box button data hint.
+ * @param b the rhs SDL message box button data flags.
+ * @return true if the values represent the same thing; false otherwise.
+ * @since 3.0.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator==(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept;
 
-CENTURION_API bool operator==(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept;
+/**
+ * Indicates whether or not the flags represent the same value.
+ *
+ * @param a the lhs SDL message box button data flags.
+ * @param b the rhs Centurion message box button data hint.
+ * @return true if the values represent the same thing; false otherwise.
+ * @since 3.0.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator==(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept;
 
-CENTURION_API bool operator!=(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept;
+/**
+ * Indicates whether or not the flags don't represent the same value.
+ *
+ * @param a the lhs Centurion message box button data hint.
+ * @param b the rhs SDL message box button data flags.
+ * @return true if the values don't represent the same thing; false otherwise.
+ * @since 3.0.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator!=(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept;
 
-CENTURION_API bool operator!=(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept;
+/**
+ * Indicates whether or not the flags don't represent the same value.
+ *
+ * @param a the lhs SDL message box button data flags.
+ * @param b the rhs Centurion message box button data hint.
+ * @return true if the values don't represent the same thing; false otherwise.
+ * @since 3.0.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator!=(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept;
 
-class CENTURION_API Button {
+/**
+ * The ButtonData class represents the data associated with a message box button.
+ *
+ * @since 3.0.0
+ */
+class CENTURION_API ButtonData final {
  private:
-  ButtonData data;
+  ButtonDataHint buttonDataHint;
   int id;
   std::string text;
 
  public:
-  CENTURION_API Button(ButtonData buttonData, int id, std::string text);
+  /**
+   * @param hint the button data hint that will be used.
+   * @param id the ID of the button.
+   * @param text the text that will be displayed on the button.
+   * @since 3.0.0
+   */
+  CENTURION_API ButtonData(ButtonDataHint hint, int id, std::string text);
 
-  CENTURION_API ~Button();
+  /**
+   * @since 3.0.0
+   */
+  CENTURION_API ~ButtonData();
 
+  /**
+   * Converts the button data into an SDL_MessageBoxButtonData instance.
+   *
+   * @return an SDL_MessageBoxButtonData instance.
+   * @since 3.0.0
+   */
   CENTURION_API /*implicit*/ operator SDL_MessageBoxButtonData() const noexcept;
 };
 
-enum class ColorSchemeType {
+/**
+ * The ColorType enum class mirrors the SDL_MessageBoxColorType enum.
+ *
+ * @since 3.0.0
+ */
+enum class ColorType {
   Background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
   ButtonBorder = SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,
   ButtonBackground = SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND,
   ButtonSelected = SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED,
 };
 
+/**
+ * Indicates whether or not the message box color types represent the same value.
+ *
+ * @param a the lhs SDL message box color type.
+ * @param b the rhs Centurion message box color type.
+ * @return true if the color types represent the same value; false otherwise.
+ * @since 3.0.0
+ */
 [[nodiscard]]
-CENTURION_API bool operator==(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept;
+CENTURION_API bool operator==(SDL_MessageBoxColorType a, ColorType b) noexcept;
 
+/**
+ * Indicates whether or not the message box color types represent the same value.
+ *
+ * @param a the lhs Centurion message box color type.
+ * @param b the rhs SDL message box color type.
+ * @return true if the color types represent the same value; false otherwise.
+ * @since 3.0.0
+ */
 [[nodiscard]]
-CENTURION_API bool operator==(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept;
+CENTURION_API bool operator==(ColorType a, SDL_MessageBoxColorType b) noexcept;
 
+/**
+ * Indicates whether or not the message box color types don't represent the same value.
+ *
+ * @param a the lhs SDL message box color type.
+ * @param b the rhs Centurion message box color type.
+ * @return true if the color types don't represent the same value; false otherwise.
+ * @since 3.0.0
+ */
 [[nodiscard]]
-CENTURION_API bool operator!=(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept;
+CENTURION_API bool operator!=(SDL_MessageBoxColorType a, ColorType b) noexcept;
 
+/**
+ * Indicates whether or not the message box color types don't represent the same value.
+ *
+ * @param a the lhs Centurion message box color type.
+ * @param b the rhs SDL message box color type.
+ * @return true if the color types don't represent the same value; false otherwise.
+ * @since 3.0.0
+ */
 [[nodiscard]]
-CENTURION_API bool operator!=(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept;
+CENTURION_API bool operator!=(ColorType a, SDL_MessageBoxColorType b) noexcept;
 
 /**
  * The ColorScheme class is a simple wrapper around an SDL_MessageBoxColorScheme struct.
@@ -98,7 +194,7 @@ class CENTURION_API ColorScheme final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  int get_index(ColorSchemeType type) const noexcept {
+  int get_index(ColorType type) const noexcept {
     return static_cast<int>(type);
   }
 
@@ -117,7 +213,7 @@ class CENTURION_API ColorScheme final {
    * @param color the color that will be used.
    * @since 3.0.0
    */
-  CENTURION_API void set_color(ColorSchemeType type, const Color& color) noexcept;
+  CENTURION_API void set_color(ColorType type, const Color& color) noexcept;
 
   /**
    * Returns the internal SDL_MessageBoxColorScheme.
@@ -204,7 +300,7 @@ CENTURION_API bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept;
 class CENTURION_API MessageBox {
  private:
   std::optional<ColorScheme> colorScheme;
-  std::vector<Button> buttons;
+  std::vector<ButtonData> buttons;
   std::string title = "Centurion message box";
   std::string message = "N/A";
   MessageBoxID type = MessageBoxID::Info;
@@ -283,12 +379,12 @@ class CENTURION_API MessageBox {
   /**
    * Adds a button to the message box.
    *
-   * @param data the data of the button.
+   * @param hint the data hint of the button.
    * @param id the ID of the button.
    * @param text the text of the button.
    * @since 3.0.0
    */
-  CENTURION_API void add_button(ButtonData data, int id, std::string text) noexcept;
+  CENTURION_API void add_button(ButtonDataHint hint, int id, std::string text) noexcept;
 
   /**
    * Sets the title of the message box.

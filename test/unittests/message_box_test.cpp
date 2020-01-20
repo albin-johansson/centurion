@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "new_message_box.h"
+#include "message_box.h"
 
 using namespace centurion::messagebox;
 
@@ -24,21 +24,21 @@ TEST_CASE("MessageBoxID enum values", "[MessageBox]") {
 }
 
 TEST_CASE("ButtonData enum values", "[MessageBox]") {
-  CHECK(ButtonData::ReturnKey == SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
-  CHECK(ButtonData::EscapeKey == SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
+  CHECK(ButtonDataHint::ReturnKey == SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
+  CHECK(ButtonDataHint::EscapeKey == SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
 
-  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT == ButtonData::ReturnKey);
-  CHECK(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT == ButtonData::EscapeKey);
+  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT == ButtonDataHint::ReturnKey);
+  CHECK(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT == ButtonDataHint::EscapeKey);
 }
 
 TEST_CASE("ColorSchemeType enum values", "[MessageBox]") {
-  CHECK(ColorSchemeType::ButtonSelected == SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
-  CHECK(ColorSchemeType::ButtonBackground == SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
-  CHECK(ColorSchemeType::ButtonBorder == SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);
-  CHECK(ColorSchemeType::Background == SDL_MESSAGEBOX_COLOR_BACKGROUND);
+  CHECK(ColorType::ButtonSelected == SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
+  CHECK(ColorType::ButtonBackground == SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
+  CHECK(ColorType::ButtonBorder == SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);
+  CHECK(ColorType::Background == SDL_MESSAGEBOX_COLOR_BACKGROUND);
 
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED == ColorSchemeType::ButtonSelected);
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND == ColorSchemeType::ButtonBackground);
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER == ColorSchemeType::ButtonBorder);
-  CHECK(SDL_MESSAGEBOX_COLOR_BACKGROUND == ColorSchemeType::Background);
+  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED == ColorType::ButtonSelected);
+  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND == ColorType::ButtonBackground);
+  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER == ColorType::ButtonBorder);
+  CHECK(SDL_MESSAGEBOX_COLOR_BACKGROUND == ColorType::Background);
 }

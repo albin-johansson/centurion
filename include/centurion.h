@@ -40,7 +40,7 @@
 #include "image.h"
 #include "image_generator.h"
 #include "log.h"
-#include "new_message_box.h"
+#include "message_box.h"
 #include "paths.h"
 #include "renderer.h"
 #include "sound_effect.h"
@@ -61,7 +61,6 @@ class CENTURION_API Centurion final {
   static constexpr int img_flags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP;
   static constexpr int mix_flags = MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID
       | MIX_INIT_MOD | MIX_INIT_OPUS;
-
 
   static inline bool wasInit = false;
 

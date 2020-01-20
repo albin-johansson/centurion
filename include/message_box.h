@@ -297,7 +297,7 @@ CENTURION_API bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept;
  *
  * @since 3.0.0
  */
-class CENTURION_API MessageBox {
+class CENTURION_API MessageBox final {
  private:
   std::optional<ColorScheme> colorScheme;
   std::vector<ButtonData> buttons;

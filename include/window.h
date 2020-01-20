@@ -42,7 +42,7 @@ class CENTURION_API IWindowListener;
  * @see IWindowListener
  * @since 3.0.0
  */
-class CENTURION_API Window {
+class CENTURION_API Window final {
  private:
   SDL_Window* window = nullptr;
   std::vector<IWindowListener*> windowListeners;
@@ -103,7 +103,7 @@ class CENTURION_API Window {
 
   Window(const Window&) noexcept = delete;
 
-  CENTURION_API virtual ~Window();
+  CENTURION_API ~Window();
 
   Window& operator=(const Window&) noexcept = delete;
 

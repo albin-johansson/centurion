@@ -26,9 +26,9 @@
 #include <string>
 #include <vector>
 #include <optional>
-#include <SDL_messagebox.h>
-#include "color.h"
+#include <SDL.h>
 #include "centurion_api.h"
+#include "color.h"
 
 namespace centurion::messagebox {
 
@@ -40,25 +40,13 @@ enum class ButtonData {
   EscapeKey = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
 };
 
-[[nodiscard]]
-inline bool operator==(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept {
-  return static_cast<SDL_MessageBoxButtonFlags>(a) == b;
-}
+CENTURION_API bool operator==(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept;
 
-[[nodiscard]]
-inline bool operator==(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept {
-  return a == static_cast<SDL_MessageBoxButtonFlags>(b);
-}
+CENTURION_API bool operator==(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept;
 
-[[nodiscard]]
-inline bool operator!=(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept {
-  return static_cast<SDL_MessageBoxButtonFlags>(a) != b;
-}
+CENTURION_API bool operator!=(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept;
 
-[[nodiscard]]
-inline bool operator!=(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept {
-  return a != static_cast<SDL_MessageBoxButtonFlags>(b);
-}
+CENTURION_API bool operator!=(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept;
 
 class CENTURION_API Button {
  private:
@@ -82,24 +70,16 @@ enum class ColorSchemeType {
 };
 
 [[nodiscard]]
-inline bool operator==(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept {
-  return a == static_cast<SDL_MessageBoxColorType>(b);
-}
+CENTURION_API bool operator==(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept;
 
 [[nodiscard]]
-inline bool operator==(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept {
-  return static_cast<SDL_MessageBoxColorType>(a) == b;
-}
+CENTURION_API bool operator==(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept;
 
 [[nodiscard]]
-inline bool operator!=(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept {
-  return a != static_cast<SDL_MessageBoxColorType>(b);
-}
+CENTURION_API bool operator!=(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept;
 
 [[nodiscard]]
-inline bool operator!=(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept {
-  return static_cast<SDL_MessageBoxColorType>(a) != b;
-}
+CENTURION_API bool operator!=(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept;
 
 /**
  * The ColorScheme class is a simple wrapper around an SDL_MessageBoxColorScheme struct.
@@ -146,7 +126,7 @@ class CENTURION_API ColorScheme final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  const SDL_MessageBoxColorScheme& get() const noexcept { return scheme; }
+  CENTURION_API const SDL_MessageBoxColorScheme& get() const noexcept;
 
   /**
    * Converts the ColorScheme to an SDL_MessageBoxColorScheme.
@@ -180,9 +160,7 @@ enum class MessageBoxID {
  * @since 3.0.0
  */
 [[nodiscard]]
-inline bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
-  return static_cast<SDL_MessageBoxFlags>(a) == b;
-}
+CENTURION_API bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept;
 
 /**
  * Indicates whether or not two message box flag values are the same.
@@ -193,9 +171,7 @@ inline bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
  * @since 3.0.0
  */
 [[nodiscard]]
-inline bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
-  return a == static_cast<SDL_MessageBoxFlags>(b);
-}
+CENTURION_API bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept;
 
 /**
  * Indicates whether or not two message box flag values aren't the same.
@@ -206,9 +182,7 @@ inline bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
  * @since 3.0.0
  */
 [[nodiscard]]
-inline bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
-  return static_cast<SDL_MessageBoxFlags>(a) != b;
-}
+CENTURION_API bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept;
 
 /**
  * Indicates whether or not two message box flag values aren't the same.
@@ -219,9 +193,7 @@ inline bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
  * @since 3.0.0
  */
 [[nodiscard]]
-inline bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
-  return a != static_cast<SDL_MessageBoxFlags>(b);
-}
+CENTURION_API bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept;
 
 /**
  * The MessageBox class represents a modal message box that can be used display information,
@@ -265,7 +237,7 @@ class CENTURION_API MessageBox {
   /**
    * @since 3.0.0
    */
-  CENTURION_API MessageBox() = default;
+  MessageBox() = default;
 
   /**
    * @param title the title of the message box.
@@ -280,7 +252,7 @@ class CENTURION_API MessageBox {
    */
   CENTURION_API MessageBox(std::string title, std::string message);
 
-  CENTURION_API virtual ~MessageBox() noexcept;
+  CENTURION_API ~MessageBox() noexcept;
 
   /**
    * Displays the message box. If no buttons have been added, the message box will feature an

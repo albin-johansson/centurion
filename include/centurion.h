@@ -40,7 +40,7 @@
 #include "image.h"
 #include "image_generator.h"
 #include "log.h"
-#include "message_box.h"
+#include "new_message_box.h"
 #include "paths.h"
 #include "renderer.h"
 #include "sound_effect.h"

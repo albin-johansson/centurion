@@ -1,10 +1,9 @@
-#include "message_box.h"
+#include "new_message_box.h"
 #include <cstdint>
 #include <utility>
 #include <SDL.h>
 #include "centurion_exception.h"
 #include "colors.h"
-#include "log.h"
 
 namespace centurion::messagebox {
 
@@ -38,13 +37,13 @@ void ColorScheme::set_color(ColorSchemeType type, const Color& color) noexcept {
   scheme.colors[get_index(type)] = color;
 }
 
-ColorScheme::operator SDL_MessageBoxColorScheme() const noexcept {
+const SDL_MessageBoxColorScheme& ColorScheme::get() const noexcept {
   return scheme;
 }
 
-/***************************************
- * MESSAGE BOX *************************
- ***************************************/
+ColorScheme::operator SDL_MessageBoxColorScheme() const noexcept {
+  return scheme;
+}
 
 MessageBox::MessageBox(std::string title)
     : title{std::move(title)} {}
@@ -134,6 +133,54 @@ void MessageBox::set_color_scheme(std::optional<ColorScheme> scheme) noexcept {
 
 MessageBoxID MessageBox::get_type() const noexcept {
   return type;
+}
+
+bool operator==(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept {
+  return static_cast<SDL_MessageBoxButtonFlags>(a) == b;
+}
+
+bool operator==(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept {
+  return a == static_cast<SDL_MessageBoxButtonFlags>(b);
+}
+
+bool operator!=(ButtonData a, SDL_MessageBoxButtonFlags b) noexcept {
+  return static_cast<SDL_MessageBoxButtonFlags>(a) != b;
+}
+
+bool operator!=(SDL_MessageBoxButtonFlags a, ButtonData b) noexcept {
+  return a != static_cast<SDL_MessageBoxButtonFlags>(b);
+}
+
+bool operator==(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept {
+  return a == static_cast<SDL_MessageBoxColorType>(b);
+}
+
+bool operator==(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept {
+  return static_cast<SDL_MessageBoxColorType>(a) == b;
+}
+
+bool operator!=(SDL_MessageBoxColorType a, ColorSchemeType b) noexcept {
+  return a != static_cast<SDL_MessageBoxColorType>(b);
+}
+
+bool operator!=(ColorSchemeType a, SDL_MessageBoxColorType b) noexcept {
+  return static_cast<SDL_MessageBoxColorType>(a) != b;
+}
+
+bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
+  return static_cast<SDL_MessageBoxFlags>(a) == b;
+}
+
+bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
+  return a == static_cast<SDL_MessageBoxFlags>(b);
+}
+
+bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
+  return static_cast<SDL_MessageBoxFlags>(a) != b;
+}
+
+bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
+  return a != static_cast<SDL_MessageBoxFlags>(b);
 }
 
 }

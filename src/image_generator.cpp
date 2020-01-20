@@ -6,8 +6,7 @@
 
 namespace centurion {
 
-static_assert(std::has_virtual_destructor_v<ImageGenerator>);
-static_assert(!std::is_final_v<ImageGenerator>);
+static_assert(std::is_final_v<ImageGenerator>);
 
 static_assert(std::is_nothrow_copy_assignable_v<ImageGenerator>);
 static_assert(std::is_nothrow_copy_constructible_v<ImageGenerator>);

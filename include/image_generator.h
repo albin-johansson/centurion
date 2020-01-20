@@ -43,7 +43,7 @@ class CENTURION_API Renderer;
  * @since 3.0.0
  * @author Albin Johansson
  */
-class CENTURION_API ImageGenerator {
+class CENTURION_API ImageGenerator final {
  private:
   std::shared_ptr<Renderer> renderer;
 
@@ -55,7 +55,7 @@ class CENTURION_API ImageGenerator {
    */
   CENTURION_API explicit ImageGenerator(const std::shared_ptr<Renderer>& renderer);
 
-  CENTURION_API virtual ~ImageGenerator() noexcept;
+  CENTURION_API ~ImageGenerator() noexcept;
 
   /**
    * Creates and returns a unique pointer to an image.

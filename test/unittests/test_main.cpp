@@ -1,7 +1,6 @@
 #define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
 #include "centurion.h"
-#include "log.h"
 
 int main(int argc, char** argv) {
   using namespace centurion;

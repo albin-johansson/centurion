@@ -54,9 +54,8 @@ enum class TextureAccess {
  * @return true if the texture access values are the same; false otherwise.
  * @since 3.0.0
  */
-inline bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept {
-  return static_cast<SDL_TextureAccess>(a) == b;
-}
+[[nodiscard]]
+CENTURION_API bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept;
 
 /**
  * Indicates whether or not the two texture access values are the same.
@@ -66,9 +65,30 @@ inline bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept {
  * @return true if the texture access values are the same; false otherwise.
  * @since 3.0.0
  */
-inline bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept {
-  return a == static_cast<SDL_TextureAccess>(b);
-}
+[[nodiscard]]
+CENTURION_API bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept;
+
+/**
+ * Indicates whether or not the two texture access values aren't the same.
+ *
+ * @param a the lhs Centurion texture access.
+ * @param b the rhs SDL texture access.
+ * @return true if the texture access values aren't the same; false otherwise.
+ * @since 3.0.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept;
+
+/**
+ * Indicates whether or not the two texture access values aren't the same.
+ *
+ * @param a the lhs SDL texture access.
+ * @param b the rhs Centurion texture access.
+ * @return true if the texture access values aren't the same; false otherwise.
+ * @since 3.0.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept;
 
 /**
  * The Image class represents an image that is hardware-accelerated. Instances of the Image class
@@ -77,7 +97,7 @@ inline bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept {
  * @see SDL_Texture
  * @since 3.0.0
  */
-class CENTURION_API Image {
+class CENTURION_API Image final {
  private:
   SDL_Texture* texture = nullptr;
 
@@ -139,7 +159,7 @@ class CENTURION_API Image {
 
   Image(const Image&) noexcept = delete;
 
-  CENTURION_API virtual ~Image() noexcept;
+  CENTURION_API ~Image() noexcept;
 
   Image& operator=(const Image&) noexcept = delete;
 

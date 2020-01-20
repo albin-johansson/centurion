@@ -6,14 +6,13 @@
 
 namespace centurion {
 
+static_assert(std::is_final_v<Image>);
+
 static_assert(std::is_nothrow_move_constructible_v<Image>);
 static_assert(std::is_nothrow_move_assignable_v<Image>);
 
 static_assert(!std::is_nothrow_copy_constructible_v<Image>);
 static_assert(!std::is_nothrow_copy_assignable_v<Image>);
-
-static_assert(!std::is_final_v<Image>);
-static_assert(std::has_virtual_destructor_v<Image>);
 
 Image::Image(gsl::owner<SDL_Texture*> texture) {
   if (!texture) {
@@ -191,6 +190,22 @@ std::string Image::to_string() const {
 
 Image::operator SDL_Texture*() const noexcept {
   return texture;
+}
+
+bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept {
+  return static_cast<SDL_TextureAccess>(a) == b;
+}
+
+bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept {
+  return a == static_cast<SDL_TextureAccess>(b);
+}
+
+bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept {
+  return static_cast<SDL_TextureAccess>(a) != b;
+}
+
+bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept {
+  return a != static_cast<SDL_TextureAccess>(b);
 }
 
 }

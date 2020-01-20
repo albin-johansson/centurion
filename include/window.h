@@ -36,7 +36,6 @@ class CENTURION_API IWindowListener;
 
 /**
  * The Window class is a wrapper around an SDL_Window instance. Window instances can't be copied.
- * The class can safely be used as a base class, since it provides a virtual destructor.
  * Instances of the Window class can be implicitly converted to SDL_Window*.
  *
  * @see IWindowListener

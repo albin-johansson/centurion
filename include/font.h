@@ -36,7 +36,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API Font {
+class CENTURION_API Font final {
  private:
   TTF_Font* font = nullptr;
   int style = 0;
@@ -85,7 +85,7 @@ class CENTURION_API Font {
    */
   CENTURION_API Font(Font&& other) noexcept;
 
-  CENTURION_API virtual ~Font() noexcept;
+  CENTURION_API ~Font() noexcept;
 
   /**
    * The copy assignment operator is deleted for font instances.

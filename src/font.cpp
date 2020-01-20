@@ -5,8 +5,7 @@
 
 namespace centurion {
 
-static_assert(std::has_virtual_destructor_v<Font>);
-static_assert(!std::is_final_v<Font>);
+static_assert(std::is_final_v<Font>);
 
 static_assert(std::is_nothrow_move_constructible_v<Font>);
 static_assert(std::is_nothrow_move_assignable_v<Font>);

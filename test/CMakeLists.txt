@@ -35,7 +35,6 @@ target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST} PUBLIC ${INCLUDE_DIR})
-target_include_directories(${CENTURION_TEST} PUBLIC ${SOURCE_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR}/gsl)
 
@@ -43,7 +42,7 @@ if (WIN32)
     target_link_libraries(${CENTURION_TEST}
             mingw32
             Catch2
-            ${CENTURION_DLL_PATH}
+            ${CENTURION_LIBRARIES}
             ${SDL2_LIBRARY}
             ${SDL2_IMAGE_LIBRARIES}
             ${SDL2_MIXER_LIBRARIES}
@@ -51,7 +50,7 @@ if (WIN32)
 else ()
     target_link_libraries(${CENTURION_TEST}
             Catch2
-            ${CENTURION_DLL_PATH}
+            ${CENTURION_LIBRARIES}
             ${SDL2_LIBRARY}
             ${SDL2_IMAGE_LIBRARIES}
             ${SDL2_MIXER_LIBRARIES}

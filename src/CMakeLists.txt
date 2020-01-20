@@ -36,7 +36,8 @@ set(SOURCE_FILES
         log.cpp
         timer.cpp
         message_box.cpp
-        color.cpp)
+        color.cpp
+        blend_mode.cpp)
 
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
 add_definitions(-DWIN_EXPORT)

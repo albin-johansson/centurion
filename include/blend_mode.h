@@ -24,6 +24,7 @@
 
 #pragma once
 #include <SDL_blendmode.h>
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -48,9 +49,8 @@ enum class BlendMode {
  * @return true if the values represent the same blend mode; false otherwise.
  * @since 3.0.0 
  */
-inline bool operator==(BlendMode a, SDL_BlendMode b) noexcept {
-  return static_cast<SDL_BlendMode>(a) == b;
-}
+[[nodiscard]]
+CENTURION_API bool operator==(BlendMode a, SDL_BlendMode b) noexcept;
 
 /**
  * Indicates whether the two blend mode values represent the same blend mode.
@@ -60,9 +60,8 @@ inline bool operator==(BlendMode a, SDL_BlendMode b) noexcept {
  * @return true if the values represent the same blend mode; false otherwise.
  * @since 3.0.0 
  */
-inline bool operator==(SDL_BlendMode a, BlendMode b) noexcept {
-  return a == static_cast<SDL_BlendMode>(b);
-}
+[[nodiscard]]
+CENTURION_API bool operator==(SDL_BlendMode a, BlendMode b) noexcept;
 
 /**
  * Indicates whether the two blend mode values don't represent the same blend mode.
@@ -72,9 +71,8 @@ inline bool operator==(SDL_BlendMode a, BlendMode b) noexcept {
  * @return true if the values don't represent the same blend mode; false otherwise.
  * @since 3.0.0 
  */
-inline bool operator!=(BlendMode a, SDL_BlendMode b) noexcept {
-  return static_cast<SDL_BlendMode>(a) != b;
-}
+[[nodiscard]]
+CENTURION_API bool operator!=(BlendMode a, SDL_BlendMode b) noexcept;
 
 /**
  * Indicates whether the two blend mode values don't represent the same blend mode.
@@ -84,8 +82,7 @@ inline bool operator!=(BlendMode a, SDL_BlendMode b) noexcept {
  * @return true if the values don't represent the same blend mode; false otherwise.
  * @since 3.0.0 
  */
-inline bool operator!=(SDL_BlendMode a, BlendMode b) noexcept {
-  return a != static_cast<SDL_BlendMode>(b);
-}
+[[nodiscard]]
+CENTURION_API bool operator!=(SDL_BlendMode a, BlendMode b) noexcept;
 
 }

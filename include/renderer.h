@@ -45,7 +45,7 @@ class Font;
  * @see SDL_Renderer
  * @since 3.0.0
  */
-class CENTURION_API Renderer {
+class CENTURION_API Renderer final {
  private:
   SDL_Renderer* renderer = nullptr;
   SDL_FRect translationViewport = {0, 0, 0, 0};
@@ -86,7 +86,7 @@ class CENTURION_API Renderer {
 
   Renderer& operator=(const Renderer&) noexcept = delete;
 
-  CENTURION_API virtual ~Renderer();
+  CENTURION_API ~Renderer();
 
   /**
    * Creates and returns a unique pointer to a renderer.

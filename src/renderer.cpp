@@ -9,8 +9,7 @@
 
 namespace centurion {
 
-static_assert(std::has_virtual_destructor_v<Renderer>);
-static_assert(!std::is_final_v<Renderer>);
+static_assert(std::is_final_v<Renderer>);
 
 static_assert(std::is_nothrow_move_constructible_v<Renderer>);
 static_assert(std::is_nothrow_move_assignable_v<Renderer>);

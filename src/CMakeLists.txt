@@ -2,40 +2,42 @@ cmake_minimum_required(VERSION 3.12)
 project(${CMAKE_PROJECT_NAME}_src)
 
 set(SOURCE_FILES
-        window.h
+        ${INCLUDE_DIR}/window.h
+        ${INCLUDE_DIR}/window_listener.h
+        ${INCLUDE_DIR}/font.h
+        ${INCLUDE_DIR}/renderer.h
+        ${INCLUDE_DIR}/image.h
+        ${INCLUDE_DIR}/sound_effect.h
+        ${INCLUDE_DIR}/centurion_exception.h
+        ${INCLUDE_DIR}/bool_converter.h
+        ${INCLUDE_DIR}/centurion_api.h
+        ${INCLUDE_DIR}/centurion.h
+        ${INCLUDE_DIR}/colors.h
+        ${INCLUDE_DIR}/image_generator.h
+        ${INCLUDE_DIR}/paths.h
+        ${INCLUDE_DIR}/system.h
+        ${INCLUDE_DIR}/timer.h
+        ${INCLUDE_DIR}/log.h
+        ${INCLUDE_DIR}/blend_mode.h
+        ${INCLUDE_DIR}/message_box.h
+        ${INCLUDE_DIR}/color.h
+
         window.cpp
-        window_listener.h
-        font.h
         font.cpp
-        renderer.h
         renderer.cpp
-        image.h
         image.cpp
-        sound_effect.h
         sound_effect.cpp
-        centurion_exception.h
         centurion_exception.cpp
-        bool_converter.h
-        centurion_api.h
         centurion.cpp
-        centurion.h
-        colors.h
         colors.cpp
         image_generator.cpp
-        image_generator.h
         paths.cpp
-        paths.h
-        system.h
         system.cpp
         log.cpp
-        log.h
         timer.cpp
-        timer.h
-        blend_mode.h
         message_box.cpp
-        message_box.h
         color.cpp
-        color.h)
+        )
 
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
 add_definitions(-DWIN_EXPORT)
@@ -57,6 +59,7 @@ target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_INCLUDE_DIR})
 target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
 target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
+target_include_directories(${CENTURION_LIB} PUBLIC ${INCLUDE_DIR})
 target_include_directories(${CENTURION_LIB} PUBLIC ${LIBRARY_DIR})
 target_include_directories(${CENTURION_LIB} PUBLIC ${LIBRARY_DIR}/gsl)
 

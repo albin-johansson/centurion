@@ -20,6 +20,7 @@ set(SOURCE_FILES
         centurion.cpp
         centurion.h
         colors.h
+        colors.cpp
         image_generator.cpp
         image_generator.h
         paths.cpp

@@ -38,7 +38,7 @@ class CENTURION_API BoolConverter final {
  public:
   BoolConverter() = delete;
 
-  CENTURION_API ~BoolConverter() noexcept = default;
+  ~BoolConverter() noexcept = default;
 
   /**
    * Returns the corresponding SDL_bool value for the supplied boolean value.
@@ -48,7 +48,7 @@ class CENTURION_API BoolConverter final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  CENTURION_API static constexpr SDL_bool convert(bool b) noexcept {
+  static constexpr SDL_bool convert(bool b) noexcept {
     return b ? SDL_TRUE : SDL_FALSE;
   }
 };

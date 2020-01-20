@@ -30,11 +30,6 @@
 *.out
 *.app
 
-# Custom stuff
-cmake-build-debug/
-cmake-build-release/
-SDL2-x64/
-.idea/
 *.config
 *.idb
 *.pdb
@@ -42,3 +37,11 @@ SDL2-x64/
 *.tlog
 *.user
 *.filters
+
+# Custom stuff
+cmake-build-debug/
+cmake-build-release/
+.idea/
+
+# Ignore the Centurion DLL, since it's updated all the time
+libCenturion.dll

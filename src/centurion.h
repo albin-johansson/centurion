@@ -30,8 +30,24 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-// TODO include all centurion files
 #include "centurion_api.h"
+#include "blend_mode.h"
+#include "bool_converter.h"
+#include "centurion_exception.h"
+#include "color.h"
+#include "colors.h"
+#include "font.h"
+#include "image.h"
+#include "image_generator.h"
+#include "log.h"
+#include "message_box.h"
+#include "paths.h"
+#include "renderer.h"
+#include "sound_effect.h"
+#include "system.h"
+#include "timer.h"
+#include "window.h"
+#include "window_listener.h"
 
 namespace centurion {
 

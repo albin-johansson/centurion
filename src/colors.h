@@ -40,14 +40,14 @@ namespace centurion {
 class CENTURION_API Colors final {
  public:
   /**
-   * The maximum possible Color component value.
+   * The maximum possible color component value.
    *
    * @since 3.0.0
    */
   CENTURION_API static constexpr uint8_t max = 0xFF;
 
   /**
-   * The minimum possible Color component value.
+   * The minimum possible color component value.
    *
    * @since 3.0.0
    */

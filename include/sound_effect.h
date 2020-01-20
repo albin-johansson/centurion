@@ -37,7 +37,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API SoundEffect {
+class CENTURION_API SoundEffect final {
  private:
   static constexpr int undefinedChannel = -1;
 
@@ -78,7 +78,7 @@ class CENTURION_API SoundEffect {
 
   SoundEffect(const SoundEffect&) noexcept = delete;
 
-  CENTURION_API virtual ~SoundEffect();
+  CENTURION_API ~SoundEffect();
 
   SoundEffect& operator=(const SoundEffect&) noexcept = delete;
 

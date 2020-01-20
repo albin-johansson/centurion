@@ -30,10 +30,19 @@ set(SOURCE_FILES
         log.h
         timer.cpp
         timer.h
-        blend_mode.h)
+        blend_mode.h
+        message_box.cpp
+        message_box.h
+        color.cpp
+        color.h)
 
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
 add_definitions(-DWIN_EXPORT)
+
+if (DEFINED ENV{TRAVIS_TEST})
+    # The Travis CI virtual machines can't handle the audio stuff
+    target_compile_definitions(${CENTURION_LIB} PUBLIC CENTURION_NOAUDIO)
+endif ()
 
 # Specifies C++ version and compiler warning flags.
 target_compile_options(${CENTURION_LIB} PRIVATE -Wall -Wextra -Wpedantic)

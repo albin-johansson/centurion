@@ -249,8 +249,12 @@ void Renderer::set_color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha
   SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
 }
 
-void Renderer::set_color(const SDL_Color& color) const noexcept {
-  SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+void Renderer::set_color(const Color& color) const noexcept {
+  SDL_SetRenderDrawColor(renderer,
+                         color.get_red(),
+                         color.get_green(),
+                         color.get_blue(),
+                         color.get_alpha());
 }
 
 void Renderer::set_clip(std::optional<SDL_Rect> area) noexcept {
@@ -297,7 +301,7 @@ void Renderer::set_logical_integer_scale(bool useLogicalIntegerScale) noexcept {
   SDL_RenderSetIntegerScale(renderer, BoolConverter::convert(useLogicalIntegerScale));
 }
 
-SDL_Color Renderer::get_color() const noexcept {
+Color Renderer::get_color() const noexcept {
   uint8_t r = 0, g = 0, b = 0, a = 0;
   SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
   return {r, g, b, a};

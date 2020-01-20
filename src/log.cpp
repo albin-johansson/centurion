@@ -21,6 +21,17 @@ void Log::msg(Category category, const char* fmt, ...) noexcept {
   SDL_LogMessageV(static_cast<int>(category), prio, fmt, args);
 }
 
+void Log::msg(const char* fmt, ...) noexcept {
+  if (!fmt) { return; }
+  std::va_list args;
+  va_start(args, fmt);
+
+  SDL_LogMessageV(static_cast<int>(Category::App),
+                  static_cast<SDL_LogPriority>(Priority::Info),
+                  fmt,
+                  args);
+}
+
 void Log::set_priority(Category category, Priority prio) noexcept {
   SDL_LogSetPriority(static_cast<int>(category), static_cast<SDL_LogPriority>(prio));
 }

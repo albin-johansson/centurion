@@ -4,11 +4,17 @@
 using namespace centurion;
 
 TEST_CASE("PowerState enum", "[Power]") {
-  CHECK(static_cast<SDL_PowerState>(PowerState::Unknown) == SDL_POWERSTATE_UNKNOWN);
-  CHECK(static_cast<SDL_PowerState>(PowerState::OnBattery) == SDL_POWERSTATE_ON_BATTERY);
-  CHECK(static_cast<SDL_PowerState>(PowerState::NoBattery) == SDL_POWERSTATE_NO_BATTERY);
-  CHECK(static_cast<SDL_PowerState>(PowerState::Charging) == SDL_POWERSTATE_CHARGING);
-  CHECK(static_cast<SDL_PowerState>(PowerState::Charged) == SDL_POWERSTATE_CHARGED);
+  CHECK(PowerState::Unknown == SDL_POWERSTATE_UNKNOWN);
+  CHECK(PowerState::OnBattery == SDL_POWERSTATE_ON_BATTERY);
+  CHECK(PowerState::NoBattery == SDL_POWERSTATE_NO_BATTERY);
+  CHECK(PowerState::Charging == SDL_POWERSTATE_CHARGING);
+  CHECK(PowerState::Charged == SDL_POWERSTATE_CHARGED);
+
+  CHECK(SDL_POWERSTATE_UNKNOWN == PowerState::Unknown);
+  CHECK(SDL_POWERSTATE_ON_BATTERY == PowerState::OnBattery);
+  CHECK(SDL_POWERSTATE_NO_BATTERY == PowerState::NoBattery);
+  CHECK(SDL_POWERSTATE_CHARGING == PowerState::Charging);
+  CHECK(SDL_POWERSTATE_CHARGED == PowerState::Charged);
 }
 
 TEST_CASE("PowerState::get_battery_percentage", "[Power]") {

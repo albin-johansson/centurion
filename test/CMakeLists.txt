@@ -1,16 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
 project(${CENTURION_TEST})
 
+enable_testing()
+
 set(CATCH_INCLUDE_DIR catch2)
 add_library(Catch2 INTERFACE)
 target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
-
-if (DEFINED ENV{TRAVIS_TEST})
-    message("No audio is used, since TRAVIS_TEST was defined!")
-    add_compile_definitions(CENTURION_NOAUDIO)
-else ()
-    message("TRAVIS_TEST isn't defined!")
-endif ()
 
 set(TEST_FILES
         unittests/test_main.cpp
@@ -23,10 +18,12 @@ set(TEST_FILES
         unittests/renderer_test.cpp
         unittests/log_test.cpp
         unittests/power_test.cpp
-        unittests/blend_mode_test.cpp)
+        unittests/blend_mode_test.cpp
+        unittests/message_box_test.cpp
+        unittests/color_test.cpp)
 
-enable_testing()
 add_executable(${CENTURION_TEST} ${TEST_FILES})
+add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
 
 set_target_properties(${CENTURION_TEST} PROPERTIES
         CXX_STANDARD 17)
@@ -54,9 +51,9 @@ endif ()
 
 include(CTest)
 include(Catch)
-
-add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
-catch_discover_tests(${CENTURION_TEST})
+include(ParseAndAddCatchTests)
+ParseAndAddCatchTests(${CENTURION_TEST})
+#catch_discover_tests(${CENTURION_TEST})
 
 # Copies all of the files in the bin folder and puts them next to the executable
 add_custom_command(TARGET ${CENTURION_TEST} POST_BUILD

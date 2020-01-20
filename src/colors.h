@@ -23,9 +23,9 @@
  */
 
 #pragma once
-#include <SDL_pixels.h>
 #include <cstdint>
 #include "centurion_api.h"
+#include "color.h"
 
 namespace centurion {
 

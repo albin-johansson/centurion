@@ -31,6 +31,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "centurion_api.h"
+#include "color.h"
 
 namespace centurion {
 
@@ -474,7 +475,7 @@ class CENTURION_API Renderer {
    * @param color the color that will be used by the renderer.
    * @since 3.0.0
    */
-  CENTURION_API void set_color(const SDL_Color& color) const noexcept;
+  CENTURION_API void set_color(const Color& color) const noexcept;
 
   /**
    * Sets the clipping area rectangle. Clipping is disabled by default.
@@ -706,7 +707,7 @@ class CENTURION_API Renderer {
    * @since 3.0.0
    */
   [[nodiscard]]
-  CENTURION_API SDL_Color get_color() const noexcept;
+  CENTURION_API Color get_color() const noexcept;
 
   /**
    * Attempts to create and return a pointer to an SDL_Texture instance that represents the

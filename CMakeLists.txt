@@ -9,6 +9,8 @@ set(CENTURION_LIB ${PROJECT_NAME}_lib)
 set(CENTURION_TEST ${PROJECT_NAME}_test)
 set(CENTURION_DEMO ${PROJECT_NAME}_demo)
 
+message("CMake binary directory: ${CMAKE_BINARY_DIR}")
+
 # Checks if an environment variable is defined.
 #   envVar: the name of the actual environment variable.
 #   name: the name of the library associated with the environment variable.

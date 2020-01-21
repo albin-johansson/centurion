@@ -6,6 +6,8 @@
 #include "font.h"
 #include "colors.h"
 #include "bool_converter.h"
+#include "point.h"
+#include "rectangle.h"
 
 namespace centurion {
 
@@ -148,17 +150,19 @@ void Renderer::draw_image(const Image& image,
 void Renderer::draw_image(const Image& image,
                           const SDL_Rect& source,
                           const SDL_Rect& destination,
-                          const SDL_Point& center,
+                          const Point& center,
                           double angle) const noexcept {
-  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &center, SDL_FLIP_NONE);
+  const SDL_Point c = center;
+  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &c, SDL_FLIP_NONE);
 }
 
 void Renderer::draw_image(const Image& image,
                           const SDL_Rect& source,
                           const SDL_FRect& destination,
-                          const SDL_FPoint& center,
+                          const FPoint& center,
                           double angle) const noexcept {
-  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &center, SDL_FLIP_NONE);
+  const SDL_FPoint c = center;
+  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &c, SDL_FLIP_NONE);
 
 }
 
@@ -182,18 +186,20 @@ void Renderer::draw_image(const Image& image,
                           const SDL_Rect& source,
                           const SDL_Rect& destination,
                           double angle,
-                          const SDL_Point& center,
+                          const Point& center,
                           SDL_RendererFlip flip) const noexcept {
-  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &center, flip);
+  const SDL_Point c = center;
+  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &c, flip);
 }
 
 void Renderer::draw_image(const Image& image,
                           const SDL_Rect& source,
                           const SDL_FRect& destination,
                           double angle,
-                          const SDL_FPoint& center,
+                          const FPoint& center,
                           SDL_RendererFlip flip) const noexcept {
-  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &center, flip);
+  const SDL_FPoint c = center;
+  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &c, flip);
 }
 
 void Renderer::fill_rect(float x, float y, float width, float height) const noexcept {
@@ -216,19 +222,21 @@ void Renderer::draw_rect(int x, int y, int width, int height) const noexcept {
   SDL_RenderDrawRect(renderer, &rect);
 }
 
-void Renderer::draw_line(const SDL_FPoint& start, const SDL_FPoint& end) const noexcept {
-  SDL_RenderDrawLineF(renderer, start.x, start.y, end.x, end.y);
+void Renderer::draw_line(const FPoint& start, const FPoint& end) const noexcept {
+  SDL_RenderDrawLineF(renderer, start.get_x(), start.get_y(), end.get_x(), end.get_y());
 }
 
-void Renderer::draw_line(const SDL_Point& start, const SDL_Point& end) const noexcept {
-  SDL_RenderDrawLine(renderer, start.x, start.y, end.x, end.y);
+void Renderer::draw_line(const Point& start, const Point& end) const noexcept {
+  SDL_RenderDrawLine(renderer, start.get_x(), start.get_y(), end.get_x(), end.get_y());
 }
 
-void Renderer::draw_lines(const std::vector<SDL_Point>& points) const noexcept {
+void Renderer::draw_lines(const std::vector<Point>& points) const noexcept {
   if (points.empty()) {
     return;
   } else {
-    SDL_RenderDrawLines(renderer, &points.front(), points.size());
+    // TODO write own method that achieves the same thing to avoid the reinterpret_cast
+    const auto* front = reinterpret_cast<const SDL_Point*>(&points.front());
+    SDL_RenderDrawLines(renderer, front, points.size());
   }
 }
 

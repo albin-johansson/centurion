@@ -37,6 +37,8 @@ namespace centurion {
 
 class Image;
 class Font;
+class Point;
+class FPoint;
 
 /**
  * The Renderer class is a wrapper class for the SDL_Renderer struct. Rendering operations are
@@ -280,7 +282,7 @@ class CENTURION_API Renderer final {
   CENTURION_API void draw_image(const Image& image,
                                 const SDL_Rect& source,
                                 const SDL_Rect& destination,
-                                const SDL_Point& center,
+                                const Point& center,
                                 double angle) const noexcept;
 
   /**
@@ -296,7 +298,7 @@ class CENTURION_API Renderer final {
   CENTURION_API void draw_image(const Image& image,
                                 const SDL_Rect& source,
                                 const SDL_FRect& destination,
-                                const SDL_FPoint& center,
+                                const FPoint& center,
                                 double angle) const noexcept;
 
   /**
@@ -346,7 +348,7 @@ class CENTURION_API Renderer final {
                                 const SDL_Rect& source,
                                 const SDL_Rect& destination,
                                 double angle,
-                                const SDL_Point& center,
+                                const Point& center,
                                 SDL_RendererFlip flip) const noexcept;
 
   /**
@@ -364,7 +366,7 @@ class CENTURION_API Renderer final {
                                 const SDL_Rect& source,
                                 const SDL_FRect& destination,
                                 double angle,
-                                const SDL_FPoint& center,
+                                const FPoint& center,
                                 SDL_RendererFlip flip) const noexcept;
 
   /**
@@ -422,7 +424,7 @@ class CENTURION_API Renderer final {
    * @param end the end of the line.
    * @since 3.0.0
    */
-  CENTURION_API void draw_line(const SDL_FPoint& start, const SDL_FPoint& end) const noexcept;
+  CENTURION_API void draw_line(const FPoint& start, const FPoint& end) const noexcept;
 
   /**
    * Renders a line in the currently selected color.
@@ -431,7 +433,7 @@ class CENTURION_API Renderer final {
    * @param end the end of the line.
    * @since 3.0.0
    */
-  CENTURION_API void draw_line(const SDL_Point& start, const SDL_Point& end) const noexcept;
+  CENTURION_API void draw_line(const Point& start, const Point& end) const noexcept;
 
   /**
    * Renders a sequence of connected lines in the currently selected color.
@@ -439,7 +441,7 @@ class CENTURION_API Renderer final {
    * @param points the collection of points to draw the lines between.
    * @since 3.0.0
    */
-  CENTURION_API void draw_lines(const std::vector<SDL_Point>& points) const noexcept;
+  CENTURION_API void draw_lines(const std::vector<Point>& points) const noexcept;
 
   /**
    * Renders a string of text. Note that this method is rather inefficient, since it will

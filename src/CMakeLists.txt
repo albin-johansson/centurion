@@ -37,7 +37,12 @@ set(SOURCE_FILES
         timer.cpp
         message_box.cpp
         color.cpp
-        blend_mode.cpp)
+        blend_mode.cpp
+
+        rectangle.cpp
+        point.cpp
+        ${INCLUDE_DIR}/point.h
+        )
 
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
 add_definitions(-DWIN_EXPORT)

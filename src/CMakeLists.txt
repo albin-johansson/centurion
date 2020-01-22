@@ -26,7 +26,7 @@ set(SOURCE_FILES
         ${INCLUDE_DIR}/key_state.h
         ${INCLUDE_DIR}/mouse_state.h
         ${INCLUDE_DIR}/music.h
-        
+        ${INCLUDE_DIR}/centurion_utils.h
         window.cpp
         font.cpp
         renderer.cpp

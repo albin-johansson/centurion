@@ -109,10 +109,6 @@ TEST_CASE("Equality operators", "[Color]") {
     const auto sdlColor = SDL_Color{0x84, 0x45, 0x11, 0xFA};
     const auto msgColor = SDL_MessageBoxColor{0xAA, 0x57, 0x99};
 
-    std::cout << color << "\n";
-    std::cout << sdlColor << "\n";
-    std::cout << msgColor << "\n";
-
     CHECK(color != sdlColor);
     CHECK(sdlColor != color);
 
@@ -172,4 +168,13 @@ TEST_CASE("Color conversions", "[Color]") {
     CHECK(color.get_green() == msgColor.g);
     CHECK(color.get_blue() == msgColor.b);
   }
+}
+
+TEST_CASE("Color << operators", "[Color]") {
+  const auto color = Color{0x12, 0xFA, 0xCC, 0xAD};
+  const auto sdlColor = SDL_Color{0xBC, 0x64, 0x12, 0xAE};
+  const auto msgColor = SDL_MessageBoxColor{0xEE, 0xCA, 0xA3};
+  std::cout << color << "\n";
+  std::cout << sdlColor << "\n";
+  std::cout << msgColor << "\n";
 }

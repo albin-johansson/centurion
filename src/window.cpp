@@ -1,6 +1,7 @@
 #include "window.h"
 #include <stdexcept>
 #include <type_traits>
+#include <SDL_image.h>
 #include "window_listener.h"
 #include "bool_converter.h"
 
@@ -25,6 +26,12 @@ Window::Window(const std::string& title, int width, int height) {
   const auto pos = SDL_WINDOWPOS_CENTERED;
   window = SDL_CreateWindow(title.c_str(), pos, pos, width, height,
                             SDL_WINDOW_HIDDEN);
+
+  SDL_Surface* icon = IMG_Load("centurion_icon.png");
+  if (icon) {
+    set_icon(icon);
+    SDL_FreeSurface(icon);
+  }
 }
 
 Window::Window(int width, int height) : Window("Centurion window", width, height) {}

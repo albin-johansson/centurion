@@ -55,7 +55,10 @@ class CENTURION_API Window final {
 
  public:
   /**
-   * Creates a window instance. The window will be hidden by default.
+   * Creates a window instance. The window will be hidden by default. When a window is being
+   * created, it will look for a file called "centurion_icon.png", which it will attempt to use
+   * as the default icon. However, the window can be created without any problem with the file
+   * missing.
    *
    * @param title the title of thw window.
    * @param width the width of the window, must be greater than zero.

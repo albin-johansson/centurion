@@ -23,6 +23,10 @@ set(SOURCE_FILES
         ${INCLUDE_DIR}/color.h
         ${INCLUDE_DIR}/rectangle.h
         ${INCLUDE_DIR}/point.h
+        ${INCLUDE_DIR}/key_state.h
+        ${INCLUDE_DIR}/mouse_state.h
+        ${INCLUDE_DIR}/music.h
+        
         window.cpp
         font.cpp
         renderer.cpp
@@ -40,7 +44,10 @@ set(SOURCE_FILES
         color.cpp
         blend_mode.cpp
         rectangle.cpp
-        point.cpp)
+        point.cpp
+        key_state.cpp
+        mouse_state.cpp
+        music.cpp)
 
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
 add_definitions(-DWIN_EXPORT)

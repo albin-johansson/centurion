@@ -7,9 +7,9 @@ int main(int argc, char** argv) {
   Centurion c;
 
 #ifdef CENTURION_NOAUDIO
-  Log::msg(Category::App, "No audio!");
+  Log::msg("No audio!");
 #else
-  Log::msg(Category::App, "Using audio!");
+  Log::msg("Using audio!");
 #endif
 
   return Catch::Session().run(argc, argv);

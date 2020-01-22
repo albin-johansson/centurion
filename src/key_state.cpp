@@ -11,11 +11,19 @@ KeyState::KeyState() {
   if (!states) {
     throw CenturionException("Failed to obtain key state! Error: " + std::string{SDL_GetError()});
   }
-  assert(nKeys == previousStates.size());
+  assert(static_cast<unsigned long long>(nKeys) == previousStates.size());
   std::fill(previousStates.begin(), previousStates.end(), 0);
 }
 
 KeyState::~KeyState() noexcept = default;
+
+std::unique_ptr<KeyState> KeyState::unique() {
+  return std::make_unique<KeyState>();
+}
+
+std::shared_ptr<KeyState> KeyState::shared() {
+  return std::make_shared<KeyState>();
+}
 
 void KeyState::update() noexcept {
   std::copy(states, states + nKeys, previousStates.begin());

@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <array>
+#include <memory>
 #include <SDL.h>
 #include "centurion_api.h"
 
@@ -29,6 +30,24 @@ class CENTURION_API KeyState final {
    * @since 3.0.0
    */
   CENTURION_API ~KeyState() noexcept;
+
+  /**
+   * Creates and returns a unique pointer to a KeyState instance.
+   *
+   * @return a unique pointer to a KeyState instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::unique_ptr<KeyState> unique();
+
+  /**
+   * Creates and returns a shared pointer to a KeyState instance.
+   *
+   * @return a shared pointer to a KeyState instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::shared_ptr<KeyState> shared();
 
   /**
    * Updates the state of the key state object. Note! SDL_PollEvent isn't invoked by this method.

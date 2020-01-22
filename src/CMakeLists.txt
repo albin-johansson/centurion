@@ -21,6 +21,8 @@ set(SOURCE_FILES
         ${INCLUDE_DIR}/blend_mode.h
         ${INCLUDE_DIR}/message_box.h
         ${INCLUDE_DIR}/color.h
+        ${INCLUDE_DIR}/point.h
+        ${INCLUDE_DIR}/key_state.h
 
         window.cpp
         font.cpp
@@ -38,11 +40,8 @@ set(SOURCE_FILES
         message_box.cpp
         color.cpp
         blend_mode.cpp
-
-        rectangle.cpp
         point.cpp
-        ${INCLUDE_DIR}/point.h
-        )
+        key_state.cpp)
 
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
 add_definitions(-DWIN_EXPORT)

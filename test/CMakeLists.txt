@@ -15,7 +15,8 @@ set(TEST_FILES
         unittests/blend_mode_test.cpp
         unittests/message_box_test.cpp
         unittests/color_test.cpp
-        unittests/point_test.cpp)
+        unittests/point_test.cpp
+        unittests/key_state_test.cpp)
 
 add_executable(${CENTURION_TEST} ${TEST_FILES})
 

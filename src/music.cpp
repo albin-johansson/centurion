@@ -75,7 +75,7 @@ void Music::fade_in(int ms, int nLoops) noexcept {
 void Music::fade_out(int ms) {
   if (is_fading()) { return; }
   if (ms < 0) { ms = 0; }
-  Mix_FadeOutMusic(ms); // FIXME this crashes if the music was started with fade_in
+  Mix_FadeOutMusic(ms);
 }
 
 void Music::set_volume(int volume) noexcept {

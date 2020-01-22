@@ -17,7 +17,8 @@ set(TEST_FILES
         unittests/color_test.cpp
         unittests/point_test.cpp
         unittests/key_state_test.cpp
-        unittests/mouse_state_test.cpp)
+        unittests/mouse_state_test.cpp
+        unittests/music_test.cpp)
 
 add_executable(${CENTURION_TEST} ${TEST_FILES})
 

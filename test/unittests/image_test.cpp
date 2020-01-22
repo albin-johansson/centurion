@@ -1,5 +1,6 @@
-#include <colors.h>
 #include "catch.hpp"
+#include <iostream>
+#include "colors.h"
 #include "image.h"
 #include "window.h"
 #include "renderer.h"
@@ -137,6 +138,14 @@ TEST_CASE("Image::is_target", "[Image]") {
   Renderer renderer{window};
   Image img{renderer, window.get_pixel_format(), TextureAccess::Target, 10, 10};
   CHECK(img.is_target());
+}
+
+TEST_CASE("Image << operator", "[Image]") {
+  Window window;
+  Renderer renderer{window};
+  Image img{renderer, path};
+
+  std::cout << img << "\n";
 }
 
 TEST_CASE("TextureAccess enum values", "[TextureAccess]") {

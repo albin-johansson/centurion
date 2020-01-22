@@ -3,6 +3,7 @@
 #include <type_traits>
 #include <SDL_image.h>
 #include "centurion_exception.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 
@@ -179,13 +180,10 @@ SDL_Texture* Image::get_texture() noexcept {
 }
 
 std::string Image::to_string() const {
-  std::ostringstream address;
-  address << static_cast<void const*>(this);
-
-  const auto w = std::to_string(get_width());
-  const auto h = std::to_string(get_height());
-
-  return "(Image@" + address.str() + " | Width: " + w + ", Height: " + h + ")";
+  const auto address = CenturionUtils::address(this);
+  const auto width = std::to_string(get_width());
+  const auto height = std::to_string(get_height());
+  return "(Image@" + address + " | Width: " + width + ", Height: " + height + ")";
 }
 
 Image::operator SDL_Texture*() const noexcept {
@@ -206,6 +204,11 @@ bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept {
 
 bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept {
   return a != static_cast<SDL_TextureAccess>(b);
+}
+
+std::ostream& operator<<(std::ostream& ostream, const Image& image) {
+  ostream << image.to_string();
+  return ostream;
 }
 
 }

@@ -26,6 +26,7 @@
 #include <string>
 #include <memory>
 #include <cstdint>
+#include <ostream>
 #include <gsl>
 #include <SDL_render.h>
 #include "color.h"
@@ -427,6 +428,16 @@ class CENTURION_API Image final {
    * @since 3.0.0
    */
   CENTURION_API /*implicit*/ operator SDL_Texture*() const noexcept;
+
+  /**
+   * Prints the string representation of an image.
+   *
+   * @param ostream the stream that will be used.
+   * @param image the image that will be used.
+   * @return the output stream.
+   * @since 3.0.0
+   */
+  CENTURION_API friend std::ostream& operator<<(std::ostream& ostream, const Image& image);
 };
 
 }

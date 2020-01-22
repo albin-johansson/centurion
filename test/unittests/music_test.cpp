@@ -26,6 +26,13 @@ TEST_CASE("Music::play", "[Music]") {
   CHECK(!Music::is_fading());
   CHECK(!Music::is_paused());
   CHECK(Music::get_fade_status() == FadeStatus::None);
+
+  Music::halt();
+
+  music.play(Music::loopForever);
+  CHECK(Music::is_playing());
+
+  Music::halt();
 }
 
 TEST_CASE("Music::resume", "[Music]") {
@@ -34,11 +41,16 @@ TEST_CASE("Music::resume", "[Music]") {
   Music music{path};
 
   music.play();
+  CHECK_NOTHROW(Music::resume());
+
   Music::pause();
   CHECK(Music::is_paused());
 
   Music::resume();
   CHECK(Music::is_playing());
+
+  Music::halt();
+  CHECK_NOTHROW(Music::resume());
 }
 
 TEST_CASE("Music::pause", "[Music]") {

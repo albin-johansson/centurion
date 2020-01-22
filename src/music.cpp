@@ -15,6 +15,7 @@ static_assert(std::is_nothrow_move_assignable_v<Music>);
 static_assert(std::is_convertible_v<Music, Mix_Music*>);
 
 const int Music::maxVolume = MIX_MAX_VOLUME;
+const int Music::loopForever = -1;
 
 Music::Music(const std::string& file) {
   music = Mix_LoadMUS(file.c_str());

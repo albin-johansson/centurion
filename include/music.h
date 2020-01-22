@@ -107,6 +107,13 @@ class CENTURION_API Music final {
   CENTURION_API static const int maxVolume;
 
   /**
+   * A constant that can be used to indicate that the music should be looped forever.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API static const int loopForever;
+
+  /**
    * @param file the file path of the music file that will be loaded.
    * @throws CenturionException if the music file cannot be loaded.
    * @since 3.0.0
@@ -203,8 +210,8 @@ class CENTURION_API Music final {
    *
    * @param ms the amount of time for the fade to complete, in milliseconds. A negative value is
    * clamped to 0.
-   * @param nLoops the number of iterations to play the music, a < -1 value will be clamped to
-   * -1, which indicates that the music should be played indefinitely.
+   * @param nLoops the number of iterations to play the music, a value less than -1 will be
+   * clamped to -1, which indicates that the music should be played forever.
    * @since 3.0.0
    */
   CENTURION_API void fade_in(int ms, int nLoops = 1) noexcept;

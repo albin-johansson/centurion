@@ -22,7 +22,6 @@ class CenturionUtils final {
    * @return a string that represents the memory address of the supplied pointer.
    * @since 3.0.0
    */
-
   template<typename T>
   [[nodiscard]] static std::string address(T* ptr) {
     if (ptr) {

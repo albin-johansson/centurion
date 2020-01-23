@@ -6,6 +6,8 @@
 
 namespace centurion {
 
+// TODO check Mix documentation if there are any redundancies
+
 static_assert(std::is_final_v<SoundEffect>);
 
 static_assert(std::is_nothrow_move_constructible_v<SoundEffect>);

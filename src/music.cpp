@@ -1,3 +1,5 @@
+#ifndef CENTURION_NOAUDIO
+
 #include "music.h"
 #include <type_traits>
 #include "centurion_exception.h"
@@ -133,3 +135,5 @@ bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept {
 }
 
 }
+
+#endif

@@ -1,3 +1,5 @@
+#ifndef CENTURION_NOAUDIO
+
 #include "catch.hpp"
 #include "music.h"
 #include "centurion_exception.h"
@@ -248,3 +250,5 @@ TEST_CASE("MusicType enum values", "[Music]") {
   CHECK(MUS_MID == MusicType::MIDI);
   CHECK(MUS_OPUS == MusicType::OPUS);
 }
+
+#endif

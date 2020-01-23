@@ -50,6 +50,7 @@ TEST_CASE("Window smart pointer factory methods", "[Window]") {
     CHECK_NOTHROW(Window::unique(10, 10));
 
     CHECK_NOTHROW(Window::unique(""));
+    CHECK_NOTHROW(Window::unique());
   }
   SECTION("Shared") {
     CHECK_THROWS_AS(Window::shared("", 0, 10), std::invalid_argument);
@@ -61,6 +62,7 @@ TEST_CASE("Window smart pointer factory methods", "[Window]") {
     CHECK_NOTHROW(Window::shared(10, 10));
 
     CHECK_NOTHROW(Window::shared(""));
+    CHECK_NOTHROW(Window::shared());
   }
 }
 

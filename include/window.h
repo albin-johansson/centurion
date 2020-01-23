@@ -160,6 +160,15 @@ class CENTURION_API Window final {
   CENTURION_API static std::unique_ptr<Window> unique(const std::string& title);
 
   /**
+   * Creates and returns a unique pointer to a Window instance.
+   *
+   * @return a unique pointer to a Window instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::unique_ptr<Window> unique();
+
+  /**
    * Creates and returns a shared pointer to a window instance.
    *
    * @param title the title of the window.
@@ -197,6 +206,15 @@ class CENTURION_API Window final {
    */
   [[nodiscard]]
   CENTURION_API static std::shared_ptr<Window> shared(const std::string& title);
+
+  /**
+   * Creates and returns a shared pointer to a Window instance.
+   *
+   * @return a shared pointer to a Window instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::shared_ptr<Window> shared();
 
   /**
    * Makes the window visible. Triggers a window listener update.

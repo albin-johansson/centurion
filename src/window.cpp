@@ -73,6 +73,10 @@ std::unique_ptr<Window> Window::unique(const std::string& title) {
   return std::make_unique<Window>(title);
 }
 
+std::unique_ptr<Window> Window::unique() {
+  return std::make_unique<Window>();
+}
+
 std::shared_ptr<Window> Window::shared(const std::string& title, int width, int height) {
   return std::make_shared<Window>(title, width, height);
 }
@@ -83,6 +87,10 @@ std::shared_ptr<Window> Window::shared(int width, int height) {
 
 std::shared_ptr<Window> Window::shared(const std::string& title) {
   return std::make_shared<Window>(title);
+}
+
+std::shared_ptr<Window> Window::shared() {
+  return std::make_shared<Window>();
 }
 
 void Window::notify_window_listeners() noexcept {

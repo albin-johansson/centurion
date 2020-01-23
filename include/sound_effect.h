@@ -27,6 +27,7 @@
 #pragma once
 #include <cstdint>
 #include <string>
+#include <memory>
 #include <SDL_mixer.h>
 #include "centurion_api.h"
 
@@ -59,7 +60,14 @@ class CENTURION_API SoundEffect final {
    *
    * @since 3.0.0
    */
-  static const int loopIndefinitely;
+  static const int loopForever;
+
+  /**
+   * A constant that represents the maximum possible volume.
+   *
+   * @since 3.0.0
+   */
+  static const int maxVolume;
 
   /**
    * @param file the file path of the audio file.
@@ -93,21 +101,35 @@ class CENTURION_API SoundEffect final {
   CENTURION_API SoundEffect& operator=(SoundEffect&& other) noexcept;
 
   /**
-   * Plays the sound effect.
+   * Creates and returns a unique pointer to a SoundEffect instance.
    *
+   * @param file the file path of the audio file.
+   * @return a unique pointer to a SoundEffect instance.
+   * @throws CenturionException if the audio file cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_API void play() noexcept;
+  [[nodiscard]]
+  CENTURION_API static std::unique_ptr<SoundEffect> unique(const std::string& file);
 
   /**
-   * Loops the sound effect by the specified amount of times.
+   * Creates and returns a shared pointer to a SoundEffect instance.
+   *
+   * @param file the file path of the audio file.
+   * @return a shared pointer to a SoundEffect instance.
+   * @throws CenturionException if the audio file cannot be loaded.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::shared_ptr<SoundEffect> shared(const std::string& file);
+
+  /**
+   * Plays the sound effect.
    *
    * @param nLoops the amount of loops. A negative value indicates that the sound effect should
-   * be looped indefinitely.
+   * be looped forever.
    * @since 3.0.0
-   * @see SoundEffect::loopIndefinitely
    */
-  CENTURION_API void loop(int nLoops) noexcept;
+  CENTURION_API void play(int nLoops = 0) noexcept;
 
   /**
    * Stops the sound effect from playing.
@@ -123,7 +145,7 @@ class CENTURION_API SoundEffect final {
    * @param ms the duration to fade in, in milliseconds.
    * @since 3.0.0
    */
-  CENTURION_API void fade_in(uint32_t ms) noexcept;
+  CENTURION_API void fade_in(int ms) noexcept;
 
   /**
    * Fades out the sound effect. This method has no effect if the supplied duration isn't greater
@@ -132,19 +154,19 @@ class CENTURION_API SoundEffect final {
    * @param ms the duration to fade in, in milliseconds.
    * @since 3.0.0
    */
-  CENTURION_API void fade_out(uint32_t ms) noexcept;
+  CENTURION_API void fade_out(int ms) noexcept;
 
   /**
    * Sets the volume of the sound effect. This method will adjust input values outside
    * the legal range to the closest legal value.
    *
-   * @param volume the volume of the sound effect, in the range [0, MIX_MAX_VOLUME].
+   * @param volume the volume of the sound effect, in the range [0, maxVolume].
    * @since 3.0.0
    */
   CENTURION_API void set_volume(int volume) noexcept;
 
   /**
-   * Returns the current volume of the sound effect.
+   * Returns the current volume of the sound effect. By default, this property is set to 128.
    *
    * @return the current volume of the sound effect.
    * @since 3.0.0

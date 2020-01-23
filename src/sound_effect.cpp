@@ -16,14 +16,14 @@ static_assert(!std::is_copy_assignable_v<SoundEffect>);
 
 static_assert(std::is_convertible_v<SoundEffect, Mix_Chunk*>);
 
-const int SoundEffect::loopIndefinitely = -10;
+const int SoundEffect::loopForever = -10;
+const int SoundEffect::maxVolume = MIX_MAX_VOLUME;
 
 SoundEffect::SoundEffect(const std::string& file) {
   chunk = Mix_LoadWAV(file.c_str());
   if (!chunk) {
     throw CenturionException(SDL_GetError());
   }
-  set_volume(MIX_MAX_VOLUME / 2);
 }
 
 SoundEffect::SoundEffect(SoundEffect&& other) noexcept
@@ -48,6 +48,14 @@ SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept {
   return *this;
 }
 
+std::unique_ptr<SoundEffect> SoundEffect::unique(const std::string& file) {
+  return std::make_unique<SoundEffect>(file);
+}
+
+std::shared_ptr<SoundEffect> SoundEffect::shared(const std::string& file) {
+  return std::make_shared<SoundEffect>(file);
+}
+
 void SoundEffect::activate(int nLoops) noexcept {
   if (channel != undefinedChannel) {
     Mix_PlayChannel(channel, chunk, nLoops);
@@ -56,12 +64,8 @@ void SoundEffect::activate(int nLoops) noexcept {
   }
 }
 
-void SoundEffect::play() noexcept {
-  activate(0);
-}
-
-void SoundEffect::loop(int nLoops) noexcept {
-  if (nLoops < 0) { nLoops = -1; }
+void SoundEffect::play(int nLoops) noexcept {
+  if (nLoops < 0) { nLoops = loopForever; }
   activate(nLoops);
 }
 
@@ -72,7 +76,7 @@ void SoundEffect::stop() noexcept {
   }
 }
 
-void SoundEffect::fade_in(uint32_t ms) noexcept {
+void SoundEffect::fade_in(int ms) noexcept {
   if (ms > 0 && !is_playing()) {
     if (channel != undefinedChannel) {
       Mix_FadeInChannelTimed(channel, chunk, 0, ms, -1);
@@ -82,7 +86,7 @@ void SoundEffect::fade_in(uint32_t ms) noexcept {
   }
 }
 
-void SoundEffect::fade_out(uint32_t ms) noexcept {
+void SoundEffect::fade_out(int ms) noexcept {
   if ((ms > 0) && is_playing()) {
     Mix_FadeOutChannel(channel, ms);
   }

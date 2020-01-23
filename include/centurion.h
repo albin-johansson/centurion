@@ -34,14 +34,20 @@
 #include "blend_mode.h"
 #include "bool_converter.h"
 #include "centurion_exception.h"
+#include "centurion_utils.h"
 #include "color.h"
 #include "colors.h"
 #include "font.h"
 #include "image.h"
 #include "image_generator.h"
+#include "key_state.h"
 #include "log.h"
 #include "message_box.h"
+#include "mouse_state.h"
+#include "music.h"
 #include "paths.h"
+#include "point.h"
+#include "rectangle.h"
 #include "renderer.h"
 #include "sound_effect.h"
 #include "system.h"
@@ -70,6 +76,7 @@ class CENTURION_API Centurion final {
    * @since 3.0.0
    */
   CENTURION_API static void init_sdl();
+
 
   /**
    * Initializes the SDL2_ttf library.

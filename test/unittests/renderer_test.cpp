@@ -246,3 +246,29 @@ TEST_CASE("Renderer::set_target", "[Renderer]") {
   Renderer renderer{window};
   CHECK_NOTHROW(renderer.set_target(nullptr));
 }
+
+TEST_CASE("Renderer::set_color(uint8_t, uint8_t, uint8_t, uint8_t)", "[Renderer]") {
+  Window window;
+  Renderer renderer{window};
+
+  SECTION("Full parameter list") {
+    const uint8_t red = 0xFA;
+    const uint8_t green = 0xBB;
+    const uint8_t blue = 0x39;
+    const uint8_t alpha = 0x1F;
+    renderer.set_color(red, green, blue, alpha);
+
+    const auto color = renderer.get_color();
+
+    CHECK(red == color.get_red());
+    CHECK(green == color.get_green());
+    CHECK(blue == color.get_blue());
+    CHECK(alpha == color.get_alpha());
+  }
+
+  SECTION("Default alpha value") {
+    renderer.set_color(0, 0, 0);
+    const auto color = renderer.get_color();
+    CHECK(0xFF == color.get_alpha());
+  }
+}

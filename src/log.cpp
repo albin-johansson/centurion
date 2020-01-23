@@ -1,7 +1,15 @@
 #include "log.h"
 #include <cstdarg>
+#include <type_traits>
 
 namespace centurion {
+
+static_assert(std::is_final_v<Log>);
+static_assert(!std::is_constructible_v<Log>);
+static_assert(!std::is_copy_constructible_v<Log>);
+static_assert(!std::is_move_constructible_v<Log>);
+static_assert(!std::is_copy_assignable_v<Log>);
+static_assert(!std::is_move_assignable_v<Log>);
 
 void Log::msgf(Category category, Priority prio, const char* fmt, ...) noexcept {
   if (!fmt) { return; }

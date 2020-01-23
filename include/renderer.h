@@ -589,15 +589,6 @@ class CENTURION_API Renderer final {
   CENTURION_API float get_y_scale() const noexcept;
 
   /**
-   * Indicates whether or not clipping is enabled. This is disabled by default.
-   *
-   * @return true if clipping is enabled; false otherwise.
-   * @since 3.0.0
-   */
-  [[nodiscard]]
-  CENTURION_API bool is_clipping_enabled() const noexcept;
-
-  /**
    * Returns the current clipping rectangle, if there is one active.
    *
    * @return the current clipping rectangle; or std::nullopt if there is none.
@@ -701,6 +692,15 @@ class CENTURION_API Renderer final {
    */
   [[nodiscard]]
   CENTURION_API bool is_using_integer_logical_scaling() const noexcept;
+
+  /**
+   * Indicates whether or not clipping is enabled. This is disabled by default.
+   *
+   * @return true if clipping is enabled; false otherwise.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API bool is_clipping_enabled() const noexcept;
 
   /**
    * Returns the currently selected rendering color. Set to black by default.

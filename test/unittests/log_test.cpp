@@ -3,6 +3,17 @@
 
 using namespace centurion;
 
+TEST_CASE("Log methods bad arg resistance", "[Log]") {
+  const char* msg = nullptr;
+  CHECK_NOTHROW(Log::msg(msg));
+  CHECK_NOTHROW(Log::msg(Category::App, msg));
+  CHECK_NOTHROW(Log::msg(Category::App, Priority::Info, msg));
+
+  CHECK_NOTHROW(Log::msgf(msg));
+  CHECK_NOTHROW(Log::msgf(Category::App, msg));
+  CHECK_NOTHROW(Log::msgf(Category::App, Priority::Info, msg));
+}
+
 TEST_CASE("Specific logging category", "[Log]") {
   const auto category = Category::App;
 

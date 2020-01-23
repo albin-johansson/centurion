@@ -112,7 +112,7 @@ class CENTURION_API Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API static void msg(Category category, Priority prio, const char* fmt, ...) noexcept;
+  CENTURION_API static void msgf(Category category, Priority prio, const char* fmt, ...) noexcept;
 
   /**
    * Logs a message.
@@ -122,16 +122,44 @@ class CENTURION_API Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API static void msg(Category category, const char* fmt, ...) noexcept;
+  CENTURION_API static void msgf(Category category, const char* fmt, ...) noexcept;
 
   /**
-   * Logs a message with Category::App and Priority::Info.
+   * Logs a message with the App category and Info priority.
    *
    * @param fmt the formatted string.
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API static void msg(const char* fmt, ...) noexcept;
+  CENTURION_API static void msgf(const char* fmt, ...) noexcept;
+
+  /**
+   * Logs a message.
+   *
+   * @param category the category that the message belongs to.
+   * @param prio the priority of the message.
+   * @param msg the actual message that will be logged.
+   * @since 3.0.0
+   */
+  CENTURION_API static void msg(Category category, Priority prio, const char* msg) noexcept;
+
+
+  /**
+   * Logs a message.
+   *
+   * @param category the category that the message belongs to.
+   * @param msg the actual message that will be logged.
+   * @since 3.0.0
+   */
+  CENTURION_API static void msg(Category category, const char* msg) noexcept;
+
+  /**
+   * Logs a message with the App category and Info priority.
+   *
+   * @param msg the message that will be logged.
+   * @since 3.0.0
+   */
+  CENTURION_API static void msg(const char* msg) noexcept;
 
   /**
    * Sets the priority of all categories.

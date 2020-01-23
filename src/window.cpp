@@ -61,6 +61,30 @@ Window& Window::operator=(Window&& other) noexcept {
   return *this;
 }
 
+std::unique_ptr<Window> Window::unique(const std::string& title, int width, int height) {
+  return std::make_unique<Window>(title, width, height);
+}
+
+std::unique_ptr<Window> Window::unique(int width, int height) {
+  return std::make_unique<Window>(width, height);
+}
+
+std::unique_ptr<Window> Window::unique(const std::string& title) {
+  return std::make_unique<Window>(title);
+}
+
+std::shared_ptr<Window> Window::shared(const std::string& title, int width, int height) {
+  return std::make_shared<Window>(title, width, height);
+}
+
+std::shared_ptr<Window> Window::shared(int width, int height) {
+  return std::make_shared<Window>(width, height);
+}
+
+std::shared_ptr<Window> Window::shared(const std::string& title) {
+  return std::make_shared<Window>(title);
+}
+
 void Window::notify_window_listeners() noexcept {
   const auto& self = *this;
   for (auto* listener : windowListeners) {

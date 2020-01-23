@@ -26,6 +26,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <memory>
 #include <gsl>
 #include <SDL.h>
 #include "centurion_api.h"
@@ -118,6 +119,84 @@ class CENTURION_API Window final {
    */
   [[nodiscard]]
   CENTURION_API Window& operator=(Window&& other) noexcept;
+
+  /**
+   * Creates and returns a unique pointer to a window instance.
+   *
+   * @param title the title of the window.
+   * @param width the width of the window.
+   * @param height the height of the window.
+   * @return a unique pointer to a window instance.
+   * @throws invalid_argument if the supplied width or height values aren't
+   * greater than zero.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::unique_ptr<Window> unique(const std::string& title,
+                                                      int width,
+                                                      int height);
+
+  /**
+   * Creates and returns a unique pointer to a window instance.
+   *
+   * @param width the width of the window.
+   * @param height the height of the window.
+   * @return a unique pointer to a window instance.
+   * @throws invalid_argument if the supplied width or height values aren't
+   * greater than zero.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::unique_ptr<Window> unique(int width, int height);
+
+  /**
+   * Creates and returns a unique pointer to a window instance.
+   *
+   * @param title the title of the window.
+   * @return a unique pointer to a window instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::unique_ptr<Window> unique(const std::string& title);
+
+  /**
+   * Creates and returns a shared pointer to a window instance.
+   *
+   * @param title the title of the window.
+   * @param width the width of the window.
+   * @param height the height of the window.
+   * @return a shared pointer to a window instance.
+   * @throws invalid_argument if the supplied width or height values aren't
+   * greater than zero.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::shared_ptr<Window> shared(const std::string& title,
+                                                      int width,
+                                                      int height);
+
+  /**
+   * Creates and returns a shared pointer to a window instance.
+   *
+   * @param width the width of the window.
+   * @param height the height of the window.
+   * @return a shared pointer to a window instance.
+   * @throws invalid_argument if the supplied width or height values aren't
+   * greater than zero.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::shared_ptr<Window> shared(int width, int height);
+
+  /**
+   * Creates and returns a shared pointer to a window instance.
+   *
+   * @param title the title of the window.
+   * @return a shared pointer to a window instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API static std::shared_ptr<Window> shared(const std::string& title);
 
   /**
    * Makes the window visible. Triggers a window listener update.

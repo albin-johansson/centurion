@@ -39,6 +39,31 @@ TEST_CASE("Window()", "[Window]") {
   CHECK(!window.is_visible());
 }
 
+TEST_CASE("Window smart pointer factory methods", "[Window]") {
+  SECTION("Unique") {
+    CHECK_THROWS_AS(Window::unique("", 0, 10), std::invalid_argument);
+    CHECK_THROWS_AS(Window::unique("", 10, 0), std::invalid_argument);
+    CHECK_NOTHROW(Window::unique("", 10, 10));
+
+    CHECK_THROWS_AS(Window::unique(10, 0), std::invalid_argument);
+    CHECK_THROWS_AS(Window::unique(0, 10), std::invalid_argument);
+    CHECK_NOTHROW(Window::unique(10, 10));
+
+    CHECK_NOTHROW(Window::unique(""));
+  }
+  SECTION("Shared") {
+    CHECK_THROWS_AS(Window::shared("", 0, 10), std::invalid_argument);
+    CHECK_THROWS_AS(Window::shared("", 10, 0), std::invalid_argument);
+    CHECK_NOTHROW(Window::shared("", 10, 10));
+
+    CHECK_THROWS_AS(Window::shared(10, 0), std::invalid_argument);
+    CHECK_THROWS_AS(Window::shared(0, 10), std::invalid_argument);
+    CHECK_NOTHROW(Window::shared(10, 10));
+
+    CHECK_NOTHROW(Window::shared(""));
+  }
+}
+
 TEST_CASE("Window::show", "[Window]") {
   Window window("Foo", 100, 100);
 

@@ -20,7 +20,8 @@ set(TEST_FILES
         unittests/mouse_state_test.cpp
         unittests/music_test.cpp
         unittests/rectangle_test.cpp
-        unittests/centurion_exception_test.cpp)
+        unittests/centurion_exception_test.cpp
+        unittests/error_test.cpp)
 
 add_executable(${CENTURION_TEST} ${TEST_FILES})
 

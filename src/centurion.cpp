@@ -6,34 +6,34 @@ namespace centurion {
 void Centurion::init_sdl() {
 #ifndef CENTURION_NOAUDIO
   if (const auto result = SDL_Init(SDL_INIT_EVERYTHING); result < 0) {
-    throw CenturionException{"Failed to load SDL2! Error: " + std::string{SDL_GetError()}};
+    throw CenturionException{"Failed to load SDL2! " + Error::msg()};
   }
 #else
   if (const auto result = SDL_Init(SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO); result < 0) {
-    throw CenturionException{"Failed to load SDL2! Error: " + std::string{SDL_GetError()}};
+    throw CenturionException{"Failed to load SDL2! " + Error::msg()};
   }
 #endif
 }
 
 void Centurion::init_ttf() {
   if (const auto result = TTF_Init(); result == -1) {
-    throw CenturionException{"Failed to load SDL2_ttf! Error: " + std::string{TTF_GetError()}};
+    throw CenturionException{"Failed to load SDL2_ttf! " + Error::msg()};
   }
 }
 
 void Centurion::init_img() {
   if (const auto flags = IMG_Init(img_flags); !flags) {
-    throw CenturionException{"Failed to load SDL2_image! Error: " + std::string{IMG_GetError()}};
+    throw CenturionException{"Failed to load SDL2_image! " + Error::msg()};
   }
 }
 
 void Centurion::init_mix() {
   if (const auto flags = Mix_Init(mix_flags); !flags) {
-    throw CenturionException{"Failed to init SDL2_mixer! Error: " + std::string{Mix_GetError()}};
+    throw CenturionException{"Failed to init SDL2_mixer! " + Error::msg()};
   }
 
   if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096) == -1) {
-    throw CenturionException{"Failed to open audio! Error: " + std::string{Mix_GetError()}};
+    throw CenturionException{"Failed to open audio! " + Error::msg()};
   }
 }
 

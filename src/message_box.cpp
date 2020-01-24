@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include "centurion_exception.h"
 #include "colors.h"
+#include "error.h"
 
 namespace centurion::messagebox {
 
@@ -95,7 +96,7 @@ int MessageBox::show(SDL_Window* window) {
 
   int button = -1;
   if (SDL_ShowMessageBox(&data, &button) < 0) {
-    throw CenturionException("Failed to show message box! Error: " + std::string{SDL_GetError()});
+    throw CenturionException("Failed to show message box! " + Error::msg());
   }
 
   return button;

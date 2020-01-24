@@ -3,6 +3,7 @@
 #include "sound_effect.h"
 #include <type_traits>
 #include "centurion_exception.h"
+#include "error.h"
 
 namespace centurion {
 
@@ -24,7 +25,7 @@ const int SoundEffect::maxVolume = MIX_MAX_VOLUME;
 SoundEffect::SoundEffect(const std::string& file) {
   chunk = Mix_LoadWAV(file.c_str());
   if (!chunk) {
-    throw CenturionException(SDL_GetError());
+    throw CenturionException(Error::descriptionf());
   }
 }
 

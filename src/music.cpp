@@ -3,6 +3,7 @@
 #include "music.h"
 #include <type_traits>
 #include "centurion_exception.h"
+#include "error.h"
 
 namespace centurion {
 
@@ -22,7 +23,7 @@ const int Music::loopForever = -1;
 Music::Music(const std::string& file) {
   music = Mix_LoadMUS(file.c_str());
   if (!music) {
-    throw CenturionException{"Failed to create music! Error: " + std::string{Mix_GetError()}};
+    throw CenturionException{"Failed to create music! " + Error::msg()};
   }
 }
 

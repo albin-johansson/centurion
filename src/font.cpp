@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <type_traits>
 #include "centurion_exception.h"
+#include "error.h"
 
 namespace centurion {
 
@@ -22,7 +23,7 @@ Font::Font(const std::string& file, int size) : size{size} {
 
   font = TTF_OpenFont(file.c_str(), size);
   if (!font) {
-    throw CenturionException{"Failed to open font! Error: " + std::string{TTF_GetError()}};
+    throw CenturionException{"Failed to open font! " + Error::msg()};
   }
 
   style = TTF_GetFontStyle(font);

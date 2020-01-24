@@ -37,6 +37,7 @@
 #include "centurion_utils.h"
 #include "color.h"
 #include "colors.h"
+#include "error.h"
 #include "font.h"
 #include "image.h"
 #include "image_generator.h"

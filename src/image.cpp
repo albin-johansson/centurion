@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include "centurion_exception.h"
 #include "centurion_utils.h"
+#include "error.h"
 
 namespace centurion {
 
@@ -32,7 +33,7 @@ Image::Image(gsl::not_null<SDL_Renderer*> renderer, const std::string& path) {
 Image::Image(gsl::not_null<SDL_Renderer*> renderer, gsl::not_null<SDL_Surface*> surface) {
   this->texture = SDL_CreateTextureFromSurface(renderer, surface);
   if (!texture) {
-    throw CenturionException{"Failed to create image from surface!"};
+    throw CenturionException{"Failed to create image from surface! " + Error::msg()};
   }
 }
 
@@ -43,7 +44,7 @@ Image::Image(gsl::not_null<SDL_Renderer*> renderer,
              int height) {
   texture = SDL_CreateTexture(renderer, format, static_cast<int>(access), width, height);
   if (!texture) {
-    throw CenturionException{"Failed to create image! Error: " + std::string{SDL_GetError()}};
+    throw CenturionException{"Failed to create image! " + Error::msg()};
   }
 }
 

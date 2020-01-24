@@ -4,8 +4,6 @@
 
 namespace centurion {
 
-static constexpr const char* a = "";
-
 Platform System::get_platform() noexcept {
   const std::string name{SDL_GetPlatform()};
   if (name == "Windows") {

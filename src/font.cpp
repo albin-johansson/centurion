@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <type_traits>
 #include "centurion_exception.h"
+#include "centurion_utils.h"
 #include "error.h"
 
 namespace centurion {
@@ -186,6 +187,11 @@ std::optional<std::string> Font::get_style_name() const noexcept {
 
 Font::operator TTF_Font*() const noexcept {
   return font;
+}
+
+std::ostream& operator<<(std::ostream& stream, const Font& font) {
+  stream << "(Font@" << CenturionUtils::address(&font) << ")";
+  return stream;
 }
 
 }

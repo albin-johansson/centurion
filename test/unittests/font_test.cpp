@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "font.h"
 #include "centurion_exception.h"
+#include <iostream>
 
 using namespace centurion;
 
@@ -11,6 +12,9 @@ static constexpr auto daniel_path = "resources/daniel.ttf";
 TEST_CASE("Font(string&, int)", "[Font]") {
   CHECK_THROWS_AS(Font("", 1), CenturionException);
   CHECK_THROWS_AS(Font("", 0), std::invalid_argument);
+
+  Font font{type_writer_path, 12};
+  std::cout << font << "\n";
 }
 
 TEST_CASE("Font::reset", "[Font]") {

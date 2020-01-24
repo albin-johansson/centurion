@@ -26,6 +26,7 @@
 #include <string>
 #include <optional>
 #include <memory>
+#include <ostream>
 #include <SDL_ttf.h>
 #include "centurion_api.h"
 
@@ -327,7 +328,23 @@ class CENTURION_API Font final {
   [[nodiscard]]
   CENTURION_API int get_string_height(const std::string& s) const noexcept;
 
+  /**
+   * Converts to TTF_Font*.
+   *
+   * @return a pointer to the internal TTF_Font instance.
+   * @since 3.0.0
+   */
   CENTURION_API /*implicit*/ operator TTF_Font*() const noexcept;
+
+  /**
+   * Prints a textual representation of a font.
+   *
+   * @param stream the output stream that will be used.
+   * @param font the font that will be printed.
+   * @return the used output stream.
+   * @since 3.0.0
+   */
+  CENTURION_API friend std::ostream& operator<<(std::ostream& stream, const Font& font);
 
 };
 

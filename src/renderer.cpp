@@ -236,7 +236,7 @@ void Renderer::draw_lines(const std::vector<Point>& points) const noexcept {
   } else {
     // TODO write own method that achieves the same thing to avoid the reinterpret_cast
     const auto* front = reinterpret_cast<const SDL_Point*>(&points.front());
-    SDL_RenderDrawLines(renderer, front, points.size());
+    SDL_RenderDrawLines(renderer, front, static_cast<int>(points.size()));
   }
 }
 

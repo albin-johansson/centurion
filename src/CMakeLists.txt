@@ -60,17 +60,30 @@ if (DEFINED ENV{TRAVIS_TEST})
 endif ()
 
 # Specifies C++ version and compiler warning flags.
-target_compile_options(${CENTURION_LIB} PRIVATE -Wall -Wextra -Wpedantic)
+target_compile_options(${CENTURION_LIB} PRIVATE
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wdouble-promotion
+        -Wswitch-default
+        -Wswitch-enum
+        -Wunused
+        -Wuninitialized
+        -Wsuggest-final-types
+        -Wsuggest-final-methods
+        -Wsuggest-override
+        -Wduplicated-cond
+        -Wconversion)
 set_target_properties(${CENTURION_LIB} PROPERTIES
         VERSION 3.0.0
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         OUTPUT_NAME "Centurion")
 
-target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_INCLUDE_DIR})
-target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
-target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
-target_include_directories(${CENTURION_LIB} PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
+target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
+target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
+target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
+target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 
 target_include_directories(${CENTURION_LIB} PUBLIC ${INCLUDE_DIR})
 target_include_directories(${CENTURION_LIB} PUBLIC ${SOURCE_DIR})

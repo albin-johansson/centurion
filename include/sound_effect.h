@@ -183,6 +183,12 @@ class CENTURION_API SoundEffect final {
   [[nodiscard]]
   CENTURION_API bool is_playing() const noexcept;
 
+  /**
+   * Converts to a Mix_Chunk pointer.
+   *
+   * @return a pointer to the internal Mix_Chunk instance.
+   * @since 3.0.0
+   */
   CENTURION_API /*implicit*/ operator Mix_Chunk*() const noexcept;
 };
 

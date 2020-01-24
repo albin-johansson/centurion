@@ -31,25 +31,30 @@ namespace centurion {
 
 /**
  * A general exception used by the Centurion library.
+ *
+ * @since 3.0.0
  */
 class CENTURION_API CenturionException final : public std::exception {
  private:
   std::string msg = "";
 
  public:
-  CENTURION_API CenturionException();
+  /**
+   * @since 3.0.0
+   */
+  CenturionException() = default;
 
   /**
-   * @param msg the message of the exception.
+   * @param msg the message of the exception. If the pointer is null, the string "N/A" is used.
+   * @since 3.0.0
    */
   CENTURION_API explicit CenturionException(const char* msg);
 
   /**
    * @param msg the message of the exception.
+   * @since 3.0.0
    */
   CENTURION_API explicit CenturionException(const std::string& msg);
-
-  CENTURION_API ~CenturionException() override;
 
   [[nodiscard]]
   CENTURION_API const char* what() const noexcept override;

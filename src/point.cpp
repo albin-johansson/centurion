@@ -13,6 +13,9 @@ static_assert(std::is_nothrow_move_constructible_v<Point>);
 static_assert(std::is_nothrow_copy_assignable_v<Point>);
 static_assert(std::is_nothrow_copy_constructible_v<Point>);
 
+static_assert(std::is_nothrow_default_constructible_v<Point>);
+static_assert(std::is_nothrow_destructible_v<Point>);
+
 Point::Point() noexcept = default;
 
 Point::Point(int x, int y) noexcept : x{x}, y{y} {}
@@ -48,6 +51,9 @@ static_assert(std::is_nothrow_move_constructible_v<FPoint>);
 
 static_assert(std::is_nothrow_copy_assignable_v<FPoint>);
 static_assert(std::is_nothrow_copy_constructible_v<FPoint>);
+
+static_assert(std::is_nothrow_default_constructible_v<FPoint>);
+static_assert(std::is_nothrow_destructible_v<FPoint>);
 
 FPoint::FPoint() noexcept = default;
 

@@ -1,29 +1,34 @@
 #include "message_box.h"
 #include <cstdint>
 #include <utility>
+#include <type_traits>
 #include <SDL.h>
 #include "centurion_exception.h"
 #include "colors.h"
 
 namespace centurion::messagebox {
 
+static_assert(std::is_final_v<ButtonData>);
+static_assert(std::is_nothrow_destructible_v<ButtonData>);
+static_assert(std::is_convertible_v<ButtonData, SDL_MessageBoxButtonData>);
+
 ButtonData::ButtonData(ButtonDataHint hint, int id, std::string text)
     : buttonDataHint{hint}, id{id}, text{std::move(text)} {}
-
-ButtonData::~ButtonData() = default;
 
 ButtonData::operator SDL_MessageBoxButtonData() const noexcept {
   return {static_cast<uint32_t>(buttonDataHint), id, text.c_str()};
 }
 
-ColorScheme::ColorScheme() {
+static_assert(std::is_final_v<ColorScheme>);
+static_assert(std::is_nothrow_default_constructible_v<ColorScheme>);
+static_assert(std::is_nothrow_destructible_v<ColorScheme>);
+
+ColorScheme::ColorScheme() noexcept {
   set_color(ColorType::Background, Colors::black);
   set_color(ColorType::ButtonBorder, Colors::black);
   set_color(ColorType::ButtonBackground, Colors::black);
   set_color(ColorType::ButtonSelected, Colors::black);
 }
-
-ColorScheme::~ColorScheme() noexcept = default;
 
 void ColorScheme::set_color(ColorType type, const Color& color) noexcept {
   scheme.colors[get_index(type)] = color;

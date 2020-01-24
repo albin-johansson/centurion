@@ -108,11 +108,6 @@ class CENTURION_API ButtonData final {
   CENTURION_API ButtonData(ButtonDataHint hint, int id, std::string text);
 
   /**
-   * @since 3.0.0
-   */
-  CENTURION_API ~ButtonData();
-
-  /**
    * Converts the button data into an SDL_MessageBoxButtonData instance.
    *
    * @return an SDL_MessageBoxButtonData instance.
@@ -202,9 +197,7 @@ class CENTURION_API ColorScheme final {
   /**
    * @since 3.0.0
    */
-  CENTURION_API ColorScheme();
-
-  CENTURION_API ~ColorScheme() noexcept;
+  CENTURION_API ColorScheme() noexcept;
 
   /**
    * Sets the color of a color scheme component.

@@ -27,7 +27,6 @@ set(SOURCE_FILES
         ${INCLUDE_DIR}/mouse_state.h
         ${INCLUDE_DIR}/music.h
         ${INCLUDE_DIR}/centurion_utils.h
-        ${INCLUDE_DIR}/input.h
         ${INCLUDE_DIR}/error.h
         window.cpp
         font.cpp
@@ -50,7 +49,6 @@ set(SOURCE_FILES
         key_state.cpp
         mouse_state.cpp
         music.cpp
-        input.cpp
         error.cpp)
 
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})

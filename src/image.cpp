@@ -184,7 +184,7 @@ std::string Image::to_string() const {
   const auto address = CenturionUtils::address(this);
   const auto width = std::to_string(get_width());
   const auto height = std::to_string(get_height());
-  return "(Image@" + address + " | Width: " + width + ", Height: " + height + ")";
+  return "[Image@" + address + " | Width: " + width + ", Height: " + height + "]";
 }
 
 Image::operator SDL_Texture*() const noexcept {
@@ -205,11 +205,6 @@ bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept {
 
 bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept {
   return a != static_cast<SDL_TextureAccess>(b);
-}
-
-std::ostream& operator<<(std::ostream& ostream, const Image& image) {
-  ostream << image.to_string();
-  return ostream;
 }
 
 }

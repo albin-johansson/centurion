@@ -6,10 +6,13 @@ int main(int argc, char** argv) {
   using namespace centurion;
   Centurion c;
 
+  Log::set_priority(Priority::Error);
+  Log::set_priority(Category::Test, Priority::Info);
+
 #ifdef CENTURION_NOAUDIO
-  Log::msg("No audio!");
+  Log::msgf("%s", "No audio!");
 #else
-  Log::msg("Using audio!");
+  Log::msgf("%s", "Using audio!");
 #endif
 
   return Catch::Session().run(argc, argv);

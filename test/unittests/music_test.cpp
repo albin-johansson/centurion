@@ -1,9 +1,9 @@
 #ifndef CENTURION_NOAUDIO
-
 #include "catch.hpp"
 #include "music.h"
 #include "centurion_exception.h"
 #include "timer.h"
+#include "log.h"
 
 using namespace centurion;
 
@@ -211,6 +211,11 @@ TEST_CASE("Music::get_fade_status", "[Music]") {
 TEST_CASE("Music::get_music_type", "[Music]") {
   Music music{path};
   CHECK(music.get_music_type() == MusicType::MP3);
+}
+
+TEST_CASE("Music::to_string", "[Music]") {
+  Music music{path};
+  Log::msgf(Category::Test, "%s", music.to_string().c_str());
 }
 
 TEST_CASE("Music to Mix_Music*", "[Music]") {

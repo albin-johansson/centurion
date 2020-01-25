@@ -104,6 +104,13 @@ class CENTURION_API Log final {
   Log& operator=(Log&&) = delete;
 
   /**
+   * Resets all of the logging priorities.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API static void reset_priorites() noexcept;
+
+  /**
    * Logs a message.
    *
    * @param category the category of the message.
@@ -132,34 +139,6 @@ class CENTURION_API Log final {
    * @since 3.0.0
    */
   CENTURION_API static void msgf(const char* fmt, ...) noexcept;
-
-  /**
-   * Logs a message.
-   *
-   * @param category the category that the message belongs to.
-   * @param prio the priority of the message.
-   * @param msg the actual message that will be logged.
-   * @since 3.0.0
-   */
-  CENTURION_API static void msg(Category category, Priority prio, const char* msg) noexcept;
-
-
-  /**
-   * Logs a message.
-   *
-   * @param category the category that the message belongs to.
-   * @param msg the actual message that will be logged.
-   * @since 3.0.0
-   */
-  CENTURION_API static void msg(Category category, const char* msg) noexcept;
-
-  /**
-   * Logs a message with the App category and Info priority.
-   *
-   * @param msg the message that will be logged.
-   * @since 3.0.0
-   */
-  CENTURION_API static void msg(const char* msg) noexcept;
 
   /**
    * Sets the priority of all categories.

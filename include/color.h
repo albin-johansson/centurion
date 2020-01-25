@@ -25,7 +25,7 @@
 #pragma once
 #include <cstdint>
 #include <utility>
-#include <ostream>
+#include <string>
 #include <SDL.h>
 #include "centurion_api.h"
 
@@ -326,6 +326,15 @@ class CENTURION_API Color final {
   }
 
   /**
+   * Returns a textual representation of the color.
+   *
+   * @return a textual representation of the color.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API std::string to_string() const;
+
+  /**
    * Implicitly converts the the color into an SDL_Color.
    *
    * @return an SDL_Color that mirrors this color.
@@ -396,36 +405,5 @@ inline bool operator!=(const Color& color, const SDL_MessageBoxColor& msgColor) 
 inline bool operator!=(const SDL_MessageBoxColor& msgColor, const Color& color) noexcept {
   return !(msgColor == color);
 }
-
-/**
- * Displays a textual representation of a Centurion color.
- *
- * @param ostream the output stream.
- * @param color the color that will be printed.
- * @return the output stream.
- * @since 3.0.0
- */
-CENTURION_API std::ostream& operator<<(std::ostream& ostream, const Color& color) noexcept;
-
-/**
- * Displays a textual representation of an SDL color.
- *
- * @param ostream the output stream.
- * @param color the color that will be printed.
- * @return the output stream.
- * @since 3.0.0
- */
-CENTURION_API std::ostream& operator<<(std::ostream& ostream, const SDL_Color& sdlColor) noexcept;
-
-/**
- * Displays a textual representation of an SDL message box color.
- *
- * @param ostream the output stream.
- * @param color the color that will be printed.
- * @return the output stream.
- * @since 3.0.0
- */
-CENTURION_API std::ostream& operator<<(std::ostream& ostream,
-                                       const SDL_MessageBoxColor& msgColor) noexcept;
 
 }

@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "color.h"
 #include "colors.h"
-#include <iostream>
+#include "log.h"
 
 using namespace centurion;
 
@@ -170,11 +170,7 @@ TEST_CASE("Color conversions", "[Color]") {
   }
 }
 
-TEST_CASE("Color << operators", "[Color]") {
+TEST_CASE("Color::to_string", "[Color]") {
   const auto color = Color{0x12, 0xFA, 0xCC, 0xAD};
-  const auto sdlColor = SDL_Color{0xBC, 0x64, 0x12, 0xAE};
-  const auto msgColor = SDL_MessageBoxColor{0xEE, 0xCA, 0xA3};
-  std::cout << color << "\n";
-  std::cout << sdlColor << "\n";
-  std::cout << msgColor << "\n";
+  Log::msgf(Category::Test, "%s", color.to_string().c_str());
 }

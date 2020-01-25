@@ -317,6 +317,15 @@ class CENTURION_API Music final {
   CENTURION_API MusicType get_music_type() const noexcept;
 
   /**
+   * Returns a textual representation of the Music instance.
+   *
+   * @return a textual representation of the Music instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API std::string to_string() const;
+
+  /**
    * Converts the Music instance into a pointer to a Mix_Music instance.
    *
    * @return a pointer to the internal Mix_Music instance.
@@ -324,7 +333,6 @@ class CENTURION_API Music final {
    */
   [[nodiscard]]
   CENTURION_API /*implicit*/ operator Mix_Music*() const noexcept;
-
 };
 
 }

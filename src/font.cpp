@@ -185,13 +185,15 @@ std::optional<std::string> Font::get_style_name() const noexcept {
   }
 }
 
-Font::operator TTF_Font*() const noexcept {
-  return font;
+std::string Font::to_string() const {
+  const auto idStr = "Font@" + CenturionUtils::address(this);
+  const auto nameStr = " | Name: " + get_family_name();
+  const auto sizeStr = ", Size: " + std::to_string(get_size());
+  return "[" + idStr + nameStr + sizeStr + "]";
 }
 
-std::ostream& operator<<(std::ostream& stream, const Font& font) {
-  stream << "(Font@" << CenturionUtils::address(&font) << ")";
-  return stream;
+Font::operator TTF_Font*() const noexcept {
+  return font;
 }
 
 }

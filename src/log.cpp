@@ -11,6 +11,10 @@ static_assert(!std::is_move_constructible_v<Log>);
 static_assert(!std::is_copy_assignable_v<Log>);
 static_assert(!std::is_move_assignable_v<Log>);
 
+void Log::reset_priorites() noexcept {
+  SDL_LogResetPriorities();
+}
+
 void Log::msgf(Category category, Priority prio, const char* fmt, ...) noexcept {
   if (!fmt) { return; }
   std::va_list args;
@@ -26,7 +30,7 @@ void Log::msgf(Category category, const char* fmt, ...) noexcept {
   const auto category_id = static_cast<int>(category);
   const auto prio = SDL_LogGetPriority(category_id);
 
-  SDL_LogMessageV(static_cast<int>(category), prio, fmt, args);
+  SDL_LogMessageV(category_id, prio, fmt, args);
 }
 
 void Log::msgf(const char* fmt, ...) noexcept {
@@ -38,31 +42,6 @@ void Log::msgf(const char* fmt, ...) noexcept {
                   static_cast<SDL_LogPriority>(Priority::Info),
                   fmt,
                   args);
-}
-
-void Log::msg(Category category, Priority prio, const char* msg) noexcept {
-  if (!msg) { return; }
-  SDL_LogMessageV(static_cast<int>(category),
-                  static_cast<SDL_LogPriority>(prio),
-                  "%s",
-                  const_cast<char*>(msg));
-}
-
-void Log::msg(Category category, const char* msg) noexcept {
-  if (!msg) { return; }
-
-  const auto category_id = static_cast<int>(category);
-  const auto prio = SDL_LogGetPriority(category_id);
-
-  SDL_LogMessageV(static_cast<int>(category),
-                  static_cast<SDL_LogPriority>(prio),
-                  "%s",
-                  const_cast<char*>(msg));
-}
-
-void Log::msg(const char* msg) noexcept {
-  if (!msg) { return; }
-  SDL_Log("%s", msg);
 }
 
 void Log::set_priority(Category category, Priority prio) noexcept {

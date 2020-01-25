@@ -5,9 +5,9 @@ using namespace centurion;
 
 TEST_CASE("Log methods bad arg resistance", "[Log]") {
   const char* msg = nullptr;
-  CHECK_NOTHROW(Log::msg(msg));
-  CHECK_NOTHROW(Log::msg(Category::App, msg));
-  CHECK_NOTHROW(Log::msg(Category::App, Priority::Info, msg));
+//  CHECK_NOTHROW(Log::msg(msg));
+//  CHECK_NOTHROW(Log::msg(Category::App, msg));
+//  CHECK_NOTHROW(Log::msg(Category::App, Priority::Info, msg));
 
   CHECK_NOTHROW(Log::msgf(msg));
   CHECK_NOTHROW(Log::msgf(Category::App, msg));
@@ -16,9 +16,6 @@ TEST_CASE("Log methods bad arg resistance", "[Log]") {
 
 TEST_CASE("Specific logging category", "[Log]") {
   const auto category = Category::App;
-
-  CHECK(Priority::Info == Log::get_priority(category));
-
   const auto priority = Priority::Debug;
   Log::set_priority(category, priority);
 
@@ -39,6 +36,8 @@ TEST_CASE("Global logging priority", "[Log]") {
   CHECK(priority == Log::get_priority(Category::Input));
   CHECK(priority == Log::get_priority(Category::Test));
   CHECK(priority == Log::get_priority(Category::Misc));
+
+  Log::reset_priorites();
 }
 
 TEST_CASE("Priority enum values", "[Log]") {

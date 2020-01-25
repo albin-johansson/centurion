@@ -90,4 +90,5 @@ script:
   - cd .. # Now we're back in the project directory
 
   - cmake .
+  # - cmake -DCMAKE_BUILD_TYPE=Release .
 #  - make

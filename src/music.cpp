@@ -3,6 +3,7 @@
 #include "music.h"
 #include <type_traits>
 #include "centurion_exception.h"
+#include "centurion_utils.h"
 #include "error.h"
 
 namespace centurion {
@@ -113,6 +114,10 @@ FadeStatus Music::get_fade_status() noexcept {
 
 MusicType Music::get_music_type() const noexcept {
   return static_cast<MusicType>(Mix_GetMusicType(music));
+}
+
+std::string Music::to_string() const {
+  return "[Music@" + CenturionUtils::address(this) + "]";
 }
 
 Music::operator Mix_Music*() const noexcept {

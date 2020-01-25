@@ -7,7 +7,6 @@
 #include "colors.h"
 #include "bool_converter.h"
 #include "point.h"
-#include "rectangle.h"
 
 namespace centurion {
 

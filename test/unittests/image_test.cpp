@@ -1,10 +1,10 @@
 #include "catch.hpp"
-#include <iostream>
 #include "colors.h"
 #include "image.h"
 #include "window.h"
 #include "renderer.h"
 #include "centurion_exception.h"
+#include "log.h"
 
 using namespace centurion;
 
@@ -17,7 +17,6 @@ TEST_CASE("Image(string)", "[Image]") {
   CHECK_THROWS_AS(Image(renderer, "badpath"), CenturionException);
 
   Image img{renderer, path};
-
   CHECK(img.get_width() == 108);
   CHECK(img.get_height() == 108);
 }
@@ -140,12 +139,11 @@ TEST_CASE("Image::is_target", "[Image]") {
   CHECK(img.is_target());
 }
 
-TEST_CASE("Image << operator", "[Image]") {
+TEST_CASE("Image::to_string", "[Image]") {
   Window window;
   Renderer renderer{window};
   Image img{renderer, path};
-
-  std::cout << img << "\n";
+  Log::msgf(Category::Test, "%s", img.to_string().c_str());
 }
 
 TEST_CASE("TextureAccess enum values", "[TextureAccess]") {

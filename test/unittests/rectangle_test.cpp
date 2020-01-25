@@ -1,5 +1,6 @@
 #include "catch.hpp"
 #include "rectangle.h"
+#include "log.h"
 
 using namespace centurion;
 
@@ -269,6 +270,11 @@ TEST_CASE("Rect::get_center_y", "[Rect]") {
   CHECK(rect.get_center_y() == y + (height / 2));
 }
 
+TEST_CASE("Rect::to_string", "[Rect]") {
+  const Rect rect{20, 45, 100, 150};
+  Log::msgf(Category::Test, "%s", rect.to_string().c_str());
+}
+
 TEST_CASE("Rect to SDL_Rect", "[Rect]") {
   const Rect rect{123, 321, 782, 991};
   const SDL_Rect sdlRect = rect;
@@ -535,6 +541,12 @@ TEST_CASE("FRect::get_height", "[FRect]") {
   const FRect rect;
   CHECK(rect.get_height() == 0);
 }
+
+TEST_CASE("FRect::to_string", "[FRect]") {
+  const FRect rect{17.5f, 72.9f, 65.2f, 124.1f};
+  Log::msgf(Category::Test, "%s", rect.to_string().c_str());
+}
+
 
 TEST_CASE("FRect to SDL_FRect", "[FRect]") {
   const FRect rect{120.3f, 89.3f, 569.5f, 124.8f};

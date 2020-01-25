@@ -534,6 +534,15 @@ class CENTURION_API Window final {
   CENTURION_API std::string get_title() const noexcept;
 
   /**
+   * Returns a textual representation of the window.
+   *
+   * @return a textual representation of the window.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API std::string to_string() const;
+
+  /**
    * Implicit conversion to raw SDL_Window pointer.
    *
    * @return a pointer to the SDL_Window representation of the window.

@@ -3,6 +3,7 @@
 #include "window.h"
 #include "renderer.h"
 #include "colors.h"
+#include "log.h"
 
 using namespace centurion;
 
@@ -271,4 +272,10 @@ TEST_CASE("Renderer::set_color(uint8_t, uint8_t, uint8_t, uint8_t)", "[Renderer]
     const auto color = renderer.get_color();
     CHECK(0xFF == color.get_alpha());
   }
+}
+
+TEST_CASE("Renderer::to_string", "[Renderer]") {
+  Window window;
+  Renderer renderer{window};
+  Log::msgf(Category::Test, "%s", renderer.to_string().c_str());
 }

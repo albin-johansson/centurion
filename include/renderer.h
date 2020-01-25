@@ -743,6 +743,15 @@ class CENTURION_API Renderer final {
   CENTURION_API const SDL_FRect& get_translation_viewport() const noexcept;
 
   /**
+   * Returns a textual representation of the renderer.
+   *
+   * @return a textual representation of the renderer.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API std::string to_string() const;
+
+  /**
    * @since 3.0.0
    */
   CENTURION_API /*implicit*/ operator SDL_Renderer*() const noexcept;

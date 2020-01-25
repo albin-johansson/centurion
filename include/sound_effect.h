@@ -184,6 +184,15 @@ class CENTURION_API SoundEffect final {
   CENTURION_API bool is_playing() const noexcept;
 
   /**
+   * Returns a textual representation of the sound effect.
+   *
+   * @return a textual representation of the sound effect.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API std::string to_string() const;
+
+  /**
    * Converts to a Mix_Chunk pointer.
    *
    * @return a pointer to the internal Mix_Chunk instance.

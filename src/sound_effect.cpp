@@ -3,6 +3,7 @@
 #include "sound_effect.h"
 #include <type_traits>
 #include "centurion_exception.h"
+#include "centurion_utils.h"
 #include "error.h"
 
 namespace centurion {
@@ -107,6 +108,12 @@ int SoundEffect::get_volume() const noexcept {
 
 bool SoundEffect::is_playing() const noexcept {
   return (channel != undefinedChannel) && Mix_Playing(channel);
+}
+
+std::string SoundEffect::to_string() const {
+  const auto address = CenturionUtils::address(this);
+  const auto volume = std::to_string(get_volume());
+  return "[SoundEffect@" + address + " | Volume: " + volume + "]";
 }
 
 SoundEffect::operator Mix_Chunk*() const noexcept {

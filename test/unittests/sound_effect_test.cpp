@@ -4,6 +4,7 @@
 #include "sound_effect.h"
 #include "centurion_exception.h"
 #include "timer.h"
+#include "log.h"
 
 using namespace centurion;
 
@@ -130,6 +131,11 @@ TEST_CASE("SoundEffect::is_playing", "[SoundEffect]") {
   CHECK(!sound.is_playing());
   sound.play(2);
   CHECK(sound.is_playing());
+}
+
+TEST_CASE("SoundEffect::to_string", "[SoundEffect]") {
+  SoundEffect sound{path};
+  Log::msgf(Category::Test, "%s", sound.to_string().c_str());
 }
 
 #endif

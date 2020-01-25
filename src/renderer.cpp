@@ -7,6 +7,7 @@
 #include "colors.h"
 #include "bool_converter.h"
 #include "point.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 
@@ -427,6 +428,15 @@ std::unique_ptr<Image> Renderer::create_image(const std::string& s, const Font& 
   SDL_FreeSurface(surface);
 
   return std::make_unique<Image>(texture);
+}
+
+std::string Renderer::to_string() const {
+  const auto address = CenturionUtils::address(this);
+  const auto owidth = std::to_string(get_output_width());
+  const auto oheight = std::to_string(get_output_height());
+  return "[Renderer@" + address
+      + " | Output width: " + owidth
+      + ", Output height: " + oheight + "]";
 }
 
 Renderer::operator SDL_Renderer*() const noexcept {

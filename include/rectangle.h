@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <SDL.h>
 #include "centurion_api.h"
 #include "point.h"
@@ -178,6 +179,15 @@ class CENTURION_API Rect final {
   [[nodiscard]]
   CENTURION_API int get_height() const noexcept;
 
+  /**
+   * Returns a textual representation of the rectangle.
+   *
+   * @return a textual representation of the rectangle.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API std::string to_string() const;
+
   [[nodiscard]]
   CENTURION_API /*implicit*/ operator const SDL_Rect&() const noexcept;
 
@@ -354,6 +364,15 @@ class FRect final {
    */
   [[nodiscard]]
   CENTURION_API float get_height() const noexcept;
+
+  /**
+   * Returns a textual representation of the rectangle.
+   *
+   * @return a textual representation of the rectangle.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API std::string to_string() const;
 
   /**
    * Returns a reference to the internal SDL_FRect instance.

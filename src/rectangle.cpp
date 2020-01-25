@@ -89,6 +89,14 @@ int Rect::get_center_y() const noexcept {
   return get_y() + (get_height() / 2);
 }
 
+std::string Rect::to_string() const {
+  const auto x = std::to_string(get_x());
+  const auto y = std::to_string(get_y());
+  const auto w = std::to_string(get_width());
+  const auto h = std::to_string(get_height());
+  return "[Rect | X: " + x + ", Y: " + y + ", Width: " + w + ", Height: " + h + "]";
+}
+
 Rect::operator const SDL_Rect&() const noexcept {
   return rect;
 }
@@ -176,6 +184,14 @@ float FRect::get_width() const noexcept {
 
 float FRect::get_height() const noexcept {
   return rect.h;
+}
+
+std::string FRect::to_string() const {
+  const auto x = std::to_string(get_x());
+  const auto y = std::to_string(get_y());
+  const auto w = std::to_string(get_width());
+  const auto h = std::to_string(get_height());
+  return "[FRect | X: " + x + ", Y: " + y + ", Width: " + w + ", Height: " + h + "]";
 }
 
 FRect::operator const SDL_FRect&() const noexcept {

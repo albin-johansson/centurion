@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include "window_listener.h"
 #include "bool_converter.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 
@@ -312,6 +313,13 @@ uint32_t Window::get_pixel_format() const noexcept {
 
 std::string Window::get_title() const noexcept {
   return SDL_GetWindowTitle(window);
+}
+
+std::string Window::to_string() const {
+  const auto address = CenturionUtils::address(this);
+  const auto width = std::to_string(get_width());
+  const auto height = std::to_string(get_height());
+  return "[Window@" + address + " | Width: " + width + ", Height: " + height + "]";
 }
 
 Window::operator SDL_Window*() const noexcept {

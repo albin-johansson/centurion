@@ -38,6 +38,10 @@ int Point::get_y() const noexcept {
   return y;
 }
 
+std::string Point::to_string() const {
+  return "[Point | X: " + std::to_string(x) + ", Y: " + std::to_string(y) + "]";
+}
+
 Point::operator SDL_Point() const noexcept {
   return {x, y};
 }
@@ -75,6 +79,10 @@ float FPoint::get_x() const noexcept {
 
 float FPoint::get_y() const noexcept {
   return y;
+}
+
+std::string FPoint::to_string() const {
+  return "[FPoint | X: " + std::to_string(x) + ", Y: " + std::to_string(y) + "]";
 }
 
 FPoint::operator SDL_FPoint() const noexcept {

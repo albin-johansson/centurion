@@ -23,6 +23,7 @@
  */
 
 #pragma once
+#include <string>
 #include <SDL.h>
 #include "centurion_api.h"
 
@@ -94,6 +95,15 @@ class CENTURION_API Point final {
    */
   [[nodiscard]]
   CENTURION_API int get_y() const noexcept;
+
+  /**
+   * Returns a textual representation of the Point instance.
+   *
+   * @return a textual representation of the Point instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API std::string to_string() const;
 
   /**
    * Converts the point into an SDL_Point.
@@ -172,6 +182,15 @@ class CENTURION_API FPoint final {
    */
   [[nodiscard]]
   CENTURION_API float get_y() const noexcept;
+
+  /**
+   * Returns a textual representation of the Point instance.
+   *
+   * @return a textual representation of the Point instance.
+   * @since 3.0.0
+   */
+  [[nodiscard]]
+  CENTURION_API std::string to_string() const;
 
   /**
    * Converts the point into an SDL_FPoint.

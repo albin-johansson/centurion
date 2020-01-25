@@ -1,5 +1,6 @@
 #include "catch.hpp"
 #include "point.h"
+#include "log.h"
 
 using namespace centurion;
 
@@ -42,6 +43,11 @@ TEST_CASE("Point::set_y", "[Point]") {
   point.set_y(y);
 
   CHECK(y == point.get_y());
+}
+
+TEST_CASE("Point::to_string", "[Point]") {
+  const Point point{27, 82};
+  Log::msgf(Category::Test, "%s", point.to_string().c_str());
 }
 
 TEST_CASE("Point::operator SDL_Point", "[Point]") {
@@ -93,6 +99,11 @@ TEST_CASE("FPoint::set_y", "[Point]") {
   point.set_y(y);
 
   CHECK(y == point.get_y());
+}
+
+TEST_CASE("FPoint::to_string", "[FPoint]") {
+  const FPoint point{45.5f, 77.2f};
+  Log::msgf(Category::Test, "%s", point.to_string().c_str());
 }
 
 TEST_CASE("FPoint operator SDL_FPoint", "[Point]") {

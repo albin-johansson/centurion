@@ -1,4 +1,4 @@
-# Centurion ![Centurion](bin/centurion_icon.png) [![version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://semver.org) [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) 
+# Centurion ![Centurion](bin/centurion_icon.png) [![version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://semver.org) [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) 
 
 
 Centurion is a small wrapper library for [SDL2](https://www.libsdl.org/index.php), written in C++. The main purpose of Centurion is to provide a modern object-oriented take on SDL2, which is a C library. However, it's important to note that Centurion is __not__ meant to cover the entire SDL2 library. Instead, Centurion is designed to be used and compatible with native SDL2 enums, structs, etc.
@@ -22,11 +22,9 @@ The following are the tools and dependencies used when developing the Centurion 
 * **CLion 2019.3.2**
 
 ### Installing Centurion
-TODO...
+Download the latest release of the library. Include the header files in the `include` directory in your project and copy the `libCenturion.dll` file (along with the rest of the SDL2 binaries) to your binaries. After that, you're ready to start using the Centurion library!
 
 ### Using Centurion
-All of the classes in Centurion reside in the `centurion` namespace.
-
 Before you can start using components found in the Centurion library, you must initialise the library! Here's an example of how you would initialise and subsequently close the library.
 ```c++
 // main.cpp
@@ -39,7 +37,7 @@ static void run() {
   // ...
 }
 
-int main(int, char**) { // SDL2 requires this signature of main
+int main(int, char**) {
   Centurion c;
   run();
   return 0;

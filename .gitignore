@@ -42,6 +42,3 @@
 cmake-build-debug/
 cmake-build-release/
 .idea/
-
-# Ignore the Centurion DLL, since it's updated all the time
-libCenturion.dll

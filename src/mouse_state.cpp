@@ -14,6 +14,8 @@ static_assert(std::is_nothrow_move_assignable_v<MouseState>);
 static_assert(std::is_nothrow_copy_constructible_v<MouseState>);
 static_assert(std::is_nothrow_copy_assignable_v<MouseState>);
 
+static_assert(std::is_base_of_v<IWindowListener, MouseState>);
+
 MouseState::MouseState() noexcept = default;
 
 std::unique_ptr<MouseState> MouseState::unique() {

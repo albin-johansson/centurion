@@ -37,7 +37,7 @@ class Window;
  */
 class CENTURION_API IWindowListener {
  public:
-  CENTURION_API virtual ~IWindowListener() = default;
+  virtual ~IWindowListener() = default;
 
   /**
    * Invoked when the window is updated.

@@ -91,6 +91,6 @@ script:
 
   - cmake .
   - cmake -DCMAKE_BUILD_TYPE=Release --build .
-  # - ctest
+  - ctest .
 
   # TODO run ./Centurion_test in the right place

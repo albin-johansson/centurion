@@ -9,7 +9,7 @@ notifications:
 env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    - TRAVIS_TEST=true
+    # - TRAVIS_TEST=true
 
 addons:
   apt:
@@ -90,9 +90,7 @@ script:
   - cd .. # Now we're back in the project directory
 
   - cmake .
-  - cmake -DCMAKE_BUILD_TYPE=Release --build . 
-  # - ./Centurion_test
-  # - make
+  - cmake -DCMAKE_BUILD_TYPE=Release --build .
   # - ctest
-  # - cmake -DCMAKE_BUILD_TYPE=Release .
-#  - make
+
+  # TODO run ./Centurion_test in the right place

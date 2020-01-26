@@ -54,7 +54,7 @@ set(SOURCE_FILES
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
 add_definitions(-DWIN_EXPORT)
 
-if (DEFINED ENV{TRAVIS_TEST})
+if (DEFINED ENV{TRAVIS})
     # The Travis CI virtual machines can't handle the audio stuff
     target_compile_definitions(${CENTURION_LIB} PUBLIC CENTURION_NOAUDIO)
 endif ()

@@ -90,7 +90,7 @@ script:
   - cd .. # Now we're back in the project directory
 
   - cmake .
-  - cmake --build .
+  - cmake -DCMAKE_BUILD_TYPE=Release --build . 
   # - ./Centurion_test
   # - make
   # - ctest

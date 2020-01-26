@@ -1,5 +1,5 @@
 dist: trusty
-sudo: required
+os: linux
 language: cpp
 compiler: gcc
 
@@ -91,6 +91,6 @@ script:
 
   - cmake .
   - cmake -DCMAKE_BUILD_TYPE=Release --build .
-  - ctest .
+  - make test
 
   # TODO run ./Centurion_test in the right place

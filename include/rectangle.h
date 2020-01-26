@@ -206,7 +206,7 @@ class CENTURION_API Rect final {
  *
  * @since 3.0.0
  */
-class FRect final {
+class CENTURION_API FRect final {
  private:
   SDL_FRect rect{0, 0, 0, 0};
 

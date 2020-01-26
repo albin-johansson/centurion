@@ -1,16 +1,20 @@
 #pragma once
 #include <memory>
 #include "centurion_api.h"
+#include "window_listener.h"
 
 namespace centurion {
 
 /**
  * The MouseState class provides information about the mouse state, which is an alternative to
- * dealing with mouse events.
+ * dealing with mouse events. This class implements the IWindowListener interface. Important
+ * note! If you register a MouseState instance as a window listener, you'll need to set the
+ * logical size of the window manually, otherwise you'll end up with unexpected behaviour.
  *
+ * @see IWindowListener
  * @since 3.0.0
  */
-class CENTURION_API MouseState final {
+class CENTURION_API MouseState final : public IWindowListener {
  private:
   int mouseX = 0;
   int mouseY = 0;
@@ -33,6 +37,8 @@ class CENTURION_API MouseState final {
    */
   CENTURION_API MouseState() noexcept;
 
+  ~MouseState() override = default;
+
   /**
    * Creates and returns a unique pointer to a MouseState instance.
    *
@@ -50,6 +56,8 @@ class CENTURION_API MouseState final {
    */
   [[nodiscard]]
   CENTURION_API static std::shared_ptr<MouseState> shared();
+
+  void window_updated(const Window& window) noexcept override;
 
   /**
    * Updates the mouse state.

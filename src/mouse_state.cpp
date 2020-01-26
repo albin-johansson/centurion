@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <type_traits>
 #include <SDL.h>
+#include "window.h"
 
 namespace centurion {
 
@@ -21,6 +22,11 @@ std::unique_ptr<MouseState> MouseState::unique() {
 
 std::shared_ptr<MouseState> MouseState::shared() {
   return std::make_shared<MouseState>();
+}
+
+void MouseState::window_updated(const Window& window) noexcept {
+  windowWidth = window.get_width();
+  windowHeight = window.get_height();
 }
 
 void MouseState::update() noexcept {

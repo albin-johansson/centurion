@@ -72,6 +72,18 @@ TEST_CASE("Rect::set_height", "[Rect]") {
   CHECK(height == rect.get_height());
 }
 
+TEST_CASE("Rect::set", "[Rect]") {
+  Rect rect;
+  const Rect other{702, 234, 50, 27};
+
+  rect.set(other);
+
+  CHECK(rect.get_x() == other.get_x());
+  CHECK(rect.get_y() == other.get_y());
+  CHECK(rect.get_width() == other.get_width());
+  CHECK(rect.get_height() == other.get_height());
+}
+
 TEST_CASE("Rect::intersects", "[Rect]") {
   const Rect rect{100, 100, 100, 100};
   CHECK(rect.intersects(rect));
@@ -344,6 +356,18 @@ TEST_CASE("FRect::set_height", "[FRect]") {
   CHECK(rect.get_height() == height);
 }
 
+TEST_CASE("FRect::set", "[FRect]") {
+  FRect rect;
+  const FRect other{123.6f, 738.7f, 192.9f, 91.3f};
+
+  rect.set(other);
+
+  CHECK(rect.get_x() == other.get_x());
+  CHECK(rect.get_y() == other.get_y());
+  CHECK(rect.get_width() == other.get_width());
+  CHECK(rect.get_height() == other.get_height());
+}
+
 TEST_CASE("FRect::intersects", "[FRect]") {
   const FRect rect{100.0f, 100.0f, 100.0f, 100.0f};
   CHECK(rect.intersects(rect));
@@ -352,9 +376,9 @@ TEST_CASE("FRect::intersects", "[FRect]") {
     const FRect left{rect.get_x() - rect.get_width(), rect.get_y(), 10, 10};
     const FRect top{rect.get_x(), rect.get_y() - rect.get_height(), 10, 10};
     const FRect right{rect.get_x() + rect.get_width(),
-                     rect.get_y(),
-                     rect.get_width(),
-                     rect.get_height()};
+                      rect.get_y(),
+                      rect.get_width(),
+                      rect.get_height()};
     const FRect bottom{rect.get_x(), rect.get_y() + rect.get_height(), 10, 10};
 
     CHECK(!left.intersects(rect));
@@ -547,6 +571,26 @@ TEST_CASE("FRect::to_string", "[FRect]") {
   Log::msgf(Category::Test, "%s", rect.to_string().c_str());
 }
 
+TEST_CASE("FRect::equals", "[FRect]") {
+  SECTION("Reflexivity") {
+    const FRect rect{81.0f, 92.3f, 24.3f, 12.3f};
+    CHECK(FRect::equals(rect, rect));
+    CHECK(FRect::equals(rect, rect, 0));
+    CHECK(FRect::equals(rect, rect, -1));
+  }
+
+  SECTION("Exclusive epsilon range") {
+    const FRect first{10, 10, 10, 10};
+    const FRect other{11, 10, 10, 10};
+    CHECK(!FRect::equals(first, other, 1));
+  }
+
+  SECTION("In-range check") {
+    const FRect first{10, 10, 10, 10};
+    const FRect other{10.5f, 10, 10, 10};
+    CHECK(FRect::equals(first, other, 1));
+  }
+}
 
 TEST_CASE("FRect to SDL_FRect", "[FRect]") {
   const FRect rect{120.3f, 89.3f, 569.5f, 124.8f};
@@ -555,4 +599,88 @@ TEST_CASE("FRect to SDL_FRect", "[FRect]") {
   CHECK(rect.get_y() == sdlRect.y);
   CHECK(rect.get_width() == sdlRect.w);
   CHECK(rect.get_height() == sdlRect.h);
+}
+
+TEST_CASE("operator==(Rect&, Rect&)", "[Rect]") {
+  SECTION("Reflexivity") {
+    const Rect rect{22, 34, 85, 91};
+    CHECK(rect == rect);
+  }
+
+  SECTION("Equal rectangles") {
+    const Rect first{123, 623, 82, 9912};
+    const Rect other{first};
+    CHECK(first == other);
+    CHECK(other == first);
+  }
+
+  SECTION("Non-equal rectangles") {
+    const Rect first{123, 623, 82, 9912};
+    const Rect other{77, 23, 2712, 933};
+    CHECK(!(first == other));
+    CHECK(!(other == first));
+  }
+}
+
+TEST_CASE("operator!=(Rect&, Rect&)", "[Rect]") {
+  SECTION("Self test") {
+    const Rect rect;
+    CHECK(!(rect != rect));
+  }
+
+  SECTION("Equal rectangles") {
+    const Rect first{99, 23, 74, 10};
+    const Rect other{first};
+    CHECK(!(first != other));
+    CHECK(!(other != first));
+  }
+
+  SECTION("Different rectangles") {
+    const Rect first{-45, 92, 24, 882};
+    const Rect other{821, 223, 112, 72};
+    CHECK(first != other);
+    CHECK(other != first);
+  }
+}
+
+TEST_CASE("operator==(FRect&, FRect&)", "[FRect]") {
+  SECTION("Reflexivity") {
+    const FRect rect{18.2f, 57.7f, 56.9f, 122.4f};
+    CHECK(rect == rect);
+  }
+
+  SECTION("Equal rectangles") {
+    const FRect first{782.2f, 112.4f, 123.3f, 558.8f};
+    const FRect other{first};
+    CHECK(first == other);
+    CHECK(other == first);
+  }
+
+  SECTION("Non-equal rectangles") {
+    const FRect first{12.2f, 821.3f, 302.3f, 199.2f};
+    const FRect other{82.2f, -12.3f, 278.2f, 771.3f};
+    CHECK(!(first == other));
+    CHECK(!(other == first));
+  }
+}
+
+TEST_CASE("operator!=(FRect&, FRect&)", "[FRect]") {
+  SECTION("Self test") {
+    const FRect rect;
+    CHECK(!(rect != rect));
+  }
+
+  SECTION("Equal rectangles") {
+    const FRect first{5.3f, 78.3f, 824.3f, 792.7f};
+    const FRect other{first};
+    CHECK(!(first != other));
+    CHECK(!(other != first));
+  }
+
+  SECTION("Different rectangles") {
+    const FRect first{10.5f, 20.1f, 50.9f, 29.2f};
+    const FRect other{59.2f, 82.4f, 88.2f, 812.4f};
+    CHECK(first != other);
+    CHECK(other != first);
+  }
 }

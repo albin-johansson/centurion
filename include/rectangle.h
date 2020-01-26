@@ -65,6 +65,14 @@ class CENTURION_API Rect final {
   CENTURION_API void set_height(int height) noexcept;
 
   /**
+   * Copies all of the components of the supplied rectangle.
+   *
+   * @param other the rectangle that will be copied.
+   * @since 3.1.0
+   */
+  CENTURION_API void set(const Rect& other) noexcept;
+
+  /**
    * Indicates whether or not the supplied rectangle intersects this rectangle.
    *
    * @param other the rectangle that will be checked with this rectangle.
@@ -252,6 +260,14 @@ class FRect final {
   CENTURION_API void set_height(float height) noexcept;
 
   /**
+   * Copies all of the components of the supplied rectangle.
+   *
+   * @param other the rectangle that will be copied.
+   * @since 3.1.0
+   */
+  CENTURION_API void set(const FRect& other) noexcept;
+
+  /**
    * Indicates whether or not the rectangle intersects the supplied rectangle.
    *
    * @param other the rectangle to check for an intersection with.
@@ -281,6 +297,24 @@ class FRect final {
    */
   [[nodiscard]]
   CENTURION_API bool contains(FPoint point) const noexcept;
+
+  /**
+   * Indicates whether or not two rectangles are considered to be equal. This method allows for
+   * an explicit epsilon value, unlike the overloaded ==-operator for FRect instances. In order
+   * for two rectangles to be considered equal, the absolute difference of the respective
+   * components of the rectangles must be in the range [0, epsilon).
+   *
+   * @param lhs the left-hand side rectangle.
+   * @param rhs the right-hand side rectangle.
+   * @param epsilon the exclusive limit that determines the maximum allowed difference between the
+   * component values of the rectangles. A negative value is capped to zero.
+   * @return true if the two rectangles are considered to be the same; false otherwise.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  CENTURION_API static bool equals(const FRect& lhs,
+                                   const FRect& rhs,
+                                   float epsilon = 0.0001f) noexcept;
 
   /**
    * Indicates whether or not the rectangle has an area. A rectangle has an area if its width and
@@ -383,5 +417,52 @@ class FRect final {
   [[nodiscard]]
   CENTURION_API /*implicit*/ operator const SDL_FRect&() const noexcept;
 };
+
+/**
+ * Indicates whether or not two rectangles are the same.
+ *
+ * @param lhs the left-hand side rectangle.
+ * @param rhs the right-hand side rectangle.
+ * @return true if the rectangle have the same components; false otherwise.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator==(const Rect& lhs, const Rect& rhs) noexcept;
+
+/**
+ * Indicates whether or not two rectangles aren't the same.
+ *
+ * @param lhs the left-hand side rectangle.
+ * @param rhs the right-hand side rectangle.
+ * @return true if the rectangles aren't the same; false otherwise.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator!=(const Rect& lhs, const Rect& rhs) noexcept;
+
+/**
+ * Indicates whether or not two rectangles are the same. Note! The implementation allows for
+ * a small difference in the component values (an epsilon value). However, if you need to be
+ * explicit about the precision, use the FRect::equals method. Note, this operator is implemented
+ * by simply delegating to the FRect::equals method, using the default epsilon value.
+ *
+ * @param lhs the left-hand side rectangle.
+ * @param rhs the right-hand side rectangle.
+ * @return true if the rectangle have the same components; false otherwise.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator==(const FRect& lhs, const FRect& rhs) noexcept;
+
+/**
+ * Indicates whether or not two rectangles aren't the same.
+ *
+ * @param lhs the left-hand side rectangle.
+ * @param rhs the right-hand side rectangle.
+ * @return true if the rectangles aren't the same; false otherwise.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator!=(const FRect& lhs, const FRect& rhs) noexcept;
 
 }

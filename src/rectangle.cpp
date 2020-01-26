@@ -1,5 +1,6 @@
 #include "rectangle.h"
 #include <type_traits>
+#include <cmath>
 #include <SDL.h>
 
 namespace centurion {
@@ -36,6 +37,10 @@ void Rect::set_width(int width) noexcept {
 
 void Rect::set_height(int height) noexcept {
   rect.h = height;
+}
+
+void Rect::set(const Rect& other) noexcept {
+  rect = other.rect;
 }
 
 bool Rect::intersects(const Rect& other) const noexcept {
@@ -135,6 +140,10 @@ void FRect::set_height(float height) noexcept {
   rect.h = height;
 }
 
+void FRect::set(const FRect& other) noexcept {
+  rect = other.rect;
+}
+
 bool FRect::intersects(const FRect& other) const noexcept {
   return !(get_x() >= other.get_max_x()
       || get_max_x() <= other.get_x()
@@ -148,6 +157,15 @@ bool FRect::contains(float px, float py) const noexcept {
 
 bool FRect::contains(FPoint point) const noexcept {
   return contains(point.get_x(), point.get_y());
+}
+
+bool FRect::equals(const FRect& lhs, const FRect& rhs, float epsilon) noexcept {
+  if (&lhs == &rhs) { return true; }
+  if (epsilon < 0) { epsilon = 0; }
+  return std::abs(lhs.get_x() - rhs.get_x()) < epsilon &&
+      std::abs(lhs.get_y() - rhs.get_y()) < epsilon &&
+      std::abs(lhs.get_width() - rhs.get_width()) < epsilon &&
+      std::abs(lhs.get_height() - rhs.get_height()) < epsilon;
 }
 
 bool FRect::has_area() const noexcept {
@@ -196,6 +214,26 @@ std::string FRect::to_string() const {
 
 FRect::operator const SDL_FRect&() const noexcept {
   return rect;
+}
+
+bool operator==(const Rect& lhs, const Rect& rhs) noexcept {
+  if (&lhs == &rhs) { return true; }
+  return lhs.get_x() == rhs.get_x() &&
+      lhs.get_y() == rhs.get_y() &&
+      lhs.get_width() == rhs.get_width() &&
+      lhs.get_height() == rhs.get_height();
+}
+
+bool operator==(const FRect& lhs, const FRect& rhs) noexcept {
+  return FRect::equals(lhs, rhs);
+}
+
+bool operator!=(const Rect& lhs, const Rect& rhs) noexcept {
+  return !(lhs == rhs);
+}
+
+bool operator!=(const FRect& lhs, const FRect& rhs) noexcept {
+  return !(lhs == rhs);
 }
 
 }

@@ -91,7 +91,7 @@ script:
 
   - cmake .
   - cmake --build .
-  - ./Centurion_test
+  # - ./Centurion_test
   # - make
   # - ctest
   # - cmake -DCMAKE_BUILD_TYPE=Release .

@@ -33,7 +33,7 @@
 
 namespace centurion {
 
-class CENTURION_API IWindowListener;
+class IWindowListener;
 
 /**
  * The Window class is a wrapper around an SDL_Window instance. Window instances can't be copied.

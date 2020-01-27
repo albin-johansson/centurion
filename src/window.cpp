@@ -18,6 +18,7 @@ static_assert(!std::is_copy_constructible_v<Window>);
 
 static_assert(std::is_convertible_v<Window, SDL_Window*>);
 static_assert(std::is_default_constructible_v<Window>);
+static_assert(std::is_nothrow_destructible_v<Window>);
 
 Window::Window(const std::string& title, int width, int height) {
   if ((width < 1) || (height < 1)) {
@@ -120,6 +121,16 @@ void Window::center() noexcept {
 
 void Window::raise() noexcept {
   SDL_RaiseWindow(window);
+  notify_window_listeners();
+}
+
+void Window::maximise() noexcept {
+  SDL_MaximizeWindow(window);
+  notify_window_listeners();
+}
+
+void Window::minimise() noexcept {
+  SDL_MinimizeWindow(window);
   notify_window_listeners();
 }
 
@@ -257,7 +268,16 @@ float Window::get_brightness() const noexcept {
 }
 
 int Window::get_id() const noexcept {
-  return SDL_GetWindowID(window);
+  return static_cast<int>(SDL_GetWindowID(window));
+}
+
+std::optional<int> Window::get_display_index() const noexcept {
+  const auto index = SDL_GetWindowDisplayIndex(window);
+  if (index != -1) {
+    return index;
+  } else {
+    return std::nullopt;
+  }
 }
 
 int Window::get_x() const noexcept {

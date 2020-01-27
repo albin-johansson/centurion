@@ -27,6 +27,7 @@
 #include <vector>
 #include <utility>
 #include <memory>
+#include <optional>
 #include <gsl>
 #include <SDL.h>
 #include "centurion_api.h"
@@ -243,6 +244,20 @@ class CENTURION_API Window final {
    * @since 3.0.0
    */
   CENTURION_API void raise() noexcept;
+
+  /**
+   * Maximises the window. Triggers a window listener update.
+   *
+   * @since 3.1.0
+   */
+  CENTURION_API void maximise() noexcept;
+
+  /**
+   * Minimises the window. Triggers a window listener update.
+   *
+   * @since 3.1.0
+   */
+  CENTURION_API void minimise() noexcept;
 
   /**
    * Adds a window listener to the window. Null listener are always silently ignored. The window
@@ -469,6 +484,16 @@ class CENTURION_API Window final {
    */
   [[nodiscard]]
   CENTURION_API int get_id() const noexcept;
+
+  /**
+   * Returns the display index associated with the window.
+   *
+   * @return the display index associated with the window; std::nullopt if the display index cannot
+   * be obtained.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  CENTURION_API std::optional<int> get_display_index() const noexcept;
 
   /**
    * Returns the current position of the window.

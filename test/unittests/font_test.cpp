@@ -4,6 +4,7 @@
 #include "log.h"
 
 using namespace centurion;
+using namespace Catch;
 
 static constexpr auto type_writer_path = "resources/type_writer.ttf";
 static constexpr auto fira_code_path = "resources/fira_code.ttf";
@@ -107,6 +108,41 @@ TEST_CASE("Font::is_fixed_width", "[Font]") {
 TEST_CASE("Font::get_family_name", "[Font]") {
   Font font{type_writer_path, 12};
   CHECK(font.get_family_name() == "Type Writer");
+}
+
+TEST_CASE("Font::get_style_name", "[Font]") {
+  const Font font{type_writer_path, 12};
+  CHECK_THAT(font.get_style_name()->c_str(), Equals("Regular"));
+}
+
+TEST_CASE("Font::get_string_width", "[Font]") {
+  const Font font{type_writer_path, 12};
+  CHECK(font.get_string_width("foo") > 0);
+}
+
+TEST_CASE("Font::get_string_height", "[Font]") {
+  const Font font{type_writer_path, 12};
+  CHECK(font.get_string_height("foo") > 0);
+}
+
+TEST_CASE("Font::get_font_faces", "[Font]") {
+  const Font font{type_writer_path, 12};
+  CHECK_NOTHROW(font.get_font_faces());
+}
+
+TEST_CASE("Font::get_line_skip", "[Font]") {
+  const Font font{type_writer_path, 12};
+  CHECK(font.get_line_skip() > 0);
+}
+
+TEST_CASE("Font::get_ascent", "[Font]") {
+  const Font font{type_writer_path, 12};
+  CHECK(font.get_ascent() > 0);
+}
+
+TEST_CASE("Font::get_descent", "[Font]") {
+  const Font font{type_writer_path, 12};
+  CHECK(font.get_descent() < 0);
 }
 
 TEST_CASE("Font::to_string", "[Font]") {

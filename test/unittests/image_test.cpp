@@ -31,6 +31,22 @@ TEST_CASE("Image(Image&&)", "[Image]") {
   CHECK(!img.get_texture());
 }
 
+TEST_CASE("Image::unique", "[Image]") {
+  const Window window;
+  const Renderer renderer{window};
+  CHECK_THROWS_AS(Image::unique(nullptr), CenturionException);
+  CHECK(Image::unique(renderer, path));
+  CHECK(Image::unique(renderer, window.get_pixel_format(), TextureAccess::Static, 100, 100));
+}
+
+TEST_CASE("Image:::shared", "[Image]") {
+  const Window window;
+  const Renderer renderer{window};
+  CHECK_THROWS_AS(Image::shared(nullptr), CenturionException);
+  CHECK(Image::shared(renderer, path));
+  CHECK(Image::shared(renderer, window.get_pixel_format(), TextureAccess::Static, 100, 100));
+}
+
 TEST_CASE("Image::get_format", "[Image]") {
   Window window;
   Renderer renderer{window};

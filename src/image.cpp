@@ -18,7 +18,7 @@ static_assert(!std::is_nothrow_copy_assignable_v<Image>);
 
 Image::Image(gsl::owner<SDL_Texture*> texture) {
   if (!texture) {
-    throw std::invalid_argument{"Image can't be created from null SDL texture!"};
+    throw CenturionException{"Image can't be created from null SDL texture!"};
   }
   this->texture = texture;
 }

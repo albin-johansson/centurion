@@ -107,7 +107,7 @@ class CENTURION_API Image final {
    * the supplied pointer!
    *
    * @param texture a pointer to the SDL_Texture that will be claimed, may not be null.
-   * @throws NullPointerException if the supplied pointer is null.
+   * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
   CENTURION_API explicit Image(gsl::owner<SDL_Texture*> texture);
@@ -179,7 +179,7 @@ class CENTURION_API Image final {
    *
    * @param texture a pointer to the SDL_Texture that will be claimed, may not be null.
    * @returns a unique pointer to the created image.
-   * @throws NullPointerException if the supplied pointer is null.
+   * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
   [[nodiscard]]
@@ -236,7 +236,7 @@ class CENTURION_API Image final {
    *
    * @param texture a pointer to the SDL_Texture that will be claimed, may not be null.
    * @returns a shared pointer to the created image.
-   * @throws NullPointerException if the supplied pointer is null.
+   * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
   [[nodiscard]]

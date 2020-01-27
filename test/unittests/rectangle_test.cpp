@@ -268,6 +268,20 @@ TEST_CASE("Rect::get_height", "[Rect]") {
   CHECK(rect.get_height() == 0);
 }
 
+TEST_CASE("Rect::get_union", "[Rect]") {
+  const Rect rect{10, 10, 50, 50};
+  const Rect other{40, 40, 50, 50};
+  const Rect res = rect.get_union(other);
+  const Rect res2 = other.get_union(rect);
+  CHECK(res.has_area());
+  CHECK(res.get_x() == 10);
+  CHECK(res.get_y() == 10);
+  CHECK(res.get_width() == 80);
+  CHECK(res.get_height() == 80);
+  CHECK(res == res2);
+  CHECK(res2 == res);
+}
+
 TEST_CASE("Rect::get_center_x", "[Rect]") {
   const auto x = 728;
   const auto width = 8819;

@@ -33,6 +33,12 @@ class CENTURION_API Rect final {
   CENTURION_API Rect(int x, int y, int width, int height) noexcept;
 
   /**
+   * @param sdlRect the rectangle that will be copied.
+   * @since 3.1.0
+   */
+  CENTURION_API explicit Rect(const SDL_Rect& sdlRect) noexcept;
+
+  /**
    * Sets the x-coordinate of the rectangle.
    *
    * @param x the x-coordinate of the rectangle.
@@ -188,6 +194,15 @@ class CENTURION_API Rect final {
   CENTURION_API int get_height() const noexcept;
 
   /**
+   * Calculates and returns a rectangle that represents the union of two rectangles.
+   *
+   * @return a rectangle that represents the union of the rectangles.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  CENTURION_API Rect get_union(const Rect& other) const noexcept;
+
+  /**
    * Returns a textual representation of the rectangle.
    *
    * @return a textual representation of the rectangle.
@@ -226,6 +241,12 @@ class CENTURION_API FRect final {
    * @since 3.0.0
    */
   CENTURION_API FRect(float x, float y, float width, float height) noexcept;
+
+  /**
+   * @param sdlRect the rectangle that will be copied.
+   * @since 3.1.0
+   */
+  CENTURION_API FRect(const SDL_FRect& sdlRect) noexcept;
 
   /**
    * Sets the x-coordinate of the rectangle.

@@ -23,6 +23,9 @@ Rect::Rect() noexcept = default;
 Rect::Rect(int x, int y, int width, int height) noexcept
     : rect{x, y, width, height} {}
 
+Rect::Rect(const SDL_Rect& sdlRect) noexcept
+    : rect{sdlRect.x, sdlRect.y, sdlRect.w, sdlRect.h} {}
+
 void Rect::set_x(int x) noexcept {
   rect.x = x;
 }
@@ -94,6 +97,12 @@ int Rect::get_center_y() const noexcept {
   return get_y() + (get_height() / 2);
 }
 
+Rect Rect::get_union(const Rect& other) const noexcept {
+  SDL_Rect result{0, 0, 0, 0};
+  SDL_UnionRect(&rect, &other.rect, &result);
+  return Rect{result};
+}
+
 std::string Rect::to_string() const {
   const auto x = std::to_string(get_x());
   const auto y = std::to_string(get_y());
@@ -123,6 +132,9 @@ FRect::FRect() noexcept = default;
 
 FRect::FRect(float x, float y, float width, float height) noexcept
     : rect{x, y, width, height} {}
+
+FRect::FRect(const SDL_FRect& sdlRect) noexcept
+    : rect{sdlRect.x, sdlRect.y, sdlRect.w, sdlRect.h} {}
 
 void FRect::set_x(float x) noexcept {
   rect.x = x;

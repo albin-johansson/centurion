@@ -44,10 +44,14 @@ void MouseState::update() noexcept {
   }
 
   {
-    const auto adjustedX = (mouseX / windowWidth) * logicalWidth;
-    const auto adjustedY = (mouseY / windowHeight) * logicalHeight;
-    mouseX = adjustedX;
-    mouseY = adjustedY;
+    const auto xRatio = static_cast<float>(mouseX) / static_cast<float>(windowWidth);
+    const auto adjustedX = xRatio * static_cast<float>(logicalWidth);
+
+    const auto yRatio = static_cast<float>(mouseY) / static_cast<float>(windowHeight);
+    const auto adjustedY = yRatio * static_cast<float>(logicalHeight);
+
+    mouseX = static_cast<int>(adjustedX);
+    mouseY = static_cast<int>(adjustedY);
   }
 }
 

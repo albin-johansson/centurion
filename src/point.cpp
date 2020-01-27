@@ -1,5 +1,6 @@
 #include "point.h"
 #include <type_traits>
+#include <cmath>
 
 namespace centurion {
 
@@ -46,6 +47,15 @@ Point::operator SDL_Point() const noexcept {
   return {x, y};
 }
 
+bool operator==(const Point& lhs, const Point& rhs) noexcept {
+  return lhs.get_x() == rhs.get_x()
+      && lhs.get_y() == rhs.get_y();
+}
+
+bool operator!=(const Point& lhs, const Point& rhs) noexcept {
+  return !(lhs == rhs);
+}
+
 static_assert(std::is_final_v<FPoint>);
 static_assert(std::is_convertible_v<FPoint, SDL_FPoint>);
 static_assert(sizeof(FPoint) == sizeof(SDL_FPoint));
@@ -87,6 +97,19 @@ std::string FPoint::to_string() const {
 
 FPoint::operator SDL_FPoint() const noexcept {
   return {x, y};
+}
+
+bool FPoint::equals(const FPoint& lhs, const FPoint& rhs, float epsilon) noexcept {
+  return std::abs(lhs.get_x() - rhs.get_x()) < epsilon
+      && std::abs(lhs.get_x() - rhs.get_x()) < epsilon;
+}
+
+bool operator==(const FPoint& lhs, const FPoint& rhs) noexcept {
+  return FPoint::equals(lhs, rhs);
+}
+
+bool operator!=(const FPoint& lhs, const FPoint& rhs) noexcept {
+  return !(lhs == rhs);
 }
 
 }

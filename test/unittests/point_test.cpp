@@ -58,6 +58,26 @@ TEST_CASE("Point::operator SDL_Point", "[Point]") {
   CHECK(point.get_y() == sdlPoint.y);
 }
 
+TEST_CASE("Point::operator==", "[Point]") {
+  const Point point{812, 4829};
+  const Point other{point};
+  const Point different{point.get_x() + 10, point.get_y() + 10};
+
+  CHECK(point == point);
+  CHECK(point == other);
+  CHECK(other == point);
+  CHECK(!(point == different));
+}
+
+TEST_CASE("Point::operator!=", "[Point]") {
+  const Point point{5029, 831};
+  const Point other{1782, 923};
+
+  CHECK(!(point != point));
+  CHECK(point != other);
+  CHECK(other != point);
+}
+
 TEST_CASE("FPoint()", "[Point]") {
   FPoint point;
 
@@ -112,4 +132,33 @@ TEST_CASE("FPoint operator SDL_FPoint", "[Point]") {
 
   CHECK(point.get_x() == sdlPoint.x);
   CHECK(point.get_y() == sdlPoint.y);
+}
+
+TEST_CASE("FPoint::equals", "[FPoint]") {
+  const FPoint point{11.7f, 38.9f};
+  const FPoint other{point};
+
+  CHECK(FPoint::equals(point, point));
+  CHECK(FPoint::equals(point, other));
+  CHECK(FPoint::equals(other, point));
+}
+
+TEST_CASE("FPoint::operator==", "[FPoint]") {
+  const FPoint point{27.1f, 97.4f};
+  const FPoint other{point};
+  const FPoint different{point.get_x() + 10, point.get_y() + 10};
+
+  CHECK(point == point);
+  CHECK(point == other);
+  CHECK(other == point);
+  CHECK(!(point == different));
+}
+
+TEST_CASE("FPoint::operator!=", "[FPoint]") {
+  const FPoint point{56.2f, 88.8f};
+  const FPoint other{66.3f, 15.7f};
+
+  CHECK(!(point != point));
+  CHECK(point != other);
+  CHECK(other != point);
 }

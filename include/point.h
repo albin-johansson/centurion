@@ -200,6 +200,69 @@ class CENTURION_API FPoint final {
    */
   [[nodiscard]]
   CENTURION_API /*implicit*/ operator SDL_FPoint() const noexcept;
+
+  /**
+   * Indicates whether or not two points are considered to be equal. The points are considered
+   * tobe equal iff the absolute difference of the components of the points are less than the
+   * specified epsilon value.
+   *
+   * @param lhs the left-hand side point.
+   * @param rhs the right-hand side point.
+   * @param epsilon the epsilon value that will be used. Denotes the exclusive upper bound for
+   * the maximum allowed difference of the components of the points. A negative value will be
+   * converted to zero.
+   * @return true if the points are considered to be equal; false otherwise.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  CENTURION_API static bool equals(const FPoint& lhs,
+                                   const FPoint& rhs,
+                                   float epsilon = 0.0001f) noexcept;
 };
+
+/**
+ * Indicates whether or not two points are the same.
+ *
+ * @param lhs the left-hand side point.
+ * @param rhs the right-hand side point.
+ * @return true if the points are the same; false otherwise.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator==(const Point& lhs, const Point& rhs) noexcept;
+
+/**
+ * Indicates whether or not two points aren't the same.
+ *
+ * @param lhs the left-hand side point.
+ * @param rhs the right-hand side point.
+ * @return true if the points aren't the same; false otherwise.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator!=(const Point& lhs, const Point& rhs) noexcept;
+
+/**
+ * Indicates whether or not two points are the same. The absolute difference of the components of
+ * the points must be less than 0.0001, in order for the points to be considered equal.
+ *
+ * @param lhs the left-hand side point.
+ * @param rhs the right-hand side point.
+ * @return true if the points are the same; false otherwise.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator==(const FPoint& lhs, const FPoint& rhs) noexcept;
+
+/**
+ * Indicates whether or not two points aren't the same.
+ *
+ * @param lhs the left-hand side point.
+ * @param rhs the right-hand side point.
+ * @return true if the points aren't the same; false otherwise.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API bool operator!=(const FPoint& lhs, const FPoint& rhs) noexcept;
 
 }

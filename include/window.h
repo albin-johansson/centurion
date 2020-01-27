@@ -516,6 +516,18 @@ class CENTURION_API Window final {
   CENTURION_API int get_height() const noexcept;
 
   /**
+   * Returns any renderer that is associated with this window. Note! If no renderer is associated
+   * with the window, then a null pointer is returned. Please don't take ownership of the
+   * returned renderer.
+   *
+   * @return a pointer to the renderer that is associated with this window; null if no such
+   * renderer exists.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  CENTURION_API SDL_Renderer* get_renderer() const noexcept;
+
+  /**
    * Returns the pixel format of the window.
    *
    * @return the pixel format of the window.

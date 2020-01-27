@@ -1,5 +1,6 @@
 #include "catch.hpp"
 #include "window.h"
+#include "renderer.h"
 #include "log.h"
 
 using namespace centurion;
@@ -253,6 +254,17 @@ TEST_CASE("Window::set_brightness", "[Window]") {
 TEST_CASE("Window::get_brightness", "[Window]") {
   Window window;
   CHECK(window.get_brightness() == 1);
+}
+
+TEST_CASE("Window::get_renderer", "[Window]") {
+  const Window window;
+
+  CHECK(!window.get_renderer());
+
+  const Renderer renderer{window};
+  SDL_Renderer* sdlRenderer = renderer;
+
+  CHECK(window.get_renderer() == sdlRenderer);
 }
 
 TEST_CASE("Window::to_string", "[Window]") {

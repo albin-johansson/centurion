@@ -307,6 +307,10 @@ int Window::get_height() const noexcept {
   return height;
 }
 
+SDL_Renderer* Window::get_renderer() const noexcept {
+  return SDL_GetRenderer(window);
+}
+
 uint32_t Window::get_pixel_format() const noexcept {
   return SDL_GetWindowPixelFormat(window);
 }

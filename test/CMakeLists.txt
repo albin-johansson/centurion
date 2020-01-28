@@ -37,49 +37,51 @@ enable_testing()
 add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
 
 target_include_directories(${CENTURION_TEST} PUBLIC unittests)
-target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_INCLUDE_DIR})
-target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
-target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
-target_include_directories(${CENTURION_TEST} PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
+
+target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
+target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
+target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
+target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
+
 target_include_directories(${CENTURION_TEST} PUBLIC ${INCLUDE_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR}/gsl)
 
 if (WIN32)
     target_link_libraries(${CENTURION_TEST}
-            mingw32
-            Catch2
-            ${CENTURION_LIBRARIES}
-            ${SDL2_LIBRARY}
-            ${SDL2_IMAGE_LIBRARIES}
-            ${SDL2_MIXER_LIBRARIES}
-            ${SDL2_TTF_LIBRARIES})
+            PUBLIC mingw32
+            PUBLIC Catch2
+            PUBLIC ${CENTURION_LIBRARIES}
+            PUBLIC ${SDL2_LIBRARY}
+            PUBLIC ${SDL2_IMAGE_LIBRARIES}
+            PUBLIC ${SDL2_MIXER_LIBRARIES}
+            PUBLIC ${SDL2_TTF_LIBRARIES})
 else ()
     target_link_libraries(${CENTURION_TEST}
-            Catch2
-            ${CENTURION_LIBRARIES}
-            ${SDL2_LIBRARY}
-            ${SDL2_IMAGE_LIBRARIES}
-            ${SDL2_MIXER_LIBRARIES}
-            ${SDL2_TTF_LIBRARIES})
+            PUBLIC Catch2
+            PUBLIC ${CENTURION_LIBRARIES}
+            PUBLIC ${SDL2_LIBRARY}
+            PUBLIC ${SDL2_IMAGE_LIBRARIES}
+            PUBLIC ${SDL2_MIXER_LIBRARIES}
+            PUBLIC ${SDL2_TTF_LIBRARIES})
 endif ()
 
 include(CTest)
 include(Catch)
 include(ParseAndAddCatchTests)
-ParseAndAddCatchTests(${CENTURION_TEST})
-#catch_discover_tests(${CENTURION_TEST})
+#ParseAndAddCatchTests(${CENTURION_TEST})
+catch_discover_tests(${CENTURION_TEST})
 
 # Copies all of the files in the bin folder and puts them next to the executable
 add_custom_command(
         TARGET ${CENTURION_TEST} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${BINARIES_DIR}
-        ${CMAKE_BINARY_DIR}/test)
+        ${CMAKE_CURRENT_BINARY_DIR})
 
 # Copies all of the resources and puts the in the build folder
 add_custom_command(
         TARGET ${CENTURION_TEST} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${RESOURCES_DIR}
-        ${CMAKE_BINARY_DIR}/test/resources)
+        ${CMAKE_CURRENT_BINARY_DIR}/resources)

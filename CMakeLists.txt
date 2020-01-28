@@ -15,7 +15,7 @@ set(CENTURION_TEST ${PROJECT_NAME}_test)
 if (WIN32)
     set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.dll.a)
 elseif (LINUX)
-    set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.dll.so)
+    set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.so)
 endif ()
 
 # Checks if an environment variable is defined.

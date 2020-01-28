@@ -81,6 +81,12 @@ before_script:
 
 script:
 #   # - cmake .
-  - make && make test
+  # - make && make test
+  - mkdir -p build
+  - cd build
+  - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Release ..
+  - make
+  - ctest
+
 
   # TODO run ./Centurion_test in the right place

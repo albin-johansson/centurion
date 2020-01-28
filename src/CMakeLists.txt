@@ -98,19 +98,17 @@ target_link_libraries(${CENTURION_LIB}
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     get_target_property(CTN_OUTPUT_NAME ${CENTURION_LIB} OUTPUT_NAME)
-
-    # Copies the generated Centurion DLL and moves copies it to the binary directory
     add_custom_command(
             TARGET ${CENTURION_LIB} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_BINARY_DIR}/src/libCenturion.dll
-            ${BINARIES_DIR}/lib${CTN_OUTPUT_NAME}.dll)
+            ${BINARIES_DIR}/libCenturion.dll
+            ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll)
 
     add_custom_command(
             TARGET ${CENTURION_LIB} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_BINARY_DIR}/src/libCenturion.dll.a
-            ${BINARIES_DIR}/lib${CTN_OUTPUT_NAME}.dll.a)
+            ${BINARIES_DIR}/libCenturion.dll.a
+            ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll.a)
 endif ()
 
 # Copies all of the files in the bin folder and puts them next to the executable

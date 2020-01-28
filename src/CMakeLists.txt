@@ -98,11 +98,27 @@ target_link_libraries(${CENTURION_LIB}
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     get_target_property(CTN_OUTPUT_NAME ${CENTURION_LIB} OUTPUT_NAME)
-    add_custom_command(
-            TARGET ${CENTURION_LIB} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy
-            ${BINARIES_DIR}/libCenturion.dll
-            ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll)
+
+    if (WIN32)
+        add_custom_command(
+                TARGET ${CENTURION_LIB} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy
+                ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll
+                ${BINARIES_DIR}/libCenturion.dll)
+        add_custom_command(
+                TARGET ${CENTURION_LIB} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy
+                ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll.a
+                ${BINARIES_DIR}/libCenturion.dll.a)
+    elseif (LINUX)
+        add_custom_command(
+                TARGET ${CENTURION_LIB} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy
+                ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.so
+                ${BINARIES_DIR}/libCenturion.so)
+    else ()
+        message("Failed to move generated Centurion library file!")
+    endif ()
 endif ()
 
 # Copies all of the files in the bin folder and puts them next to the executable

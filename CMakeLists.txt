@@ -17,6 +17,7 @@ if (WIN32)
 elseif (LINUX)
     set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.dll.so)
 endif ()
+
 # Checks if an environment variable is defined.
 #   envVar: the name of the actual environment variable.
 #   name: the name of the library associated with the environment variable.

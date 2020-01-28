@@ -12,8 +12,11 @@ set(LIBRARY_DIR ${PROJECT_SOURCE_DIR}/src/lib)
 set(CENTURION_LIB ${PROJECT_NAME}_lib)
 set(CENTURION_TEST ${PROJECT_NAME}_test)
 
-set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.dll.a)
-
+if (WIN32)
+    set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.dll.a)
+elseif (LINUX)
+    set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.dll.so)
+endif ()
 # Checks if an environment variable is defined.
 #   envVar: the name of the actual environment variable.
 #   name: the name of the library associated with the environment variable.

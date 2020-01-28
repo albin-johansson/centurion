@@ -9,7 +9,6 @@ notifications:
 env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    # - TRAVIS_TEST=true
 
 addons:
   apt:
@@ -39,18 +38,13 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
+
   - export CC=/usr/bin/gcc-8
   - export CXX=/usr/bin/g++-8
-  - export TRAVIS_TEST=true
-#  - export SDL_AUDIODRIVER=alsa
-#  - export AUDIODEV=pulse
 
   - gcc -v
   - g++ -v
   - cmake --version
-  
-  - mkdir sdl
-  - cd sdl
 
   # Install core SDL2
   - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.10.tar.gz | tar xz
@@ -85,11 +79,8 @@ before_script:
   - sudo make install
   - cd ..
 
-  - cd .. # Now we're back in the project directory
-
 script:
-  - cmake .
-  # - cmake -DCMAKE_BUILD_TYPE=Release --build .
-  # - make test
+  # - cmake .
+  - ./configure && make && make test
 
   # TODO run ./Centurion_test in the right place

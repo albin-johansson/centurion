@@ -80,7 +80,7 @@ before_script:
   - cd ..
 
 script:
-  # - cmake .
-  - ./configure && make && make test
+#   # - cmake .
+  - make && make test
 
   # TODO run ./Centurion_test in the right place

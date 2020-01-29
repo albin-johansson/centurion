@@ -100,6 +100,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     get_target_property(CTN_OUTPUT_NAME ${CENTURION_LIB} OUTPUT_NAME)
 
     if (WIN32)
+        message("Moving .dll and .dll.a files...")
         copy_file_post_build(
                 ${CENTURION_LIB}
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll
@@ -109,6 +110,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll.a
                 ${BINARIES_DIR}/libCenturion.dll.a)
     else() # FIXME for now we assume some sort of Linux distro
+        message("Moving .so file...")
         copy_file_post_build(
                 ${CENTURION_LIB}
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.so

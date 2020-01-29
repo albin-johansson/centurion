@@ -118,7 +118,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     endif ()
 endif ()
 
-copy_directory_post_build(
-        ${CENTURION_LIB}
-        ${BINARIES_DIR}
-        ${CMAKE_CURRENT_BINARY_DIR})
+#copy_directory_post_build(
+#        ${CENTURION_LIB}
+#        ${BINARIES_DIR}
+#        ${CMAKE_CURRENT_BINARY_DIR})

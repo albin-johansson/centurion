@@ -19,7 +19,7 @@ static_assert(std::is_convertible_v<Font, TTF_Font*>);
 
 Font::Font(const std::string& file, int size) : size{size} {
   if (size <= 0) {
-    throw std::invalid_argument{"Bad font size!"};
+    throw std::invalid_argument{"Bad font size!"}; // TODO consider using CenturionException
   }
 
   font = TTF_OpenFont(file.c_str(), size);
@@ -169,7 +169,7 @@ int Font::get_line_skip() const noexcept {
 }
 
 int Font::get_font_faces() const noexcept {
-  return TTF_FontFaces(font);
+  return static_cast<int>(TTF_FontFaces(font));
 }
 
 std::string Font::get_family_name() const noexcept {

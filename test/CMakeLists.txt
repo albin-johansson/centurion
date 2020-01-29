@@ -47,6 +47,12 @@ target_include_directories(${CENTURION_TEST} PUBLIC ${INCLUDE_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR}/gsl)
 
+message("Linking to SDL2: ${SDL2_LIBRARY}")
+message("Linking to SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
+message("Linking to SDL2_image: ${SDL2_MIXER_LIBRARIES}")
+message("Linking to SDL2_image: ${SDL2_TTF_LIBRARIES}")
+message("Linking to Centurion: ${CENTURION_LIBRARIES}")
+
 if (WIN32)
     target_link_libraries(${CENTURION_TEST}
             PUBLIC mingw32
@@ -69,19 +75,14 @@ endif ()
 include(CTest)
 include(Catch)
 include(ParseAndAddCatchTests)
-#ParseAndAddCatchTests(${CENTURION_TEST})
 catch_discover_tests(${CENTURION_TEST})
 
-# Copies all of the files in the bin folder and puts them next to the executable
-add_custom_command(
-        TARGET ${CENTURION_TEST} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
+copy_directory_post_build(
+        ${CENTURION_TEST}
         ${BINARIES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR})
 
-# Copies all of the resources and puts the in the build folder
-add_custom_command(
-        TARGET ${CENTURION_TEST} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
+copy_directory_post_build(
+        ${CENTURION_TEST}
         ${RESOURCES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}/resources)

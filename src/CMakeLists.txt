@@ -100,20 +100,17 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     get_target_property(CTN_OUTPUT_NAME ${CENTURION_LIB} OUTPUT_NAME)
 
     if (WIN32)
-        add_custom_command(
-                TARGET ${CENTURION_LIB} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy
+        copy_file_post_build(
+                ${CENTURION_LIB}
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll
                 ${BINARIES_DIR}/libCenturion.dll)
-        add_custom_command(
-                TARGET ${CENTURION_LIB} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy
+        copy_file_post_build(
+                ${CENTURION_LIB}
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll.a
                 ${BINARIES_DIR}/libCenturion.dll.a)
     elseif (LINUX)
-        add_custom_command(
-                TARGET ${CENTURION_LIB} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy
+        copy_file_post_build(
+                ${CENTURION_LIB}
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.so
                 ${BINARIES_DIR}/libCenturion.so)
     else ()
@@ -121,9 +118,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     endif ()
 endif ()
 
-# Copies all of the files in the bin folder and puts them next to the executable
-add_custom_command(
-        TARGET ${CENTURION_LIB} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
+copy_directory_post_build(
+        ${CENTURION_LIB}
         ${BINARIES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR})

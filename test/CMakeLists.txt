@@ -4,7 +4,7 @@ project(${CENTURION_TEST})
 if (NOT WIN32)
     message("Moving .so file again...")
     copy_file_post_build(
-            ${CENTURION_LIB}
+            ${CENTURION_TEST}
             ${BINARIES_DIR}/libCenturion.so
             ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.so)
 endif ()

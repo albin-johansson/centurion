@@ -23,7 +23,6 @@ addons:
 before_install:
   - sudo apt-get update
   - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev
-  - sudo apt-get install tree
   - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
   - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 
@@ -82,12 +81,11 @@ before_script:
   - make
   - sudo make install
   - cd ..
-  - tree -d
 
 script:
   - mkdir -p build
   - cd build
   - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Release ..
   - make
-  - ctest
+#  - ctest
   # TODO run ./Centurion_test in the right place

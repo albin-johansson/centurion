@@ -108,13 +108,13 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
                 ${CENTURION_LIB}
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll.a
                 ${BINARIES_DIR}/libCenturion.dll.a)
-    elseif (LINUX)
+    else() # FIXME for now we assume some sort of Linux distro
         copy_file_post_build(
                 ${CENTURION_LIB}
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.so
                 ${BINARIES_DIR}/libCenturion.so)
-    else ()
-        message("Failed to move generated Centurion library file!")
+#    else ()
+#        message("Failed to move generated Centurion library file!")
     endif ()
 endif ()
 

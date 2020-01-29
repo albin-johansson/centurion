@@ -47,6 +47,7 @@ target_include_directories(${CENTURION_TEST} PUBLIC ${INCLUDE_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR}/gsl)
 
+message("------ LINKING TEST EXECUTABLE ------")
 message("Linking to SDL2: ${SDL2_LIBRARY}")
 message("Linking to SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
 message("Linking to SDL2_image: ${SDL2_MIXER_LIBRARIES}")

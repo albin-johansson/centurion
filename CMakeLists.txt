@@ -16,7 +16,8 @@ message("Source directory: ${PROJECT_SOURCE_DIR}")
 
 if (WIN32)
     set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.dll.a)
-elseif (LINUX)
+    #elseif (LINUX)
+else () # FIXME for now we assume some sort of Linux distro
     set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.so)
 endif ()
 
@@ -55,15 +56,19 @@ function(copy_directory_post_build [target [from [to]]])
             ${ARGV2})
 endfunction()
 
+message("------ LOOKING FOR ENVIRONMENT VARIABLES ------")
 find_env_var(SDL2DIR SDL2)
 find_env_var(SDL2IMAGEDIR SDL2_image)
 find_env_var(SDL2MIXERDIR SDL2_mixer)
 find_env_var(SDL2TTFDIR SDL2_ttf)
 
+message("------ LOOKING FOR SDL LIBRARIES ------")
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
+
+message("Found all required SDL libraries!")
 
 add_subdirectory(src)
 add_subdirectory(test)

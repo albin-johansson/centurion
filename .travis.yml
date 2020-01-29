@@ -3,12 +3,13 @@ os: linux
 language: cpp
 compiler: gcc
 
-notifications: 
+notifications:
   email: false
 
 env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+    - CXX_FLAGS=""
 
 addons:
   apt:
@@ -22,6 +23,9 @@ addons:
 before_install:
   - sudo apt-get update
   - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev
+  - sudo apt-get install tree
+  - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
+  - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 
 install:
   # Download and install recent cmake
@@ -78,6 +82,7 @@ before_script:
   - make
   - sudo make install
   - cd ..
+  - tree -d
 
 script:
   - mkdir -p build

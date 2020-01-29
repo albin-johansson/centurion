@@ -124,3 +124,5 @@ endif ()
 #        ${CENTURION_LIB}
 #        ${BINARIES_DIR}
 #        ${CMAKE_CURRENT_BINARY_DIR})
+
+message("SOURCE BINARY DIRECTORY: ${CMAKE_CURRENT_BINARY_DIR}")

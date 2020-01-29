@@ -12,6 +12,8 @@ set(LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
 set(CENTURION_LIB ${PROJECT_NAME}_lib)
 set(CENTURION_TEST ${PROJECT_NAME}_test)
 
+message("Source directory: ${PROJECT_SOURCE_DIR}")
+
 if (WIN32)
     set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.dll.a)
 elseif (LINUX)

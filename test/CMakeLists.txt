@@ -1,14 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 project(${CENTURION_TEST})
 
-if (NOT WIN32)
-    message("Moving .so file again...")
-    copy_file_post_build(
-            ${CENTURION_TEST}
-            ${BINARIES_DIR}/libCenturion.so
-            ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.so)
-endif ()
-
 set(TEST_FILES
         unittests/test_main.cpp
         unittests/window_test.cpp
@@ -56,11 +48,11 @@ target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR}/gsl)
 
 message("------ LINKING TEST EXECUTABLE ------")
-message("Linking to SDL2: ${SDL2_LIBRARY}")
-message("Linking to SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
-message("Linking to SDL2_image: ${SDL2_MIXER_LIBRARIES}")
-message("Linking to SDL2_image: ${SDL2_TTF_LIBRARIES}")
-message("Linking to Centurion: ${CENTURION_LIBRARIES}")
+message("Linking against SDL2: ${SDL2_LIBRARY}")
+message("Linking against SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
+message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
+message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
+message("Linking against Centurion: ${CENTURION_LIBRARIES}")
 
 if (WIN32)
     target_link_libraries(${CENTURION_TEST}

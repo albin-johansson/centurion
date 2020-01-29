@@ -87,5 +87,10 @@ copy_directory_post_build(
 
 copy_directory_post_build(
         ${CENTURION_TEST}
+        ${BINARIES_DIR}
+        ${CMAKE_BINARY_DIR})
+
+copy_directory_post_build(
+        ${CENTURION_TEST}
         ${RESOURCES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}/resources)

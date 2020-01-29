@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
 project(${CENTURION_TEST})
 
+if (NOT WIN32)
+    message("Moving .so file again...")
+    copy_file_post_build(
+            ${CENTURION_LIB}
+            ${BINARIES_DIR}/libCenturion.so
+            ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.so)
+endif ()
+
 set(TEST_FILES
         unittests/test_main.cpp
         unittests/window_test.cpp
@@ -56,7 +64,7 @@ message("Linking to Centurion: ${CENTURION_LIBRARIES}")
 
 if (WIN32)
     target_link_libraries(${CENTURION_TEST}
-            PUBLIC mingw32
+            #            PUBLIC mingw32
             PUBLIC Catch2
             PUBLIC ${CENTURION_LIBRARIES}
             PUBLIC ${SDL2_LIBRARY}

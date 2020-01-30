@@ -118,5 +118,3 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
                 ${BINARIES_DIR}/libCenturion.so)
     endif ()
 endif ()
-
-message("SOURCE BINARY DIRECTORY: ${CMAKE_CURRENT_BINARY_DIR}")

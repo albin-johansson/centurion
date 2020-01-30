@@ -64,13 +64,16 @@ if (WIN32)
             PUBLIC ${SDL2_MIXER_LIBRARIES}
             PUBLIC ${SDL2_TTF_LIBRARIES})
 else ()
+    target_link_directories(${CENTURION_TEST} PUBLIC ${BINARIES_DIR})
+
     target_link_libraries(${CENTURION_TEST}
             PUBLIC Catch2
-            PUBLIC ${CENTURION_LIBRARIES}
-            PUBLIC ${SDL2_LIBRARY}
-            PUBLIC ${SDL2_IMAGE_LIBRARIES}
-            PUBLIC ${SDL2_MIXER_LIBRARIES}
-            PUBLIC ${SDL2_TTF_LIBRARIES})
+        #     PUBLIC ${CENTURION_LIBRARIES}
+        #     PUBLIC ${SDL2_LIBRARY}
+        #     PUBLIC ${SDL2_IMAGE_LIBRARIES}
+        #     PUBLIC ${SDL2_MIXER_LIBRARIES}
+        #     PUBLIC ${SDL2_TTF_LIBRARIES}
+            )
 endif ()
 
 include(CTest)
@@ -85,10 +88,10 @@ copy_directory_post_build(
         ${BINARIES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR})
 
-copy_directory_post_build(
-        ${CENTURION_TEST}
-        ${BINARIES_DIR}
-        ${CMAKE_BINARY_DIR})
+#copy_directory_post_build(
+#        ${CENTURION_TEST}
+#        ${BINARIES_DIR}
+#        ${CMAKE_BINARY_DIR})
 
 copy_directory_post_build(
         ${CENTURION_TEST}

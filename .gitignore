@@ -45,4 +45,3 @@ cmake-build-release/
 
 # Ignore the documentation for now
 doc
-bin

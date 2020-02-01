@@ -14,8 +14,7 @@ set(CENTURION_TEST ${PROJECT_NAME}_test)
 
 message("Source directory: ${PROJECT_SOURCE_DIR}")
 
-if (TRAVIS)
-    message("Moving libCenturion.so because TRAVIS was defined!")
+if (DEFINED ENV{TRAVIS})
     set(CENTURION_LIBRARIES ${CTN_BINARIES_DIR}/libCenturion.so)
 else ()
     set(CENTURION_LIBRARIES ${CTN_BINARIES_DIR}/libCenturion.dll.a)

@@ -91,9 +91,10 @@ script:
   - make
   - cd test
 
-  - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-    make gcov
-    make lcov
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      make gcov
+      make lcov
     fi
   - ctest
 

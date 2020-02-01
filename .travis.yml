@@ -89,13 +89,12 @@ script:
   - cd build
   - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Release ..
   - make
+  - cd test
 
   - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
     make gcov
     make lcov
     fi
-
-  - cd test
   - ctest
 
 after_success:

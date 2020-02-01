@@ -1,48 +1,31 @@
 cmake_minimum_required(VERSION 3.12)
 project(${CENTURION_TEST})
 
-if (DEFINED ENV{TRAVIS})
+set(TEST_FILES
+        unittests/test_main.cpp
+        unittests/window_test.cpp
+        unittests/bool_converter_test.cpp
+        unittests/font_test.cpp
+        unittests/image_test.cpp
+        unittests/image_generator_test.cpp
+        unittests/renderer_test.cpp
+        unittests/log_test.cpp
+        unittests/power_test.cpp
+        unittests/blend_mode_test.cpp
+        unittests/message_box_test.cpp
+        unittests/color_test.cpp
+        unittests/point_test.cpp
+        unittests/key_state_test.cpp
+        unittests/mouse_state_test.cpp
+        unittests/rectangle_test.cpp
+        unittests/centurion_exception_test.cpp
+        unittests/error_test.cpp)
+
+if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES
-            unittests/test_main.cpp
-            unittests/window_test.cpp
-            unittests/bool_converter_test.cpp
-            unittests/font_test.cpp
-            unittests/image_test.cpp
-            unittests/image_generator_test.cpp
-            unittests/renderer_test.cpp
-            unittests/log_test.cpp
-            unittests/power_test.cpp
-            unittests/blend_mode_test.cpp
-            unittests/message_box_test.cpp
-            unittests/color_test.cpp
-            unittests/point_test.cpp
-            unittests/key_state_test.cpp
-            unittests/mouse_state_test.cpp
-            unittests/rectangle_test.cpp
-            unittests/centurion_exception_test.cpp
-            unittests/error_test.cpp)
-else ()
-    set(TEST_FILES
-            unittests/test_main.cpp
-            unittests/window_test.cpp
-            unittests/bool_converter_test.cpp
-            unittests/font_test.cpp
-            unittests/image_test.cpp
+            ${TEST_FILES}
             unittests/sound_effect_test.cpp
-            unittests/image_generator_test.cpp
-            unittests/renderer_test.cpp
-            unittests/log_test.cpp
-            unittests/power_test.cpp
-            unittests/blend_mode_test.cpp
-            unittests/message_box_test.cpp
-            unittests/color_test.cpp
-            unittests/point_test.cpp
-            unittests/key_state_test.cpp
-            unittests/mouse_state_test.cpp
-            unittests/music_test.cpp
-            unittests/rectangle_test.cpp
-            unittests/centurion_exception_test.cpp
-            unittests/error_test.cpp)
+            unittests/music_test.cpp)
 endif ()
 
 add_executable(${CENTURION_TEST} ${TEST_FILES})

@@ -112,6 +112,10 @@ void Font::set_outlined(bool outlined) noexcept {
   TTF_SetFontOutline(font, outlined ? 1 : 0);
 }
 
+void Font::set_font_hinting(FontHint hint) noexcept {
+  TTF_SetFontHinting(font, static_cast<int>(hint));
+}
+
 bool Font::is_bold() const noexcept {
   return style & TTF_STYLE_BOLD;
 }
@@ -170,6 +174,10 @@ int Font::get_line_skip() const noexcept {
 
 int Font::get_font_faces() const noexcept {
   return static_cast<int>(TTF_FontFaces(font));
+}
+
+FontHint Font::get_font_hinting() const noexcept {
+  return static_cast<FontHint>(TTF_GetFontHinting(font)); // TODO check if the SDL call can fail
 }
 
 std::string Font::get_family_name() const noexcept {

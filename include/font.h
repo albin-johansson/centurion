@@ -32,6 +32,18 @@
 namespace centurion {
 
 /**
+ * The FontHint enum class represents different possible TrueType font hint values.
+ *
+ * @since 3.1.0
+ */
+enum class FontHint {
+  Normal = TTF_HINTING_NORMAL,
+  Light = TTF_HINTING_LIGHT,
+  Mono = TTF_HINTING_MONO,
+  None = TTF_HINTING_NONE
+};
+
+/**
  * The Font class represents a TrueType font.
  *
  * @since 3.0.0
@@ -178,6 +190,14 @@ class CENTURION_API Font final {
   CENTURION_API void set_outlined(bool outlined) noexcept;
 
   /**
+   * Sets the TrueType font hinting.
+   *
+   * @param hint the font hinting that will be used.
+   * @since 3.1.0
+   */
+  CENTURION_API void set_font_hinting(FontHint hint) noexcept;
+
+  /**
    * Returns the size of the font.
    *
    * @return the size of the font.
@@ -234,6 +254,15 @@ class CENTURION_API Font final {
    */
   [[nodiscard]]
   CENTURION_API int get_font_faces() const noexcept;
+
+  /**
+   * Returns the TrueType font hinting of the font.
+   *
+   * @return the TrueType font hinting of the font.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  CENTURION_API FontHint get_font_hinting() const noexcept;
 
   /**
    * Indicates whether or not the font is bold.

@@ -3,7 +3,6 @@
 #include "centurion.h"
 
 int main(int argc, char** argv) {
-  using namespace centurion;
-  const Centurion c;
+  const centurion::Centurion c;
   return Catch::Session().run(argc, argv);
 }

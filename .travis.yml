@@ -11,6 +11,7 @@ env:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     - CXX_FLAGS=""
     - CODECOV_TOKEN="d078f878-66f2-4ea0-916d-708109a3358b"
+    - ENABLE_COVERAGE=true
 
 addons:
   apt:
@@ -90,7 +91,6 @@ script:
   - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Release ..
   - make
   - cd test
-
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       make gcov

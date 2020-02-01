@@ -31,12 +31,16 @@ endif ()
 add_executable(${CENTURION_TEST} ${TEST_FILES})
 add_dependencies(${CENTURION_TEST} ${CENTURION_LIB})
 
-if (ENABLE_COVERAGE)
+if (DEFINED ENV{ENABLE_COVERAGE})
+    message("Generating code coverage...")
+
     #    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
     find_package(codecov)
     add_coverage(${CENTURION_TEST})
     list(APPEND LCOV_REMOVE_PATTERNS "/usr/")
     coverage_evaluate()
+else ()
+    message("Not generating code coverage!")
 endif ()
 
 set_target_properties(${CENTURION_TEST} PROPERTIES

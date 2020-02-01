@@ -38,12 +38,10 @@ enable_testing()
 add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
 
 target_include_directories(${CENTURION_TEST} PUBLIC unittests)
-
 target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
 target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
-
 target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_INCLUDE_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_LIBRARY_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_LIBRARY_DIR}/gsl)
@@ -55,46 +53,26 @@ message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
 message("Linking against Centurion: ${CENTURION_LIBRARIES}")
 
-if (WIN32)
-    target_link_libraries(${CENTURION_TEST}
-            #            PUBLIC mingw32
-            PUBLIC Catch2
-            PUBLIC ${CENTURION_LIBRARIES}
-            PUBLIC ${SDL2_LIBRARY}
-            PUBLIC ${SDL2_IMAGE_LIBRARIES}
-            PUBLIC ${SDL2_MIXER_LIBRARIES}
-            PUBLIC ${SDL2_TTF_LIBRARIES})
-else ()
-    target_link_directories(${CENTURION_TEST} PUBLIC ${CTN_BINARIES_DIR})
-
-    target_link_libraries(${CENTURION_TEST}
-            PUBLIC Catch2
-        #     PUBLIC ${CENTURION_LIBRARIES}
-        #     PUBLIC ${SDL2_LIBRARY}
-        #     PUBLIC ${SDL2_IMAGE_LIBRARIES}
-        #     PUBLIC ${SDL2_MIXER_LIBRARIES}
-        #     PUBLIC ${SDL2_TTF_LIBRARIES}
-            )
-endif ()
-
 include(CTest)
 include(Catch)
 include(ParseAndAddCatchTests)
+
+target_link_libraries(${CENTURION_TEST}
+        PUBLIC Catch2
+        PUBLIC ${SDL2_LIBRARY}
+        PUBLIC ${SDL2_IMAGE_LIBRARIES}
+        PUBLIC ${SDL2_MIXER_LIBRARIES}
+        PUBLIC ${SDL2_TTF_LIBRARIES}
+        PUBLIC ${CENTURION_LIBRARIES})
+
 catch_discover_tests(${CENTURION_TEST})
-
-#message("Moving contents of ${CTN_BINARIES_DIR} to ${CMAKE_CURRENT_BINARY_DIR}...")
-
-#copy_directory_post_build(
-#        ${CENTURION_TEST}
-#        ${CTN_BINARIES_DIR}
-#        ${CMAKE_CURRENT_BINARY_DIR})
-
-#copy_directory_post_build(
-#        ${CENTURION_TEST}
-#        ${BINARIES_DIR}
-#        ${CMAKE_BINARY_DIR})
 
 copy_directory_post_build(
         ${CENTURION_TEST}
         ${CTN_RESOURCES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}/resources)
+
+#copy_directory_post_build(
+#        ${CENTURION_TEST}
+#        ${CMAKE}
+#        ${CMAKE_CURRENT_BINARY_DIR})

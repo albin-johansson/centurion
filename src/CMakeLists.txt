@@ -105,20 +105,20 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     if (WIN32)
         message("Moving .dll and .dll.a files...")
 
-        copy_file_post_build(
-                ${CENTURION_LIB}
-                ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll
-                ${CTN_BINARIES_DIR}/libCenturion.dll)
-
-        copy_file_post_build(
-                ${CENTURION_LIB}
-                ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll.a
-                ${CTN_BINARIES_DIR}/libCenturion.dll.a)
+#        copy_file_post_build(
+#                ${CENTURION_LIB}
+#                ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll
+#                ${CTN_BINARIES_DIR}/libCenturion.dll)
+#
+#        copy_file_post_build(
+#                ${CENTURION_LIB}
+#                ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll.a
+#                ${CTN_BINARIES_DIR}/libCenturion.dll.a)
     else () # FIXME for now we assume some sort of Linux distro
-        message("Moving .so file...")
-        copy_file_post_build(
-                ${CENTURION_LIB}
-                ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.so
-                ${CTN_BINARIES_DIR}/libCenturion.so)
+#        message("Moving .so file...")
+#        copy_file_post_build(
+#                ${CENTURION_LIB}
+#                ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.so
+#                ${CTN_BINARIES_DIR}/libCenturion.so)
     endif ()
 endif ()

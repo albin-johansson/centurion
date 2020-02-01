@@ -82,12 +82,12 @@ include(Catch)
 include(ParseAndAddCatchTests)
 catch_discover_tests(${CENTURION_TEST})
 
-message("Moving contents of ${CTN_BINARIES_DIR} to ${CMAKE_CURRENT_BINARY_DIR}...")
+#message("Moving contents of ${CTN_BINARIES_DIR} to ${CMAKE_CURRENT_BINARY_DIR}...")
 
-copy_directory_post_build(
-        ${CENTURION_TEST}
-        ${CTN_BINARIES_DIR}
-        ${CMAKE_CURRENT_BINARY_DIR})
+#copy_directory_post_build(
+#        ${CENTURION_TEST}
+#        ${CTN_BINARIES_DIR}
+#        ${CMAKE_CURRENT_BINARY_DIR})
 
 #copy_directory_post_build(
 #        ${CENTURION_TEST}

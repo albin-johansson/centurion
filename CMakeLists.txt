@@ -3,7 +3,7 @@ project(Centurion)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-set(CTN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
+#set(CTN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
 set(CTN_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
 set(CTN_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 set(CTN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
@@ -15,9 +15,9 @@ set(CENTURION_TEST ${PROJECT_NAME}_test)
 message("Source directory: ${PROJECT_SOURCE_DIR}")
 
 if (DEFINED ENV{TRAVIS})
-    set(CENTURION_LIBRARIES ${CTN_BINARIES_DIR}/libCenturion.so)
+    set(CENTURION_LIBRARIES ${CMAKE_BINARY_DIR}/src/libCenturion.so)
 else ()
-    set(CENTURION_LIBRARIES ${CTN_BINARIES_DIR}/libCenturion.dll.a)
+    set(CENTURION_LIBRARIES ${CMAKE_BINARY_DIR}/src/libCenturion.dll.a)
 endif ()
 
 # Checks if an environment variable is defined.

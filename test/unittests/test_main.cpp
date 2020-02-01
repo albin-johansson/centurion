@@ -4,13 +4,6 @@
 
 int main(int argc, char** argv) {
   using namespace centurion;
-  Centurion c;
-
-#ifdef CENTURION_NOAUDIO
-  Log::msgf("%s", "No audio!");
-#else
-  Log::msgf("%s", "Using audio!");
-#endif
-
+  const Centurion c;
   return Catch::Session().run(argc, argv);
 }

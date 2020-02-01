@@ -93,3 +93,14 @@ copy_directory_post_build(
         ${CENTURION_TEST}
         ${CTN_RESOURCES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}/resources)
+if (WIN32)
+    copy_file_post_build(
+            ${CENTURION_TEST}
+            ${CENTURION_DLL}
+            ${CMAKE_CURRENT_BINARY_DIR})
+
+    copy_directory_post_build(
+            ${CENTURION_TEST}
+            ${CTN_BINARIES_DIR}
+            ${CMAKE_CURRENT_BINARY_DIR})
+endif ()

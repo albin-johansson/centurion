@@ -22,7 +22,7 @@
 # Compiled Static libraries
 *.lai
 *.la
-# *.a
+*.a
 *.lib
 
 # Executables
@@ -45,3 +45,4 @@ cmake-build-release/
 
 # Ignore the documentation for now
 doc
+bin

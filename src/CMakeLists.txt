@@ -2,32 +2,32 @@ cmake_minimum_required(VERSION 3.12)
 project(${CMAKE_PROJECT_NAME}_src)
 
 set(SOURCE_FILES
-        ${INCLUDE_DIR}/window.h
-        ${INCLUDE_DIR}/window_listener.h
-        ${INCLUDE_DIR}/font.h
-        ${INCLUDE_DIR}/renderer.h
-        ${INCLUDE_DIR}/image.h
-        ${INCLUDE_DIR}/sound_effect.h
-        ${INCLUDE_DIR}/centurion_exception.h
-        ${INCLUDE_DIR}/bool_converter.h
-        ${INCLUDE_DIR}/centurion_api.h
-        ${INCLUDE_DIR}/centurion.h
-        ${INCLUDE_DIR}/colors.h
-        ${INCLUDE_DIR}/image_generator.h
-        ${INCLUDE_DIR}/paths.h
-        ${INCLUDE_DIR}/system.h
-        ${INCLUDE_DIR}/timer.h
-        ${INCLUDE_DIR}/log.h
-        ${INCLUDE_DIR}/blend_mode.h
-        ${INCLUDE_DIR}/message_box.h
-        ${INCLUDE_DIR}/color.h
-        ${INCLUDE_DIR}/rectangle.h
-        ${INCLUDE_DIR}/point.h
-        ${INCLUDE_DIR}/key_state.h
-        ${INCLUDE_DIR}/mouse_state.h
-        ${INCLUDE_DIR}/music.h
-        ${INCLUDE_DIR}/centurion_utils.h
-        ${INCLUDE_DIR}/error.h
+        ${CTN_INCLUDE_DIR}/window.h
+        ${CTN_INCLUDE_DIR}/window_listener.h
+        ${CTN_INCLUDE_DIR}/font.h
+        ${CTN_INCLUDE_DIR}/renderer.h
+        ${CTN_INCLUDE_DIR}/image.h
+        ${CTN_INCLUDE_DIR}/sound_effect.h
+        ${CTN_INCLUDE_DIR}/centurion_exception.h
+        ${CTN_INCLUDE_DIR}/bool_converter.h
+        ${CTN_INCLUDE_DIR}/centurion_api.h
+        ${CTN_INCLUDE_DIR}/centurion.h
+        ${CTN_INCLUDE_DIR}/colors.h
+        ${CTN_INCLUDE_DIR}/image_generator.h
+        ${CTN_INCLUDE_DIR}/paths.h
+        ${CTN_INCLUDE_DIR}/system.h
+        ${CTN_INCLUDE_DIR}/timer.h
+        ${CTN_INCLUDE_DIR}/log.h
+        ${CTN_INCLUDE_DIR}/blend_mode.h
+        ${CTN_INCLUDE_DIR}/message_box.h
+        ${CTN_INCLUDE_DIR}/color.h
+        ${CTN_INCLUDE_DIR}/rectangle.h
+        ${CTN_INCLUDE_DIR}/point.h
+        ${CTN_INCLUDE_DIR}/key_state.h
+        ${CTN_INCLUDE_DIR}/mouse_state.h
+        ${CTN_INCLUDE_DIR}/music.h
+        ${CTN_INCLUDE_DIR}/centurion_utils.h
+        ${CTN_INCLUDE_DIR}/error.h
         window.cpp
         font.cpp
         renderer.cpp
@@ -52,7 +52,10 @@ set(SOURCE_FILES
         error.cpp)
 
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
-add_definitions(-DWIN_EXPORT)
+
+if (WIN32)
+    add_definitions(-DWIN_EXPORT)
+endif()
 
 if (DEFINED ENV{TRAVIS})
     # The Travis CI virtual machines can't handle the audio stuff
@@ -85,10 +88,10 @@ target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_D
 target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 
-target_include_directories(${CENTURION_LIB} PUBLIC ${INCLUDE_DIR})
-target_include_directories(${CENTURION_LIB} PUBLIC ${SOURCE_DIR})
-target_include_directories(${CENTURION_LIB} PUBLIC ${LIBRARY_DIR})
-target_include_directories(${CENTURION_LIB} PUBLIC ${LIBRARY_DIR}/gsl)
+target_include_directories(${CENTURION_LIB} PUBLIC ${CTN_INCLUDE_DIR})
+target_include_directories(${CENTURION_LIB} PUBLIC ${CTN_SOURCE_DIR})
+target_include_directories(${CENTURION_LIB} PUBLIC ${CTN_LIBRARY_DIR})
+target_include_directories(${CENTURION_LIB} PUBLIC ${CTN_LIBRARY_DIR}/gsl)
 
 target_link_libraries(${CENTURION_LIB}
         PUBLIC ${SDL2_LIBRARY}
@@ -105,16 +108,17 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
         copy_file_post_build(
                 ${CENTURION_LIB}
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll
-                ${BINARIES_DIR}/libCenturion.dll)
+                ${CTN_BINARIES_DIR}/libCenturion.dll)
+
         copy_file_post_build(
                 ${CENTURION_LIB}
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.dll.a
-                ${BINARIES_DIR}/libCenturion.dll.a)
+                ${CTN_BINARIES_DIR}/libCenturion.dll.a)
     else () # FIXME for now we assume some sort of Linux distro
         message("Moving .so file...")
         copy_file_post_build(
                 ${CENTURION_LIB}
                 ${CMAKE_CURRENT_BINARY_DIR}/libCenturion.so
-                ${BINARIES_DIR}/libCenturion.so)
+                ${CTN_BINARIES_DIR}/libCenturion.so)
     endif ()
 endif ()

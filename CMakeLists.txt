@@ -3,22 +3,22 @@ project(Centurion)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
-set(BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
-set(RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
-set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
-set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-set(LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
+set(CTN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
+set(CTN_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
+set(CTN_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
+set(CTN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+set(CTN_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
 
 set(CENTURION_LIB ${PROJECT_NAME}_lib)
 set(CENTURION_TEST ${PROJECT_NAME}_test)
 
 message("Source directory: ${PROJECT_SOURCE_DIR}")
 
-if (WIN32)
-    set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.dll.a)
-    #elseif (LINUX)
-else () # FIXME for now we assume some sort of Linux distro
-    set(CENTURION_LIBRARIES ${BINARIES_DIR}/libCenturion.so)
+if (TRAVIS)
+    message("Moving libCenturion.so because TRAVIS was defined!")
+    set(CENTURION_LIBRARIES ${CTN_BINARIES_DIR}/libCenturion.so)
+else ()
+    set(CENTURION_LIBRARIES ${CTN_BINARIES_DIR}/libCenturion.dll.a)
 endif ()
 
 # Checks if an environment variable is defined.

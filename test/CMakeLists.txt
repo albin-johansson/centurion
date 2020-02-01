@@ -24,6 +24,7 @@ set(TEST_FILES
         unittests/error_test.cpp)
 
 add_executable(${CENTURION_TEST} ${TEST_FILES})
+add_dependencies(${CENTURION_TEST} ${CENTURION_LIB})
 
 set_target_properties(${CENTURION_TEST} PROPERTIES
         CXX_STANDARD 17
@@ -43,9 +44,9 @@ target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_
 target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 
-target_include_directories(${CENTURION_TEST} PUBLIC ${INCLUDE_DIR})
-target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR})
-target_include_directories(${CENTURION_TEST} PUBLIC ${LIBRARY_DIR}/gsl)
+target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_INCLUDE_DIR})
+target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_LIBRARY_DIR})
+target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_LIBRARY_DIR}/gsl)
 
 message("------ LINKING TEST EXECUTABLE ------")
 message("Linking against SDL2: ${SDL2_LIBRARY}")
@@ -64,7 +65,7 @@ if (WIN32)
             PUBLIC ${SDL2_MIXER_LIBRARIES}
             PUBLIC ${SDL2_TTF_LIBRARIES})
 else ()
-    target_link_directories(${CENTURION_TEST} PUBLIC ${BINARIES_DIR})
+    target_link_directories(${CENTURION_TEST} PUBLIC ${CTN_BINARIES_DIR})
 
     target_link_libraries(${CENTURION_TEST}
             PUBLIC Catch2
@@ -81,11 +82,11 @@ include(Catch)
 include(ParseAndAddCatchTests)
 catch_discover_tests(${CENTURION_TEST})
 
-message("Moving contents of ${BINARIES_DIR} to ${CMAKE_CURRENT_BINARY_DIR}...")
+message("Moving contents of ${CTN_BINARIES_DIR} to ${CMAKE_CURRENT_BINARY_DIR}...")
 
 copy_directory_post_build(
         ${CENTURION_TEST}
-        ${BINARIES_DIR}
+        ${CTN_BINARIES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR})
 
 #copy_directory_post_build(
@@ -95,5 +96,5 @@ copy_directory_post_build(
 
 copy_directory_post_build(
         ${CENTURION_TEST}
-        ${RESOURCES_DIR}
+        ${CTN_RESOURCES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}/resources)

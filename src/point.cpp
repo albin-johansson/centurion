@@ -31,12 +31,26 @@ void Point::set_y(int y) noexcept {
   this->y = y;
 }
 
+void Point::set(const Point& other) noexcept {
+  x = other.x;
+  y = other.y;
+}
+
+void Point::set(int px, int py) noexcept {
+  x = px;
+  y = py;
+}
+
 int Point::get_x() const noexcept {
   return x;
 }
 
 int Point::get_y() const noexcept {
   return y;
+}
+
+int Point::distance(const Point& a, const Point& b) noexcept {
+  return static_cast<int>(std::round(std::sqrt(std::abs(a.x - b.x) + std::abs(a.y - b.y))));
 }
 
 std::string Point::to_string() const {
@@ -54,6 +68,14 @@ bool operator==(const Point& lhs, const Point& rhs) noexcept {
 
 bool operator!=(const Point& lhs, const Point& rhs) noexcept {
   return !(lhs == rhs);
+}
+
+Point operator+(const Point& lhs, const Point& rhs) noexcept {
+  return {lhs.get_x() + rhs.get_x(), lhs.get_y() + rhs.get_y()};
+}
+
+Point operator-(const Point& lhs, const Point& rhs) noexcept {
+  return {lhs.get_x() - rhs.get_x(), lhs.get_y() - rhs.get_y()};
 }
 
 static_assert(std::is_final_v<FPoint>);
@@ -81,6 +103,16 @@ void FPoint::set_x(float x) noexcept {
 
 void FPoint::set_y(float y) noexcept {
   this->y = y;
+}
+
+void FPoint::set(const FPoint& other) noexcept {
+  x = other.x;
+  y = other.y;
+}
+
+void FPoint::set(float px, float py) noexcept {
+  x = px;
+  y = py;
 }
 
 float FPoint::get_x() const noexcept {
@@ -114,6 +146,14 @@ bool operator==(const FPoint& lhs, const FPoint& rhs) noexcept {
 
 bool operator!=(const FPoint& lhs, const FPoint& rhs) noexcept {
   return !(lhs == rhs);
+}
+
+FPoint operator+(const FPoint& lhs, const FPoint& rhs) noexcept {
+  return {lhs.get_x() + rhs.get_x(), lhs.get_y() + rhs.get_y()};
+}
+
+FPoint operator-(const FPoint& lhs, const FPoint& rhs) noexcept {
+  return {lhs.get_x() - rhs.get_x(), lhs.get_y() - rhs.get_y()};
 }
 
 }

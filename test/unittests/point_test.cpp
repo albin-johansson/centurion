@@ -45,6 +45,31 @@ TEST_CASE("Point::set_y", "[Point]") {
   CHECK(y == point.get_y());
 }
 
+TEST_CASE("Point::set(Point&)", "[Point]") {
+  Point point;
+
+  const auto x = 21006;
+  const auto y = 3456;
+  const Point other{x, y};
+
+  point.set(other);
+
+  CHECK(x == point.get_x());
+  CHECK(y == point.get_y());
+}
+
+TEST_CASE("Point::set(int, int)", "[Point]") {
+  Point point;
+
+  const auto x = -2421;
+  const auto y = 673;
+
+  point.set(x, y);
+
+  CHECK(x == point.get_x());
+  CHECK(y == point.get_y());
+}
+
 TEST_CASE("Point::to_string", "[Point]") {
   const Point point{27, 82};
   Log::msgf(Category::Test, "%s", point.to_string().c_str());
@@ -56,6 +81,32 @@ TEST_CASE("Point::operator SDL_Point", "[Point]") {
 
   CHECK(point.get_x() == sdlPoint.x);
   CHECK(point.get_y() == sdlPoint.y);
+}
+
+TEST_CASE("Point::distance", "[Point]") {
+  SECTION("Basic x-step") {
+    const Point a{0, 0};
+    const Point b{1, 0};
+    CHECK(1 == Point::distance(a, b));
+    CHECK(1 == Point::distance(b, a));
+  }
+
+  SECTION("Basic y-step") {
+    const Point a{0, 0};
+    const Point b{0, 1};
+    CHECK(1 == Point::distance(a, b));
+    CHECK(1 == Point::distance(b, a));
+  }
+
+  const Point a{189, 86};
+  const Point b{66, 36};
+
+  const auto distance = std::sqrt(
+      std::abs(a.get_x() - b.get_x()) +
+          std::abs(a.get_y() - b.get_y()));
+
+  CHECK(static_cast<int>(distance) == Point::distance(a, b));
+  CHECK(static_cast<int>(distance) == Point::distance(b, a));
 }
 
 TEST_CASE("Point::operator==", "[Point]") {
@@ -76,6 +127,37 @@ TEST_CASE("Point::operator!=", "[Point]") {
   CHECK(!(point != point));
   CHECK(point != other);
   CHECK(other != point);
+}
+
+TEST_CASE("Point::operator+", "[Point]") {
+  const Point point{56, 87};
+  const Point other{69, 175};
+
+  const Point res1 = point + other;
+  const Point res2 = other + point;
+
+  CHECK(res1 == res2);
+
+  CHECK(res1.get_x() == point.get_x() + other.get_x());
+  CHECK(res1.get_y() == point.get_y() + other.get_y());
+  CHECK(res2.get_x() == point.get_x() + other.get_x());
+  CHECK(res2.get_y() == point.get_y() + other.get_y());
+}
+
+TEST_CASE("Point::operator-", "[Point]") {
+  const Point point{673, 123};
+  const Point other{-547, 451};
+
+  const Point res1 = point - other;
+  const Point res2 = other - point;
+
+  CHECK(res1 != res2);
+
+  CHECK(res1.get_x() == point.get_x() - other.get_x());
+  CHECK(res1.get_y() == point.get_y() - other.get_y());
+
+  CHECK(res2.get_x() == other.get_x() - point.get_x());
+  CHECK(res2.get_y() == other.get_y() - point.get_y());
 }
 
 TEST_CASE("FPoint()", "[Point]") {
@@ -118,6 +200,31 @@ TEST_CASE("FPoint::set_y", "[Point]") {
   const auto y = 88.8f;
   point.set_y(y);
 
+  CHECK(y == point.get_y());
+}
+
+TEST_CASE("FPoint::set(FPoint&)", "[FPoint]") {
+  FPoint point;
+
+  const auto x = 825.3f;
+  const auto y = -425.5f;
+  const FPoint other{x, y};
+
+  point.set(other);
+
+  CHECK(x == point.get_x());
+  CHECK(y == point.get_y());
+}
+
+TEST_CASE("FPoint::set(float, float)", "[FPoint]") {
+  FPoint point;
+
+  const auto x = 2812.5f;
+  const auto y = 391.4f;
+
+  point.set(x, y);
+
+  CHECK(x == point.get_x());
   CHECK(y == point.get_y());
 }
 
@@ -185,4 +292,35 @@ TEST_CASE("FPoint::operator!=", "[FPoint]") {
   CHECK(!(point != point));
   CHECK(point != other);
   CHECK(other != point);
+}
+
+TEST_CASE("FPoint::operator+", "[FPoint]") {
+  const FPoint point{25.8f, 17.8f};
+  const FPoint other{44.6f, 33.7f};
+
+  const FPoint res1 = point + other;
+  const FPoint res2 = other + point;
+
+  CHECK(res1 == res2);
+
+  CHECK(res1.get_x() == point.get_x() + other.get_x());
+  CHECK(res1.get_y() == point.get_y() + other.get_y());
+  CHECK(res2.get_x() == point.get_x() + other.get_x());
+  CHECK(res2.get_y() == point.get_y() + other.get_y());
+}
+
+TEST_CASE("FPoint::operator-", "[FPoint]") {
+  const FPoint point{58.9f, 48.6f};
+  const FPoint other{12.7f, 69.3f};
+
+  const FPoint res1 = point - other;
+  const FPoint res2 = other - point;
+
+  CHECK(res1 != res2);
+
+  CHECK(res1.get_x() == point.get_x() - other.get_x());
+  CHECK(res1.get_y() == point.get_y() - other.get_y());
+
+  CHECK(res2.get_x() == other.get_x() - point.get_x());
+  CHECK(res2.get_y() == other.get_y() - point.get_y());
 }

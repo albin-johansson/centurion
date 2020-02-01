@@ -79,6 +79,23 @@ class CENTURION_API Point final {
   CENTURION_API void set_y(int y) noexcept;
 
   /**
+   * Copies the components of the supplied point into this point.
+   *
+   * @param other the point that will be copied.
+   * @since 3.1.0
+   */
+  CENTURION_API void set(const Point& other) noexcept;
+
+  /**
+   * Sets the x- and y-components of this point.
+   *
+   * @param px the new x-coordinate of the point.
+   * @param py the new y-coordinate of the point.
+   * @since 3.1.0
+   */
+  CENTURION_API void set(int px, int py) noexcept;
+
+  /**
    * Returns the x-coordinate of the point.
    *
    * @return the x-coordinate of the point.
@@ -95,6 +112,18 @@ class CENTURION_API Point final {
    */
   [[nodiscard]]
   CENTURION_API int get_y() const noexcept;
+
+  /**
+   * Calculates and returns the distance between two points. The returned distance is always
+   * positive. The order of the operands doesn't matter.
+   *
+   * @param a the first point.
+   * @param b the second point.
+   * @return the distance between two points.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  CENTURION_API static int distance(const Point& a, const Point& b) noexcept;
 
   /**
    * Returns a textual representation of the Point instance.
@@ -164,6 +193,23 @@ class CENTURION_API FPoint final {
    * @since 3.0.0
    */
   CENTURION_API void set_y(float y) noexcept;
+
+  /**
+   * Copies the components of the supplied point into this point.
+   *
+   * @param other the point that will be copied.
+   * @since 3.1.0
+   */
+  CENTURION_API void set(const FPoint& other) noexcept;
+
+  /**
+   * Sets the x- and y-components of this point.
+   *
+   * @param px the new x-coordinate of the point.
+   * @param py the new y-coordinate of the point.
+   * @since 3.1.0
+   */
+  CENTURION_API void set(float px, float py) noexcept;
 
   /**
    * Returns the x-coordinate of the point.
@@ -255,6 +301,28 @@ CENTURION_API bool operator==(const Point& lhs, const Point& rhs) noexcept;
 CENTURION_API bool operator!=(const Point& lhs, const Point& rhs) noexcept;
 
 /**
+ * Adds the coordinates of two points and returns the resulting point.
+ *
+ * @param lhs the left-hand side point.
+ * @param rhs the right-hand side point.
+ * @return a point that has the sum of the supplied points coordinates as its coordinates.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API Point operator+(const Point& lhs, const Point& rhs) noexcept;
+
+/**
+ * Subtracts the coordinates of two points and returns the resulting point.
+ *
+ * @param lhs the left-hand side point.
+ * @param rhs the right-hand side point.
+ * @return a point that has the difference of the supplied points coordinates as its coordinates.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API Point operator-(const Point& lhs, const Point& rhs) noexcept;
+
+/**
  * Indicates whether or not two points are the same. The absolute difference of the components of
  * the points must be less than 0.0001, in order for the points to be considered equal.
  *
@@ -276,5 +344,27 @@ CENTURION_API bool operator==(const FPoint& lhs, const FPoint& rhs) noexcept;
  */
 [[nodiscard]]
 CENTURION_API bool operator!=(const FPoint& lhs, const FPoint& rhs) noexcept;
+
+/**
+ * Adds the coordinates of two points and returns the resulting point.
+ *
+ * @param lhs the left-hand side point.
+ * @param rhs the right-hand side point.
+ * @return a point that has the sum of the supplied points coordinates as its coordinates.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API FPoint operator+(const FPoint& lhs, const FPoint& rhs) noexcept;
+
+/**
+ * Subtracts the coordinates of two points and returns the resulting point.
+ *
+ * @param lhs the left-hand side point.
+ * @param rhs the right-hand side point.
+ * @return a point that has the difference of the supplied points coordinates as its coordinates.
+ * @since 3.1.0
+ */
+[[nodiscard]]
+CENTURION_API FPoint operator-(const FPoint& lhs, const FPoint& rhs) noexcept;
 
 }

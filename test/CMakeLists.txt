@@ -93,8 +93,3 @@ copy_directory_post_build(
         ${CENTURION_TEST}
         ${CTN_RESOURCES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}/resources)
-
-#copy_directory_post_build(
-#        ${CENTURION_TEST}
-#        ${CMAKE}
-#        ${CMAKE_CURRENT_BINARY_DIR})

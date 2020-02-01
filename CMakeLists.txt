@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.12)
 project(Centurion)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 set(CTN_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
 set(CTN_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 set(CTN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(CTN_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
+set(CTN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
 
 set(CENTURION_LIB ${PROJECT_NAME}_lib)
 set(CENTURION_TEST ${PROJECT_NAME}_test)
@@ -19,6 +19,7 @@ if (DEFINED ENV{TRAVIS})
     set(CENTURION_LIBRARIES ${CMAKE_BINARY_DIR}/src/libCenturion.so)
 else ()
     set(CENTURION_LIBRARIES "${CMAKE_BINARY_DIR}/src/libCenturion.dll.a")
+    set(CENTURION_DLL "${CMAKE_BINARY_DIR}/src/libCenturion.dll")
 endif ()
 
 # Checks if an environment variable is defined.

@@ -134,6 +134,30 @@ TEST_CASE("FPoint operator SDL_FPoint", "[Point]") {
   CHECK(point.get_y() == sdlPoint.y);
 }
 
+TEST_CASE("FPoint::distance", "[FPoint]") {
+  SECTION("Basic x-step") {
+    const FPoint a{0, 0};
+    const FPoint b{1, 0};
+    CHECK(1 == FPoint::distance(a, b));
+    CHECK(1 == FPoint::distance(b, a));
+  }
+
+  SECTION("Basic y-step") {
+    const FPoint a{0, 0};
+    const FPoint b{0, 1};
+    CHECK(1 == FPoint::distance(a, b));
+    CHECK(1 == FPoint::distance(b, a));
+  }
+
+  const FPoint a{123.8f, 82.4f};
+  const FPoint b{45.9f, 12.4f};
+  const auto distance = std::sqrt(std::abs(a.get_x() - b.get_x()) +
+      std::abs(a.get_y() - b.get_y()));
+
+  CHECK(distance == FPoint::distance(a, b));
+  CHECK(distance == FPoint::distance(b, a));
+}
+
 TEST_CASE("FPoint::equals", "[FPoint]") {
   const FPoint point{11.7f, 38.9f};
   const FPoint other{point};

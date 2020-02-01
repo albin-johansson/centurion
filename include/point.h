@@ -184,6 +184,18 @@ class CENTURION_API FPoint final {
   CENTURION_API float get_y() const noexcept;
 
   /**
+   * Calculates and returns the distance between two points. The returned distance is always
+   * positive. The order of the operands doesn't matter.
+   *
+   * @param a the first point.
+   * @param b the second point.
+   * @return the distance between two points.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  CENTURION_API static float distance(const FPoint& a, const FPoint& b) noexcept;
+
+  /**
    * Returns a textual representation of the Point instance.
    *
    * @return a textual representation of the Point instance.

@@ -91,6 +91,10 @@ float FPoint::get_y() const noexcept {
   return y;
 }
 
+float FPoint::distance(const FPoint& a, const FPoint& b) noexcept {
+  return std::sqrt(std::abs(a.x - b.x) + std::abs(a.y - b.y));
+}
+
 std::string FPoint::to_string() const {
   return "[FPoint | X: " + std::to_string(x) + ", Y: " + std::to_string(y) + "]";
 }

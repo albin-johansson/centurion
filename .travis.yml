@@ -10,6 +10,7 @@ env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     - CXX_FLAGS=""
+    - CODECOV_TOKEN="d078f878-66f2-4ea0-916d-708109a3358b"
 
 addons:
   apt:
@@ -19,6 +20,7 @@ addons:
       - gcc-8
       - g++-8
       - cmake
+      - lcov
 
 before_install:
   - sudo apt-get update
@@ -87,5 +89,14 @@ script:
   - cd build
   - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Release ..
   - make
+
+  - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+    make gcov
+    make lcov
+    fi
+
   - cd test
   - ctest
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"

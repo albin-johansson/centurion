@@ -62,13 +62,13 @@ if (DEFINED ENV{TRAVIS})
     target_compile_definitions(${CENTURION_LIB} PUBLIC CENTURION_NOAUDIO)
 endif ()
 
-if (DEFINED ENV{ENABLE_COVERAGE})
-#    include(CodeCoverage)
-#    append_coverage_compiler_flags()
-    target_link_libraries(${CENTURION_LIB} PUBLIC coverage_config)
-else ()
-    message("Not generating code coverage!")
-endif ()
+#if (DEFINED ENV{ENABLE_COVERAGE})
+##    include(CodeCoverage)
+##    append_coverage_compiler_flags()
+#    target_link_libraries(${CENTURION_LIB} PUBLIC coverage_config)
+#else ()
+#    message("Not generating code coverage!")
+#endif ()
 
 # Specifies C++ version and compiler warning flags.
 target_compile_options(${CENTURION_LIB} PRIVATE

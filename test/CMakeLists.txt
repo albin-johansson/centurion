@@ -73,11 +73,16 @@ target_link_libraries(${CENTURION_TEST}
 catch_discover_tests(${CENTURION_TEST})
 
 if (DEFINED ENV{CODE_COVERAGE})
-    include(CodeCoverage)
-    setup_target_for_coverage(${PROJECT_NAME}_coverage ${CENTURION_TEST} coverage)
-
-    SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
-#    SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+#    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
+    find_package(codecov)
+    add_coverage(${CENTURION_TEST})
+    list(APPEND LCOV_REMOVE_PATTERNS "/usr/")
+    coverage_evaluate()
+#    include(CodeCoverage)
+#    setup_target_for_coverage(${PROJECT_NAME}_coverage ${CENTURION_TEST} coverage)
+#
+#    SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+#    #    SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
 endif ()
 
 copy_directory_post_build(

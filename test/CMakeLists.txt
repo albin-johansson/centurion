@@ -73,6 +73,7 @@ target_link_libraries(${CENTURION_TEST}
 catch_discover_tests(${CENTURION_TEST})
 
 if (DEFINED ENV{CODE_COVERAGE})
+    option(ENABLE_COVERAGE ON)
 #    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
     find_package(codecov)
     add_coverage(${CENTURION_TEST})

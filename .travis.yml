@@ -90,7 +90,7 @@ script:
   - cd build
 
   # Builds the project
-  - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Release ..
+  - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Debug ..
   - make
   - cd test
   - ctest

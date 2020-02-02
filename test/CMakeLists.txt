@@ -31,13 +31,6 @@ endif ()
 add_executable(${CENTURION_TEST} ${TEST_FILES})
 add_dependencies(${CENTURION_TEST} ${CENTURION_LIB})
 
-if (DEFINED ENV{ENABLE_COVERAGE})
-    #    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -fprofile-arcs -ftest-coverage")
-
-    set_target_properties(${CENTURION_TEST} PROPERTIES
-            LINK_FLAGS "-lgcov --coverage")
-endif ()
-
 set_target_properties(${CENTURION_TEST} PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON)

@@ -93,13 +93,15 @@ script:
   - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Release ..
   - make
   - cd test
+  - ctest
+
+after_success:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      make gcov
-      make lcov
+      lcov --directory . --capture --output-file coverage.info
+      lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
       bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
     fi
-  - ctest
 
 #after_success:
 #  - bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"

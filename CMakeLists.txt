@@ -13,7 +13,6 @@ set(CENTURION_LIB ${PROJECT_NAME}_lib)
 set(CENTURION_TEST ${PROJECT_NAME}_test)
 
 message("Source directory: ${PROJECT_SOURCE_DIR}")
-message("Runtime output directory: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
 if (DEFINED ENV{TRAVIS})
     set(CENTURION_LIBRARIES ${CMAKE_BINARY_DIR}/src/libCenturion.so)

@@ -92,16 +92,24 @@ script:
   # Builds the project
   - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Debug ..
   - make
-  - cd test
-  - ctest
 
-after_success:
+  - cd test
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      lcov --directory . --capture --output-file coverage.info
-      lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
+      make gcov
+      make lcov
       bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
     fi
+
+  - ctest
+
+#after_success:
+#  - |
+#    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+#      lcov --directory . --capture --output-file coverage.info
+#      lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
+#      bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
+#    fi
 
 #after_success:
 #  - bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"

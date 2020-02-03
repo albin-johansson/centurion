@@ -138,4 +138,8 @@ TEST_CASE("SoundEffect::to_string", "[SoundEffect]") {
   Log::msgf(Category::Test, "%s", sound.to_string().c_str());
 }
 
+TEST_CASE("SoundEffect::get_max_volume", "[SoundEffect]") {
+  CHECK(SoundEffect::get_max_volume() == MIX_MAX_VOLUME);
+}
+
 #endif

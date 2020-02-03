@@ -21,7 +21,7 @@ static_assert(!std::is_copy_assignable_v<SoundEffect>);
 static_assert(std::is_convertible_v<SoundEffect, Mix_Chunk*>);
 
 const int SoundEffect::loopForever = -10;
-const int SoundEffect::maxVolume = MIX_MAX_VOLUME;
+const int SoundEffect::maxVolume = get_max_volume();
 
 SoundEffect::SoundEffect(const std::string& file) {
   chunk = Mix_LoadWAV(file.c_str());
@@ -98,7 +98,7 @@ void SoundEffect::fade_out(int ms) noexcept {
 
 void SoundEffect::set_volume(int volume) noexcept {
   if (volume < 0) { volume = 0; }
-  if (volume > MIX_MAX_VOLUME) { volume = MIX_MAX_VOLUME; }
+  if (volume > get_max_volume()) { volume = get_max_volume(); }
   Mix_VolumeChunk(chunk, volume);
 }
 

@@ -199,6 +199,17 @@ class CENTURION_API SoundEffect final {
    * @since 3.0.0
    */
   CENTURION_API /*implicit*/ operator Mix_Chunk*() const noexcept;
+
+  /**
+   * Returns the maximum possible volume value.
+   *
+   * @return the maximum possible volume value.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  static constexpr int get_max_volume() noexcept {
+    return MIX_MAX_VOLUME;
+  }
 };
 
 }

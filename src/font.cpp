@@ -177,7 +177,7 @@ int Font::get_font_faces() const noexcept {
 }
 
 FontHint Font::get_font_hinting() const noexcept {
-  return static_cast<FontHint>(TTF_GetFontHinting(font)); // TODO check if the SDL call can fail
+  return static_cast<FontHint>(TTF_GetFontHinting(font));
 }
 
 std::string Font::get_family_name() const noexcept {

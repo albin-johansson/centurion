@@ -18,6 +18,7 @@ static_assert(std::is_nothrow_move_assignable_v<Music>);
 
 static_assert(std::is_convertible_v<Music, Mix_Music*>);
 
+// FIXME there is some duplication between SoundEffect and Music
 const int Music::maxVolume = MIX_MAX_VOLUME;
 const int Music::loopForever = -1;
 

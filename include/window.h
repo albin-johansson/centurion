@@ -556,9 +556,11 @@ class CENTURION_API Window final {
    * Returns the pixel format of the window.
    *
    * @return the pixel format of the window.
+   * @deprecated this method will return a PixelFormat value in a future version of Centurion.
+   * It's safe to use static cast to convert the returned value to PixelFormat.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  [[nodiscard, deprecated]]
   CENTURION_API uint32_t get_pixel_format() const noexcept;
 
   /**

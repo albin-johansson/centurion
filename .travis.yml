@@ -94,12 +94,12 @@ script:
   - make
 
   - cd test
-  - |
-    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-      make gcov
-      make lcov
-      bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
-    fi
+#  - |
+#    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+#      make gcov
+#      make lcov
+#      bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
+#    fi
 
   - ctest
 

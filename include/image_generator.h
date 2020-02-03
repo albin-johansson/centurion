@@ -71,8 +71,27 @@ class CENTURION_API ImageGenerator final {
   /**
    * Creates and returns a unique pointer to an image with the specified characteristics.
    *
-   * @param format the format of the created image.
-   * @param access one of the SDL_TextureAccess values.
+   * @param format the pixel format of the created image.
+   * @param access the texture access of the image.
+   * @param width the width of the created image.
+   * @param height the height of the created image.
+   * @return a unique pointer to an image.
+   * @throws CenturionException if the image cannot be created.
+   * @deprecated use the more type-safe version instead, that takes a PixelFormat value instead
+   * of a uint32_t.
+   * @since 3.0.0
+   */
+  [[nodiscard, deprecated]]
+  CENTURION_API std::unique_ptr<Image> unique_img(uint32_t format,
+                                                  TextureAccess access,
+                                                  int width,
+                                                  int height) const;
+
+  /**
+   * Creates and returns a unique pointer to an image with the specified characteristics.
+   *
+   * @param format the pixel format of the image.
+   * @param access the texture access of the image.
    * @param width the width of the created image.
    * @param height the height of the created image.
    * @return a unique pointer to an image.
@@ -80,7 +99,7 @@ class CENTURION_API ImageGenerator final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  CENTURION_API std::unique_ptr<Image> unique_img(uint32_t format,
+  CENTURION_API std::unique_ptr<Image> unique_img(PixelFormat format,
                                                   TextureAccess access,
                                                   int width,
                                                   int height) const;
@@ -99,8 +118,27 @@ class CENTURION_API ImageGenerator final {
   /**
    * Creates and returns a shared pointer to an image with the specified characteristics.
    *
-   * @param format the format of the created image.
-   * @param access one of the SDL_TextureAccess values.
+   * @param format the pixel format of the created image.
+   * @param access the texture access of the image.
+   * @param width the width of the created image.
+   * @param height the height of the created image.
+   * @return a shared pointer to an image.
+   * @throws CenturionException if the image cannot be created.
+   * @deprecated use the more type-safe version instead, that takes a PixelFormat value instead
+   * of a uint32_t.
+   * @since 3.0.0
+   */
+  [[nodiscard, deprecated]]
+  CENTURION_API std::shared_ptr<Image> shared_img(uint32_t format,
+                                                  TextureAccess access,
+                                                  int width,
+                                                  int height) const;
+
+  /**
+   * Creates and returns a shared pointer to an image with the specified characteristics.
+   *
+   * @param format the pixel format of the image.
+   * @param access the texture access of the image.
    * @param width the width of the created image.
    * @param height the height of the created image.
    * @return a shared pointer to an image.
@@ -108,7 +146,7 @@ class CENTURION_API ImageGenerator final {
    * @since 3.0.0
    */
   [[nodiscard]]
-  CENTURION_API std::shared_ptr<Image> shared_img(uint32_t format,
+  CENTURION_API std::shared_ptr<Image> shared_img(PixelFormat format,
                                                   TextureAccess access,
                                                   int width,
                                                   int height) const;

@@ -35,11 +35,25 @@ std::unique_ptr<Image> ImageGenerator::unique_img(uint32_t format,
   return std::make_unique<Image>(*renderer, format, access, width, height);
 }
 
+std::unique_ptr<Image> ImageGenerator::unique_img(PixelFormat format,
+                                                  TextureAccess access,
+                                                  int width,
+                                                  int height) const {
+  return std::make_unique<Image>(*renderer, format, access, width, height);
+}
+
 std::shared_ptr<Image> ImageGenerator::shared_img(const std::string& file) const {
   return Image::shared(*renderer, file);
 }
 
 std::shared_ptr<Image> ImageGenerator::shared_img(uint32_t format,
+                                                  TextureAccess access,
+                                                  int width,
+                                                  int height) const {
+  return std::make_shared<Image>(*renderer, format, access, width, height);
+}
+
+std::shared_ptr<Image> ImageGenerator::shared_img(PixelFormat format,
                                                   TextureAccess access,
                                                   int width,
                                                   int height) const {

@@ -251,15 +251,36 @@ class CENTURION_API Image final {
    * Creates an image with the specified characteristics.
    *
    * @param renderer the associated renderer instance, may not be null.
-   * @param format the format of the created image.
-   * @param access one of the SDL_TextureAccess values.
+   * @param format the pixel format of the created image. Must be one of the SDL_PIXELFORMAT_x
+   * values.
+   * @param access the texture access of the created image.
    * @param width the width of the created image.
    * @param height the height of the created image.
+   * @deprecated use the Image constructor that takes a PixelFormat value instead of a uint32_t,
+   * as it is much more type-safe.
    * @throws CenturionException if the image cannot be created.
    * @since 3.0.0
    */
+  [[deprecated]]
   CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer,
                       uint32_t format,
+                      TextureAccess access,
+                      int width,
+                      int height);
+
+  /**
+   * Creates an image with the specified characteristics.
+   *
+   * @param renderer the associated renderer instance, may not be null.
+   * @param format the pixel format of the created image.
+   * @param access the texture access of the created image.
+   * @param width the width of the image.
+   * @param height the height of the image.
+   * @throws CenturionException if the image cannot be created.
+   * @since 3.1.0
+   */
+  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer,
+                      PixelFormat format,
                       TextureAccess access,
                       int width,
                       int height);
@@ -330,17 +351,39 @@ class CENTURION_API Image final {
    * Creates and returns a unique pointer to an image with the specified characteristics.
    *
    * @param renderer the associated renderer instance, may not be null.
-   * @param format the format of the created image.
-   * @param access one of the SDL_TextureAccess values.
+   * @param format the pixel format of the created image. Must be one of the SDL_PIXELFORMAT_x
+   * values.
+   * @param access the texture access of the image.
    * @param width the width of the created image.
    * @param height the height of the created image.
    * @return a unique pointer to an image.
    * @throws CenturionException if the image cannot be created.
+   * @deprecated use the factory method that takes a PixelFormat value instead of a uint32_t,
+   * as it is much more type-safe.
    * @since 3.0.0
+   */
+  [[nodiscard, deprecated]]
+  CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
+                                                     uint32_t format,
+                                                     TextureAccess access,
+                                                     int width,
+                                                     int height);
+
+  /**
+   * Creates and returns a unique pointer to an image with the supplied characteristics.
+   *
+   * @param renderer a pointer to associated renderer that will be used.
+   * @param format the pixel format of the image.
+   * @param access the texture access of the image.
+   * @param width the width of the image.
+   * @param height the height of the image.
+   * @return a unique pointer to an image.
+   * @throws CenturionException if the image cannot be created.
+   * @since 3.1.0
    */
   [[nodiscard]]
   CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
-                                                     uint32_t format,
+                                                     PixelFormat format,
                                                      TextureAccess access,
                                                      int width,
                                                      int height);
@@ -387,17 +430,39 @@ class CENTURION_API Image final {
    * Creates and returns a shared pointer to an image with the specified characteristics.
    *
    * @param renderer the associated renderer instance, may not be null.
-   * @param format the format of the created image.
-   * @param access one of the SDL_TextureAccess values.
+   * @param format the pixel format of the created image. Must be one of the SDL_PIXELFORMAT_x
+   * values.
+   * @param access the texture access of the image.
    * @param width the width of the created image.
    * @param height the height of the created image.
    * @return a shared pointer to an image.
    * @throws CenturionException if the image cannot be created.
+   * @deprecated use the factory method that takes a PixelFormat value instead of a uint32_t,
+   * as it is much more type-safe.
    * @since 3.0.0
+   */
+  [[nodiscard, deprecated]]
+  CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
+                                                     uint32_t format,
+                                                     TextureAccess access,
+                                                     int width,
+                                                     int height);
+
+  /**
+   * Creates and returns a shared pointer to an image with the supplied characteristics.
+   *
+   * @param renderer a pointer to associated renderer that will be used.
+   * @param format the pixel format of the image.
+   * @param access the texture access of the image.
+   * @param width the width of the image.
+   * @param height the height of the image.
+   * @return a shared pointer to an image.
+   * @throws CenturionException if the image cannot be created.
+   * @since 3.1.0
    */
   [[nodiscard]]
   CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
-                                                     uint32_t format,
+                                                     PixelFormat format,
                                                      TextureAccess access,
                                                      int width,
                                                      int height);

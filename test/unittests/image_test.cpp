@@ -32,12 +32,21 @@ TEST_CASE("Image(Image&&)", "[Image]") {
   CHECK(!img.get_texture());
 }
 
+TEST_CASE("Image(gsl::not_null<SDL_Renderer*>, PixelFormat, TextureAccess, int, int)", "[Image]") {
+  Window window;
+  Renderer renderer{window};
+  CHECK_NOTHROW(Image{renderer, PixelFormat::RGBA32, TextureAccess::Static, 50, 50});
+}
+
 TEST_CASE("Image::unique", "[Image]") {
   const Window window;
   const Renderer renderer{window};
   CHECK_THROWS_AS(Image::unique(nullptr), CenturionException);
   CHECK(Image::unique(renderer, path));
   CHECK(Image::unique(renderer, window.get_pixel_format(), TextureAccess::Static, 100, 100));
+  CHECK(Image::unique(renderer,
+                      static_cast<PixelFormat>(window.get_pixel_format()),
+                      TextureAccess::Static, 100, 100));
 }
 
 TEST_CASE("Image:::shared", "[Image]") {
@@ -46,6 +55,9 @@ TEST_CASE("Image:::shared", "[Image]") {
   CHECK_THROWS_AS(Image::shared(nullptr), CenturionException);
   CHECK(Image::shared(renderer, path));
   CHECK(Image::shared(renderer, window.get_pixel_format(), TextureAccess::Static, 100, 100));
+  CHECK(Image::shared(renderer,
+                      static_cast<PixelFormat>(window.get_pixel_format()),
+                      TextureAccess::Static, 100, 100));
 }
 
 TEST_CASE("Image::get_format", "[Image]") {
@@ -234,7 +246,7 @@ TEST_CASE("PixelFormat enum values", "[PixelFormat]") {
     CHECK(PixelFormat::YVYU == SDL_PIXELFORMAT_YVYU);
     CHECK(PixelFormat::NV12 == SDL_PIXELFORMAT_NV12);
     CHECK(PixelFormat::NV21 == SDL_PIXELFORMAT_NV21);
-    CHECK(PixelFormat::ExternalOES  == SDL_PIXELFORMAT_EXTERNAL_OES);
+    CHECK(PixelFormat::ExternalOES == SDL_PIXELFORMAT_EXTERNAL_OES);
   }
 
   SECTION("CTN right and SDL left") {

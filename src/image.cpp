@@ -1,5 +1,4 @@
 #include "image.h"
-#include <sstream>
 #include <type_traits>
 #include <SDL_image.h>
 #include "centurion_exception.h"
@@ -48,6 +47,21 @@ Image::Image(gsl::not_null<SDL_Renderer*> renderer,
   }
 }
 
+Image::Image(gsl::not_null<SDL_Renderer*> renderer,
+             PixelFormat format,
+             TextureAccess access,
+             int width,
+             int height) {
+  texture = SDL_CreateTexture(renderer,
+                              static_cast<uint32_t>(format),
+                              static_cast<int>(access),
+                              width,
+                              height);
+  if (!texture) {
+    throw CenturionException{"Failed to create image! " + Error::msg()};
+  }
+}
+
 Image::Image(Image&& other) noexcept
     : texture{other.texture} {
   other.texture = nullptr;
@@ -88,14 +102,13 @@ std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
   return std::make_unique<Image>(renderer, format, access, width, height);
 }
 
-std::shared_ptr<Image> Image::shared(gsl::not_null<SDL_Renderer*> renderer,
-                                     uint32_t format,
+std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
+                                     PixelFormat format,
                                      TextureAccess access,
                                      int width,
                                      int height) {
-  return std::make_shared<Image>(renderer, format, access, width, height);
+  return std::make_unique<Image>(renderer, format, access, width, height);
 }
-
 std::shared_ptr<Image> Image::shared(gsl::owner<SDL_Texture*> texture) {
   return std::make_shared<Image>(texture);
 }
@@ -108,6 +121,22 @@ std::shared_ptr<Image> Image::shared(gsl::not_null<SDL_Renderer*> renderer,
 std::shared_ptr<Image> Image::shared(gsl::not_null<SDL_Renderer*> renderer,
                                      gsl::not_null<SDL_Surface*> surface) {
   return std::make_shared<Image>(renderer, surface);
+}
+
+std::shared_ptr<Image> Image::shared(gsl::not_null<SDL_Renderer*> renderer,
+                                     uint32_t format,
+                                     TextureAccess access,
+                                     int width,
+                                     int height) {
+  return std::make_shared<Image>(renderer, format, access, width, height);
+}
+
+std::shared_ptr<Image> Image::shared(gsl::not_null<SDL_Renderer*> renderer,
+                                     PixelFormat format,
+                                     TextureAccess access,
+                                     int width,
+                                     int height) {
+  return std::make_shared<Image>(renderer, format, access, width, height);
 }
 
 void Image::set_alpha(uint8_t alpha) noexcept {

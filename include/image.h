@@ -34,8 +34,6 @@
 
 namespace centurion {
 
-// TODO 3.1.0: deprecate the methods/ctors that uses uint32_t as a pixel format value
-
 /**
  * The PixelFormat enum class mirrors the values of the SDL_PixelFormatEnum.
  *

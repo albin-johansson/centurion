@@ -31,7 +31,7 @@
 
 namespace centurion {
 
-class CENTURION_API Renderer;
+class Renderer;
 
 /**
  * The ImageGenerator class is a utility class designed to make it easier to create instances of

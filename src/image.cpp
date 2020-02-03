@@ -207,4 +207,20 @@ bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept {
   return a != static_cast<SDL_TextureAccess>(b);
 }
 
+bool operator==(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept {
+  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
+}
+
+bool operator==(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept {
+  return lhs == static_cast<SDL_PixelFormatEnum>(rhs);
+}
+
+bool operator!=(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept {
+  return static_cast<SDL_PixelFormatEnum>(lhs) != rhs;
+}
+
+bool operator!=(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept {
+  return lhs != static_cast<SDL_PixelFormatEnum>(rhs);
+}
+
 }

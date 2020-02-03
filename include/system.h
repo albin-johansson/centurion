@@ -24,7 +24,7 @@
 
 #pragma once
 #include <optional>
-#include <SDL_power.h>
+#include <SDL.h>
 #include "centurion_api.h"
 
 namespace centurion {
@@ -97,6 +97,28 @@ class CENTURION_API CPU final {
    */
   [[nodiscard]]
   CENTURION_API static int get_cores() noexcept;
+
+  /**
+   * Indicates whether or not the CPU uses big-endian byte ordering.
+   *
+   * @return true if the CPU uses big-endian byte ordering; false otherwise.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  constexpr static bool is_big_endian() noexcept {
+    return SDL_BYTEORDER == SDL_BIG_ENDIAN;
+  }
+
+  /**
+   * Indicates whether or not the CPU uses little-endian byte ordering.
+   *
+   * @return true if the CPU uses little-endian byte ordering; false otherwise.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  constexpr static bool is_little_endian() noexcept {
+    return SDL_BYTEORDER == SDL_LIL_ENDIAN;
+  }
 };
 
 /**

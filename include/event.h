@@ -338,7 +338,7 @@ enum class MouseButton {
  *
  * @since 3.1.0
  */
-class MouseButtonEvent final {
+class CENTURION_API MouseButtonEvent final {
  private:
   SDL_MouseButtonEvent event;
 

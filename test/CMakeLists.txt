@@ -19,7 +19,8 @@ set(TEST_FILES
         unittests/mouse_state_test.cpp
         unittests/rectangle_test.cpp
         unittests/centurion_exception_test.cpp
-        unittests/error_test.cpp)
+        unittests/error_test.cpp
+        unittests/event_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

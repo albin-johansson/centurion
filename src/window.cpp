@@ -267,7 +267,7 @@ float Window::get_brightness() const noexcept {
   return SDL_GetWindowBrightness(window);
 }
 
-int Window::get_id() const noexcept {
+int Window::get_id() const noexcept { // TODO change to uint32_t?
   return static_cast<int>(SDL_GetWindowID(window));
 }
 

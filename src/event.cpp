@@ -15,38 +15,6 @@ constexpr bool check_event_type() noexcept {
 
 }
 
-bool operator==(EventType lhs, SDL_EventType rhs) noexcept {
-  return static_cast<SDL_EventType>(lhs) == rhs;
-}
-
-bool operator==(SDL_EventType lhs, EventType rhs) noexcept {
-  return lhs == static_cast<SDL_EventType>(rhs);
-}
-
-bool operator!=(EventType lhs, SDL_EventType rhs) noexcept {
-  return !(lhs == rhs);
-}
-
-bool operator!=(SDL_EventType lhs, EventType rhs) noexcept {
-  return !(lhs == rhs);
-}
-
-bool operator==(KeyModifier lhs, SDL_Keymod rhs) noexcept {
-  return static_cast<SDL_Keymod>(lhs) == rhs;
-}
-
-bool operator==(SDL_Keymod lhs, KeyModifier rhs) noexcept {
-  return lhs == static_cast<SDL_Keymod>(rhs);
-}
-
-bool operator!=(KeyModifier lhs, SDL_Keymod rhs) noexcept {
-  return !(lhs == rhs);
-}
-
-bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept {
-  return !(lhs == rhs);
-}
-
 // ** KEY EVENT ************************************************************************************
 
 static_assert(check_event_type<KeyEvent>());

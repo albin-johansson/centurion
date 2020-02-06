@@ -197,7 +197,7 @@ void Window::set_gamma(float gamma) noexcept {
   }
 }
 
-void Window::set_opacity(float opacity) noexcept {
+void Window::set_opacity(float opacity) noexcept { // TODO doc: the window must be visible?
   SDL_SetWindowOpacity(window, opacity);
   notify_window_listeners();
 }
@@ -267,7 +267,7 @@ float Window::get_brightness() const noexcept {
   return SDL_GetWindowBrightness(window);
 }
 
-int Window::get_id() const noexcept { // TODO change to uint32_t?
+int Window::get_id() const noexcept { // TODO change to uint32_t
   return static_cast<int>(SDL_GetWindowID(window));
 }
 

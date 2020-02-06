@@ -21,7 +21,8 @@ set(TEST_FILES
         unittests/centurion_exception_test.cpp
         unittests/error_test.cpp
         unittests/event_test.cpp
-        unittests/key_event_test.cpp)
+        unittests/key_event_test.cpp
+        unittests/mouse_motion_event_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

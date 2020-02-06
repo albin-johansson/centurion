@@ -20,7 +20,8 @@ set(TEST_FILES
         unittests/rectangle_test.cpp
         unittests/centurion_exception_test.cpp
         unittests/error_test.cpp
-        unittests/event_test.cpp)
+        unittests/event_test.cpp
+        unittests/key_event_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES
@@ -64,12 +65,12 @@ include(Catch)
 include(ParseAndAddCatchTests)
 
 target_link_libraries(${CENTURION_TEST}
-        PUBLIC Catch2
         PUBLIC ${SDL2_LIBRARY}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
-        PUBLIC ${CENTURION_LIBRARIES})
+        PUBLIC ${CENTURION_LIBRARIES}
+        PUBLIC Catch2)
 
 catch_discover_tests(${CENTURION_TEST})
 

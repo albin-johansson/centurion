@@ -28,6 +28,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/music.h
         ${CTN_INCLUDE_DIR}/centurion_utils.h
         ${CTN_INCLUDE_DIR}/error.h
+        ${CTN_INCLUDE_DIR}/event.h
         window.cpp
         font.cpp
         renderer.cpp
@@ -49,7 +50,8 @@ set(SOURCE_FILES
         key_state.cpp
         mouse_state.cpp
         music.cpp
-        error.cpp)
+        error.cpp
+        event.cpp)
 
 add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
 

@@ -226,7 +226,7 @@ MouseWheelEvent Event::as_mouse_wheel_event() const noexcept {
 }
 
 QuitEvent Event::as_quit_event() const noexcept {
-  return QuitEvent(SDL_QuitEvent());
+  return QuitEvent{event.quit};
 }
 
 }

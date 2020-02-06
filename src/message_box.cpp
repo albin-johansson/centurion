@@ -99,7 +99,7 @@ int MessageBox::show(SDL_Window* window) {
     throw CenturionException("Failed to show message box! " + Error::msg());
   }
 
-  return button;
+  return button; // TODO consider returning std::optional<int> instead
 }
 
 void MessageBox::show(const std::string& title,

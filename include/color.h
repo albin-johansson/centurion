@@ -358,6 +358,13 @@ class CENTURION_API Color final {
   }
 };
 
+/**
+ * An alias for the british spelling of color.
+ *
+ * @since 3.1.0
+ */
+using Colour = Color;
+
 inline bool operator==(const Color& color, const Color& other) noexcept {
   return color.red == other.red
       && color.green == other.green

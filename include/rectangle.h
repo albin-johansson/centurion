@@ -211,6 +211,12 @@ class CENTURION_API Rect final {
   [[nodiscard]]
   CENTURION_API std::string to_string() const;
 
+  /**
+   * Returns a reference to the internal SDL_Rect instance.
+   *
+   * @return a reference to the internal SDL_Rect instance.
+   * @since 3.0.0
+   */
   [[nodiscard]]
   CENTURION_API /*implicit*/ operator const SDL_Rect&() const noexcept;
 

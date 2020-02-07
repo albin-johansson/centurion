@@ -84,50 +84,50 @@ void Renderer::present() const noexcept {
   SDL_RenderPresent(renderer);
 }
 
-void Renderer::draw_image(const Image& texture, int x, int y) const noexcept {
-  const auto dst = SDL_Rect{x, y, texture.get_width(), texture.get_height()};
-  SDL_RenderCopy(renderer, texture, nullptr, &dst);
+void Renderer::draw_image(const Image& img, int x, int y) const noexcept {
+  const auto dst = SDL_Rect{x, y, img.get_width(), img.get_height()};
+  SDL_RenderCopy(renderer, img, nullptr, &dst);
 }
 
-void Renderer::draw_image(const Image& texture, float x, float y) const noexcept {
+void Renderer::draw_image(const Image& img, float x, float y) const noexcept {
   const auto dst = SDL_FRect{x, y,
-                             static_cast<float>(texture.get_width()),
-                             static_cast<float>(texture.get_height())};
-  SDL_RenderCopyF(renderer, texture, nullptr, &dst);
+                             static_cast<float>(img.get_width()),
+                             static_cast<float>(img.get_height())};
+  SDL_RenderCopyF(renderer, img, nullptr, &dst);
 }
 
-void Renderer::draw_image(const Image& texture,
+void Renderer::draw_image(const Image& img,
                           int x,
                           int y,
                           int width,
                           int height) const noexcept {
   const auto dst = SDL_Rect{x, y, width, height};
-  SDL_RenderCopy(renderer, texture, nullptr, &dst);
+  SDL_RenderCopy(renderer, img, nullptr, &dst);
 }
 
-void Renderer::draw_image(const Image& texture,
+void Renderer::draw_image(const Image& img,
                           float x,
                           float y,
                           float width,
                           float height) const noexcept {
   const auto dst = SDL_FRect{x, y, width, height};
-  SDL_RenderCopyF(renderer, texture, nullptr, &dst);
+  SDL_RenderCopyF(renderer, img, nullptr, &dst);
 }
 
-void Renderer::draw_image(const Image& texture,
+void Renderer::draw_image(const Image& img,
                           const SDL_Rect& source,
                           const SDL_FRect& destination) const noexcept {
-  SDL_RenderCopyF(renderer, texture, &source, &destination);
+  SDL_RenderCopyF(renderer, img, &source, &destination);
 }
 
-void Renderer::draw_image_translated(const Image& texture,
+void Renderer::draw_image_translated(const Image& img,
                                      const SDL_Rect& source,
                                      const SDL_FRect& destination) const noexcept {
   const auto dst = SDL_FRect{destination.x - translationViewport.x,
                              destination.y - translationViewport.y,
                              destination.w,
                              destination.h};
-  SDL_RenderCopyF(renderer, texture, &source, &dst);
+  SDL_RenderCopyF(renderer, img, &source, &dst);
 }
 
 void Renderer::draw_image(const Image& image,

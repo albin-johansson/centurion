@@ -163,54 +163,54 @@ class CENTURION_API Renderer final {
   CENTURION_API void present() const noexcept;
 
   /**
-   * Renders a texture.
+   * Renders an image.
    *
-   * @param texture a reference to the texture that will be rendered.
-   * @param x the x-coordinate of the rendered texture.
-   * @param y the y-coordinate of the rendered texture.
+   * @param img a reference to the image that will be rendered.
+   * @param x the x-coordinate of the rendered image.
+   * @param y the y-coordinate of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& texture, int x, int y) const noexcept;
+  CENTURION_API void draw_image(const Image& img, int x, int y) const noexcept;
 
   /**
-   * Renders a texture.
+   * Renders an image.
    *
-   * @param texture a reference to the texture that will be rendered.
-   * @param x the x-coordinate of the rendered texture.
-   * @param y the y-coordinate of the rendered texture.
+   * @param img a reference to the image that will be rendered.
+   * @param x the x-coordinate of the rendered image.
+   * @param y the y-coordinate of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& texture, float x, float y) const noexcept;
+  CENTURION_API void draw_image(const Image& img, float x, float y) const noexcept;
 
   /**
-   * Renders a texture. This method has no effect if the supplied width and/or height isn't
+   * Renders an image. This method has no effect if the supplied width and/or height isn't
    * greater than zero.
    *
-   * @param texture a reference to the texture that will be rendered.
-   * @param x the x-coordinate of the rendered texture.
-   * @param y the y-coordinate of the rendered texture.
-   * @param width the width of the rendered texture.
-   * @param height the height of the rendered texture.
+   * @param img a reference to the image that will be rendered.
+   * @param x the x-coordinate of the rendered image.
+   * @param y the y-coordinate of the rendered image.
+   * @param width the width of the rendered image.
+   * @param height the height of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& texture,
+  CENTURION_API void draw_image(const Image& img,
                                 int x,
                                 int y,
                                 int width,
                                 int height) const noexcept;
 
   /**
-   * Renders a texture. This method has no effect if the supplied width and/or height isn't greater
+   * Renders an image. This method has no effect if the supplied width and/or height isn't greater
    * than zero.
    *
-   * @param texture a reference to the texture that will be rendered.
-   * @param x the x-coordinate of the rendered texture.
-   * @param y the y-coordinate of the rendered texture.
-   * @param width the width of the rendered texture.
-   * @param height the height of the rendered texture.
+   * @param img a reference to the image that will be rendered.
+   * @param x the x-coordinate of the rendered image.
+   * @param y the y-coordinate of the rendered image.
+   * @param width the width of the rendered image.
+   * @param height the height of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& texture,
+  CENTURION_API void draw_image(const Image& img,
                                 float x,
                                 float y,
                                 float width,
@@ -219,12 +219,12 @@ class CENTURION_API Renderer final {
   /**
    * Renders a part of an image at the specified destination.
    *
-   * @param texture the source image.
+   * @param img the source image.
    * @param source the rectangle that specifies the cutout of the source image.
    * @param destination the destination of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& texture,
+  CENTURION_API void draw_image(const Image& img,
                                 const SDL_Rect& source,
                                 const SDL_FRect& destination) const noexcept;
 
@@ -232,12 +232,12 @@ class CENTURION_API Renderer final {
    * Renders a part of an image at the specified destination. The position of the rendered image
    * is translated using the currently set translation viewport.
    *
-   * @param texture the source image.
+   * @param img the source image.
    * @param source the rectangle that specifies the cutout of the source image.
    * @param destination the destination of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image_translated(const Image& texture,
+  CENTURION_API void draw_image_translated(const Image& img,
                                            const SDL_Rect& source,
                                            const SDL_FRect& destination) const noexcept;
 

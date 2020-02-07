@@ -64,7 +64,7 @@ message("Linking against Centurion: ${CENTURION_LIBRARIES}")
 
 include(CTest)
 include(Catch)
-include(ParseAndAddCatchTests)
+#include(ParseAndAddCatchTests)
 
 target_link_libraries(${CENTURION_TEST}
         PUBLIC ${SDL2_LIBRARY}

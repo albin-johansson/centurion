@@ -57,11 +57,15 @@ add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
 
 if (WIN32)
     add_definitions(-DWIN_EXPORT)
-endif()
+endif ()
 
 if (DEFINED ENV{TRAVIS})
     # The Travis CI virtual machines can't handle the audio stuff
     target_compile_definitions(${CENTURION_LIB} PUBLIC CENTURION_NOAUDIO)
+endif ()
+
+if (DEFINED ENV{TRAVIS} AND DEFINED ENV{ENABLE_COVERAGE})
+    target_compile_options(${CENTURION_LIB} PUBLIC "-g;-O0;--coverage;-fprofile-arcs;-ftest-coverage")
 endif ()
 
 # Specifies C++ version and compiler warning flags.

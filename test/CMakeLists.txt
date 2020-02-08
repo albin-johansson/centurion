@@ -97,5 +97,6 @@ if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS} AND DEFINED ENV{ENABLE_COVE
             NAME coverage
             EXECUTABLE ctest # -j ${n_cores} # Executable in PROJECT_BINARY_DIR
             DEPENDENCIES ${CENTURION_TEST}
+            BASE_DIRECTORY "${CTN_ROOT_DIR}/src"
             EXCLUDE "${CTN_ROOT_DIR}/test/*" "${CTN_LIBRARIES_DIR}/*")
 endif ()

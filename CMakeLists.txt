@@ -82,6 +82,6 @@ add_subdirectory(test)
 if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS} AND DEFINED ENV{ENABLE_COVERAGE})
     setup_target_for_coverage_lcov(
             NAME coverage
-            EXECUTABLE "cd test && ctest" # -j ${n_cores} # Executable in PROJECT_BINARY_DIR
+            EXECUTABLE ctest # -j ${n_cores} # Executable in PROJECT_BINARY_DIR
             DEPENDENCIES ${CENTURION_TEST})
 endif ()

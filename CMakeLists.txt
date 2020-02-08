@@ -77,6 +77,7 @@ if (DEFINED ENV{ENABLE_COVERAGE})
             '${CTN_ROOT_DIR}/test/*'
             '${CTN_ROOT_DIR}/lib/*')
     append_coverage_compiler_flags()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage") # enabling coverage
 endif ()
 
 add_subdirectory(src)

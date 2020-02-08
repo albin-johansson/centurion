@@ -72,10 +72,10 @@ find_package(SDL2_ttf REQUIRED)
 message("Found all required SDL libraries!")
 
 if (DEFINED ENV{ENABLE_COVERAGE})
-    if (NOT (CMAKE_BUILD_TYPE STREQUAL "Debug"))
-        message(WARNING "Code coverage results with an optimized build may be misleading!")
-    endif ()
     include(CodeCoverage)
+    set(COVERAGE_EXCLUDES
+            '${CTN_ROOT_DIR}/test/*'
+            '${CTN_ROOT_DIR}/lib/*')
     append_coverage_compiler_flags()
 endif ()
 

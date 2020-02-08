@@ -93,9 +93,6 @@ if (WIN32)
 endif ()
 
 if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS} AND DEFINED ENV{ENABLE_COVERAGE})
-    set(COVERAGE_EXCLUDES
-            '${CTN_ROOT_DIR}/test'
-            '${CTN_ROOT_DIR}/lib')
     setup_target_for_coverage_lcov(
             NAME coverage
             EXECUTABLE ctest

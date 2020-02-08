@@ -81,6 +81,6 @@ if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS})
             NAME coverage
             EXECUTABLE ${CENTURION_TEST}
             DEPENDENCIES ${CENTURION_LIB}
-            BASE_DIRECTORY "${CTN_ROOT_DIR}/src"
+#            BASE_DIRECTORY "${CTN_ROOT_DIR}/src"
             EXCLUDE "${CTN_ROOT_DIR}/test/*")
 endif ()

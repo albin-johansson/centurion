@@ -71,5 +71,10 @@ find_package(SDL2_ttf REQUIRED)
 
 message("Found all required SDL libraries!")
 
+if (DEFINED ENV{ENABLE_COVERAGE})
+    include(CodeCoverage)
+    append_coverage_compiler_flags()
+endif ()
+
 add_subdirectory(src)
 add_subdirectory(test)

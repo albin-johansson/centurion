@@ -71,16 +71,23 @@ find_package(SDL2_ttf REQUIRED)
 
 message("Found all required SDL libraries!")
 
+if (DEFINED ENV{ENABLE_COVERAGE})
+    include(CodeCoverage)
+    append_coverage_compiler_flags()
+endif ()
+
 add_subdirectory(src)
 add_subdirectory(test)
 
-if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS})
-    include(CodeCoverage)
-    append_coverage_compiler_flags()
+if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS} AND DEFINED ENV{ENABLE_COVERAGE})
+    #    setup_target_for_coverage_lcov(
+    #            NAME coverage
+    #            EXECUTABLE ${CENTURION_TEST}
+    #            DEPENDENCIES ${CENTURION_LIB}
+    #            #            BASE_DIRECTORY "${CTN_ROOT_DIR}/src"
+    #            EXCLUDE "${CTN_ROOT_DIR}/test/*")
     setup_target_for_coverage_lcov(
             NAME coverage
-            EXECUTABLE ${CENTURION_TEST}
-            DEPENDENCIES ${CENTURION_LIB}
-#            BASE_DIRECTORY "${CTN_ROOT_DIR}/src"
-            EXCLUDE "${CTN_ROOT_DIR}/test/*")
+            EXECUTABLE ctest # -j ${n_cores} # Executable in PROJECT_BINARY_DIR
+            DEPENDENCIES ${CENTURION_TEST})
 endif ()

@@ -102,6 +102,7 @@ script:
 #    fi
 
   - ctest
+  - cd ..
   - make coverage
 
 #after_success:

@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
 project(${CMAKE_PROJECT_NAME}_src)
 
+if (DEFINED ENV{ENABLE_COVERAGE})
+    include(CodeCoverage)
+    append_coverage_compiler_flags()
+endif ()
+
 set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/window.h
         ${CTN_INCLUDE_DIR}/window_listener.h

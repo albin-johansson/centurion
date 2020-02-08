@@ -76,6 +76,23 @@ target_link_libraries(${CENTURION_TEST}
 
 catch_discover_tests(${CENTURION_TEST})
 
+if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS})
+    include(CodeCoverage)
+    #    setup_target_for_coverage(NAME ${PROJECT_NAME} ${CENTURION_TEST} coverage)
+
+    #    setup_target_for_coverage_gcovr_html(
+    #            NAME coverage
+    #            EXECUTABLE ${CENTURION_TEST}
+    #            EXCLUDE ${CMAKE
+    #    )
+
+    setup_target_for_coverage_lcov(
+            NAME coverage
+            EXECUTABLE ${CENTURION_TEST}
+            BASE_DIRECTORY "${CTN_ROOT_DIR}/src"
+            EXCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/*")
+endif ()
+
 copy_directory_post_build(
         ${CENTURION_TEST}
         ${CTN_RESOURCES_DIR}

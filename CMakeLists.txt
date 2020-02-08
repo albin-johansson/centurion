@@ -73,11 +73,11 @@ message("Found all required SDL libraries!")
 
 if (DEFINED ENV{ENABLE_COVERAGE})
     include(CodeCoverage)
-    set(COVERAGE_EXCLUDES
+    set(COVERAGE_EXCLUDES # TODO this could probably be removed
             '${CTN_ROOT_DIR}/test/*'
             '${CTN_ROOT_DIR}/lib/*')
     append_coverage_compiler_flags()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage") # enabling coverage
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
 endif ()
 
 add_subdirectory(src)

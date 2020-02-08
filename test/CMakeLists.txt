@@ -93,7 +93,7 @@ if (WIN32)
 endif ()
 
 if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS} AND DEFINED ENV{ENABLE_COVERAGE})
-    setup_target_for_coverage_lcov(
+    setup_target_for_coverage_lcov( # FIXME this is currently not used
             NAME coverage
             EXECUTABLE ctest
             DEPENDENCIES "${CENTURION_TEST}"

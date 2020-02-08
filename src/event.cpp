@@ -197,7 +197,21 @@ uint32_t QuitEvent::get_time() const noexcept {
 
 static_assert(check_event_type<Event>());
 
+void Event::refresh() noexcept {
+  SDL_PumpEvents();
+}
+
+void Event::push(Event& event) noexcept {
+  SDL_Event& sdlEvent = event;
+  SDL_PushEvent(&sdlEvent);
+}
+
 void Event::flush() noexcept {
+  SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+}
+
+void Event::flush_all() noexcept {
+  SDL_PumpEvents();
   SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 }
 
@@ -227,6 +241,10 @@ MouseWheelEvent Event::as_mouse_wheel_event() const noexcept {
 
 QuitEvent Event::as_quit_event() const noexcept {
   return QuitEvent{event.quit};
+}
+
+Event::operator SDL_Event&() noexcept {
+  return event;
 }
 
 }

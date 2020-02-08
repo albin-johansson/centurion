@@ -139,3 +139,102 @@ TEST_CASE("MouseButton enum values", "[MouseButton]") {
   CHECK(static_cast<int>(MouseButton::X1) == SDL_BUTTON_X1);
   CHECK(static_cast<int>(MouseButton::X2) == SDL_BUTTON_X2);
 }
+
+TEST_CASE("Event::refresh", "[Event]") {
+  CHECK_NOTHROW(Event::refresh());
+}
+
+TEST_CASE("Event::push", "[Event]") {
+  Event::flush_all();
+
+  // TODO
+
+}
+
+TEST_CASE("Event::flush", "[Event]") {
+  Event::refresh();
+  Event::flush();
+  Event event;
+  CHECK(!event.poll());
+}
+
+TEST_CASE("Event::flush_all", "[Event]") {
+  Event::flush_all();
+  Event event;
+
+
+  CHECK(!event.poll());
+}
+
+TEST_CASE("Event::poll", "[Event]") {
+  SDL_Event sdlEvent{};
+  sdlEvent.type = SDL_MOUSEMOTION;
+  sdlEvent.motion.x = 839;
+  sdlEvent.motion.y = 351;
+
+  Event::flush();
+  SDL_PushEvent(&sdlEvent);
+
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.get_type() == static_cast<EventType>(sdlEvent.type));
+
+  MouseMotionEvent motionEvent = event.as_mouse_motion_event();
+  CHECK(motionEvent.get_x() == sdlEvent.motion.x);
+  CHECK(motionEvent.get_y() == sdlEvent.motion.y);
+}
+
+TEST_CASE("Event::get_type", "[Event]") {
+  const auto type = EventType::DropFile;
+  auto sdlEvent = [type]() noexcept {
+    SDL_Event sdlEvent{};
+    sdlEvent.type = static_cast<unsigned>(type);
+    return sdlEvent;
+  }();
+
+  Event::flush_all();
+  SDL_PushEvent(&sdlEvent);
+
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.get_type() == type);
+}
+
+TEST_CASE("Event::as_key_event", "[Event]") {
+  SDL_Event sdlEvent;
+  sdlEvent.type = SDL_KEYUP;
+
+  Event::flush_all();
+  SDL_PushEvent(&sdlEvent);
+
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.get_type() == EventType::KeyUp);
+  CHECK_NOTHROW(event.as_key_event());
+}
+
+TEST_CASE("Event::as_mouse_button_event", "[Event]") {
+  SDL_Event sdlEvent;
+  sdlEvent.type = SDL_MOUSEBUTTONDOWN;
+
+  Event::flush_all();
+  SDL_PushEvent(&sdlEvent);
+
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.get_type() == EventType::MouseButtonDown);
+  CHECK_NOTHROW(event.as_mouse_button_event());
+}
+
+TEST_CASE("Event::as_mouse_motion_event", "[Event]") {
+  SDL_Event sdlEvent;
+  sdlEvent.type = SDL_MOUSEMOTION;
+
+  Event::flush_all();
+  SDL_PushEvent(&sdlEvent);
+
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.get_type() == EventType::MouseMotion);
+  CHECK_NOTHROW(event.as_mouse_motion_event());
+}

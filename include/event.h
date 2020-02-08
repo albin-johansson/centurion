@@ -566,7 +566,7 @@ class CENTURION_API MouseMotionEvent final {
  *
  * @since 3.1.0
  */
-enum class MouseWheelDirection {
+enum class MouseWheelDirection { // TODO test
   Normal = SDL_MOUSEWHEEL_NORMAL,
   Flipped = SDL_MOUSEWHEEL_FLIPPED
 };
@@ -576,7 +576,7 @@ enum class MouseWheelDirection {
  *
  * @since 3.1.0
  */
-class CENTURION_API MouseWheelEvent final {
+class CENTURION_API MouseWheelEvent final { // TODO test
  private:
   SDL_MouseWheelEvent event;
 
@@ -679,11 +679,36 @@ class CENTURION_API Event final {
 
  public:
   /**
+   * Refresh the event loop, gathering events from the input devices. Note that you might not have
+   * to call this method by yourself.
+   *
+   * @see SDL_PumpEvents
+   * @since 3.1.0
+   */
+  CENTURION_API static void refresh() noexcept;
+
+  /**
+   * Pushes an event onto the event queue.
+   *
+   * @param event the event that will be added to the event queue.
+   * @since 3.1.0
+   */
+  CENTURION_API static void push(Event& event) noexcept;
+
+  /**
    * Flushes all current events from the event queue.
    *
+   * @see
    * @since 3.1.0
    */
   CENTURION_API static void flush() noexcept;
+
+  /**
+   * Flushes all of the current events from the event queue, including pending events.
+   *
+   * @since 3.1.0
+   */
+  CENTURION_API static void flush_all() noexcept;
 
   /**
    * Polls the next available event, if there is one.
@@ -713,12 +738,33 @@ class CENTURION_API Event final {
   [[nodiscard]]
   CENTURION_API KeyEvent as_key_event() const noexcept;
 
+  /**
+   * Returns the internal SDL event as a mouse button event. Ensure that the actual type of the
+   * internal event is a key event, otherwise you might end up with undefined behaviour!
+   *
+   * @return the internal event as a mouse button event.
+   * @since 3.1.0
+   */
   [[nodiscard]]
   CENTURION_API MouseButtonEvent as_mouse_button_event() const noexcept;
 
+  /**
+   * Returns the internal SDL event as a mouse motion event. Ensure that the actual type of the
+   * internal event is a mouse motion event, otherwise you might end up with undefined behaviour!
+   *
+   * @return the internal event as a mouse motion event.
+   * @since 3.1.0
+   */
   [[nodiscard]]
   CENTURION_API MouseMotionEvent as_mouse_motion_event() const noexcept;
 
+  /**
+   * Returns the internal SDL event as a mouse wheel event. Ensure that the actual type of the
+   * internal event is a mouse wheel event, otherwise you might end up with undefined behaviour!
+   *
+   * @return the internal event as a mouse wheel event.
+   * @since 3.1.0
+   */
   [[nodiscard]]
   CENTURION_API MouseWheelEvent as_mouse_wheel_event() const noexcept;
 
@@ -731,6 +777,15 @@ class CENTURION_API Event final {
    */
   [[nodiscard]]
   CENTURION_API QuitEvent as_quit_event() const noexcept;
+
+  /**
+   * Returns the internal SDL_Event instance.
+   *
+   * @return the internal SDL_Event instance.
+   * @since 3.1.0
+   */
+  [[nodiscard]]
+  operator SDL_Event&() noexcept;
 };
 
 }

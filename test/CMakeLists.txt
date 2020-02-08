@@ -96,5 +96,6 @@ if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS} AND DEFINED ENV{ENABLE_COVE
     setup_target_for_coverage_lcov(
             NAME coverage
             EXECUTABLE ctest # -j ${n_cores} # Executable in PROJECT_BINARY_DIR
-            DEPENDENCIES ${CENTURION_TEST})
+            DEPENDENCIES ${CENTURION_TEST}
+            EXCLUDE "${CTN_ROOT_DIR}/test/*" "${CTN_LIBRARIES_DIR}/*")
 endif ()

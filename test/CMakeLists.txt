@@ -91,3 +91,10 @@ if (WIN32)
             ${CTN_BINARIES_DIR}
             ${CMAKE_CURRENT_BINARY_DIR})
 endif ()
+
+if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS} AND DEFINED ENV{ENABLE_COVERAGE})
+    setup_target_for_coverage_lcov(
+            NAME coverage
+            EXECUTABLE ctest # -j ${n_cores} # Executable in PROJECT_BINARY_DIR
+            DEPENDENCIES ${CENTURION_TEST})
+endif ()

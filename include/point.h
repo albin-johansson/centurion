@@ -57,7 +57,7 @@ class CENTURION_API Point final {
   /**
    * Creates a point based on an SDL_Point instance.
    *
-   * @param rect the SDL point that will be copied.
+   * @param point the SDL point that will be copied.
    * @since 3.0.0
    */
   CENTURION_API explicit Point(SDL_Point point) noexcept;

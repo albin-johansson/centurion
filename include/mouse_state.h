@@ -92,16 +92,16 @@ class CENTURION_API MouseState final : public IWindowListener {
   CENTURION_API void set_logical_height(int logicalHeight) noexcept;
 
   /**
-   * Sets the screen width that the mouse state instance will use when calculating the mouse
+   * Sets the window width that the mouse state instance will use when calculating the mouse
    * position. This method will use the default window width when the supplied value is <= 0.
    *
-   * @param screenWidth the width of the screen.
+   * @param windowWidth the width of the screen.
    * @since 3.0.0
    */
   CENTURION_API void set_window_width(int windowWidth) noexcept;
 
   /**
-   * Sets the screen height that the mouse state instance will use when calculating the mouse
+   * Sets the window height that the mouse state instance will use when calculating the mouse
    * position. This method will use the default window height when the supplied value is <= 0.
    *
    * @param windowHeight the height of the screen.
@@ -115,6 +115,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return the x-coordinate of the mouse.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API int get_mouse_x() const noexcept;
 
   /**
@@ -123,6 +124,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return the y-coordinate of the mouse.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API int get_mouse_y() const noexcept;
 
   /**
@@ -131,6 +133,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return the window width used by the mouse state instance, 1 is used by default.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API int get_window_width() const noexcept;
 
   /**
@@ -139,6 +142,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return the window height used by the mouse state instance, 1 is used by default.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API int get_window_height() const noexcept;
 
   /**
@@ -147,6 +151,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return the logical width used by the mouse state instance, 1 is used by default.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API int get_logical_width() const noexcept;
 
   /**
@@ -155,6 +160,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return the logical height used by the mouse state instance, 1 is used by default.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API int get_logical_height() const noexcept;
 
   /**
@@ -163,6 +169,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return true if the left mouse button is pressed; false otherwise.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API bool is_left_button_pressed() const noexcept;
 
   /**
@@ -171,6 +178,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return true if the right mouse button is pressed; false otherwise.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API bool is_right_button_pressed() const noexcept;
 
   /**
@@ -179,6 +187,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return true if the left mouse button was released; false otherwise.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API bool was_left_button_released() const noexcept;
 
   /**
@@ -187,6 +196,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return true if the right mouse button was released; false otherwise.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API bool was_right_button_released() const noexcept;
 
   /**
@@ -195,6 +205,7 @@ class CENTURION_API MouseState final : public IWindowListener {
    * @return true if the mouse was moved; false otherwise.
    * @since 3.0.0
    */
+  [[nodiscard]]
   CENTURION_API bool was_mouse_moved() const noexcept;
 
 };

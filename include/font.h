@@ -160,7 +160,7 @@ class CENTURION_API Font final {
   /**
    * Sets the italic property of the font.
    *
-   * @param bold true if the font should be italic; false otherwise.
+   * @param italic true if the font should be italic; false otherwise.
    * @since 3.0.0
    */
   CENTURION_API void set_italic(bool italic) noexcept;
@@ -168,7 +168,7 @@ class CENTURION_API Font final {
   /**
    * Sets the underlined property of the font.
    *
-   * @param bold true if the font should be underlined; false otherwise.
+   * @param underlined true if the font should be underlined; false otherwise.
    * @since 3.0.0
    */
   CENTURION_API void set_underlined(bool underlined) noexcept;
@@ -176,7 +176,7 @@ class CENTURION_API Font final {
   /**
    * Sets the strikethrough property of the font.
    *
-   * @param bold true if the font should be strikethrough; false otherwise.
+   * @param strikethrough true if the font should be strikethrough; false otherwise.
    * @since 3.0.0
    */
   CENTURION_API void set_strikethrough(bool strikethrough) noexcept;
@@ -184,7 +184,7 @@ class CENTURION_API Font final {
   /**
    * Sets the outlined property of the font.
    *
-   * @param bold true if the font should be outlined; false otherwise.
+   * @param outlined true if the font should be outlined; false otherwise.
    * @since 3.0.0
    */
   CENTURION_API void set_outlined(bool outlined) noexcept;

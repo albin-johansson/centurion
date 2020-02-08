@@ -76,7 +76,7 @@ class CENTURION_API Color final {
   /**
    * Creates a color that is a copy of the supplied color.
    *
-   * @param color the color that will be copied.
+   * @param other the color that will be copied.
    * @since 3.0.0
    */
   Color(const Color& other) noexcept = default;

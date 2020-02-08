@@ -98,21 +98,5 @@ script:
 #  - cd test
 #  - ctest
 
-  #  - |
-  #    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-  #      make gcov
-  #      make lcov
-  #      bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
-  #    fi
-
-
-#after_success:
-#  - |
-#    if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
-#      lcov --directory . --capture --output-file coverage.info
-#      lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
-#      bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
-#    fi
-
-#after_success:
-#  - bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"

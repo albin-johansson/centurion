@@ -95,15 +95,14 @@ script:
 #  - make coverage
 
   # This works if no code coverage is needed
-#  - cd test
-#  - ctest
+  - cd test
+  - ctest
 
 after_success:
   - lcov --directory . --capture --output-file coverage.info
   # filter out system and extra files.
   # To also not include test code in coverage add them with full path to the patterns: '*/tests/*'
-  - lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' '*/Centurion/test/*' '*/Centurion/lib/*' --output-file coverage
-  - .info
+  - lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' '*/Centurion/test/*' '*/Centurion/lib/*' --output-file coverage.info
   # output coverage data for debugging (optional)
   - lcov --list coverage.info
 

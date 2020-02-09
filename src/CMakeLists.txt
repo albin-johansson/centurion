@@ -101,3 +101,5 @@ target_link_libraries(${CENTURION_LIB}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES})
+
+message("Source CXX flags: ${CMAKE_CXX_FLAGS}")

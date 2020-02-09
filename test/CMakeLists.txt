@@ -92,10 +92,12 @@ if (WIN32)
             ${CMAKE_CURRENT_BINARY_DIR})
 endif ()
 
-if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS} AND DEFINED ENV{ENABLE_COVERAGE})
-    setup_target_for_coverage_lcov( # FIXME this is currently not used
-            NAME coverage
-            EXECUTABLE ctest
-            DEPENDENCIES "${CENTURION_TEST}"
-    )
-endif ()
+#if (CMAKE_COMPILER_IS_GNUCXX AND DEFINED ENV{TRAVIS} AND DEFINED ENV{ENABLE_COVERAGE})
+#    setup_target_for_coverage_lcov( # FIXME this is currently not used
+#            NAME coverage
+#            EXECUTABLE ctest
+#            DEPENDENCIES "${CENTURION_TEST}"
+#    )
+#endif ()
+
+message("Test CXX flags: ${CMAKE_CXX_FLAGS}")

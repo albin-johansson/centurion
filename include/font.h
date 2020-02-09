@@ -113,7 +113,6 @@ class CENTURION_API Font final {
    * @return the created font.
    * @since 3.0.0
    */
-  [[nodiscard]]
   CENTURION_API Font& operator=(Font&& other) noexcept;
 
   /**

@@ -1,4 +1,5 @@
 #include "catch.hpp"
+#include <utility>
 #include "font.h"
 #include "centurion_exception.h"
 #include "log.h"
@@ -13,6 +14,26 @@ static constexpr auto daniel_path = "resources/daniel.ttf";
 TEST_CASE("Font(string&, int)", "[Font]") {
   CHECK_THROWS_AS(Font("", 1), CenturionException);
   CHECK_THROWS_AS(Font("", 0), std::invalid_argument);
+}
+
+TEST_CASE("Font(Font&&)", "[Font]") {
+  Font font{type_writer_path, 12};
+  Font other{std::move(font)};
+
+  TTF_Font* sdlFont = font;
+  CHECK(!sdlFont);
+}
+
+TEST_CASE("Font::operator=(Font&&)", "[Font]") {
+  Font font{type_writer_path, 12};
+  Font other{daniel_path, 16};
+
+  font = std::move(other);
+
+  CHECK(font.get_size() == 16);
+
+  TTF_Font* sdlFont = other;
+  CHECK(!sdlFont);
 }
 
 TEST_CASE("Font::reset", "[Font]") {
@@ -90,11 +111,41 @@ TEST_CASE("Font::set_outlined", "[Font]") {
   CHECK(!font.is_outlined());
 }
 
+TEST_CASE("Font::set_font_hinting", "[Font]") {
+  Font font{type_writer_path, 12};
+
+  SECTION("Mono") {
+    font.set_font_hinting(FontHint::Mono);
+    CHECK(font.get_font_hinting() == FontHint::Mono);
+  }
+
+  SECTION("None") {
+    font.set_font_hinting(FontHint::None);
+    CHECK(font.get_font_hinting() == FontHint::None);
+  }
+
+  SECTION("Light") {
+    font.set_font_hinting(FontHint::Light);
+    CHECK(font.get_font_hinting() == FontHint::Light);
+  }
+
+  SECTION("Normal") {
+    font.set_font_hinting(FontHint::Normal);
+    CHECK(font.get_font_hinting() == FontHint::Normal);
+  }
+}
+
 TEST_CASE("Font::get_size", "[Font]") {
   const auto size = 12;
   Font font{type_writer_path, size};
 
   CHECK(size == font.get_size());
+}
+
+TEST_CASE("Font::get_height", "[Font]") {
+  const auto size = 16;
+  Font font{type_writer_path, size};
+  CHECK(size == font.get_height()); // doesn't have to be equal, but should be close
 }
 
 TEST_CASE("Font::is_fixed_width", "[Font]") {
@@ -130,6 +181,11 @@ TEST_CASE("Font::get_font_faces", "[Font]") {
   CHECK_NOTHROW(font.get_font_faces());
 }
 
+TEST_CASE("Font::get_font_hinting", "[Font]") {
+  const Font font{type_writer_path, 12};
+  CHECK(font.get_font_hinting() == FontHint::Normal);
+}
+
 TEST_CASE("Font::get_line_skip", "[Font]") {
   const Font font{type_writer_path, 12};
   CHECK(font.get_line_skip() > 0);
@@ -148,4 +204,10 @@ TEST_CASE("Font::get_descent", "[Font]") {
 TEST_CASE("Font::to_string", "[Font]") {
   Font font{type_writer_path, 12};
   Log::msgf(Category::Test, "%s", font.to_string().c_str());
+}
+
+TEST_CASE("Font to TTF_Font*", "[Font]") {
+  Font font{type_writer_path, 12};
+  TTF_Font* sdlFont = font;
+  CHECK(sdlFont);
 }

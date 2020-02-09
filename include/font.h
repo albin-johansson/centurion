@@ -255,7 +255,7 @@ class CENTURION_API Font final {
   CENTURION_API int get_font_faces() const noexcept;
 
   /**
-   * Returns the TrueType font hinting of the font.
+   * Returns the TrueType font hinting of the font. Set to FontHint::Normal by default.
    *
    * @return the TrueType font hinting of the font.
    * @since 3.1.0

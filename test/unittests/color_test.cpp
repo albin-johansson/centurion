@@ -19,7 +19,8 @@ TEST_CASE("Color(Color&&)", "[Color]") {
   const auto g = 0xDD;
   const auto b = 0xC5;
   const auto a = 0x38;
-  Color other{Color{r, g, b, a}};
+  Color color{r, g, b, a};
+  Color other{std::move(color)};
   CHECK(r == other.get_red());
   CHECK(g == other.get_green());
   CHECK(b == other.get_blue());

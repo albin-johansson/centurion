@@ -675,9 +675,19 @@ class CENTURION_API QuitEvent final {
  */
 class CENTURION_API Event final {
  private:
-  SDL_Event event;
+  SDL_Event event{};
 
  public:
+  Event() noexcept = default;
+
+  /**
+   * Creates an Event instance based on an SDL event instance.
+   *
+   * @param sdlEvent the SDL event that will be copied.
+   * @since 3.1.1
+   */
+  CENTURION_API explicit Event(const SDL_Event& sdlEvent) noexcept;
+
   /**
    * Refresh the event loop, gathering events from the input devices. Note that you might not have
    * to call this method by yourself.

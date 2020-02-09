@@ -197,6 +197,9 @@ uint32_t QuitEvent::get_time() const noexcept {
 
 static_assert(check_event_type<Event>());
 
+Event::Event(const SDL_Event& sdlEvent) noexcept
+    : event{sdlEvent} {}
+
 void Event::refresh() noexcept {
   SDL_PumpEvents();
 }

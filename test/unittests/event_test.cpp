@@ -147,8 +147,16 @@ TEST_CASE("Event::refresh", "[Event]") {
 TEST_CASE("Event::push", "[Event]") {
   Event::flush_all();
 
-  // TODO
+  {
+    SDL_Event sdlEvent{};
+    sdlEvent.type = SDL_KEYDOWN;
+    Event event{sdlEvent};
+    Event::push(event);
+  }
 
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.get_type() == EventType::KeyDown);
 }
 
 TEST_CASE("Event::flush", "[Event]") {
@@ -161,7 +169,6 @@ TEST_CASE("Event::flush", "[Event]") {
 TEST_CASE("Event::flush_all", "[Event]") {
   Event::flush_all();
   Event event;
-
 
   CHECK(!event.poll());
 }
@@ -237,4 +244,35 @@ TEST_CASE("Event::as_mouse_motion_event", "[Event]") {
   CHECK(event.poll());
   CHECK(event.get_type() == EventType::MouseMotion);
   CHECK_NOTHROW(event.as_mouse_motion_event());
+}
+
+TEST_CASE("Event::as_mouse_wheel_event", "[Event]") {
+  SDL_Event sdlEvent;
+  sdlEvent.type = SDL_MOUSEWHEEL;
+
+  Event::flush_all();
+  SDL_PushEvent(&sdlEvent);
+
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.get_type() == EventType::MouseWheel);
+  CHECK_NOTHROW(event.as_mouse_wheel_event());
+}
+
+TEST_CASE("Event::as_quit_event", "[Event]") {
+  SDL_Event sdlEvent;
+  sdlEvent.type = SDL_QUIT;
+
+  Event::flush_all();
+  SDL_PushEvent(&sdlEvent);
+
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.get_type() == EventType::Quit);
+  CHECK_NOTHROW(event.as_quit_event());
+}
+
+TEST_CASE("Event to const SDL_Event&", "[Event]") {
+  Event event;
+  CHECK_NOTHROW(static_cast<const SDL_Event&>(event));
 }

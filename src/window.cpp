@@ -42,10 +42,13 @@ Window::Window(const std::string& title) : Window(title, 800, 600) {}
 
 Window::Window() : Window(800, 600) {}
 
-Window::Window(Window&& other) noexcept
-    : window{other.window},
-      windowListeners{std::move(other.windowListeners)} {
+Window::Window(Window&& other) noexcept {
+  SDL_DestroyWindow(window);
+
+  window = other.window;
   other.window = nullptr;
+
+  windowListeners = std::move(other.windowListeners);
 }
 
 Window::~Window() {
@@ -55,10 +58,12 @@ Window::~Window() {
 }
 
 Window& Window::operator=(Window&& other) noexcept {
-  window = other.window;
-  windowListeners = std::move(other.windowListeners);
+  SDL_DestroyWindow(window);
 
+  window = other.window;
   other.window = nullptr;
+
+  windowListeners = std::move(other.windowListeners);
 
   return *this;
 }

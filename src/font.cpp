@@ -30,11 +30,14 @@ Font::Font(const std::string& file, int size) : size{size} {
   style = TTF_GetFontStyle(font);
 }
 
-Font::Font(Font&& other) noexcept
-    : font{other.font},
-      style{other.style},
-      size{other.size} {
+Font::Font(Font&& other) noexcept {
+  TTF_CloseFont(font);
+
+  font = other.font;
   other.font = nullptr;
+
+  style = other.style;
+  size = other.size;
 }
 
 Font::~Font() noexcept {
@@ -44,11 +47,13 @@ Font::~Font() noexcept {
 }
 
 Font& Font::operator=(Font&& other) noexcept {
+  TTF_CloseFont(font);
+
   font = other.font;
+  other.font = nullptr;
+
   style = other.style;
   size = other.size;
-
-  other.font = nullptr;
 
   return *this;
 }

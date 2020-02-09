@@ -30,10 +30,13 @@ SoundEffect::SoundEffect(const std::string& file) {
   }
 }
 
-SoundEffect::SoundEffect(SoundEffect&& other) noexcept
-    : chunk{other.chunk},
-      channel{other.channel} {
+SoundEffect::SoundEffect(SoundEffect&& other) noexcept {
+  Mix_FreeChunk(chunk);
+
+  chunk = other.chunk;
   other.chunk = nullptr;
+
+  channel = other.channel;
 }
 
 SoundEffect::~SoundEffect() {
@@ -44,10 +47,12 @@ SoundEffect::~SoundEffect() {
 }
 
 SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept {
-  chunk = other.chunk;
-  channel = other.channel;
+  Mix_FreeChunk(chunk);
 
+  chunk = other.chunk;
   other.chunk = nullptr;
+
+  channel = other.channel;
 
   return *this;
 }

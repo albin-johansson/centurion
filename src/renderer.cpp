@@ -39,10 +39,13 @@ Renderer::Renderer(gsl::not_null<SDL_Window*> window, uint32_t flags) {
   set_logical_integer_scale(false);
 }
 
-Renderer::Renderer(Renderer&& other) noexcept
-    : renderer{other.renderer},
-      translationViewport{other.translationViewport} {
+Renderer::Renderer(Renderer&& other) noexcept {
+  SDL_DestroyRenderer(renderer);
+
+  renderer = other.renderer;
   other.renderer = nullptr;
+
+  translationViewport = other.translationViewport;
 }
 
 Renderer::~Renderer() {
@@ -68,10 +71,12 @@ std::shared_ptr<Renderer> Renderer::shared(gsl::not_null<SDL_Window*> window, ui
 }
 
 Renderer& Renderer::operator=(Renderer&& other) noexcept {
-  renderer = other.renderer;
-  translationViewport = other.translationViewport;
+  SDL_DestroyRenderer(renderer);
 
+  renderer = other.renderer;
   other.renderer = nullptr;
+
+  translationViewport = other.translationViewport;
 
   return *this;
 }

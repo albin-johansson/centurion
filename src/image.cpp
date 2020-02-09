@@ -62,8 +62,10 @@ Image::Image(gsl::not_null<SDL_Renderer*> renderer,
   }
 }
 
-Image::Image(Image&& other) noexcept
-    : texture{other.texture} {
+Image::Image(Image&& other) noexcept {
+  SDL_DestroyTexture(texture);
+
+  texture = other.texture;
   other.texture = nullptr;
 }
 
@@ -74,6 +76,8 @@ Image::~Image() noexcept {
 }
 
 Image& Image::operator=(Image&& other) noexcept {
+  SDL_DestroyTexture(texture);
+
   texture = other.texture;
   other.texture = nullptr;
 

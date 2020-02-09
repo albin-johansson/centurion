@@ -29,8 +29,10 @@ Music::Music(const std::string& file) {
   }
 }
 
-Music::Music(Music&& other) noexcept
-    : music{other.music} {
+Music::Music(Music&& other) noexcept {
+  Mix_FreeMusic(music);
+
+  music = other.music;
   other.music = nullptr;
 }
 
@@ -41,8 +43,11 @@ Music::~Music() noexcept {
 }
 
 Music& Music::operator=(Music&& other) noexcept {
+  Mix_FreeMusic(music);
+
   music = other.music;
   other.music = nullptr;
+
   return *this;
 }
 

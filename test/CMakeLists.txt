@@ -24,7 +24,9 @@ set(TEST_FILES
         unittests/key_event_test.cpp
         unittests/mouse_motion_event_test.cpp
         unittests/mouse_button_event_test.cpp
-        unittests/mouse_wheel_event_test.cpp)
+        unittests/mouse_wheel_event_test.cpp
+        unittests/quit_event_test.cpp
+        unittests/quit_event_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

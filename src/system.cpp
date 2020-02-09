@@ -97,7 +97,7 @@ int Screen::get_refresh_rate() noexcept {
   return mode.refresh_rate;
 }
 
-uint32_t Screen::get_pixel_format() noexcept {
+uint32_t Screen::get_pixel_format() noexcept { // TODO replace return type
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
   return mode.format;

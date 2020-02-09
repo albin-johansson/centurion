@@ -28,7 +28,11 @@ set(TEST_FILES
         unittests/quit_event_test.cpp
         unittests/quit_event_test.cpp
         unittests/timer_test.cpp
-        unittests/paths_test.cpp)
+        unittests/paths_test.cpp
+        unittests/system_test.cpp
+        unittests/cpu_test.cpp
+        unittests/ram_test.cpp
+        unittests/screen_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

@@ -36,6 +36,16 @@ TEST_CASE("Font::operator=(Font&&)", "[Font]") {
   CHECK(!sdlFont);
 }
 
+TEST_CASE("Font::unique", "[Font]") {
+  CHECK_THROWS_AS(Font::unique("", 1), CenturionException);
+  CHECK(Font::unique(type_writer_path, 12));
+}
+
+TEST_CASE("Font::shared", "[Font]") {
+  CHECK_THROWS_AS(Font::shared("", 1), CenturionException);
+  CHECK(Font::shared(type_writer_path, 12));
+}
+
 TEST_CASE("Font::reset", "[Font]") {
   Font font{type_writer_path, 12};
 

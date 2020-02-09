@@ -16,3 +16,8 @@ TEST_CASE("BlendMode enum values", "[BlendMode]") {
   CHECK(SDL_BLENDMODE_MOD == BlendMode::Mod);
   CHECK(SDL_BLENDMODE_INVALID == BlendMode::Invalid);
 }
+
+TEST_CASE("BlendMode operator!=", "[BlendMode]") {
+  CHECK(BlendMode::None != BlendMode::Mod);
+  CHECK(BlendMode::Blend != BlendMode::Invalid);
+}

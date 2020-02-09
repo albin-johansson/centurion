@@ -795,7 +795,7 @@ WARN_IF_DOC_ERROR      = YES
 # EXTRACT_ALL is set to YES then this flag will automatically be disabled.
 # The default value is: NO.
 
-WARN_NO_PARAMDOC       = YES
+WARN_NO_PARAMDOC       = NO
 
 # If the WARN_AS_ERROR tag is set to YES then doxygen will immediately stop when
 # a warning is encountered.

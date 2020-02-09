@@ -1,4 +1,5 @@
 #include "catch.hpp"
+#include <utility>
 #include "color.h"
 #include "colors.h"
 #include "log.h"
@@ -11,6 +12,18 @@ TEST_CASE("Color()", "[Color]") {
   CHECK(0 == c.get_red());
   CHECK(0 == c.get_red());
   CHECK(0xFF == c.get_alpha());
+}
+
+TEST_CASE("Color(Color&&)", "[Color]") {
+  const auto r = 0xAE;
+  const auto g = 0xDD;
+  const auto b = 0xC5;
+  const auto a = 0x38;
+  Color other{Color{r, g, b, a}};
+  CHECK(r == other.get_red());
+  CHECK(g == other.get_green());
+  CHECK(b == other.get_blue());
+  CHECK(a == other.get_alpha());
 }
 
 TEST_CASE("Color(uint8_t, uint8_t, uint8_t, uint8_t)", "[Color]") {
@@ -36,6 +49,32 @@ TEST_CASE("Color(uint8_t, uint8_t, uint8_t, uint8_t)", "[Color]") {
     CHECK(b == c.get_blue());
     CHECK(c.get_alpha() == Color::max);
   }
+}
+
+TEST_CASE("Color::operator=(Color&)", "[Color]") {
+  Color color{0xFE, 0x13, 0xA8, 0xCA};
+  const Color other{0xBE, 0x44, 0xAC, 0xFD};
+
+  REQUIRE(color != other);
+
+  color = other;
+
+  CHECK(color == other);
+}
+
+TEST_CASE("Color::operator=(Color&&)", "[Color]") {
+  Color color{0xFE, 0x13, 0xA8, 0xCA};
+  const auto r = 0xCC;
+  const auto g = 0xCE;
+  const auto b = 0x71;
+  const auto a = 0x99;
+
+  color = Color{r, g, b, a};
+
+  CHECK(r == color.get_red());
+  CHECK(g == color.get_green());
+  CHECK(b == color.get_blue());
+  CHECK(a == color.get_alpha());
 }
 
 TEST_CASE("Color from SDL_Color", "[Color]") {

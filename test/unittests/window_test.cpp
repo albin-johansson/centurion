@@ -12,7 +12,7 @@ TEST_CASE("Window(string, int, int)", "[Window]") {
   const auto width = 123;
   const auto height = 321;
   const auto title = "Foo";
-  Window window(title, width, height);
+  const Window window{title, width, height};
 
   CHECK(window.get_width() == width);
   CHECK(window.get_height() == height);
@@ -23,7 +23,7 @@ TEST_CASE("Window(string, int, int)", "[Window]") {
 TEST_CASE("Window(int, int)", "[Window]") {
   const auto width = 832;
   const auto height = 715;
-  Window window(width, height);
+  const Window window{width, height};
 
   CHECK(window.get_width() == width);
   CHECK(window.get_height() == height);
@@ -32,7 +32,7 @@ TEST_CASE("Window(int, int)", "[Window]") {
 }
 
 TEST_CASE("Window()", "[Window]") {
-  Window window;
+  const Window window;
 
   CHECK(window.get_width() == 800);
   CHECK(window.get_height() == 600);
@@ -53,6 +53,7 @@ TEST_CASE("Window smart pointer factory methods", "[Window]") {
     CHECK_NOTHROW(Window::unique(""));
     CHECK_NOTHROW(Window::unique());
   }
+
   SECTION("Shared") {
     CHECK_THROWS_AS(Window::shared("", 0, 10), std::invalid_argument);
     CHECK_THROWS_AS(Window::shared("", 10, 0), std::invalid_argument);
@@ -68,7 +69,7 @@ TEST_CASE("Window smart pointer factory methods", "[Window]") {
 }
 
 TEST_CASE("Window::show", "[Window]") {
-  Window window("Foo", 100, 100);
+  Window window{"Foo", 100, 100};
 
   window.show();
   CHECK(window.is_visible());
@@ -152,7 +153,7 @@ TEST_CASE("Window::set_grab_mouse && Window::is_grabbing_mouse", "[Window]") {
 
 TEST_CASE("Window::get_title && Window::set_title", "[Window]") {
   const auto title = "HelloWorld";
-  Window window(title);
+  Window window{title};
   CHECK(window.get_title() == title);
 
   const auto other = "foo";
@@ -252,7 +253,7 @@ TEST_CASE("Window::set_brightness", "[Window]") {
 }
 
 TEST_CASE("Window::get_brightness", "[Window]") {
-  Window window;
+  const Window window;
   CHECK(window.get_brightness() == 1);
 }
 

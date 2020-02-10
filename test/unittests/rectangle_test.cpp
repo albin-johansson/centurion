@@ -318,6 +318,13 @@ TEST_CASE("FRect()", "[FRect]") {
   CHECK(rect.get_height() == 0);
 }
 
+TEST_CASE("FRect(SDL_FRect&)", "[FRect]") {
+  SDL_FRect sdlRect {4.5f, 16.2f, 25.9f, 56.8f};
+  FRect rect{sdlRect};
+  CHECK(rect == sdlRect);
+  CHECK(sdlRect == rect);
+}
+
 TEST_CASE("FRect(float, float, float, float)", "[FRect]") {
   const auto x = 123.5f;
   const auto y = 81.4f;

@@ -26,7 +26,7 @@ const int SoundEffect::maxVolume = get_max_volume();
 SoundEffect::SoundEffect(const std::string& file) {
   chunk = Mix_LoadWAV(file.c_str());
   if (!chunk) {
-    throw CenturionException(Error::descriptionf());
+    throw CenturionException{Error::descriptionf()};
   }
 }
 

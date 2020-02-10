@@ -23,7 +23,7 @@ static_assert(std::is_convertible_v<Renderer, SDL_Renderer*>);
 
 Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer) {
   if (!renderer) {
-    throw std::invalid_argument("Can't create renderer from null SDL_Renderer!");
+    throw std::invalid_argument{"Can't create renderer from null SDL_Renderer!"};
   }
   this->renderer = renderer;
 

@@ -26,6 +26,7 @@
 #define CENTURION_TIMER_HEADER
 
 #include "centurion_api.h"
+#include <cstdint>
 
 namespace centurion {
 

@@ -25,11 +25,13 @@
 #ifndef CENTURION_API_HEADER
 #define CENTURION_API_HEADER
 
+#include "centurion_cfg.h"
 #include <type_traits>
 #include <optional>
+#include <memory>
 
 // Define CENTURION_API for any platform https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(CENTURION_HEADER_ONLY)
 # ifdef WIN_EXPORT
 #   define CENTURION_API __declspec(dllexport)
 # else
@@ -37,4 +39,54 @@
 # endif
 #else
 # define CENTURION_API
-#endif#endif // CENTURION_API_HEADER
+#endif
+
+/*
+ * The attribute macros are necessary since unknown attributes weren't specified to not cause errors
+ * until C++17.
+ */
+
+#ifndef CENTURION_NODISCARD
+# if defined(__GNUC__)
+#   define CENTURION_NODISCARD __attribute__((warn_unused_result))
+# elif defined(_MSC_VER) && _MSC_VER >= 1700
+#   define CENTURION_NODISCARD _Check_return_
+# else
+#   if __cplusplus >= 201603
+#     define CENTURION_NODISCARD [[nodiscard]]
+#   else
+#     define CENTURION_NODISCARD
+#   endif
+# endif
+#endif
+
+// An attribute that indicates that something shouldn't be used
+#ifndef CENTURION_DEPRECATED
+# if defined(__GNUC__)
+#   define CENTURION_DEPRECATED __attribute__((deprecated))
+# elif defined(_MSC_VER) && _MSC_VER >= 1300
+#   define CENTURION_DEPRECATED __declspec(deprecated)
+# else
+#   if __cplusplus >= 201309
+#     define CENTURION_DEPRECATED [[deprecated]]
+#   else
+#     define CENTURION_DEPRECATED
+#   endif
+# endif
+#endif
+
+// Indicates whether or not std::optional is available (added in C++17)
+#if !defined(CENTURION_HAS_OPTIONAL) && defined(__cpp_lib_optional)
+# define CENTURION_HAS_OPTIONAL
+#endif
+
+// Indicates whether or not the std::is_final type trait check is available (added in C++14)
+#if !defined(CENTURION_HAS_IS_FINAL_TYPE_TRAIT) && defined(__cpp_lib_is_final)
+# define CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+#endif
+
+#if !defined(CENTURION_HAS_MAKE_UNIQUE) && defined(__cpp_lib_make_unique)
+# define CENTURION_HAS_MAKE_UNIQUE
+#endif
+
+#endif // CENTURION_API_HEADER

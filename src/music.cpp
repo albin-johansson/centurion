@@ -41,7 +41,11 @@ Music& Music::operator=(Music&& other) noexcept {
 }
 
 std::unique_ptr<Music> Music::unique(const std::string& file) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Music>(file);
+#else
+  return centurion::make_unique<Music>(file);
+#endif
 }
 
 std::shared_ptr<Music> Music::shared(const std::string& file) {

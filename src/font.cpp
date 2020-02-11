@@ -48,7 +48,11 @@ Font& Font::operator=(Font&& other) noexcept {
 }
 
 std::unique_ptr<Font> Font::unique(const std::string& file, int size) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Font>(file, size);
+#else
+  return centurion::make_unique<Font>(file, size);
+#endif
 }
 
 std::shared_ptr<Font> Font::shared(const std::string& file, int size) {

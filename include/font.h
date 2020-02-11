@@ -27,6 +27,7 @@
 
 #include "centurion_api.h"
 #include <optional>
+#include <string>
 #include <memory>
 #include <type_traits>
 #include <SDL_ttf.h>

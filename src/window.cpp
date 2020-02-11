@@ -56,19 +56,35 @@ Window& Window::operator=(Window&& other) noexcept {
 }
 
 std::unique_ptr<Window> Window::unique(const std::string& title, int width, int height) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Window>(title, width, height);
+#else
+  return centurion::make_unique<Window>(title, width, height);
+#endif
 }
 
 std::unique_ptr<Window> Window::unique(int width, int height) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Window>(width, height);
+#else
+  return centurion::make_unique<Window>(width, height);
+#endif
 }
 
 std::unique_ptr<Window> Window::unique(const std::string& title) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Window>(title);
+#else
+  return centurion::make_unique<Window>(title);
+#endif
 }
 
 std::unique_ptr<Window> Window::unique() {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Window>();
+#else
+  return centurion::make_unique<Window>();
+#endif
 }
 
 std::shared_ptr<Window> Window::shared(const std::string& title, int width, int height) {

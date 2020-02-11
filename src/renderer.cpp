@@ -44,11 +44,19 @@ Renderer::~Renderer() {
 }
 
 std::unique_ptr<Renderer> Renderer::unique(gsl::owner<SDL_Renderer*> renderer) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Renderer>(renderer);
+#else
+  return centurion::make_unique<Renderer>(renderer);
+#endif
 }
 
 std::unique_ptr<Renderer> Renderer::unique(gsl::not_null<SDL_Window*> window, uint32_t flags) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Renderer>(window, flags);
+#else
+  return centurion::make_unique<Renderer>(window, flags);
+#endif
 }
 
 std::shared_ptr<Renderer> Renderer::shared(gsl::owner<SDL_Renderer*> renderer) {

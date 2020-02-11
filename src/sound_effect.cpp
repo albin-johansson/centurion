@@ -47,7 +47,11 @@ SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept {
 }
 
 std::unique_ptr<SoundEffect> SoundEffect::unique(const std::string& file) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<SoundEffect>(file);
+#else
+  return centurion::make_unique<SoundEffect>(file);
+#endif
 }
 
 std::shared_ptr<SoundEffect> SoundEffect::shared(const std::string& file) {

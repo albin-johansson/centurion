@@ -76,17 +76,29 @@ Image& Image::operator=(Image&& other) noexcept {
 }
 
 std::unique_ptr<Image> Image::unique(gsl::owner<SDL_Texture*> texture) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Image>(texture);
+#else
+  return centurion::make_unique<Image>(texture);
+#endif
 }
 
 std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
                                      const std::string& path) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Image>(renderer, path);
+#else
+  return centurion::make_unique<Image>(renderer, path);
+#endif
 }
 
 std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
                                      gsl::not_null<SDL_Surface*> surface) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Image>(renderer, surface);
+#else
+  return centurion::make_unique<Image>(renderer, surface);
+#endif
 }
 
 std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
@@ -94,7 +106,11 @@ std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
                                      TextureAccess access,
                                      int width,
                                      int height) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Image>(renderer, format, access, width, height);
+#else
+  return centurion::make_unique<Image>(renderer, format, access, width, height);
+#endif
 }
 
 std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
@@ -102,8 +118,13 @@ std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
                                      TextureAccess access,
                                      int width,
                                      int height) {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Image>(renderer, format, access, width, height);
+#else
+  return centurion::make_unique<Image>(renderer, format, access, width, height);
+#endif
 }
+
 std::shared_ptr<Image> Image::shared(gsl::owner<SDL_Texture*> texture) {
   return std::make_shared<Image>(texture);
 }

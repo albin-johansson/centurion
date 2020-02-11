@@ -488,6 +488,8 @@ class CENTURION_API Window final {
   [[nodiscard]]
   CENTURION_API int get_id() const noexcept;
 
+#ifdef CENTURION_HAS_OPTIONAL
+
   /**
    * Returns the display index associated with the window.
    *
@@ -497,6 +499,8 @@ class CENTURION_API Window final {
    */
   [[nodiscard]]
   CENTURION_API std::optional<int> get_display_index() const noexcept;
+
+#endif
 
   /**
    * Returns the current position of the window.

@@ -263,6 +263,8 @@ int Window::get_id() const noexcept { // TODO change to uint32_t
   return static_cast<int>(SDL_GetWindowID(window));
 }
 
+#ifdef CENTURION_HAS_OPTIONAL
+
 std::optional<int> Window::get_display_index() const noexcept {
   const auto index = SDL_GetWindowDisplayIndex(window);
   if (index != -1) {
@@ -271,6 +273,8 @@ std::optional<int> Window::get_display_index() const noexcept {
     return std::nullopt;
   }
 }
+
+#endif
 
 int Window::get_x() const noexcept {
   int x = 0;

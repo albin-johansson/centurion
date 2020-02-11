@@ -567,7 +567,8 @@ class CENTURION_API Window final {
    * It's safe to use static cast to convert the returned value to PixelFormat.
    * @since 3.0.0
    */
-  [[nodiscard, deprecated]]
+  CENTURION_NODISCARD
+  CENTURION_DEPRECATED
   CENTURION_API uint32_t get_pixel_format() const noexcept;
 
   /**

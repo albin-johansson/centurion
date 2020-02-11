@@ -84,7 +84,8 @@ class CENTURION_API ImageGenerator final {
    * of a uint32_t.
    * @since 3.0.0
    */
-  [[nodiscard, deprecated]]
+  CENTURION_NODISCARD
+  CENTURION_DEPRECATED
   CENTURION_API std::unique_ptr<Image> unique_img(uint32_t format,
                                                   TextureAccess access,
                                                   int width,
@@ -131,7 +132,8 @@ class CENTURION_API ImageGenerator final {
    * of a uint32_t.
    * @since 3.0.0
    */
-  [[nodiscard, deprecated]]
+  CENTURION_NODISCARD
+  CENTURION_DEPRECATED
   CENTURION_API std::shared_ptr<Image> shared_img(uint32_t format,
                                                   TextureAccess access,
                                                   int width,

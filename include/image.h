@@ -363,7 +363,8 @@ class CENTURION_API Image final {
    * as it is much more type-safe.
    * @since 3.0.0
    */
-  [[nodiscard, deprecated]]
+  CENTURION_NODISCARD
+  CENTURION_DEPRECATED
   CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
                                                      uint32_t format,
                                                      TextureAccess access,
@@ -442,7 +443,8 @@ class CENTURION_API Image final {
    * as it is much more type-safe.
    * @since 3.0.0
    */
-  [[nodiscard, deprecated]]
+  CENTURION_NODISCARD
+  CENTURION_DEPRECATED
   CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
                                                      uint32_t format,
                                                      TextureAccess access,

@@ -26,6 +26,7 @@
 #define CENTURION_PATHS_HEADER
 
 #include "centurion_api.h"
+#include <string>
 #include <memory>
 
 namespace centurion {

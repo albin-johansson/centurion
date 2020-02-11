@@ -30,6 +30,7 @@
 #include <string>
 #include <memory>
 #include <optional>
+#include <type_traits>
 #include <gsl>
 #include <SDL.h>
 #include <SDL_image.h>
@@ -759,5 +760,18 @@ class CENTURION_API Renderer final {
   CENTURION_API /*implicit*/ operator SDL_Renderer*() const noexcept;
 };
 
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<Renderer>::value);
+#endif
+
+static_assert(std::is_nothrow_move_constructible<Renderer>::value);
+static_assert(std::is_nothrow_move_assignable<Renderer>::value);
+
+static_assert(!std::is_nothrow_copy_constructible<Renderer>::value);
+static_assert(!std::is_nothrow_copy_assignable<Renderer>::value);
+
+static_assert(std::is_convertible<Renderer, SDL_Renderer*>::value);
+
 }
+
 #endif // CENTURION_RENDERER_HEADER

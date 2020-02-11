@@ -25,11 +25,11 @@
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
+#include "centurion_api.h"
 #include <cstdint>
 #include <utility>
 #include <string>
 #include <SDL.h>
-#include "centurion_api.h"
 
 namespace centurion {
 

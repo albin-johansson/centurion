@@ -28,6 +28,7 @@
 #include "centurion_api.h"
 #include <sstream>
 #include <string>
+#include <memory>
 
 namespace centurion {
 
@@ -60,6 +61,26 @@ class CenturionUtils final {
     }
   }
 };
+
+//#ifndef CENTURION_HAS_MAKE_UNIQUE
+
+/**
+   * Creates and returns a unique pointer. This method should only be used when C++11 is used, since
+   * it doesn't provide std::make_unique.
+   *
+   * @tparam T the type of the object that will be created.
+   * @tparam Args the type of the arguments that will be passed to an appropriate constructor.
+   * @param args the arguments that will be passed to an appropriate constructor.
+   * @return a unique pointer.
+   * @since 3.2.0
+   */
+
+template<typename T, typename... Args>
+CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&& ... args) {
+  return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+
+//#endif
 
 }
 

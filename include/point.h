@@ -27,6 +27,7 @@
 
 #include "centurion_api.h"
 #include <string>
+#include <type_traits>
 #include <SDL.h>
 
 namespace centurion {
@@ -368,6 +369,29 @@ CENTURION_API FPoint operator+(const FPoint& lhs, const FPoint& rhs) noexcept;
  */
 [[nodiscard]]
 CENTURION_API FPoint operator-(const FPoint& lhs, const FPoint& rhs) noexcept;
+
+namespace {
+
+template<typename CTNPoint, typename SDLPoint>
+constexpr bool check_point_type() noexcept {
+  return std::is_convertible<CTNPoint, SDLPoint>::value
+      && sizeof(CTNPoint) == sizeof(SDLPoint)
+      && std::is_nothrow_move_assignable<CTNPoint>::value
+      && std::is_nothrow_move_constructible<CTNPoint>::value
+      && std::is_nothrow_copy_assignable<CTNPoint>::value
+      && std::is_nothrow_copy_constructible<CTNPoint>::value
+      && std::is_nothrow_default_constructible<CTNPoint>::value
+      && std::is_nothrow_destructible<CTNPoint>::value
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+      && std::is_final<CTNPoint>::value
+#endif
+      ;
+}
+
+static_assert(check_point_type<Point, SDL_Point>());
+static_assert(check_point_type<FPoint, SDL_FPoint>());
+
+}
 
 }
 

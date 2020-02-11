@@ -85,6 +85,7 @@
 # define CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 #endif
 
+// Indicates whether or not std::make_unique is available (added in C++14)
 #if !defined(CENTURION_HAS_MAKE_UNIQUE) && defined(__cpp_lib_make_unique)
 # define CENTURION_HAS_MAKE_UNIQUE
 #endif

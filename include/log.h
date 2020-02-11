@@ -26,6 +26,8 @@
 #define CENTURION_LOG_HEADER
 
 #include "centurion_api.h"
+#include <type_traits>
+#include <SDL_log.h>
 
 namespace centurion {
 
@@ -168,6 +170,16 @@ class CENTURION_API Log final {
   [[nodiscard]]
   CENTURION_API static Priority get_priority(Category category) noexcept;
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<Log>::value);
+#endif
+
+static_assert(!std::is_constructible<Log>::value);
+static_assert(!std::is_copy_constructible<Log>::value);
+static_assert(!std::is_move_constructible<Log>::value);
+static_assert(!std::is_copy_assignable<Log>::value);
+static_assert(!std::is_move_assignable<Log>::value);
 
 }
 

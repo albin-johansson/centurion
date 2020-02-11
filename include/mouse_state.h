@@ -26,6 +26,7 @@
 #define CENTURION_MOUSE_STATE_HEADER
 
 #include <memory>
+#include <type_traits>
 #include "centurion_api.h"
 #include "window_listener.h"
 
@@ -235,6 +236,18 @@ class CENTURION_API MouseState final : public IWindowListener {
   CENTURION_API bool was_mouse_moved() const noexcept;
 
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<MouseState>::value);
+#endif
+
+static_assert(std::is_nothrow_move_constructible<MouseState>::value);
+static_assert(std::is_nothrow_move_assignable<MouseState>::value);
+
+static_assert(std::is_nothrow_copy_constructible<MouseState>::value);
+static_assert(std::is_nothrow_copy_assignable<MouseState>::value);
+
+static_assert(std::is_base_of<IWindowListener, MouseState>::value);
 
 }
 

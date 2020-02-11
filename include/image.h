@@ -262,7 +262,7 @@ class CENTURION_API Image final {
    * @throws CenturionException if the image cannot be created.
    * @since 3.0.0
    */
-  [[deprecated]]
+  CENTURION_DEPRECATED
   CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer,
                       uint32_t format,
                       TextureAccess access,

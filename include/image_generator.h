@@ -68,7 +68,7 @@ class CENTURION_API ImageGenerator final {
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::unique_ptr<Image> unique_img(const std::string& file) const;
 
   /**
@@ -101,7 +101,7 @@ class CENTURION_API ImageGenerator final {
    * @throws CenturionException if the image cannot be created.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::unique_ptr<Image> unique_img(PixelFormat format,
                                                   TextureAccess access,
                                                   int width,
@@ -115,7 +115,7 @@ class CENTURION_API ImageGenerator final {
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::shared_ptr<Image> shared_img(const std::string& file) const;
 
   /**
@@ -148,7 +148,7 @@ class CENTURION_API ImageGenerator final {
    * @throws CenturionException if the image cannot be created.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::shared_ptr<Image> shared_img(PixelFormat format,
                                                   TextureAccess access,
                                                   int width,

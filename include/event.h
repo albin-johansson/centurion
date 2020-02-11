@@ -114,7 +114,7 @@ enum class EventType {
 * @return true if the values represent the same event type; false otherwise.
 * @since 3.1.0
 */
-[[nodiscard]]
+CENTURION_NODISCARD
 inline bool operator==(EventType lhs, SDL_EventType rhs) noexcept {
   return static_cast<SDL_EventType>(lhs) == rhs;
 }
@@ -127,7 +127,7 @@ inline bool operator==(EventType lhs, SDL_EventType rhs) noexcept {
 * @return true if the values represent the same event type; false otherwise.
 * @since 3.1.0
 */
-[[nodiscard]]
+CENTURION_NODISCARD
 inline bool operator==(SDL_EventType lhs, EventType rhs) noexcept {
   return lhs == static_cast<SDL_EventType>(rhs);
 }
@@ -140,7 +140,7 @@ inline bool operator==(SDL_EventType lhs, EventType rhs) noexcept {
 * @return true if the values don't represent the same event type; false otherwise.
 * @since 3.1.0
 */
-[[nodiscard]]
+CENTURION_NODISCARD
 inline bool operator!=(EventType lhs, SDL_EventType rhs) noexcept {
   return !(lhs == rhs);
 }
@@ -153,7 +153,7 @@ inline bool operator!=(EventType lhs, SDL_EventType rhs) noexcept {
 * @return true if the values don't represent the same event type; false otherwise.
 * @since 3.1.0
 */
-[[nodiscard]]
+CENTURION_NODISCARD
 inline bool operator!=(SDL_EventType lhs, EventType rhs) noexcept {
   return !(lhs == rhs);
 }
@@ -196,7 +196,7 @@ enum class KeyModifier {
 * @return true if the key modifier values are the same; false otherwise.
 * @since 3.1.0
 */
-[[nodiscard]]
+CENTURION_NODISCARD
 inline bool operator==(KeyModifier lhs, SDL_Keymod rhs) noexcept {
   return static_cast<SDL_Keymod>(lhs) == rhs;
 }
@@ -209,7 +209,7 @@ inline bool operator==(KeyModifier lhs, SDL_Keymod rhs) noexcept {
 * @return true if the key modifier values are the same; false otherwise.
 * @since 3.1.0
 */
-[[nodiscard]]
+CENTURION_NODISCARD
 inline bool operator==(SDL_Keymod lhs, KeyModifier rhs) noexcept {
   return lhs == static_cast<SDL_Keymod>(rhs);
 }
@@ -222,7 +222,7 @@ inline bool operator==(SDL_Keymod lhs, KeyModifier rhs) noexcept {
 * @return true if the key modifier values aren't the same; false otherwise.
 * @since 3.1.0
 */
-[[nodiscard]]
+CENTURION_NODISCARD
 inline bool operator!=(KeyModifier lhs, SDL_Keymod rhs) noexcept {
   return !(lhs == rhs);
 }
@@ -235,7 +235,7 @@ inline bool operator!=(KeyModifier lhs, SDL_Keymod rhs) noexcept {
 * @return true if the key modifier values aren't the same; false otherwise.
 * @since 3.1.0
 */
-[[nodiscard]]
+CENTURION_NODISCARD
 inline bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept {
   return !(lhs == rhs);
 }
@@ -265,7 +265,7 @@ class CENTURION_API KeyEvent final {
   * false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_key_active(SDL_Keycode keycode) const noexcept;
 
   /**
@@ -277,7 +277,7 @@ class CENTURION_API KeyEvent final {
   * false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_key_active(SDL_Scancode scancode) const noexcept;
 
   /**
@@ -288,7 +288,7 @@ class CENTURION_API KeyEvent final {
   * @return true if the specified key modifier is active; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_modifier_active(KeyModifier modifier) const noexcept;
 
   /**
@@ -297,7 +297,7 @@ class CENTURION_API KeyEvent final {
   * @return true if any of the CTRL-keys are associated with the keyboard event; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_control_active() const noexcept;
 
   /**
@@ -306,7 +306,7 @@ class CENTURION_API KeyEvent final {
   * @return true if any of the Shift-keys are associated with the keyboard event; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_shift_active() const noexcept;
 
   /**
@@ -315,7 +315,7 @@ class CENTURION_API KeyEvent final {
   * @return true if any of the Alt-keys are associated with the keyboard event; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_alt_active() const noexcept;
 
   /**
@@ -324,7 +324,7 @@ class CENTURION_API KeyEvent final {
   * @return true if any of the GUI-keys are associated with the keyboard event; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_gui_active() const noexcept;
 
   /**
@@ -333,7 +333,7 @@ class CENTURION_API KeyEvent final {
   * @return true if the key associated with the event was repeated; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_repeated() const noexcept;
 
   /**
@@ -342,7 +342,7 @@ class CENTURION_API KeyEvent final {
   * @return the button state of the key associated with the event.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API ButtonState get_state() const noexcept;
 
   /**
@@ -351,7 +351,7 @@ class CENTURION_API KeyEvent final {
   * @return the ID of the parent window of the keyboard event.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_window_id() const noexcept;
 
   /**
@@ -360,7 +360,7 @@ class CENTURION_API KeyEvent final {
   * @return the time that the event was created, in milliseconds.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_time() const noexcept;
 };
 
@@ -399,7 +399,7 @@ class CENTURION_API MouseButtonEvent final {
   * @return the mouse button that triggered the event.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API MouseButton get_button() const noexcept;
 
   /**
@@ -408,7 +408,7 @@ class CENTURION_API MouseButtonEvent final {
   * @return the x-coordinate of the mouse.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_x() const noexcept;
 
   /**
@@ -417,7 +417,7 @@ class CENTURION_API MouseButtonEvent final {
   * @return the y-coordinate of the mouse.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_y() const noexcept;
 
   /**
@@ -426,7 +426,7 @@ class CENTURION_API MouseButtonEvent final {
   * @return the state of the mouse button that triggered the event.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API ButtonState get_state() const noexcept;
 
   /**
@@ -435,7 +435,7 @@ class CENTURION_API MouseButtonEvent final {
   * @return true if a single-click triggered the event; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool was_single_click() const noexcept;
 
   /**
@@ -444,7 +444,7 @@ class CENTURION_API MouseButtonEvent final {
   * @return true if a double-click triggered the event; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool was_double_click() const noexcept;
 
   /**
@@ -453,7 +453,7 @@ class CENTURION_API MouseButtonEvent final {
   * @return true if the event was triggered by a touch input device; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool was_touch() const noexcept;
 
   /**
@@ -462,7 +462,7 @@ class CENTURION_API MouseButtonEvent final {
   * @return the ID of the window with mouse focus.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_window_id() const noexcept;
 
   /**
@@ -471,7 +471,7 @@ class CENTURION_API MouseButtonEvent final {
   * @return the time that the event was created, in milliseconds.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_time() const noexcept;
 };
 
@@ -497,7 +497,7 @@ class CENTURION_API MouseMotionEvent final {
   * @return the x-coordinate of the mouse.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_x() const noexcept;
 
   /**
@@ -506,7 +506,7 @@ class CENTURION_API MouseMotionEvent final {
   * @return the y-coordinate of the mouse.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_y() const noexcept;
 
   /**
@@ -515,7 +515,7 @@ class CENTURION_API MouseMotionEvent final {
   * @return the relative motion of the mouse, along the x-axis.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_x_movement() const noexcept;
 
   /**
@@ -524,7 +524,7 @@ class CENTURION_API MouseMotionEvent final {
   * @return the relative motion of the mouse, along the y-axis.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_y_movement() const noexcept;
 
   /**
@@ -533,7 +533,7 @@ class CENTURION_API MouseMotionEvent final {
   * @return true if the event was triggered by a touch input device; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool was_touch() const noexcept;
 
   /**
@@ -543,7 +543,7 @@ class CENTURION_API MouseMotionEvent final {
   * @return true if the specified mouse button is down; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_button_down(MouseButton button) const noexcept;
 
   /**
@@ -552,7 +552,7 @@ class CENTURION_API MouseMotionEvent final {
   * @return the ID of the window with mouse focus.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_window_id() const noexcept;
 
   /**
@@ -561,7 +561,7 @@ class CENTURION_API MouseMotionEvent final {
   * @return the time that the event was created, in milliseconds.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_time() const noexcept;
 };
 
@@ -597,7 +597,7 @@ class CENTURION_API MouseWheelEvent final { // TODO test
   * @return the amount scrolled horizontally.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_horizontal_scroll() const noexcept;
 
   /**
@@ -606,7 +606,7 @@ class CENTURION_API MouseWheelEvent final { // TODO test
   * @return the amount scrolled vertically.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_vertical_scroll() const noexcept;
 
   /**
@@ -615,7 +615,7 @@ class CENTURION_API MouseWheelEvent final { // TODO test
   * @return the direction of the mouse wheel.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API MouseWheelDirection get_wheel_direction() const noexcept;
 
   /**
@@ -624,7 +624,7 @@ class CENTURION_API MouseWheelEvent final { // TODO test
   * @return true if the event was triggered by a touch input device; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool was_touch() const noexcept;
 
   /**
@@ -633,7 +633,7 @@ class CENTURION_API MouseWheelEvent final { // TODO test
   * @return the ID of the window with mouse focus.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_window_id() const noexcept;
 
   /**
@@ -642,7 +642,7 @@ class CENTURION_API MouseWheelEvent final { // TODO test
   * @return the time that the event was created, in milliseconds.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_time() const noexcept;
 };
 
@@ -668,7 +668,7 @@ class CENTURION_API QuitEvent final {
   * @return the time that the event was created, in milliseconds.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_time() const noexcept;
 };
 
@@ -730,7 +730,7 @@ class CENTURION_API Event final {
   * @return true if there are any pending events; false otherwise.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool poll() noexcept;
 
   /**
@@ -739,7 +739,7 @@ class CENTURION_API Event final {
   * @return the type of the event.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API EventType get_type() const noexcept;
 
   /**
@@ -749,7 +749,7 @@ class CENTURION_API Event final {
   * @return the internal event as a key event.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API KeyEvent as_key_event() const noexcept;
 
   /**
@@ -759,7 +759,7 @@ class CENTURION_API Event final {
   * @return the internal event as a mouse button event.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API MouseButtonEvent as_mouse_button_event() const noexcept;
 
   /**
@@ -769,7 +769,7 @@ class CENTURION_API Event final {
   * @return the internal event as a mouse motion event.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API MouseMotionEvent as_mouse_motion_event() const noexcept;
 
   /**
@@ -779,7 +779,7 @@ class CENTURION_API Event final {
   * @return the internal event as a mouse wheel event.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API MouseWheelEvent as_mouse_wheel_event() const noexcept;
 
   /**
@@ -789,7 +789,7 @@ class CENTURION_API Event final {
   * @return the internal event as a quit event.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API QuitEvent as_quit_event() const noexcept;
 
   /**
@@ -798,7 +798,7 @@ class CENTURION_API Event final {
   * @return the internal SDL_Event instance.
   * @since 3.1.0
   */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   operator SDL_Event&() noexcept;
 };
 

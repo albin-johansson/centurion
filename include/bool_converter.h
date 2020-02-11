@@ -49,7 +49,7 @@ class CENTURION_API BoolConverter final {
    * @return the corresponding SDL_bool value for the supplied boolean value.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   static constexpr SDL_bool convert(bool b) noexcept {
     return b ? SDL_TRUE : SDL_FALSE;
   }

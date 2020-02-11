@@ -56,7 +56,7 @@ class CENTURION_API Error final {
    * no error has been set.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static const char* descriptionf() noexcept;
 
   /**
@@ -65,7 +65,7 @@ class CENTURION_API Error final {
    * @return a string that describes the last error.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::string description() noexcept;
 
   /**
@@ -75,7 +75,7 @@ class CENTURION_API Error final {
    * @return a string that holds the last error message.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::string msg() noexcept;
 
 };

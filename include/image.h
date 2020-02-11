@@ -114,7 +114,7 @@ enum class PixelFormat {
  * @return true if the pixel format values are the same; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept;
 
 /**
@@ -125,7 +125,7 @@ CENTURION_API bool operator==(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept
  * @return true if the pixel format values are the same; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept;
 
 /**
@@ -136,7 +136,7 @@ CENTURION_API bool operator==(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept
  * @return true if the pixel format values aren't the same; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept;
 
 /**
@@ -147,7 +147,7 @@ CENTURION_API bool operator!=(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept
  * @return true if the pixel format values aren't the same; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept;
 
 /**
@@ -170,7 +170,7 @@ enum class TextureAccess {
  * @return true if the texture access values are the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept;
 
 /**
@@ -181,7 +181,7 @@ CENTURION_API bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept;
  * @return true if the texture access values are the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept;
 
 /**
@@ -192,7 +192,7 @@ CENTURION_API bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept;
  * @return true if the texture access values aren't the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept;
 
 /**
@@ -203,7 +203,7 @@ CENTURION_API bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept;
  * @return true if the texture access values aren't the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept;
 
 /**
@@ -307,7 +307,7 @@ class CENTURION_API Image final {
    * @return the changed image.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API Image& operator=(Image&& other) noexcept;
 
   /**
@@ -319,7 +319,7 @@ class CENTURION_API Image final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Image> unique(gsl::owner<SDL_Texture*> texture);
 
   /**
@@ -331,7 +331,7 @@ class CENTURION_API Image final {
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
                                                      const std::string& path);
 
@@ -344,7 +344,7 @@ class CENTURION_API Image final {
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
                                                      gsl::not_null<SDL_Surface*> surface);
 
@@ -382,7 +382,7 @@ class CENTURION_API Image final {
    * @throws CenturionException if the image cannot be created.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
                                                      PixelFormat format,
                                                      TextureAccess access,
@@ -398,7 +398,7 @@ class CENTURION_API Image final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Image> shared(gsl::owner<SDL_Texture*> texture);
 
   /**
@@ -410,7 +410,7 @@ class CENTURION_API Image final {
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
                                                      const std::string& path);
 
@@ -423,7 +423,7 @@ class CENTURION_API Image final {
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
                                                      gsl::not_null<SDL_Surface*> surface);
 
@@ -461,7 +461,7 @@ class CENTURION_API Image final {
    * @throws CenturionException if the image cannot be created.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
                                                      PixelFormat format,
                                                      TextureAccess access,
@@ -499,7 +499,7 @@ class CENTURION_API Image final {
    * @return the format of the internal SDL_Texture.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_format() const noexcept;
 
   /**
@@ -508,7 +508,7 @@ class CENTURION_API Image final {
    * @return the texture access of the internal SDL_Texture.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API TextureAccess get_access() const noexcept;
 
   /**
@@ -517,7 +517,7 @@ class CENTURION_API Image final {
    * @return the width of the image.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_width() const noexcept;
 
   /**
@@ -526,7 +526,7 @@ class CENTURION_API Image final {
    * @return the height of the image.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_height() const noexcept;
 
   /**
@@ -535,7 +535,7 @@ class CENTURION_API Image final {
    * @return true if the image is a possible render target; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_target() const noexcept;
 
   /**
@@ -544,7 +544,7 @@ class CENTURION_API Image final {
    * @return true if the image has static texture access.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_static() const noexcept;
 
   /**
@@ -553,7 +553,7 @@ class CENTURION_API Image final {
    * @return true if the image has streaming texture access; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_streaming() const noexcept;
 
   /**
@@ -562,7 +562,7 @@ class CENTURION_API Image final {
    * @return the alpha value of the texture.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint8_t get_alpha() const noexcept;
 
   /**
@@ -571,7 +571,7 @@ class CENTURION_API Image final {
    * @return the blend mode of the texture.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API BlendMode get_blend_mode() const noexcept;
 
   /**
@@ -580,7 +580,7 @@ class CENTURION_API Image final {
    * @return the modulation of the image.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API Color get_color_mod() const noexcept;
 
   /**
@@ -589,7 +589,7 @@ class CENTURION_API Image final {
    * @return a pointer to the internal SDL_Texture of the image.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API SDL_Texture* get_texture() noexcept;
 
   /**
@@ -598,7 +598,7 @@ class CENTURION_API Image final {
    * @return a string representation of the image.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
 
   /**

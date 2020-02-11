@@ -53,7 +53,7 @@ enum class Priority {
  * @return true if the priorities are the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 inline bool operator==(Priority a, SDL_LogPriority b) noexcept {
   return static_cast<SDL_LogPriority>(a) == b;
 }
@@ -66,7 +66,7 @@ inline bool operator==(Priority a, SDL_LogPriority b) noexcept {
  * @return true if the priorities are the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 inline bool operator==(SDL_LogPriority a, Priority b) noexcept {
   return a == static_cast<SDL_LogPriority>(b);
 }
@@ -167,7 +167,7 @@ class CENTURION_API Log final {
    * @return the priority of the specified category.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static Priority get_priority(Category category) noexcept;
 };
 

@@ -60,7 +60,7 @@ class CENTURION_API System final {
    * @return a value that represents the current platform.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static Platform get_platform() noexcept;
 
 #ifdef CENTURION_HAS_OPTIONAL
@@ -71,7 +71,7 @@ class CENTURION_API System final {
    * @return the name of the current platform; std::nullopt if the name cannot be deduced.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::optional<std::string> get_platform_name() noexcept;
 
 #endif
@@ -92,7 +92,7 @@ class CENTURION_API CPU final {
    * @return the CPU L1 cache line size, in bytes.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static int get_cache_line_size() noexcept;
 
   /**
@@ -101,7 +101,7 @@ class CENTURION_API CPU final {
    * @return the amount of cores that the CPU has.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static int get_cores() noexcept;
 
   /**
@@ -110,7 +110,7 @@ class CENTURION_API CPU final {
    * @return true if the CPU uses big-endian byte ordering; false otherwise.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   constexpr static bool is_big_endian() noexcept {
     return SDL_BYTEORDER == SDL_BIG_ENDIAN;
   }
@@ -121,7 +121,7 @@ class CENTURION_API CPU final {
    * @return true if the CPU uses little-endian byte ordering; false otherwise.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   constexpr static bool is_little_endian() noexcept {
     return SDL_BYTEORDER == SDL_LIL_ENDIAN;
   }
@@ -143,7 +143,7 @@ class CENTURION_API RAM final {
    * @return the total amount of system RAM in megabytes.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static int get_size_mb() noexcept;
 
   /**
@@ -152,7 +152,7 @@ class CENTURION_API RAM final {
    * @return the total amount of system RAM in gigabytes.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static int get_size_gb() noexcept;
 };
 
@@ -225,7 +225,7 @@ class CENTURION_API Power final {
    * computed.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::optional<int> get_battery_seconds_left() noexcept;
 
   /**
@@ -235,7 +235,7 @@ class CENTURION_API Power final {
    * cannot be computed.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::optional<int> get_battery_minutes_left() noexcept;
 
   /**
@@ -245,7 +245,7 @@ class CENTURION_API Power final {
    * std::nullopt if the battery percentage isn't available.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::optional<int> get_battery_percentage() noexcept;
 
 #endif
@@ -256,7 +256,7 @@ class CENTURION_API Power final {
    * @return the current power state.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static PowerState get_state() noexcept;
 };
 
@@ -275,7 +275,7 @@ class CENTURION_API Screen final {
    * @return the width of the screen.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static int get_width() noexcept;
 
   /**
@@ -284,7 +284,7 @@ class CENTURION_API Screen final {
    * @return the height of the screen.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static int get_height() noexcept;
 
   /**
@@ -293,7 +293,7 @@ class CENTURION_API Screen final {
    * @return the refresh rate of the screen.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static int get_refresh_rate() noexcept;
 
   /**
@@ -302,7 +302,7 @@ class CENTURION_API Screen final {
    * @return the pixel format of the desktop display mode.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static uint32_t get_pixel_format() noexcept;
 };
 

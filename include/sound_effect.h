@@ -100,7 +100,7 @@ class CENTURION_API SoundEffect final {
    * @return the changed sound effect.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API SoundEffect& operator=(SoundEffect&& other) noexcept;
 
   /**
@@ -111,7 +111,7 @@ class CENTURION_API SoundEffect final {
    * @throws CenturionException if the audio file cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<SoundEffect> unique(const std::string& file);
 
   /**
@@ -122,7 +122,7 @@ class CENTURION_API SoundEffect final {
    * @throws CenturionException if the audio file cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<SoundEffect> shared(const std::string& file);
 
   /**
@@ -174,7 +174,7 @@ class CENTURION_API SoundEffect final {
    * @return the current volume of the sound effect.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_volume() const noexcept;
 
   /**
@@ -183,7 +183,7 @@ class CENTURION_API SoundEffect final {
    * @return true if the sound effect is playing; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_playing() const noexcept;
 
   /**
@@ -192,7 +192,7 @@ class CENTURION_API SoundEffect final {
    * @return a textual representation of the sound effect.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
 
   /**
@@ -209,7 +209,7 @@ class CENTURION_API SoundEffect final {
    * @return the maximum possible volume value.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   static constexpr int get_max_volume() noexcept {
     return MIX_MAX_VOLUME;
   }

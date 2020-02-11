@@ -290,7 +290,7 @@ class CENTURION_API Color final {
    * @return the value of the red component, in the range [0, 255].
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   uint8_t get_red() const noexcept {
     return red;
   }
@@ -301,7 +301,7 @@ class CENTURION_API Color final {
    * @return the value of the green component, in the range [0, 255].
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   uint8_t get_green() const noexcept {
     return green;
   }
@@ -312,7 +312,7 @@ class CENTURION_API Color final {
    * @return the value of the blue component, in the range [0, 255].
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   uint8_t get_blue() const noexcept {
     return blue;
   }
@@ -323,7 +323,7 @@ class CENTURION_API Color final {
    * @return the value of the alpha component, in the range [0, 255].
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   uint8_t get_alpha() const noexcept {
     return alpha;
   }
@@ -334,7 +334,7 @@ class CENTURION_API Color final {
    * @return a textual representation of the color.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
 
   /**
@@ -343,7 +343,7 @@ class CENTURION_API Color final {
    * @return an SDL_Color that mirrors this color.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   /*implicit*/ operator SDL_Color() const noexcept {
     return {red, green, blue, alpha};
   }
@@ -355,7 +355,7 @@ class CENTURION_API Color final {
    * @return an SDL_MessageBoxColor that this the color.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   /*implicit*/ operator SDL_MessageBoxColor() const noexcept {
     return {red, green, blue};
   }

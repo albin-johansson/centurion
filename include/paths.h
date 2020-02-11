@@ -65,7 +65,7 @@ class CENTURION_API AppPath final {
    * @return a unique pointer to an AppPath instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   static std::unique_ptr<AppPath> unique();
 
   /**
@@ -76,7 +76,7 @@ class CENTURION_API AppPath final {
    * @return a shared pointer to an AppPath instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   static std::shared_ptr<AppPath> shared();
 
   /**
@@ -85,7 +85,7 @@ class CENTURION_API AppPath final {
    * @return true if the internal string pointer isn't null; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API explicit operator bool() const noexcept;
 
   /**
@@ -94,7 +94,7 @@ class CENTURION_API AppPath final {
    * @return the path of the application executable, can be null.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   const char* get() const noexcept { return path; }
 };
 
@@ -133,7 +133,7 @@ class CENTURION_API PrefPath final {
    * @return a unique pointer to a PrefPath instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   static std::unique_ptr<PrefPath> unique(const std::string& org, const std::string& app);
 
   /**
@@ -145,7 +145,7 @@ class CENTURION_API PrefPath final {
    * @return a shared pointer to a PrefPath instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   static std::shared_ptr<PrefPath> shared(const std::string& org, const std::string& app);
 
   /**
@@ -154,7 +154,7 @@ class CENTURION_API PrefPath final {
    * @return true if the object holds a non-null path; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   explicit operator bool() const noexcept { return path; }
 
   /**
@@ -163,7 +163,7 @@ class CENTURION_API PrefPath final {
    * @return a string that represents the preferred path.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   const char* get() const noexcept { return path; }
 };
 

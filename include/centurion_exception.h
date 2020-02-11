@@ -59,7 +59,7 @@ class CENTURION_API CenturionException final : public std::exception {
    */
   CENTURION_API explicit CenturionException(const std::string& msg);
 
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API const char* what() const noexcept override;
 };
 

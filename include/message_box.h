@@ -55,7 +55,7 @@ enum class ButtonDataHint {
  * @return true if the values represent the same thing; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept;
 
 /**
@@ -66,7 +66,7 @@ CENTURION_API bool operator==(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noe
  * @return true if the values represent the same thing; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept;
 
 /**
@@ -77,7 +77,7 @@ CENTURION_API bool operator==(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noe
  * @return true if the values don't represent the same thing; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept;
 
 /**
@@ -88,7 +88,7 @@ CENTURION_API bool operator!=(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noe
  * @return true if the values don't represent the same thing; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept;
 
 /**
@@ -140,7 +140,7 @@ enum class ColorType {
  * @return true if the color types represent the same value; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(SDL_MessageBoxColorType a, ColorType b) noexcept;
 
 /**
@@ -151,7 +151,7 @@ CENTURION_API bool operator==(SDL_MessageBoxColorType a, ColorType b) noexcept;
  * @return true if the color types represent the same value; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(ColorType a, SDL_MessageBoxColorType b) noexcept;
 
 /**
@@ -162,7 +162,7 @@ CENTURION_API bool operator==(ColorType a, SDL_MessageBoxColorType b) noexcept;
  * @return true if the color types don't represent the same value; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_MessageBoxColorType a, ColorType b) noexcept;
 
 /**
@@ -173,7 +173,7 @@ CENTURION_API bool operator!=(SDL_MessageBoxColorType a, ColorType b) noexcept;
  * @return true if the color types don't represent the same value; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(ColorType a, SDL_MessageBoxColorType b) noexcept;
 
 /**
@@ -192,7 +192,7 @@ class CENTURION_API ColorScheme final {
    * @return the array index associated with the supplied color scheme type.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   int get_index(ColorType type) const noexcept {
     return static_cast<int>(type);
   }
@@ -218,7 +218,7 @@ class CENTURION_API ColorScheme final {
    * @return the internal SDL_MessageBoxColorScheme.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API const SDL_MessageBoxColorScheme& get() const noexcept;
 
   /**
@@ -252,7 +252,7 @@ enum class MessageBoxID {
  * @return true if the values are the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept;
 
 /**
@@ -263,7 +263,7 @@ CENTURION_API bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept;
  * @return true if the values are the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept;
 
 /**
@@ -274,7 +274,7 @@ CENTURION_API bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept;
  * @return true if the values aren't the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept;
 
 /**
@@ -285,7 +285,7 @@ CENTURION_API bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept;
  * @return true if the values aren't the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept;
 
 /**
@@ -310,7 +310,7 @@ class CENTURION_API MessageBox final {
    * @return a vector of SDL_MessageBoxButtonData instances.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::vector<SDL_MessageBoxButtonData> create_sdl_button_data() const noexcept;
 
   /**
@@ -322,7 +322,7 @@ class CENTURION_API MessageBox final {
    * @return an SDL_MessageBoxData based on the MessageBox.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API SDL_MessageBoxData create_sdl_message_box_data(SDL_Window* window,
                                                                const SDL_MessageBoxButtonData* data,
                                                                const SDL_MessageBoxColorScheme* scheme =
@@ -430,7 +430,7 @@ class CENTURION_API MessageBox final {
    * @return the type of the message box.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API MessageBoxID get_type() const noexcept;
 
 };

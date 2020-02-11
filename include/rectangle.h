@@ -112,7 +112,7 @@ class CENTURION_API Rect final {
    * @return true if the rectangles intersect; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool intersects(const Rect& other) const noexcept;
 
   /**
@@ -123,7 +123,7 @@ class CENTURION_API Rect final {
    * @return true if the point is contained in the rectangle; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool contains(int px, int py) const noexcept;
 
   /**
@@ -133,7 +133,7 @@ class CENTURION_API Rect final {
    * @return true if the point is contained in the rectangle; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool contains(Point point) const noexcept;
 
   /**
@@ -143,7 +143,7 @@ class CENTURION_API Rect final {
    * @return true if the rectangle has an area; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool has_area() const noexcept;
 
   /**
@@ -152,7 +152,7 @@ class CENTURION_API Rect final {
    * @return the x-coordinate of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_x() const noexcept;
 
   /**
@@ -161,7 +161,7 @@ class CENTURION_API Rect final {
    * @return the y-coordinate of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_y() const noexcept;
 
   /**
@@ -170,7 +170,7 @@ class CENTURION_API Rect final {
    * @return the x-coordinate of the center point of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_center_x() const noexcept;
 
   /**
@@ -179,7 +179,7 @@ class CENTURION_API Rect final {
    * @return the y-coordinate of the center point of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_center_y() const noexcept;
 
   /**
@@ -189,7 +189,7 @@ class CENTURION_API Rect final {
    * @return the maximum x-coordinate of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_max_x() const noexcept;
 
   /**
@@ -199,7 +199,7 @@ class CENTURION_API Rect final {
    * @return the maximum y-coordinate of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_max_y() const noexcept;
 
   /**
@@ -208,7 +208,7 @@ class CENTURION_API Rect final {
    * @return the width of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_width() const noexcept;
 
   /**
@@ -217,7 +217,7 @@ class CENTURION_API Rect final {
    * @return the height of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_height() const noexcept;
 
   /**
@@ -226,7 +226,7 @@ class CENTURION_API Rect final {
    * @return a rectangle that represents the union of the rectangles.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API Rect get_union(const Rect& other) const noexcept;
 
   /**
@@ -235,7 +235,7 @@ class CENTURION_API Rect final {
    * @return a textual representation of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
 
   /**
@@ -244,7 +244,7 @@ class CENTURION_API Rect final {
    * @return a reference to the internal SDL_Rect instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API /*implicit*/ operator const SDL_Rect&() const noexcept;
 
 };
@@ -328,7 +328,7 @@ class CENTURION_API FRect final {
    * @return true if the rectangles intersect; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool intersects(const FRect& other) const noexcept;
 
   /**
@@ -339,7 +339,7 @@ class CENTURION_API FRect final {
    * @return true if the point is contained within the rectangle; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool contains(float px, float py) const noexcept;
 
   /**
@@ -349,7 +349,7 @@ class CENTURION_API FRect final {
    * @return true if the point is contained within the rectangle; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool contains(FPoint point) const noexcept;
 
   /**
@@ -365,7 +365,7 @@ class CENTURION_API FRect final {
    * @return true if the two rectangles are considered to be the same; false otherwise.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static bool equals(const FRect& lhs,
                                    const FRect& rhs,
                                    float epsilon = 0.0001f) noexcept;
@@ -377,7 +377,7 @@ class CENTURION_API FRect final {
    * @return true if the rectangle has an area; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool has_area() const noexcept;
 
   /**
@@ -386,7 +386,7 @@ class CENTURION_API FRect final {
    * @return the x-coordinate of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_x() const noexcept;
 
   /**
@@ -395,7 +395,7 @@ class CENTURION_API FRect final {
    * @return the y-coordinate of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_y() const noexcept;
 
   /**
@@ -412,7 +412,7 @@ class CENTURION_API FRect final {
    * @return the y-coordinate of the center point of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_center_y() const noexcept;
 
   /**
@@ -422,7 +422,7 @@ class CENTURION_API FRect final {
    * @return the maximum x-coordinate of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_max_x() const noexcept;
 
   /**
@@ -432,7 +432,7 @@ class CENTURION_API FRect final {
    * @return the maximum y-coordinate of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_max_y() const noexcept;
 
   /**
@@ -441,7 +441,7 @@ class CENTURION_API FRect final {
    * @return the width of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_width() const noexcept;
 
   /**
@@ -450,7 +450,7 @@ class CENTURION_API FRect final {
    * @return the height of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_height() const noexcept;
 
   /**
@@ -459,7 +459,7 @@ class CENTURION_API FRect final {
    * @return a textual representation of the rectangle.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
 
   /**
@@ -468,7 +468,7 @@ class CENTURION_API FRect final {
    * @return a reference to the internal SDL_FRect instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API /*implicit*/ operator const SDL_FRect&() const noexcept;
 };
 
@@ -480,7 +480,7 @@ class CENTURION_API FRect final {
  * @return true if the rectangle have the same components; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(const Rect& lhs, const Rect& rhs) noexcept;
 
 /**
@@ -491,7 +491,7 @@ CENTURION_API bool operator==(const Rect& lhs, const Rect& rhs) noexcept;
  * @return true if the rectangles aren't the same; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(const Rect& lhs, const Rect& rhs) noexcept;
 
 /**
@@ -505,7 +505,7 @@ CENTURION_API bool operator!=(const Rect& lhs, const Rect& rhs) noexcept;
  * @return true if the rectangle have the same components; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(const FRect& lhs, const FRect& rhs) noexcept;
 
 /**
@@ -516,7 +516,7 @@ CENTURION_API bool operator==(const FRect& lhs, const FRect& rhs) noexcept;
  * @return true if the rectangles aren't the same; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(const FRect& lhs, const FRect& rhs) noexcept;
 
 namespace {

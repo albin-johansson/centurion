@@ -59,7 +59,7 @@ class CENTURION_API KeyState final {
    * @return a unique pointer to a KeyState instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<KeyState> unique();
 
   /**
@@ -68,7 +68,7 @@ class CENTURION_API KeyState final {
    * @return a shared pointer to a KeyState instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<KeyState> shared();
 
   /**
@@ -85,7 +85,7 @@ class CENTURION_API KeyState final {
    * @return true if the key is being pressed; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_pressed(SDL_Scancode code) const noexcept;
 
   /**
@@ -96,7 +96,7 @@ class CENTURION_API KeyState final {
    * @return true if the key has been held down; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_held(SDL_Scancode code) const noexcept;
 
   /**
@@ -106,7 +106,7 @@ class CENTURION_API KeyState final {
    * @return true if the key has just been pressed; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool was_just_pressed(SDL_Scancode code) const noexcept;
 
   /**
@@ -116,7 +116,7 @@ class CENTURION_API KeyState final {
    * @return true if the key was released; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool was_just_released(SDL_Scancode code) const noexcept;
 
   /**
@@ -124,7 +124,7 @@ class CENTURION_API KeyState final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_amount_of_keys() const noexcept;
 };
 

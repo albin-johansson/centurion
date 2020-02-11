@@ -55,7 +55,7 @@ class CENTURION_API Timer final {
    * @return the current value of the system high-performance counter.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static uint64_t high_res() noexcept;
 
   /**
@@ -64,7 +64,7 @@ class CENTURION_API Timer final {
    * @return the frequency of the system high-performance counter.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static uint64_t high_res_freq() noexcept;
 
   /**
@@ -73,7 +73,7 @@ class CENTURION_API Timer final {
    * @return the amount of milliseconds since the library was initialized.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static uint32_t millis() noexcept;
 
 };

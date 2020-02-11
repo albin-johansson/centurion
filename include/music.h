@@ -55,7 +55,7 @@ enum class FadeStatus {
  * @return true if the fading status hints represent the same thing.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept;
 
 /**
@@ -66,7 +66,7 @@ CENTURION_API bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept;
  * @return true if the fading status hints represent the same thing.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(Mix_Fading lhs, FadeStatus rhs) noexcept;
 
 /**
@@ -94,7 +94,7 @@ enum class MusicType {
  * @return true if the music type values represent the same thing.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(MusicType lhs, Mix_MusicType rhs) noexcept;
 
 /**
@@ -105,7 +105,7 @@ CENTURION_API bool operator==(MusicType lhs, Mix_MusicType rhs) noexcept;
  * @return true if the music type values represent the same thing.
  * @since 3.0.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept;
 
 /**
@@ -183,7 +183,7 @@ class CENTURION_API Music final {
    * @throws CenturionException if the music file cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Music> unique(const std::string& file);
 
   /**
@@ -194,7 +194,7 @@ class CENTURION_API Music final {
    * @throws CenturionException if the music file cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Music> shared(const std::string& file);
 
   /**
@@ -271,7 +271,7 @@ class CENTURION_API Music final {
    * @return true if music is currently being played; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static bool is_playing() noexcept;
 
   /**
@@ -280,7 +280,7 @@ class CENTURION_API Music final {
    * @return true if any music is paused; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static bool is_paused() noexcept;
 
   /**
@@ -289,7 +289,7 @@ class CENTURION_API Music final {
    * @return true if any music is currently being faded in or out; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static bool is_fading() noexcept;
 
   /**
@@ -298,7 +298,7 @@ class CENTURION_API Music final {
    * @return the volume of all music, in the range [0, Music::maxVolume].
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static int get_volume() noexcept;
 
   /**
@@ -307,7 +307,7 @@ class CENTURION_API Music final {
    * @return the current fade status.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static FadeStatus get_fade_status() noexcept;
 
   /**
@@ -316,7 +316,7 @@ class CENTURION_API Music final {
    * @return the type of the music.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API MusicType get_music_type() const noexcept;
 
   /**
@@ -325,7 +325,7 @@ class CENTURION_API Music final {
    * @return a textual representation of the Music instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
 
   /**
@@ -334,7 +334,7 @@ class CENTURION_API Music final {
    * @return a pointer to the internal Mix_Music instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API /*implicit*/ operator Mix_Music*() const noexcept;
 };
 
@@ -353,7 +353,7 @@ static_assert(std::is_nothrow_move_constructible<Music>::value,
               "Music isn't nothrow move constructible!");
 
 static_assert(std::is_nothrow_move_assignable<Music>::value,
-              "Music isn't notrhow move assignable!");
+              "Music isn't nothrow move assignable!");
 
 static_assert(std::is_convertible<Music, Mix_Music*>::value,
               "Music isn't convertible to Mix_Music*!");

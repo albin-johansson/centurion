@@ -103,7 +103,7 @@ class CENTURION_API Renderer final {
    * @throws invalid_argument if the supplied renderer is null.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Renderer> unique(gsl::owner<SDL_Renderer*> renderer);
 
   /**
@@ -118,7 +118,7 @@ class CENTURION_API Renderer final {
    * @see SDL_RendererFlags
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Renderer> unique(gsl::not_null<SDL_Window*> window,
                                                         uint32_t flags = SDL_RENDERER_ACCELERATED
                                                             | SDL_RENDERER_PRESENTVSYNC);
@@ -132,7 +132,7 @@ class CENTURION_API Renderer final {
    * @throws invalid_argument if the supplied renderer is null.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Renderer> shared(gsl::owner<SDL_Renderer*> renderer);
 
   /**
@@ -147,7 +147,7 @@ class CENTURION_API Renderer final {
    * @see SDL_RendererFlags
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Renderer> shared(gsl::not_null<SDL_Window*> window,
                                                         uint32_t flags = SDL_RENDERER_ACCELERATED
                                                             | SDL_RENDERER_PRESENTVSYNC);
@@ -566,7 +566,7 @@ class CENTURION_API Renderer final {
    * @return the logical width that the renderer uses.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_logical_width() const noexcept;
 
   /**
@@ -575,7 +575,7 @@ class CENTURION_API Renderer final {
    * @return the logical height that the renderer uses.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_logical_height() const noexcept;
 
   /**
@@ -584,7 +584,7 @@ class CENTURION_API Renderer final {
    * @return the x-axis scale that the renderer uses.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_x_scale() const noexcept;
 
   /**
@@ -593,7 +593,7 @@ class CENTURION_API Renderer final {
    * @return the y-axis scale that the renderer uses.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_y_scale() const noexcept;
 
 #ifdef CENTURION_HAS_OPTIONAL
@@ -604,7 +604,7 @@ class CENTURION_API Renderer final {
    * @return the current clipping rectangle; or std::nullopt if there is none.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::optional<SDL_Rect> get_clip() const noexcept;
 
 #endif
@@ -615,7 +615,7 @@ class CENTURION_API Renderer final {
    * @return information about the renderer.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API SDL_RendererInfo get_info() const noexcept;
 
   /**
@@ -624,7 +624,7 @@ class CENTURION_API Renderer final {
    * @return the output width of the renderer.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_output_width() const noexcept;
 
   /**
@@ -633,7 +633,7 @@ class CENTURION_API Renderer final {
    * @return the output height of the renderer.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_output_height() const noexcept;
 
   /**
@@ -642,7 +642,7 @@ class CENTURION_API Renderer final {
    * @return the output size of the renderer, in the format (width, height).
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::pair<int, int> get_output_size() const noexcept;
 
   /**
@@ -655,7 +655,7 @@ class CENTURION_API Renderer final {
    * @return a bit mask that represents all of flags used when creating the renderer.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API uint32_t get_flags() const noexcept;
 
   /**
@@ -665,7 +665,7 @@ class CENTURION_API Renderer final {
    * @return true if vsync is enabled; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_vsync_enabled() const noexcept;
 
   /**
@@ -674,7 +674,7 @@ class CENTURION_API Renderer final {
    * @return true if the renderer is hardware accelerated; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_accelerated() const noexcept;
 
   /**
@@ -683,7 +683,7 @@ class CENTURION_API Renderer final {
    * @return true if the renderer is software-based; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_software_based() const noexcept;
 
   /**
@@ -692,7 +692,7 @@ class CENTURION_API Renderer final {
    * @return true if the renderer supports target texture rendering; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_supporting_target_textures() const noexcept;
 
   /**
@@ -702,7 +702,7 @@ class CENTURION_API Renderer final {
    * @return true if the renderer uses integer scaling for logical viewports; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_using_integer_logical_scaling() const noexcept;
 
   /**
@@ -711,7 +711,7 @@ class CENTURION_API Renderer final {
    * @return true if clipping is enabled; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_clipping_enabled() const noexcept;
 
   /**
@@ -720,7 +720,7 @@ class CENTURION_API Renderer final {
    * @return the currently selected rendering color.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API Color get_color() const noexcept;
 
   /**
@@ -733,7 +733,7 @@ class CENTURION_API Renderer final {
    * @return a unique pointer to an image that represents the supplied string rendered with the
    * currently selected font; nullptr if the operation is unsuccessful.
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::unique_ptr<Image> create_image(const std::string& s, const Font& font) const;
 
   /**
@@ -742,7 +742,7 @@ class CENTURION_API Renderer final {
    * @return the viewport that the renderer uses.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API SDL_Rect get_viewport() const noexcept;
 
   /**
@@ -751,7 +751,7 @@ class CENTURION_API Renderer final {
    * @return the translation viewport that is currently being used.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API const SDL_FRect& get_translation_viewport() const noexcept;
 
   /**
@@ -760,7 +760,7 @@ class CENTURION_API Renderer final {
    * @return a textual representation of the renderer.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
 
   /**

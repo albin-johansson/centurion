@@ -51,7 +51,7 @@ class CenturionUtils final {
    * @since 3.0.0
    */
   template<typename T>
-  [[nodiscard]] static std::string address(T* ptr) {
+  CENTURION_NODISCARD static std::string address(T* ptr) {
     if (ptr) {
       std::ostringstream address;
       address << static_cast<void const*>(ptr);

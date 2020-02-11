@@ -104,7 +104,7 @@ class CENTURION_API Point final {
    * @return the x-coordinate of the point.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_x() const noexcept;
 
   /**
@@ -113,7 +113,7 @@ class CENTURION_API Point final {
    * @return the y-coordinate of the point.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_y() const noexcept;
 
   /**
@@ -125,7 +125,7 @@ class CENTURION_API Point final {
    * @return the distance between two points.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static int distance(const Point& a, const Point& b) noexcept;
 
   /**
@@ -134,7 +134,7 @@ class CENTURION_API Point final {
    * @return a textual representation of the Point instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
 
   /**
@@ -143,7 +143,7 @@ class CENTURION_API Point final {
    * @return an SDL_Point.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API /*implicit*/ operator SDL_Point() const noexcept;
 };
 
@@ -220,7 +220,7 @@ class CENTURION_API FPoint final {
    * @return the x-coordinate of the point.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_x() const noexcept;
 
   /**
@@ -229,7 +229,7 @@ class CENTURION_API FPoint final {
    * @return the y-coordinate of the point.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API float get_y() const noexcept;
 
   /**
@@ -241,7 +241,7 @@ class CENTURION_API FPoint final {
    * @return the distance between two points.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static float distance(const FPoint& a, const FPoint& b) noexcept;
 
   /**
@@ -250,7 +250,7 @@ class CENTURION_API FPoint final {
    * @return a textual representation of the Point instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
 
   /**
@@ -259,7 +259,7 @@ class CENTURION_API FPoint final {
    * @return an SDL_FPoint instance, based on the point.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API /*implicit*/ operator SDL_FPoint() const noexcept;
 
   /**
@@ -275,7 +275,7 @@ class CENTURION_API FPoint final {
    * @return true if the points are considered to be equal; false otherwise.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static bool equals(const FPoint& lhs,
                                    const FPoint& rhs,
                                    float epsilon = 0.0001f) noexcept;
@@ -289,7 +289,7 @@ class CENTURION_API FPoint final {
  * @return true if the points are the same; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(const Point& lhs, const Point& rhs) noexcept;
 
 /**
@@ -300,7 +300,7 @@ CENTURION_API bool operator==(const Point& lhs, const Point& rhs) noexcept;
  * @return true if the points aren't the same; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(const Point& lhs, const Point& rhs) noexcept;
 
 /**
@@ -311,7 +311,7 @@ CENTURION_API bool operator!=(const Point& lhs, const Point& rhs) noexcept;
  * @return a point that has the sum of the supplied points coordinates as its coordinates.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API Point operator+(const Point& lhs, const Point& rhs) noexcept;
 
 /**
@@ -322,7 +322,7 @@ CENTURION_API Point operator+(const Point& lhs, const Point& rhs) noexcept;
  * @return a point that has the difference of the supplied points coordinates as its coordinates.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API Point operator-(const Point& lhs, const Point& rhs) noexcept;
 
 /**
@@ -334,7 +334,7 @@ CENTURION_API Point operator-(const Point& lhs, const Point& rhs) noexcept;
  * @return true if the points are the same; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator==(const FPoint& lhs, const FPoint& rhs) noexcept;
 
 /**
@@ -345,7 +345,7 @@ CENTURION_API bool operator==(const FPoint& lhs, const FPoint& rhs) noexcept;
  * @return true if the points aren't the same; false otherwise.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API bool operator!=(const FPoint& lhs, const FPoint& rhs) noexcept;
 
 /**
@@ -356,7 +356,7 @@ CENTURION_API bool operator!=(const FPoint& lhs, const FPoint& rhs) noexcept;
  * @return a point that has the sum of the supplied points coordinates as its coordinates.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API FPoint operator+(const FPoint& lhs, const FPoint& rhs) noexcept;
 
 /**
@@ -367,7 +367,7 @@ CENTURION_API FPoint operator+(const FPoint& lhs, const FPoint& rhs) noexcept;
  * @return a point that has the difference of the supplied points coordinates as its coordinates.
  * @since 3.1.0
  */
-[[nodiscard]]
+CENTURION_NODISCARD
 CENTURION_API FPoint operator-(const FPoint& lhs, const FPoint& rhs) noexcept;
 
 namespace {

@@ -41,6 +41,7 @@
 # Custom stuff
 cmake-build-debug
 cmake-build-release
+build
 .idea
 .vscode
 

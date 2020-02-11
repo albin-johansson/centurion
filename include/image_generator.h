@@ -28,6 +28,7 @@
 #include "centurion_api.h"
 #include <memory>
 #include <string>
+#include <type_traits>
 #include <cstdint>
 #include "image.h"
 
@@ -154,6 +155,16 @@ class CENTURION_API ImageGenerator final {
                                                   int height) const;
 
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<ImageGenerator>::value);
+#endif
+
+static_assert(std::is_nothrow_copy_assignable<ImageGenerator>::value);
+static_assert(std::is_nothrow_copy_constructible<ImageGenerator>::value);
+
+static_assert(std::is_nothrow_move_assignable<ImageGenerator>::value);
+static_assert(std::is_nothrow_move_constructible<ImageGenerator>::value);
 
 }
 

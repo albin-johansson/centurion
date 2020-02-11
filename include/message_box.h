@@ -29,8 +29,8 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include <type_traits>
 #include <SDL.h>
-#include "centurion_api.h"
 #include "color.h"
 
 namespace centurion::messagebox {
@@ -427,6 +427,13 @@ class CENTURION_API MessageBox final {
   CENTURION_API MessageBoxID get_type() const noexcept;
 
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<ButtonData>::value);
+#endif
+
+static_assert(std::is_nothrow_destructible<ButtonData>::value);
+static_assert(std::is_convertible<ButtonData, SDL_MessageBoxButtonData>::value);
 
 }
 

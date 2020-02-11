@@ -26,6 +26,7 @@
 #define CENTURION_COLORS_HEADER
 
 #include "centurion_api.h"
+#include <cstdint>
 #include "color.h"
 
 namespace centurion {

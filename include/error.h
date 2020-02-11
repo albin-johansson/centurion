@@ -27,6 +27,7 @@
 
 #include "centurion_api.h"
 #include <string>
+#include <type_traits>
 
 namespace centurion {
 
@@ -78,6 +79,17 @@ class CENTURION_API Error final {
   CENTURION_API static std::string msg() noexcept;
 
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<Error>::value);
+#endif
+
+static_assert(std::is_nothrow_destructible<Error>::value);
+static_assert(!std::is_constructible<Error>::value);
+static_assert(!std::is_copy_constructible<Error>::value);
+static_assert(!std::is_move_constructible<Error>::value);
+static_assert(!std::is_copy_assignable<Error>::value);
+static_assert(!std::is_move_assignable<Error>::value);
 
 }
 

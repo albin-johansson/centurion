@@ -28,6 +28,7 @@
 #include "centurion_api.h"
 #include <optional>
 #include <memory>
+#include <type_traits>
 #include <SDL_ttf.h>
 
 namespace centurion {
@@ -373,6 +374,18 @@ class CENTURION_API Font final {
    */
   CENTURION_API /*implicit*/ operator TTF_Font*() const noexcept;
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<Font>::value);
+#endif
+
+static_assert(std::is_nothrow_move_constructible<Font>::value);
+static_assert(std::is_nothrow_move_assignable<Font>::value);
+
+static_assert(!std::is_copy_constructible<Font>::value);
+static_assert(!std::is_copy_assignable<Font>::value);
+
+static_assert(std::is_convertible<Font, TTF_Font*>::value);
 
 }
 

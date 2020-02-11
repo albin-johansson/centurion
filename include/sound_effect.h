@@ -31,6 +31,7 @@
 #include <cstdint>
 #include <string>
 #include <memory>
+#include <type_traits>
 #include <SDL_mixer.h>
 
 namespace centurion {
@@ -213,6 +214,18 @@ class CENTURION_API SoundEffect final {
     return MIX_MAX_VOLUME;
   }
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<SoundEffect>::value);
+#endif
+
+static_assert(std::is_nothrow_move_constructible<SoundEffect>::value);
+static_assert(std::is_nothrow_move_assignable<SoundEffect>::value);
+
+static_assert(!std::is_copy_constructible<SoundEffect>::value);
+static_assert(!std::is_copy_assignable<SoundEffect>::value);
+
+static_assert(std::is_convertible<SoundEffect, Mix_Chunk*>::value);
 
 }
 

@@ -22,7 +22,11 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_API_HEADER
+#define CENTURION_API_HEADER
+
+#include <type_traits>
+#include <optional>
 
 // Define CENTURION_API for any platform https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html
 #ifdef _WIN32
@@ -33,4 +37,4 @@
 # endif
 #else
 # define CENTURION_API
-#endif
+#endif#endif // CENTURION_API_HEADER

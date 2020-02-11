@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-#pragma once
-#include <SDL_log.h>
+#ifndef CENTURION_LOG_HEADER
+#define CENTURION_LOG_HEADER
+
 #include "centurion_api.h"
 
 namespace centurion {
@@ -169,3 +170,5 @@ class CENTURION_API Log final {
 };
 
 }
+
+#endif // CENTURION_LOG_HEADER

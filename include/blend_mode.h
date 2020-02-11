@@ -22,9 +22,11 @@
  * SOFTWARE.
  */
 
-#pragma once
-#include <SDL_blendmode.h>
+#ifndef CENTURION_BLEND_MODE_HEADER
+#define CENTURION_BLEND_MODE_HEADER
+
 #include "centurion_api.h"
+#include <SDL_blendmode.h>
 
 namespace centurion {
 
@@ -86,3 +88,5 @@ CENTURION_API bool operator!=(BlendMode a, SDL_BlendMode b) noexcept;
 CENTURION_API bool operator!=(SDL_BlendMode a, BlendMode b) noexcept;
 
 }
+
+#endif // CENTURION_BLEND_MODE_HEADER

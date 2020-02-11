@@ -22,12 +22,13 @@
  * SOFTWARE.
  */
 
-#pragma once
-#include <string>
+#ifndef CENTURION_FONT
+#define CENTURION_FONT
+
+#include "centurion_api.h"
 #include <optional>
 #include <memory>
 #include <SDL_ttf.h>
-#include "centurion_api.h"
 
 namespace centurion {
 
@@ -374,3 +375,5 @@ class CENTURION_API Font final {
 };
 
 }
+
+#endif // CENTURION_FONT

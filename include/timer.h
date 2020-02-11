@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-#pragma once
-#include <cstdint>
+#ifndef CENTURION_TIMER_HEADER
+#define CENTURION_TIMER_HEADER
+
 #include "centurion_api.h"
 
 namespace centurion {
@@ -77,3 +78,5 @@ class CENTURION_API Timer final {
 };
 
 }
+
+#endif // CENTURION_TIMER_HEADER

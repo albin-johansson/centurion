@@ -22,12 +22,14 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_IMAGE_GENERATOR_HEADER
+#define CENTURION_IMAGE_GENERATOR_HEADER
+
+#include "centurion_api.h"
 #include <memory>
 #include <string>
 #include <cstdint>
 #include "image.h"
-#include "centurion_api.h"
 
 namespace centurion {
 
@@ -154,3 +156,5 @@ class CENTURION_API ImageGenerator final {
 };
 
 }
+
+#endif // CENTURION_IMAGE_GENERATOR_HEADER

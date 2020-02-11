@@ -22,7 +22,10 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_IMAGE_HEADER
+#define CENTURION_IMAGE_HEADER
+
+#include "centurion_api.h"
 #include <string>
 #include <memory>
 #include <cstdint>
@@ -30,7 +33,6 @@
 #include <SDL_render.h>
 #include "color.h"
 #include "blend_mode.h"
-#include "centurion_api.h"
 
 namespace centurion {
 
@@ -608,3 +610,5 @@ class CENTURION_API Image final {
 };
 
 }
+
+#endif // CENTURION_IMAGE_HEADER

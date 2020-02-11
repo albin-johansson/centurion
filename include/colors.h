@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-#pragma once
-#include <cstdint>
+#ifndef CENTURION_COLORS_HEADER
+#define CENTURION_COLORS_HEADER
+
 #include "centurion_api.h"
 #include "color.h"
 
@@ -1101,3 +1102,5 @@ class CENTURION_API Colors final {
 };
 
 }
+
+#endif // CENTURION_COLORS_HEADER

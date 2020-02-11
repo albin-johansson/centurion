@@ -22,7 +22,9 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_WINDOW_LISTENER_HEADER
+#define CENTURION_WINDOW_LISTENER_HEADER
+
 #include "centurion_api.h"
 
 namespace centurion {
@@ -49,3 +51,5 @@ class CENTURION_API IWindowListener {
 };
 
 }
+
+#endif // CENTURION_WINDOW_LISTENER_HEADER

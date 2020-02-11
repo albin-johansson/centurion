@@ -22,7 +22,10 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_WINDOW_HEADER
+#define CENTURION_WINDOW_HEADER
+
+#include "centurion_api.h"
 #include <string>
 #include <vector>
 #include <utility>
@@ -30,7 +33,6 @@
 #include <optional>
 #include <gsl>
 #include <SDL.h>
-#include "centurion_api.h"
 
 namespace centurion {
 
@@ -591,3 +593,4 @@ class CENTURION_API Window final {
 };
 
 }
+#endif // CENTURION_WINDOW_HEADER

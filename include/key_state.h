@@ -22,12 +22,14 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_KEY_STATE_HEADER
+#define CENTURION_KEY_STATE_HEADER
+
+#include "centurion_api.h"
 #include <cstdint>
 #include <array>
 #include <memory>
 #include <SDL.h>
-#include "centurion_api.h"
 
 namespace centurion {
 
@@ -126,3 +128,5 @@ class CENTURION_API KeyState final {
 };
 
 }
+
+#endif // CENTURION_KEY_STATE_HEADER

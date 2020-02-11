@@ -22,7 +22,10 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_RENDERER_HEADER
+#define CENTURION_RENDERER_HEADER
+
+#include "centurion_api.h"
 #include <cstdint>
 #include <string>
 #include <memory>
@@ -30,7 +33,6 @@
 #include <gsl>
 #include <SDL.h>
 #include <SDL_image.h>
-#include "centurion_api.h"
 #include "color.h"
 
 namespace centurion {
@@ -758,3 +760,4 @@ class CENTURION_API Renderer final {
 };
 
 }
+#endif // CENTURION_RENDERER_HEADER

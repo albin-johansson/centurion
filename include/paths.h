@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-#pragma once
-#include <string>
+#ifndef CENTURION_PATHS_HEADER
+#define CENTURION_PATHS_HEADER
+
 #include "centurion_api.h"
 #include <memory>
 
@@ -166,3 +167,5 @@ class CENTURION_API PrefPath final {
 };
 
 }
+
+#endif // CENTURION_PATHS_HEADER

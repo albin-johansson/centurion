@@ -22,10 +22,12 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_EVENT_HEADER
+#define CENTURION_EVENT_HEADER
+
+#include "centurion_api.h"
 #include <cstdint>
 #include <SDL.h>
-#include "centurion_api.h"
 
 namespace centurion::event {
 
@@ -799,3 +801,5 @@ class CENTURION_API Event final {
 };
 
 }
+
+#endif // CENTURION_EVENT_HEADER

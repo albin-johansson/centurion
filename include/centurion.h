@@ -22,7 +22,10 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_HEADER
+#define CENTURION_HEADER
+
+#include "centurion_api.h"
 
 #include <cstdint>
 #include <SDL.h>
@@ -30,7 +33,6 @@
 #include <SDL_ttf.h>
 #include <SDL_mixer.h>
 
-#include "centurion_api.h"
 #include "blend_mode.h"
 #include "bool_converter.h"
 #include "centurion_exception.h"
@@ -131,3 +133,5 @@ class CENTURION_API Centurion final {
 };
 
 }
+
+#endif // CENTURION_HEADER

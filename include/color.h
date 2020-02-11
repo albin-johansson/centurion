@@ -22,7 +22,9 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_COLOR_HEADER
+#define CENTURION_COLOR_HEADER
+
 #include <cstdint>
 #include <utility>
 #include <string>
@@ -414,3 +416,5 @@ inline bool operator!=(const SDL_MessageBoxColor& msgColor, const Color& color) 
 }
 
 }
+
+#endif // CENTURION_COLOR_HEADER

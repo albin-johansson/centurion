@@ -24,12 +24,14 @@
 
 #ifndef CENTURION_NOAUDIO
 
-#pragma once
+#ifndef CENTURION_SOUND_EFFECT_HEADER
+#define CENTURION_SOUND_EFFECT_HEADER
+
+#include "centurion_api.h"
 #include <cstdint>
 #include <string>
 #include <memory>
 #include <SDL_mixer.h>
-#include "centurion_api.h"
 
 namespace centurion {
 
@@ -214,4 +216,5 @@ class CENTURION_API SoundEffect final {
 
 }
 
-#endif
+#endif // CENTURION_SOUND_EFFECT_HEADER
+#endif // CENTURION_NOAUDIO

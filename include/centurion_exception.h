@@ -22,7 +22,10 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_EXCEPTION_HEADER
+#define CENTURION_EXCEPTION_HEADER
+
+#include "centurion_api.h"
 #include <stdexcept>
 #include <string>
 #include "centurion_api.h"
@@ -61,3 +64,5 @@ class CENTURION_API CenturionException final : public std::exception {
 };
 
 }
+
+#endif // CENTURION_EXCEPTION_HEADER

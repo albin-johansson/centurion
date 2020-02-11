@@ -22,10 +22,12 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_POINT_HEADER
+#define CENTURION_POINT_HEADER
+
+#include "centurion_api.h"
 #include <string>
 #include <SDL.h>
-#include "centurion_api.h"
 
 namespace centurion {
 
@@ -368,3 +370,5 @@ CENTURION_API FPoint operator+(const FPoint& lhs, const FPoint& rhs) noexcept;
 CENTURION_API FPoint operator-(const FPoint& lhs, const FPoint& rhs) noexcept;
 
 }
+
+#endif // CENTURION_POINT_HEADER

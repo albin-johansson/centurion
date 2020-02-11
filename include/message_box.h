@@ -22,7 +22,10 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_MESSAGE_BOX_HEADER
+#define CENTURION_MESSAGE_BOX_HEADER
+
+#include "centurion_api.h"
 #include <string>
 #include <vector>
 #include <optional>
@@ -426,3 +429,5 @@ class CENTURION_API MessageBox final {
 };
 
 }
+
+#endif // CENTURION_MESSAGE_BOX_HEADER

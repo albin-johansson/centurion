@@ -24,12 +24,14 @@
 
 #ifndef CENTURION_NOAUDIO
 
-#pragma once
+#ifndef CENTURION_MUSIC_HEADER
+#define CENTURION_MUSIC_HEADER
+
+#include "centurion_api.h"
 #include <string>
 #include <memory>
 #include <cstdint>
 #include <SDL_mixer.h>
-#include "centurion_api.h"
 
 namespace centurion {
 
@@ -337,4 +339,5 @@ class CENTURION_API Music final {
 
 }
 
-#endif
+#endif // CENTURION_MUSIC_HEADER
+#endif // CENTURION_NOAUDIO

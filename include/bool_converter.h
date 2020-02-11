@@ -22,9 +22,11 @@
  * SOFTWARE.
  */
 
-#pragma once
-#include <SDL.h>
+#ifndef CENTURION_BOOL_CONVERTER
+#define CENTURION_BOOL_CONVERTER
+
 #include "centurion_api.h"
+#include <SDL.h>
 
 namespace centurion {
 
@@ -54,3 +56,5 @@ class CENTURION_API BoolConverter final {
 };
 
 }
+
+#endif // CENTURION_BOOL_CONVERTER

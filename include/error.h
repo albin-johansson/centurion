@@ -22,9 +22,11 @@
  * SOFTWARE.
  */
 
-#pragma once
-#include <string>
+#ifndef CENTURION_ERROR_HEADER
+#define CENTURION_ERROR_HEADER
+
 #include "centurion_api.h"
+#include <string>
 
 namespace centurion {
 
@@ -78,3 +80,5 @@ class CENTURION_API Error final {
 };
 
 }
+
+#endif // CENTURION_ERROR_HEADER

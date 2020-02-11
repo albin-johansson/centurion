@@ -22,10 +22,12 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_SYSTEM_HEADER
+#define CENTURION_SYSTEM_HEADER
+
+#include "centurion_api.h"
 #include <optional>
 #include <SDL.h>
-#include "centurion_api.h"
 
 namespace centurion {
 
@@ -297,3 +299,5 @@ class CENTURION_API Screen final {
 };
 
 }
+
+#endif // CENTURION_SYSTEM_HEADER

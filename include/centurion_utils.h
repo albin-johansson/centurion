@@ -62,7 +62,7 @@ class CenturionUtils final {
   }
 };
 
-//#ifndef CENTURION_HAS_MAKE_UNIQUE
+#ifndef CENTURION_HAS_MAKE_UNIQUE
 
 /**
    * Creates and returns a unique pointer. This method should only be used when C++11 is used, since
@@ -80,7 +80,7 @@ CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&& ... args) {
   return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
-//#endif
+#endif
 
 }
 

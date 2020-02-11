@@ -27,6 +27,7 @@
 
 #include "centurion_api.h"
 #include <string>
+#include <type_traits>
 #include <SDL.h>
 #include "point.h"
 
@@ -517,6 +518,27 @@ CENTURION_API bool operator==(const FRect& lhs, const FRect& rhs) noexcept;
  */
 [[nodiscard]]
 CENTURION_API bool operator!=(const FRect& lhs, const FRect& rhs) noexcept;
+
+namespace {
+
+template<typename CTNRect, typename SDLRect>
+constexpr bool check_rect_type() noexcept {
+  return sizeof(CTNRect) == sizeof(SDLRect)
+      && std::is_convertible<CTNRect, const SDLRect&>::value
+      && std::is_nothrow_copy_constructible<CTNRect>::value
+      && std::is_nothrow_copy_assignable<CTNRect>::value
+      && std::is_nothrow_move_constructible<CTNRect>::value
+      && std::is_nothrow_move_assignable<CTNRect>::value
+      && std::is_nothrow_default_constructible<CTNRect>::value
+      && std::is_nothrow_destructible<CTNRect>::value
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+      && std::is_final<CTNRect>::value
+#endif
+      ;
+}
+
+static_assert(check_rect_type<Rect, SDL_Rect>());
+static_assert(check_rect_type<FRect, SDL_FRect>());
 
 }
 

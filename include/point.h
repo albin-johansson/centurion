@@ -395,4 +395,8 @@ static_assert(check_point_type<FPoint, SDL_FPoint>());
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "point.cpp"
+#endif
+
 #endif // CENTURION_POINT_HEADER

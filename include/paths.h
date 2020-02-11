@@ -169,4 +169,8 @@ class CENTURION_API PrefPath final {
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "paths.cpp"
+#endif
+
 #endif // CENTURION_PATHS_HEADER

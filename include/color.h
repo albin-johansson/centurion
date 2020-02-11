@@ -433,4 +433,8 @@ static_assert(std::is_nothrow_move_assignable<Color>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "color.cpp"
+#endif
+
 #endif // CENTURION_COLOR_HEADER

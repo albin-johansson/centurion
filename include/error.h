@@ -93,4 +93,8 @@ static_assert(!std::is_move_assignable<Error>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "error.cpp"
+#endif
+
 #endif // CENTURION_ERROR_HEADER

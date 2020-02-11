@@ -544,4 +544,8 @@ static_assert(check_rect_type<FRect, SDL_FRect>());
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "rectangle.cpp"
+#endif
+
 #endif // CENTURION_RECTANGLE_HEADER

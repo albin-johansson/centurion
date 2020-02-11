@@ -352,5 +352,9 @@ static_assert(std::is_convertible<Music, Mix_Music*>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "music.cpp"
+#endif
+
 #endif // CENTURION_MUSIC_HEADER
 #endif // CENTURION_NOAUDIO

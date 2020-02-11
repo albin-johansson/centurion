@@ -251,4 +251,8 @@ static_assert(std::is_base_of<IWindowListener, MouseState>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "mouse_state.cpp"
+#endif
+
 #endif // CENTURION_MOUSE_STATE_HEADER

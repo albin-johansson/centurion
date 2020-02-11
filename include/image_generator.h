@@ -168,4 +168,8 @@ static_assert(std::is_nothrow_move_constructible<ImageGenerator>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "image_generator.cpp"
+#endif
+
 #endif // CENTURION_IMAGE_GENERATOR_HEADER

@@ -143,4 +143,8 @@ static_assert(std::is_nothrow_copy_assignable<KeyState>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "key_state.cpp"
+#endif
+
 #endif // CENTURION_KEY_STATE_HEADER

@@ -1104,4 +1104,8 @@ class CENTURION_API Colors final {
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "colors.cpp"
+#endif
+
 #endif // CENTURION_COLORS_HEADER

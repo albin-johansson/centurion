@@ -183,4 +183,8 @@ static_assert(!std::is_move_assignable<Log>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "log.cpp"
+#endif
+
 #endif // CENTURION_LOG_HEADER

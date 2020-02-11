@@ -774,4 +774,8 @@ static_assert(std::is_convertible<Renderer, SDL_Renderer*>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "renderer.cpp"
+#endif
+
 #endif // CENTURION_RENDERER_HEADER

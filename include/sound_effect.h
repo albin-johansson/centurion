@@ -229,5 +229,9 @@ static_assert(std::is_convertible<SoundEffect, Mix_Chunk*>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "sound_effect.cpp"
+#endif
+
 #endif // CENTURION_SOUND_EFFECT_HEADER
 #endif // CENTURION_NOAUDIO

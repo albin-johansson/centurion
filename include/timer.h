@@ -80,4 +80,8 @@ class CENTURION_API Timer final {
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "timer.cpp"
+#endif
+
 #endif // CENTURION_TIMER_HEADER

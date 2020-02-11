@@ -825,4 +825,8 @@ static_assert(check_event_type<Event>());
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "event.cpp"
+#endif
+
 #endif // CENTURION_EVENT_HEADER

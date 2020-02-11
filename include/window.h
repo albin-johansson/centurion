@@ -609,4 +609,8 @@ static_assert(std::is_nothrow_destructible<Window>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "window.cpp"
+#endif
+
 #endif // CENTURION_WINDOW_HEADER

@@ -389,4 +389,8 @@ static_assert(std::is_convertible<Font, TTF_Font*>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "font.cpp"
+#endif
+
 #endif // CENTURION_FONT

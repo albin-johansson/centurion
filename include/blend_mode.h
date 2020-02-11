@@ -89,4 +89,8 @@ CENTURION_API bool operator!=(SDL_BlendMode a, BlendMode b) noexcept;
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "blend_mode.cpp"
+#endif
+
 #endif // CENTURION_BLEND_MODE_HEADER

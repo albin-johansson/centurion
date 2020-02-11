@@ -64,4 +64,8 @@ class CENTURION_API CenturionException final : public std::exception {
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "centurion_exception.cpp"
+#endif
+
 #endif // CENTURION_EXCEPTION_HEADER

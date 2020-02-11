@@ -134,4 +134,8 @@ class CENTURION_API Centurion final {
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "centurion.cpp"
+#endif
+
 #endif // CENTURION_HEADER

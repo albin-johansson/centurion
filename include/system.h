@@ -300,4 +300,8 @@ class CENTURION_API Screen final {
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "system.cpp"
+#endif
+
 #endif // CENTURION_SYSTEM_HEADER

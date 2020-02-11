@@ -437,4 +437,8 @@ static_assert(std::is_convertible<ButtonData, SDL_MessageBoxButtonData>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
+# include "message_box.cpp"
+#endif
+
 #endif // CENTURION_MESSAGE_BOX_HEADER

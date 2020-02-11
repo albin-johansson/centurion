@@ -20,6 +20,8 @@ Platform System::get_platform() noexcept {
   }
 }
 
+#ifdef CENTURION_HAS_OPTIONAL
+
 std::optional<std::string> System::get_platform_name() noexcept {
   const std::string name{SDL_GetPlatform()};
   if (name == "Unknown") {
@@ -28,6 +30,8 @@ std::optional<std::string> System::get_platform_name() noexcept {
     return name;
   }
 }
+
+#endif
 
 int CPU::get_cache_line_size() noexcept {
   return SDL_GetCPUCacheLineSize();
@@ -44,6 +48,8 @@ int RAM::get_size_mb() noexcept {
 int RAM::get_size_gb() noexcept {
   return get_size_mb() / 1'000;
 }
+
+#ifdef CENTURION_HAS_OPTIONAL
 
 std::optional<int> Power::get_battery_seconds_left() noexcept {
   int secondsLeft = -1;
@@ -73,6 +79,8 @@ std::optional<int> Power::get_battery_percentage() noexcept {
     return percentageLeft;
   }
 }
+
+#endif
 
 PowerState Power::get_state() noexcept {
   return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));

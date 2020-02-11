@@ -63,6 +63,8 @@ class CENTURION_API System final {
   [[nodiscard]]
   CENTURION_API static Platform get_platform() noexcept;
 
+#ifdef CENTURION_HAS_OPTIONAL
+
   /**
    * Returns the name of the current platform.
    *
@@ -71,6 +73,8 @@ class CENTURION_API System final {
    */
   [[nodiscard]]
   CENTURION_API static std::optional<std::string> get_platform_name() noexcept;
+
+#endif
 };
 
 /**
@@ -212,6 +216,8 @@ class CENTURION_API Power final {
  public:
   Power() = delete;
 
+#ifdef CENTURION_HAS_OPTIONAL
+
   /**
    * Returns the seconds of battery life that is remaining.
    *
@@ -241,6 +247,8 @@ class CENTURION_API Power final {
    */
   [[nodiscard]]
   CENTURION_API static std::optional<int> get_battery_percentage() noexcept;
+
+#endif
 
   /**
    * Returns the current power state.

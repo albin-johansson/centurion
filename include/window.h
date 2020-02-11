@@ -31,6 +31,7 @@
 #include <utility>
 #include <memory>
 #include <optional>
+#include <type_traits>
 #include <gsl>
 #include <SDL.h>
 
@@ -592,5 +593,20 @@ class CENTURION_API Window final {
   CENTURION_API /*implicit*/ operator SDL_Window*() const noexcept;
 };
 
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<Window>::value);
+#endif
+
+static_assert(std::is_nothrow_move_assignable<Window>::value);
+static_assert(std::is_nothrow_move_constructible<Window>::value);
+
+static_assert(!std::is_copy_assignable<Window>::value);
+static_assert(!std::is_copy_constructible<Window>::value);
+
+static_assert(std::is_convertible<Window, SDL_Window*>::value);
+static_assert(std::is_default_constructible<Window>::value);
+static_assert(std::is_nothrow_destructible<Window>::value);
+
 }
+
 #endif // CENTURION_WINDOW_HEADER

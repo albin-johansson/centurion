@@ -39,9 +39,10 @@
 *.filters
 
 # Custom stuff
-cmake-build-debug/
-cmake-build-release/
-.idea/
+cmake-build-debug
+cmake-build-release
+.idea
+.vscode
 
 # Ignore the documentation for now
 doc

@@ -81,10 +81,13 @@ int MessageBox::show(SDL_Window* window) {
   const SDL_MessageBoxButtonData* buttonDataFront = &sdl_buttonData.front();
 
   const SDL_MessageBoxColorScheme* sdl_colorScheme = nullptr;
+
+#ifdef CENTURION_HAS_OPTIONAL
   if (colorScheme) {
     auto& scheme = colorScheme.value();
     sdl_colorScheme = &scheme.get();
   }
+#endif
 
   const auto data = create_sdl_message_box_data(window, buttonDataFront, sdl_colorScheme);
 
@@ -119,9 +122,13 @@ void MessageBox::set_type(MessageBoxID type) noexcept {
   this->type = type;
 }
 
+#ifdef CENTURION_HAS_OPTIONAL
+
 void MessageBox::set_color_scheme(std::optional<ColorScheme> scheme) noexcept {
   this->colorScheme = std::move(scheme);
 }
+
+#endif
 
 MessageBoxID MessageBox::get_type() const noexcept {
   return type;

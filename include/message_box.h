@@ -295,7 +295,9 @@ CENTURION_API bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept;
  */
 class CENTURION_API MessageBox final {
  private:
+#ifdef CENTURION_HAS_OPTIONAL
   std::optional<ColorScheme> colorScheme;
+#endif
   std::vector<ButtonData> buttons;
   std::string title = "Centurion message box";
   std::string message = "N/A";
@@ -407,6 +409,8 @@ class CENTURION_API MessageBox final {
    */
   CENTURION_API void set_type(MessageBoxID type) noexcept;
 
+#ifdef CENTURION_HAS_OPTIONAL
+
   /**
    * Sets the color scheme that will be used by the message box. Color schemes aren't supported
    * on all platforms, so the default value is std::nullopt for the color scheme.
@@ -416,6 +420,8 @@ class CENTURION_API MessageBox final {
    * @since 3.0.0
    */
   CENTURION_API void set_color_scheme(std::optional<ColorScheme> scheme) noexcept;
+
+#endif
 
   /**
    * Returns the type of the message box.

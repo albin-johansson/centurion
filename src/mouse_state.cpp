@@ -1,20 +1,9 @@
 #include "mouse_state.h"
 #include <cstdint>
-#include <type_traits>
 #include <SDL.h>
 #include "window.h"
 
 namespace centurion {
-
-static_assert(std::is_final_v<MouseState>);
-
-static_assert(std::is_nothrow_move_constructible_v<MouseState>);
-static_assert(std::is_nothrow_move_assignable_v<MouseState>);
-
-static_assert(std::is_nothrow_copy_constructible_v<MouseState>);
-static_assert(std::is_nothrow_copy_assignable_v<MouseState>);
-
-static_assert(std::is_base_of_v<IWindowListener, MouseState>);
 
 MouseState::MouseState() noexcept = default;
 

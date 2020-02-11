@@ -1,18 +1,6 @@
 #include "color.h"
-#include <type_traits>
 
 namespace centurion {
-
-static_assert(std::is_convertible_v<Color, SDL_Color>);
-static_assert(std::is_convertible_v<Color, SDL_MessageBoxColor>);
-
-static_assert(std::is_default_constructible_v<Color>);
-
-static_assert(std::is_nothrow_copy_constructible_v<Color>);
-static_assert(std::is_nothrow_copy_assignable_v<Color>);
-
-static_assert(std::is_nothrow_move_constructible_v<Color>);
-static_assert(std::is_nothrow_move_assignable_v<Color>);
 
 const uint8_t Color::max = 0xFF;
 

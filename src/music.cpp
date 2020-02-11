@@ -1,22 +1,11 @@
 #ifndef CENTURION_NOAUDIO
 
 #include "music.h"
-#include <type_traits>
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "error.h"
 
 namespace centurion {
-
-static_assert(std::is_final_v<Music>);
-
-static_assert(!std::is_nothrow_copy_constructible_v<Music>);
-static_assert(!std::is_nothrow_copy_assignable_v<Music>);
-
-static_assert(std::is_nothrow_move_constructible_v<Music>);
-static_assert(std::is_nothrow_move_assignable_v<Music>);
-
-static_assert(std::is_convertible_v<Music, Mix_Music*>);
 
 // FIXME there is some duplication between SoundEffect and Music
 const int Music::maxVolume = MIX_MAX_VOLUME;

@@ -2,22 +2,10 @@
 #include <string>
 #include <algorithm>
 #include <cassert>
-#include <type_traits>
 #include "centurion_exception.h"
 #include "error.h"
 
 namespace centurion {
-
-static_assert(std::is_final_v<KeyState>);
-
-static_assert(std::is_default_constructible_v<KeyState>);
-static_assert(std::is_nothrow_destructible_v<KeyState>);
-
-static_assert(std::is_nothrow_move_constructible_v<KeyState>);
-static_assert(std::is_nothrow_move_assignable_v<KeyState>);
-
-static_assert(std::is_nothrow_copy_constructible_v<KeyState>);
-static_assert(std::is_nothrow_copy_assignable_v<KeyState>);
 
 KeyState::KeyState() {
   states = SDL_GetKeyboardState(&nKeys);

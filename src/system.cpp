@@ -1,6 +1,5 @@
 #include "system.h"
 #include <string>
-#include <SDL.h>
 
 namespace centurion {
 

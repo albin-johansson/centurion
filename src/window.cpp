@@ -1,24 +1,11 @@
 #include "window.h"
 #include <stdexcept>
-#include <type_traits>
 #include <SDL_image.h>
 #include "window_listener.h"
 #include "bool_converter.h"
 #include "centurion_utils.h"
 
 namespace centurion {
-
-static_assert(std::is_final_v<Window>);
-
-static_assert(std::is_nothrow_move_assignable_v<Window>);
-static_assert(std::is_nothrow_move_constructible_v<Window>);
-
-static_assert(!std::is_copy_assignable_v<Window>);
-static_assert(!std::is_copy_constructible_v<Window>);
-
-static_assert(std::is_convertible_v<Window, SDL_Window*>);
-static_assert(std::is_default_constructible_v<Window>);
-static_assert(std::is_nothrow_destructible_v<Window>);
 
 Window::Window(const std::string& title, int width, int height) {
   if ((width < 1) || (height < 1)) {

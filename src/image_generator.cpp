@@ -1,18 +1,9 @@
 #include "image_generator.h"
-#include <type_traits>
 #include "renderer.h"
 #include "image.h"
 #include "centurion_exception.h"
 
 namespace centurion {
-
-static_assert(std::is_final_v<ImageGenerator>);
-
-static_assert(std::is_nothrow_copy_assignable_v<ImageGenerator>);
-static_assert(std::is_nothrow_copy_constructible_v<ImageGenerator>);
-
-static_assert(std::is_nothrow_move_assignable_v<ImageGenerator>);
-static_assert(std::is_nothrow_move_constructible_v<ImageGenerator>);
 
 ImageGenerator::ImageGenerator(const std::shared_ptr<Renderer>& renderer) {
   if (renderer) {

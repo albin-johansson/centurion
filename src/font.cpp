@@ -1,21 +1,10 @@
 #include "font.h"
 #include <stdexcept>
-#include <type_traits>
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "error.h"
 
 namespace centurion {
-
-static_assert(std::is_final_v<Font>);
-
-static_assert(std::is_nothrow_move_constructible_v<Font>);
-static_assert(std::is_nothrow_move_assignable_v<Font>);
-
-static_assert(!std::is_copy_constructible_v<Font>);
-static_assert(!std::is_copy_assignable_v<Font>);
-
-static_assert(std::is_convertible_v<Font, TTF_Font*>);
 
 Font::Font(const std::string& file, int size) : size{size} {
   if (size <= 0) {

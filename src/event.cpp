@@ -1,23 +1,8 @@
 #include "event.h"
-#include <type_traits>
 
 namespace centurion::event {
 
-namespace {
-
-template<typename T>
-constexpr bool check_event_type() noexcept {
-  return std::is_final_v<T>
-      && std::is_nothrow_destructible_v<T>
-      && std::is_nothrow_copy_constructible_v<T>
-      && std::is_nothrow_move_constructible_v<T>;
-}
-
-}
-
 // ** KEY EVENT ************************************************************************************
-
-static_assert(check_event_type<KeyEvent>());
 
 KeyEvent::KeyEvent(SDL_KeyboardEvent keyEvent) noexcept: event{keyEvent} {}
 
@@ -71,8 +56,6 @@ ButtonState KeyEvent::get_state() const noexcept {
 
 // ** MOUSE BUTTON EVENT ***************************************************************************
 
-static_assert(check_event_type<MouseButtonEvent>());
-
 MouseButtonEvent::MouseButtonEvent(SDL_MouseButtonEvent buttonEvent) noexcept
     : event{buttonEvent} {}
 
@@ -114,8 +97,6 @@ uint32_t MouseButtonEvent::get_time() const noexcept {
 
 // ** MOUSE MOTION EVENT ***************************************************************************
 
-static_assert(check_event_type<MouseMotionEvent>());
-
 MouseMotionEvent::MouseMotionEvent(SDL_MouseMotionEvent motionEvent) noexcept
     : event{motionEvent} {}
 
@@ -153,8 +134,6 @@ uint32_t MouseMotionEvent::get_time() const noexcept {
 
 // ** MOUSE WHEEL EVENT ****************************************************************************
 
-static_assert(check_event_type<MouseWheelEvent>());
-
 MouseWheelEvent::MouseWheelEvent(SDL_MouseWheelEvent wheelEvent) noexcept
     : event{wheelEvent} {}
 
@@ -184,8 +163,6 @@ uint32_t MouseWheelEvent::get_time() const noexcept {
 
 // ** QUIT EVENT ***********************************************************************************
 
-static_assert(check_event_type<QuitEvent>());
-
 QuitEvent::QuitEvent(SDL_QuitEvent quitEvent) noexcept
     : time{quitEvent.timestamp} {}
 
@@ -194,8 +171,6 @@ uint32_t QuitEvent::get_time() const noexcept {
 }
 
 // ** EVENT ****************************************************************************************
-
-static_assert(check_event_type<Event>());
 
 Event::Event(const SDL_Event& sdlEvent) noexcept
     : event{sdlEvent} {}

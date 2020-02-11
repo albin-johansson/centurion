@@ -1,19 +1,10 @@
 #include "image.h"
-#include <type_traits>
 #include <SDL_image.h>
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "error.h"
 
 namespace centurion {
-
-static_assert(std::is_final_v<Image>);
-
-static_assert(std::is_nothrow_move_constructible_v<Image>);
-static_assert(std::is_nothrow_move_assignable_v<Image>);
-
-static_assert(!std::is_nothrow_copy_constructible_v<Image>);
-static_assert(!std::is_nothrow_copy_assignable_v<Image>);
 
 Image::Image(gsl::owner<SDL_Texture*> texture) {
   if (!texture) {

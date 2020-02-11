@@ -1,7 +1,6 @@
 #ifndef CENTURION_NOAUDIO
 
 #include "sound_effect.h"
-#include <type_traits>
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "error.h"
@@ -9,16 +8,6 @@
 namespace centurion {
 
 // TODO check Mix documentation if there are any redundancies
-
-static_assert(std::is_final_v<SoundEffect>);
-
-static_assert(std::is_nothrow_move_constructible_v<SoundEffect>);
-static_assert(std::is_nothrow_move_assignable_v<SoundEffect>);
-
-static_assert(!std::is_copy_constructible_v<SoundEffect>);
-static_assert(!std::is_copy_assignable_v<SoundEffect>);
-
-static_assert(std::is_convertible_v<SoundEffect, Mix_Chunk*>);
 
 const int SoundEffect::loopForever = -10;
 const int SoundEffect::maxVolume = get_max_volume();

@@ -1,21 +1,7 @@
 #include "point.h"
-#include <type_traits>
 #include <cmath>
 
 namespace centurion {
-
-static_assert(std::is_final_v<Point>);
-static_assert(std::is_convertible_v<Point, SDL_Point>);
-static_assert(sizeof(Point) == sizeof(SDL_Point));
-
-static_assert(std::is_nothrow_move_assignable_v<Point>);
-static_assert(std::is_nothrow_move_constructible_v<Point>);
-
-static_assert(std::is_nothrow_copy_assignable_v<Point>);
-static_assert(std::is_nothrow_copy_constructible_v<Point>);
-
-static_assert(std::is_nothrow_default_constructible_v<Point>);
-static_assert(std::is_nothrow_destructible_v<Point>);
 
 Point::Point() noexcept = default;
 
@@ -77,19 +63,6 @@ Point operator+(const Point& lhs, const Point& rhs) noexcept {
 Point operator-(const Point& lhs, const Point& rhs) noexcept {
   return {lhs.get_x() - rhs.get_x(), lhs.get_y() - rhs.get_y()};
 }
-
-static_assert(std::is_final_v<FPoint>);
-static_assert(std::is_convertible_v<FPoint, SDL_FPoint>);
-static_assert(sizeof(FPoint) == sizeof(SDL_FPoint));
-
-static_assert(std::is_nothrow_move_assignable_v<FPoint>);
-static_assert(std::is_nothrow_move_constructible_v<FPoint>);
-
-static_assert(std::is_nothrow_copy_assignable_v<FPoint>);
-static_assert(std::is_nothrow_copy_constructible_v<FPoint>);
-
-static_assert(std::is_nothrow_default_constructible_v<FPoint>);
-static_assert(std::is_nothrow_destructible_v<FPoint>);
 
 FPoint::FPoint() noexcept = default;
 

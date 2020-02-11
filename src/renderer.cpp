@@ -1,6 +1,5 @@
 #include "renderer.h"
 #include <stdexcept>
-#include <type_traits>
 #include <SDL.h>
 #include "image.h"
 #include "font.h"
@@ -10,16 +9,6 @@
 #include "centurion_utils.h"
 
 namespace centurion {
-
-static_assert(std::is_final_v<Renderer>);
-
-static_assert(std::is_nothrow_move_constructible_v<Renderer>);
-static_assert(std::is_nothrow_move_assignable_v<Renderer>);
-
-static_assert(!std::is_nothrow_copy_constructible_v<Renderer>);
-static_assert(!std::is_nothrow_copy_assignable_v<Renderer>);
-
-static_assert(std::is_convertible_v<Renderer, SDL_Renderer*>);
 
 Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer) {
   if (!renderer) {

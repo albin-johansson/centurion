@@ -1,17 +1,11 @@
 #include "message_box.h"
 #include <cstdint>
 #include <utility>
-#include <type_traits>
-#include <SDL.h>
 #include "centurion_exception.h"
 #include "colors.h"
 #include "error.h"
 
 namespace centurion::messagebox {
-
-static_assert(std::is_final_v<ButtonData>);
-static_assert(std::is_nothrow_destructible_v<ButtonData>);
-static_assert(std::is_convertible_v<ButtonData, SDL_MessageBoxButtonData>);
 
 ButtonData::ButtonData(ButtonDataHint hint, int id, std::string text)
     : buttonDataHint{hint}, id{id}, text{std::move(text)} {}
@@ -96,7 +90,7 @@ int MessageBox::show(SDL_Window* window) {
 
   int button = -1;
   if (SDL_ShowMessageBox(&data, &button) < 0) {
-    throw CenturionException("Failed to show message box! " + Error::msg());
+    throw CenturionException{"Failed to show message box! " + Error::msg()};
   }
 
   return button; // TODO consider returning std::optional<int> instead

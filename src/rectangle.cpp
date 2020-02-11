@@ -1,22 +1,8 @@
 #include "rectangle.h"
-#include <type_traits>
 #include <cmath>
 #include <SDL.h>
 
 namespace centurion {
-
-static_assert(sizeof(Rect) == sizeof(SDL_Rect));
-static_assert(std::is_final_v<Rect>);
-static_assert(std::is_convertible_v<Rect, const SDL_Rect&>);
-
-static_assert(std::is_nothrow_copy_constructible_v<Rect>);
-static_assert(std::is_nothrow_copy_assignable_v<Rect>);
-
-static_assert(std::is_nothrow_move_constructible_v<Rect>);
-static_assert(std::is_nothrow_move_assignable_v<Rect>);
-
-static_assert(std::is_nothrow_default_constructible_v<Rect>);
-static_assert(std::is_nothrow_destructible_v<Rect>);
 
 Rect::Rect() noexcept = default;
 
@@ -114,19 +100,6 @@ std::string Rect::to_string() const {
 Rect::operator const SDL_Rect&() const noexcept {
   return rect;
 }
-
-static_assert(sizeof(FRect) == sizeof(SDL_FRect));
-static_assert(std::is_final_v<FRect>);
-static_assert(std::is_convertible_v<FRect, const SDL_FRect&>);
-
-static_assert(std::is_nothrow_copy_constructible_v<FRect>);
-static_assert(std::is_nothrow_copy_assignable_v<FRect>);
-
-static_assert(std::is_nothrow_move_constructible_v<FRect>);
-static_assert(std::is_nothrow_move_assignable_v<FRect>);
-
-static_assert(std::is_nothrow_default_constructible_v<FRect>);
-static_assert(std::is_nothrow_destructible_v<FRect>);
 
 FRect::FRect() noexcept = default;
 

@@ -29,6 +29,7 @@
 #include <cstdint>
 #include <array>
 #include <memory>
+#include <type_traits>
 #include <SDL.h>
 
 namespace centurion {
@@ -126,6 +127,19 @@ class CENTURION_API KeyState final {
   [[nodiscard]]
   CENTURION_API int get_amount_of_keys() const noexcept;
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<KeyState>::value);
+#endif
+
+static_assert(std::is_default_constructible<KeyState>::value);
+static_assert(std::is_nothrow_destructible<KeyState>::value);
+
+static_assert(std::is_nothrow_move_constructible<KeyState>::value);
+static_assert(std::is_nothrow_move_assignable<KeyState>::value);
+
+static_assert(std::is_nothrow_copy_constructible<KeyState>::value);
+static_assert(std::is_nothrow_copy_assignable<KeyState>::value);
 
 }
 

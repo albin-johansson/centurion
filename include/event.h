@@ -27,6 +27,7 @@
 
 #include "centurion_api.h"
 #include <cstdint>
+#include <type_traits>
 #include <SDL.h>
 
 namespace centurion::event {
@@ -799,6 +800,28 @@ class CENTURION_API Event final {
   [[nodiscard]]
   operator SDL_Event&() noexcept;
 };
+
+namespace {
+
+template<typename T>
+constexpr bool check_event_type() noexcept {
+  return std::is_nothrow_destructible<T>::value
+      && std::is_nothrow_copy_constructible<T>::value
+      && std::is_nothrow_move_constructible<T>::value
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+      && std::is_final<T>::value
+#endif
+      ;
+}
+
+}
+
+static_assert(check_event_type<KeyEvent>());
+static_assert(check_event_type<MouseButtonEvent>());
+static_assert(check_event_type<MouseMotionEvent>());
+static_assert(check_event_type<MouseWheelEvent>());
+static_assert(check_event_type<QuitEvent>());
+static_assert(check_event_type<Event>());
 
 }
 

@@ -31,6 +31,7 @@
 #include <string>
 #include <memory>
 #include <cstdint>
+#include <type_traits>
 #include <SDL_mixer.h>
 
 namespace centurion {
@@ -336,6 +337,18 @@ class CENTURION_API Music final {
   [[nodiscard]]
   CENTURION_API /*implicit*/ operator Mix_Music*() const noexcept;
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<Music>::value);
+#endif
+
+static_assert(!std::is_nothrow_copy_constructible<Music>::value);
+static_assert(!std::is_nothrow_copy_assignable<Music>::value);
+
+static_assert(std::is_nothrow_move_constructible<Music>::value);
+static_assert(std::is_nothrow_move_assignable<Music>::value);
+
+static_assert(std::is_convertible<Music, Mix_Music*>::value);
 
 }
 

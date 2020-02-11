@@ -29,6 +29,7 @@
 #include <string>
 #include <memory>
 #include <cstdint>
+#include <type_traits>
 #include <gsl>
 #include <SDL_render.h>
 #include "color.h"
@@ -608,6 +609,16 @@ class CENTURION_API Image final {
    */
   CENTURION_API /*implicit*/ operator SDL_Texture*() const noexcept;
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<Image>::value);
+#endif
+
+static_assert(std::is_nothrow_move_constructible<Image>::value);
+static_assert(std::is_nothrow_move_assignable<Image>::value);
+
+static_assert(!std::is_nothrow_copy_constructible<Image>::value);
+static_assert(!std::is_nothrow_copy_assignable<Image>::value);
 
 }
 

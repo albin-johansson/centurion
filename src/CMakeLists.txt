@@ -84,6 +84,7 @@ set_target_properties(${CENTURION_LIB} PROPERTIES
         VERSION 3.0.0
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
         OUTPUT_NAME "Centurion")
 
 target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})

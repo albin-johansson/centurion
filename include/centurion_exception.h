@@ -28,7 +28,6 @@
 #include "centurion_api.h"
 #include <stdexcept>
 #include <string>
-#include "centurion_api.h"
 
 namespace centurion {
 

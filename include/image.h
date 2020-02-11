@@ -622,5 +622,8 @@ static_assert(!std::is_nothrow_copy_assignable<Image>::value);
 
 }
 
+#ifdef CENTURION_HEADER_ONLY
 # include "image.cpp"
+#endif
+
 #endif // CENTURION_IMAGE_HEADER

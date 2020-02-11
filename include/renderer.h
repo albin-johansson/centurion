@@ -31,6 +31,7 @@
 #include <memory>
 #include <optional>
 #include <type_traits>
+#include <vector>
 #include <gsl>
 #include <SDL.h>
 #include <SDL_image.h>

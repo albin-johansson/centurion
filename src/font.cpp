@@ -182,6 +182,8 @@ std::string Font::get_family_name() const noexcept {
   return TTF_FontFaceFamilyName(font);
 }
 
+#ifdef CENTURION_HAS_OPTIONAL
+
 std::optional<std::string> Font::get_style_name() const noexcept {
   const auto* name = TTF_FontFaceStyleName(font);
   if (name) {
@@ -190,6 +192,8 @@ std::optional<std::string> Font::get_style_name() const noexcept {
     return std::nullopt;
   }
 }
+
+#endif
 
 std::string Font::to_string() const {
   const auto idStr = "Font@" + CenturionUtils::address(this);

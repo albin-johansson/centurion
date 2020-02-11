@@ -329,6 +329,8 @@ class CENTURION_API Font final {
   [[nodiscard]]
   CENTURION_API std::string get_family_name() const noexcept;
 
+#ifdef CENTURION_HAS_OPTIONAL
+
   /**
    * Returns the font face style name of the font. This information may not be available.
    *
@@ -337,6 +339,8 @@ class CENTURION_API Font final {
    */
   [[nodiscard]]
   CENTURION_API std::optional<std::string> get_style_name() const noexcept;
+
+#endif
 
   /**
    * Returns the width of the supplied string, if it was rendered using the font.

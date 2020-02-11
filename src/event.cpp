@@ -1,6 +1,7 @@
 #include "event.h"
 
-namespace centurion::event {
+namespace centurion {
+namespace event {
 
 // ** KEY EVENT ************************************************************************************
 
@@ -225,4 +226,5 @@ Event::operator SDL_Event&() noexcept {
   return event;
 }
 
-}
+} // namespace event
+} // namespace centurion

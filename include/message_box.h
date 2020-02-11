@@ -33,7 +33,8 @@
 #include <SDL.h>
 #include "color.h"
 
-namespace centurion::messagebox {
+namespace centurion {
+namespace messagebox {
 
 /**
  * The ButtonDataHint enum class mirrors the SDL_MessageBoxButtonFlags enum.
@@ -435,13 +436,29 @@ class CENTURION_API MessageBox final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<ButtonData>::value);
+static_assert(std::is_final<ButtonData>::value,
+              "ButtonData isn't final!");
 #endif
 
-static_assert(std::is_nothrow_destructible<ButtonData>::value);
-static_assert(std::is_convertible<ButtonData, SDL_MessageBoxButtonData>::value);
+static_assert(std::is_nothrow_destructible<ButtonData>::value,
+              "ButtonData isn't nothrow destructible!");
 
-}
+static_assert(std::is_convertible<ButtonData, SDL_MessageBoxButtonData>::value,
+              "ButtonData isn't convertible to SDL_MessageBoxButtonData!");
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<ColorScheme>::value,
+              "ColorScheme isn't final!");
+#endif
+
+static_assert(std::is_nothrow_default_constructible<ColorScheme>::value,
+              "ColorScheme isn't nothrow default constructible!");
+
+static_assert(std::is_nothrow_destructible<ColorScheme>::value,
+              "ColorScheme isn't nothrow destructible!");
+
+} // namespace messagebox
+} // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
 # include "message_box.cpp"

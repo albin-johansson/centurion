@@ -28,6 +28,7 @@
 #include "centurion_api.h"
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 
 namespace centurion {
 
@@ -61,6 +62,16 @@ class CENTURION_API CenturionException final : public std::exception {
   [[nodiscard]]
   CENTURION_API const char* what() const noexcept override;
 };
+
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<CenturionException>::value,
+              "CenturionException isn't final!");
+#endif
+
+static_assert(std::is_default_constructible<CenturionException>::value,
+              "CenturionException isn't default constructible!");
+static_assert(std::is_nothrow_destructible<CenturionException>::value,
+              "CenturionException isn't nothrow destructible!");
 
 }
 

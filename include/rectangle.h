@@ -537,8 +537,11 @@ constexpr bool check_rect_type() noexcept {
       ;
 }
 
-static_assert(check_rect_type<Rect, SDL_Rect>());
-static_assert(check_rect_type<FRect, SDL_FRect>());
+static_assert(check_rect_type<Rect, SDL_Rect>(),
+              "Rect failed the rectangle type check!");
+
+static_assert(check_rect_type<FRect, SDL_FRect>(),
+              "FRect failed the rectangle type check!");
 
 }
 

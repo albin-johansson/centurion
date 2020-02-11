@@ -157,14 +157,21 @@ class CENTURION_API ImageGenerator final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<ImageGenerator>::value);
+static_assert(std::is_final<ImageGenerator>::value,
+              "ImageGenerator isn't final!");
 #endif
 
-static_assert(std::is_nothrow_copy_assignable<ImageGenerator>::value);
-static_assert(std::is_nothrow_copy_constructible<ImageGenerator>::value);
+static_assert(std::is_nothrow_copy_assignable<ImageGenerator>::value,
+              "ImageGenerator isn't nothrow copy assignable!");
 
-static_assert(std::is_nothrow_move_assignable<ImageGenerator>::value);
-static_assert(std::is_nothrow_move_constructible<ImageGenerator>::value);
+static_assert(std::is_nothrow_copy_constructible<ImageGenerator>::value,
+              "ImageGenerator isn't nothrow copy constructible!");
+
+static_assert(std::is_nothrow_move_assignable<ImageGenerator>::value,
+              "ImageGenerator isn't nothrow move assignable!");
+
+static_assert(std::is_nothrow_move_constructible<ImageGenerator>::value,
+              "ImageGenerator isn't nothrow move constructible!");
 
 }
 

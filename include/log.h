@@ -172,14 +172,24 @@ class CENTURION_API Log final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Log>::value);
+static_assert(std::is_final<Log>::value,
+              "Log isn't final!");
 #endif
 
-static_assert(!std::is_constructible<Log>::value);
-static_assert(!std::is_copy_constructible<Log>::value);
-static_assert(!std::is_move_constructible<Log>::value);
-static_assert(!std::is_copy_assignable<Log>::value);
-static_assert(!std::is_move_assignable<Log>::value);
+static_assert(!std::is_constructible<Log>::value,
+              "Log is constructible!");
+
+static_assert(!std::is_copy_constructible<Log>::value,
+              "Log is copy constructible!");
+
+static_assert(!std::is_move_constructible<Log>::value,
+              "Log is move constructible!");
+
+static_assert(!std::is_copy_assignable<Log>::value,
+              "Log is copy assignable!");
+
+static_assert(!std::is_move_assignable<Log>::value,
+              "Log is move assignable!");
 
 }
 

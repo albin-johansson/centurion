@@ -26,6 +26,7 @@
 #define CENTURION_WINDOW_LISTENER_HEADER
 
 #include "centurion_api.h"
+#include <type_traits>
 
 namespace centurion {
 
@@ -49,6 +50,9 @@ class CENTURION_API IWindowListener {
    */
   CENTURION_API virtual void window_updated(const Window& window) noexcept = 0;
 };
+
+static_assert(std::has_virtual_destructor<IWindowListener>::value,
+              "IWindowListener doesn't have virtual destructor!");
 
 }
 

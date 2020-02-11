@@ -128,7 +128,7 @@ class CENTURION_API Font final {
    * @throws CenturionException if the font cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Font> unique(const std::string& file, int size);
 
   /**
@@ -141,7 +141,7 @@ class CENTURION_API Font final {
    * @throws CenturionException if the font cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Font> shared(const std::string& file, int size);
 
   /**
@@ -205,7 +205,7 @@ class CENTURION_API Font final {
    * @return the size of the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_size() const noexcept;
 
   /**
@@ -215,7 +215,7 @@ class CENTURION_API Font final {
    * @return the maximum height of a character in this font.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_height() const noexcept;
 
   /**
@@ -225,7 +225,7 @@ class CENTURION_API Font final {
    * @return the offset from the baseline to the bottom of the font characters.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_descent() const noexcept;
 
   /**
@@ -235,7 +235,7 @@ class CENTURION_API Font final {
    * @return the offset from the baseline to the top of the font characters.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_ascent() const noexcept;
 
   /**
@@ -245,7 +245,7 @@ class CENTURION_API Font final {
    * @return Returns the recommended pixel height of rendered text in the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_line_skip() const noexcept;
 
   /**
@@ -254,7 +254,7 @@ class CENTURION_API Font final {
    * @return the number of available font faces in the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_font_faces() const noexcept;
 
   /**
@@ -263,7 +263,7 @@ class CENTURION_API Font final {
    * @return the TrueType font hinting of the font.
    * @since 3.1.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API FontHint get_font_hinting() const noexcept;
 
   /**
@@ -272,7 +272,7 @@ class CENTURION_API Font final {
    * @return true if the font is bold; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_bold() const noexcept;
 
   /**
@@ -281,7 +281,7 @@ class CENTURION_API Font final {
    * @return true if the font is italic; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_italic() const noexcept;
 
   /**
@@ -290,7 +290,7 @@ class CENTURION_API Font final {
    * @return true if the font is underlined; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_underlined() const noexcept;
 
   /**
@@ -299,7 +299,7 @@ class CENTURION_API Font final {
    * @return true if the font is a strikethrough font; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_strikethrough() const noexcept;
 
   /**
@@ -308,7 +308,7 @@ class CENTURION_API Font final {
    * @return true if the font is outlined; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_outlined() const noexcept;
 
   /**
@@ -317,7 +317,7 @@ class CENTURION_API Font final {
    * @return true if the font is fixed width; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API bool is_fixed_width() const noexcept;
 
   /**
@@ -326,7 +326,7 @@ class CENTURION_API Font final {
    * @return the family name of the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string get_family_name() const noexcept;
 
 #ifdef CENTURION_HAS_OPTIONAL
@@ -337,7 +337,7 @@ class CENTURION_API Font final {
    * @return the font face style name of the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::optional<std::string> get_style_name() const noexcept;
 
 #endif
@@ -349,7 +349,7 @@ class CENTURION_API Font final {
    * @return the width of the supplied string, if it was rendered using the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_string_width(const std::string& s) const noexcept;
 
   /**
@@ -359,7 +359,7 @@ class CENTURION_API Font final {
    * @return the height of the supplied string, if it was rendered using the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API int get_string_height(const std::string& s) const noexcept;
 
   /**
@@ -368,7 +368,7 @@ class CENTURION_API Font final {
    * @return a textual representation of the font instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
+  CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
 
   /**
@@ -377,20 +377,29 @@ class CENTURION_API Font final {
    * @return a pointer to the internal TTF_Font instance.
    * @since 3.0.0
    */
+  CENTURION_NODISCARD
   CENTURION_API /*implicit*/ operator TTF_Font*() const noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Font>::value);
+static_assert(std::is_final<Font>::value,
+              "Font isn't final!");
 #endif
 
-static_assert(std::is_nothrow_move_constructible<Font>::value);
-static_assert(std::is_nothrow_move_assignable<Font>::value);
+static_assert(std::is_nothrow_move_constructible<Font>::value,
+              "Font isn't nothrow move constructible!");
 
-static_assert(!std::is_copy_constructible<Font>::value);
-static_assert(!std::is_copy_assignable<Font>::value);
+static_assert(std::is_nothrow_move_assignable<Font>::value,
+              "Font isn't nothrow move assignable!");
 
-static_assert(std::is_convertible<Font, TTF_Font*>::value);
+static_assert(!std::is_copy_constructible<Font>::value,
+              "Font is copy constructible!");
+
+static_assert(!std::is_copy_assignable<Font>::value,
+              "Font is copy assignable!");
+
+static_assert(std::is_convertible<Font, TTF_Font*>::value,
+              "Font isn't convertible to TTF_Font*!");
 
 }
 

@@ -81,15 +81,22 @@ class CENTURION_API Error final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Error>::value);
+static_assert(std::is_final<Error>::value,
+              "Error isn't final!");
 #endif
 
-static_assert(std::is_nothrow_destructible<Error>::value);
-static_assert(!std::is_constructible<Error>::value);
-static_assert(!std::is_copy_constructible<Error>::value);
-static_assert(!std::is_move_constructible<Error>::value);
-static_assert(!std::is_copy_assignable<Error>::value);
-static_assert(!std::is_move_assignable<Error>::value);
+static_assert(std::is_nothrow_destructible<Error>::value,
+              "Error isn't nothrow destructible!");
+static_assert(!std::is_constructible<Error>::value,
+              "Error is constructible!");
+static_assert(!std::is_copy_constructible<Error>::value,
+              "Error is copyable!");
+static_assert(!std::is_move_constructible<Error>::value,
+              "Error is movable!");
+static_assert(!std::is_copy_assignable<Error>::value,
+              "Error is copy assignable!");
+static_assert(!std::is_move_assignable<Error>::value,
+              "Error is move assignable!");
 
 }
 

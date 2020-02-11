@@ -71,7 +71,7 @@ class CENTURION_API Centurion final {
   static constexpr int mix_flags = MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID
       | MIX_INIT_MOD | MIX_INIT_OPUS;
 
-  static inline bool wasInit = false;
+  static bool wasInit;
 
   /**
    * Initializes the core SDL2 library.

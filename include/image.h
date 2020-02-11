@@ -611,14 +611,21 @@ class CENTURION_API Image final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Image>::value);
+static_assert(std::is_final<Image>::value,
+              "Image isn't final!");
 #endif
 
-static_assert(std::is_nothrow_move_constructible<Image>::value);
-static_assert(std::is_nothrow_move_assignable<Image>::value);
+static_assert(std::is_nothrow_move_constructible<Image>::value,
+              "Image isn't nothrow move constructible!");
 
-static_assert(!std::is_nothrow_copy_constructible<Image>::value);
-static_assert(!std::is_nothrow_copy_assignable<Image>::value);
+static_assert(std::is_nothrow_move_assignable<Image>::value,
+              "Image isn't nothrow move assignable!");
+
+static_assert(!std::is_nothrow_copy_constructible<Image>::value,
+              "Image is copyable!");
+
+static_assert(!std::is_nothrow_copy_assignable<Image>::value,
+              "Image is assignable!");
 
 }
 

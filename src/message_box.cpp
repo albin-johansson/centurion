@@ -5,7 +5,8 @@
 #include "colors.h"
 #include "error.h"
 
-namespace centurion::messagebox {
+namespace centurion {
+namespace messagebox {
 
 ButtonData::ButtonData(ButtonDataHint hint, int id, std::string text)
     : buttonDataHint{hint}, id{id}, text{std::move(text)} {}
@@ -13,10 +14,6 @@ ButtonData::ButtonData(ButtonDataHint hint, int id, std::string text)
 ButtonData::operator SDL_MessageBoxButtonData() const noexcept {
   return {static_cast<uint32_t>(buttonDataHint), id, text.c_str()};
 }
-
-static_assert(std::is_final_v<ColorScheme>);
-static_assert(std::is_nothrow_default_constructible_v<ColorScheme>);
-static_assert(std::is_nothrow_destructible_v<ColorScheme>);
 
 ColorScheme::ColorScheme() noexcept {
   set_color(ColorType::Background, Colors::black);
@@ -182,4 +179,5 @@ bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
   return a != static_cast<SDL_MessageBoxFlags>(b);
 }
 
-}
+} // namespace messagebox
+} // namespace centurion

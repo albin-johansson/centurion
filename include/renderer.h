@@ -770,16 +770,24 @@ class CENTURION_API Renderer final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Renderer>::value);
+static_assert(std::is_final<Renderer>::value,
+              "Renderer isn't final!");
 #endif
 
-static_assert(std::is_nothrow_move_constructible<Renderer>::value);
-static_assert(std::is_nothrow_move_assignable<Renderer>::value);
+static_assert(std::is_nothrow_move_constructible<Renderer>::value,
+              "Renderer isn't nothrow move constructible!");
 
-static_assert(!std::is_nothrow_copy_constructible<Renderer>::value);
-static_assert(!std::is_nothrow_copy_assignable<Renderer>::value);
+static_assert(std::is_nothrow_move_assignable<Renderer>::value,
+              "Renderer isn't nothrow move assignable!");
 
-static_assert(std::is_convertible<Renderer, SDL_Renderer*>::value);
+static_assert(!std::is_nothrow_copy_constructible<Renderer>::value,
+              "Renderer is copyable!");
+
+static_assert(!std::is_nothrow_copy_assignable<Renderer>::value,
+              "Renderer is copy assignable!");
+
+static_assert(std::is_convertible<Renderer, SDL_Renderer*>::value,
+              "Renderer isn't convertible to SDL_Renderer*!");
 
 }
 

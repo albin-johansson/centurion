@@ -388,8 +388,10 @@ constexpr bool check_point_type() noexcept {
       ;
 }
 
-static_assert(check_point_type<Point, SDL_Point>());
-static_assert(check_point_type<FPoint, SDL_FPoint>());
+static_assert(check_point_type<Point, SDL_Point>(),
+              "Point failed to point type check!");
+static_assert(check_point_type<FPoint, SDL_FPoint>(),
+              "FPoint failed to point type check!");
 
 }
 

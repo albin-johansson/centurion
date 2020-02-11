@@ -17,6 +17,8 @@ TEST_CASE("PowerState enum", "[Power]") {
   CHECK(SDL_POWERSTATE_CHARGED == PowerState::Charged);
 }
 
+#ifdef CENTURION_HAS_OPTIONAL
+
 TEST_CASE("PowerState::get_battery_percentage", "[Power]") {
   CHECK_NOTHROW(Power::get_battery_percentage());
 
@@ -39,7 +41,9 @@ TEST_CASE("PowerState::get_battery_minutes_left", "[Power]") {
   }
 }
 
-TEST_CASE("PowerState::get_power_state", "[Power]") {
+#endif
+
+TEST_CASE("PowerState::get_state", "[Power]") {
   CHECK_NOTHROW(Power::get_state());
 
   const auto state = Power::get_state();

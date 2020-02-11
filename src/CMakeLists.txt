@@ -82,7 +82,7 @@ target_compile_options(${CENTURION_LIB} PRIVATE
 
 set_target_properties(${CENTURION_LIB} PROPERTIES
         VERSION 3.0.0
-        CXX_STANDARD 17
+        CXX_STANDARD 14
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
         OUTPUT_NAME "Centurion")

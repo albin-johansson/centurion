@@ -217,6 +217,8 @@ TEST_CASE("Renderer::get_translation_viewport", "[Renderer]") {
   CHECK(tviewport.h == 0);
 }
 
+#ifdef CENTURION_HAS_OPTIONAL
+
 TEST_CASE("Renderer clipping", "[Renderer]") {
   Window window;
   Renderer renderer{window};
@@ -241,6 +243,8 @@ TEST_CASE("Renderer clipping", "[Renderer]") {
   CHECK(clip.w == rclip.w);
   CHECK(clip.h == rclip.h);
 }
+
+#endif
 
 TEST_CASE("Renderer::set_target", "[Renderer]") {
   Window window;

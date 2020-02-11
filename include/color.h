@@ -417,19 +417,30 @@ inline bool operator!=(const SDL_MessageBoxColor& msgColor, const Color& color) 
 }
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Color>::value);
+static_assert(std::is_final<Color>::value,
+              "Color isn't final!");
 #endif
 
-static_assert(std::is_convertible<Color, SDL_Color>::value);
-static_assert(std::is_convertible<Color, SDL_MessageBoxColor>::value);
+static_assert(std::is_convertible<Color, SDL_Color>::value,
+              "Color isn't convertible to SDL_Color!");
 
-static_assert(std::is_default_constructible<Color>::value);
+static_assert(std::is_convertible<Color, SDL_MessageBoxColor>::value,
+              "Color isn't convertible to SDL_MessageBoxColor!");
 
-static_assert(std::is_nothrow_copy_constructible<Color>::value);
-static_assert(std::is_nothrow_copy_assignable<Color>::value);
+static_assert(std::is_default_constructible<Color>::value,
+              "Color isn't default constructible!");
 
-static_assert(std::is_nothrow_move_constructible<Color>::value);
-static_assert(std::is_nothrow_move_assignable<Color>::value);
+static_assert(std::is_nothrow_copy_constructible<Color>::value,
+              "Color isn't copy constructible!");
+
+static_assert(std::is_nothrow_copy_assignable<Color>::value,
+              "Color isn't nothrow copy assignable!");
+
+static_assert(std::is_nothrow_move_constructible<Color>::value,
+              "Color isn't nothrow move constructible!");
+
+static_assert(std::is_nothrow_move_assignable<Color>::value,
+              "Color isn't nothrow move assignable!");
 
 }
 

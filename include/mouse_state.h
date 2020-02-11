@@ -238,16 +238,24 @@ class CENTURION_API MouseState final : public IWindowListener {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<MouseState>::value);
+static_assert(std::is_final<MouseState>::value,
+              "MouseState isn't final!");
 #endif
 
-static_assert(std::is_nothrow_move_constructible<MouseState>::value);
-static_assert(std::is_nothrow_move_assignable<MouseState>::value);
+static_assert(std::is_nothrow_move_constructible<MouseState>::value,
+              "MouseState isn't nothrow move constructible!");
 
-static_assert(std::is_nothrow_copy_constructible<MouseState>::value);
-static_assert(std::is_nothrow_copy_assignable<MouseState>::value);
+static_assert(std::is_nothrow_move_assignable<MouseState>::value,
+              "MouseState isn't nothrow move assignable!");
 
-static_assert(std::is_base_of<IWindowListener, MouseState>::value);
+static_assert(std::is_nothrow_copy_constructible<MouseState>::value,
+              "MouseState isn't nothrow copy constructible!");
+
+static_assert(std::is_nothrow_copy_assignable<MouseState>::value,
+              "MouseState isn't nothrow copy assignable!");
+
+static_assert(std::is_base_of<IWindowListener, MouseState>::value,
+              "MouseState isn't a subclass of IWindowListener!");
 
 }
 

@@ -598,18 +598,30 @@ class CENTURION_API Window final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Window>::value);
+static_assert(std::is_final<Window>::value,
+              "Window isn't final!");
 #endif
 
-static_assert(std::is_nothrow_move_assignable<Window>::value);
-static_assert(std::is_nothrow_move_constructible<Window>::value);
+static_assert(std::is_nothrow_move_assignable<Window>::value,
+              "Window isn't nothrow move assignable!");
 
-static_assert(!std::is_copy_assignable<Window>::value);
-static_assert(!std::is_copy_constructible<Window>::value);
+static_assert(std::is_nothrow_move_constructible<Window>::value,
+              "Window isn't nothrow move constructible!");
 
-static_assert(std::is_convertible<Window, SDL_Window*>::value);
-static_assert(std::is_default_constructible<Window>::value);
-static_assert(std::is_nothrow_destructible<Window>::value);
+static_assert(!std::is_copy_assignable<Window>::value,
+              "Window is copy assignable!");
+
+static_assert(!std::is_copy_constructible<Window>::value,
+              "Window is copy constructible!");
+
+static_assert(std::is_convertible<Window, SDL_Window*>::value,
+              "Window isn't convertible to SDL_Window*!");
+
+static_assert(std::is_default_constructible<Window>::value,
+              "Window isn't default constructible!");
+
+static_assert(std::is_nothrow_destructible<Window>::value,
+              "Window isn't nothrow destructible!");
 
 }
 

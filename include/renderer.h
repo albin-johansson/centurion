@@ -482,6 +482,8 @@ class CENTURION_API Renderer final {
    */
   CENTURION_API void set_color(const Color& color) const noexcept;
 
+#ifdef CENTURION_HAS_OPTIONAL
+
   /**
    * Sets the clipping area rectangle. Clipping is disabled by default.
    *
@@ -489,6 +491,8 @@ class CENTURION_API Renderer final {
    * @since 3.0.0
    */
   CENTURION_API void set_clip(std::optional<SDL_Rect> area) noexcept;
+
+#endif
 
   /**
    * Sets the viewport that will be used by the renderer.
@@ -591,6 +595,8 @@ class CENTURION_API Renderer final {
   [[nodiscard]]
   CENTURION_API float get_y_scale() const noexcept;
 
+#ifdef CENTURION_HAS_OPTIONAL
+
   /**
    * Returns the current clipping rectangle, if there is one active.
    *
@@ -599,6 +605,8 @@ class CENTURION_API Renderer final {
    */
   [[nodiscard]]
   CENTURION_API std::optional<SDL_Rect> get_clip() const noexcept;
+
+#endif
 
   /**
    * Returns information about the renderer.

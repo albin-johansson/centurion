@@ -258,6 +258,8 @@ void Renderer::set_color(const Color& color) const noexcept {
                          color.get_alpha());
 }
 
+#ifdef CENTURION_HAS_OPTIONAL
+
 void Renderer::set_clip(std::optional<SDL_Rect> area) noexcept {
   if (area) {
     SDL_RenderSetClipRect(renderer, &*area);
@@ -265,6 +267,8 @@ void Renderer::set_clip(std::optional<SDL_Rect> area) noexcept {
     SDL_RenderSetClipRect(renderer, nullptr);
   }
 }
+
+#endif
 
 void Renderer::set_viewport(const SDL_Rect& viewport) noexcept {
   SDL_RenderSetViewport(renderer, &viewport);
@@ -324,6 +328,8 @@ bool Renderer::is_clipping_enabled() const noexcept {
   return SDL_RenderIsClipEnabled(renderer);
 }
 
+#ifdef CENTURION_HAS_OPTIONAL
+
 std::optional<SDL_Rect> Renderer::get_clip() const noexcept {
   SDL_Rect rect{0, 0, 0, 0};
   SDL_RenderGetClipRect(renderer, &rect);
@@ -333,6 +339,8 @@ std::optional<SDL_Rect> Renderer::get_clip() const noexcept {
     return rect;
   }
 }
+
+#endif
 
 SDL_RendererInfo Renderer::get_info() const noexcept {
   SDL_RendererInfo info;

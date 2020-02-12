@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,19 +25,21 @@
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 
-#include "centurion_api.h"
+#include <SDL.h>
+
 #include <cstdint>
-#include <utility>
 #include <string>
 #include <type_traits>
-#include <SDL.h>
+#include <utility>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
 /**
- * The Color class represents an RGBA color with 8-bit components. Instances of the Color class
- * can easily be created and converted from/to SDL colors, such as SDL_Color and
- * SDL_MessageBoxColor.
+ * The Color class represents an RGBA color with 8-bit components. Instances of
+ * the Color class can easily be created and converted from/to SDL colors, such
+ * as SDL_Color and SDL_MessageBoxColor.
  *
  * @since 3.0.0
  */
@@ -69,8 +71,8 @@ class CENTURION_API Color final {
    * @param r the red component value, in the range [0, 255].
    * @param g the green component value, in the range [0, 255].
    * @param b the blue component value, in the range [0, 255].
-   * @param a the alpha component value, in the rage [0, 255]. By default, the alpha value is set
-   * to 255.
+   * @param a the alpha component value, in the rage [0, 255]. By default, the
+   * alpha value is set to 255.
    * @since 3.0.0
    */
   constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF) noexcept
@@ -109,8 +111,9 @@ class CENTURION_API Color final {
   CENTURION_API explicit Color(SDL_Color&& color) noexcept;
 
   /**
-   * Creates a color that is a copy of the supplied SDL_MessageBoxColor. Message box colors
-   * don't have an alpha component so the created color will feature an alpha value of 255.
+   * Creates a color that is a copy of the supplied SDL_MessageBoxColor. Message
+   * box colors don't have an alpha component so the created color will feature
+   * an alpha value of 255.
    *
    * @param color the message box color that will be copied.
    * @since 3.0.0
@@ -118,8 +121,9 @@ class CENTURION_API Color final {
   CENTURION_API explicit Color(const SDL_MessageBoxColor& color) noexcept;
 
   /**
-   * Creates a color by moving the supplied SDL_MessageBoxColor. Message box colors don't have an
-   * alpha component so the created color will feature an alpha value of 255.
+   * Creates a color by moving the supplied SDL_MessageBoxColor. Message box
+   * colors don't have an alpha component so the created color will feature an
+   * alpha value of 255.
    *
    * @param color the message box color that will be copied.
    * @since 3.0.0
@@ -181,7 +185,8 @@ class CENTURION_API Color final {
    *
    * @param color the lhs color.
    * @param other the rhs color.
-   * @return true if the colors feature the same color component values; false otherwise.
+   * @return true if the colors feature the same color component values; false
+   * otherwise.
    * @since 3.0.0
    */
   friend bool operator==(const Color& color, const Color& other) noexcept;
@@ -191,40 +196,46 @@ class CENTURION_API Color final {
    *
    * @param color the lhs color.
    * @param sdlColor the rhs color.
-   * @return true if the colors feature the same color component values; false otherwise.
+   * @return true if the colors feature the same color component values; false
+   * otherwise.
    * @since 3.0.0
    */
-  friend bool operator==(const Color& color, const SDL_Color& sdlColor) noexcept;
+  friend bool operator==(const Color& color,
+                         const SDL_Color& sdlColor) noexcept;
 
   /**
    * Indicates whether or not the two colors are considered to be equal.
    *
    * @param sdlColor the lhs color.
    * @param other the rhs color.
-   * @return true if the colors feature the same color component values; false otherwise.
+   * @return true if the colors feature the same color component values; false
+   * otherwise.
    * @since 3.0.0
    */
-  friend bool operator==(const SDL_Color& sdlColor, const Color& color) noexcept;
+  friend bool operator==(const SDL_Color& sdlColor,
+                         const Color& color) noexcept;
 
   /**
-   * Indicates whether or not the two colors are considered to be equal. Note! The alpha
-   * components are not taken into account.
+   * Indicates whether or not the two colors are considered to be equal. Note!
+   * The alpha components are not taken into account.
    *
    * @param color the lhs color.
    * @param msgColor the rhs color.
-   * @return true if the colors feature the same color component values; false otherwise.
+   * @return true if the colors feature the same color component values; false
+   * otherwise.
    * @since 3.0.0
    */
   friend bool operator==(const Color& color,
                          const SDL_MessageBoxColor& msgColor) noexcept;
 
   /**
-   * Indicates whether or not the two colors are considered to be equal. Note! The alpha
-   * components are not taken into account.
+   * Indicates whether or not the two colors are considered to be equal. Note!
+   * The alpha components are not taken into account.
    *
    * @param msgColor the lhs color.
    * @param color the rhs color.
-   * @return true if the colors feature the same color component values; false otherwise.
+   * @return true if the colors feature the same color component values; false
+   * otherwise.
    * @since 3.0.0
    */
   friend bool operator==(const SDL_MessageBoxColor& msgColor,
@@ -235,7 +246,8 @@ class CENTURION_API Color final {
    *
    * @param color the lhs color.
    * @param other the rhs color.
-   * @return true if the colors don't feature the same color components; false otherwise.
+   * @return true if the colors don't feature the same color components; false
+   * otherwise.
    * @since 3.0.0
    */
   friend bool operator!=(const Color& color, const Color& other) noexcept;
@@ -245,40 +257,46 @@ class CENTURION_API Color final {
    *
    * @param color the lhs color.
    * @param sdlColor the rhs color.
-   * @return true if the colors don't feature the same color components; false otherwise.
+   * @return true if the colors don't feature the same color components; false
+   * otherwise.
    * @since 3.0.0
    */
-  friend bool operator!=(const Color& color, const SDL_Color& sdlColor) noexcept;
+  friend bool operator!=(const Color& color,
+                         const SDL_Color& sdlColor) noexcept;
 
   /**
    * Indicates whether or not two colors aren't considered to be equal.
    *
    * @param sdlColor the lhs color.
    * @param other the rhs color.
-   * @return true if the colors don't feature the same color components; false otherwise.
+   * @return true if the colors don't feature the same color components; false
+   * otherwise.
    * @since 3.0.0
    */
-  friend bool operator!=(const SDL_Color& sdlColor, const Color& color) noexcept;
+  friend bool operator!=(const SDL_Color& sdlColor,
+                         const Color& color) noexcept;
 
   /**
-   * Indicates whether or not two colors aren't considered to be equal. Note! The alpha
-   * components of the colors are not taken into account.
+   * Indicates whether or not two colors aren't considered to be equal. Note!
+   * The alpha components of the colors are not taken into account.
    *
    * @param color the lhs color.
    * @param msgColor the rhs color.
-   * @return true if the colors don't feature the same color components; false otherwise.
+   * @return true if the colors don't feature the same color components; false
+   * otherwise.
    * @since 3.0.0
    */
   friend bool operator!=(const Color& color,
                          const SDL_MessageBoxColor& msgColor) noexcept;
 
   /**
-   * Indicates whether or not two colors aren't considered to be equal. Note! The alpha
-   * components of the colors are not taken into account.
+   * Indicates whether or not two colors aren't considered to be equal. Note!
+   * The alpha components of the colors are not taken into account.
    *
    * @param msgColor the lhs color.
    * @param color the rhs color.
-   * @return true if the colors don't feature the same color components; false otherwise.
+   * @return true if the colors don't feature the same color components; false
+   * otherwise.
    * @since 3.0.0
    */
   friend bool operator!=(const SDL_MessageBoxColor& msgColor,
@@ -291,9 +309,7 @@ class CENTURION_API Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_red() const noexcept {
-    return red;
-  }
+  uint8_t get_red() const noexcept { return red; }
 
   /**
    * Returns the value of the green component.
@@ -302,9 +318,7 @@ class CENTURION_API Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_green() const noexcept {
-    return green;
-  }
+  uint8_t get_green() const noexcept { return green; }
 
   /**
    * Returns the value of the blue component.
@@ -313,9 +327,7 @@ class CENTURION_API Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_blue() const noexcept {
-    return blue;
-  }
+  uint8_t get_blue() const noexcept { return blue; }
 
   /**
    * Returns the value of the alpha component.
@@ -324,9 +336,7 @@ class CENTURION_API Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_alpha() const noexcept {
-    return alpha;
-  }
+  uint8_t get_alpha() const noexcept { return alpha; }
 
   /**
    * Returns a textual representation of the color.
@@ -349,8 +359,8 @@ class CENTURION_API Color final {
   }
 
   /**
-   * Implicitly converts the the color into an SDL_MessageBoxColor. Note that message box colors
-   * don't feature an alpha value!
+   * Implicitly converts the the color into an SDL_MessageBoxColor. Note that
+   * message box colors don't feature an alpha value!
    *
    * @return an SDL_MessageBoxColor that this the color.
    * @since 3.0.0
@@ -369,30 +379,27 @@ class CENTURION_API Color final {
 using Colour = Color;
 
 inline bool operator==(const Color& color, const Color& other) noexcept {
-  return color.red == other.red
-      && color.green == other.green
-      && color.blue == other.blue
-      && color.alpha == other.alpha;
+  return color.red == other.red && color.green == other.green &&
+         color.blue == other.blue && color.alpha == other.alpha;
 }
 
 inline bool operator==(const Color& color, const SDL_Color& sdlColor) noexcept {
-  return color.red == sdlColor.r
-      && color.green == sdlColor.g
-      && color.blue == sdlColor.b
-      && color.alpha == sdlColor.a;
+  return color.red == sdlColor.r && color.green == sdlColor.g &&
+         color.blue == sdlColor.b && color.alpha == sdlColor.a;
 }
 
 inline bool operator==(const SDL_Color& sdlColor, const Color& color) noexcept {
   return color == sdlColor;
 }
 
-inline bool operator==(const Color& color, const SDL_MessageBoxColor& msgColor) noexcept {
-  return color.red == msgColor.r
-      && color.green == msgColor.g
-      && color.blue == msgColor.b;
+inline bool operator==(const Color& color,
+                       const SDL_MessageBoxColor& msgColor) noexcept {
+  return color.red == msgColor.r && color.green == msgColor.g &&
+         color.blue == msgColor.b;
 }
 
-inline bool operator==(const SDL_MessageBoxColor& msgColor, const Color& color) noexcept {
+inline bool operator==(const SDL_MessageBoxColor& msgColor,
+                       const Color& color) noexcept {
   return color == msgColor;
 }
 
@@ -408,17 +415,18 @@ inline bool operator!=(const SDL_Color& sdlColor, const Color& color) noexcept {
   return !(sdlColor == color);
 }
 
-inline bool operator!=(const Color& color, const SDL_MessageBoxColor& msgColor) noexcept {
+inline bool operator!=(const Color& color,
+                       const SDL_MessageBoxColor& msgColor) noexcept {
   return !(color == msgColor);
 }
 
-inline bool operator!=(const SDL_MessageBoxColor& msgColor, const Color& color) noexcept {
+inline bool operator!=(const SDL_MessageBoxColor& msgColor,
+                       const Color& color) noexcept {
   return !(msgColor == color);
 }
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Color>::value,
-              "Color isn't final!");
+static_assert(std::is_final<Color>::value, "Color isn't final!");
 #endif
 
 static_assert(std::is_convertible<Color, SDL_Color>::value,
@@ -442,10 +450,10 @@ static_assert(std::is_nothrow_move_constructible<Color>::value,
 static_assert(std::is_nothrow_move_assignable<Color>::value,
               "Color isn't nothrow move assignable!");
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "color.cpp"
+#include "color.cpp"
 #endif
 
-#endif // CENTURION_COLOR_HEADER
+#endif  // CENTURION_COLOR_HEADER

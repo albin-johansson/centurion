@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,15 +25,18 @@
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
-#include "centurion_api.h"
+#include <SDL.h>
+
 #include <string>
 #include <type_traits>
-#include <SDL.h>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
 /**
- * The Point class is a simple representation of a point in the plane, with integer components.
+ * The Point class is a simple representation of a point in the plane, with
+ * integer components.
  *
  * @since 3.0.0
  */
@@ -117,8 +120,8 @@ class CENTURION_API Point final {
   CENTURION_API int get_y() const noexcept;
 
   /**
-   * Calculates and returns the distance between two points. The returned distance is always
-   * positive. The order of the operands doesn't matter.
+   * Calculates and returns the distance between two points. The returned
+   * distance is always positive. The order of the operands doesn't matter.
    *
    * @param a the first point.
    * @param b the second point.
@@ -148,8 +151,8 @@ class CENTURION_API Point final {
 };
 
 /**
- * The FPoint class is a simple representation of a point in the plane, with floating-point
- * components.
+ * The FPoint class is a simple representation of a point in the plane, with
+ * floating-point components.
  *
  * @since 3.0.0
  */
@@ -233,8 +236,8 @@ class CENTURION_API FPoint final {
   CENTURION_API float get_y() const noexcept;
 
   /**
-   * Calculates and returns the distance between two points. The returned distance is always
-   * positive. The order of the operands doesn't matter.
+   * Calculates and returns the distance between two points. The returned
+   * distance is always positive. The order of the operands doesn't matter.
    *
    * @param a the first point.
    * @param b the second point.
@@ -242,7 +245,8 @@ class CENTURION_API FPoint final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static float distance(const FPoint& a, const FPoint& b) noexcept;
+  CENTURION_API static float distance(const FPoint& a,
+                                      const FPoint& b) noexcept;
 
   /**
    * Returns a textual representation of the Point instance.
@@ -263,21 +267,20 @@ class CENTURION_API FPoint final {
   CENTURION_API /*implicit*/ operator SDL_FPoint() const noexcept;
 
   /**
-   * Indicates whether or not two points are considered to be equal. The points are considered
-   * tobe equal iff the absolute difference of the components of the points are less than the
-   * specified epsilon value.
+   * Indicates whether or not two points are considered to be equal. The points
+   * are considered tobe equal iff the absolute difference of the components of
+   * the points are less than the specified epsilon value.
    *
    * @param lhs the left-hand side point.
    * @param rhs the right-hand side point.
-   * @param epsilon the epsilon value that will be used. Denotes the exclusive upper bound for
-   * the maximum allowed difference of the components of the points. A negative value will be
-   * converted to zero.
+   * @param epsilon the epsilon value that will be used. Denotes the exclusive
+   * upper bound for the maximum allowed difference of the components of the
+   * points. A negative value will be converted to zero.
    * @return true if the points are considered to be equal; false otherwise.
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static bool equals(const FPoint& lhs,
-                                   const FPoint& rhs,
+  CENTURION_API static bool equals(const FPoint& lhs, const FPoint& rhs,
                                    float epsilon = 0.0001f) noexcept;
 };
 
@@ -308,7 +311,8 @@ CENTURION_API bool operator!=(const Point& lhs, const Point& rhs) noexcept;
  *
  * @param lhs the left-hand side point.
  * @param rhs the right-hand side point.
- * @return a point that has the sum of the supplied points coordinates as its coordinates.
+ * @return a point that has the sum of the supplied points coordinates as its
+ * coordinates.
  * @since 3.1.0
  */
 CENTURION_NODISCARD
@@ -319,15 +323,17 @@ CENTURION_API Point operator+(const Point& lhs, const Point& rhs) noexcept;
  *
  * @param lhs the left-hand side point.
  * @param rhs the right-hand side point.
- * @return a point that has the difference of the supplied points coordinates as its coordinates.
+ * @return a point that has the difference of the supplied points coordinates as
+ * its coordinates.
  * @since 3.1.0
  */
 CENTURION_NODISCARD
 CENTURION_API Point operator-(const Point& lhs, const Point& rhs) noexcept;
 
 /**
- * Indicates whether or not two points are the same. The absolute difference of the components of
- * the points must be less than 0.0001, in order for the points to be considered equal.
+ * Indicates whether or not two points are the same. The absolute difference of
+ * the components of the points must be less than 0.0001, in order for the
+ * points to be considered equal.
  *
  * @param lhs the left-hand side point.
  * @param rhs the right-hand side point.
@@ -353,7 +359,8 @@ CENTURION_API bool operator!=(const FPoint& lhs, const FPoint& rhs) noexcept;
  *
  * @param lhs the left-hand side point.
  * @param rhs the right-hand side point.
- * @return a point that has the sum of the supplied points coordinates as its coordinates.
+ * @return a point that has the sum of the supplied points coordinates as its
+ * coordinates.
  * @since 3.1.0
  */
 CENTURION_NODISCARD
@@ -364,7 +371,8 @@ CENTURION_API FPoint operator+(const FPoint& lhs, const FPoint& rhs) noexcept;
  *
  * @param lhs the left-hand side point.
  * @param rhs the right-hand side point.
- * @return a point that has the difference of the supplied points coordinates as its coordinates.
+ * @return a point that has the difference of the supplied points coordinates as
+ * its coordinates.
  * @since 3.1.0
  */
 CENTURION_NODISCARD
@@ -372,18 +380,18 @@ CENTURION_API FPoint operator-(const FPoint& lhs, const FPoint& rhs) noexcept;
 
 namespace {
 
-template<typename CTNPoint, typename SDLPoint>
+template <typename CTNPoint, typename SDLPoint>
 constexpr bool check_point_type() noexcept {
-  return std::is_convertible<CTNPoint, SDLPoint>::value
-      && sizeof(CTNPoint) == sizeof(SDLPoint)
-      && std::is_nothrow_move_assignable<CTNPoint>::value
-      && std::is_nothrow_move_constructible<CTNPoint>::value
-      && std::is_nothrow_copy_assignable<CTNPoint>::value
-      && std::is_nothrow_copy_constructible<CTNPoint>::value
-      && std::is_nothrow_default_constructible<CTNPoint>::value
-      && std::is_nothrow_destructible<CTNPoint>::value
+  return std::is_convertible<CTNPoint, SDLPoint>::value &&
+         sizeof(CTNPoint) == sizeof(SDLPoint) &&
+         std::is_nothrow_move_assignable<CTNPoint>::value &&
+         std::is_nothrow_move_constructible<CTNPoint>::value &&
+         std::is_nothrow_copy_assignable<CTNPoint>::value &&
+         std::is_nothrow_copy_constructible<CTNPoint>::value &&
+         std::is_nothrow_default_constructible<CTNPoint>::value &&
+         std::is_nothrow_destructible<CTNPoint>::value
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-      && std::is_final<CTNPoint>::value
+         && std::is_final<CTNPoint>::value
 #endif
       ;
 }
@@ -393,12 +401,12 @@ static_assert(check_point_type<Point, SDL_Point>(),
 static_assert(check_point_type<FPoint, SDL_FPoint>(),
               "FPoint failed to point type check!");
 
-}
+}  // namespace
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "point.cpp"
+#include "point.cpp"
 #endif
 
-#endif // CENTURION_POINT_HEADER
+#endif  // CENTURION_POINT_HEADER

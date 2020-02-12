@@ -1,4 +1,5 @@
 #include "centurion.h"
+
 #include "centurion_exception.h"
 
 namespace centurion {
@@ -39,18 +40,15 @@ void Centurion::init_mix() {
     throw CenturionException{"Failed to init SDL2_mixer! " + Error::msg()};
   }
 
-  if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096) == -1) {
+  if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+                    MIX_DEFAULT_CHANNELS, 4096) == -1) {
     throw CenturionException{"Failed to open audio! " + Error::msg()};
   }
 }
 
-Centurion::Centurion() {
-  init();
-}
+Centurion::Centurion() { init(); }
 
-Centurion::~Centurion() noexcept {
-  close();
-}
+Centurion::~Centurion() noexcept { close(); }
 
 void Centurion::init() {
   if (!wasInit) {
@@ -77,4 +75,4 @@ void Centurion::close() noexcept {
   }
 }
 
-}
+}  // namespace centurion

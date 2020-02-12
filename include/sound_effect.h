@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -27,12 +27,14 @@
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
 
-#include "centurion_api.h"
-#include <cstdint>
-#include <string>
-#include <memory>
-#include <type_traits>
 #include <SDL_mixer.h>
+
+#include <cstdint>
+#include <memory>
+#include <string>
+#include <type_traits>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -58,8 +60,8 @@ class CENTURION_API SoundEffect final {
 
  public:
   /**
-   * A constant that can be used as the argument to the SoundEffect::Loop method, in order to make
-   * the call more readable.
+   * A constant that can be used as the argument to the SoundEffect::Loop
+   * method, in order to make the call more readable.
    *
    * @since 3.0.0
    */
@@ -112,7 +114,8 @@ class CENTURION_API SoundEffect final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<SoundEffect> unique(const std::string& file);
+  CENTURION_API static std::unique_ptr<SoundEffect> unique(
+      const std::string& file);
 
   /**
    * Creates and returns a shared pointer to a SoundEffect instance.
@@ -123,13 +126,14 @@ class CENTURION_API SoundEffect final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<SoundEffect> shared(const std::string& file);
+  CENTURION_API static std::shared_ptr<SoundEffect> shared(
+      const std::string& file);
 
   /**
    * Plays the sound effect.
    *
-   * @param nLoops the amount of loops. A negative value indicates that the sound effect should
-   * be looped forever.
+   * @param nLoops the amount of loops. A negative value indicates that the
+   * sound effect should be looped forever.
    * @since 3.0.0
    */
   CENTURION_API void play(int nLoops = 0) noexcept;
@@ -142,8 +146,9 @@ class CENTURION_API SoundEffect final {
   CENTURION_API void stop() noexcept;
 
   /**
-   * Fades in the sound effect. This method has no effect if the supplied duration isn't greater
-   * than zero or if the sound effect is currently playing.
+   * Fades in the sound effect. This method has no effect if the supplied
+   * duration isn't greater than zero or if the sound effect is currently
+   * playing.
    *
    * @param ms the duration to fade in, in milliseconds.
    * @since 3.0.0
@@ -151,8 +156,9 @@ class CENTURION_API SoundEffect final {
   CENTURION_API void fade_in(int ms) noexcept;
 
   /**
-   * Fades out the sound effect. This method has no effect if the supplied duration isn't greater
-   * than zero or if the sound effect isn't currently playing.
+   * Fades out the sound effect. This method has no effect if the supplied
+   * duration isn't greater than zero or if the sound effect isn't currently
+   * playing.
    *
    * @param ms the duration to fade in, in milliseconds.
    * @since 3.0.0
@@ -160,8 +166,8 @@ class CENTURION_API SoundEffect final {
   CENTURION_API void fade_out(int ms) noexcept;
 
   /**
-   * Sets the volume of the sound effect. This method will adjust input values outside
-   * the legal range to the closest legal value.
+   * Sets the volume of the sound effect. This method will adjust input values
+   * outside the legal range to the closest legal value.
    *
    * @param volume the volume of the sound effect, in the range [0, maxVolume].
    * @since 3.0.0
@@ -169,7 +175,8 @@ class CENTURION_API SoundEffect final {
   CENTURION_API void set_volume(int volume) noexcept;
 
   /**
-   * Returns the current volume of the sound effect. By default, this property is set to 128.
+   * Returns the current volume of the sound effect. By default, this property
+   * is set to 128.
    *
    * @return the current volume of the sound effect.
    * @since 3.0.0
@@ -210,14 +217,11 @@ class CENTURION_API SoundEffect final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  static constexpr int get_max_volume() noexcept {
-    return MIX_MAX_VOLUME;
-  }
+  static constexpr int get_max_volume() noexcept { return MIX_MAX_VOLUME; }
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<SoundEffect>::value,
-              "SoundEffect isn't final!");
+static_assert(std::is_final<SoundEffect>::value, "SoundEffect isn't final!");
 #endif
 
 static_assert(std::is_nothrow_move_constructible<SoundEffect>::value,
@@ -235,11 +239,11 @@ static_assert(!std::is_copy_assignable<SoundEffect>::value,
 static_assert(std::is_convertible<SoundEffect, Mix_Chunk*>::value,
               "SoundEffect isn't convertible to Mix_Chunk*!");
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "sound_effect.cpp"
+#include "sound_effect.cpp"
 #endif
 
-#endif // CENTURION_SOUND_EFFECT_HEADER
-#endif // CENTURION_NOAUDIO
+#endif  // CENTURION_SOUND_EFFECT_HEADER
+#endif  // CENTURION_NOAUDIO

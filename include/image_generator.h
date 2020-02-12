@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,11 +25,12 @@
 #ifndef CENTURION_IMAGE_GENERATOR_HEADER
 #define CENTURION_IMAGE_GENERATOR_HEADER
 
-#include "centurion_api.h"
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <type_traits>
-#include <cstdint>
+
+#include "centurion_api.h"
 #include "image.h"
 
 namespace centurion {
@@ -37,9 +38,10 @@ namespace centurion {
 class Renderer;
 
 /**
- * The ImageGenerator class is a utility class designed to make it easier to create instances of
- * the Image class without passing a renderer instance around. This can make it easier to keep
- * renderer instances out of logic-related code.
+ * The ImageGenerator class is a utility class designed to make it easier to
+ * create instances of the Image class without passing a renderer instance
+ * around. This can make it easier to keep renderer instances out of
+ * logic-related code.
  *
  * @see Renderer
  * @see Image
@@ -52,11 +54,13 @@ class CENTURION_API ImageGenerator final {
 
  public:
   /**
-   * @param renderer a shared pointer to the associated renderer instance, may not be null.
+   * @param renderer a shared pointer to the associated renderer instance, may
+   * not be null.
    * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
-  CENTURION_API explicit ImageGenerator(const std::shared_ptr<Renderer>& renderer);
+  CENTURION_API explicit ImageGenerator(
+      const std::shared_ptr<Renderer>& renderer);
 
   CENTURION_API ~ImageGenerator() noexcept;
 
@@ -69,10 +73,12 @@ class CENTURION_API ImageGenerator final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::unique_ptr<Image> unique_img(const std::string& file) const;
+  CENTURION_API std::unique_ptr<Image> unique_img(
+      const std::string& file) const;
 
   /**
-   * Creates and returns a unique pointer to an image with the specified characteristics.
+   * Creates and returns a unique pointer to an image with the specified
+   * characteristics.
    *
    * @param format the pixel format of the created image.
    * @param access the texture access of the image.
@@ -80,19 +86,19 @@ class CENTURION_API ImageGenerator final {
    * @param height the height of the created image.
    * @return a unique pointer to an image.
    * @throws CenturionException if the image cannot be created.
-   * @deprecated use the more type-safe version instead, that takes a PixelFormat value instead
-   * of a uint32_t.
+   * @deprecated use the more type-safe version instead, that takes a
+   * PixelFormat value instead of a uint32_t.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_DEPRECATED
   CENTURION_API std::unique_ptr<Image> unique_img(uint32_t format,
                                                   TextureAccess access,
-                                                  int width,
-                                                  int height) const;
+                                                  int width, int height) const;
 
   /**
-   * Creates and returns a unique pointer to an image with the specified characteristics.
+   * Creates and returns a unique pointer to an image with the specified
+   * characteristics.
    *
    * @param format the pixel format of the image.
    * @param access the texture access of the image.
@@ -105,8 +111,7 @@ class CENTURION_API ImageGenerator final {
   CENTURION_NODISCARD
   CENTURION_API std::unique_ptr<Image> unique_img(PixelFormat format,
                                                   TextureAccess access,
-                                                  int width,
-                                                  int height) const;
+                                                  int width, int height) const;
 
   /**
    * Creates and returns a shared pointer to an image.
@@ -117,10 +122,12 @@ class CENTURION_API ImageGenerator final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::shared_ptr<Image> shared_img(const std::string& file) const;
+  CENTURION_API std::shared_ptr<Image> shared_img(
+      const std::string& file) const;
 
   /**
-   * Creates and returns a shared pointer to an image with the specified characteristics.
+   * Creates and returns a shared pointer to an image with the specified
+   * characteristics.
    *
    * @param format the pixel format of the created image.
    * @param access the texture access of the image.
@@ -128,19 +135,19 @@ class CENTURION_API ImageGenerator final {
    * @param height the height of the created image.
    * @return a shared pointer to an image.
    * @throws CenturionException if the image cannot be created.
-   * @deprecated use the more type-safe version instead, that takes a PixelFormat value instead
-   * of a uint32_t.
+   * @deprecated use the more type-safe version instead, that takes a
+   * PixelFormat value instead of a uint32_t.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_DEPRECATED
   CENTURION_API std::shared_ptr<Image> shared_img(uint32_t format,
                                                   TextureAccess access,
-                                                  int width,
-                                                  int height) const;
+                                                  int width, int height) const;
 
   /**
-   * Creates and returns a shared pointer to an image with the specified characteristics.
+   * Creates and returns a shared pointer to an image with the specified
+   * characteristics.
    *
    * @param format the pixel format of the image.
    * @param access the texture access of the image.
@@ -153,9 +160,7 @@ class CENTURION_API ImageGenerator final {
   CENTURION_NODISCARD
   CENTURION_API std::shared_ptr<Image> shared_img(PixelFormat format,
                                                   TextureAccess access,
-                                                  int width,
-                                                  int height) const;
-
+                                                  int width, int height) const;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
@@ -175,10 +180,10 @@ static_assert(std::is_nothrow_move_assignable<ImageGenerator>::value,
 static_assert(std::is_nothrow_move_constructible<ImageGenerator>::value,
               "ImageGenerator isn't nothrow move constructible!");
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "image_generator.cpp"
+#include "image_generator.cpp"
 #endif
 
-#endif // CENTURION_IMAGE_GENERATOR_HEADER
+#endif  // CENTURION_IMAGE_GENERATOR_HEADER

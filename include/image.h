@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,15 +25,17 @@
 #ifndef CENTURION_IMAGE_HEADER
 #define CENTURION_IMAGE_HEADER
 
-#include "centurion_api.h"
-#include <string>
-#include <memory>
-#include <cstdint>
-#include <type_traits>
-#include <gsl>
 #include <SDL_render.h>
-#include "color.h"
+
+#include <cstdint>
+#include <gsl>
+#include <memory>
+#include <string>
+#include <type_traits>
+
 #include "blend_mode.h"
+#include "centurion_api.h"
+#include "color.h"
 
 namespace centurion {
 
@@ -115,7 +117,8 @@ enum class PixelFormat {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-CENTURION_API bool operator==(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept;
+CENTURION_API bool operator==(PixelFormat lhs,
+                              SDL_PixelFormatEnum rhs) noexcept;
 
 /**
  * Indicates whether or not the two pixel format values are the same.
@@ -126,7 +129,8 @@ CENTURION_API bool operator==(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept;
+CENTURION_API bool operator==(SDL_PixelFormatEnum lhs,
+                              PixelFormat rhs) noexcept;
 
 /**
  * Indicates whether or not the two pixel format values aren't the same.
@@ -137,7 +141,8 @@ CENTURION_API bool operator==(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-CENTURION_API bool operator!=(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept;
+CENTURION_API bool operator!=(PixelFormat lhs,
+                              SDL_PixelFormatEnum rhs) noexcept;
 
 /**
  * Indicates whether or not the two pixel format values aren't the same.
@@ -148,7 +153,8 @@ CENTURION_API bool operator!=(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept;
+CENTURION_API bool operator!=(SDL_PixelFormatEnum lhs,
+                              PixelFormat rhs) noexcept;
 
 /**
  * The TextureAccess enum mirrors the SDL_TextureAccess enum.
@@ -207,8 +213,8 @@ CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept;
 
 /**
- * The Image class represents an image that is hardware-accelerated. Instances of the Image class
- * can be implicitly converted to SDL_Texture*.
+ * The Image class represents an image that is hardware-accelerated. Instances
+ * of the Image class can be implicitly converted to SDL_Texture*.
  *
  * @see SDL_Texture
  * @since 3.0.0
@@ -219,10 +225,11 @@ class CENTURION_API Image final {
 
  public:
   /**
-   * Creates an image from a pre-existing SDL texture. The created image WILL claim ownership of
-   * the supplied pointer!
+   * Creates an image from a pre-existing SDL texture. The created image WILL
+   * claim ownership of the supplied pointer!
    *
-   * @param texture a pointer to the SDL_Texture that will be claimed, may not be null.
+   * @param texture a pointer to the SDL_Texture that will be claimed, may not
+   * be null.
    * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
@@ -231,43 +238,44 @@ class CENTURION_API Image final {
   /**
    * Creates an image by loading it from a file.
    *
-   * @param renderer a pointer to the SDL_Renderer used to create the image, must not be null.
+   * @param renderer a pointer to the SDL_Renderer used to create the image,
+   * must not be null.
    * @param path the file path of the image that will be loaded.
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer, const std::string& path);
+  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer,
+                      const std::string& path);
 
   /**
    * Creates an image that is a copy of the supplied SDL surface.
    *
    * @param renderer the associated renderer instance, may not be null.
-   * @param surface the SDL surface that the image will be based on, may not be null
+   * @param surface the SDL surface that the image will be based on, may not be
+   * null
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer, gsl::not_null<SDL_Surface*> surface);
+  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer,
+                      gsl::not_null<SDL_Surface*> surface);
 
   /**
    * Creates an image with the specified characteristics.
    *
    * @param renderer the associated renderer instance, may not be null.
-   * @param format the pixel format of the created image. Must be one of the SDL_PIXELFORMAT_x
-   * values.
+   * @param format the pixel format of the created image. Must be one of the
+   * SDL_PIXELFORMAT_x values.
    * @param access the texture access of the created image.
    * @param width the width of the created image.
    * @param height the height of the created image.
-   * @deprecated use the Image constructor that takes a PixelFormat value instead of a uint32_t,
-   * as it is much more type-safe.
+   * @deprecated use the Image constructor that takes a PixelFormat value
+   * instead of a uint32_t, as it is much more type-safe.
    * @throws CenturionException if the image cannot be created.
    * @since 3.0.0
    */
   CENTURION_DEPRECATED
-  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer,
-                      uint32_t format,
-                      TextureAccess access,
-                      int width,
-                      int height);
+  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer, uint32_t format,
+                      TextureAccess access, int width, int height);
 
   /**
    * Creates an image with the specified characteristics.
@@ -280,11 +288,8 @@ class CENTURION_API Image final {
    * @throws CenturionException if the image cannot be created.
    * @since 3.1.0
    */
-  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer,
-                      PixelFormat format,
-                      TextureAccess access,
-                      int width,
-                      int height);
+  CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer, PixelFormat format,
+                      TextureAccess access, int width, int height);
 
   /**
    * Creates an image by moving the supplied image.
@@ -311,16 +316,18 @@ class CENTURION_API Image final {
   CENTURION_API Image& operator=(Image&& other) noexcept;
 
   /**
-   * Creates and returns a unique image from a pre-existing SDL texture. The created image WILL
-   * claim ownership of the supplied pointer!
+   * Creates and returns a unique image from a pre-existing SDL texture. The
+   * created image WILL claim ownership of the supplied pointer!
    *
-   * @param texture a pointer to the SDL_Texture that will be claimed, may not be null.
+   * @param texture a pointer to the SDL_Texture that will be claimed, may not
+   * be null.
    * @returns a unique pointer to the created image.
    * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Image> unique(gsl::owner<SDL_Texture*> texture);
+  CENTURION_API static std::unique_ptr<Image> unique(
+      gsl::owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a unique image by loading it from a file.
@@ -332,47 +339,50 @@ class CENTURION_API Image final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
-                                                     const std::string& path);
+  CENTURION_API static std::unique_ptr<Image> unique(
+      gsl::not_null<SDL_Renderer*> renderer, const std::string& path);
 
   /**
-   * Creates and returns a unique image that is a copy of the supplied SDL surface.
+   * Creates and returns a unique image that is a copy of the supplied SDL
+   * surface.
    *
    * @param renderer the associated renderer instance, may not be null.
-   * @param surface the SDL surface that the image will be based on, may not be null
+   * @param surface the SDL surface that the image will be based on, may not be
+   * null
    * @return a unique pointer to the created image.
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
-                                                     gsl::not_null<SDL_Surface*> surface);
+  CENTURION_API static std::unique_ptr<Image> unique(
+      gsl::not_null<SDL_Renderer*> renderer,
+      gsl::not_null<SDL_Surface*> surface);
 
   /**
-   * Creates and returns a unique pointer to an image with the specified characteristics.
+   * Creates and returns a unique pointer to an image with the specified
+   * characteristics.
    *
    * @param renderer the associated renderer instance, may not be null.
-   * @param format the pixel format of the created image. Must be one of the SDL_PIXELFORMAT_x
-   * values.
+   * @param format the pixel format of the created image. Must be one of the
+   * SDL_PIXELFORMAT_x values.
    * @param access the texture access of the image.
    * @param width the width of the created image.
    * @param height the height of the created image.
    * @return a unique pointer to an image.
    * @throws CenturionException if the image cannot be created.
-   * @deprecated use the factory method that takes a PixelFormat value instead of a uint32_t,
-   * as it is much more type-safe.
+   * @deprecated use the factory method that takes a PixelFormat value instead
+   * of a uint32_t, as it is much more type-safe.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_DEPRECATED
-  CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
-                                                     uint32_t format,
-                                                     TextureAccess access,
-                                                     int width,
-                                                     int height);
+  CENTURION_API static std::unique_ptr<Image> unique(
+      gsl::not_null<SDL_Renderer*> renderer, uint32_t format,
+      TextureAccess access, int width, int height);
 
   /**
-   * Creates and returns a unique pointer to an image with the supplied characteristics.
+   * Creates and returns a unique pointer to an image with the supplied
+   * characteristics.
    *
    * @param renderer a pointer to associated renderer that will be used.
    * @param format the pixel format of the image.
@@ -384,23 +394,23 @@ class CENTURION_API Image final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Image> unique(gsl::not_null<SDL_Renderer*> renderer,
-                                                     PixelFormat format,
-                                                     TextureAccess access,
-                                                     int width,
-                                                     int height);
+  CENTURION_API static std::unique_ptr<Image> unique(
+      gsl::not_null<SDL_Renderer*> renderer, PixelFormat format,
+      TextureAccess access, int width, int height);
 
   /**
-   * Creates and returns a shared image from a pre-existing SDL texture. The created image WILL
-   * claim ownership of the supplied pointer!
+   * Creates and returns a shared image from a pre-existing SDL texture. The
+   * created image WILL claim ownership of the supplied pointer!
    *
-   * @param texture a pointer to the SDL_Texture that will be claimed, may not be null.
+   * @param texture a pointer to the SDL_Texture that will be claimed, may not
+   * be null.
    * @returns a shared pointer to the created image.
    * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Image> shared(gsl::owner<SDL_Texture*> texture);
+  CENTURION_API static std::shared_ptr<Image> shared(
+      gsl::owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a shared image by loading it from a file.
@@ -412,47 +422,50 @@ class CENTURION_API Image final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
-                                                     const std::string& path);
+  CENTURION_API static std::shared_ptr<Image> shared(
+      gsl::not_null<SDL_Renderer*> renderer, const std::string& path);
 
   /**
-   * Creates and returns a shared image that is a copy of the supplied SDL surface.
+   * Creates and returns a shared image that is a copy of the supplied SDL
+   * surface.
    *
    * @param renderer the associated renderer instance, may not be null.
-   * @param surface the SDL surface that the image will be based on, may not be null
+   * @param surface the SDL surface that the image will be based on, may not be
+   * null
    * @return a shared pointer to the created image.
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
-                                                     gsl::not_null<SDL_Surface*> surface);
+  CENTURION_API static std::shared_ptr<Image> shared(
+      gsl::not_null<SDL_Renderer*> renderer,
+      gsl::not_null<SDL_Surface*> surface);
 
   /**
-   * Creates and returns a shared pointer to an image with the specified characteristics.
+   * Creates and returns a shared pointer to an image with the specified
+   * characteristics.
    *
    * @param renderer the associated renderer instance, may not be null.
-   * @param format the pixel format of the created image. Must be one of the SDL_PIXELFORMAT_x
-   * values.
+   * @param format the pixel format of the created image. Must be one of the
+   * SDL_PIXELFORMAT_x values.
    * @param access the texture access of the image.
    * @param width the width of the created image.
    * @param height the height of the created image.
    * @return a shared pointer to an image.
    * @throws CenturionException if the image cannot be created.
-   * @deprecated use the factory method that takes a PixelFormat value instead of a uint32_t,
-   * as it is much more type-safe.
+   * @deprecated use the factory method that takes a PixelFormat value instead
+   * of a uint32_t, as it is much more type-safe.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_DEPRECATED
-  CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
-                                                     uint32_t format,
-                                                     TextureAccess access,
-                                                     int width,
-                                                     int height);
+  CENTURION_API static std::shared_ptr<Image> shared(
+      gsl::not_null<SDL_Renderer*> renderer, uint32_t format,
+      TextureAccess access, int width, int height);
 
   /**
-   * Creates and returns a shared pointer to an image with the supplied characteristics.
+   * Creates and returns a shared pointer to an image with the supplied
+   * characteristics.
    *
    * @param renderer a pointer to associated renderer that will be used.
    * @param format the pixel format of the image.
@@ -464,11 +477,9 @@ class CENTURION_API Image final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Image> shared(gsl::not_null<SDL_Renderer*> renderer,
-                                                     PixelFormat format,
-                                                     TextureAccess access,
-                                                     int width,
-                                                     int height);
+  CENTURION_API static std::shared_ptr<Image> shared(
+      gsl::not_null<SDL_Renderer*> renderer, PixelFormat format,
+      TextureAccess access, int width, int height);
 
   /**
    * Sets the alpha value of the image.
@@ -487,10 +498,11 @@ class CENTURION_API Image final {
   CENTURION_API void set_blend_mode(BlendMode mode) noexcept;
 
   /**
-   * Sets the color modulation of the image. Note, the alpha component in the color struct is
-   * ignored by this method.
+   * Sets the color modulation of the image. Note, the alpha component in the
+   * color struct is ignored by this method.
    *
-   * @param color the color that will be used to modulate the color of the image.
+   * @param color the color that will be used to modulate the color of the
+   * image.
    * @since 3.0.0
    */
   CENTURION_API void set_color_mod(Color color) noexcept;
@@ -613,8 +625,7 @@ class CENTURION_API Image final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Image>::value,
-              "Image isn't final!");
+static_assert(std::is_final<Image>::value, "Image isn't final!");
 #endif
 
 static_assert(std::is_nothrow_move_constructible<Image>::value,
@@ -629,10 +640,10 @@ static_assert(!std::is_nothrow_copy_constructible<Image>::value,
 static_assert(!std::is_nothrow_copy_assignable<Image>::value,
               "Image is assignable!");
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "image.cpp"
+#include "image.cpp"
 #endif
 
-#endif // CENTURION_IMAGE_HEADER
+#endif  // CENTURION_IMAGE_HEADER

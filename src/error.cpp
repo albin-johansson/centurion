@@ -1,4 +1,5 @@
 #include "error.h"
+
 #include <SDL.h>
 
 namespace centurion {
@@ -8,12 +9,8 @@ const char* Error::descriptionf() noexcept {
   return err ? err : "";
 }
 
-std::string Error::description() noexcept {
-  return {descriptionf()};
-}
+std::string Error::description() noexcept { return {descriptionf()}; }
 
-std::string Error::msg() noexcept {
-  return "Error: " + description();
-}
+std::string Error::msg() noexcept { return "Error: " + description(); }
 
-}
+}  // namespace centurion

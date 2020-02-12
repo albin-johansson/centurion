@@ -1,6 +1,8 @@
 #include "message_box.h"
+
 #include <cstdint>
 #include <utility>
+
 #include "centurion_exception.h"
 #include "colors.h"
 #include "error.h"
@@ -34,16 +36,15 @@ ColorScheme::operator SDL_MessageBoxColorScheme() const noexcept {
   return scheme;
 }
 
-MessageBox::MessageBox(std::string title)
-    : title{std::move(title)} {}
+MessageBox::MessageBox(std::string title) : title{std::move(title)} {}
 
 MessageBox::MessageBox(std::string title, std::string message)
-    : title{std::move(title)},
-      message{std::move(message)} {}
+    : title{std::move(title)}, message{std::move(message)} {}
 
 MessageBox::~MessageBox() noexcept = default;
 
-std::vector<SDL_MessageBoxButtonData> MessageBox::create_sdl_button_data() const noexcept {
+std::vector<SDL_MessageBoxButtonData> MessageBox::create_sdl_button_data() const
+    noexcept {
   std::vector<SDL_MessageBoxButtonData> result;
   result.reserve(buttons.size());
 
@@ -54,19 +55,16 @@ std::vector<SDL_MessageBoxButtonData> MessageBox::create_sdl_button_data() const
   return result;
 }
 
-SDL_MessageBoxData MessageBox::create_sdl_message_box_data(SDL_Window* window,
-                                                           const SDL_MessageBoxButtonData* data,
-                                                           const SDL_MessageBoxColorScheme*
-                                                           scheme) const noexcept {
-  return {
-      static_cast<SDL_MessageBoxFlags>(type),
-      window,
-      title.c_str(),
-      message.c_str(),
-      static_cast<int>(buttons.size()),
-      data,
-      scheme
-  };
+SDL_MessageBoxData MessageBox::create_sdl_message_box_data(
+    SDL_Window* window, const SDL_MessageBoxButtonData* data,
+    const SDL_MessageBoxColorScheme* scheme) const noexcept {
+  return {static_cast<SDL_MessageBoxFlags>(type),
+          window,
+          title.c_str(),
+          message.c_str(),
+          static_cast<int>(buttons.size()),
+          data,
+          scheme};
 }
 
 int MessageBox::show(SDL_Window* window) {
@@ -86,24 +84,25 @@ int MessageBox::show(SDL_Window* window) {
   }
 #endif
 
-  const auto data = create_sdl_message_box_data(window, buttonDataFront, sdl_colorScheme);
+  const auto data =
+      create_sdl_message_box_data(window, buttonDataFront, sdl_colorScheme);
 
   int button = -1;
   if (SDL_ShowMessageBox(&data, &button) < 0) {
     throw CenturionException{"Failed to show message box! " + Error::msg()};
   }
 
-  return button; // TODO consider returning std::optional<int> instead
+  return button;  // TODO consider returning std::optional<int> instead
 }
 
-void MessageBox::show(const std::string& title,
-                      const std::string& message,
-                      MessageBoxID type,
-                      SDL_Window* window) noexcept {
-  SDL_ShowSimpleMessageBox(static_cast<uint32_t>(type), title.c_str(), message.c_str(), window);
+void MessageBox::show(const std::string& title, const std::string& message,
+                      MessageBoxID type, SDL_Window* window) noexcept {
+  SDL_ShowSimpleMessageBox(static_cast<uint32_t>(type), title.c_str(),
+                           message.c_str(), window);
 }
 
-void MessageBox::add_button(ButtonDataHint hint, int id, std::string text) noexcept {
+void MessageBox::add_button(ButtonDataHint hint, int id,
+                            std::string text) noexcept {
   buttons.emplace_back(hint, id, std::move(text));
 }
 
@@ -115,9 +114,7 @@ void MessageBox::set_message(const std::string& message) noexcept {
   this->message = message;
 }
 
-void MessageBox::set_type(MessageBoxID type) noexcept {
-  this->type = type;
-}
+void MessageBox::set_type(MessageBoxID type) noexcept { this->type = type; }
 
 #ifdef CENTURION_HAS_OPTIONAL
 
@@ -127,9 +124,7 @@ void MessageBox::set_color_scheme(std::optional<ColorScheme> scheme) noexcept {
 
 #endif
 
-MessageBoxID MessageBox::get_type() const noexcept {
-  return type;
-}
+MessageBoxID MessageBox::get_type() const noexcept { return type; }
 
 bool operator==(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept {
   return static_cast<SDL_MessageBoxButtonFlags>(a) == b;
@@ -179,5 +174,5 @@ bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
   return a != static_cast<SDL_MessageBoxFlags>(b);
 }
 
-} // namespace messagebox
-} // namespace centurion
+}  // namespace messagebox
+}  // namespace centurion

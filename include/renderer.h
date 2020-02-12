@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,16 +25,18 @@
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
-#include "centurion_api.h"
-#include <cstdint>
-#include <string>
-#include <memory>
-#include <optional>
-#include <type_traits>
-#include <vector>
-#include <gsl>
 #include <SDL.h>
 #include <SDL_image.h>
+
+#include <cstdint>
+#include <gsl>
+#include <memory>
+#include <optional>
+#include <string>
+#include <type_traits>
+#include <vector>
+
+#include "centurion_api.h"
 #include "color.h"
 
 namespace centurion {
@@ -45,8 +47,8 @@ class Point;
 class FPoint;
 
 /**
- * The Renderer class is a wrapper class for the SDL_Renderer struct. Rendering operations are
- * treated as const methods.
+ * The Renderer class is a wrapper class for the SDL_Renderer struct. Rendering
+ * operations are treated as const methods.
  *
  * @see SDL_Renderer
  * @since 3.0.0
@@ -57,8 +59,9 @@ class CENTURION_API Renderer final {
   SDL_FRect translationViewport = {0, 0, 0, 0};
 
  public:
-  // TODO a lot of rendering class would be prettier if there was a viewport-translated
-  // alternative for all methods, ex: RenderTranslatedRect, RenderTranslatedImage, etc.
+  // TODO a lot of rendering class would be prettier if there was a
+  // viewport-translated alternative for all methods, ex: RenderTranslatedRect,
+  // RenderTranslatedImage, etc.
 
   /**
    * Creates a renderer based on the supplied SDL_Renderer.
@@ -71,8 +74,9 @@ class CENTURION_API Renderer final {
   CENTURION_API explicit Renderer(gsl::owner<SDL_Renderer*> renderer);
 
   /**
-   * Creates a renderer based on the supplied SDL_Window. By default, the internal renderer will be
-   * created using the SDL_RENDERER_ACCELERATED and SDL_RENDERER_PRESENTVSYNC flags.
+   * Creates a renderer based on the supplied SDL_Window. By default, the
+   * internal renderer will be created using the SDL_RENDERER_ACCELERATED and
+   * SDL_RENDERER_PRESENTVSYNC flags.
    *
    * @param window a pointer to the SDL_Window that will be used to create the
    * renderer.
@@ -81,8 +85,8 @@ class CENTURION_API Renderer final {
    * @since 3.0.0
    */
   CENTURION_API explicit Renderer(gsl::not_null<SDL_Window*> window,
-                                  uint32_t flags = SDL_RENDERER_ACCELERATED
-                                      | SDL_RENDERER_PRESENTVSYNC);
+                                  uint32_t flags = SDL_RENDERER_ACCELERATED |
+                                                   SDL_RENDERER_PRESENTVSYNC);
 
   CENTURION_API Renderer(Renderer&& other) noexcept;
 
@@ -97,19 +101,20 @@ class CENTURION_API Renderer final {
   /**
    * Creates and returns a unique pointer to a renderer.
    *
-   * @param renderer a raw pointer to the SDL_Renderer that the created renderer will be based
-   * on, may not be null.
+   * @param renderer a raw pointer to the SDL_Renderer that the created renderer
+   * will be based on, may not be null.
    * @return a unique pointer to a renderer.
    * @throws invalid_argument if the supplied renderer is null.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Renderer> unique(gsl::owner<SDL_Renderer*> renderer);
+  CENTURION_API static std::unique_ptr<Renderer> unique(
+      gsl::owner<SDL_Renderer*> renderer);
 
   /**
-   * Creates and returns a unique pointer to a renderer based on the supplied SDL_Window. By
-   * default, the internal renderer will be created using the SDL_RENDERER_ACCELERATED and
-   * SDL_RENDERER_PRESENTVSYNC flags.
+   * Creates and returns a unique pointer to a renderer based on the supplied
+   * SDL_Window. By default, the internal renderer will be created using the
+   * SDL_RENDERER_ACCELERATED and SDL_RENDERER_PRESENTVSYNC flags.
    *
    * @param window a pointer to the SDL_Window that will be used to create the
    * renderer.
@@ -119,26 +124,27 @@ class CENTURION_API Renderer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Renderer> unique(gsl::not_null<SDL_Window*> window,
-                                                        uint32_t flags = SDL_RENDERER_ACCELERATED
-                                                            | SDL_RENDERER_PRESENTVSYNC);
+  CENTURION_API static std::unique_ptr<Renderer> unique(
+      gsl::not_null<SDL_Window*> window,
+      uint32_t flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
   /**
    * Creates and returns a shared pointer to a renderer.
    *
-   * @param renderer a raw pointer to the SDL_Renderer that the created renderer will be based
-   * on, may not be null.
+   * @param renderer a raw pointer to the SDL_Renderer that the created renderer
+   * will be based on, may not be null.
    * @return a shared pointer to a renderer.
    * @throws invalid_argument if the supplied renderer is null.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Renderer> shared(gsl::owner<SDL_Renderer*> renderer);
+  CENTURION_API static std::shared_ptr<Renderer> shared(
+      gsl::owner<SDL_Renderer*> renderer);
 
   /**
-   * Creates and returns a shared pointer to a renderer based on the supplied SDL_Window. By
-   * default, the internal renderer will be created using the SDL_RENDERER_ACCELERATED and
-   * SDL_RENDERER_PRESENTVSYNC flags.
+   * Creates and returns a shared pointer to a renderer based on the supplied
+   * SDL_Window. By default, the internal renderer will be created using the
+   * SDL_RENDERER_ACCELERATED and SDL_RENDERER_PRESENTVSYNC flags.
    *
    * @param window a pointer to the SDL_Window that will be used to create the
    * renderer.
@@ -148,9 +154,9 @@ class CENTURION_API Renderer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Renderer> shared(gsl::not_null<SDL_Window*> window,
-                                                        uint32_t flags = SDL_RENDERER_ACCELERATED
-                                                            | SDL_RENDERER_PRESENTVSYNC);
+  CENTURION_API static std::shared_ptr<Renderer> shared(
+      gsl::not_null<SDL_Window*> window,
+      uint32_t flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
   /**
    * Clears the rendering target with the currently selected color.
@@ -184,11 +190,12 @@ class CENTURION_API Renderer final {
    * @param y the y-coordinate of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& img, float x, float y) const noexcept;
+  CENTURION_API void draw_image(const Image& img, float x, float y) const
+      noexcept;
 
   /**
-   * Renders an image. This method has no effect if the supplied width and/or height isn't
-   * greater than zero.
+   * Renders an image. This method has no effect if the supplied width and/or
+   * height isn't greater than zero.
    *
    * @param img a reference to the image that will be rendered.
    * @param x the x-coordinate of the rendered image.
@@ -197,15 +204,12 @@ class CENTURION_API Renderer final {
    * @param height the height of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& img,
-                                int x,
-                                int y,
-                                int width,
+  CENTURION_API void draw_image(const Image& img, int x, int y, int width,
                                 int height) const noexcept;
 
   /**
-   * Renders an image. This method has no effect if the supplied width and/or height isn't greater
-   * than zero.
+   * Renders an image. This method has no effect if the supplied width and/or
+   * height isn't greater than zero.
    *
    * @param img a reference to the image that will be rendered.
    * @param x the x-coordinate of the rendered image.
@@ -214,10 +218,7 @@ class CENTURION_API Renderer final {
    * @param height the height of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& img,
-                                float x,
-                                float y,
-                                float width,
+  CENTURION_API void draw_image(const Image& img, float x, float y, float width,
                                 float height) const noexcept;
 
   /**
@@ -228,13 +229,13 @@ class CENTURION_API Renderer final {
    * @param destination the destination of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& img,
-                                const SDL_Rect& source,
+  CENTURION_API void draw_image(const Image& img, const SDL_Rect& source,
                                 const SDL_FRect& destination) const noexcept;
 
   /**
-   * Renders a part of an image at the specified destination. The position of the rendered image
-   * is translated using the currently set translation viewport.
+   * Renders a part of an image at the specified destination. The position of
+   * the rendered image is translated using the currently set translation
+   * viewport.
    *
    * @param img the source image.
    * @param source the rectangle that specifies the cutout of the source image.
@@ -243,7 +244,8 @@ class CENTURION_API Renderer final {
    */
   CENTURION_API void draw_image_translated(const Image& img,
                                            const SDL_Rect& source,
-                                           const SDL_FRect& destination) const noexcept;
+                                           const SDL_FRect& destination) const
+      noexcept;
 
   /**
    * Renders an image.
@@ -254,10 +256,9 @@ class CENTURION_API Renderer final {
    * @param angle the angle of the image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image,
-                                const SDL_Rect& source,
-                                const SDL_Rect& destination,
-                                double angle) const noexcept;
+  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+                                const SDL_Rect& destination, double angle) const
+      noexcept;
 
   /**
    * Renders an image.
@@ -268,8 +269,7 @@ class CENTURION_API Renderer final {
    * @param angle the angle of the image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image,
-                                const SDL_Rect& source,
+  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
                                 const SDL_FRect& destination,
                                 double angle) const noexcept;
 
@@ -283,11 +283,10 @@ class CENTURION_API Renderer final {
    * @param angle the angle of the image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image,
-                                const SDL_Rect& source,
+  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
                                 const SDL_Rect& destination,
-                                const Point& center,
-                                double angle) const noexcept;
+                                const Point& center, double angle) const
+      noexcept;
 
   /**
    * Renders an image.
@@ -299,11 +298,10 @@ class CENTURION_API Renderer final {
    * @param angle the angle of the image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image,
-                                const SDL_Rect& source,
+  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
                                 const SDL_FRect& destination,
-                                const FPoint& center,
-                                double angle) const noexcept;
+                                const FPoint& center, double angle) const
+      noexcept;
 
   /**
    * Renders an image.
@@ -312,13 +310,12 @@ class CENTURION_API Renderer final {
    * @param source the rectangle that specifies the cutout of the source image.
    * @param destination the destination of the rendered image.
    * @param angle the angle of the image.
-   * @param flip the value that specifies whether or not the rendered image should be flipped.
+   * @param flip the value that specifies whether or not the rendered image
+   * should be flipped.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image,
-                                const SDL_Rect& source,
-                                const SDL_Rect& destination,
-                                double angle,
+  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+                                const SDL_Rect& destination, double angle,
                                 SDL_RendererFlip flip) const noexcept;
 
   /**
@@ -328,13 +325,12 @@ class CENTURION_API Renderer final {
    * @param source the rectangle that specifies the cutout of the source image.
    * @param destination the destination of the rendered image.
    * @param angle the angle of the image.
-   * @param flip the value that specifies whether or not the rendered image should be flipped.
+   * @param flip the value that specifies whether or not the rendered image
+   * should be flipped.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image,
-                                const SDL_Rect& source,
-                                const SDL_FRect& destination,
-                                double angle,
+  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+                                const SDL_FRect& destination, double angle,
                                 SDL_RendererFlip flip) const noexcept;
 
   /**
@@ -345,13 +341,12 @@ class CENTURION_API Renderer final {
    * @param destination the destination of the rendered image.
    * @param angle the angle of the image.
    * @param center the rotation center point.
-   * @param flip the value that specifies whether or not the rendered image should be flipped.
+   * @param flip the value that specifies whether or not the rendered image
+   * should be flipped.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image,
-                                const SDL_Rect& source,
-                                const SDL_Rect& destination,
-                                double angle,
+  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+                                const SDL_Rect& destination, double angle,
                                 const Point& center,
                                 SDL_RendererFlip flip) const noexcept;
 
@@ -363,19 +358,18 @@ class CENTURION_API Renderer final {
    * @param destination the destination of the rendered image.
    * @param angle the angle of the image.
    * @param center the rotation center point.
-   * @param flip the value that specifies whether or not the rendered image should be flipped.
+   * @param flip the value that specifies whether or not the rendered image
+   * should be flipped.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image,
-                                const SDL_Rect& source,
-                                const SDL_FRect& destination,
-                                double angle,
+  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+                                const SDL_FRect& destination, double angle,
                                 const FPoint& center,
                                 SDL_RendererFlip flip) const noexcept;
 
   /**
-   * Renders a filled rectangle with the currently selected color. This method has no effect if the
-   * supplied width and/or height isn't greater than zero.
+   * Renders a filled rectangle with the currently selected color. This method
+   * has no effect if the supplied width and/or height isn't greater than zero.
    *
    * @param x the x-coordinate of the rendered rectangle.
    * @param y the y-coordinate of the rendered rectangle.
@@ -383,11 +377,12 @@ class CENTURION_API Renderer final {
    * @param height the height of the rendered rectangle.
    * @since 3.0.0
    */
-  CENTURION_API void fill_rect(int x, int y, int width, int height) const noexcept;
+  CENTURION_API void fill_rect(int x, int y, int width, int height) const
+      noexcept;
 
   /**
-   * Renders a filled rectangle with the currently selected color. This method has no effect if the
-   * supplied width and/or height isn't greater than zero.
+   * Renders a filled rectangle with the currently selected color. This method
+   * has no effect if the supplied width and/or height isn't greater than zero.
    *
    * @param x the x-coordinate of the rendered rectangle.
    * @param y the y-coordinate of the rendered rectangle.
@@ -395,11 +390,13 @@ class CENTURION_API Renderer final {
    * @param height the height of the rendered rectangle.
    * @since 3.0.0
    */
-  CENTURION_API void fill_rect(float x, float y, float width, float height) const noexcept;
+  CENTURION_API void fill_rect(float x, float y, float width,
+                               float height) const noexcept;
 
   /**
-   * Renders an outlined rectangle with the currently selected color. This method has no effect if
-   * the supplied width and/or height isn't greater than zero.
+   * Renders an outlined rectangle with the currently selected color. This
+   * method has no effect if the supplied width and/or height isn't greater than
+   * zero.
    *
    * @param x the x-coordinate of the rendered rectangle.
    * @param y the y-coordinate of the rendered rectangle.
@@ -407,11 +404,13 @@ class CENTURION_API Renderer final {
    * @param height the height of the rendered rectangle.
    * @since 3.0.0
    */
-  CENTURION_API void draw_rect(float x, float y, float width, float height) const noexcept;
+  CENTURION_API void draw_rect(float x, float y, float width,
+                               float height) const noexcept;
 
   /**
-   * Renders an outlined rectangle with the currently selected color. This method has no effect if
-   * the supplied width and/or height isn't greater than zero.
+   * Renders an outlined rectangle with the currently selected color. This
+   * method has no effect if the supplied width and/or height isn't greater than
+   * zero.
    *
    * @param x the x-coordinate of the rendered rectangle.
    * @param y the y-coordinate of the rendered rectangle.
@@ -419,7 +418,8 @@ class CENTURION_API Renderer final {
    * @param height the height of the rendered rectangle.
    * @since 3.0.0
    */
-  CENTURION_API void draw_rect(int x, int y, int width, int height) const noexcept;
+  CENTURION_API void draw_rect(int x, int y, int width, int height) const
+      noexcept;
 
   /**
    * Renders a line in the currently selected color.
@@ -428,7 +428,8 @@ class CENTURION_API Renderer final {
    * @param end the end of the line.
    * @since 3.0.0
    */
-  CENTURION_API void draw_line(const FPoint& start, const FPoint& end) const noexcept;
+  CENTURION_API void draw_line(const FPoint& start, const FPoint& end) const
+      noexcept;
 
   /**
    * Renders a line in the currently selected color.
@@ -437,7 +438,8 @@ class CENTURION_API Renderer final {
    * @param end the end of the line.
    * @since 3.0.0
    */
-  CENTURION_API void draw_line(const Point& start, const Point& end) const noexcept;
+  CENTURION_API void draw_line(const Point& start, const Point& end) const
+      noexcept;
 
   /**
    * Renders a sequence of connected lines in the currently selected color.
@@ -445,11 +447,13 @@ class CENTURION_API Renderer final {
    * @param points the collection of points to draw the lines between.
    * @since 3.0.0
    */
-  CENTURION_API void draw_lines(const std::vector<Point>& points) const noexcept;
+  CENTURION_API void draw_lines(const std::vector<Point>& points) const
+      noexcept;
 
   /**
-   * Renders a string of text. Note that this method is rather inefficient, since it will
-   * dynamically allocate a texture based on the supplied string for every call to this method.
+   * Renders a string of text. Note that this method is rather inefficient,
+   * since it will dynamically allocate a texture based on the supplied string
+   * for every call to this method.
    *
    * @param text the text that will be rendered in the supplied font.
    * @param x the x-coordinate of the rendered text.
@@ -457,26 +461,28 @@ class CENTURION_API Renderer final {
    * @param font the font that will be used.
    * @since 3.0.0
    */
-  CENTURION_API void draw_text(const std::string& text, float x, float y, const Font& font) const;
+  CENTURION_API void draw_text(const std::string& text, float x, float y,
+                               const Font& font) const;
 
   /**
-   * Sets the color that will be used by the renderer. This method is intentionally considered a
-   * const-method, even if it technically changes the state of the renderer.
+   * Sets the color that will be used by the renderer. This method is
+   * intentionally considered a const-method, even if it technically changes the
+   * state of the renderer.
    *
    * @param red the red component value, in the range [0, 255].
    * @param green the green component value, in the range [0, 255].
    * @param blue the blue component value, in the range [0, 255].
-   * @param alpha the alpha component value, in the range [0, 255]. Set to 255 by default.
+   * @param alpha the alpha component value, in the range [0, 255]. Set to 255
+   * by default.
    * @since 3.0.0
    */
-  CENTURION_API void set_color(uint8_t red,
-                               uint8_t green,
-                               uint8_t blue,
+  CENTURION_API void set_color(uint8_t red, uint8_t green, uint8_t blue,
                                uint8_t alpha = SDL_ALPHA_OPAQUE) const noexcept;
 
   /**
-   * Sets the color that will be used by the renderer. This method is intentionally considered a
-   * const-method, even if it technically changes the state of the renderer.
+   * Sets the color that will be used by the renderer. This method is
+   * intentionally considered a const-method, even if it technically changes the
+   * state of the renderer.
    *
    * @param color the color that will be used by the renderer.
    * @since 3.0.0
@@ -504,13 +510,16 @@ class CENTURION_API Renderer final {
   CENTURION_API void set_viewport(const SDL_Rect& viewport) noexcept;
 
   /**
-   * Sets the translation viewport that will be used by the renderer. This method can be used in
-   * order to be able to use the various X_translated-methods.
+   * Sets the translation viewport that will be used by the renderer. This
+   * method can be used in order to be able to use the various
+   * X_translated-methods.
    *
-   * @param viewport the rectangle that will be used as the translation viewport.
+   * @param viewport the rectangle that will be used as the translation
+   * viewport.
    * @since 3.0.0
    */
-  CENTURION_API void set_translation_viewport(const SDL_FRect& viewport) noexcept;
+  CENTURION_API void set_translation_viewport(
+      const SDL_FRect& viewport) noexcept;
 
   /**
    * Sets the blend mode that will be used by the renderer.
@@ -521,18 +530,18 @@ class CENTURION_API Renderer final {
   CENTURION_API void set_blend_mode(const SDL_BlendMode& blendMode) noexcept;
 
   /**
-   * Sets the rendering target of the renderer. The supplied image must support being a render
-   * target. Otherwise, this method will reset the render target.
+   * Sets the rendering target of the renderer. The supplied image must support
+   * being a render target. Otherwise, this method will reset the render target.
    *
-   * @param texture a pointer to the new target texture, can safely be null to indicate that the
-   * default rendering target should be used.
+   * @param texture a pointer to the new target texture, can safely be null to
+   * indicate that the default rendering target should be used.
    * @since 3.0.0
    */
   CENTURION_API void set_target(const Image* texture) noexcept;
 
   /**
-   * Sets the viewport that will be used by the renderer. This method has no effect if any of the
-   * arguments are less than or equal to zero.
+   * Sets the viewport that will be used by the renderer. This method has no
+   * effect if any of the arguments are less than or equal to zero.
    *
    * @param xScale the x-axis scale that will be used.
    * @param yScale the y-axis scale that will be used.
@@ -542,8 +551,8 @@ class CENTURION_API Renderer final {
 
   /**
    * Sets the logical dimensions of the renderer, which is useful for achieving
-   * resolution-independent rendering. This method has no effect if either of the supplied
-   * dimensions aren't greater than zero.
+   * resolution-independent rendering. This method has no effect if either of
+   * the supplied dimensions aren't greater than zero.
    *
    * @param width the logical width that will be used.
    * @param height the logical height that will be used.
@@ -552,16 +561,19 @@ class CENTURION_API Renderer final {
   CENTURION_API void set_logical_size(int width, int height) noexcept;
 
   /**
-   * Sets whether or not to force integer scaling for the logical viewport. By default, this
-   * property is set to false.
+   * Sets whether or not to force integer scaling for the logical viewport. By
+   * default, this property is set to false.
    *
-   * @param useLogicalIntegerScale true if integer scaling should be used; false otherwise.
+   * @param useLogicalIntegerScale true if integer scaling should be used; false
+   * otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_logical_integer_scale(bool useLogicalIntegerScale) noexcept;
+  CENTURION_API void set_logical_integer_scale(
+      bool useLogicalIntegerScale) noexcept;
 
   /**
-   * Returns the logical width that the renderer uses. By default, this property is set to 0.
+   * Returns the logical width that the renderer uses. By default, this property
+   * is set to 0.
    *
    * @return the logical width that the renderer uses.
    * @since 3.0.0
@@ -570,7 +582,8 @@ class CENTURION_API Renderer final {
   CENTURION_API int get_logical_width() const noexcept;
 
   /**
-   * Returns the logical height that the renderer uses. By default, this property is set to 0.
+   * Returns the logical height that the renderer uses. By default, this
+   * property is set to 0.
    *
    * @return the logical height that the renderer uses.
    * @since 3.0.0
@@ -646,21 +659,20 @@ class CENTURION_API Renderer final {
   CENTURION_API std::pair<int, int> get_output_size() const noexcept;
 
   /**
-   * Returns a bit mask that represents all of flags used when creating the renderer. The
-   * possible values are
-   * <ul>
-   *   <li>a</li>
+   * Returns a bit mask that represents all of flags used when creating the
+   * renderer. The possible values are <ul> <li>a</li>
    * </ul>
    *
-   * @return a bit mask that represents all of flags used when creating the renderer.
+   * @return a bit mask that represents all of flags used when creating the
+   * renderer.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API uint32_t get_flags() const noexcept;
 
   /**
-   * Indicates whether or not the <code>present()</code> method is synced with the
-   * refresh rate of the screen.
+   * Indicates whether or not the <code>present()</code> method is synced with
+   * the refresh rate of the screen.
    *
    * @return true if vsync is enabled; false otherwise.
    * @since 3.0.0
@@ -687,19 +699,22 @@ class CENTURION_API Renderer final {
   CENTURION_API bool is_software_based() const noexcept;
 
   /**
-   * Indicates whether or not the renderer supports rendering to a target texture.
+   * Indicates whether or not the renderer supports rendering to a target
+   * texture.
    *
-   * @return true if the renderer supports target texture rendering; false otherwise.
+   * @return true if the renderer supports target texture rendering; false
+   * otherwise.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API bool is_supporting_target_textures() const noexcept;
 
   /**
-   * Indicates whether or not the renderer uses integer scaling values for logical viewports. By
-   * default, this property is set to false.
+   * Indicates whether or not the renderer uses integer scaling values for
+   * logical viewports. By default, this property is set to false.
    *
-   * @return true if the renderer uses integer scaling for logical viewports; false otherwise.
+   * @return true if the renderer uses integer scaling for logical viewports;
+   * false otherwise.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -724,17 +739,21 @@ class CENTURION_API Renderer final {
   CENTURION_API Color get_color() const noexcept;
 
   /**
-   * Attempts to create and return a pointer to an SDL_Texture instance that represents the
-   * supplied string rendered with the supplied font. This method will not throw any
-   * exception by itself, but dynamic memory allocation will occur behind-the-scenes.
+   * Attempts to create and return a pointer to an SDL_Texture instance that
+   * represents the supplied string rendered with the supplied font. This method
+   * will not throw any exception by itself, but dynamic memory allocation will
+   * occur behind-the-scenes.
    *
-   * @param s the string that contains the content that will be rendered to a texture.
+   * @param s the string that contains the content that will be rendered to a
+   * texture.
    * @param font a reference to the font that will be used.
-   * @return a unique pointer to an image that represents the supplied string rendered with the
-   * currently selected font; nullptr if the operation is unsuccessful.
+   * @return a unique pointer to an image that represents the supplied string
+   * rendered with the currently selected font; nullptr if the operation is
+   * unsuccessful.
    */
   CENTURION_NODISCARD
-  CENTURION_API std::unique_ptr<Image> create_image(const std::string& s, const Font& font) const;
+  CENTURION_API std::unique_ptr<Image> create_image(const std::string& s,
+                                                    const Font& font) const;
 
   /**
    * Returns the viewport that the renderer uses.
@@ -746,7 +765,8 @@ class CENTURION_API Renderer final {
   CENTURION_API SDL_Rect get_viewport() const noexcept;
 
   /**
-   * Returns the translation viewport that is currently being used. Set to (0, 0, 0, 0) by default.
+   * Returns the translation viewport that is currently being used. Set to (0,
+   * 0, 0, 0) by default.
    *
    * @return the translation viewport that is currently being used.
    * @since 3.0.0
@@ -770,8 +790,7 @@ class CENTURION_API Renderer final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Renderer>::value,
-              "Renderer isn't final!");
+static_assert(std::is_final<Renderer>::value, "Renderer isn't final!");
 #endif
 
 static_assert(std::is_nothrow_move_constructible<Renderer>::value,
@@ -789,10 +808,10 @@ static_assert(!std::is_nothrow_copy_assignable<Renderer>::value,
 static_assert(std::is_convertible<Renderer, SDL_Renderer*>::value,
               "Renderer isn't convertible to SDL_Renderer*!");
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "renderer.cpp"
+#include "renderer.cpp"
 #endif
 
-#endif // CENTURION_RENDERER_HEADER
+#endif  // CENTURION_RENDERER_HEADER

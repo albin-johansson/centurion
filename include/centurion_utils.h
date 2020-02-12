@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,15 +25,17 @@
 #ifndef CENTURION_CENTURION_UTILS_HEADER
 #define CENTURION_CENTURION_UTILS_HEADER
 
-#include "centurion_api.h"
+#include <memory>
 #include <sstream>
 #include <string>
-#include <memory>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
 /**
- * The CenturionUtils class provides utilities used by components of the Centurion library.
+ * The CenturionUtils class provides utilities used by components of the
+ * Centurion library.
  *
  * @since 3.0.0
  */
@@ -42,15 +44,16 @@ class CenturionUtils final {
   CenturionUtils() = delete;
 
   /**
-   * Returns a string that represents the memory address of the supplied pointer. The empty
-   * string is returned if the supplied pointer is null.
+   * Returns a string that represents the memory address of the supplied
+   * pointer. The empty string is returned if the supplied pointer is null.
    *
    * @tparam T the type of the pointer.
    * @param ptr the pointer that will be converted.
-   * @return a string that represents the memory address of the supplied pointer.
+   * @return a string that represents the memory address of the supplied
+   * pointer.
    * @since 3.0.0
    */
-  template<typename T>
+  template <typename T>
   CENTURION_NODISCARD static std::string address(T* ptr) {
     if (ptr) {
       std::ostringstream address;
@@ -65,22 +68,23 @@ class CenturionUtils final {
 #ifndef CENTURION_HAS_MAKE_UNIQUE
 
 /**
- * Creates and returns a unique pointer. This method should only be used when C++11 is used, since
- * it doesn't provide std::make_unique.
+ * Creates and returns a unique pointer. This method should only be used when
+ * C++11 is used, since it doesn't provide std::make_unique.
  *
  * @tparam T the type of the object that will be created.
- * @tparam Args the type of the arguments that will be passed to an appropriate constructor.
+ * @tparam Args the type of the arguments that will be passed to an appropriate
+ * constructor.
  * @param args the arguments that will be passed to an appropriate constructor.
  * @return a unique pointer.
  * @since 3.2.0
  */
-template<typename T, typename... Args>
-CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&& ... args) {
+template <typename T, typename... Args>
+CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args) {
   return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
 #endif
 
-}
+}  // namespace centurion
 
-#endif // CENTURION_CENTURION_UTILS_HEADER
+#endif  // CENTURION_CENTURION_UTILS_HEADER

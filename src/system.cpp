@@ -1,4 +1,5 @@
 #include "system.h"
+
 #include <string>
 
 namespace centurion {
@@ -33,21 +34,13 @@ std::optional<std::string> System::get_platform_name() noexcept {
 
 #endif
 
-int CPU::get_cache_line_size() noexcept {
-  return SDL_GetCPUCacheLineSize();
-}
+int CPU::get_cache_line_size() noexcept { return SDL_GetCPUCacheLineSize(); }
 
-int CPU::get_cores() noexcept {
-  return SDL_GetCPUCount();
-}
+int CPU::get_cores() noexcept { return SDL_GetCPUCount(); }
 
-int RAM::get_size_mb() noexcept {
-  return SDL_GetSystemRAM();
-}
+int RAM::get_size_mb() noexcept { return SDL_GetSystemRAM(); }
 
-int RAM::get_size_gb() noexcept {
-  return get_size_mb() / 1'000;
-}
+int RAM::get_size_gb() noexcept { return get_size_mb() / 1'000; }
 
 #ifdef CENTURION_HAS_OPTIONAL
 
@@ -104,10 +97,10 @@ int Screen::get_refresh_rate() noexcept {
   return mode.refresh_rate;
 }
 
-uint32_t Screen::get_pixel_format() noexcept { // TODO replace return type
+uint32_t Screen::get_pixel_format() noexcept {  // TODO replace return type
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
   return mode.format;
 }
 
-}
+}  // namespace centurion

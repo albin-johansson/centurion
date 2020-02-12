@@ -1,6 +1,9 @@
 #include "mouse_state.h"
-#include <cstdint>
+
 #include <SDL.h>
+
+#include <cstdint>
+
 #include "window.h"
 
 namespace centurion {
@@ -33,10 +36,12 @@ void MouseState::update() noexcept {
   }
 
   {
-    const auto xRatio = static_cast<float>(mouseX) / static_cast<float>(windowWidth);
+    const auto xRatio =
+        static_cast<float>(mouseX) / static_cast<float>(windowWidth);
     const auto adjustedX = xRatio * static_cast<float>(logicalWidth);
 
-    const auto yRatio = static_cast<float>(mouseY) / static_cast<float>(windowHeight);
+    const auto yRatio =
+        static_cast<float>(mouseY) / static_cast<float>(windowHeight);
     const auto adjustedY = yRatio * static_cast<float>(logicalHeight);
 
     mouseX = static_cast<int>(adjustedX);
@@ -79,17 +84,11 @@ void MouseState::set_window_height(int windowHeight) noexcept {
   this->windowHeight = windowHeight;
 }
 
-int MouseState::get_mouse_x() const noexcept {
-  return mouseX;
-}
+int MouseState::get_mouse_x() const noexcept { return mouseX; }
 
-int MouseState::get_mouse_y() const noexcept {
-  return mouseY;
-}
+int MouseState::get_mouse_y() const noexcept { return mouseY; }
 
-bool MouseState::is_left_button_pressed() const noexcept {
-  return leftPressed;
-}
+bool MouseState::is_left_button_pressed() const noexcept { return leftPressed; }
 
 bool MouseState::is_right_button_pressed() const noexcept {
   return rightPressed;
@@ -107,20 +106,12 @@ bool MouseState::was_mouse_moved() const noexcept {
   return mouseX != oldX || mouseY != oldY;
 }
 
-int MouseState::get_window_width() const noexcept {
-  return windowWidth;
-}
+int MouseState::get_window_width() const noexcept { return windowWidth; }
 
-int MouseState::get_window_height() const noexcept {
-  return windowHeight;
-}
+int MouseState::get_window_height() const noexcept { return windowHeight; }
 
-int MouseState::get_logical_width() const noexcept {
-  return logicalWidth;
-}
+int MouseState::get_logical_width() const noexcept { return logicalWidth; }
 
-int MouseState::get_logical_height() const noexcept {
-  return logicalHeight;
-}
+int MouseState::get_logical_height() const noexcept { return logicalHeight; }
 
-}
+}  // namespace centurion

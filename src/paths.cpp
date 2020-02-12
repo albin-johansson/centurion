@@ -1,4 +1,5 @@
 #include "paths.h"
+
 #include <SDL.h>
 
 namespace centurion {
@@ -11,9 +12,7 @@ AppPath::~AppPath() noexcept {
   }
 }
 
-AppPath::operator bool() const noexcept {
-  return path;
-}
+AppPath::operator bool() const noexcept { return path; }
 
 std::unique_ptr<AppPath> AppPath::unique() {
   return std::make_unique<AppPath>();
@@ -32,12 +31,14 @@ PrefPath::~PrefPath() noexcept {
   }
 }
 
-std::unique_ptr<PrefPath> PrefPath::unique(const std::string& org, const std::string& app) {
+std::unique_ptr<PrefPath> PrefPath::unique(const std::string& org,
+                                           const std::string& app) {
   return std::make_unique<PrefPath>(org, app);
 }
 
-std::shared_ptr<PrefPath> PrefPath::shared(const std::string& org, const std::string& app) {
+std::shared_ptr<PrefPath> PrefPath::shared(const std::string& org,
+                                           const std::string& app) {
   return std::make_shared<PrefPath>(org, app);
 }
 
-}
+}  // namespace centurion

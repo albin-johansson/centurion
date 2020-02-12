@@ -18,4 +18,4 @@ bool operator!=(SDL_BlendMode a, BlendMode b) noexcept {
   return a != static_cast<SDL_BlendMode>(b);
 }
 
-}
+}  // namespace centurion

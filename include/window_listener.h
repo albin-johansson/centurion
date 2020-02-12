@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,16 +25,17 @@
 #ifndef CENTURION_WINDOW_LISTENER_HEADER
 #define CENTURION_WINDOW_LISTENER_HEADER
 
-#include "centurion_api.h"
 #include <type_traits>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
 class Window;
 
 /**
- * The IWindowListener interface is a one-method interface that specifies objects that can listen
- * for window updates.
+ * The IWindowListener interface is a one-method interface that specifies
+ * objects that can listen for window updates.
  *
  * @since 3.0.0
  */
@@ -54,6 +55,6 @@ class CENTURION_API IWindowListener {
 static_assert(std::has_virtual_destructor<IWindowListener>::value,
               "IWindowListener doesn't have virtual destructor!");
 
-}
+}  // namespace centurion
 
-#endif // CENTURION_WINDOW_LISTENER_HEADER
+#endif  // CENTURION_WINDOW_LISTENER_HEADER

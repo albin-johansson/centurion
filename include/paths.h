@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,15 +25,16 @@
 #ifndef CENTURION_PATHS_HEADER
 #define CENTURION_PATHS_HEADER
 
-#include "centurion_api.h"
-#include <string>
 #include <memory>
+#include <string>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
 /**
- * The AppPath class is a simple wrapper class for a string that represents the application path
- * obtained by SDL_GetBasePath.
+ * The AppPath class is a simple wrapper class for a string that represents the
+ * application path obtained by SDL_GetBasePath.
  *
  * @since 3.0.0
  */
@@ -43,9 +44,9 @@ class CENTURION_API AppPath final {
 
  public:
   /**
-   * Constructs an AppPath object that represents the path of the application executable. Note!
-   * This might be an expensive operation, so it is recommended to create only one instance of
-   * this class and cache it.
+   * Constructs an AppPath object that represents the path of the application
+   * executable. Note! This might be an expensive operation, so it is
+   * recommended to create only one instance of this class and cache it.
    *
    * @since 3.0.0
    */
@@ -58,9 +59,10 @@ class CENTURION_API AppPath final {
   AppPath& operator=(const AppPath&) = delete;
 
   /**
-   * Creates and returns a unique pointer to an AppPath object that represents the path of the
-   * application executable. Note! This might be an expensive operation, so it is recommended to
-   * create only one instance of this class and cache it.
+   * Creates and returns a unique pointer to an AppPath object that represents
+   * the path of the application executable. Note! This might be an expensive
+   * operation, so it is recommended to create only one instance of this class
+   * and cache it.
    *
    * @return a unique pointer to an AppPath instance.
    * @since 3.0.0
@@ -69,9 +71,10 @@ class CENTURION_API AppPath final {
   static std::unique_ptr<AppPath> unique();
 
   /**
-   * Creates and returns a shared pointer to an AppPath object that represents the path of the
-   * application executable. Note! This might be an expensive operation, so it is recommended to
-   * create only one instance of this class and cache it.
+   * Creates and returns a shared pointer to an AppPath object that represents
+   * the path of the application executable. Note! This might be an expensive
+   * operation, so it is recommended to create only one instance of this class
+   * and cache it.
    *
    * @return a shared pointer to an AppPath instance.
    * @since 3.0.0
@@ -89,7 +92,8 @@ class CENTURION_API AppPath final {
   CENTURION_API explicit operator bool() const noexcept;
 
   /**
-   * Returns the path of the application executable. The returned pointer might be null!
+   * Returns the path of the application executable. The returned pointer might
+   * be null!
    *
    * @return the path of the application executable, can be null.
    * @since 3.0.0
@@ -99,8 +103,8 @@ class CENTURION_API AppPath final {
 };
 
 /**
- * The PrefPath class provides a way to obtain the preferred path for where you should
- * store application related files.
+ * The PrefPath class provides a way to obtain the preferred path for where you
+ * should store application related files.
  *
  * @since 3.0.0
  */
@@ -110,7 +114,8 @@ class CENTURION_API PrefPath final {
 
  public:
   /**
-   * Constructs a PrefPath object. Only use letters, numbers, and spaces in the supplied strings!
+   * Constructs a PrefPath object. Only use letters, numbers, and spaces in the
+   * supplied strings!
    *
    * @param org the name of your organization.
    * @param app the name of your application.
@@ -125,8 +130,8 @@ class CENTURION_API PrefPath final {
   PrefPath& operator=(const PrefPath&) = delete;
 
   /**
-   * Creates and returns a unique pointer to a PrefPath object. Only use letters, numbers, and
-   * spaces in the supplied strings!
+   * Creates and returns a unique pointer to a PrefPath object. Only use
+   * letters, numbers, and spaces in the supplied strings!
    *
    * @param org the name of your organization.
    * @param app the name of your application.
@@ -134,11 +139,12 @@ class CENTURION_API PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  static std::unique_ptr<PrefPath> unique(const std::string& org, const std::string& app);
+  static std::unique_ptr<PrefPath> unique(const std::string& org,
+                                          const std::string& app);
 
   /**
-   * Creates and returns a shared pointer to a PrefPath object. Only use letters, numbers, and
-   * spaces in the supplied strings!
+   * Creates and returns a shared pointer to a PrefPath object. Only use
+   * letters, numbers, and spaces in the supplied strings!
    *
    * @param org the name of your organization.
    * @param app the name of your application.
@@ -146,7 +152,8 @@ class CENTURION_API PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  static std::shared_ptr<PrefPath> shared(const std::string& org, const std::string& app);
+  static std::shared_ptr<PrefPath> shared(const std::string& org,
+                                          const std::string& app);
 
   /**
    * Indicates whether or not the path object holds a non-null path.
@@ -167,10 +174,10 @@ class CENTURION_API PrefPath final {
   const char* get() const noexcept { return path; }
 };
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "paths.cpp"
+#include "paths.cpp"
 #endif
 
-#endif // CENTURION_PATHS_HEADER
+#endif  // CENTURION_PATHS_HEADER

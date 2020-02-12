@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -26,16 +26,16 @@
 #define CENTURION_CFG_HEADER
 
 /*
- * This file can be used to configure the behaviour of the Centurion library. Note, You don't need
- * to explicitly include this file!
+ * This file can be used to configure the behaviour of the Centurion library.
+ * Note, You don't need to explicitly include this file!
  *
  * @since 3.2.0
  */
 
 /*
- * Uncomment the following line in order to use Centurion as a header-only library. Note that you
- * still have to link to the SDL2 libraries.
+ * Uncomment the following line in order to use Centurion as a header-only
+ * library. Note that you still have to link to the SDL2 libraries.
  */
 //#define CENTURION_HEADER_ONLY
 
-#endif // CENTURION_CFG_HEADER
+#endif  // CENTURION_CFG_HEADER

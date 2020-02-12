@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,17 +25,20 @@
 #ifndef CENTURION_FONT
 #define CENTURION_FONT
 
-#include "centurion_api.h"
+#include <SDL_ttf.h>
+
+#include <memory>
 #include <optional>
 #include <string>
-#include <memory>
 #include <type_traits>
-#include <SDL_ttf.h>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
 /**
- * The FontHint enum class represents different possible TrueType font hint values.
+ * The FontHint enum class represents different possible TrueType font hint
+ * values.
  *
  * @since 3.1.0
  */
@@ -58,8 +61,9 @@ class CENTURION_API Font final {
   int size = 0;
 
   /**
-   * Enables the font style associated with the supplied bit mask. The possible values are
-   * TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and TTF_STYLE_STRIKETHROUGH.
+   * Enables the font style associated with the supplied bit mask. The possible
+   * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
+   * TTF_STYLE_STRIKETHROUGH.
    *
    * @param mask the bit mask of the font style to enable.
    * @since 3.0.0
@@ -67,8 +71,9 @@ class CENTURION_API Font final {
   CENTURION_API void add_style(int mask) noexcept;
 
   /**
-   * Removes the font style associated with the supplied bit mask. The possible values are
-   * TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and TTF_STYLE_STRIKETHROUGH.
+   * Removes the font style associated with the supplied bit mask. The possible
+   * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
+   * TTF_STYLE_STRIKETHROUGH.
    *
    * @param mask the bit mask of the font style to disable.
    * @since 3.0.0
@@ -129,7 +134,8 @@ class CENTURION_API Font final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Font> unique(const std::string& file, int size);
+  CENTURION_API static std::unique_ptr<Font> unique(const std::string& file,
+                                                    int size);
 
   /**
    * Creates and returns a shared pointer to a font instance.
@@ -142,7 +148,8 @@ class CENTURION_API Font final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Font> shared(const std::string& file, int size);
+  CENTURION_API static std::shared_ptr<Font> shared(const std::string& file,
+                                                    int size);
 
   /**
    * Resets the style of the font.
@@ -178,7 +185,8 @@ class CENTURION_API Font final {
   /**
    * Sets the strikethrough property of the font.
    *
-   * @param strikethrough true if the font should be strikethrough; false otherwise.
+   * @param strikethrough true if the font should be strikethrough; false
+   * otherwise.
    * @since 3.0.0
    */
   CENTURION_API void set_strikethrough(bool strikethrough) noexcept;
@@ -209,8 +217,8 @@ class CENTURION_API Font final {
   CENTURION_API int get_size() const noexcept;
 
   /**
-   * Returns the maximum height of a character in this font. This is usually the same as the
-   * point size.
+   * Returns the maximum height of a character in this font. This is usually the
+   * same as the point size.
    *
    * @return the maximum height of a character in this font.
    * @since 3.0.0
@@ -219,8 +227,8 @@ class CENTURION_API Font final {
   CENTURION_API int get_height() const noexcept;
 
   /**
-   * Returns the offset from the baseline to the bottom of the font characters. The returned
-   * value is negative, relative to the baseline.
+   * Returns the offset from the baseline to the bottom of the font characters.
+   * The returned value is negative, relative to the baseline.
    *
    * @return the offset from the baseline to the bottom of the font characters.
    * @since 3.0.0
@@ -229,8 +237,8 @@ class CENTURION_API Font final {
   CENTURION_API int get_descent() const noexcept;
 
   /**
-   * Returns the offset from the baseline to the top of the font characters. The returned
-   * value is positive, relative to the baseline.
+   * Returns the offset from the baseline to the top of the font characters. The
+   * returned value is positive, relative to the baseline.
    *
    * @return the offset from the baseline to the top of the font characters.
    * @since 3.0.0
@@ -239,8 +247,8 @@ class CENTURION_API Font final {
   CENTURION_API int get_ascent() const noexcept;
 
   /**
-   * Returns the recommended pixel height of rendered text in the font. The returned
-   * value is usually larger than the height of the font.
+   * Returns the recommended pixel height of rendered text in the font. The
+   * returned value is usually larger than the height of the font.
    *
    * @return Returns the recommended pixel height of rendered text in the font.
    * @since 3.0.0
@@ -258,7 +266,8 @@ class CENTURION_API Font final {
   CENTURION_API int get_font_faces() const noexcept;
 
   /**
-   * Returns the TrueType font hinting of the font. Set to FontHint::Normal by default.
+   * Returns the TrueType font hinting of the font. Set to FontHint::Normal by
+   * default.
    *
    * @return the TrueType font hinting of the font.
    * @since 3.1.0
@@ -332,7 +341,8 @@ class CENTURION_API Font final {
 #ifdef CENTURION_HAS_OPTIONAL
 
   /**
-   * Returns the font face style name of the font. This information may not be available.
+   * Returns the font face style name of the font. This information may not be
+   * available.
    *
    * @return the font face style name of the font.
    * @since 3.0.0
@@ -343,20 +353,24 @@ class CENTURION_API Font final {
 #endif
 
   /**
-   * Returns the width of the supplied string, if it was rendered using the font.
+   * Returns the width of the supplied string, if it was rendered using the
+   * font.
    *
    * @param s the string to determine the width of.
-   * @return the width of the supplied string, if it was rendered using the font.
+   * @return the width of the supplied string, if it was rendered using the
+   * font.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API int get_string_width(const std::string& s) const noexcept;
 
   /**
-   * Returns the height of the supplied string, if it was rendered using the font.
+   * Returns the height of the supplied string, if it was rendered using the
+   * font.
    *
    * @param s the string to determine the height of.
-   * @return the height of the supplied string, if it was rendered using the font.
+   * @return the height of the supplied string, if it was rendered using the
+   * font.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -382,8 +396,7 @@ class CENTURION_API Font final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Font>::value,
-              "Font isn't final!");
+static_assert(std::is_final<Font>::value, "Font isn't final!");
 #endif
 
 static_assert(std::is_nothrow_move_constructible<Font>::value,
@@ -401,10 +414,10 @@ static_assert(!std::is_copy_assignable<Font>::value,
 static_assert(std::is_convertible<Font, TTF_Font*>::value,
               "Font isn't convertible to TTF_Font*!");
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "font.cpp"
+#include "font.cpp"
 #endif
 
-#endif // CENTURION_FONT
+#endif  // CENTURION_FONT

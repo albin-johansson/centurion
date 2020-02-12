@@ -52,7 +52,7 @@ set(CATCH_INCLUDE_DIR catch2)
 add_library(Catch2 INTERFACE)
 target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
 
-enable_testing()
+enable_testing() # TODO consider moving to root CMakeLists
 add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
 
 target_include_directories(${CENTURION_TEST} PUBLIC unittests)

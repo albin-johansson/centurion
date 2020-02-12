@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,16 +25,17 @@
 #ifndef CENTURION_COLORS_HEADER
 #define CENTURION_COLORS_HEADER
 
-#include "centurion_api.h"
 #include <cstdint>
+
+#include "centurion_api.h"
 #include "color.h"
 
 namespace centurion {
 
 /**
- * The Colors class is a utility class that provides more than 140 SDL colors. The colors
- * defined in this class were based on
- * <a href=https://www.w3schools.com/colors/colors_names.asp>this</a> list.
+ * The Colors class is a utility class that provides more than 140 SDL colors.
+ * The colors defined in this class were based on <a
+ * href=https://www.w3schools.com/colors/colors_names.asp>this</a> list.
  *
  * @since 3.0.0
  * @author Albin Johansson
@@ -1099,13 +1100,12 @@ class CENTURION_API Colors final {
   CENTURION_API static const Color yellow_green;
 
   Colors() = delete;
-
 };
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "colors.cpp"
+#include "colors.cpp"
 #endif
 
-#endif // CENTURION_COLORS_HEADER
+#endif  // CENTURION_COLORS_HEADER

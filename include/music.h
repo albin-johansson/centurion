@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -27,12 +27,14 @@
 #ifndef CENTURION_MUSIC_HEADER
 #define CENTURION_MUSIC_HEADER
 
-#include "centurion_api.h"
-#include <string>
-#include <memory>
-#include <cstdint>
-#include <type_traits>
 #include <SDL_mixer.h>
+
+#include <cstdint>
+#include <memory>
+#include <string>
+#include <type_traits>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
@@ -109,17 +111,12 @@ CENTURION_NODISCARD
 CENTURION_API bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept;
 
 /**
- * The Music class represents audio files of music. Note! Only one music instance can ever be
- * playing at any time. The supported audio formats are the following:
- * <ul>
- *   <li>WAVE/RIFF (.wav)</li>
- *   <li>AIFF (.aiff)</li>
- *   <li>VOC (.voc)</li>
- *   <li>MOD (.mod .xm .s3m .669 .it .med and more)</li>
- *   <li>MIDI (.mid)</li>
- *   <li>OggVorbis (.ogg)</li>
- *   <li>MP3 (.mp3)</li>
- *   <li>FLAC (.flac)</li>
+ * The Music class represents audio files of music. Note! Only one music
+ * instance can ever be playing at any time. The supported audio formats are the
+ * following: <ul> <li>WAVE/RIFF (.wav)</li> <li>AIFF (.aiff)</li> <li>VOC
+ * (.voc)</li> <li>MOD (.mod .xm .s3m .669 .it .med and more)</li> <li>MIDI
+ * (.mid)</li> <li>OggVorbis (.ogg)</li> <li>MP3 (.mp3)</li> <li>FLAC
+ * (.flac)</li>
  * </ul>
  * @since 3.0.0
  */
@@ -136,7 +133,8 @@ class CENTURION_API Music final {
   CENTURION_API static const int maxVolume;
 
   /**
-   * A constant that can be used to indicate that the music should be looped forever.
+   * A constant that can be used to indicate that the music should be looped
+   * forever.
    *
    * @since 3.0.0
    */
@@ -198,60 +196,63 @@ class CENTURION_API Music final {
   CENTURION_API static std::shared_ptr<Music> shared(const std::string& file);
 
   /**
-   * Plays the music. Previously playing music will be halted. However, this method will wait
-   * for music that was fading out to complete.
+   * Plays the music. Previously playing music will be halted. However, this
+   * method will wait for music that was fading out to complete.
    *
-   * @param nLoops the number of times to loop the music, a negative value is indicates that the
-   * music should be looped forever. The default value is 1.
+   * @param nLoops the number of times to loop the music, a negative value is
+   * indicates that the music should be looped forever. The default value is 1.
    * @since 3.0.0
    */
   CENTURION_API void play(int nLoops = 1) noexcept;
 
   /**
-   * Resumes the music. This method can safely be invoked on halted, paused and even
-   * currently playing music.
+   * Resumes the music. This method can safely be invoked on halted, paused and
+   * even currently playing music.
    *
    * @since 3.0.0
    */
   CENTURION_API static void resume() noexcept;
 
   /**
-   * Pauses any currently playing music. Note! This method only affects music that is currently
-   * playing, which doesn't include music that is being faded in/out.
+   * Pauses any currently playing music. Note! This method only affects music
+   * that is currently playing, which doesn't include music that is being faded
+   * in/out.
    *
    * @since 3.0.0
    */
   CENTURION_API static void pause() noexcept;
 
   /**
-   * Stops ALL currently playing and fading music. Unlike <code>pause</code>, this method affects
-   * all kinds of music.
+   * Stops ALL currently playing and fading music. Unlike <code>pause</code>,
+   * this method affects all kinds of music.
    *
    * @since 3.0.0
    */
   CENTURION_API static void halt() noexcept;
 
   /**
-   * Plays the music by fading it in by the specified amount of time. The fade effect is only
-   * applied to the first iteration of playing the music. Any previously playing music will be
-   * halted. However, if other music is currently being faded out, this music will wait for that
-   * to complete.
+   * Plays the music by fading it in by the specified amount of time. The fade
+   * effect is only applied to the first iteration of playing the music. Any
+   * previously playing music will be halted. However, if other music is
+   * currently being faded out, this music will wait for that to complete.
    *
-   * @param ms the amount of time for the fade to complete, in milliseconds. A negative value is
-   * clamped to 0.
-   * @param nLoops the number of iterations to play the music, a value less than -1 will be
-   * clamped to -1, which indicates that the music should be played forever.
+   * @param ms the amount of time for the fade to complete, in milliseconds. A
+   * negative value is clamped to 0.
+   * @param nLoops the number of iterations to play the music, a value less than
+   * -1 will be clamped to -1, which indicates that the music should be played
+   * forever.
    * @since 3.0.0
    */
   CENTURION_API void fade_in(int ms, int nLoops = 1) noexcept;
 
   /**
-   * Fades out any currently playing music over the specified amount of time. This method only
-   * affects music that is currently playing and not currently fading out. In other words, this
-   * method has no effect if music is currently being faded by the time the method is invoked.
+   * Fades out any currently playing music over the specified amount of time.
+   * This method only affects music that is currently playing and not currently
+   * fading out. In other words, this method has no effect if music is currently
+   * being faded by the time the method is invoked.
    *
-   * @param ms the amount of time for the fade to complete, in milliseconds. A negative value is
-   * clamped to zero.
+   * @param ms the amount of time for the fade to complete, in milliseconds. A
+   * negative value is clamped to zero.
    * @since 3.0.0
    */
   CENTURION_API static void fade_out(int ms);
@@ -259,8 +260,9 @@ class CENTURION_API Music final {
   /**
    * Sets the volume of all music.
    *
-   * @param volume the volume that will be used, in the range [0, Music::maxVolume]. An
-   * out-of-bounds value will be clamped to the closest valid value.
+   * @param volume the volume that will be used, in the range [0,
+   * Music::maxVolume]. An out-of-bounds value will be clamped to the closest
+   * valid value.
    * @since 3.0.0
    */
   CENTURION_API static void set_volume(int volume) noexcept;
@@ -286,14 +288,16 @@ class CENTURION_API Music final {
   /**
    * Indicates whether or not any music is currently being faded in or out.
    *
-   * @return true if any music is currently being faded in or out; false otherwise.
+   * @return true if any music is currently being faded in or out; false
+   * otherwise.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API static bool is_fading() noexcept;
 
   /**
-   * Returns the volume of all music. The default value is set to Music::maxVolume.
+   * Returns the volume of all music. The default value is set to
+   * Music::maxVolume.
    *
    * @return the volume of all music, in the range [0, Music::maxVolume].
    * @since 3.0.0
@@ -339,8 +343,7 @@ class CENTURION_API Music final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Music>::value,
-              "Music isn't final!");
+static_assert(std::is_final<Music>::value, "Music isn't final!");
 #endif
 
 static_assert(!std::is_nothrow_copy_constructible<Music>::value,
@@ -358,11 +361,11 @@ static_assert(std::is_nothrow_move_assignable<Music>::value,
 static_assert(std::is_convertible<Music, Mix_Music*>::value,
               "Music isn't convertible to Mix_Music*!");
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "music.cpp"
+#include "music.cpp"
 #endif
 
-#endif // CENTURION_MUSIC_HEADER
-#endif // CENTURION_NOAUDIO
+#endif  // CENTURION_MUSIC_HEADER
+#endif  // CENTURION_NOAUDIO

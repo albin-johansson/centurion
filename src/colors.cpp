@@ -300,4 +300,4 @@ const Color Colors::yellow{0xFF, 0xFF, 0, 0xFF};
 
 const Color Colors::yellow_green{0x9A, 0xCD, 0x32, 0xFF};
 
-}
+}  // namespace centurion

@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,13 +25,12 @@
 #ifndef CENTURION_HEADER
 #define CENTURION_HEADER
 
-#include "centurion_api.h"
-
-#include <cstdint>
 #include <SDL.h>
 #include <SDL_image.h>
-#include <SDL_ttf.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
+#include <cstdint>
 
 #include "blend_mode.h"
 #include "bool_converter.h"
@@ -40,6 +39,7 @@
 #include "color.h"
 #include "colors.h"
 #include "error.h"
+#include "event.h"
 #include "font.h"
 #include "image.h"
 #include "image_generator.h"
@@ -61,15 +61,17 @@
 namespace centurion {
 
 /**
- * The Centurion class is used to initialize and de-initialize the Centurion library.
+ * The Centurion class is used to initialize and de-initialize the Centurion
+ * library.
  *
  * @since 3.0.0
  */
 class CENTURION_API Centurion final {
  private:
-  static constexpr int img_flags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP;
-  static constexpr int mix_flags = MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID
-      | MIX_INIT_MOD | MIX_INIT_OPUS;
+  static constexpr int img_flags =
+      IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP;
+  static constexpr int mix_flags = MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC |
+                                   MIX_INIT_MID | MIX_INIT_MOD | MIX_INIT_OPUS;
 
   static bool wasInit;
 
@@ -79,7 +81,6 @@ class CENTURION_API Centurion final {
    * @since 3.0.0
    */
   CENTURION_API static void init_sdl();
-
 
   /**
    * Initializes the SDL2_ttf library.
@@ -108,8 +109,8 @@ class CENTURION_API Centurion final {
 
  public:
   /**
-   * Initializes the Centurion library. Creating more than one instance of this class is never
-   * necessary, but doing so is safe.
+   * Initializes the Centurion library. Creating more than one instance of this
+   * class is never necessary, but doing so is safe.
    *
    * @throws CenturionException if any of the SDL libraries can't be loaded.
    * @since 3.0.0
@@ -132,10 +133,10 @@ class CENTURION_API Centurion final {
   Centurion& operator=(Centurion&&) = delete;
 };
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "centurion.cpp"
+#include "centurion.cpp"
 #endif
 
-#endif // CENTURION_HEADER
+#endif  // CENTURION_HEADER

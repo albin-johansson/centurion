@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,69 +25,72 @@
 #ifndef CENTURION_API_HEADER
 #define CENTURION_API_HEADER
 
-#include "centurion_cfg.h"
-#include <type_traits>
-#include <optional>
 #include <memory>
+#include <optional>
+#include <type_traits>
 
-// Define CENTURION_API for any platform https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html
+#include "centurion_cfg.h"
+
+// Define CENTURION_API for any platform
+// https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html
 #if defined(_WIN32) && !defined(CENTURION_HEADER_ONLY)
-# ifdef WIN_EXPORT
-#   define CENTURION_API __declspec(dllexport)
-# else
-#   define CENTURION_API __declspec(dllimport)
-# endif
+#ifdef WIN_EXPORT
+#define CENTURION_API __declspec(dllexport)
 #else
-# define CENTURION_API
+#define CENTURION_API __declspec(dllimport)
+#endif
+#else
+#define CENTURION_API
 #endif
 
 /*
- * The attribute macros are necessary since unknown attributes weren't specified to not cause errors
- * until C++17.
+ * The attribute macros are necessary since unknown attributes weren't specified
+ * to not cause errors until C++17.
  */
 
 #ifndef CENTURION_NODISCARD
-# if defined(__GNUC__)
-#   define CENTURION_NODISCARD __attribute__((warn_unused_result))
-# elif defined(_MSC_VER) && _MSC_VER >= 1700
-#   define CENTURION_NODISCARD _Check_return_
-# else
-#   if __cplusplus >= 201603
-#     define CENTURION_NODISCARD [[nodiscard]]
-#   else
-#     define CENTURION_NODISCARD
-#   endif
-# endif
+#if defined(__GNUC__)
+#define CENTURION_NODISCARD __attribute__((warn_unused_result))
+#elif defined(_MSC_VER) && _MSC_VER >= 1700
+#define CENTURION_NODISCARD _Check_return_
+#else
+#if __cplusplus >= 201603
+#define CENTURION_NODISCARD [[nodiscard]]
+#else
+#define CENTURION_NODISCARD
+#endif
+#endif
 #endif
 
 // An attribute that indicates that something shouldn't be used
 #ifndef CENTURION_DEPRECATED
-# if defined(__GNUC__)
-#   define CENTURION_DEPRECATED __attribute__((deprecated))
-# elif defined(_MSC_VER) && _MSC_VER >= 1300
-#   define CENTURION_DEPRECATED __declspec(deprecated)
-# else
-#   if __cplusplus >= 201309
-#     define CENTURION_DEPRECATED [[deprecated]]
-#   else
-#     define CENTURION_DEPRECATED
-#   endif
-# endif
+#if defined(__GNUC__)
+#define CENTURION_DEPRECATED __attribute__((deprecated))
+#elif defined(_MSC_VER) && _MSC_VER >= 1300
+#define CENTURION_DEPRECATED __declspec(deprecated)
+#else
+#if __cplusplus >= 201309
+#define CENTURION_DEPRECATED [[deprecated]]
+#else
+#define CENTURION_DEPRECATED
+#endif
+#endif
 #endif
 
 // Indicates whether or not std::optional is available (added in C++17)
 #if !defined(CENTURION_HAS_OPTIONAL) && defined(__cpp_lib_optional)
-# define CENTURION_HAS_OPTIONAL
+#define CENTURION_HAS_OPTIONAL
 #endif
 
-// Indicates whether or not the std::is_final type trait check is available (added in C++14)
+// Indicates whether or not the std::is_final type trait check is available
+// (added in C++14)
 #if !defined(CENTURION_HAS_IS_FINAL_TYPE_TRAIT) && defined(__cpp_lib_is_final)
-# define CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+#define CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 #endif
 
 // Indicates whether or not std::make_unique is available (added in C++14)
 #if !defined(CENTURION_HAS_MAKE_UNIQUE) && defined(__cpp_lib_make_unique)
-# define CENTURION_HAS_MAKE_UNIQUE
+#define CENTURION_HAS_MAKE_UNIQUE
 #endif
 
-#endif // CENTURION_API_HEADER
+#endif  // CENTURION_API_HEADER

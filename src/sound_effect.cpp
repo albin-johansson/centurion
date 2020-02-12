@@ -1,6 +1,7 @@
 #ifndef CENTURION_NOAUDIO
 
 #include "sound_effect.h"
+
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "error.h"
@@ -67,7 +68,9 @@ void SoundEffect::activate(int nLoops) noexcept {
 }
 
 void SoundEffect::play(int nLoops) noexcept {
-  if (nLoops < 0) { nLoops = loopForever; }
+  if (nLoops < 0) {
+    nLoops = loopForever;
+  }
   activate(nLoops);
 }
 
@@ -95,14 +98,16 @@ void SoundEffect::fade_out(int ms) noexcept {
 }
 
 void SoundEffect::set_volume(int volume) noexcept {
-  if (volume < 0) { volume = 0; }
-  if (volume > get_max_volume()) { volume = get_max_volume(); }
+  if (volume < 0) {
+    volume = 0;
+  }
+  if (volume > get_max_volume()) {
+    volume = get_max_volume();
+  }
   Mix_VolumeChunk(chunk, volume);
 }
 
-int SoundEffect::get_volume() const noexcept {
-  return chunk->volume;
-}
+int SoundEffect::get_volume() const noexcept { return chunk->volume; }
 
 bool SoundEffect::is_playing() const noexcept {
   return (channel != undefinedChannel) && Mix_Playing(channel);
@@ -114,10 +119,8 @@ std::string SoundEffect::to_string() const {
   return "[SoundEffect@" + address + " | Volume: " + volume + "]";
 }
 
-SoundEffect::operator Mix_Chunk*() const noexcept {
-  return chunk;
-}
+SoundEffect::operator Mix_Chunk*() const noexcept { return chunk; }
 
-}
+}  // namespace centurion
 
 #endif

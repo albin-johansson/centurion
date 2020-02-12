@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,18 +25,20 @@
 #ifndef CENTURION_KEY_STATE_HEADER
 #define CENTURION_KEY_STATE_HEADER
 
-#include "centurion_api.h"
-#include <cstdint>
+#include <SDL.h>
+
 #include <array>
+#include <cstdint>
 #include <memory>
 #include <type_traits>
-#include <SDL.h>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
 /**
- * The KeyState class provides information about the keyboard state. Using the keyboard state is
- * an alternative to using events for keyboard input.
+ * The KeyState class provides information about the keyboard state. Using the
+ * keyboard state is an alternative to using events for keyboard input.
  *
  * @since 3.0.0
  */
@@ -72,7 +74,8 @@ class CENTURION_API KeyState final {
   CENTURION_API static std::shared_ptr<KeyState> shared();
 
   /**
-   * Updates the state of the key state object. Note! SDL_PollEvent isn't invoked by this method.
+   * Updates the state of the key state object. Note! SDL_PollEvent isn't
+   * invoked by this method.
    *
    * @since 3.0.0
    */
@@ -89,8 +92,8 @@ class CENTURION_API KeyState final {
   CENTURION_API bool is_pressed(SDL_Scancode code) const noexcept;
 
   /**
-   * Indicates whether or not the specified key has been pressed during more than one
-   * update of the key state.
+   * Indicates whether or not the specified key has been pressed during more
+   * than one update of the key state.
    *
    * @param code the scancode of the key that will be checked.
    * @return true if the key has been held down; false otherwise.
@@ -100,7 +103,8 @@ class CENTURION_API KeyState final {
   CENTURION_API bool is_held(SDL_Scancode code) const noexcept;
 
   /**
-   * Indicates whether or not a key just became pressed in the last update of the key state.
+   * Indicates whether or not a key just became pressed in the last update of
+   * the key state.
    *
    * @param code the scancode of the key that will be checked.
    * @return true if the key has just been pressed; false otherwise.
@@ -110,7 +114,8 @@ class CENTURION_API KeyState final {
   CENTURION_API bool was_just_pressed(SDL_Scancode code) const noexcept;
 
   /**
-   * Indicates whether or not the specified key was released in the last update of the key state.
+   * Indicates whether or not the specified key was released in the last update
+   * of the key state.
    *
    * @param code the scancode of the key that will be checked.
    * @return true if the key was released; false otherwise.
@@ -129,8 +134,7 @@ class CENTURION_API KeyState final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<KeyState>::value,
-              "KeyState isn't final!");
+static_assert(std::is_final<KeyState>::value, "KeyState isn't final!");
 #endif
 
 static_assert(std::is_default_constructible<KeyState>::value,
@@ -151,10 +155,10 @@ static_assert(std::is_nothrow_copy_constructible<KeyState>::value,
 static_assert(std::is_nothrow_copy_assignable<KeyState>::value,
               "KeyState isn't nothrow copy assignable!");
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "key_state.cpp"
+#include "key_state.cpp"
 #endif
 
-#endif // CENTURION_KEY_STATE_HEADER
+#endif  // CENTURION_KEY_STATE_HEADER

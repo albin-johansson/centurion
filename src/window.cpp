@@ -1,9 +1,12 @@
 #include "window.h"
-#include <stdexcept>
+
 #include <SDL_image.h>
-#include "window_listener.h"
+
+#include <stdexcept>
+
 #include "bool_converter.h"
 #include "centurion_utils.h"
+#include "window_listener.h"
 
 namespace centurion {
 
@@ -23,7 +26,8 @@ Window::Window(const std::string& title, int width, int height) {
   }
 }
 
-Window::Window(int width, int height) : Window("Centurion window", width, height) {}
+Window::Window(int width, int height)
+    : Window("Centurion window", width, height) {}
 
 Window::Window(const std::string& title) : Window(title, 800, 600) {}
 
@@ -55,7 +59,8 @@ Window& Window::operator=(Window&& other) noexcept {
   return *this;
 }
 
-std::unique_ptr<Window> Window::unique(const std::string& title, int width, int height) {
+std::unique_ptr<Window> Window::unique(const std::string& title, int width,
+                                       int height) {
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Window>(title, width, height);
 #else
@@ -87,7 +92,8 @@ std::unique_ptr<Window> Window::unique() {
 #endif
 }
 
-std::shared_ptr<Window> Window::shared(const std::string& title, int width, int height) {
+std::shared_ptr<Window> Window::shared(const std::string& title, int width,
+                                       int height) {
   return std::make_shared<Window>(title, width, height);
 }
 
@@ -99,9 +105,7 @@ std::shared_ptr<Window> Window::shared(const std::string& title) {
   return std::make_shared<Window>(title);
 }
 
-std::shared_ptr<Window> Window::shared() {
-  return std::make_shared<Window>();
-}
+std::shared_ptr<Window> Window::shared() { return std::make_shared<Window>(); }
 
 void Window::notify_window_listeners() noexcept {
   const auto& self = *this;
@@ -149,8 +153,9 @@ void Window::add_window_listener(IWindowListener* listener) noexcept {
 }
 
 void Window::set_fullscreen(bool fullscreen) noexcept {
-  const auto flags = (fullscreen) ? (SDL_GetWindowFlags(window) | SDL_WINDOW_FULLSCREEN)
-                                  : (SDL_GetWindowFlags(window) & ~SDL_WINDOW_FULLSCREEN);
+  const auto flags =
+      (fullscreen) ? (SDL_GetWindowFlags(window) | SDL_WINDOW_FULLSCREEN)
+                   : (SDL_GetWindowFlags(window) & ~SDL_WINDOW_FULLSCREEN);
   SDL_SetWindowFullscreen(window, flags);
 
   if (!fullscreen) {
@@ -205,7 +210,8 @@ void Window::set_gamma(float gamma) noexcept {
   }
 }
 
-void Window::set_opacity(float opacity) noexcept { // TODO doc: the window must be visible?
+void Window::set_opacity(
+    float opacity) noexcept {  // TODO doc: the window must be visible?
   SDL_SetWindowOpacity(window, opacity);
   notify_window_listeners();
 }
@@ -275,7 +281,7 @@ float Window::get_brightness() const noexcept {
   return SDL_GetWindowBrightness(window);
 }
 
-int Window::get_id() const noexcept { // TODO change to uint32_t
+int Window::get_id() const noexcept {  // TODO change to uint32_t
   return static_cast<int>(SDL_GetWindowID(window));
 }
 
@@ -355,11 +361,10 @@ std::string Window::to_string() const {
   const auto address = CenturionUtils::address(this);
   const auto width = std::to_string(get_width());
   const auto height = std::to_string(get_height());
-  return "[Window@" + address + " | Width: " + width + ", Height: " + height + "]";
+  return "[Window@" + address + " | Width: " + width + ", Height: " + height +
+         "]";
 }
 
-Window::operator SDL_Window*() const noexcept {
-  return window;
-}
+Window::operator SDL_Window*() const noexcept { return window; }
 
-}
+}  // namespace centurion

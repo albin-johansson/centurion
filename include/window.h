@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,23 +25,26 @@
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
-#include "centurion_api.h"
-#include <string>
-#include <vector>
-#include <utility>
+#include <SDL.h>
+
+#include <gsl>
 #include <memory>
 #include <optional>
+#include <string>
 #include <type_traits>
-#include <gsl>
-#include <SDL.h>
+#include <utility>
+#include <vector>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
 class IWindowListener;
 
 /**
- * The Window class is a wrapper around an SDL_Window instance. Window instances can't be copied.
- * Instances of the Window class can be implicitly converted to SDL_Window*.
+ * The Window class is a wrapper around an SDL_Window instance. Window instances
+ * can't be copied. Instances of the Window class can be implicitly converted to
+ * SDL_Window*.
  *
  * @see IWindowListener
  * @since 3.0.0
@@ -60,9 +63,10 @@ class CENTURION_API Window final {
 
  public:
   /**
-   * Creates a window instance. The window will be hidden by default. When a window is being
-   * created, it will look for a file called "centurion_icon.png", which it will attempt to use
-   * as the default icon. However, the window can be created without any problem with the file
+   * Creates a window instance. The window will be hidden by default. When a
+   * window is being created, it will look for a file called
+   * "centurion_icon.png", which it will attempt to use as the default icon.
+   * However, the window can be created without any problem with the file
    * missing.
    *
    * @param title the title of thw window.
@@ -72,7 +76,8 @@ class CENTURION_API Window final {
    * greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(const std::string& title, int width, int height);
+  CENTURION_API explicit Window(const std::string& title, int width,
+                                int height);
 
   /**
    * Creates a window instance. The window will be hidden by default.
@@ -101,7 +106,8 @@ class CENTURION_API Window final {
   CENTURION_API Window();
 
   /**
-   * Creates a window by moving the contents of the supplied window into the new window.
+   * Creates a window by moving the contents of the supplied window into the new
+   * window.
    *
    * @param other the window that will be moved.
    * @since 3.0.0
@@ -137,8 +143,7 @@ class CENTURION_API Window final {
    */
   CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Window> unique(const std::string& title,
-                                                      int width,
-                                                      int height);
+                                                      int width, int height);
 
   /**
    * Creates and returns a unique pointer to a window instance.
@@ -185,8 +190,7 @@ class CENTURION_API Window final {
    */
   CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Window> shared(const std::string& title,
-                                                      int width,
-                                                      int height);
+                                                      int width, int height);
 
   /**
    * Creates and returns a shared pointer to a window instance.
@@ -235,14 +239,16 @@ class CENTURION_API Window final {
   CENTURION_API void hide() noexcept;
 
   /**
-   * Centers the window position relative to the screen. Triggers a window listener update.
+   * Centers the window position relative to the screen. Triggers a window
+   * listener update.
    *
    * @since 3.0.0
    */
   CENTURION_API void center() noexcept;
 
   /**
-   * Raises this window above other windows and requests focus. Triggers a window listener update.
+   * Raises this window above other windows and requests focus. Triggers a
+   * window listener update.
    *
    * @since 3.0.0
    */
@@ -263,8 +269,8 @@ class CENTURION_API Window final {
   CENTURION_API void minimise() noexcept;
 
   /**
-   * Adds a window listener to the window. Null listener are always silently ignored. The window
-   * takes no ownership of supplied pointers.
+   * Adds a window listener to the window. Null listener are always silently
+   * ignored. The window takes no ownership of supplied pointers.
    *
    * @param listener a window listener, may be null.
    * @since 3.0.0
@@ -272,7 +278,8 @@ class CENTURION_API Window final {
   CENTURION_API void add_window_listener(IWindowListener* listener) noexcept;
 
   /**
-   * Sets whether or not the window is in fullscreen mode. Triggers a window listener update.
+   * Sets whether or not the window is in fullscreen mode. Triggers a window
+   * listener update.
    *
    * @param fullscreen true if the window should enable fullscreen mode; false
    * otherwise.
@@ -281,8 +288,8 @@ class CENTURION_API Window final {
   CENTURION_API void set_fullscreen(bool fullscreen) noexcept;
 
   /**
-   * Sets whether or not the window is decorated. Triggers a window listener update. This property
-   * is enabled by default.
+   * Sets whether or not the window is decorated. Triggers a window listener
+   * update. This property is enabled by default.
    *
    * @param decorated true if the window should be decorated; false otherwise.
    * @since 3.0.0
@@ -290,7 +297,8 @@ class CENTURION_API Window final {
   CENTURION_API void set_decorated(bool decorated) noexcept;
 
   /**
-   * Sets whether or not the window should be resizable. Triggers a window listener update.
+   * Sets whether or not the window should be resizable. Triggers a window
+   * listener update.
    *
    * @param isResizable true if the window should be resizable; false otherwise.
    * @since 3.0.0
@@ -317,10 +325,11 @@ class CENTURION_API Window final {
   CENTURION_API void set_height(int height);
 
   /**
-   * Sets the icon that will be used by the window. Triggers a window listener update. The
-   * supplied pointer should be freed by the caller.
+   * Sets the icon that will be used by the window. Triggers a window listener
+   * update. The supplied pointer should be freed by the caller.
    *
-   * @param icon a pointer to the surface that will serve as the icon of the window.
+   * @param icon a pointer to the surface that will serve as the icon of the
+   * window.
    * @since 3.0.0
    */
   CENTURION_API void set_icon(gsl::not_null<SDL_Surface*> icon) noexcept;
@@ -334,9 +343,9 @@ class CENTURION_API Window final {
   CENTURION_API void set_title(const std::string& title) noexcept;
 
   /**
-   * Sets the gamma brightness of the window. This operation is only supported if the window is
-   * in fullscreen mode. This property will be reset every time the fullscreen mode is exited.
-   * Triggers a window listener update.
+   * Sets the gamma brightness of the window. This operation is only supported
+   * if the window is in fullscreen mode. This property will be reset every time
+   * the fullscreen mode is exited. Triggers a window listener update.
    *
    * @param gamma the brightness value, in the range [0, 1].
    * @since 3.0.0
@@ -346,8 +355,8 @@ class CENTURION_API Window final {
   /**
    * Sets the opacity of the window. Triggers a window listener update.
    *
-   * @param opacity the opacity, in the range [0, 1]. This value will be clamped to a value in
-   * the legal range internally.
+   * @param opacity the opacity, in the range [0, 1]. This value will be clamped
+   * to a value in the legal range internally.
    * @since 3.0.0
    */
   CENTURION_API void set_opacity(float opacity) noexcept;
@@ -371,8 +380,9 @@ class CENTURION_API Window final {
   CENTURION_API void set_max_size(int width, int height) noexcept;
 
   /**
-   * Sets the position of the window. Note, it's possible to use SDL_WINDOWPOS_CENTERED or
-   * SDL_WINDOWPOS_UNDEFINED as any of the arguments. Triggers a window listener update.
+   * Sets the position of the window. Note, it's possible to use
+   * SDL_WINDOWPOS_CENTERED or SDL_WINDOWPOS_UNDEFINED as any of the arguments.
+   * Triggers a window listener update.
    *
    * @param x the screen x-coordinate that the window will adapt.
    * @param y the screen y-coordinate that the window will adapt.
@@ -381,25 +391,28 @@ class CENTURION_API Window final {
   CENTURION_API void set_position(int x, int y) noexcept;
 
   /**
-   * Sets whether or not the mouse should be confined within the window. This property is disabled
-   * by default. Triggers a window listener update.
+   * Sets whether or not the mouse should be confined within the window. This
+   * property is disabled by default. Triggers a window listener update.
    *
-   * @param grabMouse true if the mouse should be confined within the window; false otherwise.
+   * @param grabMouse true if the mouse should be confined within the window;
+   * false otherwise.
    * @since 3.0.0
    */
   CENTURION_API void set_grab_mouse(bool grabMouse) noexcept;
 
   /**
-   * Sets the overall brightness of the window. Triggers a window listener update.
+   * Sets the overall brightness of the window. Triggers a window listener
+   * update.
    *
-   * @param brightness the brightness value, in the range [0, 1]. A value outside this range will
-   * be clamped to the closest valid value.
+   * @param brightness the brightness value, in the range [0, 1]. A value
+   * outside this range will be clamped to the closest valid value.
    * @since 3.0.0
    */
   CENTURION_API void set_brightness(float brightness) noexcept;
 
   /**
-   * Indicates whether or not the window is decorated. The window is decorated by default.
+   * Indicates whether or not the window is decorated. The window is decorated
+   * by default.
    *
    * @return true if the window is decorated; false otherwise.
    * @since 3.0.0
@@ -444,7 +457,8 @@ class CENTURION_API Window final {
   CENTURION_API bool is_visible() const noexcept;
 
   /**
-   * Returns the current brightness value of the window. The default value of this property is 1.
+   * Returns the current brightness value of the window. The default value of
+   * this property is 1.
    *
    * @return the current brightness of the window, in the range [0, 1].
    * @since 3.0.0
@@ -493,8 +507,8 @@ class CENTURION_API Window final {
   /**
    * Returns the display index associated with the window.
    *
-   * @return the display index associated with the window; std::nullopt if the display index cannot
-   * be obtained.
+   * @return the display index associated with the window; std::nullopt if the
+   * display index cannot be obtained.
    * @since 3.1.0
    */
   CENTURION_NODISCARD
@@ -548,12 +562,12 @@ class CENTURION_API Window final {
   CENTURION_API int get_height() const noexcept;
 
   /**
-   * Returns any renderer that is associated with this window. Note! If no renderer is associated
-   * with the window, then a null pointer is returned. Please don't take ownership of the
-   * returned renderer.
+   * Returns any renderer that is associated with this window. Note! If no
+   * renderer is associated with the window, then a null pointer is returned.
+   * Please don't take ownership of the returned renderer.
    *
-   * @return a pointer to the renderer that is associated with this window; null if no such
-   * renderer exists.
+   * @return a pointer to the renderer that is associated with this window; null
+   * if no such renderer exists.
    * @since 3.1.0
    */
   CENTURION_NODISCARD
@@ -563,8 +577,9 @@ class CENTURION_API Window final {
    * Returns the pixel format of the window.
    *
    * @return the pixel format of the window.
-   * @deprecated this method will return a PixelFormat value in a future version of Centurion.
-   * It's safe to use static cast to convert the returned value to PixelFormat.
+   * @deprecated this method will return a PixelFormat value in a future version
+   * of Centurion. It's safe to use static cast to convert the returned value to
+   * PixelFormat.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -599,8 +614,7 @@ class CENTURION_API Window final {
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Window>::value,
-              "Window isn't final!");
+static_assert(std::is_final<Window>::value, "Window isn't final!");
 #endif
 
 static_assert(std::is_nothrow_move_assignable<Window>::value,
@@ -624,10 +638,10 @@ static_assert(std::is_default_constructible<Window>::value,
 static_assert(std::is_nothrow_destructible<Window>::value,
               "Window isn't nothrow destructible!");
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "window.cpp"
+#include "window.cpp"
 #endif
 
-#endif // CENTURION_WINDOW_HEADER
+#endif  // CENTURION_WINDOW_HEADER

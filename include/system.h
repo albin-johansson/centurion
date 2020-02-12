@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -25,28 +25,25 @@
 #ifndef CENTURION_SYSTEM_HEADER
 #define CENTURION_SYSTEM_HEADER
 
-#include "centurion_api.h"
-#include <optional>
 #include <SDL.h>
+
+#include <optional>
+
+#include "centurion_api.h"
 
 namespace centurion {
 
 /**
- * An enum class that provides values that represent various different operating systems.
+ * An enum class that provides values that represent various different operating
+ * systems.
  *
  * @since 3.0.0
  */
-enum class Platform {
-  Unknown,
-  Windows,
-  MacOSX,
-  Linux,
-  Ios,
-  Android
-};
+enum class Platform { Unknown, Windows, MacOSX, Linux, Ios, Android };
 
 /**
- * The System class is a general utility class that provides information about the operating system.
+ * The System class is a general utility class that provides information about
+ * the operating system.
  *
  * @since 3.0.0
  */
@@ -68,7 +65,8 @@ class CENTURION_API System final {
   /**
    * Returns the name of the current platform.
    *
-   * @return the name of the current platform; std::nullopt if the name cannot be deduced.
+   * @return the name of the current platform; std::nullopt if the name cannot
+   * be deduced.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -78,7 +76,8 @@ class CENTURION_API System final {
 };
 
 /**
- * The CPU class is a utility class that provides information related to, unsurprisingly, the CPU.
+ * The CPU class is a utility class that provides information related to,
+ * unsurprisingly, the CPU.
  *
  * @since 3.0.0
  */
@@ -128,8 +127,8 @@ class CENTURION_API CPU final {
 };
 
 /**
- * The RAM class is a utility class that provides information related to, unsurprisingly, the
- * system RAM.
+ * The RAM class is a utility class that provides information related to,
+ * unsurprisingly, the system RAM.
  *
  * @since 3.0.0
  */
@@ -162,13 +161,16 @@ class CENTURION_API RAM final {
  * Unknown: Indicates that the power status is unknown.
  *
  * <p>
- * OnBattery: Indicates that the device isn't plugged in and is running on the battery.
+ * OnBattery: Indicates that the device isn't plugged in and is running on the
+ * battery.
  *
  * <p>
- * NoBattery: Indicates that the device is plugged in and no battery is available.
+ * NoBattery: Indicates that the device is plugged in and no battery is
+ * available.
  *
  * <p>
- * Charging: Indicates that the device is plugged in and the battery is charging.
+ * Charging: Indicates that the device is plugged in and the battery is
+ * charging.
  *
  * <p>
  * Charged: Indicates that the device is plugged in and the battery is charged.
@@ -221,8 +223,8 @@ class CENTURION_API Power final {
   /**
    * Returns the seconds of battery life that is remaining.
    *
-   * @return the seconds of battery life that is remaining; std::nullopt if the value cannot be
-   * computed.
+   * @return the seconds of battery life that is remaining; std::nullopt if the
+   * value cannot be computed.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -231,8 +233,8 @@ class CENTURION_API Power final {
   /**
    * Returns the amount of minutes of battery life that is remaining.
    *
-   * @return the amount of minutes of battery life that is remaining; std::nullopt if the value
-   * cannot be computed.
+   * @return the amount of minutes of battery life that is remaining;
+   * std::nullopt if the value cannot be computed.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -241,8 +243,8 @@ class CENTURION_API Power final {
   /**
    * Returns the percentage of battery life that is currently left.
    *
-   * @return the percentage of battery life that is currently left, in the range [0, 100];
-   * std::nullopt if the battery percentage isn't available.
+   * @return the percentage of battery life that is currently left, in the range
+   * [0, 100]; std::nullopt if the battery percentage isn't available.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -306,10 +308,10 @@ class CENTURION_API Screen final {
   CENTURION_API static uint32_t get_pixel_format() noexcept;
 };
 
-}
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-# include "system.cpp"
+#include "system.cpp"
 #endif
 
-#endif // CENTURION_SYSTEM_HEADER
+#endif  // CENTURION_SYSTEM_HEADER

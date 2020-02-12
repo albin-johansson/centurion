@@ -1,7 +1,9 @@
 #include "key_state.h"
-#include <string>
+
 #include <algorithm>
 #include <cassert>
+#include <string>
+
 #include "centurion_exception.h"
 #include "error.h"
 
@@ -48,8 +50,6 @@ bool KeyState::was_just_released(SDL_Scancode code) const noexcept {
   return !states[code] && previousStates[code];
 }
 
-int KeyState::get_amount_of_keys() const noexcept {
-  return nKeys;
-}
+int KeyState::get_amount_of_keys() const noexcept { return nKeys; }
 
-}
+}  // namespace centurion

@@ -1,5 +1,7 @@
 #include "image.h"
+
 #include <SDL_image.h>
+
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "error.h"
@@ -20,34 +22,28 @@ Image::Image(gsl::not_null<SDL_Renderer*> renderer, const std::string& path) {
   }
 }
 
-Image::Image(gsl::not_null<SDL_Renderer*> renderer, gsl::not_null<SDL_Surface*> surface) {
+Image::Image(gsl::not_null<SDL_Renderer*> renderer,
+             gsl::not_null<SDL_Surface*> surface) {
   this->texture = SDL_CreateTextureFromSurface(renderer, surface);
   if (!texture) {
-    throw CenturionException{"Failed to create image from surface! " + Error::msg()};
+    throw CenturionException{"Failed to create image from surface! " +
+                             Error::msg()};
   }
 }
 
-Image::Image(gsl::not_null<SDL_Renderer*> renderer,
-             uint32_t format,
-             TextureAccess access,
-             int width,
-             int height) {
-  texture = SDL_CreateTexture(renderer, format, static_cast<int>(access), width, height);
+Image::Image(gsl::not_null<SDL_Renderer*> renderer, uint32_t format,
+             TextureAccess access, int width, int height) {
+  texture = SDL_CreateTexture(renderer, format, static_cast<int>(access), width,
+                              height);
   if (!texture) {
     throw CenturionException{"Failed to create image! " + Error::msg()};
   }
 }
 
-Image::Image(gsl::not_null<SDL_Renderer*> renderer,
-             PixelFormat format,
-             TextureAccess access,
-             int width,
-             int height) {
-  texture = SDL_CreateTexture(renderer,
-                              static_cast<uint32_t>(format),
-                              static_cast<int>(access),
-                              width,
-                              height);
+Image::Image(gsl::not_null<SDL_Renderer*> renderer, PixelFormat format,
+             TextureAccess access, int width, int height) {
+  texture = SDL_CreateTexture(renderer, static_cast<uint32_t>(format),
+                              static_cast<int>(access), width, height);
   if (!texture) {
     throw CenturionException{"Failed to create image! " + Error::msg()};
   }
@@ -102,10 +98,8 @@ std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
 }
 
 std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
-                                     uint32_t format,
-                                     TextureAccess access,
-                                     int width,
-                                     int height) {
+                                     uint32_t format, TextureAccess access,
+                                     int width, int height) {
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Image>(renderer, format, access, width, height);
 #else
@@ -114,10 +108,8 @@ std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
 }
 
 std::unique_ptr<Image> Image::unique(gsl::not_null<SDL_Renderer*> renderer,
-                                     PixelFormat format,
-                                     TextureAccess access,
-                                     int width,
-                                     int height) {
+                                     PixelFormat format, TextureAccess access,
+                                     int width, int height) {
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Image>(renderer, format, access, width, height);
 #else
@@ -140,18 +132,14 @@ std::shared_ptr<Image> Image::shared(gsl::not_null<SDL_Renderer*> renderer,
 }
 
 std::shared_ptr<Image> Image::shared(gsl::not_null<SDL_Renderer*> renderer,
-                                     uint32_t format,
-                                     TextureAccess access,
-                                     int width,
-                                     int height) {
+                                     uint32_t format, TextureAccess access,
+                                     int width, int height) {
   return std::make_shared<Image>(renderer, format, access, width, height);
 }
 
 std::shared_ptr<Image> Image::shared(gsl::not_null<SDL_Renderer*> renderer,
-                                     PixelFormat format,
-                                     TextureAccess access,
-                                     int width,
-                                     int height) {
+                                     PixelFormat format, TextureAccess access,
+                                     int width, int height) {
   return std::make_shared<Image>(renderer, format, access, width, height);
 }
 
@@ -164,7 +152,8 @@ void Image::set_blend_mode(BlendMode mode) noexcept {
 }
 
 void Image::set_color_mod(Color color) noexcept {
-  SDL_SetTextureColorMod(texture, color.get_red(), color.get_green(), color.get_blue());
+  SDL_SetTextureColorMod(texture, color.get_red(), color.get_green(),
+                         color.get_blue());
 }
 
 uint32_t Image::get_format() const noexcept {
@@ -221,20 +210,17 @@ Color Image::get_color_mod() const noexcept {
   return {r, g, b, 0xFF};
 }
 
-SDL_Texture* Image::get_texture() noexcept {
-  return texture;
-}
+SDL_Texture* Image::get_texture() noexcept { return texture; }
 
 std::string Image::to_string() const {
   const auto address = CenturionUtils::address(this);
   const auto width = std::to_string(get_width());
   const auto height = std::to_string(get_height());
-  return "[Image@" + address + " | Width: " + width + ", Height: " + height + "]";
+  return "[Image@" + address + " | Width: " + width + ", Height: " + height +
+         "]";
 }
 
-Image::operator SDL_Texture*() const noexcept {
-  return texture;
-}
+Image::operator SDL_Texture*() const noexcept { return texture; }
 
 bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept {
   return static_cast<SDL_TextureAccess>(a) == b;
@@ -268,4 +254,4 @@ bool operator!=(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept {
   return lhs != static_cast<SDL_PixelFormatEnum>(rhs);
 }
 
-}
+}  // namespace centurion

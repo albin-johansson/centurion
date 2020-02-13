@@ -164,6 +164,7 @@ inline bool operator!=(SDL_EventType lhs, EventType rhs) noexcept {
 
 /**
  * The ButtonState enum class provides the possible states for a button.
+ * Corresponds to the SDL_RELEASED and SDL_PRESSED macros.
  *
  * @since 3.1.0
  */
@@ -240,6 +241,40 @@ CENTURION_NODISCARD
 inline bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept {
   return !(lhs == rhs);
 }
+
+/**
+ * The WindowEvent class is a wrapper for the SDL_WindowEvent struct.
+ *
+ * @since 3.2.0
+ */
+class CENTURION_API WindowEvent final {
+ private:
+  SDL_WindowEvent event;
+
+ public:
+  CENTURION_API explicit WindowEvent(const SDL_WindowEvent& sdlEvent) noexcept;
+
+  // TODO 3.2.0
+
+  /**
+   * Returns the ID of the parent window of the event.
+   *
+   * @return the ID of the parent window of the event.
+   * @since 3.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API uint32_t get_window_id() const noexcept;
+
+  /**
+   * Returns the time that the event was created. The value is obtained through
+   * SDL_GetTicks.
+   *
+   * @return the time that the event was created, in milliseconds.
+   * @since 3.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API uint32_t get_time() const noexcept;
+};
 
 /**
  * The KeyEvent class is a wrapper for the SDL_KeyboardEvent struct.

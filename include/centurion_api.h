@@ -77,6 +77,13 @@
 #endif
 #endif
 
+// When header-only mode is enabled, definitions are specified as inline
+#if !defined(CENTURION_DEF) && defined(CENTURION_HEADER_ONLY)
+#define CENTURION_DEF inline
+#else
+#define CENTURION_DEF
+#endif
+
 // Indicates whether or not std::optional is available (added in C++17)
 #if !defined(CENTURION_HAS_OPTIONAL) && defined(__cpp_lib_optional)
 #define CENTURION_HAS_OPTIONAL

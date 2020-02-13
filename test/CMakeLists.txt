@@ -61,6 +61,7 @@ target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_
 target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_INCLUDE_DIR})
+target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_SOURCE_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_LIBRARY_DIR})
 target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_LIBRARY_DIR}/gsl)
 
@@ -79,7 +80,7 @@ target_link_libraries(${CENTURION_TEST}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
-        PUBLIC ${CENTURION_LIBRARIES}
+        # PUBLIC ${CENTURION_LIBRARIES}
         PUBLIC Catch2)
 
 catch_discover_tests(${CENTURION_TEST})

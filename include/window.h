@@ -37,6 +37,7 @@
 
 #include "centurion_api.h"
 
+
 namespace centurion {
 
 class IWindowListener;
@@ -640,8 +641,9 @@ static_assert(std::is_nothrow_destructible<Window>::value,
 
 }  // namespace centurion
 
-#ifdef CENTURION_HEADER_ONLY
-#include "window.cpp"
+#if defined(CENTURION_HEADER_ONLY) && !defined(WINDOW_SOURCE)
+#define WINDOW_SOURCE "window.cpp"
+#include WINDOW_SOURCE
 #endif
 
 #endif  // CENTURION_WINDOW_HEADER

@@ -28,6 +28,7 @@
 #include <SDL_log.h>
 
 #include <type_traits>
+#include <cstdarg>
 
 #include "centurion_api.h"
 
@@ -194,8 +195,9 @@ static_assert(!std::is_move_assignable<Log>::value, "Log is move assignable!");
 
 }  // namespace centurion
 
-#ifdef CENTURION_HEADER_ONLY
-#include "log.cpp"
+#if defined(CENTURION_HEADER_ONLY) && !defined(LOG_SOURCE)
+#	define LOG_SOURCE "log.cpp"
+#	include LOG_SOURCE
 #endif
 
 #endif  // CENTURION_LOG_HEADER

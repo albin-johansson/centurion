@@ -34,7 +34,6 @@ set(SOURCE_FILES
         renderer.cpp
         image.cpp
         sound_effect.cpp
-        centurion_exception.cpp
         centurion.cpp
         colors.cpp
         image_generator.cpp

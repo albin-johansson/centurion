@@ -1,16 +1,25 @@
+#ifndef CENTURION_ERROR_SOURCE
+#define CENTURION_ERROR_SOURCE
+
 #include "error.h"
 
 #include <SDL.h>
 
 namespace centurion {
 
-const char* Error::descriptionf() noexcept {
+CENTURION_DEF const char* Error::descriptionf() noexcept {
   const auto* err = SDL_GetError();
   return err ? err : "";
 }
 
-std::string Error::description() noexcept { return {descriptionf()}; }
+CENTURION_DEF std::string Error::description() noexcept {
+  return {descriptionf()};
+}
 
-std::string Error::msg() noexcept { return "Error: " + description(); }
+CENTURION_DEF std::string Error::msg() noexcept {
+  return "Error: " + description();
+}
 
 }  // namespace centurion
+
+#endif  // CENTURION_ERROR_SOURCE

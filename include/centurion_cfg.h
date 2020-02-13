@@ -36,6 +36,6 @@
  * Uncomment the following line in order to use Centurion as a header-only
  * library. Note that you still have to link to the SDL2 libraries.
  */
-//#define CENTURION_HEADER_ONLY
+#define CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_CFG_HEADER

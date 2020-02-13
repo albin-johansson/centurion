@@ -29,10 +29,14 @@
 
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
 
 #include "centurion_api.h"
+#include "centurion_exception.h"
+#include "centurion_utils.h"
+#include "error.h"
 
 namespace centurion {
 
@@ -416,8 +420,9 @@ static_assert(std::is_convertible<Font, TTF_Font*>::value,
 
 }  // namespace centurion
 
-#ifdef CENTURION_HEADER_ONLY
-#include "font.cpp"
+#if defined(CENTURION_HEADER_ONLY) && !defined(FONT_SOURCE)
+#define FONT_SOURCE "font.cpp"
+#include FONT_SOURCE
 #endif
 
 #endif  // CENTURION_FONT

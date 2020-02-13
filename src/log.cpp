@@ -1,13 +1,14 @@
-#include "log.h"
+#ifndef CENTURION_LOG_SOURCE
+#define CENTURION_LOG_SOURCE
 
-#include <cstdarg>
+#include "log.h"
 
 namespace centurion {
 
-void Log::reset_priorites() noexcept { SDL_LogResetPriorities(); }
+CENTURION_DEF void Log::reset_priorites() noexcept { SDL_LogResetPriorities(); }
 
-void Log::msgf(Category category, Priority prio, const char* fmt,
-               ...) noexcept {
+CENTURION_DEF void Log::msgf(Category category, Priority prio, const char* fmt,
+                             ...) noexcept {
   if (!fmt) {
     return;
   }
@@ -17,7 +18,7 @@ void Log::msgf(Category category, Priority prio, const char* fmt,
                   static_cast<SDL_LogPriority>(prio), fmt, args);
 }
 
-void Log::msgf(Category category, const char* fmt, ...) noexcept {
+CENTURION_DEF void Log::msgf(Category category, const char* fmt, ...) noexcept {
   if (!fmt) {
     return;
   }
@@ -30,7 +31,7 @@ void Log::msgf(Category category, const char* fmt, ...) noexcept {
   SDL_LogMessageV(category_id, prio, fmt, args);
 }
 
-void Log::msgf(const char* fmt, ...) noexcept {
+CENTURION_DEF void Log::msgf(const char* fmt, ...) noexcept {
   if (!fmt) {
     return;
   }
@@ -41,19 +42,22 @@ void Log::msgf(const char* fmt, ...) noexcept {
                   static_cast<SDL_LogPriority>(Priority::Info), fmt, args);
 }
 
-void Log::set_priority(Category category, Priority prio) noexcept {
+CENTURION_DEF void Log::set_priority(Category category,
+                                     Priority prio) noexcept {
   SDL_LogSetPriority(static_cast<int>(category),
                      static_cast<SDL_LogPriority>(prio));
 }
 
-void Log::set_priority(Priority prio) noexcept {
+CENTURION_DEF void Log::set_priority(Priority prio) noexcept {
   const auto p = static_cast<SDL_LogPriority>(prio);
   SDL_LogSetAllPriority(p);
   SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p);  // Apparently not set by SDL
 }
 
-Priority Log::get_priority(Category category) noexcept {
+CENTURION_DEF Priority Log::get_priority(Category category) noexcept {
   return static_cast<Priority>(SDL_LogGetPriority(static_cast<int>(category)));
 }
 
 }  // namespace centurion
+
+#endif  // CENTURION_LOG_SOURCE

@@ -42,9 +42,8 @@
 cmake-build-debug
 cmake-build-release
 build
+doc
 .idea
 .vscode
 .clangd
-
-# Ignore the documentation for now
-doc
+compile_commands.json

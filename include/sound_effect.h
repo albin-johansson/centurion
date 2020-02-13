@@ -246,7 +246,7 @@ static_assert(std::is_convertible<SoundEffect, Mix_Chunk*>::value,
 
 }  // namespace centurion
 
-#if defined(CENTURION_HEADER_ONLY)
+#ifdef CENTURION_HEADER_ONLY
 #include "sound_effect.cpp"
 #endif
 

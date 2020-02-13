@@ -60,6 +60,7 @@ if (WIN32)
 endif ()
 
 if (DEFINED ENV{TRAVIS})
+    message("Not using audio!")
     # The Travis CI virtual machines can't handle the audio stuff
     target_compile_definitions(${CENTURION_LIB} PUBLIC CENTURION_NOAUDIO)
 endif ()

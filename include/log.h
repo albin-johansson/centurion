@@ -195,9 +195,8 @@ static_assert(!std::is_move_assignable<Log>::value, "Log is move assignable!");
 
 }  // namespace centurion
 
-#if defined(CENTURION_HEADER_ONLY) && !defined(LOG_SOURCE)
-#	define LOG_SOURCE "log.cpp"
-#	include LOG_SOURCE
+#ifdef CENTURION_HEADER_ONLY
+#include "log.cpp"
 #endif
 
 #endif  // CENTURION_LOG_HEADER

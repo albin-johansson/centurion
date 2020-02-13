@@ -420,9 +420,8 @@ static_assert(std::is_convertible<Font, TTF_Font*>::value,
 
 }  // namespace centurion
 
-#if defined(CENTURION_HEADER_ONLY) && !defined(FONT_SOURCE)
-#define FONT_SOURCE "font.cpp"
-#include FONT_SOURCE
+#ifdef CENTURION_HEADER_ONLY
+#include "font.cpp"
 #endif
 
 #endif  // CENTURION_FONT

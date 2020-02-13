@@ -102,9 +102,8 @@ static_assert(!std::is_move_assignable<Error>::value,
 
 }  // namespace centurion
 
-#if defined(CENTURION_HEADER_ONLY) && !defined(ERROR_SOURCE)
-#define ERROR_SOURCE "error.cpp"
-#include ERROR_SOURCE
+#ifdef CENTURION_HEADER_ONLY
+#include "error.cpp"
 #endif
 
 #endif  // CENTURION_ERROR_HEADER

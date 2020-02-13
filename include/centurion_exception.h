@@ -31,7 +31,6 @@
 
 #include "centurion_api.h"
 
-
 namespace centurion {
 
 /**
@@ -54,20 +53,16 @@ class CENTURION_API CenturionException final : public std::exception {
    * "N/A" is used.
    * @since 3.0.0
    */
-  CENTURION_API explicit CenturionException(const char* msg)
-      : msg{msg ? msg : "N/A"} {}
+  CENTURION_API explicit CenturionException(const char* msg);
 
   /**
    * @param msg the message of the exception.
    * @since 3.0.0
    */
-  CENTURION_API explicit CenturionException(const std::string& msg)
-      : msg{msg} {}
+  CENTURION_API explicit CenturionException(const std::string& msg);
 
   CENTURION_NODISCARD
-  CENTURION_API const char* what() const noexcept override {
-    return msg.c_str();
-  }
+  CENTURION_API const char* what() const noexcept override;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
@@ -83,8 +78,8 @@ static_assert(std::is_nothrow_destructible<CenturionException>::value,
 
 }  // namespace centurion
 
-// #ifdef CENTURION_HEADER_ONLY
-// #include "centurion_exception.cpp"
-// #endif
+#ifdef CENTURION_HEADER_ONLY
+#include "centurion_exception.cpp"
+#endif
 
 #endif  // CENTURION_EXCEPTION_HEADER

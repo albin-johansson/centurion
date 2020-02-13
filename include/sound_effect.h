@@ -22,10 +22,11 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_NOAUDIO
 
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
+
+#ifndef CENTURION_NOAUDIO
 
 #include <SDL_mixer.h>
 
@@ -249,5 +250,5 @@ static_assert(std::is_convertible<SoundEffect, Mix_Chunk*>::value,
 #include "sound_effect.cpp"
 #endif
 
-#endif  // CENTURION_SOUND_EFFECT_HEADER
 #endif  // CENTURION_NOAUDIO
+#endif  // CENTURION_SOUND_EFFECT_HEADER

@@ -59,9 +59,9 @@ target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
 include(CTest)
 include(Catch)
 
-#enable_testing()
+enable_testing()
 add_test(
-        NAME Centurion_test
+        NAME ${CENTURION_TEST_TARGET}
         COMMAND ${CENTURION_TEST_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET} PUBLIC unittests)

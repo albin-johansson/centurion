@@ -59,6 +59,11 @@ if (WIN32)
     add_definitions(-DWIN_EXPORT)
 endif ()
 
+if (DEFINED ENV{TRAVIS})
+    target_compile_definitions(${CENTURION_LIB_TARGET} PUBLIC CENTURION_NOAUDIO)
+endif ()
+
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
             -Wall

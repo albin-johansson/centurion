@@ -40,7 +40,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API Point final {
+class Point final {
  private:
   int x = 0;
   int y = 0;
@@ -156,7 +156,7 @@ class CENTURION_API Point final {
  *
  * @since 3.0.0
  */
-class CENTURION_API FPoint final {
+class FPoint final {
  private:
   float x = 0;
   float y = 0;

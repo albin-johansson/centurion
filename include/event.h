@@ -164,6 +164,7 @@ inline bool operator!=(SDL_EventType lhs, EventType rhs) noexcept {
 
 /**
  * The ButtonState enum class provides the possible states for a button.
+ * Corresponds to the SDL_RELEASED and SDL_PRESSED macros.
  *
  * @since 3.1.0
  */
@@ -242,11 +243,45 @@ inline bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept {
 }
 
 /**
+ * The WindowEvent class is a wrapper for the SDL_WindowEvent struct.
+ *
+ * @since 4.0.0
+ */
+class WindowEvent final {
+ private:
+  SDL_WindowEvent event;
+
+ public:
+  CENTURION_API explicit WindowEvent(const SDL_WindowEvent& sdlEvent) noexcept;
+
+  // TODO 3.2.0
+
+  /**
+   * Returns the ID of the parent window of the event.
+   *
+   * @return the ID of the parent window of the event.
+   * @since 3.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API uint32_t get_window_id() const noexcept;
+
+  /**
+   * Returns the time that the event was created. The value is obtained through
+   * SDL_GetTicks.
+   *
+   * @return the time that the event was created, in milliseconds.
+   * @since 3.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API uint32_t get_time() const noexcept;
+};
+
+/**
  * The KeyEvent class is a wrapper for the SDL_KeyboardEvent struct.
  *
  * @since 3.1.0
  */
-class CENTURION_API KeyEvent final {
+class KeyEvent final {
  private:
   SDL_KeyboardEvent event;
 
@@ -396,7 +431,7 @@ enum class MouseButton {
  *
  * @since 3.1.0
  */
-class CENTURION_API MouseButtonEvent final {
+class MouseButtonEvent final {
  private:
   SDL_MouseButtonEvent event;
 
@@ -497,7 +532,7 @@ class CENTURION_API MouseButtonEvent final {
  *
  * @since 3.1.0
  */
-class CENTURION_API MouseMotionEvent final {
+class MouseMotionEvent final {
  private:
   SDL_MouseMotionEvent event;
 
@@ -601,7 +636,7 @@ enum class MouseWheelDirection {  // TODO test
  *
  * @since 3.1.0
  */
-class CENTURION_API MouseWheelEvent final {  // TODO test
+class MouseWheelEvent final {  // TODO test
  private:
   SDL_MouseWheelEvent event;
 
@@ -675,7 +710,7 @@ class CENTURION_API MouseWheelEvent final {  // TODO test
  *
  * @since 3.1.0
  */
-class CENTURION_API QuitEvent final {
+class QuitEvent final {
  private:
   uint32_t time;
 
@@ -702,7 +737,7 @@ class CENTURION_API QuitEvent final {
  *
  * @since 3.1.0
  */
-class CENTURION_API Event final {
+class Event final {
  private:
   SDL_Event event{};
 
@@ -831,7 +866,7 @@ class CENTURION_API Event final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  operator SDL_Event&() noexcept;
+  CENTURION_API operator SDL_Event&() noexcept;
 };
 
 namespace {

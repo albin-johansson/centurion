@@ -38,7 +38,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API CenturionException final : public std::exception {
+class CenturionException final : public std::exception {
  private:
   std::string msg = "";
 
@@ -47,6 +47,11 @@ class CENTURION_API CenturionException final : public std::exception {
    * @since 3.0.0
    */
   CenturionException() = default;
+
+  /**
+   * @since 4.0.0
+   */
+  CENTURION_API ~CenturionException() noexcept override;
 
   /**
    * @param msg the message of the exception. If the pointer is null, the string

@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_NOAUDIO
-
 #ifndef CENTURION_MUSIC_HEADER
 #define CENTURION_MUSIC_HEADER
+
+#ifndef CENTURION_NOAUDIO
 
 #include <SDL_mixer.h>
 
@@ -120,7 +120,7 @@ CENTURION_API bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept;
  * </ul>
  * @since 3.0.0
  */
-class CENTURION_API Music final {
+class Music final {
  private:
   Mix_Music* music = nullptr;
 
@@ -367,5 +367,5 @@ static_assert(std::is_convertible<Music, Mix_Music*>::value,
 #include "music.cpp"
 #endif
 
-#endif  // CENTURION_MUSIC_HEADER
 #endif  // CENTURION_NOAUDIO
+#endif  // CENTURION_MUSIC_HEADER

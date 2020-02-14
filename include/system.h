@@ -47,7 +47,7 @@ enum class Platform { Unknown, Windows, MacOSX, Linux, Ios, Android };
  *
  * @since 3.0.0
  */
-class CENTURION_API System final {
+class System final {
  public:
   System() = delete;
 
@@ -81,7 +81,7 @@ class CENTURION_API System final {
  *
  * @since 3.0.0
  */
-class CENTURION_API CPU final {
+class CPU final {
  public:
   CPU() = delete;
 
@@ -132,7 +132,7 @@ class CENTURION_API CPU final {
  *
  * @since 3.0.0
  */
-class CENTURION_API RAM final {
+class RAM final {
  public:
   RAM() = delete;
 
@@ -214,7 +214,7 @@ inline bool operator==(SDL_PowerState a, PowerState b) noexcept {
  *
  * @since 3.0.0
  */
-class CENTURION_API Power final {
+class Power final {
  public:
   Power() = delete;
 
@@ -267,7 +267,7 @@ class CENTURION_API Power final {
  *
  * @since 3.0.0
  */
-class CENTURION_API Screen final {
+class Screen final {
  public:
   Screen() = delete;
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(${CENTURION_TEST})
+project(CenturionTestProj)
 
 set(TEST_FILES
         unittests/test_main.cpp
@@ -41,10 +41,14 @@ if (NOT DEFINED ENV{TRAVIS})
             unittests/music_test.cpp)
 endif ()
 
-add_executable(${CENTURION_TEST} ${TEST_FILES})
-add_dependencies(${CENTURION_TEST} ${CENTURION_LIB})
+add_executable(${CENTURION_TEST_TARGET} ${TEST_FILES})
+add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
 
-set_target_properties(${CENTURION_TEST} PROPERTIES
+if (DEFINED ENV{TRAVIS})
+    target_compile_definitions(${CENTURION_TEST_TARGET} PUBLIC CENTURION_NOAUDIO)
+endif ()
+
+set_target_properties(${CENTURION_TEST_TARGET} PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON)
 
@@ -59,23 +63,24 @@ enable_testing()
 add_test(NAME ${CENTURION_TEST_TARGET}
         COMMAND ${CENTURION_TEST_TARGET})
 
-target_include_directories(${CENTURION_TEST} PUBLIC unittests)
-target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
-target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
-target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
-target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
-target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_INCLUDE_DIR})
-target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_LIBRARY_DIR})
-target_include_directories(${CENTURION_TEST} PUBLIC ${CTN_LIBRARY_DIR}/gsl)
+target_include_directories(${CENTURION_TEST_TARGET} PUBLIC unittests)
+target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
+target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
+target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
+target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
+target_include_directories(${CENTURION_TEST_TARGET} PUBLIC ${CTN_INCLUDE_DIR})
+target_include_directories(${CENTURION_TEST_TARGET} PUBLIC ${CTN_SOURCE_DIR})
+target_include_directories(${CENTURION_TEST_TARGET} PUBLIC ${CTN_LIBRARY_DIR})
+target_include_directories(${CENTURION_TEST_TARGET} PUBLIC ${CTN_LIBRARY_DIR}/gsl)
 
 message("------ LINKING TEST EXECUTABLE ------")
 message("Linking against SDL2: ${SDL2_LIBRARY}")
 message("Linking against SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
-message("Linking against Centurion: ${CENTURION_LIBRARIES}")
+message("Centurion link target (unused in header-only mode): ${CENTURION_LIBRARIES}")
 
-target_link_libraries(${CENTURION_TEST}
+target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_LIBRARY}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
@@ -83,21 +88,21 @@ target_link_libraries(${CENTURION_TEST}
         PUBLIC ${CENTURION_LIBRARIES}
         PUBLIC Catch2)
 
-catch_discover_tests(${CENTURION_TEST})
+catch_discover_tests(${CENTURION_TEST_TARGET})
 
 copy_directory_post_build(
-        ${CENTURION_TEST}
+        ${CENTURION_TEST_TARGET}
         ${CTN_RESOURCES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
 if (WIN32)
     copy_file_post_build(
-            ${CENTURION_TEST}
-            ${CENTURION_DLL}
+            ${CENTURION_TEST_TARGET}
+            ${CENTURION_DYNAMIC_LIB}
             ${CMAKE_CURRENT_BINARY_DIR})
 
     copy_directory_post_build(
-            ${CENTURION_TEST}
+            ${CENTURION_TEST_TARGET}
             ${CTN_BINARIES_DIR}
             ${CMAKE_CURRENT_BINARY_DIR})
 endif ()

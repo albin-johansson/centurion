@@ -42,7 +42,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API KeyState final {
+class KeyState final {
  private:
   const uint8_t* states = nullptr;
   std::array<uint8_t, static_cast<int>(SDL_NUM_SCANCODES)> previousStates;

@@ -40,7 +40,7 @@ namespace centurion {
  * @since 3.0.0
  * @author Albin Johansson
  */
-class CENTURION_API Colors final {
+class Colors final {
  public:
   /**
    * The maximum possible color component value.

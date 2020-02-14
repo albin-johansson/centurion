@@ -37,7 +37,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API Error final {
+class Error final {
  public:
   Error() = delete;
 

@@ -36,7 +36,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API Timer final {
+class Timer final {
  public:
   Timer() = delete;
 

@@ -48,7 +48,7 @@ class Renderer;
  * @since 3.0.0
  * @author Albin Johansson
  */
-class CENTURION_API ImageGenerator final {
+class ImageGenerator final {
  private:
   std::shared_ptr<Renderer> renderer;
 

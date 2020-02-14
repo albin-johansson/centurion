@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_NOAUDIO
-
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
+
+#ifndef CENTURION_NOAUDIO
 
 #include <SDL_mixer.h>
 
@@ -43,7 +43,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API SoundEffect final {
+class SoundEffect final {
  private:
   static constexpr int undefinedChannel = -1;
 
@@ -220,6 +220,9 @@ class CENTURION_API SoundEffect final {
   static constexpr int get_max_volume() noexcept { return MIX_MAX_VOLUME; }
 };
 
+inline const int SoundEffect::loopForever = -10;
+inline const int SoundEffect::maxVolume = get_max_volume();
+
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<SoundEffect>::value, "SoundEffect isn't final!");
 #endif
@@ -245,5 +248,5 @@ static_assert(std::is_convertible<SoundEffect, Mix_Chunk*>::value,
 #include "sound_effect.cpp"
 #endif
 
-#endif  // CENTURION_SOUND_EFFECT_HEADER
 #endif  // CENTURION_NOAUDIO
+#endif  // CENTURION_SOUND_EFFECT_HEADER

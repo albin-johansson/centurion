@@ -43,7 +43,7 @@ namespace centurion {
  * @see IWindowListener
  * @since 3.0.0
  */
-class CENTURION_API MouseState final : public IWindowListener {
+class MouseState final : public IWindowListener {
  private:
   int mouseX = 0;
   int mouseY = 0;

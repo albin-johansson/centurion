@@ -49,7 +49,7 @@ class IWindowListener;
  * @see IWindowListener
  * @since 3.0.0
  */
-class CENTURION_API Window final {
+class Window final {
  private:
   SDL_Window* window = nullptr;
   std::vector<IWindowListener*> windowListeners;

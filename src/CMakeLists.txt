@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(${CMAKE_PROJECT_NAME}_src)
+project(CenturionSrcProj)
 
 set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/window.h
@@ -53,51 +53,52 @@ set(SOURCE_FILES
         error.cpp
         event.cpp)
 
-add_library(${CENTURION_LIB} SHARED ${SOURCE_FILES})
+add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})
 
 if (WIN32)
     add_definitions(-DWIN_EXPORT)
 endif ()
 
 if (DEFINED ENV{TRAVIS})
-    # The Travis CI virtual machines can't handle the audio stuff
-    target_compile_definitions(${CENTURION_LIB} PUBLIC CENTURION_NOAUDIO)
+    target_compile_definitions(${CENTURION_LIB_TARGET} PUBLIC CENTURION_NOAUDIO)
 endif ()
 
-# Specifies C++ version and compiler warning flags.
-target_compile_options(${CENTURION_LIB} PRIVATE
-        -Wall
-        -Wextra
-        -Wpedantic
-        -Wdouble-promotion
-        -Wswitch-default
-        -Wswitch-enum
-        -Wunused
-        -Wuninitialized
-        -Wsuggest-final-types
-        -Wsuggest-final-methods
-        -Wsuggest-override
-        -Wduplicated-cond
-        -Wconversion)
 
-set_target_properties(${CENTURION_LIB} PROPERTIES
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
+            -Wall
+            -Wextra
+            -Wpedantic
+            -Wdouble-promotion
+            -Wswitch-default
+            -Wswitch-enum
+            -Wunused
+            -Wuninitialized
+            -Wsuggest-final-types
+            -Wsuggest-final-methods
+            -Wsuggest-override
+            -Wduplicated-cond
+            -Wconversion)
+endif ()
+
+set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
         VERSION 3.0.0
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
         OUTPUT_NAME "Centurion")
 
-target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
-target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
-target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
-target_include_directories(${CENTURION_LIB} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
+target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
+target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
+target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
+target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 
-target_include_directories(${CENTURION_LIB} PUBLIC ${CTN_INCLUDE_DIR})
-target_include_directories(${CENTURION_LIB} PUBLIC ${CTN_SOURCE_DIR})
-target_include_directories(${CENTURION_LIB} PUBLIC ${CTN_LIBRARY_DIR})
-target_include_directories(${CENTURION_LIB} PUBLIC ${CTN_LIBRARY_DIR}/gsl)
+target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_INCLUDE_DIR})
+target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_SOURCE_DIR})
+target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_LIBRARY_DIR})
+target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_LIBRARY_DIR}/gsl)
 
-target_link_libraries(${CENTURION_LIB}
+target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_LIBRARY}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}

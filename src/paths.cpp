@@ -1,44 +1,49 @@
+#ifndef CENTURION_PATHS_SOURCE
+#define CENTURION_PATHS_SOURCE
+
 #include "paths.h"
 
 #include <SDL.h>
 
 namespace centurion {
 
-AppPath::AppPath() noexcept : path{SDL_GetBasePath()} {}
+CENTURION_DEF AppPath::AppPath() noexcept : path{SDL_GetBasePath()} {}
 
-AppPath::~AppPath() noexcept {
+CENTURION_DEF AppPath::~AppPath() noexcept {
   if (path) {
     SDL_free(path);
   }
 }
 
-AppPath::operator bool() const noexcept { return path; }
+CENTURION_DEF AppPath::operator bool() const noexcept { return path; }
 
-std::unique_ptr<AppPath> AppPath::unique() {
+CENTURION_DEF std::unique_ptr<AppPath> AppPath::unique() {
   return std::make_unique<AppPath>();
 }
 
-std::shared_ptr<AppPath> AppPath::shared() {
+CENTURION_DEF std::shared_ptr<AppPath> AppPath::shared() {
   return std::make_shared<AppPath>();
 }
 
-PrefPath::PrefPath(const std::string& org, const std::string& app)
+CENTURION_DEF PrefPath::PrefPath(const std::string& org, const std::string& app)
     : path{SDL_GetPrefPath(org.c_str(), app.c_str())} {}
 
-PrefPath::~PrefPath() noexcept {
+CENTURION_DEF PrefPath::~PrefPath() noexcept {
   if (path) {
     SDL_free(path);
   }
 }
 
-std::unique_ptr<PrefPath> PrefPath::unique(const std::string& org,
-                                           const std::string& app) {
+CENTURION_DEF std::unique_ptr<PrefPath> PrefPath::unique(
+    const std::string& org, const std::string& app) {
   return std::make_unique<PrefPath>(org, app);
 }
 
-std::shared_ptr<PrefPath> PrefPath::shared(const std::string& org,
-                                           const std::string& app) {
+CENTURION_DEF std::shared_ptr<PrefPath> PrefPath::shared(
+    const std::string& org, const std::string& app) {
   return std::make_shared<PrefPath>(org, app);
 }
 
 }  // namespace centurion
+
+#endif  // CENTURION_PATHS_SOURCE

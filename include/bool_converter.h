@@ -37,7 +37,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API BoolConverter final {
+class BoolConverter final {
  public:
   BoolConverter() = delete;
 

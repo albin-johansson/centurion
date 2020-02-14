@@ -29,10 +29,14 @@
 
 #include <memory>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
 
 #include "centurion_api.h"
+#include "centurion_exception.h"
+#include "centurion_utils.h"
+#include "error.h"
 
 namespace centurion {
 
@@ -54,7 +58,7 @@ enum class FontHint {
  *
  * @since 3.0.0
  */
-class CENTURION_API Font final {
+class Font final {
  private:
   TTF_Font* font = nullptr;
   int style = 0;

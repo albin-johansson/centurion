@@ -28,6 +28,7 @@
 #include <SDL_log.h>
 
 #include <type_traits>
+#include <cstdarg>
 
 #include "centurion_api.h"
 
@@ -96,7 +97,7 @@ enum class Category {
  *
  * @since 3.0.0
  */
-class CENTURION_API Log final {
+class Log final {
  public:
   Log() = delete;
 

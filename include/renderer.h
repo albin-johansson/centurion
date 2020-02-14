@@ -53,7 +53,7 @@ class FPoint;
  * @see SDL_Renderer
  * @since 3.0.0
  */
-class CENTURION_API Renderer final {
+class Renderer final {
  private:
   SDL_Renderer* renderer = nullptr;
   SDL_FRect translationViewport = {0, 0, 0, 0};

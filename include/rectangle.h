@@ -40,7 +40,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API Rect final {
+class Rect final {
  private:
   SDL_Rect rect{0, 0, 0, 0};
 
@@ -256,7 +256,7 @@ class CENTURION_API Rect final {
  *
  * @since 3.0.0
  */
-class CENTURION_API FRect final {
+class FRect final {
  private:
   SDL_FRect rect{0, 0, 0, 0};
 

@@ -219,7 +219,7 @@ CENTURION_API bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept;
  * @see SDL_Texture
  * @since 3.0.0
  */
-class CENTURION_API Image final {
+class Image final {
  private:
   SDL_Texture* texture = nullptr;
 

@@ -38,7 +38,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API AppPath final {
+class AppPath final {
  private:
   char* path = nullptr;
 
@@ -68,7 +68,7 @@ class CENTURION_API AppPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  static std::unique_ptr<AppPath> unique();
+  CENTURION_API static std::unique_ptr<AppPath> unique();
 
   /**
    * Creates and returns a shared pointer to an AppPath object that represents
@@ -80,7 +80,7 @@ class CENTURION_API AppPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  static std::shared_ptr<AppPath> shared();
+  CENTURION_API static std::shared_ptr<AppPath> shared();
 
   /**
    * Indicates whether or not there is a non-null string in the app path object.
@@ -108,7 +108,7 @@ class CENTURION_API AppPath final {
  *
  * @since 3.0.0
  */
-class CENTURION_API PrefPath final {
+class PrefPath final {
  private:
   char* path = nullptr;
 
@@ -139,8 +139,8 @@ class CENTURION_API PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  static std::unique_ptr<PrefPath> unique(const std::string& org,
-                                          const std::string& app);
+  CENTURION_API static std::unique_ptr<PrefPath> unique(const std::string& org,
+                                                        const std::string& app);
 
   /**
    * Creates and returns a shared pointer to a PrefPath object. Only use
@@ -152,8 +152,8 @@ class CENTURION_API PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  static std::shared_ptr<PrefPath> shared(const std::string& org,
-                                          const std::string& app);
+  CENTURION_API static std::shared_ptr<PrefPath> shared(const std::string& org,
+                                                        const std::string& app);
 
   /**
    * Indicates whether or not the path object holds a non-null path.

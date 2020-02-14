@@ -43,7 +43,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API Color final {
+class Color final {
  private:
   uint8_t red = 0;
   uint8_t green = 0;
@@ -56,7 +56,7 @@ class CENTURION_API Color final {
    *
    * @since 3.0.0
    */
-  static const uint8_t max;
+  CENTURION_API static const uint8_t max;
 
   /**
    * Creates a color. The created color will be equal to #000000FF.

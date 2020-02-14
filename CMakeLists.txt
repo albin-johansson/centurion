@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(CenturionProj)
+project(Centurion)
 
 add_definitions(-DCMAKE_EXPORT_COMPILE_COMMANDS=1)
 

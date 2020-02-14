@@ -34,6 +34,7 @@
 
 #include "blend_mode.h"
 #include "bool_converter.h"
+#include "centurion_api.h"
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "color.h"

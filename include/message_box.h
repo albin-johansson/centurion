@@ -224,7 +224,8 @@ class ColorScheme final {
    * @param color the color that will be used.
    * @since 3.0.0
    */
-  CENTURION_API void set_color(ColorType type, const Color& color) noexcept;
+  CENTURION_API void set_color(ColorType type,
+                               const video::Color& color) noexcept;
 
   /**
    * Returns the internal SDL_MessageBoxColorScheme.

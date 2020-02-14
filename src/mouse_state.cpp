@@ -21,7 +21,8 @@ CENTURION_DEF std::shared_ptr<MouseState> MouseState::shared() {
   return std::make_shared<MouseState>();
 }
 
-CENTURION_DEF void MouseState::window_updated(const Window& window) noexcept {
+CENTURION_DEF void MouseState::window_updated(
+    const video::Window& window) noexcept {
   windowWidth = window.get_width();
   windowHeight = window.get_height();
 }

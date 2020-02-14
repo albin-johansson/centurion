@@ -4,6 +4,7 @@
 #include "log.h"
 
 using namespace centurion;
+using namespace centurion::video;
 
 TEST_CASE("Window(string, int, int)", "[Window]") {
   CHECK_THROWS_AS(Window("", 0, 10), std::invalid_argument);

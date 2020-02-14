@@ -8,6 +8,7 @@
 #include "renderer.h"
 
 namespace centurion {
+namespace video {
 
 CENTURION_DEF ImageGenerator::ImageGenerator(
     const std::shared_ptr<Renderer>& renderer) {
@@ -50,6 +51,7 @@ CENTURION_DEF std::shared_ptr<Image> ImageGenerator::shared_img(
   return std::make_shared<Image>(*renderer, format, access, width, height);
 }
 
+}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_IMAGE_GENERATOR_SOURCE

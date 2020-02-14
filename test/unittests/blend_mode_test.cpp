@@ -2,6 +2,7 @@
 #include "blend_mode.h"
 
 using namespace centurion;
+using namespace centurion::video;
 
 TEST_CASE("BlendMode enum values", "[BlendMode]") {
   CHECK(BlendMode::None == SDL_BLENDMODE_NONE);

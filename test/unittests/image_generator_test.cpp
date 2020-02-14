@@ -6,6 +6,7 @@
 #include <string>
 
 using namespace centurion;
+using namespace centurion::video;
 using namespace std::literals;
 
 static const auto good_path = "resources/ctn_icon_1.png"s;

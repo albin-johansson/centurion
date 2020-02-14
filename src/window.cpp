@@ -12,6 +12,7 @@
 #include "window_listener.h"
 
 namespace centurion {
+namespace video {
 
 CENTURION_DEF Window::Window(const std::string& title, int width, int height) {
   if ((width < 1) || (height < 1)) {
@@ -374,6 +375,7 @@ CENTURION_DEF std::string Window::to_string() const {
 
 CENTURION_DEF Window::operator SDL_Window*() const noexcept { return window; }
 
+}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_WINDOW_SOURCE

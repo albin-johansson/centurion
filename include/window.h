@@ -38,6 +38,7 @@
 #include "centurion_api.h"
 
 namespace centurion {
+namespace video {
 
 class IWindowListener;
 
@@ -638,6 +639,7 @@ static_assert(std::is_default_constructible<Window>::value,
 static_assert(std::is_nothrow_destructible<Window>::value,
               "Window isn't nothrow destructible!");
 
+}
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

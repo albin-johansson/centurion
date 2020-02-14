@@ -4,6 +4,7 @@
 
 using namespace centurion;
 using namespace centurion::event;
+using namespace centurion::video;
 
 TEST_CASE("MouseMotionEvent::get_x", "[MouseMotionEvent]") {
   const auto x = 451;

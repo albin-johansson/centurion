@@ -41,13 +41,15 @@
 
 namespace centurion {
 
-class Image;
-class Font;
-
 namespace math {
 class Point;
 class FPoint;
 }  // namespace math
+
+namespace video {
+
+class Image;
+class Font;
 
 /**
  * The Renderer class is a wrapper class for the SDL_Renderer struct. Rendering
@@ -811,6 +813,7 @@ static_assert(!std::is_nothrow_copy_assignable<Renderer>::value,
 static_assert(std::is_convertible<Renderer, SDL_Renderer*>::value,
               "Renderer isn't convertible to SDL_Renderer*!");
 
+}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

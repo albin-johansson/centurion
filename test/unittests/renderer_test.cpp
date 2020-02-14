@@ -6,6 +6,7 @@
 #include "log.h"
 
 using namespace centurion;
+using namespace centurion::video;
 
 TEST_CASE("Renderer(SDL_Renderer*)", "[Renderer]") {
   CHECK_THROWS_AS(Renderer{nullptr}, std::invalid_argument);

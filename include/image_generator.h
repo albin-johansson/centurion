@@ -34,6 +34,7 @@
 #include "image.h"
 
 namespace centurion {
+namespace video {
 
 class Renderer;
 
@@ -48,7 +49,7 @@ class Renderer;
  * @since 3.0.0
  * @author Albin Johansson
  */
-class ImageGenerator final {
+class ImageGenerator final {  // TODO rename to ImageLoader (typedef old name)
  private:
   std::shared_ptr<Renderer> renderer;
 
@@ -180,6 +181,7 @@ static_assert(std::is_nothrow_move_assignable<ImageGenerator>::value,
 static_assert(std::is_nothrow_move_constructible<ImageGenerator>::value,
               "ImageGenerator isn't nothrow move constructible!");
 
+}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

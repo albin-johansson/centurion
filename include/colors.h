@@ -31,6 +31,7 @@
 #include "color.h"
 
 namespace centurion {
+namespace video {
 
 /**
  * The Colors class is a utility class that provides more than 140 SDL colors.
@@ -1102,6 +1103,7 @@ class Colors final {
   Colors() = delete;
 };
 
+}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

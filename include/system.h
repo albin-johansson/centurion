@@ -267,7 +267,7 @@ class Power final {
  *
  * @since 3.0.0
  */
-class Screen final {
+class Screen final { // TODO this might belong in video namespace?
  public:
   Screen() = delete;
 

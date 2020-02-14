@@ -4,6 +4,7 @@
 #include "colors.h"
 
 namespace centurion {
+namespace video {
 
 CENTURION_DEF const Color Colors::transparent{0, 0, 0, 0};
 
@@ -149,7 +150,8 @@ CENTURION_DEF const Color Colors::light_coral{0xF0, 0x80, 0x80, 0xFF};
 
 CENTURION_DEF const Color Colors::light_cyan{0xE0, 0xFF, 0xFF, 0xFF};
 
-CENTURION_DEF const Color Colors::light_golden_rod_yellow{0xFA, 0xFA, 0xD2, 0xFF};
+CENTURION_DEF const Color Colors::light_golden_rod_yellow{0xFA, 0xFA, 0xD2,
+                                                          0xFF};
 
 CENTURION_DEF const Color Colors::light_gray{0xD3, 0xD3, 0xD3, 0xFF};
 
@@ -303,6 +305,7 @@ CENTURION_DEF const Color Colors::yellow{0xFF, 0xFF, 0, 0xFF};
 
 CENTURION_DEF const Color Colors::yellow_green{0x9A, 0xCD, 0x32, 0xFF};
 
+}
 }  // namespace centurion
 
 #endif // CENTURION_COLORS_SOURCE

@@ -5,6 +5,7 @@
 
 using namespace centurion;
 using namespace centurion::event;
+using namespace centurion::video;
 
 namespace {
 

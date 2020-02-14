@@ -4,6 +4,7 @@
 #include "color.h"
 
 namespace centurion {
+namespace video {
 
 CENTURION_DEF const uint8_t Color::max = 0xFF;
 
@@ -55,6 +56,7 @@ CENTURION_DEF std::string Color::to_string() const {
          ", A: " + std::to_string(alpha) + "]";
 }
 
+}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_COLOR_SOURCE

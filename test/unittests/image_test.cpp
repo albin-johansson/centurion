@@ -8,6 +8,7 @@
 #include "system.h"
 
 using namespace centurion;
+using namespace centurion::video;
 
 static constexpr auto path = "resources/grass.png";
 

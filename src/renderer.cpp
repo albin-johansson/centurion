@@ -15,6 +15,7 @@
 #include "point.h"
 
 namespace centurion {
+namespace video {
 
 CENTURION_DEF Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer) {
   if (!renderer) {
@@ -479,6 +480,7 @@ CENTURION_DEF Renderer::operator SDL_Renderer*() const noexcept {
   return renderer;
 }
 
+}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_RENDERER_SOURCE

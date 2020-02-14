@@ -4,6 +4,7 @@
 
 using namespace centurion;
 using namespace centurion::event;
+using namespace centurion::video;
 
 TEST_CASE("MouseWheelEvent(SDL_MouseWheelEvent)", "[MouseWheelEvent]") {
   SDL_MouseWheelEvent sdlEvent{};

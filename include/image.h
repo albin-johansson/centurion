@@ -38,6 +38,7 @@
 #include "color.h"
 
 namespace centurion {
+namespace video {
 
 /**
  * The PixelFormat enum class mirrors the values of the SDL_PixelFormatEnum.
@@ -640,6 +641,7 @@ static_assert(!std::is_nothrow_copy_constructible<Image>::value,
 static_assert(!std::is_nothrow_copy_assignable<Image>::value,
               "Image is assignable!");
 
+}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

@@ -4,6 +4,7 @@
 #include "font.h"
 
 namespace centurion {
+namespace video {
 
 CENTURION_DEF Font::Font(const std::string& file, int size) : size{size} {
   if (size <= 0) {
@@ -204,6 +205,7 @@ CENTURION_DEF std::string Font::to_string() const {
 
 CENTURION_DEF Font::operator TTF_Font*() const noexcept { return font; }
 
+}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_FONT_SOURCE

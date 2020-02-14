@@ -2,8 +2,9 @@
 #include "event.h"
 #include "window.h"
 
-using namespace centurion::event;
 using namespace centurion;
+using namespace centurion::event;
+using namespace centurion::video;
 
 TEST_CASE("MouseButtonEvent::get_button", "[MouseButtonEvent]") {
   const auto button = SDL_BUTTON_LEFT;

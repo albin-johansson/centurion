@@ -30,6 +30,7 @@
 #include "centurion_api.h"
 
 namespace centurion {
+namespace video {
 
 /**
  * The BlendMode enum class mirrors the SDL_BlendMode enum.
@@ -92,6 +93,7 @@ CENTURION_API bool operator!=(BlendMode a, SDL_BlendMode b) noexcept;
 CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_BlendMode a, BlendMode b) noexcept;
 
+}
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

@@ -5,6 +5,7 @@
 #include "log.h"
 
 using namespace centurion;
+using namespace centurion::video;
 using namespace Catch;
 
 static constexpr auto type_writer_path = "resources/type_writer.ttf";

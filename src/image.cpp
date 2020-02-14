@@ -10,6 +10,7 @@
 #include "error.h"
 
 namespace centurion {
+namespace video {
 
 CENTURION_DEF Image::Image(gsl::owner<SDL_Texture*> texture) {
   if (!texture) {
@@ -268,6 +269,7 @@ CENTURION_DEF bool operator!=(SDL_PixelFormatEnum lhs,
   return lhs != static_cast<SDL_PixelFormatEnum>(rhs);
 }
 
+}  // namespace video
 }  // namespace centurion
 
-#endif // CENTURION_IMAGE_SOURCE
+#endif  // CENTURION_IMAGE_SOURCE

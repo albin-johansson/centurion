@@ -245,7 +245,7 @@ inline bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept {
 /**
  * The WindowEvent class is a wrapper for the SDL_WindowEvent struct.
  *
- * @since 3.2.0
+ * @since 4.0.0
  */
 class WindowEvent final {
  private:

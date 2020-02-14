@@ -49,7 +49,7 @@ class CenturionException final : public std::exception {
   CenturionException() = default;
 
   /**
-   * @since 3.2.0
+   * @since 4.0.0
    */
   CENTURION_API ~CenturionException() noexcept override;
 

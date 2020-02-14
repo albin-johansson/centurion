@@ -29,7 +29,7 @@
  * This file can be used to configure the behaviour of the Centurion library.
  * Note, You don't need to explicitly include this file!
  *
- * @since 3.2.0
+ * @since 4.0.0
  */
 
 /*

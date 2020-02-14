@@ -76,7 +76,7 @@ class CenturionUtils final {
  * constructor.
  * @param args the arguments that will be passed to an appropriate constructor.
  * @return a unique pointer.
- * @since 3.2.0
+ * @since 4.0.0
  */
 template <typename T, typename... Args>
 CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args) {

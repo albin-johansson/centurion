@@ -93,12 +93,12 @@ copy_directory_post_build(
         ${CTN_RESOURCES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
-copy_file_post_build(
-        ${CENTURION_TEST_TARGET}
-        ${CENTURION_DYNAMIC_LIB}
-        ${CMAKE_CURRENT_BINARY_DIR})
-
 if (WIN32)
+    copy_file_post_build(
+            ${CENTURION_TEST_TARGET}
+            ${CENTURION_DYNAMIC_LIB}
+            ${CMAKE_CURRENT_BINARY_DIR})
+
     copy_directory_post_build(
             ${CENTURION_TEST_TARGET}
             ${CTN_BINARIES_DIR}

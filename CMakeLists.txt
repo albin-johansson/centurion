@@ -18,6 +18,10 @@ set(CENTURION_TEST_TARGET Centurion_test)
 set(CENTURION_DYNAMIC_LIB "${CMAKE_BINARY_DIR}/src/libCenturion${CMAKE_SHARED_LIBRARY_SUFFIX}")
 set(CENTURION_LIBRARIES "${CMAKE_BINARY_DIR}/src/libCenturion${CMAKE_IMPORT_LIBRARY_SUFFIX}")
 
+if (DEFINED ENV{TRAVIS}) # FIXME tmp fix
+    set(CENTURION_LIBRARIES "${CMAKE_BINARY_DIR}/src/libCenturion.so")
+endif ()
+
 # Checks if an environment variable is defined.
 #   envVar: the name of the actual environment variable.
 #   name: the name of the library associated with the environment variable.

@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
 
@@ -36,7 +35,6 @@
 #include <type_traits>
 
 #include "centurion_api.h"
-
 
 namespace centurion {
 
@@ -222,8 +220,8 @@ class CENTURION_API SoundEffect final {
   static constexpr int get_max_volume() noexcept { return MIX_MAX_VOLUME; }
 };
 
-inline const int SoundEffect::loopForever = -10;
-inline const int SoundEffect::maxVolume = get_max_volume();
+CENTURION_DEF const int SoundEffect::loopForever = -10;
+CENTURION_DEF const int SoundEffect::maxVolume = get_max_volume();
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<SoundEffect>::value, "SoundEffect isn't final!");

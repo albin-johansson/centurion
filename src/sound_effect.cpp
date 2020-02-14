@@ -130,5 +130,5 @@ CENTURION_DEF SoundEffect::operator Mix_Chunk*() const noexcept {
 
 }  // namespace centurion
 
-#endif // CENTURION_NOAUDIO
-#endif // CENTURION_SOUND_EFFECT_SOURCE
+#endif  // CENTURION_NOAUDIO
+#endif  // CENTURION_SOUND_EFFECT_SOURCE

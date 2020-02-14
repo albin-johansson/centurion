@@ -1,12 +1,14 @@
 #ifndef CENTURION_NOAUDIO
 
-#include "catch.hpp"
 #include "sound_effect.h"
+
+#include "catch.hpp"
 #include "centurion_exception.h"
-#include "timer.h"
 #include "log.h"
+#include "timer.h"
 
 using namespace centurion;
+using namespace audio;
 
 static constexpr auto path = "resources/swing.wav";
 
@@ -121,7 +123,7 @@ TEST_CASE("SoundEffect:set_volume", "[SoundEffect]") {
 TEST_CASE("SoundEffect::get_volume", "[SoundEffect]") {
   SoundEffect sound{path};
   CHECK(sound.get_volume() == SoundEffect::maxVolume);
-  CHECK(sound.get_volume() == 128); // because of the documentation guarantee
+  CHECK(sound.get_volume() == 128);  // because of the documentation guarantee
   CHECK(SoundEffect::maxVolume == MIX_MAX_VOLUME);
 }
 

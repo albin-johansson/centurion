@@ -6,6 +6,7 @@
 #include "log.h"
 
 using namespace centurion;
+using namespace audio;
 
 static constexpr auto path = "resources/hiddenPond.mp3";
 

@@ -37,6 +37,7 @@
 #include "centurion_api.h"
 
 namespace centurion {
+namespace audio {
 
 /**
  * The SoundEffect class represents sound effects in various file formats.
@@ -242,6 +243,7 @@ static_assert(!std::is_copy_assignable<SoundEffect>::value,
 static_assert(std::is_convertible<SoundEffect, Mix_Chunk*>::value,
               "SoundEffect isn't convertible to Mix_Chunk*!");
 
+}  // namespace audio
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

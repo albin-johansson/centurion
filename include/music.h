@@ -37,6 +37,7 @@
 #include "centurion_api.h"
 
 namespace centurion {
+namespace audio {
 
 /**
  * The FadeStatus enum class mirrors the values of the Mix_Fading enum.
@@ -361,6 +362,7 @@ static_assert(std::is_nothrow_move_assignable<Music>::value,
 static_assert(std::is_convertible<Music, Mix_Music*>::value,
               "Music isn't convertible to Mix_Music*!");
 
+}  // namespace audio
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

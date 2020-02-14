@@ -10,6 +10,7 @@
 #include "error.h"
 
 namespace centurion {
+namespace audio {
 
 // TODO check Mix documentation if there are any redundancies
 
@@ -128,6 +129,7 @@ CENTURION_DEF SoundEffect::operator Mix_Chunk*() const noexcept {
   return chunk;
 }
 
+}  // namespace audio
 }  // namespace centurion
 
 #endif  // CENTURION_NOAUDIO

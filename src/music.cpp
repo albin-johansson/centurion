@@ -10,6 +10,7 @@
 #include "error.h"
 
 namespace centurion {
+namespace audio {
 
 // FIXME there is some duplication between SoundEffect and Music
 CENTURION_DEF const int Music::maxVolume = MIX_MAX_VOLUME;
@@ -139,6 +140,7 @@ CENTURION_DEF bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept {
   return lhs == static_cast<Mix_MusicType>(rhs);
 }
 
+}  // namespace audio
 }  // namespace centurion
 
 #endif  // CENTURION_NOAUDIO

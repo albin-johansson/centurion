@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(Centurion)
+project(CenturionProj)
 
 add_definitions(-DCMAKE_EXPORT_COMPILE_COMMANDS=1)
 
@@ -12,15 +12,11 @@ set(CTN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(CTN_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
 set(CTN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
 
-set(CENTURION_LIB ${PROJECT_NAME}_lib)
-set(CENTURION_TEST ${PROJECT_NAME}_test)
+set(CENTURION_LIB_TARGET Centurion_lib)
+set(CENTURION_TEST_TARGET Centurion_test)
 
-if (DEFINED ENV{TRAVIS})
-    set(CENTURION_LIBRARIES ${CMAKE_BINARY_DIR}/src/libCenturion.so)
-else ()
-    set(CENTURION_LIBRARIES "${CMAKE_BINARY_DIR}/src/libCenturion.dll.a")
-    set(CENTURION_DLL "${CMAKE_BINARY_DIR}/src/libCenturion.dll")
-endif ()
+set(CENTURION_DYNAMIC_LIB "${CMAKE_BINARY_DIR}/src/libCenturion${CMAKE_SHARED_LIBRARY_SUFFIX}")
+set(CENTURION_LIBRARIES "${CMAKE_BINARY_DIR}/src/libCenturion${CMAKE_IMPORT_LIBRARY_SUFFIX}")
 
 # Checks if an environment variable is defined.
 #   envVar: the name of the actual environment variable.

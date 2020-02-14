@@ -52,8 +52,12 @@ set(CATCH_INCLUDE_DIR catch2)
 add_library(Catch2 INTERFACE)
 target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
 
-enable_testing() # TODO consider moving to root CMakeLists
-add_test(NAME ${CENTURION_TEST} COMMAND ${CENTURION_TEST})
+include(CTest)
+include(Catch)
+
+enable_testing()
+add_test(NAME ${CENTURION_TEST_TARGET}
+        COMMAND ${CENTURION_TEST_TARGET})
 
 target_include_directories(${CENTURION_TEST} PUBLIC unittests)
 target_include_directories(${CENTURION_TEST} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
@@ -70,9 +74,6 @@ message("Linking against SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
 message("Linking against Centurion: ${CENTURION_LIBRARIES}")
-
-include(CTest)
-include(Catch)
 
 target_link_libraries(${CENTURION_TEST}
         PUBLIC ${SDL2_LIBRARY}

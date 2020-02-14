@@ -137,7 +137,7 @@ class Rect final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool contains(Point point) const noexcept;
+  CENTURION_API bool contains(IPoint point) const noexcept;
 
   /**
    * Indicates whether or not the rectangle has an area. A rectangle has an area

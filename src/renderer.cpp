@@ -163,9 +163,9 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
 CENTURION_DEF void Renderer::draw_image(const Image& image,
                                         const SDL_Rect& source,
                                         const SDL_Rect& destination,
-                                        const math::Point& center,
+                                        const math::IPoint& center,
                                         double angle) const noexcept {
-  const SDL_Point c = center;
+  const auto c = center.to_sdl_point();
   SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &c,
                    SDL_FLIP_NONE);
 }
@@ -175,7 +175,7 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
                                         const SDL_FRect& destination,
                                         const math::FPoint& center,
                                         double angle) const noexcept {
-  const SDL_FPoint c = center;
+  const auto c = center.to_sdl_fpoint();
   SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &c,
                     SDL_FLIP_NONE);
 }
@@ -201,9 +201,10 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
 CENTURION_DEF void Renderer::draw_image(const Image& image,
                                         const SDL_Rect& source,
                                         const SDL_Rect& destination,
-                                        double angle, const math::Point& center,
+                                        double angle,
+                                        const math::IPoint& center,
                                         SDL_RendererFlip flip) const noexcept {
-  const SDL_Point c = center;
+  const auto c = center.to_sdl_point();
   SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &c, flip);
 }
 
@@ -213,7 +214,7 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
                                         double angle,
                                         const math::FPoint& center,
                                         SDL_RendererFlip flip) const noexcept {
-  const SDL_FPoint c = center;
+  const auto c = center.to_sdl_fpoint();
   SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &c, flip);
 }
 
@@ -247,14 +248,14 @@ CENTURION_DEF void Renderer::draw_line(const math::FPoint& start,
                       end.get_y());
 }
 
-CENTURION_DEF void Renderer::draw_line(const math::Point& start,
-                                       const math::Point& end) const noexcept {
+CENTURION_DEF void Renderer::draw_line(const math::IPoint& start,
+                                       const math::IPoint& end) const noexcept {
   SDL_RenderDrawLine(renderer, start.get_x(), start.get_y(), end.get_x(),
                      end.get_y());
 }
 
 CENTURION_DEF void Renderer::draw_lines(
-    const std::vector<math::Point>& points) const noexcept {
+    const std::vector<math::IPoint>& points) const noexcept {
   if (points.empty()) {
     return;
   } else {

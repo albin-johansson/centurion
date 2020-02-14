@@ -38,7 +38,7 @@ CENTURION_DEF bool Rect::contains(int px, int py) const noexcept {
            py > get_max_y());
 }
 
-CENTURION_DEF bool Rect::contains(Point point) const noexcept {
+CENTURION_DEF bool Rect::contains(IPoint point) const noexcept {
   return contains(point.get_x(), point.get_y());
 }
 

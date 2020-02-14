@@ -38,14 +38,9 @@
 
 #include "centurion_api.h"
 #include "color.h"
+#include "point.h"
 
 namespace centurion {
-
-namespace math {
-class Point;
-class FPoint;
-}  // namespace math
-
 namespace video {
 
 class Image;
@@ -290,7 +285,7 @@ class Renderer final {
    */
   CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
                                 const SDL_Rect& destination,
-                                const math::Point& center, double angle) const
+                                const math::IPoint& center, double angle) const
       noexcept;
 
   /**
@@ -352,7 +347,7 @@ class Renderer final {
    */
   CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
                                 const SDL_Rect& destination, double angle,
-                                const math::Point& center,
+                                const math::IPoint& center,
                                 SDL_RendererFlip flip) const noexcept;
 
   /**
@@ -443,8 +438,8 @@ class Renderer final {
    * @param end the end of the line.
    * @since 3.0.0
    */
-  CENTURION_API void draw_line(const math::Point& start,
-                               const math::Point& end) const noexcept;
+  CENTURION_API void draw_line(const math::IPoint& start,
+                               const math::IPoint& end) const noexcept;
 
   /**
    * Renders a sequence of connected lines in the currently selected color.
@@ -452,7 +447,7 @@ class Renderer final {
    * @param points the collection of points to draw the lines between.
    * @since 3.0.0
    */
-  CENTURION_API void draw_lines(const std::vector<math::Point>& points) const
+  CENTURION_API void draw_lines(const std::vector<math::IPoint>& points) const
       noexcept;
 
   /**

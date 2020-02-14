@@ -56,7 +56,13 @@ set(CATCH_INCLUDE_DIR catch2)
 add_library(Catch2 INTERFACE)
 target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
 
-add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
+include(CTest)
+include(Catch)
+
+#enable_testing()
+add_test(
+        NAME Centurion_test
+        COMMAND ${CENTURION_TEST_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET} PUBLIC unittests)
 target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
@@ -74,9 +80,6 @@ message("Linking against SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
 message("Centurion link target (unused in header-only mode): ${CENTURION_LIBRARIES}")
-
-include(CTest)
-include(Catch)
 
 target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_LIBRARY}

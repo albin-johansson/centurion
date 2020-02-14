@@ -130,7 +130,7 @@ class Point final {
    * point. It doesn't matter in which order the method call is performed
    * (i.e. <code>a.distance_to(b) == b.distance_to(a)</code>)
    *
-   * @param other
+   * @param other the point to calculate the distance to.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -179,6 +179,7 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T>
+  CENTURION_NODISCARD
   type_if<std::is_floating_point<T>::value, U> equals(const Point<T>& other,
                                                       T epsilon = 0.0001) const
       noexcept {
@@ -217,6 +218,7 @@ class Point final {
    * the x- and y-coordinates of the supplied points.
    * @since 4.0.0
    */
+  CENTURION_NODISCARD
   friend constexpr Point<T> operator+
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
@@ -230,6 +232,7 @@ class Point final {
    * subtracting the x- and y-coordinates of the supplied points.
    * @since 4.0.0
    */
+  CENTURION_NODISCARD
   friend Point<T> operator-
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
@@ -241,6 +244,7 @@ class Point final {
    * @return true if the points are equal; false otherwise.
    * @since 4.0.0
    */
+  CENTURION_NODISCARD
   friend bool operator==<T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
@@ -251,6 +255,7 @@ class Point final {
    * @return true if the points aren't equal; false otherwise.
    * @since 4.0.0
    */
+  CENTURION_NODISCARD
   friend bool operator!=<T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,

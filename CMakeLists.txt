@@ -77,5 +77,6 @@ if (DEFINED ENV{ENABLE_COVERAGE})
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
 endif ()
 
+enable_testing()
 add_subdirectory(src)
 add_subdirectory(test)

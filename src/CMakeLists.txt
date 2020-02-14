@@ -60,26 +60,26 @@ if (WIN32)
 endif ()
 
 if (DEFINED ENV{TRAVIS})
-    message("Not using audio!")
     # The Travis CI virtual machines can't handle the audio stuff
     target_compile_definitions(${CENTURION_LIB} PUBLIC CENTURION_NOAUDIO)
 endif ()
 
-# Specifies C++ version and compiler warning flags.
-target_compile_options(${CENTURION_LIB} PRIVATE
-        -Wall
-        -Wextra
-        -Wpedantic
-        -Wdouble-promotion
-        -Wswitch-default
-        -Wswitch-enum
-        -Wunused
-        -Wuninitialized
-        -Wsuggest-final-types
-        -Wsuggest-final-methods
-        -Wsuggest-override
-        -Wduplicated-cond
-        -Wconversion)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(${CENTURION_LIB} PRIVATE
+            -Wall
+            -Wextra
+            -Wpedantic
+            -Wdouble-promotion
+            -Wswitch-default
+            -Wswitch-enum
+            -Wunused
+            -Wuninitialized
+            -Wsuggest-final-types
+            -Wsuggest-final-methods
+            -Wsuggest-override
+            -Wduplicated-cond
+            -Wconversion)
+endif ()
 
 set_target_properties(${CENTURION_LIB} PROPERTIES
         VERSION 3.0.0

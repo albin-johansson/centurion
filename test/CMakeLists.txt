@@ -44,6 +44,10 @@ endif ()
 add_executable(${CENTURION_TEST} ${TEST_FILES})
 add_dependencies(${CENTURION_TEST} ${CENTURION_LIB})
 
+if (DEFINED ENV{TRAVIS})
+    target_compile_definitions(${CENTURION_TEST} PUBLIC CENTURION_NOAUDIO)
+endif ()
+
 set_target_properties(${CENTURION_TEST} PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON)
@@ -70,7 +74,7 @@ message("Linking against SDL2: ${SDL2_LIBRARY}")
 message("Linking against SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
-message("Linking against Centurion: ${CENTURION_LIBRARIES}")
+#message("Linking against Centurion: ${CENTURION_LIBRARIES}")
 
 include(CTest)
 include(Catch)

@@ -66,8 +66,8 @@ class Point final {
   T x = 0;
   T y = 0;
 
-  template <bool cond, typename U>
-  using type_if = typename std::enable_if<cond, U>::type;
+  template <bool condition, typename U>
+  using type_if = typename std::enable_if<condition, U>::type;
 
  public:
   /**

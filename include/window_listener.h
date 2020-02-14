@@ -39,7 +39,7 @@ class Window;
  *
  * @since 3.0.0
  */
-class CENTURION_API IWindowListener {
+class IWindowListener {
  public:
   virtual ~IWindowListener() = default;
 

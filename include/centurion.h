@@ -67,7 +67,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API Centurion final {
+class Centurion final {
  private:
   static constexpr int img_flags =
       IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP;

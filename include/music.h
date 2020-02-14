@@ -120,7 +120,7 @@ CENTURION_API bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept;
  * </ul>
  * @since 3.0.0
  */
-class CENTURION_API Music final {
+class Music final {
  private:
   Mix_Music* music = nullptr;
 

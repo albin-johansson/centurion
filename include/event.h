@@ -247,7 +247,7 @@ inline bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept {
  *
  * @since 3.2.0
  */
-class CENTURION_API WindowEvent final {
+class WindowEvent final {
  private:
   SDL_WindowEvent event;
 
@@ -281,7 +281,7 @@ class CENTURION_API WindowEvent final {
  *
  * @since 3.1.0
  */
-class CENTURION_API KeyEvent final {
+class KeyEvent final {
  private:
   SDL_KeyboardEvent event;
 
@@ -431,7 +431,7 @@ enum class MouseButton {
  *
  * @since 3.1.0
  */
-class CENTURION_API MouseButtonEvent final {
+class MouseButtonEvent final {
  private:
   SDL_MouseButtonEvent event;
 
@@ -532,7 +532,7 @@ class CENTURION_API MouseButtonEvent final {
  *
  * @since 3.1.0
  */
-class CENTURION_API MouseMotionEvent final {
+class MouseMotionEvent final {
  private:
   SDL_MouseMotionEvent event;
 
@@ -636,7 +636,7 @@ enum class MouseWheelDirection {  // TODO test
  *
  * @since 3.1.0
  */
-class CENTURION_API MouseWheelEvent final {  // TODO test
+class MouseWheelEvent final {  // TODO test
  private:
   SDL_MouseWheelEvent event;
 
@@ -710,7 +710,7 @@ class CENTURION_API MouseWheelEvent final {  // TODO test
  *
  * @since 3.1.0
  */
-class CENTURION_API QuitEvent final {
+class QuitEvent final {
  private:
   uint32_t time;
 
@@ -737,7 +737,7 @@ class CENTURION_API QuitEvent final {
  *
  * @since 3.1.0
  */
-class CENTURION_API Event final {
+class Event final {
  private:
   SDL_Event event{};
 
@@ -866,7 +866,7 @@ class CENTURION_API Event final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  operator SDL_Event&() noexcept;
+  CENTURION_API operator SDL_Event&() noexcept;
 };
 
 namespace {

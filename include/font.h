@@ -58,7 +58,7 @@ enum class FontHint {
  *
  * @since 3.0.0
  */
-class CENTURION_API Font final {
+class Font final {
  private:
   TTF_Font* font = nullptr;
   int style = 0;

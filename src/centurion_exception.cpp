@@ -15,6 +15,8 @@ CENTURION_DEF const char* CenturionException::what() const noexcept {
   return msg.c_str();
 }
 
+CENTURION_DEF CenturionException::~CenturionException() noexcept = default;
+
 }  // namespace centurion
 
 #endif  // CENTURION_EXCEPTION_SOURCE

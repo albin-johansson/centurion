@@ -43,7 +43,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class CENTURION_API SoundEffect final {
+class SoundEffect final {
  private:
   static constexpr int undefinedChannel = -1;
 
@@ -220,8 +220,8 @@ class CENTURION_API SoundEffect final {
   static constexpr int get_max_volume() noexcept { return MIX_MAX_VOLUME; }
 };
 
-CENTURION_DEF const int SoundEffect::loopForever = -10;
-CENTURION_DEF const int SoundEffect::maxVolume = get_max_volume();
+inline const int SoundEffect::loopForever = -10;
+inline const int SoundEffect::maxVolume = get_max_volume();
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<SoundEffect>::value, "SoundEffect isn't final!");

@@ -74,7 +74,7 @@ message("Linking against SDL2: ${SDL2_LIBRARY}")
 message("Linking against SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
-#message("Linking against Centurion: ${CENTURION_LIBRARIES}")
+message("Centurion link target (unused in header-only mode): ${CENTURION_LIBRARIES}")
 
 include(CTest)
 include(Catch)

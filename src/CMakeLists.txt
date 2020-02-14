@@ -59,11 +59,6 @@ if (WIN32)
     add_definitions(-DWIN_EXPORT)
 endif ()
 
-if (DEFINED ENV{TRAVIS})
-    # The Travis CI virtual machines can't handle the audio stuff
-    target_compile_definitions(${CENTURION_LIB} PUBLIC CENTURION_NOAUDIO)
-endif ()
-
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_LIB} PRIVATE
             -Wall

@@ -6,6 +6,7 @@
 #include <cmath>
 
 namespace centurion {
+namespace math {
 
 CENTURION_DEF Point::Point() noexcept = default;
 
@@ -117,6 +118,7 @@ CENTURION_DEF FPoint operator-(const FPoint& lhs, const FPoint& rhs) noexcept {
   return {lhs.get_x() - rhs.get_x(), lhs.get_y() - rhs.get_y()};
 }
 
+}  // namespace math
 }  // namespace centurion
 
 #endif  // CENTURION_POINT_SOURCE

@@ -3,6 +3,7 @@
 #include "log.h"
 
 using namespace centurion;
+using namespace centurion::math;
 
 TEST_CASE("Point()", "[Point]") {
   Point p;

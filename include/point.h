@@ -33,6 +33,7 @@
 #include "centurion_api.h"
 
 namespace centurion {
+namespace math {
 
 /**
  * The Point class is a simple representation of a point in the plane, with
@@ -403,6 +404,7 @@ static_assert(check_point_type<FPoint, SDL_FPoint>(),
 
 }  // namespace
 
+}  // namespace math
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

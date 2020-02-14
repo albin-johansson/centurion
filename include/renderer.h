@@ -43,8 +43,11 @@ namespace centurion {
 
 class Image;
 class Font;
+
+namespace math {
 class Point;
 class FPoint;
+}  // namespace math
 
 /**
  * The Renderer class is a wrapper class for the SDL_Renderer struct. Rendering
@@ -285,7 +288,7 @@ class Renderer final {
    */
   CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
                                 const SDL_Rect& destination,
-                                const Point& center, double angle) const
+                                const math::Point& center, double angle) const
       noexcept;
 
   /**
@@ -300,7 +303,7 @@ class Renderer final {
    */
   CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
                                 const SDL_FRect& destination,
-                                const FPoint& center, double angle) const
+                                const math::FPoint& center, double angle) const
       noexcept;
 
   /**
@@ -347,7 +350,7 @@ class Renderer final {
    */
   CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
                                 const SDL_Rect& destination, double angle,
-                                const Point& center,
+                                const math::Point& center,
                                 SDL_RendererFlip flip) const noexcept;
 
   /**
@@ -364,7 +367,7 @@ class Renderer final {
    */
   CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
                                 const SDL_FRect& destination, double angle,
-                                const FPoint& center,
+                                const math::FPoint& center,
                                 SDL_RendererFlip flip) const noexcept;
 
   /**
@@ -428,8 +431,8 @@ class Renderer final {
    * @param end the end of the line.
    * @since 3.0.0
    */
-  CENTURION_API void draw_line(const FPoint& start, const FPoint& end) const
-      noexcept;
+  CENTURION_API void draw_line(const math::FPoint& start,
+                               const math::FPoint& end) const noexcept;
 
   /**
    * Renders a line in the currently selected color.
@@ -438,8 +441,8 @@ class Renderer final {
    * @param end the end of the line.
    * @since 3.0.0
    */
-  CENTURION_API void draw_line(const Point& start, const Point& end) const
-      noexcept;
+  CENTURION_API void draw_line(const math::Point& start,
+                               const math::Point& end) const noexcept;
 
   /**
    * Renders a sequence of connected lines in the currently selected color.
@@ -447,7 +450,7 @@ class Renderer final {
    * @param points the collection of points to draw the lines between.
    * @since 3.0.0
    */
-  CENTURION_API void draw_lines(const std::vector<Point>& points) const
+  CENTURION_API void draw_lines(const std::vector<math::Point>& points) const
       noexcept;
 
   /**

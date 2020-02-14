@@ -8,6 +8,7 @@
 #include <cmath>
 
 namespace centurion {
+namespace math {
 
 CENTURION_DEF Rect::Rect() noexcept = default;
 
@@ -194,6 +195,7 @@ CENTURION_DEF bool operator!=(const FRect& lhs, const FRect& rhs) noexcept {
   return !(lhs == rhs);
 }
 
+}  // namespace math
 }  // namespace centurion
 
 #endif  // CENTURION_RECTANGLE_SOURCE

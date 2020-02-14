@@ -34,6 +34,7 @@
 #include "point.h"
 
 namespace centurion {
+namespace math {
 
 /**
  * The Rect class is a wrapper around an SDL_Rect struct.
@@ -552,6 +553,7 @@ static_assert(check_rect_type<FRect, SDL_FRect>(),
 
 }  // namespace
 
+}  // namespace math
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

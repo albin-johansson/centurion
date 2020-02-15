@@ -48,6 +48,8 @@ class CenturionException final : public std::exception {
    */
   CenturionException() = default;
 
+  CENTURION_API CenturionException(const CenturionException& other) noexcept;
+
   /**
    * @since 4.0.0
    */
@@ -77,6 +79,9 @@ static_assert(std::is_final<CenturionException>::value,
 
 static_assert(std::is_default_constructible<CenturionException>::value,
               "CenturionException isn't default constructible!");
+
+static_assert(std::is_nothrow_copy_constructible<CenturionException>::value,
+              "CenturionException isn't nothrow copy constructible!");
 
 static_assert(std::is_nothrow_destructible<CenturionException>::value,
               "CenturionException isn't nothrow destructible!");

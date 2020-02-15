@@ -11,6 +11,10 @@ CENTURION_DEF CenturionException::CenturionException(const char* msg)
 CENTURION_DEF CenturionException::CenturionException(const std::string& msg)
     : msg{msg} {}
 
+CENTURION_DEF CenturionException::CenturionException(
+    const CenturionException& other) noexcept
+    : msg{other.msg} {}
+
 CENTURION_DEF const char* CenturionException::what() const noexcept {
   return msg.c_str();
 }

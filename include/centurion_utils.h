@@ -74,7 +74,7 @@ namespace impl {
  * @since 3.0.0
  */
 template <typename T>
-CENTURION_NODISCARD static std::string address_of(T* ptr) {
+CENTURION_NODISCARD std::string address_of(T* ptr) {
   if (ptr) {
     std::ostringstream address;
     address << static_cast<void const*>(ptr);

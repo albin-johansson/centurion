@@ -24,7 +24,7 @@ CENTURION_DEF Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer) {
   }
   this->renderer = renderer;
 
-  set_color(Colors::black);
+  set_color(black);
   set_logical_integer_scale(false);
 }
 
@@ -33,7 +33,7 @@ CENTURION_DEF Renderer::Renderer(gsl::not_null<SDL_Window*> window,
   renderer = SDL_CreateRenderer(window, -1, flags);
 
   set_blend_mode(SDL_BLENDMODE_BLEND);
-  set_color(Colors::black);
+  set_color(black);
   set_logical_integer_scale(false);
 }
 

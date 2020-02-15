@@ -36,7 +36,6 @@ set(SOURCE_FILES
         sound_effect.cpp
         centurion_exception.cpp
         centurion.cpp
-        colors.cpp
         image_generator.cpp
         paths.cpp
         system.cpp
@@ -76,7 +75,9 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
             -Wsuggest-final-methods
             -Wsuggest-override
             -Wduplicated-cond
-            -Wconversion)
+            -Wconversion
+            -Wc++14-compat
+            -Wc++17-compat)
 endif ()
 
 set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES

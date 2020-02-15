@@ -186,7 +186,7 @@ TEST_CASE("Color setters", "[Color]") {
 }
 
 TEST_CASE("Color conversions", "[Color]") {
-  const auto& color = Colors::dark_orchid;
+  const auto& color = dark_orchid;
   SECTION("Convert to SDL_Color") {
     SDL_Color sdlColor = color;
 

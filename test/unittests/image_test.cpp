@@ -138,7 +138,7 @@ TEST_CASE("Image::set_color_mod", "[Image]") {
   Renderer renderer{window};
   Image img{renderer, path};
 
-  const auto color = Colors::misty_rose;
+  const auto color = misty_rose;
   img.set_color_mod(color);
 
   const auto actual = img.get_color_mod();

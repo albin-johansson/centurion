@@ -1,4 +1,4 @@
-# Centurion ![Centurion](bin/centurion_icon.png) [![version](https://img.shields.io/badge/version-3.1.1-blue.svg)](https://semver.org) [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) [![codecov](https://codecov.io/gh/albin-johansson/Centurion/branch/master/graph/badge.svg)](https://codecov.io/gh/albin-johansson/Centurion)
+# Centurion ![Centurion](bin/centurion_icon.png) [![version](https://img.shields.io/badge/version-4.0.0-green.svg)](https://semver.org) [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) [![codecov](https://codecov.io/gh/albin-johansson/Centurion/branch/master/graph/badge.svg)](https://codecov.io/gh/albin-johansson/Centurion)
 
 
 

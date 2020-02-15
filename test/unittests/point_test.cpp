@@ -218,12 +218,46 @@ TEST_CASE("FPoint::to_string", "[FPoint]") {
   Log::msgf(Category::Test, "%s", point.to_string().c_str());
 }
 
-TEST_CASE("FPoint to SDL_FPoint", "[FPoint]") {
+TEST_CASE("Point::to_sdl_fpoint", "[FPoint]") {
   const FPoint point{76.2f, 91.2f};
   const SDL_FPoint sdlPoint = point.to_sdl_fpoint();
 
   CHECK(point.get_x() == sdlPoint.x);
   CHECK(point.get_y() == sdlPoint.y);
+}
+
+TEST_CASE("FPoint to SDL_FPoint*", "[FPoint]") {
+  SECTION("Const version") {
+    const FPoint point{44.9f, 22.5f};
+    const auto* sdlPoint = static_cast<const SDL_FPoint*>(point);
+
+    CHECK(point.get_x() == sdlPoint->x);
+    CHECK(point.get_y() == sdlPoint->y);
+  }
+  SECTION("Non-const version") {
+    FPoint point{89.7f, -24.6f};
+    auto* sdlPoint = static_cast<SDL_FPoint*>(point);
+
+    CHECK(point.get_x() == sdlPoint->x);
+    CHECK(point.get_y() == sdlPoint->y);
+  }
+}
+
+TEST_CASE("IPoint to SDL_Point*", "[FPoint]") {
+  SECTION("Const version") {
+    const IPoint point{-58, 99};
+    const auto* sdlPoint = static_cast<const SDL_Point*>(point);
+
+    CHECK(point.get_x() == sdlPoint->x);
+    CHECK(point.get_y() == sdlPoint->y);
+  }
+  SECTION("Non-const version") {
+    IPoint point{10, 892};
+    auto* sdlPoint = static_cast<SDL_Point*>(point);
+
+    CHECK(point.get_x() == sdlPoint->x);
+    CHECK(point.get_y() == sdlPoint->y);
+  }
 }
 
 TEST_CASE("Point::distance_to", "[FPoint]") {

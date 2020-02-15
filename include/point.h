@@ -58,10 +58,10 @@ constexpr Point<U> operator+(const Point<U>& lhs, const Point<U>& rhs) noexcept;
  * and DPoint.
  *
  * @tparam T the type of the components of the point. Must be either integral
- * or real.
+ * or real. Defaults to float.
  * @since 4.0.0
  */
-template <typename T>
+template <typename T = float>
 class Point final {
  private:
   T x = 0;
@@ -217,6 +217,70 @@ class Point final {
   CENTURION_NODISCARD
   friend constexpr Point<T> operator+
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+
+  /**
+   * Converts the point to a pointer to an SDL_Point instance. This
+   * conversion is only available if the point is based on <code>int</code>.
+   *
+   * @tparam U the type parameter, defaults to the type of the point
+   * components.
+   * @return an SDL_Point pointer that is produced by reinterpreting the
+   * invoked point.
+   * @since 4.0.0
+   */
+  template <typename U = T, typename = typename std::enable_if<
+                                std::is_same<U, int>::value>::type>
+  CENTURION_NODISCARD explicit operator SDL_Point*() noexcept {
+    return reinterpret_cast<SDL_Point*>(this);
+  }
+
+  /**
+   * Converts the point to a pointer to an SDL_Point instance. This
+   * conversion is only available if the point is based on <code>int</code>.
+   *
+   * @tparam U the type parameter, defaults to the type of the point
+   * components.
+   * @return an SDL_Point pointer that is produced by reinterpreting the
+   * invoked point.
+   * @since 4.0.0
+   */
+  template <typename U = T, typename = typename std::enable_if<
+                                std::is_same<U, int>::value>::type>
+  CENTURION_NODISCARD explicit operator const SDL_Point*() const noexcept {
+    return reinterpret_cast<const SDL_Point*>(this);
+  }
+
+  /**
+   * Converts the point to a pointer to an SDL_FPoint instance. This
+   * conversion is only available if the point is based on <code>float</code>.
+   *
+   * @tparam U the type parameter, defaults to the type of the point
+   * components.
+   * @return an SDL_FPoint pointer that is produced by reinterpreting the
+   * invoked point.
+   * @since 4.0.0
+   */
+  template <typename U = T, typename = typename std::enable_if<
+                                std::is_same<U, float>::value>::type>
+  CENTURION_NODISCARD explicit operator SDL_FPoint*() noexcept {
+    return reinterpret_cast<SDL_FPoint*>(this);
+  }
+
+  /**
+   * Converts the point to a pointer to an SDL_FPoint instance. This
+   * conversion is only available if the point is based on <code>float</code>.
+   *
+   * @tparam U the type parameter, defaults to the type of the point
+   * components.
+   * @return an SDL_FPoint pointer that is produced by reinterpreting the
+   * invoked point.
+   * @since 4.0.0
+   */
+  template <typename U = T, typename = typename std::enable_if<
+                                std::is_same<U, float>::value>::type>
+  CENTURION_NODISCARD explicit operator const SDL_FPoint*() const noexcept {
+    return reinterpret_cast<const SDL_FPoint*>(this);
+  }
 
   /**
    * Creates and returns a point in which the coordinates are the differences

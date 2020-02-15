@@ -32,6 +32,7 @@
 #include "centurion_api.h"
 
 namespace centurion {
+namespace system {
 
 /**
  * An enum class that provides values that represent various different operating
@@ -42,38 +43,27 @@ namespace centurion {
 enum class Platform { Unknown, Windows, MacOSX, Linux, Ios, Android };
 
 /**
- * The System class is a general utility class that provides information about
- * the operating system.
+ * Returns a value that represents the current platform.
  *
+ * @return a value that represents the current platform.
  * @since 3.0.0
  */
-class System final {
- public:
-  System() = delete;
-
-  /**
-   * Returns a value that represents the current platform.
-   *
-   * @return a value that represents the current platform.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API static Platform get_platform() noexcept;
+CENTURION_NODISCARD
+CENTURION_API Platform get_platform() noexcept;
 
 #ifdef CENTURION_HAS_OPTIONAL
 
-  /**
-   * Returns the name of the current platform.
-   *
-   * @return the name of the current platform; std::nullopt if the name cannot
-   * be deduced.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API static std::optional<std::string> get_platform_name() noexcept;
+/**
+ * Returns the name of the current platform.
+ *
+ * @return the name of the current platform; std::nullopt if the name cannot
+ * be deduced.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API std::optional<std::string> get_platform_name() noexcept;
 
 #endif
-};
 
 /**
  * The CPU class is a utility class that provides information related to,
@@ -267,7 +257,7 @@ class Power final {
  *
  * @since 3.0.0
  */
-class Screen final { // TODO this might belong in video namespace?
+class Screen final {  // TODO this might belong in video namespace?
  public:
   Screen() = delete;
 
@@ -308,6 +298,7 @@ class Screen final { // TODO this might belong in video namespace?
   CENTURION_API static uint32_t get_pixel_format() noexcept;
 };
 
+}  // namespace system
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

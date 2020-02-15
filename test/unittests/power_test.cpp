@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "system.h"
 
-using namespace centurion;
+using namespace centurion::system;
 
 TEST_CASE("PowerState enum", "[Power]") {
   CHECK(PowerState::Unknown == SDL_POWERSTATE_UNKNOWN);

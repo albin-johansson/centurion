@@ -6,8 +6,9 @@
 #include <string>
 
 namespace centurion {
+namespace system {
 
-CENTURION_DEF Platform System::get_platform() noexcept {
+CENTURION_DEF Platform get_platform() noexcept {
   const std::string name{SDL_GetPlatform()};
   if (name == "Windows") {
     return Platform::Windows;
@@ -26,7 +27,7 @@ CENTURION_DEF Platform System::get_platform() noexcept {
 
 #ifdef CENTURION_HAS_OPTIONAL
 
-CENTURION_DEF std::optional<std::string> System::get_platform_name() noexcept {
+CENTURION_DEF std::optional<std::string> get_platform_name() noexcept {
   const std::string name{SDL_GetPlatform()};
   if (name == "Unknown") {
     return std::nullopt;
@@ -111,6 +112,7 @@ Screen::get_pixel_format() noexcept {  // TODO replace return type
   return mode.format;
 }
 
+}  // namespace system
 }  // namespace centurion
 
 #endif  // CENTURION_SYSTEM_SOURCE

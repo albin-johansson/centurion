@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "system.h"
 
-using namespace centurion;
+using namespace centurion::system;
 
 TEST_CASE("CPU::get_cache_line_size", "[CPU]") {
   const auto size = CPU::get_cache_line_size();

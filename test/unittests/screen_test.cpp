@@ -1,7 +1,7 @@
 #include "catch.hpp"
 #include "system.h"
 
-using namespace centurion;
+using namespace centurion::system;
 
 TEST_CASE("Screen::get_width", "[Screen]") {
   SDL_DisplayMode mode;

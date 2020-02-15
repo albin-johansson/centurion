@@ -34,38 +34,6 @@
 
 namespace centurion {
 
-/**
- * The CenturionUtils class provides utilities used by components of the
- * Centurion library.
- *
- * @since 3.0.0
- */
-class CenturionUtils final {
- public:
-  CenturionUtils() = delete;
-
-  /**
-   * Returns a string that represents the memory address of the supplied
-   * pointer. The empty string is returned if the supplied pointer is null.
-   *
-   * @tparam T the type of the pointer.
-   * @param ptr the pointer that will be converted.
-   * @return a string that represents the memory address of the supplied
-   * pointer.
-   * @since 3.0.0
-   */
-  template <typename T>
-  CENTURION_NODISCARD static std::string address(T* ptr) {
-    if (ptr) {
-      std::ostringstream address;
-      address << static_cast<void const*>(ptr);
-      return address.str();
-    } else {
-      return "";
-    }
-  }
-};
-
 #ifndef CENTURION_HAS_MAKE_UNIQUE
 
 /**
@@ -86,12 +54,40 @@ CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args) {
 
 #endif
 
+/**
+ * The impl namespace is reserved for the implementation of the Centurion
+ * library and may change at any time. In other words, don't use the stuff in
+ * this namespace.
+ *
+ * @since 4.0.0
+ */
 namespace impl {
+
+/**
+ * Returns a string that represents the memory address of the supplied
+ * pointer. The empty string is returned if the supplied pointer is null.
+ *
+ * @tparam T the type of the pointer.
+ * @param ptr the pointer that will be converted.
+ * @return a string that represents the memory address of the supplied
+ * pointer.
+ * @since 3.0.0
+ */
+template <typename T>
+CENTURION_NODISCARD static std::string address_of(T* ptr) {
+  if (ptr) {
+    std::ostringstream address;
+    address << static_cast<void const*>(ptr);
+    return address.str();
+  } else {
+    return "";
+  }
+}
 
 template <bool condition, typename U>
 using type_if = typename std::enable_if<condition, U>::type;
 
-}
+}  // namespace impl
 
 }  // namespace centurion
 

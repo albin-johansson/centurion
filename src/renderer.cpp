@@ -470,7 +470,7 @@ CENTURION_DEF std::unique_ptr<Image> Renderer::create_image(
 }
 
 CENTURION_DEF std::string Renderer::to_string() const {
-  const auto address = CenturionUtils::address(this);
+  const auto address = impl::address_of(this);
   const auto owidth = std::to_string(get_output_width());
   const auto oheight = std::to_string(get_output_height());
   return "[Renderer@" + address + " | Output width: " + owidth +

@@ -28,6 +28,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <type_traits>
 
 #include "centurion_api.h"
 
@@ -84,6 +85,13 @@ CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args) {
 }
 
 #endif
+
+namespace impl {
+
+template <bool condition, typename U>
+using type_if = typename std::enable_if<condition, U>::type;
+
+}
 
 }  // namespace centurion
 

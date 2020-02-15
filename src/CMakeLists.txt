@@ -45,7 +45,6 @@ set(SOURCE_FILES
         message_box.cpp
         color.cpp
         blend_mode.cpp
-        rectangle.cpp
         key_state.cpp
         mouse_state.cpp
         music.cpp

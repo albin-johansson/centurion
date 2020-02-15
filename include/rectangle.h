@@ -31,197 +31,256 @@
 #include <type_traits>
 
 #include "centurion_api.h"
+#include "centurion_utils.h"
 #include "point.h"
 
 namespace centurion {
 namespace math {
 
+template <typename T>
+class Rect;
+
+template <typename U>
+constexpr bool operator==(const Rect<U>& lhs, const Rect<U>& rhs) noexcept;
+
+template <typename U>
+constexpr bool operator!=(const Rect<U>& lhs, const Rect<U>& rhs) noexcept;
+
 /**
- * The Rect class is a wrapper around an SDL_Rect struct.
+ * The Rect class represents a rectangle that supports integral and
+ * floating-point components.
  *
- * @since 3.0.0
+ * <p>
+ * <code>Rect&lt;int&gt;</code> and <code>Rect&lt;float&gt;</code> can safely
+ * be casted to be pointers of their corresponding SDL types,
+ * <code>SDL_Rect</code> and <code>SDL_FRect</code> respectively.
+ *
+ * @tparam T the type of the components of the rectangle. Set to float by
+ * default.
+ * @since 4.0.0
  */
+template <typename T = float>
 class Rect final {
  private:
-  SDL_Rect rect{0, 0, 0, 0};
+  T x = 0;
+  T y = 0;
+  T width = 0;
+  T height = 0;
 
  public:
   /**
    * Creates a rectangle with the components (0, 0, 0, 0).
    *
-   * @since 3.0.0
+   * @since 4.0.0
    */
-  CENTURION_API Rect() noexcept;
+  constexpr Rect() noexcept = default;
 
   /**
    * @param x the x-coordinate of the rectangle.
    * @param y the y-coordinate of the rectangle.
    * @param width the width of the rectangle.
    * @param height the height of the rectangle.
-   * @since 3.0.0
+   * @since 4.0.0
    */
-  CENTURION_API Rect(int x, int y, int width, int height) noexcept;
-
-  /**
-   * @param sdlRect the rectangle that will be copied.
-   * @since 3.1.0
-   */
-  CENTURION_API explicit Rect(const SDL_Rect& sdlRect) noexcept;
+  constexpr Rect(T x, T y, T width, T height) noexcept
+      : x{x}, y{y}, width{width}, height{height} {}
 
   /**
    * Sets the x-coordinate of the rectangle.
    *
-   * @param x the x-coordinate of the rectangle.
-   * @since 3.0.0
+   * @param rx the new x-coordinate of the rectangle.
+   * @since 4.0.0
    */
-  CENTURION_API void set_x(int x) noexcept;
+  constexpr void set_x(T rx) noexcept { x = rx; }
 
   /**
    * Sets the y-coordinate of the rectangle.
    *
-   * @param y the y-coordinate of the rectangle.
-   * @since 3.0.0
+   * @param ry the new y-coordinate of the rectangle.
+   * @since 4.0.0
    */
-  CENTURION_API void set_y(int y) noexcept;
+  constexpr void set_y(T ry) noexcept { y = ry; }
 
   /**
    * Sets the width of the rectangle.
    *
-   * @param width the width of the rectangle.
-   * @since 3.0.0
+   * @param rwidth the new width of the rectangle.
+   * @since 4.0.0
    */
-  CENTURION_API void set_width(int width) noexcept;
+  constexpr void set_width(T rwidth) noexcept { width = rwidth; }
 
   /**
    * Sets the height of the rectangle.
    *
-   * @param height the height of the rectangle.
-   * @since 3.0.0
+   * @param rheight the new height of the rectangle.
+   * @since 4.0.0
    */
-  CENTURION_API void set_height(int height) noexcept;
+  constexpr void set_height(T rheight) noexcept { height = rheight; }
 
   /**
-   * Copies all of the components of the supplied rectangle.
+   * Sets all of the components of the rectangle.
+   *
+   * @param rx the new x-coordinate of the rectangle.
+   * @param ry the new y-coordinate of the rectangle.
+   * @param rwidth the new width of the rectangle.
+   * @param rheight the new height of the rectangle.
+   * @since 4.0.0
+   */
+  constexpr void set(T rx, T ry, T rwidth, T rheight) noexcept {
+    x = rx;
+    y = ry;
+    width = rwidth;
+    height = rheight;
+  }
+
+  /**
+   * Copies all of the components of the supplied rectangle to the invoked
+   * rectangle. The rectangles will be equal after this operation.
    *
    * @param other the rectangle that will be copied.
-   * @since 3.1.0
+   * @since 4.0.0
    */
-  CENTURION_API void set(const Rect& other) noexcept;
+  constexpr void set(const Rect<T>& other) noexcept {
+    x = other.x;
+    y = other.y;
+    width = other.width;
+    height = other.height;
+  }
 
   /**
-   * Indicates whether or not the supplied rectangle intersects this rectangle.
+   * Indicates whether or not this rectangle intersects the supplied rectangle.
    *
-   * @param other the rectangle that will be checked with this rectangle.
+   * @param other the other rectangle to check.
    * @return true if the rectangles intersect; false otherwise.
-   * @since 3.0.0
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool intersects(const Rect& other) const noexcept;
+  constexpr bool intersects(const Rect<T>& other) const noexcept {
+    return !(x >= other.get_max_x() || get_max_x() <= other.x ||
+             y >= other.get_max_y() || get_max_y() <= other.y);
+  }
 
   /**
-   * Indicates whether or not the rectangle contains the supplied point.
+   * Indicates whether or not the supplied point is contained within the
+   * rectangle.
    *
-   * @param px the x-coordinate of the point that will be checked.
-   * @param py the y-coordinate of the point that will be checked.
-   * @return true if the point is contained in the rectangle; false otherwise.
-   * @since 3.0.0
+   * @param px the x-coordinate of the point.
+   * @param py the y-coordinate of the point.
+   * @return true if the supplied point is inside the rectangle; false
+   * otherwise.
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool contains(int px, int py) const noexcept;
+  constexpr bool contains(T px, T py) const noexcept {
+    return !(px < x || py < y || px > get_max_x() || py > get_max_y());
+  }
 
   /**
-   * Indicates whether or not the rectangle contains the supplied point.
+   * Indicates whether or not the supplied point is contained within the
+   * rectangle.
    *
-   * @param point th point that will be checked.
-   * @return true if the point is contained in the rectangle; false otherwise.
-   * @since 3.0.0
+   * @param point the point that will be checked.
+   * @return true if the supplied point is inside the rectangle; false
+   * otherwise.
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool contains(IPoint point) const noexcept;
-
-  /**
-   * Indicates whether or not the rectangle has an area. A rectangle has an area
-   * if the width and height are both greater than zero.
-   *
-   * @return true if the rectangle has an area; false otherwise.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API bool has_area() const noexcept;
+  constexpr bool contains(Point<T> point) const noexcept {
+    return contains(point.get_x(), point.get_y());
+  }
 
   /**
    * Returns the x-coordinate of the rectangle.
    *
    * @return the x-coordinate of the rectangle.
-   * @since 3.0.0
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_x() const noexcept;
+  constexpr T get_x() const noexcept { return x; }
 
   /**
    * Returns the y-coordinate of the rectangle.
    *
    * @return the y-coordinate of the rectangle.
-   * @since 3.0.0
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_y() const noexcept;
-
-  /**
-   * Returns the x-coordinate of the center point of the rectangle.
-   *
-   * @return the x-coordinate of the center point of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int get_center_x() const noexcept;
-
-  /**
-   * Returns the y-coordinate of the center point of the rectangle.
-   *
-   * @return the y-coordinate of the center point of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int get_center_y() const noexcept;
-
-  /**
-   * Returns the maximum x-coordinate of the rectangle. The returned value is
-   * the same as the x-coordinate added with the width of the rectangle.
-   *
-   * @return the maximum x-coordinate of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int get_max_x() const noexcept;
-
-  /**
-   * Returns the maximum y-coordinate of the rectangle. The returned value is
-   * the same as the y-coordinate added with the width of the rectangle.
-   *
-   * @return the maximum y-coordinate of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int get_max_y() const noexcept;
+  constexpr T get_y() const noexcept { return y; }
 
   /**
    * Returns the width of the rectangle.
    *
    * @return the width of the rectangle.
-   * @since 3.0.0
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_width() const noexcept;
+  constexpr T get_width() const noexcept { return width; }
 
   /**
    * Returns the height of the rectangle.
    *
    * @return the height of the rectangle.
-   * @since 3.0.0
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_height() const noexcept;
+  constexpr T get_height() const noexcept { return height; }
+
+  /**
+   * Returns the maximum x-coordinate of the rectangle.
+   *
+   * @return the maximum x-coordinate of the rectangle.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  constexpr T get_max_x() const noexcept { return x + width; }
+
+  /**
+   * Returns the maximum y-coordinate of the rectangle.
+   *
+   * @return the maximum y-coordinate of the rectangle.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  constexpr T get_max_y() const noexcept { return y + height; }
+
+  /**
+   * Returns the x-coordinate of the center point of the rectangle.
+   *
+   * @return the x-coordinate of the center point of the rectangle.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  constexpr T get_center_x() const noexcept { return x + (width / 2); }
+
+  /**
+   * Returns the y-coordinate of the center point of the rectangle.
+   *
+   * @return the y-coordinate of the center point of the rectangle.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  constexpr T get_center_y() const noexcept { return y + (height / 2); }
+
+  /**
+   * Returns the center point of the rectangle.
+   *
+   * @return the center point of the rectangle.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  constexpr Point<T> get_center() const noexcept {
+    return {get_center_x(), get_center_y()};
+  }
+
+  /**
+   * Indicates whether or not the rectangle has an area. A rectangle has an
+   * area if the width and height are both greater than zero.
+   *
+   * @return true if the rectangle has an area; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  constexpr bool has_area() const noexcept { return width > 0 && height > 0; }
 
   /**
    * Calculates and returns a rectangle that represents the union of two
@@ -230,334 +289,164 @@ class Rect final {
    * @return a rectangle that represents the union of the rectangles.
    * @since 3.1.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Rect get_union(const Rect& other) const noexcept;
+  template <typename U = T, typename = typename std::enable_if<
+                                std::is_same<U, int>::value>::type>
+  CENTURION_NODISCARD Rect<T> get_union(const Rect<T>& other) const noexcept {
+    SDL_Rect result{0, 0, 0, 0};
+
+    const auto* a = static_cast<const SDL_Rect*>(*this);
+    const auto* b = static_cast<const SDL_Rect*>(other);
+
+    SDL_UnionRect(a, b, &result);
+    return {result.x, result.y, result.w, result.h};
+  }
 
   /**
    * Returns a textual representation of the rectangle.
    *
    * @return a textual representation of the rectangle.
-   * @since 3.0.0
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::string to_string() const;
+  std::string to_string() const {
+    const auto sx = std::to_string(x);
+    const auto sy = std::to_string(y);
+    const auto sw = std::to_string(width);
+    const auto sh = std::to_string(height);
+    return "[Rect | X: " + sx + ", Y: " + sy + ", Width: " + sw +
+           ", Height: " + sh + "]";
+  }
 
   /**
-   * Returns a reference to the internal SDL_Rect instance.
+   * Converts the rectangle to a pointer to an SDL_Rect. This conversion is
+   * only available if the rectangle is based on <code>int</code>.
    *
-   * @return a reference to the internal SDL_Rect instance.
-   * @since 3.0.0
+   * @tparam U the type parameter, defaults to the type of the rectangle
+   * components.
+   * @return an SDL_Rect pointer that is produced by reinterpreting the
+   * invoked rectangle.
+   * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API /*implicit*/ operator const SDL_Rect&() const noexcept;
-};
+  template <typename U = T, typename = typename std::enable_if<
+                                std::is_same<U, int>::value>::type>
+  CENTURION_NODISCARD explicit operator SDL_Rect*() noexcept {
+    return reinterpret_cast<SDL_Rect*>(this);
+  }
 
-/**
- * The FRect class is a wrapper around the SDL_FRect struct.
- *
- * @since 3.0.0
- */
-class FRect final {
- private:
-  SDL_FRect rect{0, 0, 0, 0};
-
- public:
   /**
-   * Creates a rectangle with all of the components set to 0.
+   * Converts the rectangle to a pointer to an SDL_Rect. This conversion is
+   * only available if the rectangle is based on <code>int</code>.
    *
-   * @since 3.0.0
+   * @tparam U the type parameter, defaults to the type of the rectangle
+   * components.
+   * @return an SDL_Rect pointer that is produced by reinterpreting the
+   * invoked rectangle.
+   * @since 4.0.0
    */
-  CENTURION_API FRect() noexcept;
+  template <typename U = T, typename = typename std::enable_if<
+                                std::is_same<U, int>::value>::type>
+  CENTURION_NODISCARD explicit operator const SDL_Rect*() const noexcept {
+    return reinterpret_cast<const SDL_Rect*>(this);
+  }
 
   /**
-   * @param x the x-coordinate of the rectangle.
-   * @param y the y-coordinate of the rectangle.
-   * @param width the width of the rectangle.
-   * @param height the height of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_API FRect(float x, float y, float width, float height) noexcept;
-
-  /**
-   * @param sdlRect the rectangle that will be copied.
-   * @since 3.1.0
-   */
-  CENTURION_API FRect(const SDL_FRect& sdlRect) noexcept;
-
-  /**
-   * Sets the x-coordinate of the rectangle.
+   * Converts the rectangle to a pointer to an SDL_FRect. This conversion is
+   * only available if the rectangle is based on <code>float</code>.
    *
-   * @param x the new x-coordinate of the rectangle.
-   * @since 3.0.0
+   * @tparam U the type parameter, defaults to the type of the rectangle
+   * components.
+   * @return an SDL_FRect pointer that is produced by reinterpreting the
+   * invoked rectangle.
+   * @since 4.0.0
    */
-  CENTURION_API void set_x(float x) noexcept;
+  template <typename U = T, typename = typename std::enable_if<
+                                std::is_same<U, float>::value>::type>
+  CENTURION_NODISCARD explicit operator SDL_FRect*() noexcept {
+    return reinterpret_cast<SDL_FRect*>(this);
+  }
 
   /**
-   * Sets the y-coordinate of the rectangle.
+   * Converts the rectangle to a pointer to an SDL_FRect. This conversion is
+   * only available if the rectangle is based on <code>float</code>.
    *
-   * @param y the new y-coordinate of the rectangle.
-   * @since 3.0.0
+   * @tparam U the type parameter, defaults to the type of the rectangle
+   * components.
+   * @return an SDL_FRect pointer that is produced by reinterpreting the
+   * invoked rectangle.
+   * @since 4.0.0
    */
-  CENTURION_API void set_y(float y) noexcept;
+  template <typename U = T, typename = typename std::enable_if<
+                                std::is_same<U, float>::value>::type>
+  CENTURION_NODISCARD explicit operator const SDL_FRect*() const noexcept {
+    return reinterpret_cast<const SDL_FRect*>(this);
+  }
 
   /**
-   * Sets the width of the rectangle.
-   *
-   * @param width the new width of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_width(float width) noexcept;
-
-  /**
-   * Sets the height of the rectangle.
-   *
-   * @param height the new height of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_height(float height) noexcept;
-
-  /**
-   * Copies all of the components of the supplied rectangle.
-   *
-   * @param other the rectangle that will be copied.
-   * @since 3.1.0
-   */
-  CENTURION_API void set(const FRect& other) noexcept;
-
-  /**
-   * Indicates whether or not the rectangle intersects the supplied rectangle.
-   *
-   * @param other the rectangle to check for an intersection with.
-   * @return true if the rectangles intersect; false otherwise.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API bool intersects(const FRect& other) const noexcept;
-
-  /**
-   * Indicates whether or not the rectangle contains the specified point.
-   *
-   * @param px the x-coordinate of the point.
-   * @param py the y-coordinate of the point.
-   * @return true if the point is contained within the rectangle; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API bool contains(float px, float py) const noexcept;
-
-  /**
-   * Indicates whether or not the rectangle contains the specified point.
-   *
-   * @param point the point that will be checked.
-   * @return true if the point is contained within the rectangle; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API bool contains(FPoint point) const noexcept;
-
-  /**
-   * Indicates whether or not two rectangles are considered to be equal. This
-   * method allows for an explicit epsilon value, unlike the overloaded
-   * ==-operator for FRect instances. In order for two rectangles to be
-   * considered equal, the absolute difference of the respective components of
-   * the rectangles must be in the range [0, epsilon).
+   * Indicates whether or not two rectangles are equal.
    *
    * @param lhs the left-hand side rectangle.
    * @param rhs the right-hand side rectangle.
-   * @param epsilon the exclusive limit that determines the maximum allowed
-   * difference between the component values of the rectangles. A negative value
-   * is capped to zero.
-   * @return true if the two rectangles are considered to be the same; false
-   * otherwise.
-   * @since 3.1.0
+   * @return true if the rectangles are equal; false otherwise.
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static bool equals(const FRect& lhs, const FRect& rhs,
-                                   float epsilon = 0.0001f) noexcept;
+  friend bool operator==<T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
   /**
-   * Indicates whether or not the rectangle has an area. A rectangle has an area
-   * if its width and height are both greater than zero.
+   * Indicates whether or not two rectangles aren't equal.
    *
-   * @return true if the rectangle has an area; false otherwise.
-   * @since 3.0.0
+   * @param lhs the left-hand side rectangle.
+   * @param rhs the right-hand side rectangle.
+   * @return true if the rectangles aren't equal; false otherwise.
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool has_area() const noexcept;
+  friend bool operator!=<T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
-  /**
-   * Returns the x-coordinate of the rectangle.
-   *
-   * @return the x-coordinate of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API float get_x() const noexcept;
+  static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+                "Rect type must be either integral or floating-point!");
 
-  /**
-   * Returns the y-coordinate of the rectangle.
-   *
-   * @return the y-coordinate of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API float get_y() const noexcept;
-
-  /**
-   * Returns the x-coordinate of the center point of the rectangle.
-   *
-   * @return the x-coordinate of the center point of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_API float get_center_x() const noexcept;
-
-  /**
-   * Returns the y-coordinate of the center point of the rectangle.
-   *
-   * @return the y-coordinate of the center point of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API float get_center_y() const noexcept;
-
-  /**
-   * Returns the maximum x-coordinate of the rectangle, which is equivalent to
-   * the sum of the x-coordinate and width of the rectangle.
-   *
-   * @return the maximum x-coordinate of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API float get_max_x() const noexcept;
-
-  /**
-   * Returns the maximum y-coordinate of the rectangle, which is equivalent to
-   * the sum of the y-coordinate and height of the rectangle.
-   *
-   * @return the maximum y-coordinate of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API float get_max_y() const noexcept;
-
-  /**
-   * Returns the width of the rectangle.
-   *
-   * @return the width of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API float get_width() const noexcept;
-
-  /**
-   * Returns the height of the rectangle.
-   *
-   * @return the height of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API float get_height() const noexcept;
-
-  /**
-   * Returns a textual representation of the rectangle.
-   *
-   * @return a textual representation of the rectangle.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API std::string to_string() const;
-
-  /**
-   * Returns a reference to the internal SDL_FRect instance.
-   *
-   * @return a reference to the internal SDL_FRect instance.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API /*implicit*/ operator const SDL_FRect&() const noexcept;
+  static_assert(std::is_trivial<T>::value, "Rect type must be trivial!");
 };
 
-/**
- * Indicates whether or not two rectangles are the same.
- *
- * @param lhs the left-hand side rectangle.
- * @param rhs the right-hand side rectangle.
- * @return true if the rectangle have the same components; false otherwise.
- * @since 3.1.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(const Rect& lhs, const Rect& rhs) noexcept;
-
-/**
- * Indicates whether or not two rectangles aren't the same.
- *
- * @param lhs the left-hand side rectangle.
- * @param rhs the right-hand side rectangle.
- * @return true if the rectangles aren't the same; false otherwise.
- * @since 3.1.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(const Rect& lhs, const Rect& rhs) noexcept;
-
-/**
- * Indicates whether or not two rectangles are the same. Note! The
- * implementation allows for a small difference in the component values (an
- * epsilon value). However, if you need to be explicit about the precision, use
- * the FRect::equals method. Note, this operator is implemented by simply
- * delegating to the FRect::equals method, using the default epsilon value.
- *
- * @param lhs the left-hand side rectangle.
- * @param rhs the right-hand side rectangle.
- * @return true if the rectangle have the same components; false otherwise.
- * @since 3.1.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(const FRect& lhs, const FRect& rhs) noexcept;
-
-/**
- * Indicates whether or not two rectangles aren't the same.
- *
- * @param lhs the left-hand side rectangle.
- * @param rhs the right-hand side rectangle.
- * @return true if the rectangles aren't the same; false otherwise.
- * @since 3.1.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(const FRect& lhs, const FRect& rhs) noexcept;
-
-namespace {
-
-template <typename CTNRect, typename SDLRect>
-constexpr bool check_rect_type() noexcept {
-  return sizeof(CTNRect) == sizeof(SDLRect) &&
-         std::is_convertible<CTNRect, const SDLRect&>::value &&
-         std::is_nothrow_copy_constructible<CTNRect>::value &&
-         std::is_nothrow_copy_assignable<CTNRect>::value &&
-         std::is_nothrow_move_constructible<CTNRect>::value &&
-         std::is_nothrow_move_assignable<CTNRect>::value &&
-         std::is_nothrow_default_constructible<CTNRect>::value &&
-         std::is_nothrow_destructible<CTNRect>::value
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-         && std::is_final<CTNRect>::value
-#endif
-      ;
+template <typename T>
+inline constexpr bool operator==(const Rect<T>& lhs,
+                                 const Rect<T>& rhs) noexcept {
+  return lhs.x == rhs.x && lhs.y == rhs.y && lhs.width == rhs.width &&
+         lhs.height == rhs.height;
 }
 
-static_assert(check_rect_type<Rect, SDL_Rect>(),
-              "Rect failed the rectangle type check!");
+template <typename T>
+inline constexpr bool operator!=(const Rect<T>& lhs,
+                                 const Rect<T>& rhs) noexcept {
+  return !(lhs == rhs);
+}
 
-static_assert(check_rect_type<FRect, SDL_FRect>(),
-              "FRect failed the rectangle type check!");
+static_assert(std::is_nothrow_default_constructible<Rect<float>>::value,
+              "Rect isn't nothrow default constructible!");
 
-}  // namespace
+static_assert(std::is_nothrow_copy_constructible<Rect<float>>::value,
+              "Rect isn't nothrow copy constructible!");
+
+static_assert(std::is_nothrow_move_constructible<Rect<float>>::value,
+              "Rect isn't nothrow move constructible!");
+
+static_assert(std::is_nothrow_copy_assignable<Rect<float>>::value,
+              "Rect isn't nothrow copy assignable!");
+
+static_assert(std::is_nothrow_move_assignable<Rect<float>>::value,
+              "Rect isn't nothrow move assignable!");
+
+static_assert(sizeof(Rect<int>) == sizeof(SDL_Rect),
+              "Rect<int> has invalid size!");
+
+static_assert(sizeof(Rect<float>) == sizeof(SDL_FRect),
+              "Rect<float> has invalid size!");
+
+using IRect = Rect<int>;
+using FRect = Rect<float>;
 
 }  // namespace math
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "rectangle.cpp"
-#endif
 
 #endif  // CENTURION_RECTANGLE_HEADER

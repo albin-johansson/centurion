@@ -32,6 +32,7 @@
 #include <type_traits>
 
 #include "centurion_api.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 namespace math {
@@ -65,9 +66,6 @@ class Point final {
  private:
   T x = 0;
   T y = 0;
-
-  template <bool condition, typename U>
-  using type_if = typename std::enable_if<condition, U>::type;
 
  public:
   /**
@@ -179,10 +177,8 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T>
-  CENTURION_NODISCARD
-  type_if<std::is_floating_point<T>::value, U> equals(const Point<T>& other,
-                                                      T epsilon = 0.0001) const
-      noexcept {
+  CENTURION_NODISCARD impl::type_if<std::is_floating_point<T>::value, U> equals(
+      const Point<T>& other, T epsilon = 0.0001) const noexcept {
     return std::abs(x - other.x) < epsilon && std::abs(y - other.y) < epsilon;
   }
 

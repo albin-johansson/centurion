@@ -318,6 +318,7 @@ CENTURION_DEF int Window::get_y() const noexcept {
   return y;
 }
 
+// TODO change return type to IPoint?
 CENTURION_DEF std::pair<int, int> Window::get_position() const noexcept {
   int x = 0;
   int y = 0;
@@ -342,14 +343,12 @@ CENTURION_DEF std::pair<int, int> Window::get_max_size() const noexcept {
 CENTURION_DEF int Window::get_width() const noexcept {
   int width = 0;
   SDL_GetWindowSize(window, &width, nullptr);
-
   return width;
 }
 
 CENTURION_DEF int Window::get_height() const noexcept {
   int height = 0;
   SDL_GetWindowSize(window, nullptr, &height);
-
   return height;
 }
 

@@ -61,21 +61,6 @@ class SoundEffect final {
 
  public:
   /**
-   * A constant that can be used as the argument to the SoundEffect::Loop
-   * method, in order to make the call more readable.
-   *
-   * @since 3.0.0
-   */
-  static const int loopForever;
-
-  /**
-   * A constant that represents the maximum possible volume.
-   *
-   * @since 3.0.0
-   */
-  static const int maxVolume;
-
-  /**
    * @param file the file path of the audio file.
    * @throws CenturionException if the audio file cannot be loaded.
    * @since 3.0.0
@@ -220,9 +205,6 @@ class SoundEffect final {
   CENTURION_NODISCARD
   static constexpr int get_max_volume() noexcept { return MIX_MAX_VOLUME; }
 };
-
-inline const int SoundEffect::loopForever = -10;
-inline const int SoundEffect::maxVolume = get_max_volume();
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<SoundEffect>::value, "SoundEffect isn't final!");

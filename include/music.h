@@ -127,21 +127,6 @@ class Music final {
 
  public:
   /**
-   * The maximum possible music volume.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API static const int maxVolume;
-
-  /**
-   * A constant that can be used to indicate that the music should be looped
-   * forever.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API static const int loopForever;
-
-  /**
    * @param file the file path of the music file that will be loaded.
    * @throws CenturionException if the music file cannot be loaded.
    * @since 3.0.0

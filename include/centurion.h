@@ -32,6 +32,7 @@
 
 #include <cstdint>
 
+#include "audio.h"
 #include "blend_mode.h"
 #include "bool_converter.h"
 #include "centurion_api.h"

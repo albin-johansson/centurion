@@ -73,7 +73,7 @@ CENTURION_DEF void SoundEffect::activate(int nLoops) noexcept {
 
 CENTURION_DEF void SoundEffect::play(int nLoops) noexcept {
   if (nLoops < 0) {
-    nLoops = loopForever;
+    nLoops = -1;
   }
   activate(nLoops);
 }
@@ -120,7 +120,7 @@ CENTURION_DEF bool SoundEffect::is_playing() const noexcept {
 }
 
 CENTURION_DEF std::string SoundEffect::to_string() const {
-  const auto address = CenturionUtils::address(this);
+  const auto address = impl::address_of(this);
   const auto volume = std::to_string(get_volume());
   return "[SoundEffect@" + address + " | Volume: " + volume + "]";
 }

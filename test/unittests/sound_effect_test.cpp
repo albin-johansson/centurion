@@ -1,6 +1,6 @@
 #ifndef CENTURION_NOAUDIO
 
-#include "sound_effect.h"
+#include "audio.h"
 
 #include "catch.hpp"
 #include "centurion_exception.h"
@@ -54,9 +54,9 @@ TEST_CASE("SoundEffect looping", "[SoundEffect]") {
   CHECK(sound.is_playing());
   sound.stop();
 
-  CHECK(SoundEffect::loopForever < 0);
+  CHECK(loopForever < 0);
 
-  CHECK_NOTHROW(sound.play(SoundEffect::loopForever));
+  CHECK_NOTHROW(sound.play(loopForever));
   CHECK(sound.is_playing());
 
   sound.stop();
@@ -114,17 +114,17 @@ TEST_CASE("SoundEffect:set_volume", "[SoundEffect]") {
   }
 
   SECTION("Volume overflow") {
-    const auto volume = SoundEffect::maxVolume + 1;
+    const auto volume = maxVolume + 1;
     sound.set_volume(volume);
-    CHECK(sound.get_volume() == SoundEffect::maxVolume);
+    CHECK(sound.get_volume() == maxVolume);
   }
 }
 
 TEST_CASE("SoundEffect::get_volume", "[SoundEffect]") {
   SoundEffect sound{path};
-  CHECK(sound.get_volume() == SoundEffect::maxVolume);
+  CHECK(sound.get_volume() == maxVolume);
   CHECK(sound.get_volume() == 128);  // because of the documentation guarantee
-  CHECK(SoundEffect::maxVolume == MIX_MAX_VOLUME);
+  CHECK(maxVolume == MIX_MAX_VOLUME);
 }
 
 TEST_CASE("SoundEffect::is_playing", "[SoundEffect]") {

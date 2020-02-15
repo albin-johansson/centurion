@@ -1,9 +1,10 @@
 #ifndef CENTURION_NOAUDIO
-#include "catch.hpp"
-#include "music.h"
+#include <catch.hpp>
+
+#include "audio.h"
 #include "centurion_exception.h"
-#include "timer.h"
 #include "log.h"
+#include "timer.h"
 
 using namespace centurion;
 using namespace audio;
@@ -32,7 +33,7 @@ TEST_CASE("Music::play", "[Music]") {
 
   Music::halt();
 
-  music.play(Music::loopForever);
+  music.play(loopForever);
   CHECK(Music::is_playing());
 
   Music::halt();
@@ -127,9 +128,9 @@ TEST_CASE("Music::set_volume", "[Music]") {
   }
 
   SECTION("Volume overflow") {
-    const auto volume = Music::maxVolume + 1;
+    const auto volume = maxVolume + 1;
     Music::set_volume(volume);
-    CHECK(Music::maxVolume == Music::get_volume());
+    CHECK(maxVolume == Music::get_volume());
   }
 
   Music::set_volume(originalVolume);
@@ -171,12 +172,13 @@ TEST_CASE("Music::is_fading", "[Music]") {
   music.fade_in(200);
   CHECK(Music::is_fading());
 
-  Music::fade_out(50); // This should have no effect, since the music is fading in
+  Music::fade_out(
+      50);  // This should have no effect, since the music is fading in
   CHECK(Music::get_fade_status() == FadeStatus::In);
 }
 
 TEST_CASE("Music::get_volume", "[Music]") {
-  CHECK(Music::get_volume() == Music::maxVolume);
+  CHECK(Music::get_volume() == maxVolume);
 
   const auto volume = 47;
   Music::set_volume(volume);

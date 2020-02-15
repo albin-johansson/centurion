@@ -12,10 +12,6 @@
 namespace centurion {
 namespace audio {
 
-// FIXME there is some duplication between SoundEffect and Music
-CENTURION_DEF const int Music::maxVolume = MIX_MAX_VOLUME;
-CENTURION_DEF const int Music::loopForever = -1;
-
 CENTURION_DEF Music::Music(const std::string& file) {
   music = Mix_LoadMUS(file.c_str());
   if (!music) {
@@ -91,8 +87,8 @@ CENTURION_DEF void Music::fade_out(int ms) {
 }
 
 CENTURION_DEF void Music::set_volume(int volume) noexcept {
-  if (volume > maxVolume) {
-    volume = maxVolume;
+  if (volume > MIX_MAX_VOLUME) {
+    volume = MIX_MAX_VOLUME;
   } else if (volume < 0) {
     volume = 0;
   }
@@ -119,7 +115,7 @@ CENTURION_DEF MusicType Music::get_music_type() const noexcept {
 }
 
 CENTURION_DEF std::string Music::to_string() const {
-  return "[Music@" + CenturionUtils::address(this) + "]";
+  return "[Music@" + impl::address_of(this) + "]";
 }
 
 CENTURION_DEF Music::operator Mix_Music*() const noexcept { return music; }

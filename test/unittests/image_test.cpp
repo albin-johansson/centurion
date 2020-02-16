@@ -1,11 +1,12 @@
-#include "catch.hpp"
-#include "colors.h"
 #include "image.h"
-#include "window.h"
-#include "renderer.h"
+
+#include "catch.hpp"
 #include "centurion_exception.h"
+#include "colors.h"
 #include "log.h"
+#include "renderer.h"
 #include "system.h"
+#include "window.h"
 
 using namespace centurion;
 using namespace centurion::video;
@@ -33,19 +34,23 @@ TEST_CASE("Image(Image&&)", "[Image]") {
   CHECK(!img.get_texture());
 }
 
-TEST_CASE("Image(gsl::not_null<SDL_Renderer*>, PixelFormat, TextureAccess, int, int)", "[Image]") {
+TEST_CASE(
+    "Image(gsl::not_null<SDL_Renderer*>, PixelFormat, TextureAccess, int, int)",
+    "[Image]") {
   Window window;
   Renderer renderer{window};
-  CHECK_NOTHROW(Image{renderer, PixelFormat::RGBA32, TextureAccess::Static, 50, 50});
+  CHECK_NOTHROW(Image{renderer.get_internal(), PixelFormat::RGBA32,
+                      TextureAccess::Static, 50, 50});
 }
 
 TEST_CASE("Image::unique", "[Image]") {
   const Window window;
   const Renderer renderer{window};
   CHECK_THROWS_AS(Image::unique(nullptr), CenturionException);
-  CHECK(Image::unique(renderer, path));
-  CHECK(Image::unique(renderer, window.get_pixel_format(), TextureAccess::Static, 100, 100));
-  CHECK(Image::unique(renderer,
+  CHECK(Image::unique(renderer.get_internal(), path));
+  CHECK(Image::unique(renderer.get_internal(), window.get_pixel_format(),
+                      TextureAccess::Static, 100, 100));
+  CHECK(Image::unique(renderer.get_internal(),
                       static_cast<PixelFormat>(window.get_pixel_format()),
                       TextureAccess::Static, 100, 100));
 }
@@ -54,9 +59,10 @@ TEST_CASE("Image:::shared", "[Image]") {
   const Window window;
   const Renderer renderer{window};
   CHECK_THROWS_AS(Image::shared(nullptr), CenturionException);
-  CHECK(Image::shared(renderer, path));
-  CHECK(Image::shared(renderer, window.get_pixel_format(), TextureAccess::Static, 100, 100));
-  CHECK(Image::shared(renderer,
+  CHECK(Image::shared(renderer.get_internal(), path));
+  CHECK(Image::shared(renderer.get_internal(), window.get_pixel_format(),
+                      TextureAccess::Static, 100, 100));
+  CHECK(Image::shared(renderer.get_internal(),
                       static_cast<PixelFormat>(window.get_pixel_format()),
                       TextureAccess::Static, 100, 100));
 }
@@ -151,21 +157,24 @@ TEST_CASE("Image::set_color_mod", "[Image]") {
 TEST_CASE("Image::is_static", "[Image]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, window.get_pixel_format(), TextureAccess::Static, 10, 10};
+  Image img{renderer.get_internal(), window.get_pixel_format(),
+            TextureAccess::Static, 10, 10};
   CHECK(img.is_static());
 }
 
 TEST_CASE("Image::is_streaming", "[Image]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, window.get_pixel_format(), TextureAccess::Streaming, 10, 10};
+  Image img{renderer.get_internal(), window.get_pixel_format(),
+            TextureAccess::Streaming, 10, 10};
   CHECK(img.is_streaming());
 }
 
 TEST_CASE("Image::is_target", "[Image]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, window.get_pixel_format(), TextureAccess::Target, 10, 10};
+  Image img{renderer.get_internal(), window.get_pixel_format(),
+            TextureAccess::Target, 10, 10};
   CHECK(img.is_target());
 }
 

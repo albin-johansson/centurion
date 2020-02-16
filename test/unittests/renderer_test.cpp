@@ -1,9 +1,11 @@
-#include "catch.hpp"
-#include <stdexcept>
-#include "window.h"
 #include "renderer.h"
+
+#include <stdexcept>
+
+#include "catch.hpp"
 #include "colors.h"
 #include "log.h"
+#include "window.h"
 
 using namespace centurion;
 using namespace centurion::video;
@@ -30,12 +32,12 @@ TEST_CASE("Renderer::unique(SDL_Renderer*)", "[Renderer]") {
   CHECK_THROWS_AS(Renderer::unique(nullptr), std::invalid_argument);
 
   Window window;
-  CHECK_NOTHROW(Renderer::unique(window));
+  CHECK_NOTHROW(Renderer::unique(window.get_internal()));
 }
 
 TEST_CASE("Renderer::unique(SDL_Window*, uint32_t", "[Renderer]") {
   Window window;
-  auto renderer = Renderer::unique(window);
+  auto renderer = Renderer::unique(window.get_internal());
 
   SECTION("Check default flags") {
     const uint32_t flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
@@ -48,12 +50,12 @@ TEST_CASE("Renderer::shared(SDL_Renderer*)", "[Renderer]") {
   CHECK_THROWS_AS(Renderer::shared(nullptr), std::invalid_argument);
 
   Window window;
-  CHECK_NOTHROW(Renderer::shared(window));
+  CHECK_NOTHROW(Renderer::shared(window.get_internal()));
 }
 
 TEST_CASE("Renderer::shared(SDL_Window*, uint32_t", "[Renderer]") {
   Window window;
-  auto renderer = Renderer::shared(window);
+  auto renderer = Renderer::shared(window.get_internal());
 
   SECTION("Check default flags") {
     const uint32_t flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
@@ -125,7 +127,7 @@ TEST_CASE("Renderer::get_output_height", "[Renderer]") {
 TEST_CASE("Renderer::get_output_size", "[Renderer]") {
   Window window;
   Renderer renderer{window};
-  const auto[width, height] = renderer.get_output_size();
+  const auto [width, height] = renderer.get_output_size();
   CHECK(width == window.get_width());
   CHECK(height == window.get_height());
 }
@@ -253,7 +255,8 @@ TEST_CASE("Renderer::set_target", "[Renderer]") {
   CHECK_NOTHROW(renderer.set_target(nullptr));
 }
 
-TEST_CASE("Renderer::set_color(uint8_t, uint8_t, uint8_t, uint8_t)", "[Renderer]") {
+TEST_CASE("Renderer::set_color(uint8_t, uint8_t, uint8_t, uint8_t)",
+          "[Renderer]") {
   Window window;
   Renderer renderer{window};
 

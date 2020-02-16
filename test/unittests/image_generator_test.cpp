@@ -17,7 +17,7 @@ TEST_CASE("ImageGenerator(Renderer)", "[Renderer]") {
 
 TEST_CASE("ImageGenerator::unique_img(std::string&)", "[ImageGenerator]") {
   const Window window;
-  const auto renderer = Renderer::shared(window);
+  const auto renderer = Renderer::shared(window.get_internal());
   const ImageGenerator imgGen{renderer};
 
   CHECK_THROWS_AS(imgGen.unique_img("badpath"s), CenturionException);
@@ -26,7 +26,7 @@ TEST_CASE("ImageGenerator::unique_img(std::string&)", "[ImageGenerator]") {
 
 TEST_CASE("ImageGenerator::unique_img(PixelFormat, TextureAccess, int, int)", "[ImageGenerator]") {
   const Window window;
-  const auto renderer = Renderer::shared(window);
+  const auto renderer = Renderer::shared(window.get_internal());
   const ImageGenerator imgGen{renderer};
 
   CHECK_NOTHROW(imgGen.unique_img(PixelFormat::RGBA32, TextureAccess::Static, 10, 10));
@@ -34,7 +34,7 @@ TEST_CASE("ImageGenerator::unique_img(PixelFormat, TextureAccess, int, int)", "[
 
 TEST_CASE("ImageGenerator::shared_img(std::string&)", "[ImageGenerator]") {
   const Window window;
-  const auto renderer = Renderer::shared(window);
+  const auto renderer = Renderer::shared(window.get_internal());
   const ImageGenerator imgGen{renderer};
 
   CHECK_THROWS_AS(imgGen.shared_img("badpath"s), CenturionException);
@@ -43,7 +43,7 @@ TEST_CASE("ImageGenerator::shared_img(std::string&)", "[ImageGenerator]") {
 
 TEST_CASE("ImageGenerator::shared_img(PixelFormat, TextureAccess, int, int)", "[ImageGenerator]") {
   const Window window;
-  const auto renderer = Renderer::shared(window);
+  const auto renderer = Renderer::shared(window.get_internal());
   const ImageGenerator imgGen{renderer};
 
   CHECK_NOTHROW(imgGen.shared_img(PixelFormat::RGBA32, TextureAccess::Static, 10, 10));

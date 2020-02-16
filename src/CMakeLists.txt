@@ -9,7 +9,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/image.h
         ${CTN_INCLUDE_DIR}/sound_effect.h
         ${CTN_INCLUDE_DIR}/centurion_exception.h
-        ${CTN_INCLUDE_DIR}/bool_converter.h
         ${CTN_INCLUDE_DIR}/centurion_api.h
         ${CTN_INCLUDE_DIR}/centurion.h
         ${CTN_INCLUDE_DIR}/colors.h

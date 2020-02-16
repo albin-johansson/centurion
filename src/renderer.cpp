@@ -7,7 +7,6 @@
 
 #include <stdexcept>
 
-#include "bool_converter.h"
 #include "centurion_utils.h"
 #include "colors.h"
 #include "font.h"
@@ -346,8 +345,7 @@ CENTURION_DEF void Renderer::set_logical_size(int width, int height) noexcept {
 
 CENTURION_DEF void Renderer::set_logical_integer_scale(
     bool useLogicalIntegerScale) noexcept {
-  SDL_RenderSetIntegerScale(renderer,
-                            BoolConverter::convert(useLogicalIntegerScale));
+  SDL_RenderSetIntegerScale(renderer, convert_bool(useLogicalIntegerScale));
 }
 
 CENTURION_DEF Color Renderer::get_color() const noexcept {

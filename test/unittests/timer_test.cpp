@@ -1,6 +1,8 @@
-#include "catch.hpp"
 #include "timer.h"
+
 #include <SDL.h>
+
+#include "catch.hpp"
 
 using namespace centurion;
 

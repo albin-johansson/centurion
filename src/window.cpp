@@ -7,7 +7,6 @@
 
 #include <stdexcept>
 
-#include "bool_converter.h"
 #include "centurion_utils.h"
 #include "window_listener.h"
 
@@ -174,12 +173,12 @@ CENTURION_DEF void Window::set_fullscreen(bool fullscreen) noexcept {
 }
 
 CENTURION_DEF void Window::set_decorated(bool decorated) noexcept {
-  SDL_SetWindowBordered(window, BoolConverter::convert(decorated));
+  SDL_SetWindowBordered(window, convert_bool(decorated));
   notify_window_listeners();
 }
 
 CENTURION_DEF void Window::set_resizable(bool isResizable) noexcept {
-  SDL_SetWindowResizable(window, BoolConverter::convert(isResizable));
+  SDL_SetWindowResizable(window, convert_bool(isResizable));
   notify_window_listeners();
 }
 
@@ -240,7 +239,7 @@ CENTURION_DEF void Window::set_position(int x, int y) noexcept {
 }
 
 CENTURION_DEF void Window::set_grab_mouse(bool grabMouse) noexcept {
-  SDL_SetWindowGrab(window, BoolConverter::convert(grabMouse));
+  SDL_SetWindowGrab(window, convert_bool(grabMouse));
   notify_window_listeners();
 }
 

@@ -25,6 +25,8 @@
 #ifndef CENTURION_CENTURION_UTILS_HEADER
 #define CENTURION_CENTURION_UTILS_HEADER
 
+#include <SDL.h>
+
 #include <memory>
 #include <sstream>
 #include <string>
@@ -53,6 +55,18 @@ CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args) {
 }
 
 #endif
+
+/**
+ * Returns the corresponding SDL_bool value for the supplied boolean value.
+ *
+ * @param b the boolean value that will be converted.
+ * @return the corresponding SDL_bool value for the supplied boolean value.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+constexpr SDL_bool convert_bool(bool b) noexcept {
+  return b ? SDL_TRUE : SDL_FALSE;
+}
 
 /**
  * Returns a string that represents the memory address of the supplied

@@ -50,7 +50,7 @@ CENTURION_DEF int RAM::get_size_gb() noexcept { return get_size_mb() / 1'000; }
 
 #ifdef CENTURION_HAS_OPTIONAL
 
-CENTURION_DEF std::optional<int> Power::get_battery_seconds_left() noexcept {
+CENTURION_DEF std::optional<int> Battery::get_seconds_left() noexcept {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
   if (secondsLeft == -1) {
@@ -60,8 +60,8 @@ CENTURION_DEF std::optional<int> Power::get_battery_seconds_left() noexcept {
   }
 }
 
-CENTURION_DEF std::optional<int> Power::get_battery_minutes_left() noexcept {
-  const auto secondsLeft = get_battery_seconds_left();
+CENTURION_DEF std::optional<int> Battery::get_minutes_left() noexcept {
+  const auto secondsLeft = get_seconds_left();
   if (secondsLeft) {
     return *secondsLeft / 60;
   } else {
@@ -69,7 +69,7 @@ CENTURION_DEF std::optional<int> Power::get_battery_minutes_left() noexcept {
   }
 }
 
-CENTURION_DEF std::optional<int> Power::get_battery_percentage() noexcept {
+CENTURION_DEF std::optional<int> Battery::get_percentage() noexcept {
   int percentageLeft = -1;
   SDL_GetPowerInfo(nullptr, &percentageLeft);
   if (percentageLeft == -1) {
@@ -81,9 +81,7 @@ CENTURION_DEF std::optional<int> Power::get_battery_percentage() noexcept {
 
 #endif
 
-// TODO rename Power to Battery and PowerState to BatteryState in version 4
-
-CENTURION_DEF PowerState Power::get_state() noexcept {
+CENTURION_DEF PowerState Battery::get_state() noexcept {
   return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 }
 

@@ -20,9 +20,9 @@ TEST_CASE("PowerState enum", "[Power]") {
 #ifdef CENTURION_HAS_OPTIONAL
 
 TEST_CASE("PowerState::get_battery_percentage", "[Power]") {
-  CHECK_NOTHROW(Power::get_battery_percentage());
+  CHECK_NOTHROW(Battery::get_percentage());
 
-  const auto percentage = Power::get_battery_percentage();
+  const auto percentage = Battery::get_percentage();
   if (percentage) {
     int actual = -1;
     SDL_GetPowerInfo(nullptr, &actual);
@@ -31,9 +31,9 @@ TEST_CASE("PowerState::get_battery_percentage", "[Power]") {
 }
 
 TEST_CASE("PowerState::get_battery_minutes_left", "[Power]") {
-  CHECK_NOTHROW(Power::get_battery_minutes_left());
+  CHECK_NOTHROW(Battery::get_minutes_left());
 
-  const auto minutes = Power::get_battery_minutes_left();
+  const auto minutes = Battery::get_minutes_left();
   if (minutes) {
     int secs = -1;
     SDL_GetPowerInfo(&secs, nullptr);
@@ -44,9 +44,9 @@ TEST_CASE("PowerState::get_battery_minutes_left", "[Power]") {
 #endif
 
 TEST_CASE("PowerState::get_state", "[Power]") {
-  CHECK_NOTHROW(Power::get_state());
+  CHECK_NOTHROW(Battery::get_state());
 
-  const auto state = Power::get_state();
+  const auto state = Battery::get_state();
   const auto actual = static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 
   CHECK(state == actual);

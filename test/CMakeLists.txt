@@ -10,7 +10,7 @@ set(TEST_FILES
         unittests/image_generator_test.cpp
         unittests/renderer_test.cpp
         unittests/log_test.cpp
-        unittests/power_test.cpp
+        unittests/battery_test.cpp
         unittests/blend_mode_test.cpp
         unittests/message_box_test.cpp
         unittests/color_test.cpp

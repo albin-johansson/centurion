@@ -200,13 +200,13 @@ inline bool operator==(SDL_PowerState a, PowerState b) noexcept {
 }
 
 /**
- * The Power class provides utilities related to the battery of the system.
+ * The Battery class provides utilities related to the battery of the system.
  *
  * @since 3.0.0
  */
-class Power final {
+class Battery final {
  public:
-  Power() = delete;
+  Battery() = delete;
 
 #ifdef CENTURION_HAS_OPTIONAL
 
@@ -218,7 +218,7 @@ class Power final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::optional<int> get_battery_seconds_left() noexcept;
+  CENTURION_API static std::optional<int> get_seconds_left() noexcept;
 
   /**
    * Returns the amount of minutes of battery life that is remaining.
@@ -228,7 +228,7 @@ class Power final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::optional<int> get_battery_minutes_left() noexcept;
+  CENTURION_API static std::optional<int> get_minutes_left() noexcept;
 
   /**
    * Returns the percentage of battery life that is currently left.
@@ -238,7 +238,7 @@ class Power final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::optional<int> get_battery_percentage() noexcept;
+  CENTURION_API static std::optional<int> get_percentage() noexcept;
 
 #endif
 

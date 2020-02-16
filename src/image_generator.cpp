@@ -23,32 +23,46 @@ CENTURION_DEF ImageGenerator::~ImageGenerator() noexcept = default;
 
 CENTURION_DEF std::unique_ptr<Image> ImageGenerator::unique_img(
     const std::string& file) const {
-  return Image::unique(*renderer, file);
+  return Image::unique(renderer->get_internal(), file);
 }
 
 CENTURION_DEF std::unique_ptr<Image> ImageGenerator::unique_img(
     uint32_t format, TextureAccess access, int width, int height) const {
-  return std::make_unique<Image>(*renderer, format, access, width, height);
+#ifdef CENTURION_HAS_MAKE_UNIQUE
+  return std::make_unique<Image>(renderer->get_internal(), format, access,
+                                 width, height);
+#else
+  return make_unique<Image>(renderer->get_internal(), format, access, width,
+                            height);
+#endif
 }
 
 CENTURION_DEF std::unique_ptr<Image> ImageGenerator::unique_img(
     PixelFormat format, TextureAccess access, int width, int height) const {
-  return std::make_unique<Image>(*renderer, format, access, width, height);
+#ifdef CENTURION_HAS_MAKE_UNIQUE
+  return std::make_unique<Image>(renderer->get_internal(), format, access,
+                                 width, height);
+#else
+  return make_unique<Image>(renderer->get_internal(), format, access, width,
+                            height);
+#endif
 }
 
 CENTURION_DEF std::shared_ptr<Image> ImageGenerator::shared_img(
     const std::string& file) const {
-  return Image::shared(*renderer, file);
+  return Image::shared(renderer->get_internal(), file);
 }
 
 CENTURION_DEF std::shared_ptr<Image> ImageGenerator::shared_img(
     uint32_t format, TextureAccess access, int width, int height) const {
-  return std::make_shared<Image>(*renderer, format, access, width, height);
+  return std::make_shared<Image>(renderer->get_internal(), format, access,
+                                 width, height);
 }
 
 CENTURION_DEF std::shared_ptr<Image> ImageGenerator::shared_img(
     PixelFormat format, TextureAccess access, int width, int height) const {
-  return std::make_shared<Image>(*renderer, format, access, width, height);
+  return std::make_shared<Image>(renderer->get_internal(), format, access,
+                                 width, height);
 }
 
 }  // namespace video

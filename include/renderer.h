@@ -29,7 +29,7 @@
 #include <SDL_image.h>
 
 #include <cstdint>
-#include <gsl>
+#include <gsl-lite.hpp>
 #include <memory>
 #include <optional>
 #include <string>
@@ -43,6 +43,7 @@
 namespace centurion {
 namespace video {
 
+class Window;
 class Image;
 class Font;
 
@@ -85,6 +86,10 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_API explicit Renderer(gsl::not_null<SDL_Window*> window,
+                                  uint32_t flags = SDL_RENDERER_ACCELERATED |
+                                                   SDL_RENDERER_PRESENTVSYNC);
+
+  CENTURION_API explicit Renderer(const Window& window,
                                   uint32_t flags = SDL_RENDERER_ACCELERATED |
                                                    SDL_RENDERER_PRESENTVSYNC);
 
@@ -782,6 +787,9 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API std::string to_string() const;
+
+  CENTURION_NODISCARD
+  CENTURION_API SDL_Renderer* get_internal() const noexcept;
 
   /**
    * @since 3.0.0

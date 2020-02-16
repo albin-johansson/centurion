@@ -28,7 +28,7 @@
 #include <SDL_render.h>
 
 #include <cstdint>
-#include <gsl>
+#include <gsl-lite.hpp>
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -213,6 +213,8 @@ CENTURION_API bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept;
 CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept;
 
+class Renderer;
+
 /**
  * The Image class represents an image that is hardware-accelerated. Instances
  * of the Image class can be implicitly converted to SDL_Texture*.
@@ -247,6 +249,8 @@ class Image final {
    */
   CENTURION_API Image(gsl::not_null<SDL_Renderer*> renderer,
                       const std::string& path);
+
+  CENTURION_API Image(const Renderer& renderer, const std::string& path);
 
   /**
    * Creates an image that is a copy of the supplied SDL surface.

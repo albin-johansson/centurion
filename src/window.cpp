@@ -374,6 +374,10 @@ CENTURION_DEF std::string Window::to_string() const {
 
 CENTURION_DEF Window::operator SDL_Window*() const noexcept { return window; }
 
+CENTURION_DEF SDL_Window* Window::get_internal() const noexcept {
+  return window;
+}
+
 }  // namespace video
 }  // namespace centurion
 

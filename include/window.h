@@ -27,7 +27,7 @@
 
 #include <SDL.h>
 
-#include <gsl>
+#include <gsl-lite.hpp>
 #include <memory>
 #include <optional>
 #include <string>
@@ -612,6 +612,9 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_API /*implicit*/ operator SDL_Window*() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API SDL_Window* get_internal() const noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
@@ -639,7 +642,7 @@ static_assert(std::is_default_constructible<Window>::value,
 static_assert(std::is_nothrow_destructible<Window>::value,
               "Window isn't nothrow destructible!");
 
-}
+}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

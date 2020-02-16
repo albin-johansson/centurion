@@ -46,7 +46,7 @@ CENTURION_DEF int CPU::get_cores() noexcept { return SDL_GetCPUCount(); }
 
 CENTURION_DEF int RAM::get_size_mb() noexcept { return SDL_GetSystemRAM(); }
 
-CENTURION_DEF int RAM::get_size_gb() noexcept { return get_size_mb() / 1'000; }
+CENTURION_DEF int RAM::get_size_gb() noexcept { return get_size_mb() / 1000; }
 
 #ifdef CENTURION_HAS_OPTIONAL
 

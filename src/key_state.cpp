@@ -8,6 +8,7 @@
 #include <string>
 
 #include "centurion_exception.h"
+#include "centurion_utils.h"
 #include "error.h"
 
 namespace centurion {
@@ -22,7 +23,11 @@ CENTURION_DEF KeyState::KeyState() {
 }
 
 CENTURION_DEF std::unique_ptr<KeyState> KeyState::unique() {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<KeyState>();
+#else
+  return make_unique<KeyState>();
+#endif
 }
 
 CENTURION_DEF std::shared_ptr<KeyState> KeyState::shared() {

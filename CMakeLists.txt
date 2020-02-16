@@ -69,6 +69,9 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
+add_library(gsl-lite INTERFACE)
+target_include_directories(gsl-lite INTERFACE ${CTN_LIBRARY_DIR})  # adapt as necessary
+
 message("Found all required SDL libraries!")
 
 if (DEFINED ENV{ENABLE_COVERAGE})

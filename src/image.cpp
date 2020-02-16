@@ -8,6 +8,7 @@
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "error.h"
+#include "renderer.h"
 
 namespace centurion {
 namespace video {
@@ -22,6 +23,13 @@ CENTURION_DEF Image::Image(gsl::owner<SDL_Texture*> texture) {
 CENTURION_DEF Image::Image(gsl::not_null<SDL_Renderer*> renderer,
                            const std::string& path) {
   texture = IMG_LoadTexture(renderer, path.c_str());
+  if (!texture) {
+    throw CenturionException{"Failed to load image from " + path};
+  }
+}
+
+Image::Image(const Renderer& renderer, const std::string& path) {
+  texture = IMG_LoadTexture(renderer.get_internal(), path.c_str());
   if (!texture) {
     throw CenturionException{"Failed to load image from " + path};
   }

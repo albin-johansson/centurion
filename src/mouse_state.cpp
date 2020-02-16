@@ -7,6 +7,7 @@
 
 #include <cstdint>
 
+#include "centurion_utils.h"
 #include "window.h"
 
 namespace centurion {
@@ -14,7 +15,11 @@ namespace centurion {
 CENTURION_DEF MouseState::MouseState() noexcept = default;
 
 CENTURION_DEF std::unique_ptr<MouseState> MouseState::unique() {
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<MouseState>();
+#else
+  return make_unique<MouseState>();
+#endif
 }
 
 CENTURION_DEF std::shared_ptr<MouseState> MouseState::shared() {

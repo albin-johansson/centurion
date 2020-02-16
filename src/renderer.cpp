@@ -13,6 +13,7 @@
 #include "font.h"
 #include "image.h"
 #include "point.h"
+#include "window.h"
 
 namespace centurion {
 namespace video {
@@ -31,6 +32,14 @@ CENTURION_DEF Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer) {
 CENTURION_DEF Renderer::Renderer(gsl::not_null<SDL_Window*> window,
                                  uint32_t flags) {
   renderer = SDL_CreateRenderer(window, -1, flags);
+
+  set_blend_mode(SDL_BLENDMODE_BLEND);
+  set_color(black);
+  set_logical_integer_scale(false);
+}
+
+Renderer::Renderer(const Window& window, uint32_t flags) {
+  renderer = SDL_CreateRenderer(window.get_internal(), -1, flags);
 
   set_blend_mode(SDL_BLENDMODE_BLEND);
   set_color(black);
@@ -466,7 +475,11 @@ CENTURION_DEF std::unique_ptr<Image> Renderer::create_image(
   SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
   SDL_FreeSurface(surface);
 
+#ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Image>(texture);
+#else
+  return make_unique<Image>(texture);
+#endif
 }
 
 CENTURION_DEF std::string Renderer::to_string() const {
@@ -475,6 +488,10 @@ CENTURION_DEF std::string Renderer::to_string() const {
   const auto oheight = std::to_string(get_output_height());
   return "[Renderer@" + address + " | Output width: " + owidth +
          ", Output height: " + oheight + "]";
+}
+
+CENTURION_DEF SDL_Renderer* Renderer::get_internal() const noexcept {
+  return renderer;
 }
 
 CENTURION_DEF Renderer::operator SDL_Renderer*() const noexcept {

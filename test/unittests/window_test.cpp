@@ -1,7 +1,8 @@
-#include "catch.hpp"
 #include "window.h"
-#include "renderer.h"
+
+#include "catch.hpp"
 #include "log.h"
+#include "renderer.h"
 
 using namespace centurion;
 using namespace centurion::video;
@@ -140,16 +141,16 @@ TEST_CASE("Window::set_height", "[Window]") {
 }
 
 TEST_CASE("Window::set_grab_mouse && Window::is_grabbing_mouse", "[Window]") {
-//  Window window;
-//  window.show();
-//
-//  CHECK(!window.is_grabbing_mouse());
-//
-//  window.set_grab_mouse(true);
-//  CHECK(window.is_grabbing_mouse());
-//
-//  window.set_grab_mouse(false);
-//  CHECK(!window.is_grabbing_mouse());
+  //  Window window;
+  //  window.show();
+  //
+  //  CHECK(!window.is_grabbing_mouse());
+  //
+  //  window.set_grab_mouse(true);
+  //  CHECK(window.is_grabbing_mouse());
+  //
+  //  window.set_grab_mouse(false);
+  //  CHECK(!window.is_grabbing_mouse());
 }
 
 TEST_CASE("Window::get_title && Window::set_title", "[Window]") {
@@ -192,20 +193,20 @@ TEST_CASE("Window::get_position && Window::set_position", "[Window]") {
   Window window;
   window.set_position(x, y);
 
-  const auto[actualX, actualY] = window.get_position();
+  const auto [actualX, actualY] = window.get_position();
   CHECK(x == actualX);
   CHECK(y == actualY);
 }
 
 TEST_CASE("Window::set_decorated && Window::is_decorated", "[Window]") {
-//  Window window;
-//  CHECK(window.is_decorated());
-//
-//  window.set_decorated(false);
-//  CHECK(!window.is_decorated());
-//
-//  window.set_decorated(true);
-//  CHECK(window.is_decorated());
+  //  Window window;
+  //  CHECK(window.is_decorated());
+  //
+  //  window.set_decorated(false);
+  //  CHECK(!window.is_decorated());
+  //
+  //  window.set_decorated(true);
+  //  CHECK(window.is_decorated());
 }
 
 TEST_CASE("Window::set_min_size && Window::get_min_size", "[Window]") {
@@ -216,7 +217,7 @@ TEST_CASE("Window::set_min_size && Window::get_min_size", "[Window]") {
 
   window.set_min_size(width, height);
 
-  const auto[actualWidth, actualHeight] = window.get_min_size();
+  const auto [actualWidth, actualHeight] = window.get_min_size();
   CHECK(width == actualWidth);
   CHECK(height == actualHeight);
 }
@@ -229,7 +230,7 @@ TEST_CASE("Window::set_max_size && Window::get_max_size", "[Window]") {
 
   window.set_max_size(width, height);
 
-  const auto[actualWidth, actualHeight] = window.get_max_size();
+  const auto [actualWidth, actualHeight] = window.get_max_size();
   CHECK(width == actualWidth);
   CHECK(height == actualHeight);
 }
@@ -263,7 +264,7 @@ TEST_CASE("Window::get_renderer", "[Window]") {
 
   CHECK(!window.get_renderer());
 
-  const Renderer renderer{window};
+  const Renderer renderer{window.operator SDL_Window*()};
   SDL_Renderer* sdlRenderer = renderer;
 
   CHECK(window.get_renderer() == sdlRenderer);
@@ -273,5 +274,3 @@ TEST_CASE("Window::to_string", "[Window]") {
   const Window window;
   Log::msgf(Category::Test, "%s", window.to_string().c_str());
 }
-
-

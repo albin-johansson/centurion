@@ -120,7 +120,7 @@ CENTURION_DEF bool SoundEffect::is_playing() const noexcept {
 }
 
 CENTURION_DEF std::string SoundEffect::to_string() const {
-  const auto address = impl::address_of(this);
+  const auto address = address_of(this);
   const auto volume = std::to_string(get_volume());
   return "[SoundEffect@" + address + " | Volume: " + volume + "]";
 }

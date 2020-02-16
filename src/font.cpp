@@ -197,7 +197,7 @@ CENTURION_DEF std::optional<std::string> Font::get_style_name() const noexcept {
 #endif
 
 CENTURION_DEF std::string Font::to_string() const {
-  const auto idStr = "Font@" + impl::address_of(this);
+  const auto idStr = "Font@" + address_of(this);
   const auto nameStr = " | Name: " + get_family_name();
   const auto sizeStr = ", Size: " + std::to_string(get_size());
   return "[" + idStr + nameStr + sizeStr + "]";

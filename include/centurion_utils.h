@@ -55,15 +55,6 @@ CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args) {
 #endif
 
 /**
- * The impl namespace is reserved for the implementation of the Centurion
- * library and may change at any time. In other words, don't use the stuff in
- * this namespace.
- *
- * @since 4.0.0
- */
-namespace impl {
-
-/**
  * Returns a string that represents the memory address of the supplied
  * pointer. The empty string is returned if the supplied pointer is null.
  *
@@ -84,10 +75,17 @@ CENTURION_NODISCARD std::string address_of(T* ptr) {
   }
 }
 
-template <bool condition, typename U>
-using type_if = typename std::enable_if<condition, U>::type;
+template <bool condition, typename T>
+using type_if = typename std::enable_if<condition, T>::type;
 
-}  // namespace impl
+template <typename T>
+using type_if_floating = type_if<std::is_floating_point<T>::value, T>;
+
+template <typename T>
+using type_if_integral = type_if<std::is_integral<T>::value, T>;
+
+template <typename T, typename U>
+using type_if_same = typename std::enable_if<std::is_same<T, U>::value>::type;
 
 }  // namespace centurion
 

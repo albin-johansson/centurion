@@ -232,7 +232,7 @@ CENTURION_DEF Color Image::get_color_mod() const noexcept {
 CENTURION_DEF SDL_Texture* Image::get_texture() noexcept { return texture; }
 
 CENTURION_DEF std::string Image::to_string() const {
-  const auto address = impl::address_of(this);
+  const auto address = address_of(this);
   const auto width = std::to_string(get_width());
   const auto height = std::to_string(get_height());
   return "[Image@" + address + " | Width: " + width + ", Height: " + height +

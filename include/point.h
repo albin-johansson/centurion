@@ -177,8 +177,9 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T>
-  CENTURION_NODISCARD impl::type_if<std::is_floating_point<T>::value, U> equals(
-      const Point<T>& other, T epsilon = 0.0001) const noexcept {
+  CENTURION_NODISCARD type_if_floating<U> equals(const Point<T>& other,
+                                                 T epsilon = 0.0001) const
+      noexcept {
     return std::abs(x - other.x) < epsilon && std::abs(y - other.y) < epsilon;
   }
 
@@ -228,8 +229,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = typename std::enable_if<
-                                std::is_same<U, int>::value>::type>
+  template <typename U = T, typename = type_if_same<U, int>>
   CENTURION_NODISCARD explicit operator SDL_Point*() noexcept {
     return reinterpret_cast<SDL_Point*>(this);
   }
@@ -244,8 +244,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = typename std::enable_if<
-                                std::is_same<U, int>::value>::type>
+  template <typename U = T, typename = type_if_same<U, int>>
   CENTURION_NODISCARD explicit operator const SDL_Point*() const noexcept {
     return reinterpret_cast<const SDL_Point*>(this);
   }
@@ -260,8 +259,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = typename std::enable_if<
-                                std::is_same<U, float>::value>::type>
+  template <typename U = T, typename = type_if_same<U, float>>
   CENTURION_NODISCARD explicit operator SDL_FPoint*() noexcept {
     return reinterpret_cast<SDL_FPoint*>(this);
   }
@@ -276,8 +274,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = typename std::enable_if<
-                                std::is_same<U, float>::value>::type>
+  template <typename U = T, typename = type_if_same<U, float>>
   CENTURION_NODISCARD explicit operator const SDL_FPoint*() const noexcept {
     return reinterpret_cast<const SDL_FPoint*>(this);
   }

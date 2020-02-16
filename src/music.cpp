@@ -115,7 +115,7 @@ CENTURION_DEF MusicType Music::get_music_type() const noexcept {
 }
 
 CENTURION_DEF std::string Music::to_string() const {
-  return "[Music@" + impl::address_of(this) + "]";
+  return "[Music@" + address_of(this) + "]";
 }
 
 CENTURION_DEF Music::operator Mix_Music*() const noexcept { return music; }

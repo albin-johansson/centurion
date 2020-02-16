@@ -365,7 +365,7 @@ CENTURION_DEF std::string Window::get_title() const noexcept {
 }
 
 CENTURION_DEF std::string Window::to_string() const {
-  const auto address = impl::address_of(this);
+  const auto address = address_of(this);
   const auto width = std::to_string(get_width());
   const auto height = std::to_string(get_height());
   return "[Window@" + address + " | Width: " + width + ", Height: " + height +

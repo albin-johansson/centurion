@@ -85,6 +85,18 @@ CENTURION_DEF PowerState Battery::get_state() noexcept {
   return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 }
 
+void Screen::set_screen_saver_enabled(bool enabled) noexcept {
+  if (enabled) {
+    SDL_EnableScreenSaver();
+  } else {
+    SDL_DisableScreenSaver();
+  }
+}
+
+bool Screen::is_screen_saver_enabled() noexcept {
+  return SDL_IsScreenSaverEnabled();
+}
+
 CENTURION_DEF int Screen::get_width() noexcept {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);

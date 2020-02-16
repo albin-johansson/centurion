@@ -3,6 +3,16 @@
 
 using namespace centurion::system;
 
+TEST_CASE("Screen::set_screen_saver_enabled", "[Screen]") {
+  CHECK(!Screen::is_screen_saver_enabled());
+
+  Screen::set_screen_saver_enabled(true);
+  CHECK(Screen::is_screen_saver_enabled());
+
+  Screen::set_screen_saver_enabled(false);
+  CHECK(!Screen::is_screen_saver_enabled());
+}
+
 TEST_CASE("Screen::get_width", "[Screen]") {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);

@@ -257,9 +257,28 @@ class Battery final {
  *
  * @since 3.0.0
  */
-class Screen final {  // TODO this might belong in video namespace?
+class Screen final {
  public:
   Screen() = delete;
+
+  /**
+   * Sets whether or not screen savers are enabled. By default, screen
+   * savers are disabled.
+   *
+   * @param enabled true if screen savers should be enabled; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_API static void set_screen_saver_enabled(bool enabled) noexcept;
+
+  /**
+   * Indicates whether or not screen savers are enabled. By default, screen
+   * savers are disabled.
+   *
+   * @return true if screen savers are enabled; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static bool is_screen_saver_enabled() noexcept;
 
   /**
    * Returns the width of the screen.

@@ -36,6 +36,7 @@
 #include <vector>
 
 #include "centurion_api.h"
+#include "pixel_format.h"
 
 namespace centurion {
 namespace video {
@@ -578,14 +579,10 @@ class Window final {
    * Returns the pixel format of the window.
    *
    * @return the pixel format of the window.
-   * @deprecated this method will return a PixelFormat value in a future version
-   * of Centurion. It's safe to use static cast to convert the returned value to
-   * PixelFormat.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_DEPRECATED
-  CENTURION_API uint32_t get_pixel_format() const noexcept;
+  CENTURION_API PixelFormat get_pixel_format() const noexcept;
 
   /**
    * Returns the title of the window.

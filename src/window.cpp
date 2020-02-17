@@ -355,8 +355,8 @@ CENTURION_DEF SDL_Renderer* Window::get_renderer() const noexcept {
   return SDL_GetRenderer(window);
 }
 
-CENTURION_DEF uint32_t Window::get_pixel_format() const noexcept {
-  return SDL_GetWindowPixelFormat(window);
+CENTURION_DEF PixelFormat Window::get_pixel_format() const noexcept {
+  return static_cast<PixelFormat>(SDL_GetWindowPixelFormat(window));
 }
 
 CENTURION_DEF std::string Window::get_title() const noexcept {

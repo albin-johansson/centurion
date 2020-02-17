@@ -120,7 +120,8 @@ class Texture final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
-  CENTURION_API explicit Texture(gsl::owner<SDL_Texture*> texture);
+  CENTURION_API
+  explicit Texture(gsl::owner<SDL_Texture*> texture);
 
   /**
    * Creates an texture by loading it from a file.
@@ -131,10 +132,11 @@ class Texture final {
    * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_API Texture(gsl::not_null<SDL_Renderer*> renderer,
-                        const std::string& path);
+  CENTURION_API
+  Texture(gsl::not_null<SDL_Renderer*> renderer, const std::string& path);
 
-  CENTURION_API Texture(const Renderer& renderer, const std::string& path);
+  CENTURION_API
+  Texture(const Renderer& renderer, const std::string& path);
 
   /**
    * Creates an texture that is a copy of the supplied SDL surface.
@@ -145,8 +147,9 @@ class Texture final {
    * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_API Texture(gsl::not_null<SDL_Renderer*> renderer,
-                        gsl::not_null<SDL_Surface*> surface);
+  CENTURION_API
+  Texture(gsl::not_null<SDL_Renderer*> renderer,
+          gsl::not_null<SDL_Surface*> surface);
 
   /**
    * Creates an texture with the specified characteristics.
@@ -159,9 +162,9 @@ class Texture final {
    * @throws CenturionException if the texture cannot be created.
    * @since 3.1.0
    */
-  CENTURION_API Texture(gsl::not_null<SDL_Renderer*> renderer,
-                        PixelFormat format, TextureAccess access, int width,
-                        int height);
+  CENTURION_API
+  Texture(gsl::not_null<SDL_Renderer*> renderer, PixelFormat format,
+          TextureAccess access, int width, int height);
 
   /**
    * Creates an texture by moving the supplied texture.
@@ -169,11 +172,13 @@ class Texture final {
    * @param other the texture that will be moved.
    * @since 3.0.0
    */
-  CENTURION_API Texture(Texture&& other) noexcept;
+  CENTURION_API
+  Texture(Texture&& other) noexcept;
 
   Texture(const Texture&) noexcept = delete;
 
-  CENTURION_API ~Texture() noexcept;
+  CENTURION_API
+  ~Texture() noexcept;
 
   Texture& operator=(const Texture&) noexcept = delete;
 
@@ -185,7 +190,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Texture& operator=(Texture&& other) noexcept;
+  CENTURION_API
+  Texture& operator=(Texture&& other) noexcept;
 
   /**
    * Creates and returns a unique texture from a pre-existing SDL texture. The
@@ -198,8 +204,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Texture> unique(
-      gsl::owner<SDL_Texture*> texture);
+  CENTURION_API
+  static std::unique_ptr<Texture> unique(gsl::owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a unique texture by loading it from a file.
@@ -211,8 +217,9 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Texture> unique(
-      gsl::not_null<SDL_Renderer*> renderer, const std::string& path);
+  CENTURION_API
+  static std::unique_ptr<Texture> unique(gsl::not_null<SDL_Renderer*> renderer,
+                                         const std::string& path);
 
   /**
    * Creates and returns a unique texture that is a copy of the supplied SDL
@@ -226,9 +233,9 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Texture> unique(
-      gsl::not_null<SDL_Renderer*> renderer,
-      gsl::not_null<SDL_Surface*> surface);
+  CENTURION_API
+  static std::unique_ptr<Texture> unique(gsl::not_null<SDL_Renderer*> renderer,
+                                         gsl::not_null<SDL_Surface*> surface);
 
   /**
    * Creates and returns a unique pointer to an texture with the supplied
@@ -244,9 +251,11 @@ class Texture final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Texture> unique(
-      gsl::not_null<SDL_Renderer*> renderer, PixelFormat format,
-      TextureAccess access, int width, int height);
+  CENTURION_API
+  static std::unique_ptr<Texture> unique(gsl::not_null<SDL_Renderer*> renderer,
+                                         PixelFormat format,
+                                         TextureAccess access, int width,
+                                         int height);
 
   /**
    * Creates and returns a shared texture from a pre-existing SDL texture. The
@@ -259,8 +268,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Texture> shared(
-      gsl::owner<SDL_Texture*> texture);
+  CENTURION_API
+  static std::shared_ptr<Texture> shared(gsl::owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a shared texture by loading it from a file.
@@ -272,8 +281,9 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Texture> shared(
-      gsl::not_null<SDL_Renderer*> renderer, const std::string& path);
+  CENTURION_API
+  static std::shared_ptr<Texture> shared(gsl::not_null<SDL_Renderer*> renderer,
+                                         const std::string& path);
 
   /**
    * Creates and returns a shared texture that is a copy of the supplied SDL
@@ -287,9 +297,9 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Texture> shared(
-      gsl::not_null<SDL_Renderer*> renderer,
-      gsl::not_null<SDL_Surface*> surface);
+  CENTURION_API
+  static std::shared_ptr<Texture> shared(gsl::not_null<SDL_Renderer*> renderer,
+                                         gsl::not_null<SDL_Surface*> surface);
 
   /**
    * Creates and returns a shared pointer to an texture with the supplied
@@ -305,17 +315,20 @@ class Texture final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Texture> shared(
-      gsl::not_null<SDL_Renderer*> renderer, PixelFormat format,
-      TextureAccess access, int width, int height);
-
+  CENTURION_API
+  static std::shared_ptr<Texture> shared(gsl::not_null<SDL_Renderer*> renderer,
+                                         PixelFormat format,
+                                         TextureAccess access, int width,
+                                         int height);
+  
   /**
    * Sets the alpha value of the texture.
    *
    * @param alpha the alpha value, in the range [0, 255].
    * @since 3.0.0
    */
-  CENTURION_API void set_alpha(uint8_t alpha) noexcept;
+  CENTURION_API
+  void set_alpha(uint8_t alpha) noexcept;
 
   /**
    * Sets the blend mode that will be used by the texture.
@@ -323,7 +336,8 @@ class Texture final {
    * @param mode the blend mode that will be used.
    * @since 3.0.0
    */
-  CENTURION_API void set_blend_mode(BlendMode mode) noexcept;
+  CENTURION_API
+  void set_blend_mode(BlendMode mode) noexcept;
 
   /**
    * Sets the color modulation of the texture. Note, the alpha component in the
@@ -333,7 +347,8 @@ class Texture final {
    * texture.
    * @since 3.0.0
    */
-  CENTURION_API void set_color_mod(Color color) noexcept;
+  CENTURION_API
+  void set_color_mod(Color color) noexcept;
 
   /**
    * Returns the format of the internal SDL_Texture.
@@ -342,7 +357,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API uint32_t get_format() const noexcept;
+  CENTURION_API
+  PixelFormat get_format() const noexcept;
 
   /**
    * Returns the texture access of the internal SDL_Texture.
@@ -351,7 +367,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API TextureAccess get_access() const noexcept;
+  CENTURION_API
+  TextureAccess get_access() const noexcept;
 
   /**
    * Returns the width of the texture.
@@ -360,7 +377,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_width() const noexcept;
+  CENTURION_API
+  int get_width() const noexcept;
 
   /**
    * Returns the height of the texture.
@@ -369,7 +387,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_height() const noexcept;
+  CENTURION_API
+  int get_height() const noexcept;
 
   /**
    * Indicates whether or not the texture is a possible render target.
@@ -378,7 +397,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_target() const noexcept;
+  CENTURION_API
+  bool is_target() const noexcept;
 
   /**
    * Indicates whether or not the texture has static texture access.
@@ -387,7 +407,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_static() const noexcept;
+  CENTURION_API
+  bool is_static() const noexcept;
 
   /**
    * Indicates whether or not the texture has streaming texture access.
@@ -396,7 +417,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_streaming() const noexcept;
+  CENTURION_API
+  bool is_streaming() const noexcept;
 
   /**
    * Returns the alpha value of the texture.
@@ -405,7 +427,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API uint8_t get_alpha() const noexcept;
+  CENTURION_API
+  uint8_t get_alpha() const noexcept;
 
   /**
    * Returns the blend mode of the texture.
@@ -414,7 +437,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API BlendMode get_blend_mode() const noexcept;
+  CENTURION_API
+  BlendMode get_blend_mode() const noexcept;
 
   /**
    * Returns the color modulation of the texture.
@@ -423,7 +447,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Color get_color_mod() const noexcept;
+  CENTURION_API
+  Color get_color_mod() const noexcept;
 
   /**
    * Returns a pointer to the internal SDL_Texture of the texture.
@@ -432,7 +457,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API SDL_Texture* get_internal() noexcept;
+  CENTURION_API
+  SDL_Texture* get_internal() noexcept;
 
   /**
    * Returns a string representation of the texture.
@@ -441,7 +467,8 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::string to_string() const;
+  CENTURION_API
+  std::string to_string() const;
 
   /**
    * Returns a pointer to the internal SDL_Texture.
@@ -449,10 +476,11 @@ class Texture final {
    * @return a pointer to the internal SDL_Texture.
    * @since 3.0.0
    */
-  CENTURION_API operator SDL_Texture*() const noexcept;
+  CENTURION_API
+  operator SDL_Texture*() const noexcept;
 };
 
-using Image = Texture;
+using Image = Texture;  // for compatibility
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<Image>::value, "Texture isn't final!");

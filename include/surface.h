@@ -66,6 +66,7 @@ class Surface final {  // TODO rename Image to Texture
    * @throws CenturionException if the copy couldn't be created.
    * @since 4.0.0
    */
+  CENTURION_NODISCARD
   SDL_Surface* copy_surface() const;
 
  public:

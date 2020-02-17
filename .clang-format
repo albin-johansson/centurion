@@ -5,3 +5,6 @@ IndentWidth: 2
 Language: Cpp
 DerivePointerAlignment: false
 PointerAlignment: Left
+#AlignAfterOpenBracket: AlwaysBreak
+#BinPackArguments: false
+#BinPackParameters: false

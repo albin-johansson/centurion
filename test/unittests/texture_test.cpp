@@ -1,26 +1,65 @@
+#include "texture.h"
+
 #include "catch.hpp"
 #include "centurion_exception.h"
 #include "colors.h"
 #include "log.h"
 #include "renderer.h"
+#include "surface.h"
 #include "system.h"
-#include "texture.h"
 #include "window.h"
 
 using namespace centurion;
 using namespace centurion::video;
 
-static constexpr auto path = "resources/grass.png";
+static constexpr auto* path = "resources/grass.png";
 
-TEST_CASE("Texture(string)", "[Texture]") {
+TEST_CASE("Texture(SDL_Texture*)", "[Texture]") {
+  CHECK_THROWS_AS(Texture(nullptr), CenturionException);
+
+  Window window;
+  Renderer renderer{window};
+  SDL_Surface* surface = IMG_Load(path);
+  SDL_Texture* sdlTexture =
+      SDL_CreateTextureFromSurface(renderer.get_internal(), surface);
+  SDL_FreeSurface(surface);
+
+  CHECK_NOTHROW(Texture(sdlTexture));
+}
+
+TEST_CASE("Texture(Renderer&, char*)", "[Texture]") {
   Window window;
   Renderer renderer{window};
 
+  CHECK_THROWS_AS(Texture(renderer, nullptr), CenturionException);
   CHECK_THROWS_AS(Texture(renderer, "badpath"), CenturionException);
 
   Texture texture{renderer, path};
   CHECK(texture.get_width() == 108);
   CHECK(texture.get_height() == 108);
+}
+
+TEST_CASE("Texture(Renderer&, Surface&", "[Texture]") {
+  Window window;
+  Renderer renderer{window};
+  Surface surface{path};
+  CHECK_NOTHROW(Texture{renderer, surface});
+}
+
+TEST_CASE("Texture(Renderer&, PixelFormat, TextureAccess, int, int)",
+          "[Texture]") {
+  Window window;
+  Renderer renderer{window};
+
+  const auto pixelFormat = PixelFormat::RGBA32;
+  const auto access = TextureAccess::Static;
+  const auto width = 145;
+  const auto height = 85;
+  Texture texture{renderer, pixelFormat, access, width, height};
+  CHECK(pixelFormat == texture.get_format());
+  CHECK(access == texture.get_access());
+  CHECK(width == texture.get_width());
+  CHECK(height == texture.get_height());
 }
 
 TEST_CASE("Texture(Texture&&)", "[Texture]") {
@@ -30,26 +69,15 @@ TEST_CASE("Texture(Texture&&)", "[Texture]") {
 
   Texture moved_img = std::move(texture);
 
-  CHECK(!texture.get_internal());
-}
-
-TEST_CASE(
-    "Texture(gsl::not_null<SDL_Renderer*>, PixelFormat, TextureAccess, int, "
-    "int)",
-    "[Texture]") {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(Texture{renderer.get_internal(), PixelFormat::RGBA32,
-                        TextureAccess::Static, 50, 50});
+  CHECK(!texture.get_internal()); // NOLINT
 }
 
 TEST_CASE("Texture::unique", "[Texture]") {
   const Window window;
   const Renderer renderer{window};
   CHECK_THROWS_AS(Texture::unique(nullptr), CenturionException);
-  CHECK(Texture::unique(renderer.get_internal(), path));
-  CHECK(Texture::unique(renderer.get_internal(),
-                        static_cast<PixelFormat>(window.get_pixel_format()),
+  CHECK(Texture::unique(renderer, path));
+  CHECK(Texture::unique(renderer, window.get_pixel_format(),
                         TextureAccess::Static, 100, 100));
 }
 
@@ -57,9 +85,8 @@ TEST_CASE("Texture:::shared", "[Texture]") {
   const Window window;
   const Renderer renderer{window};
   CHECK_THROWS_AS(Texture::shared(nullptr), CenturionException);
-  CHECK(Texture::shared(renderer.get_internal(), path));
-  CHECK(Texture::shared(renderer.get_internal(),
-                        static_cast<PixelFormat>(window.get_pixel_format()),
+  CHECK(Texture::shared(renderer, path));
+  CHECK(Texture::shared(renderer, window.get_pixel_format(),
                         TextureAccess::Static, 100, 100));
 }
 
@@ -72,7 +99,7 @@ TEST_CASE("Texture::get_format", "[Texture]") {
   uint32_t format = 0;
   SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
 
-  CHECK(texture.get_format() == format);
+  CHECK(texture.get_format() == static_cast<PixelFormat>(format));
 }
 
 TEST_CASE("Texture::get_access", "[Texture]") {
@@ -153,24 +180,24 @@ TEST_CASE("Texture::set_color_mod", "[Texture]") {
 TEST_CASE("Texture::is_static", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer.get_internal(), window.get_pixel_format(),
-                  TextureAccess::Static, 10, 10};
+  Texture texture{renderer, window.get_pixel_format(), TextureAccess::Static,
+                  10, 10};
   CHECK(texture.is_static());
 }
 
 TEST_CASE("Texture::is_streaming", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer.get_internal(), window.get_pixel_format(),
-                  TextureAccess::Streaming, 10, 10};
+  Texture texture{renderer, window.get_pixel_format(), TextureAccess::Streaming,
+                  10, 10};
   CHECK(texture.is_streaming());
 }
 
 TEST_CASE("Texture::is_target", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer.get_internal(), window.get_pixel_format(),
-                  TextureAccess::Target, 10, 10};
+  Texture texture{renderer, window.get_pixel_format(), TextureAccess::Target,
+                  10, 10};
   CHECK(texture.is_target());
 }
 
@@ -196,4 +223,7 @@ TEST_CASE("TextureAccess enum values", "[TextureAccess]") {
   CHECK(SDL_TEXTUREACCESS_STATIC == TextureAccess::Static);
   CHECK(SDL_TEXTUREACCESS_STREAMING == TextureAccess::Streaming);
   CHECK(SDL_TEXTUREACCESS_TARGET == TextureAccess::Target);
+
+  CHECK(TextureAccess::Static != SDL_TEXTUREACCESS_STREAMING);
+  CHECK(SDL_TEXTUREACCESS_STREAMING != TextureAccess::Static);
 }

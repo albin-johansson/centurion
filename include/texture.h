@@ -98,6 +98,7 @@ CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept;
 
 class Renderer;
+class Surface;
 
 /**
  * The Texture class represents an texture that is hardware-accelerated.
@@ -124,47 +125,39 @@ class Texture final {
   explicit Texture(gsl::owner<SDL_Texture*> texture);
 
   /**
-   * Creates an texture by loading it from a file.
-   *
-   * @param renderer a pointer to the SDL_Renderer used to create the texture,
-   * must not be null.
-   * @param path the file path of the texture that will be loaded.
+   * @param renderer the renderer that will be used to create the texture.
+   * @param path the file path of the texture, may not be null.
    * @throws CenturionException if the texture cannot be loaded.
-   * @since 3.0.0
+   * @since 4.0.0
    */
   CENTURION_API
-  Texture(gsl::not_null<SDL_Renderer*> renderer, const std::string& path);
-
-  CENTURION_API
-  Texture(const Renderer& renderer, const std::string& path);
+  Texture(const Renderer& renderer, const char* path);
 
   /**
-   * Creates an texture that is a copy of the supplied SDL surface.
+   * Creates an texture that is a copy of the supplied surface.
    *
-   * @param renderer the associated renderer instance, may not be null.
-   * @param surface the SDL surface that the texture will be based on, may not
-   * be null
+   * @param renderer the renderer that will be used to create the texture.
+   * @param surface the surface that the texture will be based on.
    * @throws CenturionException if the texture cannot be loaded.
-   * @since 3.0.0
+   * @since 4.0.0
    */
   CENTURION_API
-  Texture(gsl::not_null<SDL_Renderer*> renderer,
-          gsl::not_null<SDL_Surface*> surface);
+  Texture(const Renderer& renderer, const Surface& surface);
 
   /**
    * Creates an texture with the specified characteristics.
    *
-   * @param renderer the associated renderer instance, may not be null.
+   * @param renderer the associated renderer instance.
    * @param format the pixel format of the created texture.
    * @param access the texture access of the created texture.
    * @param width the width of the texture.
    * @param height the height of the texture.
    * @throws CenturionException if the texture cannot be created.
-   * @since 3.1.0
+   * @since 4.0.0
    */
   CENTURION_API
-  Texture(gsl::not_null<SDL_Renderer*> renderer, PixelFormat format,
-          TextureAccess access, int width, int height);
+  Texture(const Renderer& renderer, PixelFormat format, TextureAccess access,
+          int width, int height);
 
   /**
    * Creates an texture by moving the supplied texture.
@@ -211,37 +204,36 @@ class Texture final {
    * Creates and returns a unique texture by loading it from a file.
    *
    * @param renderer the renderer that will be used when loading the texture.
-   * @param path the file path of the texture.
+   * @param path the file path of the texture, may not be null.
    * @return a unique pointer to the created texture.
    * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::unique_ptr<Texture> unique(gsl::not_null<SDL_Renderer*> renderer,
-                                         const std::string& path);
+  static std::unique_ptr<Texture> unique(const Renderer& renderer,
+                                         const char* path);
 
   /**
-   * Creates and returns a unique texture that is a copy of the supplied SDL
+   * Creates and returns a unique texture that is a copy of the supplied
    * surface.
    *
-   * @param renderer the associated renderer instance, may not be null.
-   * @param surface the SDL surface that the texture will be based on, may not
-   * be null
+   * @param renderer the associated renderer instance.
+   * @param surface the surface that the texture will be based on.
    * @return a unique pointer to the created texture.
    * @throws CenturionException if the texture cannot be loaded.
-   * @since 3.0.0
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::unique_ptr<Texture> unique(gsl::not_null<SDL_Renderer*> renderer,
-                                         gsl::not_null<SDL_Surface*> surface);
+  static std::unique_ptr<Texture> unique(const Renderer& renderer,
+                                         const Surface& surface);
 
   /**
    * Creates and returns a unique pointer to an texture with the supplied
    * characteristics.
    *
-   * @param renderer a pointer to associated renderer that will be used.
+   * @param renderer the associated renderer that will be used.
    * @param format the pixel format of the texture.
    * @param access the texture access of the texture.
    * @param width the width of the texture.
@@ -252,7 +244,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::unique_ptr<Texture> unique(gsl::not_null<SDL_Renderer*> renderer,
+  static std::unique_ptr<Texture> unique(const Renderer& renderer,
                                          PixelFormat format,
                                          TextureAccess access, int width,
                                          int height);
@@ -275,37 +267,36 @@ class Texture final {
    * Creates and returns a shared texture by loading it from a file.
    *
    * @param renderer the renderer that will be used when loading the texture.
-   * @param path the file path of the texture.
+   * @param path the file path of the texture, may not be null.
    * @return a shared pointer to the created texture.
    * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::shared_ptr<Texture> shared(gsl::not_null<SDL_Renderer*> renderer,
-                                         const std::string& path);
+  static std::shared_ptr<Texture> shared(const Renderer& renderer,
+                                         const char* path);
 
   /**
-   * Creates and returns a shared texture that is a copy of the supplied SDL
+   * Creates and returns a shared texture that is a copy of the supplied
    * surface.
    *
-   * @param renderer the associated renderer instance, may not be null.
-   * @param surface the SDL surface that the texture will be based on, may not
-   * be null
+   * @param renderer the associated renderer instance.
+   * @param surface the surface that the texture will be based on.
    * @return a shared pointer to the created texture.
    * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::shared_ptr<Texture> shared(gsl::not_null<SDL_Renderer*> renderer,
-                                         gsl::not_null<SDL_Surface*> surface);
+  static std::shared_ptr<Texture> shared(const Renderer& renderer,
+                                         const Surface& surface);
 
   /**
    * Creates and returns a shared pointer to an texture with the supplied
    * characteristics.
    *
-   * @param renderer a pointer to associated renderer that will be used.
+   * @param renderer the associated renderer that will be used.
    * @param format the pixel format of the texture.
    * @param access the texture access of the texture.
    * @param width the width of the texture.
@@ -316,11 +307,11 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::shared_ptr<Texture> shared(gsl::not_null<SDL_Renderer*> renderer,
+  static std::shared_ptr<Texture> shared(const Renderer& renderer,
                                          PixelFormat format,
                                          TextureAccess access, int width,
                                          int height);
-  
+
   /**
    * Sets the alpha value of the texture.
    *

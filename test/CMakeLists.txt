@@ -7,7 +7,7 @@ set(TEST_FILES
         unittests/bool_converter_test.cpp
         unittests/font_test.cpp
         unittests/texture_test.cpp
-        unittests/image_generator_test.cpp
+        unittests/texture_loader_test.cpp
         unittests/renderer_test.cpp
         unittests/log_test.cpp
         unittests/battery_test.cpp
@@ -34,6 +34,7 @@ set(TEST_FILES
         unittests/ram_test.cpp
         unittests/screen_test.cpp
         unittests/audio_test.cpp
+        unittests/surface_test.cpp
         unittests/pixel_format_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})

@@ -9,6 +9,7 @@
 #include "centurion_utils.h"
 #include "error.h"
 #include "renderer.h"
+#include "surface.h"
 
 namespace centurion {
 namespace video {
@@ -22,26 +23,23 @@ Texture::Texture(gsl::owner<SDL_Texture*> texture) {
 }
 
 CENTURION_DEF
-Texture::Texture(gsl::not_null<SDL_Renderer*> renderer,
-                 const std::string& path) {
-  texture = IMG_LoadTexture(renderer, path.c_str());
+Texture::Texture(const Renderer& renderer, const char* path) {
+  if (!path) {
+    throw CenturionException{"Can't load texture from null path!"};
+  }
+
+  texture = IMG_LoadTexture(renderer.get_internal(), path);
+
   if (!texture) {
-    throw CenturionException{"Failed to load texture from " + path};
+    const auto strPath = std::string{path};
+    throw CenturionException{"Failed to load texture from " + strPath};
   }
 }
 
 CENTURION_DEF
-Texture::Texture(const Renderer& renderer, const std::string& path) {
-  texture = IMG_LoadTexture(renderer.get_internal(), path.c_str());
-  if (!texture) {
-    throw CenturionException{"Failed to load texture from " + path};
-  }
-}
-
-CENTURION_DEF
-Texture::Texture(gsl::not_null<SDL_Renderer*> renderer,
-                 gsl::not_null<SDL_Surface*> surface) {
-  this->texture = SDL_CreateTextureFromSurface(renderer, surface);
+Texture::Texture(const Renderer& renderer, const Surface& surface) {
+  this->texture = SDL_CreateTextureFromSurface(renderer.get_internal(),
+                                               surface.get_internal());
   if (!texture) {
     throw CenturionException{"Failed to create texture from surface! " +
                              Error::msg()};
@@ -49,7 +47,7 @@ Texture::Texture(gsl::not_null<SDL_Renderer*> renderer,
 }
 
 CENTURION_DEF
-Texture::Texture(gsl::not_null<SDL_Renderer*> renderer, PixelFormat format,
+Texture::Texture(const Renderer& renderer, PixelFormat format,
                  TextureAccess access, int width, int height) {
   texture = SDL_CreateTexture(renderer, static_cast<uint32_t>(format),
                               static_cast<int>(access), width, height);
@@ -93,8 +91,8 @@ std::unique_ptr<Texture> Texture::unique(gsl::owner<SDL_Texture*> texture) {
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Texture::unique(gsl::not_null<SDL_Renderer*> renderer,
-                                         const std::string& path) {
+std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
+                                         const char* path) {
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Texture>(renderer, path);
 #else
@@ -103,8 +101,8 @@ std::unique_ptr<Texture> Texture::unique(gsl::not_null<SDL_Renderer*> renderer,
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Texture::unique(gsl::not_null<SDL_Renderer*> renderer,
-                                         gsl::not_null<SDL_Surface*> surface) {
+std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
+                                         const Surface& surface) {
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Texture>(renderer, surface);
 #else
@@ -113,7 +111,7 @@ std::unique_ptr<Texture> Texture::unique(gsl::not_null<SDL_Renderer*> renderer,
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Texture::unique(gsl::not_null<SDL_Renderer*> renderer,
+std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
                                          PixelFormat format,
                                          TextureAccess access, int width,
                                          int height) {
@@ -131,32 +129,24 @@ std::shared_ptr<Texture> Texture::shared(gsl::owner<SDL_Texture*> texture) {
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> Texture::shared(gsl::not_null<SDL_Renderer*> renderer,
-                                         const std::string& path) {
+std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
+                                         const char* path) {
   return std::make_shared<Texture>(renderer, path);
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> Texture::shared(gsl::not_null<SDL_Renderer*> renderer,
-                                         gsl::not_null<SDL_Surface*> surface) {
+std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
+                                         const Surface& surface) {
   return std::make_shared<Texture>(renderer, surface);
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> Texture::shared(gsl::not_null<SDL_Renderer*> renderer,
+std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
                                          PixelFormat format,
                                          TextureAccess access, int width,
                                          int height) {
   return std::make_shared<Texture>(renderer, format, access, width, height);
 }
-
-CENTURION_DEF
-void Texture::lock() noexcept {
-  SDL_LockTexture(texture);
-}
-
-CENTURION_DEF
-void Texture::unlock() noexcept {}
 
 CENTURION_DEF
 void Texture::set_alpha(uint8_t alpha) noexcept {

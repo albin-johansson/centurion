@@ -27,7 +27,6 @@
 
 #include <cstdint>
 #include <memory>
-#include <string>
 #include <type_traits>
 
 #include "centurion_api.h"
@@ -59,22 +58,24 @@ class TextureLoader final {
    * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
-  CENTURION_API explicit TextureLoader(
-      const std::shared_ptr<Renderer>& renderer);
+  CENTURION_API
+  explicit TextureLoader(const std::shared_ptr<Renderer>& renderer);
 
-  CENTURION_API ~TextureLoader() noexcept;
+  CENTURION_API
+  ~TextureLoader() noexcept;
 
   /**
    * Creates and returns a unique pointer to an image.
    *
-   * @param file the file path of the image that will be loaded.
+   * @param file the file path of the image that will be loaded, may not be
+   * null.
    * @return a unique pointer to an image.
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::unique_ptr<Texture> unique_img(
-      const std::string& file) const;
+  CENTURION_API
+  std::unique_ptr<Texture> unique_img(const char* file) const;
 
   /**
    * Creates and returns a unique pointer to an image with the specified
@@ -89,22 +90,22 @@ class TextureLoader final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::unique_ptr<Texture> unique_img(PixelFormat format,
-                                                    TextureAccess access,
-                                                    int width,
-                                                    int height) const;
+  CENTURION_API
+  std::unique_ptr<Texture> unique_img(PixelFormat format, TextureAccess access,
+                                      int width, int height) const;
 
   /**
    * Creates and returns a shared pointer to an image.
    *
-   * @param file the file path of the image that will be loaded.
+   * @param file the file path of the image that will be loaded, may not be
+   * null.
    * @return a shared pointer to an image.
    * @throws CenturionException if the image cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::shared_ptr<Texture> shared_img(
-      const std::string& file) const;
+  CENTURION_API
+  std::shared_ptr<Texture> shared_img(const char* file) const;
 
   /**
    * Creates and returns a shared pointer to an image with the specified
@@ -119,10 +120,9 @@ class TextureLoader final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::shared_ptr<Texture> shared_img(PixelFormat format,
-                                                    TextureAccess access,
-                                                    int width,
-                                                    int height) const;
+  CENTURION_API
+  std::shared_ptr<Texture> shared_img(PixelFormat format, TextureAccess access,
+                                      int width, int height) const;
 };
 
 using ImageGenerator = TextureLoader;  // for compatibility

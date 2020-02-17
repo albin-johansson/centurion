@@ -328,7 +328,7 @@ class Rect final {
    * invoked rectangle.
    * @since 4.0.0
    */
-  template <typename U = T, typename =  type_if_same<U, int>>
+  template <typename U = T, typename = type_if_same<U, int>>
   CENTURION_NODISCARD explicit operator SDL_Rect*() noexcept {
     return reinterpret_cast<SDL_Rect*>(this);
   }
@@ -343,7 +343,7 @@ class Rect final {
    * invoked rectangle.
    * @since 4.0.0
    */
-  template <typename U = T, typename =  type_if_same<U, int>>
+  template <typename U = T, typename = type_if_same<U, int>>
   CENTURION_NODISCARD explicit operator const SDL_Rect*() const noexcept {
     return reinterpret_cast<const SDL_Rect*>(this);
   }
@@ -358,7 +358,7 @@ class Rect final {
    * invoked rectangle.
    * @since 4.0.0
    */
-  template <typename U = T, typename =  type_if_same<U, float>>
+  template <typename U = T, typename = type_if_same<U, float>>
   CENTURION_NODISCARD explicit operator SDL_FRect*() noexcept {
     return reinterpret_cast<SDL_FRect*>(this);
   }
@@ -373,7 +373,7 @@ class Rect final {
    * invoked rectangle.
    * @since 4.0.0
    */
-  template <typename U = T, typename =  type_if_same<U, float>>
+  template <typename U = T, typename = type_if_same<U, float>>
   CENTURION_NODISCARD explicit operator const SDL_FRect*() const noexcept {
     return reinterpret_cast<const SDL_FRect*>(this);
   }

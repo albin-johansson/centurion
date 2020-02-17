@@ -10,7 +10,7 @@
 #include "centurion_utils.h"
 #include "colors.h"
 #include "font.h"
-#include "image.h"
+#include "texture.h"
 #include "point.h"
 #include "window.h"
 
@@ -107,49 +107,49 @@ CENTURION_DEF void Renderer::present() const noexcept {
   SDL_RenderPresent(renderer);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& img, int x, int y) const
+CENTURION_DEF void Renderer::draw_image(const Texture& texture, int x, int y) const
     noexcept {
-  const auto dst = SDL_Rect{x, y, img.get_width(), img.get_height()};
-  SDL_RenderCopy(renderer, img, nullptr, &dst);
+  const auto dst = SDL_Rect{x, y, texture.get_width(), texture.get_height()};
+  SDL_RenderCopy(renderer, texture, nullptr, &dst);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& img, float x,
+CENTURION_DEF void Renderer::draw_image(const Texture& texture, float x,
                                         float y) const noexcept {
-  const auto dst = SDL_FRect{x, y, static_cast<float>(img.get_width()),
-                             static_cast<float>(img.get_height())};
-  SDL_RenderCopyF(renderer, img, nullptr, &dst);
+  const auto dst = SDL_FRect{x, y, static_cast<float>(texture.get_width()),
+                             static_cast<float>(texture.get_height())};
+  SDL_RenderCopyF(renderer, texture, nullptr, &dst);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& img, int x, int y,
+CENTURION_DEF void Renderer::draw_image(const Texture& texture, int x, int y,
                                         int width, int height) const noexcept {
   const auto dst = SDL_Rect{x, y, width, height};
-  SDL_RenderCopy(renderer, img, nullptr, &dst);
+  SDL_RenderCopy(renderer, texture, nullptr, &dst);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& img, float x, float y,
+CENTURION_DEF void Renderer::draw_image(const Texture& texture, float x, float y,
                                         float width, float height) const
     noexcept {
   const auto dst = SDL_FRect{x, y, width, height};
-  SDL_RenderCopyF(renderer, img, nullptr, &dst);
+  SDL_RenderCopyF(renderer, texture, nullptr, &dst);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& img,
+CENTURION_DEF void Renderer::draw_image(const Texture& texture,
                                         const SDL_Rect& source,
                                         const SDL_FRect& destination) const
     noexcept {
-  SDL_RenderCopyF(renderer, img, &source, &destination);
+  SDL_RenderCopyF(renderer, texture, &source, &destination);
 }
 
 CENTURION_DEF void Renderer::draw_image_translated(
-    const Image& img, const SDL_Rect& source,
+    const Texture& texture, const SDL_Rect& source,
     const SDL_FRect& destination) const noexcept {
   const auto dst = SDL_FRect{destination.x - translationViewport.x,
                              destination.y - translationViewport.y,
                              destination.w, destination.h};
-  SDL_RenderCopyF(renderer, img, &source, &dst);
+  SDL_RenderCopyF(renderer, texture, &source, &dst);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& image,
+CENTURION_DEF void Renderer::draw_image(const Texture& image,
                                         const SDL_Rect& source,
                                         const SDL_Rect& destination,
                                         double angle) const noexcept {
@@ -158,7 +158,7 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
                    SDL_FLIP_NONE);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& image,
+CENTURION_DEF void Renderer::draw_image(const Texture& image,
                                         const SDL_Rect& source,
                                         const SDL_FRect& destination,
                                         double angle) const noexcept {
@@ -168,7 +168,7 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
                     SDL_FLIP_NONE);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& image,
+CENTURION_DEF void Renderer::draw_image(const Texture& image,
                                         const SDL_Rect& source,
                                         const SDL_Rect& destination,
                                         const math::IPoint& center,
@@ -178,7 +178,7 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
                    SDL_FLIP_NONE);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& image,
+CENTURION_DEF void Renderer::draw_image(const Texture& image,
                                         const SDL_Rect& source,
                                         const SDL_FRect& destination,
                                         const math::FPoint& center,
@@ -188,7 +188,7 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
                     SDL_FLIP_NONE);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& image,
+CENTURION_DEF void Renderer::draw_image(const Texture& image,
                                         const SDL_Rect& source,
                                         const SDL_Rect& destination,
                                         double angle,
@@ -197,7 +197,7 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
                    flip);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& image,
+CENTURION_DEF void Renderer::draw_image(const Texture& image,
                                         const SDL_Rect& source,
                                         const SDL_FRect& destination,
                                         double angle,
@@ -206,7 +206,7 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
                     flip);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& image,
+CENTURION_DEF void Renderer::draw_image(const Texture& image,
                                         const SDL_Rect& source,
                                         const SDL_Rect& destination,
                                         double angle,
@@ -216,7 +216,7 @@ CENTURION_DEF void Renderer::draw_image(const Image& image,
   SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &c, flip);
 }
 
-CENTURION_DEF void Renderer::draw_image(const Image& image,
+CENTURION_DEF void Renderer::draw_image(const Texture& image,
                                         const SDL_Rect& source,
                                         const SDL_FRect& destination,
                                         double angle,
@@ -323,7 +323,7 @@ CENTURION_DEF void Renderer::set_blend_mode(
   SDL_SetRenderDrawBlendMode(renderer, blendMode);
 }
 
-CENTURION_DEF void Renderer::set_target(const Image* texture) noexcept {
+CENTURION_DEF void Renderer::set_target(const Texture* texture) noexcept {
   if (texture && texture->is_target()) {
     SDL_SetRenderTarget(renderer, *texture);
   } else {
@@ -458,7 +458,7 @@ CENTURION_DEF bool Renderer::is_using_integer_logical_scaling() const noexcept {
   return SDL_RenderGetIntegerScale(renderer);
 }
 
-CENTURION_DEF std::unique_ptr<Image> Renderer::create_image(
+CENTURION_DEF std::unique_ptr<Texture> Renderer::create_image(
     const std::string& s, const Font& font) const {
   if (s.empty()) {
     return nullptr;
@@ -474,9 +474,9 @@ CENTURION_DEF std::unique_ptr<Image> Renderer::create_image(
   SDL_FreeSurface(surface);
 
 #ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Image>(texture);
+  return std::make_unique<Texture>(texture);
 #else
-  return make_unique<Image>(texture);
+  return make_unique<Texture>(texture);
 #endif
 }
 

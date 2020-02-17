@@ -27,8 +27,8 @@
 
 #include <SDL_log.h>
 
-#include <type_traits>
 #include <cstdarg>
+#include <type_traits>
 
 #include "centurion_api.h"
 

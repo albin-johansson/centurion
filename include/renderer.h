@@ -44,7 +44,7 @@ namespace centurion {
 namespace video {
 
 class Window;
-class Image;
+class Texture;
 class Font;
 
 /**
@@ -62,7 +62,7 @@ class Renderer final {
  public:
   // TODO a lot of rendering class would be prettier if there was a
   // viewport-translated alternative for all methods, ex: RenderTranslatedRect,
-  // RenderTranslatedImage, etc.
+  // RenderTranslatedTexture, etc.
 
   /**
    * Creates a renderer based on the supplied SDL_Renderer.
@@ -180,61 +180,62 @@ class Renderer final {
   /**
    * Renders an image.
    *
-   * @param img a reference to the image that will be rendered.
+   * @param texture a reference to the image that will be rendered.
    * @param x the x-coordinate of the rendered image.
    * @param y the y-coordinate of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& img, int x, int y) const noexcept;
+  CENTURION_API void draw_image(const Texture& texture, int x, int y) const
+      noexcept;
 
   /**
    * Renders an image.
    *
-   * @param img a reference to the image that will be rendered.
+   * @param texture a reference to the image that will be rendered.
    * @param x the x-coordinate of the rendered image.
    * @param y the y-coordinate of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& img, float x, float y) const
+  CENTURION_API void draw_image(const Texture& texture, float x, float y) const
       noexcept;
 
   /**
    * Renders an image. This method has no effect if the supplied width and/or
    * height isn't greater than zero.
    *
-   * @param img a reference to the image that will be rendered.
+   * @param texture a reference to the image that will be rendered.
    * @param x the x-coordinate of the rendered image.
    * @param y the y-coordinate of the rendered image.
    * @param width the width of the rendered image.
    * @param height the height of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& img, int x, int y, int width,
+  CENTURION_API void draw_image(const Texture& texture, int x, int y, int width,
                                 int height) const noexcept;
 
   /**
    * Renders an image. This method has no effect if the supplied width and/or
    * height isn't greater than zero.
    *
-   * @param img a reference to the image that will be rendered.
+   * @param texture a reference to the image that will be rendered.
    * @param x the x-coordinate of the rendered image.
    * @param y the y-coordinate of the rendered image.
    * @param width the width of the rendered image.
    * @param height the height of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& img, float x, float y, float width,
-                                float height) const noexcept;
+  CENTURION_API void draw_image(const Texture& texture, float x, float y,
+                                float width, float height) const noexcept;
 
   /**
    * Renders a part of an image at the specified destination.
    *
-   * @param img the source image.
+   * @param texture the source image.
    * @param source the rectangle that specifies the cutout of the source image.
    * @param destination the destination of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& img, const SDL_Rect& source,
+  CENTURION_API void draw_image(const Texture& texture, const SDL_Rect& source,
                                 const SDL_FRect& destination) const noexcept;
 
   /**
@@ -242,12 +243,12 @@ class Renderer final {
    * the rendered image is translated using the currently set translation
    * viewport.
    *
-   * @param img the source image.
+   * @param texture the source image.
    * @param source the rectangle that specifies the cutout of the source image.
    * @param destination the destination of the rendered image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image_translated(const Image& img,
+  CENTURION_API void draw_image_translated(const Texture& texture,
                                            const SDL_Rect& source,
                                            const SDL_FRect& destination) const
       noexcept;
@@ -261,7 +262,7 @@ class Renderer final {
    * @param angle the angle of the image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+  CENTURION_API void draw_image(const Texture& image, const SDL_Rect& source,
                                 const SDL_Rect& destination, double angle) const
       noexcept;
 
@@ -274,7 +275,7 @@ class Renderer final {
    * @param angle the angle of the image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+  CENTURION_API void draw_image(const Texture& image, const SDL_Rect& source,
                                 const SDL_FRect& destination,
                                 double angle) const noexcept;
 
@@ -288,7 +289,7 @@ class Renderer final {
    * @param angle the angle of the image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+  CENTURION_API void draw_image(const Texture& image, const SDL_Rect& source,
                                 const SDL_Rect& destination,
                                 const math::IPoint& center, double angle) const
       noexcept;
@@ -303,7 +304,7 @@ class Renderer final {
    * @param angle the angle of the image.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+  CENTURION_API void draw_image(const Texture& image, const SDL_Rect& source,
                                 const SDL_FRect& destination,
                                 const math::FPoint& center, double angle) const
       noexcept;
@@ -319,7 +320,7 @@ class Renderer final {
    * should be flipped.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+  CENTURION_API void draw_image(const Texture& image, const SDL_Rect& source,
                                 const SDL_Rect& destination, double angle,
                                 SDL_RendererFlip flip) const noexcept;
 
@@ -334,7 +335,7 @@ class Renderer final {
    * should be flipped.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+  CENTURION_API void draw_image(const Texture& image, const SDL_Rect& source,
                                 const SDL_FRect& destination, double angle,
                                 SDL_RendererFlip flip) const noexcept;
 
@@ -350,7 +351,7 @@ class Renderer final {
    * should be flipped.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+  CENTURION_API void draw_image(const Texture& image, const SDL_Rect& source,
                                 const SDL_Rect& destination, double angle,
                                 const math::IPoint& center,
                                 SDL_RendererFlip flip) const noexcept;
@@ -367,7 +368,7 @@ class Renderer final {
    * should be flipped.
    * @since 3.0.0
    */
-  CENTURION_API void draw_image(const Image& image, const SDL_Rect& source,
+  CENTURION_API void draw_image(const Texture& image, const SDL_Rect& source,
                                 const SDL_FRect& destination, double angle,
                                 const math::FPoint& center,
                                 SDL_RendererFlip flip) const noexcept;
@@ -542,7 +543,7 @@ class Renderer final {
    * indicate that the default rendering target should be used.
    * @since 3.0.0
    */
-  CENTURION_API void set_target(const Image* texture) noexcept;
+  CENTURION_API void set_target(const Texture* texture) noexcept;
 
   /**
    * Sets the viewport that will be used by the renderer. This method has no
@@ -757,8 +758,8 @@ class Renderer final {
    * unsuccessful.
    */
   CENTURION_NODISCARD
-  CENTURION_API std::unique_ptr<Image> create_image(const std::string& s,
-                                                    const Font& font) const;
+  CENTURION_API std::unique_ptr<Texture> create_image(const std::string& s,
+                                                      const Font& font) const;
 
   /**
    * Returns the viewport that the renderer uses.

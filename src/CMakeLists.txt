@@ -6,13 +6,13 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/window_listener.h
         ${CTN_INCLUDE_DIR}/font.h
         ${CTN_INCLUDE_DIR}/renderer.h
-        ${CTN_INCLUDE_DIR}/image.h
+        ${CTN_INCLUDE_DIR}/texture.h
         ${CTN_INCLUDE_DIR}/sound_effect.h
         ${CTN_INCLUDE_DIR}/centurion_exception.h
         ${CTN_INCLUDE_DIR}/centurion_api.h
         ${CTN_INCLUDE_DIR}/centurion.h
         ${CTN_INCLUDE_DIR}/colors.h
-        ${CTN_INCLUDE_DIR}/image_generator.h
+        ${CTN_INCLUDE_DIR}/texture_loader.h
         ${CTN_INCLUDE_DIR}/paths.h
         ${CTN_INCLUDE_DIR}/system.h
         ${CTN_INCLUDE_DIR}/timer.h
@@ -31,11 +31,11 @@ set(SOURCE_FILES
         window.cpp
         font.cpp
         renderer.cpp
-        image.cpp
+        texture.cpp
         sound_effect.cpp
         centurion_exception.cpp
         centurion.cpp
-        image_generator.cpp
+        texture_loader.cpp
         paths.cpp
         system.cpp
         log.cpp

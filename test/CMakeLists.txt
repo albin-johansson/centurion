@@ -6,7 +6,7 @@ set(TEST_FILES
         unittests/window_test.cpp
         unittests/bool_converter_test.cpp
         unittests/font_test.cpp
-        unittests/image_test.cpp
+        unittests/texture_test.cpp
         unittests/image_generator_test.cpp
         unittests/renderer_test.cpp
         unittests/log_test.cpp

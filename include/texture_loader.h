@@ -31,7 +31,7 @@
 #include <type_traits>
 
 #include "centurion_api.h"
-#include "image.h"
+#include "texture.h"
 
 namespace centurion {
 namespace video {
@@ -39,17 +39,16 @@ namespace video {
 class Renderer;
 
 /**
- * The ImageGenerator class is a utility class designed to make it easier to
- * create instances of the Image class without passing a renderer instance
+ * The TextureLoader class is a utility class designed to make it easier to
+ * create instances of the Texture class without passing a renderer instance
  * around. This can make it easier to keep renderer instances out of
  * logic-related code.
  *
  * @see Renderer
- * @see Image
+ * @see Texture
  * @since 3.0.0
- * @author Albin Johansson
  */
-class ImageGenerator final {  // TODO rename to ImageLoader (typedef old name)
+class TextureLoader final {
  private:
   std::shared_ptr<Renderer> renderer;
 
@@ -60,10 +59,10 @@ class ImageGenerator final {  // TODO rename to ImageLoader (typedef old name)
    * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
-  CENTURION_API explicit ImageGenerator(
+  CENTURION_API explicit TextureLoader(
       const std::shared_ptr<Renderer>& renderer);
 
-  CENTURION_API ~ImageGenerator() noexcept;
+  CENTURION_API ~TextureLoader() noexcept;
 
   /**
    * Creates and returns a unique pointer to an image.
@@ -74,28 +73,8 @@ class ImageGenerator final {  // TODO rename to ImageLoader (typedef old name)
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::unique_ptr<Image> unique_img(
+  CENTURION_API std::unique_ptr<Texture> unique_img(
       const std::string& file) const;
-
-  /**
-   * Creates and returns a unique pointer to an image with the specified
-   * characteristics.
-   *
-   * @param format the pixel format of the created image.
-   * @param access the texture access of the image.
-   * @param width the width of the created image.
-   * @param height the height of the created image.
-   * @return a unique pointer to an image.
-   * @throws CenturionException if the image cannot be created.
-   * @deprecated use the more type-safe version instead, that takes a
-   * PixelFormat value instead of a uint32_t.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_DEPRECATED
-  CENTURION_API std::unique_ptr<Image> unique_img(uint32_t format,
-                                                  TextureAccess access,
-                                                  int width, int height) const;
 
   /**
    * Creates and returns a unique pointer to an image with the specified
@@ -110,9 +89,10 @@ class ImageGenerator final {  // TODO rename to ImageLoader (typedef old name)
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::unique_ptr<Image> unique_img(PixelFormat format,
-                                                  TextureAccess access,
-                                                  int width, int height) const;
+  CENTURION_API std::unique_ptr<Texture> unique_img(PixelFormat format,
+                                                    TextureAccess access,
+                                                    int width,
+                                                    int height) const;
 
   /**
    * Creates and returns a shared pointer to an image.
@@ -123,28 +103,8 @@ class ImageGenerator final {  // TODO rename to ImageLoader (typedef old name)
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::shared_ptr<Image> shared_img(
+  CENTURION_API std::shared_ptr<Texture> shared_img(
       const std::string& file) const;
-
-  /**
-   * Creates and returns a shared pointer to an image with the specified
-   * characteristics.
-   *
-   * @param format the pixel format of the created image.
-   * @param access the texture access of the image.
-   * @param width the width of the created image.
-   * @param height the height of the created image.
-   * @return a shared pointer to an image.
-   * @throws CenturionException if the image cannot be created.
-   * @deprecated use the more type-safe version instead, that takes a
-   * PixelFormat value instead of a uint32_t.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_DEPRECATED
-  CENTURION_API std::shared_ptr<Image> shared_img(uint32_t format,
-                                                  TextureAccess access,
-                                                  int width, int height) const;
 
   /**
    * Creates and returns a shared pointer to an image with the specified
@@ -159,26 +119,29 @@ class ImageGenerator final {  // TODO rename to ImageLoader (typedef old name)
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::shared_ptr<Image> shared_img(PixelFormat format,
-                                                  TextureAccess access,
-                                                  int width, int height) const;
+  CENTURION_API std::shared_ptr<Texture> shared_img(PixelFormat format,
+                                                    TextureAccess access,
+                                                    int width,
+                                                    int height) const;
 };
 
+using ImageGenerator = TextureLoader;  // for compatibility
+
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<ImageGenerator>::value,
+static_assert(std::is_final<TextureLoader>::value,
               "ImageGenerator isn't final!");
 #endif
 
-static_assert(std::is_nothrow_copy_assignable<ImageGenerator>::value,
+static_assert(std::is_nothrow_copy_assignable<TextureLoader>::value,
               "ImageGenerator isn't nothrow copy assignable!");
 
-static_assert(std::is_nothrow_copy_constructible<ImageGenerator>::value,
+static_assert(std::is_nothrow_copy_constructible<TextureLoader>::value,
               "ImageGenerator isn't nothrow copy constructible!");
 
-static_assert(std::is_nothrow_move_assignable<ImageGenerator>::value,
+static_assert(std::is_nothrow_move_assignable<TextureLoader>::value,
               "ImageGenerator isn't nothrow move assignable!");
 
-static_assert(std::is_nothrow_move_constructible<ImageGenerator>::value,
+static_assert(std::is_nothrow_move_constructible<TextureLoader>::value,
               "ImageGenerator isn't nothrow move constructible!");
 
 }  // namespace video

@@ -1,11 +1,10 @@
-#include "image.h"
-
 #include "catch.hpp"
 #include "centurion_exception.h"
 #include "colors.h"
 #include "log.h"
 #include "renderer.h"
 #include "system.h"
+#include "texture.h"
 #include "window.h"
 
 using namespace centurion;
@@ -13,176 +12,173 @@ using namespace centurion::video;
 
 static constexpr auto path = "resources/grass.png";
 
-TEST_CASE("Image(string)", "[Image]") {
+TEST_CASE("Texture(string)", "[Texture]") {
   Window window;
   Renderer renderer{window};
 
-  CHECK_THROWS_AS(Image(renderer, "badpath"), CenturionException);
+  CHECK_THROWS_AS(Texture(renderer, "badpath"), CenturionException);
 
-  Image img{renderer, path};
-  CHECK(img.get_width() == 108);
-  CHECK(img.get_height() == 108);
+  Texture texture{renderer, path};
+  CHECK(texture.get_width() == 108);
+  CHECK(texture.get_height() == 108);
 }
 
-TEST_CASE("Image(Image&&)", "[Image]") {
+TEST_CASE("Texture(Texture&&)", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, path};
+  Texture texture{renderer, path};
 
-  Image moved_img = std::move(img);
+  Texture moved_img = std::move(texture);
 
-  CHECK(!img.get_texture());
+  CHECK(!texture.get_texture());
 }
 
 TEST_CASE(
-    "Image(gsl::not_null<SDL_Renderer*>, PixelFormat, TextureAccess, int, int)",
-    "[Image]") {
+    "Texture(gsl::not_null<SDL_Renderer*>, PixelFormat, TextureAccess, int, "
+    "int)",
+    "[Texture]") {
   Window window;
   Renderer renderer{window};
-  CHECK_NOTHROW(Image{renderer.get_internal(), PixelFormat::RGBA32,
-                      TextureAccess::Static, 50, 50});
+  CHECK_NOTHROW(Texture{renderer.get_internal(), PixelFormat::RGBA32,
+                        TextureAccess::Static, 50, 50});
 }
 
-TEST_CASE("Image::unique", "[Image]") {
+TEST_CASE("Texture::unique", "[Texture]") {
   const Window window;
   const Renderer renderer{window};
-  CHECK_THROWS_AS(Image::unique(nullptr), CenturionException);
-  CHECK(Image::unique(renderer.get_internal(), path));
-  CHECK(Image::unique(renderer.get_internal(), window.get_pixel_format(),
-                      TextureAccess::Static, 100, 100));
-  CHECK(Image::unique(renderer.get_internal(),
-                      static_cast<PixelFormat>(window.get_pixel_format()),
-                      TextureAccess::Static, 100, 100));
+  CHECK_THROWS_AS(Texture::unique(nullptr), CenturionException);
+  CHECK(Texture::unique(renderer.get_internal(), path));
+  CHECK(Texture::unique(renderer.get_internal(),
+                        static_cast<PixelFormat>(window.get_pixel_format()),
+                        TextureAccess::Static, 100, 100));
 }
 
-TEST_CASE("Image:::shared", "[Image]") {
+TEST_CASE("Texture:::shared", "[Texture]") {
   const Window window;
   const Renderer renderer{window};
-  CHECK_THROWS_AS(Image::shared(nullptr), CenturionException);
-  CHECK(Image::shared(renderer.get_internal(), path));
-  CHECK(Image::shared(renderer.get_internal(), window.get_pixel_format(),
-                      TextureAccess::Static, 100, 100));
-  CHECK(Image::shared(renderer.get_internal(),
-                      static_cast<PixelFormat>(window.get_pixel_format()),
-                      TextureAccess::Static, 100, 100));
+  CHECK_THROWS_AS(Texture::shared(nullptr), CenturionException);
+  CHECK(Texture::shared(renderer.get_internal(), path));
+  CHECK(Texture::shared(renderer.get_internal(),
+                        static_cast<PixelFormat>(window.get_pixel_format()),
+                        TextureAccess::Static, 100, 100));
 }
 
-TEST_CASE("Image::get_format", "[Image]") {
+TEST_CASE("Texture::get_format", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, path};
-  SDL_Texture* texture = img.get_texture();
+  Texture texture{renderer, path};
+  SDL_Texture* sdlTexture = texture.get_texture();
 
   uint32_t format = 0;
-  SDL_QueryTexture(texture, &format, nullptr, nullptr, nullptr);
+  SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
 
-  CHECK(img.get_format() == format);
+  CHECK(texture.get_format() == format);
 }
 
-TEST_CASE("Image::get_access", "[Image]") {
+TEST_CASE("Texture::get_access", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, path};
-  SDL_Texture* texture = img.get_texture();
+  Texture texture{renderer, path};
+  SDL_Texture* sdlTexture = texture.get_texture();
 
   int access = 0;
-  SDL_QueryTexture(texture, nullptr, &access, nullptr, nullptr);
+  SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
 
-  CHECK(img.get_access() == static_cast<TextureAccess>(access));
+  CHECK(texture.get_access() == static_cast<TextureAccess>(access));
 }
 
-TEST_CASE("Image::get_width", "[Image]") {
+TEST_CASE("Texture::get_width", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img(renderer, path);
-  SDL_Texture* texture = img.get_texture();
+  Texture texture(renderer, path);
+  SDL_Texture* sdlTexture = texture.get_texture();
 
-  CHECK(img.get_width() == 108);
+  CHECK(texture.get_width() == 108);
 
   int width = 0;
-  SDL_QueryTexture(texture, nullptr, nullptr, &width, nullptr);
-  CHECK(img.get_width() == width);
+  SDL_QueryTexture(sdlTexture, nullptr, nullptr, &width, nullptr);
+  CHECK(texture.get_width() == width);
 }
 
-TEST_CASE("Image::get_height", "[Image]") {
+TEST_CASE("Texture::get_height", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, path};
-  SDL_Texture* texture = img.get_texture();
+  Texture texture{renderer, path};
+  SDL_Texture* sdlTexture = texture.get_texture();
 
-  CHECK(img.get_height() == 108);
+  CHECK(texture.get_height() == 108);
 
   int height = 0;
-  SDL_QueryTexture(texture, nullptr, nullptr, nullptr, &height);
-  CHECK(img.get_height() == height);
+  SDL_QueryTexture(sdlTexture, nullptr, nullptr, nullptr, &height);
+  CHECK(texture.get_height() == height);
 }
 
-TEST_CASE("Image::set_blend_mode", "[Image]") {
+TEST_CASE("Texture::set_blend_mode", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, path};
+  Texture texture{renderer, path};
 
   const auto mode = BlendMode::Blend;
-  img.set_blend_mode(mode);
+  texture.set_blend_mode(mode);
 
-  CHECK(mode == img.get_blend_mode());
+  CHECK(mode == texture.get_blend_mode());
 }
 
-TEST_CASE("Image::set_alpha", "[Image]") {
+TEST_CASE("Texture::set_alpha", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, path};
+  Texture texture{renderer, path};
 
   const auto alpha = 0x3A;
-  img.set_alpha(alpha);
+  texture.set_alpha(alpha);
 
-  CHECK(alpha == img.get_alpha());
+  CHECK(alpha == texture.get_alpha());
 }
 
-TEST_CASE("Image::set_color_mod", "[Image]") {
+TEST_CASE("Texture::set_color_mod", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, path};
+  Texture texture{renderer, path};
 
   const auto color = misty_rose;
-  img.set_color_mod(color);
+  texture.set_color_mod(color);
 
-  const auto actual = img.get_color_mod();
+  const auto actual = texture.get_color_mod();
   CHECK(color.get_red() == actual.get_red());
   CHECK(color.get_green() == actual.get_green());
   CHECK(color.get_blue() == actual.get_blue());
   CHECK(color.get_alpha() == actual.get_alpha());
 }
 
-TEST_CASE("Image::is_static", "[Image]") {
+TEST_CASE("Texture::is_static", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer.get_internal(), window.get_pixel_format(),
-            TextureAccess::Static, 10, 10};
-  CHECK(img.is_static());
+  Texture texture{renderer.get_internal(), window.get_pixel_format(),
+                  TextureAccess::Static, 10, 10};
+  CHECK(texture.is_static());
 }
 
-TEST_CASE("Image::is_streaming", "[Image]") {
+TEST_CASE("Texture::is_streaming", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer.get_internal(), window.get_pixel_format(),
-            TextureAccess::Streaming, 10, 10};
-  CHECK(img.is_streaming());
+  Texture texture{renderer.get_internal(), window.get_pixel_format(),
+                  TextureAccess::Streaming, 10, 10};
+  CHECK(texture.is_streaming());
 }
 
-TEST_CASE("Image::is_target", "[Image]") {
+TEST_CASE("Texture::is_target", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer.get_internal(), window.get_pixel_format(),
-            TextureAccess::Target, 10, 10};
-  CHECK(img.is_target());
+  Texture texture{renderer.get_internal(), window.get_pixel_format(),
+                  TextureAccess::Target, 10, 10};
+  CHECK(texture.is_target());
 }
 
-TEST_CASE("Image::to_string", "[Image]") {
+TEST_CASE("Texture::to_string", "[Texture]") {
   Window window;
   Renderer renderer{window};
-  Image img{renderer, path};
-  Log::msgf(Category::Test, "%s", img.to_string().c_str());
+  Texture texture{renderer, path};
+  Log::msgf(Category::Test, "%s", texture.to_string().c_str());
 }
 
 TEST_CASE("TextureAccess enum values", "[TextureAccess]") {

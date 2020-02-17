@@ -33,7 +33,8 @@ set(TEST_FILES
         unittests/cpu_test.cpp
         unittests/ram_test.cpp
         unittests/screen_test.cpp
-        unittests/audio_test.cpp)
+        unittests/audio_test.cpp
+        unittests/pixel_format_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

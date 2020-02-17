@@ -28,6 +28,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/centurion_utils.h
         ${CTN_INCLUDE_DIR}/error.h
         ${CTN_INCLUDE_DIR}/event.h
+        ${CTN_INCLUDE_DIR}/pixel_format.h
         window.cpp
         font.cpp
         renderer.cpp

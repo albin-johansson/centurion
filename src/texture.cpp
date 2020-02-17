@@ -58,26 +58,23 @@ Texture::Texture(const Renderer& renderer, PixelFormat format,
 
 CENTURION_DEF
 Texture::Texture(Texture&& other) noexcept {
-  SDL_DestroyTexture(texture);
-
-  texture = other.texture;
-  other.texture = nullptr;
-}
-
-CENTURION_DEF
-Texture::~Texture() noexcept {
-  if (texture) {
-    SDL_DestroyTexture(texture);
+  if (this != &other) {
+    destroy();
+    texture = other.texture;
+    other.texture = nullptr;
   }
 }
 
 CENTURION_DEF
+Texture::~Texture() noexcept { destroy(); }
+
+CENTURION_DEF
 Texture& Texture::operator=(Texture&& other) noexcept {
-  SDL_DestroyTexture(texture);
-
-  texture = other.texture;
-  other.texture = nullptr;
-
+  if (this != &other) {
+    destroy();
+    texture = other.texture;
+    other.texture = nullptr;
+  }
   return *this;
 }
 
@@ -146,6 +143,13 @@ std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
                                          TextureAccess access, int width,
                                          int height) {
   return std::make_shared<Texture>(renderer, format, access, width, height);
+}
+
+CENTURION_DEF
+void Texture::destroy() noexcept {
+  if (texture) {
+    SDL_DestroyTexture(texture);
+  }
 }
 
 CENTURION_DEF

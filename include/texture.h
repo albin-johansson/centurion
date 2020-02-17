@@ -111,6 +111,14 @@ class Texture final {
  private:
   SDL_Texture* texture = nullptr;
 
+  /**
+   * Destroys the internal texture instance. This method has no effect if the
+   * associated texture is already null.
+   *
+   * @since 4.0.0
+   */
+  void destroy() noexcept;
+
  public:
   /**
    * Creates an texture from a pre-existing SDL texture. The created texture

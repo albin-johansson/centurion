@@ -432,8 +432,7 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API SDL_Texture*
-  get_texture() noexcept;  // TODO rename to get_internal
+  CENTURION_API SDL_Texture* get_internal() noexcept;
 
   /**
    * Returns a string representation of the texture.

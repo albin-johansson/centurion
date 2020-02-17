@@ -218,7 +218,7 @@ CENTURION_DEF Color Texture::get_color_mod() const noexcept {
   return {r, g, b, 0xFF};
 }
 
-CENTURION_DEF SDL_Texture* Texture::get_texture() noexcept { return texture; }
+CENTURION_DEF SDL_Texture* Texture::get_internal() noexcept { return texture; }
 
 CENTURION_DEF std::string Texture::to_string() const {
   const auto address = address_of(this);

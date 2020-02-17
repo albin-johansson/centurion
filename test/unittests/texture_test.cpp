@@ -30,7 +30,7 @@ TEST_CASE("Texture(Texture&&)", "[Texture]") {
 
   Texture moved_img = std::move(texture);
 
-  CHECK(!texture.get_texture());
+  CHECK(!texture.get_internal());
 }
 
 TEST_CASE(
@@ -67,7 +67,7 @@ TEST_CASE("Texture::get_format", "[Texture]") {
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, path};
-  SDL_Texture* sdlTexture = texture.get_texture();
+  SDL_Texture* sdlTexture = texture.get_internal();
 
   uint32_t format = 0;
   SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
@@ -79,7 +79,7 @@ TEST_CASE("Texture::get_access", "[Texture]") {
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, path};
-  SDL_Texture* sdlTexture = texture.get_texture();
+  SDL_Texture* sdlTexture = texture.get_internal();
 
   int access = 0;
   SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
@@ -91,7 +91,7 @@ TEST_CASE("Texture::get_width", "[Texture]") {
   Window window;
   Renderer renderer{window};
   Texture texture(renderer, path);
-  SDL_Texture* sdlTexture = texture.get_texture();
+  SDL_Texture* sdlTexture = texture.get_internal();
 
   CHECK(texture.get_width() == 108);
 
@@ -104,7 +104,7 @@ TEST_CASE("Texture::get_height", "[Texture]") {
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, path};
-  SDL_Texture* sdlTexture = texture.get_texture();
+  SDL_Texture* sdlTexture = texture.get_internal();
 
   CHECK(texture.get_height() == 108);
 
@@ -179,6 +179,13 @@ TEST_CASE("Texture::to_string", "[Texture]") {
   Renderer renderer{window};
   Texture texture{renderer, path};
   Log::msgf(Category::Test, "%s", texture.to_string().c_str());
+}
+
+TEST_CASE("Texture::get_internal", "[Texture]") {
+  Window window;
+  Renderer renderer{window};
+  Texture texture{renderer, path};
+  CHECK(texture.get_internal());
 }
 
 TEST_CASE("TextureAccess enum values", "[TextureAccess]") {

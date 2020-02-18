@@ -83,7 +83,8 @@ class Rect final {
    * @since 4.0.0
    */
   constexpr Rect(T x, T y, T width, T height) noexcept
-      : x{x}, y{y}, width{width}, height{height} {}
+      : x{x}, y{y}, width{width}, height{height}
+  {}
 
   /**
    * Sets the x-coordinate of the rectangle.
@@ -126,7 +127,8 @@ class Rect final {
    * @param rheight the new height of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set(T rx, T ry, T rwidth, T rheight) noexcept {
+  constexpr void set(T rx, T ry, T rwidth, T rheight) noexcept
+  {
     x = rx;
     y = ry;
     width = rwidth;
@@ -140,7 +142,8 @@ class Rect final {
    * @param other the rectangle that will be copied.
    * @since 4.0.0
    */
-  constexpr void set(const Rect<T>& other) noexcept {
+  constexpr void set(const Rect<T>& other) noexcept
+  {
     x = other.x;
     y = other.y;
     width = other.width;
@@ -155,7 +158,8 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr bool intersects(const Rect<T>& other) const noexcept {
+  constexpr bool intersects(const Rect<T>& other) const noexcept
+  {
     return !(x >= other.get_max_x() || get_max_x() <= other.x ||
              y >= other.get_max_y() || get_max_y() <= other.y);
   }
@@ -171,7 +175,8 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr bool contains(T px, T py) const noexcept {
+  constexpr bool contains(T px, T py) const noexcept
+  {
     return !(px < x || py < y || px > get_max_x() || py > get_max_y());
   }
 
@@ -185,7 +190,8 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr bool contains(Point<T> point) const noexcept {
+  constexpr bool contains(Point<T> point) const noexcept
+  {
     return contains(point.get_x(), point.get_y());
   }
 
@@ -268,7 +274,8 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr Point<T> get_center() const noexcept {
+  constexpr Point<T> get_center() const noexcept
+  {
     return {get_center_x(), get_center_y()};
   }
 
@@ -292,7 +299,8 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = type_if_same<U, int>>
-  CENTURION_NODISCARD Rect<T> get_union(const Rect<T>& other) const noexcept {
+  CENTURION_NODISCARD Rect<T> get_union(const Rect<T>& other) const noexcept
+  {
     SDL_Rect result{0, 0, 0, 0};
 
     const auto* a = static_cast<const SDL_Rect*>(*this);
@@ -309,7 +317,8 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  std::string to_string() const {
+  std::string to_string() const
+  {
     const auto sx = std::to_string(x);
     const auto sy = std::to_string(y);
     const auto sw = std::to_string(width);
@@ -329,7 +338,8 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = type_if_same<U, int>>
-  CENTURION_NODISCARD explicit operator SDL_Rect*() noexcept {
+  CENTURION_NODISCARD explicit operator SDL_Rect*() noexcept
+  {
     return reinterpret_cast<SDL_Rect*>(this);
   }
 
@@ -344,7 +354,8 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = type_if_same<U, int>>
-  CENTURION_NODISCARD explicit operator const SDL_Rect*() const noexcept {
+  CENTURION_NODISCARD explicit operator const SDL_Rect*() const noexcept
+  {
     return reinterpret_cast<const SDL_Rect*>(this);
   }
 
@@ -359,7 +370,8 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = type_if_same<U, float>>
-  CENTURION_NODISCARD explicit operator SDL_FRect*() noexcept {
+  CENTURION_NODISCARD explicit operator SDL_FRect*() noexcept
+  {
     return reinterpret_cast<SDL_FRect*>(this);
   }
 
@@ -374,7 +386,8 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = type_if_same<U, float>>
-  CENTURION_NODISCARD explicit operator const SDL_FRect*() const noexcept {
+  CENTURION_NODISCARD explicit operator const SDL_FRect*() const noexcept
+  {
     return reinterpret_cast<const SDL_FRect*>(this);
   }
 
@@ -408,14 +421,16 @@ class Rect final {
 
 template <typename T>
 inline constexpr bool operator==(const Rect<T>& lhs,
-                                 const Rect<T>& rhs) noexcept {
+                                 const Rect<T>& rhs) noexcept
+{
   return lhs.x == rhs.x && lhs.y == rhs.y && lhs.width == rhs.width &&
          lhs.height == rhs.height;
 }
 
 template <typename T>
 inline constexpr bool operator!=(const Rect<T>& lhs,
-                                 const Rect<T>& rhs) noexcept {
+                                 const Rect<T>& rhs) noexcept
+{
   return !(lhs == rhs);
 }
 

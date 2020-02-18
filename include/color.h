@@ -77,7 +77,8 @@ class Color final {
    * @since 3.0.0
    */
   constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF) noexcept
-      : red{r}, green{g}, blue{b}, alpha{a} {}
+      : red{r}, green{g}, blue{b}, alpha{a}
+  {}
 
   /**
    * Creates a color that is a copy of the supplied color.
@@ -355,7 +356,8 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  /*implicit*/ operator SDL_Color() const noexcept {
+  /*implicit*/ operator SDL_Color() const noexcept
+  {
     return {red, green, blue, alpha};
   }
 
@@ -367,7 +369,8 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  /*implicit*/ operator SDL_MessageBoxColor() const noexcept {
+  /*implicit*/ operator SDL_MessageBoxColor() const noexcept
+  {
     return {red, green, blue};
   }
 };
@@ -379,50 +382,60 @@ class Color final {
  */
 using Colour = Color;
 
-inline bool operator==(const Color& color, const Color& other) noexcept {
+inline bool operator==(const Color& color, const Color& other) noexcept
+{
   return color.red == other.red && color.green == other.green &&
          color.blue == other.blue && color.alpha == other.alpha;
 }
 
-inline bool operator==(const Color& color, const SDL_Color& sdlColor) noexcept {
+inline bool operator==(const Color& color, const SDL_Color& sdlColor) noexcept
+{
   return color.red == sdlColor.r && color.green == sdlColor.g &&
          color.blue == sdlColor.b && color.alpha == sdlColor.a;
 }
 
-inline bool operator==(const SDL_Color& sdlColor, const Color& color) noexcept {
+inline bool operator==(const SDL_Color& sdlColor, const Color& color) noexcept
+{
   return color == sdlColor;
 }
 
 inline bool operator==(const Color& color,
-                       const SDL_MessageBoxColor& msgColor) noexcept {
+                       const SDL_MessageBoxColor& msgColor) noexcept
+{
   return color.red == msgColor.r && color.green == msgColor.g &&
          color.blue == msgColor.b;
 }
 
 inline bool operator==(const SDL_MessageBoxColor& msgColor,
-                       const Color& color) noexcept {
+                       const Color& color) noexcept
+{
   return color == msgColor;
 }
 
-inline bool operator!=(const Color& color, const Color& other) noexcept {
+inline bool operator!=(const Color& color, const Color& other) noexcept
+{
   return !(color == other);
 }
 
-inline bool operator!=(const Color& color, const SDL_Color& sdlColor) noexcept {
+inline bool operator!=(const Color& color, const SDL_Color& sdlColor) noexcept
+{
   return !(color == sdlColor);
 }
 
-inline bool operator!=(const SDL_Color& sdlColor, const Color& color) noexcept {
+inline bool operator!=(const SDL_Color& sdlColor, const Color& color) noexcept
+{
   return !(sdlColor == color);
 }
 
 inline bool operator!=(const Color& color,
-                       const SDL_MessageBoxColor& msgColor) noexcept {
+                       const SDL_MessageBoxColor& msgColor) noexcept
+{
   return !(color == msgColor);
 }
 
 inline bool operator!=(const SDL_MessageBoxColor& msgColor,
-                       const Color& color) noexcept {
+                       const Color& color) noexcept
+{
   return !(msgColor == color);
 }
 

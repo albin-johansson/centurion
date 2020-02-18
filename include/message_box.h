@@ -207,7 +207,8 @@ class ColorScheme final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  int get_index(ColorType type) const noexcept {
+  int get_index(ColorType type) const noexcept
+  {
     return static_cast<int>(type);
   }
 
@@ -341,7 +342,8 @@ class MessageBox final {
    */
   CENTURION_NODISCARD
   CENTURION_API SDL_MessageBoxData create_sdl_message_box_data(
-      SDL_Window* window, const SDL_MessageBoxButtonData* data,
+      SDL_Window* window,
+      const SDL_MessageBoxButtonData* data,
       const SDL_MessageBoxColorScheme* scheme = nullptr) const noexcept;
 
  public:
@@ -390,7 +392,8 @@ class MessageBox final {
    * @since 3.0.0
    */
   CENTURION_API static void show(const std::string& title,
-                                 const std::string& message, MessageBoxID type,
+                                 const std::string& message,
+                                 MessageBoxID type,
                                  SDL_Window* window = nullptr) noexcept;
 
   /**
@@ -401,7 +404,8 @@ class MessageBox final {
    * @param text the text of the button.
    * @since 3.0.0
    */
-  CENTURION_API void add_button(ButtonDataHint hint, int id,
+  CENTURION_API void add_button(ButtonDataHint hint,
+                                int id,
                                 std::string text) noexcept;
 
   /**

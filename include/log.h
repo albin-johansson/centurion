@@ -57,7 +57,8 @@ enum class Priority {
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-inline bool operator==(Priority a, SDL_LogPriority b) noexcept {
+inline bool operator==(Priority a, SDL_LogPriority b) noexcept
+{
   return static_cast<SDL_LogPriority>(a) == b;
 }
 
@@ -70,7 +71,8 @@ inline bool operator==(Priority a, SDL_LogPriority b) noexcept {
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-inline bool operator==(SDL_LogPriority a, Priority b) noexcept {
+inline bool operator==(SDL_LogPriority a, Priority b) noexcept
+{
   return a == static_cast<SDL_LogPriority>(b);
 }
 
@@ -125,8 +127,10 @@ class Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API static void msgf(Category category, Priority prio,
-                                 const char* fmt, ...) noexcept;
+  CENTURION_API static void msgf(Category category,
+                                 Priority prio,
+                                 const char* fmt,
+                                 ...) noexcept;
 
   /**
    * Logs a message.
@@ -136,7 +140,8 @@ class Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API static void msgf(Category category, const char* fmt,
+  CENTURION_API static void msgf(Category category,
+                                 const char* fmt,
                                  ...) noexcept;
 
   /**

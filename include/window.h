@@ -78,7 +78,8 @@ class Window final {
    * greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(const std::string& title, int width,
+  CENTURION_API explicit Window(const std::string& title,
+                                int width,
                                 int height);
 
   /**
@@ -145,7 +146,8 @@ class Window final {
    */
   CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Window> unique(const std::string& title,
-                                                      int width, int height);
+                                                      int width,
+                                                      int height);
 
   /**
    * Creates and returns a unique pointer to a window instance.
@@ -192,7 +194,8 @@ class Window final {
    */
   CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Window> shared(const std::string& title,
-                                                      int width, int height);
+                                                      int width,
+                                                      int height);
 
   /**
    * Creates and returns a shared pointer to a window instance.

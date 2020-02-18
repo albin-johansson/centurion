@@ -107,7 +107,8 @@ class Point final {
    * @param py the new y-coordinate of the point.
    * @since 4.0.0
    */
-  constexpr void set(T px, T py) noexcept {
+  constexpr void set(T px, T py) noexcept
+  {
     x = px;
     y = py;
   }
@@ -118,7 +119,8 @@ class Point final {
    * @param other the point that will be copied.
    * @since 4.0.0
    */
-  constexpr void set(const Point<T>& other) noexcept {
+  constexpr void set(const Point<T>& other) noexcept
+  {
     x = other.x;
     y = other.y;
   }
@@ -132,7 +134,8 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  T distance_to(const Point<T>& other) const noexcept {
+  T distance_to(const Point<T>& other) const noexcept
+  {
     return std::sqrt(std::abs(x - other.x) + std::abs(y - other.y));
   }
 
@@ -143,7 +146,8 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  std::string to_string() const {
+  std::string to_string() const
+  {
     return "[Point | X: " + std::to_string(x) + ", Y: " + std::to_string(y) +
            "]";
   }
@@ -179,7 +183,8 @@ class Point final {
   template <typename U = T>
   CENTURION_NODISCARD type_if_floating<U> equals(const Point<T>& other,
                                                  T epsilon = 0.0001) const
-      noexcept {
+      noexcept
+  {
     return std::abs(x - other.x) < epsilon && std::abs(y - other.y) < epsilon;
   }
 
@@ -190,7 +195,8 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr SDL_Point to_sdl_point() const noexcept {
+  constexpr SDL_Point to_sdl_point() const noexcept
+  {
     return {static_cast<int>(x), static_cast<int>(y)};
   }
 
@@ -201,7 +207,8 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr SDL_FPoint to_sdl_fpoint() const noexcept {
+  constexpr SDL_FPoint to_sdl_fpoint() const noexcept
+  {
     return {static_cast<float>(x), static_cast<float>(y)};
   }
 
@@ -230,7 +237,8 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T, typename = type_if_same<U, int>>
-  CENTURION_NODISCARD explicit operator SDL_Point*() noexcept {
+  CENTURION_NODISCARD explicit operator SDL_Point*() noexcept
+  {
     return reinterpret_cast<SDL_Point*>(this);
   }
 
@@ -245,7 +253,8 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T, typename = type_if_same<U, int>>
-  CENTURION_NODISCARD explicit operator const SDL_Point*() const noexcept {
+  CENTURION_NODISCARD explicit operator const SDL_Point*() const noexcept
+  {
     return reinterpret_cast<const SDL_Point*>(this);
   }
 
@@ -260,7 +269,8 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T, typename = type_if_same<U, float>>
-  CENTURION_NODISCARD explicit operator SDL_FPoint*() noexcept {
+  CENTURION_NODISCARD explicit operator SDL_FPoint*() noexcept
+  {
     return reinterpret_cast<SDL_FPoint*>(this);
   }
 
@@ -275,7 +285,8 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T, typename = type_if_same<U, float>>
-  CENTURION_NODISCARD explicit operator const SDL_FPoint*() const noexcept {
+  CENTURION_NODISCARD explicit operator const SDL_FPoint*() const noexcept
+  {
     return reinterpret_cast<const SDL_FPoint*>(this);
   }
 
@@ -323,25 +334,29 @@ class Point final {
 
 template <typename T>
 inline constexpr Point<T> operator+(const Point<T>& lhs,
-                                    const Point<T>& rhs) noexcept {
+                                    const Point<T>& rhs) noexcept
+{
   return Point<T>{lhs.x + rhs.x, lhs.y + rhs.y};
 }
 
 template <typename T>
 inline constexpr Point<T> operator-(const Point<T>& lhs,
-                                    const Point<T>& rhs) noexcept {
+                                    const Point<T>& rhs) noexcept
+{
   return Point<T>{lhs.x - rhs.x, lhs.y - rhs.y};
 }
 
 template <typename T>
 inline constexpr bool operator==(const Point<T>& lhs,
-                                 const Point<T>& rhs) noexcept {
+                                 const Point<T>& rhs) noexcept
+{
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
 template <typename T>
 inline constexpr bool operator!=(const Point<T>& lhs,
-                                 const Point<T>& rhs) noexcept {
+                                 const Point<T>& rhs) noexcept
+{
   return !(lhs == rhs);
 }
 

@@ -100,7 +100,8 @@ class CPU final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  constexpr static bool is_big_endian() noexcept {
+  constexpr static bool is_big_endian() noexcept
+  {
     return SDL_BYTEORDER == SDL_BIG_ENDIAN;
   }
 
@@ -111,7 +112,8 @@ class CPU final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  constexpr static bool is_little_endian() noexcept {
+  constexpr static bool is_little_endian() noexcept
+  {
     return SDL_BYTEORDER == SDL_LIL_ENDIAN;
   }
 };
@@ -183,7 +185,8 @@ enum class PowerState {
  * @return true if the power states are the same.
  * @since 3.0.0
  */
-inline bool operator==(PowerState a, SDL_PowerState b) noexcept {
+inline bool operator==(PowerState a, SDL_PowerState b) noexcept
+{
   return static_cast<SDL_PowerState>(a) == b;
 }
 
@@ -195,7 +198,8 @@ inline bool operator==(PowerState a, SDL_PowerState b) noexcept {
  * @return true if the power states are the same.
  * @since 3.0.0
  */
-inline bool operator==(SDL_PowerState a, PowerState b) noexcept {
+inline bool operator==(SDL_PowerState a, PowerState b) noexcept
+{
   return a == static_cast<SDL_PowerState>(b);
 }
 

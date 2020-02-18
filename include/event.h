@@ -117,7 +117,8 @@ enum class EventType {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator==(EventType lhs, SDL_EventType rhs) noexcept {
+inline bool operator==(EventType lhs, SDL_EventType rhs) noexcept
+{
   return static_cast<SDL_EventType>(lhs) == rhs;
 }
 
@@ -130,7 +131,8 @@ inline bool operator==(EventType lhs, SDL_EventType rhs) noexcept {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator==(SDL_EventType lhs, EventType rhs) noexcept {
+inline bool operator==(SDL_EventType lhs, EventType rhs) noexcept
+{
   return lhs == static_cast<SDL_EventType>(rhs);
 }
 
@@ -144,7 +146,8 @@ inline bool operator==(SDL_EventType lhs, EventType rhs) noexcept {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator!=(EventType lhs, SDL_EventType rhs) noexcept {
+inline bool operator!=(EventType lhs, SDL_EventType rhs) noexcept
+{
   return !(lhs == rhs);
 }
 
@@ -158,7 +161,8 @@ inline bool operator!=(EventType lhs, SDL_EventType rhs) noexcept {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator!=(SDL_EventType lhs, EventType rhs) noexcept {
+inline bool operator!=(SDL_EventType lhs, EventType rhs) noexcept
+{
   return !(lhs == rhs);
 }
 
@@ -199,7 +203,8 @@ enum class KeyModifier {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator==(KeyModifier lhs, SDL_Keymod rhs) noexcept {
+inline bool operator==(KeyModifier lhs, SDL_Keymod rhs) noexcept
+{
   return static_cast<SDL_Keymod>(lhs) == rhs;
 }
 
@@ -212,7 +217,8 @@ inline bool operator==(KeyModifier lhs, SDL_Keymod rhs) noexcept {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator==(SDL_Keymod lhs, KeyModifier rhs) noexcept {
+inline bool operator==(SDL_Keymod lhs, KeyModifier rhs) noexcept
+{
   return lhs == static_cast<SDL_Keymod>(rhs);
 }
 
@@ -225,7 +231,8 @@ inline bool operator==(SDL_Keymod lhs, KeyModifier rhs) noexcept {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator!=(KeyModifier lhs, SDL_Keymod rhs) noexcept {
+inline bool operator!=(KeyModifier lhs, SDL_Keymod rhs) noexcept
+{
   return !(lhs == rhs);
 }
 
@@ -238,7 +245,8 @@ inline bool operator!=(KeyModifier lhs, SDL_Keymod rhs) noexcept {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept {
+inline bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept
+{
   return !(lhs == rhs);
 }
 
@@ -872,7 +880,8 @@ class Event final {
 namespace {
 
 template <typename T>
-constexpr bool check_event_type() noexcept {
+constexpr bool check_event_type() noexcept
+{
   return std::is_nothrow_destructible<T>::value &&
          std::is_nothrow_copy_constructible<T>::value &&
          std::is_nothrow_move_constructible<T>::value

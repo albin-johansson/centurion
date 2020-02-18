@@ -50,7 +50,8 @@ namespace centurion {
  * @since 4.0.0
  */
 template <typename T, typename... Args>
-CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args) {
+CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args)
+{
   return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
@@ -64,7 +65,8 @@ CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args) {
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-constexpr SDL_bool convert_bool(bool b) noexcept {
+constexpr SDL_bool convert_bool(bool b) noexcept
+{
   return b ? SDL_TRUE : SDL_FALSE;
 }
 
@@ -79,7 +81,8 @@ constexpr SDL_bool convert_bool(bool b) noexcept {
  * @since 3.0.0
  */
 template <typename T>
-CENTURION_NODISCARD std::string address_of(T* ptr) {
+CENTURION_NODISCARD std::string address_of(T* ptr)
+{
   if (ptr) {
     std::ostringstream address;
     address << static_cast<void const*>(ptr);

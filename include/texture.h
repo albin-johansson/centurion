@@ -164,8 +164,11 @@ class Texture final {
    * @since 4.0.0
    */
   CENTURION_API
-  Texture(const Renderer& renderer, PixelFormat format, TextureAccess access,
-          int width, int height);
+  Texture(const Renderer& renderer,
+          PixelFormat format,
+          TextureAccess access,
+          int width,
+          int height);
 
   /**
    * Creates an texture by moving the supplied texture.
@@ -254,7 +257,8 @@ class Texture final {
   CENTURION_API
   static std::unique_ptr<Texture> unique(const Renderer& renderer,
                                          PixelFormat format,
-                                         TextureAccess access, int width,
+                                         TextureAccess access,
+                                         int width,
                                          int height);
 
   /**
@@ -317,7 +321,8 @@ class Texture final {
   CENTURION_API
   static std::shared_ptr<Texture> shared(const Renderer& renderer,
                                          PixelFormat format,
-                                         TextureAccess access, int width,
+                                         TextureAccess access,
+                                         int width,
                                          int height);
 
   /**

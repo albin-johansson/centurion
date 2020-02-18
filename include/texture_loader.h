@@ -91,8 +91,10 @@ class TextureLoader final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  std::unique_ptr<Texture> unique_img(PixelFormat format, TextureAccess access,
-                                      int width, int height) const;
+  std::unique_ptr<Texture> unique_img(PixelFormat format,
+                                      TextureAccess access,
+                                      int width,
+                                      int height) const;
 
   /**
    * Creates and returns a shared pointer to an image.
@@ -121,8 +123,10 @@ class TextureLoader final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  std::shared_ptr<Texture> shared_img(PixelFormat format, TextureAccess access,
-                                      int width, int height) const;
+  std::shared_ptr<Texture> shared_img(PixelFormat format,
+                                      TextureAccess access,
+                                      int width,
+                                      int height) const;
 };
 
 using ImageGenerator = TextureLoader;  // for compatibility

@@ -5,6 +5,17 @@ IndentWidth: 2
 Language: Cpp
 DerivePointerAlignment: false
 PointerAlignment: Left
-#AlignAfterOpenBracket: AlwaysBreak
-#BinPackArguments: false
-#BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: true
+
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+
+BinPackParameters: false
+BinPackArguments: false
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: false
+  AfterStruct: false
+  AfterFunction: true
+  SplitEmptyFunction: false

@@ -1,10 +1,13 @@
-#include "catch.hpp"
 #include "event.h"
+
 #include <SDL.h>
+
+#include "catch.hpp"
 
 using namespace centurion::event;
 
-TEST_CASE("EventType enum values", "[EventType]") {
+TEST_CASE("EventType enum values", "[EventType]")
+{
   CHECK(EventType::Quit == SDL_EventType::SDL_QUIT);
   CHECK(EventType::AppTerminating == SDL_APP_TERMINATING);
   CHECK(EventType::AppLowMemory == SDL_APP_LOWMEMORY);
@@ -104,7 +107,8 @@ TEST_CASE("EventType enum values", "[EventType]") {
   CHECK(SDL_USEREVENT == EventType::User);
 }
 
-TEST_CASE("KeyModifier enum values", "[KeyModifier]") {
+TEST_CASE("KeyModifier enum values", "[KeyModifier]")
+{
   CHECK(KeyModifier::None == KMOD_NONE);
   CHECK(KeyModifier::LeftShift == KMOD_LSHIFT);
   CHECK(KeyModifier::RightShift == KMOD_RSHIFT);
@@ -132,7 +136,8 @@ TEST_CASE("KeyModifier enum values", "[KeyModifier]") {
   CHECK(KMOD_MODE == KeyModifier::Mode);
 }
 
-TEST_CASE("MouseButton enum values", "[MouseButton]") {
+TEST_CASE("MouseButton enum values", "[MouseButton]")
+{
   CHECK(static_cast<int>(MouseButton::Left) == SDL_BUTTON_LEFT);
   CHECK(static_cast<int>(MouseButton::Middle) == SDL_BUTTON_MIDDLE);
   CHECK(static_cast<int>(MouseButton::Right) == SDL_BUTTON_RIGHT);
@@ -140,11 +145,10 @@ TEST_CASE("MouseButton enum values", "[MouseButton]") {
   CHECK(static_cast<int>(MouseButton::X2) == SDL_BUTTON_X2);
 }
 
-TEST_CASE("Event::refresh", "[Event]") {
-  CHECK_NOTHROW(Event::refresh());
-}
+TEST_CASE("Event::refresh", "[Event]") { CHECK_NOTHROW(Event::refresh()); }
 
-TEST_CASE("Event::push", "[Event]") {
+TEST_CASE("Event::push", "[Event]")
+{
   Event::flush_all();
 
   {
@@ -159,21 +163,24 @@ TEST_CASE("Event::push", "[Event]") {
   CHECK(event.get_type() == EventType::KeyDown);
 }
 
-TEST_CASE("Event::flush", "[Event]") {
+TEST_CASE("Event::flush", "[Event]")
+{
   Event::refresh();
   Event::flush();
   Event event;
   CHECK(!event.poll());
 }
 
-TEST_CASE("Event::flush_all", "[Event]") {
+TEST_CASE("Event::flush_all", "[Event]")
+{
   Event::flush_all();
   Event event;
 
   CHECK(!event.poll());
 }
 
-TEST_CASE("Event::poll", "[Event]") {
+TEST_CASE("Event::poll", "[Event]")
+{
   SDL_Event sdlEvent{};
   sdlEvent.type = SDL_MOUSEMOTION;
   sdlEvent.motion.x = 839;
@@ -191,7 +198,8 @@ TEST_CASE("Event::poll", "[Event]") {
   CHECK(motionEvent.get_y() == sdlEvent.motion.y);
 }
 
-TEST_CASE("Event::get_type", "[Event]") {
+TEST_CASE("Event::get_type", "[Event]")
+{
   const auto type = EventType::DropFile;
   auto sdlEvent = [type]() noexcept {
     SDL_Event sdlEvent{};
@@ -207,7 +215,8 @@ TEST_CASE("Event::get_type", "[Event]") {
   CHECK(event.get_type() == type);
 }
 
-TEST_CASE("Event::as_key_event", "[Event]") {
+TEST_CASE("Event::as_key_event", "[Event]")
+{
   SDL_Event sdlEvent;
   sdlEvent.type = SDL_KEYUP;
 
@@ -220,7 +229,8 @@ TEST_CASE("Event::as_key_event", "[Event]") {
   CHECK_NOTHROW(event.as_key_event());
 }
 
-TEST_CASE("Event::as_mouse_button_event", "[Event]") {
+TEST_CASE("Event::as_mouse_button_event", "[Event]")
+{
   SDL_Event sdlEvent;
   sdlEvent.type = SDL_MOUSEBUTTONDOWN;
 
@@ -233,7 +243,8 @@ TEST_CASE("Event::as_mouse_button_event", "[Event]") {
   CHECK_NOTHROW(event.as_mouse_button_event());
 }
 
-TEST_CASE("Event::as_mouse_motion_event", "[Event]") {
+TEST_CASE("Event::as_mouse_motion_event", "[Event]")
+{
   SDL_Event sdlEvent;
   sdlEvent.type = SDL_MOUSEMOTION;
 
@@ -246,7 +257,8 @@ TEST_CASE("Event::as_mouse_motion_event", "[Event]") {
   CHECK_NOTHROW(event.as_mouse_motion_event());
 }
 
-TEST_CASE("Event::as_mouse_wheel_event", "[Event]") {
+TEST_CASE("Event::as_mouse_wheel_event", "[Event]")
+{
   SDL_Event sdlEvent;
   sdlEvent.type = SDL_MOUSEWHEEL;
 
@@ -259,7 +271,8 @@ TEST_CASE("Event::as_mouse_wheel_event", "[Event]") {
   CHECK_NOTHROW(event.as_mouse_wheel_event());
 }
 
-TEST_CASE("Event::as_quit_event", "[Event]") {
+TEST_CASE("Event::as_quit_event", "[Event]")
+{
   SDL_Event sdlEvent;
   sdlEvent.type = SDL_QUIT;
 
@@ -272,7 +285,8 @@ TEST_CASE("Event::as_quit_event", "[Event]") {
   CHECK_NOTHROW(event.as_quit_event());
 }
 
-TEST_CASE("Event to const SDL_Event&", "[Event]") {
+TEST_CASE("Event to const SDL_Event&", "[Event]")
+{
   Event event;
   CHECK_NOTHROW(static_cast<const SDL_Event&>(event));
 }

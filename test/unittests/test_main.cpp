@@ -3,7 +3,8 @@
 
 #include "centurion.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
   const centurion::Centurion c;
   return Catch::Session().run(argc, argv);
 }

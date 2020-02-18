@@ -4,8 +4,10 @@
 
 using namespace centurion::video;
 
-TEST_CASE("PixelFormat enum values", "[PixelFormat]") {
-  SECTION("CTN left and SDL right") {
+TEST_CASE("PixelFormat enum values", "[PixelFormat]")
+{
+  SECTION("CTN left and SDL right")
+  {
     CHECK(PixelFormat::Unknown == SDL_PIXELFORMAT_UNKNOWN);
     CHECK(PixelFormat::Index1LSB == SDL_PIXELFORMAT_INDEX1LSB);
     CHECK(PixelFormat::Index1MSB == SDL_PIXELFORMAT_INDEX1MSB);
@@ -68,7 +70,8 @@ TEST_CASE("PixelFormat enum values", "[PixelFormat]") {
     CHECK(PixelFormat::ExternalOES == SDL_PIXELFORMAT_EXTERNAL_OES);
   }
 
-  SECTION("CTN right and SDL left") {
+  SECTION("CTN right and SDL left")
+  {
     CHECK(SDL_PIXELFORMAT_UNKNOWN == PixelFormat::Unknown);
     CHECK(SDL_PIXELFORMAT_INDEX1LSB == PixelFormat::Index1LSB);
     CHECK(SDL_PIXELFORMAT_INDEX1MSB == PixelFormat::Index1MSB);

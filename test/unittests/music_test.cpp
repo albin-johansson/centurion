@@ -11,19 +11,22 @@ using namespace audio;
 
 static constexpr auto path = "resources/hiddenPond.mp3";
 
-TEST_CASE("Music::Music(string)", "[Music]") {
+TEST_CASE("Music::Music(string)", "[Music]")
+{
   CHECK_THROWS_AS(Music{""}, CenturionException);
   CHECK_NOTHROW(Music{path});
 }
 
-TEST_CASE("Music smart pointer factory methods", "[Music]") {
+TEST_CASE("Music smart pointer factory methods", "[Music]")
+{
   CHECK_THROWS_AS(Music::unique(""), CenturionException);
   CHECK_THROWS_AS(Music::unique(""), CenturionException);
   CHECK_NOTHROW(Music::unique(path));
   CHECK_NOTHROW(Music::shared(path));
 }
 
-TEST_CASE("Music::play", "[Music]") {
+TEST_CASE("Music::play", "[Music]")
+{
   Music music{path};
   music.play();
   CHECK(Music::is_playing());
@@ -39,7 +42,8 @@ TEST_CASE("Music::play", "[Music]") {
   Music::halt();
 }
 
-TEST_CASE("Music::resume", "[Music]") {
+TEST_CASE("Music::resume", "[Music]")
+{
   CHECK_NOTHROW(Music::resume());
 
   Music music{path};
@@ -57,7 +61,8 @@ TEST_CASE("Music::resume", "[Music]") {
   CHECK_NOTHROW(Music::resume());
 }
 
-TEST_CASE("Music::pause", "[Music]") {
+TEST_CASE("Music::pause", "[Music]")
+{
   CHECK_NOTHROW(Music::pause());
 
   Music music{path};
@@ -71,7 +76,8 @@ TEST_CASE("Music::pause", "[Music]") {
   CHECK(Music::is_paused());
 }
 
-TEST_CASE("Music::halt", "[Music]") {
+TEST_CASE("Music::halt", "[Music]")
+{
   CHECK_NOTHROW(Music::halt());
 
   Music music{path};
@@ -89,7 +95,8 @@ TEST_CASE("Music::halt", "[Music]") {
   CHECK(!Music::is_fading());
 }
 
-TEST_CASE("Music::fade_in", "[Music]") {
+TEST_CASE("Music::fade_in", "[Music]")
+{
   CHECK(!Music::is_fading());
 
   Music music{path};
@@ -101,7 +108,8 @@ TEST_CASE("Music::fade_in", "[Music]") {
   CHECK(Music::is_fading());
 }
 
-TEST_CASE("Music::fade_out", "[Music]") {
+TEST_CASE("Music::fade_out", "[Music]")
+{
   CHECK(!Music::is_fading());
   CHECK_NOTHROW(Music::fade_out(100));
   CHECK_NOTHROW(Music::fade_out(-1));
@@ -112,22 +120,26 @@ TEST_CASE("Music::fade_out", "[Music]") {
   CHECK(Music::is_fading());
 }
 
-TEST_CASE("Music::set_volume", "[Music]") {
+TEST_CASE("Music::set_volume", "[Music]")
+{
   const auto originalVolume = Music::get_volume();
 
-  SECTION("Valid volume") {
+  SECTION("Valid volume")
+  {
     const auto volume = 102;
     Music::set_volume(volume);
     CHECK(volume == Music::get_volume());
   }
 
-  SECTION("Negative volume") {
+  SECTION("Negative volume")
+  {
     const auto volume = -1;
     Music::set_volume(volume);
     CHECK(Music::get_volume() == 0);
   }
 
-  SECTION("Volume overflow") {
+  SECTION("Volume overflow")
+  {
     const auto volume = maxVolume + 1;
     Music::set_volume(volume);
     CHECK(maxVolume == Music::get_volume());
@@ -136,7 +148,8 @@ TEST_CASE("Music::set_volume", "[Music]") {
   Music::set_volume(originalVolume);
 }
 
-TEST_CASE("Music::is_playing", "[Music]") {
+TEST_CASE("Music::is_playing", "[Music]")
+{
   CHECK(!Music::is_playing());
 
   Music music{path};
@@ -150,7 +163,8 @@ TEST_CASE("Music::is_playing", "[Music]") {
   CHECK(Music::is_playing());
 }
 
-TEST_CASE("Music::is_paused", "[Music]") {
+TEST_CASE("Music::is_paused", "[Music]")
+{
   CHECK(!Music::is_paused());
 
   Music music{path};
@@ -160,7 +174,8 @@ TEST_CASE("Music::is_paused", "[Music]") {
   CHECK(Music::is_paused());
 }
 
-TEST_CASE("Music::is_fading", "[Music]") {
+TEST_CASE("Music::is_fading", "[Music]")
+{
   CHECK(!Music::is_fading());
 
   Music music{path};
@@ -177,7 +192,8 @@ TEST_CASE("Music::is_fading", "[Music]") {
   CHECK(Music::get_fade_status() == FadeStatus::In);
 }
 
-TEST_CASE("Music::get_volume", "[Music]") {
+TEST_CASE("Music::get_volume", "[Music]")
+{
   CHECK(Music::get_volume() == maxVolume);
 
   const auto volume = 47;
@@ -186,7 +202,8 @@ TEST_CASE("Music::get_volume", "[Music]") {
   CHECK(Music::get_volume() == volume);
 }
 
-TEST_CASE("Music::get_fade_status", "[Music]") {
+TEST_CASE("Music::get_fade_status", "[Music]")
+{
   CHECK(Music::get_fade_status() == FadeStatus::None);
   CHECK(!Music::is_fading());
 
@@ -211,23 +228,27 @@ TEST_CASE("Music::get_fade_status", "[Music]") {
   CHECK(Music::get_fade_status() == FadeStatus::None);
 }
 
-TEST_CASE("Music::get_music_type", "[Music]") {
+TEST_CASE("Music::get_music_type", "[Music]")
+{
   Music music{path};
   CHECK(music.get_music_type() == MusicType::MP3);
 }
 
-TEST_CASE("Music::to_string", "[Music]") {
+TEST_CASE("Music::to_string", "[Music]")
+{
   Music music{path};
   Log::msgf(Category::Test, "%s", music.to_string().c_str());
 }
 
-TEST_CASE("Music to Mix_Music*", "[Music]") {
+TEST_CASE("Music to Mix_Music*", "[Music]")
+{
   Music music{path};
   Mix_Music* sdlMusic = music;
   CHECK(sdlMusic);
 }
 
-TEST_CASE("FadeStatus enum values", "[Music]") {
+TEST_CASE("FadeStatus enum values", "[Music]")
+{
   CHECK(FadeStatus::None == MIX_NO_FADING);
   CHECK(FadeStatus::In == MIX_FADING_IN);
   CHECK(FadeStatus::Out == MIX_FADING_OUT);
@@ -237,7 +258,8 @@ TEST_CASE("FadeStatus enum values", "[Music]") {
   CHECK(MIX_FADING_OUT == FadeStatus::Out);
 }
 
-TEST_CASE("MusicType enum values", "[Music]") {
+TEST_CASE("MusicType enum values", "[Music]")
+{
   CHECK(MusicType::Unknown == MUS_NONE);
   CHECK(MusicType::MP3 == MUS_MP3);
   CHECK(MusicType::WAV == MUS_WAV);

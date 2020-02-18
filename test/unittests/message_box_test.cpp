@@ -1,9 +1,11 @@
-#include "catch.hpp"
 #include "message_box.h"
+
+#include "catch.hpp"
 
 using namespace centurion::messagebox;
 
-TEST_CASE("MessageBox::set_type", "[MessageBox]") {
+TEST_CASE("MessageBox::set_type", "[MessageBox]")
+{
   MessageBox mb;
   CHECK(MessageBoxID::Info == mb.get_type());
 
@@ -13,7 +15,8 @@ TEST_CASE("MessageBox::set_type", "[MessageBox]") {
   CHECK(type == mb.get_type());
 }
 
-TEST_CASE("MessageBoxID enum values", "[MessageBox]") {
+TEST_CASE("MessageBoxID enum values", "[MessageBox]")
+{
   CHECK(MessageBoxID::Info == SDL_MESSAGEBOX_INFORMATION);
   CHECK(MessageBoxID::Error == SDL_MESSAGEBOX_ERROR);
   CHECK(MessageBoxID::Warning == SDL_MESSAGEBOX_WARNING);
@@ -23,7 +26,8 @@ TEST_CASE("MessageBoxID enum values", "[MessageBox]") {
   CHECK(SDL_MESSAGEBOX_WARNING == MessageBoxID::Warning);
 }
 
-TEST_CASE("ButtonData enum values", "[MessageBox]") {
+TEST_CASE("ButtonData enum values", "[MessageBox]")
+{
   CHECK(ButtonDataHint::ReturnKey == SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
   CHECK(ButtonDataHint::EscapeKey == SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
 
@@ -31,7 +35,8 @@ TEST_CASE("ButtonData enum values", "[MessageBox]") {
   CHECK(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT == ButtonDataHint::EscapeKey);
 }
 
-TEST_CASE("ColorSchemeType enum values", "[MessageBox]") {
+TEST_CASE("ColorSchemeType enum values", "[MessageBox]")
+{
   CHECK(ColorType::ButtonSelected == SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
   CHECK(ColorType::ButtonBackground == SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
   CHECK(ColorType::ButtonBorder == SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);

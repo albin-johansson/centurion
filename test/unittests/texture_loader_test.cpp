@@ -1,9 +1,10 @@
+#include "texture_loader.h"
+
 #include <string>
 
 #include "catch.hpp"
 #include "centurion_exception.h"
 #include "renderer.h"
-#include "texture_loader.h"
 #include "window.h"
 
 using namespace centurion;
@@ -12,11 +13,13 @@ using namespace std::literals;
 
 static const auto* good_path = "resources/ctn_icon_1.png";
 
-TEST_CASE("TextureLoader(Renderer)", "[Renderer]") {
+TEST_CASE("TextureLoader(Renderer)", "[Renderer]")
+{
   CHECK_THROWS_AS(TextureLoader{nullptr}, CenturionException);
 }
 
-TEST_CASE("TextureLoader::unique_img(std::string&)", "[TextureLoader]") {
+TEST_CASE("TextureLoader::unique_img(std::string&)", "[TextureLoader]")
+{
   const Window window;
   const auto renderer = Renderer::shared(window.get_internal());
   const TextureLoader loader{renderer};
@@ -26,7 +29,8 @@ TEST_CASE("TextureLoader::unique_img(std::string&)", "[TextureLoader]") {
 }
 
 TEST_CASE("TextureLoader::unique_img(PixelFormat, TextureAccess, int, int)",
-          "[TextureLoader]") {
+          "[TextureLoader]")
+{
   const Window window;
   const auto renderer = Renderer::shared(window.get_internal());
   const TextureLoader loader{renderer};
@@ -35,7 +39,8 @@ TEST_CASE("TextureLoader::unique_img(PixelFormat, TextureAccess, int, int)",
       loader.unique_img(PixelFormat::RGBA32, TextureAccess::Static, 10, 10));
 }
 
-TEST_CASE("TextureLoader::shared_img(std::string&)", "[TextureLoader]") {
+TEST_CASE("TextureLoader::shared_img(std::string&)", "[TextureLoader]")
+{
   const Window window;
   const auto renderer = Renderer::shared(window.get_internal());
   const TextureLoader loader{renderer};
@@ -45,7 +50,8 @@ TEST_CASE("TextureLoader::shared_img(std::string&)", "[TextureLoader]") {
 }
 
 TEST_CASE("TextureLoader::shared_img(PixelFormat, TextureAccess, int, int)",
-          "[TextureLoader]") {
+          "[TextureLoader]")
+{
   const Window window;
   const auto renderer = Renderer::shared(window.get_internal());
   const TextureLoader loader{renderer};

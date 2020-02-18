@@ -1,14 +1,17 @@
-#include "catch.hpp"
 #include "key_state.h"
+
+#include "catch.hpp"
 
 using namespace centurion;
 
-TEST_CASE("KeyState smart pointer factory methods", "[KeyState]") {
+TEST_CASE("KeyState smart pointer factory methods", "[KeyState]")
+{
   CHECK(KeyState::unique());
   CHECK(KeyState::shared());
 }
 
-TEST_CASE("KeyState internal array bounds assertions", "[KeyState]") {
+TEST_CASE("KeyState internal array bounds assertions", "[KeyState]")
+{
   KeyState state;
 
   // Note, these tests are only useful when assertions are enabled
@@ -19,7 +22,8 @@ TEST_CASE("KeyState internal array bounds assertions", "[KeyState]") {
   CHECK_NOFAIL(state.was_just_released(maxScancode));
 }
 
-TEST_CASE("KeyState::get_amount_of_keys", "[KeyState]") {
+TEST_CASE("KeyState::get_amount_of_keys", "[KeyState]")
+{
   KeyState state;
   CHECK(state.get_amount_of_keys() == static_cast<int>(SDL_NUM_SCANCODES));
 }

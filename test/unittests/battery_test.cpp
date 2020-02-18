@@ -3,7 +3,8 @@
 
 using namespace centurion::system;
 
-TEST_CASE("PowerState enum", "[Power]") {
+TEST_CASE("PowerState enum", "[Power]")
+{
   CHECK(PowerState::Unknown == SDL_POWERSTATE_UNKNOWN);
   CHECK(PowerState::OnBattery == SDL_POWERSTATE_ON_BATTERY);
   CHECK(PowerState::NoBattery == SDL_POWERSTATE_NO_BATTERY);
@@ -19,7 +20,8 @@ TEST_CASE("PowerState enum", "[Power]") {
 
 #ifdef CENTURION_HAS_OPTIONAL
 
-TEST_CASE("PowerState::get_battery_percentage", "[Power]") {
+TEST_CASE("PowerState::get_battery_percentage", "[Power]")
+{
   CHECK_NOTHROW(Battery::get_percentage());
 
   const auto percentage = Battery::get_percentage();
@@ -30,7 +32,8 @@ TEST_CASE("PowerState::get_battery_percentage", "[Power]") {
   }
 }
 
-TEST_CASE("PowerState::get_battery_minutes_left", "[Power]") {
+TEST_CASE("PowerState::get_battery_minutes_left", "[Power]")
+{
   CHECK_NOTHROW(Battery::get_minutes_left());
 
   const auto minutes = Battery::get_minutes_left();
@@ -43,11 +46,13 @@ TEST_CASE("PowerState::get_battery_minutes_left", "[Power]") {
 
 #endif
 
-TEST_CASE("PowerState::get_state", "[Power]") {
+TEST_CASE("PowerState::get_state", "[Power]")
+{
   CHECK_NOTHROW(Battery::get_state());
 
   const auto state = Battery::get_state();
-  const auto actual = static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
+  const auto actual =
+      static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 
   CHECK(state == actual);
 }

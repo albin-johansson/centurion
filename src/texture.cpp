@@ -15,7 +15,8 @@ namespace centurion {
 namespace video {
 
 CENTURION_DEF
-Texture::Texture(gsl::owner<SDL_Texture*> texture) {
+Texture::Texture(gsl::owner<SDL_Texture*> texture)
+{
   if (!texture) {
     throw CenturionException{"Texture can't be created from null SDL texture!"};
   }
@@ -23,7 +24,8 @@ Texture::Texture(gsl::owner<SDL_Texture*> texture) {
 }
 
 CENTURION_DEF
-Texture::Texture(const Renderer& renderer, const char* path) {
+Texture::Texture(const Renderer& renderer, const char* path)
+{
   if (!path) {
     throw CenturionException{"Can't load texture from null path!"};
   }
@@ -37,7 +39,8 @@ Texture::Texture(const Renderer& renderer, const char* path) {
 }
 
 CENTURION_DEF
-Texture::Texture(const Renderer& renderer, const Surface& surface) {
+Texture::Texture(const Renderer& renderer, const Surface& surface)
+{
   this->texture = SDL_CreateTextureFromSurface(renderer.get_internal(),
                                                surface.get_internal());
   if (!texture) {
@@ -47,17 +50,25 @@ Texture::Texture(const Renderer& renderer, const Surface& surface) {
 }
 
 CENTURION_DEF
-Texture::Texture(const Renderer& renderer, PixelFormat format,
-                 TextureAccess access, int width, int height) {
-  texture = SDL_CreateTexture(renderer, static_cast<uint32_t>(format),
-                              static_cast<int>(access), width, height);
+Texture::Texture(const Renderer& renderer,
+                 PixelFormat format,
+                 TextureAccess access,
+                 int width,
+                 int height)
+{
+  texture = SDL_CreateTexture(renderer,
+                              static_cast<uint32_t>(format),
+                              static_cast<int>(access),
+                              width,
+                              height);
   if (!texture) {
     throw CenturionException{"Failed to create texture! " + Error::msg()};
   }
 }
 
 CENTURION_DEF
-Texture::Texture(Texture&& other) noexcept {
+Texture::Texture(Texture&& other) noexcept
+{
   if (this != &other) {
     destroy();
     texture = other.texture;
@@ -69,7 +80,8 @@ CENTURION_DEF
 Texture::~Texture() noexcept { destroy(); }
 
 CENTURION_DEF
-Texture& Texture::operator=(Texture&& other) noexcept {
+Texture& Texture::operator=(Texture&& other) noexcept
+{
   if (this != &other) {
     destroy();
     texture = other.texture;
@@ -79,7 +91,8 @@ Texture& Texture::operator=(Texture&& other) noexcept {
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Texture::unique(gsl::owner<SDL_Texture*> texture) {
+std::unique_ptr<Texture> Texture::unique(gsl::owner<SDL_Texture*> texture)
+{
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Texture>(texture);
 #else
@@ -89,7 +102,8 @@ std::unique_ptr<Texture> Texture::unique(gsl::owner<SDL_Texture*> texture) {
 
 CENTURION_DEF
 std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
-                                         const char* path) {
+                                         const char* path)
+{
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Texture>(renderer, path);
 #else
@@ -99,7 +113,8 @@ std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
 
 CENTURION_DEF
 std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
-                                         const Surface& surface) {
+                                         const Surface& surface)
+{
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Texture>(renderer, surface);
 #else
@@ -110,123 +125,144 @@ std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
 CENTURION_DEF
 std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
                                          PixelFormat format,
-                                         TextureAccess access, int width,
-                                         int height) {
+                                         TextureAccess access,
+                                         int width,
+                                         int height)
+{
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Texture>(renderer, format, access, width, height);
 #else
-  return centurion::make_unique<Texture>(renderer, format, access, width,
-                                         height);
+  return centurion::make_unique<Texture>(
+      renderer, format, access, width, height);
 #endif
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> Texture::shared(gsl::owner<SDL_Texture*> texture) {
+std::shared_ptr<Texture> Texture::shared(gsl::owner<SDL_Texture*> texture)
+{
   return std::make_shared<Texture>(texture);
 }
 
 CENTURION_DEF
 std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
-                                         const char* path) {
+                                         const char* path)
+{
   return std::make_shared<Texture>(renderer, path);
 }
 
 CENTURION_DEF
 std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
-                                         const Surface& surface) {
+                                         const Surface& surface)
+{
   return std::make_shared<Texture>(renderer, surface);
 }
 
 CENTURION_DEF
 std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
                                          PixelFormat format,
-                                         TextureAccess access, int width,
-                                         int height) {
+                                         TextureAccess access,
+                                         int width,
+                                         int height)
+{
   return std::make_shared<Texture>(renderer, format, access, width, height);
 }
 
 CENTURION_DEF
-void Texture::destroy() noexcept {
+void Texture::destroy() noexcept
+{
   if (texture) {
     SDL_DestroyTexture(texture);
   }
 }
 
 CENTURION_DEF
-void Texture::set_alpha(uint8_t alpha) noexcept {
+void Texture::set_alpha(uint8_t alpha) noexcept
+{
   SDL_SetTextureAlphaMod(texture, alpha);
 }
 
 CENTURION_DEF
-void Texture::set_blend_mode(BlendMode mode) noexcept {
+void Texture::set_blend_mode(BlendMode mode) noexcept
+{
   SDL_SetTextureBlendMode(texture, static_cast<SDL_BlendMode>(mode));
 }
 
 CENTURION_DEF
-void Texture::set_color_mod(Color color) noexcept {
-  SDL_SetTextureColorMod(texture, color.get_red(), color.get_green(),
-                         color.get_blue());
+void Texture::set_color_mod(Color color) noexcept
+{
+  SDL_SetTextureColorMod(
+      texture, color.get_red(), color.get_green(), color.get_blue());
 }
 
 CENTURION_DEF
-PixelFormat Texture::get_format() const noexcept {
+PixelFormat Texture::get_format() const noexcept
+{
   uint32_t format = 0;
   SDL_QueryTexture(texture, &format, nullptr, nullptr, nullptr);
   return static_cast<PixelFormat>(format);
 }
 
 CENTURION_DEF
-TextureAccess Texture::get_access() const noexcept {
+TextureAccess Texture::get_access() const noexcept
+{
   int access = 0;
   SDL_QueryTexture(texture, nullptr, &access, nullptr, nullptr);
   return static_cast<TextureAccess>(access);
 }
 
 CENTURION_DEF
-int Texture::get_width() const noexcept {
+int Texture::get_width() const noexcept
+{
   int width = 0;
   SDL_QueryTexture(texture, nullptr, nullptr, &width, nullptr);
   return width;
 }
 
 CENTURION_DEF
-int Texture::get_height() const noexcept {
+int Texture::get_height() const noexcept
+{
   int height = 0;
   SDL_QueryTexture(texture, nullptr, nullptr, nullptr, &height);
   return height;
 }
 
 CENTURION_DEF
-bool Texture::is_target() const noexcept {
+bool Texture::is_target() const noexcept
+{
   return get_access() == TextureAccess::Target;
 }
 
 CENTURION_DEF
-bool Texture::is_static() const noexcept {
+bool Texture::is_static() const noexcept
+{
   return get_access() == TextureAccess::Static;
 }
 
 CENTURION_DEF
-bool Texture::is_streaming() const noexcept {
+bool Texture::is_streaming() const noexcept
+{
   return get_access() == TextureAccess::Streaming;
 }
 
 CENTURION_DEF
-uint8_t Texture::get_alpha() const noexcept {
+uint8_t Texture::get_alpha() const noexcept
+{
   uint8_t alpha;
   SDL_GetTextureAlphaMod(texture, &alpha);
   return alpha;
 }
 
 CENTURION_DEF
-BlendMode Texture::get_blend_mode() const noexcept {
+BlendMode Texture::get_blend_mode() const noexcept
+{
   SDL_BlendMode mode;
   SDL_GetTextureBlendMode(texture, &mode);
   return static_cast<BlendMode>(mode);
 }
 
 CENTURION_DEF
-Color Texture::get_color_mod() const noexcept {
+Color Texture::get_color_mod() const noexcept
+{
   uint8_t r = 0, g = 0, b = 0;
   SDL_GetTextureColorMod(texture, &r, &g, &b);
   return {r, g, b, 0xFF};
@@ -236,7 +272,8 @@ CENTURION_DEF
 SDL_Texture* Texture::get_internal() noexcept { return texture; }
 
 CENTURION_DEF
-std::string Texture::to_string() const {
+std::string Texture::to_string() const
+{
   const auto address = address_of(this);
   const auto width = std::to_string(get_width());
   const auto height = std::to_string(get_height());
@@ -248,42 +285,50 @@ CENTURION_DEF
 Texture::operator SDL_Texture*() const noexcept { return texture; }
 
 CENTURION_DEF
-bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept {
+bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept
+{
   return static_cast<SDL_TextureAccess>(a) == b;
 }
 
 CENTURION_DEF
-bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept {
+bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept
+{
   return a == static_cast<SDL_TextureAccess>(b);
 }
 
 CENTURION_DEF
-bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept {
+bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept
+{
   return static_cast<SDL_TextureAccess>(a) != b;
 }
 
 CENTURION_DEF
-bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept {
+bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept
+{
   return a != static_cast<SDL_TextureAccess>(b);
 }
 
 CENTURION_DEF
-bool operator==(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept {
+bool operator==(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept
+{
   return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
 }
 
 CENTURION_DEF
-bool operator==(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept {
+bool operator==(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept
+{
   return lhs == static_cast<SDL_PixelFormatEnum>(rhs);
 }
 
 CENTURION_DEF
-bool operator!=(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept {
+bool operator!=(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept
+{
   return static_cast<SDL_PixelFormatEnum>(lhs) != rhs;
 }
 
 CENTURION_DEF
-bool operator!=(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept {
+bool operator!=(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept
+{
   return lhs != static_cast<SDL_PixelFormatEnum>(rhs);
 }
 

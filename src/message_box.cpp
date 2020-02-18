@@ -13,15 +13,19 @@
 namespace centurion {
 namespace messagebox {
 
-CENTURION_DEF ButtonData::ButtonData(ButtonDataHint hint, int id,
+CENTURION_DEF ButtonData::ButtonData(ButtonDataHint hint,
+                                     int id,
                                      std::string text)
-    : buttonDataHint{hint}, id{id}, text{std::move(text)} {}
+    : buttonDataHint{hint}, id{id}, text{std::move(text)}
+{}
 
-CENTURION_DEF ButtonData::operator SDL_MessageBoxButtonData() const noexcept {
+CENTURION_DEF ButtonData::operator SDL_MessageBoxButtonData() const noexcept
+{
   return {static_cast<uint32_t>(buttonDataHint), id, text.c_str()};
 }
 
-CENTURION_DEF ColorScheme::ColorScheme() noexcept {
+CENTURION_DEF ColorScheme::ColorScheme() noexcept
+{
   set_color(ColorType::Background, video::black);
   set_color(ColorType::ButtonBorder, video::black);
   set_color(ColorType::ButtonBackground, video::black);
@@ -29,29 +33,34 @@ CENTURION_DEF ColorScheme::ColorScheme() noexcept {
 }
 
 CENTURION_DEF void ColorScheme::set_color(ColorType type,
-                                          const video::Color& color) noexcept {
+                                          const video::Color& color) noexcept
+{
   scheme.colors[get_index(type)] = color;
 }
 
-CENTURION_DEF const SDL_MessageBoxColorScheme& ColorScheme::get() const
-    noexcept {
+CENTURION_DEF const SDL_MessageBoxColorScheme& ColorScheme::get() const noexcept
+{
   return scheme;
 }
 
-CENTURION_DEF ColorScheme::operator SDL_MessageBoxColorScheme() const noexcept {
+CENTURION_DEF ColorScheme::operator SDL_MessageBoxColorScheme() const noexcept
+{
   return scheme;
 }
 
 CENTURION_DEF MessageBox::MessageBox(std::string title)
-    : title{std::move(title)} {}
+    : title{std::move(title)}
+{}
 
 CENTURION_DEF MessageBox::MessageBox(std::string title, std::string message)
-    : title{std::move(title)}, message{std::move(message)} {}
+    : title{std::move(title)}, message{std::move(message)}
+{}
 
 CENTURION_DEF MessageBox::~MessageBox() noexcept = default;
 
 CENTURION_DEF std::vector<SDL_MessageBoxButtonData>
-MessageBox::create_sdl_button_data() const noexcept {
+MessageBox::create_sdl_button_data() const noexcept
+{
   std::vector<SDL_MessageBoxButtonData> result;
   result.reserve(buttons.size());
 
@@ -63,8 +72,10 @@ MessageBox::create_sdl_button_data() const noexcept {
 }
 
 CENTURION_DEF SDL_MessageBoxData MessageBox::create_sdl_message_box_data(
-    SDL_Window* window, const SDL_MessageBoxButtonData* data,
-    const SDL_MessageBoxColorScheme* scheme) const noexcept {
+    SDL_Window* window,
+    const SDL_MessageBoxButtonData* data,
+    const SDL_MessageBoxColorScheme* scheme) const noexcept
+{
   return {static_cast<SDL_MessageBoxFlags>(type),
           window,
           title.c_str(),
@@ -74,7 +85,8 @@ CENTURION_DEF SDL_MessageBoxData MessageBox::create_sdl_message_box_data(
           scheme};
 }
 
-CENTURION_DEF int MessageBox::show(SDL_Window* window) {
+CENTURION_DEF int MessageBox::show(SDL_Window* window)
+{
   if (buttons.empty()) {
     buttons.emplace_back(ButtonDataHint::ReturnKey, 0, "OK");
   }
@@ -105,91 +117,110 @@ CENTURION_DEF int MessageBox::show(SDL_Window* window) {
 CENTURION_DEF void MessageBox::show(const std::string& title,
                                     const std::string& message,
                                     MessageBoxID type,
-                                    SDL_Window* window) noexcept {
-  SDL_ShowSimpleMessageBox(static_cast<uint32_t>(type), title.c_str(),
-                           message.c_str(), window);
+                                    SDL_Window* window) noexcept
+{
+  SDL_ShowSimpleMessageBox(
+      static_cast<uint32_t>(type), title.c_str(), message.c_str(), window);
 }
 
-CENTURION_DEF void MessageBox::add_button(ButtonDataHint hint, int id,
-                                          std::string text) noexcept {
+CENTURION_DEF void MessageBox::add_button(ButtonDataHint hint,
+                                          int id,
+                                          std::string text) noexcept
+{
   buttons.emplace_back(hint, id, std::move(text));
 }
 
-CENTURION_DEF void MessageBox::set_title(const std::string& title) noexcept {
+CENTURION_DEF void MessageBox::set_title(const std::string& title) noexcept
+{
   this->title = title;
 }
 
-CENTURION_DEF void MessageBox::set_message(
-    const std::string& message) noexcept {
+CENTURION_DEF void MessageBox::set_message(const std::string& message) noexcept
+{
   this->message = message;
 }
 
-CENTURION_DEF void MessageBox::set_type(MessageBoxID type) noexcept {
+CENTURION_DEF void MessageBox::set_type(MessageBoxID type) noexcept
+{
   this->type = type;
 }
 
 #ifdef CENTURION_HAS_OPTIONAL
 
 CENTURION_DEF void MessageBox::set_color_scheme(
-    std::optional<ColorScheme> scheme) noexcept {
+    std::optional<ColorScheme> scheme) noexcept
+{
   this->colorScheme = std::move(scheme);
 }
 
 #endif
 
-CENTURION_DEF MessageBoxID MessageBox::get_type() const noexcept {
+CENTURION_DEF MessageBoxID MessageBox::get_type() const noexcept
+{
   return type;
 }
 
 CENTURION_DEF bool operator==(ButtonDataHint a,
-                              SDL_MessageBoxButtonFlags b) noexcept {
+                              SDL_MessageBoxButtonFlags b) noexcept
+{
   return static_cast<SDL_MessageBoxButtonFlags>(a) == b;
 }
 
 CENTURION_DEF bool operator==(SDL_MessageBoxButtonFlags a,
-                              ButtonDataHint b) noexcept {
+                              ButtonDataHint b) noexcept
+{
   return a == static_cast<SDL_MessageBoxButtonFlags>(b);
 }
 
 CENTURION_DEF bool operator!=(ButtonDataHint a,
-                              SDL_MessageBoxButtonFlags b) noexcept {
+                              SDL_MessageBoxButtonFlags b) noexcept
+{
   return static_cast<SDL_MessageBoxButtonFlags>(a) != b;
 }
 
 CENTURION_DEF bool operator!=(SDL_MessageBoxButtonFlags a,
-                              ButtonDataHint b) noexcept {
+                              ButtonDataHint b) noexcept
+{
   return a != static_cast<SDL_MessageBoxButtonFlags>(b);
 }
 
-CENTURION_DEF bool operator==(SDL_MessageBoxColorType a, ColorType b) noexcept {
+CENTURION_DEF bool operator==(SDL_MessageBoxColorType a, ColorType b) noexcept
+{
   return a == static_cast<SDL_MessageBoxColorType>(b);
 }
 
-CENTURION_DEF bool operator==(ColorType a, SDL_MessageBoxColorType b) noexcept {
+CENTURION_DEF bool operator==(ColorType a, SDL_MessageBoxColorType b) noexcept
+{
   return static_cast<SDL_MessageBoxColorType>(a) == b;
 }
 
-CENTURION_DEF bool operator!=(SDL_MessageBoxColorType a, ColorType b) noexcept {
+CENTURION_DEF bool operator!=(SDL_MessageBoxColorType a, ColorType b) noexcept
+{
   return a != static_cast<SDL_MessageBoxColorType>(b);
 }
 
-CENTURION_DEF bool operator!=(ColorType a, SDL_MessageBoxColorType b) noexcept {
+CENTURION_DEF bool operator!=(ColorType a, SDL_MessageBoxColorType b) noexcept
+{
   return static_cast<SDL_MessageBoxColorType>(a) != b;
 }
 
-CENTURION_DEF bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
+CENTURION_DEF bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept
+{
   return static_cast<SDL_MessageBoxFlags>(a) == b;
 }
 
-CENTURION_DEF bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
+CENTURION_DEF bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept
+{
   return a == static_cast<SDL_MessageBoxFlags>(b);
 }
 
-CENTURION_DEF bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
+CENTURION_DEF bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept
+{
   return static_cast<SDL_MessageBoxFlags>(a) != b;
 }
 
-CENTURION_DEF bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
+CENTURION_DEF bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept
+{
   return a != static_cast<SDL_MessageBoxFlags>(b);
 }
 

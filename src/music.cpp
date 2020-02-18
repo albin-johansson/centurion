@@ -12,27 +12,31 @@
 namespace centurion {
 namespace audio {
 
-CENTURION_DEF Music::Music(const std::string& file) {
+CENTURION_DEF Music::Music(const std::string& file)
+{
   music = Mix_LoadMUS(file.c_str());
   if (!music) {
     throw CenturionException{"Failed to create music! " + Error::msg()};
   }
 }
 
-CENTURION_DEF Music::Music(Music&& other) noexcept {
+CENTURION_DEF Music::Music(Music&& other) noexcept
+{
   Mix_FreeMusic(music);
 
   music = other.music;
   other.music = nullptr;
 }
 
-CENTURION_DEF Music::~Music() noexcept {
+CENTURION_DEF Music::~Music() noexcept
+{
   if (music) {
     Mix_FreeMusic(music);
   }
 }
 
-CENTURION_DEF Music& Music::operator=(Music&& other) noexcept {
+CENTURION_DEF Music& Music::operator=(Music&& other) noexcept
+{
   Mix_FreeMusic(music);
 
   music = other.music;
@@ -41,7 +45,8 @@ CENTURION_DEF Music& Music::operator=(Music&& other) noexcept {
   return *this;
 }
 
-CENTURION_DEF std::unique_ptr<Music> Music::unique(const std::string& file) {
+CENTURION_DEF std::unique_ptr<Music> Music::unique(const std::string& file)
+{
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Music>(file);
 #else
@@ -49,11 +54,13 @@ CENTURION_DEF std::unique_ptr<Music> Music::unique(const std::string& file) {
 #endif
 }
 
-CENTURION_DEF std::shared_ptr<Music> Music::shared(const std::string& file) {
+CENTURION_DEF std::shared_ptr<Music> Music::shared(const std::string& file)
+{
   return std::make_shared<Music>(file);
 }
 
-CENTURION_DEF void Music::play(int nLoops) noexcept {
+CENTURION_DEF void Music::play(int nLoops) noexcept
+{
   if (nLoops < -1) {
     nLoops = -1;
   }
@@ -66,7 +73,8 @@ CENTURION_DEF void Music::pause() noexcept { Mix_PauseMusic(); }
 
 CENTURION_DEF void Music::halt() noexcept { Mix_HaltMusic(); }
 
-CENTURION_DEF void Music::fade_in(int ms, int nLoops) noexcept {
+CENTURION_DEF void Music::fade_in(int ms, int nLoops) noexcept
+{
   if (ms < 0) {
     ms = 0;
   }
@@ -76,7 +84,8 @@ CENTURION_DEF void Music::fade_in(int ms, int nLoops) noexcept {
   Mix_FadeInMusic(music, nLoops, ms);
 }
 
-CENTURION_DEF void Music::fade_out(int ms) {
+CENTURION_DEF void Music::fade_out(int ms)
+{
   if (is_fading()) {
     return;
   }
@@ -86,7 +95,8 @@ CENTURION_DEF void Music::fade_out(int ms) {
   Mix_FadeOutMusic(ms);
 }
 
-CENTURION_DEF void Music::set_volume(int volume) noexcept {
+CENTURION_DEF void Music::set_volume(int volume) noexcept
+{
   if (volume > MIX_MAX_VOLUME) {
     volume = MIX_MAX_VOLUME;
   } else if (volume < 0) {
@@ -99,40 +109,48 @@ CENTURION_DEF bool Music::is_playing() noexcept { return Mix_PlayingMusic(); }
 
 CENTURION_DEF bool Music::is_paused() noexcept { return Mix_PausedMusic(); }
 
-CENTURION_DEF bool Music::is_fading() noexcept {
+CENTURION_DEF bool Music::is_fading() noexcept
+{
   const auto status = get_fade_status();
   return status == FadeStatus::In || status == FadeStatus::Out;
 }
 
 CENTURION_DEF int Music::get_volume() noexcept { return Mix_VolumeMusic(-1); }
 
-CENTURION_DEF FadeStatus Music::get_fade_status() noexcept {
+CENTURION_DEF FadeStatus Music::get_fade_status() noexcept
+{
   return static_cast<FadeStatus>(Mix_FadingMusic());
 }
 
-CENTURION_DEF MusicType Music::get_music_type() const noexcept {
+CENTURION_DEF MusicType Music::get_music_type() const noexcept
+{
   return static_cast<MusicType>(Mix_GetMusicType(music));
 }
 
-CENTURION_DEF std::string Music::to_string() const {
+CENTURION_DEF std::string Music::to_string() const
+{
   return "[Music@" + address_of(this) + "]";
 }
 
 CENTURION_DEF Music::operator Mix_Music*() const noexcept { return music; }
 
-CENTURION_DEF bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept {
+CENTURION_DEF bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept
+{
   return static_cast<Mix_Fading>(lhs) == rhs;
 }
 
-CENTURION_DEF bool operator==(Mix_Fading lhs, FadeStatus rhs) noexcept {
+CENTURION_DEF bool operator==(Mix_Fading lhs, FadeStatus rhs) noexcept
+{
   return lhs == static_cast<Mix_Fading>(rhs);
 }
 
-CENTURION_DEF bool operator==(MusicType lhs, Mix_MusicType rhs) noexcept {
+CENTURION_DEF bool operator==(MusicType lhs, Mix_MusicType rhs) noexcept
+{
   return static_cast<Mix_MusicType>(lhs) == rhs;
 }
 
-CENTURION_DEF bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept {
+CENTURION_DEF bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept
+{
   return lhs == static_cast<Mix_MusicType>(rhs);
 }
 

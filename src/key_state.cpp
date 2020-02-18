@@ -13,7 +13,8 @@
 
 namespace centurion {
 
-CENTURION_DEF KeyState::KeyState() {
+CENTURION_DEF KeyState::KeyState()
+{
   states = SDL_GetKeyboardState(&nKeys);
   if (!states) {
     throw CenturionException("Failed to obtain key state! " + Error::msg());
@@ -22,7 +23,8 @@ CENTURION_DEF KeyState::KeyState() {
   std::fill(previousStates.begin(), previousStates.end(), 0);
 }
 
-CENTURION_DEF std::unique_ptr<KeyState> KeyState::unique() {
+CENTURION_DEF std::unique_ptr<KeyState> KeyState::unique()
+{
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<KeyState>();
 #else
@@ -30,37 +32,42 @@ CENTURION_DEF std::unique_ptr<KeyState> KeyState::unique() {
 #endif
 }
 
-CENTURION_DEF std::shared_ptr<KeyState> KeyState::shared() {
+CENTURION_DEF std::shared_ptr<KeyState> KeyState::shared()
+{
   return std::make_shared<KeyState>();
 }
 
-CENTURION_DEF void KeyState::update() noexcept {
+CENTURION_DEF void KeyState::update() noexcept
+{
   std::copy(states, states + nKeys, previousStates.begin());
 }
 
-CENTURION_DEF bool KeyState::is_pressed(SDL_Scancode code) const noexcept {
+CENTURION_DEF bool KeyState::is_pressed(SDL_Scancode code) const noexcept
+{
   assert(code < nKeys);
   return states[code];
 }
 
-CENTURION_DEF bool KeyState::is_held(SDL_Scancode code) const noexcept {
+CENTURION_DEF bool KeyState::is_held(SDL_Scancode code) const noexcept
+{
   assert(code < nKeys);
   return states[code] && previousStates[code];
 }
 
-CENTURION_DEF bool KeyState::was_just_pressed(SDL_Scancode code) const
-    noexcept {
+CENTURION_DEF bool KeyState::was_just_pressed(SDL_Scancode code) const noexcept
+{
   assert(code < nKeys);
   return states[code] && !previousStates[code];
 }
 
-CENTURION_DEF bool KeyState::was_just_released(SDL_Scancode code) const
-    noexcept {
+CENTURION_DEF bool KeyState::was_just_released(SDL_Scancode code) const noexcept
+{
   assert(code < nKeys);
   return !states[code] && previousStates[code];
 }
 
-CENTURION_DEF int KeyState::get_amount_of_keys() const noexcept {
+CENTURION_DEF int KeyState::get_amount_of_keys() const noexcept
+{
   return nKeys;
 }
 

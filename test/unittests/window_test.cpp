@@ -291,7 +291,7 @@ TEST_CASE("Window::get_renderer", "[Window]")
 
   CHECK(!window.get_renderer());
 
-  const Renderer renderer{window.operator SDL_Window*()};
+  const Renderer renderer{window};
   SDL_Renderer* sdlRenderer = renderer;
 
   CHECK(window.get_renderer() == sdlRenderer);

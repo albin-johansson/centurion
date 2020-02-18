@@ -21,7 +21,7 @@ TEST_CASE("TextureLoader(Renderer)", "[Renderer]")
 TEST_CASE("TextureLoader::unique_img(std::string&)", "[TextureLoader]")
 {
   const Window window;
-  const auto renderer = Renderer::shared(window.get_internal());
+  const auto renderer = Renderer::shared(window);
   const TextureLoader loader{renderer};
 
   CHECK_THROWS_AS(loader.unique_img("badpath"), CenturionException);
@@ -32,7 +32,7 @@ TEST_CASE("TextureLoader::unique_img(PixelFormat, TextureAccess, int, int)",
           "[TextureLoader]")
 {
   const Window window;
-  const auto renderer = Renderer::shared(window.get_internal());
+  const auto renderer = Renderer::shared(window);
   const TextureLoader loader{renderer};
 
   CHECK_NOTHROW(
@@ -42,7 +42,7 @@ TEST_CASE("TextureLoader::unique_img(PixelFormat, TextureAccess, int, int)",
 TEST_CASE("TextureLoader::shared_img(std::string&)", "[TextureLoader]")
 {
   const Window window;
-  const auto renderer = Renderer::shared(window.get_internal());
+  const auto renderer = Renderer::shared(window);
   const TextureLoader loader{renderer};
 
   CHECK_THROWS_AS(loader.shared_img("badpath"), CenturionException);
@@ -53,7 +53,7 @@ TEST_CASE("TextureLoader::shared_img(PixelFormat, TextureAccess, int, int)",
           "[TextureLoader]")
 {
   const Window window;
-  const auto renderer = Renderer::shared(window.get_internal());
+  const auto renderer = Renderer::shared(window);
   const TextureLoader loader{renderer};
 
   CHECK_NOTHROW(

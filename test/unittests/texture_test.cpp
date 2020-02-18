@@ -19,11 +19,7 @@ TEST_CASE("Texture(SDL_Texture*)", "[Texture]") {
 
   Window window;
   Renderer renderer{window};
-  SDL_Surface* surface = IMG_Load(path);
-  SDL_Texture* sdlTexture =
-      SDL_CreateTextureFromSurface(renderer.get_internal(), surface);
-  SDL_FreeSurface(surface);
-
+  SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.get_internal(), path);
   CHECK_NOTHROW(Texture(sdlTexture));
 }
 

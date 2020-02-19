@@ -7,12 +7,13 @@
 
 #include <cstdint>
 
-#include "centurion_utils.h"
 #include "window.h"
 
 namespace centurion {
 
 CENTURION_DEF MouseState::MouseState() noexcept = default;
+
+CENTURION_DEF MouseState::~MouseState() noexcept = default;
 
 CENTURION_DEF std::unique_ptr<MouseState> MouseState::unique()
 {

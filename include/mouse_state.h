@@ -66,7 +66,7 @@ class MouseState final : public video::IWindowListener {
    */
   CENTURION_API MouseState() noexcept;
 
-  ~MouseState() override = default;
+  CENTURION_API ~MouseState() noexcept override;
 
   /**
    * Creates and returns a unique pointer to a MouseState instance.
@@ -86,7 +86,8 @@ class MouseState final : public video::IWindowListener {
   CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<MouseState> shared();
 
-  void window_updated(const video::Window& window) noexcept override;
+  CENTURION_API void window_updated(
+      const video::Window& window) noexcept override;
 
   /**
    * Updates the mouse state.

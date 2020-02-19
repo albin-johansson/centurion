@@ -152,7 +152,7 @@ static_assert(std::is_nothrow_move_constructible<TextureLoader>::value,
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-#include "image_generator.cpp"
+#include "texture_loader.cpp"
 #endif
 
 #endif  // CENTURION_IMAGE_GENERATOR_HEADER

@@ -55,7 +55,7 @@ class Surface;
 class Window final {
  private:
   SDL_Window* window = nullptr;
-  std::vector<IWindowListener*> windowListeners;
+  std::vector<std::weak_ptr<IWindowListener>> windowListeners;
 
   /**
    * Notifies all registered window listeners that the window has been updated.
@@ -279,13 +279,14 @@ class Window final {
   CENTURION_API void minimise() noexcept;
 
   /**
-   * Adds a window listener to the window. Null listener are always silently
-   * ignored. The window takes no ownership of supplied pointers.
+   * Adds a window listener to the window. Null listeners are always silently
+   * ignored.
    *
    * @param listener a window listener, may be null.
    * @since 3.0.0
    */
-  CENTURION_API void add_window_listener(IWindowListener* listener) noexcept;
+  CENTURION_API void add_window_listener(
+      std::weak_ptr<IWindowListener> listener) noexcept;
 
   /**
    * Sets whether or not the window is in fullscreen mode. Triggers a window

@@ -130,9 +130,10 @@ CENTURION_DEF std::shared_ptr<Window> Window::shared()
 CENTURION_DEF void Window::notify_window_listeners() noexcept
 {
   const auto& self = *this;
-  for (auto* listener : windowListeners) {
-    if (listener) {
-      listener->window_updated(self);
+  for (const auto& listener : windowListeners) {
+    auto tmp = listener.lock();
+    if (tmp) {
+      tmp->window_updated(self);
     }
   }
 }
@@ -174,9 +175,9 @@ CENTURION_DEF void Window::minimise() noexcept
 }
 
 CENTURION_DEF void Window::add_window_listener(
-    IWindowListener* listener) noexcept
+    std::weak_ptr<IWindowListener> listener) noexcept
 {
-  if (listener) {
+  if (!listener.expired()) {
     windowListeners.push_back(listener);
   }
 }

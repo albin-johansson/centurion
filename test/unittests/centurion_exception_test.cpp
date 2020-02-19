@@ -1,11 +1,12 @@
 #include "centurion_exception.h"
 
-#include "catch.hpp"
+#include <catch.hpp>
+#include <string>
 
 using namespace centurion;
 using namespace Catch;
 
-TEST_CASE("CenturionException()", "[CenturionException]")
+TEST_CASE("CenturionException(const char*)", "[CenturionException]")
 {
   SECTION("Null string")
   {
@@ -19,4 +20,18 @@ TEST_CASE("CenturionException()", "[CenturionException]")
     CenturionException ce{msg};
     CHECK_THAT(ce.what(), Equals(msg));
   }
+}
+
+TEST_CASE("CenturionException(std::string&)", "[CenturionException]")
+{
+  const std::string msg{"Hello"};
+  CenturionException ce{msg};
+  CHECK_THAT(ce.what(), Equals(msg));
+}
+
+TEST_CASE("CenturionException(CenturionException&)", "[CenturionException]")
+{
+  const CenturionException ce{"message"};
+  const CenturionException ce2{ce};
+  CHECK_THAT(ce.what(), Equals(ce2.what()));
 }

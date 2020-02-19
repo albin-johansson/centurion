@@ -39,6 +39,7 @@ namespace centurion {
 namespace video {
 
 class Texture;
+class Renderer;
 
 /**
  * The <code>Surface</code> class represents a non-accelerated image. In most
@@ -204,7 +205,7 @@ class Surface final {  // TODO rename Image to Texture
   int get_height() const noexcept;
 
   /**
-   * Returns the pitch of the surface.
+   * Returns the pitch (the length of a row of pixels in bytes) of the surface.
    *
    * @return the pitch of the surface.
    * @since 4.0.0
@@ -214,26 +215,16 @@ class Surface final {  // TODO rename Image to Texture
   int get_pitch() const noexcept;
 
   /**
-   * Creates and returns a copy of this surface.
-   *
-   * @return a copy of the surface.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API
-  Surface duplicate() const;
-
-  /**
    * Converts the surface into its texture equivalent.
    *
-   * @param renderer a pointer to the renderer that will be used to create the
-   * texture, shouldn't be null.
+   * @param renderer the renderer that will be used to create the
+   * texture.
    * @return a texture that is equivalent to the surface.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API
-  Texture to_texture(SDL_Renderer* renderer) const noexcept;
+  Texture to_texture(const Renderer& renderer) const noexcept;
 
   /**
    * Returns a pointer to the internal SDL_Surface instance. Don't take

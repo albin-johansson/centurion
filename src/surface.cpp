@@ -6,6 +6,7 @@
 #include <SDL_image.h>
 
 #include "centurion_exception.h"
+#include "renderer.h"
 #include "texture.h"
 
 namespace centurion {
@@ -13,9 +14,12 @@ namespace video {
 
 CENTURION_DEF Surface::Surface(const char* file)
 {
+  if (!file) {
+    throw CenturionException{"Can't create surface from null path!"};
+  }
   surface = IMG_Load(file);
   if (!surface) {
-    throw CenturionException{"Failed to create surface!"};
+    throw CenturionException{"Failed to load surface!"};
   }
 }
 
@@ -121,11 +125,11 @@ CENTURION_DEF int Surface::get_height() const noexcept { return surface->h; }
 
 CENTURION_DEF int Surface::get_pitch() const noexcept { return surface->pitch; }
 
-CENTURION_DEF Surface Surface::duplicate() const { return Surface{*this}; }
-
-CENTURION_DEF Texture Surface::to_texture(SDL_Renderer* renderer) const noexcept
+CENTURION_DEF Texture Surface::to_texture(const Renderer& renderer) const
+    noexcept
 {
-  return Texture{SDL_CreateTextureFromSurface(renderer, surface)};
+  return Texture{
+      SDL_CreateTextureFromSurface(renderer.get_internal(), surface)};
 }
 
 CENTURION_DEF SDL_Surface* Surface::get_internal() const noexcept

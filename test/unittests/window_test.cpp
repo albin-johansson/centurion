@@ -450,6 +450,14 @@ TEST_CASE("Window::get_brightness", "[Window]")
   CHECK(window.get_brightness() == 1);
 }
 
+TEST_CASE("Window::get_display_index", "[Window]")
+{
+  const Window window;
+  const auto index = window.get_display_index();
+  CHECK(index);
+  CHECK(*index == 0);
+}
+
 TEST_CASE("Window::get_renderer", "[Window]")
 {
   const Window window;
@@ -460,6 +468,12 @@ TEST_CASE("Window::get_renderer", "[Window]")
   SDL_Renderer* sdlRenderer = renderer;
 
   CHECK(window.get_renderer() == sdlRenderer);
+}
+
+TEST_CASE("Window to SDL_Window*", "[Window]")
+{
+  const Window window;
+  CHECK(window.operator SDL_Window*());
 }
 
 TEST_CASE("Window::to_string", "[Window]")

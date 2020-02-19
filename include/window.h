@@ -42,6 +42,7 @@ namespace centurion {
 namespace video {
 
 class IWindowListener;
+class Surface;
 
 /**
  * The Window class is a wrapper around an SDL_Window instance. Window instances
@@ -335,13 +336,12 @@ class Window final {
 
   /**
    * Sets the icon that will be used by the window. Triggers a window listener
-   * update. The supplied pointer should be freed by the caller.
+   * update.
    *
-   * @param icon a pointer to the surface that will serve as the icon of the
-   * window.
+   * @param icon the surface that will serve as the icon of the window.
    * @since 3.0.0
    */
-  CENTURION_API void set_icon(gsl::not_null<SDL_Surface*> icon) noexcept;
+  CENTURION_API void set_icon(const Surface& icon) noexcept;
 
   /**
    * Sets the title of the window. Triggers a window listener update.
@@ -350,16 +350,6 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_API void set_title(const std::string& title) noexcept;
-
-  /**
-   * Sets the gamma brightness of the window. This operation is only supported
-   * if the window is in fullscreen mode. This property will be reset every time
-   * the fullscreen mode is exited. Triggers a window listener update.
-   *
-   * @param gamma the brightness value, in the range [0, 1].
-   * @since 3.0.0
-   */
-  CENTURION_API void set_gamma(float gamma) noexcept;
 
   /**
    * Sets the opacity of the window. Triggers a window listener update.
@@ -410,8 +400,9 @@ class Window final {
   CENTURION_API void set_grab_mouse(bool grabMouse) noexcept;
 
   /**
-   * Sets the overall brightness of the window. Triggers a window listener
-   * update.
+   * Sets the overall brightness of the window. This operation is only supported
+   * if the window is in fullscreen mode. This property will be reset every time
+   * the fullscreen mode is exited. Triggers a window listener update.
    *
    * @param brightness the brightness value, in the range [0, 1]. A value
    * outside this range will be clamped to the closest valid value.

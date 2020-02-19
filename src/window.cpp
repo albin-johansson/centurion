@@ -7,8 +7,8 @@
 
 #include "centurion_exception.h"
 #include "centurion_utils.h"
+#include "surface.h"
 #include "window_listener.h"
-#include "log.h"
 
 namespace centurion {
 namespace video {
@@ -25,18 +25,18 @@ CENTURION_DEF Window::Window(const char* title, int width, int height)
 
   SDL_Surface* icon = IMG_Load("centurion_icon.png");
   if (icon) {
-    set_icon(icon);
+    SDL_SetWindowIcon(window, icon);
     SDL_FreeSurface(icon);
   }
 }
 
 CENTURION_DEF Window::Window(int width, int height)
-    : Window("Centurion window", width, height)
+    : Window{"Centurion window", width, height}
 {}
 
-CENTURION_DEF Window::Window(const char* title) : Window(title, 800, 600) {}
+CENTURION_DEF Window::Window(const char* title) : Window{title, 800, 600} {}
 
-CENTURION_DEF Window::Window() : Window(800, 600) {}
+CENTURION_DEF Window::Window() : Window{800, 600} {}
 
 CENTURION_DEF Window::Window(Window&& other) noexcept
 {
@@ -133,8 +133,6 @@ CENTURION_DEF void Window::notify_window_listeners() noexcept
   for (auto* listener : windowListeners) {
     if (listener) {
       listener->window_updated(self);
-    } else {
-      Log::msgf("Invalid listener!");
     }
   }
 }
@@ -191,7 +189,7 @@ CENTURION_DEF void Window::set_fullscreen(bool fullscreen) noexcept
   SDL_SetWindowFullscreen(window, flags);
 
   if (!fullscreen) {
-    set_gamma(1);
+    set_brightness(1);
   }
 
   notify_window_listeners();
@@ -229,9 +227,9 @@ CENTURION_DEF void Window::set_height(int height)
   }
 }
 
-CENTURION_DEF void Window::set_icon(gsl::not_null<SDL_Surface*> icon) noexcept
+CENTURION_DEF void Window::set_icon(const Surface& icon) noexcept
 {
-  SDL_SetWindowIcon(window, icon);
+  SDL_SetWindowIcon(window, icon.get_internal());
   notify_window_listeners();
 }
 
@@ -239,14 +237,6 @@ CENTURION_DEF void Window::set_title(const std::string& title) noexcept
 {
   SDL_SetWindowTitle(window, title.c_str());
   notify_window_listeners();
-}
-
-CENTURION_DEF void Window::set_gamma(float gamma) noexcept
-{
-  if (is_fullscreen()) {
-    SDL_SetWindowBrightness(window, gamma);
-    notify_window_listeners();
-  }
 }
 
 CENTURION_DEF void Window::set_opacity(float opacity) noexcept
@@ -281,13 +271,15 @@ CENTURION_DEF void Window::set_grab_mouse(bool grabMouse) noexcept
 
 CENTURION_DEF void Window::set_brightness(float brightness) noexcept
 {
-  if (brightness < 0) {
-    brightness = 0;
-  } else if (brightness > 1) {
-    brightness = 1;
+  if (is_fullscreen()) {
+    if (brightness < 0) {
+      brightness = 0;
+    } else if (brightness > 1) {
+      brightness = 1;
+    }
+    SDL_SetWindowBrightness(window, brightness);
+    notify_window_listeners();
   }
-  SDL_SetWindowBrightness(window, brightness);
-  notify_window_listeners();
 }
 
 CENTURION_DEF bool Window::is_decorated() const noexcept

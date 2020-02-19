@@ -49,7 +49,8 @@ enum class Platform { Unknown, Windows, MacOSX, Linux, Ios, Android };
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API Platform get_platform() noexcept;
+CENTURION_API
+Platform get_platform() noexcept;
 
 #ifdef CENTURION_HAS_OPTIONAL
 
@@ -61,7 +62,8 @@ CENTURION_API Platform get_platform() noexcept;
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API std::optional<std::string> get_platform_name() noexcept;
+CENTURION_API
+std::optional<std::string> get_platform_name() noexcept;
 
 #endif
 
@@ -82,7 +84,8 @@ class CPU final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static int get_cache_line_size() noexcept;
+  CENTURION_API
+  static int get_cache_line_size() noexcept;
 
   /**
    * Returns the amount of cores that the CPU has.
@@ -91,7 +94,8 @@ class CPU final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static int get_cores() noexcept;
+  CENTURION_API
+  static int get_cores() noexcept;
 
   /**
    * Indicates whether or not the CPU uses big-endian byte ordering.
@@ -135,7 +139,8 @@ class RAM final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static int get_size_mb() noexcept;
+  CENTURION_API
+  static int get_size_mb() noexcept;
 
   /**
    * Returns the total amount of system RAM in gigabytes.
@@ -144,7 +149,8 @@ class RAM final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static int get_size_gb() noexcept;
+  CENTURION_API
+  static int get_size_gb() noexcept;
 };
 
 /**
@@ -222,7 +228,8 @@ class Battery final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::optional<int> get_seconds_left() noexcept;
+  CENTURION_API
+  static std::optional<int> get_seconds_left() noexcept;
 
   /**
    * Returns the amount of minutes of battery life that is remaining.
@@ -232,7 +239,8 @@ class Battery final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::optional<int> get_minutes_left() noexcept;
+  CENTURION_API
+  static std::optional<int> get_minutes_left() noexcept;
 
   /**
    * Returns the percentage of battery life that is currently left.
@@ -242,7 +250,8 @@ class Battery final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::optional<int> get_percentage() noexcept;
+  CENTURION_API
+  static std::optional<int> get_percentage() noexcept;
 
 #endif
 
@@ -253,7 +262,8 @@ class Battery final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static PowerState get_state() noexcept;
+  CENTURION_API
+  static PowerState get_state() noexcept;
 };
 
 /**
@@ -272,7 +282,8 @@ class Screen final {
    * @param enabled true if screen savers should be enabled; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_API static void set_screen_saver_enabled(bool enabled) noexcept;
+  CENTURION_API
+  static void set_screen_saver_enabled(bool enabled) noexcept;
 
   /**
    * Indicates whether or not screen savers are enabled. By default, screen
@@ -282,7 +293,8 @@ class Screen final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static bool is_screen_saver_enabled() noexcept;
+  CENTURION_API
+  static bool is_screen_saver_enabled() noexcept;
 
   /**
    * Returns the width of the screen.
@@ -291,7 +303,8 @@ class Screen final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static int get_width() noexcept;
+  CENTURION_API
+  static int get_width() noexcept;
 
   /**
    * Returns the height of the screen.
@@ -300,7 +313,8 @@ class Screen final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static int get_height() noexcept;
+  CENTURION_API
+  static int get_height() noexcept;
 
   /**
    * Returns the refresh rate of the screen.
@@ -309,7 +323,8 @@ class Screen final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static int get_refresh_rate() noexcept;
+  CENTURION_API
+  static int get_refresh_rate() noexcept;
 
   /**
    * Returns the pixel format of the desktop display mode.
@@ -318,7 +333,8 @@ class Screen final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static uint32_t get_pixel_format() noexcept;
+  CENTURION_API
+  static uint32_t get_pixel_format() noexcept;
 };
 
 }  // namespace system

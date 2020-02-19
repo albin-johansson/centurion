@@ -8,7 +8,8 @@
 namespace centurion {
 namespace system {
 
-CENTURION_DEF Platform get_platform() noexcept
+CENTURION_DEF
+Platform get_platform() noexcept
 {
   const std::string name{SDL_GetPlatform()};
   if (name == "Windows") {
@@ -28,7 +29,8 @@ CENTURION_DEF Platform get_platform() noexcept
 
 #ifdef CENTURION_HAS_OPTIONAL
 
-CENTURION_DEF std::optional<std::string> get_platform_name() noexcept
+CENTURION_DEF
+std::optional<std::string> get_platform_name() noexcept
 {
   const std::string name{SDL_GetPlatform()};
   if (name == "Unknown") {
@@ -40,20 +42,22 @@ CENTURION_DEF std::optional<std::string> get_platform_name() noexcept
 
 #endif
 
-CENTURION_DEF int CPU::get_cache_line_size() noexcept
-{
-  return SDL_GetCPUCacheLineSize();
-}
+CENTURION_DEF
+int CPU::get_cache_line_size() noexcept { return SDL_GetCPUCacheLineSize(); }
 
-CENTURION_DEF int CPU::get_cores() noexcept { return SDL_GetCPUCount(); }
+CENTURION_DEF
+int CPU::get_cores() noexcept { return SDL_GetCPUCount(); }
 
-CENTURION_DEF int RAM::get_size_mb() noexcept { return SDL_GetSystemRAM(); }
+CENTURION_DEF
+int RAM::get_size_mb() noexcept { return SDL_GetSystemRAM(); }
 
-CENTURION_DEF int RAM::get_size_gb() noexcept { return get_size_mb() / 1000; }
+CENTURION_DEF
+int RAM::get_size_gb() noexcept { return get_size_mb() / 1000; }
 
 #ifdef CENTURION_HAS_OPTIONAL
 
-CENTURION_DEF std::optional<int> Battery::get_seconds_left() noexcept
+CENTURION_DEF
+std::optional<int> Battery::get_seconds_left() noexcept
 {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
@@ -64,7 +68,8 @@ CENTURION_DEF std::optional<int> Battery::get_seconds_left() noexcept
   }
 }
 
-CENTURION_DEF std::optional<int> Battery::get_minutes_left() noexcept
+CENTURION_DEF
+std::optional<int> Battery::get_minutes_left() noexcept
 {
   const auto secondsLeft = get_seconds_left();
   if (secondsLeft) {
@@ -74,7 +79,8 @@ CENTURION_DEF std::optional<int> Battery::get_minutes_left() noexcept
   }
 }
 
-CENTURION_DEF std::optional<int> Battery::get_percentage() noexcept
+CENTURION_DEF
+std::optional<int> Battery::get_percentage() noexcept
 {
   int percentageLeft = -1;
   SDL_GetPowerInfo(nullptr, &percentageLeft);
@@ -87,11 +93,13 @@ CENTURION_DEF std::optional<int> Battery::get_percentage() noexcept
 
 #endif
 
-CENTURION_DEF PowerState Battery::get_state() noexcept
+CENTURION_DEF
+PowerState Battery::get_state() noexcept
 {
   return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 }
 
+CENTURION_DEF
 void Screen::set_screen_saver_enabled(bool enabled) noexcept
 {
   if (enabled) {
@@ -101,33 +109,38 @@ void Screen::set_screen_saver_enabled(bool enabled) noexcept
   }
 }
 
+CENTURION_DEF
 bool Screen::is_screen_saver_enabled() noexcept
 {
   return SDL_IsScreenSaverEnabled();
 }
 
-CENTURION_DEF int Screen::get_width() noexcept
+CENTURION_DEF
+int Screen::get_width() noexcept
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
   return mode.w;
 }
 
-CENTURION_DEF int Screen::get_height() noexcept
+CENTURION_DEF
+int Screen::get_height() noexcept
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
   return mode.h;
 }
 
-CENTURION_DEF int Screen::get_refresh_rate() noexcept
+CENTURION_DEF
+int Screen::get_refresh_rate() noexcept
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
   return mode.refresh_rate;
 }
 
-CENTURION_DEF uint32_t Screen::get_pixel_format() noexcept
+CENTURION_DEF
+uint32_t Screen::get_pixel_format() noexcept
 {  // TODO replace return type
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);

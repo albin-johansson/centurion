@@ -895,6 +895,16 @@ class Renderer final {
   std::pair<int, int> get_output_size() const noexcept;
 
   /**
+   * Returns the blend mode that is being used by the renderer.
+   *
+   * @return the blend mode that is being used.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  BlendMode get_blend_mode() const noexcept;
+
+  /**
    * Returns a bit mask that represents all of flags used when creating the
    * renderer. The possible values are <ul> <li>a</li>
    * </ul>
@@ -905,7 +915,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  uint32_t get_flags() const noexcept;
+  uint32_t get_flags() const noexcept;  // FIXME
 
   /**
    * Indicates whether or not the <code>present()</code> method is synced with

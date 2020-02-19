@@ -708,6 +708,13 @@ std::pair<int, int> Renderer::get_output_size() const noexcept
 }
 
 CENTURION_DEF
+BlendMode Renderer::get_blend_mode() const noexcept {
+  SDL_BlendMode mode;
+  SDL_GetRenderDrawBlendMode(renderer, &mode);
+  return static_cast<BlendMode>(mode);
+}
+
+CENTURION_DEF
 float Renderer::get_x_scale() const noexcept
 {
   float xScale = 0;

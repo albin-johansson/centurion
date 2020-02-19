@@ -320,7 +320,7 @@ class Window final {
    * Sets the width of the window. Triggers a window listener update.
    *
    * @param width the new width of the window.
-   * @throws invalid_argument if the supplied width isn't greater than zero.
+   * @throws CenturionException if the supplied width isn't greater than zero.
    * @since 3.0.0
    */
   CENTURION_API void set_width(int width);
@@ -329,7 +329,7 @@ class Window final {
    * Sets the height of the window. Triggers a window listener update.
    *
    * @param height the new height of the window.
-   * @throws invalid_argument if the supplied height isn't greater than
+   * @throws CenturionException if the supplied height isn't greater than
    * zero.
    * @since 3.0.0
    */

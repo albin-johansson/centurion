@@ -211,7 +211,7 @@ CENTURION_DEF void Window::set_resizable(bool isResizable) noexcept
 CENTURION_DEF void Window::set_width(int width)
 {
   if (width < 1) {
-    throw std::invalid_argument("Invalid width!");
+    throw CenturionException{"Invalid window width!"};
   } else {
     SDL_SetWindowSize(window, width, get_height());
     notify_window_listeners();
@@ -221,7 +221,7 @@ CENTURION_DEF void Window::set_width(int width)
 CENTURION_DEF void Window::set_height(int height)
 {
   if (height < 1) {
-    throw std::invalid_argument("Invalid height!");
+    throw CenturionException{"Invalid window height!"};
   } else {
     SDL_SetWindowSize(window, get_width(), height);
     notify_window_listeners();

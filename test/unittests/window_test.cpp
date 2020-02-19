@@ -12,11 +12,11 @@ using namespace centurion::video;
 
 namespace {
 
-class Incrementer : public IWindowListener {
+class Incrementer final : public IWindowListener {
  public:
   int counter = 0;
 
-  void window_updated(const Window& window) noexcept { ++counter; }
+  void window_updated(const Window& window) noexcept override { ++counter; }
 };
 
 }  // namespace
@@ -254,6 +254,13 @@ TEST_CASE("Window::set_resizable", "[Window]")
 
 TEST_CASE("Window::set_width", "[Window]")
 {
+  SECTION("Invalid width")
+  {
+    Window window;
+    CHECK_THROWS_AS(window.set_width(0), CenturionException);
+    CHECK_THROWS_AS(window.set_width(-1), CenturionException);
+  }
+  
   Window window;
   auto listener = std::make_shared<Incrementer>();
   window.add_window_listener(listener);
@@ -267,6 +274,13 @@ TEST_CASE("Window::set_width", "[Window]")
 
 TEST_CASE("Window::set_height", "[Window]")
 {
+  SECTION("Invalid height")
+  {
+    Window window;
+    CHECK_THROWS_AS(window.set_height(0), CenturionException);
+    CHECK_THROWS_AS(window.set_height(-1), CenturionException);
+  }
+
   Window window;
   auto listener = std::make_shared<Incrementer>();
   window.add_window_listener(listener);

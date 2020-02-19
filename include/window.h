@@ -71,16 +71,15 @@ class Window final {
    * However, the window can be created without any problem with the file
    * missing.
    *
-   * @param title the title of thw window.
+   * @param title the title of the window, may be null. If null, the empty
+   * string is used.
    * @param width the width of the window, must be greater than zero.
    * @param height the height of the window, must be greater than zero.
-   * @throws invalid_argument if the supplied width or height values aren't
+   * @throws CenturionException if the supplied width or height values aren't
    * greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(const std::string& title,
-                                int width,
-                                int height);
+  CENTURION_API explicit Window(const char* title, int width, int height);
 
   /**
    * Creates a window instance. The window will be hidden by default.
@@ -96,10 +95,11 @@ class Window final {
   /**
    * Creates a 800x600 window with the specified title.
    *
-   * @param title the title of the window.
+   * @param title the title of the window, may be null. If null, the empty
+   * string is used.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(const std::string& title);
+  CENTURION_API explicit Window(const char* title);
 
   /**
    * Creates a 800x600 window. The window will be hidden by default.
@@ -136,7 +136,8 @@ class Window final {
   /**
    * Creates and returns a unique pointer to a window instance.
    *
-   * @param title the title of the window.
+   * @param title the title of the window, may be null. If null, the empty
+   * string is used.
    * @param width the width of the window.
    * @param height the height of the window.
    * @return a unique pointer to a window instance.
@@ -145,7 +146,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique(const std::string& title,
+  CENTURION_API static std::unique_ptr<Window> unique(const char* title,
                                                       int width,
                                                       int height);
 
@@ -165,12 +166,13 @@ class Window final {
   /**
    * Creates and returns a unique pointer to a window instance.
    *
-   * @param title the title of the window.
+   * @param title the title of the window, may be null. If null, the empty
+   * string is used.
    * @return a unique pointer to a window instance.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique(const std::string& title);
+  CENTURION_API static std::unique_ptr<Window> unique(const char* title);
 
   /**
    * Creates and returns a unique pointer to a Window instance.
@@ -184,7 +186,8 @@ class Window final {
   /**
    * Creates and returns a shared pointer to a window instance.
    *
-   * @param title the title of the window.
+   * @param title the title of the window, may be null. If null, the empty
+   * string is used.
    * @param width the width of the window.
    * @param height the height of the window.
    * @return a shared pointer to a window instance.
@@ -193,7 +196,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared(const std::string& title,
+  CENTURION_API static std::shared_ptr<Window> shared(const char* title,
                                                       int width,
                                                       int height);
 
@@ -213,12 +216,13 @@ class Window final {
   /**
    * Creates and returns a shared pointer to a window instance.
    *
-   * @param title the title of the window.
+   * @param title the title of the window, may be null. If null, the empty
+   * string is used.
    * @return a shared pointer to a window instance.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared(const std::string& title);
+  CENTURION_API static std::shared_ptr<Window> shared(const char* title);
 
   /**
    * Creates and returns a shared pointer to a Window instance.

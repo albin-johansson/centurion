@@ -5,23 +5,23 @@
 
 #include <SDL_image.h>
 
-#include <stdexcept>
-
+#include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "window_listener.h"
+#include "log.h"
 
 namespace centurion {
 namespace video {
 
-CENTURION_DEF Window::Window(const std::string& title, int width, int height)
+CENTURION_DEF Window::Window(const char* title, int width, int height)
 {
   if ((width < 1) || (height < 1)) {
-    throw std::invalid_argument("Invalid width or height!");
+    throw CenturionException{"Invalid width or height!"};
   }
 
   const auto pos = SDL_WINDOWPOS_CENTERED;
   window = SDL_CreateWindow(
-      title.c_str(), pos, pos, width, height, SDL_WINDOW_HIDDEN);
+      title ? title : "", pos, pos, width, height, SDL_WINDOW_HIDDEN);
 
   SDL_Surface* icon = IMG_Load("centurion_icon.png");
   if (icon) {
@@ -34,8 +34,7 @@ CENTURION_DEF Window::Window(int width, int height)
     : Window("Centurion window", width, height)
 {}
 
-CENTURION_DEF Window::Window(const std::string& title) : Window(title, 800, 600)
-{}
+CENTURION_DEF Window::Window(const char* title) : Window(title, 800, 600) {}
 
 CENTURION_DEF Window::Window() : Window(800, 600) {}
 
@@ -68,7 +67,7 @@ CENTURION_DEF Window& Window::operator=(Window&& other) noexcept
   return *this;
 }
 
-CENTURION_DEF std::unique_ptr<Window> Window::unique(const std::string& title,
+CENTURION_DEF std::unique_ptr<Window> Window::unique(const char* title,
                                                      int width,
                                                      int height)
 {
@@ -88,7 +87,7 @@ CENTURION_DEF std::unique_ptr<Window> Window::unique(int width, int height)
 #endif
 }
 
-CENTURION_DEF std::unique_ptr<Window> Window::unique(const std::string& title)
+CENTURION_DEF std::unique_ptr<Window> Window::unique(const char* title)
 {
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<Window>(title);
@@ -106,7 +105,7 @@ CENTURION_DEF std::unique_ptr<Window> Window::unique()
 #endif
 }
 
-CENTURION_DEF std::shared_ptr<Window> Window::shared(const std::string& title,
+CENTURION_DEF std::shared_ptr<Window> Window::shared(const char* title,
                                                      int width,
                                                      int height)
 {
@@ -118,7 +117,7 @@ CENTURION_DEF std::shared_ptr<Window> Window::shared(int width, int height)
   return std::make_shared<Window>(width, height);
 }
 
-CENTURION_DEF std::shared_ptr<Window> Window::shared(const std::string& title)
+CENTURION_DEF std::shared_ptr<Window> Window::shared(const char* title)
 {
   return std::make_shared<Window>(title);
 }
@@ -134,6 +133,8 @@ CENTURION_DEF void Window::notify_window_listeners() noexcept
   for (auto* listener : windowListeners) {
     if (listener) {
       listener->window_updated(self);
+    } else {
+      Log::msgf("Invalid listener!");
     }
   }
 }

@@ -18,8 +18,14 @@ static constexpr auto* path = "resources/ctn_icon_1.png";
 
 TEST_CASE("Surface(const char*)", "[Surface]")
 {
-  const char* c = nullptr;
-  CHECK_THROWS_AS(Surface{c}, CenturionException);
+  SECTION("Null path")
+  {
+    const char* c = nullptr;
+    CHECK_THROWS_AS(Surface{c}, CenturionException);
+  }
+
+  SECTION("Bad path") { CHECK_THROWS_AS(Surface{""}, CenturionException); }
+
   CHECK_NOTHROW(Surface{path});
 }
 

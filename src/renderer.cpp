@@ -167,10 +167,13 @@ void Renderer::draw_line_f(const math::FPoint& start,
 }
 
 CENTURION_DEF
-void Renderer::render(const Texture& texture, math::IPoint position) const noexcept
+void Renderer::render(const Texture& texture, math::IPoint position) const
+    noexcept
 {
   const SDL_Rect dst{position.get_x(),
-                     position.get_y(), texture.get_width(), texture.get_height()};
+                     position.get_y(),
+                     texture.get_width(),
+                     texture.get_height()};
   SDL_RenderCopy(renderer, texture, nullptr, &dst);
 }
 
@@ -350,6 +353,170 @@ void Renderer::render_f(const Texture& texture,
 }
 
 CENTURION_DEF
+void Renderer::render_t(const Texture& texture, math::IPoint position) const
+    noexcept
+{
+  const auto tx =
+      position.get_x() + static_cast<int>(translationViewport.get_x());
+  const auto ty =
+      position.get_y() + static_cast<int>(translationViewport.get_y());
+  render(texture, {tx, ty});
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture, const math::IRect& rect) const
+    noexcept
+{
+  const auto tx = rect.get_x() + static_cast<int>(translationViewport.get_x());
+  const auto ty = rect.get_y() + static_cast<int>(translationViewport.get_y());
+  render(texture, {tx, ty, rect.get_width(), rect.get_height()});
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture,
+                        const math::IRect& src,
+                        const math::IRect& dst) const noexcept
+{
+  const auto tx = dst.get_x() + static_cast<int>(translationViewport.get_x());
+  const auto ty = dst.get_y() + static_cast<int>(translationViewport.get_y());
+  render(texture, src, {tx, ty, dst.get_width(), dst.get_height()});
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture,
+                        const math::IRect& src,
+                        const math::IRect& dst,
+                        double angle) const noexcept
+{
+  const auto tx = dst.get_x() + static_cast<int>(translationViewport.get_x());
+  const auto ty = dst.get_y() + static_cast<int>(translationViewport.get_y());
+  render(texture, src, {tx, ty, dst.get_width(), dst.get_height()}, angle);
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture,
+                        const math::IRect& src,
+                        const math::IRect& dst,
+                        double angle,
+                        math::IPoint center) const noexcept
+{
+  const auto tx = dst.get_x() + static_cast<int>(translationViewport.get_x());
+  const auto ty = dst.get_y() + static_cast<int>(translationViewport.get_y());
+  render(
+      texture, src, {tx, ty, dst.get_width(), dst.get_height()}, angle, center);
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture,
+                        const math::IRect& src,
+                        const math::IRect& dst,
+                        SDL_RendererFlip flip) const noexcept
+{
+  const auto tx = dst.get_x() + static_cast<int>(translationViewport.get_x());
+  const auto ty = dst.get_y() + static_cast<int>(translationViewport.get_y());
+  render(texture, src, {tx, ty, dst.get_width(), dst.get_height()}, flip);
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture,
+                        const math::IRect& src,
+                        const math::IRect& dst,
+                        double angle,
+                        math::IPoint center,
+                        SDL_RendererFlip flip) const noexcept
+{
+  const auto tx = dst.get_x() + static_cast<int>(translationViewport.get_x());
+  const auto ty = dst.get_y() + static_cast<int>(translationViewport.get_y());
+  render(texture,
+         src,
+         {tx, ty, dst.get_width(), dst.get_height()},
+         angle,
+         center,
+         flip);
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture, math::FPoint position) const
+    noexcept
+{
+  const auto tx = position.get_x() + translationViewport.get_x();
+  const auto ty = position.get_y() + translationViewport.get_y();
+  render_f(texture, {tx, ty});
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture, const math::FRect& rect) const
+    noexcept
+{
+  const auto tx = rect.get_x() + translationViewport.get_x();
+  const auto ty = rect.get_y() + translationViewport.get_y();
+  render_f(texture, {tx, ty, rect.get_width(), rect.get_height()});
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture,
+                         const math::IRect& src,
+                         const math::FRect& dst) const noexcept
+{
+  const auto tx = dst.get_x() + translationViewport.get_x();
+  const auto ty = dst.get_y() + translationViewport.get_y();
+  render_f(texture, src, {tx, ty, dst.get_width(), dst.get_height()});
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture,
+                         const math::IRect& src,
+                         const math::FRect& dst,
+                         double angle) const noexcept
+{
+  const auto tx = dst.get_x() + translationViewport.get_x();
+  const auto ty = dst.get_y() + translationViewport.get_y();
+  render_f(texture, src, {tx, ty, dst.get_width(), dst.get_height()}, angle);
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture,
+                         const math::IRect& src,
+                         const math::FRect& dst,
+                         double angle,
+                         math::FPoint center) const noexcept
+{
+  const auto tx = dst.get_x() + translationViewport.get_x();
+  const auto ty = dst.get_y() + translationViewport.get_y();
+  render_f(
+      texture, src, {tx, ty, dst.get_width(), dst.get_height()}, angle, center);
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture,
+                         const math::IRect& src,
+                         const math::FRect& dst,
+                         SDL_RendererFlip flip) const noexcept
+{
+  const auto tx = dst.get_x() + translationViewport.get_x();
+  const auto ty = dst.get_y() + translationViewport.get_y();
+  render_f(texture, src, {tx, ty, dst.get_width(), dst.get_height()}, flip);
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture,
+                         const math::IRect& src,
+                         const math::FRect& dst,
+                         double angle,
+                         math::FPoint center,
+                         SDL_RendererFlip flip) const noexcept
+{
+  const auto tx = dst.get_x() + translationViewport.get_x();
+  const auto ty = dst.get_y() + translationViewport.get_y();
+  render_f(texture,
+           src,
+           {tx, ty, dst.get_width(), dst.get_height()},
+           angle,
+           center,
+           flip);
+}
+
+CENTURION_DEF
 void Renderer::render_text(const char* text,
                            math::IRect pos,
                            const Font& font) const
@@ -408,7 +575,6 @@ void Renderer::set_clip(const math::IRect* area) noexcept
     SDL_RenderSetClipRect(renderer, nullptr);
   }
 }
-
 
 #endif
 

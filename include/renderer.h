@@ -444,6 +444,223 @@ class Renderer final {
                 SDL_RendererFlip flip) const noexcept;
 
   /**
+   * Renders a texture at the specified position. The rendered texture will be
+   * translated using the translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param position the position (pre-translation) of the rendered texture.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_t(const Texture& texture, math::IPoint position) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be
+   * translated using the translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param rect the rectangle that provides the position (pre-translation) and
+   * size of the rendered texture.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_t(const Texture& texture, const math::IRect& rect) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be translated using the
+   * translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param src the section of the texture that will be rendered.
+   * @param dst the position (pre-translation) and size of the rendered texture.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_t(const Texture& texture,
+                const math::IRect& src,
+                const math::IRect& dst) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be translated using the
+   * translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param src the section of the supplied texture that will be rendered.
+   * @param dst the position (pre-translation) and size of the rendered texture.
+   * @param angle the angle of the rendered texture, in degrees.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_t(const Texture& texture,
+                const math::IRect& src,
+                const math::IRect& dst,
+                double angle) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be translated using the
+   * translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param src the section of the supplied texture that will be rendered.
+   * @param dst the position and size of the rendered texture.
+   * @param angle the angle of the rendered texture, in degrees.
+   * @param center the rotation center point.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_t(const Texture& texture,
+                const math::IRect& src,
+                const math::IRect& dst,
+                double angle,
+                math::IPoint center) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be translated using the
+   * translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param src the section of the supplied texture that will be rendered.
+   * @param dst the position and size of the rendered texture.
+   * @param angle the angle of the rendered texture, in degrees.
+   * @param flip the hint for how the rendered texture should be flipped.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_t(const Texture& texture,
+                const math::IRect& src,
+                const math::IRect& dst,
+                SDL_RendererFlip flip) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be translated using the
+   * translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param src the section of the supplied texture that will be rendered.
+   * @param dst the position and size of the rendered texture.
+   * @param angle the angle of the rendered texture, in degrees.
+   * @param center the rotation center point.
+   * @param flip the hint for how the rendered texture should be flipped.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_t(const Texture& texture,
+                const math::IRect& src,
+                const math::IRect& dst,
+                double angle,
+                math::IPoint center,
+                SDL_RendererFlip flip) const noexcept;
+
+  /**
+   * Renders a texture at the specified position. The rendered texture will be
+   * translated using the translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param position the position (pre-translation) of the rendered texture.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_tf(const Texture& texture, math::FPoint position) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be
+   * translated using the translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param rect the rectangle that provides the position (pre-translation) and
+   * size of the rendered texture.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_tf(const Texture& texture, const math::FRect& rect) const
+      noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be translated using the
+   * translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param src the section of the texture that will be rendered.
+   * @param dst the position (pre-translation) and size of the rendered texture.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_tf(const Texture& texture,
+                 const math::IRect& src,
+                 const math::FRect& dst) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be translated using the
+   * translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param src the section of the supplied texture that will be rendered.
+   * @param dst the position (pre-translation) and size of the rendered texture.
+   * @param angle the angle of the rendered texture, in degrees.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_tf(const Texture& texture,
+                 const math::IRect& src,
+                 const math::FRect& dst,
+                 double angle) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be translated using the
+   * translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param src the section of the supplied texture that will be rendered.
+   * @param dst the position and size of the rendered texture.
+   * @param angle the angle of the rendered texture, in degrees.
+   * @param center the rotation center point.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_tf(const Texture& texture,
+                 const math::IRect& src,
+                 const math::FRect& dst,
+                 double angle,
+                 math::FPoint center) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be translated using the
+   * translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param src the section of the supplied texture that will be rendered.
+   * @param dst the position and size of the rendered texture.
+   * @param angle the angle of the rendered texture, in degrees.
+   * @param flip the hint for how the rendered texture should be flipped.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_tf(const Texture& texture,
+                 const math::IRect& src,
+                 const math::FRect& dst,
+                 SDL_RendererFlip flip) const noexcept;
+
+  /**
+   * Renders a texture. The rendered texture will be translated using the
+   * translation viewport.
+   *
+   * @param texture the texture that will be rendered.
+   * @param src the section of the supplied texture that will be rendered.
+   * @param dst the position and size of the rendered texture.
+   * @param angle the angle of the rendered texture, in degrees.
+   * @param center the rotation center point.
+   * @param flip the hint for how the rendered texture should be flipped.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void render_tf(const Texture& texture,
+                 const math::IRect& src,
+                 const math::FRect& dst,
+                 double angle,
+                 math::FPoint center,
+                 SDL_RendererFlip flip) const noexcept;
+
+  /**
    * Renders a string of text. Note that this method is rather inefficient,
    * since it will dynamically allocate a texture based on the supplied
    * string for every call to this method. This method has no effect if the

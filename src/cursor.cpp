@@ -47,6 +47,4 @@ bool Cursor::is_visible() noexcept
 
 }  // namespace centurion
 
-static void demo() { using namespace centurion; }
-
 #endif  // CENTURION_CURSOR_SOURCE

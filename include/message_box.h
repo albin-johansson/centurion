@@ -316,8 +316,8 @@ class MessageBox final {
   std::optional<ColorScheme> colorScheme;
 #endif
   std::vector<ButtonData> buttons;
-  std::string title = "Centurion message box";
-  std::string message = "N/A";
+  const char* title = "Centurion message box";
+  const char* message = "N/A";
   MessageBoxID type = MessageBoxID::Info;
 
   /**
@@ -353,17 +353,17 @@ class MessageBox final {
   MessageBox() = default;
 
   /**
-   * @param title the title of the message box.
+   * @param title the title of the message box, can be null.
    * @since 3.0.0
    */
-  CENTURION_API explicit MessageBox(std::string title);
+  CENTURION_API explicit MessageBox(const char* title);
 
   /**
-   * @param title the title of the message box.
-   * @param message the message of the message box.
+   * @param title the title of the message box, can be null.
+   * @param message the message of the message box, can be null.
    * @since 3.0.0
    */
-  CENTURION_API MessageBox(std::string title, std::string message);
+  CENTURION_API MessageBox(const char* title, const char* message);
 
   CENTURION_API ~MessageBox() noexcept;
 
@@ -384,15 +384,15 @@ class MessageBox final {
    * create message boxes, compared to creating instances of the MessageBox
    * class.
    *
-   * @param title the title of the message box window.
-   * @param message the message of the message box window.
+   * @param title the title of the message box window, can be null.
+   * @param message the message of the message box window, can be null.
    * @param type the type of the message.
    * @param window a pointer to the parent window, can safely be null to
    * indicate no parent.
    * @since 3.0.0
    */
-  CENTURION_API static void show(const std::string& title,
-                                 const std::string& message,
+  CENTURION_API static void show(const char* title,
+                                 const char* message,
                                  MessageBoxID type,
                                  SDL_Window* window = nullptr) noexcept;
 
@@ -411,18 +411,18 @@ class MessageBox final {
   /**
    * Sets the title of the message box.
    *
-   * @param title the title of the message box.
+   * @param title the title of the message box, can be null.
    * @since 3.0.0
    */
-  CENTURION_API void set_title(const std::string& title) noexcept;
+  CENTURION_API void set_title(const char* title) noexcept;
 
   /**
    * Sets the message of the message box.
    *
-   * @param message the message of the message box.
+   * @param message the message of the message box, can be null.
    * @since 3.0.0
    */
-  CENTURION_API void set_message(const std::string& message) noexcept;
+  CENTURION_API void set_message(const char* message) noexcept;
 
   /**
    * Sets what kind of message box the message box is. By default, this property

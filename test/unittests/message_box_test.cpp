@@ -85,6 +85,8 @@ TEST_CASE("ColorScheme general test", "[MessageBox]")
   CHECK(sdlScheme.colors[index(ColorType::ButtonBackground)] == azure);
   CHECK(sdlScheme.colors[index(ColorType::ButtonBorder)] == tomato);
   CHECK(sdlScheme.colors[index(ColorType::ButtonSelected)] == cornsilk);
+
+  CHECK(&scheme.get());
 }
 
 TEST_CASE("MessageBox::set_type", "[MessageBox]")
@@ -96,4 +98,10 @@ TEST_CASE("MessageBox::set_type", "[MessageBox]")
   mb.set_type(type);
 
   CHECK(type == mb.get_type());
+}
+
+TEST_CASE("MessageBox(const char*)", "[MessageBox]")
+{
+  CHECK_NOTHROW(MessageBox{nullptr});
+  CHECK_NOTHROW(MessageBox{"foo"});
 }

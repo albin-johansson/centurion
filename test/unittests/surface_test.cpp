@@ -57,15 +57,21 @@ TEST_CASE("Surface(Surface&&)", "[Surface]")
 
 TEST_CASE("Surface::operator=(const Surface&)", "[Surface]")
 {
-  const Surface fst{path};
-  const Surface copy = fst;
+  Surface fst{path};
+  Surface copy{path};
+
+  copy = fst;
+
   CHECK(fst.get_internal() != copy.get_internal());
 }
 
 TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
 {
   Surface fst{path};
-  Surface copy = std::move(fst);
+  Surface copy{path};
+
+  copy = std::move(fst);
+
   CHECK(!fst.get_internal());
 }
 

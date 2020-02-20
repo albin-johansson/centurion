@@ -30,6 +30,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/event.h
         ${CTN_INCLUDE_DIR}/surface.h
         ${CTN_INCLUDE_DIR}/pixel_format.h
+        ${CTN_INCLUDE_DIR}/cursor.h
         window.cpp
         font.cpp
         renderer.cpp
@@ -50,7 +51,8 @@ set(SOURCE_FILES
         music.cpp
         error.cpp
         event.cpp
-        surface.cpp)
+        surface.cpp
+        cursor.cpp)
 
 add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})
 

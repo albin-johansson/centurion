@@ -54,8 +54,8 @@ constexpr Point<U> operator+(const Point<U>& lhs, const Point<U>& rhs) noexcept;
 
 /**
  * The Point class represents an integer or floating-point based 2D point.
- * There are three type aliases pre-defined for this class: IPoint, FPoint
- * and DPoint.
+ * There are two pre-defined type aliases pre-defined for this class: IPoint and
+ * FPoint.
  *
  * @tparam T the type of the components of the point. Must be either integral
  * or real. Defaults to float.
@@ -394,13 +394,6 @@ using IPoint = Point<int>;
  * @since 4.0.0
  */
 using FPoint = Point<float>;
-
-/**
- * An alias for Point&lt;double&gt;.
- *
- * @since 4.0.0
- */
-using DPoint = Point<double>;
 
 }  // namespace math
 }  // namespace centurion

@@ -131,7 +131,6 @@ class Window final {
    * @return the changed window.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
   CENTURION_API Window& operator=(Window&& other) noexcept;
 
   /**

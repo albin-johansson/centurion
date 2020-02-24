@@ -23,6 +23,21 @@ TEST_CASE("Cursor(Surface, IPoint)", "[Cursor]")
   Cursor cursor{surface, hotspot};
 }
 
+TEST_CASE("Cursor move semantics", "[Cursor]")
+{
+  SECTION("Move constructor")
+  {
+    Cursor cursor{SystemCursor::Arrow_N_S};
+    Cursor other{std::move(cursor)};
+  }
+
+  SECTION("Move assignment")
+  {
+    Cursor cursor{SystemCursor::Arrow_N_S};
+    Cursor other = std::move(cursor);
+  }
+}
+
 TEST_CASE("Cursor::enable", "[Cursor]")
 {
   Cursor cursor{SystemCursor::Wait};

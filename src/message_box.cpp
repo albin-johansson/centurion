@@ -171,7 +171,10 @@ void MessageBox::set_message(const char* message) noexcept
 }
 
 CENTURION_DEF
-void MessageBox::set_type(MessageBoxID type) noexcept { this->type = type; }
+void MessageBox::set_type(MessageBoxID type) noexcept
+{
+  this->type = type;
+}
 
 #ifdef CENTURION_HAS_OPTIONAL
 
@@ -184,7 +187,10 @@ void MessageBox::set_color_scheme(std::optional<ColorScheme> scheme) noexcept
 #endif
 
 CENTURION_DEF
-MessageBoxID MessageBox::get_type() const noexcept { return type; }
+MessageBoxID MessageBox::get_type() const noexcept
+{
+  return type;
+}
 
 CENTURION_DEF
 bool operator==(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept

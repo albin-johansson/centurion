@@ -462,7 +462,8 @@ TEST_CASE(
                                    SDL_FLIP_VERTICAL));
 }
 
-TEST_CASE("Renderer::set_color", "[Renderer]") {
+TEST_CASE("Renderer::set_color", "[Renderer]")
+{
   Window window;
   Renderer renderer{window};
 
@@ -472,7 +473,8 @@ TEST_CASE("Renderer::set_color", "[Renderer]") {
   CHECK(color == renderer.get_color());
 }
 
-TEST_CASE("Renderer::set_viewport", "[Renderer]") {
+TEST_CASE("Renderer::set_viewport", "[Renderer]")
+{
   Window window;
   Renderer renderer{window};
 

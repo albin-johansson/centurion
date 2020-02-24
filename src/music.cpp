@@ -67,11 +67,20 @@ CENTURION_DEF void Music::play(int nLoops) noexcept
   Mix_PlayMusic(music, nLoops);
 }
 
-CENTURION_DEF void Music::resume() noexcept { Mix_ResumeMusic(); }
+CENTURION_DEF void Music::resume() noexcept
+{
+  Mix_ResumeMusic();
+}
 
-CENTURION_DEF void Music::pause() noexcept { Mix_PauseMusic(); }
+CENTURION_DEF void Music::pause() noexcept
+{
+  Mix_PauseMusic();
+}
 
-CENTURION_DEF void Music::halt() noexcept { Mix_HaltMusic(); }
+CENTURION_DEF void Music::halt() noexcept
+{
+  Mix_HaltMusic();
+}
 
 CENTURION_DEF void Music::fade_in(int ms, int nLoops) noexcept
 {
@@ -105,9 +114,15 @@ CENTURION_DEF void Music::set_volume(int volume) noexcept
   Mix_VolumeMusic(volume);
 }
 
-CENTURION_DEF bool Music::is_playing() noexcept { return Mix_PlayingMusic(); }
+CENTURION_DEF bool Music::is_playing() noexcept
+{
+  return Mix_PlayingMusic();
+}
 
-CENTURION_DEF bool Music::is_paused() noexcept { return Mix_PausedMusic(); }
+CENTURION_DEF bool Music::is_paused() noexcept
+{
+  return Mix_PausedMusic();
+}
 
 CENTURION_DEF bool Music::is_fading() noexcept
 {
@@ -115,7 +130,10 @@ CENTURION_DEF bool Music::is_fading() noexcept
   return status == FadeStatus::In || status == FadeStatus::Out;
 }
 
-CENTURION_DEF int Music::get_volume() noexcept { return Mix_VolumeMusic(-1); }
+CENTURION_DEF int Music::get_volume() noexcept
+{
+  return Mix_VolumeMusic(-1);
+}
 
 CENTURION_DEF FadeStatus Music::get_fade_status() noexcept
 {
@@ -132,7 +150,10 @@ CENTURION_DEF std::string Music::to_string() const
   return "[Music@" + address_of(this) + "]";
 }
 
-CENTURION_DEF Music::operator Mix_Music*() const noexcept { return music; }
+CENTURION_DEF Music::operator Mix_Music*() const noexcept
+{
+  return music;
+}
 
 CENTURION_DEF bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept
 {

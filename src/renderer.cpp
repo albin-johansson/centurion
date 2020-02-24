@@ -52,7 +52,10 @@ Renderer::Renderer(Renderer&& other) noexcept
 }
 
 CENTURION_DEF
-Renderer::~Renderer() { destroy(); }
+Renderer::~Renderer()
+{
+  destroy();
+}
 
 CENTURION_DEF
 void Renderer::destroy() noexcept
@@ -111,10 +114,16 @@ Renderer& Renderer::operator=(Renderer&& other) noexcept
 }
 
 CENTURION_DEF
-void Renderer::clear() const noexcept { SDL_RenderClear(renderer); }
+void Renderer::clear() const noexcept
+{
+  SDL_RenderClear(renderer);
+}
 
 CENTURION_DEF
-void Renderer::present() const noexcept { SDL_RenderPresent(renderer); }
+void Renderer::present() const noexcept
+{
+  SDL_RenderPresent(renderer);
+}
 
 CENTURION_DEF
 void Renderer::draw_rect(const math::IRect& rect) const noexcept
@@ -708,7 +717,8 @@ std::pair<int, int> Renderer::get_output_size() const noexcept
 }
 
 CENTURION_DEF
-BlendMode Renderer::get_blend_mode() const noexcept {
+BlendMode Renderer::get_blend_mode() const noexcept
+{
   SDL_BlendMode mode;
   SDL_GetRenderDrawBlendMode(renderer, &mode);
   return static_cast<BlendMode>(mode);
@@ -817,10 +827,16 @@ std::string Renderer::to_string() const
 }
 
 CENTURION_DEF
-SDL_Renderer* Renderer::get_internal() const noexcept { return renderer; }
+SDL_Renderer* Renderer::get_internal() const noexcept
+{
+  return renderer;
+}
 
 CENTURION_DEF
-Renderer::operator SDL_Renderer*() const noexcept { return renderer; }
+Renderer::operator SDL_Renderer*() const noexcept
+{
+  return renderer;
+}
 
 }  // namespace video
 }  // namespace centurion

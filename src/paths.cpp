@@ -9,7 +9,8 @@
 
 namespace centurion {
 
-CENTURION_DEF AppPath::AppPath() noexcept : path{SDL_GetBasePath()} {}
+CENTURION_DEF AppPath::AppPath() noexcept : path{SDL_GetBasePath()}
+{}
 
 CENTURION_DEF AppPath::~AppPath() noexcept
 {
@@ -18,7 +19,10 @@ CENTURION_DEF AppPath::~AppPath() noexcept
   }
 }
 
-CENTURION_DEF AppPath::operator bool() const noexcept { return path; }
+CENTURION_DEF AppPath::operator bool() const noexcept
+{
+  return path;
+}
 
 CENTURION_DEF std::unique_ptr<AppPath> AppPath::unique()
 {

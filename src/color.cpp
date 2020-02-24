@@ -46,13 +46,25 @@ CENTURION_DEF Color& Color::operator=(Color&& other) noexcept
   return *this;
 }
 
-CENTURION_DEF void Color::set_red(uint8_t r) noexcept { this->red = r; }
+CENTURION_DEF void Color::set_red(uint8_t r) noexcept
+{
+  this->red = r;
+}
 
-CENTURION_DEF void Color::set_green(uint8_t g) noexcept { this->green = g; }
+CENTURION_DEF void Color::set_green(uint8_t g) noexcept
+{
+  this->green = g;
+}
 
-CENTURION_DEF void Color::set_blue(uint8_t b) noexcept { this->blue = b; }
+CENTURION_DEF void Color::set_blue(uint8_t b) noexcept
+{
+  this->blue = b;
+}
 
-CENTURION_DEF void Color::set_alpha(uint8_t a) noexcept { this->alpha = a; }
+CENTURION_DEF void Color::set_alpha(uint8_t a) noexcept
+{
+  this->alpha = a;
+}
 
 CENTURION_DEF std::string Color::to_string() const
 {

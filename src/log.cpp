@@ -5,7 +5,10 @@
 
 namespace centurion {
 
-CENTURION_DEF void Log::reset_priorites() noexcept { SDL_LogResetPriorities(); }
+CENTURION_DEF void Log::reset_priorites() noexcept
+{
+  SDL_LogResetPriorities();
+}
 
 CENTURION_DEF void Log::msgf(Category category,
                              Priority prio,

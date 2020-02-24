@@ -77,7 +77,10 @@ Texture::Texture(Texture&& other) noexcept
 }
 
 CENTURION_DEF
-Texture::~Texture() noexcept { destroy(); }
+Texture::~Texture() noexcept
+{
+  destroy();
+}
 
 CENTURION_DEF
 Texture& Texture::operator=(Texture&& other) noexcept
@@ -269,7 +272,10 @@ Color Texture::get_color_mod() const noexcept
 }
 
 CENTURION_DEF
-SDL_Texture* Texture::get_internal() noexcept { return texture; }
+SDL_Texture* Texture::get_internal() noexcept
+{
+  return texture;
+}
 
 CENTURION_DEF
 std::string Texture::to_string() const
@@ -282,7 +288,10 @@ std::string Texture::to_string() const
 }
 
 CENTURION_DEF
-Texture::operator SDL_Texture*() const noexcept { return texture; }
+Texture::operator SDL_Texture*() const noexcept
+{
+  return texture;
+}
 
 CENTURION_DEF
 bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept

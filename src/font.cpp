@@ -146,10 +146,16 @@ void Font::set_font_hinting(FontHint hint) noexcept
 }
 
 CENTURION_DEF
-bool Font::is_bold() const noexcept { return style & TTF_STYLE_BOLD; }
+bool Font::is_bold() const noexcept
+{
+  return style & TTF_STYLE_BOLD;
+}
 
 CENTURION_DEF
-bool Font::is_italic() const noexcept { return style & TTF_STYLE_ITALIC; }
+bool Font::is_italic() const noexcept
+{
+  return style & TTF_STYLE_ITALIC;
+}
 
 CENTURION_DEF
 bool Font::is_underlined() const noexcept
@@ -164,7 +170,10 @@ bool Font::is_strikethrough() const noexcept
 }
 
 CENTURION_DEF
-bool Font::is_outlined() const noexcept { return TTF_GetFontOutline(font); }
+bool Font::is_outlined() const noexcept
+{
+  return TTF_GetFontOutline(font);
+}
 
 CENTURION_DEF
 bool Font::is_fixed_width() const noexcept
@@ -189,19 +198,34 @@ int Font::get_string_height(const std::string& s) const noexcept
 }
 
 CENTURION_DEF
-int Font::get_size() const noexcept { return size; }
+int Font::get_size() const noexcept
+{
+  return size;
+}
 
 CENTURION_DEF
-int Font::get_height() const noexcept { return TTF_FontHeight(font); }
+int Font::get_height() const noexcept
+{
+  return TTF_FontHeight(font);
+}
 
 CENTURION_DEF
-int Font::get_descent() const noexcept { return TTF_FontDescent(font); }
+int Font::get_descent() const noexcept
+{
+  return TTF_FontDescent(font);
+}
 
 CENTURION_DEF
-int Font::get_ascent() const noexcept { return TTF_FontAscent(font); }
+int Font::get_ascent() const noexcept
+{
+  return TTF_FontAscent(font);
+}
 
 CENTURION_DEF
-int Font::get_line_skip() const noexcept { return TTF_FontLineSkip(font); }
+int Font::get_line_skip() const noexcept
+{
+  return TTF_FontLineSkip(font);
+}
 
 CENTURION_DEF
 int Font::get_font_faces() const noexcept
@@ -246,7 +270,10 @@ std::string Font::to_string() const
 }
 
 CENTURION_DEF
-Font::operator TTF_Font*() const noexcept { return font; }
+Font::operator TTF_Font*() const noexcept
+{
+  return font;
+}
 
 }  // namespace video
 }  // namespace centurion

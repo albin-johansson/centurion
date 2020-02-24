@@ -103,9 +103,15 @@ CENTURION_DEF void MouseState::set_window_height(int windowHeight) noexcept
   this->windowHeight = windowHeight;
 }
 
-CENTURION_DEF int MouseState::get_mouse_x() const noexcept { return mouseX; }
+CENTURION_DEF int MouseState::get_mouse_x() const noexcept
+{
+  return mouseX;
+}
 
-CENTURION_DEF int MouseState::get_mouse_y() const noexcept { return mouseY; }
+CENTURION_DEF int MouseState::get_mouse_y() const noexcept
+{
+  return mouseY;
+}
 
 CENTURION_DEF bool MouseState::is_left_button_pressed() const noexcept
 {

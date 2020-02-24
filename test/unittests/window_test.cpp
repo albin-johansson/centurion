@@ -16,7 +16,10 @@ class Incrementer final : public IWindowListener {
  public:
   int counter = 0;
 
-  void window_updated(const Window& window) noexcept override { ++counter; }
+  void window_updated(const Window& window) noexcept override
+  {
+    ++counter;
+  }
 };
 
 }  // namespace
@@ -260,7 +263,7 @@ TEST_CASE("Window::set_width", "[Window]")
     CHECK_THROWS_AS(window.set_width(0), CenturionException);
     CHECK_THROWS_AS(window.set_width(-1), CenturionException);
   }
-  
+
   Window window;
   auto listener = std::make_shared<Incrementer>();
   window.add_window_listener(listener);

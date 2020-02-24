@@ -19,3 +19,6 @@ BraceWrapping:
   AfterStruct: false
   AfterFunction: true
   SplitEmptyFunction: false
+
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: false

@@ -24,7 +24,10 @@ TEST_CASE("Surface(const char*)", "[Surface]")
     CHECK_THROWS_AS(Surface{c}, CenturionException);
   }
 
-  SECTION("Bad path") { CHECK_THROWS_AS(Surface{""}, CenturionException); }
+  SECTION("Bad path")
+  {
+    CHECK_THROWS_AS(Surface{""}, CenturionException);
+  }
 
   CHECK_NOTHROW(Surface{path});
 }

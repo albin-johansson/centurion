@@ -43,16 +43,28 @@ std::optional<std::string> get_platform_name() noexcept
 #endif
 
 CENTURION_DEF
-int CPU::get_cache_line_size() noexcept { return SDL_GetCPUCacheLineSize(); }
+int CPU::get_cache_line_size() noexcept
+{
+  return SDL_GetCPUCacheLineSize();
+}
 
 CENTURION_DEF
-int CPU::get_cores() noexcept { return SDL_GetCPUCount(); }
+int CPU::get_cores() noexcept
+{
+  return SDL_GetCPUCount();
+}
 
 CENTURION_DEF
-int RAM::get_size_mb() noexcept { return SDL_GetSystemRAM(); }
+int RAM::get_size_mb() noexcept
+{
+  return SDL_GetSystemRAM();
+}
 
 CENTURION_DEF
-int RAM::get_size_gb() noexcept { return get_size_mb() / 1000; }
+int RAM::get_size_gb() noexcept
+{
+  return get_size_mb() / 1000;
+}
 
 #ifdef CENTURION_HAS_OPTIONAL
 

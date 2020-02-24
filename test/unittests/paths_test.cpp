@@ -4,7 +4,10 @@
 
 using namespace centurion;
 
-TEST_CASE("AppPath()", "[AppPath]") { CHECK_NOTHROW(AppPath{}); }
+TEST_CASE("AppPath()", "[AppPath]")
+{
+  CHECK_NOTHROW(AppPath{});
+}
 
 TEST_CASE("AppPath::operator bool", "[AppPath]")
 {

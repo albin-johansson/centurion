@@ -92,7 +92,10 @@ class Rect final {
    * @param rx the new x-coordinate of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_x(T rx) noexcept { x = rx; }
+  constexpr void set_x(T rx) noexcept
+  {
+    x = rx;
+  }
 
   /**
    * Sets the y-coordinate of the rectangle.
@@ -100,7 +103,10 @@ class Rect final {
    * @param ry the new y-coordinate of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_y(T ry) noexcept { y = ry; }
+  constexpr void set_y(T ry) noexcept
+  {
+    y = ry;
+  }
 
   /**
    * Sets the width of the rectangle.
@@ -108,7 +114,10 @@ class Rect final {
    * @param rwidth the new width of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_width(T rwidth) noexcept { width = rwidth; }
+  constexpr void set_width(T rwidth) noexcept
+  {
+    width = rwidth;
+  }
 
   /**
    * Sets the height of the rectangle.
@@ -116,7 +125,10 @@ class Rect final {
    * @param rheight the new height of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_height(T rheight) noexcept { height = rheight; }
+  constexpr void set_height(T rheight) noexcept
+  {
+    height = rheight;
+  }
 
   /**
    * Sets all of the components of the rectangle.
@@ -202,7 +214,10 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_x() const noexcept { return x; }
+  constexpr T get_x() const noexcept
+  {
+    return x;
+  }
 
   /**
    * Returns the y-coordinate of the rectangle.
@@ -211,7 +226,10 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_y() const noexcept { return y; }
+  constexpr T get_y() const noexcept
+  {
+    return y;
+  }
 
   /**
    * Returns the width of the rectangle.
@@ -220,7 +238,10 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_width() const noexcept { return width; }
+  constexpr T get_width() const noexcept
+  {
+    return width;
+  }
 
   /**
    * Returns the height of the rectangle.
@@ -229,7 +250,10 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_height() const noexcept { return height; }
+  constexpr T get_height() const noexcept
+  {
+    return height;
+  }
 
   /**
    * Returns the maximum x-coordinate of the rectangle.
@@ -238,7 +262,10 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_max_x() const noexcept { return x + width; }
+  constexpr T get_max_x() const noexcept
+  {
+    return x + width;
+  }
 
   /**
    * Returns the maximum y-coordinate of the rectangle.
@@ -247,7 +274,10 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_max_y() const noexcept { return y + height; }
+  constexpr T get_max_y() const noexcept
+  {
+    return y + height;
+  }
 
   /**
    * Returns the x-coordinate of the center point of the rectangle.
@@ -256,7 +286,10 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_center_x() const noexcept { return x + (width / 2); }
+  constexpr T get_center_x() const noexcept
+  {
+    return x + (width / 2);
+  }
 
   /**
    * Returns the y-coordinate of the center point of the rectangle.
@@ -265,7 +298,10 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_center_y() const noexcept { return y + (height / 2); }
+  constexpr T get_center_y() const noexcept
+  {
+    return y + (height / 2);
+  }
 
   /**
    * Returns the center point of the rectangle.
@@ -287,7 +323,10 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr bool has_area() const noexcept { return width > 0 && height > 0; }
+  constexpr bool has_area() const noexcept
+  {
+    return width > 0 && height > 0;
+  }
 
   /**
    * Calculates and returns a rectangle that represents the union of two

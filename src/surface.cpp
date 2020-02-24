@@ -44,7 +44,10 @@ CENTURION_DEF Surface::Surface(Surface&& other) noexcept
   other.surface = nullptr;
 }
 
-CENTURION_DEF Surface::~Surface() noexcept { destroy(); }
+CENTURION_DEF Surface::~Surface() noexcept
+{
+  destroy();
+}
 
 CENTURION_DEF Surface& Surface::operator=(Surface&& other) noexcept
 {
@@ -119,11 +122,20 @@ CENTURION_DEF BlendMode Surface::get_blend_mode() const noexcept
   return static_cast<BlendMode>(mode);
 }
 
-CENTURION_DEF int Surface::get_width() const noexcept { return surface->w; }
+CENTURION_DEF int Surface::get_width() const noexcept
+{
+  return surface->w;
+}
 
-CENTURION_DEF int Surface::get_height() const noexcept { return surface->h; }
+CENTURION_DEF int Surface::get_height() const noexcept
+{
+  return surface->h;
+}
 
-CENTURION_DEF int Surface::get_pitch() const noexcept { return surface->pitch; }
+CENTURION_DEF int Surface::get_pitch() const noexcept
+{
+  return surface->pitch;
+}
 
 CENTURION_DEF Texture Surface::to_texture(const Renderer& renderer) const
     noexcept

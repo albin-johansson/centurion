@@ -145,7 +145,10 @@ TEST_CASE("MouseButton enum values", "[MouseButton]")
   CHECK(static_cast<int>(MouseButton::X2) == SDL_BUTTON_X2);
 }
 
-TEST_CASE("Event::refresh", "[Event]") { CHECK_NOTHROW(Event::refresh()); }
+TEST_CASE("Event::refresh", "[Event]")
+{
+  CHECK_NOTHROW(Event::refresh());
+}
 
 TEST_CASE("Event::push", "[Event]")
 {

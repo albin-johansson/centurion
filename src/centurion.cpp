@@ -55,9 +55,15 @@ CENTURION_DEF void Centurion::init_mix()
   }
 }
 
-CENTURION_DEF Centurion::Centurion() { init(); }
+CENTURION_DEF Centurion::Centurion()
+{
+  init();
+}
 
-CENTURION_DEF Centurion::~Centurion() noexcept { close(); }
+CENTURION_DEF Centurion::~Centurion() noexcept
+{
+  close();
+}
 
 CENTURION_DEF void Centurion::init()
 {

@@ -100,9 +100,15 @@ CENTURION_DEF MouseButton MouseButtonEvent::get_button() const noexcept
   return static_cast<MouseButton>(event.button);
 }
 
-CENTURION_DEF int MouseButtonEvent::get_x() const noexcept { return event.x; }
+CENTURION_DEF int MouseButtonEvent::get_x() const noexcept
+{
+  return event.x;
+}
 
-CENTURION_DEF int MouseButtonEvent::get_y() const noexcept { return event.y; }
+CENTURION_DEF int MouseButtonEvent::get_y() const noexcept
+{
+  return event.y;
+}
 
 CENTURION_DEF bool MouseButtonEvent::was_single_click() const noexcept
 {
@@ -141,9 +147,15 @@ CENTURION_DEF MouseMotionEvent::MouseMotionEvent(
     : event{motionEvent}
 {}
 
-CENTURION_DEF int MouseMotionEvent::get_x() const noexcept { return event.x; }
+CENTURION_DEF int MouseMotionEvent::get_x() const noexcept
+{
+  return event.x;
+}
 
-CENTURION_DEF int MouseMotionEvent::get_y() const noexcept { return event.y; }
+CENTURION_DEF int MouseMotionEvent::get_y() const noexcept
+{
+  return event.y;
+}
 
 CENTURION_DEF int MouseMotionEvent::get_x_movement() const noexcept
 {
@@ -220,14 +232,20 @@ CENTURION_DEF QuitEvent::QuitEvent(SDL_QuitEvent quitEvent) noexcept
     : time{quitEvent.timestamp}
 {}
 
-CENTURION_DEF uint32_t QuitEvent::get_time() const noexcept { return time; }
+CENTURION_DEF uint32_t QuitEvent::get_time() const noexcept
+{
+  return time;
+}
 
 // ** EVENT ********************************************************************
 
 CENTURION_DEF Event::Event(const SDL_Event& sdlEvent) noexcept : event{sdlEvent}
 {}
 
-CENTURION_DEF void Event::refresh() noexcept { SDL_PumpEvents(); }
+CENTURION_DEF void Event::refresh() noexcept
+{
+  SDL_PumpEvents();
+}
 
 CENTURION_DEF void Event::push(Event& event) noexcept
 {
@@ -246,7 +264,10 @@ CENTURION_DEF void Event::flush_all() noexcept
   SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 }
 
-CENTURION_DEF bool Event::poll() noexcept { return SDL_PollEvent(&event); }
+CENTURION_DEF bool Event::poll() noexcept
+{
+  return SDL_PollEvent(&event);
+}
 
 CENTURION_DEF EventType Event::get_type() const noexcept
 {
@@ -278,7 +299,10 @@ CENTURION_DEF QuitEvent Event::as_quit_event() const noexcept
   return QuitEvent{event.quit};
 }
 
-CENTURION_DEF Event::operator SDL_Event&() noexcept { return event; }
+CENTURION_DEF Event::operator SDL_Event&() noexcept
+{
+  return event;
+}
 
 }  // namespace event
 }  // namespace centurion

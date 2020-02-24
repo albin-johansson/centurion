@@ -106,7 +106,8 @@ TEST_CASE("MessageBox::set_type", "[MessageBox]")
   CHECK(type == mb.get_type());
 }
 
-TEST_CASE("MessageBox::set_color_scheme", "[MessageBox]") {
+TEST_CASE("MessageBox::set_color_scheme", "[MessageBox]")
+{
   MessageBox mb;
   CHECK_NOTHROW(mb.set_color_scheme(std::nullopt));
 }
@@ -118,7 +119,8 @@ TEST_CASE("MessageBox::set_title", "[MessageBox]")
   CHECK_NOTHROW(mb.set_title("foo"));
 }
 
-TEST_CASE("MessageBox::set_message", "[MessageBox]") {
+TEST_CASE("MessageBox::set_message", "[MessageBox]")
+{
   MessageBox mb;
   CHECK_NOTHROW(mb.set_message(nullptr));
   CHECK_NOTHROW(mb.set_message("foo"));

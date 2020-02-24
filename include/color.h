@@ -311,7 +311,10 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_red() const noexcept { return red; }
+  uint8_t get_red() const noexcept
+  {
+    return red;
+  }
 
   /**
    * Returns the value of the green component.
@@ -320,7 +323,10 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_green() const noexcept { return green; }
+  uint8_t get_green() const noexcept
+  {
+    return green;
+  }
 
   /**
    * Returns the value of the blue component.
@@ -329,7 +335,10 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_blue() const noexcept { return blue; }
+  uint8_t get_blue() const noexcept
+  {
+    return blue;
+  }
 
   /**
    * Returns the value of the alpha component.
@@ -338,7 +347,10 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_alpha() const noexcept { return alpha; }
+  uint8_t get_alpha() const noexcept
+  {
+    return alpha;
+  }
 
   /**
    * Returns a textual representation of the color.

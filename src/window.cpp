@@ -34,9 +34,11 @@ CENTURION_DEF Window::Window(int width, int height)
     : Window{"Centurion window", width, height}
 {}
 
-CENTURION_DEF Window::Window(const char* title) : Window{title, 800, 600} {}
+CENTURION_DEF Window::Window(const char* title) : Window{title, 800, 600}
+{}
 
-CENTURION_DEF Window::Window() : Window{800, 600} {}
+CENTURION_DEF Window::Window() : Window{800, 600}
+{}
 
 CENTURION_DEF Window::Window(Window&& other) noexcept
 {
@@ -421,7 +423,10 @@ CENTURION_DEF std::string Window::to_string() const
          "]";
 }
 
-CENTURION_DEF Window::operator SDL_Window*() const noexcept { return window; }
+CENTURION_DEF Window::operator SDL_Window*() const noexcept
+{
+  return window;
+}
 
 CENTURION_DEF SDL_Window* Window::get_internal() const noexcept
 {

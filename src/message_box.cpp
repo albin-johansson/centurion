@@ -178,7 +178,7 @@ void MessageBox::set_type(MessageBoxID type) noexcept { this->type = type; }
 CENTURION_DEF
 void MessageBox::set_color_scheme(std::optional<ColorScheme> scheme) noexcept
 {
-  this->colorScheme = std::move(scheme);
+  this->colorScheme = scheme;
 }
 
 #endif

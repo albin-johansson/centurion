@@ -167,9 +167,22 @@ class Cursor final {
   CENTURION_API
   explicit Cursor(const Surface& surface, math::IPoint hotspot);
 
+  /**
+   * Creates a cursor by moving the supplied cursor.
+   *
+   * @param other the cursor that will be moved.
+   * @since 4.0.0
+   */
   CENTURION_API
   Cursor(Cursor&& other) noexcept;
 
+  /**
+   * Moves the contents of the supplied cursor into this cursor.
+   *
+   * @param other the cursor that will be moved.
+   * @return the updated cursor.
+   * @since 4.0.0
+   */
   CENTURION_API
   Cursor& operator=(Cursor&& other) noexcept;
 

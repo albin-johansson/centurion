@@ -89,6 +89,12 @@ TEST_CASE("ColorScheme general test", "[MessageBox]")
   CHECK(&scheme.get());
 }
 
+TEST_CASE("MessageBox(const char*)", "[MessageBox]")
+{
+  CHECK_NOTHROW(MessageBox{nullptr});
+  CHECK_NOTHROW(MessageBox{"foo"});
+}
+
 TEST_CASE("MessageBox::set_type", "[MessageBox]")
 {
   MessageBox mb;
@@ -100,8 +106,20 @@ TEST_CASE("MessageBox::set_type", "[MessageBox]")
   CHECK(type == mb.get_type());
 }
 
-TEST_CASE("MessageBox(const char*)", "[MessageBox]")
+TEST_CASE("MessageBox::set_color_scheme", "[MessageBox]") {
+  MessageBox mb;
+  CHECK_NOTHROW(mb.set_color_scheme(std::nullopt));
+}
+
+TEST_CASE("MessageBox::set_title", "[MessageBox]")
 {
-  CHECK_NOTHROW(MessageBox{nullptr});
-  CHECK_NOTHROW(MessageBox{"foo"});
+  MessageBox mb;
+  CHECK_NOTHROW(mb.set_title(nullptr));
+  CHECK_NOTHROW(mb.set_title("foo"));
+}
+
+TEST_CASE("MessageBox::set_message", "[MessageBox]") {
+  MessageBox mb;
+  CHECK_NOTHROW(mb.set_message(nullptr));
+  CHECK_NOTHROW(mb.set_message("foo"));
 }

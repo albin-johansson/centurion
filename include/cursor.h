@@ -70,7 +70,7 @@ class Cursor final {
   CENTURION_API static bool is_visible() noexcept;
 };
 
-};  // namespace centurion
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
 #include "cursor.cpp"

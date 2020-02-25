@@ -23,7 +23,7 @@
  */
 
 /**
- * This header provides about 140 color constants.
+ * The colors header provides about 140 color constants.
  * The colors defined in this header were based on <a
  * href=https://www.w3schools.com/colors/colors_names.asp>this</a> list.
  *

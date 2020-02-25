@@ -86,7 +86,7 @@ class Color final {
    * @param other the color that will be copied.
    * @since 3.0.0
    */
-  Color(const Color& other) noexcept = default;
+  constexpr Color(const Color& other) noexcept = default;
 
   /**
    * Move constructor.
@@ -94,7 +94,7 @@ class Color final {
    * @param other the color that will be moved.
    * @since 3.0.0
    */
-  CENTURION_API Color(Color&& other) noexcept;
+  constexpr Color(Color&& other) noexcept = default;
 
   /**
    * Creates a color that is a copy of the supplied SDL_Color.
@@ -102,7 +102,8 @@ class Color final {
    * @param color the SDL_Color that will be copied.
    * @since 3.0.0
    */
-  CENTURION_API explicit Color(const SDL_Color& color) noexcept;
+  CENTURION_API 
+  explicit Color(const SDL_Color& color) noexcept;
 
   /**
    * Creates a color by moving the supplied SDL_Color.
@@ -139,7 +140,7 @@ class Color final {
    * @return the modified color.
    * @since 3.0.0
    */
-  CENTURION_API Color& operator=(const Color& other) noexcept;
+  constexpr Color& operator=(const Color& other) noexcept = default;
 
   /**
    * Moves the fields of the supplied color.
@@ -148,7 +149,7 @@ class Color final {
    * @return the modified color.
    * @since 3.0.0
    */
-  CENTURION_API Color& operator=(Color&& other) noexcept;
+  constexpr Color& operator=(Color&& other) noexcept = default;
 
   /**
    * Sets the value of the red component.
@@ -371,6 +372,17 @@ class Color final {
   /*implicit*/ operator SDL_Color() const noexcept
   {
     return {red, green, blue, alpha};
+  }
+
+  /**
+   * Converts the color to a pointer to a SDL_Color instance.
+   * 
+   * @return a pointer to the Color instance reinterpreted as a SDL_Color instance.
+   * @since 4.0,0 
+   */
+  CENTURION_NODISCARD
+  explicit operator const SDL_Color*() const noexcept {
+    return reinterpret_cast<const SDL_Color*>(this); 
   }
 
   /**

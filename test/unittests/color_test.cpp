@@ -236,6 +236,20 @@ TEST_CASE("Color conversions", "[Color]")
     CHECK(color.get_green() == msgColor.g);
     CHECK(color.get_blue() == msgColor.b);
   }
+
+  SECTION("Reinterpret to SDL_Color*") {
+    const Color color = bisque;
+    const auto* sdlColor = static_cast<const SDL_Color*>(color);
+
+    const void* adr = &color;
+    const void* sdlAdr = sdlColor;
+    CHECK(adr == sdlAdr);
+
+    CHECK(color.get_red() == sdlColor->r);
+    CHECK(color.get_green() == sdlColor->g);
+    CHECK(color.get_blue() == sdlColor->b);
+    CHECK(color.get_alpha() == sdlColor->a);
+  }
 }
 
 TEST_CASE("Color::to_string", "[Color]")

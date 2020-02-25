@@ -73,8 +73,6 @@ Cursor::~Cursor() noexcept
   destroy();
 }
 
-// TODO add smart pointer factory methods
-
 CENTURION_DEF
 void Cursor::destroy() noexcept
 {

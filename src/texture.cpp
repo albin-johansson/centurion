@@ -317,30 +317,6 @@ bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept
   return a != static_cast<SDL_TextureAccess>(b);
 }
 
-CENTURION_DEF
-bool operator==(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept
-{
-  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
-}
-
-CENTURION_DEF
-bool operator==(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept
-{
-  return lhs == static_cast<SDL_PixelFormatEnum>(rhs);
-}
-
-CENTURION_DEF
-bool operator!=(PixelFormat lhs, SDL_PixelFormatEnum rhs) noexcept
-{
-  return static_cast<SDL_PixelFormatEnum>(lhs) != rhs;
-}
-
-CENTURION_DEF
-bool operator!=(SDL_PixelFormatEnum lhs, PixelFormat rhs) noexcept
-{
-  return lhs != static_cast<SDL_PixelFormatEnum>(rhs);
-}
-
 }  // namespace video
 }  // namespace centurion
 

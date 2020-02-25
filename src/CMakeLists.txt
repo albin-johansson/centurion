@@ -52,7 +52,8 @@ set(SOURCE_FILES
         error.cpp
         event.cpp
         surface.cpp
-        cursor.cpp)
+        cursor.cpp
+        pixel_format.cpp)
 
 add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})
 

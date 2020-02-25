@@ -360,8 +360,7 @@ CENTURION_DEF int Window::get_y() const noexcept
   return y;
 }
 
-// TODO change return type to IPoint?
-CENTURION_DEF std::pair<int, int> Window::get_position() const noexcept
+CENTURION_DEF math::IPoint Window::get_position() const noexcept
 {
   int x = 0;
   int y = 0;

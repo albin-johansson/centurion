@@ -37,6 +37,7 @@
 
 #include "centurion_api.h"
 #include "pixel_format.h"
+#include "point.h"
 
 namespace centurion {
 namespace video {
@@ -519,11 +520,11 @@ class Window final {
   /**
    * Returns the current position of the window.
    *
-   * @return the current position of the window, in the format (x, y).
+   * @return the current position of the window.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::pair<int, int> get_position() const noexcept;
+  CENTURION_API math::IPoint get_position() const noexcept;
 
   /**
    * Returns the minimum size of the window.

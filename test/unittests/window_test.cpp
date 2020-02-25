@@ -369,9 +369,9 @@ TEST_CASE("Window::get_position && Window::set_position", "[Window]")
 
   CHECK(listener->counter > 0);
 
-  const auto [actualX, actualY] = window.get_position();
-  CHECK(x == actualX);
-  CHECK(y == actualY);
+  const auto pos = window.get_position();
+  CHECK(x == pos.get_x());
+  CHECK(y == pos.get_y());
 }
 
 TEST_CASE("Window::set_decorated && Window::is_decorated", "[Window]")

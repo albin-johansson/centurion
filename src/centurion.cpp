@@ -5,7 +5,8 @@
 
 namespace centurion {
 
-CENTURION_DEF void Centurion::init_sdl()
+CENTURION_DEF
+void Centurion::init_sdl()
 {
 #ifndef CENTURION_NOAUDIO
   const auto result = SDL_Init(SDL_INIT_EVERYTHING);
@@ -20,7 +21,8 @@ CENTURION_DEF void Centurion::init_sdl()
 #endif
 }
 
-CENTURION_DEF void Centurion::init_ttf()
+CENTURION_DEF
+void Centurion::init_ttf()
 {
   const auto result = TTF_Init();
   if (result == -1) {
@@ -28,7 +30,8 @@ CENTURION_DEF void Centurion::init_ttf()
   }
 }
 
-CENTURION_DEF void Centurion::init_img()
+CENTURION_DEF
+void Centurion::init_img()
 {
   const auto flags = IMG_Init(img_flags);
   if (!flags) {
@@ -36,7 +39,8 @@ CENTURION_DEF void Centurion::init_img()
   }
 }
 
-CENTURION_DEF void Centurion::init_mix()
+CENTURION_DEF
+void Centurion::init_mix()
 {
   const auto flags = Mix_Init(mix_flags);
   if (!flags) {
@@ -51,17 +55,20 @@ CENTURION_DEF void Centurion::init_mix()
   }
 }
 
-CENTURION_DEF Centurion::Centurion()
+CENTURION_DEF
+Centurion::Centurion()
 {
   init();
 }
 
-CENTURION_DEF Centurion::~Centurion() noexcept
+CENTURION_DEF
+Centurion::~Centurion() noexcept
 {
   close();
 }
 
-CENTURION_DEF void Centurion::init()
+CENTURION_DEF
+void Centurion::init()
 {
   init_sdl();
   init_img();
@@ -71,7 +78,8 @@ CENTURION_DEF void Centurion::init()
 #endif
 }
 
-CENTURION_DEF void Centurion::close() noexcept
+CENTURION_DEF
+void Centurion::close() noexcept
 {
   IMG_Quit();
   TTF_Quit();

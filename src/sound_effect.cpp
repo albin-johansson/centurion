@@ -14,7 +14,8 @@ namespace audio {
 
 // TODO check Mix documentation if there are any redundancies
 
-CENTURION_DEF SoundEffect::SoundEffect(const std::string& file)
+CENTURION_DEF
+SoundEffect::SoundEffect(const std::string& file)
 {
   chunk = Mix_LoadWAV(file.c_str());
   if (!chunk) {
@@ -22,7 +23,8 @@ CENTURION_DEF SoundEffect::SoundEffect(const std::string& file)
   }
 }
 
-CENTURION_DEF SoundEffect::SoundEffect(SoundEffect&& other) noexcept
+CENTURION_DEF
+SoundEffect::SoundEffect(SoundEffect&& other) noexcept
 {
   Mix_FreeChunk(chunk);
 
@@ -32,7 +34,8 @@ CENTURION_DEF SoundEffect::SoundEffect(SoundEffect&& other) noexcept
   channel = other.channel;
 }
 
-CENTURION_DEF SoundEffect::~SoundEffect()
+CENTURION_DEF
+SoundEffect::~SoundEffect()
 {
   if (chunk) {
     stop();
@@ -40,7 +43,8 @@ CENTURION_DEF SoundEffect::~SoundEffect()
   }
 }
 
-CENTURION_DEF SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept
+CENTURION_DEF
+SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept
 {
   Mix_FreeChunk(chunk);
 
@@ -52,8 +56,8 @@ CENTURION_DEF SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept
   return *this;
 }
 
-CENTURION_DEF std::unique_ptr<SoundEffect> SoundEffect::unique(
-    const std::string& file)
+CENTURION_DEF
+std::unique_ptr<SoundEffect> SoundEffect::unique(const std::string& file)
 {
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<SoundEffect>(file);
@@ -62,13 +66,14 @@ CENTURION_DEF std::unique_ptr<SoundEffect> SoundEffect::unique(
 #endif
 }
 
-CENTURION_DEF std::shared_ptr<SoundEffect> SoundEffect::shared(
-    const std::string& file)
+CENTURION_DEF
+std::shared_ptr<SoundEffect> SoundEffect::shared(const std::string& file)
 {
   return std::make_shared<SoundEffect>(file);
 }
 
-CENTURION_DEF void SoundEffect::activate(int nLoops) noexcept
+CENTURION_DEF
+void SoundEffect::activate(int nLoops) noexcept
 {
   if (channel != undefinedChannel) {
     Mix_PlayChannel(channel, chunk, nLoops);
@@ -77,7 +82,8 @@ CENTURION_DEF void SoundEffect::activate(int nLoops) noexcept
   }
 }
 
-CENTURION_DEF void SoundEffect::play(int nLoops) noexcept
+CENTURION_DEF
+void SoundEffect::play(int nLoops) noexcept
 {
   if (nLoops < 0) {
     nLoops = -1;
@@ -85,7 +91,8 @@ CENTURION_DEF void SoundEffect::play(int nLoops) noexcept
   activate(nLoops);
 }
 
-CENTURION_DEF void SoundEffect::stop() noexcept
+CENTURION_DEF
+void SoundEffect::stop() noexcept
 {
   if (is_playing()) {
     Mix_Pause(channel);
@@ -93,7 +100,8 @@ CENTURION_DEF void SoundEffect::stop() noexcept
   }
 }
 
-CENTURION_DEF void SoundEffect::fade_in(int ms) noexcept
+CENTURION_DEF
+void SoundEffect::fade_in(int ms) noexcept
 {
   if (ms > 0 && !is_playing()) {
     if (channel != undefinedChannel) {
@@ -104,14 +112,16 @@ CENTURION_DEF void SoundEffect::fade_in(int ms) noexcept
   }
 }
 
-CENTURION_DEF void SoundEffect::fade_out(int ms) noexcept
+CENTURION_DEF
+void SoundEffect::fade_out(int ms) noexcept
 {
   if ((ms > 0) && is_playing()) {
     Mix_FadeOutChannel(channel, ms);
   }
 }
 
-CENTURION_DEF void SoundEffect::set_volume(int volume) noexcept
+CENTURION_DEF
+void SoundEffect::set_volume(int volume) noexcept
 {
   if (volume < 0) {
     volume = 0;
@@ -122,24 +132,28 @@ CENTURION_DEF void SoundEffect::set_volume(int volume) noexcept
   Mix_VolumeChunk(chunk, volume);
 }
 
-CENTURION_DEF int SoundEffect::get_volume() const noexcept
+CENTURION_DEF
+int SoundEffect::get_volume() const noexcept
 {
   return chunk->volume;
 }
 
-CENTURION_DEF bool SoundEffect::is_playing() const noexcept
+CENTURION_DEF
+bool SoundEffect::is_playing() const noexcept
 {
   return (channel != undefinedChannel) && Mix_Playing(channel);
 }
 
-CENTURION_DEF std::string SoundEffect::to_string() const
+CENTURION_DEF
+std::string SoundEffect::to_string() const
 {
   const auto address = address_of(this);
   const auto volume = std::to_string(get_volume());
   return "[SoundEffect@" + address + " | Volume: " + volume + "]";
 }
 
-CENTURION_DEF SoundEffect::operator Mix_Chunk*() const noexcept
+CENTURION_DEF
+SoundEffect::operator Mix_Chunk*() const noexcept
 {
   return chunk;
 }

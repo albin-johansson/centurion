@@ -7,18 +7,21 @@
 
 namespace centurion {
 
-CENTURION_DEF const char* Error::descriptionf() noexcept
+CENTURION_DEF
+const char* Error::descriptionf() noexcept
 {
   const auto* err = SDL_GetError();
   return err ? err : "";
 }
 
-CENTURION_DEF std::string Error::description() noexcept
+CENTURION_DEF
+std::string Error::description() noexcept
 {
   return {descriptionf()};
 }
 
-CENTURION_DEF std::string Error::msg() noexcept
+CENTURION_DEF
+std::string Error::msg() noexcept
 {
   return "Error: " + description();
 }

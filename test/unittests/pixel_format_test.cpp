@@ -133,4 +133,7 @@ TEST_CASE("PixelFormat enum values", "[PixelFormat]")
     CHECK(SDL_PIXELFORMAT_NV21 == PixelFormat::NV21);
     CHECK(SDL_PIXELFORMAT_EXTERNAL_OES == PixelFormat::ExternalOES);
   }
+
+  CHECK(PixelFormat::YV12 != SDL_PIXELFORMAT_BGR555);
+  CHECK(SDL_PIXELFORMAT_INDEX4LSB != PixelFormat::ABGR8888);
 }

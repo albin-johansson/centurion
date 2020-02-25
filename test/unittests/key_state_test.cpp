@@ -3,6 +3,7 @@
 #include "catch.hpp"
 
 using namespace centurion;
+using namespace centurion::input;
 
 TEST_CASE("KeyState smart pointer factory methods", "[KeyState]")
 {

@@ -3,6 +3,7 @@
 #include "catch.hpp"
 
 using namespace centurion;
+using namespace centurion::input;
 
 TEST_CASE("MouseState()", "[MouseState]")
 {
@@ -19,6 +20,20 @@ TEST_CASE("MouseState smart pointer factory methods", "[MouseState]")
 {
   CHECK(MouseState::unique());
   CHECK(MouseState::shared());
+}
+
+TEST_CASE("MouseState::update", "[MouseState]")
+{
+  MouseState state;
+
+  CHECK_NOTHROW(state.update());
+
+  state.set_window_width(12);
+  state.set_window_height(632);
+  state.set_logical_width(234);
+  state.set_logical_height(35);
+
+  CHECK_NOTHROW(state.update());
 }
 
 TEST_CASE("MouseState::reset", "[MouseState]")

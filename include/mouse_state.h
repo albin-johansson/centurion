@@ -32,6 +32,7 @@
 #include "window_listener.h"
 
 namespace centurion {
+namespace input {
 
 /**
  * The MouseState class provides information about the mouse state, which is an
@@ -64,9 +65,11 @@ class MouseState final : public video::IWindowListener {
   /**
    * @since 3.0.0
    */
-  CENTURION_API MouseState() noexcept;
+  CENTURION_API
+  MouseState() noexcept;
 
-  CENTURION_API ~MouseState() noexcept override;
+  CENTURION_API
+  ~MouseState() noexcept override;
 
   /**
    * Creates and returns a unique pointer to a MouseState instance.
@@ -75,7 +78,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<MouseState> unique();
+  CENTURION_API
+  static std::unique_ptr<MouseState> unique();
 
   /**
    * Creates and returns a shared pointer to a MouseState instance.
@@ -84,24 +88,27 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<MouseState> shared();
+  CENTURION_API
+  static std::shared_ptr<MouseState> shared();
 
-  CENTURION_API void window_updated(
-      const video::Window& window) noexcept override;
+  CENTURION_API
+  void window_updated(const video::Window& window) noexcept override;
 
   /**
    * Updates the mouse state.
    *
    * @since 3.0.0
    */
-  CENTURION_API void update() noexcept;
+  CENTURION_API
+  void update() noexcept;
 
   /**
    * Resets the screen and logical dimensions of the mouse state instance.
    *
    * @since 3.0.0
    */
-  CENTURION_API void reset() noexcept;
+  CENTURION_API
+  void reset() noexcept;
 
   /**
    * Sets the logical width that will be used to determine the mouse position.
@@ -112,7 +119,8 @@ class MouseState final : public video::IWindowListener {
    * mouse position.
    * @since 3.0.0
    */
-  CENTURION_API void set_logical_width(int logicalWidth) noexcept;
+  CENTURION_API
+  void set_logical_width(int logicalWidth) noexcept;
 
   /**
    * Sets the logical height that will be used to determine the mouse position.
@@ -123,7 +131,8 @@ class MouseState final : public video::IWindowListener {
    * mouse position.
    * @since 3.0.0
    */
-  CENTURION_API void set_logical_height(int logicalHeight) noexcept;
+  CENTURION_API
+  void set_logical_height(int logicalHeight) noexcept;
 
   /**
    * Sets the window width that the mouse state instance will use when
@@ -133,7 +142,8 @@ class MouseState final : public video::IWindowListener {
    * @param windowWidth the width of the screen.
    * @since 3.0.0
    */
-  CENTURION_API void set_window_width(int windowWidth) noexcept;
+  CENTURION_API
+  void set_window_width(int windowWidth) noexcept;
 
   /**
    * Sets the window height that the mouse state instance will use when
@@ -143,7 +153,8 @@ class MouseState final : public video::IWindowListener {
    * @param windowHeight the height of the screen.
    * @since 3.0.0
    */
-  CENTURION_API void set_window_height(int windowHeight) noexcept;
+  CENTURION_API
+  void set_window_height(int windowHeight) noexcept;
 
   /**
    * Returns the x-coordinate of the mouse.
@@ -152,7 +163,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_mouse_x() const noexcept;
+  CENTURION_API
+  int get_mouse_x() const noexcept;
 
   /**
    * Returns the y-coordinate of the mouse.
@@ -161,7 +173,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_mouse_y() const noexcept;
+  CENTURION_API
+  int get_mouse_y() const noexcept;
 
   /**
    * Returns the window width used by the mouse state instance.
@@ -171,7 +184,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_window_width() const noexcept;
+  CENTURION_API
+  int get_window_width() const noexcept;
 
   /**
    * Returns the window height used by the mouse state instance.
@@ -181,7 +195,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_window_height() const noexcept;
+  CENTURION_API
+  int get_window_height() const noexcept;
 
   /**
    * Returns the logical width used by the mouse state instance.
@@ -191,7 +206,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_logical_width() const noexcept;
+  CENTURION_API
+  int get_logical_width() const noexcept;
 
   /**
    * Returns the logical height used by the mouse state instance.
@@ -201,7 +217,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_logical_height() const noexcept;
+  CENTURION_API
+  int get_logical_height() const noexcept;
 
   /**
    * Indicates whether or not the left mouse button is currently pressed.
@@ -210,7 +227,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_left_button_pressed() const noexcept;
+  CENTURION_API
+  bool is_left_button_pressed() const noexcept;
 
   /**
    * Indicates whether or not the right mouse button is currently pressed.
@@ -219,7 +237,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_right_button_pressed() const noexcept;
+  CENTURION_API
+  bool is_right_button_pressed() const noexcept;
 
   /**
    * Indicates whether or not the left mouse button was released.
@@ -228,7 +247,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool was_left_button_released() const noexcept;
+  CENTURION_API
+  bool was_left_button_released() const noexcept;
 
   /**
    * Indicates whether or not the right mouse button was released.
@@ -237,7 +257,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool was_right_button_released() const noexcept;
+  CENTURION_API
+  bool was_right_button_released() const noexcept;
 
   /**
    * Indicates whether or not the mouse was moved.
@@ -246,7 +267,8 @@ class MouseState final : public video::IWindowListener {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool was_mouse_moved() const noexcept;
+  CENTURION_API
+  bool was_mouse_moved() const noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
@@ -268,6 +290,7 @@ static_assert(std::is_nothrow_copy_assignable<MouseState>::value,
 static_assert(std::is_base_of<video::IWindowListener, MouseState>::value,
               "MouseState isn't a subclass of IWindowListener!");
 
+}  // namespace input
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

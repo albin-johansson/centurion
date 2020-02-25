@@ -74,8 +74,6 @@ class Centurion final {
   static constexpr int mix_flags = MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC |
                                    MIX_INIT_MID | MIX_INIT_MOD | MIX_INIT_OPUS;
 
-  static bool wasInit;
-
   /**
    * Initializes the core SDL2 library.
    *
@@ -110,8 +108,8 @@ class Centurion final {
 
  public:
   /**
-   * Initializes the Centurion library. Creating more than one instance of this
-   * class is never necessary, but doing so is safe.
+   * Initializes the Centurion library. Do NOT ever create more than one
+   * instance of this class, or bad things might happen.
    *
    * @throws CenturionException if any of the SDL libraries can't be loaded.
    * @since 3.0.0

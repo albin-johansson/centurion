@@ -3,11 +3,7 @@
 
 #include "centurion.h"
 
-#include "centurion_exception.h"
-
 namespace centurion {
-
-bool Centurion::wasInit = false;
 
 CENTURION_DEF void Centurion::init_sdl()
 {
@@ -67,30 +63,23 @@ CENTURION_DEF Centurion::~Centurion() noexcept
 
 CENTURION_DEF void Centurion::init()
 {
-  if (!wasInit) {
-    init_sdl();
-    init_img();
-    init_ttf();
+  init_sdl();
+  init_img();
+  init_ttf();
 #ifndef CENTURION_NOAUDIO
-    init_mix();
+  init_mix();
 #endif
-    wasInit = true;
-  }
 }
 
 CENTURION_DEF void Centurion::close() noexcept
 {
-  if (wasInit) {
-    IMG_Quit();
-    TTF_Quit();
+  IMG_Quit();
+  TTF_Quit();
 #ifndef CENTURION_NOAUDIO
-    Mix_CloseAudio();
-    Mix_Quit();
+  Mix_CloseAudio();
+  Mix_Quit();
 #endif
-    SDL_Quit();
-
-    wasInit = false;
-  }
+  SDL_Quit();
 }
 
 }  // namespace centurion

@@ -30,6 +30,7 @@
 #include <optional>
 
 #include "centurion_api.h"
+#include "pixel_format.h"
 
 namespace centurion {
 namespace system {
@@ -464,7 +465,7 @@ class Screen final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static uint32_t get_pixel_format() noexcept;
+  static video::PixelFormat get_pixel_format() noexcept;
 };
 
 }  // namespace system

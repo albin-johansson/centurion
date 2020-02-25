@@ -230,11 +230,11 @@ int Screen::get_refresh_rate() noexcept
 }
 
 CENTURION_DEF
-uint32_t Screen::get_pixel_format() noexcept
-{  // TODO replace return type
+video::PixelFormat Screen::get_pixel_format() noexcept
+{
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  return mode.format;
+  return static_cast<video::PixelFormat>(mode.format);
 }
 
 }  // namespace system

@@ -3,6 +3,7 @@
 #include <catch.hpp>
 
 using namespace centurion;
+using namespace system;
 
 TEST_CASE("AppPath()", "[AppPath]")
 {

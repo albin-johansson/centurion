@@ -17,7 +17,7 @@ static constexpr auto daniel_path = "resources/daniel.ttf";
 TEST_CASE("Font(string&, int)", "[Font]")
 {
   CHECK_THROWS_AS(Font("", 1), CenturionException);
-  CHECK_THROWS_AS(Font("", 0), std::invalid_argument);
+  CHECK_THROWS_AS(Font("", 0), CenturionException);
 }
 
 TEST_CASE("Font(Font&&)", "[Font]")

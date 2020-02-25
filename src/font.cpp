@@ -10,8 +10,7 @@ CENTURION_DEF
 Font::Font(const std::string& file, int size) : size{size}
 {
   if (size <= 0) {
-    // TODO consider using CenturionException
-    throw std::invalid_argument{"Bad font size!"};
+    throw CenturionException{"Bad font size!"};
   }
 
   font = TTF_OpenFont(file.c_str(), size);

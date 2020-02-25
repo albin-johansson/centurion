@@ -91,8 +91,8 @@ class Font final {
   /**
    * @param file the file path of the TrueType font file.
    * @param size the font size, must be greater than zero.
-   * @throws std::invalid_argument if the supplied size isn't greater than zero.
-   * @throws CenturionException if the font cannot be loaded.
+   * @throws CenturionException if the font cannot be loaded or if the supplied
+   * size isn't greater than zero.
    * @since 3.0.0
    */
   CENTURION_API
@@ -141,7 +141,8 @@ class Font final {
    * @param size the font size, must be greater than zero.
    * @return a unique pointer to a font instance.
    * @throws std::invalid_argument if the supplied size isn't greater than zero.
-   * @throws CenturionException if the font cannot be loaded.
+   * @throws CenturionException if the font cannot be loaded or if the supplied
+   * size isn't greater than zero.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -155,7 +156,8 @@ class Font final {
    * @param size the font size, must be greater than zero.
    * @return a shared pointer to a font instance.
    * @throws std::invalid_argument if the supplied size isn't greater than zero.
-   * @throws CenturionException if the font cannot be loaded.
+   * @throws CenturionException if the font cannot be loaded or if the supplied
+   * size isn't greater than zero.
    * @since 3.0.0
    */
   CENTURION_NODISCARD

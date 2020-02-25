@@ -34,7 +34,9 @@ TEST_CASE("Cursor move semantics", "[Cursor]")
   SECTION("Move assignment")
   {
     Cursor cursor{SystemCursor::Arrow_N_S};
-    Cursor other = std::move(cursor);
+    Cursor other{SystemCursor::No};
+    
+    other = std::move(cursor);
   }
 }
 

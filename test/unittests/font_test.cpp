@@ -1,8 +1,8 @@
 #include "font.h"
 
+#include <catch.hpp>
 #include <utility>
 
-#include "catch.hpp"
 #include "centurion_exception.h"
 #include "log.h"
 

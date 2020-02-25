@@ -1,8 +1,8 @@
 #include "color.h"
 
+#include <catch.hpp>
 #include <utility>
 
-#include "catch.hpp"
 #include "colors.h"
 #include "log.h"
 
@@ -237,7 +237,8 @@ TEST_CASE("Color conversions", "[Color]")
     CHECK(color.get_blue() == msgColor.b);
   }
 
-  SECTION("Reinterpret to SDL_Color*") {
+  SECTION("Reinterpret to SDL_Color*")
+  {
     const Color color = bisque;
     const auto* sdlColor = static_cast<const SDL_Color*>(color);
 

@@ -1,6 +1,6 @@
 #include "paths.h"
 
-#include "catch.hpp"
+#include <catch.hpp>
 
 using namespace centurion;
 

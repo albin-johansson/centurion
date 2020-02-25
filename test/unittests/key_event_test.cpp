@@ -1,6 +1,6 @@
+#include <catch.hpp>
 #include <utility>
 
-#include "catch.hpp"
 #include "event.h"
 #include "window.h"
 

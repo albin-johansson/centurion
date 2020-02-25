@@ -2,9 +2,9 @@
 
 #include <SDL.h>
 
+#include <catch.hpp>
 #include <string>
 
-#include "catch.hpp"
 #include "log.h"
 
 using namespace centurion;

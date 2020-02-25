@@ -1,8 +1,8 @@
 #include "renderer.h"
 
+#include <catch.hpp>
 #include <utility>
 
-#include "catch.hpp"
 #include "centurion_exception.h"
 #include "colors.h"
 #include "log.h"

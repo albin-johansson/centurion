@@ -1,7 +1,8 @@
 #ifndef CENTURION_NOAUDIO
 
+#include <catch.hpp>
+
 #include "audio.h"
-#include "catch.hpp"
 #include "centurion_exception.h"
 #include "log.h"
 #include "timer.h"

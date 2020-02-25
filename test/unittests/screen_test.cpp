@@ -1,4 +1,5 @@
-#include "catch.hpp"
+#include <catch.hpp>
+
 #include "system.h"
 
 using namespace centurion::system;

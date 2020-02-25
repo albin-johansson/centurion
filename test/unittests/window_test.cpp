@@ -1,6 +1,7 @@
 #include "window.h"
 
-#include "catch.hpp"
+#include <catch.hpp>
+
 #include "centurion_exception.h"
 #include "log.h"
 #include "renderer.h"

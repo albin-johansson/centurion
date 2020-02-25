@@ -1,6 +1,7 @@
 #include "point.h"
 
-#include "catch.hpp"
+#include <catch.hpp>
+
 #include "log.h"
 
 using namespace centurion;

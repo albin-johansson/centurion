@@ -1,4 +1,5 @@
-#include "catch.hpp"
+#include <catch.hpp>
+
 #include "event.h"
 
 using namespace centurion;

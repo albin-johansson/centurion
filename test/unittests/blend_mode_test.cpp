@@ -1,6 +1,6 @@
 #include "blend_mode.h"
 
-#include "catch.hpp"
+#include <catch.hpp>
 
 using namespace centurion;
 using namespace centurion::video;

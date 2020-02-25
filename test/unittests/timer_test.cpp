@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 
-#include "catch.hpp"
+#include <catch.hpp>
 
 using namespace centurion;
 

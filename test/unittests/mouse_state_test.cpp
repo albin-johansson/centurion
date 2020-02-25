@@ -1,6 +1,6 @@
 #include "mouse_state.h"
 
-#include "catch.hpp"
+#include <catch.hpp>
 
 using namespace centurion;
 using namespace centurion::input;

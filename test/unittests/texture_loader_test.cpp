@@ -1,8 +1,8 @@
 #include "texture_loader.h"
 
+#include <catch.hpp>
 #include <string>
 
-#include "catch.hpp"
 #include "centurion_exception.h"
 #include "renderer.h"
 #include "window.h"

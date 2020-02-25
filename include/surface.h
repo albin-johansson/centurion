@@ -47,7 +47,7 @@ class Renderer;
  *
  * @since 4.0.0
  */
-class Surface final {  // TODO rename Image to Texture
+class Surface final {
  private:
   SDL_Surface* surface = nullptr;
 

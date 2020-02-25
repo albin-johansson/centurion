@@ -35,8 +35,6 @@
 namespace centurion {
 namespace event {
 
-// TODO decide whether or not the methods should prefer int over uint32_t
-
 /**
  * The EventType enum class mirrors the SDL_EventType enum.
  *

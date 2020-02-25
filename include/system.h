@@ -100,7 +100,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has the RDTSC instruction.
-   * 
+   *
    * @return true if the CPU has the RDTSC instruction; false otherwise.
    * @since 4.0.0
    */
@@ -109,8 +109,8 @@ class CPU final {
   static bool has_rdtsc() noexcept;
 
   /**
-   * Indicates whether or not the CPU has AltiVec features. 
-   * 
+   * Indicates whether or not the CPU has AltiVec features.
+   *
    * @return true if the CPU has AltiVec features; false otherwise.
    * @since 4.0.0
    */
@@ -120,7 +120,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has MMX features.
-   * 
+   *
    * @return true if the CPU has MMX features; false otherwise.
    * @since 4.0.0
    */
@@ -130,7 +130,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has 3DNow! features.
-   * 
+   *
    * @return true if the CPU has 3DNow! features; false otherwise.
    * @since 4.0.0
    */
@@ -140,7 +140,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has SSE features.
-   * 
+   *
    * @return true if the CPU has SSE features; false otherwise.
    * @since 4.0.0
    */
@@ -150,7 +150,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has SSE2 features.
-   * 
+   *
    * @return true if the CPU has SSE2 features; false otherwise.
    * @since 4.0.0
    */
@@ -160,7 +160,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has SSE3 features.
-   * 
+   *
    * @return true if the CPU has SSE3 features; false otherwise.
    * @since 4.0.0
    */
@@ -170,7 +170,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has SSE4.1 features.
-   * 
+   *
    * @return true if the CPU has SSE4.1 features; false otherwise.
    * @since 4.0.0
    */
@@ -180,7 +180,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has SSE4.2 features.
-   * 
+   *
    * @return true if the CPU has SSE4.2 features; false otherwise.
    * @since 4.0.0
    */
@@ -190,7 +190,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has AVX features.
-   * 
+   *
    * @return true if the CPU has AVX features; false otherwise.
    * @since 4.0.0
    */
@@ -200,7 +200,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has AVX2 features.
-   * 
+   *
    * @return true if the CPU has AVX2 features; false otherwise.
    * @since 4.0.0
    */
@@ -210,8 +210,9 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has AVX-512F (foundation) features.
-   * 
-   * @return true if the CPU has AVX-512F (foundation) features; false otherwise.
+   *
+   * @return true if the CPU has AVX-512F (foundation) features; false
+   * otherwise.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -220,7 +221,7 @@ class CPU final {
 
   /**
    * Indicates whether or not the CPU has NEON (ARM SIMD) features.
-   * 
+   *
    * @return true if the CPU has NEON (ARM SIMD) features; false otherwise.
    * @since 4.0.0
    */

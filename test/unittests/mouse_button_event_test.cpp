@@ -100,7 +100,7 @@ TEST_CASE("MouseButtonEvent::was_touch", "[MouseButtonEvent]")
 TEST_CASE("MouseButtonEvent::get_window_id", "[MouseButtonEvent]")
 {
   Window window;
-  const auto windowID = static_cast<uint32_t>(window.get_id());
+  const auto windowID = window.get_id();
   const auto event = [windowID]() noexcept {
     SDL_MouseButtonEvent sdlEvent{};
     sdlEvent.windowID = windowID;

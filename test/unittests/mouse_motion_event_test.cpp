@@ -106,7 +106,7 @@ TEST_CASE("MouseMotionEvent::is_button_down", "[MouseMotionEvent]")
 TEST_CASE("MouseMotionEvent::get_window_id", "[MouseMotionEvent]")
 {
   Window window;
-  const auto windowID = static_cast<uint32_t>(window.get_id());
+  const auto windowID = window.get_id();
   const auto event = [windowID]() noexcept {
     SDL_MouseMotionEvent sdlEvent{};
     sdlEvent.windowID = windowID;

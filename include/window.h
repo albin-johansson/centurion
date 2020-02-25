@@ -500,7 +500,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_id() const noexcept;
+  CENTURION_API uint32_t get_id() const noexcept;
 
 #ifdef CENTURION_HAS_OPTIONAL
 

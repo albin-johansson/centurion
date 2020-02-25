@@ -246,7 +246,7 @@ TEST_CASE("KeyEvent::get_state", "[KeyEvent]")
 TEST_CASE("KeyEvent::get_window_id", "[KeyEvent]")
 {
   const Window window;
-  const uint32_t windowID = static_cast<uint32_t>(window.get_id());
+  const auto windowID = window.get_id();
   const auto event = [windowID]() noexcept {
     SDL_KeyboardEvent sdlEvent{};
     sdlEvent.windowID = windowID;

@@ -327,9 +327,9 @@ CENTURION_DEF float Window::get_brightness() const noexcept
   return SDL_GetWindowBrightness(window);
 }
 
-CENTURION_DEF int Window::get_id() const noexcept
-{  // TODO change to uint32_t
-  return static_cast<int>(SDL_GetWindowID(window));
+CENTURION_DEF uint32_t Window::get_id() const noexcept
+{
+  return SDL_GetWindowID(window);
 }
 
 #ifdef CENTURION_HAS_OPTIONAL

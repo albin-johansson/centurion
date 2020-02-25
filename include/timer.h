@@ -30,6 +30,7 @@
 #include "centurion_api.h"
 
 namespace centurion {
+namespace system {
 
 /**
  * The Timer class provides utilities related to the system clock.
@@ -82,6 +83,7 @@ class Timer final {
   static uint32_t millis() noexcept;
 };
 
+}  // namespace system
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

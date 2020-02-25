@@ -5,6 +5,7 @@
 #include <catch.hpp>
 
 using namespace centurion;
+using namespace centurion::system;
 
 TEST_CASE("Timer::sleep", "[Timer]")
 {

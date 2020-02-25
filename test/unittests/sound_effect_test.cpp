@@ -102,7 +102,7 @@ TEST_CASE("SoundEffect::fade_out", "[SoundEffect]")
   sound.fade_out(10);
   CHECK(sound.is_playing());
 
-  Timer::sleep(1000);
+  system::Timer::sleep(1000);
   CHECK(!sound.is_playing());
 }
 

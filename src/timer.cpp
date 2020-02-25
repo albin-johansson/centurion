@@ -6,6 +6,7 @@
 #include <SDL.h>
 
 namespace centurion {
+namespace system {
 
 CENTURION_DEF
 void Timer::sleep(uint32_t ms) noexcept
@@ -31,6 +32,7 @@ uint32_t Timer::millis() noexcept
   return SDL_GetTicks();
 }
 
+}  // namespace system
 }  // namespace centurion
 
 #endif  // CENTURION_TIMER_SOURCE

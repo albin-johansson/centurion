@@ -79,32 +79,38 @@ class Centurion final {
    *
    * @since 3.0.0
    */
-  CENTURION_API static void init_sdl();
+  CENTURION_API
+  static void init_sdl();
 
   /**
    * Initializes the SDL2_ttf library.
    *
    * @since 3.0.0
    */
-  CENTURION_API static void init_ttf();
+  CENTURION_API
+  static void init_ttf();
 
   /**
    * Initializes the SDL2_image library.
    *
    * @since 3.0.0
    */
-  CENTURION_API static void init_img();
+  CENTURION_API
+  static void init_img();
 
   /**
    * Initializes the SDL2_mixer library.
    *
    * @since 3.0.0
    */
-  CENTURION_API static void init_mix();
+  CENTURION_API
+  static void init_mix();
 
-  CENTURION_API static void init();
+  CENTURION_API
+  static void init();
 
-  CENTURION_API static void close() noexcept;
+  CENTURION_API
+  static void close() noexcept;
 
  public:
   /**
@@ -114,14 +120,16 @@ class Centurion final {
    * @throws CenturionException if any of the SDL libraries can't be loaded.
    * @since 3.0.0
    */
-  CENTURION_API Centurion();
+  CENTURION_API
+  Centurion();
 
   /**
    * Closes the Centurion library.
    *
    * @since 3.0.0
    */
-  CENTURION_API ~Centurion() noexcept;
+  CENTURION_API
+  ~Centurion() noexcept;
 
   Centurion(const Centurion&) = delete;
 

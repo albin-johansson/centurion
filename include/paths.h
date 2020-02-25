@@ -50,11 +50,13 @@ class AppPath final {
    *
    * @since 3.0.0
    */
-  CENTURION_API AppPath() noexcept;
+  CENTURION_API
+  AppPath() noexcept;
 
   AppPath(const AppPath&) = delete;
 
-  CENTURION_API ~AppPath() noexcept;
+  CENTURION_API
+  ~AppPath() noexcept;
 
   AppPath& operator=(const AppPath&) = delete;
 
@@ -68,7 +70,8 @@ class AppPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<AppPath> unique();
+  CENTURION_API
+  static std::unique_ptr<AppPath> unique();
 
   /**
    * Creates and returns a shared pointer to an AppPath object that represents
@@ -80,7 +83,8 @@ class AppPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<AppPath> shared();
+  CENTURION_API
+  static std::shared_ptr<AppPath> shared();
 
   /**
    * Indicates whether or not there is a non-null string in the app path object.
@@ -89,7 +93,8 @@ class AppPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API explicit operator bool() const noexcept;
+  CENTURION_API
+  explicit operator bool() const noexcept;
 
   /**
    * Returns the path of the application executable. The returned pointer might
@@ -124,11 +129,13 @@ class PrefPath final {
    * @param app the name of your application.
    * @since 3.0.0
    */
-  CENTURION_API PrefPath(const std::string& org, const std::string& app);
+  CENTURION_API
+  PrefPath(const std::string& org, const std::string& app);
 
   PrefPath(const PrefPath&) = delete;
 
-  CENTURION_API ~PrefPath() noexcept;
+  CENTURION_API
+  ~PrefPath() noexcept;
 
   PrefPath& operator=(const PrefPath&) = delete;
 
@@ -142,8 +149,9 @@ class PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<PrefPath> unique(const std::string& org,
-                                                        const std::string& app);
+  CENTURION_API
+  static std::unique_ptr<PrefPath> unique(const std::string& org,
+                                          const std::string& app);
 
   /**
    * Creates and returns a shared pointer to a PrefPath object. Only use
@@ -155,8 +163,9 @@ class PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<PrefPath> shared(const std::string& org,
-                                                        const std::string& app);
+  CENTURION_API
+  static std::shared_ptr<PrefPath> shared(const std::string& org,
+                                          const std::string& app);
 
   /**
    * Indicates whether or not the path object holds a non-null path.

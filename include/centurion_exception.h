@@ -48,28 +48,33 @@ class CenturionException final : public std::exception {
    */
   CenturionException() = default;
 
-  CENTURION_API CenturionException(const CenturionException& other) noexcept;
+  CENTURION_API
+  CenturionException(const CenturionException& other) noexcept;
 
   /**
    * @since 4.0.0
    */
-  CENTURION_API ~CenturionException() noexcept override;
+  CENTURION_API
+  ~CenturionException() noexcept override;
 
   /**
    * @param msg the message of the exception. If the pointer is null, the string
    * "N/A" is used.
    * @since 3.0.0
    */
-  CENTURION_API explicit CenturionException(const char* msg);
+  CENTURION_API
+  explicit CenturionException(const char* msg);
 
   /**
    * @param msg the message of the exception.
    * @since 3.0.0
    */
-  CENTURION_API explicit CenturionException(const std::string& msg);
+  CENTURION_API
+  explicit CenturionException(const std::string& msg);
 
   CENTURION_NODISCARD
-  CENTURION_API const char* what() const noexcept override;
+  CENTURION_API
+  const char* what() const noexcept override;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

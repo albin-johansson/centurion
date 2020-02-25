@@ -63,7 +63,8 @@ class Window final {
    *
    * @since 3.0.0
    */
-  CENTURION_API void notify_window_listeners() noexcept;
+  CENTURION_API
+  void notify_window_listeners() noexcept;
 
  public:
   /**
@@ -81,7 +82,8 @@ class Window final {
    * greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(const char* title, int width, int height);
+  CENTURION_API
+  explicit Window(const char* title, int width, int height);
 
   /**
    * Creates a window instance. The window will be hidden by default.
@@ -92,7 +94,8 @@ class Window final {
    * greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(int width, int height);
+  CENTURION_API
+  explicit Window(int width, int height);
 
   /**
    * Creates a 800x600 window with the specified title.
@@ -101,14 +104,16 @@ class Window final {
    * string is used.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(const char* title);
+  CENTURION_API
+  explicit Window(const char* title);
 
   /**
    * Creates a 800x600 window. The window will be hidden by default.
    *
    * @since 3.0.0
    */
-  CENTURION_API Window();
+  CENTURION_API
+  Window();
 
   /**
    * Creates a window by moving the contents of the supplied window into the new
@@ -117,11 +122,13 @@ class Window final {
    * @param other the window that will be moved.
    * @since 3.0.0
    */
-  CENTURION_API Window(Window&& other) noexcept;
+  CENTURION_API
+  Window(Window&& other) noexcept;
 
   Window(const Window&) noexcept = delete;
 
-  CENTURION_API ~Window();
+  CENTURION_API
+  ~Window();
 
   Window& operator=(const Window&) noexcept = delete;
 
@@ -132,7 +139,8 @@ class Window final {
    * @return the changed window.
    * @since 3.0.0
    */
-  CENTURION_API Window& operator=(Window&& other) noexcept;
+  CENTURION_API
+  Window& operator=(Window&& other) noexcept;
 
   /**
    * Creates and returns a unique pointer to a window instance.
@@ -147,9 +155,10 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique(const char* title,
-                                                      int width,
-                                                      int height);
+  CENTURION_API
+  static std::unique_ptr<Window> unique(const char* title,
+                                        int width,
+                                        int height);
 
   /**
    * Creates and returns a unique pointer to a window instance.
@@ -162,7 +171,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique(int width, int height);
+  CENTURION_API
+  static std::unique_ptr<Window> unique(int width, int height);
 
   /**
    * Creates and returns a unique pointer to a window instance.
@@ -173,7 +183,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique(const char* title);
+  CENTURION_API
+  static std::unique_ptr<Window> unique(const char* title);
 
   /**
    * Creates and returns a unique pointer to a Window instance.
@@ -182,7 +193,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique();
+  CENTURION_API
+  static std::unique_ptr<Window> unique();
 
   /**
    * Creates and returns a shared pointer to a window instance.
@@ -197,9 +209,10 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared(const char* title,
-                                                      int width,
-                                                      int height);
+  CENTURION_API
+  static std::shared_ptr<Window> shared(const char* title,
+                                        int width,
+                                        int height);
 
   /**
    * Creates and returns a shared pointer to a window instance.
@@ -212,7 +225,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared(int width, int height);
+  CENTURION_API
+  static std::shared_ptr<Window> shared(int width, int height);
 
   /**
    * Creates and returns a shared pointer to a window instance.
@@ -223,7 +237,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared(const char* title);
+  CENTURION_API
+  static std::shared_ptr<Window> shared(const char* title);
 
   /**
    * Creates and returns a shared pointer to a Window instance.
@@ -232,21 +247,24 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared();
+  CENTURION_API
+  static std::shared_ptr<Window> shared();
 
   /**
    * Makes the window visible. Triggers a window listener update.
    *
    * @since 3.0.0
    */
-  CENTURION_API void show() noexcept;
+  CENTURION_API
+  void show() noexcept;
 
   /**
    * Makes the window invisible. Triggers a window listener update.
    *
    * @since 3.0.0
    */
-  CENTURION_API void hide() noexcept;
+  CENTURION_API
+  void hide() noexcept;
 
   /**
    * Centers the window position relative to the screen. Triggers a window
@@ -254,7 +272,8 @@ class Window final {
    *
    * @since 3.0.0
    */
-  CENTURION_API void center() noexcept;
+  CENTURION_API
+  void center() noexcept;
 
   /**
    * Raises this window above other windows and requests focus. Triggers a
@@ -262,21 +281,24 @@ class Window final {
    *
    * @since 3.0.0
    */
-  CENTURION_API void raise() noexcept;
+  CENTURION_API
+  void raise() noexcept;
 
   /**
    * Maximises the window. Triggers a window listener update.
    *
    * @since 3.1.0
    */
-  CENTURION_API void maximise() noexcept;
+  CENTURION_API
+  void maximise() noexcept;
 
   /**
    * Minimises the window. Triggers a window listener update.
    *
    * @since 3.1.0
    */
-  CENTURION_API void minimise() noexcept;
+  CENTURION_API
+  void minimise() noexcept;
 
   /**
    * Adds a window listener to the window. Null listeners are always silently
@@ -285,8 +307,8 @@ class Window final {
    * @param listener a window listener, may be null.
    * @since 3.0.0
    */
-  CENTURION_API void add_window_listener(
-      std::weak_ptr<IWindowListener> listener) noexcept;
+  CENTURION_API
+  void add_window_listener(std::weak_ptr<IWindowListener> listener) noexcept;
 
   /**
    * Sets whether or not the window is in fullscreen mode. Triggers a window
@@ -296,7 +318,8 @@ class Window final {
    * otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_fullscreen(bool fullscreen) noexcept;
+  CENTURION_API
+  void set_fullscreen(bool fullscreen) noexcept;
 
   /**
    * Sets whether or not the window is decorated. Triggers a window listener
@@ -305,7 +328,8 @@ class Window final {
    * @param decorated true if the window should be decorated; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_decorated(bool decorated) noexcept;
+  CENTURION_API
+  void set_decorated(bool decorated) noexcept;
 
   /**
    * Sets whether or not the window should be resizable. Triggers a window
@@ -314,7 +338,8 @@ class Window final {
    * @param isResizable true if the window should be resizable; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_resizable(bool isResizable) noexcept;
+  CENTURION_API
+  void set_resizable(bool isResizable) noexcept;
 
   /**
    * Sets the width of the window. Triggers a window listener update.
@@ -323,7 +348,8 @@ class Window final {
    * @throws CenturionException if the supplied width isn't greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_width(int width);
+  CENTURION_API
+  void set_width(int width);
 
   /**
    * Sets the height of the window. Triggers a window listener update.
@@ -333,7 +359,8 @@ class Window final {
    * zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_height(int height);
+  CENTURION_API
+  void set_height(int height);
 
   /**
    * Sets the icon that will be used by the window. Triggers a window listener
@@ -342,7 +369,8 @@ class Window final {
    * @param icon the surface that will serve as the icon of the window.
    * @since 3.0.0
    */
-  CENTURION_API void set_icon(const Surface& icon) noexcept;
+  CENTURION_API
+  void set_icon(const Surface& icon) noexcept;
 
   /**
    * Sets the title of the window. Triggers a window listener update.
@@ -350,7 +378,8 @@ class Window final {
    * @param title the title of the window.
    * @since 3.0.0
    */
-  CENTURION_API void set_title(const std::string& title) noexcept;
+  CENTURION_API
+  void set_title(const std::string& title) noexcept;
 
   /**
    * Sets the opacity of the window. Triggers a window listener update.
@@ -359,7 +388,8 @@ class Window final {
    * to a value in the legal range internally.
    * @since 3.0.0
    */
-  CENTURION_API void set_opacity(float opacity) noexcept;
+  CENTURION_API
+  void set_opacity(float opacity) noexcept;
 
   /**
    * Sets the minimum size of the window. Triggers a window listener update.
@@ -368,7 +398,8 @@ class Window final {
    * @param height the minimum height of the window, must be greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_min_size(int width, int height) noexcept;
+  CENTURION_API
+  void set_min_size(int width, int height) noexcept;
 
   /**
    * Sets the maximum size of the window. Triggers a window listener update.
@@ -377,7 +408,8 @@ class Window final {
    * @param height the maximum height of the window, must be greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_max_size(int width, int height) noexcept;
+  CENTURION_API
+  void set_max_size(int width, int height) noexcept;
 
   /**
    * Sets the position of the window. Note, it's possible to use
@@ -388,7 +420,8 @@ class Window final {
    * @param y the screen y-coordinate that the window will adapt.
    * @since 3.0.0
    */
-  CENTURION_API void set_position(int x, int y) noexcept;
+  CENTURION_API
+  void set_position(int x, int y) noexcept;
 
   /**
    * Sets whether or not the mouse should be confined within the window. This
@@ -398,7 +431,8 @@ class Window final {
    * false otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_grab_mouse(bool grabMouse) noexcept;
+  CENTURION_API
+  void set_grab_mouse(bool grabMouse) noexcept;
 
   /**
    * Sets the overall brightness of the window. This operation is only supported
@@ -409,7 +443,8 @@ class Window final {
    * outside this range will be clamped to the closest valid value.
    * @since 3.0.0
    */
-  CENTURION_API void set_brightness(float brightness) noexcept;
+  CENTURION_API
+  void set_brightness(float brightness) noexcept;
 
   /**
    * Indicates whether or not the window is decorated. The window is decorated
@@ -419,7 +454,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_decorated() const noexcept;
+  CENTURION_API
+  bool is_decorated() const noexcept;
 
   /**
    * Indicates whether or not the window is currently grabbing the mouse input.
@@ -428,7 +464,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_grabbing_mouse() const noexcept;
+  CENTURION_API
+  bool is_grabbing_mouse() const noexcept;
 
   /**
    * Indicates whether or not the window is resizable.
@@ -437,7 +474,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_resizable() const noexcept;
+  CENTURION_API
+  bool is_resizable() const noexcept;
 
   /**
    * Indicates whether or not the window is in fullscreen mode.
@@ -446,7 +484,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_fullscreen() const noexcept;
+  CENTURION_API
+  bool is_fullscreen() const noexcept;
 
   /**
    * Indicates whether or not the window is visible.
@@ -455,7 +494,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_visible() const noexcept;
+  CENTURION_API
+  bool is_visible() const noexcept;
 
   /**
    * Returns the current brightness value of the window. The default value of
@@ -465,7 +505,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API float get_brightness() const noexcept;
+  CENTURION_API
+  float get_brightness() const noexcept;
 
   /**
    * Returns the opacity of the window.
@@ -474,7 +515,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API float get_opacity() const noexcept;
+  CENTURION_API
+  float get_opacity() const noexcept;
 
   /**
    * Returns the x-coordinate of the window position.
@@ -483,7 +525,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_x() const noexcept;
+  CENTURION_API
+  int get_x() const noexcept;
 
   /**
    * Returns the y-coordinate of the window position.
@@ -492,7 +535,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_y() const noexcept;
+  CENTURION_API
+  int get_y() const noexcept;
 
   /**
    * Returns a numerical ID of the window.
@@ -501,7 +545,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API uint32_t get_id() const noexcept;
+  CENTURION_API
+  uint32_t get_id() const noexcept;
 
 #ifdef CENTURION_HAS_OPTIONAL
 
@@ -513,7 +558,8 @@ class Window final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::optional<int> get_display_index() const noexcept;
+  CENTURION_API
+  std::optional<int> get_display_index() const noexcept;
 
 #endif
 
@@ -524,7 +570,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API math::IPoint get_position() const noexcept;
+  CENTURION_API
+  math::IPoint get_position() const noexcept;
 
   /**
    * Returns the minimum size of the window.
@@ -533,7 +580,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::pair<int, int> get_min_size() const noexcept;
+  CENTURION_API
+  std::pair<int, int> get_min_size() const noexcept;
 
   /**
    * Returns the maximum size of the window.
@@ -542,7 +590,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::pair<int, int> get_max_size() const noexcept;
+  CENTURION_API
+  std::pair<int, int> get_max_size() const noexcept;
 
   /**
    * Returns the current width of the window.
@@ -551,7 +600,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_width() const noexcept;
+  CENTURION_API
+  int get_width() const noexcept;
 
   /**
    * Returns the current height of the window.
@@ -560,7 +610,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int get_height() const noexcept;
+  CENTURION_API
+  int get_height() const noexcept;
 
   /**
    * Returns any renderer that is associated with this window. Note! If no
@@ -572,7 +623,8 @@ class Window final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  CENTURION_API SDL_Renderer* get_renderer() const noexcept;
+  CENTURION_API
+  SDL_Renderer* get_renderer() const noexcept;
 
   /**
    * Returns the pixel format of the window.
@@ -581,7 +633,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API PixelFormat get_pixel_format() const noexcept;
+  CENTURION_API
+  PixelFormat get_pixel_format() const noexcept;
 
   /**
    * Returns the title of the window.
@@ -590,7 +643,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::string get_title() const noexcept;
+  CENTURION_API
+  std::string get_title() const noexcept;
 
   /**
    * Returns a textual representation of the window.
@@ -599,7 +653,8 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::string to_string() const;
+  CENTURION_API
+  std::string to_string() const;
 
   /**
    * Implicit conversion to raw SDL_Window pointer.
@@ -607,10 +662,12 @@ class Window final {
    * @return a pointer to the SDL_Window representation of the window.
    * @since 3.0.0
    */
-  CENTURION_API /*implicit*/ operator SDL_Window*() const noexcept;
+  CENTURION_API
+  /*implicit*/ operator SDL_Window*() const noexcept;
 
   CENTURION_NODISCARD
-  CENTURION_API SDL_Window* get_internal() const noexcept;
+  CENTURION_API
+  SDL_Window* get_internal() const noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

@@ -28,6 +28,7 @@
 #include <SDL.h>
 
 #include <gsl-lite.hpp>
+#include <memory>
 #include <type_traits>
 
 #include "centurion_api.h"
@@ -156,7 +157,8 @@ class Cursor final {
   explicit Cursor(gsl::owner<SDL_Cursor*> cursor);
 
   /**
-   * Creates a cursor based on the supplied surface.
+   * Creates a cursor based on the supplied surface. The supplied hotspot
+   * must be within the area of the supplied surface.
    *
    * @param surface the surface that will represent the cursor.
    * @param hotspot the point used to determine where the mouse
@@ -195,6 +197,88 @@ class Cursor final {
    */
   CENTURION_API
   ~Cursor() noexcept;
+
+  /**
+   * Creates and returns a unique pointer to a Cursor instance.
+   *
+   * @param id the cursor type that will be used.
+   * @return a unique pointer to a Cursor instance.
+   * @throws CenturionException if the cursor cannot be created.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static std::unique_ptr<Cursor> unique(SystemCursor id);
+
+  /**
+   * Creates and returns a unique pointer to a Cursor instance. The created
+   * Cursor will claim ownership of the supplied pointer.
+   *
+   * @param cursor a pointer to an SDL_Cursor that will be adopted.
+   * @return a unique pointer to a Cursor instance.
+   * @throws CenturionException if the cursor cannot be created.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static std::unique_ptr<Cursor> unique(gsl::owner<SDL_Cursor*> cursor);
+
+  /**
+   * Creates and returns a unique pointer to a Cursor instance. The supplied
+   * hotspot must be within the area of the supplied surface.
+   *
+   * @param surface the surface that will represent the cursor.
+   * @param hotspot the point used to determine where the mouse
+   * actually is.
+   * @return a unique pointer to a Cursor instance.
+   * @throws CenturionException if the cursor cannot be created.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static std::unique_ptr<Cursor> unique(const Surface& surface,
+                                        math::IPoint hotspot);
+
+  /**
+   * Creates and returns a shared pointer to a Cursor instance.
+   *
+   * @param id the cursor type that will be used.
+   * @return a shared pointer to a Cursor instance.
+   * @throws CenturionException if the cursor cannot be created.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static std::shared_ptr<Cursor> shared(SystemCursor id);
+
+  /**
+   * Creates and returns a shared pointer to a Cursor instance. The created
+   * Cursor will claim ownership of the supplied pointer.
+   *
+   * @param cursor a pointer to an SDL_Cursor that will be adopted.
+   * @return a shared pointer to a Cursor instance.
+   * @throws CenturionException if the cursor cannot be created.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static std::shared_ptr<Cursor> shared(gsl::owner<SDL_Cursor*> cursor);
+
+  /**
+   * Creates and returns a shared pointer to a Cursor instance. The supplied
+   * hotspot must be within the area of the supplied surface.
+   *
+   * @param surface the surface that will represent the cursor.
+   * @param hotspot the point used to determine where the mouse
+   * actually is.
+   * @return a shared pointer to a Cursor instance.
+   * @throws CenturionException if the cursor cannot be created.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static std::shared_ptr<Cursor> shared(const Surface& surface,
+                                        math::IPoint hotspot);
 
   /**
    * Makes the cursor the used cursor.

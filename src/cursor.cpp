@@ -73,6 +73,8 @@ Cursor::~Cursor() noexcept
   destroy();
 }
 
+// TODO add smart pointer factory methods
+
 CENTURION_DEF
 void Cursor::destroy() noexcept
 {
@@ -83,6 +85,56 @@ void Cursor::destroy() noexcept
   if (surface) {
     SDL_FreeSurface(surface);
   }
+}
+
+CENTURION_DEF
+std::unique_ptr<Cursor> Cursor::unique(SystemCursor id)
+{
+#ifdef CENTURION_HAS_MAKE_UNIQUE
+  return std::make_unique<Cursor>(id);
+#else
+  return centurion::make_unique<Cursor>(id);
+#endif
+}
+
+CENTURION_DEF
+std::unique_ptr<Cursor> Cursor::unique(gsl::owner<SDL_Cursor*> cursor)
+{
+#ifdef CENTURION_HAS_MAKE_UNIQUE
+  return std::make_unique<Cursor>(cursor);
+#else
+  return centurion::make_unique<Cursor>(cursor);
+#endif
+}
+
+CENTURION_DEF
+std::unique_ptr<Cursor> Cursor::unique(const Surface& surface,
+                                       math::IPoint hotspot)
+{
+#ifdef CENTURION_HAS_MAKE_UNIQUE
+  return std::make_unique<Cursor>(surface, hotspot);
+#else
+  return centurion::make_unique<Cursor>(surface, hotspot);
+#endif
+}
+
+CENTURION_DEF
+std::shared_ptr<Cursor> Cursor::shared(SystemCursor id)
+{
+  return std::make_shared<Cursor>(id);
+}
+
+CENTURION_DEF
+std::shared_ptr<Cursor> Cursor::shared(gsl::owner<SDL_Cursor*> cursor)
+{
+  return std::make_shared<Cursor>(cursor);
+}
+
+CENTURION_DEF
+std::shared_ptr<Cursor> Cursor::shared(const Surface& surface,
+                                       math::IPoint hotspot)
+{
+  return std::make_shared<Cursor>(surface, hotspot);
 }
 
 CENTURION_DEF

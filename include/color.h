@@ -379,7 +379,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  /*implicit*/ operator SDL_Color() const noexcept
+  operator SDL_Color() const noexcept
   {
     return {red, green, blue, alpha};
   }
@@ -405,7 +405,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  /*implicit*/ operator SDL_MessageBoxColor() const noexcept
+  operator SDL_MessageBoxColor() const noexcept
   {
     return {red, green, blue};
   }

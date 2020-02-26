@@ -126,7 +126,7 @@ class ButtonData final {
    * @since 3.0.0
    */
   CENTURION_API
-  /*implicit*/ operator SDL_MessageBoxButtonData() const noexcept;
+  operator SDL_MessageBoxButtonData() const noexcept;
 };
 
 /**

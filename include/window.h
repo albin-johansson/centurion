@@ -663,7 +663,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_API
-  /*implicit*/ operator SDL_Window*() const noexcept;
+  operator SDL_Window*() const noexcept;
 
   CENTURION_NODISCARD
   CENTURION_API

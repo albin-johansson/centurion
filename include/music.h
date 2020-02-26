@@ -350,7 +350,7 @@ class Music final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  /*implicit*/ operator Mix_Music*() const noexcept;
+  operator Mix_Music*() const noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

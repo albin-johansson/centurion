@@ -25,8 +25,6 @@
 #ifndef CENTURION_MUSIC_HEADER
 #define CENTURION_MUSIC_HEADER
 
-#ifndef CENTURION_NOAUDIO
-
 #include <SDL_mixer.h>
 
 #include <cstdint>
@@ -379,5 +377,4 @@ static_assert(std::is_convertible<Music, Mix_Music*>::value,
 #include "music.cpp"
 #endif
 
-#endif  // CENTURION_NOAUDIO
 #endif  // CENTURION_MUSIC_HEADER

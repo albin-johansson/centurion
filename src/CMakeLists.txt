@@ -7,7 +7,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/font.h
         ${CTN_INCLUDE_DIR}/renderer.h
         ${CTN_INCLUDE_DIR}/texture.h
-        ${CTN_INCLUDE_DIR}/sound_effect.h
         ${CTN_INCLUDE_DIR}/centurion_exception.h
         ${CTN_INCLUDE_DIR}/centurion_api.h
         ${CTN_INCLUDE_DIR}/centurion.h
@@ -24,7 +23,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/point.h
         ${CTN_INCLUDE_DIR}/key_state.h
         ${CTN_INCLUDE_DIR}/mouse_state.h
-        ${CTN_INCLUDE_DIR}/music.h
         ${CTN_INCLUDE_DIR}/centurion_utils.h
         ${CTN_INCLUDE_DIR}/error.h
         ${CTN_INCLUDE_DIR}/event.h
@@ -39,7 +37,6 @@ set(SOURCE_FILES
         font.cpp
         renderer.cpp
         texture.cpp
-        sound_effect.cpp
         centurion_exception.cpp
         centurion.cpp
         texture_loader.cpp
@@ -52,7 +49,6 @@ set(SOURCE_FILES
         blend_mode.cpp
         key_state.cpp
         mouse_state.cpp
-        music.cpp
         error.cpp
         event.cpp
         surface.cpp
@@ -62,6 +58,16 @@ set(SOURCE_FILES
         ram.cpp
         battery.cpp
         screen.cpp)
+
+if (NOT DEFINED ENV{TRAVIS})
+    set(SOURCE_FILES
+            ${SOURCE_FILES}
+            ${CTN_INCLUDE_DIR}/audio.h
+            ${CTN_INCLUDE_DIR}/sound_effect.h
+            ${CTN_INCLUDE_DIR}/music.h
+            sound_effect.cpp
+            music.cpp)
+endif ()
 
 add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})
 
@@ -108,7 +114,6 @@ target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_TTF_INCL
 target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_INCLUDE_DIR})
 target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_SOURCE_DIR})
 target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_LIBRARY_DIR})
-#target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_LIBRARY_DIR}/gsl)
 
 target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_LIBRARY}

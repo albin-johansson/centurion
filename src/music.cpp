@@ -1,8 +1,6 @@
 #ifndef CENTURION_MUSIC_SOURCE
 #define CENTURION_MUSIC_SOURCE
 
-#ifndef CENTURION_NOAUDIO
-
 #include "music.h"
 
 #include "centurion_exception.h"
@@ -203,5 +201,4 @@ bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept
 }  // namespace audio
 }  // namespace centurion
 
-#endif  // CENTURION_NOAUDIO
 #endif  // CENTURION_MUSIC_SOURCE

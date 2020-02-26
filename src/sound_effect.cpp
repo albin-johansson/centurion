@@ -1,8 +1,6 @@
 #ifndef CENTURION_SOUND_EFFECT_SOURCE
 #define CENTURION_SOUND_EFFECT_SOURCE
 
-#ifndef CENTURION_NOAUDIO
-
 #include "sound_effect.h"
 
 #include "centurion_exception.h"
@@ -161,5 +159,4 @@ SoundEffect::operator Mix_Chunk*() const noexcept
 }  // namespace audio
 }  // namespace centurion
 
-#endif  // CENTURION_NOAUDIO
 #endif  // CENTURION_SOUND_EFFECT_SOURCE

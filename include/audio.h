@@ -27,9 +27,6 @@
 
 #include <SDL_mixer.h>
 
-#include "music.h"
-#include "sound_effect.h"
-
 namespace centurion {
 namespace audio {
 
@@ -50,5 +47,8 @@ static constexpr int loopForever = -1;
 
 }  // namespace audio
 }  // namespace centurion
+
+#include "music.h"
+#include "sound_effect.h"
 
 #endif  // CENTURION_AUDIO_HEADER

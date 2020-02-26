@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "system.h"
+#include "screen.h"
 
 using namespace centurion::system;
 using namespace centurion::video;

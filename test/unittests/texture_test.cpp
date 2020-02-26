@@ -7,7 +7,6 @@
 #include "log.h"
 #include "renderer.h"
 #include "surface.h"
-#include "system.h"
 #include "window.h"
 
 using namespace centurion;

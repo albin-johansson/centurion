@@ -1,6 +1,4 @@
-#include "system.h"
-
-#include <SDL.h>
+#include "platform.h"
 
 #include <catch.hpp>
 #include <string>

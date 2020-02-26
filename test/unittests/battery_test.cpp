@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "system.h"
+#include "battery.h"
 
 using namespace centurion::system;
 

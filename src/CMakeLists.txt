@@ -14,7 +14,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/colors.h
         ${CTN_INCLUDE_DIR}/texture_loader.h
         ${CTN_INCLUDE_DIR}/paths.h
-        ${CTN_INCLUDE_DIR}/system.h
+        ${CTN_INCLUDE_DIR}/platform.h
         ${CTN_INCLUDE_DIR}/timer.h
         ${CTN_INCLUDE_DIR}/log.h
         ${CTN_INCLUDE_DIR}/blend_mode.h
@@ -31,6 +31,10 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/surface.h
         ${CTN_INCLUDE_DIR}/pixel_format.h
         ${CTN_INCLUDE_DIR}/cursor.h
+        ${CTN_INCLUDE_DIR}/cpu.h
+        ${CTN_INCLUDE_DIR}/ram.h
+        ${CTN_INCLUDE_DIR}/battery.h
+        ${CTN_INCLUDE_DIR}/screen.h
         window.cpp
         font.cpp
         renderer.cpp
@@ -40,7 +44,7 @@ set(SOURCE_FILES
         centurion.cpp
         texture_loader.cpp
         paths.cpp
-        system.cpp
+        platform.cpp
         log.cpp
         timer.cpp
         message_box.cpp
@@ -53,7 +57,11 @@ set(SOURCE_FILES
         event.cpp
         surface.cpp
         cursor.cpp
-        pixel_format.cpp)
+        pixel_format.cpp
+        cpu.cpp
+        ram.cpp
+        battery.cpp
+        screen.cpp)
 
 add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})
 

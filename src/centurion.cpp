@@ -8,17 +8,10 @@ namespace centurion {
 CENTURION_DEF
 void Centurion::init_sdl()
 {
-#ifndef CENTURION_NOAUDIO
-  const auto result = SDL_Init(SDL_INIT_EVERYTHING);
+  const auto result = SDL_Init(cfg.coreFlags);
   if (result < 0) {
     throw CenturionException{"Failed to load SDL2! " + Error::msg()};
   }
-#else
-  const auto result = SDL_Init(SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO);
-  if (result < 0) {
-    throw CenturionException{"Failed to load SDL2! " + Error::msg()};
-  }
-#endif
 }
 
 CENTURION_DEF
@@ -33,7 +26,7 @@ void Centurion::init_ttf()
 CENTURION_DEF
 void Centurion::init_img()
 {
-  const auto flags = IMG_Init(img_flags);
+  const auto flags = IMG_Init(cfg.imageFlags);
   if (!flags) {
     throw CenturionException{"Failed to load SDL2_image! " + Error::msg()};
   }
@@ -42,21 +35,27 @@ void Centurion::init_img()
 CENTURION_DEF
 void Centurion::init_mix()
 {
-  const auto flags = Mix_Init(mix_flags);
+  const auto flags = Mix_Init(cfg.mixerFlags);
   if (!flags) {
     throw CenturionException{"Failed to init SDL2_mixer! " + Error::msg()};
   }
 
-  if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,
-                    MIX_DEFAULT_FORMAT,
-                    MIX_DEFAULT_CHANNELS,
-                    4096) == -1) {
+  if (Mix_OpenAudio(cfg.mixerFreq,
+                    cfg.mixerFormat,
+                    cfg.mixerChannels,
+                    cfg.mixerChunkSize) == -1) {
     throw CenturionException{"Failed to open audio! " + Error::msg()};
   }
 }
 
 CENTURION_DEF
 Centurion::Centurion()
+{
+  init();
+}
+
+CENTURION_DEF
+Centurion::Centurion(const CenturionConfig& cfg_) : cfg{cfg_}
 {
   init();
 }
@@ -70,24 +69,42 @@ Centurion::~Centurion() noexcept
 CENTURION_DEF
 void Centurion::init()
 {
-  init_sdl();
-  init_img();
-  init_ttf();
-#ifndef CENTURION_NOAUDIO
-  init_mix();
-#endif
+  if (cfg.initCore) {
+    init_sdl();
+  }
+
+  if (cfg.initImage) {
+    init_img();
+  }
+
+  if (cfg.initTTF) {
+    init_ttf();
+  }
+
+  if (cfg.initMixer) {
+    init_mix();
+  }
 }
 
 CENTURION_DEF
 void Centurion::close() noexcept
 {
-  IMG_Quit();
-  TTF_Quit();
-#ifndef CENTURION_NOAUDIO
-  Mix_CloseAudio();
-  Mix_Quit();
-#endif
-  SDL_Quit();
+  if (cfg.initImage) {
+    IMG_Quit();
+  }
+
+  if (cfg.initTTF) {
+    TTF_Quit();
+  }
+
+  if (cfg.initMixer) {
+    Mix_CloseAudio();
+    Mix_Quit();
+  }
+
+  if (cfg.initCore) {
+    SDL_Quit();
+  }
 }
 
 }  // namespace centurion

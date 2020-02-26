@@ -33,12 +33,16 @@
 #include <cstdint>
 
 #include "audio.h"
+#include "battery.h"
 #include "blend_mode.h"
 #include "centurion_api.h"
+#include "centurion_cfg.h"
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "color.h"
 #include "colors.h"
+#include "cpu.h"
+#include "cursor.h"
 #include "error.h"
 #include "event.h"
 #include "font.h"
@@ -48,15 +52,15 @@
 #include "mouse_state.h"
 #include "music.h"
 #include "paths.h"
+#include "pixel_format.h"
+#include "platform.h"
 #include "point.h"
+#include "ram.h"
 #include "rectangle.h"
 #include "renderer.h"
-#include "sound_effect.h"
-#include "platform.h"
-#include "ram.h"
-#include "cpu.h"
-#include "battery.h"
 #include "screen.h"
+#include "sound_effect.h"
+#include "surface.h"
 #include "texture.h"
 #include "texture_loader.h"
 #include "timer.h"
@@ -66,6 +70,32 @@
 namespace centurion {
 
 /**
+ * The CenturionConfig struct is used to specify how the Centurion
+ * library is initialized. All fields are initialized to the default values
+ * used by the Centurion library.
+ *
+ * @since 4.0.0
+ */
+struct CenturionConfig {
+  bool initCore = true;
+  bool initImage = true;
+  bool initMixer = true;
+  bool initTTF = true;
+
+  uint32_t coreFlags = SDL_INIT_EVERYTHING;
+
+  int imageFlags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP;
+
+  int mixerFlags = MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC | MIX_INIT_MID |
+                   MIX_INIT_MOD | MIX_INIT_OPUS;
+
+  int mixerFreq = MIX_DEFAULT_FREQUENCY;
+  uint16_t mixerFormat = MIX_DEFAULT_FORMAT;
+  int mixerChannels = MIX_DEFAULT_CHANNELS;
+  int mixerChunkSize = 4096;
+};
+
+/**
  * The Centurion class is used to initialize and de-initialize the Centurion
  * library.
  *
@@ -73,10 +103,7 @@ namespace centurion {
  */
 class Centurion final {
  private:
-  static constexpr int img_flags =
-      IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP;
-  static constexpr int mix_flags = MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_FLAC |
-                                   MIX_INIT_MID | MIX_INIT_MOD | MIX_INIT_OPUS;
+  CenturionConfig cfg;
 
   /**
    * Initializes the core SDL2 library.
@@ -84,7 +111,7 @@ class Centurion final {
    * @since 3.0.0
    */
   CENTURION_API
-  static void init_sdl();
+  void init_sdl();
 
   /**
    * Initializes the SDL2_ttf library.
@@ -92,7 +119,7 @@ class Centurion final {
    * @since 3.0.0
    */
   CENTURION_API
-  static void init_ttf();
+  void init_ttf();
 
   /**
    * Initializes the SDL2_image library.
@@ -100,7 +127,7 @@ class Centurion final {
    * @since 3.0.0
    */
   CENTURION_API
-  static void init_img();
+  void init_img();
 
   /**
    * Initializes the SDL2_mixer library.
@@ -108,13 +135,13 @@ class Centurion final {
    * @since 3.0.0
    */
   CENTURION_API
-  static void init_mix();
+  void init_mix();
 
   CENTURION_API
-  static void init();
+  void init();
 
   CENTURION_API
-  static void close() noexcept;
+  void close() noexcept;
 
  public:
   /**
@@ -126,6 +153,18 @@ class Centurion final {
    */
   CENTURION_API
   Centurion();
+
+  /**
+   * Initializes the Centurion library according to the supplied configuration.
+   * Do NOT ever create more than one instance of this class, or bad things
+   * might happen.
+   *
+   * @param cfg the Centurion configuration, determines what gets initialized.
+   * @throws CenturionException if any of the SDL libraries can't be loaded.
+   * @since 4.0.0
+   */
+  CENTURION_API
+  explicit Centurion(const CenturionConfig& cfg);
 
   /**
    * Closes the Centurion library.

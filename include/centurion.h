@@ -76,7 +76,7 @@ namespace centurion {
  *
  * @since 4.0.0
  */
-struct CenturionConfig {
+struct CenturionConfig final {
   bool initCore = true;
   bool initImage = true;
   bool initMixer = true;

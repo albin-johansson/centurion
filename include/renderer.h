@@ -915,7 +915,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  uint32_t get_flags() const noexcept;  // FIXME
+  uint32_t get_flags() const noexcept;
 
   /**
    * Indicates whether or not the <code>present()</code> method is synced with

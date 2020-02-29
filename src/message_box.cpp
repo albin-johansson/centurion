@@ -131,7 +131,7 @@ int MessageBox::show(SDL_Window* window)
     throw CenturionException{"Failed to show message box! " + Error::msg()};
   }
 
-  return button;  // TODO consider returning std::optional<int> instead
+  return button; 
 }
 
 CENTURION_DEF

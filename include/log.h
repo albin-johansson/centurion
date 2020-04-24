@@ -57,10 +57,7 @@ enum class Priority {
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-inline bool operator==(Priority a, SDL_LogPriority b) noexcept
-{
-  return static_cast<SDL_LogPriority>(a) == b;
-}
+CENTURION_API bool operator==(Priority a, SDL_LogPriority b) noexcept;
 
 /**
  * Indicates whether or not the two log priorities represent the same priority.
@@ -71,10 +68,7 @@ inline bool operator==(Priority a, SDL_LogPriority b) noexcept
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-inline bool operator==(SDL_LogPriority a, Priority b) noexcept
-{
-  return a == static_cast<SDL_LogPriority>(b);
-}
+CENTURION_API bool operator==(SDL_LogPriority a, Priority b) noexcept;
 
 /**
  * The Category enum provides values the mirror those of SDL_LOG_CATEGORY_x.

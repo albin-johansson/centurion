@@ -76,6 +76,18 @@ Priority Log::get_priority(Category category) noexcept
   return static_cast<Priority>(SDL_LogGetPriority(static_cast<int>(category)));
 }
 
+CENTURION_DEF
+bool operator==(Priority a, SDL_LogPriority b) noexcept
+{
+  return static_cast<SDL_LogPriority>(a) == b;
+}
+
+CENTURION_DEF
+bool operator==(SDL_LogPriority a, Priority b) noexcept
+{
+  return a == static_cast<SDL_LogPriority>(b);
+}
+
 }  // namespace centurion
 
 #endif  // CENTURION_LOG_SOURCE

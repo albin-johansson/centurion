@@ -20,5 +20,5 @@ BraceWrapping:
   AfterFunction: true
   SplitEmptyFunction: false
 
-AllowShortFunctionsOnASingleLine: None
+AllowShortFunctionsOnASingleLine: InlineOnly
 AllowShortBlocksOnASingleLine: false

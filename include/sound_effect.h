@@ -215,10 +215,7 @@ class SoundEffect final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  static constexpr int get_max_volume() noexcept
-  {
-    return MIX_MAX_VOLUME;
-  }
+  static constexpr int get_max_volume() noexcept { return MIX_MAX_VOLUME; }
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

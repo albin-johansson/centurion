@@ -218,8 +218,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API
-  void draw_line(const math::IPoint& start, const math::IPoint& end) const
-      noexcept;
+  void draw_line(const math::IPoint& start,
+                 const math::IPoint& end) const noexcept;
 
   /**
    * Renders a sequence of connected lines in the currently selected color.
@@ -239,8 +239,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API
-  void draw_line_f(const math::FPoint& start, const math::FPoint& end) const
-      noexcept;
+  void draw_line_f(const math::FPoint& start,
+                   const math::FPoint& end) const noexcept;
 
   /**
    * Renders a texture at the specified position.
@@ -572,8 +572,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API
-  void render_tf(const Texture& texture, const math::FRect& rect) const
-      noexcept;
+  void render_tf(const Texture& texture,
+                 const math::FRect& rect) const noexcept;
 
   /**
    * Renders a texture. The rendered texture will be translated using the

@@ -68,6 +68,6 @@ class RAM final {
 
 #ifdef CENTURION_HEADER_ONLY
 #include "ram.cpp"
-#endif 
+#endif
 
 #endif  // CENTURION_RAM_HEADER

@@ -82,8 +82,7 @@ class Point final {
    * @param py the y-coordinate of the point.
    * @since 4.0.0
    */
-  constexpr Point(T px, T py) noexcept : x{px}, y{py}
-  {}
+  constexpr Point(T px, T py) noexcept : x{px}, y{py} {}
 
   /**
    * Sets the x-coordinate of the point.
@@ -91,10 +90,7 @@ class Point final {
    * @param px the new x-coordinate of the point.
    * @since 4.0.0
    */
-  constexpr void set_x(T px) noexcept
-  {
-    x = px;
-  }
+  constexpr void set_x(T px) noexcept { x = px; }
 
   /**
    * Sets the y-coordinate of the point.
@@ -102,10 +98,7 @@ class Point final {
    * @param py the new y-coordinate of the point.
    * @since 4.0.0
    */
-  constexpr void set_y(T py) noexcept
-  {
-    y = py;
-  }
+  constexpr void set_y(T py) noexcept { y = py; }
 
   /**
    * Sets the values of the x- and y-coordinates of the point.
@@ -166,10 +159,7 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_x() const noexcept
-  {
-    return x;
-  }
+  constexpr T get_x() const noexcept { return x; }
 
   /**
    * Returns the y-coordinate of the point.
@@ -178,10 +168,7 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_y() const noexcept
-  {
-    return y;
-  }
+  constexpr T get_y() const noexcept { return y; }
 
   /**
    * Indicates whether or not the point is considered to be equal to the
@@ -194,9 +181,8 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T>
-  CENTURION_NODISCARD type_if_floating<U> equals(const Point<T>& other,
-                                                 T epsilon = 0.0001) const
-      noexcept
+  CENTURION_NODISCARD type_if_floating<U> equals(
+      const Point<T>& other, T epsilon = 0.0001) const noexcept
   {
     return std::abs(x - other.x) < epsilon && std::abs(y - other.y) < epsilon;
   }

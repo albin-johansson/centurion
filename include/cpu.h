@@ -225,4 +225,4 @@ class CPU final {
 #include "cpu.cpp"
 #endif
 
-#endif // CENTURION_CPU_HEADER
+#endif  // CENTURION_CPU_HEADER

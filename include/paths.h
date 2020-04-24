@@ -105,10 +105,7 @@ class AppPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  const char* get() const noexcept
-  {
-    return path;
-  }
+  const char* get() const noexcept { return path; }
 };
 
 /**
@@ -175,10 +172,7 @@ class PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  explicit operator bool() const noexcept
-  {
-    return path;
-  }
+  explicit operator bool() const noexcept { return path; }
 
   /**
    * Returns a string that represents the preferred path.
@@ -187,10 +181,7 @@ class PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  const char* get() const noexcept
-  {
-    return path;
-  }
+  const char* get() const noexcept { return path; }
 };
 
 }  // namespace system

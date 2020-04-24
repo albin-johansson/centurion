@@ -3,6 +3,8 @@
 
 #include "font.h"
 
+#include "centurion_utils.h"
+
 namespace centurion {
 namespace video {
 
@@ -58,11 +60,7 @@ Font& Font::operator=(Font&& other) noexcept
 CENTURION_DEF
 std::unique_ptr<Font> Font::unique(const std::string& file, int size)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Font>(file, size);
-#else
   return centurion::make_unique<Font>(file, size);
-#endif
 }
 
 CENTURION_DEF

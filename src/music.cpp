@@ -50,11 +50,7 @@ Music& Music::operator=(Music&& other) noexcept
 CENTURION_DEF
 std::unique_ptr<Music> Music::unique(const std::string& file)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Music>(file);
-#else
   return centurion::make_unique<Music>(file);
-#endif
 }
 
 CENTURION_DEF

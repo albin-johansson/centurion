@@ -96,33 +96,21 @@ Texture& Texture::operator=(Texture&& other) noexcept
 CENTURION_DEF
 std::unique_ptr<Texture> Texture::unique(gsl::owner<SDL_Texture*> texture)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Texture>(texture);
-#else
   return centurion::make_unique<Texture>(texture);
-#endif
 }
 
 CENTURION_DEF
 std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
                                          const char* path)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Texture>(renderer, path);
-#else
   return centurion::make_unique<Texture>(renderer, path);
-#endif
 }
 
 CENTURION_DEF
 std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
                                          const Surface& surface)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Texture>(renderer, surface);
-#else
   return centurion::make_unique<Texture>(renderer, surface);
-#endif
 }
 
 CENTURION_DEF
@@ -132,12 +120,8 @@ std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
                                          int width,
                                          int height)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Texture>(renderer, format, access, width, height);
-#else
   return centurion::make_unique<Texture>(
       renderer, format, access, width, height);
-#endif
 }
 
 CENTURION_DEF

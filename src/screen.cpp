@@ -1,9 +1,9 @@
 #ifndef CENTURION_SCREEN_SOURCE
 #define CENTURION_SCREEN_SOURCE
 
-#include <SDL.h>
-
 #include "screen.h"
+
+#include <SDL.h>
 
 namespace centurion {
 namespace system {

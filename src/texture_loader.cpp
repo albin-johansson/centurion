@@ -35,11 +35,7 @@ std::unique_ptr<Texture> TextureLoader::unique_img(PixelFormat format,
                                                    int width,
                                                    int height) const
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Texture>(*renderer, format, access, width, height);
-#else
-  return make_unique<Image>(*renderer, format, access, width, height);
-#endif
+  return Texture::unique(*renderer, format, access, width, height);
 }
 
 CENTURION_DEF

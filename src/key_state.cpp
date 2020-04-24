@@ -28,11 +28,7 @@ KeyState::KeyState()
 CENTURION_DEF
 std::unique_ptr<KeyState> KeyState::unique()
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<KeyState>();
-#else
-  return make_unique<KeyState>();
-#endif
+  return centurion::make_unique<KeyState>();
 }
 
 CENTURION_DEF

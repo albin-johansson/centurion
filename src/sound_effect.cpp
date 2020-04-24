@@ -57,11 +57,7 @@ SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept
 CENTURION_DEF
 std::unique_ptr<SoundEffect> SoundEffect::unique(const std::string& file)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<SoundEffect>(file);
-#else
   return centurion::make_unique<SoundEffect>(file);
-#endif
 }
 
 CENTURION_DEF

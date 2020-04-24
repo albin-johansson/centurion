@@ -4,6 +4,7 @@
 #include "cursor.h"
 
 #include "centurion_exception.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 namespace video {
@@ -88,32 +89,20 @@ void Cursor::destroy() noexcept
 CENTURION_DEF
 std::unique_ptr<Cursor> Cursor::unique(SystemCursor id)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Cursor>(id);
-#else
   return centurion::make_unique<Cursor>(id);
-#endif
 }
 
 CENTURION_DEF
 std::unique_ptr<Cursor> Cursor::unique(gsl::owner<SDL_Cursor*> cursor)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Cursor>(cursor);
-#else
   return centurion::make_unique<Cursor>(cursor);
-#endif
 }
 
 CENTURION_DEF
 std::unique_ptr<Cursor> Cursor::unique(const Surface& surface,
                                        math::IPoint hotspot)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Cursor>(surface, hotspot);
-#else
   return centurion::make_unique<Cursor>(surface, hotspot);
-#endif
 }
 
 CENTURION_DEF

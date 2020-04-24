@@ -68,22 +68,14 @@ void Renderer::destroy() noexcept
 CENTURION_DEF
 std::unique_ptr<Renderer> Renderer::unique(gsl::owner<SDL_Renderer*> renderer)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Renderer>(renderer);
-#else
   return centurion::make_unique<Renderer>(renderer);
-#endif
 }
 
 CENTURION_DEF
 std::unique_ptr<Renderer> Renderer::unique(const Window& window,
                                            SDL_RendererFlags flags)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Renderer>(window, flags);
-#else
   return centurion::make_unique<Renderer>(window, flags);
-#endif
 }
 
 CENTURION_DEF
@@ -789,11 +781,7 @@ std::unique_ptr<Texture> Renderer::create_image(const std::string& s,
   SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
   SDL_FreeSurface(surface);
 
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Texture>(texture);
-#else
-  return make_unique<Texture>(texture);
-#endif
+  return centurion::make_unique<Texture>(texture);
 }
 
 CENTURION_DEF

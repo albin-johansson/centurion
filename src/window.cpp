@@ -79,41 +79,25 @@ Window& Window::operator=(Window&& other) noexcept
 CENTURION_DEF
 std::unique_ptr<Window> Window::unique(const char* title, int width, int height)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Window>(title, width, height);
-#else
   return centurion::make_unique<Window>(title, width, height);
-#endif
 }
 
 CENTURION_DEF
 std::unique_ptr<Window> Window::unique(int width, int height)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Window>(width, height);
-#else
   return centurion::make_unique<Window>(width, height);
-#endif
 }
 
 CENTURION_DEF
 std::unique_ptr<Window> Window::unique(const char* title)
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Window>(title);
-#else
   return centurion::make_unique<Window>(title);
-#endif
 }
 
 CENTURION_DEF
 std::unique_ptr<Window> Window::unique()
 {
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<Window>();
-#else
   return centurion::make_unique<Window>();
-#endif
 }
 
 CENTURION_DEF

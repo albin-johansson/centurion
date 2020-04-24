@@ -33,6 +33,7 @@
 #include <type_traits>
 
 #include "centurion_api.h"
+#include "optional.hpp"
 
 namespace centurion {
 
@@ -103,6 +104,9 @@ using type_if_integral = type_if<std::is_integral<T>::value, T>;
 
 template <typename T, typename U>
 using type_if_same = typename std::enable_if<std::is_same<T, U>::value>::type;
+
+template <typename T>
+using Optional = tl::optional<T>;
 
 }  // namespace centurion
 

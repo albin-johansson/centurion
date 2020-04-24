@@ -27,9 +27,8 @@
 
 #include <SDL.h>
 
-#include <optional>
-
 #include "centurion_api.h"
+#include "centurion_utils.h"
 #include "pixel_format.h"
 
 namespace centurion {
@@ -53,8 +52,6 @@ CENTURION_NODISCARD
 CENTURION_API
 Platform get_platform() noexcept;
 
-#ifdef CENTURION_HAS_OPTIONAL
-
 /**
  * Returns the name of the current platform.
  *
@@ -64,9 +61,7 @@ Platform get_platform() noexcept;
  */
 CENTURION_NODISCARD
 CENTURION_API
-std::optional<std::string> get_platform_name() noexcept;
-
-#endif
+Optional<std::string> get_platform_name() noexcept;
 
 }  // namespace system
 }  // namespace centurion

@@ -27,20 +27,16 @@ Platform get_platform() noexcept
   }
 }
 
-#ifdef CENTURION_HAS_OPTIONAL
-
 CENTURION_DEF
-std::optional<std::string> get_platform_name() noexcept
+Optional<std::string> get_platform_name() noexcept
 {
   const std::string name{SDL_GetPlatform()};
   if (name == "Unknown") {
-    return std::nullopt;
+    return tl::nullopt;
   } else {
     return name;
   }
 }
-
-#endif
 
 }  // namespace system
 }  // namespace centurion

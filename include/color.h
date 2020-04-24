@@ -145,7 +145,7 @@ class Color final {
    * @return the modified color.
    * @since 3.0.0
    */
-  constexpr Color& operator=(const Color& other) noexcept = default;
+  Color& operator=(const Color& other) noexcept = default;
 
   /**
    * Moves the fields of the supplied color.
@@ -154,7 +154,7 @@ class Color final {
    * @return the modified color.
    * @since 3.0.0
    */
-  constexpr Color& operator=(Color&& other) noexcept = default;
+  Color& operator=(Color&& other) noexcept = default;
 
   /**
    * Sets the value of the red component.

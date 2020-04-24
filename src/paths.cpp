@@ -5,6 +5,8 @@
 
 #include <SDL.h>
 
+#include "centurion_utils.h"
+
 namespace centurion {
 namespace system {
 

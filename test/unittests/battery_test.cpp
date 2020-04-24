@@ -19,8 +19,6 @@ TEST_CASE("PowerState enum", "[Power]")
   CHECK(SDL_POWERSTATE_CHARGED == PowerState::Charged);
 }
 
-#ifdef CENTURION_HAS_OPTIONAL
-
 TEST_CASE("PowerState::get_battery_percentage", "[Power]")
 {
   CHECK_NOTHROW(Battery::get_percentage());
@@ -44,8 +42,6 @@ TEST_CASE("PowerState::get_battery_minutes_left", "[Power]")
     CHECK(minutes == (secs / 60));
   }
 }
-
-#endif
 
 TEST_CASE("PowerState::get_state", "[Power]")
 {

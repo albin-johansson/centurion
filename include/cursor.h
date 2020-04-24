@@ -69,10 +69,7 @@ enum class SystemCursor {
  * @since 4.0.0
  */
 CENTURION_NODISCARD
-inline bool operator==(SystemCursor lhs, SDL_SystemCursor rhs) noexcept
-{
-  return static_cast<SDL_SystemCursor>(lhs) == rhs;
-}
+CENTURION_API bool operator==(SystemCursor lhs, SDL_SystemCursor rhs) noexcept;
 
 /**
  * Indicates whether or not two system cursor values are the same.
@@ -83,10 +80,7 @@ inline bool operator==(SystemCursor lhs, SDL_SystemCursor rhs) noexcept
  * @since 4.0.0
  */
 CENTURION_NODISCARD
-inline bool operator==(SDL_SystemCursor lhs, SystemCursor rhs) noexcept
-{
-  return lhs == static_cast<SDL_SystemCursor>(rhs);
-}
+CENTURION_API bool operator==(SDL_SystemCursor lhs, SystemCursor rhs) noexcept;
 
 /**
  * Indicates whether or not two system cursor values aren't the same.
@@ -97,10 +91,7 @@ inline bool operator==(SDL_SystemCursor lhs, SystemCursor rhs) noexcept
  * @since 4.0.0
  */
 CENTURION_NODISCARD
-inline bool operator!=(SystemCursor lhs, SDL_SystemCursor rhs) noexcept
-{
-  return !(lhs == rhs);
-}
+CENTURION_API bool operator!=(SystemCursor lhs, SDL_SystemCursor rhs) noexcept;
 
 /**
  * Indicates whether or not two system cursor values aren't the same.
@@ -111,10 +102,7 @@ inline bool operator!=(SystemCursor lhs, SDL_SystemCursor rhs) noexcept
  * @since 4.0.0
  */
 CENTURION_NODISCARD
-inline bool operator!=(SDL_SystemCursor lhs, SystemCursor rhs) noexcept
-{
-  return !(lhs == rhs);
-}
+CENTURION_API bool operator!=(SDL_SystemCursor lhs, SystemCursor rhs) noexcept;
 
 /**
  * The Cursor class is a wrapper for the SDL_Cursor struct. Cursors can be

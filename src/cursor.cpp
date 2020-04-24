@@ -160,6 +160,30 @@ bool Cursor::is_visible() noexcept
   return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
 }
 
+CENTURION_DEF
+bool operator==(SystemCursor lhs, SDL_SystemCursor rhs) noexcept
+{
+  return static_cast<SDL_SystemCursor>(lhs) == rhs;
+}
+
+CENTURION_DEF
+bool operator==(SDL_SystemCursor lhs, SystemCursor rhs) noexcept
+{
+  return lhs == static_cast<SDL_SystemCursor>(rhs);
+}
+
+CENTURION_DEF
+bool operator!=(SystemCursor lhs, SDL_SystemCursor rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+CENTURION_DEF
+bool operator!=(SDL_SystemCursor lhs, SystemCursor rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
 }  // namespace video
 }  // namespace centurion
 

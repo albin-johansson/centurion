@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.12)
 project(CenturionSrcProj)
 
 set(SOURCE_FILES
+        ${CTN_LIBRARY_DIR}/gsl-lite.hpp
+        ${CTN_LIBRARY_DIR}/optional.hpp
+
         ${CTN_INCLUDE_DIR}/window.h
         ${CTN_INCLUDE_DIR}/window_listener.h
         ${CTN_INCLUDE_DIR}/font.h
@@ -33,6 +36,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/ram.h
         ${CTN_INCLUDE_DIR}/battery.h
         ${CTN_INCLUDE_DIR}/screen.h
+
         window.cpp
         font.cpp
         renderer.cpp

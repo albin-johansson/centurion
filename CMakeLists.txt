@@ -9,7 +9,7 @@ set(CTN_ROOT_DIR ${PROJECT_SOURCE_DIR})
 set(CTN_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
 set(CTN_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 set(CTN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-set(CTN_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
+set(CTN_LIBRARY_DIR ${CTN_INCLUDE_DIR}/lib)
 set(CTN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
 
 set(CENTURION_LIB_TARGET Centurion_lib)
@@ -69,8 +69,8 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-add_library(gsl-lite INTERFACE)
-target_include_directories(gsl-lite INTERFACE ${CTN_LIBRARY_DIR})  # adapt as necessary
+#add_library(gsl-lite INTERFACE)
+#target_include_directories(gsl-lite INTERFACE ${CTN_LIBRARY_DIR})  # adapt as necessary
 
 message("Found all required SDL libraries!")
 

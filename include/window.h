@@ -90,7 +90,7 @@ class Window final {
    *
    * @param width the width of the window, must be greater than zero.
    * @param height the height of the window, must be greater than zero.
-   * @throws invalid_argument if the supplied width or height values aren't
+   * @throws CenturionException if the supplied width or height values aren't
    * greater than zero.
    * @since 3.0.0
    */

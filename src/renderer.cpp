@@ -158,8 +158,8 @@ void Renderer::draw_line(const math::IPoint& start,
 }
 
 CENTURION_DEF
-void Renderer::draw_lines(const std::vector<math::IPoint>& points) const
-    noexcept
+void Renderer::draw_lines(
+    const std::vector<math::IPoint>& points) const noexcept
 {
   if (!points.empty()) {
     const auto* firstPoint = static_cast<const SDL_Point*>(points.front());
@@ -176,8 +176,8 @@ void Renderer::draw_line_f(const math::FPoint& start,
 }
 
 CENTURION_DEF
-void Renderer::render(const Texture& texture, math::IPoint position) const
-    noexcept
+void Renderer::render(const Texture& texture,
+                      math::IPoint position) const noexcept
 {
   const SDL_Rect dst{position.get_x(),
                      position.get_y(),
@@ -187,8 +187,8 @@ void Renderer::render(const Texture& texture, math::IPoint position) const
 }
 
 CENTURION_DEF
-void Renderer::render(const Texture& texture, const math::IRect& rect) const
-    noexcept
+void Renderer::render(const Texture& texture,
+                      const math::IRect& rect) const noexcept
 {
   const auto* dst = static_cast<const SDL_Rect*>(rect);
   SDL_RenderCopy(renderer, texture, nullptr, dst);
@@ -269,8 +269,8 @@ void Renderer::render(const Texture& texture,
 }
 
 CENTURION_DEF
-void Renderer::render_f(const Texture& texture, math::FPoint position) const
-    noexcept
+void Renderer::render_f(const Texture& texture,
+                        math::FPoint position) const noexcept
 {
   const auto dst = SDL_FRect{position.get_x(),
                              position.get_y(),
@@ -280,8 +280,8 @@ void Renderer::render_f(const Texture& texture, math::FPoint position) const
 }
 
 CENTURION_DEF
-void Renderer::render_f(const Texture& texture, const math::FRect& rect) const
-    noexcept
+void Renderer::render_f(const Texture& texture,
+                        const math::FRect& rect) const noexcept
 {
   const auto* dst = static_cast<const SDL_FRect*>(rect);
   SDL_RenderCopyF(renderer, texture, nullptr, dst);
@@ -362,8 +362,8 @@ void Renderer::render_f(const Texture& texture,
 }
 
 CENTURION_DEF
-void Renderer::render_t(const Texture& texture, math::IPoint position) const
-    noexcept
+void Renderer::render_t(const Texture& texture,
+                        math::IPoint position) const noexcept
 {
   const auto tx =
       position.get_x() - static_cast<int>(translationViewport.get_x());
@@ -373,8 +373,8 @@ void Renderer::render_t(const Texture& texture, math::IPoint position) const
 }
 
 CENTURION_DEF
-void Renderer::render_t(const Texture& texture, const math::IRect& rect) const
-    noexcept
+void Renderer::render_t(const Texture& texture,
+                        const math::IRect& rect) const noexcept
 {
   const auto tx = rect.get_x() - static_cast<int>(translationViewport.get_x());
   const auto ty = rect.get_y() - static_cast<int>(translationViewport.get_y());
@@ -445,8 +445,8 @@ void Renderer::render_t(const Texture& texture,
 }
 
 CENTURION_DEF
-void Renderer::render_tf(const Texture& texture, math::FPoint position) const
-    noexcept
+void Renderer::render_tf(const Texture& texture,
+                         math::FPoint position) const noexcept
 {
   const auto tx = position.get_x() - translationViewport.get_x();
   const auto ty = position.get_y() - translationViewport.get_y();
@@ -454,8 +454,8 @@ void Renderer::render_tf(const Texture& texture, math::FPoint position) const
 }
 
 CENTURION_DEF
-void Renderer::render_tf(const Texture& texture, const math::FRect& rect) const
-    noexcept
+void Renderer::render_tf(const Texture& texture,
+                         const math::FRect& rect) const noexcept
 {
   const auto tx = rect.get_x() - translationViewport.get_x();
   const auto ty = rect.get_y() - translationViewport.get_y();
@@ -561,10 +561,8 @@ void Renderer::set_color(const Color& color) const noexcept
                          color.get_alpha());
 }
 
-#ifdef CENTURION_HAS_OPTIONAL
-
 CENTURION_DEF
-void Renderer::set_clip(std::optional<math::IRect> area) noexcept
+void Renderer::set_clip(Optional<math::IRect> area) noexcept
 {
   if (area) {
     SDL_RenderSetClipRect(renderer, static_cast<const SDL_Rect*>(*area));
@@ -572,20 +570,6 @@ void Renderer::set_clip(std::optional<math::IRect> area) noexcept
     SDL_RenderSetClipRect(renderer, nullptr);
   }
 }
-
-#else
-
-CENTURION_DEF
-void Renderer::set_clip(const math::IRect* area) noexcept
-{
-  if (area) {
-    SDL_RenderSetClipRect(renderer, static_cast<const SDL_Rect*>(*area));
-  } else {
-    SDL_RenderSetClipRect(renderer, nullptr);
-  }
-}
-
-#endif
 
 CENTURION_DEF
 void Renderer::set_viewport(const math::IRect& viewport) noexcept
@@ -667,21 +651,17 @@ bool Renderer::is_clipping_enabled() const noexcept
   return SDL_RenderIsClipEnabled(renderer);
 }
 
-#ifdef CENTURION_HAS_OPTIONAL
-
 CENTURION_DEF
-std::optional<math::IRect> Renderer::get_clip() const noexcept
+Optional<math::IRect> Renderer::get_clip() const noexcept
 {
   SDL_Rect rect{0, 0, 0, 0};
   SDL_RenderGetClipRect(renderer, &rect);
   if (SDL_RectEmpty(&rect)) {
-    return std::nullopt;
+    return tl::nullopt;
   } else {
     return math::IRect{rect.x, rect.y, rect.w, rect.h};
   }
 }
-
-#endif
 
 CENTURION_DEF
 SDL_RendererInfo Renderer::get_info() const noexcept

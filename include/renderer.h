@@ -31,13 +31,13 @@
 #include <cstdint>
 #include <gsl-lite.hpp>
 #include <memory>
-#include <optional>
 #include <string>
 #include <type_traits>
 #include <vector>
 
 #include "blend_mode.h"
 #include "centurion_api.h"
+#include "centurion_utils.h"
 #include "color.h"
 #include "point.h"
 #include "rectangle.h"
@@ -699,29 +699,14 @@ class Renderer final {
   CENTURION_API
   void set_color(const Color& color) const noexcept;
 
-#ifdef CENTURION_HAS_OPTIONAL
-
   /**
    * Sets the clipping area rectangle. Clipping is disabled by default.
    *
-   * @param area the clip area rectangle; or std::nullopt to disable clipping.
+   * @param area the clip area rectangle; or nullopt to disable clipping.
    * @since 3.0.0
    */
   CENTURION_API
-  void set_clip(std::optional<math::IRect> area) noexcept;
-
-#else
-
-  /**
-   * Sets the clipping area rectangle. Clipping is disabled by default.
-   *
-   * @param area the clip area rectangle; or null to disable clipping.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  void set_clip(const math::IRect* area) noexcept;
-
-#endif
+  void set_clip(Optional<math::IRect> area) noexcept;
 
   /**
    * Sets the viewport that will be used by the renderer.
@@ -840,19 +825,15 @@ class Renderer final {
   CENTURION_API
   float get_y_scale() const noexcept;
 
-#ifdef CENTURION_HAS_OPTIONAL
-
   /**
    * Returns the current clipping rectangle, if there is one active.
    *
-   * @return the current clipping rectangle; or std::nullopt if there is none.
+   * @return the current clipping rectangle; or nullopt if there is none.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API
-  std::optional<math::IRect> get_clip() const noexcept;
-
-#endif
+  Optional<math::IRect> get_clip() const noexcept;
 
   /**
    * Returns information about the renderer.

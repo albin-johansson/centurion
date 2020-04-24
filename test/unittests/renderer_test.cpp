@@ -660,8 +660,6 @@ TEST_CASE("Renderer::get_translation_viewport", "[Renderer]")
   CHECK(viewport.get_height() == 0);
 }
 
-#ifdef CENTURION_HAS_OPTIONAL
-
 TEST_CASE("Renderer clipping", "[Renderer]")
 {
   Window window;
@@ -674,7 +672,7 @@ TEST_CASE("Renderer clipping", "[Renderer]")
     CHECK(!clip);
   }
 
-  CHECK_NOTHROW(renderer.set_clip(std::nullopt));
+  CHECK_NOTHROW(renderer.set_clip(tl::nullopt));
 
   const auto clip = IRect{5, 2, 75, 93};
 
@@ -689,8 +687,6 @@ TEST_CASE("Renderer clipping", "[Renderer]")
   CHECK(clip.get_width() == rendererClip.get_width());
   CHECK(clip.get_height() == rendererClip.get_height());
 }
-
-#endif
 
 TEST_CASE("Renderer::set_target", "[Renderer]")
 {

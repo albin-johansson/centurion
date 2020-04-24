@@ -195,15 +195,11 @@ TEST_CASE("Font::get_family_name", "[Font]")
   CHECK(font.get_family_name() == "Type Writer");
 }
 
-#ifdef CENTURION_HAS_OPTIONAL
-
 TEST_CASE("Font::get_style_name", "[Font]")
 {
   const Font font{type_writer_path, 12};
   CHECK_THAT(font.get_style_name()->c_str(), Equals("Regular"));
 }
-
-#endif
 
 TEST_CASE("Font::get_string_width", "[Font]")
 {

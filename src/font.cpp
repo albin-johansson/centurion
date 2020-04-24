@@ -244,20 +244,16 @@ std::string Font::get_family_name() const noexcept
   return TTF_FontFaceFamilyName(font);
 }
 
-#ifdef CENTURION_HAS_OPTIONAL
-
 CENTURION_DEF
-std::optional<std::string> Font::get_style_name() const noexcept
+Optional<std::string> Font::get_style_name() const noexcept
 {
   const auto* name = TTF_FontFaceStyleName(font);
   if (name) {
     return name;
   } else {
-    return std::nullopt;
+    return tl::nullopt;
   }
 }
-
-#endif
 
 CENTURION_DEF
 std::string Font::to_string() const

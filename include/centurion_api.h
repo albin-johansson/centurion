@@ -86,7 +86,7 @@
 
 // Indicates whether or not std::optional is available (added in C++17)
 #if !defined(CENTURION_HAS_OPTIONAL) && defined(__cpp_lib_optional)
-#define CENTURION_HAS_OPTIONAL
+#define CENTURION_HAS_OPTIONAL // TODO remove
 #endif
 
 // Indicates whether or not the std::is_final type trait check is available

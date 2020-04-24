@@ -6,6 +6,54 @@
 namespace centurion {
 namespace event {
 
+CENTURION_DEF
+bool operator==(EventType lhs, SDL_EventType rhs) noexcept
+{
+  return static_cast<SDL_EventType>(lhs) == rhs;
+}
+
+CENTURION_DEF
+bool operator==(SDL_EventType lhs, EventType rhs) noexcept
+{
+  return lhs == static_cast<SDL_EventType>(rhs);
+}
+
+CENTURION_DEF
+bool operator!=(EventType lhs, SDL_EventType rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+CENTURION_DEF
+bool operator!=(SDL_EventType lhs, EventType rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+CENTURION_DEF
+bool operator==(KeyModifier lhs, SDL_Keymod rhs) noexcept
+{
+  return static_cast<SDL_Keymod>(lhs) == rhs;
+}
+
+CENTURION_DEF
+bool operator==(SDL_Keymod lhs, KeyModifier rhs) noexcept
+{
+  return lhs == static_cast<SDL_Keymod>(rhs);
+}
+
+CENTURION_DEF
+bool operator!=(KeyModifier lhs, SDL_Keymod rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+CENTURION_DEF
+bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
 // ** WINDOW EVENT *************************************************************
 
 CENTURION_DEF

@@ -115,10 +115,7 @@ enum class EventType {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator==(EventType lhs, SDL_EventType rhs) noexcept
-{
-  return static_cast<SDL_EventType>(lhs) == rhs;
-}
+CENTURION_API bool operator==(EventType lhs, SDL_EventType rhs) noexcept;
 
 /**
  * Indicates whether or not two event type values are the same.
@@ -129,10 +126,7 @@ inline bool operator==(EventType lhs, SDL_EventType rhs) noexcept
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator==(SDL_EventType lhs, EventType rhs) noexcept
-{
-  return lhs == static_cast<SDL_EventType>(rhs);
-}
+CENTURION_API bool operator==(SDL_EventType lhs, EventType rhs) noexcept;
 
 /**
  * Indicates whether or not two event type values aren't the same.
@@ -144,10 +138,7 @@ inline bool operator==(SDL_EventType lhs, EventType rhs) noexcept
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator!=(EventType lhs, SDL_EventType rhs) noexcept
-{
-  return !(lhs == rhs);
-}
+CENTURION_API bool operator!=(EventType lhs, SDL_EventType rhs) noexcept;
 
 /**
  * Indicates whether or not two event type values aren't the same.
@@ -159,10 +150,7 @@ inline bool operator!=(EventType lhs, SDL_EventType rhs) noexcept
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator!=(SDL_EventType lhs, EventType rhs) noexcept
-{
-  return !(lhs == rhs);
-}
+CENTURION_API bool operator!=(SDL_EventType lhs, EventType rhs) noexcept;
 
 /**
  * The ButtonState enum class provides the possible states for a button.
@@ -201,10 +189,7 @@ enum class KeyModifier {
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator==(KeyModifier lhs, SDL_Keymod rhs) noexcept
-{
-  return static_cast<SDL_Keymod>(lhs) == rhs;
-}
+CENTURION_API bool operator==(KeyModifier lhs, SDL_Keymod rhs) noexcept;
 
 /**
  * Indicates whether or not two key modifier values are the same.
@@ -215,10 +200,7 @@ inline bool operator==(KeyModifier lhs, SDL_Keymod rhs) noexcept
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator==(SDL_Keymod lhs, KeyModifier rhs) noexcept
-{
-  return lhs == static_cast<SDL_Keymod>(rhs);
-}
+CENTURION_API bool operator==(SDL_Keymod lhs, KeyModifier rhs) noexcept;
 
 /**
  * Indicates whether or not two key modifier values aren't the same.
@@ -229,10 +211,7 @@ inline bool operator==(SDL_Keymod lhs, KeyModifier rhs) noexcept
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator!=(KeyModifier lhs, SDL_Keymod rhs) noexcept
-{
-  return !(lhs == rhs);
-}
+CENTURION_API bool operator!=(KeyModifier lhs, SDL_Keymod rhs) noexcept;
 
 /**
  * Indicates whether or not two key modifier values aren't the same.
@@ -243,10 +222,7 @@ inline bool operator!=(KeyModifier lhs, SDL_Keymod rhs) noexcept
  * @since 3.1.0
  */
 CENTURION_NODISCARD
-inline bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept
-{
-  return !(lhs == rhs);
-}
+CENTURION_API bool operator!=(SDL_Keymod lhs, KeyModifier rhs) noexcept;
 
 /**
  * The WindowEvent class is a wrapper for the SDL_WindowEvent struct.

@@ -109,7 +109,7 @@ TEST_CASE("MessageBox::set_type", "[MessageBox]")
 TEST_CASE("MessageBox::set_color_scheme", "[MessageBox]")
 {
   MessageBox mb;
-  CHECK_NOTHROW(mb.set_color_scheme(std::nullopt));
+  CHECK_NOTHROW(mb.set_color_scheme(tl::nullopt));
 }
 
 TEST_CASE("MessageBox::set_title", "[MessageBox]")

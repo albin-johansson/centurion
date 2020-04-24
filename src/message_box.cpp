@@ -76,8 +76,8 @@ CENTURION_DEF
 MessageBox::~MessageBox() noexcept = default;
 
 CENTURION_DEF
-std::vector<SDL_MessageBoxButtonData> MessageBox::create_sdl_button_data() const
-    noexcept
+std::vector<SDL_MessageBoxButtonData> MessageBox::create_sdl_button_data()
+    const noexcept
 {
   std::vector<SDL_MessageBoxButtonData> result;
   result.reserve(buttons.size());
@@ -114,24 +114,15 @@ int MessageBox::show(SDL_Window* window)
   const auto sdl_buttonData = create_sdl_button_data();
   const SDL_MessageBoxButtonData* buttonDataFront = &sdl_buttonData.front();
 
-  const SDL_MessageBoxColorScheme* sdl_colorScheme = nullptr;
-
-#ifdef CENTURION_HAS_OPTIONAL
-  if (colorScheme) {
-    auto& scheme = colorScheme.value();
-    sdl_colorScheme = &scheme.get();
-  }
-#endif
-
-  const auto data =
-      create_sdl_message_box_data(window, buttonDataFront, sdl_colorScheme);
+  const auto data = create_sdl_message_box_data(
+      window, buttonDataFront, colorScheme ? &colorScheme->get() : nullptr);
 
   int button = -1;
   if (SDL_ShowMessageBox(&data, &button) < 0) {
     throw CenturionException{"Failed to show message box! " + Error::msg()};
   }
 
-  return button; 
+  return button;
 }
 
 CENTURION_DEF
@@ -176,15 +167,11 @@ void MessageBox::set_type(MessageBoxID type) noexcept
   this->type = type;
 }
 
-#ifdef CENTURION_HAS_OPTIONAL
-
 CENTURION_DEF
-void MessageBox::set_color_scheme(std::optional<ColorScheme> scheme) noexcept
+void MessageBox::set_color_scheme(Optional<ColorScheme> scheme) noexcept
 {
   this->colorScheme = scheme;
 }
-
-#endif
 
 CENTURION_DEF
 MessageBoxID MessageBox::get_type() const noexcept

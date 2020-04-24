@@ -29,13 +29,13 @@
 
 #include <gsl-lite.hpp>
 #include <memory>
-#include <optional>
 #include <string>
 #include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "centurion_api.h"
+#include "centurion_utils.h"
 #include "pixel_format.h"
 #include "point.h"
 
@@ -548,20 +548,16 @@ class Window final {
   CENTURION_API
   uint32_t get_id() const noexcept;
 
-#ifdef CENTURION_HAS_OPTIONAL
-
   /**
    * Returns the display index associated with the window.
    *
-   * @return the display index associated with the window; std::nullopt if the
+   * @return the display index associated with the window; nullopt if the
    * display index cannot be obtained.
    * @since 3.1.0
    */
   CENTURION_NODISCARD
   CENTURION_API
-  std::optional<int> get_display_index() const noexcept;
-
-#endif
+  Optional<int> get_display_index() const noexcept;
 
   /**
    * Returns the current position of the window.

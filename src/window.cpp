@@ -372,20 +372,16 @@ uint32_t Window::get_id() const noexcept
   return SDL_GetWindowID(window);
 }
 
-#ifdef CENTURION_HAS_OPTIONAL
-
 CENTURION_DEF
-std::optional<int> Window::get_display_index() const noexcept
+Optional<int> Window::get_display_index() const noexcept
 {
   const auto index = SDL_GetWindowDisplayIndex(window);
   if (index != -1) {
     return index;
   } else {
-    return std::nullopt;
+    return tl::nullopt;
   }
 }
-
-#endif
 
 CENTURION_DEF
 int Window::get_x() const noexcept

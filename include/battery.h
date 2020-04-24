@@ -28,6 +28,7 @@
 #include <SDL.h>
 
 #include "centurion_api.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 namespace system {
@@ -97,42 +98,38 @@ class Battery final {
  public:
   Battery() = delete;
 
-#ifdef CENTURION_HAS_OPTIONAL
-
   /**
    * Returns the seconds of battery life that is remaining.
    *
-   * @return the seconds of battery life that is remaining; std::nullopt if the
+   * @return the seconds of battery life that is remaining; nullopt if the
    * value cannot be computed.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::optional<int> get_seconds_left() noexcept;
+  static Optional<int> get_seconds_left() noexcept;
 
   /**
    * Returns the amount of minutes of battery life that is remaining.
    *
    * @return the amount of minutes of battery life that is remaining;
-   * std::nullopt if the value cannot be computed.
+   * nullopt if the value cannot be computed.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::optional<int> get_minutes_left() noexcept;
+  static Optional<int> get_minutes_left() noexcept;
 
   /**
    * Returns the percentage of battery life that is currently left.
    *
    * @return the percentage of battery life that is currently left, in the range
-   * [0, 100]; std::nullopt if the battery percentage isn't available.
+   * [0, 100]; nullopt if the battery percentage isn't available.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::optional<int> get_percentage() noexcept;
-
-#endif
+  static Optional<int> get_percentage() noexcept;
 
   /**
    * Returns the current power state.
@@ -150,6 +147,6 @@ class Battery final {
 
 #ifdef CENTURION_HEADER_ONLY
 #include "battery.cpp"
-#endif 
+#endif
 
 #endif  // CENTURION_BATTERY_HEADER

@@ -117,7 +117,7 @@ target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_TTF_INCL
 
 target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_INCLUDE_DIR})
 target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_SOURCE_DIR})
-target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_LIBRARY_DIR})
+target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${CTN_LIBRARY_DIR})
 
 target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_LIBRARY}

@@ -193,128 +193,6 @@ class Color final {
   void set_alpha(uint8_t a) noexcept;
 
   /**
-   * Indicates whether or not the two colors are considered to be equal.
-   *
-   * @param color the lhs color.
-   * @param other the rhs color.
-   * @return true if the colors feature the same color component values; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  friend bool operator==(const Color& color, const Color& other) noexcept;
-
-  /**
-   * Indicates whether or not the two colors are considered to be equal.
-   *
-   * @param color the lhs color.
-   * @param sdlColor the rhs color.
-   * @return true if the colors feature the same color component values; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  friend bool operator==(const Color& color,
-                         const SDL_Color& sdlColor) noexcept;
-
-  /**
-   * Indicates whether or not the two colors are considered to be equal.
-   *
-   * @param sdlColor the lhs color.
-   * @param other the rhs color.
-   * @return true if the colors feature the same color component values; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  friend bool operator==(const SDL_Color& sdlColor,
-                         const Color& color) noexcept;
-
-  /**
-   * Indicates whether or not the two colors are considered to be equal. Note!
-   * The alpha components are not taken into account.
-   *
-   * @param color the lhs color.
-   * @param msgColor the rhs color.
-   * @return true if the colors feature the same color component values; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  friend bool operator==(const Color& color,
-                         const SDL_MessageBoxColor& msgColor) noexcept;
-
-  /**
-   * Indicates whether or not the two colors are considered to be equal. Note!
-   * The alpha components are not taken into account.
-   *
-   * @param msgColor the lhs color.
-   * @param color the rhs color.
-   * @return true if the colors feature the same color component values; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  friend bool operator==(const SDL_MessageBoxColor& msgColor,
-                         const Color& color) noexcept;
-
-  /**
-   * Indicates whether or not two colors aren't considered to be equal.
-   *
-   * @param color the lhs color.
-   * @param other the rhs color.
-   * @return true if the colors don't feature the same color components; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  friend bool operator!=(const Color& color, const Color& other) noexcept;
-
-  /**
-   * Indicates whether or not two colors aren't considered to be equal.
-   *
-   * @param color the lhs color.
-   * @param sdlColor the rhs color.
-   * @return true if the colors don't feature the same color components; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  friend bool operator!=(const Color& color,
-                         const SDL_Color& sdlColor) noexcept;
-
-  /**
-   * Indicates whether or not two colors aren't considered to be equal.
-   *
-   * @param sdlColor the lhs color.
-   * @param other the rhs color.
-   * @return true if the colors don't feature the same color components; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  friend bool operator!=(const SDL_Color& sdlColor,
-                         const Color& color) noexcept;
-
-  /**
-   * Indicates whether or not two colors aren't considered to be equal. Note!
-   * The alpha components of the colors are not taken into account.
-   *
-   * @param color the lhs color.
-   * @param msgColor the rhs color.
-   * @return true if the colors don't feature the same color components; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  friend bool operator!=(const Color& color,
-                         const SDL_MessageBoxColor& msgColor) noexcept;
-
-  /**
-   * Indicates whether or not two colors aren't considered to be equal. Note!
-   * The alpha components of the colors are not taken into account.
-   *
-   * @param msgColor the lhs color.
-   * @param color the rhs color.
-   * @return true if the colors don't feature the same color components; false
-   * otherwise.
-   * @since 3.0.0
-   */
-  friend bool operator!=(const SDL_MessageBoxColor& msgColor,
-                         const Color& color) noexcept;
-
-  /**
    * Returns the value of the red component.
    *
    * @return the value of the red component, in the range [0, 255].
@@ -400,62 +278,137 @@ class Color final {
  */
 using Colour = Color;
 
-inline bool operator==(const Color& color, const Color& other) noexcept
-{
-  return color.red == other.red && color.green == other.green &&
-         color.blue == other.blue && color.alpha == other.alpha;
-}
+/**
+ * Indicates whether or not the two colors are considered to be equal.
+ *
+ * @param color the lhs color.
+ * @param other the rhs color.
+ * @return true if the colors feature the same color component values; false
+ * otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(const Color& color, const Color& other) noexcept;
 
-inline bool operator==(const Color& color, const SDL_Color& sdlColor) noexcept
-{
-  return color.red == sdlColor.r && color.green == sdlColor.g &&
-         color.blue == sdlColor.b && color.alpha == sdlColor.a;
-}
+/**
+ * Indicates whether or not the two colors are considered to be equal.
+ *
+ * @param color the lhs color.
+ * @param sdlColor the rhs color.
+ * @return true if the colors feature the same color component values; false
+ * otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(const Color& color,
+                              const SDL_Color& sdlColor) noexcept;
 
-inline bool operator==(const SDL_Color& sdlColor, const Color& color) noexcept
-{
-  return color == sdlColor;
-}
+/**
+ * Indicates whether or not the two colors are considered to be equal.
+ *
+ * @param sdlColor the lhs color.
+ * @param other the rhs color.
+ * @return true if the colors feature the same color component values; false
+ * otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(const SDL_Color& sdlColor,
+                              const Color& color) noexcept;
 
-inline bool operator==(const Color& color,
-                       const SDL_MessageBoxColor& msgColor) noexcept
-{
-  return color.red == msgColor.r && color.green == msgColor.g &&
-         color.blue == msgColor.b;
-}
+/**
+ * Indicates whether or not the two colors are considered to be equal. Note!
+ * The alpha components are not taken into account.
+ *
+ * @param color the lhs color.
+ * @param msgColor the rhs color.
+ * @return true if the colors feature the same color component values; false
+ * otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(const Color& color,
+                              const SDL_MessageBoxColor& msgColor) noexcept;
 
-inline bool operator==(const SDL_MessageBoxColor& msgColor,
-                       const Color& color) noexcept
-{
-  return color == msgColor;
-}
+/**
+ * Indicates whether or not the two colors are considered to be equal. Note!
+ * The alpha components are not taken into account.
+ *
+ * @param msgColor the lhs color.
+ * @param color the rhs color.
+ * @return true if the colors feature the same color component values; false
+ * otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(const SDL_MessageBoxColor& msgColor,
+                              const Color& color) noexcept;
 
-inline bool operator!=(const Color& color, const Color& other) noexcept
-{
-  return !(color == other);
-}
+/**
+ * Indicates whether or not two colors aren't considered to be equal.
+ *
+ * @param color the lhs color.
+ * @param other the rhs color.
+ * @return true if the colors don't feature the same color components; false
+ * otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(const Color& color, const Color& other) noexcept;
 
-inline bool operator!=(const Color& color, const SDL_Color& sdlColor) noexcept
-{
-  return !(color == sdlColor);
-}
+/**
+ * Indicates whether or not two colors aren't considered to be equal.
+ *
+ * @param color the lhs color.
+ * @param sdlColor the rhs color.
+ * @return true if the colors don't feature the same color components; false
+ * otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(const Color& color,
+                              const SDL_Color& sdlColor) noexcept;
 
-inline bool operator!=(const SDL_Color& sdlColor, const Color& color) noexcept
-{
-  return !(sdlColor == color);
-}
+/**
+ * Indicates whether or not two colors aren't considered to be equal.
+ *
+ * @param sdlColor the lhs color.
+ * @param other the rhs color.
+ * @return true if the colors don't feature the same color components; false
+ * otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(const SDL_Color& sdlColor,
+                              const Color& color) noexcept;
 
-inline bool operator!=(const Color& color,
-                       const SDL_MessageBoxColor& msgColor) noexcept
-{
-  return !(color == msgColor);
-}
+/**
+ * Indicates whether or not two colors aren't considered to be equal. Note!
+ * The alpha components of the colors are not taken into account.
+ *
+ * @param color the lhs color.
+ * @param msgColor the rhs color.
+ * @return true if the colors don't feature the same color components; false
+ * otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(const Color& color,
+                              const SDL_MessageBoxColor& msgColor) noexcept;
 
-inline bool operator!=(const SDL_MessageBoxColor& msgColor,
-                       const Color& color) noexcept
-{
-  return !(msgColor == color);
-}
+/**
+ * Indicates whether or not two colors aren't considered to be equal. Note!
+ * The alpha components of the colors are not taken into account.
+ *
+ * @param msgColor the lhs color.
+ * @param color the rhs color.
+ * @return true if the colors don't feature the same color components; false
+ * otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(const SDL_MessageBoxColor& msgColor,
+                              const Color& color) noexcept;
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<Color>::value, "Color isn't final!");

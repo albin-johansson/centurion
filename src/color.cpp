@@ -61,6 +61,75 @@ std::string Color::to_string() const
          ", A: " + std::to_string(alpha) + "]";
 }
 
+CENTURION_DEF
+bool operator==(const Color& color, const Color& other) noexcept
+{
+  return color.get_red() == other.get_red() &&
+         color.get_green() == other.get_green() &&
+         color.get_blue() == other.get_blue() &&
+         color.get_alpha() == other.get_alpha();
+}
+
+CENTURION_DEF
+bool operator==(const Color& color, const SDL_Color& sdlColor) noexcept
+{
+  return color.get_red() == sdlColor.r && color.get_green() == sdlColor.g &&
+         color.get_blue() == sdlColor.b && color.get_alpha() == sdlColor.a;
+}
+
+CENTURION_DEF
+bool operator==(const SDL_Color& sdlColor, const Color& color) noexcept
+{
+  return color == sdlColor;
+}
+
+CENTURION_DEF
+bool operator==(const Color& color,
+                const SDL_MessageBoxColor& msgColor) noexcept
+{
+  return color.get_red() == msgColor.r && color.get_green() == msgColor.g &&
+         color.get_blue() == msgColor.b;
+}
+
+CENTURION_DEF
+bool operator==(const SDL_MessageBoxColor& msgColor,
+                const Color& color) noexcept
+{
+  return color == msgColor;
+}
+
+CENTURION_DEF
+bool operator!=(const Color& color, const Color& other) noexcept
+{
+  return !(color == other);
+}
+
+CENTURION_DEF
+bool operator!=(const Color& color, const SDL_Color& sdlColor) noexcept
+{
+  return !(color == sdlColor);
+}
+
+CENTURION_DEF
+bool operator!=(const SDL_Color& sdlColor, const Color& color) noexcept
+{
+  return !(sdlColor == color);
+}
+
+CENTURION_DEF
+bool operator!=(const Color& color,
+                const SDL_MessageBoxColor& msgColor) noexcept
+{
+  return !(color == msgColor);
+}
+
+CENTURION_DEF
+bool operator!=(const SDL_MessageBoxColor& msgColor,
+                const Color& color) noexcept
+{
+  return !(msgColor == color);
+}
+
 }  // namespace video
 }  // namespace centurion
 

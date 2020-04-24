@@ -71,10 +71,9 @@ enum class PowerState {
  * @return true if the power states are the same.
  * @since 3.0.0
  */
-inline bool operator==(PowerState a, SDL_PowerState b) noexcept
-{
-  return static_cast<SDL_PowerState>(a) == b;
-}
+CENTURION_NODISCARD
+CENTURION_API
+bool operator==(PowerState a, SDL_PowerState b) noexcept;
 
 /**
  * Indicates whether or not the power states hold the same values.
@@ -84,10 +83,9 @@ inline bool operator==(PowerState a, SDL_PowerState b) noexcept
  * @return true if the power states are the same.
  * @since 3.0.0
  */
-inline bool operator==(SDL_PowerState a, PowerState b) noexcept
-{
-  return a == static_cast<SDL_PowerState>(b);
-}
+CENTURION_NODISCARD
+CENTURION_API
+bool operator==(SDL_PowerState a, PowerState b) noexcept;
 
 /**
  * The Battery class provides utilities related to the battery of the system.

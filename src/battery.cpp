@@ -47,6 +47,18 @@ PowerState Battery::get_state() noexcept
   return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 }
 
+CENTURION_DEF
+bool operator==(PowerState a, SDL_PowerState b) noexcept
+{
+  return static_cast<SDL_PowerState>(a) == b;
+}
+
+CENTURION_DEF
+bool operator==(SDL_PowerState a, PowerState b) noexcept
+{
+  return a == static_cast<SDL_PowerState>(b);
+}
+
 }  // namespace system
 }  // namespace centurion
 

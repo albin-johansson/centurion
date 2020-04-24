@@ -6,6 +6,8 @@
 
 Centurion is a small wrapper library for [SDL2](https://www.libsdl.org/index.php), written in C++. The main purpose of Centurion is to provide a modern object-oriented take on SDL2, which is a C library. However, it's important to note that Centurion is __not__ meant to cover the entire SDL2 library. Instead, Centurion is designed to be used and compatible with native SDL2 enums, structs, etc.
 
+[GitBook documentation](https://albin-johansson.gitbook.io/centurion/)
+
 ## Getting Started
 
 ### Tools and dependencies

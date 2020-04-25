@@ -1,7 +1,7 @@
 #ifndef CENTURION_EVENT_SOURCE
 #define CENTURION_EVENT_SOURCE
 
-#include "event.h"
+#include "old_event.h"
 
 namespace centurion {
 namespace event {

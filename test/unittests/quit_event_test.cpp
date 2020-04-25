@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "event.h"
+#include "old_event.h"
 
 using namespace centurion;
 using namespace centurion::event;

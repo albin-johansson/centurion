@@ -1,8 +1,8 @@
-#include "event.h"
-
 #include <SDL.h>
 
 #include <catch.hpp>
+
+#include "old_event.h"
 
 using namespace centurion::event;
 

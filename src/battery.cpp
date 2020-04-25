@@ -48,6 +48,12 @@ PowerState Battery::get_state() noexcept
 }
 
 CENTURION_DEF
+bool Battery::exists() noexcept
+{
+  return get_state() == PowerState::OnBattery;
+}
+
+CENTURION_DEF
 bool operator==(PowerState a, SDL_PowerState b) noexcept
 {
   return static_cast<SDL_PowerState>(a) == b;

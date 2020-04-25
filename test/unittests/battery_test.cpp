@@ -1,10 +1,10 @@
-#include <catch.hpp>
-
 #include "battery.h"
+
+#include <catch.hpp>
 
 using namespace centurion::system;
 
-TEST_CASE("PowerState enum", "[Power]")
+TEST_CASE("PowerState enum", "[PowerState]")
 {
   CHECK(PowerState::Unknown == SDL_POWERSTATE_UNKNOWN);
   CHECK(PowerState::OnBattery == SDL_POWERSTATE_ON_BATTERY);
@@ -19,7 +19,7 @@ TEST_CASE("PowerState enum", "[Power]")
   CHECK(SDL_POWERSTATE_CHARGED == PowerState::Charged);
 }
 
-TEST_CASE("PowerState::get_battery_percentage", "[Power]")
+TEST_CASE("Battery::get_percentage", "[Battery]")
 {
   CHECK_NOTHROW(Battery::get_percentage());
 
@@ -31,7 +31,7 @@ TEST_CASE("PowerState::get_battery_percentage", "[Power]")
   }
 }
 
-TEST_CASE("PowerState::get_battery_minutes_left", "[Power]")
+TEST_CASE("Battery::get_minutes_left", "[Battery]")
 {
   CHECK_NOTHROW(Battery::get_minutes_left());
 
@@ -43,7 +43,7 @@ TEST_CASE("PowerState::get_battery_minutes_left", "[Power]")
   }
 }
 
-TEST_CASE("PowerState::get_state", "[Power]")
+TEST_CASE("Battery::get_state", "[Battery]")
 {
   CHECK_NOTHROW(Battery::get_state());
 
@@ -52,4 +52,9 @@ TEST_CASE("PowerState::get_state", "[Power]")
       static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 
   CHECK(state == actual);
+}
+
+TEST_CASE("Battery::exists", "[Battery]")
+{
+  CHECK(Battery::exists() == (Battery::get_state() == PowerState::OnBattery));
 }

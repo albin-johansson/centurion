@@ -138,6 +138,18 @@ class Battery final {
   CENTURION_NODISCARD
   CENTURION_API
   static PowerState get_state() noexcept;
+
+  /**
+   * Indicates whether or not the system is running on a battery. This method
+   * is simply a convenience method that is based on the <code>get_state()
+   * </code> method.
+   *
+   * @return true if the system is running on a battery; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static bool exists() noexcept;
 };
 
 }  // namespace system

@@ -178,7 +178,7 @@ CENTURION_DEF
 void Texture::set_color_mod(Color color) noexcept
 {
   SDL_SetTextureColorMod(
-      texture, color.get_red(), color.get_green(), color.get_blue());
+      texture, color.red(), color.green(), color.blue());
 }
 
 CENTURION_DEF

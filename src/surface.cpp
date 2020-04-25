@@ -104,7 +104,7 @@ CENTURION_DEF
 void Surface::set_color_mod(const Color& color) noexcept
 {
   SDL_SetSurfaceColorMod(
-      surface, color.get_red(), color.get_green(), color.get_blue());
+      surface, color.red(), color.green(), color.blue());
 }
 
 CENTURION_DEF

@@ -12,10 +12,10 @@ using namespace centurion::video;
 TEST_CASE("Color()", "[Color]")
 {
   Color c;
-  CHECK(0 == c.get_red());
-  CHECK(0 == c.get_red());
-  CHECK(0 == c.get_red());
-  CHECK(0xFF == c.get_alpha());
+  CHECK(0 == c.red());
+  CHECK(0 == c.red());
+  CHECK(0 == c.red());
+  CHECK(0xFF == c.alpha());
 }
 
 TEST_CASE("Color(Color&&)", "[Color]")
@@ -26,10 +26,10 @@ TEST_CASE("Color(Color&&)", "[Color]")
   const auto a = 0x38;
   Color color{r, g, b, a};
   Color other{std::move(color)};
-  CHECK(r == other.get_red());
-  CHECK(g == other.get_green());
-  CHECK(b == other.get_blue());
-  CHECK(a == other.get_alpha());
+  CHECK(r == other.red());
+  CHECK(g == other.green());
+  CHECK(b == other.blue());
+  CHECK(a == other.alpha());
 }
 
 TEST_CASE("Color(uint8_t, uint8_t, uint8_t, uint8_t)", "[Color]")
@@ -43,20 +43,20 @@ TEST_CASE("Color(uint8_t, uint8_t, uint8_t, uint8_t)", "[Color]")
   {
     const Color c{r, g, b, a};
 
-    CHECK(r == c.get_red());
-    CHECK(g == c.get_green());
-    CHECK(b == c.get_blue());
-    CHECK(a == c.get_alpha());
+    CHECK(r == c.red());
+    CHECK(g == c.green());
+    CHECK(b == c.blue());
+    CHECK(a == c.alpha());
   }
 
   SECTION("Defaulted alpha value")
   {
     const Color c{r, g, b};
 
-    CHECK(r == c.get_red());
-    CHECK(g == c.get_green());
-    CHECK(b == c.get_blue());
-    CHECK(c.get_alpha() == Color::max);
+    CHECK(r == c.red());
+    CHECK(g == c.green());
+    CHECK(b == c.blue());
+    CHECK(c.alpha() == Color::max);
   }
 }
 
@@ -82,10 +82,10 @@ TEST_CASE("Color::operator=(Color&&)", "[Color]")
 
   color = Color{r, g, b, a};
 
-  CHECK(r == color.get_red());
-  CHECK(g == color.get_green());
-  CHECK(b == color.get_blue());
-  CHECK(a == color.get_alpha());
+  CHECK(r == color.red());
+  CHECK(g == color.green());
+  CHECK(b == color.blue());
+  CHECK(a == color.alpha());
 }
 
 TEST_CASE("Color from SDL_Color", "[Color]")
@@ -96,20 +96,20 @@ TEST_CASE("Color from SDL_Color", "[Color]")
   {
     const auto c = Color{sc};
     CHECK(c == sc);
-    CHECK(c.get_red() == sc.r);
-    CHECK(c.get_green() == sc.g);
-    CHECK(c.get_blue() == sc.b);
-    CHECK(c.get_alpha() == sc.a);
+    CHECK(c.red() == sc.r);
+    CHECK(c.green() == sc.g);
+    CHECK(c.blue() == sc.b);
+    CHECK(c.alpha() == sc.a);
   }
 
   SECTION("Move constructor")
   {
     const auto c = Color{SDL_Color{sc.r, sc.g, sc.b, sc.a}};
     CHECK(c == sc);
-    CHECK(c.get_red() == sc.r);
-    CHECK(c.get_green() == sc.g);
-    CHECK(c.get_blue() == sc.b);
-    CHECK(c.get_alpha() == sc.a);
+    CHECK(c.red() == sc.r);
+    CHECK(c.green() == sc.g);
+    CHECK(c.blue() == sc.b);
+    CHECK(c.alpha() == sc.a);
   }
 }
 
@@ -121,18 +121,18 @@ TEST_CASE("Color from SDL_MessageBoxColor", "[Color]")
   {
     const auto c = Color{sc};
     CHECK(c == sc);
-    CHECK(c.get_red() == sc.r);
-    CHECK(c.get_green() == sc.g);
-    CHECK(c.get_blue() == sc.b);
+    CHECK(c.red() == sc.r);
+    CHECK(c.green() == sc.g);
+    CHECK(c.blue() == sc.b);
   }
 
   SECTION("Move constructor")
   {
     const auto c = Color{SDL_MessageBoxColor{sc.r, sc.g, sc.b}};
     CHECK(c == sc);
-    CHECK(c.get_red() == sc.r);
-    CHECK(c.get_green() == sc.g);
-    CHECK(c.get_blue() == sc.b);
+    CHECK(c.red() == sc.r);
+    CHECK(c.green() == sc.g);
+    CHECK(c.blue() == sc.b);
   }
 }
 
@@ -184,28 +184,28 @@ TEST_CASE("Color setters", "[Color]")
   {
     const auto r = 0x3C;
     c.set_red(r);
-    CHECK(r == c.get_red());
+    CHECK(r == c.red());
   }
 
   SECTION("Green")
   {
     const auto g = 0x79;
     c.set_green(g);
-    CHECK(g == c.get_green());
+    CHECK(g == c.green());
   }
 
   SECTION("Blue")
   {
     const auto b = 0xEE;
     c.set_blue(b);
-    CHECK(b == c.get_blue());
+    CHECK(b == c.blue());
   }
 
   SECTION("Alpha")
   {
     const auto a = 0x28;
     c.set_alpha(a);
-    CHECK(a == c.get_alpha());
+    CHECK(a == c.alpha());
   }
 }
 
@@ -219,10 +219,10 @@ TEST_CASE("Color conversions", "[Color]")
     CHECK(color == sdlColor);
     CHECK(sdlColor == color);
 
-    CHECK(color.get_red() == sdlColor.r);
-    CHECK(color.get_green() == sdlColor.g);
-    CHECK(color.get_blue() == sdlColor.b);
-    CHECK(color.get_alpha() == sdlColor.a);
+    CHECK(color.red() == sdlColor.r);
+    CHECK(color.green() == sdlColor.g);
+    CHECK(color.blue() == sdlColor.b);
+    CHECK(color.alpha() == sdlColor.a);
   }
 
   SECTION("Convert to SDL_MessageBoxColor")
@@ -232,9 +232,9 @@ TEST_CASE("Color conversions", "[Color]")
     CHECK(color == msgColor);
     CHECK(msgColor == color);
 
-    CHECK(color.get_red() == msgColor.r);
-    CHECK(color.get_green() == msgColor.g);
-    CHECK(color.get_blue() == msgColor.b);
+    CHECK(color.red() == msgColor.r);
+    CHECK(color.green() == msgColor.g);
+    CHECK(color.blue() == msgColor.b);
   }
 
   SECTION("Reinterpret to SDL_Color*")
@@ -246,10 +246,10 @@ TEST_CASE("Color conversions", "[Color]")
     const void* sdlAdr = sdlColor;
     CHECK(adr == sdlAdr);
 
-    CHECK(color.get_red() == sdlColor->r);
-    CHECK(color.get_green() == sdlColor->g);
-    CHECK(color.get_blue() == sdlColor->b);
-    CHECK(color.get_alpha() == sdlColor->a);
+    CHECK(color.red() == sdlColor->r);
+    CHECK(color.green() == sdlColor->g);
+    CHECK(color.blue() == sdlColor->b);
+    CHECK(color.alpha() == sdlColor->a);
   }
 }
 

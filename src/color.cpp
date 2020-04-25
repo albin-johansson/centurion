@@ -11,70 +11,110 @@ const uint8_t Color::max = 0xFF;
 
 CENTURION_DEF
 Color::Color(const SDL_Color& color) noexcept
-    : red{color.r}, green{color.g}, blue{color.b}, alpha{color.a}
+    : m_red{color.r}, m_green{color.g}, m_blue{color.b}, m_alpha{color.a}
 {}
 
 CENTURION_DEF
 Color::Color(SDL_Color&& color) noexcept
-    : red{color.r}, green{color.g}, blue{color.b}, alpha{color.a}
+    : m_red{color.r}, m_green{color.g}, m_blue{color.b}, m_alpha{color.a}
 {}
 
 CENTURION_DEF
 Color::Color(const SDL_MessageBoxColor& color) noexcept
-    : red{color.r}, green{color.g}, blue{color.b}, alpha{max}
+    : m_red{color.r}, m_green{color.g}, m_blue{color.b}, m_alpha{max}
 {}
 
 CENTURION_DEF
 Color::Color(SDL_MessageBoxColor&& color) noexcept
-    : red{color.r}, green{color.g}, blue{color.b}, alpha{max}
+    : m_red{color.r}, m_green{color.g}, m_blue{color.b}, m_alpha{max}
 {}
 
 CENTURION_DEF
 void Color::set_red(uint8_t r) noexcept
 {
-  this->red = r;
+  this->m_red = r;
 }
 
 CENTURION_DEF
 void Color::set_green(uint8_t g) noexcept
 {
-  this->green = g;
+  this->m_green = g;
 }
 
 CENTURION_DEF
 void Color::set_blue(uint8_t b) noexcept
 {
-  this->blue = b;
+  this->m_blue = b;
 }
 
 CENTURION_DEF
 void Color::set_alpha(uint8_t a) noexcept
 {
-  this->alpha = a;
+  this->m_alpha = a;
+}
+
+CENTURION_DEF
+uint8_t Color::red() const noexcept
+{
+  return m_red;
+}
+
+CENTURION_DEF
+uint8_t Color::green() const noexcept
+{
+  return m_green;
+}
+
+CENTURION_DEF
+uint8_t Color::blue() const noexcept
+{
+  return m_blue;
+}
+
+CENTURION_DEF
+uint8_t Color::alpha() const noexcept
+{
+  return m_alpha;
 }
 
 CENTURION_DEF
 std::string Color::to_string() const
 {
-  return "[Color | R: " + std::to_string(red) +
-         ", G: " + std::to_string(green) + ", B: " + std::to_string(blue) +
-         ", A: " + std::to_string(alpha) + "]";
+  return "[Color | R: " + std::to_string(m_red) +
+         ", G: " + std::to_string(m_green) + ", B: " + std::to_string(m_blue) +
+         ", A: " + std::to_string(m_alpha) + "]";
+}
+
+CENTURION_DEF
+Color::operator SDL_Color() const noexcept
+{
+  return {m_red, m_green, m_blue, m_alpha};
+}
+
+CENTURION_DEF
+Color::operator const SDL_Color*() const noexcept
+{
+  return reinterpret_cast<const SDL_Color*>(this);
+}
+
+CENTURION_DEF
+Color::operator SDL_MessageBoxColor() const noexcept
+{
+  return {m_red, m_green, m_blue};
 }
 
 CENTURION_DEF
 bool operator==(const Color& color, const Color& other) noexcept
 {
-  return color.get_red() == other.get_red() &&
-         color.get_green() == other.get_green() &&
-         color.get_blue() == other.get_blue() &&
-         color.get_alpha() == other.get_alpha();
+  return color.red() == other.red() && color.green() == other.green() &&
+         color.blue() == other.blue() && color.alpha() == other.alpha();
 }
 
 CENTURION_DEF
 bool operator==(const Color& color, const SDL_Color& sdlColor) noexcept
 {
-  return color.get_red() == sdlColor.r && color.get_green() == sdlColor.g &&
-         color.get_blue() == sdlColor.b && color.get_alpha() == sdlColor.a;
+  return color.red() == sdlColor.r && color.green() == sdlColor.g &&
+         color.blue() == sdlColor.b && color.alpha() == sdlColor.a;
 }
 
 CENTURION_DEF
@@ -87,8 +127,8 @@ CENTURION_DEF
 bool operator==(const Color& color,
                 const SDL_MessageBoxColor& msgColor) noexcept
 {
-  return color.get_red() == msgColor.r && color.get_green() == msgColor.g &&
-         color.get_blue() == msgColor.b;
+  return color.red() == msgColor.r && color.green() == msgColor.g &&
+         color.blue() == msgColor.b;
 }
 
 CENTURION_DEF

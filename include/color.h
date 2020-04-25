@@ -45,12 +45,6 @@ namespace video {
  * @since 3.0.0
  */
 class Color final {
- private:
-  uint8_t red = 0;
-  uint8_t green = 0;
-  uint8_t blue = 0;
-  uint8_t alpha = max;
-
  public:
   /**
    * The maximum possible value of a color component.
@@ -78,7 +72,7 @@ class Color final {
    * @since 3.0.0
    */
   constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF) noexcept
-      : red{r}, green{g}, blue{b}, alpha{a}
+      : m_red{r}, m_green{g}, m_blue{b}, m_alpha{a}
   {}
 
   /**
@@ -199,7 +193,8 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_red() const noexcept { return red; }
+  CENTURION_API
+  uint8_t red() const noexcept;
 
   /**
    * Returns the value of the green component.
@@ -208,7 +203,8 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_green() const noexcept { return green; }
+  CENTURION_API
+  uint8_t green() const noexcept;
 
   /**
    * Returns the value of the blue component.
@@ -217,7 +213,8 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_blue() const noexcept { return blue; }
+  CENTURION_API
+  uint8_t blue() const noexcept;
 
   /**
    * Returns the value of the alpha component.
@@ -226,7 +223,8 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  uint8_t get_alpha() const noexcept { return alpha; }
+  CENTURION_API
+  uint8_t alpha() const noexcept;
 
   /**
    * Returns a textual representation of the color.
@@ -245,7 +243,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  operator SDL_Color() const noexcept { return {red, green, blue, alpha}; }
+  CENTURION_API operator SDL_Color() const noexcept;
 
   /**
    * Converts the color to a pointer to a SDL_Color instance.
@@ -255,10 +253,7 @@ class Color final {
    * @since 4.0,0
    */
   CENTURION_NODISCARD
-  explicit operator const SDL_Color*() const noexcept
-  {
-    return reinterpret_cast<const SDL_Color*>(this);
-  }
+  CENTURION_API explicit operator const SDL_Color*() const noexcept;
 
   /**
    * Implicitly converts the the color into an SDL_MessageBoxColor. Note that
@@ -268,11 +263,17 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  operator SDL_MessageBoxColor() const noexcept { return {red, green, blue}; }
+  CENTURION_API operator SDL_MessageBoxColor() const noexcept;
+
+ private:
+  uint8_t m_red = 0;
+  uint8_t m_green = 0;
+  uint8_t m_blue = 0;
+  uint8_t m_alpha = max;
 };
 
 /**
- * An alias for the british spelling of color.
+ * An alias for the British spelling of color.
  *
  * @since 3.1.0
  */

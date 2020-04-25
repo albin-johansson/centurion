@@ -181,10 +181,10 @@ TEST_CASE("Texture::set_color_mod", "[Texture]")
   texture.set_color_mod(color);
 
   const auto actual = texture.get_color_mod();
-  CHECK(color.get_red() == actual.get_red());
-  CHECK(color.get_green() == actual.get_green());
-  CHECK(color.get_blue() == actual.get_blue());
-  CHECK(color.get_alpha() == actual.get_alpha());
+  CHECK(color.red() == actual.red());
+  CHECK(color.green() == actual.green());
+  CHECK(color.blue() == actual.blue());
+  CHECK(color.alpha() == actual.alpha());
 }
 
 TEST_CASE("Texture::is_static", "[Texture]")

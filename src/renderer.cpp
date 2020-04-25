@@ -547,10 +547,10 @@ CENTURION_DEF
 void Renderer::set_color(const Color& color) const noexcept
 {
   SDL_SetRenderDrawColor(renderer,
-                         color.get_red(),
-                         color.get_green(),
-                         color.get_blue(),
-                         color.get_alpha());
+                         color.red(),
+                         color.green(),
+                         color.blue(),
+                         color.alpha());
 }
 
 CENTURION_DEF

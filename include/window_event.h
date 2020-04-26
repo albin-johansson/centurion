@@ -1,177 +1,14 @@
-#ifndef CENTURION_NEW_EVENT_HEADER
-#define CENTURION_NEW_EVENT_HEADER
+#ifndef CENTURION_WINDOW_EVENT_HEADER
+#define CENTURION_WINDOW_EVENT_HEADER
 
 #include <SDL_events.h>
 
-#include <cstdint>
-#include <utility>
-
+#include "base_event.h"
+#include "button_state.h"
 #include "centurion_api.h"
 
 namespace centurion {
-
-/**
- * This is the templated base class of all Centurion events. This class
- * provides the common API of all events and the storage of the SDL2 event.
- *
- * @tparam T the SDL2 event type that the Centurion version represents.
- * @since 4.0.0
- */
-template <typename T>
-class TEvent {
- public:
-  /**
-   * Creates a TEvent and default-initializes the internal event.
-   *
-   * @since 4.0.0
-   */
-  TEvent() noexcept : m_event{} {}
-
-  /**
-   * Creates a TEvent and copies the supplied event.
-   *
-   * @param event the event that will be copied.
-   * @since 4.0.0
-   */
-  explicit TEvent(const T& event) : m_event{event} {}
-
-  /**
-   * Creates a TEvent and moves the contents of the supplied event.
-   *
-   * @param event the event that will be moved.
-   * @since 4.0.0
-   */
-  explicit TEvent(T&& event) : m_event{std::move(event)} {}
-
-  /**
-   * Default virtual destructor.
-   *
-   * @since 4.0.0
-   */
-  virtual ~TEvent() noexcept {};
-
-  /**
-   * Returns the ID of the window associated with the event.
-   *
-   * @return the ID of the window associated with the event.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD uint32_t window_id() const noexcept
-  {
-    return m_event.windowID;
-  }
-
-  /**
-   * Returns the timestamp associated with the creation of the event.
-   *
-   * @return the timestamp associated with the creation of the event.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD uint32_t time() const noexcept
-  {
-    return m_event.timestamp;
-  }
-
- protected:
-  T m_event;
-};
-
-class AudioDeviceEvent : public TEvent<SDL_AudioDeviceEvent> {
- public:
-};
-
-class ControllerAxisEvent : public TEvent<SDL_ControllerAxisEvent> {
-};
-
-class ControllerButtonEvent : public TEvent<SDL_ControllerButtonEvent> {
-};
-
-class ControllerDeviceEvent : public TEvent<SDL_ControllerDeviceEvent> {
-};
-
-class DollarGestureEvent : public TEvent<SDL_DollarGestureEvent> {
-};
-
-class DropEvent : public TEvent<SDL_DropEvent> {
-};
-
-class TouchFingerEvent : public TEvent<SDL_TouchFingerEvent> {
-};
-
-class KeyboardEvent : public TEvent<SDL_KeyboardEvent> {
-};
-
-class JoyAxisEvent : public TEvent<SDL_JoyAxisEvent> {
-};
-
-class JoyBallEvent : public TEvent<SDL_JoyBallEvent> {
-};
-
-class JoyHatEvent : public TEvent<SDL_JoyHatEvent> {
-};
-
-class JoyButtonEvent : public TEvent<SDL_JoyButtonEvent> {
-};
-
-class JoyDeviceEvent : public TEvent<SDL_JoyDeviceEvent> {
-};
-
-class MouseMotionEvent : public TEvent<SDL_MouseMotionEvent> {
-};
-
-class MouseButtonEvent : public TEvent<SDL_MouseButtonEvent> {
-};
-
-class MouseWheelEvent : public TEvent<SDL_MouseWheelEvent> {
-};
-
-class MultiGestureEvent : public TEvent<SDL_MultiGestureEvent> {
-};
-
-/**
- * The QuitEvent class represents the event of the user wanting to close the
- * application, usually by pressing the "X"-button on the window frame.
- *
- * @see SDL_QuitEvent
- * @since 4.0.0
- */
-class QuitEvent : public TEvent<SDL_QuitEvent> {
- public:
-  /**
-   * Creates a default-initialized quit event.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API QuitEvent() noexcept;
-
-  /**
-   * Creates a quit event based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be copied.
-   * @since 4.0.0
-   */
-  CENTURION_API explicit QuitEvent(const SDL_QuitEvent& event) noexcept;
-
-  /**
-   * Creates a quit event based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API explicit QuitEvent(SDL_QuitEvent&& event) noexcept;
-};
-
-class SysWMEvent : public TEvent<SDL_SysWMEvent> {
-};
-
-class TextEditingEvent : public TEvent<SDL_TextEditingEvent> {
-};
-
-class TextInputEvent : public TEvent<SDL_TextInputEvent> {
-};
-
-class UserEvent : public TEvent<SDL_UserEvent> {
-};
+namespace event {
 
 /**
  *
@@ -419,10 +256,11 @@ class WindowEvent : public TEvent<SDL_WindowEvent> {
   CENTURION_API int32_t data_2() const noexcept;
 };
 
+}  // namespace event
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-#include "quit_event.cpp"
-#endif
+#include "window_event.cpp"
+#endif  // CENTURION_HEADER_ONLY
 
-#endif  // CENTURION_NEW_EVENT_HEADER // TODO fix this include guard name
+#endif  // CENTURION_WINDOW_EVENT_HEADER

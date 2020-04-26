@@ -1,8 +1,9 @@
 #include <catch.hpp>
 
-#include "new_event.h"
+#include "event.h"
 
 using namespace centurion;
+using namespace event;
 
 TEST_CASE("WindowEventID operator==", "[WindowEvent]")
 {

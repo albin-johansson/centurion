@@ -1,9 +1,10 @@
 #ifndef CENTURION_WINDOW_EVENT_SOURCE
 #define CENTURION_WINDOW_EVENT_SOURCE
 
-#include "new_event.h"
+#include "window_event.h"
 
 namespace centurion {
+namespace event {
 
 CENTURION_DEF
 WindowEvent::WindowEvent() noexcept : TEvent{}
@@ -60,6 +61,7 @@ bool operator!=(SDL_WindowEventID sdlEventId, WindowEventID eventId) noexcept
   return !(sdlEventId == eventId);
 }
 
+}  // namespace event
 }  // namespace centurion
 
 #endif  // CENTURION_WINDOW_EVENT_SOURCE

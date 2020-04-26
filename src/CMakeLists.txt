@@ -36,8 +36,15 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/battery.h
         ${CTN_INCLUDE_DIR}/screen.h
         ${CTN_INCLUDE_DIR}/key.h
+
+        ${CTN_INCLUDE_DIR}/event.h
+        ${CTN_INCLUDE_DIR}/keyboard_event.h
+        ${CTN_INCLUDE_DIR}/base_event.h
+        ${CTN_INCLUDE_DIR}/quit_event.h
+        ${CTN_INCLUDE_DIR}/button_state.h
+        ${CTN_INCLUDE_DIR}/window_event.h
+
         ${CTN_INCLUDE_DIR}/old_event.h
-        ${CTN_INCLUDE_DIR}/new_event.h
 
         window.cpp
         font.cpp
@@ -56,7 +63,6 @@ set(SOURCE_FILES
         key_state.cpp
         mouse_state.cpp
         error.cpp
-        old_event.cpp
         surface.cpp
         cursor.cpp
         pixel_format.cpp
@@ -65,9 +71,10 @@ set(SOURCE_FILES
         battery.cpp
         screen.cpp
         key.cpp
+
         quit_event.cpp
-        window_event.cpp)
-        )
+        window_event.cpp
+        keyboard_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

@@ -36,7 +36,10 @@ set(TEST_FILES
         unittests/surface_test.cpp
         unittests/pixel_format_test.cpp
         unittests/cursor_test.cpp
-        unittests/window_event_test.cpp)
+        unittests/key_test.cpp
+
+        unittests/window_event_test.cpp
+        )
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

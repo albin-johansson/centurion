@@ -35,6 +35,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/ram.h
         ${CTN_INCLUDE_DIR}/battery.h
         ${CTN_INCLUDE_DIR}/screen.h
+        ${CTN_INCLUDE_DIR}/key.h
         ${CTN_INCLUDE_DIR}/old_event.h
         ${CTN_INCLUDE_DIR}/new_event.h
 
@@ -63,8 +64,10 @@ set(SOURCE_FILES
         ram.cpp
         battery.cpp
         screen.cpp
+        key.cpp
         quit_event.cpp
         window_event.cpp)
+        )
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

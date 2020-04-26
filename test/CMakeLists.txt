@@ -20,12 +20,6 @@ set(TEST_FILES
         unittests/rectangle_test.cpp
         unittests/centurion_exception_test.cpp
         unittests/error_test.cpp
-        unittests/event_test.cpp
-        unittests/mouse_motion_event_test.cpp
-        unittests/mouse_button_event_test.cpp
-        unittests/mouse_wheel_event_test.cpp
-        unittests/quit_event_test.cpp
-        unittests/quit_event_test.cpp
         unittests/timer_test.cpp
         unittests/paths_test.cpp
         unittests/platform_test.cpp
@@ -37,10 +31,8 @@ set(TEST_FILES
         unittests/pixel_format_test.cpp
         unittests/cursor_test.cpp
         unittests/key_test.cpp
-
         unittests/window_event_test.cpp
-        unittests/keyboard_event_test.cpp
-        )
+        unittests/keyboard_event_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

@@ -212,10 +212,7 @@ TEST_CASE("KeyboardEvent::caps_active", "[KeyboardEvent]")
 
   SECTION("Active")
   {
-    //    const auto [left, right] =
-    //        get_events_one_mod_active(KeyModifier::C, KeyModifier::RightGUI);
-    //    CHECK(left.gui_active());
-    //    CHECK(right.gui_active());
+    // TODO
   }
 
   SECTION("With noise (other modifiers)")

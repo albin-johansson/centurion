@@ -44,8 +44,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/button_state.h
         ${CTN_INCLUDE_DIR}/window_event.h
 
-        ${CTN_INCLUDE_DIR}/old_event.h
-
         window.cpp
         font.cpp
         renderer.cpp
@@ -71,7 +69,6 @@ set(SOURCE_FILES
         battery.cpp
         screen.cpp
         key.cpp
-
         quit_event.cpp
         window_event.cpp
         keyboard_event.cpp)

@@ -206,12 +206,12 @@ CENTURION_API bool operator!=(SDL_WindowEventID sdlEventId,
 /**
  * The WindowEvent class represents an event that is associated with an
  * action related to a window. This class is a subclass of
- * TEvent&lt;SDL_WindowEvent&gt;.
+ * BaseEvent&lt;SDL_WindowEvent&gt;.
  *
  * @see SDL_WindowEvent
  * @since 4.0.0
  */
-class WindowEvent : public TEvent<SDL_WindowEvent> {
+class WindowEvent : public BaseEvent<SDL_WindowEvent> {
  public:
   /**
    * Creates a default-initialized window event.

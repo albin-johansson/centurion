@@ -25,9 +25,13 @@
 #ifndef CENTURION_KEYBOARD_EVENT_HEADER
 #define CENTURION_KEYBOARD_EVENT_HEADER
 
+#include <SDL_events.h>
 #include <SDL_keyboard.h>
 
+#include "base_event.h"
+#include "button_state.h"
 #include "centurion_api.h"
+#include "key.h"
 
 namespace centurion {
 namespace event {
@@ -60,7 +64,7 @@ enum class KeyModifier {
  * @see SDL_KeyboardEvent
  * @since 4.0.0
  */
-class KeyboardEvent : public TEvent<SDL_KeyboardEvent> {  // TODO test
+class KeyboardEvent : public BaseEvent<SDL_KeyboardEvent> {
  public:
   /**
    * Creates a default-initialized keyboard event.
@@ -85,33 +89,52 @@ class KeyboardEvent : public TEvent<SDL_KeyboardEvent> {  // TODO test
    */
   CENTURION_API explicit KeyboardEvent(SDL_KeyboardEvent&& event) noexcept;
 
+  /**
+   * Sets the button state associated with a key.
+   *
+   * @param key the key to set the button state of.
+   * @param state the new button state of the key.
+   * @since 4.0.0
+   */
+  CENTURION_API void set_key(const Key& key, ButtonState state) noexcept;
+
+  /**
+   * Sets the status of a key modifier.
+   *
+   * @param modifier the key modifier that will be affected.
+   * @param active true if the key modifier is active; false otherwise.
+   * @since 4.0.0
+   */
   CENTURION_API void set_modifier(KeyModifier modifier, bool active) noexcept;
-  CENTURION_API void set_key(SDL_Keycode keycode, ButtonState state) noexcept;
-  CENTURION_API void set_key(SDL_Scancode scancode, ButtonState state) noexcept;
 
   /**
-   * Indicates whether or not the supplied keycode represents the same key that
+   * Sets the flag that indicates whether or not the key associated with this
+   * key event was repeatedly triggered.
+   *
+   * @param repeated true if the key was repeatedly triggered; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_API void set_repeated(bool repeated) noexcept;
+
+  /**
+   * Sets the window ID that is associated with this key event.
+   *
+   * @param id the window ID that should be associated with the key event.
+   * @since 4.0.0
+   */
+  CENTURION_API void set_window_id(uint32_t id) noexcept;
+
+  /**
+   * Indicates whether or not the supplied key represents the same key that
    * triggered this keyboard event.
    *
-   * @param keycode the keycode of the key that will be checked.
-   * @return true if the key associated with the supplied keycode caused this
-   * keyboard event; false otherwise.
+   * @param keycode the key that will be checked.
+   * @return true if the supplied key caused this keyboard event; false
+   * otherwise.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_key_active(SDL_Keycode keycode) const noexcept;
-
-  /**
-   * Indicates whether or not the supplied scancode represents the same key that
-   * triggered this keyboard event.
-   *
-   * @param scancode the scancode of the key that will be checked.
-   * @return true if the key associated with the supplied scancode caused this
-   * keyboard event; false otherwise.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_key_active(SDL_Scancode scancode) const noexcept;
+  CENTURION_API bool is_active(const Key& key) const noexcept;
 
   /**
    * Indicates whether or not the specified key modifier is active. Multiple key
@@ -167,7 +190,7 @@ class KeyboardEvent : public TEvent<SDL_KeyboardEvent> {  // TODO test
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool caps_active() const noexcept;  // TODO test
+  CENTURION_API bool caps_active() const noexcept;
 
   /**
    * Indicates whether or not the NUM modifier is active.
@@ -176,7 +199,7 @@ class KeyboardEvent : public TEvent<SDL_KeyboardEvent> {  // TODO test
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool num_active() const noexcept;  // TODO test
+  CENTURION_API bool num_active() const noexcept;
 
   /**
    * Indicates whether or not the key associated with this key event has been
@@ -198,11 +221,23 @@ class KeyboardEvent : public TEvent<SDL_KeyboardEvent> {  // TODO test
   CENTURION_NODISCARD
   CENTURION_API ButtonState state() const noexcept;
 
+  /**
+   * Returns the key that triggered this keyboard event.
+   *
+   * @return the key that triggered this keyboard event.
+   * @since 4.0.0
+   */
   CENTURION_NODISCARD
-  CENTURION_API SDL_Scancode scancode() const noexcept;
+  CENTURION_API Key key() const noexcept;
 
+  /**
+   * Returns the ID of the window associated with the event.
+   *
+   * @return the ID of the window associated with the event.
+   * @since 4.0.0
+   */
   CENTURION_NODISCARD
-  CENTURION_API SDL_Keycode keycode() const noexcept;
+  CENTURION_API uint32_t window_id() const noexcept;
 };
 
 }  // namespace event

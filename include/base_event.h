@@ -38,48 +38,46 @@ namespace event {
  * @since 4.0.0
  */
 template <typename T>
-class TEvent {
+class BaseEvent {
  public:
   /**
-   * Creates a TEvent and default-initializes the internal event.
+   * Creates a BaseEvent and default-initializes the internal event.
    *
    * @since 4.0.0
    */
-  TEvent() noexcept : m_event{} {}
+  BaseEvent() noexcept : m_event{} {}
 
   /**
-   * Creates a TEvent and copies the supplied event.
+   * Creates a BaseEvent and copies the supplied event.
    *
    * @param event the event that will be copied.
    * @since 4.0.0
    */
-  explicit TEvent(const T& event) : m_event{event} {}
+  explicit BaseEvent(const T& event) : m_event{event} {}
 
   /**
-   * Creates a TEvent and moves the contents of the supplied event.
+   * Creates a BaseEvent and moves the contents of the supplied event.
    *
    * @param event the event that will be moved.
    * @since 4.0.0
    */
-  explicit TEvent(T&& event) : m_event{std::move(event)} {}
+  explicit BaseEvent(T&& event) : m_event{std::move(event)} {}
 
   /**
    * Default virtual destructor.
    *
    * @since 4.0.0
    */
-  virtual ~TEvent() noexcept {};
+  virtual ~BaseEvent() noexcept {}
 
   /**
-   * Returns the ID of the window associated with the event.
+   * Sets the timestamp that is associated with the creation of the event.
    *
-   * @return the ID of the window associated with the event.
+   * @param timestamp the timestamp that should be associated with the creation
+   * of the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD uint32_t window_id() const noexcept
-  {
-    return m_event.windowID;
-  }
+  void set_time(uint32_t timestamp) noexcept { m_event.timestamp = timestamp; }
 
   /**
    * Returns the timestamp associated with the creation of the event.
@@ -96,7 +94,7 @@ class TEvent {
   T m_event;
 };
 
-}
-}
+}  // namespace event
+}  // namespace centurion
 
-#endif // CENTURION_BASE_EVENT_HEADER
+#endif  // CENTURION_BASE_EVENT_HEADER

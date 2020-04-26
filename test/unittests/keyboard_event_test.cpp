@@ -34,33 +34,71 @@ KeyboardEvent get_event_mod_flags(int modifierFlags) noexcept
 
 }  // namespace
 
-TEST_CASE("KeyboardEvent::is_key_active(SDL_Keycode)", "[KeyboardEvent]")
+TEST_CASE("KeyboardEvent::set_key", "[KeyboardEvent]")
 {
-  const auto keycode = SDLK_DOLLAR;
-  const auto createEvent = [keycode]() noexcept {
-    SDL_KeyboardEvent event{};
-    event.keysym = {SDL_SCANCODE_UNKNOWN, keycode};
-    return event;
-  };
-  const KeyboardEvent event{createEvent()};
+  KeyboardEvent event;
 
-  CHECK(event.is_key_active(keycode));
-  CHECK(!event.is_key_active(keycode + 1));
+  event.set_key(SDLK_b, ButtonState::Pressed);
+  CHECK(event.key() == Key{SDLK_b});
+  CHECK(event.state() == ButtonState::Pressed);
+
+  event.set_key(SDL_SCANCODE_Q, ButtonState::Released);
+  CHECK(event.key() == Key{SDL_SCANCODE_Q});
+  CHECK(event.state() == ButtonState::Released);
 }
 
-TEST_CASE("KeyboardEvent::is_key_active(SDL_Scancode)", "[KeyboardEvent]")
+TEST_CASE("KeyboardEvent::set_modifier", "[KeyboardEvent]")
 {
-  const auto scancode = SDL_SCANCODE_L;
-  const auto createEvent = [scancode]() noexcept {
+  KeyboardEvent event;
+
+  const auto shift = KeyModifier::LeftShift;
+  const auto caps = KeyModifier::Caps;
+
+  event.set_modifier(shift, true);
+  CHECK(event.modifier_active(shift));
+
+  event.set_modifier(caps, true);
+
+  CHECK(event.modifier_active(shift));
+  CHECK(event.modifier_active(caps));
+
+  event.set_modifier(shift, false);
+  CHECK(!event.modifier_active(shift));
+  CHECK(event.modifier_active(caps));
+}
+
+TEST_CASE("KeyboardEvent::set_repeated", "[KeyboardEvent]")
+{
+  KeyboardEvent event;
+  event.set_repeated(true);
+  CHECK(event.repeated());
+  event.set_repeated(false);
+  CHECK(!event.repeated());
+}
+
+TEST_CASE("KeyboardEvent::set_window_id", "[KeyboardEvent]")
+{
+  KeyboardEvent event;
+  const auto id = 79U;
+  event.set_window_id(id);
+  CHECK(event.window_id() == id);
+}
+
+TEST_CASE("KeyboardEvent::is_active", "[KeyboardEvent]")
+{
+  const auto createEvent = [](Key key) noexcept {
     SDL_KeyboardEvent keyboardEvent{};
-    keyboardEvent.keysym = {scancode};
+    keyboardEvent.keysym.scancode = key;
+    keyboardEvent.keysym.sym = key;
     return keyboardEvent;
   };
 
-  const KeyboardEvent event{createEvent()};
+  const KeyboardEvent event{createEvent(SDLK_q)};
 
-  CHECK(event.is_key_active(scancode));
-  CHECK(!event.is_key_active(scancode + 1));
+  CHECK(event.is_active(SDLK_q));
+  CHECK(event.is_active(SDL_SCANCODE_Q));
+
+  CHECK(!event.is_active(SDLK_e));
 }
 
 TEST_CASE("KeyboardEvent::modifier_active", "[KeyboardEvent]")
@@ -79,36 +117,6 @@ TEST_CASE("KeyboardEvent::modifier_active", "[KeyboardEvent]")
   {
     CHECK(event.modifier_active(KeyModifier::LeftAlt));
     CHECK(event.modifier_active(KeyModifier::Caps));
-  }
-}
-
-TEST_CASE("KeyboardEvent::ctrl_active", "[KeyboardEvent]")
-{
-  SECTION("No modifiers")
-  {
-    const KeyboardEvent event{{}};
-    CHECK(!event.ctrl_active());
-  }
-
-  SECTION("One active modifier")
-  {
-    const auto [left, right] = get_events_one_mod_active(
-        KeyModifier::LeftControl, KeyModifier::RightControl);
-    CHECK(left.ctrl_active());
-    CHECK(right.ctrl_active());
-  }
-
-  SECTION("Both modifiers active")
-  {
-    const KeyboardEvent event = get_event_mod_flags(KMOD_LCTRL | KMOD_RCTRL);
-    CHECK(event.ctrl_active());
-  }
-
-  SECTION("With noise (other modifiers)")
-  {
-    const KeyboardEvent event =
-        get_event_mod_flags(KMOD_LCTRL | KMOD_RCTRL | KMOD_CAPS | KMOD_LSHIFT);
-    CHECK(event.ctrl_active());
   }
 }
 
@@ -139,6 +147,36 @@ TEST_CASE("KeyboardEvent::shift_active", "[KeyboardEvent]")
     const KeyboardEvent event =
         get_event_mod_flags(KMOD_LSHIFT | KMOD_RSHIFT | KMOD_CAPS | KMOD_LGUI);
     CHECK(event.shift_active());
+  }
+}
+
+TEST_CASE("KeyboardEvent::ctrl_active", "[KeyboardEvent]")
+{
+  SECTION("No modifiers")
+  {
+    const KeyboardEvent event{{}};
+    CHECK(!event.ctrl_active());
+  }
+
+  SECTION("One active modifier")
+  {
+    const auto [left, right] = get_events_one_mod_active(
+        KeyModifier::LeftControl, KeyModifier::RightControl);
+    CHECK(left.ctrl_active());
+    CHECK(right.ctrl_active());
+  }
+
+  SECTION("Both modifiers active")
+  {
+    const KeyboardEvent event = get_event_mod_flags(KMOD_LCTRL | KMOD_RCTRL);
+    CHECK(event.ctrl_active());
+  }
+
+  SECTION("With noise (other modifiers)")
+  {
+    const KeyboardEvent event =
+        get_event_mod_flags(KMOD_LCTRL | KMOD_RCTRL | KMOD_CAPS | KMOD_LSHIFT);
+    CHECK(event.ctrl_active());
   }
 }
 
@@ -212,7 +250,9 @@ TEST_CASE("KeyboardEvent::caps_active", "[KeyboardEvent]")
 
   SECTION("Active")
   {
-    // TODO
+    KeyboardEvent event;
+    event.set_modifier(KeyModifier::Caps, true);
+    CHECK(event.caps_active());
   }
 
   SECTION("With noise (other modifiers)")
@@ -220,6 +260,29 @@ TEST_CASE("KeyboardEvent::caps_active", "[KeyboardEvent]")
     const KeyboardEvent event =
         get_event_mod_flags(KMOD_RCTRL | KMOD_RSHIFT | KMOD_CAPS);
     CHECK(event.caps_active());
+  }
+}
+
+TEST_CASE("KeyboardEvent::num_active", "[KeyboardEvent]")
+{
+  SECTION("No modifiers")
+  {
+    const KeyboardEvent event{{}};
+    CHECK(!event.num_active());
+  }
+
+  SECTION("Active")
+  {
+    KeyboardEvent event;
+    event.set_modifier(KeyModifier::Num, true);
+    CHECK(event.num_active());
+  }
+
+  SECTION("With noise (other modifiers)")
+  {
+    const KeyboardEvent event =
+        get_event_mod_flags(KMOD_RGUI | KMOD_RSHIFT | KMOD_NUM);
+    CHECK(event.num_active());
   }
 }
 
@@ -262,6 +325,17 @@ TEST_CASE("KeyboardEvent::state", "[KeyboardEvent]")
   }
 }
 
+TEST_CASE("KeyboardEvent::key", "[KeyboardEvent]")
+{
+  KeyboardEvent event;
+  const Key original = SDLK_b;
+
+  event.set_key(original, ButtonState::Pressed);
+  const auto copy = event.key();
+
+  CHECK(original == copy);
+}
+
 TEST_CASE("KeyboardEvent::window_id", "[KeyboardEvent]")
 {
   const auto windowID = 72;
@@ -271,16 +345,4 @@ TEST_CASE("KeyboardEvent::window_id", "[KeyboardEvent]")
     return KeyboardEvent{sdlEvent};
   }();
   CHECK(event.window_id() == windowID);
-}
-
-TEST_CASE("KeyboardEvent::get_time", "[KeyboardEvent]")
-{
-  const auto time = SDL_GetTicks();
-  const auto event = [time]() noexcept {
-    SDL_KeyboardEvent sdlEvent{};
-    sdlEvent.timestamp = time;
-    return KeyboardEvent{sdlEvent};
-  }();
-
-  CHECK(event.time() == time);
 }

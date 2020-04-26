@@ -40,7 +40,7 @@ namespace event {
  * @see SDL_QuitEvent
  * @since 4.0.0
  */
-class QuitEvent : public TEvent<SDL_QuitEvent> {
+class QuitEvent : public BaseEvent<SDL_QuitEvent> {
  public:
   /**
    * Creates a default-initialized quit event.

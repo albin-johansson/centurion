@@ -32,7 +32,8 @@ set(TEST_FILES
         unittests/cursor_test.cpp
         unittests/key_test.cpp
         unittests/window_event_test.cpp
-        unittests/keyboard_event_test.cpp)
+        unittests/keyboard_event_test.cpp
+        unittests/base_event_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

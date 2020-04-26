@@ -1,23 +1,33 @@
 #ifndef CENTURION_KEYBOARD_EVENT_SOURCE
 #define CENTURION_KEYBOARD_EVENT_SOURCE
 
+#include <keyboard_event.h>
+
 #include "event.h"
 
 namespace centurion {
 namespace event {
 
 CENTURION_DEF
-KeyboardEvent::KeyboardEvent() noexcept : TEvent{{}}
+KeyboardEvent::KeyboardEvent() noexcept : BaseEvent{{}}
 {}
 
 CENTURION_DEF
 KeyboardEvent::KeyboardEvent(const SDL_KeyboardEvent& event) noexcept
-    : TEvent{event}
+    : BaseEvent{event}
 {}
 
 CENTURION_DEF
-KeyboardEvent::KeyboardEvent(SDL_KeyboardEvent&& event) noexcept : TEvent{event}
+KeyboardEvent::KeyboardEvent(SDL_KeyboardEvent&& event) noexcept : BaseEvent{event}
 {}
+
+CENTURION_DEF
+void KeyboardEvent::set_key(const Key& key, ButtonState state) noexcept
+{
+  m_event.keysym.scancode = key.scancode();
+  m_event.keysym.sym = key.keycode();
+  m_event.state = static_cast<uint8_t>(state);
+}
 
 CENTURION_DEF
 void KeyboardEvent::set_modifier(KeyModifier modifier, bool active) noexcept
@@ -31,15 +41,21 @@ void KeyboardEvent::set_modifier(KeyModifier modifier, bool active) noexcept
 }
 
 CENTURION_DEF
-bool KeyboardEvent::is_key_active(SDL_Keycode keycode) const noexcept
+void KeyboardEvent::set_repeated(bool repeated) noexcept
 {
-  return m_event.keysym.sym == keycode;
+  m_event.repeat = repeated;
 }
 
 CENTURION_DEF
-bool KeyboardEvent::is_key_active(SDL_Scancode scancode) const noexcept
+void KeyboardEvent::set_window_id(uint32_t id) noexcept
 {
-  return m_event.keysym.scancode == scancode;
+  m_event.windowID = id;
+}
+
+CENTURION_DEF
+bool KeyboardEvent::is_active(const Key& key) const noexcept
+{
+  return m_event.keysym.sym == key.keycode();
 }
 
 CENTURION_DEF
@@ -101,15 +117,15 @@ ButtonState KeyboardEvent::state() const noexcept
 }
 
 CENTURION_DEF
-SDL_Scancode KeyboardEvent::scancode() const noexcept
+Key KeyboardEvent::key() const noexcept
 {
   return m_event.keysym.scancode;
 }
 
 CENTURION_DEF
-SDL_Keycode KeyboardEvent::keycode() const noexcept
+uint32_t KeyboardEvent::window_id() const noexcept
 {
-  return m_event.keysym.sym;
+  return m_event.windowID;
 }
 
 }  // namespace event

@@ -31,6 +31,7 @@
 #include <utility>
 #include <variant>
 
+#include "audio_device_event.h"
 #include "base_event.h"
 #include "button_state.h"
 #include "centurion_api.h"
@@ -39,10 +40,6 @@
 
 namespace centurion {
 namespace event {
-
-class AudioDeviceEvent : public BaseEvent<SDL_AudioDeviceEvent> {
- public:
-};
 
 class ControllerAxisEvent : public BaseEvent<SDL_ControllerAxisEvent> {
 };

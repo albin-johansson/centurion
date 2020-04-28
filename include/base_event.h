@@ -25,6 +25,8 @@
 #ifndef CENTURION_BASE_EVENT_HEADER
 #define CENTURION_BASE_EVENT_HEADER
 
+#include <type_traits>
+
 #include "centurion_api.h"
 
 namespace centurion {
@@ -90,9 +92,36 @@ class BaseEvent {
     return m_event.timestamp;
   }
 
+  /**
+   * Implicitly converts the event to its SDL counterpart.
+   *
+   * @return a copy of the internal SDL event.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD operator T() const noexcept { return m_event; }
+
  protected:
   T m_event;
 };
+
+/**
+ * Indicates whether or not a Centurion event type has the properties that is
+ * expected of it.
+ *
+ * @tparam T the Centurion event type that will be checked.
+ * @return true if the supplied event type passed the requirements; false
+ * otherwise.
+ * @since 4.0.0
+ */
+template <typename T>
+CENTURION_NODISCARD inline constexpr bool validate_event() noexcept
+{
+  return !std::is_final<T>::value && std::has_virtual_destructor<T>::value &&
+         std::is_nothrow_copy_constructible<T>::value &&
+         std::is_nothrow_copy_assignable<T>::value &&
+         std::is_nothrow_move_constructible<T>::value &&
+         std::is_nothrow_move_assignable<T>::value;
+}
 
 }  // namespace event
 }  // namespace centurion

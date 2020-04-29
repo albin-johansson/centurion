@@ -22,15 +22,91 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_GAME_CONTROLLER_BUTTON_HEADER
-#define CENTURION_GAME_CONTROLLER_BUTTON_HEADER
+#ifndef CENTURION_GAME_CONTROLLER_HEADER
+#define CENTURION_GAME_CONTROLLER_HEADER
 
 #include <SDL_gamecontroller.h>
 
 #include "centurion_api.h"
 
 namespace centurion {
-namespace event {
+
+/**
+ * A type alias for SDL_JoystickID.
+ *
+ * @since 4.0.0
+ */
+using JoystickID = SDL_JoystickID;
+
+/**
+ * The GameControllerAxis enum class mirrors the values of the
+ * SDL_GameControllerAxis enum.
+ *
+ * @see SDL_GameControllerAxis
+ * @since 4.0.0
+ */
+enum class GameControllerAxis {
+  Invalid = SDL_CONTROLLER_AXIS_INVALID,
+  LeftX = SDL_CONTROLLER_AXIS_LEFTX,
+  LeftY = SDL_CONTROLLER_AXIS_LEFTY,
+  RightX = SDL_CONTROLLER_AXIS_RIGHTX,
+  RightY = SDL_CONTROLLER_AXIS_RIGHTY,
+  TriggerLeft = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+  TriggerRight = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+  Max = SDL_CONTROLLER_AXIS_MAX
+};
+
+/**
+ * Indicates whether or not the two game controller axis values are the same.
+ *
+ * @param axis the lhs Centurion game controller axis value.
+ * @param sdlAxis the rhs SDL game controller axis value.
+ * @return true if the game controller axis values are the same; false
+ * otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(GameControllerAxis axis,
+                              SDL_GameControllerAxis sdlAxis) noexcept;
+
+/**
+ * Indicates whether or not the two game controller axis values are the same.
+ *
+ * @param sdlAxis the lhs SDL game controller axis value.
+ * @param axis the rhs Centurion game controller axis value.
+ * @return true if the game controller axis values are the same; false
+ * otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(SDL_GameControllerAxis sdlAxis,
+                              GameControllerAxis axis) noexcept;
+
+/**
+ * Indicates whether or not the two game controller axis values aren't the same.
+ *
+ * @param axis the lhs Centurion game controller axis value.
+ * @param sdlAxis the rhs SDL game controller axis value.
+ * @return true if the game controller axis values aren't the same; false
+ * otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(GameControllerAxis axis,
+                              SDL_GameControllerAxis sdlAxis) noexcept;
+
+/**
+ * Indicates whether or not the two game controller axis values aren't the same.
+ *
+ * @param sdlAxis the lhs SDL game controller axis value.
+ * @param axis the rhs Centurion game controller axis value.
+ * @return true if the game controller axis values aren't the same; false
+ * otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(SDL_GameControllerAxis sdlAxis,
+                              GameControllerAxis axis) noexcept;
 
 /**
  * The GameControllerButton enum class mirrors the values of the
@@ -109,11 +185,11 @@ CENTURION_API bool operator!=(GameControllerButton button,
 CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_GameControllerButton sdlButton,
                               GameControllerButton button) noexcept;
-}  // namespace event
+
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-#include "game_controller_button.cpp"
+#include "game_controller.cpp"
 #endif  // CENTURION_HEADER_ONLY
 
-#endif  // CENTURION_GAME_CONTROLLER_BUTTON_HEADER
+#endif  // CENTURION_GAME_CONTROLLER_HEADER

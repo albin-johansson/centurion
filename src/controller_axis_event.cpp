@@ -58,34 +58,6 @@ int16_t ControllerAxisEvent::value() const noexcept
   return m_event.value;
 }
 
-CENTURION_DEF
-bool operator==(GameControllerAxis axis,
-                SDL_GameControllerAxis sdlAxis) noexcept
-{
-  return static_cast<SDL_GameControllerAxis>(axis) == sdlAxis;
-}
-
-CENTURION_DEF
-bool operator==(SDL_GameControllerAxis sdlAxis,
-                GameControllerAxis axis) noexcept
-{
-  return sdlAxis == static_cast<SDL_GameControllerAxis>(axis);
-}
-
-CENTURION_DEF
-bool operator!=(GameControllerAxis axis,
-                SDL_GameControllerAxis sdlAxis) noexcept
-{
-  return !(axis == sdlAxis);
-}
-
-CENTURION_DEF
-bool operator!=(SDL_GameControllerAxis sdlAxis,
-                GameControllerAxis axis) noexcept
-{
-  return !(sdlAxis == axis);
-}
-
 }  // namespace event
 }  // namespace centurion
 

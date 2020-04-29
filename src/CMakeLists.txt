@@ -45,7 +45,8 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/window_event.h
         ${CTN_INCLUDE_DIR}/audio_device_event.h
         ${CTN_INCLUDE_DIR}/controller_axis_event.h
-        ${CTN_INCLUDE_DIR}/game_controller_button.h
+        ${CTN_INCLUDE_DIR}/controller_button_event.h
+        ${CTN_INCLUDE_DIR}/game_controller.h
 
         window.cpp
         font.cpp
@@ -78,8 +79,8 @@ set(SOURCE_FILES
         keyboard_event.cpp
         audio_device_event.cpp
         controller_axis_event.cpp
-        game_controller_button.cpp
-        )
+        controller_button_event.cpp
+        game_controller.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

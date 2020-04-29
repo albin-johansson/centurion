@@ -1,8 +1,8 @@
-#include "game_controller_button.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
+#include "game_controller.h"
+
+using namespace centurion;
 
 TEST_CASE("GameControllerButton operator==", "[ControllerButtonEvent]")
 {

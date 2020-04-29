@@ -177,8 +177,7 @@ void Texture::set_blend_mode(BlendMode mode) noexcept
 CENTURION_DEF
 void Texture::set_color_mod(Color color) noexcept
 {
-  SDL_SetTextureColorMod(
-      texture, color.red(), color.green(), color.blue());
+  SDL_SetTextureColorMod(texture, color.red(), color.green(), color.blue());
 }
 
 CENTURION_DEF

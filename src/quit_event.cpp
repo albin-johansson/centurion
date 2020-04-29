@@ -15,7 +15,8 @@ QuitEvent::QuitEvent(const SDL_QuitEvent& event) noexcept : BaseEvent{event}
 {}
 
 CENTURION_DEF
-QuitEvent::QuitEvent(SDL_QuitEvent&& event) noexcept : BaseEvent{std::move(event)}
+QuitEvent::QuitEvent(SDL_QuitEvent&& event) noexcept
+    : BaseEvent{std::move(event)}
 {}
 
 }  // namespace event

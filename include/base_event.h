@@ -101,7 +101,7 @@ class BaseEvent {
   CENTURION_NODISCARD operator T() const noexcept { return m_event; }
 
  protected:
-  T m_event;
+  T m_event{};
 };
 
 /**

@@ -7,19 +7,19 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-ControllerDeviceEvent::ControllerDeviceEvent() noexcept
+ControllerDeviceEvent::ControllerDeviceEvent() noexcept : BaseEvent{}
 {}
 
 CENTURION_DEF
 ControllerDeviceEvent::ControllerDeviceEvent(
     const SDL_ControllerDeviceEvent& event) noexcept
-    : BaseEvent(event)
+    : BaseEvent{event}
 {}
 
 CENTURION_DEF
 ControllerDeviceEvent::ControllerDeviceEvent(
     SDL_ControllerDeviceEvent&& event) noexcept
-    : BaseEvent(event)
+    : BaseEvent{std::move(event)}
 {}
 
 CENTURION_DEF

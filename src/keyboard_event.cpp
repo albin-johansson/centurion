@@ -9,7 +9,7 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-KeyboardEvent::KeyboardEvent() noexcept : BaseEvent{{}}
+KeyboardEvent::KeyboardEvent() noexcept : BaseEvent{}
 {}
 
 CENTURION_DEF
@@ -18,7 +18,8 @@ KeyboardEvent::KeyboardEvent(const SDL_KeyboardEvent& event) noexcept
 {}
 
 CENTURION_DEF
-KeyboardEvent::KeyboardEvent(SDL_KeyboardEvent&& event) noexcept : BaseEvent{event}
+KeyboardEvent::KeyboardEvent(SDL_KeyboardEvent&& event) noexcept
+    : BaseEvent{std::move(event)}
 {}
 
 CENTURION_DEF

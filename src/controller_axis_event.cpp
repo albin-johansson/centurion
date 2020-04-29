@@ -19,7 +19,7 @@ ControllerAxisEvent::ControllerAxisEvent(
 CENTURION_DEF
 ControllerAxisEvent::ControllerAxisEvent(
     SDL_ControllerAxisEvent&& event) noexcept
-    : BaseEvent{event}
+    : BaseEvent{std::move(event)}
 {}
 
 CENTURION_DEF

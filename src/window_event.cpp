@@ -11,7 +11,8 @@ WindowEvent::WindowEvent() noexcept : BaseEvent{}
 {}
 
 CENTURION_DEF
-WindowEvent::WindowEvent(const SDL_WindowEvent& event) noexcept : BaseEvent{event}
+WindowEvent::WindowEvent(const SDL_WindowEvent& event) noexcept
+    : BaseEvent{event}
 {}
 
 CENTURION_DEF

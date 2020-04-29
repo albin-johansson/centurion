@@ -4,9 +4,9 @@ Centurion is a modern C++ library built on top of SDL2 in order to improve type-
 
 See the [GitBook documentation](https://albin-johansson.gitbook.io/centurion/) for more details
  about the
- various components, installation and usage.
- 
-Happy coding!
+ various components, installation and usage. :closed_book:
+
+Happy coding! :heart:
 
 ## Author
 

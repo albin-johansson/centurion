@@ -159,4 +159,8 @@ CENTURION_API bool operator!=(const Key& lhs, const Key& rhs) noexcept;
 
 }  // namespace centurion
 
+#ifdef CENTURION_HEADER_ONLY
+#include "key.cpp"
+#endif  // CENTURION_HEADER_ONLY
+
 #endif  // CENTURION_KEY_HEADER

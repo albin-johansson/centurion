@@ -34,7 +34,10 @@ set(TEST_FILES
         unittests/window_event_test.cpp
         unittests/keyboard_event_test.cpp
         unittests/base_event_test.cpp
-        unittests/audio_device_event_test.cpp unittests/controller_axis_event_test.cpp)
+        unittests/audio_device_event_test.cpp
+        unittests/controller_axis_event_test.cpp
+        unittests/game_controller_button_test.cpp
+        )
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

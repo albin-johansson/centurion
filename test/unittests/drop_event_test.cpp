@@ -31,19 +31,13 @@ TEST_CASE("DropEvent::set_will_free_file", "[DropEvent]")
 
 TEST_CASE("DropEvent::set_file", "[DropEvent]")
 {
-  CHECK_NOTHROW([] {
-    DropEvent event;
-    event.set_file(nullptr);
-  });
+  DropEvent event;
+  CHECK_NOTHROW(event.set_file(nullptr));
 
-  CHECK_NOTHROW([] {
-    DropEvent event;
-
-    // This is the only time in the test that a DropEvent should free the file,
-    // check the code coverage reports in order to see if it's freed.
-    auto* file = static_cast<char*>(SDL_malloc(sizeof(char)));
-    event.set_file(file);
-  });
+  // This is the only time in the test that a DropEvent should free the file,
+  // check the code coverage reports in order to see if it's freed.
+  auto* file = static_cast<char*>(SDL_malloc(sizeof(char)));
+  event.set_file(file);
 }
 
 TEST_CASE("DropEvent::set_window_id", "[DropEvent]")

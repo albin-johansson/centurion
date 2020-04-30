@@ -87,8 +87,9 @@ TEST_CASE("DropEvent::file", "[DropEvent]")
 
 TEST_CASE("DropEvent::window_id", "[DropEvent]")
 {
-  SDL_DropEvent sdlEvent;
+  SDL_DropEvent sdlEvent{};
   sdlEvent.windowID = 32;
+  sdlEvent.file = nullptr;
 
   DropEvent event{sdlEvent};
 
@@ -99,6 +100,7 @@ TEST_CASE("DropEvent::type", "[DropEvent]")
 {
   SDL_DropEvent sdlEvent;
   sdlEvent.type = SDL_DROPCOMPLETE;
+  sdlEvent.file = nullptr;
   DropEvent event{sdlEvent};
 
   CHECK(event.type() == DropEventType::Complete);

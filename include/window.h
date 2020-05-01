@@ -679,6 +679,10 @@ static_assert(std::is_nothrow_move_constructible<Window>::value,
 static_assert(!std::is_copy_assignable<Window>::value,
               "Window is copy assignable!");
 
+/* When a distinguished but elderly scientist states that something is
+   possible, he is almost certainly right. When he states that something is
+   impossible, he is very probably wrong. */
+
 static_assert(!std::is_copy_constructible<Window>::value,
               "Window is copy constructible!");
 

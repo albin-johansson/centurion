@@ -29,6 +29,7 @@
 
 #include "base_event.h"
 #include "centurion_api.h"
+#include "touch.h"
 
 namespace centurion {
 namespace event {
@@ -43,20 +44,6 @@ enum class DollarGestureEventType {
   DollarGesture = SDL_DOLLARGESTURE,
   DollarRecord = SDL_DOLLARRECORD
 };
-
-/**
- * A type alias for SDL_TouchID.
- *
- * @since 4.0.0
- */
-using TouchID = SDL_TouchID;
-
-/**
- * A type alias for SDL_GestureID.
- *
- * @since 4.0.0
- */
-using GestureID = SDL_GestureID;
 
 /**
  * The DollarGestureEvent provides information about dollar gestures from

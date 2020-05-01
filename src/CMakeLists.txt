@@ -50,6 +50,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/controller_device_event.h
         ${CTN_INCLUDE_DIR}/dollar_gesture_event.h
         ${CTN_INCLUDE_DIR}/drop_event.h
+        ${CTN_INCLUDE_DIR}/touch_finger_event.h
 
         window.cpp
         font.cpp
@@ -86,7 +87,8 @@ set(SOURCE_FILES
         game_controller.cpp
         controller_device_event.cpp
         dollar_gesture_event.cpp
-        drop_event.cpp)
+        drop_event.cpp
+        touch_finger_event.cpp ../include/touch.h)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

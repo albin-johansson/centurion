@@ -8,6 +8,8 @@
 namespace centurion {
 namespace video {
 
+/* Any sufficiently advanced technology is indistinguishable from magic. */
+
 CENTURION_DEF
 Font::Font(const std::string& file, int size) : size{size}
 {

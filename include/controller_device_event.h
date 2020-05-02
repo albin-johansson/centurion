@@ -121,8 +121,9 @@ class ControllerDeviceEvent : public BaseEvent<SDL_ControllerDeviceEvent> {
   CENTURION_API Sint32 which() const noexcept;
 };
 
-static_assert(validate_event<ControllerDeviceEvent>(),
-              "ControllerDeviceEvent failed the event type specification!");
+static_assert(
+    validate_event<ControllerDeviceEvent, SDL_ControllerDeviceEvent>(),
+    "ControllerDeviceEvent failed the event type specification!");
 
 }  // namespace event
 }  // namespace centurion

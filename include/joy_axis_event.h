@@ -22,12 +22,10 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_CONTROLLER_AXIS_EVENT_HEADER
-#define CENTURION_CONTROLLER_AXIS_EVENT_HEADER
+#ifndef CENTURION_JOY_AXIS_EVENT_HEADER
+#define CENTURION_JOY_AXIS_EVENT_HEADER
 
 #include <SDL_events.h>
-
-#include <type_traits>
 
 #include "base_event.h"
 #include "centurion_api.h"
@@ -37,63 +35,60 @@ namespace centurion {
 namespace event {
 
 /**
- * The ControllerAxisEvent represents an event triggered by game controller
- * axis motion.
+ * The JoyAxisEvent class represents an event that occurs whenever a user
+ * moves an axis on a joystick.
  *
+ * @see SDL_JoyAxisEvent
  * @since 4.0.0
  */
-class ControllerAxisEvent : public BaseEvent<SDL_ControllerAxisEvent> {
+class JoyAxisEvent : public BaseEvent<SDL_JoyAxisEvent> {
  public:
   /**
-   * Creates a default-initialized controller axis event.
+   * Creates a default-initialized joy axis event.
    *
    * @since 4.0.0
    */
-  CENTURION_API ControllerAxisEvent() noexcept;
+  CENTURION_API JoyAxisEvent() noexcept;
 
   /**
-   * Creates a controller axis event that is based on the supplied SDL
-   * controller axis event.
+   * Creates a joy axis event based on the supplied SDL joy axis event.
    *
-   * @param event the SDL event that will be copied.
+   * @param event the SDL joy axis event that will be copied.
    * @since 4.0.0
    */
-  CENTURION_API ControllerAxisEvent(
-      const SDL_ControllerAxisEvent& event) noexcept;
+  CENTURION_API JoyAxisEvent(const SDL_JoyAxisEvent& event) noexcept;
 
   /**
-   * Creates a controller axis event by moving the supplied SDL controller
-   * axis event.
+   * Creates a joy axis event based on the supplied SDL joy axis event.
    *
-   * @param event the SDL controller axis event that will be moved.
+   * @param event the SDL joy axis event that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API ControllerAxisEvent(SDL_ControllerAxisEvent&& event) noexcept;
+  CENTURION_API JoyAxisEvent(SDL_JoyAxisEvent&& event) noexcept;
 
   /**
    * Sets the joystick instance ID associated with the event.
    *
-   * @param which the instance ID of the joystick that the event is
-   * associated with.
+   * @param which the joystick instance ID associated with the event.
    * @since 4.0.0
    */
   CENTURION_API void set_which(JoystickID which) noexcept;
 
   /**
-   * Sets the game controller axis value associated with the event.
+   * Sets the joystick axis index associated with the event.
    *
-   * @param axis the game controller axis value associated with the event.
+   * @param axis the joystick axis index associated with the event.
    * @since 4.0.0
    */
-  CENTURION_API void set_axis(GameControllerAxis axis) noexcept;
+  CENTURION_API void set_axis(Uint8 axis) noexcept;
 
   /**
-   * Sets the axis value associated with the event.
+   * Sets the joystick axis value associated with the event.
    *
-   * @param value the new axis value associated with the event.
+   * @param value the joystick axis value associated with the event.
    * @since 4.0.0
    */
-  CENTURION_API void set_value(int16_t value) noexcept;
+  CENTURION_API void set_value(Sint16 value) noexcept;
 
   /**
    * Returns the joystick instance ID associated with the event.
@@ -105,33 +100,42 @@ class ControllerAxisEvent : public BaseEvent<SDL_ControllerAxisEvent> {
   CENTURION_API JoystickID which() const noexcept;
 
   /**
-   * Returns the game controller axis value associated with the event.
+   * Returns the joystick axis index associated with the event.
    *
-   * @return the game controller axis value associated with the event.
+   * @return the joystick axis index associated with the event.
    * @since 4.0.0
-   * @see GameControllerAxis
    */
   CENTURION_NODISCARD
-  CENTURION_API GameControllerAxis axis() const noexcept;
+  CENTURION_API Uint8 axis() const noexcept;
 
   /**
-   * Returns the axis value associated with the event.
+   * Returns the joystick axis value associated with the event.
    *
-   * @return the axis value associated with the event.
+   * @return the joystick axis value associated with the event.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int16_t value() const noexcept;
+  CENTURION_API Sint16 value() const noexcept;
+
+  /**
+   * Returns the SDL_EventType value associated with the event. The returned
+   * value is always SDL_JOYAXISMOTION.
+   *
+   * @return the SDL_EventType value, always equal to SDL_JOYAXISMOTION.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  constexpr Uint32 type() const noexcept { return SDL_JOYAXISMOTION; }
 };
 
-static_assert(validate_event<ControllerAxisEvent, SDL_ControllerAxisEvent>(),
-              "ControllerAxisEvent failed event type specification!");
+static_assert(validate_event<JoyAxisEvent, SDL_JoyAxisEvent>(),
+              "JoyAxisEvent failed event type specification!");
 
 }  // namespace event
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-#include "controller_axis_event.cpp"
+#include "joy_axis_event.cpp"
 #endif  // CENTURION_HEADER_ONLY
 
-#endif  // CENTURION_CONTROLLER_AXIS_EVENT_HEADER
+#endif  // CENTURION_JOY_AXIS_EVENT_HEADER

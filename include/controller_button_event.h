@@ -124,8 +124,9 @@ class ControllerButtonEvent : public BaseEvent<SDL_ControllerButtonEvent> {
   CENTURION_API JoystickID which() const noexcept;
 };
 
-static_assert(validate_event<ControllerButtonEvent>(),
-              "ControllerButtonEvent failed event type specification!");
+static_assert(
+    validate_event<ControllerButtonEvent, SDL_ControllerButtonEvent>(),
+    "ControllerButtonEvent failed event type specification!");
 
 }  // namespace event
 }  // namespace centurion

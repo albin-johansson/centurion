@@ -180,7 +180,7 @@ class DropEvent : public BaseEvent<SDL_DropEvent> {
   bool m_willFreeFile;
 };
 
-static_assert(validate_event<DropEvent>(),
+static_assert(validate_event<DropEvent, SDL_DropEvent>(),
               "DropEvent failed the event type specification!");
 
 }  // namespace event

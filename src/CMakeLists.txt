@@ -36,6 +36,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/battery.h
         ${CTN_INCLUDE_DIR}/screen.h
         ${CTN_INCLUDE_DIR}/key.h
+        ${CTN_INCLUDE_DIR}/touch.h
 
         ${CTN_INCLUDE_DIR}/event.h
         ${CTN_INCLUDE_DIR}/keyboard_event.h
@@ -51,6 +52,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/dollar_gesture_event.h
         ${CTN_INCLUDE_DIR}/drop_event.h
         ${CTN_INCLUDE_DIR}/touch_finger_event.h
+        ${CTN_INCLUDE_DIR}/joy_axis_event.h
 
         window.cpp
         font.cpp
@@ -88,7 +90,8 @@ set(SOURCE_FILES
         controller_device_event.cpp
         dollar_gesture_event.cpp
         drop_event.cpp
-        touch_finger_event.cpp ../include/touch.h)
+        touch_finger_event.cpp
+        joy_axis_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

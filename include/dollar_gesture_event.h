@@ -205,7 +205,7 @@ class DollarGestureEvent : public BaseEvent<SDL_DollarGestureEvent> {
   CENTURION_API float y() const noexcept;
 };
 
-static_assert(validate_event<DollarGestureEvent>(),
+static_assert(validate_event<DollarGestureEvent, SDL_DollarGestureEvent>(),
               "DollarGestureEvent failed event type specification!");
 
 }  // namespace event

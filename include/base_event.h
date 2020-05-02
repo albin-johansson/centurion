@@ -113,14 +113,15 @@ class BaseEvent {
  * otherwise.
  * @since 4.0.0
  */
-template <typename T>
+template <typename T, typename E>
 CENTURION_NODISCARD inline constexpr bool validate_event() noexcept
 {
   return !std::is_final<T>::value && std::has_virtual_destructor<T>::value &&
          std::is_nothrow_copy_constructible<T>::value &&
          std::is_nothrow_copy_assignable<T>::value &&
          std::is_nothrow_move_constructible<T>::value &&
-         std::is_nothrow_move_assignable<T>::value;
+         std::is_nothrow_move_assignable<T>::value &&
+         std::is_nothrow_constructible<T, E>::value;
 }
 
 }  // namespace event

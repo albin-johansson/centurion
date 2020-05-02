@@ -1,6 +1,6 @@
-#include <catch.hpp>
-
 #include "ram.h"
+
+#include <catch.hpp>
 
 using namespace centurion::system;
 

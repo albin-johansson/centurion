@@ -1,6 +1,6 @@
-#include <catch.hpp>
-
 #include "cpu.h"
+
+#include <catch.hpp>
 
 using namespace centurion::system;
 

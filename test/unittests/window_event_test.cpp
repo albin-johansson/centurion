@@ -1,6 +1,6 @@
-#include <catch.hpp>
-
 #include "window_event.h"
+
+#include <catch.hpp>
 
 using namespace centurion::event;
 

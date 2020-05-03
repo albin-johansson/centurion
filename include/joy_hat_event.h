@@ -27,8 +27,8 @@
 
 #include <SDL_events.h>
 
-#include "base_event.h"
 #include "centurion_api.h"
+#include "common_event.h"
 
 namespace centurion {
 namespace event {
@@ -58,7 +58,7 @@ enum class JoyHatPosition {
  * @see SDL_JoyHatEvent
  * @since 4.0.0
  */
-class JoyHatEvent : public BaseEvent<SDL_JoyHatEvent> {
+class JoyHatEvent : public CommonEvent<SDL_JoyHatEvent> {
  public:
   /**
    * Creates a default-initialized joy hat event.

@@ -27,23 +27,12 @@
 
 #include <SDL_events.h>
 
-#include "base_event.h"
 #include "centurion_api.h"
+#include "common_event.h"
 #include "touch.h"
 
 namespace centurion {
 namespace event {
-
-/**
- * The DollarGestureEventType enum class is a wrapper for the
- * SDL_DOLLARGESTURE and SDL_DOLLARRECORD values.
- *
- * @since 4.0.0
- */
-enum class DollarGestureEventType {
-  DollarGesture = SDL_DOLLARGESTURE,
-  DollarRecord = SDL_DOLLARRECORD
-};
 
 /**
  * The DollarGestureEvent provides information about dollar gestures from
@@ -52,7 +41,7 @@ enum class DollarGestureEventType {
  * @see SDL_DollarGestureEvent
  * @since 4.0.0
  */
-class DollarGestureEvent : public BaseEvent<SDL_DollarGestureEvent> {
+class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
  public:
   /**
    * Creates a default-initialized dollar gesture event.
@@ -79,14 +68,6 @@ class DollarGestureEvent : public BaseEvent<SDL_DollarGestureEvent> {
    * @since 4.0.0
    */
   CENTURION_API DollarGestureEvent(SDL_DollarGestureEvent&& event) noexcept;
-
-  /**
-   * Sets the type of the dollar gesture event.
-   *
-   * @param type the type of the dollar gesture event.
-   * @since 4.0.0
-   */
-  CENTURION_API void set_type(DollarGestureEventType type) noexcept;
 
   /**
    * Sets the touch device ID associated with the event.
@@ -136,17 +117,6 @@ class DollarGestureEvent : public BaseEvent<SDL_DollarGestureEvent> {
    * @since 4.0.0
    */
   CENTURION_API void set_y(float y) noexcept;
-
-  /**
-   * Returns the type of the dollar gesture event. Note! If the type is
-   * <code>DollarRecord</code>, the only valid methods to call are those
-   * related to touch ID and gesture ID.
-   *
-   * @return the type of the dollar gesture event.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API DollarGestureEventType type() const noexcept;
 
   /**
    * Returns the touch device ID associated with the event.

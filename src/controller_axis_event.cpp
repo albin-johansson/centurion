@@ -7,19 +7,19 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-ControllerAxisEvent::ControllerAxisEvent() noexcept : BaseEvent{}
+ControllerAxisEvent::ControllerAxisEvent() noexcept : CommonEvent{}
 {}
 
 CENTURION_DEF
 ControllerAxisEvent::ControllerAxisEvent(
     const SDL_ControllerAxisEvent& event) noexcept
-    : BaseEvent{event}
+    : CommonEvent{event}
 {}
 
 CENTURION_DEF
 ControllerAxisEvent::ControllerAxisEvent(
     SDL_ControllerAxisEvent&& event) noexcept
-    : BaseEvent{std::move(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

@@ -12,16 +12,6 @@ TEST_CASE("AudioDeviceEvent constructors", "[AudioDeviceEvent]")
   CHECK_NOTHROW(AudioDeviceEvent{e});
 }
 
-TEST_CASE("AudioDeviceEvent::set_type", "[AudioDeviceEvent]")
-{
-  AudioDeviceEvent event;
-
-  const auto type = AudioDeviceEventID::Added;
-  event.set_type(type);
-
-  CHECK(event.type() == type);
-}
-
 TEST_CASE("AudioDeviceEvent::set_which", "[AudioDeviceEvent]")
 {
   AudioDeviceEvent event;
@@ -43,15 +33,6 @@ TEST_CASE("AudioDeviceEvent::set_capture", "[AudioDeviceEvent]")
   event.set_capture(false);
   CHECK(!event.capture());
   CHECK(event.output());
-}
-
-TEST_CASE("AudioDeviceEvent::type", "[AudioDeviceEvent]")
-{
-  SDL_AudioDeviceEvent sdl;
-  sdl.type = SDL_AUDIODEVICEREMOVED;
-  AudioDeviceEvent event{sdl};
-
-  CHECK(event.type() == AudioDeviceEventID::Removed);
 }
 
 TEST_CASE("AudioDeviceEvent::which", "[AudioDeviceEvent]")

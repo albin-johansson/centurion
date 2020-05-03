@@ -7,25 +7,19 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-DollarGestureEvent::DollarGestureEvent() noexcept : BaseEvent{}
+DollarGestureEvent::DollarGestureEvent() noexcept : CommonEvent{}
 {}
 
 CENTURION_DEF
 DollarGestureEvent::DollarGestureEvent(
     const SDL_DollarGestureEvent& event) noexcept
-    : BaseEvent{event}
+    : CommonEvent{event}
 {}
 
 CENTURION_DEF
 DollarGestureEvent::DollarGestureEvent(SDL_DollarGestureEvent&& event) noexcept
-    : BaseEvent{std::move(event)}
+    : CommonEvent{std::move(event)}
 {}
-
-CENTURION_DEF
-void DollarGestureEvent::set_type(DollarGestureEventType type) noexcept
-{
-  m_event.type = static_cast<Uint32>(type);
-}
 
 CENTURION_DEF
 void DollarGestureEvent::set_touch_id(TouchID id) noexcept
@@ -61,12 +55,6 @@ CENTURION_DEF
 void DollarGestureEvent::set_y(float y) noexcept
 {
   m_event.y = y;
-}
-
-CENTURION_DEF
-DollarGestureEventType DollarGestureEvent::type() const noexcept
-{
-  return static_cast<DollarGestureEventType>(m_event.type);
 }
 
 CENTURION_DEF

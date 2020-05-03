@@ -37,10 +37,12 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/screen.h
         ${CTN_INCLUDE_DIR}/key.h
         ${CTN_INCLUDE_DIR}/touch.h
+        ${CTN_INCLUDE_DIR}/event.h
+        ${CTN_INCLUDE_DIR}/event_type.h
 
         ${CTN_INCLUDE_DIR}/event.h
         ${CTN_INCLUDE_DIR}/keyboard_event.h
-        ${CTN_INCLUDE_DIR}/base_event.h
+        ${CTN_INCLUDE_DIR}/common_event.h
         ${CTN_INCLUDE_DIR}/quit_event.h
         ${CTN_INCLUDE_DIR}/button_state.h
         ${CTN_INCLUDE_DIR}/window_event.h
@@ -97,7 +99,10 @@ set(SOURCE_FILES
         joy_axis_event.cpp
         joy_ball_event.cpp
         joy_hat_event.cpp
-        joy_button_event.cpp)
+        joy_button_event.cpp
+
+        event.cpp
+        event_type.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

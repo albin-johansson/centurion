@@ -38,24 +38,18 @@ CENTURION_NODISCARD T clamp_inclusive(std::pair<T, T> range, T value) noexcept
 }  // namespace
 
 CENTURION_DEF
-TouchFingerEvent::TouchFingerEvent() noexcept : BaseEvent{}
+TouchFingerEvent::TouchFingerEvent() noexcept : CommonEvent{}
 {}
 
 CENTURION_DEF
 TouchFingerEvent::TouchFingerEvent(const SDL_TouchFingerEvent& event) noexcept
-    : BaseEvent{event}
+    : CommonEvent{event}
 {}
 
 CENTURION_DEF
 TouchFingerEvent::TouchFingerEvent(SDL_TouchFingerEvent&& event) noexcept
-    : BaseEvent{std::move(event)}
+    : CommonEvent{std::move(event)}
 {}
-
-CENTURION_DEF
-void TouchFingerEvent::set_type(TouchFingerEventType type) noexcept
-{
-  m_event.type = static_cast<Uint32>(type);
-}
 
 CENTURION_DEF
 void TouchFingerEvent::set_touch_id(TouchID id) noexcept
@@ -103,12 +97,6 @@ CENTURION_DEF
 void TouchFingerEvent::set_pressure(float pressure) noexcept
 {
   m_event.pressure = clamp_inclusive({0, 1}, pressure);
-}
-
-CENTURION_DEF
-TouchFingerEventType TouchFingerEvent::type() const noexcept
-{
-  return static_cast<TouchFingerEventType>(m_event.type);
 }
 
 CENTURION_DEF

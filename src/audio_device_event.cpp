@@ -7,24 +7,18 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-AudioDeviceEvent::AudioDeviceEvent() noexcept : BaseEvent{}
+AudioDeviceEvent::AudioDeviceEvent() noexcept : CommonEvent{}
 {}
 
 CENTURION_DEF
 AudioDeviceEvent::AudioDeviceEvent(const SDL_AudioDeviceEvent& event) noexcept
-    : BaseEvent{event}
+    : CommonEvent{event}
 {}
 
 CENTURION_DEF
 AudioDeviceEvent::AudioDeviceEvent(SDL_AudioDeviceEvent&& event) noexcept
-    : BaseEvent{std::move(event)}
+    : CommonEvent{std::move(event)}
 {}
-
-CENTURION_DEF
-void AudioDeviceEvent::set_type(AudioDeviceEventID id) noexcept
-{
-  m_event.type = static_cast<uint32_t>(id);
-}
 
 CENTURION_DEF
 void AudioDeviceEvent::set_which(uint32_t which) noexcept
@@ -36,12 +30,6 @@ CENTURION_DEF
 void AudioDeviceEvent::set_capture(bool capture) noexcept
 {
   m_event.iscapture = capture;
-}
-
-CENTURION_DEF
-AudioDeviceEventID AudioDeviceEvent::type() const noexcept
-{
-  return static_cast<AudioDeviceEventID>(m_event.type);
 }
 
 CENTURION_DEF

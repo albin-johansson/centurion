@@ -28,6 +28,7 @@
 #include <type_traits>
 
 #include "centurion_api.h"
+#include "event_type.h"
 
 namespace centurion {
 namespace event {
@@ -40,37 +41,37 @@ namespace event {
  * @since 4.0.0
  */
 template <typename T>
-class BaseEvent { // TODO rename to CommonEvent?
+class CommonEvent {
  public:
   /**
-   * Creates a BaseEvent and default-initializes the internal event.
+   * Creates a CommonEvent and default-initializes the internal event.
    *
    * @since 4.0.0
    */
-  BaseEvent() noexcept : m_event{} {}
+  CommonEvent() noexcept : m_event{} {}
 
   /**
-   * Creates a BaseEvent and copies the supplied event.
+   * Creates a CommonEvent and copies the supplied event.
    *
    * @param event the event that will be copied.
    * @since 4.0.0
    */
-  explicit BaseEvent(const T& event) : m_event{event} {}
+  explicit CommonEvent(const T& event) : m_event{event} {}
 
   /**
-   * Creates a BaseEvent and moves the contents of the supplied event.
+   * Creates a CommonEvent and moves the contents of the supplied event.
    *
    * @param event the event that will be moved.
    * @since 4.0.0
    */
-  explicit BaseEvent(T&& event) : m_event{std::move(event)} {}
+  explicit CommonEvent(T&& event) : m_event{std::move(event)} {}
 
   /**
    * Default virtual destructor.
    *
    * @since 4.0.0
    */
-  virtual ~BaseEvent() noexcept {}
+  virtual ~CommonEvent() noexcept {}
 
   /**
    * Sets the timestamp that is associated with the creation of the event.
@@ -79,7 +80,18 @@ class BaseEvent { // TODO rename to CommonEvent?
    * of the event.
    * @since 4.0.0
    */
-  void set_time(uint32_t timestamp) noexcept { m_event.timestamp = timestamp; }
+  void set_time(Uint32 timestamp) noexcept { m_event.timestamp = timestamp; }
+
+  /**
+   * Sets the event type value associated with the event.
+   *
+   * @param type the event type value associated with the event.
+   * @since 4.0.0
+   */
+  void set_type(EventType type) noexcept
+  {
+    m_event.type = static_cast<Uint32>(type);
+  }
 
   /**
    * Returns the timestamp associated with the creation of the event.
@@ -87,10 +99,35 @@ class BaseEvent { // TODO rename to CommonEvent?
    * @return the timestamp associated with the creation of the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD uint32_t time() const noexcept
+  CENTURION_NODISCARD Uint32 time() const noexcept { return m_event.timestamp; }
+
+  /**
+   * Returns the event type value associated with the event.
+   *
+   * @see EventType
+   * @return the event type value associated with the event.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD EventType type() const noexcept
   {
-    return m_event.timestamp;
+    return static_cast<EventType>(m_event.type);
   }
+
+  /**
+   * Implicitly converts the event to a reference to the SDL counterpart.
+   *
+   * @return a reference to the internal SDL event.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD operator T&() noexcept { return m_event; }
+
+  /**
+   * Implicitly converts the event to a const reference to the SDL counterpart.
+   *
+   * @return a const reference to the internal SDL event.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD operator const T&() const noexcept { return m_event; }
 
   /**
    * Implicitly converts the event to its SDL counterpart.
@@ -99,8 +136,6 @@ class BaseEvent { // TODO rename to CommonEvent?
    * @since 4.0.0
    */
   CENTURION_NODISCARD operator T() const noexcept { return m_event; }
-
-  // TODO check if all events feature a type method, if so: add it to this class
 
  protected:
   T m_event{};

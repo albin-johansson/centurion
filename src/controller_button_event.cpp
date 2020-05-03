@@ -7,18 +7,18 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-ControllerButtonEvent::ControllerButtonEvent() noexcept : BaseEvent{}
+ControllerButtonEvent::ControllerButtonEvent() noexcept : CommonEvent{}
 {}
 
 CENTURION_DEF ControllerButtonEvent::ControllerButtonEvent(
     const SDL_ControllerButtonEvent& event) noexcept
-    : BaseEvent{event}
+    : CommonEvent{event}
 {}
 
 CENTURION_DEF
 ControllerButtonEvent::ControllerButtonEvent(
     SDL_ControllerButtonEvent&& event) noexcept
-    : BaseEvent{std::move(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

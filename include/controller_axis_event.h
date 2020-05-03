@@ -29,8 +29,8 @@
 
 #include <type_traits>
 
-#include "base_event.h"
 #include "centurion_api.h"
+#include "common_event.h"
 #include "game_controller.h"
 
 namespace centurion {
@@ -42,7 +42,7 @@ namespace event {
  *
  * @since 4.0.0
  */
-class ControllerAxisEvent : public BaseEvent<SDL_ControllerAxisEvent> {
+class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
  public:
   /**
    * Creates a default-initialized controller axis event.

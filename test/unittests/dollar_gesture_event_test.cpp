@@ -4,16 +4,6 @@
 
 using namespace centurion::event;
 
-TEST_CASE("DollarGestureEvent::set_type", "[DollarGestureEvent]")
-{
-  DollarGestureEvent event;
-
-  const auto type = DollarGestureEventType::DollarRecord;
-  event.set_type(type);
-
-  CHECK(event.type() == type);
-}
-
 TEST_CASE("DollarGestureEvent::set_touch_id", "[DollarGestureEvent]")
 {
   DollarGestureEvent event;
@@ -72,15 +62,6 @@ TEST_CASE("DollarGestureEvent::set_y", "[DollarGestureEvent]")
   event.set_y(y);
 
   CHECK(event.y() == y);
-}
-
-TEST_CASE("DollarGestureEvent::type", "[DollarGestureEvent]")
-{
-  SDL_DollarGestureEvent sdlEvent;
-  sdlEvent.type = SDL_DOLLARGESTURE;
-  DollarGestureEvent event{sdlEvent};
-
-  CHECK(event.type() == DollarGestureEventType::DollarGesture);
 }
 
 TEST_CASE("DollarGestureEvent::touch_id", "[DollarGestureEvent]")

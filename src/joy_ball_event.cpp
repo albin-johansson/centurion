@@ -7,17 +7,17 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-JoyBallEvent::JoyBallEvent() noexcept : BaseEvent{}
+JoyBallEvent::JoyBallEvent() noexcept : CommonEvent{}
 {}
 
 CENTURION_DEF
 JoyBallEvent::JoyBallEvent(const SDL_JoyBallEvent& event) noexcept
-    : BaseEvent{event}
+    : CommonEvent{event}
 {}
 
 CENTURION_DEF
 JoyBallEvent::JoyBallEvent(SDL_JoyBallEvent&& event) noexcept
-    : BaseEvent{std::move(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

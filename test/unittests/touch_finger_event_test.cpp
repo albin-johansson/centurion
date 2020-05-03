@@ -4,16 +4,6 @@
 
 using namespace centurion::event;
 
-TEST_CASE("TouchFingerEvent::set_type", "[TouchFingerEvent]")
-{
-  TouchFingerEvent event;
-
-  const auto type = TouchFingerEventType::Motion;
-  event.set_type(type);
-
-  CHECK(event.type() == type);
-}
-
 TEST_CASE("TouchFingerEvent::set_touch_id", "[TouchFingerEvent]")
 {
   TouchFingerEvent event;
@@ -162,15 +152,6 @@ TEST_CASE("TouchFingerEvent::set_pressure", "[TouchFingerEvent]")
     event.set_pressure(pressure);
     CHECK(event.pressure() == pressure);
   }
-}
-
-TEST_CASE("TouchFingerEvent::type", "[TouchFingerEvent]")
-{
-  SDL_TouchFingerEvent sdlEvent{};
-  sdlEvent.type = SDL_FINGERUP;
-  TouchFingerEvent event{sdlEvent};
-
-  CHECK(event.type() == TouchFingerEventType::Up);
 }
 
 TEST_CASE("TouchFingerEvent::touch_id", "[TouchFingerEvent]")

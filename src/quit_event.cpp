@@ -7,16 +7,16 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-QuitEvent::QuitEvent() noexcept : BaseEvent{}
+QuitEvent::QuitEvent() noexcept : CommonEvent{}
 {}
 
 CENTURION_DEF
-QuitEvent::QuitEvent(const SDL_QuitEvent& event) noexcept : BaseEvent{event}
+QuitEvent::QuitEvent(const SDL_QuitEvent& event) noexcept : CommonEvent{event}
 {}
 
 CENTURION_DEF
 QuitEvent::QuitEvent(SDL_QuitEvent&& event) noexcept
-    : BaseEvent{std::move(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 }  // namespace event

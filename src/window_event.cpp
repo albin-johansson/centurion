@@ -7,17 +7,17 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-WindowEvent::WindowEvent() noexcept : BaseEvent{}
+WindowEvent::WindowEvent() noexcept : CommonEvent{}
 {}
 
 CENTURION_DEF
 WindowEvent::WindowEvent(const SDL_WindowEvent& event) noexcept
-    : BaseEvent{event}
+    : CommonEvent{event}
 {}
 
 CENTURION_DEF
 WindowEvent::WindowEvent(SDL_WindowEvent&& event) noexcept
-    : BaseEvent{std::move(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

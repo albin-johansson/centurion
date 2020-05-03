@@ -27,24 +27,11 @@
 
 #include <SDL_events.h>
 
-#include "base_event.h"
 #include "centurion_api.h"
+#include "common_event.h"
 
 namespace centurion {
 namespace event {
-
-/**
- * The DropEventType enum class provides values that represent the various
- * kinds of possible drop events.
- *
- * @since 4.0.0
- */
-enum class DropEventType {
-  Begin = SDL_DROPBEGIN,
-  File = SDL_DROPFILE,
-  Text = SDL_DROPTEXT,
-  Complete = SDL_DROPCOMPLETE
-};
 
 /**
  * The DropEvent class represents the event of requesting a file to be opened.
@@ -52,7 +39,7 @@ enum class DropEventType {
  * @see SDL_DropEvent
  * @since 4.0.0
  */
-class DropEvent : public BaseEvent<SDL_DropEvent> {
+class DropEvent : public CommonEvent<SDL_DropEvent> {
  public:
   /**
    * Creates a default-initialized drop event.
@@ -126,14 +113,6 @@ class DropEvent : public BaseEvent<SDL_DropEvent> {
   CENTURION_API void set_window_id(Uint32 id) noexcept;
 
   /**
-   * Sets the type of the drop event.
-   *
-   * @param type the type of the drop event.
-   * @since 4.0.0
-   */
-  CENTURION_API void set_type(DropEventType type) noexcept;
-
-  /**
    * Indicates whether or not the file associated with the event will be
    * freed upon the destruction of this instance. By default, this property
    * is set to <b>true</b>.
@@ -149,7 +128,7 @@ class DropEvent : public BaseEvent<SDL_DropEvent> {
    * Returns a pointer to the associated file. Do <b>NOT</b> claim ownership
    * of the returned pointer without setting the <code>will_free_file</code>
    * property to <b>false</b>. The returned pointer is null for
-   * <code>Begin</code> and <code>Complete</code> type drop events.
+   * <code>DropBegin</code> and <code>DropComplete</code> type drop events.
    *
    * @return a pointer to the file associated with the event, might be null.
    * @since 4.0.0
@@ -166,15 +145,6 @@ class DropEvent : public BaseEvent<SDL_DropEvent> {
    */
   CENTURION_NODISCARD
   CENTURION_API Uint32 window_id() const noexcept;
-
-  /**
-   * Returns the type of the drop event.
-   *
-   * @return the type of the drop event.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API DropEventType type() const noexcept;
 
  private:
   bool m_willFreeFile;

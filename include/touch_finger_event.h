@@ -27,24 +27,12 @@
 
 #include <SDL_events.h>
 
-#include "base_event.h"
 #include "centurion_api.h"
+#include "common_event.h"
 #include "touch.h"
 
 namespace centurion {
 namespace event {
-
-/**
- * The TouchFingerEventType enum class is a wrapper for SDL_FINGERMOTION,
- * SDL_FINGERDOWN and SDL_FINGERUP.
- *
- * @since 4.0.0
- */
-enum class TouchFingerEventType {
-  Motion = SDL_FINGERMOTION,
-  Down = SDL_FINGERDOWN,
-  Up = SDL_FINGERUP
-};
 
 /**
  * The TouchFingerEvent class represents an event related to touch screen
@@ -53,7 +41,7 @@ enum class TouchFingerEventType {
  * @see SDL_TouchFingerEvent
  * @since 4.0.0
  */
-class TouchFingerEvent : public BaseEvent<SDL_TouchFingerEvent> {
+class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
  public:
   /**
    * Creates a default-initialized touch finger event.
@@ -79,14 +67,6 @@ class TouchFingerEvent : public BaseEvent<SDL_TouchFingerEvent> {
    * @since 4.0.0
    */
   CENTURION_API TouchFingerEvent(SDL_TouchFingerEvent&& event) noexcept;
-
-  /**
-   * Sets the type of the touch finger event.
-   *
-   * @param type the type of the touch finger event.
-   * @since 4.0.0
-   */
-  CENTURION_API void set_type(TouchFingerEventType type) noexcept;
 
   /**
    * Sets the ID of the associated touch device.
@@ -161,15 +141,6 @@ class TouchFingerEvent : public BaseEvent<SDL_TouchFingerEvent> {
    * @since 4.0.0
    */
   CENTURION_API void set_pressure(float pressure) noexcept;
-
-  /**
-   * Returns the type of the touch finger event.
-   *
-   * @return the type of the touch finger event.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API TouchFingerEventType type() const noexcept;
 
   /**
    * Returns the touch device ID associated with the event.

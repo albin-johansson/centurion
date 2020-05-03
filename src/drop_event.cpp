@@ -7,17 +7,17 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-DropEvent::DropEvent() noexcept : BaseEvent{}, m_willFreeFile{true}
+DropEvent::DropEvent() noexcept : CommonEvent{}, m_willFreeFile{true}
 {}
 
 CENTURION_DEF
 DropEvent::DropEvent(const SDL_DropEvent& event) noexcept
-    : BaseEvent{event}, m_willFreeFile{true}
+    : CommonEvent{event}, m_willFreeFile{true}
 {}
 
 CENTURION_DEF
 DropEvent::DropEvent(SDL_DropEvent&& event) noexcept
-    : BaseEvent{std::move(event)}, m_willFreeFile{true}
+    : CommonEvent{std::move(event)}, m_willFreeFile{true}
 {}
 
 CENTURION_DEF
@@ -50,12 +50,6 @@ void DropEvent::set_window_id(Uint32 id) noexcept
 }
 
 CENTURION_DEF
-void DropEvent::set_type(DropEventType type) noexcept
-{
-  m_event.type = static_cast<Uint32>(type);
-}
-
-CENTURION_DEF
 bool DropEvent::will_free_file() const noexcept
 {
   return m_willFreeFile;
@@ -71,12 +65,6 @@ CENTURION_DEF
 Uint32 DropEvent::window_id() const noexcept
 {
   return m_event.windowID;
-}
-
-CENTURION_DEF
-DropEventType DropEvent::type() const noexcept
-{
-  return static_cast<DropEventType>(m_event.type);
 }
 
 }  // namespace event

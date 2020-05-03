@@ -7,37 +7,25 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-ControllerDeviceEvent::ControllerDeviceEvent() noexcept : BaseEvent{}
+ControllerDeviceEvent::ControllerDeviceEvent() noexcept : CommonEvent{}
 {}
 
 CENTURION_DEF
 ControllerDeviceEvent::ControllerDeviceEvent(
     const SDL_ControllerDeviceEvent& event) noexcept
-    : BaseEvent{event}
+    : CommonEvent{event}
 {}
 
 CENTURION_DEF
 ControllerDeviceEvent::ControllerDeviceEvent(
     SDL_ControllerDeviceEvent&& event) noexcept
-    : BaseEvent{std::move(event)}
+    : CommonEvent{std::move(event)}
 {}
-
-CENTURION_DEF
-void ControllerDeviceEvent::set_type(ControllerDeviceEventType type) noexcept
-{
-  m_event.type = static_cast<Uint32>(type);
-}
 
 CENTURION_DEF
 void ControllerDeviceEvent::set_which(Sint32 which) noexcept
 {
   m_event.which = which;
-}
-
-CENTURION_DEF
-ControllerDeviceEventType ControllerDeviceEvent::type() const noexcept
-{
-  return static_cast<ControllerDeviceEventType>(m_event.type);
 }
 
 CENTURION_DEF

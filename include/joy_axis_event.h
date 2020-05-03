@@ -27,8 +27,8 @@
 
 #include <SDL_events.h>
 
-#include "base_event.h"
 #include "centurion_api.h"
+#include "common_event.h"
 #include "game_controller.h"
 
 namespace centurion {
@@ -41,7 +41,7 @@ namespace event {
  * @see SDL_JoyAxisEvent
  * @since 4.0.0
  */
-class JoyAxisEvent : public BaseEvent<SDL_JoyAxisEvent> {
+class JoyAxisEvent : public CommonEvent<SDL_JoyAxisEvent> {
  public:
   /**
    * Creates a default-initialized joy axis event.
@@ -116,16 +116,6 @@ class JoyAxisEvent : public BaseEvent<SDL_JoyAxisEvent> {
    */
   CENTURION_NODISCARD
   CENTURION_API Sint16 value() const noexcept;
-
-  /**
-   * Returns the SDL_EventType value associated with the event. The returned
-   * value is always SDL_JOYAXISMOTION.
-   *
-   * @return the SDL_EventType value, always equal to SDL_JOYAXISMOTION.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  constexpr Uint32 type() const noexcept { return SDL_JOYAXISMOTION; }
 };
 
 static_assert(validate_event<JoyAxisEvent, SDL_JoyAxisEvent>(),

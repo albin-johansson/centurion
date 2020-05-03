@@ -27,9 +27,9 @@
 
 #include <SDL_events.h>
 
-#include "base_event.h"
 #include "button_state.h"
 #include "centurion_api.h"
+#include "common_event.h"
 #include "game_controller.h"
 
 namespace centurion {
@@ -42,7 +42,7 @@ namespace event {
  * @see SDL_ControllerButtonEvent
  * @since 4.0.0
  */
-class ControllerButtonEvent : public BaseEvent<SDL_ControllerButtonEvent> {
+class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
  public:
   /**
    * Creates a default-initialized controller button event.

@@ -28,9 +28,9 @@
 #include <SDL_events.h>
 #include <SDL_keyboard.h>
 
-#include "base_event.h"
 #include "button_state.h"
 #include "centurion_api.h"
+#include "common_event.h"
 #include "key.h"
 
 namespace centurion {
@@ -64,7 +64,7 @@ enum class KeyModifier {
  * @see SDL_KeyboardEvent
  * @since 4.0.0
  */
-class KeyboardEvent : public BaseEvent<SDL_KeyboardEvent> {
+class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
  public:
   /**
    * Creates a default-initialized keyboard event.

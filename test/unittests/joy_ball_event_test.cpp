@@ -84,9 +84,3 @@ TEST_CASE("JoyBallEvent::dy", "[JoyBallEvent]")
 
   CHECK(event.dy() == sdlEvent.yrel);
 }
-
-TEST_CASE("JoyBallEvent::type", "[JoyBallEvent]")
-{
-  JoyBallEvent event;
-  STATIC_REQUIRE(event.type() == SDL_JOYBALLMOTION);
-}

@@ -27,22 +27,11 @@
 
 #include <SDL_events.h>
 
-#include "base_event.h"
 #include "centurion_api.h"
+#include "common_event.h"
 
 namespace centurion {
 namespace event {
-
-/**
- * The AudioDeviceEventID enum class is a wrapper for SDL_AUDIODEVICEADDED
- * and SDL_AUDIODEVICEREMOVED.
- *
- * @since 4.0.0
- */
-enum class AudioDeviceEventID {
-  Added = SDL_AUDIODEVICEADDED,
-  Removed = SDL_AUDIODEVICEREMOVED
-};
 
 /**
  * The AudioDeviceEvent class represents an event that is associated with
@@ -51,7 +40,7 @@ enum class AudioDeviceEventID {
  * @see SDL_AudioDeviceEvent
  * @since 4.0.0
  */
-class AudioDeviceEvent : public BaseEvent<SDL_AudioDeviceEvent> {
+class AudioDeviceEvent : public CommonEvent<SDL_AudioDeviceEvent> {
  public:
   /**
    * Creates a default-initialized audio device event.
@@ -77,14 +66,6 @@ class AudioDeviceEvent : public BaseEvent<SDL_AudioDeviceEvent> {
   CENTURION_API AudioDeviceEvent(SDL_AudioDeviceEvent&& event) noexcept;
 
   /**
-   * Sets the type of the audio device event.
-   *
-   * @param id the type of the audio device event.
-   * @since 4.0.0
-   */
-  CENTURION_API void set_type(AudioDeviceEventID id) noexcept;
-
-  /**
    * Sets the audio device ID that is associated with the event.
    *
    * @param which the audio device ID that is associated with the event.
@@ -101,15 +82,6 @@ class AudioDeviceEvent : public BaseEvent<SDL_AudioDeviceEvent> {
    * @since 4.0.0
    */
   CENTURION_API void set_capture(bool capture) noexcept;
-
-  /**
-   * Returns the type of the audio device event.
-   *
-   * @return the type of the audio device event.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API AudioDeviceEventID type() const noexcept;
 
   /**
    * Returns the audio device ID associated with the event.

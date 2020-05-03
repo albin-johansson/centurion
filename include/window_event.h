@@ -27,9 +27,9 @@
 
 #include <SDL_events.h>
 
-#include "base_event.h"
 #include "button_state.h"
 #include "centurion_api.h"
+#include "common_event.h"
 
 namespace centurion {
 namespace event {
@@ -211,7 +211,7 @@ CENTURION_API bool operator!=(SDL_WindowEventID sdlEventId,
  * @see SDL_WindowEvent
  * @since 4.0.0
  */
-class WindowEvent : public BaseEvent<SDL_WindowEvent> {
+class WindowEvent : public CommonEvent<SDL_WindowEvent> {
  public:
   /**
    * Creates a default-initialized window event.

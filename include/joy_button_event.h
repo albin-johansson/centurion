@@ -27,9 +27,9 @@
 
 #include <SDL_events.h>
 
-#include "base_event.h"
 #include "button_state.h"
 #include "centurion_api.h"
+#include "common_event.h"
 #include "game_controller.h"
 
 namespace centurion {
@@ -42,7 +42,7 @@ namespace event {
  * @see SDL_JoyButtonEvent
  * @since 4.0.0
  */
-class JoyButtonEvent : public BaseEvent<SDL_JoyButtonEvent> {
+class JoyButtonEvent : public CommonEvent<SDL_JoyButtonEvent> {
  public:
   /**
    * Creates a default-initialized JoyButtonEvent.

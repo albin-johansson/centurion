@@ -22,83 +22,19 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_NEW_EVENT_HEADER
-#define CENTURION_NEW_EVENT_HEADER
+#ifndef CENTURION_EVENT_HEADER
+#define CENTURION_EVENT_HEADER
 
 #include <SDL_events.h>
 
-#include <cstdint>
-#include <utility>
-#include <variant>
-
-#include "audio_device_event.h"
-#include "base_event.h"
-#include "button_state.h"
 #include "centurion_api.h"
-#include "keyboard_event.h"
-#include "quit_event.h"
+
+// TODO include ALL event related headers
 
 namespace centurion {
 namespace event {
 
-class ControllerAxisEvent : public BaseEvent<SDL_ControllerAxisEvent> {
-};
-
-class ControllerButtonEvent : public BaseEvent<SDL_ControllerButtonEvent> {
-};
-
-class ControllerDeviceEvent : public BaseEvent<SDL_ControllerDeviceEvent> {
-};
-
-class DollarGestureEvent : public BaseEvent<SDL_DollarGestureEvent> {
-};
-
-class DropEvent : public BaseEvent<SDL_DropEvent> {
-};
-
-class TouchFingerEvent : public BaseEvent<SDL_TouchFingerEvent> {
-};
-
-class JoyAxisEvent : public BaseEvent<SDL_JoyAxisEvent> {
-};
-
-class JoyBallEvent : public BaseEvent<SDL_JoyBallEvent> {
-};
-
-class JoyHatEvent : public BaseEvent<SDL_JoyHatEvent> {
-};
-
-class JoyButtonEvent : public BaseEvent<SDL_JoyButtonEvent> {
-};
-
-class JoyDeviceEvent : public BaseEvent<SDL_JoyDeviceEvent> {
-};
-
-class MouseMotionEvent : public BaseEvent<SDL_MouseMotionEvent> {
-};
-
-class MouseButtonEvent : public BaseEvent<SDL_MouseButtonEvent> {
-};
-
-class MouseWheelEvent : public BaseEvent<SDL_MouseWheelEvent> {
-};
-
-class MultiGestureEvent : public BaseEvent<SDL_MultiGestureEvent> {
-};
-
-class SysWMEvent : public BaseEvent<SDL_SysWMEvent> {
-};
-
-class TextEditingEvent : public BaseEvent<SDL_TextEditingEvent> {
-};
-
-class TextInputEvent : public BaseEvent<SDL_TextInputEvent> {
-};
-
-class UserEvent : public BaseEvent<SDL_UserEvent> {
-};
-
 }  // namespace event
 }  // namespace centurion
 
-#endif  // CENTURION_NEW_EVENT_HEADER // TODO fix this include guard name
+#endif  // CENTURION_EVENT_HEADER

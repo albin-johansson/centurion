@@ -27,8 +27,8 @@
 
 #include <SDL_events.h>
 
-#include "base_event.h"
 #include "centurion_api.h"
+#include "common_event.h"
 
 namespace centurion {
 namespace event {
@@ -53,7 +53,7 @@ enum class ControllerDeviceEventType {
  * @see SDL_ControllerDeviceEvent
  * @since 4.0.0
  */
-class ControllerDeviceEvent : public BaseEvent<SDL_ControllerDeviceEvent> {
+class ControllerDeviceEvent : public CommonEvent<SDL_ControllerDeviceEvent> {
  public:
   /**
    * Creates a default-initialized controller device event.
@@ -83,14 +83,6 @@ class ControllerDeviceEvent : public BaseEvent<SDL_ControllerDeviceEvent> {
       SDL_ControllerDeviceEvent&& event) noexcept;
 
   /**
-   * Sets the type of the controller device event.
-   *
-   * @param type the type of the controller device event.
-   * @since 4.0.0
-   */
-  CENTURION_API void set_type(ControllerDeviceEventType type) noexcept;
-
-  /**
    * If the event type is <code>Added</code>, then this value is the joystick
    * device index. If the type of the event is either <code>Removed</code> or
    * <code>Remapped</code>, then this value is the instance ID.
@@ -99,15 +91,6 @@ class ControllerDeviceEvent : public BaseEvent<SDL_ControllerDeviceEvent> {
    * @since 4.0.0
    */
   CENTURION_API void set_which(Sint32 which) noexcept;
-
-  /**
-   * Returns the type of the event.
-   *
-   * @return the type of the event.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API ControllerDeviceEventType type() const noexcept;
 
   /**
    * Returns the joystick device index if the type of the event is

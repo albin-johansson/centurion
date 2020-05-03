@@ -4,15 +4,6 @@
 
 using namespace centurion::event;
 
-TEST_CASE("DropEventType values", "[DropEvent]")
-{
-  using DET = DropEventType;
-  CHECK(static_cast<SDL_EventType>(DET::Begin) == SDL_DROPBEGIN);
-  CHECK(static_cast<SDL_EventType>(DET::File) == SDL_DROPFILE);
-  CHECK(static_cast<SDL_EventType>(DET::Text) == SDL_DROPTEXT);
-  CHECK(static_cast<SDL_EventType>(DET::Complete) == SDL_DROPCOMPLETE);
-}
-
 TEST_CASE("DropEvent move constructor", "[DropEvent]")
 {
   CHECK_NOTHROW(DropEvent{{}});
@@ -50,16 +41,6 @@ TEST_CASE("DropEvent::set_window_id", "[DropEvent]")
   CHECK(event.window_id() == id);
 }
 
-TEST_CASE("DropEvent::set_type", "[DropEvent]")
-{
-  DropEvent event;
-
-  const auto type = DropEventType::File;
-  event.set_type(type);
-
-  CHECK(event.type() == type);
-}
-
 TEST_CASE("DropEvent::will_free_file", "[DropEvent]")
 {
   DropEvent event;
@@ -88,14 +69,4 @@ TEST_CASE("DropEvent::window_id", "[DropEvent]")
   DropEvent event{sdlEvent};
 
   CHECK(event.window_id() == sdlEvent.windowID);
-}
-
-TEST_CASE("DropEvent::type", "[DropEvent]")
-{
-  SDL_DropEvent sdlEvent;
-  sdlEvent.type = SDL_DROPCOMPLETE;
-  sdlEvent.file = nullptr;
-  DropEvent event{sdlEvent};
-
-  CHECK(event.type() == DropEventType::Complete);
 }

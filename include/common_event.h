@@ -146,6 +146,7 @@ class CommonEvent {
  * expected of it.
  *
  * @tparam T the Centurion event type that will be checked.
+ * @tparam E the SDL event type that the Centurion event is mirroring.
  * @return true if the supplied event type passed the requirements; false
  * otherwise.
  * @since 4.0.0

@@ -34,19 +34,6 @@ namespace centurion {
 namespace event {
 
 /**
- * The ControllerDeviceEventType enum class is a wrapper for the
- * SDL_CONTROLLERDEVICEADDED, SDL_CONTROLLERDEVICEREMOVED and
- * SDL_CONTROLLERDEVICEREMAPPED values.
- *
- * @since 4.0.0
- */
-enum class ControllerDeviceEventType {
-  Added = SDL_CONTROLLERDEVICEADDED,
-  Removed = SDL_CONTROLLERDEVICEREMOVED,
-  Remapped = SDL_CONTROLLERDEVICEREMAPPED
-};
-
-/**
  * The ControllerDeviceEvent class represents events related to game
  * controller devices such as adding or removing game controller devices.
  *

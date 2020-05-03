@@ -49,7 +49,8 @@ set(TEST_FILES
         unittests/joy_button_event_test.cpp
         unittests/event_test.cpp
         unittests/joy_device_event_test.cpp
-        unittests/mouse_button_test.cpp)
+        unittests/mouse_button_test.cpp
+        unittests/mouse_motion_event_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

@@ -4,24 +4,58 @@
 
 using namespace centurion::event;
 
-TEST_CASE("CommonEvent::time", "[CommonEvent]")
+using DummyType = SDL_QuitEvent;
+
+TEST_CASE("CommonEvent::set_time", "[CommonEvent]")
 {
-  const auto time = 735;
+  CommonEvent<DummyType> event;
 
-  SDL_QuitEvent quitEvent;
-  quitEvent.timestamp = time;
-
-  CommonEvent<SDL_QuitEvent> event{quitEvent};
+  const auto time = 8934;
+  event.set_time(time);
 
   CHECK(event.time() == time);
 }
 
-TEST_CASE("AudioDeviceEvent::type", "[AudioDeviceEvent]")
+TEST_CASE("CommonEvent::set_type", "[CommonEvent]")
 {
-  SDL_QuitEvent quitEvent;
-  quitEvent.type = SDL_MOUSEMOTION;
+  CommonEvent<DummyType> event;
 
-  CommonEvent<SDL_QuitEvent> event{quitEvent};
+  const auto type = EventType::AppLowMemory;
+  event.set_type(type);
+
+  CHECK(event.type() == type);
+}
+
+TEST_CASE("CommonEvent::time", "[CommonEvent]")
+{
+  const auto time = 735;
+
+  DummyType dummy;
+  dummy.timestamp = time;
+
+  CommonEvent<DummyType> event{dummy};
+
+  CHECK(event.time() == time);
+}
+
+TEST_CASE("CommonEvent::type", "[CommonEvent]")
+{
+  DummyType dummy;
+  dummy.type = SDL_MOUSEMOTION;
+
+  CommonEvent<DummyType> event{dummy};
 
   CHECK(event.type() == EventType::MouseMotion);
+}
+
+TEST_CASE("CommonEvent conversions", "[CommonEvent]")
+{
+  STATIC_REQUIRE(std::is_convertible_v<CommonEvent<DummyType>, DummyType>);
+  STATIC_REQUIRE(std::is_convertible_v<CommonEvent<DummyType>, DummyType&>);
+
+  STATIC_REQUIRE(
+      std::is_convertible_v<CommonEvent<DummyType>, const DummyType&>);
+
+  STATIC_REQUIRE(
+      !std::is_convertible_v<CommonEvent<const DummyType>, DummyType&>);
 }

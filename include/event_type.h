@@ -153,4 +153,8 @@ CENTURION_API bool operator!=(SDL_EventType lhs, EventType rhs) noexcept;
 }  // namespace event
 }  // namespace centurion
 
+#ifdef CENTURION_HEADER_ONLY
+#include "event_type.cpp"
+#endif  // CENTURION_HEADER_ONLY
+
 #endif  // CENTURION_EVENT_TYPE_HEADER

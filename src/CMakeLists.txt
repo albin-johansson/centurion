@@ -55,6 +55,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/joy_axis_event.h
         ${CTN_INCLUDE_DIR}/joy_ball_event.h
         ${CTN_INCLUDE_DIR}/joy_hat_event.h
+        ${CTN_INCLUDE_DIR}/joy_button_event.h
 
         window.cpp
         font.cpp
@@ -95,7 +96,8 @@ set(SOURCE_FILES
         touch_finger_event.cpp
         joy_axis_event.cpp
         joy_ball_event.cpp
-        joy_hat_event.cpp)
+        joy_hat_event.cpp
+        joy_button_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

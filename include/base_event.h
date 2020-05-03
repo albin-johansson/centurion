@@ -40,7 +40,7 @@ namespace event {
  * @since 4.0.0
  */
 template <typename T>
-class BaseEvent {
+class BaseEvent { // TODO rename to CommonEvent?
  public:
   /**
    * Creates a BaseEvent and default-initializes the internal event.
@@ -99,6 +99,8 @@ class BaseEvent {
    * @since 4.0.0
    */
   CENTURION_NODISCARD operator T() const noexcept { return m_event; }
+
+  // TODO check if all events feature a type method, if so: add it to this class
 
  protected:
   T m_event{};

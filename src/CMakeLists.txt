@@ -39,6 +39,8 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/touch.h
         ${CTN_INCLUDE_DIR}/event.h
         ${CTN_INCLUDE_DIR}/event_type.h
+        ${CTN_INCLUDE_DIR}/mouse_button.h
+
 
         ${CTN_INCLUDE_DIR}/event.h
         ${CTN_INCLUDE_DIR}/keyboard_event.h

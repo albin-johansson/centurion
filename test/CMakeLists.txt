@@ -47,7 +47,8 @@ set(TEST_FILES
         unittests/joy_ball_event_test.cpp
         unittests/joy_hat_event_test.cpp
         unittests/joy_button_event_test.cpp
-        unittests/event_test.cpp)
+        unittests/event_test.cpp
+        unittests/joy_device_event_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

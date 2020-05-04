@@ -31,6 +31,7 @@
 #include <sstream>
 #include <string>
 #include <type_traits>
+#include <utility>
 
 #include "centurion_api.h"
 #include "optional.hpp"
@@ -90,6 +91,32 @@ CENTURION_NODISCARD std::string address_of(T* ptr)
     return address.str();
   } else {
     return "";
+  }
+}
+
+/**
+ * Returns the closest legal value that is inside the specified inclusive
+ * range based on the supplied value.
+ *
+ * @tparam T the type of the range.
+ * @param range the inclusive range, the format is (min, max).
+ * @param value the value that will be checked.
+ * @return the closest legal value that is inside the specified inclusive
+ * range.
+ * @since 4.0.0
+ */
+template <typename T>
+CENTURION_NODISCARD T clamp_inclusive(std::pair<T, T> range, T value) noexcept
+{
+  const auto min = range.first;
+  const auto max = range.second;
+
+  if (value < min) {
+    return min;
+  } else if (value > max) {
+    return max;
+  } else {
+    return value;
   }
 }
 

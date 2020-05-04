@@ -50,7 +50,7 @@ std::shared_ptr<Texture> TextureLoader::shared_img(PixelFormat format,
                                                    int width,
                                                    int height) const
 {
-  return std::make_shared<Texture>(*renderer, format, access, width, height);
+  return Texture::shared(*renderer, format, access, width, height);
 }
 
 }  // namespace video

@@ -127,7 +127,9 @@ class Key final {
   SDL_Keycode m_keycode;
 };
 
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<Key>::value, "Key isn't final!");
+#endif  // CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 
 static_assert(std::is_copy_constructible<Key>::value, "Key isn't copyable!");
 static_assert(std::is_copy_assignable<Key>::value, "Key isn't copyable!");

@@ -64,6 +64,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/mouse_motion_event.h
         ${CTN_INCLUDE_DIR}/mouse_button_event.h
         ${CTN_INCLUDE_DIR}/mouse_wheel_event.h
+        ${CTN_INCLUDE_DIR}/multi_gesture_event.h
 
         window.cpp
         font.cpp
@@ -111,7 +112,8 @@ set(SOURCE_FILES
         joy_device_event.cpp
         mouse_motion_event.cpp
         mouse_button_event.cpp
-        mouse_wheel_event.cpp)
+        mouse_wheel_event.cpp
+        multi_gesture_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

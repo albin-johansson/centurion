@@ -1,16 +1,19 @@
-#include "catch.hpp"
 #include "log.h"
+
+#include <catch.hpp>
 
 using namespace centurion;
 
-TEST_CASE("Log methods bad arg resistance", "[Log]") {
+TEST_CASE("Log methods bad arg resistance", "[Log]")
+{
   const char* msg = nullptr;
   CHECK_NOTHROW(Log::msgf(msg));
   CHECK_NOTHROW(Log::msgf(Category::App, msg));
   CHECK_NOTHROW(Log::msgf(Category::App, Priority::Info, msg));
 }
 
-TEST_CASE("Specific logging category", "[Log]") {
+TEST_CASE("Specific logging category", "[Log]")
+{
   const auto category = Category::App;
   const auto priority = Priority::Debug;
   Log::set_priority(category, priority);
@@ -19,7 +22,8 @@ TEST_CASE("Specific logging category", "[Log]") {
   Log::reset_priorites();
 }
 
-TEST_CASE("Global logging priority", "[Log]") {
+TEST_CASE("Global logging priority", "[Log]")
+{
   const auto priority = Priority::Critical;
   Log::set_priority(priority);
 
@@ -37,7 +41,8 @@ TEST_CASE("Global logging priority", "[Log]") {
   Log::reset_priorites();
 }
 
-TEST_CASE("Priority enum values", "[Log]") {
+TEST_CASE("Priority enum values", "[Log]")
+{
   CHECK(Priority::Info == SDL_LOG_PRIORITY_INFO);
   CHECK(Priority::Warn == SDL_LOG_PRIORITY_WARN);
   CHECK(Priority::Debug == SDL_LOG_PRIORITY_DEBUG);
@@ -53,7 +58,8 @@ TEST_CASE("Priority enum values", "[Log]") {
   CHECK(SDL_LOG_PRIORITY_ERROR == Priority::Error);
 }
 
-TEST_CASE("Category enum values", "[Log]") {
+TEST_CASE("Category enum values", "[Log]")
+{
   CHECK(static_cast<int>(Category::App) == SDL_LOG_CATEGORY_APPLICATION);
   CHECK(static_cast<int>(Category::Error) == SDL_LOG_CATEGORY_ERROR);
   CHECK(static_cast<int>(Category::Assert) == SDL_LOG_CATEGORY_ASSERT);

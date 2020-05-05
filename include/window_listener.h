@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 Albin Johansson
+ * Copyright (c) 2019-2020 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,20 +22,26 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_WINDOW_LISTENER_HEADER
+#define CENTURION_WINDOW_LISTENER_HEADER
+
+#include <type_traits>
+
 #include "centurion_api.h"
 
 namespace centurion {
+namespace video {
 
 class Window;
 
 /**
- * The IWindowListener interface is a one-method interface that specifies objects that can listen
- * for window updates.
+ * The IWindowListener interface is a one-method interface that specifies
+ * objects that can listen for window updates.
  *
  * @since 3.0.0
  */
-class CENTURION_API IWindowListener {
+class [[deprecated]] IWindowListener
+{
  public:
   virtual ~IWindowListener() = default;
 
@@ -45,7 +51,14 @@ class CENTURION_API IWindowListener {
    * @param window the window that was updated.
    * @since 3.0.0
    */
-  CENTURION_API virtual void window_updated(const Window& window) noexcept = 0;
+  CENTURION_API
+  virtual void window_updated(const Window& window) noexcept = 0;
 };
 
-}
+static_assert(std::has_virtual_destructor<IWindowListener>::value,
+              "IWindowListener doesn't have virtual destructor!");
+
+}  // namespace video
+}  // namespace centurion
+
+#endif  // CENTURION_WINDOW_LISTENER_HEADER

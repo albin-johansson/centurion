@@ -1,9 +1,12 @@
-#include "catch.hpp"
 #include "blend_mode.h"
 
-using namespace centurion;
+#include <catch.hpp>
 
-TEST_CASE("BlendMode enum values", "[BlendMode]") {
+using namespace centurion;
+using namespace centurion::video;
+
+TEST_CASE("BlendMode enum values", "[BlendMode]")
+{
   CHECK(BlendMode::None == SDL_BLENDMODE_NONE);
   CHECK(BlendMode::Blend == SDL_BLENDMODE_BLEND);
   CHECK(BlendMode::Add == SDL_BLENDMODE_ADD);
@@ -17,7 +20,8 @@ TEST_CASE("BlendMode enum values", "[BlendMode]") {
   CHECK(SDL_BLENDMODE_INVALID == BlendMode::Invalid);
 }
 
-TEST_CASE("BlendMode operator!=", "[BlendMode]") {
+TEST_CASE("BlendMode operator!=", "[BlendMode]")
+{
   CHECK(BlendMode::None != SDL_BLENDMODE_MOD);
   CHECK(BlendMode::Blend != SDL_BLENDMODE_INVALID);
 

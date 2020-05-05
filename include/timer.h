@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 Albin Johansson
+ * Copyright (c) 2019-2020 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,30 +22,35 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_TIMER_HEADER
+#define CENTURION_TIMER_HEADER
+
 #include <cstdint>
+
 #include "centurion_api.h"
 
 namespace centurion {
+namespace system {
 
 /**
  * The Timer class provides utilities related to the system clock.
  *
  * @since 3.0.0
  */
-class CENTURION_API Timer final {
+class Timer final {
  public:
   Timer() = delete;
 
   /**
-   * Forces the currently executing thread to halt for at least the specified amount of
-   * milliseconds. However, the actual time spent sleeping may be longer, depending on the
-   * scheduling of the operating system.
+   * Forces the currently executing thread to halt for at least the specified
+   * amount of milliseconds. However, the actual time spent sleeping may be
+   * longer, depending on the scheduling of the operating system.
    *
    * @param ms the minimum amount of time to sleep for, in milliseconds.
    * @since 3.0.0
    */
-  CENTURION_API static void sleep(uint32_t ms) noexcept;
+  CENTURION_API
+  static void sleep(uint32_t ms) noexcept;
 
   /**
    * Returns the current value of the system high-performance counter.
@@ -53,8 +58,9 @@ class CENTURION_API Timer final {
    * @return the current value of the system high-performance counter.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API static uint64_t high_res() noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  static uint64_t high_res() noexcept;
 
   /**
    * Returns the frequency of the system high-performance counter.
@@ -62,8 +68,9 @@ class CENTURION_API Timer final {
    * @return the frequency of the system high-performance counter.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API static uint64_t high_res_freq() noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  static uint64_t high_res_freq() noexcept;
 
   /**
    * Returns the amount of milliseconds since the library was initialized.
@@ -71,9 +78,16 @@ class CENTURION_API Timer final {
    * @return the amount of milliseconds since the library was initialized.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API static uint32_t millis() noexcept;
-
+  CENTURION_NODISCARD
+  CENTURION_API
+  static uint32_t millis() noexcept;
 };
 
-}
+}  // namespace system
+}  // namespace centurion
+
+#ifdef CENTURION_HEADER_ONLY
+#include "timer.cpp"
+#endif
+
+#endif  // CENTURION_TIMER_HEADER

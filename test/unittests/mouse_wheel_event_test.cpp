@@ -1,88 +1,127 @@
-#include "catch.hpp"
-#include "event.h"
-#include "window.h"
+#include "mouse_wheel_event.h"
 
-using namespace centurion;
+#include <catch.hpp>
+
 using namespace centurion::event;
 
-TEST_CASE("MouseWheelEvent(SDL_MouseWheelEvent)", "[MouseWheelEvent]") {
-  SDL_MouseWheelEvent sdlEvent{};
-  CHECK_NOTHROW(MouseWheelEvent{sdlEvent});
+TEST_CASE("MouseWheelDirection operator==", "[MouseWheelDirection]")
+{
+  CHECK(MouseWheelDirection::Normal == SDL_MOUSEWHEEL_NORMAL);
+  CHECK(MouseWheelDirection::Flipped == SDL_MOUSEWHEEL_FLIPPED);
+
+  CHECK(SDL_MOUSEWHEEL_NORMAL == MouseWheelDirection::Normal);
+  CHECK(SDL_MOUSEWHEEL_FLIPPED == MouseWheelDirection::Flipped);
+
+  CHECK(!(MouseWheelDirection::Normal == SDL_MOUSEWHEEL_FLIPPED));
 }
 
-TEST_CASE("MouseWheelEvent::get_horizontal_scroll", "[MouseWheelEvent]") {
-  const auto horizontalScroll = 75;
-  const auto event = [horizontalScroll]() noexcept {
-    SDL_MouseWheelEvent sdlEvent{};
-    sdlEvent.x = horizontalScroll;
-    return MouseWheelEvent{sdlEvent};
-  }();
-  CHECK(event.get_horizontal_scroll() == horizontalScroll);
+TEST_CASE("MouseWheelDirection operator!=", "[MouseWheelDirection]")
+{
+  CHECK(MouseWheelDirection::Normal != SDL_MOUSEWHEEL_FLIPPED);
+  CHECK(MouseWheelDirection::Flipped != SDL_MOUSEWHEEL_NORMAL);
+
+  CHECK(SDL_MOUSEWHEEL_NORMAL != MouseWheelDirection::Flipped);
+  CHECK(SDL_MOUSEWHEEL_FLIPPED != MouseWheelDirection::Normal);
+
+  CHECK(!(MouseWheelDirection::Flipped != SDL_MOUSEWHEEL_FLIPPED));
 }
 
-TEST_CASE("MouseWheelEvent::get_vertical_scroll", "[MouseWheelEvent]") {
-  const auto verticalScroll = -46;
-  const auto event = [verticalScroll]() noexcept {
-    SDL_MouseWheelEvent sdlEvent{};
-    sdlEvent.y = verticalScroll;
-    return MouseWheelEvent{sdlEvent};
-  }();
-  CHECK(event.get_vertical_scroll() == verticalScroll);
+TEST_CASE("MouseWheelEvent::set_window_id", "[MouseWheelEvent]")
+{
+  MouseWheelEvent event;
+
+  const auto id = 32;
+  event.set_window_id(id);
+
+  CHECK(event.window_id() == id);
 }
 
-TEST_CASE("MouseWheelEvent::get_wheel_direction", "[MouseWheelEvent]") {
-  const auto mk_event = [](uint32_t direction) noexcept {
-    SDL_MouseWheelEvent sdlEvent{};
-    sdlEvent.direction = direction;
-    return MouseWheelEvent{sdlEvent};
-  };
+TEST_CASE("MouseWheelEvent::set_which", "[MouseWheelEvent]")
+{
+  MouseWheelEvent event;
 
-  SECTION("Normal") {
-    const auto event = mk_event(SDL_MOUSEWHEEL_NORMAL);
-    CHECK(event.get_wheel_direction() == MouseWheelDirection::Normal);
-  }
+  const auto which = 32;
+  event.set_which(which);
 
-  SECTION("Flipped") {
-    const auto event = mk_event(SDL_MOUSEWHEEL_FLIPPED);
-    CHECK(event.get_wheel_direction() == MouseWheelDirection::Flipped);
-  }
+  CHECK(event.which() == which);
 }
 
-TEST_CASE("MouseWheelEvent::was_touch", "[MouseWheelEvent]") {
-  const auto mk_event = [](uint32_t which) noexcept {
-    SDL_MouseWheelEvent sdlEvent{};
-    sdlEvent.which = which;
-    return MouseWheelEvent{sdlEvent};
-  };
+TEST_CASE("MouseWheelEvent::set_x_scroll", "[MouseWheelEvent]")
+{
+  MouseWheelEvent event;
 
-  SECTION("Was touch") {
-    const auto event = mk_event(SDL_TOUCH_MOUSEID);
-    CHECK(event.was_touch());
-  }
+  const auto xScroll = -545;
+  event.set_x_scroll(xScroll);
 
-  SECTION("Wasn't touch") {
-    const auto event = mk_event(0);
-    CHECK(!event.was_touch());
-  }
+  CHECK(event.x_scroll() == xScroll);
 }
 
-TEST_CASE("MouseWheelEvent::get_window_id", "[MouseWheelEvent]") {
-  Window window;
-  const auto windowID = static_cast<uint32_t>(window.get_id());
-  const auto event = [windowID]() noexcept {
-    SDL_MouseWheelEvent sdlEvent{};
-    sdlEvent.windowID = windowID;
-    return MouseWheelEvent{sdlEvent};
-  }();
-  CHECK(event.get_window_id() == windowID);
+TEST_CASE("MouseWheelEvent::set_y_scroll", "[MouseWheelEvent]")
+{
+  MouseWheelEvent event;
+
+  const auto yScroll = 725;
+  event.set_y_scroll(yScroll);
+
+  CHECK(event.y_scroll() == yScroll);
 }
 
-TEST_CASE("MouseWheelEvent::get_time", "[MouseWheelEvent]") {
-  const auto time = 83914U;
-  const auto event = [time]() noexcept {
-    SDL_MouseWheelEvent sdlEvent{};
-    sdlEvent.timestamp = time;
-    return MouseWheelEvent{sdlEvent};
-  }();
-  CHECK(event.get_time() == time);
+TEST_CASE("MouseWheelEvent::set_direction", "[MouseWheelEvent]")
+{
+  MouseWheelEvent event;
+
+  const auto direction = MouseWheelDirection::Flipped;
+  event.set_direction(direction);
+
+  CHECK(event.direction() == direction);
+}
+
+TEST_CASE("MouseWheelEvent::window_id", "[MouseWheelEvent]")
+{
+  SDL_MouseWheelEvent sdlEvent;
+  sdlEvent.windowID = 12;
+
+  MouseWheelEvent event{sdlEvent};
+
+  CHECK(event.window_id() == sdlEvent.windowID);
+}
+
+TEST_CASE("MouseWheelEvent::which", "[MouseWheelEvent]")
+{
+  SDL_MouseWheelEvent sdlEvent;
+  sdlEvent.windowID = 12;
+
+  MouseWheelEvent event{sdlEvent};
+
+  CHECK(event.window_id() == sdlEvent.windowID);
+}
+
+TEST_CASE("MouseWheelEvent::x_scroll", "[MouseWheelEvent]")
+{
+  SDL_MouseWheelEvent sdlEvent;
+  sdlEvent.x = 455;
+
+  MouseWheelEvent event{sdlEvent};
+
+  CHECK(event.x_scroll() == sdlEvent.x);
+}
+
+TEST_CASE("MouseWheelEvent::y_scroll", "[MouseWheelEvent]")
+{
+  SDL_MouseWheelEvent sdlEvent;
+  sdlEvent.y = -123;
+
+  MouseWheelEvent event{sdlEvent};
+
+  CHECK(event.y_scroll() == sdlEvent.y);
+}
+
+TEST_CASE("MouseWheelEvent::direction", "[MouseWheelEvent]")
+{
+  SDL_MouseWheelEvent sdlEvent;
+  sdlEvent.direction = SDL_MOUSEWHEEL_NORMAL;
+
+  MouseWheelEvent event{sdlEvent};
+
+  CHECK(event.direction() == MouseWheelDirection::Normal);
 }

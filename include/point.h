@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 Albin Johansson
+ * Copyright (c) 2019-2020 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,349 +22,379 @@
  * SOFTWARE.
  */
 
-#pragma once
-#include <string>
+#ifndef CENTURION_POINT_HEADER
+#define CENTURION_POINT_HEADER
+
 #include <SDL.h>
+
+#include <cmath>
+#include <string>
+#include <type_traits>
+
 #include "centurion_api.h"
+#include "centurion_utils.h"
 
 namespace centurion {
+namespace math {
+
+template <typename T>
+class Point;
+
+template <typename U>
+constexpr bool operator==(const Point<U>& lhs, const Point<U>& rhs) noexcept;
+
+template <typename U>
+constexpr bool operator!=(const Point<U>& lhs, const Point<U>& rhs) noexcept;
+
+template <typename U>
+constexpr Point<U> operator-(const Point<U>& lhs, const Point<U>& rhs) noexcept;
+
+template <typename U>
+constexpr Point<U> operator+(const Point<U>& lhs, const Point<U>& rhs) noexcept;
 
 /**
- * The Point class is a simple representation of a point in the plane, with integer components.
+ * The Point class represents an integer or floating-point based 2D point.
+ * There are two pre-defined type aliases pre-defined for this class: IPoint and
+ * FPoint.
  *
- * @since 3.0.0
+ * @tparam T the type of the components of the point. Must be either integral
+ * or real. Defaults to float.
+ * @since 4.0.0
  */
-class CENTURION_API Point final {
+template <typename T = float>
+class Point final {
  private:
-  int x = 0;
-  int y = 0;
+  T x = 0;
+  T y = 0;
 
  public:
   /**
-   * Creates a point with the coordinates (0, 0).
+   * Creates a point with coordinates (0, 0).
    *
-   * @since 3.0.0
+   * @since 4.0.0
    */
-  CENTURION_API Point() noexcept;
+  constexpr Point() noexcept = default;
 
   /**
-   * @param x the x-coordinate of the point.
-   * @param y the y-coordinate of the point.
-   * @since 3.0.0
-   */
-  CENTURION_API Point(int x, int y) noexcept;
-
-  /**
-   * Creates a point based on an SDL_Point instance.
+   * Creates a point with the specified coordinates.
    *
-   * @param point the SDL point that will be copied.
-   * @since 3.0.0
+   * @param px the x-coordinate of the point.
+   * @param py the y-coordinate of the point.
+   * @since 4.0.0
    */
-  CENTURION_API explicit Point(SDL_Point point) noexcept;
+  constexpr Point(T px, T py) noexcept : x{px}, y{py} {}
 
   /**
    * Sets the x-coordinate of the point.
    *
-   * @param x the x-coordinate of the point.
-   * @since 3.0.0
+   * @param px the new x-coordinate of the point.
+   * @since 4.0.0
    */
-  CENTURION_API void set_x(int x) noexcept;
+  constexpr void set_x(T px) noexcept { x = px; }
 
   /**
    * Sets the y-coordinate of the point.
    *
-   * @param y the y-coordinate of the point.
-   * @since 3.0.0
+   * @param py the new y-coordinate of the point.
+   * @since 4.0.0
    */
-  CENTURION_API void set_y(int y) noexcept;
+  constexpr void set_y(T py) noexcept { y = py; }
+
+  /**
+   * Sets the values of the x- and y-coordinates of the point.
+   *
+   * @param px the new x-coordinate of the point.
+   * @param py the new y-coordinate of the point.
+   * @since 4.0.0
+   */
+  constexpr void set(T px, T py) noexcept
+  {
+    x = px;
+    y = py;
+  }
 
   /**
    * Copies the components of the supplied point into this point.
    *
    * @param other the point that will be copied.
-   * @since 3.1.0
+   * @since 4.0.0
    */
-  CENTURION_API void set(const Point& other) noexcept;
+  constexpr void set(const Point<T>& other) noexcept
+  {
+    x = other.x;
+    y = other.y;
+  }
 
   /**
-   * Sets the x- and y-components of this point.
+   * Calculates and returns the distance from this point to the supplied
+   * point. It doesn't matter in which order the method call is performed
+   * (i.e. <code>a.distance_to(b) == b.distance_to(a)</code>)
    *
-   * @param px the new x-coordinate of the point.
-   * @param py the new y-coordinate of the point.
-   * @since 3.1.0
+   * @param other the point to calculate the distance to.
+   * @since 4.0.0
    */
-  CENTURION_API void set(int px, int py) noexcept;
+  CENTURION_NODISCARD
+  T distance_to(const Point<T>& other) const noexcept
+  {
+    return std::sqrt(std::abs(x - other.x) + std::abs(y - other.y));
+  }
+
+  /**
+   * Returns a textual representation of the point.
+   *
+   * @return a textual representation of the point.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  std::string to_string() const
+  {
+    return "[Point | X: " + std::to_string(x) + ", Y: " + std::to_string(y) +
+           "]";
+  }
 
   /**
    * Returns the x-coordinate of the point.
    *
    * @return the x-coordinate of the point.
-   * @since 3.0.0
+   * @since 4.0.0
    */
-  [[nodiscard]]
-  CENTURION_API int get_x() const noexcept;
+  CENTURION_NODISCARD
+  constexpr T get_x() const noexcept { return x; }
 
   /**
    * Returns the y-coordinate of the point.
    *
    * @return the y-coordinate of the point.
-   * @since 3.0.0
+   * @since 4.0.0
    */
-  [[nodiscard]]
-  CENTURION_API int get_y() const noexcept;
+  CENTURION_NODISCARD
+  constexpr T get_y() const noexcept { return y; }
 
   /**
-   * Calculates and returns the distance between two points. The returned distance is always
-   * positive. The order of the operands doesn't matter.
+   * Indicates whether or not the point is considered to be equal to the
+   * supplied point. This method is only enabled if the points are
+   * floating-point based.
    *
-   * @param a the first point.
-   * @param b the second point.
-   * @return the distance between two points.
-   * @since 3.1.0
+   * @param other the other point to compare this point with.
+   * @param epsilon the exclusive limit on the maximum allowed absolute
+   * difference between the coordinates of the points.
+   * @since 4.0.0
    */
-  [[nodiscard]]
-  CENTURION_API static int distance(const Point& a, const Point& b) noexcept;
+  template <typename U = T>
+  CENTURION_NODISCARD type_if_floating<U> equals(
+      const Point<T>& other, T epsilon = 0.0001) const noexcept
+  {
+    return std::abs(x - other.x) < epsilon && std::abs(y - other.y) < epsilon;
+  }
 
   /**
-   * Returns a textual representation of the Point instance.
+   * Returns an SDL_Point instance based on the point.
    *
-   * @return a textual representation of the Point instance.
-   * @since 3.0.0
+   * @return an SDL_Point instance based on the point.
+   * @since 4.0.0
    */
-  [[nodiscard]]
-  CENTURION_API std::string to_string() const;
+  CENTURION_NODISCARD
+  constexpr SDL_Point to_sdl_point() const noexcept
+  {
+    return {static_cast<int>(x), static_cast<int>(y)};
+  }
 
   /**
-   * Converts the point into an SDL_Point.
+   * Returns an SDL_FPoint instance based on the point.
    *
-   * @return an SDL_Point.
-   * @since 3.0.0
+   * @return an SDL_FPoint instance based on the point.
+   * @since 4.0.0
    */
-  [[nodiscard]]
-  CENTURION_API /*implicit*/ operator SDL_Point() const noexcept;
-};
-
-/**
- * The FPoint class is a simple representation of a point in the plane, with floating-point
- * components.
- *
- * @since 3.0.0
- */
-class CENTURION_API FPoint final {
- private:
-  float x = 0;
-  float y = 0;
-
- public:
-  /**
-   * Creates a point with the coordinates (0, 0).
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API FPoint() noexcept;
+  CENTURION_NODISCARD
+  constexpr SDL_FPoint to_sdl_fpoint() const noexcept
+  {
+    return {static_cast<float>(x), static_cast<float>(y)};
+  }
 
   /**
-   * @param x the x-coordinate of the point.
-   * @param y the y-coordinate of the point.
-   * @since 3.0.0
-   */
-  CENTURION_API FPoint(float x, float y) noexcept;
-
-  /**
-   * Creates a FPoint based on the supplied SDL_FRect.
-   *
-   * @param point the SDL rectangle that will be copied.
-   * @since 3.0.0
-   */
-  CENTURION_API explicit FPoint(SDL_FPoint point) noexcept;
-
-  /**
-   * Sets the x-coordinate of the point.
-   *
-   * @param x the new x-coordinate of the point.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_x(float x) noexcept;
-
-  /**
-   * Sets the y-coordinate of the point.
-   *
-   * @param y the new y-coordinate of the point.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_y(float y) noexcept;
-
-  /**
-   * Copies the components of the supplied point into this point.
-   *
-   * @param other the point that will be copied.
-   * @since 3.1.0
-   */
-  CENTURION_API void set(const FPoint& other) noexcept;
-
-  /**
-   * Sets the x- and y-components of this point.
-   *
-   * @param px the new x-coordinate of the point.
-   * @param py the new y-coordinate of the point.
-   * @since 3.1.0
-   */
-  CENTURION_API void set(float px, float py) noexcept;
-
-  /**
-   * Returns the x-coordinate of the point.
-   *
-   * @return the x-coordinate of the point.
-   * @since 3.0.0
-   */
-  [[nodiscard]]
-  CENTURION_API float get_x() const noexcept;
-
-  /**
-   * Returns the y-coordinate of the point.
-   *
-   * @return the y-coordinate of the point.
-   * @since 3.0.0
-   */
-  [[nodiscard]]
-  CENTURION_API float get_y() const noexcept;
-
-  /**
-   * Calculates and returns the distance between two points. The returned distance is always
-   * positive. The order of the operands doesn't matter.
-   *
-   * @param a the first point.
-   * @param b the second point.
-   * @return the distance between two points.
-   * @since 3.1.0
-   */
-  [[nodiscard]]
-  CENTURION_API static float distance(const FPoint& a, const FPoint& b) noexcept;
-
-  /**
-   * Returns a textual representation of the Point instance.
-   *
-   * @return a textual representation of the Point instance.
-   * @since 3.0.0
-   */
-  [[nodiscard]]
-  CENTURION_API std::string to_string() const;
-
-  /**
-   * Converts the point into an SDL_FPoint.
-   *
-   * @return an SDL_FPoint instance, based on the point.
-   * @since 3.0.0
-   */
-  [[nodiscard]]
-  CENTURION_API /*implicit*/ operator SDL_FPoint() const noexcept;
-
-  /**
-   * Indicates whether or not two points are considered to be equal. The points are considered
-   * tobe equal iff the absolute difference of the components of the points are less than the
-   * specified epsilon value.
+   * Creates and returns a point in which the coordinates are the sums
+   * obtained by adding the x- and y-coordinates of the supplied points.
    *
    * @param lhs the left-hand side point.
    * @param rhs the right-hand side point.
-   * @param epsilon the epsilon value that will be used. Denotes the exclusive upper bound for
-   * the maximum allowed difference of the components of the points. A negative value will be
-   * converted to zero.
-   * @return true if the points are considered to be equal; false otherwise.
-   * @since 3.1.0
+   * @return a point in which the coordinates are the sums obtained by adding
+   * the x- and y-coordinates of the supplied points.
+   * @since 4.0.0
    */
-  [[nodiscard]]
-  CENTURION_API static bool equals(const FPoint& lhs,
-                                   const FPoint& rhs,
-                                   float epsilon = 0.0001f) noexcept;
+  CENTURION_NODISCARD
+  friend constexpr Point<T> operator+
+      <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+
+  /**
+   * Converts the point to a pointer to an SDL_Point instance. This
+   * conversion is only available if the point is based on <code>int</code>.
+   *
+   * @tparam U the type parameter, defaults to the type of the point
+   * components.
+   * @return an SDL_Point pointer that is produced by reinterpreting the
+   * invoked point.
+   * @since 4.0.0
+   */
+  template <typename U = T, typename = type_if_same<U, int>>
+  CENTURION_NODISCARD explicit operator SDL_Point*() noexcept
+  {
+    return reinterpret_cast<SDL_Point*>(this);
+  }
+
+  /**
+   * Converts the point to a pointer to an SDL_Point instance. This
+   * conversion is only available if the point is based on <code>int</code>.
+   *
+   * @tparam U the type parameter, defaults to the type of the point
+   * components.
+   * @return an SDL_Point pointer that is produced by reinterpreting the
+   * invoked point.
+   * @since 4.0.0
+   */
+  template <typename U = T, typename = type_if_same<U, int>>
+  CENTURION_NODISCARD explicit operator const SDL_Point*() const noexcept
+  {
+    return reinterpret_cast<const SDL_Point*>(this);
+  }
+
+  /**
+   * Converts the point to a pointer to an SDL_FPoint instance. This
+   * conversion is only available if the point is based on <code>float</code>.
+   *
+   * @tparam U the type parameter, defaults to the type of the point
+   * components.
+   * @return an SDL_FPoint pointer that is produced by reinterpreting the
+   * invoked point.
+   * @since 4.0.0
+   */
+  template <typename U = T, typename = type_if_same<U, float>>
+  CENTURION_NODISCARD explicit operator SDL_FPoint*() noexcept
+  {
+    return reinterpret_cast<SDL_FPoint*>(this);
+  }
+
+  /**
+   * Converts the point to a pointer to an SDL_FPoint instance. This
+   * conversion is only available if the point is based on <code>float</code>.
+   *
+   * @tparam U the type parameter, defaults to the type of the point
+   * components.
+   * @return an SDL_FPoint pointer that is produced by reinterpreting the
+   * invoked point.
+   * @since 4.0.0
+   */
+  template <typename U = T, typename = type_if_same<U, float>>
+  CENTURION_NODISCARD explicit operator const SDL_FPoint*() const noexcept
+  {
+    return reinterpret_cast<const SDL_FPoint*>(this);
+  }
+
+  /**
+   * Creates and returns a point in which the coordinates are the differences
+   * obtained by subtracting the x- and y-coordinates of the supplied points.
+   *
+   * @param lhs the left-hand side point.
+   * @param rhs the right-hand side point.
+   * @return a point in which the coordinates are the differences obtained by
+   * subtracting the x- and y-coordinates of the supplied points.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  friend Point<T> operator-
+      <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+
+  /**
+   * Indicates whether or not two points are considered to be equal.
+   *
+   * @param lhs the left-hand side point.
+   * @param rhs the right-hand side point.
+   * @return true if the points are equal; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  friend bool operator==<T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+
+  /**
+   * Indicates whether or not two points aren't considered to be equal.
+   *
+   * @param lhs the left-hand side point.
+   * @param rhs the right-hand side point.
+   * @return true if the points aren't equal; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  friend bool operator!=<T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+
+  static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+                "Point type must be either integral or floating-point!");
+
+  static_assert(std::is_trivial<T>::value, "Point type must be trivial!");
 };
 
-/**
- * Indicates whether or not two points are the same.
- *
- * @param lhs the left-hand side point.
- * @param rhs the right-hand side point.
- * @return true if the points are the same; false otherwise.
- * @since 3.1.0
- */
-[[nodiscard]]
-CENTURION_API bool operator==(const Point& lhs, const Point& rhs) noexcept;
-
-/**
- * Indicates whether or not two points aren't the same.
- *
- * @param lhs the left-hand side point.
- * @param rhs the right-hand side point.
- * @return true if the points aren't the same; false otherwise.
- * @since 3.1.0
- */
-[[nodiscard]]
-CENTURION_API bool operator!=(const Point& lhs, const Point& rhs) noexcept;
-
-/**
- * Adds the coordinates of two points and returns the resulting point.
- *
- * @param lhs the left-hand side point.
- * @param rhs the right-hand side point.
- * @return a point that has the sum of the supplied points coordinates as its coordinates.
- * @since 3.1.0
- */
-[[nodiscard]]
-CENTURION_API Point operator+(const Point& lhs, const Point& rhs) noexcept;
-
-/**
- * Subtracts the coordinates of two points and returns the resulting point.
- *
- * @param lhs the left-hand side point.
- * @param rhs the right-hand side point.
- * @return a point that has the difference of the supplied points coordinates as its coordinates.
- * @since 3.1.0
- */
-[[nodiscard]]
-CENTURION_API Point operator-(const Point& lhs, const Point& rhs) noexcept;
-
-/**
- * Indicates whether or not two points are the same. The absolute difference of the components of
- * the points must be less than 0.0001, in order for the points to be considered equal.
- *
- * @param lhs the left-hand side point.
- * @param rhs the right-hand side point.
- * @return true if the points are the same; false otherwise.
- * @since 3.1.0
- */
-[[nodiscard]]
-CENTURION_API bool operator==(const FPoint& lhs, const FPoint& rhs) noexcept;
-
-/**
- * Indicates whether or not two points aren't the same.
- *
- * @param lhs the left-hand side point.
- * @param rhs the right-hand side point.
- * @return true if the points aren't the same; false otherwise.
- * @since 3.1.0
- */
-[[nodiscard]]
-CENTURION_API bool operator!=(const FPoint& lhs, const FPoint& rhs) noexcept;
-
-/**
- * Adds the coordinates of two points and returns the resulting point.
- *
- * @param lhs the left-hand side point.
- * @param rhs the right-hand side point.
- * @return a point that has the sum of the supplied points coordinates as its coordinates.
- * @since 3.1.0
- */
-[[nodiscard]]
-CENTURION_API FPoint operator+(const FPoint& lhs, const FPoint& rhs) noexcept;
-
-/**
- * Subtracts the coordinates of two points and returns the resulting point.
- *
- * @param lhs the left-hand side point.
- * @param rhs the right-hand side point.
- * @return a point that has the difference of the supplied points coordinates as its coordinates.
- * @since 3.1.0
- */
-[[nodiscard]]
-CENTURION_API FPoint operator-(const FPoint& lhs, const FPoint& rhs) noexcept;
-
+template <typename T>
+inline constexpr Point<T> operator+(const Point<T>& lhs,
+                                    const Point<T>& rhs) noexcept
+{
+  return Point<T>{lhs.x + rhs.x, lhs.y + rhs.y};
 }
+
+template <typename T>
+inline constexpr Point<T> operator-(const Point<T>& lhs,
+                                    const Point<T>& rhs) noexcept
+{
+  return Point<T>{lhs.x - rhs.x, lhs.y - rhs.y};
+}
+
+template <typename T>
+inline constexpr bool operator==(const Point<T>& lhs,
+                                 const Point<T>& rhs) noexcept
+{
+  return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+template <typename T>
+inline constexpr bool operator!=(const Point<T>& lhs,
+                                 const Point<T>& rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+static_assert(std::is_nothrow_default_constructible<Point<float>>::value,
+              "Point isn't nothrow default constructible!");
+
+static_assert(std::is_nothrow_copy_constructible<Point<float>>::value,
+              "Point isn't nothrow copy constructible!");
+
+static_assert(std::is_nothrow_move_constructible<Point<float>>::value,
+              "Point isn't nothrow move constructible!");
+
+static_assert(std::is_nothrow_copy_assignable<Point<float>>::value,
+              "Point isn't nothrow copy assignable!");
+
+static_assert(std::is_nothrow_move_assignable<Point<float>>::value,
+              "Point isn't nothrow move assignable!");
+
+static_assert(sizeof(Point<int>) == sizeof(SDL_Point),
+              "Point<int> has invalid size!");
+
+static_assert(sizeof(Point<float>) == sizeof(SDL_FPoint),
+              "Point<float> has invalid size!");
+
+/**
+ * An alias for Point&lt;int&gt;.
+ *
+ * @since 4.0.0
+ */
+using IPoint = Point<int>;
+
+/**
+ * An alias for Point&lt;float&gt;.
+ *
+ * @since 4.0.0
+ */
+using FPoint = Point<float>;
+
+}  // namespace math
+}  // namespace centurion
+
+#endif  // CENTURION_POINT_HEADER

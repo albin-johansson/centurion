@@ -1,13 +1,17 @@
-#include "catch.hpp"
 #include "error.h"
-#include "log.h"
+
 #include <SDL.h>
+
+#include <catch.hpp>
 #include <string>
+
+#include "log.h"
 
 using namespace centurion;
 using namespace Catch;
 
-TEST_CASE("Error::descriptionf", "[Error]") {
+TEST_CASE("Error::descriptionf", "[Error]")
+{
   CHECK(Error::descriptionf());
 
   const auto* msg = "Test of Error::descriptionf";
@@ -15,7 +19,8 @@ TEST_CASE("Error::descriptionf", "[Error]") {
   CHECK_THAT(Error::descriptionf(), Equals(msg));
 }
 
-TEST_CASE("Error::description", "[Error]") {
+TEST_CASE("Error::description", "[Error]")
+{
   CHECK_NOTHROW(Error::description());
 
   const std::string msg{"Test of Error::description"};
@@ -24,7 +29,8 @@ TEST_CASE("Error::description", "[Error]") {
   CHECK_THAT(Error::description(), Equals(msg));
 }
 
-TEST_CASE("Error::msg", "[Error]") {
+TEST_CASE("Error::msg", "[Error]")
+{
   CHECK_NOTHROW(Error::msg());
 
   const std::string msg{"Test of Error::msg"};

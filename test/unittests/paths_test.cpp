@@ -1,50 +1,62 @@
-#include "catch.hpp"
 #include "paths.h"
 
-using namespace centurion;
+#include <catch.hpp>
 
-TEST_CASE("AppPath()", "[AppPath]") {
+using namespace centurion;
+using namespace system;
+
+TEST_CASE("AppPath()", "[AppPath]")
+{
   CHECK_NOTHROW(AppPath{});
 }
 
-TEST_CASE("AppPath::operator bool", "[AppPath]") {
+TEST_CASE("AppPath::operator bool", "[AppPath]")
+{
   const AppPath appPath;
   CHECK(appPath);
 }
 
-TEST_CASE("AppPath::unique", "[AppPath]") {
+TEST_CASE("AppPath::unique", "[AppPath]")
+{
   const auto appPath = AppPath::unique();
   CHECK(appPath);
 }
 
-TEST_CASE("AppPath::shared", "[AppPath]") {
+TEST_CASE("AppPath::shared", "[AppPath]")
+{
   const auto appPath = AppPath::shared();
   CHECK(appPath);
 }
 
-TEST_CASE("AppPath::get", "[AppPath]") {
+TEST_CASE("AppPath::get", "[AppPath]")
+{
   const AppPath appPath;
   CHECK(appPath.get());
 }
 
-TEST_CASE("PrefPath(string&, string&)", "[PrefPath]") {
+TEST_CASE("PrefPath(string&, string&)", "[PrefPath]")
+{
   CHECK_NOTHROW(PrefPath{"centurion", "tests"});
 }
 
-TEST_CASE("PrefPath::unique", "[PrefPath]") {
+TEST_CASE("PrefPath::unique", "[PrefPath]")
+{
   CHECK(PrefPath::unique("centurion", "tests"));
 }
 
-TEST_CASE("PrefPath::shared", "[PrefPath]") {
+TEST_CASE("PrefPath::shared", "[PrefPath]")
+{
   CHECK(PrefPath::shared("centurion", "tests"));
 }
 
-TEST_CASE("PrefPath::operator bool", "[PrefPath]") {
+TEST_CASE("PrefPath::operator bool", "[PrefPath]")
+{
   const PrefPath prefPath{"centurion", "tests"};
   CHECK(prefPath);
 }
 
-TEST_CASE("PrefPath::get", "[PrefPath]") {
+TEST_CASE("PrefPath::get", "[PrefPath]")
+{
   const PrefPath prefPath{"centurion", "tests"};
   CHECK(prefPath.get());
 }

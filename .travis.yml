@@ -53,8 +53,8 @@ before_script:
   - cmake --version
 
   # Install core SDL2
-  - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.10.tar.gz | tar xz
-  - cd SDL2-2.0.10
+  - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.12.tar.gz | tar xz
+  - cd SDL2-2.0.12
   - ./configure
   - make
   - sudo make install

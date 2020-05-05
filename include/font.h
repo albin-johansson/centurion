@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 Albin Johansson
+ * Copyright (c) 2019-2020 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,17 +22,28 @@
  * SOFTWARE.
  */
 
-#pragma once
-#include <string>
-#include <optional>
-#include <memory>
+#ifndef CENTURION_FONT
+#define CENTURION_FONT
+
 #include <SDL_ttf.h>
+
+#include <memory>
+#include <optional>
+#include <stdexcept>
+#include <string>
+#include <type_traits>
+
 #include "centurion_api.h"
+#include "centurion_exception.h"
+#include "centurion_utils.h"
+#include "error.h"
 
 namespace centurion {
+namespace video {
 
 /**
- * The FontHint enum class represents different possible TrueType font hint values.
+ * The FontHint enum class represents different possible TrueType font hint
+ * values.
  *
  * @since 3.1.0
  */
@@ -48,39 +59,44 @@ enum class FontHint {
  *
  * @since 3.0.0
  */
-class CENTURION_API Font final {
+class Font final {
  private:
   TTF_Font* font = nullptr;
   int style = 0;
   int size = 0;
 
   /**
-   * Enables the font style associated with the supplied bit mask. The possible values are
-   * TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and TTF_STYLE_STRIKETHROUGH.
+   * Enables the font style associated with the supplied bit mask. The possible
+   * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
+   * TTF_STYLE_STRIKETHROUGH.
    *
    * @param mask the bit mask of the font style to enable.
    * @since 3.0.0
    */
-  CENTURION_API void add_style(int mask) noexcept;
+  CENTURION_API
+  void add_style(int mask) noexcept;
 
   /**
-   * Removes the font style associated with the supplied bit mask. The possible values are
-   * TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and TTF_STYLE_STRIKETHROUGH.
+   * Removes the font style associated with the supplied bit mask. The possible
+   * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
+   * TTF_STYLE_STRIKETHROUGH.
    *
    * @param mask the bit mask of the font style to disable.
    * @since 3.0.0
    */
-  CENTURION_API void remove_style(int mask) noexcept;
+  CENTURION_API
+  void remove_style(int mask) noexcept;
 
  public:
   /**
    * @param file the file path of the TrueType font file.
    * @param size the font size, must be greater than zero.
-   * @throws std::invalid_argument if the supplied size isn't greater than zero.
-   * @throws CenturionException if the font cannot be loaded.
+   * @throws CenturionException if the font cannot be loaded or if the supplied
+   * size isn't greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API Font(const std::string& file, int size);
+  CENTURION_API
+  Font(const std::string& file, int size);
 
   /**
    * The copy constructor is deleted for font instances.
@@ -95,9 +111,11 @@ class CENTURION_API Font final {
    * @param other the font that will have its fields moved.
    * @since 3.0.0
    */
-  CENTURION_API Font(Font&& other) noexcept;
+  CENTURION_API
+  Font(Font&& other) noexcept;
 
-  CENTURION_API ~Font() noexcept;
+  CENTURION_API
+  ~Font() noexcept;
 
   /**
    * The copy assignment operator is deleted for font instances.
@@ -113,7 +131,8 @@ class CENTURION_API Font final {
    * @return the created font.
    * @since 3.0.0
    */
-  CENTURION_API Font& operator=(Font&& other) noexcept;
+  CENTURION_API
+  Font& operator=(Font&& other) noexcept;
 
   /**
    * Creates and returns a unique pointer to a font instance.
@@ -122,11 +141,13 @@ class CENTURION_API Font final {
    * @param size the font size, must be greater than zero.
    * @return a unique pointer to a font instance.
    * @throws std::invalid_argument if the supplied size isn't greater than zero.
-   * @throws CenturionException if the font cannot be loaded.
+   * @throws CenturionException if the font cannot be loaded or if the supplied
+   * size isn't greater than zero.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API static std::unique_ptr<Font> unique(const std::string& file, int size);
+  CENTURION_NODISCARD
+  CENTURION_API
+  static std::unique_ptr<Font> unique(const std::string& file, int size);
 
   /**
    * Creates and returns a shared pointer to a font instance.
@@ -135,18 +156,21 @@ class CENTURION_API Font final {
    * @param size the font size, must be greater than zero.
    * @return a shared pointer to a font instance.
    * @throws std::invalid_argument if the supplied size isn't greater than zero.
-   * @throws CenturionException if the font cannot be loaded.
+   * @throws CenturionException if the font cannot be loaded or if the supplied
+   * size isn't greater than zero.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API static std::shared_ptr<Font> shared(const std::string& file, int size);
+  CENTURION_NODISCARD
+  CENTURION_API
+  static std::shared_ptr<Font> shared(const std::string& file, int size);
 
   /**
    * Resets the style of the font.
    *
    * @since 3.0.0
    */
-  CENTURION_API void reset() noexcept;
+  CENTURION_API
+  void reset() noexcept;
 
   /**
    * Sets the bold property of the font.
@@ -154,7 +178,8 @@ class CENTURION_API Font final {
    * @param bold true if the font should be bold; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_bold(bool bold) noexcept;
+  CENTURION_API
+  void set_bold(bool bold) noexcept;
 
   /**
    * Sets the italic property of the font.
@@ -162,7 +187,8 @@ class CENTURION_API Font final {
    * @param italic true if the font should be italic; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_italic(bool italic) noexcept;
+  CENTURION_API
+  void set_italic(bool italic) noexcept;
 
   /**
    * Sets the underlined property of the font.
@@ -170,15 +196,18 @@ class CENTURION_API Font final {
    * @param underlined true if the font should be underlined; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_underlined(bool underlined) noexcept;
+  CENTURION_API
+  void set_underlined(bool underlined) noexcept;
 
   /**
    * Sets the strikethrough property of the font.
    *
-   * @param strikethrough true if the font should be strikethrough; false otherwise.
+   * @param strikethrough true if the font should be strikethrough; false
+   * otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_strikethrough(bool strikethrough) noexcept;
+  CENTURION_API
+  void set_strikethrough(bool strikethrough) noexcept;
 
   /**
    * Sets the outlined property of the font.
@@ -186,7 +215,8 @@ class CENTURION_API Font final {
    * @param outlined true if the font should be outlined; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_outlined(bool outlined) noexcept;
+  CENTURION_API
+  void set_outlined(bool outlined) noexcept;
 
   /**
    * Sets the TrueType font hinting.
@@ -194,7 +224,8 @@ class CENTURION_API Font final {
    * @param hint the font hinting that will be used.
    * @since 3.1.0
    */
-  CENTURION_API void set_font_hinting(FontHint hint) noexcept;
+  CENTURION_API
+  void set_font_hinting(FontHint hint) noexcept;
 
   /**
    * Returns the size of the font.
@@ -202,48 +233,53 @@ class CENTURION_API Font final {
    * @return the size of the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API int get_size() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  int get_size() const noexcept;
 
   /**
-   * Returns the maximum height of a character in this font. This is usually the same as the
-   * point size.
+   * Returns the maximum height of a character in this font. This is usually the
+   * same as the point size.
    *
    * @return the maximum height of a character in this font.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API int get_height() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  int get_height() const noexcept;
 
   /**
-   * Returns the offset from the baseline to the bottom of the font characters. The returned
-   * value is negative, relative to the baseline.
+   * Returns the offset from the baseline to the bottom of the font characters.
+   * The returned value is negative, relative to the baseline.
    *
    * @return the offset from the baseline to the bottom of the font characters.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API int get_descent() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  int get_descent() const noexcept;
 
   /**
-   * Returns the offset from the baseline to the top of the font characters. The returned
-   * value is positive, relative to the baseline.
+   * Returns the offset from the baseline to the top of the font characters. The
+   * returned value is positive, relative to the baseline.
    *
    * @return the offset from the baseline to the top of the font characters.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API int get_ascent() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  int get_ascent() const noexcept;
 
   /**
-   * Returns the recommended pixel height of rendered text in the font. The returned
-   * value is usually larger than the height of the font.
+   * Returns the recommended pixel height of rendered text in the font. The
+   * returned value is usually larger than the height of the font.
    *
    * @return Returns the recommended pixel height of rendered text in the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API int get_line_skip() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  int get_line_skip() const noexcept;
 
   /**
    * Returns the number of available font faces in the font.
@@ -251,17 +287,20 @@ class CENTURION_API Font final {
    * @return the number of available font faces in the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API int get_font_faces() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  int get_font_faces() const noexcept;
 
   /**
-   * Returns the TrueType font hinting of the font. Set to FontHint::Normal by default.
+   * Returns the TrueType font hinting of the font. Set to FontHint::Normal by
+   * default.
    *
    * @return the TrueType font hinting of the font.
    * @since 3.1.0
    */
-  [[nodiscard]]
-  CENTURION_API FontHint get_font_hinting() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  FontHint get_font_hinting() const noexcept;
 
   /**
    * Indicates whether or not the font is bold.
@@ -269,8 +308,9 @@ class CENTURION_API Font final {
    * @return true if the font is bold; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API bool is_bold() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  bool is_bold() const noexcept;
 
   /**
    * Indicates whether or not the font is italic.
@@ -278,8 +318,9 @@ class CENTURION_API Font final {
    * @return true if the font is italic; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API bool is_italic() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  bool is_italic() const noexcept;
 
   /**
    * Indicates whether or not the font is underlined.
@@ -287,8 +328,9 @@ class CENTURION_API Font final {
    * @return true if the font is underlined; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API bool is_underlined() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  bool is_underlined() const noexcept;
 
   /**
    * Indicates whether or not the font is a strikethrough font.
@@ -296,8 +338,9 @@ class CENTURION_API Font final {
    * @return true if the font is a strikethrough font; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API bool is_strikethrough() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  bool is_strikethrough() const noexcept;
 
   /**
    * Indicates whether or not the font is outlined.
@@ -305,8 +348,9 @@ class CENTURION_API Font final {
    * @return true if the font is outlined; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API bool is_outlined() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  bool is_outlined() const noexcept;
 
   /**
    * Indicates whether or not the font is fixed width.
@@ -314,8 +358,9 @@ class CENTURION_API Font final {
    * @return true if the font is fixed width; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API bool is_fixed_width() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  bool is_fixed_width() const noexcept;
 
   /**
    * Returns the family name of the font.
@@ -323,37 +368,47 @@ class CENTURION_API Font final {
    * @return the family name of the font.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API std::string get_family_name() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  std::string get_family_name() const noexcept;
 
   /**
-   * Returns the font face style name of the font. This information may not be available.
+   * Returns the font face style name of the font. This information may not be
+   * available.
    *
-   * @return the font face style name of the font.
+   * @return the font face style name of the font; nullopt if there is none
+   * available.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API std::optional<std::string> get_style_name() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<std::string> get_style_name() const noexcept;
 
   /**
-   * Returns the width of the supplied string, if it was rendered using the font.
+   * Returns the width of the supplied string, if it was rendered using the
+   * font.
    *
    * @param s the string to determine the width of.
-   * @return the width of the supplied string, if it was rendered using the font.
+   * @return the width of the supplied string, if it was rendered using the
+   * font.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API int get_string_width(const std::string& s) const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  int get_string_width(const std::string& s) const noexcept;
 
   /**
-   * Returns the height of the supplied string, if it was rendered using the font.
+   * Returns the height of the supplied string, if it was rendered using the
+   * font.
    *
    * @param s the string to determine the height of.
-   * @return the height of the supplied string, if it was rendered using the font.
+   * @return the height of the supplied string, if it was rendered using the
+   * font.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API int get_string_height(const std::string& s) const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  int get_string_height(const std::string& s) const noexcept;
 
   /**
    * Returns a textual representation of the font instance.
@@ -361,8 +416,9 @@ class CENTURION_API Font final {
    * @return a textual representation of the font instance.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API std::string to_string() const;
+  CENTURION_NODISCARD
+  CENTURION_API
+  std::string to_string() const;
 
   /**
    * Converts to TTF_Font*.
@@ -370,7 +426,35 @@ class CENTURION_API Font final {
    * @return a pointer to the internal TTF_Font instance.
    * @since 3.0.0
    */
-  CENTURION_API /*implicit*/ operator TTF_Font*() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  operator TTF_Font*() const noexcept;
 };
 
-}
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<Font>::value, "Font isn't final!");
+#endif
+
+static_assert(std::is_nothrow_move_constructible<Font>::value,
+              "Font isn't nothrow move constructible!");
+
+static_assert(std::is_nothrow_move_assignable<Font>::value,
+              "Font isn't nothrow move assignable!");
+
+static_assert(!std::is_copy_constructible<Font>::value,
+              "Font is copy constructible!");
+
+static_assert(!std::is_copy_assignable<Font>::value,
+              "Font is copy assignable!");
+
+static_assert(std::is_convertible<Font, TTF_Font*>::value,
+              "Font isn't convertible to TTF_Font*!");
+
+}  // namespace video
+}  // namespace centurion
+
+#ifdef CENTURION_HEADER_ONLY
+#include "font.cpp"
+#endif
+
+#endif  // CENTURION_FONT

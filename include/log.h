@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 Albin Johansson
+ * Copyright (c) 2019-2020 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -22,8 +22,14 @@
  * SOFTWARE.
  */
 
-#pragma once
+#ifndef CENTURION_LOG_HEADER
+#define CENTURION_LOG_HEADER
+
 #include <SDL_log.h>
+
+#include <cstdarg>
+#include <type_traits>
+
 #include "centurion_api.h"
 
 namespace centurion {
@@ -50,10 +56,8 @@ enum class Priority {
  * @return true if the priorities are the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
-inline bool operator==(Priority a, SDL_LogPriority b) noexcept {
-  return static_cast<SDL_LogPriority>(a) == b;
-}
+CENTURION_NODISCARD
+CENTURION_API bool operator==(Priority a, SDL_LogPriority b) noexcept;
 
 /**
  * Indicates whether or not the two log priorities represent the same priority.
@@ -63,10 +67,8 @@ inline bool operator==(Priority a, SDL_LogPriority b) noexcept {
  * @return true if the priorities are the same; false otherwise.
  * @since 3.0.0
  */
-[[nodiscard]]
-inline bool operator==(SDL_LogPriority a, Priority b) noexcept {
-  return a == static_cast<SDL_LogPriority>(b);
-}
+CENTURION_NODISCARD
+CENTURION_API bool operator==(SDL_LogPriority a, Priority b) noexcept;
 
 /**
  * The Category enum provides values the mirror those of SDL_LOG_CATEGORY_x.
@@ -91,7 +93,7 @@ enum class Category {
  *
  * @since 3.0.0
  */
-class CENTURION_API Log final {
+class Log final {
  public:
   Log() = delete;
 
@@ -108,7 +110,8 @@ class CENTURION_API Log final {
    *
    * @since 3.0.0
    */
-  CENTURION_API static void reset_priorites() noexcept;
+  CENTURION_API
+  static void reset_priorites() noexcept;
 
   /**
    * Logs a message.
@@ -119,7 +122,11 @@ class CENTURION_API Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API static void msgf(Category category, Priority prio, const char* fmt, ...) noexcept;
+  CENTURION_API
+  static void msgf(Category category,
+                   Priority prio,
+                   const char* fmt,
+                   ...) noexcept;
 
   /**
    * Logs a message.
@@ -129,7 +136,8 @@ class CENTURION_API Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API static void msgf(Category category, const char* fmt, ...) noexcept;
+  CENTURION_API
+  static void msgf(Category category, const char* fmt, ...) noexcept;
 
   /**
    * Logs a message with the App category and Info priority.
@@ -138,7 +146,8 @@ class CENTURION_API Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API static void msgf(const char* fmt, ...) noexcept;
+  CENTURION_API
+  static void msgf(const char* fmt, ...) noexcept;
 
   /**
    * Sets the priority of all categories.
@@ -146,7 +155,8 @@ class CENTURION_API Log final {
    * @param prio the priority that will be used.
    * @since 3.0.0
    */
-  CENTURION_API static void set_priority(Priority prio) noexcept;
+  CENTURION_API
+  static void set_priority(Priority prio) noexcept;
 
   /**
    * Sets the priority of the specified category.
@@ -155,7 +165,8 @@ class CENTURION_API Log final {
    * @param prio the new priority value.
    * @since 3.0.0
    */
-  CENTURION_API static void set_priority(Category category, Priority prio) noexcept;
+  CENTURION_API
+  static void set_priority(Category category, Priority prio) noexcept;
 
   /**
    * Returns the priority of the specified category.
@@ -164,8 +175,31 @@ class CENTURION_API Log final {
    * @return the priority of the specified category.
    * @since 3.0.0
    */
-  [[nodiscard]]
-  CENTURION_API static Priority get_priority(Category category) noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API
+  static Priority get_priority(Category category) noexcept;
 };
 
-}
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+static_assert(std::is_final<Log>::value, "Log isn't final!");
+#endif
+
+static_assert(!std::is_constructible<Log>::value, "Log is constructible!");
+
+static_assert(!std::is_copy_constructible<Log>::value,
+              "Log is copy constructible!");
+
+static_assert(!std::is_move_constructible<Log>::value,
+              "Log is move constructible!");
+
+static_assert(!std::is_copy_assignable<Log>::value, "Log is copy assignable!");
+
+static_assert(!std::is_move_assignable<Log>::value, "Log is move assignable!");
+
+}  // namespace centurion
+
+#ifdef CENTURION_HEADER_ONLY
+#include "log.cpp"
+#endif
+
+#endif  // CENTURION_LOG_HEADER

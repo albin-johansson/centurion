@@ -1,29 +1,36 @@
+#ifndef CENTURION_LOG_SOURCE
+#define CENTURION_LOG_SOURCE
+
 #include "log.h"
-#include <cstdarg>
-#include <type_traits>
 
 namespace centurion {
 
-static_assert(std::is_final_v<Log>);
-static_assert(!std::is_constructible_v<Log>);
-static_assert(!std::is_copy_constructible_v<Log>);
-static_assert(!std::is_move_constructible_v<Log>);
-static_assert(!std::is_copy_assignable_v<Log>);
-static_assert(!std::is_move_assignable_v<Log>);
-
-void Log::reset_priorites() noexcept {
+CENTURION_DEF
+void Log::reset_priorites() noexcept
+{
   SDL_LogResetPriorities();
 }
 
-void Log::msgf(Category category, Priority prio, const char* fmt, ...) noexcept {
-  if (!fmt) { return; }
+CENTURION_DEF
+void Log::msgf(Category category, Priority prio, const char* fmt, ...) noexcept
+{
+  if (!fmt) {
+    return;
+  }
   std::va_list args;
   va_start(args, fmt);
-  SDL_LogMessageV(static_cast<int>(category), static_cast<SDL_LogPriority>(prio), fmt, args);
+  SDL_LogMessageV(static_cast<int>(category),
+                  static_cast<SDL_LogPriority>(prio),
+                  fmt,
+                  args);
 }
 
-void Log::msgf(Category category, const char* fmt, ...) noexcept {
-  if (!fmt) { return; }
+CENTURION_DEF
+void Log::msgf(Category category, const char* fmt, ...) noexcept
+{
+  if (!fmt) {
+    return;
+  }
   std::va_list args;
   va_start(args, fmt);
 
@@ -33,8 +40,12 @@ void Log::msgf(Category category, const char* fmt, ...) noexcept {
   SDL_LogMessageV(category_id, prio, fmt, args);
 }
 
-void Log::msgf(const char* fmt, ...) noexcept {
-  if (!fmt) { return; }
+CENTURION_DEF
+void Log::msgf(const char* fmt, ...) noexcept
+{
+  if (!fmt) {
+    return;
+  }
   std::va_list args;
   va_start(args, fmt);
 
@@ -44,18 +55,39 @@ void Log::msgf(const char* fmt, ...) noexcept {
                   args);
 }
 
-void Log::set_priority(Category category, Priority prio) noexcept {
-  SDL_LogSetPriority(static_cast<int>(category), static_cast<SDL_LogPriority>(prio));
+CENTURION_DEF
+void Log::set_priority(Category category, Priority prio) noexcept
+{
+  SDL_LogSetPriority(static_cast<int>(category),
+                     static_cast<SDL_LogPriority>(prio));
 }
 
-void Log::set_priority(Priority prio) noexcept {
+CENTURION_DEF
+void Log::set_priority(Priority prio) noexcept
+{
   const auto p = static_cast<SDL_LogPriority>(prio);
   SDL_LogSetAllPriority(p);
-  SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p); // Apparently not set by SDL
+  SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p);  // Apparently not set by SDL
 }
 
-Priority Log::get_priority(Category category) noexcept {
+CENTURION_DEF
+Priority Log::get_priority(Category category) noexcept
+{
   return static_cast<Priority>(SDL_LogGetPriority(static_cast<int>(category)));
 }
 
+CENTURION_DEF
+bool operator==(Priority a, SDL_LogPriority b) noexcept
+{
+  return static_cast<SDL_LogPriority>(a) == b;
 }
+
+CENTURION_DEF
+bool operator==(SDL_LogPriority a, Priority b) noexcept
+{
+  return a == static_cast<SDL_LogPriority>(b);
+}
+
+}  // namespace centurion
+
+#endif  // CENTURION_LOG_SOURCE

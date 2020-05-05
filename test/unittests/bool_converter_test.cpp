@@ -1,9 +1,14 @@
-#include "catch.hpp"
-#include "bool_converter.h"
+#include <SDL.h>
+#include <centurion.h>
+
+#include <catch.hpp>
+
+#include "centurion_utils.h"
 
 using namespace centurion;
 
-TEST_CASE("BoolConverter::convert", "[BoolConverter]") {
-  CHECK(BoolConverter::convert(true) == SDL_TRUE);
-  CHECK(BoolConverter::convert(false) == SDL_FALSE);
+TEST_CASE("Convert C++ bool to SDL bool", "[utilities]")
+{
+  CHECK(convert_bool(true) == SDL_TRUE);
+  CHECK(convert_bool(false) == SDL_FALSE);
 }

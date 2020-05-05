@@ -40,8 +40,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/event.h
         ${CTN_INCLUDE_DIR}/event_type.h
         ${CTN_INCLUDE_DIR}/mouse_button.h
-
-
         ${CTN_INCLUDE_DIR}/event.h
         ${CTN_INCLUDE_DIR}/keyboard_event.h
         ${CTN_INCLUDE_DIR}/common_event.h
@@ -66,6 +64,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/mouse_wheel_event.h
         ${CTN_INCLUDE_DIR}/multi_gesture_event.h
         ${CTN_INCLUDE_DIR}/text_editing_event.h
+        ${CTN_INCLUDE_DIR}/text_input_event.h
 
         window.cpp
         font.cpp
@@ -92,7 +91,6 @@ set(SOURCE_FILES
         battery.cpp
         screen.cpp
         key.cpp
-
         event.cpp
         event_type.cpp
         quit_event.cpp
@@ -115,7 +113,8 @@ set(SOURCE_FILES
         mouse_button_event.cpp
         mouse_wheel_event.cpp
         multi_gesture_event.cpp
-        text_editing_event.cpp)
+        text_editing_event.cpp
+        text_input_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

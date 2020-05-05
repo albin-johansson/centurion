@@ -546,11 +546,8 @@ void Renderer::render_text_f(const char* text,
 CENTURION_DEF
 void Renderer::set_color(const Color& color) const noexcept
 {
-  SDL_SetRenderDrawColor(renderer,
-                         color.red(),
-                         color.green(),
-                         color.blue(),
-                         color.alpha());
+  SDL_SetRenderDrawColor(
+      renderer, color.red(), color.green(), color.blue(), color.alpha());
 }
 
 CENTURION_DEF

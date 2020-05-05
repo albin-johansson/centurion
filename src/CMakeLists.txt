@@ -28,7 +28,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/mouse_state.h
         ${CTN_INCLUDE_DIR}/centurion_utils.h
         ${CTN_INCLUDE_DIR}/error.h
-        ${CTN_INCLUDE_DIR}/event.h
         ${CTN_INCLUDE_DIR}/surface.h
         ${CTN_INCLUDE_DIR}/pixel_format.h
         ${CTN_INCLUDE_DIR}/cursor.h
@@ -36,6 +35,36 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/ram.h
         ${CTN_INCLUDE_DIR}/battery.h
         ${CTN_INCLUDE_DIR}/screen.h
+        ${CTN_INCLUDE_DIR}/key.h
+        ${CTN_INCLUDE_DIR}/touch.h
+        ${CTN_INCLUDE_DIR}/event.h
+        ${CTN_INCLUDE_DIR}/event_type.h
+        ${CTN_INCLUDE_DIR}/mouse_button.h
+        ${CTN_INCLUDE_DIR}/event.h
+        ${CTN_INCLUDE_DIR}/keyboard_event.h
+        ${CTN_INCLUDE_DIR}/common_event.h
+        ${CTN_INCLUDE_DIR}/quit_event.h
+        ${CTN_INCLUDE_DIR}/button_state.h
+        ${CTN_INCLUDE_DIR}/window_event.h
+        ${CTN_INCLUDE_DIR}/audio_device_event.h
+        ${CTN_INCLUDE_DIR}/controller_axis_event.h
+        ${CTN_INCLUDE_DIR}/controller_button_event.h
+        ${CTN_INCLUDE_DIR}/game_controller.h
+        ${CTN_INCLUDE_DIR}/controller_device_event.h
+        ${CTN_INCLUDE_DIR}/dollar_gesture_event.h
+        ${CTN_INCLUDE_DIR}/drop_event.h
+        ${CTN_INCLUDE_DIR}/touch_finger_event.h
+        ${CTN_INCLUDE_DIR}/joy_axis_event.h
+        ${CTN_INCLUDE_DIR}/joy_ball_event.h
+        ${CTN_INCLUDE_DIR}/joy_hat_event.h
+        ${CTN_INCLUDE_DIR}/joy_button_event.h
+        ${CTN_INCLUDE_DIR}/joy_device_event.h
+        ${CTN_INCLUDE_DIR}/mouse_motion_event.h
+        ${CTN_INCLUDE_DIR}/mouse_button_event.h
+        ${CTN_INCLUDE_DIR}/mouse_wheel_event.h
+        ${CTN_INCLUDE_DIR}/multi_gesture_event.h
+        ${CTN_INCLUDE_DIR}/text_editing_event.h
+        ${CTN_INCLUDE_DIR}/text_input_event.h
 
         window.cpp
         font.cpp
@@ -54,14 +83,38 @@ set(SOURCE_FILES
         key_state.cpp
         mouse_state.cpp
         error.cpp
-        event.cpp
         surface.cpp
         cursor.cpp
         pixel_format.cpp
         cpu.cpp
         ram.cpp
         battery.cpp
-        screen.cpp)
+        screen.cpp
+        key.cpp
+        event.cpp
+        event_type.cpp
+        quit_event.cpp
+        window_event.cpp
+        keyboard_event.cpp
+        audio_device_event.cpp
+        controller_axis_event.cpp
+        controller_button_event.cpp
+        game_controller.cpp
+        controller_device_event.cpp
+        dollar_gesture_event.cpp
+        drop_event.cpp
+        touch_finger_event.cpp
+        joy_axis_event.cpp
+        joy_ball_event.cpp
+        joy_hat_event.cpp
+        joy_button_event.cpp
+        joy_device_event.cpp
+        mouse_motion_event.cpp
+        mouse_button_event.cpp
+        mouse_wheel_event.cpp
+        multi_gesture_event.cpp
+        text_editing_event.cpp
+        text_input_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES
@@ -115,9 +168,9 @@ target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_IMAGE_IN
 target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 
+target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${CTN_LIBRARY_DIR})
 target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_INCLUDE_DIR})
 target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_SOURCE_DIR})
-target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${CTN_LIBRARY_DIR})
 
 target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_LIBRARY}

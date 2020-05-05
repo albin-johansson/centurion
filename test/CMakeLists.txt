@@ -20,13 +20,6 @@ set(TEST_FILES
         unittests/rectangle_test.cpp
         unittests/centurion_exception_test.cpp
         unittests/error_test.cpp
-        unittests/event_test.cpp
-        unittests/key_event_test.cpp
-        unittests/mouse_motion_event_test.cpp
-        unittests/mouse_button_event_test.cpp
-        unittests/mouse_wheel_event_test.cpp
-        unittests/quit_event_test.cpp
-        unittests/quit_event_test.cpp
         unittests/timer_test.cpp
         unittests/paths_test.cpp
         unittests/platform_test.cpp
@@ -36,7 +29,33 @@ set(TEST_FILES
         unittests/audio_test.cpp
         unittests/surface_test.cpp
         unittests/pixel_format_test.cpp
-        unittests/cursor_test.cpp)
+        unittests/cursor_test.cpp
+        unittests/key_test.cpp
+        unittests/window_event_test.cpp
+        unittests/keyboard_event_test.cpp
+        unittests/common_event_test.cpp
+        unittests/audio_device_event_test.cpp
+        unittests/controller_axis_event_test.cpp
+        unittests/controller_button_event_test.cpp
+        unittests/game_controller_button_test.cpp
+        unittests/game_controller_axis_test.cpp
+        unittests/controller_device_event_test.cpp
+        unittests/dollar_gesture_event_test.cpp
+        unittests/drop_event_test.cpp
+        unittests/touch_finger_event_test.cpp
+        unittests/joy_axis_event_test.cpp
+        unittests/joy_ball_event_test.cpp
+        unittests/joy_hat_event_test.cpp
+        unittests/joy_button_event_test.cpp
+        unittests/event_test.cpp
+        unittests/joy_device_event_test.cpp
+        unittests/mouse_button_test.cpp
+        unittests/mouse_motion_event_test.cpp
+        unittests/mouse_button_event_test.cpp
+        unittests/mouse_wheel_event_test.cpp
+        unittests/multi_gesture_event_test.cpp
+        unittests/text_editing_event_test.cpp
+        unittests/text_input_event_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

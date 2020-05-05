@@ -40,7 +40,8 @@ class Window;
  *
  * @since 3.0.0
  */
-class IWindowListener {
+class [[deprecated]] IWindowListener
+{
  public:
   virtual ~IWindowListener() = default;
 

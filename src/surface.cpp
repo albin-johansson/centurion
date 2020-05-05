@@ -103,8 +103,7 @@ void Surface::set_alpha(uint8_t alpha) noexcept
 CENTURION_DEF
 void Surface::set_color_mod(const Color& color) noexcept
 {
-  SDL_SetSurfaceColorMod(
-      surface, color.red(), color.green(), color.blue());
+  SDL_SetSurfaceColorMod(surface, color.red(), color.green(), color.blue());
 }
 
 CENTURION_DEF

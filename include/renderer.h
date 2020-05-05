@@ -805,6 +805,9 @@ class Renderer final {
   CENTURION_API
   int get_logical_height() const noexcept;
 
+  /* The only way of discovering the limits of the possible is to venture a
+     little way past them into the impossible. */
+
   /**
    * Returns the x-axis scale that the renderer uses.
    *

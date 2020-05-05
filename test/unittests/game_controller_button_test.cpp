@@ -1,0 +1,55 @@
+#include <catch.hpp>
+
+#include "game_controller.h"
+
+using namespace centurion;
+
+TEST_CASE("GameControllerButton operator==", "[ControllerButtonEvent]")
+{
+  using Button = GameControllerButton;
+  CHECK(Button::Invalid == SDL_CONTROLLER_BUTTON_INVALID);
+  CHECK(Button::A == SDL_CONTROLLER_BUTTON_A);
+  CHECK(Button::B == SDL_CONTROLLER_BUTTON_B);
+  CHECK(Button::X == SDL_CONTROLLER_BUTTON_X);
+  CHECK(Button::Y == SDL_CONTROLLER_BUTTON_Y);
+  CHECK(Button::Back == SDL_CONTROLLER_BUTTON_BACK);
+  CHECK(Button::Guide == SDL_CONTROLLER_BUTTON_GUIDE);
+  CHECK(Button::Start == SDL_CONTROLLER_BUTTON_START);
+  CHECK(Button::LeftStick == SDL_CONTROLLER_BUTTON_LEFTSTICK);
+  CHECK(Button::RightStick == SDL_CONTROLLER_BUTTON_RIGHTSTICK);
+  CHECK(Button::LeftShoulder == SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+  CHECK(Button::RightShoulder == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+  CHECK(Button::DpadUp == SDL_CONTROLLER_BUTTON_DPAD_UP);
+  CHECK(Button::DpadDown == SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+  CHECK(Button::DpadLeft == SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+  CHECK(Button::DpadRight == SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+  CHECK(Button::Max == SDL_CONTROLLER_BUTTON_MAX);
+
+  CHECK(SDL_CONTROLLER_BUTTON_INVALID == Button::Invalid);
+  CHECK(SDL_CONTROLLER_BUTTON_A == Button::A);
+  CHECK(SDL_CONTROLLER_BUTTON_B == Button::B);
+  CHECK(SDL_CONTROLLER_BUTTON_X == Button::X);
+  CHECK(SDL_CONTROLLER_BUTTON_Y == Button::Y);
+  CHECK(SDL_CONTROLLER_BUTTON_BACK == Button::Back);
+  CHECK(SDL_CONTROLLER_BUTTON_GUIDE == Button::Guide);
+  CHECK(SDL_CONTROLLER_BUTTON_START == Button::Start);
+  CHECK(SDL_CONTROLLER_BUTTON_LEFTSTICK == Button::LeftStick);
+  CHECK(SDL_CONTROLLER_BUTTON_RIGHTSTICK == Button::RightStick);
+  CHECK(SDL_CONTROLLER_BUTTON_LEFTSHOULDER == Button::LeftShoulder);
+  CHECK(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER == Button::RightShoulder);
+  CHECK(SDL_CONTROLLER_BUTTON_DPAD_UP == Button::DpadUp);
+  CHECK(SDL_CONTROLLER_BUTTON_DPAD_DOWN == Button::DpadDown);
+  CHECK(SDL_CONTROLLER_BUTTON_DPAD_LEFT == Button::DpadLeft);
+  CHECK(SDL_CONTROLLER_BUTTON_DPAD_RIGHT == Button::DpadRight);
+  CHECK(SDL_CONTROLLER_BUTTON_MAX == Button::Max);
+}
+
+TEST_CASE("GameControllerButton operator!=", "[ControllerButtonEvent]")
+{
+  using Button = GameControllerButton;
+
+  CHECK(Button::DpadRight != SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+  CHECK(SDL_CONTROLLER_BUTTON_X != Button::A);
+
+  CHECK(!(SDL_CONTROLLER_BUTTON_INVALID != Button::Invalid));
+}

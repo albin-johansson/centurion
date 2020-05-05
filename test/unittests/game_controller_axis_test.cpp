@@ -1,0 +1,37 @@
+#include <catch.hpp>
+
+#include "game_controller.h"
+
+using namespace centurion;
+
+TEST_CASE("GameControllerAxis operator==", "[GameControllerAxis]")
+{
+  using GCA = GameControllerAxis;
+
+  CHECK(SDL_CONTROLLER_AXIS_INVALID == GCA::Invalid);
+  CHECK(SDL_CONTROLLER_AXIS_LEFTX == GCA::LeftX);
+  CHECK(SDL_CONTROLLER_AXIS_LEFTY == GCA::LeftY);
+  CHECK(SDL_CONTROLLER_AXIS_RIGHTX == GCA::RightX);
+  CHECK(SDL_CONTROLLER_AXIS_RIGHTY == GCA::RightY);
+  CHECK(SDL_CONTROLLER_AXIS_TRIGGERLEFT == GCA::TriggerLeft);
+  CHECK(SDL_CONTROLLER_AXIS_TRIGGERRIGHT == GCA::TriggerRight);
+  CHECK(SDL_CONTROLLER_AXIS_MAX == GCA::Max);
+
+  CHECK(GCA::Invalid == SDL_CONTROLLER_AXIS_INVALID);
+  CHECK(GCA::LeftX == SDL_CONTROLLER_AXIS_LEFTX);
+  CHECK(GCA::LeftY == SDL_CONTROLLER_AXIS_LEFTY);
+  CHECK(GCA::RightX == SDL_CONTROLLER_AXIS_RIGHTX);
+  CHECK(GCA::RightY == SDL_CONTROLLER_AXIS_RIGHTY);
+  CHECK(GCA::TriggerLeft == SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+  CHECK(GCA::TriggerRight == SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+  CHECK(GCA::Max == SDL_CONTROLLER_AXIS_MAX);
+}
+
+TEST_CASE("GameControllerAxis operator!=", "[GameControllerAxis]")
+{
+  CHECK(SDL_CONTROLLER_AXIS_INVALID != GameControllerAxis::RightX);
+  CHECK(GameControllerAxis::Max != SDL_CONTROLLER_AXIS_LEFTX);
+
+  CHECK(
+      !(SDL_CONTROLLER_AXIS_TRIGGERRIGHT != GameControllerAxis::TriggerRight));
+}

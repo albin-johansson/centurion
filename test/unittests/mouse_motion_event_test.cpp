@@ -1,128 +1,157 @@
-#include <catch.hpp>
+#include "mouse_motion_event.h"
 
-#include "event.h"
-#include "window.h"
+#include <catch.hpp>
 
 using namespace centurion;
 using namespace centurion::event;
-using namespace centurion::video;
 
-TEST_CASE("MouseMotionEvent::get_x", "[MouseMotionEvent]")
+TEST_CASE("MouseMotionEvent::set_window_id", "[MouseMotionEvent]")
 {
-  const auto x = 451;
-  const auto event = []() noexcept {
-    SDL_MouseMotionEvent sdlEvent{};
-    sdlEvent.x = x;
-    return MouseMotionEvent{sdlEvent};
-  }();
+  MouseMotionEvent event;
 
-  CHECK(event.get_x() == x);
+  const auto id = 8;
+  event.set_window_id(id);
+
+  CHECK(event.window_id() == id);
 }
 
-TEST_CASE("MouseMotionEvent::get_y", "[MouseMotionEvent]")
+TEST_CASE("MouseMotionEvent::set_which", "[MouseMotionEvent]")
 {
-  const auto y = 814;
-  const auto event = []() noexcept {
-    SDL_MouseMotionEvent sdlEvent{};
-    sdlEvent.y = y;
-    return MouseMotionEvent{sdlEvent};
-  }();
+  MouseMotionEvent event;
 
-  CHECK(event.get_y() == y);
+  const auto which = 65;
+  event.set_which(which);
+
+  CHECK(event.which() == which);
 }
 
-TEST_CASE("MouseMotionEvent::get_x_movement", "[MouseMotionEvent]")
+TEST_CASE("MouseMotionEvent::set_state", "[MouseMotionEvent]")
 {
-  const auto dx = -52;
-  const auto event = []() noexcept {
-    SDL_MouseMotionEvent sdlEvent{};
-    sdlEvent.xrel = dx;
-    return MouseMotionEvent{sdlEvent};
-  }();
+  MouseMotionEvent event;
 
-  CHECK(event.get_x_movement() == dx);
+  const auto state = SDL_BUTTON_LMASK | SDL_BUTTON_RMASK;
+  event.set_state(state);
+
+  CHECK(event.state() == state);
 }
 
-TEST_CASE("MouseMotionEvent::get_y_movement", "[MouseMotionEvent]")
+TEST_CASE("MouseMotionEvent::set_x", "[MouseMotionEvent]")
 {
-  const auto dy = 72;
-  const auto event = []() noexcept {
-    SDL_MouseMotionEvent sdlEvent{};
-    sdlEvent.yrel = dy;
-    return MouseMotionEvent{sdlEvent};
-  }();
+  MouseMotionEvent event;
 
-  CHECK(event.get_y_movement() == dy);
+  const auto x = 745;
+  event.set_x(x);
+
+  CHECK(event.x() == x);
 }
 
-TEST_CASE("MouseMotionEvent::was_touch", "[MouseMotionEvent]")
+TEST_CASE("MouseMotionEvent::set_y", "[MouseMotionEvent]")
 {
-  SECTION("Caused by touch")
-  {
-    const auto event = []() noexcept {
-      SDL_MouseMotionEvent sdlEvent{};
-      sdlEvent.which = SDL_TOUCH_MOUSEID;
-      return MouseMotionEvent{sdlEvent};
-    }();
-    CHECK(event.was_touch());
-  }
-  SECTION("No touch")
-  {
-    const auto event = []() noexcept {
-      SDL_MouseMotionEvent sdlEvent{};
-      sdlEvent.which = 0;
-      return MouseMotionEvent{sdlEvent};
-    }();
-    CHECK(!event.was_touch());
-  }
+  MouseMotionEvent event;
+
+  const auto y = 123;
+  event.set_y(y);
+
+  CHECK(event.y() == y);
 }
 
-TEST_CASE("MouseMotionEvent::is_button_down", "[MouseMotionEvent]")
+TEST_CASE("MouseMotionEvent::set_dx", "[MouseMotionEvent]")
 {
-  SECTION("Single button")
-  {
-    const auto button = SDL_BUTTON_LEFT;
-    const auto event = [button]() noexcept {
-      SDL_MouseMotionEvent sdlEvent{};
-      sdlEvent.state = button;
-      return MouseMotionEvent{sdlEvent};
-    }();
-    CHECK(event.is_button_down(static_cast<MouseButton>(button)));
-  }
+  MouseMotionEvent event;
 
-  SECTION("Multiple buttons")
-  {
-    const auto firstButton = SDL_BUTTON_LEFT;
-    const auto secondButton = SDL_BUTTON_MIDDLE;
-    const auto event = [firstButton, secondButton]() noexcept {
-      SDL_MouseMotionEvent sdlEvent{};
-      sdlEvent.state = firstButton | secondButton;
-      return MouseMotionEvent{sdlEvent};
-    }();
-    CHECK(event.is_button_down(static_cast<MouseButton>(firstButton)));
-    CHECK(event.is_button_down(static_cast<MouseButton>(secondButton)));
-  }
+  const auto dx = -456;
+  event.set_dx(dx);
+
+  CHECK(event.dx() == dx);
 }
 
-TEST_CASE("MouseMotionEvent::get_window_id", "[MouseMotionEvent]")
+TEST_CASE("MouseMotionEvent::set_dy", "[MouseMotionEvent]")
 {
-  Window window;
-  const auto windowID = window.get_id();
-  const auto event = [windowID]() noexcept {
-    SDL_MouseMotionEvent sdlEvent{};
-    sdlEvent.windowID = windowID;
-    return MouseMotionEvent{sdlEvent};
-  }();
-  CHECK(windowID == event.get_window_id());
+  MouseMotionEvent event;
+
+  const auto dy = 835;
+  event.set_dy(dy);
+
+  CHECK(event.dy() == dy);
 }
 
-TEST_CASE("MouseMotionEvent::get_time", "[MouseMotionEvent]")
+TEST_CASE("MouseMotionEvent::pressed", "[MouseMotionEvent]")
 {
-  const auto time = SDL_GetTicks();
-  const auto event = [time]() noexcept {
-    SDL_MouseMotionEvent sdlEvent{};
-    sdlEvent.timestamp = time;
-    return MouseMotionEvent{sdlEvent};
-  }();
-  CHECK(time == event.get_time());
+  MouseMotionEvent event;
+  event.set_state(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
+
+  CHECK(event.pressed(MouseButton::Left));
+  CHECK(event.pressed(MouseButton::Middle));
+
+  CHECK(!event.pressed(MouseButton::Right));
+  CHECK(!event.pressed(MouseButton::X1));
+  CHECK(!event.pressed(MouseButton::X2));
+}
+
+TEST_CASE("MouseMotionEvent::window_id", "[MouseMotionEvent]")
+{
+  SDL_MouseMotionEvent sdlEvent;
+  sdlEvent.windowID = 45;
+  MouseMotionEvent event{sdlEvent};
+
+  CHECK(event.window_id() == sdlEvent.windowID);
+}
+
+TEST_CASE("MouseMotionEvent::which", "[MouseMotionEvent]")
+{
+  SDL_MouseMotionEvent sdlEvent;
+  sdlEvent.which = 77;
+  MouseMotionEvent event{sdlEvent};
+
+  CHECK(event.which() == sdlEvent.which);
+}
+
+TEST_CASE("MouseMotionEvent::state", "[MouseMotionEvent]")
+{
+  SDL_MouseMotionEvent sdlEvent;
+  sdlEvent.state = SDL_BUTTON_LMASK;
+  MouseMotionEvent event{sdlEvent};
+
+  CHECK(event.state() == sdlEvent.state);
+}
+
+TEST_CASE("MouseMotionEvent::x", "[MouseMotionEvent]")
+{
+  SDL_MouseMotionEvent sdlEvent;
+  sdlEvent.x = 1867;
+  MouseMotionEvent event{sdlEvent};
+
+  CHECK(event.x() == sdlEvent.x);
+}
+
+TEST_CASE("MouseMotionEvent::y", "[MouseMotionEvent]")
+{
+  SDL_MouseMotionEvent sdlEvent;
+  sdlEvent.y = 454;
+  MouseMotionEvent event{sdlEvent};
+
+  CHECK(event.y() == sdlEvent.y);
+}
+
+TEST_CASE("MouseMotionEvent::dx", "[MouseMotionEvent]")
+{
+  SDL_MouseMotionEvent sdlEvent;
+  sdlEvent.xrel = 78;
+  MouseMotionEvent event{sdlEvent};
+
+  CHECK(event.dx() == sdlEvent.xrel);
+}
+
+TEST_CASE("MouseMotionEvent::dy", "[MouseMotionEvent]")
+{
+  SDL_MouseMotionEvent sdlEvent;
+  sdlEvent.yrel = -564;
+  MouseMotionEvent event{sdlEvent};
+
+  CHECK(event.dy() == sdlEvent.yrel);
+}
+
+TEST_CASE("MouseMotionEvent move constructor", "[MouseMotionEvent]")
+{
+  CHECK_NOTHROW(MouseMotionEvent{{}});
 }

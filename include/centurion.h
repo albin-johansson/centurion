@@ -32,6 +32,8 @@
 
 #include <cstdint>
 
+// TODO update this list of includes or simply remove the includes
+
 #include "audio.h"
 #include "battery.h"
 #include "blend_mode.h"
@@ -44,7 +46,6 @@
 #include "cpu.h"
 #include "cursor.h"
 #include "error.h"
-#include "event.h"
 #include "font.h"
 #include "key_state.h"
 #include "log.h"

@@ -17,10 +17,7 @@ class Incrementer final : public IWindowListener {
  public:
   int counter = 0;
 
-  void window_updated(const Window& window) noexcept override
-  {
-    ++counter;
-  }
+  void window_updated(const Window& window) noexcept override { ++counter; }
 };
 
 }  // namespace

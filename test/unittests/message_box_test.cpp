@@ -1,7 +1,6 @@
 #include "message_box.h"
 
 #include <catch.hpp>
-#include <cstdint>
 #include <string>
 
 #include "colors.h"

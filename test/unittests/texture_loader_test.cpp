@@ -11,7 +11,7 @@ using namespace centurion;
 using namespace centurion::video;
 using namespace std::literals;
 
-static const auto* good_path = "resources/ctn_icon_1.png";
+static const auto* good_path = "resources/panda.png";
 
 TEST_CASE("TextureLoader(Renderer)", "[Renderer]")
 {

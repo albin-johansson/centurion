@@ -14,7 +14,7 @@
 using namespace centurion;
 using namespace centurion::video;
 
-static constexpr auto* path = "resources/ctn_icon_1.png";
+static constexpr auto* path = "resources/panda.png";
 
 TEST_CASE("Surface(const char*)", "[Surface]")
 {

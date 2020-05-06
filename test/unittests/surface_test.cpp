@@ -108,19 +108,19 @@ TEST_CASE("Surface::set_blend_mode", "[Surface]")
 TEST_CASE("Surface::get_width", "[Surface]")
 {
   const Surface surface{path};
-  CHECK(surface.get_width() == 32);
+  CHECK(surface.get_width() == 200);
 }
 
 TEST_CASE("Surface::get_height", "[Surface]")
 {
   const Surface surface{path};
-  CHECK(surface.get_height() == 32);
+  CHECK(surface.get_height() == 150);
 }
 
 TEST_CASE("Surface::get_pitch", "[Surface]")
 {
   const Surface surface{path};
-  CHECK(surface.get_pitch() == 128);
+  CHECK(surface.get_pitch() == (4 * surface.get_width()));
 }
 
 TEST_CASE("Surface::to_texture", "[Surface]")

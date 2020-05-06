@@ -12,7 +12,9 @@
 using namespace centurion;
 using namespace centurion::video;
 
-static constexpr auto* path = "resources/grass.png";
+static constexpr auto* pandaPath = "resources/panda.png";
+static constexpr int pandaWidth = 200;
+static constexpr int pandaHeight = 150;
 
 TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
 {
@@ -20,7 +22,7 @@ TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
 
   Window window;
   Renderer renderer{window};
-  SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.get_internal(), path);
+  SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.get_internal(), pandaPath);
   CHECK_NOTHROW(Texture(sdlTexture));
 }
 
@@ -32,16 +34,16 @@ TEST_CASE("Texture(Renderer&, char*)", "[Texture]")
   CHECK_THROWS_AS(Texture(renderer, nullptr), CenturionException);
   CHECK_THROWS_AS(Texture(renderer, "badpath"), CenturionException);
 
-  Texture texture{renderer, path};
-  CHECK(texture.get_width() == 108);
-  CHECK(texture.get_height() == 108);
+  Texture texture{renderer, pandaPath};
+  CHECK(texture.get_width() == pandaWidth);
+  CHECK(texture.get_height() == pandaHeight);
 }
 
 TEST_CASE("Texture(Renderer&, Surface&", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Surface surface{path};
+  Surface surface{pandaPath};
   CHECK_NOTHROW(Texture{renderer, surface});
 }
 
@@ -66,7 +68,7 @@ TEST_CASE("Texture(Texture&&)", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer, path};
+  Texture texture{renderer, pandaPath};
 
   Texture moved_img = std::move(texture);
 
@@ -78,7 +80,7 @@ TEST_CASE("Texture::unique", "[Texture]")
   const Window window;
   const Renderer renderer{window};
   CHECK_THROWS_AS(Texture::unique(nullptr), CenturionException);
-  CHECK(Texture::unique(renderer, path));
+  CHECK(Texture::unique(renderer, pandaPath));
   CHECK(Texture::unique(
       renderer, window.get_pixel_format(), TextureAccess::Static, 100, 100));
 }
@@ -88,7 +90,7 @@ TEST_CASE("Texture:::shared", "[Texture]")
   const Window window;
   const Renderer renderer{window};
   CHECK_THROWS_AS(Texture::shared(nullptr), CenturionException);
-  CHECK(Texture::shared(renderer, path));
+  CHECK(Texture::shared(renderer, pandaPath));
   CHECK(Texture::shared(
       renderer, window.get_pixel_format(), TextureAccess::Static, 100, 100));
 }
@@ -97,7 +99,7 @@ TEST_CASE("Texture::get_format", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer, path};
+  Texture texture{renderer, pandaPath};
   SDL_Texture* sdlTexture = texture.get_internal();
 
   uint32_t format = 0;
@@ -110,7 +112,7 @@ TEST_CASE("Texture::get_access", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer, path};
+  Texture texture{renderer, pandaPath};
   SDL_Texture* sdlTexture = texture.get_internal();
 
   int access = 0;
@@ -123,10 +125,10 @@ TEST_CASE("Texture::get_width", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Texture texture(renderer, path);
+  Texture texture(renderer, pandaPath);
   SDL_Texture* sdlTexture = texture.get_internal();
 
-  CHECK(texture.get_width() == 108);
+  CHECK(texture.get_width() == pandaWidth);
 
   int width = 0;
   SDL_QueryTexture(sdlTexture, nullptr, nullptr, &width, nullptr);
@@ -137,10 +139,10 @@ TEST_CASE("Texture::get_height", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer, path};
+  Texture texture{renderer, pandaPath};
   SDL_Texture* sdlTexture = texture.get_internal();
 
-  CHECK(texture.get_height() == 108);
+  CHECK(texture.get_height() == pandaHeight);
 
   int height = 0;
   SDL_QueryTexture(sdlTexture, nullptr, nullptr, nullptr, &height);
@@ -151,7 +153,7 @@ TEST_CASE("Texture::set_blend_mode", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer, path};
+  Texture texture{renderer, pandaPath};
 
   const auto mode = BlendMode::Blend;
   texture.set_blend_mode(mode);
@@ -163,7 +165,7 @@ TEST_CASE("Texture::set_alpha", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer, path};
+  Texture texture{renderer, pandaPath};
 
   const auto alpha = 0x3A;
   texture.set_alpha(alpha);
@@ -175,7 +177,7 @@ TEST_CASE("Texture::set_color_mod", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer, path};
+  Texture texture{renderer, pandaPath};
 
   const auto color = misty_rose;
   texture.set_color_mod(color);
@@ -218,7 +220,7 @@ TEST_CASE("Texture::to_string", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer, path};
+  Texture texture{renderer, pandaPath};
   Log::msgf(Category::Test, "%s", texture.to_string().c_str());
 }
 
@@ -226,7 +228,7 @@ TEST_CASE("Texture::get_internal", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
-  Texture texture{renderer, path};
+  Texture texture{renderer, pandaPath};
   CHECK(texture.get_internal());
 }
 

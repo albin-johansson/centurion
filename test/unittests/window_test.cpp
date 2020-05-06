@@ -427,7 +427,7 @@ TEST_CASE("Window::set_icon", "[Window]")
   auto listener = std::make_shared<Incrementer>();
   window.add_window_listener(listener);
 
-  Surface icon{"resources/ctn_icon_1.png"};
+  Surface icon{"resources/panda.png"};
   window.set_icon(icon);
 
   CHECK(listener->counter > 0);

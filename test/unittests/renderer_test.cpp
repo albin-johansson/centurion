@@ -14,7 +14,7 @@ using namespace centurion;
 using namespace centurion::math;
 using namespace centurion::video;
 
-static constexpr auto* texturePath = "resources/ctn_icon_1.png";
+static constexpr auto* texturePath = "resources/panda.png";
 
 TEST_CASE("Renderer(SDL_Renderer*)", "[Renderer]")
 {

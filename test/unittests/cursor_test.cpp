@@ -22,7 +22,7 @@ TEST_CASE("Cursor(gsl::owner<SDL_Cursor*>)", "[Cursor]")
 
 TEST_CASE("Cursor(Surface, IPoint)", "[Cursor]")
 {
-  const Surface surface{"resources/ctn_icon_1.png"};
+  const Surface surface{"resources/panda.png"};
   const math::IPoint hotspot{12, 14};
   Cursor cursor{surface, hotspot};
 }
@@ -51,11 +51,11 @@ TEST_CASE("Cursor::unique", "[Cursor]")
   CHECK(Cursor::unique(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW)));
   CHECK_THROWS_AS(Cursor::unique(nullptr), CenturionException);
 
-  CHECK(Cursor::unique(Surface{"resources/ctn_icon_1.png"}, {10, 10}));
+  CHECK(Cursor::unique(Surface{"resources/panda.png"}, {10, 10}));
 
   SECTION("Out-of-bounds hotspot")
   {
-    Surface surface{"resources/ctn_icon_1.png"};
+    Surface surface{"resources/panda.png"};
     math::IPoint hotspot{1, surface.get_height() + 1};
     CHECK_THROWS_AS(Cursor::unique(surface, hotspot), CenturionException);
   }
@@ -68,11 +68,11 @@ TEST_CASE("Cursor::shared", "[Cursor]")
   CHECK(Cursor::shared(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE)));
   CHECK_THROWS_AS(Cursor::shared(nullptr), CenturionException);
 
-  CHECK(Cursor::shared(Surface{"resources/ctn_icon_1.png"}, {8, 28}));
+  CHECK(Cursor::shared(Surface{"resources/panda.png"}, {8, 28}));
 
   SECTION("Out-of-bounds hotspot")
   {
-    Surface surface{"resources/ctn_icon_1.png"};
+    Surface surface{"resources/panda.png"};
     math::IPoint hotspot{surface.get_width() + 1, 1};
     CHECK_THROWS_AS(Cursor::shared(surface, hotspot), CenturionException);
   }

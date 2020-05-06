@@ -35,7 +35,7 @@ void ControllerAxisEvent::set_axis(GameControllerAxis axis) noexcept
 }
 
 CENTURION_DEF
-void ControllerAxisEvent::set_value(int16_t value) noexcept
+void ControllerAxisEvent::set_value(Sint16 value) noexcept
 {
   m_event.value = value;
 }
@@ -53,7 +53,7 @@ GameControllerAxis ControllerAxisEvent::axis() const noexcept
 }
 
 CENTURION_DEF
-int16_t ControllerAxisEvent::value() const noexcept
+Sint16 ControllerAxisEvent::value() const noexcept
 {
   return m_event.value;
 }

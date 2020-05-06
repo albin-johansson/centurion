@@ -7,7 +7,7 @@ namespace centurion {
 namespace video {
 
 CENTURION_DEF
-const uint8_t Color::max = 0xFF;
+const Uint8 Color::max = 0xFF;
 
 CENTURION_DEF
 Color::Color(const SDL_Color& color) noexcept
@@ -30,49 +30,49 @@ Color::Color(SDL_MessageBoxColor&& color) noexcept
 {}
 
 CENTURION_DEF
-void Color::set_red(uint8_t r) noexcept
+void Color::set_red(Uint8 r) noexcept
 {
   this->m_red = r;
 }
 
 CENTURION_DEF
-void Color::set_green(uint8_t g) noexcept
+void Color::set_green(Uint8 g) noexcept
 {
   this->m_green = g;
 }
 
 CENTURION_DEF
-void Color::set_blue(uint8_t b) noexcept
+void Color::set_blue(Uint8 b) noexcept
 {
   this->m_blue = b;
 }
 
 CENTURION_DEF
-void Color::set_alpha(uint8_t a) noexcept
+void Color::set_alpha(Uint8 a) noexcept
 {
   this->m_alpha = a;
 }
 
 CENTURION_DEF
-uint8_t Color::red() const noexcept
+Uint8 Color::red() const noexcept
 {
   return m_red;
 }
 
 CENTURION_DEF
-uint8_t Color::green() const noexcept
+Uint8 Color::green() const noexcept
 {
   return m_green;
 }
 
 CENTURION_DEF
-uint8_t Color::blue() const noexcept
+Uint8 Color::blue() const noexcept
 {
   return m_blue;
 }
 
 CENTURION_DEF
-uint8_t Color::alpha() const noexcept
+Uint8 Color::alpha() const noexcept
 {
   return m_alpha;
 }

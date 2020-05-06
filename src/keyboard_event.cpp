@@ -27,7 +27,7 @@ void KeyboardEvent::set_key(const Key& key, ButtonState state) noexcept
 {
   m_event.keysym.scancode = key.scancode();
   m_event.keysym.sym = key.keycode();
-  m_event.state = static_cast<uint8_t>(state);
+  m_event.state = static_cast<Uint8>(state);
 }
 
 CENTURION_DEF
@@ -48,7 +48,7 @@ void KeyboardEvent::set_repeated(bool repeated) noexcept
 }
 
 CENTURION_DEF
-void KeyboardEvent::set_window_id(uint32_t id) noexcept
+void KeyboardEvent::set_window_id(Uint32 id) noexcept
 {
   m_event.windowID = id;
 }
@@ -124,7 +124,7 @@ Key KeyboardEvent::key() const noexcept
 }
 
 CENTURION_DEF
-uint32_t KeyboardEvent::window_id() const noexcept
+Uint32 KeyboardEvent::window_id() const noexcept
 {
   return m_event.windowID;
 }

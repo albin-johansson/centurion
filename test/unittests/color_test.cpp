@@ -32,7 +32,7 @@ TEST_CASE("Color(Color&&)", "[Color]")
   CHECK(a == other.alpha());
 }
 
-TEST_CASE("Color(uint8_t, uint8_t, uint8_t, uint8_t)", "[Color]")
+TEST_CASE("Color(Uint8, Uint8, Uint8, Uint8)", "[Color]")
 {
   const auto r = 0xA5;
   const auto g = 0xB3;

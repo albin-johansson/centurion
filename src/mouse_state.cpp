@@ -5,8 +5,6 @@
 
 #include <SDL.h>
 
-#include <cstdint>
-
 #include "centurion_utils.h"
 #include "window.h"
 
@@ -47,7 +45,7 @@ void MouseState::update() noexcept
   prevRightPressed = rightPressed;
 
   {
-    const uint32_t mask = SDL_GetMouseState(&mouseX, &mouseY);
+    const Uint32 mask = SDL_GetMouseState(&mouseX, &mouseY);
     leftPressed = mask & SDL_BUTTON(SDL_BUTTON_LEFT);
     rightPressed = mask & SDL_BUTTON(SDL_BUTTON_RIGHT);
   }

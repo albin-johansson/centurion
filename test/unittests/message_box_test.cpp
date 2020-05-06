@@ -1,7 +1,6 @@
 #include "message_box.h"
 
 #include <catch.hpp>
-#include <cstdint>
 #include <string>
 
 #include "colors.h"
@@ -62,7 +61,7 @@ TEST_CASE("ButtonData general test", "[MessageBox]")
   const SDL_MessageBoxButtonData data = buttonData;
 
   CHECK(id == data.buttonid);
-  CHECK(static_cast<uint32_t>(hint) == data.flags);
+  CHECK(static_cast<Uint32>(hint) == data.flags);
   CHECK_THAT(text, Catch::Equals(data.text));
 }
 

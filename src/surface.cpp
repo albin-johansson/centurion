@@ -95,7 +95,7 @@ SDL_Surface* Surface::copy_surface() const
 }
 
 CENTURION_DEF
-void Surface::set_alpha(uint8_t alpha) noexcept
+void Surface::set_alpha(Uint8 alpha) noexcept
 {
   SDL_SetSurfaceAlphaMod(surface, alpha);
 }
@@ -113,9 +113,9 @@ void Surface::set_blend_mode(BlendMode mode) noexcept
 }
 
 CENTURION_DEF
-uint8_t Surface::get_alpha() const noexcept
+Uint8 Surface::get_alpha() const noexcept
 {
-  uint8_t alpha = 0xFF;
+  Uint8 alpha = 0xFF;
   SDL_GetSurfaceAlphaMod(surface, &alpha);
   return alpha;
 }
@@ -123,7 +123,7 @@ uint8_t Surface::get_alpha() const noexcept
 CENTURION_DEF
 Color Surface::get_color_mod() const noexcept
 {
-  uint8_t r = 0, g = 0, b = 0;
+  Uint8 r = 0, g = 0, b = 0;
   SDL_GetSurfaceColorMod(surface, &r, &g, &b);
   return Color{r, g, b};
 }

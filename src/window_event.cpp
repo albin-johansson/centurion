@@ -27,13 +27,13 @@ WindowEventID WindowEvent::event_id() const noexcept
 }
 
 CENTURION_DEF
-int32_t WindowEvent::data_1() const noexcept
+Sint32 WindowEvent::data_1() const noexcept
 {
   return m_event.data1;
 }
 
 CENTURION_DEF
-int32_t WindowEvent::data_2() const noexcept
+Sint32 WindowEvent::data_2() const noexcept
 {
   return m_event.data2;
 }

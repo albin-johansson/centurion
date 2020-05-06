@@ -613,7 +613,7 @@ void Renderer::set_logical_integer_scale(bool useLogicalIntegerScale) noexcept
 CENTURION_DEF
 Color Renderer::get_color() const noexcept
 {
-  uint8_t r = 0, g = 0, b = 0, a = 0;
+  Uint8 r = 0, g = 0, b = 0, a = 0;
   SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
   return {r, g, b, a};
 }
@@ -724,7 +724,7 @@ const math::FRect& Renderer::get_translation_viewport() const noexcept
 }
 
 CENTURION_DEF
-uint32_t Renderer::get_flags() const noexcept
+Uint32 Renderer::get_flags() const noexcept
 {
   SDL_RendererInfo info;
   SDL_GetRendererInfo(renderer, &info);

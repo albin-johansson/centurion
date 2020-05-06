@@ -71,7 +71,7 @@ class AudioDeviceEvent : public CommonEvent<SDL_AudioDeviceEvent> {
    * @param which the audio device ID that is associated with the event.
    * @since 4.0.0
    */
-  CENTURION_API void set_which(uint32_t which) noexcept;
+  CENTURION_API void set_which(Uint32 which) noexcept;
 
   /**
    * Sets whether or not the audio device event is associated with a capture
@@ -90,7 +90,7 @@ class AudioDeviceEvent : public CommonEvent<SDL_AudioDeviceEvent> {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API uint32_t which() const noexcept;
+  CENTURION_API Uint32 which() const noexcept;
 
   /**
    * Indicates whether or not the audio device event is associated with an audio

@@ -21,7 +21,7 @@ AudioDeviceEvent::AudioDeviceEvent(SDL_AudioDeviceEvent&& event) noexcept
 {}
 
 CENTURION_DEF
-void AudioDeviceEvent::set_which(uint32_t which) noexcept
+void AudioDeviceEvent::set_which(Uint32 which) noexcept
 {
   m_event.which = which;
 }
@@ -33,7 +33,7 @@ void AudioDeviceEvent::set_capture(bool capture) noexcept
 }
 
 CENTURION_DEF
-uint32_t AudioDeviceEvent::which() const noexcept
+Uint32 AudioDeviceEvent::which() const noexcept
 {
   return m_event.which;
 }

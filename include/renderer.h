@@ -28,7 +28,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include <cstdint>
 #include <gsl-lite.hpp>
 #include <memory>
 #include <string>
@@ -899,7 +898,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  uint32_t get_flags() const noexcept;
+  Uint32 get_flags() const noexcept;
 
   /**
    * Indicates whether or not the <code>present()</code> method is synced with

@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_BASE_EVENT_HEADER
-#define CENTURION_BASE_EVENT_HEADER
+#ifndef CENTURION_COMMON_EVENT_HEADER
+#define CENTURION_COMMON_EVENT_HEADER
 
 #include <type_traits>
 
@@ -169,4 +169,4 @@ CENTURION_NODISCARD inline constexpr bool validate_event() noexcept
 }  // namespace event
 }  // namespace centurion
 
-#endif  // CENTURION_BASE_EVENT_HEADER
+#endif  // CENTURION_COMMON_EVENT_HEADER

@@ -9,7 +9,7 @@ namespace centurion {
 namespace system {
 
 CENTURION_DEF
-void Timer::sleep(uint32_t ms) noexcept
+void Timer::sleep(Uint32 ms) noexcept
 {
   SDL_Delay(ms);
 }
@@ -27,7 +27,7 @@ uint64_t Timer::high_res_freq() noexcept
 }
 
 CENTURION_DEF
-uint32_t Timer::millis() noexcept
+Uint32 Timer::millis() noexcept
 {
   return SDL_GetTicks();
 }

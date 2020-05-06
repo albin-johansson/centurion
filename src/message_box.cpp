@@ -3,7 +3,6 @@
 
 #include "message_box.h"
 
-#include <cstdint>
 #include <utility>
 
 #include "centurion_exception.h"
@@ -21,7 +20,7 @@ ButtonData::ButtonData(ButtonDataHint hint, int id, std::string text)
 CENTURION_DEF
 ButtonData::operator SDL_MessageBoxButtonData() const noexcept
 {
-  return {static_cast<uint32_t>(buttonDataHint), id, text.c_str()};
+  return {static_cast<Uint32>(buttonDataHint), id, text.c_str()};
 }
 
 CENTURION_DEF
@@ -131,7 +130,7 @@ void MessageBox::show(const char* title,
                       MessageBoxID type,
                       SDL_Window* window) noexcept
 {
-  SDL_ShowSimpleMessageBox(static_cast<uint32_t>(type),
+  SDL_ShowSimpleMessageBox(static_cast<Uint32>(type),
                            title ? title : "Centurion message box",
                            message ? message : "N/A",
                            window);

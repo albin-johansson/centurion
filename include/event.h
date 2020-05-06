@@ -34,6 +34,8 @@
 namespace centurion {
 namespace event {
 
+// TODO add class for SDL_Event
+
 }  // namespace event
 }  // namespace centurion
 

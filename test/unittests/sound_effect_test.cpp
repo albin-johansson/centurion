@@ -10,7 +10,7 @@
 using namespace centurion;
 using namespace audio;
 
-static constexpr auto path = "resources/swing.wav";
+static constexpr auto path = "resources/click.wav";
 
 TEST_CASE("SoundEffect(file)", "[SoundEffect]")
 {

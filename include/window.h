@@ -546,7 +546,7 @@ class Window final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  uint32_t get_id() const noexcept;
+  Uint32 get_id() const noexcept;
 
   /**
    * Returns the display index associated with the window.

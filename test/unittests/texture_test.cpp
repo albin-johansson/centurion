@@ -102,7 +102,7 @@ TEST_CASE("Texture::get_format", "[Texture]")
   Texture texture{renderer, pandaPath};
   SDL_Texture* sdlTexture = texture.get_internal();
 
-  uint32_t format = 0;
+  Uint32 format = 0;
   SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
 
   CHECK(texture.get_format() == static_cast<PixelFormat>(format));

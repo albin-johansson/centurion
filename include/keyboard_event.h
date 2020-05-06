@@ -122,7 +122,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @param id the window ID that should be associated with the key event.
    * @since 4.0.0
    */
-  CENTURION_API void set_window_id(uint32_t id) noexcept;
+  CENTURION_API void set_window_id(Uint32 id) noexcept;
 
   /**
    * Indicates whether or not the supplied key represents the same key that
@@ -237,7 +237,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API uint32_t window_id() const noexcept;
+  CENTURION_API Uint32 window_id() const noexcept;
 };
 
 static_assert(validate_event<KeyboardEvent, SDL_KeyboardEvent>(),

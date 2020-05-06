@@ -28,7 +28,6 @@
 #include <SDL.h>
 
 #include <array>
-#include <cstdint>
 #include <memory>
 #include <type_traits>
 
@@ -45,8 +44,8 @@ namespace input {
  */
 class KeyState final {
  private:
-  const uint8_t* states = nullptr;
-  std::array<uint8_t, static_cast<int>(SDL_NUM_SCANCODES)> previousStates;
+  const Uint8* states = nullptr;
+  std::array<Uint8, static_cast<int>(SDL_NUM_SCANCODES)> previousStates;
   int nKeys = 0;
 
  public:

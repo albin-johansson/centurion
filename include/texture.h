@@ -27,7 +27,6 @@
 
 #include <SDL_render.h>
 
-#include <cstdint>
 #include <gsl-lite.hpp>
 #include <memory>
 #include <string>
@@ -332,7 +331,7 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_alpha(uint8_t alpha) noexcept;
+  void set_alpha(Uint8 alpha) noexcept;
 
   /**
    * Sets the blend mode that will be used by the texture.
@@ -432,7 +431,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  uint8_t get_alpha() const noexcept;
+  Uint8 get_alpha() const noexcept;
 
   /**
    * Returns the blend mode of the texture.

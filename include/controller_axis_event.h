@@ -93,7 +93,7 @@ class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
    * @param value the new axis value associated with the event.
    * @since 4.0.0
    */
-  CENTURION_API void set_value(int16_t value) noexcept;
+  CENTURION_API void set_value(Sint16 value) noexcept;
 
   /**
    * Returns the joystick instance ID associated with the event.
@@ -121,7 +121,7 @@ class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int16_t value() const noexcept;
+  CENTURION_API Sint16 value() const noexcept;
 };
 
 static_assert(validate_event<ControllerAxisEvent, SDL_ControllerAxisEvent>(),

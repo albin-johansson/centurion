@@ -261,7 +261,7 @@ class WindowEvent : public CommonEvent<SDL_WindowEvent> {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int32_t data_1() const noexcept;
+  CENTURION_API Sint32 data_1() const noexcept;
 
   /**
    * Returns the value of the second data value. The meaning of this value is
@@ -277,7 +277,7 @@ class WindowEvent : public CommonEvent<SDL_WindowEvent> {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int32_t data_2() const noexcept;
+  CENTURION_API Sint32 data_2() const noexcept;
 };
 
 static_assert(validate_event<WindowEvent, SDL_WindowEvent>(),

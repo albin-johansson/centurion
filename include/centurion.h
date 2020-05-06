@@ -30,8 +30,6 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-#include <cstdint>
-
 // TODO update this list of includes or simply remove the includes
 
 #include "audio.h"
@@ -83,7 +81,7 @@ struct CenturionConfig final {
   bool initMixer = true;
   bool initTTF = true;
 
-  uint32_t coreFlags = SDL_INIT_EVERYTHING;
+  Uint32 coreFlags = SDL_INIT_EVERYTHING;
 
   int imageFlags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP;
 
@@ -91,7 +89,7 @@ struct CenturionConfig final {
                    MIX_INIT_MOD | MIX_INIT_OPUS;
 
   int mixerFreq = MIX_DEFAULT_FREQUENCY;
-  uint16_t mixerFormat = MIX_DEFAULT_FORMAT;
+  Uint16 mixerFormat = MIX_DEFAULT_FORMAT;
   int mixerChannels = MIX_DEFAULT_CHANNELS;
   int mixerChunkSize = 4096;
 };

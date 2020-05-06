@@ -27,7 +27,6 @@
 
 #include <SDL.h>
 
-#include <cstdint>
 #include <gsl-lite.hpp>
 #include <type_traits>
 
@@ -135,7 +134,7 @@ class Surface final {
    * @param alpha the new alpha component value, in the range [0, 255].
    * @since 4.0.0
    */
-  CENTURION_API void set_alpha(uint8_t alpha) noexcept;
+  CENTURION_API void set_alpha(Uint8 alpha) noexcept;
 
   /**
    * Sets the color modulation that will be used by the surface.
@@ -162,7 +161,7 @@ class Surface final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  uint8_t get_alpha() const noexcept;
+  Uint8 get_alpha() const noexcept;
 
   /**
    * Returns the color modulation of the surface.

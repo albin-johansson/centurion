@@ -25,7 +25,7 @@
 #ifndef CENTURION_TIMER_HEADER
 #define CENTURION_TIMER_HEADER
 
-#include <cstdint>
+#include <SDL_timer.h>
 
 #include "centurion_api.h"
 
@@ -50,7 +50,7 @@ class Timer final {
    * @since 3.0.0
    */
   CENTURION_API
-  static void sleep(uint32_t ms) noexcept;
+  static void sleep(Uint32 ms) noexcept;
 
   /**
    * Returns the current value of the system high-performance counter.
@@ -80,7 +80,7 @@ class Timer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static uint32_t millis() noexcept;
+  static Uint32 millis() noexcept;
 };
 
 }  // namespace system

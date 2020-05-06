@@ -57,7 +57,7 @@ Texture::Texture(const Renderer& renderer,
                  int height)
 {
   texture = SDL_CreateTexture(renderer,
-                              static_cast<uint32_t>(format),
+                              static_cast<Uint32>(format),
                               static_cast<int>(access),
                               width,
                               height);
@@ -163,7 +163,7 @@ void Texture::destroy() noexcept
 }
 
 CENTURION_DEF
-void Texture::set_alpha(uint8_t alpha) noexcept
+void Texture::set_alpha(Uint8 alpha) noexcept
 {
   SDL_SetTextureAlphaMod(texture, alpha);
 }
@@ -183,7 +183,7 @@ void Texture::set_color_mod(Color color) noexcept
 CENTURION_DEF
 PixelFormat Texture::get_format() const noexcept
 {
-  uint32_t format = 0;
+  Uint32 format = 0;
   SDL_QueryTexture(texture, &format, nullptr, nullptr, nullptr);
   return static_cast<PixelFormat>(format);
 }
@@ -231,9 +231,9 @@ bool Texture::is_streaming() const noexcept
 }
 
 CENTURION_DEF
-uint8_t Texture::get_alpha() const noexcept
+Uint8 Texture::get_alpha() const noexcept
 {
-  uint8_t alpha;
+  Uint8 alpha;
   SDL_GetTextureAlphaMod(texture, &alpha);
   return alpha;
 }
@@ -249,7 +249,7 @@ BlendMode Texture::get_blend_mode() const noexcept
 CENTURION_DEF
 Color Texture::get_color_mod() const noexcept
 {
-  uint8_t r = 0, g = 0, b = 0;
+  Uint8 r = 0, g = 0, b = 0;
   SDL_GetTextureColorMod(texture, &r, &g, &b);
   return {r, g, b, 0xFF};
 }

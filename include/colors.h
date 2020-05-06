@@ -33,8 +33,6 @@
 #ifndef CENTURION_COLORS_HEADER
 #define CENTURION_COLORS_HEADER
 
-#include <cstdint>
-
 #include "centurion_api.h"
 #include "color.h"
 
@@ -46,14 +44,14 @@ namespace video {
  *
  * @since 3.0.0
  */
-static constexpr uint8_t max = 0xFF;
+static constexpr Uint8 max = 0xFF;
 
 /**
  * The minimum possible color component value.
  *
  * @since 3.0.0
  */
-static constexpr uint8_t min = 0;
+static constexpr Uint8 min = 0;
 
 /**
  * An invisible color. Hex: #000000.

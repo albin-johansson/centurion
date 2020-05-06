@@ -33,7 +33,7 @@ TEST_CASE("Renderer(const Window&, SDL_RendererFlags)", "[Renderer]")
 
   SECTION("Check default flags")
   {
-    const uint32_t flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+    const Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     const auto correctFlags = renderer.get_flags() & flags;
     CHECK(correctFlags);
   }
@@ -75,7 +75,7 @@ TEST_CASE("Renderer::unique(const Window&, SDL_RendererFlags)", "[Renderer]")
 
   SECTION("Check default flags")
   {
-    const uint32_t flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+    const Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     const auto correctFlags = renderer->get_flags() & flags;
     CHECK(correctFlags);
   }
@@ -99,7 +99,7 @@ TEST_CASE("Renderer::shared(const Window&, SDL_RendererFlags)", "[Renderer]")
 
   SECTION("Check default flags")
   {
-    const uint32_t flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+    const Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
     const auto correctFlags = renderer->get_flags() & flags;
     CHECK(correctFlags);
   }

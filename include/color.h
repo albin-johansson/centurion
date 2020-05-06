@@ -27,7 +27,6 @@
 
 #include <SDL.h>
 
-#include <cstdint>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -52,7 +51,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_API
-  static const uint8_t max;
+  static const Uint8 max;
 
   /**
    * Creates a color. The created color will be equal to #000000FF.
@@ -71,7 +70,7 @@ class Color final {
    * alpha value is set to 255.
    * @since 3.0.0
    */
-  constexpr Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF) noexcept
+  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xFF) noexcept
       : m_red{r}, m_green{g}, m_blue{b}, m_alpha{a}
   {}
 
@@ -157,7 +156,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_red(uint8_t r) noexcept;
+  void set_red(Uint8 r) noexcept;
 
   /**
    * Sets the value of the green component.
@@ -166,7 +165,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_green(uint8_t g) noexcept;
+  void set_green(Uint8 g) noexcept;
 
   /**
    * Sets the value of the blue component.
@@ -175,7 +174,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_blue(uint8_t b) noexcept;
+  void set_blue(Uint8 b) noexcept;
 
   /**
    * Sets the value of the alpha component.
@@ -184,7 +183,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_alpha(uint8_t a) noexcept;
+  void set_alpha(Uint8 a) noexcept;
 
   /**
    * Returns the value of the red component.
@@ -194,7 +193,7 @@ class Color final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  uint8_t red() const noexcept;
+  Uint8 red() const noexcept;
 
   /**
    * Returns the value of the green component.
@@ -204,7 +203,7 @@ class Color final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  uint8_t green() const noexcept;
+  Uint8 green() const noexcept;
 
   /**
    * Returns the value of the blue component.
@@ -214,7 +213,7 @@ class Color final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  uint8_t blue() const noexcept;
+  Uint8 blue() const noexcept;
 
   /**
    * Returns the value of the alpha component.
@@ -224,7 +223,7 @@ class Color final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  uint8_t alpha() const noexcept;
+  Uint8 alpha() const noexcept;
 
   /**
    * Returns a textual representation of the color.
@@ -266,10 +265,10 @@ class Color final {
   CENTURION_API operator SDL_MessageBoxColor() const noexcept;
 
  private:
-  uint8_t m_red = 0;
-  uint8_t m_green = 0;
-  uint8_t m_blue = 0;
-  uint8_t m_alpha = max;
+  Uint8 m_red = 0;
+  Uint8 m_green = 0;
+  Uint8 m_blue = 0;
+  Uint8 m_alpha = max;
 };
 
 /**

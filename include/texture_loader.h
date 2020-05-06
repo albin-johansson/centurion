@@ -25,7 +25,6 @@
 #ifndef CENTURION_IMAGE_GENERATOR_HEADER
 #define CENTURION_IMAGE_GENERATOR_HEADER
 
-#include <cstdint>
 #include <memory>
 #include <type_traits>
 

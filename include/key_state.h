@@ -43,11 +43,6 @@ namespace input {
  * @since 3.0.0
  */
 class KeyState final {
- private:
-  const Uint8* states = nullptr;
-  std::array<Uint8, static_cast<int>(SDL_NUM_SCANCODES)> previousStates;
-  int nKeys = 0;
-
  public:
   /**
    * @throws CenturionException if the key state cannot be obtained.
@@ -139,7 +134,12 @@ class KeyState final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_amount_of_keys() const noexcept;
+  int amount_of_keys() const noexcept;
+
+ private:
+  const Uint8* m_states = nullptr;
+  std::array<Uint8, static_cast<int>(SDL_NUM_SCANCODES)> m_previousStates;
+  int m_nKeys = 0;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

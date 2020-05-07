@@ -23,8 +23,8 @@ TEST_CASE("KeyState internal array bounds assertions", "[KeyState]")
   CHECK_NOFAIL(state.was_just_released(maxScancode));
 }
 
-TEST_CASE("KeyState::get_amount_of_keys", "[KeyState]")
+TEST_CASE("KeyState::amount_of_keys", "[KeyState]")
 {
   KeyState state;
-  CHECK(state.get_amount_of_keys() == static_cast<int>(SDL_NUM_SCANCODES));
+  CHECK(state.amount_of_keys() == static_cast<int>(SDL_NUM_SCANCODES));
 }

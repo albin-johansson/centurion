@@ -17,12 +17,12 @@ namespace input {
 CENTURION_DEF
 KeyState::KeyState()
 {
-  states = SDL_GetKeyboardState(&nKeys);
-  if (!states) {
+  m_states = SDL_GetKeyboardState(&m_nKeys);
+  if (!m_states) {
     throw CenturionException{"Failed to obtain key state! " + Error::msg()};
   }
-  assert(static_cast<unsigned long long>(nKeys) == previousStates.size());
-  std::fill(previousStates.begin(), previousStates.end(), 0);
+  assert(static_cast<unsigned long long>(m_nKeys) == m_previousStates.size());
+  std::fill(m_previousStates.begin(), m_previousStates.end(), 0);
 }
 
 CENTURION_DEF
@@ -40,41 +40,41 @@ std::shared_ptr<KeyState> KeyState::shared()
 CENTURION_DEF
 void KeyState::update() noexcept
 {
-  std::copy(states, states + nKeys, previousStates.begin());
+  std::copy(m_states, m_states + m_nKeys, m_previousStates.begin());
 }
 
 CENTURION_DEF
 bool KeyState::is_pressed(SDL_Scancode code) const noexcept
 {
-  assert(code < nKeys);
-  return states[code];
+  assert(code < m_nKeys);
+  return m_states[code];
 }
 
 CENTURION_DEF
 bool KeyState::is_held(SDL_Scancode code) const noexcept
 {
-  assert(code < nKeys);
-  return states[code] && previousStates[code];
+  assert(code < m_nKeys);
+  return m_states[code] && m_previousStates[code];
 }
 
 CENTURION_DEF
 bool KeyState::was_just_pressed(SDL_Scancode code) const noexcept
 {
-  assert(code < nKeys);
-  return states[code] && !previousStates[code];
+  assert(code < m_nKeys);
+  return m_states[code] && !m_previousStates[code];
 }
 
 CENTURION_DEF
 bool KeyState::was_just_released(SDL_Scancode code) const noexcept
 {
-  assert(code < nKeys);
-  return !states[code] && previousStates[code];
+  assert(code < m_nKeys);
+  return !m_states[code] && m_previousStates[code];
 }
 
 CENTURION_DEF
-int KeyState::get_amount_of_keys() const noexcept
+int KeyState::amount_of_keys() const noexcept
 {
-  return nKeys;
+  return m_nKeys;
 }
 
 }  // namespace input

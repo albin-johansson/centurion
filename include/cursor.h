@@ -111,17 +111,6 @@ CENTURION_API bool operator!=(SDL_SystemCursor lhs, SystemCursor rhs) noexcept;
  * @since 4.0.0
  */
 class Cursor final {
- private:
-  SDL_Cursor* cursor = nullptr;
-  SDL_Surface* surface = nullptr;
-
-  /**
-   * Destroys the components in the Cursor instance.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
  public:
   /**
    * Creates a cursor based on the specified cursor type.
@@ -324,7 +313,18 @@ class Cursor final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static bool is_visible() noexcept;
+  static bool visible() noexcept;
+
+ private:
+  SDL_Cursor* cursor = nullptr;
+  SDL_Surface* surface = nullptr;
+
+  /**
+   * Destroys the components in the Cursor instance.
+   *
+   * @since 4.0.0
+   */
+  void destroy() noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

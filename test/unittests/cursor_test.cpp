@@ -129,13 +129,13 @@ TEST_CASE("Cursor::reset", "[Cursor]")
 
 TEST_CASE("Cursor::set_visible", "[Cursor]")
 {
-  CHECK(Cursor::is_visible());
+  CHECK(Cursor::visible());
 
   Cursor::set_visible(false);
-  CHECK(!Cursor::is_visible());
+  CHECK(!Cursor::visible());
 
   Cursor::set_visible(true);
-  CHECK(Cursor::is_visible());
+  CHECK(Cursor::visible());
 }
 
 TEST_CASE("SystemCursor enum values", "[Cursor]")

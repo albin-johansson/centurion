@@ -155,7 +155,7 @@ void Cursor::set_visible(bool visible) noexcept
 }
 
 CENTURION_DEF
-bool Cursor::is_visible() noexcept
+bool Cursor::visible() noexcept
 {
   return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
 }

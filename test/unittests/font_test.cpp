@@ -36,7 +36,7 @@ TEST_CASE("Font::operator=(Font&&)", "[Font]")
 
   font = std::move(other);
 
-  CHECK(font.get_size() == 16);
+  CHECK(font.size() == 16);
 
   TTF_Font* sdlFont = other;
   CHECK(!sdlFont);
@@ -64,75 +64,75 @@ TEST_CASE("Font::reset", "[Font]")
   font.set_strikethrough(true);
 
   font.reset();
-  CHECK(!font.is_bold());
-  CHECK(!font.is_italic());
-  CHECK(!font.is_underlined());
-  CHECK(!font.is_strikethrough());
+  CHECK(!font.bold());
+  CHECK(!font.italic());
+  CHECK(!font.underlined());
+  CHECK(!font.strikethrough());
 }
 
 TEST_CASE("Font::set_bold", "[Font]")
 {
   Font font{type_writer_path, 12};
 
-  CHECK(!font.is_bold());
+  CHECK(!font.bold());
 
   font.set_bold(true);
-  CHECK(font.is_bold());
+  CHECK(font.bold());
 
   font.set_bold(false);
-  CHECK(!font.is_bold());
+  CHECK(!font.bold());
 }
 
 TEST_CASE("Font::set_italic", "[Font]")
 {
   Font font{type_writer_path, 12};
 
-  CHECK(!font.is_italic());
+  CHECK(!font.italic());
 
   font.set_italic(true);
-  CHECK(font.is_italic());
+  CHECK(font.italic());
 
   font.set_italic(false);
-  CHECK(!font.is_italic());
+  CHECK(!font.italic());
 }
 
 TEST_CASE("Font::set_underlined", "[Font]")
 {
   Font font{type_writer_path, 12};
 
-  CHECK(!font.is_underlined());
+  CHECK(!font.underlined());
 
   font.set_underlined(true);
-  CHECK(font.is_underlined());
+  CHECK(font.underlined());
 
   font.set_underlined(false);
-  CHECK(!font.is_underlined());
+  CHECK(!font.underlined());
 }
 
 TEST_CASE("Font::set_strikethrough", "[Font]")
 {
   Font font{type_writer_path, 12};
 
-  CHECK(!font.is_strikethrough());
+  CHECK(!font.strikethrough());
 
   font.set_strikethrough(true);
-  CHECK(font.is_strikethrough());
+  CHECK(font.strikethrough());
 
   font.set_strikethrough(false);
-  CHECK(!font.is_strikethrough());
+  CHECK(!font.strikethrough());
 }
 
 TEST_CASE("Font::set_outlined", "[Font]")
 {
   Font font{type_writer_path, 12};
 
-  CHECK(!font.is_outlined());
+  CHECK(!font.outlined());
 
   font.set_outlined(true);
-  CHECK(font.is_outlined());
+  CHECK(font.outlined());
 
   font.set_outlined(false);
-  CHECK(!font.is_outlined());
+  CHECK(!font.outlined());
 }
 
 TEST_CASE("Font::set_font_hinting", "[Font]")
@@ -142,42 +142,42 @@ TEST_CASE("Font::set_font_hinting", "[Font]")
   SECTION("Mono")
   {
     font.set_font_hinting(FontHint::Mono);
-    CHECK(font.get_font_hinting() == FontHint::Mono);
+    CHECK(font.font_hinting() == FontHint::Mono);
   }
 
   SECTION("None")
   {
     font.set_font_hinting(FontHint::None);
-    CHECK(font.get_font_hinting() == FontHint::None);
+    CHECK(font.font_hinting() == FontHint::None);
   }
 
   SECTION("Light")
   {
     font.set_font_hinting(FontHint::Light);
-    CHECK(font.get_font_hinting() == FontHint::Light);
+    CHECK(font.font_hinting() == FontHint::Light);
   }
 
   SECTION("Normal")
   {
     font.set_font_hinting(FontHint::Normal);
-    CHECK(font.get_font_hinting() == FontHint::Normal);
+    CHECK(font.font_hinting() == FontHint::Normal);
   }
 }
 
-TEST_CASE("Font::get_size", "[Font]")
+TEST_CASE("Font::size", "[Font]")
 {
   const auto size = 12;
   Font font{type_writer_path, size};
 
-  CHECK(size == font.get_size());
+  CHECK(size == font.size());
 }
 
-TEST_CASE("Font::get_height", "[Font]")
+TEST_CASE("Font::height", "[Font]")
 {
   const auto size = 16;
   Font font{type_writer_path, size};
   CHECK(size ==
-        font.get_height());  // doesn't have to be equal, but should be close
+        font.height());  // doesn't have to be equal, but should be close
 }
 
 TEST_CASE("Font::is_fixed_width", "[Font]")
@@ -189,58 +189,58 @@ TEST_CASE("Font::is_fixed_width", "[Font]")
   CHECK(!daniel.is_fixed_width());
 }
 
-TEST_CASE("Font::get_family_name", "[Font]")
+TEST_CASE("Font::family_name", "[Font]")
 {
   Font font{type_writer_path, 12};
-  CHECK(font.get_family_name() == "Type Writer");
+  CHECK(font.family_name() == "Type Writer");
 }
 
-TEST_CASE("Font::get_style_name", "[Font]")
+TEST_CASE("Font::style_name", "[Font]")
 {
   const Font font{type_writer_path, 12};
-  CHECK_THAT(font.get_style_name()->c_str(), Equals("Regular"));
+  CHECK_THAT(font.style_name()->c_str(), Equals("Regular"));
 }
 
-TEST_CASE("Font::get_string_width", "[Font]")
+TEST_CASE("Font::string_width", "[Font]")
 {
   const Font font{type_writer_path, 12};
-  CHECK(font.get_string_width("foo") > 0);
+  CHECK(font.string_width("foo") > 0);
 }
 
-TEST_CASE("Font::get_string_height", "[Font]")
+TEST_CASE("Font::string_height", "[Font]")
 {
   const Font font{type_writer_path, 12};
-  CHECK(font.get_string_height("foo") > 0);
+  CHECK(font.string_height("foo") > 0);
 }
 
-TEST_CASE("Font::get_font_faces", "[Font]")
+TEST_CASE("Font::font_faces", "[Font]")
 {
   const Font font{type_writer_path, 12};
-  CHECK_NOTHROW(font.get_font_faces());
+  CHECK_NOTHROW(font.font_faces());
 }
 
-TEST_CASE("Font::get_font_hinting", "[Font]")
+TEST_CASE("Font::font_hinting", "[Font]")
 {
   const Font font{type_writer_path, 12};
-  CHECK(font.get_font_hinting() == FontHint::Normal);
+  CHECK(font.font_hinting() == FontHint::Normal);
 }
 
-TEST_CASE("Font::get_line_skip", "[Font]")
+TEST_CASE("Font::line_skip", "[Font]")
 {
   const Font font{type_writer_path, 12};
-  CHECK(font.get_line_skip() > 0);
+  CHECK(font.line_skip() > 0);
 }
 
-TEST_CASE("Font::get_ascent", "[Font]")
+TEST_CASE("Font::ascent", "[Font]")
 {
   const Font font{type_writer_path, 12};
-  CHECK(font.get_ascent() > 0);
+  CHECK(font.ascent() > 0);
 }
 
-TEST_CASE("Font::get_descent", "[Font]")
+TEST_CASE("Font::descent", "[Font]")
 {
   const Font font{type_writer_path, 12};
-  CHECK(font.get_descent() < 0);
+  CHECK(font.descent() < 0);
 }
 
 TEST_CASE("Font::to_string", "[Font]")

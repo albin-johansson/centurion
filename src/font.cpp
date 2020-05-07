@@ -11,50 +11,50 @@ namespace video {
 /* Any sufficiently advanced technology is indistinguishable from magic. */
 
 CENTURION_DEF
-Font::Font(const std::string& file, int size) : size{size}
+Font::Font(const std::string& file, int size) : m_size{size}
 {
   if (size <= 0) {
     throw CenturionException{"Bad font size!"};
   }
 
-  font = TTF_OpenFont(file.c_str(), size);
-  if (!font) {
+  m_font = TTF_OpenFont(file.c_str(), size);
+  if (!m_font) {
     throw CenturionException{"Failed to open font! " + Error::msg()};
   }
 
-  style = TTF_GetFontStyle(font);
+  m_style = TTF_GetFontStyle(m_font);
 }
 
 CENTURION_DEF
 Font::Font(Font&& other) noexcept
 {
-  TTF_CloseFont(font);
+  TTF_CloseFont(m_font);
 
-  font = other.font;
-  other.font = nullptr;
+  m_font = other.m_font;
+  other.m_font = nullptr;
 
-  style = other.style;
-  size = other.size;
+  m_style = other.m_style;
+  m_size = other.m_size;
 }
 
 CENTURION_DEF
 Font::~Font() noexcept
 {
-  if (font) {
-    TTF_CloseFont(font);
+  if (m_font) {
+    TTF_CloseFont(m_font);
   }
 }
 
 CENTURION_DEF
 Font& Font::operator=(Font&& other) noexcept
 {
-  TTF_CloseFont(font);
+  TTF_CloseFont(m_font);
 
-  font = other.font;
-  other.font = nullptr;
+  m_font = other.m_font;
+  other.m_font = nullptr;
 
-  style = other.style;
-  size = other.size;
+  m_style = other.m_style;
+  m_size = other.m_size;
 
   return *this;
 }
@@ -74,22 +74,22 @@ std::shared_ptr<Font> Font::shared(const std::string& file, int size)
 CENTURION_DEF
 void Font::reset() noexcept
 {
-  style = TTF_STYLE_NORMAL;
-  TTF_SetFontStyle(font, style);
+  m_style = TTF_STYLE_NORMAL;
+  TTF_SetFontStyle(m_font, m_style);
 }
 
 CENTURION_DEF
 void Font::add_style(int mask) noexcept
 {
-  style |= mask;
-  TTF_SetFontStyle(font, style);
+  m_style |= mask;
+  TTF_SetFontStyle(m_font, m_style);
 }
 
 CENTURION_DEF
 void Font::remove_style(int mask) noexcept
 {
-  style &= ~mask;
-  TTF_SetFontStyle(font, style);
+  m_style &= ~mask;
+  TTF_SetFontStyle(m_font, m_style);
 }
 
 CENTURION_DEF
@@ -135,119 +135,119 @@ void Font::set_strikethrough(bool strikethrough) noexcept
 CENTURION_DEF
 void Font::set_outlined(bool outlined) noexcept
 {
-  TTF_SetFontOutline(font, outlined ? 1 : 0);
+  TTF_SetFontOutline(m_font, outlined ? 1 : 0);
 }
 
 CENTURION_DEF
 void Font::set_font_hinting(FontHint hint) noexcept
 {
-  TTF_SetFontHinting(font, static_cast<int>(hint));
+  TTF_SetFontHinting(m_font, static_cast<int>(hint));
 }
 
 CENTURION_DEF
-bool Font::is_bold() const noexcept
+bool Font::bold() const noexcept
 {
-  return style & TTF_STYLE_BOLD;
+  return m_style & TTF_STYLE_BOLD;
 }
 
 CENTURION_DEF
-bool Font::is_italic() const noexcept
+bool Font::italic() const noexcept
 {
-  return style & TTF_STYLE_ITALIC;
+  return m_style & TTF_STYLE_ITALIC;
 }
 
 CENTURION_DEF
-bool Font::is_underlined() const noexcept
+bool Font::underlined() const noexcept
 {
-  return style & TTF_STYLE_UNDERLINE;
+  return m_style & TTF_STYLE_UNDERLINE;
 }
 
 CENTURION_DEF
-bool Font::is_strikethrough() const noexcept
+bool Font::strikethrough() const noexcept
 {
-  return style & TTF_STYLE_STRIKETHROUGH;
+  return m_style & TTF_STYLE_STRIKETHROUGH;
 }
 
 CENTURION_DEF
-bool Font::is_outlined() const noexcept
+bool Font::outlined() const noexcept
 {
-  return TTF_GetFontOutline(font);
+  return TTF_GetFontOutline(m_font);
 }
 
 CENTURION_DEF
 bool Font::is_fixed_width() const noexcept
 {
-  return TTF_FontFaceIsFixedWidth(font);
+  return TTF_FontFaceIsFixedWidth(m_font);
 }
 
 CENTURION_DEF
-int Font::get_string_width(const std::string& s) const noexcept
+int Font::string_width(const std::string& s) const noexcept
 {
   int width = 0;
-  TTF_SizeText(font, s.c_str(), &width, nullptr);
+  TTF_SizeText(m_font, s.c_str(), &width, nullptr);
   return width;
 }
 
 CENTURION_DEF
-int Font::get_string_height(const std::string& s) const noexcept
+int Font::string_height(const std::string& s) const noexcept
 {
   int height = 0;
-  TTF_SizeText(font, s.c_str(), nullptr, &height);
+  TTF_SizeText(m_font, s.c_str(), nullptr, &height);
   return height;
 }
 
 CENTURION_DEF
-int Font::get_size() const noexcept
+int Font::size() const noexcept
 {
-  return size;
+  return m_size;
 }
 
 CENTURION_DEF
-int Font::get_height() const noexcept
+int Font::height() const noexcept
 {
-  return TTF_FontHeight(font);
+  return TTF_FontHeight(m_font);
 }
 
 CENTURION_DEF
-int Font::get_descent() const noexcept
+int Font::descent() const noexcept
 {
-  return TTF_FontDescent(font);
+  return TTF_FontDescent(m_font);
 }
 
 CENTURION_DEF
-int Font::get_ascent() const noexcept
+int Font::ascent() const noexcept
 {
-  return TTF_FontAscent(font);
+  return TTF_FontAscent(m_font);
 }
 
 CENTURION_DEF
-int Font::get_line_skip() const noexcept
+int Font::line_skip() const noexcept
 {
-  return TTF_FontLineSkip(font);
+  return TTF_FontLineSkip(m_font);
 }
 
 CENTURION_DEF
-int Font::get_font_faces() const noexcept
+int Font::font_faces() const noexcept
 {
-  return static_cast<int>(TTF_FontFaces(font));
+  return static_cast<int>(TTF_FontFaces(m_font));
 }
 
 CENTURION_DEF
-FontHint Font::get_font_hinting() const noexcept
+FontHint Font::font_hinting() const noexcept
 {
-  return static_cast<FontHint>(TTF_GetFontHinting(font));
+  return static_cast<FontHint>(TTF_GetFontHinting(m_font));
 }
 
 CENTURION_DEF
-std::string Font::get_family_name() const noexcept
+std::string Font::family_name() const noexcept
 {
-  return TTF_FontFaceFamilyName(font);
+  return TTF_FontFaceFamilyName(m_font);
 }
 
 CENTURION_DEF
-Optional<std::string> Font::get_style_name() const noexcept
+Optional<std::string> Font::style_name() const noexcept
 {
-  const auto* name = TTF_FontFaceStyleName(font);
+  const auto* name = TTF_FontFaceStyleName(m_font);
   if (name) {
     return name;
   } else {
@@ -259,15 +259,15 @@ CENTURION_DEF
 std::string Font::to_string() const
 {
   const auto idStr = "Font@" + address_of(this);
-  const auto nameStr = " | Name: " + get_family_name();
-  const auto sizeStr = ", Size: " + std::to_string(get_size());
+  const auto nameStr = " | Name: " + family_name();
+  const auto sizeStr = ", Size: " + std::to_string(size());
   return "[" + idStr + nameStr + sizeStr + "]";
 }
 
 CENTURION_DEF
 Font::operator TTF_Font*() const noexcept
 {
-  return font;
+  return m_font;
 }
 
 }  // namespace video

@@ -32,45 +32,45 @@ std::shared_ptr<MouseState> MouseState::shared()
 CENTURION_DEF
 void MouseState::window_updated(const video::Window& window) noexcept
 {
-  windowWidth = window.get_width();
-  windowHeight = window.get_height();
+  m_windowWidth = window.get_width();
+  m_windowHeight = window.get_height();
 }
 
 CENTURION_DEF
 void MouseState::update() noexcept
 {
-  oldX = mouseX;
-  oldY = mouseY;
-  prevLeftPressed = leftPressed;
-  prevRightPressed = rightPressed;
+  m_oldX = m_mouseX;
+  m_oldY = m_mouseY;
+  m_prevLeftPressed = m_leftPressed;
+  m_prevRightPressed = m_rightPressed;
 
   {
-    const Uint32 mask = SDL_GetMouseState(&mouseX, &mouseY);
-    leftPressed = mask & SDL_BUTTON(SDL_BUTTON_LEFT);
-    rightPressed = mask & SDL_BUTTON(SDL_BUTTON_RIGHT);
+    const Uint32 mask = SDL_GetMouseState(&m_mouseX, &m_mouseY);
+    m_leftPressed = mask & SDL_BUTTON(SDL_BUTTON_LEFT);
+    m_rightPressed = mask & SDL_BUTTON(SDL_BUTTON_RIGHT);
   }
 
   {
     const auto xRatio =
-        static_cast<float>(mouseX) / static_cast<float>(windowWidth);
-    const auto adjustedX = xRatio * static_cast<float>(logicalWidth);
+        static_cast<float>(m_mouseX) / static_cast<float>(m_windowWidth);
+    const auto adjustedX = xRatio * static_cast<float>(m_logicalWidth);
 
     const auto yRatio =
-        static_cast<float>(mouseY) / static_cast<float>(windowHeight);
-    const auto adjustedY = yRatio * static_cast<float>(logicalHeight);
+        static_cast<float>(m_mouseY) / static_cast<float>(m_windowHeight);
+    const auto adjustedY = yRatio * static_cast<float>(m_logicalHeight);
 
-    mouseX = static_cast<int>(adjustedX);
-    mouseY = static_cast<int>(adjustedY);
+    m_mouseX = static_cast<int>(adjustedX);
+    m_mouseY = static_cast<int>(adjustedY);
   }
 }
 
 CENTURION_DEF
 void MouseState::reset() noexcept
 {
-  logicalWidth = 1;
-  logicalHeight = 1;
-  windowWidth = 1;
-  windowHeight = 1;
+  m_logicalWidth = 1;
+  m_logicalHeight = 1;
+  m_windowWidth = 1;
+  m_windowHeight = 1;
 }
 
 CENTURION_DEF
@@ -79,7 +79,7 @@ void MouseState::set_logical_width(int logicalWidth) noexcept
   if (logicalWidth <= 0) {
     logicalWidth = 1;
   }
-  this->logicalWidth = logicalWidth;
+  this->m_logicalWidth = logicalWidth;
 }
 
 CENTURION_DEF
@@ -88,7 +88,7 @@ void MouseState::set_logical_height(int logicalHeight) noexcept
   if (logicalHeight <= 0) {
     logicalHeight = 1;
   }
-  this->logicalHeight = logicalHeight;
+  this->m_logicalHeight = logicalHeight;
 }
 
 CENTURION_DEF
@@ -97,7 +97,7 @@ void MouseState::set_window_width(int windowWidth) noexcept
   if (windowWidth <= 0) {
     windowWidth = 1;
   }
-  this->windowWidth = windowWidth;
+  this->m_windowWidth = windowWidth;
 }
 
 CENTURION_DEF
@@ -106,73 +106,73 @@ void MouseState::set_window_height(int windowHeight) noexcept
   if (windowHeight <= 0) {
     windowHeight = 1;
   }
-  this->windowHeight = windowHeight;
+  this->m_windowHeight = windowHeight;
 }
 
 CENTURION_DEF
-int MouseState::get_mouse_x() const noexcept
+int MouseState::mouse_x() const noexcept
 {
-  return mouseX;
+  return m_mouseX;
 }
 
 CENTURION_DEF
-int MouseState::get_mouse_y() const noexcept
+int MouseState::mouse_y() const noexcept
 {
-  return mouseY;
+  return m_mouseY;
 }
 
 CENTURION_DEF
 bool MouseState::is_left_button_pressed() const noexcept
 {
-  return leftPressed;
+  return m_leftPressed;
 }
 
 CENTURION_DEF
 bool MouseState::is_right_button_pressed() const noexcept
 {
-  return rightPressed;
+  return m_rightPressed;
 }
 
 CENTURION_DEF
 bool MouseState::was_left_button_released() const noexcept
 {
-  return !leftPressed && prevLeftPressed;
+  return !m_leftPressed && m_prevLeftPressed;
 }
 
 CENTURION_DEF
 bool MouseState::was_right_button_released() const noexcept
 {
-  return !rightPressed && prevRightPressed;
+  return !m_rightPressed && m_prevRightPressed;
 }
 
 CENTURION_DEF
 bool MouseState::was_mouse_moved() const noexcept
 {
-  return mouseX != oldX || mouseY != oldY;
+  return m_mouseX != m_oldX || m_mouseY != m_oldY;
 }
 
 CENTURION_DEF
-int MouseState::get_window_width() const noexcept
+int MouseState::window_width() const noexcept
 {
-  return windowWidth;
+  return m_windowWidth;
 }
 
 CENTURION_DEF
-int MouseState::get_window_height() const noexcept
+int MouseState::window_height() const noexcept
 {
-  return windowHeight;
+  return m_windowHeight;
 }
 
 CENTURION_DEF
-int MouseState::get_logical_width() const noexcept
+int MouseState::logical_width() const noexcept
 {
-  return logicalWidth;
+  return m_logicalWidth;
 }
 
 CENTURION_DEF
-int MouseState::get_logical_height() const noexcept
+int MouseState::logical_height() const noexcept
 {
-  return logicalHeight;
+  return m_logicalHeight;
 }
 
 }  // namespace input

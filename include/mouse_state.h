@@ -45,22 +45,6 @@ namespace input {
  * @since 3.0.0
  */
 class MouseState final : public video::IWindowListener {
- private:
-  int mouseX = 0;
-  int mouseY = 0;
-  int oldX = 0;
-  int oldY = 0;
-
-  int logicalWidth = 1;
-  int logicalHeight = 1;
-  int windowWidth = 1;
-  int windowHeight = 1;
-
-  bool leftPressed = false;
-  bool rightPressed = false;
-  bool prevLeftPressed = false;
-  bool prevRightPressed = false;
-
  public:
   /**
    * @since 3.0.0
@@ -164,7 +148,7 @@ class MouseState final : public video::IWindowListener {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_mouse_x() const noexcept;
+  int mouse_x() const noexcept;
 
   /**
    * Returns the y-coordinate of the mouse.
@@ -174,7 +158,7 @@ class MouseState final : public video::IWindowListener {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_mouse_y() const noexcept;
+  int mouse_y() const noexcept;
 
   /**
    * Returns the window width used by the mouse state instance.
@@ -185,7 +169,7 @@ class MouseState final : public video::IWindowListener {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_window_width() const noexcept;
+  int window_width() const noexcept;
 
   /**
    * Returns the window height used by the mouse state instance.
@@ -196,7 +180,7 @@ class MouseState final : public video::IWindowListener {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_window_height() const noexcept;
+  int window_height() const noexcept;
 
   /**
    * Returns the logical width used by the mouse state instance.
@@ -207,7 +191,7 @@ class MouseState final : public video::IWindowListener {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_logical_width() const noexcept;
+  int logical_width() const noexcept;
 
   /**
    * Returns the logical height used by the mouse state instance.
@@ -218,7 +202,7 @@ class MouseState final : public video::IWindowListener {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_logical_height() const noexcept;
+  int logical_height() const noexcept;
 
   /**
    * Indicates whether or not the left mouse button is currently pressed.
@@ -269,6 +253,20 @@ class MouseState final : public video::IWindowListener {
   CENTURION_NODISCARD
   CENTURION_API
   bool was_mouse_moved() const noexcept;
+
+ private:
+  int m_mouseX = 0;
+  int m_mouseY = 0;
+  int m_oldX = 0;
+  int m_oldY = 0;
+  int m_logicalWidth = 1;
+  int m_logicalHeight = 1;
+  int m_windowWidth = 1;
+  int m_windowHeight = 1;
+  bool m_leftPressed = false;
+  bool m_rightPressed = false;
+  bool m_prevLeftPressed = false;
+  bool m_prevRightPressed = false;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

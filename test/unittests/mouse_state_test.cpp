@@ -8,12 +8,12 @@ using namespace centurion::input;
 TEST_CASE("MouseState()", "[MouseState]")
 {
   const MouseState state;
-  CHECK(state.get_logical_width() == 1);
-  CHECK(state.get_logical_height() == 1);
-  CHECK(state.get_window_width() == 1);
-  CHECK(state.get_window_height() == 1);
-  CHECK(state.get_mouse_x() == 0);
-  CHECK(state.get_mouse_y() == 0);
+  CHECK(state.logical_width() == 1);
+  CHECK(state.logical_height() == 1);
+  CHECK(state.window_width() == 1);
+  CHECK(state.window_height() == 1);
+  CHECK(state.mouse_x() == 0);
+  CHECK(state.mouse_y() == 0);
 }
 
 TEST_CASE("MouseState smart pointer factory methods", "[MouseState]")
@@ -47,10 +47,10 @@ TEST_CASE("MouseState::reset", "[MouseState]")
 
   state.reset();
 
-  CHECK(state.get_window_width() == 1);
-  CHECK(state.get_window_height() == 1);
-  CHECK(state.get_logical_width() == 1);
-  CHECK(state.get_logical_height() == 1);
+  CHECK(state.window_width() == 1);
+  CHECK(state.window_height() == 1);
+  CHECK(state.logical_width() == 1);
+  CHECK(state.logical_height() == 1);
 }
 
 TEST_CASE("MouseState::set_logical_width", "[MouseState]")
@@ -60,7 +60,7 @@ TEST_CASE("MouseState::set_logical_width", "[MouseState]")
   const auto width = 821;
   state.set_logical_width(width);
 
-  CHECK(width == state.get_logical_width());
+  CHECK(width == state.logical_width());
 }
 
 TEST_CASE("MouseState::set_logical_height", "[MouseState]")
@@ -70,7 +70,7 @@ TEST_CASE("MouseState::set_logical_height", "[MouseState]")
   const auto height = 219;
   state.set_logical_height(height);
 
-  CHECK(height == state.get_logical_height());
+  CHECK(height == state.logical_height());
 }
 
 TEST_CASE("MouseState::set_window_width", "[MouseState]")
@@ -80,7 +80,7 @@ TEST_CASE("MouseState::set_window_width", "[MouseState]")
   const auto width = 771;
   state.set_window_width(width);
 
-  CHECK(width == state.get_window_width());
+  CHECK(width == state.window_width());
 }
 
 TEST_CASE("MouseState::set_window_height", "[MouseState]")
@@ -90,7 +90,7 @@ TEST_CASE("MouseState::set_window_height", "[MouseState]")
   const auto height = 373;
   state.set_window_height(height);
 
-  CHECK(height == state.get_window_height());
+  CHECK(height == state.window_height());
 }
 
 TEST_CASE("MouseState::is_left_button_pressed", "[MouseState]")

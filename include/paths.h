@@ -40,9 +40,6 @@ namespace system {
  * @since 3.0.0
  */
 class AppPath final {
- private:
-  char* path = nullptr;
-
  public:
   /**
    * Constructs an AppPath object that represents the path of the application
@@ -105,7 +102,10 @@ class AppPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  const char* get() const noexcept { return path; }
+  const char* get() const noexcept { return m_path; }
+
+ private:
+  char* m_path = nullptr;
 };
 
 /**
@@ -115,9 +115,6 @@ class AppPath final {
  * @since 3.0.0
  */
 class PrefPath final {
- private:
-  char* path = nullptr;
-
  public:
   /**
    * Constructs a PrefPath object. Only use letters, numbers, and spaces in the
@@ -172,7 +169,7 @@ class PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  explicit operator bool() const noexcept { return path; }
+  explicit operator bool() const noexcept { return m_path; }
 
   /**
    * Returns a string that represents the preferred path.
@@ -181,7 +178,10 @@ class PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  const char* get() const noexcept { return path; }
+  const char* get() const noexcept { return m_path; }
+
+ private:
+  char* m_path = nullptr;
 };
 
 }  // namespace system

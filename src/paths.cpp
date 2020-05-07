@@ -11,21 +11,21 @@ namespace centurion {
 namespace system {
 
 CENTURION_DEF
-AppPath::AppPath() noexcept : path{SDL_GetBasePath()}
+AppPath::AppPath() noexcept : m_path{SDL_GetBasePath()}
 {}
 
 CENTURION_DEF
 AppPath::~AppPath() noexcept
 {
-  if (path) {
-    SDL_free(path);
+  if (m_path) {
+    SDL_free(m_path);
   }
 }
 
 CENTURION_DEF
 AppPath::operator bool() const noexcept
 {
-  return path;
+  return m_path;
 }
 
 CENTURION_DEF
@@ -42,14 +42,14 @@ std::shared_ptr<AppPath> AppPath::shared()
 
 CENTURION_DEF
 PrefPath::PrefPath(const std::string& org, const std::string& app)
-    : path{SDL_GetPrefPath(org.c_str(), app.c_str())}
+    : m_path{SDL_GetPrefPath(org.c_str(), app.c_str())}
 {}
 
 CENTURION_DEF
 PrefPath::~PrefPath() noexcept
 {
-  if (path) {
-    SDL_free(path);
+  if (m_path) {
+    SDL_free(m_path);
   }
 }
 

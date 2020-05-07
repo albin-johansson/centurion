@@ -47,28 +47,6 @@ class Renderer;
  * @since 4.0.0
  */
 class Surface final {
- private:
-  SDL_Surface* surface = nullptr;
-
-  /**
-   * Destroys the associated SDL_Surface. This method has no effect if the
-   * associated surface is null.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
-  /**
-   * Creates a copy of the internal SDL_Surface, and returns a pointer to it.
-   *
-   * @return a copy of the internal SDL_Surface, the returned pointer won't be
-   * null.
-   * @throws CenturionException if the copy couldn't be created.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  SDL_Surface* copy_surface() const;
-
  public:
   /**
    * @param file the file path of the image file that will be loaded.
@@ -161,7 +139,7 @@ class Surface final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  Uint8 get_alpha() const noexcept;
+  Uint8 alpha() const noexcept;
 
   /**
    * Returns the color modulation of the surface.
@@ -171,7 +149,7 @@ class Surface final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  Color get_color_mod() const noexcept;
+  Color color_mod() const noexcept;
 
   /**
    * Returns the blend mode that is being used by the surface.
@@ -181,7 +159,7 @@ class Surface final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  BlendMode get_blend_mode() const noexcept;
+  BlendMode blend_mode() const noexcept;
 
   /**
    * Returns the width of the surface.
@@ -191,7 +169,7 @@ class Surface final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_width() const noexcept;
+  int width() const noexcept;
 
   /**
    * Returns the height of the surface.
@@ -201,7 +179,7 @@ class Surface final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_height() const noexcept;
+  int height() const noexcept;
 
   /**
    * Returns the pitch (the length of a row of pixels in bytes) of the surface.
@@ -211,7 +189,7 @@ class Surface final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_pitch() const noexcept;
+  int pitch() const noexcept;
 
   /**
    * Converts the surface into its texture equivalent.
@@ -235,6 +213,28 @@ class Surface final {
   CENTURION_NODISCARD
   CENTURION_API
   SDL_Surface* get_internal() const noexcept;
+
+ private:
+  SDL_Surface* m_surface = nullptr;
+
+  /**
+   * Destroys the associated SDL_Surface. This method has no effect if the
+   * associated surface is null.
+   *
+   * @since 4.0.0
+   */
+  void destroy() noexcept;
+
+  /**
+   * Creates a copy of the internal SDL_Surface, and returns a pointer to it.
+   *
+   * @return a copy of the internal SDL_Surface, the returned pointer won't be
+   * null.
+   * @throws CenturionException if the copy couldn't be created.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  SDL_Surface* copy_surface() const;
 };
 
 static_assert(!std::is_nothrow_copy_constructible<Surface>::value,

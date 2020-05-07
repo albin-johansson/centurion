@@ -82,7 +82,7 @@ TEST_CASE("Surface::set_alpha", "[Surface]")
   const auto alpha = 0xCF;
   surface.set_alpha(alpha);
 
-  CHECK(alpha == surface.get_alpha());
+  CHECK(alpha == surface.alpha());
 }
 
 TEST_CASE("Surface::set_color_mod", "[Surface]")
@@ -92,7 +92,7 @@ TEST_CASE("Surface::set_color_mod", "[Surface]")
   const auto& color = hot_pink;
   surface.set_color_mod(color);
 
-  CHECK(color == surface.get_color_mod());
+  CHECK(color == surface.color_mod());
 }
 
 TEST_CASE("Surface::set_blend_mode", "[Surface]")
@@ -102,25 +102,25 @@ TEST_CASE("Surface::set_blend_mode", "[Surface]")
   const auto mode = BlendMode::Mod;
   surface.set_blend_mode(mode);
 
-  CHECK(mode == surface.get_blend_mode());
+  CHECK(mode == surface.blend_mode());
 }
 
-TEST_CASE("Surface::get_width", "[Surface]")
+TEST_CASE("Surface::width", "[Surface]")
 {
   const Surface surface{path};
-  CHECK(surface.get_width() == 200);
+  CHECK(surface.width() == 200);
 }
 
-TEST_CASE("Surface::get_height", "[Surface]")
+TEST_CASE("Surface::height", "[Surface]")
 {
   const Surface surface{path};
-  CHECK(surface.get_height() == 150);
+  CHECK(surface.height() == 150);
 }
 
-TEST_CASE("Surface::get_pitch", "[Surface]")
+TEST_CASE("Surface::pitch", "[Surface]")
 {
   const Surface surface{path};
-  CHECK(surface.get_pitch() == (4 * surface.get_width()));
+  CHECK(surface.pitch() == (4 * surface.width()));
 }
 
 TEST_CASE("Surface::to_texture", "[Surface]")

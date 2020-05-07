@@ -56,7 +56,7 @@ TEST_CASE("Cursor::unique", "[Cursor]")
   SECTION("Out-of-bounds hotspot")
   {
     Surface surface{"resources/panda.png"};
-    math::IPoint hotspot{1, surface.get_height() + 1};
+    math::IPoint hotspot{1, surface.height() + 1};
     CHECK_THROWS_AS(Cursor::unique(surface, hotspot), CenturionException);
   }
 }
@@ -73,7 +73,7 @@ TEST_CASE("Cursor::shared", "[Cursor]")
   SECTION("Out-of-bounds hotspot")
   {
     Surface surface{"resources/panda.png"};
-    math::IPoint hotspot{surface.get_width() + 1, 1};
+    math::IPoint hotspot{surface.width() + 1, 1};
     CHECK_THROWS_AS(Cursor::shared(surface, hotspot), CenturionException);
   }
 }

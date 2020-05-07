@@ -106,52 +106,51 @@ Renderer& Renderer::operator=(Renderer&& other) noexcept
 }
 
 CENTURION_DEF
-void Renderer::clear() const noexcept
+void Renderer::clear() noexcept
 {
   SDL_RenderClear(renderer);
 }
 
 CENTURION_DEF
-void Renderer::present() const noexcept
+void Renderer::present() noexcept
 {
   SDL_RenderPresent(renderer);
 }
 
 CENTURION_DEF
-void Renderer::draw_rect(const math::IRect& rect) const noexcept
+void Renderer::draw_rect(const math::IRect& rect) noexcept
 {
   SDL_RenderDrawRect(renderer, static_cast<const SDL_Rect*>(rect));
 }
 
 CENTURION_DEF
-void Renderer::fill_rect(const math::IRect& rect) const noexcept
+void Renderer::fill_rect(const math::IRect& rect) noexcept
 {
   SDL_RenderFillRect(renderer, static_cast<const SDL_Rect*>(rect));
 }
 
 CENTURION_DEF
-void Renderer::draw_rect_f(const math::FRect& rect) const noexcept
+void Renderer::draw_rect_f(const math::FRect& rect) noexcept
 {
   SDL_RenderDrawRectF(renderer, static_cast<const SDL_FRect*>(rect));
 }
 
 CENTURION_DEF
-void Renderer::fill_rect_f(const math::FRect& rect) const noexcept
+void Renderer::fill_rect_f(const math::FRect& rect) noexcept
 {
   SDL_RenderFillRectF(renderer, static_cast<const SDL_FRect*>(rect));
 }
 
 CENTURION_DEF
 void Renderer::draw_line(const math::IPoint& start,
-                         const math::IPoint& end) const noexcept
+                         const math::IPoint& end) noexcept
 {
   SDL_RenderDrawLine(
       renderer, start.get_x(), start.get_y(), end.get_x(), end.get_y());
 }
 
 CENTURION_DEF
-void Renderer::draw_lines(
-    const std::vector<math::IPoint>& points) const noexcept
+void Renderer::draw_lines(const std::vector<math::IPoint>& points) noexcept
 {
   if (!points.empty()) {
     const auto* firstPoint = static_cast<const SDL_Point*>(points.front());
@@ -161,15 +160,14 @@ void Renderer::draw_lines(
 
 CENTURION_DEF
 void Renderer::draw_line_f(const math::FPoint& start,
-                           const math::FPoint& end) const noexcept
+                           const math::FPoint& end) noexcept
 {
   SDL_RenderDrawLineF(
       renderer, start.get_x(), start.get_y(), end.get_x(), end.get_y());
 }
 
 CENTURION_DEF
-void Renderer::render(const Texture& texture,
-                      math::IPoint position) const noexcept
+void Renderer::render(const Texture& texture, math::IPoint position) noexcept
 {
   const SDL_Rect dst{position.get_x(),
                      position.get_y(),
@@ -179,8 +177,7 @@ void Renderer::render(const Texture& texture,
 }
 
 CENTURION_DEF
-void Renderer::render(const Texture& texture,
-                      const math::IRect& rect) const noexcept
+void Renderer::render(const Texture& texture, const math::IRect& rect) noexcept
 {
   const auto* dst = static_cast<const SDL_Rect*>(rect);
   SDL_RenderCopy(renderer, texture, nullptr, dst);
@@ -189,7 +186,7 @@ void Renderer::render(const Texture& texture,
 CENTURION_DEF
 void Renderer::render(const Texture& texture,
                       const math::IRect& src,
-                      const math::IRect& dst) const noexcept
+                      const math::IRect& dst) noexcept
 {
   SDL_RenderCopy(renderer,
                  texture,
@@ -201,7 +198,7 @@ CENTURION_DEF
 void Renderer::render(const Texture& texture,
                       const math::IRect& src,
                       const math::IRect& dst,
-                      double angle) const noexcept
+                      double angle) noexcept
 {
   SDL_RenderCopyEx(renderer,
                    texture,
@@ -217,7 +214,7 @@ void Renderer::render(const Texture& texture,
                       const math::IRect& src,
                       const math::IRect& dst,
                       double angle,
-                      math::IPoint center) const noexcept
+                      math::IPoint center) noexcept
 {
   SDL_RenderCopyEx(renderer,
                    texture,
@@ -232,7 +229,7 @@ CENTURION_DEF
 void Renderer::render(const Texture& texture,
                       const math::IRect& src,
                       const math::IRect& dst,
-                      SDL_RendererFlip flip) const noexcept
+                      SDL_RendererFlip flip) noexcept
 {
   SDL_RenderCopyEx(renderer,
                    texture,
@@ -249,7 +246,7 @@ void Renderer::render(const Texture& texture,
                       const math::IRect& dst,
                       double angle,
                       math::IPoint center,
-                      SDL_RendererFlip flip) const noexcept
+                      SDL_RendererFlip flip) noexcept
 {
   SDL_RenderCopyEx(renderer,
                    texture,
@@ -261,8 +258,7 @@ void Renderer::render(const Texture& texture,
 }
 
 CENTURION_DEF
-void Renderer::render_f(const Texture& texture,
-                        math::FPoint position) const noexcept
+void Renderer::render_f(const Texture& texture, math::FPoint position) noexcept
 {
   const auto dst = SDL_FRect{position.get_x(),
                              position.get_y(),
@@ -273,7 +269,7 @@ void Renderer::render_f(const Texture& texture,
 
 CENTURION_DEF
 void Renderer::render_f(const Texture& texture,
-                        const math::FRect& rect) const noexcept
+                        const math::FRect& rect) noexcept
 {
   const auto* dst = static_cast<const SDL_FRect*>(rect);
   SDL_RenderCopyF(renderer, texture, nullptr, dst);
@@ -282,7 +278,7 @@ void Renderer::render_f(const Texture& texture,
 CENTURION_DEF
 void Renderer::render_f(const Texture& texture,
                         const math::IRect& src,
-                        const math::FRect& dst) const noexcept
+                        const math::FRect& dst) noexcept
 {
   SDL_RenderCopyF(renderer,
                   texture,
@@ -294,7 +290,7 @@ CENTURION_DEF
 void Renderer::render_f(const Texture& texture,
                         const math::IRect& src,
                         const math::FRect& dst,
-                        double angle) const noexcept
+                        double angle) noexcept
 {
   SDL_RenderCopyExF(renderer,
                     texture,
@@ -310,7 +306,7 @@ void Renderer::render_f(const Texture& texture,
                         const math::IRect& src,
                         const math::FRect& dst,
                         double angle,
-                        math::FPoint center) const noexcept
+                        math::FPoint center) noexcept
 {
   SDL_RenderCopyExF(renderer,
                     texture,
@@ -325,7 +321,7 @@ CENTURION_DEF
 void Renderer::render_f(const Texture& texture,
                         const math::IRect& src,
                         const math::FRect& dst,
-                        SDL_RendererFlip flip) const noexcept
+                        SDL_RendererFlip flip) noexcept
 {
   SDL_RenderCopyExF(renderer,
                     texture,
@@ -342,7 +338,7 @@ void Renderer::render_f(const Texture& texture,
                         const math::FRect& dst,
                         double angle,
                         math::FPoint center,
-                        SDL_RendererFlip flip) const noexcept
+                        SDL_RendererFlip flip) noexcept
 {
   SDL_RenderCopyExF(renderer,
                     texture,
@@ -354,8 +350,7 @@ void Renderer::render_f(const Texture& texture,
 }
 
 CENTURION_DEF
-void Renderer::render_t(const Texture& texture,
-                        math::IPoint position) const noexcept
+void Renderer::render_t(const Texture& texture, math::IPoint position) noexcept
 {
   const auto tx =
       position.get_x() - static_cast<int>(translationViewport.get_x());
@@ -366,7 +361,7 @@ void Renderer::render_t(const Texture& texture,
 
 CENTURION_DEF
 void Renderer::render_t(const Texture& texture,
-                        const math::IRect& rect) const noexcept
+                        const math::IRect& rect) noexcept
 {
   const auto tx = rect.get_x() - static_cast<int>(translationViewport.get_x());
   const auto ty = rect.get_y() - static_cast<int>(translationViewport.get_y());
@@ -376,7 +371,7 @@ void Renderer::render_t(const Texture& texture,
 CENTURION_DEF
 void Renderer::render_t(const Texture& texture,
                         const math::IRect& src,
-                        const math::IRect& dst) const noexcept
+                        const math::IRect& dst) noexcept
 {
   const auto tx = dst.get_x() - static_cast<int>(translationViewport.get_x());
   const auto ty = dst.get_y() - static_cast<int>(translationViewport.get_y());
@@ -387,7 +382,7 @@ CENTURION_DEF
 void Renderer::render_t(const Texture& texture,
                         const math::IRect& src,
                         const math::IRect& dst,
-                        double angle) const noexcept
+                        double angle) noexcept
 {
   const auto tx = dst.get_x() - static_cast<int>(translationViewport.get_x());
   const auto ty = dst.get_y() - static_cast<int>(translationViewport.get_y());
@@ -399,7 +394,7 @@ void Renderer::render_t(const Texture& texture,
                         const math::IRect& src,
                         const math::IRect& dst,
                         double angle,
-                        math::IPoint center) const noexcept
+                        math::IPoint center) noexcept
 {
   const auto tx = dst.get_x() - static_cast<int>(translationViewport.get_x());
   const auto ty = dst.get_y() - static_cast<int>(translationViewport.get_y());
@@ -411,7 +406,7 @@ CENTURION_DEF
 void Renderer::render_t(const Texture& texture,
                         const math::IRect& src,
                         const math::IRect& dst,
-                        SDL_RendererFlip flip) const noexcept
+                        SDL_RendererFlip flip) noexcept
 {
   const auto tx = dst.get_x() - static_cast<int>(translationViewport.get_x());
   const auto ty = dst.get_y() - static_cast<int>(translationViewport.get_y());
@@ -424,7 +419,7 @@ void Renderer::render_t(const Texture& texture,
                         const math::IRect& dst,
                         double angle,
                         math::IPoint center,
-                        SDL_RendererFlip flip) const noexcept
+                        SDL_RendererFlip flip) noexcept
 {
   const auto tx = dst.get_x() - static_cast<int>(translationViewport.get_x());
   const auto ty = dst.get_y() - static_cast<int>(translationViewport.get_y());
@@ -437,8 +432,7 @@ void Renderer::render_t(const Texture& texture,
 }
 
 CENTURION_DEF
-void Renderer::render_tf(const Texture& texture,
-                         math::FPoint position) const noexcept
+void Renderer::render_tf(const Texture& texture, math::FPoint position) noexcept
 {
   const auto tx = position.get_x() - translationViewport.get_x();
   const auto ty = position.get_y() - translationViewport.get_y();
@@ -447,7 +441,7 @@ void Renderer::render_tf(const Texture& texture,
 
 CENTURION_DEF
 void Renderer::render_tf(const Texture& texture,
-                         const math::FRect& rect) const noexcept
+                         const math::FRect& rect) noexcept
 {
   const auto tx = rect.get_x() - translationViewport.get_x();
   const auto ty = rect.get_y() - translationViewport.get_y();
@@ -457,7 +451,7 @@ void Renderer::render_tf(const Texture& texture,
 CENTURION_DEF
 void Renderer::render_tf(const Texture& texture,
                          const math::IRect& src,
-                         const math::FRect& dst) const noexcept
+                         const math::FRect& dst) noexcept
 {
   const auto tx = dst.get_x() - translationViewport.get_x();
   const auto ty = dst.get_y() - translationViewport.get_y();
@@ -468,7 +462,7 @@ CENTURION_DEF
 void Renderer::render_tf(const Texture& texture,
                          const math::IRect& src,
                          const math::FRect& dst,
-                         double angle) const noexcept
+                         double angle) noexcept
 {
   const auto tx = dst.get_x() - translationViewport.get_x();
   const auto ty = dst.get_y() - translationViewport.get_y();
@@ -480,7 +474,7 @@ void Renderer::render_tf(const Texture& texture,
                          const math::IRect& src,
                          const math::FRect& dst,
                          double angle,
-                         math::FPoint center) const noexcept
+                         math::FPoint center) noexcept
 {
   const auto tx = dst.get_x() - translationViewport.get_x();
   const auto ty = dst.get_y() - translationViewport.get_y();
@@ -492,7 +486,7 @@ CENTURION_DEF
 void Renderer::render_tf(const Texture& texture,
                          const math::IRect& src,
                          const math::FRect& dst,
-                         SDL_RendererFlip flip) const noexcept
+                         SDL_RendererFlip flip) noexcept
 {
   const auto tx = dst.get_x() - translationViewport.get_x();
   const auto ty = dst.get_y() - translationViewport.get_y();
@@ -505,7 +499,7 @@ void Renderer::render_tf(const Texture& texture,
                          const math::FRect& dst,
                          double angle,
                          math::FPoint center,
-                         SDL_RendererFlip flip) const noexcept
+                         SDL_RendererFlip flip) noexcept
 {
   const auto tx = dst.get_x() - translationViewport.get_x();
   const auto ty = dst.get_y() - translationViewport.get_y();
@@ -518,9 +512,7 @@ void Renderer::render_tf(const Texture& texture,
 }
 
 CENTURION_DEF
-void Renderer::render_text(const char* text,
-                           math::IRect pos,
-                           const Font& font) const
+void Renderer::render_text(const char* text, math::IRect pos, const Font& font)
 {
   if (text) {
     const auto texture = create_image(text, font);
@@ -533,7 +525,7 @@ void Renderer::render_text(const char* text,
 CENTURION_DEF
 void Renderer::render_text_f(const char* text,
                              math::FRect pos,
-                             const Font& font) const
+                             const Font& font)
 {
   if (text) {
     const auto texture = create_image(text, font);
@@ -544,7 +536,7 @@ void Renderer::render_text_f(const char* text,
 }
 
 CENTURION_DEF
-void Renderer::set_color(const Color& color) const noexcept
+void Renderer::set_color(const Color& color) noexcept
 {
   SDL_SetRenderDrawColor(
       renderer, color.red(), color.green(), color.blue(), color.alpha());

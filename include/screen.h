@@ -59,7 +59,7 @@ class Screen final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static bool is_screen_saver_enabled() noexcept;
+  static bool screen_saver_enabled() noexcept;
 
   /**
    * Returns the width of the screen.
@@ -69,7 +69,7 @@ class Screen final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static int get_width() noexcept;
+  static int width() noexcept;
 
   /**
    * Returns the height of the screen.
@@ -79,7 +79,7 @@ class Screen final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static int get_height() noexcept;
+  static int height() noexcept;
 
   /**
    * Returns the refresh rate of the screen.
@@ -89,7 +89,7 @@ class Screen final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static int get_refresh_rate() noexcept;
+  static int refresh_rate() noexcept;
 
   /**
    * Returns the pixel format of the desktop display mode.
@@ -99,7 +99,7 @@ class Screen final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static video::PixelFormat get_pixel_format() noexcept;
+  static video::PixelFormat pixel_format() noexcept;
 };
 
 }  // namespace system

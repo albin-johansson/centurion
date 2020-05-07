@@ -19,13 +19,13 @@ void Screen::set_screen_saver_enabled(bool enabled) noexcept
 }
 
 CENTURION_DEF
-bool Screen::is_screen_saver_enabled() noexcept
+bool Screen::screen_saver_enabled() noexcept
 {
   return SDL_IsScreenSaverEnabled();
 }
 
 CENTURION_DEF
-int Screen::get_width() noexcept
+int Screen::width() noexcept
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
@@ -33,7 +33,7 @@ int Screen::get_width() noexcept
 }
 
 CENTURION_DEF
-int Screen::get_height() noexcept
+int Screen::height() noexcept
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
@@ -41,7 +41,7 @@ int Screen::get_height() noexcept
 }
 
 CENTURION_DEF
-int Screen::get_refresh_rate() noexcept
+int Screen::refresh_rate() noexcept
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
@@ -49,7 +49,7 @@ int Screen::get_refresh_rate() noexcept
 }
 
 CENTURION_DEF
-video::PixelFormat Screen::get_pixel_format() noexcept
+video::PixelFormat Screen::pixel_format() noexcept
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);

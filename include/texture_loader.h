@@ -47,9 +47,6 @@ class Renderer;
  * @since 3.0.0
  */
 class TextureLoader final {
- private:
-  std::shared_ptr<Renderer> renderer;
-
  public:
   /**
    * @param renderer a shared pointer to the associated renderer instance, may
@@ -126,6 +123,9 @@ class TextureLoader final {
                                       TextureAccess access,
                                       int width,
                                       int height) const;
+
+ private:
+  std::shared_ptr<Renderer> m_renderer;
 };
 
 using ImageGenerator = TextureLoader;  // for compatibility

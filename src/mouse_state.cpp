@@ -32,8 +32,8 @@ std::shared_ptr<MouseState> MouseState::shared()
 CENTURION_DEF
 void MouseState::window_updated(const video::Window& window) noexcept
 {
-  m_windowWidth = window.get_width();
-  m_windowHeight = window.get_height();
+  m_windowWidth = window.width();
+  m_windowHeight = window.height();
 }
 
 CENTURION_DEF

@@ -32,15 +32,15 @@ TEST_CASE("Window(string, int, int)", "[Window]")
   const auto title = "Foo";
   const Window window{title, width, height};
 
-  CHECK(window.get_width() == width);
-  CHECK(window.get_height() == height);
-  CHECK(window.get_title() == title);
-  CHECK(!window.is_visible());
+  CHECK(window.width() == width);
+  CHECK(window.height() == height);
+  CHECK(window.title() == title);
+  CHECK(!window.visible());
 
   SECTION("Null title")
   {
     const Window window{nullptr, 10, 10};
-    CHECK_THAT(window.get_title(), Catch::Equals(""));
+    CHECK_THAT(window.title(), Catch::Equals(""));
   }
 }
 
@@ -50,20 +50,20 @@ TEST_CASE("Window(int, int)", "[Window]")
   const auto height = 715;
   const Window window{width, height};
 
-  CHECK(window.get_width() == width);
-  CHECK(window.get_height() == height);
-  CHECK(window.get_title() == "Centurion window");
-  CHECK(!window.is_visible());
+  CHECK(window.width() == width);
+  CHECK(window.height() == height);
+  CHECK(window.title() == "Centurion window");
+  CHECK(!window.visible());
 }
 
 TEST_CASE("Window()", "[Window]")
 {
   const Window window;
 
-  CHECK(window.get_width() == 800);
-  CHECK(window.get_height() == 600);
-  CHECK(window.get_title() == "Centurion window");
-  CHECK(!window.is_visible());
+  CHECK(window.width() == 800);
+  CHECK(window.height() == 600);
+  CHECK(window.title() == "Centurion window");
+  CHECK(!window.visible());
 }
 
 TEST_CASE("Window(Window&&)", "[Window]")
@@ -125,7 +125,7 @@ TEST_CASE("Window::show", "[Window]")
   window.add_window_listener(listener);
 
   window.show();
-  CHECK(window.is_visible());
+  CHECK(window.visible());
   CHECK(listener->counter > 0);
 }
 
@@ -137,7 +137,7 @@ TEST_CASE("Window::hide", "[Window]")
   window.add_window_listener(listener);
 
   window.hide();
-  CHECK(!window.is_visible());
+  CHECK(!window.visible());
   CHECK(listener->counter > 0);
 }
 
@@ -151,13 +151,13 @@ TEST_CASE("Window::center", "[Window]")
   SDL_DisplayMode dm;
   SDL_GetDesktopDisplayMode(0, &dm);
 
-  const auto x = (dm.w - window.get_width()) / 2;
-  const auto y = (dm.h - window.get_height()) / 2;
+  const auto x = (dm.w - window.width()) / 2;
+  const auto y = (dm.h - window.height()) / 2;
 
   window.center();
 
-  CHECK(x == window.get_x());
-  CHECK(y == window.get_y());
+  CHECK(x == window.x());
+  CHECK(y == window.y());
   CHECK(listener->counter > 0);
 }
 
@@ -230,10 +230,10 @@ TEST_CASE("Window::set_fullscreen", "[Window]")
   window.add_window_listener(listener);
 
   window.set_fullscreen(true);
-  CHECK(window.is_fullscreen());
+  CHECK(window.fullscreen());
 
   window.set_fullscreen(false);
-  CHECK(!window.is_fullscreen());
+  CHECK(!window.fullscreen());
 
   CHECK(listener->counter > 0);
 }
@@ -245,10 +245,10 @@ TEST_CASE("Window::set_resizable", "[Window]")
   window.add_window_listener(listener);
 
   window.set_resizable(true);
-  CHECK(window.is_resizable());
+  CHECK(window.resizable());
 
   window.set_resizable(false);
-  CHECK(!window.is_resizable());
+  CHECK(!window.resizable());
 
   CHECK(listener->counter > 0);
 }
@@ -268,7 +268,7 @@ TEST_CASE("Window::set_width", "[Window]")
 
   const auto width = 812;
   window.set_width(width);
-  CHECK(window.get_width() == width);
+  CHECK(window.width() == width);
 
   CHECK(listener->counter > 0);
 }
@@ -288,12 +288,12 @@ TEST_CASE("Window::set_height", "[Window]")
 
   const auto height = 327;
   window.set_height(height);
-  CHECK(window.get_height() == height);
+  CHECK(window.height() == height);
 
   CHECK(listener->counter > 0);
 }
 
-TEST_CASE("Window::set_grab_mouse && Window::is_grabbing_mouse", "[Window]")
+TEST_CASE("Window::set_grab_mouse && Window::grabbing_mouse", "[Window]")
 {
   //  Window window;
   //  window.show();
@@ -307,7 +307,7 @@ TEST_CASE("Window::set_grab_mouse && Window::is_grabbing_mouse", "[Window]")
   //  CHECK(!window.is_grabbing_mouse());
 }
 
-TEST_CASE("Window::get_title && Window::set_title", "[Window]")
+TEST_CASE("Window::title && Window::set_title", "[Window]")
 {
   const auto title = "HelloWorld";
   Window window{title};
@@ -315,29 +315,29 @@ TEST_CASE("Window::get_title && Window::set_title", "[Window]")
   auto listener = std::make_shared<Incrementer>();
   window.add_window_listener(listener);
 
-  CHECK(window.get_title() == title);
+  CHECK(window.title() == title);
 
   const auto* other = "foo";
   window.set_title(other);
 
-  CHECK(window.get_title() == other);
+  CHECK(window.title() == other);
   CHECK(listener->counter > 0);
 }
 
-TEST_CASE("Window::set_opacity && Window::get_opacity", "[Window]")
+TEST_CASE("Window::set_opacity && Window::opacity", "[Window]")
 {
   Window window;
   auto listener = std::make_shared<Incrementer>();
   window.add_window_listener(listener);
 
-  CHECK(window.get_opacity() == 1);
+  CHECK(window.opacity() == 1);
 
   SECTION("Windowed mode")
   {
     const auto opacity = 0.4f;
     window.set_opacity(opacity);
 
-    CHECK(window.get_opacity() == opacity);
+    CHECK(window.opacity() == opacity);
   }
 
   SECTION("Fullscreen mode")
@@ -348,13 +348,13 @@ TEST_CASE("Window::set_opacity && Window::get_opacity", "[Window]")
     const auto opacity = 0.75f;
     window.set_opacity(opacity);
 
-    CHECK(window.get_opacity() == opacity);
+    CHECK(window.opacity() == opacity);
   }
 
   CHECK(listener->counter > 0);
 }
 
-TEST_CASE("Window::get_position && Window::set_position", "[Window]")
+TEST_CASE("Window::position && Window::set_position", "[Window]")
 {
   const auto x = 467;
   const auto y = 246;
@@ -367,12 +367,12 @@ TEST_CASE("Window::get_position && Window::set_position", "[Window]")
 
   CHECK(listener->counter > 0);
 
-  const auto pos = window.get_position();
+  const auto pos = window.position();
   CHECK(x == pos.x());
   CHECK(y == pos.y());
 }
 
-TEST_CASE("Window::set_decorated && Window::is_decorated", "[Window]")
+TEST_CASE("Window::set_decorated && Window::decorated", "[Window]")
 {
   //  Window window;
   //  CHECK(window.is_decorated());
@@ -384,7 +384,7 @@ TEST_CASE("Window::set_decorated && Window::is_decorated", "[Window]")
   //  CHECK(window.is_decorated());
 }
 
-TEST_CASE("Window::set_min_size && Window::get_min_size", "[Window]")
+TEST_CASE("Window::set_min_size && Window::min_size", "[Window]")
 {
   Window window;
 
@@ -397,12 +397,12 @@ TEST_CASE("Window::set_min_size && Window::get_min_size", "[Window]")
   window.set_min_size(width, height);
   CHECK(listener->counter > 0);
 
-  const auto [actualWidth, actualHeight] = window.get_min_size();
+  const auto [actualWidth, actualHeight] = window.min_size();
   CHECK(width == actualWidth);
   CHECK(height == actualHeight);
 }
 
-TEST_CASE("Window::set_max_size && Window::get_max_size", "[Window]")
+TEST_CASE("Window::set_max_size && Window::max_size", "[Window]")
 {
   Window window;
 
@@ -415,7 +415,7 @@ TEST_CASE("Window::set_max_size && Window::get_max_size", "[Window]")
   window.set_max_size(width, height);
   CHECK(listener->counter > 0);
 
-  const auto [actualWidth, actualHeight] = window.get_max_size();
+  const auto [actualWidth, actualHeight] = window.max_size();
   CHECK(width == actualWidth);
   CHECK(height == actualHeight);
 }
@@ -445,44 +445,44 @@ TEST_CASE("Window::set_brightness", "[Window]")
   window.set_brightness(brightness);
 
   CHECK(listener->counter > 0);
-  CHECK(window.get_brightness() == brightness);
+  CHECK(window.brightness() == brightness);
 
   SECTION("Test clamping of bad arguments")
   {
     const auto tooHigh = 1.7f;
     window.set_brightness(tooHigh);
-    CHECK(window.get_brightness() == 1);
+    CHECK(window.brightness() == 1);
 
     const auto tooLow = -1.4f;
     window.set_brightness(tooLow);
-    CHECK(window.get_brightness() == 0);
+    CHECK(window.brightness() == 0);
   }
 }
 
-TEST_CASE("Window::get_brightness", "[Window]")
+TEST_CASE("Window::brightness", "[Window]")
 {
   const Window window;
-  CHECK(window.get_brightness() == 1);
+  CHECK(window.brightness() == 1);
 }
 
-TEST_CASE("Window::get_display_index", "[Window]")
+TEST_CASE("Window::display_index", "[Window]")
 {
   const Window window;
-  const auto index = window.get_display_index();
+  const auto index = window.display_index();
   CHECK(index);
   CHECK(*index == 0);
 }
 
-TEST_CASE("Window::get_renderer", "[Window]")
+TEST_CASE("Window::renderer", "[Window]")
 {
   const Window window;
 
-  CHECK(!window.get_renderer());
+  CHECK(!window.renderer());
 
   const Renderer renderer{window};
   SDL_Renderer* sdlRenderer = renderer;
 
-  CHECK(window.get_renderer() == sdlRenderer);
+  CHECK(window.renderer() == sdlRenderer);
 }
 
 TEST_CASE("Window to SDL_Window*", "[Window]")

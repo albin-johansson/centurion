@@ -542,14 +542,14 @@ TEST_CASE("Renderer::output_width", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK(renderer.output_width() == window.get_width());
+  CHECK(renderer.output_width() == window.width());
 }
 
 TEST_CASE("Renderer::output_height", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK(renderer.output_height() == window.get_height());
+  CHECK(renderer.output_height() == window.height());
 }
 
 TEST_CASE("Renderer::output_size", "[Renderer]")
@@ -557,8 +557,8 @@ TEST_CASE("Renderer::output_size", "[Renderer]")
   Window window;
   Renderer renderer{window};
   const auto [width, height] = renderer.output_size();
-  CHECK(width == window.get_width());
-  CHECK(height == window.get_height());
+  CHECK(width == window.width());
+  CHECK(height == window.height());
 }
 
 TEST_CASE("Renderer::vsync_enabled", "[Renderer]")
@@ -627,8 +627,8 @@ TEST_CASE("Renderer::viewport", "[Renderer]")
   Renderer renderer{window};
 
   const auto viewport = renderer.viewport();
-  CHECK(viewport.width() == window.get_width());
-  CHECK(viewport.height() == window.get_height());
+  CHECK(viewport.width() == window.width());
+  CHECK(viewport.height() == window.height());
 }
 
 TEST_CASE("Renderer::set_translation_viewport", "[Renderer]")

@@ -123,9 +123,6 @@ bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept;
  * @since 3.0.0
  */
 class Music final {
- private:
-  Mix_Music* music = nullptr;
-
  public:
   /**
    * @param file the file path of the music file that will be loaded.
@@ -275,7 +272,7 @@ class Music final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static bool is_playing() noexcept;
+  static bool playing() noexcept;
 
   /**
    * Indicates whether or not any music is paused.
@@ -285,7 +282,7 @@ class Music final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static bool is_paused() noexcept;
+  static bool paused() noexcept;
 
   /**
    * Indicates whether or not any music is currently being faded in or out.
@@ -296,7 +293,7 @@ class Music final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static bool is_fading() noexcept;
+  static bool fading() noexcept;
 
   /**
    * Returns the volume of all music. The default value is set to
@@ -307,7 +304,7 @@ class Music final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static int get_volume() noexcept;
+  static int volume() noexcept;
 
   /**
    * Returns the current fade status of the music playback.
@@ -317,7 +314,7 @@ class Music final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static FadeStatus get_fade_status() noexcept;
+  static FadeStatus fade_status() noexcept;
 
   /**
    * Returns the type of the music.
@@ -327,7 +324,7 @@ class Music final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  MusicType get_music_type() const noexcept;
+  MusicType music_type() const noexcept;
 
   /**
    * Returns a textual representation of the Music instance.
@@ -348,6 +345,9 @@ class Music final {
   CENTURION_NODISCARD
   CENTURION_API
   operator Mix_Music*() const noexcept;
+
+ private:
+  Mix_Music* m_music = nullptr;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

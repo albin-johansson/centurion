@@ -13,8 +13,8 @@ namespace audio {
 CENTURION_DEF
 Music::Music(const std::string& file)
 {
-  music = Mix_LoadMUS(file.c_str());
-  if (!music) {
+  m_music = Mix_LoadMUS(file.c_str());
+  if (!m_music) {
     throw CenturionException{"Failed to create music! " + Error::msg()};
   }
 }
@@ -22,27 +22,27 @@ Music::Music(const std::string& file)
 CENTURION_DEF
 Music::Music(Music&& other) noexcept
 {
-  Mix_FreeMusic(music);
+  Mix_FreeMusic(m_music);
 
-  music = other.music;
-  other.music = nullptr;
+  m_music = other.m_music;
+  other.m_music = nullptr;
 }
 
 CENTURION_DEF
 Music::~Music() noexcept
 {
-  if (music) {
-    Mix_FreeMusic(music);
+  if (m_music) {
+    Mix_FreeMusic(m_music);
   }
 }
 
 CENTURION_DEF
 Music& Music::operator=(Music&& other) noexcept
 {
-  Mix_FreeMusic(music);
+  Mix_FreeMusic(m_music);
 
-  music = other.music;
-  other.music = nullptr;
+  m_music = other.m_music;
+  other.m_music = nullptr;
 
   return *this;
 }
@@ -65,7 +65,7 @@ void Music::play(int nLoops) noexcept
   if (nLoops < -1) {
     nLoops = -1;
   }
-  Mix_PlayMusic(music, nLoops);
+  Mix_PlayMusic(m_music, nLoops);
 }
 
 CENTURION_DEF
@@ -95,13 +95,13 @@ void Music::fade_in(int ms, int nLoops) noexcept
   if (nLoops < -1) {
     nLoops = -1;
   }
-  Mix_FadeInMusic(music, nLoops, ms);
+  Mix_FadeInMusic(m_music, nLoops, ms);
 }
 
 CENTURION_DEF
 void Music::fade_out(int ms)
 {
-  if (is_fading()) {
+  if (fading()) {
     return;
   }
   if (ms < 0) {
@@ -122,40 +122,40 @@ void Music::set_volume(int volume) noexcept
 }
 
 CENTURION_DEF
-bool Music::is_playing() noexcept
+bool Music::playing() noexcept
 {
   return Mix_PlayingMusic();
 }
 
 CENTURION_DEF
-bool Music::is_paused() noexcept
+bool Music::paused() noexcept
 {
   return Mix_PausedMusic();
 }
 
 CENTURION_DEF
-bool Music::is_fading() noexcept
+bool Music::fading() noexcept
 {
-  const auto status = get_fade_status();
+  const auto status = fade_status();
   return status == FadeStatus::In || status == FadeStatus::Out;
 }
 
 CENTURION_DEF
-int Music::get_volume() noexcept
+int Music::volume() noexcept
 {
   return Mix_VolumeMusic(-1);
 }
 
 CENTURION_DEF
-FadeStatus Music::get_fade_status() noexcept
+FadeStatus Music::fade_status() noexcept
 {
   return static_cast<FadeStatus>(Mix_FadingMusic());
 }
 
 CENTURION_DEF
-MusicType Music::get_music_type() const noexcept
+MusicType Music::music_type() const noexcept
 {
-  return static_cast<MusicType>(Mix_GetMusicType(music));
+  return static_cast<MusicType>(Mix_GetMusicType(m_music));
 }
 
 CENTURION_DEF
@@ -167,7 +167,7 @@ std::string Music::to_string() const
 CENTURION_DEF
 Music::operator Mix_Music*() const noexcept
 {
-  return music;
+  return m_music;
 }
 
 CENTURION_DEF

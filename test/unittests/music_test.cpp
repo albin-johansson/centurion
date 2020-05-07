@@ -29,15 +29,15 @@ TEST_CASE("Music::play", "[Music]")
 {
   Music music{path};
   music.play();
-  CHECK(Music::is_playing());
-  CHECK(!Music::is_fading());
-  CHECK(!Music::is_paused());
-  CHECK(Music::get_fade_status() == FadeStatus::None);
+  CHECK(Music::playing());
+  CHECK(!Music::fading());
+  CHECK(!Music::paused());
+  CHECK(Music::fade_status() == FadeStatus::None);
 
   Music::halt();
 
   music.play(loopForever);
-  CHECK(Music::is_playing());
+  CHECK(Music::playing());
 
   Music::halt();
 }
@@ -52,10 +52,10 @@ TEST_CASE("Music::resume", "[Music]")
   CHECK_NOTHROW(Music::resume());
 
   Music::pause();
-  CHECK(Music::is_paused());
+  CHECK(Music::paused());
 
   Music::resume();
-  CHECK(Music::is_playing());
+  CHECK(Music::playing());
 
   Music::halt();
   CHECK_NOTHROW(Music::resume());
@@ -69,11 +69,11 @@ TEST_CASE("Music::pause", "[Music]")
 
   music.play();
   Music::pause();
-  CHECK(Music::is_paused());
+  CHECK(Music::paused());
 
   music.fade_in(100);
   Music::pause();
-  CHECK(Music::is_paused());
+  CHECK(Music::paused());
 }
 
 TEST_CASE("Music::halt", "[Music]")
@@ -85,19 +85,19 @@ TEST_CASE("Music::halt", "[Music]")
   music.play();
   Music::halt();
 
-  CHECK(!Music::is_playing());
-  CHECK(!Music::is_fading());
+  CHECK(!Music::playing());
+  CHECK(!Music::fading());
 
   music.fade_in(100);
   Music::halt();
 
-  CHECK(!Music::is_playing());
-  CHECK(!Music::is_fading());
+  CHECK(!Music::playing());
+  CHECK(!Music::fading());
 }
 
 TEST_CASE("Music::fade_in", "[Music]")
 {
-  CHECK(!Music::is_fading());
+  CHECK(!Music::fading());
 
   Music music{path};
   CHECK_NOTHROW(music.fade_in(-1));
@@ -105,133 +105,133 @@ TEST_CASE("Music::fade_in", "[Music]")
   Music::halt();
 
   music.fade_in(100);
-  CHECK(Music::is_fading());
+  CHECK(Music::fading());
 }
 
 TEST_CASE("Music::fade_out", "[Music]")
 {
-  CHECK(!Music::is_fading());
+  CHECK(!Music::fading());
   CHECK_NOTHROW(Music::fade_out(100));
   CHECK_NOTHROW(Music::fade_out(-1));
 
   Music music{path};
   music.fade_in(100);
 
-  CHECK(Music::is_fading());
+  CHECK(Music::fading());
 }
 
 TEST_CASE("Music::set_volume", "[Music]")
 {
-  const auto originalVolume = Music::get_volume();
+  const auto originalVolume = Music::volume();
 
   SECTION("Valid volume")
   {
     const auto volume = 102;
     Music::set_volume(volume);
-    CHECK(volume == Music::get_volume());
+    CHECK(volume == Music::volume());
   }
 
   SECTION("Negative volume")
   {
     const auto volume = -1;
     Music::set_volume(volume);
-    CHECK(Music::get_volume() == 0);
+    CHECK(Music::volume() == 0);
   }
 
   SECTION("Volume overflow")
   {
     const auto volume = maxVolume + 1;
     Music::set_volume(volume);
-    CHECK(maxVolume == Music::get_volume());
+    CHECK(maxVolume == Music::volume());
   }
 
   Music::set_volume(originalVolume);
 }
 
-TEST_CASE("Music::is_playing", "[Music]")
+TEST_CASE("Music::playing", "[Music]")
 {
-  CHECK(!Music::is_playing());
+  CHECK(!Music::playing());
 
   Music music{path};
 
   music.play();
-  CHECK(Music::is_playing());
+  CHECK(Music::playing());
 
   Music::halt();
 
   music.fade_in(100);
-  CHECK(Music::is_playing());
+  CHECK(Music::playing());
 }
 
-TEST_CASE("Music::is_paused", "[Music]")
+TEST_CASE("Music::paused", "[Music]")
 {
-  CHECK(!Music::is_paused());
+  CHECK(!Music::paused());
 
   Music music{path};
   music.play();
 
   Music::pause();
-  CHECK(Music::is_paused());
+  CHECK(Music::paused());
 }
 
-TEST_CASE("Music::is_fading", "[Music]")
+TEST_CASE("Music::fading", "[Music]")
 {
-  CHECK(!Music::is_fading());
+  CHECK(!Music::fading());
 
   Music music{path};
 
   music.play();
-  CHECK(!Music::is_fading());
+  CHECK(!Music::fading());
   Music::halt();
 
   music.fade_in(200);
-  CHECK(Music::is_fading());
+  CHECK(Music::fading());
 
   Music::fade_out(
       50);  // This should have no effect, since the music is fading in
-  CHECK(Music::get_fade_status() == FadeStatus::In);
+  CHECK(Music::fade_status() == FadeStatus::In);
 }
 
-TEST_CASE("Music::get_volume", "[Music]")
+TEST_CASE("Music::volume", "[Music]")
 {
-  CHECK(Music::get_volume() == maxVolume);
+  CHECK(Music::volume() == maxVolume);
 
   const auto volume = 47;
   Music::set_volume(volume);
 
-  CHECK(Music::get_volume() == volume);
+  CHECK(Music::volume() == volume);
 }
 
-TEST_CASE("Music::get_fade_status", "[Music]")
+TEST_CASE("Music::fade_status", "[Music]")
 {
-  CHECK(Music::get_fade_status() == FadeStatus::None);
-  CHECK(!Music::is_fading());
+  CHECK(Music::fade_status() == FadeStatus::None);
+  CHECK(!Music::fading());
 
   Music music{path};
 
   music.fade_in(100);
-  CHECK(Music::get_fade_status() == FadeStatus::In);
-  CHECK(Music::is_fading());
-  CHECK(Music::is_playing());
-  CHECK(!Music::is_paused());
+  CHECK(Music::fade_status() == FadeStatus::In);
+  CHECK(Music::fading());
+  CHECK(Music::playing());
+  CHECK(!Music::paused());
 
   Music::halt();
 
   music.play();
   Music::fade_out(100);
-  CHECK(Music::get_fade_status() == FadeStatus::Out);
-  CHECK(Music::is_fading());
-  CHECK(Music::is_playing());
-  CHECK(!Music::is_paused());
+  CHECK(Music::fade_status() == FadeStatus::Out);
+  CHECK(Music::fading());
+  CHECK(Music::playing());
+  CHECK(!Music::paused());
 
   Music::halt();
-  CHECK(Music::get_fade_status() == FadeStatus::None);
+  CHECK(Music::fade_status() == FadeStatus::None);
 }
 
-TEST_CASE("Music::get_music_type", "[Music]")
+TEST_CASE("Music::music_type", "[Music]")
 {
   Music music{path};
-  CHECK(music.get_music_type() == MusicType::MP3);
+  CHECK(music.music_type() == MusicType::MP3);
 }
 
 TEST_CASE("Music::to_string", "[Music]")

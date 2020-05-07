@@ -7,7 +7,7 @@ namespace centurion {
 namespace system {
 
 CENTURION_DEF
-Optional<int> Battery::get_seconds_left() noexcept
+Optional<int> Battery::seconds_left() noexcept
 {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
@@ -19,9 +19,9 @@ Optional<int> Battery::get_seconds_left() noexcept
 }
 
 CENTURION_DEF
-Optional<int> Battery::get_minutes_left() noexcept
+Optional<int> Battery::minutes_left() noexcept
 {
-  const auto secondsLeft = get_seconds_left();
+  const auto secondsLeft = seconds_left();
   if (secondsLeft) {
     return *secondsLeft / 60;
   } else {
@@ -30,7 +30,7 @@ Optional<int> Battery::get_minutes_left() noexcept
 }
 
 CENTURION_DEF
-Optional<int> Battery::get_percentage() noexcept
+Optional<int> Battery::percentage() noexcept
 {
   int percentageLeft = -1;
   SDL_GetPowerInfo(nullptr, &percentageLeft);
@@ -42,7 +42,7 @@ Optional<int> Battery::get_percentage() noexcept
 }
 
 CENTURION_DEF
-PowerState Battery::get_state() noexcept
+PowerState Battery::state() noexcept
 {
   return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 }
@@ -50,7 +50,7 @@ PowerState Battery::get_state() noexcept
 CENTURION_DEF
 bool Battery::exists() noexcept
 {
-  return get_state() == PowerState::OnBattery;
+  return state() == PowerState::OnBattery;
 }
 
 CENTURION_DEF

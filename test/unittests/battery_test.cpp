@@ -19,11 +19,11 @@ TEST_CASE("PowerState enum", "[PowerState]")
   CHECK(SDL_POWERSTATE_CHARGED == PowerState::Charged);
 }
 
-TEST_CASE("Battery::get_percentage", "[Battery]")
+TEST_CASE("Battery::percentage", "[Battery]")
 {
-  CHECK_NOTHROW(Battery::get_percentage());
+  CHECK_NOTHROW(Battery::percentage());
 
-  const auto percentage = Battery::get_percentage();
+  const auto percentage = Battery::percentage();
   if (percentage) {
     int actual = -1;
     SDL_GetPowerInfo(nullptr, &actual);
@@ -31,11 +31,11 @@ TEST_CASE("Battery::get_percentage", "[Battery]")
   }
 }
 
-TEST_CASE("Battery::get_minutes_left", "[Battery]")
+TEST_CASE("Battery::minutes_left", "[Battery]")
 {
-  CHECK_NOTHROW(Battery::get_minutes_left());
+  CHECK_NOTHROW(Battery::minutes_left());
 
-  const auto minutes = Battery::get_minutes_left();
+  const auto minutes = Battery::minutes_left();
   if (minutes) {
     int secs = -1;
     SDL_GetPowerInfo(&secs, nullptr);
@@ -43,11 +43,11 @@ TEST_CASE("Battery::get_minutes_left", "[Battery]")
   }
 }
 
-TEST_CASE("Battery::get_state", "[Battery]")
+TEST_CASE("Battery::state", "[Battery]")
 {
-  CHECK_NOTHROW(Battery::get_state());
+  CHECK_NOTHROW(Battery::state());
 
-  const auto state = Battery::get_state();
+  const auto state = Battery::state();
   const auto actual =
       static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 
@@ -56,5 +56,5 @@ TEST_CASE("Battery::get_state", "[Battery]")
 
 TEST_CASE("Battery::exists", "[Battery]")
 {
-  CHECK(Battery::exists() == (Battery::get_state() == PowerState::OnBattery));
+  CHECK(Battery::exists() == (Battery::state() == PowerState::OnBattery));
 }

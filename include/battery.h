@@ -105,7 +105,7 @@ class Battery final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static Optional<int> get_seconds_left() noexcept;
+  static Optional<int> seconds_left() noexcept;
 
   /**
    * Returns the amount of minutes of battery life that is remaining.
@@ -116,7 +116,7 @@ class Battery final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static Optional<int> get_minutes_left() noexcept;
+  static Optional<int> minutes_left() noexcept;
 
   /**
    * Returns the percentage of battery life that is currently left.
@@ -127,7 +127,7 @@ class Battery final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static Optional<int> get_percentage() noexcept;
+  static Optional<int> percentage() noexcept;
 
   /**
    * Returns the current power state.
@@ -137,11 +137,11 @@ class Battery final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static PowerState get_state() noexcept;
+  static PowerState state() noexcept;
 
   /**
    * Indicates whether or not the system is running on a battery. This method
-   * is simply a convenience method that is based on the <code>get_state()
+   * is simply a convenience method that is based on the <code>state()
    * </code> method.
    *
    * @return true if the system is running on a battery; false otherwise.

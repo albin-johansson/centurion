@@ -36,7 +36,7 @@ Cursor::Cursor(const Surface& surface_, math::IPoint hotspot)
     throw CenturionException{"Failed to create color cursor!"};
   }
 
-  cursor = SDL_CreateColorCursor(surface, hotspot.get_x(), hotspot.get_y());
+  cursor = SDL_CreateColorCursor(surface, hotspot.x(), hotspot.y());
   if (!cursor) {
     throw CenturionException{"Failed to create color cursor!"};
   }

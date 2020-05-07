@@ -192,7 +192,7 @@ class Rect final {
   CENTURION_NODISCARD
   constexpr bool contains(Point<T> point) const noexcept
   {
-    return contains(point.get_x(), point.get_y());
+    return contains(point.x(), point.y());
   }
 
   /**

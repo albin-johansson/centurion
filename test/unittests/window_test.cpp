@@ -368,8 +368,8 @@ TEST_CASE("Window::get_position && Window::set_position", "[Window]")
   CHECK(listener->counter > 0);
 
   const auto pos = window.get_position();
-  CHECK(x == pos.get_x());
-  CHECK(y == pos.get_y());
+  CHECK(x == pos.x());
+  CHECK(y == pos.y());
 }
 
 TEST_CASE("Window::set_decorated && Window::is_decorated", "[Window]")

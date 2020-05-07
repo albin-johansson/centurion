@@ -63,10 +63,6 @@ constexpr Point<U> operator+(const Point<U>& lhs, const Point<U>& rhs) noexcept;
  */
 template <typename T = float>
 class Point final {
- private:
-  T x = 0;
-  T y = 0;
-
  public:
   /**
    * Creates a point with coordinates (0, 0).
@@ -82,7 +78,7 @@ class Point final {
    * @param py the y-coordinate of the point.
    * @since 4.0.0
    */
-  constexpr Point(T px, T py) noexcept : x{px}, y{py} {}
+  constexpr Point(T px, T py) noexcept : m_x{px}, m_y{py} {}
 
   /**
    * Sets the x-coordinate of the point.
@@ -90,7 +86,7 @@ class Point final {
    * @param px the new x-coordinate of the point.
    * @since 4.0.0
    */
-  constexpr void set_x(T px) noexcept { x = px; }
+  constexpr void set_x(T px) noexcept { m_x = px; }
 
   /**
    * Sets the y-coordinate of the point.
@@ -98,7 +94,7 @@ class Point final {
    * @param py the new y-coordinate of the point.
    * @since 4.0.0
    */
-  constexpr void set_y(T py) noexcept { y = py; }
+  constexpr void set_y(T py) noexcept { m_y = py; }
 
   /**
    * Sets the values of the x- and y-coordinates of the point.
@@ -109,8 +105,8 @@ class Point final {
    */
   constexpr void set(T px, T py) noexcept
   {
-    x = px;
-    y = py;
+    m_x = px;
+    m_y = py;
   }
 
   /**
@@ -121,8 +117,8 @@ class Point final {
    */
   constexpr void set(const Point<T>& other) noexcept
   {
-    x = other.x;
-    y = other.y;
+    m_x = other.m_x;
+    m_y = other.m_y;
   }
 
   /**
@@ -136,7 +132,7 @@ class Point final {
   CENTURION_NODISCARD
   T distance_to(const Point<T>& other) const noexcept
   {
-    return std::sqrt(std::abs(x - other.x) + std::abs(y - other.y));
+    return std::sqrt(std::abs(m_x - other.m_x) + std::abs(m_y - other.m_y));
   }
 
   /**
@@ -148,7 +144,7 @@ class Point final {
   CENTURION_NODISCARD
   std::string to_string() const
   {
-    return "[Point | X: " + std::to_string(x) + ", Y: " + std::to_string(y) +
+    return "[Point | X: " + std::to_string(m_x) + ", Y: " + std::to_string(m_y) +
            "]";
   }
 
@@ -159,7 +155,7 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_x() const noexcept { return x; }
+  constexpr T x() const noexcept { return m_x; }
 
   /**
    * Returns the y-coordinate of the point.
@@ -168,7 +164,7 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_y() const noexcept { return y; }
+  constexpr T y() const noexcept { return m_y; }
 
   /**
    * Indicates whether or not the point is considered to be equal to the
@@ -184,7 +180,7 @@ class Point final {
   CENTURION_NODISCARD type_if_floating<U> equals(
       const Point<T>& other, T epsilon = 0.0001) const noexcept
   {
-    return std::abs(x - other.x) < epsilon && std::abs(y - other.y) < epsilon;
+    return std::abs(m_x - other.m_x) < epsilon && std::abs(m_y - other.m_y) < epsilon;
   }
 
   /**
@@ -196,7 +192,7 @@ class Point final {
   CENTURION_NODISCARD
   constexpr SDL_Point to_sdl_point() const noexcept
   {
-    return {static_cast<int>(x), static_cast<int>(y)};
+    return {static_cast<int>(m_x), static_cast<int>(m_y)};
   }
 
   /**
@@ -208,7 +204,7 @@ class Point final {
   CENTURION_NODISCARD
   constexpr SDL_FPoint to_sdl_fpoint() const noexcept
   {
-    return {static_cast<float>(x), static_cast<float>(y)};
+    return {static_cast<float>(m_x), static_cast<float>(m_y)};
   }
 
   /**
@@ -325,9 +321,12 @@ class Point final {
   CENTURION_NODISCARD
   friend bool operator!=<T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
+ private:
+  T m_x = 0;
+  T m_y = 0;
+
   static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
                 "Point type must be either integral or floating-point!");
-
   static_assert(std::is_trivial<T>::value, "Point type must be trivial!");
 };
 
@@ -335,21 +334,21 @@ template <typename T>
 inline constexpr Point<T> operator+(const Point<T>& lhs,
                                     const Point<T>& rhs) noexcept
 {
-  return Point<T>{lhs.x + rhs.x, lhs.y + rhs.y};
+  return Point<T>{lhs.m_x + rhs.m_x, lhs.m_y + rhs.m_y};
 }
 
 template <typename T>
 inline constexpr Point<T> operator-(const Point<T>& lhs,
                                     const Point<T>& rhs) noexcept
 {
-  return Point<T>{lhs.x - rhs.x, lhs.y - rhs.y};
+  return Point<T>{lhs.m_x - rhs.m_x, lhs.m_y - rhs.m_y};
 }
 
 template <typename T>
 inline constexpr bool operator==(const Point<T>& lhs,
                                  const Point<T>& rhs) noexcept
 {
-  return lhs.x == rhs.x && lhs.y == rhs.y;
+  return lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y;
 }
 
 template <typename T>

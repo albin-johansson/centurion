@@ -146,7 +146,7 @@ void Renderer::draw_line(const math::IPoint& start,
                          const math::IPoint& end) noexcept
 {
   SDL_RenderDrawLine(
-      renderer, start.get_x(), start.get_y(), end.get_x(), end.get_y());
+      renderer, start.x(), start.y(), end.x(), end.y());
 }
 
 CENTURION_DEF
@@ -163,14 +163,13 @@ void Renderer::draw_line_f(const math::FPoint& start,
                            const math::FPoint& end) noexcept
 {
   SDL_RenderDrawLineF(
-      renderer, start.get_x(), start.get_y(), end.get_x(), end.get_y());
+      renderer, start.x(), start.y(), end.x(), end.y());
 }
 
 CENTURION_DEF
 void Renderer::render(const Texture& texture, math::IPoint position) noexcept
 {
-  const SDL_Rect dst{position.get_x(),
-                     position.get_y(),
+  const SDL_Rect dst{position.x(), position.y(),
                      texture.get_width(),
                      texture.get_height()};
   SDL_RenderCopy(renderer, texture, nullptr, &dst);
@@ -260,8 +259,8 @@ void Renderer::render(const Texture& texture,
 CENTURION_DEF
 void Renderer::render_f(const Texture& texture, math::FPoint position) noexcept
 {
-  const auto dst = SDL_FRect{position.get_x(),
-                             position.get_y(),
+  const auto dst = SDL_FRect{position.x(),
+                             position.y(),
                              static_cast<float>(texture.get_width()),
                              static_cast<float>(texture.get_height())};
   SDL_RenderCopyF(renderer, texture, nullptr, &dst);
@@ -352,10 +351,8 @@ void Renderer::render_f(const Texture& texture,
 CENTURION_DEF
 void Renderer::render_t(const Texture& texture, math::IPoint position) noexcept
 {
-  const auto tx =
-      position.get_x() - static_cast<int>(translationViewport.get_x());
-  const auto ty =
-      position.get_y() - static_cast<int>(translationViewport.get_y());
+  const auto tx = position.x() - static_cast<int>(translationViewport.get_x());
+  const auto ty = position.y() - static_cast<int>(translationViewport.get_y());
   render(texture, {tx, ty});
 }
 
@@ -434,8 +431,8 @@ void Renderer::render_t(const Texture& texture,
 CENTURION_DEF
 void Renderer::render_tf(const Texture& texture, math::FPoint position) noexcept
 {
-  const auto tx = position.get_x() - translationViewport.get_x();
-  const auto ty = position.get_y() - translationViewport.get_y();
+  const auto tx = position.x() - translationViewport.get_x();
+  const auto ty = position.y() - translationViewport.get_y();
   render_f(texture, {tx, ty});
 }
 

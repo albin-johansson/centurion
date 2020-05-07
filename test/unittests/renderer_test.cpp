@@ -627,8 +627,8 @@ TEST_CASE("Renderer::get_viewport", "[Renderer]")
   Renderer renderer{window};
 
   const auto viewport = renderer.get_viewport();
-  CHECK(viewport.get_width() == window.get_width());
-  CHECK(viewport.get_height() == window.get_height());
+  CHECK(viewport.width() == window.get_width());
+  CHECK(viewport.height() == window.get_height());
 }
 
 TEST_CASE("Renderer::set_translation_viewport", "[Renderer]")
@@ -641,10 +641,10 @@ TEST_CASE("Renderer::set_translation_viewport", "[Renderer]")
 
   const auto rendererViewport = renderer.get_translation_viewport();
 
-  CHECK(rendererViewport.get_x() == viewport.get_x());
-  CHECK(rendererViewport.get_y() == viewport.get_y());
-  CHECK(rendererViewport.get_width() == viewport.get_width());
-  CHECK(rendererViewport.get_height() == viewport.get_height());
+  CHECK(rendererViewport.x() == viewport.x());
+  CHECK(rendererViewport.y() == viewport.y());
+  CHECK(rendererViewport.width() == viewport.width());
+  CHECK(rendererViewport.height() == viewport.height());
 }
 
 TEST_CASE("Renderer::get_translation_viewport", "[Renderer]")
@@ -654,10 +654,10 @@ TEST_CASE("Renderer::get_translation_viewport", "[Renderer]")
 
   const auto viewport = renderer.get_translation_viewport();
 
-  CHECK(viewport.get_x() == 0);
-  CHECK(viewport.get_y() == 0);
-  CHECK(viewport.get_width() == 0);
-  CHECK(viewport.get_height() == 0);
+  CHECK(viewport.x() == 0);
+  CHECK(viewport.y() == 0);
+  CHECK(viewport.width() == 0);
+  CHECK(viewport.height() == 0);
 }
 
 TEST_CASE("Renderer clipping", "[Renderer]")
@@ -682,10 +682,10 @@ TEST_CASE("Renderer clipping", "[Renderer]")
 
   const auto rendererClip = *renderer.get_clip();
 
-  CHECK(clip.get_x() == rendererClip.get_x());
-  CHECK(clip.get_y() == rendererClip.get_y());
-  CHECK(clip.get_width() == rendererClip.get_width());
-  CHECK(clip.get_height() == rendererClip.get_height());
+  CHECK(clip.x() == rendererClip.x());
+  CHECK(clip.y() == rendererClip.y());
+  CHECK(clip.width() == rendererClip.width());
+  CHECK(clip.height() == rendererClip.height());
 }
 
 TEST_CASE("Renderer::set_target", "[Renderer]")

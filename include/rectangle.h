@@ -61,12 +61,6 @@ constexpr bool operator!=(const Rect<U>& lhs, const Rect<U>& rhs) noexcept;
  */
 template <typename T = float>
 class Rect final {
- private:
-  T x = 0;
-  T y = 0;
-  T width = 0;
-  T height = 0;
-
  public:
   /**
    * Creates a rectangle with the components (0, 0, 0, 0).
@@ -83,7 +77,7 @@ class Rect final {
    * @since 4.0.0
    */
   constexpr Rect(T x, T y, T width, T height) noexcept
-      : x{x}, y{y}, width{width}, height{height}
+      : m_x{x}, m_y{y}, m_width{width}, m_height{height}
   {}
 
   /**
@@ -92,7 +86,7 @@ class Rect final {
    * @param rx the new x-coordinate of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_x(T rx) noexcept { x = rx; }
+  constexpr void set_x(T rx) noexcept { m_x = rx; }
 
   /**
    * Sets the y-coordinate of the rectangle.
@@ -100,7 +94,7 @@ class Rect final {
    * @param ry the new y-coordinate of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_y(T ry) noexcept { y = ry; }
+  constexpr void set_y(T ry) noexcept { m_y = ry; }
 
   /**
    * Sets the width of the rectangle.
@@ -108,7 +102,7 @@ class Rect final {
    * @param rwidth the new width of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_width(T rwidth) noexcept { width = rwidth; }
+  constexpr void set_width(T rwidth) noexcept { m_width = rwidth; }
 
   /**
    * Sets the height of the rectangle.
@@ -116,7 +110,7 @@ class Rect final {
    * @param rheight the new height of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_height(T rheight) noexcept { height = rheight; }
+  constexpr void set_height(T rheight) noexcept { m_height = rheight; }
 
   /**
    * Sets all of the components of the rectangle.
@@ -129,10 +123,10 @@ class Rect final {
    */
   constexpr void set(T rx, T ry, T rwidth, T rheight) noexcept
   {
-    x = rx;
-    y = ry;
-    width = rwidth;
-    height = rheight;
+    m_x = rx;
+    m_y = ry;
+    m_width = rwidth;
+    m_height = rheight;
   }
 
   /**
@@ -144,10 +138,10 @@ class Rect final {
    */
   constexpr void set(const Rect<T>& other) noexcept
   {
-    x = other.x;
-    y = other.y;
-    width = other.width;
-    height = other.height;
+    m_x = other.m_x;
+    m_y = other.m_y;
+    m_width = other.m_width;
+    m_height = other.m_height;
   }
 
   /**
@@ -160,8 +154,8 @@ class Rect final {
   CENTURION_NODISCARD
   constexpr bool intersects(const Rect<T>& other) const noexcept
   {
-    return !(x >= other.get_max_x() || get_max_x() <= other.x ||
-             y >= other.get_max_y() || get_max_y() <= other.y);
+    return !(m_x >= other.max_x() || max_x() <= other.m_x ||
+             m_y >= other.max_y() || max_y() <= other.m_y);
   }
 
   /**
@@ -177,7 +171,7 @@ class Rect final {
   CENTURION_NODISCARD
   constexpr bool contains(T px, T py) const noexcept
   {
-    return !(px < x || py < y || px > get_max_x() || py > get_max_y());
+    return !(px < m_x || py < m_y || px > max_x() || py > max_y());
   }
 
   /**
@@ -202,7 +196,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_x() const noexcept { return x; }
+  constexpr T x() const noexcept { return m_x; }
 
   /**
    * Returns the y-coordinate of the rectangle.
@@ -211,7 +205,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_y() const noexcept { return y; }
+  constexpr T y() const noexcept { return m_y; }
 
   /**
    * Returns the width of the rectangle.
@@ -220,7 +214,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_width() const noexcept { return width; }
+  constexpr T width() const noexcept { return m_width; }
 
   /**
    * Returns the height of the rectangle.
@@ -229,7 +223,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_height() const noexcept { return height; }
+  constexpr T height() const noexcept { return m_height; }
 
   /**
    * Returns the maximum x-coordinate of the rectangle.
@@ -238,7 +232,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_max_x() const noexcept { return x + width; }
+  constexpr T max_x() const noexcept { return m_x + m_width; }
 
   /**
    * Returns the maximum y-coordinate of the rectangle.
@@ -247,7 +241,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_max_y() const noexcept { return y + height; }
+  constexpr T max_y() const noexcept { return m_y + m_height; }
 
   /**
    * Returns the x-coordinate of the center point of the rectangle.
@@ -256,7 +250,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_center_x() const noexcept { return x + (width / 2); }
+  constexpr T center_x() const noexcept { return m_x + (m_width / 2); }
 
   /**
    * Returns the y-coordinate of the center point of the rectangle.
@@ -265,7 +259,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T get_center_y() const noexcept { return y + (height / 2); }
+  constexpr T center_y() const noexcept { return m_y + (m_height / 2); }
 
   /**
    * Returns the center point of the rectangle.
@@ -274,9 +268,9 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr Point<T> get_center() const noexcept
+  constexpr Point<T> center() const noexcept
   {
-    return {get_center_x(), get_center_y()};
+    return {center_x(), center_y()};
   }
 
   /**
@@ -287,7 +281,10 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr bool has_area() const noexcept { return width > 0 && height > 0; }
+  constexpr bool has_area() const noexcept
+  {
+    return m_width > 0 && m_height > 0;
+  }
 
   /**
    * Calculates and returns a rectangle that represents the union of two
@@ -319,10 +316,10 @@ class Rect final {
   CENTURION_NODISCARD
   std::string to_string() const
   {
-    const auto sx = std::to_string(x);
-    const auto sy = std::to_string(y);
-    const auto sw = std::to_string(width);
-    const auto sh = std::to_string(height);
+    const auto sx = std::to_string(m_x);
+    const auto sy = std::to_string(m_y);
+    const auto sw = std::to_string(m_width);
+    const auto sh = std::to_string(m_height);
     return "[Rect | X: " + sx + ", Y: " + sy + ", Width: " + sw +
            ", Height: " + sh + "]";
   }
@@ -413,9 +410,14 @@ class Rect final {
   CENTURION_NODISCARD
   friend bool operator!=<T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
+ private:
+  T m_x = 0;
+  T m_y = 0;
+  T m_width = 0;
+  T m_height = 0;
+
   static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
                 "Rect type must be either integral or floating-point!");
-
   static_assert(std::is_trivial<T>::value, "Rect type must be trivial!");
 };
 
@@ -423,8 +425,8 @@ template <typename T>
 inline constexpr bool operator==(const Rect<T>& lhs,
                                  const Rect<T>& rhs) noexcept
 {
-  return lhs.x == rhs.x && lhs.y == rhs.y && lhs.width == rhs.width &&
-         lhs.height == rhs.height;
+  return lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y &&
+         lhs.m_width == rhs.m_width && lhs.m_height == rhs.m_height;
 }
 
 template <typename T>

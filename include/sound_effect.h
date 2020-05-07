@@ -42,21 +42,6 @@ namespace audio {
  * @since 3.0.0
  */
 class SoundEffect final {
- private:
-  static constexpr int undefinedChannel = -1;
-
-  Mix_Chunk* chunk = nullptr;
-  int channel = undefinedChannel;
-
-  /**
-   * Activates the sound effect by playing it the specified amount of times.
-   *
-   * @param nLoops the amount of times to play the sound effect.
-   * @since 3.0.0
-   */
-  CENTURION_API
-  void activate(int nLoops) noexcept;
-
  public:
   /**
    * @param file the file path of the audio file.
@@ -176,7 +161,7 @@ class SoundEffect final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_volume() const noexcept;
+  int volume() const noexcept;
 
   /**
    * Indicates whether or not the sound effect is currently playing.
@@ -186,7 +171,7 @@ class SoundEffect final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  bool is_playing() const noexcept;
+  bool playing() const noexcept;
 
   /**
    * Returns a textual representation of the sound effect.
@@ -214,7 +199,22 @@ class SoundEffect final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  static constexpr int get_max_volume() noexcept { return MIX_MAX_VOLUME; }
+  static constexpr int max_volume() noexcept { return MIX_MAX_VOLUME; }
+
+ private:
+  static constexpr int undefinedChannel = -1;
+
+  Mix_Chunk* m_chunk = nullptr;
+  int m_channel = undefinedChannel;
+
+  /**
+   * Activates the sound effect by playing it the specified amount of times.
+   *
+   * @param nLoops the amount of times to play the sound effect.
+   * @since 3.0.0
+   */
+  CENTURION_API
+  void activate(int nLoops) noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

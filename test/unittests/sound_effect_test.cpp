@@ -38,16 +38,16 @@ TEST_CASE("SoundEffect::play", "[SoundEffect]")
 {
   SoundEffect sound{path};
 
-  CHECK(!sound.is_playing());
+  CHECK(!sound.playing());
 
   sound.play();
-  CHECK(sound.is_playing());
+  CHECK(sound.playing());
 
   sound.stop();
-  CHECK(!sound.is_playing());
+  CHECK(!sound.playing());
 
   sound.play(5);
-  CHECK(sound.is_playing());
+  CHECK(sound.playing());
 }
 
 TEST_CASE("SoundEffect looping", "[SoundEffect]")
@@ -56,16 +56,16 @@ TEST_CASE("SoundEffect looping", "[SoundEffect]")
   sound.set_volume(1);
 
   sound.play(10);
-  CHECK(sound.is_playing());
+  CHECK(sound.playing());
   sound.stop();
 
   CHECK(loopForever < 0);
 
   CHECK_NOTHROW(sound.play(loopForever));
-  CHECK(sound.is_playing());
+  CHECK(sound.playing());
 
   sound.stop();
-  CHECK(!sound.is_playing());
+  CHECK(!sound.playing());
 }
 
 TEST_CASE("SoundEffect::stop", "[SoundEffect]")
@@ -74,7 +74,7 @@ TEST_CASE("SoundEffect::stop", "[SoundEffect]")
 
   sound.play();
   sound.stop();
-  CHECK(!sound.is_playing());
+  CHECK(!sound.playing());
 }
 
 TEST_CASE("SoundEffect::fade_in", "[SoundEffect]")
@@ -85,10 +85,10 @@ TEST_CASE("SoundEffect::fade_in", "[SoundEffect]")
   sound.stop();
 
   CHECK_NOTHROW(sound.fade_in(0));
-  CHECK(!sound.is_playing());
+  CHECK(!sound.playing());
 
   sound.fade_in(100);
-  CHECK(sound.is_playing());
+  CHECK(sound.playing());
 }
 
 TEST_CASE("SoundEffect::fade_out", "[SoundEffect]")
@@ -96,14 +96,14 @@ TEST_CASE("SoundEffect::fade_out", "[SoundEffect]")
   SoundEffect sound{path};
 
   CHECK_NOTHROW(sound.fade_out(0));
-  CHECK(!sound.is_playing());
+  CHECK(!sound.playing());
 
   sound.play();
   sound.fade_out(10);
-  CHECK(sound.is_playing());
+  CHECK(sound.playing());
 
   system::Timer::sleep(1000);
-  CHECK(!sound.is_playing());
+  CHECK(!sound.playing());
 }
 
 TEST_CASE("SoundEffect:set_volume", "[SoundEffect]")
@@ -114,39 +114,39 @@ TEST_CASE("SoundEffect:set_volume", "[SoundEffect]")
   {
     const auto volume = 27;
     sound.set_volume(volume);
-    CHECK(volume == sound.get_volume());
+    CHECK(volume == sound.volume());
   }
 
   SECTION("Volume underflow")
   {
     const auto volume = -1;
     sound.set_volume(volume);
-    CHECK(sound.get_volume() == 0);
+    CHECK(sound.volume() == 0);
   }
 
   SECTION("Volume overflow")
   {
     const auto volume = maxVolume + 1;
     sound.set_volume(volume);
-    CHECK(sound.get_volume() == maxVolume);
+    CHECK(sound.volume() == maxVolume);
   }
 }
 
-TEST_CASE("SoundEffect::get_volume", "[SoundEffect]")
+TEST_CASE("SoundEffect::volume", "[SoundEffect]")
 {
   SoundEffect sound{path};
-  CHECK(sound.get_volume() == maxVolume);
-  CHECK(sound.get_volume() == 128);  // because of the documentation guarantee
+  CHECK(sound.volume() == maxVolume);
+  CHECK(sound.volume() == 128);  // because of the documentation guarantee
   CHECK(maxVolume == MIX_MAX_VOLUME);
 }
 
-TEST_CASE("SoundEffect::is_playing", "[SoundEffect]")
+TEST_CASE("SoundEffect::playing", "[SoundEffect]")
 {
   SoundEffect sound{path};
 
-  CHECK(!sound.is_playing());
+  CHECK(!sound.playing());
   sound.play(2);
-  CHECK(sound.is_playing());
+  CHECK(sound.playing());
 }
 
 TEST_CASE("SoundEffect::to_string", "[SoundEffect]")
@@ -155,9 +155,9 @@ TEST_CASE("SoundEffect::to_string", "[SoundEffect]")
   Log::msgf(Category::Test, "%s", sound.to_string().c_str());
 }
 
-TEST_CASE("SoundEffect::get_max_volume", "[SoundEffect]")
+TEST_CASE("SoundEffect::max_volume", "[SoundEffect]")
 {
-  CHECK(SoundEffect::get_max_volume() == MIX_MAX_VOLUME);
+  CHECK(SoundEffect::max_volume() == MIX_MAX_VOLUME);
 }
 
 #endif

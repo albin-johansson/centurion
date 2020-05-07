@@ -4,18 +4,14 @@
 
 using namespace centurion::system;
 
-TEST_CASE("CPU::get_cache_line_size", "[CPU]")
+TEST_CASE("CPU::cache_line_size", "[CPU]")
 {
-  const auto size = CPU::get_cache_line_size();
-  const auto sdlSize = SDL_GetCPUCacheLineSize();
-  CHECK(size == sdlSize);
+  CHECK(CPU::cache_line_size() == SDL_GetCPUCacheLineSize());
 }
 
-TEST_CASE("CPU::get_cores", "[CPU]")
+TEST_CASE("CPU::cores", "[CPU]")
 {
-  const auto size = CPU::get_cores();
-  const auto sdlSize = SDL_GetCPUCount();
-  CHECK(size == sdlSize);
+  CHECK(CPU::cores() == SDL_GetCPUCount());
 }
 
 TEST_CASE("CPU::is_little_endian", "[CPU]")

@@ -7,13 +7,13 @@ namespace centurion {
 namespace system {
 
 CENTURION_DEF
-int CPU::get_cache_line_size() noexcept
+int CPU::cache_line_size() noexcept
 {
   return SDL_GetCPUCacheLineSize();
 }
 
 CENTURION_DEF
-int CPU::get_cores() noexcept
+int CPU::cores() noexcept
 {
   return SDL_GetCPUCount();
 }

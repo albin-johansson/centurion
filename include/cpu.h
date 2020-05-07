@@ -50,7 +50,7 @@ class CPU final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static int get_cache_line_size() noexcept;
+  static int cache_line_size() noexcept;
 
   /**
    * Returns the amount of cores that the CPU has.
@@ -60,7 +60,7 @@ class CPU final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static int get_cores() noexcept;
+  static int cores() noexcept;
 
   /**
    * Indicates whether or not the CPU has the RDTSC instruction.
@@ -192,6 +192,8 @@ class CPU final {
   CENTURION_NODISCARD
   CENTURION_API
   static bool has_neon() noexcept;
+  
+  // TODO add has_arm_simd, SDL_SIMDGetAlignment, and look into the SIMD malloc
 
   /**
    * Indicates whether or not the CPU uses big-endian byte ordering.

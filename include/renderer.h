@@ -777,7 +777,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_logical_width() const noexcept;
+  int logical_width() const noexcept;
 
   /**
    * Returns the logical height that the renderer uses. By default, this
@@ -788,7 +788,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_logical_height() const noexcept;
+  int logical_height() const noexcept;
 
   /* The only way of discovering the limits of the possible is to venture a
      little way past them into the impossible. */
@@ -801,7 +801,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  float get_x_scale() const noexcept;
+  float x_scale() const noexcept;
 
   /**
    * Returns the y-axis scale that the renderer uses.
@@ -811,7 +811,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  float get_y_scale() const noexcept;
+  float y_scale() const noexcept;
 
   /**
    * Returns the current clipping rectangle, if there is one active.
@@ -821,7 +821,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  Optional<math::IRect> get_clip() const noexcept;
+  Optional<math::IRect> clip() const noexcept;
 
   /**
    * Returns information about the renderer.
@@ -831,7 +831,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  SDL_RendererInfo get_info() const noexcept;
+  SDL_RendererInfo info() const noexcept;
 
   /**
    * Returns the output width of the renderer.
@@ -841,7 +841,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_output_width() const noexcept;
+  int output_width() const noexcept;
 
   /**
    * Returns the output height of the renderer.
@@ -851,7 +851,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_output_height() const noexcept;
+  int output_height() const noexcept;
 
   /**
    * Returns the output size of the renderer.
@@ -861,7 +861,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  std::pair<int, int> get_output_size() const noexcept;
+  std::pair<int, int> output_size() const noexcept;
 
   /**
    * Returns the blend mode that is being used by the renderer.
@@ -871,7 +871,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  BlendMode get_blend_mode() const noexcept;
+  BlendMode blend_mode() const noexcept;
 
   /**
    * Returns a bit mask that represents all of flags used when creating the
@@ -884,7 +884,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  Uint32 get_flags() const noexcept;
+  Uint32 flags() const noexcept;
 
   /**
    * Indicates whether or not the <code>present()</code> method is synced with
@@ -895,7 +895,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  bool is_vsync_enabled() const noexcept;
+  bool vsync_enabled() const noexcept;
 
   /**
    * Indicates whether or not the renderer is hardware accelerated.
@@ -905,7 +905,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  bool is_accelerated() const noexcept;
+  bool accelerated() const noexcept;
 
   /**
    * Indicates whether or not the renderer is using software rendering.
@@ -915,7 +915,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  bool is_software_based() const noexcept;
+  bool software_based() const noexcept;
 
   /**
    * Indicates whether or not the renderer supports rendering to a target
@@ -927,7 +927,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  bool is_supporting_target_textures() const noexcept;
+  bool supports_target_textures() const noexcept;
 
   /**
    * Indicates whether or not the renderer uses integer scaling values for
@@ -939,7 +939,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  bool is_using_integer_logical_scaling() const noexcept;
+  bool using_integer_logical_scaling() const noexcept;
 
   /**
    * Indicates whether or not clipping is enabled. This is disabled by default.
@@ -949,7 +949,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  bool is_clipping_enabled() const noexcept;
+  bool clipping_enabled() const noexcept;
 
   /**
    * Returns the currently selected rendering color. Set to black by default.
@@ -959,7 +959,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  Color get_color() const noexcept;
+  Color color() const noexcept;
 
   /**
    * Attempts to create and return a pointer to an SDL_Texture instance that
@@ -987,7 +987,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  math::IRect get_viewport() const noexcept;
+  math::IRect viewport() const noexcept;
 
   /**
    * Returns the translation viewport that is currently being used. Set to (0,
@@ -998,7 +998,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  const math::FRect& get_translation_viewport() const noexcept;
+  const math::FRect& translation_viewport() const noexcept;
 
   /**
    * Returns a textual representation of the renderer.
@@ -1021,8 +1021,8 @@ class Renderer final {
   operator SDL_Renderer*() const noexcept;
 
  private:
-  SDL_Renderer* renderer = nullptr;
-  math::FRect translationViewport = {0, 0, 0, 0};
+  SDL_Renderer* m_renderer = nullptr;
+  math::FRect m_translationViewport = {0, 0, 0, 0};
 
   static constexpr SDL_RendererFlags defaultFlags =
       static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |

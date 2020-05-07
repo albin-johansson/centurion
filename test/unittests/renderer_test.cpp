@@ -34,7 +34,7 @@ TEST_CASE("Renderer(const Window&, SDL_RendererFlags)", "[Renderer]")
   SECTION("Check default flags")
   {
     const Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    const auto correctFlags = renderer.get_flags() & flags;
+    const auto correctFlags = renderer.flags() & flags;
     CHECK(correctFlags);
   }
 }
@@ -76,7 +76,7 @@ TEST_CASE("Renderer::unique(const Window&, SDL_RendererFlags)", "[Renderer]")
   SECTION("Check default flags")
   {
     const Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    const auto correctFlags = renderer->get_flags() & flags;
+    const auto correctFlags = renderer->flags() & flags;
     CHECK(correctFlags);
   }
 }
@@ -100,7 +100,7 @@ TEST_CASE("Renderer::shared(const Window&, SDL_RendererFlags)", "[Renderer]")
   SECTION("Check default flags")
   {
     const Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    const auto correctFlags = renderer->get_flags() & flags;
+    const auto correctFlags = renderer->flags() & flags;
     CHECK(correctFlags);
   }
 }
@@ -470,7 +470,7 @@ TEST_CASE("Renderer::set_color", "[Renderer]")
   const auto& color = pale_violet_red;
   renderer.set_color(color);
 
-  CHECK(color == renderer.get_color());
+  CHECK(color == renderer.color());
 }
 
 TEST_CASE("Renderer::set_viewport", "[Renderer]")
@@ -481,7 +481,7 @@ TEST_CASE("Renderer::set_viewport", "[Renderer]")
   const auto viewport = IRect{50, 33, 768, 453};
   renderer.set_viewport(viewport);
 
-  CHECK(viewport == renderer.get_viewport());
+  CHECK(viewport == renderer.viewport());
 }
 
 TEST_CASE("Renderer::set_logical_size", "[Renderer]")
@@ -493,8 +493,8 @@ TEST_CASE("Renderer::set_logical_size", "[Renderer]")
   const auto h = 253;
   renderer.set_logical_size(w, h);
 
-  CHECK(renderer.get_logical_width() == w);
-  CHECK(renderer.get_logical_height() == h);
+  CHECK(renderer.logical_width() == w);
+  CHECK(renderer.logical_height() == h);
 }
 
 TEST_CASE("Renderer::set_scale", "[Renderer]")
@@ -506,127 +506,127 @@ TEST_CASE("Renderer::set_scale", "[Renderer]")
   const auto yScale = 0.4f;
   renderer.set_scale(xScale, yScale);
 
-  CHECK(renderer.get_x_scale() == xScale);
-  CHECK(renderer.get_y_scale() == yScale);
+  CHECK(renderer.x_scale() == xScale);
+  CHECK(renderer.y_scale() == yScale);
 }
 
-TEST_CASE("Renderer::get_x_scale", "[Renderer]")
+TEST_CASE("Renderer::x_scale", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK(renderer.get_x_scale() == 1);
+  CHECK(renderer.x_scale() == 1);
 }
 
-TEST_CASE("Renderer::get_y_scale", "[Renderer]")
+TEST_CASE("Renderer::y_scale", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK(renderer.get_y_scale() == 1);
+  CHECK(renderer.y_scale() == 1);
 }
 
-TEST_CASE("Renderer::get_logical_width", "[Renderer]")
+TEST_CASE("Renderer::logical_width", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK(renderer.get_logical_width() == 0);
+  CHECK(renderer.logical_width() == 0);
 }
 
-TEST_CASE("Renderer::get_logical_height", "[Renderer]")
+TEST_CASE("Renderer::logical_height", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK(renderer.get_logical_height() == 0);
+  CHECK(renderer.logical_height() == 0);
 }
 
-TEST_CASE("Renderer::get_output_width", "[Renderer]")
+TEST_CASE("Renderer::output_width", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK(renderer.get_output_width() == window.get_width());
+  CHECK(renderer.output_width() == window.get_width());
 }
 
-TEST_CASE("Renderer::get_output_height", "[Renderer]")
+TEST_CASE("Renderer::output_height", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK(renderer.get_output_height() == window.get_height());
+  CHECK(renderer.output_height() == window.get_height());
 }
 
-TEST_CASE("Renderer::get_output_size", "[Renderer]")
+TEST_CASE("Renderer::output_size", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  const auto [width, height] = renderer.get_output_size();
+  const auto [width, height] = renderer.output_size();
   CHECK(width == window.get_width());
   CHECK(height == window.get_height());
 }
 
-TEST_CASE("Renderer::is_vsync_enabled", "[Renderer]")
+TEST_CASE("Renderer::vsync_enabled", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
 
-  const bool vsync = renderer.get_flags() & SDL_RENDERER_PRESENTVSYNC;
-  CHECK(vsync == renderer.is_vsync_enabled());
+  const bool vsync = renderer.flags() & SDL_RENDERER_PRESENTVSYNC;
+  CHECK(vsync == renderer.vsync_enabled());
 }
 
-TEST_CASE("Renderer::is_accelerated", "[Renderer]")
+TEST_CASE("Renderer::accelerated", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
 
-  const bool accelerated = renderer.get_flags() & SDL_RENDERER_ACCELERATED;
-  CHECK(accelerated == renderer.is_accelerated());
+  const bool accelerated = renderer.flags() & SDL_RENDERER_ACCELERATED;
+  CHECK(accelerated == renderer.accelerated());
 }
 
-TEST_CASE("Renderer::is_software_based", "[Renderer]")
+TEST_CASE("Renderer::software_based", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
 
-  const bool software = renderer.get_flags() & SDL_RENDERER_SOFTWARE;
-  CHECK(software == renderer.is_software_based());
+  const bool software = renderer.flags() & SDL_RENDERER_SOFTWARE;
+  CHECK(software == renderer.software_based());
 }
 
-TEST_CASE("Renderer::is_supporting_target_textures", "[Renderer]")
+TEST_CASE("Renderer::supports_target_textures", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
 
-  const bool targettexture = renderer.get_flags() & SDL_RENDERER_TARGETTEXTURE;
-  CHECK(targettexture == renderer.is_supporting_target_textures());
+  const bool targettexture = renderer.flags() & SDL_RENDERER_TARGETTEXTURE;
+  CHECK(targettexture == renderer.supports_target_textures());
 }
 
-TEST_CASE("Renderer::is_using_integer_logical_scaling", "[Renderer]")
+TEST_CASE("Renderer::using_integer_logical_scaling", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
 
-  CHECK(!renderer.is_using_integer_logical_scaling());
+  CHECK(!renderer.using_integer_logical_scaling());
 
   renderer.set_logical_integer_scale(true);
 
-  CHECK(renderer.is_using_integer_logical_scaling());
+  CHECK(renderer.using_integer_logical_scaling());
 }
 
-TEST_CASE("Renderer::get_color", "[Renderer]")
+TEST_CASE("Renderer::color", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
 
-  const auto color = renderer.get_color();
+  const auto color = renderer.color();
   CHECK(color.red() == 0);
   CHECK(color.green() == 0);
   CHECK(color.blue() == 0);
   CHECK(color.alpha() == 0xFF);
 }
 
-TEST_CASE("Renderer::get_viewport", "[Renderer]")
+TEST_CASE("Renderer::viewport", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
 
-  const auto viewport = renderer.get_viewport();
+  const auto viewport = renderer.viewport();
   CHECK(viewport.width() == window.get_width());
   CHECK(viewport.height() == window.get_height());
 }
@@ -639,7 +639,7 @@ TEST_CASE("Renderer::set_translation_viewport", "[Renderer]")
   const auto viewport = FRect{123, 523, 845, 541};
   renderer.set_translation_viewport(viewport);
 
-  const auto rendererViewport = renderer.get_translation_viewport();
+  const auto rendererViewport = renderer.translation_viewport();
 
   CHECK(rendererViewport.x() == viewport.x());
   CHECK(rendererViewport.y() == viewport.y());
@@ -647,12 +647,12 @@ TEST_CASE("Renderer::set_translation_viewport", "[Renderer]")
   CHECK(rendererViewport.height() == viewport.height());
 }
 
-TEST_CASE("Renderer::get_translation_viewport", "[Renderer]")
+TEST_CASE("Renderer::translation_viewport", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
 
-  const auto viewport = renderer.get_translation_viewport();
+  const auto viewport = renderer.translation_viewport();
 
   CHECK(viewport.x() == 0);
   CHECK(viewport.y() == 0);
@@ -667,8 +667,8 @@ TEST_CASE("Renderer clipping", "[Renderer]")
 
   SECTION("Default values")
   {
-    CHECK(!renderer.is_clipping_enabled());
-    const auto clip = renderer.get_clip();
+    CHECK(!renderer.clipping_enabled());
+    const auto clip = renderer.clip();
     CHECK(!clip);
   }
 
@@ -677,10 +677,10 @@ TEST_CASE("Renderer clipping", "[Renderer]")
   const auto clip = IRect{5, 2, 75, 93};
 
   renderer.set_clip(clip);
-  CHECK(renderer.is_clipping_enabled());
-  CHECK(renderer.get_clip());
+  CHECK(renderer.clipping_enabled());
+  CHECK(renderer.clip());
 
-  const auto rendererClip = *renderer.get_clip();
+  const auto rendererClip = *renderer.clip();
 
   CHECK(clip.x() == rendererClip.x());
   CHECK(clip.y() == rendererClip.y());

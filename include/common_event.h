@@ -159,11 +159,11 @@ CENTURION_NODISCARD inline constexpr bool validate_event() noexcept
          std::is_nothrow_copy_assignable<T>::value &&
          std::is_nothrow_move_constructible<T>::value &&
          std::is_nothrow_move_assignable<T>::value &&
-         std::is_nothrow_constructible<T, E>::value 
-         #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-          && !std::is_final<T>::value 
-         #endif // CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-         ;
+         std::is_nothrow_constructible<T, E>::value
+#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+         && !std::is_final<T>::value
+#endif  // CENTURION_HAS_IS_FINAL_TYPE_TRAIT
+      ;
 }
 
 }  // namespace event

@@ -37,7 +37,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class Error final {
+class [[deprecated]] Error final {
  public:
   Error() = delete;
 

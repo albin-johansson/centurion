@@ -7,15 +7,15 @@ namespace centurion {
 namespace system {
 
 CENTURION_DEF
-int RAM::get_size_mb() noexcept
+int RAM::size_mb() noexcept
 {
   return SDL_GetSystemRAM();
 }
 
 CENTURION_DEF
-int RAM::get_size_gb() noexcept
+int RAM::size_gb() noexcept
 {
-  return get_size_mb() / 1000;
+  return size_mb() / 1000;
 }
 
 }  // namespace system

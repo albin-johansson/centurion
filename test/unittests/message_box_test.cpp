@@ -97,12 +97,12 @@ TEST_CASE("MessageBox(const char*)", "[MessageBox]")
 TEST_CASE("MessageBox::set_type", "[MessageBox]")
 {
   MessageBox mb;
-  CHECK(MessageBoxID::Info == mb.get_type());
+  CHECK(MessageBoxID::Info == mb.type());
 
   const auto type = MessageBoxID::Error;
   mb.set_type(type);
 
-  CHECK(type == mb.get_type());
+  CHECK(type == mb.type());
 }
 
 TEST_CASE("MessageBox::set_color_scheme", "[MessageBox]")

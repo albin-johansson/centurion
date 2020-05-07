@@ -105,11 +105,6 @@ bool operator!=(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept;
  * @since 3.0.0
  */
 class ButtonData final {
- private:
-  ButtonDataHint buttonDataHint;
-  int id;
-  std::string text;
-
  public:
   /**
    * @param hint the button data hint that will be used.
@@ -128,6 +123,11 @@ class ButtonData final {
    */
   CENTURION_API
   operator SDL_MessageBoxButtonData() const noexcept;
+
+ private:
+  ButtonDataHint m_buttonDataHint;
+  int m_id;
+  std::string m_text;
 };
 
 /**
@@ -203,22 +203,6 @@ bool operator!=(ColorType a, SDL_MessageBoxColorType b) noexcept;
  * @since 3.0.0
  */
 class ColorScheme final {
- private:
-  SDL_MessageBoxColorScheme scheme{};
-
-  /**
-   * Returns the array index associated with the supplied color scheme type.
-   *
-   * @param type color scheme type to obtain the index for.
-   * @return the array index associated with the supplied color scheme type.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  int get_index(ColorType type) const noexcept
-  {
-    return static_cast<int>(type);
-  }
-
  public:
   /**
    * @since 3.0.0
@@ -254,6 +238,19 @@ class ColorScheme final {
    */
   CENTURION_API
   explicit operator SDL_MessageBoxColorScheme() const noexcept;
+
+ private:
+  SDL_MessageBoxColorScheme m_scheme{};
+
+  /**
+   * Returns the array index associated with the supplied color scheme type.
+   *
+   * @param type color scheme type to obtain the index for.
+   * @return the array index associated with the supplied color scheme type.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  int index(ColorType type) const noexcept { return static_cast<int>(type); }
 };
 
 /**
@@ -325,40 +322,6 @@ bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept;
  * @since 3.0.0
  */
 class MessageBox final {
- private:
-  Optional<ColorScheme> colorScheme;
-  std::vector<ButtonData> buttons;
-  const char* title = "Centurion message box";
-  const char* message = "N/A";
-  MessageBoxID type = MessageBoxID::Info;
-
-  /**
-   * Creates and returns a vector of SDL_MessageBoxButtonData instances.
-   *
-   * @return a vector of SDL_MessageBoxButtonData instances.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API
-  std::vector<SDL_MessageBoxButtonData> create_sdl_button_data() const noexcept;
-
-  /**
-   * Creates and returns an SDL_MessageBoxData based on the MessageBox.
-   *
-   * @param window the parent window, can safely be null.
-   * @param data a pointer to the first element in the array of buttons.
-   * @param scheme a pointer to the color scheme that will be used, set to null
-   * by default.
-   * @return an SDL_MessageBoxData based on the MessageBox.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API
-  SDL_MessageBoxData create_sdl_message_box_data(
-      SDL_Window* window,
-      const SDL_MessageBoxButtonData* data,
-      const SDL_MessageBoxColorScheme* scheme = nullptr) const noexcept;
-
  public:
   /**
    * @since 3.0.0
@@ -473,7 +436,41 @@ class MessageBox final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  MessageBoxID get_type() const noexcept;
+  MessageBoxID type() const noexcept;
+
+ private:
+  Optional<ColorScheme> m_colorScheme;
+  std::vector<ButtonData> m_buttons;
+  const char* m_title = "Centurion message box";
+  const char* m_message = "N/A";
+  MessageBoxID m_type = MessageBoxID::Info;
+
+  /**
+   * Creates and returns a vector of SDL_MessageBoxButtonData instances.
+   *
+   * @return a vector of SDL_MessageBoxButtonData instances.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  std::vector<SDL_MessageBoxButtonData> create_sdl_button_data() const noexcept;
+
+  /**
+   * Creates and returns an SDL_MessageBoxData based on the MessageBox.
+   *
+   * @param window the parent window, can safely be null.
+   * @param data a pointer to the first element in the array of buttons.
+   * @param scheme a pointer to the color scheme that will be used, set to null
+   * by default.
+   * @return an SDL_MessageBoxData based on the MessageBox.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  SDL_MessageBoxData create_sdl_message_box_data(
+      SDL_Window* window,
+      const SDL_MessageBoxButtonData* data,
+      const SDL_MessageBoxColorScheme* scheme = nullptr) const noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

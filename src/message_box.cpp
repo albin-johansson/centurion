@@ -14,13 +14,13 @@ namespace messagebox {
 
 CENTURION_DEF
 ButtonData::ButtonData(ButtonDataHint hint, int id, std::string text)
-    : buttonDataHint{hint}, id{id}, text{std::move(text)}
+    : m_buttonDataHint{hint}, m_id{id}, m_text{std::move(text)}
 {}
 
 CENTURION_DEF
 ButtonData::operator SDL_MessageBoxButtonData() const noexcept
 {
-  return {static_cast<Uint32>(buttonDataHint), id, text.c_str()};
+  return {static_cast<Uint32>(m_buttonDataHint), m_id, m_text.c_str()};
 }
 
 CENTURION_DEF
@@ -35,39 +35,39 @@ ColorScheme::ColorScheme() noexcept
 CENTURION_DEF
 void ColorScheme::set_color(ColorType type, const video::Color& color) noexcept
 {
-  scheme.colors[get_index(type)] = color;
+  m_scheme.colors[index(type)] = color;
 }
 
 CENTURION_DEF
 const SDL_MessageBoxColorScheme& ColorScheme::get() const noexcept
 {
-  return scheme;
+  return m_scheme;
 }
 
 CENTURION_DEF
 ColorScheme::operator SDL_MessageBoxColorScheme() const noexcept
 {
-  return scheme;
+  return m_scheme;
 }
 
 CENTURION_DEF
 MessageBox::MessageBox(const char* title)
 {
   if (title) {
-    this->title = title;
+    this->m_title = title;
   }
 }
 
 CENTURION_DEF
 MessageBox::MessageBox(const char* title, const char* message)
-    : title{title}, message{message}
+    : m_title{title}, m_message{message}
 {
   if (title) {
-    this->title = title;
+    this->m_title = title;
   }
 
   if (message) {
-    this->message = message;
+    this->m_message = message;
   }
 }
 
@@ -79,9 +79,9 @@ std::vector<SDL_MessageBoxButtonData> MessageBox::create_sdl_button_data()
     const noexcept
 {
   std::vector<SDL_MessageBoxButtonData> result;
-  result.reserve(buttons.size());
+  result.reserve(m_buttons.size());
 
-  for (const auto& b : buttons) {
+  for (const auto& b : m_buttons) {
     result.push_back(b);
   }
 
@@ -94,11 +94,11 @@ SDL_MessageBoxData MessageBox::create_sdl_message_box_data(
     const SDL_MessageBoxButtonData* data,
     const SDL_MessageBoxColorScheme* scheme) const noexcept
 {
-  return {static_cast<SDL_MessageBoxFlags>(type),
+  return {static_cast<SDL_MessageBoxFlags>(m_type),
           window,
-          title,
-          message,
-          static_cast<int>(buttons.size()),
+          m_title,
+          m_message,
+          static_cast<int>(m_buttons.size()),
           data,
           scheme};
 }
@@ -106,15 +106,15 @@ SDL_MessageBoxData MessageBox::create_sdl_message_box_data(
 CENTURION_DEF
 int MessageBox::show(SDL_Window* window)
 {
-  if (buttons.empty()) {
-    buttons.emplace_back(ButtonDataHint::ReturnKey, 0, "OK");
+  if (m_buttons.empty()) {
+    m_buttons.emplace_back(ButtonDataHint::ReturnKey, 0, "OK");
   }
 
   const auto sdl_buttonData = create_sdl_button_data();
   const SDL_MessageBoxButtonData* buttonDataFront = &sdl_buttonData.front();
 
   const auto data = create_sdl_message_box_data(
-      window, buttonDataFront, colorScheme ? &colorScheme->get() : nullptr);
+      window, buttonDataFront, m_colorScheme ? &m_colorScheme->get() : nullptr);
 
   int button = -1;
   if (SDL_ShowMessageBox(&data, &button) < 0) {
@@ -141,14 +141,14 @@ void MessageBox::add_button(ButtonDataHint hint,
                             int id,
                             std::string text) noexcept
 {
-  buttons.emplace_back(hint, id, std::move(text));
+  m_buttons.emplace_back(hint, id, std::move(text));
 }
 
 CENTURION_DEF
 void MessageBox::set_title(const char* title) noexcept
 {
   if (title) {
-    this->title = title;
+    this->m_title = title;
   }
 }
 
@@ -156,26 +156,26 @@ CENTURION_DEF
 void MessageBox::set_message(const char* message) noexcept
 {
   if (message) {
-    this->message = message;
+    this->m_message = message;
   }
 }
 
 CENTURION_DEF
 void MessageBox::set_type(MessageBoxID type) noexcept
 {
-  this->type = type;
+  this->m_type = type;
 }
 
 CENTURION_DEF
 void MessageBox::set_color_scheme(Optional<ColorScheme> scheme) noexcept
 {
-  this->colorScheme = scheme;
+  this->m_colorScheme = scheme;
 }
 
 CENTURION_DEF
-MessageBoxID MessageBox::get_type() const noexcept
+MessageBoxID MessageBox::type() const noexcept
 {
-  return type;
+  return m_type;
 }
 
 CENTURION_DEF

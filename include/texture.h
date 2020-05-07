@@ -107,17 +107,6 @@ class Surface;
  * @since 3.0.0
  */
 class Texture final {
- private:
-  SDL_Texture* texture = nullptr;
-
-  /**
-   * Destroys the internal texture instance. This method has no effect if the
-   * associated texture is already null.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
  public:
   /**
    * Creates an texture from a pre-existing SDL texture. The created texture
@@ -361,7 +350,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  PixelFormat get_format() const noexcept;
+  PixelFormat format() const noexcept;
 
   /**
    * Returns the texture access of the internal SDL_Texture.
@@ -371,7 +360,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  TextureAccess get_access() const noexcept;
+  TextureAccess access() const noexcept;
 
   /**
    * Returns the width of the texture.
@@ -381,7 +370,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_width() const noexcept;
+  int width() const noexcept;
 
   /**
    * Returns the height of the texture.
@@ -391,7 +380,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  int get_height() const noexcept;
+  int height() const noexcept;
 
   /**
    * Indicates whether or not the texture is a possible render target.
@@ -431,7 +420,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  Uint8 get_alpha() const noexcept;
+  Uint8 alpha() const noexcept;
 
   /**
    * Returns the blend mode of the texture.
@@ -441,7 +430,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  BlendMode get_blend_mode() const noexcept;
+  BlendMode blend_mode() const noexcept;
 
   /**
    * Returns the color modulation of the texture.
@@ -451,7 +440,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  Color get_color_mod() const noexcept;
+  Color color_mod() const noexcept;
 
   /**
    * Returns a pointer to the internal SDL_Texture of the texture.
@@ -481,6 +470,17 @@ class Texture final {
    */
   CENTURION_API
   operator SDL_Texture*() const noexcept;
+
+ private:
+  SDL_Texture* m_texture = nullptr;
+
+  /**
+   * Destroys the internal texture instance. This method has no effect if the
+   * associated texture is already null.
+   *
+   * @since 4.0.0
+   */
+  void destroy() noexcept;
 };
 
 using Image = Texture;  // for compatibility

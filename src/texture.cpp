@@ -20,7 +20,7 @@ Texture::Texture(gsl::owner<SDL_Texture*> texture)
   if (!texture) {
     throw CenturionException{"Texture can't be created from null SDL texture!"};
   }
-  this->texture = texture;
+  this->m_texture = texture;
 }
 
 CENTURION_DEF
@@ -30,9 +30,9 @@ Texture::Texture(const Renderer& renderer, const char* path)
     throw CenturionException{"Can't load texture from null path!"};
   }
 
-  texture = IMG_LoadTexture(renderer.get_internal(), path);
+  m_texture = IMG_LoadTexture(renderer.get_internal(), path);
 
-  if (!texture) {
+  if (!m_texture) {
     const auto strPath = std::string{path};
     throw CenturionException{"Failed to load texture from " + strPath};
   }
@@ -41,9 +41,9 @@ Texture::Texture(const Renderer& renderer, const char* path)
 CENTURION_DEF
 Texture::Texture(const Renderer& renderer, const Surface& surface)
 {
-  this->texture = SDL_CreateTextureFromSurface(renderer.get_internal(),
-                                               surface.get_internal());
-  if (!texture) {
+  this->m_texture = SDL_CreateTextureFromSurface(renderer.get_internal(),
+                                                 surface.get_internal());
+  if (!m_texture) {
     throw CenturionException{"Failed to create texture from surface! " +
                              Error::msg()};
   }
@@ -56,12 +56,12 @@ Texture::Texture(const Renderer& renderer,
                  int width,
                  int height)
 {
-  texture = SDL_CreateTexture(renderer,
-                              static_cast<Uint32>(format),
-                              static_cast<int>(access),
-                              width,
-                              height);
-  if (!texture) {
+  m_texture = SDL_CreateTexture(renderer,
+                                static_cast<Uint32>(format),
+                                static_cast<int>(access),
+                                width,
+                                height);
+  if (!m_texture) {
     throw CenturionException{"Failed to create texture! " + Error::msg()};
   }
 }
@@ -71,8 +71,8 @@ Texture::Texture(Texture&& other) noexcept
 {
   if (this != &other) {
     destroy();
-    texture = other.texture;
-    other.texture = nullptr;
+    m_texture = other.m_texture;
+    other.m_texture = nullptr;
   }
 }
 
@@ -87,8 +87,8 @@ Texture& Texture::operator=(Texture&& other) noexcept
 {
   if (this != &other) {
     destroy();
-    texture = other.texture;
-    other.texture = nullptr;
+    m_texture = other.m_texture;
+    other.m_texture = nullptr;
   }
   return *this;
 }
@@ -157,123 +157,122 @@ std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
 CENTURION_DEF
 void Texture::destroy() noexcept
 {
-  if (texture) {
-    SDL_DestroyTexture(texture);
+  if (m_texture) {
+    SDL_DestroyTexture(m_texture);
   }
 }
 
 CENTURION_DEF
 void Texture::set_alpha(Uint8 alpha) noexcept
 {
-  SDL_SetTextureAlphaMod(texture, alpha);
+  SDL_SetTextureAlphaMod(m_texture, alpha);
 }
 
 CENTURION_DEF
 void Texture::set_blend_mode(BlendMode mode) noexcept
 {
-  SDL_SetTextureBlendMode(texture, static_cast<SDL_BlendMode>(mode));
+  SDL_SetTextureBlendMode(m_texture, static_cast<SDL_BlendMode>(mode));
 }
 
 CENTURION_DEF
 void Texture::set_color_mod(Color color) noexcept
 {
-  SDL_SetTextureColorMod(texture, color.red(), color.green(), color.blue());
+  SDL_SetTextureColorMod(m_texture, color.red(), color.green(), color.blue());
 }
 
 CENTURION_DEF
-PixelFormat Texture::get_format() const noexcept
+PixelFormat Texture::format() const noexcept
 {
   Uint32 format = 0;
-  SDL_QueryTexture(texture, &format, nullptr, nullptr, nullptr);
+  SDL_QueryTexture(m_texture, &format, nullptr, nullptr, nullptr);
   return static_cast<PixelFormat>(format);
 }
 
 CENTURION_DEF
-TextureAccess Texture::get_access() const noexcept
+TextureAccess Texture::access() const noexcept
 {
   int access = 0;
-  SDL_QueryTexture(texture, nullptr, &access, nullptr, nullptr);
+  SDL_QueryTexture(m_texture, nullptr, &access, nullptr, nullptr);
   return static_cast<TextureAccess>(access);
 }
 
 CENTURION_DEF
-int Texture::get_width() const noexcept
+int Texture::width() const noexcept
 {
   int width = 0;
-  SDL_QueryTexture(texture, nullptr, nullptr, &width, nullptr);
+  SDL_QueryTexture(m_texture, nullptr, nullptr, &width, nullptr);
   return width;
 }
 
 CENTURION_DEF
-int Texture::get_height() const noexcept
+int Texture::height() const noexcept
 {
   int height = 0;
-  SDL_QueryTexture(texture, nullptr, nullptr, nullptr, &height);
+  SDL_QueryTexture(m_texture, nullptr, nullptr, nullptr, &height);
   return height;
 }
 
 CENTURION_DEF
 bool Texture::is_target() const noexcept
 {
-  return get_access() == TextureAccess::Target;
+  return access() == TextureAccess::Target;
 }
 
 CENTURION_DEF
 bool Texture::is_static() const noexcept
 {
-  return get_access() == TextureAccess::Static;
+  return access() == TextureAccess::Static;
 }
 
 CENTURION_DEF
 bool Texture::is_streaming() const noexcept
 {
-  return get_access() == TextureAccess::Streaming;
+  return access() == TextureAccess::Streaming;
 }
 
 CENTURION_DEF
-Uint8 Texture::get_alpha() const noexcept
+Uint8 Texture::alpha() const noexcept
 {
   Uint8 alpha;
-  SDL_GetTextureAlphaMod(texture, &alpha);
+  SDL_GetTextureAlphaMod(m_texture, &alpha);
   return alpha;
 }
 
 CENTURION_DEF
-BlendMode Texture::get_blend_mode() const noexcept
+BlendMode Texture::blend_mode() const noexcept
 {
   SDL_BlendMode mode;
-  SDL_GetTextureBlendMode(texture, &mode);
+  SDL_GetTextureBlendMode(m_texture, &mode);
   return static_cast<BlendMode>(mode);
 }
 
 CENTURION_DEF
-Color Texture::get_color_mod() const noexcept
+Color Texture::color_mod() const noexcept
 {
   Uint8 r = 0, g = 0, b = 0;
-  SDL_GetTextureColorMod(texture, &r, &g, &b);
+  SDL_GetTextureColorMod(m_texture, &r, &g, &b);
   return {r, g, b, 0xFF};
 }
 
 CENTURION_DEF
 SDL_Texture* Texture::get_internal() noexcept
 {
-  return texture;
+  return m_texture;
 }
 
 CENTURION_DEF
 std::string Texture::to_string() const
 {
   const auto address = address_of(this);
-  const auto width = std::to_string(get_width());
-  const auto height = std::to_string(get_height());
-  return "[Texture@" + address + " | Width: " + width + ", Height: " + height +
-         "]";
+  const auto w = std::to_string(width());
+  const auto h = std::to_string(height());
+  return "[Texture@" + address + " | Width: " + w + ", Height: " + h + "]";
 }
 
 CENTURION_DEF
 Texture::operator SDL_Texture*() const noexcept
 {
-  return texture;
+  return m_texture;
 }
 
 CENTURION_DEF

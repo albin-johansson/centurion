@@ -168,9 +168,7 @@ void Renderer::draw_line_f(const math::FPoint& start,
 CENTURION_DEF
 void Renderer::render(const Texture& texture, math::IPoint position) noexcept
 {
-  const SDL_Rect dst{position.x(), position.y(),
-                     texture.get_width(),
-                     texture.get_height()};
+  const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
   SDL_RenderCopy(m_renderer, texture, nullptr, &dst);
 }
 
@@ -260,8 +258,8 @@ void Renderer::render_f(const Texture& texture, math::FPoint position) noexcept
 {
   const auto dst = SDL_FRect{position.x(),
                              position.y(),
-                             static_cast<float>(texture.get_width()),
-                             static_cast<float>(texture.get_height())};
+                             static_cast<float>(texture.width()),
+                             static_cast<float>(texture.height())};
   SDL_RenderCopyF(m_renderer, texture, nullptr, &dst);
 }
 

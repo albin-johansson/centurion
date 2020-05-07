@@ -35,8 +35,8 @@ TEST_CASE("Texture(Renderer&, char*)", "[Texture]")
   CHECK_THROWS_AS(Texture(renderer, "badpath"), CenturionException);
 
   Texture texture{renderer, pandaPath};
-  CHECK(texture.get_width() == pandaWidth);
-  CHECK(texture.get_height() == pandaHeight);
+  CHECK(texture.width() == pandaWidth);
+  CHECK(texture.height() == pandaHeight);
 }
 
 TEST_CASE("Texture(Renderer&, Surface&", "[Texture]")
@@ -58,10 +58,10 @@ TEST_CASE("Texture(Renderer&, PixelFormat, TextureAccess, int, int)",
   const auto width = 145;
   const auto height = 85;
   Texture texture{renderer, pixelFormat, access, width, height};
-  CHECK(pixelFormat == texture.get_format());
-  CHECK(access == texture.get_access());
-  CHECK(width == texture.get_width());
-  CHECK(height == texture.get_height());
+  CHECK(pixelFormat == texture.format());
+  CHECK(access == texture.access());
+  CHECK(width == texture.width());
+  CHECK(height == texture.height());
 }
 
 TEST_CASE("Texture(Texture&&)", "[Texture]")
@@ -95,7 +95,7 @@ TEST_CASE("Texture:::shared", "[Texture]")
       renderer, window.get_pixel_format(), TextureAccess::Static, 100, 100));
 }
 
-TEST_CASE("Texture::get_format", "[Texture]")
+TEST_CASE("Texture::format", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
@@ -105,10 +105,10 @@ TEST_CASE("Texture::get_format", "[Texture]")
   Uint32 format = 0;
   SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
 
-  CHECK(texture.get_format() == static_cast<PixelFormat>(format));
+  CHECK(texture.format() == static_cast<PixelFormat>(format));
 }
 
-TEST_CASE("Texture::get_access", "[Texture]")
+TEST_CASE("Texture::access", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
@@ -118,35 +118,35 @@ TEST_CASE("Texture::get_access", "[Texture]")
   int access = 0;
   SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
 
-  CHECK(texture.get_access() == static_cast<TextureAccess>(access));
+  CHECK(texture.access() == static_cast<TextureAccess>(access));
 }
 
-TEST_CASE("Texture::get_width", "[Texture]")
+TEST_CASE("Texture::width", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
   Texture texture(renderer, pandaPath);
   SDL_Texture* sdlTexture = texture.get_internal();
 
-  CHECK(texture.get_width() == pandaWidth);
+  CHECK(texture.width() == pandaWidth);
 
   int width = 0;
   SDL_QueryTexture(sdlTexture, nullptr, nullptr, &width, nullptr);
-  CHECK(texture.get_width() == width);
+  CHECK(texture.width() == width);
 }
 
-TEST_CASE("Texture::get_height", "[Texture]")
+TEST_CASE("Texture::height", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, pandaPath};
   SDL_Texture* sdlTexture = texture.get_internal();
 
-  CHECK(texture.get_height() == pandaHeight);
+  CHECK(texture.height() == pandaHeight);
 
   int height = 0;
   SDL_QueryTexture(sdlTexture, nullptr, nullptr, nullptr, &height);
-  CHECK(texture.get_height() == height);
+  CHECK(texture.height() == height);
 }
 
 TEST_CASE("Texture::set_blend_mode", "[Texture]")
@@ -158,7 +158,7 @@ TEST_CASE("Texture::set_blend_mode", "[Texture]")
   const auto mode = BlendMode::Blend;
   texture.set_blend_mode(mode);
 
-  CHECK(mode == texture.get_blend_mode());
+  CHECK(mode == texture.blend_mode());
 }
 
 TEST_CASE("Texture::set_alpha", "[Texture]")
@@ -170,7 +170,7 @@ TEST_CASE("Texture::set_alpha", "[Texture]")
   const auto alpha = 0x3A;
   texture.set_alpha(alpha);
 
-  CHECK(alpha == texture.get_alpha());
+  CHECK(alpha == texture.alpha());
 }
 
 TEST_CASE("Texture::set_color_mod", "[Texture]")
@@ -182,7 +182,7 @@ TEST_CASE("Texture::set_color_mod", "[Texture]")
   const auto color = misty_rose;
   texture.set_color_mod(color);
 
-  const auto actual = texture.get_color_mod();
+  const auto actual = texture.color_mod();
   CHECK(color.red() == actual.red());
   CHECK(color.green() == actual.green());
   CHECK(color.blue() == actual.blue());

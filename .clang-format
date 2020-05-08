@@ -21,4 +21,4 @@ BraceWrapping:
   SplitEmptyFunction: false
 
 AllowShortFunctionsOnASingleLine: InlineOnly
-AllowShortBlocksOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never

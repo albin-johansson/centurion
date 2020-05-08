@@ -107,8 +107,8 @@ TEST_CASE("IPoint::distance", "[Point]")
   const IPoint a{189, 86};
   const IPoint b{66, 36};
 
-  const auto distance = std::sqrt(std::abs(a.x() - b.x()) +
-                                  std::abs(a.y() - b.y()));
+  const auto distance =
+      std::sqrt(std::abs(a.x() - b.x()) + std::abs(a.y() - b.y()));
 
   CHECK(static_cast<int>(distance) == a.distance_to(b));
   CHECK(static_cast<int>(distance) == b.distance_to(a));
@@ -310,8 +310,8 @@ TEST_CASE("Point::distance_to", "[FPoint]")
 
   const FPoint a{123.8f, 82.4f};
   const FPoint b{45.9f, 12.4f};
-  const auto distance = std::sqrt(std::abs(a.x() - b.x()) +
-                                  std::abs(a.y() - b.y()));
+  const auto distance =
+      std::sqrt(std::abs(a.x() - b.x()) + std::abs(a.y() - b.y()));
 
   CHECK(distance == a.distance_to(b));
   CHECK(distance == b.distance_to(a));

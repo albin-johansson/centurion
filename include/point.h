@@ -144,8 +144,8 @@ class Point final {
   CENTURION_NODISCARD
   std::string to_string() const
   {
-    return "[Point | X: " + std::to_string(m_x) + ", Y: " + std::to_string(m_y) +
-           "]";
+    return "[Point | X: " + std::to_string(m_x) +
+           ", Y: " + std::to_string(m_y) + "]";
   }
 
   /**
@@ -178,9 +178,11 @@ class Point final {
    */
   template <typename U = T>
   CENTURION_NODISCARD type_if_floating<U> equals(
-      const Point<T>& other, T epsilon = 0.0001) const noexcept
+      const Point<T>& other,
+      T epsilon = 0.0001) const noexcept
   {
-    return std::abs(m_x - other.m_x) < epsilon && std::abs(m_y - other.m_y) < epsilon;
+    return std::abs(m_x - other.m_x) < epsilon &&
+           std::abs(m_y - other.m_y) < epsilon;
   }
 
   /**

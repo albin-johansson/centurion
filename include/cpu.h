@@ -177,7 +177,7 @@ class CPU final {
    */
   CENTURION_NODISCARD
   CENTURION_API static bool has_neon() noexcept;
-  
+
   // TODO add has_arm_simd, SDL_SIMDGetAlignment, and look into the SIMD malloc
 
   /**

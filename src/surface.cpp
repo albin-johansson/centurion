@@ -157,8 +157,7 @@ int Surface::pitch() const noexcept
 CENTURION_DEF
 Texture Surface::to_texture(const Renderer& renderer) const noexcept
 {
-  return Texture{
-      SDL_CreateTextureFromSurface(renderer.internal(), m_surface)};
+  return Texture{SDL_CreateTextureFromSurface(renderer.internal(), m_surface)};
 }
 
 CENTURION_DEF

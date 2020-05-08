@@ -168,7 +168,8 @@ void Renderer::draw_line_f(const math::FPoint& start,
 CENTURION_DEF
 void Renderer::render(const Texture& texture, math::IPoint position) noexcept
 {
-  const SDL_Rect dst{position.x(), position.y(), texture.width(), texture.height()};
+  const SDL_Rect dst{
+      position.x(), position.y(), texture.width(), texture.height()};
   SDL_RenderCopy(m_renderer, texture, nullptr, &dst);
 }
 
@@ -392,8 +393,7 @@ void Renderer::render_t(const Texture& texture,
 {
   const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
   const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
-  render(
-      texture, src, {tx, ty, dst.width(), dst.height()}, angle, center);
+  render(texture, src, {tx, ty, dst.width(), dst.height()}, angle, center);
 }
 
 CENTURION_DEF
@@ -417,12 +417,8 @@ void Renderer::render_t(const Texture& texture,
 {
   const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
   const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
-  render(texture,
-         src,
-         {tx, ty, dst.width(), dst.height()},
-         angle,
-         center,
-         flip);
+  render(
+      texture, src, {tx, ty, dst.width(), dst.height()}, angle, center, flip);
 }
 
 CENTURION_DEF
@@ -472,8 +468,7 @@ void Renderer::render_tf(const Texture& texture,
 {
   const auto tx = dst.x() - m_translationViewport.x();
   const auto ty = dst.y() - m_translationViewport.y();
-  render_f(
-      texture, src, {tx, ty, dst.width(), dst.height()}, angle, center);
+  render_f(texture, src, {tx, ty, dst.width(), dst.height()}, angle, center);
 }
 
 CENTURION_DEF
@@ -497,12 +492,8 @@ void Renderer::render_tf(const Texture& texture,
 {
   const auto tx = dst.x() - m_translationViewport.x();
   const auto ty = dst.y() - m_translationViewport.y();
-  render_f(texture,
-           src,
-           {tx, ty, dst.width(), dst.height()},
-           angle,
-           center,
-           flip);
+  render_f(
+      texture, src, {tx, ty, dst.width(), dst.height()}, angle, center, flip);
 }
 
 CENTURION_DEF

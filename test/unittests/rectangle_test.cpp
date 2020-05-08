@@ -105,9 +105,7 @@ TEST_CASE("IRect::intersects", "[Rect]")
     const IRect left{rect.x() - rect.width(), rect.y(), 10, 10};
     const IRect top{rect.x(), rect.y() - rect.height(), 10, 10};
     const IRect right{
-        rect.x() + rect.width(), rect.y(),
-                      rect.width(),
-                      rect.height()};
+        rect.x() + rect.width(), rect.y(), rect.width(), rect.height()};
     const IRect bottom{rect.x(), rect.y() + rect.height(), 10, 10};
 
     CHECK(!left.intersects(rect));
@@ -448,9 +446,7 @@ TEST_CASE("FRect::intersects", "[FRect]")
     const FRect left{rect.x() - rect.width(), rect.y(), 10, 10};
     const FRect top{rect.x(), rect.y() - rect.height(), 10, 10};
     const FRect right{
-        rect.x() + rect.width(), rect.y(),
-                      rect.width(),
-                      rect.height()};
+        rect.x() + rect.width(), rect.y(), rect.width(), rect.height()};
     const FRect bottom{rect.x(), rect.y() + rect.height(), 10, 10};
 
     CHECK(!left.intersects(rect));

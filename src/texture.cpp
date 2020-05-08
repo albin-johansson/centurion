@@ -41,8 +41,8 @@ Texture::Texture(const Renderer& renderer, const char* path)
 CENTURION_DEF
 Texture::Texture(const Renderer& renderer, const Surface& surface)
 {
-  this->m_texture = SDL_CreateTextureFromSurface(renderer.internal(),
-                                                 surface.get_internal());
+  this->m_texture =
+      SDL_CreateTextureFromSurface(renderer.internal(), surface.get_internal());
   if (!m_texture) {
     throw CenturionException{"Failed to create texture from surface! " +
                              Error::msg()};

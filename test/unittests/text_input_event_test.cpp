@@ -16,7 +16,7 @@ TEST_CASE("TextInputEvent::set_window_id", "[TextInputEvent]")
 
 TEST_CASE("TextInputEvent::window_id", "[TextInputEvent]")
 {
-  SDL_TextInputEvent sdlEvent{ SDL_TEXTINPUT, 0, 8};
+  SDL_TextInputEvent sdlEvent{SDL_TEXTINPUT, 0, 8};
   TextInputEvent event{sdlEvent};
 
   CHECK(event.window_id() == sdlEvent.windowID);

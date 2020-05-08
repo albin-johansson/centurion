@@ -30,7 +30,6 @@
 #include "centurion_api.h"
 
 namespace centurion {
-namespace system {
 
 /**
  * The Timer class provides utilities related to the system clock.
@@ -49,7 +48,7 @@ class Timer final {
    * @param ms the minimum amount of time to sleep for, in milliseconds.
    * @since 3.0.0
    */
-  CENTURION_API static void sleep(Uint32 ms) noexcept;
+  CENTURION_API static void delay(Uint32 ms) noexcept;
 
   /**
    * Returns the current value of the system high-performance counter.
@@ -79,7 +78,6 @@ class Timer final {
   CENTURION_API static Uint32 millis() noexcept;
 };
 
-}  // namespace system
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

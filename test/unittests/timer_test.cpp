@@ -1,16 +1,13 @@
-#include "timer.h"
-
-#include <SDL.h>
-
 #include <catch.hpp>
 
-using namespace centurion;
-using namespace centurion::system;
+#include "timer.h"
 
-TEST_CASE("Timer::sleep", "[Timer]")
+using namespace centurion;
+
+TEST_CASE("Timer::delay", "[Timer]")
 {
-  CHECK_NOTHROW(Timer::sleep(10));
-  CHECK_NOTHROW(Timer::sleep(0));
+  CHECK_NOTHROW(Timer::delay(10));
+  CHECK_NOTHROW(Timer::delay(0));
 }
 
 TEST_CASE("Timer::high_res", "[Timer]")

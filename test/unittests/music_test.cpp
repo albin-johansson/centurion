@@ -1,10 +1,10 @@
 #ifndef CENTURION_NOAUDIO
 #include <catch.hpp>
 
+#include "../include/timer.h"
 #include "audio.h"
 #include "centurion_exception.h"
 #include "log.h"
-#include "timer.h"
 
 using namespace centurion;
 using namespace audio;

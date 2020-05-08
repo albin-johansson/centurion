@@ -2,7 +2,7 @@
 
 #include <catch.hpp>
 
-using namespace centurion::system;
+using namespace centurion;
 
 TEST_CASE("RAM::size_mb", "[RAM]")
 {

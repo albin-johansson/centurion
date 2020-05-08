@@ -30,7 +30,6 @@
 #include "centurion_api.h"
 
 namespace centurion {
-namespace system {
 
 /**
  * The RAM class is a utility class that provides information related to,
@@ -61,7 +60,6 @@ class RAM final {
   CENTURION_API static int size_gb() noexcept;
 };
 
-}  // namespace system
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

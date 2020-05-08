@@ -36,7 +36,6 @@
 #include "surface.h"
 
 namespace centurion {
-namespace video {
 
 /**
  * The SystemCursor enum represents the various available system cursors.
@@ -327,7 +326,6 @@ static_assert(!std::is_copy_constructible<Cursor>::value,
 static_assert(!std::is_copy_assignable<Cursor>::value,
               "Cursor is copy assignable!");
 
-}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

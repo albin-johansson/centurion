@@ -5,7 +5,6 @@
 #include "centurion_exception.h"
 
 using namespace centurion;
-using namespace centurion::video;
 
 TEST_CASE("Cursor(SystemCursor)", "[Cursor]")
 {

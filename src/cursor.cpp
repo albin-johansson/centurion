@@ -7,7 +7,6 @@
 #include "centurion_utils.h"
 
 namespace centurion {
-namespace video {
 
 CENTURION_DEF
 Cursor::Cursor(SystemCursor id)
@@ -29,7 +28,7 @@ Cursor::Cursor(gsl::owner<SDL_Cursor*> cursor_)
 }
 
 CENTURION_DEF
-Cursor::Cursor(const Surface& surface_,  IPoint hotspot)
+Cursor::Cursor(const Surface& surface_, IPoint hotspot)
 {
   surface = SDL_DuplicateSurface(surface_.get_internal());
   if (!surface) {
@@ -99,8 +98,7 @@ std::unique_ptr<Cursor> Cursor::unique(gsl::owner<SDL_Cursor*> cursor)
 }
 
 CENTURION_DEF
-std::unique_ptr<Cursor> Cursor::unique(const Surface& surface,
-                                        IPoint hotspot)
+std::unique_ptr<Cursor> Cursor::unique(const Surface& surface, IPoint hotspot)
 {
   return centurion::make_unique<Cursor>(surface, hotspot);
 }
@@ -118,8 +116,7 @@ std::shared_ptr<Cursor> Cursor::shared(gsl::owner<SDL_Cursor*> cursor)
 }
 
 CENTURION_DEF
-std::shared_ptr<Cursor> Cursor::shared(const Surface& surface,
-                                        IPoint hotspot)
+std::shared_ptr<Cursor> Cursor::shared(const Surface& surface, IPoint hotspot)
 {
   return std::make_shared<Cursor>(surface, hotspot);
 }
@@ -184,7 +181,6 @@ bool operator!=(SDL_SystemCursor lhs, SystemCursor rhs) noexcept
   return !(lhs == rhs);
 }
 
-}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_CURSOR_SOURCE

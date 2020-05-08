@@ -5,14 +5,22 @@
 
 using namespace centurion;
 
-TEST_CASE("System::get_platform", "[System]")
+TEST_CASE("Platform::id", "[Platform]")
 {
-  CHECK_NOTHROW(system::get_platform());
+  CHECK_NOTHROW(Platform::id());
+
+#ifdef __WIN32
+  CHECK(Platform::id() == PlatformID::Windows);
+#elif __APPLE__
+  CHECK(Platform::id() == PlatformID::MacOSX);
+#elif __linux__
+  CHECK(Platform::id() == PlatformID::Linux);
+#elif __ANDROID__
+  CHECK(Platform::id() == PlatformID::Android);
+#endif
 }
 
-TEST_CASE("System::get_platform_name", "[System]")
+TEST_CASE("Platform::name", "[Platform]")
 {
-  const auto name = system::get_platform_name();
-  const auto sdlName = std::string{SDL_GetPlatform()};
-  CHECK(name == sdlName);
+  CHECK(*Platform::name() == std::string{SDL_GetPlatform()});
 }

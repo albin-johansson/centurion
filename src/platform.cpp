@@ -6,29 +6,28 @@
 #include <string>
 
 namespace centurion {
-namespace system {
 
 CENTURION_DEF
-Platform get_platform() noexcept
+PlatformID Platform::id() noexcept
 {
-  const std::string name{SDL_GetPlatform()};
-  if (name == "Windows") {
-    return Platform::Windows;
-  } else if (name == "Mac OS X") {
-    return Platform::MacOSX;
-  } else if (name == "Linux") {
-    return Platform::Linux;
-  } else if (name == "iOS") {
-    return Platform::Ios;
-  } else if (name == "Android") {
-    return Platform::Android;
+  const auto platform = name();
+  if (platform == "Windows") {
+    return PlatformID::Windows;
+  } else if (platform == "Mac OS X") {
+    return PlatformID::MacOSX;
+  } else if (platform == "Linux") {
+    return PlatformID::Linux;
+  } else if (platform == "iOS") {
+    return PlatformID::Ios;
+  } else if (platform == "Android") {
+    return PlatformID::Android;
   } else {
-    return Platform::Unknown;
+    return PlatformID::Unknown;
   }
 }
 
 CENTURION_DEF
-Optional<std::string> get_platform_name() noexcept
+Optional<std::string> Platform::name() noexcept
 {
   const std::string name{SDL_GetPlatform()};
   if (name == "Unknown") {
@@ -38,7 +37,6 @@ Optional<std::string> get_platform_name() noexcept
   }
 }
 
-}  // namespace system
 }  // namespace centurion
 
 #endif  // CENTURION_PLATFORM_SOURCE

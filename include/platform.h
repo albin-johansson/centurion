@@ -32,7 +32,6 @@
 #include "pixel_format.h"
 
 namespace centurion {
-namespace system {
 
 /**
  * An enum class that provides values that represent various different operating
@@ -40,28 +39,37 @@ namespace system {
  *
  * @since 3.0.0
  */
-enum class Platform { Unknown, Windows, MacOSX, Linux, Ios, Android };
+enum class PlatformID { Unknown, Windows, MacOSX, Linux, Ios, Android };
 
 /**
- * Returns a value that represents the current platform.
+ * The Platform class provides information about the system platform.
  *
- * @return a value that represents the current platform.
- * @since 3.0.0
+ * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API Platform get_platform() noexcept;
+class Platform final {
+ public:
+  Platform() = delete;
 
-/**
- * Returns the name of the current platform.
- *
- * @return the name of the current platform; nullopt if the name cannot
- * be deduced.
- * @since 3.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API Optional<std::string> get_platform_name() noexcept;
+  /**
+   * Returns the value that represents the current platform.
+   *
+   * @return the value that represents the current platform.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static PlatformID id() noexcept;
 
-}  // namespace system
+  /**
+   * Returns the name of the current platform.
+   *
+   * @return the name of the current platform; nullopt if the name cannot
+   * be deduced.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static Optional<std::string> name() noexcept;
+};
+
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

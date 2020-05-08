@@ -23,7 +23,7 @@ TEST_CASE("Cursor(gsl::owner<SDL_Cursor*>)", "[Cursor]")
 TEST_CASE("Cursor(Surface, IPoint)", "[Cursor]")
 {
   const Surface surface{"resources/panda.png"};
-  const math::IPoint hotspot{12, 14};
+  const IPoint hotspot{12, 14};
   Cursor cursor{surface, hotspot};
 }
 
@@ -56,7 +56,7 @@ TEST_CASE("Cursor::unique", "[Cursor]")
   SECTION("Out-of-bounds hotspot")
   {
     Surface surface{"resources/panda.png"};
-    math::IPoint hotspot{1, surface.height() + 1};
+    IPoint hotspot{1, surface.height() + 1};
     CHECK_THROWS_AS(Cursor::unique(surface, hotspot), CenturionException);
   }
 }
@@ -73,7 +73,7 @@ TEST_CASE("Cursor::shared", "[Cursor]")
   SECTION("Out-of-bounds hotspot")
   {
     Surface surface{"resources/panda.png"};
-    math::IPoint hotspot{surface.width() + 1, 1};
+    IPoint hotspot{surface.width() + 1, 1};
     CHECK_THROWS_AS(Cursor::shared(surface, hotspot), CenturionException);
   }
 }

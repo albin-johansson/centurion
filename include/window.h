@@ -509,7 +509,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API math::IPoint position() const noexcept;
+  CENTURION_API IPoint position() const noexcept;
 
   /**
    * Returns the minimum size of the window.

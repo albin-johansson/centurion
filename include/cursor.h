@@ -141,7 +141,7 @@ class Cursor final {
    * @throws CenturionException if the cursor cannot be created.
    * @since 4.0.0
    */
-  CENTURION_API explicit Cursor(const Surface& surface, math::IPoint hotspot);
+  CENTURION_API explicit Cursor(const Surface& surface, IPoint hotspot);
 
   /**
    * Creates a cursor by moving the supplied cursor.
@@ -206,7 +206,7 @@ class Cursor final {
    */
   CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Cursor> unique(const Surface& surface,
-                                                      math::IPoint hotspot);
+                                                      IPoint hotspot);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance.
@@ -245,7 +245,7 @@ class Cursor final {
    */
   CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Cursor> shared(const Surface& surface,
-                                                      math::IPoint hotspot);
+                                                      IPoint hotspot);
 
   /**
    * Makes the cursor the used cursor.

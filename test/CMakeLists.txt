@@ -17,7 +17,7 @@ set(TEST_FILES
         unittests/point_test.cpp
         unittests/key_state_test.cpp
         unittests/mouse_state_test.cpp
-        unittests/rectangle_test.cpp
+        unittests/rect_test.cpp
         unittests/centurion_exception_test.cpp
         unittests/error_test.cpp
         unittests/timer_test.cpp

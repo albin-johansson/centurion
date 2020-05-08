@@ -35,7 +35,6 @@
 #include "centurion_utils.h"
 
 namespace centurion {
-namespace math {
 
 template <typename T>
 class Point;
@@ -395,7 +394,6 @@ using IPoint = Point<int>;
  */
 using FPoint = Point<float>;
 
-}  // namespace math
 }  // namespace centurion
 
 #endif  // CENTURION_POINT_HEADER

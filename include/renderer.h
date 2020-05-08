@@ -39,7 +39,7 @@
 #include "centurion_utils.h"
 #include "color.h"
 #include "point.h"
-#include "rectangle.h"
+#include "rect.h"
 
 namespace centurion {
 namespace video {
@@ -160,7 +160,7 @@ class Renderer final {
    * @param rect the rectangle that will be rendered.
    * @since 4.0.0
    */
-  CENTURION_API void draw_rect(const math::IRect& rect) noexcept;
+  CENTURION_API void draw_rect(const IRect& rect) noexcept;
 
   /**
    * Renders a filled rectangle in the currently selected color.
@@ -168,7 +168,7 @@ class Renderer final {
    * @param rect the rectangle that will be rendered.
    * @since 4.0.0
    */
-  CENTURION_API void fill_rect(const math::IRect& rect) noexcept;
+  CENTURION_API void fill_rect(const IRect& rect) noexcept;
 
   /**
    * Renders an outlined rectangle in the currently selected color.
@@ -176,7 +176,7 @@ class Renderer final {
    * @param rect the rectangle that will be rendered.
    * @since 4.0.0
    */
-  CENTURION_API void draw_rect_f(const math::FRect& rect) noexcept;
+  CENTURION_API void draw_rect_f(const FRect& rect) noexcept;
 
   /**
    * Renders a filled rectangle in the currently selected color.
@@ -184,7 +184,7 @@ class Renderer final {
    * @param rect the rectangle that will be rendered.
    * @since 4.0.0
    */
-  CENTURION_API void fill_rect_f(const math::FRect& rect) noexcept;
+  CENTURION_API void fill_rect_f(const FRect& rect) noexcept;
 
   /**
    * Draws a line in between the supplied points in the currently selected
@@ -195,7 +195,7 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API
-  void draw_line(const math::IPoint& start, const math::IPoint& end) noexcept;
+  void draw_line(const IPoint& start, const IPoint& end) noexcept;
 
   /**
    * Renders a sequence of connected lines in the currently selected color.
@@ -203,8 +203,7 @@ class Renderer final {
    * @param points the collection of points to draw the lines between.
    * @since 3.0.0
    */
-  CENTURION_API void draw_lines(
-      const std::vector<math::IPoint>& points) noexcept;
+  CENTURION_API void draw_lines(const std::vector<IPoint>& points) noexcept;
 
   /**
    * Draws a line in between the supplied points in the currently selected
@@ -214,8 +213,8 @@ class Renderer final {
    * @param end the end point of the line.
    * @since 4.0.0
    */
-  CENTURION_API void draw_line_f(const math::FPoint& start,
-                                 const math::FPoint& end) noexcept;
+  CENTURION_API void draw_line_f(const FPoint& start,
+                                 const FPoint& end) noexcept;
 
   /**
    * Renders a texture at the specified position.
@@ -224,8 +223,7 @@ class Renderer final {
    * @param position the position of the rendered texture.
    * @since 4.0.0
    */
-  CENTURION_API void render(const Texture& texture,
-                            math::IPoint position) noexcept;
+  CENTURION_API void render(const Texture& texture, IPoint position) noexcept;
 
   /**
    * Renders a texture.
@@ -235,8 +233,7 @@ class Renderer final {
    * rendered texture.
    * @since 4.0.0
    */
-  CENTURION_API void render(const Texture& texture,
-                            const math::IRect& rect) noexcept;
+  CENTURION_API void render(const Texture& texture, const IRect& rect) noexcept;
 
   /**
    * Renders a texture.
@@ -247,8 +244,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render(const Texture& texture,
-                            const math::IRect& src,
-                            const math::IRect& dst) noexcept;
+                            const IRect& src,
+                            const IRect& dst) noexcept;
 
   /**
    * Renders a texture.
@@ -260,8 +257,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render(const Texture& texture,
-                            const math::IRect& src,
-                            const math::IRect& dst,
+                            const IRect& src,
+                            const IRect& dst,
                             double angle) noexcept;
 
   /**
@@ -275,10 +272,10 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render(const Texture& texture,
-                            const math::IRect& src,
-                            const math::IRect& dst,
+                            const IRect& src,
+                            const IRect& dst,
                             double angle,
-                            math::IPoint center) noexcept;
+                            IPoint center) noexcept;
 
   /**
    * Renders a texture.
@@ -291,8 +288,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render(const Texture& texture,
-                            const math::IRect& src,
-                            const math::IRect& dst,
+                            const IRect& src,
+                            const IRect& dst,
                             SDL_RendererFlip flip) noexcept;
 
   /**
@@ -307,10 +304,10 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render(const Texture& texture,
-                            const math::IRect& src,
-                            const math::IRect& dst,
+                            const IRect& src,
+                            const IRect& dst,
                             double angle,
-                            math::IPoint center,
+                            IPoint center,
                             SDL_RendererFlip flip) noexcept;
 
   /**
@@ -320,8 +317,7 @@ class Renderer final {
    * @param position the position of the rendered texture.
    * @since 4.0.0
    */
-  CENTURION_API void render_f(const Texture& texture,
-                              math::FPoint position) noexcept;
+  CENTURION_API void render_f(const Texture& texture, FPoint position) noexcept;
 
   /**
    * Renders a texture.
@@ -331,7 +327,7 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_f(const Texture& texture,
-                              const math::FRect& rect) noexcept;
+                              const FRect& rect) noexcept;
 
   /**
    * Renders a texture.
@@ -342,8 +338,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_f(const Texture& texture,
-                              const math::IRect& src,
-                              const math::FRect& dst) noexcept;
+                              const IRect& src,
+                              const FRect& dst) noexcept;
 
   /**
    * Renders a texture.
@@ -355,8 +351,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_f(const Texture& texture,
-                              const math::IRect& src,
-                              const math::FRect& dst,
+                              const IRect& src,
+                              const FRect& dst,
                               double angle) noexcept;
 
   /**
@@ -370,10 +366,10 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_f(const Texture& texture,
-                              const math::IRect& src,
-                              const math::FRect& dst,
+                              const IRect& src,
+                              const FRect& dst,
                               double angle,
-                              math::FPoint center) noexcept;
+                              FPoint center) noexcept;
 
   /**
    * Renders a texture.
@@ -385,8 +381,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_f(const Texture& texture,
-                              const math::IRect& src,
-                              const math::FRect& dst,
+                              const IRect& src,
+                              const FRect& dst,
                               SDL_RendererFlip flip) noexcept;
 
   /**
@@ -402,10 +398,10 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_f(const Texture& texture,
-                              const math::IRect& src,
-                              const math::FRect& dst,
+                              const IRect& src,
+                              const FRect& dst,
                               double angle,
-                              math::FPoint center,
+                              FPoint center,
                               SDL_RendererFlip flip) noexcept;
 
   /**
@@ -416,8 +412,7 @@ class Renderer final {
    * @param position the position (pre-translation) of the rendered texture.
    * @since 4.0.0
    */
-  CENTURION_API void render_t(const Texture& texture,
-                              math::IPoint position) noexcept;
+  CENTURION_API void render_t(const Texture& texture, IPoint position) noexcept;
 
   /**
    * Renders a texture. The rendered texture will be
@@ -429,7 +424,7 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_t(const Texture& texture,
-                              const math::IRect& rect) noexcept;
+                              const IRect& rect) noexcept;
 
   /**
    * Renders a texture. The rendered texture will be translated using the
@@ -441,8 +436,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_t(const Texture& texture,
-                              const math::IRect& src,
-                              const math::IRect& dst) noexcept;
+                              const IRect& src,
+                              const IRect& dst) noexcept;
 
   /**
    * Renders a texture. The rendered texture will be translated using the
@@ -455,8 +450,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_t(const Texture& texture,
-                              const math::IRect& src,
-                              const math::IRect& dst,
+                              const IRect& src,
+                              const IRect& dst,
                               double angle) noexcept;
 
   /**
@@ -471,10 +466,10 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_t(const Texture& texture,
-                              const math::IRect& src,
-                              const math::IRect& dst,
+                              const IRect& src,
+                              const IRect& dst,
                               double angle,
-                              math::IPoint center) noexcept;
+                              IPoint center) noexcept;
 
   /**
    * Renders a texture. The rendered texture will be translated using the
@@ -488,8 +483,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_t(const Texture& texture,
-                              const math::IRect& src,
-                              const math::IRect& dst,
+                              const IRect& src,
+                              const IRect& dst,
                               SDL_RendererFlip flip) noexcept;
 
   /**
@@ -505,10 +500,10 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_t(const Texture& texture,
-                              const math::IRect& src,
-                              const math::IRect& dst,
+                              const IRect& src,
+                              const IRect& dst,
                               double angle,
-                              math::IPoint center,
+                              IPoint center,
                               SDL_RendererFlip flip) noexcept;
 
   /**
@@ -520,7 +515,7 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_tf(const Texture& texture,
-                               math::FPoint position) noexcept;
+                               FPoint position) noexcept;
 
   /**
    * Renders a texture. The rendered texture will be
@@ -532,7 +527,7 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_tf(const Texture& texture,
-                               const math::FRect& rect) noexcept;
+                               const FRect& rect) noexcept;
 
   /**
    * Renders a texture. The rendered texture will be translated using the
@@ -544,8 +539,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_tf(const Texture& texture,
-                               const math::IRect& src,
-                               const math::FRect& dst) noexcept;
+                               const IRect& src,
+                               const FRect& dst) noexcept;
 
   /**
    * Renders a texture. The rendered texture will be translated using the
@@ -558,8 +553,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_tf(const Texture& texture,
-                               const math::IRect& src,
-                               const math::FRect& dst,
+                               const IRect& src,
+                               const FRect& dst,
                                double angle) noexcept;
 
   /**
@@ -574,10 +569,10 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_tf(const Texture& texture,
-                               const math::IRect& src,
-                               const math::FRect& dst,
+                               const IRect& src,
+                               const FRect& dst,
                                double angle,
-                               math::FPoint center) noexcept;
+                               FPoint center) noexcept;
 
   /**
    * Renders a texture. The rendered texture will be translated using the
@@ -591,8 +586,8 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_tf(const Texture& texture,
-                               const math::IRect& src,
-                               const math::FRect& dst,
+                               const IRect& src,
+                               const FRect& dst,
                                SDL_RendererFlip flip) noexcept;
 
   /**
@@ -608,10 +603,10 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void render_tf(const Texture& texture,
-                               const math::IRect& src,
-                               const math::FRect& dst,
+                               const IRect& src,
+                               const FRect& dst,
                                double angle,
-                               math::FPoint center,
+                               FPoint center,
                                SDL_RendererFlip flip) noexcept;
 
   /**
@@ -625,9 +620,7 @@ class Renderer final {
    * @param font the font that will be used.
    * @since 4.0.0
    */
-  CENTURION_API void render_text(const char* text,
-                                 math::IRect pos,
-                                 const Font& font);
+  CENTURION_API void render_text(const char* text, IRect pos, const Font& font);
 
   /**
    * Renders a string of text. Note that this method is rather inefficient,
@@ -641,7 +634,7 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_API void render_text_f(const char* text,
-                                   math::FRect pos,
+                                   FRect pos,
                                    const Font& font);
 
   /**
@@ -660,7 +653,7 @@ class Renderer final {
    * @param area the clip area rectangle; or nullopt to disable clipping.
    * @since 3.0.0
    */
-  CENTURION_API void set_clip(Optional<math::IRect> area) noexcept;
+  CENTURION_API void set_clip(Optional<IRect> area) noexcept;
 
   /**
    * Sets the viewport that will be used by the renderer.
@@ -668,7 +661,7 @@ class Renderer final {
    * @param viewport the viewport that will be used by the renderer.
    * @since 3.0.0
    */
-  CENTURION_API void set_viewport(const math::IRect& viewport) noexcept;
+  CENTURION_API void set_viewport(const IRect& viewport) noexcept;
 
   /**
    * Sets the translation viewport that will be used by the renderer. This
@@ -679,8 +672,7 @@ class Renderer final {
    * viewport.
    * @since 3.0.0
    */
-  CENTURION_API void set_translation_viewport(
-      const math::FRect& viewport) noexcept;
+  CENTURION_API void set_translation_viewport(const FRect& viewport) noexcept;
 
   /**
    * Sets the blend mode that will be used by the renderer.
@@ -780,7 +772,7 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Optional<math::IRect> clip() const noexcept;
+  CENTURION_API Optional<IRect> clip() const noexcept;
 
   /**
    * Returns information about the renderer.
@@ -931,7 +923,7 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API math::IRect viewport() const noexcept;
+  CENTURION_API IRect viewport() const noexcept;
 
   /**
    * Returns the translation viewport that is currently being used. Set to (0,
@@ -941,7 +933,7 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API const math::FRect& translation_viewport() const noexcept;
+  CENTURION_API const FRect& translation_viewport() const noexcept;
 
   /**
    * Returns a textual representation of the renderer.
@@ -968,7 +960,7 @@ class Renderer final {
 
  private:
   SDL_Renderer* m_renderer = nullptr;
-  math::FRect m_translationViewport = {0, 0, 0, 0};
+  FRect m_translationViewport = {0, 0, 0, 0};
 
   static constexpr SDL_RendererFlags defaultFlags =
       static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |

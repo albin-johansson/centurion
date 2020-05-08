@@ -6,12 +6,11 @@
 #include "centurion_exception.h"
 #include "colors.h"
 #include "log.h"
-#include "rectangle.h"
+#include "rect.h"
 #include "texture.h"
 #include "window.h"
 
 using namespace centurion;
-using namespace centurion::math;
 using namespace centurion::video;
 
 static constexpr auto* texturePath = "resources/panda.png";

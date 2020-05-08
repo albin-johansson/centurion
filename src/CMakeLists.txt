@@ -22,7 +22,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/blend_mode.h
         ${CTN_INCLUDE_DIR}/message_box.h
         ${CTN_INCLUDE_DIR}/color.h
-        ${CTN_INCLUDE_DIR}/rectangle.h
+        ${CTN_INCLUDE_DIR}/rect.h
         ${CTN_INCLUDE_DIR}/point.h
         ${CTN_INCLUDE_DIR}/key_state.h
         ${CTN_INCLUDE_DIR}/mouse_state.h

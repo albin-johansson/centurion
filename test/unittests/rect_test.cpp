@@ -1,11 +1,9 @@
-#include "rectangle.h"
-
 #include <catch.hpp>
 
 #include "log.h"
+#include "rect.h"
 
 using namespace centurion;
-using namespace centurion::math;
 
 TEST_CASE("IRect()", "[Rect]")
 {

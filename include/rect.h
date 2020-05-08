@@ -35,7 +35,6 @@
 #include "point.h"
 
 namespace centurion {
-namespace math {
 
 template <typename T>
 class Rect;
@@ -460,7 +459,6 @@ static_assert(sizeof(Rect<float>) == sizeof(SDL_FRect),
 using IRect = Rect<int>;
 using FRect = Rect<float>;
 
-}  // namespace math
 }  // namespace centurion
 
 #endif  // CENTURION_RECTANGLE_HEADER

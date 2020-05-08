@@ -55,7 +55,7 @@
 #include "platform.h"
 #include "point.h"
 #include "ram.h"
-#include "rectangle.h"
+#include "rect.h"
 #include "renderer.h"
 #include "screen.h"
 #include "sound_effect.h"

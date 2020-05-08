@@ -4,7 +4,6 @@
 #include "battery.h"
 
 namespace centurion {
-namespace system {
 
 CENTURION_DEF
 Optional<int> Battery::seconds_left() noexcept
@@ -65,7 +64,6 @@ bool operator==(SDL_PowerState a, PowerState b) noexcept
   return a == static_cast<SDL_PowerState>(b);
 }
 
-}  // namespace system
 }  // namespace centurion
 
 #endif  // CENTURION_BATTERY_SOURCE

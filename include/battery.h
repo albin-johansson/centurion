@@ -31,7 +31,6 @@
 #include "centurion_utils.h"
 
 namespace centurion {
-namespace system {
 
 /**
  * The PowerState enum class mirrors the values of the SDL_PowerState enum.
@@ -145,7 +144,6 @@ class Battery final {
   CENTURION_API static bool exists() noexcept;
 };
 
-}  // namespace system
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

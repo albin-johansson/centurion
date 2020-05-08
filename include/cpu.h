@@ -30,7 +30,6 @@
 #include "centurion_api.h"
 
 namespace centurion {
-namespace system {
 
 /**
  * The CPU class is a utility class that provides information related to,
@@ -205,7 +204,6 @@ class CPU final {
   }
 };
 
-}  // namespace system
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

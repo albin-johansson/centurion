@@ -4,7 +4,6 @@
 #include "cpu.h"
 
 namespace centurion {
-namespace system {
 
 CENTURION_DEF
 int CPU::cache_line_size() noexcept
@@ -96,7 +95,6 @@ bool CPU::has_neon() noexcept
   return SDL_HasNEON();
 }
 
-}  // namespace system
 }  // namespace centurion
 
 #endif  // CENTURION_CPU_SOURCE

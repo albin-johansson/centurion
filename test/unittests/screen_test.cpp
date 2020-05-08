@@ -2,8 +2,7 @@
 
 #include <catch.hpp>
 
-using namespace centurion::system;
-using namespace centurion::video;
+using namespace centurion;
 
 TEST_CASE("Screen::set_screen_saver_enabled", "[Screen]")
 {
@@ -41,5 +40,5 @@ TEST_CASE("Screen::pixel_format", "[Screen]")
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  CHECK(Screen::pixel_format() == static_cast<PixelFormat>(mode.format));
+  CHECK(Screen::pixel_format() == static_cast<video::PixelFormat>(mode.format));
 }

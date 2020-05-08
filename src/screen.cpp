@@ -6,7 +6,6 @@
 #include <SDL.h>
 
 namespace centurion {
-namespace system {
 
 CENTURION_DEF
 void Screen::set_screen_saver_enabled(bool enabled) noexcept
@@ -56,7 +55,6 @@ video::PixelFormat Screen::pixel_format() noexcept
   return static_cast<video::PixelFormat>(mode.format);
 }
 
-}  // namespace system
 }  // namespace centurion
 
 #endif  // CENTURION_SCREEN_SOURCE

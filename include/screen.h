@@ -29,7 +29,6 @@
 #include "pixel_format.h"
 
 namespace centurion {
-namespace system {
 
 /**
  * The Screen class provides information about the primary screen monitor.
@@ -96,7 +95,6 @@ class Screen final {
   CENTURION_API static video::PixelFormat pixel_format() noexcept;
 };
 
-}  // namespace system
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

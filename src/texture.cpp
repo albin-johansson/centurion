@@ -12,7 +12,6 @@
 #include "surface.h"
 
 namespace centurion {
-namespace video {
 
 CENTURION_DEF
 Texture::Texture(gsl::owner<SDL_Texture*> texture)
@@ -299,7 +298,6 @@ bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept
   return a != static_cast<SDL_TextureAccess>(b);
 }
 
-}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_IMAGE_SOURCE

@@ -9,7 +9,6 @@
 #include "window_listener.h"
 
 using namespace centurion;
-using namespace centurion::video;
 
 namespace {
 

@@ -7,7 +7,6 @@
 #include "log.h"
 
 using namespace centurion;
-using namespace centurion::video;
 
 TEST_CASE("Color()", "[Color]")
 {

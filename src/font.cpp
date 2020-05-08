@@ -6,7 +6,6 @@
 #include "centurion_utils.h"
 
 namespace centurion {
-namespace video {
 
 /* Any sufficiently advanced technology is indistinguishable from magic. */
 
@@ -270,7 +269,6 @@ Font::operator TTF_Font*() const noexcept
   return m_font;
 }
 
-}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_FONT_SOURCE

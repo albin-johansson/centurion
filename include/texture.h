@@ -38,7 +38,6 @@
 #include "pixel_format.h"
 
 namespace centurion {
-namespace video {
 
 /**
  * The TextureAccess enum mirrors the SDL_TextureAccess enum.
@@ -472,7 +471,6 @@ static_assert(!std::is_nothrow_copy_constructible<Image>::value,
 static_assert(!std::is_nothrow_copy_assignable<Image>::value,
               "Texture is assignable!");
 
-}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

@@ -42,7 +42,6 @@
 #include "rect.h"
 
 namespace centurion {
-namespace video {
 
 class Window;
 class Texture;
@@ -988,7 +987,6 @@ static_assert(!std::is_nothrow_copy_assignable<Renderer>::value,
 static_assert(std::is_convertible<Renderer, SDL_Renderer*>::value,
               "Renderer isn't convertible to SDL_Renderer*!");
 
-}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

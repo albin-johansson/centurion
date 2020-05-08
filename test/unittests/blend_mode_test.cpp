@@ -3,7 +3,6 @@
 #include <catch.hpp>
 
 using namespace centurion;
-using namespace centurion::video;
 
 TEST_CASE("BlendMode enum values", "[BlendMode]")
 {

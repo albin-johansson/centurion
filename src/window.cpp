@@ -11,7 +11,6 @@
 #include "window_listener.h"
 
 namespace centurion {
-namespace video {
 
 CENTURION_DEF
 Window::Window(const char* title, int width, int height)
@@ -465,7 +464,6 @@ SDL_Window* Window::internal() const noexcept
   return m_window;
 }
 
-}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_WINDOW_SOURCE

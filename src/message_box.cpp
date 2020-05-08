@@ -26,14 +26,14 @@ ButtonData::operator SDL_MessageBoxButtonData() const noexcept
 CENTURION_DEF
 ColorScheme::ColorScheme() noexcept
 {
-  set_color(ColorType::Background, video::black);
-  set_color(ColorType::ButtonBorder, video::black);
-  set_color(ColorType::ButtonBackground, video::black);
-  set_color(ColorType::ButtonSelected, video ::black);
+  set_color(ColorType::Background, black);
+  set_color(ColorType::ButtonBorder, black);
+  set_color(ColorType::ButtonBackground, black);
+  set_color(ColorType::ButtonSelected, black);
 }
 
 CENTURION_DEF
-void ColorScheme::set_color(ColorType type, const video::Color& color) noexcept
+void ColorScheme::set_color(ColorType type, const Color& color) noexcept
 {
   m_scheme.colors[index(type)] = color;
 }

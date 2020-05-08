@@ -10,7 +10,6 @@
 #include "window.h"
 
 using namespace centurion;
-using namespace centurion::video;
 
 static constexpr auto* pandaPath = "resources/panda.png";
 static constexpr int pandaWidth = 200;

@@ -8,7 +8,6 @@
 #include "window.h"
 
 using namespace centurion;
-using namespace centurion::video;
 using namespace std::literals;
 
 static const auto* good_path = "resources/panda.png";

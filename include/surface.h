@@ -35,7 +35,6 @@
 #include "color.h"
 
 namespace centurion {
-namespace video {
 
 class Texture;
 class Renderer;
@@ -233,7 +232,6 @@ static_assert(std::is_nothrow_move_constructible<Surface>::value,
 static_assert(std::is_nothrow_move_assignable<Surface>::value,
               "Surface isn't nothrow move assignable!");
 
-}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

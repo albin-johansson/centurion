@@ -2,7 +2,7 @@
 
 #include <catch.hpp>
 
-using namespace centurion::video;
+using namespace centurion;
 
 TEST_CASE("PixelFormat enum values", "[PixelFormat]")
 {

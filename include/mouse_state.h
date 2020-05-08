@@ -44,7 +44,7 @@ namespace input {
  * @see IWindowListener
  * @since 3.0.0
  */
-class MouseState final : public video::IWindowListener {
+class MouseState final : public IWindowListener {
  public:
   /**
    * @since 3.0.0
@@ -71,8 +71,7 @@ class MouseState final : public video::IWindowListener {
   CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<MouseState> shared();
 
-  CENTURION_API void window_updated(
-      const video::Window& window) noexcept override;
+  CENTURION_API void window_updated(const Window& window) noexcept override;
 
   /**
    * Updates the mouse state.
@@ -264,7 +263,7 @@ static_assert(std::is_nothrow_copy_constructible<MouseState>::value,
 static_assert(std::is_nothrow_copy_assignable<MouseState>::value,
               "MouseState isn't nothrow copy assignable!");
 
-static_assert(std::is_base_of<video::IWindowListener, MouseState>::value,
+static_assert(std::is_base_of<IWindowListener, MouseState>::value,
               "MouseState isn't a subclass of IWindowListener!");
 
 }  // namespace input

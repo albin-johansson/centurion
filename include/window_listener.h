@@ -30,7 +30,6 @@
 #include "centurion_api.h"
 
 namespace centurion {
-namespace video {
 
 class Window;
 
@@ -57,7 +56,6 @@ class [[deprecated]] IWindowListener
 static_assert(std::has_virtual_destructor<IWindowListener>::value,
               "IWindowListener doesn't have virtual destructor!");
 
-}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_WINDOW_LISTENER_HEADER

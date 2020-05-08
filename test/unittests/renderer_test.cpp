@@ -11,7 +11,6 @@
 #include "window.h"
 
 using namespace centurion;
-using namespace centurion::video;
 
 static constexpr auto* texturePath = "resources/panda.png";
 

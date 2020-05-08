@@ -92,7 +92,7 @@ class Screen final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static video::PixelFormat pixel_format() noexcept;
+  CENTURION_API static PixelFormat pixel_format() noexcept;
 };
 
 }  // namespace centurion

@@ -37,7 +37,6 @@
 #include "color.h"
 
 namespace centurion {
-namespace video {
 
 /**
  * The maximum possible color component value.
@@ -1096,7 +1095,6 @@ static constexpr Color yellow{0xFF, 0xFF, 0};
  */
 static constexpr Color yellow_green{0x9A, 0xCD, 0x32};
 
-}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_COLORS_HEADER

@@ -39,7 +39,6 @@
 #include "error.h"
 
 namespace centurion {
-namespace video {
 
 /**
  * The FontHint enum class represents different possible TrueType font hint
@@ -418,7 +417,6 @@ static_assert(!std::is_copy_assignable<Font>::value,
 static_assert(std::is_convertible<Font, TTF_Font*>::value,
               "Font isn't convertible to TTF_Font*!");
 
-}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

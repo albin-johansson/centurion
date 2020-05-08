@@ -34,7 +34,6 @@
 #include "centurion_api.h"
 
 namespace centurion {
-namespace video {
 
 /**
  * The Color class represents an RGBA color with 8-bit components. Instances of
@@ -419,7 +418,6 @@ static_assert(std::is_nothrow_move_constructible<Color>::value,
 static_assert(std::is_nothrow_move_assignable<Color>::value,
               "Color isn't nothrow move assignable!");
 
-}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

@@ -10,7 +10,6 @@
 #include "texture.h"
 
 namespace centurion {
-namespace video {
 
 CENTURION_DEF
 Surface::Surface(const char* file)
@@ -166,7 +165,6 @@ SDL_Surface* Surface::get_internal() const noexcept
   return m_surface;
 }
 
-}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_SURFACE_SOURCE

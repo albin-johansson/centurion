@@ -4,7 +4,6 @@
 #include "color.h"
 
 namespace centurion {
-namespace video {
 
 CENTURION_DEF
 const Uint8 Color::max = 0xFF;
@@ -170,7 +169,6 @@ bool operator!=(const SDL_MessageBoxColor& msgColor,
   return !(msgColor == color);
 }
 
-}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_COLOR_SOURCE

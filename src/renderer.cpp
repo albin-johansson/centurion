@@ -14,7 +14,6 @@
 #include "window.h"
 
 namespace centurion {
-namespace video {
 
 CENTURION_DEF
 Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer)
@@ -773,7 +772,6 @@ Renderer::operator SDL_Renderer*() const noexcept
   return m_renderer;
 }
 
-}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_RENDERER_SOURCE

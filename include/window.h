@@ -40,7 +40,6 @@
 #include "point.h"
 
 namespace centurion {
-namespace video {
 
 class IWindowListener;
 class Surface;
@@ -638,7 +637,6 @@ static_assert(std::is_default_constructible<Window>::value,
 static_assert(std::is_nothrow_destructible<Window>::value,
               "Window isn't nothrow destructible!");
 
-}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

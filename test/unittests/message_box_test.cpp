@@ -7,7 +7,6 @@
 
 using namespace centurion;
 using namespace centurion::messagebox;
-using namespace centurion::video;
 
 TEST_CASE("MessageBoxID enum values", "[MessageBox]")
 {
@@ -69,10 +68,10 @@ TEST_CASE("ColorScheme general test", "[MessageBox]")
 {
   ColorScheme scheme;
 
-  scheme.set_color(ColorType::Background, video::aquamarine);
-  scheme.set_color(ColorType::ButtonBackground, video::azure);
-  scheme.set_color(ColorType::ButtonBorder, video::tomato);
-  scheme.set_color(ColorType::ButtonSelected, video::cornsilk);
+  scheme.set_color(ColorType::Background, aquamarine);
+  scheme.set_color(ColorType::ButtonBackground, azure);
+  scheme.set_color(ColorType::ButtonBorder, tomato);
+  scheme.set_color(ColorType::ButtonSelected, cornsilk);
 
   const auto sdlScheme = static_cast<SDL_MessageBoxColorScheme>(scheme);
 

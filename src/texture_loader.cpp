@@ -8,7 +8,6 @@
 #include "texture.h"
 
 namespace centurion {
-namespace video {
 
 CENTURION_DEF
 TextureLoader::TextureLoader(const std::shared_ptr<Renderer>& renderer)
@@ -53,7 +52,6 @@ std::shared_ptr<Texture> TextureLoader::shared_img(PixelFormat format,
   return Texture::shared(*m_renderer, format, access, width, height);
 }
 
-}  // namespace video
 }  // namespace centurion
 
 #endif  // CENTURION_IMAGE_GENERATOR_SOURCE

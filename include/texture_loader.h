@@ -32,7 +32,6 @@
 #include "texture.h"
 
 namespace centurion {
-namespace video {
 
 class Renderer;
 
@@ -123,8 +122,6 @@ class TextureLoader final {
   std::shared_ptr<Renderer> m_renderer;
 };
 
-using ImageGenerator = TextureLoader;  // for compatibility
-
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<TextureLoader>::value,
               "ImageGenerator isn't final!");
@@ -142,7 +139,6 @@ static_assert(std::is_nothrow_move_assignable<TextureLoader>::value,
 static_assert(std::is_nothrow_move_constructible<TextureLoader>::value,
               "ImageGenerator isn't nothrow move constructible!");
 
-}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

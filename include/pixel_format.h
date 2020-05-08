@@ -6,7 +6,6 @@
 #include "centurion_api.h"
 
 namespace centurion {
-namespace video {
 
 /**
  * The PixelFormat enum class mirrors the values of the SDL_PixelFormatEnum.
@@ -125,7 +124,6 @@ CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_PixelFormatEnum lhs,
                               PixelFormat rhs) noexcept;
 
-}  // namespace video
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

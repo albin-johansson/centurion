@@ -8,7 +8,6 @@
 #include "centurion_utils.h"
 
 namespace centurion {
-namespace system {
 
 CENTURION_DEF
 AppPath::AppPath() noexcept : m_path{SDL_GetBasePath()}
@@ -67,7 +66,6 @@ std::shared_ptr<PrefPath> PrefPath::shared(const std::string& org,
   return std::make_shared<PrefPath>(org, app);
 }
 
-}  // namespace system
 }  // namespace centurion
 
 #endif  // CENTURION_PATHS_SOURCE

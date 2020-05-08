@@ -31,7 +31,6 @@
 #include "centurion_api.h"
 
 namespace centurion {
-namespace system {
 
 /**
  * The AppPath class is a simple wrapper class for a string that represents the
@@ -172,7 +171,6 @@ class PrefPath final {
   char* m_path = nullptr;
 };
 
-}  // namespace system
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

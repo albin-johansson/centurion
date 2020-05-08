@@ -54,11 +54,10 @@ class TextureLoader final {
    * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
-  CENTURION_API
-  explicit TextureLoader(const std::shared_ptr<Renderer>& renderer);
+  CENTURION_API explicit TextureLoader(
+      const std::shared_ptr<Renderer>& renderer);
 
-  CENTURION_API
-  ~TextureLoader() noexcept;
+  CENTURION_API ~TextureLoader() noexcept;
 
   /**
    * Creates and returns a unique pointer to an image.
@@ -70,8 +69,7 @@ class TextureLoader final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  std::unique_ptr<Texture> unique_img(const char* file) const;
+  CENTURION_API std::unique_ptr<Texture> unique_img(const char* file) const;
 
   /**
    * Creates and returns a unique pointer to an image with the specified
@@ -86,11 +84,10 @@ class TextureLoader final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  std::unique_ptr<Texture> unique_img(PixelFormat format,
-                                      TextureAccess access,
-                                      int width,
-                                      int height) const;
+  CENTURION_API std::unique_ptr<Texture> unique_img(PixelFormat format,
+                                                    TextureAccess access,
+                                                    int width,
+                                                    int height) const;
 
   /**
    * Creates and returns a shared pointer to an image.
@@ -102,8 +99,7 @@ class TextureLoader final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  std::shared_ptr<Texture> shared_img(const char* file) const;
+  CENTURION_API std::shared_ptr<Texture> shared_img(const char* file) const;
 
   /**
    * Creates and returns a shared pointer to an image with the specified
@@ -118,11 +114,10 @@ class TextureLoader final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  std::shared_ptr<Texture> shared_img(PixelFormat format,
-                                      TextureAccess access,
-                                      int width,
-                                      int height) const;
+  CENTURION_API std::shared_ptr<Texture> shared_img(PixelFormat format,
+                                                    TextureAccess access,
+                                                    int width,
+                                                    int height) const;
 
  private:
   std::shared_ptr<Renderer> m_renderer;

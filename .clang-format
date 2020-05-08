@@ -5,7 +5,7 @@ IndentWidth: 2
 Language: Cpp
 DerivePointerAlignment: false
 PointerAlignment: Left
-AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: false
 
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None

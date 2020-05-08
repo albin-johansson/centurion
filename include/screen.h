@@ -47,8 +47,7 @@ class Screen final {
    * @param enabled true if screen savers should be enabled; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_API
-  static void set_screen_saver_enabled(bool enabled) noexcept;
+  CENTURION_API static void set_screen_saver_enabled(bool enabled) noexcept;
 
   /**
    * Indicates whether or not screen savers are enabled. By default, screen
@@ -58,8 +57,7 @@ class Screen final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool screen_saver_enabled() noexcept;
+  CENTURION_API static bool screen_saver_enabled() noexcept;
 
   /**
    * Returns the width of the screen.
@@ -68,8 +66,7 @@ class Screen final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static int width() noexcept;
+  CENTURION_API static int width() noexcept;
 
   /**
    * Returns the height of the screen.
@@ -78,8 +75,7 @@ class Screen final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static int height() noexcept;
+  CENTURION_API static int height() noexcept;
 
   /**
    * Returns the refresh rate of the screen.
@@ -88,8 +84,7 @@ class Screen final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static int refresh_rate() noexcept;
+  CENTURION_API static int refresh_rate() noexcept;
 
   /**
    * Returns the pixel format of the desktop display mode.
@@ -98,8 +93,7 @@ class Screen final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static video::PixelFormat pixel_format() noexcept;
+  CENTURION_API static video::PixelFormat pixel_format() noexcept;
 };
 
 }  // namespace system

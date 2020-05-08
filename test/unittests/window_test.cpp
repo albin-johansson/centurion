@@ -71,7 +71,7 @@ TEST_CASE("Window(Window&&)", "[Window]")
   Window window;
   Window other{std::move(window)};
 
-  CHECK(!window.get_internal());
+  CHECK(!window.internal());
 }
 
 TEST_CASE("Window::operator=(Window&&)", "[Window]")
@@ -81,7 +81,7 @@ TEST_CASE("Window::operator=(Window&&)", "[Window]")
 
   window = std::move(other);
 
-  CHECK(!other.get_internal());
+  CHECK(!other.internal());
 }
 
 TEST_CASE("Window smart pointer factory methods", "[Window]")

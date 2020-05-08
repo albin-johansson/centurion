@@ -56,8 +56,7 @@ enum class FadeStatus {
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept;
+CENTURION_API bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept;
 
 /**
  * Indicates whether or not the fading status values represent the same thing.
@@ -68,8 +67,7 @@ bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept;
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-bool operator==(Mix_Fading lhs, FadeStatus rhs) noexcept;
+CENTURION_API bool operator==(Mix_Fading lhs, FadeStatus rhs) noexcept;
 
 /**
  * The MusicType enum class mirrors the values of the Mix_MusicType enum.
@@ -97,8 +95,7 @@ enum class MusicType {
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-bool operator==(MusicType lhs, Mix_MusicType rhs) noexcept;
+CENTURION_API bool operator==(MusicType lhs, Mix_MusicType rhs) noexcept;
 
 /**
  * Indicates whether or not the music type values represent the same thing.
@@ -109,8 +106,7 @@ bool operator==(MusicType lhs, Mix_MusicType rhs) noexcept;
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept;
+CENTURION_API bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept;
 
 /**
  * The Music class represents audio files of music. Note! Only one music
@@ -129,8 +125,7 @@ class Music final {
    * @throws CenturionException if the music file cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_API
-  explicit Music(const std::string& file);
+  CENTURION_API explicit Music(const std::string& file);
 
   /**
    * Creates a Music instance by moving the supplied Music instance.
@@ -138,16 +133,14 @@ class Music final {
    * @param other the Music instance that will be moved.
    * @since 3.0.0
    */
-  CENTURION_API
-  Music(Music&& other) noexcept;
+  CENTURION_API Music(Music&& other) noexcept;
 
   Music(const Music&) = delete;
 
   /**
    * @since 3.0.0
    */
-  CENTURION_API
-  ~Music() noexcept;
+  CENTURION_API ~Music() noexcept;
 
   /**
    * Moves the contents of the supplied Music into this Music instance.
@@ -156,8 +149,7 @@ class Music final {
    * @return the assigned Music instance.
    * @since 3.0.0
    */
-  CENTURION_API
-  Music& operator=(Music&& other) noexcept;
+  CENTURION_API Music& operator=(Music&& other) noexcept;
 
   Music& operator=(const Music&) = delete;
 
@@ -170,8 +162,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::unique_ptr<Music> unique(const std::string& file);
+  CENTURION_API static std::unique_ptr<Music> unique(const std::string& file);
 
   /**
    * Creates and returns a shared pointer to a Music instance.
@@ -182,8 +173,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::shared_ptr<Music> shared(const std::string& file);
+  CENTURION_API static std::shared_ptr<Music> shared(const std::string& file);
 
   /**
    * Plays the music. Previously playing music will be halted. However, this
@@ -193,8 +183,7 @@ class Music final {
    * indicates that the music should be looped forever. The default value is 1.
    * @since 3.0.0
    */
-  CENTURION_API
-  void play(int nLoops = 1) noexcept;
+  CENTURION_API void play(int nLoops = 1) noexcept;
 
   /**
    * Resumes the music. This method can safely be invoked on halted, paused and
@@ -202,8 +191,7 @@ class Music final {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  static void resume() noexcept;
+  CENTURION_API static void resume() noexcept;
 
   /**
    * Pauses any currently playing music. Note! This method only affects music
@@ -212,8 +200,7 @@ class Music final {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  static void pause() noexcept;
+  CENTURION_API static void pause() noexcept;
 
   /**
    * Stops ALL currently playing and fading music. Unlike <code>pause</code>,
@@ -221,8 +208,7 @@ class Music final {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  static void halt() noexcept;
+  CENTURION_API static void halt() noexcept;
 
   /**
    * Plays the music by fading it in by the specified amount of time. The fade
@@ -237,8 +223,7 @@ class Music final {
    * forever.
    * @since 3.0.0
    */
-  CENTURION_API
-  void fade_in(int ms, int nLoops = 1) noexcept;
+  CENTURION_API void fade_in(int ms, int nLoops = 1) noexcept;
 
   /**
    * Fades out any currently playing music over the specified amount of time.
@@ -250,8 +235,7 @@ class Music final {
    * negative value is clamped to zero.
    * @since 3.0.0
    */
-  CENTURION_API
-  static void fade_out(int ms);
+  CENTURION_API static void fade_out(int ms);
 
   /**
    * Sets the volume of all music.
@@ -261,8 +245,7 @@ class Music final {
    * valid value.
    * @since 3.0.0
    */
-  CENTURION_API
-  static void set_volume(int volume) noexcept;
+  CENTURION_API static void set_volume(int volume) noexcept;
 
   /**
    * Indicates whether or not any music is currently playing.
@@ -271,8 +254,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool playing() noexcept;
+  CENTURION_API static bool playing() noexcept;
 
   /**
    * Indicates whether or not any music is paused.
@@ -281,8 +263,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool paused() noexcept;
+  CENTURION_API static bool paused() noexcept;
 
   /**
    * Indicates whether or not any music is currently being faded in or out.
@@ -292,8 +273,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool fading() noexcept;
+  CENTURION_API static bool fading() noexcept;
 
   /**
    * Returns the volume of all music. The default value is set to
@@ -303,8 +283,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static int volume() noexcept;
+  CENTURION_API static int volume() noexcept;
 
   /**
    * Returns the current fade status of the music playback.
@@ -313,8 +292,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static FadeStatus fade_status() noexcept;
+  CENTURION_API static FadeStatus fade_status() noexcept;
 
   /**
    * Returns the type of the music.
@@ -323,8 +301,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  MusicType music_type() const noexcept;
+  CENTURION_API MusicType music_type() const noexcept;
 
   /**
    * Returns a textual representation of the Music instance.
@@ -333,8 +310,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  std::string to_string() const;
+  CENTURION_API std::string to_string() const;
 
   /**
    * Converts the Music instance into a pointer to a Mix_Music instance.
@@ -343,8 +319,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  operator Mix_Music*() const noexcept;
+  CENTURION_API operator Mix_Music*() const noexcept;
 
  private:
   Mix_Music* m_music = nullptr;

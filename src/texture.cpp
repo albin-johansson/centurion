@@ -30,7 +30,7 @@ Texture::Texture(const Renderer& renderer, const char* path)
     throw CenturionException{"Can't load texture from null path!"};
   }
 
-  m_texture = IMG_LoadTexture(renderer.get_internal(), path);
+  m_texture = IMG_LoadTexture(renderer.internal(), path);
 
   if (!m_texture) {
     const auto strPath = std::string{path};
@@ -41,7 +41,7 @@ Texture::Texture(const Renderer& renderer, const char* path)
 CENTURION_DEF
 Texture::Texture(const Renderer& renderer, const Surface& surface)
 {
-  this->m_texture = SDL_CreateTextureFromSurface(renderer.get_internal(),
+  this->m_texture = SDL_CreateTextureFromSurface(renderer.internal(),
                                                  surface.get_internal());
   if (!m_texture) {
     throw CenturionException{"Failed to create texture from surface! " +

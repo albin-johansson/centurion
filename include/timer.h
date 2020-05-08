@@ -49,8 +49,7 @@ class Timer final {
    * @param ms the minimum amount of time to sleep for, in milliseconds.
    * @since 3.0.0
    */
-  CENTURION_API
-  static void sleep(Uint32 ms) noexcept;
+  CENTURION_API static void sleep(Uint32 ms) noexcept;
 
   /**
    * Returns the current value of the system high-performance counter.
@@ -59,8 +58,7 @@ class Timer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static uint64_t high_res() noexcept;
+  CENTURION_API static uint64_t high_res() noexcept;
 
   /**
    * Returns the frequency of the system high-performance counter.
@@ -69,8 +67,7 @@ class Timer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static uint64_t high_res_freq() noexcept;
+  CENTURION_API static uint64_t high_res_freq() noexcept;
 
   /**
    * Returns the amount of milliseconds since the library was initialized.
@@ -79,8 +76,7 @@ class Timer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static Uint32 millis() noexcept;
+  CENTURION_API static Uint32 millis() noexcept;
 };
 
 }  // namespace system

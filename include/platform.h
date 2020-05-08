@@ -49,8 +49,7 @@ enum class Platform { Unknown, Windows, MacOSX, Linux, Ios, Android };
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-Platform get_platform() noexcept;
+CENTURION_API Platform get_platform() noexcept;
 
 /**
  * Returns the name of the current platform.
@@ -60,8 +59,7 @@ Platform get_platform() noexcept;
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-Optional<std::string> get_platform_name() noexcept;
+CENTURION_API Optional<std::string> get_platform_name() noexcept;
 
 }  // namespace system
 }  // namespace centurion

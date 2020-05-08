@@ -22,7 +22,7 @@ TEST_CASE("Renderer(SDL_Renderer*)", "[Renderer]")
 
   Window window;
   SDL_Renderer* ren =
-      SDL_CreateRenderer(window.get_internal(), -1, SDL_RENDERER_SOFTWARE);
+      SDL_CreateRenderer(window.internal(), -1, SDL_RENDERER_SOFTWARE);
   CHECK_NOTHROW(Renderer{ren});
 }
 
@@ -45,7 +45,7 @@ TEST_CASE("Renderer(Renderer&&)", "[Renderer]")
   Renderer renderer{window};
   Renderer other{std::move(renderer)};
 
-  CHECK(!renderer.get_internal());
+  CHECK(!renderer.internal());
 }
 
 TEST_CASE("Renderer::operator=(Renderer&&)", "[Renderer]")
@@ -54,7 +54,7 @@ TEST_CASE("Renderer::operator=(Renderer&&)", "[Renderer]")
   Renderer renderer{window};
   Renderer other = std::move(renderer);
 
-  CHECK(!renderer.get_internal());
+  CHECK(!renderer.internal());
 }
 
 TEST_CASE("Renderer::unique(SDL_Renderer*)", "[Renderer]")
@@ -63,7 +63,7 @@ TEST_CASE("Renderer::unique(SDL_Renderer*)", "[Renderer]")
 
   Window window;
   SDL_Renderer* ren =
-      SDL_CreateRenderer(window.get_internal(), -1, SDL_RENDERER_SOFTWARE);
+      SDL_CreateRenderer(window.internal(), -1, SDL_RENDERER_SOFTWARE);
 
   CHECK_NOTHROW(Renderer::unique(ren));
 }
@@ -87,7 +87,7 @@ TEST_CASE("Renderer::shared(SDL_Renderer*)", "[Renderer]")
 
   Window window;
   SDL_Renderer* ren =
-      SDL_CreateRenderer(window.get_internal(), -1, SDL_RENDERER_SOFTWARE);
+      SDL_CreateRenderer(window.internal(), -1, SDL_RENDERER_SOFTWARE);
 
   CHECK_NOTHROW(Renderer::shared(ren));
 }

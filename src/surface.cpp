@@ -158,7 +158,7 @@ CENTURION_DEF
 Texture Surface::to_texture(const Renderer& renderer) const noexcept
 {
   return Texture{
-      SDL_CreateTextureFromSurface(renderer.get_internal(), m_surface)};
+      SDL_CreateTextureFromSurface(renderer.internal(), m_surface)};
 }
 
 CENTURION_DEF

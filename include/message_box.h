@@ -59,8 +59,8 @@ enum class ButtonDataHint {
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-bool operator==(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept;
+CENTURION_API bool operator==(ButtonDataHint a,
+                              SDL_MessageBoxButtonFlags b) noexcept;
 
 /**
  * Indicates whether or not the flags represent the same value.
@@ -71,8 +71,8 @@ bool operator==(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept;
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-bool operator==(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept;
+CENTURION_API bool operator==(SDL_MessageBoxButtonFlags a,
+                              ButtonDataHint b) noexcept;
 
 /**
  * Indicates whether or not the flags don't represent the same value.
@@ -83,8 +83,8 @@ bool operator==(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept;
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-bool operator!=(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept;
+CENTURION_API bool operator!=(ButtonDataHint a,
+                              SDL_MessageBoxButtonFlags b) noexcept;
 
 /**
  * Indicates whether or not the flags don't represent the same value.
@@ -95,8 +95,8 @@ bool operator!=(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept;
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-bool operator!=(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept;
+CENTURION_API bool operator!=(SDL_MessageBoxButtonFlags a,
+                              ButtonDataHint b) noexcept;
 
 /**
  * The ButtonData class represents the data associated with a message box

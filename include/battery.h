@@ -72,8 +72,7 @@ enum class PowerState {
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-bool operator==(PowerState a, SDL_PowerState b) noexcept;
+CENTURION_API bool operator==(PowerState a, SDL_PowerState b) noexcept;
 
 /**
  * Indicates whether or not the power states hold the same values.
@@ -84,8 +83,7 @@ bool operator==(PowerState a, SDL_PowerState b) noexcept;
  * @since 3.0.0
  */
 CENTURION_NODISCARD
-CENTURION_API
-bool operator==(SDL_PowerState a, PowerState b) noexcept;
+CENTURION_API bool operator==(SDL_PowerState a, PowerState b) noexcept;
 
 /**
  * The Battery class provides utilities related to the battery of the system.
@@ -104,8 +102,7 @@ class Battery final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static Optional<int> seconds_left() noexcept;
+  CENTURION_API static Optional<int> seconds_left() noexcept;
 
   /**
    * Returns the amount of minutes of battery life that is remaining.
@@ -115,8 +112,7 @@ class Battery final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static Optional<int> minutes_left() noexcept;
+  CENTURION_API static Optional<int> minutes_left() noexcept;
 
   /**
    * Returns the percentage of battery life that is currently left.
@@ -126,8 +122,7 @@ class Battery final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static Optional<int> percentage() noexcept;
+  CENTURION_API static Optional<int> percentage() noexcept;
 
   /**
    * Returns the current power state.
@@ -136,8 +131,7 @@ class Battery final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static PowerState state() noexcept;
+  CENTURION_API static PowerState state() noexcept;
 
   /**
    * Indicates whether or not the system is running on a battery. This method
@@ -148,8 +142,7 @@ class Battery final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool exists() noexcept;
+  CENTURION_API static bool exists() noexcept;
 };
 
 }  // namespace system

@@ -101,47 +101,6 @@ struct CenturionConfig final {
  * @since 3.0.0
  */
 class Centurion final {
- private:
-  CenturionConfig cfg;
-
-  /**
-   * Initializes the core SDL2 library.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  void init_sdl();
-
-  /**
-   * Initializes the SDL2_ttf library.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  void init_ttf();
-
-  /**
-   * Initializes the SDL2_image library.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  void init_img();
-
-  /**
-   * Initializes the SDL2_mixer library.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  void init_mix();
-
-  CENTURION_API
-  void init();
-
-  CENTURION_API
-  void close() noexcept;
-
  public:
   /**
    * Initializes the Centurion library. Do NOT ever create more than one
@@ -150,8 +109,7 @@ class Centurion final {
    * @throws CenturionException if any of the SDL libraries can't be loaded.
    * @since 3.0.0
    */
-  CENTURION_API
-  Centurion();
+  CENTURION_API Centurion();
 
   /**
    * Initializes the Centurion library according to the supplied configuration.
@@ -162,16 +120,14 @@ class Centurion final {
    * @throws CenturionException if any of the SDL libraries can't be loaded.
    * @since 4.0.0
    */
-  CENTURION_API
-  explicit Centurion(const CenturionConfig& cfg);
+  CENTURION_API explicit Centurion(const CenturionConfig& cfg);
 
   /**
    * Closes the Centurion library.
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  ~Centurion() noexcept;
+  CENTURION_API ~Centurion() noexcept;
 
   Centurion(const Centurion&) = delete;
 
@@ -180,6 +136,21 @@ class Centurion final {
   Centurion& operator=(const Centurion&) = delete;
 
   Centurion& operator=(Centurion&&) = delete;
+
+ private:
+  CenturionConfig cfg;
+
+  CENTURION_API void init_sdl();
+
+  CENTURION_API void init_ttf();
+
+  CENTURION_API void init_img();
+
+  CENTURION_API void init_mix();
+
+  CENTURION_API void init();
+
+  CENTURION_API void close() noexcept;
 };
 
 }  // namespace centurion

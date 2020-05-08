@@ -22,7 +22,7 @@ TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
 
   Window window;
   Renderer renderer{window};
-  SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.get_internal(), pandaPath);
+  SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.internal(), pandaPath);
   CHECK_NOTHROW(Texture(sdlTexture));
 }
 

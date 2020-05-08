@@ -60,26 +60,6 @@ enum class FontHint {
  * @since 3.0.0
  */
 class Font final {
-  /**
-   * Enables the font style associated with the supplied bit mask. The possible
-   * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
-   * TTF_STYLE_STRIKETHROUGH.
-   *
-   * @param mask the bit mask of the font style to enable.
-   * @since 3.0.0
-   */
-  CENTURION_API void add_style(int mask) noexcept;
-
-  /**
-   * Removes the font style associated with the supplied bit mask. The possible
-   * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
-   * TTF_STYLE_STRIKETHROUGH.
-   *
-   * @param mask the bit mask of the font style to disable.
-   * @since 3.0.0
-   */
-  CENTURION_API void remove_style(int mask) noexcept;
-
  public:
   /**
    * @param file the file path of the TrueType font file.
@@ -397,6 +377,26 @@ class Font final {
   TTF_Font* m_font = nullptr;
   int m_style = 0;
   int m_size = 0;
+
+  /**
+   * Enables the font style associated with the supplied bit mask. The possible
+   * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
+   * TTF_STYLE_STRIKETHROUGH.
+   *
+   * @param mask the bit mask of the font style to enable.
+   * @since 3.0.0
+   */
+  CENTURION_API void add_style(int mask) noexcept;
+
+  /**
+   * Removes the font style associated with the supplied bit mask. The possible
+   * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
+   * TTF_STYLE_STRIKETHROUGH.
+   *
+   * @param mask the bit mask of the font style to disable.
+   * @since 3.0.0
+   */
+  CENTURION_API void remove_style(int mask) noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

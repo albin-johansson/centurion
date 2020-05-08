@@ -53,8 +53,7 @@ class Surface final {
    * @throws CenturionException if the surface cannot be created.
    * @since 4.0.0
    */
-  CENTURION_API
-  explicit Surface(const char* file);
+  CENTURION_API explicit Surface(const char* file);
 
   /**
    * @param surface a pointer to the SDL_Surface that will be used to create the
@@ -62,8 +61,7 @@ class Surface final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 4.0.0
    */
-  CENTURION_API
-  explicit Surface(gsl::owner<SDL_Surface*> surface);
+  CENTURION_API explicit Surface(gsl::owner<SDL_Surface*> surface);
 
   /**
    * Creates a copy of the supplied surface.
@@ -72,8 +70,7 @@ class Surface final {
    * @throws CenturionException if the supplied surface couldn't be copied.
    * @since 4.0.0
    */
-  CENTURION_API
-  Surface(const Surface& other);
+  CENTURION_API Surface(const Surface& other);
 
   /**
    * Creates a surface by moving the supplied surface.
@@ -81,8 +78,7 @@ class Surface final {
    * @param other the surface that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API
-  Surface(Surface&& other) noexcept;
+  CENTURION_API Surface(Surface&& other) noexcept;
 
   /**
    * Copies the supplied surface and saves the result in the invoked surface.
@@ -91,8 +87,7 @@ class Surface final {
    * @throws CenturionException if the supplied surface couldn't be copied.
    * @since 4.0.0
    */
-  CENTURION_API
-  Surface& operator=(const Surface& other);
+  CENTURION_API Surface& operator=(const Surface& other);
 
   /**
    * Moves the supplied surface into this surface.
@@ -100,11 +95,9 @@ class Surface final {
    * @param other the surface that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API
-  Surface& operator=(Surface&& other) noexcept;
+  CENTURION_API Surface& operator=(Surface&& other) noexcept;
 
-  CENTURION_API
-  ~Surface() noexcept;
+  CENTURION_API ~Surface() noexcept;
 
   /**
    * Sets the alpha component modulation value.
@@ -138,8 +131,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  Uint8 alpha() const noexcept;
+  CENTURION_API Uint8 alpha() const noexcept;
 
   /**
    * Returns the color modulation of the surface.
@@ -148,8 +140,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  Color color_mod() const noexcept;
+  CENTURION_API Color color_mod() const noexcept;
 
   /**
    * Returns the blend mode that is being used by the surface.
@@ -158,8 +149,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  BlendMode blend_mode() const noexcept;
+  CENTURION_API BlendMode blend_mode() const noexcept;
 
   /**
    * Returns the width of the surface.
@@ -168,8 +158,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  int width() const noexcept;
+  CENTURION_API int width() const noexcept;
 
   /**
    * Returns the height of the surface.
@@ -178,8 +167,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  int height() const noexcept;
+  CENTURION_API int height() const noexcept;
 
   /**
    * Returns the pitch (the length of a row of pixels in bytes) of the surface.
@@ -188,8 +176,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  int pitch() const noexcept;
+  CENTURION_API int pitch() const noexcept;
 
   /**
    * Converts the surface into its texture equivalent.
@@ -200,8 +187,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  Texture to_texture(const Renderer& renderer) const noexcept;
+  CENTURION_API Texture to_texture(const Renderer& renderer) const noexcept;
 
   /**
    * Returns a pointer to the internal SDL_Surface instance. Don't take
@@ -211,8 +197,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  SDL_Surface* get_internal() const noexcept;
+  CENTURION_API SDL_Surface* get_internal() const noexcept;
 
  private:
   SDL_Surface* m_surface = nullptr;
@@ -233,8 +218,7 @@ class Surface final {
    * @throws CenturionException if the copy couldn't be created.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  SDL_Surface* copy_surface() const;
+  CENTURION_NODISCARD SDL_Surface* copy_surface() const;
 };
 
 static_assert(!std::is_nothrow_copy_constructible<Surface>::value,

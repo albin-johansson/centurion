@@ -119,8 +119,7 @@ class Cursor final {
    * @throws CenturionException if the cursor cannot be created.
    * @since 4.0.0
    */
-  CENTURION_API
-  explicit Cursor(SystemCursor id);
+  CENTURION_API explicit Cursor(SystemCursor id);
 
   /**
    * Creates a cursor based on the supplied SDL_Cursor. The ownership
@@ -130,8 +129,7 @@ class Cursor final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 4.0.0
    */
-  CENTURION_API
-  explicit Cursor(gsl::owner<SDL_Cursor*> cursor);
+  CENTURION_API explicit Cursor(gsl::owner<SDL_Cursor*> cursor);
 
   /**
    * Creates a cursor based on the supplied surface. The supplied hotspot
@@ -143,8 +141,7 @@ class Cursor final {
    * @throws CenturionException if the cursor cannot be created.
    * @since 4.0.0
    */
-  CENTURION_API
-  explicit Cursor(const Surface& surface, math::IPoint hotspot);
+  CENTURION_API explicit Cursor(const Surface& surface, math::IPoint hotspot);
 
   /**
    * Creates a cursor by moving the supplied cursor.
@@ -152,8 +149,7 @@ class Cursor final {
    * @param other the cursor that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API
-  Cursor(Cursor&& other) noexcept;
+  CENTURION_API Cursor(Cursor&& other) noexcept;
 
   /**
    * Moves the contents of the supplied cursor into this cursor.
@@ -162,8 +158,7 @@ class Cursor final {
    * @return the updated cursor.
    * @since 4.0.0
    */
-  CENTURION_API
-  Cursor& operator=(Cursor&& other) noexcept;
+  CENTURION_API Cursor& operator=(Cursor&& other) noexcept;
 
   Cursor(const Cursor&) = delete;
 
@@ -172,8 +167,7 @@ class Cursor final {
   /**
    * @since 4.0.0
    */
-  CENTURION_API
-  ~Cursor() noexcept;
+  CENTURION_API ~Cursor() noexcept;
 
   /**
    * Creates and returns a unique pointer to a Cursor instance.
@@ -184,8 +178,7 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::unique_ptr<Cursor> unique(SystemCursor id);
+  CENTURION_API static std::unique_ptr<Cursor> unique(SystemCursor id);
 
   /**
    * Creates and returns a unique pointer to a Cursor instance. The created
@@ -197,8 +190,8 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::unique_ptr<Cursor> unique(gsl::owner<SDL_Cursor*> cursor);
+  CENTURION_API static std::unique_ptr<Cursor> unique(
+      gsl::owner<SDL_Cursor*> cursor);
 
   /**
    * Creates and returns a unique pointer to a Cursor instance. The supplied
@@ -212,9 +205,8 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::unique_ptr<Cursor> unique(const Surface& surface,
-                                        math::IPoint hotspot);
+  CENTURION_API static std::unique_ptr<Cursor> unique(const Surface& surface,
+                                                      math::IPoint hotspot);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance.
@@ -225,8 +217,7 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::shared_ptr<Cursor> shared(SystemCursor id);
+  CENTURION_API static std::shared_ptr<Cursor> shared(SystemCursor id);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance. The created
@@ -238,8 +229,8 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::shared_ptr<Cursor> shared(gsl::owner<SDL_Cursor*> cursor);
+  CENTURION_API static std::shared_ptr<Cursor> shared(
+      gsl::owner<SDL_Cursor*> cursor);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance. The supplied
@@ -253,17 +244,15 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::shared_ptr<Cursor> shared(const Surface& surface,
-                                        math::IPoint hotspot);
+  CENTURION_API static std::shared_ptr<Cursor> shared(const Surface& surface,
+                                                      math::IPoint hotspot);
 
   /**
    * Makes the cursor the used cursor.
    *
    * @since 4.0.0
    */
-  CENTURION_API
-  void enable() noexcept;
+  CENTURION_API void enable() noexcept;
 
   /**
    * Indicates whether or not the cursor is currently being used. Note, this
@@ -277,24 +266,21 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  bool is_enabled() const noexcept;
+  CENTURION_API bool is_enabled() const noexcept;
 
   /**
    * Forces a cursor redraw.
    *
    * @since 4.0.0
    */
-  CENTURION_API
-  static void force_redraw() noexcept;
+  CENTURION_API static void force_redraw() noexcept;
 
   /**
    * Resets the cursor to the system default.
    *
    * @since 4.0.0
    */
-  CENTURION_API
-  static void reset() noexcept;
+  CENTURION_API static void reset() noexcept;
 
   /**
    * Sets whether or not the cursor is visible.
@@ -302,8 +288,7 @@ class Cursor final {
    * @param visible true if the cursor should be made visible; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_API
-  static void set_visible(bool visible) noexcept;
+  CENTURION_API static void set_visible(bool visible) noexcept;
 
   /**
    * Indicates whether or not the cursor is visible.
@@ -312,8 +297,7 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool visible() noexcept;
+  CENTURION_API static bool visible() noexcept;
 
  private:
   SDL_Cursor* cursor = nullptr;

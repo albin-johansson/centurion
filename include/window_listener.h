@@ -51,8 +51,7 @@ class [[deprecated]] IWindowListener
    * @param window the window that was updated.
    * @since 3.0.0
    */
-  CENTURION_API
-  virtual void window_updated(const Window& window) noexcept = 0;
+  CENTURION_API virtual void window_updated(const Window& window) noexcept = 0;
 };
 
 static_assert(std::has_virtual_destructor<IWindowListener>::value,

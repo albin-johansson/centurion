@@ -460,7 +460,7 @@ Window::operator SDL_Window*() const noexcept
 }
 
 CENTURION_DEF
-SDL_Window* Window::get_internal() const noexcept
+SDL_Window* Window::internal() const noexcept
 {
   return m_window;
 }

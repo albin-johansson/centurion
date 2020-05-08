@@ -110,8 +110,7 @@ class Log final {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  static void reset_priorites() noexcept;
+  CENTURION_API static void reset_priorites() noexcept;
 
   /**
    * Logs a message.
@@ -122,11 +121,10 @@ class Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API
-  static void msgf(Category category,
-                   Priority prio,
-                   const char* fmt,
-                   ...) noexcept;
+  CENTURION_API static void msgf(Category category,
+                                 Priority prio,
+                                 const char* fmt,
+                                 ...) noexcept;
 
   /**
    * Logs a message.
@@ -136,8 +134,9 @@ class Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API
-  static void msgf(Category category, const char* fmt, ...) noexcept;
+  CENTURION_API static void msgf(Category category,
+                                 const char* fmt,
+                                 ...) noexcept;
 
   /**
    * Logs a message with the App category and Info priority.
@@ -146,8 +145,7 @@ class Log final {
    * @param ... the values that are used by the formatted string.
    * @since 3.0.0
    */
-  CENTURION_API
-  static void msgf(const char* fmt, ...) noexcept;
+  CENTURION_API static void msgf(const char* fmt, ...) noexcept;
 
   /**
    * Sets the priority of all categories.
@@ -155,8 +153,7 @@ class Log final {
    * @param prio the priority that will be used.
    * @since 3.0.0
    */
-  CENTURION_API
-  static void set_priority(Priority prio) noexcept;
+  CENTURION_API static void set_priority(Priority prio) noexcept;
 
   /**
    * Sets the priority of the specified category.
@@ -165,8 +162,8 @@ class Log final {
    * @param prio the new priority value.
    * @since 3.0.0
    */
-  CENTURION_API
-  static void set_priority(Category category, Priority prio) noexcept;
+  CENTURION_API static void set_priority(Category category,
+                                         Priority prio) noexcept;
 
   /**
    * Returns the priority of the specified category.
@@ -176,8 +173,7 @@ class Log final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static Priority get_priority(Category category) noexcept;
+  CENTURION_API static Priority get_priority(Category category) noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

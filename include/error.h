@@ -37,13 +37,14 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class [[deprecated]] Error final {
+class [[deprecated]] Error final
+{
  public:
   Error() = delete;
 
   Error(const Error&) = delete;
 
-  Error(Error&&) = delete;
+  Error(Error &&) = delete;
 
   Error& operator=(const Error&) = delete;
 
@@ -58,8 +59,7 @@ class [[deprecated]] Error final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static const char* descriptionf() noexcept;
+  CENTURION_API static const char* descriptionf() noexcept;
 
   /**
    * Returns a string that describes the last error.
@@ -68,8 +68,7 @@ class [[deprecated]] Error final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::string description() noexcept;
+  CENTURION_API static std::string description() noexcept;
 
   /**
    * Returns a string that holds the last error message. The returned string
@@ -80,8 +79,7 @@ class [[deprecated]] Error final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::string msg() noexcept;
+  CENTURION_API static std::string msg() noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

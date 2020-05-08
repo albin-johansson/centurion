@@ -48,8 +48,7 @@ class KeyState final {
    * @throws CenturionException if the key state cannot be obtained.
    * @since 3.0.0
    */
-  CENTURION_API
-  KeyState();
+  CENTURION_API KeyState();
 
   /**
    * Creates and returns a unique pointer to a KeyState instance.
@@ -58,8 +57,7 @@ class KeyState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::unique_ptr<KeyState> unique();
+  CENTURION_API static std::unique_ptr<KeyState> unique();
 
   /**
    * Creates and returns a shared pointer to a KeyState instance.
@@ -68,8 +66,7 @@ class KeyState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static std::shared_ptr<KeyState> shared();
+  CENTURION_API static std::shared_ptr<KeyState> shared();
 
   /**
    * Updates the state of the key state object. Note! SDL_PollEvent isn't
@@ -77,8 +74,7 @@ class KeyState final {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void update() noexcept;
+  CENTURION_API void update() noexcept;
 
   /**
    * Indicates whether or not the specified key is being pressed.
@@ -88,8 +84,7 @@ class KeyState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  bool is_pressed(SDL_Scancode code) const noexcept;
+  CENTURION_API bool is_pressed(SDL_Scancode code) const noexcept;
 
   /**
    * Indicates whether or not the specified key has been pressed during more
@@ -100,8 +95,7 @@ class KeyState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  bool is_held(SDL_Scancode code) const noexcept;
+  CENTURION_API bool is_held(SDL_Scancode code) const noexcept;
 
   /**
    * Indicates whether or not a key just became pressed in the last update of
@@ -112,8 +106,7 @@ class KeyState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  bool was_just_pressed(SDL_Scancode code) const noexcept;
+  CENTURION_API bool was_just_pressed(SDL_Scancode code) const noexcept;
 
   /**
    * Indicates whether or not the specified key was released in the last update
@@ -124,8 +117,7 @@ class KeyState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  bool was_just_released(SDL_Scancode code) const noexcept;
+  CENTURION_API bool was_just_released(SDL_Scancode code) const noexcept;
 
   /**
    * Returns the total amount of keys.
@@ -133,8 +125,7 @@ class KeyState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  int amount_of_keys() const noexcept;
+  CENTURION_API int amount_of_keys() const noexcept;
 
  private:
   const Uint8* m_states = nullptr;

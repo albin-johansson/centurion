@@ -39,9 +39,6 @@ namespace centurion {
  * @since 3.0.0
  */
 class CenturionException final : public std::exception {
- private:
-  std::string msg = "";
-
  public:
   /**
    * @since 3.0.0
@@ -75,6 +72,9 @@ class CenturionException final : public std::exception {
   CENTURION_NODISCARD
   CENTURION_API
   const char* what() const noexcept override;
+
+ private:
+  std::string msg = "";
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

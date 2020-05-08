@@ -31,7 +31,7 @@ Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer)
 CENTURION_DEF
 Renderer::Renderer(const Window& window, SDL_RendererFlags flags)
 {
-  m_renderer = SDL_CreateRenderer(window.get_internal(), -1, flags);
+  m_renderer = SDL_CreateRenderer(window.internal(), -1, flags);
 
   set_blend_mode(BlendMode::Blend);
   set_color(black);
@@ -778,7 +778,7 @@ std::string Renderer::to_string() const
 }
 
 CENTURION_DEF
-SDL_Renderer* Renderer::get_internal() const noexcept
+SDL_Renderer* Renderer::internal() const noexcept
 {
   return m_renderer;
 }

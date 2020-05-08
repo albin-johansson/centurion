@@ -49,8 +49,7 @@ class CPU final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static int cache_line_size() noexcept;
+  CENTURION_API static int cache_line_size() noexcept;
 
   /**
    * Returns the amount of cores that the CPU has.
@@ -59,8 +58,7 @@ class CPU final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static int cores() noexcept;
+  CENTURION_API static int cores() noexcept;
 
   /**
    * Indicates whether or not the CPU has the RDTSC instruction.
@@ -69,8 +67,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_rdtsc() noexcept;
+  CENTURION_API static bool has_rdtsc() noexcept;
 
   /**
    * Indicates whether or not the CPU has AltiVec features.
@@ -79,8 +76,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_altivec() noexcept;
+  CENTURION_API static bool has_altivec() noexcept;
 
   /**
    * Indicates whether or not the CPU has MMX features.
@@ -89,8 +85,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_mmx() noexcept;
+  CENTURION_API static bool has_mmx() noexcept;
 
   /**
    * Indicates whether or not the CPU has 3DNow! features.
@@ -99,8 +94,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_3dnow() noexcept;
+  CENTURION_API static bool has_3dnow() noexcept;
 
   /**
    * Indicates whether or not the CPU has SSE features.
@@ -109,8 +103,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_sse() noexcept;
+  CENTURION_API static bool has_sse() noexcept;
 
   /**
    * Indicates whether or not the CPU has SSE2 features.
@@ -119,8 +112,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_sse2() noexcept;
+  CENTURION_API static bool has_sse2() noexcept;
 
   /**
    * Indicates whether or not the CPU has SSE3 features.
@@ -129,8 +121,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_sse3() noexcept;
+  CENTURION_API static bool has_sse3() noexcept;
 
   /**
    * Indicates whether or not the CPU has SSE4.1 features.
@@ -139,8 +130,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_sse41() noexcept;
+  CENTURION_API static bool has_sse41() noexcept;
 
   /**
    * Indicates whether or not the CPU has SSE4.2 features.
@@ -149,8 +139,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_sse42() noexcept;
+  CENTURION_API static bool has_sse42() noexcept;
 
   /**
    * Indicates whether or not the CPU has AVX features.
@@ -159,8 +148,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_avx() noexcept;
+  CENTURION_API static bool has_avx() noexcept;
 
   /**
    * Indicates whether or not the CPU has AVX2 features.
@@ -169,8 +157,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_avx2() noexcept;
+  CENTURION_API static bool has_avx2() noexcept;
 
   /**
    * Indicates whether or not the CPU has AVX-512F (foundation) features.
@@ -180,8 +167,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_avx512f() noexcept;
+  CENTURION_API static bool has_avx512f() noexcept;
 
   /**
    * Indicates whether or not the CPU has NEON (ARM SIMD) features.
@@ -190,8 +176,7 @@ class CPU final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API
-  static bool has_neon() noexcept;
+  CENTURION_API static bool has_neon() noexcept;
   
   // TODO add has_arm_simd, SDL_SIMDGetAlignment, and look into the SIMD malloc
 

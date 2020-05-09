@@ -313,13 +313,34 @@ class Music final {
   CENTURION_API std::string to_string() const;
 
   /**
+   * Returns a pointer to the internal Mix_Music. Use of this method is
+   * not recommended, since it purposefully breaks const-correctness. However
+   * it is useful since many SDL calls use non-const pointers even when no
+   * change will be applied.
+   *
+   * @return a pointer to the internal Mix_Music.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  Mix_Music* get() const noexcept { return m_music; }
+
+  /**
+   * Converts the Music instance into a pointer to a Mix_Music instance.
+   *
+   * @return a pointer to the internal Mix_Music instance.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  operator Mix_Music*() noexcept { return m_music; }
+
+  /**
    * Converts the Music instance into a pointer to a Mix_Music instance.
    *
    * @return a pointer to the internal Mix_Music instance.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API operator Mix_Music*() const noexcept;
+  operator const Mix_Music*() const noexcept { return m_music; }
 
  private:
   Mix_Music* m_music = nullptr;

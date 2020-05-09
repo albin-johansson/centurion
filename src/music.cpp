@@ -165,12 +165,6 @@ std::string Music::to_string() const
 }
 
 CENTURION_DEF
-Music::operator Mix_Music*() const noexcept
-{
-  return m_music;
-}
-
-CENTURION_DEF
 bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept
 {
   return static_cast<Mix_Fading>(lhs) == rhs;

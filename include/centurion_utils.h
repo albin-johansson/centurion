@@ -135,6 +135,8 @@ using type_if_same = typename std::enable_if<std::is_same<T, U>::value>::type;
 template <typename T>
 using Optional = tl::optional<T>;
 
+inline constexpr tl::nullopt_t nothing = tl::nullopt;
+
 }  // namespace centurion
 
 #endif  // CENTURION_CENTURION_UTILS_HEADER

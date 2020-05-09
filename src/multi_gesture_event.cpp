@@ -3,6 +3,8 @@
 
 #include "multi_gesture_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -18,7 +20,7 @@ MultiGestureEvent::MultiGestureEvent(
 
 CENTURION_DEF
 MultiGestureEvent::MultiGestureEvent(SDL_MultiGestureEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_MultiGestureEvent>(event)}
 {}
 
 CENTURION_DEF

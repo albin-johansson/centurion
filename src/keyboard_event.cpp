@@ -1,7 +1,9 @@
 #ifndef CENTURION_KEYBOARD_EVENT_SOURCE
 #define CENTURION_KEYBOARD_EVENT_SOURCE
 
-#include <keyboard_event.h>
+#include "keyboard_event.h"
+
+#include <utility>
 
 namespace centurion {
 namespace event {
@@ -17,7 +19,7 @@ KeyboardEvent::KeyboardEvent(const SDL_KeyboardEvent& event) noexcept
 
 CENTURION_DEF
 KeyboardEvent::KeyboardEvent(SDL_KeyboardEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_KeyboardEvent>(event)}
 {}
 
 CENTURION_DEF

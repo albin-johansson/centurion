@@ -3,6 +3,8 @@
 
 #include "controller_axis_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -19,7 +21,7 @@ ControllerAxisEvent::ControllerAxisEvent(
 CENTURION_DEF
 ControllerAxisEvent::ControllerAxisEvent(
     SDL_ControllerAxisEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_ControllerAxisEvent>(event)}
 {}
 
 CENTURION_DEF

@@ -17,7 +17,8 @@ Event::Event(const SDL_Event& event) noexcept : m_event{event}
 {}
 
 CENTURION_DEF
-Event::Event(SDL_Event&& event) noexcept : m_event{std::move(event)}
+Event::Event(SDL_Event&& event) noexcept
+    : m_event{std::forward<SDL_Event>(event)}
 {}
 
 CENTURION_DEF

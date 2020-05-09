@@ -3,6 +3,8 @@
 
 #include "dollar_gesture_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -18,7 +20,7 @@ DollarGestureEvent::DollarGestureEvent(
 
 CENTURION_DEF
 DollarGestureEvent::DollarGestureEvent(SDL_DollarGestureEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_DollarGestureEvent>(event)}
 {}
 
 CENTURION_DEF

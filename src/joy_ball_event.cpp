@@ -3,6 +3,8 @@
 
 #include "joy_ball_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -17,7 +19,7 @@ JoyBallEvent::JoyBallEvent(const SDL_JoyBallEvent& event) noexcept
 
 CENTURION_DEF
 JoyBallEvent::JoyBallEvent(SDL_JoyBallEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_JoyBallEvent>(event)}
 {}
 
 CENTURION_DEF

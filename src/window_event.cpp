@@ -3,6 +3,8 @@
 
 #include "window_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -17,7 +19,7 @@ WindowEvent::WindowEvent(const SDL_WindowEvent& event) noexcept
 
 CENTURION_DEF
 WindowEvent::WindowEvent(SDL_WindowEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_WindowEvent>(event)}
 {}
 
 CENTURION_DEF

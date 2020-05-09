@@ -19,7 +19,7 @@ TouchFingerEvent::TouchFingerEvent(const SDL_TouchFingerEvent& event) noexcept
 
 CENTURION_DEF
 TouchFingerEvent::TouchFingerEvent(SDL_TouchFingerEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_TouchFingerEvent>(event)}
 {}
 
 CENTURION_DEF

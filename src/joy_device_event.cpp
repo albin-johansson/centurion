@@ -3,6 +3,8 @@
 
 #include "joy_device_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -17,7 +19,7 @@ JoyDeviceEvent::JoyDeviceEvent(const SDL_JoyDeviceEvent& event) noexcept
 
 CENTURION_DEF
 JoyDeviceEvent::JoyDeviceEvent(SDL_JoyDeviceEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_JoyDeviceEvent>(event)}
 {}
 
 CENTURION_DEF

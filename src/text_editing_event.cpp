@@ -23,7 +23,7 @@ TextEditingEvent::TextEditingEvent(const SDL_TextEditingEvent& event) noexcept
 
 CENTURION_DEF
 TextEditingEvent::TextEditingEvent(SDL_TextEditingEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_TextEditingEvent>(event)}
 {
   check_length();
 }

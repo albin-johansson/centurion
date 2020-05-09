@@ -3,6 +3,8 @@
 
 #include "controller_device_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -19,7 +21,7 @@ ControllerDeviceEvent::ControllerDeviceEvent(
 CENTURION_DEF
 ControllerDeviceEvent::ControllerDeviceEvent(
     SDL_ControllerDeviceEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_ControllerDeviceEvent>(event)}
 {}
 
 CENTURION_DEF

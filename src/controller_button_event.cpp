@@ -1,7 +1,9 @@
 #ifndef CENTURION_CONTROLLER_BUTTON_EVENT_SOURCE
 #define CENTURION_CONTROLLER_BUTTON_EVENT_SOURCE
 
-#include <controller_button_event.h>
+#include "controller_button_event.h"
+
+#include <utility>
 
 namespace centurion {
 namespace event {
@@ -18,7 +20,7 @@ CENTURION_DEF ControllerButtonEvent::ControllerButtonEvent(
 CENTURION_DEF
 ControllerButtonEvent::ControllerButtonEvent(
     SDL_ControllerButtonEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_ControllerButtonEvent>(event)}
 {}
 
 CENTURION_DEF

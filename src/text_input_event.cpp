@@ -3,6 +3,8 @@
 
 #include "text_input_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -17,7 +19,7 @@ TextInputEvent::TextInputEvent(const SDL_TextInputEvent& event) noexcept
 
 CENTURION_DEF
 TextInputEvent::TextInputEvent(SDL_TextInputEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_TextInputEvent>(event)}
 {}
 
 CENTURION_DEF

@@ -3,6 +3,8 @@
 
 #include "mouse_motion_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -17,7 +19,7 @@ MouseMotionEvent::MouseMotionEvent(const SDL_MouseMotionEvent& event) noexcept
 
 CENTURION_DEF
 MouseMotionEvent::MouseMotionEvent(SDL_MouseMotionEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_MouseMotionEvent>(event)}
 {}
 
 CENTURION_DEF

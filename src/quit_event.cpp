@@ -3,6 +3,8 @@
 
 #include "quit_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -16,7 +18,7 @@ QuitEvent::QuitEvent(const SDL_QuitEvent& event) noexcept : CommonEvent{event}
 
 CENTURION_DEF
 QuitEvent::QuitEvent(SDL_QuitEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_QuitEvent>(event)}
 {}
 
 }  // namespace event

@@ -3,6 +3,8 @@
 
 #include "joy_axis_event.h"
 
+#include <utility>
+
 namespace centurion {
 namespace event {
 
@@ -17,7 +19,7 @@ JoyAxisEvent::JoyAxisEvent(const SDL_JoyAxisEvent& event) noexcept
 
 CENTURION_DEF
 JoyAxisEvent::JoyAxisEvent(SDL_JoyAxisEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
+    : CommonEvent{std::forward<SDL_JoyAxisEvent>(event)}
 {}
 
 CENTURION_DEF

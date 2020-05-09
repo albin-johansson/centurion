@@ -217,6 +217,21 @@ class SoundEffect final {
   int m_channel = undefinedChannel;
 
   /**
+   * Destroys the resources associated with the sound effect.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API void destroy() noexcept;
+
+  /**
+   * Moves the contents of the supplied SoundEffect instance into this instance.
+   *
+   * @param other the instance that will be moved.
+   * @since 4.0.0
+   */
+  CENTURION_API void move(SoundEffect&& other) noexcept;
+
+  /**
    * Activates the sound effect by playing it the specified amount of times.
    *
    * @param nLoops the amount of times to play the sound effect.

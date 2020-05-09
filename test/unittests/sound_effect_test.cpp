@@ -20,10 +20,32 @@ TEST_CASE("SoundEffect(file)", "[SoundEffect]")
 TEST_CASE("SoundEffect(SoundEffect&&)", "[SoundEffect]")
 {
   SoundEffect sound{path};
-  SoundEffect sound2{std::move(sound)};
+  SoundEffect other{std::move(sound)};
 
-  Mix_Chunk* sdlSound = sound;
-  CHECK(!sdlSound);
+  CHECK(!sound.get());
+  CHECK(other.get());
+}
+
+TEST_CASE("SoundEffect::operator=(SoundEffect&&)", "[SoundEffect]")
+{
+  SECTION("Self-assignment")
+  {
+    SoundEffect sound{path};
+
+    sound = std::move(sound);
+    CHECK(sound.get());
+  }
+
+  SECTION("Normal usage")
+  {
+    SoundEffect sound{path};
+    SoundEffect other{path};
+
+    other = std::move(sound);
+
+    CHECK(!sound.get());
+    CHECK(other.get());
+  }
 }
 
 TEST_CASE("SoundEffect smart pointer factory methods", "[SoundEffect]")

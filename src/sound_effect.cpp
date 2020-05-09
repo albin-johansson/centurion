@@ -24,16 +24,26 @@ SoundEffect::SoundEffect(const std::string& file)
 CENTURION_DEF
 SoundEffect::SoundEffect(SoundEffect&& other) noexcept
 {
-  Mix_FreeChunk(m_chunk);
-
-  m_chunk = other.m_chunk;
-  other.m_chunk = nullptr;
-
-  m_channel = other.m_channel;
+  move(std::forward<SoundEffect>(other));
 }
 
 CENTURION_DEF
 SoundEffect::~SoundEffect()
+{
+  destroy();
+}
+
+CENTURION_DEF
+SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept
+{
+  if (this != &other) {
+    move(std::forward<SoundEffect>(other));
+  }
+  return *this;
+}
+
+CENTURION_DEF
+void SoundEffect::destroy() noexcept
 {
   if (m_chunk) {
     stop();
@@ -42,16 +52,14 @@ SoundEffect::~SoundEffect()
 }
 
 CENTURION_DEF
-SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept
+void SoundEffect::move(SoundEffect&& other) noexcept
 {
-  Mix_FreeChunk(m_chunk);
+  destroy();
 
   m_chunk = other.m_chunk;
-  other.m_chunk = nullptr;
-
   m_channel = other.m_channel;
 
-  return *this;
+  other.m_chunk = nullptr;
 }
 
 CENTURION_DEF

@@ -7,17 +7,16 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-DropEvent::DropEvent() noexcept : CommonEvent{}, m_willFreeFile{false}
+DropEvent::DropEvent() noexcept : CommonEvent{}
 {}
 
 CENTURION_DEF
-DropEvent::DropEvent(const SDL_DropEvent& event) noexcept
-    : CommonEvent{event}, m_willFreeFile{false}
+DropEvent::DropEvent(const SDL_DropEvent& event) noexcept : CommonEvent{event}
 {}
 
 CENTURION_DEF
 DropEvent::DropEvent(SDL_DropEvent&& event) noexcept
-    : CommonEvent{std::move(event)}, m_willFreeFile{false}
+    : CommonEvent{std::move(event)} // FIXME can this introduce leak?
 {}
 
 CENTURION_DEF

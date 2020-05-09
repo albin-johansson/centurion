@@ -147,7 +147,7 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
   CENTURION_API Uint32 window_id() const noexcept;
 
  private:
-  bool m_willFreeFile;
+  bool m_willFreeFile = false;
 };
 
 static_assert(validate_event<DropEvent, SDL_DropEvent>(),

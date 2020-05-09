@@ -32,6 +32,7 @@
 #include <type_traits>
 
 #include "centurion_api.h"
+#include "key.h"
 
 namespace centurion {
 namespace input {
@@ -79,45 +80,45 @@ class KeyState final {
   /**
    * Indicates whether or not the specified key is being pressed.
    *
-   * @param code the scancode of the key that will be checked.
+   * @param key the key that will be checked.
    * @return true if the key is being pressed; false otherwise.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_pressed(SDL_Scancode code) const noexcept;
+  CENTURION_API bool is_pressed(const Key& key) const noexcept;
 
   /**
    * Indicates whether or not the specified key has been pressed during more
    * than one update of the key state.
    *
-   * @param code the scancode of the key that will be checked.
+   * @param key the key that will be checked.
    * @return true if the key has been held down; false otherwise.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool is_held(SDL_Scancode code) const noexcept;
+  CENTURION_API bool is_held(const Key& key) const noexcept;
 
   /**
    * Indicates whether or not a key just became pressed in the last update of
    * the key state.
    *
-   * @param code the scancode of the key that will be checked.
+   * @param key the key that will be checked.
    * @return true if the key has just been pressed; false otherwise.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool was_just_pressed(SDL_Scancode code) const noexcept;
+  CENTURION_API bool was_just_pressed(const Key& key) const noexcept;
 
   /**
    * Indicates whether or not the specified key was released in the last update
    * of the key state.
    *
-   * @param code the scancode of the key that will be checked.
+   * @param key the key that will be checked.
    * @return true if the key was released; false otherwise.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool was_just_released(SDL_Scancode code) const noexcept;
+  CENTURION_API bool was_just_released(const Key& key) const noexcept;
 
   /**
    * Returns the total amount of keys.

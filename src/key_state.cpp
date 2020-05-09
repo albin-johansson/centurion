@@ -44,29 +44,33 @@ void KeyState::update() noexcept
 }
 
 CENTURION_DEF
-bool KeyState::is_pressed(SDL_Scancode code) const noexcept
+bool KeyState::is_pressed(const Key& key) const noexcept
 {
+  const auto code = key.scancode();
   assert(code < m_nKeys);
   return m_states[code];
 }
 
 CENTURION_DEF
-bool KeyState::is_held(SDL_Scancode code) const noexcept
+bool KeyState::is_held(const Key& key) const noexcept
 {
+  const auto code = key.scancode();
   assert(code < m_nKeys);
   return m_states[code] && m_previousStates[code];
 }
 
 CENTURION_DEF
-bool KeyState::was_just_pressed(SDL_Scancode code) const noexcept
+bool KeyState::was_just_pressed(const Key& key) const noexcept
 {
+  const auto code = key.scancode();
   assert(code < m_nKeys);
   return m_states[code] && !m_previousStates[code];
 }
 
 CENTURION_DEF
-bool KeyState::was_just_released(SDL_Scancode code) const noexcept
+bool KeyState::was_just_released(const Key& key) const noexcept
 {
+  const auto code = key.scancode();
   assert(code < m_nKeys);
   return !m_states[code] && m_previousStates[code];
 }

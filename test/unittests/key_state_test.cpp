@@ -17,10 +17,10 @@ TEST_CASE("KeyState internal array bounds assertions", "[KeyState]")
 
   // Note, these tests are only useful when assertions are enabled
   const auto maxScancode = static_cast<SDL_Scancode>(SDL_NUM_SCANCODES - 1);
-  CHECK_NOFAIL(state.is_pressed(maxScancode));
-  CHECK_NOFAIL(state.is_held(maxScancode));
-  CHECK_NOFAIL(state.was_just_pressed(maxScancode));
-  CHECK_NOFAIL(state.was_just_released(maxScancode));
+  CHECK(state.is_pressed(maxScancode));
+  CHECK(state.is_held(maxScancode));
+  CHECK(state.was_just_pressed(maxScancode));
+  CHECK(state.was_just_released(maxScancode));
 }
 
 TEST_CASE("KeyState::amount_of_keys", "[KeyState]")

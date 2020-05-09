@@ -399,6 +399,21 @@ class Font final {
   int m_size = 0;
 
   /**
+   * Destroys the resources associated with the font.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API void destroy() noexcept;
+
+  /**
+   * Moves the contents of the supplied font instance into this instance.
+   *
+   * @param other the instance that will be moved.
+   * @since 4.0.0
+   */
+  CENTURION_API void move(Font&& other) noexcept;
+
+  /**
    * Enables the font style associated with the supplied bit mask. The possible
    * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
    * TTF_STYLE_STRIKETHROUGH.

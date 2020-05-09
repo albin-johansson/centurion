@@ -24,21 +24,29 @@ TEST_CASE("Font(Font&&)", "[Font]")
   Font font{type_writer_path, 12};
   Font other{std::move(font)};
 
-  TTF_Font* sdlFont = font;
-  CHECK(!sdlFont);
+  CHECK(!font.get());
+  CHECK(other.get());
 }
 
 TEST_CASE("Font::operator=(Font&&)", "[Font]")
 {
-  Font font{type_writer_path, 12};
-  Font other{daniel_path, 16};
+  SECTION("Self-assignment")
+  {
+    Font font{type_writer_path, 12};
+    font = std::move(font);
+    CHECK(font.get());
+  }
 
-  font = std::move(other);
+  SECTION("Normal usage")
+  {
+    Font font{type_writer_path, 12};
+    Font other{daniel_path, 16};
 
-  CHECK(font.size() == 16);
+    other = std::move(font);
 
-  TTF_Font* sdlFont = other;
-  CHECK(!sdlFont);
+    CHECK(!font.get());
+    CHECK(other.get());
+  }
 }
 
 TEST_CASE("Font::unique", "[Font]")

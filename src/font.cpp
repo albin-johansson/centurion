@@ -27,19 +27,26 @@ Font::Font(const std::string& file, int size) : m_size{size}
 CENTURION_DEF
 Font::Font(Font&& other) noexcept
 {
-  if (this != &other) {
-    TTF_CloseFont(m_font);
-
-    m_font = other.m_font;
-    other.m_font = nullptr;
-
-    m_style = other.m_style;
-    m_size = other.m_size;
-  }
+  move(std::forward<Font>(other));
 }
 
 CENTURION_DEF
 Font::~Font() noexcept
+{
+  destroy();
+}
+
+CENTURION_DEF
+Font& Font::operator=(Font&& other) noexcept
+{
+  if (this != &other) {
+    move(std::forward<Font>(other));
+  }
+  return *this;
+}
+
+CENTURION_DEF
+void Font::destroy() noexcept
 {
   if (m_font) {
     TTF_CloseFont(m_font);
@@ -47,17 +54,15 @@ Font::~Font() noexcept
 }
 
 CENTURION_DEF
-Font& Font::operator=(Font&& other) noexcept
+void Font::move(Font&& other) noexcept
 {
-  TTF_CloseFont(m_font);
+  destroy();
 
   m_font = other.m_font;
-  other.m_font = nullptr;
-
   m_style = other.m_style;
   m_size = other.m_size;
 
-  return *this;
+  other.m_font = nullptr;
 }
 
 CENTURION_DEF

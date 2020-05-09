@@ -298,9 +298,456 @@ TEST_CASE("Event::as_controller_device_event", "[Event]")
   SECTION("Wrong type")
   {
     SDL_Event sdlEvent;
-    sdlEvent.type = SDL_FINGERDOWN;
+    sdlEvent.type = SDL_DOLLARGESTURE;
     Event event{sdlEvent};
 
     CHECK(!event.as_controller_device_event());
+  }
+}
+
+TEST_CASE("Event::as_dollar_gesture_event", "[Event]")
+{
+  SECTION("SDL_DOLLARGESTURE")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_DOLLARGESTURE;
+    Event event{sdlEvent};
+
+    CHECK(event.as_dollar_gesture_event());
+  }
+
+  SECTION("SDL_DOLLARRECORD")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_DOLLARRECORD;
+    Event event{sdlEvent};
+
+    CHECK(event.as_dollar_gesture_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_WINDOWEVENT;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_dollar_gesture_event());
+  }
+}
+
+TEST_CASE("Event::as_drop_event", "[Event]")
+{
+  SECTION("SDL_DROPBEGIN")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_DROPBEGIN;
+    Event event{sdlEvent};
+
+    CHECK(event.as_drop_event());
+  }
+
+  SECTION("SDL_DROPCOMPLETE")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_DROPCOMPLETE;
+    Event event{sdlEvent};
+
+    CHECK(event.as_drop_event());
+  }
+
+  SECTION("SDL_DROPFILE")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_DROPFILE;
+    Event event{sdlEvent};
+
+    CHECK(event.as_drop_event());
+  }
+
+  SECTION("SDL_DROPTEXT")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_DROPTEXT;
+    Event event{sdlEvent};
+
+    CHECK(event.as_drop_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_MOUSEWHEEL;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_drop_event());
+  }
+}
+
+TEST_CASE("Event::as_joy_axis_event", "[Event]")
+{
+  SECTION("SDL_JOYAXISMOTION")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_JOYAXISMOTION;
+    Event event{sdlEvent};
+
+    CHECK(event.as_joy_axis_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_FINGERUP;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_joy_axis_event());
+  }
+}
+
+TEST_CASE("Event::as_joy_ball_event", "[Event]")
+{
+  SECTION("SDL_JOYBALLMOTION")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_JOYBALLMOTION;
+    Event event{sdlEvent};
+
+    CHECK(event.as_joy_ball_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_WINDOWEVENT;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_joy_ball_event());
+  }
+}
+
+TEST_CASE("Event::as_joy_button_event", "[Event]")
+{
+  SECTION("SDL_JOYBUTTONUP")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_JOYBUTTONUP;
+    Event event{sdlEvent};
+
+    CHECK(event.as_joy_button_event());
+  }
+
+  SECTION("SDL_JOYBUTTONDOWN")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_JOYBUTTONDOWN;
+    Event event{sdlEvent};
+
+    CHECK(event.as_joy_button_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_KEYMAPCHANGED;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_joy_button_event());
+  }
+}
+
+TEST_CASE("Event::as_joy_device_event", "[Event]")
+{
+  SECTION("SDL_JOYDEVICEADDED")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_JOYDEVICEADDED;
+    Event event{sdlEvent};
+
+    CHECK(event.as_joy_device_event());
+  }
+
+  SECTION("SDL_JOYDEVICEREMOVED")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_JOYDEVICEREMOVED;
+    Event event{sdlEvent};
+
+    CHECK(event.as_joy_device_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_MOUSEMOTION;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_joy_device_event());
+  }
+}
+
+TEST_CASE("Event::as_joy_hat_event", "[Event]")
+{
+  SECTION("SDL_JOYHATMOTION")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_JOYHATMOTION;
+    Event event{sdlEvent};
+
+    CHECK(event.as_joy_hat_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_DOLLARGESTURE;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_joy_hat_event());
+  }
+}
+
+TEST_CASE("Event::as_keyboard_event", "[Event]")
+{
+  SECTION("SDL_KEYUP")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_KEYUP;
+    Event event{sdlEvent};
+
+    CHECK(event.as_keyboard_event());
+  }
+
+  SECTION("SDL_KEYDOWN")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_KEYDOWN;
+    Event event{sdlEvent};
+
+    CHECK(event.as_keyboard_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_JOYBALLMOTION;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_keyboard_event());
+  }
+}
+
+TEST_CASE("Event::as_mouse_button_event", "[Event]")
+{
+  SECTION("SDL_MOUSEBUTTONUP")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_MOUSEBUTTONUP;
+    Event event{sdlEvent};
+
+    CHECK(event.as_mouse_button_event());
+  }
+
+  SECTION("SDL_MOUSEBUTTONDOWN")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_MOUSEBUTTONDOWN;
+    Event event{sdlEvent};
+
+    CHECK(event.as_mouse_button_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_SENSORUPDATE;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_mouse_button_event());
+  }
+}
+
+TEST_CASE("Event::as_mouse_motion_event", "[Event]")
+{
+  SECTION("SDL_MOUSEMOTION")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_MOUSEMOTION;
+    Event event{sdlEvent};
+
+    CHECK(event.as_mouse_motion_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_SYSWMEVENT;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_mouse_motion_event());
+  }
+}
+
+TEST_CASE("Event::as_mouse_wheel_event", "[Event]")
+{
+  SECTION("SDL_MOUSEWHEEL")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_MOUSEWHEEL;
+    Event event{sdlEvent};
+
+    CHECK(event.as_mouse_wheel_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_FINGERMOTION;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_mouse_wheel_event());
+  }
+}
+
+TEST_CASE("Event::as_multi_gesture_event", "[Event]")
+{
+  SECTION("SDL_MULTIGESTURE")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_MULTIGESTURE;
+    Event event{sdlEvent};
+
+    CHECK(event.as_multi_gesture_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_MOUSEBUTTONUP;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_multi_gesture_event());
+  }
+}
+
+TEST_CASE("Event::as_quit_event", "[Event]")
+{
+  SECTION("SDL_QUIT")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_QUIT;
+    Event event{sdlEvent};
+
+    CHECK(event.as_quit_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_APP_WILLENTERFOREGROUND;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_quit_event());
+  }
+}
+
+TEST_CASE("Event::as_text_editing_event", "[Event]")
+{
+  SECTION("SDL_TEXTEDITING")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_TEXTEDITING;
+    Event event{sdlEvent};
+
+    CHECK(event.as_text_editing_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_KEYMAPCHANGED;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_text_editing_event());
+  }
+}
+
+TEST_CASE("Event::as_text_input_event", "[Event]")
+{
+  SECTION("SDL_TEXTINPUT")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_TEXTINPUT;
+    Event event{sdlEvent};
+
+    CHECK(event.as_text_input_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_CONTROLLERBUTTONUP;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_text_input_event());
+  }
+}
+
+TEST_CASE("Event::as_touch_finger_event", "[Event]")
+{
+  SECTION("SDL_FINGERMOTION")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_FINGERMOTION;
+    Event event{sdlEvent};
+
+    CHECK(event.as_touch_finger_event());
+  }
+
+  SECTION("SDL_FINGERDOWN")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_FINGERDOWN;
+    Event event{sdlEvent};
+
+    CHECK(event.as_touch_finger_event());
+  }
+
+  SECTION("SDL_FINGERUP")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_FINGERUP;
+    Event event{sdlEvent};
+
+    CHECK(event.as_touch_finger_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_DISPLAYEVENT;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_touch_finger_event());
+  }
+}
+
+TEST_CASE("Event::as_window_event", "[Event]")
+{
+  SECTION("SDL_WINDOWEVENT")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_WINDOWEVENT;
+    Event event{sdlEvent};
+
+    CHECK(event.as_window_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_AUDIODEVICEADDED;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_window_event());
   }
 }

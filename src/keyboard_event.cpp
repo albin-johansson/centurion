@@ -3,8 +3,6 @@
 
 #include <keyboard_event.h>
 
-#include "event.h"
-
 namespace centurion {
 namespace event {
 

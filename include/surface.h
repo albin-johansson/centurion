@@ -151,33 +151,6 @@ class Surface final {
   CENTURION_API BlendMode blend_mode() const noexcept;
 
   /**
-   * Returns the width of the surface.
-   *
-   * @return the width of the surface.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int width() const noexcept;
-
-  /**
-   * Returns the height of the surface.
-   *
-   * @return the height of the surface.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int height() const noexcept;
-
-  /**
-   * Returns the pitch (the length of a row of pixels in bytes) of the surface.
-   *
-   * @return the pitch of the surface.
-   * @since 4.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int pitch() const noexcept;
-
-  /**
    * Converts the surface into its texture equivalent.
    *
    * @param renderer the renderer that will be used to create the
@@ -187,6 +160,33 @@ class Surface final {
    */
   CENTURION_NODISCARD
   CENTURION_API Texture to_texture(const Renderer& renderer) const noexcept;
+
+  /**
+   * Returns the width of the surface.
+   *
+   * @return the width of the surface.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  int width() const noexcept { return m_surface->w; }
+
+  /**
+   * Returns the height of the surface.
+   *
+   * @return the height of the surface.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  int height() const noexcept { return m_surface->h; }
+
+  /**
+   * Returns the pitch (the length of a row of pixels in bytes) of the surface.
+   *
+   * @return the pitch of the surface.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  int pitch() const noexcept { return m_surface->pitch; }
 
   /**
    * Returns a pointer to the internal SDL_Surface. Use of this method is

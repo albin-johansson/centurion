@@ -136,24 +136,6 @@ BlendMode Surface::blend_mode() const noexcept
 }
 
 CENTURION_DEF
-int Surface::width() const noexcept
-{
-  return m_surface->w;
-}
-
-CENTURION_DEF
-int Surface::height() const noexcept
-{
-  return m_surface->h;
-}
-
-CENTURION_DEF
-int Surface::pitch() const noexcept
-{
-  return m_surface->pitch;
-}
-
-CENTURION_DEF
 Texture Surface::to_texture(const Renderer& renderer) const noexcept
 {
   return Texture{SDL_CreateTextureFromSurface(renderer.get(), m_surface)};

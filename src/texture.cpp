@@ -67,11 +67,7 @@ Texture::Texture(const Renderer& renderer,
 CENTURION_DEF
 Texture::Texture(Texture&& other) noexcept
 {
-  if (this != &other) {
-    destroy();
-    m_texture = other.m_texture;
-    other.m_texture = nullptr;
-  }
+  move(std::forward<Texture>(other));
 }
 
 CENTURION_DEF
@@ -84,11 +80,25 @@ CENTURION_DEF
 Texture& Texture::operator=(Texture&& other) noexcept
 {
   if (this != &other) {
-    destroy();
-    m_texture = other.m_texture;
-    other.m_texture = nullptr;
+    move(std::forward<Texture>(other));
   }
   return *this;
+}
+
+CENTURION_DEF
+void Texture::destroy() noexcept
+{
+  if (m_texture) {
+    SDL_DestroyTexture(m_texture);
+  }
+}
+
+CENTURION_DEF
+void Texture::move(Texture&& other) noexcept
+{
+  destroy();
+  m_texture = other.m_texture;
+  other.m_texture = nullptr;
 }
 
 CENTURION_DEF
@@ -150,14 +160,6 @@ std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
                                          int height)
 {
   return std::make_shared<Texture>(renderer, format, access, width, height);
-}
-
-CENTURION_DEF
-void Texture::destroy() noexcept
-{
-  if (m_texture) {
-    SDL_DestroyTexture(m_texture);
-  }
 }
 
 CENTURION_DEF

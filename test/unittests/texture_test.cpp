@@ -81,11 +81,40 @@ TEST_CASE("Texture(Texture&&)", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
+
   Texture texture{renderer, pandaPath};
+  Texture other = std::move(texture);
 
-  Texture moved_img = std::move(texture);
+  CHECK(!texture.get());
+  CHECK(other.get());
+}
 
-  CHECK(!texture.get());  // NOLINT
+TEST_CASE("Texture::operator=(Texture&&)", "[Texture]")
+{
+  SECTION("Self-assignment")
+  {
+    Window window;
+    Renderer renderer{window};
+
+    Texture texture{renderer, pandaPath};
+
+    texture = std::move(texture);
+    CHECK(texture.get());
+  }
+
+  SECTION("Normal usage")
+  {
+    Window window;
+    Renderer renderer{window};
+
+    Texture texture{renderer, pandaPath};
+    Texture other{renderer, pandaPath};
+
+    other = std::move(texture);
+
+    CHECK(!texture.get());
+    CHECK(other.get());
+  }
 }
 
 TEST_CASE("Texture::unique", "[Texture]")

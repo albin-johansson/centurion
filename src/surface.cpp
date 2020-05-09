@@ -36,15 +36,13 @@ Surface::Surface(gsl::owner<SDL_Surface*> surface)
 CENTURION_DEF
 Surface::Surface(const Surface& other)
 {
-  m_surface = other.copy_surface();
+  copy(other);
 }
 
 CENTURION_DEF
 Surface::Surface(Surface&& other) noexcept
 {
-  destroy();
-  m_surface = other.m_surface;
-  other.m_surface = nullptr;
+  move(std::forward<Surface>(other));
 }
 
 CENTURION_DEF
@@ -56,11 +54,9 @@ Surface::~Surface() noexcept
 CENTURION_DEF
 Surface& Surface::operator=(Surface&& other) noexcept
 {
-  destroy();
-
-  m_surface = other.m_surface;
-  other.m_surface = nullptr;
-
+  if (this != &other) {
+    move(std::forward<Surface>(other));
+  }
   return *this;
 }
 
@@ -68,8 +64,7 @@ CENTURION_DEF
 Surface& Surface::operator=(const Surface& other)
 {
   if (this != &other) {
-    destroy();
-    m_surface = other.copy_surface();
+    copy(other);
   }
   return *this;
 }
@@ -80,6 +75,21 @@ void Surface::destroy() noexcept
   if (m_surface) {
     SDL_FreeSurface(m_surface);
   }
+}
+
+CENTURION_DEF
+void Surface::move(Surface&& other) noexcept
+{
+  destroy();
+  m_surface = other.m_surface;
+  other.m_surface = nullptr;
+}
+
+CENTURION_DEF
+void Surface::copy(const Surface& other) noexcept
+{
+  destroy();
+  m_surface = other.copy_surface();
 }
 
 CENTURION_DEF

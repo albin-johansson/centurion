@@ -42,16 +42,21 @@ TEST_CASE("Surface(SDL_Surface*)", "[Surface]")
 
 TEST_CASE("Surface(const Surface&)", "[Surface]")
 {
-  const Surface fst{path};
-  const Surface copy{fst};
-  CHECK(fst.get() != copy.get());
+  const Surface surface{path};
+  const Surface copy{surface};
+
+  CHECK(surface.get() != copy.get());
+  CHECK(surface.get());
+  CHECK(copy.get());
 }
 
 TEST_CASE("Surface(Surface&&)", "[Surface]")
 {
-  Surface fst{path};
-  Surface copy{std::move(fst)};
-  CHECK(!fst.get());
+  Surface surface{path};
+  Surface other{std::move(surface)};
+
+  CHECK(!surface.get());
+  CHECK(other.get());
 }
 
 TEST_CASE("Surface::operator=(const Surface&)", "[Surface]")
@@ -66,12 +71,24 @@ TEST_CASE("Surface::operator=(const Surface&)", "[Surface]")
 
 TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
 {
-  Surface fst{path};
-  Surface copy{path};
+  SECTION("Self-assignment")
+  {
+    Surface surface{path};
 
-  copy = std::move(fst);
+    surface = std::move(surface);
+    CHECK(surface.get());
+  }
 
-  CHECK(!fst.get());
+  SECTION("Normal usage")
+  {
+    Surface surface{path};
+    Surface other{path};
+
+    other = std::move(surface);
+
+    CHECK(!surface.get());
+    CHECK(other.get());
+  }
 }
 
 TEST_CASE("Surface::set_alpha", "[Surface]")

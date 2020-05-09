@@ -231,6 +231,22 @@ class Surface final {
   void destroy() noexcept;
 
   /**
+   * Moves the contents of the supplied Surface instance into this instance.
+   *
+   * @param other the instance that will be moved.
+   * @since 4.0.0
+   */
+  void move(Surface&& other) noexcept;
+
+  /**
+   * Copies the contents of the supplied Surface instance into this instance.
+   *
+   * @param other the instance that will be copied.
+   * @since 4.0.0
+   */
+  void copy(const Surface& other) noexcept;
+
+  /**
    * Creates a copy of the internal SDL_Surface, and returns a pointer to it.
    *
    * @return a copy of the internal SDL_Surface, the returned pointer won't be

@@ -46,16 +46,26 @@ Window::Window() : Window{800, 600}
 CENTURION_DEF
 Window::Window(Window&& other) noexcept
 {
-  SDL_DestroyWindow(m_window);
-
-  m_window = other.m_window;
-  other.m_window = nullptr;
-
-  m_windowListeners = std::move(other.m_windowListeners);
+  move(std::forward<Window>(other));
 }
 
 CENTURION_DEF
-Window::~Window()
+Window::~Window() noexcept
+{
+  destroy();
+}
+
+CENTURION_DEF
+Window& Window::operator=(Window&& other) noexcept
+{
+  if (this != &other) {
+    move(std::forward<Window>(other));
+  }
+  return *this;
+}
+
+CENTURION_DEF
+void Window::destroy() noexcept
 {
   if (m_window) {
     SDL_DestroyWindow(m_window);
@@ -63,16 +73,14 @@ Window::~Window()
 }
 
 CENTURION_DEF
-Window& Window::operator=(Window&& other) noexcept
+void Window::move(Window&& other) noexcept
 {
-  SDL_DestroyWindow(m_window);
+  destroy();
 
   m_window = other.m_window;
-  other.m_window = nullptr;
-
   m_windowListeners = std::move(other.m_windowListeners);
 
-  return *this;
+  other.m_window = nullptr;
 }
 
 CENTURION_DEF

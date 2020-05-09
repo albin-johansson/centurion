@@ -109,7 +109,7 @@ class Window final {
 
   Window(const Window&) noexcept = delete;
 
-  CENTURION_API ~Window();
+  CENTURION_API ~Window() noexcept;
 
   Window& operator=(const Window&) noexcept = delete;
 
@@ -620,11 +620,26 @@ class Window final {
   std::vector<std::weak_ptr<IWindowListener>> m_windowListeners;
 
   /**
+   * Destroys the resources associated with the window.
+   *
+   * @since 4.0.0
+   */
+  void destroy() noexcept;
+
+  /**
+   * Moves the contents of the supplied window instance into this instance.
+   *
+   * @param other the instance that will be moved.
+   * @since 4.0.0
+   */
+  void move(Window&& other) noexcept;
+
+  /**
    * Notifies all registered window listeners that the window has been updated.
    *
    * @since 3.0.0
    */
-  CENTURION_API void notify_window_listeners() noexcept;
+  void notify_window_listeners() noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

@@ -71,16 +71,28 @@ TEST_CASE("Window(Window&&)", "[Window]")
   Window other{std::move(window)};
 
   CHECK(!window.get());
+  CHECK(other.get());
 }
 
 TEST_CASE("Window::operator=(Window&&)", "[Window]")
 {
-  Window window;
-  Window other;
+  SECTION("Self-assignment")
+  {
+    Window window;
+    window = std::move(window);
+    CHECK(window.get());
+  }
 
-  window = std::move(other);
+  SECTION("Normal usage")
+  {
+    Window window;
+    Window other;
 
-  CHECK(!other.get());
+    other = std::move(window);
+
+    CHECK(!window.get());
+    CHECK(other.get());
+  }
 }
 
 TEST_CASE("Window smart pointer factory methods", "[Window]")

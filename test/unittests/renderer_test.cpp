@@ -38,20 +38,37 @@ TEST_CASE("Renderer(const Window&, SDL_RendererFlags)", "[Renderer]")
 
 TEST_CASE("Renderer(Renderer&&)", "[Renderer]")
 {
-  Window window;
+  const Window window;
+
   Renderer renderer{window};
   Renderer other{std::move(renderer)};
 
   CHECK(!renderer.get());
+  CHECK(other.get());
 }
 
 TEST_CASE("Renderer::operator=(Renderer&&)", "[Renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Renderer other = std::move(renderer);
+  SECTION("Self-assignment")
+  {
+    const Window window;
+    Renderer renderer{window};
 
-  CHECK(!renderer.get());
+    renderer = std::move(renderer);
+    CHECK(renderer.get());
+  }
+
+  SECTION("Normal usage")
+  {
+    const Window window;
+    Renderer renderer{window};
+    Renderer other{window};
+
+    other = std::move(renderer);
+
+    CHECK(!renderer.get());
+    CHECK(other.get());
+  }
 }
 
 TEST_CASE("Renderer::unique(SDL_Renderer*)", "[Renderer]")

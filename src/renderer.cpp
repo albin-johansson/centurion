@@ -40,14 +40,7 @@ Renderer::Renderer(const Window& window, SDL_RendererFlags flags)
 CENTURION_DEF
 Renderer::Renderer(Renderer&& other) noexcept
 {
-  if (this != &other) {
-    destroy();
-
-    m_renderer = other.m_renderer;
-    other.m_renderer = nullptr;
-
-    m_translationViewport = other.m_translationViewport;
-  }
+  move(std::forward<Renderer>(other));
 }
 
 CENTURION_DEF
@@ -57,11 +50,31 @@ Renderer::~Renderer()
 }
 
 CENTURION_DEF
+Renderer& Renderer::operator=(Renderer&& other) noexcept
+{
+  if (this != &other) {
+    move(std::forward<Renderer>(other));
+  }
+  return *this;
+}
+
+CENTURION_DEF
 void Renderer::destroy() noexcept
 {
   if (m_renderer) {
     SDL_DestroyRenderer(m_renderer);
   }
+}
+
+CENTURION_DEF
+void Renderer::move(Renderer&& other) noexcept
+{
+  destroy();
+
+  m_renderer = other.m_renderer;
+  m_translationViewport = other.m_translationViewport;
+
+  other.m_renderer = nullptr;
 }
 
 CENTURION_DEF
@@ -88,20 +101,6 @@ std::shared_ptr<Renderer> Renderer::shared(const Window& window,
                                            SDL_RendererFlags flags)
 {
   return std::make_shared<Renderer>(window, flags);
-}
-
-CENTURION_DEF
-Renderer& Renderer::operator=(Renderer&& other) noexcept
-{
-  if (this != &other) {
-    destroy();
-
-    m_renderer = other.m_renderer;
-    other.m_renderer = nullptr;
-
-    m_translationViewport = other.m_translationViewport;
-  }
-  return *this;
 }
 
 CENTURION_DEF

@@ -983,7 +983,20 @@ class Renderer final {
       static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |
                                      SDL_RENDERER_PRESENTVSYNC);
 
+  /**
+   * Destroys the resources associated with the renderer.
+   *
+   * @since 4.0.0
+   */
   void destroy() noexcept;
+
+  /**
+   * Moves the contents of the supplied renderer instance into this instance.
+   *
+   * @param other the instance that will be moved.
+   * @since 4.0.0
+   */
+  void move(Renderer&& other) noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

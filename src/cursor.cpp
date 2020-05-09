@@ -44,26 +44,15 @@ Cursor::Cursor(const Surface& surface, IPoint hotspot)
 CENTURION_DEF
 Cursor::Cursor(Cursor&& other) noexcept
 {
-  destroy();
-
-  m_cursor = other.m_cursor;
-  m_surface = other.m_surface;
-
-  other.m_cursor = nullptr;
-  other.m_surface = nullptr;
+  move(std::forward<Cursor>(other));
 }
 
 CENTURION_DEF
 Cursor& Cursor::operator=(Cursor&& other) noexcept
 {
-  destroy();
-
-  m_cursor = other.m_cursor;
-  m_surface = other.m_surface;
-
-  other.m_cursor = nullptr;
-  other.m_surface = nullptr;
-
+  if (this != &other) {
+    move(std::forward<Cursor>(other));
+  }
   return *this;
 }
 
@@ -83,6 +72,18 @@ void Cursor::destroy() noexcept
   if (m_surface) {
     SDL_FreeSurface(m_surface);
   }
+}
+
+CENTURION_DEF
+void Cursor::move(Cursor&& other) noexcept
+{
+  destroy();
+
+  m_cursor = other.m_cursor;
+  m_surface = other.m_surface;
+
+  other.m_cursor = nullptr;
+  other.m_surface = nullptr;
 }
 
 CENTURION_DEF

@@ -298,6 +298,18 @@ class Cursor final {
   CENTURION_NODISCARD
   CENTURION_API static bool visible() noexcept;
 
+  /**
+   * Returns a pointer to the internal SDL_Cursor. Use of this method is
+   * not recommended, since it purposefully breaks const-correctness. However
+   * it is useful since many SDL calls use non-const pointers even when no
+   * change will be applied.
+   *
+   * @return a pointer to the internal SDL_Cursor.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  SDL_Cursor* get() const noexcept { return m_cursor; }
+
  private:
   SDL_Cursor* m_cursor = nullptr;
   SDL_Surface* m_surface = nullptr;
@@ -307,7 +319,15 @@ class Cursor final {
    *
    * @since 4.0.0
    */
-  void destroy() noexcept;
+  CENTURION_API void destroy() noexcept;
+
+  /**
+   * Moves the contents of the supplied cursor instance into this instance.
+   *
+   * @param other the instance that will be moved.
+   * @since 4.0.0
+   */
+  CENTURION_API void move(Cursor&& other) noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

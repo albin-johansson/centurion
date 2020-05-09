@@ -26,20 +26,42 @@ TEST_CASE("Cursor(Surface, IPoint)", "[Cursor]")
   Cursor cursor{surface, hotspot};
 }
 
-TEST_CASE("Cursor move semantics", "[Cursor]")
+TEST_CASE("Cursor(Cursor&&)", "[Cursor]")
 {
-  SECTION("Move constructor")
+  const Surface surface{"resources/panda.png"};
+  const IPoint hotspot{12, 14};
+  Cursor cursor{surface, hotspot};
+
+  Cursor other{std::move(cursor)};
+
+  CHECK(!cursor.get());
+  CHECK(other.get());
+}
+
+TEST_CASE("Cursor::operator=(Cursor&&)", "[Cursor]")
+{
+  SECTION("Self-assignment")
   {
-    Cursor cursor{SystemCursor::Arrow_N_S};
-    Cursor other{std::move(cursor)};
+    const Surface surface{"resources/panda.png"};
+    const IPoint hotspot{12, 14};
+    Cursor cursor{surface, hotspot};
+
+    cursor = std::move(cursor);
+
+    CHECK(cursor.get());
   }
 
-  SECTION("Move assignment")
+  SECTION("Normal usage")
   {
-    Cursor cursor{SystemCursor::Arrow_N_S};
-    Cursor other{SystemCursor::No};
+    const Surface surface{"resources/panda.png"};
+    const IPoint hotspot{12, 14};
+    Cursor cursor{surface, hotspot};
+    Cursor other{surface, hotspot};
 
     other = std::move(cursor);
+
+    CHECK(!cursor.get());
+    CHECK(other.get());
   }
 }
 

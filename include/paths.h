@@ -38,7 +38,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class AppPath final {
+class AppPath final { // TODO rename to BasePath
  public:
   /**
    * Constructs an AppPath object that represents the path of the application
@@ -49,9 +49,25 @@ class AppPath final {
    */
   CENTURION_API AppPath() noexcept;
 
+  /**
+   * Moves the contents of the supplied AppPath into this instance.
+   *
+   * @param other the AppPath that will be moved.
+   * @since 4.0.0
+   */
+  CENTURION_API AppPath(AppPath&& other) noexcept;
+
   AppPath(const AppPath&) = delete;
 
   CENTURION_API ~AppPath() noexcept;
+
+  /**
+   * Moves the contents of the supplied AppPath into this instance.
+   *
+   * @param other the AppPath that will be moved.
+   * @since 4.0.0
+   */
+  CENTURION_API AppPath& operator=(AppPath&& other) noexcept;
 
   AppPath& operator=(const AppPath&) = delete;
 
@@ -100,6 +116,21 @@ class AppPath final {
 
  private:
   char* m_path = nullptr;
+
+  /**
+   * Destroys the resources associated with the AppPath instance.
+   *
+   * @since 4.0.0
+   */
+  void destroy() noexcept;
+
+  /**
+   * Moves the contents of the supplied AppPath instance into this instance.
+   *
+   * @param other the instance that will be moved.
+   * @since 4.0.0
+   */
+  void move(AppPath&& other) noexcept;
 };
 
 /**
@@ -120,9 +151,25 @@ class PrefPath final {
    */
   CENTURION_API PrefPath(const std::string& org, const std::string& app);
 
+  /**
+   * Moves the contents of the supplied PrefPath into this instance.
+   *
+   * @param other the PrefPath that will be moved.
+   * @since 4.0.0
+   */
+  CENTURION_API PrefPath(PrefPath&& other) noexcept;
+
   PrefPath(const PrefPath&) = delete;
 
   CENTURION_API ~PrefPath() noexcept;
+
+  /**
+   * Moves the contents of the supplied PrefPath into this instance.
+   *
+   * @param other the PrefPath that will be moved.
+   * @since 4.0.0
+   */
+  CENTURION_API PrefPath& operator=(PrefPath&& other) noexcept;
 
   PrefPath& operator=(const PrefPath&) = delete;
 
@@ -172,6 +219,21 @@ class PrefPath final {
 
  private:
   char* m_path = nullptr;
+
+  /**
+   * Destroys the resources associated with the PrefPath instance.
+   *
+   * @since 4.0.0
+   */
+  void destroy() noexcept;
+
+  /**
+   * Moves the contents of the supplied PrefPath instance into this instance.
+   *
+   * @param other the instance that will be moved.
+   * @since 4.0.0
+   */
+  void move(PrefPath&& other) noexcept;
 };
 
 }  // namespace centurion

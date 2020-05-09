@@ -9,6 +9,36 @@ TEST_CASE("AppPath()", "[AppPath]")
   CHECK_NOTHROW(AppPath{});
 }
 
+TEST_CASE("AppPath(AppPath&&)", "[AppPath]")
+{
+  AppPath path;
+  AppPath other{std::move(path)};
+
+  CHECK(!path.get());
+  CHECK(other.get());
+}
+
+TEST_CASE("AppPath::operator=(AppPath&&)", "[AppPath]")
+{
+  SECTION("Self-assignment")
+  {
+    AppPath path;
+    path = std::move(path);
+    CHECK(path.get());
+  }
+
+  SECTION("Normal usage")
+  {
+    AppPath path;
+    AppPath other;
+
+    other = std::move(path);
+
+    CHECK(!path.get());
+    CHECK(other.get());
+  }
+}
+
 TEST_CASE("AppPath::operator bool", "[AppPath]")
 {
   const AppPath appPath;
@@ -36,6 +66,36 @@ TEST_CASE("AppPath::get", "[AppPath]")
 TEST_CASE("PrefPath(string&, string&)", "[PrefPath]")
 {
   CHECK_NOTHROW(PrefPath{"centurion", "tests"});
+}
+
+TEST_CASE("PrefPath(PrefPath&&)", "[PrefPath]")
+{
+  PrefPath path{"centurion", "tests"};
+  PrefPath other{std::move(path)};
+
+  CHECK(!path.get());
+  CHECK(other.get());
+}
+
+TEST_CASE("PrefPath::operator=(PrefPath&&)", "[PrefPath]")
+{
+  SECTION("Self-assignment")
+  {
+    PrefPath path{"centurion", "tests"};
+    path = std::move(path);
+    CHECK(path.get());
+  }
+
+  SECTION("Normal usage")
+  {
+    PrefPath path{"centurion", "tests"};
+    PrefPath other{"centurion", "tests"};
+
+    other = std::move(path);
+
+    CHECK(!path.get());
+    CHECK(other.get());
+  }
 }
 
 TEST_CASE("PrefPath::unique", "[PrefPath]")

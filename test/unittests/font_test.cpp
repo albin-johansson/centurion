@@ -248,9 +248,25 @@ TEST_CASE("Font::to_string", "[Font]")
   Log::msgf(Category::Test, "%s", font.to_string().c_str());
 }
 
-TEST_CASE("Font to TTF_Font*", "[Font]")
+TEST_CASE("Font::get", "[Font]")
 {
   Font font{type_writer_path, 12};
-  TTF_Font* sdlFont = font;
-  CHECK(sdlFont);
+  CHECK(font.get());
+}
+
+TEST_CASE("Font to TTF_Font*", "[Font]")
+{
+  SECTION("Non-const")
+  {
+    Font font{type_writer_path, 12};
+    TTF_Font* sdlFont = font;
+    CHECK(sdlFont);
+  }
+
+  SECTION("Const")
+  {
+    const Font font{type_writer_path, 12};
+    const TTF_Font* sdlFont = font;
+    CHECK(sdlFont);
+  }
 }

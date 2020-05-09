@@ -86,7 +86,7 @@ class AppPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API explicit operator bool() const noexcept;
+  explicit operator bool() const noexcept { return m_path; }
 
   /**
    * Returns the path of the application executable. The returned pointer might
@@ -95,7 +95,8 @@ class AppPath final {
    * @return the path of the application executable, can be null.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD const char* get() const noexcept { return m_path; }
+  CENTURION_NODISCARD
+  const char* get() const noexcept { return m_path; }
 
  private:
   char* m_path = nullptr;
@@ -157,7 +158,8 @@ class PrefPath final {
    * @return true if the object holds a non-null path; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD explicit operator bool() const noexcept { return m_path; }
+  CENTURION_NODISCARD
+  explicit operator bool() const noexcept { return m_path; }
 
   /**
    * Returns a string that represents the preferred path.
@@ -165,7 +167,8 @@ class PrefPath final {
    * @return a string that represents the preferred path.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD const char* get() const noexcept { return m_path; }
+  CENTURION_NODISCARD
+  const char* get() const noexcept { return m_path; }
 
  private:
   char* m_path = nullptr;

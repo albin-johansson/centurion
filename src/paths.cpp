@@ -22,12 +22,6 @@ AppPath::~AppPath() noexcept
 }
 
 CENTURION_DEF
-AppPath::operator bool() const noexcept
-{
-  return m_path;
-}
-
-CENTURION_DEF
 std::unique_ptr<AppPath> AppPath::unique()
 {
   return centurion::detail::make_unique<AppPath>();

@@ -19,8 +19,7 @@ TEST_CASE("Renderer(SDL_Renderer*)", "[Renderer]")
   CHECK_THROWS_AS(Renderer{nullptr}, CenturionException);
 
   Window window;
-  SDL_Renderer* ren =
-      SDL_CreateRenderer(window.internal(), -1, SDL_RENDERER_SOFTWARE);
+  SDL_Renderer* ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
   CHECK_NOTHROW(Renderer{ren});
 }
 
@@ -43,7 +42,7 @@ TEST_CASE("Renderer(Renderer&&)", "[Renderer]")
   Renderer renderer{window};
   Renderer other{std::move(renderer)};
 
-  CHECK(!renderer.internal());
+  CHECK(!renderer.get());
 }
 
 TEST_CASE("Renderer::operator=(Renderer&&)", "[Renderer]")
@@ -52,7 +51,7 @@ TEST_CASE("Renderer::operator=(Renderer&&)", "[Renderer]")
   Renderer renderer{window};
   Renderer other = std::move(renderer);
 
-  CHECK(!renderer.internal());
+  CHECK(!renderer.get());
 }
 
 TEST_CASE("Renderer::unique(SDL_Renderer*)", "[Renderer]")
@@ -60,8 +59,7 @@ TEST_CASE("Renderer::unique(SDL_Renderer*)", "[Renderer]")
   CHECK_THROWS_AS(Renderer::unique(nullptr), CenturionException);
 
   Window window;
-  SDL_Renderer* ren =
-      SDL_CreateRenderer(window.internal(), -1, SDL_RENDERER_SOFTWARE);
+  SDL_Renderer* ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
   CHECK_NOTHROW(Renderer::unique(ren));
 }
@@ -84,8 +82,7 @@ TEST_CASE("Renderer::shared(SDL_Renderer*)", "[Renderer]")
   CHECK_THROWS_AS(Renderer::shared(nullptr), CenturionException);
 
   Window window;
-  SDL_Renderer* ren =
-      SDL_CreateRenderer(window.internal(), -1, SDL_RENDERER_SOFTWARE);
+  SDL_Renderer* ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
   CHECK_NOTHROW(Renderer::shared(ren));
 }
@@ -698,4 +695,30 @@ TEST_CASE("Renderer::to_string", "[Renderer]")
   Window window;
   Renderer renderer{window};
   Log::msgf(Category::Test, "%s", renderer.to_string().c_str());
+}
+
+TEST_CASE("Renderer::get", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  CHECK(renderer.get());
+}
+
+TEST_CASE("Renderer to SDL_Renderer*", "[Renderer]")
+{
+  SECTION("Const")
+  {
+    Window window;
+    const Renderer renderer{window};
+    const SDL_Renderer* sdlRenderer = renderer;
+    CHECK(sdlRenderer);
+  }
+
+  SECTION("Non-const")
+  {
+    Window window;
+    Renderer renderer{window};
+    SDL_Renderer* sdlRenderer = renderer;
+    CHECK(sdlRenderer);
+  }
 }

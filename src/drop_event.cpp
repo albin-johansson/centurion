@@ -7,17 +7,17 @@ namespace centurion {
 namespace event {
 
 CENTURION_DEF
-DropEvent::DropEvent() noexcept : CommonEvent{}, m_willFreeFile{true}
+DropEvent::DropEvent() noexcept : CommonEvent{}, m_willFreeFile{false}
 {}
 
 CENTURION_DEF
 DropEvent::DropEvent(const SDL_DropEvent& event) noexcept
-    : CommonEvent{event}, m_willFreeFile{true}
+    : CommonEvent{event}, m_willFreeFile{false}
 {}
 
 CENTURION_DEF
 DropEvent::DropEvent(SDL_DropEvent&& event) noexcept
-    : CommonEvent{std::move(event)}, m_willFreeFile{true}
+    : CommonEvent{std::move(event)}, m_willFreeFile{false}
 {}
 
 CENTURION_DEF

@@ -86,10 +86,10 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
 
   /**
    * Sets the file associated with the drop event. The ownership of the
-   * supplied pointer will, by default, be claimed by this event. Note that the
-   * supplied pointer will be freed using <code>SDL_free</code> upon the
-   * destruction of the event, unless the <code>will_free_file</code>
-   * property is set to <b>false</b>.
+   * supplied pointer will, by default, not be claimed by this event. Note
+   * that the supplied pointer will be freed using <code>SDL_free</code> upon
+   * the destruction of the event, if the <code>will_free_file</code>
+   * property is set to <b>true</b>.
    *
    * <p> Note! If the <code>will_free_file</code> property is true, then <b>the
    * previously set file pointer will be freed</b> by calling this method.
@@ -115,14 +115,14 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
   /**
    * Indicates whether or not the file associated with the event will be
    * freed upon the destruction of this instance. By default, this property
-   * is set to <b>true</b>.
+   * is set to <b>false</b>.
    *
    * @return true if the associated file will be freed upon destruction;
    * false otherwise.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool will_free_file() const noexcept; // TODO change to false
+  CENTURION_API bool will_free_file() const noexcept;
 
   /**
    * Returns a pointer to the associated file. Do <b>NOT</b> claim ownership

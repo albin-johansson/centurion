@@ -75,12 +75,6 @@ bool KeyState::was_just_released(const Key& key) const noexcept
   return !m_states[code] && m_previousStates[code];
 }
 
-CENTURION_DEF
-int KeyState::amount_of_keys() const noexcept
-{
-  return m_nKeys;
-}
-
 }  // namespace input
 }  // namespace centurion
 

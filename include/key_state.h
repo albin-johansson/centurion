@@ -123,10 +123,11 @@ class KeyState final {
   /**
    * Returns the total amount of keys.
    *
+   * @return the total amount of keys.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int amount_of_keys() const noexcept;
+  int amount_of_keys() const noexcept { return m_nKeys; }
 
  private:
   const Uint8* m_states = nullptr;

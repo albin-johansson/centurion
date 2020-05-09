@@ -51,22 +51,22 @@ class Timer final {
   CENTURION_API static void delay(Uint32 ms) noexcept;
 
   /**
-   * Returns the current value of the system high-performance counter.
-   *
-   * @return the current value of the system high-performance counter.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API static uint64_t high_res() noexcept;
-
-  /**
    * Returns the frequency of the system high-performance counter.
    *
    * @return the frequency of the system high-performance counter.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static uint64_t high_res_freq() noexcept;
+  CENTURION_API static Uint64 high_res_freq() noexcept;
+
+  /**
+   * Returns the current value of the system high-performance counter.
+   *
+   * @return the current value of the system high-performance counter.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  static Uint64 high_res() noexcept { return SDL_GetPerformanceCounter(); }
 
   /**
    * Returns the amount of milliseconds since the library was initialized.
@@ -75,7 +75,7 @@ class Timer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static Uint32 millis() noexcept;
+  static Uint32 millis() noexcept { return SDL_GetTicks(); }
 };
 
 }  // namespace centurion

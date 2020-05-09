@@ -12,21 +12,9 @@ void Timer::delay(Uint32 ms) noexcept
 }
 
 CENTURION_DEF
-uint64_t Timer::high_res() noexcept
-{
-  return SDL_GetPerformanceCounter();
-}
-
-CENTURION_DEF
-uint64_t Timer::high_res_freq() noexcept
+Uint64 Timer::high_res_freq() noexcept
 {
   return SDL_GetPerformanceFrequency();
-}
-
-CENTURION_DEF
-Uint32 Timer::millis() noexcept
-{
-  return SDL_GetTicks();
 }
 
 }  // namespace centurion

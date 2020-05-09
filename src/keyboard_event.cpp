@@ -33,7 +33,7 @@ void KeyboardEvent::set_key(const Key& key, ButtonState state) noexcept
 CENTURION_DEF
 void KeyboardEvent::set_modifier(KeyModifier modifier, bool active) noexcept
 {
-  const auto flag = static_cast<SDL_Keymod>(modifier);
+  const auto flag = static_cast<Uint16>(modifier);
   if (active) {
     m_event.keysym.mod |= flag;
   } else {
@@ -62,7 +62,7 @@ bool KeyboardEvent::is_active(const Key& key) const noexcept
 CENTURION_DEF
 bool KeyboardEvent::modifier_active(KeyModifier modifier) const noexcept
 {
-  return m_event.keysym.mod & static_cast<SDL_Keymod>(modifier);
+  return m_event.keysym.mod & static_cast<Uint16>(modifier);
 }
 
 CENTURION_DEF

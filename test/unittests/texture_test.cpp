@@ -15,13 +15,27 @@ static constexpr auto* pandaPath = "resources/panda.png";
 static constexpr int pandaWidth = 200;
 static constexpr int pandaHeight = 150;
 
+TEST_CASE("TextureAccess enum values", "[TextureAccess]")
+{
+  CHECK(TextureAccess::Static == SDL_TEXTUREACCESS_STATIC);
+  CHECK(TextureAccess::Streaming == SDL_TEXTUREACCESS_STREAMING);
+  CHECK(TextureAccess::Target == SDL_TEXTUREACCESS_TARGET);
+
+  CHECK(SDL_TEXTUREACCESS_STATIC == TextureAccess::Static);
+  CHECK(SDL_TEXTUREACCESS_STREAMING == TextureAccess::Streaming);
+  CHECK(SDL_TEXTUREACCESS_TARGET == TextureAccess::Target);
+
+  CHECK(TextureAccess::Static != SDL_TEXTUREACCESS_STREAMING);
+  CHECK(SDL_TEXTUREACCESS_STREAMING != TextureAccess::Static);
+}
+
 TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
 {
   CHECK_THROWS_AS(Texture(nullptr), CenturionException);
 
   Window window;
   Renderer renderer{window};
-  SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.internal(), pandaPath);
+  SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.get(), pandaPath);
   CHECK_NOTHROW(Texture(sdlTexture));
 }
 
@@ -71,13 +85,13 @@ TEST_CASE("Texture(Texture&&)", "[Texture]")
 
   Texture moved_img = std::move(texture);
 
-  CHECK(!texture.get_internal());  // NOLINT
+  CHECK(!texture.get());  // NOLINT
 }
 
 TEST_CASE("Texture::unique", "[Texture]")
 {
-  const Window window;
-  const Renderer renderer{window};
+  Window window;
+  Renderer renderer{window};
   CHECK_THROWS_AS(Texture::unique(nullptr), CenturionException);
   CHECK(Texture::unique(renderer, pandaPath));
   CHECK(Texture::unique(
@@ -86,8 +100,8 @@ TEST_CASE("Texture::unique", "[Texture]")
 
 TEST_CASE("Texture:::shared", "[Texture]")
 {
-  const Window window;
-  const Renderer renderer{window};
+  Window window;
+  Renderer renderer{window};
   CHECK_THROWS_AS(Texture::shared(nullptr), CenturionException);
   CHECK(Texture::shared(renderer, pandaPath));
   CHECK(Texture::shared(
@@ -99,7 +113,7 @@ TEST_CASE("Texture::format", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, pandaPath};
-  SDL_Texture* sdlTexture = texture.get_internal();
+  SDL_Texture* sdlTexture = texture.get();
 
   Uint32 format = 0;
   SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
@@ -112,7 +126,7 @@ TEST_CASE("Texture::access", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, pandaPath};
-  SDL_Texture* sdlTexture = texture.get_internal();
+  SDL_Texture* sdlTexture = texture.get();
 
   int access = 0;
   SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
@@ -125,7 +139,7 @@ TEST_CASE("Texture::width", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture(renderer, pandaPath);
-  SDL_Texture* sdlTexture = texture.get_internal();
+  SDL_Texture* sdlTexture = texture.get();
 
   CHECK(texture.width() == pandaWidth);
 
@@ -139,7 +153,7 @@ TEST_CASE("Texture::height", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, pandaPath};
-  SDL_Texture* sdlTexture = texture.get_internal();
+  SDL_Texture* sdlTexture = texture.get();
 
   CHECK(texture.height() == pandaHeight);
 
@@ -223,24 +237,29 @@ TEST_CASE("Texture::to_string", "[Texture]")
   Log::msgf(Category::Test, "%s", texture.to_string().c_str());
 }
 
-TEST_CASE("Texture::get_internal", "[Texture]")
+TEST_CASE("Texture::get", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, pandaPath};
-  CHECK(texture.get_internal());
+  CHECK(texture.get());
 }
 
-TEST_CASE("TextureAccess enum values", "[TextureAccess]")
+TEST_CASE("Texture to SDL_Texture*", "[Texture]")
 {
-  CHECK(TextureAccess::Static == SDL_TEXTUREACCESS_STATIC);
-  CHECK(TextureAccess::Streaming == SDL_TEXTUREACCESS_STREAMING);
-  CHECK(TextureAccess::Target == SDL_TEXTUREACCESS_TARGET);
+  SECTION("Const")
+  {
+    Window window;
+    Renderer renderer{window};
+    const Texture texture{renderer, pandaPath};
+    CHECK(texture.operator const SDL_Texture*());
+  }
 
-  CHECK(SDL_TEXTUREACCESS_STATIC == TextureAccess::Static);
-  CHECK(SDL_TEXTUREACCESS_STREAMING == TextureAccess::Streaming);
-  CHECK(SDL_TEXTUREACCESS_TARGET == TextureAccess::Target);
-
-  CHECK(TextureAccess::Static != SDL_TEXTUREACCESS_STREAMING);
-  CHECK(SDL_TEXTUREACCESS_STREAMING != TextureAccess::Static);
+  SECTION("Non-const")
+  {
+    Window window;
+    Renderer renderer{window};
+    Texture texture{renderer, pandaPath};
+    CHECK(texture.operator SDL_Texture*());
+  }
 }

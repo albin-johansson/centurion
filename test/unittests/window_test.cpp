@@ -70,7 +70,7 @@ TEST_CASE("Window(Window&&)", "[Window]")
   Window window;
   Window other{std::move(window)};
 
-  CHECK(!window.internal());
+  CHECK(!window.get());
 }
 
 TEST_CASE("Window::operator=(Window&&)", "[Window]")
@@ -80,7 +80,7 @@ TEST_CASE("Window::operator=(Window&&)", "[Window]")
 
   window = std::move(other);
 
-  CHECK(!other.internal());
+  CHECK(!other.get());
 }
 
 TEST_CASE("Window smart pointer factory methods", "[Window]")
@@ -479,15 +479,30 @@ TEST_CASE("Window::renderer", "[Window]")
   CHECK(!window.renderer());
 
   const Renderer renderer{window};
-  SDL_Renderer* sdlRenderer = renderer;
+  const SDL_Renderer* sdlRenderer = renderer;
 
   CHECK(window.renderer() == sdlRenderer);
 }
 
+TEST_CASE("Window::get", "[Window]")
+{
+  Window window;
+  CHECK(window.get());
+}
+
 TEST_CASE("Window to SDL_Window*", "[Window]")
 {
-  const Window window;
-  CHECK(window.operator SDL_Window*());
+  SECTION("Const")
+  {
+    const Window window;
+    CHECK(window.operator const SDL_Window*());
+  }
+
+  SECTION("Non-const")
+  {
+    Window window;
+    CHECK(window.operator SDL_Window*());
+  }
 }
 
 TEST_CASE("Window::to_string", "[Window]")

@@ -44,14 +44,14 @@ TEST_CASE("Surface(const Surface&)", "[Surface]")
 {
   const Surface fst{path};
   const Surface copy{fst};
-  CHECK(fst.get_internal() != copy.get_internal());
+  CHECK(fst.get() != copy.get());
 }
 
 TEST_CASE("Surface(Surface&&)", "[Surface]")
 {
   Surface fst{path};
   Surface copy{std::move(fst)};
-  CHECK(!fst.get_internal());
+  CHECK(!fst.get());
 }
 
 TEST_CASE("Surface::operator=(const Surface&)", "[Surface]")
@@ -61,7 +61,7 @@ TEST_CASE("Surface::operator=(const Surface&)", "[Surface]")
 
   copy = fst;
 
-  CHECK(fst.get_internal() != copy.get_internal());
+  CHECK(fst.get() != copy.get());
 }
 
 TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
@@ -71,7 +71,7 @@ TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
 
   copy = std::move(fst);
 
-  CHECK(!fst.get_internal());
+  CHECK(!fst.get());
 }
 
 TEST_CASE("Surface::set_alpha", "[Surface]")
@@ -131,8 +131,23 @@ TEST_CASE("Surface::to_texture", "[Surface]")
   CHECK(surface.to_texture(renderer));
 }
 
-TEST_CASE("Surface::get_internal", "[Surface]")
+TEST_CASE("Surface::get", "[Surface]")
 {
-  const Surface surface{path};
-  CHECK(surface.get_internal());
+  Surface surface{path};
+  CHECK(surface.get());
+}
+
+TEST_CASE("Surface to SDL_Surface*", "[Surface]")
+{
+  SECTION("Const")
+  {
+    const Surface surface{path};
+    CHECK(surface.operator const SDL_Surface*());
+  }
+
+  SECTION("Non-const")
+  {
+    Surface surface{path};
+    CHECK(surface.operator SDL_Surface*());
+  }
 }

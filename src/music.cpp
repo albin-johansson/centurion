@@ -28,9 +28,7 @@ Music::Music(Music&& other) noexcept
 CENTURION_DEF
 Music::~Music() noexcept
 {
-  if (m_music) {
-    Mix_FreeMusic(m_music);
-  }
+  destroy();
 }
 
 CENTURION_DEF
@@ -43,11 +41,17 @@ Music& Music::operator=(Music&& other) noexcept
 }
 
 CENTURION_DEF
-void Music::move(Music&& other) noexcept
+void Music::destroy() noexcept
 {
   if (m_music) {
     Mix_FreeMusic(m_music);
   }
+}
+
+CENTURION_DEF
+void Music::move(Music&& other) noexcept
+{
+  destroy();
   m_music = other.m_music;
   other.m_music = nullptr;
 }

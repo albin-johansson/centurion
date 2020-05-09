@@ -346,6 +346,13 @@ class Music final {
   Mix_Music* m_music = nullptr;
 
   /**
+   * Destroys the resources associated with the Music instance.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API void destroy() noexcept;
+
+  /**
    * Moves the contents of the supplied music instance into this instance.
    *
    * @param other the instance that will be moved.

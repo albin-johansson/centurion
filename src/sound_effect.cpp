@@ -117,19 +117,7 @@ void SoundEffect::fade_out(int ms) noexcept
 CENTURION_DEF
 void SoundEffect::set_volume(int volume) noexcept
 {
-  if (volume < 0) {
-    volume = 0;
-  }
-  if (volume > max_volume()) {
-    volume = max_volume();
-  }
-  Mix_VolumeChunk(m_chunk, volume);
-}
-
-CENTURION_DEF
-int SoundEffect::volume() const noexcept
-{
-  return m_chunk->volume;
+  Mix_VolumeChunk(m_chunk, detail::clamp_inclusive({0, max_volume()}, volume));
 }
 
 CENTURION_DEF
@@ -144,12 +132,6 @@ std::string SoundEffect::to_string() const
   const auto address = detail::address_of(this);
   const auto vol = std::to_string(volume());
   return "[SoundEffect@" + address + " | Volume: " + vol + "]";
-}
-
-CENTURION_DEF
-SoundEffect::operator Mix_Chunk*() const noexcept
-{
-  return m_chunk;
 }
 
 }  // namespace audio

@@ -144,16 +144,6 @@ class SoundEffect final {
   CENTURION_API void set_volume(int volume) noexcept;
 
   /**
-   * Returns the current volume of the sound effect. By default, this property
-   * is set to 128.
-   *
-   * @return the current volume of the sound effect.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int volume() const noexcept;
-
-  /**
    * Indicates whether or not the sound effect is currently playing.
    *
    * @return true if the sound effect is playing; false otherwise.
@@ -172,12 +162,44 @@ class SoundEffect final {
   CENTURION_API std::string to_string() const;
 
   /**
+   * Returns the current volume of the sound effect. By default, this property
+   * is set to 128.
+   *
+   * @return the current volume of the sound effect.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  int volume() const noexcept { return m_chunk->volume; }
+
+  /**
+   * Returns a pointer to the internal Mix_Chunk. Use of this method is
+   * not recommended, since it purposefully breaks const-correctness. However
+   * it is useful since many SDL calls use non-const pointers even when no
+   * change will be applied.
+   *
+   * @return a pointer to the internal Mix_Chunk.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  Mix_Chunk* get() const noexcept { return m_chunk; }
+
+  /**
    * Converts to a Mix_Chunk pointer.
    *
    * @return a pointer to the internal Mix_Chunk instance.
-   * @since 3.0.0
+   * @since 4.0.0
    */
-  CENTURION_API operator Mix_Chunk*() const noexcept;
+  CENTURION_NODISCARD
+  operator Mix_Chunk*() noexcept { return m_chunk; }
+
+  /**
+   * Converts to a Mix_Chunk pointer.
+   *
+   * @return a pointer to the internal Mix_Chunk instance.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  operator const Mix_Chunk*() const noexcept { return m_chunk; }
 
   /**
    * Returns the maximum possible volume value.
@@ -185,10 +207,8 @@ class SoundEffect final {
    * @return the maximum possible volume value.
    * @since 3.1.0
    */
-  CENTURION_NODISCARD static constexpr int max_volume() noexcept
-  {
-    return MIX_MAX_VOLUME;
-  }
+  CENTURION_NODISCARD
+  static constexpr int max_volume() noexcept { return MIX_MAX_VOLUME; }
 
  private:
   static constexpr int undefinedChannel = -1;

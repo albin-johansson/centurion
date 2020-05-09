@@ -1,6 +1,6 @@
-#include <catch.hpp>
-
 #include "event.h"
+
+#include <catch.hpp>
 
 using namespace centurion::event;
 
@@ -111,40 +111,42 @@ TEST_CASE("EventType operator!=", "[EventType]")
   CHECK(SDL_MOUSEMOTION != EventType::ControllerDeviceRemoved);
 }
 
-TEST_CASE("Event::refresh", "[Event]") {
-//  CHECK_NOTHROW(Event::refresh());
+TEST_CASE("Event::refresh", "[Event]")
+{
+  //  CHECK_NOTHROW(Event::refresh());
 }
 
-TEST_CASE("Event::push", "[Event]") {
-//  Event::flush_all();
+TEST_CASE("Event::push", "[Event]")
+{
+  //  Event::flush_all();
 
-//  {
-//    SDL_Event sdlEvent{};
-//    sdlEvent.type = SDL_KEYDOWN;
-//    Event event{sdlEvent};
-//    Event::push(event);
-//  }
-//
-//  Event event;
-//  CHECK(event.poll());
-//  CHECK(event.type() == EventType::KeyDown);
+  //  {
+  //    SDL_Event sdlEvent{};
+  //    sdlEvent.type = SDL_KEYDOWN;
+  //    Event event{sdlEvent};
+  //    Event::push(event);
+  //  }
+  //
+  //  Event event;
+  //  CHECK(event.poll());
+  //  CHECK(event.type() == EventType::KeyDown);
 }
 
-//TEST_CASE("Event::flush", "[Event]") {
+// TEST_CASE("Event::flush", "[Event]") {
 //  Event::refresh();
 //  Event::flush();
 //  Event event;
 //  CHECK(!event.poll());
 //}
 //
-//TEST_CASE("Event::flush_all", "[Event]") {
+// TEST_CASE("Event::flush_all", "[Event]") {
 //  Event::flush_all();
 //  Event event;
 //
 //  CHECK(!event.poll());
 //}
 //
-//TEST_CASE("Event::poll", "[Event]") {
+// TEST_CASE("Event::poll", "[Event]") {
 //  SDL_Event sdlEvent{};
 //  sdlEvent.type = SDL_MOUSEMOTION;
 //  sdlEvent.motion.x = 839;
@@ -165,7 +167,7 @@ TEST_CASE("Event::push", "[Event]") {
 //  Event::flush_all();
 //}
 //
-//TEST_CASE("Event::type", "[Event]") {
+// TEST_CASE("Event::type", "[Event]") {
 //  const auto type = EventType::DropFile;
 //  auto sdlEvent = [type]() noexcept {
 //    SDL_Event sdlEvent{};
@@ -182,3 +184,123 @@ TEST_CASE("Event::push", "[Event]") {
 //
 //  Event::flush_all();
 //}
+
+TEST_CASE("Event::as_audio_device_event", "[Event]")
+{
+  SECTION("SDL_AUDIODEVICEADDED")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_AUDIODEVICEADDED;
+    Event event{sdlEvent};
+
+    CHECK(event.as_audio_device_event());
+  }
+
+  SECTION("SDL_AUDIODEVICEREMOVED")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_AUDIODEVICEREMOVED;
+    Event event{sdlEvent};
+
+    CHECK(event.as_audio_device_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_QUIT;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_audio_device_event());
+  }
+}
+
+TEST_CASE("Event::as_controller_axis_event", "[Event]")
+{
+  SECTION("SDL_CONTROLLERAXISMOTION")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_CONTROLLERAXISMOTION;
+    Event event{sdlEvent};
+
+    CHECK(event.as_controller_axis_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_MOUSEWHEEL;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_controller_axis_event());
+  }
+}
+
+TEST_CASE("Event::as_controller_button_event", "[Event]")
+{
+  SECTION("SDL_CONTROLLERBUTTONUP")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_CONTROLLERBUTTONUP;
+    Event event{sdlEvent};
+
+    CHECK(event.as_controller_button_event());
+  }
+
+  SECTION("SDL_CONTROLLERBUTTONDOWN")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_CONTROLLERBUTTONDOWN;
+    Event event{sdlEvent};
+
+    CHECK(event.as_controller_button_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_FINGERDOWN;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_controller_button_event());
+  }
+}
+
+TEST_CASE("Event::as_controller_device_event", "[Event]")
+{
+  SECTION("SDL_CONTROLLERDEVICEADDED")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_CONTROLLERDEVICEADDED;
+    Event event{sdlEvent};
+
+    CHECK(event.as_controller_device_event());
+  }
+
+  SECTION("SDL_CONTROLLERDEVICEREMOVED")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_CONTROLLERDEVICEREMOVED;
+    Event event{sdlEvent};
+
+    CHECK(event.as_controller_device_event());
+  }
+
+  SECTION("SDL_CONTROLLERDEVICEREMAPPED")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_CONTROLLERDEVICEREMAPPED;
+    Event event{sdlEvent};
+
+    CHECK(event.as_controller_device_event());
+  }
+
+  SECTION("Wrong type")
+  {
+    SDL_Event sdlEvent;
+    sdlEvent.type = SDL_FINGERDOWN;
+    Event event{sdlEvent};
+
+    CHECK(!event.as_controller_device_event());
+  }
+}

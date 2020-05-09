@@ -250,7 +250,7 @@ Optional<std::string> Font::style_name() const noexcept
   if (name) {
     return name;
   } else {
-    return tl::nullopt;
+    return nothing;
   }
 }
 

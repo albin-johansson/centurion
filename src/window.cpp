@@ -362,7 +362,7 @@ Optional<int> Window::display_index() const noexcept
   if (index != -1) {
     return index;
   } else {
-    return tl::nullopt;
+    return nothing;
   }
 }
 

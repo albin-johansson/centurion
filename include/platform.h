@@ -62,7 +62,7 @@ class Platform final {
   /**
    * Returns the name of the current platform.
    *
-   * @return the name of the current platform; nullopt if the name cannot
+   * @return the name of the current platform; nothing if the name cannot
    * be deduced.
    * @since 3.0.0
    */

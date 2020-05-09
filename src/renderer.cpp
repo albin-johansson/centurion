@@ -615,7 +615,7 @@ Optional<IRect> Renderer::clip() const noexcept
   SDL_Rect rect{0, 0, 0, 0};
   SDL_RenderGetClipRect(m_renderer, &rect);
   if (SDL_RectEmpty(&rect)) {
-    return tl::nullopt;
+    return nothing;
   } else {
     return IRect{rect.x, rect.y, rect.w, rect.h};
   }

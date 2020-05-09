@@ -494,7 +494,7 @@ class Window final {
   /**
    * Returns the display index associated with the window.
    *
-   * @return the display index associated with the window; nullopt if the
+   * @return the display index associated with the window; nothing if the
    * display index cannot be obtained.
    * @since 3.1.0
    */

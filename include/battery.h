@@ -96,7 +96,7 @@ class Battery final {
   /**
    * Returns the seconds of battery life that is remaining.
    *
-   * @return the seconds of battery life that is remaining; nullopt if the
+   * @return the seconds of battery life that is remaining; nothing if the
    * value cannot be computed.
    * @since 3.0.0
    */
@@ -107,7 +107,7 @@ class Battery final {
    * Returns the amount of minutes of battery life that is remaining.
    *
    * @return the amount of minutes of battery life that is remaining;
-   * nullopt if the value cannot be computed.
+   * nothing if the value cannot be computed.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -117,7 +117,7 @@ class Battery final {
    * Returns the percentage of battery life that is currently left.
    *
    * @return the percentage of battery life that is currently left, in the range
-   * [0, 100]; nullopt if the battery percentage isn't available.
+   * [0, 100]; nothing if the battery percentage isn't available.
    * @since 3.0.0
    */
   CENTURION_NODISCARD

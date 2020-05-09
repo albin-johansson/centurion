@@ -323,7 +323,7 @@ class Font final {
    * Returns the font face style name of the font. This information may not be
    * available.
    *
-   * @return the font face style name of the font; nullopt if there is none
+   * @return the font face style name of the font; nothing if there is none
    * available.
    * @since 3.0.0
    */

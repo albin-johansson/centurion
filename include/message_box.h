@@ -418,10 +418,10 @@ class MessageBox final {
 
   /**
    * Sets the color scheme that will be used by the message box. Color schemes
-   * aren't supported on all platforms, so the default value is nullopt for
+   * aren't supported on all platforms, so the default value is nothing for
    * the color scheme.
    *
-   * @param scheme the color scheme that will be used; nullopt indicates
+   * @param scheme the color scheme that will be used; nothing indicates
    * that the system defaults should be used.
    * @since 3.0.0
    */

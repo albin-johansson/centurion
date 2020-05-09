@@ -649,7 +649,7 @@ class Renderer final {
   /**
    * Sets the clipping area rectangle. Clipping is disabled by default.
    *
-   * @param area the clip area rectangle; or nullopt to disable clipping.
+   * @param area the clip area rectangle; or nothing to disable clipping.
    * @since 3.0.0
    */
   CENTURION_API void set_clip(Optional<IRect> area) noexcept;
@@ -767,7 +767,7 @@ class Renderer final {
   /**
    * Returns the current clipping rectangle, if there is one active.
    *
-   * @return the current clipping rectangle; or nullopt if there is none.
+   * @return the current clipping rectangle; or nothing if there is none.
    * @since 3.0.0
    */
   CENTURION_NODISCARD

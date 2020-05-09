@@ -31,7 +31,7 @@ Optional<std::string> Platform::name() noexcept
 {
   const std::string name{SDL_GetPlatform()};
   if (name == "Unknown") {
-    return tl::nullopt;
+    return nothing;
   } else {
     return name;
   }

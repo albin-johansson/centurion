@@ -11,7 +11,7 @@ Optional<int> Battery::seconds_left() noexcept
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
   if (secondsLeft == -1) {
-    return tl::nullopt;
+    return nothing;
   } else {
     return secondsLeft;
   }
@@ -24,7 +24,7 @@ Optional<int> Battery::minutes_left() noexcept
   if (secondsLeft) {
     return *secondsLeft / 60;
   } else {
-    return tl::nullopt;
+    return nothing;
   }
 }
 
@@ -34,7 +34,7 @@ Optional<int> Battery::percentage() noexcept
   int percentageLeft = -1;
   SDL_GetPowerInfo(nullptr, &percentageLeft);
   if (percentageLeft == -1) {
-    return tl::nullopt;
+    return nothing;
   } else {
     return percentageLeft;
   }

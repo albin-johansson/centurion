@@ -78,25 +78,25 @@ Window& Window::operator=(Window&& other) noexcept
 CENTURION_DEF
 std::unique_ptr<Window> Window::unique(const char* title, int width, int height)
 {
-  return centurion::make_unique<Window>(title, width, height);
+  return centurion::detail::make_unique<Window>(title, width, height);
 }
 
 CENTURION_DEF
 std::unique_ptr<Window> Window::unique(int width, int height)
 {
-  return centurion::make_unique<Window>(width, height);
+  return centurion::detail::make_unique<Window>(width, height);
 }
 
 CENTURION_DEF
 std::unique_ptr<Window> Window::unique(const char* title)
 {
-  return centurion::make_unique<Window>(title);
+  return centurion::detail::make_unique<Window>(title);
 }
 
 CENTURION_DEF
 std::unique_ptr<Window> Window::unique()
 {
-  return centurion::make_unique<Window>();
+  return centurion::detail::make_unique<Window>();
 }
 
 CENTURION_DEF
@@ -204,14 +204,14 @@ void Window::set_fullscreen(bool fullscreen) noexcept
 CENTURION_DEF
 void Window::set_decorated(bool decorated) noexcept
 {
-  SDL_SetWindowBordered(m_window, convert_bool(decorated));
+  SDL_SetWindowBordered(m_window, detail::convert_bool(decorated));
   notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::set_resizable(bool isResizable) noexcept
 {
-  SDL_SetWindowResizable(m_window, convert_bool(isResizable));
+  SDL_SetWindowResizable(m_window, detail::convert_bool(isResizable));
   notify_window_listeners();
 }
 
@@ -282,7 +282,7 @@ void Window::set_position(int x, int y) noexcept
 CENTURION_DEF
 void Window::set_grab_mouse(bool grabMouse) noexcept
 {
-  SDL_SetWindowGrab(m_window, convert_bool(grabMouse));
+  SDL_SetWindowGrab(m_window, detail::convert_bool(grabMouse));
   notify_window_listeners();
 }
 
@@ -383,7 +383,7 @@ int Window::y() const noexcept
 }
 
 CENTURION_DEF
- IPoint Window::position() const noexcept
+IPoint Window::position() const noexcept
 {
   int x = 0;
   int y = 0;
@@ -446,7 +446,7 @@ std::string Window::title() const noexcept
 CENTURION_DEF
 std::string Window::to_string() const
 {
-  const auto address = address_of(this);
+  const auto address = detail::address_of(this);
   const auto w = std::to_string(width());
   const auto h = std::to_string(height());
   return "[Window@" + address + " | Width: " + w + ", Height: " + h + "]";

@@ -95,21 +95,21 @@ Texture& Texture::operator=(Texture&& other) noexcept
 CENTURION_DEF
 std::unique_ptr<Texture> Texture::unique(gsl::owner<SDL_Texture*> texture)
 {
-  return centurion::make_unique<Texture>(texture);
+  return centurion::detail::make_unique<Texture>(texture);
 }
 
 CENTURION_DEF
 std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
                                          const char* path)
 {
-  return centurion::make_unique<Texture>(renderer, path);
+  return centurion::detail::make_unique<Texture>(renderer, path);
 }
 
 CENTURION_DEF
 std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
                                          const Surface& surface)
 {
-  return centurion::make_unique<Texture>(renderer, surface);
+  return centurion::detail::make_unique<Texture>(renderer, surface);
 }
 
 CENTURION_DEF
@@ -119,7 +119,7 @@ std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
                                          int width,
                                          int height)
 {
-  return centurion::make_unique<Texture>(
+  return centurion::detail::make_unique<Texture>(
       renderer, format, access, width, height);
 }
 
@@ -262,7 +262,7 @@ SDL_Texture* Texture::get_internal() noexcept
 CENTURION_DEF
 std::string Texture::to_string() const
 {
-  const auto address = address_of(this);
+  const auto address = detail::address_of(this);
   const auto w = std::to_string(width());
   const auto h = std::to_string(height());
   return "[Texture@" + address + " | Width: " + w + ", Height: " + h + "]";

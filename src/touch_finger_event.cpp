@@ -43,31 +43,31 @@ void TouchFingerEvent::set_window_id(Uint32 id) noexcept
 CENTURION_DEF
 void TouchFingerEvent::set_x(float x) noexcept
 {
-  m_event.x = clamp_inclusive({0, 1}, x);
+  m_event.x = detail::clamp_inclusive({0, 1}, x);
 }
 
 CENTURION_DEF
 void TouchFingerEvent::set_y(float y) noexcept
 {
-  m_event.y = clamp_inclusive({0, 1}, y);
+  m_event.y = detail::clamp_inclusive({0, 1}, y);
 }
 
 CENTURION_DEF
 void TouchFingerEvent::set_dx(float dx) noexcept
 {
-  m_event.dx = clamp_inclusive({-1, 1}, dx);
+  m_event.dx = detail::clamp_inclusive({-1, 1}, dx);
 }
 
 CENTURION_DEF
 void TouchFingerEvent::set_dy(float dy) noexcept
 {
-  m_event.dy = clamp_inclusive({-1, 1}, dy);
+  m_event.dy = detail::clamp_inclusive({-1, 1}, dy);
 }
 
 CENTURION_DEF
 void TouchFingerEvent::set_pressure(float pressure) noexcept
 {
-  m_event.pressure = clamp_inclusive({0, 1}, pressure);
+  m_event.pressure = detail::clamp_inclusive({0, 1}, pressure);
 }
 
 CENTURION_DEF

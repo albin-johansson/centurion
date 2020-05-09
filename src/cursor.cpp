@@ -88,19 +88,19 @@ void Cursor::destroy() noexcept
 CENTURION_DEF
 std::unique_ptr<Cursor> Cursor::unique(SystemCursor id)
 {
-  return centurion::make_unique<Cursor>(id);
+  return centurion::detail::make_unique<Cursor>(id);
 }
 
 CENTURION_DEF
 std::unique_ptr<Cursor> Cursor::unique(gsl::owner<SDL_Cursor*> cursor)
 {
-  return centurion::make_unique<Cursor>(cursor);
+  return centurion::detail::make_unique<Cursor>(cursor);
 }
 
 CENTURION_DEF
 std::unique_ptr<Cursor> Cursor::unique(const Surface& surface, IPoint hotspot)
 {
-  return centurion::make_unique<Cursor>(surface, hotspot);
+  return centurion::detail::make_unique<Cursor>(surface, hotspot);
 }
 
 CENTURION_DEF

@@ -20,7 +20,7 @@ MouseState::~MouseState() noexcept = default;
 CENTURION_DEF
 std::unique_ptr<MouseState> MouseState::unique()
 {
-  return centurion::make_unique<MouseState>();
+  return centurion::detail::make_unique<MouseState>();
 }
 
 CENTURION_DEF

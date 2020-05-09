@@ -61,7 +61,7 @@ Font& Font::operator=(Font&& other) noexcept
 CENTURION_DEF
 std::unique_ptr<Font> Font::unique(const std::string& file, int size)
 {
-  return centurion::make_unique<Font>(file, size);
+  return centurion::detail::make_unique<Font>(file, size);
 }
 
 CENTURION_DEF
@@ -257,7 +257,7 @@ Optional<std::string> Font::style_name() const noexcept
 CENTURION_DEF
 std::string Font::to_string() const
 {
-  const auto idStr = "Font@" + address_of(this);
+  const auto idStr = "Font@" + detail::address_of(this);
   const auto nameStr = " | Name: " + family_name();
   const auto sizeStr = ", Size: " + std::to_string(size());
   return "[" + idStr + nameStr + sizeStr + "]";

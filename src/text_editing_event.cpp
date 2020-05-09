@@ -31,7 +31,7 @@ TextEditingEvent::TextEditingEvent(SDL_TextEditingEvent&& event) noexcept
 CENTURION_DEF
 void TextEditingEvent::check_length() noexcept
 {
-  m_event.length = clamp_inclusive({0, 32}, m_event.length);
+  m_event.length = detail::clamp_inclusive({0, 32}, m_event.length);
 }
 
 CENTURION_DEF
@@ -49,7 +49,7 @@ void TextEditingEvent::set_start(Sint32 start) noexcept
 CENTURION_DEF
 void TextEditingEvent::set_length(Sint32 length) noexcept
 {
-  m_event.length = clamp_inclusive({0, 32}, length);
+  m_event.length = detail::clamp_inclusive({0, 32}, length);
 }
 
 CENTURION_DEF

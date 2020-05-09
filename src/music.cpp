@@ -50,7 +50,7 @@ Music& Music::operator=(Music&& other) noexcept
 CENTURION_DEF
 std::unique_ptr<Music> Music::unique(const std::string& file)
 {
-  return centurion::make_unique<Music>(file);
+  return centurion::detail::make_unique<Music>(file);
 }
 
 CENTURION_DEF
@@ -161,7 +161,7 @@ MusicType Music::music_type() const noexcept
 CENTURION_DEF
 std::string Music::to_string() const
 {
-  return "[Music@" + address_of(this) + "]";
+  return "[Music@" + detail::address_of(this) + "]";
 }
 
 CENTURION_DEF

@@ -37,6 +37,7 @@
 #include "optional.hpp"
 
 namespace centurion {
+namespace detail {
 
 /**
  * Creates and returns a unique pointer. This method is used since C++11
@@ -119,6 +120,8 @@ CENTURION_NODISCARD T clamp_inclusive(std::pair<T, T> range, T value) noexcept
     return value;
   }
 }
+
+}  // namespace detail
 
 template <bool condition, typename T>
 using type_if = typename std::enable_if<condition, T>::type;

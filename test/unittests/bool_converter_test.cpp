@@ -9,6 +9,6 @@ using namespace centurion;
 
 TEST_CASE("Convert C++ bool to SDL bool", "[utilities]")
 {
-  CHECK(convert_bool(true) == SDL_TRUE);
-  CHECK(convert_bool(false) == SDL_FALSE);
+  CHECK(detail::convert_bool(true) == SDL_TRUE);
+  CHECK(detail::convert_bool(false) == SDL_FALSE);
 }

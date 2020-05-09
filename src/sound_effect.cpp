@@ -57,7 +57,7 @@ SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept
 CENTURION_DEF
 std::unique_ptr<SoundEffect> SoundEffect::unique(const std::string& file)
 {
-  return centurion::make_unique<SoundEffect>(file);
+  return centurion::detail::make_unique<SoundEffect>(file);
 }
 
 CENTURION_DEF
@@ -141,7 +141,7 @@ bool SoundEffect::playing() const noexcept
 CENTURION_DEF
 std::string SoundEffect::to_string() const
 {
-  const auto address = address_of(this);
+  const auto address = detail::address_of(this);
   const auto vol = std::to_string(volume());
   return "[SoundEffect@" + address + " | Volume: " + vol + "]";
 }

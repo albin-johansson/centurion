@@ -67,14 +67,14 @@ void Renderer::destroy() noexcept
 CENTURION_DEF
 std::unique_ptr<Renderer> Renderer::unique(gsl::owner<SDL_Renderer*> renderer)
 {
-  return centurion::make_unique<Renderer>(renderer);
+  return centurion::detail::make_unique<Renderer>(renderer);
 }
 
 CENTURION_DEF
 std::unique_ptr<Renderer> Renderer::unique(const Window& window,
                                            SDL_RendererFlags flags)
 {
-  return centurion::make_unique<Renderer>(window, flags);
+  return centurion::detail::make_unique<Renderer>(window, flags);
 }
 
 CENTURION_DEF
@@ -576,7 +576,8 @@ void Renderer::set_logical_size(int width, int height) noexcept
 CENTURION_DEF
 void Renderer::set_logical_integer_scale(bool useLogicalIntegerScale) noexcept
 {
-  SDL_RenderSetIntegerScale(m_renderer, convert_bool(useLogicalIntegerScale));
+  SDL_RenderSetIntegerScale(m_renderer,
+                            detail::convert_bool(useLogicalIntegerScale));
 }
 
 CENTURION_DEF
@@ -747,13 +748,13 @@ std::unique_ptr<Texture> Renderer::create_image(const std::string& s,
   SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, surface);
   SDL_FreeSurface(surface);
 
-  return centurion::make_unique<Texture>(texture);
+  return centurion::detail::make_unique<Texture>(texture);
 }
 
 CENTURION_DEF
 std::string Renderer::to_string() const
 {
-  const auto address = address_of(this);
+  const auto address = detail::address_of(this);
   const auto owidth = std::to_string(output_width());
   const auto oheight = std::to_string(output_height());
   return "[Renderer@" + address + " | Output width: " + owidth +

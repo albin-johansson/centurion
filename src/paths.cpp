@@ -30,7 +30,7 @@ AppPath::operator bool() const noexcept
 CENTURION_DEF
 std::unique_ptr<AppPath> AppPath::unique()
 {
-  return centurion::make_unique<AppPath>();
+  return centurion::detail::make_unique<AppPath>();
 }
 
 CENTURION_DEF
@@ -56,7 +56,7 @@ CENTURION_DEF
 std::unique_ptr<PrefPath> PrefPath::unique(const std::string& org,
                                            const std::string& app)
 {
-  return centurion::make_unique<PrefPath>(org, app);
+  return centurion::detail::make_unique<PrefPath>(org, app);
 }
 
 CENTURION_DEF

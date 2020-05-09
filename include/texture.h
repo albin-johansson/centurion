@@ -416,15 +416,6 @@ class Texture final {
   CENTURION_API Color color_mod() const noexcept;
 
   /**
-   * Returns a pointer to the internal SDL_Texture of the texture.
-   *
-   * @return a pointer to the internal SDL_Texture of the texture.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API SDL_Texture* get_internal() noexcept;
-
-  /**
    * Returns a string representation of the texture.
    *
    * @return a string representation of the texture.
@@ -434,12 +425,34 @@ class Texture final {
   CENTURION_API std::string to_string() const;
 
   /**
+   * Returns a pointer to the internal SDL_Texture. Use of this method is
+   * not recommended, since it purposefully breaks const-correctness. However
+   * it is useful since many SDL calls use non-const pointers even when no
+   * change will be applied.
+   *
+   * @return a pointer to the internal SDL_Texture.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  SDL_Texture* get() const noexcept { return m_texture; }
+
+  /**
    * Returns a pointer to the internal SDL_Texture.
    *
    * @return a pointer to the internal SDL_Texture.
    * @since 3.0.0
    */
-  CENTURION_API operator SDL_Texture*() const noexcept;
+  CENTURION_NODISCARD
+  operator SDL_Texture*() noexcept { return m_texture; }
+
+  /**
+   * Returns a pointer to the internal SDL_Texture.
+   *
+   * @return a pointer to the internal SDL_Texture.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  operator const SDL_Texture*() const noexcept { return m_texture; }
 
  private:
   SDL_Texture* m_texture = nullptr;
@@ -453,22 +466,20 @@ class Texture final {
   void destroy() noexcept;
 };
 
-using Image = Texture;  // for compatibility
-
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-static_assert(std::is_final<Image>::value, "Texture isn't final!");
+static_assert(std::is_final<Texture>::value, "Texture isn't final!");
 #endif
 
-static_assert(std::is_nothrow_move_constructible<Image>::value,
+static_assert(std::is_nothrow_move_constructible<Texture>::value,
               "Texture isn't nothrow move constructible!");
 
-static_assert(std::is_nothrow_move_assignable<Image>::value,
+static_assert(std::is_nothrow_move_assignable<Texture>::value,
               "Texture isn't nothrow move assignable!");
 
-static_assert(!std::is_nothrow_copy_constructible<Image>::value,
+static_assert(!std::is_nothrow_copy_constructible<Texture>::value,
               "Texture is copyable!");
 
-static_assert(!std::is_nothrow_copy_assignable<Image>::value,
+static_assert(!std::is_nothrow_copy_assignable<Texture>::value,
               "Texture is assignable!");
 
 }  // namespace centurion

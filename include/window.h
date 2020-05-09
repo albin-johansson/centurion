@@ -586,15 +586,34 @@ class Window final {
   CENTURION_API std::string to_string() const;
 
   /**
-   * Implicit conversion to raw SDL_Window pointer.
+   * Returns a pointer to the internal SDL_Window. Use of this method is
+   * not recommended, since it purposefully breaks const-correctness. However
+   * it is useful since many SDL calls use non-const pointers even when no
+   * change will be applied.
    *
-   * @return a pointer to the SDL_Window representation of the window.
+   * @return a pointer to the internal SDL_Window.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  SDL_Window* get() const noexcept { return m_window; }
+
+  /**
+   * Implicitly converts to a pointer to SDL_Window.
+   *
+   * @return a pointer to the internal SDL_Window.
    * @since 3.0.0
    */
-  CENTURION_API operator SDL_Window*() const noexcept;
-
   CENTURION_NODISCARD
-  CENTURION_API SDL_Window* internal() const noexcept;
+  operator SDL_Window*() noexcept { return m_window; }
+
+  /**
+   * Implicitly converts to a pointer to SDL_Window.
+   *
+   * @return a pointer to the internal SDL_Window.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  operator const SDL_Window*() const noexcept { return m_window; }
 
  private:
   SDL_Window* m_window = nullptr;

@@ -299,8 +299,8 @@ class Cursor final {
   CENTURION_API static bool visible() noexcept;
 
  private:
-  SDL_Cursor* cursor = nullptr;
-  SDL_Surface* surface = nullptr;
+  SDL_Cursor* m_cursor = nullptr;
+  SDL_Surface* m_surface = nullptr;
 
   /**
    * Destroys the components in the Cursor instance.

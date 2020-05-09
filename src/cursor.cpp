@@ -11,32 +11,32 @@ namespace centurion {
 CENTURION_DEF
 Cursor::Cursor(SystemCursor id)
 {
-  cursor = SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(id));
-  if (!cursor) {
+  m_cursor = SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(id));
+  if (!m_cursor) {
     throw CenturionException{"Failed to create system cursor!"};
   }
 }
 
 CENTURION_DEF
-Cursor::Cursor(gsl::owner<SDL_Cursor*> cursor_)
+Cursor::Cursor(gsl::owner<SDL_Cursor*> cursor)
 {
-  if (cursor_) {
-    cursor = cursor_;
+  if (cursor) {
+    m_cursor = cursor;
   } else {
     throw CenturionException{"Can't create cursor from null SDL_Cursor!"};
   }
 }
 
 CENTURION_DEF
-Cursor::Cursor(const Surface& surface_, IPoint hotspot)
+Cursor::Cursor(const Surface& surface, IPoint hotspot)
 {
-  surface = SDL_DuplicateSurface(surface_.get_internal());
-  if (!surface) {
+  m_surface = SDL_DuplicateSurface(surface.get());
+  if (!m_surface) {
     throw CenturionException{"Failed to create color cursor!"};
   }
 
-  cursor = SDL_CreateColorCursor(surface, hotspot.x(), hotspot.y());
-  if (!cursor) {
+  m_cursor = SDL_CreateColorCursor(m_surface, hotspot.x(), hotspot.y());
+  if (!m_cursor) {
     throw CenturionException{"Failed to create color cursor!"};
   }
 }
@@ -46,11 +46,11 @@ Cursor::Cursor(Cursor&& other) noexcept
 {
   destroy();
 
-  cursor = other.cursor;
-  surface = other.surface;
+  m_cursor = other.m_cursor;
+  m_surface = other.m_surface;
 
-  other.cursor = nullptr;
-  other.surface = nullptr;
+  other.m_cursor = nullptr;
+  other.m_surface = nullptr;
 }
 
 CENTURION_DEF
@@ -58,11 +58,11 @@ Cursor& Cursor::operator=(Cursor&& other) noexcept
 {
   destroy();
 
-  cursor = other.cursor;
-  surface = other.surface;
+  m_cursor = other.m_cursor;
+  m_surface = other.m_surface;
 
-  other.cursor = nullptr;
-  other.surface = nullptr;
+  other.m_cursor = nullptr;
+  other.m_surface = nullptr;
 
   return *this;
 }
@@ -76,12 +76,12 @@ Cursor::~Cursor() noexcept
 CENTURION_DEF
 void Cursor::destroy() noexcept
 {
-  if (cursor) {
-    SDL_FreeCursor(cursor);
+  if (m_cursor) {
+    SDL_FreeCursor(m_cursor);
   }
 
-  if (surface) {
-    SDL_FreeSurface(surface);
+  if (m_surface) {
+    SDL_FreeSurface(m_surface);
   }
 }
 
@@ -124,13 +124,13 @@ std::shared_ptr<Cursor> Cursor::shared(const Surface& surface, IPoint hotspot)
 CENTURION_DEF
 void Cursor::enable() noexcept
 {
-  SDL_SetCursor(cursor);
+  SDL_SetCursor(m_cursor);
 }
 
 CENTURION_DEF
 bool Cursor::is_enabled() const noexcept
 {
-  return SDL_GetCursor() == cursor;
+  return SDL_GetCursor() == m_cursor;
 }
 
 CENTURION_DEF

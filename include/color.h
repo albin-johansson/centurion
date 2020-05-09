@@ -181,7 +181,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Uint8 red() const noexcept;
+  Uint8 red() const noexcept { return m_red; }
 
   /**
    * Returns the value of the green component.
@@ -190,7 +190,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Uint8 green() const noexcept;
+  Uint8 green() const noexcept { return m_green; }
 
   /**
    * Returns the value of the blue component.
@@ -199,7 +199,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Uint8 blue() const noexcept;
+  Uint8 blue() const noexcept { return m_blue; }
 
   /**
    * Returns the value of the alpha component.
@@ -208,7 +208,7 @@ class Color final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Uint8 alpha() const noexcept;
+  Uint8 alpha() const noexcept { return m_alpha; }
 
   /**
    * Returns a textual representation of the color.
@@ -225,7 +225,8 @@ class Color final {
    * @return an SDL_Color that mirrors this color.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD CENTURION_API operator SDL_Color() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API operator SDL_Color() const noexcept;
 
   /**
    * Converts the color to a pointer to a SDL_Color instance.
@@ -234,8 +235,18 @@ class Color final {
    * instance.
    * @since 4.0,0
    */
-  CENTURION_NODISCARD CENTURION_API explicit operator const SDL_Color*()
-      const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API explicit operator SDL_Color*() noexcept;
+
+  /**
+   * Converts the color to a pointer to a SDL_Color instance.
+   *
+   * @return a pointer to the Color instance reinterpreted as a SDL_Color
+   * instance.
+   * @since 4.0,0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API explicit operator const SDL_Color*() const noexcept;
 
   /**
    * Implicitly converts the the color into an SDL_MessageBoxColor. Note that
@@ -244,8 +255,8 @@ class Color final {
    * @return an SDL_MessageBoxColor that this the color.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD CENTURION_API
-  operator SDL_MessageBoxColor() const noexcept;
+  CENTURION_NODISCARD
+  CENTURION_API operator SDL_MessageBoxColor() const noexcept;
 
  private:
   Uint8 m_red = 0;

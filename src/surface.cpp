@@ -156,13 +156,7 @@ int Surface::pitch() const noexcept
 CENTURION_DEF
 Texture Surface::to_texture(const Renderer& renderer) const noexcept
 {
-  return Texture{SDL_CreateTextureFromSurface(renderer.internal(), m_surface)};
-}
-
-CENTURION_DEF
-SDL_Surface* Surface::get_internal() const noexcept
-{
-  return m_surface;
+  return Texture{SDL_CreateTextureFromSurface(renderer.get(), m_surface)};
 }
 
 }  // namespace centurion

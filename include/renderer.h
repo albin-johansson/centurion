@@ -193,8 +193,7 @@ class Renderer final {
    * @param end the end point of the line.
    * @since 4.0.0
    */
-  CENTURION_API
-  void draw_line(const IPoint& start, const IPoint& end) noexcept;
+  CENTURION_API void draw_line(const IPoint& start, const IPoint& end) noexcept;
 
   /**
    * Renders a sequence of connected lines in the currently selected color.
@@ -925,16 +924,6 @@ class Renderer final {
   CENTURION_API IRect viewport() const noexcept;
 
   /**
-   * Returns the translation viewport that is currently being used. Set to (0,
-   * 0, 0, 0) by default.
-   *
-   * @return the translation viewport that is currently being used.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API const FRect& translation_viewport() const noexcept;
-
-  /**
    * Returns a textual representation of the renderer.
    *
    * @return a textual representation of the renderer.
@@ -944,18 +933,47 @@ class Renderer final {
   CENTURION_API std::string to_string() const;
 
   /**
-   * Returns a pointer to the internal SDL_Renderer instance.
+   * Returns the translation viewport that is currently being used. Set to (0,
+   * 0, 0, 0) by default.
+   *
+   * @return the translation viewport that is currently being used.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  const FRect& translation_viewport() const noexcept
+  {
+    return m_translationViewport;
+  }
+
+  /**
+   * Returns a pointer to the internal SDL_Renderer. Use of this method is
+   * not recommended, since it purposefully breaks const-correctness. However
+   * it is useful since many SDL calls use non-const pointers even when no
+   * change will be applied.
+   *
+   * @return a pointer to the internal SDL_Renderer.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  SDL_Renderer* get() const noexcept { return m_renderer; }
+
+  /**
+   * Converts to SDL_Renderer*.
    *
    * @return a pointer to the internal SDL_Renderer instance.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API SDL_Renderer* internal() const noexcept;
+  operator SDL_Renderer*() noexcept { return m_renderer; }
 
   /**
+   * Converts to SDL_Renderer*.
+   *
+   * @return a pointer to the internal SDL_Renderer instance.
    * @since 3.0.0
    */
-  CENTURION_API operator SDL_Renderer*() const noexcept;
+  CENTURION_NODISCARD
+  operator const SDL_Renderer*() const noexcept { return m_renderer; }
 
  private:
   SDL_Renderer* m_renderer = nullptr;

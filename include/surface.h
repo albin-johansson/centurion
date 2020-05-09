@@ -189,14 +189,35 @@ class Surface final {
   CENTURION_API Texture to_texture(const Renderer& renderer) const noexcept;
 
   /**
-   * Returns a pointer to the internal SDL_Surface instance. Don't take
-   * ownership of the returned pointer, or bad things will happen.
+   * Returns a pointer to the internal SDL_Surface. Use of this method is
+   * not recommended, since it purposefully breaks const-correctness. However
+   * it is useful since many SDL calls use non-const pointers even when no
+   * change will be applied. Don't take ownership of the returned pointer, or
+   * bad things will happen.
    *
-   * @return a pointer to the internal SDL_Surface instance.
+   * @return a pointer to the internal SDL_Surface.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API SDL_Surface* get_internal() const noexcept;
+  SDL_Surface* get() const noexcept { return m_surface; }
+
+  /**
+   * Implicitly converts to SDL_Surface*.
+   *
+   * @return a pointer to the internal SDL_Surface.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  operator SDL_Surface*() noexcept { return m_surface; }
+
+  /**
+   * Implicitly converts to SDL_Surface*.
+   *
+   * @return a pointer to the internal SDL_Surface.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  operator const SDL_Surface*() const noexcept { return m_surface; }
 
  private:
   SDL_Surface* m_surface = nullptr;

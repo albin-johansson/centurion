@@ -53,30 +53,6 @@ void Color::set_alpha(Uint8 a) noexcept
 }
 
 CENTURION_DEF
-Uint8 Color::red() const noexcept
-{
-  return m_red;
-}
-
-CENTURION_DEF
-Uint8 Color::green() const noexcept
-{
-  return m_green;
-}
-
-CENTURION_DEF
-Uint8 Color::blue() const noexcept
-{
-  return m_blue;
-}
-
-CENTURION_DEF
-Uint8 Color::alpha() const noexcept
-{
-  return m_alpha;
-}
-
-CENTURION_DEF
 std::string Color::to_string() const
 {
   return "[Color | R: " + std::to_string(m_red) +
@@ -88,6 +64,12 @@ CENTURION_DEF
 Color::operator SDL_Color() const noexcept
 {
   return {m_red, m_green, m_blue, m_alpha};
+}
+
+CENTURION_DEF
+Color::operator SDL_Color*() noexcept
+{
+  return reinterpret_cast<SDL_Color*>(this);
 }
 
 CENTURION_DEF

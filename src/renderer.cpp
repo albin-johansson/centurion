@@ -30,7 +30,7 @@ Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer)
 CENTURION_DEF
 Renderer::Renderer(const Window& window, SDL_RendererFlags flags)
 {
-  m_renderer = SDL_CreateRenderer(window.internal(), -1, flags);
+  m_renderer = SDL_CreateRenderer(window.get(), -1, flags);
 
   set_blend_mode(BlendMode::Blend);
   set_color(black);
@@ -167,14 +167,14 @@ void Renderer::render(const Texture& texture, IPoint position) noexcept
 {
   const SDL_Rect dst{
       position.x(), position.y(), texture.width(), texture.height()};
-  SDL_RenderCopy(m_renderer, texture, nullptr, &dst);
+  SDL_RenderCopy(m_renderer, texture.get(), nullptr, &dst);
 }
 
 CENTURION_DEF
 void Renderer::render(const Texture& texture, const IRect& rect) noexcept
 {
   const auto* dst = static_cast<const SDL_Rect*>(rect);
-  SDL_RenderCopy(m_renderer, texture, nullptr, dst);
+  SDL_RenderCopy(m_renderer, texture.get(), nullptr, dst);
 }
 
 CENTURION_DEF
@@ -183,7 +183,7 @@ void Renderer::render(const Texture& texture,
                       const IRect& dst) noexcept
 {
   SDL_RenderCopy(m_renderer,
-                 texture,
+                 texture.get(),
                  static_cast<const SDL_Rect*>(src),
                  static_cast<const SDL_Rect*>(dst));
 }
@@ -195,7 +195,7 @@ void Renderer::render(const Texture& texture,
                       double angle) noexcept
 {
   SDL_RenderCopyEx(m_renderer,
-                   texture,
+                   texture.get(),
                    static_cast<const SDL_Rect*>(src),
                    static_cast<const SDL_Rect*>(dst),
                    angle,
@@ -211,7 +211,7 @@ void Renderer::render(const Texture& texture,
                       IPoint center) noexcept
 {
   SDL_RenderCopyEx(m_renderer,
-                   texture,
+                   texture.get(),
                    static_cast<const SDL_Rect*>(src),
                    static_cast<const SDL_Rect*>(dst),
                    angle,
@@ -226,7 +226,7 @@ void Renderer::render(const Texture& texture,
                       SDL_RendererFlip flip) noexcept
 {
   SDL_RenderCopyEx(m_renderer,
-                   texture,
+                   texture.get(),
                    static_cast<const SDL_Rect*>(src),
                    static_cast<const SDL_Rect*>(dst),
                    0,
@@ -243,7 +243,7 @@ void Renderer::render(const Texture& texture,
                       SDL_RendererFlip flip) noexcept
 {
   SDL_RenderCopyEx(m_renderer,
-                   texture,
+                   texture.get(),
                    static_cast<const SDL_Rect*>(src),
                    static_cast<const SDL_Rect*>(dst),
                    angle,
@@ -258,14 +258,14 @@ void Renderer::render_f(const Texture& texture, FPoint position) noexcept
                              position.y(),
                              static_cast<float>(texture.width()),
                              static_cast<float>(texture.height())};
-  SDL_RenderCopyF(m_renderer, texture, nullptr, &dst);
+  SDL_RenderCopyF(m_renderer, texture.get(), nullptr, &dst);
 }
 
 CENTURION_DEF
 void Renderer::render_f(const Texture& texture, const FRect& rect) noexcept
 {
   const auto* dst = static_cast<const SDL_FRect*>(rect);
-  SDL_RenderCopyF(m_renderer, texture, nullptr, dst);
+  SDL_RenderCopyF(m_renderer, texture.get(), nullptr, dst);
 }
 
 CENTURION_DEF
@@ -274,7 +274,7 @@ void Renderer::render_f(const Texture& texture,
                         const FRect& dst) noexcept
 {
   SDL_RenderCopyF(m_renderer,
-                  texture,
+                  texture.get(),
                   static_cast<const SDL_Rect*>(src),
                   static_cast<const SDL_FRect*>(dst));
 }
@@ -286,7 +286,7 @@ void Renderer::render_f(const Texture& texture,
                         double angle) noexcept
 {
   SDL_RenderCopyExF(m_renderer,
-                    texture,
+                    texture.get(),
                     static_cast<const SDL_Rect*>(src),
                     static_cast<const SDL_FRect*>(dst),
                     angle,
@@ -302,7 +302,7 @@ void Renderer::render_f(const Texture& texture,
                         FPoint center) noexcept
 {
   SDL_RenderCopyExF(m_renderer,
-                    texture,
+                    texture.get(),
                     static_cast<const SDL_Rect*>(src),
                     static_cast<const SDL_FRect*>(dst),
                     angle,
@@ -317,7 +317,7 @@ void Renderer::render_f(const Texture& texture,
                         SDL_RendererFlip flip) noexcept
 {
   SDL_RenderCopyExF(m_renderer,
-                    texture,
+                    texture.get(),
                     static_cast<const SDL_Rect*>(src),
                     static_cast<const SDL_FRect*>(dst),
                     0,
@@ -334,7 +334,7 @@ void Renderer::render_f(const Texture& texture,
                         SDL_RendererFlip flip) noexcept
 {
   SDL_RenderCopyExF(m_renderer,
-                    texture,
+                    texture.get(),
                     static_cast<const SDL_Rect*>(src),
                     static_cast<const SDL_FRect*>(dst),
                     angle,
@@ -551,7 +551,7 @@ CENTURION_DEF
 void Renderer::set_target(const Texture* texture) noexcept
 {
   if (texture && texture->is_target()) {
-    SDL_SetRenderTarget(m_renderer, *texture);
+    SDL_SetRenderTarget(m_renderer, texture->get());
   } else {
     SDL_SetRenderTarget(m_renderer, nullptr);
   }
@@ -688,12 +688,6 @@ IRect Renderer::viewport() const noexcept
 }
 
 CENTURION_DEF
-const FRect& Renderer::translation_viewport() const noexcept
-{
-  return m_translationViewport;
-}
-
-CENTURION_DEF
 Uint32 Renderer::flags() const noexcept
 {
   SDL_RendererInfo info;
@@ -739,7 +733,7 @@ std::unique_ptr<Texture> Renderer::create_image(const std::string& s,
     return nullptr;
   }
 
-  SDL_Surface* surface = TTF_RenderText_Blended(font, s.c_str(), color());
+  SDL_Surface* surface = TTF_RenderText_Blended(font.get(), s.c_str(), color());
 
   if (!surface) {
     return nullptr;
@@ -759,18 +753,6 @@ std::string Renderer::to_string() const
   const auto oheight = std::to_string(output_height());
   return "[Renderer@" + address + " | Output width: " + owidth +
          ", Output height: " + oheight + "]";
-}
-
-CENTURION_DEF
-SDL_Renderer* Renderer::internal() const noexcept
-{
-  return m_renderer;
-}
-
-CENTURION_DEF
-Renderer::operator SDL_Renderer*() const noexcept
-{
-  return m_renderer;
 }
 
 }  // namespace centurion

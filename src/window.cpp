@@ -240,7 +240,7 @@ void Window::set_height(int height)
 CENTURION_DEF
 void Window::set_icon(const Surface& icon) noexcept
 {
-  SDL_SetWindowIcon(m_window, icon.get_internal());
+  SDL_SetWindowIcon(m_window, icon.get());
   notify_window_listeners();
 }
 
@@ -450,18 +450,6 @@ std::string Window::to_string() const
   const auto w = std::to_string(width());
   const auto h = std::to_string(height());
   return "[Window@" + address + " | Width: " + w + ", Height: " + h + "]";
-}
-
-CENTURION_DEF
-Window::operator SDL_Window*() const noexcept
-{
-  return m_window;
-}
-
-CENTURION_DEF
-SDL_Window* Window::internal() const noexcept
-{
-  return m_window;
 }
 
 }  // namespace centurion

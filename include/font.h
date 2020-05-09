@@ -189,15 +189,6 @@ class Font final {
   CENTURION_API void set_font_hinting(FontHint hint) noexcept;
 
   /**
-   * Returns the size of the font.
-   *
-   * @return the size of the font.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int size() const noexcept;
-
-  /**
    * Returns the maximum height of a character in this font. This is usually the
    * same as the point size.
    *
@@ -364,13 +355,43 @@ class Font final {
   CENTURION_API std::string to_string() const;
 
   /**
+   * Returns the size of the font.
+   *
+   * @return the size of the font.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  int size() const noexcept { return m_size; }
+
+  /**
+   * Returns a pointer to the internal TTF_Font. Use of this method is
+   * not recommended, since it purposefully breaks const-correctness. However
+   * it is useful since many SDL calls use non-const pointers even when no
+   * change will be applied.
+   *
+   * @return a pointer to the internal TTF_Font.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  TTF_Font* get() const noexcept { return m_font; }
+
+  /**
    * Converts to TTF_Font*.
    *
    * @return a pointer to the internal TTF_Font instance.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API operator TTF_Font*() const noexcept;
+  operator TTF_Font*() noexcept { return m_font; }
+
+  /**
+   * Converts to TTF_Font*.
+   *
+   * @return a pointer to the internal TTF_Font instance.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  operator const TTF_Font*() const noexcept { return m_font; }
 
  private:
   TTF_Font* m_font = nullptr;

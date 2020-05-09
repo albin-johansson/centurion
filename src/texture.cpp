@@ -29,7 +29,7 @@ Texture::Texture(const Renderer& renderer, const char* path)
     throw CenturionException{"Can't load texture from null path!"};
   }
 
-  m_texture = IMG_LoadTexture(renderer.internal(), path);
+  m_texture = IMG_LoadTexture(renderer.get(), path);
 
   if (!m_texture) {
     const auto strPath = std::string{path};
@@ -40,8 +40,7 @@ Texture::Texture(const Renderer& renderer, const char* path)
 CENTURION_DEF
 Texture::Texture(const Renderer& renderer, const Surface& surface)
 {
-  this->m_texture =
-      SDL_CreateTextureFromSurface(renderer.internal(), surface.get_internal());
+  this->m_texture = SDL_CreateTextureFromSurface(renderer.get(), surface.get());
   if (!m_texture) {
     throw CenturionException{"Failed to create texture from surface! " +
                              Error::msg()};
@@ -55,7 +54,7 @@ Texture::Texture(const Renderer& renderer,
                  int width,
                  int height)
 {
-  m_texture = SDL_CreateTexture(renderer,
+  m_texture = SDL_CreateTexture(renderer.get(),
                                 static_cast<Uint32>(format),
                                 static_cast<int>(access),
                                 width,
@@ -254,24 +253,12 @@ Color Texture::color_mod() const noexcept
 }
 
 CENTURION_DEF
-SDL_Texture* Texture::get_internal() noexcept
-{
-  return m_texture;
-}
-
-CENTURION_DEF
 std::string Texture::to_string() const
 {
   const auto address = detail::address_of(this);
   const auto w = std::to_string(width());
   const auto h = std::to_string(height());
   return "[Texture@" + address + " | Width: " + w + ", Height: " + h + "]";
-}
-
-CENTURION_DEF
-Texture::operator SDL_Texture*() const noexcept
-{
-  return m_texture;
 }
 
 CENTURION_DEF

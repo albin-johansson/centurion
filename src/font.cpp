@@ -27,13 +27,15 @@ Font::Font(const std::string& file, int size) : m_size{size}
 CENTURION_DEF
 Font::Font(Font&& other) noexcept
 {
-  TTF_CloseFont(m_font);
+  if (this != &other) {
+    TTF_CloseFont(m_font);
 
-  m_font = other.m_font;
-  other.m_font = nullptr;
+    m_font = other.m_font;
+    other.m_font = nullptr;
 
-  m_style = other.m_style;
-  m_size = other.m_size;
+    m_style = other.m_style;
+    m_size = other.m_size;
+  }
 }
 
 CENTURION_DEF
@@ -196,12 +198,6 @@ int Font::string_height(const std::string& s) const noexcept
 }
 
 CENTURION_DEF
-int Font::size() const noexcept
-{
-  return m_size;
-}
-
-CENTURION_DEF
 int Font::height() const noexcept
 {
   return TTF_FontHeight(m_font);
@@ -261,12 +257,6 @@ std::string Font::to_string() const
   const auto nameStr = " | Name: " + family_name();
   const auto sizeStr = ", Size: " + std::to_string(size());
   return "[" + idStr + nameStr + sizeStr + "]";
-}
-
-CENTURION_DEF
-Font::operator TTF_Font*() const noexcept
-{
-  return m_font;
 }
 
 }  // namespace centurion

@@ -130,82 +130,6 @@ class MouseState final : public IWindowListener {
   CENTURION_API void set_window_height(int windowHeight) noexcept;
 
   /**
-   * Returns the x-coordinate of the mouse.
-   *
-   * @return the x-coordinate of the mouse.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int mouse_x() const noexcept;
-
-  /**
-   * Returns the y-coordinate of the mouse.
-   *
-   * @return the y-coordinate of the mouse.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int mouse_y() const noexcept;
-
-  /**
-   * Returns the window width used by the mouse state instance.
-   *
-   * @return the window width used by the mouse state instance, 1 is used by
-   * default.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int window_width() const noexcept;
-
-  /**
-   * Returns the window height used by the mouse state instance.
-   *
-   * @return the window height used by the mouse state instance, 1 is used by
-   * default.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int window_height() const noexcept;
-
-  /**
-   * Returns the logical width used by the mouse state instance.
-   *
-   * @return the logical width used by the mouse state instance, 1 is used by
-   * default.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int logical_width() const noexcept;
-
-  /**
-   * Returns the logical height used by the mouse state instance.
-   *
-   * @return the logical height used by the mouse state instance, 1 is used by
-   * default.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API int logical_height() const noexcept;
-
-  /**
-   * Indicates whether or not the left mouse button is currently pressed.
-   *
-   * @return true if the left mouse button is pressed; false otherwise.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_left_button_pressed() const noexcept;
-
-  /**
-   * Indicates whether or not the right mouse button is currently pressed.
-   *
-   * @return true if the right mouse button is pressed; false otherwise.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_right_button_pressed() const noexcept;
-
-  /**
    * Indicates whether or not the left mouse button was released.
    *
    * @return true if the left mouse button was released; false otherwise.
@@ -231,6 +155,82 @@ class MouseState final : public IWindowListener {
    */
   CENTURION_NODISCARD
   CENTURION_API bool was_mouse_moved() const noexcept;
+
+  /**
+   * Returns the x-coordinate of the mouse.
+   *
+   * @return the x-coordinate of the mouse.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  int mouse_x() const noexcept { return m_mouseX; }
+
+  /**
+   * Returns the y-coordinate of the mouse.
+   *
+   * @return the y-coordinate of the mouse.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  int mouse_y() const noexcept { return m_mouseY; }
+
+  /**
+   * Returns the window width used by the mouse state instance.
+   *
+   * @return the window width used by the mouse state instance, 1 is used by
+   * default.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  int window_width() const noexcept { return m_windowWidth; }
+
+  /**
+   * Returns the window height used by the mouse state instance.
+   *
+   * @return the window height used by the mouse state instance, 1 is used by
+   * default.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  int window_height() const noexcept { return m_windowHeight; }
+
+  /**
+   * Returns the logical width used by the mouse state instance.
+   *
+   * @return the logical width used by the mouse state instance, 1 is used by
+   * default.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  int logical_width() const noexcept { return m_logicalWidth; }
+
+  /**
+   * Returns the logical height used by the mouse state instance.
+   *
+   * @return the logical height used by the mouse state instance, 1 is used by
+   * default.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  int logical_height() const noexcept { return m_logicalHeight; }
+
+  /**
+   * Indicates whether or not the left mouse button is currently pressed.
+   *
+   * @return true if the left mouse button is pressed; false otherwise.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  bool is_left_button_pressed() const noexcept { return m_leftPressed; }
+
+  /**
+   * Indicates whether or not the right mouse button is currently pressed.
+   *
+   * @return true if the right mouse button is pressed; false otherwise.
+   * @since 3.0.0
+   */
+  CENTURION_NODISCARD
+  bool is_right_button_pressed() const noexcept { return m_rightPressed; }
 
  private:
   int m_mouseX = 0;

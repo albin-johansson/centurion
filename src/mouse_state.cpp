@@ -110,30 +110,6 @@ void MouseState::set_window_height(int windowHeight) noexcept
 }
 
 CENTURION_DEF
-int MouseState::mouse_x() const noexcept
-{
-  return m_mouseX;
-}
-
-CENTURION_DEF
-int MouseState::mouse_y() const noexcept
-{
-  return m_mouseY;
-}
-
-CENTURION_DEF
-bool MouseState::is_left_button_pressed() const noexcept
-{
-  return m_leftPressed;
-}
-
-CENTURION_DEF
-bool MouseState::is_right_button_pressed() const noexcept
-{
-  return m_rightPressed;
-}
-
-CENTURION_DEF
 bool MouseState::was_left_button_released() const noexcept
 {
   return !m_leftPressed && m_prevLeftPressed;
@@ -149,30 +125,6 @@ CENTURION_DEF
 bool MouseState::was_mouse_moved() const noexcept
 {
   return m_mouseX != m_oldX || m_mouseY != m_oldY;
-}
-
-CENTURION_DEF
-int MouseState::window_width() const noexcept
-{
-  return m_windowWidth;
-}
-
-CENTURION_DEF
-int MouseState::window_height() const noexcept
-{
-  return m_windowHeight;
-}
-
-CENTURION_DEF
-int MouseState::logical_width() const noexcept
-{
-  return m_logicalWidth;
-}
-
-CENTURION_DEF
-int MouseState::logical_height() const noexcept
-{
-  return m_logicalHeight;
 }
 
 }  // namespace input

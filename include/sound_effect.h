@@ -71,7 +71,6 @@ class SoundEffect final {
    * @return the changed sound effect.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
   CENTURION_API SoundEffect& operator=(SoundEffect&& other) noexcept;
 
   /**
@@ -83,8 +82,8 @@ class SoundEffect final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<SoundEffect> unique(
-      const std::string& file);
+  CENTURION_API
+  static std::unique_ptr<SoundEffect> unique(const std::string& file);
 
   /**
    * Creates and returns a shared pointer to a SoundEffect instance.
@@ -95,8 +94,8 @@ class SoundEffect final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<SoundEffect> shared(
-      const std::string& file);
+  CENTURION_API
+  static std::shared_ptr<SoundEffect> shared(const std::string& file);
 
   /**
    * Plays the sound effect.

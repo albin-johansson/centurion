@@ -60,6 +60,10 @@ class Event final {
  public:
   CENTURION_API Event() noexcept;
 
+  CENTURION_API Event(const SDL_Event& event) noexcept;
+
+  CENTURION_API Event(SDL_Event&& event) noexcept;
+
   /**
    * Refresh the event loop, gathering events from the input devices. Note that
    * you might not have to call this method by yourself.

@@ -221,7 +221,7 @@ class SoundEffect final {
    *
    * @since 4.0.0
    */
-  CENTURION_API void destroy() noexcept;
+  void destroy() noexcept;
 
   /**
    * Moves the contents of the supplied SoundEffect instance into this instance.
@@ -229,7 +229,7 @@ class SoundEffect final {
    * @param other the instance that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API void move(SoundEffect&& other) noexcept;
+  void move(SoundEffect&& other) noexcept;
 
   /**
    * Activates the sound effect by playing it the specified amount of times.
@@ -237,7 +237,7 @@ class SoundEffect final {
    * @param nLoops the amount of times to play the sound effect.
    * @since 3.0.0
    */
-  CENTURION_API void activate(int nLoops) noexcept;
+  void activate(int nLoops) noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

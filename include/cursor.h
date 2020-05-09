@@ -319,7 +319,7 @@ class Cursor final {
    *
    * @since 4.0.0
    */
-  CENTURION_API void destroy() noexcept;
+  void destroy() noexcept;
 
   /**
    * Moves the contents of the supplied cursor instance into this instance.
@@ -327,7 +327,7 @@ class Cursor final {
    * @param other the instance that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API void move(Cursor&& other) noexcept;
+  void move(Cursor&& other) noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

@@ -403,7 +403,7 @@ class Font final {
    *
    * @since 4.0.0
    */
-  CENTURION_API void destroy() noexcept;
+  void destroy() noexcept;
 
   /**
    * Moves the contents of the supplied font instance into this instance.
@@ -411,7 +411,7 @@ class Font final {
    * @param other the instance that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API void move(Font&& other) noexcept;
+  void move(Font&& other) noexcept;
 
   /**
    * Enables the font style associated with the supplied bit mask. The possible
@@ -421,7 +421,7 @@ class Font final {
    * @param mask the bit mask of the font style to enable.
    * @since 3.0.0
    */
-  CENTURION_API void add_style(int mask) noexcept;
+  void add_style(int mask) noexcept;
 
   /**
    * Removes the font style associated with the supplied bit mask. The possible
@@ -431,7 +431,7 @@ class Font final {
    * @param mask the bit mask of the font style to disable.
    * @since 3.0.0
    */
-  CENTURION_API void remove_style(int mask) noexcept;
+  void remove_style(int mask) noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

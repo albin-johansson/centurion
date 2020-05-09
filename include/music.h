@@ -350,7 +350,7 @@ class Music final {
    *
    * @since 4.0.0
    */
-  CENTURION_API void destroy() noexcept;
+  void destroy() noexcept;
 
   /**
    * Moves the contents of the supplied music instance into this instance.
@@ -358,7 +358,7 @@ class Music final {
    * @param other the instance that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API void move(Music&& other) noexcept;
+  void move(Music&& other) noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

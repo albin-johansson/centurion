@@ -27,14 +27,185 @@
 
 #include <SDL_events.h>
 
+#include "audio_device_event.h"
 #include "centurion_api.h"
-
-// TODO include ALL event related headers
+#include "centurion_utils.h"
+#include "common_event.h"
+#include "controller_axis_event.h"
+#include "controller_button_event.h"
+#include "controller_device_event.h"
+#include "dollar_gesture_event.h"
+#include "drop_event.h"
+#include "event_type.h"
+#include "joy_axis_event.h"
+#include "joy_ball_event.h"
+#include "joy_button_event.h"
+#include "joy_device_event.h"
+#include "joy_hat_event.h"
+#include "keyboard_event.h"
+#include "mouse_button_event.h"
+#include "mouse_motion_event.h"
+#include "mouse_wheel_event.h"
+#include "multi_gesture_event.h"
+#include "quit_event.h"
+#include "text_editing_event.h"
+#include "text_input_event.h"
+#include "touch_finger_event.h"
+#include "window_event.h"
 
 namespace centurion {
 namespace event {
 
-// TODO add class for SDL_Event
+class Event final {
+ public:
+  CENTURION_API Event() noexcept;
+
+  /**
+   * Refresh the event loop, gathering events from the input devices. Note that
+   * you might not have to call this method by yourself.
+   *
+   * @see SDL_PumpEvents
+   * @since 3.1.0
+   */
+  CENTURION_API static void refresh() noexcept;
+
+  /**
+   * Pushes an event onto the event queue.
+   *
+   * @param event the event that will be added to the event queue.
+   * @since 3.1.0
+   */
+  CENTURION_API static void push(Event& event) noexcept;  // TODO change
+
+  /**
+   * Flushes all current events from the event queue.
+   *
+   * @see
+   * @since 3.1.0
+   */
+  CENTURION_API static void flush() noexcept;
+
+  /**
+   * Flushes all of the current events from the event queue, including pending
+   * events.
+   *
+   * @since 3.1.0
+   */
+  CENTURION_API static void flush_all() noexcept;
+
+  /**
+   * Polls the next available event, if there is one. This is meant to be
+   * called inside a while-loop.
+   *
+   * @return true if there are any pending events; false otherwise.
+   * @since 3.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool poll() noexcept;
+
+  /**
+   * Returns the type of the event. This method can always be safely called on
+   * an event instance.
+   *
+   * @return the type of the event.
+   * @since 3.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API EventType type() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<AudioDeviceEvent> as_audio_device_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<ControllerAxisEvent> as_controller_axis_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<ControllerButtonEvent> as_controller_button_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<ControllerDeviceEvent> as_controller_device_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<DollarGestureEvent> as_dollar_gesture_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<DropEvent> as_drop_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<JoyAxisEvent> as_joy_axis_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<JoyBallEvent> as_joy_ball_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<JoyButtonEvent> as_joy_button_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<JoyDeviceEvent> as_joy_device_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<JoyHatEvent> as_joy_hat_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<KeyboardEvent> as_keyboard_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<MouseButtonEvent> as_mouse_button_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<MouseMotionEvent> as_mouse_motion_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<MouseWheelEvent> as_mouse_wheel_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<MultiGestureEvent> as_multi_gesture_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<QuitEvent> as_quit_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<TextEditingEvent> as_text_editing_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<TextInputEvent> as_text_input_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<TouchFingerEvent> as_touch_finger_event() const noexcept;
+
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<WindowEvent> as_window_event() const noexcept;
+
+  CENTURION_NODISCARD
+  operator SDL_Event&() noexcept { return m_event; }
+
+  CENTURION_NODISCARD
+  operator const SDL_Event&() const noexcept { return m_event; }
+
+ private:
+  SDL_Event m_event;
+};
 
 }  // namespace event
 }  // namespace centurion

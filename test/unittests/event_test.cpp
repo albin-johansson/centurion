@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "event_type.h"
+#include "event.h"
 
 using namespace centurion::event;
 
@@ -110,3 +110,75 @@ TEST_CASE("EventType operator!=", "[EventType]")
   CHECK(EventType::DollarGesture != SDL_RENDER_DEVICE_RESET);
   CHECK(SDL_MOUSEMOTION != EventType::ControllerDeviceRemoved);
 }
+
+TEST_CASE("Event::refresh", "[Event]") {
+//  CHECK_NOTHROW(Event::refresh());
+}
+
+TEST_CASE("Event::push", "[Event]") {
+//  Event::flush_all();
+
+//  {
+//    SDL_Event sdlEvent{};
+//    sdlEvent.type = SDL_KEYDOWN;
+//    Event event{sdlEvent};
+//    Event::push(event);
+//  }
+//
+//  Event event;
+//  CHECK(event.poll());
+//  CHECK(event.type() == EventType::KeyDown);
+}
+
+//TEST_CASE("Event::flush", "[Event]") {
+//  Event::refresh();
+//  Event::flush();
+//  Event event;
+//  CHECK(!event.poll());
+//}
+//
+//TEST_CASE("Event::flush_all", "[Event]") {
+//  Event::flush_all();
+//  Event event;
+//
+//  CHECK(!event.poll());
+//}
+//
+//TEST_CASE("Event::poll", "[Event]") {
+//  SDL_Event sdlEvent{};
+//  sdlEvent.type = SDL_MOUSEMOTION;
+//  sdlEvent.motion.x = 839;
+//  sdlEvent.motion.y = 351;
+//
+//  Event::flush();
+//  SDL_PushEvent(&sdlEvent);
+//
+//  Event event;
+//  CHECK(event.poll());
+//  CHECK(event.type() == static_cast<EventType>(sdlEvent.type));
+//
+//  auto motionEvent = event.as_mouse_motion_event();
+//  REQUIRE(motionEvent);
+//  CHECK(motionEvent->x() == sdlEvent.motion.x);
+//  CHECK(motionEvent->y() == sdlEvent.motion.y);
+//
+//  Event::flush_all();
+//}
+//
+//TEST_CASE("Event::type", "[Event]") {
+//  const auto type = EventType::DropFile;
+//  auto sdlEvent = [type]() noexcept {
+//    SDL_Event sdlEvent{};
+//    sdlEvent.type = static_cast<unsigned>(type);
+//    return sdlEvent;
+//  }();
+//
+//  Event::flush_all();
+//  SDL_PushEvent(&sdlEvent);
+//
+//  Event event;
+//  CHECK(event.poll());
+//  CHECK(event.type() == type);
+//
+//  Event::flush_all();
+//}

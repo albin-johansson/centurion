@@ -122,7 +122,7 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API bool will_free_file() const noexcept;
+  CENTURION_API bool will_free_file() const noexcept; // TODO change to false
 
   /**
    * Returns a pointer to the associated file. Do <b>NOT</b> claim ownership

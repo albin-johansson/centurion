@@ -93,7 +93,7 @@ class Key final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API SDL_Scancode scancode() const noexcept;
+  SDL_Scancode scancode() const noexcept { return m_scancode; }
 
   /**
    * Returns the keycode associated with the key.
@@ -102,7 +102,7 @@ class Key final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API SDL_Keycode keycode() const noexcept;
+  SDL_Keycode keycode() const noexcept { return m_keycode; }
 
   /**
    * Implicitly converts the Key instance to an SDL_Scancode value.
@@ -111,7 +111,7 @@ class Key final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API operator SDL_Scancode() const noexcept;
+  operator SDL_Scancode() const noexcept { return m_scancode; }
 
   /**
    * Implicitly converts the Key instance to an SDL_Keycode value.
@@ -120,7 +120,7 @@ class Key final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API operator SDL_Keycode() const noexcept;
+  operator SDL_Keycode() const noexcept { return m_keycode; }
 
  private:
   SDL_Scancode m_scancode;

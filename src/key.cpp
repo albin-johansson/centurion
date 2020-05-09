@@ -38,30 +38,6 @@ void Key::set(SDL_Keycode keycode) noexcept
 }
 
 CENTURION_DEF
-SDL_Scancode Key::scancode() const noexcept
-{
-  return m_scancode;
-}
-
-CENTURION_DEF
-SDL_Keycode Key::keycode() const noexcept
-{
-  return m_keycode;
-}
-
-CENTURION_DEF
-Key::operator SDL_Scancode() const noexcept
-{
-  return m_scancode;
-}
-
-CENTURION_DEF
-Key::operator SDL_Keycode() const noexcept
-{
-  return m_keycode;
-}
-
-CENTURION_DEF
 bool operator==(const Key& lhs, const Key& rhs) noexcept
 {
   return lhs.scancode() == rhs.scancode();

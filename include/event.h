@@ -103,7 +103,7 @@ class Event final {
    * @param event the event that will be added to the event queue.
    * @since 3.1.0
    */
-  CENTURION_API static void push(Event& event) noexcept;  // TODO change
+  CENTURION_API static void push(Event& event) noexcept;
 
   /**
    * Flushes all current events from the event queue.
@@ -397,5 +397,9 @@ class Event final {
 
 }  // namespace event
 }  // namespace centurion
+
+#ifdef CENTURION_HEADER_ONLY
+#include "event.cpp"
+#endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_EVENT_HEADER

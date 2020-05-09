@@ -113,77 +113,83 @@ TEST_CASE("EventType operator!=", "[EventType]")
 
 TEST_CASE("Event::refresh", "[Event]")
 {
-  //  CHECK_NOTHROW(Event::refresh());
+  CHECK_NOTHROW(Event::refresh());
 }
 
 TEST_CASE("Event::push", "[Event]")
 {
-  //  Event::flush_all();
+  Event::flush_all();
+  {
+    SDL_Event sdlEvent{};
+    sdlEvent.type = SDL_KEYDOWN;
+    Event event{sdlEvent};
+    Event::push(event);
+  }
 
-  //  {
-  //    SDL_Event sdlEvent{};
-  //    sdlEvent.type = SDL_KEYDOWN;
-  //    Event event{sdlEvent};
-  //    Event::push(event);
-  //  }
-  //
-  //  Event event;
-  //  CHECK(event.poll());
-  //  CHECK(event.type() == EventType::KeyDown);
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.type() == EventType::KeyDown);
 }
 
-// TEST_CASE("Event::flush", "[Event]") {
-//  Event::refresh();
-//  Event::flush();
-//  Event event;
-//  CHECK(!event.poll());
-//}
-//
-// TEST_CASE("Event::flush_all", "[Event]") {
-//  Event::flush_all();
-//  Event event;
-//
-//  CHECK(!event.poll());
-//}
-//
-// TEST_CASE("Event::poll", "[Event]") {
-//  SDL_Event sdlEvent{};
-//  sdlEvent.type = SDL_MOUSEMOTION;
-//  sdlEvent.motion.x = 839;
-//  sdlEvent.motion.y = 351;
-//
-//  Event::flush();
-//  SDL_PushEvent(&sdlEvent);
-//
-//  Event event;
-//  CHECK(event.poll());
-//  CHECK(event.type() == static_cast<EventType>(sdlEvent.type));
-//
-//  auto motionEvent = event.as_mouse_motion_event();
-//  REQUIRE(motionEvent);
-//  CHECK(motionEvent->x() == sdlEvent.motion.x);
-//  CHECK(motionEvent->y() == sdlEvent.motion.y);
-//
-//  Event::flush_all();
-//}
-//
-// TEST_CASE("Event::type", "[Event]") {
-//  const auto type = EventType::DropFile;
-//  auto sdlEvent = [type]() noexcept {
-//    SDL_Event sdlEvent{};
-//    sdlEvent.type = static_cast<unsigned>(type);
-//    return sdlEvent;
-//  }();
-//
-//  Event::flush_all();
-//  SDL_PushEvent(&sdlEvent);
-//
-//  Event event;
-//  CHECK(event.poll());
-//  CHECK(event.type() == type);
-//
-//  Event::flush_all();
-//}
+TEST_CASE("Event::flush", "[Event]")
+{
+  Event::refresh();
+  Event::flush();
+
+  Event event;
+  CHECK(!event.poll());
+}
+
+TEST_CASE("Event::flush_all", "[Event]")
+{
+  Event::flush_all();
+
+  Event event;
+  CHECK(!event.poll());
+}
+
+TEST_CASE("Event::poll", "[Event]")
+{
+  SDL_Event sdlEvent{};
+  sdlEvent.type = SDL_MOUSEMOTION;
+  sdlEvent.motion.x = 839;
+  sdlEvent.motion.y = 351;
+
+  Event::flush();
+  SDL_PushEvent(&sdlEvent);
+
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.type() == static_cast<EventType>(sdlEvent.type));
+
+  auto motionEvent = event.as_mouse_motion_event();
+  REQUIRE(motionEvent);
+  CHECK(motionEvent->x() == sdlEvent.motion.x);
+  CHECK(motionEvent->y() == sdlEvent.motion.y);
+
+  Event::flush_all();
+}
+
+TEST_CASE("Event::type", "[Event]")
+{
+  const auto makeEvent = [](EventType type) noexcept {
+    SDL_Event event{};
+    event.type = static_cast<Uint32>(type);
+    return event;
+  };
+
+  const auto type = EventType::TouchMotion;
+  auto sdlEvent = makeEvent(type);
+
+  Event::flush_all();
+  SDL_PushEvent(&sdlEvent);
+
+  Event event;
+  CHECK(event.poll());
+  CHECK(event.type() == type);
+
+  Event::flush_all();
+}
 
 TEST_CASE("Event::as_audio_device_event", "[Event]")
 {
@@ -341,6 +347,7 @@ TEST_CASE("Event::as_drop_event", "[Event]")
   {
     SDL_Event sdlEvent;
     sdlEvent.type = SDL_DROPBEGIN;
+    sdlEvent.drop.file = nullptr;
     Event event{sdlEvent};
 
     CHECK(event.as_drop_event());
@@ -350,6 +357,7 @@ TEST_CASE("Event::as_drop_event", "[Event]")
   {
     SDL_Event sdlEvent;
     sdlEvent.type = SDL_DROPCOMPLETE;
+    sdlEvent.drop.file = nullptr;
     Event event{sdlEvent};
 
     CHECK(event.as_drop_event());
@@ -359,6 +367,7 @@ TEST_CASE("Event::as_drop_event", "[Event]")
   {
     SDL_Event sdlEvent;
     sdlEvent.type = SDL_DROPFILE;
+    sdlEvent.drop.file = nullptr;
     Event event{sdlEvent};
 
     CHECK(event.as_drop_event());
@@ -368,6 +377,7 @@ TEST_CASE("Event::as_drop_event", "[Event]")
   {
     SDL_Event sdlEvent;
     sdlEvent.type = SDL_DROPTEXT;
+    sdlEvent.drop.file = nullptr;
     Event event{sdlEvent};
 
     CHECK(event.as_drop_event());

@@ -22,10 +22,7 @@ Music::Music(const std::string& file)
 CENTURION_DEF
 Music::Music(Music&& other) noexcept
 {
-  Mix_FreeMusic(m_music);
-
-  m_music = other.m_music;
-  other.m_music = nullptr;
+  move(std::forward<Music>(other));
 }
 
 CENTURION_DEF
@@ -39,12 +36,20 @@ Music::~Music() noexcept
 CENTURION_DEF
 Music& Music::operator=(Music&& other) noexcept
 {
-  Mix_FreeMusic(m_music);
+  if (this != &other) {
+    move(std::forward<Music>(other));
+  }
+  return *this;
+}
 
+CENTURION_DEF
+void Music::move(Music&& other) noexcept
+{
+  if (m_music) {
+    Mix_FreeMusic(m_music);
+  }
   m_music = other.m_music;
   other.m_music = nullptr;
-
-  return *this;
 }
 
 CENTURION_DEF
@@ -118,6 +123,9 @@ void Music::set_volume(int volume) noexcept
   } else if (volume < 0) {
     volume = 0;
   }
+
+  detail::clamp_inclusive({0, MIX_MAX_VOLUME}, volume);
+
   Mix_VolumeMusic(volume);
 }
 

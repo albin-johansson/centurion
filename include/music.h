@@ -344,6 +344,14 @@ class Music final {
 
  private:
   Mix_Music* m_music = nullptr;
+
+  /**
+   * Moves the contents of the supplied music instance into this instance.
+   *
+   * @param other the instance that will be moved.
+   * @since 4.0.0
+   */
+  CENTURION_API void move(Music&& other) noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

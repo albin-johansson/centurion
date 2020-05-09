@@ -1,7 +1,6 @@
 #ifndef CENTURION_NOAUDIO
 #include <catch.hpp>
 
-#include "../include/timer.h"
 #include "audio.h"
 #include "centurion_exception.h"
 #include "log.h"
@@ -15,6 +14,36 @@ TEST_CASE("Music::Music(string)", "[Music]")
 {
   CHECK_THROWS_AS(Music{""}, CenturionException);
   CHECK_NOTHROW(Music{path});
+}
+
+TEST_CASE("Music(Music&&)", "[Music]")
+{
+  Music music{path};
+  Music other{std::move(music)};
+
+  CHECK(!music.get());
+  CHECK(other.get());
+}
+
+TEST_CASE("Music::operator=(Music&&)", "[Music]")
+{
+  SECTION("Self-assignment")
+  {
+    Music music{path};
+    music = std::move(music);
+    CHECK(music.get());
+  }
+
+  SECTION("Normal usage")
+  {
+    Music music{path};
+    Music other{path};
+
+    other = std::move(music);
+
+    CHECK(!music.get());
+    CHECK(other.get());
+  }
 }
 
 TEST_CASE("Music smart pointer factory methods", "[Music]")

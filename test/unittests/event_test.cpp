@@ -111,6 +111,11 @@ TEST_CASE("EventType operator!=", "[EventType]")
   CHECK(SDL_MOUSEMOTION != EventType::ControllerDeviceRemoved);
 }
 
+TEST_CASE("Event move constructor", "[Event]")
+{
+  CHECK_NOTHROW(Event{{}});
+}
+
 TEST_CASE("Event::refresh", "[Event]")
 {
   CHECK_NOTHROW(Event::refresh());

@@ -388,6 +388,36 @@ class Rect final {
   }
 
   /**
+   * Converts the rectangle to an SDL_Rect. This conversion is
+   * only available if the rectangle is based on <code>int</code>.
+   *
+   * @tparam U the type parameter, defaults to the type of the rectangle
+   * components.
+   * @return an SDL_Rect based on this rectangle.
+   * @since 4.0.0
+   */
+  template <typename U = T, typename = type_if_same<U, int>>
+  CENTURION_NODISCARD operator SDL_Rect() const noexcept
+  {
+    return {m_x, m_y, m_width, m_height};
+  }
+
+  /**
+   * Converts the rectangle to an SDL_FRect. This conversion is
+   * only available if the rectangle is based on <code>float</code>.
+   *
+   * @tparam U the type parameter, defaults to the type of the rectangle
+   * components.
+   * @return an SDL_FRect based on this rectangle.
+   * @since 4.0.0
+   */
+  template <typename U = T, typename = type_if_same<U, float>>
+  CENTURION_NODISCARD operator SDL_FRect() const noexcept
+  {
+    return {m_x, m_y, m_width, m_height};
+  }
+
+  /**
    * Indicates whether or not two rectangles are equal.
    *
    * @param lhs the left-hand side rectangle.

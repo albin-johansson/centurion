@@ -27,11 +27,11 @@
 
 #include <SDL.h>
 
-#include <gsl-lite.hpp>
 #include <type_traits>
 
 #include "blend_mode.h"
 #include "centurion_api.h"
+#include "centurion_utils.h"
 #include "color.h"
 
 namespace centurion {

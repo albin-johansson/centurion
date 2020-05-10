@@ -28,7 +28,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include <gsl-lite.hpp>
 #include <memory>
 #include <string>
 #include <type_traits>

@@ -27,11 +27,11 @@
 
 #include <SDL.h>
 
-#include <gsl-lite.hpp>
 #include <memory>
 #include <type_traits>
 
 #include "centurion_api.h"
+#include "centurion_utils.h"
 #include "point.h"
 #include "surface.h"
 

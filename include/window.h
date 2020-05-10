@@ -27,7 +27,6 @@
 
 #include <SDL.h>
 
-#include <gsl-lite.hpp>
 #include <memory>
 #include <string>
 #include <type_traits>

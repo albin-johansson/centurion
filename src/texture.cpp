@@ -14,7 +14,7 @@
 namespace centurion {
 
 CENTURION_DEF
-Texture::Texture(gsl::owner<SDL_Texture*> texture)
+Texture::Texture(Owner<SDL_Texture*> texture)
 {
   if (!texture) {
     throw CenturionException{"Texture can't be created from null SDL texture!"};
@@ -102,7 +102,7 @@ void Texture::move(Texture&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Texture::unique(gsl::owner<SDL_Texture*> texture)
+std::unique_ptr<Texture> Texture::unique(Owner<SDL_Texture*> texture)
 {
   return centurion::detail::make_unique<Texture>(texture);
 }
@@ -133,7 +133,7 @@ std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> Texture::shared(gsl::owner<SDL_Texture*> texture)
+std::shared_ptr<Texture> Texture::shared(Owner<SDL_Texture*> texture)
 {
   return std::make_shared<Texture>(texture);
 }

@@ -116,7 +116,7 @@ class Texture final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
-  CENTURION_API explicit Texture(gsl::owner<SDL_Texture*> texture);
+  CENTURION_API explicit Texture(Owner<SDL_Texture*> texture);
 
   /**
    * @param renderer the renderer that will be used to create the texture.
@@ -188,7 +188,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::unique_ptr<Texture> unique(gsl::owner<SDL_Texture*> texture);
+  static std::unique_ptr<Texture> unique(Owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a unique texture by loading it from a file.
@@ -252,7 +252,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::shared_ptr<Texture> shared(gsl::owner<SDL_Texture*> texture);
+  static std::shared_ptr<Texture> shared(Owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a shared texture by loading it from a file.

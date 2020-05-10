@@ -24,7 +24,7 @@ Surface::Surface(const char* file)
 }
 
 CENTURION_DEF
-Surface::Surface(gsl::owner<SDL_Surface*> surface)
+Surface::Surface(Owner<SDL_Surface*> surface)
 {
   if (!surface) {
     throw CenturionException{"Cannot create surface from null SDL_Surface!"};

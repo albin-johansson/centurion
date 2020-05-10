@@ -64,7 +64,7 @@ class Renderer final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
-  CENTURION_API explicit Renderer(gsl::owner<SDL_Renderer*> renderer);
+  CENTURION_API explicit Renderer(Owner<SDL_Renderer*> renderer);
 
   /**
    * Creates a renderer based on the supplied window. By default, the
@@ -99,7 +99,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Renderer> unique(
-      gsl::owner<SDL_Renderer*> renderer);
+      Owner<SDL_Renderer*> renderer);
 
   /**
    * Creates and returns a unique pointer to a renderer instance.
@@ -125,7 +125,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Renderer> shared(
-      gsl::owner<SDL_Renderer*> renderer);
+      Owner<SDL_Renderer*> renderer);
 
   /**
    * Creates and returns a shared pointer to a renderer instance.

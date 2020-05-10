@@ -27,14 +27,15 @@
 
 #include <SDL.h>
 
+#include <gsl-lite.hpp>
 #include <memory>
+#include <optional.hpp>
 #include <sstream>
 #include <string>
 #include <type_traits>
 #include <utility>
 
 #include "centurion_api.h"
-#include "optional.hpp"
 
 namespace centurion {
 namespace detail {
@@ -134,6 +135,9 @@ using type_if_integral = type_if<std::is_integral<T>::value, T>;
 
 template <typename T, typename U>
 using type_if_same = typename std::enable_if<std::is_same<T, U>::value>::type;
+
+template <typename T>
+using Owner = gsl::owner<T>;
 
 template <typename T>
 using Optional = tl::optional<T>;

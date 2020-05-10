@@ -18,7 +18,7 @@ Cursor::Cursor(SystemCursor id)
 }
 
 CENTURION_DEF
-Cursor::Cursor(gsl::owner<SDL_Cursor*> cursor)
+Cursor::Cursor(Owner<SDL_Cursor*> cursor)
 {
   if (cursor) {
     m_cursor = cursor;
@@ -93,7 +93,7 @@ std::unique_ptr<Cursor> Cursor::unique(SystemCursor id)
 }
 
 CENTURION_DEF
-std::unique_ptr<Cursor> Cursor::unique(gsl::owner<SDL_Cursor*> cursor)
+std::unique_ptr<Cursor> Cursor::unique(Owner<SDL_Cursor*> cursor)
 {
   return centurion::detail::make_unique<Cursor>(cursor);
 }
@@ -111,7 +111,7 @@ std::shared_ptr<Cursor> Cursor::shared(SystemCursor id)
 }
 
 CENTURION_DEF
-std::shared_ptr<Cursor> Cursor::shared(gsl::owner<SDL_Cursor*> cursor)
+std::shared_ptr<Cursor> Cursor::shared(Owner<SDL_Cursor*> cursor)
 {
   return std::make_shared<Cursor>(cursor);
 }

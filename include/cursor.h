@@ -128,7 +128,7 @@ class Cursor final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 4.0.0
    */
-  CENTURION_API explicit Cursor(gsl::owner<SDL_Cursor*> cursor);
+  CENTURION_API explicit Cursor(Owner<SDL_Cursor*> cursor);
 
   /**
    * Creates a cursor based on the supplied surface. The supplied hotspot
@@ -190,7 +190,7 @@ class Cursor final {
    */
   CENTURION_NODISCARD
   CENTURION_API static std::unique_ptr<Cursor> unique(
-      gsl::owner<SDL_Cursor*> cursor);
+      Owner<SDL_Cursor*> cursor);
 
   /**
    * Creates and returns a unique pointer to a Cursor instance. The supplied
@@ -229,7 +229,7 @@ class Cursor final {
    */
   CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Cursor> shared(
-      gsl::owner<SDL_Cursor*> cursor);
+      Owner<SDL_Cursor*> cursor);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance. The supplied

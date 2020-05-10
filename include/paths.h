@@ -38,7 +38,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class AppPath final { // TODO rename to BasePath
+class AppPath final {  // TODO rename to BasePath
  public:
   /**
    * Constructs an AppPath object that represents the path of the application

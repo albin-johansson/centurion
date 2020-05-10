@@ -16,7 +16,7 @@
 namespace centurion {
 
 CENTURION_DEF
-Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer)
+Renderer::Renderer(Owner<SDL_Renderer*> renderer)
 {
   if (!renderer) {
     throw CenturionException{"Can't create renderer from null SDL_Renderer!"};
@@ -78,7 +78,7 @@ void Renderer::move(Renderer&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Renderer> Renderer::unique(gsl::owner<SDL_Renderer*> renderer)
+std::unique_ptr<Renderer> Renderer::unique(Owner<SDL_Renderer*> renderer)
 {
   return centurion::detail::make_unique<Renderer>(renderer);
 }
@@ -91,7 +91,7 @@ std::unique_ptr<Renderer> Renderer::unique(const Window& window,
 }
 
 CENTURION_DEF
-std::shared_ptr<Renderer> Renderer::shared(gsl::owner<SDL_Renderer*> renderer)
+std::shared_ptr<Renderer> Renderer::shared(Owner<SDL_Renderer*> renderer)
 {
   return std::make_shared<Renderer>(renderer);
 }

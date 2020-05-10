@@ -124,24 +124,62 @@ CENTURION_NODISCARD T clamp_inclusive(std::pair<T, T> range, T value) noexcept
 
 }  // namespace detail
 
+/**
+ * Used to enable a template if a condition is true.
+ *
+ * @since 4.0.0
+ */
 template <bool condition, typename T>
 using type_if = typename std::enable_if<condition, T>::type;
 
+/**
+ * Used to enable a template if a type is a floating-point type, such as
+ * float and double.
+ *
+ * @since 4.0.0
+ */
 template <typename T>
 using type_if_floating = type_if<std::is_floating_point<T>::value, T>;
 
+/**
+ * Used to enable a template if a type is an integral type, such as
+ * int and long, etc.
+ *
+ * @since 4.0.0
+ */
 template <typename T>
 using type_if_integral = type_if<std::is_integral<T>::value, T>;
 
+/**
+ * Used to enable a template if two types are the same.
+ *
+ * @since 4.0.0
+ */
 template <typename T, typename U>
 using type_if_same = typename std::enable_if<std::is_same<T, U>::value>::type;
 
+/**
+ * A type alias for gsl::owner. This is used to denote ownership of raw
+ * pointers.
+ *
+ * @since 4.0.0
+ */
 template <typename T>
 using Owner = gsl::owner<T>;
 
+/**
+ * A type alias for tl::optional.
+ *
+ * @since 4.0.0
+ */
 template <typename T>
 using Optional = tl::optional<T>;
 
+/**
+ * A constant that represents an empty Optional.
+ *
+ * @since 4.0.0
+ */
 inline constexpr tl::nullopt_t nothing = tl::nullopt;
 
 }  // namespace centurion

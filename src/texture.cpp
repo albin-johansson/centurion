@@ -188,14 +188,13 @@ std::unique_ptr<Texture> Texture::streaming(const Renderer& renderer,
                                             const std::string& path,
                                             PixelFormat format)
 {
+  const auto blendMode = BlendMode::Blend;
   const auto createSurface = [](const std::string& path, PixelFormat format) {
     Surface source{path.c_str()};
-    source.set_blend_mode(BlendMode::Blend);
+    source.set_blend_mode(blendMode);
     return source.convert(format);
   };
   const auto surface = createSurface(path, format);
-  const auto blendMode = BlendMode::Blend;
-
   auto texture = Texture::unique(renderer,
                                  format,
                                  TextureAccess::Streaming,

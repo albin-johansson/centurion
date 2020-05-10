@@ -85,9 +85,9 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
   CENTURION_API void set_finger_id(FingerID id) noexcept;
 
   /**
-   * Sets the window ID associated with the event.
+   * Sets the window ID of the window under the finger.
    *
-   * @param id the window ID associated with the event.
+   * @param id the window ID of the window under the finger.
    * @since 4.0.0
    */
   CENTURION_API void set_window_id(Uint32 id) noexcept;
@@ -161,9 +161,9 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
   CENTURION_API FingerID finger_id() const noexcept;
 
   /**
-   * Returns the window ID associated with the event.
+   * Returns the window ID of the window under the finger.
    *
-   * @return the window ID associated with the event.
+   * @return the window ID of the window under the finger.
    * @since 4.0.0
    */
   CENTURION_NODISCARD

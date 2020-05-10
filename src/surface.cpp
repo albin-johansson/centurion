@@ -151,6 +151,15 @@ Texture Surface::to_texture(const Renderer& renderer) const noexcept
   return Texture{SDL_CreateTextureFromSurface(renderer.get(), m_surface)};
 }
 
+CENTURION_DEF
+Surface Surface::convert(PixelFormat format) const
+{
+  const auto pixelFormat = static_cast<Uint32>(format);
+  auto* converted = SDL_ConvertSurfaceFormat(m_surface, pixelFormat, 0);
+  SDL_SetSurfaceBlendMode(converted, static_cast<SDL_BlendMode>(blend_mode()));
+  return Surface{converted};
+}
+
 }  // namespace centurion
 
 #endif  // CENTURION_SURFACE_SOURCE

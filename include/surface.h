@@ -33,6 +33,8 @@
 #include "centurion_api.h"
 #include "centurion_utils.h"
 #include "color.h"
+#include "pixel_format.h"
+#include "rect.h"
 
 namespace centurion {
 
@@ -162,6 +164,19 @@ class Surface final {
   CENTURION_API Texture to_texture(const Renderer& renderer) const noexcept;
 
   /**
+   * Creates and returns a surface based on this surface with the specified
+   * pixel format.
+   *
+   * @param format the pixel format that will be used by the new surface.
+   * @return a surface based on this surface with the specified
+   * pixel format.
+   * @throws CenturionException if the surface cannot be created.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API Surface convert(PixelFormat format) const;
+
+  /**
    * Returns the width of the surface.
    *
    * @return the width of the surface.
@@ -187,6 +202,38 @@ class Surface final {
    */
   CENTURION_NODISCARD
   int pitch() const noexcept { return m_surface->pitch; }
+
+  /**
+   * Returns a pointer to the pixel data of the surface. It's possible to
+   * modify the surface through this pointer.
+   *
+   * @return a pointer to the pixel data of the surface.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  void* pixels() noexcept { return m_surface->pixels; }
+
+  /**
+   * Returns a const pointer to the pixel data of the surface.
+   *
+   * @return a const pointer to the pixel data of the surface.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  const void* pixels() const noexcept { return m_surface->pixels; }
+
+  /**
+   * Returns the clipping information associated with the surface.
+   *
+   * @return the clipping information associated with the surface.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  IRect clip() const noexcept
+  {
+    const auto rect = m_surface->clip_rect;
+    return {rect.x, rect.y, rect.w, rect.h};
+  }
 
   /**
    * Returns a pointer to the internal SDL_Surface. Use of this method is

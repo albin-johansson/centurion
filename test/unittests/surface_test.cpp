@@ -139,6 +139,39 @@ TEST_CASE("Surface::pitch", "[Surface]")
   CHECK(surface.pitch() == (4 * surface.width()));
 }
 
+TEST_CASE("Surface::clip", "[Surface]")
+{
+  const IRect rect = {48, 29, 34, 89};
+
+  SECTION("Non-const")
+  {
+    Surface surface{path};
+    surface.get()->clip_rect = rect;
+    CHECK(surface.clip() == rect);
+  }
+
+  SECTION("Const")
+  {
+    const Surface surface{path};
+    surface.get()->clip_rect = rect;
+    CHECK(surface.clip() == rect);
+  }
+}
+
+TEST_CASE("Surface::pixels", "[Surface]")
+{
+  SECTION("Const")
+  {
+    const Surface surface{path};
+    CHECK(surface.pixels());
+  }
+  SECTION("Non-const")
+  {
+    Surface surface{path};
+    CHECK(surface.pixels());
+  }
+}
+
 TEST_CASE("Surface::to_texture", "[Surface]")
 {
   const Surface surface{path};
@@ -146,6 +179,21 @@ TEST_CASE("Surface::to_texture", "[Surface]")
   const Renderer renderer{window};
 
   CHECK(surface.to_texture(renderer));
+}
+
+TEST_CASE("Surface::convert", "[Surface]")
+{
+  Surface original{path};
+  original.set_blend_mode(BlendMode::Blend);
+  original.set_alpha(0xAE);
+  original.set_color_mod(red);
+
+  const auto pixelFormat = PixelFormat::RGBA8888;
+  Surface converted = original.convert(pixelFormat);
+
+  CHECK(converted.blend_mode() == original.blend_mode());
+  CHECK(converted.alpha() == original.alpha());
+  CHECK(converted.color_mod() == original.color_mod());
 }
 
 TEST_CASE("Surface::get", "[Surface]")

@@ -5,6 +5,7 @@
 
 #include "centurion_exception.h"
 #include "colors.h"
+#include "font.h"
 #include "log.h"
 #include "rect.h"
 #include "texture.h"
@@ -631,6 +632,46 @@ TEST_CASE("Renderer::color", "[Renderer]")
   CHECK(color.green() == 0);
   CHECK(color.blue() == 0);
   CHECK(color.alpha() == 0xFF);
+}
+
+TEST_CASE("Renderer::text_blended", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  Font font{"resources/daniel.ttf", 12};
+
+  CHECK(!renderer.text_blended("", font));
+  CHECK(renderer.text_blended("Hello", font));
+}
+
+TEST_CASE("Renderer::text_blended_wrapped", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  Font font{"resources/daniel.ttf", 12};
+
+  CHECK(!renderer.text_blended_wrapped("", 500, font));
+  CHECK(renderer.text_blended_wrapped("Hello", 500, font));
+}
+
+TEST_CASE("Renderer::text_shaded", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  Font font{"resources/daniel.ttf", 12};
+
+  CHECK(!renderer.text_shaded("", black, font));
+  CHECK(renderer.text_shaded("Hello", black, font));
+}
+
+TEST_CASE("Renderer::text_solid", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  Font font{"resources/daniel.ttf", 12};
+
+  CHECK(!renderer.text_solid("", font));
+  CHECK(renderer.text_solid("Hello", font));
 }
 
 TEST_CASE("Renderer::viewport", "[Renderer]")

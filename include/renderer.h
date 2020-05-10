@@ -609,34 +609,6 @@ class Renderer final {
                                SDL_RendererFlip flip) noexcept;
 
   /**
-   * Renders a string of text. Note that this method is rather inefficient,
-   * since it will dynamically allocate a texture based on the supplied
-   * string for every call to this method. This method has no effect if the
-   * supplied string is null.
-   *
-   * @param text the text that will be rendered in the supplied font.
-   * @param pos the position of the rendered text.
-   * @param font the font that will be used.
-   * @since 4.0.0
-   */
-  CENTURION_API void render_text(const char* text, IRect pos, const Font& font);
-
-  /**
-   * Renders a string of text. Note that this method is rather inefficient,
-   * since it will dynamically allocate a texture based on the supplied
-   * string for every call to this method. This method has no effect if the
-   * supplied string is null.
-   *
-   * @param text the text that will be rendered in the supplied font.
-   * @param pos the position of the rendered text.
-   * @param font the font that will be used.
-   * @since 3.0.0
-   */
-  CENTURION_API void render_text_f(const char* text,
-                                   FRect pos,
-                                   const Font& font);
-
-  /**
    * Sets the color that will be used by the renderer. This method is
    * intentionally considered a const-method, even if it technically changes the
    * state of the renderer.
@@ -899,21 +871,98 @@ class Renderer final {
   CENTURION_API Color color() const noexcept;
 
   /**
-   * Attempts to create and return a pointer to an SDL_Texture instance that
-   * represents the supplied string rendered with the supplied font. This method
-   * will not throw any exception by itself, but dynamic memory allocation will
-   * occur behind-the-scenes.
+   * Attempts to render the specified text in the supplied font using the
+   * currently selected color and return the texture that contains the result.
+   * Use the returned texture to actually render the text to the screen. This
+   * method doesn't throw but might return null if something goes wrong.
    *
-   * @param s the string that contains the content that will be rendered to a
-   * texture.
-   * @param font a reference to the font that will be used.
-   * @return a unique pointer to an image that represents the supplied string
-   * rendered with the currently selected font; nullptr if the operation is
-   * unsuccessful.
+   * <p> This method renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative.
+   *
+   * @param text the text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   * @return a unique pointer to a texture that contains the rendered text;
+   * null if something went wrong.
+   * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::unique_ptr<Texture> create_image(const std::string& s,
-                                                      const Font& font) const;
+  CENTURION_API
+  std::unique_ptr<Texture> text_blended(const std::string& text,
+                                        const Font& font) const noexcept;
+
+  /**
+   * Attempts to render the specified text in the supplied font using the
+   * currently selected color and return the texture that contains the result.
+   * Use the returned texture to actually render the text to the screen. This
+   * method doesn't throw but might return null if something goes wrong.
+   *
+   * <p> This method renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative. This method will wrap the supplied text
+   * to fit the specified width. Furthermore, you can also manually control
+   * the line breaks by inserting newline characters at the desired breakpoints.
+   *
+   * @param text the text that will be rendered. You can insert newline
+   * characters in the string to indicate breakpoints.
+   * @param wrap the width in pixels which marks the point that the text will
+   * be wrapped after.
+   * @param font the font that the text will be rendered in.
+   * @return a unique pointer to a texture that contains the rendered text;
+   * null if something went wrong.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  std::unique_ptr<Texture> text_blended_wrapped(
+      const std::string& text,
+      Uint32 wrap,
+      const Font& font) const noexcept;
+
+  /**
+   * Attempts to render the specified text in the supplied font using the
+   * currently selected color and return the texture that contains the result.
+   * Use the returned texture to actually render the text to the screen. This
+   * method doesn't throw but might return null if something goes wrong.
+   *
+   * <p> This method renders the text using anti-aliasing and with a box
+   * behind the text. This alternative is probably a bit slower than
+   * rendering solid text but about as fast as blended text. Use this
+   * method when you want nice text, and can live with a box around it.
+   *
+   * @param text the text that will be rendered.
+   * @param bg the background color used for the box.
+   * @param font the font that the text will be rendered in.
+   * @return a unique pointer to a texture that contains the rendered text;
+   * null if something went wrong.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  std::unique_ptr<Texture> text_shaded(const std::string& text,
+                                       const Color& bg,
+                                       const Font& font) const noexcept;
+
+  /**
+   * Attempts to render the specified text in the supplied font using the
+   * currently selected color and return the texture that contains the result.
+   * Use the returned texture to actually render the text to the screen. This
+   * method doesn't throw but might return null if something goes wrong.
+   *
+   * <p> This method is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
+   * when quality isn't as big of a concern and speed is important.
+   *
+   * @param text the text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   * @return a unique pointer to a texture that contains the rendered text;
+   * null if something went wrong.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  std::unique_ptr<Texture> text_solid(const std::string& text,
+                                      const Font& font) const noexcept;
 
   /**
    * Returns the viewport that the renderer uses.
@@ -998,6 +1047,40 @@ class Renderer final {
    * @since 4.0.0
    */
   void move(Renderer&& other) noexcept;
+
+  /**
+   * A helper method used by text rendering methods to create surfaces based
+   * on the text and then convert it to fast textures.
+   *
+   * @param text the text that will be rendered.
+   * @param render a lambda that creates a <code>SDL_Surface*</code> and
+   * takes a <code>const char*</code> as its parameter.
+   * @return a unique pointer to a texture; null if something went wrong.
+   * @since 4.0.0
+   */
+  template <typename Lambda>
+  CENTURION_NODISCARD std::unique_ptr<Texture> render_text(
+      const std::string& text,
+      Lambda&& render) const noexcept
+  {
+    if (text.empty()) {
+      return nullptr;
+    }
+
+    SDL_Surface* surface = render(text.c_str());
+    if (!surface) {
+      return nullptr;
+    }
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, surface);
+    SDL_FreeSurface(surface);
+
+    if (texture) {
+      return centurion::detail::make_unique<Texture>(texture);
+    } else {
+      return nullptr;
+    }
+  }
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

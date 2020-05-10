@@ -490,28 +490,6 @@ void Renderer::render_tf(const Texture& texture,
 }
 
 CENTURION_DEF
-void Renderer::render_text(const char* text, IRect pos, const Font& font)
-{
-  if (text) {
-    const auto texture = create_image(text, font);
-    if (texture) {
-      render(*texture, pos);
-    }
-  }
-}
-
-CENTURION_DEF
-void Renderer::render_text_f(const char* text, FRect pos, const Font& font)
-{
-  if (text) {
-    const auto texture = create_image(text, font);
-    if (texture) {
-      render_f(*texture, pos);
-    }
-  }
-}
-
-CENTURION_DEF
 void Renderer::set_color(const Color& color) noexcept
 {
   SDL_SetRenderDrawColor(
@@ -725,23 +703,42 @@ bool Renderer::using_integer_logical_scaling() const noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Renderer::create_image(const std::string& s,
-                                                const Font& font) const
+std::unique_ptr<Texture> Renderer::text_blended(const std::string& text,
+                                                const Font& font) const noexcept
 {
-  if (s.empty()) {
-    return nullptr;
-  }
+  return render_text(text, [this, &font](const char* text) noexcept {
+    return TTF_RenderText_Blended(font.get(), text, color());
+  });
+}
 
-  SDL_Surface* surface = TTF_RenderText_Blended(font.get(), s.c_str(), color());
+CENTURION_DEF
+std::unique_ptr<Texture> Renderer::text_blended_wrapped(
+    const std::string& text,
+    Uint32 wrap,
+    const Font& font) const noexcept
+{
+  return render_text(text, [this, &font, wrap](const char* text) noexcept {
+    return TTF_RenderText_Blended_Wrapped(font.get(), text, color(), wrap);
+  });
+}
 
-  if (!surface) {
-    return nullptr;
-  }
+CENTURION_DEF
+std::unique_ptr<Texture> Renderer::text_shaded(const std::string& text,
+                                               const Color& bg,
+                                               const Font& font) const noexcept
+{
+  return render_text(text, [this, &font, &bg](const char* text) noexcept {
+    return TTF_RenderText_Shaded(font.get(), text, color(), bg);
+  });
+}
 
-  SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, surface);
-  SDL_FreeSurface(surface);
-
-  return centurion::detail::make_unique<Texture>(texture);
+CENTURION_DEF
+std::unique_ptr<Texture> Renderer::text_solid(const std::string& text,
+                                              const Font& font) const noexcept
+{
+  return render_text(text, [this, &font](const char* text) noexcept {
+    return TTF_RenderText_Solid(font.get(), text, color());
+  });
 }
 
 CENTURION_DEF

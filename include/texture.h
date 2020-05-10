@@ -95,6 +95,62 @@ CENTURION_API bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept;
 CENTURION_NODISCARD
 CENTURION_API bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept;
 
+/**
+ * The ScaleMode enum class mirrors the values of the SDL_ScaleMode enum.
+ *
+ * @see SDL_ScaleMode
+ * @since 4.0.0
+ */
+enum class ScaleMode {
+  Nearest = SDL_ScaleModeNearest,
+  Linear = SDL_ScaleModeLinear,
+  Best = SDL_ScaleModeBest
+};
+
+/**
+ * Indicates whether or not the two scale mode values are the same.
+ *
+ * @param lhs the Centurion scale mode.
+ * @param rhs the SDL scale mode.
+ * @return true if the scale mode values are the same; false otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(ScaleMode lhs, SDL_ScaleMode rhs) noexcept;
+
+/**
+ * Indicates whether or not the two scale mode values are the same.
+ *
+ * @param lhs the SDL scale mode.
+ * @param rhs the Centurion scale mode.
+ * @return true if the scale mode values are the same; false otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(SDL_ScaleMode lhs, ScaleMode rhs) noexcept;
+
+/**
+ * Indicates whether or not the two scale mode values aren't the same.
+ *
+ * @param lhs the Centurion scale mode.
+ * @param rhs the SDL scale mode.
+ * @return true if the scale mode values aren't the same; false otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(ScaleMode lhs, SDL_ScaleMode rhs) noexcept;
+
+/**
+ * Indicates whether or not the two scale mode values aren't the same.
+ *
+ * @param lhs the SDL scale mode.
+ * @param rhs the Centurion scale mode.
+ * @return true if the scale mode values aren't the same; false otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(SDL_ScaleMode lhs, ScaleMode rhs) noexcept;
+
 class Renderer;
 class Surface;
 
@@ -331,6 +387,14 @@ class Texture final {
   CENTURION_API void set_color_mod(Color color) noexcept;
 
   /**
+   * Sets the scale mode that will be used by the texture.
+   *
+   * @param mode the scale mode that will be used.
+   * @since 4.0.0
+   */
+  CENTURION_API void set_scale_mode(ScaleMode mode) noexcept;
+
+  /**
    * Returns the format of the internal SDL_Texture.
    *
    * @return the format of the internal SDL_Texture.
@@ -419,6 +483,15 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API Color color_mod() const noexcept;
+
+  /**
+   * Returns the scale mode that is used by the texture.
+   *
+   * @return the scale mode that is used by the texture.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API ScaleMode scale_mode() const noexcept;
 
   /**
    * Returns a string representation of the texture.

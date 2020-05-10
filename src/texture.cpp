@@ -162,6 +162,8 @@ std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
   return std::make_shared<Texture>(renderer, format, access, width, height);
 }
 
+// TODO consider making setters return true if successful; false otherwise
+
 CENTURION_DEF
 void Texture::set_alpha(Uint8 alpha) noexcept
 {
@@ -178,6 +180,12 @@ CENTURION_DEF
 void Texture::set_color_mod(Color color) noexcept
 {
   SDL_SetTextureColorMod(m_texture, color.red(), color.green(), color.blue());
+}
+
+CENTURION_DEF
+void Texture::set_scale_mode(ScaleMode mode) noexcept
+{
+  SDL_SetTextureScaleMode(m_texture, static_cast<SDL_ScaleMode>(mode));
 }
 
 CENTURION_DEF
@@ -255,6 +263,14 @@ Color Texture::color_mod() const noexcept
 }
 
 CENTURION_DEF
+ScaleMode Texture::scale_mode() const noexcept
+{
+  SDL_ScaleMode mode;
+  SDL_GetTextureScaleMode(m_texture, &mode);
+  return static_cast<ScaleMode>(mode);
+}
+
+CENTURION_DEF
 std::string Texture::to_string() const
 {
   const auto address = detail::address_of(this);
@@ -285,6 +301,30 @@ CENTURION_DEF
 bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept
 {
   return a != static_cast<SDL_TextureAccess>(b);
+}
+
+CENTURION_DEF
+bool operator==(ScaleMode lhs, SDL_ScaleMode rhs) noexcept
+{
+  return static_cast<SDL_ScaleMode>(lhs) == rhs;
+}
+
+CENTURION_DEF
+bool operator==(SDL_ScaleMode lhs, ScaleMode rhs) noexcept
+{
+  return lhs == static_cast<SDL_ScaleMode>(rhs);
+}
+
+CENTURION_DEF
+bool operator!=(ScaleMode lhs, SDL_ScaleMode rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+CENTURION_DEF
+bool operator!=(SDL_ScaleMode lhs, ScaleMode rhs) noexcept
+{
+  return !(lhs == rhs);
 }
 
 }  // namespace centurion

@@ -29,6 +29,20 @@ TEST_CASE("TextureAccess enum values", "[TextureAccess]")
   CHECK(SDL_TEXTUREACCESS_STREAMING != TextureAccess::Static);
 }
 
+TEST_CASE("ScaleMode enum values", "[ScaleMode]")
+{
+  CHECK(ScaleMode::Linear == SDL_ScaleModeLinear);
+  CHECK(ScaleMode::Nearest == SDL_ScaleModeNearest);
+  CHECK(ScaleMode::Best == SDL_ScaleModeBest);
+
+  CHECK(SDL_ScaleModeLinear == ScaleMode::Linear);
+  CHECK(SDL_ScaleModeNearest == ScaleMode::Nearest);
+  CHECK(SDL_ScaleModeBest == ScaleMode::Best);
+
+  CHECK(ScaleMode::Linear != SDL_ScaleModeNearest);
+  CHECK(SDL_ScaleModeBest != ScaleMode::Nearest);
+}
+
 TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
 {
   CHECK_THROWS_AS(Texture(nullptr), CenturionException);
@@ -137,60 +151,6 @@ TEST_CASE("Texture:::shared", "[Texture]")
       renderer, window.pixel_format(), TextureAccess::Static, 100, 100));
 }
 
-TEST_CASE("Texture::format", "[Texture]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
-  SDL_Texture* sdlTexture = texture.get();
-
-  Uint32 format = 0;
-  SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
-
-  CHECK(texture.format() == static_cast<PixelFormat>(format));
-}
-
-TEST_CASE("Texture::access", "[Texture]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
-  SDL_Texture* sdlTexture = texture.get();
-
-  int access = 0;
-  SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
-
-  CHECK(texture.access() == static_cast<TextureAccess>(access));
-}
-
-TEST_CASE("Texture::width", "[Texture]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture(renderer, pandaPath);
-  SDL_Texture* sdlTexture = texture.get();
-
-  CHECK(texture.width() == pandaWidth);
-
-  int width = 0;
-  SDL_QueryTexture(sdlTexture, nullptr, nullptr, &width, nullptr);
-  CHECK(texture.width() == width);
-}
-
-TEST_CASE("Texture::height", "[Texture]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
-  SDL_Texture* sdlTexture = texture.get();
-
-  CHECK(texture.height() == pandaHeight);
-
-  int height = 0;
-  SDL_QueryTexture(sdlTexture, nullptr, nullptr, nullptr, &height);
-  CHECK(texture.height() == height);
-}
-
 TEST_CASE("Texture::set_blend_mode", "[Texture]")
 {
   Window window;
@@ -229,6 +189,22 @@ TEST_CASE("Texture::set_color_mod", "[Texture]")
   CHECK(color.green() == actual.green());
   CHECK(color.blue() == actual.blue());
   CHECK(color.alpha() == actual.alpha());
+}
+
+TEST_CASE("Texture::set_scale_mode", "[Texture]")
+{
+  Window window;
+  Renderer renderer{window};
+  Texture texture{renderer, pandaPath};
+
+  texture.set_scale_mode(ScaleMode::Nearest);
+  CHECK(texture.scale_mode() == ScaleMode::Nearest);
+
+  texture.set_scale_mode(ScaleMode::Linear);
+  CHECK(texture.scale_mode() == ScaleMode::Linear);
+
+  texture.set_scale_mode(ScaleMode::Best);
+  CHECK(texture.scale_mode() == ScaleMode::Best);
 }
 
 TEST_CASE("Texture::is_static", "[Texture]")
@@ -272,6 +248,71 @@ TEST_CASE("Texture::get", "[Texture]")
   Renderer renderer{window};
   Texture texture{renderer, pandaPath};
   CHECK(texture.get());
+}
+
+TEST_CASE("Texture::format", "[Texture]")
+{
+  Window window;
+  Renderer renderer{window};
+  Texture texture{renderer, pandaPath};
+  SDL_Texture* sdlTexture = texture.get();
+
+  Uint32 format = 0;
+  SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
+
+  CHECK(texture.format() == static_cast<PixelFormat>(format));
+}
+
+TEST_CASE("Texture::access", "[Texture]")
+{
+  Window window;
+  Renderer renderer{window};
+  Texture texture{renderer, pandaPath};
+  SDL_Texture* sdlTexture = texture.get();
+
+  int access = 0;
+  SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
+
+  CHECK(texture.access() == static_cast<TextureAccess>(access));
+}
+
+TEST_CASE("Texture::scale_mode", "[Texture]")
+{
+  Window window;
+  Renderer renderer{window};
+  Texture texture{renderer, pandaPath};
+
+  SDL_ScaleMode mode;
+  SDL_GetTextureScaleMode(texture.get(), &mode);
+  CHECK(static_cast<SDL_ScaleMode>(texture.scale_mode()) == mode);
+}
+
+TEST_CASE("Texture::width", "[Texture]")
+{
+  Window window;
+  Renderer renderer{window};
+  Texture texture(renderer, pandaPath);
+  SDL_Texture* sdlTexture = texture.get();
+
+  CHECK(texture.width() == pandaWidth);
+
+  int width = 0;
+  SDL_QueryTexture(sdlTexture, nullptr, nullptr, &width, nullptr);
+  CHECK(texture.width() == width);
+}
+
+TEST_CASE("Texture::height", "[Texture]")
+{
+  Window window;
+  Renderer renderer{window};
+  Texture texture{renderer, pandaPath};
+  SDL_Texture* sdlTexture = texture.get();
+
+  CHECK(texture.height() == pandaHeight);
+
+  int height = 0;
+  SDL_QueryTexture(sdlTexture, nullptr, nullptr, nullptr, &height);
+  CHECK(texture.height() == height);
 }
 
 TEST_CASE("Texture to SDL_Texture*", "[Texture]")

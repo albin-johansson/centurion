@@ -10,12 +10,14 @@ TEST_CASE("BlendMode enum values", "[BlendMode]")
   CHECK(BlendMode::Blend == SDL_BLENDMODE_BLEND);
   CHECK(BlendMode::Add == SDL_BLENDMODE_ADD);
   CHECK(BlendMode::Mod == SDL_BLENDMODE_MOD);
+  CHECK(BlendMode::Mul == SDL_BLENDMODE_MUL);
   CHECK(BlendMode::Invalid == SDL_BLENDMODE_INVALID);
 
   CHECK(SDL_BLENDMODE_NONE == BlendMode::None);
   CHECK(SDL_BLENDMODE_BLEND == BlendMode::Blend);
   CHECK(SDL_BLENDMODE_ADD == BlendMode::Add);
   CHECK(SDL_BLENDMODE_MOD == BlendMode::Mod);
+  CHECK(SDL_BLENDMODE_MUL == BlendMode::Mul);
   CHECK(SDL_BLENDMODE_INVALID == BlendMode::Invalid);
 }
 

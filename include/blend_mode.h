@@ -41,6 +41,7 @@ enum class BlendMode {
   Blend = SDL_BLENDMODE_BLEND,
   Add = SDL_BLENDMODE_ADD,
   Mod = SDL_BLENDMODE_MOD,
+  Mul = SDL_BLENDMODE_MUL,
   Invalid = SDL_BLENDMODE_INVALID
 };
 

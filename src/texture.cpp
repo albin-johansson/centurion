@@ -102,6 +102,27 @@ void Texture::move(Texture&& other) noexcept
 }
 
 CENTURION_DEF
+bool Texture::lock(Uint32** pixels, int* pitch) noexcept
+{
+  if (pitch) {
+    const auto result = SDL_LockTexture(
+        m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch);
+    return result == 0;
+  } else {
+    int dummyPitch;
+    const auto result = SDL_LockTexture(
+        m_texture, nullptr, reinterpret_cast<void**>(pixels), &dummyPitch);
+    return result == 0;
+  }
+}
+
+CENTURION_DEF
+void Texture::unlock() noexcept
+{
+  SDL_UnlockTexture(m_texture);
+}
+
+CENTURION_DEF
 std::unique_ptr<Texture> Texture::unique(Owner<SDL_Texture*> texture)
 {
   return centurion::detail::make_unique<Texture>(texture);
@@ -162,7 +183,71 @@ std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
   return std::make_shared<Texture>(renderer, format, access, width, height);
 }
 
-// TODO consider making setters return true if successful; false otherwise
+CENTURION_DEF
+std::unique_ptr<Texture> Texture::streaming(const Renderer& renderer,
+                                            const std::string& path,
+                                            PixelFormat format)
+{
+  const auto createSurface = [](const std::string& path, PixelFormat format) {
+    Surface source{path.c_str()};
+    source.set_blend_mode(BlendMode::Blend);
+    return source.convert(format);
+  };
+  const auto surface = createSurface(path, format);
+  const auto blendMode = BlendMode::Blend;
+
+  auto texture = Texture::unique(renderer,
+                                 format,
+                                 TextureAccess::Streaming,
+                                 surface.width(),
+                                 surface.height());
+  texture->set_blend_mode(blendMode);
+
+  Uint32* pixels = nullptr;
+  const auto success = texture->lock(&pixels);
+  if (!success) {
+    throw CenturionException{"Failed to lock texture!"};
+  }
+
+  const auto maxCount =
+      static_cast<std::size_t>(surface.pitch() * surface.height());
+  memcpy(pixels, surface.pixels(), maxCount);
+
+  texture->unlock();
+
+  return texture;
+}
+
+CENTURION_DEF
+void Texture::set_pixel(IPoint pixel, const Color& color) noexcept
+{
+  if (access() != TextureAccess::Streaming || pixel.x() < 0 || pixel.y() < 0 ||
+      pixel.x() >= width() || pixel.y() >= height()) {
+    return;
+  }
+
+  Uint32* pixels = nullptr;
+  int pitch;
+  const auto success = lock(&pixels, &pitch);
+  if (!success) {
+    return;
+  }
+
+  const int nPixels = (pitch / 4) * height();
+  const int index = (pixel.y() * width()) + pixel.x();
+
+  if ((index >= 0) && (index < nPixels)) {
+    auto* pixelFormat = SDL_AllocFormat(static_cast<Uint32>(format()));
+    const auto value = SDL_MapRGBA(
+        pixelFormat, color.red(), color.green(), color.blue(), color.alpha());
+
+    SDL_FreeFormat(pixelFormat);
+
+    pixels[index] = value;
+  }
+
+  unlock();
+}
 
 CENTURION_DEF
 void Texture::set_alpha(Uint8 alpha) noexcept
@@ -218,6 +303,15 @@ int Texture::height() const noexcept
   int height = 0;
   SDL_QueryTexture(m_texture, nullptr, nullptr, nullptr, &height);
   return height;
+}
+
+CENTURION_DEF
+Dimension Texture::size() const noexcept
+{
+  int width = 0;
+  int height = 0;
+  SDL_QueryTexture(m_texture, nullptr, nullptr, &width, &height);
+  return {width, height};
 }
 
 CENTURION_DEF

@@ -151,6 +151,39 @@ TEST_CASE("Texture:::shared", "[Texture]")
       renderer, window.pixel_format(), TextureAccess::Static, 100, 100));
 }
 
+TEST_CASE("Texture::streaming", "[Texture]")
+{
+  Window window;
+  Renderer renderer{window};
+
+  const auto pixelFormat = PixelFormat::RGBA8888;
+  auto texture = Texture::streaming(renderer, pandaPath, pixelFormat);
+
+  CHECK(texture->format() == pixelFormat);
+
+  CHECK_THROWS_AS(Texture::streaming(renderer, "", PixelFormat::YUY2),
+                  CenturionException);
+}
+
+TEST_CASE("Texture::set_pixel", "[Texture]")
+{
+  Window window;
+  Renderer renderer{window};
+  const auto texture =
+      Texture::streaming(renderer, pandaPath, PixelFormat::RGBA8888);
+
+  const auto [width, height] = texture->size();
+
+  CHECK_NOTHROW(texture->set_pixel({-1, -1}, black));
+  CHECK_NOTHROW(texture->set_pixel({-1, 0}, black));
+  CHECK_NOTHROW(texture->set_pixel({0, -1}, black));
+  CHECK_NOTHROW(texture->set_pixel({width, 0}, black));
+  CHECK_NOTHROW(texture->set_pixel({0, height}, black));
+  CHECK_NOTHROW(texture->set_pixel({width, height}, black));
+
+  CHECK_NOTHROW(texture->set_pixel({45, 23}, orange));
+}
+
 TEST_CASE("Texture::set_blend_mode", "[Texture]")
 {
   Window window;

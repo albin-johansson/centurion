@@ -35,7 +35,9 @@
 #include "centurion_api.h"
 #include "centurion_utils.h"
 #include "color.h"
+#include "dimension.h"
 #include "pixel_format.h"
+#include "point.h"
 
 namespace centurion {
 
@@ -361,6 +363,35 @@ class Texture final {
                                          int height);
 
   /**
+   * Creates and returns a unique pointer to a texture based on the image at
+   * the specified path with the <code>Streaming</code> texture access.
+   *
+   * @param renderer the renderer that will be used to create the texture.
+   * @param path the path of the image file to base the texture on.
+   * @param format the pixel format that will be used by the texture.
+   * @throws CenturionException if something goes wrong.
+   * @return a unique pointer to a texture with <code>Streaming</code>
+   * texture access.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static std::unique_ptr<Texture> streaming(const Renderer& renderer,
+                                            const std::string& path,
+                                            PixelFormat format);
+
+  /**
+   * Sets the color of the pixel at the specified coordinate. This method has
+   * no effect if the texture access isn't <code>Streaming</code> or if the
+   * coordinate is out-of-bounds.
+   *
+   * @param pixel the pixel that will be changed.
+   * @param color the new color of the pixel.
+   * @since 4.0.0
+   */
+  CENTURION_API void set_pixel(IPoint pixel, const Color& color) noexcept;
+
+  /**
    * Sets the alpha value of the texture.
    *
    * @param alpha the alpha value, in the range [0, 255].
@@ -429,6 +460,15 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API int height() const noexcept;
+
+  /**
+   * Returns the size (width and height) of the texture.
+   *
+   * @return the size of the texture.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API Dimension size() const noexcept;
 
   /**
    * Indicates whether or not the texture is a possible render target.
@@ -550,6 +590,25 @@ class Texture final {
    * @since 4.0.0
    */
   void move(Texture&& other) noexcept;
+
+  /**
+   * Locks the texture for write-only pixel access. This method is only
+   * applicable if the texture access of the texture is <code>Streaming</code>.
+   *
+   * @param pixels this will be filled with a pointer to the locked pixels.
+   * @param pitch This is filled in with the pitch of the locked pixels, can
+   * safely be null if it isn't needed.
+   * @return true if all went well; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_API bool lock(Uint32** pixels, int* pitch = nullptr) noexcept;
+
+  /**
+   * Unlocks the texture.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API void unlock() noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

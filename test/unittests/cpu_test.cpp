@@ -88,3 +88,13 @@ TEST_CASE("CPU::has_neon", "[CPU]")
 {
   CHECK(CPU::has_neon() == SDL_HasNEON());
 }
+
+TEST_CASE("CPU::has_arm_simd", "[CPU]")
+{
+  CHECK(CPU::has_arm_simd() == SDL_HasARMSIMD());
+}
+
+TEST_CASE("CPU::simd_alignment", "[CPU]")
+{
+  CHECK(CPU::simd_alignment() == SDL_SIMDGetAlignment());
+}

@@ -177,7 +177,25 @@ class CPU final {
   CENTURION_NODISCARD
   CENTURION_API static bool has_neon() noexcept;
 
-  // TODO add has_arm_simd, SDL_SIMDGetAlignment, and look into the SIMD malloc
+  /**
+   * Indicates whether or not the CPU has ARM SIMD (ARMv6+) features.
+   *
+   * @return true if the CPU has ARM SIMD (ARMv6+) features; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static bool has_arm_simd() noexcept;
+
+  /**
+   * Returns the minimum number of bytes to which a pointer must be
+   * aligned to be compatible with SIMD instructions on the current CPU.
+   *
+   * @return the minimum number of bytes to which a pointer must be
+   * aligned to be compatible with SIMD instructions.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static std::size_t simd_alignment() noexcept;
 
   /**
    * Indicates whether or not the CPU uses big-endian byte ordering.

@@ -95,6 +95,18 @@ bool CPU::has_neon() noexcept
   return SDL_HasNEON();
 }
 
+CENTURION_DEF
+bool CPU::has_arm_simd() noexcept
+{
+  return SDL_HasARMSIMD();
+}
+
+CENTURION_DEF
+std::size_t CPU::simd_alignment() noexcept
+{
+  return SDL_SIMDGetAlignment();
+}
+
 }  // namespace centurion
 
 #endif  // CENTURION_CPU_SOURCE

@@ -38,6 +38,7 @@
 #include "centurion_api.h"
 #include "centurion_utils.h"
 #include "color.h"
+#include "dimension.h"
 #include "point.h"
 #include "rect.h"
 
@@ -806,7 +807,7 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::pair<int, int> output_size() const noexcept;
+  CENTURION_API Dimension output_size() const noexcept;
 
   /**
    * Returns the blend mode that is being used by the renderer.

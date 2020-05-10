@@ -36,6 +36,7 @@
 
 #include "centurion_api.h"
 #include "centurion_utils.h"
+#include "dimension.h"
 #include "pixel_format.h"
 #include "point.h"
 
@@ -517,7 +518,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::pair<int, int> min_size() const noexcept;
+  CENTURION_API Dimension min_size() const noexcept;
 
   /**
    * Returns the maximum size of the window.
@@ -526,7 +527,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::pair<int, int> max_size() const noexcept;
+  CENTURION_API Dimension max_size() const noexcept;
 
   /**
    * Returns the current width of the window.

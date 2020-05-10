@@ -400,7 +400,7 @@ IPoint Window::position() const noexcept
 }
 
 CENTURION_DEF
-std::pair<int, int> Window::min_size() const noexcept
+Dimension Window::min_size() const noexcept
 {
   int w = 0;
   int h = 0;
@@ -409,7 +409,7 @@ std::pair<int, int> Window::min_size() const noexcept
 }
 
 CENTURION_DEF
-std::pair<int, int> Window::max_size() const noexcept
+Dimension Window::max_size() const noexcept
 {
   int w = 0;
   int h = 0;

@@ -122,15 +122,7 @@ void Music::fade_out(int ms)
 CENTURION_DEF
 void Music::set_volume(int volume) noexcept
 {
-  if (volume > MIX_MAX_VOLUME) {
-    volume = MIX_MAX_VOLUME;
-  } else if (volume < 0) {
-    volume = 0;
-  }
-
-  detail::clamp_inclusive({0, MIX_MAX_VOLUME}, volume);
-
-  Mix_VolumeMusic(volume);
+  Mix_VolumeMusic(detail::clamp_inclusive({0, MIX_MAX_VOLUME}, volume));
 }
 
 CENTURION_DEF

@@ -646,7 +646,7 @@ int Renderer::output_height() const noexcept
 }
 
 CENTURION_DEF
-std::pair<int, int> Renderer::output_size() const noexcept
+Dimension Renderer::output_size() const noexcept
 {
   int width = 0;
   int height = 0;

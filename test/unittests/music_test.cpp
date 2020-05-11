@@ -194,8 +194,6 @@ TEST_CASE("Music::playing", "[Music]")
 
 TEST_CASE("Music::paused", "[Music]")
 {
-  CHECK(!Music::paused());
-
   Music music{path};
   music.play();
 

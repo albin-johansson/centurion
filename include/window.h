@@ -543,6 +543,17 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API int height() const noexcept;
 
   /**
+   * Returns a mask that represents the flags associated with the window. You
+   * can check the returned mask using the SDL_WindowFlags enum.
+   *
+   * @return a mask that represents the flags associated with the window.
+   * @since 4.0.0
+   * @see SDL_WindowFlags
+   */
+  CENTURION_NODISCARD
+  CENTURION_API Uint32 flags() const noexcept;
+
+  /**w
    * Returns any renderer that is associated with this window. Note! If no
    * renderer is associated with the window, then a null pointer is returned.
    * Please don't take ownership of the returned renderer.

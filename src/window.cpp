@@ -189,10 +189,10 @@ void Window::add_window_listener(
 CENTURION_DEF
 void Window::set_fullscreen(bool fullscreen) noexcept
 {
-  const auto flags =
-      (fullscreen) ? (SDL_GetWindowFlags(m_window) | SDL_WINDOW_FULLSCREEN)
-                   : (SDL_GetWindowFlags(m_window) & ~SDL_WINDOW_FULLSCREEN);
-  SDL_SetWindowFullscreen(m_window, flags);
+  const auto fullscreenFlag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
+  const auto newFlags =
+      (fullscreen) ? (flags() | fullscreenFlag) : (flags() & ~fullscreenFlag);
+  SDL_SetWindowFullscreen(m_window, newFlags);
 
   if (!fullscreen) {
     set_brightness(1);
@@ -419,6 +419,12 @@ int Window::height() const noexcept
   int height = 0;
   SDL_GetWindowSize(m_window, nullptr, &height);
   return height;
+}
+
+CENTURION_DEF
+Uint32 Window::flags() const noexcept
+{
+  return SDL_GetWindowFlags(m_window);
 }
 
 CENTURION_DEF

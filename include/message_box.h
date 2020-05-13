@@ -27,7 +27,6 @@
 
 #include <SDL.h>
 
-#include <optional>
 #include <string>
 #include <type_traits>
 #include <vector>

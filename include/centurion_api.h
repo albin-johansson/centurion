@@ -26,7 +26,6 @@
 #define CENTURION_API_HEADER
 
 #include <memory>
-#include <optional>
 #include <type_traits>
 
 #include "centurion_cfg.h"

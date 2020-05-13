@@ -28,7 +28,6 @@
 #include <SDL_ttf.h>
 
 #include <memory>
-#include <optional>
 #include <stdexcept>
 #include <string>
 #include <type_traits>

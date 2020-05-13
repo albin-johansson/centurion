@@ -3,8 +3,6 @@
 
 #include "window.h"
 
-#include <SDL_image.h>
-
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "surface.h"
@@ -22,12 +20,6 @@ Window::Window(const char* title, int width, int height)
   const auto pos = SDL_WINDOWPOS_CENTERED;
   m_window = SDL_CreateWindow(
       title ? title : "", pos, pos, width, height, SDL_WINDOW_HIDDEN);
-
-  SDL_Surface* icon = IMG_Load("centurion_icon.png");
-  if (icon) {
-    SDL_SetWindowIcon(m_window, icon);
-    SDL_FreeSurface(icon);
-  }
 }
 
 CENTURION_DEF

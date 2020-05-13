@@ -52,14 +52,10 @@ class Surface;
  * @see IWindowListener
  * @since 3.0.0
  */
-class Window final {
+class Window final {  // TODO add support for checking all SDL_WindowFlags
  public:
   /**
-   * Creates a window instance. The window will be hidden by default. When a
-   * window is being created, it will look for a file called
-   * "centurion_icon.png", which it will attempt to use as the default icon.
-   * However, the window can be created without any problem with the file
-   * missing.
+   * Creates a window instance. The window will be hidden by default.
    *
    * @param title the title of the window, may be null. If null, the empty
    * string is used.

@@ -290,12 +290,8 @@ CENTURION_DEF
 void Window::set_brightness(float brightness) noexcept
 {
   if (fullscreen()) {
-    if (brightness < 0) {
-      brightness = 0;
-    } else if (brightness > 1) {
-      brightness = 1;
-    }
-    SDL_SetWindowBrightness(m_window, brightness);
+    SDL_SetWindowBrightness(m_window,
+                            detail::clamp_inclusive({0, 1}, brightness));
     notify_window_listeners();
   }
 }

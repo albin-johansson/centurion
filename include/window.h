@@ -312,10 +312,20 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
    * listener update.
    *
    * @param fullscreen true if the window should enable fullscreen mode; false
-   * otherwise.
+   * for windowed mode.
    * @since 3.0.0
    */
   CENTURION_API void set_fullscreen(bool fullscreen) noexcept;
+
+  /**
+   * Sets whether or not the window is in fullscreen desktop mode. This mode
+   * is useful when you want to "fake" fullscreen mode.
+   *
+   * @param fullscreen true if the window should enable fullscreen desktop
+   * mode; false for windowed mode.
+   * @since 4.0.0
+   */
+  CENTURION_API void set_fullscreen_desktop(bool fullscreen) noexcept;
 
   /**
    * Sets whether or not the window is decorated. Triggers a window listener
@@ -431,6 +441,16 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API void set_brightness(float brightness) noexcept;
 
   /**
+   * Sets whether or not the mouse should be captured. The window might have
+   * to be visible in order for the mouse to be captured.
+   *
+   * @param capturingMouse true if the mouse should be captured; false
+   * otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_API void set_capturing_mouse(bool capturingMouse) noexcept;
+
+  /**
    * Indicates whether or not the window is decorated. The window is decorated
    * by default.
    *
@@ -450,7 +470,8 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API bool grabbing_mouse() const noexcept;
 
   /**
-   * Indicates whether or not the window is resizable.
+   * Indicates whether or not the window is resizable. By default, this
+   * property is set to false.
    *
    * @return true if the window is resizable; false otherwise.
    * @since 3.0.0
@@ -466,6 +487,15 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
    */
   CENTURION_NODISCARD
   CENTURION_API bool fullscreen() const noexcept;
+
+  /**
+   * Indicates whether or not the window is in fullscreen desktop mode.
+   *
+   * @return true if the window is in fullscreen desktop mode; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool fullscreen_desktop() const noexcept;
 
   /**
    * Indicates whether or not the window is visible.
@@ -576,6 +606,86 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
    */
   CENTURION_NODISCARD
   CENTURION_API int height() const noexcept;
+
+  /**
+   * Indicates whether or not the window is usable with an OpenGL-context.
+   *
+   * @return true if the window is compatible with an OpenGL-context; false
+   * otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool opengl() const noexcept;
+
+  /**
+   * Indicates whether or not the window is usable as a Vulkan surface.
+   *
+   * @return true if the window is is usable as a Vulkan surface; false
+   * otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool vulkan() const noexcept;
+
+  /**
+   * Indicates whether or not the window has input focus. The window might
+   * have to be visible for this to be true.
+   *
+   * @return true if the window has input focus; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool has_input_focus() const noexcept;
+
+  /**
+   * Indicates whether or not the window has mouse focus.
+   *
+   * @return true if the window has mouse focus; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool has_mouse_focus() const noexcept;
+
+  /**
+   * Indicates whether or not the window wasn't created by SDL.
+   *
+   * @return true if the window wasn't created by SDL; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool is_foreign() const noexcept;
+
+  /**
+   * Indicates whether or not the window is capturing the mouse.
+   *
+   * @return true if the window is capturing the mouse; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool capturing_mouse() const noexcept;
+
+  /**
+   * Indicates whether or not the window is set to be always on top of other
+   * windows.
+   *
+   * @return true if the window is always on top of other windows; false
+   * otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool always_on_top() const noexcept;
+
+  /**
+   * Indicates whether or not a flag is set. Some of the use cases of this
+   * method can be replaced by more explicit methods, e.g. <code>fullscreen()
+   * </code> instead of <code>check_flag(SDL_WINDOW_FULLSCREEN)</code>.
+   *
+   * @param flag the flag that will be tested.
+   * @return true if the flag is set; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool check_flag(SDL_WindowFlags flag) const noexcept;
 
   /**
    * Returns a mask that represents the flags associated with the window. You

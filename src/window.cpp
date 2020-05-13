@@ -3,6 +3,8 @@
 
 #include "window.h"
 
+#include <string>
+
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "surface.h"
@@ -210,15 +212,21 @@ CENTURION_DEF
 void Window::set_fullscreen(bool fullscreen) noexcept
 {
   const auto fullscreenFlag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
-  const auto newFlags =
-      (fullscreen) ? (flags() | fullscreenFlag) : (flags() & ~fullscreenFlag);
-  SDL_SetWindowFullscreen(m_window, newFlags);
+  SDL_SetWindowFullscreen(m_window, fullscreen ? fullscreenFlag : 0);
 
   if (!fullscreen) {
     set_brightness(1);
   }
 
   notify_window_listeners();
+}
+
+CENTURION_DEF
+void Window::set_fullscreen_desktop(bool fullscreen) noexcept
+{
+  const auto fullscreenFlag =
+      static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
+  SDL_SetWindowFullscreen(m_window, fullscreen ? fullscreenFlag : 0);
 }
 
 CENTURION_DEF
@@ -317,38 +325,21 @@ void Window::set_brightness(float brightness) noexcept
 }
 
 CENTURION_DEF
+void Window::set_capturing_mouse(bool capturingMouse) noexcept
+{
+  SDL_CaptureMouse(detail::convert_bool(capturingMouse));
+}
+
+CENTURION_DEF
 bool Window::decorated() const noexcept
 {
-  int left = 0;
-  int right = 0;
-  int top = 0;
-  int bottom = 0;
-  SDL_GetWindowBordersSize(m_window, &top, &left, &bottom, &right);
-  return left || right || top || bottom;
+  return !(flags() & SDL_WINDOW_BORDERLESS);
 }
 
 CENTURION_DEF
 bool Window::grabbing_mouse() const noexcept
 {
   return SDL_GetWindowGrab(m_window);
-}
-
-CENTURION_DEF
-bool Window::resizable() const noexcept
-{
-  return SDL_GetWindowFlags(m_window) & SDL_WINDOW_RESIZABLE;
-}
-
-CENTURION_DEF
-bool Window::fullscreen() const noexcept
-{
-  return SDL_GetWindowFlags(m_window) & SDL_WINDOW_FULLSCREEN;
-}
-
-CENTURION_DEF
-bool Window::visible() const noexcept
-{
-  return SDL_GetWindowFlags(m_window) & SDL_WINDOW_SHOWN;
 }
 
 CENTURION_DEF
@@ -439,6 +430,78 @@ int Window::height() const noexcept
   int height = 0;
   SDL_GetWindowSize(m_window, nullptr, &height);
   return height;
+}
+
+CENTURION_DEF
+bool Window::resizable() const noexcept
+{
+  return flags() & SDL_WINDOW_RESIZABLE;
+}
+
+CENTURION_DEF
+bool Window::fullscreen() const noexcept
+{
+  return flags() & SDL_WINDOW_FULLSCREEN;
+}
+
+CENTURION_DEF
+bool Window::fullscreen_desktop() const noexcept
+{
+  return flags() & SDL_WINDOW_FULLSCREEN_DESKTOP;
+}
+
+CENTURION_DEF
+bool Window::visible() const noexcept
+{
+  return flags() & SDL_WINDOW_SHOWN;
+}
+
+CENTURION_DEF
+bool Window::opengl() const noexcept
+{
+  return flags() & SDL_WINDOW_OPENGL;
+}
+
+CENTURION_DEF
+bool Window::vulkan() const noexcept
+{
+  return flags() & SDL_WINDOW_VULKAN;
+}
+
+CENTURION_DEF
+bool Window::has_input_focus() const noexcept
+{
+  return flags() & SDL_WINDOW_INPUT_FOCUS;
+}
+
+CENTURION_DEF
+bool Window::has_mouse_focus() const noexcept
+{
+  return flags() & SDL_WINDOW_MOUSE_FOCUS;
+}
+
+CENTURION_DEF
+bool Window::is_foreign() const noexcept
+{
+  return flags() & SDL_WINDOW_FOREIGN;
+}
+
+CENTURION_DEF
+bool Window::capturing_mouse() const noexcept
+{
+  return flags() & SDL_WINDOW_MOUSE_CAPTURE;
+}
+
+CENTURION_DEF
+bool Window::always_on_top() const noexcept
+{
+  return flags() & SDL_WINDOW_ALWAYS_ON_TOP;
+}
+
+CENTURION_DEF
+bool Window::check_flag(SDL_WindowFlags flag) const noexcept
+{
+  return flags() & flag;
 }
 
 CENTURION_DEF

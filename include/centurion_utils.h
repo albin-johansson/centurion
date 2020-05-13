@@ -158,6 +158,8 @@ using type_if_integral = type_if<std::is_integral<T>::value, T>;
 template <typename T, typename U>
 using type_if_same = typename std::enable_if<std::is_same<T, U>::value>::type;
 
+// TODO the template stuff should be in the detail namespace
+
 /**
  * A type alias for gsl::owner. This is used to denote ownership of raw
  * pointers.
@@ -174,6 +176,8 @@ using Owner = gsl::owner<T>;
  */
 template <typename T>
 using Optional = tl::optional<T>;
+
+// TODO consider adding UniquePtr, SharedPtr, WeakPtr
 
 /**
  * A constant that represents an empty Optional.

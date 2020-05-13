@@ -176,7 +176,7 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T>
-  CENTURION_NODISCARD type_if_floating<U> equals(
+  CENTURION_NODISCARD detail::type_if_floating<U> equals(
       const Point<T>& other,
       T epsilon = 0.0001) const noexcept
   {
@@ -232,7 +232,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, int>>
+  template <typename U = T, typename = detail::type_if_same<U, int>>
   CENTURION_NODISCARD explicit operator SDL_Point*() noexcept
   {
     return reinterpret_cast<SDL_Point*>(this);
@@ -248,7 +248,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, int>>
+  template <typename U = T, typename = detail::type_if_same<U, int>>
   CENTURION_NODISCARD explicit operator const SDL_Point*() const noexcept
   {
     return reinterpret_cast<const SDL_Point*>(this);
@@ -264,7 +264,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, float>>
+  template <typename U = T, typename = detail::type_if_same<U, float>>
   CENTURION_NODISCARD explicit operator SDL_FPoint*() noexcept
   {
     return reinterpret_cast<SDL_FPoint*>(this);
@@ -280,7 +280,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, float>>
+  template <typename U = T, typename = detail::type_if_same<U, float>>
   CENTURION_NODISCARD explicit operator const SDL_FPoint*() const noexcept
   {
     return reinterpret_cast<const SDL_FPoint*>(this);

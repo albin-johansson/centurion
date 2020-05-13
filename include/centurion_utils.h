@@ -27,9 +27,9 @@
 
 #include <SDL.h>
 
-#include <gsl-lite.hpp>
+#include <lib/gsl-lite.hpp>
+#include <lib/optional.hpp>
 #include <memory>
-#include <optional.hpp>
 #include <sstream>
 #include <string>
 #include <type_traits>
@@ -122,8 +122,6 @@ CENTURION_NODISCARD T clamp_inclusive(std::pair<T, T> range, T value) noexcept
   }
 }
 
-}  // namespace detail
-
 /**
  * Used to enable a template if a condition is true.
  *
@@ -158,7 +156,7 @@ using type_if_integral = type_if<std::is_integral<T>::value, T>;
 template <typename T, typename U>
 using type_if_same = typename std::enable_if<std::is_same<T, U>::value>::type;
 
-// TODO the template stuff should be in the detail namespace
+}  // namespace detail
 
 /**
  * A type alias for gsl::owner. This is used to denote ownership of raw

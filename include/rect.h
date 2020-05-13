@@ -294,7 +294,7 @@ class Rect final {
    * @return a rectangle that represents the union of the rectangles.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, int>>
+  template <typename U = T, typename = detail::type_if_same<U, int>>
   CENTURION_NODISCARD Rect<T> get_union(const Rect<T>& other) const noexcept
   {
     SDL_Rect result{0, 0, 0, 0};
@@ -333,7 +333,7 @@ class Rect final {
    * invoked rectangle.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, int>>
+  template <typename U = T, typename = detail::type_if_same<U, int>>
   CENTURION_NODISCARD explicit operator SDL_Rect*() noexcept
   {
     return reinterpret_cast<SDL_Rect*>(this);
@@ -349,7 +349,7 @@ class Rect final {
    * invoked rectangle.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, int>>
+  template <typename U = T, typename = detail::type_if_same<U, int>>
   CENTURION_NODISCARD explicit operator const SDL_Rect*() const noexcept
   {
     return reinterpret_cast<const SDL_Rect*>(this);
@@ -365,7 +365,7 @@ class Rect final {
    * invoked rectangle.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, float>>
+  template <typename U = T, typename = detail::type_if_same<U, float>>
   CENTURION_NODISCARD explicit operator SDL_FRect*() noexcept
   {
     return reinterpret_cast<SDL_FRect*>(this);
@@ -381,7 +381,7 @@ class Rect final {
    * invoked rectangle.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, float>>
+  template <typename U = T, typename = detail::type_if_same<U, float>>
   CENTURION_NODISCARD explicit operator const SDL_FRect*() const noexcept
   {
     return reinterpret_cast<const SDL_FRect*>(this);
@@ -396,7 +396,7 @@ class Rect final {
    * @return an SDL_Rect based on this rectangle.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, int>>
+  template <typename U = T, typename = detail::type_if_same<U, int>>
   CENTURION_NODISCARD operator SDL_Rect() const noexcept
   {
     return {m_x, m_y, m_width, m_height};
@@ -411,7 +411,7 @@ class Rect final {
    * @return an SDL_FRect based on this rectangle.
    * @since 4.0.0
    */
-  template <typename U = T, typename = type_if_same<U, float>>
+  template <typename U = T, typename = detail::type_if_same<U, float>>
   CENTURION_NODISCARD operator SDL_FRect() const noexcept
   {
     return {m_x, m_y, m_width, m_height};

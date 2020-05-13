@@ -180,7 +180,7 @@ using Optional = tl::optional<T>;
  *
  * @since 4.0.0
  */
-inline constexpr tl::nullopt_t nothing = tl::nullopt;
+constexpr tl::nullopt_t nothing = tl::nullopt;
 
 }  // namespace centurion
 

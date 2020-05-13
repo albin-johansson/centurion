@@ -35,6 +35,8 @@ namespace centurion {
  * @since 4.0.0
  */
 struct Dimension {
+  Dimension() noexcept = default;
+  Dimension(int width, int height) noexcept : width{width}, height{height} {}
   int width = 0;
   int height = 0;
 };

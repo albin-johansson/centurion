@@ -65,6 +65,21 @@ TEST_CASE("Window()", "[Window]")
   CHECK(!window.visible());
 }
 
+TEST_CASE("Window(Owner<SDL_Window*>)", "[Window]")
+{
+  SECTION("Null pointer")
+  {
+    SDL_Window* w = nullptr;
+    CHECK_THROWS_AS(Window{w}, CenturionException);
+  }
+
+  SECTION("Good window")
+  {
+    SDL_Window* w = SDL_CreateWindow("foo", 0, 0, 100, 100, SDL_WINDOW_HIDDEN);
+    Window window{w};
+  }
+}
+
 TEST_CASE("Window(Window&&)", "[Window]")
 {
   Window window;
@@ -101,13 +116,15 @@ TEST_CASE("Window smart pointer factory methods", "[Window]")
   {
     CHECK_THROWS_AS(Window::unique("", 0, 10), CenturionException);
     CHECK_THROWS_AS(Window::unique("", 10, 0), CenturionException);
+    CHECK_THROWS_AS(Window::unique(static_cast<Owner<SDL_Window*>>(nullptr)),
+                    CenturionException);
     CHECK_NOTHROW(Window::unique(nullptr, 10, 10));
 
     CHECK_THROWS_AS(Window::unique(10, 0), CenturionException);
     CHECK_THROWS_AS(Window::unique(0, 10), CenturionException);
     CHECK_NOTHROW(Window::unique(10, 10));
 
-    CHECK_NOTHROW(Window::unique(nullptr));
+    CHECK_NOTHROW(Window::unique(static_cast<const char*>(nullptr)));
     CHECK_NOTHROW(Window::unique(""));
     CHECK_NOTHROW(Window::unique());
   }
@@ -116,13 +133,15 @@ TEST_CASE("Window smart pointer factory methods", "[Window]")
   {
     CHECK_THROWS_AS(Window::shared("", 0, 10), CenturionException);
     CHECK_THROWS_AS(Window::shared("", 10, 0), CenturionException);
+    CHECK_THROWS_AS(Window::shared(static_cast<Owner<SDL_Window*>>(nullptr)),
+                    CenturionException);
     CHECK_NOTHROW(Window::shared(nullptr, 10, 10));
 
     CHECK_THROWS_AS(Window::shared(10, 0), CenturionException);
     CHECK_THROWS_AS(Window::shared(0, 10), CenturionException);
     CHECK_NOTHROW(Window::shared(10, 10));
 
-    CHECK_NOTHROW(Window::shared(nullptr));
+    CHECK_NOTHROW(Window::shared(static_cast<const char*>(nullptr)));
     CHECK_NOTHROW(Window::shared(""));
     CHECK_NOTHROW(Window::shared());
   }
@@ -494,6 +513,15 @@ TEST_CASE("Window::renderer", "[Window]")
   const SDL_Renderer* sdlRenderer = renderer;
 
   CHECK(window.renderer() == sdlRenderer);
+}
+
+TEST_CASE("Window::flags", "[Window]")
+{
+  SDL_Window* sdlWindow = SDL_CreateWindow(
+      "foo", 0, 0, 800, 600, SDL_WINDOW_HIDDEN | SDL_WINDOW_MAXIMIZED);
+  Window window{sdlWindow};
+
+  CHECK(window.flags() == SDL_GetWindowFlags(sdlWindow));
 }
 
 TEST_CASE("Window::get", "[Window]")

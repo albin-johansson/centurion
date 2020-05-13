@@ -88,6 +88,15 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API explicit Window(const char* title);
 
   /**
+   * Creates a window based on the supplied SDL_Window instance. The created
+   * window will claim ownership of the supplied pointer.
+   *
+   * @param window a pointer to the SDL_Window that will be claimed.
+   * @throws CenturionException if the supplied pointer is null.
+   * @since 4.0.0
+   */
+  CENTURION_API explicit Window(Owner<SDL_Window*> window);
+  /**
    * Creates a 800x600 window. The window will be hidden by default.
    *
    * @since 3.0.0
@@ -160,6 +169,19 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API static std::unique_ptr<Window> unique(const char* title);
 
   /**
+   * Creates and returns a unique pointer to a window instance. The created
+   * window will claim ownership of the supplied pointer.
+   *
+   * @param window a pointer to the SDL_Window that will be claimed.
+   * @throws CenturionException if the supplied pointer is null.
+   * @return a unique pointer to a window instance.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static std::unique_ptr<Window> unique(
+      Owner<SDL_Window*> window);
+
+  /**
    * Creates and returns a unique pointer to a Window instance.
    *
    * @return a unique pointer to a Window instance.
@@ -208,6 +230,19 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
    */
   CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<Window> shared(const char* title);
+
+  /**
+   * Creates and returns a shared pointer to a window instance. The created
+   * window will claim ownership of the supplied pointer.
+   *
+   * @param window a pointer to the SDL_Window that will be claimed.
+   * @throws CenturionException if the supplied pointer is null.
+   * @return a shared pointer to a window instance.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static std::shared_ptr<Window> shared(
+      Owner<SDL_Window*> window);
 
   /**
    * Creates and returns a shared pointer to a Window instance.

@@ -32,6 +32,14 @@ Window::Window(const char* title) : Window{title, 800, 600}
 {}
 
 CENTURION_DEF
+Window::Window(Owner<SDL_Window*> window) : m_window{window}
+{
+  if (!window) {
+    throw CenturionException{"Cannot create window from null SDL_Window!"};
+  }
+}
+
+CENTURION_DEF
 Window::Window() : Window{800, 600}
 {}
 
@@ -94,6 +102,12 @@ std::unique_ptr<Window> Window::unique(const char* title)
 }
 
 CENTURION_DEF
+std::unique_ptr<Window> Window::unique(Owner<SDL_Window*> window)
+{
+  return centurion::detail::make_unique<Window>(window);
+}
+
+CENTURION_DEF
 std::unique_ptr<Window> Window::unique()
 {
   return centurion::detail::make_unique<Window>();
@@ -115,6 +129,12 @@ CENTURION_DEF
 std::shared_ptr<Window> Window::shared(const char* title)
 {
   return std::make_shared<Window>(title);
+}
+
+CENTURION_DEF
+std::shared_ptr<Window> Window::shared(Owner<SDL_Window*> window)
+{
+  return std::make_shared<Window>(window);
 }
 
 CENTURION_DEF

@@ -6,26 +6,19 @@
 namespace centurion {
 
 CENTURION_DEF
-CenturionException::CenturionException(const char* msg) : msg{msg ? msg : "N/A"}
+CenturionException::CenturionException(CZString what) noexcept
+    : m_what{what ? what : "N/A"}
 {}
 
 CENTURION_DEF
-CenturionException::CenturionException(const std::string& msg) : msg{msg}
+CenturionException::CenturionException(std::string what) noexcept
+    : m_what{what.empty() ? "N/A" : what}
 {}
 
 CENTURION_DEF
 CenturionException::CenturionException(const CenturionException& other) noexcept
-    : msg{other.msg}
+    : m_what{other.m_what}
 {}
-
-CENTURION_DEF
-const char* CenturionException::what() const noexcept
-{
-  return msg.c_str();
-}
-
-CENTURION_DEF
-CenturionException::~CenturionException() noexcept = default;
 
 }  // namespace centurion
 

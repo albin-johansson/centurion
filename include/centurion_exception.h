@@ -26,10 +26,9 @@
 #define CENTURION_EXCEPTION_HEADER
 
 #include <exception>
-#include <string>
-#include <type_traits>
 
 #include "centurion_api.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 
@@ -43,38 +42,34 @@ class CenturionException final : public std::exception {
   /**
    * @since 3.0.0
    */
-  CenturionException() = default;
+  CenturionException() noexcept = default;
+
+  /**
+   * @param what the message of the exception. If the string is null, "N/A" is
+   * used.
+   * @since 3.0.0
+   */
+  CENTURION_API
+  explicit CenturionException(CZString what) noexcept;
+
+  /**
+   * @param what the message of the exception. If the string is empty, "N/A"
+   * is used.
+   * @since 3.0.0
+   */
+  CENTURION_API
+  explicit CenturionException(std::string what) noexcept;
 
   CENTURION_API
   CenturionException(const CenturionException& other) noexcept;
 
-  /**
-   * @since 4.0.0
-   */
-  CENTURION_API
-  ~CenturionException() noexcept override;
-
-  /**
-   * @param msg the message of the exception. If the pointer is null, the string
-   * "N/A" is used.
-   * @since 3.0.0
-   */
-  CENTURION_API
-  explicit CenturionException(const char* msg);
-
-  /**
-   * @param msg the message of the exception.
-   * @since 3.0.0
-   */
-  CENTURION_API
-  explicit CenturionException(const std::string& msg);
+  ~CenturionException() noexcept override = default;
 
   CENTURION_NODISCARD
-  CENTURION_API
-  const char* what() const noexcept override;
+  CZString what() const noexcept override { return m_what.c_str(); }
 
  private:
-  std::string msg = "";
+  std::string m_what;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

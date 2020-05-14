@@ -6,7 +6,7 @@
 using namespace centurion;
 using namespace Catch;
 
-TEST_CASE("CenturionException(const char*)", "[CenturionException]")
+TEST_CASE("CenturionException(CZString)", "[CenturionException]")
 {
   SECTION("Null string")
   {
@@ -22,7 +22,7 @@ TEST_CASE("CenturionException(const char*)", "[CenturionException]")
   }
 }
 
-TEST_CASE("CenturionException(std::string&)", "[CenturionException]")
+TEST_CASE("CenturionException(std::string)", "[CenturionException]")
 {
   const std::string msg{"Hello"};
   CenturionException ce{msg};

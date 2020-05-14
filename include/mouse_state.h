@@ -25,10 +25,8 @@
 #ifndef CENTURION_MOUSE_STATE_HEADER
 #define CENTURION_MOUSE_STATE_HEADER
 
-#include <memory>
-#include <type_traits>
-
 #include "centurion_api.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 namespace input {
@@ -53,7 +51,7 @@ class MouseState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<MouseState> unique();
+  CENTURION_API static UniquePtr<MouseState> unique();
 
   /**
    * Creates and returns a shared pointer to a MouseState instance.
@@ -62,7 +60,7 @@ class MouseState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<MouseState> shared();
+  CENTURION_API static SharedPtr<MouseState> shared();
 
   /**
    * Updates the mouse state. The window width and height will be adjusted to

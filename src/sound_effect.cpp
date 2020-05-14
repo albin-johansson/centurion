@@ -63,13 +63,13 @@ void SoundEffect::move(SoundEffect&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<SoundEffect> SoundEffect::unique(const std::string& file)
+UniquePtr<SoundEffect> SoundEffect::unique(const std::string& file)
 {
   return centurion::detail::make_unique<SoundEffect>(file);
 }
 
 CENTURION_DEF
-std::shared_ptr<SoundEffect> SoundEffect::shared(const std::string& file)
+SharedPtr<SoundEffect> SoundEffect::shared(const std::string& file)
 {
   return std::make_shared<SoundEffect>(file);
 }

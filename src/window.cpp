@@ -12,7 +12,7 @@
 namespace centurion {
 
 CENTURION_DEF
-Window::Window(const char* title, int width, int height)
+Window::Window(CZString title, int width, int height)
 {
   if ((width < 1) || (height < 1)) {
     throw CenturionException{"Invalid width or height!"};
@@ -29,7 +29,7 @@ Window::Window(int width, int height)
 {}
 
 CENTURION_DEF
-Window::Window(const char* title) : Window{title, 800, 600}
+Window::Window(CZString title) : Window{title, 800, 600}
 {}
 
 CENTURION_DEF
@@ -84,61 +84,61 @@ void Window::move(Window&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Window> Window::unique(const char* title, int width, int height)
+UniquePtr<Window> Window::unique(CZString title, int width, int height)
 {
   return centurion::detail::make_unique<Window>(title, width, height);
 }
 
 CENTURION_DEF
-std::unique_ptr<Window> Window::unique(int width, int height)
+UniquePtr<Window> Window::unique(int width, int height)
 {
   return centurion::detail::make_unique<Window>(width, height);
 }
 
 CENTURION_DEF
-std::unique_ptr<Window> Window::unique(const char* title)
+UniquePtr<Window> Window::unique(CZString title)
 {
   return centurion::detail::make_unique<Window>(title);
 }
 
 CENTURION_DEF
-std::unique_ptr<Window> Window::unique(Owner<SDL_Window*> window)
+UniquePtr<Window> Window::unique(Owner<SDL_Window*> window)
 {
   return centurion::detail::make_unique<Window>(window);
 }
 
 CENTURION_DEF
-std::unique_ptr<Window> Window::unique()
+UniquePtr<Window> Window::unique()
 {
   return centurion::detail::make_unique<Window>();
 }
 
 CENTURION_DEF
-std::shared_ptr<Window> Window::shared(const char* title, int width, int height)
+SharedPtr<Window> Window::shared(CZString title, int width, int height)
 {
   return std::make_shared<Window>(title, width, height);
 }
 
 CENTURION_DEF
-std::shared_ptr<Window> Window::shared(int width, int height)
+SharedPtr<Window> Window::shared(int width, int height)
 {
   return std::make_shared<Window>(width, height);
 }
 
 CENTURION_DEF
-std::shared_ptr<Window> Window::shared(const char* title)
+SharedPtr<Window> Window::shared(CZString title)
 {
   return std::make_shared<Window>(title);
 }
 
 CENTURION_DEF
-std::shared_ptr<Window> Window::shared(Owner<SDL_Window*> window)
+SharedPtr<Window> Window::shared(Owner<SDL_Window*> window)
 {
   return std::make_shared<Window>(window);
 }
 
 CENTURION_DEF
-std::shared_ptr<Window> Window::shared()
+SharedPtr<Window> Window::shared()
 {
   return std::make_shared<Window>();
 }
@@ -233,9 +233,11 @@ void Window::set_icon(const Surface& icon) noexcept
 }
 
 CENTURION_DEF
-void Window::set_title(const std::string& title) noexcept
+void Window::set_title(CZString title) noexcept
 {
-  SDL_SetWindowTitle(m_window, title.c_str());
+  if (title) {
+    SDL_SetWindowTitle(m_window, title);
+  }
 }
 
 CENTURION_DEF
@@ -488,7 +490,7 @@ PixelFormat Window::pixel_format() const noexcept
 }
 
 CENTURION_DEF
-std::string Window::title() const noexcept
+CZString Window::title() const noexcept
 {
   return SDL_GetWindowTitle(m_window);
 }

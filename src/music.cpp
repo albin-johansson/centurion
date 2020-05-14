@@ -57,13 +57,13 @@ void Music::move(Music&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Music> Music::unique(const std::string& file)
+UniquePtr<Music> Music::unique(const std::string& file)
 {
   return centurion::detail::make_unique<Music>(file);
 }
 
 CENTURION_DEF
-std::shared_ptr<Music> Music::shared(const std::string& file)
+SharedPtr<Music> Music::shared(const std::string& file)
 {
   return std::make_shared<Music>(file);
 }

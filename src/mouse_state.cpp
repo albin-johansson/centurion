@@ -14,13 +14,13 @@ CENTURION_DEF
 MouseState::MouseState() noexcept = default;
 
 CENTURION_DEF
-std::unique_ptr<MouseState> MouseState::unique()
+UniquePtr<MouseState> MouseState::unique()
 {
   return centurion::detail::make_unique<MouseState>();
 }
 
 CENTURION_DEF
-std::shared_ptr<MouseState> MouseState::shared()
+SharedPtr<MouseState> MouseState::shared()
 {
   return std::make_shared<MouseState>();
 }

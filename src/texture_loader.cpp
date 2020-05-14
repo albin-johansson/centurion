@@ -10,7 +10,7 @@
 namespace centurion {
 
 CENTURION_DEF
-TextureLoader::TextureLoader(const std::shared_ptr<Renderer>& renderer)
+TextureLoader::TextureLoader(const SharedPtr<Renderer>& renderer)
 {
   if (renderer) {
     this->m_renderer = renderer;
@@ -23,31 +23,31 @@ CENTURION_DEF
 TextureLoader::~TextureLoader() noexcept = default;
 
 CENTURION_DEF
-std::unique_ptr<Texture> TextureLoader::unique_img(const char* file) const
+UniquePtr<Texture> TextureLoader::unique_img(const char* file) const
 {
   return Texture::unique(*m_renderer, file);
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> TextureLoader::unique_img(PixelFormat format,
-                                                   TextureAccess access,
-                                                   int width,
-                                                   int height) const
+UniquePtr<Texture> TextureLoader::unique_img(PixelFormat format,
+                                             TextureAccess access,
+                                             int width,
+                                             int height) const
 {
   return Texture::unique(*m_renderer, format, access, width, height);
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> TextureLoader::shared_img(const char* file) const
+SharedPtr<Texture> TextureLoader::shared_img(const char* file) const
 {
   return Texture::shared(*m_renderer, file);
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> TextureLoader::shared_img(PixelFormat format,
-                                                   TextureAccess access,
-                                                   int width,
-                                                   int height) const
+SharedPtr<Texture> TextureLoader::shared_img(PixelFormat format,
+                                             TextureAccess access,
+                                             int width,
+                                             int height) const
 {
   return Texture::shared(*m_renderer, format, access, width, height);
 }

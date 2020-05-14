@@ -51,13 +51,13 @@ void AppPath::move(AppPath&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<AppPath> AppPath::unique()
+UniquePtr<AppPath> AppPath::unique()
 {
   return centurion::detail::make_unique<AppPath>();
 }
 
 CENTURION_DEF
-std::shared_ptr<AppPath> AppPath::shared()
+SharedPtr<AppPath> AppPath::shared()
 {
   return std::make_shared<AppPath>();
 }
@@ -105,15 +105,15 @@ void PrefPath::move(PrefPath&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<PrefPath> PrefPath::unique(const std::string& org,
-                                           const std::string& app)
+UniquePtr<PrefPath> PrefPath::unique(const std::string& org,
+                                     const std::string& app)
 {
   return centurion::detail::make_unique<PrefPath>(org, app);
 }
 
 CENTURION_DEF
-std::shared_ptr<PrefPath> PrefPath::shared(const std::string& org,
-                                           const std::string& app)
+SharedPtr<PrefPath> PrefPath::shared(const std::string& org,
+                                     const std::string& app)
 {
   return std::make_shared<PrefPath>(org, app);
 }

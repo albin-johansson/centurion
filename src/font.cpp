@@ -66,13 +66,13 @@ void Font::move(Font&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Font> Font::unique(const std::string& file, int size)
+UniquePtr<Font> Font::unique(const std::string& file, int size)
 {
   return centurion::detail::make_unique<Font>(file, size);
 }
 
 CENTURION_DEF
-std::shared_ptr<Font> Font::shared(const std::string& file, int size)
+SharedPtr<Font> Font::shared(const std::string& file, int size)
 {
   return std::make_shared<Font>(file, size);
 }

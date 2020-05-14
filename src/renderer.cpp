@@ -78,27 +78,27 @@ void Renderer::move(Renderer&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Renderer> Renderer::unique(Owner<SDL_Renderer*> renderer)
+UniquePtr<Renderer> Renderer::unique(Owner<SDL_Renderer*> renderer)
 {
   return centurion::detail::make_unique<Renderer>(renderer);
 }
 
 CENTURION_DEF
-std::unique_ptr<Renderer> Renderer::unique(const Window& window,
-                                           SDL_RendererFlags flags)
+UniquePtr<Renderer> Renderer::unique(const Window& window,
+                                     SDL_RendererFlags flags)
 {
   return centurion::detail::make_unique<Renderer>(window, flags);
 }
 
 CENTURION_DEF
-std::shared_ptr<Renderer> Renderer::shared(Owner<SDL_Renderer*> renderer)
+SharedPtr<Renderer> Renderer::shared(Owner<SDL_Renderer*> renderer)
 {
   return std::make_shared<Renderer>(renderer);
 }
 
 CENTURION_DEF
-std::shared_ptr<Renderer> Renderer::shared(const Window& window,
-                                           SDL_RendererFlags flags)
+SharedPtr<Renderer> Renderer::shared(const Window& window,
+                                     SDL_RendererFlags flags)
 {
   return std::make_shared<Renderer>(window, flags);
 }
@@ -703,8 +703,8 @@ bool Renderer::using_integer_logical_scaling() const noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Renderer::text_blended(const std::string& text,
-                                                const Font& font) const noexcept
+UniquePtr<Texture> Renderer::text_blended(const std::string& text,
+                                          const Font& font) const noexcept
 {
   return render_text(text, [this, &font](const char* text) noexcept {
     return TTF_RenderText_Blended(font.get(), text, color());
@@ -712,7 +712,7 @@ std::unique_ptr<Texture> Renderer::text_blended(const std::string& text,
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Renderer::text_blended_wrapped(
+UniquePtr<Texture> Renderer::text_blended_wrapped(
     const std::string& text,
     Uint32 wrap,
     const Font& font) const noexcept
@@ -723,9 +723,9 @@ std::unique_ptr<Texture> Renderer::text_blended_wrapped(
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Renderer::text_shaded(const std::string& text,
-                                               const Color& bg,
-                                               const Font& font) const noexcept
+UniquePtr<Texture> Renderer::text_shaded(const std::string& text,
+                                         const Color& bg,
+                                         const Font& font) const noexcept
 {
   return render_text(text, [this, &font, &bg](const char* text) noexcept {
     return TTF_RenderText_Shaded(font.get(), text, color(), bg);
@@ -733,8 +733,8 @@ std::unique_ptr<Texture> Renderer::text_shaded(const std::string& text,
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Renderer::text_solid(const std::string& text,
-                                              const Font& font) const noexcept
+UniquePtr<Texture> Renderer::text_solid(const std::string& text,
+                                        const Font& font) const noexcept
 {
   return render_text(text, [this, &font](const char* text) noexcept {
     return TTF_RenderText_Solid(font.get(), text, color());

@@ -27,11 +27,8 @@
 
 #include <SDL_mixer.h>
 
-#include <memory>
-#include <string>
-#include <type_traits>
-
 #include "centurion_api.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 namespace audio {
@@ -162,7 +159,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Music> unique(const std::string& file);
+  CENTURION_API static UniquePtr<Music> unique(const std::string& file);
 
   /**
    * Creates and returns a shared pointer to a Music instance.
@@ -173,7 +170,7 @@ class Music final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Music> shared(const std::string& file);
+  CENTURION_API static SharedPtr<Music> shared(const std::string& file);
 
   /**
    * Plays the music. Previously playing music will be halted. However, this

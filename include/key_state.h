@@ -28,10 +28,9 @@
 #include <SDL.h>
 
 #include <array>
-#include <memory>
-#include <type_traits>
 
 #include "centurion_api.h"
+#include "centurion_utils.h"
 #include "key.h"
 
 namespace centurion {
@@ -58,7 +57,7 @@ class KeyState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<KeyState> unique();
+  CENTURION_API static UniquePtr<KeyState> unique();
 
   /**
    * Creates and returns a shared pointer to a KeyState instance.
@@ -67,7 +66,7 @@ class KeyState final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<KeyState> shared();
+  CENTURION_API static SharedPtr<KeyState> shared();
 
   /**
    * Updates the state of the key state object. Note! SDL_PollEvent isn't

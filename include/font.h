@@ -113,8 +113,8 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Font> unique(const std::string& file,
-                                                    int size);
+  CENTURION_API static UniquePtr<Font> unique(const std::string& file,
+                                              int size);
 
   /**
    * Creates and returns a shared pointer to a font instance.
@@ -128,8 +128,8 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Font> shared(const std::string& file,
-                                                    int size);
+  CENTURION_API static SharedPtr<Font> shared(const std::string& file,
+                                              int size);
 
   /**
    * Resets the style of the font.

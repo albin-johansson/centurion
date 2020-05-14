@@ -97,7 +97,7 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Renderer> unique(
+  CENTURION_API static UniquePtr<Renderer> unique(
       Owner<SDL_Renderer*> renderer);
 
   /**
@@ -109,7 +109,7 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Renderer> unique(
+  CENTURION_API static UniquePtr<Renderer> unique(
       const Window& window,
       SDL_RendererFlags flags = defaultFlags);
 
@@ -123,7 +123,7 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Renderer> shared(
+  CENTURION_API static SharedPtr<Renderer> shared(
       Owner<SDL_Renderer*> renderer);
 
   /**
@@ -135,7 +135,7 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Renderer> shared(
+  CENTURION_API static SharedPtr<Renderer> shared(
       const Window& window,
       SDL_RendererFlags flags = defaultFlags);
 
@@ -887,8 +887,8 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  std::unique_ptr<Texture> text_blended(const std::string& text,
-                                        const Font& font) const noexcept;
+  UniquePtr<Texture> text_blended(const std::string& text,
+                                  const Font& font) const noexcept;
 
   /**
    * Attempts to render the specified text in the supplied font using the
@@ -913,10 +913,9 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  std::unique_ptr<Texture> text_blended_wrapped(
-      const std::string& text,
-      Uint32 wrap,
-      const Font& font) const noexcept;
+  UniquePtr<Texture> text_blended_wrapped(const std::string& text,
+                                          Uint32 wrap,
+                                          const Font& font) const noexcept;
 
   /**
    * Attempts to render the specified text in the supplied font using the
@@ -938,9 +937,9 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  std::unique_ptr<Texture> text_shaded(const std::string& text,
-                                       const Color& bg,
-                                       const Font& font) const noexcept;
+  UniquePtr<Texture> text_shaded(const std::string& text,
+                                 const Color& bg,
+                                 const Font& font) const noexcept;
 
   /**
    * Attempts to render the specified text in the supplied font using the
@@ -960,8 +959,8 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  std::unique_ptr<Texture> text_solid(const std::string& text,
-                                      const Font& font) const noexcept;
+  UniquePtr<Texture> text_solid(const std::string& text,
+                                const Font& font) const noexcept;
 
   /**
    * Returns the viewport that the renderer uses.
@@ -1058,7 +1057,7 @@ class Renderer final {
    * @since 4.0.0
    */
   template <typename Lambda>
-  CENTURION_NODISCARD std::unique_ptr<Texture> render_text(
+  CENTURION_NODISCARD UniquePtr<Texture> render_text(
       const std::string& text,
       Lambda&& render) const noexcept
   {

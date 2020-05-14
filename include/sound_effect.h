@@ -27,11 +27,8 @@
 
 #include <SDL_mixer.h>
 
-#include <memory>
-#include <string>
-#include <type_traits>
-
 #include "centurion_api.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 namespace audio {
@@ -83,7 +80,7 @@ class SoundEffect final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::unique_ptr<SoundEffect> unique(const std::string& file);
+  static UniquePtr<SoundEffect> unique(const std::string& file);
 
   /**
    * Creates and returns a shared pointer to a SoundEffect instance.
@@ -95,7 +92,7 @@ class SoundEffect final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::shared_ptr<SoundEffect> shared(const std::string& file);
+  static SharedPtr<SoundEffect> shared(const std::string& file);
 
   /**
    * Plays the sound effect.

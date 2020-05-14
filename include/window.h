@@ -57,7 +57,7 @@ class Window final {
    * greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(const char* title, int width, int height);
+  CENTURION_API explicit Window(CZString title, int width, int height);
 
   /**
    * Creates a window instance. The window will be hidden by default.
@@ -77,7 +77,7 @@ class Window final {
    * string is used.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(const char* title);
+  CENTURION_API explicit Window(CZString title);
 
   /**
    * Creates a window based on the supplied SDL_Window instance. The created
@@ -132,9 +132,9 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique(const char* title,
-                                                      int width,
-                                                      int height);
+  CENTURION_API static UniquePtr<Window> unique(CZString title,
+                                                int width,
+                                                int height);
 
   /**
    * Creates and returns a unique pointer to a window instance.
@@ -147,7 +147,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique(int width, int height);
+  CENTURION_API static UniquePtr<Window> unique(int width, int height);
 
   /**
    * Creates and returns a unique pointer to a window instance.
@@ -158,7 +158,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique(const char* title);
+  CENTURION_API static UniquePtr<Window> unique(CZString title);
 
   /**
    * Creates and returns a unique pointer to a window instance. The created
@@ -170,8 +170,7 @@ class Window final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique(
-      Owner<SDL_Window*> window);
+  CENTURION_API static UniquePtr<Window> unique(Owner<SDL_Window*> window);
 
   /**
    * Creates and returns a unique pointer to a Window instance.
@@ -180,7 +179,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Window> unique();
+  CENTURION_API static UniquePtr<Window> unique();
 
   /**
    * Creates and returns a shared pointer to a window instance.
@@ -195,9 +194,9 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared(const char* title,
-                                                      int width,
-                                                      int height);
+  CENTURION_API static SharedPtr<Window> shared(CZString title,
+                                                int width,
+                                                int height);
 
   /**
    * Creates and returns a shared pointer to a window instance.
@@ -210,7 +209,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared(int width, int height);
+  CENTURION_API static SharedPtr<Window> shared(int width, int height);
 
   /**
    * Creates and returns a shared pointer to a window instance.
@@ -221,7 +220,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared(const char* title);
+  CENTURION_API static SharedPtr<Window> shared(CZString title);
 
   /**
    * Creates and returns a shared pointer to a window instance. The created
@@ -233,8 +232,7 @@ class Window final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared(
-      Owner<SDL_Window*> window);
+  CENTURION_API static SharedPtr<Window> shared(Owner<SDL_Window*> window);
 
   /**
    * Creates and returns a shared pointer to a Window instance.
@@ -243,7 +241,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Window> shared();
+  CENTURION_API static SharedPtr<Window> shared();
 
   /**
    * Makes the window visible.
@@ -350,12 +348,13 @@ class Window final {
   CENTURION_API void set_icon(const Surface& icon) noexcept;
 
   /**
-   * Sets the title of the window.
+   * Sets the title of the window. This method has no effect if the supplied
+   * string is null.
    *
-   * @param title the title of the window.
+   * @param title the title of the window, can safely be null.
    * @since 3.0.0
    */
-  CENTURION_API void set_title(const std::string& title) noexcept;
+  CENTURION_API void set_title(CZString title) noexcept;
 
   /**
    * Sets the opacity of the window.
@@ -720,7 +719,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::string title() const noexcept;
+  CENTURION_API CZString title() const noexcept;
 
   /**
    * Returns a textual representation of the window.

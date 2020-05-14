@@ -123,70 +123,68 @@ void Texture::unlock() noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Texture::unique(Owner<SDL_Texture*> texture)
+UniquePtr<Texture> Texture::unique(Owner<SDL_Texture*> texture)
 {
   return centurion::detail::make_unique<Texture>(texture);
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
-                                         const char* path)
+UniquePtr<Texture> Texture::unique(const Renderer& renderer, const char* path)
 {
   return centurion::detail::make_unique<Texture>(renderer, path);
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
-                                         const Surface& surface)
+UniquePtr<Texture> Texture::unique(const Renderer& renderer,
+                                   const Surface& surface)
 {
   return centurion::detail::make_unique<Texture>(renderer, surface);
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Texture::unique(const Renderer& renderer,
-                                         PixelFormat format,
-                                         TextureAccess access,
-                                         int width,
-                                         int height)
+UniquePtr<Texture> Texture::unique(const Renderer& renderer,
+                                   PixelFormat format,
+                                   TextureAccess access,
+                                   int width,
+                                   int height)
 {
   return centurion::detail::make_unique<Texture>(
       renderer, format, access, width, height);
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> Texture::shared(Owner<SDL_Texture*> texture)
+SharedPtr<Texture> Texture::shared(Owner<SDL_Texture*> texture)
 {
   return std::make_shared<Texture>(texture);
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
-                                         const char* path)
+SharedPtr<Texture> Texture::shared(const Renderer& renderer, const char* path)
 {
   return std::make_shared<Texture>(renderer, path);
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
-                                         const Surface& surface)
+SharedPtr<Texture> Texture::shared(const Renderer& renderer,
+                                   const Surface& surface)
 {
   return std::make_shared<Texture>(renderer, surface);
 }
 
 CENTURION_DEF
-std::shared_ptr<Texture> Texture::shared(const Renderer& renderer,
-                                         PixelFormat format,
-                                         TextureAccess access,
-                                         int width,
-                                         int height)
+SharedPtr<Texture> Texture::shared(const Renderer& renderer,
+                                   PixelFormat format,
+                                   TextureAccess access,
+                                   int width,
+                                   int height)
 {
   return std::make_shared<Texture>(renderer, format, access, width, height);
 }
 
 CENTURION_DEF
-std::unique_ptr<Texture> Texture::streaming(const Renderer& renderer,
-                                            const std::string& path,
-                                            PixelFormat format)
+UniquePtr<Texture> Texture::streaming(const Renderer& renderer,
+                                      const std::string& path,
+                                      PixelFormat format)
 {
   const auto blendMode = BlendMode::Blend;
   const auto createSurface = [](const std::string& path, PixelFormat format) {

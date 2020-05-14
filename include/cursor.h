@@ -177,7 +177,7 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Cursor> unique(SystemCursor id);
+  CENTURION_API static UniquePtr<Cursor> unique(SystemCursor id);
 
   /**
    * Creates and returns a unique pointer to a Cursor instance. The created
@@ -189,8 +189,7 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Cursor> unique(
-      Owner<SDL_Cursor*> cursor);
+  CENTURION_API static UniquePtr<Cursor> unique(Owner<SDL_Cursor*> cursor);
 
   /**
    * Creates and returns a unique pointer to a Cursor instance. The supplied
@@ -204,8 +203,8 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::unique_ptr<Cursor> unique(const Surface& surface,
-                                                      IPoint hotspot);
+  CENTURION_API static UniquePtr<Cursor> unique(const Surface& surface,
+                                                IPoint hotspot);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance.
@@ -216,7 +215,7 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Cursor> shared(SystemCursor id);
+  CENTURION_API static SharedPtr<Cursor> shared(SystemCursor id);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance. The created
@@ -228,8 +227,7 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Cursor> shared(
-      Owner<SDL_Cursor*> cursor);
+  CENTURION_API static SharedPtr<Cursor> shared(Owner<SDL_Cursor*> cursor);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance. The supplied
@@ -243,8 +241,8 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static std::shared_ptr<Cursor> shared(const Surface& surface,
-                                                      IPoint hotspot);
+  CENTURION_API static SharedPtr<Cursor> shared(const Surface& surface,
+                                                IPoint hotspot);
 
   /**
    * Makes the cursor the used cursor.

@@ -246,7 +246,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::unique_ptr<Texture> unique(Owner<SDL_Texture*> texture);
+  static UniquePtr<Texture> unique(Owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a unique texture by loading it from a file.
@@ -259,8 +259,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::unique_ptr<Texture> unique(const Renderer& renderer,
-                                         const char* path);
+  static UniquePtr<Texture> unique(const Renderer& renderer, const char* path);
 
   /**
    * Creates and returns a unique texture that is a copy of the supplied
@@ -274,8 +273,8 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::unique_ptr<Texture> unique(const Renderer& renderer,
-                                         const Surface& surface);
+  static UniquePtr<Texture> unique(const Renderer& renderer,
+                                   const Surface& surface);
 
   /**
    * Creates and returns a unique pointer to an texture with the supplied
@@ -292,11 +291,11 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::unique_ptr<Texture> unique(const Renderer& renderer,
-                                         PixelFormat format,
-                                         TextureAccess access,
-                                         int width,
-                                         int height);
+  static UniquePtr<Texture> unique(const Renderer& renderer,
+                                   PixelFormat format,
+                                   TextureAccess access,
+                                   int width,
+                                   int height);
 
   /**
    * Creates and returns a shared texture from a pre-existing SDL texture. The
@@ -310,7 +309,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::shared_ptr<Texture> shared(Owner<SDL_Texture*> texture);
+  static SharedPtr<Texture> shared(Owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a shared texture by loading it from a file.
@@ -323,8 +322,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::shared_ptr<Texture> shared(const Renderer& renderer,
-                                         const char* path);
+  static SharedPtr<Texture> shared(const Renderer& renderer, const char* path);
 
   /**
    * Creates and returns a shared texture that is a copy of the supplied
@@ -338,8 +336,8 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::shared_ptr<Texture> shared(const Renderer& renderer,
-                                         const Surface& surface);
+  static SharedPtr<Texture> shared(const Renderer& renderer,
+                                   const Surface& surface);
 
   /**
    * Creates and returns a shared pointer to an texture with the supplied
@@ -356,11 +354,11 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::shared_ptr<Texture> shared(const Renderer& renderer,
-                                         PixelFormat format,
-                                         TextureAccess access,
-                                         int width,
-                                         int height);
+  static SharedPtr<Texture> shared(const Renderer& renderer,
+                                   PixelFormat format,
+                                   TextureAccess access,
+                                   int width,
+                                   int height);
 
   /**
    * Creates and returns a unique pointer to a texture based on the image at
@@ -376,9 +374,9 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static std::unique_ptr<Texture> streaming(const Renderer& renderer,
-                                            const std::string& path,
-                                            PixelFormat format);
+  static UniquePtr<Texture> streaming(const Renderer& renderer,
+                                      const std::string& path,
+                                      PixelFormat format);
 
   /**
    * Sets the color of the pixel at the specified coordinate. This method has

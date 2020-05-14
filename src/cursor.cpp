@@ -87,37 +87,37 @@ void Cursor::move(Cursor&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Cursor> Cursor::unique(SystemCursor id)
+UniquePtr<Cursor> Cursor::unique(SystemCursor id)
 {
   return centurion::detail::make_unique<Cursor>(id);
 }
 
 CENTURION_DEF
-std::unique_ptr<Cursor> Cursor::unique(Owner<SDL_Cursor*> cursor)
+UniquePtr<Cursor> Cursor::unique(Owner<SDL_Cursor*> cursor)
 {
   return centurion::detail::make_unique<Cursor>(cursor);
 }
 
 CENTURION_DEF
-std::unique_ptr<Cursor> Cursor::unique(const Surface& surface, IPoint hotspot)
+UniquePtr<Cursor> Cursor::unique(const Surface& surface, IPoint hotspot)
 {
   return centurion::detail::make_unique<Cursor>(surface, hotspot);
 }
 
 CENTURION_DEF
-std::shared_ptr<Cursor> Cursor::shared(SystemCursor id)
+SharedPtr<Cursor> Cursor::shared(SystemCursor id)
 {
   return std::make_shared<Cursor>(id);
 }
 
 CENTURION_DEF
-std::shared_ptr<Cursor> Cursor::shared(Owner<SDL_Cursor*> cursor)
+SharedPtr<Cursor> Cursor::shared(Owner<SDL_Cursor*> cursor)
 {
   return std::make_shared<Cursor>(cursor);
 }
 
 CENTURION_DEF
-std::shared_ptr<Cursor> Cursor::shared(const Surface& surface, IPoint hotspot)
+SharedPtr<Cursor> Cursor::shared(const Surface& surface, IPoint hotspot)
 {
   return std::make_shared<Cursor>(surface, hotspot);
 }

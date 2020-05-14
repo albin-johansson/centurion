@@ -26,13 +26,13 @@ KeyState::KeyState()
 }
 
 CENTURION_DEF
-std::unique_ptr<KeyState> KeyState::unique()
+UniquePtr<KeyState> KeyState::unique()
 {
   return centurion::detail::make_unique<KeyState>();
 }
 
 CENTURION_DEF
-std::shared_ptr<KeyState> KeyState::shared()
+SharedPtr<KeyState> KeyState::shared()
 {
   return std::make_shared<KeyState>();
 }

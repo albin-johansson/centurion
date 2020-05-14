@@ -19,7 +19,7 @@ inline Window create(SDL_WindowFlags flag)
 
 }  // namespace
 
-TEST_CASE("Window(const char*, int, int)", "[Window]")
+TEST_CASE("Window(CZString, int, int)", "[Window]")
 {
   CHECK_THROWS_AS(Window("", 0, 10), CenturionException);
   CHECK_THROWS_AS(Window("", 10, 0), CenturionException);
@@ -33,7 +33,7 @@ TEST_CASE("Window(const char*, int, int)", "[Window]")
 
     CHECK(window.width() == width);
     CHECK(window.height() == height);
-    CHECK(window.title() == title);
+    CHECK_THAT(window.title(), Catch::Equals(title));
     CHECK(!window.visible());
   }
 
@@ -52,25 +52,27 @@ TEST_CASE("Window(int, int)", "[Window]")
 
   CHECK(window.width() == width);
   CHECK(window.height() == height);
-  CHECK(window.title() == "Centurion window");  // TODO either doc or remove
-                                                // behavior
+
+  // TODO either doc or remove behavior
+  CHECK_THAT(window.title(), Catch::Equals("Centurion window"));
+
   CHECK(!window.visible());
 }
 
-TEST_CASE("Window(const char*)", "[Window]")
+TEST_CASE("Window(CZString)", "[Window]")
 {
   SECTION("Null string")
   {
-    const char* str = nullptr;
+    CZString str = nullptr;
     Window window{str};
 
-    CHECK(window.title() == "");
+    CHECK_THAT(window.title(), Catch::Equals(""));
   }
   SECTION("Normal")
   {
-    const char* str = "Foo";
+    CZString str = "Foo";
     Window window{"Foo"};
-    CHECK(window.title() == str);
+    CHECK_THAT(window.title(), Catch::Equals(str));
   }
 }
 
@@ -95,7 +97,7 @@ TEST_CASE("Window()", "[Window]")
 
   CHECK(window.width() == 800);
   CHECK(window.height() == 600);
-  CHECK(window.title() == "Centurion window");
+  CHECK_THAT(window.title(), Catch::Equals("Centurion window"));
   CHECK(!window.visible());
 }
 
@@ -142,9 +144,9 @@ TEST_CASE("Window::unique", "[Window]")
     CHECK(Window::unique(good));
   }
 
-  SECTION("Window::unique(const char*)")
+  SECTION("Window::unique(CZString)")
   {
-    CHECK_NOTHROW(Window::unique(static_cast<const char*>(nullptr)));
+    CHECK_NOTHROW(Window::unique(static_cast<CZString>(nullptr)));
     CHECK_NOTHROW(Window::unique(""));
     CHECK_NOTHROW(Window::unique());
   }
@@ -156,7 +158,7 @@ TEST_CASE("Window::unique", "[Window]")
     CHECK_NOTHROW(Window::unique(10, 10));
   }
 
-  SECTION("Window::unique(const char*, int, int)")
+  SECTION("Window::unique(CZString, int, int)")
   {
     CHECK_THROWS_AS(Window::unique("", 0, 10), CenturionException);
     CHECK_THROWS_AS(Window::unique("", 10, 0), CenturionException);
@@ -178,9 +180,9 @@ TEST_CASE("Window::shared", "[Window]")
     CHECK(Window::shared(good));
   }
 
-  SECTION("Window::shared(const char*)")
+  SECTION("Window::shared(CZString)")
   {
-    CHECK_NOTHROW(Window::shared(static_cast<const char*>(nullptr)));
+    CHECK_NOTHROW(Window::shared(static_cast<CZString>(nullptr)));
     CHECK_NOTHROW(Window::shared(""));
     CHECK_NOTHROW(Window::shared());
   }
@@ -192,7 +194,7 @@ TEST_CASE("Window::shared", "[Window]")
     CHECK_NOTHROW(Window::shared(10, 10));
   }
 
-  SECTION("Window::shared(const char*, int, int)")
+  SECTION("Window::shared(CZString, int, int)")
   {
     CHECK_THROWS_AS(Window::shared("", 0, 10), CenturionException);
     CHECK_THROWS_AS(Window::shared("", 10, 0), CenturionException);
@@ -369,10 +371,10 @@ TEST_CASE("Window::set_title", "[Window]")
 {
   Window window;
 
-  const auto title = "foo";
+  CZString title = "foo";
   window.set_title(title);
 
-  CHECK(window.title() == title);
+  CHECK_THAT(window.title(), Catch::Equals(title));
 }
 
 TEST_CASE("Window::set_opacity", "[Window]")
@@ -911,9 +913,9 @@ TEST_CASE("Window::pixel_format", "[Window]")
 
 TEST_CASE("Window::title", "[Window]")
 {
-  const auto* title = "HelloWorld";
+  CZString title = "HelloWorld";
   const Window window{title};
-  CHECK(window.title() == title);
+  CHECK_THAT(window.title(), Catch::Equals(title));
 }
 
 TEST_CASE("Window::to_string", "[Window]")

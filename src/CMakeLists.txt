@@ -168,9 +168,11 @@ target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_IMAGE_IN
 target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 
-target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${CTN_LIBRARY_DIR})
-target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_INCLUDE_DIR})
+target_include_directories(${CENTURION_LIB_TARGET} PRIVATE ${CTN_INCLUDE_DIR}
+        SYSTEM INTERFACE ${CTN_INCLUDE_DIR})
+
 target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_SOURCE_DIR})
+target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${CTN_LIBRARY_DIR})
 
 target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_LIBRARY}

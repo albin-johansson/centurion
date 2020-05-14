@@ -198,6 +198,14 @@ using SharedPtr = std::shared_ptr<T>;
  */
 template <typename T>
 using WeakPtr = std::weak_ptr<T>;
+
+///**
+// * A type alias for a string span.
+// *
+// * @since 4.0.0
+// */
+//using StringSpan = gsl::czstring_span; // TODO remove if unused
+
 /**
  * A type alias for a const null-terminated C-style string.
  *

@@ -512,6 +512,7 @@ TEST_CASE("Window::decorated", "[Window]")
   }
 }
 
+#ifndef TRAVIS_TEST
 TEST_CASE("Window::grabbing_mouse", "[Window]")
 {
   SECTION("Normal")
@@ -525,6 +526,7 @@ TEST_CASE("Window::grabbing_mouse", "[Window]")
     CHECK(window.grabbing_mouse());
   }
 }
+#endif  // TRAVIS_TEST
 
 TEST_CASE("Window::resizable", "[Window]")
 {
@@ -664,6 +666,7 @@ TEST_CASE("Window::opengl", "[Window]")
   }
 }
 
+#ifndef TRAVIS_TEST
 TEST_CASE("Window::vulkan", "[Window]")
 {
   SECTION("Normal")
@@ -689,6 +692,7 @@ TEST_CASE("Window::has_input_focus", "[Window]")
 
   CHECK(window.has_input_focus());
 }
+#endif  // TRAVIS_TEST
 
 TEST_CASE("Window::has_mouse_focus", "[Window]")
 {
@@ -702,6 +706,7 @@ TEST_CASE("Window::is_foreign", "[Window]")
   CHECK(!window.is_foreign());
 }
 
+#ifndef TRAVIS_TEST
 TEST_CASE("Window::capturing_mouse", "[Window]")
 {
   SECTION("Normal")
@@ -721,6 +726,7 @@ TEST_CASE("Window::capturing_mouse", "[Window]")
     CHECK(window.capturing_mouse());
   }
 }
+#endif // TRAVIS_TEST
 
 TEST_CASE("Window::always_on_top", "[Window]")
 {

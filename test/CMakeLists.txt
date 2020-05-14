@@ -69,6 +69,7 @@ add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
 
 if (DEFINED ENV{TRAVIS})
     target_compile_definitions(${CENTURION_TEST_TARGET} PUBLIC CENTURION_NOAUDIO)
+    target_compile_definitions(${CENTURION_TEST_TARGET} PUBLIC TRAVIS_TEST)
 endif ()
 
 set_target_properties(${CENTURION_TEST_TARGET} PROPERTIES

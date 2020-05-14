@@ -6,7 +6,6 @@ set(SOURCE_FILES
         ${CTN_LIBRARY_DIR}/optional.hpp
 
         ${CTN_INCLUDE_DIR}/window.h
-        ${CTN_INCLUDE_DIR}/window_listener.h
         ${CTN_INCLUDE_DIR}/font.h
         ${CTN_INCLUDE_DIR}/renderer.h
         ${CTN_INCLUDE_DIR}/texture.h

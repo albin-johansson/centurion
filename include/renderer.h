@@ -33,11 +33,11 @@
 #include <type_traits>
 #include <vector>
 
+#include "area.h"
 #include "blend_mode.h"
 #include "centurion_api.h"
 #include "centurion_utils.h"
 #include "color.h"
-#include "dimension.h"
 #include "point.h"
 #include "rect.h"
 
@@ -677,11 +677,10 @@ class Renderer final {
    * resolution-independent rendering. This method has no effect if either of
    * the supplied dimensions aren't greater than zero.
    *
-   * @param width the logical width that will be used.
-   * @param height the logical height that will be used.
+   * @param size the logical width and height that will be used.
    * @since 3.0.0
    */
-  CENTURION_API void set_logical_size(int width, int height) noexcept;
+  CENTURION_API void set_logical_size(Area size) noexcept;
 
   /**
    * Sets whether or not to force integer scaling for the logical viewport. By

@@ -19,17 +19,17 @@ inline Window create(SDL_WindowFlags flag)
 
 }  // namespace
 
-TEST_CASE("Window(CZString, int, int)", "[Window]")
+TEST_CASE("Window(CZString, Area)", "[Window]")
 {
-  CHECK_THROWS_AS(Window("", 0, 10), CenturionException);
-  CHECK_THROWS_AS(Window("", 10, 0), CenturionException);
+  CHECK_THROWS_AS(Window("", {0, 10}), CenturionException);
+  CHECK_THROWS_AS(Window("", {10, 0}), CenturionException);
 
   SECTION("Normal")
   {
     const auto width = 123;
     const auto height = 321;
     const auto title = "Foo";
-    const Window window{title, width, height};
+    const Window window{title, {width, height}};
 
     CHECK(window.width() == width);
     CHECK(window.height() == height);
@@ -39,7 +39,7 @@ TEST_CASE("Window(CZString, int, int)", "[Window]")
 
   SECTION("Null title")
   {
-    const Window window{nullptr, 10, 10};
+    const Window window{nullptr, {10, 10}};
     CHECK_THAT(window.title(), Catch::Equals(""));
   }
 }
@@ -48,7 +48,7 @@ TEST_CASE("Window(int, int)", "[Window]")
 {
   const auto width = 832;
   const auto height = 715;
-  const Window window{width, height};
+  const Window window{{width, height}};
 
   CHECK(window.width() == width);
   CHECK(window.height() == height);
@@ -151,19 +151,19 @@ TEST_CASE("Window::unique", "[Window]")
     CHECK_NOTHROW(Window::unique());
   }
 
-  SECTION("Window::unique(int, int)")
+  SECTION("Window::unique(Area)")
   {
-    CHECK_THROWS_AS(Window::unique(10, 0), CenturionException);
-    CHECK_THROWS_AS(Window::unique(0, 10), CenturionException);
-    CHECK_NOTHROW(Window::unique(10, 10));
+    CHECK_THROWS_AS(Window::unique({10, 0}), CenturionException);
+    CHECK_THROWS_AS(Window::unique({0, 10}), CenturionException);
+    CHECK_NOTHROW(Window::unique({10, 10}));
   }
 
-  SECTION("Window::unique(CZString, int, int)")
+  SECTION("Window::unique(CZString, Area)")
   {
-    CHECK_THROWS_AS(Window::unique("", 0, 10), CenturionException);
-    CHECK_THROWS_AS(Window::unique("", 10, 0), CenturionException);
-    CHECK_NOTHROW(Window::unique(nullptr, 10, 10));
-    CHECK(Window::unique("Foo", 10, 10));
+    CHECK_THROWS_AS(Window::unique("", {0, 10}), CenturionException);
+    CHECK_THROWS_AS(Window::unique("", {10, 0}), CenturionException);
+    CHECK_NOTHROW(Window::unique(nullptr, {10, 10}));
+    CHECK(Window::unique("Foo", {10, 10}));
   }
 }
 
@@ -187,19 +187,19 @@ TEST_CASE("Window::shared", "[Window]")
     CHECK_NOTHROW(Window::shared());
   }
 
-  SECTION("Window::shared(int, int)")
+  SECTION("Window::shared(Area)")
   {
-    CHECK_THROWS_AS(Window::shared(10, 0), CenturionException);
-    CHECK_THROWS_AS(Window::shared(0, 10), CenturionException);
-    CHECK_NOTHROW(Window::shared(10, 10));
+    CHECK_THROWS_AS(Window::shared({10, 0}), CenturionException);
+    CHECK_THROWS_AS(Window::shared({0, 10}), CenturionException);
+    CHECK_NOTHROW(Window::shared({10, 10}));
   }
 
-  SECTION("Window::shared(CZString, int, int)")
+  SECTION("Window::shared(CZString, Area)")
   {
-    CHECK_THROWS_AS(Window::shared("", 0, 10), CenturionException);
-    CHECK_THROWS_AS(Window::shared("", 10, 0), CenturionException);
-    CHECK_NOTHROW(Window::shared(nullptr, 10, 10));
-    CHECK(Window::shared("Foo", 10, 10));
+    CHECK_THROWS_AS(Window::shared("", {0, 10}), CenturionException);
+    CHECK_THROWS_AS(Window::shared("", {10, 0}), CenturionException);
+    CHECK_NOTHROW(Window::shared(nullptr, {10, 10}));
+    CHECK(Window::shared("Foo", {10, 10}));
   }
 }
 
@@ -409,7 +409,7 @@ TEST_CASE("Window::set_min_size", "[Window]")
   const auto width = 123;
   const auto height = 496;
 
-  window.set_min_size(width, height);
+  window.set_min_size({width, height});
 
   const auto minSize = window.min_size();
   CHECK(width == minSize.width);
@@ -422,7 +422,7 @@ TEST_CASE("Window::set_max_size", "[Window]")
 
   const auto width = 834;
   const auto height = 123;
-  window.set_max_size(width, height);
+  window.set_max_size({width, height});
 
   const auto maxSize = window.max_size();
   CHECK(width == maxSize.width);
@@ -646,14 +646,14 @@ TEST_CASE("Window::position", "[Window]")
 TEST_CASE("Window::width", "[Window]")
 {
   const auto width = 921;
-  Window window{width, 10};
+  Window window{{width, 10}};
   CHECK(window.width() == width);
 }
 
 TEST_CASE("Window::height", "[Window]")
 {
   const auto height = 435;
-  Window window{10, height};
+  Window window{{10, height}};
   CHECK(window.height() == height);
 }
 

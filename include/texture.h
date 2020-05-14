@@ -31,11 +31,11 @@
 #include <string>
 #include <type_traits>
 
+#include "area.h"
 #include "blend_mode.h"
 #include "centurion_api.h"
 #include "centurion_utils.h"
 #include "color.h"
-#include "dimension.h"
 #include "pixel_format.h"
 #include "point.h"
 

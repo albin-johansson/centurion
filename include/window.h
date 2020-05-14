@@ -27,9 +27,9 @@
 
 #include <SDL.h>
 
+#include "area.h"
 #include "centurion_api.h"
 #include "centurion_utils.h"
-#include "dimension.h"
 #include "pixel_format.h"
 #include "point.h"
 
@@ -51,24 +51,22 @@ class Window final {
    *
    * @param title the title of the window, may be null. If null, the empty
    * string is used.
-   * @param width the width of the window, must be greater than zero.
-   * @param height the height of the window, must be greater than zero.
-   * @throws CenturionException if the supplied width or height values aren't
+   * @param size the size of the window, components must be greater than zero.
+   * @throws CenturionException if the supplied width or height isn't
    * greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(CZString title, int width, int height);
+  CENTURION_API explicit Window(CZString title, Area size);
 
   /**
    * Creates a window instance. The window will be hidden by default.
    *
-   * @param width the width of the window, must be greater than zero.
-   * @param height the height of the window, must be greater than zero.
-   * @throws CenturionException if the supplied width or height values aren't
+   * @param size the size of the window, components must be greater than zero.
+   * @throws CenturionException if the supplied width or height isn't
    * greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(int width, int height);
+  CENTURION_API explicit Window(Area size);
 
   /**
    * Creates a 800x600 window with the specified title.
@@ -88,6 +86,7 @@ class Window final {
    * @since 4.0.0
    */
   CENTURION_API explicit Window(Owner<SDL_Window*> window);
+
   /**
    * Creates a 800x600 window. The window will be hidden by default.
    *
@@ -132,22 +131,19 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Window> unique(CZString title,
-                                                int width,
-                                                int height);
+  CENTURION_API static UniquePtr<Window> unique(CZString title, Area size);
 
   /**
    * Creates and returns a unique pointer to a window instance.
    *
-   * @param width the width of the window.
-   * @param height the height of the window.
+   * @param size the size of the window, components must be greater than zero.
    * @return a unique pointer to a window instance.
    * @throws invalid_argument if the supplied width or height values aren't
    * greater than zero.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Window> unique(int width, int height);
+  CENTURION_API static UniquePtr<Window> unique(Area size);
 
   /**
    * Creates and returns a unique pointer to a window instance.
@@ -186,30 +182,26 @@ class Window final {
    *
    * @param title the title of the window, may be null. If null, the empty
    * string is used.
-   * @param width the width of the window.
-   * @param height the height of the window.
+   *@param size the size of the window, components must be greater than zero.
    * @return a shared pointer to a window instance.
    * @throws invalid_argument if the supplied width or height values aren't
    * greater than zero.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Window> shared(CZString title,
-                                                int width,
-                                                int height);
+  CENTURION_API static SharedPtr<Window> shared(CZString title, Area size);
 
   /**
    * Creates and returns a shared pointer to a window instance.
    *
-   * @param width the width of the window.
-   * @param height the height of the window.
+   * @param size the size of the window, components must be greater than zero.
    * @return a shared pointer to a window instance.
    * @throws invalid_argument if the supplied width or height values aren't
    * greater than zero.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Window> shared(int width, int height);
+  CENTURION_API static SharedPtr<Window> shared(Area size);
 
   /**
    * Creates and returns a shared pointer to a window instance.
@@ -366,22 +358,24 @@ class Window final {
   CENTURION_API void set_opacity(float opacity) noexcept;
 
   /**
-   * Sets the minimum size of the window.
+   * Sets the minimum size of the window. This method has no effect if any of
+   * the components aren't greater than zero.
    *
-   * @param width the minimum width of the window, must be greater than zero.
-   * @param height the minimum height of the window, must be greater than zero.
+   * @param size the minimum size of the window, components must be greater
+   * than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_min_size(int width, int height) noexcept;
+  CENTURION_API void set_min_size(Area size) noexcept;
 
   /**
-   * Sets the maximum size of the window.
+   * Sets the maximum size of the window. This method has no effect if any of
+   * the components aren't greater than zero.
    *
-   * @param width the maximum width of the window, must be greater than zero.
-   * @param height the maximum height of the window, must be greater than zero.
+   * @param size the maximum size of the window, components must be greater
+   * than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_max_size(int width, int height) noexcept;
+  CENTURION_API void set_max_size(Area size) noexcept;
 
   /**
    * Sets the position of the window. Note, it's possible to use

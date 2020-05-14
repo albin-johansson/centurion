@@ -12,24 +12,23 @@
 namespace centurion {
 
 CENTURION_DEF
-Window::Window(CZString title, int width, int height)
+Window::Window(CZString title, Area size)
 {
-  if ((width < 1) || (height < 1)) {
+  if ((size.width < 1) || (size.height < 1)) {
     throw CenturionException{"Invalid width or height!"};
   }
 
   const auto pos = SDL_WINDOWPOS_CENTERED;
   m_window = SDL_CreateWindow(
-      title ? title : "", pos, pos, width, height, SDL_WINDOW_HIDDEN);
+      title ? title : "", pos, pos, size.width, size.height, SDL_WINDOW_HIDDEN);
 }
 
 CENTURION_DEF
-Window::Window(int width, int height)
-    : Window{"Centurion window", width, height}
+Window::Window(Area size) : Window{"Centurion window", size}
 {}
 
 CENTURION_DEF
-Window::Window(CZString title) : Window{title, 800, 600}
+Window::Window(CZString title) : Window{title, {800, 600}}
 {}
 
 CENTURION_DEF
@@ -41,7 +40,7 @@ Window::Window(Owner<SDL_Window*> window) : m_window{window}
 }
 
 CENTURION_DEF
-Window::Window() : Window{800, 600}
+Window::Window() : Window{{800, 600}}
 {}
 
 CENTURION_DEF
@@ -84,15 +83,15 @@ void Window::move(Window&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Window> Window::unique(CZString title, int width, int height)
+UniquePtr<Window> Window::unique(CZString title, Area size)
 {
-  return centurion::detail::make_unique<Window>(title, width, height);
+  return centurion::detail::make_unique<Window>(title, size);
 }
 
 CENTURION_DEF
-UniquePtr<Window> Window::unique(int width, int height)
+UniquePtr<Window> Window::unique(Area size)
 {
-  return centurion::detail::make_unique<Window>(width, height);
+  return centurion::detail::make_unique<Window>(size);
 }
 
 CENTURION_DEF
@@ -114,15 +113,15 @@ UniquePtr<Window> Window::unique()
 }
 
 CENTURION_DEF
-SharedPtr<Window> Window::shared(CZString title, int width, int height)
+SharedPtr<Window> Window::shared(CZString title, Area size)
 {
-  return std::make_shared<Window>(title, width, height);
+  return std::make_shared<Window>(title, size);
 }
 
 CENTURION_DEF
-SharedPtr<Window> Window::shared(int width, int height)
+SharedPtr<Window> Window::shared(Area size)
 {
-  return std::make_shared<Window>(width, height);
+  return std::make_shared<Window>(size);
 }
 
 CENTURION_DEF
@@ -247,15 +246,15 @@ void Window::set_opacity(float opacity) noexcept
 }
 
 CENTURION_DEF
-void Window::set_min_size(int width, int height) noexcept
+void Window::set_min_size(Area size) noexcept
 {
-  SDL_SetWindowMinimumSize(m_window, width, height);
+  SDL_SetWindowMinimumSize(m_window, size.width, size.height);
 }
 
 CENTURION_DEF
-void Window::set_max_size(int width, int height) noexcept
+void Window::set_max_size(Area size) noexcept
 {
-  SDL_SetWindowMaximumSize(m_window, width, height);
+  SDL_SetWindowMaximumSize(m_window, size.width, size.height);
 }
 
 CENTURION_DEF

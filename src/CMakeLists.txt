@@ -64,7 +64,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/multi_gesture_event.h
         ${CTN_INCLUDE_DIR}/text_editing_event.h
         ${CTN_INCLUDE_DIR}/text_input_event.h
-        ${CTN_INCLUDE_DIR}/dimension.h
+        ${CTN_INCLUDE_DIR}/area.h
 
         window.cpp
         font.cpp

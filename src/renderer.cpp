@@ -543,10 +543,10 @@ void Renderer::set_scale(float xScale, float yScale) noexcept
 }
 
 CENTURION_DEF
-void Renderer::set_logical_size(int width, int height) noexcept
+void Renderer::set_logical_size(Area size) noexcept
 {
-  if (width > 0 && height > 0) {
-    SDL_RenderSetLogicalSize(m_renderer, width, height);
+  if (size.width > 0 && size.height > 0) {
+    SDL_RenderSetLogicalSize(m_renderer, size.width, size.height);
   }
 }
 

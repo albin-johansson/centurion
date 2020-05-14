@@ -8,7 +8,6 @@
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "surface.h"
-#include "window_listener.h"
 
 namespace centurion {
 
@@ -80,7 +79,6 @@ void Window::move(Window&& other) noexcept
   destroy();
 
   m_window = other.m_window;
-  m_windowListeners = std::move(other.m_windowListeners);
 
   other.m_window = nullptr;
 }
@@ -146,66 +144,39 @@ std::shared_ptr<Window> Window::shared()
 }
 
 CENTURION_DEF
-void Window::notify_window_listeners() noexcept
-{
-  const auto& self = *this;
-  for (const auto& listener : m_windowListeners) {
-    auto tmp = listener.lock();
-    if (tmp) {
-      tmp->window_updated(self);
-    }
-  }
-}
-
-CENTURION_DEF
 void Window::show() noexcept
 {
   SDL_ShowWindow(m_window);
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::hide() noexcept
 {
   SDL_HideWindow(m_window);
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::center() noexcept
 {
   set_position(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::raise() noexcept
 {
   SDL_RaiseWindow(m_window);
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::maximize() noexcept
 {
   SDL_MaximizeWindow(m_window);
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::minimize() noexcept
 {
   SDL_MinimizeWindow(m_window);
-  notify_window_listeners();
-}
-
-CENTURION_DEF
-void Window::add_window_listener(
-    std::weak_ptr<IWindowListener> listener) noexcept
-{
-  if (!listener.expired()) {
-    m_windowListeners.push_back(listener);
-  }
 }
 
 CENTURION_DEF
@@ -217,8 +188,6 @@ void Window::set_fullscreen(bool fullscreen) noexcept
   if (!fullscreen) {
     set_brightness(1);
   }
-
-  notify_window_listeners();
 }
 
 CENTURION_DEF
@@ -233,35 +202,27 @@ CENTURION_DEF
 void Window::set_decorated(bool decorated) noexcept
 {
   SDL_SetWindowBordered(m_window, detail::convert_bool(decorated));
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::set_resizable(bool isResizable) noexcept
 {
   SDL_SetWindowResizable(m_window, detail::convert_bool(isResizable));
-  notify_window_listeners();
 }
 
 CENTURION_DEF
-void Window::set_width(int width)
+void Window::set_width(int width) noexcept
 {
-  if (width < 1) {
-    throw CenturionException{"Invalid window width!"};
-  } else {
+  if (width > 0) {
     SDL_SetWindowSize(m_window, width, height());
-    notify_window_listeners();
   }
 }
 
 CENTURION_DEF
-void Window::set_height(int height)
+void Window::set_height(int height) noexcept
 {
-  if (height < 1) {
-    throw CenturionException{"Invalid window height!"};
-  } else {
+  if (height > 0) {
     SDL_SetWindowSize(m_window, width(), height);
-    notify_window_listeners();
   }
 }
 
@@ -269,49 +230,42 @@ CENTURION_DEF
 void Window::set_icon(const Surface& icon) noexcept
 {
   SDL_SetWindowIcon(m_window, icon.get());
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::set_title(const std::string& title) noexcept
 {
   SDL_SetWindowTitle(m_window, title.c_str());
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::set_opacity(float opacity) noexcept
 {  // TODO doc: the window must be visible?
   SDL_SetWindowOpacity(m_window, opacity);
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::set_min_size(int width, int height) noexcept
 {
   SDL_SetWindowMinimumSize(m_window, width, height);
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::set_max_size(int width, int height) noexcept
 {
   SDL_SetWindowMaximumSize(m_window, width, height);
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::set_position(int x, int y) noexcept
 {
   SDL_SetWindowPosition(m_window, x, y);
-  notify_window_listeners();
 }
 
 CENTURION_DEF
 void Window::set_grab_mouse(bool grabMouse) noexcept
 {
   SDL_SetWindowGrab(m_window, detail::convert_bool(grabMouse));
-  notify_window_listeners();
 }
 
 CENTURION_DEF
@@ -320,7 +274,6 @@ void Window::set_brightness(float brightness) noexcept
   if (fullscreen()) {
     SDL_SetWindowBrightness(m_window,
                             detail::clamp_inclusive({0, 1}, brightness));
-    notify_window_listeners();
   }
 }
 

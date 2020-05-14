@@ -29,29 +29,22 @@
 #include <type_traits>
 
 #include "centurion_api.h"
-#include "window_listener.h"
 
 namespace centurion {
 namespace input {
 
 /**
  * The MouseState class provides information about the mouse state, which is an
- * alternative to dealing with mouse events. This class implements the
- * IWindowListener interface. Important note! If you register a MouseState
- * instance as a window listener, you'll need to set the logical size of the
- * window manually, otherwise you'll end up with unexpected behaviour.
+ * alternative to dealing with mouse events.
  *
- * @see IWindowListener
  * @since 3.0.0
  */
-class MouseState final : public IWindowListener {
+class MouseState final {
  public:
   /**
    * @since 3.0.0
    */
   CENTURION_API MouseState() noexcept;
-
-  CENTURION_API ~MouseState() noexcept override;
 
   /**
    * Creates and returns a unique pointer to a MouseState instance.
@@ -71,14 +64,15 @@ class MouseState final : public IWindowListener {
   CENTURION_NODISCARD
   CENTURION_API static std::shared_ptr<MouseState> shared();
 
-  CENTURION_API void window_updated(const Window& window) noexcept override;
-
   /**
-   * Updates the mouse state.
+   * Updates the mouse state. The window width and height will be adjusted to
+   * be at least 1.
    *
+   * @param windowWidth the current window width, set to 1 by default.
+   * @param windowHeight the current window height, set to 1 by default.
    * @since 3.0.0
    */
-  CENTURION_API void update() noexcept;
+  CENTURION_API void update(int windowWidth = 1, int windowHeight = 1) noexcept;
 
   /**
    * Resets the screen and logical dimensions of the mouse state instance.
@@ -89,8 +83,7 @@ class MouseState final : public IWindowListener {
 
   /**
    * Sets the logical width that will be used to determine the mouse position.
-   * This method will use the default logical width when the supplied value is
-   * <= 0.
+   * The supplied value will be adjusted to be at least 1.
    *
    * @param logicalWidth the logical width that will be used to determine the
    * mouse position.
@@ -100,34 +93,13 @@ class MouseState final : public IWindowListener {
 
   /**
    * Sets the logical height that will be used to determine the mouse position.
-   * This method will use the default logical height when the supplied value is
-   * <= 0.
+   * The supplied value will be adjusted to be at least 1.
    *
    * @param logicalHeight the logical height that will be used to determine the
    * mouse position.
    * @since 3.0.0
    */
   CENTURION_API void set_logical_height(int logicalHeight) noexcept;
-
-  /**
-   * Sets the window width that the mouse state instance will use when
-   * calculating the mouse position. This method will use the default window
-   * width when the supplied value is <= 0.
-   *
-   * @param windowWidth the width of the screen.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_window_width(int windowWidth) noexcept;
-
-  /**
-   * Sets the window height that the mouse state instance will use when
-   * calculating the mouse position. This method will use the default window
-   * height when the supplied value is <= 0.
-   *
-   * @param windowHeight the height of the screen.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_window_height(int windowHeight) noexcept;
 
   /**
    * Indicates whether or not the left mouse button was released.
@@ -175,26 +147,6 @@ class MouseState final : public IWindowListener {
   int mouse_y() const noexcept { return m_mouseY; }
 
   /**
-   * Returns the window width used by the mouse state instance.
-   *
-   * @return the window width used by the mouse state instance, 1 is used by
-   * default.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  int window_width() const noexcept { return m_windowWidth; }
-
-  /**
-   * Returns the window height used by the mouse state instance.
-   *
-   * @return the window height used by the mouse state instance, 1 is used by
-   * default.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  int window_height() const noexcept { return m_windowHeight; }
-
-  /**
    * Returns the logical width used by the mouse state instance.
    *
    * @return the logical width used by the mouse state instance, 1 is used by
@@ -239,8 +191,6 @@ class MouseState final : public IWindowListener {
   int m_oldY = 0;
   int m_logicalWidth = 1;
   int m_logicalHeight = 1;
-  int m_windowWidth = 1;
-  int m_windowHeight = 1;
   bool m_leftPressed = false;
   bool m_rightPressed = false;
   bool m_prevLeftPressed = false;
@@ -262,9 +212,6 @@ static_assert(std::is_nothrow_copy_constructible<MouseState>::value,
 
 static_assert(std::is_nothrow_copy_assignable<MouseState>::value,
               "MouseState isn't nothrow copy assignable!");
-
-static_assert(std::is_base_of<IWindowListener, MouseState>::value,
-              "MouseState isn't a subclass of IWindowListener!");
 
 }  // namespace input
 }  // namespace centurion

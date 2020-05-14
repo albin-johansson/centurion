@@ -64,7 +64,6 @@
 #include "texture_loader.h"
 #include "timer.h"
 #include "window.h"
-#include "window_listener.h"
 
 namespace centurion {
 

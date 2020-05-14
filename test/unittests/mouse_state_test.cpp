@@ -10,8 +10,6 @@ TEST_CASE("MouseState()", "[MouseState]")
   const MouseState state;
   CHECK(state.logical_width() == 1);
   CHECK(state.logical_height() == 1);
-  CHECK(state.window_width() == 1);
-  CHECK(state.window_height() == 1);
   CHECK(state.mouse_x() == 0);
   CHECK(state.mouse_y() == 0);
 }
@@ -26,10 +24,8 @@ TEST_CASE("MouseState::update", "[MouseState]")
 {
   MouseState state;
 
-  CHECK_NOTHROW(state.update());
+  CHECK_NOTHROW(state.update(12, 632));
 
-  state.set_window_width(12);
-  state.set_window_height(632);
   state.set_logical_width(234);
   state.set_logical_height(35);
 
@@ -40,15 +36,11 @@ TEST_CASE("MouseState::reset", "[MouseState]")
 {
   MouseState state;
 
-  state.set_window_height(912);
-  state.set_window_height(124);
   state.set_logical_width(455);
   state.set_logical_height(183);
 
   state.reset();
 
-  CHECK(state.window_width() == 1);
-  CHECK(state.window_height() == 1);
   CHECK(state.logical_width() == 1);
   CHECK(state.logical_height() == 1);
 }
@@ -71,26 +63,6 @@ TEST_CASE("MouseState::set_logical_height", "[MouseState]")
   state.set_logical_height(height);
 
   CHECK(height == state.logical_height());
-}
-
-TEST_CASE("MouseState::set_window_width", "[MouseState]")
-{
-  MouseState state;
-
-  const auto width = 771;
-  state.set_window_width(width);
-
-  CHECK(width == state.window_width());
-}
-
-TEST_CASE("MouseState::set_window_height", "[MouseState]")
-{
-  MouseState state;
-
-  const auto height = 373;
-  state.set_window_height(height);
-
-  CHECK(height == state.window_height());
 }
 
 TEST_CASE("MouseState::is_left_button_pressed", "[MouseState]")

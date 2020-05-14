@@ -6,16 +6,12 @@
 #include <SDL.h>
 
 #include "centurion_utils.h"
-#include "window.h"
 
 namespace centurion {
 namespace input {
 
 CENTURION_DEF
 MouseState::MouseState() noexcept = default;
-
-CENTURION_DEF
-MouseState::~MouseState() noexcept = default;
 
 CENTURION_DEF
 std::unique_ptr<MouseState> MouseState::unique()
@@ -30,15 +26,11 @@ std::shared_ptr<MouseState> MouseState::shared()
 }
 
 CENTURION_DEF
-void MouseState::window_updated(const Window& window) noexcept
+void MouseState::update(int windowWidth, int windowHeight) noexcept
 {
-  m_windowWidth = window.width();
-  m_windowHeight = window.height();
-}
+  windowWidth = (windowWidth < 1) ? 1 : windowWidth;
+  windowHeight = (windowHeight < 1) ? 1 : windowHeight;
 
-CENTURION_DEF
-void MouseState::update() noexcept
-{
   m_oldX = m_mouseX;
   m_oldY = m_mouseY;
   m_prevLeftPressed = m_leftPressed;
@@ -52,11 +44,11 @@ void MouseState::update() noexcept
 
   {
     const auto xRatio =
-        static_cast<float>(m_mouseX) / static_cast<float>(m_windowWidth);
+        static_cast<float>(m_mouseX) / static_cast<float>(windowWidth);
     const auto adjustedX = xRatio * static_cast<float>(m_logicalWidth);
 
     const auto yRatio =
-        static_cast<float>(m_mouseY) / static_cast<float>(m_windowHeight);
+        static_cast<float>(m_mouseY) / static_cast<float>(windowHeight);
     const auto adjustedY = yRatio * static_cast<float>(m_logicalHeight);
 
     m_mouseX = static_cast<int>(adjustedX);
@@ -69,8 +61,6 @@ void MouseState::reset() noexcept
 {
   m_logicalWidth = 1;
   m_logicalHeight = 1;
-  m_windowWidth = 1;
-  m_windowHeight = 1;
 }
 
 CENTURION_DEF
@@ -89,24 +79,6 @@ void MouseState::set_logical_height(int logicalHeight) noexcept
     logicalHeight = 1;
   }
   this->m_logicalHeight = logicalHeight;
-}
-
-CENTURION_DEF
-void MouseState::set_window_width(int windowWidth) noexcept
-{
-  if (windowWidth <= 0) {
-    windowWidth = 1;
-  }
-  this->m_windowWidth = windowWidth;
-}
-
-CENTURION_DEF
-void MouseState::set_window_height(int windowHeight) noexcept
-{
-  if (windowHeight <= 0) {
-    windowHeight = 1;
-  }
-  this->m_windowHeight = windowHeight;
 }
 
 CENTURION_DEF

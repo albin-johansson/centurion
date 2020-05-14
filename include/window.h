@@ -27,12 +27,6 @@
 
 #include <SDL.h>
 
-#include <memory>
-#include <string>
-#include <type_traits>
-#include <utility>
-#include <vector>
-
 #include "centurion_api.h"
 #include "centurion_utils.h"
 #include "dimension.h"
@@ -41,7 +35,6 @@
 
 namespace centurion {
 
-class IWindowListener;
 class Surface;
 
 /**
@@ -49,7 +42,6 @@ class Surface;
  * can't be copied. Instances of the Window class can be implicitly converted to
  * SDL_Window*.
  *
- * @see IWindowListener
  * @since 3.0.0
  */
 class Window final {  // TODO add support for checking all SDL_WindowFlags
@@ -254,62 +246,49 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API static std::shared_ptr<Window> shared();
 
   /**
-   * Makes the window visible. Triggers a window listener update.
+   * Makes the window visible.
    *
    * @since 3.0.0
    */
   CENTURION_API void show() noexcept;
 
   /**
-   * Makes the window invisible. Triggers a window listener update.
+   * Makes the window invisible.
    *
    * @since 3.0.0
    */
   CENTURION_API void hide() noexcept;
 
   /**
-   * Centers the window position relative to the screen. Triggers a window
-   * listener update.
+   * Centers the window position relative to the screen.
    *
    * @since 3.0.0
    */
   CENTURION_API void center() noexcept;
 
   /**
-   * Raises this window above other windows and requests focus. Triggers a
-   * window listener update.
+   * Raises this window above other windows and requests focus.
    *
    * @since 3.0.0
    */
   CENTURION_API void raise() noexcept;
 
   /**
-   * Maximizes the window. Triggers a window listener update.
+   * Maximizes the window.
    *
    * @since 3.1.0
    */
   CENTURION_API void maximize() noexcept;
 
   /**
-   * Minimizes the window. Triggers a window listener update.
+   * Minimizes the window.
    *
    * @since 3.1.0
    */
   CENTURION_API void minimize() noexcept;
 
   /**
-   * Adds a window listener to the window. Null listeners are always silently
-   * ignored.
-   *
-   * @param listener a window listener, may be null.
-   * @since 3.0.0
-   */
-  CENTURION_API void add_window_listener(
-      std::weak_ptr<IWindowListener> listener) noexcept;
-
-  /**
-   * Sets whether or not the window is in fullscreen mode. Triggers a window
-   * listener update.
+   * Sets whether or not the window is in fullscreen mode.
    *
    * @param fullscreen true if the window should enable fullscreen mode; false
    * for windowed mode.
@@ -328,8 +307,8 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API void set_fullscreen_desktop(bool fullscreen) noexcept;
 
   /**
-   * Sets whether or not the window is decorated. Triggers a window listener
-   * update. This property is enabled by default.
+   * Sets whether or not the window is decorated. This property is enabled by
+   * default.
    *
    * @param decorated true if the window should be decorated; false otherwise.
    * @since 3.0.0
@@ -337,8 +316,7 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API void set_decorated(bool decorated) noexcept;
 
   /**
-   * Sets whether or not the window should be resizable. Triggers a window
-   * listener update.
+   * Sets whether or not the window should be resizable.
    *
    * @param isResizable true if the window should be resizable; false otherwise.
    * @since 3.0.0
@@ -346,27 +324,25 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API void set_resizable(bool isResizable) noexcept;
 
   /**
-   * Sets the width of the window. Triggers a window listener update.
+   * Sets the width of the window. This method has no effect if the supplied
+   * width isn't greater than zero.
    *
-   * @param width the new width of the window.
-   * @throws CenturionException if the supplied width isn't greater than zero.
+   * @param width the new width of the window, must be greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_width(int width);
+  CENTURION_API void set_width(int width) noexcept;
 
   /**
-   * Sets the height of the window. Triggers a window listener update.
+   * Sets the height of the window. This method has no effect if the supplied
+   * height isn't greater than zero.
    *
-   * @param height the new height of the window.
-   * @throws CenturionException if the supplied height isn't greater than
-   * zero.
+   * @param height the new height of the window, must be greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_height(int height);
+  CENTURION_API void set_height(int height) noexcept;
 
   /**
-   * Sets the icon that will be used by the window. Triggers a window listener
-   * update.
+   * Sets the icon that will be used by the window.
    *
    * @param icon the surface that will serve as the icon of the window.
    * @since 3.0.0
@@ -374,7 +350,7 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API void set_icon(const Surface& icon) noexcept;
 
   /**
-   * Sets the title of the window. Triggers a window listener update.
+   * Sets the title of the window.
    *
    * @param title the title of the window.
    * @since 3.0.0
@@ -382,7 +358,7 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API void set_title(const std::string& title) noexcept;
 
   /**
-   * Sets the opacity of the window. Triggers a window listener update.
+   * Sets the opacity of the window.
    *
    * @param opacity the opacity, in the range [0, 1]. This value will be clamped
    * to a value in the legal range internally.
@@ -391,7 +367,7 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API void set_opacity(float opacity) noexcept;
 
   /**
-   * Sets the minimum size of the window. Triggers a window listener update.
+   * Sets the minimum size of the window.
    *
    * @param width the minimum width of the window, must be greater than zero.
    * @param height the minimum height of the window, must be greater than zero.
@@ -400,7 +376,7 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API void set_min_size(int width, int height) noexcept;
 
   /**
-   * Sets the maximum size of the window. Triggers a window listener update.
+   * Sets the maximum size of the window.
    *
    * @param width the maximum width of the window, must be greater than zero.
    * @param height the maximum height of the window, must be greater than zero.
@@ -411,7 +387,7 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   /**
    * Sets the position of the window. Note, it's possible to use
    * SDL_WINDOWPOS_CENTERED or SDL_WINDOWPOS_UNDEFINED as any of the arguments.
-   * Triggers a window listener update.
+   *
    *
    * @param x the screen x-coordinate that the window will adapt.
    * @param y the screen y-coordinate that the window will adapt.
@@ -421,7 +397,7 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
 
   /**
    * Sets whether or not the mouse should be confined within the window. This
-   * property is disabled by default. Triggers a window listener update.
+   * property is disabled by default.
    *
    * @param grabMouse true if the mouse should be confined within the window;
    * false otherwise.
@@ -432,7 +408,7 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   /**
    * Sets the overall brightness of the window. This operation is only supported
    * if the window is in fullscreen mode. This property will be reset every time
-   * the fullscreen mode is exited. Triggers a window listener update.
+   * the fullscreen mode is exited.
    *
    * @param brightness the brightness value, in the range [0, 1]. A value
    * outside this range will be clamped to the closest valid value.
@@ -787,7 +763,6 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
 
  private:
   SDL_Window* m_window = nullptr;
-  std::vector<std::weak_ptr<IWindowListener>> m_windowListeners;
 
   /**
    * Destroys the resources associated with the window.
@@ -803,13 +778,6 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
    * @since 4.0.0
    */
   void move(Window&& other) noexcept;
-
-  /**
-   * Notifies all registered window listeners that the window has been updated.
-   *
-   * @since 3.0.0
-   */
-  void notify_window_listeners() noexcept;
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

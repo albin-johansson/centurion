@@ -319,8 +319,13 @@ TEST_CASE("Window::set_width", "[Window]")
   SECTION("Invalid width")
   {
     Window window;
-    CHECK_THROWS_AS(window.set_width(0), CenturionException);
-    CHECK_THROWS_AS(window.set_width(-1), CenturionException);
+
+    const auto widthBefore = window.width();
+
+    CHECK_NOTHROW(window.set_width(-1));
+    CHECK_NOTHROW(window.set_width(0));
+
+    CHECK(window.width() == widthBefore);
   }
 
   Window window;
@@ -336,8 +341,13 @@ TEST_CASE("Window::set_height", "[Window]")
   SECTION("Invalid height")
   {
     Window window;
-    CHECK_THROWS_AS(window.set_height(0), CenturionException);
-    CHECK_THROWS_AS(window.set_height(-1), CenturionException);
+
+    const auto heightBefore = window.height();
+
+    CHECK_NOTHROW(window.set_height(-1));
+    CHECK_NOTHROW(window.set_height(0));
+
+    CHECK(window.height() == heightBefore);
   }
 
   Window window;

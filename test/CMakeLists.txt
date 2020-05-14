@@ -92,10 +92,15 @@ target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_INCLUDE
 target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
 target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
-target_include_directories(${CENTURION_TEST_TARGET} PUBLIC ${CTN_INCLUDE_DIR})
-target_include_directories(${CENTURION_TEST_TARGET} PUBLIC ${CTN_SOURCE_DIR})
-target_include_directories(${CENTURION_TEST_TARGET} PUBLIC ${CTN_LIBRARY_DIR})
-target_include_directories(${CENTURION_TEST_TARGET} PUBLIC ${CTN_LIBRARY_DIR}/gsl)
+target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${CTN_LIBRARY_DIR})
+target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${CTN_INCLUDE_DIR})
+target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${CTN_SOURCE_DIR})
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
+            -Wno-unused-result
+            )
+endif ()
 
 message("------ LINKING TEST EXECUTABLE ------")
 message("Linking against SDL2: ${SDL2_LIBRARY}")
@@ -103,7 +108,6 @@ message("Linking against SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
 message("Centurion link target (unused in header-only mode): ${CENTURION_LIBRARIES}")
-
 target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_LIBRARY}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}

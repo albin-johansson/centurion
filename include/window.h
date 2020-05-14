@@ -44,7 +44,7 @@ class Surface;
  *
  * @since 3.0.0
  */
-class Window final {  // TODO add support for checking all SDL_WindowFlags
+class Window final {
  public:
   /**
    * Creates a window instance. The window will be hidden by default.

@@ -175,7 +175,35 @@ using Owner = gsl::owner<T>;
 template <typename T>
 using Optional = tl::optional<T>;
 
-// TODO consider adding UniquePtr, SharedPtr, WeakPtr
+/**
+ * A type alias for unique pointers.
+ *
+ * @since 4.0.0
+ */
+template <typename T, typename Deleter = std::default_delete<T>>
+using UniquePtr = std::unique_ptr<T, Deleter>;
+
+/**
+ * A type alias for shared pointers.
+ *
+ * @since 4.0.0
+ */
+template <typename T>
+using SharedPtr = std::shared_ptr<T>;
+
+/**
+ * A type alias for weak pointers.
+ *
+ * @since 4.0.0
+ */
+template <typename T>
+using WeakPtr = std::weak_ptr<T>;
+/**
+ * A type alias for a const null-terminated C-style string.
+ *
+ * @since 4.0.0
+ */
+using CZString = gsl::czstring;
 
 /**
  * A constant that represents an empty Optional.

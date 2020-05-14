@@ -284,18 +284,18 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
   CENTURION_API void raise() noexcept;
 
   /**
-   * Maximises the window. Triggers a window listener update.
+   * Maximizes the window. Triggers a window listener update.
    *
    * @since 3.1.0
    */
-  CENTURION_API void maximise() noexcept;
+  CENTURION_API void maximize() noexcept;
 
   /**
-   * Minimises the window. Triggers a window listener update.
+   * Minimizes the window. Triggers a window listener update.
    *
    * @since 3.1.0
    */
-  CENTURION_API void minimise() noexcept;
+  CENTURION_API void minimize() noexcept;
 
   /**
    * Adds a window listener to the window. Null listeners are always silently
@@ -674,6 +674,24 @@ class Window final {  // TODO add support for checking all SDL_WindowFlags
    */
   CENTURION_NODISCARD
   CENTURION_API bool always_on_top() const noexcept;
+
+  /**
+   * Indicates whether or not the window is minimized.
+   *
+   * @return true if the window is minimized; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool minimized() const noexcept;
+
+  /**
+   * Indicates whether or not the window is maximized.
+   *
+   * @return true if the window is maximized; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool maximized() const noexcept;
 
   /**
    * Indicates whether or not a flag is set. Some of the use cases of this

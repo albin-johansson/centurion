@@ -186,14 +186,14 @@ void Window::raise() noexcept
 }
 
 CENTURION_DEF
-void Window::maximise() noexcept
+void Window::maximize() noexcept
 {
   SDL_MaximizeWindow(m_window);
   notify_window_listeners();
 }
 
 CENTURION_DEF
-void Window::minimise() noexcept
+void Window::minimize() noexcept
 {
   SDL_MinimizeWindow(m_window);
   notify_window_listeners();
@@ -496,6 +496,18 @@ CENTURION_DEF
 bool Window::always_on_top() const noexcept
 {
   return flags() & SDL_WINDOW_ALWAYS_ON_TOP;
+}
+
+CENTURION_DEF
+bool Window::minimized() const noexcept
+{
+  return flags() & SDL_WINDOW_MINIMIZED;
+}
+
+CENTURION_DEF
+bool Window::maximized() const noexcept
+{
+  return flags() & SDL_WINDOW_MAXIMIZED;
 }
 
 CENTURION_DEF

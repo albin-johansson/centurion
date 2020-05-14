@@ -778,7 +778,7 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Dimension output_size() const noexcept;
+  CENTURION_API Area output_size() const noexcept;
 
   /**
    * Returns the blend mode that is being used by the renderer.

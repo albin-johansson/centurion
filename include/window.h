@@ -553,7 +553,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Dimension min_size() const noexcept;
+  CENTURION_API Area min_size() const noexcept;
 
   /**
    * Returns the maximum size of the window.
@@ -562,7 +562,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Dimension max_size() const noexcept;
+  CENTURION_API Area max_size() const noexcept;
 
   /**
    * Returns the current width of the window.

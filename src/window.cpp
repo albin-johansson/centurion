@@ -354,7 +354,7 @@ IPoint Window::position() const noexcept
 }
 
 CENTURION_DEF
-Dimension Window::min_size() const noexcept
+Area Window::min_size() const noexcept
 {
   int w = 0;
   int h = 0;
@@ -363,7 +363,7 @@ Dimension Window::min_size() const noexcept
 }
 
 CENTURION_DEF
-Dimension Window::max_size() const noexcept
+Area Window::max_size() const noexcept
 {
   int w = 0;
   int h = 0;

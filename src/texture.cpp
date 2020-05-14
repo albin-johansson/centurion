@@ -303,7 +303,7 @@ int Texture::height() const noexcept
 }
 
 CENTURION_DEF
-Dimension Texture::size() const noexcept
+Area Texture::size() const noexcept
 {
   int width = 0;
   int height = 0;

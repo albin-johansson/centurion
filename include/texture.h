@@ -466,7 +466,7 @@ class Texture final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Dimension size() const noexcept;
+  CENTURION_API Area size() const noexcept;
 
   /**
    * Indicates whether or not the texture is a possible render target.

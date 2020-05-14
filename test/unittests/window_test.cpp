@@ -232,6 +232,7 @@ TEST_CASE("Window::center", "[Window]")
   CHECK(y == window.y());
 }
 
+#ifndef TRAVIS_TEST
 TEST_CASE("Window::raise", "[Window]")
 {
   Window window;
@@ -241,6 +242,7 @@ TEST_CASE("Window::raise", "[Window]")
 
   CHECK(window.has_input_focus());
 }
+#endif  // TRAVIS_TEST
 
 TEST_CASE("Window:maximize", "[Window]")
 {
@@ -252,6 +254,7 @@ TEST_CASE("Window:maximize", "[Window]")
   CHECK(window.maximized());
 }
 
+#ifndef TRAVIS_TEST
 TEST_CASE("Window::minimize", "[Window]")
 {
   Window window;
@@ -261,6 +264,7 @@ TEST_CASE("Window::minimize", "[Window]")
 
   CHECK(window.minimized());
 }
+#endif  // TRAVIS_TEST
 
 TEST_CASE("Window::set_fullscreen", "[Window]")
 {
@@ -347,11 +351,8 @@ TEST_CASE("Window::set_height", "[Window]")
 TEST_CASE("Window::set_icon", "[Window]")
 {
   Window window;
-
   Surface icon{"resources/panda.png"};
-  window.set_icon(icon);
-
-  // TODO add Window::icon()
+  CHECK_NOTHROW(window.set_icon(icon));
 }
 
 TEST_CASE("Window::set_title", "[Window]")
@@ -429,6 +430,7 @@ TEST_CASE("Window::set_position", "[Window]")
   CHECK(y == pos.y());
 }
 
+#ifndef TRAVIS_TEST
 TEST_CASE("Window::set_grab_mouse", "[Window]")
 {
   Window window;
@@ -441,6 +443,7 @@ TEST_CASE("Window::set_grab_mouse", "[Window]")
   window.set_grab_mouse(false);
   CHECK(!window.grabbing_mouse());
 }
+#endif  // TRAVIS_TEST
 
 TEST_CASE("Window::set_brightness", "[Window]")
 {

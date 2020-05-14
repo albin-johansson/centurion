@@ -3,8 +3,6 @@
 
 #include "drop_event.h"
 
-#include <utility>
-
 namespace centurion {
 namespace event {
 
@@ -19,7 +17,6 @@ DropEvent::DropEvent(const SDL_DropEvent& event) noexcept : CommonEvent{event}
 CENTURION_DEF
 DropEvent::DropEvent(SDL_DropEvent&& event) noexcept
     : CommonEvent{std::forward<SDL_DropEvent>(event)}
-// FIXME can this introduce leak?
 {}
 
 CENTURION_DEF

@@ -191,7 +191,7 @@ static_assert(validate_event<MultiGestureEvent, SDL_MultiGestureEvent>(),
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-// TODO include source here!
+#include "multi_gesture_event.cpp"
 #endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_MULTI_GESTURE_EVENT_HEADER

@@ -8,20 +8,6 @@
 using namespace centurion;
 using namespace centurion::messagebox;
 
-TEST_CASE("MessageBoxID enum values", "[MessageBox]")
-{
-  CHECK(MessageBoxID::Info == SDL_MESSAGEBOX_INFORMATION);
-  CHECK(MessageBoxID::Error == SDL_MESSAGEBOX_ERROR);
-  CHECK(MessageBoxID::Warning == SDL_MESSAGEBOX_WARNING);
-
-  CHECK(SDL_MESSAGEBOX_INFORMATION == MessageBoxID::Info);
-  CHECK(SDL_MESSAGEBOX_ERROR == MessageBoxID::Error);
-  CHECK(SDL_MESSAGEBOX_WARNING == MessageBoxID::Warning);
-
-  CHECK(MessageBoxID::Info != SDL_MESSAGEBOX_ERROR);
-  CHECK(SDL_MESSAGEBOX_WARNING != MessageBoxID::Error);
-}
-
 TEST_CASE("ButtonDataHint enum values", "[MessageBox]")
 {
   CHECK(ButtonDataHint::ReturnKey == SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
@@ -50,21 +36,7 @@ TEST_CASE("ColorType enum values", "[MessageBox]")
   CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER != ColorType::ButtonSelected);
 }
 
-TEST_CASE("ButtonData general test", "[MessageBox]")
-{
-  const auto hint = ButtonDataHint::ReturnKey;
-  const auto id = 7;
-  const std::string text{"foo"};
-
-  const ButtonData buttonData{hint, id, text};
-  const SDL_MessageBoxButtonData data = buttonData;
-
-  CHECK(id == data.buttonid);
-  CHECK(static_cast<Uint32>(hint) == data.flags);
-  CHECK_THAT(text, Catch::Equals(data.text));
-}
-
-TEST_CASE("ColorScheme general test", "[MessageBox]")
+TEST_CASE("ColorScheme::set_color", "[ColorScheme]")
 {
   ColorScheme scheme;
 
@@ -73,7 +45,7 @@ TEST_CASE("ColorScheme general test", "[MessageBox]")
   scheme.set_color(ColorType::ButtonBorder, tomato);
   scheme.set_color(ColorType::ButtonSelected, cornsilk);
 
-  const auto sdlScheme = static_cast<SDL_MessageBoxColorScheme>(scheme);
+  const auto sdlScheme = scheme.convert();
 
   const auto index = [](ColorType type) noexcept {
     return static_cast<int>(type);
@@ -87,39 +59,173 @@ TEST_CASE("ColorScheme general test", "[MessageBox]")
   CHECK(&scheme.get());
 }
 
-TEST_CASE("MessageBox(const char*)", "[MessageBox]")
-{
-  CHECK_NOTHROW(MessageBox{nullptr});
-  CHECK_NOTHROW(MessageBox{"foo"});
-}
-
-TEST_CASE("MessageBox::set_type", "[MessageBox]")
+TEST_CASE("MessageBox()", "[MessageBox]")
 {
   MessageBox mb;
-  CHECK(MessageBoxID::Info == mb.type());
-
-  const auto type = MessageBoxID::Error;
-  mb.set_type(type);
-
-  CHECK(type == mb.type());
+  CHECK(!mb.color_scheme());
+  CHECK(mb.type() == MessageBox::Type::Information);
+  CHECK(mb.button_order() == MessageBox::ButtonOrder::LeftToRight);
+  CHECK_THAT(mb.title(), Catch::Equals("Centurion message box"));
+  CHECK_THAT(mb.message(), Catch::Equals("N/A"));
 }
 
-TEST_CASE("MessageBox::set_color_scheme", "[MessageBox]")
+TEST_CASE("MessageBox(CZString, CZString)", "[MessageBox]")
+{
+  SECTION("Null arguments")
+  {
+    MessageBox mb{nullptr, nullptr};
+    CHECK_THAT(mb.title(), Catch::Equals("Centurion message box"));
+    CHECK_THAT(mb.message(), Catch::Equals("N/A"));
+  }
+  SECTION("Normal arguments")
+  {
+    CZString title = "This is a title";
+    CZString message = "This is a message";
+    MessageBox mb{title, message};
+    CHECK_THAT(mb.title(), Catch::Equals(title));
+    CHECK_THAT(mb.message(), Catch::Equals(message));
+  }
+}
+
+#ifndef TRAVIS_TEST
+TEST_CASE("MessageBox::show [static]", "[MessageBox]")
+{
+  SECTION("Checking defaults")
+  {
+    CZString title = nullptr;
+    CZString message = nullptr;
+    MessageBoxConfig config;
+    MessageBox::show(title, message, config, nullptr);
+  }
+  SECTION("Actual parameters")
+  {
+    CZString title = "This is a title";
+    CZString message = "This message box was created with the static show!";
+    MessageBoxConfig config;
+    config.type = MessageBox::Type::Warning;
+    config.buttonOrder = MessageBox::ButtonOrder::RightToLeft;
+    MessageBox::show(title, message, config);
+  }
+}
+
+TEST_CASE("MessageBox::show [non-static]", "[MessageBox]")
 {
   MessageBox mb;
-  CHECK_NOTHROW(mb.set_color_scheme(tl::nullopt));
+  mb.show(nullptr);
+}
+#endif  // TRAVIS_TEST
+
+TEST_CASE("MessageBox::add_button", "[MessageBox]")
+{
+  MessageBox mb;
+  CHECK_NOTHROW(mb.add_button(ButtonDataHint::ReturnKey, 0, nullptr));
+  CHECK_NOTHROW(mb.add_button(ButtonDataHint::EscapeKey, 12, "Foo"));
 }
 
 TEST_CASE("MessageBox::set_title", "[MessageBox]")
 {
   MessageBox mb;
-  CHECK_NOTHROW(mb.set_title(nullptr));
-  CHECK_NOTHROW(mb.set_title("foo"));
+  CZString title = "This is a title";
+
+  mb.set_title(title);
+  CHECK_THAT(mb.title(), Catch::Equals(title));
+
+  mb.set_title(nullptr);
+  CHECK_THAT(mb.title(), Catch::Equals(title));
 }
 
 TEST_CASE("MessageBox::set_message", "[MessageBox]")
 {
   MessageBox mb;
-  CHECK_NOTHROW(mb.set_message(nullptr));
-  CHECK_NOTHROW(mb.set_message("foo"));
+  CZString msg = "Foobar";
+
+  mb.set_message(msg);
+  CHECK_THAT(mb.message(), Catch::Equals(msg));
+
+  mb.set_message(nullptr);
+  CHECK_THAT(mb.message(), Catch::Equals(msg));
+}
+
+TEST_CASE("MessageBox::set_type", "[MessageBox]")
+{
+  MessageBox mb;
+
+  const auto error = MessageBox::Type::Error;
+  mb.set_type(error);
+
+  CHECK(mb.type() == error);
+
+  const auto warn = MessageBox::Type::Warning;
+  mb.set_type(warn);
+
+  CHECK(mb.type() == warn);
+
+  const auto info = MessageBox::Type::Information;
+  mb.set_type(info);
+
+  CHECK(mb.type() == info);
+}
+
+TEST_CASE("MessageBox::set_button_order", "[MessageBox]")
+{
+  MessageBox mb;
+
+  const auto rightToLeft = MessageBox::ButtonOrder::RightToLeft;
+  mb.set_button_order(rightToLeft);
+
+  CHECK(mb.button_order() == rightToLeft);
+
+  const auto leftToRight = MessageBox::ButtonOrder::LeftToRight;
+  mb.set_button_order(leftToRight);
+
+  CHECK(mb.button_order() == leftToRight);
+}
+
+TEST_CASE("MessageBox::set_color_scheme", "[MessageBox]")
+{
+  const auto colorType = ColorType::Background;
+  MessageBox mb;
+
+  ColorScheme scheme;
+  scheme.set_color(colorType, red);
+
+  mb.set_color_scheme(scheme);
+
+  CHECK(mb.color_scheme());
+
+  const auto sdlScheme = scheme.convert();
+  CHECK(sdlScheme.colors[static_cast<int>(colorType)] == red);
+
+  mb.set_color_scheme(nothing);
+  CHECK(!mb.color_scheme());
+}
+
+TEST_CASE("MessageBox::title", "[MessageBox]")
+{
+  MessageBox mb;
+  CHECK_THAT(mb.title(), Catch::Equals("Centurion message box"));
+}
+
+TEST_CASE("MessageBox::message", "[MessageBox]")
+{
+  MessageBox mb;
+  CHECK_THAT(mb.message(), Catch::Equals("N/A"));
+}
+
+TEST_CASE("MessageBox::color_scheme", "[MessageBox]")
+{
+  MessageBox mb;
+  CHECK(!mb.color_scheme());
+}
+
+TEST_CASE("MessageBox::type", "[MessageBox]")
+{
+  MessageBox mb;
+  CHECK(mb.type() == MessageBox::Type::Information);
+}
+
+TEST_CASE("MessageBox::button_order", "[MessageBox]")
+{
+  MessageBox mb;
+  CHECK(mb.button_order() == MessageBox::ButtonOrder::LeftToRight);
 }

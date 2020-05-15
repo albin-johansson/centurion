@@ -113,7 +113,7 @@ class BasePath final {
   CZString get() const noexcept { return m_path; }
 
  private:
-  ZString m_path;
+  ZString m_path = nullptr;
 
   /**
    * Destroys the resources associated with the BasePath instance.
@@ -216,7 +216,7 @@ class PrefPath final {
   CZString get() const noexcept { return m_path; }
 
  private:
-  ZString m_path;
+  ZString m_path = nullptr;
 
   /**
    * Destroys the resources associated with the PrefPath instance.

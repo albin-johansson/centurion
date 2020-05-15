@@ -77,7 +77,7 @@ static_assert(std::is_final<CenturionException>::value,
               "CenturionException isn't final!");
 #endif
 
-static_assert(std::is_default_constructible<CenturionException>::value,
+static_assert(std::is_nothrow_default_constructible<CenturionException>::value,
               "CenturionException isn't default constructible!");
 
 static_assert(std::is_nothrow_copy_constructible<CenturionException>::value,

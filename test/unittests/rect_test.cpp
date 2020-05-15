@@ -1,7 +1,8 @@
+#include "rect.h"
+
 #include <catch.hpp>
 
 #include "log.h"
-#include "rect.h"
 
 using namespace centurion;
 
@@ -335,7 +336,7 @@ TEST_CASE("IRect::center_y", "[Rect]")
 TEST_CASE("IRect::to_string", "[Rect]")
 {
   const IRect rect{20, 45, 100, 150};
-  Log::msgf(Category::Test, "%s", rect.to_string().c_str());
+  Log::info(Log::Category::Test, "%s", rect.to_string().c_str());
 }
 
 TEST_CASE("IRect to SDL_Rect*", "[Rect]")
@@ -661,7 +662,7 @@ TEST_CASE("FRect::height", "[FRect]")
 TEST_CASE("FRect::to_string", "[FRect]")
 {
   const FRect rect{17.5f, 72.9f, 65.2f, 124.1f};
-  Log::msgf(Category::Test, "%s", rect.to_string().c_str());
+  Log::info(Log::Category::Test, "%s", rect.to_string().c_str());
 }
 
 // TEST_CASE("FRect::equals", "[FRect]") {

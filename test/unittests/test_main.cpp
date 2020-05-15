@@ -5,16 +5,16 @@
 
 int main(int argc, char** argv)
 {
-  namespace ctn = centurion;
+  using namespace centurion;
 #ifndef CENTURION_NOAUDIO
-  const ctn::Centurion c;
+  const Centurion c;
 #else
-  ctn::CenturionConfig cfg;
+  CenturionConfig cfg;
 
   cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
   cfg.initMixer = false;
 
-  const ctn::Centurion c{cfg};
+  const Centurion c{cfg};
 #endif
   return Catch::Session().run(argc, argv);
 }

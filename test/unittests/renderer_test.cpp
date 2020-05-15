@@ -754,7 +754,7 @@ TEST_CASE("Renderer::to_string", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  Log::msgf(Category::Test, "%s", renderer.to_string().c_str());
+  Log::info(Log::Category::Test, "%s", renderer.to_string().c_str());
 }
 
 TEST_CASE("Renderer::get", "[Renderer]")

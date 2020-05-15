@@ -264,7 +264,7 @@ TEST_CASE("Music::music_type", "[Music]")
 TEST_CASE("Music::to_string", "[Music]")
 {
   Music music{path};
-  Log::msgf(Category::Test, "%s", music.to_string().c_str());
+  Log::info(Log::Category::Test, "%s", music.to_string().c_str());
 }
 
 TEST_CASE("Music to Mix_Music*", "[Music]")

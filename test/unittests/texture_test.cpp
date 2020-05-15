@@ -272,7 +272,7 @@ TEST_CASE("Texture::to_string", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, pandaPath};
-  Log::msgf(Category::Test, "%s", texture.to_string().c_str());
+  Log::info(Log::Category::Test, "%s", texture.to_string().c_str());
 }
 
 TEST_CASE("Texture::get", "[Texture]")

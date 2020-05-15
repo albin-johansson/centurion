@@ -27,69 +27,13 @@
 
 #include <SDL_log.h>
 
-#include <cstdarg>
-#include <type_traits>
-
 #include "centurion_api.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 
 /**
- * The Priority enum provides values the mirror those of SDL_LogPriority.
- *
- * @since 3.0.0
- */
-enum class Priority {
-  Info = SDL_LOG_PRIORITY_INFO,
-  Warn = SDL_LOG_PRIORITY_WARN,
-  Verbose = SDL_LOG_PRIORITY_VERBOSE,
-  Debug = SDL_LOG_PRIORITY_DEBUG,
-  Critical = SDL_LOG_PRIORITY_CRITICAL,
-  Error = SDL_LOG_PRIORITY_ERROR,
-};
-
-/**
- * Indicates whether or not the two log priorities represent the same priority.
- *
- * @param a the lhs Centurion priority.
- * @param b the rhs SDL priority.
- * @return true if the priorities are the same; false otherwise.
- * @since 3.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(Priority a, SDL_LogPriority b) noexcept;
-
-/**
- * Indicates whether or not the two log priorities represent the same priority.
- *
- * @param a the lhs SDL priority.
- * @param b the rhs Centurion priority.
- * @return true if the priorities are the same; false otherwise.
- * @since 3.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_LogPriority a, Priority b) noexcept;
-
-/**
- * The Category enum provides values the mirror those of SDL_LOG_CATEGORY_x.
- *
- * @since 3.0.0
- */
-enum class Category {
-  App = SDL_LOG_CATEGORY_APPLICATION,
-  Error = SDL_LOG_CATEGORY_ERROR,
-  Assert = SDL_LOG_CATEGORY_ASSERT,
-  System = SDL_LOG_CATEGORY_SYSTEM,
-  Audio = SDL_LOG_CATEGORY_AUDIO,
-  Video = SDL_LOG_CATEGORY_VIDEO,
-  Render = SDL_LOG_CATEGORY_RENDER,
-  Input = SDL_LOG_CATEGORY_INPUT,
-  Test = SDL_LOG_CATEGORY_TEST,
-  Misc = SDL_LOG_CATEGORY_CUSTOM
-};
-
-/**
- * The Log class provides logging-related methods.
+ * The Log class provides easy-to-use logging facilities.
  *
  * @since 3.0.0
  */
@@ -106,46 +50,269 @@ class Log final {
   Log& operator=(Log&&) = delete;
 
   /**
+   * The Priority enum provides values the mirror those of SDL_LogPriority.
+   *
+   * @see SDL_LogPriority
+   * @since 3.0.0
+   */
+  enum class Priority {
+    Info = SDL_LOG_PRIORITY_INFO,
+    Warn = SDL_LOG_PRIORITY_WARN,
+    Verbose = SDL_LOG_PRIORITY_VERBOSE,
+    Debug = SDL_LOG_PRIORITY_DEBUG,
+    Critical = SDL_LOG_PRIORITY_CRITICAL,
+    Error = SDL_LOG_PRIORITY_ERROR,
+  };
+
+  /**
+   * The Category enum provides values the mirror those of SDL_LogCategory.
+   *
+   * @see SDL_LogCategory
+   * @since 3.0.0
+   */
+  enum class Category {
+    App = SDL_LOG_CATEGORY_APPLICATION,
+    Error = SDL_LOG_CATEGORY_ERROR,
+    Assert = SDL_LOG_CATEGORY_ASSERT,
+    System = SDL_LOG_CATEGORY_SYSTEM,
+    Audio = SDL_LOG_CATEGORY_AUDIO,
+    Video = SDL_LOG_CATEGORY_VIDEO,
+    Render = SDL_LOG_CATEGORY_RENDER,
+    Input = SDL_LOG_CATEGORY_INPUT,
+    Test = SDL_LOG_CATEGORY_TEST,
+    Misc = SDL_LOG_CATEGORY_CUSTOM
+  };
+
+  /**
+   * Logs a message with the specified priority and category. This method has no
+   * effect if the supplied string is null. Usage of this method is quite
+   * bulky, so refer to the other logging methods for casual logging.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param priority the priority that will be used.
+   * @param category the category that will be used.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void log(Priority priority,
+                  Category category,
+                  CZString fmt,
+                  Args... args) noexcept
+  {
+    if (fmt) {
+      const auto sdlCategory = static_cast<SDL_LogCategory>(category);
+      const auto prio = static_cast<SDL_LogPriority>(priority);
+      SDL_LogMessage(sdlCategory, prio, fmt, args...);
+    }
+  }
+
+  /**
+   * Logs a message with the <code>Info</code> priority and <code>App</code>
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void info(CZString fmt, Args... args) noexcept
+  {
+    Log::info(Category::App, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Info</code> priority and the specified
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param category the category that will be used.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void info(Category category, CZString fmt, Args... args) noexcept
+  {
+    Log::log(Priority::Info, category, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Warn</code> priority and <code>App</code>
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void warn(CZString fmt, Args... args) noexcept
+  {
+    Log::warn(Category::App, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Warn</code> priority and the specified
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param category the category that will be used.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void warn(Category category, CZString fmt, Args... args) noexcept
+  {
+    Log::log(Priority::Warn, category, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Verbose</code> priority and <code>App</code>
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void verbose(CZString fmt, Args... args) noexcept
+  {
+    Log::verbose(Category::App, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Verbose</code> priority and the specified
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param category the category that will be used.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void verbose(Category category, CZString fmt, Args... args) noexcept
+  {
+    Log::log(Priority::Verbose, category, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Debug</code> priority and <code>App</code>
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void debug(CZString fmt, Args... args) noexcept
+  {
+    Log::debug(Category::App, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Debug</code> priority and the specified
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param category the category that will be used.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void debug(Category category, CZString fmt, Args... args) noexcept
+  {
+    Log::log(Priority::Debug, category, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Critical</code> priority and <code>App</code>
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void critical(CZString fmt, Args... args) noexcept
+  {
+    Log::critical(Category::App, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Critical</code> priority and the specified
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param category the category that will be used.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void critical(Category category, CZString fmt, Args... args) noexcept
+  {
+    Log::log(Priority::Critical, category, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Error</code> priority and <code>App</code>
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void error(CZString fmt, Args... args) noexcept
+  {
+    Log::error(Category::App, fmt, args...);
+  }
+
+  /**
+   * Logs a message with the <code>Error</code> priority and the specified
+   * category. This method has no effect if the supplied string is null.
+   *
+   * @tparam Args the types of the arguments that will be used in the
+   * formatted string.
+   * @param category the category that will be used.
+   * @param fmt the formatted string that will be logged, can safely be null.
+   * @param args the arguments that will be used by the formatted string.
+   * @since 4.0.0
+   */
+  template <typename... Args>
+  static void error(Category category, CZString fmt, Args... args) noexcept
+  {
+    Log::log(Priority::Error, category, fmt, args...);
+  }
+
+  /**
    * Resets all of the logging priorities.
    *
    * @since 3.0.0
    */
   CENTURION_API static void reset_priorites() noexcept;
-
-  /**
-   * Logs a message.
-   *
-   * @param category the category of the message.
-   * @param prio the priority of the message.
-   * @param fmt the formatted string.
-   * @param ... the values that are used by the formatted string.
-   * @since 3.0.0
-   */
-  CENTURION_API static void msgf(Category category,
-                                 Priority prio,
-                                 const char* fmt,
-                                 ...) noexcept;
-
-  /**
-   * Logs a message.
-   *
-   * @param category the category of the message.
-   * @param fmt the formatted string.
-   * @param ... the values that are used by the formatted string.
-   * @since 3.0.0
-   */
-  CENTURION_API static void msgf(Category category,
-                                 const char* fmt,
-                                 ...) noexcept;
-
-  /**
-   * Logs a message with the App category and Info priority.
-   *
-   * @param fmt the formatted string.
-   * @param ... the values that are used by the formatted string.
-   * @since 3.0.0
-   */
-  CENTURION_API static void msgf(const char* fmt, ...) noexcept;
 
   /**
    * Sets the priority of all categories.
@@ -174,6 +341,21 @@ class Log final {
    */
   CENTURION_NODISCARD
   CENTURION_API static Priority get_priority(Category category) noexcept;
+
+  /**
+   * Returns the maximum size, i.e the maximum amount of characters that a
+   * string can contain and successfully without being truncated.
+   *
+   * @return the maximum amount of characters that a loggable string can
+   * contain. Strings longer that this value will be truncated.
+   * @since 4.0.0
+   * @see SDL_MAX_LOG_MESSAGE
+   */
+  CENTURION_NODISCARD
+  constexpr static int max_message_size() noexcept
+  {
+    return SDL_MAX_LOG_MESSAGE;
+  }
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
@@ -191,6 +373,98 @@ static_assert(!std::is_move_constructible<Log>::value,
 static_assert(!std::is_copy_assignable<Log>::value, "Log is copy assignable!");
 
 static_assert(!std::is_move_assignable<Log>::value, "Log is move assignable!");
+
+/**
+ * Indicates whether or not the two log priorities represent the same priority.
+ *
+ * @param lhs the left-hand side Centurion priority.
+ * @param rhs the right-hand side SDL priority.
+ * @return true if the priorities are the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(Log::Priority lhs, SDL_LogPriority rhs) noexcept;
+
+/**
+ * Indicates whether or not the two log priorities represent the same priority.
+ *
+ * @param lhs the left-hand side SDL priority.
+ * @param rhs the right-hand side Centurion priority.
+ * @return true if the priorities are the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(SDL_LogPriority lhs, Log::Priority rhs) noexcept;
+
+/**
+ * Indicates whether or not the two log priorities don't represent the same
+ * priority.
+ *
+ * @param lhs the left-hand side Centurion priority.
+ * @param rhs the right-hand side SDL priority.
+ * @return true if the priorities aren't the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(Log::Priority lhs, SDL_LogPriority rhs) noexcept;
+
+/**
+ * Indicates whether or not the two log priorities don't represent the same
+ * priority.
+ *
+ * @param lhs the left-hand side SDL priority.
+ * @param rhs the right-hand side Centurion priority.
+ * @return true if the priorities aren't the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(SDL_LogPriority lhs, Log::Priority rhs) noexcept;
+
+/**
+ * Indicates whether or not the two log categories represent the same value.
+ *
+ * @param lhs the left-hand side Centurion category.
+ * @param rhs the right-hand side SDL category.
+ * @return true if the categories are the same; false otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(Log::Category lhs, SDL_LogCategory rhs) noexcept;
+
+/**
+ * Indicates whether or not the two log categories represent the same value.
+ *
+ * @param lhs the left-hand side SDL category.
+ * @param rhs the right-hand side Centurion category.
+ * @return true if the priorities are the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(SDL_LogCategory lhs, Log::Category rhs) noexcept;
+
+/**
+ * Indicates whether or not the two log priorities don't represent the same
+ * priority.
+ *
+ * @param lhs the left-hand side Centurion priority.
+ * @param rhs the right-hand side SDL priority.
+ * @return true if the priorities aren't the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(Log::Category lhs, SDL_LogCategory rhs) noexcept;
+
+/**
+ * Indicates whether or not the two log priorities don't represent the same
+ * priority.
+ *
+ * @param lhs the left-hand side SDL priority.
+ * @param rhs the right-hand side Centurion priority.
+ * @return true if the priorities aren't the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(SDL_LogCategory lhs, Log::Category rhs) noexcept;
 
 }  // namespace centurion
 

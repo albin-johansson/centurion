@@ -921,7 +921,7 @@ TEST_CASE("Window::title", "[Window]")
 TEST_CASE("Window::to_string", "[Window]")
 {
   const Window window;
-  Log::msgf(Category::Test, "%s", window.to_string().c_str());
+  Log::info(Log::Category::Test, "%s", window.to_string().c_str());
 }
 
 TEST_CASE("Window::get", "[Window]")

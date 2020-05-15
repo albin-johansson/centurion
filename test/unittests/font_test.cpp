@@ -252,7 +252,7 @@ TEST_CASE("Font::descent", "[Font]")
 TEST_CASE("Font::to_string", "[Font]")
 {
   Font font{type_writer_path, 12};
-  Log::msgf(Category::Test, "%s", font.to_string().c_str());
+  Log::info(Log::Category::Test, "%s", font.to_string().c_str());
 }
 
 TEST_CASE("Font::get", "[Font]")

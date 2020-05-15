@@ -4,16 +4,15 @@
 #include "music.h"
 
 #include "centurion_exception.h"
-#include "centurion_utils.h"
 #include "error.h"
 
 namespace centurion {
 namespace audio {
 
 CENTURION_DEF
-Music::Music(const std::string& file)
+Music::Music(CZString file)
 {
-  m_music = Mix_LoadMUS(file.c_str());
+  m_music = Mix_LoadMUS(file);
   if (!m_music) {
     throw CenturionException{"Failed to create music! " + Error::msg()};
   }
@@ -57,13 +56,13 @@ void Music::move(Music&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Music> Music::unique(const std::string& file)
+UniquePtr<Music> Music::unique(CZString file)
 {
   return centurion::detail::make_unique<Music>(file);
 }
 
 CENTURION_DEF
-SharedPtr<Music> Music::shared(const std::string& file)
+SharedPtr<Music> Music::shared(CZString file)
 {
   return std::make_shared<Music>(file);
 }

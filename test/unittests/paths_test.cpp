@@ -4,33 +4,33 @@
 
 using namespace centurion;
 
-TEST_CASE("AppPath()", "[AppPath]")
+TEST_CASE("BasePath()", "[BasePath]")
 {
-  CHECK_NOTHROW(AppPath{});
+  CHECK_NOTHROW(BasePath{});
 }
 
-TEST_CASE("AppPath(AppPath&&)", "[AppPath]")
+TEST_CASE("BasePath(BasePath&&)", "[BasePath]")
 {
-  AppPath path;
-  AppPath other{std::move(path)};
+  BasePath path;
+  BasePath other{std::move(path)};
 
   CHECK(!path.get());
   CHECK(other.get());
 }
 
-TEST_CASE("AppPath::operator=(AppPath&&)", "[AppPath]")
+TEST_CASE("BasePath::operator=(BasePath&&)", "[BasePath]")
 {
   SECTION("Self-assignment")
   {
-    AppPath path;
+    BasePath path;
     path = std::move(path);
     CHECK(path.get());
   }
 
   SECTION("Normal usage")
   {
-    AppPath path;
-    AppPath other;
+    BasePath path;
+    BasePath other;
 
     other = std::move(path);
 
@@ -39,28 +39,28 @@ TEST_CASE("AppPath::operator=(AppPath&&)", "[AppPath]")
   }
 }
 
-TEST_CASE("AppPath::operator bool", "[AppPath]")
+TEST_CASE("BasePath::unique", "[BasePath]")
 {
-  const AppPath appPath;
-  CHECK(appPath);
+  const auto path = BasePath::unique();
+  CHECK(path);
 }
 
-TEST_CASE("AppPath::unique", "[AppPath]")
+TEST_CASE("BasePath::shared", "[BasePath]")
 {
-  const auto appPath = AppPath::unique();
-  CHECK(appPath);
+  const auto path = BasePath::shared();
+  CHECK(path);
 }
 
-TEST_CASE("AppPath::shared", "[AppPath]")
+TEST_CASE("BasePath::operator bool", "[BasePath]")
 {
-  const auto appPath = AppPath::shared();
-  CHECK(appPath);
+  const BasePath path;
+  CHECK(path);
 }
 
-TEST_CASE("AppPath::get", "[AppPath]")
+TEST_CASE("BasePath::get", "[BasePath]")
 {
-  const AppPath appPath;
-  CHECK(appPath.get());
+  const BasePath path;
+  CHECK(path.get());
 }
 
 TEST_CASE("PrefPath(string&, string&)", "[PrefPath]")

@@ -31,70 +31,70 @@
 namespace centurion {
 
 /**
- * The AppPath class is a simple wrapper class for a string that represents the
+ * The BasePath class is a simple wrapper class for a string that represents the
  * application path obtained by SDL_GetBasePath.
  *
  * @since 3.0.0
  */
-class AppPath final {  // TODO rename to BasePath
+class BasePath final {
  public:
   /**
-   * Constructs an AppPath object that represents the path of the application
+   * Constructs an BasePath object that represents the path of the application
    * executable. Note! This might be an expensive operation, so it is
    * recommended to create only one instance of this class and cache it.
    *
    * @since 3.0.0
    */
-  CENTURION_API AppPath() noexcept;
+  CENTURION_API BasePath() noexcept;
 
   /**
-   * Moves the contents of the supplied AppPath into this instance.
+   * Moves the contents of the supplied BasePath into this instance.
    *
-   * @param other the AppPath that will be moved.
+   * @param other the BasePath that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API AppPath(AppPath&& other) noexcept;
+  CENTURION_API BasePath(BasePath&& other) noexcept;
 
-  AppPath(const AppPath&) = delete;
+  BasePath(const BasePath&) = delete;
 
-  CENTURION_API ~AppPath() noexcept;
+  CENTURION_API ~BasePath() noexcept;
 
   /**
-   * Moves the contents of the supplied AppPath into this instance.
+   * Moves the contents of the supplied BasePath into this instance.
    *
-   * @param other the AppPath that will be moved.
+   * @param other the BasePath that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API AppPath& operator=(AppPath&& other) noexcept;
+  CENTURION_API BasePath& operator=(BasePath&& other) noexcept;
 
-  AppPath& operator=(const AppPath&) = delete;
+  BasePath& operator=(const BasePath&) = delete;
 
   /**
-   * Creates and returns a unique pointer to an AppPath object that represents
+   * Creates and returns a unique pointer to an BasePath object that represents
    * the path of the application executable. Note! This might be an expensive
    * operation, so it is recommended to create only one instance of this class
    * and cache it.
    *
-   * @return a unique pointer to an AppPath instance.
+   * @return a unique pointer to an BasePath instance.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<AppPath> unique();
+  CENTURION_API static UniquePtr<BasePath> unique() noexcept;
 
   /**
-   * Creates and returns a shared pointer to an AppPath object that represents
+   * Creates and returns a shared pointer to an BasePath object that represents
    * the path of the application executable. Note! This might be an expensive
    * operation, so it is recommended to create only one instance of this class
    * and cache it.
    *
-   * @return a shared pointer to an AppPath instance.
+   * @return a shared pointer to an BasePath instance.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<AppPath> shared();
+  CENTURION_API static SharedPtr<BasePath> shared() noexcept;
 
   /**
-   * Indicates whether or not there is a non-null string in the app path object.
+   * Indicates whether or not there is a non-null string in the BasePath object.
    *
    * @return true if the internal string pointer isn't null; false otherwise.
    * @since 3.0.0
@@ -110,25 +110,25 @@ class AppPath final {  // TODO rename to BasePath
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  const char* get() const noexcept { return m_path; }
+  CZString get() const noexcept { return m_path; }
 
  private:
-  char* m_path = nullptr;
+  ZString m_path;
 
   /**
-   * Destroys the resources associated with the AppPath instance.
+   * Destroys the resources associated with the BasePath instance.
    *
    * @since 4.0.0
    */
   void destroy() noexcept;
 
   /**
-   * Moves the contents of the supplied AppPath instance into this instance.
+   * Moves the contents of the supplied BasePath instance into this instance.
    *
    * @param other the instance that will be moved.
    * @since 4.0.0
    */
-  void move(AppPath&& other) noexcept;
+  void move(BasePath&& other) noexcept;
 };
 
 /**
@@ -147,7 +147,7 @@ class PrefPath final {
    * @param app the name of your application.
    * @since 3.0.0
    */
-  CENTURION_API PrefPath(const std::string& org, const std::string& app);
+  CENTURION_API PrefPath(CZString org, CZString app) noexcept;
 
   /**
    * Moves the contents of the supplied PrefPath into this instance.
@@ -181,8 +181,8 @@ class PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<PrefPath> unique(const std::string& org,
-                                                  const std::string& app);
+  CENTURION_API static UniquePtr<PrefPath> unique(CZString org,
+                                                  CZString app) noexcept;
 
   /**
    * Creates and returns a shared pointer to a PrefPath object. Only use
@@ -194,8 +194,8 @@ class PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<PrefPath> shared(const std::string& org,
-                                                  const std::string& app);
+  CENTURION_API static SharedPtr<PrefPath> shared(CZString org,
+                                                  CZString app) noexcept;
 
   /**
    * Indicates whether or not the path object holds a non-null path.
@@ -213,10 +213,10 @@ class PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  const char* get() const noexcept { return m_path; }
+  CZString get() const noexcept { return m_path; }
 
  private:
-  char* m_path = nullptr;
+  ZString m_path;
 
   /**
    * Destroys the resources associated with the PrefPath instance.

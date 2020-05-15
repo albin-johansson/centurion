@@ -10,32 +10,32 @@
 namespace centurion {
 
 CENTURION_DEF
-AppPath::AppPath() noexcept : m_path{SDL_GetBasePath()}
+BasePath::BasePath() noexcept : m_path{SDL_GetBasePath()}
 {}
 
 CENTURION_DEF
-AppPath::AppPath(AppPath&& other) noexcept
+BasePath::BasePath(BasePath&& other) noexcept
 {
-  move(std::forward<AppPath>(other));
+  move(std::forward<BasePath>(other));
 }
 
 CENTURION_DEF
-AppPath& AppPath::operator=(AppPath&& other) noexcept
+BasePath& BasePath::operator=(BasePath&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<AppPath>(other));
+    move(std::forward<BasePath>(other));
   }
   return *this;
 }
 
 CENTURION_DEF
-AppPath::~AppPath() noexcept
+BasePath::~BasePath() noexcept
 {
   destroy();
 }
 
 CENTURION_DEF
-void AppPath::destroy() noexcept
+void BasePath::destroy() noexcept
 {
   if (m_path) {
     SDL_free(m_path);
@@ -43,7 +43,7 @@ void AppPath::destroy() noexcept
 }
 
 CENTURION_DEF
-void AppPath::move(AppPath&& other) noexcept
+void BasePath::move(BasePath&& other) noexcept
 {
   destroy();
   m_path = other.m_path;
@@ -51,20 +51,20 @@ void AppPath::move(AppPath&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<AppPath> AppPath::unique()
+UniquePtr<BasePath> BasePath::unique() noexcept
 {
-  return centurion::detail::make_unique<AppPath>();
+  return centurion::detail::make_unique<BasePath>();
 }
 
 CENTURION_DEF
-SharedPtr<AppPath> AppPath::shared()
+SharedPtr<BasePath> BasePath::shared() noexcept
 {
-  return std::make_shared<AppPath>();
+  return std::make_shared<BasePath>();
 }
 
 CENTURION_DEF
-PrefPath::PrefPath(const std::string& org, const std::string& app)
-    : m_path{SDL_GetPrefPath(org.c_str(), app.c_str())}
+PrefPath::PrefPath(CZString org, CZString app) noexcept
+    : m_path{SDL_GetPrefPath(org, app)}
 {}
 
 CENTURION_DEF
@@ -105,15 +105,13 @@ void PrefPath::move(PrefPath&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<PrefPath> PrefPath::unique(const std::string& org,
-                                     const std::string& app)
+UniquePtr<PrefPath> PrefPath::unique(CZString org, CZString app) noexcept
 {
   return centurion::detail::make_unique<PrefPath>(org, app);
 }
 
 CENTURION_DEF
-SharedPtr<PrefPath> PrefPath::shared(const std::string& org,
-                                     const std::string& app)
+SharedPtr<PrefPath> PrefPath::shared(CZString org, CZString app) noexcept
 {
   return std::make_shared<PrefPath>(org, app);
 }

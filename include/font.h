@@ -66,7 +66,7 @@ class Font final {
    * size isn't greater than zero.
    * @since 3.0.0
    */
-  CENTURION_API Font(const std::string& file, int size);
+  CENTURION_API Font(CZString file, int size);
 
   /**
    * The copy constructor is deleted for font instances.
@@ -113,8 +113,7 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Font> unique(const std::string& file,
-                                              int size);
+  CENTURION_API static UniquePtr<Font> unique(CZString file, int size);
 
   /**
    * Creates and returns a shared pointer to a font instance.
@@ -128,8 +127,7 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Font> shared(const std::string& file,
-                                              int size);
+  CENTURION_API static SharedPtr<Font> shared(CZString file, int size);
 
   /**
    * Resets the style of the font.
@@ -307,18 +305,18 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API std::string family_name() const noexcept;
+  CENTURION_API CZString family_name() const noexcept;
 
   /**
    * Returns the font face style name of the font. This information may not be
    * available.
    *
-   * @return the font face style name of the font; nothing if there is none
+   * @return the font face style name of the font; null if there is none
    * available.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Optional<std::string> style_name() const noexcept;
+  CENTURION_API CZString style_name() const noexcept;
 
   /**
    * Returns the width of the supplied string, if it was rendered using the
@@ -330,7 +328,7 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int string_width(const std::string& s) const noexcept;
+  CENTURION_API int string_width(CZString s) const noexcept;
 
   /**
    * Returns the height of the supplied string, if it was rendered using the
@@ -342,7 +340,7 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API int string_height(const std::string& s) const noexcept;
+  CENTURION_API int string_height(CZString s) const noexcept;
 
   /**
    * Returns a textual representation of the font instance.

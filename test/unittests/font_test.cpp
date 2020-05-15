@@ -2,7 +2,6 @@
 
 #include <catch.hpp>
 
-#include "centurion_exception.h"
 #include "log.h"
 
 using namespace centurion;
@@ -12,8 +11,9 @@ static constexpr auto type_writer_path = "resources/type_writer.ttf";
 static constexpr auto fira_code_path = "resources/fira_code.ttf";
 static constexpr auto daniel_path = "resources/daniel.ttf";
 
-TEST_CASE("Font(string&, int)", "[Font]")
+TEST_CASE("Font(CZString, int)", "[Font]")
 {
+  CHECK_THROWS_AS(Font(nullptr, 1), CenturionException);
   CHECK_THROWS_AS(Font("", 1), CenturionException);
   CHECK_THROWS_AS(Font("", 0), CenturionException);
 }
@@ -198,13 +198,13 @@ TEST_CASE("Font::is_fixed_width", "[Font]")
 TEST_CASE("Font::family_name", "[Font]")
 {
   Font font{type_writer_path, 12};
-  CHECK(font.family_name() == "Type Writer");
+  CHECK_THAT(font.family_name(), Catch::Equals("Type Writer"));
 }
 
 TEST_CASE("Font::style_name", "[Font]")
 {
   const Font font{type_writer_path, 12};
-  CHECK_THAT(font.style_name()->c_str(), Equals("Regular"));
+  CHECK_THAT(font.style_name(), Equals("Regular"));
 }
 
 TEST_CASE("Font::string_width", "[Font]")

@@ -10,13 +10,17 @@ namespace centurion {
 /* Any sufficiently advanced technology is indistinguishable from magic. */
 
 CENTURION_DEF
-Font::Font(const std::string& file, int size) : m_size{size}
+Font::Font(CZString file, int size) : m_size{size}
 {
+  if (!file) {
+    throw CenturionException{"Cannot create font from null path!"};
+  }
+
   if (size <= 0) {
     throw CenturionException{"Bad font size!"};
   }
 
-  m_font = TTF_OpenFont(file.c_str(), size);
+  m_font = TTF_OpenFont(file, size);
   if (!m_font) {
     throw CenturionException{"Failed to open font! " + Error::msg()};
   }
@@ -66,13 +70,13 @@ void Font::move(Font&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Font> Font::unique(const std::string& file, int size)
+UniquePtr<Font> Font::unique(CZString file, int size)
 {
   return centurion::detail::make_unique<Font>(file, size);
 }
 
 CENTURION_DEF
-SharedPtr<Font> Font::shared(const std::string& file, int size)
+SharedPtr<Font> Font::shared(CZString file, int size)
 {
   return std::make_shared<Font>(file, size);
 }
@@ -187,18 +191,18 @@ bool Font::is_fixed_width() const noexcept
 }
 
 CENTURION_DEF
-int Font::string_width(const std::string& s) const noexcept
+int Font::string_width(CZString s) const noexcept
 {
   int width = 0;
-  TTF_SizeText(m_font, s.c_str(), &width, nullptr);
+  TTF_SizeText(m_font, s, &width, nullptr);
   return width;
 }
 
 CENTURION_DEF
-int Font::string_height(const std::string& s) const noexcept
+int Font::string_height(CZString s) const noexcept
 {
   int height = 0;
-  TTF_SizeText(m_font, s.c_str(), nullptr, &height);
+  TTF_SizeText(m_font, s, nullptr, &height);
   return height;
 }
 
@@ -239,27 +243,22 @@ FontHint Font::font_hinting() const noexcept
 }
 
 CENTURION_DEF
-std::string Font::family_name() const noexcept
+CZString Font::family_name() const noexcept
 {
   return TTF_FontFaceFamilyName(m_font);
 }
 
 CENTURION_DEF
-Optional<std::string> Font::style_name() const noexcept
+CZString Font::style_name() const noexcept
 {
-  const auto* name = TTF_FontFaceStyleName(m_font);
-  if (name) {
-    return name;
-  } else {
-    return nothing;
-  }
+  return TTF_FontFaceStyleName(m_font);
 }
 
 CENTURION_DEF
 std::string Font::to_string() const
 {
   const auto idStr = "Font@" + detail::address_of(this);
-  const auto nameStr = " | Name: " + family_name();
+  const auto nameStr = " | Name: " + std::string{family_name()};
   const auto sizeStr = ", Size: " + std::to_string(size());
   return "[" + idStr + nameStr + sizeStr + "]";
 }

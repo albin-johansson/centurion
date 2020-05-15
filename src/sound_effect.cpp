@@ -4,7 +4,6 @@
 #include "sound_effect.h"
 
 #include "centurion_exception.h"
-#include "centurion_utils.h"
 #include "error.h"
 
 namespace centurion {
@@ -13,9 +12,12 @@ namespace audio {
 // TODO check Mix documentation if there are any redundancies
 
 CENTURION_DEF
-SoundEffect::SoundEffect(const std::string& file)
+SoundEffect::SoundEffect(CZString file)
 {
-  m_chunk = Mix_LoadWAV(file.c_str());
+  if (!file) {
+    throw CenturionException{"Cannot create sound effect from null file!"};
+  }
+  m_chunk = Mix_LoadWAV(file);
   if (!m_chunk) {
     throw CenturionException{Error::descriptionf()};
   }
@@ -63,13 +65,13 @@ void SoundEffect::move(SoundEffect&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<SoundEffect> SoundEffect::unique(const std::string& file)
+UniquePtr<SoundEffect> SoundEffect::unique(CZString file)
 {
   return centurion::detail::make_unique<SoundEffect>(file);
 }
 
 CENTURION_DEF
-SharedPtr<SoundEffect> SoundEffect::shared(const std::string& file)
+SharedPtr<SoundEffect> SoundEffect::shared(CZString file)
 {
   return std::make_shared<SoundEffect>(file);
 }

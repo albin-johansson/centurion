@@ -12,9 +12,10 @@ using namespace audio;
 
 static constexpr auto path = "resources/click.wav";
 
-TEST_CASE("SoundEffect(file)", "[SoundEffect]")
+TEST_CASE("SoundEffect(CZString)", "[SoundEffect]")
 {
   CHECK_THROWS_AS(SoundEffect("somebadpath"), CenturionException);
+  CHECK_THROWS_AS(SoundEffect(nullptr), CenturionException);
 }
 
 TEST_CASE("SoundEffect(SoundEffect&&)", "[SoundEffect]")
@@ -53,7 +54,9 @@ TEST_CASE("SoundEffect smart pointer factory methods", "[SoundEffect]")
   CHECK(SoundEffect::unique(path));
   CHECK(SoundEffect::shared(path));
   CHECK_THROWS_AS(SoundEffect::unique(""), CenturionException);
+  CHECK_THROWS_AS(SoundEffect::unique(nullptr), CenturionException);
   CHECK_THROWS_AS(SoundEffect::shared(""), CenturionException);
+  CHECK_THROWS_AS(SoundEffect::shared(nullptr), CenturionException);
 }
 
 TEST_CASE("SoundEffect::play", "[SoundEffect]")

@@ -45,7 +45,7 @@ class SoundEffect final {
    * @throws CenturionException if the audio file cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_API explicit SoundEffect(const std::string& file);
+  CENTURION_API explicit SoundEffect(CZString file);
 
   /**
    * Creates a sound effect by moving the contents of the supplied sound effect.
@@ -80,7 +80,7 @@ class SoundEffect final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static UniquePtr<SoundEffect> unique(const std::string& file);
+  static UniquePtr<SoundEffect> unique(CZString file);
 
   /**
    * Creates and returns a shared pointer to a SoundEffect instance.
@@ -92,7 +92,7 @@ class SoundEffect final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static SharedPtr<SoundEffect> shared(const std::string& file);
+  static SharedPtr<SoundEffect> shared(CZString file);
 
   /**
    * Plays the sound effect.

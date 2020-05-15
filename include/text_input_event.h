@@ -28,6 +28,7 @@
 #include <SDL_events.h>
 
 #include "centurion_api.h"
+#include "centurion_utils.h"
 #include "common_event.h"
 
 namespace centurion {
@@ -90,7 +91,7 @@ class TextInputEvent : public CommonEvent<SDL_TextInputEvent> {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API const char* text() const noexcept;
+  CENTURION_API CZString text() const noexcept;
 };
 
 static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>(),

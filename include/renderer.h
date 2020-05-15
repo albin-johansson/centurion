@@ -1051,7 +1051,7 @@ class Renderer final {
    *
    * @param text the text that will be rendered.
    * @param render a lambda that creates a <code>SDL_Surface*</code> and
-   * takes a <code>const char*</code> as its parameter.
+   * takes a <code>CZString</code> as its parameter.
    * @return a unique pointer to a texture; null if something went wrong.
    * @since 4.0.0
    */

@@ -12,7 +12,7 @@
 namespace centurion {
 
 CENTURION_DEF
-Surface::Surface(const char* file)
+Surface::Surface(CZString file)
 {
   if (!file) {
     throw CenturionException{"Can't create surface from null path!"};

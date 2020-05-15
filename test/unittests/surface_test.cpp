@@ -13,13 +13,13 @@
 
 using namespace centurion;
 
-static constexpr auto* path = "resources/panda.png";
+static constexpr CZString path = "resources/panda.png";
 
-TEST_CASE("Surface(const char*)", "[Surface]")
+TEST_CASE("Surface(CZString)", "[Surface]")
 {
   SECTION("Null path")
   {
-    const char* c = nullptr;
+    CZString c = nullptr;
     CHECK_THROWS_AS(Surface{c}, CenturionException);
   }
 

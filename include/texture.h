@@ -27,10 +27,6 @@
 
 #include <SDL_render.h>
 
-#include <memory>
-#include <string>
-#include <type_traits>
-
 #include "area.h"
 #include "blend_mode.h"
 #include "centurion_api.h"
@@ -182,7 +178,7 @@ class Texture final {
    * @throws CenturionException if the texture cannot be loaded.
    * @since 4.0.0
    */
-  CENTURION_API Texture(const Renderer& renderer, const char* path);
+  CENTURION_API Texture(const Renderer& renderer, CZString path);
 
   /**
    * Creates an texture that is a copy of the supplied surface.
@@ -259,7 +255,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static UniquePtr<Texture> unique(const Renderer& renderer, const char* path);
+  static UniquePtr<Texture> unique(const Renderer& renderer, CZString path);
 
   /**
    * Creates and returns a unique texture that is a copy of the supplied
@@ -322,7 +318,7 @@ class Texture final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  static SharedPtr<Texture> shared(const Renderer& renderer, const char* path);
+  static SharedPtr<Texture> shared(const Renderer& renderer, CZString path);
 
   /**
    * Creates and returns a shared texture that is a copy of the supplied
@@ -375,7 +371,7 @@ class Texture final {
   CENTURION_NODISCARD
   CENTURION_API
   static UniquePtr<Texture> streaming(const Renderer& renderer,
-                                      const std::string& path,
+                                      CZString path,
                                       PixelFormat format);
 
   /**

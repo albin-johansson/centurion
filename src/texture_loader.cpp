@@ -23,7 +23,7 @@ CENTURION_DEF
 TextureLoader::~TextureLoader() noexcept = default;
 
 CENTURION_DEF
-UniquePtr<Texture> TextureLoader::unique_img(const char* file) const
+UniquePtr<Texture> TextureLoader::unique_img(CZString file) const
 {
   return Texture::unique(*m_renderer, file);
 }
@@ -38,7 +38,7 @@ UniquePtr<Texture> TextureLoader::unique_img(PixelFormat format,
 }
 
 CENTURION_DEF
-SharedPtr<Texture> TextureLoader::shared_img(const char* file) const
+SharedPtr<Texture> TextureLoader::shared_img(CZString file) const
 {
   return Texture::shared(*m_renderer, file);
 }

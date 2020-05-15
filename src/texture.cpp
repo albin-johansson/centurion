@@ -23,7 +23,7 @@ Texture::Texture(Owner<SDL_Texture*> texture)
 }
 
 CENTURION_DEF
-Texture::Texture(const Renderer& renderer, const char* path)
+Texture::Texture(const Renderer& renderer, CZString path)
 {
   if (!path) {
     throw CenturionException{"Can't load texture from null path!"};
@@ -129,7 +129,7 @@ UniquePtr<Texture> Texture::unique(Owner<SDL_Texture*> texture)
 }
 
 CENTURION_DEF
-UniquePtr<Texture> Texture::unique(const Renderer& renderer, const char* path)
+UniquePtr<Texture> Texture::unique(const Renderer& renderer, CZString path)
 {
   return centurion::detail::make_unique<Texture>(renderer, path);
 }
@@ -159,7 +159,7 @@ SharedPtr<Texture> Texture::shared(Owner<SDL_Texture*> texture)
 }
 
 CENTURION_DEF
-SharedPtr<Texture> Texture::shared(const Renderer& renderer, const char* path)
+SharedPtr<Texture> Texture::shared(const Renderer& renderer, CZString path)
 {
   return std::make_shared<Texture>(renderer, path);
 }
@@ -183,12 +183,12 @@ SharedPtr<Texture> Texture::shared(const Renderer& renderer,
 
 CENTURION_DEF
 UniquePtr<Texture> Texture::streaming(const Renderer& renderer,
-                                      const std::string& path,
+                                      CZString path,
                                       PixelFormat format)
 {
   const auto blendMode = BlendMode::Blend;
-  const auto createSurface = [](const std::string& path, PixelFormat format) {
-    Surface source{path.c_str()};
+  const auto createSurface = [](CZString path, PixelFormat format) {
+    Surface source{path};
     source.set_blend_mode(blendMode);
     return source.convert(format);
   };

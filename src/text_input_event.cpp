@@ -35,7 +35,7 @@ Uint32 TextInputEvent::window_id() const noexcept
 }
 
 CENTURION_DEF
-const char* TextInputEvent::text() const noexcept
+CZString TextInputEvent::text() const noexcept
 {
   return m_event.text;
 }

@@ -706,7 +706,7 @@ CENTURION_DEF
 UniquePtr<Texture> Renderer::text_blended(const std::string& text,
                                           const Font& font) const noexcept
 {
-  return render_text(text, [this, &font](const char* text) noexcept {
+  return render_text(text, [this, &font](CZString text) noexcept {
     return TTF_RenderText_Blended(font.get(), text, color());
   });
 }
@@ -717,7 +717,7 @@ UniquePtr<Texture> Renderer::text_blended_wrapped(
     Uint32 wrap,
     const Font& font) const noexcept
 {
-  return render_text(text, [this, &font, wrap](const char* text) noexcept {
+  return render_text(text, [this, &font, wrap](CZString text) noexcept {
     return TTF_RenderText_Blended_Wrapped(font.get(), text, color(), wrap);
   });
 }
@@ -727,7 +727,7 @@ UniquePtr<Texture> Renderer::text_shaded(const std::string& text,
                                          const Color& bg,
                                          const Font& font) const noexcept
 {
-  return render_text(text, [this, &font, &bg](const char* text) noexcept {
+  return render_text(text, [this, &font, &bg](CZString text) noexcept {
     return TTF_RenderText_Shaded(font.get(), text, color(), bg);
   });
 }
@@ -736,7 +736,7 @@ CENTURION_DEF
 UniquePtr<Texture> Renderer::text_solid(const std::string& text,
                                         const Font& font) const noexcept
 {
-  return render_text(text, [this, &font](const char* text) noexcept {
+  return render_text(text, [this, &font](CZString text) noexcept {
     return TTF_RenderText_Solid(font.get(), text, color());
   });
 }

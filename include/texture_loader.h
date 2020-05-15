@@ -67,7 +67,7 @@ class TextureLoader final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API UniquePtr<Texture> unique_img(const char* file) const;
+  CENTURION_API UniquePtr<Texture> unique_img(CZString file) const;
 
   /**
    * Creates and returns a unique pointer to an image with the specified
@@ -97,7 +97,7 @@ class TextureLoader final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API SharedPtr<Texture> shared_img(const char* file) const;
+  CENTURION_API SharedPtr<Texture> shared_img(CZString file) const;
 
   /**
    * Creates and returns a shared pointer to an image with the specified

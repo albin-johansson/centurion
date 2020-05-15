@@ -8,9 +8,9 @@
 namespace centurion {
 
 CENTURION_DEF
-const char* Error::descriptionf() noexcept
+CZString Error::descriptionf() noexcept
 {
-  const auto* err = SDL_GetError();
+  CZString err = SDL_GetError();
   return err ? err : "";
 }
 

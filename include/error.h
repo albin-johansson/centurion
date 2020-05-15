@@ -25,10 +25,8 @@
 #ifndef CENTURION_ERROR_HEADER
 #define CENTURION_ERROR_HEADER
 
-#include <string>
-#include <type_traits>
-
 #include "centurion_api.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 
@@ -51,7 +49,7 @@ class [[deprecated]] Error final
   Error& operator=(Error&&) = delete;
 
   /**
-   * Returns a raw string literal that describes the last error. This methods
+   * Returns a raw string literal that describes the last error. This method
    * will never return null.
    *
    * @return a raw string literal that describes the last error. The empty
@@ -59,7 +57,7 @@ class [[deprecated]] Error final
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static const char* descriptionf() noexcept;
+  CENTURION_API static CZString descriptionf() noexcept;
 
   /**
    * Returns a string that describes the last error.

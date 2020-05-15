@@ -150,7 +150,7 @@ void MessageBox::set_title(CZString title) noexcept
 }
 
 CENTURION_DEF
-void MessageBox::set_message(const char* message) noexcept
+void MessageBox::set_message(CZString message) noexcept
 {
   m_message = message ? message : m_message;
 }

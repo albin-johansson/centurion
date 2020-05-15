@@ -28,6 +28,7 @@
 #include <SDL_events.h>
 
 #include "centurion_api.h"
+#include "centurion_utils.h"
 #include "common_event.h"
 
 namespace centurion {
@@ -108,7 +109,7 @@ class TextEditingEvent : public CommonEvent<SDL_TextEditingEvent> {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API const char* text() const noexcept;
+  CENTURION_API CZString text() const noexcept;
 
   /**
    * Returns the location to begin editing from.

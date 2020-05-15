@@ -703,7 +703,7 @@ bool Renderer::using_integer_logical_scaling() const noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Texture> Renderer::text_blended(const std::string& text,
+UniquePtr<Texture> Renderer::text_blended(CZString text,
                                           const Font& font) const noexcept
 {
   return render_text(text, [this, &font](CZString text) noexcept {
@@ -713,7 +713,7 @@ UniquePtr<Texture> Renderer::text_blended(const std::string& text,
 
 CENTURION_DEF
 UniquePtr<Texture> Renderer::text_blended_wrapped(
-    const std::string& text,
+    CZString text,
     Uint32 wrap,
     const Font& font) const noexcept
 {
@@ -723,7 +723,7 @@ UniquePtr<Texture> Renderer::text_blended_wrapped(
 }
 
 CENTURION_DEF
-UniquePtr<Texture> Renderer::text_shaded(const std::string& text,
+UniquePtr<Texture> Renderer::text_shaded(CZString text,
                                          const Color& bg,
                                          const Font& font) const noexcept
 {
@@ -733,7 +733,7 @@ UniquePtr<Texture> Renderer::text_shaded(const std::string& text,
 }
 
 CENTURION_DEF
-UniquePtr<Texture> Renderer::text_solid(const std::string& text,
+UniquePtr<Texture> Renderer::text_solid(CZString text,
                                         const Font& font) const noexcept
 {
   return render_text(text, [this, &font](CZString text) noexcept {

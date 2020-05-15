@@ -878,7 +878,7 @@ class Renderer final {
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
-   * @param text the text that will be rendered.
+   * @param text the text that will be rendered, can safely be null.
    * @param font the font that the text will be rendered in.
    * @return a unique pointer to a texture that contains the rendered text;
    * null if something went wrong.
@@ -886,7 +886,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  UniquePtr<Texture> text_blended(const std::string& text,
+  UniquePtr<Texture> text_blended(CZString text,
                                   const Font& font) const noexcept;
 
   /**
@@ -902,7 +902,7 @@ class Renderer final {
    * the line breaks by inserting newline characters at the desired breakpoints.
    *
    * @param text the text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints.
+   * characters in the string to indicate breakpoints, can safely be null.
    * @param wrap the width in pixels which marks the point that the text will
    * be wrapped after.
    * @param font the font that the text will be rendered in.
@@ -912,7 +912,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  UniquePtr<Texture> text_blended_wrapped(const std::string& text,
+  UniquePtr<Texture> text_blended_wrapped(CZString text,
                                           Uint32 wrap,
                                           const Font& font) const noexcept;
 
@@ -927,7 +927,7 @@ class Renderer final {
    * rendering solid text but about as fast as blended text. Use this
    * method when you want nice text, and can live with a box around it.
    *
-   * @param text the text that will be rendered.
+   * @param text the text that will be rendered, can safely be null.
    * @param bg the background color used for the box.
    * @param font the font that the text will be rendered in.
    * @return a unique pointer to a texture that contains the rendered text;
@@ -936,7 +936,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  UniquePtr<Texture> text_shaded(const std::string& text,
+  UniquePtr<Texture> text_shaded(CZString text,
                                  const Color& bg,
                                  const Font& font) const noexcept;
 
@@ -950,7 +950,7 @@ class Renderer final {
    * doesn't use anti-aliasing so the text isn't very smooth. Use this method
    * when quality isn't as big of a concern and speed is important.
    *
-   * @param text the text that will be rendered.
+   * @param text the text that will be rendered, can safely be null.
    * @param font the font that the text will be rendered in.
    * @return a unique pointer to a texture that contains the rendered text;
    * null if something went wrong.
@@ -958,8 +958,7 @@ class Renderer final {
    */
   CENTURION_NODISCARD
   CENTURION_API
-  UniquePtr<Texture> text_solid(const std::string& text,
-                                const Font& font) const noexcept;
+  UniquePtr<Texture> text_solid(CZString text, const Font& font) const noexcept;
 
   /**
    * Returns the viewport that the renderer uses.
@@ -1057,14 +1056,14 @@ class Renderer final {
    */
   template <typename Lambda>
   CENTURION_NODISCARD UniquePtr<Texture> render_text(
-      const std::string& text,
+      CZString text,
       Lambda&& render) const noexcept
   {
-    if (text.empty()) {
+    if (!text) {
       return nullptr;
     }
 
-    SDL_Surface* surface = render(text.c_str());
+    SDL_Surface* surface = render(text);
     if (!surface) {
       return nullptr;
     }

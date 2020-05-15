@@ -642,6 +642,7 @@ TEST_CASE("Renderer::text_blended", "[Renderer]")
   Renderer renderer{window};
   Font font{"resources/daniel.ttf", 12};
 
+  CHECK(!renderer.text_blended(nullptr, font));
   CHECK(!renderer.text_blended("", font));
   CHECK(renderer.text_blended("Hello", font));
 }
@@ -652,6 +653,7 @@ TEST_CASE("Renderer::text_blended_wrapped", "[Renderer]")
   Renderer renderer{window};
   Font font{"resources/daniel.ttf", 12};
 
+  CHECK(!renderer.text_blended_wrapped(nullptr, 500, font));
   CHECK(!renderer.text_blended_wrapped("", 500, font));
   CHECK(renderer.text_blended_wrapped("Hello", 500, font));
 }
@@ -662,6 +664,7 @@ TEST_CASE("Renderer::text_shaded", "[Renderer]")
   Renderer renderer{window};
   Font font{"resources/daniel.ttf", 12};
 
+  CHECK(!renderer.text_shaded(nullptr, black, font));
   CHECK(!renderer.text_shaded("", black, font));
   CHECK(renderer.text_shaded("Hello", black, font));
 }
@@ -672,6 +675,7 @@ TEST_CASE("Renderer::text_solid", "[Renderer]")
   Renderer renderer{window};
   Font font{"resources/daniel.ttf", 12};
 
+  CHECK(!renderer.text_solid(nullptr, font));
   CHECK(!renderer.text_solid("", font));
   CHECK(renderer.text_solid("Hello", font));
 }

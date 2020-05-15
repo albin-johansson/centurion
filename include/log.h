@@ -40,13 +40,9 @@ namespace centurion {
 class Log final {
  public:
   Log() = delete;
-
   Log(const Log&) = delete;
-
   Log(Log&&) = delete;
-
   Log& operator=(const Log&) = delete;
-
   Log& operator=(Log&&) = delete;
 
   /**

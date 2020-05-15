@@ -195,6 +195,14 @@ class ColorScheme final {
   CENTURION_API
   const SDL_MessageBoxColorScheme& get() const noexcept;  // FIXME remove
 
+  /**
+   * Creates and returns the SDL_MessageBoxColorScheme equivalent of the color
+   * scheme
+   *
+   * @return a SDL_MessageBoxColorScheme that is equivalent to the color
+   * scheme.
+   * @since 4.0.0
+   */
   CENTURION_NODISCARD
   CENTURION_API SDL_MessageBoxColorScheme convert() const noexcept;
 

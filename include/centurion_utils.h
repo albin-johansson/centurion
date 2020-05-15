@@ -204,7 +204,7 @@ using WeakPtr = std::weak_ptr<T>;
 // *
 // * @since 4.0.0
 // */
-//using StringSpan = gsl::czstring_span; // TODO remove if unused
+// using StringSpan = gsl::czstring_span; // TODO remove if unused
 
 /**
  * A type alias for a const null-terminated C-style string.
@@ -212,6 +212,13 @@ using WeakPtr = std::weak_ptr<T>;
  * @since 4.0.0
  */
 using CZString = gsl::czstring;
+
+/**
+ * A type alias for a null-terminated C-style string.
+ *
+ * @since 4.0.0
+ */
+using ZString = gsl::zstring;
 
 /**
  * A constant that represents an empty Optional.

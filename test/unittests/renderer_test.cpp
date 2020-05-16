@@ -602,6 +602,19 @@ TEST_CASE("Renderer::output_size", "[Renderer]")
   CHECK(height == window.height());
 }
 
+TEST_CASE("Renderer::blend_mode", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+
+  const auto mode = renderer.blend_mode();
+
+  SDL_BlendMode sdlMode;
+  SDL_GetRenderDrawBlendMode(renderer, &sdlMode);
+
+  CHECK(mode == sdlMode);
+}
+
 TEST_CASE("Renderer::vsync_enabled", "[Renderer]")
 {
   Window window;

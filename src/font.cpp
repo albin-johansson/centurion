@@ -23,7 +23,7 @@ Font::Font(CZString file, int size) : m_size{size}
 
   m_font = TTF_OpenFont(file, size);
   if (!m_font) {
-    throw Error::from_img("Failed to open font!");
+    throw Error::from_image("Failed to open font!");
   }
 
   m_style = TTF_GetFontStyle(m_font);

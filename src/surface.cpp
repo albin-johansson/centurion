@@ -93,6 +93,38 @@ void Surface::copy(const Surface& other) noexcept
 }
 
 CENTURION_DEF
+bool Surface::in_bounds(IPoint point) const noexcept
+{
+  return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
+           point.y() >= height());
+}
+
+CENTURION_DEF
+bool Surface::must_lock() const noexcept
+{
+  return SDL_MUSTLOCK(m_surface);
+}
+
+CENTURION_DEF
+bool Surface::lock() noexcept
+{
+  if (must_lock()) {
+    const auto result = SDL_LockSurface(m_surface);
+    return result == 0;
+  } else {
+    return true;
+  }
+}
+
+CENTURION_DEF
+void Surface::unlock() noexcept
+{
+  if (must_lock()) {
+    SDL_UnlockSurface(m_surface);
+  }
+}
+
+CENTURION_DEF
 SDL_Surface* Surface::copy_surface() const
 {
   auto* copy = SDL_DuplicateSurface(m_surface);
@@ -101,6 +133,34 @@ SDL_Surface* Surface::copy_surface() const
   } else {
     return copy;
   }
+}
+
+CENTURION_DEF
+void Surface::set_pixel(IPoint pixel, const Color& color) noexcept
+{
+  if (!in_bounds(pixel)) {
+    return;
+  }
+
+  const auto success = lock();
+  if (!success) {
+    return;
+  }
+
+  const int nPixels = (m_surface->pitch / 4) * height();
+  const int index = (pixel.y() * width()) + pixel.x();
+
+  if ((index >= 0) && (index < nPixels)) {
+    const auto value = SDL_MapRGBA(m_surface->format,
+                                   color.red(),
+                                   color.green(),
+                                   color.blue(),
+                                   color.alpha());
+    Uint32* pixels = reinterpret_cast<Uint32*>(m_surface->pixels);
+    pixels[index] = value;
+  }
+
+  unlock();
 }
 
 CENTURION_DEF

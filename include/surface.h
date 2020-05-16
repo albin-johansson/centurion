@@ -101,6 +101,17 @@ class Surface final {
   CENTURION_API ~Surface() noexcept;
 
   /**
+   * Sets the color of the pixel at the specified coordinate. This method has
+   * no effect if the coordinate is out-of-bounds of if something goes wrong
+   * when attempting to modify the pixel data.
+   *
+   * @param pixel the pixel that will be changed.
+   * @param color the new color of the pixel.
+   * @since 4.0.0
+   */
+  CENTURION_API void set_pixel(IPoint pixel, const Color& color) noexcept;
+
+  /**
    * Sets the alpha component modulation value.
    *
    * @param alpha the new alpha component value, in the range [0, 255].
@@ -292,6 +303,46 @@ class Surface final {
    * @since 4.0.0
    */
   void copy(const Surface& other) noexcept;
+
+  /**
+   * Indicates whether or not the supplied point is within the bounds of the
+   * surface.
+   *
+   * @param point the point that will be checked.
+   * @return true if the point is within the bounds of the surface; false
+   * otherwise.
+   * @since 4.0.0
+   */
+  bool in_bounds(IPoint point) const noexcept;
+
+  /**
+   * Indicates whether or not the surface must be locked before modifying the
+   * pixel data associated with the surface.
+   *
+   * @return true if the surface must be locked before modification; false
+   * otherwise.
+   * @since 4.0.0
+   */
+  bool must_lock() const noexcept;
+
+  /**
+   * Attempts to lock the surface, so that the associated pixel data can be
+   * modified. This method has no effect if <code>must_lock()</code> returns
+   * false.
+   *
+   * @return true if the locking of the surface was successful or if locking
+   * isn't required for modifying the surface; false if something went wrong.
+   * @since 4.0.0
+   */
+  bool lock() noexcept;
+
+  /**
+   * Unlocks the surface. This method has no effect if <code>must_lock()
+   * </code> returns false.
+   *
+   * @since 4.0.0
+   */
+  void unlock() noexcept;
 
   /**
    * Creates a copy of the internal SDL_Surface, and returns a pointer to it.

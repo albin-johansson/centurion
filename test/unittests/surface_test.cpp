@@ -91,6 +91,18 @@ TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
   }
 }
 
+TEST_CASE("Surface::set_pixel", "[Surface]")
+{
+  Surface surface{path};
+
+  CHECK_NOTHROW(surface.set_pixel({-1, 0}, red));
+  CHECK_NOTHROW(surface.set_pixel({0, -1}, red));
+  CHECK_NOTHROW(surface.set_pixel({surface.width(), 0}, red));
+  CHECK_NOTHROW(surface.set_pixel({0, surface.height()}, red));
+
+  CHECK_NOTHROW(surface.set_pixel({43, 12}, orange));
+}
+
 TEST_CASE("Surface::set_alpha", "[Surface]")
 {
   Surface surface{path};

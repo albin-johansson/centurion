@@ -4,8 +4,63 @@
 #include "error.h"
 
 #include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
 
 namespace centurion {
+
+CENTURION_DEF
+Error::Error(std::string message) : m_message{std::move(message)}
+{}
+
+CENTURION_DEF
+std::string Error::core_message() const
+{
+  return m_message + " Error: " + SDL_GetError();
+}
+
+CENTURION_DEF
+std::string Error::img_message() const
+{
+  return m_message + " Error: " + IMG_GetError();
+}
+
+CENTURION_DEF
+std::string Error::ttf_message() const
+{
+  return m_message + " Error: " + TTF_GetError();
+}
+
+CENTURION_DEF
+std::string Error::mix_message() const
+{
+  return m_message + " Error: " + Mix_GetError();
+}
+
+CENTURION_DEF
+CenturionException Error::from_core(std::string message)
+{
+  return CenturionException{message + " Error: " + SDL_GetError()};
+}
+
+CENTURION_DEF
+CenturionException Error::from_img(std::string message)
+{
+  return CenturionException{message + " Error: " + IMG_GetError()};
+}
+
+CENTURION_DEF
+CenturionException Error::from_ttf(std::string message)
+{
+  return CenturionException{message + " Error: " + TTF_GetError()};
+}
+
+CENTURION_DEF
+CenturionException Error::from_mix(std::string message)
+{
+  return CenturionException{message + " Error: " + Mix_GetError()};
+}
 
 CENTURION_DEF
 CZString Error::descriptionf() noexcept

@@ -7,20 +7,15 @@
 #include <cassert>
 #include <string>
 
-#include "centurion_exception.h"
 #include "centurion_utils.h"
-#include "error.h"
 
 namespace centurion {
 namespace input {
 
 CENTURION_DEF
-KeyState::KeyState()
+KeyState::KeyState() noexcept
 {
   m_states = SDL_GetKeyboardState(&m_nKeys);
-  if (!m_states) {
-    throw CenturionException{"Failed to obtain key state! " + Error::msg()};
-  }
   assert(static_cast<unsigned long long>(m_nKeys) == m_previousStates.size());
   std::fill(m_previousStates.begin(), m_previousStates.end(), 0);
 }

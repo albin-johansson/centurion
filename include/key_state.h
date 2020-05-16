@@ -45,10 +45,9 @@ namespace input {
 class KeyState final {
  public:
   /**
-   * @throws CenturionException if the key state cannot be obtained.
    * @since 3.0.0
    */
-  CENTURION_API KeyState();
+  CENTURION_API KeyState() noexcept;
 
   /**
    * Creates and returns a unique pointer to a KeyState instance.

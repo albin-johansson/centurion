@@ -979,6 +979,37 @@ class Renderer final {
   CENTURION_API std::string to_string() const;
 
   /**
+   * Returns the number of available rendering drivers. Usually there is only
+   * 1 available rendering driver.
+   *
+   * @return the number of available rendering drivers.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static int render_drivers() noexcept;
+
+  /**
+   * Returns the number of available video drivers compiled into SDL.
+   *
+   * @return the number of available video drivers compiled into SDL.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static int video_drivers() noexcept;
+
+  /**
+   * Returns the information associated with a rendering driver.
+   *
+   * @param index the index of the rendering driver to query.
+   * @return information about the specified rendering driver; nothing if
+   * something went wrong.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static Optional<SDL_RendererInfo> driver_info(int index) noexcept;
+
+  /**
    * Returns the translation viewport that is currently being used. Set to (0,
    * 0, 0, 0) by default.
    *

@@ -755,6 +755,30 @@ std::string Renderer::to_string() const
          ", Output height: " + oheight + "]";
 }
 
+CENTURION_DEF
+int Renderer::render_drivers() noexcept
+{
+  return SDL_GetNumRenderDrivers();
+}
+
+CENTURION_DEF
+int Renderer::video_drivers() noexcept
+{
+  return SDL_GetNumVideoDrivers();
+}
+
+CENTURION_DEF
+Optional<SDL_RendererInfo> Renderer::driver_info(int index) noexcept
+{
+  SDL_RendererInfo info;
+  const auto result = SDL_GetRenderDriverInfo(index, &info);
+  if (result == 0) {
+    return info;
+  } else {
+    return nothing;
+  }
+}
+
 }  // namespace centurion
 
 #endif  // CENTURION_RENDERER_SOURCE

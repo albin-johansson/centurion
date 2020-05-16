@@ -800,6 +800,23 @@ TEST_CASE("Renderer::to_string", "[Renderer]")
   Log::info(Log::Category::Test, "%s", renderer.to_string().c_str());
 }
 
+TEST_CASE("Renderer::render_drivers", "[Renderer]")
+{
+  CHECK(Renderer::render_drivers() == SDL_GetNumRenderDrivers());
+}
+
+TEST_CASE("Renderer::video_drivers", "[Renderer]")
+{
+  CHECK(Renderer::video_drivers() == SDL_GetNumVideoDrivers());
+}
+
+TEST_CASE("Renderer::driver_info", "[Renderer]")
+{
+  CHECK(!Renderer::driver_info(-1));
+  CHECK(!Renderer::driver_info(Renderer::render_drivers()));
+  CHECK(Renderer::driver_info(0));
+}
+
 TEST_CASE("Renderer::get", "[Renderer]")
 {
   Window window;

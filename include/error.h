@@ -48,15 +48,51 @@ class Error final {
   Error& operator=(const Error&) = delete;
   Error& operator=(Error&&) = delete;
 
+  /**
+   * Returns an exception with the supplied message along with the latest
+   * error obtained from SDL_GetError().
+   *
+   * @param message the message that will be included in the exception.
+   * @return a CenturionException with the supplied message along with the
+   * latest SDL_GetError() message.
+   * @since 4.0.0
+   */
   CENTURION_NODISCARD
   CENTURION_API static CenturionException from_core(std::string message);
 
+  /**
+   * Returns an exception with the supplied message along with the latest
+   * error obtained from IMG_GetError().
+   *
+   * @param message the message that will be included in the exception.
+   * @return a CenturionException with the supplied message along with the
+   * latest IMG_GetError() message.
+   * @since 4.0.0
+   */
   CENTURION_NODISCARD
   CENTURION_API static CenturionException from_image(std::string message);
 
+  /**
+   * Returns an exception with the supplied message along with the latest
+   * error obtained from TTF_GetError().
+   *
+   * @param message the message that will be included in the exception.
+   * @return a CenturionException with the supplied message along with the
+   * latest TTF_GetError() message.
+   * @since 4.0.0
+   */
   CENTURION_NODISCARD
   CENTURION_API static CenturionException from_ttf(std::string message);
 
+  /**
+   * Returns an exception with the supplied message along with the latest
+   * error obtained from Mix_GetError().
+   *
+   * @param message the message that will be included in the exception.
+   * @return a CenturionException with the supplied message along with the
+   * latest Mix_GetError() message.
+   * @since 4.0.0
+   */
   CENTURION_NODISCARD
   CENTURION_API static CenturionException from_mixer(std::string message);
 };

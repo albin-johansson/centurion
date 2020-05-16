@@ -19,7 +19,7 @@ Surface::Surface(CZString file)
   }
   m_surface = IMG_Load(file);
   if (!m_surface) {
-    throw Error::from_image("Failed to create Surface!");
+    throw detail::Error::from_image("Failed to create Surface!");
   }
 }
 
@@ -129,7 +129,7 @@ SDL_Surface* Surface::copy_surface() const
 {
   auto* copy = SDL_DuplicateSurface(m_surface);
   if (!copy) {
-    throw Error::from_core("Failed to duplicate Surface!");
+    throw detail::Error::from_core("Failed to duplicate Surface!");
   } else {
     return copy;
   }

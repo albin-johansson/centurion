@@ -18,7 +18,7 @@ SoundEffect::SoundEffect(CZString file)
   }
   m_chunk = Mix_LoadWAV(file);
   if (!m_chunk) {
-    throw Error::from_mixer("Failed to create SoundEffect instance!");
+    throw detail::Error::from_mixer("Failed to create SoundEffect instance!");
   }
 }
 

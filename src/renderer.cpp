@@ -33,7 +33,7 @@ Renderer::Renderer(const Window& window, SDL_RendererFlags flags)
 {
   m_renderer = SDL_CreateRenderer(window.get(), -1, flags);
   if (!m_renderer) {
-    throw Error::from_core("Failed to create Renderer!");
+    throw detail::Error::from_core("Failed to create Renderer!");
   }
 
   set_blend_mode(BlendMode::Blend);

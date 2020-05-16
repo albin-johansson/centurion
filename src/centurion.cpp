@@ -30,7 +30,7 @@ void Centurion::init_img()
 {
   const auto flags = IMG_Init(cfg.imageFlags);
   if (!flags) {
-    throw Error::from_img("Failed to load SDL2_image!");
+    throw Error::from_image("Failed to load SDL2_image!");
   }
 }
 
@@ -39,14 +39,14 @@ void Centurion::init_mix()
 {
   const auto flags = Mix_Init(cfg.mixerFlags);
   if (!flags) {
-    throw Error::from_mix("Failed to load SDL2_mixer!");
+    throw Error::from_mixer("Failed to load SDL2_mixer!");
   }
 
   if (Mix_OpenAudio(cfg.mixerFreq,
                     cfg.mixerFormat,
                     cfg.mixerChannels,
                     cfg.mixerChunkSize) == -1) {
-    throw Error::from_mix("Failed to open audio!");
+    throw Error::from_mixer("Failed to open audio!");
   }
 }
 

@@ -53,7 +53,7 @@ class Window final {
    * string is used.
    * @param size the size of the window, components must be greater than zero.
    * @throws CenturionException if the supplied width or height isn't
-   * greater than zero.
+   * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_API explicit Window(CZString title, Area size);
@@ -63,7 +63,7 @@ class Window final {
    *
    * @param size the size of the window, components must be greater than zero.
    * @throws CenturionException if the supplied width or height isn't
-   * greater than zero.
+   * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_API explicit Window(Area size);
@@ -73,6 +73,7 @@ class Window final {
    *
    * @param title the title of the window, may be null. If null, the empty
    * string is used.
+   * @throws CenturionException if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_API explicit Window(CZString title);
@@ -90,6 +91,7 @@ class Window final {
   /**
    * Creates a 800x600 window. The window will be hidden by default.
    *
+   * @throws CenturionException if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_API Window();
@@ -127,7 +129,7 @@ class Window final {
    * @param height the height of the window.
    * @return a unique pointer to a window instance.
    * @throws invalid_argument if the supplied width or height values aren't
-   * greater than zero.
+   * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -139,7 +141,7 @@ class Window final {
    * @param size the size of the window, components must be greater than zero.
    * @return a unique pointer to a window instance.
    * @throws invalid_argument if the supplied width or height values aren't
-   * greater than zero.
+   * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -151,6 +153,7 @@ class Window final {
    * @param title the title of the window, may be null. If null, the empty
    * string is used.
    * @return a unique pointer to a window instance.
+   * @throws CenturionException if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -161,8 +164,9 @@ class Window final {
    * window will claim ownership of the supplied pointer.
    *
    * @param window a pointer to the SDL_Window that will be claimed.
-   * @throws CenturionException if the supplied pointer is null.
    * @return a unique pointer to a window instance.
+   * @throws CenturionException if the supplied pointer is null or if the window
+   * cannot be created.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -172,6 +176,7 @@ class Window final {
    * Creates and returns a unique pointer to a Window instance.
    *
    * @return a unique pointer to a Window instance.
+   * @throws if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -182,10 +187,10 @@ class Window final {
    *
    * @param title the title of the window, may be null. If null, the empty
    * string is used.
-   *@param size the size of the window, components must be greater than zero.
+   * @param size the size of the window, components must be greater than zero.
    * @return a shared pointer to a window instance.
    * @throws invalid_argument if the supplied width or height values aren't
-   * greater than zero.
+   * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -197,7 +202,7 @@ class Window final {
    * @param size the size of the window, components must be greater than zero.
    * @return a shared pointer to a window instance.
    * @throws invalid_argument if the supplied width or height values aren't
-   * greater than zero.
+   * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -209,6 +214,7 @@ class Window final {
    * @param title the title of the window, may be null. If null, the empty
    * string is used.
    * @return a shared pointer to a window instance.
+   * @throws CenturionException if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -219,8 +225,8 @@ class Window final {
    * window will claim ownership of the supplied pointer.
    *
    * @param window a pointer to the SDL_Window that will be claimed.
-   * @throws CenturionException if the supplied pointer is null.
    * @return a shared pointer to a window instance.
+   * @throws CenturionException if the supplied pointer is null.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -230,6 +236,7 @@ class Window final {
    * Creates and returns a shared pointer to a Window instance.
    *
    * @return a shared pointer to a Window instance.
+   * @throws CenturionException if the window cannot be created.
    * @since 3.0.0
    */
   CENTURION_NODISCARD

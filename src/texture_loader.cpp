@@ -15,7 +15,7 @@ TextureLoader::TextureLoader(const SharedPtr<Renderer>& renderer)
   if (renderer) {
     this->m_renderer = renderer;
   } else {
-    throw CenturionException{"Null renderer argument!"};
+    throw CenturionException{"Cannot create TextureLoader from null renderer!"};
   }
 }
 

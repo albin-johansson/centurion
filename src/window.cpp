@@ -3,10 +3,7 @@
 
 #include "window.h"
 
-#include <string>
-
-#include "centurion_exception.h"
-#include "centurion_utils.h"
+#include "error.h"
 #include "surface.h"
 
 namespace centurion {
@@ -21,6 +18,9 @@ Window::Window(CZString title, Area size)
   const auto pos = SDL_WINDOWPOS_CENTERED;
   m_window = SDL_CreateWindow(
       title ? title : "", pos, pos, size.width, size.height, SDL_WINDOW_HIDDEN);
+  if (!m_window) {
+    throw Error::from_core("Failed to create Window!");
+  }
 }
 
 CENTURION_DEF
@@ -35,7 +35,7 @@ CENTURION_DEF
 Window::Window(Owner<SDL_Window*> window) : m_window{window}
 {
   if (!window) {
-    throw CenturionException{"Cannot create window from null SDL_Window!"};
+    throw CenturionException{"Cannot create Window from null SDL_Window!"};
   }
 }
 

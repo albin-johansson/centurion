@@ -61,9 +61,10 @@ TEST_CASE("Renderer::operator=(Renderer&&)", "[Renderer]")
 
   SECTION("Normal usage")
   {
-    const Window window;
-    Renderer renderer{window};
-    Renderer other{window};
+    const Window firstWindow;
+    const Window secondWindow;
+    Renderer renderer{firstWindow};
+    Renderer other{secondWindow};
 
     other = std::move(renderer);
 

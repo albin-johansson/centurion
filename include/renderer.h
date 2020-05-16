@@ -72,6 +72,8 @@ class Renderer final {
    *
    * @param window the associated window instance.
    * @param flags the renderer flags that will be used.
+   * @throws CenturionException if something goes wrong when creating the
+   * Renderer.
    * @since 4.0.0
    */
   CENTURION_API explicit Renderer(const Window& window,
@@ -106,6 +108,8 @@ class Renderer final {
    * @param window the associated window instance.
    * @param flags the renderer flags that will be used.
    * @return a unique pointer to a renderer instance.
+   * @throws CenturionException if something goes wrong when creating the
+   * Renderer.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -132,6 +136,8 @@ class Renderer final {
    * @param window the associated window instance.
    * @param flags the renderer flags that will be used.
    * @return a shared pointer to a renderer instance.
+   * @throws CenturionException if something goes wrong when creating the
+   * Renderer.
    * @since 4.0.0
    */
   CENTURION_NODISCARD

@@ -5,7 +5,7 @@
 
 #include <SDL_image.h>
 
-#include "centurion_exception.h"
+#include "error.h"
 #include "renderer.h"
 #include "texture.h"
 
@@ -15,11 +15,11 @@ CENTURION_DEF
 Surface::Surface(CZString file)
 {
   if (!file) {
-    throw CenturionException{"Can't create surface from null path!"};
+    throw CenturionException{"Can't create Surface from null path!"};
   }
   m_surface = IMG_Load(file);
   if (!m_surface) {
-    throw CenturionException{"Failed to load surface!"};
+    throw Error::from_image("Failed to create Surface!");
   }
 }
 
@@ -27,7 +27,7 @@ CENTURION_DEF
 Surface::Surface(Owner<SDL_Surface*> surface)
 {
   if (!surface) {
-    throw CenturionException{"Cannot create surface from null SDL_Surface!"};
+    throw CenturionException{"Cannot create Surface from null SDL_Surface!"};
   } else {
     this->m_surface = surface;
   }
@@ -129,7 +129,7 @@ SDL_Surface* Surface::copy_surface() const
 {
   auto* copy = SDL_DuplicateSurface(m_surface);
   if (!copy) {
-    throw CenturionException{"Failed to duplicate SDL surface!"};
+    throw Error::from_core("Failed to duplicate Surface!");
   } else {
     return copy;
   }

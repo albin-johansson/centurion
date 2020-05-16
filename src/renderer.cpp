@@ -8,6 +8,7 @@
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "colors.h"
+#include "error.h"
 #include "font.h"
 #include "point.h"
 #include "texture.h"
@@ -31,6 +32,9 @@ CENTURION_DEF
 Renderer::Renderer(const Window& window, SDL_RendererFlags flags)
 {
   m_renderer = SDL_CreateRenderer(window.get(), -1, flags);
+  if (!m_renderer) {
+    throw Error::from_core("Failed to create Renderer!");
+  }
 
   set_blend_mode(BlendMode::Blend);
   set_color(black);

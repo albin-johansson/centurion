@@ -14,7 +14,7 @@ CENTURION_DEF
 Font::Font(CZString file, int size) : m_size{size}
 {
   if (!file) {
-    throw CenturionException{"Cannot create font from null path!"};
+    throw CenturionException{"Cannot create Font from null path!"};
   }
 
   if (size <= 0) {
@@ -23,7 +23,7 @@ Font::Font(CZString file, int size) : m_size{size}
 
   m_font = TTF_OpenFont(file, size);
   if (!m_font) {
-    throw Error::from_image("Failed to open font!");
+    throw Error::from_ttf("Failed to open font!");
   }
 
   m_style = TTF_GetFontStyle(m_font);

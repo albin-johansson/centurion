@@ -3,8 +3,8 @@
 
 #include "cursor.h"
 
-#include "centurion_exception.h"
 #include "centurion_utils.h"
+#include "error.h"
 
 namespace centurion {
 
@@ -13,7 +13,7 @@ Cursor::Cursor(SystemCursor id)
 {
   m_cursor = SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(id));
   if (!m_cursor) {
-    throw CenturionException{"Failed to create system cursor!"};
+    throw Error::from_core("Failed to create system cursor!");
   }
 }
 
@@ -23,7 +23,7 @@ Cursor::Cursor(Owner<SDL_Cursor*> cursor)
   if (cursor) {
     m_cursor = cursor;
   } else {
-    throw CenturionException{"Can't create cursor from null SDL_Cursor!"};
+    throw CenturionException{"Can't create Cursor from null SDL_Cursor!"};
   }
 }
 
@@ -32,12 +32,12 @@ Cursor::Cursor(const Surface& surface, IPoint hotspot)
 {
   m_surface = SDL_DuplicateSurface(surface.get());
   if (!m_surface) {
-    throw CenturionException{"Failed to create color cursor!"};
+    throw Error::from_core("Failed to create color cursor!");
   }
 
   m_cursor = SDL_CreateColorCursor(m_surface, hotspot.x(), hotspot.y());
   if (!m_cursor) {
-    throw CenturionException{"Failed to create color cursor!"};
+    throw Error::from_core("Failed to create color cursor!");
   }
 }
 

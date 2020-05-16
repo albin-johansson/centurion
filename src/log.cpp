@@ -27,7 +27,7 @@ void Log::set_priority(Log::Priority prio) noexcept
 }
 
 CENTURION_DEF
-Log::Priority Log::get_priority(Log::Category category) noexcept
+Log::Priority Log::priority(Log::Category category) noexcept
 {
   return static_cast<Log::Priority>(
       SDL_LogGetPriority(static_cast<int>(category)));

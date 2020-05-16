@@ -336,7 +336,7 @@ class Log final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static Priority get_priority(Category category) noexcept;
+  CENTURION_API static Priority priority(Category category) noexcept;
 
   /**
    * Returns the maximum size, i.e the maximum amount of characters that a

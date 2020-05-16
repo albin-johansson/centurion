@@ -14,7 +14,7 @@ Music::Music(CZString file)
 {
   m_music = Mix_LoadMUS(file);
   if (!m_music) {
-    throw CenturionException{"Failed to create music! " + Error::msg()};
+    throw Error::from_mixer("Failed to create Music instance!");
   }
 }
 

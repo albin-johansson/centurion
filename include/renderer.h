@@ -746,11 +746,11 @@ class Renderer final {
   /**
    * Returns information about the renderer.
    *
-   * @return information about the renderer.
+   * @return information about the renderer; nothing if something went wrong.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API SDL_RendererInfo info() const noexcept;
+  CENTURION_API Optional<SDL_RendererInfo> info() const noexcept;
 
   /**
    * Returns the output width of the renderer.

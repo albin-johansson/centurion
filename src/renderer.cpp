@@ -600,11 +600,15 @@ Optional<IRect> Renderer::clip() const noexcept
 }
 
 CENTURION_DEF
-SDL_RendererInfo Renderer::info() const noexcept
+Optional<SDL_RendererInfo> Renderer::info() const noexcept
 {
   SDL_RendererInfo info;
-  SDL_GetRendererInfo(m_renderer, &info);
-  return info;
+  const auto result = SDL_GetRendererInfo(m_renderer, &info);
+  if (result == 0) {
+    return info;
+  } else {
+    return nothing;
+  }
 }
 
 CENTURION_DEF

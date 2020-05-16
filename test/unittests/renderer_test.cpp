@@ -553,6 +553,32 @@ TEST_CASE("Renderer::logical_height", "[Renderer]")
   CHECK(renderer.logical_height() == 0);
 }
 
+TEST_CASE("Renderer::info", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+
+  auto maybeInfo = renderer.info();
+  CHECK(maybeInfo);
+
+  if (maybeInfo) {
+    auto info = *maybeInfo;
+
+    SDL_RendererInfo sdlInfo;
+    SDL_GetRendererInfo(renderer, &sdlInfo);
+
+    CHECK_THAT(info.name, Catch::Equals(sdlInfo.name));
+    CHECK(info.flags == sdlInfo.flags);
+
+    for (int i = 0; i < 16; ++i) {
+      CHECK(info.texture_formats[i] == sdlInfo.texture_formats[i]);
+    }
+
+    CHECK(info.max_texture_width == sdlInfo.max_texture_width);
+    CHECK(info.max_texture_height == sdlInfo.max_texture_height);
+  }
+}
+
 TEST_CASE("Renderer::output_width", "[Renderer]")
 {
   Window window;

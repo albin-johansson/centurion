@@ -58,13 +58,13 @@ class Error final {
   CENTURION_API static CenturionException from_core(std::string message);
 
   CENTURION_NODISCARD
-  CENTURION_API static CenturionException from_img(std::string message);
+  CENTURION_API static CenturionException from_image(std::string message);
 
   CENTURION_NODISCARD
   CENTURION_API static CenturionException from_ttf(std::string message);
 
   CENTURION_NODISCARD
-  CENTURION_API static CenturionException from_mix(std::string message);
+  CENTURION_API static CenturionException from_mixer(std::string message);
 
   /**
    * Returns a raw string literal that describes the last error. This method

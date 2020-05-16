@@ -45,7 +45,7 @@ CenturionException Error::from_core(std::string message)
 }
 
 CENTURION_DEF
-CenturionException Error::from_img(std::string message)
+CenturionException Error::from_image(std::string message)
 {
   return CenturionException{message + " Error: " + IMG_GetError()};
 }
@@ -57,7 +57,7 @@ CenturionException Error::from_ttf(std::string message)
 }
 
 CENTURION_DEF
-CenturionException Error::from_mix(std::string message)
+CenturionException Error::from_mixer(std::string message)
 {
   return CenturionException{message + " Error: " + Mix_GetError()};
 }

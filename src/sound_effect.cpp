@@ -3,7 +3,6 @@
 
 #include "sound_effect.h"
 
-#include "centurion_exception.h"
 #include "error.h"
 
 namespace centurion {
@@ -19,7 +18,7 @@ SoundEffect::SoundEffect(CZString file)
   }
   m_chunk = Mix_LoadWAV(file);
   if (!m_chunk) {
-    throw CenturionException{Error::descriptionf()};
+    throw Error::from_mixer("Failed to create SoundEffect instance!");
   }
 }
 

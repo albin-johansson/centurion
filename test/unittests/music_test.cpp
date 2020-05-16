@@ -10,9 +10,10 @@ using namespace audio;
 
 static constexpr auto path = "resources/hiddenPond.mp3";
 
-TEST_CASE("Music::Music(string)", "[Music]")
+TEST_CASE("Music::Music(CZString)", "[Music]")
 {
   CHECK_THROWS_AS(Music{""}, CenturionException);
+  CHECK_THROWS_AS(Music{nullptr}, CenturionException);
   CHECK_NOTHROW(Music{path});
 }
 

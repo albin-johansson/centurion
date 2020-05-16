@@ -4,6 +4,7 @@
 #include "font.h"
 
 #include "centurion_utils.h"
+#include "error.h"
 
 namespace centurion {
 
@@ -22,7 +23,7 @@ Font::Font(CZString file, int size) : m_size{size}
 
   m_font = TTF_OpenFont(file, size);
   if (!m_font) {
-    throw CenturionException{"Failed to open font! " + Error::msg()};
+    throw Error::from_img("Failed to open font!");
   }
 
   m_style = TTF_GetFontStyle(m_font);

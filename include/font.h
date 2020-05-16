@@ -35,7 +35,6 @@
 #include "centurion_api.h"
 #include "centurion_exception.h"
 #include "centurion_utils.h"
-#include "error.h"
 
 namespace centurion {
 

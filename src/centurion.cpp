@@ -3,6 +3,8 @@
 
 #include "centurion.h"
 
+#include "error.h"
+
 namespace centurion {
 
 CENTURION_DEF
@@ -10,7 +12,7 @@ void Centurion::init_sdl()
 {
   const auto result = SDL_Init(cfg.coreFlags);
   if (result < 0) {
-    throw CenturionException{"Failed to load SDL2! " + Error::msg()};
+    throw Error::from_core("Failed to load SDL2!");
   }
 }
 
@@ -19,7 +21,7 @@ void Centurion::init_ttf()
 {
   const auto result = TTF_Init();
   if (result == -1) {
-    throw CenturionException{"Failed to load SDL2_ttf! " + Error::msg()};
+    throw Error::from_ttf("Failed to load SDL2_ttf!");
   }
 }
 
@@ -28,7 +30,7 @@ void Centurion::init_img()
 {
   const auto flags = IMG_Init(cfg.imageFlags);
   if (!flags) {
-    throw CenturionException{"Failed to load SDL2_image! " + Error::msg()};
+    throw Error::from_img("Failed to load SDL2_image!");
   }
 }
 
@@ -37,14 +39,14 @@ void Centurion::init_mix()
 {
   const auto flags = Mix_Init(cfg.mixerFlags);
   if (!flags) {
-    throw CenturionException{"Failed to init SDL2_mixer! " + Error::msg()};
+    throw Error::from_mix("Failed to load SDL2_mixer!");
   }
 
   if (Mix_OpenAudio(cfg.mixerFreq,
                     cfg.mixerFormat,
                     cfg.mixerChannels,
                     cfg.mixerChunkSize) == -1) {
-    throw CenturionException{"Failed to open audio! " + Error::msg()};
+    throw Error::from_mix("Failed to open audio!");
   }
 }
 

@@ -37,118 +37,6 @@
 
 namespace centurion {
 
-/**
- * The TextureAccess enum mirrors the SDL_TextureAccess enum.
- *
- * @see SDL_TextureAccess
- * @since 3.0.0
- */
-enum class TextureAccess {
-  Static = SDL_TEXTUREACCESS_STATIC,
-  Streaming = SDL_TEXTUREACCESS_STREAMING,
-  Target = SDL_TEXTUREACCESS_TARGET
-};
-
-/**
- * Indicates whether or not the two texture access values are the same.
- *
- * @param a the lhs Centurion texture access.
- * @param b the rhs SDL texture access.
- * @return true if the texture access values are the same; false otherwise.
- * @since 3.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept;
-
-/**
- * Indicates whether or not the two texture access values are the same.
- *
- * @param a the lhs SDL texture access.
- * @param b the rhs Centurion texture access.
- * @return true if the texture access values are the same; false otherwise.
- * @since 3.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept;
-
-/**
- * Indicates whether or not the two texture access values aren't the same.
- *
- * @param a the lhs Centurion texture access.
- * @param b the rhs SDL texture access.
- * @return true if the texture access values aren't the same; false otherwise.
- * @since 3.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept;
-
-/**
- * Indicates whether or not the two texture access values aren't the same.
- *
- * @param a the lhs SDL texture access.
- * @param b the rhs Centurion texture access.
- * @return true if the texture access values aren't the same; false otherwise.
- * @since 3.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept;
-
-/**
- * The ScaleMode enum class mirrors the values of the SDL_ScaleMode enum.
- *
- * @see SDL_ScaleMode
- * @since 4.0.0
- */
-enum class ScaleMode {
-  Nearest = SDL_ScaleModeNearest,
-  Linear = SDL_ScaleModeLinear,
-  Best = SDL_ScaleModeBest
-};
-
-/**
- * Indicates whether or not the two scale mode values are the same.
- *
- * @param lhs the Centurion scale mode.
- * @param rhs the SDL scale mode.
- * @return true if the scale mode values are the same; false otherwise.
- * @since 4.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(ScaleMode lhs, SDL_ScaleMode rhs) noexcept;
-
-/**
- * Indicates whether or not the two scale mode values are the same.
- *
- * @param lhs the SDL scale mode.
- * @param rhs the Centurion scale mode.
- * @return true if the scale mode values are the same; false otherwise.
- * @since 4.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_ScaleMode lhs, ScaleMode rhs) noexcept;
-
-/**
- * Indicates whether or not the two scale mode values aren't the same.
- *
- * @param lhs the Centurion scale mode.
- * @param rhs the SDL scale mode.
- * @return true if the scale mode values aren't the same; false otherwise.
- * @since 4.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(ScaleMode lhs, SDL_ScaleMode rhs) noexcept;
-
-/**
- * Indicates whether or not the two scale mode values aren't the same.
- *
- * @param lhs the SDL scale mode.
- * @param rhs the Centurion scale mode.
- * @return true if the scale mode values aren't the same; false otherwise.
- * @since 4.0.0
- */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_ScaleMode lhs, ScaleMode rhs) noexcept;
-
 class Renderer;
 class Surface;
 
@@ -161,6 +49,30 @@ class Surface;
  */
 class Texture final {
  public:
+  /**
+   * The Access enum mirrors the SDL_TextureAccess enum.
+   *
+   * @see SDL_TextureAccess
+   * @since 3.0.0
+   */
+  enum class Access {
+    Static = SDL_TEXTUREACCESS_STATIC,
+    Streaming = SDL_TEXTUREACCESS_STREAMING,
+    Target = SDL_TEXTUREACCESS_TARGET
+  };
+
+  /**
+   * The ScaleMode enum class mirrors the values of the SDL_ScaleMode enum.
+   *
+   * @see SDL_ScaleMode
+   * @since 4.0.0
+   */
+  enum class ScaleMode {
+    Nearest = SDL_ScaleModeNearest,
+    Linear = SDL_ScaleModeLinear,
+    Best = SDL_ScaleModeBest
+  };
+
   /**
    * Creates an texture from a pre-existing SDL texture. The created texture
    * WILL claim ownership of the supplied pointer!
@@ -195,7 +107,7 @@ class Texture final {
    *
    * @param renderer the associated renderer instance.
    * @param format the pixel format of the created texture.
-   * @param access the texture access of the created texture.
+   * @param access the access of the created texture.
    * @param width the width of the texture.
    * @param height the height of the texture.
    * @throws CenturionException if the texture cannot be created.
@@ -203,7 +115,7 @@ class Texture final {
    */
   CENTURION_API Texture(const Renderer& renderer,
                         PixelFormat format,
-                        TextureAccess access,
+                        Access access,
                         int width,
                         int height);
 
@@ -278,7 +190,7 @@ class Texture final {
    *
    * @param renderer the associated renderer that will be used.
    * @param format the pixel format of the texture.
-   * @param access the texture access of the texture.
+   * @param access the access of the texture.
    * @param width the width of the texture.
    * @param height the height of the texture.
    * @return a unique pointer to an texture.
@@ -289,7 +201,7 @@ class Texture final {
   CENTURION_API
   static UniquePtr<Texture> unique(const Renderer& renderer,
                                    PixelFormat format,
-                                   TextureAccess access,
+                                   Access access,
                                    int width,
                                    int height);
 
@@ -341,7 +253,7 @@ class Texture final {
    *
    * @param renderer the associated renderer that will be used.
    * @param format the pixel format of the texture.
-   * @param access the texture access of the texture.
+   * @param access the access of the texture.
    * @param width the width of the texture.
    * @param height the height of the texture.
    * @return a shared pointer to an texture.
@@ -352,7 +264,7 @@ class Texture final {
   CENTURION_API
   static SharedPtr<Texture> shared(const Renderer& renderer,
                                    PixelFormat format,
-                                   TextureAccess access,
+                                   Access access,
                                    int width,
                                    int height);
 
@@ -435,7 +347,7 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API TextureAccess access() const noexcept;
+  CENTURION_API Access access() const noexcept;
 
   /**
    * Returns the width of the texture.
@@ -620,6 +532,102 @@ static_assert(!std::is_nothrow_copy_constructible<Texture>::value,
 
 static_assert(!std::is_nothrow_copy_assignable<Texture>::value,
               "Texture is assignable!");
+
+/**
+ * Indicates whether or not the two texture access values are the same.
+ *
+ * @param lhs the lhs Centurion texture access.
+ * @param rhs the rhs SDL texture access.
+ * @return true if the texture access values are the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(Texture::Access lhs,
+                              SDL_TextureAccess rhs) noexcept;
+
+/**
+ * Indicates whether or not the two texture access values are the same.
+ *
+ * @param lhs the lhs SDL texture access.
+ * @param rhs the rhs Centurion texture access.
+ * @return true if the texture access values are the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(SDL_TextureAccess lhs,
+                              Texture::Access rhs) noexcept;
+
+/**
+ * Indicates whether or not the two texture access values aren't the same.
+ *
+ * @param lhs the lhs Centurion texture access.
+ * @param rhs the rhs SDL texture access.
+ * @return true if the texture access values aren't the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(Texture::Access lhs,
+                              SDL_TextureAccess rhs) noexcept;
+
+/**
+ * Indicates whether or not the two texture access values aren't the same.
+ *
+ * @param lhs the lhs SDL texture access.
+ * @param rhs the rhs Centurion texture access.
+ * @return true if the texture access values aren't the same; false otherwise.
+ * @since 3.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(SDL_TextureAccess lhs,
+                              Texture::Access rhs) noexcept;
+
+/**
+ * Indicates whether or not the two scale mode values are the same.
+ *
+ * @param lhs the Centurion scale mode.
+ * @param rhs the SDL scale mode.
+ * @return true if the scale mode values are the same; false otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(Texture::ScaleMode lhs,
+                              SDL_ScaleMode rhs) noexcept;
+
+/**
+ * Indicates whether or not the two scale mode values are the same.
+ *
+ * @param lhs the SDL scale mode.
+ * @param rhs the Centurion scale mode.
+ * @return true if the scale mode values are the same; false otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(SDL_ScaleMode lhs,
+                              Texture::ScaleMode rhs) noexcept;
+
+/**
+ * Indicates whether or not the two scale mode values aren't the same.
+ *
+ * @param lhs the Centurion scale mode.
+ * @param rhs the SDL scale mode.
+ * @return true if the scale mode values aren't the same; false otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(Texture::ScaleMode lhs,
+                              SDL_ScaleMode rhs) noexcept;
+
+/**
+ * Indicates whether or not the two scale mode values aren't the same.
+ *
+ * @param lhs the SDL scale mode.
+ * @param rhs the Centurion scale mode.
+ * @return true if the scale mode values aren't the same; false otherwise.
+ * @since 4.0.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(SDL_ScaleMode lhs,
+                              Texture::ScaleMode rhs) noexcept;
 
 }  // namespace centurion
 

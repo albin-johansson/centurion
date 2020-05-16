@@ -83,7 +83,7 @@ class TextureLoader final {
    */
   CENTURION_NODISCARD
   CENTURION_API UniquePtr<Texture> unique_img(PixelFormat format,
-                                              TextureAccess access,
+                                              Texture::Access access,
                                               int width,
                                               int height) const;
 
@@ -113,7 +113,7 @@ class TextureLoader final {
    */
   CENTURION_NODISCARD
   CENTURION_API SharedPtr<Texture> shared_img(PixelFormat format,
-                                              TextureAccess access,
+                                              Texture::Access access,
                                               int width,
                                               int height) const;
 

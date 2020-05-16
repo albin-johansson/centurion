@@ -15,32 +15,32 @@ static constexpr auto* pandaPath = "resources/panda.png";
 static constexpr int pandaWidth = 200;
 static constexpr int pandaHeight = 150;
 
-TEST_CASE("TextureAccess enum values", "[TextureAccess]")
+TEST_CASE("Access enum values", "[Texture]")
 {
-  CHECK(TextureAccess::Static == SDL_TEXTUREACCESS_STATIC);
-  CHECK(TextureAccess::Streaming == SDL_TEXTUREACCESS_STREAMING);
-  CHECK(TextureAccess::Target == SDL_TEXTUREACCESS_TARGET);
+  CHECK(Texture::Access::Static == SDL_TEXTUREACCESS_STATIC);
+  CHECK(Texture::Access::Streaming == SDL_TEXTUREACCESS_STREAMING);
+  CHECK(Texture::Access::Target == SDL_TEXTUREACCESS_TARGET);
 
-  CHECK(SDL_TEXTUREACCESS_STATIC == TextureAccess::Static);
-  CHECK(SDL_TEXTUREACCESS_STREAMING == TextureAccess::Streaming);
-  CHECK(SDL_TEXTUREACCESS_TARGET == TextureAccess::Target);
+  CHECK(SDL_TEXTUREACCESS_STATIC == Texture::Access::Static);
+  CHECK(SDL_TEXTUREACCESS_STREAMING == Texture::Access::Streaming);
+  CHECK(SDL_TEXTUREACCESS_TARGET == Texture::Access::Target);
 
-  CHECK(TextureAccess::Static != SDL_TEXTUREACCESS_STREAMING);
-  CHECK(SDL_TEXTUREACCESS_STREAMING != TextureAccess::Static);
+  CHECK(Texture::Access::Static != SDL_TEXTUREACCESS_STREAMING);
+  CHECK(SDL_TEXTUREACCESS_STREAMING != Texture::Access::Static);
 }
 
 TEST_CASE("ScaleMode enum values", "[ScaleMode]")
 {
-  CHECK(ScaleMode::Linear == SDL_ScaleModeLinear);
-  CHECK(ScaleMode::Nearest == SDL_ScaleModeNearest);
-  CHECK(ScaleMode::Best == SDL_ScaleModeBest);
+  CHECK(Texture::ScaleMode::Linear == SDL_ScaleModeLinear);
+  CHECK(Texture::ScaleMode::Nearest == SDL_ScaleModeNearest);
+  CHECK(Texture::ScaleMode::Best == SDL_ScaleModeBest);
 
-  CHECK(SDL_ScaleModeLinear == ScaleMode::Linear);
-  CHECK(SDL_ScaleModeNearest == ScaleMode::Nearest);
-  CHECK(SDL_ScaleModeBest == ScaleMode::Best);
+  CHECK(SDL_ScaleModeLinear == Texture::ScaleMode::Linear);
+  CHECK(SDL_ScaleModeNearest == Texture::ScaleMode::Nearest);
+  CHECK(SDL_ScaleModeBest == Texture::ScaleMode::Best);
 
-  CHECK(ScaleMode::Linear != SDL_ScaleModeNearest);
-  CHECK(SDL_ScaleModeBest != ScaleMode::Nearest);
+  CHECK(Texture::ScaleMode::Linear != SDL_ScaleModeNearest);
+  CHECK(SDL_ScaleModeBest != Texture::ScaleMode::Nearest);
 }
 
 TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
@@ -74,14 +74,13 @@ TEST_CASE("Texture(Renderer&, Surface&", "[Texture]")
   CHECK_NOTHROW(Texture{renderer, surface});
 }
 
-TEST_CASE("Texture(Renderer&, PixelFormat, TextureAccess, int, int)",
-          "[Texture]")
+TEST_CASE("Texture(Renderer&, PixelFormat, Access, int, int)", "[Texture]")
 {
   Window window;
   Renderer renderer{window};
 
   const auto pixelFormat = PixelFormat::RGBA32;
-  const auto access = TextureAccess::Static;
+  const auto access = Texture::Access::Static;
   const auto width = 145;
   const auto height = 85;
   Texture texture{renderer, pixelFormat, access, width, height};
@@ -133,22 +132,30 @@ TEST_CASE("Texture::operator=(Texture&&)", "[Texture]")
 
 TEST_CASE("Texture::unique", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
+  const Window window;
+  const Renderer renderer{window};
+  const Surface surface{pandaPath};
+
   CHECK_THROWS_AS(Texture::unique(nullptr), CenturionException);
+
   CHECK(Texture::unique(renderer, pandaPath));
+  CHECK(Texture::unique(renderer, surface));
   CHECK(Texture::unique(
-      renderer, window.pixel_format(), TextureAccess::Static, 100, 100));
+      renderer, window.pixel_format(), Texture::Access::Static, 100, 100));
 }
 
 TEST_CASE("Texture:::shared", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
+  const Window window;
+  const Renderer renderer{window};
+  const Surface surface{pandaPath};
+
   CHECK_THROWS_AS(Texture::shared(nullptr), CenturionException);
+
   CHECK(Texture::shared(renderer, pandaPath));
+  CHECK(Texture::shared(renderer, surface));
   CHECK(Texture::shared(
-      renderer, window.pixel_format(), TextureAccess::Static, 100, 100));
+      renderer, window.pixel_format(), Texture::Access::Static, 100, 100));
 }
 
 TEST_CASE("Texture::streaming", "[Texture]")
@@ -230,14 +237,14 @@ TEST_CASE("Texture::set_scale_mode", "[Texture]")
   Renderer renderer{window};
   Texture texture{renderer, pandaPath};
 
-  texture.set_scale_mode(ScaleMode::Nearest);
-  CHECK(texture.scale_mode() == ScaleMode::Nearest);
+  texture.set_scale_mode(Texture::ScaleMode::Nearest);
+  CHECK(texture.scale_mode() == Texture::ScaleMode::Nearest);
 
-  texture.set_scale_mode(ScaleMode::Linear);
-  CHECK(texture.scale_mode() == ScaleMode::Linear);
+  texture.set_scale_mode(Texture::ScaleMode::Linear);
+  CHECK(texture.scale_mode() == Texture::ScaleMode::Linear);
 
-  texture.set_scale_mode(ScaleMode::Best);
-  CHECK(texture.scale_mode() == ScaleMode::Best);
+  texture.set_scale_mode(Texture::ScaleMode::Best);
+  CHECK(texture.scale_mode() == Texture::ScaleMode::Best);
 }
 
 TEST_CASE("Texture::is_static", "[Texture]")
@@ -245,7 +252,7 @@ TEST_CASE("Texture::is_static", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture{
-      renderer, window.pixel_format(), TextureAccess::Static, 10, 10};
+      renderer, window.pixel_format(), Texture::Access::Static, 10, 10};
   CHECK(texture.is_static());
 }
 
@@ -254,7 +261,7 @@ TEST_CASE("Texture::is_streaming", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture{
-      renderer, window.pixel_format(), TextureAccess::Streaming, 10, 10};
+      renderer, window.pixel_format(), Texture::Access::Streaming, 10, 10};
   CHECK(texture.is_streaming());
 }
 
@@ -263,7 +270,7 @@ TEST_CASE("Texture::is_target", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture{
-      renderer, window.pixel_format(), TextureAccess::Target, 10, 10};
+      renderer, window.pixel_format(), Texture::Access::Target, 10, 10};
   CHECK(texture.is_target());
 }
 
@@ -306,7 +313,7 @@ TEST_CASE("Texture::access", "[Texture]")
   int access = 0;
   SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
 
-  CHECK(texture.access() == static_cast<TextureAccess>(access));
+  CHECK(texture.access() == static_cast<Texture::Access>(access));
 }
 
 TEST_CASE("Texture::scale_mode", "[Texture]")

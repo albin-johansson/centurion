@@ -50,7 +50,7 @@ Texture::Texture(const Renderer& renderer, const Surface& surface)
 CENTURION_DEF
 Texture::Texture(const Renderer& renderer,
                  PixelFormat format,
-                 TextureAccess access,
+                 Access access,
                  int width,
                  int height)
 {
@@ -144,7 +144,7 @@ UniquePtr<Texture> Texture::unique(const Renderer& renderer,
 CENTURION_DEF
 UniquePtr<Texture> Texture::unique(const Renderer& renderer,
                                    PixelFormat format,
-                                   TextureAccess access,
+                                   Access access,
                                    int width,
                                    int height)
 {
@@ -174,7 +174,7 @@ SharedPtr<Texture> Texture::shared(const Renderer& renderer,
 CENTURION_DEF
 SharedPtr<Texture> Texture::shared(const Renderer& renderer,
                                    PixelFormat format,
-                                   TextureAccess access,
+                                   Access access,
                                    int width,
                                    int height)
 {
@@ -193,11 +193,8 @@ UniquePtr<Texture> Texture::streaming(const Renderer& renderer,
     return source.convert(format);
   };
   const auto surface = createSurface(path, format);
-  auto texture = Texture::unique(renderer,
-                                 format,
-                                 TextureAccess::Streaming,
-                                 surface.width(),
-                                 surface.height());
+  auto texture = Texture::unique(
+      renderer, format, Access::Streaming, surface.width(), surface.height());
   texture->set_blend_mode(blendMode);
 
   Uint32* pixels = nullptr;
@@ -218,7 +215,7 @@ UniquePtr<Texture> Texture::streaming(const Renderer& renderer,
 CENTURION_DEF
 void Texture::set_pixel(IPoint pixel, const Color& color) noexcept
 {
-  if (access() != TextureAccess::Streaming || pixel.x() < 0 || pixel.y() < 0 ||
+  if (access() != Access::Streaming || pixel.x() < 0 || pixel.y() < 0 ||
       pixel.x() >= width() || pixel.y() >= height()) {
     return;
   }
@@ -279,11 +276,11 @@ PixelFormat Texture::format() const noexcept
 }
 
 CENTURION_DEF
-TextureAccess Texture::access() const noexcept
+Texture::Access Texture::access() const noexcept
 {
   int access = 0;
   SDL_QueryTexture(m_texture, nullptr, &access, nullptr, nullptr);
-  return static_cast<TextureAccess>(access);
+  return static_cast<Access>(access);
 }
 
 CENTURION_DEF
@@ -314,19 +311,19 @@ Area Texture::size() const noexcept
 CENTURION_DEF
 bool Texture::is_target() const noexcept
 {
-  return access() == TextureAccess::Target;
+  return access() == Access::Target;
 }
 
 CENTURION_DEF
 bool Texture::is_static() const noexcept
 {
-  return access() == TextureAccess::Static;
+  return access() == Access::Static;
 }
 
 CENTURION_DEF
 bool Texture::is_streaming() const noexcept
 {
-  return access() == TextureAccess::Streaming;
+  return access() == Access::Streaming;
 }
 
 CENTURION_DEF
@@ -354,7 +351,7 @@ Color Texture::color_mod() const noexcept
 }
 
 CENTURION_DEF
-ScaleMode Texture::scale_mode() const noexcept
+Texture::ScaleMode Texture::scale_mode() const noexcept
 {
   SDL_ScaleMode mode;
   SDL_GetTextureScaleMode(m_texture, &mode);
@@ -371,49 +368,49 @@ std::string Texture::to_string() const
 }
 
 CENTURION_DEF
-bool operator==(TextureAccess a, SDL_TextureAccess b) noexcept
+bool operator==(Texture::Access lhs, SDL_TextureAccess rhs) noexcept
 {
-  return static_cast<SDL_TextureAccess>(a) == b;
+  return static_cast<SDL_TextureAccess>(lhs) == rhs;
 }
 
 CENTURION_DEF
-bool operator==(SDL_TextureAccess a, TextureAccess b) noexcept
+bool operator==(SDL_TextureAccess lhs, Texture::Access rhs) noexcept
 {
-  return a == static_cast<SDL_TextureAccess>(b);
+  return lhs == static_cast<SDL_TextureAccess>(rhs);
 }
 
 CENTURION_DEF
-bool operator!=(TextureAccess a, SDL_TextureAccess b) noexcept
-{
-  return static_cast<SDL_TextureAccess>(a) != b;
-}
-
-CENTURION_DEF
-bool operator!=(SDL_TextureAccess a, TextureAccess b) noexcept
-{
-  return a != static_cast<SDL_TextureAccess>(b);
-}
-
-CENTURION_DEF
-bool operator==(ScaleMode lhs, SDL_ScaleMode rhs) noexcept
-{
-  return static_cast<SDL_ScaleMode>(lhs) == rhs;
-}
-
-CENTURION_DEF
-bool operator==(SDL_ScaleMode lhs, ScaleMode rhs) noexcept
-{
-  return lhs == static_cast<SDL_ScaleMode>(rhs);
-}
-
-CENTURION_DEF
-bool operator!=(ScaleMode lhs, SDL_ScaleMode rhs) noexcept
+bool operator!=(Texture::Access lhs, SDL_TextureAccess rhs) noexcept
 {
   return !(lhs == rhs);
 }
 
 CENTURION_DEF
-bool operator!=(SDL_ScaleMode lhs, ScaleMode rhs) noexcept
+bool operator!=(SDL_TextureAccess lhs, Texture::Access rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+CENTURION_DEF
+bool operator==(Texture::ScaleMode lhs, SDL_ScaleMode rhs) noexcept
+{
+  return static_cast<SDL_ScaleMode>(lhs) == rhs;
+}
+
+CENTURION_DEF
+bool operator==(SDL_ScaleMode lhs, Texture::ScaleMode rhs) noexcept
+{
+  return lhs == static_cast<SDL_ScaleMode>(rhs);
+}
+
+CENTURION_DEF
+bool operator!=(Texture::ScaleMode lhs, SDL_ScaleMode rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+CENTURION_DEF
+bool operator!=(SDL_ScaleMode lhs, Texture::ScaleMode rhs) noexcept
 {
   return !(lhs == rhs);
 }

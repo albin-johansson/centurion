@@ -30,10 +30,8 @@ Texture::Texture(const Renderer& renderer, CZString path)
   }
 
   m_texture = IMG_LoadTexture(renderer.get(), path);
-
   if (!m_texture) {
-    const auto strPath = std::string{path};
-    throw CenturionException{"Failed to load texture from " + strPath};
+    throw Error::from_image("Failed to create Texture!");
   }
 }
 
@@ -42,8 +40,7 @@ Texture::Texture(const Renderer& renderer, const Surface& surface)
 {
   this->m_texture = SDL_CreateTextureFromSurface(renderer.get(), surface.get());
   if (!m_texture) {
-    throw CenturionException{"Failed to create texture from surface! " +
-                             Error::msg()};
+    throw Error::from_core("Failed to create Texture from Surface!");
   }
 }
 
@@ -60,7 +57,7 @@ Texture::Texture(const Renderer& renderer,
                                 width,
                                 height);
   if (!m_texture) {
-    throw CenturionException{"Failed to create texture! " + Error::msg()};
+    throw Error::from_core("Failed to create Texture!");
   }
 }
 

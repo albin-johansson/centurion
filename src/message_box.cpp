@@ -3,7 +3,6 @@
 
 #include "message_box.h"
 
-#include "centurion_exception.h"
 #include "colors.h"
 #include "error.h"
 
@@ -116,8 +115,8 @@ int MessageBox::show(SDL_Window* window)
   const auto data = create_data(window, &buttons.front(), colorScheme);
 
   int button = -1;
-  if (SDL_ShowMessageBox(&data, &button) < 0) {
-    throw CenturionException{"Failed to show message box! " + Error::msg()};
+  if (SDL_ShowMessageBox(&data, &button) == -1) {
+    throw Error::from_core("Failed to show message box!");
   }
 
   return button;

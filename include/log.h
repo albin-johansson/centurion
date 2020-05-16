@@ -340,7 +340,7 @@ class Log final {
 
   /**
    * Returns the maximum size, i.e the maximum amount of characters that a
-   * string can contain and successfully without being truncated.
+   * string can contain and successfully be logged without being truncated.
    *
    * @return the maximum amount of characters that a loggable string can
    * contain. Strings longer that this value will be truncated.

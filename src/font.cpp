@@ -150,7 +150,7 @@ void Font::set_outlined(bool outlined) noexcept
 }
 
 CENTURION_DEF
-void Font::set_font_hinting(FontHint hint) noexcept
+void Font::set_font_hinting(Font::Hint hint) noexcept
 {
   TTF_SetFontHinting(m_font, static_cast<int>(hint));
 }
@@ -238,9 +238,9 @@ int Font::font_faces() const noexcept
 }
 
 CENTURION_DEF
-FontHint Font::font_hinting() const noexcept
+Font::Hint Font::font_hinting() const noexcept
 {
-  return static_cast<FontHint>(TTF_GetFontHinting(m_font));
+  return static_cast<Font::Hint>(TTF_GetFontHinting(m_font));
 }
 
 CENTURION_DEF

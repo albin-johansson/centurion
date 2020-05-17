@@ -147,26 +147,26 @@ TEST_CASE("Font::set_font_hinting", "[Font]")
 
   SECTION("Mono")
   {
-    font.set_font_hinting(FontHint::Mono);
-    CHECK(font.font_hinting() == FontHint::Mono);
+    font.set_font_hinting(Font::Hint::Mono);
+    CHECK(font.font_hinting() == Font::Hint::Mono);
   }
 
   SECTION("None")
   {
-    font.set_font_hinting(FontHint::None);
-    CHECK(font.font_hinting() == FontHint::None);
+    font.set_font_hinting(Font::Hint::None);
+    CHECK(font.font_hinting() == Font::Hint::None);
   }
 
   SECTION("Light")
   {
-    font.set_font_hinting(FontHint::Light);
-    CHECK(font.font_hinting() == FontHint::Light);
+    font.set_font_hinting(Font::Hint::Light);
+    CHECK(font.font_hinting() == Font::Hint::Light);
   }
 
   SECTION("Normal")
   {
-    font.set_font_hinting(FontHint::Normal);
-    CHECK(font.font_hinting() == FontHint::Normal);
+    font.set_font_hinting(Font::Hint::Normal);
+    CHECK(font.font_hinting() == Font::Hint::Normal);
   }
 }
 
@@ -228,7 +228,7 @@ TEST_CASE("Font::font_faces", "[Font]")
 TEST_CASE("Font::font_hinting", "[Font]")
 {
   const Font font{type_writer_path, 12};
-  CHECK(font.font_hinting() == FontHint::Normal);
+  CHECK(font.font_hinting() == Font::Hint::Normal);
 }
 
 TEST_CASE("Font::line_skip", "[Font]")

@@ -39,25 +39,25 @@
 namespace centurion {
 
 /**
- * The FontHint enum class represents different possible TrueType font hint
- * values.
- *
- * @since 3.1.0
- */
-enum class FontHint {
-  Normal = TTF_HINTING_NORMAL,
-  Light = TTF_HINTING_LIGHT,
-  Mono = TTF_HINTING_MONO,
-  None = TTF_HINTING_NONE
-};
-
-/**
  * The Font class represents a TrueType font.
  *
  * @since 3.0.0
  */
 class Font final {
  public:
+  /**
+   * The Hint enum class represents different possible TrueType font hint
+   * values.
+   *
+   * @since 3.1.0
+   */
+  enum class Hint {
+    Normal = TTF_HINTING_NORMAL,
+    Light = TTF_HINTING_LIGHT,
+    Mono = TTF_HINTING_MONO,
+    None = TTF_HINTING_NONE
+  };
+
   /**
    * Creates a Font based on the .ttf-file at the specified path.
    *
@@ -182,7 +182,7 @@ class Font final {
    * @param hint the font hinting that will be used.
    * @since 3.1.0
    */
-  CENTURION_API void set_font_hinting(FontHint hint) noexcept;
+  CENTURION_API void set_font_hinting(Hint hint) noexcept;
 
   /**
    * Returns the maximum height of a character in this font. This is usually the
@@ -241,7 +241,7 @@ class Font final {
    * @since 3.1.0
    */
   CENTURION_NODISCARD
-  CENTURION_API FontHint font_hinting() const noexcept;
+  CENTURION_API Hint font_hinting() const noexcept;
 
   /**
    * Indicates whether or not the font is bold.

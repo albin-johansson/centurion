@@ -45,6 +45,7 @@ cmake-build-release
 build
 doc
 .idea
+.vs
 .vscode
 .clangd
 compile_commands.json

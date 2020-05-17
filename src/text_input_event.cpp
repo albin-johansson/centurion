@@ -19,7 +19,7 @@ TextInputEvent::TextInputEvent(const SDL_TextInputEvent& event) noexcept
 
 CENTURION_DEF
 TextInputEvent::TextInputEvent(SDL_TextInputEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_TextInputEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

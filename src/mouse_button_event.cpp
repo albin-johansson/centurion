@@ -19,7 +19,7 @@ MouseButtonEvent::MouseButtonEvent(const SDL_MouseButtonEvent& event) noexcept
 
 CENTURION_DEF
 MouseButtonEvent::MouseButtonEvent(SDL_MouseButtonEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_MouseButtonEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

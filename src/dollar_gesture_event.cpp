@@ -20,7 +20,7 @@ DollarGestureEvent::DollarGestureEvent(
 
 CENTURION_DEF
 DollarGestureEvent::DollarGestureEvent(SDL_DollarGestureEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_DollarGestureEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

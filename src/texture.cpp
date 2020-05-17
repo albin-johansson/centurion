@@ -64,7 +64,7 @@ Texture::Texture(const Renderer& renderer,
 CENTURION_DEF
 Texture::Texture(Texture&& other) noexcept
 {
-  move(std::forward<Texture>(other));
+  move(std::move(other));
 }
 
 CENTURION_DEF
@@ -77,7 +77,7 @@ CENTURION_DEF
 Texture& Texture::operator=(Texture&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<Texture>(other));
+    move(std::move(other));
   }
   return *this;
 }

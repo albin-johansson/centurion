@@ -19,6 +19,31 @@ inline Window create(SDL_WindowFlags flag)
 
 }  // namespace
 
+TEST_CASE("Window()", "[Window]")
+{
+  const Window window;
+
+  CHECK(window.width() == 800);
+  CHECK(window.height() == 600);
+  CHECK_THAT(window.title(), Catch::Equals("Centurion window"));
+  CHECK(!window.visible());
+}
+
+TEST_CASE("Window(Owner<SDL_Window*>)", "[Window]")
+{
+  SECTION("Null pointer")
+  {
+    SDL_Window* w = nullptr;
+    CHECK_THROWS_AS(Window{w}, CenturionException);
+  }
+
+  SECTION("Good window")
+  {
+    SDL_Window* w = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
+    CHECK_NOTHROW(Window{w});
+  }
+}
+
 TEST_CASE("Window(CZString, Area)", "[Window]")
 {
   CHECK_THROWS_AS(Window("", {0, 10}), CenturionException);
@@ -42,63 +67,6 @@ TEST_CASE("Window(CZString, Area)", "[Window]")
     const Window window{nullptr, {10, 10}};
     CHECK_THAT(window.title(), Catch::Equals(""));
   }
-}
-
-TEST_CASE("Window(int, int)", "[Window]")
-{
-  const auto width = 832;
-  const auto height = 715;
-  const Window window{{width, height}};
-
-  CHECK(window.width() == width);
-  CHECK(window.height() == height);
-
-  // TODO either doc or remove behavior
-  CHECK_THAT(window.title(), Catch::Equals("Centurion window"));
-
-  CHECK(!window.visible());
-}
-
-TEST_CASE("Window(CZString)", "[Window]")
-{
-  SECTION("Null string")
-  {
-    CZString str = nullptr;
-    Window window{str};
-
-    CHECK_THAT(window.title(), Catch::Equals(""));
-  }
-  SECTION("Normal")
-  {
-    CZString str = "Foo";
-    Window window{"Foo"};
-    CHECK_THAT(window.title(), Catch::Equals(str));
-  }
-}
-
-TEST_CASE("Window(Owner<SDL_Window*>)", "[Window]")
-{
-  SECTION("Null pointer")
-  {
-    SDL_Window* w = nullptr;
-    CHECK_THROWS_AS(Window{w}, CenturionException);
-  }
-
-  SECTION("Good window")
-  {
-    SDL_Window* w = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
-    CHECK_NOTHROW(Window{w});
-  }
-}
-
-TEST_CASE("Window()", "[Window]")
-{
-  const Window window;
-
-  CHECK(window.width() == 800);
-  CHECK(window.height() == 600);
-  CHECK_THAT(window.title(), Catch::Equals("Centurion window"));
-  CHECK(!window.visible());
 }
 
 TEST_CASE("Window(Window&&)", "[Window]")
@@ -144,20 +112,6 @@ TEST_CASE("Window::unique", "[Window]")
     CHECK(Window::unique(good));
   }
 
-  SECTION("Window::unique(CZString)")
-  {
-    CHECK_NOTHROW(Window::unique(static_cast<CZString>(nullptr)));
-    CHECK_NOTHROW(Window::unique(""));
-    CHECK_NOTHROW(Window::unique());
-  }
-
-  SECTION("Window::unique(Area)")
-  {
-    CHECK_THROWS_AS(Window::unique({10, 0}), CenturionException);
-    CHECK_THROWS_AS(Window::unique({0, 10}), CenturionException);
-    CHECK_NOTHROW(Window::unique({10, 10}));
-  }
-
   SECTION("Window::unique(CZString, Area)")
   {
     CHECK_THROWS_AS(Window::unique("", {0, 10}), CenturionException);
@@ -178,20 +132,6 @@ TEST_CASE("Window::shared", "[Window]")
 
     auto* good = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
     CHECK(Window::shared(good));
-  }
-
-  SECTION("Window::shared(CZString)")
-  {
-    CHECK_NOTHROW(Window::shared(static_cast<CZString>(nullptr)));
-    CHECK_NOTHROW(Window::shared(""));
-    CHECK_NOTHROW(Window::shared());
-  }
-
-  SECTION("Window::shared(Area)")
-  {
-    CHECK_THROWS_AS(Window::shared({10, 0}), CenturionException);
-    CHECK_THROWS_AS(Window::shared({0, 10}), CenturionException);
-    CHECK_NOTHROW(Window::shared({10, 10}));
   }
 
   SECTION("Window::shared(CZString, Area)")
@@ -646,14 +586,14 @@ TEST_CASE("Window::position", "[Window]")
 TEST_CASE("Window::width", "[Window]")
 {
   const auto width = 921;
-  Window window{{width, 10}};
+  Window window{"", {width, 10}};
   CHECK(window.width() == width);
 }
 
 TEST_CASE("Window::height", "[Window]")
 {
   const auto height = 435;
-  Window window{{10, height}};
+  Window window{"",{10, height}};
   CHECK(window.height() == height);
 }
 

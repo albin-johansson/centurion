@@ -44,7 +44,7 @@ Renderer::Renderer(const Window& window, SDL_RendererFlags flags)
 CENTURION_DEF
 Renderer::Renderer(Renderer&& other) noexcept
 {
-  move(std::forward<Renderer>(other));
+  move(std::move(other));
 }
 
 CENTURION_DEF
@@ -57,7 +57,7 @@ CENTURION_DEF
 Renderer& Renderer::operator=(Renderer&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<Renderer>(other));
+    move(std::move(other));
   }
   return *this;
 }

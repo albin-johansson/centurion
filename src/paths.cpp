@@ -16,14 +16,14 @@ BasePath::BasePath() noexcept : m_path{SDL_GetBasePath()}
 CENTURION_DEF
 BasePath::BasePath(BasePath&& other) noexcept
 {
-  move(std::forward<BasePath>(other));
+  move(std::move(other));
 }
 
 CENTURION_DEF
 BasePath& BasePath::operator=(BasePath&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<BasePath>(other));
+    move(std::move(other));
   }
   return *this;
 }
@@ -70,14 +70,14 @@ PrefPath::PrefPath(CZString org, CZString app) noexcept
 CENTURION_DEF
 PrefPath::PrefPath(PrefPath&& other) noexcept
 {
-  move(std::forward<PrefPath>(other));
+  move(std::move(other));
 }
 
 CENTURION_DEF
 PrefPath& PrefPath::operator=(PrefPath&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<PrefPath>(other));
+    move(std::move(other));
   }
   return *this;
 }

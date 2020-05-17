@@ -44,14 +44,14 @@ Cursor::Cursor(const Surface& surface, IPoint hotspot)
 CENTURION_DEF
 Cursor::Cursor(Cursor&& other) noexcept
 {
-  move(std::forward<Cursor>(other));
+  move(std::move(other));
 }
 
 CENTURION_DEF
 Cursor& Cursor::operator=(Cursor&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<Cursor>(other));
+    move(std::move(other));
   }
   return *this;
 }

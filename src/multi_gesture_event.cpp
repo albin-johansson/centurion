@@ -20,7 +20,7 @@ MultiGestureEvent::MultiGestureEvent(
 
 CENTURION_DEF
 MultiGestureEvent::MultiGestureEvent(SDL_MultiGestureEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_MultiGestureEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

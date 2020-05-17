@@ -19,7 +19,7 @@ JoyButtonEvent::JoyButtonEvent(const SDL_JoyButtonEvent& event) noexcept
 
 CENTURION_DEF
 JoyButtonEvent::JoyButtonEvent(SDL_JoyButtonEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_JoyButtonEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

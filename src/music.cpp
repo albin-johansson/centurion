@@ -21,7 +21,7 @@ Music::Music(CZString file)
 CENTURION_DEF
 Music::Music(Music&& other) noexcept
 {
-  move(std::forward<Music>(other));
+  move(std::move(other));
 }
 
 CENTURION_DEF
@@ -34,7 +34,7 @@ CENTURION_DEF
 Music& Music::operator=(Music&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<Music>(other));
+    move(std::move(other));
   }
   return *this;
 }

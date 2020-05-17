@@ -21,7 +21,7 @@ ControllerDeviceEvent::ControllerDeviceEvent(
 CENTURION_DEF
 ControllerDeviceEvent::ControllerDeviceEvent(
     SDL_ControllerDeviceEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_ControllerDeviceEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

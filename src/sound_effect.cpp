@@ -25,7 +25,7 @@ SoundEffect::SoundEffect(CZString file)
 CENTURION_DEF
 SoundEffect::SoundEffect(SoundEffect&& other) noexcept
 {
-  move(std::forward<SoundEffect>(other));
+  move(std::move(other));
 }
 
 CENTURION_DEF
@@ -38,7 +38,7 @@ CENTURION_DEF
 SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<SoundEffect>(other));
+    move(std::move(other));
   }
   return *this;
 }

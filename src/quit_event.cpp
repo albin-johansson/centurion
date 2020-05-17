@@ -18,7 +18,7 @@ QuitEvent::QuitEvent(const SDL_QuitEvent& event) noexcept : CommonEvent{event}
 
 CENTURION_DEF
 QuitEvent::QuitEvent(SDL_QuitEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_QuitEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 }  // namespace event

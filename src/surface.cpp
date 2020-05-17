@@ -42,7 +42,7 @@ Surface::Surface(const Surface& other)
 CENTURION_DEF
 Surface::Surface(Surface&& other) noexcept
 {
-  move(std::forward<Surface>(other));
+  move(std::move(other));
 }
 
 CENTURION_DEF
@@ -55,7 +55,7 @@ CENTURION_DEF
 Surface& Surface::operator=(Surface&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<Surface>(other));
+    move(std::move(other));
   }
   return *this;
 }

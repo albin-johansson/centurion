@@ -32,7 +32,7 @@ Font::Font(CZString file, int size) : m_size{size}
 CENTURION_DEF
 Font::Font(Font&& other) noexcept
 {
-  move(std::forward<Font>(other));
+  move(std::move(other));
 }
 
 CENTURION_DEF
@@ -45,7 +45,7 @@ CENTURION_DEF
 Font& Font::operator=(Font&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<Font>(other));
+    move(std::move(other));
   }
   return *this;
 }

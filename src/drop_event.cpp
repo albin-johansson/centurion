@@ -16,7 +16,7 @@ DropEvent::DropEvent(const SDL_DropEvent& event) noexcept : CommonEvent{event}
 
 CENTURION_DEF
 DropEvent::DropEvent(SDL_DropEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_DropEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

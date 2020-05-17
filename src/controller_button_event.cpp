@@ -20,7 +20,7 @@ CENTURION_DEF ControllerButtonEvent::ControllerButtonEvent(
 CENTURION_DEF
 ControllerButtonEvent::ControllerButtonEvent(
     SDL_ControllerButtonEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_ControllerButtonEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

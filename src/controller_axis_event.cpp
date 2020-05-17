@@ -21,7 +21,7 @@ ControllerAxisEvent::ControllerAxisEvent(
 CENTURION_DEF
 ControllerAxisEvent::ControllerAxisEvent(
     SDL_ControllerAxisEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_ControllerAxisEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

@@ -9,6 +9,18 @@
 namespace centurion {
 
 CENTURION_DEF
+Window::Window() : Window{"Centurion window"}
+{}
+
+CENTURION_DEF
+Window::Window(Owner<SDL_Window*> window) : m_window{window}
+{
+  if (!window) {
+    throw CenturionException{"Cannot create Window from null SDL_Window!"};
+  }
+}
+
+CENTURION_DEF
 Window::Window(CZString title, Area size)
 {
   if ((size.width < 1) || (size.height < 1)) {
@@ -24,29 +36,9 @@ Window::Window(CZString title, Area size)
 }
 
 CENTURION_DEF
-Window::Window(Area size) : Window{"Centurion window", size}
-{}
-
-CENTURION_DEF
-Window::Window(CZString title) : Window{title, {800, 600}}
-{}
-
-CENTURION_DEF
-Window::Window(Owner<SDL_Window*> window) : m_window{window}
-{
-  if (!window) {
-    throw CenturionException{"Cannot create Window from null SDL_Window!"};
-  }
-}
-
-CENTURION_DEF
-Window::Window() : Window{{800, 600}}
-{}
-
-CENTURION_DEF
 Window::Window(Window&& other) noexcept
 {
-  move(std::forward<Window>(other));
+  move(std::move(other));
 }
 
 CENTURION_DEF
@@ -59,7 +51,7 @@ CENTURION_DEF
 Window& Window::operator=(Window&& other) noexcept
 {
   if (this != &other) {
-    move(std::forward<Window>(other));
+    move(std::move(other));
   }
   return *this;
 }
@@ -83,21 +75,9 @@ void Window::move(Window&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Window> Window::unique(CZString title, Area size)
+UniquePtr<Window> Window::unique()
 {
-  return centurion::detail::make_unique<Window>(title, size);
-}
-
-CENTURION_DEF
-UniquePtr<Window> Window::unique(Area size)
-{
-  return centurion::detail::make_unique<Window>(size);
-}
-
-CENTURION_DEF
-UniquePtr<Window> Window::unique(CZString title)
-{
-  return centurion::detail::make_unique<Window>(title);
+  return centurion::detail::make_unique<Window>();
 }
 
 CENTURION_DEF
@@ -107,27 +87,15 @@ UniquePtr<Window> Window::unique(Owner<SDL_Window*> window)
 }
 
 CENTURION_DEF
-UniquePtr<Window> Window::unique()
+UniquePtr<Window> Window::unique(CZString title, Area size)
 {
-  return centurion::detail::make_unique<Window>();
+  return centurion::detail::make_unique<Window>(title, size);
 }
 
 CENTURION_DEF
-SharedPtr<Window> Window::shared(CZString title, Area size)
+SharedPtr<Window> Window::shared()
 {
-  return std::make_shared<Window>(title, size);
-}
-
-CENTURION_DEF
-SharedPtr<Window> Window::shared(Area size)
-{
-  return std::make_shared<Window>(size);
-}
-
-CENTURION_DEF
-SharedPtr<Window> Window::shared(CZString title)
-{
-  return std::make_shared<Window>(title);
+  return std::make_shared<Window>();
 }
 
 CENTURION_DEF
@@ -137,9 +105,9 @@ SharedPtr<Window> Window::shared(Owner<SDL_Window*> window)
 }
 
 CENTURION_DEF
-SharedPtr<Window> Window::shared()
+SharedPtr<Window> Window::shared(CZString title, Area size)
 {
-  return std::make_shared<Window>();
+  return std::make_shared<Window>(title, size);
 }
 
 CENTURION_DEF
@@ -204,9 +172,9 @@ void Window::set_decorated(bool decorated) noexcept
 }
 
 CENTURION_DEF
-void Window::set_resizable(bool isResizable) noexcept
+void Window::set_resizable(bool resizable) noexcept
 {
-  SDL_SetWindowResizable(m_window, detail::convert_bool(isResizable));
+  SDL_SetWindowResizable(m_window, detail::convert_bool(resizable));
 }
 
 CENTURION_DEF
@@ -477,7 +445,7 @@ Uint32 Window::flags() const noexcept
 }
 
 CENTURION_DEF
-SDL_Renderer* Window::renderer() const noexcept
+const SDL_Renderer* Window::renderer() const noexcept
 {
   return SDL_GetRenderer(m_window);
 }

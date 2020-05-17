@@ -19,7 +19,7 @@ KeyboardEvent::KeyboardEvent(const SDL_KeyboardEvent& event) noexcept
 
 CENTURION_DEF
 KeyboardEvent::KeyboardEvent(SDL_KeyboardEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_KeyboardEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

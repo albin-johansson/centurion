@@ -19,7 +19,7 @@ JoyAxisEvent::JoyAxisEvent(const SDL_JoyAxisEvent& event) noexcept
 
 CENTURION_DEF
 JoyAxisEvent::JoyAxisEvent(SDL_JoyAxisEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_JoyAxisEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

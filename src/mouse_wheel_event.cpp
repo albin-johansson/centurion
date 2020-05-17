@@ -43,7 +43,7 @@ MouseWheelEvent::MouseWheelEvent(const SDL_MouseWheelEvent& event) noexcept
 
 CENTURION_DEF
 MouseWheelEvent::MouseWheelEvent(SDL_MouseWheelEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_MouseWheelEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

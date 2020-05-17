@@ -19,7 +19,7 @@ AudioDeviceEvent::AudioDeviceEvent(const SDL_AudioDeviceEvent& event) noexcept
 
 CENTURION_DEF
 AudioDeviceEvent::AudioDeviceEvent(SDL_AudioDeviceEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_AudioDeviceEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

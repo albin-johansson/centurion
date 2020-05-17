@@ -19,7 +19,7 @@ WindowEvent::WindowEvent(const SDL_WindowEvent& event) noexcept
 
 CENTURION_DEF
 WindowEvent::WindowEvent(SDL_WindowEvent&& event) noexcept
-    : CommonEvent{std::forward<SDL_WindowEvent>(event)}
+    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF

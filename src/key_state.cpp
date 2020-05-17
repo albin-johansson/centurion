@@ -4,7 +4,6 @@
 #include "key_state.h"
 
 #include <algorithm>
-#include <cassert>
 #include <string>
 
 #include "centurion_utils.h"
@@ -16,7 +15,6 @@ CENTURION_DEF
 KeyState::KeyState() noexcept
 {
   m_states = SDL_GetKeyboardState(&m_nKeys);
-  assert(static_cast<unsigned long long>(m_nKeys) == m_previousStates.size());
   std::fill(m_previousStates.begin(), m_previousStates.end(), 0);
 }
 
@@ -42,32 +40,44 @@ CENTURION_DEF
 bool KeyState::is_pressed(const Key& key) const noexcept
 {
   const auto code = key.scancode();
-  assert(code < m_nKeys);
-  return m_states[code];
+  if (code >= 0 && code < m_nKeys) {
+    return m_states[code];
+  } else {
+    return false;
+  }
 }
 
 CENTURION_DEF
 bool KeyState::is_held(const Key& key) const noexcept
 {
   const auto code = key.scancode();
-  assert(code < m_nKeys);
-  return m_states[code] && m_previousStates[code];
+  if (code >= 0 && code < m_nKeys) {
+    return m_states[code] && m_previousStates[code];
+  } else {
+    return false;
+  }
 }
 
 CENTURION_DEF
 bool KeyState::was_just_pressed(const Key& key) const noexcept
 {
   const auto code = key.scancode();
-  assert(code < m_nKeys);
-  return m_states[code] && !m_previousStates[code];
+  if (code >= 0 && code < m_nKeys) {
+    return m_states[code] && !m_previousStates[code];
+  } else {
+    return false;
+  }
 }
 
 CENTURION_DEF
 bool KeyState::was_just_released(const Key& key) const noexcept
 {
   const auto code = key.scancode();
-  assert(code < m_nKeys);
-  return !m_states[code] && m_previousStates[code];
+  if (code >= 0 && code < m_nKeys) {
+    return !m_states[code] && m_previousStates[code];
+  } else {
+    return false;
+  }
 }
 
 }  // namespace input

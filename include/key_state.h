@@ -68,7 +68,7 @@ class KeyState final {
   CENTURION_API static SharedPtr<KeyState> shared();
 
   /**
-   * Updates the state of the key state object. Note! SDL_PollEvent isn't
+   * Updates the state of the key state object. Note! SDL_PumpEvents isn't
    * invoked by this method.
    *
    * @since 3.0.0
@@ -76,7 +76,8 @@ class KeyState final {
   CENTURION_API void update() noexcept;
 
   /**
-   * Indicates whether or not the specified key is being pressed.
+   * Indicates whether or not the specified key is being pressed. This method
+   * returns false if the supplied key isn't recognized.
    *
    * @param key the key that will be checked.
    * @return true if the key is being pressed; false otherwise.
@@ -87,7 +88,8 @@ class KeyState final {
 
   /**
    * Indicates whether or not the specified key has been pressed during more
-   * than one update of the key state.
+   * than one update of the key state. This method returns false if the
+   * supplied key isn't recognized.
    *
    * @param key the key that will be checked.
    * @return true if the key has been held down; false otherwise.
@@ -98,7 +100,8 @@ class KeyState final {
 
   /**
    * Indicates whether or not a key just became pressed in the last update of
-   * the key state.
+   * the key state. This method returns false if the supplied key isn't
+   * recognized.
    *
    * @param key the key that will be checked.
    * @return true if the key has just been pressed; false otherwise.
@@ -109,7 +112,8 @@ class KeyState final {
 
   /**
    * Indicates whether or not the specified key was released in the last update
-   * of the key state.
+   * of the key state. This method returns false if the supplied key isn't
+   * recognized.
    *
    * @param key the key that will be checked.
    * @return true if the key was released; false otherwise.

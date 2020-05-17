@@ -93,3 +93,8 @@ TEST_CASE("TextEditingEvent::length", "[TextEditingEvent]")
     CHECK(event.length() == 32);
   }
 }
+
+TEST_CASE("TextEditingEvent()", "[TextEditingEvent]")
+{
+  CHECK_NOTHROW(TextEditingEvent{{}});
+}

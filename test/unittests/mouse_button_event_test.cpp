@@ -137,3 +137,8 @@ TEST_CASE("MouseButtonEvent::y", "[MouseButtonEvent]")
 
   CHECK(event.y() == sdlEvent.y);
 }
+
+TEST_CASE("MouseButtonEvent()", "[MouseButtonEvent]")
+{
+  CHECK_NOTHROW(MouseButtonEvent{{}});
+}

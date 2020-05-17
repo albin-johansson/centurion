@@ -28,3 +28,8 @@ TEST_CASE("TextInputEvent::text", "[TextInputEvent]")
   TextInputEvent event{sdlEvent};
   CHECK_THAT(event.text(), Catch::Equals("hello"));
 }
+
+TEST_CASE("TextInputEvent()", "[TextInputEvent]")
+{
+  CHECK_NOTHROW(TextInputEvent{{}});
+}

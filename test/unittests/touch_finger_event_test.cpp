@@ -225,3 +225,8 @@ TEST_CASE("TouchFingerEvent::pressure", "[TouchFingerEvent]")
 
   CHECK(event.pressure() == sdlEvent.pressure);
 }
+
+TEST_CASE("TouchFingerEvent()", "[TouchFingerEvent]")
+{
+  CHECK_NOTHROW(TouchFingerEvent{{}});
+}

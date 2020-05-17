@@ -22,3 +22,8 @@ TEST_CASE("ControllerDeviceEvent::which", "[ControllerDeviceEvent]")
 
   CHECK(event.which() == 11);
 }
+
+TEST_CASE("ControllerDeviceEvent()", "[ControllerDeviceEvent]")
+{
+  CHECK_NOTHROW(ControllerDeviceEvent{{}});
+}

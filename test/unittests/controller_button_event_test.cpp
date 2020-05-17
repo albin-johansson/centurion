@@ -61,3 +61,8 @@ TEST_CASE("ControllerButtonEvent::which", "[ControllerButtonEvent]")
   ControllerButtonEvent event{sdlEvent};
   CHECK(event.which() == 16);
 }
+
+TEST_CASE("ControllerButtonEvent()", "[ControllerButtonEvent]")
+{
+  CHECK_NOTHROW(ControllerButtonEvent{{}});
+}

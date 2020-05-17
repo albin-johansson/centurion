@@ -65,6 +65,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/text_input_event.h
         ${CTN_INCLUDE_DIR}/area.h
         ${CTN_INCLUDE_DIR}/key_modifier.h
+        ${CTN_INCLUDE_DIR}/syswm_event.h
         window.cpp
         font.cpp
         renderer.cpp
@@ -113,7 +114,8 @@ set(SOURCE_FILES
         mouse_wheel_event.cpp
         multi_gesture_event.cpp
         text_editing_event.cpp
-        text_input_event.cpp)
+        text_input_event.cpp
+        syswm_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

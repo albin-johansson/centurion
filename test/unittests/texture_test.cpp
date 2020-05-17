@@ -181,14 +181,14 @@ TEST_CASE("Texture::set_pixel", "[Texture]")
 
   const auto [width, height] = texture->size();
 
-  CHECK_NOTHROW(texture->set_pixel({-1, -1}, black));
-  CHECK_NOTHROW(texture->set_pixel({-1, 0}, black));
-  CHECK_NOTHROW(texture->set_pixel({0, -1}, black));
-  CHECK_NOTHROW(texture->set_pixel({width, 0}, black));
-  CHECK_NOTHROW(texture->set_pixel({0, height}, black));
-  CHECK_NOTHROW(texture->set_pixel({width, height}, black));
+  CHECK_NOTHROW(texture->set_pixel({-1, -1}, color::black));
+  CHECK_NOTHROW(texture->set_pixel({-1, 0}, color::black));
+  CHECK_NOTHROW(texture->set_pixel({0, -1}, color::black));
+  CHECK_NOTHROW(texture->set_pixel({width, 0}, color::black));
+  CHECK_NOTHROW(texture->set_pixel({0, height}, color::black));
+  CHECK_NOTHROW(texture->set_pixel({width, height}, color::black));
 
-  CHECK_NOTHROW(texture->set_pixel({45, 23}, orange));
+  CHECK_NOTHROW(texture->set_pixel({45, 23}, color::orange));
 }
 
 TEST_CASE("Texture::set_blend_mode", "[Texture]")
@@ -221,7 +221,7 @@ TEST_CASE("Texture::set_color_mod", "[Texture]")
   Renderer renderer{window};
   Texture texture{renderer, pandaPath};
 
-  const auto color = misty_rose;
+  const auto color = color::misty_rose;
   texture.set_color_mod(color);
 
   const auto actual = texture.color_mod();

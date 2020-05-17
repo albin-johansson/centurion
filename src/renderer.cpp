@@ -24,7 +24,7 @@ Renderer::Renderer(Owner<SDL_Renderer*> renderer)
   }
   this->m_renderer = renderer;
 
-  set_color(black);
+  set_color(color::black);
   set_logical_integer_scale(false);
 }
 
@@ -37,7 +37,7 @@ Renderer::Renderer(const Window& window, SDL_RendererFlags flags)
   }
 
   set_blend_mode(BlendMode::Blend);
-  set_color(black);
+  set_color(color::black);
   set_logical_integer_scale(false);
 }
 

@@ -40,10 +40,10 @@ TEST_CASE("ColorScheme::set_color", "[ColorScheme]")
 {
   ColorScheme scheme;
 
-  scheme.set_color(ColorType::Background, aquamarine);
-  scheme.set_color(ColorType::ButtonBackground, azure);
-  scheme.set_color(ColorType::ButtonBorder, tomato);
-  scheme.set_color(ColorType::ButtonSelected, cornsilk);
+  scheme.set_color(ColorType::Background, color::aquamarine);
+  scheme.set_color(ColorType::ButtonBackground, color::azure);
+  scheme.set_color(ColorType::ButtonBorder, color::tomato);
+  scheme.set_color(ColorType::ButtonSelected, color::cornsilk);
 
   const auto sdlScheme = scheme.convert();
 
@@ -51,10 +51,10 @@ TEST_CASE("ColorScheme::set_color", "[ColorScheme]")
     return static_cast<int>(type);
   };
 
-  CHECK(sdlScheme.colors[index(ColorType::Background)] == aquamarine);
-  CHECK(sdlScheme.colors[index(ColorType::ButtonBackground)] == azure);
-  CHECK(sdlScheme.colors[index(ColorType::ButtonBorder)] == tomato);
-  CHECK(sdlScheme.colors[index(ColorType::ButtonSelected)] == cornsilk);
+  CHECK(sdlScheme.colors[index(ColorType::Background)] == color::aquamarine);
+  CHECK(sdlScheme.colors[index(ColorType::ButtonBackground)] == color::azure);
+  CHECK(sdlScheme.colors[index(ColorType::ButtonBorder)] == color::tomato);
+  CHECK(sdlScheme.colors[index(ColorType::ButtonSelected)] == color::cornsilk);
 
   CHECK(&scheme.get());
 }
@@ -187,14 +187,14 @@ TEST_CASE("MessageBox::set_color_scheme", "[MessageBox]")
   MessageBox mb;
 
   ColorScheme scheme;
-  scheme.set_color(colorType, red);
+  scheme.set_color(colorType, color::red);
 
   mb.set_color_scheme(scheme);
 
   CHECK(mb.color_scheme());
 
   const auto sdlScheme = scheme.convert();
-  CHECK(sdlScheme.colors[static_cast<int>(colorType)] == red);
+  CHECK(sdlScheme.colors[static_cast<int>(colorType)] == color::red);
 
   mb.set_color_scheme(nothing);
   CHECK(!mb.color_scheme());

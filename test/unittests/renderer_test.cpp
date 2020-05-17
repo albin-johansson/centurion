@@ -481,7 +481,7 @@ TEST_CASE("Renderer::set_color", "[Renderer]")
   Window window;
   Renderer renderer{window};
 
-  const auto& color = pale_violet_red;
+  const auto& color = color::pale_violet_red;
   renderer.set_color(color);
 
   CHECK(color == renderer.color());
@@ -704,9 +704,9 @@ TEST_CASE("Renderer::text_shaded", "[Renderer]")
   Renderer renderer{window};
   Font font{"resources/daniel.ttf", 12};
 
-  CHECK(!renderer.text_shaded(nullptr, black, font));
-  CHECK(!renderer.text_shaded("", black, font));
-  CHECK(renderer.text_shaded("Hello", black, font));
+  CHECK(!renderer.text_shaded(nullptr, color::black, font));
+  CHECK(!renderer.text_shaded("", color::black, font));
+  CHECK(renderer.text_shaded("Hello", color::black, font));
 }
 
 TEST_CASE("Renderer::text_solid", "[Renderer]")

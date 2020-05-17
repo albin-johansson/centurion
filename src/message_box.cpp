@@ -32,10 +32,10 @@ inline SDL_MessageBoxButtonData create_button_data(ButtonDataHint hint,
 CENTURION_DEF
 ColorScheme::ColorScheme() noexcept
 {
-  set_color(ColorType::Background, black);
-  set_color(ColorType::ButtonBorder, black);
-  set_color(ColorType::ButtonBackground, black);
-  set_color(ColorType::ButtonSelected, black);
+  set_color(ColorType::Background, color::black);
+  set_color(ColorType::ButtonBorder, color::black);
+  set_color(ColorType::ButtonBackground, color::black);
+  set_color(ColorType::ButtonSelected, color::black);
 }
 
 CENTURION_DEF

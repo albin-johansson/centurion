@@ -209,7 +209,7 @@ void Window::set_title(CZString title) noexcept
 
 CENTURION_DEF
 void Window::set_opacity(float opacity) noexcept
-{  // TODO doc: the window must be visible?
+{  
   SDL_SetWindowOpacity(m_window, opacity);
 }
 

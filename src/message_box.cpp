@@ -111,6 +111,7 @@ int MessageBox::show(SDL_Window* window)
   }
 
   const auto buttons = create_buttons();
+  // FIXME get call
   const auto* colorScheme = m_colorScheme ? &m_colorScheme->get() : nullptr;
   const auto data = create_data(window, &buttons.front(), colorScheme);
 

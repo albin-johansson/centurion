@@ -83,7 +83,7 @@ TEST_CASE("Texture(Renderer&, PixelFormat, Access, int, int)", "[Texture]")
   const auto access = Texture::Access::Static;
   const auto width = 145;
   const auto height = 85;
-  Texture texture{renderer, pixelFormat, access, width, height};
+  Texture texture{renderer, pixelFormat, access, {width, height}};
   CHECK(pixelFormat == texture.format());
   CHECK(access == texture.access());
   CHECK(width == texture.width());
@@ -141,7 +141,7 @@ TEST_CASE("Texture::unique", "[Texture]")
   CHECK(Texture::unique(renderer, pandaPath));
   CHECK(Texture::unique(renderer, surface));
   CHECK(Texture::unique(
-      renderer, window.pixel_format(), Texture::Access::Static, 100, 100));
+      renderer, window.pixel_format(), Texture::Access::Static, {100, 100}));
 }
 
 TEST_CASE("Texture:::shared", "[Texture]")
@@ -155,7 +155,7 @@ TEST_CASE("Texture:::shared", "[Texture]")
   CHECK(Texture::shared(renderer, pandaPath));
   CHECK(Texture::shared(renderer, surface));
   CHECK(Texture::shared(
-      renderer, window.pixel_format(), Texture::Access::Static, 100, 100));
+      renderer, window.pixel_format(), Texture::Access::Static, {100, 100}));
 }
 
 TEST_CASE("Texture::streaming", "[Texture]")
@@ -252,7 +252,7 @@ TEST_CASE("Texture::is_static", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture{
-      renderer, window.pixel_format(), Texture::Access::Static, 10, 10};
+      renderer, window.pixel_format(), Texture::Access::Static, {10, 10}};
   CHECK(texture.is_static());
 }
 
@@ -261,7 +261,7 @@ TEST_CASE("Texture::is_streaming", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture{
-      renderer, window.pixel_format(), Texture::Access::Streaming, 10, 10};
+      renderer, window.pixel_format(), Texture::Access::Streaming, {10, 10}};
   CHECK(texture.is_streaming());
 }
 
@@ -270,7 +270,7 @@ TEST_CASE("Texture::is_target", "[Texture]")
   Window window;
   Renderer renderer{window};
   Texture texture{
-      renderer, window.pixel_format(), Texture::Access::Target, 10, 10};
+      renderer, window.pixel_format(), Texture::Access::Target, {10, 10}};
   CHECK(texture.is_target());
 }
 
@@ -314,6 +314,15 @@ TEST_CASE("Texture::access", "[Texture]")
   SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
 
   CHECK(texture.access() == static_cast<Texture::Access>(access));
+}
+
+TEST_CASE("Texture::color_mod", "[Texture]")
+{
+  Window window;
+  Renderer renderer{window};
+  Texture texture{renderer, pandaPath};
+
+  CHECK(texture.color_mod() == color::white);
 }
 
 TEST_CASE("Texture::scale_mode", "[Texture]")

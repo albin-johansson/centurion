@@ -108,16 +108,14 @@ class Texture final {
    * @param renderer the associated renderer instance.
    * @param format the pixel format of the created texture.
    * @param access the access of the created texture.
-   * @param width the width of the texture.
-   * @param height the height of the texture.
+   * @param size the size of the texture.
    * @throws CenturionException if the texture cannot be created.
    * @since 4.0.0
    */
   CENTURION_API Texture(const Renderer& renderer,
                         PixelFormat format,
                         Access access,
-                        int width,
-                        int height);
+                        Area size);
 
   /**
    * Creates an texture by moving the supplied texture.
@@ -191,8 +189,7 @@ class Texture final {
    * @param renderer the associated renderer that will be used.
    * @param format the pixel format of the texture.
    * @param access the access of the texture.
-   * @param width the width of the texture.
-   * @param height the height of the texture.
+   * @param size the size of the texture.
    * @return a unique pointer to an texture.
    * @throws CenturionException if the texture cannot be created.
    * @since 3.1.0
@@ -202,8 +199,7 @@ class Texture final {
   static UniquePtr<Texture> unique(const Renderer& renderer,
                                    PixelFormat format,
                                    Access access,
-                                   int width,
-                                   int height);
+                                   Area size);
 
   /**
    * Creates and returns a shared texture from a pre-existing SDL texture. The
@@ -254,8 +250,7 @@ class Texture final {
    * @param renderer the associated renderer that will be used.
    * @param format the pixel format of the texture.
    * @param access the access of the texture.
-   * @param width the width of the texture.
-   * @param height the height of the texture.
+   * @param size the size of the texture.
    * @return a shared pointer to an texture.
    * @throws CenturionException if the texture cannot be created.
    * @since 3.1.0
@@ -265,8 +260,7 @@ class Texture final {
   static SharedPtr<Texture> shared(const Renderer& renderer,
                                    PixelFormat format,
                                    Access access,
-                                   int width,
-                                   int height);
+                                   Area size);
 
   /**
    * Creates and returns a unique pointer to a texture based on the image at
@@ -332,18 +326,18 @@ class Texture final {
   CENTURION_API void set_scale_mode(ScaleMode mode) noexcept;
 
   /**
-   * Returns the format of the internal SDL_Texture.
+   * Returns the pixel format that is used by the texture.
    *
-   * @return the format of the internal SDL_Texture.
+   * @return the pixel format that is used by the texture.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API PixelFormat format() const noexcept;
 
   /**
-   * Returns the texture access of the internal SDL_Texture.
+   * Returns the texture access of the texture.
    *
-   * @return the texture access of the internal SDL_Texture.
+   * @return the texture access of the texture.
    * @since 3.0.0
    */
   CENTURION_NODISCARD

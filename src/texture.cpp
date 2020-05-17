@@ -48,14 +48,13 @@ CENTURION_DEF
 Texture::Texture(const Renderer& renderer,
                  PixelFormat format,
                  Access access,
-                 int width,
-                 int height)
+                 Area size)
 {
   m_texture = SDL_CreateTexture(renderer.get(),
                                 static_cast<Uint32>(format),
                                 static_cast<int>(access),
-                                width,
-                                height);
+                                size.width,
+                                size.height);
   if (!m_texture) {
     throw detail::Error::from_core("Failed to create Texture!");
   }
@@ -142,11 +141,10 @@ CENTURION_DEF
 UniquePtr<Texture> Texture::unique(const Renderer& renderer,
                                    PixelFormat format,
                                    Access access,
-                                   int width,
-                                   int height)
+                                   Area size)
 {
   return centurion::detail::make_unique<Texture>(
-      renderer, format, access, width, height);
+      renderer, format, access, size);
 }
 
 CENTURION_DEF
@@ -172,10 +170,9 @@ CENTURION_DEF
 SharedPtr<Texture> Texture::shared(const Renderer& renderer,
                                    PixelFormat format,
                                    Access access,
-                                   int width,
-                                   int height)
+                                   Area size)
 {
-  return std::make_shared<Texture>(renderer, format, access, width, height);
+  return std::make_shared<Texture>(renderer, format, access, size);
 }
 
 CENTURION_DEF
@@ -191,7 +188,7 @@ UniquePtr<Texture> Texture::streaming(const Renderer& renderer,
   };
   const auto surface = createSurface(path, format);
   auto texture = Texture::unique(
-      renderer, format, Access::Streaming, surface.width(), surface.height());
+      renderer, format, Access::Streaming, {surface.width(), surface.height()});
   texture->set_blend_mode(blendMode);
 
   Uint32* pixels = nullptr;

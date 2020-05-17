@@ -28,6 +28,7 @@
 #include <memory>
 #include <type_traits>
 
+#include "area.h"
 #include "centurion_api.h"
 #include "texture.h"
 
@@ -58,64 +59,60 @@ class TextureLoader final {
   CENTURION_API ~TextureLoader() noexcept;
 
   /**
-   * Creates and returns a unique pointer to an image.
+   * Creates and returns a unique pointer to a texture.
    *
-   * @param file the file path of the image that will be loaded, may not be
+   * @param file the file path of the texture that will be loaded, may not be
    * null.
-   * @return a unique pointer to an image.
-   * @throws CenturionException if the image cannot be loaded.
+   * @return a unique pointer to a texture.
+   * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API UniquePtr<Texture> unique_img(CZString file) const;
 
   /**
-   * Creates and returns a unique pointer to an image with the specified
+   * Creates and returns a unique pointer to a texture with the specified
    * characteristics.
    *
-   * @param format the pixel format of the image.
-   * @param access the texture access of the image.
-   * @param width the width of the created image.
-   * @param height the height of the created image.
-   * @return a unique pointer to an image.
-   * @throws CenturionException if the image cannot be created.
+   * @param format the pixel format of the texture.
+   * @param access the texture access of the texture.
+   * @param size the size of the texture.
+   * @return a unique pointer to a texture.
+   * @throws CenturionException if the texture cannot be created.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API UniquePtr<Texture> unique_img(PixelFormat format,
                                               Texture::Access access,
-                                              int width,
-                                              int height) const;
+                                              Area size) const;
 
   /**
-   * Creates and returns a shared pointer to an image.
+   * Creates and returns a shared pointer to a texture.
    *
-   * @param file the file path of the image that will be loaded, may not be
+   * @param file the file path of the texture that will be loaded, may not be
    * null.
-   * @return a shared pointer to an image.
-   * @throws CenturionException if the image cannot be loaded.
+   * @return a shared pointer to a texture.
+   * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API SharedPtr<Texture> shared_img(CZString file) const;
 
   /**
-   * Creates and returns a shared pointer to an image with the specified
+   * Creates and returns a shared pointer to a texture with the specified
    * characteristics.
    *
-   * @param format the pixel format of the image.
-   * @param access the texture access of the image.
-   * @param width the width of the created image.
-   * @param height the height of the created image.
-   * @return a shared pointer to an image.
-   * @throws CenturionException if the image cannot be created.
+   * @param format the pixel format of the texture.
+   * @param access the texture access of the texture.
+   * @param size the size of the texture..
+   * @return a shared pointer to a texture.
+   * @throws CenturionException if the texture cannot be created.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API SharedPtr<Texture> shared_img(PixelFormat format,
                                               Texture::Access access,
-                                              int width,
-                                              int height) const;
+                                              Area size) const;
 
  private:
   SharedPtr<Renderer> m_renderer;

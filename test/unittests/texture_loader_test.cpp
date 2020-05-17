@@ -27,15 +27,15 @@ TEST_CASE("TextureLoader::unique_img(std::string&)", "[TextureLoader]")
   CHECK_NOTHROW(loader.unique_img(good_path));
 }
 
-TEST_CASE("TextureLoader::unique_img(PixelFormat, Texture::Access, int, int)",
+TEST_CASE("TextureLoader::unique_img(PixelFormat, Texture::Access, Area)",
           "[TextureLoader]")
 {
   const Window window;
   const auto renderer = Renderer::shared(window);
   const TextureLoader loader{renderer};
 
-  CHECK_NOTHROW(
-      loader.unique_img(PixelFormat::RGBA32, Texture::Access::Static, 10, 10));
+  CHECK_NOTHROW(loader.unique_img(
+      PixelFormat::RGBA32, Texture::Access::Static, {10, 10}));
 }
 
 TEST_CASE("TextureLoader::shared_img(std::string&)", "[TextureLoader]")
@@ -48,13 +48,13 @@ TEST_CASE("TextureLoader::shared_img(std::string&)", "[TextureLoader]")
   CHECK_NOTHROW(loader.shared_img(good_path));
 }
 
-TEST_CASE("TextureLoader::shared_img(PixelFormat, Texture::Access, int, int)",
+TEST_CASE("TextureLoader::shared_img(PixelFormat, Texture::Access, Area)",
           "[TextureLoader]")
 {
   const Window window;
   const auto renderer = Renderer::shared(window);
   const TextureLoader loader{renderer};
 
-  CHECK_NOTHROW(
-      loader.shared_img(PixelFormat::RGBA32, Texture::Access::Static, 10, 10));
+  CHECK_NOTHROW(loader.shared_img(
+      PixelFormat::RGBA32, Texture::Access::Static, {10, 10}));
 }

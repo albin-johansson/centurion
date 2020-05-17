@@ -32,30 +32,10 @@
 #include "centurion_api.h"
 #include "common_event.h"
 #include "key.h"
+#include "key_modifier.h"
 
 namespace centurion {
 namespace event {
-
-/**
- * The KeyModifier enum class mirrors the values of the SDL_Keymod enum.
- *
- * @see SDL_Keymod
- * @since 3.1.0
- */
-enum class KeyModifier {
-  None = KMOD_NONE,
-  LeftShift = KMOD_LSHIFT,
-  RightShift = KMOD_RSHIFT,
-  LeftControl = KMOD_LCTRL,
-  RightControl = KMOD_RCTRL,
-  LeftAlt = KMOD_LALT,
-  RightAlt = KMOD_RALT,
-  LeftGUI = KMOD_LGUI,
-  RightGUI = KMOD_RGUI,
-  Num = KMOD_NUM,
-  Caps = KMOD_CAPS,
-  Mode = KMOD_MODE
-};
 
 /**
  * The KeyboardEvent class represents an event associated with some sort of

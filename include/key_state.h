@@ -32,6 +32,7 @@
 #include "centurion_api.h"
 #include "centurion_utils.h"
 #include "key.h"
+#include "key_modifier.h"
 
 namespace centurion {
 namespace input {
@@ -121,6 +122,17 @@ class KeyState final {
    */
   CENTURION_NODISCARD
   CENTURION_API bool was_just_released(const Key& key) const noexcept;
+
+  /**
+   * Indicates whether or not the specified key modifier is active. Multiple key
+   * modifiers can be active at the same time.
+   *
+   * @param modifier the key modifier that will be checked.
+   * @return true if the specified key modifier is active; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool modifier_active(KeyModifier modifier) const noexcept;
 
   /**
    * Returns the total amount of keys.

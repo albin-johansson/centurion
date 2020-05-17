@@ -53,6 +53,16 @@ TEST_CASE("KeyState::was_just_released", "[KeyState]")
   CHECK(!state.was_just_released(SDL_NUM_SCANCODES + 1));
 }
 
+TEST_CASE("KeyState::modifier_active", "[KeyState]")
+{
+  KeyState state;
+  CHECK(!state.modifier_active(KeyModifier::Caps));
+
+  SDL_SetModState(SDL_Keymod::KMOD_CAPS);
+
+  CHECK(state.modifier_active(KeyModifier::Caps));
+}
+
 TEST_CASE("KeyState::amount_of_keys", "[KeyState]")
 {
   KeyState state;

@@ -80,6 +80,12 @@ bool KeyState::was_just_released(const Key& key) const noexcept
   }
 }
 
+CENTURION_DEF
+bool KeyState::modifier_active(KeyModifier modifier) const noexcept
+{
+  return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
+}
+
 }  // namespace input
 }  // namespace centurion
 

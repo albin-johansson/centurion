@@ -4,7 +4,6 @@ project(CenturionSrcProj)
 set(SOURCE_FILES
         ${CTN_LIBRARY_DIR}/gsl-lite.hpp
         ${CTN_LIBRARY_DIR}/optional.hpp
-
         ${CTN_INCLUDE_DIR}/window.h
         ${CTN_INCLUDE_DIR}/font.h
         ${CTN_INCLUDE_DIR}/renderer.h
@@ -65,7 +64,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/text_editing_event.h
         ${CTN_INCLUDE_DIR}/text_input_event.h
         ${CTN_INCLUDE_DIR}/area.h
-
+        ${CTN_INCLUDE_DIR}/key_modifier.h
         window.cpp
         font.cpp
         renderer.cpp

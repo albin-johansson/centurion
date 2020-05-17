@@ -575,7 +575,6 @@ TEST_CASE("Window::position", "[Window]")
   const Window window;
   const auto position = window.position();
 
-  // Windows are centered by default TODO document this!
   const auto x = (Screen::width() - window.width()) / 2;
   const auto y = (Screen::height() - window.height()) / 2;
 
@@ -593,7 +592,7 @@ TEST_CASE("Window::width", "[Window]")
 TEST_CASE("Window::height", "[Window]")
 {
   const auto height = 435;
-  Window window{"",{10, height}};
+  Window window{"", {10, height}};
   CHECK(window.height() == height);
 }
 

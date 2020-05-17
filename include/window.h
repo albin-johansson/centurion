@@ -75,8 +75,7 @@ class Window final {
    * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(CZString title,
-                                Area size = {800, 600});
+  CENTURION_API explicit Window(CZString title, Area size = {800, 600});
 
   /**
    * Creates a window by moving the contents of the supplied window into the new
@@ -194,7 +193,8 @@ class Window final {
   CENTURION_API void hide() noexcept;
 
   /**
-   * Centers the window position relative to the screen.
+   * Centers the window position relative to the screen. Windows are centered by
+   * default.
    *
    * @since 3.0.0
    */
@@ -476,7 +476,8 @@ class Window final {
   CENTURION_API Optional<int> display_index() const noexcept;
 
   /**
-   * Returns the current position of the window.
+   * Returns the current position of the window. Windows are centered by
+   * default.
    *
    * @return the current position of the window.
    * @since 3.0.0

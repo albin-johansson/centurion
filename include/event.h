@@ -48,7 +48,7 @@
 #include "mouse_wheel_event.h"
 #include "multi_gesture_event.h"
 #include "quit_event.h"
-#include "syswm_event.h"
+// #include "syswm_event.h"
 #include "text_editing_event.h"
 #include "text_input_event.h"
 #include "touch_finger_event.h"

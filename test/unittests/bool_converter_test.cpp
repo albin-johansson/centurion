@@ -1,9 +1,6 @@
-#include <SDL.h>
-#include <centurion.h>
-
 #include <catch.hpp>
 
-#include "centurion_utils.h"
+#include "centurion.h"
 
 using namespace centurion;
 

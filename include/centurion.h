@@ -31,7 +31,6 @@
 #include <SDL_ttf.h>
 
 #include "area.h"
-#include "audio.h"
 #include "audio_device_event.h"
 #include "battery.h"
 #include "blend_mode.h"

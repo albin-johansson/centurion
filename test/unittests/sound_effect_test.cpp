@@ -1,14 +1,14 @@
 #ifndef CENTURION_NOAUDIO
 
+#include "sound_effect.cpp"
+
 #include <catch.hpp>
 
-#include "audio.h"
 #include "centurion_exception.h"
 #include "log.h"
 #include "timer.h"
 
 using namespace centurion;
-using namespace audio;
 
 static constexpr auto path = "resources/click.wav";
 
@@ -84,9 +84,9 @@ TEST_CASE("SoundEffect looping", "[SoundEffect]")
   CHECK(sound.playing());
   sound.stop();
 
-  CHECK(loopForever < 0);
+  CHECK(SoundEffect::loopForever < 0);
 
-  CHECK_NOTHROW(sound.play(loopForever));
+  CHECK_NOTHROW(sound.play(SoundEffect::loopForever));
   CHECK(sound.playing());
 
   sound.stop();
@@ -151,18 +151,18 @@ TEST_CASE("SoundEffect:set_volume", "[SoundEffect]")
 
   SECTION("Volume overflow")
   {
-    const auto volume = maxVolume + 1;
+    const auto volume = SoundEffect::maxVolume + 1;
     sound.set_volume(volume);
-    CHECK(sound.volume() == maxVolume);
+    CHECK(sound.volume() == SoundEffect::maxVolume);
   }
 }
 
 TEST_CASE("SoundEffect::volume", "[SoundEffect]")
 {
   SoundEffect sound{path};
-  CHECK(sound.volume() == maxVolume);
+  CHECK(sound.volume() == SoundEffect::maxVolume);
   CHECK(sound.volume() == 128);  // because of the documentation guarantee
-  CHECK(maxVolume == MIX_MAX_VOLUME);
+  CHECK(SoundEffect::maxVolume == MIX_MAX_VOLUME);
 }
 
 TEST_CASE("SoundEffect::playing", "[SoundEffect]")

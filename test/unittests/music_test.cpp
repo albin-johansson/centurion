@@ -1,12 +1,12 @@
 #ifndef CENTURION_NOAUDIO
+#include "music.h"
+
 #include <catch.hpp>
 
-#include "audio.h"
 #include "centurion_exception.h"
 #include "log.h"
 
 using namespace centurion;
-using namespace audio;
 
 static constexpr auto path = "resources/hiddenPond.mp3";
 
@@ -66,7 +66,7 @@ TEST_CASE("Music::play", "[Music]")
 
   Music::halt();
 
-  music.play(loopForever);
+  music.play(Music::loopForever);
   CHECK(Music::playing());
 
   Music::halt();
@@ -170,9 +170,9 @@ TEST_CASE("Music::set_volume", "[Music]")
 
   SECTION("Volume overflow")
   {
-    const auto volume = maxVolume + 1;
+    const auto volume = Music::maxVolume + 1;
     Music::set_volume(volume);
-    CHECK(maxVolume == Music::volume());
+    CHECK(Music::maxVolume == Music::volume());
   }
 
   Music::set_volume(originalVolume);
@@ -222,7 +222,7 @@ TEST_CASE("Music::fading", "[Music]")
 
 TEST_CASE("Music::volume", "[Music]")
 {
-  CHECK(Music::volume() == maxVolume);
+  CHECK(Music::volume() == Music::maxVolume);
 
   const auto volume = 47;
   Music::set_volume(volume);

@@ -6,7 +6,6 @@
 #include "error.h"
 
 namespace centurion {
-namespace audio {
 
 // TODO check Mix documentation if there are any redundancies
 
@@ -143,7 +142,6 @@ std::string SoundEffect::to_string() const
   return "[SoundEffect@" + address + " | Volume: " + vol + "]";
 }
 
-}  // namespace audio
 }  // namespace centurion
 
 #endif  // CENTURION_SOUND_EFFECT_SOURCE

@@ -31,7 +31,6 @@
 #include "centurion_utils.h"
 
 namespace centurion {
-namespace audio {
 
 /**
  * The FadeStatus enum class mirrors the values of the Mix_Fading enum.
@@ -117,6 +116,21 @@ CENTURION_API bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept;
  */
 class Music final {
  public:
+  /**
+   * The maximum possible volume value.
+   *
+   * @since 4.0.0
+   */
+  static constexpr int maxVolume = MIX_MAX_VOLUME;
+
+  /**
+   * A constant that indicates that an audio snippet should be looped
+   * indefinitely.
+   *
+   * @since 4.0.0
+   */
+  static constexpr int loopForever = -1;
+
   /**
    * @param file the file path of the music file that will be loaded.
    * @throws CenturionException if the music file cannot be loaded.
@@ -377,7 +391,6 @@ static_assert(std::is_nothrow_move_assignable<Music>::value,
 static_assert(std::is_convertible<Music, Mix_Music*>::value,
               "Music isn't convertible to Mix_Music*!");
 
-}  // namespace audio
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

@@ -31,7 +31,6 @@
 #include "centurion_utils.h"
 
 namespace centurion {
-namespace audio {
 
 /**
  * The SoundEffect class represents sound effects in various file formats.
@@ -40,6 +39,21 @@ namespace audio {
  */
 class SoundEffect final {
  public:
+  /**
+   * The maximum possible volume value.
+   *
+   * @since 4.0.0
+   */
+  static constexpr int maxVolume = MIX_MAX_VOLUME;
+
+  /**
+   * A constant that indicates that an audio snippet should be looped
+   * indefinitely.
+   *
+   * @since 4.0.0
+   */
+  static constexpr int loopForever = -1;
+
   /**
    * @param file the file path of the audio file.
    * @throws CenturionException if the audio file cannot be loaded.
@@ -134,7 +148,8 @@ class SoundEffect final {
    * Sets the volume of the sound effect. This method will adjust input values
    * outside the legal range to the closest legal value.
    *
-   * @param volume the volume of the sound effect, in the range [0, maxVolume].
+   * @param volume the volume of the sound effect, in the range [0,
+   * SoundEffect::maxVolume].
    * @since 3.0.0
    */
   CENTURION_API void set_volume(int volume) noexcept;
@@ -255,7 +270,6 @@ static_assert(!std::is_copy_assignable<SoundEffect>::value,
 static_assert(std::is_convertible<SoundEffect, Mix_Chunk*>::value,
               "SoundEffect isn't convertible to Mix_Chunk*!");
 
-}  // namespace audio
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

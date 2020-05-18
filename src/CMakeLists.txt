@@ -120,7 +120,6 @@ set(SOURCE_FILES
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES
             ${SOURCE_FILES}
-            ${CTN_INCLUDE_DIR}/audio.h
             ${CTN_INCLUDE_DIR}/sound_effect.h
             ${CTN_INCLUDE_DIR}/music.h
             sound_effect.cpp

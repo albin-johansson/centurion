@@ -7,7 +7,6 @@
 #include "error.h"
 
 namespace centurion {
-namespace audio {
 
 CENTURION_DEF
 Music::Music(CZString file)
@@ -191,7 +190,6 @@ bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept
   return lhs == static_cast<Mix_MusicType>(rhs);
 }
 
-}  // namespace audio
 }  // namespace centurion
 
 #endif  // CENTURION_MUSIC_SOURCE

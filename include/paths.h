@@ -100,7 +100,7 @@ class BasePath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  explicit operator bool() const noexcept { return m_path; }
+  explicit operator bool() const noexcept { return static_cast<bool>(m_path); }
 
   /**
    * Returns the path of the application executable. The returned pointer might
@@ -204,7 +204,7 @@ class PrefPath final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  explicit operator bool() const noexcept { return m_path; }
+  explicit operator bool() const noexcept { return static_cast<bool>(m_path); }
 
   /**
    * Returns a string that represents the preferred path.

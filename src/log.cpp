@@ -6,7 +6,7 @@
 namespace centurion {
 
 CENTURION_DEF
-void Log::reset_priorites() noexcept
+void Log::reset_priorities() noexcept
 {
   SDL_LogResetPriorities();
 }

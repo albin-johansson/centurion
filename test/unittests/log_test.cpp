@@ -15,7 +15,7 @@ TEST_CASE("Log priority test", "[Log]")
   Log::critical("Critical message %i", 5);
   Log::error("Error message %i", 6);
 
-  Log::reset_priorites();
+  Log::reset_priorities();
 }
 
 TEST_CASE("Log::set_priority(Priority)", "[Log]")
@@ -34,7 +34,7 @@ TEST_CASE("Log::set_priority(Priority)", "[Log]")
   CHECK(priority == Log::priority(Log::Category::Test));
   CHECK(priority == Log::priority(Log::Category::Misc));
 
-  Log::reset_priorites();
+  Log::reset_priorities();
 }
 
 TEST_CASE("Log::set_priority(Category, Priority)", "[Log]")
@@ -45,7 +45,7 @@ TEST_CASE("Log::set_priority(Category, Priority)", "[Log]")
   Log::set_priority(category, priority);
   CHECK(priority == Log::priority(category));
 
-  Log::reset_priorites();
+  Log::reset_priorities();
 }
 
 TEST_CASE("Log::priority", "[Log]")

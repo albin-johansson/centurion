@@ -308,7 +308,7 @@ class Log final {
    *
    * @since 3.0.0
    */
-  CENTURION_API static void reset_priorites() noexcept;
+  CENTURION_API static void reset_priorities() noexcept;
 
   /**
    * Sets the priority of all categories.

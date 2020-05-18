@@ -1,0 +1,17 @@
+path_classifiers:
+  docs:
+    - README.md
+    - LICENSE
+  test:
+    - exclude: /
+    - test
+  library:
+    - include/lib
+
+extraction:
+  cpp:
+    prepare:
+      packages:
+        - gcc-8
+        - g++-8
+        - cmake

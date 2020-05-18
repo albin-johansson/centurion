@@ -293,6 +293,16 @@ Optional<WindowEvent> Event::as_window_event() const noexcept
   }
 }
 
+CENTURION_DEF
+Optional<SysWMEvent> Event::as_syswm_event() const noexcept
+{
+  if (type() == EventType::System) {
+    return SysWMEvent{m_event.syswm};
+  } else {
+    return nothing;
+  }
+}
+
 }  // namespace event
 }  // namespace centurion
 

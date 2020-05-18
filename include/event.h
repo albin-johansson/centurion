@@ -48,6 +48,7 @@
 #include "mouse_wheel_event.h"
 #include "multi_gesture_event.h"
 #include "quit_event.h"
+#include "syswm_event.h"
 #include "text_editing_event.h"
 #include "text_input_event.h"
 #include "touch_finger_event.h"
@@ -371,6 +372,17 @@ class Event final {
   CENTURION_NODISCARD
   CENTURION_API
   Optional<WindowEvent> as_window_event() const noexcept;
+
+  /**
+   * Returns a SysWMEvent or nothing if the type of the event doesn't
+   * match.
+   *
+   * @return a SysWMEvent or nothing.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<SysWMEvent> as_syswm_event() const noexcept;
 
   /**
    * Implicitly converts the event to a reference to the internal SDL_Event.

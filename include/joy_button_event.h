@@ -78,7 +78,7 @@ class JoyButtonEvent : public CommonEvent<SDL_JoyButtonEvent> {
   /**
    * Sets the button index associated with the event.
    *
-   * @param which the button index associated with the event.
+   * @param button the button index associated with the event.
    * @since 4.0.0
    */
   CENTURION_API void set_button(Uint8 button) noexcept;

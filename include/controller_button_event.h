@@ -90,8 +90,8 @@ class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
   /**
    * Sets the joystick instance ID associated with the event.
    *
-   * @param which the instance ID of the joystick that the event is
-   * associated with.
+   * @param id the instance ID of the joystick that the event is associated
+   * with.
    * @since 4.0.0
    */
   CENTURION_API void set_which(JoystickID id) noexcept;

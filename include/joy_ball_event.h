@@ -69,7 +69,7 @@ class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
   /**
    * Sets the joystick instance ID associated with the event.
    *
-   * @param the joystick instance ID.
+   * @param which the joystick instance ID.
    * @since 4.0.0
    */
   CENTURION_API void set_which(JoystickID which) noexcept;
@@ -93,7 +93,7 @@ class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
   /**
    * Sets the relative motion along the y-axis associated with the event.
    *
-   * @param dx the relative motion along the y-axis.
+   * @param dy the relative motion along the y-axis.
    * @since 4.0.0
    */
   CENTURION_API void set_dy(Sint16 dy) noexcept;

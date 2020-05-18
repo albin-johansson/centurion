@@ -301,7 +301,7 @@ CENTURION_API bool operator==(const Color& color,
  * Indicates whether or not the two colors are considered to be equal.
  *
  * @param sdlColor the lhs color.
- * @param other the rhs color.
+ * @param color the rhs color.
  * @return true if the colors feature the same color component values; false
  * otherwise.
  * @since 3.0.0
@@ -367,7 +367,7 @@ CENTURION_API bool operator!=(const Color& color,
  * Indicates whether or not two colors aren't considered to be equal.
  *
  * @param sdlColor the lhs color.
- * @param other the rhs color.
+ * @param color the rhs color.
  * @return true if the colors don't feature the same color components; false
  * otherwise.
  * @since 3.0.0

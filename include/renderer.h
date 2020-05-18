@@ -287,7 +287,6 @@ class Renderer final {
    * @param texture the texture that will be rendered.
    * @param src the section of the supplied texture that will be rendered.
    * @param dst the position and size of the rendered texture.
-   * @param angle the angle of the rendered texture, in degrees.
    * @param flip the hint for how the rendered texture should be flipped.
    * @since 4.0.0
    */
@@ -482,7 +481,6 @@ class Renderer final {
    * @param texture the texture that will be rendered.
    * @param src the section of the supplied texture that will be rendered.
    * @param dst the position and size of the rendered texture.
-   * @param angle the angle of the rendered texture, in degrees.
    * @param flip the hint for how the rendered texture should be flipped.
    * @since 4.0.0
    */
@@ -585,7 +583,6 @@ class Renderer final {
    * @param texture the texture that will be rendered.
    * @param src the section of the supplied texture that will be rendered.
    * @param dst the position and size of the rendered texture.
-   * @param angle the angle of the rendered texture, in degrees.
    * @param flip the hint for how the rendered texture should be flipped.
    * @since 4.0.0
    */

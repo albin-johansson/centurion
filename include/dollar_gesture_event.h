@@ -113,7 +113,7 @@ class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
   /**
    * Sets the normalized y-coordinate of the center of the gesture.
    *
-   * @param x the normalized y-coordinate of the center of the gesture.
+   * @param y the normalized y-coordinate of the center of the gesture.
    * @since 4.0.0
    */
   CENTURION_API void set_y(float y) noexcept;

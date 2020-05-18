@@ -63,7 +63,7 @@ class Key final {
   /**
    * Creates a Key instance based on the supplied keycode.
    *
-   * @param scancode the keycode that the Key will be based on.
+   * @param keycode the keycode that the Key will be based on.
    * @since 4.0.0
    */
   CENTURION_API Key(SDL_Keycode keycode) noexcept;

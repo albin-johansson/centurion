@@ -108,7 +108,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * Indicates whether or not the supplied key represents the same key that
    * triggered this keyboard event.
    *
-   * @param keycode the key that will be checked.
+   * @param key the key that will be checked.
    * @return true if the supplied key caused this keyboard event; false
    * otherwise.
    * @since 4.0.0

@@ -1,130 +1,145 @@
-#ifndef CENTURION_NOAUDIO
+#ifndef CENTURION_SOUND_EFFECT_SOURCE
+#define CENTURION_SOUND_EFFECT_SOURCE
 
 #include "sound_effect.h"
-#include <type_traits>
-#include "centurion_exception.h"
-#include "centurion_utils.h"
+
 #include "error.h"
 
 namespace centurion {
 
-// TODO check Mix documentation if there are any redundancies
-
-static_assert(std::is_final_v<SoundEffect>);
-
-static_assert(std::is_nothrow_move_constructible_v<SoundEffect>);
-static_assert(std::is_nothrow_move_assignable_v<SoundEffect>);
-
-static_assert(!std::is_copy_constructible_v<SoundEffect>);
-static_assert(!std::is_copy_assignable_v<SoundEffect>);
-
-static_assert(std::is_convertible_v<SoundEffect, Mix_Chunk*>);
-
-const int SoundEffect::loopForever = -10;
-const int SoundEffect::maxVolume = get_max_volume();
-
-SoundEffect::SoundEffect(const std::string& file) {
-  chunk = Mix_LoadWAV(file.c_str());
-  if (!chunk) {
-    throw CenturionException{Error::descriptionf()};
+CENTURION_DEF
+SoundEffect::SoundEffect(CZString file)
+{
+  if (!file) {
+    throw CenturionException{"Cannot create sound effect from null file!"};
+  }
+  m_chunk = Mix_LoadWAV(file);
+  if (!m_chunk) {
+    throw detail::Error::from_mixer("Failed to create SoundEffect instance!");
   }
 }
 
-SoundEffect::SoundEffect(SoundEffect&& other) noexcept {
-  Mix_FreeChunk(chunk);
-
-  chunk = other.chunk;
-  other.chunk = nullptr;
-
-  channel = other.channel;
+CENTURION_DEF
+SoundEffect::SoundEffect(SoundEffect&& other) noexcept
+{
+  move(std::move(other));
 }
 
-SoundEffect::~SoundEffect() {
-  if (chunk) {
-    stop();
-    Mix_FreeChunk(chunk);
+CENTURION_DEF
+SoundEffect::~SoundEffect()
+{
+  destroy();
+}
+
+CENTURION_DEF
+SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept
+{
+  if (this != &other) {
+    move(std::move(other));
   }
-}
-
-SoundEffect& SoundEffect::operator=(SoundEffect&& other) noexcept {
-  Mix_FreeChunk(chunk);
-
-  chunk = other.chunk;
-  other.chunk = nullptr;
-
-  channel = other.channel;
-
   return *this;
 }
 
-std::unique_ptr<SoundEffect> SoundEffect::unique(const std::string& file) {
-  return std::make_unique<SoundEffect>(file);
+CENTURION_DEF
+void SoundEffect::destroy() noexcept
+{
+  if (m_chunk) {
+    stop();
+    Mix_FreeChunk(m_chunk);
+  }
 }
 
-std::shared_ptr<SoundEffect> SoundEffect::shared(const std::string& file) {
+CENTURION_DEF
+void SoundEffect::move(SoundEffect&& other) noexcept
+{
+  destroy();
+
+  m_chunk = other.m_chunk;
+  m_channel = other.m_channel;
+
+  other.m_chunk = nullptr;
+}
+
+CENTURION_DEF
+UniquePtr<SoundEffect> SoundEffect::unique(CZString file)
+{
+  return centurion::detail::make_unique<SoundEffect>(file);
+}
+
+CENTURION_DEF
+SharedPtr<SoundEffect> SoundEffect::shared(CZString file)
+{
   return std::make_shared<SoundEffect>(file);
 }
 
-void SoundEffect::activate(int nLoops) noexcept {
-  if (channel != undefinedChannel) {
-    Mix_PlayChannel(channel, chunk, nLoops);
+CENTURION_DEF
+void SoundEffect::activate(int nLoops) noexcept
+{
+  if (m_channel != undefinedChannel) {
+    Mix_PlayChannel(m_channel, m_chunk, nLoops);
   } else {
-    channel = Mix_PlayChannel(undefinedChannel, chunk, nLoops);
+    m_channel = Mix_PlayChannel(undefinedChannel, m_chunk, nLoops);
   }
 }
 
-void SoundEffect::play(int nLoops) noexcept {
-  if (nLoops < 0) { nLoops = loopForever; }
+CENTURION_DEF
+void SoundEffect::play(int nLoops) noexcept
+{
+  if (nLoops < 0) {
+    nLoops = -1;
+  }
   activate(nLoops);
 }
 
-void SoundEffect::stop() noexcept {
-  if (is_playing()) {
-    Mix_Pause(channel);
-    channel = undefinedChannel;
+CENTURION_DEF
+void SoundEffect::stop() noexcept
+{
+  if (playing()) {
+    Mix_Pause(m_channel);
+    m_channel = undefinedChannel;
   }
 }
 
-void SoundEffect::fade_in(int ms) noexcept {
-  if (ms > 0 && !is_playing()) {
-    if (channel != undefinedChannel) {
-      Mix_FadeInChannelTimed(channel, chunk, 0, ms, -1);
+CENTURION_DEF
+void SoundEffect::fade_in(int ms) noexcept
+{
+  if (ms > 0 && !playing()) {
+    if (m_channel != undefinedChannel) {
+      Mix_FadeInChannelTimed(m_channel, m_chunk, 0, ms, -1);
     } else {
-      channel = Mix_FadeInChannelTimed(undefinedChannel, chunk, 0, ms, -1);
+      m_channel = Mix_FadeInChannelTimed(undefinedChannel, m_chunk, 0, ms, -1);
     }
   }
 }
 
-void SoundEffect::fade_out(int ms) noexcept {
-  if ((ms > 0) && is_playing()) {
-    Mix_FadeOutChannel(channel, ms);
+CENTURION_DEF
+void SoundEffect::fade_out(int ms) noexcept
+{
+  if ((ms > 0) && playing()) {
+    Mix_FadeOutChannel(m_channel, ms);
   }
 }
 
-void SoundEffect::set_volume(int volume) noexcept {
-  if (volume < 0) { volume = 0; }
-  if (volume > get_max_volume()) { volume = get_max_volume(); }
-  Mix_VolumeChunk(chunk, volume);
+CENTURION_DEF
+void SoundEffect::set_volume(int volume) noexcept
+{
+  Mix_VolumeChunk(m_chunk, detail::clamp_inclusive({0, max_volume()}, volume));
 }
 
-int SoundEffect::get_volume() const noexcept {
-  return chunk->volume;
+CENTURION_DEF
+bool SoundEffect::playing() const noexcept
+{
+  return (m_channel != undefinedChannel) && Mix_Playing(m_channel);
 }
 
-bool SoundEffect::is_playing() const noexcept {
-  return (channel != undefinedChannel) && Mix_Playing(channel);
+CENTURION_DEF
+std::string SoundEffect::to_string() const
+{
+  const auto address = detail::address_of(this);
+  const auto vol = std::to_string(volume());
+  return "[SoundEffect@" + address + " | Volume: " + vol + "]";
 }
 
-std::string SoundEffect::to_string() const {
-  const auto address = CenturionUtils::address(this);
-  const auto volume = std::to_string(get_volume());
-  return "[SoundEffect@" + address + " | Volume: " + volume + "]";
-}
+}  // namespace centurion
 
-SoundEffect::operator Mix_Chunk*() const noexcept {
-  return chunk;
-}
-
-}
-
-#endif
+#endif  // CENTURION_SOUND_EFFECT_SOURCE

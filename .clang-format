@@ -1,0 +1,24 @@
+---
+BasedOnStyle: Google
+IndentWidth: 2
+---
+Language: Cpp
+DerivePointerAlignment: false
+PointerAlignment: Left
+AllowAllParametersOfDeclarationOnNextLine: false
+
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+
+BinPackParameters: false
+BinPackArguments: false
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: false
+  AfterStruct: false
+  AfterFunction: true
+  SplitEmptyFunction: false
+
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortBlocksOnASingleLine: Never

@@ -1,20 +1,25 @@
+#ifndef CENTURION_EXCEPTION_SOURCE
+#define CENTURION_EXCEPTION_SOURCE
+
 #include "centurion_exception.h"
-#include <type_traits>
 
 namespace centurion {
 
-static_assert(std::is_default_constructible_v<CenturionException>);
-static_assert(std::is_nothrow_destructible_v<CenturionException>);
-static_assert(std::is_final_v<CenturionException>);
+CENTURION_DEF
+CenturionException::CenturionException(CZString what) noexcept
+    : m_what{what ? what : "N/A"}
+{}
 
-CenturionException::CenturionException(const char* msg)
-    : msg{msg ? msg : "N/A"} {}
+CENTURION_DEF
+CenturionException::CenturionException(std::string what) noexcept
+    : m_what{what.empty() ? "N/A" : what}
+{}
 
-CenturionException::CenturionException(const std::string& msg)
-    : msg{msg} {}
+CENTURION_DEF
+CenturionException::CenturionException(const CenturionException& other) noexcept
+    : m_what{other.m_what}
+{}
 
-const char* CenturionException::what() const noexcept {
-  return msg.c_str();
-}
+}  // namespace centurion
 
-}
+#endif  // CENTURION_EXCEPTION_SOURCE

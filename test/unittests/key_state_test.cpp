@@ -1,25 +1,70 @@
-#include "catch.hpp"
 #include "key_state.h"
 
-using namespace centurion;
+#include <catch.hpp>
 
-TEST_CASE("KeyState smart pointer factory methods", "[KeyState]") {
+using namespace centurion;
+using namespace centurion::input;
+
+TEST_CASE("KeyState smart pointer factory methods", "[KeyState]")
+{
   CHECK(KeyState::unique());
   CHECK(KeyState::shared());
 }
 
-TEST_CASE("KeyState internal array bounds assertions", "[KeyState]") {
+TEST_CASE("KeyState::update", "[KeyState]")
+{
   KeyState state;
-
-  // Note, these tests are only useful when assertions are enabled
-  const auto maxScancode = static_cast<SDL_Scancode>(SDL_NUM_SCANCODES - 1);
-  CHECK_NOFAIL(state.is_pressed(maxScancode));
-  CHECK_NOFAIL(state.is_held(maxScancode));
-  CHECK_NOFAIL(state.was_just_pressed(maxScancode));
-  CHECK_NOFAIL(state.was_just_released(maxScancode));
+  CHECK_NOTHROW(state.update());
 }
 
-TEST_CASE("KeyState::get_amount_of_keys", "[KeyState]") {
+TEST_CASE("KeyState::is_pressed", "[KeyState]")
+{
   KeyState state;
-  CHECK(state.get_amount_of_keys() == static_cast<int>(SDL_NUM_SCANCODES));
+  CHECK(!state.is_pressed(SDL_SCANCODE_A));
+  CHECK(!state.is_pressed(-1));
+  CHECK(!state.is_pressed(SDL_NUM_SCANCODES));
+  CHECK(!state.is_pressed(SDL_NUM_SCANCODES + 1));
+}
+
+TEST_CASE("KeyState::is_held", "[KeyState]")
+{
+  KeyState state;
+  CHECK(!state.is_held(SDLK_x));
+  CHECK(!state.is_held(-1));
+  CHECK(!state.is_held(SDL_NUM_SCANCODES));
+  CHECK(!state.is_held(SDL_NUM_SCANCODES + 1));
+}
+
+TEST_CASE("KeyState::was_just_pressed", "[KeyState]")
+{
+  KeyState state;
+  CHECK(!state.was_just_pressed(SDL_SCANCODE_V));
+  CHECK(!state.was_just_pressed(-1));
+  CHECK(!state.was_just_pressed(SDL_NUM_SCANCODES));
+  CHECK(!state.was_just_pressed(SDL_NUM_SCANCODES + 1));
+}
+
+TEST_CASE("KeyState::was_just_released", "[KeyState]")
+{
+  KeyState state;
+  CHECK(!state.was_just_released(SDLK_u));
+  CHECK(!state.was_just_released(-1));
+  CHECK(!state.was_just_released(SDL_NUM_SCANCODES));
+  CHECK(!state.was_just_released(SDL_NUM_SCANCODES + 1));
+}
+
+TEST_CASE("KeyState::modifier_active", "[KeyState]")
+{
+  KeyState state;
+  CHECK(!state.modifier_active(KeyModifier::Caps));
+
+  SDL_SetModState(SDL_Keymod::KMOD_CAPS);
+
+  CHECK(state.modifier_active(KeyModifier::Caps));
+}
+
+TEST_CASE("KeyState::amount_of_keys", "[KeyState]")
+{
+  KeyState state;
+  CHECK(state.amount_of_keys() == static_cast<int>(SDL_NUM_SCANCODES));
 }

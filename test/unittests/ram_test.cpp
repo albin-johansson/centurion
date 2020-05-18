@@ -1,12 +1,15 @@
-#include "catch.hpp"
-#include "system.h"
+#include "ram.h"
+
+#include <catch.hpp>
 
 using namespace centurion;
 
-TEST_CASE("RAM::get_size_mb", "[RAM]") {
-  CHECK(RAM::get_size_mb() == SDL_GetSystemRAM());
+TEST_CASE("RAM::size_mb", "[RAM]")
+{
+  CHECK(RAM::size_mb() == SDL_GetSystemRAM());
 }
 
-TEST_CASE("RAM::get_size_gb", "[RAM]") {
-  CHECK(RAM::get_size_gb() == SDL_GetSystemRAM() / 1'000);
+TEST_CASE("RAM::size_gb", "[RAM]")
+{
+  CHECK(RAM::size_gb() == SDL_GetSystemRAM() / 1'000);
 }

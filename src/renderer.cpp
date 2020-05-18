@@ -1,451 +1,788 @@
+#ifndef CENTURION_RENDERER_SOURCE
+#define CENTURION_RENDERER_SOURCE
+
 #include "renderer.h"
-#include <stdexcept>
-#include <type_traits>
+
 #include <SDL.h>
-#include "image.h"
-#include "font.h"
-#include "colors.h"
-#include "bool_converter.h"
-#include "point.h"
+
+#include "centurion_exception.h"
 #include "centurion_utils.h"
+#include "colors.h"
+#include "error.h"
+#include "font.h"
+#include "point.h"
+#include "texture.h"
+#include "window.h"
 
 namespace centurion {
 
-static_assert(std::is_final_v<Renderer>);
-
-static_assert(std::is_nothrow_move_constructible_v<Renderer>);
-static_assert(std::is_nothrow_move_assignable_v<Renderer>);
-
-static_assert(!std::is_nothrow_copy_constructible_v<Renderer>);
-static_assert(!std::is_nothrow_copy_assignable_v<Renderer>);
-
-static_assert(std::is_convertible_v<Renderer, SDL_Renderer*>);
-
-Renderer::Renderer(gsl::owner<SDL_Renderer*> renderer) {
+CENTURION_DEF
+Renderer::Renderer(Owner<SDL_Renderer*> renderer)
+{
   if (!renderer) {
-    throw std::invalid_argument{"Can't create renderer from null SDL_Renderer!"};
+    throw CenturionException{"Can't create renderer from null SDL_Renderer!"};
   }
-  this->renderer = renderer;
+  this->m_renderer = renderer;
 
-  set_color(Colors::black);
+  set_color(color::black);
   set_logical_integer_scale(false);
 }
 
-Renderer::Renderer(gsl::not_null<SDL_Window*> window, uint32_t flags) {
-  renderer = SDL_CreateRenderer(window, -1, flags);
+CENTURION_DEF
+Renderer::Renderer(const Window& window, SDL_RendererFlags flags)
+{
+  m_renderer = SDL_CreateRenderer(window.get(), -1, flags);
+  if (!m_renderer) {
+    throw detail::Error::from_core("Failed to create Renderer!");
+  }
 
-  set_blend_mode(SDL_BLENDMODE_BLEND);
-  set_color(Colors::black);
+  set_blend_mode(BlendMode::Blend);
+  set_color(color::black);
   set_logical_integer_scale(false);
 }
 
-Renderer::Renderer(Renderer&& other) noexcept {
-  SDL_DestroyRenderer(renderer);
-
-  renderer = other.renderer;
-  other.renderer = nullptr;
-
-  translationViewport = other.translationViewport;
+CENTURION_DEF
+Renderer::Renderer(Renderer&& other) noexcept
+{
+  move(std::move(other));
 }
 
-Renderer::~Renderer() {
-  if (renderer) {
-    SDL_DestroyRenderer(renderer);
+CENTURION_DEF
+Renderer::~Renderer()
+{
+  destroy();
+}
+
+CENTURION_DEF
+Renderer& Renderer::operator=(Renderer&& other) noexcept
+{
+  if (this != &other) {
+    move(std::move(other));
   }
-}
-
-std::unique_ptr<Renderer> Renderer::unique(gsl::owner<SDL_Renderer*> renderer) {
-  return std::make_unique<Renderer>(renderer);
-}
-
-std::unique_ptr<Renderer> Renderer::unique(gsl::not_null<SDL_Window*> window, uint32_t flags) {
-  return std::make_unique<Renderer>(window, flags);
-}
-
-std::shared_ptr<Renderer> Renderer::shared(gsl::owner<SDL_Renderer*> renderer) {
-  return std::make_shared<Renderer>(renderer);
-}
-
-std::shared_ptr<Renderer> Renderer::shared(gsl::not_null<SDL_Window*> window, uint32_t flags) {
-  return std::make_shared<Renderer>(window, flags);
-}
-
-Renderer& Renderer::operator=(Renderer&& other) noexcept {
-  SDL_DestroyRenderer(renderer);
-
-  renderer = other.renderer;
-  other.renderer = nullptr;
-
-  translationViewport = other.translationViewport;
-
   return *this;
 }
 
-void Renderer::clear() const noexcept {
-  SDL_RenderClear(renderer);
-}
-
-void Renderer::present() const noexcept {
-  SDL_RenderPresent(renderer);
-}
-
-void Renderer::draw_image(const Image& img, int x, int y) const noexcept {
-  const auto dst = SDL_Rect{x, y, img.get_width(), img.get_height()};
-  SDL_RenderCopy(renderer, img, nullptr, &dst);
-}
-
-void Renderer::draw_image(const Image& img, float x, float y) const noexcept {
-  const auto dst = SDL_FRect{x, y,
-                             static_cast<float>(img.get_width()),
-                             static_cast<float>(img.get_height())};
-  SDL_RenderCopyF(renderer, img, nullptr, &dst);
-}
-
-void Renderer::draw_image(const Image& img,
-                          int x,
-                          int y,
-                          int width,
-                          int height) const noexcept {
-  const auto dst = SDL_Rect{x, y, width, height};
-  SDL_RenderCopy(renderer, img, nullptr, &dst);
-}
-
-void Renderer::draw_image(const Image& img,
-                          float x,
-                          float y,
-                          float width,
-                          float height) const noexcept {
-  const auto dst = SDL_FRect{x, y, width, height};
-  SDL_RenderCopyF(renderer, img, nullptr, &dst);
-}
-
-void Renderer::draw_image(const Image& img,
-                          const SDL_Rect& source,
-                          const SDL_FRect& destination) const noexcept {
-  SDL_RenderCopyF(renderer, img, &source, &destination);
-}
-
-void Renderer::draw_image_translated(const Image& img,
-                                     const SDL_Rect& source,
-                                     const SDL_FRect& destination) const noexcept {
-  const auto dst = SDL_FRect{destination.x - translationViewport.x,
-                             destination.y - translationViewport.y,
-                             destination.w,
-                             destination.h};
-  SDL_RenderCopyF(renderer, img, &source, &dst);
-}
-
-void Renderer::draw_image(const Image& image,
-                          const SDL_Rect& source,
-                          const SDL_Rect& destination,
-                          double angle) const noexcept {
-  SDL_Point center{source.x + (source.w / 2), source.y + (source.h / 2)};
-  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &center, SDL_FLIP_NONE);
-}
-
-void Renderer::draw_image(const Image& image,
-                          const SDL_Rect& source,
-                          const SDL_FRect& destination,
-                          double angle) const noexcept {
-  SDL_FPoint center{static_cast<float>(source.x + (source.w / 2.0)),
-                    static_cast<float>(source.y + (source.h / 2.0))};
-  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &center, SDL_FLIP_NONE);
-}
-
-void Renderer::draw_image(const Image& image,
-                          const SDL_Rect& source,
-                          const SDL_Rect& destination,
-                          const Point& center,
-                          double angle) const noexcept {
-  const SDL_Point c = center;
-  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &c, SDL_FLIP_NONE);
-}
-
-void Renderer::draw_image(const Image& image,
-                          const SDL_Rect& source,
-                          const SDL_FRect& destination,
-                          const FPoint& center,
-                          double angle) const noexcept {
-  const SDL_FPoint c = center;
-  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &c, SDL_FLIP_NONE);
-
-}
-
-void Renderer::draw_image(const Image& image,
-                          const SDL_Rect& source,
-                          const SDL_Rect& destination,
-                          double angle,
-                          SDL_RendererFlip flip) const noexcept {
-  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, nullptr, flip);
-}
-
-void Renderer::draw_image(const Image& image,
-                          const SDL_Rect& source,
-                          const SDL_FRect& destination,
-                          double angle,
-                          SDL_RendererFlip flip) const noexcept {
-  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, nullptr, flip);
-}
-
-void Renderer::draw_image(const Image& image,
-                          const SDL_Rect& source,
-                          const SDL_Rect& destination,
-                          double angle,
-                          const Point& center,
-                          SDL_RendererFlip flip) const noexcept {
-  const SDL_Point c = center;
-  SDL_RenderCopyEx(renderer, image, &source, &destination, angle, &c, flip);
-}
-
-void Renderer::draw_image(const Image& image,
-                          const SDL_Rect& source,
-                          const SDL_FRect& destination,
-                          double angle,
-                          const FPoint& center,
-                          SDL_RendererFlip flip) const noexcept {
-  const SDL_FPoint c = center;
-  SDL_RenderCopyExF(renderer, image, &source, &destination, angle, &c, flip);
-}
-
-void Renderer::fill_rect(float x, float y, float width, float height) const noexcept {
-  const auto rect = SDL_FRect{x, y, width, height};
-  SDL_RenderFillRectF(renderer, &rect);
-}
-
-void Renderer::fill_rect(int x, int y, int width, int height) const noexcept {
-  const auto rect = SDL_Rect{x, y, width, height};
-  SDL_RenderFillRect(renderer, &rect);
-}
-
-void Renderer::draw_rect(float x, float y, float width, float height) const noexcept {
-  const auto rect = SDL_FRect{x, y, width, height};
-  SDL_RenderDrawRectF(renderer, &rect);
-}
-
-void Renderer::draw_rect(int x, int y, int width, int height) const noexcept {
-  const auto rect = SDL_Rect{x, y, width, height};
-  SDL_RenderDrawRect(renderer, &rect);
-}
-
-void Renderer::draw_line(const FPoint& start, const FPoint& end) const noexcept {
-  SDL_RenderDrawLineF(renderer, start.get_x(), start.get_y(), end.get_x(), end.get_y());
-}
-
-void Renderer::draw_line(const Point& start, const Point& end) const noexcept {
-  SDL_RenderDrawLine(renderer, start.get_x(), start.get_y(), end.get_x(), end.get_y());
-}
-
-void Renderer::draw_lines(const std::vector<Point>& points) const noexcept {
-  if (points.empty()) {
-    return;
-  } else {
-    // TODO write own method that achieves the same thing to avoid the reinterpret_cast
-    const auto* front = reinterpret_cast<const SDL_Point*>(&points.front());
-    SDL_RenderDrawLines(renderer, front, static_cast<int>(points.size()));
+CENTURION_DEF
+void Renderer::destroy() noexcept
+{
+  if (m_renderer) {
+    SDL_DestroyRenderer(m_renderer);
   }
 }
 
-void Renderer::draw_text(const std::string& text, float x, float y, const Font& font) const {
-  if (!text.empty()) {
-    const auto texture = create_image(text, font);
+CENTURION_DEF
+void Renderer::move(Renderer&& other) noexcept
+{
+  destroy();
 
-    if (!texture) {
-      return;
-    }
+  m_renderer = other.m_renderer;
+  m_translationViewport = other.m_translationViewport;
 
-    draw_image(*texture, x, y);
+  other.m_renderer = nullptr;
+}
+
+CENTURION_DEF
+UniquePtr<Renderer> Renderer::unique(Owner<SDL_Renderer*> renderer)
+{
+  return centurion::detail::make_unique<Renderer>(renderer);
+}
+
+CENTURION_DEF
+UniquePtr<Renderer> Renderer::unique(const Window& window,
+                                     SDL_RendererFlags flags)
+{
+  return centurion::detail::make_unique<Renderer>(window, flags);
+}
+
+CENTURION_DEF
+SharedPtr<Renderer> Renderer::shared(Owner<SDL_Renderer*> renderer)
+{
+  return std::make_shared<Renderer>(renderer);
+}
+
+CENTURION_DEF
+SharedPtr<Renderer> Renderer::shared(const Window& window,
+                                     SDL_RendererFlags flags)
+{
+  return std::make_shared<Renderer>(window, flags);
+}
+
+CENTURION_DEF
+void Renderer::clear() noexcept
+{
+  SDL_RenderClear(m_renderer);
+}
+
+CENTURION_DEF
+void Renderer::present() noexcept
+{
+  SDL_RenderPresent(m_renderer);
+}
+
+CENTURION_DEF
+void Renderer::draw_rect(const IRect& rect) noexcept
+{
+  SDL_RenderDrawRect(m_renderer, static_cast<const SDL_Rect*>(rect));
+}
+
+CENTURION_DEF
+void Renderer::fill_rect(const IRect& rect) noexcept
+{
+  SDL_RenderFillRect(m_renderer, static_cast<const SDL_Rect*>(rect));
+}
+
+CENTURION_DEF
+void Renderer::draw_rect_f(const FRect& rect) noexcept
+{
+  SDL_RenderDrawRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
+}
+
+CENTURION_DEF
+void Renderer::fill_rect_f(const FRect& rect) noexcept
+{
+  SDL_RenderFillRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
+}
+
+CENTURION_DEF
+void Renderer::draw_line(const IPoint& start, const IPoint& end) noexcept
+{
+  SDL_RenderDrawLine(m_renderer, start.x(), start.y(), end.x(), end.y());
+}
+
+CENTURION_DEF
+void Renderer::draw_lines(const std::vector<IPoint>& points) noexcept
+{
+  if (!points.empty()) {
+    const auto* firstPoint = static_cast<const SDL_Point*>(points.front());
+    SDL_RenderDrawLines(
+        m_renderer, firstPoint, static_cast<int>(points.size()));
   }
 }
 
-void Renderer::set_color(uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) const noexcept {
-  SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
+CENTURION_DEF
+void Renderer::draw_line_f(const FPoint& start, const FPoint& end) noexcept
+{
+  SDL_RenderDrawLineF(m_renderer, start.x(), start.y(), end.x(), end.y());
 }
 
-void Renderer::set_color(const Color& color) const noexcept {
-  SDL_SetRenderDrawColor(renderer,
-                         color.get_red(),
-                         color.get_green(),
-                         color.get_blue(),
-                         color.get_alpha());
+CENTURION_DEF
+void Renderer::render(const Texture& texture, IPoint position) noexcept
+{
+  const SDL_Rect dst{
+      position.x(), position.y(), texture.width(), texture.height()};
+  SDL_RenderCopy(m_renderer, texture.get(), nullptr, &dst);
 }
 
-void Renderer::set_clip(std::optional<SDL_Rect> area) noexcept {
+CENTURION_DEF
+void Renderer::render(const Texture& texture, const IRect& rect) noexcept
+{
+  const auto* dst = static_cast<const SDL_Rect*>(rect);
+  SDL_RenderCopy(m_renderer, texture.get(), nullptr, dst);
+}
+
+CENTURION_DEF
+void Renderer::render(const Texture& texture,
+                      const IRect& src,
+                      const IRect& dst) noexcept
+{
+  SDL_RenderCopy(m_renderer,
+                 texture.get(),
+                 static_cast<const SDL_Rect*>(src),
+                 static_cast<const SDL_Rect*>(dst));
+}
+
+CENTURION_DEF
+void Renderer::render(const Texture& texture,
+                      const IRect& src,
+                      const IRect& dst,
+                      double angle) noexcept
+{
+  SDL_RenderCopyEx(m_renderer,
+                   texture.get(),
+                   static_cast<const SDL_Rect*>(src),
+                   static_cast<const SDL_Rect*>(dst),
+                   angle,
+                   nullptr,
+                   SDL_FLIP_NONE);
+}
+
+CENTURION_DEF
+void Renderer::render(const Texture& texture,
+                      const IRect& src,
+                      const IRect& dst,
+                      double angle,
+                      IPoint center) noexcept
+{
+  SDL_RenderCopyEx(m_renderer,
+                   texture.get(),
+                   static_cast<const SDL_Rect*>(src),
+                   static_cast<const SDL_Rect*>(dst),
+                   angle,
+                   static_cast<const SDL_Point*>(center),
+                   SDL_FLIP_NONE);
+}
+
+CENTURION_DEF
+void Renderer::render(const Texture& texture,
+                      const IRect& src,
+                      const IRect& dst,
+                      SDL_RendererFlip flip) noexcept
+{
+  SDL_RenderCopyEx(m_renderer,
+                   texture.get(),
+                   static_cast<const SDL_Rect*>(src),
+                   static_cast<const SDL_Rect*>(dst),
+                   0,
+                   nullptr,
+                   flip);
+}
+
+CENTURION_DEF
+void Renderer::render(const Texture& texture,
+                      const IRect& src,
+                      const IRect& dst,
+                      double angle,
+                      IPoint center,
+                      SDL_RendererFlip flip) noexcept
+{
+  SDL_RenderCopyEx(m_renderer,
+                   texture.get(),
+                   static_cast<const SDL_Rect*>(src),
+                   static_cast<const SDL_Rect*>(dst),
+                   angle,
+                   static_cast<const SDL_Point*>(center),
+                   flip);
+}
+
+CENTURION_DEF
+void Renderer::render_f(const Texture& texture, FPoint position) noexcept
+{
+  const auto dst = SDL_FRect{position.x(),
+                             position.y(),
+                             static_cast<float>(texture.width()),
+                             static_cast<float>(texture.height())};
+  SDL_RenderCopyF(m_renderer, texture.get(), nullptr, &dst);
+}
+
+CENTURION_DEF
+void Renderer::render_f(const Texture& texture, const FRect& rect) noexcept
+{
+  const auto* dst = static_cast<const SDL_FRect*>(rect);
+  SDL_RenderCopyF(m_renderer, texture.get(), nullptr, dst);
+}
+
+CENTURION_DEF
+void Renderer::render_f(const Texture& texture,
+                        const IRect& src,
+                        const FRect& dst) noexcept
+{
+  SDL_RenderCopyF(m_renderer,
+                  texture.get(),
+                  static_cast<const SDL_Rect*>(src),
+                  static_cast<const SDL_FRect*>(dst));
+}
+
+CENTURION_DEF
+void Renderer::render_f(const Texture& texture,
+                        const IRect& src,
+                        const FRect& dst,
+                        double angle) noexcept
+{
+  SDL_RenderCopyExF(m_renderer,
+                    texture.get(),
+                    static_cast<const SDL_Rect*>(src),
+                    static_cast<const SDL_FRect*>(dst),
+                    angle,
+                    nullptr,
+                    SDL_FLIP_NONE);
+}
+
+CENTURION_DEF
+void Renderer::render_f(const Texture& texture,
+                        const IRect& src,
+                        const FRect& dst,
+                        double angle,
+                        FPoint center) noexcept
+{
+  SDL_RenderCopyExF(m_renderer,
+                    texture.get(),
+                    static_cast<const SDL_Rect*>(src),
+                    static_cast<const SDL_FRect*>(dst),
+                    angle,
+                    static_cast<const SDL_FPoint*>(center),
+                    SDL_FLIP_NONE);
+}
+
+CENTURION_DEF
+void Renderer::render_f(const Texture& texture,
+                        const IRect& src,
+                        const FRect& dst,
+                        SDL_RendererFlip flip) noexcept
+{
+  SDL_RenderCopyExF(m_renderer,
+                    texture.get(),
+                    static_cast<const SDL_Rect*>(src),
+                    static_cast<const SDL_FRect*>(dst),
+                    0,
+                    nullptr,
+                    flip);
+}
+
+CENTURION_DEF
+void Renderer::render_f(const Texture& texture,
+                        const IRect& src,
+                        const FRect& dst,
+                        double angle,
+                        FPoint center,
+                        SDL_RendererFlip flip) noexcept
+{
+  SDL_RenderCopyExF(m_renderer,
+                    texture.get(),
+                    static_cast<const SDL_Rect*>(src),
+                    static_cast<const SDL_FRect*>(dst),
+                    angle,
+                    static_cast<const SDL_FPoint*>(center),
+                    flip);
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture, IPoint position) noexcept
+{
+  const auto tx = position.x() - static_cast<int>(m_translationViewport.x());
+  const auto ty = position.y() - static_cast<int>(m_translationViewport.y());
+  render(texture, {tx, ty});
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture, const IRect& rect) noexcept
+{
+  const auto tx = rect.x() - static_cast<int>(m_translationViewport.x());
+  const auto ty = rect.y() - static_cast<int>(m_translationViewport.y());
+  render(texture, {tx, ty, rect.width(), rect.height()});
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture,
+                        const IRect& src,
+                        const IRect& dst) noexcept
+{
+  const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
+  const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
+  render(texture, src, {tx, ty, dst.width(), dst.height()});
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture,
+                        const IRect& src,
+                        const IRect& dst,
+                        double angle) noexcept
+{
+  const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
+  const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
+  render(texture, src, {tx, ty, dst.width(), dst.height()}, angle);
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture,
+                        const IRect& src,
+                        const IRect& dst,
+                        double angle,
+                        IPoint center) noexcept
+{
+  const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
+  const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
+  render(texture, src, {tx, ty, dst.width(), dst.height()}, angle, center);
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture,
+                        const IRect& src,
+                        const IRect& dst,
+                        SDL_RendererFlip flip) noexcept
+{
+  const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
+  const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
+  render(texture, src, {tx, ty, dst.width(), dst.height()}, flip);
+}
+
+CENTURION_DEF
+void Renderer::render_t(const Texture& texture,
+                        const IRect& src,
+                        const IRect& dst,
+                        double angle,
+                        IPoint center,
+                        SDL_RendererFlip flip) noexcept
+{
+  const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
+  const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
+  render(
+      texture, src, {tx, ty, dst.width(), dst.height()}, angle, center, flip);
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture, FPoint position) noexcept
+{
+  const auto tx = position.x() - m_translationViewport.x();
+  const auto ty = position.y() - m_translationViewport.y();
+  render_f(texture, {tx, ty});
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture, const FRect& rect) noexcept
+{
+  const auto tx = rect.x() - m_translationViewport.x();
+  const auto ty = rect.y() - m_translationViewport.y();
+  render_f(texture, {tx, ty, rect.width(), rect.height()});
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture,
+                         const IRect& src,
+                         const FRect& dst) noexcept
+{
+  const auto tx = dst.x() - m_translationViewport.x();
+  const auto ty = dst.y() - m_translationViewport.y();
+  render_f(texture, src, {tx, ty, dst.width(), dst.height()});
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture,
+                         const IRect& src,
+                         const FRect& dst,
+                         double angle) noexcept
+{
+  const auto tx = dst.x() - m_translationViewport.x();
+  const auto ty = dst.y() - m_translationViewport.y();
+  render_f(texture, src, {tx, ty, dst.width(), dst.height()}, angle);
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture,
+                         const IRect& src,
+                         const FRect& dst,
+                         double angle,
+                         FPoint center) noexcept
+{
+  const auto tx = dst.x() - m_translationViewport.x();
+  const auto ty = dst.y() - m_translationViewport.y();
+  render_f(texture, src, {tx, ty, dst.width(), dst.height()}, angle, center);
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture,
+                         const IRect& src,
+                         const FRect& dst,
+                         SDL_RendererFlip flip) noexcept
+{
+  const auto tx = dst.x() - m_translationViewport.x();
+  const auto ty = dst.y() - m_translationViewport.y();
+  render_f(texture, src, {tx, ty, dst.width(), dst.height()}, flip);
+}
+
+CENTURION_DEF
+void Renderer::render_tf(const Texture& texture,
+                         const IRect& src,
+                         const FRect& dst,
+                         double angle,
+                         FPoint center,
+                         SDL_RendererFlip flip) noexcept
+{
+  const auto tx = dst.x() - m_translationViewport.x();
+  const auto ty = dst.y() - m_translationViewport.y();
+  render_f(
+      texture, src, {tx, ty, dst.width(), dst.height()}, angle, center, flip);
+}
+
+CENTURION_DEF
+void Renderer::set_color(const Color& color) noexcept
+{
+  SDL_SetRenderDrawColor(
+      m_renderer, color.red(), color.green(), color.blue(), color.alpha());
+}
+
+CENTURION_DEF
+void Renderer::set_clip(Optional<IRect> area) noexcept
+{
   if (area) {
-    SDL_RenderSetClipRect(renderer, &*area);
+    SDL_RenderSetClipRect(m_renderer, static_cast<const SDL_Rect*>(*area));
   } else {
-    SDL_RenderSetClipRect(renderer, nullptr);
+    SDL_RenderSetClipRect(m_renderer, nullptr);
   }
 }
 
-void Renderer::set_viewport(const SDL_Rect& viewport) noexcept {
-  SDL_RenderSetViewport(renderer, &viewport);
+CENTURION_DEF
+void Renderer::set_viewport(const IRect& viewport) noexcept
+{
+  SDL_RenderSetViewport(m_renderer, static_cast<const SDL_Rect*>(viewport));
 }
 
-void Renderer::set_translation_viewport(const SDL_FRect& viewport) noexcept {
-  translationViewport = viewport;
+CENTURION_DEF
+void Renderer::set_translation_viewport(const FRect& viewport) noexcept
+{
+  m_translationViewport = viewport;
 }
 
-void Renderer::set_blend_mode(const SDL_BlendMode& blendMode) noexcept {
-  SDL_SetRenderDrawBlendMode(renderer, blendMode);
+CENTURION_DEF
+void Renderer::set_blend_mode(BlendMode mode) noexcept
+{
+  SDL_SetRenderDrawBlendMode(m_renderer, static_cast<SDL_BlendMode>(mode));
 }
 
-void Renderer::set_target(const Image* texture) noexcept {
+CENTURION_DEF
+void Renderer::set_target(const Texture* texture) noexcept
+{
   if (texture && texture->is_target()) {
-    SDL_SetRenderTarget(renderer, *texture);
+    SDL_SetRenderTarget(m_renderer, texture->get());
   } else {
-    SDL_SetRenderTarget(renderer, nullptr);
+    SDL_SetRenderTarget(m_renderer, nullptr);
   }
 }
 
-void Renderer::set_scale(float xScale, float yScale) noexcept {
+CENTURION_DEF
+void Renderer::set_scale(float xScale, float yScale) noexcept
+{
   if (xScale > 0 && yScale > 0) {
-    SDL_RenderSetScale(renderer, xScale, yScale);
+    SDL_RenderSetScale(m_renderer, xScale, yScale);
   }
 }
 
-void Renderer::set_logical_size(int width, int height) noexcept {
-  if (width > 0 && height > 0) {
-    SDL_RenderSetLogicalSize(renderer, width, height);
+CENTURION_DEF
+void Renderer::set_logical_size(Area size) noexcept
+{
+  if (size.width > 0 && size.height > 0) {
+    SDL_RenderSetLogicalSize(m_renderer, size.width, size.height);
   }
 }
 
-void Renderer::set_logical_integer_scale(bool useLogicalIntegerScale) noexcept {
-  SDL_RenderSetIntegerScale(renderer, BoolConverter::convert(useLogicalIntegerScale));
+CENTURION_DEF
+void Renderer::set_logical_integer_scale(bool useLogicalIntegerScale) noexcept
+{
+  SDL_RenderSetIntegerScale(m_renderer,
+                            detail::convert_bool(useLogicalIntegerScale));
 }
 
-Color Renderer::get_color() const noexcept {
-  uint8_t r = 0, g = 0, b = 0, a = 0;
-  SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+CENTURION_DEF
+Color Renderer::color() const noexcept
+{
+  Uint8 r = 0, g = 0, b = 0, a = 0;
+  SDL_GetRenderDrawColor(m_renderer, &r, &g, &b, &a);
   return {r, g, b, a};
 }
 
-int Renderer::get_logical_width() const noexcept {
+CENTURION_DEF
+int Renderer::logical_width() const noexcept
+{
   int w = 0;
-  SDL_RenderGetLogicalSize(renderer, &w, nullptr);
+  SDL_RenderGetLogicalSize(m_renderer, &w, nullptr);
   return w;
 }
 
-int Renderer::get_logical_height() const noexcept {
+CENTURION_DEF
+int Renderer::logical_height() const noexcept
+{
   int h = 0;
-  SDL_RenderGetLogicalSize(renderer, nullptr, &h);
+  SDL_RenderGetLogicalSize(m_renderer, nullptr, &h);
   return h;
 }
 
-bool Renderer::is_clipping_enabled() const noexcept {
-  return SDL_RenderIsClipEnabled(renderer);
+CENTURION_DEF
+bool Renderer::clipping_enabled() const noexcept
+{
+  return SDL_RenderIsClipEnabled(m_renderer);
 }
 
-std::optional<SDL_Rect> Renderer::get_clip() const noexcept {
+CENTURION_DEF
+Optional<IRect> Renderer::clip() const noexcept
+{
   SDL_Rect rect{0, 0, 0, 0};
-  SDL_RenderGetClipRect(renderer, &rect);
+  SDL_RenderGetClipRect(m_renderer, &rect);
   if (SDL_RectEmpty(&rect)) {
-    return std::nullopt;
+    return nothing;
   } else {
-    return rect;
+    return IRect{rect.x, rect.y, rect.w, rect.h};
   }
 }
 
-SDL_RendererInfo Renderer::get_info() const noexcept {
+CENTURION_DEF
+Optional<SDL_RendererInfo> Renderer::info() const noexcept
+{
   SDL_RendererInfo info;
-  SDL_GetRendererInfo(renderer, &info);
-  return info;
+  const auto result = SDL_GetRendererInfo(m_renderer, &info);
+  if (result == 0) {
+    return info;
+  } else {
+    return nothing;
+  }
 }
 
-int Renderer::get_output_width() const noexcept {
+CENTURION_DEF
+int Renderer::output_width() const noexcept
+{
   int width = 0;
-  SDL_GetRendererOutputSize(renderer, &width, nullptr);
+  SDL_GetRendererOutputSize(m_renderer, &width, nullptr);
   return width;
 }
 
-int Renderer::get_output_height() const noexcept {
+CENTURION_DEF
+int Renderer::output_height() const noexcept
+{
   int height = 0;
-  SDL_GetRendererOutputSize(renderer, nullptr, &height);
+  SDL_GetRendererOutputSize(m_renderer, nullptr, &height);
   return height;
 }
 
-std::pair<int, int> Renderer::get_output_size() const noexcept {
+CENTURION_DEF
+Area Renderer::output_size() const noexcept
+{
   int width = 0;
   int height = 0;
-  SDL_GetRendererOutputSize(renderer, &width, &height);
+  SDL_GetRendererOutputSize(m_renderer, &width, &height);
   return {width, height};
 }
 
-float Renderer::get_x_scale() const noexcept {
+CENTURION_DEF
+BlendMode Renderer::blend_mode() const noexcept
+{
+  SDL_BlendMode mode;
+  SDL_GetRenderDrawBlendMode(m_renderer, &mode);
+  return static_cast<BlendMode>(mode);
+}
+
+CENTURION_DEF
+float Renderer::x_scale() const noexcept
+{
   float xScale = 0;
-  SDL_RenderGetScale(renderer, &xScale, nullptr);
+  SDL_RenderGetScale(m_renderer, &xScale, nullptr);
   return xScale;
 }
 
-float Renderer::get_y_scale() const noexcept {
+CENTURION_DEF
+float Renderer::y_scale() const noexcept
+{
   float yScale = 0;
-  SDL_RenderGetScale(renderer, nullptr, &yScale);
+  SDL_RenderGetScale(m_renderer, nullptr, &yScale);
   return yScale;
 }
 
-SDL_Rect Renderer::get_viewport() const noexcept {
+CENTURION_DEF
+IRect Renderer::viewport() const noexcept
+{
   SDL_Rect viewport{0, 0, 0, 0};
-  SDL_RenderGetViewport(renderer, &viewport);
-  return viewport;
+  SDL_RenderGetViewport(m_renderer, &viewport);
+  return {viewport.x, viewport.y, viewport.w, viewport.h};
 }
 
-const SDL_FRect& Renderer::get_translation_viewport() const noexcept {
-  return translationViewport;
-}
-
-uint32_t Renderer::get_flags() const noexcept {
+CENTURION_DEF
+Uint32 Renderer::flags() const noexcept
+{
   SDL_RendererInfo info;
-  SDL_GetRendererInfo(renderer, &info);
+  SDL_GetRendererInfo(m_renderer, &info);
   return info.flags;
 }
 
-bool Renderer::is_vsync_enabled() const noexcept {
-  return get_flags() & SDL_RENDERER_PRESENTVSYNC;
+CENTURION_DEF
+bool Renderer::vsync_enabled() const noexcept
+{
+  return flags() & SDL_RENDERER_PRESENTVSYNC;
 }
 
-bool Renderer::is_accelerated() const noexcept {
-  return get_flags() & SDL_RENDERER_ACCELERATED;
+CENTURION_DEF
+bool Renderer::accelerated() const noexcept
+{
+  return flags() & SDL_RENDERER_ACCELERATED;
 }
 
-bool Renderer::is_software_based() const noexcept {
-  return get_flags() & SDL_RENDERER_SOFTWARE;
+CENTURION_DEF
+bool Renderer::software_based() const noexcept
+{
+  return flags() & SDL_RENDERER_SOFTWARE;
 }
 
-bool Renderer::is_supporting_target_textures() const noexcept {
-  return get_flags() & SDL_RENDERER_TARGETTEXTURE;
+CENTURION_DEF
+bool Renderer::supports_target_textures() const noexcept
+{
+  return flags() & SDL_RENDERER_TARGETTEXTURE;
 }
 
-bool Renderer::is_using_integer_logical_scaling() const noexcept {
-  return SDL_RenderGetIntegerScale(renderer);
+CENTURION_DEF
+bool Renderer::using_integer_logical_scaling() const noexcept
+{
+  return SDL_RenderGetIntegerScale(m_renderer);
 }
 
-std::unique_ptr<Image> Renderer::create_image(const std::string& s, const Font& font) const {
-  if (s.empty()) {
-    return nullptr;
+CENTURION_DEF
+UniquePtr<Texture> Renderer::text_blended(CZString text,
+                                          const Font& font) const noexcept
+{
+  return render_text(text, [this, &font](CZString text) noexcept {
+    return TTF_RenderText_Blended(font.get(), text, color());
+  });
+}
+
+CENTURION_DEF
+UniquePtr<Texture> Renderer::text_blended_wrapped(
+    CZString text,
+    Uint32 wrap,
+    const Font& font) const noexcept
+{
+  return render_text(text, [this, &font, wrap](CZString text) noexcept {
+    return TTF_RenderText_Blended_Wrapped(font.get(), text, color(), wrap);
+  });
+}
+
+CENTURION_DEF
+UniquePtr<Texture> Renderer::text_shaded(CZString text,
+                                         const Color& bg,
+                                         const Font& font) const noexcept
+{
+  return render_text(text, [this, &font, &bg](CZString text) noexcept {
+    return TTF_RenderText_Shaded(font.get(), text, color(), bg);
+  });
+}
+
+CENTURION_DEF
+UniquePtr<Texture> Renderer::text_solid(CZString text,
+                                        const Font& font) const noexcept
+{
+  return render_text(text, [this, &font](CZString text) noexcept {
+    return TTF_RenderText_Solid(font.get(), text, color());
+  });
+}
+
+CENTURION_DEF
+std::string Renderer::to_string() const
+{
+  const auto address = detail::address_of(this);
+  const auto owidth = std::to_string(output_width());
+  const auto oheight = std::to_string(output_height());
+  return "[Renderer@" + address + " | Output width: " + owidth +
+         ", Output height: " + oheight + "]";
+}
+
+CENTURION_DEF
+int Renderer::render_drivers() noexcept
+{
+  return SDL_GetNumRenderDrivers();
+}
+
+CENTURION_DEF
+int Renderer::video_drivers() noexcept
+{
+  return SDL_GetNumVideoDrivers();
+}
+
+CENTURION_DEF
+Optional<SDL_RendererInfo> Renderer::driver_info(int index) noexcept
+{
+  SDL_RendererInfo info;
+  const auto result = SDL_GetRenderDriverInfo(index, &info);
+  if (result == 0) {
+    return info;
+  } else {
+    return nothing;
   }
-
-  SDL_Surface* surface = TTF_RenderText_Blended(font, s.c_str(), get_color());
-
-  if (!surface) {
-    return nullptr;
-  }
-
-  SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-  SDL_FreeSurface(surface);
-
-  return std::make_unique<Image>(texture);
 }
 
-std::string Renderer::to_string() const {
-  const auto address = CenturionUtils::address(this);
-  const auto owidth = std::to_string(get_output_width());
-  const auto oheight = std::to_string(get_output_height());
-  return "[Renderer@" + address
-      + " | Output width: " + owidth
-      + ", Output height: " + oheight + "]";
-}
+}  // namespace centurion
 
-Renderer::operator SDL_Renderer*() const noexcept {
-  return renderer;
-}
-
-}
+#endif  // CENTURION_RENDERER_SOURCE

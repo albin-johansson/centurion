@@ -1,67 +1,92 @@
+#ifndef CENTURION_KEY_STATE_SOURCE
+#define CENTURION_KEY_STATE_SOURCE
+
 #include "key_state.h"
-#include <string>
+
 #include <algorithm>
-#include <cassert>
-#include <type_traits>
-#include "centurion_exception.h"
-#include "error.h"
+#include <string>
+
+#include "centurion_utils.h"
 
 namespace centurion {
+namespace input {
 
-static_assert(std::is_final_v<KeyState>);
-
-static_assert(std::is_default_constructible_v<KeyState>);
-static_assert(std::is_nothrow_destructible_v<KeyState>);
-
-static_assert(std::is_nothrow_move_constructible_v<KeyState>);
-static_assert(std::is_nothrow_move_assignable_v<KeyState>);
-
-static_assert(std::is_nothrow_copy_constructible_v<KeyState>);
-static_assert(std::is_nothrow_copy_assignable_v<KeyState>);
-
-KeyState::KeyState() {
-  states = SDL_GetKeyboardState(&nKeys);
-  if (!states) {
-    throw CenturionException("Failed to obtain key state! " + Error::msg());
-  }
-  assert(static_cast<unsigned long long>(nKeys) == previousStates.size());
-  std::fill(previousStates.begin(), previousStates.end(), 0);
+CENTURION_DEF
+KeyState::KeyState() noexcept
+{
+  m_states = SDL_GetKeyboardState(&m_nKeys);
+  std::fill(m_previousStates.begin(), m_previousStates.end(), 0);
 }
 
-std::unique_ptr<KeyState> KeyState::unique() {
-  return std::make_unique<KeyState>();
+CENTURION_DEF
+UniquePtr<KeyState> KeyState::unique()
+{
+  return centurion::detail::make_unique<KeyState>();
 }
 
-std::shared_ptr<KeyState> KeyState::shared() {
+CENTURION_DEF
+SharedPtr<KeyState> KeyState::shared()
+{
   return std::make_shared<KeyState>();
 }
 
-void KeyState::update() noexcept {
-  std::copy(states, states + nKeys, previousStates.begin());
+CENTURION_DEF
+void KeyState::update() noexcept
+{
+  std::copy(m_states, m_states + m_nKeys, m_previousStates.begin());
 }
 
-bool KeyState::is_pressed(SDL_Scancode code) const noexcept {
-  assert(code < nKeys);
-  return states[code];
+CENTURION_DEF
+bool KeyState::is_pressed(const Key& key) const noexcept
+{
+  const auto code = key.scancode();
+  if (code >= 0 && code < m_nKeys) {
+    return m_states[code];
+  } else {
+    return false;
+  }
 }
 
-bool KeyState::is_held(SDL_Scancode code) const noexcept {
-  assert(code < nKeys);
-  return states[code] && previousStates[code];
+CENTURION_DEF
+bool KeyState::is_held(const Key& key) const noexcept
+{
+  const auto code = key.scancode();
+  if (code >= 0 && code < m_nKeys) {
+    return m_states[code] && m_previousStates[code];
+  } else {
+    return false;
+  }
 }
 
-bool KeyState::was_just_pressed(SDL_Scancode code) const noexcept {
-  assert(code < nKeys);
-  return states[code] && !previousStates[code];
+CENTURION_DEF
+bool KeyState::was_just_pressed(const Key& key) const noexcept
+{
+  const auto code = key.scancode();
+  if (code >= 0 && code < m_nKeys) {
+    return m_states[code] && !m_previousStates[code];
+  } else {
+    return false;
+  }
 }
 
-bool KeyState::was_just_released(SDL_Scancode code) const noexcept {
-  assert(code < nKeys);
-  return !states[code] && previousStates[code];
+CENTURION_DEF
+bool KeyState::was_just_released(const Key& key) const noexcept
+{
+  const auto code = key.scancode();
+  if (code >= 0 && code < m_nKeys) {
+    return !m_states[code] && m_previousStates[code];
+  } else {
+    return false;
+  }
 }
 
-int KeyState::get_amount_of_keys() const noexcept {
-  return nKeys;
+CENTURION_DEF
+bool KeyState::modifier_active(KeyModifier modifier) const noexcept
+{
+  return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
 }
 
-}
+}  // namespace input
+}  // namespace centurion
+
+#endif  // CENTURION_KEY_STATE_SOURCE

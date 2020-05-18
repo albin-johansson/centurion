@@ -1,253 +1,309 @@
+#ifndef CENTURION_EVENT_SOURCE
+#define CENTURION_EVENT_SOURCE
+
 #include "event.h"
-#include <type_traits>
 
-namespace centurion::event {
+#include <utility>
 
-namespace {
+namespace centurion {
+namespace event {
 
-template<typename T>
-constexpr bool check_event_type() noexcept {
-  return std::is_final_v<T>
-      && std::is_nothrow_destructible_v<T>
-      && std::is_nothrow_copy_constructible_v<T>
-      && std::is_nothrow_move_constructible_v<T>;
-}
+CENTURION_DEF
+Event::Event() noexcept
+{}
 
-}
+CENTURION_DEF
+Event::Event(const SDL_Event& event) noexcept : m_event{event}
+{}
 
-// ** KEY EVENT ************************************************************************************
+CENTURION_DEF
+Event::Event(SDL_Event&& event) noexcept : m_event{std::move(event)}
+{}
 
-static_assert(check_event_type<KeyEvent>());
-
-KeyEvent::KeyEvent(SDL_KeyboardEvent keyEvent) noexcept: event{keyEvent} {}
-
-bool KeyEvent::is_key_active(SDL_Keycode keycode) const noexcept {
-  return event.keysym.sym == keycode;
-}
-
-bool KeyEvent::is_key_active(SDL_Scancode scancode) const noexcept {
-  return event.keysym.scancode == scancode;
-}
-
-bool KeyEvent::is_modifier_active(KeyModifier modifier) const noexcept {
-  return event.keysym.mod & static_cast<SDL_Keymod>(modifier);
-}
-
-bool KeyEvent::is_control_active() const noexcept {
-  return is_modifier_active(KeyModifier::LeftControl)
-      || is_modifier_active(KeyModifier::RightControl);
-}
-
-bool KeyEvent::is_shift_active() const noexcept {
-  return is_modifier_active(KeyModifier::LeftShift)
-      || is_modifier_active(KeyModifier::RightShift);
-}
-
-bool KeyEvent::is_alt_active() const noexcept {
-  return is_modifier_active(KeyModifier::LeftAlt)
-      || is_modifier_active(KeyModifier::RightAlt);
-}
-
-bool KeyEvent::is_gui_active() const noexcept {
-  return is_modifier_active(KeyModifier::LeftGUI)
-      || is_modifier_active(KeyModifier::RightGUI);
-}
-
-uint32_t KeyEvent::get_window_id() const noexcept {
-  return event.windowID;
-}
-
-uint32_t KeyEvent::get_time() const noexcept {
-  return event.timestamp;
-}
-
-bool KeyEvent::is_repeated() const noexcept {
-  return event.repeat;
-}
-
-ButtonState KeyEvent::get_state() const noexcept {
-  return static_cast<ButtonState>(event.state);
-}
-
-// ** MOUSE BUTTON EVENT ***************************************************************************
-
-static_assert(check_event_type<MouseButtonEvent>());
-
-MouseButtonEvent::MouseButtonEvent(SDL_MouseButtonEvent buttonEvent) noexcept
-    : event{buttonEvent} {}
-
-MouseButton MouseButtonEvent::get_button() const noexcept {
-  return static_cast<MouseButton>(event.button);
-}
-
-int MouseButtonEvent::get_x() const noexcept {
-  return event.x;
-}
-
-int MouseButtonEvent::get_y() const noexcept {
-  return event.y;
-}
-
-bool MouseButtonEvent::was_single_click() const noexcept {
-  return event.clicks == 1;
-}
-
-bool MouseButtonEvent::was_double_click() const noexcept {
-  return event.clicks == 2;
-}
-
-bool MouseButtonEvent::was_touch() const noexcept {
-  return event.which == SDL_TOUCH_MOUSEID;
-}
-
-ButtonState MouseButtonEvent::get_state() const noexcept {
-  return static_cast<ButtonState>(event.state);
-}
-
-uint32_t MouseButtonEvent::get_window_id() const noexcept {
-  return event.windowID;
-}
-
-uint32_t MouseButtonEvent::get_time() const noexcept {
-  return event.timestamp;
-}
-
-// ** MOUSE MOTION EVENT ***************************************************************************
-
-static_assert(check_event_type<MouseMotionEvent>());
-
-MouseMotionEvent::MouseMotionEvent(SDL_MouseMotionEvent motionEvent) noexcept
-    : event{motionEvent} {}
-
-int MouseMotionEvent::get_x() const noexcept {
-  return event.x;
-}
-
-int MouseMotionEvent::get_y() const noexcept {
-  return event.y;
-}
-
-int MouseMotionEvent::get_x_movement() const noexcept {
-  return event.xrel;
-}
-
-int MouseMotionEvent::get_y_movement() const noexcept {
-  return event.yrel;
-}
-
-bool MouseMotionEvent::was_touch() const noexcept {
-  return event.which == SDL_TOUCH_MOUSEID;
-}
-
-bool MouseMotionEvent::is_button_down(MouseButton button) const noexcept {
-  return event.state & static_cast<unsigned>(button);
-}
-
-uint32_t MouseMotionEvent::get_window_id() const noexcept {
-  return event.windowID;
-}
-
-uint32_t MouseMotionEvent::get_time() const noexcept {
-  return event.timestamp;
-}
-
-// ** MOUSE WHEEL EVENT ****************************************************************************
-
-static_assert(check_event_type<MouseWheelEvent>());
-
-MouseWheelEvent::MouseWheelEvent(SDL_MouseWheelEvent wheelEvent) noexcept
-    : event{wheelEvent} {}
-
-int MouseWheelEvent::get_horizontal_scroll() const noexcept {
-  return event.x;
-}
-
-int MouseWheelEvent::get_vertical_scroll() const noexcept {
-  return event.y;
-}
-
-MouseWheelDirection MouseWheelEvent::get_wheel_direction() const noexcept {
-  return static_cast<MouseWheelDirection>(event.direction);
-}
-
-bool MouseWheelEvent::was_touch() const noexcept {
-  return event.which == SDL_TOUCH_MOUSEID;
-}
-
-uint32_t MouseWheelEvent::get_window_id() const noexcept {
-  return event.windowID;
-}
-
-uint32_t MouseWheelEvent::get_time() const noexcept {
-  return event.timestamp;
-}
-
-// ** QUIT EVENT ***********************************************************************************
-
-static_assert(check_event_type<QuitEvent>());
-
-QuitEvent::QuitEvent(SDL_QuitEvent quitEvent) noexcept
-    : time{quitEvent.timestamp} {}
-
-uint32_t QuitEvent::get_time() const noexcept {
-  return time;
-}
-
-// ** EVENT ****************************************************************************************
-
-static_assert(check_event_type<Event>());
-
-Event::Event(const SDL_Event& sdlEvent) noexcept
-    : event{sdlEvent} {}
-
-void Event::refresh() noexcept {
+CENTURION_DEF
+void Event::refresh() noexcept
+{
   SDL_PumpEvents();
 }
 
-void Event::push(Event& event) noexcept {
+CENTURION_DEF
+void Event::push(Event& event) noexcept
+{
   SDL_Event& sdlEvent = event;
   SDL_PushEvent(&sdlEvent);
 }
 
-void Event::flush() noexcept {
+CENTURION_DEF
+void Event::flush() noexcept
+{
   SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 }
 
-void Event::flush_all() noexcept {
+CENTURION_DEF
+void Event::flush_all() noexcept
+{
   SDL_PumpEvents();
   SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 }
 
-bool Event::poll() noexcept {
-  return SDL_PollEvent(&event);
+CENTURION_DEF
+bool Event::poll() noexcept
+{
+  return SDL_PollEvent(&m_event);
 }
 
-EventType Event::get_type() const noexcept {
-  return static_cast<EventType>(event.type);
+CENTURION_DEF
+EventType Event::type() const noexcept
+{
+  return static_cast<EventType>(m_event.type);
 }
 
-KeyEvent Event::as_key_event() const noexcept {
-  return KeyEvent{event.key};
+CENTURION_DEF
+Optional<QuitEvent> Event::as_quit_event() const noexcept
+{
+  if (type() == EventType::Quit) {
+    return QuitEvent{m_event.quit};
+  } else {
+    return nothing;
+  }
 }
 
-MouseButtonEvent Event::as_mouse_button_event() const noexcept {
-  return MouseButtonEvent{event.button};
+CENTURION_DEF
+Optional<AudioDeviceEvent> Event::as_audio_device_event() const noexcept
+{
+  const auto isAudioEvent = type() == EventType::AudioDeviceAdded ||
+                            type() == EventType::AudioDeviceRemoved;
+  if (isAudioEvent) {
+    return AudioDeviceEvent{m_event.adevice};
+  } else {
+    return nothing;
+  }
 }
 
-MouseMotionEvent Event::as_mouse_motion_event() const noexcept {
-  return MouseMotionEvent{event.motion};
+CENTURION_DEF
+Optional<ControllerAxisEvent> Event::as_controller_axis_event() const noexcept
+{
+  if (type() == EventType::ControllerAxisMotion) {
+    return ControllerAxisEvent{m_event.caxis};
+  } else {
+    return nothing;
+  }
 }
 
-MouseWheelEvent Event::as_mouse_wheel_event() const noexcept {
-  return MouseWheelEvent{event.wheel};
+CENTURION_DEF
+Optional<ControllerButtonEvent> Event::as_controller_button_event()
+    const noexcept
+{
+  const auto isContButtonEvent = type() == EventType::ControllerButtonDown ||
+                                 type() == EventType::ControllerButtonUp;
+  if (isContButtonEvent) {
+    return ControllerButtonEvent{m_event.cbutton};
+  } else {
+    return nothing;
+  }
 }
 
-QuitEvent Event::as_quit_event() const noexcept {
-  return QuitEvent{event.quit};
+CENTURION_DEF
+Optional<ControllerDeviceEvent> Event::as_controller_device_event()
+    const noexcept
+{
+  const auto isContDeviceEvent = type() == EventType::ControllerDeviceAdded ||
+                                 type() == EventType::ControllerDeviceRemoved ||
+                                 type() == EventType::ControllerDeviceRemapped;
+  if (isContDeviceEvent) {
+    return ControllerDeviceEvent{m_event.cdevice};
+  } else {
+    return nothing;
+  }
 }
 
-Event::operator SDL_Event&() noexcept {
-  return event;
+CENTURION_DEF
+Optional<DollarGestureEvent> Event::as_dollar_gesture_event() const noexcept
+{
+  const auto isDollarGestureEvent =
+      type() == EventType::DollarGesture || type() == EventType::DollarRecord;
+  if (isDollarGestureEvent) {
+    return DollarGestureEvent{m_event.dgesture};
+  } else {
+    return nothing;
+  }
 }
 
+CENTURION_DEF
+Optional<DropEvent> Event::as_drop_event() const noexcept
+{
+  const auto isDropEvent =
+      type() == EventType::DropBegin || type() == EventType::DropComplete ||
+      type() == EventType::DropFile || type() == EventType::DropText;
+  if (isDropEvent) {
+    return DropEvent{m_event.drop};
+  } else {
+    return nothing;
+  }
 }
+
+CENTURION_DEF
+Optional<JoyAxisEvent> Event::as_joy_axis_event() const noexcept
+{
+  if (type() == EventType::JoystickAxisMotion) {
+    return JoyAxisEvent{m_event.jaxis};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<JoyBallEvent> Event::as_joy_ball_event() const noexcept
+{
+  if (type() == EventType::JoystickBallMotion) {
+    return JoyBallEvent{m_event.jball};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<JoyButtonEvent> Event::as_joy_button_event() const noexcept
+{
+  const auto isJoyButtonEvent = type() == EventType::JoystickButtonUp ||
+                                type() == EventType::JoystickButtonDown;
+  if (isJoyButtonEvent) {
+    return JoyButtonEvent{m_event.jbutton};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<JoyDeviceEvent> Event::as_joy_device_event() const noexcept
+{
+  const auto isJoyDeviceEvent = type() == EventType::JoystickDeviceAdded ||
+                                type() == EventType::JoystickDeviceRemoved;
+  if (isJoyDeviceEvent) {
+    return JoyDeviceEvent{m_event.jdevice};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<JoyHatEvent> Event::as_joy_hat_event() const noexcept
+{
+  if (type() == EventType::JoystickHatMotion) {
+    return JoyHatEvent{m_event.jhat};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<KeyboardEvent> Event::as_keyboard_event() const noexcept
+{
+  const auto isKeyboardEvent =
+      type() == EventType::KeyDown || type() == EventType::KeyUp;
+  if (isKeyboardEvent) {
+    return KeyboardEvent{m_event.key};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<MouseButtonEvent> Event::as_mouse_button_event() const noexcept
+{
+  const auto isMouseButtonEvent = type() == EventType::MouseButtonUp ||
+                                  type() == EventType::MouseButtonDown;
+  if (isMouseButtonEvent) {
+    return MouseButtonEvent{m_event.button};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<MouseMotionEvent> Event::as_mouse_motion_event() const noexcept
+{
+  if (type() == EventType::MouseMotion) {
+    return MouseMotionEvent{m_event.motion};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<MouseWheelEvent> Event::as_mouse_wheel_event() const noexcept
+{
+  if (type() == EventType::MouseWheel) {
+    return MouseWheelEvent{m_event.wheel};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<MultiGestureEvent> Event::as_multi_gesture_event() const noexcept
+{
+  if (type() == EventType::MultiGesture) {
+    return MultiGestureEvent{m_event.mgesture};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<TextEditingEvent> Event::as_text_editing_event() const noexcept
+{
+  if (type() == EventType::TextEditing) {
+    return TextEditingEvent{m_event.edit};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<TextInputEvent> Event::as_text_input_event() const noexcept
+{
+  if (type() == EventType::TextInput) {
+    return TextInputEvent{m_event.text};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<TouchFingerEvent> Event::as_touch_finger_event() const noexcept
+{
+  const auto isTouchFingerEvent = type() == EventType::TouchMotion ||
+                                  type() == EventType::TouchDown ||
+                                  type() == EventType::TouchUp;
+  if (isTouchFingerEvent) {
+    return TouchFingerEvent{m_event.tfinger};
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+Optional<WindowEvent> Event::as_window_event() const noexcept
+{
+  if (type() == EventType::Window) {
+    return WindowEvent{m_event.window};
+  } else {
+    return nothing;
+  }
+}
+
+//CENTURION_DEF
+//Optional<SysWMEvent> Event::as_syswm_event() const noexcept
+//{
+//  if (type() == EventType::System) {
+//    return SysWMEvent{m_event.syswm};
+//  } else {
+//    return nothing;
+//  }
+//}
+
+}  // namespace event
+}  // namespace centurion
+
+#endif  // CENTURION_EVENT_SOURCE

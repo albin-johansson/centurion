@@ -1,28 +1,41 @@
+#ifndef CENTURION_ERROR_SOURCE
+#define CENTURION_ERROR_SOURCE
+
 #include "error.h"
-#include <type_traits>
+
 #include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
 
 namespace centurion {
+namespace detail {
 
-static_assert(std::is_final_v<Error>);
-static_assert(std::is_nothrow_destructible_v<Error>);
-static_assert(!std::is_constructible_v<Error>);
-static_assert(!std::is_copy_constructible_v<Error>);
-static_assert(!std::is_move_constructible_v<Error>);
-static_assert(!std::is_copy_assignable_v<Error>);
-static_assert(!std::is_move_assignable_v<Error>);
-
-const char* Error::descriptionf() noexcept {
-  const auto* err = SDL_GetError();
-  return err ? err : "";
+CENTURION_DEF
+CenturionException Error::from_core(std::string message)
+{
+  return CenturionException{message + " Error: " + SDL_GetError()};
 }
 
-std::string Error::description() noexcept {
-  return {descriptionf()};
+CENTURION_DEF
+CenturionException Error::from_image(std::string message)
+{
+  return CenturionException{message + " Error: " + IMG_GetError()};
 }
 
-std::string Error::msg() noexcept {
-  return "Error: " + description();
+CENTURION_DEF
+CenturionException Error::from_ttf(std::string message)
+{
+  return CenturionException{message + " Error: " + TTF_GetError()};
 }
 
+CENTURION_DEF
+CenturionException Error::from_mixer(std::string message)
+{
+  return CenturionException{message + " Error: " + Mix_GetError()};
 }
+
+}  // namespace detail
+}  // namespace centurion
+
+#endif  // CENTURION_ERROR_SOURCE

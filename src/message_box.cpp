@@ -1,184 +1,238 @@
+#ifndef CENTURION_MESSAGE_BOX_SOURCE
+#define CENTURION_MESSAGE_BOX_SOURCE
+
 #include "message_box.h"
-#include <cstdint>
-#include <utility>
-#include <type_traits>
-#include <SDL.h>
-#include "centurion_exception.h"
+
 #include "colors.h"
 #include "error.h"
 
-namespace centurion::messagebox {
+namespace centurion {
+namespace messagebox {
+namespace {
 
-static_assert(std::is_final_v<ButtonData>);
-static_assert(std::is_nothrow_destructible_v<ButtonData>);
-static_assert(std::is_convertible_v<ButtonData, SDL_MessageBoxButtonData>);
-
-ButtonData::ButtonData(ButtonDataHint hint, int id, std::string text)
-    : buttonDataHint{hint}, id{id}, text{std::move(text)} {}
-
-ButtonData::operator SDL_MessageBoxButtonData() const noexcept {
-  return {static_cast<uint32_t>(buttonDataHint), id, text.c_str()};
+/**
+ * Creates and returns an <code>SDL_MessageBoxButtonData</code> object based
+ * on the specified attributes.
+ *
+ * @param hint the button data hint that will be used.
+ * @param id the ID of the button.
+ * @param text the text that will be displayed on the button, the empty
+ * string is used if null.
+ * @since 4.0.0
+ */
+inline SDL_MessageBoxButtonData create_button_data(ButtonDataHint hint,
+                                                   int id,
+                                                   CZString text) noexcept
+{
+  return {static_cast<Uint32>(hint), id, text};
 }
 
-static_assert(std::is_final_v<ColorScheme>);
-static_assert(std::is_nothrow_default_constructible_v<ColorScheme>);
-static_assert(std::is_nothrow_destructible_v<ColorScheme>);
+}  // namespace
 
-ColorScheme::ColorScheme() noexcept {
-  set_color(ColorType::Background, Colors::black);
-  set_color(ColorType::ButtonBorder, Colors::black);
-  set_color(ColorType::ButtonBackground, Colors::black);
-  set_color(ColorType::ButtonSelected, Colors::black);
+CENTURION_DEF
+ColorScheme::ColorScheme() noexcept
+{
+  set_color(ColorType::Background, color::black);
+  set_color(ColorType::ButtonBorder, color::black);
+  set_color(ColorType::ButtonBackground, color::black);
+  set_color(ColorType::ButtonSelected, color::black);
 }
 
-void ColorScheme::set_color(ColorType type, const Color& color) noexcept {
-  scheme.colors[get_index(type)] = color;
+CENTURION_DEF
+void ColorScheme::set_color(ColorType type, const Color& color) noexcept
+{
+  m_scheme.colors[index(type)] = color;
 }
 
-const SDL_MessageBoxColorScheme& ColorScheme::get() const noexcept {
-  return scheme;
+CENTURION_DEF
+SDL_MessageBoxColorScheme ColorScheme::convert() const noexcept
+{
+  return m_scheme;
 }
 
-ColorScheme::operator SDL_MessageBoxColorScheme() const noexcept {
-  return scheme;
+CENTURION_DEF
+MessageBox::MessageBox() : m_config{std::make_unique<MessageBoxConfig>()}
+{}
+
+CENTURION_DEF
+MessageBox::MessageBox(CZString title, CZString message) : MessageBox{}
+
+{
+  set_title(title);
+  set_message(message);
 }
 
-MessageBox::MessageBox(std::string title)
-    : title{std::move(title)} {}
-
-MessageBox::MessageBox(std::string title, std::string message)
-    : title{std::move(title)},
-      message{std::move(message)} {}
-
+CENTURION_DEF
 MessageBox::~MessageBox() noexcept = default;
 
-std::vector<SDL_MessageBoxButtonData> MessageBox::create_sdl_button_data() const noexcept {
+CENTURION_DEF
+std::vector<SDL_MessageBoxButtonData> MessageBox::create_buttons()
+    const noexcept
+{
   std::vector<SDL_MessageBoxButtonData> result;
-  result.reserve(buttons.size());
+  result.reserve(m_buttons.size());
 
-  for (const auto& b : buttons) {
+  for (const auto& b : m_buttons) {
     result.push_back(b);
   }
 
   return result;
 }
 
-SDL_MessageBoxData MessageBox::create_sdl_message_box_data(SDL_Window* window,
-                                                           const SDL_MessageBoxButtonData* data,
-                                                           const SDL_MessageBoxColorScheme*
-                                                           scheme) const noexcept {
-  return {
-      static_cast<SDL_MessageBoxFlags>(type),
-      window,
-      title.c_str(),
-      message.c_str(),
-      static_cast<int>(buttons.size()),
-      data,
-      scheme
-  };
+CENTURION_DEF
+SDL_MessageBoxData MessageBox::create_data(
+    SDL_Window* window,
+    const SDL_MessageBoxButtonData* data,
+    const SDL_MessageBoxColorScheme* scheme) const noexcept
+{
+  const auto flags = static_cast<Uint32>(m_config->type) |
+                     static_cast<Uint32>(m_config->buttonOrder);
+  return {flags,
+          window,
+          m_title,
+          m_message,
+          static_cast<int>(m_buttons.size()),
+          data,
+          scheme};
 }
 
-int MessageBox::show(SDL_Window* window) {
-  if (buttons.empty()) {
-    buttons.emplace_back(ButtonDataHint::ReturnKey, 0, "OK");
+CENTURION_DEF
+int MessageBox::show(SDL_Window* window)
+{
+  if (m_buttons.empty()) {
+    m_buttons.emplace_back(
+        create_button_data(ButtonDataHint::ReturnKey, 0, "OK"));
   }
 
-  const auto sdl_buttonData = create_sdl_button_data();
-  const SDL_MessageBoxButtonData* buttonDataFront = &sdl_buttonData.front();
+  const auto buttons = create_buttons();
 
-  const SDL_MessageBoxColorScheme* sdl_colorScheme = nullptr;
-  if (colorScheme) {
-    auto& scheme = colorScheme.value();
-    sdl_colorScheme = &scheme.get();
+  Optional<SDL_MessageBoxColorScheme> optScheme;
+  if (m_colorScheme) {
+    optScheme.emplace(m_colorScheme->convert());
   }
 
-  const auto data = create_sdl_message_box_data(window, buttonDataFront, sdl_colorScheme);
+  const auto scheme = optScheme ? &*optScheme : nullptr;
+  const auto data = create_data(window, &buttons.front(), scheme);
 
   int button = -1;
-  if (SDL_ShowMessageBox(&data, &button) < 0) {
-    throw CenturionException("Failed to show message box! " + Error::msg());
+  if (SDL_ShowMessageBox(&data, &button) == -1) {
+    throw detail::Error::from_core("Failed to show message box!");
   }
 
-  return button; // TODO consider returning std::optional<int> instead
+  return button;
 }
 
-void MessageBox::show(const std::string& title,
-                      const std::string& message,
-                      MessageBoxID type,
-                      SDL_Window* window) noexcept {
-  SDL_ShowSimpleMessageBox(static_cast<uint32_t>(type), title.c_str(), message.c_str(), window);
+CENTURION_DEF
+void MessageBox::show(CZString title,
+                      CZString message,
+                      const MessageBoxConfig& config,
+                      SDL_Window* window) noexcept
+{
+  const auto flags = static_cast<Uint32>(config.type) |
+                     static_cast<Uint32>(config.buttonOrder);
+  SDL_ShowSimpleMessageBox(flags,
+                           title ? title : "Centurion message box",
+                           message ? message : "N/A",
+                           window);
 }
 
-void MessageBox::add_button(ButtonDataHint hint, int id, std::string text) noexcept {
-  buttons.emplace_back(hint, id, std::move(text));
+CENTURION_DEF
+void MessageBox::add_button(ButtonDataHint hint, int id, CZString text) noexcept
+{
+  m_buttons.emplace_back(create_button_data(hint, id, text));
 }
 
-void MessageBox::set_title(const std::string& title) noexcept {
-  this->title = title;
+CENTURION_DEF
+void MessageBox::set_title(CZString title) noexcept
+{
+  m_title = title ? title : m_title;
 }
 
-void MessageBox::set_message(const std::string& message) noexcept {
-  this->message = message;
+CENTURION_DEF
+void MessageBox::set_message(CZString message) noexcept
+{
+  m_message = message ? message : m_message;
 }
 
-void MessageBox::set_type(MessageBoxID type) noexcept {
-  this->type = type;
+CENTURION_DEF
+void MessageBox::set_type(Type type) noexcept
+{
+  m_config->type = type;
 }
 
-void MessageBox::set_color_scheme(std::optional<ColorScheme> scheme) noexcept {
-  this->colorScheme = std::move(scheme);
+CENTURION_DEF
+void MessageBox::set_button_order(ButtonOrder order) noexcept
+{
+  m_config->buttonOrder = order;
 }
 
-MessageBoxID MessageBox::get_type() const noexcept {
-  return type;
+CENTURION_DEF
+void MessageBox::set_color_scheme(Optional<ColorScheme> scheme) noexcept
+{
+  this->m_colorScheme = scheme;
 }
 
-bool operator==(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept {
-  return static_cast<SDL_MessageBoxButtonFlags>(a) == b;
+CENTURION_DEF
+MessageBox::Type MessageBox::type() const noexcept
+{
+  return m_config->type;
 }
 
-bool operator==(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept {
-  return a == static_cast<SDL_MessageBoxButtonFlags>(b);
+CENTURION_DEF
+MessageBox::ButtonOrder MessageBox::button_order() const noexcept
+{
+  return m_config->buttonOrder;
 }
 
-bool operator!=(ButtonDataHint a, SDL_MessageBoxButtonFlags b) noexcept {
-  return static_cast<SDL_MessageBoxButtonFlags>(a) != b;
+CENTURION_DEF
+bool operator==(ButtonDataHint lhs, SDL_MessageBoxButtonFlags rhs) noexcept
+{
+  return static_cast<SDL_MessageBoxButtonFlags>(lhs) == rhs;
 }
 
-bool operator!=(SDL_MessageBoxButtonFlags a, ButtonDataHint b) noexcept {
-  return a != static_cast<SDL_MessageBoxButtonFlags>(b);
+CENTURION_DEF
+bool operator==(SDL_MessageBoxButtonFlags lhs, ButtonDataHint rhs) noexcept
+{
+  return lhs == static_cast<SDL_MessageBoxButtonFlags>(rhs);
 }
 
-bool operator==(SDL_MessageBoxColorType a, ColorType b) noexcept {
-  return a == static_cast<SDL_MessageBoxColorType>(b);
+CENTURION_DEF
+bool operator!=(ButtonDataHint lhs, SDL_MessageBoxButtonFlags rhs) noexcept
+{
+  return !(lhs == rhs);
 }
 
-bool operator==(ColorType a, SDL_MessageBoxColorType b) noexcept {
-  return static_cast<SDL_MessageBoxColorType>(a) == b;
+CENTURION_DEF
+bool operator!=(SDL_MessageBoxButtonFlags lhs, ButtonDataHint rhs) noexcept
+{
+  return !(lhs == rhs);
 }
 
-bool operator!=(SDL_MessageBoxColorType a, ColorType b) noexcept {
-  return a != static_cast<SDL_MessageBoxColorType>(b);
+CENTURION_DEF
+bool operator==(SDL_MessageBoxColorType lhs, ColorType rhs) noexcept
+{
+  return lhs == static_cast<SDL_MessageBoxColorType>(rhs);
 }
 
-bool operator!=(ColorType a, SDL_MessageBoxColorType b) noexcept {
-  return static_cast<SDL_MessageBoxColorType>(a) != b;
+CENTURION_DEF
+bool operator==(ColorType lhs, SDL_MessageBoxColorType rhs) noexcept
+{
+  return static_cast<SDL_MessageBoxColorType>(lhs) == rhs;
 }
 
-bool operator==(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
-  return static_cast<SDL_MessageBoxFlags>(a) == b;
+CENTURION_DEF
+bool operator!=(SDL_MessageBoxColorType lhs, ColorType rhs) noexcept
+{
+  return !(lhs == rhs);
 }
 
-bool operator==(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
-  return a == static_cast<SDL_MessageBoxFlags>(b);
+CENTURION_DEF
+bool operator!=(ColorType lhs, SDL_MessageBoxColorType rhs) noexcept
+{
+  return !(lhs == rhs);
 }
 
-bool operator!=(MessageBoxID a, SDL_MessageBoxFlags b) noexcept {
-  return static_cast<SDL_MessageBoxFlags>(a) != b;
-}
+}  // namespace messagebox
+}  // namespace centurion
 
-bool operator!=(SDL_MessageBoxFlags a, MessageBoxID b) noexcept {
-  return a != static_cast<SDL_MessageBoxFlags>(b);
-}
-
-}
+#endif  // CENTURION_MESSAGE_BOX_SOURCE

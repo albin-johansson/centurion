@@ -1,20 +1,21 @@
-#include "catch.hpp"
-#include "event.h"
+#include "quit_event.h"
 
-using namespace centurion;
+#include <catch.hpp>
+
 using namespace centurion::event;
 
-TEST_CASE("QuitEvent(SDL_QuitEvent)", "[QuitEvent]") {
-  SDL_QuitEvent sdlEvent{};
-  CHECK_NOTHROW(QuitEvent{sdlEvent});
+TEST_CASE("QuitEvent()", "[QuitEvent]")
+{
+  CHECK_NOTHROW(QuitEvent{});
 }
 
-TEST_CASE("QuitEvent::get_time", "[QuitEvent]") {
-  const auto time = 8191278U;
-  const auto event = [time]() noexcept {
-    SDL_QuitEvent sdlEvent{};
-    sdlEvent.timestamp = time;
-    return QuitEvent{sdlEvent};
-  }();
-  CHECK(event.get_time() == time);
+TEST_CASE("QuitEvent(const SDL_QuitEvent&)", "[QuitEvent]")
+{
+  SDL_QuitEvent qEvent;
+  CHECK_NOTHROW(QuitEvent{qEvent});
+}
+
+TEST_CASE("QuitEvent(SDL_QuitEvent&&)", "[QuitEvent]")
+{
+  CHECK_NOTHROW(QuitEvent{{}});
 }

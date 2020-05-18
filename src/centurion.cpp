@@ -1,73 +1,114 @@
+#ifndef CENTURION_CENTURION_SOURCE
+#define CENTURION_CENTURION_SOURCE
+
 #include "centurion.h"
-#include "centurion_exception.h"
+
+#include "error.h"
 
 namespace centurion {
 
-void Centurion::init_sdl() {
-#ifndef CENTURION_NOAUDIO
-  if (const auto result = SDL_Init(SDL_INIT_EVERYTHING); result < 0) {
-    throw CenturionException{"Failed to load SDL2! " + Error::msg()};
-  }
-#else
-  if (const auto result = SDL_Init(SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO); result < 0) {
-    throw CenturionException{"Failed to load SDL2! " + Error::msg()};
-  }
-#endif
-}
-
-void Centurion::init_ttf() {
-  if (const auto result = TTF_Init(); result == -1) {
-    throw CenturionException{"Failed to load SDL2_ttf! " + Error::msg()};
+CENTURION_DEF
+void Centurion::init_sdl()
+{
+  const auto result = SDL_Init(cfg.coreFlags);
+  if (result < 0) {
+    throw detail::Error::from_core("Failed to load SDL2!");
   }
 }
 
-void Centurion::init_img() {
-  if (const auto flags = IMG_Init(img_flags); !flags) {
-    throw CenturionException{"Failed to load SDL2_image! " + Error::msg()};
+CENTURION_DEF
+void Centurion::init_ttf()
+{
+  const auto result = TTF_Init();
+  if (result == -1) {
+    throw detail::Error::from_ttf("Failed to load SDL2_ttf!");
   }
 }
 
-void Centurion::init_mix() {
-  if (const auto flags = Mix_Init(mix_flags); !flags) {
-    throw CenturionException{"Failed to init SDL2_mixer! " + Error::msg()};
-  }
-
-  if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096) == -1) {
-    throw CenturionException{"Failed to open audio! " + Error::msg()};
+CENTURION_DEF
+void Centurion::init_img()
+{
+  const auto flags = IMG_Init(cfg.imageFlags);
+  if (!flags) {
+    throw detail::Error::from_image("Failed to load SDL2_image!");
   }
 }
 
-Centurion::Centurion() {
+CENTURION_DEF
+void Centurion::init_mix()
+{
+  const auto flags = Mix_Init(cfg.mixerFlags);
+  if (!flags) {
+    throw detail::Error::from_mixer("Failed to load SDL2_mixer!");
+  }
+
+  if (Mix_OpenAudio(cfg.mixerFreq,
+                    cfg.mixerFormat,
+                    cfg.mixerChannels,
+                    cfg.mixerChunkSize) == -1) {
+    throw detail::Error::from_mixer("Failed to open audio!");
+  }
+}
+
+CENTURION_DEF
+Centurion::Centurion()
+{
   init();
 }
 
-Centurion::~Centurion() noexcept {
+CENTURION_DEF
+Centurion::Centurion(const CenturionConfig& cfg_) : cfg{cfg_}
+{
+  init();
+}
+
+CENTURION_DEF
+Centurion::~Centurion() noexcept
+{
   close();
 }
 
-void Centurion::init() {
-  if (!wasInit) {
+CENTURION_DEF
+void Centurion::init()
+{
+  if (cfg.initCore) {
     init_sdl();
+  }
+
+  if (cfg.initImage) {
     init_img();
+  }
+
+  if (cfg.initTTF) {
     init_ttf();
-#ifndef CENTURION_NOAUDIO
+  }
+
+  if (cfg.initMixer) {
     init_mix();
-#endif
-    wasInit = true;
   }
 }
 
-void Centurion::close() noexcept {
-  if (wasInit) {
+CENTURION_DEF
+void Centurion::close() noexcept
+{
+  if (cfg.initImage) {
     IMG_Quit();
+  }
+
+  if (cfg.initTTF) {
     TTF_Quit();
-#ifndef CENTURION_NOAUDIO
+  }
+
+  if (cfg.initMixer) {
     Mix_CloseAudio();
     Mix_Quit();
-#endif
+  }
+
+  if (cfg.initCore) {
     SDL_Quit();
-    wasInit = false;
   }
 }
 
-}
+}  // namespace centurion
+
+#endif  // CENTURION_CENTURION_SOURCE

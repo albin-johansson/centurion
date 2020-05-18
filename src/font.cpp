@@ -156,6 +156,12 @@ void Font::set_font_hinting(Font::Hint hint) noexcept
 }
 
 CENTURION_DEF
+void Font::set_kerning(bool kerning) noexcept
+{
+  TTF_SetFontKerning(m_font, kerning ? 1 : 0);
+}
+
+CENTURION_DEF
 bool Font::bold() const noexcept
 {
   return m_style & TTF_STYLE_BOLD;
@@ -192,6 +198,38 @@ bool Font::is_fixed_width() const noexcept
 }
 
 CENTURION_DEF
+int Font::kerning_amount(Uint16 firstGlyph, Uint16 secondGlyph) const noexcept
+{
+  const auto amount =
+      TTF_GetFontKerningSizeGlyphs(m_font, firstGlyph, secondGlyph);
+  return amount;
+}
+
+CENTURION_DEF
+bool Font::is_glyph_provided(Uint16 glyph) const noexcept
+{
+  return TTF_GlyphIsProvided(m_font, glyph);
+}
+
+CENTURION_DEF
+Optional<GlyphMetrics> Font::glyph_metrics(Uint16 glyph) const noexcept
+{
+  GlyphMetrics metrics;
+  const auto result = TTF_GlyphMetrics(m_font,
+                                       glyph,
+                                       &metrics.minX,
+                                       &metrics.maxX,
+                                       &metrics.minY,
+                                       &metrics.maxY,
+                                       &metrics.advance);
+  if (result != -1) {
+    return metrics;
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
 int Font::string_width(CZString s) const noexcept
 {
   int width = 0;
@@ -205,6 +243,15 @@ int Font::string_height(CZString s) const noexcept
   int height = 0;
   TTF_SizeText(m_font, s, nullptr, &height);
   return height;
+}
+
+CENTURION_DEF
+Area Font::string_size(CZString s) const noexcept
+{
+  int width = 0;
+  int height = 0;
+  TTF_SizeText(m_font, s, &width, &height);
+  return {width, height};
 }
 
 CENTURION_DEF
@@ -244,6 +291,12 @@ Font::Hint Font::font_hinting() const noexcept
 }
 
 CENTURION_DEF
+bool Font::kerning() const noexcept
+{
+  return TTF_GetFontKerning(m_font);
+}
+
+CENTURION_DEF
 CZString Font::family_name() const noexcept
 {
   return TTF_FontFaceFamilyName(m_font);
@@ -253,6 +306,14 @@ CENTURION_DEF
 CZString Font::style_name() const noexcept
 {
   return TTF_FontFaceStyleName(m_font);
+}
+
+CENTURION_DEF
+SDL_version Font::ttf_version() noexcept
+{
+  SDL_version version;
+  SDL_TTF_VERSION(&version);
+  return version;
 }
 
 CENTURION_DEF

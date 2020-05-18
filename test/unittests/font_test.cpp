@@ -170,6 +170,17 @@ TEST_CASE("Font::set_font_hinting", "[Font]")
   }
 }
 
+TEST_CASE("Font::set_kerning", "[Font]")
+{
+  Font font{daniel_path, 12};
+
+  font.set_kerning(true);
+  CHECK(font.kerning());
+
+  font.set_kerning(false);
+  CHECK(!font.kerning());
+}
+
 TEST_CASE("Font::size", "[Font]")
 {
   const auto size = 12;
@@ -188,11 +199,37 @@ TEST_CASE("Font::height", "[Font]")
 
 TEST_CASE("Font::is_fixed_width", "[Font]")
 {
-  Font fira_code{fira_code_path, 12};  // Fixed width
-  Font daniel{daniel_path, 12};        // Not fixed width
+  Font firaCode{fira_code_path, 12};  // Fixed width
+  Font daniel{daniel_path, 12};       // Not fixed width
 
-  CHECK(fira_code.is_fixed_width());
+  CHECK(firaCode.is_fixed_width());
   CHECK(!daniel.is_fixed_width());
+}
+
+TEST_CASE("Font::kerning_amount", "[Font]")
+{
+  Font font{daniel_path, 36};
+  font.set_kerning(true);
+
+  const auto a = font.kerning_amount('A', 'A');
+  CHECK(a == 0);
+
+  // TODO test font with heavier kerning
+}
+
+TEST_CASE("Font::glyph_metrics", "[Font]")
+{
+  Font font{daniel_path, 12};
+  const auto metrics = font.glyph_metrics('A');
+  CHECK(metrics);
+}
+
+TEST_CASE("Font::is_glyph_available", "[Font]")
+{
+  Font firaCode{fira_code_path, 12};
+
+  CHECK(firaCode.is_glyph_provided('A'));
+  CHECK(firaCode.is_glyph_provided(0x003D));  // U+003D is an equal sign
 }
 
 TEST_CASE("Font::family_name", "[Font]")
@@ -211,12 +248,33 @@ TEST_CASE("Font::string_width", "[Font]")
 {
   const Font font{type_writer_path, 12};
   CHECK(font.string_width("foo") > 0);
+  CHECK(font.string_width(nullptr) == 0);
 }
 
 TEST_CASE("Font::string_height", "[Font]")
 {
   const Font font{type_writer_path, 12};
   CHECK(font.string_height("foo") > 0);
+  CHECK(font.string_height(nullptr) == 0);
+}
+
+TEST_CASE("Font::string_size", "[Font]")
+{
+  const Font font{type_writer_path, 12};
+
+  SECTION("Normal string")
+  {
+    const auto size = font.string_size("bar");
+    CHECK(size.width > 0);
+    CHECK(size.height > 0);
+  }
+
+  SECTION("Null string")
+  {
+    const auto size = font.string_size(nullptr);
+    CHECK(size.width == 0);
+    CHECK(size.height == 0);
+  }
 }
 
 TEST_CASE("Font::font_faces", "[Font]")
@@ -229,6 +287,12 @@ TEST_CASE("Font::font_hinting", "[Font]")
 {
   const Font font{type_writer_path, 12};
   CHECK(font.font_hinting() == Font::Hint::Normal);
+}
+
+TEST_CASE("Font::kerning", "[Font]")
+{
+  const Font font{daniel_path, 12};
+  CHECK(font.kerning());
 }
 
 TEST_CASE("Font::line_skip", "[Font]")
@@ -247,6 +311,18 @@ TEST_CASE("Font::descent", "[Font]")
 {
   const Font font{type_writer_path, 12};
   CHECK(font.descent() < 0);
+}
+
+TEST_CASE("Font::ttf_version", "[Font]")
+{
+  SDL_version sdl;
+  SDL_TTF_VERSION(&sdl);
+
+  const SDL_version v = Font::ttf_version();
+
+  CHECK(sdl.major == v.major);
+  CHECK(sdl.minor == v.minor);
+  CHECK(sdl.patch == v.patch);
 }
 
 TEST_CASE("Font::to_string", "[Font]")

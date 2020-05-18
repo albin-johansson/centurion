@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_FONT
-#define CENTURION_FONT
+#ifndef CENTURION_FONT_HEADER
+#define CENTURION_FONT_HEADER
 
 #include <SDL_ttf.h>
 
@@ -32,11 +32,25 @@
 #include <string>
 #include <type_traits>
 
+#include "area.h"
 #include "centurion_api.h"
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 
 namespace centurion {
+
+/**
+ * The GlyphMetrics struct provides metrics about a glyph in a font.
+ *
+ * @since 4.0.0
+ */
+struct GlyphMetrics final {
+  int minX;
+  int minY;
+  int maxX;
+  int maxY;
+  int advance;
+};
 
 /**
  * The Font class represents a TrueType font.
@@ -185,6 +199,16 @@ class Font final {
   CENTURION_API void set_font_hinting(Hint hint) noexcept;
 
   /**
+   * Sets whether or not font kerning is allowed. Kerning is the process of
+   * adjusting the spacing between certain characters in order to improve the
+   * appearance of a font.
+   *
+   * @param kerning true if kerning should be allowed; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_API void set_kerning(bool kerning) noexcept;
+
+  /**
    * Returns the maximum height of a character in this font. This is usually the
    * same as the point size.
    *
@@ -244,6 +268,15 @@ class Font final {
   CENTURION_API Hint font_hinting() const noexcept;
 
   /**
+   * Indicates whether or not kerning is being used.
+   *
+   * @return true if kerning is being used by the font; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool kerning() const noexcept;
+
+  /**
    * Indicates whether or not the font is bold.
    *
    * @return true if the font is bold; false otherwise.
@@ -298,6 +331,43 @@ class Font final {
   CENTURION_API bool is_fixed_width() const noexcept;
 
   /**
+   * Returns the kerning amount between two glyphs in the font, if kerning
+   * would be enabled. In other words, you can use this method to obtain the
+   * kerning amount between, for instance, the characters 'a' and 'V' if they
+   * were to be rendered next to each other.
+   *
+   * @param firstGlyph the first glyph.
+   * @param secondGlyph the second glyph.
+   * @return the kerning amount between to glyphs in the font.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API int kerning_amount(Uint16 firstGlyph,
+                                   Uint16 secondGlyph) const noexcept;
+
+  /**
+   * Indicates whether or not the specified glyph is available in the font.
+   *
+   * @param glyph the unicode glyph that will be checked.
+   * @return true if the glyph is available in the font; false otherwise.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool is_glyph_provided(Uint16 glyph) const noexcept;
+
+  /**
+   * Returns the metrics of the specified glyph in this font.
+   *
+   * @param glyph the glyph to obtain the metrics of.
+   * @return the metrics of the specified glyph; nothing if the metrics
+   * couldn't be obtained.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<GlyphMetrics> glyph_metrics(Uint16 glyph) const noexcept;
+
+  /**
    * Returns the family name of the font.
    *
    * @return the family name of the font.
@@ -323,7 +393,7 @@ class Font final {
    *
    * @param s the string to determine the width of.
    * @return the width of the supplied string, if it was rendered using the
-   * font.
+   * font. The returned value is 0 if the string is null.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -335,11 +405,31 @@ class Font final {
    *
    * @param s the string to determine the height of.
    * @return the height of the supplied string, if it was rendered using the
-   * font.
+   * font. The returned value is 0 if the string is null.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
   CENTURION_API int string_height(CZString s) const noexcept;
+
+  /**
+   * Returns the size of the supplied string, if it was rendered using the font.
+   *
+   * @param s the string to determine the size of.
+   * @return the size of the string, if it was rendered using the font. The
+   * returned size is 0x0 if the supplied string is null.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API Area string_size(CZString s) const noexcept;
+
+  /**
+   * Returns the compile-time version of SDL2_ttf that is being used.
+   *
+   * @return the compile-time version of SDL2_ttf that is being used.
+   * @since 4.0.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static SDL_version ttf_version() noexcept;
 
   /**
    * Returns a textual representation of the font instance.
@@ -455,4 +545,4 @@ static_assert(std::is_convertible<Font, TTF_Font*>::value,
 #include "font.cpp"
 #endif
 
-#endif  // CENTURION_FONT
+#endif  // CENTURION_FONT_HEADER

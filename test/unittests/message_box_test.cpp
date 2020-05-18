@@ -55,8 +55,6 @@ TEST_CASE("ColorScheme::set_color", "[ColorScheme]")
   CHECK(sdlScheme.colors[index(ColorType::ButtonBackground)] == color::azure);
   CHECK(sdlScheme.colors[index(ColorType::ButtonBorder)] == color::tomato);
   CHECK(sdlScheme.colors[index(ColorType::ButtonSelected)] == color::cornsilk);
-
-  CHECK(&scheme.get());
 }
 
 TEST_CASE("MessageBox()", "[MessageBox]")

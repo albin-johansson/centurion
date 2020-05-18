@@ -7,8 +7,6 @@
 
 namespace centurion {
 
-// TODO check Mix documentation if there are any redundancies
-
 CENTURION_DEF
 SoundEffect::SoundEffect(CZString file)
 {

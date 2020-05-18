@@ -45,12 +45,6 @@ void ColorScheme::set_color(ColorType type, const Color& color) noexcept
 }
 
 CENTURION_DEF
-const SDL_MessageBoxColorScheme& ColorScheme::get() const noexcept
-{
-  return m_scheme;
-}
-
-CENTURION_DEF
 SDL_MessageBoxColorScheme ColorScheme::convert() const noexcept
 {
   return m_scheme;
@@ -111,9 +105,14 @@ int MessageBox::show(SDL_Window* window)
   }
 
   const auto buttons = create_buttons();
-  // FIXME get call
-  const auto* colorScheme = m_colorScheme ? &m_colorScheme->get() : nullptr;
-  const auto data = create_data(window, &buttons.front(), colorScheme);
+
+  Optional<SDL_MessageBoxColorScheme> optScheme;
+  if (m_colorScheme) {
+    optScheme.emplace(m_colorScheme->convert());
+  }
+
+  const auto scheme = optScheme ? &*optScheme : nullptr;
+  const auto data = create_data(window, &buttons.front(), scheme);
 
   int button = -1;
   if (SDL_ShowMessageBox(&data, &button) == -1) {

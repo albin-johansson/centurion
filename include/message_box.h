@@ -186,16 +186,6 @@ class ColorScheme final {
   void set_color(ColorType type, const Color& color) noexcept;
 
   /**
-   * Returns the internal SDL_MessageBoxColorScheme.
-   *
-   * @return the internal SDL_MessageBoxColorScheme.
-   * @since 3.0.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API
-  const SDL_MessageBoxColorScheme& get() const noexcept;  // FIXME remove
-
-  /**
    * Creates and returns the SDL_MessageBoxColorScheme equivalent of the color
    * scheme
    *

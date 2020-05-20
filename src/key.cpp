@@ -18,6 +18,14 @@ Key::Key(SDL_Keycode keycode) noexcept
 }
 
 CENTURION_DEF
+Key::Key(CZString name) noexcept : Key{}
+{
+  if (name) {
+    set(SDL_GetScancodeFromName(name));
+  }
+}
+
+CENTURION_DEF
 Key::Key(SDL_Scancode scancode) noexcept
 {
   set(scancode);
@@ -35,6 +43,12 @@ void Key::set(SDL_Keycode keycode) noexcept
 {
   m_scancode = SDL_GetScancodeFromKey(keycode);
   m_keycode = keycode;
+}
+
+CENTURION_DEF
+std::string Key::name() const noexcept
+{
+  return SDL_GetScancodeName(m_scancode);
 }
 
 CENTURION_DEF

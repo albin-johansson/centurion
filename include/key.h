@@ -28,9 +28,8 @@
 #include <SDL_keycode.h>
 #include <SDL_scancode.h>
 
-#include <type_traits>
-
 #include "centurion_api.h"
+#include "centurion_utils.h"
 
 namespace centurion {
 
@@ -69,6 +68,17 @@ class Key final {
   CENTURION_API Key(SDL_Keycode keycode) noexcept;
 
   /**
+   * Creates a Key instance from the specified key name. If no key is
+   * associated with the specified name, then the created instance will
+   * assume the key- and scancodes that represent an unknown key.
+   *
+   * @param name the name of the key that the created instance will
+   * represent, can safely be null.
+   * @since 4.1.0
+   */
+  CENTURION_API explicit Key(CZString name) noexcept;
+
+  /**
    * Sets the value of the key.
    *
    * @param scancode the scancode of the key that the key instance will
@@ -85,6 +95,18 @@ class Key final {
    * @since 4.0.0
    */
   CENTURION_API void set(SDL_Keycode keycode) noexcept;
+
+  /**
+   * Returns the name of the key associated with the Key instance. This
+   * method returns the empty string if no name is found to be associated with
+   * the key that the Key instance represents.
+   *
+   * @return the name of the key associated with this Key instance; the empty
+   * string if the name couldn't be deduced.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API std::string name() const noexcept;
 
   /**
    * Returns the scancode associated with the key.

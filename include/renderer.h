@@ -28,9 +28,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include <memory>
-#include <string>
-#include <type_traits>
+#include <unordered_map>
 #include <vector>
 
 #include "area.h"
@@ -158,6 +156,41 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_API void present() noexcept;
+
+  /**
+   * Adds a font to the renderer. This method has no effect if the specified
+   * name is already taken or if the supplied font is null.
+   *
+   * @param name the name that will be associated with the font, should
+   * preferably be quite short.
+   * @param font the font that will be added, can safely be null.
+   * @since 4.1.0
+   */
+  CENTURION_API void add_font(const std::string& name,
+                              const SharedPtr<Font>& font) noexcept;
+
+  /**
+   * Adds a font to the renderer. This method has no effect if the name of
+   * the font is already taken or if the supplied font is null. This method
+   * will return the name that was associated with the font if adding the
+   * font was successful.
+   *
+   * @param font the font that will be added, can safely be null.
+   * @return the name associated with the supplied font if successful;
+   * nothing otherwise.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<std::string> add_font(const SharedPtr<Font>& font) noexcept;
+
+  /**
+   * Removes the font associated with the specified name.
+   *
+   * @param name the name associated with the font that will be removed.
+   * @since 4.1.0
+   */
+  CENTURION_API void remove_font(const std::string& name) noexcept;
 
   /**
    * Renders an outlined rectangle in the currently selected color.
@@ -964,6 +997,43 @@ class Renderer final {
   UniquePtr<Texture> text_solid(CZString text, const Font& font) const noexcept;
 
   /**
+   * Returns the font associated with the specified name. This method returns
+   * null if there is no font associated with the specified name.
+   *
+   * @param name the name associated with the desired font.
+   * @return the font associated with the specified name; null if there is no
+   * such font.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API SharedPtr<Font> font(const std::string& name) noexcept;
+
+  /**
+   * Returns the font associated with the specified name. This method returns
+   * null if there is no font associated with the specified name.
+   *
+   * @param name the name associated with the desired font.
+   * @return the font associated with the specified name; null if there is no
+   * such font.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API const SharedPtr<Font> font(
+      const std::string& name) const noexcept;
+
+  /**
+   * Indicates whether or not the renderer has a font associated with the
+   * specified name.
+   *
+   * @param name the name that will be checked.
+   * @return true if the renderer has a font associated with the specified
+   * name; false otherwise.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool has_font(const std::string& name) const noexcept;
+
+  /**
    * Returns the viewport that the renderer uses.
    *
    * @return the viewport that the renderer uses.
@@ -1058,6 +1128,7 @@ class Renderer final {
  private:
   SDL_Renderer* m_renderer = nullptr;
   FRect m_translationViewport = {0, 0, 0, 0};
+  std::unordered_map<std::string, SharedPtr<Font>> m_fonts;
 
   static constexpr SDL_RendererFlags defaultFlags =
       static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |

@@ -133,6 +133,66 @@ TEST_CASE("Renderer::present", "[Renderer]")
   CHECK_NOTHROW(renderer.present());
 }
 
+TEST_CASE("Renderer::add_font(const std::string&, const SharedPtr<Font>&)",
+          "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+
+  SECTION("Bad arguments") { CHECK_NOTHROW(renderer.add_font("", nullptr)); }
+
+  SECTION("Normal arguments")
+  {
+    auto font = Font::shared("resources/daniel.ttf", 12);
+    const auto fontName = font->family_name();
+
+    renderer.add_font(fontName, font);
+    CHECK(renderer.has_font(fontName));
+    CHECK_NOTHROW(renderer.add_font(fontName, font));
+    CHECK(renderer.has_font(fontName));
+  }
+}
+
+TEST_CASE("Renderer::add_font(const SharedPtr<Font>&)", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+
+  SECTION("Bad arguments")
+  {
+    CHECK_NOTHROW(renderer.add_font(nullptr));
+    CHECK(!renderer.add_font(nullptr));
+  }
+
+  SECTION("Normal arguments")
+  {
+    auto font = Font::shared("resources/daniel.ttf", 12);
+    const auto fontName = font->family_name();
+
+    const auto name = renderer.add_font(font);
+    CHECK(name);
+    CHECK(*name == fontName);
+
+    CHECK(!renderer.add_font(font));
+  }
+}
+
+TEST_CASE("Renderer::remove_font", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  const std::string name = "foo";
+  const auto font = Font::shared("resources/daniel.ttf", 12);
+
+  CHECK_NOTHROW(renderer.remove_font(""));
+
+  renderer.add_font(name, font);
+  CHECK(renderer.has_font(name));
+
+  renderer.remove_font(name);
+  CHECK(!renderer.has_font(name));
+}
+
 TEST_CASE("Renderer::draw_rect", "[Renderer]")
 {
   Window window;
@@ -461,9 +521,8 @@ TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, SDL_RendererFlip)",
                                    SDL_FLIP_HORIZONTAL));
 }
 
-TEST_CASE(
-    "Renderer::render_tf(Texture&, IRect&, FRect&, double, "
-    "[Renderer]")
+TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double, ",
+          "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
@@ -718,6 +777,44 @@ TEST_CASE("Renderer::text_solid", "[Renderer]")
   CHECK(!renderer.text_solid(nullptr, font));
   CHECK(!renderer.text_solid("", font));
   CHECK(renderer.text_solid("Hello", font));
+}
+
+TEST_CASE("Renderer::font", "[Renderer]")
+{
+  const std::string name = "bar";
+  SECTION("Non-const")
+  {
+    Window window;
+    Renderer renderer{window};
+
+    CHECK(!renderer.font(name));
+
+    auto font = Font::shared("resources/daniel.ttf", 12);
+    renderer.add_font(name, font);
+
+    CHECK(renderer.font(name));
+
+    auto storedFont = renderer.font(name);
+    CHECK(storedFont);
+    CHECK(font == storedFont);
+  }
+  SECTION("Const")
+  {
+    Window window;
+    Renderer renderer{window};
+    const Renderer* cRenderer = &renderer;
+
+    CHECK(!cRenderer->font(name));
+
+    auto font = Font::shared("resources/daniel.ttf", 12);
+    renderer.add_font(name, font);
+
+    CHECK(cRenderer->font(name));
+
+    const auto storedFont = cRenderer->font(name);
+    CHECK(storedFont);
+    CHECK(font == storedFont);
+  }
 }
 
 TEST_CASE("Renderer::viewport", "[Renderer]")

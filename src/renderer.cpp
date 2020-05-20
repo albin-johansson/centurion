@@ -3,8 +3,6 @@
 
 #include "renderer.h"
 
-#include <SDL.h>
-
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "colors.h"
@@ -117,6 +115,37 @@ CENTURION_DEF
 void Renderer::present() noexcept
 {
   SDL_RenderPresent(m_renderer);
+}
+
+CENTURION_DEF
+void Renderer::add_font(const std::string& name,
+                        const SharedPtr<Font>& font) noexcept
+{
+  if (!name.empty() && font && !m_fonts.count(name)) {
+    m_fonts.emplace(name, font);
+  }
+}
+
+CENTURION_DEF
+Optional<std::string> Renderer::add_font(const SharedPtr<Font>& font) noexcept
+{
+  if (!font) {
+    return nothing;
+  }
+
+  const std::string name = font->family_name();
+  if (!name.empty() && !m_fonts.count(name)) {
+    m_fonts.emplace(name, font);
+    return name;
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+void Renderer::remove_font(const std::string& name) noexcept
+{
+  m_fonts.erase(name);
 }
 
 CENTURION_DEF
@@ -747,6 +776,32 @@ UniquePtr<Texture> Renderer::text_solid(CZString text,
   return render_text(text, [this, &font](CZString text) noexcept {
     return TTF_RenderText_Solid(font.get(), text, color());
   });
+}
+
+CENTURION_DEF
+SharedPtr<Font> Renderer::font(const std::string& name) noexcept
+{
+  if (m_fonts.count(name)) {
+    return m_fonts.at(name);
+  } else {
+    return nullptr;
+  }
+}
+
+CENTURION_DEF
+const SharedPtr<Font> Renderer::font(const std::string& name) const noexcept
+{
+  if (m_fonts.count(name)) {
+    return m_fonts.at(name);
+  } else {
+    return nullptr;
+  }
+}
+
+CENTURION_DEF
+bool Renderer::has_font(const std::string& name) const noexcept
+{
+  return m_fonts.count(name);
 }
 
 CENTURION_DEF

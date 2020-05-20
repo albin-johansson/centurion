@@ -43,7 +43,7 @@ class Renderer;
 
 /**
  * The <code>Surface</code> class represents a non-accelerated image. In most
- * cases, it's preferable to use the <code>Image</code> class instead.
+ * cases, it's preferable to use the <code>Texture</code> class instead.
  *
  * @since 4.0.0
  */

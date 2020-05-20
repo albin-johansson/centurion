@@ -109,6 +109,16 @@ class Key final {
   CENTURION_API std::string name() const noexcept;
 
   /**
+   * Indicates whether or not the Key instance is associated with a known key.
+   *
+   * @return true if no key is associated with the Key instance; false
+   * otherwise.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  bool unknown() const noexcept { return m_scancode == SDL_SCANCODE_UNKNOWN; }
+
+  /**
    * Returns the scancode associated with the key.
    *
    * @return the scancode associated with the key.

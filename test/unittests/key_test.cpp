@@ -86,6 +86,24 @@ TEST_CASE("Key::name", "[Key]")
   }
 }
 
+TEST_CASE("Key::unknown", "[Key]")
+{
+  SECTION("Known key")
+  {
+    Key key{SDL_SCANCODE_ESCAPE};
+    CHECK(!key.unknown());
+  }
+
+  SECTION("Unknown key")
+  {
+    Key key;
+    CHECK(key.unknown());
+
+    key.set(SDL_SCANCODE_UNKNOWN);
+    CHECK(key.unknown());
+  }
+}
+
 TEST_CASE("Key::scancode", "[Key]")
 {
   const Key key{SDL_SCANCODE_7};

@@ -782,39 +782,20 @@ TEST_CASE("Renderer::text_solid", "[Renderer]")
 TEST_CASE("Renderer::font", "[Renderer]")
 {
   const std::string name = "bar";
-  SECTION("Non-const")
-  {
-    Window window;
-    Renderer renderer{window};
 
-    CHECK(!renderer.font(name));
+  Window window;
+  Renderer renderer{window};
 
-    auto font = Font::shared("resources/daniel.ttf", 12);
-    renderer.add_font(name, font);
+  CHECK(!renderer.font(name));
 
-    CHECK(renderer.font(name));
+  auto font = Font::shared("resources/daniel.ttf", 12);
+  renderer.add_font(name, font);
 
-    auto storedFont = renderer.font(name);
-    CHECK(storedFont);
-    CHECK(font == storedFont);
-  }
-  SECTION("Const")
-  {
-    Window window;
-    Renderer renderer{window};
-    const Renderer* cRenderer = &renderer;
+  CHECK(renderer.font(name));
 
-    CHECK(!cRenderer->font(name));
-
-    auto font = Font::shared("resources/daniel.ttf", 12);
-    renderer.add_font(name, font);
-
-    CHECK(cRenderer->font(name));
-
-    const auto storedFont = cRenderer->font(name);
-    CHECK(storedFont);
-    CHECK(font == storedFont);
-  }
+  auto storedFont = renderer.font(name);
+  CHECK(storedFont);
+  CHECK(font == storedFont);
 }
 
 TEST_CASE("Renderer::viewport", "[Renderer]")

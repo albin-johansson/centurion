@@ -1009,19 +1009,6 @@ class Renderer final {
   CENTURION_API SharedPtr<Font> font(const std::string& name) noexcept;
 
   /**
-   * Returns the font associated with the specified name. This method returns
-   * null if there is no font associated with the specified name.
-   *
-   * @param name the name associated with the desired font.
-   * @return the font associated with the specified name; null if there is no
-   * such font.
-   * @since 4.1.0
-   */
-  CENTURION_NODISCARD
-  CENTURION_API const SharedPtr<Font> font(
-      const std::string& name) const noexcept;
-
-  /**
    * Indicates whether or not the renderer has a font associated with the
    * specified name.
    *

@@ -789,16 +789,6 @@ SharedPtr<Font> Renderer::font(const std::string& name) noexcept
 }
 
 CENTURION_DEF
-const SharedPtr<Font> Renderer::font(const std::string& name) const noexcept
-{
-  if (m_fonts.count(name)) {
-    return m_fonts.at(name);
-  } else {
-    return nullptr;
-  }
-}
-
-CENTURION_DEF
 bool Renderer::has_font(const std::string& name) const noexcept
 {
   return m_fonts.count(name);

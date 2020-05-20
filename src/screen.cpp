@@ -40,6 +40,14 @@ int Screen::height() noexcept
 }
 
 CENTURION_DEF
+Area Screen::size() noexcept
+{
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  return {mode.w, mode.h};
+}
+
+CENTURION_DEF
 int Screen::refresh_rate() noexcept
 {
   SDL_DisplayMode mode;

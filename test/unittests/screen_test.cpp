@@ -29,6 +29,16 @@ TEST_CASE("Screen::height", "[Screen]")
   CHECK(Screen::height() == mode.h);
 }
 
+TEST_CASE("Screen::size", "[Screen]")
+{
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+
+  const auto size = Screen::size();
+  CHECK(size.width == mode.w);
+  CHECK(size.height == mode.h);
+}
+
 TEST_CASE("Screen::refresh_rate", "[Screen]")
 {
   SDL_DisplayMode mode;

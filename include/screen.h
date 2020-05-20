@@ -25,6 +25,7 @@
 #ifndef CENTURION_SCREEN_HEADER
 #define CENTURION_SCREEN_HEADER
 
+#include "area.h"
 #include "centurion_api.h"
 #include "pixel_format.h"
 
@@ -75,6 +76,15 @@ class Screen final {
    */
   CENTURION_NODISCARD
   CENTURION_API static int height() noexcept;
+
+  /**
+   * Returns the size of the screen.
+   *
+   * @return the size of the screen.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static Area size() noexcept;
 
   /**
    * Returns the refresh rate of the screen.

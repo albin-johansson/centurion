@@ -95,7 +95,7 @@ class Renderer final {
    * @param renderer a raw pointer to the SDL_Renderer that the created renderer
    * will be based on, may not be null.
    * @return a unique pointer to a renderer.
-   * @throws invalid_argument if the supplied renderer is null.
+   * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -123,7 +123,7 @@ class Renderer final {
    * @param renderer a raw pointer to the SDL_Renderer that the created
    * renderer will be based on, may not be null.
    * @return a shared pointer to a renderer.
-   * @throws invalid_argument if the supplied renderer is null.
+   * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
   CENTURION_NODISCARD

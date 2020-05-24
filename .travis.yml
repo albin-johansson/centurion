@@ -94,6 +94,7 @@ before_script:
   - cd ..
 
 script:
+  - cd ${TRAVIS_BUILD_DIR}
   - mkdir -p build
   - cd build
 

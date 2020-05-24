@@ -225,6 +225,42 @@ class Renderer final {
   CENTURION_API void fill_rect_f(const FRect& rect) noexcept;
 
   /**
+   * Renders an outlined rectangle in the currently selected color. The rendered
+   * rectangle will be translated using the translation viewport.
+   *
+   * @param rect the rectangle that will be rendered.
+   * @since 4.1.0
+   */
+  CENTURION_API void draw_rect_t(const IRect& rect) noexcept;
+
+  /**
+   * Renders an outlined rectangle in the currently selected color. The rendered
+   * rectangle will be translated using the translation viewport.
+   *
+   * @param rect the rectangle that will be rendered.
+   * @since 4.1.0
+   */
+  CENTURION_API void draw_rect_tf(const FRect& rect) noexcept;
+
+  /**
+   * Renders a filled rectangle in the currently selected color. The rendered
+   * rectangle will be translated using the translation viewport.
+   *
+   * @param rect the rectangle that will be rendered.
+   * @since 4.1.0
+   */
+  CENTURION_API void fill_rect_t(const IRect& rect) noexcept;
+
+  /**
+   * Renders a filled rectangle in the currently selected color. The rendered
+   * rectangle will be translated using the translation viewport.
+   *
+   * @param rect the rectangle that will be rendered.
+   * @since 4.1.0
+   */
+  CENTURION_API void fill_rect_tf(const FRect& rect) noexcept;
+
+  /**
    * Draws a line in between the supplied points in the currently selected
    * color.
    *

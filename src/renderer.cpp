@@ -173,6 +173,30 @@ void Renderer::fill_rect_f(const FRect& rect) noexcept
 }
 
 CENTURION_DEF
+void Renderer::draw_rect_t(const IRect& rect) noexcept
+{
+  draw_rect({tx(rect.x()), ty(rect.y()), rect.width(), rect.height()});
+}
+
+CENTURION_DEF
+void Renderer::draw_rect_tf(const FRect& rect) noexcept
+{
+  draw_rect_f({tx(rect.x()), ty(rect.y()), rect.width(), rect.height()});
+}
+
+CENTURION_DEF
+void Renderer::fill_rect_t(const IRect& rect) noexcept
+{
+  fill_rect({tx(rect.x()), ty(rect.y()), rect.width(), rect.height()});
+}
+
+CENTURION_DEF
+void Renderer::fill_rect_tf(const FRect& rect) noexcept
+{
+  fill_rect_f({tx(rect.x()), ty(rect.y()), rect.width(), rect.height()});
+}
+
+CENTURION_DEF
 void Renderer::draw_line(const IPoint& start, const IPoint& end) noexcept
 {
   SDL_RenderDrawLine(m_renderer, start.x(), start.y(), end.x(), end.y());

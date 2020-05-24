@@ -221,6 +221,34 @@ TEST_CASE("Renderer::fill_rect_f", "[Renderer]")
   CHECK_NOTHROW(renderer.fill_rect_f({}));
 }
 
+TEST_CASE("Renderer::draw_rect_t", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  CHECK_NOTHROW(renderer.draw_rect_t({}));
+}
+
+TEST_CASE("Renderer::fill_rect_t", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  CHECK_NOTHROW(renderer.fill_rect_t({}));
+}
+
+TEST_CASE("Renderer::draw_rect_tf", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  CHECK_NOTHROW(renderer.draw_rect_tf({}));
+}
+
+TEST_CASE("Renderer::fill_rect_tf", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  CHECK_NOTHROW(renderer.fill_rect_tf({}));
+}
+
 TEST_CASE("Renderer::draw_line", "[Renderer]")
 {
   Window window;

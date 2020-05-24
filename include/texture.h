@@ -84,8 +84,6 @@ class Texture final {
    */
   CENTURION_API explicit Texture(Owner<SDL_Texture*> texture);
 
-  // TODO 4.1 Texture(Owner<SDL_Surface*> surface);
-
   /**
    * @param renderer the renderer that will be used to create the texture.
    * @param path the file path of the texture, may not be null.

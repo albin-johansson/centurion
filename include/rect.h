@@ -75,58 +75,65 @@ class Rect final {
    * @param height the height of the rectangle.
    * @since 4.0.0
    */
-  constexpr Rect(T x, T y, T width, T height) noexcept
+  constexpr Rect(T x, T y, T width, T height) noexcept  // TODO 4.1 deprecate
       : m_x{x}, m_y{y}, m_width{width}, m_height{height}
   {}
+
+  // TODO 4.1 add Rect(T, T, Area), maybe even Rect(Point<T>, Area)
 
   /**
    * Sets the x-coordinate of the rectangle.
    *
-   * @param rx the new x-coordinate of the rectangle.
+   * @param x the new x-coordinate of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_x(T rx) noexcept { m_x = rx; }
+  constexpr void set_x(T x) noexcept { m_x = x; }
 
   /**
    * Sets the y-coordinate of the rectangle.
    *
-   * @param ry the new y-coordinate of the rectangle.
+   * @param y the new y-coordinate of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_y(T ry) noexcept { m_y = ry; }
+  constexpr void set_y(T y) noexcept { m_y = y; }
 
   /**
    * Sets the width of the rectangle.
    *
-   * @param rwidth the new width of the rectangle.
+   * @param width the new width of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_width(T rwidth) noexcept { m_width = rwidth; }
+  constexpr void set_width(T width) noexcept { m_width = width; }
 
   /**
    * Sets the height of the rectangle.
    *
-   * @param rheight the new height of the rectangle.
+   * @param height the new height of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_height(T rheight) noexcept { m_height = rheight; }
+  constexpr void set_height(T height) noexcept { m_height = height; }
 
   /**
    * Sets all of the components of the rectangle.
    *
-   * @param rx the new x-coordinate of the rectangle.
-   * @param ry the new y-coordinate of the rectangle.
-   * @param rwidth the new width of the rectangle.
-   * @param rheight the new height of the rectangle.
+   * @param x the new x-coordinate of the rectangle.
+   * @param y the new y-coordinate of the rectangle.
+   * @param width the new width of the rectangle.
+   * @param height the new height of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set(T rx, T ry, T rwidth, T rheight) noexcept
+  constexpr void set(T x,
+                     T y,
+                     T width,
+                     T height) noexcept  // TODO 4.1 deprecate
   {
-    m_x = rx;
-    m_y = ry;
-    m_width = rwidth;
-    m_height = rheight;
+    m_x = x;
+    m_y = y;
+    m_width = width;
+    m_height = height;
   }
+
+  // TODO 4.1 add Rect::set(Point<T>, Area)
 
   /**
    * Copies all of the components of the supplied rectangle to the invoked

@@ -29,6 +29,9 @@
 
 namespace centurion {
 
+// TODO 4.1 add templated Area and add "using Area = Area<int>" for backwards
+//  compatibility
+
 /**
  * A simple struct that represents a width and a height.
  *

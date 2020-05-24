@@ -1169,6 +1169,62 @@ class Renderer final {
       return nullptr;
     }
   }
+
+  /**
+   * Returns the translated x-coordinate that corresponds to the supplied
+   * x-coordinate.
+   *
+   * @param x the x-coordinate that will be translated.
+   * @return the translated x-coordinate that corresponds to the supplied
+   * x-coordinate.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD int tx(int x) const noexcept
+  {
+    return x - static_cast<int>(m_translationViewport.x());
+  }
+
+  /**
+   * Returns the translated y-coordinate that corresponds to the supplied
+   * y-coordinate.
+   *
+   * @param y the y-coordinate that will be translated.
+   * @return the translated y-coordinate that corresponds to the supplied
+   * y-coordinate.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD int ty(int y) const noexcept
+  {
+    return y - static_cast<int>(m_translationViewport.y());
+  }
+
+  /**
+   * Returns the translated x-coordinate that corresponds to the supplied
+   * x-coordinate.
+   *
+   * @param x the x-coordinate that will be translated.
+   * @return the translated x-coordinate that corresponds to the supplied
+   * x-coordinate.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD float tx(float x) const noexcept
+  {
+    return x - m_translationViewport.x();
+  }
+
+  /**
+   * Returns the translated y-coordinate that corresponds to the supplied
+   * y-coordinate.
+   *
+   * @param y the y-coordinate that will be translated.
+   * @return the translated y-coordinate that corresponds to the supplied
+   * y-coordinate.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD float ty(float y) const noexcept
+  {
+    return y - m_translationViewport.y();
+  }
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

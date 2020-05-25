@@ -22,28 +22,100 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_DIMENSION_HEADER
-#define CENTURION_DIMENSION_HEADER
+#ifndef CENTURION_AREA_HEADER
+#define CENTURION_AREA_HEADER
+
+#include <type_traits>
 
 #include "centurion_api.h"
 
 namespace centurion {
 
-// TODO 4.1 add templated Area and add "using Area = Area<int>" for backwards
-//  compatibility
+template <typename T>
+struct TArea;
 
 /**
  * A simple struct that represents a width and a height.
  *
+ * @tparam T the type of the components of the Area, defaults to float.
  * @since 4.0.0
  */
-struct Area {
-  Area() noexcept = default;
-  Area(int width, int height) noexcept : width{width}, height{height} {}
-  int width = 0;
-  int height = 0;
+template <typename T = float>
+struct TArea {
+  constexpr TArea() noexcept = default;
+  constexpr TArea(T width, T height) noexcept : width{width}, height{height} {}
+  T width = 0;
+  T height = 0;
+
+  static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+                "Area type must be either integral or floating-point!");
+  static_assert(!std::is_same<T, bool>::value, "Area type cannot be bool!");
+  static_assert(std::is_trivial<T>::value, "Area type must be trivial!");
 };
+
+/**
+ * A type alias for TArea&lt;int&gt;, for backwards compatibility reasons.
+ * Use of this type alias is discouraged.
+ *
+ * @since 4.1.0
+ */
+using Area = TArea<int>;
+
+/**
+ * A type alias for TArea&lt;int&gt;. Prefer usage of this alias over
+ * <code>Area</code>, since it might be removed in a future release of
+ * Centurion.
+ *
+ * @since 4.1.0
+ */
+using IArea = TArea<int>;
+
+/**
+ * A type alias for TArea&lt;float&gt;.
+ *
+ * @since 4.1.0
+ */
+using FArea = TArea<float>;
+
+/**
+ * A type alias for TArea&lt;double&gt;.
+ *
+ * @since 4.1.0
+ */
+using DArea = TArea<double>;
+
+/**
+ * Indicates whether or not two areas are considered to be equal.
+ *
+ * @param lhs the left-hand side area.
+ * @param rhs the right-hand side area.
+ * @return true if the areas are equal; false otherwise.
+ * @since 4.1.0
+ */
+template <typename T>
+CENTURION_NODISCARD inline constexpr bool operator==(
+    const TArea<T>& lhs,
+    const TArea<T>& rhs) noexcept
+{
+  return (lhs.width == rhs.width) && (lhs.height == rhs.height);
+}
+
+/**
+ * Indicates whether or not two areas aren't considered to be equal.
+ *
+ * @param lhs the left-hand side area.
+ * @param rhs the right-hand side area.
+ * @return true if the areas aren't equal; false otherwise.
+ * @since 4.1.0
+ */
+template <typename T>
+CENTURION_NODISCARD inline constexpr bool operator!=(
+    const TArea<T>& lhs,
+    const TArea<T>& rhs) noexcept
+{
+  return !(lhs == rhs);
+}
 
 }  // namespace centurion
 
-#endif  // CENTURION_DIMENSION_HEADER
+#endif  // CENTURION_AREA_HEADER

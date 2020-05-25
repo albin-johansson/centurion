@@ -27,9 +27,7 @@
 
 #include <SDL.h>
 
-#include <string>
-#include <type_traits>
-
+#include "area.h"
 #include "centurion_api.h"
 #include "centurion_utils.h"
 #include "point.h"
@@ -73,13 +71,23 @@ class Rect final {
    * @param y the y-coordinate of the rectangle.
    * @param width the width of the rectangle.
    * @param height the height of the rectangle.
+   * @deprecated this constructor is deprecated in favor of <code>Rect
+   * (Point, TArea)</code> since 4.1.0.
    * @since 4.0.0
    */
-  constexpr Rect(T x, T y, T width, T height) noexcept  // TODO 4.1 deprecate
-      : m_x{x}, m_y{y}, m_width{width}, m_height{height}
+  CENTURION_DEPRECATED
+  constexpr Rect(T x, T y, T width, T height) noexcept
+      : Rect{{x, y}, {width, height}}
   {}
 
-  // TODO 4.1 add Rect(T, T, Area), maybe even Rect(Point<T>, Area)
+  /**
+   * @param position the position of the rectangle.
+   * @param size the size of the rectangle.
+   * @since 4.1.0
+   */
+  constexpr Rect(Point<T> position, TArea<T> size) noexcept
+      : m_position{position}, m_size{size}
+  {}
 
   /**
    * Sets the x-coordinate of the rectangle.
@@ -87,7 +95,7 @@ class Rect final {
    * @param x the new x-coordinate of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_x(T x) noexcept { m_x = x; }
+  constexpr void set_x(T x) noexcept { m_position.set_x(x); }
 
   /**
    * Sets the y-coordinate of the rectangle.
@@ -95,7 +103,7 @@ class Rect final {
    * @param y the new y-coordinate of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_y(T y) noexcept { m_y = y; }
+  constexpr void set_y(T y) noexcept { m_position.set_y(y); }
 
   /**
    * Sets the width of the rectangle.
@@ -103,7 +111,7 @@ class Rect final {
    * @param width the new width of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_width(T width) noexcept { m_width = width; }
+  constexpr void set_width(T width) noexcept { m_size.width = width; }
 
   /**
    * Sets the height of the rectangle.
@@ -111,7 +119,7 @@ class Rect final {
    * @param height the new height of the rectangle.
    * @since 4.0.0
    */
-  constexpr void set_height(T height) noexcept { m_height = height; }
+  constexpr void set_height(T height) noexcept { m_size.height = height; }
 
   /**
    * Sets all of the components of the rectangle.
@@ -120,20 +128,28 @@ class Rect final {
    * @param y the new y-coordinate of the rectangle.
    * @param width the new width of the rectangle.
    * @param height the new height of the rectangle.
+   * @deprecated this method is deprecated in favor of <code>set(Point,
+   * TArea)</code> since 4.1.0.
    * @since 4.0.0
    */
-  constexpr void set(T x,
-                     T y,
-                     T width,
-                     T height) noexcept  // TODO 4.1 deprecate
+  CENTURION_DEPRECATED
+  constexpr void set(T x, T y, T width, T height) noexcept
   {
-    m_x = x;
-    m_y = y;
-    m_width = width;
-    m_height = height;
+    set({x, y}, {width, height});
   }
 
-  // TODO 4.1 add Rect::set(Point<T>, Area)
+  /**
+   * Sets the position and size of the rectangle.
+   *
+   * @param position the new position of the rectangle.
+   * @param size the new size of the rectangle.
+   * @since 4.1.0
+   */
+  constexpr void set(Point<T> position, TArea<T> size) noexcept
+  {
+    m_position = position;
+    m_size = size;
+  }
 
   /**
    * Copies all of the components of the supplied rectangle to the invoked
@@ -144,10 +160,10 @@ class Rect final {
    */
   constexpr void set(const Rect<T>& other) noexcept
   {
-    m_x = other.m_x;
-    m_y = other.m_y;
-    m_width = other.m_width;
-    m_height = other.m_height;
+    m_position.set_x(other.x());
+    m_position.set_y(other.y());
+    m_size.width = other.width();
+    m_size.height = other.height();
   }
 
   /**
@@ -160,8 +176,8 @@ class Rect final {
   CENTURION_NODISCARD
   constexpr bool intersects(const Rect<T>& other) const noexcept
   {
-    return !(m_x >= other.max_x() || max_x() <= other.m_x ||
-             m_y >= other.max_y() || max_y() <= other.m_y);
+    return !(x() >= other.max_x() || max_x() <= other.x() ||
+             y() >= other.max_y() || max_y() <= other.y());
   }
 
   /**
@@ -172,12 +188,15 @@ class Rect final {
    * @param py the y-coordinate of the point.
    * @return true if the supplied point is inside the rectangle; false
    * otherwise.
+   * @deprecated this method is deprecated in favor of <code>contains(Point)
+   * </code> since 4.1.0.
    * @since 4.0.0
    */
   CENTURION_NODISCARD
+  CENTURION_DEPRECATED
   constexpr bool contains(T px, T py) const noexcept
   {
-    return !(px < m_x || py < m_y || px > max_x() || py > max_y());
+    return contains({px, py});
   }
 
   /**
@@ -192,7 +211,9 @@ class Rect final {
   CENTURION_NODISCARD
   constexpr bool contains(Point<T> point) const noexcept
   {
-    return contains(point.x(), point.y());
+    const auto px = point.x();
+    const auto py = point.y();
+    return !(px < x() || py < y() || px > max_x() || py > max_y());
   }
 
   /**
@@ -202,7 +223,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T x() const noexcept { return m_x; }
+  constexpr T x() const noexcept { return m_position.x(); }
 
   /**
    * Returns the y-coordinate of the rectangle.
@@ -211,7 +232,16 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T y() const noexcept { return m_y; }
+  constexpr T y() const noexcept { return m_position.y(); }
+
+  /**
+   * Returns the position of the rectangle.
+   *
+   * @return the position of the rectangle.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  constexpr Point<T> position() const noexcept { return m_position; }
 
   /**
    * Returns the width of the rectangle.
@@ -220,7 +250,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T width() const noexcept { return m_width; }
+  constexpr T width() const noexcept { return m_size.width; }
 
   /**
    * Returns the height of the rectangle.
@@ -229,7 +259,16 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T height() const noexcept { return m_height; }
+  constexpr T height() const noexcept { return m_size.height; }
+
+  /**
+   * Returns the size of the rectangle.
+   *
+   * @return the size of the rectangle.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  constexpr TArea<T> size() const noexcept { return m_size; }
 
   /**
    * Returns the maximum x-coordinate of the rectangle.
@@ -238,7 +277,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T max_x() const noexcept { return m_x + m_width; }
+  constexpr T max_x() const noexcept { return x() + m_size.width; }
 
   /**
    * Returns the maximum y-coordinate of the rectangle.
@@ -247,7 +286,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T max_y() const noexcept { return m_y + m_height; }
+  constexpr T max_y() const noexcept { return y() + m_size.height; }
 
   /**
    * Returns the x-coordinate of the center point of the rectangle.
@@ -256,7 +295,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T center_x() const noexcept { return m_x + (m_width / 2); }
+  constexpr T center_x() const noexcept { return x() + (m_size.width / 2); }
 
   /**
    * Returns the y-coordinate of the center point of the rectangle.
@@ -265,7 +304,7 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  constexpr T center_y() const noexcept { return m_y + (m_height / 2); }
+  constexpr T center_y() const noexcept { return y() + (m_size.height / 2); }
 
   /**
    * Returns the center point of the rectangle.
@@ -289,7 +328,7 @@ class Rect final {
   CENTURION_NODISCARD
   constexpr bool has_area() const noexcept
   {
-    return m_width > 0 && m_height > 0;
+    return m_size.width > 0 && m_size.height > 0;
   }
 
   /**
@@ -322,10 +361,10 @@ class Rect final {
   CENTURION_NODISCARD
   std::string to_string() const
   {
-    const auto sx = std::to_string(m_x);
-    const auto sy = std::to_string(m_y);
-    const auto sw = std::to_string(m_width);
-    const auto sh = std::to_string(m_height);
+    const auto sx = std::to_string(m_position.x());
+    const auto sy = std::to_string(m_position.y());
+    const auto sw = std::to_string(m_size.width);
+    const auto sh = std::to_string(m_size.height);
     return "[Rect | X: " + sx + ", Y: " + sy + ", Width: " + sw +
            ", Height: " + sh + "]";
   }
@@ -406,7 +445,7 @@ class Rect final {
   template <typename U = T, typename = detail::type_if_same<U, int>>
   CENTURION_NODISCARD operator SDL_Rect() const noexcept
   {
-    return {m_x, m_y, m_width, m_height};
+    return {m_position.x(), m_position.y(), m_size.width, m_size.height};
   }
 
   /**
@@ -421,7 +460,7 @@ class Rect final {
   template <typename U = T, typename = detail::type_if_same<U, float>>
   CENTURION_NODISCARD operator SDL_FRect() const noexcept
   {
-    return {m_x, m_y, m_width, m_height};
+    return {m_position.x(), m_position.y(), m_size.width, m_size.height};
   }
 
   /**
@@ -447,10 +486,8 @@ class Rect final {
   friend bool operator!=<T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
  private:
-  T m_x = 0;
-  T m_y = 0;
-  T m_width = 0;
-  T m_height = 0;
+  Point<T> m_position = {0, 0};
+  TArea<T> m_size = {0, 0};
 
   static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
                 "Rect type must be either integral or floating-point!");
@@ -461,8 +498,8 @@ template <typename T>
 inline constexpr bool operator==(const Rect<T>& lhs,
                                  const Rect<T>& rhs) noexcept
 {
-  return lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y &&
-         lhs.m_width == rhs.m_width && lhs.m_height == rhs.m_height;
+  return lhs.x() == rhs.x() && lhs.y() == rhs.y() &&
+         lhs.width() == rhs.width() && lhs.height() == rhs.height();
 }
 
 template <typename T>

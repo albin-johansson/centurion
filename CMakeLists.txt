@@ -79,4 +79,6 @@ endif ()
 
 enable_testing()
 add_subdirectory(src)
-add_subdirectory(test)
+if (NOT DEFINED ENV{NO_TEST_SUBDIRECTORY})
+    add_subdirectory(test)
+endif ()

@@ -3,11 +3,9 @@ path_classifiers:
     - README.md
     - LICENSE
   test:
-    - exclude: /
-    - test
+    - exclude: test
   library:
     - include/lib
-
 extraction:
   cpp:
     prepare:
@@ -15,3 +13,14 @@ extraction:
         - gcc-8
         - g++-8
         - cmake
+    after_prepare:
+      - wget -c https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
+      - mkdir ${LGTM_WORKSPACE}/SDL2-2.0.12
+      - tar -xf SDL2-2.0.12.tar.gz -C ${LGTM_WORKSPACE}
+      - cd ${LGTM_WORKSPACE}/SDL2-2.0.12
+      - mkdir ${LGTM_WORKSPACE}/packages/
+      - ./configure --prefix=${LGTM_WORKSPACE}/packages/
+      - export SDL2DIR="${LGTM_WORKSPACE}/packages/"
+      - export NO_TEST_SUBDIRECTORY=true
+      - make
+      - make install

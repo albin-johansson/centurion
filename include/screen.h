@@ -84,7 +84,7 @@ class Screen final {
    * @since 4.1.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static Area size() noexcept;
+  CENTURION_API static IArea size() noexcept;
 
   /**
    * Returns the refresh rate of the screen.

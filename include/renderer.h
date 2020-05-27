@@ -680,9 +680,7 @@ class Renderer final {
                                SDL_RendererFlip flip) noexcept;
 
   /**
-   * Sets the color that will be used by the renderer. This method is
-   * intentionally considered a const-method, even if it technically changes the
-   * state of the renderer.
+   * Sets the color that will be used by the renderer. 
    *
    * @param color the color that will be used by the renderer.
    * @since 3.0.0

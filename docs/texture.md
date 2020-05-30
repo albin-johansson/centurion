@@ -54,6 +54,8 @@ The `Texture` class represents a hardware-accelerated image. This is the type us
       - [`operator const SDL_Texture*()`](#operator-const-sdl_texture)
   - [Overloaded operators](#overloaded-operators)
 
+---
+
 ## General information
 
 | Property              | Value                                |
@@ -66,6 +68,8 @@ The `Texture` class represents a hardware-accelerated image. This is the type us
 | Overloaded operators  | None                                 |
 | Namespace             | `centurion`                          |
 | Header                | `texture.h`                          |
+
+---
 
 ## Construction and destruction
 
@@ -81,6 +85,8 @@ Creates a texture based on an existing SDL_Texture. The created Texture will cla
 explicit Texture(Owner<SDL_Texture*> texture);
 ```
 
+---
+
 ### `Texture(const Renderer&, CZString)`
 
 Creates a texture based on the image located at the specified file path.
@@ -94,6 +100,8 @@ Creates a texture based on the image located at the specified file path.
 Texture(const Renderer& renderer, CZString path);
 ```
 
+---
+
 ### `Texture(const Renderer&, const Surface&)`
 
 Creates a texture based on the supplied `Surface` instance.
@@ -106,6 +114,8 @@ Creates a texture based on the supplied `Surface` instance.
 ```C++
 Texture(const Renderer& renderer, const Surface& surface);
 ```
+
+---
 
 ### `Texture(const Renderer&, PixelFormat, Access, IArea)`
 
@@ -122,6 +132,8 @@ Creates a texture with the specified characteristics.
 Texture(const Renderer& renderer, PixelFormat format, Access access, IArea size);
 ```
 
+---
+
 ## Smart pointer factory methods
 
 ### `Texture::unique(Owner<SDL_Texture*>)`
@@ -137,6 +149,8 @@ Creates and returns a unique pointer to a texture based on an existing SDL textu
 UniquePtr<Texture> unique(Owner<SDL_Texture*> texture);
 ```
 
+---
+
 ### `Texture::unique(const Renderer&, CZString)`
 
 Creates and returns a unique pointer to a texture loaded from the image at the specified path.
@@ -151,6 +165,8 @@ Creates and returns a unique pointer to a texture loaded from the image at the s
 UniquePtr<Texture> unique(const Renderer& renderer, CZString path);
 ```
 
+---
+
 ### `Texture::unique(const Renderer&, const Surface&)`
 
 Creates and returns a unique pointer to a texture that is based on the supplied `Surface` instance.
@@ -164,6 +180,8 @@ Creates and returns a unique pointer to a texture that is based on the supplied 
 ```C++
 UniquePtr<Texture> unique(const Renderer& renderer, const Surface& surface);
 ```
+
+---
 
 ### `Texture::unique(const Renderer&, PixelFormat, Access, IArea)`
 
@@ -180,6 +198,8 @@ Creates and returns a unique pointer to a texture with the specified characteris
 UniquePtr<Texture> unique(const Renderer& renderer, PixelFormat format, Access access, IArea size);
 ```
 
+---
+
 ### `Texture::streaming(const Renderer&, CZString, PixelFormat)`
 
 Creates and returns a unique pointer to a texture based on the image at the specified path with `Streaming` texture access.
@@ -195,6 +215,8 @@ Creates and returns a unique pointer to a texture based on the image at the spec
 UniquePtr<Texture> streaming(const Renderer& renderer, CZString path, PixelFormat format);
 ```
 
+---
+
 ### `Texture::shared(Owner<SDL_Texture*>)`
 
 Creates and returns a shared pointer to a texture based on an existing SDL texture. The created texture will claim ownership of the supplied SDL texture.
@@ -207,6 +229,8 @@ Creates and returns a shared pointer to a texture based on an existing SDL textu
 ```C++
 UniquePtr<Texture> shared(Owner<SDL_Texture*> texture);
 ```
+
+---
 
 ### `Texture::shared(const Renderer&, CZString)`
 
@@ -222,6 +246,8 @@ Creates and returns a shared pointer to a texture loaded from the image at the s
 UniquePtr<Texture> shared(const Renderer& renderer, CZString path);
 ```
 
+---
+
 ### `Texture::shared(const Renderer&, const Surface&)`
 
 Creates and returns a shared pointer to a texture that is based on the supplied `Surface` instance.
@@ -235,6 +261,8 @@ Creates and returns a shared pointer to a texture that is based on the supplied 
 ```C++
 UniquePtr<Texture> shared(const Renderer& renderer, const Surface& surface);
 ```
+
+---
 
 ### `Texture::shared(const Renderer&, PixelFormat, Access, IArea)`
 
@@ -251,9 +279,13 @@ Creates and returns a shared pointer to a texture with the specified characteris
 UniquePtr<Texture> shared(const Renderer& renderer, PixelFormat format, Access access, IArea size);
 ```
 
+---
+
 ## Copying
 
 N/A
+
+---
 
 ## Moving
 
@@ -286,6 +318,8 @@ Texture& operator=(Texture&& other) noexcept;
 
 N/A
 
+---
+
 ### Setters
 
 #### `Texture::set_pixel(IPoint, const Color&)`
@@ -300,6 +334,8 @@ Sets the color of the pixel at the specified coordinate. This method has no effe
 void set_pixel(IPoint pixel, const Color& color) noexcept;
 ```
 
+---
+
 #### `Texture::set_alpha(Uint8)`
 
 Sets the alpha (opacity) value that is used by the texture.
@@ -310,6 +346,8 @@ Sets the alpha (opacity) value that is used by the texture.
 ```C++
 void set_alpha(Uint8 alpha) noexcept;
 ```
+
+---
 
 #### `Texture::set_blend_mode(BlendMode)`
 
@@ -322,6 +360,8 @@ Sets the blend mode that will be used by the texture.
 void set_blend_mode(BlendMode mode) noexcept;
 ```
 
+---
+
 #### `Texture::set_color_mod(Color)`
 
 Sets the color modulation that is used by the texture. Note, the alpha component of the supplied color is ignored by this method.
@@ -333,6 +373,8 @@ Sets the color modulation that is used by the texture. Note, the alpha component
 void set_color_mod(Color color) noexcept;
 ```
 
+---
+
 #### `Texture::set_scale_mod(ScaleMode)`
 
 Sets the scale mode that will be used by the texture.
@@ -343,6 +385,8 @@ Sets the scale mode that will be used by the texture.
 ```C++
 void set_scale_mode(ScaleMode mode) noexcept;
 ```
+
+---
 
 ### Getters
 
@@ -357,6 +401,8 @@ Returns the pixel format that is used by the texture.
 PixelFormat format() const noexcept;
 ```
 
+---
+
 #### `Texture::access()`
 
 Returns the texture access that is used by the texture.
@@ -367,6 +413,8 @@ Returns the texture access that is used by the texture.
 ```C++
 Access access() const noexcept;
 ```
+
+---
 
 #### `Texture::width()`
 
@@ -379,6 +427,8 @@ Returns the width of the texture.
 int width() const noexcept;
 ```
 
+---
+
 #### `Texture::height()`
 
 Returns the height of the texture.
@@ -389,6 +439,8 @@ Returns the height of the texture.
 ```C++
 int height() const noexcept;
 ```
+
+---
 
 #### `Texture::size()`
 
@@ -401,6 +453,8 @@ Returns the size (width and height) of the texture.
 IArea size() const noexcept;
 ```
 
+---
+
 #### `Texture::is_target()`
 
 Indicates whether or not the texture is a possible render target.
@@ -411,6 +465,8 @@ Indicates whether or not the texture is a possible render target.
 ```C++
 bool is_target() const noexcept;
 ```
+
+---
 
 #### `Texture::is_static()`
 
@@ -423,6 +479,8 @@ Indicates whether or not the texture has `Static` texture access. Which would in
 bool is_static() const noexcept;
 ```
 
+---
+
 #### `Texture::is_streaming()`
 
 Indicates whether or not the texture has `Streaming` texture access. Which would indicate that the texture changes frequently and is therefore lockable.
@@ -433,6 +491,8 @@ Indicates whether or not the texture has `Streaming` texture access. Which would
 ```C++
 bool is_streaming() const noexcept;
 ```
+
+---
 
 #### `Texture::alpha()`
 
@@ -445,6 +505,8 @@ Returns the alpha of the texture.
 Uint8 alpha() const noexcept;
 ```
 
+---
+
 #### `Texture::blend_mode()`
 
 Returns the blend mode used by the texture.
@@ -455,6 +517,8 @@ Returns the blend mode used by the texture.
 ```C++
 BlendMode blend_mode() const noexcept;
 ```
+
+---
 
 #### `Texture::color_mod()`
 
@@ -467,6 +531,8 @@ Returns the color modulation of the texture.
 Color color_mod() const noexcept;
 ```
 
+---
+
 #### `Texture::scale_mode()`
 
 Returns the scale mode used by the texture.
@@ -477,6 +543,8 @@ Returns the scale mode used by the texture.
 ```C++
 ScaleMode scale_mode() const noexcept;
 ```
+
+---
 
 #### `Texture::to_string()`
 
@@ -489,6 +557,8 @@ Returns a string representation of the texture. The returned string will look so
 std::string to_string() const;
 ```
 
+---
+
 #### `Texture::get()`
 
 Returns a pointer to the internal SDL_Texture. Use of this method is not recommended, since it purposefully breaks const-correctness. However, it is useful since many SDL calls use non-const pointers even when no change will be applied.
@@ -499,6 +569,8 @@ Returns a pointer to the internal SDL_Texture. Use of this method is not recomme
 ```C++
 SDL_Texture* get() const noexcept;
 ```
+
+---
 
 ### Conversions
 
@@ -513,6 +585,8 @@ Implicitly converts to `SDL_Texture*`.
 operator SDL_Texture*() noexcept;
 ```
 
+---
+
 #### `operator const SDL_Texture*()`
 
 Implicitly converts to `const SDL_Texture*`.
@@ -523,6 +597,8 @@ Implicitly converts to `const SDL_Texture*`.
 ```C++
 operator const SDL_Texture*() const noexcept;
 ```
+
+---
 
 ## Overloaded operators
 

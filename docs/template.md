@@ -1,17 +1,15 @@
 # Foo
 
-The Foo class...
+The `Foo` class...
 
 ## Table of contents
 
 - [Foo](#foo)
   - [Table of contents](#table-of-contents)
   - [General information](#general-information)
-  - [Construction and destruction](#construction-and-destruction)
+  - [Constructors](#constructors)
     - [`Foo(T)`](#foot)
   - [Smart pointer factory methods](#smart-pointer-factory-methods)
-    - [Unique](#unique)
-    - [Shared](#shared)
   - [Copying](#copying)
   - [Moving](#moving)
   - [Members](#members)
@@ -23,26 +21,30 @@ The Foo class...
   - [Examples](#examples)
     - [Some common use case](#some-common-use-case)
 
+---
+
 ## General information
 
-| Property              | Value         |
-| --------------------- |:--------------|
-| Default constructible | Yes |
-| Movable               | Yes |
-| Copyable              | No |
-| Explicit conversions  | None |
-| Implicit conversions  | None |
-| Overloaded operators  | None |
+| Property              | Value       |
+| --------------------- | :---------- |
+| Default constructible | Yes         |
+| Movable               | Yes         |
+| Copyable              | No          |
+| Explicit conversions  | None        |
+| Implicit conversions  | None        |
+| Overloaded operators  | None        |
 | Namespace             | `centurion` |
-| Header                | `foo.h` |
+| Header                | `foo.h`     |
 
-## Construction and destruction
+---
+
+## Constructors
 
 ### `Foo(T)`
 
 Explanation goes here!
 
-- **parameter** this is a parameter.
+- **`parameter`** this is a parameter.
 - ***Throws*** `CenturionException` if you do something bad.
 - ***Since*** `3.0.0`
 
@@ -50,27 +52,41 @@ Explanation goes here!
 // code goes here
 ```
 
+---
+
 ## Smart pointer factory methods
 
-### Unique
-
-### Shared
+---
 
 ## Copying
 
+---
+
 ## Moving
+
+---
 
 ## Members
 
 ### Mutators
 
+---
+
 ### Setters
+
+---
 
 ### Getters
 
+---
+
 ### Conversions
 
+---
+
 ## Overloaded operators
+
+---
 
 ## Examples
 

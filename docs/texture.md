@@ -22,12 +22,10 @@ The `Texture` class represents a hardware-accelerated image. This is the type us
     - [`shared(const Renderer&, CZString)`](#sharedconst-renderer-czstring)
     - [`shared(const Renderer&, const Surface&)`](#sharedconst-renderer-const-surface)
     - [`shared(const Renderer&, PixelFormat, Access, IArea)`](#sharedconst-renderer-pixelformat-access-iarea)
-  - [Copying](#copying)
   - [Moving](#moving)
     - [`Texture(Texture&&)`](#texturetexture)
     - [`operator=(Texture&&)`](#operatortexture)
   - [Members](#members)
-    - [Mutators](#mutators)
     - [Setters](#setters)
       - [`set_pixel(IPoint, const Color&)`](#set_pixelipoint-const-color)
       - [`set_alpha(Uint8)`](#set_alphauint8)
@@ -52,7 +50,6 @@ The `Texture` class represents a hardware-accelerated image. This is the type us
     - [Conversions](#conversions)
       - [`operator SDL_Texture*()`](#operator-sdl_texture)
       - [`operator const SDL_Texture*()`](#operator-const-sdl_texture)
-  - [Overloaded operators](#overloaded-operators)
 
 ---
 
@@ -287,12 +284,6 @@ static UniquePtr<Texture> shared(const Renderer& renderer,
 
 ---
 
-## Copying
-
-N/A
-
----
-
 ## Moving
 
 ### `Texture(Texture&&)`
@@ -319,12 +310,6 @@ Texture& operator=(Texture&& other) noexcept;
 ```
 
 ## Members
-
-### Mutators
-
-N/A
-
----
 
 ### Setters
 
@@ -603,9 +588,3 @@ Implicitly converts to `const SDL_Texture*`.
 ```C++
 operator const SDL_Texture*() const noexcept;
 ```
-
----
-
-## Overloaded operators
-
-N/A

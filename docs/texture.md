@@ -7,7 +7,7 @@ The `Texture` class represents a hardware-accelerated image. This is the type us
 - [Texture](#texture)
   - [Table of contents](#table-of-contents)
   - [General information](#general-information)
-  - [Construction and destruction](#construction-and-destruction)
+  - [Constructors](#constructors)
     - [`Texture(Owner<SDL_Texture*>)`](#textureownersdl_texture)
     - [`Texture(const Renderer&, CZString)`](#textureconst-renderer-czstring)
     - [`Texture(const Renderer&, const Surface&)`](#textureconst-renderer-const-surface)
@@ -71,7 +71,7 @@ The `Texture` class represents a hardware-accelerated image. This is the type us
 
 ---
 
-## Construction and destruction
+## Constructors
 
 ### `Texture(Owner<SDL_Texture*>)`
 

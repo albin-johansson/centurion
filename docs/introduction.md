@@ -34,7 +34,7 @@ Some components, methods and aliases in the Centurion library reside in the `cen
 
 ### Factory methods
 
-Many Centurion components have static factory methods for creating smart pointers, for convenience. For example, if you're working with the Centurion class `T`, then you can expect to be able to call `T::unique()`, in order to create a unique pointer to a `T` instance. There is one of these factory methods for every constructor.
+Many Centurion components have static factory methods for creating smart pointers, for convenience. For example, if you're working with the Centurion class `T`, then you can expect to be able to call `T::unique()`, in order to create a unique pointer to a `T` instance. There is one of these factory methods for every constructor. The same applies for shared pointers.
 
 ### String representation
 

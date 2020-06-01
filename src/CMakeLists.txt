@@ -66,6 +66,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/area.h
         ${CTN_INCLUDE_DIR}/key_modifier.h
         ${CTN_INCLUDE_DIR}/syswm_event.h
+        ${CTN_INCLUDE_DIR}/hints.h
         window.cpp
         font.cpp
         renderer.cpp

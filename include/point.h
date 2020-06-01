@@ -175,10 +175,9 @@ class Point final {
    * difference between the coordinates of the points.
    * @since 4.0.0
    */
-  template <typename U = T>
-  CENTURION_NODISCARD detail::type_if_floating<U> equals(
-      const Point<T>& other,
-      T epsilon = 0.0001) const noexcept
+  template <typename U = T, typename X = detail::type_if_floating<U>>
+  CENTURION_NODISCARD bool equals(const Point<T>& other,
+                                  T epsilon = 0.0001) const noexcept
   {
     return std::abs(m_x - other.m_x) < epsilon &&
            std::abs(m_y - other.m_y) < epsilon;

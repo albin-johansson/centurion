@@ -2,31 +2,73 @@
 
 #include <catch.hpp>
 
-using namespace centurion::hint;
+using namespace centurion;
+using namespace hint;
+
+namespace {
+
+template <typename Hint, typename Lambda>
+void test_hint(Lambda&& lambda)
+{
+  const auto optPrev = get_hint<Hint>();
+
+  lambda();
+
+  if (optPrev) {
+    set_hint<Hint, HintPrio::Default>(*optPrev);
+  }
+}
+
+}  // namespace
+
+TEST_CASE("HintPrio", "[Hints]")
+{
+  CHECK(HintPrio::Default == static_cast<HintPrio>(SDL_HINT_DEFAULT));
+  CHECK(HintPrio::Normal == static_cast<HintPrio>(SDL_HINT_NORMAL));
+  CHECK(HintPrio::Override == static_cast<HintPrio>(SDL_HINT_OVERRIDE));
+
+  CHECK(static_cast<HintPrio>(SDL_HINT_DEFAULT) == HintPrio::Default);
+  CHECK(static_cast<HintPrio>(SDL_HINT_NORMAL) == HintPrio::Normal);
+  CHECK(static_cast<HintPrio>(SDL_HINT_OVERRIDE) == HintPrio::Override);
+}
 
 TEST_CASE("set_hint", "[Hints]")
 {
-  const auto prev = get_hint<RenderDriver>();
+  SECTION("AccelerometerAsJoystick")
+  {
+    test_hint<AccelerometerAsJoystick>([] {
+      CHECK(set_hint<AccelerometerAsJoystick>(true));
+      CHECK(get_hint<AccelerometerAsJoystick>().value());
 
-  set_hint<RenderDriver>(OpenGL);
-  CHECK(get_hint<RenderDriver>() == OpenGL);
+      CHECK(set_hint<AccelerometerAsJoystick>(false));
+      CHECK(!get_hint<AccelerometerAsJoystick>().value());
+    });
+  }
 
-//  set_hint<RenderDriver, HintPrio::Override>(OpenGL);
-//  set_hint<NoSignalHandlers>(true);
-//
-//  SDL_SetHintWithPriority(SDL_HINT_RENDER_DRIVER, "opengl", SDL_HINT_OVERRIDE);
-//  SDL_SetHint(SDL_HINT_NO_SIGNAL_HANDLERS, "1");
-//
-//  set_hint<NoSignalHandlers>(false);
-//
-//  const auto renderDriver = get_hint<RenderDriver>();
-//  if (renderDriver == OpenGL) {
-//    // do something
-//  }
-//
-//  const auto noSignalHandles = get_hint<NoSignalHandlers>();
-//  if (noSignalHandles) {
-//  }
+  SECTION("RenderDriver")
+  {
+    test_hint<RenderDriver>([] {
+      const auto value = OpenGL;
+      CHECK(set_hint<RenderDriver>(value));
+      CHECK(get_hint<RenderDriver>().value() == value);
+    });
+  }
 
-  set_hint<RenderDriver, HintPrio::Default>(prev);
+  SECTION("NoSignalHandlers")
+  {
+    test_hint<NoSignalHandlers>([] {
+      CHECK(set_hint<NoSignalHandlers>(true));
+      CHECK(get_hint<NoSignalHandlers>().value());
+
+      CHECK(set_hint<NoSignalHandlers>(false));
+      CHECK(!get_hint<NoSignalHandlers>().value());
+    });
+  }
+
+  SECTION("AndroidAPKExpansionMainFileVersion") {
+    test_hint<AndroidAPKExpansionMainFileVersion>([]{
+      CHECK(set_hint<AndroidAPKExpansionMainFileVersion>(1));
+      CHECK(get_hint<AndroidAPKExpansionMainFileVersion>() == 1);
+    });
+  }
 }

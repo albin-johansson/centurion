@@ -27,10 +27,26 @@
 
 #include <SDL_hints.h>
 
+#include <cstring>
+
 #include "centurion_api.h"
 #include "centurion_utils.h"
 
 namespace centurion {
+namespace detail {
+
+CENTURION_NODISCARD Optional<bool> to_bool(CZString name) noexcept
+{
+  CZString value = SDL_GetHint(name);
+  if (!value) {
+    return nothing;
+  } else {
+    return strcmp(value, "1") == 0;
+  }
+}
+
+}  // namespace detail
+
 namespace hint {
 
 // TODO finish 4.1
@@ -50,10 +66,58 @@ enum class HintPrio {
   Override = SDL_HINT_OVERRIDE
 };
 
+class AccelerometerAsJoystick final {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, bool>::value;
+  }
+
+  CENTURION_NODISCARD static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_ACCELEROMETER_AS_JOYSTICK;
+  }
+
+  CENTURION_NODISCARD static Optional<bool> value() noexcept
+  {
+    return detail::to_bool(name());
+  }
+
+  CENTURION_NODISCARD static std::string to_string(bool value) noexcept
+  {
+    return value ? "1" : "0";
+  }
+};
+
+class AndroidAPKExpansionMainFileVersion final {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, int>::value;
+  }
+
+  CENTURION_NODISCARD static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
+  }
+
+  CENTURION_NODISCARD static Optional<int> value() noexcept
+  {
+    return detail::to_bool(name());
+  }
+
+  CENTURION_NODISCARD static std::string to_string(int value) noexcept
+  {
+    return std::to_string(value);
+  }
+};
+
 class RenderDriver final {
  public:
   template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg_type() noexcept
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
   {
     return std::is_same<T, RenderDriverHint>::value;
   }
@@ -63,9 +127,14 @@ class RenderDriver final {
     return SDL_HINT_RENDER_DRIVER;
   }
 
-  CENTURION_NODISCARD static RenderDriverHint value() noexcept
+  CENTURION_NODISCARD static Optional<RenderDriverHint> value() noexcept
   {
-    const std::string current = SDL_GetHint(name());
+    CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    const std::string current{hint};
     if (current == "direct3d") {
       return Direct3D;
     } else if (current == "opengl") {
@@ -81,7 +150,7 @@ class RenderDriver final {
     }
   }
 
-  CENTURION_NODISCARD static CZString to_string(RenderDriverHint value) noexcept
+  CENTURION_NODISCARD static std::string to_string(RenderDriverHint value) noexcept
   {
     switch (value) {
       case Direct3D:
@@ -105,7 +174,7 @@ class RenderDriver final {
 class NoSignalHandlers final {
  public:
   template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg_type() noexcept
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
   {
     return std::is_same<T, bool>::value;
   }
@@ -115,19 +184,14 @@ class NoSignalHandlers final {
     return SDL_HINT_NO_SIGNAL_HANDLERS;
   }
 
-  CENTURION_NODISCARD static bool value() noexcept
+  CENTURION_NODISCARD static Optional<bool> value() noexcept
   {
-    const std::string current = SDL_GetHint(name());
-    return current == "1";
+    return detail::to_bool(name());
   }
 
-  CENTURION_NODISCARD static CZString to_string(bool value) noexcept
+  CENTURION_NODISCARD static std::string to_string(bool value) noexcept
   {
-    if (value) {
-      return "1";
-    } else {
-      return "0";
-    }
+    return value ? "1" : "0";
   }
 };
 
@@ -144,25 +208,28 @@ class NoSignalHandlers final {
  * @tparam X a dummy type parameter only used to check if the value type is
  * correct.
  * @param value the new value that will be set for the specified hint.
+ * @return true if the hint was successfully set; false otherwise.
  * @since 0.1.0
  */
-template <
-    typename Hint,
-    HintPrio priority = HintPrio::Normal,
-    typename Value,
-    typename X = detail::type_if<Hint::template valid_arg_type<Value>(), Value>>
-void set_hint(const Value& value) noexcept
+template <typename Hint,
+          HintPrio priority = HintPrio::Normal,
+          typename Value,
+          typename X = detail::type_if<Hint::template valid_arg<Value>()>>
+bool set_hint(const Value& value) noexcept
 {
-  SDL_SetHintWithPriority(Hint::name(),
-                          Hint::to_string(value),
-                          static_cast<SDL_HintPriority>(priority));
+  return static_cast<bool>(
+      SDL_SetHintWithPriority(Hint::name(),
+                              Hint::to_string(value).c_str(),
+                              static_cast<SDL_HintPriority>(priority)));
 }
 
 /**
- * Returns the current value of the specified hint.
+ * Returns the current value of the specified hint. This method returns an
+ * <code>Optional</code> of the hint value type.
  *
  * @tparam Hint the type of the Hint to obtain the value of.
- * @return the current value of the specified hint.
+ * @return the current value of the specified hint; nothing if there is no
+ * value set for the hint.
  * @since 0.1.0
  */
 template <typename Hint>

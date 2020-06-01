@@ -128,7 +128,7 @@ CENTURION_NODISCARD T clamp_inclusive(std::pair<T, T> range, T value) noexcept
  * @since 4.0.0
  */
 template <bool condition, typename T>
-using type_if = typename std::enable_if<condition, T>::type;
+using type_if = typename std::enable_if<condition>::type;
 
 /**
  * Used to enable a template if a type is a floating-point type, such as

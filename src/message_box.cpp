@@ -3,6 +3,7 @@
 
 #include "message_box.h"
 
+#include "centurion_utils.h"
 #include "colors.h"
 #include "error.h"
 
@@ -51,7 +52,7 @@ SDL_MessageBoxColorScheme ColorScheme::convert() const noexcept
 }
 
 CENTURION_DEF
-MessageBox::MessageBox() : m_config{std::make_unique<MessageBoxConfig>()}
+MessageBox::MessageBox() : m_config{detail::make_unique<MessageBoxConfig>()}
 {}
 
 CENTURION_DEF

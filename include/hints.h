@@ -33,7 +33,7 @@
 #include "centurion_utils.h"
 
 namespace centurion {
-namespace detail {
+namespace {
 
 CENTURION_NODISCARD Optional<bool> to_bool(CZString name) noexcept
 {
@@ -45,7 +45,7 @@ CENTURION_NODISCARD Optional<bool> to_bool(CZString name) noexcept
   }
 }
 
-}  // namespace detail
+}  // namespace
 
 namespace hint {
 
@@ -66,29 +66,42 @@ enum class HintPrio {
   Override = SDL_HINT_OVERRIDE
 };
 
-class AccelerometerAsJoystick final {
- public:
-  template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
-  {
-    return std::is_same<T, bool>::value;
-  }
+#define CENTURION_BOOL_HINT(Type, SDLHint)                                \
+  class Type final {                                                      \
+   public:                                                                \
+    template <typename T>                                                 \
+    CENTURION_NODISCARD static constexpr bool valid_arg() noexcept        \
+    {                                                                     \
+      return std::is_same<T, bool>::value;                                \
+    }                                                                     \
+                                                                          \
+    CENTURION_NODISCARD static constexpr CZString name() noexcept         \
+    {                                                                     \
+      return SDLHint;                                                     \
+    }                                                                     \
+                                                                          \
+    CENTURION_NODISCARD static Optional<bool> value() noexcept            \
+    {                                                                     \
+      return to_bool(name());                                             \
+    }                                                                     \
+                                                                          \
+    CENTURION_NODISCARD static std::string to_string(bool value) noexcept \
+    {                                                                     \
+      return value ? "1" : "0";                                           \
+    }                                                                     \
+  };
 
-  CENTURION_NODISCARD static constexpr CZString name() noexcept
-  {
-    return SDL_HINT_ACCELEROMETER_AS_JOYSTICK;
-  }
+CENTURION_BOOL_HINT(AccelerometerAsJoystick, SDL_HINT_ACCELEROMETER_AS_JOYSTICK)
 
-  CENTURION_NODISCARD static Optional<bool> value() noexcept
-  {
-    return detail::to_bool(name());
-  }
+CENTURION_BOOL_HINT(AppleTVControllerUIEvents,
+                    SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS)
 
-  CENTURION_NODISCARD static std::string to_string(bool value) noexcept
-  {
-    return value ? "1" : "0";
-  }
-};
+CENTURION_BOOL_HINT(AppleTVRemoteAllowRotation,
+                    SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION)
+
+CENTURION_BOOL_HINT(BMPSaveLegacyFormat, SDL_HINT_BMP_SAVE_LEGACY_FORMAT)
+
+CENTURION_BOOL_HINT(NoSignalHandlers, SDL_HINT_NO_SIGNAL_HANDLERS)
 
 class AndroidAPKExpansionMainFileVersion final {
  public:
@@ -105,7 +118,31 @@ class AndroidAPKExpansionMainFileVersion final {
 
   CENTURION_NODISCARD static Optional<int> value() noexcept
   {
-    return detail::to_bool(name());
+    return to_bool(name());
+  }
+
+  CENTURION_NODISCARD static std::string to_string(int value) noexcept
+  {
+    return std::to_string(value);
+  }
+};
+
+class AndroidAPKExpansionPatchFileVersion final {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, int>::value;
+  }
+
+  CENTURION_NODISCARD static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION;
+  }
+
+  CENTURION_NODISCARD static Optional<int> value() noexcept
+  {
+    return to_bool(name());
   }
 
   CENTURION_NODISCARD static std::string to_string(int value) noexcept
@@ -150,7 +187,8 @@ class RenderDriver final {
     }
   }
 
-  CENTURION_NODISCARD static std::string to_string(RenderDriverHint value) noexcept
+  CENTURION_NODISCARD static std::string to_string(
+      RenderDriverHint value) noexcept
   {
     switch (value) {
       case Direct3D:
@@ -168,30 +206,6 @@ class RenderDriver final {
       default:
         return "";
     }
-  }
-};
-
-class NoSignalHandlers final {
- public:
-  template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
-  {
-    return std::is_same<T, bool>::value;
-  }
-
-  CENTURION_NODISCARD static constexpr CZString name() noexcept
-  {
-    return SDL_HINT_NO_SIGNAL_HANDLERS;
-  }
-
-  CENTURION_NODISCARD static Optional<bool> value() noexcept
-  {
-    return detail::to_bool(name());
-  }
-
-  CENTURION_NODISCARD static std::string to_string(bool value) noexcept
-  {
-    return value ? "1" : "0";
   }
 };
 
@@ -241,4 +255,5 @@ auto get_hint() noexcept
 }  // namespace hint
 }  // namespace centurion
 
+#undef CENTURION_BOOL_HINT
 #endif  // CENTURION_HINTS_HEADER

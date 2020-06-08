@@ -247,7 +247,7 @@ bool set_hint(const Value& value) noexcept
  * @since 0.1.0
  */
 template <typename Hint>
-auto get_hint() noexcept
+decltype(auto) get_hint() noexcept
 {
   return Hint::value();
 }

@@ -293,7 +293,7 @@ TEST_CASE("Renderer::render(Texture&, IRect&, IRect&)", "[Renderer]")
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(
-      renderer.render(texture, IRect{10, 15, 20, 20}, IRect{35, 92, 15, 23}));
+      renderer.render(texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}));
 }
 
 TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double)", "[Renderer]")
@@ -302,7 +302,7 @@ TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double)", "[Renderer]")
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render(
-      texture, IRect{10, 15, 20, 20}, IRect{35, 92, 15, 23}, 17));
+      texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}, 17));
 }
 
 TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double, IPoint&)",
@@ -312,7 +312,7 @@ TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double, IPoint&)",
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render(
-      texture, IRect{10, 15, 20, 20}, IRect{35, 92, 15, 23}, 17, IPoint{5, 9}));
+      texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}, 17, IPoint{5, 9}));
 }
 
 TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, SDL_RendererFlip)",
@@ -322,8 +322,8 @@ TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, SDL_RendererFlip)",
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render(texture,
-                                IRect{10, 15, 20, 20},
-                                IRect{35, 92, 15, 23},
+                                IRect{{10, 15}, {20, 20}},
+                                IRect{{35, 92}, {15, 23}},
                                 SDL_FLIP_HORIZONTAL));
 }
 
@@ -336,8 +336,8 @@ TEST_CASE(
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_t(texture,
-                                  IRect{10, 15, 20, 20},
-                                  IRect{35, 92, 15, 23},
+                                  IRect{{10, 15}, {20, 20}},
+                                  IRect{{35, 92}, {15, 23}},
                                   -5,
                                   IPoint{5, 5},
                                   SDL_FLIP_HORIZONTAL));

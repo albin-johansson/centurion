@@ -63,12 +63,34 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK(set_hint<NoSignalHandlers>(false));
       CHECK(!get_hint<NoSignalHandlers>().value());
     });
+  };
+
+  SECTION("AndroidAPKExpansionMainFileVersion")
+  {
+    using AndroidMainFile = AndroidAPKExpansionMainFileVersion;
+    test_hint<AndroidMainFile>([] {
+      CHECK(!get_hint<AndroidMainFile>());
+      CHECK(set_hint<AndroidMainFile>(1));
+      CHECK(get_hint<AndroidMainFile>() == 1);
+    });
   }
 
-  SECTION("AndroidAPKExpansionMainFileVersion") {
-    test_hint<AndroidAPKExpansionMainFileVersion>([]{
-      CHECK(set_hint<AndroidAPKExpansionMainFileVersion>(1));
-      CHECK(get_hint<AndroidAPKExpansionMainFileVersion>() == 1);
+  SECTION("AndroidAPKExpansionPatchFileVersion")
+  {
+    using AndroidPatchFile = AndroidAPKExpansionPatchFileVersion;
+    test_hint<AndroidPatchFile>([] {
+      CHECK(!get_hint<AndroidPatchFile>());
+      CHECK(set_hint<AndroidPatchFile>(1));
+      CHECK(get_hint<AndroidPatchFile>() == 1);
+    });
+  }
+
+  SECTION("AppleTVControllerUIEvents")
+  {
+    test_hint<AppleTVControllerUIEvents>([] {
+      CHECK(!get_hint<AppleTVControllerUIEvents>());
+      CHECK(set_hint<AppleTVControllerUIEvents>(true));
+      CHECK(get_hint<AppleTVControllerUIEvents>().value());
     });
   }
 }

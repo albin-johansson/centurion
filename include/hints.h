@@ -219,8 +219,6 @@ class RenderDriver final {
  * @tparam priority the priority that will be used, defaults to
  * <code>Normal</code>.
  * @tparam Value the type of the hint value.
- * @tparam X a dummy type parameter only used to check if the value type is
- * correct.
  * @param value the new value that will be set for the specified hint.
  * @return true if the hint was successfully set; false otherwise.
  * @since 0.1.0
@@ -228,7 +226,7 @@ class RenderDriver final {
 template <typename Hint,
           HintPrio priority = HintPrio::Normal,
           typename Value,
-          typename X = detail::type_if<Hint::template valid_arg<Value>()>>
+          typename = detail::type_if<Hint::template valid_arg<Value>()>>
 bool set_hint(const Value& value) noexcept
 {
   return static_cast<bool>(

@@ -1148,7 +1148,7 @@ class Renderer final {
 
  private:
   SDL_Renderer* m_renderer = nullptr;
-  FRect m_translationViewport = {0, 0, 0, 0};
+  FRect m_translationViewport = {{0, 0}, {0, 0}};
   std::unordered_map<std::string, SharedPtr<Font>> m_fonts;
 
   static constexpr SDL_RendererFlags defaultFlags =

@@ -27,9 +27,9 @@
 
 #include <SDL.h>
 
-#include <lib/gsl-lite.hpp>
-#include <lib/optional.hpp>
+#include <gsl-lite.hpp>
 #include <memory>
+#include <optional.hpp>
 #include <sstream>
 #include <string>
 #include <type_traits>

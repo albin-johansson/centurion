@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 project(Centurion)
 
 add_definitions(-DCMAKE_EXPORT_COMPILE_COMMANDS=1)
@@ -9,8 +9,15 @@ set(CTN_ROOT_DIR ${PROJECT_SOURCE_DIR})
 set(CTN_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/test/resources)
 set(CTN_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 set(CTN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-set(CTN_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/include/lib)
-set(CTN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin)
+set(CTN_LIBRARY_DIR ${PROJECT_SOURCE_DIR}/lib)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    # using Clang
+    set(CTN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin-vs)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # using GCC
+    set(CTN_BINARIES_DIR ${PROJECT_SOURCE_DIR}/bin-mingw)
+endif ()
 
 set(CENTURION_LIB_TARGET Centurion_lib)
 set(CENTURION_TEST_TARGET Centurion_test)
@@ -70,6 +77,18 @@ find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
 message("Found all required SDL libraries!")
+
+include_directories(
+        SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
+        SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
+        SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
+        SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
+
+add_library(libGSL INTERFACE)
+target_include_directories(libGSL INTERFACE ${CTN_LIBRARY_DIR}/gsl)
+
+add_library(libOptional INTERFACE)
+target_include_directories(libOptional INTERFACE ${CTN_LIBRARY_DIR}/optional)
 
 if (DEFINED ENV{ENABLE_COVERAGE})
     include(CodeCoverage)

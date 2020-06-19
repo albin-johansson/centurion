@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 project(CenturionTestProj)
 
 set(TEST_FILES
@@ -70,8 +70,9 @@ add_executable(${CENTURION_TEST_TARGET} ${TEST_FILES})
 add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
 
 if (DEFINED ENV{TRAVIS})
-    target_compile_definitions(${CENTURION_TEST_TARGET} PUBLIC CENTURION_NOAUDIO)
-    target_compile_definitions(${CENTURION_TEST_TARGET} PUBLIC TRAVIS_TEST)
+    target_compile_definitions(${CENTURION_TEST_TARGET}
+            PUBLIC CENTURION_NOAUDIO
+            PUBLIC TRAVIS_TEST)
 endif ()
 
 set_target_properties(${CENTURION_TEST_TARGET} PROPERTIES
@@ -90,18 +91,19 @@ add_test(NAME ${CENTURION_TEST_TARGET}
         COMMAND ${CENTURION_TEST_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET} PUBLIC unittests)
-target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
-target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
-target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
-target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
-target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${CTN_LIBRARY_DIR})
-target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${CTN_INCLUDE_DIR})
-target_include_directories(${CENTURION_TEST_TARGET} SYSTEM PUBLIC ${CTN_SOURCE_DIR})
+
+target_include_directories(${CENTURION_TEST_TARGET}
+        SYSTEM PUBLIC ${CTN_LIBRARY_DIR}
+        SYSTEM PUBLIC ${CTN_INCLUDE_DIR}
+        SYSTEM PUBLIC ${CTN_SOURCE_DIR})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
             -Wno-unused-result
             )
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
+            /EHsc)
 endif ()
 
 message("------ LINKING TEST EXECUTABLE ------")
@@ -109,13 +111,17 @@ message("Linking against SDL2: ${SDL2_LIBRARY}")
 message("Linking against SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
 message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
-message("Centurion link target (unused in header-only mode): ${CENTURION_LIBRARIES}")
+message("Centurion link target: ${CENTURION_LIBRARIES}")
+message("-------------------------------------")
+
 target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_LIBRARY}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
         PUBLIC ${CENTURION_LIBRARIES}
+        PUBLIC libGSL
+        PUBLIC libOptional
         PUBLIC Catch2)
 
 catch_discover_tests(${CENTURION_TEST_TARGET})

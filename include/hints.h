@@ -103,27 +103,61 @@ CENTURION_BOOL_HINT(BMPSaveLegacyFormat, SDL_HINT_BMP_SAVE_LEGACY_FORMAT)
 
 CENTURION_BOOL_HINT(NoSignalHandlers, SDL_HINT_NO_SIGNAL_HANDLERS)
 
-class AndroidAPKExpansionMainFileVersion final {
+// class AndroidAPKExpansionMainFileVersion final {
+// public:
+//  template <typename T>
+//  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+//  {
+//    return std::is_same<T, int>::value;
+//  }
+//
+//  CENTURION_NODISCARD static constexpr CZString name() noexcept
+//  {
+//    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
+//  }
+//
+//  CENTURION_NODISCARD static Optional<int> value() noexcept
+//  {
+//    return to_bool(name());
+//  }
+//
+//  CENTURION_NODISCARD static std::string to_string(int value) noexcept
+//  {
+//    return std::to_string(value);
+//  }
+//};
+
+template <typename Derived, typename Arg>
+class CRTPHint {
  public:
   template <typename T>
   CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, int>::value;
+    return std::is_same<T, Arg>::value;
   }
 
   CENTURION_NODISCARD static constexpr CZString name() noexcept
   {
-    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
+    return Derived::name();
   }
 
-  CENTURION_NODISCARD static Optional<int> value() noexcept
+  CENTURION_NODISCARD static Optional<Arg> value() noexcept
   {
     return to_bool(name());
   }
 
-  CENTURION_NODISCARD static std::string to_string(int value) noexcept
+  CENTURION_NODISCARD static std::string to_string(Arg value) noexcept
   {
     return std::to_string(value);
+  }
+};
+
+class AndroidAPKExpansionMainFileVersion
+    : public CRTPHint<AndroidAPKExpansionMainFileVersion, int> {
+ public:
+  CENTURION_NODISCARD static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
   }
 };
 

@@ -41,7 +41,7 @@ CENTURION_NODISCARD Optional<bool> to_bool(CZString name) noexcept
   if (!value) {
     return nothing;
   } else {
-    return strcmp(value, "1") == 0;
+    return std::strcmp(value, "1") == 0;
   }
 }
 

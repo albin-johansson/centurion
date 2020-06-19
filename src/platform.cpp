@@ -4,6 +4,7 @@
 #include "platform.h"
 
 #include <string>
+#include <utility>
 
 namespace centurion {
 
@@ -33,7 +34,7 @@ Optional<std::string> Platform::name() noexcept
   if (name == "Unknown") {
     return nothing;
   } else {
-    return name;
+    return std::move(name);
   }
 }
 

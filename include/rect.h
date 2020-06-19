@@ -380,7 +380,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
-  CENTURION_NODISCARD explicit operator SDL_Rect*() noexcept
+  CENTURION_NODISCARD constexpr explicit operator SDL_Rect*() noexcept
   {
     return reinterpret_cast<SDL_Rect*>(this);
   }
@@ -396,7 +396,8 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
-  CENTURION_NODISCARD explicit operator const SDL_Rect*() const noexcept
+  CENTURION_NODISCARD constexpr explicit operator const SDL_Rect*()
+      const noexcept
   {
     return reinterpret_cast<const SDL_Rect*>(this);
   }
@@ -412,7 +413,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
-  CENTURION_NODISCARD explicit operator SDL_FRect*() noexcept
+  CENTURION_NODISCARD constexpr explicit operator SDL_FRect*() noexcept
   {
     return reinterpret_cast<SDL_FRect*>(this);
   }
@@ -428,7 +429,8 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
-  CENTURION_NODISCARD explicit operator const SDL_FRect*() const noexcept
+  CENTURION_NODISCARD constexpr explicit operator const SDL_FRect*()
+      const noexcept
   {
     return reinterpret_cast<const SDL_FRect*>(this);
   }
@@ -443,7 +445,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
-  CENTURION_NODISCARD operator SDL_Rect() const noexcept
+  CENTURION_NODISCARD constexpr operator SDL_Rect() const noexcept
   {
     return {m_position.x(), m_position.y(), m_size.width, m_size.height};
   }
@@ -458,7 +460,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
-  CENTURION_NODISCARD operator SDL_FRect() const noexcept
+  CENTURION_NODISCARD constexpr operator SDL_FRect() const noexcept
   {
     return {m_position.x(), m_position.y(), m_size.width, m_size.height};
   }
@@ -472,7 +474,8 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  friend bool operator==<T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
+  friend constexpr bool operator==
+      <T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
   /**
    * Indicates whether or not two rectangles aren't equal.
@@ -483,7 +486,8 @@ class Rect final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  friend bool operator!=<T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
+  friend constexpr bool operator!=
+      <T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
  private:
   Point<T> m_position = {0, 0};

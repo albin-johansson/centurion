@@ -296,7 +296,7 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  friend Point<T> operator-
+  friend constexpr Point<T> operator-
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
@@ -308,7 +308,8 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  friend bool operator==<T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+  friend constexpr bool operator==
+      <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
    * Indicates whether or not two points aren't considered to be equal.
@@ -319,7 +320,8 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  friend bool operator!=<T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+  friend constexpr bool operator!=
+      <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
  private:
   T m_x = 0;

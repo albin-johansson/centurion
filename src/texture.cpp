@@ -181,7 +181,7 @@ UniquePtr<Texture> Texture::streaming(const Renderer& renderer,
                                       PixelFormat format)
 {
   const auto blendMode = BlendMode::Blend;
-  const auto createSurface = [](CZString path, PixelFormat format) {
+  const auto createSurface = [blendMode](CZString path, PixelFormat format) {
     Surface source{path};
     source.set_blend_mode(blendMode);
     return source.convert(format);

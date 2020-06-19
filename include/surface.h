@@ -243,7 +243,7 @@ class Surface final {
   IRect clip() const noexcept
   {
     const auto rect = m_surface->clip_rect;
-    return {rect.x, rect.y, rect.w, rect.h};
+    return {{rect.x, rect.y}, {rect.w, rect.h}};
   }
 
   /**

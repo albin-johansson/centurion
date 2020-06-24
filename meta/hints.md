@@ -40,8 +40,8 @@
 * [X] `MouseFocusClickthrough`: `0`, `1`.
 * [X] `MouseRelativeModeWarp`: `0` (def), `1`.
 * [X] `MouseTouchEvents`: `0`, `1`.
-* [ ] `MouseDoubleClickTime`: milliseconds.
-* [ ] `MouseDoubleClickRadius`: pixels.
+* [X] `MouseDoubleClickTime`: milliseconds.
+* [X] `MouseDoubleClickRadius`: pixels.
 * [ ] `MouseNormalSpeedScale`: `float`.
 * [ ] `MouseRelativeSpeedScale`: `float`.
 * [X] `ReturnKeyHidesIME`: `0`, `1`.

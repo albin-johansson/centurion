@@ -251,6 +251,28 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("MouseRelativeModeWarp") { test_bool_hint<MouseRelativeModeWarp>(); }
 
+  SECTION("MouseDoubleClickRadius")
+  {
+    test_hint<MouseDoubleClickRadius>([] {
+      set_hint<MouseDoubleClickRadius>(5);
+      CHECK(get_hint<MouseDoubleClickRadius>().value() == 5);
+
+      set_hint<MouseDoubleClickRadius>(20);
+      CHECK(get_hint<MouseDoubleClickRadius>().value() == 20);
+    });
+  }
+
+  SECTION("MouseDoubleClickTime")
+  {
+    test_hint<MouseDoubleClickTime>([] {
+      set_hint<MouseDoubleClickTime>(25);
+      CHECK(get_hint<MouseDoubleClickTime>().value() == 25);
+
+      set_hint<MouseDoubleClickTime>(178);
+      CHECK(get_hint<MouseDoubleClickTime>().value() == 178);
+    });
+  }
+
   SECTION("NoSignalHandlers") { test_bool_hint<NoSignalHandlers>(); };
 
   SECTION("Direct3D11Debug") { test_bool_hint<Direct3D11Debug>(); };

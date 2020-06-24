@@ -35,6 +35,109 @@
 
 namespace centurion {
 namespace hint {
+namespace {
+
+template <typename Derived, typename Arg>
+class CRTPHint {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Arg>::value;
+  }
+
+  CENTURION_NODISCARD static constexpr CZString name() noexcept
+  {
+    return Derived::name();
+  }
+
+  CENTURION_NODISCARD static Optional<Arg> value() noexcept
+  {
+    return Derived::current_value();
+  }
+
+  CENTURION_NODISCARD static std::string to_string(Arg value) noexcept
+  {
+    return std::to_string(value);
+  }
+};
+
+// A hint class that only accepts booleans
+template <typename Hint>
+class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, bool>::value;
+  }
+
+  CENTURION_NODISCARD
+  static Optional<bool> current_value() noexcept
+  {
+    const CZString value = SDL_GetHint(Hint::name());
+    if (!value) {
+      return nothing;
+    } else {
+      return std::strcmp(value, "1") == 0;
+    }
+  }
+
+  CENTURION_NODISCARD
+  static std::string to_string(bool value) noexcept
+  {
+    return value ? "1" : "0";
+  }
+};
+
+// A hint class that only accepts strings
+template <typename Hint>
+class StringHint : public CRTPHint<StringHint<Hint>, CZString> {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_convertible<T, CZString>::value;
+  }
+
+  CENTURION_NODISCARD
+  static Optional<CZString> current_value() noexcept
+  {
+    const CZString value = SDL_GetHint(Hint::name());
+    if (!value) {
+      return nothing;
+    } else {
+      return value;
+    }
+  }
+
+  CENTURION_NODISCARD
+  static std::string to_string(CZString value) { return value; }
+};
+
+// A hint class that only accepts integers
+template <typename Hint>
+class IntHint : public CRTPHint<IntHint<Hint>, int> {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_convertible<T, int>::value;
+  }
+
+  CENTURION_NODISCARD
+  static Optional<int> current_value() noexcept
+  {
+    const CZString value = SDL_GetHint(Hint::name());
+    if (!value) {
+      return nothing;
+    } else {
+      return std::stoi(value);
+    }
+  }
+};
+
+}  // namespace
 
 // TODO finish 4.1
 
@@ -298,112 +401,8 @@ class FramebufferAcceleration final {
   }
 };
 
-namespace detail {
-
-template <typename Derived, typename Arg>
-class CRTPHint {
- public:
-  template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
-  {
-    return std::is_same<T, Arg>::value;
-  }
-
-  CENTURION_NODISCARD static constexpr CZString name() noexcept
-  {
-    return Derived::name();
-  }
-
-  CENTURION_NODISCARD static Optional<Arg> value() noexcept
-  {
-    return Derived::current_value();
-  }
-
-  CENTURION_NODISCARD static std::string to_string(Arg value) noexcept
-  {
-    return std::to_string(value);
-  }
-};
-
-// A hint class that only accepts booleans
-template <typename Hint>
-class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
- public:
-  template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
-  {
-    return std::is_same<T, bool>::value;
-  }
-
-  CENTURION_NODISCARD
-  static Optional<bool> current_value() noexcept
-  {
-    const CZString value = SDL_GetHint(Hint::name());
-    if (!value) {
-      return nothing;
-    } else {
-      return std::strcmp(value, "1") == 0;
-    }
-  }
-
-  CENTURION_NODISCARD
-  static std::string to_string(bool value) noexcept
-  {
-    return value ? "1" : "0";
-  }
-};
-
-// A hint class that only accepts strings
-template <typename Hint>
-class StringHint : public CRTPHint<StringHint<Hint>, CZString> {
- public:
-  template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
-  {
-    return std::is_convertible<T, CZString>::value;
-  }
-
-  CENTURION_NODISCARD
-  static Optional<CZString> current_value() noexcept
-  {
-    const CZString value = SDL_GetHint(Hint::name());
-    if (!value) {
-      return nothing;
-    } else {
-      return value;
-    }
-  }
-
-  CENTURION_NODISCARD
-  static std::string to_string(CZString value) { return value; }
-};
-
-// A hint class that only accepts integers
-template <typename Hint>
-class IntHint : public CRTPHint<IntHint<Hint>, int> {
- public:
-  template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
-  {
-    return std::is_convertible<T, int>::value;
-  }
-
-  CENTURION_NODISCARD
-  static Optional<int> current_value() noexcept
-  {
-    const CZString value = SDL_GetHint(Hint::name());
-    if (!value) {
-      return nothing;
-    } else {
-      return std::stoi(value);
-    }
-  }
-};
-
-}  // namespace detail
-
 #define CENTURION_HINT(Name, SDLName, Type)                       \
-  class Name final : public detail::Type<Name> {                  \
+  class Name final : public Type<Name> {                          \
    public:                                                        \
     CENTURION_NODISCARD static constexpr CZString name() noexcept \
     {                                                             \
@@ -506,6 +505,12 @@ CENTURION_HINT(MouseFocusClickthrough,
 CENTURION_HINT(MouseRelativeModeWarp,
                SDL_HINT_MOUSE_RELATIVE_MODE_WARP,
                BoolHint)
+
+CENTURION_HINT(MouseDoubleClickTime, SDL_HINT_MOUSE_DOUBLE_CLICK_TIME, IntHint)
+
+CENTURION_HINT(MouseDoubleClickRadius,
+               SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS,
+               IntHint)
 
 CENTURION_HINT(NoSignalHandlers, SDL_HINT_NO_SIGNAL_HANDLERS, BoolHint)
 

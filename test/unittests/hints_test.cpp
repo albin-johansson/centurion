@@ -51,7 +51,11 @@ TEST_CASE("set_hint", "[Hints]")
     test_bool_hint<AccelerometerAsJoystick>();
   }
 
+  SECTION("AllowTopMost") { test_bool_hint<AllowTopMost>(); }
+
   SECTION("AndroidBlockOnPause") { test_bool_hint<AndroidBlockOnPause>(); }
+
+  SECTION("AndroidTrapBackButton") { test_bool_hint<AndroidTrapBackButton>(); }
 
   SECTION("AppleTVControllerUIEvents")
   {
@@ -65,11 +69,23 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("BMPSaveLegacyFormat") { test_bool_hint<BMPSaveLegacyFormat>(); }
 
+  SECTION("DoubleBuffer") { test_bool_hint<DoubleBuffer>(); }
+
+  SECTION("EnableSteamControllers")
+  {
+    test_bool_hint<EnableSteamControllers>();
+  }
+
+  SECTION("GamecontrollerUseButtonLabels")
+  {
+    test_bool_hint<GamecontrollerUseButtonLabels>();
+  }
+
   SECTION("GrabKeyboard") { test_bool_hint<GrabKeyboard>(); }
 
   SECTION("FramebufferAcceleration")
   {
-    test_bool_hint<FramebufferAcceleration>();
+    //    test_bool_hint<FramebufferAcceleration>();
   }
 
   SECTION("IdleTimerDisabled") { test_bool_hint<IdleTimerDisabled>(); }
@@ -79,6 +95,27 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("JoystickAllowBackgroundEvents")
   {
     test_bool_hint<JoystickAllowBackgroundEvents>();
+  }
+
+  SECTION("JoystickUseHIDAPI") { test_bool_hint<JoystickUseHIDAPI>(); }
+
+  SECTION("JoystickUseHIDAPIPS4") { test_bool_hint<JoystickUseHIDAPIPS4>(); }
+
+  SECTION("JoystickUseHIDAPISteam")
+  {
+    test_bool_hint<JoystickUseHIDAPISteam>();
+  }
+
+  SECTION("JoystickUseHIDAPISwitch")
+  {
+    test_bool_hint<JoystickUseHIDAPISwitch>();
+  }
+
+  SECTION("JoystickUseHIDAPIXbox") { test_bool_hint<JoystickUseHIDAPIXbox>(); }
+
+  SECTION("JoystickUseHIDAPIGameCube")
+  {
+    test_bool_hint<JoystickUseHIDAPIGameCube>();
   }
 
   SECTION("MacBackgroundApp") { test_bool_hint<MacBackgroundApp>(); }
@@ -97,19 +134,19 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("NoSignalHandlers") { test_bool_hint<NoSignalHandlers>(); };
 
-  // TODO remove Render prefix
-  SECTION("RenderDirect3D11Debug") { test_bool_hint<RenderDirect3D11Debug>(); };
+  SECTION("Direct3D11Debug") { test_bool_hint<Direct3D11Debug>(); };
 
-  SECTION("RenderDirect3DThreadSafe")
-  {
-    test_bool_hint<RenderDirect3DThreadSafe>();
-  };
+  SECTION("Direct3DThreadSafe") { test_bool_hint<Direct3DThreadSafe>(); };
 
-  SECTION("RenderOpenGLShaders") { test_bool_hint<RenderOpenGLShaders>(); };
+  SECTION("EnableOpenGLShaders") { test_bool_hint<EnableOpenGLShaders>(); };
 
-  SECTION("RenderVSync") { test_bool_hint<RenderVSync>(); };
+  SECTION("OpenGLESDriver") { test_bool_hint<OpenGLESDriver>(); };
+
+  SECTION("EnableVSync") { test_bool_hint<EnableVSync>(); };
 
   SECTION("AllowScreensaver") { test_bool_hint<AllowScreensaver>(); };
+
+  SECTION("VideoExternalContext") { test_bool_hint<VideoExternalContext>(); };
 
   SECTION("DisableHighDPI") { test_bool_hint<DisableHighDPI>(); };
 
@@ -118,6 +155,13 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("MinimizeOnFocusLoss") { test_bool_hint<MinimizeOnFocusLoss>(); };
 
   SECTION("X11NetWMPing") { test_bool_hint<X11NetWMPing>(); };
+
+  SECTION("X11XNetWMBypassCompositor")
+  {
+    test_bool_hint<X11XNetWMBypassCompositor>();
+  };
+
+  SECTION("X11ForceEGL") { test_bool_hint<X11ForceEGL>(); };
 
   SECTION("X11Xinerama") { test_bool_hint<X11Xinerama>(); };
 
@@ -137,10 +181,20 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("WindowsNoCloseOnAltF4") { test_bool_hint<WindowsNoCloseOnAltF4>(); };
 
-  SECTION("WindowFrameUsableWithCursorHidden")
+  SECTION("WindowFrameUsableWhileCursorHidden")
   {
-    test_bool_hint<WindowFrameUsableWithCursorHidden>();
+    test_bool_hint<WindowFrameUsableWhileCursorHidden>();
   };
+
+  SECTION("MouseTouchEvents") { test_bool_hint<MouseTouchEvents>(); };
+
+  SECTION("RenderBatching") { test_bool_hint<RenderBatching>(); };
+
+  SECTION("ReturnKeyHidesIME") { test_bool_hint<ReturnKeyHidesIME>(); };
+
+  SECTION("TouchMouseEvents") { test_bool_hint<TouchMouseEvents>(); };
+
+  SECTION("TVRemoteAsJoystick") { test_bool_hint<TVRemoteAsJoystick>(); };
 
   SECTION("XinputEnabled") { test_bool_hint<XinputEnabled>(); };
 

@@ -218,6 +218,86 @@ class ScaleQuality final {
   }
 };
 
+class FramebufferAcceleration final {
+ public:
+  enum Value {
+    Off,
+    On,
+    Direct3D,
+    OpenGL,
+    OpenGLES,
+    OpenGLES2,
+    Metal,
+    Software
+  };
+
+  template <typename T>
+  static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Value>::value;
+  }
+
+  static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_FRAMEBUFFER_ACCELERATION;
+  }
+
+  static Optional<Value> current_value() noexcept
+  {
+    const CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    const std::string current{hint};
+    if (current == "0") {
+      return Off;
+    } else if (current == "1") {
+      return On;
+    } else if (current == "direct3d") {
+      return Direct3D;
+    } else if (current == "opengl") {
+      return OpenGL;
+    } else if (current == "opengles") {
+      return OpenGLES;
+    } else if (current == "opengles2") {
+      return OpenGLES2;
+    } else if (current == "metal") {
+      return Metal;
+    } else {
+      return Software;
+    }
+  }
+
+  static std::string to_string(Value value) noexcept
+  {
+    switch (value) {
+      case Off:
+        return "0";
+      case On:
+        return "1";
+      case Direct3D:
+        return "direct3d";
+      case OpenGL:
+        return "opengl";
+      case OpenGLES:
+        return "opengles";
+      case OpenGLES2:
+        return "opengles2";
+      case Metal:
+        return "metal";
+      case Software:
+        return "software";
+      default: {
+        Log::warn(
+            "Failed to convert FramebufferAcceleration value to string: %i",
+            static_cast<int>(value));
+        return "0";
+      }
+    }
+  }
+};
+
 namespace detail {
 
 template <typename Derived, typename Arg>
@@ -383,9 +463,6 @@ CENTURION_HINT(GameControllerIgnoreDevicesExcept,
 
 CENTURION_HINT(GrabKeyboard, SDL_HINT_GRAB_KEYBOARD, BoolHint)
 
-// CENTURION_BOOL_HINT(FramebufferAcceleration,
-// SDL_HINT_FRAMEBUFFER_ACCELERATION)
-
 CENTURION_HINT(IdleTimerDisabled, SDL_HINT_IDLE_TIMER_DISABLED, BoolHint)
 
 CENTURION_HINT(IMEInternalEditing, SDL_HINT_IME_INTERNAL_EDITING, BoolHint)
@@ -509,44 +586,6 @@ CENTURION_HINT(XinputEnabled, SDL_HINT_XINPUT_ENABLED, BoolHint)
 CENTURION_HINT(XinputUseOldJoystickMapping,
                SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING,
                BoolHint)
-
-// class AndroidAPKExpansionMainFileVersion
-//    : public CRTPHint<AndroidAPKExpansionMainFileVersion, int> {
-// public:
-//  CENTURION_NODISCARD static constexpr CZString name() noexcept
-//  {
-//    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
-//  }
-//
-//  CENTURION_NODISCARD static constexpr Optional<int> current_value()
-//  {
-//    return 0;
-//  }
-//};
-
-// class AndroidAPKExpansionPatchFileVersion final {
-// public:
-//  template <typename T>
-//  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
-//  {
-//    return std::is_same<T, int>::value;
-//  }
-//
-//  CENTURION_NODISCARD static constexpr CZString name() noexcept
-//  {
-//    return SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION;
-//  }
-//
-//  CENTURION_NODISCARD static Optional<int> value() noexcept
-//  {
-//    return hint_value_as_bool(name());
-//  }
-//
-//  CENTURION_NODISCARD static std::string to_string(int value) noexcept
-//  {
-//    return std::to_string(value);
-//  }
-//};
 
 /**
  * Sets the value of the specified hint. This method will only accept values

@@ -17,7 +17,7 @@
 * [X] `EnableSteamControllers`: `0`, `1`.
 * [ ] `EventLogging`: `0`, `1`, `2`.
 * [X] `DisplayUsableBounds`: string (four CSV integers)
-* [ ] `FramebufferAcceleration`: `0`, `1` or render driver.
+* [X] `FramebufferAcceleration`: `0`, `1` or render driver.
 * [X] `GameControllerType`: string.
 * [X] `GameControllerConfig`: string.
 * [X] `GameControllerConfigFile`: string.

@@ -103,6 +103,36 @@ TEST_CASE("set_hint", "[Hints]")
     test_bool_hint<EnableSteamControllers>();
   }
 
+  SECTION("FramebufferAcceleration")
+  {
+    using Hint = FramebufferAcceleration;
+    test_hint<Hint>([] {
+      set_hint<Hint>(Hint::Off);
+      CHECK(get_hint<Hint>().value() == Hint::Off);
+
+      set_hint<Hint>(Hint::On);
+      CHECK(get_hint<Hint>().value() == Hint::On);
+
+      set_hint<Hint>(Hint::OpenGL);
+      CHECK(get_hint<Hint>().value() == Hint::OpenGL);
+
+      set_hint<Hint>(Hint::OpenGLES);
+      CHECK(get_hint<Hint>().value() == Hint::OpenGLES);
+
+      set_hint<Hint>(Hint::OpenGLES2);
+      CHECK(get_hint<Hint>().value() == Hint::OpenGLES2);
+
+      set_hint<Hint>(Hint::Direct3D);
+      CHECK(get_hint<Hint>().value() == Hint::Direct3D);
+
+      set_hint<Hint>(Hint::Metal);
+      CHECK(get_hint<Hint>().value() == Hint::Metal);
+
+      set_hint<Hint>(Hint::Software);
+      CHECK(get_hint<Hint>().value() == Hint::Software);
+    });
+  }
+
   SECTION("GameControllerUseButtonLabels")
   {
     test_bool_hint<GameControllerUseButtonLabels>();

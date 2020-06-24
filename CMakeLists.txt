@@ -64,6 +64,16 @@ function(copy_directory_post_build [target [from [to]]])
             ${ARGV2})
 endfunction()
 
+# Creates an interface library target for a header-only library.
+#   name: the name of the library target.
+#   includeDirectory: the path of the directory that contains the headers of the library.
+#   sources: the headers associated with the library.
+function(centurion_add_header_only_lib [name [includeDirectory [sources]]])
+    add_library(${ARGV0} INTERFACE)
+    target_sources(${ARGV0} INTERFACE ${ARGV2})
+    target_include_directories(${ARGV0} SYSTEM INTERFACE ${ARGV1})
+endfunction()
+
 message("------ LOOKING FOR ENVIRONMENT VARIABLES ------")
 find_env_var(SDL2DIR SDL2)
 find_env_var(SDL2IMAGEDIR SDL2_image)
@@ -83,12 +93,6 @@ include_directories(
         SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
         SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
         SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
-
-add_library(libGSL INTERFACE)
-target_include_directories(libGSL INTERFACE ${CTN_LIBRARY_DIR}/gsl)
-
-add_library(libOptional INTERFACE)
-target_include_directories(libOptional INTERFACE ${CTN_LIBRARY_DIR}/optional)
 
 if (DEFINED ENV{ENABLE_COVERAGE})
     include(CodeCoverage)

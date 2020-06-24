@@ -131,6 +131,12 @@ if (WIN32)
     add_definitions(-DWIN_EXPORT)
 endif ()
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(STEP_OUTPUT_NAME centurion)
+else ()
+    set(STEP_OUTPUT_NAME libcenturion)
+endif ()
+
 if (DEFINED ENV{TRAVIS})
     target_compile_definitions(${CENTURION_LIB_TARGET} PUBLIC CENTURION_NOAUDIO)
 endif ()
@@ -141,6 +147,10 @@ set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
         OUTPUT_NAME "libcenturion")
+
+centurion_add_header_only_lib(libGSL ${CTN_LIBRARY_DIR}/gsl ${CTN_LIBRARY_DIR}/gsl/gsl-lite.hpp)
+centurion_add_header_only_lib(libOptional ${CTN_LIBRARY_DIR}/optional
+        ${CTN_LIBRARY_DIR}/optional/optional.hpp)
 
 target_include_directories(${CENTURION_LIB_TARGET}
         PRIVATE ${CTN_INCLUDE_DIR}
@@ -196,7 +206,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
             /EHsc
-            /W3
-            /experimental:external
-            /external:anglebrackets)
+            /W3)
 endif ()
+

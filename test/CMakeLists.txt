@@ -90,12 +90,9 @@ enable_testing()
 add_test(NAME ${CENTURION_TEST_TARGET}
         COMMAND ${CENTURION_TEST_TARGET})
 
-target_include_directories(${CENTURION_TEST_TARGET} PUBLIC unittests)
-
 target_include_directories(${CENTURION_TEST_TARGET}
-        SYSTEM PUBLIC ${CTN_LIBRARY_DIR}
-        SYSTEM PUBLIC ${CTN_INCLUDE_DIR}
-        SYSTEM PUBLIC ${CTN_SOURCE_DIR})
+        PUBLIC unittests
+        SYSTEM PUBLIC ${CTN_INCLUDE_DIR})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE

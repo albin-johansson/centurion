@@ -132,9 +132,9 @@ if (WIN32)
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(STEP_OUTPUT_NAME centurion)
+    set(CENTURION_OUTPUT_NAME centurion)
 else ()
-    set(STEP_OUTPUT_NAME libcenturion)
+    set(CENTURION_OUTPUT_NAME libcenturion)
 endif ()
 
 if (DEFINED ENV{TRAVIS})
@@ -146,7 +146,7 @@ set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
-        OUTPUT_NAME "libcenturion")
+        OUTPUT_NAME ${CENTURION_OUTPUT_NAME})
 
 centurion_add_header_only_lib(libGSL ${CTN_LIBRARY_DIR}/gsl ${CTN_LIBRARY_DIR}/gsl/gsl-lite.hpp)
 centurion_add_header_only_lib(libOptional ${CTN_LIBRARY_DIR}/optional

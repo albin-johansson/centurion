@@ -135,6 +135,7 @@ class CRTPHint {
   }
 };
 
+// A hint class that only accepts booleans
 template <typename Hint>
 class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
  public:
@@ -145,9 +146,9 @@ class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
   }
 
   CENTURION_NODISCARD
-  static Optional<bool> current_value()
+  static Optional<bool> current_value() noexcept
   {
-    CZString value = SDL_GetHint(Hint::name());
+    const CZString value = SDL_GetHint(Hint::name());
     if (!value) {
       return nothing;
     } else {
@@ -156,143 +157,226 @@ class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
   }
 
   CENTURION_NODISCARD
-  static std::string to_string(bool value) noexcept
+  static std::string to_string(bool value) noexcept  // FIXME not noexcept
   {
     return value ? "1" : "0";
   }
 };
 
-#define CENTURION_BOOL_HINT(Type, SDLHint)                        \
-  class Type final : public detail::BoolHint<Type> {              \
-   public:                                                        \
-    CENTURION_NODISCARD static constexpr CZString name() noexcept \
-    {                                                             \
-      return SDLHint;                                             \
-    }                                                             \
-  };
+// A hint class that only accepts strings
+template <typename Hint>
+class StringHint : public CRTPHint<StringHint<Hint>, CZString> {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_convertible<T, CZString>::value;
+  }
+
+  CENTURION_NODISCARD
+  static Optional<CZString> current_value() noexcept
+  {
+    const CZString value = SDL_GetHint(Hint::name());
+    if (!value) {
+      return nothing;
+    } else {
+      return value;
+    }
+  }
+
+  CENTURION_NODISCARD
+  static std::string to_string(CZString value) { return value; }
+};
 
 }  // namespace detail
 
-CENTURION_BOOL_HINT(AccelerometerAsJoystick, SDL_HINT_ACCELEROMETER_AS_JOYSTICK)
+#define CENTURION_HINT(Name, SDLName, Type)                       \
+  class Name final : public detail::Type<Name> {                  \
+   public:                                                        \
+    CENTURION_NODISCARD static constexpr CZString name() noexcept \
+    {                                                             \
+      return SDLName;                                             \
+    }                                                             \
+  };
 
-CENTURION_BOOL_HINT(AllowTopMost, SDL_HINT_ALLOW_TOPMOST)
+CENTURION_HINT(AccelerometerAsJoystick,
+               SDL_HINT_ACCELEROMETER_AS_JOYSTICK,
+               BoolHint)
 
-CENTURION_BOOL_HINT(AndroidBlockOnPause, SDL_HINT_ANDROID_BLOCK_ON_PAUSE)
+CENTURION_HINT(AllowTopMost, SDL_HINT_ALLOW_TOPMOST, BoolHint)
 
-CENTURION_BOOL_HINT(AndroidTrapBackButton, SDL_HINT_ANDROID_TRAP_BACK_BUTTON)
+CENTURION_HINT(AndroidBlockOnPause, SDL_HINT_ANDROID_BLOCK_ON_PAUSE, BoolHint)
 
-CENTURION_BOOL_HINT(AppleTVControllerUIEvents,
-                    SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS)
+CENTURION_HINT(AndroidTrapBackButton,
+               SDL_HINT_ANDROID_TRAP_BACK_BUTTON,
+               BoolHint)
 
-CENTURION_BOOL_HINT(AppleTVRemoteAllowRotation,
-                    SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION)
+CENTURION_HINT(AppleTVControllerUIEvents,
+               SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS,
+               BoolHint)
 
-CENTURION_BOOL_HINT(BMPSaveLegacyFormat, SDL_HINT_BMP_SAVE_LEGACY_FORMAT)
+CENTURION_HINT(AppleTVRemoteAllowRotation,
+               SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION,
+               BoolHint)
 
-CENTURION_BOOL_HINT(DoubleBuffer, SDL_HINT_VIDEO_DOUBLE_BUFFER)
+CENTURION_HINT(BMPSaveLegacyFormat, SDL_HINT_BMP_SAVE_LEGACY_FORMAT, BoolHint)
 
-CENTURION_BOOL_HINT(EnableSteamControllers, SDL_HINT_ENABLE_STEAM_CONTROLLERS)
+CENTURION_HINT(DoubleBuffer, SDL_HINT_VIDEO_DOUBLE_BUFFER, BoolHint)
 
-CENTURION_BOOL_HINT(GamecontrollerUseButtonLabels,
-                    SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS)
+CENTURION_HINT(DisplayUsableBounds, SDL_HINT_DISPLAY_USABLE_BOUNDS, StringHint)
 
-CENTURION_BOOL_HINT(GrabKeyboard, SDL_HINT_GRAB_KEYBOARD)
+CENTURION_HINT(EnableSteamControllers,
+               SDL_HINT_ENABLE_STEAM_CONTROLLERS,
+               BoolHint)
+
+CENTURION_HINT(GameControllerUseButtonLabels,
+               SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS,
+               BoolHint)
+
+CENTURION_HINT(GameControllerType, SDL_HINT_GAMECONTROLLERTYPE, StringHint)
+
+CENTURION_HINT(GameControllerConfig, SDL_HINT_GAMECONTROLLERCONFIG, StringHint)
+
+CENTURION_HINT(GameControllerConfigFile,
+               SDL_HINT_GAMECONTROLLERCONFIG_FILE,
+               StringHint)
+
+CENTURION_HINT(GameControllerIgnoreDevices,
+               SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES,
+               StringHint)
+
+CENTURION_HINT(GameControllerIgnoreDevicesExcept,
+               SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT,
+               StringHint)
+
+CENTURION_HINT(GrabKeyboard, SDL_HINT_GRAB_KEYBOARD, BoolHint)
 
 // CENTURION_BOOL_HINT(FramebufferAcceleration,
 // SDL_HINT_FRAMEBUFFER_ACCELERATION)
 
-CENTURION_BOOL_HINT(IdleTimerDisabled, SDL_HINT_IDLE_TIMER_DISABLED)
+CENTURION_HINT(IdleTimerDisabled, SDL_HINT_IDLE_TIMER_DISABLED, BoolHint)
 
-CENTURION_BOOL_HINT(IMEInternalEditing, SDL_HINT_IME_INTERNAL_EDITING)
+CENTURION_HINT(IMEInternalEditing, SDL_HINT_IME_INTERNAL_EDITING, BoolHint)
 
-CENTURION_BOOL_HINT(JoystickAllowBackgroundEvents,
-                    SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS)
+CENTURION_HINT(JoystickAllowBackgroundEvents,
+               SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,
+               BoolHint)
 
-CENTURION_BOOL_HINT(JoystickUseHIDAPI, SDL_HINT_JOYSTICK_HIDAPI)
+CENTURION_HINT(JoystickUseHIDAPI, SDL_HINT_JOYSTICK_HIDAPI, BoolHint)
 
-CENTURION_BOOL_HINT(JoystickUseHIDAPIPS4, SDL_HINT_JOYSTICK_HIDAPI_PS4)
+CENTURION_HINT(JoystickUseHIDAPIPS4, SDL_HINT_JOYSTICK_HIDAPI_PS4, BoolHint)
 
-CENTURION_BOOL_HINT(JoystickUseHIDAPIRumble,
-                    SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE)
+CENTURION_HINT(JoystickUseHIDAPIRumble,
+               SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE,
+               BoolHint)
 
-CENTURION_BOOL_HINT(JoystickUseHIDAPISteam, SDL_HINT_JOYSTICK_HIDAPI_STEAM)
+CENTURION_HINT(JoystickUseHIDAPISteam, SDL_HINT_JOYSTICK_HIDAPI_STEAM, BoolHint)
 
-CENTURION_BOOL_HINT(JoystickUseHIDAPISwitch, SDL_HINT_JOYSTICK_HIDAPI_SWITCH)
+CENTURION_HINT(JoystickUseHIDAPISwitch,
+               SDL_HINT_JOYSTICK_HIDAPI_SWITCH,
+               BoolHint)
 
-CENTURION_BOOL_HINT(JoystickUseHIDAPIXbox, SDL_HINT_JOYSTICK_HIDAPI_XBOX)
+CENTURION_HINT(JoystickUseHIDAPIXbox, SDL_HINT_JOYSTICK_HIDAPI_XBOX, BoolHint)
 
-CENTURION_BOOL_HINT(JoystickUseHIDAPIGameCube,
-                    SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE)
+CENTURION_HINT(JoystickUseHIDAPIGameCube,
+               SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE,
+               BoolHint)
 
-CENTURION_BOOL_HINT(MacBackgroundApp, SDL_HINT_MAC_BACKGROUND_APP)
+CENTURION_HINT(MacBackgroundApp, SDL_HINT_MAC_BACKGROUND_APP, BoolHint)
 
-CENTURION_BOOL_HINT(MacCTRLClickEmulateRightClick,
-                    SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK)
+CENTURION_HINT(MacCTRLClickEmulateRightClick,
+               SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK,
+               BoolHint)
 
-CENTURION_BOOL_HINT(MouseFocusClickthrough, SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH)
+CENTURION_HINT(MouseFocusClickthrough,
+               SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH,
+               BoolHint)
 
-CENTURION_BOOL_HINT(MouseRelativeModeWarp, SDL_HINT_MOUSE_RELATIVE_MODE_WARP)
+CENTURION_HINT(MouseRelativeModeWarp,
+               SDL_HINT_MOUSE_RELATIVE_MODE_WARP,
+               BoolHint)
 
-CENTURION_BOOL_HINT(NoSignalHandlers, SDL_HINT_NO_SIGNAL_HANDLERS)
+CENTURION_HINT(NoSignalHandlers, SDL_HINT_NO_SIGNAL_HANDLERS, BoolHint)
 
-CENTURION_BOOL_HINT(Direct3D11Debug, SDL_HINT_RENDER_DIRECT3D11_DEBUG)
+CENTURION_HINT(Direct3D11Debug, SDL_HINT_RENDER_DIRECT3D11_DEBUG, BoolHint)
 
-CENTURION_BOOL_HINT(Direct3DThreadSafe, SDL_HINT_RENDER_DIRECT3D_THREADSAFE)
+CENTURION_HINT(Direct3DThreadSafe,
+               SDL_HINT_RENDER_DIRECT3D_THREADSAFE,
+               BoolHint)
 
-CENTURION_BOOL_HINT(OpenGLESDriver, SDL_HINT_OPENGL_ES_DRIVER)
+CENTURION_HINT(OpenGLESDriver, SDL_HINT_OPENGL_ES_DRIVER, BoolHint)
 
-CENTURION_BOOL_HINT(EnableOpenGLShaders, SDL_HINT_RENDER_OPENGL_SHADERS)
+CENTURION_HINT(EnableOpenGLShaders, SDL_HINT_RENDER_OPENGL_SHADERS, BoolHint)
 
-CENTURION_BOOL_HINT(EnableVSync, SDL_HINT_RENDER_VSYNC)
+CENTURION_HINT(EnableVSync, SDL_HINT_RENDER_VSYNC, BoolHint)
 
-CENTURION_BOOL_HINT(AllowScreensaver, SDL_HINT_VIDEO_ALLOW_SCREENSAVER)
+CENTURION_HINT(AllowScreensaver, SDL_HINT_VIDEO_ALLOW_SCREENSAVER, BoolHint)
 
-CENTURION_BOOL_HINT(VideoExternalContext, SDL_HINT_VIDEO_EXTERNAL_CONTEXT)
+CENTURION_HINT(VideoExternalContext, SDL_HINT_VIDEO_EXTERNAL_CONTEXT, BoolHint)
 
-CENTURION_BOOL_HINT(DisableHighDPI, SDL_HINT_VIDEO_HIGHDPI_DISABLED)
+CENTURION_HINT(DisableHighDPI, SDL_HINT_VIDEO_HIGHDPI_DISABLED, BoolHint)
 
-CENTURION_BOOL_HINT(MacFullscreenSpaces, SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES)
+CENTURION_HINT(MacFullscreenSpaces,
+               SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES,
+               BoolHint)
 
-CENTURION_BOOL_HINT(MinimizeOnFocusLoss, SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS)
+CENTURION_HINT(MinimizeOnFocusLoss,
+               SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS,
+               BoolHint)
 
-CENTURION_BOOL_HINT(X11NetWMPing, SDL_HINT_VIDEO_X11_NET_WM_PING)
+CENTURION_HINT(X11NetWMPing, SDL_HINT_VIDEO_X11_NET_WM_PING, BoolHint)
 
-CENTURION_BOOL_HINT(X11XNetWMBypassCompositor,
-                    SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR)
+CENTURION_HINT(X11XNetWMBypassCompositor,
+               SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR,
+               BoolHint)
 
-CENTURION_BOOL_HINT(X11ForceEGL, SDL_HINT_VIDEO_X11_FORCE_EGL)
+CENTURION_HINT(X11ForceEGL, SDL_HINT_VIDEO_X11_FORCE_EGL, BoolHint)
 
-CENTURION_BOOL_HINT(X11Xinerama, SDL_HINT_VIDEO_X11_XINERAMA)
+CENTURION_HINT(X11Xinerama, SDL_HINT_VIDEO_X11_XINERAMA, BoolHint)
 
-CENTURION_BOOL_HINT(X11XRandR, SDL_HINT_VIDEO_X11_XRANDR)
+CENTURION_HINT(X11XRandR, SDL_HINT_VIDEO_X11_XRANDR, BoolHint)
 
-CENTURION_BOOL_HINT(X11XVidMode, SDL_HINT_VIDEO_X11_XVIDMODE)
+CENTURION_HINT(X11XVidMode, SDL_HINT_VIDEO_X11_XVIDMODE, BoolHint)
 
-CENTURION_BOOL_HINT(WindowsDisableThreadNaming,
-                    SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING)
+CENTURION_HINT(WindowsDisableThreadNaming,
+               SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING,
+               BoolHint)
 
-CENTURION_BOOL_HINT(WindowsEnableMessageLoop,
-                    SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP)
+CENTURION_HINT(WindowsEnableMessageLoop,
+               SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP,
+               BoolHint)
 
-CENTURION_BOOL_HINT(WindowsNoCloseOnAltF4, SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4)
+CENTURION_HINT(WindowsNoCloseOnAltF4,
+               SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4,
+               BoolHint)
 
-CENTURION_BOOL_HINT(WindowFrameUsableWhileCursorHidden,
-                    SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN)
+CENTURION_HINT(WindowFrameUsableWhileCursorHidden,
+               SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN,
+               BoolHint)
 
-CENTURION_BOOL_HINT(MouseTouchEvents, SDL_HINT_MOUSE_TOUCH_EVENTS)
+CENTURION_HINT(WinRTPrivacyPolicyLabel,
+               SDL_HINT_WINRT_PRIVACY_POLICY_LABEL,
+               StringHint)
 
-CENTURION_BOOL_HINT(RenderBatching, SDL_HINT_RENDER_BATCHING)
+CENTURION_HINT(WinRTPrivacyPolicyURL,
+               SDL_HINT_WINRT_PRIVACY_POLICY_URL,
+               StringHint)
 
-CENTURION_BOOL_HINT(ReturnKeyHidesIME, SDL_HINT_RETURN_KEY_HIDES_IME)
+CENTURION_HINT(MouseTouchEvents, SDL_HINT_MOUSE_TOUCH_EVENTS, BoolHint)
 
-CENTURION_BOOL_HINT(TouchMouseEvents, SDL_HINT_TOUCH_MOUSE_EVENTS)
+CENTURION_HINT(RenderBatching, SDL_HINT_RENDER_BATCHING, BoolHint)
 
-CENTURION_BOOL_HINT(TVRemoteAsJoystick, SDL_HINT_TV_REMOTE_AS_JOYSTICK)
+CENTURION_HINT(ReturnKeyHidesIME, SDL_HINT_RETURN_KEY_HIDES_IME, BoolHint)
 
-CENTURION_BOOL_HINT(XinputEnabled, SDL_HINT_XINPUT_ENABLED)
+CENTURION_HINT(TouchMouseEvents, SDL_HINT_TOUCH_MOUSE_EVENTS, BoolHint)
 
-CENTURION_BOOL_HINT(XinputUseOldJoystickMapping,
-                    SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING)
+CENTURION_HINT(TVRemoteAsJoystick, SDL_HINT_TV_REMOTE_AS_JOYSTICK, BoolHint)
+
+CENTURION_HINT(XinputEnabled, SDL_HINT_XINPUT_ENABLED, BoolHint)
+
+CENTURION_HINT(XinputUseOldJoystickMapping,
+               SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING,
+               BoolHint)
 
 // class AndroidAPKExpansionMainFileVersion
 //    : public CRTPHint<AndroidAPKExpansionMainFileVersion, int> {

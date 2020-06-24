@@ -16,14 +16,14 @@
 * [ ] `EmscriptenKeyboardElement`: `#window` (def), `#document`, `#screen`, `#canvas` or string.
 * [X] `EnableSteamControllers`: `0`, `1`.
 * [ ] `EventLogging`: `0`, `1`, `2`.
-* [ ] `DisplayUsableBounds`: string (four CSV integers)
+* [X] `DisplayUsableBounds`: string (four CSV integers)
 * [ ] `FramebufferAcceleration`: `0`, `1` or render driver.
-* [ ] `GamecontrollerType`: string.
-* [ ] `GamecontrollerConfig`: string.
-* [ ] `GamecontrollerConfigFile`: string.
-* [ ] `GamecontrollerIgnoreDevices`: string.
-* [ ] `GamecontrollerIgnoreDevicesExcept`: string.
-* [X] `GamecontrollerUseButtonLabels`: `0`, `1`.
+* [X] `GameControllerType`: string.
+* [X] `GameControllerConfig`: string.
+* [X] `GameControllerConfigFile`: string.
+* [X] `GameControllerIgnoreDevices`: string.
+* [X] `GameControllerIgnoreDevicesExcept`: string.
+* [X] `GameControllerUseButtonLabels`: `0`, `1`.
 * [X] `GrabKeyboard`: `0` (def), `1`.
 * [X] `IdleTimerDisabled`: `0` (def), `1`.
 * [X] `IMEInternalEditing`: `0`, `1`
@@ -87,7 +87,7 @@
 * [X] `WindowsNoCloseOnAltF4`: `0` (def), `1`.
 * [X] `WindowFrameUsableWhileCursorHidden`: `0`, `1` (def).
 * [ ] `WinRTHandleBackButton`: `1` or not set (def).
-* [ ] `WinRTPrivacyPolicyLabel`: string
-* [ ] `WinRTPrivacyPolicyURL`: string
+* [X] `WinRTPrivacyPolicyLabel`: string
+* [X] `WinRTPrivacyPolicyURL`: string
 * [X] `XinputEnabled`: `0`, `1` (default).
 * [X] `XinputUseOldJoystickMapping`: `0` (def), `1`.

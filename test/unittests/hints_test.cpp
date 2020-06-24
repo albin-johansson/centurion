@@ -71,14 +71,71 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("DoubleBuffer") { test_bool_hint<DoubleBuffer>(); }
 
+  SECTION("DisplayUsableBounds")
+  {
+    test_hint<DisplayUsableBounds>([] {
+      const CZString str = "10, 20, 30, 40";
+      set_hint<DisplayUsableBounds>(str);
+      CHECK_THAT(get_hint<DisplayUsableBounds>().value(), Catch::Equals(str));
+    });
+  }
+
   SECTION("EnableSteamControllers")
   {
     test_bool_hint<EnableSteamControllers>();
   }
 
-  SECTION("GamecontrollerUseButtonLabels")
+  SECTION("GameControllerUseButtonLabels")
   {
-    test_bool_hint<GamecontrollerUseButtonLabels>();
+    test_bool_hint<GameControllerUseButtonLabels>();
+  }
+
+  SECTION("GameControllerType")
+  {
+    test_hint<GameControllerType>([] {
+      const CZString str = "0x00FD/0xAAC3=PS4";
+      set_hint<GameControllerType>(str);
+      CHECK_THAT(get_hint<GameControllerType>().value(), Catch::Equals(str));
+    });
+  }
+
+  SECTION("GameControllerConfig")
+  {
+    test_hint<GameControllerConfig>([] {
+      const CZString str = "asd\nasd";
+      set_hint<GameControllerConfig>(str);
+      CHECK_THAT(get_hint<GameControllerConfig>().value(), Catch::Equals(str));
+    });
+  }
+
+  SECTION("GameControllerConfigFile")
+  {
+    test_hint<GameControllerConfigFile>([] {
+      const CZString str = "foo";
+      set_hint<GameControllerConfigFile>(str);
+      CHECK_THAT(get_hint<GameControllerConfigFile>().value(),
+                 Catch::Equals(str));
+    });
+  }
+
+  SECTION("GameControllerIgnoreDevices")
+  {
+    test_hint<GameControllerIgnoreDevices>([] {
+      const CZString str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+      set_hint<GameControllerIgnoreDevices>(str);
+      CHECK_THAT(get_hint<GameControllerIgnoreDevices>().value(),
+                 Catch::Equals(str));
+    });
+  }
+
+  SECTION("GameControllerIgnoreDevicesExcept")
+  {
+    test_hint<GameControllerIgnoreDevicesExcept>([] {
+      const CZString str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+      set_hint<GameControllerIgnoreDevicesExcept>(str);
+      CHECK_THAT(get_hint<GameControllerIgnoreDevicesExcept>().value(),
+                 Catch::Equals(str));
+    });
   }
 
   SECTION("GrabKeyboard") { test_bool_hint<GrabKeyboard>(); }
@@ -185,6 +242,25 @@ TEST_CASE("set_hint", "[Hints]")
   {
     test_bool_hint<WindowFrameUsableWhileCursorHidden>();
   };
+
+  SECTION("WinRTPrivacyPolicyLabel")
+  {
+    test_hint<WinRTPrivacyPolicyLabel>([] {
+      const CZString str = "Hello this is GDPR speaking";
+      set_hint<WinRTPrivacyPolicyLabel>(str);
+      CHECK_THAT(get_hint<WinRTPrivacyPolicyLabel>().value(),
+                 Catch::Equals(str));
+    });
+  }
+
+  SECTION("WinRTPrivacyPolicyURL")
+  {
+    test_hint<WinRTPrivacyPolicyURL>([] {
+      const CZString str = "Hello this is GDPR URL speaking";
+      set_hint<WinRTPrivacyPolicyURL>(str);
+      CHECK_THAT(get_hint<WinRTPrivacyPolicyURL>().value(), Catch::Equals(str));
+    });
+  }
 
   SECTION("MouseTouchEvents") { test_bool_hint<MouseTouchEvents>(); };
 

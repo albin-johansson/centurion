@@ -53,6 +53,24 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("AllowTopMost") { test_bool_hint<AllowTopMost>(); }
 
+  SECTION("AudioResamplingMode")
+  {
+    using Event = AudioResamplingMode;
+    test_hint<Event>([] {
+      set_hint<Event>(Event::Default);
+      CHECK(get_hint<Event>().value() == Event::Default);
+
+      set_hint<Event>(Event::Fast);
+      CHECK(get_hint<Event>().value() == Event::Fast);
+
+      set_hint<Event>(Event::Medium);
+      CHECK(get_hint<Event>().value() == Event::Medium);
+
+      set_hint<Event>(Event::Best);
+      CHECK(get_hint<Event>().value() == Event::Best);
+    });
+  }
+
   SECTION("AndroidBlockOnPause") { test_bool_hint<AndroidBlockOnPause>(); }
 
   SECTION("AndroidTrapBackButton") { test_bool_hint<AndroidTrapBackButton>(); }
@@ -282,9 +300,23 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("RenderDriver")
   {
     test_hint<RenderDriver>([] {
-      const auto value = OpenGL;
-      CHECK(set_hint<RenderDriver>(value));
-      CHECK(get_hint<RenderDriver>().value() == value);
+      CHECK(set_hint<RenderDriver>(RenderDriver::OpenGL));
+      CHECK(get_hint<RenderDriver>().value() == RenderDriver::OpenGL);
+
+      CHECK(set_hint<RenderDriver>(RenderDriver::OpenGLES));
+      CHECK(get_hint<RenderDriver>().value() == RenderDriver::OpenGLES);
+
+      CHECK(set_hint<RenderDriver>(RenderDriver::OpenGLES2));
+      CHECK(get_hint<RenderDriver>().value() == RenderDriver::OpenGLES2);
+
+      CHECK(set_hint<RenderDriver>(RenderDriver::Metal));
+      CHECK(get_hint<RenderDriver>().value() == RenderDriver::Metal);
+
+      CHECK(set_hint<RenderDriver>(RenderDriver::Direct3D));
+      CHECK(get_hint<RenderDriver>().value() == RenderDriver::Direct3D);
+
+      CHECK(set_hint<RenderDriver>(RenderDriver::Software));
+      CHECK(get_hint<RenderDriver>().value() == RenderDriver::Software);
     });
   }
 

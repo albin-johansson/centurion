@@ -44,26 +44,19 @@ enum class HintPrio {
   Override = SDL_HINT_OVERRIDE
 };
 
-enum RenderDriverHint {
-  Direct3D,
-  OpenGL,
-  OpenGLES,
-  OpenGLES2,
-  Metal,
-  Software
-};
-
 class RenderDriver final {
  public:
+  enum Value { Direct3D, OpenGL, OpenGLES, OpenGLES2, Metal, Software };
+
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, RenderDriverHint>::value;
+    return std::is_same<T, Value>::value;
   }
 
   static constexpr CZString name() noexcept { return SDL_HINT_RENDER_DRIVER; }
 
-  static Optional<RenderDriverHint> current_value() noexcept
+  static Optional<Value> current_value() noexcept
   {
     CZString hint = SDL_GetHint(name());
     if (!hint) {
@@ -86,7 +79,7 @@ class RenderDriver final {
     }
   }
 
-  static std::string to_string(RenderDriverHint value) noexcept
+  static CZString to_string(Value value) noexcept
   {
     switch (value) {
       case Direct3D:
@@ -100,14 +93,75 @@ class RenderDriver final {
       case Metal:
         return "metal";
       default: {
-        Log::warn("Failed to convert RenderDriverHint value to string: %i",
+        Log::warn("Failed to convert RenderDriver value to string: %i",
                   static_cast<int>(value));
       }  // fallthrough
       case Software:
         return "software";
     }
   }
-};  // namespace hint
+};
+
+class AudioResamplingMode final {
+ public:
+  enum Value { Default = 0, Fast = 1, Medium = 2, Best = 3 };
+
+  template <typename T>
+  static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Value>::value;
+  }
+
+  static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_AUDIO_RESAMPLING_MODE;
+  }
+
+  static Optional<Value> current_value() noexcept
+  {
+    const CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    if (std::strcmp(hint, "default") == 0) {
+      return Default;
+
+    } else if (std::strcmp(hint, "fast") == 0) {
+      return Fast;
+
+    } else if (std::strcmp(hint, "medium") == 0) {
+      return Medium;
+
+    } else if (std::strcmp(hint, "best") == 0) {
+      return Best;
+
+    } else {
+      Log::warn("Did not recognize AudioResamplingMode value: %s", hint);
+      return Default;
+    }
+  }
+
+  static CZString to_string(Value value) noexcept
+  {
+    switch (value) {
+      case Default:
+        return "default";
+      case Fast:
+        return "fast";
+      case Medium:
+        return "medium";
+      case Best:
+        return "best";
+      default: {
+        Log::warn(
+            "Failed to convert AudioResamplingModeHint value to string: %i",
+            static_cast<int>(value));
+        return "default";
+      }
+    }
+  }
+};
 
 namespace detail {
 template <typename Derived, typename Arg>
@@ -157,10 +211,7 @@ class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
   }
 
   CENTURION_NODISCARD
-  static std::string to_string(bool value) noexcept  // FIXME not noexcept
-  {
-    return value ? "1" : "0";
-  }
+  static CZString to_string(bool value) noexcept { return value ? "1" : "0"; }
 };
 
 // A hint class that only accepts strings
@@ -185,7 +236,7 @@ class StringHint : public CRTPHint<StringHint<Hint>, CZString> {
   }
 
   CENTURION_NODISCARD
-  static std::string to_string(CZString value) { return value; }
+  static CZString to_string(CZString value) { return value; }
 };
 
 }  // namespace detail
@@ -439,7 +490,7 @@ bool set_hint(const Value& value) noexcept  // TODO rename type_if -> if_t
 {
   return static_cast<bool>(
       SDL_SetHintWithPriority(Hint::name(),
-                              Hint::to_string(value).c_str(),
+                              Hint::to_string(value),
                               static_cast<SDL_HintPriority>(priority)));
 }
 

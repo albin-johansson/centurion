@@ -10,7 +10,7 @@
 * [X] `AndroidTrapBackButton`: `0`, `1`.
 * [X] `AppleTVControllerUIEvents`: `0` (def), `1`.
 * [X] `AppleTVRemoteAllowRotation`: `0` (def), `1`.
-* [ ] `AudioResamplingMode`: `0/default`, `1/fast`, `2/medium`, `3/best`.
+* [X] `AudioResamplingMode`: `0/default`, `1/fast`, `2/medium`, `3/best`.
 * [ ] `AudioCategory`: `ambient`, `playback`.
 * [X] `BMPSaveLegacyFormat`: `0` (def), `1`.
 * [ ] `EmscriptenKeyboardElement`: `#window` (def), `#document`, `#screen`, `#canvas` or string.

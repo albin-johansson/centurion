@@ -79,7 +79,7 @@ class RenderDriver final {
     }
   }
 
-  static CZString to_string(Value value) noexcept
+  static std::string to_string(Value value) noexcept
   {
     switch (value) {
       case Direct3D:
@@ -142,7 +142,7 @@ class AudioResamplingMode final {
     }
   }
 
-  static CZString to_string(Value value) noexcept
+  static std::string to_string(Value value) noexcept
   {
     switch (value) {
       case Default:
@@ -163,7 +163,63 @@ class AudioResamplingMode final {
   }
 };
 
+class ScaleQuality final {
+ public:
+  enum Value { Nearest = 0, Linear = 1, Best = 2 };
+
+  template <typename T>
+  static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Value>::value;
+  }
+
+  static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_RENDER_SCALE_QUALITY;
+  }
+
+  static Optional<Value> current_value() noexcept
+  {
+    const CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    if (std::strcmp(hint, "nearest") == 0) {
+      return Nearest;
+
+    } else if (std::strcmp(hint, "linear") == 0) {
+      return Linear;
+
+    } else if (std::strcmp(hint, "best") == 0) {
+      return Best;
+
+    } else {
+      Log::warn("Did not recognize ScaleQuality value: %s", hint);
+      return Nearest;
+    }
+  }
+
+  static std::string to_string(Value value) noexcept
+  {
+    switch (value) {
+      case Nearest:
+        return "nearest";
+      case Linear:
+        return "linear";
+      case Best:
+        return "best";
+      default: {
+        Log::warn("Failed to convert ScaleQuality value to string: %i",
+                  static_cast<int>(value));
+        return "nearest";
+      }
+    }
+  }
+};
+
 namespace detail {
+
 template <typename Derived, typename Arg>
 class CRTPHint {
  public:
@@ -211,7 +267,10 @@ class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
   }
 
   CENTURION_NODISCARD
-  static CZString to_string(bool value) noexcept { return value ? "1" : "0"; }
+  static std::string to_string(bool value) noexcept
+  {
+    return value ? "1" : "0";
+  }
 };
 
 // A hint class that only accepts strings
@@ -236,7 +295,29 @@ class StringHint : public CRTPHint<StringHint<Hint>, CZString> {
   }
 
   CENTURION_NODISCARD
-  static CZString to_string(CZString value) { return value; }
+  static std::string to_string(CZString value) { return value; }
+};
+
+// A hint class that only accepts integers
+template <typename Hint>
+class IntHint : public CRTPHint<IntHint<Hint>, int> {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_convertible<T, int>::value;
+  }
+
+  CENTURION_NODISCARD
+  static Optional<int> current_value() noexcept
+  {
+    const CZString value = SDL_GetHint(Hint::name());
+    if (!value) {
+      return nothing;
+    } else {
+      return std::stoi(value);
+    }
+  }
 };
 
 }  // namespace detail
@@ -490,7 +571,7 @@ bool set_hint(const Value& value) noexcept  // TODO rename type_if -> if_t
 {
   return static_cast<bool>(
       SDL_SetHintWithPriority(Hint::name(),
-                              Hint::to_string(value),
+                              Hint::to_string(value).c_str(),
                               static_cast<SDL_HintPriority>(priority)));
 }
 

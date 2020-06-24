@@ -53,8 +53,8 @@
 * [X] `RenderDriver`: `direct3d`, `opengl`, `opengles2`, `opengles`, `metal`, `software`.
 * [X] `EnableOpenGLShaders`: `0`, `1`.
 * [X] `OpenGLESDriver`: `0`, `1`.
-* [ ] `RenderScaleQuality`: `0` (nearest, def), `1` (linear), `2` (best).
-* [X] `RenderVSync`: `0`, `1`.
+* [X] `ScaleQuality`: `0` (nearest, def), `1` (linear), `2` (best).
+* [X] `EnableVSync`: `0`, `1`.
 * [ ] `RenderLogicalSizeMode`: `0/letterbox`, `1/overscan`.
 * [ ] `RaspberryPIVideoLayer`: `int` (def: 10000).
 * [ ] `ThreadStackSize`: `0` (def) or positive value.

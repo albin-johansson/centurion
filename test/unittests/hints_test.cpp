@@ -219,6 +219,20 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("EnableVSync") { test_bool_hint<EnableVSync>(); };
 
+  SECTION("ScaleQuality")
+  {
+    test_hint<ScaleQuality>([] {
+      set_hint<ScaleQuality>(ScaleQuality::Nearest);
+      CHECK(get_hint<ScaleQuality>() == ScaleQuality::Nearest);
+
+      set_hint<ScaleQuality>(ScaleQuality::Linear);
+      CHECK(get_hint<ScaleQuality>() == ScaleQuality::Linear);
+
+      set_hint<ScaleQuality>(ScaleQuality::Best);
+      CHECK(get_hint<ScaleQuality>() == ScaleQuality::Best);
+    });
+  };
+
   SECTION("AllowScreensaver") { test_bool_hint<AllowScreensaver>(); };
 
   SECTION("VideoExternalContext") { test_bool_hint<VideoExternalContext>(); };

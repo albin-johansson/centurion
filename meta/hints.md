@@ -15,7 +15,7 @@
 * [X] `BMPSaveLegacyFormat`: `0` (def), `1`.
 * [ ] `EmscriptenKeyboardElement`: `#window` (def), `#document`, `#screen`, `#canvas` or string.
 * [X] `EnableSteamControllers`: `0`, `1`.
-* [ ] `EventLogging`: `0`, `1`, `2`.
+* [X] `EventLogging`: `0`, `1`, `2`.
 * [X] `DisplayUsableBounds`: string (four CSV integers)
 * [X] `FramebufferAcceleration`: `0`, `1` or render driver.
 * [X] `GameControllerType`: string.

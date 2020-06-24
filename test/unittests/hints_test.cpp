@@ -103,6 +103,20 @@ TEST_CASE("set_hint", "[Hints]")
     test_bool_hint<EnableSteamControllers>();
   }
 
+  SECTION("EventLogging")
+  {
+    test_hint<EventLogging>([] {
+      set_hint<EventLogging>(0);
+      CHECK(get_hint<EventLogging>().value() == 0);
+
+      set_hint<EventLogging>(1);
+      CHECK(get_hint<EventLogging>().value() == 1);
+
+      set_hint<EventLogging>(2);
+      CHECK(get_hint<EventLogging>().value() == 2);
+    });
+  }
+
   SECTION("FramebufferAcceleration")
   {
     using Hint = FramebufferAcceleration;

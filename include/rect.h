@@ -349,7 +349,7 @@ class Rect final {
     const auto* b = static_cast<const SDL_Rect*>(other);
 
     SDL_UnionRect(a, b, &result);
-    return {result.x, result.y, result.w, result.h};
+    return {{result.x, result.y}, {result.w, result.h}};
   }
 
   /**

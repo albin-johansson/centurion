@@ -35,7 +35,7 @@
 
 namespace centurion {
 namespace hint {
-namespace {
+namespace detail {
 
 template <typename Derived, typename Arg>
 class CRTPHint {
@@ -75,12 +75,7 @@ class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
   CENTURION_NODISCARD
   static Optional<bool> current_value() noexcept
   {
-    const CZString value = SDL_GetHint(Hint::name());
-    if (!value) {
-      return nothing;
-    } else {
-      return std::strcmp(value, "1") == 0;
-    }
+    return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
   }
 
   CENTURION_NODISCARD
@@ -137,7 +132,7 @@ class IntHint : public CRTPHint<IntHint<Hint>, int> {
   }
 };
 
-}  // namespace
+}  // namespace detail
 
 // TODO finish 4.1
 
@@ -402,7 +397,7 @@ class FramebufferAcceleration final {
 };
 
 #define CENTURION_HINT(Name, SDLName, Type)                       \
-  class Name final : public Type<Name> {                          \
+  class Name final : public detail::Type<Name> {                  \
    public:                                                        \
     CENTURION_NODISCARD static constexpr CZString name() noexcept \
     {                                                             \

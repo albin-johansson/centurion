@@ -115,6 +115,8 @@ TEST_CASE("set_hint", "[Hints]")
       set_hint<EventLogging>(2);
       CHECK(get_hint<EventLogging>().value() == 2);
     });
+
+    set_hint<EventLogging>(0);
   }
 
   SECTION("FramebufferAcceleration")
@@ -283,7 +285,13 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("OpenGLESDriver") { test_bool_hint<OpenGLESDriver>(); };
 
-  SECTION("EnableVSync") { test_bool_hint<EnableVSync>(); };
+  SECTION("EnableVSync")
+  {
+    test_bool_hint<EnableVSync>();
+    set_hint<EnableVSync>(true);
+
+//    SDL_SetHint(SDL_HINT_RENDER_VSYNC, nullptr);
+  };
 
   SECTION("ScaleQuality")
   {
@@ -398,6 +406,8 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK(set_hint<RenderDriver>(RenderDriver::Software));
       CHECK(get_hint<RenderDriver>().value() == RenderDriver::Software);
     });
+
+    set_hint<RenderDriver>(RenderDriver::OpenGL);
   }
 
   SECTION("AndroidAPKExpansionMainFileVersion")

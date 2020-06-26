@@ -5,6 +5,8 @@
 
 namespace centurion {
 
+// TODO rename Timer to Clock/Counter, also move delay to somewhere else
+
 CENTURION_DEF
 void Timer::delay(Uint32 ms) noexcept
 {

@@ -379,6 +379,23 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("X11XVidMode") { test_bool_hint<X11XVidMode>(); };
 
+  SECTION("WAVERIFFChunkSize")
+  {
+    test_hint<WAVERIFFChunkSize>([] {
+      CHECK(set_hint<WAVERIFFChunkSize>(WAVERIFFChunkSize::Force));
+      CHECK(get_hint<WAVERIFFChunkSize>() == WAVERIFFChunkSize::Force);
+
+      CHECK(set_hint<WAVERIFFChunkSize>(WAVERIFFChunkSize::IgnoreZero));
+      CHECK(get_hint<WAVERIFFChunkSize>() == WAVERIFFChunkSize::IgnoreZero);
+
+      CHECK(set_hint<WAVERIFFChunkSize>(WAVERIFFChunkSize::Ignore));
+      CHECK(get_hint<WAVERIFFChunkSize>() == WAVERIFFChunkSize::Ignore);
+
+      CHECK(set_hint<WAVERIFFChunkSize>(WAVERIFFChunkSize::Maximum));
+      CHECK(get_hint<WAVERIFFChunkSize>() == WAVERIFFChunkSize::Maximum);
+    });
+  };
+
   SECTION("WindowsDisableThreadNaming")
   {
     test_bool_hint<WindowsDisableThreadNaming>();

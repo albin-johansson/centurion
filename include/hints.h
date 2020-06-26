@@ -495,6 +495,56 @@ class WinD3DCompiler final {
   }
 };
 
+class WAVERIFFChunkSize final {
+ public:
+  enum Value { Force, IgnoreZero, Ignore, Maximum };
+
+  template <typename T>
+  static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Value>::value;
+  }
+
+  static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
+  }
+
+  static Optional<Value> current_value() noexcept
+  {
+    const CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    if (std::strcmp(hint, "force") == 0) {
+      return Force;
+    } else if (std::strcmp(hint, "ignorezero") == 0) {
+      return IgnoreZero;
+    } else if (std::strcmp(hint, "ignore") == 0) {
+      return Ignore;
+    } else /* if (std::strcmp(hint, "maximum") == 0) */ {
+      return Maximum;
+    }
+  }
+
+  static std::string to_string(Value value) noexcept
+  {
+    switch (value) {
+      default:
+        /* FALLTHROUGH */
+      case IgnoreZero:
+        return "ignorezero";
+      case Ignore:
+        return "ignore";
+      case Force:
+        return "force";
+      case Maximum:
+        return "maximum";
+    }
+  }
+};
+
 #define CENTURION_HINT(Name, SDLName, Type)                       \
   class Name final : public detail::Type<Name> {                  \
    public:                                                        \

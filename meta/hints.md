@@ -68,7 +68,7 @@
 * [X] `MinimizeOnFocusLoss`: `0`, `1` (def).
 * [ ] `QtWaylandContentOrientation`: `primary`, `portrait`, `landscape`, `inverted-portrait`, `inverted-landscape`.
 * [ ] `QtWaylandWindowFlags`: space-separated list of `OverridesSystemGestures`, `StaysOnTop`, `BypassWindowManager`
-* [ ] `WAVERIFFChunkSize`: `force`, `ignorezero`, `ignore`, `maximum`.  
+* [X] `WAVERIFFChunkSize`: `force`, `ignorezero`, `ignore`, `maximum`.  
 * [ ] `WAVETruncation`: `verystrict`, `strict`, `dropframe`, `dropblock`.
 * [ ] `WAVEFactChunk`: `truncate`, `strict`, `ignorezero`, `ignore`.
 * [ ] `WindowSharePixelFormat`: string for pointer address of `SDL_Window*`.

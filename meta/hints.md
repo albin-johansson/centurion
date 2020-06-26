@@ -3,8 +3,8 @@
 
 * [X] `AccelerometerAsJoystick`. Values: `0`, `1` (default).
 * [X] `AllowTopMost`: `0`, `1`.
-* [ ] `AndroidAPKExpansionMainFileVersion`. Values: number 1, 2, 3, .... Not set by default.
-* [ ] `AndroidAPKExpansionPatchFileVersion`. Values: number 1, 2, 3, .... Not set by default.
+* [X] `AndroidAPKExpansionMainFileVersion`. Values: number 1, 2, 3, .... Not set by default.
+* [X] `AndroidAPKExpansionPatchFileVersion`. Values: number 1, 2, 3, .... Not set by default.
 * [ ] ~~`AndroidSeparateMouseAndTouch`. Values: `0` (default) and `1`.~~
 * [X] `AndroidBlockOnPause`: `0`, `1`.
 * [X] `AndroidTrapBackButton`: `0`, `1`.

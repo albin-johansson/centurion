@@ -75,6 +75,24 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("AndroidTrapBackButton") { test_bool_hint<AndroidTrapBackButton>(); }
 
+  SECTION("AndroidAPKExpansionMainFileVersion")
+  {
+    using AndroidMainFile = AndroidAPKExpansionMainFileVersion;
+    test_hint<AndroidMainFile>([] {
+      CHECK(set_hint<AndroidMainFile>(1));
+      CHECK(get_hint<AndroidMainFile>() == 1);
+    });
+  }
+
+  SECTION("AndroidAPKExpansionPatchFileVersion")
+  {
+    using AndroidPatchFile = AndroidAPKExpansionPatchFileVersion;
+    test_hint<AndroidPatchFile>([] {
+      CHECK(set_hint<AndroidPatchFile>(1));
+      CHECK(get_hint<AndroidPatchFile>() == 1);
+    });
+  }
+
   SECTION("AudioCategory")
   {
     test_hint<AudioCategory>([] {
@@ -437,26 +455,6 @@ TEST_CASE("set_hint", "[Hints]")
     });
 
     set_hint<RenderDriver>(RenderDriver::OpenGL);
-  }
-
-  SECTION("AndroidAPKExpansionMainFileVersion")
-  {
-    //    using AndroidMainFile = AndroidAPKExpansionMainFileVersion;
-    //    test_hint<AndroidMainFile>([] {
-    //      CHECK(!get_hint<AndroidMainFile>());
-    //      CHECK(set_hint<AndroidMainFile>(1));
-    //      CHECK(get_hint<AndroidMainFile>() == 1);
-    //    });
-  }
-
-  SECTION("AndroidAPKExpansionPatchFileVersion")
-  {
-    //    using AndroidPatchFile = AndroidAPKExpansionPatchFileVersion;
-    //    test_hint<AndroidPatchFile>([] {
-    //      CHECK(!get_hint<AndroidPatchFile>());
-    //      CHECK(set_hint<AndroidPatchFile>(1));
-    //      CHECK(get_hint<AndroidPatchFile>() == 1);
-    //    });
   }
 }
 

@@ -470,6 +470,14 @@ CENTURION_HINT(AndroidTrapBackButton,
                SDL_HINT_ANDROID_TRAP_BACK_BUTTON,
                BoolHint)
 
+CENTURION_HINT(AndroidAPKExpansionMainFileVersion,
+               SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION,
+               IntHint)
+
+CENTURION_HINT(AndroidAPKExpansionPatchFileVersion,
+               SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION,
+               IntHint)
+
 CENTURION_HINT(AppleTVControllerUIEvents,
                SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS,
                BoolHint)

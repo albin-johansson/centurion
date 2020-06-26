@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(CenturionSrcProj)
 
 set(SOURCE_FILES
+        ${CTN_INCLUDE_DIR}/centurion_docs.h
         ${CTN_INCLUDE_DIR}/window.h
         ${CTN_INCLUDE_DIR}/font.h
         ${CTN_INCLUDE_DIR}/renderer.h

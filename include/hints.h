@@ -445,6 +445,10 @@ CENTURION_HINT(DoubleBuffer, SDL_HINT_VIDEO_DOUBLE_BUFFER, BoolHint)
 
 CENTURION_HINT(DisplayUsableBounds, SDL_HINT_DISPLAY_USABLE_BOUNDS, StringHint)
 
+CENTURION_HINT(EmscriptenKeyboardElement,
+               SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT,
+               StringHint)
+
 CENTURION_HINT(EventLogging, SDL_HINT_EVENT_LOGGING, IntHint)
 
 CENTURION_HINT(EnableSteamControllers,

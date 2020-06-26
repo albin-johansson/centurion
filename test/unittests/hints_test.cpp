@@ -93,8 +93,26 @@ TEST_CASE("set_hint", "[Hints]")
   {
     test_hint<DisplayUsableBounds>([] {
       const CZString str = "10, 20, 30, 40";
-      set_hint<DisplayUsableBounds>(str);
+      CHECK(set_hint<DisplayUsableBounds>(str));
       CHECK_THAT(get_hint<DisplayUsableBounds>().value(), Catch::Equals(str));
+    });
+  }
+
+  SECTION("EmscriptenKeyboardElement")
+  {
+    using Hint = EmscriptenKeyboardElement;
+    test_hint<Hint>([] {
+      CHECK(set_hint<Hint>("#window"));
+      CHECK_THAT(get_hint<Hint>().value(), Catch::Equals("#window"));
+
+      CHECK(set_hint<Hint>("#document"));
+      CHECK_THAT(get_hint<Hint>().value(), Catch::Equals("#document"));
+
+      CHECK(set_hint<Hint>("#screen"));
+      CHECK_THAT(get_hint<Hint>().value(), Catch::Equals("#screen"));
+
+      CHECK(set_hint<Hint>("#canvas"));
+      CHECK_THAT(get_hint<Hint>().value(), Catch::Equals("#canvas"));
     });
   }
 

@@ -75,6 +75,17 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("AndroidTrapBackButton") { test_bool_hint<AndroidTrapBackButton>(); }
 
+  SECTION("AudioCategory")
+  {
+    test_hint<AudioCategory>([] {
+      CHECK(set_hint<AudioCategory>(AudioCategory::Ambient));
+      CHECK(get_hint<AudioCategory>() == AudioCategory::Ambient);
+
+      CHECK(set_hint<AudioCategory>(AudioCategory::Playback));
+      CHECK(get_hint<AudioCategory>() == AudioCategory::Playback);
+    });
+  }
+
   SECTION("AppleTVControllerUIEvents")
   {
     test_bool_hint<AppleTVControllerUIEvents>();

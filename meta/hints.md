@@ -11,9 +11,9 @@
 * [X] `AppleTVControllerUIEvents`: `0` (def), `1`.
 * [X] `AppleTVRemoteAllowRotation`: `0` (def), `1`.
 * [X] `AudioResamplingMode`: `0/default`, `1/fast`, `2/medium`, `3/best`.
-* [ ] `AudioCategory`: `ambient`, `playback`.
+* [X] `AudioCategory`: `ambient`, `playback`.
 * [X] `BMPSaveLegacyFormat`: `0` (def), `1`.
-* [ ] `EmscriptenKeyboardElement`: `#window` (def), `#document`, `#screen`, `#canvas` or string.
+* [X] `EmscriptenKeyboardElement`: `#window` (def), `#document`, `#screen`, `#canvas` or string.
 * [X] `EnableSteamControllers`: `0`, `1`.
 * [X] `EventLogging`: `0`, `1`, `2`.
 * [X] `DisplayUsableBounds`: string (four CSV integers)

@@ -410,6 +410,45 @@ class FramebufferAcceleration final {
   }
 };
 
+class AudioCategory final {
+ public:
+  enum Value { Ambient, Playback };
+
+  template <typename T>
+  static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Value>::value;
+  }
+
+  static constexpr CZString name() noexcept { return SDL_HINT_AUDIO_CATEGORY; }
+
+  static Optional<Value> current_value() noexcept
+  {
+    const CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    if (std::strcmp(hint, "ambient") == 0) {
+      return Ambient;
+    } else /*if (current == "playback")*/ {
+      return Playback;
+    }
+  }
+
+  static std::string to_string(Value value) noexcept
+  {
+    switch (value) {
+      default:
+        /* FALLTHROUGH */
+      case Ambient:
+        return "ambient";
+      case Playback:
+        return "playback";
+    }
+  }
+};
+
 #define CENTURION_HINT(Name, SDLName, Type)                       \
   class Name final : public detail::Type<Name> {                  \
    public:                                                        \

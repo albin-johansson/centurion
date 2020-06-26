@@ -86,7 +86,7 @@
 * [ ] `WindowsIntResourceIconSmall`: ?
 * [X] `WindowsNoCloseOnAltF4`: `0` (def), `1`.
 * [X] `WindowFrameUsableWhileCursorHidden`: `0`, `1` (def).
-* [ ] `WinRTHandleBackButton`: `1` or not set (def).
+* [X] `WinRTHandleBackButton`: `1` or not set (def).
 * [X] `WinRTPrivacyPolicyLabel`: string
 * [X] `WinRTPrivacyPolicyURL`: string
 * [X] `XinputEnabled`: `0`, `1` (default).

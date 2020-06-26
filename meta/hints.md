@@ -69,7 +69,7 @@
 * [ ] `QtWaylandContentOrientation`: `primary`, `portrait`, `landscape`, `inverted-portrait`, `inverted-landscape`.
 * [ ] `QtWaylandWindowFlags`: space-separated list of `OverridesSystemGestures`, `StaysOnTop`, `BypassWindowManager`
 * [X] `WAVERIFFChunkSize`: `force`, `ignorezero`, `ignore`, `maximum`.  
-* [ ] `WAVETruncation`: `verystrict`, `strict`, `dropframe`, `dropblock`.
+* [X] `WAVETruncation`: `verystrict`, `strict`, `dropframe`, `dropblock`.
 * [ ] `WAVEFactChunk`: `truncate`, `strict`, `ignorezero`, `ignore`.
 * [ ] `WindowSharePixelFormat`: string for pointer address of `SDL_Window*`.
 * [X] `WinD3DCompiler`: `d3dcompiler_46.dll` (def), `d3dcompiler_43.dll`, `none`.

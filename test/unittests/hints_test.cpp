@@ -396,6 +396,23 @@ TEST_CASE("set_hint", "[Hints]")
     });
   };
 
+  SECTION("WAVETruncation")
+  {
+    test_hint<WAVETruncation>([] {
+      CHECK(set_hint<WAVETruncation>(WAVETruncation::VeryStrict));
+      CHECK(get_hint<WAVETruncation>() == WAVETruncation::VeryStrict);
+
+      CHECK(set_hint<WAVETruncation>(WAVETruncation::Strict));
+      CHECK(get_hint<WAVETruncation>() == WAVETruncation::Strict);
+
+      CHECK(set_hint<WAVETruncation>(WAVETruncation::DropFrame));
+      CHECK(get_hint<WAVETruncation>() == WAVETruncation::DropFrame);
+
+      CHECK(set_hint<WAVETruncation>(WAVETruncation::DropBlock));
+      CHECK(get_hint<WAVETruncation>() == WAVETruncation::DropBlock);
+    });
+  };
+
   SECTION("WindowsDisableThreadNaming")
   {
     test_bool_hint<WindowsDisableThreadNaming>();

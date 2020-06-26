@@ -545,6 +545,56 @@ class WAVERIFFChunkSize final {
   }
 };
 
+class WAVETruncation final {
+ public:
+  enum Value { VeryStrict, Strict, DropFrame, DropBlock };
+
+  template <typename T>
+  static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Value>::value;
+  }
+
+  static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_WAVE_TRUNCATION;
+  }
+
+  static Optional<Value> current_value() noexcept
+  {
+    const CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    if (std::strcmp(hint, "verystrict") == 0) {
+      return VeryStrict;
+    } else if (std::strcmp(hint, "strict") == 0) {
+      return Strict;
+    } else if (std::strcmp(hint, "dropframe") == 0) {
+      return DropFrame;
+    } else /* if (std::strcmp(hint, "dropblock") == 0) */ {
+      return DropBlock;
+    }
+  }
+
+  static std::string to_string(Value value) noexcept
+  {
+    switch (value) {
+      default:
+        /* FALLTHROUGH */
+      case DropBlock:
+        return "dropblock";
+      case DropFrame:
+        return "dropframe";
+      case VeryStrict:
+        return "verystrict";
+      case Strict:
+        return "strict";
+    }
+  }
+};
+
 #define CENTURION_HINT(Name, SDLName, Type)                       \
   class Name final : public detail::Type<Name> {                  \
    public:                                                        \

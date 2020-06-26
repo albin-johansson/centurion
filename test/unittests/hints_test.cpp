@@ -15,7 +15,7 @@ void test_hint(Lambda&& lambda)
   lambda();
 
   if (optPrev) {
-    set_hint<Hint, HintPrio::Default>(*optPrev);
+    set_hint<Hint, Prio::Default>(*optPrev);
   }
 }
 
@@ -35,13 +35,13 @@ void test_bool_hint()
 
 TEST_CASE("HintPrio", "[Hints]")
 {
-  CHECK(HintPrio::Default == static_cast<HintPrio>(SDL_HINT_DEFAULT));
-  CHECK(HintPrio::Normal == static_cast<HintPrio>(SDL_HINT_NORMAL));
-  CHECK(HintPrio::Override == static_cast<HintPrio>(SDL_HINT_OVERRIDE));
+  CHECK(Prio::Default == static_cast<Prio>(SDL_HINT_DEFAULT));
+  CHECK(Prio::Normal == static_cast<Prio>(SDL_HINT_NORMAL));
+  CHECK(Prio::Override == static_cast<Prio>(SDL_HINT_OVERRIDE));
 
-  CHECK(static_cast<HintPrio>(SDL_HINT_DEFAULT) == HintPrio::Default);
-  CHECK(static_cast<HintPrio>(SDL_HINT_NORMAL) == HintPrio::Normal);
-  CHECK(static_cast<HintPrio>(SDL_HINT_OVERRIDE) == HintPrio::Override);
+  CHECK(static_cast<Prio>(SDL_HINT_DEFAULT) == Prio::Default);
+  CHECK(static_cast<Prio>(SDL_HINT_NORMAL) == Prio::Normal);
+  CHECK(static_cast<Prio>(SDL_HINT_OVERRIDE) == Prio::Override);
 }
 
 TEST_CASE("set_hint", "[Hints]")
@@ -290,7 +290,7 @@ TEST_CASE("set_hint", "[Hints]")
     test_bool_hint<EnableVSync>();
     set_hint<EnableVSync>(true);
 
-//    SDL_SetHint(SDL_HINT_RENDER_VSYNC, nullptr);
+    //    SDL_SetHint(SDL_HINT_RENDER_VSYNC, nullptr);
   };
 
   SECTION("ScaleQuality")
@@ -429,4 +429,44 @@ TEST_CASE("set_hint", "[Hints]")
     //      CHECK(get_hint<AndroidPatchFile>() == 1);
     //    });
   }
+}
+
+TEST_CASE("add_callback", "[Hints]")
+{
+  set_hint<RenderDriver>(RenderDriver::Software);
+
+  int data = 7;
+  auto handle = add_callback<RenderDriver>(
+      [](void* data, CZString hint, CZString oldVal, CZString newVal) {
+        static bool first = true;
+        if (first) {
+          first = false;
+        } else {
+          const auto ptr = reinterpret_cast<int*>(data);
+          CHECK(*ptr == 7);
+          CHECK_THAT(SDL_HINT_RENDER_DRIVER, Catch::Equals(hint));
+          CHECK_THAT("software", Catch::Equals(oldVal));
+          CHECK_THAT("opengl", Catch::Equals(newVal));
+        }
+      },
+      &data);
+
+  set_hint<RenderDriver, Prio::Override>(RenderDriver::Software);
+
+  handle.disconnect();
+
+  set_hint<RenderDriver, Prio::Override>(RenderDriver::OpenGL);
+}
+
+TEST_CASE("clear_all", "[Hints]")
+{
+  CHECK_NOTHROW(clear_all());
+}
+
+TEST_CASE("user_data", "[hint::Callback]")
+{
+  int i = 123;
+  Callback<RenderDriver> callback{[](void*, CZString, CZString, CZString) {},
+                                  &i};
+  CHECK(callback.user_data() == &i);
 }

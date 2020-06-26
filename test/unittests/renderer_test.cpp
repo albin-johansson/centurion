@@ -27,14 +27,7 @@ TEST_CASE("Renderer(SDL_Renderer*)", "[Renderer]")
 TEST_CASE("Renderer(const Window&, SDL_RendererFlags)", "[Renderer]")
 {
   Window window;
-  Renderer renderer{window};
-
-  SECTION("Check default flags")
-  {
-    const auto actualFlags = renderer.flags();
-    CHECK(actualFlags & SDL_RENDERER_ACCELERATED);
-    CHECK(actualFlags & SDL_RENDERER_PRESENTVSYNC);
-  }
+  CHECK_NOTHROW(Renderer{window});
 }
 
 TEST_CASE("Renderer(Renderer&&)", "[Renderer]")
@@ -83,19 +76,6 @@ TEST_CASE("Renderer::unique(SDL_Renderer*)", "[Renderer]")
   CHECK_NOTHROW(Renderer::unique(ren));
 }
 
-TEST_CASE("Renderer::unique(const Window&, SDL_RendererFlags)", "[Renderer]")
-{
-  Window window;
-  auto renderer = Renderer::unique(window);
-
-  SECTION("Check default flags")
-  {
-    const auto actualFlags = renderer->flags();
-    CHECK(actualFlags & SDL_RENDERER_ACCELERATED);
-    CHECK(actualFlags & SDL_RENDERER_PRESENTVSYNC);
-  }
-}
-
 TEST_CASE("Renderer::shared(SDL_Renderer*)", "[Renderer]")
 {
   CHECK_THROWS_AS(Renderer::shared(nullptr), CenturionException);
@@ -104,19 +84,6 @@ TEST_CASE("Renderer::shared(SDL_Renderer*)", "[Renderer]")
   SDL_Renderer* ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
   CHECK_NOTHROW(Renderer::shared(ren));
-}
-
-TEST_CASE("Renderer::shared(const Window&, SDL_RendererFlags)", "[Renderer]")
-{
-  Window window;
-  auto renderer = Renderer::shared(window);
-
-  SECTION("Check default flags")
-  {
-    const auto actualFlags = renderer->flags();
-    CHECK(actualFlags & SDL_RENDERER_ACCELERATED);
-    CHECK(actualFlags & SDL_RENDERER_PRESENTVSYNC);
-  }
 }
 
 TEST_CASE("Renderer::clear", "[Renderer]")

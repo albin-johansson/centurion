@@ -286,6 +286,17 @@ TEST_CASE("set_hint", "[Hints]")
     test_bool_hint<JoystickUseHIDAPIGameCube>();
   }
 
+  SECTION("LogicalSizeMode")
+  {
+    test_hint<LogicalSizeMode>([] {
+      CHECK(set_hint<LogicalSizeMode>(LogicalSizeMode::Letterbox));
+      CHECK(get_hint<LogicalSizeMode>().value() == LogicalSizeMode::Letterbox);
+
+      CHECK(set_hint<LogicalSizeMode>(LogicalSizeMode::Overscan));
+      CHECK(get_hint<LogicalSizeMode>().value() == LogicalSizeMode::Overscan);
+    });
+  }
+
   SECTION("MacBackgroundApp") { test_bool_hint<MacBackgroundApp>(); }
 
   SECTION("MacCTRLClickEmulateRightClick")

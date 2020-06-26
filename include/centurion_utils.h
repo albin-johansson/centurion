@@ -27,6 +27,7 @@
 
 #include <SDL.h>
 
+#include <cstring>
 #include <gsl-lite.hpp>
 #include <memory>
 #include <optional.hpp>
@@ -220,6 +221,26 @@ using ZString = gsl::zstring;
  */
 constexpr tl::nullopt_t nothing = tl::nullopt;
 
+namespace detail {
+
+/**
+ * Indicates whether or not two C-style strings are equal.
+ *
+ * @param lhs the left-hand side string, can safely be null.
+ * @param rhs the right-hand side string, can safely be null.
+ * @return true if the strings are equal; false otherwise.
+ * @since 4.1.0
+ */
+CENTURION_NODISCARD inline bool equal(CZString lhs, CZString rhs) noexcept
+{
+  if (lhs && rhs) {
+    return std::strcmp(lhs, rhs) == 0;
+  } else {
+    return false;
+  }
+}
+
+}  // namespace detail
 }  // namespace centurion
 
 #endif  // CENTURION_CENTURION_UTILS_HEADER

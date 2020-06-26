@@ -55,7 +55,7 @@
 * [X] `OpenGLESDriver`: `0`, `1`.
 * [X] `ScaleQuality`: `0` (nearest, def), `1` (linear), `2` (best).
 * [X] `EnableVSync`: `0`, `1`.
-* [ ] `RenderLogicalSizeMode`: `0/letterbox`, `1/overscan`.
+* [X] `LogicalSizeMode`: `0/letterbox`, `1/overscan`.
 * [ ] `RaspberryPIVideoLayer`: `int` (def: 10000).
 * [ ] `ThreadStackSize`: `0` (def) or positive value.
 * [ ] `TimerResolution`: `uint` in milliseconds, default is `1`.

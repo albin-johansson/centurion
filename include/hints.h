@@ -175,16 +175,16 @@ class RenderDriver final {
       return nothing;
     }
 
-    const std::string current{hint};
-    if (current == "direct3d") {
+    using centurion::detail::equal;
+    if (equal(hint, "direct3d")) {
       return Direct3D;
-    } else if (current == "opengl") {
+    } else if (equal(hint, "opengl")) {
       return OpenGL;
-    } else if (current == "opengles") {
+    } else if (equal(hint, "opengles")) {
       return OpenGLES;
-    } else if (current == "opengles2") {
+    } else if (equal(hint, "opengles2")) {
       return OpenGLES2;
-    } else if (current == "metal") {
+    } else if (equal(hint, "metal")) {
       return Metal;
     } else {
       return Software;
@@ -204,10 +204,8 @@ class RenderDriver final {
         return "opengles2";
       case Metal:
         return "metal";
-      default: {
-        Log::warn("Failed to convert RenderDriver value to string: %i",
-                  static_cast<int>(value));
-      }  // fallthrough
+      default:
+        /* FALLTHROUGH */
       case Software:
         return "software";
     }
@@ -236,21 +234,15 @@ class AudioResamplingMode final {
       return nothing;
     }
 
-    if (std::strcmp(hint, "default") == 0) {
+    using centurion::detail::equal;
+    if (equal(hint, "default")) {
       return Default;
-
-    } else if (std::strcmp(hint, "fast") == 0) {
+    } else if (equal(hint, "fast")) {
       return Fast;
-
-    } else if (std::strcmp(hint, "medium") == 0) {
+    } else if (equal(hint, "medium")) {
       return Medium;
-
-    } else if (std::strcmp(hint, "best") == 0) {
+    } else /*if (equal(hint, "best"))*/ {
       return Best;
-
-    } else {
-      Log::warn("Did not recognize AudioResamplingMode value: %s", hint);
-      return Default;
     }
   }
 
@@ -258,6 +250,7 @@ class AudioResamplingMode final {
   {
     switch (value) {
       case Default:
+      default:
         return "default";
       case Fast:
         return "fast";
@@ -265,12 +258,6 @@ class AudioResamplingMode final {
         return "medium";
       case Best:
         return "best";
-      default: {
-        Log::warn(
-            "Failed to convert AudioResamplingModeHint value to string: %i",
-            static_cast<int>(value));
-        return "default";
-      }
     }
   }
 };
@@ -297,35 +284,26 @@ class ScaleQuality final {
       return nothing;
     }
 
-    if (std::strcmp(hint, "nearest") == 0) {
+    using centurion::detail::equal;
+    if (equal(hint, "nearest")) {
       return Nearest;
-
-    } else if (std::strcmp(hint, "linear") == 0) {
+    } else if (equal(hint, "linear")) {
       return Linear;
-
-    } else if (std::strcmp(hint, "best") == 0) {
+    } else /*if (equal(hint, "best"))*/ {
       return Best;
-
-    } else {
-      Log::warn("Did not recognize ScaleQuality value: %s", hint);
-      return Nearest;
     }
   }
 
   static std::string to_string(Value value) noexcept
   {
     switch (value) {
+      default:
       case Nearest:
         return "nearest";
       case Linear:
         return "linear";
       case Best:
         return "best";
-      default: {
-        Log::warn("Failed to convert ScaleQuality value to string: %i",
-                  static_cast<int>(value));
-        return "nearest";
-      }
     }
   }
 };
@@ -361,20 +339,20 @@ class FramebufferAcceleration final {
       return nothing;
     }
 
-    const std::string current{hint};
-    if (current == "0") {
+    using centurion::detail::equal;
+    if (equal(hint, "0")) {
       return Off;
-    } else if (current == "1") {
+    } else if (equal(hint, "1")) {
       return On;
-    } else if (current == "direct3d") {
+    } else if (equal(hint, "direct3d")) {
       return Direct3D;
-    } else if (current == "opengl") {
+    } else if (equal(hint, "opengl")) {
       return OpenGL;
-    } else if (current == "opengles") {
+    } else if (equal(hint, "opengles")) {
       return OpenGLES;
-    } else if (current == "opengles2") {
+    } else if (equal(hint, "opengles2")) {
       return OpenGLES2;
-    } else if (current == "metal") {
+    } else if (equal(hint, "metal")) {
       return Metal;
     } else {
       return Software;
@@ -384,6 +362,7 @@ class FramebufferAcceleration final {
   static std::string to_string(Value value) noexcept
   {
     switch (value) {
+      default:
       case Off:
         return "0";
       case On:
@@ -400,12 +379,6 @@ class FramebufferAcceleration final {
         return "metal";
       case Software:
         return "software";
-      default: {
-        Log::warn(
-            "Failed to convert FramebufferAcceleration value to string: %i",
-            static_cast<int>(value));
-        return "0";
-      }
     }
   }
 };
@@ -429,9 +402,10 @@ class AudioCategory final {
       return nothing;
     }
 
-    if (std::strcmp(hint, "ambient") == 0) {
+    using centurion::detail::equal;
+    if (equal(hint, "ambient")) {
       return Ambient;
-    } else /*if (current == "playback")*/ {
+    } else /*if (equal(hint, "playback"))*/ {
       return Playback;
     }
   }
@@ -471,9 +445,10 @@ class WinD3DCompiler final {
       return nothing;
     }
 
-    if (std::strcmp(hint, "d3dcompiler_46.dll") == 0) {
+    using centurion::detail::equal;
+    if (equal(hint, "d3dcompiler_46.dll")) {
       return D3DCompiler46;
-    } else if (std::strcmp(hint, "d3dcompiler_43.dll") == 0) {
+    } else if (equal(hint, "d3dcompiler_43.dll")) {
       return D3DCompiler43;
     } else {
       return None;
@@ -517,13 +492,14 @@ class WAVERIFFChunkSize final {
       return nothing;
     }
 
-    if (std::strcmp(hint, "force") == 0) {
+    using centurion::detail::equal;
+    if (equal(hint, "force")) {
       return Force;
-    } else if (std::strcmp(hint, "ignorezero") == 0) {
+    } else if (equal(hint, "ignorezero")) {
       return IgnoreZero;
-    } else if (std::strcmp(hint, "ignore") == 0) {
+    } else if (equal(hint, "ignore")) {
       return Ignore;
-    } else /* if (std::strcmp(hint, "maximum") == 0) */ {
+    } else /* if (equal(hint, "maximum")) */ {
       return Maximum;
     }
   }
@@ -564,13 +540,14 @@ class WAVETruncation final {
       return nothing;
     }
 
-    if (std::strcmp(hint, "verystrict") == 0) {
+    using centurion::detail::equal;
+    if (equal(hint, "verystrict")) {
       return VeryStrict;
-    } else if (std::strcmp(hint, "strict") == 0) {
+    } else if (equal(hint, "strict")) {
       return Strict;
-    } else if (std::strcmp(hint, "dropframe") == 0) {
+    } else if (equal(hint, "dropframe")) {
       return DropFrame;
-    } else /* if (std::strcmp(hint, "dropblock") == 0) */ {
+    } else /* if (equal(hint, "dropblock")) */ {
       return DropBlock;
     }
   }
@@ -611,13 +588,14 @@ class WAVEFactChunk final {
       return nothing;
     }
 
-    if (std::strcmp(hint, "truncate") == 0) {
+    using centurion::detail::equal;
+    if (equal(hint, "truncate")) {
       return Truncate;
-    } else if (std::strcmp(hint, "strict") == 0) {
+    } else if (equal(hint, "strict")) {
       return Strict;
-    } else if (std::strcmp(hint, "ignorezero") == 0) {
+    } else if (equal(hint, "ignorezero")) {
       return IgnoreZero;
-    } else /* if (std::strcmp(hint, "ignore") == 0) */ {
+    } else /* if (equal(hint, "ignore")) */ {
       return Ignore;
     }
   }
@@ -635,6 +613,49 @@ class WAVEFactChunk final {
         return "truncate";
       case Strict:
         return "strict";
+    }
+  }
+};
+
+class LogicalSizeMode final {
+ public:
+  enum Value { Letterbox, Overscan };
+
+  template <typename T>
+  static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Value>::value;
+  }
+
+  static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
+  }
+
+  static Optional<Value> current_value() noexcept
+  {
+    const CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    using centurion::detail::equal;
+    if (equal(hint, "0") || equal(hint, "letterbox")) {
+      return Letterbox;
+    } else /*if (equal(hint, "1") || equal(hint, "overscan"))*/ {
+      return Overscan;
+    }
+  }
+
+  static std::string to_string(Value value) noexcept
+  {
+    switch (value) {
+      default:
+        /* FALLTHROUGH */
+      case Letterbox:
+        return "letterbox";
+      case Overscan:
+        return "overscan";
     }
   }
 };

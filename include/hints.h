@@ -449,6 +449,52 @@ class AudioCategory final {
   }
 };
 
+class WinD3DCompiler final {
+ public:
+  enum Value { D3DCompiler46, D3DCompiler43, None };
+
+  template <typename T>
+  static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Value>::value;
+  }
+
+  static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
+  }
+
+  static Optional<Value> current_value() noexcept
+  {
+    const CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    if (std::strcmp(hint, "d3dcompiler_46.dll") == 0) {
+      return D3DCompiler46;
+    } else if (std::strcmp(hint, "d3dcompiler_43.dll") == 0) {
+      return D3DCompiler43;
+    } else {
+      return None;
+    }
+  }
+
+  static std::string to_string(Value value) noexcept
+  {
+    switch (value) {
+      default:
+        /* FALLTHROUGH */
+      case None:
+        return "none";
+      case D3DCompiler43:
+        return "d3dcompiler_43.dll";
+      case D3DCompiler46:
+        return "d3dcompiler_46.dll";
+    }
+  }
+};
+
 #define CENTURION_HINT(Name, SDLName, Type)                       \
   class Name final : public detail::Type<Name> {                  \
    public:                                                        \

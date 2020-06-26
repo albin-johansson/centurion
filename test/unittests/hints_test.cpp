@@ -384,6 +384,20 @@ TEST_CASE("set_hint", "[Hints]")
     test_bool_hint<WindowsDisableThreadNaming>();
   };
 
+  SECTION("WinD3DCompiler")
+  {
+    test_hint<WinD3DCompiler>([] {
+      CHECK(set_hint<WinD3DCompiler>(WinD3DCompiler::None));
+      CHECK(get_hint<WinD3DCompiler>() == WinD3DCompiler::None);
+
+      CHECK(set_hint<WinD3DCompiler>(WinD3DCompiler::D3DCompiler46));
+      CHECK(get_hint<WinD3DCompiler>() == WinD3DCompiler::D3DCompiler46);
+
+      CHECK(set_hint<WinD3DCompiler>(WinD3DCompiler::D3DCompiler43));
+      CHECK(get_hint<WinD3DCompiler>() == WinD3DCompiler::D3DCompiler43);
+    });
+  }
+
   SECTION("WindowsEnableMessageLoop")
   {
     test_bool_hint<WindowsEnableMessageLoop>();

@@ -20,7 +20,7 @@ Covered by the `Centurion` class located in `centurion.h`.
 
 ### Configuration variables
 
-Not covered.
+In progress (4.1.0).
 
 ### Error handling
 

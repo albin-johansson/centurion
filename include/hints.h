@@ -555,10 +555,7 @@ class WAVETruncation final {
     return std::is_same<T, Value>::value;
   }
 
-  static constexpr CZString name() noexcept
-  {
-    return SDL_HINT_WAVE_TRUNCATION;
-  }
+  static constexpr CZString name() noexcept { return SDL_HINT_WAVE_TRUNCATION; }
 
   static Optional<Value> current_value() noexcept
   {
@@ -589,6 +586,53 @@ class WAVETruncation final {
         return "dropframe";
       case VeryStrict:
         return "verystrict";
+      case Strict:
+        return "strict";
+    }
+  }
+};
+
+class WAVEFactChunk final {
+ public:
+  enum Value { Truncate, Strict, IgnoreZero, Ignore };
+
+  template <typename T>
+  static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Value>::value;
+  }
+
+  static constexpr CZString name() noexcept { return SDL_HINT_WAVE_FACT_CHUNK; }
+
+  static Optional<Value> current_value() noexcept
+  {
+    const CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    if (std::strcmp(hint, "truncate") == 0) {
+      return Truncate;
+    } else if (std::strcmp(hint, "strict") == 0) {
+      return Strict;
+    } else if (std::strcmp(hint, "ignorezero") == 0) {
+      return IgnoreZero;
+    } else /* if (std::strcmp(hint, "ignore") == 0) */ {
+      return Ignore;
+    }
+  }
+
+  static std::string to_string(Value value) noexcept
+  {
+    switch (value) {
+      default:
+        /* FALLTHROUGH */
+      case Ignore:
+        return "ignore";
+      case IgnoreZero:
+        return "ignorezero";
+      case Truncate:
+        return "truncate";
       case Strict:
         return "strict";
     }

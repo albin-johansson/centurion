@@ -413,6 +413,23 @@ TEST_CASE("set_hint", "[Hints]")
     });
   };
 
+  SECTION("WAVEFactChunk")
+  {
+    test_hint<WAVEFactChunk>([] {
+      CHECK(set_hint<WAVEFactChunk>(WAVEFactChunk::Truncate));
+      CHECK(get_hint<WAVEFactChunk>() == WAVEFactChunk::Truncate);
+
+      CHECK(set_hint<WAVEFactChunk>(WAVEFactChunk::Ignore));
+      CHECK(get_hint<WAVEFactChunk>() == WAVEFactChunk::Ignore);
+
+      CHECK(set_hint<WAVEFactChunk>(WAVEFactChunk::IgnoreZero));
+      CHECK(get_hint<WAVEFactChunk>() == WAVEFactChunk::IgnoreZero);
+
+      CHECK(set_hint<WAVEFactChunk>(WAVEFactChunk::Strict));
+      CHECK(get_hint<WAVEFactChunk>() == WAVEFactChunk::Strict);
+    });
+  };
+
   SECTION("WindowsDisableThreadNaming")
   {
     test_bool_hint<WindowsDisableThreadNaming>();

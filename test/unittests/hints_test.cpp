@@ -493,6 +493,14 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("MouseTouchEvents") { test_bool_hint<MouseTouchEvents>(); };
 
+  SECTION("RaspberryPIVideoLayer")
+  {
+    test_hint<RaspberryPIVideoLayer>([] {
+      CHECK(set_hint<RaspberryPIVideoLayer>(8'000));
+      CHECK(get_hint<RaspberryPIVideoLayer>().value() == 8'000);
+    });
+  };
+
   SECTION("RenderBatching") { test_bool_hint<RenderBatching>(); };
 
   SECTION("ReturnKeyHidesIME") { test_bool_hint<ReturnKeyHidesIME>(); };

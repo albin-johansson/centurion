@@ -56,7 +56,7 @@
 * [X] `ScaleQuality`: `0` (nearest, def), `1` (linear), `2` (best).
 * [X] `EnableVSync`: `0`, `1`.
 * [X] `LogicalSizeMode`: `0/letterbox`, `1/overscan`.
-* [ ] `RaspberryPIVideoLayer`: `int` (def: 10000).
+* [X] `RaspberryPIVideoLayer`: `int` (def: 10000).
 * [ ] `ThreadStackSize`: `0` (def) or positive value.
 * [ ] `TimerResolution`: `uint` in milliseconds, default is `1`.
 * [X] `TouchMouseEvents`: `0`, `1`.

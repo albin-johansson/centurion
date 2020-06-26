@@ -38,7 +38,7 @@ PROJECT_NAME           = Centurion
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = 4.0.0
+PROJECT_NUMBER         = 4.1.0
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -51,7 +51,7 @@ PROJECT_BRIEF          = "A modern C++ library built on top of SDL2 in order to 
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           =
+PROJECT_LOGO           = C:/Users/albin/Documents/GitHub/Centurion/meta/centurion_icon.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -795,7 +795,7 @@ WARN_IF_DOC_ERROR      = YES
 # EXTRACT_ALL is set to YES then this flag will automatically be disabled.
 # The default value is: NO.
 
-WARN_NO_PARAMDOC       = NO
+WARN_NO_PARAMDOC       = YES
 
 # If the WARN_AS_ERROR tag is set to YES then doxygen will immediately stop when
 # a warning is encountered.
@@ -1267,7 +1267,7 @@ HTML_EXTRA_FILES       =
 # Minimum value: 0, maximum value: 359, default value: 220.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_COLORSTYLE_HUE    = 225
+HTML_COLORSTYLE_HUE    = 200
 
 # The HTML_COLORSTYLE_SAT tag controls the purity (or saturation) of the colors
 # in the HTML output. For a value of 0 the output will use grayscales only. A
@@ -1275,7 +1275,7 @@ HTML_COLORSTYLE_HUE    = 225
 # Minimum value: 0, maximum value: 255, default value: 100.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_COLORSTYLE_SAT    = 132
+HTML_COLORSTYLE_SAT    = 71
 
 # The HTML_COLORSTYLE_GAMMA tag controls the gamma correction applied to the
 # luminance component of the colors in the HTML output. Values below 100
@@ -1286,7 +1286,7 @@ HTML_COLORSTYLE_SAT    = 132
 # Minimum value: 40, maximum value: 240, default value: 80.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_COLORSTYLE_GAMMA  = 82
+HTML_COLORSTYLE_GAMMA  = 240
 
 # If the HTML_TIMESTAMP tag is set to YES then the footer of each generated HTML
 # page will contain the date and time when the page was generated. Setting this

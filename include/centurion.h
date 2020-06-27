@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * This file provides the declaration of the @link centurion::Centurion @endlink
+ * and @link centurion::CenturionConfig @endlink classes, and are related to the
+ * initialization of the library. This file also includes all other
+ * header files in the library.
+ *
+ * @file centurion.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_HEADER
 #define CENTURION_HEADER
 
@@ -93,18 +105,6 @@
 #include "touch_finger_event.h"
 #include "window.h"
 #include "window_event.h"
-
-/**
- * This file provides the declaration of the @link centurion::Centurion @endlink
- * and @link centurion::CenturionConfig @endlink classes, and are related to the
- * initialization of the library. This file also includes all other
- * header files in the library.
- *
- * @file centurion.h
- * @author Albin Johansson
- * @date 2019-2020
- * @copyright MIT License
- */
 
 /**
  * The top-level namespace that all components of the library reside in.

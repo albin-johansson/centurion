@@ -23,8 +23,7 @@
  */
 
 /**
- * This file provides the definition of the @link centurion::TArea @endlink
- * struct, which represents an area of some integral/floating-point type.
+ * @brief Provides the definition of @link centurion::TArea @endlink.
  *
  * @file area.h
  * @author Albin Johansson
@@ -45,7 +44,7 @@ template <typename T>
 struct TArea;
 
 /**
- * A simple struct that represents a width and a height.
+ * @brief Simple struct that represents a width and a height.
  *
  * | Property              | Value                                |
  * | --------------------- | :----------------------------------- |
@@ -58,9 +57,10 @@ struct TArea;
  * | Namespace             | @link ::centurion @endlink           |
  *
  * @tparam T the type of the components of the Area, defaults to float.
- * @headerfile area.h <>
+ * @headerfile area.h
  * @note This struct wasn't templated in older versions of the library, hence
  * the rather ugly name. This name will be changed in some later major release.
+ * @struct TArea
  * @since 4.0.0
  */
 template <typename T = float>

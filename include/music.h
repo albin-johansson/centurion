@@ -33,14 +33,15 @@
 namespace centurion {
 
 /**
- * The FadeStatus enum class mirrors the values of the Mix_Fading enum.
- *
+ * @enum FadeStatus
+ * @brief Mirrors the values of the Mix_Fading enum.
+ * @headerfile music.h
  * @since 3.0.0
  */
 enum class FadeStatus {
-  None = MIX_NO_FADING,
-  In = MIX_FADING_IN,
-  Out = MIX_FADING_OUT
+  None = MIX_NO_FADING, /**< No currently fading music. */
+  In = MIX_FADING_IN,   /**< Currently fading in music. */
+  Out = MIX_FADING_OUT  /**< Currently fading out music. */
 };
 
 /**

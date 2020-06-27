@@ -23,8 +23,7 @@
  */
 
 /**
- * This file provides the declaration of the @link centurion::Battery @endlink
- * class, which provides utilities for querying the battery state of the system.
+ * @brief Provides battery related utilities.
  *
  * @file battery.h
  * @author Albin Johansson
@@ -43,11 +42,12 @@
 namespace centurion {
 
 /**
- * The PowerState enum class mirrors the values of the SDL_PowerState enum.
- *
  * @enum PowerState
+ *
+ * @brief Mirrors the values of the SDL_PowerState enum.
+ *
  * @since 3.0.0
- * 
+ *
  * @var PowerState::Unknown
  * Indicates that the power status is unknown.
  * @var PowerState::OnBattery
@@ -91,7 +91,7 @@ CENTURION_NODISCARD
 CENTURION_API bool operator==(SDL_PowerState a, PowerState b) noexcept;
 
 /**
- * The Battery class provides utilities related to the battery of the system.
+ * @brief Provides utilities related to the battery of the system.
  *
  * @since 3.0.0
  * @class Battery

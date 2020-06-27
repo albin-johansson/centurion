@@ -10,7 +10,6 @@ env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     - CXX_FLAGS=""
-    - CODECOV_TOKEN="d078f878-66f2-4ea0-916d-708109a3358b"
     - ENABLE_COVERAGE=true
 
 addons:
@@ -22,6 +21,7 @@ addons:
       - g++-8
       - cmake
       - lcov
+      - doxygen
 
 before_install:
   - sudo apt-get update
@@ -95,6 +95,9 @@ before_script:
 
 script:
   - cd ${TRAVIS_BUILD_DIR}
+
+  - doxygen Doxyfile
+
   - mkdir -p build
   - cd build
 
@@ -103,6 +106,14 @@ script:
 
   - cd test
   - ctest
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: doc/html
+  github_token: $GH_REPO_TOKEN
+  on:
+    branch: master
 
 after_success:
   - cd ${TRAVIS_BUILD_DIR}

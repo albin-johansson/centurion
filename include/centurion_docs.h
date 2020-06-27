@@ -1,4 +1,12 @@
-// This header only contains documentation for Doxygen, don't include this file.
+/**
+ * @brief Only contains documentation for Doxygen.
+ * @note Don't include this file, there's no code in it!
+ * @file centurion_docs.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ * @since 4.0.0
+ */
 
 /**
  * @mainpage notitle

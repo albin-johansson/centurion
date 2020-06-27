@@ -22,6 +22,16 @@
  * SOFTWARE.
  */
 
+/**
+ * This file provides the definition of the @link centurion::TArea @endlink
+ * struct, which represents an area of some integral/floating-point type.
+ *
+ * @file area.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
@@ -37,15 +47,28 @@ struct TArea;
 /**
  * A simple struct that represents a width and a height.
  *
+ * | Property              | Value                                |
+ * | --------------------- | :----------------------------------- |
+ * | Default constructible | Yes                                  |
+ * | Movable               | Yes                                  |
+ * | Copyable              | Yes                                  |
+ * | Explicit conversions  | None                                 |
+ * | Implicit conversions  | None                                 |
+ * | Overloaded operators  | `==`, `!=`                           |
+ * | Namespace             | @link ::centurion @endlink           |
+ *
  * @tparam T the type of the components of the Area, defaults to float.
+ * @headerfile area.h <>
+ * @note This struct wasn't templated in older versions of the library, hence
+ * the rather ugly name. This name will be changed in some later major release.
  * @since 4.0.0
  */
 template <typename T = float>
 struct TArea {
   constexpr TArea() noexcept = default;
   constexpr TArea(T width, T height) noexcept : width{width}, height{height} {}
-  T width = 0;
-  T height = 0;
+  T width = 0;  /**< The width associated with the area. */
+  T height = 0; /**< The height associated with the area. */
 
   static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
                 "Area type must be either integral or floating-point!");

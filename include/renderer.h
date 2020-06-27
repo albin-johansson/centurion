@@ -680,7 +680,7 @@ class Renderer final {
                                SDL_RendererFlip flip) noexcept;
 
   /**
-   * Sets the color that will be used by the renderer. 
+   * Sets the color that will be used by the renderer.
    *
    * @param color the color that will be used by the renderer.
    * @since 3.0.0

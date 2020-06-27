@@ -22,6 +22,14 @@
  * SOFTWARE.
  */
 
+/**
+ * @brief Provides utilities used in the implementation of the library.
+ * @file centurion_utils.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_CENTURION_UTILS_HEADER
 #define CENTURION_CENTURION_UTILS_HEADER
 
@@ -39,6 +47,13 @@
 #include "centurion_api.h"
 
 namespace centurion {
+
+/**
+ * @brief The main namespace used for implementation details of the library.
+ * @warning Do not use anything that resides in this namespace, the contents
+ * may change at any time without warning.
+ * @namespace centurion::detail
+ */
 namespace detail {
 
 /**

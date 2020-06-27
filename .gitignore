@@ -42,7 +42,8 @@
 *.afdesign
 cmake-build-*
 build
-doc
+doc/html
+doc/latex
 .idea
 .vs
 .vscode

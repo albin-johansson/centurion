@@ -560,6 +560,27 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("TVRemoteAsJoystick") { test_bool_hint<TVRemoteAsJoystick>(); };
 
+  SECTION("QtWaylandContentOrientation")
+  {
+    using Hint = QtWaylandContentOrientation;
+    test_hint<QtWaylandContentOrientation>([] {
+      CHECK(set_hint<Hint>(Hint::Primary));
+      CHECK(get_hint<Hint>() == Hint::Primary);
+
+      CHECK(set_hint<Hint>(Hint::Portrait));
+      CHECK(get_hint<Hint>() == Hint::Portrait);
+
+      CHECK(set_hint<Hint>(Hint::Landscape));
+      CHECK(get_hint<Hint>() == Hint::Landscape);
+
+      CHECK(set_hint<Hint>(Hint::InvertedPortrait));
+      CHECK(get_hint<Hint>() == Hint::InvertedPortrait);
+
+      CHECK(set_hint<Hint>(Hint::InvertedLandscape));
+      CHECK(get_hint<Hint>() == Hint::InvertedLandscape);
+    });
+  };
+
   SECTION("XinputEnabled") { test_bool_hint<XinputEnabled>(); };
 
   SECTION("XinputUseOldJoystickMapping")

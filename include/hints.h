@@ -704,6 +704,67 @@ class LogicalSizeMode final {
   }
 };
 
+class QtWaylandContentOrientation final {
+ public:
+  enum Value {
+    Primary,
+    Portrait,
+    Landscape,
+    InvertedPortrait,
+    InvertedLandscape
+  };
+
+  template <typename T>
+  static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, Value>::value;
+  }
+
+  static constexpr CZString name() noexcept
+  {
+    return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
+  }
+
+  static Optional<Value> current_value() noexcept
+  {
+    const CZString hint = SDL_GetHint(name());
+    if (!hint) {
+      return nothing;
+    }
+
+    using centurion::detail::equal;
+    if (equal(hint, "primary")) {
+      return Primary;
+    } else if (equal(hint, "portrait")) {
+      return Portrait;
+    } else if (equal(hint, "landscape")) {
+      return Landscape;
+    } else if (equal(hint, "inverted-portrait")) {
+      return InvertedPortrait;
+    } else /*if (equal(hint, "inverted-landscape"))*/ {
+      return InvertedLandscape;
+    }
+  }
+
+  static std::string to_string(Value value) noexcept
+  {
+    switch (value) {
+      default:
+        /* FALLTHROUGH */
+      case Primary:
+        return "primary";
+      case Portrait:
+        return "portrait";
+      case Landscape:
+        return "landscape";
+      case InvertedPortrait:
+        return "inverted-portrait";
+      case InvertedLandscape:
+        return "inverted-landscape";
+    }
+  }
+};
+
 #define CENTURION_HINT(Name, SDLName, Type)                       \
   class Name final : public detail::Type<Name> {                  \
    public:                                                        \

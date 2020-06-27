@@ -23,9 +23,11 @@
  */
 
 /**
- * This file is a convenience header that includes the @link centurion.h
- * @endlink header whilst also defining a namespace alias for the @link
- * ::centurion @endlink namespace.
+ * @brief Convenience header that defines the @link ::ctn @endlink alias.
+ *
+ * Includes the @link centurion.h @endlink header whilst also defining a
+ * namespace alias for the @link ::centurion @endlink namespace, @link ::ctn
+ * @endlink.
  *
  * @file centurion_as_ctn.h
  * @author Albin Johansson

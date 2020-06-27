@@ -28,7 +28,7 @@
  * @file window.h
  * @author Albin Johansson
  * @date 2019-2020
- * @copyright MIT License.
+ * @copyright MIT License
  */
 
 #ifndef CENTURION_WINDOW_HEADER

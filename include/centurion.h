@@ -107,16 +107,19 @@
 #include "window_event.h"
 
 /**
- * The top-level namespace that all components of the library reside in.
+ * @brief The top-level namespace that all components of the library reside in.
  *
  * @namespace centurion
  */
 namespace centurion {
 
 /**
- * The CenturionConfig struct is used to specify how the library is
- * initialized. All fields are initialized to the default values used by the
+ * @brief The CenturionConfig struct is used to specify how the library is
+ * initialized.
+ * 
+ * All fields are initialized to the default values used by the
  * library.
+ * 
  * @struct CenturionConfig
  * @since 4.0.0
  *
@@ -176,7 +179,9 @@ struct CenturionConfig final {
 };
 
 /**
- * The Centurion class is used to initialize and de-initialize the library.
+ * @brief Used to initialize and de-initialize the library.
+ * @class Centurion
+ * @since 3.0.0
  *
  * @par Examples
  * This is how you should initialize the library.
@@ -224,8 +229,6 @@ struct CenturionConfig final {
  * | Implicit conversions  | None                                 |
  * | Overloaded operators  | None                                 |
  * | Namespace             | @link ::centurion @endlink           |
- *
- * @since 3.0.0
  */
 class Centurion final {
  public:

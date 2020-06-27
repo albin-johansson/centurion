@@ -523,6 +523,26 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("TouchMouseEvents") { test_bool_hint<TouchMouseEvents>(); };
 
+  SECTION("ThreadStackSize")
+  {
+    test_hint<ThreadStackSize>([] {
+      CHECK(set_hint<ThreadStackSize>(47U));
+      CHECK(get_hint<ThreadStackSize>().value() == 47U);
+
+      set_hint<ThreadStackSize>(0U);
+    });
+  };
+
+  SECTION("TimerResolution")
+  {
+    test_hint<TimerResolution>([] {
+      CHECK(set_hint<TimerResolution>(68U));
+      CHECK(get_hint<TimerResolution>().value() == 68U);
+
+      set_hint<TimerResolution>(1U);
+    });
+  };
+
   SECTION("TVRemoteAsJoystick") { test_bool_hint<TVRemoteAsJoystick>(); };
 
   SECTION("XinputEnabled") { test_bool_hint<XinputEnabled>(); };

@@ -57,8 +57,8 @@
 * [X] `EnableVSync`: `0`, `1`.
 * [X] `LogicalSizeMode`: `0/letterbox`, `1/overscan`.
 * [X] `RaspberryPIVideoLayer`: `int` (def: 10000).
-* [ ] `ThreadStackSize`: `0` (def) or positive value.
-* [ ] `TimerResolution`: `uint` in milliseconds, default is `1`.
+* [X] `ThreadStackSize`: `0` (def) or positive value.
+* [X] `TimerResolution`: `uint` in milliseconds, default is `1`.
 * [X] `TouchMouseEvents`: `0`, `1`.
 * [X] `TVRemoteAsJoystick`: `0`, `1`.
 * [X] `DoubleBuffer`: `0`, `1`.

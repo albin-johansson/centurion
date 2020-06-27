@@ -139,7 +139,7 @@ class IntHint : public CRTPHint<IntHint<Hint>, int> {
   template <typename T>
   CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
   {
-    return std::is_convertible<T, int>::value;
+    return std::is_same<T, int>::value;
   }
 
   CENTURION_NODISCARD
@@ -154,6 +154,28 @@ class IntHint : public CRTPHint<IntHint<Hint>, int> {
   }
 };
 
+// A hint class that only accepts unsigned integers
+template <typename Hint>
+class UnsignedIntHint : public CRTPHint<IntHint<Hint>, unsigned int> {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_same<T, unsigned int>::value;
+  }
+
+  CENTURION_NODISCARD
+  static Optional<unsigned int> current_value() noexcept
+  {
+    const CZString value = SDL_GetHint(Hint::name());
+    if (!value) {
+      return nothing;
+    } else {
+      return static_cast<unsigned int>(std::stoul(value));
+    }
+  }
+};
+
 // A hint class that only accepts floats
 template <typename Hint>
 class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
@@ -161,7 +183,7 @@ class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
   template <typename T>
   CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
   {
-    return std::is_convertible<T, float>::value;
+    return std::is_same<T, float>::value;
   }
 
   CENTURION_NODISCARD
@@ -892,6 +914,10 @@ CENTURION_HINT(RenderBatching, SDL_HINT_RENDER_BATCHING, BoolHint)
 CENTURION_HINT(ReturnKeyHidesIME, SDL_HINT_RETURN_KEY_HIDES_IME, BoolHint)
 
 CENTURION_HINT(TouchMouseEvents, SDL_HINT_TOUCH_MOUSE_EVENTS, BoolHint)
+
+CENTURION_HINT(ThreadStackSize, SDL_HINT_THREAD_STACK_SIZE, UnsignedIntHint)
+
+CENTURION_HINT(TimerResolution, SDL_HINT_TIMER_RESOLUTION, UnsignedIntHint)
 
 CENTURION_HINT(TVRemoteAsJoystick, SDL_HINT_TV_REMOTE_AS_JOYSTICK, BoolHint)
 

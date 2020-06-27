@@ -42,10 +42,9 @@
 
 /**
  * @brief Alias for @link ::centurion @endlink.
- *
- * This alias can make header files look a bit nicer when dealing with
+ * @details This alias can make header files look a bit nicer when dealing with
  * centurion components.
- *
+ * @headerfile centurion_as_ctn.h
  * @namespace ctn
  * @since 4.1.0
  */

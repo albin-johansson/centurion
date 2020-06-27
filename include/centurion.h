@@ -114,13 +114,13 @@
 namespace centurion {
 
 /**
- * @brief The CenturionConfig struct is used to specify how the library is
- * initialized.
+ * @brief Used to specify how the library is initialized.
  * 
  * All fields are initialized to the default values used by the
  * library.
  * 
  * @struct CenturionConfig
+ * @headerfile centurion.h
  * @since 4.0.0
  *
  * @var CenturionConfig::initCore
@@ -181,6 +181,7 @@ struct CenturionConfig final {
 /**
  * @brief Used to initialize and de-initialize the library.
  * @class Centurion
+ * @headerfile centurion.h
  * @since 3.0.0
  *
  * @par Examples

@@ -22,15 +22,29 @@
  * SOFTWARE.
  */
 
+/**
+ * This file is a convenience header that includes the @link centurion.h
+ * @endlink header whilst also defining a namespace alias for the @link
+ * ::centurion @endlink namespace.
+ *
+ * @file centurion_as_ctn.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_AS_CTN_HEADER
 #define CENTURION_AS_CTN_HEADER
 
 #include "centurion.h"
 
 /**
- * A simple namespace alias that can make header files look a little nicer
- * when dealing with centurion components.
+ * @brief Alias for @link ::centurion @endlink.
  *
+ * This alias can make header files look a bit nicer when dealing with
+ * centurion components.
+ *
+ * @namespace ctn
  * @since 4.1.0
  */
 namespace ctn = centurion;

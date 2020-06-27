@@ -581,6 +581,22 @@ TEST_CASE("set_hint", "[Hints]")
     });
   };
 
+  SECTION("QtWaylandWindowFlags")
+  {
+    using Hint = QtWaylandWindowFlags;
+    test_hint<QtWaylandWindowFlags>([] {
+      CHECK(set_hint<Hint>("OverridesSystemGestures StaysOnTop"));
+      CHECK_THAT(get_hint<Hint>().value(),
+                 Catch::Equals("OverridesSystemGestures StaysOnTop"));
+
+      CHECK(set_hint<Hint>("BypassWindowManager"));
+      CHECK_THAT(get_hint<Hint>().value(),
+                 Catch::Equals("BypassWindowManager"));
+
+      CHECK(set_hint<Hint>(""));
+    });
+  };
+
   SECTION("XinputEnabled") { test_bool_hint<XinputEnabled>(); };
 
   SECTION("XinputUseOldJoystickMapping")

@@ -67,7 +67,7 @@
 * [X] `MacFullscreenSpaces`: `0`, `1`.
 * [X] `MinimizeOnFocusLoss`: `0`, `1` (def).
 * [X] `QtWaylandContentOrientation`: `primary`, `portrait`, `landscape`, `inverted-portrait`, `inverted-landscape`.
-* [ ] `QtWaylandWindowFlags`: space-separated list of `OverridesSystemGestures`, `StaysOnTop`, `BypassWindowManager`
+* [X] `QtWaylandWindowFlags`: space-separated list of `OverridesSystemGestures`, `StaysOnTop`, `BypassWindowManager`
 * [X] `WAVERIFFChunkSize`: `force`, `ignorezero`, `ignore`, `maximum`.  
 * [X] `WAVETruncation`: `verystrict`, `strict`, `dropframe`, `dropblock`.
 * [X] `WAVEFactChunk`: `truncate`, `strict`, `ignorezero`, `ignore`.

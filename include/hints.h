@@ -986,6 +986,10 @@ CENTURION_HINT(TimerResolution, SDL_HINT_TIMER_RESOLUTION, UnsignedIntHint)
 
 CENTURION_HINT(TVRemoteAsJoystick, SDL_HINT_TV_REMOTE_AS_JOYSTICK, BoolHint)
 
+CENTURION_HINT(QtWaylandWindowFlags,
+               SDL_HINT_QTWAYLAND_WINDOW_FLAGS,
+               StringHint)
+
 CENTURION_HINT(XinputEnabled, SDL_HINT_XINPUT_ENABLED, BoolHint)
 
 CENTURION_HINT(XinputUseOldJoystickMapping,

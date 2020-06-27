@@ -2,6 +2,9 @@
 
 #include <catch.hpp>
 
+#include "centurion_utils.h"
+#include "window.h"
+
 using namespace centurion;
 using namespace hint;
 
@@ -466,6 +469,18 @@ TEST_CASE("set_hint", "[Hints]")
   };
 
   SECTION("WindowsNoCloseOnAltF4") { test_bool_hint<WindowsNoCloseOnAltF4>(); };
+
+  SECTION("WindowSharePixelFormat")
+  {
+    test_hint<WindowSharePixelFormat>([] {
+      Window window;
+      const auto str = centurion::detail::address_of(window.get());
+
+      CHECK(set_hint<WindowSharePixelFormat>(str.c_str()));
+      CHECK_THAT(get_hint<WindowSharePixelFormat>().value(),
+                 Catch::Equals(str.c_str()));
+    });
+  };
 
   SECTION("WindowFrameUsableWhileCursorHidden")
   {

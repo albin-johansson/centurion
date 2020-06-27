@@ -881,6 +881,10 @@ CENTURION_HINT(WindowsDisableThreadNaming,
                SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING,
                BoolHint)
 
+CENTURION_HINT(WindowSharePixelFormat,
+               SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT,
+               StringHint)
+
 CENTURION_HINT(WindowsEnableMessageLoop,
                SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP,
                BoolHint)

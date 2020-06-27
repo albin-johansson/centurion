@@ -71,7 +71,7 @@
 * [X] `WAVERIFFChunkSize`: `force`, `ignorezero`, `ignore`, `maximum`.  
 * [X] `WAVETruncation`: `verystrict`, `strict`, `dropframe`, `dropblock`.
 * [X] `WAVEFactChunk`: `truncate`, `strict`, `ignorezero`, `ignore`.
-* [ ] `WindowSharePixelFormat`: string for pointer address of `SDL_Window*`.
+* [X] `WindowSharePixelFormat`: string for pointer address of `SDL_Window*`.
 * [X] `WinD3DCompiler`: `d3dcompiler_46.dll` (def), `d3dcompiler_43.dll`, `none`.
 * [X] `X11NetWMPing`: `0`, `1`.
 * [X] `X11NetWMBypassCompositor`: `0`, `1`.

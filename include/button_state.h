@@ -44,13 +44,13 @@ namespace centurion {
  *
  * @headerfile button_state.h
  * @since 3.1.0
- *
- * @var ButtonState::Released
- * Indicates that a button is released. Corresponds to `SDL_RELEASED`.
- * @var ButtonState::Pressed
- * Indicates that a button is pressed. Corresponds to `SDL_PRESSED`.
  */
-enum class ButtonState { Released = SDL_RELEASED, Pressed = SDL_PRESSED };
+enum class ButtonState {
+  Released = SDL_RELEASED, /**< Button is released. Corresponds to
+                            * `SDL_RELEASED`.*/
+  Pressed = SDL_PRESSED    /**< Button is pressed. Corresponds to
+                            * `SDL_PRESSED`.*/
+};
 
 }  // namespace centurion
 

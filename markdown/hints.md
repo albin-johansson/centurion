@@ -42,8 +42,8 @@
 * [X] `MouseTouchEvents`: `0`, `1`.
 * [X] `MouseDoubleClickTime`: milliseconds.
 * [X] `MouseDoubleClickRadius`: pixels.
-* [ ] `MouseNormalSpeedScale`: `float`.
-* [ ] `MouseRelativeSpeedScale`: `float`.
+* [X] `MouseNormalSpeedScale`: `float`.
+* [X] `MouseRelativeSpeedScale`: `float`.
 * [X] `ReturnKeyHidesIME`: `0`, `1`.
 * [X] `NoSignalHandlers`: `0` (def), `1`.
 * [ ] `Orientations`: `LandscapeLeft`, `LandscapeRight`, `Portrait`, `PortraitUpsideDown`. Can be combined in space delimited list.

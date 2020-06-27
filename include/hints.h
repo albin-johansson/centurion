@@ -154,6 +154,28 @@ class IntHint : public CRTPHint<IntHint<Hint>, int> {
   }
 };
 
+// A hint class that only accepts floats
+template <typename Hint>
+class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
+ public:
+  template <typename T>
+  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  {
+    return std::is_convertible<T, float>::value;
+  }
+
+  CENTURION_NODISCARD
+  static Optional<float> current_value() noexcept
+  {
+    const CZString value = SDL_GetHint(Hint::name());
+    if (!value) {
+      return nothing;
+    } else {
+      return std::stof(value);
+    }
+  }
+};
+
 }  // namespace detail
 
 class RenderDriver final {
@@ -810,6 +832,14 @@ CENTURION_HINT(MacFullscreenSpaces,
 CENTURION_HINT(MinimizeOnFocusLoss,
                SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS,
                BoolHint)
+
+CENTURION_HINT(MouseNormalSpeedScale,
+               SDL_HINT_MOUSE_NORMAL_SPEED_SCALE,
+               FloatHint)
+
+CENTURION_HINT(MouseRelativeSpeedScale,
+               SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE,
+               FloatHint)
 
 CENTURION_HINT(X11NetWMPing, SDL_HINT_VIDEO_X11_NET_WM_PING, BoolHint)
 

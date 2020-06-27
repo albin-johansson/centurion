@@ -493,6 +493,22 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("MouseTouchEvents") { test_bool_hint<MouseTouchEvents>(); };
 
+  SECTION("MouseNormalSpeedScale")
+  {
+    test_hint<MouseNormalSpeedScale>([] {
+      CHECK(set_hint<MouseNormalSpeedScale>(2.3f));
+      CHECK(get_hint<MouseNormalSpeedScale>().value() == 2.3f);
+    });
+  };
+
+  SECTION("MouseRelativeSpeedScale")
+  {
+    test_hint<MouseRelativeSpeedScale>([] {
+      CHECK(set_hint<MouseRelativeSpeedScale>(6.7f));
+      CHECK(get_hint<MouseRelativeSpeedScale>().value() == 6.7f);
+    });
+  };
+
   SECTION("RaspberryPIVideoLayer")
   {
     test_hint<RaspberryPIVideoLayer>([] {

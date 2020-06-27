@@ -22,6 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * @brief Provides the @link centurion::CPU @endlink class.
+ *
+ * @file cpu.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_CPU_HEADER
 #define CENTURION_CPU_HEADER
 
@@ -32,9 +41,12 @@
 namespace centurion {
 
 /**
- * The CPU class is a utility class that provides information related to,
- * unsurprisingly, the CPU.
- *
+ * @class CPU
+ * @brief A utility class for obtaining information about the processor.
+ * @details Use this class to determine whether or not the system processor
+ * supports different instruction sets, the cache line size, amount of cores,
+ * etc.
+ * @headerfile cpu.h
  * @since 3.0.0
  */
 class CPU final {

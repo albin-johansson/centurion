@@ -23,10 +23,12 @@
  */
 
 /**
- * This file provides the declaration of the @link centurion::Centurion @endlink
- * and @link centurion::CenturionConfig @endlink classes, and are related to the
- * initialization of the library. This file also includes all other
- * header files in the library.
+ * @brief The main header file for the library.
+ *
+ * Provides the declaration of the @link centurion::Centurion @endlink and
+ * @link centurion::CenturionConfig @endlink classes, and are related to the
+ * initialization of the library. This file also includes all other header
+ * files in the library.
  *
  * @file centurion.h
  * @author Albin Johansson
@@ -115,10 +117,10 @@ namespace centurion {
 
 /**
  * @brief Used to specify how the library is initialized.
- * 
+ *
  * All fields are initialized to the default values used by the
  * library.
- * 
+ *
  * @struct CenturionConfig
  * @headerfile centurion.h
  * @since 4.0.0

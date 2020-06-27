@@ -22,6 +22,16 @@
  * SOFTWARE.
  */
 
+/**
+ * This file provides the declaration of the @link centurion::Battery @endlink
+ * class, which provides utilities for querying the battery state of the system.
+ *
+ * @file battery.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_BATTERY_HEADER
 #define CENTURION_BATTERY_HEADER
 
@@ -35,24 +45,20 @@ namespace centurion {
 /**
  * The PowerState enum class mirrors the values of the SDL_PowerState enum.
  *
- * Unknown: Indicates that the power status is unknown.
- *
- * <p>
- * OnBattery: Indicates that the device isn't plugged in and is running on the
- * battery.
- *
- * <p>
- * NoBattery: Indicates that the device is plugged in and no battery is
- * available.
- *
- * <p>
- * Charging: Indicates that the device is plugged in and the battery is
- * charging.
- *
- * <p>
- * Charged: Indicates that the device is plugged in and the battery is charged.
- *
+ * @enum PowerState
  * @since 3.0.0
+ * 
+ * @var PowerState::Unknown
+ * Indicates that the power status is unknown.
+ * @var PowerState::OnBattery
+ * Indicates that the device isn't plugged in and is running on the
+ * battery.
+ * @var PowerState::NoBattery
+ * Indicates that the device is plugged in and no battery is available.
+ * @var PowerState::Charging
+ * Indicates that the device is plugged in and the battery is charging.
+ * @var PowerState::Charged
+ * Indicates that the device is plugged in and the battery is charged.
  */
 enum class PowerState {
   Unknown = SDL_POWERSTATE_UNKNOWN,
@@ -88,6 +94,7 @@ CENTURION_API bool operator==(SDL_PowerState a, PowerState b) noexcept;
  * The Battery class provides utilities related to the battery of the system.
  *
  * @since 3.0.0
+ * @class Battery
  */
 class Battery final {
  public:

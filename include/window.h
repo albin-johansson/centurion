@@ -22,6 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * This header provides the @link centurion::Window @endlink class.
+ *
+ * @file window.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License.
+ */
+
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
@@ -42,6 +51,18 @@ class Surface;
  * can't be copied. Instances of the Window class can be implicitly converted to
  * SDL_Window*.
  *
+ * @par General information
+ * | Property              | Value                                |
+ * | --------------------- | :----------------------------------- |
+ * | Default constructible | Yes                                  |
+ * | Movable               | Yes                                  |
+ * | Copyable              | No                                   |
+ * | Explicit conversions  | None                                 |
+ * | Implicit conversions  | `SDL_Window*`, `const SDL_Window*`   |
+ * | Overloaded operators  | None                                 |
+ * | Namespace             | @link ::centurion @endlink           |
+ *
+ * @headerfile window.h <>
  * @since 3.0.0
  */
 class Window final {

@@ -346,12 +346,34 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("OpenGLESDriver") { test_bool_hint<OpenGLESDriver>(); };
 
+  SECTION("Orientations")
+  {
+    test_hint<Orientations>([] {
+      CHECK(set_hint<Orientations>("LandscapeLeft"));
+      CHECK_THAT(get_hint<Orientations>().value(),
+                 Catch::Equals("LandscapeLeft"));
+
+      CHECK(set_hint<Orientations>("LandscapeRight"));
+      CHECK_THAT(get_hint<Orientations>().value(),
+                 Catch::Equals("LandscapeRight"));
+
+      CHECK(set_hint<Orientations>("Portrait"));
+      CHECK_THAT(get_hint<Orientations>().value(), Catch::Equals("Portrait"));
+
+      CHECK(set_hint<Orientations>("PortraitUpsideDown"));
+      CHECK_THAT(get_hint<Orientations>().value(),
+                 Catch::Equals("PortraitUpsideDown"));
+
+      CHECK(set_hint<Orientations>("PortraitUpsideDown LandscapeRight"));
+      CHECK_THAT(get_hint<Orientations>().value(),
+                 Catch::Equals("PortraitUpsideDown LandscapeRight"));
+    });
+  };
+
   SECTION("EnableVSync")
   {
     test_bool_hint<EnableVSync>();
     set_hint<EnableVSync>(true);
-
-    //    SDL_SetHint(SDL_HINT_RENDER_VSYNC, nullptr);
   };
 
   SECTION("ScaleQuality")

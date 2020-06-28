@@ -46,7 +46,7 @@
 * [X] `MouseRelativeSpeedScale`: `float`.
 * [X] `ReturnKeyHidesIME`: `0`, `1`.
 * [X] `NoSignalHandlers`: `0` (def), `1`.
-* [ ] `Orientations`: `LandscapeLeft`, `LandscapeRight`, `Portrait`, `PortraitUpsideDown`. Can be combined in space delimited list.
+* [X] `Orientations`: `LandscapeLeft`, `LandscapeRight`, `Portrait`, `PortraitUpsideDown`. Can be combined in space delimited list.
 * [X] `Direct3D11Debug`: `0`, `1`.
 * [X] `Direct3DThreadSafe`: `0` (def), `1`.
 * [X] `RenderBatching`: `0`, `1`.

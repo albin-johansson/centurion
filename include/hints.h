@@ -1281,7 +1281,7 @@ Callback<Hint, UserData> add_callback(SDL_HintCallback callback,
  * @since 4.1.0
  * @see SDL_ClearHints
  */
-void clear_all() noexcept
+inline void clear_all() noexcept
 {
   SDL_ClearHints();
 }

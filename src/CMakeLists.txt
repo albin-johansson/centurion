@@ -143,7 +143,7 @@ if (DEFINED ENV{TRAVIS})
 endif ()
 
 set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
-        VERSION 4.0.0
+        VERSION 4.1.0
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF

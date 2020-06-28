@@ -26,7 +26,7 @@ set(CENTURION_DYNAMIC_LIB ${CMAKE_BINARY_DIR}/src/libcenturion${CMAKE_SHARED_LIB
 set(CENTURION_LIBRARIES ${CMAKE_BINARY_DIR}/src/libcenturion${CMAKE_IMPORT_LIBRARY_SUFFIX})
 
 if (DEFINED ENV{TRAVIS} OR ${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    set(CENTURION_LIBRARIES "${CMAKE_BINARY_DIR}/src/libcenturion.so")
+    set(CENTURION_LIBRARIES "${CMAKE_BINARY_DIR}/src/libCenturion.so")
 endif ()
 
 # Checks if an environment variable is defined.

@@ -39,6 +39,9 @@
  *
  * @file hints.h
  * @since 4.1.0
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
  */
 
 #ifndef CENTURION_HINTS_HEADER

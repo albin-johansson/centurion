@@ -22,6 +22,16 @@
  * SOFTWARE.
  */
 
+/**
+ * @brief Provides utilities related to to the system clock and timing.
+ * @todo Rename `Timer` to Clock/Counter.
+ * @todo Move `Timer::delay` to somewhere else
+ * @file timer.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_TIMER_HEADER
 #define CENTURION_TIMER_HEADER
 

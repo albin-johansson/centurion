@@ -415,6 +415,16 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("X11XVidMode") { test_bool_hint<X11XVidMode>(); };
 
+  SECTION("X11WindowVisualID")
+  {
+    test_hint<X11WindowVisualID>([] {
+      CHECK(set_hint<X11WindowVisualID>("foo"));
+      CHECK_THAT(get_hint<X11WindowVisualID>().value(), Catch::Equals("foo"));
+
+      set_hint<X11WindowVisualID>("");
+    });
+  };
+
   SECTION("WAVERIFFChunkSize")
   {
     test_hint<WAVERIFFChunkSize>([] {
@@ -469,6 +479,28 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("WindowsDisableThreadNaming")
   {
     test_bool_hint<WindowsDisableThreadNaming>();
+  };
+
+  SECTION("WindowsIntResourceIcon")
+  {
+    test_hint<WindowsIntResourceIcon>([] {
+      CHECK(set_hint<WindowsIntResourceIcon>("foo"));
+      CHECK_THAT(get_hint<WindowsIntResourceIcon>().value(),
+                 Catch::Equals("foo"));
+
+      set_hint<WindowsIntResourceIcon>("");
+    });
+  };
+
+  SECTION("WindowsIntResourceIconSmall")
+  {
+    test_hint<WindowsIntResourceIcon>([] {
+      CHECK(set_hint<WindowsIntResourceIcon>("bar"));
+      CHECK_THAT(get_hint<WindowsIntResourceIcon>().value(),
+                 Catch::Equals("bar"));
+
+      set_hint<WindowsIntResourceIcon>("");
+    });
   };
 
   SECTION("WinD3DCompiler")

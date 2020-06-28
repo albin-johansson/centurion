@@ -23,10 +23,11 @@
  */
 
 /**
- * The <code>hints.h</code> header provides utilities related to managing
- * hints ("configuration variables" on the SDL2 wiki). Refer to the official
- * SDL2 wiki or the <code>SDL_hints.h</code> header for details regarding any
- * specific hint type.
+ * @brief Provides utilities related to managing hints.
+ *
+ * @details Provides utilities related to managing hints ("configuration
+ * variables" on the SDL2 wiki). Refer to the official SDL2 wiki or the
+ * <code>SDL_hints.h</code> header for details regarding any specific hint type.
  *
  * @file hints.h
  * @since 4.1.0

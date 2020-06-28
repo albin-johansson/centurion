@@ -68,6 +68,7 @@
 #include "event_type.h"
 #include "font.h"
 #include "game_controller.h"
+#include "hints.h"
 #include "joy_axis_event.h"
 #include "joy_ball_event.h"
 #include "joy_button_event.h"

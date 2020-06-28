@@ -79,11 +79,11 @@
 * [X] `X11Xinerama`: `0`, `1`.
 * [X] `X11XRandR`: `0`, `1`.
 * [X] `X11XVidMode`: `0`, `1`.
-* [ ] `X11WindowVisualID`: ?
+* [X] `X11WindowVisualID`: ?
 * [X] `WindowsDisableThreadNaming`: `0` (def), `1`.
 * [X] `WindowsEnableMessageLoop`: `0`, `1` (def).
-* [ ] `WindowsIntResourceIcon`: ?
-* [ ] `WindowsIntResourceIconSmall`: ?
+* [X] `WindowsIntResourceIcon`: ?
+* [X] `WindowsIntResourceIconSmall`: ?
 * [X] `WindowsNoCloseOnAltF4`: `0` (def), `1`.
 * [X] `WindowFrameUsableWhileCursorHidden`: `0`, `1` (def).
 * [X] `WinRTHandleBackButton`: `1` or not set (def).

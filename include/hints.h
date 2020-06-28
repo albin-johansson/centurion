@@ -29,6 +29,14 @@
  * variables" on the SDL2 wiki). Refer to the official SDL2 wiki or the
  * <code>SDL_hints.h</code> header for details regarding any specific hint type.
  *
+ * @todo `WindowsIntResourceIcon`, `WindowsIntResourceIconSmall`,
+ * `X11WindowVisualID` are string hints because the types of their values
+ * isn't known. Should be fixed if the type isn't actually string.
+ *
+ * @todo C++20: Make callback signature depend on the `UserData` and the type
+ * of the associated hint, so that the values supplied to the callback aren't
+ * always strings.
+ *
  * @file hints.h
  * @since 4.1.0
  */
@@ -46,15 +54,6 @@
 #include "centurion_utils.h"
 
 namespace centurion {
-
-/**
- * The <code>hint</code> namespace contains all of the Centurion components
- * related to hints (configuration variables).
- *
- * @namespace centurion::hint
- * @since 4.1.0
- */
-namespace hint {
 
 /// @cond FALSE
 
@@ -201,6 +200,19 @@ class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
 
 }  // namespace detail
 
+/// @endcond
+
+/**
+ * The <code>hint</code> namespace contains all of the Centurion components
+ * related to hints (configuration variables).
+ *
+ * @namespace centurion::hint
+ * @since 4.1.0
+ */
+namespace hint {
+
+/// @cond FALSE
+
 class RenderDriver final {
  public:
   enum Value { Direct3D, OpenGL, OpenGLES, OpenGLES2, Metal, Software };
@@ -220,7 +232,7 @@ class RenderDriver final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "direct3d")) {
       return Direct3D;
     } else if (equal(hint, "opengl")) {
@@ -279,7 +291,7 @@ class AudioResamplingMode final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "default")) {
       return Default;
     } else if (equal(hint, "fast")) {
@@ -329,7 +341,7 @@ class ScaleQuality final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "nearest")) {
       return Nearest;
     } else if (equal(hint, "linear")) {
@@ -384,7 +396,7 @@ class FramebufferAcceleration final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "0")) {
       return Off;
     } else if (equal(hint, "1")) {
@@ -447,7 +459,7 @@ class AudioCategory final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "ambient")) {
       return Ambient;
     } else /*if (equal(hint, "playback"))*/ {
@@ -490,7 +502,7 @@ class WinD3DCompiler final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "d3dcompiler_46.dll")) {
       return D3DCompiler46;
     } else if (equal(hint, "d3dcompiler_43.dll")) {
@@ -537,7 +549,7 @@ class WAVERIFFChunkSize final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "force")) {
       return Force;
     } else if (equal(hint, "ignorezero")) {
@@ -585,7 +597,7 @@ class WAVETruncation final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "verystrict")) {
       return VeryStrict;
     } else if (equal(hint, "strict")) {
@@ -633,7 +645,7 @@ class WAVEFactChunk final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "truncate")) {
       return Truncate;
     } else if (equal(hint, "strict")) {
@@ -684,7 +696,7 @@ class LogicalSizeMode final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "0") || equal(hint, "letterbox")) {
       return Letterbox;
     } else /*if (equal(hint, "1") || equal(hint, "overscan"))*/ {
@@ -733,7 +745,7 @@ class QtWaylandContentOrientation final {
       return nothing;
     }
 
-    using centurion::detail::equal;
+    using detail::equal;
     if (equal(hint, "primary")) {
       return Primary;
     } else if (equal(hint, "portrait")) {
@@ -941,6 +953,10 @@ CENTURION_HINT(X11XRandR, SDL_HINT_VIDEO_X11_XRANDR, BoolHint)
 
 CENTURION_HINT(X11XVidMode, SDL_HINT_VIDEO_X11_XVIDMODE, BoolHint)
 
+CENTURION_HINT(X11WindowVisualID,
+               SDL_HINT_VIDEO_X11_WINDOW_VISUALID,
+               StringHint)
+
 CENTURION_HINT(WindowsDisableThreadNaming,
                SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING,
                BoolHint)
@@ -960,6 +976,14 @@ CENTURION_HINT(WindowsNoCloseOnAltF4,
 CENTURION_HINT(WindowFrameUsableWhileCursorHidden,
                SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN,
                BoolHint)
+
+CENTURION_HINT(WindowsIntResourceIcon,
+               SDL_HINT_WINDOWS_INTRESOURCE_ICON,
+               StringHint)
+
+CENTURION_HINT(WindowsIntResourceIconSmall,
+               SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL,
+               StringHint)
 
 CENTURION_HINT(WinRTPrivacyPolicyLabel,
                SDL_HINT_WINRT_PRIVACY_POLICY_LABEL,
@@ -1057,12 +1081,11 @@ enum class Prio {
  * @return true if the hint was successfully set; false otherwise.
  * @since 4.1.0
  */
-template <
-    typename Hint,
-    Prio priority = Prio::Normal,
-    typename Value,
-    typename = centurion::detail::type_if<Hint::template valid_arg<Value>()>>
-bool set_hint(const Value& value) noexcept  // TODO rename type_if -> if_t
+template <typename Hint,
+          Prio priority = Prio::Normal,
+          typename Value,
+          typename = detail::enable_if_t<Hint::template valid_arg<Value>()>>
+bool set_hint(const Value& value) noexcept
 {
   return static_cast<bool>(
       SDL_SetHintWithPriority(Hint::name(),
@@ -1118,10 +1141,6 @@ CENTURION_NODISCARD decltype(auto) get_hint() noexcept
  */
 template <typename Hint, typename UserData = void>
 class Callback final {
-  // TODO in future version, possible to supply UserData* to function ptr?
-  //  using safe_callback =
-  //      typename std::add_pointer<void(UserData*, CZString, CZString)>::type;
-
  public:
   /**
    * Creates a <code>HintCallback</code>.
@@ -1141,8 +1160,6 @@ class Callback final {
       throw CenturionException{msg};
     }
   }
-
-  //  HintCallback(simple_callback callback) {}
 
   /**
    * Registers the callback to be invoked whenever the associated hint is
@@ -1193,7 +1210,6 @@ class Callback final {
 
  private:
   SDL_HintCallback m_callback;
-  //  simple_callback m_simpleCallback{nullptr};
   UserData* m_userData;
 };
 
@@ -1266,13 +1282,6 @@ void clear_all() noexcept
 {
   SDL_ClearHints();
 }
-
-// TODO with C++20 it'll be possible to add a simple hint callback mechanism
-// template<typename Lambda>
-// void f(void*, CZString, CZString oldValue, CZString newValue) {
-//  Lambda lambda; // requires C++20 and a stateless lambda
-//  lambda(oldValue, newValue);
-//}
 
 }  // namespace hint
 }  // namespace centurion

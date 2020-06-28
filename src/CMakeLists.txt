@@ -133,9 +133,9 @@ if (WIN32)
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CENTURION_OUTPUT_NAME centurion)
+    set(CENTURION_OUTPUT_NAME Centurion)
 else ()
-    set(CENTURION_OUTPUT_NAME libcenturion)
+    set(CENTURION_OUTPUT_NAME libCenturion)
 endif ()
 
 if (DEFINED ENV{TRAVIS})

@@ -11,6 +11,4 @@ TEST_CASE("...", "[Joystick]")
 }
 
 TEST_CASE("Joystick::Power values", "[Joystick]")
-{
-
-}
+{}

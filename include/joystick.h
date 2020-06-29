@@ -103,6 +103,56 @@ class Joystick final {
   CENTURION_API ~Joystick() noexcept;
 
   /**
+   * @brief Creates and returns a unique pointer to a `Joystick` instance.
+   * @invariant This method never returns a null pointer.
+   * @param deviceIndex refers to the N'th joystick that is currently
+   * recognized by SDL.
+   * @return a unique pointer to a `Joystick` instance.
+   * @throws CenturionException if the joystick cannot be created.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static UniquePtr<Joystick> unique(int deviceIndex);
+
+  /**
+   * @brief Creates and returns a unique pointer to a `Joystick` instance.
+   * @pre `joystick` must not be null.
+   * @invariant This method never returns a null pointer.
+   * @param joystick a pointer to the `SDL_Joystick` that will be claimed.
+   * @return a unique pointer to a `Joystick` instance.
+   * @throws CenturionException if the joystick cannot be created.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static UniquePtr<Joystick> unique(
+      Owner<SDL_Joystick*> joystick);
+
+  /**
+   * @brief Creates and returns a shared pointer to a `Joystick` instance.
+   * @invariant This method never returns a null pointer.
+   * @param deviceIndex refers to the N'th joystick that is currently
+   * recognized by SDL.
+   * @return a shared pointer to a `Joystick` instance.
+   * @throws CenturionException if the joystick cannot be created.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static SharedPtr<Joystick> shared(int deviceIndex);
+
+  /**
+   * @brief Creates and returns a shared pointer to a `Joystick` instance.
+   * @pre `joystick` must not be null.
+   * @invariant This method never returns a null pointer.
+   * @param joystick a pointer to the `SDL_Joystick` that will be claimed.
+   * @return a shared pointer to a `Joystick` instance.
+   * @throws CenturionException if the joystick cannot be created.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static SharedPtr<Joystick> shared(
+      Owner<SDL_Joystick*> joystick);
+
+  /**
    * @brief Returns a pointer to an `SDL_Joystick` associated with the ID.
    * @param id the joystick ID associated with the desired joystick.
    * @return a pointer to an `SDL_Joystick` instance if there is a joystick

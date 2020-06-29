@@ -37,6 +37,29 @@ Joystick::~Joystick() noexcept
 }
 
 CENTURION_DEF
+UniquePtr<Joystick> Joystick::unique(int deviceIndex)
+{
+  return detail::make_unique<Joystick>(deviceIndex);
+}
+
+CENTURION_DEF
+UniquePtr<Joystick> Joystick::unique(SDL_Joystick* joystick)
+{
+  return detail::make_unique<Joystick>(joystick);
+}
+
+CENTURION_DEF
+SharedPtr<Joystick> Joystick::shared(int deviceIndex)
+{
+  return std::make_shared<Joystick>(deviceIndex);
+}
+
+CENTURION_DEF
+SharedPtr<Joystick> Joystick::shared(SDL_Joystick* joystick)
+{
+  return std::make_shared<Joystick>(joystick);
+}
+CENTURION_DEF
 SDL_Joystick* Joystick::from_instance_id(JoystickID id) noexcept
 {
   return SDL_JoystickFromInstanceID(id);

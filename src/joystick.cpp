@@ -84,6 +84,21 @@ Optional<int> Joystick::amount() noexcept
 }
 
 CENTURION_DEF
+Optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
+    int ball) const noexcept
+
+{
+  BallAxisChange change{};
+  const auto result =
+      SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy);
+  if (result == 0) {
+    return change;
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
 Optional<Sint16> Joystick::axis_pos(unsigned int axis) const noexcept
 {
   const auto result = SDL_JoystickGetAxis(m_joystick, static_cast<int>(axis));

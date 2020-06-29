@@ -76,6 +76,16 @@ class Joystick final {
   };
 
   /**
+   * @brief Represents the difference in a joystick ball axis position.
+   * @headerfile joystick.h
+   * @since 4.2.0
+   */
+  struct BallAxisChange {
+    int dx; /**< Difference in x-axis position since last poll. */
+    int dy; /**< Difference in y-axis position since last poll. */
+  };
+
+  /**
    * @brief Creates a `Joystick` instance based on a device index.
    * @warning The device index is not the same as the instance ID used to
    * identify the joystick in future events.
@@ -173,6 +183,17 @@ class Joystick final {
    */
   CENTURION_NODISCARD
   CENTURION_API static Optional<int> amount() noexcept;
+
+  /**
+   * @brief Returns the ball axis change since the last poll.
+   * @param ball the ball index to check, start at 0.
+   * @return a `JoystickBallAxisChange` instance or `nothing` if something goes
+   * wrong.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<BallAxisChange> ball_axis_change(int ball) const noexcept;
 
   /**
    * @brief Returns the current position of the specified axis.

@@ -255,6 +255,38 @@ class Joystick final {
   CENTURION_API bool attached() const noexcept;
 
   /**
+   * @brief Returns the amount of hats on the joystick.
+   * @return the amount of hats on the joystick.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API int num_hats() const noexcept;
+
+  /**
+   * @brief Returns the amount of general axis controls on the joystick.
+   * @return the amount of general axis controls on the joystick.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API int num_axes() const noexcept;
+
+  /**
+   * @brief Returns the amount of trackballs on the joystick.
+   * @return the amount of trackballs on the joystick.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API int num_trackballs() const noexcept;
+
+  /**
+   * @brief Returns the amount of buttons on the joystick.
+   * @return the amount of buttons on the joystick.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API int num_buttons() const noexcept;
+
+  /**
    * @brief Returns the instance ID associated with the joystick.
    * @return the instance ID associated with the joystick.
    * @since 4.2.0

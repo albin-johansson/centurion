@@ -134,6 +134,29 @@ bool Joystick::attached() const noexcept
 }
 
 CENTURION_DEF
+int Joystick::num_hats() const noexcept
+{
+  return SDL_JoystickNumHats(m_joystick);
+}
+
+CENTURION_DEF
+int Joystick::num_axes() const noexcept
+{
+  return SDL_JoystickNumAxes(m_joystick);
+}
+CENTURION_DEF
+int Joystick::num_trackballs() const noexcept
+{
+  return SDL_JoystickNumBalls(m_joystick);
+}
+
+CENTURION_DEF
+int Joystick::num_buttons() const noexcept
+{
+  return SDL_JoystickNumButtons(m_joystick);
+}
+
+CENTURION_DEF
 JoystickID Joystick::id() const noexcept
 {
   // Can fail for null joysticks, but that can't happen due to class invariant.

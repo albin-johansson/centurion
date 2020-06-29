@@ -50,9 +50,8 @@ install:
   # Manually installs Doxygen 1.8.18
   - wget -c https://sourceforge.net/projects/doxygen/files/rel-1.8.18/doxygen-1.8.18.linux.bin.tar.gz
   - tar -xf doxygen-1.8.18.linux.bin.tar.gz
-  - ls
-#  - cd doxygen-1.8.18.linux.bin
-#  - sudo make install
+  - cd doxygen-1.8.18
+  - sudo make install
   - cd
 
 before_script:

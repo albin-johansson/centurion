@@ -127,6 +127,28 @@ class Joystick final {
 
   CENTURION_API ~Joystick() noexcept;
 
+  // TODO
+  //  SDL_JoystickGetGUIDString
+  //  SDL_JoystickGetGUIDFromString
+  //  SDL_LockJoysticks
+  //  SDL_UnlockJoysticks
+  //  SDL_JoystickGetDevicePlayerIndex
+  //  SDL_JoystickGetDeviceVendor
+  //  SDL_JoystickGetDeviceProduct
+  //  SDL_JoystickGetDeviceProductVersion
+  //  SDL_JoystickGetDeviceType
+  //  SDL_JoystickGetDeviceInstanceID
+  //  SDL_JoystickFromPlayerIndex
+  //  SDL_JoystickGetPlayerIndex
+  //  SDL_JoystickSetPlayerIndex
+  //  SDL_JoystickGetVendor
+  //  SDL_JoystickGetProduct
+  //  SDL_JoystickGetProductVersion
+  //  SDL_JoystickGetType
+  //  SDL_JoystickGetGUIDString ?
+  //  SDL_JoystickGetAxisInitialState
+  //  SDL_JoystickRumble
+
   /**
    * @brief Creates and returns a unique pointer to a `Joystick` instance.
    * @invariant This method never returns a null pointer.

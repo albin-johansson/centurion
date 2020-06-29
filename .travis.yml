@@ -59,6 +59,7 @@ before_script:
   - gcc -v
   - g++ -v
   - cmake --version
+  - doxygen --version
 
   # Install core SDL2
   - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.12.tar.gz | tar xz

@@ -186,6 +186,8 @@ class Joystick final {
 
   /**
    * @brief Returns the ball axis change since the last poll.
+   * @note Trackballs can only return relative motion since the last call, these
+   * motion deltas are placed into the `BallAxisChange` struct.
    * @param ball the ball index to check, start at 0.
    * @return a `JoystickBallAxisChange` instance or `nothing` if something goes
    * wrong.

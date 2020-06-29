@@ -47,6 +47,13 @@ install:
   - sudo make install
   - cd
 
+  # Manually installs Doxygen 1.8.18
+  - wget -c https://sourceforge.net/projects/doxygen/files/rel-1.8.18/doxygen-1.8.18.linux.bin.tar.gz
+  - tar -xf doxygen-1.8.18.linux.bin.tar.gz
+  - cd doxygen-1.8.18.linux.bin
+  - sudo make install
+  - cd
+
 before_script:
   # Emulates a video device
   - "export DISPLAY=:99.0"

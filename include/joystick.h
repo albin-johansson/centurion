@@ -166,6 +166,27 @@ class Joystick final {
   CENTURION_API static void update() noexcept;
 
   /**
+   * @brief Specifies whether or not joystick event polling is enabled.
+   * @details If joystick event polling is disabled, then you must manually call
+   * `Joystick::update()` in order to update the joystick state.
+   * @note It's recommended to leave joystick event polling enabled.
+   * @warning Calling this function might cause all events currently in
+   * the event queue to be deleted.
+   * @param enabled `true` if joystick event polling should be enabled;
+   * `false` otherwise.
+   * @see SDL_JoystickEventState(int)
+   * @since 4.2.0
+   */
+  CENTURION_API static void set_polling(bool enabled) noexcept;
+
+  /**
+   * @brief Indicates whether or not joystick event polling is enabled.
+   * @return `true` if joystick event polling is enabled; `false` otherwise.
+   * @since 4.2.0
+   */
+  CENTURION_API static bool polling() noexcept;
+
+  /**
    * @brief Returns a pointer to an `SDL_Joystick` associated with the ID.
    * @param id the joystick ID associated with the desired joystick.
    * @return a pointer to an `SDL_Joystick` instance if there is a joystick

@@ -67,6 +67,18 @@ void Joystick::update() noexcept
 }
 
 CENTURION_DEF
+void Joystick::set_polling(bool enabled) noexcept
+{
+  SDL_JoystickEventState(enabled ? SDL_ENABLE : SDL_DISABLE);
+}
+
+CENTURION_DEF
+bool Joystick::polling() noexcept
+{
+  return SDL_JoystickEventState(SDL_QUERY);
+}
+
+CENTURION_DEF
 SDL_Joystick* Joystick::from_instance_id(JoystickID id) noexcept
 {
   return SDL_JoystickFromInstanceID(id);

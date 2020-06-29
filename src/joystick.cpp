@@ -73,6 +73,17 @@ SDL_Joystick* Joystick::from_instance_id(JoystickID id) noexcept
 }
 
 CENTURION_DEF
+Optional<int> Joystick::amount() noexcept
+{
+  const auto result = SDL_NumJoysticks();
+  if (result < 0) {
+    return nothing;
+  } else {
+    return result;
+  }
+}
+
+CENTURION_DEF
 Optional<Sint16> Joystick::axis_pos(unsigned int axis) const noexcept
 {
   const auto result = SDL_JoystickGetAxis(m_joystick, static_cast<int>(axis));

@@ -171,6 +171,15 @@ class Joystick final {
   CENTURION_API static SDL_Joystick* from_instance_id(JoystickID id) noexcept;
 
   /**
+   * @brief Returns the amount of currently available joysticks.
+   * @return the current amount of available joysticks; `nothing` if
+   * something goes wrong.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static Optional<int> amount() noexcept;
+
+  /**
    * @brief Returns the current position of the specified axis.
    * @details Most modern joysticks let the X-axis be represented by 0
    * and the Y-axis by 1. To account for jitter, it may be necessary to impose

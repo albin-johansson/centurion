@@ -50,11 +50,6 @@ using JoystickID = SDL_JoystickID;
 
 /**
  * @brief Represents various types of joysticks.
- *
- * @invariant A successfully created `Joystick` instance is always viable.
- * Which means that `SDL_JoystickGetAttached(SDL_Joystick*)` always returns
- * `true` for the internal `SDL_Joystick*`.
- *
  * @class Joystick
  * @headerfile joystick.h
  * @since 4.2.0

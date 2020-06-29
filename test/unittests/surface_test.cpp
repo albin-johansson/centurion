@@ -153,7 +153,7 @@ TEST_CASE("Surface::pitch", "[Surface]")
 
 TEST_CASE("Surface::clip", "[Surface]")
 {
-  const IRect rect = {48, 29, 34, 89};
+  const IRect rect{{48, 29}, {34, 89}};
 
   SECTION("Non-const")
   {

@@ -1,6 +1,6 @@
 #ifndef CENTURION_NOAUDIO
 
-#include "sound_effect.cpp"
+#include "sound_effect.h"
 
 #include <catch.hpp>
 

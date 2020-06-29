@@ -28,9 +28,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include <memory>
-#include <string>
-#include <type_traits>
+#include <unordered_map>
 #include <vector>
 
 #include "area.h"
@@ -95,7 +93,7 @@ class Renderer final {
    * @param renderer a raw pointer to the SDL_Renderer that the created renderer
    * will be based on, may not be null.
    * @return a unique pointer to a renderer.
-   * @throws invalid_argument if the supplied renderer is null.
+   * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -123,7 +121,7 @@ class Renderer final {
    * @param renderer a raw pointer to the SDL_Renderer that the created
    * renderer will be based on, may not be null.
    * @return a shared pointer to a renderer.
-   * @throws invalid_argument if the supplied renderer is null.
+   * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
   CENTURION_NODISCARD
@@ -160,6 +158,41 @@ class Renderer final {
   CENTURION_API void present() noexcept;
 
   /**
+   * Adds a font to the renderer. This method has no effect if the specified
+   * name is already taken or if the supplied font is null.
+   *
+   * @param name the name that will be associated with the font, should
+   * preferably be quite short.
+   * @param font the font that will be added, can safely be null.
+   * @since 4.1.0
+   */
+  CENTURION_API void add_font(const std::string& name,
+                              const SharedPtr<Font>& font) noexcept;
+
+  /**
+   * Adds a font to the renderer. This method has no effect if the name of
+   * the font is already taken or if the supplied font is null. This method
+   * will return the name that was associated with the font if adding the
+   * font was successful.
+   *
+   * @param font the font that will be added, can safely be null.
+   * @return the name associated with the supplied font if successful;
+   * nothing otherwise.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<std::string> add_font(const SharedPtr<Font>& font) noexcept;
+
+  /**
+   * Removes the font associated with the specified name.
+   *
+   * @param name the name associated with the font that will be removed.
+   * @since 4.1.0
+   */
+  CENTURION_API void remove_font(const std::string& name) noexcept;
+
+  /**
    * Renders an outlined rectangle in the currently selected color.
    *
    * @param rect the rectangle that will be rendered.
@@ -190,6 +223,42 @@ class Renderer final {
    * @since 4.0.0
    */
   CENTURION_API void fill_rect_f(const FRect& rect) noexcept;
+
+  /**
+   * Renders an outlined rectangle in the currently selected color. The rendered
+   * rectangle will be translated using the translation viewport.
+   *
+   * @param rect the rectangle that will be rendered.
+   * @since 4.1.0
+   */
+  CENTURION_API void draw_rect_t(const IRect& rect) noexcept;
+
+  /**
+   * Renders an outlined rectangle in the currently selected color. The rendered
+   * rectangle will be translated using the translation viewport.
+   *
+   * @param rect the rectangle that will be rendered.
+   * @since 4.1.0
+   */
+  CENTURION_API void draw_rect_tf(const FRect& rect) noexcept;
+
+  /**
+   * Renders a filled rectangle in the currently selected color. The rendered
+   * rectangle will be translated using the translation viewport.
+   *
+   * @param rect the rectangle that will be rendered.
+   * @since 4.1.0
+   */
+  CENTURION_API void fill_rect_t(const IRect& rect) noexcept;
+
+  /**
+   * Renders a filled rectangle in the currently selected color. The rendered
+   * rectangle will be translated using the translation viewport.
+   *
+   * @param rect the rectangle that will be rendered.
+   * @since 4.1.0
+   */
+  CENTURION_API void fill_rect_tf(const FRect& rect) noexcept;
 
   /**
    * Draws a line in between the supplied points in the currently selected
@@ -611,9 +680,7 @@ class Renderer final {
                                SDL_RendererFlip flip) noexcept;
 
   /**
-   * Sets the color that will be used by the renderer. This method is
-   * intentionally considered a const-method, even if it technically changes the
-   * state of the renderer.
+   * Sets the color that will be used by the renderer.
    *
    * @param color the color that will be used by the renderer.
    * @since 3.0.0
@@ -683,7 +750,7 @@ class Renderer final {
    * @param size the logical width and height that will be used.
    * @since 3.0.0
    */
-  CENTURION_API void set_logical_size(Area size) noexcept;
+  CENTURION_API void set_logical_size(IArea size) noexcept;
 
   /**
    * Sets whether or not to force integer scaling for the logical viewport. By
@@ -780,7 +847,7 @@ class Renderer final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Area output_size() const noexcept;
+  CENTURION_API IArea output_size() const noexcept;
 
   /**
    * Returns the blend mode that is being used by the renderer.
@@ -964,6 +1031,30 @@ class Renderer final {
   UniquePtr<Texture> text_solid(CZString text, const Font& font) const noexcept;
 
   /**
+   * Returns the font associated with the specified name. This method returns
+   * null if there is no font associated with the specified name.
+   *
+   * @param name the name associated with the desired font.
+   * @return the font associated with the specified name; null if there is no
+   * such font.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API SharedPtr<Font> font(const std::string& name) noexcept;
+
+  /**
+   * Indicates whether or not the renderer has a font associated with the
+   * specified name.
+   *
+   * @param name the name that will be checked.
+   * @return true if the renderer has a font associated with the specified
+   * name; false otherwise.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API bool has_font(const std::string& name) const noexcept;
+
+  /**
    * Returns the viewport that the renderer uses.
    *
    * @return the viewport that the renderer uses.
@@ -1057,7 +1148,8 @@ class Renderer final {
 
  private:
   SDL_Renderer* m_renderer = nullptr;
-  FRect m_translationViewport = {0, 0, 0, 0};
+  FRect m_translationViewport = {{0, 0}, {0, 0}};
+  std::unordered_map<std::string, SharedPtr<Font>> m_fonts;
 
   static constexpr SDL_RendererFlags defaultFlags =
       static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |
@@ -1106,10 +1198,66 @@ class Renderer final {
     SDL_FreeSurface(surface);
 
     if (texture) {
-      return centurion::detail::make_unique<Texture>(texture);
+      return detail::make_unique<Texture>(texture);
     } else {
       return nullptr;
     }
+  }
+
+  /**
+   * Returns the translated x-coordinate that corresponds to the supplied
+   * x-coordinate.
+   *
+   * @param x the x-coordinate that will be translated.
+   * @return the translated x-coordinate that corresponds to the supplied
+   * x-coordinate.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD int tx(int x) const noexcept
+  {
+    return x - static_cast<int>(m_translationViewport.x());
+  }
+
+  /**
+   * Returns the translated y-coordinate that corresponds to the supplied
+   * y-coordinate.
+   *
+   * @param y the y-coordinate that will be translated.
+   * @return the translated y-coordinate that corresponds to the supplied
+   * y-coordinate.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD int ty(int y) const noexcept
+  {
+    return y - static_cast<int>(m_translationViewport.y());
+  }
+
+  /**
+   * Returns the translated x-coordinate that corresponds to the supplied
+   * x-coordinate.
+   *
+   * @param x the x-coordinate that will be translated.
+   * @return the translated x-coordinate that corresponds to the supplied
+   * x-coordinate.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD float tx(float x) const noexcept
+  {
+    return x - m_translationViewport.x();
+  }
+
+  /**
+   * Returns the translated y-coordinate that corresponds to the supplied
+   * y-coordinate.
+   *
+   * @param y the y-coordinate that will be translated.
+   * @return the translated y-coordinate that corresponds to the supplied
+   * y-coordinate.
+   * @since 4.1.0
+   */
+  CENTURION_NODISCARD float ty(float y) const noexcept
+  {
+    return y - m_translationViewport.y();
   }
 };
 

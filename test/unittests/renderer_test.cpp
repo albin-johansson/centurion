@@ -27,14 +27,7 @@ TEST_CASE("Renderer(SDL_Renderer*)", "[Renderer]")
 TEST_CASE("Renderer(const Window&, SDL_RendererFlags)", "[Renderer]")
 {
   Window window;
-  Renderer renderer{window};
-
-  SECTION("Check default flags")
-  {
-    const Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    const auto correctFlags = renderer.flags() & flags;
-    CHECK(correctFlags);
-  }
+  CHECK_NOTHROW(Renderer{window});
 }
 
 TEST_CASE("Renderer(Renderer&&)", "[Renderer]")
@@ -83,19 +76,6 @@ TEST_CASE("Renderer::unique(SDL_Renderer*)", "[Renderer]")
   CHECK_NOTHROW(Renderer::unique(ren));
 }
 
-TEST_CASE("Renderer::unique(const Window&, SDL_RendererFlags)", "[Renderer]")
-{
-  Window window;
-  auto renderer = Renderer::unique(window);
-
-  SECTION("Check default flags")
-  {
-    const Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    const auto correctFlags = renderer->flags() & flags;
-    CHECK(correctFlags);
-  }
-}
-
 TEST_CASE("Renderer::shared(SDL_Renderer*)", "[Renderer]")
 {
   CHECK_THROWS_AS(Renderer::shared(nullptr), CenturionException);
@@ -104,19 +84,6 @@ TEST_CASE("Renderer::shared(SDL_Renderer*)", "[Renderer]")
   SDL_Renderer* ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
 
   CHECK_NOTHROW(Renderer::shared(ren));
-}
-
-TEST_CASE("Renderer::shared(const Window&, SDL_RendererFlags)", "[Renderer]")
-{
-  Window window;
-  auto renderer = Renderer::shared(window);
-
-  SECTION("Check default flags")
-  {
-    const Uint32 flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    const auto correctFlags = renderer->flags() & flags;
-    CHECK(correctFlags);
-  }
 }
 
 TEST_CASE("Renderer::clear", "[Renderer]")
@@ -131,6 +98,66 @@ TEST_CASE("Renderer::present", "[Renderer]")
   Window window;
   Renderer renderer{window};
   CHECK_NOTHROW(renderer.present());
+}
+
+TEST_CASE("Renderer::add_font(const std::string&, const SharedPtr<Font>&)",
+          "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+
+  SECTION("Bad arguments") { CHECK_NOTHROW(renderer.add_font("", nullptr)); }
+
+  SECTION("Normal arguments")
+  {
+    auto font = Font::shared("resources/daniel.ttf", 12);
+    const auto fontName = font->family_name();
+
+    renderer.add_font(fontName, font);
+    CHECK(renderer.has_font(fontName));
+    CHECK_NOTHROW(renderer.add_font(fontName, font));
+    CHECK(renderer.has_font(fontName));
+  }
+}
+
+TEST_CASE("Renderer::add_font(const SharedPtr<Font>&)", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+
+  SECTION("Bad arguments")
+  {
+    CHECK_NOTHROW(renderer.add_font(nullptr));
+    CHECK(!renderer.add_font(nullptr));
+  }
+
+  SECTION("Normal arguments")
+  {
+    auto font = Font::shared("resources/daniel.ttf", 12);
+    const auto fontName = font->family_name();
+
+    const auto name = renderer.add_font(font);
+    CHECK(name);
+    CHECK(*name == fontName);
+
+    CHECK(!renderer.add_font(font));
+  }
+}
+
+TEST_CASE("Renderer::remove_font", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  const std::string name = "foo";
+  const auto font = Font::shared("resources/daniel.ttf", 12);
+
+  CHECK_NOTHROW(renderer.remove_font(""));
+
+  renderer.add_font(name, font);
+  CHECK(renderer.has_font(name));
+
+  renderer.remove_font(name);
+  CHECK(!renderer.has_font(name));
 }
 
 TEST_CASE("Renderer::draw_rect", "[Renderer]")
@@ -159,6 +186,34 @@ TEST_CASE("Renderer::fill_rect_f", "[Renderer]")
   Window window;
   Renderer renderer{window};
   CHECK_NOTHROW(renderer.fill_rect_f({}));
+}
+
+TEST_CASE("Renderer::draw_rect_t", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  CHECK_NOTHROW(renderer.draw_rect_t({}));
+}
+
+TEST_CASE("Renderer::fill_rect_t", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  CHECK_NOTHROW(renderer.fill_rect_t({}));
+}
+
+TEST_CASE("Renderer::draw_rect_tf", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  CHECK_NOTHROW(renderer.draw_rect_tf({}));
+}
+
+TEST_CASE("Renderer::fill_rect_tf", "[Renderer]")
+{
+  Window window;
+  Renderer renderer{window};
+  CHECK_NOTHROW(renderer.fill_rect_tf({}));
 }
 
 TEST_CASE("Renderer::draw_line", "[Renderer]")
@@ -196,7 +251,7 @@ TEST_CASE("Renderer::render(Texture&, IRect&)", "[Renderer]")
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(texture, IRect{65, -35, 124, 99}));
+  CHECK_NOTHROW(renderer.render(texture, {{65, -35}, {124, 99}}));
 }
 
 TEST_CASE("Renderer::render(Texture&, IRect&, IRect&)", "[Renderer]")
@@ -204,8 +259,8 @@ TEST_CASE("Renderer::render(Texture&, IRect&, IRect&)", "[Renderer]")
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(
-      renderer.render(texture, IRect{10, 15, 20, 20}, IRect{35, 92, 15, 23}));
+  CHECK_NOTHROW(renderer.render(
+      texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}));
 }
 
 TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double)", "[Renderer]")
@@ -214,7 +269,7 @@ TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double)", "[Renderer]")
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render(
-      texture, IRect{10, 15, 20, 20}, IRect{35, 92, 15, 23}, 17));
+      texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}, 17));
 }
 
 TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double, IPoint&)",
@@ -223,8 +278,11 @@ TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double, IPoint&)",
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(
-      texture, IRect{10, 15, 20, 20}, IRect{35, 92, 15, 23}, 17, IPoint{5, 9}));
+  CHECK_NOTHROW(renderer.render(texture,
+                                IRect{{10, 15}, {20, 20}},
+                                IRect{{35, 92}, {15, 23}},
+                                17,
+                                IPoint{5, 9}));
 }
 
 TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, SDL_RendererFlip)",
@@ -234,8 +292,8 @@ TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, SDL_RendererFlip)",
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render(texture,
-                                IRect{10, 15, 20, 20},
-                                IRect{35, 92, 15, 23},
+                                IRect{{10, 15}, {20, 20}},
+                                IRect{{35, 92}, {15, 23}},
                                 SDL_FLIP_HORIZONTAL));
 }
 
@@ -248,8 +306,8 @@ TEST_CASE(
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_t(texture,
-                                  IRect{10, 15, 20, 20},
-                                  IRect{35, 92, 15, 23},
+                                  {{10, 15}, {20, 20}},
+                                  {{35, 92}, {15, 23}},
                                   -5,
                                   IPoint{5, 5},
                                   SDL_FLIP_HORIZONTAL));
@@ -268,7 +326,7 @@ TEST_CASE("Renderer::render_f(Texture&, FRect&)", "[Renderer]")
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture, FRect{146, 34, 99, 58}));
+  CHECK_NOTHROW(renderer.render_f(texture, {{146, 34}, {99, 58}}));
 }
 
 TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&)", "[Renderer]")
@@ -277,7 +335,7 @@ TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&)", "[Renderer]")
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(
-      renderer.render_f(texture, IRect{5, 8, 15, 15}, FRect{77, 23, 100, 59}));
+      renderer.render_f(texture, {{5, 8}, {15, 15}}, {{77, 23}, {100, 59}}));
 }
 
 TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, double)", "[Renderer]")
@@ -286,7 +344,7 @@ TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, double)", "[Renderer]")
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_f(
-      texture, IRect{1, 2, 5, 8}, FRect{774, 413, 99, 224}, 123));
+      texture, {{1, 2}, {5, 8}}, {{774, 413}, {99, 224}}, 123));
 }
 
 TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, double, FPoint&)",
@@ -296,8 +354,8 @@ TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, double, FPoint&)",
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_f(texture,
-                                  IRect{10, 15, 20, 20},
-                                  FRect{99, 35, 185, 23},
+                                  {{10, 15}, {20, 20}},
+                                  {{99, 35}, {185, 23}},
                                   56,
                                   FPoint{-2.4f, 14.3f}));
 }
@@ -309,8 +367,8 @@ TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, SDL_RendererFlip)",
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_f(texture,
-                                  IRect{10, 15, 20, 20},
-                                  FRect{-67, 3, 93, 110.5f},
+                                  {{10, 15}, {20, 20}},
+                                  {{-67, 3}, {93, 110.5f}},
                                   SDL_FLIP_HORIZONTAL));
 }
 
@@ -323,8 +381,8 @@ TEST_CASE(
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_f(texture,
-                                  IRect{10, 8, 8, 9},
-                                  FRect{4.0f, -34, 88, 105.9f},
+                                  {{10, 8}, {8, 9}},
+                                  {{4.0f, -34}, {88, 105.9f}},
                                   89,
                                   FPoint{5, 5},
                                   SDL_FLIP_VERTICAL));
@@ -343,7 +401,7 @@ TEST_CASE("Renderer::render_t(Texture&, IRect&)", "[Renderer]")
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture, IRect{65, -35, 124, 99}));
+  CHECK_NOTHROW(renderer.render_t(texture, {{65, -35}, {124, 99}}));
 }
 
 TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&)", "[Renderer]")
@@ -352,7 +410,7 @@ TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&)", "[Renderer]")
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(
-      renderer.render_t(texture, IRect{10, 15, 20, 20}, IRect{35, 92, 15, 23}));
+      renderer.render_t(texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}));
 }
 
 TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, double)", "[Renderer]")
@@ -361,7 +419,7 @@ TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, double)", "[Renderer]")
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_t(
-      texture, IRect{10, 15, 20, 20}, IRect{35, 92, 15, 23}, 17));
+      texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}, 17));
 }
 
 TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, double, IPoint&)",
@@ -371,7 +429,7 @@ TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, double, IPoint&)",
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_t(
-      texture, IRect{10, 15, 20, 20}, IRect{35, 92, 15, 23}, 17, IPoint{5, 9}));
+      texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}, 17, IPoint{5, 9}));
 }
 
 TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, SDL_RendererFlip)",
@@ -381,8 +439,8 @@ TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, SDL_RendererFlip)",
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_t(texture,
-                                  IRect{10, 15, 20, 20},
-                                  IRect{35, 92, 15, 23},
+                                  {{10, 15}, {20, 20}},
+                                  {{35, 92}, {15, 23}},
                                   SDL_FLIP_HORIZONTAL));
 }
 
@@ -395,8 +453,8 @@ TEST_CASE(
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_t(texture,
-                                  IRect{10, 15, 20, 20},
-                                  IRect{35, 92, 15, 23},
+                                  {{10, 15}, {20, 20}},
+                                  {{35, 92}, {15, 23}},
                                   -5,
                                   IPoint{5, 5},
                                   SDL_FLIP_HORIZONTAL));
@@ -415,7 +473,7 @@ TEST_CASE("Renderer::render_tf(Texture&, FRect&)", "[Renderer]")
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture, FRect{146, 34, 99, 58}));
+  CHECK_NOTHROW(renderer.render_tf(texture, {{146, 34}, {99, 58}}));
 }
 
 TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&)", "[Renderer]")
@@ -424,7 +482,7 @@ TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&)", "[Renderer]")
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(
-      renderer.render_tf(texture, IRect{5, 8, 15, 15}, FRect{77, 23, 100, 59}));
+      renderer.render_tf(texture, {{5, 8}, {15, 15}}, {{77, 23}, {100, 59}}));
 }
 
 TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double)", "[Renderer]")
@@ -433,7 +491,7 @@ TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double)", "[Renderer]")
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_tf(
-      texture, IRect{1, 2, 5, 8}, FRect{774, 413, 99, 224}, 123));
+      texture, {{1, 2}, {5, 8}}, {{774, 413}, {99, 224}}, 123));
 }
 
 TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double, FPoint&)",
@@ -443,8 +501,8 @@ TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double, FPoint&)",
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_tf(texture,
-                                   IRect{10, 15, 20, 20},
-                                   FRect{99, 35, 185, 23},
+                                   {{10, 15}, {20, 20}},
+                                   {{99, 35}, {185, 23}},
                                    56,
                                    FPoint{-2.4f, 14.3f}));
 }
@@ -456,23 +514,22 @@ TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, SDL_RendererFlip)",
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_tf(texture,
-                                   IRect{10, 15, 20, 20},
-                                   FRect{-67, 3, 93, 110.5f},
+                                   {{10, 15}, {20, 20}},
+                                   {{-67, 3}, {93, 110.5f}},
                                    SDL_FLIP_HORIZONTAL));
 }
 
-TEST_CASE(
-    "Renderer::render_tf(Texture&, IRect&, FRect&, double, "
-    "[Renderer]")
+TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double, ",
+          "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
   Texture texture{renderer, texturePath};
   CHECK_NOTHROW(renderer.render_tf(texture,
-                                   IRect{10, 8, 8, 9},
-                                   FRect{4.0f, -34, 88, 105.9f},
+                                   {{10, 8}, {8, 9}},
+                                   {{4.0f, -34}, {88, 105.9f}},
                                    89,
-                                   FPoint{5, 5},
+                                   {5, 5},
                                    SDL_FLIP_VERTICAL));
 }
 
@@ -492,7 +549,7 @@ TEST_CASE("Renderer::set_viewport", "[Renderer]")
   Window window;
   Renderer renderer{window};
 
-  const auto viewport = IRect{50, 33, 768, 453};
+  const IRect viewport{{50, 33}, {768, 453}};
   renderer.set_viewport(viewport);
 
   CHECK(viewport == renderer.viewport());
@@ -505,7 +562,7 @@ TEST_CASE("Renderer::set_logical_size", "[Renderer]")
 
   const auto w = 842;
   const auto h = 253;
-  const Area size{w, h};
+  const IArea size{w, h};
 
   renderer.set_logical_size(size);
 
@@ -720,6 +777,25 @@ TEST_CASE("Renderer::text_solid", "[Renderer]")
   CHECK(renderer.text_solid("Hello", font));
 }
 
+TEST_CASE("Renderer::font", "[Renderer]")
+{
+  const std::string name = "bar";
+
+  Window window;
+  Renderer renderer{window};
+
+  CHECK(!renderer.font(name));
+
+  auto font = Font::shared("resources/daniel.ttf", 12);
+  renderer.add_font(name, font);
+
+  CHECK(renderer.font(name));
+
+  auto storedFont = renderer.font(name);
+  CHECK(storedFont);
+  CHECK(font == storedFont);
+}
+
 TEST_CASE("Renderer::viewport", "[Renderer]")
 {
   Window window;
@@ -735,7 +811,7 @@ TEST_CASE("Renderer::set_translation_viewport", "[Renderer]")
   Window window;
   Renderer renderer{window};
 
-  const auto viewport = FRect{123, 523, 845, 541};
+  const FRect viewport{{123, 523}, {845, 541}};
   renderer.set_translation_viewport(viewport);
 
   const auto rendererViewport = renderer.translation_viewport();
@@ -773,7 +849,7 @@ TEST_CASE("Renderer clipping", "[Renderer]")
 
   CHECK_NOTHROW(renderer.set_clip(tl::nullopt));
 
-  const auto clip = IRect{5, 2, 75, 93};
+  const IRect clip{{5, 2}, {75, 93}};
 
   renderer.set_clip(clip);
   CHECK(renderer.clipping_enabled());

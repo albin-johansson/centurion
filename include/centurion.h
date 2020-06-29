@@ -22,6 +22,20 @@
  * SOFTWARE.
  */
 
+/**
+ * @brief The main header file for the library.
+ *
+ * Provides the declaration of the @link centurion::Centurion @endlink and
+ * @link centurion::CenturionConfig @endlink classes, and are related to the
+ * initialization of the library. This file also includes all other header
+ * files in the library.
+ *
+ * @file centurion.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_HEADER
 #define CENTURION_HEADER
 
@@ -54,6 +68,7 @@
 #include "event_type.h"
 #include "font.h"
 #include "game_controller.h"
+#include "hints.h"
 #include "joy_axis_event.h"
 #include "joy_ball_event.h"
 #include "joy_button_event.h"
@@ -94,14 +109,58 @@
 #include "window.h"
 #include "window_event.h"
 
+/**
+ * @brief The top-level namespace that all components of the library reside in.
+ *
+ * @namespace centurion
+ */
 namespace centurion {
 
 /**
- * The CenturionConfig struct is used to specify how the Centurion
- * library is initialized. All fields are initialized to the default values
- * used by the Centurion library.
+ * @brief Used to specify how the library is initialized.
  *
+ * All fields are initialized to the default values used by the
+ * library.
+ *
+ * @struct CenturionConfig
+ * @headerfile centurion.h
  * @since 4.0.0
+ *
+ * @var CenturionConfig::initCore
+ * Indicates whether or not the SDL2 core is initialized.
+ *
+ * @var CenturionConfig::initImage
+ * Indicates whether or not SDL2_image is initialized.
+ *
+ * @var CenturionConfig::initMixer
+ * Indicates whether or not SDL2_mixer is initialized.
+ *
+ * @var CenturionConfig::initTTF
+ * Indicates whether or not SDL2_ttf is initialized.
+ *
+ * @var CenturionConfig::coreFlags
+ * Flags passed on to `SDL_Init()`, if @ref CenturionConfig.initCore is `true`.
+ *
+ * @var CenturionConfig::imageFlags
+ * Flags passed on to `IMG_Init()`, if @ref CenturionConfig.initImage is `true`.
+ *
+ * @var CenturionConfig::mixerFlags
+ * Flags passed on to `MIX_Init()`, if @ref CenturionConfig.initMixer is `true`.
+ *
+ * @var CenturionConfig::mixerFreq
+ * The frequency used by SDL2_mixer, if @ref CenturionConfig.initMixer is
+ * `true`.
+ *
+ * @var CenturionConfig::mixerFormat
+ * The format used by SDL2_mixer, if @ref CenturionConfig.initMixer is `true`.
+ *
+ * @var CenturionConfig::mixerChannels
+ * The amount of channels used by SDL2_mixer, if @ref CenturionConfig.initMixer
+ * is `true`.
+ *
+ * @var CenturionConfig::mixerChunkSize
+ * The chunk size used by SDL2_mixer, if @ref CenturionConfig.initMixer is
+ * `true`.
  */
 struct CenturionConfig final {
   bool initCore = true;
@@ -123,16 +182,65 @@ struct CenturionConfig final {
 };
 
 /**
- * The Centurion class is used to initialize and de-initialize the Centurion
- * library.
- *
+ * @brief Used to initialize and de-initialize the library.
+ * @class Centurion
+ * @headerfile centurion.h
  * @since 3.0.0
+ *
+ * @par Examples
+ * This is how you should initialize the library.
+ * @code{.cpp}
+ * #include <centurion.h>
+ *
+ * using namespace centurion;
+ *
+ * int main(int, char**)
+ * {
+ *   Centurion c;
+ *
+ *   // The library is now initialized, proceed to using it!
+ *
+ *   return 0;
+ * }
+ * @endcode
+ * You can also manually configure exactly how the library is initialized, using
+ * the @link centurion::CenturionConfig @endlink struct.
+ * @code{.cpp}
+ * #include <centurion.h>
+ *
+ * using namespace centurion;
+ *
+ * int main(int, char**)
+ * {
+ *   CenturionConfig cfg;
+ *   cfg.initMixer = false;
+ *   // ...
+ *
+ *   Centurion c{cfg};
+ *
+ *   // The library is now initialized, proceed to using it!
+ *
+ *   return 0;
+ * }
+ * @endcode
+ *
+ * | Property              | Value                                |
+ * | --------------------- | :----------------------------------- |
+ * | Default constructible | Yes                                  |
+ * | Movable               | No                                   |
+ * | Copyable              | No                                   |
+ * | Explicit conversions  | None                                 |
+ * | Implicit conversions  | None                                 |
+ * | Overloaded operators  | None                                 |
+ * | Namespace             | @link ::centurion @endlink           |
  */
 class Centurion final {
  public:
   /**
-   * Initializes the Centurion library. Do NOT ever create more than one
-   * instance of this class, or bad things might happen.
+   * Initializes the library.
+   *
+   * @pre there mustn't exist any other instances of this class at the time of
+   * invocation of this constructor.
    *
    * @throws CenturionException if any of the SDL libraries can't be loaded.
    * @since 3.0.0
@@ -140,9 +248,10 @@ class Centurion final {
   CENTURION_API Centurion();
 
   /**
-   * Initializes the Centurion library according to the supplied configuration.
-   * Do NOT ever create more than one instance of this class, or bad things
-   * might happen.
+   * Initializes the library according to the supplied configuration.
+   *
+   * @pre there mustn't exist any other instances of this class at the time of
+   * invocation of this constructor.
    *
    * @param cfg the Centurion configuration, determines what gets initialized.
    * @throws CenturionException if any of the SDL libraries can't be loaded.

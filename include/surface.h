@@ -43,7 +43,7 @@ class Renderer;
 
 /**
  * The <code>Surface</code> class represents a non-accelerated image. In most
- * cases, it's preferable to use the <code>Image</code> class instead.
+ * cases, it's preferable to use the <code>Texture</code> class instead.
  *
  * @since 4.0.0
  */
@@ -243,7 +243,7 @@ class Surface final {
   IRect clip() const noexcept
   {
     const auto rect = m_surface->clip_rect;
-    return {rect.x, rect.y, rect.w, rect.h};
+    return {{rect.x, rect.y}, {rect.w, rect.h}};
   }
 
   /**

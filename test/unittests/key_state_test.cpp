@@ -55,6 +55,7 @@ TEST_CASE("KeyState::was_just_released", "[KeyState]")
 
 TEST_CASE("KeyState::modifier_active", "[KeyState]")
 {
+  // If this test fails, make sure that CAPS isn't enabled on your computer :)
   KeyState state;
   CHECK(!state.modifier_active(KeyModifier::Caps));
 

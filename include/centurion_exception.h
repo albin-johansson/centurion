@@ -22,6 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * @brief Provides the general exception class used by the library.
+ *
+ * @file centurion_exception.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_EXCEPTION_HEADER
 #define CENTURION_EXCEPTION_HEADER
 
@@ -33,8 +42,9 @@
 namespace centurion {
 
 /**
- * A general exception used by the Centurion library.
- *
+ * @class CenturionException
+ * @brief The only exception explicitly thrown by the library.
+ * @headerfile centurion_exception.h
  * @since 3.0.0
  */
 class CenturionException final : public std::exception {

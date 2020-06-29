@@ -420,7 +420,7 @@ class Font final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Area string_size(CZString s) const noexcept;
+  CENTURION_API IArea string_size(CZString s) const noexcept;
 
   /**
    * Returns the compile-time version of SDL2_ttf that is being used.

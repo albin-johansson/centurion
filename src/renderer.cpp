@@ -3,8 +3,6 @@
 
 #include "renderer.h"
 
-#include <SDL.h>
-
 #include "centurion_exception.h"
 #include "centurion_utils.h"
 #include "colors.h"
@@ -120,6 +118,37 @@ void Renderer::present() noexcept
 }
 
 CENTURION_DEF
+void Renderer::add_font(const std::string& name,
+                        const SharedPtr<Font>& font) noexcept
+{
+  if (!name.empty() && font && !m_fonts.count(name)) {
+    m_fonts.emplace(name, font);
+  }
+}
+
+CENTURION_DEF
+Optional<std::string> Renderer::add_font(const SharedPtr<Font>& font) noexcept
+{
+  if (!font) {
+    return nothing;
+  }
+
+  const std::string name = font->family_name();
+  if (!name.empty() && !m_fonts.count(name)) {
+    m_fonts.emplace(name, font);
+    return name;
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
+void Renderer::remove_font(const std::string& name) noexcept
+{
+  m_fonts.erase(name);
+}
+
+CENTURION_DEF
 void Renderer::draw_rect(const IRect& rect) noexcept
 {
   SDL_RenderDrawRect(m_renderer, static_cast<const SDL_Rect*>(rect));
@@ -141,6 +170,30 @@ CENTURION_DEF
 void Renderer::fill_rect_f(const FRect& rect) noexcept
 {
   SDL_RenderFillRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
+}
+
+CENTURION_DEF
+void Renderer::draw_rect_t(const IRect& rect) noexcept
+{
+  draw_rect({{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
+}
+
+CENTURION_DEF
+void Renderer::draw_rect_tf(const FRect& rect) noexcept
+{
+  draw_rect_f({{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
+}
+
+CENTURION_DEF
+void Renderer::fill_rect_t(const IRect& rect) noexcept
+{
+  fill_rect({{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
+}
+
+CENTURION_DEF
+void Renderer::fill_rect_tf(const FRect& rect) noexcept
+{
+  fill_rect_f({{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
 }
 
 CENTURION_DEF
@@ -348,17 +401,14 @@ void Renderer::render_f(const Texture& texture,
 CENTURION_DEF
 void Renderer::render_t(const Texture& texture, IPoint position) noexcept
 {
-  const auto tx = position.x() - static_cast<int>(m_translationViewport.x());
-  const auto ty = position.y() - static_cast<int>(m_translationViewport.y());
-  render(texture, {tx, ty});
+  render(texture, {tx(position.x()), ty(position.y())});
 }
 
 CENTURION_DEF
 void Renderer::render_t(const Texture& texture, const IRect& rect) noexcept
 {
-  const auto tx = rect.x() - static_cast<int>(m_translationViewport.x());
-  const auto ty = rect.y() - static_cast<int>(m_translationViewport.y());
-  render(texture, {tx, ty, rect.width(), rect.height()});
+  render(texture,
+         {{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
 }
 
 CENTURION_DEF
@@ -366,9 +416,8 @@ void Renderer::render_t(const Texture& texture,
                         const IRect& src,
                         const IRect& dst) noexcept
 {
-  const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
-  const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
-  render(texture, src, {tx, ty, dst.width(), dst.height()});
+  render(
+      texture, src, {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}});
 }
 
 CENTURION_DEF
@@ -377,9 +426,10 @@ void Renderer::render_t(const Texture& texture,
                         const IRect& dst,
                         double angle) noexcept
 {
-  const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
-  const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
-  render(texture, src, {tx, ty, dst.width(), dst.height()}, angle);
+  render(texture,
+         src,
+         {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
+         angle);
 }
 
 CENTURION_DEF
@@ -389,9 +439,11 @@ void Renderer::render_t(const Texture& texture,
                         double angle,
                         IPoint center) noexcept
 {
-  const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
-  const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
-  render(texture, src, {tx, ty, dst.width(), dst.height()}, angle, center);
+  render(texture,
+         src,
+         {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
+         angle,
+         center);
 }
 
 CENTURION_DEF
@@ -400,9 +452,10 @@ void Renderer::render_t(const Texture& texture,
                         const IRect& dst,
                         SDL_RendererFlip flip) noexcept
 {
-  const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
-  const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
-  render(texture, src, {tx, ty, dst.width(), dst.height()}, flip);
+  render(texture,
+         src,
+         {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
+         flip);
 }
 
 CENTURION_DEF
@@ -413,26 +466,25 @@ void Renderer::render_t(const Texture& texture,
                         IPoint center,
                         SDL_RendererFlip flip) noexcept
 {
-  const auto tx = dst.x() - static_cast<int>(m_translationViewport.x());
-  const auto ty = dst.y() - static_cast<int>(m_translationViewport.y());
-  render(
-      texture, src, {tx, ty, dst.width(), dst.height()}, angle, center, flip);
+  render(texture,
+         src,
+         {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
+         angle,
+         center,
+         flip);
 }
 
 CENTURION_DEF
 void Renderer::render_tf(const Texture& texture, FPoint position) noexcept
 {
-  const auto tx = position.x() - m_translationViewport.x();
-  const auto ty = position.y() - m_translationViewport.y();
-  render_f(texture, {tx, ty});
+  render_f(texture, {tx(position.x()), ty(position.y())});
 }
 
 CENTURION_DEF
 void Renderer::render_tf(const Texture& texture, const FRect& rect) noexcept
 {
-  const auto tx = rect.x() - m_translationViewport.x();
-  const auto ty = rect.y() - m_translationViewport.y();
-  render_f(texture, {tx, ty, rect.width(), rect.height()});
+  render_f(texture,
+           {{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
 }
 
 CENTURION_DEF
@@ -440,9 +492,8 @@ void Renderer::render_tf(const Texture& texture,
                          const IRect& src,
                          const FRect& dst) noexcept
 {
-  const auto tx = dst.x() - m_translationViewport.x();
-  const auto ty = dst.y() - m_translationViewport.y();
-  render_f(texture, src, {tx, ty, dst.width(), dst.height()});
+  render_f(
+      texture, src, {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}});
 }
 
 CENTURION_DEF
@@ -451,9 +502,10 @@ void Renderer::render_tf(const Texture& texture,
                          const FRect& dst,
                          double angle) noexcept
 {
-  const auto tx = dst.x() - m_translationViewport.x();
-  const auto ty = dst.y() - m_translationViewport.y();
-  render_f(texture, src, {tx, ty, dst.width(), dst.height()}, angle);
+  render_f(texture,
+           src,
+           {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
+           angle);
 }
 
 CENTURION_DEF
@@ -463,9 +515,11 @@ void Renderer::render_tf(const Texture& texture,
                          double angle,
                          FPoint center) noexcept
 {
-  const auto tx = dst.x() - m_translationViewport.x();
-  const auto ty = dst.y() - m_translationViewport.y();
-  render_f(texture, src, {tx, ty, dst.width(), dst.height()}, angle, center);
+  render_f(texture,
+           src,
+           {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
+           angle,
+           center);
 }
 
 CENTURION_DEF
@@ -474,9 +528,10 @@ void Renderer::render_tf(const Texture& texture,
                          const FRect& dst,
                          SDL_RendererFlip flip) noexcept
 {
-  const auto tx = dst.x() - m_translationViewport.x();
-  const auto ty = dst.y() - m_translationViewport.y();
-  render_f(texture, src, {tx, ty, dst.width(), dst.height()}, flip);
+  render_f(texture,
+           src,
+           {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
+           flip);
 }
 
 CENTURION_DEF
@@ -487,10 +542,12 @@ void Renderer::render_tf(const Texture& texture,
                          FPoint center,
                          SDL_RendererFlip flip) noexcept
 {
-  const auto tx = dst.x() - m_translationViewport.x();
-  const auto ty = dst.y() - m_translationViewport.y();
-  render_f(
-      texture, src, {tx, ty, dst.width(), dst.height()}, angle, center, flip);
+  render_f(texture,
+           src,
+           {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
+           angle,
+           center,
+           flip);
 }
 
 CENTURION_DEF
@@ -547,7 +604,7 @@ void Renderer::set_scale(float xScale, float yScale) noexcept
 }
 
 CENTURION_DEF
-void Renderer::set_logical_size(Area size) noexcept
+void Renderer::set_logical_size(IArea size) noexcept
 {
   if (size.width > 0 && size.height > 0) {
     SDL_RenderSetLogicalSize(m_renderer, size.width, size.height);
@@ -599,7 +656,7 @@ Optional<IRect> Renderer::clip() const noexcept
   if (SDL_RectEmpty(&rect)) {
     return nothing;
   } else {
-    return IRect{rect.x, rect.y, rect.w, rect.h};
+    return IRect{{rect.x, rect.y}, {rect.w, rect.h}};
   }
 }
 
@@ -632,7 +689,7 @@ int Renderer::output_height() const noexcept
 }
 
 CENTURION_DEF
-Area Renderer::output_size() const noexcept
+IArea Renderer::output_size() const noexcept
 {
   int width = 0;
   int height = 0;
@@ -669,7 +726,7 @@ IRect Renderer::viewport() const noexcept
 {
   SDL_Rect viewport{0, 0, 0, 0};
   SDL_RenderGetViewport(m_renderer, &viewport);
-  return {viewport.x, viewport.y, viewport.w, viewport.h};
+  return {{viewport.x, viewport.y}, {viewport.w, viewport.h}};
 }
 
 CENTURION_DEF
@@ -747,6 +804,22 @@ UniquePtr<Texture> Renderer::text_solid(CZString text,
   return render_text(text, [this, &font](CZString text) noexcept {
     return TTF_RenderText_Solid(font.get(), text, color());
   });
+}
+
+CENTURION_DEF
+SharedPtr<Font> Renderer::font(const std::string& name) noexcept
+{
+  if (m_fonts.count(name)) {
+    return m_fonts.at(name);
+  } else {
+    return nullptr;
+  }
+}
+
+CENTURION_DEF
+bool Renderer::has_font(const std::string& name) const noexcept
+{
+  return m_fonts.count(name);
 }
 
 CENTURION_DEF

@@ -40,10 +40,10 @@
 
 # Custom stuff
 *.afdesign
-cmake-build-debug
-cmake-build-release
+cmake-build-*
 build
-doc
+doc/html
+doc/latex
 .idea
 .vs
 .vscode

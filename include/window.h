@@ -22,6 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * This header provides the @link centurion::Window @endlink class.
+ *
+ * @file window.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
@@ -42,6 +51,18 @@ class Surface;
  * can't be copied. Instances of the Window class can be implicitly converted to
  * SDL_Window*.
  *
+ * @par General information
+ * | Property              | Value                                |
+ * | --------------------- | :----------------------------------- |
+ * | Default constructible | Yes                                  |
+ * | Movable               | Yes                                  |
+ * | Copyable              | No                                   |
+ * | Explicit conversions  | None                                 |
+ * | Implicit conversions  | `SDL_Window*`, `const SDL_Window*`   |
+ * | Overloaded operators  | None                                 |
+ * | Namespace             | @link ::centurion @endlink           |
+ *
+ * @headerfile window.h <>
  * @since 3.0.0
  */
 class Window final {
@@ -75,7 +96,7 @@ class Window final {
    * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(CZString title, Area size = {800, 600});
+  CENTURION_API explicit Window(CZString title, IArea size = {800, 600});
 
   /**
    * Creates a window by moving the contents of the supplied window into the new
@@ -138,7 +159,7 @@ class Window final {
    */
   CENTURION_NODISCARD
   CENTURION_API static UniquePtr<Window> unique(CZString title,
-                                                Area size = {800, 600});
+                                                IArea size = {800, 600});
 
   /**
    * Creates and returns a shared pointer to a Window instance.
@@ -176,7 +197,7 @@ class Window final {
    */
   CENTURION_NODISCARD
   CENTURION_API static SharedPtr<Window> shared(CZString title,
-                                                Area size = {800, 600});
+                                                IArea size = {800, 600});
 
   /**
    * Makes the window visible.
@@ -309,7 +330,7 @@ class Window final {
    * than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_min_size(Area size) noexcept;
+  CENTURION_API void set_min_size(IArea size) noexcept;
 
   /**
    * Sets the maximum size of the window. This method has no effect if any of
@@ -319,7 +340,7 @@ class Window final {
    * than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_max_size(Area size) noexcept;
+  CENTURION_API void set_max_size(IArea size) noexcept;
 
   /**
    * Sets the position of the window. Note, it's possible to use
@@ -492,7 +513,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Area min_size() const noexcept;
+  CENTURION_API IArea min_size() const noexcept;
 
   /**
    * Returns the maximum size of the window.
@@ -501,7 +522,7 @@ class Window final {
    * @since 3.0.0
    */
   CENTURION_NODISCARD
-  CENTURION_API Area max_size() const noexcept;
+  CENTURION_API IArea max_size() const noexcept;
 
   /**
    * Returns the current width of the window.

@@ -1,9 +1,8 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
 project(CenturionSrcProj)
 
 set(SOURCE_FILES
-        ${CTN_LIBRARY_DIR}/gsl-lite.hpp
-        ${CTN_LIBRARY_DIR}/optional.hpp
+        ${CTN_INCLUDE_DIR}/centurion_docs.h
         ${CTN_INCLUDE_DIR}/window.h
         ${CTN_INCLUDE_DIR}/font.h
         ${CTN_INCLUDE_DIR}/renderer.h
@@ -66,6 +65,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/area.h
         ${CTN_INCLUDE_DIR}/key_modifier.h
         ${CTN_INCLUDE_DIR}/syswm_event.h
+        ${CTN_INCLUDE_DIR}/hints.h
         window.cpp
         font.cpp
         renderer.cpp
@@ -132,10 +132,38 @@ if (WIN32)
     add_definitions(-DWIN_EXPORT)
 endif ()
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(CENTURION_OUTPUT_NAME Centurion)
+else ()
+    set(CENTURION_OUTPUT_NAME libCenturion)
+endif ()
+
 if (DEFINED ENV{TRAVIS})
     target_compile_definitions(${CENTURION_LIB_TARGET} PUBLIC CENTURION_NOAUDIO)
 endif ()
 
+set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
+        VERSION 4.1.0
+        CXX_STANDARD 17
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+        OUTPUT_NAME ${CENTURION_OUTPUT_NAME})
+
+centurion_add_header_only_lib(libGSL ${CTN_LIBRARY_DIR}/gsl ${CTN_LIBRARY_DIR}/gsl/gsl-lite.hpp)
+centurion_add_header_only_lib(libOptional ${CTN_LIBRARY_DIR}/optional
+        ${CTN_LIBRARY_DIR}/optional/optional.hpp)
+
+target_include_directories(${CENTURION_LIB_TARGET}
+        PRIVATE ${CTN_INCLUDE_DIR}
+        SYSTEM INTERFACE ${CTN_INCLUDE_DIR})
+
+target_link_libraries(${CENTURION_LIB_TARGET}
+        PUBLIC ${SDL2_LIBRARY}
+        PUBLIC ${SDL2_IMAGE_LIBRARIES}
+        PUBLIC ${SDL2_MIXER_LIBRARIES}
+        PUBLIC ${SDL2_TTF_LIBRARIES}
+        PUBLIC libGSL
+        PUBLIC libOptional)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
@@ -152,30 +180,33 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
             -Wsuggest-override
             -Wduplicated-cond
             -Wconversion
+            -Wc++11-compat
             -Wc++14-compat
             -Wc++17-compat)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
+            /EHsc
+            -Wall
+            -Wextra
+            -Wpedantic
+            -Wdouble-promotion
+            -Wswitch-default
+            -Wswitch-enum
+            -Wunused
+            -Wuninitialized
+            -Wconversion
+            -Wc++11-compat
+            -Wc++14-compat
+            -Wc++17-compat
+            -Wno-c++98-compat
+            -Wno-c++98-compat-pedantic
+            -Wno-unused-template
+            -Wno-unused-macros
+            -Wno-newline-eof
+            -Wno-documentation-unknown-command)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
+            /EHsc
+            /W3)
 endif ()
 
-set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
-        VERSION 4.0.0
-        CXX_STANDARD 17
-        CXX_STANDARD_REQUIRED ON
-        CXX_EXTENSIONS OFF
-        OUTPUT_NAME "Centurion")
-
-target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_INCLUDE_DIR})
-target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
-target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS})
-target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
-
-target_include_directories(${CENTURION_LIB_TARGET} PRIVATE ${CTN_INCLUDE_DIR}
-        SYSTEM INTERFACE ${CTN_INCLUDE_DIR})
-
-target_include_directories(${CENTURION_LIB_TARGET} PUBLIC ${CTN_SOURCE_DIR})
-target_include_directories(${CENTURION_LIB_TARGET} SYSTEM PUBLIC ${CTN_LIBRARY_DIR})
-
-target_link_libraries(${CENTURION_LIB_TARGET}
-        PUBLIC ${SDL2_LIBRARY}
-        PUBLIC ${SDL2_IMAGE_LIBRARIES}
-        PUBLIC ${SDL2_MIXER_LIBRARIES}
-        PUBLIC ${SDL2_TTF_LIBRARIES})

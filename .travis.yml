@@ -10,7 +10,6 @@ env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
     - CXX_FLAGS=""
-    - CODECOV_TOKEN="d078f878-66f2-4ea0-916d-708109a3358b"
     - ENABLE_COVERAGE=true
 
 addons:
@@ -18,10 +17,11 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - gcc-7
-      - g++-7
+      - gcc-8
+      - g++-8
       - cmake
       - lcov
+      - doxygen
 
 before_install:
   - sudo apt-get update
@@ -38,6 +38,14 @@ install:
       travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
     fi
+  - sudo apt-get update
+
+  # Manually installs LCOV 1.14
+  - wget -c http://downloads.sourceforge.net/ltp/lcov-1.14.tar.gz
+  - tar -xf lcov-1.14.tar.gz
+  - cd lcov-1.14
+  - sudo make install
+  - cd
 
 before_script:
   # Emulates a video device
@@ -45,8 +53,8 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 
-  - export CC=/usr/bin/gcc-7
-  - export CXX=/usr/bin/g++-7
+  - export CC=/usr/bin/gcc-8
+  - export CXX=/usr/bin/g++-8
 
   - gcc -v
   - g++ -v
@@ -86,6 +94,10 @@ before_script:
   - cd ..
 
 script:
+  - cd ${TRAVIS_BUILD_DIR}
+
+  - doxygen Doxyfile
+
   - mkdir -p build
   - cd build
 
@@ -95,9 +107,17 @@ script:
   - cd test
   - ctest
 
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: doc/html
+  github_token: $GH_REPO_TOKEN
+  on:
+    branch: master
+
 after_success:
   - cd ${TRAVIS_BUILD_DIR}
-  - lcov --directory . --capture --output-file coverage.info
-  - lcov --remove coverage.info 'test/*' 'Centurion/lib/*' '/usr/*' --output-file coverage.info
+  - lcov --directory . --capture --output-file coverage.info --gcov-tool gcov-8
+  - lcov --remove coverage.info '*/test/*' '*/lib/*' '/usr/*' --output-file coverage.info
   - lcov --list coverage.info
   - bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"

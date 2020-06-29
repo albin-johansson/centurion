@@ -22,6 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * @brief Provides the @link centurion::BlendMode @endlink enum.
+ *
+ * @file blend_mode.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_BLEND_MODE_HEADER
 #define CENTURION_BLEND_MODE_HEADER
 
@@ -32,17 +41,18 @@
 namespace centurion {
 
 /**
- * The BlendMode enum class mirrors the SDL_BlendMode enum.
- *
+ * @enum BlendMode
+ * @brief Mirrors the SDL_BlendMode enum.
+ * @headerfile blend_mode.h
  * @since 3.0.0
  */
 enum class BlendMode {
-  None = SDL_BLENDMODE_NONE,
-  Blend = SDL_BLENDMODE_BLEND,
-  Add = SDL_BLENDMODE_ADD,
-  Mod = SDL_BLENDMODE_MOD,
-  Mul = SDL_BLENDMODE_MUL,
-  Invalid = SDL_BLENDMODE_INVALID
+  None = SDL_BLENDMODE_NONE,      /**< Represents no blending. */
+  Blend = SDL_BLENDMODE_BLEND,    /**< Represents additive blending. */
+  Add = SDL_BLENDMODE_ADD,        /**< Represents additive blending. */
+  Mod = SDL_BLENDMODE_MOD,        /**< Represents color modulation. */
+  Mul = SDL_BLENDMODE_MUL,        /**< Represents color multiplication. */
+  Invalid = SDL_BLENDMODE_INVALID /**< Represents an invalid blend mode. */
 };
 
 /**

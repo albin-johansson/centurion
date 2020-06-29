@@ -22,20 +22,32 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_CFG_HEADER
-#define CENTURION_CFG_HEADER
-
-/*
- * This file can be used to configure the behaviour of the Centurion library.
- * Note, You don't need to explicitly include this file!
- *
+/**
+ * @brief Used for configuring the behaviour of the library.
+ * @note You don't need to explicitly include this file!
+ * @file centurion_cfg.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
  * @since 4.0.0
  */
 
-/*
- * Uncomment the following line in order to use Centurion as a header-only
- * library. Note that you still have to link to the SDL2 libraries.
- */
+#ifndef CENTURION_CFG_HEADER
+#define CENTURION_CFG_HEADER
+
 //#define CENTURION_HEADER_ONLY
+
+#ifdef CENTURION___DOXYGEN
+/**
+ * @def CENTURION_HEADER_ONLY
+ * @brief Indicates whether or not the header-only mode should be used.
+ * @details If defined, the library will be usable without compiling it as a
+ * shared library.
+ * @note You have to include the source files of the library when using the
+ * library in the "header-only" mode.
+ * @headerfile centurion_cfg.h
+ */
+#define CENTURION_HEADER_ONLY
+#endif  // CENTURION___DOXYGEN
 
 #endif  // CENTURION_CFG_HEADER

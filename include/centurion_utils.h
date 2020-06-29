@@ -22,14 +22,23 @@
  * SOFTWARE.
  */
 
+/**
+ * @brief Provides utilities used in the implementation of the library.
+ * @file centurion_utils.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_CENTURION_UTILS_HEADER
 #define CENTURION_CENTURION_UTILS_HEADER
 
 #include <SDL.h>
 
-#include <lib/gsl-lite.hpp>
-#include <lib/optional.hpp>
+#include <cstring>
+#include <gsl-lite.hpp>
 #include <memory>
+#include <optional.hpp>
 #include <sstream>
 #include <string>
 #include <type_traits>
@@ -38,6 +47,13 @@
 #include "centurion_api.h"
 
 namespace centurion {
+
+/**
+ * @brief The main namespace used for implementation details of the library.
+ * @warning Do not use anything that resides in this namespace, the contents
+ * may change at any time without warning.
+ * @namespace centurion::detail
+ */
 namespace detail {
 
 /**
@@ -127,8 +143,8 @@ CENTURION_NODISCARD T clamp_inclusive(std::pair<T, T> range, T value) noexcept
  *
  * @since 4.0.0
  */
-template <bool condition, typename T>
-using type_if = typename std::enable_if<condition, T>::type;
+template <bool condition>
+using enable_if_t = typename std::enable_if<condition>::type;
 
 /**
  * Used to enable a template if a type is a floating-point type, such as
@@ -137,7 +153,7 @@ using type_if = typename std::enable_if<condition, T>::type;
  * @since 4.0.0
  */
 template <typename T>
-using type_if_floating = type_if<std::is_floating_point<T>::value, T>;
+using type_if_floating = enable_if_t<std::is_floating_point<T>::value>;
 
 /**
  * Used to enable a template if a type is an integral type, such as
@@ -146,7 +162,7 @@ using type_if_floating = type_if<std::is_floating_point<T>::value, T>;
  * @since 4.0.0
  */
 template <typename T>
-using type_if_integral = type_if<std::is_integral<T>::value, T>;
+using type_if_integral = enable_if_t<std::is_integral<T>::value>;
 
 /**
  * Used to enable a template if two types are the same.
@@ -220,6 +236,26 @@ using ZString = gsl::zstring;
  */
 constexpr tl::nullopt_t nothing = tl::nullopt;
 
+namespace detail {
+
+/**
+ * Indicates whether or not two C-style strings are equal.
+ *
+ * @param lhs the left-hand side string, can safely be null.
+ * @param rhs the right-hand side string, can safely be null.
+ * @return true if the strings are equal; false otherwise.
+ * @since 4.1.0
+ */
+CENTURION_NODISCARD inline bool equal(CZString lhs, CZString rhs) noexcept
+{
+  if (lhs && rhs) {
+    return std::strcmp(lhs, rhs) == 0;
+  } else {
+    return false;
+  }
+}
+
+}  // namespace detail
 }  // namespace centurion
 
 #endif  // CENTURION_CENTURION_UTILS_HEADER

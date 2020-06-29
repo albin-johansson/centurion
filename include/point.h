@@ -175,10 +175,9 @@ class Point final {
    * difference between the coordinates of the points.
    * @since 4.0.0
    */
-  template <typename U = T>
-  CENTURION_NODISCARD detail::type_if_floating<U> equals(
-      const Point<T>& other,
-      T epsilon = 0.0001) const noexcept
+  template <typename U = T, typename X = detail::type_if_floating<U>>
+  CENTURION_NODISCARD bool equals(const Point<T>& other,
+                                  T epsilon = 0.0001) const noexcept
   {
     return std::abs(m_x - other.m_x) < epsilon &&
            std::abs(m_y - other.m_y) < epsilon;
@@ -297,7 +296,7 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  friend Point<T> operator-
+  friend constexpr Point<T> operator-
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
@@ -309,7 +308,8 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  friend bool operator==<T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+  friend constexpr bool operator==
+      <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
    * Indicates whether or not two points aren't considered to be equal.
@@ -320,7 +320,8 @@ class Point final {
    * @since 4.0.0
    */
   CENTURION_NODISCARD
-  friend bool operator!=<T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+  friend constexpr bool operator!=
+      <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
  private:
   T m_x = 0;

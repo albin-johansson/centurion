@@ -20,7 +20,7 @@ Since Centurion is built on top of SDL2, you'll need to install SDL2! In order t
 
 ## How do I use Centurion?
 
-Before you can get started with using the Centurion components, you must initialize the library. Here's how to do just that. Refer the in-source documentation or the `docs` folder for more information about the library. :closed_book:
+Before you can get started with using the Centurion components, you must initialize the library. Here's how to do just that. Refer the in-source documentation or generated Doxygen documentation for more information about the library. :closed_book:
 
 ```C++
 #include <centurion.h>

@@ -36,6 +36,7 @@
 
 #include <SDL_joystick.h>
 
+#include "button_state.h"
 #include "centurion_api.h"
 #include "centurion_utils.h"
 
@@ -264,6 +265,15 @@ class Joystick final {
    */
   CENTURION_NODISCARD
   CENTURION_API Power power() const noexcept;
+
+  /**
+   * @brief Returns the button state of the button associated with the index.
+   * @param button the button index to get the state from, starting at 0.
+   * @return the state of the button.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API ButtonState button_state(int button) const noexcept;
 
   /**
    * @brief Returns a pointer to the associated `SDL_Joystick`.

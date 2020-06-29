@@ -146,6 +146,12 @@ Joystick::Power Joystick::power() const noexcept
   return static_cast<Power>(SDL_JoystickCurrentPowerLevel(m_joystick));
 }
 
+CENTURION_DEF
+ButtonState Joystick::button_state(int button) const noexcept
+{
+  return static_cast<ButtonState>(SDL_JoystickGetButton(m_joystick, button));
+}
+
 }  // namespace centurion
 
 #endif  // CENTURION_JOYSTICK_SOURCE

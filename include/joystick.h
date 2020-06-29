@@ -103,6 +103,16 @@ class Joystick final {
   CENTURION_API ~Joystick() noexcept;
 
   /**
+   * @brief Returns a pointer to an `SDL_Joystick` associated with the ID.
+   * @param id the joystick ID associated with the desired joystick.
+   * @return a pointer to an `SDL_Joystick` instance if there is a joystick
+   * associated with the supplied ID; null otherwise.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static SDL_Joystick* from_instance_id(JoystickID id) noexcept;
+
+  /**
    * @brief Returns the current power level of the joystick.
    * @return a `Joystick::Power` value that represents the current power level.
    * @since 4.2.0

@@ -37,6 +37,12 @@ Joystick::~Joystick() noexcept
 }
 
 CENTURION_DEF
+SDL_Joystick* Joystick::from_instance_id(JoystickID id) noexcept
+{
+  return SDL_JoystickFromInstanceID(id);
+}
+
+CENTURION_DEF
 Joystick::Power Joystick::power() const noexcept
 {
   return static_cast<Power>(SDL_JoystickCurrentPowerLevel(m_joystick));

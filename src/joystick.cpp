@@ -102,6 +102,12 @@ SDL_JoystickGUID Joystick::device_guid(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
+CZString Joystick::name(int deviceIndex) noexcept
+{
+  return SDL_JoystickNameForIndex(deviceIndex);
+}
+
+CENTURION_DEF
 Optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
     int ball) const noexcept
 

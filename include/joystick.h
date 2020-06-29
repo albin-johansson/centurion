@@ -239,6 +239,18 @@ class Joystick final {
   CENTURION_API static SDL_JoystickGUID device_guid(int deviceIndex) noexcept;
 
   /**
+   * @brief Returns the associated with the joystick with the specified
+   * device index.
+   * @param deviceIndex refers to the N'th joystick that is currently recognized
+   * by SDL.
+   * @return the name associated with the joystick; `nullptr` if no name is
+   * found.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static CZString name(int deviceIndex) noexcept;
+
+  /**
    * @brief Returns the ball axis change since the last poll.
    * @note Trackballs can only return relative motion since the last call, these
    * motion deltas are placed into the `BallAxisChange` struct.

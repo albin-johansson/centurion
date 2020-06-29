@@ -194,6 +194,15 @@ class Joystick final {
   CENTURION_API Optional<Sint16> axis_pos(unsigned int axis) const noexcept;
 
   /**
+   * @brief Returns the name associated with the joystick.
+   * @note If no name can be found, this method returns a null string.
+   * @return the name of the joystick; `nullptr` if no name is found.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API CZString name() const noexcept;
+
+  /**
    * @brief Returns the current power level of the joystick.
    * @return a `Joystick::Power` value that represents the current power level.
    * @since 4.2.0

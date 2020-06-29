@@ -95,6 +95,12 @@ Optional<Sint16> Joystick::axis_pos(unsigned int axis) const noexcept
 }
 
 CENTURION_DEF
+CZString Joystick::name() const noexcept
+{
+  return SDL_JoystickName(m_joystick);
+}
+
+CENTURION_DEF
 Joystick::Power Joystick::power() const noexcept
 {
   return static_cast<Power>(SDL_JoystickCurrentPowerLevel(m_joystick));

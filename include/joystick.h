@@ -77,6 +77,25 @@ class Joystick final {
   };
 
   /**
+   * @brief Represents the various states of a joystick hat.
+   *
+   * @enum HatState
+   * @headerfile joystick.h
+   * @since 4.2.0
+   */
+  enum class HatState {
+    Centered = SDL_HAT_CENTERED,   /**< The hat is centered. */
+    Up = SDL_HAT_UP,               /**< The hat is directed "north". */
+    Right = SDL_HAT_RIGHT,         /**< The hat is directed "east". */
+    Down = SDL_HAT_DOWN,           /**< The hat is directed "south". */
+    Left = SDL_HAT_LEFT,           /**< The hat is directed "west". */
+    RightUp = SDL_HAT_RIGHTUP,     /**< The hat is directed "north-east". */
+    RightDown = SDL_HAT_RIGHTDOWN, /**< The hat is directed "south-east". */
+    LeftUp = SDL_HAT_LEFTUP,       /**< The hat is directed "north-west". */
+    LeftDown = SDL_HAT_LEFTDOWN,   /**< The hat is directed "south-west". */
+  };
+
+  /**
    * @brief Represents the difference in a joystick ball axis position.
    * @headerfile joystick.h
    * @since 4.2.0
@@ -328,6 +347,16 @@ class Joystick final {
    */
   CENTURION_NODISCARD
   CENTURION_API ButtonState button_state(int button) const noexcept;
+
+  /**
+   * @brief Returns the state of a specific joystick hat.
+   * @param hat the index of the hat to query, indices start at 0.
+   * @return a `HatState` value that represents the current state of the hat.
+   * @since 4.2.0
+   * @see `Joystick::HatState`
+   */
+  CENTURION_NODISCARD
+  CENTURION_API HatState hat_state(int hat) const noexcept;
 
   /**
    * @brief Returns a pointer to the associated `SDL_Joystick`.

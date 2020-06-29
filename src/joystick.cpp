@@ -187,6 +187,12 @@ ButtonState Joystick::button_state(int button) const noexcept
   return static_cast<ButtonState>(SDL_JoystickGetButton(m_joystick, button));
 }
 
+CENTURION_DEF
+Joystick::HatState Joystick::hat_state(int hat) const noexcept
+{
+  return static_cast<HatState>(SDL_JoystickGetHat(m_joystick, hat));
+}
+
 }  // namespace centurion
 
 #endif  // CENTURION_JOYSTICK_SOURCE

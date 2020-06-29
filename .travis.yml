@@ -26,6 +26,7 @@ addons:
 before_install:
   - sudo apt-get update
   - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev doxygen
+  - sudo apt-get update
   - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
   - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 

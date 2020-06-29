@@ -44,6 +44,10 @@ namespace centurion {
 /**
  * @brief Represents various types of joysticks.
  *
+ * @invariant A successfully created `Joystick` instance is always viable.
+ * Which means that `SDL_JoystickGetAttached(SDL_Joystick*)` always returns
+ * `true` for the internal `SDL_Joystick*`.
+ *
  * @class Joystick
  * @headerfile joystick.h
  * @since 4.2.0
@@ -82,6 +86,17 @@ class Joystick final {
    */
   CENTURION_NODISCARD
   CENTURION_API Power power() const noexcept;
+
+  /**
+   * @brief Returns a pointer to the associated `SDL_Joystick`.
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However, it can be useful since many SDL calls
+   * use non-const pointers even when no change will be applied. Don't take
+   * ownership of the returned pointer, or bad things will happen.
+   * @return a pointer to the internal `SDL_Joystick`.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD SDL_Joystick* get() const noexcept { return m_joystick; }
 
  private:
   SDL_Joystick* m_joystick;

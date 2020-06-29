@@ -59,6 +59,13 @@ SharedPtr<Joystick> Joystick::shared(SDL_Joystick* joystick)
 {
   return std::make_shared<Joystick>(joystick);
 }
+
+CENTURION_DEF
+void Joystick::update() noexcept
+{
+  SDL_JoystickUpdate();
+}
+
 CENTURION_DEF
 SDL_Joystick* Joystick::from_instance_id(JoystickID id) noexcept
 {

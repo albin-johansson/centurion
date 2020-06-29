@@ -153,6 +153,14 @@ class Joystick final {
       Owner<SDL_Joystick*> joystick);
 
   /**
+   * @brief Updates the state of all open joysticks.
+   * @note This is done automatically by the event loop if any joystick
+   * events are enabled.
+   * @since 4.2.0
+   */
+  CENTURION_API static void update() noexcept;
+
+  /**
    * @brief Returns a pointer to an `SDL_Joystick` associated with the ID.
    * @param id the joystick ID associated with the desired joystick.
    * @return a pointer to an `SDL_Joystick` instance if there is a joystick

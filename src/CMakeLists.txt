@@ -155,6 +155,7 @@ centurion_add_header_only_lib(libOptional ${CTN_LIBRARY_DIR}/optional
 
 target_include_directories(${CENTURION_LIB_TARGET}
         PRIVATE ${CTN_INCLUDE_DIR}
+        PRIVATE ${CTN_SOURCE_DIR}
         SYSTEM INTERFACE ${CTN_INCLUDE_DIR})
 
 target_link_libraries(${CENTURION_LIB_TARGET}

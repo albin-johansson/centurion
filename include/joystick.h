@@ -42,6 +42,13 @@
 namespace centurion {
 
 /**
+ * A type alias for SDL_JoystickID.
+ *
+ * @since 4.0.0
+ */
+using JoystickID = SDL_JoystickID;
+
+/**
  * @brief Represents various types of joysticks.
  *
  * @invariant A successfully created `Joystick` instance is always viable.

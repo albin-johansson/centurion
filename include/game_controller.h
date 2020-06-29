@@ -28,15 +28,9 @@
 #include <SDL_gamecontroller.h>
 
 #include "centurion_api.h"
+#include "joystick.h"  // because JoystickID was prev. defined in this header
 
 namespace centurion {
-
-/**
- * A type alias for SDL_JoystickID.
- *
- * @since 4.0.0
- */
-using JoystickID = SDL_JoystickID;
 
 /**
  * The GameControllerAxis enum class mirrors the values of the

@@ -403,6 +403,26 @@ class Joystick final {
    */
   CENTURION_NODISCARD SDL_Joystick* get() const noexcept { return m_joystick; }
 
+  /**
+   * @brief Returns the maximum possible value of an axis control on a joystick.
+   * @return the maximum possible value of an axis control.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD static constexpr Sint16 axis_max() noexcept
+  {
+    return SDL_JOYSTICK_AXIS_MAX;
+  }
+
+  /**
+   * @brief Returns the minimum possible value of an axis control on a joystick.
+   * @return the minimum possible value of an axis control.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD static constexpr Sint16 axis_min() noexcept
+  {
+    return SDL_JOYSTICK_AXIS_MIN;
+  }
+
  private:
   SDL_Joystick* m_joystick;
 };

@@ -207,6 +207,19 @@ class Joystick final {
   CENTURION_API static Optional<int> amount() noexcept;
 
   /**
+   * @brief Returns the GUID for the joystick associated with the specified
+   * device index.
+   * @note The GUID is implementation-dependent.
+   * @note This function can be called before any joysticks are opened.
+   * @param deviceIndex refers to the N'th joystick that is currently recognized
+   * by SDL.
+   * @return the GUID of the joystick associated with the device index.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static SDL_JoystickGUID device_guid(int deviceIndex) noexcept;
+
+  /**
    * @brief Returns the ball axis change since the last poll.
    * @note Trackballs can only return relative motion since the last call, these
    * motion deltas are placed into the `BallAxisChange` struct.
@@ -248,6 +261,15 @@ class Joystick final {
    */
   CENTURION_NODISCARD
   CENTURION_API JoystickID id() const noexcept;
+
+  /**
+   * @brief Returns the GUID associated with the joystick.
+   * @note The GUID is implementation-dependent.
+   * @return the GUID associated with the joystick.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API SDL_JoystickGUID device_guid() noexcept;
 
   /**
    * @brief Returns the name associated with the joystick.

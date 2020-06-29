@@ -96,6 +96,12 @@ Optional<int> Joystick::amount() noexcept
 }
 
 CENTURION_DEF
+SDL_JoystickGUID Joystick::device_guid(int deviceIndex) noexcept
+{
+  return SDL_JoystickGetDeviceGUID(deviceIndex);
+}
+
+CENTURION_DEF
 Optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
     int ball) const noexcept
 
@@ -132,6 +138,12 @@ JoystickID Joystick::id() const noexcept
 {
   // Can fail for null joysticks, but that can't happen due to class invariant.
   return SDL_JoystickInstanceID(m_joystick);
+}
+
+CENTURION_DEF
+SDL_JoystickGUID Joystick::device_guid() noexcept
+{
+  return SDL_JoystickGetGUID(m_joystick);
 }
 
 CENTURION_DEF

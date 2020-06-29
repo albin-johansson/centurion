@@ -80,8 +80,24 @@ class Joystick final {
     Max = SDL_JOYSTICK_POWER_MAX          /**< Maximum power level. */
   };
 
+  /**
+   * @brief Creates a `Joystick` instance based on a device index.
+   * @warning The device index is not the same as the instance ID used to
+   * identify the joystick in future events.
+   * @param deviceIndex refers to the N'th joystick that is currently
+   * recognized by SDL.
+   * @throws CenturionException if the joystick cannot be created.
+   * @since 4.2.0
+   */
   CENTURION_API explicit Joystick(int deviceIndex);
 
+  /**
+   * @brief Creates a `Joystick` instance based on an existing `SDL_Joystick*`.
+   * @pre `joystick` must not be null.
+   * @param joystick a pointer to the `SDL_Joystick` that will be claimed.
+   * @throws CenturionException if the joystick cannot be created.
+   * @since 4.2.0
+   */
   CENTURION_API explicit Joystick(Owner<SDL_Joystick*> joystick);
 
   CENTURION_API ~Joystick() noexcept;

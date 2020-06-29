@@ -66,6 +66,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/key_modifier.h
         ${CTN_INCLUDE_DIR}/syswm_event.h
         ${CTN_INCLUDE_DIR}/hints.h
+        ${CTN_INCLUDE_DIR}/joystick.h
         window.cpp
         font.cpp
         renderer.cpp
@@ -115,7 +116,8 @@ set(SOURCE_FILES
         multi_gesture_event.cpp
         text_editing_event.cpp
         text_input_event.cpp
-        syswm_event.cpp)
+        syswm_event.cpp
+        joystick.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

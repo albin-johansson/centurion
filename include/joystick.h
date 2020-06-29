@@ -113,6 +113,20 @@ class Joystick final {
   CENTURION_API static SDL_Joystick* from_instance_id(JoystickID id) noexcept;
 
   /**
+   * @brief Returns the current position of the specified axis.
+   * @details Most modern joysticks let the X-axis be represented by 0
+   * and the Y-axis by 1. To account for jitter, it may be necessary to impose
+   * some kind of tolerance on the returned value.
+   * @note Some joysticks use axes 2 and 3 for extra buttons.
+   * @param axis the ID of the axis to query.
+   * @return a 16-bit signed integer that represents the position of the
+   * specified axis; `nothing` if something goes wrong.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API Optional<Sint16> axis_pos(unsigned int axis) const noexcept;
+
+  /**
    * @brief Returns the current power level of the joystick.
    * @return a `Joystick::Power` value that represents the current power level.
    * @since 4.2.0

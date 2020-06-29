@@ -101,6 +101,13 @@ bool Joystick::attached() const noexcept
 }
 
 CENTURION_DEF
+JoystickID Joystick::id() const noexcept
+{
+  // Can fail for null joysticks, but that can't happen due to class invariant.
+  return SDL_JoystickInstanceID(m_joystick);
+}
+
+CENTURION_DEF
 CZString Joystick::name() const noexcept
 {
   return SDL_JoystickName(m_joystick);

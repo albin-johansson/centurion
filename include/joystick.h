@@ -197,6 +197,14 @@ class Joystick final {
   CENTURION_API bool attached() const noexcept;
 
   /**
+   * @brief Returns the instance ID associated with the joystick.
+   * @return the instance ID associated with the joystick.
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API JoystickID id() const noexcept;
+
+  /**
    * @brief Returns the name associated with the joystick.
    * @note If no name can be found, this method returns a null string.
    * @return the name of the joystick; `nullptr` if no name is found.

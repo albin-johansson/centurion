@@ -175,25 +175,25 @@ void Renderer::fill_rect_f(const FRect& rect) noexcept
 CENTURION_DEF
 void Renderer::draw_rect_t(const IRect& rect) noexcept
 {
-  draw_rect({{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
+  draw_rect({{tx(rect.x()), ty(rect.y())}, rect.size()});
 }
 
 CENTURION_DEF
 void Renderer::draw_rect_tf(const FRect& rect) noexcept
 {
-  draw_rect_f({{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
+  draw_rect_f({{tx(rect.x()), ty(rect.y())}, rect.size()});
 }
 
 CENTURION_DEF
 void Renderer::fill_rect_t(const IRect& rect) noexcept
 {
-  fill_rect({{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
+  fill_rect({{tx(rect.x()), ty(rect.y())}, rect.size()});
 }
 
 CENTURION_DEF
 void Renderer::fill_rect_tf(const FRect& rect) noexcept
 {
-  fill_rect_f({{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
+  fill_rect_f({{tx(rect.x()), ty(rect.y())}, rect.size()});
 }
 
 CENTURION_DEF
@@ -407,8 +407,7 @@ void Renderer::render_t(const Texture& texture, IPoint position) noexcept
 CENTURION_DEF
 void Renderer::render_t(const Texture& texture, const IRect& rect) noexcept
 {
-  render(texture,
-         {{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
+  render(texture, {{tx(rect.x()), ty(rect.y())}, rect.size()});
 }
 
 CENTURION_DEF
@@ -416,8 +415,7 @@ void Renderer::render_t(const Texture& texture,
                         const IRect& src,
                         const IRect& dst) noexcept
 {
-  render(
-      texture, src, {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}});
+  render(texture, src, {{tx(dst.x()), ty(dst.y())}, dst.size()});
 }
 
 CENTURION_DEF
@@ -426,10 +424,7 @@ void Renderer::render_t(const Texture& texture,
                         const IRect& dst,
                         double angle) noexcept
 {
-  render(texture,
-         src,
-         {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
-         angle);
+  render(texture, src, {{tx(dst.x()), ty(dst.y())}, dst.size()}, angle);
 }
 
 CENTURION_DEF
@@ -439,11 +434,7 @@ void Renderer::render_t(const Texture& texture,
                         double angle,
                         IPoint center) noexcept
 {
-  render(texture,
-         src,
-         {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
-         angle,
-         center);
+  render(texture, src, {{tx(dst.x()), ty(dst.y())}, dst.size()}, angle, center);
 }
 
 CENTURION_DEF
@@ -452,10 +443,7 @@ void Renderer::render_t(const Texture& texture,
                         const IRect& dst,
                         SDL_RendererFlip flip) noexcept
 {
-  render(texture,
-         src,
-         {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
-         flip);
+  render(texture, src, {{tx(dst.x()), ty(dst.y())}, dst.size()}, flip);
 }
 
 CENTURION_DEF
@@ -468,7 +456,7 @@ void Renderer::render_t(const Texture& texture,
 {
   render(texture,
          src,
-         {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
+         {{tx(dst.x()), ty(dst.y())}, dst.size()},
          angle,
          center,
          flip);
@@ -483,8 +471,7 @@ void Renderer::render_tf(const Texture& texture, FPoint position) noexcept
 CENTURION_DEF
 void Renderer::render_tf(const Texture& texture, const FRect& rect) noexcept
 {
-  render_f(texture,
-           {{tx(rect.x()), ty(rect.y())}, {rect.width(), rect.height()}});
+  render_f(texture, {{tx(rect.x()), ty(rect.y())}, rect.size()});
 }
 
 CENTURION_DEF
@@ -492,8 +479,7 @@ void Renderer::render_tf(const Texture& texture,
                          const IRect& src,
                          const FRect& dst) noexcept
 {
-  render_f(
-      texture, src, {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}});
+  render_f(texture, src, {{tx(dst.x()), ty(dst.y())}, dst.size()});
 }
 
 CENTURION_DEF
@@ -502,10 +488,7 @@ void Renderer::render_tf(const Texture& texture,
                          const FRect& dst,
                          double angle) noexcept
 {
-  render_f(texture,
-           src,
-           {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
-           angle);
+  render_f(texture, src, {{tx(dst.x()), ty(dst.y())}, dst.size()}, angle);
 }
 
 CENTURION_DEF
@@ -515,11 +498,8 @@ void Renderer::render_tf(const Texture& texture,
                          double angle,
                          FPoint center) noexcept
 {
-  render_f(texture,
-           src,
-           {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
-           angle,
-           center);
+  render_f(
+      texture, src, {{tx(dst.x()), ty(dst.y())}, dst.size()}, angle, center);
 }
 
 CENTURION_DEF
@@ -528,10 +508,7 @@ void Renderer::render_tf(const Texture& texture,
                          const FRect& dst,
                          SDL_RendererFlip flip) noexcept
 {
-  render_f(texture,
-           src,
-           {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
-           flip);
+  render_f(texture, src, {{tx(dst.x()), ty(dst.y())}, dst.size()}, flip);
 }
 
 CENTURION_DEF
@@ -544,7 +521,7 @@ void Renderer::render_tf(const Texture& texture,
 {
   render_f(texture,
            src,
-           {{tx(dst.x()), ty(dst.y())}, {dst.width(), dst.height()}},
+           {{tx(dst.x()), ty(dst.y())}, dst.size()},
            angle,
            center,
            flip);

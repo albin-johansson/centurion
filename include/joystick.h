@@ -43,15 +43,17 @@
 namespace centurion {
 
 /**
- * A type alias for SDL_JoystickID.
+ * @typedef JoystickID
+ * @brief A type alias for SDL_JoystickID.
  *
  * @since 4.0.0
  */
 using JoystickID = SDL_JoystickID;
 
 /**
- * @brief Represents various types of joysticks.
  * @class Joystick
+ * @brief Represents various types of joysticks.
+ *
  * @headerfile joystick.h
  * @since 4.2.0
  * @see SDL_Joystick
@@ -59,9 +61,9 @@ using JoystickID = SDL_JoystickID;
 class Joystick final {
  public:
   /**
+   * @enum Power
    * @brief Mirrors the SDL_JoystickPowerLevel enum.
    *
-   * @enum Power
    * @headerfile joystick.h
    * @since 4.2.0
    */
@@ -77,9 +79,9 @@ class Joystick final {
   };
 
   /**
+   * @enum HatState
    * @brief Represents the various states of a joystick hat.
    *
-   * @enum HatState
    * @headerfile joystick.h
    * @since 4.2.0
    */
@@ -96,13 +98,21 @@ class Joystick final {
   };
 
   /**
+   * @struct BallAxisChange
    * @brief Represents the difference in a joystick ball axis position.
-   * @headerfile joystick.h
+   *
    * @since 4.2.0
+   * @headerfile joystick.h
+   *
+   * @var BallAxisChange::dx
+   * Difference in x-axis position since last poll.
+   *
+   * @var BallAxisChange::dy
+   * Difference in y-axis position since last poll.
    */
   struct BallAxisChange {
-    int dx; /**< Difference in x-axis position since last poll. */
-    int dy; /**< Difference in y-axis position since last poll. */
+    int dx;
+    int dy;
   };
 
   /**

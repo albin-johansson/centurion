@@ -195,8 +195,6 @@ class Joystick final {
   //  SDL_JoystickGetGUIDString ?
   //  SDL_JoystickGetAxisInitialState
 
-  //  SDL_JoystickGetType
-
   /**
    * @brief Creates and returns a unique pointer to a `Joystick` instance.
    *

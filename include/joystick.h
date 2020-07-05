@@ -50,7 +50,7 @@ namespace centurion {
  *
  * @since 4.0.0
  */
-using JoystickID CENTURION_DEPRECATED = SDL_JoystickID;
+using JoystickID = SDL_JoystickID;
 
 /**
  * @class Joystick

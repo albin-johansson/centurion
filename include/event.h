@@ -61,6 +61,8 @@ namespace event {
  * The Event class serves as the main interface for dealing with events in
  * the Centurion library.
  *
+ * @todo Look into `SysWMEvent` breaking includes on Travis.
+ *
  * @see SDL_Event
  * @since 4.0.0
  */
@@ -373,7 +375,6 @@ class Event final {
   CENTURION_API
   Optional<WindowEvent> as_window_event() const noexcept;
 
-  // FIXME Not available, there is something fishy about the SysWMEvent includes
   //  /**
   //   * Returns a SysWMEvent or nothing if the type of the event doesn't
   //   * match.

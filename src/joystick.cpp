@@ -219,6 +219,13 @@ CZString Joystick::name(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
+SDL_JoystickGUID Joystick::guid_from_string(
+    gsl::not_null<CZString> str) noexcept
+{
+  return SDL_JoystickGetGUIDFromString(str);
+}
+
+CENTURION_DEF
 void Joystick::rumble(Uint16 lowFreq, Uint16 highFreq, Uint32 duration) noexcept
 {
   SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration);

@@ -54,6 +54,8 @@ using JoystickID = SDL_JoystickID;
  * @class Joystick
  * @brief Represents various types of joysticks.
  *
+ * @todo Cover `SDL_JoystickGetGUIDString`.
+ *
  * @headerfile joystick.h
  * @since 4.2.0
  *
@@ -342,9 +344,6 @@ class Joystick final {
   CENTURION_NODISCARD
   CENTURION_API static Optional<int> amount() noexcept;
 
-  //  TODO SDL_JoystickGetGUIDFromString
-  //  TODO SDL_JoystickGetGUIDString ?
-
   /**
    * @brief Returns the GUID for the joystick associated with the specified
    * device index.
@@ -465,6 +464,21 @@ class Joystick final {
    */
   CENTURION_NODISCARD
   CENTURION_API static CZString name(int deviceIndex) noexcept;
+
+  /**
+   * @brief Returns a joystick GUID based on the supplied string.
+   *
+   * @param str the string used to obtain the GUID, can't be null.
+   *
+   * @return the obtained GUID.
+   *
+   * @see `SDL_JoystickGetGUIDFromString`
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static SDL_JoystickGUID guid_from_string(
+      gsl::not_null<CZString> str) noexcept;
 
   /**
    * @brief Makes the joystick rumble.

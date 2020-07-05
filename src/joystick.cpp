@@ -175,6 +175,17 @@ Optional<Uint16> Joystick::vendor() const noexcept
 }
 
 CENTURION_DEF
+Optional<Uint16> Joystick::product() const noexcept
+{
+  const auto product = SDL_JoystickGetProduct(m_joystick);
+  if (product == 0) {
+    return nothing;
+  } else {
+    return product;
+  }
+}
+
+CENTURION_DEF
 Optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
     int ball) const noexcept
 

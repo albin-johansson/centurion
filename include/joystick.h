@@ -186,7 +186,6 @@ class Joystick final {
   //  SDL_JoystickFromPlayerIndex
   //  SDL_JoystickGetPlayerIndex
   //  SDL_JoystickSetPlayerIndex
-  //  SDL_JoystickGetVendor
   //  SDL_JoystickGetProduct
   //  SDL_JoystickGetProductVersion
 
@@ -401,6 +400,17 @@ class Joystick final {
    */
   CENTURION_NODISCARD
   CENTURION_API Type type() const noexcept;
+
+  /**
+   * @brief Get the USB vendor ID of the joystick.
+   *
+   * @return the USB vendor ID associated with the joystick; `nothing` if it
+   * isn't available.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API Optional<Uint16> vendor() const noexcept;
 
   /**
    * @brief Returns the ball axis change since the last poll.

@@ -190,7 +190,7 @@ class Joystick final {
 
   //  SDL_JoystickGetGUIDString ?
   //  SDL_JoystickGetAxisInitialState
-  
+
   /**
    * @brief Creates and returns a unique pointer to a `Joystick` instance.
    *
@@ -279,6 +279,7 @@ class Joystick final {
    * @details If you are using the joystick API from multiple threads you
    * should use this method to restrict access to the joysticks.
    *
+   * @see SDL_LockJoysticks
    * @since 4.2.0
    */
   CENTURION_API static void lock() noexcept;
@@ -286,6 +287,7 @@ class Joystick final {
   /**
    * @brief Unlocks the access to all joysticks.
    *
+   * @see SDL_UnlockJoysticks
    * @since 4.2.0
    */
   CENTURION_API static void unlock() noexcept;

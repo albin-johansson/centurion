@@ -186,9 +186,19 @@ Optional<Uint16> Joystick::product() const noexcept
 }
 
 CENTURION_DEF
+Optional<Uint16> Joystick::product_version() const noexcept
+{
+  const auto version = SDL_JoystickGetProductVersion(m_joystick);
+  if (version == 0) {
+    return nothing;
+  } else {
+    return version;
+  }
+}
+
+CENTURION_DEF
 Optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
     int ball) const noexcept
-
 {
   BallAxisChange change{};
   const auto result =

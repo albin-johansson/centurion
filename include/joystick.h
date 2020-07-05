@@ -186,7 +186,6 @@ class Joystick final {
   //  SDL_JoystickFromPlayerIndex
   //  SDL_JoystickGetPlayerIndex
   //  SDL_JoystickSetPlayerIndex
-  //  SDL_JoystickGetProductVersion
 
   //  SDL_JoystickGetGUIDString ?
 
@@ -422,6 +421,17 @@ class Joystick final {
    */
   CENTURION_NODISCARD
   CENTURION_API Optional<Uint16> product() const noexcept;
+
+  /**
+   * @brief Returns the product version of the joystick, if available.
+   *
+   * @return the product version of the joystick; `nothing` if it isn't
+   * available.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API Optional<Uint16> product_version() const noexcept;
 
   /**
    * @brief Returns the ball axis change since the last poll.

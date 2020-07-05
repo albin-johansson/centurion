@@ -34,6 +34,8 @@
 #ifndef CENTURION_BUTTON_STATE_HEADER
 #define CENTURION_BUTTON_STATE_HEADER
 
+#include <SDL_events.h>
+
 namespace centurion {
 
 /**

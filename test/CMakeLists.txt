@@ -57,7 +57,8 @@ set(TEST_FILES
         unittests/text_input_event_test.cpp
         unittests/quit_event_test.cpp
         unittests/area_test.cpp
-        unittests/hints_test.cpp)
+        unittests/hints_test.cpp
+        unittests/joystick_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

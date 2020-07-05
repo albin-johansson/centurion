@@ -3,6 +3,8 @@
 
 #include "joystick.h"
 
+#include <utility>
+
 #include "centurion_exception.h"
 
 namespace centurion {
@@ -29,7 +31,37 @@ Joystick::Joystick(SDL_Joystick* joystick) : m_joystick{joystick}
 }
 
 CENTURION_DEF
+Joystick::Joystick(Joystick&& other) noexcept
+{
+  move(std::move(other));
+}
+
+CENTURION_DEF
+Joystick& Joystick::operator=(Joystick&& other) noexcept
+{
+  if (this != &other) {
+    move(std::move(other));
+  }
+  return *this;
+}
+
+CENTURION_DEF
 Joystick::~Joystick() noexcept
+{
+  destroy();
+}
+
+CENTURION_DEF
+void Joystick::move(Joystick&& other) noexcept
+{
+  destroy();
+
+  m_joystick = other.m_joystick;
+  other.m_joystick = nullptr;
+}
+
+CENTURION_DEF
+void Joystick::destroy() noexcept
 {
   if (SDL_JoystickGetAttached(m_joystick)) {
     SDL_JoystickClose(m_joystick);
@@ -105,6 +137,12 @@ CENTURION_DEF
 CZString Joystick::name(int deviceIndex) noexcept
 {
   return SDL_JoystickNameForIndex(deviceIndex);
+}
+
+CENTURION_DEF
+void Joystick::rumble(Uint16 lowFreq, Uint16 highFreq, Uint32 duration) noexcept
+{
+  SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration);
 }
 
 CENTURION_DEF

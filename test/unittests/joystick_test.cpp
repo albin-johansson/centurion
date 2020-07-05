@@ -2,13 +2,133 @@
 
 #include <catch.hpp>
 
+#include "centurion_exception.h"
+
 using namespace centurion;
 
 // Note, it's hard to actually test the joystick API, so coverage is the best
 // we can do really.
 
-TEST_CASE("...", "[Joystick]")
-{}
+TEST_CASE("Constructors", "[Joystick]")
+{
+  SECTION("Index ctor") { CHECK_THROWS_AS(Joystick{0}, CenturionException); }
+
+  SECTION("SDL_Joystick* ctor")
+  {
+    SDL_Joystick* ptr = nullptr;
+    CHECK_THROWS_AS(Joystick{ptr}, CenturionException);
+  }
+}
+
+TEST_CASE("Smart pointer factory methods", "[Joystick]")
+{
+  SECTION("Unique")
+  {
+    CHECK_THROWS_AS(Joystick::unique(0), CenturionException);
+    CHECK_THROWS_AS(Joystick::unique(nullptr), CenturionException);
+  }
+
+  SECTION("Shared")
+  {
+    CHECK_THROWS_AS(Joystick::shared(0), CenturionException);
+    CHECK_THROWS_AS(Joystick::shared(nullptr), CenturionException);
+  }
+}
+
+TEST_CASE("Joystick::update", "[Joystick]")
+{
+  CHECK_NOTHROW(Joystick::update());
+}
+
+TEST_CASE("Joystick locking/unlocking", "[Joystick]")
+{
+  CHECK_NOTHROW(Joystick::lock());
+  CHECK_NOTHROW(Joystick::unlock());
+}
+
+TEST_CASE("Joystick polling", "[Joystick]")
+{
+  Joystick::set_polling(false);
+  CHECK(!Joystick::polling());
+
+  Joystick::set_polling(true);
+  CHECK(Joystick::polling());
+}
+
+TEST_CASE("Joystick::from_instance_id", "[Joystick]")
+{
+  const auto* ptr = Joystick::from_instance_id(0);
+  CHECK(!ptr);
+}
+
+TEST_CASE("Joystick::from_player_index", "[Joystick]")
+{
+  const auto* ptr = Joystick::from_player_index(0);
+  CHECK(!ptr);
+}
+
+TEST_CASE("Joystick::amount", "[Joystick]")
+{
+  const auto amount = Joystick::amount();
+  REQUIRE(amount.has_value());
+  CHECK(*amount == 0);
+}
+
+TEST_CASE("Joystick::guid(int)", "[Joystick]")
+{
+  CHECK_NOTHROW(Joystick::guid(0));
+}
+
+TEST_CASE("Joystick::player_index(int)", "[Joystick]")
+{
+  CHECK_NOTHROW(Joystick::player_index(0));
+}
+
+TEST_CASE("Joystick::vendor(int)", "[Joystick]")
+{
+  CHECK_NOTHROW(Joystick::vendor(0));
+}
+
+TEST_CASE("Joystick::product(int)", "[Joystick]")
+{
+  CHECK_NOTHROW(Joystick::product(0));
+}
+
+TEST_CASE("Joystick::product_version(int)", "[Joystick]")
+{
+  CHECK_NOTHROW(Joystick::product_version(0));
+}
+
+TEST_CASE("Joystick::type(int)", "[Joystick]")
+{
+  CHECK_NOTHROW(Joystick::type(0));
+}
+
+TEST_CASE("Joystick::instance_id(int)", "[Joystick]")
+{
+  CHECK_NOTHROW(Joystick::instance_id(0));
+}
+
+TEST_CASE("Joystick::name(int)", "[Joystick]")
+{
+  CHECK_NOTHROW(Joystick::name(0));
+}
+
+TEST_CASE("Joystick::guid_from_string(int)", "[Joystick]")
+{
+  const CZString str = "";
+  CHECK_NOTHROW(Joystick::guid_from_string(str));
+}
+
+TEST_CASE("Joystick::axis_max", "[Joystick]")
+{
+  CHECK(Joystick::axis_max() == SDL_JOYSTICK_AXIS_MAX);
+}
+
+TEST_CASE("Joystick::axis_min", "[Joystick]")
+{
+  CHECK(Joystick::axis_min() == SDL_JOYSTICK_AXIS_MIN);
+}
 
 TEST_CASE("Joystick::Power values", "[Joystick]")
 {

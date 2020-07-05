@@ -48,7 +48,7 @@ namespace centurion {
  */
 enum class BlendMode {
   None = SDL_BLENDMODE_NONE,      /**< Represents no blending. */
-  Blend = SDL_BLENDMODE_BLEND,    /**< Represents additive blending. */
+  Blend = SDL_BLENDMODE_BLEND,    /**< Represents alpha blending. */
   Add = SDL_BLENDMODE_ADD,        /**< Represents additive blending. */
   Mod = SDL_BLENDMODE_MOD,        /**< Represents color modulation. */
   Mul = SDL_BLENDMODE_MUL,        /**< Represents color multiplication. */

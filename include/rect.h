@@ -22,6 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * @brief Provides a generic rectangle implementation.
+ *
+ * @file rect.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 
@@ -44,23 +53,23 @@ template <typename U>
 constexpr bool operator!=(const Rect<U>& lhs, const Rect<U>& rhs) noexcept;
 
 /**
- * The Rect class represents a rectangle that supports integral and
- * floating-point components.
+ * @class Rect
+ * @brief A rectangle that supports integral and floating-point components.
  *
- * <p>
- * <code>Rect&lt;int&gt;</code> and <code>Rect&lt;float&gt;</code> can safely
- * be casted to be pointers of their corresponding SDL types,
- * <code>SDL_Rect</code> and <code>SDL_FRect</code> respectively.
+ * @details `Rect<int>` and `Rect<float>` can safely be explicitly casted to
+ * pointers to `SDL_Rect` and `SDL_FRect` respectively.
  *
  * @tparam T the type of the components of the rectangle. Set to float by
  * default.
+ *
+ * @headerfile rect.h
  * @since 4.0.0
  */
 template <typename T = float>
 class Rect final {
  public:
   /**
-   * Creates a rectangle with the components (0, 0, 0, 0).
+   * @brief Creates a rectangle with the components (0, 0, 0, 0).
    *
    * @since 4.0.0
    */
@@ -71,8 +80,10 @@ class Rect final {
    * @param y the y-coordinate of the rectangle.
    * @param width the width of the rectangle.
    * @param height the height of the rectangle.
+   *
    * @deprecated this constructor is deprecated in favor of <code>Rect
    * (Point, TArea)</code> since 4.1.0.
+   *
    * @since 4.0.0
    */
   CENTURION_DEPRECATED
@@ -83,6 +94,7 @@ class Rect final {
   /**
    * @param position the position of the rectangle.
    * @param size the size of the rectangle.
+   *
    * @since 4.1.0
    */
   constexpr Rect(Point<T> position, TArea<T> size) noexcept
@@ -90,7 +102,7 @@ class Rect final {
   {}
 
   /**
-   * Sets the x-coordinate of the rectangle.
+   * @brief Sets the x-coordinate of the rectangle.
    *
    * @param x the new x-coordinate of the rectangle.
    * @since 4.0.0
@@ -98,7 +110,7 @@ class Rect final {
   constexpr void set_x(T x) noexcept { m_position.set_x(x); }
 
   /**
-   * Sets the y-coordinate of the rectangle.
+   * @brief Sets the y-coordinate of the rectangle.
    *
    * @param y the new y-coordinate of the rectangle.
    * @since 4.0.0
@@ -106,7 +118,7 @@ class Rect final {
   constexpr void set_y(T y) noexcept { m_position.set_y(y); }
 
   /**
-   * Sets the width of the rectangle.
+   * @brief Sets the width of the rectangle.
    *
    * @param width the new width of the rectangle.
    * @since 4.0.0
@@ -114,7 +126,7 @@ class Rect final {
   constexpr void set_width(T width) noexcept { m_size.width = width; }
 
   /**
-   * Sets the height of the rectangle.
+   * @brief Sets the height of the rectangle.
    *
    * @param height the new height of the rectangle.
    * @since 4.0.0
@@ -122,14 +134,16 @@ class Rect final {
   constexpr void set_height(T height) noexcept { m_size.height = height; }
 
   /**
-   * Sets all of the components of the rectangle.
+   * @brief Sets all of the components of the rectangle.
    *
    * @param x the new x-coordinate of the rectangle.
    * @param y the new y-coordinate of the rectangle.
    * @param width the new width of the rectangle.
    * @param height the new height of the rectangle.
+   *
    * @deprecated this method is deprecated in favor of <code>set(Point,
    * TArea)</code> since 4.1.0.
+   *
    * @since 4.0.0
    */
   CENTURION_DEPRECATED
@@ -139,10 +153,11 @@ class Rect final {
   }
 
   /**
-   * Sets the position and size of the rectangle.
+   * @brief Sets the position and size of the rectangle.
    *
    * @param position the new position of the rectangle.
    * @param size the new size of the rectangle.
+   *
    * @since 4.1.0
    */
   constexpr void set(Point<T> position, TArea<T> size) noexcept
@@ -152,10 +167,12 @@ class Rect final {
   }
 
   /**
-   * Copies all of the components of the supplied rectangle to the invoked
-   * rectangle. The rectangles will be equal after this operation.
+   * @brief Copies all of the components of the supplied rectangle.
+   *
+   * @details The two rectangles will be equal after this operation.
    *
    * @param other the rectangle that will be copied.
+   *
    * @since 4.0.0
    */
   constexpr void set(const Rect<T>& other) noexcept
@@ -167,10 +184,12 @@ class Rect final {
   }
 
   /**
-   * Indicates whether or not this rectangle intersects the supplied rectangle.
+   * @brief Indicates whether or not the two rectangles intersect.
    *
    * @param other the other rectangle to check.
-   * @return true if the rectangles intersect; false otherwise.
+   *
+   * @return `true` if the rectangles intersect; `false` otherwise.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -181,15 +200,16 @@ class Rect final {
   }
 
   /**
-   * Indicates whether or not the supplied point is contained within the
-   * rectangle.
+   * @brief Indicates whether or not the rectangle contains the point.
    *
    * @param px the x-coordinate of the point.
    * @param py the y-coordinate of the point.
-   * @return true if the supplied point is inside the rectangle; false
-   * otherwise.
+   *
+   * @return `true` if the rectangle contains the point; `false` otherwise.
+   *
    * @deprecated this method is deprecated in favor of <code>contains(Point)
    * </code> since 4.1.0.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -200,12 +220,12 @@ class Rect final {
   }
 
   /**
-   * Indicates whether or not the supplied point is contained within the
-   * rectangle.
+   * @brief Indicates whether or not the rectangle contains the point.
    *
    * @param point the point that will be checked.
-   * @return true if the supplied point is inside the rectangle; false
-   * otherwise.
+   *
+   * @return `true` if the rectangle contains the point; `false` otherwise.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -220,96 +240,107 @@ class Rect final {
    * Returns the x-coordinate of the rectangle.
    *
    * @return the x-coordinate of the rectangle.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
   constexpr T x() const noexcept { return m_position.x(); }
 
   /**
-   * Returns the y-coordinate of the rectangle.
+   * @brief Returns the y-coordinate of the rectangle.
    *
    * @return the y-coordinate of the rectangle.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
   constexpr T y() const noexcept { return m_position.y(); }
 
   /**
-   * Returns the position of the rectangle.
+   * @brief Returns the position of the rectangle.
    *
    * @return the position of the rectangle.
+   *
    * @since 4.1.0
    */
   CENTURION_NODISCARD
   constexpr Point<T> position() const noexcept { return m_position; }
 
   /**
-   * Returns the width of the rectangle.
+   * @brief Returns the width of the rectangle.
    *
    * @return the width of the rectangle.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
   constexpr T width() const noexcept { return m_size.width; }
 
   /**
-   * Returns the height of the rectangle.
+   * @brief Returns the height of the rectangle.
    *
    * @return the height of the rectangle.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
   constexpr T height() const noexcept { return m_size.height; }
 
   /**
-   * Returns the size of the rectangle.
+   * @brief Returns the size of the rectangle.
    *
    * @return the size of the rectangle.
+   *
    * @since 4.1.0
    */
   CENTURION_NODISCARD
   constexpr TArea<T> size() const noexcept { return m_size; }
 
   /**
-   * Returns the maximum x-coordinate of the rectangle.
+   * @brief Returns the maximum x-coordinate of the rectangle.
    *
    * @return the maximum x-coordinate of the rectangle.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
   constexpr T max_x() const noexcept { return x() + m_size.width; }
 
   /**
-   * Returns the maximum y-coordinate of the rectangle.
+   * @brief Returns the maximum y-coordinate of the rectangle.
    *
    * @return the maximum y-coordinate of the rectangle.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
   constexpr T max_y() const noexcept { return y() + m_size.height; }
 
   /**
-   * Returns the x-coordinate of the center point of the rectangle.
+   * @brief Returns the x-coordinate of the center point of the rectangle.
    *
    * @return the x-coordinate of the center point of the rectangle.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
   constexpr T center_x() const noexcept { return x() + (m_size.width / 2); }
 
   /**
-   * Returns the y-coordinate of the center point of the rectangle.
+   * @brief Returns the y-coordinate of the center point of the rectangle.
    *
    * @return the y-coordinate of the center point of the rectangle.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
   constexpr T center_y() const noexcept { return y() + (m_size.height / 2); }
 
   /**
-   * Returns the center point of the rectangle.
+   * @brief Returns the center point of the rectangle.
    *
    * @return the center point of the rectangle.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -319,10 +350,23 @@ class Rect final {
   }
 
   /**
-   * Indicates whether or not the rectangle has an area. A rectangle has an
-   * area if the width and height are both greater than zero.
+   * @brief Returns the area of the rectangle.
    *
-   * @return true if the rectangle has an area; false otherwise.
+   * @return the area of the rectangle.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  constexpr T area() const noexcept { return m_size.width * m_size.height; }
+
+  /**
+   * @brief Indicates whether or not the rectangle has an area.
+   *
+   * @details The rectangle has an area if both the width and height are
+   * greater than zero.
+   *
+   * @return `true` if the rectangle has an area; `false` otherwise.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -332,12 +376,13 @@ class Rect final {
   }
 
   /**
-   * Calculates and returns a rectangle that represents the union of two
-   * rectangles. This method is only available if the rectangle is based on
-   * <code>int</code>.
+   * @brief Returns the union of two rectangles.
    *
+   * @details Returns a rectangle that represents the union of two rectangles.
+   * This method is only available if the rectangle is based on `int`.
    *
    * @return a rectangle that represents the union of the rectangles.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
@@ -353,9 +398,10 @@ class Rect final {
   }
 
   /**
-   * Returns a textual representation of the rectangle.
+   * @brief Returns a textual representation of the rectangle.
    *
    * @return a textual representation of the rectangle.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -370,13 +416,17 @@ class Rect final {
   }
 
   /**
-   * Converts the rectangle to a pointer to an SDL_Rect. This conversion is
-   * only available if the rectangle is based on <code>int</code>.
+   * @brief Converts the rectangle to `SDL_Rect*`.
+   *
+   * @details This conversion is only available if the rectangle is based on
+   * `int`.
    *
    * @tparam U the type parameter, defaults to the type of the rectangle
    * components.
-   * @return an SDL_Rect pointer that is produced by reinterpreting the
-   * invoked rectangle.
+   *
+   * @return an `SDL_Rect*` that is produced by reinterpreting the invoked
+   * rectangle.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
@@ -386,13 +436,17 @@ class Rect final {
   }
 
   /**
-   * Converts the rectangle to a pointer to an SDL_Rect. This conversion is
-   * only available if the rectangle is based on <code>int</code>.
+   * @brief Converts the rectangle to `const SDL_Rect*`.
+   *
+   * @details This conversion is only available if the rectangle is based on
+   * `int`.
    *
    * @tparam U the type parameter, defaults to the type of the rectangle
    * components.
-   * @return an SDL_Rect pointer that is produced by reinterpreting the
-   * invoked rectangle.
+   *
+   * @return a `const SDL_Rect*` that is produced by reinterpreting the invoked
+   * rectangle.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
@@ -403,13 +457,17 @@ class Rect final {
   }
 
   /**
-   * Converts the rectangle to a pointer to an SDL_FRect. This conversion is
-   * only available if the rectangle is based on <code>float</code>.
+   * @brief Converts the rectangle to `SDL_FRect*`.
+   *
+   * @details This conversion is only available if the rectangle is based on
+   * `float`.
    *
    * @tparam U the type parameter, defaults to the type of the rectangle
    * components.
-   * @return an SDL_FRect pointer that is produced by reinterpreting the
-   * invoked rectangle.
+   *
+   * @return an `SDL_FRect*` that is produced by reinterpreting the invoked
+   * rectangle.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
@@ -419,13 +477,17 @@ class Rect final {
   }
 
   /**
-   * Converts the rectangle to a pointer to an SDL_FRect. This conversion is
-   * only available if the rectangle is based on <code>float</code>.
+   * @brief Converts the rectangle to `const SDL_FRect*`.
+   *
+   * @details This conversion is only available if the rectangle is based on
+   * `float`.
    *
    * @tparam U the type parameter, defaults to the type of the rectangle
    * components.
-   * @return an SDL_FRect pointer that is produced by reinterpreting the
-   * invoked rectangle.
+   *
+   * @return a `const SDL_FRect*` that is produced by reinterpreting the invoked
+   * rectangle.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
@@ -436,12 +498,16 @@ class Rect final {
   }
 
   /**
-   * Converts the rectangle to an SDL_Rect. This conversion is
-   * only available if the rectangle is based on <code>int</code>.
+   * @brief Converts the rectangle to an `SDL_Rect`.
+   *
+   * @details This conversion is only available if the rectangle is based on
+   * `int`.
    *
    * @tparam U the type parameter, defaults to the type of the rectangle
    * components.
-   * @return an SDL_Rect based on this rectangle.
+   *
+   * @return an `SDL_Rect` based on this rectangle.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
@@ -451,12 +517,16 @@ class Rect final {
   }
 
   /**
-   * Converts the rectangle to an SDL_FRect. This conversion is
-   * only available if the rectangle is based on <code>float</code>.
+   * @brief Converts the rectangle to an `SDL_FRect`.
+   *
+   * @details This conversion is only available if the rectangle is based on
+   * `float`.
    *
    * @tparam U the type parameter, defaults to the type of the rectangle
    * components.
-   * @return an SDL_FRect based on this rectangle.
+   *
+   * @return an `SDL_FRect` based on this rectangle.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
@@ -466,11 +536,13 @@ class Rect final {
   }
 
   /**
-   * Indicates whether or not two rectangles are equal.
+   * @brief Indicates whether or not two rectangles are equal.
    *
    * @param lhs the left-hand side rectangle.
    * @param rhs the right-hand side rectangle.
-   * @return true if the rectangles are equal; false otherwise.
+   *
+   * @return `true` if the rectangles are equal; `false` otherwise.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD
@@ -478,11 +550,13 @@ class Rect final {
       <T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
   /**
-   * Indicates whether or not two rectangles aren't equal.
+   * @brief Indicates whether or not two rectangles aren't equal.
    *
    * @param lhs the left-hand side rectangle.
    * @param rhs the right-hand side rectangle.
-   * @return true if the rectangles aren't equal; false otherwise.
+   *
+   * @return `true` if the rectangles aren't equal; `false` otherwise.
+   *
    * @since 4.0.0
    */
   CENTURION_NODISCARD

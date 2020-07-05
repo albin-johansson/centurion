@@ -333,6 +333,15 @@ TEST_CASE("IRect::center_y", "[Rect]")
   CHECK(rect.center_y() == y + (height / 2));
 }
 
+TEST_CASE("IRect::area", "[Rect]")
+{
+  const auto width = 563;
+  const auto height = 194;
+  const IRect rect{{}, {width, height}};
+
+  CHECK(rect.area() == (width * height));
+}
+
 TEST_CASE("IRect::center", "[Rect]")
 {
   const auto x = 77;
@@ -650,6 +659,15 @@ TEST_CASE("FRect::center_y", "[FRect]")
   const auto height = 1240.2f;
   const FRect rect{{0, y}, {0, height}};
   CHECK(rect.center_y() == y + (height / 2.0f));
+}
+
+TEST_CASE("FRect::area", "[FRect]")
+{
+  const auto width = 184.3f;
+  const auto height = 728.9f;
+  const FRect rect{{}, {width, height}};
+
+  CHECK(rect.area() == (width * height));
 }
 
 TEST_CASE("FRect::max_x", "[FRect]")

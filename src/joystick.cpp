@@ -146,6 +146,12 @@ void Joystick::rumble(Uint16 lowFreq, Uint16 highFreq, Uint32 duration) noexcept
 }
 
 CENTURION_DEF
+Joystick::Type Joystick::type() const noexcept
+{
+  return static_cast<Type>(SDL_JoystickGetType(m_joystick));
+}
+
+CENTURION_DEF
 Optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
     int ball) const noexcept
 

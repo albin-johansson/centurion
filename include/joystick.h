@@ -99,6 +99,26 @@ class Joystick final {
   };
 
   /**
+   * @enum Type
+   * @brief Mirrors the SDL_JoystickType enum.
+   *
+   * @since 4.2.0
+   * @headerfile joystick.h
+   */
+  enum class Type {
+    Unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
+    GameController = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
+    Wheel = SDL_JOYSTICK_TYPE_WHEEL,
+    ArcadeStick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
+    FlightStick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
+    DancePad = SDL_JOYSTICK_TYPE_DANCE_PAD,
+    Guitar = SDL_JOYSTICK_TYPE_GUITAR,
+    DrumKit = SDL_JOYSTICK_TYPE_DRUM_KIT,
+    ArcadePad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
+    Throttle = SDL_JOYSTICK_TYPE_THROTTLE
+  };
+
+  /**
    * @struct BallAxisChange
    * @brief Represents the difference in a joystick ball axis position.
    *
@@ -171,9 +191,11 @@ class Joystick final {
   //  SDL_JoystickGetVendor
   //  SDL_JoystickGetProduct
   //  SDL_JoystickGetProductVersion
-  //  SDL_JoystickGetType
+
   //  SDL_JoystickGetGUIDString ?
   //  SDL_JoystickGetAxisInitialState
+
+  //  SDL_JoystickGetType
 
   /**
    * @brief Creates and returns a unique pointer to a `Joystick` instance.
@@ -356,6 +378,16 @@ class Joystick final {
   CENTURION_API void rumble(Uint16 lowFreq,
                             Uint16 highFreq,
                             Uint32 duration) noexcept;
+
+  /**
+   * @brief Returns the type associated with the joystick.
+   *
+   * @return a `Joystick::Type` value that represents the type of the joystick.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API Type type() const noexcept;
 
   /**
    * @brief Returns the ball axis change since the last poll.

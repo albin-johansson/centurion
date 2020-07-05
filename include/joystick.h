@@ -54,12 +54,14 @@ using JoystickID = SDL_JoystickID;
  * @class Joystick
  * @brief Represents various types of joysticks.
  *
+ * @details `Joystick` instances are movable but not copyable.
+ *
  * @todo Cover `SDL_JoystickGetGUIDString`.
  *
  * @headerfile joystick.h
  * @since 4.2.0
  *
- * @see SDL_Joystick
+ * @see `SDL_Joystick`
  */
 class Joystick final {
  public:
@@ -166,10 +168,27 @@ class Joystick final {
    */
   CENTURION_API explicit Joystick(Owner<SDL_Joystick*> joystick);
 
+  /**
+   * @brief Creates a `Joystick` instance by moving the supplied joystick
+   * into this one.
+   *
+   * @param other the joystick that will be moved.
+   *
+   * @since 4.2.0
+   */
   CENTURION_API Joystick(Joystick&& other) noexcept;
 
   Joystick(const Joystick&) = delete;
 
+  /**
+   * @brief Moves the contents of the supplied joystick into this one.
+   *
+   * @param other the joystick that will be moved.
+   *
+   * @return a reference to the joystick that claimed the supplied joystick.
+   *
+   * @since 4.2.0
+   */
   CENTURION_API Joystick& operator=(Joystick&& other) noexcept;
 
   Joystick& operator=(const Joystick&) = delete;

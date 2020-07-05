@@ -99,6 +99,18 @@ void Joystick::update() noexcept
 }
 
 CENTURION_DEF
+void Joystick::lock() noexcept
+{
+  SDL_LockJoysticks();
+}
+
+CENTURION_DEF
+void Joystick::unlock() noexcept
+{
+  SDL_UnlockJoysticks();
+}
+
+CENTURION_DEF
 void Joystick::set_polling(bool enabled) noexcept
 {
   SDL_JoystickEventState(enabled ? SDL_ENABLE : SDL_DISABLE);

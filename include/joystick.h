@@ -177,8 +177,6 @@ class Joystick final {
   // TODO
   //  SDL_JoystickGetGUIDString
   //  SDL_JoystickGetGUIDFromString
-  //  SDL_LockJoysticks
-  //  SDL_UnlockJoysticks
   //  SDL_JoystickGetDevicePlayerIndex
   //  SDL_JoystickGetDeviceVendor
   //  SDL_JoystickGetDeviceProduct
@@ -276,6 +274,23 @@ class Joystick final {
    * @since 4.2.0
    */
   CENTURION_API static void update() noexcept;
+
+  /**
+   * @brief Locks the access to all joysticks.
+   *
+   * @details If you are using the joystick API from multiple threads you
+   * should use this method to restrict access to the joysticks.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_API static void lock() noexcept;
+
+  /**
+   * @brief Unlocks the access to all joysticks.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_API static void unlock() noexcept;
 
   /**
    * @brief Specifies whether or not joystick event polling is enabled.

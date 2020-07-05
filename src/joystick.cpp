@@ -129,6 +129,12 @@ SDL_Joystick* Joystick::from_instance_id(JoystickID id) noexcept
 }
 
 CENTURION_DEF
+SDL_Joystick* Joystick::from_player_index(int playerIndex) noexcept
+{
+  return SDL_JoystickFromPlayerIndex(playerIndex);
+}
+
+CENTURION_DEF
 Optional<int> Joystick::amount() noexcept
 {
   const auto result = SDL_NumJoysticks();

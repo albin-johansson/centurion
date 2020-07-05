@@ -184,8 +184,6 @@ class Joystick final {
   //  SDL_JoystickGetDeviceType
   //  SDL_JoystickGetDeviceInstanceID
 
-  //  SDL_JoystickFromPlayerIndex
-
   //  SDL_JoystickGetGUIDString ?
 
   /**
@@ -330,6 +328,20 @@ class Joystick final {
    */
   CENTURION_NODISCARD
   CENTURION_API static SDL_Joystick* from_instance_id(JoystickID id) noexcept;
+
+  /**
+   * @brief Returns a pointer to the joystick associated with the specified
+   * player index.
+   *
+   * @param playerIndex the player index of the desired joystick.
+   *
+   * @return a pointer to the associated joystick; `nullptr` if there is none.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static SDL_Joystick* from_player_index(int playerIndex) noexcept;
 
   /**
    * @brief Returns the amount of currently available joysticks.

@@ -212,6 +212,19 @@ Optional<Sint16> Joystick::axis_pos(unsigned int axis) const noexcept
 }
 
 CENTURION_DEF
+Optional<Sint16> Joystick::axis_initial_state(unsigned int axis) const noexcept
+{
+  Sint16 state{};
+  const auto hadInitialState = SDL_JoystickGetAxisInitialState(
+      m_joystick, static_cast<int>(axis), &state);
+  if (hadInitialState) {
+    return state;
+  } else {
+    return nothing;
+  }
+}
+
+CENTURION_DEF
 bool Joystick::attached() const noexcept
 {
   return SDL_JoystickGetAttached(m_joystick);

@@ -189,7 +189,6 @@ class Joystick final {
   //  SDL_JoystickGetProductVersion
 
   //  SDL_JoystickGetGUIDString ?
-  //  SDL_JoystickGetAxisInitialState
 
   /**
    * @brief Creates and returns a unique pointer to a `Joystick` instance.
@@ -459,6 +458,20 @@ class Joystick final {
    */
   CENTURION_NODISCARD
   CENTURION_API Optional<Sint16> axis_pos(unsigned int axis) const noexcept;
+
+  /**
+   * @brief Returns the initial state of the specified axis on the joystick.
+   *
+   * @param axis the axis that will be queried. Starts at 0.
+   *
+   * @return the initial state of the axis; `nothing` if the axis doesn't
+   * have an initial state.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  Optional<Sint16> axis_initial_state(unsigned int axis) const noexcept;
 
   /**
    * @brief Indicates whether or not the joystick is attached to the system.

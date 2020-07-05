@@ -146,9 +146,70 @@ Optional<int> Joystick::amount() noexcept
 }
 
 CENTURION_DEF
-SDL_JoystickGUID Joystick::device_guid(int deviceIndex) noexcept
+SDL_JoystickGUID Joystick::guid(int deviceIndex) noexcept
 {
   return SDL_JoystickGetDeviceGUID(deviceIndex);
+}
+
+CENTURION_DEF
+Optional<int> Joystick::player_index(int deviceIndex) noexcept
+{
+  const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
+  if (index == -1) {
+    return nothing;
+  } else {
+    return index;
+  }
+}
+
+CENTURION_DEF
+Optional<Uint16> Joystick::vendor(int deviceIndex) noexcept
+{
+  const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
+  if (vendor == 0) {
+    return nothing;
+  } else {
+    return vendor;
+  }
+}
+
+CENTURION_DEF
+Optional<Uint16> Joystick::product(int deviceIndex) noexcept
+{
+  const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
+  if (product == 0) {
+    return nothing;
+  } else {
+    return product;
+  }
+}
+
+CENTURION_DEF
+Optional<Uint16> Joystick::product_version(int deviceIndex) noexcept
+{
+  const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
+  if (version == 0) {
+    return nothing;
+  } else {
+    return version;
+  }
+}
+
+CENTURION_DEF
+Joystick::Type Joystick::type(int deviceIndex) noexcept
+{
+  return static_cast<Type>(SDL_JoystickGetDeviceType(deviceIndex));
+}
+
+CENTURION_DEF
+Optional<SDL_JoystickID> Joystick::instance_id(int deviceIndex) noexcept
+{
+  const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
+  if (id == -1) {
+    return nothing;
+  } else {
+    return id;
+  }
 }
 
 CENTURION_DEF
@@ -287,7 +348,7 @@ int Joystick::num_buttons() const noexcept
 }
 
 CENTURION_DEF
-JoystickID Joystick::id() const noexcept
+JoystickID Joystick::instance_id() const noexcept
 {
   // Can fail for null joysticks, but that can't happen due to class invariant.
   return SDL_JoystickInstanceID(m_joystick);

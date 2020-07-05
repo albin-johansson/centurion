@@ -174,18 +174,6 @@ class Joystick final {
 
   CENTURION_API ~Joystick() noexcept;
 
-  // TODO
-  //  SDL_JoystickGetGUIDFromString
-  //
-  //  SDL_JoystickGetDevicePlayerIndex
-  //  SDL_JoystickGetDeviceVendor
-  //  SDL_JoystickGetDeviceProduct
-  //  SDL_JoystickGetDeviceProductVersion
-  //  SDL_JoystickGetDeviceType
-  //  SDL_JoystickGetDeviceInstanceID
-
-  //  SDL_JoystickGetGUIDString ?
-
   /**
    * @brief Creates and returns a unique pointer to a `Joystick` instance.
    *
@@ -354,12 +342,16 @@ class Joystick final {
   CENTURION_NODISCARD
   CENTURION_API static Optional<int> amount() noexcept;
 
+  //  TODO SDL_JoystickGetGUIDFromString
+  //  TODO SDL_JoystickGetGUIDString ?
+
   /**
    * @brief Returns the GUID for the joystick associated with the specified
    * device index.
    *
    * @note The GUID is implementation-dependent.
    * @note This function can be called before any joysticks are opened.
+   *
    * @param deviceIndex refers to the N'th joystick that is currently recognized
    * by SDL.
    *
@@ -368,7 +360,96 @@ class Joystick final {
    * @since 4.2.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static SDL_JoystickGUID device_guid(int deviceIndex) noexcept;
+  CENTURION_API static SDL_JoystickGUID guid(int deviceIndex) noexcept;
+
+  /**
+   * @brief Returns the player index of the joystick associated with the
+   * specified device index.
+   *
+   * @note This method can be called before any joysticks are opened.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the player index of the desired joystick; `nothing` if it can't
+   * be obtained.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static Optional<int> player_index(int deviceIndex) noexcept;
+
+  /**
+   * @brief Returns the USB vendor ID for the joystick associated with the
+   * specified device index.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the USB vendor ID of the desired joystick; `nothing` if it can't
+   * be obtained.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static Optional<Uint16> vendor(int deviceIndex) noexcept;
+
+  /**
+   * @brief Returns the USB product ID for the joystick associated with the
+   * specified device index.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the USB product ID of the desired joystick; `nothing` if it can't
+   * be obtained.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static Optional<Uint16> product(int deviceIndex) noexcept;
+
+  /**
+   * @brief Returns the product version for the joystick associated with the
+   * specified device index.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the product version of the desired joystick; `nothing` if it
+   * can't be obtained.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static Optional<Uint16> product_version(int deviceIndex) noexcept;
+
+  /**
+   * @brief Returns the type of the joystick associated with the specified
+   * device index.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the type of the specified joystick.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API static Type type(int deviceIndex) noexcept;
+
+  /**
+   * @brief Returns the instance ID for the joystick associated with the
+   * specified device index.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the instance ID of the desired joystick; `nothing` if it can't
+   * be obtained.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API
+  static Optional<SDL_JoystickID> instance_id(int deviceIndex) noexcept;
 
   /**
    * @brief Returns the associated with the joystick with the specified
@@ -574,7 +655,7 @@ class Joystick final {
    * @since 4.2.0
    */
   CENTURION_NODISCARD
-  CENTURION_API JoystickID id() const noexcept;
+  CENTURION_API JoystickID instance_id() const noexcept;
 
   /**
    * @brief Returns the GUID associated with the joystick.

@@ -166,6 +166,19 @@ class Rect final {
   constexpr void set_height(T height) noexcept { m_size.height = height; }
 
   /**
+   * @brief Changes the size of the rectangle.
+   *
+   * @param size the new size of the rectangle.
+   *
+   * @since 4.2.0
+   */
+  constexpr void resize(TArea<T> size) noexcept
+  {
+    m_size.width = size.width;
+    m_size.height = size.height;
+  };
+
+  /**
    * @brief Sets all of the components of the rectangle.
    *
    * @param x the new x-coordinate of the rectangle.

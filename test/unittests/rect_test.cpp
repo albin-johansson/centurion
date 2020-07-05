@@ -92,6 +92,16 @@ TEST_CASE("IRect::set_height", "[Rect]")
   CHECK(height == rect.height());
 }
 
+TEST_CASE("IRect::resize", "[Rect]")
+{
+  IRect rect;
+
+  const IArea size{8596, 9235};
+  rect.resize(size);
+
+  CHECK(rect.size() == size);
+}
+
 TEST_CASE("IRect::set", "[Rect]")
 {
   IRect rect;
@@ -472,6 +482,16 @@ TEST_CASE("FRect::set_height", "[FRect]")
   rect.set_height(height);
 
   CHECK(rect.height() == height);
+}
+
+TEST_CASE("FRect::resize", "[FRect]")
+{
+  FRect rect;
+
+  const FArea size{859.6f, 773.4f};
+  rect.resize(size);
+
+  CHECK(rect.size() == size);
 }
 
 TEST_CASE("FRect::set", "[FRect]")

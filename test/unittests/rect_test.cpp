@@ -443,7 +443,7 @@ TEST_CASE("FRect::set_y", "[FRect]")
   CHECK(rect.y() == y);
 }
 
-TEST_CASE("IRect::move_to", "[FRect]")
+TEST_CASE("FRect::move_to", "[FRect]")
 {
   FRect rect;
 

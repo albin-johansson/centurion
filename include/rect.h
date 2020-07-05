@@ -135,6 +135,19 @@ class Rect final {
   constexpr void set_y(T y) noexcept { m_position.set_y(y); }
 
   /**
+   * @brief Moves the rectangle to the specified position.
+   *
+   * @note Some frameworks have this kind of method change the size of the
+   * rectangle. However, this method does *not* change the size of the
+   * rectangle.
+   *
+   * @param pos the new position of the rectangle.
+   *
+   * @since 4.2.0
+   */
+  constexpr void move_to(Point<T> pos) noexcept { m_position.set(pos); }
+
+  /**
    * @brief Sets the width of the rectangle.
    *
    * @param width the new width of the rectangle.

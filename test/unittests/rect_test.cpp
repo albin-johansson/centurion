@@ -61,6 +61,17 @@ TEST_CASE("IRect::set_y", "[Rect]")
   CHECK(y == rect.y());
 }
 
+TEST_CASE("IRect::move_to", "[Rect]")
+{
+  IRect rect;
+
+  const IPoint pos{867, 654};
+
+  rect.move_to(pos);
+
+  CHECK(pos == rect.position());
+}
+
 TEST_CASE("IRect::set_width", "[Rect]")
 {
   IRect rect;
@@ -430,6 +441,17 @@ TEST_CASE("FRect::set_y", "[FRect]")
   rect.set_y(y);
 
   CHECK(rect.y() == y);
+}
+
+TEST_CASE("IRect::move_to", "[FRect]")
+{
+  FRect rect;
+
+  const FPoint pos{834.4f, 345.8f};
+
+  rect.move_to(pos);
+
+  CHECK(pos == rect.position());
 }
 
 TEST_CASE("FRect::set_width", "[FRect]")

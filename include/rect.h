@@ -59,6 +59,21 @@ constexpr bool operator!=(const Rect<U>& lhs, const Rect<U>& rhs) noexcept;
  * @details `Rect<int>` and `Rect<float>` can safely be explicitly casted to
  * pointers to `SDL_Rect` and `SDL_FRect` respectively.
  *
+ * @par Examples
+ * The following are some examples of interaction with the SDL rectangle
+ * structs.
+ * @code{.cpp}
+ *   FRect frect{};
+ *   auto* a = static_cast<SDL_FRect*>(frect);
+ *   const auto* b = static_cast<const SDL_FRect*>(frect);
+ *   SDL_FRect c = frect;
+ *
+ *   IRect rect{};
+ *   auto* d = static_cast<SDL_Rect*>(rect);
+ *   const auto* e = static_cast<const SDL_Rect*>(rect);
+ *   SDL_Rect f = rect;
+ * @endcode
+ *
  * @tparam T the type of the components of the rectangle. Set to float by
  * default.
  *
@@ -105,6 +120,7 @@ class Rect final {
    * @brief Sets the x-coordinate of the rectangle.
    *
    * @param x the new x-coordinate of the rectangle.
+   *
    * @since 4.0.0
    */
   constexpr void set_x(T x) noexcept { m_position.set_x(x); }
@@ -113,6 +129,7 @@ class Rect final {
    * @brief Sets the y-coordinate of the rectangle.
    *
    * @param y the new y-coordinate of the rectangle.
+   *
    * @since 4.0.0
    */
   constexpr void set_y(T y) noexcept { m_position.set_y(y); }
@@ -121,6 +138,7 @@ class Rect final {
    * @brief Sets the width of the rectangle.
    *
    * @param width the new width of the rectangle.
+   *
    * @since 4.0.0
    */
   constexpr void set_width(T width) noexcept { m_size.width = width; }
@@ -129,6 +147,7 @@ class Rect final {
    * @brief Sets the height of the rectangle.
    *
    * @param height the new height of the rectangle.
+   *
    * @since 4.0.0
    */
   constexpr void set_height(T height) noexcept { m_size.height = height; }
@@ -237,7 +256,7 @@ class Rect final {
   }
 
   /**
-   * Returns the x-coordinate of the rectangle.
+   * @brief Returns the x-coordinate of the rectangle.
    *
    * @return the x-coordinate of the rectangle.
    *

@@ -123,7 +123,7 @@ bool Joystick::polling() noexcept
 }
 
 CENTURION_DEF
-SDL_Joystick* Joystick::from_instance_id(JoystickID id) noexcept
+SDL_Joystick* Joystick::from_instance_id(SDL_JoystickID id) noexcept
 {
   return SDL_JoystickFromInstanceID(id);
 }
@@ -355,7 +355,7 @@ int Joystick::num_buttons() const noexcept
 }
 
 CENTURION_DEF
-JoystickID Joystick::instance_id() const noexcept
+SDL_JoystickID Joystick::instance_id() const noexcept
 {
   // Can fail for null joysticks, but that can't happen due to class invariant.
   return SDL_JoystickInstanceID(m_joystick);

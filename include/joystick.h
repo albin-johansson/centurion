@@ -46,9 +46,11 @@ namespace centurion {
  * @typedef JoystickID
  * @brief A type alias for SDL_JoystickID.
  *
+ * @deprecated since 4.2.0, prefer `SDL_JoystickID`.
+ *
  * @since 4.0.0
  */
-using JoystickID = SDL_JoystickID;
+using JoystickID CENTURION_DEPRECATED = SDL_JoystickID;
 
 /**
  * @class Joystick
@@ -336,7 +338,8 @@ class Joystick final {
    * @since 4.2.0
    */
   CENTURION_NODISCARD
-  CENTURION_API static SDL_Joystick* from_instance_id(JoystickID id) noexcept;
+  CENTURION_API
+  static SDL_Joystick* from_instance_id(SDL_JoystickID id) noexcept;
 
   /**
    * @brief Returns a pointer to the joystick associated with the specified
@@ -688,7 +691,7 @@ class Joystick final {
    * @since 4.2.0
    */
   CENTURION_NODISCARD
-  CENTURION_API JoystickID instance_id() const noexcept;
+  CENTURION_API SDL_JoystickID instance_id() const noexcept;
 
   /**
    * @brief Returns the GUID associated with the joystick.

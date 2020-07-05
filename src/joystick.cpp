@@ -294,7 +294,7 @@ JoystickID Joystick::id() const noexcept
 }
 
 CENTURION_DEF
-SDL_JoystickGUID Joystick::device_guid() noexcept
+SDL_JoystickGUID Joystick::guid() noexcept
 {
   return SDL_JoystickGetGUID(m_joystick);
 }

@@ -586,7 +586,7 @@ class Joystick final {
    * @since 4.2.0
    */
   CENTURION_NODISCARD
-  CENTURION_API SDL_JoystickGUID device_guid() noexcept;
+  CENTURION_API SDL_JoystickGUID guid() noexcept;
 
   /**
    * @brief Returns the name associated with the joystick.

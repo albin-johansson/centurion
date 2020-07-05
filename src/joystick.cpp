@@ -158,6 +158,23 @@ void Joystick::rumble(Uint16 lowFreq, Uint16 highFreq, Uint32 duration) noexcept
 }
 
 CENTURION_DEF
+void Joystick::set_player_index(int index) noexcept
+{
+  SDL_JoystickSetPlayerIndex(m_joystick, index);
+}
+
+CENTURION_DEF
+Optional<int> Joystick::player_index() const noexcept
+{
+  const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
+  if (index == -1) {
+    return nothing;
+  } else {
+    return index;
+  }
+}
+
+CENTURION_DEF
 Joystick::Type Joystick::type() const noexcept
 {
   return static_cast<Type>(SDL_JoystickGetType(m_joystick));

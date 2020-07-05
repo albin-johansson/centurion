@@ -175,17 +175,16 @@ class Joystick final {
   CENTURION_API ~Joystick() noexcept;
 
   // TODO
-  //  SDL_JoystickGetGUIDString
   //  SDL_JoystickGetGUIDFromString
+  //
   //  SDL_JoystickGetDevicePlayerIndex
   //  SDL_JoystickGetDeviceVendor
   //  SDL_JoystickGetDeviceProduct
   //  SDL_JoystickGetDeviceProductVersion
   //  SDL_JoystickGetDeviceType
   //  SDL_JoystickGetDeviceInstanceID
+
   //  SDL_JoystickFromPlayerIndex
-  //  SDL_JoystickGetPlayerIndex
-  //  SDL_JoystickSetPlayerIndex
 
   //  SDL_JoystickGetGUIDString ?
 
@@ -389,6 +388,28 @@ class Joystick final {
   CENTURION_API void rumble(Uint16 lowFreq,
                             Uint16 highFreq,
                             Uint32 duration) noexcept;
+
+  /**
+   * @brief Sets the player index to be associated with the joystick.
+   *
+   * @param index the player index that will be used.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_API void set_player_index(int index) noexcept;
+
+  /**
+   * @brief Returns the player index of the joystick, if available.
+   *
+   * @details For XInput controllers this returns the XInput user index.
+   *
+   * @return the player index associated with the joystick; `nothing` if it
+   * can't be obtained
+   *
+   * @since 4.2.0
+   */
+  CENTURION_NODISCARD
+  CENTURION_API Optional<int> player_index() const noexcept;
 
   /**
    * @brief Returns the type associated with the joystick.

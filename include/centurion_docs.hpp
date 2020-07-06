@@ -1,7 +1,9 @@
 /**
+ * @file centurion_docs.hpp
  * @brief Only contains documentation for Doxygen.
+ *
  * @note Don't include this file, there's no code in it!
- * @file centurion_docs.h
+ * 
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License

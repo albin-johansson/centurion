@@ -589,7 +589,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] friend constexpr bool operator==
+  friend constexpr bool operator==
       <T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
   /**
@@ -602,12 +602,12 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] friend constexpr bool operator!=
+  friend constexpr bool operator!=
       <T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
  private:
   Point<T> m_position = {0, 0};
-  area<T> m_size = {0, 0};
+  centurion::area<T> m_size = {0, 0};
 
   static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
                 "Rect type must be either integral or floating-point!");

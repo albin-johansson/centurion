@@ -58,6 +58,9 @@ struct TArea;
  *
  * @tparam T the type of the components of the Area, defaults to float.
  * @headerfile area.h
+ *
+ * @todo 5.0.0 fix the name of this class.
+ *
  * @note This struct wasn't templated in older versions of the library, hence
  * the rather ugly name. This name will be changed in some later major release.
  * @struct TArea

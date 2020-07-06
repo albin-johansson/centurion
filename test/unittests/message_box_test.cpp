@@ -1,9 +1,9 @@
-#include "message_box.h"
+#include "message_box.hpp"
 
 #include <catch.hpp>
 #include <string>
 
-#include "colors.h"
+#include "colors.hpp"
 
 using namespace centurion;
 using namespace centurion::messagebox;

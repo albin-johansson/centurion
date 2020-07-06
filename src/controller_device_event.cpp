@@ -1,7 +1,7 @@
 #ifndef CENTURION_CONTROLLER_DEVICE_EVENT_SOURCE
 #define CENTURION_CONTROLLER_DEVICE_EVENT_SOURCE
 
-#include "controller_device_event.h"
+#include "controller_device_event.hpp"
 
 #include <utility>
 

@@ -1,10 +1,10 @@
 #ifndef CENTURION_WINDOW_SOURCE
 #define CENTURION_WINDOW_SOURCE
 
-#include "window.h"
+#include "window.hpp"
 
-#include "error.h"
-#include "surface.h"
+#include "error.hpp"
+#include "surface.hpp"
 
 namespace centurion {
 

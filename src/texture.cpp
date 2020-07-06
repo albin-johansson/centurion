@@ -1,15 +1,15 @@
 #ifndef CENTURION_IMAGE_SOURCE
 #define CENTURION_IMAGE_SOURCE
 
-#include "texture.h"
+#include "texture.hpp"
 
 #include <SDL_image.h>
 
-#include "centurion_exception.h"
-#include "centurion_utils.h"
-#include "error.h"
-#include "renderer.h"
-#include "surface.h"
+#include "centurion_exception.hpp"
+#include "centurion_utils.hpp"
+#include "error.hpp"
+#include "renderer.hpp"
+#include "surface.hpp"
 
 namespace centurion {
 

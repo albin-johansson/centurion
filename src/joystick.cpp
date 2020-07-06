@@ -1,11 +1,11 @@
 #ifndef CENTURION_JOYSTICK_SOURCE
 #define CENTURION_JOYSTICK_SOURCE
 
-#include "joystick.h"
+#include "joystick.hpp"
 
 #include <utility>
 
-#include "centurion_exception.h"
+#include "centurion_exception.hpp"
 
 namespace centurion {
 

@@ -1,7 +1,7 @@
 #ifndef CENTURION_COLOR_SOURCE
 #define CENTURION_COLOR_SOURCE
 
-#include "color.h"
+#include "color.hpp"
 
 namespace centurion {
 

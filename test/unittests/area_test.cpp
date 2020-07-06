@@ -1,4 +1,4 @@
-#include "area.h"
+#include "area.hpp"
 
 #include <catch.hpp>
 

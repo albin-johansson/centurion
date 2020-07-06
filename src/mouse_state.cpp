@@ -1,11 +1,11 @@
 #ifndef CENTURION_MOUSE_STATE_SOURCE
 #define CENTURION_MOUSE_STATE_SOURCE
 
-#include "mouse_state.h"
+#include "mouse_state.hpp"
 
 #include <SDL.h>
 
-#include "centurion_utils.h"
+#include "centurion_utils.hpp"
 
 namespace centurion {
 namespace input {

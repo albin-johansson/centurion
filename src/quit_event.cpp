@@ -1,7 +1,7 @@
 #ifndef CENTURION_QUIT_EVENT_SOURCE
 #define CENTURION_QUIT_EVENT_SOURCE
 
-#include "quit_event.h"
+#include "quit_event.hpp"
 
 #include <utility>
 

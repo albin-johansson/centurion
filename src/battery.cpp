@@ -1,7 +1,7 @@
 #ifndef CENTURION_BATTERY_SOURCE
 #define CENTURION_BATTERY_SOURCE
 
-#include "battery.h"
+#include "battery.hpp"
 
 namespace centurion {
 

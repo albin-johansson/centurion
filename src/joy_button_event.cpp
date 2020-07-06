@@ -1,7 +1,7 @@
 #ifndef CENTURION_JOY_BUTTON_EVENT_SOURCE
 #define CENTURION_JOY_BUTTON_EVENT_SOURCE
 
-#include "joy_button_event.h"
+#include "joy_button_event.hpp"
 
 #include <utility>
 

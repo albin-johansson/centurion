@@ -1,7 +1,7 @@
 #ifndef CENTURION_WINDOW_EVENT_SOURCE
 #define CENTURION_WINDOW_EVENT_SOURCE
 
-#include "window_event.h"
+#include "window_event.hpp"
 
 #include <utility>
 

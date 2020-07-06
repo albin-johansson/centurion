@@ -1,4 +1,4 @@
-#include "controller_axis_event.h"
+#include "controller_axis_event.hpp"
 
 #include <catch.hpp>
 

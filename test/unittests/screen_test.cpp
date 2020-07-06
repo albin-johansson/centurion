@@ -1,4 +1,4 @@
-#include "screen.h"
+#include "screen.hpp"
 
 #include <catch.hpp>
 

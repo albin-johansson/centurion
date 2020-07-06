@@ -1,7 +1,7 @@
 #ifndef CENTURION_SYSWM_EVENT_SOURCE
 #define CENTURION_SYSWM_EVENT_SOURCE
 
-#include "syswm_event.h"
+#include "syswm_event.hpp"
 
 namespace centurion {
 namespace event {

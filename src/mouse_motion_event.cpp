@@ -1,7 +1,7 @@
 #ifndef CENTURION_MOUSE_MOTION_EVENT_SOURCE
 #define CENTURION_MOUSE_MOTION_EVENT_SOURCE
 
-#include "mouse_motion_event.h"
+#include "mouse_motion_event.hpp"
 
 #include <utility>
 

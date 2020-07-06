@@ -1,4 +1,4 @@
-#include "text_editing_event.h"
+#include "text_editing_event.hpp"
 
 #include <catch.hpp>
 

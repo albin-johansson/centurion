@@ -1,4 +1,4 @@
-#include "joy_device_event.h"
+#include "joy_device_event.hpp"
 
 #include <catch.hpp>
 

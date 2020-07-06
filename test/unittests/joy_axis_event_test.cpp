@@ -1,4 +1,4 @@
-#include "joy_axis_event.h"
+#include "joy_axis_event.hpp"
 
 #include <catch.hpp>
 

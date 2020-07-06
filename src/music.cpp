@@ -1,10 +1,10 @@
 #ifndef CENTURION_MUSIC_SOURCE
 #define CENTURION_MUSIC_SOURCE
 
-#include "music.h"
+#include "music.hpp"
 
-#include "centurion_exception.h"
-#include "error.h"
+#include "centurion_exception.hpp"
+#include "error.hpp"
 
 namespace centurion {
 

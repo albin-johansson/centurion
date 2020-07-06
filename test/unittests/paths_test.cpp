@@ -1,4 +1,4 @@
-#include "paths.h"
+#include "paths.hpp"
 
 #include <catch.hpp>
 

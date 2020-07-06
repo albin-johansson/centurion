@@ -1,7 +1,7 @@
 #ifndef CENTURION_CONTROLLER_BUTTON_EVENT_SOURCE
 #define CENTURION_CONTROLLER_BUTTON_EVENT_SOURCE
 
-#include "controller_button_event.h"
+#include "controller_button_event.hpp"
 
 #include <utility>
 

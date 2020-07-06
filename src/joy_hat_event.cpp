@@ -1,7 +1,7 @@
 #ifndef CENTURION_JOY_HAT_EVENT_SOURCE
 #define CENTURION_JOY_HAT_EVENT_SOURCE
 
-#include "joy_hat_event.h"
+#include "joy_hat_event.hpp"
 
 #include <utility>
 

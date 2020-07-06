@@ -1,7 +1,7 @@
 #ifndef CENTURION_EXCEPTION_SOURCE
 #define CENTURION_EXCEPTION_SOURCE
 
-#include "centurion_exception.h"
+#include "centurion_exception.hpp"
 
 namespace centurion {
 

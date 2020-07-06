@@ -1,7 +1,7 @@
 #ifndef CENTURION_CONTROLLER_AXIS_EVENT_SOURCE
 #define CENTURION_CONTROLLER_AXIS_EVENT_SOURCE
 
-#include "controller_axis_event.h"
+#include "controller_axis_event.hpp"
 
 #include <utility>
 

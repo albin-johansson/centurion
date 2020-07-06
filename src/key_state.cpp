@@ -1,12 +1,12 @@
 #ifndef CENTURION_KEY_STATE_SOURCE
 #define CENTURION_KEY_STATE_SOURCE
 
-#include "key_state.h"
+#include "key_state.hpp"
 
 #include <algorithm>
 #include <string>
 
-#include "centurion_utils.h"
+#include "centurion_utils.hpp"
 
 namespace centurion {
 namespace input {

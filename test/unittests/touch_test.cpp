@@ -1,4 +1,4 @@
-#include "touch.h"
+#include "touch.hpp"
 
 #include <catch.hpp>
 

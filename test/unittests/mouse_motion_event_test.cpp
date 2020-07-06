@@ -1,4 +1,4 @@
-#include "mouse_motion_event.h"
+#include "mouse_motion_event.hpp"
 
 #include <catch.hpp>
 

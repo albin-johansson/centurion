@@ -1,11 +1,11 @@
 #ifndef CENTURION_MESSAGE_BOX_SOURCE
 #define CENTURION_MESSAGE_BOX_SOURCE
 
-#include "message_box.h"
+#include "message_box.hpp"
 
-#include "centurion_utils.h"
-#include "colors.h"
-#include "error.h"
+#include "centurion_utils.hpp"
+#include "colors.hpp"
+#include "error.hpp"
 
 namespace centurion {
 namespace messagebox {

@@ -1,7 +1,7 @@
 #ifndef CENTURION_DOLLAR_GESTURE_EVENT_SOURCE
 #define CENTURION_DOLLAR_GESTURE_EVENT_SOURCE
 
-#include "dollar_gesture_event.h"
+#include "dollar_gesture_event.hpp"
 
 #include <utility>
 

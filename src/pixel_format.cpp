@@ -1,7 +1,7 @@
 #ifndef CENTURION_PIXEL_FORMAT_SOURCE
 #define CENTURION_PIXEL_FORMAT_SOURCE
 
-#include "pixel_format.h"
+#include "pixel_format.hpp"
 
 namespace centurion {
 

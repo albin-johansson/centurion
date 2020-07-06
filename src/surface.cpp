@@ -1,13 +1,13 @@
 #ifndef CENTURION_SURFACE_SOURCE
 #define CENTURION_SURFACE_SOURCE
 
-#include "surface.h"
+#include "surface.hpp"
 
 #include <SDL_image.h>
 
-#include "error.h"
-#include "renderer.h"
-#include "texture.h"
+#include "error.hpp"
+#include "renderer.hpp"
+#include "texture.hpp"
 
 namespace centurion {
 

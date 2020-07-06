@@ -1,4 +1,4 @@
-#include "keyboard_event.h"
+#include "keyboard_event.hpp"
 
 #include <SDL.h>
 

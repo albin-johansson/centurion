@@ -1,7 +1,7 @@
 #ifndef CENTURION_LOG_SOURCE
 #define CENTURION_LOG_SOURCE
 
-#include "log.h"
+#include "log.hpp"
 
 namespace centurion {
 

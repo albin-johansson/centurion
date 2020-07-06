@@ -1,7 +1,7 @@
 #ifndef CENTURION_AUDIO_DEVICE_EVENT_SOURCE
 #define CENTURION_AUDIO_DEVICE_EVENT_SOURCE
 
-#include "audio_device_event.h"
+#include "audio_device_event.hpp"
 
 #include <utility>
 

@@ -1,7 +1,7 @@
 #ifndef CENTURION_KEY_SOURCE
 #define CENTURION_KEY_SOURCE
 
-#include "key.h"
+#include "key.hpp"
 
 #include <SDL.h>
 

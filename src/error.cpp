@@ -1,7 +1,7 @@
 #ifndef CENTURION_ERROR_SOURCE
 #define CENTURION_ERROR_SOURCE
 
-#include "error.h"
+#include "error.hpp"
 
 #include <SDL.h>
 #include <SDL_image.h>

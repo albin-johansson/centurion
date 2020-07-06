@@ -1,8 +1,8 @@
-#include "cursor.h"
+#include "cursor.hpp"
 
 #include <catch.hpp>
 
-#include "centurion_exception.h"
+#include "centurion_exception.hpp"
 
 using namespace centurion;
 

@@ -1,9 +1,9 @@
-#include "hints.h"
+#include "hints.hpp"
 
 #include <catch.hpp>
 
-#include "centurion_utils.h"
-#include "window.h"
+#include "centurion_utils.hpp"
+#include "window.hpp"
 
 using namespace centurion;
 using namespace hint;

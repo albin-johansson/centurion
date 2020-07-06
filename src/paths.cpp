@@ -1,11 +1,11 @@
 #ifndef CENTURION_PATHS_SOURCE
 #define CENTURION_PATHS_SOURCE
 
-#include "paths.h"
+#include "paths.hpp"
 
 #include <SDL.h>
 
-#include "centurion_utils.h"
+#include "centurion_utils.hpp"
 
 namespace centurion {
 

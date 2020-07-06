@@ -1,4 +1,4 @@
-#include "mouse_state.h"
+#include "mouse_state.hpp"
 
 #include <catch.hpp>
 

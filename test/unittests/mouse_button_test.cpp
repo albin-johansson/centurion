@@ -1,4 +1,4 @@
-#include "mouse_button.h"
+#include "mouse_button.hpp"
 
 #include <catch.hpp>
 

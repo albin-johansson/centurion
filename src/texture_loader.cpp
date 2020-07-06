@@ -1,11 +1,11 @@
 #ifndef CENTURION_IMAGE_GENERATOR_SOURCE
 #define CENTURION_IMAGE_GENERATOR_SOURCE
 
-#include "texture_loader.h"
+#include "texture_loader.hpp"
 
-#include "centurion_exception.h"
-#include "renderer.h"
-#include "texture.h"
+#include "centurion_exception.hpp"
+#include "renderer.hpp"
+#include "texture.hpp"
 
 namespace centurion {
 

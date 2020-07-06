@@ -1,7 +1,7 @@
 #ifndef CENTURION_SCREEN_SOURCE
 #define CENTURION_SCREEN_SOURCE
 
-#include "screen.h"
+#include "screen.hpp"
 
 #include <SDL.h>
 

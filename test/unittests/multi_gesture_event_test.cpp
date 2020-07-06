@@ -1,4 +1,4 @@
-#include "multi_gesture_event.h"
+#include "multi_gesture_event.hpp"
 
 #include <catch.hpp>
 

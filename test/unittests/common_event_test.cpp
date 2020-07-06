@@ -1,4 +1,4 @@
-#include "common_event.h"
+#include "common_event.hpp"
 
 #include <catch.hpp>
 

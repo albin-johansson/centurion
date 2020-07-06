@@ -1,9 +1,9 @@
 #ifndef CENTURION_CENTURION_SOURCE
 #define CENTURION_CENTURION_SOURCE
 
-#include "centurion.h"
+#include "centurion.hpp"
 
-#include "error.h"
+#include "error.hpp"
 
 namespace centurion {
 

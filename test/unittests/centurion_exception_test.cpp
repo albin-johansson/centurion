@@ -1,4 +1,4 @@
-#include "centurion_exception.h"
+#include "centurion_exception.hpp"
 
 #include <catch.hpp>
 #include <string>

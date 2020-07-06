@@ -1,4 +1,4 @@
-#include "joy_ball_event.h"
+#include "joy_ball_event.hpp"
 
 #include <catch.hpp>
 

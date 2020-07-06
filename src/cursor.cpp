@@ -1,10 +1,10 @@
 #ifndef CENTURION_CURSOR_SOURCE
 #define CENTURION_CURSOR_SOURCE
 
-#include "cursor.h"
+#include "cursor.hpp"
 
-#include "centurion_utils.h"
-#include "error.h"
+#include "centurion_utils.hpp"
+#include "error.hpp"
 
 namespace centurion {
 

@@ -1,4 +1,4 @@
-#include "key_state.h"
+#include "key_state.hpp"
 
 #include <catch.hpp>
 

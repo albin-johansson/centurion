@@ -1,7 +1,7 @@
 #ifndef CENTURION_RAM_SOURCE
 #define CENTURION_RAM_SOURCE
 
-#include "ram.h"
+#include "ram.hpp"
 
 namespace centurion {
 

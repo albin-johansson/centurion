@@ -1,4 +1,4 @@
-#include "key.h"
+#include "key.hpp"
 
 #include <SDL.h>
 

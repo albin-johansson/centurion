@@ -1,4 +1,4 @@
-#include "controller_button_event.h"
+#include "controller_button_event.hpp"
 
 #include <catch.hpp>
 

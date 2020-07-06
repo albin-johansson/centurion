@@ -1,7 +1,7 @@
 #ifndef CENTURION_PLATFORM_SOURCE
 #define CENTURION_PLATFORM_SOURCE
 
-#include "platform.h"
+#include "platform.hpp"
 
 #include <string>
 #include <utility>

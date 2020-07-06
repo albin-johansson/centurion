@@ -1,7 +1,7 @@
 #ifndef CENTURION_BLEND_MODE_SOURCE
 #define CENTURION_BLEND_MODE_SOURCE
 
-#include "blend_mode.h"
+#include "blend_mode.hpp"
 
 namespace centurion {
 

@@ -1,10 +1,10 @@
 #ifndef CENTURION_FONT_SOURCE
 #define CENTURION_FONT_SOURCE
 
-#include "font.h"
+#include "font.hpp"
 
-#include "centurion_utils.h"
-#include "error.h"
+#include "centurion_utils.hpp"
+#include "error.hpp"
 
 namespace centurion {
 

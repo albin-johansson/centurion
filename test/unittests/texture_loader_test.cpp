@@ -1,11 +1,11 @@
-#include "texture_loader.h"
+#include "texture_loader.hpp"
 
 #include <catch.hpp>
 #include <string>
 
-#include "centurion_exception.h"
-#include "renderer.h"
-#include "window.h"
+#include "centurion_exception.hpp"
+#include "renderer.hpp"
+#include "window.hpp"
 
 using namespace centurion;
 using namespace std::literals;

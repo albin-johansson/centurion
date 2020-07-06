@@ -1,10 +1,10 @@
-#include "color.h"
+#include "color.hpp"
 
 #include <catch.hpp>
 #include <utility>
 
-#include "colors.h"
-#include "log.h"
+#include "colors.hpp"
+#include "log.hpp"
 
 using namespace centurion;
 

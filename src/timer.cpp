@@ -1,7 +1,7 @@
 #ifndef CENTURION_TIMER_SOURCE
 #define CENTURION_TIMER_SOURCE
 
-#include "timer.h"
+#include "timer.hpp"
 
 namespace centurion {
 

@@ -1,7 +1,7 @@
 #ifndef CENTURION_EVENT_TYPE_SOURCE
 #define CENTURION_EVENT_TYPE_SOURCE
 
-#include "event_type.h"
+#include "event_type.hpp"
 
 namespace centurion {
 namespace event {

@@ -1,4 +1,4 @@
-#include "window_event.h"
+#include "window_event.hpp"
 
 #include <catch.hpp>
 

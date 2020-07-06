@@ -1,4 +1,4 @@
-#include "quit_event.h"
+#include "quit_event.hpp"
 
 #include <catch.hpp>
 

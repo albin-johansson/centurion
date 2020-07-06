@@ -1,16 +1,16 @@
 #ifndef CENTURION_RENDERER_SOURCE
 #define CENTURION_RENDERER_SOURCE
 
-#include "renderer.h"
+#include "renderer.hpp"
 
-#include "centurion_exception.h"
-#include "centurion_utils.h"
-#include "colors.h"
-#include "error.h"
-#include "font.h"
-#include "point.h"
-#include "texture.h"
-#include "window.h"
+#include "centurion_exception.hpp"
+#include "centurion_utils.hpp"
+#include "colors.hpp"
+#include "error.hpp"
+#include "font.hpp"
+#include "point.hpp"
+#include "texture.hpp"
+#include "window.hpp"
 
 namespace centurion {
 

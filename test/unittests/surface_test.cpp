@@ -1,15 +1,15 @@
-#include "surface.h"
+#include "surface.hpp"
 
 #include <SDL_image.h>
 
 #include <catch.hpp>
 #include <utility>
 
-#include "centurion_exception.h"
-#include "colors.h"
-#include "renderer.h"
-#include "texture.h"
-#include "window.h"
+#include "centurion_exception.hpp"
+#include "colors.hpp"
+#include "renderer.hpp"
+#include "texture.hpp"
+#include "window.hpp"
 
 using namespace centurion;
 

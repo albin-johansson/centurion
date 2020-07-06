@@ -1,9 +1,9 @@
 #ifndef CENTURION_SOUND_EFFECT_SOURCE
 #define CENTURION_SOUND_EFFECT_SOURCE
 
-#include "sound_effect.h"
+#include "sound_effect.hpp"
 
-#include "error.h"
+#include "error.hpp"
 
 namespace centurion {
 

@@ -1,4 +1,4 @@
-#include "dollar_gesture_event.h"
+#include "dollar_gesture_event.hpp"
 
 #include <catch.hpp>
 

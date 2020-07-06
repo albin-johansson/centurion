@@ -1,4 +1,4 @@
-#include "touch_finger_event.h"
+#include "touch_finger_event.hpp"
 
 #include <catch.hpp>
 

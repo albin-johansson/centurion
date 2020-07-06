@@ -1,15 +1,15 @@
-#include "renderer.h"
+#include "renderer.hpp"
 
 #include <catch.hpp>
 #include <utility>
 
-#include "centurion_exception.h"
-#include "colors.h"
-#include "font.h"
-#include "log.h"
-#include "rect.h"
-#include "texture.h"
-#include "window.h"
+#include "centurion_exception.hpp"
+#include "colors.hpp"
+#include "font.hpp"
+#include "log.hpp"
+#include "rect.hpp"
+#include "texture.hpp"
+#include "window.hpp"
 
 using namespace centurion;
 

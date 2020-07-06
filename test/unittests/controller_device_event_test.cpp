@@ -1,4 +1,4 @@
-#include "controller_device_event.h"
+#include "controller_device_event.hpp"
 
 #include <catch.hpp>
 

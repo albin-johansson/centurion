@@ -1,4 +1,4 @@
-#include "text_input_event.h"
+#include "text_input_event.hpp"
 
 #include <catch.hpp>
 

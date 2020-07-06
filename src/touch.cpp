@@ -1,7 +1,7 @@
 #ifndef CENTURION_TOUCH_SOURCE
 #define CENTURION_TOUCH_SOURCE
 
-#include "touch.h"
+#include "touch.hpp"
 
 namespace centurion {
 namespace touch {

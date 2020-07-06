@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "centurion_utils.h"
+#include "centurion_utils.hpp"
 
 using namespace centurion;
 

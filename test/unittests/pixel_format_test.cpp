@@ -1,4 +1,4 @@
-#include "pixel_format.h"
+#include "pixel_format.hpp"
 
 #include <catch.hpp>
 

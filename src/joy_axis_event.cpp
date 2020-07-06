@@ -1,7 +1,7 @@
 #ifndef CENTURION_JOY_AXIS_EVENT_SOURCE
 #define CENTURION_JOY_AXIS_EVENT_SOURCE
 
-#include "joy_axis_event.h"
+#include "joy_axis_event.hpp"
 
 #include <utility>
 

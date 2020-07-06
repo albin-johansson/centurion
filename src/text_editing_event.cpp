@@ -1,9 +1,9 @@
 #ifndef CENTURION_TEXT_EDITING_EVENT_SOURCE
 #define CENTURION_TEXT_EDITING_EVENT_SOURCE
 
-#include "text_editing_event.h"
+#include "text_editing_event.hpp"
 
-#include "centurion_utils.h"
+#include "centurion_utils.hpp"
 
 namespace centurion {
 namespace event {

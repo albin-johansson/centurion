@@ -1,10 +1,10 @@
 #ifndef CENTURION_NOAUDIO
-#include "music.h"
+#include "music.hpp"
 
 #include <catch.hpp>
 
-#include "centurion_exception.h"
-#include "log.h"
+#include "centurion_exception.hpp"
+#include "log.hpp"
 
 using namespace centurion;
 

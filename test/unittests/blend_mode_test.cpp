@@ -1,4 +1,4 @@
-#include "blend_mode.h"
+#include "blend_mode.hpp"
 
 #include <catch.hpp>
 

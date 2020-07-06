@@ -1,8 +1,8 @@
-#include "font.h"
+#include "font.hpp"
 
 #include <catch.hpp>
 
-#include "log.h"
+#include "log.hpp"
 
 using namespace centurion;
 using namespace Catch;

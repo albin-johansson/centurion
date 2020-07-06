@@ -1,7 +1,7 @@
 #ifndef CENTURION_EVENT_SOURCE
 #define CENTURION_EVENT_SOURCE
 
-#include "event.h"
+#include "event.hpp"
 
 #include <utility>
 

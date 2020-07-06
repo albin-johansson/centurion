@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "game_controller.h"
+#include "game_controller.hpp"
 
 using namespace centurion;
 

@@ -1,8 +1,8 @@
-#include "joystick.h"
+#include "joystick.hpp"
 
 #include <catch.hpp>
 
-#include "centurion_exception.h"
+#include "centurion_exception.hpp"
 
 using namespace centurion;
 

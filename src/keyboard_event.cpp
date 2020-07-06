@@ -1,7 +1,7 @@
 #ifndef CENTURION_KEYBOARD_EVENT_SOURCE
 #define CENTURION_KEYBOARD_EVENT_SOURCE
 
-#include "keyboard_event.h"
+#include "keyboard_event.hpp"
 
 #include <utility>
 

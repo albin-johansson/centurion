@@ -1,12 +1,12 @@
-#include "window.h"
+#include "window.hpp"
 
 #include <catch.hpp>
 
-#include "centurion_exception.h"
-#include "log.h"
-#include "renderer.h"
-#include "screen.h"
-#include "surface.h"
+#include "centurion_exception.hpp"
+#include "log.hpp"
+#include "renderer.hpp"
+#include "screen.hpp"
+#include "surface.hpp"
 
 using namespace centurion;
 

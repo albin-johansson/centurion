@@ -1,4 +1,4 @@
-#include "audio_device_event.h"
+#include "audio_device_event.hpp"
 
 #include <catch.hpp>
 

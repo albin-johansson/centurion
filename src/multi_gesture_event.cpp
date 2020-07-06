@@ -1,7 +1,7 @@
 #ifndef CENTURION_MULTI_GESTURE_EVENT_SOURCE
 #define CENTURION_MULTI_GESTURE_EVENT_SOURCE
 
-#include "multi_gesture_event.h"
+#include "multi_gesture_event.hpp"
 
 #include <utility>
 

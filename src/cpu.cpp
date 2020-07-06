@@ -1,7 +1,7 @@
 #ifndef CENTURION_CPU_SOURCE
 #define CENTURION_CPU_SOURCE
 
-#include "cpu.h"
+#include "cpu.hpp"
 
 namespace centurion {
 

@@ -23,9 +23,9 @@
  */
 
 /**
- * @brief Provides the @link centurion::ButtonState @endlink enum.
+ * @brief Provides the `ButtonState` enum.
  *
- * @file button_state.h
+ * @file button_state.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -40,19 +40,20 @@ namespace centurion {
 
 /**
  * @enum ButtonState
- *
  * @brief Represents the two possible states for a button.
+ *
  * @details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
  *
- * @headerfile button_state.h
  * @since 3.1.0
+ *
+ * @var ButtonState::Released
+ * Button is released. Corresponds to `SDL_RELEASED`.
+ * @var ButtonState::Pressed
+ * Button is pressed. Corresponds to `SDL_PRESSED`.
+ *
+ * @headerfile button_state.hpp
  */
-enum class ButtonState {
-  Released = SDL_RELEASED, /**< Button is released. Corresponds to
-                            * `SDL_RELEASED`.*/
-  Pressed = SDL_PRESSED    /**< Button is pressed. Corresponds to
-                            * `SDL_PRESSED`.*/
-};
+enum class ButtonState { Released = SDL_RELEASED, Pressed = SDL_PRESSED };
 
 }  // namespace centurion
 

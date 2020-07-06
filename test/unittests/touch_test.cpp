@@ -5,6 +5,8 @@
 using namespace centurion;
 using namespace touch;
 
+#ifndef TRAVIS_TEST
+
 TEST_CASE("DeviceType enum", "[Touch]")
 {
   SECTION("Operator ==")
@@ -67,3 +69,5 @@ TEST_CASE("touch::mouse_touch_id", "[Touch]")
   CHECK(mouse_touch_id() == SDL_MOUSE_TOUCHID);
   CHECK(mouse_touch_id() != SDL_TOUCH_MOUSEID);
 }
+
+#endif  // TRAVIS_TEST

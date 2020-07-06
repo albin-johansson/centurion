@@ -66,22 +66,22 @@ template <typename Derived, typename Arg>
 class CRTPHint {
  public:
   template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
     return std::is_same<T, Arg>::value;
   }
 
-  CENTURION_NODISCARD static constexpr CZString name() noexcept
+  [[nodiscard]] static constexpr CZString name() noexcept
   {
     return Derived::name();
   }
 
-  CENTURION_NODISCARD static Optional<Arg> value() noexcept
+  [[nodiscard]] static Optional<Arg> value() noexcept
   {
     return Derived::current_value();
   }
 
-  CENTURION_NODISCARD static std::string to_string(Arg value) noexcept
+  [[nodiscard]] static std::string to_string(Arg value) noexcept
   {
     return std::to_string(value);
   }
@@ -92,19 +92,17 @@ template <typename Hint>
 class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
  public:
   template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
     return std::is_same<T, bool>::value;
   }
 
-  CENTURION_NODISCARD
-  static Optional<bool> current_value() noexcept
+  [[nodiscard]] static Optional<bool> current_value() noexcept
   {
     return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
   }
 
-  CENTURION_NODISCARD
-  static std::string to_string(bool value) noexcept
+  [[nodiscard]] static std::string to_string(bool value) noexcept
   {
     return value ? "1" : "0";
   }
@@ -115,13 +113,12 @@ template <typename Hint>
 class StringHint : public CRTPHint<StringHint<Hint>, CZString> {
  public:
   template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
     return std::is_convertible<T, CZString>::value;
   }
 
-  CENTURION_NODISCARD
-  static Optional<CZString> current_value() noexcept
+  [[nodiscard]] static Optional<CZString> current_value() noexcept
   {
     const CZString value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -131,8 +128,7 @@ class StringHint : public CRTPHint<StringHint<Hint>, CZString> {
     }
   }
 
-  CENTURION_NODISCARD
-  static std::string to_string(CZString value) { return value; }
+  [[nodiscard]] static std::string to_string(CZString value) { return value; }
 };
 
 // A hint class that only accepts integers
@@ -140,13 +136,12 @@ template <typename Hint>
 class IntHint : public CRTPHint<IntHint<Hint>, int> {
  public:
   template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
     return std::is_same<T, int>::value;
   }
 
-  CENTURION_NODISCARD
-  static Optional<int> current_value() noexcept
+  [[nodiscard]] static Optional<int> current_value() noexcept
   {
     const CZString value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -162,13 +157,12 @@ template <typename Hint>
 class UnsignedIntHint : public CRTPHint<IntHint<Hint>, unsigned int> {
  public:
   template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
     return std::is_same<T, unsigned int>::value;
   }
 
-  CENTURION_NODISCARD
-  static Optional<unsigned int> current_value() noexcept
+  [[nodiscard]] static Optional<unsigned int> current_value() noexcept
   {
     const CZString value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -184,13 +178,12 @@ template <typename Hint>
 class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
  public:
   template <typename T>
-  CENTURION_NODISCARD static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
     return std::is_same<T, float>::value;
   }
 
-  CENTURION_NODISCARD
-  static Optional<float> current_value() noexcept
+  [[nodiscard]] static Optional<float> current_value() noexcept
   {
     const CZString value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -781,13 +774,13 @@ class QtWaylandContentOrientation final {
   }
 };
 
-#define CENTURION_HINT(Name, SDLName, Type)                       \
-  class Name final : public detail::Type<Name> {                  \
-   public:                                                        \
-    CENTURION_NODISCARD static constexpr CZString name() noexcept \
-    {                                                             \
-      return SDLName;                                             \
-    }                                                             \
+#define CENTURION_HINT(Name, SDLName, Type)                 \
+  class Name final : public detail::Type<Name> {            \
+   public:                                                  \
+    [[nodiscard]] static constexpr CZString name() noexcept \
+    {                                                       \
+      return SDLName;                                       \
+    }                                                       \
   };
 
 CENTURION_HINT(AccelerometerAsJoystick,
@@ -1127,7 +1120,7 @@ bool set_hint(const Value& value) noexcept
  * @since 4.1.0
  */
 template <typename Hint>
-CENTURION_NODISCARD decltype(auto) get_hint() noexcept
+[[nodiscard]] decltype(auto) get_hint() noexcept
 {
   return Hint::current_value();
 }
@@ -1197,7 +1190,7 @@ class Callback final {
    * hint is updated.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD SDL_HintCallback get() noexcept { return m_callback; }
+  [[nodiscard]] SDL_HintCallback get() noexcept { return m_callback; }
 
   /**
    * Returns a pointer to the user data associated with the callback.
@@ -1206,10 +1199,7 @@ class Callback final {
    * null.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD UserData* user_data() const noexcept
-  {
-    return m_userData;
-  }
+  [[nodiscard]] UserData* user_data() const noexcept { return m_userData; }
 
  private:
   SDL_HintCallback m_callback;

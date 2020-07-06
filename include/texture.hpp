@@ -150,9 +150,8 @@ class Texture final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static UniquePtr<Texture> unique(Owner<SDL_Texture*> texture);
+  [[nodiscard]] CENTURION_API static UniquePtr<Texture> unique(
+      Owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a unique texture by loading it from a file.
@@ -163,9 +162,9 @@ class Texture final {
    * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static UniquePtr<Texture> unique(const Renderer& renderer, CZString path);
+  [[nodiscard]] CENTURION_API static UniquePtr<Texture> unique(
+      const Renderer& renderer,
+      CZString path);
 
   /**
    * Creates and returns a unique texture that is a copy of the supplied
@@ -177,10 +176,9 @@ class Texture final {
    * @throws CenturionException if the texture cannot be loaded.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static UniquePtr<Texture> unique(const Renderer& renderer,
-                                   const Surface& surface);
+  [[nodiscard]] CENTURION_API static UniquePtr<Texture> unique(
+      const Renderer& renderer,
+      const Surface& surface);
 
   /**
    * Creates and returns a unique pointer to an texture with the supplied
@@ -194,12 +192,11 @@ class Texture final {
    * @throws CenturionException if the texture cannot be created.
    * @since 3.1.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static UniquePtr<Texture> unique(const Renderer& renderer,
-                                   PixelFormat format,
-                                   Access access,
-                                   IArea size);
+  [[nodiscard]] CENTURION_API static UniquePtr<Texture> unique(
+      const Renderer& renderer,
+      PixelFormat format,
+      Access access,
+      IArea size);
 
   /**
    * Creates and returns a shared texture from a pre-existing SDL texture. The
@@ -211,9 +208,8 @@ class Texture final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static SharedPtr<Texture> shared(Owner<SDL_Texture*> texture);
+  [[nodiscard]] CENTURION_API static SharedPtr<Texture> shared(
+      Owner<SDL_Texture*> texture);
 
   /**
    * Creates and returns a shared texture by loading it from a file.
@@ -224,9 +220,9 @@ class Texture final {
    * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static SharedPtr<Texture> shared(const Renderer& renderer, CZString path);
+  [[nodiscard]] CENTURION_API static SharedPtr<Texture> shared(
+      const Renderer& renderer,
+      CZString path);
 
   /**
    * Creates and returns a shared texture that is a copy of the supplied
@@ -238,10 +234,9 @@ class Texture final {
    * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static SharedPtr<Texture> shared(const Renderer& renderer,
-                                   const Surface& surface);
+  [[nodiscard]] CENTURION_API static SharedPtr<Texture> shared(
+      const Renderer& renderer,
+      const Surface& surface);
 
   /**
    * Creates and returns a shared pointer to an texture with the supplied
@@ -255,12 +250,11 @@ class Texture final {
    * @throws CenturionException if the texture cannot be created.
    * @since 3.1.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static SharedPtr<Texture> shared(const Renderer& renderer,
-                                   PixelFormat format,
-                                   Access access,
-                                   IArea size);
+  [[nodiscard]] CENTURION_API static SharedPtr<Texture> shared(
+      const Renderer& renderer,
+      PixelFormat format,
+      Access access,
+      IArea size);
 
   /**
    * Creates and returns a unique pointer to a texture based on the image at
@@ -274,11 +268,8 @@ class Texture final {
    * texture access.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static UniquePtr<Texture> streaming(const Renderer& renderer,
-                                      CZString path,
-                                      PixelFormat format);
+  [[nodiscard]] CENTURION_API static UniquePtr<Texture>
+  streaming(const Renderer& renderer, CZString path, PixelFormat format);
 
   /**
    * Sets the color of the pixel at the specified coordinate. This method has
@@ -331,8 +322,7 @@ class Texture final {
    * @return the pixel format that is used by the texture.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API PixelFormat format() const noexcept;
+  [[nodiscard]] CENTURION_API PixelFormat format() const noexcept;
 
   /**
    * Returns the texture access of the texture.
@@ -340,8 +330,7 @@ class Texture final {
    * @return the texture access of the texture.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Access access() const noexcept;
+  [[nodiscard]] CENTURION_API Access access() const noexcept;
 
   /**
    * Returns the width of the texture.
@@ -349,8 +338,7 @@ class Texture final {
    * @return the width of the texture.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int width() const noexcept;
+  [[nodiscard]] CENTURION_API int width() const noexcept;
 
   /**
    * Returns the height of the texture.
@@ -358,8 +346,7 @@ class Texture final {
    * @return the height of the texture.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int height() const noexcept;
+  [[nodiscard]] CENTURION_API int height() const noexcept;
 
   /**
    * Returns the size (width and height) of the texture.
@@ -367,8 +354,7 @@ class Texture final {
    * @return the size of the texture.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API IArea size() const noexcept;
+  [[nodiscard]] CENTURION_API IArea size() const noexcept;
 
   /**
    * Indicates whether or not the texture is a possible render target.
@@ -376,8 +362,7 @@ class Texture final {
    * @return true if the texture is a possible render target; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_target() const noexcept;
+  [[nodiscard]] CENTURION_API bool is_target() const noexcept;
 
   /**
    * Indicates whether or not the texture has static texture access.
@@ -385,8 +370,7 @@ class Texture final {
    * @return true if the texture has static texture access.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_static() const noexcept;
+  [[nodiscard]] CENTURION_API bool is_static() const noexcept;
 
   /**
    * Indicates whether or not the texture has streaming texture access.
@@ -394,8 +378,7 @@ class Texture final {
    * @return true if the texture has streaming texture access; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_streaming() const noexcept;
+  [[nodiscard]] CENTURION_API bool is_streaming() const noexcept;
 
   /**
    * Returns the alpha value of the texture.
@@ -403,8 +386,7 @@ class Texture final {
    * @return the alpha value of the texture.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint8 alpha() const noexcept;
+  [[nodiscard]] CENTURION_API Uint8 alpha() const noexcept;
 
   /**
    * Returns the blend mode of the texture.
@@ -412,8 +394,7 @@ class Texture final {
    * @return the blend mode of the texture.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API BlendMode blend_mode() const noexcept;
+  [[nodiscard]] CENTURION_API BlendMode blend_mode() const noexcept;
 
   /**
    * Returns the color modulation of the texture.
@@ -421,8 +402,7 @@ class Texture final {
    * @return the modulation of the texture.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Color color_mod() const noexcept;
+  [[nodiscard]] CENTURION_API Color color_mod() const noexcept;
 
   /**
    * Returns the scale mode that is used by the texture.
@@ -430,8 +410,7 @@ class Texture final {
    * @return the scale mode that is used by the texture.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API ScaleMode scale_mode() const noexcept;
+  [[nodiscard]] CENTURION_API ScaleMode scale_mode() const noexcept;
 
   /**
    * Returns a string representation of the texture.
@@ -439,8 +418,7 @@ class Texture final {
    * @return a string representation of the texture.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API std::string to_string() const;
+  [[nodiscard]] CENTURION_API std::string to_string() const;
 
   /**
    * Returns a pointer to the internal SDL_Texture. Use of this method is
@@ -451,8 +429,7 @@ class Texture final {
    * @return a pointer to the internal SDL_Texture.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  SDL_Texture* get() const noexcept { return m_texture; }
+  [[nodiscard]] SDL_Texture* get() const noexcept { return m_texture; }
 
   /**
    * Returns a pointer to the internal SDL_Texture.
@@ -460,8 +437,7 @@ class Texture final {
    * @return a pointer to the internal SDL_Texture.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  operator SDL_Texture*() noexcept { return m_texture; }
+  [[nodiscard]] operator SDL_Texture*() noexcept { return m_texture; }
 
   /**
    * Returns a pointer to the internal SDL_Texture.
@@ -469,8 +445,10 @@ class Texture final {
    * @return a pointer to the internal SDL_Texture.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  operator const SDL_Texture*() const noexcept { return m_texture; }
+  [[nodiscard]] operator const SDL_Texture*() const noexcept
+  {
+    return m_texture;
+  }
 
  private:
   SDL_Texture* m_texture = nullptr;
@@ -535,9 +513,8 @@ static_assert(!std::is_nothrow_copy_assignable<Texture>::value,
  * @return true if the texture access values are the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(Texture::Access lhs,
-                              SDL_TextureAccess rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(Texture::Access lhs,
+                                            SDL_TextureAccess rhs) noexcept;
 
 /**
  * Indicates whether or not the two texture access values are the same.
@@ -547,9 +524,8 @@ CENTURION_API bool operator==(Texture::Access lhs,
  * @return true if the texture access values are the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_TextureAccess lhs,
-                              Texture::Access rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_TextureAccess lhs,
+                                            Texture::Access rhs) noexcept;
 
 /**
  * Indicates whether or not the two texture access values aren't the same.
@@ -559,9 +535,8 @@ CENTURION_API bool operator==(SDL_TextureAccess lhs,
  * @return true if the texture access values aren't the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(Texture::Access lhs,
-                              SDL_TextureAccess rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(Texture::Access lhs,
+                                            SDL_TextureAccess rhs) noexcept;
 
 /**
  * Indicates whether or not the two texture access values aren't the same.
@@ -571,9 +546,8 @@ CENTURION_API bool operator!=(Texture::Access lhs,
  * @return true if the texture access values aren't the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_TextureAccess lhs,
-                              Texture::Access rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_TextureAccess lhs,
+                                            Texture::Access rhs) noexcept;
 
 /**
  * Indicates whether or not the two scale mode values are the same.
@@ -583,9 +557,8 @@ CENTURION_API bool operator!=(SDL_TextureAccess lhs,
  * @return true if the scale mode values are the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(Texture::ScaleMode lhs,
-                              SDL_ScaleMode rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(Texture::ScaleMode lhs,
+                                            SDL_ScaleMode rhs) noexcept;
 
 /**
  * Indicates whether or not the two scale mode values are the same.
@@ -595,9 +568,8 @@ CENTURION_API bool operator==(Texture::ScaleMode lhs,
  * @return true if the scale mode values are the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_ScaleMode lhs,
-                              Texture::ScaleMode rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_ScaleMode lhs,
+                                            Texture::ScaleMode rhs) noexcept;
 
 /**
  * Indicates whether or not the two scale mode values aren't the same.
@@ -607,9 +579,8 @@ CENTURION_API bool operator==(SDL_ScaleMode lhs,
  * @return true if the scale mode values aren't the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(Texture::ScaleMode lhs,
-                              SDL_ScaleMode rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(Texture::ScaleMode lhs,
+                                            SDL_ScaleMode rhs) noexcept;
 
 /**
  * Indicates whether or not the two scale mode values aren't the same.
@@ -619,9 +590,8 @@ CENTURION_API bool operator!=(Texture::ScaleMode lhs,
  * @return true if the scale mode values aren't the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_ScaleMode lhs,
-                              Texture::ScaleMode rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_ScaleMode lhs,
+                                            Texture::ScaleMode rhs) noexcept;
 
 }  // namespace centurion
 

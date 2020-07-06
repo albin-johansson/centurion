@@ -190,8 +190,7 @@ class Color final {
    * @return the value of the red component, in the range [0, 255].
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  Uint8 red() const noexcept { return m_red; }
+  [[nodiscard]] Uint8 red() const noexcept { return m_red; }
 
   /**
    * Returns the value of the green component.
@@ -199,8 +198,7 @@ class Color final {
    * @return the value of the green component, in the range [0, 255].
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  Uint8 green() const noexcept { return m_green; }
+  [[nodiscard]] Uint8 green() const noexcept { return m_green; }
 
   /**
    * Returns the value of the blue component.
@@ -208,8 +206,7 @@ class Color final {
    * @return the value of the blue component, in the range [0, 255].
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  Uint8 blue() const noexcept { return m_blue; }
+  [[nodiscard]] Uint8 blue() const noexcept { return m_blue; }
 
   /**
    * Returns the value of the alpha component.
@@ -217,8 +214,7 @@ class Color final {
    * @return the value of the alpha component, in the range [0, 255].
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  Uint8 alpha() const noexcept { return m_alpha; }
+  [[nodiscard]] Uint8 alpha() const noexcept { return m_alpha; }
 
   /**
    * Returns a textual representation of the color.
@@ -226,8 +222,7 @@ class Color final {
    * @return a textual representation of the color.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API std::string to_string() const;
+  [[nodiscard]] CENTURION_API std::string to_string() const;
 
   /**
    * Implicitly converts the the color into an SDL_Color.
@@ -235,8 +230,7 @@ class Color final {
    * @return an SDL_Color that mirrors this color.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API operator SDL_Color() const noexcept;
+  [[nodiscard]] CENTURION_API operator SDL_Color() const noexcept;
 
   /**
    * Converts the color to a pointer to a SDL_Color instance.
@@ -245,8 +239,7 @@ class Color final {
    * instance.
    * @since 4.0,0
    */
-  CENTURION_NODISCARD
-  CENTURION_API explicit operator SDL_Color*() noexcept;
+  [[nodiscard]] CENTURION_API explicit operator SDL_Color*() noexcept;
 
   /**
    * Converts the color to a pointer to a SDL_Color instance.
@@ -255,8 +248,8 @@ class Color final {
    * instance.
    * @since 4.0,0
    */
-  CENTURION_NODISCARD
-  CENTURION_API explicit operator const SDL_Color*() const noexcept;
+  [[nodiscard]] CENTURION_API explicit operator const SDL_Color*()
+      const noexcept;
 
   /**
    * Implicitly converts the the color into an SDL_MessageBoxColor. Note that
@@ -265,8 +258,7 @@ class Color final {
    * @return an SDL_MessageBoxColor that this the color.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API operator SDL_MessageBoxColor() const noexcept;
+  [[nodiscard]] CENTURION_API operator SDL_MessageBoxColor() const noexcept;
 
  private:
   Uint8 m_red = 0;
@@ -291,8 +283,8 @@ using Colour = Color;
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(const Color& color, const Color& other) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(const Color& color,
+                                            const Color& other) noexcept;
 
 /**
  * Indicates whether or not the two colors are considered to be equal.
@@ -303,9 +295,8 @@ CENTURION_API bool operator==(const Color& color, const Color& other) noexcept;
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(const Color& color,
-                              const SDL_Color& sdlColor) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(const Color& color,
+                                            const SDL_Color& sdlColor) noexcept;
 
 /**
  * Indicates whether or not the two colors are considered to be equal.
@@ -316,9 +307,8 @@ CENTURION_API bool operator==(const Color& color,
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(const SDL_Color& sdlColor,
-                              const Color& color) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(const SDL_Color& sdlColor,
+                                            const Color& color) noexcept;
 
 /**
  * Indicates whether or not the two colors are considered to be equal. Note!
@@ -330,9 +320,9 @@ CENTURION_API bool operator==(const SDL_Color& sdlColor,
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(const Color& color,
-                              const SDL_MessageBoxColor& msgColor) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(
+    const Color& color,
+    const SDL_MessageBoxColor& msgColor) noexcept;
 
 /**
  * Indicates whether or not the two colors are considered to be equal. Note!
@@ -344,9 +334,8 @@ CENTURION_API bool operator==(const Color& color,
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(const SDL_MessageBoxColor& msgColor,
-                              const Color& color) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(const SDL_MessageBoxColor& msgColor,
+                                            const Color& color) noexcept;
 
 /**
  * Indicates whether or not two colors aren't considered to be equal.
@@ -357,8 +346,8 @@ CENTURION_API bool operator==(const SDL_MessageBoxColor& msgColor,
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(const Color& color, const Color& other) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(const Color& color,
+                                            const Color& other) noexcept;
 
 /**
  * Indicates whether or not two colors aren't considered to be equal.
@@ -369,9 +358,8 @@ CENTURION_API bool operator!=(const Color& color, const Color& other) noexcept;
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(const Color& color,
-                              const SDL_Color& sdlColor) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(const Color& color,
+                                            const SDL_Color& sdlColor) noexcept;
 
 /**
  * Indicates whether or not two colors aren't considered to be equal.
@@ -382,9 +370,8 @@ CENTURION_API bool operator!=(const Color& color,
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(const SDL_Color& sdlColor,
-                              const Color& color) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(const SDL_Color& sdlColor,
+                                            const Color& color) noexcept;
 
 /**
  * Indicates whether or not two colors aren't considered to be equal. Note!
@@ -396,9 +383,9 @@ CENTURION_API bool operator!=(const SDL_Color& sdlColor,
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(const Color& color,
-                              const SDL_MessageBoxColor& msgColor) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(
+    const Color& color,
+    const SDL_MessageBoxColor& msgColor) noexcept;
 
 /**
  * Indicates whether or not two colors aren't considered to be equal. Note!
@@ -410,9 +397,8 @@ CENTURION_API bool operator!=(const Color& color,
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(const SDL_MessageBoxColor& msgColor,
-                              const Color& color) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(const SDL_MessageBoxColor& msgColor,
+                                            const Color& color) noexcept;
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<Color>::value, "Color isn't final!");

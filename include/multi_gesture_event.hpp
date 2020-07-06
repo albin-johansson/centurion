@@ -127,8 +127,7 @@ class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
    * @return the touch device ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API TouchID touch_id() const noexcept;
+  [[nodiscard]] CENTURION_API TouchID touch_id() const noexcept;
 
   /**
    * Returns the amount that the fingers rotated during the gesture
@@ -137,8 +136,7 @@ class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
    * @return the amount that the fingers rotated.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float delta_theta() const noexcept;
+  [[nodiscard]] CENTURION_API float delta_theta() const noexcept;
 
   /**
    * Returns the amount that the fingers pinched during the gesture
@@ -147,8 +145,7 @@ class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
    * @return the amount that the fingers pinched.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float delta_distance() const noexcept;
+  [[nodiscard]] CENTURION_API float delta_distance() const noexcept;
 
   /**
    * Returns the x-coordinate of the normalized center of gesture associated
@@ -158,8 +155,7 @@ class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
    * with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float center_x() const noexcept;
+  [[nodiscard]] CENTURION_API float center_x() const noexcept;
 
   /**
    * Returns the y-coordinate of the normalized center of gesture associated
@@ -169,8 +165,7 @@ class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
    * with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float center_y() const noexcept;
+  [[nodiscard]] CENTURION_API float center_y() const noexcept;
 
   /**
    * Returns the amount of fingers used in the gesture associated with the
@@ -180,8 +175,7 @@ class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
    * event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float fingers() const noexcept;
+  [[nodiscard]] CENTURION_API float fingers() const noexcept;
 };
 
 static_assert(validate_event<MultiGestureEvent, SDL_MultiGestureEvent>(),

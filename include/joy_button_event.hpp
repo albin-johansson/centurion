@@ -99,8 +99,7 @@ class JoyButtonEvent : public CommonEvent<SDL_JoyButtonEvent> {
    * @return the joystick instance ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API JoystickID which() const noexcept;
+  [[nodiscard]] CENTURION_API JoystickID which() const noexcept;
 
   /**
    * Returns the index of the button that changed.
@@ -108,8 +107,7 @@ class JoyButtonEvent : public CommonEvent<SDL_JoyButtonEvent> {
    * @return the index of the button that changed.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint8 button() const noexcept;
+  [[nodiscard]] CENTURION_API Uint8 button() const noexcept;
 
   /**
    * Returns the state of the button associated with the event.
@@ -117,8 +115,7 @@ class JoyButtonEvent : public CommonEvent<SDL_JoyButtonEvent> {
    * @return the state of the button associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API ButtonState state() const noexcept;
+  [[nodiscard]] CENTURION_API ButtonState state() const noexcept;
 };
 
 static_assert(validate_event<JoyButtonEvent, SDL_JoyButtonEvent>(),

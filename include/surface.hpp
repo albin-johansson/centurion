@@ -142,8 +142,7 @@ class Surface final {
    * @return the alpha modulation value, in the range [0, 255].
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint8 alpha() const noexcept;
+  [[nodiscard]] CENTURION_API Uint8 alpha() const noexcept;
 
   /**
    * Returns the color modulation of the surface.
@@ -151,8 +150,7 @@ class Surface final {
    * @return a color that represents the color modulation of the surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Color color_mod() const noexcept;
+  [[nodiscard]] CENTURION_API Color color_mod() const noexcept;
 
   /**
    * Returns the blend mode that is being used by the surface.
@@ -160,8 +158,7 @@ class Surface final {
    * @return the blend mode that the surface uses.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API BlendMode blend_mode() const noexcept;
+  [[nodiscard]] CENTURION_API BlendMode blend_mode() const noexcept;
 
   /**
    * Converts the surface into its texture equivalent.
@@ -171,8 +168,8 @@ class Surface final {
    * @return a texture that is equivalent to the surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Texture to_texture(const Renderer& renderer) const noexcept;
+  [[nodiscard]] CENTURION_API Texture
+  to_texture(const Renderer& renderer) const noexcept;
 
   /**
    * Creates and returns a surface based on this surface with the specified
@@ -184,8 +181,7 @@ class Surface final {
    * @throws CenturionException if the surface cannot be created.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Surface convert(PixelFormat format) const;
+  [[nodiscard]] CENTURION_API Surface convert(PixelFormat format) const;
 
   /**
    * Returns the width of the surface.
@@ -193,8 +189,7 @@ class Surface final {
    * @return the width of the surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  int width() const noexcept { return m_surface->w; }
+  [[nodiscard]] int width() const noexcept { return m_surface->w; }
 
   /**
    * Returns the height of the surface.
@@ -202,8 +197,7 @@ class Surface final {
    * @return the height of the surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  int height() const noexcept { return m_surface->h; }
+  [[nodiscard]] int height() const noexcept { return m_surface->h; }
 
   /**
    * Returns the pitch (the length of a row of pixels in bytes) of the surface.
@@ -211,8 +205,7 @@ class Surface final {
    * @return the pitch of the surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  int pitch() const noexcept { return m_surface->pitch; }
+  [[nodiscard]] int pitch() const noexcept { return m_surface->pitch; }
 
   /**
    * Returns a pointer to the pixel data of the surface. It's possible to
@@ -221,8 +214,7 @@ class Surface final {
    * @return a pointer to the pixel data of the surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  void* pixels() noexcept { return m_surface->pixels; }
+  [[nodiscard]] void* pixels() noexcept { return m_surface->pixels; }
 
   /**
    * Returns a const pointer to the pixel data of the surface.
@@ -230,8 +222,10 @@ class Surface final {
    * @return a const pointer to the pixel data of the surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  const void* pixels() const noexcept { return m_surface->pixels; }
+  [[nodiscard]] const void* pixels() const noexcept
+  {
+    return m_surface->pixels;
+  }
 
   /**
    * Returns the clipping information associated with the surface.
@@ -239,8 +233,7 @@ class Surface final {
    * @return the clipping information associated with the surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  IRect clip() const noexcept
+  [[nodiscard]] IRect clip() const noexcept
   {
     const auto rect = m_surface->clip_rect;
     return {{rect.x, rect.y}, {rect.w, rect.h}};
@@ -256,8 +249,7 @@ class Surface final {
    * @return a pointer to the internal SDL_Surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  SDL_Surface* get() const noexcept { return m_surface; }
+  [[nodiscard]] SDL_Surface* get() const noexcept { return m_surface; }
 
   /**
    * Implicitly converts to SDL_Surface*.
@@ -265,8 +257,7 @@ class Surface final {
    * @return a pointer to the internal SDL_Surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  operator SDL_Surface*() noexcept { return m_surface; }
+  [[nodiscard]] operator SDL_Surface*() noexcept { return m_surface; }
 
   /**
    * Implicitly converts to SDL_Surface*.
@@ -274,8 +265,10 @@ class Surface final {
    * @return a pointer to the internal SDL_Surface.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  operator const SDL_Surface*() const noexcept { return m_surface; }
+  [[nodiscard]] operator const SDL_Surface*() const noexcept
+  {
+    return m_surface;
+  }
 
  private:
   SDL_Surface* m_surface = nullptr;
@@ -352,7 +345,7 @@ class Surface final {
    * @throws CenturionException if the copy couldn't be created.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD SDL_Surface* copy_surface() const;
+  [[nodiscard]] SDL_Surface* copy_surface() const;
 };
 
 static_assert(!std::is_nothrow_copy_constructible<Surface>::value,

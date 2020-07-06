@@ -112,8 +112,8 @@ enum class EventType {
  * @return true if the values represent the same event type; false otherwise.
  * @since 3.1.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(EventType lhs, SDL_EventType rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(EventType lhs,
+                                            SDL_EventType rhs) noexcept;
 
 /**
  * Indicates whether or not two event type values are the same.
@@ -123,8 +123,8 @@ CENTURION_API bool operator==(EventType lhs, SDL_EventType rhs) noexcept;
  * @return true if the values represent the same event type; false otherwise.
  * @since 3.1.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_EventType lhs, EventType rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_EventType lhs,
+                                            EventType rhs) noexcept;
 
 /**
  * Indicates whether or not two event type values aren't the same.
@@ -135,8 +135,8 @@ CENTURION_API bool operator==(SDL_EventType lhs, EventType rhs) noexcept;
  * otherwise.
  * @since 3.1.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(EventType lhs, SDL_EventType rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(EventType lhs,
+                                            SDL_EventType rhs) noexcept;
 
 /**
  * Indicates whether or not two event type values aren't the same.
@@ -147,8 +147,8 @@ CENTURION_API bool operator!=(EventType lhs, SDL_EventType rhs) noexcept;
  * otherwise.
  * @since 3.1.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_EventType lhs, EventType rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_EventType lhs,
+                                            EventType rhs) noexcept;
 
 }  // namespace event
 }  // namespace centurion

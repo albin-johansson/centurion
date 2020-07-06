@@ -128,8 +128,7 @@ class Point final {
    * @param other the point to calculate the distance to.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  T distance_to(const Point<T>& other) const noexcept
+  [[nodiscard]] T distance_to(const Point<T>& other) const noexcept
   {
     return std::sqrt(std::abs(m_x - other.m_x) + std::abs(m_y - other.m_y));
   }
@@ -140,8 +139,7 @@ class Point final {
    * @return a textual representation of the point.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  std::string to_string() const
+  [[nodiscard]] std::string to_string() const
   {
     return "[Point | X: " + std::to_string(m_x) +
            ", Y: " + std::to_string(m_y) + "]";
@@ -153,8 +151,7 @@ class Point final {
    * @return the x-coordinate of the point.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr T x() const noexcept { return m_x; }
+  [[nodiscard]] constexpr T x() const noexcept { return m_x; }
 
   /**
    * Returns the y-coordinate of the point.
@@ -162,8 +159,7 @@ class Point final {
    * @return the y-coordinate of the point.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr T y() const noexcept { return m_y; }
+  [[nodiscard]] constexpr T y() const noexcept { return m_y; }
 
   /**
    * Indicates whether or not the point is considered to be equal to the
@@ -176,8 +172,8 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T, typename X = detail::type_if_floating<U>>
-  CENTURION_NODISCARD bool equals(const Point<T>& other,
-                                  T epsilon = 0.0001) const noexcept
+  [[nodiscard]] bool equals(const Point<T>& other,
+                            T epsilon = 0.0001) const noexcept
   {
     return std::abs(m_x - other.m_x) < epsilon &&
            std::abs(m_y - other.m_y) < epsilon;
@@ -189,8 +185,7 @@ class Point final {
    * @return an SDL_Point instance based on the point.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr SDL_Point to_sdl_point() const noexcept
+  [[nodiscard]] constexpr SDL_Point to_sdl_point() const noexcept
   {
     return {static_cast<int>(m_x), static_cast<int>(m_y)};
   }
@@ -201,8 +196,7 @@ class Point final {
    * @return an SDL_FPoint instance based on the point.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr SDL_FPoint to_sdl_fpoint() const noexcept
+  [[nodiscard]] constexpr SDL_FPoint to_sdl_fpoint() const noexcept
   {
     return {static_cast<float>(m_x), static_cast<float>(m_y)};
   }
@@ -217,8 +211,7 @@ class Point final {
    * the x- and y-coordinates of the supplied points.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  friend constexpr Point<T> operator+
+  [[nodiscard]] friend constexpr Point<T> operator+
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
@@ -232,7 +225,7 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
-  CENTURION_NODISCARD explicit operator SDL_Point*() noexcept
+  [[nodiscard]] explicit operator SDL_Point*() noexcept
   {
     return reinterpret_cast<SDL_Point*>(this);
   }
@@ -248,7 +241,7 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
-  CENTURION_NODISCARD explicit operator const SDL_Point*() const noexcept
+  [[nodiscard]] explicit operator const SDL_Point*() const noexcept
   {
     return reinterpret_cast<const SDL_Point*>(this);
   }
@@ -264,7 +257,7 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
-  CENTURION_NODISCARD explicit operator SDL_FPoint*() noexcept
+  [[nodiscard]] explicit operator SDL_FPoint*() noexcept
   {
     return reinterpret_cast<SDL_FPoint*>(this);
   }
@@ -280,7 +273,7 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
-  CENTURION_NODISCARD explicit operator const SDL_FPoint*() const noexcept
+  [[nodiscard]] explicit operator const SDL_FPoint*() const noexcept
   {
     return reinterpret_cast<const SDL_FPoint*>(this);
   }
@@ -295,8 +288,7 @@ class Point final {
    * subtracting the x- and y-coordinates of the supplied points.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  friend constexpr Point<T> operator-
+  [[nodiscard]] friend constexpr Point<T> operator-
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
@@ -307,8 +299,7 @@ class Point final {
    * @return true if the points are equal; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  friend constexpr bool operator==
+  [[nodiscard]] friend constexpr bool operator==
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
@@ -319,8 +310,7 @@ class Point final {
    * @return true if the points aren't equal; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  friend constexpr bool operator!=
+  [[nodiscard]] friend constexpr bool operator!=
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
  private:

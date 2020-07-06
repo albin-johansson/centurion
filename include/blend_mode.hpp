@@ -63,8 +63,8 @@ enum class BlendMode {
  * @return true if the values represent the same blend mode; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(BlendMode a, SDL_BlendMode b) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(BlendMode a,
+                                            SDL_BlendMode b) noexcept;
 
 /**
  * Indicates whether the two blend mode values represent the same blend mode.
@@ -74,8 +74,8 @@ CENTURION_API bool operator==(BlendMode a, SDL_BlendMode b) noexcept;
  * @return true if the values represent the same blend mode; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_BlendMode a, BlendMode b) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_BlendMode a,
+                                            BlendMode b) noexcept;
 
 /**
  * Indicates whether the two blend mode values don't represent the same blend
@@ -87,8 +87,8 @@ CENTURION_API bool operator==(SDL_BlendMode a, BlendMode b) noexcept;
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(BlendMode a, SDL_BlendMode b) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(BlendMode a,
+                                            SDL_BlendMode b) noexcept;
 
 /**
  * Indicates whether the two blend mode values don't represent the same blend
@@ -100,8 +100,8 @@ CENTURION_API bool operator!=(BlendMode a, SDL_BlendMode b) noexcept;
  * otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_BlendMode a, BlendMode b) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_BlendMode a,
+                                            BlendMode b) noexcept;
 
 }  // namespace centurion
 

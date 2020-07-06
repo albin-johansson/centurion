@@ -67,8 +67,8 @@ class TextureLoader final {
    * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API UniquePtr<Texture> unique_img(CZString file) const;
+  [[nodiscard]] CENTURION_API UniquePtr<Texture> unique_img(
+      CZString file) const;
 
   /**
    * Creates and returns a unique pointer to a texture with the specified
@@ -81,10 +81,8 @@ class TextureLoader final {
    * @throws CenturionException if the texture cannot be created.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API UniquePtr<Texture> unique_img(PixelFormat format,
-                                              Texture::Access access,
-                                              IArea size) const;
+  [[nodiscard]] CENTURION_API UniquePtr<Texture>
+  unique_img(PixelFormat format, Texture::Access access, IArea size) const;
 
   /**
    * Creates and returns a shared pointer to a texture.
@@ -95,8 +93,8 @@ class TextureLoader final {
    * @throws CenturionException if the texture cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API SharedPtr<Texture> shared_img(CZString file) const;
+  [[nodiscard]] CENTURION_API SharedPtr<Texture> shared_img(
+      CZString file) const;
 
   /**
    * Creates and returns a shared pointer to a texture with the specified
@@ -109,10 +107,8 @@ class TextureLoader final {
    * @throws CenturionException if the texture cannot be created.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API SharedPtr<Texture> shared_img(PixelFormat format,
-                                              Texture::Access access,
-                                              IArea size) const;
+  [[nodiscard]] CENTURION_API SharedPtr<Texture>
+  shared_img(PixelFormat format, Texture::Access access, IArea size) const;
 
  private:
   SharedPtr<Renderer> m_renderer;

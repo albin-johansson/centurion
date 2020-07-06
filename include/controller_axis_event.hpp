@@ -101,8 +101,7 @@ class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
    * @return the joystick instance ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API JoystickID which() const noexcept;
+  [[nodiscard]] CENTURION_API JoystickID which() const noexcept;
 
   /**
    * Returns the game controller axis value associated with the event.
@@ -111,8 +110,7 @@ class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
    * @since 4.0.0
    * @see GameControllerAxis
    */
-  CENTURION_NODISCARD
-  CENTURION_API GameControllerAxis axis() const noexcept;
+  [[nodiscard]] CENTURION_API GameControllerAxis axis() const noexcept;
 
   /**
    * Returns the axis value associated with the event.
@@ -120,8 +118,7 @@ class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
    * @return the axis value associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint16 value() const noexcept;
+  [[nodiscard]] CENTURION_API Sint16 value() const noexcept;
 };
 
 static_assert(validate_event<ControllerAxisEvent, SDL_ControllerAxisEvent>(),

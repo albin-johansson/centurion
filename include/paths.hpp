@@ -78,8 +78,7 @@ class BasePath final {
    * @return a unique pointer to an BasePath instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<BasePath> unique() noexcept;
+  [[nodiscard]] CENTURION_API static UniquePtr<BasePath> unique() noexcept;
 
   /**
    * Creates and returns a shared pointer to an BasePath object that represents
@@ -90,8 +89,7 @@ class BasePath final {
    * @return a shared pointer to an BasePath instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<BasePath> shared() noexcept;
+  [[nodiscard]] CENTURION_API static SharedPtr<BasePath> shared() noexcept;
 
   /**
    * Indicates whether or not there is a non-null string in the BasePath object.
@@ -99,8 +97,10 @@ class BasePath final {
    * @return true if the internal string pointer isn't null; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  explicit operator bool() const noexcept { return static_cast<bool>(m_path); }
+  [[nodiscard]] explicit operator bool() const noexcept
+  {
+    return static_cast<bool>(m_path);
+  }
 
   /**
    * Returns the path of the application executable. The returned pointer might
@@ -109,8 +109,7 @@ class BasePath final {
    * @return the path of the application executable, can be null.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CZString get() const noexcept { return m_path; }
+  [[nodiscard]] CZString get() const noexcept { return m_path; }
 
  private:
   ZString m_path = nullptr;
@@ -180,9 +179,9 @@ class PrefPath final {
    * @return a unique pointer to a PrefPath instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<PrefPath> unique(CZString org,
-                                                  CZString app) noexcept;
+  [[nodiscard]] CENTURION_API static UniquePtr<PrefPath> unique(
+      CZString org,
+      CZString app) noexcept;
 
   /**
    * Creates and returns a shared pointer to a PrefPath object. Only use
@@ -193,9 +192,9 @@ class PrefPath final {
    * @return a shared pointer to a PrefPath instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<PrefPath> shared(CZString org,
-                                                  CZString app) noexcept;
+  [[nodiscard]] CENTURION_API static SharedPtr<PrefPath> shared(
+      CZString org,
+      CZString app) noexcept;
 
   /**
    * Indicates whether or not the path object holds a non-null path.
@@ -203,8 +202,10 @@ class PrefPath final {
    * @return true if the object holds a non-null path; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  explicit operator bool() const noexcept { return static_cast<bool>(m_path); }
+  [[nodiscard]] explicit operator bool() const noexcept
+  {
+    return static_cast<bool>(m_path);
+  }
 
   /**
    * Returns a string that represents the preferred path.
@@ -212,8 +213,7 @@ class PrefPath final {
    * @return a string that represents the preferred path.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CZString get() const noexcept { return m_path; }
+  [[nodiscard]] CZString get() const noexcept { return m_path; }
 
  private:
   ZString m_path = nullptr;

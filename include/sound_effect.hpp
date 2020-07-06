@@ -92,9 +92,8 @@ class SoundEffect final {
    * @throws CenturionException if the audio file cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static UniquePtr<SoundEffect> unique(CZString file);
+  [[nodiscard]] CENTURION_API static UniquePtr<SoundEffect> unique(
+      CZString file);
 
   /**
    * Creates and returns a shared pointer to a SoundEffect instance.
@@ -104,9 +103,8 @@ class SoundEffect final {
    * @throws CenturionException if the audio file cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static SharedPtr<SoundEffect> shared(CZString file);
+  [[nodiscard]] CENTURION_API static SharedPtr<SoundEffect> shared(
+      CZString file);
 
   /**
    * Plays the sound effect.
@@ -160,8 +158,7 @@ class SoundEffect final {
    * @return true if the sound effect is playing; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool playing() const noexcept;
+  [[nodiscard]] CENTURION_API bool playing() const noexcept;
 
   /**
    * Returns a textual representation of the sound effect.
@@ -169,8 +166,7 @@ class SoundEffect final {
    * @return a textual representation of the sound effect.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API std::string to_string() const;
+  [[nodiscard]] CENTURION_API std::string to_string() const;
 
   /**
    * Returns the current volume of the sound effect. By default, this property
@@ -179,8 +175,7 @@ class SoundEffect final {
    * @return the current volume of the sound effect.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  int volume() const noexcept { return m_chunk->volume; }
+  [[nodiscard]] int volume() const noexcept { return m_chunk->volume; }
 
   /**
    * Returns a pointer to the internal Mix_Chunk. Use of this method is
@@ -191,8 +186,7 @@ class SoundEffect final {
    * @return a pointer to the internal Mix_Chunk.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  Mix_Chunk* get() const noexcept { return m_chunk; }
+  [[nodiscard]] Mix_Chunk* get() const noexcept { return m_chunk; }
 
   /**
    * Converts to a Mix_Chunk pointer.
@@ -200,8 +194,7 @@ class SoundEffect final {
    * @return a pointer to the internal Mix_Chunk instance.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  operator Mix_Chunk*() noexcept { return m_chunk; }
+  [[nodiscard]] operator Mix_Chunk*() noexcept { return m_chunk; }
 
   /**
    * Converts to a Mix_Chunk pointer.
@@ -209,8 +202,7 @@ class SoundEffect final {
    * @return a pointer to the internal Mix_Chunk instance.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  operator const Mix_Chunk*() const noexcept { return m_chunk; }
+  [[nodiscard]] operator const Mix_Chunk*() const noexcept { return m_chunk; }
 
   /**
    * Returns the maximum possible volume value.
@@ -218,8 +210,10 @@ class SoundEffect final {
    * @return the maximum possible volume value.
    * @since 3.1.0
    */
-  CENTURION_NODISCARD
-  static constexpr int max_volume() noexcept { return MIX_MAX_VOLUME; }
+  [[nodiscard]] static constexpr int max_volume() noexcept
+  {
+    return MIX_MAX_VOLUME;
+  }
 
  private:
   static constexpr int undefinedChannel = -1;

@@ -99,7 +99,7 @@ class CommonEvent {
    * @return the timestamp associated with the creation of the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD Uint32 time() const noexcept { return m_event.timestamp; }
+  [[nodiscard]] Uint32 time() const noexcept { return m_event.timestamp; }
 
   /**
    * Returns the event type value associated with the event.
@@ -108,7 +108,7 @@ class CommonEvent {
    * @return the event type value associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD EventType type() const noexcept
+  [[nodiscard]] EventType type() const noexcept
   {
     return static_cast<EventType>(m_event.type);
   }
@@ -119,7 +119,7 @@ class CommonEvent {
    * @return a reference to the internal SDL event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD operator T&() noexcept { return m_event; }
+  [[nodiscard]] operator T&() noexcept { return m_event; }
 
   /**
    * Implicitly converts the event to a const reference to the SDL counterpart.
@@ -127,7 +127,7 @@ class CommonEvent {
    * @return a const reference to the internal SDL event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD operator const T&() const noexcept { return m_event; }
+  [[nodiscard]] operator const T&() const noexcept { return m_event; }
 
   /**
    * Implicitly converts the event to its SDL counterpart.
@@ -135,7 +135,7 @@ class CommonEvent {
    * @return a copy of the internal SDL event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD operator T() const noexcept { return m_event; }
+  [[nodiscard]] operator T() const noexcept { return m_event; }
 
  protected:
   T m_event{};
@@ -152,7 +152,7 @@ class CommonEvent {
  * @since 4.0.0
  */
 template <typename T, typename E>
-CENTURION_NODISCARD inline constexpr bool validate_event() noexcept
+[[nodiscard]] inline constexpr bool validate_event() noexcept
 {
   return std::has_virtual_destructor<T>::value &&
          std::is_nothrow_copy_constructible<T>::value &&

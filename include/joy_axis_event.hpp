@@ -96,8 +96,7 @@ class JoyAxisEvent : public CommonEvent<SDL_JoyAxisEvent> {
    * @return the joystick instance ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API JoystickID which() const noexcept;
+  [[nodiscard]] CENTURION_API JoystickID which() const noexcept;
 
   /**
    * Returns the joystick axis index associated with the event.
@@ -105,8 +104,7 @@ class JoyAxisEvent : public CommonEvent<SDL_JoyAxisEvent> {
    * @return the joystick axis index associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint8 axis() const noexcept;
+  [[nodiscard]] CENTURION_API Uint8 axis() const noexcept;
 
   /**
    * Returns the joystick axis value associated with the event.
@@ -114,8 +112,7 @@ class JoyAxisEvent : public CommonEvent<SDL_JoyAxisEvent> {
    * @return the joystick axis value associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint16 value() const noexcept;
+  [[nodiscard]] CENTURION_API Sint16 value() const noexcept;
 };
 
 static_assert(validate_event<JoyAxisEvent, SDL_JoyAxisEvent>(),

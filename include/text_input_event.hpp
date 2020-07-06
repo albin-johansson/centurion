@@ -80,8 +80,7 @@ class TextInputEvent : public CommonEvent<SDL_TextInputEvent> {
    * @return the window ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 window_id() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 window_id() const noexcept;
 
   /**
    * Returns the text that will be used, as a null-terminated string in UTF-8
@@ -90,8 +89,7 @@ class TextInputEvent : public CommonEvent<SDL_TextInputEvent> {
    * @return the text that will be used.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API CZString text() const noexcept;
+  [[nodiscard]] CENTURION_API CZString text() const noexcept;
 };
 
 static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>(),

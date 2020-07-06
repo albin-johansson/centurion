@@ -133,8 +133,7 @@ class MouseMotionEvent : public CommonEvent<SDL_MouseMotionEvent> {
    * @return the window ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 window_id() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 window_id() const noexcept;
 
   /**
    * Returns the mouse instance ID, or SDL_TOUCH_MOUSEID. The returned value
@@ -144,8 +143,7 @@ class MouseMotionEvent : public CommonEvent<SDL_MouseMotionEvent> {
    * @return the mouse instance ID, or SDL_TOUCH_MOUSEID.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 which() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 which() const noexcept;
 
   /**
    * Returns a bitmask for the current mouse button state. If you want to
@@ -155,8 +153,7 @@ class MouseMotionEvent : public CommonEvent<SDL_MouseMotionEvent> {
    * @return  a bitmask for the current mouse button state.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 state() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 state() const noexcept;
 
   /**
    * Indicate whether or not a mouse button is pressed.
@@ -165,8 +162,7 @@ class MouseMotionEvent : public CommonEvent<SDL_MouseMotionEvent> {
    * @return true if the specified mouse button is pressed; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool pressed(MouseButton button) const noexcept;
+  [[nodiscard]] CENTURION_API bool pressed(MouseButton button) const noexcept;
 
   /**
    * Returns the x-coordinate of the mouse relative to the window.
@@ -174,8 +170,7 @@ class MouseMotionEvent : public CommonEvent<SDL_MouseMotionEvent> {
    * @return the x-coordinate of the mouse relative to the window.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint32 x() const noexcept;
+  [[nodiscard]] CENTURION_API Sint32 x() const noexcept;
 
   /**
    * Returns the y-coordinate of the mouse relative to the window.
@@ -183,8 +178,7 @@ class MouseMotionEvent : public CommonEvent<SDL_MouseMotionEvent> {
    * @return the y-coordinate of the mouse relative to the window.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint32 y() const noexcept;
+  [[nodiscard]] CENTURION_API Sint32 y() const noexcept;
 
   /**
    * Returns the relative motion of the mouse along the x-axis.
@@ -192,8 +186,7 @@ class MouseMotionEvent : public CommonEvent<SDL_MouseMotionEvent> {
    * @return the relative motion of the mouse along the x-axis.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint32 dx() const noexcept;
+  [[nodiscard]] CENTURION_API Sint32 dx() const noexcept;
 
   /**
    * Returns the relative motion of the mouse along the y-axis.
@@ -201,8 +194,7 @@ class MouseMotionEvent : public CommonEvent<SDL_MouseMotionEvent> {
    * @return the relative motion of the mouse along the y-axis.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint32 dy() const noexcept;
+  [[nodiscard]] CENTURION_API Sint32 dy() const noexcept;
 };
 
 static_assert(validate_event<MouseMotionEvent, SDL_MouseMotionEvent>(),

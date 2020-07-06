@@ -102,8 +102,7 @@ class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
    * @return the game controller button associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API GameControllerButton button() const noexcept;
+  [[nodiscard]] CENTURION_API GameControllerButton button() const noexcept;
 
   /**
    * Returns the button state associated with the event.
@@ -111,8 +110,7 @@ class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
    * @return the button state associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API ButtonState state() const noexcept;
+  [[nodiscard]] CENTURION_API ButtonState state() const noexcept;
 
   /**
    * Returns the joystick instance ID associated with the event.
@@ -120,8 +118,7 @@ class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
    * @return the joystick instance ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API JoystickID which() const noexcept;
+  [[nodiscard]] CENTURION_API JoystickID which() const noexcept;
 };
 
 static_assert(

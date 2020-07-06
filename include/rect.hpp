@@ -237,8 +237,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr bool intersects(const Rect<T>& other) const noexcept
+  [[nodiscard]] constexpr bool intersects(const Rect<T>& other) const noexcept
   {
     return !(x() >= other.max_x() || max_x() <= other.x() ||
              y() >= other.max_y() || max_y() <= other.y());
@@ -257,9 +256,8 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_DEPRECATED
-  constexpr bool contains(T px, T py) const noexcept
+  [[nodiscard]] CENTURION_DEPRECATED constexpr bool contains(T px, T py)
+      const noexcept
   {
     return contains({px, py});
   }
@@ -273,8 +271,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr bool contains(Point<T> point) const noexcept
+  [[nodiscard]] constexpr bool contains(Point<T> point) const noexcept
   {
     const auto px = point.x();
     const auto py = point.y();
@@ -288,8 +285,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr T x() const noexcept { return m_position.x(); }
+  [[nodiscard]] constexpr T x() const noexcept { return m_position.x(); }
 
   /**
    * @brief Returns the y-coordinate of the rectangle.
@@ -298,8 +294,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr T y() const noexcept { return m_position.y(); }
+  [[nodiscard]] constexpr T y() const noexcept { return m_position.y(); }
 
   /**
    * @brief Returns the position of the rectangle.
@@ -308,8 +303,10 @@ class Rect final {
    *
    * @since 4.1.0
    */
-  CENTURION_NODISCARD
-  constexpr Point<T> position() const noexcept { return m_position; }
+  [[nodiscard]] constexpr Point<T> position() const noexcept
+  {
+    return m_position;
+  }
 
   /**
    * @brief Returns the width of the rectangle.
@@ -318,8 +315,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr T width() const noexcept { return m_size.width; }
+  [[nodiscard]] constexpr T width() const noexcept { return m_size.width; }
 
   /**
    * @brief Returns the height of the rectangle.
@@ -328,8 +324,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr T height() const noexcept { return m_size.height; }
+  [[nodiscard]] constexpr T height() const noexcept { return m_size.height; }
 
   /**
    * @brief Returns the size of the rectangle.
@@ -338,8 +333,7 @@ class Rect final {
    *
    * @since 4.1.0
    */
-  CENTURION_NODISCARD
-  constexpr TArea<T> size() const noexcept { return m_size; }
+  [[nodiscard]] constexpr TArea<T> size() const noexcept { return m_size; }
 
   /**
    * @brief Returns the maximum x-coordinate of the rectangle.
@@ -348,8 +342,10 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr T max_x() const noexcept { return x() + m_size.width; }
+  [[nodiscard]] constexpr T max_x() const noexcept
+  {
+    return x() + m_size.width;
+  }
 
   /**
    * @brief Returns the maximum y-coordinate of the rectangle.
@@ -358,8 +354,10 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr T max_y() const noexcept { return y() + m_size.height; }
+  [[nodiscard]] constexpr T max_y() const noexcept
+  {
+    return y() + m_size.height;
+  }
 
   /**
    * @brief Returns the x-coordinate of the center point of the rectangle.
@@ -368,8 +366,10 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr T center_x() const noexcept { return x() + (m_size.width / 2); }
+  [[nodiscard]] constexpr T center_x() const noexcept
+  {
+    return x() + (m_size.width / 2);
+  }
 
   /**
    * @brief Returns the y-coordinate of the center point of the rectangle.
@@ -378,8 +378,10 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr T center_y() const noexcept { return y() + (m_size.height / 2); }
+  [[nodiscard]] constexpr T center_y() const noexcept
+  {
+    return y() + (m_size.height / 2);
+  }
 
   /**
    * @brief Returns the center point of the rectangle.
@@ -388,8 +390,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr Point<T> center() const noexcept
+  [[nodiscard]] constexpr Point<T> center() const noexcept
   {
     return {center_x(), center_y()};
   }
@@ -401,8 +402,10 @@ class Rect final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  constexpr T area() const noexcept { return m_size.width * m_size.height; }
+  [[nodiscard]] constexpr T area() const noexcept
+  {
+    return m_size.width * m_size.height;
+  }
 
   /**
    * @brief Indicates whether or not the rectangle has an area.
@@ -414,8 +417,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  constexpr bool has_area() const noexcept
+  [[nodiscard]] constexpr bool has_area() const noexcept
   {
     return m_size.width > 0 && m_size.height > 0;
   }
@@ -431,7 +433,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
-  CENTURION_NODISCARD Rect<T> get_union(const Rect<T>& other) const noexcept
+  [[nodiscard]] Rect<T> get_union(const Rect<T>& other) const noexcept
   {
     SDL_Rect result{0, 0, 0, 0};
 
@@ -449,8 +451,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  std::string to_string() const
+  [[nodiscard]] std::string to_string() const
   {
     const auto sx = std::to_string(m_position.x());
     const auto sy = std::to_string(m_position.y());
@@ -475,7 +476,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
-  CENTURION_NODISCARD constexpr explicit operator SDL_Rect*() noexcept
+  [[nodiscard]] constexpr explicit operator SDL_Rect*() noexcept
   {
     return reinterpret_cast<SDL_Rect*>(this);
   }
@@ -495,8 +496,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
-  CENTURION_NODISCARD constexpr explicit operator const SDL_Rect*()
-      const noexcept
+  [[nodiscard]] constexpr explicit operator const SDL_Rect*() const noexcept
   {
     return reinterpret_cast<const SDL_Rect*>(this);
   }
@@ -516,7 +516,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
-  CENTURION_NODISCARD constexpr explicit operator SDL_FRect*() noexcept
+  [[nodiscard]] constexpr explicit operator SDL_FRect*() noexcept
   {
     return reinterpret_cast<SDL_FRect*>(this);
   }
@@ -536,8 +536,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
-  CENTURION_NODISCARD constexpr explicit operator const SDL_FRect*()
-      const noexcept
+  [[nodiscard]] constexpr explicit operator const SDL_FRect*() const noexcept
   {
     return reinterpret_cast<const SDL_FRect*>(this);
   }
@@ -556,7 +555,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, int>>
-  CENTURION_NODISCARD constexpr operator SDL_Rect() const noexcept
+  [[nodiscard]] constexpr operator SDL_Rect() const noexcept
   {
     return {m_position.x(), m_position.y(), m_size.width, m_size.height};
   }
@@ -575,7 +574,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::type_if_same<U, float>>
-  CENTURION_NODISCARD constexpr operator SDL_FRect() const noexcept
+  [[nodiscard]] constexpr operator SDL_FRect() const noexcept
   {
     return {m_position.x(), m_position.y(), m_size.width, m_size.height};
   }
@@ -590,8 +589,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  friend constexpr bool operator==
+  [[nodiscard]] friend constexpr bool operator==
       <T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
   /**
@@ -604,8 +602,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  friend constexpr bool operator!=
+  [[nodiscard]] friend constexpr bool operator!=
       <T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
  private:

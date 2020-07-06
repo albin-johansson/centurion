@@ -105,8 +105,7 @@ class JoyHatEvent : public CommonEvent<SDL_JoyHatEvent> {
    * @return the index of the hat that changed.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint8 hat() const noexcept;
+  [[nodiscard]] CENTURION_API Uint8 hat() const noexcept;
 
   /**
    * Returns the position of the associated joystick hat.
@@ -114,8 +113,7 @@ class JoyHatEvent : public CommonEvent<SDL_JoyHatEvent> {
    * @return the position of the associated joystick hat.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API JoyHatPosition position() const noexcept;
+  [[nodiscard]] CENTURION_API JoyHatPosition position() const noexcept;
 };
 
 static_assert(validate_event<JoyHatEvent, SDL_JoyHatEvent>(),

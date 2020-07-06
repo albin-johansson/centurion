@@ -104,8 +104,7 @@ class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
    * @return the joystick instance ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API JoystickID which() const noexcept;
+  [[nodiscard]] CENTURION_API JoystickID which() const noexcept;
 
   /**
    * Returns the joystick trackball index associated with the event.
@@ -113,8 +112,7 @@ class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
    * @return the joystick trackball index associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint8 ball() const noexcept;
+  [[nodiscard]] CENTURION_API Uint8 ball() const noexcept;
 
   /**
    * Returns the relative motion along the x-axis. Note that trackballs only
@@ -124,8 +122,7 @@ class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
    * @return the relative motion along the x-axis.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint16 dx() const noexcept;
+  [[nodiscard]] CENTURION_API Sint16 dx() const noexcept;
 
   /**
    * Returns the relative motion along the y-axis. Note that trackballs only
@@ -135,8 +132,7 @@ class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
    * @return the relative motion along the y-axis.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint16 dy() const noexcept;
+  [[nodiscard]] CENTURION_API Sint16 dy() const noexcept;
 };
 
 static_assert(validate_event<JoyBallEvent, SDL_JoyBallEvent>(),

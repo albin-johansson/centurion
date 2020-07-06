@@ -335,8 +335,8 @@ class Log final {
    * @return the priority of the specified category.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static Priority priority(Category category) noexcept;
+  [[nodiscard]] CENTURION_API static Priority priority(
+      Category category) noexcept;
 
   /**
    * Returns the maximum size, i.e the maximum amount of characters that a
@@ -347,8 +347,7 @@ class Log final {
    * @since 4.0.0
    * @see SDL_MAX_LOG_MESSAGE
    */
-  CENTURION_NODISCARD
-  constexpr static int max_message_size() noexcept
+  [[nodiscard]] constexpr static int max_message_size() noexcept
   {
     return SDL_MAX_LOG_MESSAGE;
   }
@@ -378,8 +377,8 @@ static_assert(!std::is_move_assignable<Log>::value, "Log is move assignable!");
  * @return true if the priorities are the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(Log::Priority lhs, SDL_LogPriority rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(Log::Priority lhs,
+                                            SDL_LogPriority rhs) noexcept;
 
 /**
  * Indicates whether or not the two log priorities represent the same priority.
@@ -389,8 +388,8 @@ CENTURION_API bool operator==(Log::Priority lhs, SDL_LogPriority rhs) noexcept;
  * @return true if the priorities are the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_LogPriority lhs, Log::Priority rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_LogPriority lhs,
+                                            Log::Priority rhs) noexcept;
 
 /**
  * Indicates whether or not the two log priorities don't represent the same
@@ -401,8 +400,8 @@ CENTURION_API bool operator==(SDL_LogPriority lhs, Log::Priority rhs) noexcept;
  * @return true if the priorities aren't the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(Log::Priority lhs, SDL_LogPriority rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(Log::Priority lhs,
+                                            SDL_LogPriority rhs) noexcept;
 
 /**
  * Indicates whether or not the two log priorities don't represent the same
@@ -413,8 +412,8 @@ CENTURION_API bool operator!=(Log::Priority lhs, SDL_LogPriority rhs) noexcept;
  * @return true if the priorities aren't the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_LogPriority lhs, Log::Priority rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_LogPriority lhs,
+                                            Log::Priority rhs) noexcept;
 
 /**
  * Indicates whether or not the two log categories represent the same value.
@@ -424,8 +423,8 @@ CENTURION_API bool operator!=(SDL_LogPriority lhs, Log::Priority rhs) noexcept;
  * @return true if the categories are the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(Log::Category lhs, SDL_LogCategory rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(Log::Category lhs,
+                                            SDL_LogCategory rhs) noexcept;
 
 /**
  * Indicates whether or not the two log categories represent the same value.
@@ -435,8 +434,8 @@ CENTURION_API bool operator==(Log::Category lhs, SDL_LogCategory rhs) noexcept;
  * @return true if the priorities are the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_LogCategory lhs, Log::Category rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_LogCategory lhs,
+                                            Log::Category rhs) noexcept;
 
 /**
  * Indicates whether or not the two log priorities don't represent the same
@@ -447,8 +446,8 @@ CENTURION_API bool operator==(SDL_LogCategory lhs, Log::Category rhs) noexcept;
  * @return true if the priorities aren't the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(Log::Category lhs, SDL_LogCategory rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(Log::Category lhs,
+                                            SDL_LogCategory rhs) noexcept;
 
 /**
  * Indicates whether or not the two log priorities don't represent the same
@@ -459,8 +458,8 @@ CENTURION_API bool operator!=(Log::Category lhs, SDL_LogCategory rhs) noexcept;
  * @return true if the priorities aren't the same; false otherwise.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_LogCategory lhs, Log::Category rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_LogCategory lhs,
+                                            Log::Category rhs) noexcept;
 
 }  // namespace centurion
 

@@ -89,8 +89,7 @@ class AudioDeviceEvent : public CommonEvent<SDL_AudioDeviceEvent> {
    * @return the audio device ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 which() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 which() const noexcept;
 
   /**
    * Indicates whether or not the audio device event is associated with an audio
@@ -100,8 +99,7 @@ class AudioDeviceEvent : public CommonEvent<SDL_AudioDeviceEvent> {
    * otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool output() const noexcept;
+  [[nodiscard]] CENTURION_API bool output() const noexcept;
 
   /**
    * Indicates whether or not the audio device event is associated with an audio
@@ -111,8 +109,7 @@ class AudioDeviceEvent : public CommonEvent<SDL_AudioDeviceEvent> {
    * otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool capture() const noexcept;
+  [[nodiscard]] CENTURION_API bool capture() const noexcept;
 };
 
 static_assert(validate_event<AudioDeviceEvent, SDL_AudioDeviceEvent>(),

@@ -96,8 +96,7 @@ class Renderer final {
    * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Renderer> unique(
+  [[nodiscard]] CENTURION_API static UniquePtr<Renderer> unique(
       Owner<SDL_Renderer*> renderer);
 
   /**
@@ -110,8 +109,7 @@ class Renderer final {
    * Renderer.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Renderer> unique(
+  [[nodiscard]] CENTURION_API static UniquePtr<Renderer> unique(
       const Window& window,
       SDL_RendererFlags flags = defaultFlags);
 
@@ -124,8 +122,7 @@ class Renderer final {
    * @throws CenturionException if the supplied renderer is null.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Renderer> shared(
+  [[nodiscard]] CENTURION_API static SharedPtr<Renderer> shared(
       Owner<SDL_Renderer*> renderer);
 
   /**
@@ -138,8 +135,7 @@ class Renderer final {
    * Renderer.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Renderer> shared(
+  [[nodiscard]] CENTURION_API static SharedPtr<Renderer> shared(
       const Window& window,
       SDL_RendererFlags flags = defaultFlags);
 
@@ -180,9 +176,8 @@ class Renderer final {
    * nothing otherwise.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  Optional<std::string> add_font(const SharedPtr<Font>& font) noexcept;
+  [[nodiscard]] CENTURION_API Optional<std::string> add_font(
+      const SharedPtr<Font>& font) noexcept;
 
   /**
    * Removes the font associated with the specified name.
@@ -770,8 +765,7 @@ class Renderer final {
    * @return the logical width that the renderer uses.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int logical_width() const noexcept;
+  [[nodiscard]] CENTURION_API int logical_width() const noexcept;
 
   /**
    * Returns the logical height that the renderer uses. By default, this
@@ -780,8 +774,7 @@ class Renderer final {
    * @return the logical height that the renderer uses.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int logical_height() const noexcept;
+  [[nodiscard]] CENTURION_API int logical_height() const noexcept;
 
   /* The only way of discovering the limits of the possible is to venture a
      little way past them into the impossible. */
@@ -792,8 +785,7 @@ class Renderer final {
    * @return the x-axis scale that the renderer uses.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float x_scale() const noexcept;
+  [[nodiscard]] CENTURION_API float x_scale() const noexcept;
 
   /**
    * Returns the y-axis scale that the renderer uses.
@@ -801,8 +793,7 @@ class Renderer final {
    * @return the y-axis scale that the renderer uses.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float y_scale() const noexcept;
+  [[nodiscard]] CENTURION_API float y_scale() const noexcept;
 
   /**
    * Returns the current clipping rectangle, if there is one active.
@@ -810,8 +801,7 @@ class Renderer final {
    * @return the current clipping rectangle; or nothing if there is none.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Optional<IRect> clip() const noexcept;
+  [[nodiscard]] CENTURION_API Optional<IRect> clip() const noexcept;
 
   /**
    * Returns information about the renderer.
@@ -819,8 +809,7 @@ class Renderer final {
    * @return information about the renderer; nothing if something went wrong.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Optional<SDL_RendererInfo> info() const noexcept;
+  [[nodiscard]] CENTURION_API Optional<SDL_RendererInfo> info() const noexcept;
 
   /**
    * Returns the output width of the renderer.
@@ -828,8 +817,7 @@ class Renderer final {
    * @return the output width of the renderer.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int output_width() const noexcept;
+  [[nodiscard]] CENTURION_API int output_width() const noexcept;
 
   /**
    * Returns the output height of the renderer.
@@ -837,8 +825,7 @@ class Renderer final {
    * @return the output height of the renderer.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int output_height() const noexcept;
+  [[nodiscard]] CENTURION_API int output_height() const noexcept;
 
   /**
    * Returns the output size of the renderer.
@@ -846,8 +833,7 @@ class Renderer final {
    * @return the output size of the renderer, in the format (width, height).
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API IArea output_size() const noexcept;
+  [[nodiscard]] CENTURION_API IArea output_size() const noexcept;
 
   /**
    * Returns the blend mode that is being used by the renderer.
@@ -855,8 +841,7 @@ class Renderer final {
    * @return the blend mode that is being used.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API BlendMode blend_mode() const noexcept;
+  [[nodiscard]] CENTURION_API BlendMode blend_mode() const noexcept;
 
   /**
    * Returns a bit mask that represents all of flags used when creating the
@@ -867,8 +852,7 @@ class Renderer final {
    * renderer.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 flags() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 flags() const noexcept;
 
   /**
    * Indicates whether or not the <code>present()</code> method is synced with
@@ -877,8 +861,7 @@ class Renderer final {
    * @return true if vsync is enabled; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool vsync_enabled() const noexcept;
+  [[nodiscard]] CENTURION_API bool vsync_enabled() const noexcept;
 
   /**
    * Indicates whether or not the renderer is hardware accelerated.
@@ -886,8 +869,7 @@ class Renderer final {
    * @return true if the renderer is hardware accelerated; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool accelerated() const noexcept;
+  [[nodiscard]] CENTURION_API bool accelerated() const noexcept;
 
   /**
    * Indicates whether or not the renderer is using software rendering.
@@ -895,8 +877,7 @@ class Renderer final {
    * @return true if the renderer is software-based; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool software_based() const noexcept;
+  [[nodiscard]] CENTURION_API bool software_based() const noexcept;
 
   /**
    * Indicates whether or not the renderer supports rendering to a target
@@ -906,8 +887,7 @@ class Renderer final {
    * otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool supports_target_textures() const noexcept;
+  [[nodiscard]] CENTURION_API bool supports_target_textures() const noexcept;
 
   /**
    * Indicates whether or not the renderer uses integer scaling values for
@@ -917,8 +897,8 @@ class Renderer final {
    * false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool using_integer_logical_scaling() const noexcept;
+  [[nodiscard]] CENTURION_API bool using_integer_logical_scaling()
+      const noexcept;
 
   /**
    * Indicates whether or not clipping is enabled. This is disabled by default.
@@ -926,8 +906,7 @@ class Renderer final {
    * @return true if clipping is enabled; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool clipping_enabled() const noexcept;
+  [[nodiscard]] CENTURION_API bool clipping_enabled() const noexcept;
 
   /**
    * Returns the currently selected rendering color. Set to black by default.
@@ -935,8 +914,7 @@ class Renderer final {
    * @return the currently selected rendering color.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Color color() const noexcept;
+  [[nodiscard]] CENTURION_API Color color() const noexcept;
 
   /**
    * Attempts to render the specified text in the supplied font using the
@@ -954,10 +932,9 @@ class Renderer final {
    * null if something went wrong.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  UniquePtr<Texture> text_blended(CZString text,
-                                  const Font& font) const noexcept;
+  [[nodiscard]] CENTURION_API UniquePtr<Texture> text_blended(
+      CZString text,
+      const Font& font) const noexcept;
 
   /**
    * Attempts to render the specified text in the supplied font using the
@@ -980,11 +957,10 @@ class Renderer final {
    * null if something went wrong.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  UniquePtr<Texture> text_blended_wrapped(CZString text,
-                                          Uint32 wrap,
-                                          const Font& font) const noexcept;
+  [[nodiscard]] CENTURION_API UniquePtr<Texture> text_blended_wrapped(
+      CZString text,
+      Uint32 wrap,
+      const Font& font) const noexcept;
 
   /**
    * Attempts to render the specified text in the supplied font using the
@@ -1004,11 +980,8 @@ class Renderer final {
    * null if something went wrong.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  UniquePtr<Texture> text_shaded(CZString text,
-                                 const Color& bg,
-                                 const Font& font) const noexcept;
+  [[nodiscard]] CENTURION_API UniquePtr<Texture>
+  text_shaded(CZString text, const Color& bg, const Font& font) const noexcept;
 
   /**
    * Attempts to render the specified text in the supplied font using the
@@ -1026,9 +999,9 @@ class Renderer final {
    * null if something went wrong.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  UniquePtr<Texture> text_solid(CZString text, const Font& font) const noexcept;
+  [[nodiscard]] CENTURION_API UniquePtr<Texture> text_solid(
+      CZString text,
+      const Font& font) const noexcept;
 
   /**
    * Returns the font associated with the specified name. This method returns
@@ -1039,8 +1012,8 @@ class Renderer final {
    * such font.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API SharedPtr<Font> font(const std::string& name) noexcept;
+  [[nodiscard]] CENTURION_API SharedPtr<Font> font(
+      const std::string& name) noexcept;
 
   /**
    * Indicates whether or not the renderer has a font associated with the
@@ -1051,8 +1024,8 @@ class Renderer final {
    * name; false otherwise.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool has_font(const std::string& name) const noexcept;
+  [[nodiscard]] CENTURION_API bool has_font(
+      const std::string& name) const noexcept;
 
   /**
    * Returns the viewport that the renderer uses.
@@ -1060,8 +1033,7 @@ class Renderer final {
    * @return the viewport that the renderer uses.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API IRect viewport() const noexcept;
+  [[nodiscard]] CENTURION_API IRect viewport() const noexcept;
 
   /**
    * Returns a textual representation of the renderer.
@@ -1069,8 +1041,7 @@ class Renderer final {
    * @return a textual representation of the renderer.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API std::string to_string() const;
+  [[nodiscard]] CENTURION_API std::string to_string() const;
 
   /**
    * Returns the number of available rendering drivers. Usually there is only
@@ -1079,8 +1050,7 @@ class Renderer final {
    * @return the number of available rendering drivers.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static int render_drivers() noexcept;
+  [[nodiscard]] CENTURION_API static int render_drivers() noexcept;
 
   /**
    * Returns the number of available video drivers compiled into SDL.
@@ -1088,8 +1058,7 @@ class Renderer final {
    * @return the number of available video drivers compiled into SDL.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static int video_drivers() noexcept;
+  [[nodiscard]] CENTURION_API static int video_drivers() noexcept;
 
   /**
    * Returns the information associated with a rendering driver.
@@ -1099,9 +1068,8 @@ class Renderer final {
    * something went wrong.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static Optional<SDL_RendererInfo> driver_info(int index) noexcept;
+  [[nodiscard]] CENTURION_API static Optional<SDL_RendererInfo> driver_info(
+      int index) noexcept;
 
   /**
    * Returns the translation viewport that is currently being used. Set to (0,
@@ -1110,8 +1078,7 @@ class Renderer final {
    * @return the translation viewport that is currently being used.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  const FRect& translation_viewport() const noexcept
+  [[nodiscard]] const FRect& translation_viewport() const noexcept
   {
     return m_translationViewport;
   }
@@ -1125,8 +1092,7 @@ class Renderer final {
    * @return a pointer to the internal SDL_Renderer.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  SDL_Renderer* get() const noexcept { return m_renderer; }
+  [[nodiscard]] SDL_Renderer* get() const noexcept { return m_renderer; }
 
   /**
    * Converts to SDL_Renderer*.
@@ -1134,8 +1100,7 @@ class Renderer final {
    * @return a pointer to the internal SDL_Renderer instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  operator SDL_Renderer*() noexcept { return m_renderer; }
+  [[nodiscard]] operator SDL_Renderer*() noexcept { return m_renderer; }
 
   /**
    * Converts to SDL_Renderer*.
@@ -1143,8 +1108,10 @@ class Renderer final {
    * @return a pointer to the internal SDL_Renderer instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  operator const SDL_Renderer*() const noexcept { return m_renderer; }
+  [[nodiscard]] operator const SDL_Renderer*() const noexcept
+  {
+    return m_renderer;
+  }
 
  private:
   SDL_Renderer* m_renderer = nullptr;
@@ -1181,9 +1148,8 @@ class Renderer final {
    * @since 4.0.0
    */
   template <typename Lambda>
-  CENTURION_NODISCARD UniquePtr<Texture> render_text(
-      CZString text,
-      Lambda&& render) const noexcept
+  [[nodiscard]] UniquePtr<Texture> render_text(CZString text,
+                                               Lambda&& render) const noexcept
   {
     if (!text) {
       return nullptr;
@@ -1213,7 +1179,7 @@ class Renderer final {
    * x-coordinate.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD int tx(int x) const noexcept
+  [[nodiscard]] int tx(int x) const noexcept
   {
     return x - static_cast<int>(m_translationViewport.x());
   }
@@ -1227,7 +1193,7 @@ class Renderer final {
    * y-coordinate.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD int ty(int y) const noexcept
+  [[nodiscard]] int ty(int y) const noexcept
   {
     return y - static_cast<int>(m_translationViewport.y());
   }
@@ -1241,7 +1207,7 @@ class Renderer final {
    * x-coordinate.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD float tx(float x) const noexcept
+  [[nodiscard]] float tx(float x) const noexcept
   {
     return x - m_translationViewport.x();
   }
@@ -1255,7 +1221,7 @@ class Renderer final {
    * y-coordinate.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD float ty(float y) const noexcept
+  [[nodiscard]] float ty(float y) const noexcept
   {
     return y - m_translationViewport.y();
   }

@@ -124,8 +124,7 @@ class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
    * @return the touch device ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API TouchID touch_id() const noexcept;
+  [[nodiscard]] CENTURION_API TouchID touch_id() const noexcept;
 
   /**
    * Returns the unique ID of the closest gesture to the performed stroke.
@@ -133,8 +132,7 @@ class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
    * @return the unique ID of the closest gesture to the performed stroke.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API GestureID gesture_id() const noexcept;
+  [[nodiscard]] CENTURION_API GestureID gesture_id() const noexcept;
 
   /**
    * Returns the amount of fingers used to draw the stroke.
@@ -142,8 +140,7 @@ class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
    * @return the amount of fingers used to draw the stroke.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 fingers() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 fingers() const noexcept;
 
   /**
    * Returns the difference between the gesture template and the performed
@@ -153,8 +150,7 @@ class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
    * gesture.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float error() const noexcept;
+  [[nodiscard]] CENTURION_API float error() const noexcept;
 
   /**
    * Returns the x-coordinate of the normalized center of the gesture.
@@ -162,8 +158,7 @@ class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
    * @return the x-coordinate of the normalized center of the gesture.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float x() const noexcept;
+  [[nodiscard]] CENTURION_API float x() const noexcept;
 
   /**
    * Returns the y-coordinate of the normalized center of the gesture.
@@ -171,8 +166,7 @@ class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
    * @return the y-coordinate of the normalized center of the gesture.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float y() const noexcept;
+  [[nodiscard]] CENTURION_API float y() const noexcept;
 };
 
 static_assert(validate_event<DollarGestureEvent, SDL_DollarGestureEvent>(),

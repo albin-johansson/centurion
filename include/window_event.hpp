@@ -163,9 +163,9 @@ enum class WindowEventID {
  * @return true if the window event ID values are the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(WindowEventID eventId,
-                              SDL_WindowEventID sdlEventId) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(
+    WindowEventID eventId,
+    SDL_WindowEventID sdlEventId) noexcept;
 
 /**
  * Indicates whether or not two window event ID values are the same.
@@ -175,9 +175,8 @@ CENTURION_API bool operator==(WindowEventID eventId,
  * @return true if the window event ID values are the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_WindowEventID sdlEventId,
-                              WindowEventID eventId) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_WindowEventID sdlEventId,
+                                            WindowEventID eventId) noexcept;
 
 /**
  * Indicates whether or not two window event ID values aren't the same.
@@ -187,9 +186,9 @@ CENTURION_API bool operator==(SDL_WindowEventID sdlEventId,
  * @return true if the window event ID values aren't the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(WindowEventID eventId,
-                              SDL_WindowEventID sdlEventId) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(
+    WindowEventID eventId,
+    SDL_WindowEventID sdlEventId) noexcept;
 
 /**
  * Indicates whether or not two window event ID values aren't the same.
@@ -199,9 +198,8 @@ CENTURION_API bool operator!=(WindowEventID eventId,
  * @return true if the window event ID values aren't the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_WindowEventID sdlEventId,
-                              WindowEventID eventId) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_WindowEventID sdlEventId,
+                                            WindowEventID eventId) noexcept;
 
 /**
  * The WindowEvent class represents an event that is associated with an
@@ -244,8 +242,7 @@ class WindowEvent : public CommonEvent<SDL_WindowEvent> {
    * @return the event ID of this window event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API WindowEventID event_id() const noexcept;
+  [[nodiscard]] CENTURION_API WindowEventID event_id() const noexcept;
 
   /**
    * Returns the value of the first data value. The meaning of this value is
@@ -260,8 +257,7 @@ class WindowEvent : public CommonEvent<SDL_WindowEvent> {
    * @return the value of the first data value.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint32 data_1() const noexcept;
+  [[nodiscard]] CENTURION_API Sint32 data_1() const noexcept;
 
   /**
    * Returns the value of the second data value. The meaning of this value is
@@ -276,8 +272,7 @@ class WindowEvent : public CommonEvent<SDL_WindowEvent> {
    * @return the value of the second data value.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint32 data_2() const noexcept;
+  [[nodiscard]] CENTURION_API Sint32 data_2() const noexcept;
 };
 
 static_assert(validate_event<WindowEvent, SDL_WindowEvent>(),

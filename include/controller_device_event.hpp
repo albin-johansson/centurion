@@ -87,8 +87,7 @@ class ControllerDeviceEvent : public CommonEvent<SDL_ControllerDeviceEvent> {
    * @return the joystick device index or instance ID.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint32 which() const noexcept;
+  [[nodiscard]] CENTURION_API Sint32 which() const noexcept;
 };
 
 static_assert(

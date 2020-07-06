@@ -47,8 +47,7 @@ class RAM final {
    * @return the total amount of system RAM in megabytes.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static int size_mb() noexcept;
+  [[nodiscard]] CENTURION_API static int size_mb() noexcept;
 
   /**
    * Returns the total amount of system RAM in gigabytes.
@@ -56,8 +55,7 @@ class RAM final {
    * @return the total amount of system RAM in gigabytes.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static int size_gb() noexcept;
+  [[nodiscard]] CENTURION_API static int size_gb() noexcept;
 };
 
 }  // namespace centurion

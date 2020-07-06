@@ -59,9 +59,9 @@ enum class GameControllerAxis {
  * otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(GameControllerAxis axis,
-                              SDL_GameControllerAxis sdlAxis) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(
+    GameControllerAxis axis,
+    SDL_GameControllerAxis sdlAxis) noexcept;
 
 /**
  * Indicates whether or not the two game controller axis values are the same.
@@ -72,9 +72,8 @@ CENTURION_API bool operator==(GameControllerAxis axis,
  * otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_GameControllerAxis sdlAxis,
-                              GameControllerAxis axis) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_GameControllerAxis sdlAxis,
+                                            GameControllerAxis axis) noexcept;
 
 /**
  * Indicates whether or not the two game controller axis values aren't the same.
@@ -85,9 +84,9 @@ CENTURION_API bool operator==(SDL_GameControllerAxis sdlAxis,
  * otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(GameControllerAxis axis,
-                              SDL_GameControllerAxis sdlAxis) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(
+    GameControllerAxis axis,
+    SDL_GameControllerAxis sdlAxis) noexcept;
 
 /**
  * Indicates whether or not the two game controller axis values aren't the same.
@@ -98,9 +97,8 @@ CENTURION_API bool operator!=(GameControllerAxis axis,
  * otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_GameControllerAxis sdlAxis,
-                              GameControllerAxis axis) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_GameControllerAxis sdlAxis,
+                                            GameControllerAxis axis) noexcept;
 
 /**
  * The GameControllerButton enum class mirrors the values of the
@@ -137,9 +135,9 @@ enum class GameControllerButton {
  * otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(GameControllerButton button,
-                              SDL_GameControllerButton sdlButton) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(
+    GameControllerButton button,
+    SDL_GameControllerButton sdlButton) noexcept;
 
 /**
  * Indicates whether or not two game controller button values are the same.
@@ -150,9 +148,9 @@ CENTURION_API bool operator==(GameControllerButton button,
  * otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_GameControllerButton sdlButton,
-                              GameControllerButton button) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(
+    SDL_GameControllerButton sdlButton,
+    GameControllerButton button) noexcept;
 
 /**
  * Indicates whether or not two game controller button values aren't the same.
@@ -163,9 +161,9 @@ CENTURION_API bool operator==(SDL_GameControllerButton sdlButton,
  * otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(GameControllerButton button,
-                              SDL_GameControllerButton sdlButton) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(
+    GameControllerButton button,
+    SDL_GameControllerButton sdlButton) noexcept;
 
 /**
  * Indicates whether or not two game controller button values aren't the same.
@@ -176,9 +174,9 @@ CENTURION_API bool operator!=(GameControllerButton button,
  * otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_GameControllerButton sdlButton,
-                              GameControllerButton button) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(
+    SDL_GameControllerButton sdlButton,
+    GameControllerButton button) noexcept;
 
 }  // namespace centurion
 

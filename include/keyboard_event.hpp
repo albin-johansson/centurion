@@ -113,8 +113,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_active(const Key& key) const noexcept;
+  [[nodiscard]] CENTURION_API bool is_active(const Key& key) const noexcept;
 
   /**
    * Indicates whether or not the specified key modifier is active. Multiple key
@@ -124,8 +123,8 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @return true if the specified key modifier is active; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool modifier_active(KeyModifier modifier) const noexcept;
+  [[nodiscard]] CENTURION_API bool modifier_active(
+      KeyModifier modifier) const noexcept;
 
   /**
    * Indicates whether or not any of the SHIFT modifiers are active.
@@ -133,8 +132,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @return true if any of the SHIFT modifiers are active; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool shift_active() const noexcept;
+  [[nodiscard]] CENTURION_API bool shift_active() const noexcept;
 
   /**
    * Indicates whether or not any of the CTRL modifiers are active.
@@ -142,8 +140,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @return true if any of the CTRL modifiers are active; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool ctrl_active() const noexcept;
+  [[nodiscard]] CENTURION_API bool ctrl_active() const noexcept;
 
   /**
    * Indicates whether or not any of the ALT modifiers are active.
@@ -151,8 +148,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @return true if any of the ALT modifiers are active; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool alt_active() const noexcept;
+  [[nodiscard]] CENTURION_API bool alt_active() const noexcept;
 
   /**
    * Indicates whether or not any of the GUI modifiers are active.
@@ -160,8 +156,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @return true if any of the GUI modifiers are active; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool gui_active() const noexcept;
+  [[nodiscard]] CENTURION_API bool gui_active() const noexcept;
 
   /**
    * Indicates whether or not the CAPS modifier is active.
@@ -169,8 +164,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @return true if the CAPS modifier is active; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool caps_active() const noexcept;
+  [[nodiscard]] CENTURION_API bool caps_active() const noexcept;
 
   /**
    * Indicates whether or not the NUM modifier is active.
@@ -178,8 +172,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @return true if the NUM modifier is active; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool num_active() const noexcept;
+  [[nodiscard]] CENTURION_API bool num_active() const noexcept;
 
   /**
    * Indicates whether or not the key associated with this key event has been
@@ -189,8 +182,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool repeated() const noexcept;
+  [[nodiscard]] CENTURION_API bool repeated() const noexcept;
 
   /**
    * Returns the button state of the key associated with the event.
@@ -198,8 +190,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @return the button state of the key associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API ButtonState state() const noexcept;
+  [[nodiscard]] CENTURION_API ButtonState state() const noexcept;
 
   /**
    * Returns the key that triggered this keyboard event.
@@ -207,8 +198,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @return the key that triggered this keyboard event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Key key() const noexcept;
+  [[nodiscard]] CENTURION_API Key key() const noexcept;
 
   /**
    * Returns the ID of the window associated with the event.
@@ -216,8 +206,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @return the ID of the window associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 window_id() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 window_id() const noexcept;
 };
 
 static_assert(validate_event<KeyboardEvent, SDL_KeyboardEvent>(),

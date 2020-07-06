@@ -56,8 +56,7 @@ class KeyState final {
    * @return a unique pointer to a KeyState instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<KeyState> unique();
+  [[nodiscard]] CENTURION_API static UniquePtr<KeyState> unique();
 
   /**
    * Creates and returns a shared pointer to a KeyState instance.
@@ -65,8 +64,7 @@ class KeyState final {
    * @return a shared pointer to a KeyState instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<KeyState> shared();
+  [[nodiscard]] CENTURION_API static SharedPtr<KeyState> shared();
 
   /**
    * Updates the state of the key state object. Note! SDL_PumpEvents isn't
@@ -84,8 +82,7 @@ class KeyState final {
    * @return true if the key is being pressed; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_pressed(const Key& key) const noexcept;
+  [[nodiscard]] CENTURION_API bool is_pressed(const Key& key) const noexcept;
 
   /**
    * Indicates whether or not the specified key has been pressed during more
@@ -96,8 +93,7 @@ class KeyState final {
    * @return true if the key has been held down; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_held(const Key& key) const noexcept;
+  [[nodiscard]] CENTURION_API bool is_held(const Key& key) const noexcept;
 
   /**
    * Indicates whether or not a key just became pressed in the last update of
@@ -108,8 +104,8 @@ class KeyState final {
    * @return true if the key has just been pressed; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool was_just_pressed(const Key& key) const noexcept;
+  [[nodiscard]] CENTURION_API bool was_just_pressed(
+      const Key& key) const noexcept;
 
   /**
    * Indicates whether or not the specified key was released in the last update
@@ -120,8 +116,8 @@ class KeyState final {
    * @return true if the key was released; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool was_just_released(const Key& key) const noexcept;
+  [[nodiscard]] CENTURION_API bool was_just_released(
+      const Key& key) const noexcept;
 
   /**
    * Indicates whether or not the specified key modifier is active. Multiple key
@@ -131,8 +127,8 @@ class KeyState final {
    * @return true if the specified key modifier is active; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool modifier_active(KeyModifier modifier) const noexcept;
+  [[nodiscard]] CENTURION_API bool modifier_active(
+      KeyModifier modifier) const noexcept;
 
   /**
    * Returns the total amount of keys.
@@ -140,8 +136,7 @@ class KeyState final {
    * @return the total amount of keys.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  int amount_of_keys() const noexcept { return m_nKeys; }
+  [[nodiscard]] int amount_of_keys() const noexcept { return m_nKeys; }
 
  private:
   const Uint8* m_states = nullptr;

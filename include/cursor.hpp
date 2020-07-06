@@ -67,8 +67,8 @@ enum class SystemCursor {
  * @return true if the system cursor values are the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SystemCursor lhs, SDL_SystemCursor rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SystemCursor lhs,
+                                            SDL_SystemCursor rhs) noexcept;
 
 /**
  * Indicates whether or not two system cursor values are the same.
@@ -78,8 +78,8 @@ CENTURION_API bool operator==(SystemCursor lhs, SDL_SystemCursor rhs) noexcept;
  * @return true if the system cursor values are the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_SystemCursor lhs, SystemCursor rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_SystemCursor lhs,
+                                            SystemCursor rhs) noexcept;
 
 /**
  * Indicates whether or not two system cursor values aren't the same.
@@ -89,8 +89,8 @@ CENTURION_API bool operator==(SDL_SystemCursor lhs, SystemCursor rhs) noexcept;
  * @return true if the system cursor values aren't the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SystemCursor lhs, SDL_SystemCursor rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SystemCursor lhs,
+                                            SDL_SystemCursor rhs) noexcept;
 
 /**
  * Indicates whether or not two system cursor values aren't the same.
@@ -100,8 +100,8 @@ CENTURION_API bool operator!=(SystemCursor lhs, SDL_SystemCursor rhs) noexcept;
  * @return true if the system cursor values aren't the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_SystemCursor lhs, SystemCursor rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_SystemCursor lhs,
+                                            SystemCursor rhs) noexcept;
 
 /**
  * The Cursor class is a wrapper for the SDL_Cursor struct. Cursors can be
@@ -176,8 +176,7 @@ class Cursor final {
    * @throws CenturionException if the cursor cannot be created.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Cursor> unique(SystemCursor id);
+  [[nodiscard]] CENTURION_API static UniquePtr<Cursor> unique(SystemCursor id);
 
   /**
    * Creates and returns a unique pointer to a Cursor instance. The created
@@ -188,8 +187,8 @@ class Cursor final {
    * @throws CenturionException if the cursor cannot be created.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Cursor> unique(Owner<SDL_Cursor*> cursor);
+  [[nodiscard]] CENTURION_API static UniquePtr<Cursor> unique(
+      Owner<SDL_Cursor*> cursor);
 
   /**
    * Creates and returns a unique pointer to a Cursor instance. The supplied
@@ -202,9 +201,9 @@ class Cursor final {
    * @throws CenturionException if the cursor cannot be created.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Cursor> unique(const Surface& surface,
-                                                IPoint hotspot);
+  [[nodiscard]] CENTURION_API static UniquePtr<Cursor> unique(
+      const Surface& surface,
+      IPoint hotspot);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance.
@@ -214,8 +213,7 @@ class Cursor final {
    * @throws CenturionException if the cursor cannot be created.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Cursor> shared(SystemCursor id);
+  [[nodiscard]] CENTURION_API static SharedPtr<Cursor> shared(SystemCursor id);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance. The created
@@ -226,8 +224,8 @@ class Cursor final {
    * @throws CenturionException if the cursor cannot be created.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Cursor> shared(Owner<SDL_Cursor*> cursor);
+  [[nodiscard]] CENTURION_API static SharedPtr<Cursor> shared(
+      Owner<SDL_Cursor*> cursor);
 
   /**
    * Creates and returns a shared pointer to a Cursor instance. The supplied
@@ -240,9 +238,9 @@ class Cursor final {
    * @throws CenturionException if the cursor cannot be created.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Cursor> shared(const Surface& surface,
-                                                IPoint hotspot);
+  [[nodiscard]] CENTURION_API static SharedPtr<Cursor> shared(
+      const Surface& surface,
+      IPoint hotspot);
 
   /**
    * Makes the cursor the used cursor.
@@ -262,8 +260,7 @@ class Cursor final {
    * @return true if the cursor is being used; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_enabled() const noexcept;
+  [[nodiscard]] CENTURION_API bool is_enabled() const noexcept;
 
   /**
    * Forces a cursor redraw.
@@ -293,8 +290,7 @@ class Cursor final {
    * @return true if the cursor is visible; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool visible() noexcept;
+  [[nodiscard]] CENTURION_API static bool visible() noexcept;
 
   /**
    * Returns a pointer to the internal SDL_Cursor. Use of this method is
@@ -305,8 +301,7 @@ class Cursor final {
    * @return a pointer to the internal SDL_Cursor.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  SDL_Cursor* get() const noexcept { return m_cursor; }
+  [[nodiscard]] SDL_Cursor* get() const noexcept { return m_cursor; }
 
  private:
   SDL_Cursor* m_cursor = nullptr;

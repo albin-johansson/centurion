@@ -108,9 +108,8 @@ enum class PixelFormat {
  * @return true if the pixel format values are the same; false otherwise.
  * @since 3.1.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(PixelFormat lhs,
-                              SDL_PixelFormatEnum rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(PixelFormat lhs,
+                                            SDL_PixelFormatEnum rhs) noexcept;
 
 /**
  * Indicates whether or not the two pixel format values are the same.
@@ -120,9 +119,8 @@ CENTURION_API bool operator==(PixelFormat lhs,
  * @return true if the pixel format values are the same; false otherwise.
  * @since 3.1.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_PixelFormatEnum lhs,
-                              PixelFormat rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_PixelFormatEnum lhs,
+                                            PixelFormat rhs) noexcept;
 
 /**
  * Indicates whether or not the two pixel format values aren't the same.
@@ -132,9 +130,8 @@ CENTURION_API bool operator==(SDL_PixelFormatEnum lhs,
  * @return true if the pixel format values aren't the same; false otherwise.
  * @since 3.1.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(PixelFormat lhs,
-                              SDL_PixelFormatEnum rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(PixelFormat lhs,
+                                            SDL_PixelFormatEnum rhs) noexcept;
 
 /**
  * Indicates whether or not the two pixel format values aren't the same.
@@ -144,9 +141,8 @@ CENTURION_API bool operator!=(PixelFormat lhs,
  * @return true if the pixel format values aren't the same; false otherwise.
  * @since 3.1.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_PixelFormatEnum lhs,
-                              PixelFormat rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_PixelFormatEnum lhs,
+                                            PixelFormat rhs) noexcept;
 
 }  // namespace centurion
 

@@ -57,28 +57,6 @@
 #endif  // defined(_WIN32) && !defined(CENTURION_HEADER_ONLY)
 
 /**
- * @brief Indicates that return values shouldn't be ignored.
- *
- * Effectively equivalent to `[[nodiscard]]` in C++17.
- *
- * @def CENTURION_NODISCARD
- * @headerfile centurion_api.h
- */
-#ifndef CENTURION_NODISCARD
-#if defined(__GNUC__)
-#define CENTURION_NODISCARD __attribute__((warn_unused_result))
-#elif defined(_MSC_VER) && _MSC_VER >= 1700
-#define CENTURION_NODISCARD _Check_return_
-#else
-#if __cplusplus >= 201603
-#define CENTURION_NODISCARD [[nodiscard]]
-#else
-#define CENTURION_NODISCARD
-#endif
-#endif
-#endif
-
-/**
  * @brief Indicates that something shouldn't be used.
  *
  * Effectively equivalent to `[[deprecated]]` in C++17.

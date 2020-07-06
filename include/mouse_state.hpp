@@ -50,8 +50,7 @@ class MouseState final {
    * @return a unique pointer to a MouseState instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<MouseState> unique();
+  [[nodiscard]] CENTURION_API static UniquePtr<MouseState> unique();
 
   /**
    * Creates and returns a shared pointer to a MouseState instance.
@@ -59,8 +58,7 @@ class MouseState final {
    * @return a shared pointer to a MouseState instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<MouseState> shared();
+  [[nodiscard]] CENTURION_API static SharedPtr<MouseState> shared();
 
   /**
    * Updates the mouse state. The window width and height will be adjusted to
@@ -105,8 +103,7 @@ class MouseState final {
    * @return true if the left mouse button was released; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool was_left_button_released() const noexcept;
+  [[nodiscard]] CENTURION_API bool was_left_button_released() const noexcept;
 
   /**
    * Indicates whether or not the right mouse button was released.
@@ -114,8 +111,7 @@ class MouseState final {
    * @return true if the right mouse button was released; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool was_right_button_released() const noexcept;
+  [[nodiscard]] CENTURION_API bool was_right_button_released() const noexcept;
 
   /**
    * Indicates whether or not the mouse was moved.
@@ -123,8 +119,7 @@ class MouseState final {
    * @return true if the mouse was moved; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool was_mouse_moved() const noexcept;
+  [[nodiscard]] CENTURION_API bool was_mouse_moved() const noexcept;
 
   /**
    * Returns the x-coordinate of the mouse.
@@ -132,8 +127,7 @@ class MouseState final {
    * @return the x-coordinate of the mouse.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  int mouse_x() const noexcept { return m_mouseX; }
+  [[nodiscard]] int mouse_x() const noexcept { return m_mouseX; }
 
   /**
    * Returns the y-coordinate of the mouse.
@@ -141,8 +135,7 @@ class MouseState final {
    * @return the y-coordinate of the mouse.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  int mouse_y() const noexcept { return m_mouseY; }
+  [[nodiscard]] int mouse_y() const noexcept { return m_mouseY; }
 
   /**
    * Returns the logical width used by the mouse state instance.
@@ -151,8 +144,7 @@ class MouseState final {
    * default.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  int logical_width() const noexcept { return m_logicalWidth; }
+  [[nodiscard]] int logical_width() const noexcept { return m_logicalWidth; }
 
   /**
    * Returns the logical height used by the mouse state instance.
@@ -161,8 +153,7 @@ class MouseState final {
    * default.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  int logical_height() const noexcept { return m_logicalHeight; }
+  [[nodiscard]] int logical_height() const noexcept { return m_logicalHeight; }
 
   /**
    * Indicates whether or not the left mouse button is currently pressed.
@@ -170,8 +161,10 @@ class MouseState final {
    * @return true if the left mouse button is pressed; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  bool is_left_button_pressed() const noexcept { return m_leftPressed; }
+  [[nodiscard]] bool is_left_button_pressed() const noexcept
+  {
+    return m_leftPressed;
+  }
 
   /**
    * Indicates whether or not the right mouse button is currently pressed.
@@ -179,8 +172,10 @@ class MouseState final {
    * @return true if the right mouse button is pressed; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  bool is_right_button_pressed() const noexcept { return m_rightPressed; }
+  [[nodiscard]] bool is_right_button_pressed() const noexcept
+  {
+    return m_rightPressed;
+  }
 
  private:
   int m_mouseX = 0;

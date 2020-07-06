@@ -66,8 +66,7 @@ class Timer final {
    * @return the frequency of the system high-performance counter.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static Uint64 high_res_freq() noexcept;
+  [[nodiscard]] CENTURION_API static Uint64 high_res_freq() noexcept;
 
   /**
    * Returns the current value of the system high-performance counter.
@@ -75,8 +74,10 @@ class Timer final {
    * @return the current value of the system high-performance counter.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  static Uint64 high_res() noexcept { return SDL_GetPerformanceCounter(); }
+  [[nodiscard]] static Uint64 high_res() noexcept
+  {
+    return SDL_GetPerformanceCounter();
+  }
 
   /**
    * Returns the amount of milliseconds since the library was initialized.
@@ -84,8 +85,7 @@ class Timer final {
    * @return the amount of milliseconds since the library was initialized.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  static Uint32 millis() noexcept { return SDL_GetTicks(); }
+  [[nodiscard]] static Uint32 millis() noexcept { return SDL_GetTicks(); }
 };
 
 }  // namespace centurion

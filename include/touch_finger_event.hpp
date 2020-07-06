@@ -148,8 +148,7 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
    * @return the touch device ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API TouchID touch_id() const noexcept;
+  [[nodiscard]] CENTURION_API TouchID touch_id() const noexcept;
 
   /**
    * Returns the finger ID associated with the event.
@@ -157,8 +156,7 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
    * @return the finger ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API FingerID finger_id() const noexcept;
+  [[nodiscard]] CENTURION_API FingerID finger_id() const noexcept;
 
   /**
    * Returns the window ID of the window under the finger.
@@ -166,8 +164,7 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
    * @return the window ID of the window under the finger.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 window_id() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 window_id() const noexcept;
 
   /**
    * Returns the normalized x-coordinate of the location of the event. The
@@ -177,8 +174,7 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
    * range [0, 1].
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float x() const noexcept;
+  [[nodiscard]] CENTURION_API float x() const noexcept;
 
   /**
    * Returns the normalized y-coordinate of the location of the event. The
@@ -188,8 +184,7 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
    * range [0, 1].
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float y() const noexcept;
+  [[nodiscard]] CENTURION_API float y() const noexcept;
 
   /**
    * Returns the normalized distance moved along the x-axis. The
@@ -199,8 +194,7 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
    * [-1, 1].
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float dx() const noexcept;
+  [[nodiscard]] CENTURION_API float dx() const noexcept;
 
   /**
    * Returns the normalized distance moved along the y-axis. The
@@ -210,8 +204,7 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
    * [-1, 1].
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float dy() const noexcept;
+  [[nodiscard]] CENTURION_API float dy() const noexcept;
 
   /**
    * Returns the normalized pressure associated with the event. The
@@ -221,8 +214,7 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
    * [0, 1].
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API float pressure() const noexcept;
+  [[nodiscard]] CENTURION_API float pressure() const noexcept;
 };
 
 static_assert(validate_event<TouchFingerEvent, SDL_TouchFingerEvent>(),

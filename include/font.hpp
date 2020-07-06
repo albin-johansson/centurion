@@ -126,8 +126,8 @@ class Font final {
    * size isn't greater than zero.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Font> unique(CZString file, int size);
+  [[nodiscard]] CENTURION_API static UniquePtr<Font> unique(CZString file,
+                                                            int size);
 
   /**
    * Creates and returns a shared pointer to a font instance.
@@ -139,8 +139,8 @@ class Font final {
    * size isn't greater than zero.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Font> shared(CZString file, int size);
+  [[nodiscard]] CENTURION_API static SharedPtr<Font> shared(CZString file,
+                                                            int size);
 
   /**
    * Resets the style of the font.
@@ -215,8 +215,7 @@ class Font final {
    * @return the maximum height of a character in this font.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int height() const noexcept;
+  [[nodiscard]] CENTURION_API int height() const noexcept;
 
   /**
    * Returns the offset from the baseline to the bottom of the font characters.
@@ -225,8 +224,7 @@ class Font final {
    * @return the offset from the baseline to the bottom of the font characters.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int descent() const noexcept;
+  [[nodiscard]] CENTURION_API int descent() const noexcept;
 
   /**
    * Returns the offset from the baseline to the top of the font characters. The
@@ -235,8 +233,7 @@ class Font final {
    * @return the offset from the baseline to the top of the font characters.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int ascent() const noexcept;
+  [[nodiscard]] CENTURION_API int ascent() const noexcept;
 
   /**
    * Returns the recommended pixel height of rendered text in the font. The
@@ -245,8 +242,7 @@ class Font final {
    * @return Returns the recommended pixel height of rendered text in the font.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int line_skip() const noexcept;
+  [[nodiscard]] CENTURION_API int line_skip() const noexcept;
 
   /**
    * Returns the number of available font faces in the font.
@@ -254,8 +250,7 @@ class Font final {
    * @return the number of available font faces in the font.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int font_faces() const noexcept;
+  [[nodiscard]] CENTURION_API int font_faces() const noexcept;
 
   /**
    * Returns the TrueType font hinting of the font. Set to FontHint::Normal by
@@ -264,8 +259,7 @@ class Font final {
    * @return the TrueType font hinting of the font.
    * @since 3.1.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Hint font_hinting() const noexcept;
+  [[nodiscard]] CENTURION_API Hint font_hinting() const noexcept;
 
   /**
    * Indicates whether or not kerning is being used.
@@ -273,8 +267,7 @@ class Font final {
    * @return true if kerning is being used by the font; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool kerning() const noexcept;
+  [[nodiscard]] CENTURION_API bool kerning() const noexcept;
 
   /**
    * Indicates whether or not the font is bold.
@@ -282,8 +275,7 @@ class Font final {
    * @return true if the font is bold; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool bold() const noexcept;
+  [[nodiscard]] CENTURION_API bool bold() const noexcept;
 
   /**
    * Indicates whether or not the font is italic.
@@ -291,8 +283,7 @@ class Font final {
    * @return true if the font is italic; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool italic() const noexcept;
+  [[nodiscard]] CENTURION_API bool italic() const noexcept;
 
   /**
    * Indicates whether or not the font is underlined.
@@ -300,8 +291,7 @@ class Font final {
    * @return true if the font is underlined; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool underlined() const noexcept;
+  [[nodiscard]] CENTURION_API bool underlined() const noexcept;
 
   /**
    * Indicates whether or not the font is a strikethrough font.
@@ -309,8 +299,7 @@ class Font final {
    * @return true if the font is a strikethrough font; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool strikethrough() const noexcept;
+  [[nodiscard]] CENTURION_API bool strikethrough() const noexcept;
 
   /**
    * Indicates whether or not the font is outlined.
@@ -318,8 +307,7 @@ class Font final {
    * @return true if the font is outlined; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool outlined() const noexcept;
+  [[nodiscard]] CENTURION_API bool outlined() const noexcept;
 
   /**
    * Indicates whether or not the font is fixed width.
@@ -327,8 +315,7 @@ class Font final {
    * @return true if the font is fixed width; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_fixed_width() const noexcept;
+  [[nodiscard]] CENTURION_API bool is_fixed_width() const noexcept;
 
   /**
    * Returns the kerning amount between two glyphs in the font, if kerning
@@ -341,9 +328,9 @@ class Font final {
    * @return the kerning amount between to glyphs in the font.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int kerning_amount(Uint16 firstGlyph,
-                                   Uint16 secondGlyph) const noexcept;
+  [[nodiscard]] CENTURION_API int kerning_amount(
+      Uint16 firstGlyph,
+      Uint16 secondGlyph) const noexcept;
 
   /**
    * Indicates whether or not the specified glyph is available in the font.
@@ -352,8 +339,8 @@ class Font final {
    * @return true if the glyph is available in the font; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool is_glyph_provided(Uint16 glyph) const noexcept;
+  [[nodiscard]] CENTURION_API bool is_glyph_provided(
+      Uint16 glyph) const noexcept;
 
   /**
    * Returns the metrics of the specified glyph in this font.
@@ -363,9 +350,8 @@ class Font final {
    * couldn't be obtained.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  Optional<GlyphMetrics> glyph_metrics(Uint16 glyph) const noexcept;
+  [[nodiscard]] CENTURION_API Optional<GlyphMetrics> glyph_metrics(
+      Uint16 glyph) const noexcept;
 
   /**
    * Returns the family name of the font.
@@ -373,8 +359,7 @@ class Font final {
    * @return the family name of the font.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API CZString family_name() const noexcept;
+  [[nodiscard]] CENTURION_API CZString family_name() const noexcept;
 
   /**
    * Returns the font face style name of the font. This information may not be
@@ -384,8 +369,7 @@ class Font final {
    * available.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API CZString style_name() const noexcept;
+  [[nodiscard]] CENTURION_API CZString style_name() const noexcept;
 
   /**
    * Returns the width of the supplied string, if it was rendered using the
@@ -396,8 +380,7 @@ class Font final {
    * font. The returned value is 0 if the string is null.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int string_width(CZString s) const noexcept;
+  [[nodiscard]] CENTURION_API int string_width(CZString s) const noexcept;
 
   /**
    * Returns the height of the supplied string, if it was rendered using the
@@ -408,8 +391,7 @@ class Font final {
    * font. The returned value is 0 if the string is null.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int string_height(CZString s) const noexcept;
+  [[nodiscard]] CENTURION_API int string_height(CZString s) const noexcept;
 
   /**
    * Returns the size of the supplied string, if it was rendered using the font.
@@ -419,8 +401,7 @@ class Font final {
    * returned size is 0x0 if the supplied string is null.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API IArea string_size(CZString s) const noexcept;
+  [[nodiscard]] CENTURION_API IArea string_size(CZString s) const noexcept;
 
   /**
    * Returns the compile-time version of SDL2_ttf that is being used.
@@ -428,8 +409,7 @@ class Font final {
    * @return the compile-time version of SDL2_ttf that is being used.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SDL_version ttf_version() noexcept;
+  [[nodiscard]] CENTURION_API static SDL_version ttf_version() noexcept;
 
   /**
    * Returns a textual representation of the font instance.
@@ -437,8 +417,7 @@ class Font final {
    * @return a textual representation of the font instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API std::string to_string() const;
+  [[nodiscard]] CENTURION_API std::string to_string() const;
 
   /**
    * Returns the size of the font.
@@ -446,8 +425,7 @@ class Font final {
    * @return the size of the font.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  int size() const noexcept { return m_size; }
+  [[nodiscard]] int size() const noexcept { return m_size; }
 
   /**
    * Returns a pointer to the internal TTF_Font. Use of this method is
@@ -458,8 +436,7 @@ class Font final {
    * @return a pointer to the internal TTF_Font.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  TTF_Font* get() const noexcept { return m_font; }
+  [[nodiscard]] TTF_Font* get() const noexcept { return m_font; }
 
   /**
    * Converts to TTF_Font*.
@@ -467,8 +444,7 @@ class Font final {
    * @return a pointer to the internal TTF_Font instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  operator TTF_Font*() noexcept { return m_font; }
+  [[nodiscard]] operator TTF_Font*() noexcept { return m_font; }
 
   /**
    * Converts to TTF_Font*.
@@ -476,8 +452,7 @@ class Font final {
    * @return a pointer to the internal TTF_Font instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  operator const TTF_Font*() const noexcept { return m_font; }
+  [[nodiscard]] operator const TTF_Font*() const noexcept { return m_font; }
 
  private:
   TTF_Font* m_font = nullptr;

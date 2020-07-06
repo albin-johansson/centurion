@@ -56,8 +56,7 @@ class Platform final {
    * @return the value that represents the current platform.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static PlatformID id() noexcept;
+  [[nodiscard]] CENTURION_API static PlatformID id() noexcept;
 
   /**
    * Returns the name of the current platform.
@@ -66,8 +65,7 @@ class Platform final {
    * be deduced.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static Optional<std::string> name() noexcept;
+  [[nodiscard]] CENTURION_API static Optional<std::string> name() noexcept;
 };
 
 }  // namespace centurion

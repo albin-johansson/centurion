@@ -57,8 +57,8 @@ class Error final {
    * latest SDL_GetError() message.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static CenturionException from_core(std::string message);
+  [[nodiscard]] CENTURION_API static CenturionException from_core(
+      std::string message);
 
   /**
    * Returns an exception with the supplied message along with the latest
@@ -69,8 +69,8 @@ class Error final {
    * latest IMG_GetError() message.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static CenturionException from_image(std::string message);
+  [[nodiscard]] CENTURION_API static CenturionException from_image(
+      std::string message);
 
   /**
    * Returns an exception with the supplied message along with the latest
@@ -81,8 +81,8 @@ class Error final {
    * latest TTF_GetError() message.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static CenturionException from_ttf(std::string message);
+  [[nodiscard]] CENTURION_API static CenturionException from_ttf(
+      std::string message);
 
   /**
    * Returns an exception with the supplied message along with the latest
@@ -93,8 +93,8 @@ class Error final {
    * latest Mix_GetError() message.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static CenturionException from_mixer(std::string message);
+  [[nodiscard]] CENTURION_API static CenturionException from_mixer(
+      std::string message);
 };
 
 #ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT

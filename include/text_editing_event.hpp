@@ -98,8 +98,7 @@ class TextEditingEvent : public CommonEvent<SDL_TextEditingEvent> {
    * @return the window ID associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 window_id() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 window_id() const noexcept;
 
   /**
    * Returns the text that will be used, as a null-terminated string in UTF-8
@@ -108,8 +107,7 @@ class TextEditingEvent : public CommonEvent<SDL_TextEditingEvent> {
    * @return the text that will be used.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API CZString text() const noexcept;
+  [[nodiscard]] CENTURION_API CZString text() const noexcept;
 
   /**
    * Returns the location to begin editing from.
@@ -117,8 +115,7 @@ class TextEditingEvent : public CommonEvent<SDL_TextEditingEvent> {
    * @return the location to begin editing from.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint32 start() const noexcept;
+  [[nodiscard]] CENTURION_API Sint32 start() const noexcept;
 
   /**
    * Returns the number of characters to edit from the start point. The
@@ -127,8 +124,7 @@ class TextEditingEvent : public CommonEvent<SDL_TextEditingEvent> {
    * @return the number of characters to edit from the start point.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Sint32 length() const noexcept;
+  [[nodiscard]] CENTURION_API Sint32 length() const noexcept;
 
  private:
   void check_length() noexcept;

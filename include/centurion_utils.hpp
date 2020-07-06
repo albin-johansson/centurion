@@ -68,7 +68,7 @@ namespace detail {
  * @since 4.0.0
  */
 template <typename T, typename... Args>
-CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args)
+[[nodiscard]] std::unique_ptr<T> make_unique(Args&&... args)
 {
 #ifdef CENTURION_HAS_MAKE_UNIQUE
   return std::make_unique<T>(std::forward<Args>(args)...);
@@ -84,8 +84,7 @@ CENTURION_NODISCARD std::unique_ptr<T> make_unique(Args&&... args)
  * @return the corresponding SDL_bool value for the supplied boolean value.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-constexpr SDL_bool convert_bool(bool b) noexcept
+[[nodiscard]] constexpr SDL_bool convert_bool(bool b) noexcept
 {
   return b ? SDL_TRUE : SDL_FALSE;
 }
@@ -101,7 +100,7 @@ constexpr SDL_bool convert_bool(bool b) noexcept
  * @since 3.0.0
  */
 template <typename T>
-CENTURION_NODISCARD std::string address_of(T* ptr)
+[[nodiscard]] std::string address_of(T* ptr)
 {
   if (ptr) {
     std::ostringstream address;
@@ -124,7 +123,7 @@ CENTURION_NODISCARD std::string address_of(T* ptr)
  * @since 4.0.0
  */
 template <typename T>
-CENTURION_NODISCARD T clamp_inclusive(std::pair<T, T> range, T value) noexcept
+[[nodiscard]] T clamp_inclusive(std::pair<T, T> range, T value) noexcept
 {
   const auto min = range.first;
   const auto max = range.second;
@@ -246,7 +245,7 @@ namespace detail {
  * @return true if the strings are equal; false otherwise.
  * @since 4.1.0
  */
-CENTURION_NODISCARD inline bool equal(CZString lhs, CZString rhs) noexcept
+[[nodiscard]] inline bool equal(CZString lhs, CZString rhs) noexcept
 {
   if (lhs && rhs) {
     return std::strcmp(lhs, rhs) == 0;

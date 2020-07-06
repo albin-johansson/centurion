@@ -211,8 +211,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Joystick> unique(int deviceIndex);
+  [[nodiscard]] CENTURION_API static UniquePtr<Joystick> unique(
+      int deviceIndex);
 
   /**
    * @brief Creates and returns a unique pointer to a `Joystick` instance.
@@ -229,8 +229,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Joystick> unique(
+  [[nodiscard]] CENTURION_API static UniquePtr<Joystick> unique(
       Owner<SDL_Joystick*> joystick);
 
   /**
@@ -247,8 +246,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Joystick> shared(int deviceIndex);
+  [[nodiscard]] CENTURION_API static SharedPtr<Joystick> shared(
+      int deviceIndex);
 
   /**
    * @brief Creates and returns a shared pointer to a `Joystick` instance.
@@ -265,8 +264,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Joystick> shared(
+  [[nodiscard]] CENTURION_API static SharedPtr<Joystick> shared(
       Owner<SDL_Joystick*> joystick);
 
   /**
@@ -337,9 +335,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static SDL_Joystick* from_instance_id(SDL_JoystickID id) noexcept;
+  [[nodiscard]] CENTURION_API static SDL_Joystick* from_instance_id(
+      SDL_JoystickID id) noexcept;
 
   /**
    * @brief Returns a pointer to the joystick associated with the specified
@@ -351,9 +348,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static SDL_Joystick* from_player_index(int playerIndex) noexcept;
+  [[nodiscard]] CENTURION_API static SDL_Joystick* from_player_index(
+      int playerIndex) noexcept;
 
   /**
    * @brief Returns the amount of currently available joysticks.
@@ -363,8 +359,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static Optional<int> amount() noexcept;
+  [[nodiscard]] CENTURION_API static Optional<int> amount() noexcept;
 
   /**
    * @brief Returns the GUID for the joystick associated with the specified
@@ -380,8 +375,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SDL_JoystickGUID guid(int deviceIndex) noexcept;
+  [[nodiscard]] CENTURION_API static SDL_JoystickGUID guid(
+      int deviceIndex) noexcept;
 
   /**
    * @brief Returns the player index of the joystick associated with the
@@ -396,9 +391,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static Optional<int> player_index(int deviceIndex) noexcept;
+  [[nodiscard]] CENTURION_API static Optional<int> player_index(
+      int deviceIndex) noexcept;
 
   /**
    * @brief Returns the USB vendor ID for the joystick associated with the
@@ -411,9 +405,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static Optional<Uint16> vendor(int deviceIndex) noexcept;
+  [[nodiscard]] CENTURION_API static Optional<Uint16> vendor(
+      int deviceIndex) noexcept;
 
   /**
    * @brief Returns the USB product ID for the joystick associated with the
@@ -426,8 +419,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static Optional<Uint16> product(int deviceIndex) noexcept;
+  [[nodiscard]] CENTURION_API static Optional<Uint16> product(
+      int deviceIndex) noexcept;
 
   /**
    * @brief Returns the product version for the joystick associated with the
@@ -440,9 +433,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static Optional<Uint16> product_version(int deviceIndex) noexcept;
+  [[nodiscard]] CENTURION_API static Optional<Uint16> product_version(
+      int deviceIndex) noexcept;
 
   /**
    * @brief Returns the type of the joystick associated with the specified
@@ -454,8 +446,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static Type type(int deviceIndex) noexcept;
+  [[nodiscard]] CENTURION_API static Type type(int deviceIndex) noexcept;
 
   /**
    * @brief Returns the instance ID for the joystick associated with the
@@ -468,9 +459,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static Optional<SDL_JoystickID> instance_id(int deviceIndex) noexcept;
+  [[nodiscard]] CENTURION_API static Optional<SDL_JoystickID> instance_id(
+      int deviceIndex) noexcept;
 
   /**
    * @brief Returns the associated with the joystick with the specified
@@ -484,8 +474,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static CZString name(int deviceIndex) noexcept;
+  [[nodiscard]] CENTURION_API static CZString name(int deviceIndex) noexcept;
 
   /**
    * @brief Returns a joystick GUID based on the supplied string.
@@ -497,9 +486,7 @@ class Joystick final {
    * @see `SDL_JoystickGetGUIDFromString`
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  static SDL_JoystickGUID guid_from_string(
+  [[nodiscard]] CENTURION_API static SDL_JoystickGUID guid_from_string(
       gsl::not_null<CZString> str) noexcept;
 
   /**
@@ -537,8 +524,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Optional<int> player_index() const noexcept;
+  [[nodiscard]] CENTURION_API Optional<int> player_index() const noexcept;
 
   /**
    * @brief Returns the type associated with the joystick.
@@ -547,8 +533,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Type type() const noexcept;
+  [[nodiscard]] CENTURION_API Type type() const noexcept;
 
   /**
    * @brief Returns the USB vendor ID of the joystick.
@@ -558,8 +543,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Optional<Uint16> vendor() const noexcept;
+  [[nodiscard]] CENTURION_API Optional<Uint16> vendor() const noexcept;
 
   /**
    * @brief Returns the USB product ID of the joystick.
@@ -569,8 +553,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Optional<Uint16> product() const noexcept;
+  [[nodiscard]] CENTURION_API Optional<Uint16> product() const noexcept;
 
   /**
    * @brief Returns the product version of the joystick, if available.
@@ -580,8 +563,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Optional<Uint16> product_version() const noexcept;
+  [[nodiscard]] CENTURION_API Optional<Uint16> product_version() const noexcept;
 
   /**
    * @brief Returns the ball axis change since the last poll.
@@ -596,9 +578,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  Optional<BallAxisChange> ball_axis_change(int ball) const noexcept;
+  [[nodiscard]] CENTURION_API Optional<BallAxisChange> ball_axis_change(
+      int ball) const noexcept;
 
   /**
    * @brief Returns the current position of the specified axis.
@@ -616,8 +597,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Optional<Sint16> axis_pos(unsigned int axis) const noexcept;
+  [[nodiscard]] CENTURION_API Optional<Sint16> axis_pos(
+      unsigned int axis) const noexcept;
 
   /**
    * @brief Returns the initial state of the specified axis on the joystick.
@@ -629,9 +610,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API
-  Optional<Sint16> axis_initial_state(unsigned int axis) const noexcept;
+  [[nodiscard]] CENTURION_API Optional<Sint16> axis_initial_state(
+      unsigned int axis) const noexcept;
 
   /**
    * @brief Indicates whether or not the joystick is attached to the system.
@@ -640,8 +620,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool attached() const noexcept;
+  [[nodiscard]] CENTURION_API bool attached() const noexcept;
 
   /**
    * @brief Returns the amount of hats on the joystick.
@@ -650,8 +629,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int num_hats() const noexcept;
+  [[nodiscard]] CENTURION_API int num_hats() const noexcept;
 
   /**
    * @brief Returns the amount of general axis controls on the joystick.
@@ -660,8 +638,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int num_axes() const noexcept;
+  [[nodiscard]] CENTURION_API int num_axes() const noexcept;
 
   /**
    * @brief Returns the amount of trackballs on the joystick.
@@ -670,8 +647,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int num_trackballs() const noexcept;
+  [[nodiscard]] CENTURION_API int num_trackballs() const noexcept;
 
   /**
    * @brief Returns the amount of buttons on the joystick.
@@ -680,8 +656,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API int num_buttons() const noexcept;
+  [[nodiscard]] CENTURION_API int num_buttons() const noexcept;
 
   /**
    * @brief Returns the instance ID associated with the joystick.
@@ -690,8 +665,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API SDL_JoystickID instance_id() const noexcept;
+  [[nodiscard]] CENTURION_API SDL_JoystickID instance_id() const noexcept;
 
   /**
    * @brief Returns the GUID associated with the joystick.
@@ -702,8 +676,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API SDL_JoystickGUID guid() noexcept;
+  [[nodiscard]] CENTURION_API SDL_JoystickGUID guid() noexcept;
 
   /**
    * @brief Returns the name associated with the joystick.
@@ -714,8 +687,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API CZString name() const noexcept;
+  [[nodiscard]] CENTURION_API CZString name() const noexcept;
 
   /**
    * @brief Returns the current power level of the joystick.
@@ -724,8 +696,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Power power() const noexcept;
+  [[nodiscard]] CENTURION_API Power power() const noexcept;
 
   /**
    * @brief Returns the button state of the button associated with the index.
@@ -736,8 +707,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API ButtonState button_state(int button) const noexcept;
+  [[nodiscard]] CENTURION_API ButtonState
+  button_state(int button) const noexcept;
 
   /**
    * @brief Returns the state of a specific joystick hat.
@@ -750,8 +721,7 @@ class Joystick final {
    *
    * @see `Joystick::HatState`
    */
-  CENTURION_NODISCARD
-  CENTURION_API HatState hat_state(int hat) const noexcept;
+  [[nodiscard]] CENTURION_API HatState hat_state(int hat) const noexcept;
 
   /**
    * @brief Returns a pointer to the associated `SDL_Joystick`.
@@ -765,7 +735,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD SDL_Joystick* get() const noexcept { return m_joystick; }
+  [[nodiscard]] SDL_Joystick* get() const noexcept { return m_joystick; }
 
   /**
    * @brief Returns the maximum possible value of an axis control on a joystick.
@@ -774,7 +744,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD static constexpr Sint16 axis_max() noexcept
+  [[nodiscard]] static constexpr Sint16 axis_max() noexcept
   {
     return SDL_JOYSTICK_AXIS_MAX;
   }
@@ -786,7 +756,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_NODISCARD static constexpr Sint16 axis_min() noexcept
+  [[nodiscard]] static constexpr Sint16 axis_min() noexcept
   {
     return SDL_JOYSTICK_AXIS_MIN;
   }
@@ -809,9 +779,9 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(Joystick::Power lhs,
-                              SDL_JoystickPowerLevel rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(
+    Joystick::Power lhs,
+    SDL_JoystickPowerLevel rhs) noexcept;
 
 /**
  * @brief Indicates whether or not two joystick power values are the same.
@@ -823,9 +793,8 @@ CENTURION_API bool operator==(Joystick::Power lhs,
  *
  * @since 4.3.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_JoystickPowerLevel lhs,
-                              Joystick::Power rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_JoystickPowerLevel lhs,
+                                            Joystick::Power rhs) noexcept;
 
 /**
  * @brief Indicates whether or not two joystick power values aren't the same.
@@ -837,9 +806,9 @@ CENTURION_API bool operator==(SDL_JoystickPowerLevel lhs,
  *
  * @since 4.3.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(Joystick::Power lhs,
-                              SDL_JoystickPowerLevel rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(
+    Joystick::Power lhs,
+    SDL_JoystickPowerLevel rhs) noexcept;
 
 /**
  * @brief Indicates whether or not two joystick power values aren't the same.
@@ -851,9 +820,8 @@ CENTURION_API bool operator!=(Joystick::Power lhs,
  *
  * @since 4.3.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_JoystickPowerLevel lhs,
-                              Joystick::Power rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_JoystickPowerLevel lhs,
+                                            Joystick::Power rhs) noexcept;
 
 /**
  * @brief Indicates whether or not two joystick type values are the same.
@@ -865,9 +833,8 @@ CENTURION_API bool operator!=(SDL_JoystickPowerLevel lhs,
  *
  * @since 4.3.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(Joystick::Type lhs,
-                              SDL_JoystickType rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(Joystick::Type lhs,
+                                            SDL_JoystickType rhs) noexcept;
 
 /**
  * @brief Indicates whether or not two joystick type values are the same.
@@ -879,9 +846,8 @@ CENTURION_API bool operator==(Joystick::Type lhs,
  *
  * @since 4.3.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(SDL_JoystickType lhs,
-                              Joystick::Type rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(SDL_JoystickType lhs,
+                                            Joystick::Type rhs) noexcept;
 
 /**
  * @brief Indicates whether or not two joystick type values aren't the same.
@@ -893,9 +859,8 @@ CENTURION_API bool operator==(SDL_JoystickType lhs,
  *
  * @since 4.3.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(Joystick::Type lhs,
-                              SDL_JoystickType rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(Joystick::Type lhs,
+                                            SDL_JoystickType rhs) noexcept;
 
 /**
  * @brief Indicates whether or not two joystick type values aren't the same.
@@ -907,9 +872,8 @@ CENTURION_API bool operator!=(Joystick::Type lhs,
  *
  * @since 4.3.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(SDL_JoystickType lhs,
-                              Joystick::Type rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(SDL_JoystickType lhs,
+                                            Joystick::Type rhs) noexcept;
 
 }  // namespace centurion
 

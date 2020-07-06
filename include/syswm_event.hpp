@@ -73,8 +73,7 @@ class SysWMEvent : public CommonEvent<SDL_SysWMEvent> {
    * @return a pointer to the message associated with the event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API SDL_SysWMmsg* message() const noexcept;
+  [[nodiscard]] CENTURION_API SDL_SysWMmsg* message() const noexcept;
 };
 
 static_assert(validate_event<SysWMEvent, SDL_SysWMEvent>(),

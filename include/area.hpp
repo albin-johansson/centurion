@@ -119,9 +119,8 @@ using DArea = TArea<double>;
  * @since 4.1.0
  */
 template <typename T>
-CENTURION_NODISCARD inline constexpr bool operator==(
-    const TArea<T>& lhs,
-    const TArea<T>& rhs) noexcept
+[[nodiscard]] inline constexpr bool operator==(const TArea<T>& lhs,
+                                               const TArea<T>& rhs) noexcept
 {
   return (lhs.width == rhs.width) && (lhs.height == rhs.height);
 }
@@ -135,9 +134,8 @@ CENTURION_NODISCARD inline constexpr bool operator==(
  * @since 4.1.0
  */
 template <typename T>
-CENTURION_NODISCARD inline constexpr bool operator!=(
-    const TArea<T>& lhs,
-    const TArea<T>& rhs) noexcept
+[[nodiscard]] inline constexpr bool operator!=(const TArea<T>& lhs,
+                                               const TArea<T>& rhs) noexcept
 {
   return !(lhs == rhs);
 }

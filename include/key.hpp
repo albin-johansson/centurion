@@ -105,8 +105,7 @@ class Key final {
    * string if the name couldn't be deduced.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API std::string name() const noexcept;
+  [[nodiscard]] CENTURION_API std::string name() const noexcept;
 
   /**
    * Indicates whether or not the Key instance is associated with a known key.
@@ -115,8 +114,10 @@ class Key final {
    * otherwise.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD
-  bool unknown() const noexcept { return m_scancode == SDL_SCANCODE_UNKNOWN; }
+  [[nodiscard]] bool unknown() const noexcept
+  {
+    return m_scancode == SDL_SCANCODE_UNKNOWN;
+  }
 
   /**
    * Returns the scancode associated with the key.
@@ -124,8 +125,7 @@ class Key final {
    * @return the scancode associated with the key.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  SDL_Scancode scancode() const noexcept { return m_scancode; }
+  [[nodiscard]] SDL_Scancode scancode() const noexcept { return m_scancode; }
 
   /**
    * Returns the keycode associated with the key.
@@ -133,8 +133,7 @@ class Key final {
    * @return the keycode associated with the key.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  SDL_Keycode keycode() const noexcept { return m_keycode; }
+  [[nodiscard]] SDL_Keycode keycode() const noexcept { return m_keycode; }
 
   /**
    * Implicitly converts the Key instance to an SDL_Scancode value.
@@ -142,8 +141,7 @@ class Key final {
    * @return an SDL_Scancode value.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  operator SDL_Scancode() const noexcept { return m_scancode; }
+  [[nodiscard]] operator SDL_Scancode() const noexcept { return m_scancode; }
 
   /**
    * Implicitly converts the Key instance to an SDL_Keycode value.
@@ -151,8 +149,7 @@ class Key final {
    * @return an SDL_Keycode value.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  operator SDL_Keycode() const noexcept { return m_keycode; }
+  [[nodiscard]] operator SDL_Keycode() const noexcept { return m_keycode; }
 
  private:
   SDL_Scancode m_scancode;
@@ -177,8 +174,8 @@ static_assert(std::is_move_assignable<Key>::value, "Key isn't movable!");
  * @return true if the two keys are the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(const Key& lhs, const Key& rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(const Key& lhs,
+                                            const Key& rhs) noexcept;
 
 /**
  * Indicates whether or not two keys don't represent the same keyboard key.
@@ -188,8 +185,8 @@ CENTURION_API bool operator==(const Key& lhs, const Key& rhs) noexcept;
  * @return true if the two keys aren't the same; false otherwise.
  * @since 4.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator!=(const Key& lhs, const Key& rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator!=(const Key& lhs,
+                                            const Key& rhs) noexcept;
 
 }  // namespace centurion
 

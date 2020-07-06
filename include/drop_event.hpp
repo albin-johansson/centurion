@@ -121,8 +121,7 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
    * false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API bool will_free_file() const noexcept;
+  [[nodiscard]] CENTURION_API bool will_free_file() const noexcept;
 
   /**
    * Returns a pointer to the associated file. Do <b>NOT</b> claim ownership
@@ -133,8 +132,7 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
    * @return a pointer to the file associated with the event, might be null.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API char* file() const noexcept;
+  [[nodiscard]] CENTURION_API char* file() const noexcept;
 
   /**
    * Returns the ID of the window that is the target of the drop event, if
@@ -143,8 +141,7 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
    * @return the ID of the window that is the target of the drop event.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API Uint32 window_id() const noexcept;
+  [[nodiscard]] CENTURION_API Uint32 window_id() const noexcept;
 
  private:
   bool m_willFreeFile = false;

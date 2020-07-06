@@ -56,8 +56,7 @@ class Screen final {
    * @return true if screen savers are enabled; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool screen_saver_enabled() noexcept;
+  [[nodiscard]] CENTURION_API static bool screen_saver_enabled() noexcept;
 
   /**
    * Returns the width of the screen.
@@ -65,8 +64,7 @@ class Screen final {
    * @return the width of the screen.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static int width() noexcept;
+  [[nodiscard]] CENTURION_API static int width() noexcept;
 
   /**
    * Returns the height of the screen.
@@ -74,8 +72,7 @@ class Screen final {
    * @return the height of the screen.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static int height() noexcept;
+  [[nodiscard]] CENTURION_API static int height() noexcept;
 
   /**
    * Returns the size of the screen.
@@ -83,8 +80,7 @@ class Screen final {
    * @return the size of the screen.
    * @since 4.1.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static IArea size() noexcept;
+  [[nodiscard]] CENTURION_API static IArea size() noexcept;
 
   /**
    * Returns the refresh rate of the screen.
@@ -92,8 +88,7 @@ class Screen final {
    * @return the refresh rate of the screen.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static int refresh_rate() noexcept;
+  [[nodiscard]] CENTURION_API static int refresh_rate() noexcept;
 
   /**
    * Returns the pixel format of the desktop display mode.
@@ -101,8 +96,7 @@ class Screen final {
    * @return the pixel format of the desktop display mode.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static PixelFormat pixel_format() noexcept;
+  [[nodiscard]] CENTURION_API static PixelFormat pixel_format() noexcept;
 };
 
 }  // namespace centurion

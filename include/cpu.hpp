@@ -59,8 +59,7 @@ class CPU final {
    * @return the CPU L1 cache line size, in bytes.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static int cache_line_size() noexcept;
+  [[nodiscard]] CENTURION_API static int cache_line_size() noexcept;
 
   /**
    * Returns the amount of cores that the CPU has.
@@ -68,8 +67,7 @@ class CPU final {
    * @return the amount of cores that the CPU has.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static int cores() noexcept;
+  [[nodiscard]] CENTURION_API static int cores() noexcept;
 
   /**
    * Indicates whether or not the CPU has the RDTSC instruction.
@@ -77,8 +75,7 @@ class CPU final {
    * @return true if the CPU has the RDTSC instruction; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_rdtsc() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_rdtsc() noexcept;
 
   /**
    * Indicates whether or not the CPU has AltiVec features.
@@ -86,8 +83,7 @@ class CPU final {
    * @return true if the CPU has AltiVec features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_altivec() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_altivec() noexcept;
 
   /**
    * Indicates whether or not the CPU has MMX features.
@@ -95,8 +91,7 @@ class CPU final {
    * @return true if the CPU has MMX features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_mmx() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_mmx() noexcept;
 
   /**
    * Indicates whether or not the CPU has 3DNow! features.
@@ -104,8 +99,7 @@ class CPU final {
    * @return true if the CPU has 3DNow! features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_3dnow() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_3dnow() noexcept;
 
   /**
    * Indicates whether or not the CPU has SSE features.
@@ -113,8 +107,7 @@ class CPU final {
    * @return true if the CPU has SSE features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_sse() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_sse() noexcept;
 
   /**
    * Indicates whether or not the CPU has SSE2 features.
@@ -122,8 +115,7 @@ class CPU final {
    * @return true if the CPU has SSE2 features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_sse2() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_sse2() noexcept;
 
   /**
    * Indicates whether or not the CPU has SSE3 features.
@@ -131,8 +123,7 @@ class CPU final {
    * @return true if the CPU has SSE3 features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_sse3() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_sse3() noexcept;
 
   /**
    * Indicates whether or not the CPU has SSE4.1 features.
@@ -140,8 +131,7 @@ class CPU final {
    * @return true if the CPU has SSE4.1 features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_sse41() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_sse41() noexcept;
 
   /**
    * Indicates whether or not the CPU has SSE4.2 features.
@@ -149,8 +139,7 @@ class CPU final {
    * @return true if the CPU has SSE4.2 features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_sse42() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_sse42() noexcept;
 
   /**
    * Indicates whether or not the CPU has AVX features.
@@ -158,8 +147,7 @@ class CPU final {
    * @return true if the CPU has AVX features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_avx() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_avx() noexcept;
 
   /**
    * Indicates whether or not the CPU has AVX2 features.
@@ -167,8 +155,7 @@ class CPU final {
    * @return true if the CPU has AVX2 features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_avx2() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_avx2() noexcept;
 
   /**
    * Indicates whether or not the CPU has AVX-512F (foundation) features.
@@ -177,8 +164,7 @@ class CPU final {
    * otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_avx512f() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_avx512f() noexcept;
 
   /**
    * Indicates whether or not the CPU has NEON (ARM SIMD) features.
@@ -186,8 +172,7 @@ class CPU final {
    * @return true if the CPU has NEON (ARM SIMD) features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_neon() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_neon() noexcept;
 
   /**
    * Indicates whether or not the CPU has ARM SIMD (ARMv6+) features.
@@ -195,8 +180,7 @@ class CPU final {
    * @return true if the CPU has ARM SIMD (ARMv6+) features; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool has_arm_simd() noexcept;
+  [[nodiscard]] CENTURION_API static bool has_arm_simd() noexcept;
 
   /**
    * Returns the minimum number of bytes to which a pointer must be
@@ -206,8 +190,7 @@ class CPU final {
    * aligned to be compatible with SIMD instructions.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static std::size_t simd_alignment() noexcept;
+  [[nodiscard]] CENTURION_API static std::size_t simd_alignment() noexcept;
 
   /**
    * Indicates whether or not the CPU uses big-endian byte ordering.
@@ -215,8 +198,7 @@ class CPU final {
    * @return true if the CPU uses big-endian byte ordering; false otherwise.
    * @since 3.1.0
    */
-  CENTURION_NODISCARD
-  constexpr static bool is_big_endian() noexcept
+  [[nodiscard]] constexpr static bool is_big_endian() noexcept
   {
     return SDL_BYTEORDER == SDL_BIG_ENDIAN;
   }
@@ -227,8 +209,7 @@ class CPU final {
    * @return true if the CPU uses little-endian byte ordering; false otherwise.
    * @since 3.1.0
    */
-  CENTURION_NODISCARD
-  constexpr static bool is_little_endian() noexcept
+  [[nodiscard]] constexpr static bool is_little_endian() noexcept
   {
     return SDL_BYTEORDER == SDL_LIL_ENDIAN;
   }

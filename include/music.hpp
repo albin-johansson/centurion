@@ -52,8 +52,8 @@ enum class FadeStatus {
  * @return true if the fading status hints represent the same thing.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(FadeStatus lhs,
+                                            Mix_Fading rhs) noexcept;
 
 /**
  * Indicates whether or not the fading status values represent the same thing.
@@ -63,8 +63,8 @@ CENTURION_API bool operator==(FadeStatus lhs, Mix_Fading rhs) noexcept;
  * @return true if the fading status hints represent the same thing.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(Mix_Fading lhs, FadeStatus rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(Mix_Fading lhs,
+                                            FadeStatus rhs) noexcept;
 
 /**
  * The MusicType enum class mirrors the values of the Mix_MusicType enum.
@@ -91,8 +91,8 @@ enum class MusicType {
  * @return true if the music type values represent the same thing.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(MusicType lhs, Mix_MusicType rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(MusicType lhs,
+                                            Mix_MusicType rhs) noexcept;
 
 /**
  * Indicates whether or not the music type values represent the same thing.
@@ -102,8 +102,8 @@ CENTURION_API bool operator==(MusicType lhs, Mix_MusicType rhs) noexcept;
  * @return true if the music type values represent the same thing.
  * @since 3.0.0
  */
-CENTURION_NODISCARD
-CENTURION_API bool operator==(Mix_MusicType lhs, MusicType rhs) noexcept;
+[[nodiscard]] CENTURION_API bool operator==(Mix_MusicType lhs,
+                                            MusicType rhs) noexcept;
 
 /**
  * The Music class represents audio files of music. Note! Only one music
@@ -173,8 +173,7 @@ class Music final {
    * @throws CenturionException if the music file cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static UniquePtr<Music> unique(CZString file);
+  [[nodiscard]] CENTURION_API static UniquePtr<Music> unique(CZString file);
 
   /**
    * Creates and returns a shared pointer to a Music instance.
@@ -184,8 +183,7 @@ class Music final {
    * @throws CenturionException if the music file cannot be loaded.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static SharedPtr<Music> shared(CZString file);
+  [[nodiscard]] CENTURION_API static SharedPtr<Music> shared(CZString file);
 
   /**
    * Plays the music. Previously playing music will be halted. However, this
@@ -265,8 +263,7 @@ class Music final {
    * @return true if music is currently being played; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool playing() noexcept;
+  [[nodiscard]] CENTURION_API static bool playing() noexcept;
 
   /**
    * Indicates whether or not any music is paused.
@@ -274,8 +271,7 @@ class Music final {
    * @return true if any music is paused; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool paused() noexcept;
+  [[nodiscard]] CENTURION_API static bool paused() noexcept;
 
   /**
    * Indicates whether or not any music is currently being faded in or out.
@@ -284,8 +280,7 @@ class Music final {
    * otherwise.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static bool fading() noexcept;
+  [[nodiscard]] CENTURION_API static bool fading() noexcept;
 
   /**
    * Returns the volume of all music. The default value is set to
@@ -294,8 +289,7 @@ class Music final {
    * @return the volume of all music, in the range [0, Music::maxVolume].
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static int volume() noexcept;
+  [[nodiscard]] CENTURION_API static int volume() noexcept;
 
   /**
    * Returns the current fade status of the music playback.
@@ -303,8 +297,7 @@ class Music final {
    * @return the current fade status.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API static FadeStatus fade_status() noexcept;
+  [[nodiscard]] CENTURION_API static FadeStatus fade_status() noexcept;
 
   /**
    * Returns the type of the music.
@@ -312,8 +305,7 @@ class Music final {
    * @return the type of the music.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API MusicType music_type() const noexcept;
+  [[nodiscard]] CENTURION_API MusicType music_type() const noexcept;
 
   /**
    * Returns a textual representation of the Music instance.
@@ -321,8 +313,7 @@ class Music final {
    * @return a textual representation of the Music instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  CENTURION_API std::string to_string() const;
+  [[nodiscard]] CENTURION_API std::string to_string() const;
 
   /**
    * Returns a pointer to the internal Mix_Music. Use of this method is
@@ -333,8 +324,7 @@ class Music final {
    * @return a pointer to the internal Mix_Music.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  Mix_Music* get() const noexcept { return m_music; }
+  [[nodiscard]] Mix_Music* get() const noexcept { return m_music; }
 
   /**
    * Converts the Music instance into a pointer to a Mix_Music instance.
@@ -342,8 +332,7 @@ class Music final {
    * @return a pointer to the internal Mix_Music instance.
    * @since 4.0.0
    */
-  CENTURION_NODISCARD
-  operator Mix_Music*() noexcept { return m_music; }
+  [[nodiscard]] operator Mix_Music*() noexcept { return m_music; }
 
   /**
    * Converts the Music instance into a pointer to a Mix_Music instance.
@@ -351,8 +340,7 @@ class Music final {
    * @return a pointer to the internal Mix_Music instance.
    * @since 3.0.0
    */
-  CENTURION_NODISCARD
-  operator const Mix_Music*() const noexcept { return m_music; }
+  [[nodiscard]] operator const Mix_Music*() const noexcept { return m_music; }
 
  private:
   Mix_Music* m_music = nullptr;

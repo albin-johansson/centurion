@@ -75,8 +75,10 @@ class CenturionException final : public std::exception {
 
   ~CenturionException() noexcept override = default;
 
-  CENTURION_NODISCARD
-  CZString what() const noexcept override { return m_what.c_str(); }
+  [[nodiscard]] CZString what() const noexcept override
+  {
+    return m_what.c_str();
+  }
 
  private:
   std::string m_what;

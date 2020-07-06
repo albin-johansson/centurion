@@ -57,7 +57,6 @@ class CenturionException final : public std::exception {
    * used.
    * @since 3.0.0
    */
-  CENTURION_API
   explicit CenturionException(CZString what) noexcept
       : m_what{what ? what : "N/A"} {};
 
@@ -66,11 +65,9 @@ class CenturionException final : public std::exception {
    * is used.
    * @since 3.0.0
    */
-  CENTURION_API
   explicit CenturionException(std::string what) noexcept
       : m_what{what.empty() ? "N/A" : what} {};
 
-  CENTURION_API
   CenturionException(const CenturionException& other) noexcept
       : m_what{other.m_what} {};
 

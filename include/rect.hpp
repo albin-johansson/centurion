@@ -112,7 +112,7 @@ class Rect final {
    *
    * @since 4.1.0
    */
-  constexpr Rect(Point<T> position, area<T> size) noexcept
+  constexpr Rect(Point<T> position, Area<T> size) noexcept
       : m_position{position}, m_size{size}
   {}
 
@@ -172,7 +172,7 @@ class Rect final {
    *
    * @since 4.2.0
    */
-  constexpr void resize(area<T> size) noexcept
+  constexpr void resize(Area<T> size) noexcept
   {
     m_size.width = size.width;
     m_size.height = size.height;
@@ -205,7 +205,7 @@ class Rect final {
    *
    * @since 4.1.0
    */
-  constexpr void set(Point<T> position, area<T> size) noexcept
+  constexpr void set(Point<T> position, Area<T> size) noexcept
   {
     m_position = position;
     m_size = size;
@@ -333,7 +333,7 @@ class Rect final {
    *
    * @since 4.1.0
    */
-  [[nodiscard]] constexpr area<T> size() const noexcept { return m_size; }
+  [[nodiscard]] constexpr Area<T> size() const noexcept { return m_size; }
 
   /**
    * @brief Returns the maximum x-coordinate of the rectangle.
@@ -607,7 +607,7 @@ class Rect final {
 
  private:
   Point<T> m_position = {0, 0};
-  centurion::area<T> m_size = {0, 0};
+  Area<T> m_size = {0, 0};
 
   static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
                 "Rect type must be either integral or floating-point!");

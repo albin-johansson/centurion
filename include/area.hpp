@@ -41,10 +41,10 @@
 namespace centurion {
 
 template <typename T>
-struct area;
+struct Area;
 
 /**
- * @struct area
+ * @struct Area
  * @brief Simply represents an area with a width and height.
  *
  * @tparam T the type of the components of the area, defaults to float. Must
@@ -60,7 +60,7 @@ struct area;
  * @headerfile area.h
  */
 template <typename T = float>
-struct area {
+struct Area {
   T width = 0;
   T height = 0;
 
@@ -76,7 +76,7 @@ struct area {
  *
  * @since 4.1.0
  */
-using area_i = area<int>;
+using area_i = Area<int>;
 
 /**
  * @typedef area_f
@@ -84,7 +84,7 @@ using area_i = area<int>;
  *
  * @since 4.1.0
  */
-using area_f = area<float>;
+using area_f = Area<float>;
 
 /**
  * @typedef area_d
@@ -92,7 +92,7 @@ using area_f = area<float>;
  *
  * @since 4.1.0
  */
-using area_d = area<double>;
+using area_d = Area<double>;
 
 /**
  * @brief Indicates whether or not two areas are considered to be equal.
@@ -105,8 +105,8 @@ using area_d = area<double>;
  * @since 4.1.0
  */
 template <typename T>
-[[nodiscard]] inline constexpr auto operator==(const area<T>& lhs,
-                                               const area<T>& rhs) noexcept
+[[nodiscard]] inline constexpr auto operator==(const Area<T>& lhs,
+                                               const Area<T>& rhs) noexcept
     -> bool
 {
   return (lhs.width == rhs.width) && (lhs.height == rhs.height);
@@ -123,8 +123,8 @@ template <typename T>
  * @since 4.1.0
  */
 template <typename T>
-[[nodiscard]] inline constexpr auto operator!=(const area<T>& lhs,
-                                               const area<T>& rhs) noexcept
+[[nodiscard]] inline constexpr auto operator!=(const Area<T>& lhs,
+                                               const Area<T>& rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);

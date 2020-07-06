@@ -92,6 +92,8 @@
 #define CENTURION_DEF
 #endif
 
+#define CENTURION_QUERY [[nodiscard]] CENTURION_API
+
 /**
  * @brief Indicates whether or not `std::is_final` is available.
  *

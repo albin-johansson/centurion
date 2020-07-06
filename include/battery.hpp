@@ -25,7 +25,7 @@
 /**
  * @brief Provides battery related utilities.
  *
- * @file battery.h
+ * @file battery.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -39,15 +39,23 @@
 #include "centurion_api.hpp"
 #include "centurion_utils.hpp"
 
-namespace centurion {
+/**
+ * @namespace battery
+ *
+ * @brief Contains utilities related to the battery of the system.
+ *
+ * @since 5.0.0
+ */
+namespace centurion::battery {
 
 /**
- * @enum PowerState
- * @brief Mirrors the values of the SDL_PowerState enum.
- * @headerfile battery.h
+ * @enum power_state
+ * @brief Mirrors the values of the `SDL_PowerState` enum.
+ *
+ * @headerfile battery.hpp
  * @since 3.0.0
  */
-enum class PowerState {
+enum class power_state {
   Unknown = SDL_POWERSTATE_UNKNOWN, /**< The status is unknown. */
   OnBattery =
       SDL_POWERSTATE_ON_BATTERY, /**< Not plugged in and running on battery.*/
@@ -58,85 +66,82 @@ enum class PowerState {
 };
 
 /**
- * Indicates whether or not the power states hold the same values.
+ * @brief Indicates whether or not two power states values are the same.
  *
- * @param a the lhs Centurion power state.
- * @param b the rhs SDL power state.
- * @return true if the power states are the same.
+ * @param lhs the left-hand side power state value.
+ * @param rhs the right-hand side power state value.
+ *
+ * @return `true` if the power states are the same; `false` otherwise.
+ *
  * @since 3.0.0
  */
-[[nodiscard]] CENTURION_API bool operator==(PowerState a,
-                                            SDL_PowerState b) noexcept;
+[[nodiscard]] inline auto operator==(power_state lhs,
+                                     SDL_PowerState rhs) noexcept -> bool
+{
+  return static_cast<SDL_PowerState>(lhs) == rhs;
+}
 
 /**
- * Indicates whether or not the power states hold the same values.
- *
- * @param a the lhs SDL power state.
- * @param b the rhs Centurion power state.
- * @return true if the power states are the same.
- * @since 3.0.0
+ * @copydoc operator==(PowerState, SDL_PowerState)
  */
-[[nodiscard]] CENTURION_API bool operator==(SDL_PowerState a,
-                                            PowerState b) noexcept;
+[[nodiscard]] inline auto operator==(SDL_PowerState lhs,
+                                     power_state rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * @class Battery
- * @brief Provides utilities related to the battery of the system.
+ * @brief Returns the seconds of battery life that is remaining.
+ *
+ * @return seconds of remaining battery life; `nothing` if the value cannot
+ * be computed.
  *
  * @since 3.0.0
- * @headerfile battery.h
  */
-class Battery final {
- public:
-  Battery() = delete;
+CENTURION_QUERY auto seconds_left() noexcept -> Optional<int>;
 
-  /**
-   * Returns the seconds of battery life that is remaining.
-   *
-   * @return the seconds of battery life that is remaining; nothing if the
-   * value cannot be computed.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static Optional<int> seconds_left() noexcept;
+/**
+ * @brief Returns the amount of minutes of battery life that is remaining.
+ *
+ * @return minutes of remaining battery life; `nothing` if the value cannot
+ * be computed.
+ *
+ * @since 3.0.0
+ */
+CENTURION_QUERY auto minutes_left() noexcept -> Optional<int>;
 
-  /**
-   * Returns the amount of minutes of battery life that is remaining.
-   *
-   * @return the amount of minutes of battery life that is remaining;
-   * nothing if the value cannot be computed.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static Optional<int> minutes_left() noexcept;
+/**
+ * @brief Returns the percentage of battery life that is currently left.
+ *
+ * @return percentage of remaining battery life, in the range [0, 100];
+ * `nothing` if the battery percentage isn't available.
+ *
+ * @since 3.0.0
+ */
+CENTURION_QUERY auto percentage() noexcept -> Optional<int>;
 
-  /**
-   * Returns the percentage of battery life that is currently left.
-   *
-   * @return the percentage of battery life that is currently left, in the range
-   * [0, 100]; nothing if the battery percentage isn't available.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static Optional<int> percentage() noexcept;
+/**
+ * @brief Returns the current power state.
+ *
+ * @return the current power state.
+ *
+ * @since 3.0.0
+ */
+CENTURION_QUERY auto state() noexcept -> power_state;
 
-  /**
-   * Returns the current power state.
-   *
-   * @return the current power state.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static PowerState state() noexcept;
+/**
+ * @brief Indicates whether or not the system is running on a battery.
+ *
+ * @details This method is simply a convenience method that is based on the
+ * `battery::state()` method.
+ *
+ * @return `true` if the system is running on a battery; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+CENTURION_QUERY auto exists() noexcept -> bool;
 
-  /**
-   * Indicates whether or not the system is running on a battery. This method
-   * is simply a convenience method that is based on the <code>state()
-   * </code> method.
-   *
-   * @return true if the system is running on a battery; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool exists() noexcept;
-};
-
-}  // namespace centurion
+}  // namespace centurion::battery
 
 #ifdef CENTURION_HEADER_ONLY
 #include "battery.cpp"

@@ -3,10 +3,10 @@
 
 #include "battery.hpp"
 
-namespace centurion {
+namespace centurion::battery {
 
 CENTURION_DEF
-Optional<int> Battery::seconds_left() noexcept
+auto seconds_left() noexcept -> Optional<int>
 {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
@@ -18,7 +18,7 @@ Optional<int> Battery::seconds_left() noexcept
 }
 
 CENTURION_DEF
-Optional<int> Battery::minutes_left() noexcept
+auto minutes_left() noexcept -> Optional<int>
 {
   const auto secondsLeft = seconds_left();
   if (secondsLeft) {
@@ -29,7 +29,7 @@ Optional<int> Battery::minutes_left() noexcept
 }
 
 CENTURION_DEF
-Optional<int> Battery::percentage() noexcept
+auto percentage() noexcept -> Optional<int>
 {
   int percentageLeft = -1;
   SDL_GetPowerInfo(nullptr, &percentageLeft);
@@ -41,29 +41,17 @@ Optional<int> Battery::percentage() noexcept
 }
 
 CENTURION_DEF
-PowerState Battery::state() noexcept
+auto state() noexcept -> power_state
 {
-  return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
+  return static_cast<power_state>(SDL_GetPowerInfo(nullptr, nullptr));
 }
 
 CENTURION_DEF
-bool Battery::exists() noexcept
+auto exists() noexcept -> bool
 {
-  return state() == PowerState::OnBattery;
+  return state() == power_state::OnBattery;
 }
 
-CENTURION_DEF
-bool operator==(PowerState a, SDL_PowerState b) noexcept
-{
-  return static_cast<SDL_PowerState>(a) == b;
-}
-
-CENTURION_DEF
-bool operator==(SDL_PowerState a, PowerState b) noexcept
-{
-  return a == static_cast<SDL_PowerState>(b);
-}
-
-}  // namespace centurion
+}  // namespace centurion::battery
 
 #endif  // CENTURION_BATTERY_SOURCE

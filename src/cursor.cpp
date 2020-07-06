@@ -18,7 +18,7 @@ Cursor::Cursor(SystemCursor id)
 }
 
 CENTURION_DEF
-Cursor::Cursor(Owner<SDL_Cursor*> cursor)
+Cursor::Cursor(gsl::owner<SDL_Cursor*> cursor)
 {
   if (cursor) {
     m_cursor = cursor;
@@ -28,7 +28,7 @@ Cursor::Cursor(Owner<SDL_Cursor*> cursor)
 }
 
 CENTURION_DEF
-Cursor::Cursor(const Surface& surface, IPoint hotspot)
+Cursor::Cursor(const Surface& surface, const IPoint& hotspot)
 {
   m_surface = SDL_DuplicateSurface(surface.get());
   if (!m_surface) {
@@ -45,15 +45,6 @@ CENTURION_DEF
 Cursor::Cursor(Cursor&& other) noexcept
 {
   move(std::move(other));
-}
-
-CENTURION_DEF
-Cursor& Cursor::operator=(Cursor&& other) noexcept
-{
-  if (this != &other) {
-    move(std::move(other));
-  }
-  return *this;
 }
 
 CENTURION_DEF
@@ -87,37 +78,48 @@ void Cursor::move(Cursor&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Cursor> Cursor::unique(SystemCursor id)
+auto Cursor::operator=(Cursor&& other) noexcept -> Cursor&
+{
+  if (this != &other) {
+    move(std::move(other));
+  }
+  return *this;
+}
+
+CENTURION_DEF
+auto Cursor::unique(SystemCursor id) -> std::unique_ptr<Cursor>
 {
   return std::make_unique<Cursor>(id);
 }
 
 CENTURION_DEF
-UniquePtr<Cursor> Cursor::unique(Owner<SDL_Cursor*> cursor)
+auto Cursor::unique(gsl::owner<SDL_Cursor*> cursor) -> std::unique_ptr<Cursor>
 {
   return std::make_unique<Cursor>(cursor);
 }
 
 CENTURION_DEF
-UniquePtr<Cursor> Cursor::unique(const Surface& surface, IPoint hotspot)
+auto Cursor::unique(const Surface& surface, const IPoint& hotspot)
+    -> std::unique_ptr<Cursor>
 {
   return std::make_unique<Cursor>(surface, hotspot);
 }
 
 CENTURION_DEF
-SharedPtr<Cursor> Cursor::shared(SystemCursor id)
+auto Cursor::shared(SystemCursor id) -> std::shared_ptr<Cursor>
 {
   return std::make_shared<Cursor>(id);
 }
 
 CENTURION_DEF
-SharedPtr<Cursor> Cursor::shared(Owner<SDL_Cursor*> cursor)
+auto Cursor::shared(gsl::owner<SDL_Cursor*> cursor) -> std::shared_ptr<Cursor>
 {
   return std::make_shared<Cursor>(cursor);
 }
 
 CENTURION_DEF
-SharedPtr<Cursor> Cursor::shared(const Surface& surface, IPoint hotspot)
+auto Cursor::shared(const Surface& surface, const IPoint& hotspot)
+    -> std::shared_ptr<Cursor>
 {
   return std::make_shared<Cursor>(surface, hotspot);
 }
@@ -129,7 +131,7 @@ void Cursor::enable() noexcept
 }
 
 CENTURION_DEF
-bool Cursor::is_enabled() const noexcept
+auto Cursor::is_enabled() const noexcept -> bool
 {
   return SDL_GetCursor() == m_cursor;
 }
@@ -153,33 +155,9 @@ void Cursor::set_visible(bool visible) noexcept
 }
 
 CENTURION_DEF
-bool Cursor::visible() noexcept
+auto Cursor::visible() noexcept -> bool
 {
   return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
-}
-
-CENTURION_DEF
-bool operator==(SystemCursor lhs, SDL_SystemCursor rhs) noexcept
-{
-  return static_cast<SDL_SystemCursor>(lhs) == rhs;
-}
-
-CENTURION_DEF
-bool operator==(SDL_SystemCursor lhs, SystemCursor rhs) noexcept
-{
-  return lhs == static_cast<SDL_SystemCursor>(rhs);
-}
-
-CENTURION_DEF
-bool operator!=(SystemCursor lhs, SDL_SystemCursor rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-CENTURION_DEF
-bool operator!=(SDL_SystemCursor lhs, SystemCursor rhs) noexcept
-{
-  return !(lhs == rhs);
 }
 
 }  // namespace centurion

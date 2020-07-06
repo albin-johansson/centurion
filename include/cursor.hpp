@@ -22,6 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * @file cursor.hpp
+ * @brief Provides the cursor API.
+ *
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_CURSOR_HEADER
 #define CENTURION_CURSOR_HEADER
 
@@ -38,11 +47,15 @@
 namespace centurion {
 
 /**
- * The SystemCursor enum represents the various available system cursors.
- * Mirrors the values of the SDL_SystemCursor enum.
+ * @brief Represents the various available system cursors.
  *
- * @see SDL_SystemCursor
+ * @details Mirrors the values of the `SDL_SystemCursor` enum.
+ *
  * @since 4.0.0
+ *
+ * @see `SDL_SystemCursor`
+ *
+ * @headerfile cursor.hpp
  */
 enum class SystemCursor {
   Arrow = SDL_SYSTEM_CURSOR_ARROW,
@@ -60,221 +73,199 @@ enum class SystemCursor {
 };
 
 /**
- * Indicates whether or not two system cursor values are the same.
+ * @brief Indicates whether or not two system cursor values are the same.
  *
- * @param lhs the left-hand side Centurion value.
- * @param rhs the right-hand side SDL value.
- * @return true if the system cursor values are the same; false otherwise.
+ * @param lhs the left-hand side system cursor value.
+ * @param rhs the right-hand side system cursor value.
+ *
+ * @return `true` if the system cursor values are the same; `false` otherwise.
+ *
  * @since 4.0.0
  */
-[[nodiscard]] CENTURION_API bool operator==(SystemCursor lhs,
-                                            SDL_SystemCursor rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(SystemCursor lhs,
+                                               SDL_SystemCursor rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_SystemCursor>(lhs) == rhs;
+}
 
 /**
- * Indicates whether or not two system cursor values are the same.
+ * @copydoc operator==(SystemCursor, SDL_SystemCursor)
+ */
+[[nodiscard]] inline constexpr auto operator==(SDL_SystemCursor lhs,
+                                               SystemCursor rhs) noexcept
+    -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * @brief Indicates whether or not two system cursor values aren't the same.
  *
- * @param lhs the left-hand side SDL value.
- * @param rhs the right-hand side Centurion value.
- * @return true if the system cursor values are the same; false otherwise.
+ * @param lhs the left-hand side system cursor value.
+ * @param rhs the right-hand side system cursor value.
+ *
+ * @return `true` if the system cursor values aren't the same; `false`
+ * otherwise.
+ *
  * @since 4.0.0
  */
-[[nodiscard]] CENTURION_API bool operator==(SDL_SystemCursor lhs,
-                                            SystemCursor rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(SystemCursor lhs,
+                                               SDL_SystemCursor rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * Indicates whether or not two system cursor values aren't the same.
- *
- * @param lhs the left-hand side Centurion value.
- * @param rhs the right-hand side SDL value.
- * @return true if the system cursor values aren't the same; false otherwise.
- * @since 4.0.0
+ * @copydoc operator!=(SystemCursor, SDL_SystemCursor)
  */
-[[nodiscard]] CENTURION_API bool operator!=(SystemCursor lhs,
-                                            SDL_SystemCursor rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(SDL_SystemCursor lhs,
+                                               SystemCursor rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * Indicates whether or not two system cursor values aren't the same.
+ * @class Cursor
+ * @brief Represents a mouse cursor.
  *
- * @param lhs the left-hand side SDL value.
- * @param rhs the right-hand side Centurion value.
- * @return true if the system cursor values aren't the same; false otherwise.
- * @since 4.0.0
- */
-[[nodiscard]] CENTURION_API bool operator!=(SDL_SystemCursor lhs,
-                                            SystemCursor rhs) noexcept;
-
-/**
- * The Cursor class is a wrapper for the SDL_Cursor struct. Cursors can be
- * created from various preset shapes or from images (surfaces).
+ * @details Cursors can be created from various preset shapes or from images
+ * (surfaces).
  *
  * @since 4.0.0
+ *
+ * @headerfile cursor.hpp
  */
 class Cursor final {
  public:
   /**
-   * Creates a cursor based on the specified cursor type.
+   * @brief Creates a cursor based on the specified cursor type.
    *
    * @param id the cursor type that will be used.
-   * @throws CenturionException if the cursor cannot be created.
-   * @since 4.0.0
-   */
-  CENTURION_API explicit Cursor(SystemCursor id);
-
-  /**
-   * Creates a cursor based on the supplied SDL_Cursor. The ownership
-   * of the supplied pointer will be claimed by the created cursor instance.
    *
-   * @param cursor a pointer to an SDL_Cursor that will be adopted.
-   * @throws CenturionException if the supplied pointer is null.
+   * @throws CenturionException if the cursor cannot be created.
+   *
    * @since 4.0.0
    */
-  CENTURION_API explicit Cursor(Owner<SDL_Cursor*> cursor);
+  CENTURION_API
+  explicit Cursor(SystemCursor id);
 
   /**
-   * Creates a cursor based on the supplied surface. The supplied hotspot
-   * must be within the area of the supplied surface.
+   * @brief Creates a cursor based on the supplied `SDL_Cursor`.
+   *
+   * @details The ownership of the supplied pointer will be claimed by the
+   * created cursor instance.
+   *
+   * @param cursor a pointer to an `SDL_Cursor` that will be adopted.
+   *
+   * @throws CenturionException if the supplied pointer is null.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API
+  explicit Cursor(gsl::owner<SDL_Cursor*> cursor);
+
+  /**
+   * @brief Creates a cursor based on the supplied surface.
+   *
+   * @details The supplied hotspot must be within the area of the supplied
+   * surface.
    *
    * @param surface the surface that will represent the cursor.
    * @param hotspot the point used to determine where the mouse
    * actually is.
+   *
    * @throws CenturionException if the cursor cannot be created.
+   *
    * @since 4.0.0
    */
-  CENTURION_API explicit Cursor(const Surface& surface, IPoint hotspot);
+  CENTURION_API
+  explicit Cursor(const Surface& surface, const IPoint& hotspot);
 
   /**
-   * Creates a cursor by moving the supplied cursor.
+   * @brief Creates a cursor by moving the supplied cursor.
    *
    * @param other the cursor that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API Cursor(Cursor&& other) noexcept;
-
-  /**
-   * Moves the contents of the supplied cursor into this cursor.
    *
-   * @param other the cursor that will be moved.
-   * @return the updated cursor.
    * @since 4.0.0
    */
-  CENTURION_API Cursor& operator=(Cursor&& other) noexcept;
+  CENTURION_API
+  Cursor(Cursor&& other) noexcept;
 
   Cursor(const Cursor&) = delete;
 
-  Cursor& operator=(const Cursor&) = delete;
+  CENTURION_API
+  ~Cursor() noexcept;
 
   /**
-   * @since 4.0.0
-   */
-  CENTURION_API ~Cursor() noexcept;
-
-  /**
-   * Creates and returns a unique pointer to a Cursor instance.
+   * @brief Moves the contents of the supplied cursor into this cursor.
    *
-   * @param id the cursor type that will be used.
-   * @return a unique pointer to a Cursor instance.
-   * @throws CenturionException if the cursor cannot be created.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static UniquePtr<Cursor> unique(SystemCursor id);
-
-  /**
-   * Creates and returns a unique pointer to a Cursor instance. The created
-   * Cursor will claim ownership of the supplied pointer.
+   * @param other the cursor that will be moved.
    *
-   * @param cursor a pointer to an SDL_Cursor that will be adopted.
-   * @return a unique pointer to a Cursor instance.
-   * @throws CenturionException if the cursor cannot be created.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static UniquePtr<Cursor> unique(
-      Owner<SDL_Cursor*> cursor);
-
-  /**
-   * Creates and returns a unique pointer to a Cursor instance. The supplied
-   * hotspot must be within the area of the supplied surface.
-   *
-   * @param surface the surface that will represent the cursor.
-   * @param hotspot the point used to determine where the mouse
-   * actually is.
-   * @return a unique pointer to a Cursor instance.
-   * @throws CenturionException if the cursor cannot be created.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static UniquePtr<Cursor> unique(
-      const Surface& surface,
-      IPoint hotspot);
-
-  /**
-   * Creates and returns a shared pointer to a Cursor instance.
-   *
-   * @param id the cursor type that will be used.
-   * @return a shared pointer to a Cursor instance.
-   * @throws CenturionException if the cursor cannot be created.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static SharedPtr<Cursor> shared(SystemCursor id);
-
-  /**
-   * Creates and returns a shared pointer to a Cursor instance. The created
-   * Cursor will claim ownership of the supplied pointer.
-   *
-   * @param cursor a pointer to an SDL_Cursor that will be adopted.
-   * @return a shared pointer to a Cursor instance.
-   * @throws CenturionException if the cursor cannot be created.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static SharedPtr<Cursor> shared(
-      Owner<SDL_Cursor*> cursor);
-
-  /**
-   * Creates and returns a shared pointer to a Cursor instance. The supplied
-   * hotspot must be within the area of the supplied surface.
-   *
-   * @param surface the surface that will represent the cursor.
-   * @param hotspot the point used to determine where the mouse
-   * actually is.
-   * @return a shared pointer to a Cursor instance.
-   * @throws CenturionException if the cursor cannot be created.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static SharedPtr<Cursor> shared(
-      const Surface& surface,
-      IPoint hotspot);
-
-  /**
-   * Makes the cursor the used cursor.
+   * @return the updated cursor.
    *
    * @since 4.0.0
    */
-  CENTURION_API void enable() noexcept;
+  CENTURION_API
+  auto operator=(Cursor&& other) noexcept -> Cursor&;
+
+  auto operator=(const Cursor&) -> Cursor& = delete;
 
   /**
-   * Indicates whether or not the cursor is currently being used. Note, this
-   * method only checks if the currently used SDL cursor is the same instance
-   * referenced in the invoked Centurion cursor. In other words, if two
-   * cursors of the same type has been created, and one of them is enabled,
-   * then this method could still return false even if the cursors have the
-   * same type.
-   *
-   * @return true if the cursor is being used; false otherwise.
-   * @since 4.0.0
+   * @copydoc Cursor(SystemCursor)
    */
-  [[nodiscard]] CENTURION_API bool is_enabled() const noexcept;
+  CENTURION_QUERY
+  static auto unique(SystemCursor id) -> std::unique_ptr<Cursor>;
+
+  /**
+   * @copydoc Cursor(gsl::owner<SDL_Cursor*>)
+   */
+  CENTURION_QUERY
+  static auto unique(gsl::owner<SDL_Cursor*> cursor) -> std::unique_ptr<Cursor>;
+
+  /**
+   * @copydoc Cursor(const Surface&, const IPoint&)
+   */
+  CENTURION_QUERY
+  static auto unique(const Surface& surface, const IPoint& hotspot)
+      -> std::unique_ptr<Cursor>;
+
+  /**
+   * @copydoc Cursor(SystemCursor)
+   */
+  CENTURION_QUERY
+  static auto shared(SystemCursor id) -> std::shared_ptr<Cursor>;
+
+  /**
+   * @copydoc Cursor(gsl::owner<SDL_Cursor*>)
+   */
+  CENTURION_QUERY
+  static auto shared(gsl::owner<SDL_Cursor*> cursor) -> std::shared_ptr<Cursor>;
+
+  /**
+   * @copydoc Cursor(const Surface&, const IPoint&)
+   */
+  CENTURION_QUERY
+  static auto shared(const Surface& surface, const IPoint& hotspot)
+      -> std::shared_ptr<Cursor>;
 
   /**
    * Forces a cursor redraw.
    *
    * @since 4.0.0
    */
-  CENTURION_API static void force_redraw() noexcept;
+  CENTURION_API
+  static void force_redraw() noexcept;
 
   /**
    * Resets the cursor to the system default.
    *
    * @since 4.0.0
    */
-  CENTURION_API static void reset() noexcept;
+  CENTURION_API
+  static void reset() noexcept;
 
   /**
    * Sets whether or not the cursor is visible.
@@ -282,7 +273,8 @@ class Cursor final {
    * @param visible true if the cursor should be made visible; false otherwise.
    * @since 4.0.0
    */
-  CENTURION_API static void set_visible(bool visible) noexcept;
+  CENTURION_API
+  static void set_visible(bool visible) noexcept;
 
   /**
    * Indicates whether or not the cursor is visible.
@@ -290,7 +282,32 @@ class Cursor final {
    * @return true if the cursor is visible; false otherwise.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static bool visible() noexcept;
+  CENTURION_QUERY
+  static auto visible() noexcept -> bool;
+
+  /**
+   * @brief Makes the cursor the used cursor.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void enable() noexcept;
+
+  /**
+   * @brief Indicates whether or not the cursor is currently being used.
+   *
+   * @note This method only checks if the currently used SDL cursor is the
+   * same instance referenced in the invoked Centurion cursor. In other
+   * words, if two cursors of the same type has been created, and one of them
+   * is enabled, then this method could still return false even if the
+   * cursors have the same type.
+   *
+   * @return `true` if the cursor is being used; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto is_enabled() const noexcept -> bool;
 
   /**
    * Returns a pointer to the internal SDL_Cursor. Use of this method is
@@ -301,7 +318,7 @@ class Cursor final {
    * @return a pointer to the internal SDL_Cursor.
    * @since 4.0.0
    */
-  [[nodiscard]] SDL_Cursor* get() const noexcept { return m_cursor; }
+  [[nodiscard]] auto get() const noexcept -> SDL_Cursor* { return m_cursor; }
 
  private:
   SDL_Cursor* m_cursor = nullptr;

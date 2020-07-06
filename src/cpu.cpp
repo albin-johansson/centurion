@@ -5,8 +5,6 @@
 
 namespace centurion {
 
-
-
 }  // namespace centurion
 
 #endif  // CENTURION_CPU_SOURCE

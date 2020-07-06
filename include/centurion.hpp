@@ -23,14 +23,12 @@
  */
 
 /**
+ * @file centurion.hpp
  * @brief The main header file for the library.
  *
- * Provides the declaration of the @link centurion::Centurion @endlink and
- * @link centurion::CenturionConfig @endlink classes, and are related to the
- * initialization of the library. This file also includes all other header
- * files in the library.
+ * @details Provides the `Centurion` and `CenturionConfig` classes, which are
+ * related to the initialization of the library.
  *
- * @file centurion.h
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -44,86 +42,21 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-#include "area.hpp"
-#include "audio_device_event.hpp"
-#include "battery.hpp"
-#include "blend_mode.hpp"
-#include "button_state.hpp"
 #include "centurion_api.hpp"
-#include "centurion_cfg.hpp"
-#include "centurion_exception.hpp"
-#include "centurion_utils.hpp"
-#include "color.hpp"
-#include "colors.hpp"
-#include "common_event.hpp"
-#include "controller_axis_event.hpp"
-#include "controller_button_event.hpp"
-#include "controller_device_event.hpp"
-#include "cpu.hpp"
-#include "cursor.hpp"
-#include "dollar_gesture_event.hpp"
-#include "drop_event.hpp"
-#include "error.hpp"
-#include "event.hpp"
-#include "event_type.hpp"
-#include "font.hpp"
-#include "game_controller.hpp"
-#include "hints.hpp"
-#include "joy_axis_event.hpp"
-#include "joy_ball_event.hpp"
-#include "joy_button_event.hpp"
-#include "joy_device_event.hpp"
-#include "joy_hat_event.hpp"
-#include "key.hpp"
-#include "key_modifier.hpp"
-#include "key_state.hpp"
-#include "keyboard_event.hpp"
-#include "log.hpp"
-#include "message_box.hpp"
-#include "mouse_button.hpp"
-#include "mouse_button_event.hpp"
-#include "mouse_motion_event.hpp"
-#include "mouse_state.hpp"
-#include "mouse_wheel_event.hpp"
-#include "multi_gesture_event.hpp"
-#include "music.hpp"
-#include "paths.hpp"
-#include "pixel_format.hpp"
-#include "platform.hpp"
-#include "point.hpp"
-#include "quit_event.hpp"
-#include "ram.hpp"
-#include "rect.hpp"
-#include "renderer.hpp"
-#include "screen.hpp"
-#include "sound_effect.hpp"
-#include "surface.hpp"
-#include "syswm_event.hpp"
-#include "text_editing_event.hpp"
-#include "text_input_event.hpp"
-#include "texture.hpp"
-#include "texture_loader.hpp"
-#include "timer.hpp"
-#include "touch.hpp"
-#include "touch_finger_event.hpp"
-#include "window.hpp"
-#include "window_event.hpp"
 
 /**
- * @brief The top-level namespace that all components of the library reside in.
- *
  * @namespace centurion
+ * @brief The top-level namespace that all components of the library reside in.
  */
 namespace centurion {
 
 /**
+ * @struct CenturionConfig
  * @brief Used to specify how the library is initialized.
  *
- * All fields are initialized to the default values used by the
+ * @details All fields are initialized to the default values used by the
  * library.
  *
- * @struct CenturionConfig
- * @headerfile centurion.h
  * @since 4.0.0
  *
  * @var CenturionConfig::initCore
@@ -161,6 +94,8 @@ namespace centurion {
  * @var CenturionConfig::mixerChunkSize
  * The chunk size used by SDL2_mixer, if @ref CenturionConfig.initMixer is
  * `true`.
+ *
+ * @headerfile centurion.hpp
  */
 struct CenturionConfig final {
   bool initCore = true;
@@ -182,9 +117,9 @@ struct CenturionConfig final {
 };
 
 /**
- * @brief Used to initialize and de-initialize the library.
  * @class Centurion
- * @headerfile centurion.h
+ * @brief Used to initialize and de-initialize the library.
+ *
  * @since 3.0.0
  *
  * @par Examples
@@ -224,43 +159,38 @@ struct CenturionConfig final {
  * }
  * @endcode
  *
- * | Property              | Value                                |
- * | --------------------- | :----------------------------------- |
- * | Default constructible | Yes                                  |
- * | Movable               | No                                   |
- * | Copyable              | No                                   |
- * | Explicit conversions  | None                                 |
- * | Implicit conversions  | None                                 |
- * | Overloaded operators  | None                                 |
- * | Namespace             | @link ::centurion @endlink           |
+ * @headerfile centurion.hpp
  */
 class Centurion final {
  public:
   /**
-   * Initializes the library.
+   * @brief Initializes the library.
    *
    * @pre there mustn't exist any other instances of this class at the time of
    * invocation of this constructor.
    *
    * @throws CenturionException if any of the SDL libraries can't be loaded.
+   *
    * @since 3.0.0
    */
   CENTURION_API Centurion();
 
   /**
-   * Initializes the library according to the supplied configuration.
+   * @brief Initializes the library according to the supplied configuration.
    *
    * @pre there mustn't exist any other instances of this class at the time of
    * invocation of this constructor.
    *
-   * @param cfg the Centurion configuration, determines what gets initialized.
+   * @param cfg the configuration spec, determines what gets initialized.
+   *
    * @throws CenturionException if any of the SDL libraries can't be loaded.
+   *
    * @since 4.0.0
    */
   CENTURION_API explicit Centurion(const CenturionConfig& cfg);
 
   /**
-   * Closes the Centurion library.
+   * @brief Closes the Centurion library.
    *
    * @since 3.0.0
    */
@@ -270,9 +200,9 @@ class Centurion final {
 
   Centurion(Centurion&&) = delete;
 
-  Centurion& operator=(const Centurion&) = delete;
+  auto operator=(const Centurion&) -> Centurion& = delete;
 
-  Centurion& operator=(Centurion&&) = delete;
+  auto operator=(Centurion&&) -> Centurion& = delete;
 
  private:
   CenturionConfig cfg;

@@ -400,9 +400,7 @@ using Colour = Color;
 [[nodiscard]] CENTURION_API bool operator!=(const SDL_MessageBoxColor& msgColor,
                                             const Color& color) noexcept;
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<Color>::value, "Color isn't final!");
-#endif
 
 static_assert(std::is_convertible<Color, SDL_Color>::value,
               "Color isn't convertible to SDL_Color!");

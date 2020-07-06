@@ -489,9 +489,7 @@ class Texture final {
   CENTURION_API void unlock() noexcept;
 };
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<Texture>::value, "Texture isn't final!");
-#endif
 
 static_assert(std::is_nothrow_move_constructible<Texture>::value,
               "Texture isn't nothrow move constructible!");

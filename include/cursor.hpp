@@ -323,9 +323,7 @@ class Cursor final {
   void move(Cursor&& other) noexcept;
 };
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<Cursor>::value, "Cursor isn't final!");
-#endif
 
 static_assert(std::is_nothrow_move_constructible<Cursor>::value,
               "Cursor isn't nothrow move constructible!");

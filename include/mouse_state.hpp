@@ -190,9 +190,7 @@ class MouseState final {
   bool m_prevRightPressed = false;
 };
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<MouseState>::value, "MouseState isn't final!");
-#endif
 
 static_assert(std::is_nothrow_move_constructible<MouseState>::value,
               "MouseState isn't nothrow move constructible!");

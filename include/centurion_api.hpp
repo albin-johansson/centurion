@@ -43,7 +43,7 @@
  * @brief Used for exporting entities in generated Windows DLL.
  *
  * @def CENTURION_API
- * @headerfile centurion_api.h
+ * @headerfile centurion_api.hpp
  * @internal https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html
  */
 #if defined(_WIN32) && !defined(CENTURION_HEADER_ONLY)
@@ -63,7 +63,7 @@
  * `inline`.
  *
  * @def CENTURION_DEF
- * @headerfile centurion_api.h
+ * @headerfile centurion_api.hpp
  */
 #if !defined(CENTURION_DEF) && defined(CENTURION_HEADER_ONLY)
 #define CENTURION_DEF inline
@@ -71,16 +71,12 @@
 #define CENTURION_DEF
 #endif
 
-#define CENTURION_QUERY [[nodiscard]] CENTURION_API
-
 /**
- * @brief Indicates whether or not `std::is_final` is available.
+ * @brief Used for methods that return something and aren't inlined.
  *
- * @def CENTURION_HAS_IS_FINAL_TYPE_TRAIT
- * @headerfile centurion_api.h
+ * @since 5.0.0
+ * @headerfile centurion_api.hpp
  */
-#if !defined(CENTURION_HAS_IS_FINAL_TYPE_TRAIT) && defined(__cpp_lib_is_final)
-#define CENTURION_HAS_IS_FINAL_TYPE_TRAIT
-#endif
+#define CENTURION_QUERY [[nodiscard]] CENTURION_API
 
 #endif  // CENTURION_API_HEADER

@@ -1227,9 +1227,7 @@ class Renderer final {
   }
 };
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<Renderer>::value, "Renderer isn't final!");
-#endif
 
 static_assert(std::is_nothrow_move_constructible<Renderer>::value,
               "Renderer isn't nothrow move constructible!");

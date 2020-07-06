@@ -114,10 +114,8 @@ class TextureLoader final {
   SharedPtr<Renderer> m_renderer;
 };
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<TextureLoader>::value,
               "ImageGenerator isn't final!");
-#endif
 
 static_assert(std::is_nothrow_copy_assignable<TextureLoader>::value,
               "ImageGenerator isn't nothrow copy assignable!");

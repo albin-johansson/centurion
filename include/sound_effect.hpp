@@ -245,9 +245,7 @@ class SoundEffect final {
   void activate(int nLoops) noexcept;
 };
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<SoundEffect>::value, "SoundEffect isn't final!");
-#endif
 
 static_assert(std::is_nothrow_move_constructible<SoundEffect>::value,
               "SoundEffect isn't nothrow move constructible!");

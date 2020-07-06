@@ -144,9 +144,7 @@ class KeyState final {
   int m_nKeys = 0;
 };
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<KeyState>::value, "KeyState isn't final!");
-#endif
 
 static_assert(std::is_default_constructible<KeyState>::value,
               "KeyState isn't default constructible!");

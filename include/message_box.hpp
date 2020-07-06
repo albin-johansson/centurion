@@ -440,9 +440,7 @@ struct MessageBoxConfig {
   MessageBox::ButtonOrder buttonOrder = MessageBox::ButtonOrder::LeftToRight;
 };
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<ColorScheme>::value, "ColorScheme isn't final!");
-#endif
 
 static_assert(std::is_nothrow_default_constructible<ColorScheme>::value,
               "ColorScheme isn't nothrow default constructible!");

@@ -705,9 +705,7 @@ class Window final {
   void move(Window&& other) noexcept;
 };
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<Window>::value, "Window isn't final!");
-#endif
 
 static_assert(std::is_nothrow_move_assignable<Window>::value,
               "Window isn't nothrow move assignable!");

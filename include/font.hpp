@@ -495,9 +495,7 @@ class Font final {
   void remove_style(int mask) noexcept;
 };
 
-#ifdef CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 static_assert(std::is_final<Font>::value, "Font isn't final!");
-#endif
 
 static_assert(std::is_nothrow_move_constructible<Font>::value,
               "Font isn't nothrow move constructible!");

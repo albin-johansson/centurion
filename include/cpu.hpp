@@ -23,9 +23,13 @@
  */
 
 /**
- * @brief Provides the @link centurion::CPU @endlink class.
- *
  * @file cpu.hpp
+ * @brief Provides an API for querying information about the processor.
+ *
+ * @details Provides information about the system processor, such as whether it
+ * supports different instruction sets, the cache line size, amount of cores,
+ * etc.
+ *
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -38,187 +42,246 @@
 
 #include "centurion_api.hpp"
 
-namespace centurion {
+/**
+ * @namespace centurion::cpu
+ * @brief Provides methods for obtaining information about the processor.
+ *
+ * @headerfile cpu.hpp
+ * @since 5.0.0
+ */
+namespace centurion::cpu {
 
 /**
- * @class CPU
- * @brief A utility class for obtaining information about the processor.
- * @details Use this class to determine whether or not the system processor
- * supports different instruction sets, the cache line size, amount of cores,
- * etc.
- * @headerfile cpu.hpp
+ * @brief Returns the CPU L1 cache line size.
+ *
+ * @return the L1 cache line size, in bytes.
+ *
  * @since 3.0.0
  */
-class CPU final {
- public:
-  CPU() = delete;
+[[nodiscard]] inline auto cache_line_size() noexcept -> int
+{
+  return SDL_GetCPUCacheLineSize();
+}
 
-  /**
-   * Returns the CPU L1 cache line size.
-   *
-   * @return the CPU L1 cache line size, in bytes.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static int cache_line_size() noexcept;
+/**
+ * @brief Returns the amount of cores that the CPU has.
+ *
+ * @return the amount of cores.
+ *
+ * @since 3.0.0
+ */
+[[nodiscard]] inline auto cores() noexcept -> int
+{
+  return SDL_GetCPUCount();
+}
 
-  /**
-   * Returns the amount of cores that the CPU has.
-   *
-   * @return the amount of cores that the CPU has.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static int cores() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has the RDTSC instruction.
+ *
+ * @return `true` if the CPU has the RDTSC instruction; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_rdtsc() noexcept -> bool
+{
+  return SDL_HasRDTSC();
+}
 
-  /**
-   * Indicates whether or not the CPU has the RDTSC instruction.
-   *
-   * @return true if the CPU has the RDTSC instruction; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_rdtsc() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has AltiVec features.
+ *
+ * @return `true` if the CPU has AltiVec features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_altivec() noexcept -> bool
+{
+  return SDL_HasAltiVec();
+}
 
-  /**
-   * Indicates whether or not the CPU has AltiVec features.
-   *
-   * @return true if the CPU has AltiVec features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_altivec() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has MMX features.
+ *
+ * @return `true` if the CPU has MMX features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_mmx() noexcept -> bool
+{
+  return SDL_HasMMX();
+}
 
-  /**
-   * Indicates whether or not the CPU has MMX features.
-   *
-   * @return true if the CPU has MMX features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_mmx() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has 3DNow! features.
+ *
+ * @return `true` if the CPU has 3DNow! features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_3dnow() noexcept -> bool
+{
+  return SDL_Has3DNow();
+}
 
-  /**
-   * Indicates whether or not the CPU has 3DNow! features.
-   *
-   * @return true if the CPU has 3DNow! features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_3dnow() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has SSE features.
+ *
+ * @return `true` if the CPU has SSE features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_sse() noexcept -> bool
+{
+  return SDL_HasSSE();
+}
 
-  /**
-   * Indicates whether or not the CPU has SSE features.
-   *
-   * @return true if the CPU has SSE features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_sse() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has SSE2 features.
+ *
+ * @return `true` if the CPU has SSE2 features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_sse2() noexcept -> bool
+{
+  return SDL_HasSSE2();
+}
+/**
+ * @brief Indicates whether or not the CPU has SSE3 features.
+ *
+ * @return `true` if the CPU has SSE3 features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_sse3() noexcept -> bool
+{
+  return SDL_HasSSE3();
+}
 
-  /**
-   * Indicates whether or not the CPU has SSE2 features.
-   *
-   * @return true if the CPU has SSE2 features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_sse2() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has SSE4.1 features.
+ *
+ * @return `true` if the CPU has SSE4.1 features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_sse41() noexcept -> bool
+{
+  return SDL_HasSSE41();
+}
 
-  /**
-   * Indicates whether or not the CPU has SSE3 features.
-   *
-   * @return true if the CPU has SSE3 features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_sse3() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has SSE4.2 features.
+ *
+ * @return `true` if the CPU has SSE4.2 features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_sse42() noexcept -> bool
+{
+  return SDL_HasSSE42();
+}
 
-  /**
-   * Indicates whether or not the CPU has SSE4.1 features.
-   *
-   * @return true if the CPU has SSE4.1 features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_sse41() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has AVX features.
+ *
+ * @return `true` if the CPU has AVX features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_avx() noexcept -> bool
+{
+  return SDL_HasAVX();
+}
 
-  /**
-   * Indicates whether or not the CPU has SSE4.2 features.
-   *
-   * @return true if the CPU has SSE4.2 features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_sse42() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has AVX2 features.
+ *
+ * @return `true` if the CPU has AVX2 features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_avx2() noexcept -> bool
+{
+  return SDL_HasAVX2();
+}
 
-  /**
-   * Indicates whether or not the CPU has AVX features.
-   *
-   * @return true if the CPU has AVX features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_avx() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has AVX-512F (foundation) features.
+ *
+ * @return `true` if the CPU has AVX-512F (foundation) features; `false`
+ * otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_avx512f() noexcept -> bool
+{
+  return SDL_HasAVX512F();
+}
 
-  /**
-   * Indicates whether or not the CPU has AVX2 features.
-   *
-   * @return true if the CPU has AVX2 features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_avx2() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has NEON (ARM SIMD) features.
+ *
+ * @return `true` if the CPU has NEON (ARM SIMD) features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_neon() noexcept -> bool
+{
+  return SDL_HasNEON();
+}
 
-  /**
-   * Indicates whether or not the CPU has AVX-512F (foundation) features.
-   *
-   * @return true if the CPU has AVX-512F (foundation) features; false
-   * otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_avx512f() noexcept;
+/**
+ * @brief Indicates whether or not the CPU has ARM SIMD (ARMv6+) features.
+ *
+ * @return `true` if the CPU has ARM SIMD (ARMv6+) features; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto has_arm_simd() noexcept -> bool
+{
+  return SDL_HasARMSIMD();
+}
 
-  /**
-   * Indicates whether or not the CPU has NEON (ARM SIMD) features.
-   *
-   * @return true if the CPU has NEON (ARM SIMD) features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_neon() noexcept;
+/**
+ * @brief Returns the minimum number of bytes to which a pointer must be
+ * aligned to be compatible with SIMD instructions on the current CPU.
+ *
+ * @return the minimum number of bytes to which a pointer must be
+ * aligned to be compatible with SIMD instructions.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline auto simd_alignment() noexcept -> std::size_t
+{
+  return SDL_SIMDGetAlignment();
+}
 
-  /**
-   * Indicates whether or not the CPU has ARM SIMD (ARMv6+) features.
-   *
-   * @return true if the CPU has ARM SIMD (ARMv6+) features; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool has_arm_simd() noexcept;
+/**
+ * @brief Indicates whether or not the CPU uses big-endian byte ordering.
+ *
+ * @return `true` if the CPU uses big-endian byte ordering; `false` otherwise.
+ *
+ * @since 3.1.0
+ */
+[[nodiscard]] inline constexpr auto is_big_endian() noexcept -> bool
+{
+  return SDL_BYTEORDER == SDL_BIG_ENDIAN;
+}
 
-  /**
-   * Returns the minimum number of bytes to which a pointer must be
-   * aligned to be compatible with SIMD instructions on the current CPU.
-   *
-   * @return the minimum number of bytes to which a pointer must be
-   * aligned to be compatible with SIMD instructions.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static std::size_t simd_alignment() noexcept;
+/**
+ * @brief Indicates whether or not the CPU uses little-endian byte ordering.
+ *
+ * @return `true` if the CPU uses little-endian byte ordering; `false`
+ * otherwise.
+ *
+ * @since 3.1.0
+ */
+[[nodiscard]] inline constexpr auto is_little_endian() noexcept -> bool
+{
+  return SDL_BYTEORDER == SDL_LIL_ENDIAN;
+}
 
-  /**
-   * Indicates whether or not the CPU uses big-endian byte ordering.
-   *
-   * @return true if the CPU uses big-endian byte ordering; false otherwise.
-   * @since 3.1.0
-   */
-  [[nodiscard]] constexpr static bool is_big_endian() noexcept
-  {
-    return SDL_BYTEORDER == SDL_BIG_ENDIAN;
-  }
-
-  /**
-   * Indicates whether or not the CPU uses little-endian byte ordering.
-   *
-   * @return true if the CPU uses little-endian byte ordering; false otherwise.
-   * @since 3.1.0
-   */
-  [[nodiscard]] constexpr static bool is_little_endian() noexcept
-  {
-    return SDL_BYTEORDER == SDL_LIL_ENDIAN;
-  }
-};
-
-}  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "cpu.cpp"
-#endif
+}  // namespace centurion::cpu
 
 #endif  // CENTURION_CPU_HEADER

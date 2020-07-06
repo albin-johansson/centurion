@@ -23,9 +23,9 @@
  */
 
 /**
- * @brief Defines various compatibility macros.
+ * @brief Defines various macros.
  *
- * @file centurion_api.h
+ * @file centurion_api.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -57,31 +57,10 @@
 #endif  // defined(_WIN32) && !defined(CENTURION_HEADER_ONLY)
 
 /**
- * @brief Indicates that something shouldn't be used.
- *
- * Effectively equivalent to `[[deprecated]]` in C++17.
- *
- * @def CENTURION_DEPRECATED
- * @headerfile centurion_api.h
- */
-#ifndef CENTURION_DEPRECATED
-#if defined(__GNUC__)
-#define CENTURION_DEPRECATED __attribute__((deprecated))
-#elif defined(_MSC_VER) && _MSC_VER >= 1300
-#define CENTURION_DEPRECATED __declspec(deprecated)
-#else
-#if __cplusplus >= 201309
-#define CENTURION_DEPRECATED [[deprecated]]
-#else
-#define CENTURION_DEPRECATED
-#endif
-#endif
-#endif
-
-/**
  * @brief Used when the pseudo-header-only mode is enabled.
  *
- * When header-only mode is enabled, definitions are specified as `inline`.
+ * @details When header-only mode is enabled, definitions are specified as
+ * `inline`.
  *
  * @def CENTURION_DEF
  * @headerfile centurion_api.h

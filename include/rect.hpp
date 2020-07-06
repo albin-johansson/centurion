@@ -101,8 +101,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_DEPRECATED
-  constexpr Rect(T x, T y, T width, T height) noexcept
+  [[deprecated]] constexpr Rect(T x, T y, T width, T height) noexcept
       : Rect{{x, y}, {width, height}}
   {}
 
@@ -191,8 +190,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  CENTURION_DEPRECATED
-  constexpr void set(T x, T y, T width, T height) noexcept
+  [[deprecated]] constexpr void set(T x, T y, T width, T height) noexcept
   {
     set({x, y}, {width, height});
   }
@@ -256,8 +254,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_DEPRECATED constexpr bool contains(T px, T py)
-      const noexcept
+  [[nodiscard, deprecated]] constexpr bool contains(T px, T py) const noexcept
   {
     return contains({px, py});
   }

@@ -72,7 +72,6 @@ set(SOURCE_FILES
         font.cpp
         renderer.cpp
         texture.cpp
-        centurion_exception.cpp
         centurion.cpp
         texture_loader.cpp
         paths.cpp

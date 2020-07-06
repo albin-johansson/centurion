@@ -23,9 +23,9 @@
  */
 
 /**
+ * @file centurion_exception.hpp
  * @brief Provides the general exception class used by the library.
  *
- * @file centurion_exception.h
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -44,14 +44,12 @@ namespace centurion {
 /**
  * @class CenturionException
  * @brief The only exception explicitly thrown by the library.
+ *
  * @headerfile centurion_exception.h
  * @since 3.0.0
  */
 class CenturionException final : public std::exception {
  public:
-  /**
-   * @since 3.0.0
-   */
   CenturionException() = default;
 
   /**
@@ -60,7 +58,8 @@ class CenturionException final : public std::exception {
    * @since 3.0.0
    */
   CENTURION_API
-  explicit CenturionException(CZString what) noexcept;
+  explicit CenturionException(CZString what) noexcept
+      : m_what{what ? what : "N/A"} {};
 
   /**
    * @param what the message of the exception. If the string is empty, "N/A"
@@ -68,10 +67,12 @@ class CenturionException final : public std::exception {
    * @since 3.0.0
    */
   CENTURION_API
-  explicit CenturionException(std::string what) noexcept;
+  explicit CenturionException(std::string what) noexcept
+      : m_what{what.empty() ? "N/A" : what} {};
 
   CENTURION_API
-  CenturionException(const CenturionException& other) noexcept;
+  CenturionException(const CenturionException& other) noexcept
+      : m_what{other.m_what} {};
 
   ~CenturionException() noexcept override = default;
 
@@ -97,9 +98,5 @@ static_assert(std::is_nothrow_destructible<CenturionException>::value,
               "CenturionException isn't nothrow destructible!");
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "centurion_exception.cpp"
-#endif
 
 #endif  // CENTURION_EXCEPTION_HEADER

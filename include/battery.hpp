@@ -40,7 +40,7 @@
 #include "centurion_utils.hpp"
 
 /**
- * @namespace battery
+ * @namespace centurion::battery
  *
  * @brief Contains utilities related to the battery of the system.
  *

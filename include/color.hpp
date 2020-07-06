@@ -25,7 +25,7 @@
 /**
  * @brief Provides the @link centurion::Color @endlink class.
  *
- * @file color.h
+ * @file color.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -49,7 +49,7 @@ namespace centurion {
  * @brief An 8-bit accuracy RGBA color.
  * @details This class is designed to be easily be created and converted
  * from/to SDL colors, such as `SDL_Color` and `SDL_MessageBoxColor`.
- * @headerfile color.h
+ * @headerfile color.hpp
  * @since 3.0.0
  */
 class Color final {

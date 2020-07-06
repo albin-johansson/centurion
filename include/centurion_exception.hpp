@@ -45,7 +45,7 @@ namespace centurion {
  * @class CenturionException
  * @brief The only exception explicitly thrown by the library.
  *
- * @headerfile centurion_exception.h
+ * @headerfile centurion_exception.hpp
  * @since 3.0.0
  */
 class CenturionException final : public std::exception {

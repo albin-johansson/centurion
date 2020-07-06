@@ -27,7 +27,7 @@
  *
  * @details Provides utilities related to managing hints ("configuration
  * variables" on the SDL2 wiki). Refer to the official SDL2 wiki or the
- * <code>SDL_hints.h</code> header for details regarding any specific hint type.
+ * <code>SDL_hints.hpp</code> header for details regarding any specific hint type.
  *
  * @todo `WindowsIntResourceIcon`, `WindowsIntResourceIconSmall`,
  * `X11WindowVisualID` are string hints because the types of their values
@@ -37,7 +37,7 @@
  * of the associated hint, so that the values supplied to the callback aren't
  * always strings.
  *
- * @file hints.h
+ * @file hints.hpp
  * @since 4.1.0
  * @author Albin Johansson
  * @date 2019-2020
@@ -1131,7 +1131,7 @@ template <typename Hint>
  * and disconnecting a callback from receiving updates.
  *
  * @tparam Hint the type of the associated hint. Should be one of the hint
- * types defined in the <code>hints.h</code> header.
+ * types defined in the <code>hints.hpp</code> header.
  * @tparam UserData the type of the user data, defaults to void.
  * @since 4.1.0
  */

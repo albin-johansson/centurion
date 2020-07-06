@@ -125,7 +125,7 @@ struct CenturionConfig final {
  * @par Examples
  * This is how you should initialize the library.
  * @code{.cpp}
- * #include <centurion.h>
+ * #include <centurion.hpp>
  *
  * using namespace centurion;
  *
@@ -141,7 +141,7 @@ struct CenturionConfig final {
  * You can also manually configure exactly how the library is initialized, using
  * the @link centurion::CenturionConfig @endlink struct.
  * @code{.cpp}
- * #include <centurion.h>
+ * #include <centurion.hpp>
  *
  * using namespace centurion;
  *

@@ -23,8 +23,9 @@
  */
 
 /**
+ * @file centurion_utils.hpp
  * @brief Provides utilities used in the implementation of the library.
- * @file centurion_utils.h
+ *
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License

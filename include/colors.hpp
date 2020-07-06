@@ -27,7 +27,7 @@
  * @details Provides about 140 color constants. The colors defined in this
  * header were based on <a href=
  * https://www.w3schools.com/colors/colors_names.asp>this</a> list.
- * @file colors.h
+ * @file colors.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -45,7 +45,7 @@ namespace centurion {
 /**
  * @brief Used for color constants.
  * @namespace centurion::color
- * @headerfile colors.h
+ * @headerfile colors.hpp
  */
 namespace color {
 

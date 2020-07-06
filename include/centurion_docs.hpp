@@ -39,7 +39,7 @@
  *   </li>
  *   <li>
  *     You can use the library as a header only library, by defining the macro
- *     CENTURION_HEADER_ONLY in the file centurion_cfg.h. This means that you'll
+ *     CENTURION_HEADER_ONLY in the file centurion_cfg.hpp. This means that you'll
  *     build the library by yourself when you compile your project. This option
  *     might lead to better performance due to more inlining, at the cost of
  *     longer compilation times.
@@ -54,7 +54,7 @@
  * need to initialize the library! Here's how to do just that. See the
  * documentation for the various Centurion components for details and examples.
  * @code{.cpp}
- *   #include <centurion.h>
+ *   #include <centurion.hpp>
  *
  *   int main(int, char**)
  *   {

@@ -24,7 +24,7 @@
 
 /**
  * @brief Provides the touch API.
- * @file touch.h
+ * @file touch.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -84,7 +84,7 @@ namespace touch {
  * @var DeviceType::IndirectRelative
  * Indicates a trackpad with screen cursor-relative coordinates.
  *
- * @headerfile touch.h
+ * @headerfile touch.hpp
  */
 enum class DeviceType {
   Invalid = SDL_TOUCH_DEVICE_INVALID,

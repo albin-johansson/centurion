@@ -25,7 +25,7 @@
 /**
  * @brief Provides the @link centurion::CPU @endlink class.
  *
- * @file cpu.h
+ * @file cpu.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -46,7 +46,7 @@ namespace centurion {
  * @details Use this class to determine whether or not the system processor
  * supports different instruction sets, the cache line size, amount of cores,
  * etc.
- * @headerfile cpu.h
+ * @headerfile cpu.hpp
  * @since 3.0.0
  */
 class CPU final {

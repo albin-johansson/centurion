@@ -25,7 +25,7 @@
 /**
  * @brief Provides a generic rectangle implementation.
  *
- * @file rect.h
+ * @file rect.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -77,7 +77,7 @@ constexpr bool operator!=(const Rect<U>& lhs, const Rect<U>& rhs) noexcept;
  * @tparam T the type of the components of the rectangle. Set to float by
  * default.
  *
- * @headerfile rect.h
+ * @headerfile rect.hpp
  * @since 4.0.0
  */
 template <typename T = float>

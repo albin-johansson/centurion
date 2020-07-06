@@ -35,7 +35,7 @@ namespace centurion {
 /**
  * @enum FadeStatus
  * @brief Mirrors the values of the Mix_Fading enum.
- * @headerfile music.h
+ * @headerfile music.hpp
  * @since 3.0.0
  */
 enum class FadeStatus {

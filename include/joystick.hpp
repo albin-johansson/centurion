@@ -25,7 +25,7 @@
 /**
  * @brief Provides the joystick API.
  *
- * @file joystick.h
+ * @file joystick.hpp
  * @author Albin Johansson
  * @copyright MIT License
  * @date 2019-2020
@@ -60,7 +60,7 @@ using JoystickID = SDL_JoystickID;
  *
  * @todo Cover `SDL_JoystickGetGUIDString`.
  *
- * @headerfile joystick.h
+ * @headerfile joystick.hpp
  * @since 4.2.0
  *
  * @see `SDL_Joystick`
@@ -71,7 +71,7 @@ class Joystick final {
    * @enum Power
    * @brief Mirrors the SDL_JoystickPowerLevel enum.
    *
-   * @headerfile joystick.h
+   * @headerfile joystick.hpp
    * @since 4.2.0
    */
   enum class Power {
@@ -89,7 +89,7 @@ class Joystick final {
    * @enum HatState
    * @brief Represents the various states of a joystick hat.
    *
-   * @headerfile joystick.h
+   * @headerfile joystick.hpp
    * @since 4.2.0
    */
   enum class HatState {
@@ -109,7 +109,7 @@ class Joystick final {
    * @brief Mirrors the SDL_JoystickType enum.
    *
    * @since 4.2.0
-   * @headerfile joystick.h
+   * @headerfile joystick.hpp
    */
   enum class Type {
     Unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
@@ -129,7 +129,7 @@ class Joystick final {
    * @brief Represents the difference in a joystick ball axis position.
    *
    * @since 4.2.0
-   * @headerfile joystick.h
+   * @headerfile joystick.hpp
    *
    * @var BallAxisChange::dx
    * Difference in x-axis position since last poll.

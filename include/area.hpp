@@ -57,7 +57,7 @@ struct Area;
  * @var area::height
  * The height of the area. Defaults to 0.
  *
- * @headerfile area.h
+ * @headerfile area.hpp
  */
 template <typename T = float>
 struct Area {

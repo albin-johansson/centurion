@@ -25,7 +25,7 @@
 /**
  * This header provides the @link centurion::Window @endlink class.
  *
- * @file window.h
+ * @file window.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -62,7 +62,7 @@ class Surface;
  * | Overloaded operators  | None                                 |
  * | Namespace             | @link ::centurion @endlink           |
  *
- * @headerfile window.h <>
+ * @headerfile window.hpp <>
  * @since 3.0.0
  */
 class Window final {

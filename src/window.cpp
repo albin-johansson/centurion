@@ -77,19 +77,19 @@ void Window::move(Window&& other) noexcept
 CENTURION_DEF
 UniquePtr<Window> Window::unique()
 {
-  return centurion::detail::make_unique<Window>();
+  return std::make_unique<Window>();
 }
 
 CENTURION_DEF
 UniquePtr<Window> Window::unique(Owner<SDL_Window*> window)
 {
-  return centurion::detail::make_unique<Window>(window);
+  return std::make_unique<Window>(window);
 }
 
 CENTURION_DEF
 UniquePtr<Window> Window::unique(CZString title, area_i size)
 {
-  return centurion::detail::make_unique<Window>(title, size);
+  return std::make_unique<Window>(title, size);
 }
 
 CENTURION_DEF

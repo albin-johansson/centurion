@@ -21,7 +21,7 @@ KeyState::KeyState() noexcept
 CENTURION_DEF
 UniquePtr<KeyState> KeyState::unique()
 {
-  return centurion::detail::make_unique<KeyState>();
+  return std::make_unique<KeyState>();
 }
 
 CENTURION_DEF

@@ -104,14 +104,4 @@
 #define CENTURION_HAS_IS_FINAL_TYPE_TRAIT
 #endif
 
-/**
- * @brief Indicates whether or not `std::make_unique` is available.
- *
- * @def CENTURION_HAS_MAKE_UNIQUE
- * @headerfile centurion_api.h
- */
-#if !defined(CENTURION_HAS_MAKE_UNIQUE) && defined(__cpp_lib_make_unique)
-#define CENTURION_HAS_MAKE_UNIQUE
-#endif
-
 #endif  // CENTURION_API_HEADER

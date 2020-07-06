@@ -63,7 +63,7 @@ void SoundEffect::move(SoundEffect&& other) noexcept
 CENTURION_DEF
 UniquePtr<SoundEffect> SoundEffect::unique(CZString file)
 {
-  return centurion::detail::make_unique<SoundEffect>(file);
+  return std::make_unique<SoundEffect>(file);
 }
 
 CENTURION_DEF

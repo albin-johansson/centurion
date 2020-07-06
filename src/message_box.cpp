@@ -52,7 +52,7 @@ SDL_MessageBoxColorScheme ColorScheme::convert() const noexcept
 }
 
 CENTURION_DEF
-MessageBox::MessageBox() : m_config{detail::make_unique<MessageBoxConfig>()}
+MessageBox::MessageBox() : m_config{std::make_unique<MessageBoxConfig>()}
 {}
 
 CENTURION_DEF

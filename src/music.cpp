@@ -57,7 +57,7 @@ void Music::move(Music&& other) noexcept
 CENTURION_DEF
 UniquePtr<Music> Music::unique(CZString file)
 {
-  return centurion::detail::make_unique<Music>(file);
+  return std::make_unique<Music>(file);
 }
 
 CENTURION_DEF

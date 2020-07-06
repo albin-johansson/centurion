@@ -89,19 +89,19 @@ void Cursor::move(Cursor&& other) noexcept
 CENTURION_DEF
 UniquePtr<Cursor> Cursor::unique(SystemCursor id)
 {
-  return centurion::detail::make_unique<Cursor>(id);
+  return std::make_unique<Cursor>(id);
 }
 
 CENTURION_DEF
 UniquePtr<Cursor> Cursor::unique(Owner<SDL_Cursor*> cursor)
 {
-  return centurion::detail::make_unique<Cursor>(cursor);
+  return std::make_unique<Cursor>(cursor);
 }
 
 CENTURION_DEF
 UniquePtr<Cursor> Cursor::unique(const Surface& surface, IPoint hotspot)
 {
-  return centurion::detail::make_unique<Cursor>(surface, hotspot);
+  return std::make_unique<Cursor>(surface, hotspot);
 }
 
 CENTURION_DEF

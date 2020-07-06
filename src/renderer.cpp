@@ -82,14 +82,14 @@ void Renderer::move(Renderer&& other) noexcept
 CENTURION_DEF
 UniquePtr<Renderer> Renderer::unique(Owner<SDL_Renderer*> renderer)
 {
-  return centurion::detail::make_unique<Renderer>(renderer);
+  return std::make_unique<Renderer>(renderer);
 }
 
 CENTURION_DEF
 UniquePtr<Renderer> Renderer::unique(const Window& window,
                                      SDL_RendererFlags flags)
 {
-  return centurion::detail::make_unique<Renderer>(window, flags);
+  return std::make_unique<Renderer>(window, flags);
 }
 
 CENTURION_DEF

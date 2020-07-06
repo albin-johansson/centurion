@@ -73,7 +73,7 @@ void Font::move(Font&& other) noexcept
 CENTURION_DEF
 UniquePtr<Font> Font::unique(CZString file, int size)
 {
-  return centurion::detail::make_unique<Font>(file, size);
+  return std::make_unique<Font>(file, size);
 }
 
 CENTURION_DEF

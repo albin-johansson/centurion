@@ -57,27 +57,6 @@ namespace centurion {
 namespace detail {
 
 /**
- * Creates and returns a unique pointer. This method is used since C++11
- * doesn't provide std::make_unique.
- *
- * @tparam T the type of the object that will be created.
- * @tparam Args the type of the arguments that will be passed to an appropriate
- * constructor.
- * @param args the arguments that will be passed to an appropriate constructor.
- * @return a unique pointer.
- * @since 4.0.0
- */
-template <typename T, typename... Args>
-[[nodiscard]] std::unique_ptr<T> make_unique(Args&&... args)
-{
-#ifdef CENTURION_HAS_MAKE_UNIQUE
-  return std::make_unique<T>(std::forward<Args>(args)...);
-#else
-  return std::unique_ptr<T>{new T{std::forward<Args>(args)...}};
-#endif
-}
-
-/**
  * Returns the corresponding SDL_bool value for the supplied boolean value.
  *
  * @param b the boolean value that will be converted.

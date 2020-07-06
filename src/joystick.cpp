@@ -71,13 +71,13 @@ void Joystick::destroy() noexcept
 CENTURION_DEF
 UniquePtr<Joystick> Joystick::unique(int deviceIndex)
 {
-  return detail::make_unique<Joystick>(deviceIndex);
+  return std::make_unique<Joystick>(deviceIndex);
 }
 
 CENTURION_DEF
 UniquePtr<Joystick> Joystick::unique(SDL_Joystick* joystick)
 {
-  return detail::make_unique<Joystick>(joystick);
+  return std::make_unique<Joystick>(joystick);
 }
 
 CENTURION_DEF

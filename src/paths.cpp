@@ -53,7 +53,7 @@ void BasePath::move(BasePath&& other) noexcept
 CENTURION_DEF
 UniquePtr<BasePath> BasePath::unique() noexcept
 {
-  return centurion::detail::make_unique<BasePath>();
+  return std::make_unique<BasePath>();
 }
 
 CENTURION_DEF
@@ -107,7 +107,7 @@ void PrefPath::move(PrefPath&& other) noexcept
 CENTURION_DEF
 UniquePtr<PrefPath> PrefPath::unique(CZString org, CZString app) noexcept
 {
-  return centurion::detail::make_unique<PrefPath>(org, app);
+  return std::make_unique<PrefPath>(org, app);
 }
 
 CENTURION_DEF

@@ -121,20 +121,20 @@ void Texture::unlock() noexcept
 CENTURION_DEF
 UniquePtr<Texture> Texture::unique(Owner<SDL_Texture*> texture)
 {
-  return centurion::detail::make_unique<Texture>(texture);
+  return std::make_unique<Texture>(texture);
 }
 
 CENTURION_DEF
 UniquePtr<Texture> Texture::unique(const Renderer& renderer, CZString path)
 {
-  return centurion::detail::make_unique<Texture>(renderer, path);
+  return std::make_unique<Texture>(renderer, path);
 }
 
 CENTURION_DEF
 UniquePtr<Texture> Texture::unique(const Renderer& renderer,
                                    const Surface& surface)
 {
-  return centurion::detail::make_unique<Texture>(renderer, surface);
+  return std::make_unique<Texture>(renderer, surface);
 }
 
 CENTURION_DEF
@@ -143,8 +143,7 @@ UniquePtr<Texture> Texture::unique(const Renderer& renderer,
                                    Access access,
                                    area_i size)
 {
-  return centurion::detail::make_unique<Texture>(
-      renderer, format, access, size);
+  return std::make_unique<Texture>(renderer, format, access, size);
 }
 
 CENTURION_DEF

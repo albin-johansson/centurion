@@ -1164,7 +1164,7 @@ class Renderer final {
     SDL_FreeSurface(surface);
 
     if (texture) {
-      return detail::make_unique<Texture>(texture);
+      return std::make_unique<Texture>(texture);
     } else {
       return nullptr;
     }

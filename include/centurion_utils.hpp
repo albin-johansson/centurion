@@ -132,7 +132,7 @@ namespace centurion::detail {
  *
  * @since 3.0.0
  */
-[[nodiscard]] constexpr SDL_bool convert_bool(bool b) noexcept
+[[nodiscard]] constexpr auto convert_bool(bool b) noexcept -> SDL_bool
 {
   return b ? SDL_TRUE : SDL_FALSE;
 }
@@ -152,7 +152,7 @@ namespace centurion::detail {
  * @since 3.0.0
  */
 template <typename T>
-[[nodiscard]] std::string address_of(T* ptr)
+[[nodiscard]] auto address_of(T* ptr) -> std::string
 {
   if (ptr) {
     std::ostringstream address;
@@ -178,7 +178,7 @@ template <typename T>
  * @since 4.0.0
  */
 template <typename T>
-[[nodiscard]] T clamp_inclusive(std::pair<T, T> range, T value) noexcept
+[[nodiscard]] auto clamp_inclusive(std::pair<T, T> range, T value) noexcept -> T
 {
   const auto min = range.first;
   const auto max = range.second;
@@ -228,7 +228,7 @@ using type_if_same = typename std::enable_if_t<std::is_same_v<T, U>>;
  *
  * @since 4.1.0
  */
-[[nodiscard]] inline bool equal(CZString lhs, CZString rhs) noexcept
+[[nodiscard]] inline auto equal(CZString lhs, CZString rhs) noexcept -> bool
 {
   if (lhs && rhs) {
     return std::strcmp(lhs, rhs) == 0;

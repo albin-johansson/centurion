@@ -26,6 +26,7 @@
 #define CENTURION_COMMON_EVENT_HEADER
 
 #include <type_traits>
+#include <utility>
 
 #include "centurion_api.hpp"
 #include "event_type.hpp"

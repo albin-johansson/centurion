@@ -23,7 +23,7 @@ Joystick::Joystick(int deviceIndex)
 }
 
 CENTURION_DEF
-Joystick::Joystick(SDL_Joystick* joystick) : m_joystick{joystick}
+Joystick::Joystick(Owner<SDL_Joystick*> joystick) : m_joystick{joystick}
 {
   if (!joystick) {
     throw CenturionException{"Cannot create Joystick from null SDL_Joystick!"};

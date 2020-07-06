@@ -5,8 +5,6 @@
 using namespace centurion;
 using namespace touch;
 
-#ifndef TRAVIS_TEST
-
 TEST_CASE("DeviceType enum", "[Touch]")
 {
   SECTION("Operator ==")
@@ -30,6 +28,8 @@ TEST_CASE("DeviceType enum", "[Touch]")
     CHECK(SDL_TOUCH_DEVICE_DIRECT != DeviceType::Invalid);
   }
 }
+
+#ifndef TRAVIS_TEST
 
 TEST_CASE("touch::num_devices", "[Touch]")
 {

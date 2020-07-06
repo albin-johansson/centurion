@@ -23,11 +23,13 @@
  */
 
 /**
- * @brief A large collection of @link centurion::Color @endlink constants.
+ * @file colors.hpp
+ * @brief A large collection of `Color` constants.
+ *
  * @details Provides about 140 color constants. The colors defined in this
  * header were based on <a href=
  * https://www.w3schools.com/colors/colors_names.asp>this</a> list.
- * @file colors.hpp
+ *
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -40,1073 +42,1057 @@
 #include "centurion_api.hpp"
 #include "color.hpp"
 
-namespace centurion {
-
 /**
- * @brief Used for color constants.
  * @namespace centurion::color
+ * @brief Used for color constants.
+ *
  * @headerfile colors.hpp
  */
-namespace color {
+namespace centurion::color {
 
 /**
- * The maximum possible color component value.
+ * @brief An invisible color. Hex: #000000.
  *
  * @since 3.0.0
  */
-static constexpr Uint8 max = 0xFF;
+inline constexpr Color transparent{0, 0, 0, 0};
 
 /**
- * The minimum possible color component value.
+ * @brief Hex: #FFFFFF.
  *
  * @since 3.0.0
  */
-static constexpr Uint8 min = 0;
+inline constexpr Color white{0xFF, 0xFF, 0xFF};
 
 /**
- * An invisible color. Hex: #000000.
+ * @brief Hex: #000000.
  *
  * @since 3.0.0
  */
-static constexpr Color transparent{0, 0, 0, 0};
+inline constexpr Color black{0, 0, 0};
 
 /**
- * Hex: #FFFFFF.
+ * @brief Hex: #F0F8FF.
  *
  * @since 3.0.0
  */
-static constexpr Color white{0xFF, 0xFF, 0xFF};
+inline constexpr Color alice_blue{0xF0, 0xF8, 0xFF};
 
 /**
- * Hex: #000000.
+ * @brief Hex: #FAEBD7.
  *
  * @since 3.0.0
  */
-static constexpr Color black{0, 0, 0};
+inline constexpr Color antique_white{0xFA, 0xEB, 0xD7};
 
 /**
- * Hex: #F0F8FF.
+ * @brief Hex: #00FFFF.
  *
  * @since 3.0.0
  */
-static constexpr Color alice_blue{0xF0, 0xF8, 0xFF};
+inline constexpr Color aqua{0, 0xFF, 0xFF};
 
 /**
- * Hex: #FAEBD7.
+ * @brief Hex: #7FFFD4.
  *
  * @since 3.0.0
  */
-static constexpr Color antique_white{0xFA, 0xEB, 0xD7};
+inline constexpr Color aquamarine{0x7F, 0xFF, 0xD4};
 
 /**
- * Hex: #00FFFF.
+ * @brief Hex: #F0FFFF.
  *
  * @since 3.0.0
  */
-static constexpr Color aqua{0, 0xFF, 0xFF};
+inline constexpr Color azure{0xF0, 0xFF, 0xFF};
 
 /**
- * Hex: #7FFFD4.
+ * @brief Hex: #F5F5DC.
  *
  * @since 3.0.0
  */
-static constexpr Color aquamarine{0x7F, 0xFF, 0xD4};
+inline constexpr Color beige{0xF5, 0xF5, 0xDC};
 
 /**
- * Hex: #F0FFFF.
+ * @brief Hex: #FFE4C4.
  *
  * @since 3.0.0
  */
-static constexpr Color azure{0xF0, 0xFF, 0xFF};
+inline constexpr Color bisque{0xFF, 0xE4, 0xC4};
 
 /**
- * Hex: #F5F5DC.
+ * @brief Hex: #FFEBCD.
  *
  * @since 3.0.0
  */
-static constexpr Color beige{0xF5, 0xF5, 0xDC};
+inline constexpr Color blanched_almond{0xFF, 0xEB, 0xCD};
 
 /**
- * Hex: #FFE4C4.
+ * @brief Hex: #0000FF.
  *
  * @since 3.0.0
  */
-static constexpr Color bisque{0xFF, 0xE4, 0xC4};
+inline constexpr Color blue{0, 0, 0xFF};
 
 /**
- * Hex: #FFEBCD.
+ * @brief Hex: #8A2BE2.
  *
  * @since 3.0.0
  */
-static constexpr Color blanched_almond{0xFF, 0xEB, 0xCD};
+inline constexpr Color blue_violet{0x8A, 0x2B, 0xE2};
 
 /**
- * Hex: #0000FF.
+ * @brief Hex: #A52A2A.
  *
  * @since 3.0.0
  */
-static constexpr Color blue{0, 0, 0xFF};
+inline constexpr Color brown{0xA5, 0x2A, 0x2A};
 
 /**
- * Hex: #8A2BE2.
+ * @brief Hex: #DEB887.
  *
  * @since 3.0.0
  */
-static constexpr Color blue_violet{0x8A, 0x2B, 0xE2};
+inline constexpr Color burly_wood{0xDE, 0xB8, 0x87};
 
 /**
- * Hex: #A52A2A.
+ * @brief Hex: #5F9EA0.
  *
  * @since 3.0.0
  */
-static constexpr Color brown{0xA5, 0x2A, 0x2A};
+inline constexpr Color cadet_blue{0x5F, 0x9E, 0xA0};
 
 /**
- * Hex: #DEB887.
+ * @brief Hex: #7FFF00.
  *
  * @since 3.0.0
  */
-static constexpr Color burly_wood{0xDE, 0xB8, 0x87};
+inline constexpr Color chartreuse{0x7F, 0xFF, 0};
 
 /**
- * Hex: #5F9EA0.
+ * @brief Hex: #D2691E.
  *
  * @since 3.0.0
  */
-static constexpr Color cadet_blue{0x5F, 0x9E, 0xA0};
+inline constexpr Color chocolate{0xD2, 0x69, 0x1E};
 
 /**
- * Hex: #7FFF00.
+ * @brief Hex: #FF7F50.
  *
  * @since 3.0.0
  */
-static constexpr Color chartreuse{0x7F, 0xFF, 0};
+inline constexpr Color coral{0xFF, 0x7F, 0x50};
 
 /**
- * Hex: #D2691E.
+ * @brief Hex: #6495ED.
  *
  * @since 3.0.0
  */
-static constexpr Color chocolate{0xD2, 0x69, 0x1E};
+inline constexpr Color cornflower_blue{0x64, 0x95, 0xED};
 
 /**
- * Hex: #FF7F50.
+ * @brief Hex: #FFF8DC.
  *
  * @since 3.0.0
  */
-static constexpr Color coral{0xFF, 0x7F, 0x50};
+inline constexpr Color cornsilk{0xFF, 0xF8, 0xDC};
 
 /**
- * Hex: #6495ED.
+ * @brief Hex: #DC143C.
  *
  * @since 3.0.0
  */
-static constexpr Color cornflower_blue{0x64, 0x95, 0xED};
+inline constexpr Color crimson{0xDC, 0x14, 0x3C};
 
 /**
- * Hex: #FFF8DC.
+ * @brief Hex: #00FFFF.
  *
  * @since 3.0.0
  */
-static constexpr Color cornsilk{0xFF, 0xF8, 0xDC};
+inline constexpr Color cyan{0, 0xFF, 0xFF};
 
 /**
- * Hex: #DC143C.
+ * @brief Hex: #00008B.
  *
  * @since 3.0.0
  */
-static constexpr Color crimson{0xDC, 0x14, 0x3C};
+inline constexpr Color dark_blue{0, 0, 0x8B};
 
 /**
- * Hex: #00FFFF.
+ * @brief Hex: #008B8B.
  *
  * @since 3.0.0
  */
-static constexpr Color cyan{0, 0xFF, 0xFF};
+inline constexpr Color dark_cyan{0, 0x8B, 0x8B};
 
 /**
- * Hex: #00008B.
+ * @brief Hex: #B8860B.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_blue{0, 0, 0x8B};
+inline constexpr Color dark_golden_rod{0xB8, 0x86, 0x0B};
 
 /**
- * Hex: #008B8B.
+ * @brief Hex: #A9A9A9.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_cyan{0, 0x8B, 0x8B};
+inline constexpr Color dark_gray{0xA9, 0xA9, 0xA9};
 
 /**
- * Hex: #B8860B.
+ * @brief Hex: #A9A9A9.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_golden_rod{0xB8, 0x86, 0x0B};
+inline constexpr Color dark_grey{dark_gray};
 
 /**
- * Hex: #A9A9A9.
+ * @brief Hex: #006400.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_gray{0xA9, 0xA9, 0xA9};
+inline constexpr Color dark_green{0, 0x64, 0};
 
 /**
- * Hex: #A9A9A9.
+ * @brief Hex: #BDB76B.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_grey{dark_gray};
+inline constexpr Color dark_khaki{0xBD, 0xB7, 0x6B};
 
 /**
- * Hex: #006400.
+ * @brief Hex: #8B008B.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_green{0, 0x64, 0};
+inline constexpr Color dark_magenta{0x8B, 0, 0x8B};
 
 /**
- * Hex: #BDB76B.
+ * @brief Hex: #556B2F.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_khaki{0xBD, 0xB7, 0x6B};
+inline constexpr Color dark_olive_green{0x55, 0x6B, 0x2F};
 
 /**
- * Hex: #8B008B.
+ * @brief Hex: #FF8C00.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_magenta{0x8B, 0, 0x8B};
+inline constexpr Color dark_orange{0xFF, 0x8C, 0};
 
 /**
- * Hex: #556B2F.
+ * @brief Hex: #9932CC.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_olive_green{0x55, 0x6B, 0x2F};
+inline constexpr Color dark_orchid{0x99, 0x32, 0xCC};
 
 /**
- * Hex: #FF8C00.
+ * @brief Hex: #8B0000.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_orange{0xFF, 0x8C, 0};
+inline constexpr Color dark_red{0x8B, 0, 0};
 
 /**
- * Hex: #9932CC.
+ * @brief Hex: #E9967A.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_orchid{0x99, 0x32, 0xCC};
+inline constexpr Color dark_salmon{0xE9, 0x96, 0x7A};
 
 /**
- * Hex: #8B0000.
+ * @brief Hex: #8FBC8F.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_red{0x8B, 0, 0};
+inline constexpr Color dark_sea_green{0x8F, 0xBC, 0x8F};
 
 /**
- * Hex: #E9967A.
+ * @brief Hex: #483D8B.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_salmon{0xE9, 0x96, 0x7A};
+inline constexpr Color dark_slate_blue{0x48, 0x3D, 0x8B};
 
 /**
- * Hex: #8FBC8F.
+ * @brief Hex: #2F4F4F.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_sea_green{0x8F, 0xBC, 0x8F};
+inline constexpr Color dark_slate_gray{0x2F, 0x4F, 0x4F};
 
 /**
- * Hex: #483D8B.
+ * @brief Hex: #2F4F4F.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_slate_blue{0x48, 0x3D, 0x8B};
+inline constexpr Color dark_slate_grey{dark_slate_gray};
 
 /**
- * Hex: #2F4F4F.
+ * @brief Hex: #00CED1.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_slate_gray{0x2F, 0x4F, 0x4F};
+inline constexpr Color dark_turquoise{0, 0xCE, 0xD1};
 
 /**
- * Hex: #2F4F4F.
+ * @brief Hex: #9400D3.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_slate_grey{dark_slate_gray};
+inline constexpr Color dark_violet{0x94, 0, 0xD3};
 
 /**
- * Hex: #00CED1.
+ * @brief Hex: #FF1493.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_turquoise{0, 0xCE, 0xD1};
+inline constexpr Color deep_pink{0xFF, 0x14, 0x93};
 
 /**
- * Hex: #9400D3.
+ * @brief Hex: #00BFFF.
  *
  * @since 3.0.0
  */
-static constexpr Color dark_violet{0x94, 0, 0xD3};
+inline constexpr Color deep_sky_blue{0, 0xBF, 0xFF};
 
 /**
- * Hex: #FF1493.
+ * @brief Hex: #696969.
  *
  * @since 3.0.0
  */
-static constexpr Color deep_pink{0xFF, 0x14, 0x93};
+inline constexpr Color dim_gray{0x69, 0x69, 0x69};
 
 /**
- * Hex: #00BFFF.
+ * @brief Hex: #696969.
  *
  * @since 3.0.0
  */
-static constexpr Color deep_sky_blue{0, 0xBF, 0xFF};
+inline constexpr Color dim_grey{dim_gray};
 
 /**
- * Hex: #696969.
+ * @brief Hex: #1E90FF.
  *
  * @since 3.0.0
  */
-static constexpr Color dim_gray{0x69, 0x69, 0x69};
+inline constexpr Color dodger_blue{0x1E, 0x90, 0xFF};
 
 /**
- * Hex: #696969.
+ * @brief Hex: #B22222.
  *
  * @since 3.0.0
  */
-static constexpr Color dim_grey{dim_gray};
+inline constexpr Color fire_brick{0xB2, 0x22, 0x22};
 
 /**
- * Hex: #1E90FF.
+ * @brief Hex: #FFFAF0.
  *
  * @since 3.0.0
  */
-static constexpr Color dodger_blue{0x1E, 0x90, 0xFF};
+inline constexpr Color floral_white{0xFF, 0xFA, 0xF0};
 
 /**
- * Hex: #B22222.
+ * @brief Hex: #228B22.
  *
  * @since 3.0.0
  */
-static constexpr Color fire_brick{0xB2, 0x22, 0x22};
+inline constexpr Color forest_green{0x22, 0x8B, 0x22};
 
 /**
- * Hex: #FFFAF0.
+ * @brief Hex: #FF00FF.
  *
  * @since 3.0.0
  */
-static constexpr Color floral_white{0xFF, 0xFA, 0xF0};
+inline constexpr Color fuchsia{0xFF, 0, 0xFF};
 
 /**
- * Hex: #228B22.
+ * @brief Hex: #DCDCDC.
  *
  * @since 3.0.0
  */
-static constexpr Color forest_green{0x22, 0x8B, 0x22};
+inline constexpr Color gainsboro{0xDC, 0xDC, 0xDC};
 
 /**
- * Hex: #FF00FF.
+ * @brief Hex: #F8F8FF.
  *
  * @since 3.0.0
  */
-static constexpr Color fuchsia{0xFF, 0, 0xFF};
+inline constexpr Color ghost_white{0xF8, 0xF8, 0xFF};
 
 /**
- * Hex: #DCDCDC.
+ * @brief Hex: #FFD700.
  *
  * @since 3.0.0
  */
-static constexpr Color gainsboro{0xDC, 0xDC, 0xDC};
+inline constexpr Color gold{0xFF, 0xD7, 0};
 
 /**
- * Hex: #F8F8FF.
+ * @brief Hex: #DAA520.
  *
  * @since 3.0.0
  */
-static constexpr Color ghost_white{0xF8, 0xF8, 0xFF};
+inline constexpr Color golden_rod{0xDA, 0xA5, 0x20};
 
 /**
- * Hex: #FFD700.
+ * @brief Hex: #808080.
  *
  * @since 3.0.0
  */
-static constexpr Color gold{0xFF, 0xD7, 0};
+inline constexpr Color gray{0x80, 0x80, 0x80};
 
 /**
- * Hex: #DAA520.
+ * @brief Hex: #808080.
  *
  * @since 3.0.0
  */
-static constexpr Color golden_rod{0xDA, 0xA5, 0x20};
+inline constexpr Color grey{gray};
 
 /**
- * Hex: #808080.
+ * @brief Hex: #008000.
  *
  * @since 3.0.0
  */
-static constexpr Color gray{0x80, 0x80, 0x80};
+inline constexpr Color green{0, 0x80, 0};
 
 /**
- * Hex: #808080.
+ * @brief Hex: #ADFF2F.
  *
  * @since 3.0.0
  */
-static constexpr Color grey{gray};
+inline constexpr Color green_yellow{0xAD, 0xFF, 0x2F};
 
 /**
- * Hex: #008000.
+ * @brief Hex: #F0FFF0.
  *
  * @since 3.0.0
  */
-static constexpr Color green{0, 0x80, 0};
+inline constexpr Color honey_dew{0xF0, 0xFF, 0xF0};
 
 /**
- * Hex: #ADFF2F.
+ * @brief Hex: #FF69B4.
  *
  * @since 3.0.0
  */
-static constexpr Color green_yellow{0xAD, 0xFF, 0x2F};
+inline constexpr Color hot_pink{0xFF, 0x69, 0xB4};
 
 /**
- * Hex: #F0FFF0.
+ * @brief Hex: #CD5C5C.
  *
  * @since 3.0.0
  */
-static constexpr Color honey_dew{0xF0, 0xFF, 0xF0};
+inline constexpr Color indian_red{0xCD, 0x5C, 0x5C};
 
 /**
- * Hex: #FF69B4.
+ * @brief Hex: #4B0082.
  *
  * @since 3.0.0
  */
-static constexpr Color hot_pink{0xFF, 0x69, 0xB4};
+inline constexpr Color indigo{0x4B, 0, 0x82};
 
 /**
- * Hex: #CD5C5C.
+ * @brief Hex: #FFFFF0.
  *
  * @since 3.0.0
  */
-static constexpr Color indian_red{0xCD, 0x5C, 0x5C};
+inline constexpr Color ivory{0xFF, 0xFF, 0xF0};
 
 /**
- * Hex: #4B0082.
+ * @brief Hex: #F0E68C.
  *
  * @since 3.0.0
  */
-static constexpr Color indigo{0x4B, 0, 0x82};
+inline constexpr Color khaki{0xF0, 0xE6, 0x8C};
 
 /**
- * Hex: #FFFFF0.
+ * @brief Hex: #E6E6FA.
  *
  * @since 3.0.0
  */
-static constexpr Color ivory{0xFF, 0xFF, 0xF0};
+inline constexpr Color lavender{0xE6, 0xE6, 0xFA};
 
 /**
- * Hex: #F0E68C.
+ * @brief Hex: #FFF0F5.
  *
  * @since 3.0.0
  */
-static constexpr Color khaki{0xF0, 0xE6, 0x8C};
+inline constexpr Color lavender_blush{0xFF, 0xF0, 0xF5};
 
 /**
- * Hex: #E6E6FA.
+ * @brief Hex: #7CFC00.
  *
  * @since 3.0.0
  */
-static constexpr Color lavender{0xE6, 0xE6, 0xFA};
+inline constexpr Color lawn_green{0x7C, 0xFC, 0};
 
 /**
- * Hex: #FFF0F5.
+ * @brief Hex: #FFFACD.
  *
  * @since 3.0.0
  */
-static constexpr Color lavender_blush{0xFF, 0xF0, 0xF5};
+inline constexpr Color lemon_chiffon{0xFF, 0xFA, 0xCD};
 
 /**
- * Hex: #7CFC00.
+ * @brief Hex: #ADD8E6.
  *
  * @since 3.0.0
  */
-static constexpr Color lawn_green{0x7C, 0xFC, 0};
+inline constexpr Color light_blue{0xAD, 0xD8, 0xE6};
 
 /**
- * Hex: #FFFACD.
+ * @brief Hex: #F08080.
  *
  * @since 3.0.0
  */
-static constexpr Color lemon_chiffon{0xFF, 0xFA, 0xCD};
+inline constexpr Color light_coral{0xF0, 0x80, 0x80};
 
 /**
- * Hex: #ADD8E6.
+ * @brief Hex: #E0FFFF.
  *
  * @since 3.0.0
  */
-static constexpr Color light_blue{0xAD, 0xD8, 0xE6};
+inline constexpr Color light_cyan{0xE0, 0xFF, 0xFF};
 
 /**
- * Hex: #F08080.
+ * @brief Hex: #FAFAD2.
  *
  * @since 3.0.0
  */
-static constexpr Color light_coral{0xF0, 0x80, 0x80};
+inline constexpr Color light_golden_rod_yellow{0xFA, 0xFA, 0xD2};
 
 /**
- * Hex: #E0FFFF.
+ * @brief Hex: #D3D3D3.
  *
  * @since 3.0.0
  */
-static constexpr Color light_cyan{0xE0, 0xFF, 0xFF};
+inline constexpr Color light_gray{0xD3, 0xD3, 0xD3};
 
 /**
- * Hex: #FAFAD2.
+ * @brief Hex: #D3D3D3.
  *
  * @since 3.0.0
  */
-static constexpr Color light_golden_rod_yellow{0xFA, 0xFA, 0xD2};
+inline constexpr Color light_grey{light_gray};
 
 /**
- * Hex: #D3D3D3.
+ * @brief Hex: #90EE90.
  *
  * @since 3.0.0
  */
-static constexpr Color light_gray{0xD3, 0xD3, 0xD3};
+inline constexpr Color light_green{0x90, 0xEE, 0x90};
 
 /**
- * Hex: #D3D3D3.
+ * @brief Hex: #FFB6C1.
  *
  * @since 3.0.0
  */
-static constexpr Color light_grey{light_gray};
+inline constexpr Color light_pink{0xFF, 0xB6, 0xC1};
 
 /**
- * Hex: #90EE90.
+ * @brief Hex: #FFA07A.
  *
  * @since 3.0.0
  */
-static constexpr Color light_green{0x90, 0xEE, 0x90};
+inline constexpr Color light_salmon{0xFF, 0xA0, 0x7A};
 
 /**
- * Hex: #FFB6C1.
+ * @brief Hex: #20B2AA.
  *
  * @since 3.0.0
  */
-static constexpr Color light_pink{0xFF, 0xB6, 0xC1};
+inline constexpr Color light_sea_green{0x20, 0xB2, 0xAA};
 
 /**
- * Hex: #FFA07A.
+ * @brief Hex: #87CEFA.
  *
  * @since 3.0.0
  */
-static constexpr Color light_salmon{0xFF, 0xA0, 0x7A};
+inline constexpr Color light_sky_blue{0x87, 0xCE, 0xFA};
 
 /**
- * Hex: #20B2AA.
+ * @brief Hex: #778899.
  *
  * @since 3.0.0
  */
-static constexpr Color light_sea_green{0x20, 0xB2, 0xAA};
+inline constexpr Color light_slate_gray{0x77, 0x88, 0x99};
 
 /**
- * Hex: #87CEFA.
+ * @brief Hex: #778899.
  *
  * @since 3.0.0
  */
-static constexpr Color light_sky_blue{0x87, 0xCE, 0xFA};
+inline constexpr Color light_slate_grey{light_slate_gray};
 
 /**
- * Hex: #778899.
+ * @brief Hex: #B0C4DE.
  *
  * @since 3.0.0
  */
-static constexpr Color light_slate_gray{0x77, 0x88, 0x99};
+inline constexpr Color light_steel_blue{0xB0, 0xC4, 0xDE};
 
 /**
- * Hex: #778899.
+ * @brief Hex: #FFFFE0.
  *
  * @since 3.0.0
  */
-static constexpr Color light_slate_grey{light_slate_gray};
+inline constexpr Color light_yellow{0xFF, 0xFF, 0xE0};
 
 /**
- * Hex: #B0C4DE.
+ * @brief Hex: #00FF00.
  *
  * @since 3.0.0
  */
-static constexpr Color light_steel_blue{0xB0, 0xC4, 0xDE};
+inline constexpr Color lime{0, 0xFF, 0};
 
 /**
- * Hex: #FFFFE0.
+ * @brief Hex: #32CD32.
  *
  * @since 3.0.0
  */
-static constexpr Color light_yellow{0xFF, 0xFF, 0xE0};
+inline constexpr Color lime_green{0x32, 0xCD, 0x32};
 
 /**
- * Hex: #00FF00.
+ * @brief Hex: #FAF0E6.
  *
  * @since 3.0.0
  */
-static constexpr Color lime{0, 0xFF, 0};
+inline constexpr Color linen{0xFA, 0xF0, 0xE6};
 
 /**
- * Hex: #32CD32.
+ * @brief Hex: #FF00FF.
  *
  * @since 3.0.0
  */
-static constexpr Color lime_green{0x32, 0xCD, 0x32};
+inline constexpr Color magenta{0xFF, 0, 0xFF};
 
 /**
- * Hex: #FAF0E6.
+ * @brief Hex: #800000.
  *
  * @since 3.0.0
  */
-static constexpr Color linen{0xFA, 0xF0, 0xE6};
+inline constexpr Color maroon{0x80, 0, 0};
 
 /**
- * Hex: #FF00FF.
+ * @brief Hex: #66CDAA.
  *
  * @since 3.0.0
  */
-static constexpr Color magenta{0xFF, 0, 0xFF};
+inline constexpr Color medium_aqua_marine{0x66, 0xCD, 0xAA};
 
 /**
- * Hex: #800000.
+ * @brief Hex: #0000CD.
  *
  * @since 3.0.0
  */
-static constexpr Color maroon{0x80, 0, 0};
+inline constexpr Color medium_blue{0, 0, 0xCD};
 
 /**
- * Hex: #66CDAA.
+ * @brief Hex: #BA55D3.
  *
  * @since 3.0.0
  */
-static constexpr Color medium_aqua_marine{0x66, 0xCD, 0xAA};
+inline constexpr Color medium_orchid{0xBA, 0x55, 0xD3};
 
 /**
- * Hex: #0000CD.
+ * @brief Hex: #9370DB.
  *
  * @since 3.0.0
  */
-static constexpr Color medium_blue{0, 0, 0xCD};
+inline constexpr Color medium_purple{0x93, 0x70, 0xDB};
 
 /**
- * Hex: #BA55D3.
+ * @brief Hex: #3CB371.
  *
  * @since 3.0.0
  */
-static constexpr Color medium_orchid{0xBA, 0x55, 0xD3};
+inline constexpr Color medium_sea_green{0x3C, 0xB3, 0x71};
 
 /**
- * Hex: #9370DB.
+ * @brief Hex: #7B68EE.
  *
  * @since 3.0.0
  */
-static constexpr Color medium_purple{0x93, 0x70, 0xDB};
+inline constexpr Color medium_slate_blue{0x7B, 0x68, 0xEE};
 
 /**
- * Hex: #3CB371.
+ * @brief Hex: #00FA9A.
  *
  * @since 3.0.0
  */
-static constexpr Color medium_sea_green{0x3C, 0xB3, 0x71};
+inline constexpr Color medium_spring_green{0, 0xFA, 0x9A};
 
 /**
- * Hex: #7B68EE.
+ * @brief Hex: #48D1CC.
  *
  * @since 3.0.0
  */
-static constexpr Color medium_slate_blue{0x7B, 0x68, 0xEE};
+inline constexpr Color medium_turquoise{0x48, 0xD1, 0xCC};
 
 /**
- * Hex: #00FA9A.
+ * @brief Hex: #C71585.
  *
  * @since 3.0.0
  */
-static constexpr Color medium_spring_green{0, 0xFA, 0x9A};
+inline constexpr Color medium_violet_red{0xC7, 0x15, 0x85};
 
 /**
- * Hex: #48D1CC.
+ * @brief Hex: #191970.
  *
  * @since 3.0.0
  */
-static constexpr Color medium_turquoise{0x48, 0xD1, 0xCC};
+inline constexpr Color midnight_blue{0x19, 0x19, 0x70};
 
 /**
- * Hex: #C71585.
+ * @brief Hex: #F5FFFA.
  *
  * @since 3.0.0
  */
-static constexpr Color medium_violet_red{0xC7, 0x15, 0x85};
+inline constexpr Color mint_cream{0xF5, 0xFF, 0xFA};
 
 /**
- * Hex: #191970.
+ * @brief Hex: #FFE4E1.
  *
  * @since 3.0.0
  */
-static constexpr Color midnight_blue{0x19, 0x19, 0x70};
+inline constexpr Color misty_rose{0xFF, 0xE4, 0xE1};
 
 /**
- * Hex: #F5FFFA.
+ * @brief Hex: #FFE4B5.
  *
  * @since 3.0.0
  */
-static constexpr Color mint_cream{0xF5, 0xFF, 0xFA};
+inline constexpr Color moccasin{0xFF, 0xE4, 0xB5};
 
 /**
- * Hex: #FFE4E1.
+ * @brief Hex: #FFDEAD.
  *
  * @since 3.0.0
  */
-static constexpr Color misty_rose{0xFF, 0xE4, 0xE1};
+inline constexpr Color navajo_white{0xFF, 0xDE, 0xAD};
 
 /**
- * Hex: #FFE4B5.
+ * @brief Hex: #000080.
  *
  * @since 3.0.0
  */
-static constexpr Color moccasin{0xFF, 0xE4, 0xB5};
+inline constexpr Color navy{0, 0, 0x80};
 
 /**
- * Hex: #FFDEAD.
+ * @brief Hex: #FDF5E6.
  *
  * @since 3.0.0
  */
-static constexpr Color navajo_white{0xFF, 0xDE, 0xAD};
+inline constexpr Color old_lace{0xFD, 0xF5, 0xE6};
 
 /**
- * Hex: #000080.
+ * @brief Hex: #808000.
  *
  * @since 3.0.0
  */
-static constexpr Color navy{0, 0, 0x80};
+inline constexpr Color olive{0x80, 0x80, 0};
 
 /**
- * Hex: #FDF5E6.
+ * @brief Hex: #6B8E23.
  *
  * @since 3.0.0
  */
-static constexpr Color old_lace{0xFD, 0xF5, 0xE6};
+inline constexpr Color olive_drab{0x6B, 0x8E, 0x23};
 
 /**
- * Hex: #808000.
+ * @brief Hex: #FFA500.
  *
  * @since 3.0.0
  */
-static constexpr Color olive{0x80, 0x80, 0};
+inline constexpr Color orange{0xFF, 0xA5, 0};
 
 /**
- * Hex: #6B8E23.
+ * @brief Hex: #FF4500.
  *
  * @since 3.0.0
  */
-static constexpr Color olive_drab{0x6B, 0x8E, 0x23};
+inline constexpr Color orange_red{0xFF, 0x45, 0};
 
 /**
- * Hex: #FFA500.
+ * @brief Hex: #DA70D6.
  *
  * @since 3.0.0
  */
-static constexpr Color orange{0xFF, 0xA5, 0};
+inline constexpr Color orchid{0xDA, 0x70, 0xD6};
 
 /**
- * Hex: #FF4500.
+ * @brief Hex: #EEE8AA.
  *
  * @since 3.0.0
  */
-static constexpr Color orange_red{0xFF, 0x45, 0};
+inline constexpr Color pale_golden_rod{0xEE, 0xE8, 0xAA};
 
 /**
- * Hex: #DA70D6.
+ * @brief Hex: #98FB98.
  *
  * @since 3.0.0
  */
-static constexpr Color orchid{0xDA, 0x70, 0xD6};
+inline constexpr Color pale_green{0x98, 0xFB, 0x98};
 
 /**
- * Hex: #EEE8AA.
+ * @brief Hex: #AFEEEE.
  *
  * @since 3.0.0
  */
-static constexpr Color pale_golden_rod{0xEE, 0xE8, 0xAA};
+inline constexpr Color pale_turquoise{0xAF, 0xEE, 0xEE};
 
 /**
- * Hex: #98FB98.
+ * @brief Hex: #DB7093.
  *
  * @since 3.0.0
  */
-static constexpr Color pale_green{0x98, 0xFB, 0x98};
+inline constexpr Color pale_violet_red{0xDB, 0x70, 0x93};
 
 /**
- * Hex: #AFEEEE.
+ * @brief Hex: #FFEFD5.
  *
  * @since 3.0.0
  */
-static constexpr Color pale_turquoise{0xAF, 0xEE, 0xEE};
+inline constexpr Color papaya_whip{0xFF, 0xEF, 0xD5};
 
 /**
- * Hex: #DB7093.
+ * @brief Hex: #FFDAB9.
  *
  * @since 3.0.0
  */
-static constexpr Color pale_violet_red{0xDB, 0x70, 0x93};
+inline constexpr Color peach_puff{0xFF, 0xDA, 0xB9};
 
 /**
- * Hex: #FFEFD5.
+ * @brief Hex: #CD853F.
  *
  * @since 3.0.0
  */
-static constexpr Color papaya_whip{0xFF, 0xEF, 0xD5};
+inline constexpr Color peru{0xCD, 0x85, 0x3F};
 
 /**
- * Hex: #FFDAB9.
+ * @brief Hex: #FFC0CB.
  *
  * @since 3.0.0
  */
-static constexpr Color peach_puff{0xFF, 0xDA, 0xB9};
+inline constexpr Color pink{0xFF, 0xC0, 0xCB};
 
 /**
- * Hex: #CD853F.
+ * @brief Hex: #DDA0DD.
  *
  * @since 3.0.0
  */
-static constexpr Color peru{0xCD, 0x85, 0x3F};
+inline constexpr Color plum{0xDD, 0xA0, 0xDD};
 
 /**
- * Hex: #FFC0CB.
+ * @brief Hex: #B0E0E6.
  *
  * @since 3.0.0
  */
-static constexpr Color pink{0xFF, 0xC0, 0xCB};
+inline constexpr Color powder_blue{0xB0, 0xE0, 0xE6};
 
 /**
- * Hex: #DDA0DD.
+ * @brief Hex: #800080.
  *
  * @since 3.0.0
  */
-static constexpr Color plum{0xDD, 0xA0, 0xDD};
+inline constexpr Color purple{0x80, 0, 0x80};
 
 /**
- * Hex: #B0E0E6.
+ * @brief Hex: #663399.
  *
  * @since 3.0.0
  */
-static constexpr Color powder_blue{0xB0, 0xE0, 0xE6};
+inline constexpr Color rebecca_purple{0x66, 0x33, 0x99};
 
 /**
- * Hex: #800080.
+ * @brief Hex: #FF0000.
  *
  * @since 3.0.0
  */
-static constexpr Color purple{0x80, 0, 0x80};
+inline constexpr Color red{0xFF, 0, 0};
 
 /**
- * Hex: #663399.
+ * @brief Hex: #BC8F8F.
  *
  * @since 3.0.0
  */
-static constexpr Color rebecca_purple{0x66, 0x33, 0x99};
+inline constexpr Color rosy_brown{0xBC, 0x8F, 0x8F};
 
 /**
- * Hex: #FF0000.
+ * @brief Hex: #4169E1.
  *
  * @since 3.0.0
  */
-static constexpr Color red{0xFF, 0, 0};
+inline constexpr Color royal_blue{0x41, 0x69, 0xE1};
 
 /**
- * Hex: #BC8F8F.
+ * @brief Hex: #8B4513.
  *
  * @since 3.0.0
  */
-static constexpr Color rosy_brown{0xBC, 0x8F, 0x8F};
+inline constexpr Color saddle_brown{0x8B, 0x45, 0x13};
 
 /**
- * Hex: #4169E1.
+ * @brief Hex: #FA8072.
  *
  * @since 3.0.0
  */
-static constexpr Color royal_blue{0x41, 0x69, 0xE1};
+inline constexpr Color salmon{0xFA, 0x80, 0x72};
 
 /**
- * Hex: #8B4513.
+ * @brief Hex: #F4A460.
  *
  * @since 3.0.0
  */
-static constexpr Color saddle_brown{0x8B, 0x45, 0x13};
+inline constexpr Color sandy_brown{0xF4, 0xA4, 0x60};
 
 /**
- * Hex: #FA8072.
+ * @brief Hex: #2E8B57.
  *
  * @since 3.0.0
  */
-static constexpr Color salmon{0xFA, 0x80, 0x72};
+inline constexpr Color sea_green{0x2E, 0x8B, 0x57};
 
 /**
- * Hex: #F4A460.
+ * @brief Hex: #FFF5EE.
  *
  * @since 3.0.0
  */
-static constexpr Color sandy_brown{0xF4, 0xA4, 0x60};
+inline constexpr Color sea_shell{0xFF, 0xF5, 0xEE};
 
 /**
- * Hex: #2E8B57.
+ * @brief Hex: #A0522D.
  *
  * @since 3.0.0
  */
-static constexpr Color sea_green{0x2E, 0x8B, 0x57};
+inline constexpr Color sienna{0xA0, 0x52, 0x2D};
 
 /**
- * Hex: #FFF5EE.
+ * @brief Hex: #C0C0C0.
  *
  * @since 3.0.0
  */
-static constexpr Color sea_shell{0xFF, 0xF5, 0xEE};
+inline constexpr Color silver{0xC0, 0xC0, 0xC0};
 
 /**
- * Hex: #A0522D.
+ * @brief Hex: #87CEEB.
  *
  * @since 3.0.0
  */
-static constexpr Color sienna{0xA0, 0x52, 0x2D};
+inline constexpr Color sky_blue{0x87, 0xCE, 0xEB};
 
 /**
- * Hex: #C0C0C0.
+ * @brief Hex: #6A5ACD.
  *
  * @since 3.0.0
  */
-static constexpr Color silver{0xC0, 0xC0, 0xC0};
+inline constexpr Color slate_blue{0x6A, 0x5A, 0xCD};
 
 /**
- * Hex: #87CEEB.
+ * @brief Hex: #708090.
  *
  * @since 3.0.0
  */
-static constexpr Color sky_blue{0x87, 0xCE, 0xEB};
+inline constexpr Color slate_gray{0x70, 0x80, 0x90};
 
 /**
- * Hex: #6A5ACD.
+ * @brief Hex: #708090.
  *
  * @since 3.0.0
  */
-static constexpr Color slate_blue{0x6A, 0x5A, 0xCD};
+inline constexpr Color slate_grey{slate_gray};
 
 /**
- * Hex: #708090.
+ * @brief Hex: #FFFAFA.
  *
  * @since 3.0.0
  */
-static constexpr Color slate_gray{0x70, 0x80, 0x90};
+inline constexpr Color snow{0xFF, 0xFA, 0xFA};
 
 /**
- * Hex: #708090.
+ * @brief Hex: #00FF7F.
  *
  * @since 3.0.0
  */
-static constexpr Color slate_grey{slate_gray};
+inline constexpr Color spring_green{0, 0xFF, 0x7F};
 
 /**
- * Hex: #FFFAFA.
+ * @brief Hex: #4682B4.
  *
  * @since 3.0.0
  */
-static constexpr Color snow{0xFF, 0xFA, 0xFA};
+inline constexpr Color steel_blue{0x46, 0x82, 0xB4};
 
 /**
- * Hex: #00FF7F.
+ * @brief Hex: #D2B48C.
  *
  * @since 3.0.0
  */
-static constexpr Color spring_green{0, 0xFF, 0x7F};
+inline constexpr Color tan{0xD2, 0xB4, 0x8C};
 
 /**
- * Hex: #4682B4.
+ * @brief Hex: #008080.
  *
  * @since 3.0.0
  */
-static constexpr Color steel_blue{0x46, 0x82, 0xB4};
+inline constexpr Color teal{0, 0x80, 0x80};
 
 /**
- * Hex: #D2B48C.
+ * @brief Hex: #D8BFD8.
  *
  * @since 3.0.0
  */
-static constexpr Color tan{0xD2, 0xB4, 0x8C};
+inline constexpr Color thistle{0xD8, 0xBF, 0xD8};
 
 /**
- * Hex: #008080.
+ * @brief Hex: #FF6347.
  *
  * @since 3.0.0
  */
-static constexpr Color teal{0, 0x80, 0x80};
+inline constexpr Color tomato{0xFF, 0x63, 0x47};
 
 /**
- * Hex: #D8BFD8.
+ * @brief Hex: #40E0D0.
  *
  * @since 3.0.0
  */
-static constexpr Color thistle{0xD8, 0xBF, 0xD8};
+inline constexpr Color turquoise{0x40, 0xE0, 0xD0};
 
 /**
- * Hex: #FF6347.
+ * @brief Hex: #EE82EE.
  *
  * @since 3.0.0
  */
-static constexpr Color tomato{0xFF, 0x63, 0x47};
+inline constexpr Color violet{0xEE, 0x82, 0xEE};
 
 /**
- * Hex: #40E0D0.
+ * @brief Hex: #F5DEB3.
  *
  * @since 3.0.0
  */
-static constexpr Color turquoise{0x40, 0xE0, 0xD0};
+inline constexpr Color wheat{0xF5, 0xDE, 0xB3};
 
 /**
- * Hex: #EE82EE.
+ * @brief Hex: #F5F5F5.
  *
  * @since 3.0.0
  */
-static constexpr Color violet{0xEE, 0x82, 0xEE};
+inline constexpr Color white_smoke{0xF5, 0xF5, 0xF5};
 
 /**
- * Hex: #F5DEB3.
+ * @brief Hex: #FFFF00.
  *
  * @since 3.0.0
  */
-static constexpr Color wheat{0xF5, 0xDE, 0xB3};
+inline constexpr Color yellow{0xFF, 0xFF, 0};
 
 /**
- * Hex: #F5F5F5.
+ * @brief Hex: #9ACD32.
  *
  * @since 3.0.0
  */
-static constexpr Color white_smoke{0xF5, 0xF5, 0xF5};
+inline constexpr Color yellow_green{0x9A, 0xCD, 0x32};
 
-/**
- * Hex: #FFFF00.
- *
- * @since 3.0.0
- */
-static constexpr Color yellow{0xFF, 0xFF, 0};
-
-/**
- * Hex: #9ACD32.
- *
- * @since 3.0.0
- */
-static constexpr Color yellow_green{0x9A, 0xCD, 0x32};
-
-}  // namespace color
-}  // namespace centurion
+}  // namespace centurion::color
 
 #endif  // CENTURION_COLORS_HEADER

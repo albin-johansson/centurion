@@ -799,6 +799,118 @@ class Joystick final {
   void destroy() noexcept;
 };
 
+/**
+ * @brief Indicates whether or not two joystick power values are the same.
+ *
+ * @param lhs the left-hand side power type.
+ * @param rhs the right-hand side power type.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
+ * @since 4.3.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(Joystick::Power lhs,
+                              SDL_JoystickPowerLevel rhs) noexcept;
+
+/**
+ * @brief Indicates whether or not two joystick power values are the same.
+ *
+ * @param lhs the left-hand side power type.
+ * @param rhs the right-hand side power type.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
+ * @since 4.3.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(SDL_JoystickPowerLevel lhs,
+                              Joystick::Power rhs) noexcept;
+
+/**
+ * @brief Indicates whether or not two joystick power values aren't the same.
+ *
+ * @param lhs the left-hand side power type.
+ * @param rhs the right-hand side power type.
+ *
+ * @return `true` if the values aren't the same; `false` otherwise.
+ *
+ * @since 4.3.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(Joystick::Power lhs,
+                              SDL_JoystickPowerLevel rhs) noexcept;
+
+/**
+ * @brief Indicates whether or not two joystick power values aren't the same.
+ *
+ * @param lhs the left-hand side power type.
+ * @param rhs the right-hand side power type.
+ *
+ * @return `true` if the values aren't the same; `false` otherwise.
+ *
+ * @since 4.3.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(SDL_JoystickPowerLevel lhs,
+                              Joystick::Power rhs) noexcept;
+
+/**
+ * @brief Indicates whether or not two joystick type values are the same.
+ *
+ * @param lhs the left-hand side joystick type value.
+ * @param rhs the right-hand side joystick type value.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
+ * @since 4.3.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(Joystick::Type lhs,
+                              SDL_JoystickType rhs) noexcept;
+
+/**
+ * @brief Indicates whether or not two joystick type values are the same.
+ *
+ * @param lhs the left-hand side joystick type value.
+ * @param rhs the right-hand side joystick type value.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
+ * @since 4.3.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator==(SDL_JoystickType lhs,
+                              Joystick::Type rhs) noexcept;
+
+/**
+ * @brief Indicates whether or not two joystick type values aren't the same.
+ *
+ * @param lhs the left-hand side joystick type value.
+ * @param rhs the right-hand side joystick type value.
+ *
+ * @return `true` if the values aren't the same; `false` otherwise.
+ *
+ * @since 4.3.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(Joystick::Type lhs,
+                              SDL_JoystickType rhs) noexcept;
+
+/**
+ * @brief Indicates whether or not two joystick type values aren't the same.
+ *
+ * @param lhs the left-hand side joystick type value.
+ * @param rhs the right-hand side joystick type value.
+ *
+ * @return `true` if the values aren't the same; `false` otherwise.
+ *
+ * @since 4.3.0
+ */
+CENTURION_NODISCARD
+CENTURION_API bool operator!=(SDL_JoystickType lhs,
+                              Joystick::Type rhs) noexcept;
+
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY

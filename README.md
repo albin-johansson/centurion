@@ -1,4 +1,4 @@
-# <img src="meta/centurion.png" alt="Centurion" width="200"/> [![version](https://img.shields.io/badge/version-4.3.0-blue.svg)](https://semver.org) [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) [![codecov](https://codecov.io/gh/albin-johansson/Centurion/branch/master/graph/badge.svg)](https://codecov.io/gh/albin-johansson/Centurion) [![Language](https://img.shields.io/badge/C%2B%2B-11/14/17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/albin-johansson/Centurion) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/Centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+# <img src="meta/centurion.png" alt="Centurion" width="200"/> [![version](https://img.shields.io/badge/version-4.3.0-blue.svg)](https://semver.org) [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) [![codecov](https://codecov.io/gh/albin-johansson/Centurion/branch/master/graph/badge.svg)](https://codecov.io/gh/albin-johansson/Centurion) [![Language](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/albin-johansson/Centurion) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/Centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## What is Centurion?
 
@@ -6,7 +6,7 @@ Centurion is a modern C++ library built on top of SDL2 in order to improve type-
 
 ## Why use Centurion?
 
-Centurion is written in modern C++17 (and supports being used in C++11 and C++14 environments) and as such is much more intuitive and easy to use that raw SDL2, which is written in C. No need to worry about memory leaks and ownership of resources! By using Centurion you will write code that is type-safe, clear and efficient.
+Centurion is written in modern C++17 and as such is much more intuitive and easy to use that raw SDL2, which is written in C. No need to worry about memory leaks and ownership of resources! By using Centurion you will write code that is type-safe, clear and efficient.
 
 ## How do I install Centurion?
 

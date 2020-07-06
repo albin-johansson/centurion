@@ -23,13 +23,12 @@
  */
 
 /**
- * @brief Convenience header that defines the @link ::ctn @endlink alias.
+ * @file centurion_as_ctn.hpp
+ * @brief Convenience header that defines the `::ctn` namespace alias.
  *
- * Includes the @link centurion.h @endlink header whilst also defining a
- * namespace alias for the @link ::centurion @endlink namespace, @link ::ctn
- * @endlink.
+ * Includes the `centurion.hpp` header whilst also defining a
+ * namespace alias for the `::centurion` namespace, `::ctn`.
  *
- * @file centurion_as_ctn.h
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -41,11 +40,14 @@
 #include "centurion.hpp"
 
 /**
- * @brief Alias for @link ::centurion @endlink.
+ * @namespace ctn
+ * @brief Alias for `::centurion`.
+ *
  * @details This alias can make header files look a bit nicer when dealing with
  * centurion components.
- * @headerfile centurion_as_ctn.h
- * @namespace ctn
+ *
+ * @headerfile centurion_as_ctn.hpp
+ *
  * @since 4.1.0
  */
 namespace ctn = centurion;

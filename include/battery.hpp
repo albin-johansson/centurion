@@ -49,20 +49,30 @@
 namespace centurion::battery {
 
 /**
- * @enum power_state
+ * @enum PowerState
  * @brief Mirrors the values of the `SDL_PowerState` enum.
  *
- * @headerfile battery.hpp
  * @since 3.0.0
+ *
+ * @var PowerState::Unknown
+ * The status is unknown.
+ * @var PowerState::OnBattery
+ * Not plugged in and running on battery.
+ * @var PowerState::NoBattery
+ * No battery available.
+ * @var PowerState::Charging
+ * Currently charging the battery.
+ * @var PowerState::Charged
+ * Currently plugged in and charged.
+ *
+ * @headerfile battery.hpp
  */
-enum class power_state {
-  Unknown = SDL_POWERSTATE_UNKNOWN, /**< The status is unknown. */
-  OnBattery =
-      SDL_POWERSTATE_ON_BATTERY, /**< Not plugged in and running on battery.*/
-  NoBattery = SDL_POWERSTATE_NO_BATTERY, /**< No battery available.*/
-  Charging = SDL_POWERSTATE_CHARGING,    /**< Currently charging the battery.*/
-  Charged = SDL_POWERSTATE_CHARGED       /**< Currently plugged in and
-                                          * charged.*/
+enum class PowerState {
+  Unknown = SDL_POWERSTATE_UNKNOWN,
+  OnBattery = SDL_POWERSTATE_ON_BATTERY,
+  NoBattery = SDL_POWERSTATE_NO_BATTERY,
+  Charging = SDL_POWERSTATE_CHARGING,
+  Charged = SDL_POWERSTATE_CHARGED
 };
 
 /**
@@ -75,7 +85,7 @@ enum class power_state {
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline auto operator==(power_state lhs,
+[[nodiscard]] inline auto operator==(PowerState lhs,
                                      SDL_PowerState rhs) noexcept -> bool
 {
   return static_cast<SDL_PowerState>(lhs) == rhs;
@@ -85,7 +95,7 @@ enum class power_state {
  * @copydoc operator==(PowerState, SDL_PowerState)
  */
 [[nodiscard]] inline auto operator==(SDL_PowerState lhs,
-                                     power_state rhs) noexcept -> bool
+                                     PowerState rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -127,7 +137,7 @@ CENTURION_QUERY auto percentage() noexcept -> Optional<int>;
  *
  * @since 3.0.0
  */
-CENTURION_QUERY auto state() noexcept -> power_state;
+CENTURION_QUERY auto state() noexcept -> PowerState;
 
 /**
  * @brief Indicates whether or not the system is running on a battery.

@@ -4,20 +4,20 @@
 
 using namespace centurion;
 
-TEST_CASE("power_state enum values", "[power_state]")
+TEST_CASE("PowerState enum values", "[PowerState]")
 {
   using namespace battery;
-  CHECK(power_state::Unknown == SDL_POWERSTATE_UNKNOWN);
-  CHECK(power_state::OnBattery == SDL_POWERSTATE_ON_BATTERY);
-  CHECK(power_state::NoBattery == SDL_POWERSTATE_NO_BATTERY);
-  CHECK(power_state::Charging == SDL_POWERSTATE_CHARGING);
-  CHECK(power_state::Charged == SDL_POWERSTATE_CHARGED);
+  CHECK(PowerState::Unknown == SDL_POWERSTATE_UNKNOWN);
+  CHECK(PowerState::OnBattery == SDL_POWERSTATE_ON_BATTERY);
+  CHECK(PowerState::NoBattery == SDL_POWERSTATE_NO_BATTERY);
+  CHECK(PowerState::Charging == SDL_POWERSTATE_CHARGING);
+  CHECK(PowerState::Charged == SDL_POWERSTATE_CHARGED);
 
-  CHECK(SDL_POWERSTATE_UNKNOWN == power_state::Unknown);
-  CHECK(SDL_POWERSTATE_ON_BATTERY == power_state::OnBattery);
-  CHECK(SDL_POWERSTATE_NO_BATTERY == power_state::NoBattery);
-  CHECK(SDL_POWERSTATE_CHARGING == power_state::Charging);
-  CHECK(SDL_POWERSTATE_CHARGED == power_state::Charged);
+  CHECK(SDL_POWERSTATE_UNKNOWN == PowerState::Unknown);
+  CHECK(SDL_POWERSTATE_ON_BATTERY == PowerState::OnBattery);
+  CHECK(SDL_POWERSTATE_NO_BATTERY == PowerState::NoBattery);
+  CHECK(SDL_POWERSTATE_CHARGING == PowerState::Charging);
+  CHECK(SDL_POWERSTATE_CHARGED == PowerState::Charged);
 }
 
 TEST_CASE("battery::percentage", "[battery]")
@@ -50,7 +50,7 @@ TEST_CASE("battery::state", "[battery]")
 
   const auto state = battery::state();
   const auto actual =
-      static_cast<battery::power_state>(SDL_GetPowerInfo(nullptr, nullptr));
+      static_cast<battery::PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
 
   CHECK(state == actual);
 }
@@ -58,5 +58,5 @@ TEST_CASE("battery::state", "[battery]")
 TEST_CASE("battery::exists", "[battery]")
 {
   CHECK(battery::exists() ==
-        (battery::state() == battery::power_state::OnBattery));
+        (battery::state() == battery::PowerState::OnBattery));
 }

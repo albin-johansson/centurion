@@ -246,7 +246,7 @@ int Font::string_height(CZString s) const noexcept
 }
 
 CENTURION_DEF
-IArea Font::string_size(CZString s) const noexcept
+area_i Font::string_size(CZString s) const noexcept
 {
   int width = 0;
   int height = 0;

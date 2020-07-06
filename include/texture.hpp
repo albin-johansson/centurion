@@ -115,7 +115,7 @@ class Texture final {
   CENTURION_API Texture(const Renderer& renderer,
                         PixelFormat format,
                         Access access,
-                        IArea size);
+                        area_i size);
 
   /**
    * Creates an texture by moving the supplied texture.
@@ -196,7 +196,7 @@ class Texture final {
       const Renderer& renderer,
       PixelFormat format,
       Access access,
-      IArea size);
+      area_i size);
 
   /**
    * Creates and returns a shared texture from a pre-existing SDL texture. The
@@ -254,7 +254,7 @@ class Texture final {
       const Renderer& renderer,
       PixelFormat format,
       Access access,
-      IArea size);
+      area_i size);
 
   /**
    * Creates and returns a unique pointer to a texture based on the image at
@@ -354,7 +354,7 @@ class Texture final {
    * @return the size of the texture.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API IArea size() const noexcept;
+  [[nodiscard]] CENTURION_API area_i size() const noexcept;
 
   /**
    * Indicates whether or not the texture is a possible render target.

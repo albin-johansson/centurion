@@ -745,7 +745,7 @@ class Renderer final {
    * @param size the logical width and height that will be used.
    * @since 3.0.0
    */
-  CENTURION_API void set_logical_size(IArea size) noexcept;
+  CENTURION_API void set_logical_size(area_i size) noexcept;
 
   /**
    * Sets whether or not to force integer scaling for the logical viewport. By
@@ -833,7 +833,7 @@ class Renderer final {
    * @return the output size of the renderer, in the format (width, height).
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API IArea output_size() const noexcept;
+  [[nodiscard]] CENTURION_API area_i output_size() const noexcept;
 
   /**
    * Returns the blend mode that is being used by the renderer.

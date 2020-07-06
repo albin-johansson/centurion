@@ -31,7 +31,7 @@ UniquePtr<Texture> TextureLoader::unique_img(CZString file) const
 CENTURION_DEF
 UniquePtr<Texture> TextureLoader::unique_img(PixelFormat format,
                                              Texture::Access access,
-                                             IArea size) const
+                                             area_i size) const
 {
   return Texture::unique(*m_renderer, format, access, size);
 }
@@ -45,7 +45,7 @@ SharedPtr<Texture> TextureLoader::shared_img(CZString file) const
 CENTURION_DEF
 SharedPtr<Texture> TextureLoader::shared_img(PixelFormat format,
                                              Texture::Access access,
-                                             IArea size) const
+                                             area_i size) const
 {
   return Texture::shared(*m_renderer, format, access, size);
 }

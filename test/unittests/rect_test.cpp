@@ -96,7 +96,7 @@ TEST_CASE("IRect::resize", "[Rect]")
 {
   IRect rect;
 
-  const IArea size{8596, 9235};
+  const area_i size{8596, 9235};
   rect.resize(size);
 
   CHECK(rect.size() == size);
@@ -421,7 +421,7 @@ TEST_CASE("FRect(float, float, float, float)", "[FRect]")
 TEST_CASE("FRect(FPoint, FArea)", "[FRect]")
 {
   const FPoint pos{123.5f, 81.4f};
-  const FArea area{921.8f, 512.6f};
+  const area_f area{921.8f, 512.6f};
   const FRect rect{pos, area};
 
   CHECK(rect.x() == pos.x());
@@ -488,7 +488,7 @@ TEST_CASE("FRect::resize", "[FRect]")
 {
   FRect rect;
 
-  const FArea size{859.6f, 773.4f};
+  const area_f size{859.6f, 773.4f};
   rect.resize(size);
 
   CHECK(rect.size() == size);

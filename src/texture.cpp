@@ -48,7 +48,7 @@ CENTURION_DEF
 Texture::Texture(const Renderer& renderer,
                  PixelFormat format,
                  Access access,
-                 IArea size)
+                 area_i size)
 {
   m_texture = SDL_CreateTexture(renderer.get(),
                                 static_cast<Uint32>(format),
@@ -141,7 +141,7 @@ CENTURION_DEF
 UniquePtr<Texture> Texture::unique(const Renderer& renderer,
                                    PixelFormat format,
                                    Access access,
-                                   IArea size)
+                                   area_i size)
 {
   return centurion::detail::make_unique<Texture>(
       renderer, format, access, size);
@@ -170,7 +170,7 @@ CENTURION_DEF
 SharedPtr<Texture> Texture::shared(const Renderer& renderer,
                                    PixelFormat format,
                                    Access access,
-                                   IArea size)
+                                   area_i size)
 {
   return std::make_shared<Texture>(renderer, format, access, size);
 }
@@ -294,7 +294,7 @@ int Texture::height() const noexcept
 }
 
 CENTURION_DEF
-IArea Texture::size() const noexcept
+area_i Texture::size() const noexcept
 {
   int width = 0;
   int height = 0;

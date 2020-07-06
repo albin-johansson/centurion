@@ -21,7 +21,7 @@ Window::Window(Owner<SDL_Window*> window) : m_window{window}
 }
 
 CENTURION_DEF
-Window::Window(CZString title, IArea size)
+Window::Window(CZString title, area_i size)
 {
   if ((size.width < 1) || (size.height < 1)) {
     throw CenturionException{"Invalid width or height!"};
@@ -87,7 +87,7 @@ UniquePtr<Window> Window::unique(Owner<SDL_Window*> window)
 }
 
 CENTURION_DEF
-UniquePtr<Window> Window::unique(CZString title, IArea size)
+UniquePtr<Window> Window::unique(CZString title, area_i size)
 {
   return centurion::detail::make_unique<Window>(title, size);
 }
@@ -105,7 +105,7 @@ SharedPtr<Window> Window::shared(Owner<SDL_Window*> window)
 }
 
 CENTURION_DEF
-SharedPtr<Window> Window::shared(CZString title, IArea size)
+SharedPtr<Window> Window::shared(CZString title, area_i size)
 {
   return std::make_shared<Window>(title, size);
 }
@@ -214,13 +214,13 @@ void Window::set_opacity(float opacity) noexcept
 }
 
 CENTURION_DEF
-void Window::set_min_size(IArea size) noexcept
+void Window::set_min_size(area_i size) noexcept
 {
   SDL_SetWindowMinimumSize(m_window, size.width, size.height);
 }
 
 CENTURION_DEF
-void Window::set_max_size(IArea size) noexcept
+void Window::set_max_size(area_i size) noexcept
 {
   SDL_SetWindowMaximumSize(m_window, size.width, size.height);
 }
@@ -321,7 +321,7 @@ IPoint Window::position() const noexcept
 }
 
 CENTURION_DEF
-IArea Window::min_size() const noexcept
+area_i Window::min_size() const noexcept
 {
   int w = 0;
   int h = 0;
@@ -330,7 +330,7 @@ IArea Window::min_size() const noexcept
 }
 
 CENTURION_DEF
-IArea Window::max_size() const noexcept
+area_i Window::max_size() const noexcept
 {
   int w = 0;
   int h = 0;

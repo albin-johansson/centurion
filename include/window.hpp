@@ -96,7 +96,7 @@ class Window final {
    * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(CZString title, IArea size = {800, 600});
+  CENTURION_API explicit Window(CZString title, area_i size = {800, 600});
 
   /**
    * Creates a window by moving the contents of the supplied window into the new
@@ -157,7 +157,7 @@ class Window final {
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API static UniquePtr<Window> unique(CZString title,
-                                                              IArea size = {
+                                                              area_i size = {
                                                                   800,
                                                                   600});
 
@@ -195,7 +195,7 @@ class Window final {
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API static SharedPtr<Window> shared(CZString title,
-                                                              IArea size = {
+                                                              area_i size = {
                                                                   800,
                                                                   600});
 
@@ -330,7 +330,7 @@ class Window final {
    * than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_min_size(IArea size) noexcept;
+  CENTURION_API void set_min_size(area_i size) noexcept;
 
   /**
    * Sets the maximum size of the window. This method has no effect if any of
@@ -340,7 +340,7 @@ class Window final {
    * than zero.
    * @since 3.0.0
    */
-  CENTURION_API void set_max_size(IArea size) noexcept;
+  CENTURION_API void set_max_size(area_i size) noexcept;
 
   /**
    * Sets the position of the window. Note, it's possible to use
@@ -499,7 +499,7 @@ class Window final {
    * @return the minimum size of the window.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API IArea min_size() const noexcept;
+  [[nodiscard]] CENTURION_API area_i min_size() const noexcept;
 
   /**
    * Returns the maximum size of the window.
@@ -507,7 +507,7 @@ class Window final {
    * @return the maximum size of the window.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API IArea max_size() const noexcept;
+  [[nodiscard]] CENTURION_API area_i max_size() const noexcept;
 
   /**
    * Returns the current width of the window.

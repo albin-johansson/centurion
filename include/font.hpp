@@ -401,7 +401,7 @@ class Font final {
    * returned size is 0x0 if the supplied string is null.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API IArea string_size(CZString s) const noexcept;
+  [[nodiscard]] CENTURION_API area_i string_size(CZString s) const noexcept;
 
   /**
    * Returns the compile-time version of SDL2_ttf that is being used.

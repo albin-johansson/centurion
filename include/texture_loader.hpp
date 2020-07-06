@@ -82,7 +82,7 @@ class TextureLoader final {
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API UniquePtr<Texture>
-  unique_img(PixelFormat format, Texture::Access access, IArea size) const;
+  unique_img(PixelFormat format, Texture::Access access, area_i size) const;
 
   /**
    * Creates and returns a shared pointer to a texture.
@@ -108,7 +108,7 @@ class TextureLoader final {
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API SharedPtr<Texture>
-  shared_img(PixelFormat format, Texture::Access access, IArea size) const;
+  shared_img(PixelFormat format, Texture::Access access, area_i size) const;
 
  private:
   SharedPtr<Renderer> m_renderer;

@@ -23,9 +23,9 @@
  */
 
 /**
- * @brief Provides the definition of @link centurion::TArea @endlink.
+ * @brief Provides a simple area struct.
  *
- * @file area.h
+ * @file area.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -41,101 +41,91 @@
 namespace centurion {
 
 template <typename T>
-struct TArea;
+struct area;
 
 /**
- * @brief Simple struct that represents a width and a height.
+ * @struct area
+ * @brief Simply represents an area with a width and height.
  *
- * | Property              | Value                                |
- * | --------------------- | :----------------------------------- |
- * | Default constructible | Yes                                  |
- * | Movable               | Yes                                  |
- * | Copyable              | Yes                                  |
- * | Explicit conversions  | None                                 |
- * | Implicit conversions  | None                                 |
- * | Overloaded operators  | `==`, `!=`                           |
- * | Namespace             | @link ::centurion @endlink           |
+ * @tparam T the type of the components of the area, defaults to float. Must
+ * be either an integral or floating-point type. Can't be `bool`.
  *
- * @tparam T the type of the components of the Area, defaults to float.
- * @headerfile area.h
- *
- * @todo 5.0.0 fix the name of this class.
- *
- * @note This struct wasn't templated in older versions of the library, hence
- * the rather ugly name. This name will be changed in some later major release.
- * @struct TArea
  * @since 4.0.0
+ *
+ * @var area::width
+ * The width of the area. Defaults to 0.
+ * @var area::height
+ * The height of the area. Defaults to 0.
+ *
+ * @headerfile area.h
  */
 template <typename T = float>
-struct TArea {
-  constexpr TArea() noexcept = default;
-  constexpr TArea(T width, T height) noexcept : width{width}, height{height} {}
-  T width = 0;  /**< The width associated with the area. */
-  T height = 0; /**< The height associated with the area. */
+struct area {
+  T width = 0;
+  T height = 0;
 
-  static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>,
                 "Area type must be either integral or floating-point!");
-  static_assert(!std::is_same<T, bool>::value, "Area type cannot be bool!");
-  static_assert(std::is_trivial<T>::value, "Area type must be trivial!");
+
+  static_assert(!std::is_same_v<T, bool>, "Area type can't be bool!");
 };
 
 /**
- * A type alias for TArea&lt;int&gt;, for backwards compatibility reasons.
- * Use of this type alias is discouraged.
+ * @typedef area_i
+ * @brief An alias for `int` areas.
  *
  * @since 4.1.0
  */
-using Area = TArea<int>;
+using area_i = area<int>;
 
 /**
- * A type alias for TArea&lt;int&gt;. Prefer usage of this alias over
- * <code>Area</code>, since it might be removed in a future release of
- * Centurion.
+ * @typedef area_f
+ * @brief An alias for `float` areas.
  *
  * @since 4.1.0
  */
-using IArea = TArea<int>;
+using area_f = area<float>;
 
 /**
- * A type alias for TArea&lt;float&gt;.
+ * @typedef area_d
+ * @brief An alias for `double` areas.
  *
  * @since 4.1.0
  */
-using FArea = TArea<float>;
+using area_d = area<double>;
 
 /**
- * A type alias for TArea&lt;double&gt;.
- *
- * @since 4.1.0
- */
-using DArea = TArea<double>;
-
-/**
- * Indicates whether or not two areas are considered to be equal.
+ * @brief Indicates whether or not two areas are considered to be equal.
  *
  * @param lhs the left-hand side area.
  * @param rhs the right-hand side area.
- * @return true if the areas are equal; false otherwise.
+ *
+ * @return `true` if the areas are equal; `false` otherwise.
+ *
  * @since 4.1.0
  */
 template <typename T>
-[[nodiscard]] inline constexpr bool operator==(const TArea<T>& lhs,
-                                               const TArea<T>& rhs) noexcept
+[[nodiscard]] inline constexpr auto operator==(const area<T>& lhs,
+                                               const area<T>& rhs) noexcept
+    -> bool
 {
   return (lhs.width == rhs.width) && (lhs.height == rhs.height);
 }
 
 /**
- * Indicates whether or not two areas aren't considered to be equal.
+ * @brief Indicates whether or not two areas aren't considered to be equal.
  *
  * @param lhs the left-hand side area.
  * @param rhs the right-hand side area.
- * @return true if the areas aren't equal; false otherwise.
+ *
+ * @return `true` if the areas aren't equal; `false` otherwise.
+ *
  * @since 4.1.0
  */
 template <typename T>
-[[nodiscard]] inline constexpr bool operator!=(const TArea<T>& lhs,
-                                               const TArea<T>& rhs) noexcept
+[[nodiscard]] inline constexpr auto operator!=(const area<T>& lhs,
+                                               const area<T>& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

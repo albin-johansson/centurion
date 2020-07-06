@@ -562,7 +562,7 @@ TEST_CASE("Renderer::set_logical_size", "[Renderer]")
 
   const auto w = 842;
   const auto h = 253;
-  const IArea size{w, h};
+  const area_i size{w, h};
 
   renderer.set_logical_size(size);
 

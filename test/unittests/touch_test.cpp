@@ -29,12 +29,12 @@ TEST_CASE("DeviceType enum", "[Touch]")
   }
 }
 
-#ifndef TRAVIS_TEST
-
 TEST_CASE("touch::num_devices", "[Touch]")
 {
   CHECK(num_devices() == SDL_GetNumTouchDevices());
 }
+
+#ifndef TRAVIS_TEST
 
 TEST_CASE("touch::get_device", "[Touch]")
 {

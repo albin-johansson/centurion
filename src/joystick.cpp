@@ -391,6 +391,54 @@ Joystick::HatState Joystick::hat_state(int hat) const noexcept
   return static_cast<HatState>(SDL_JoystickGetHat(m_joystick, hat));
 }
 
+CENTURION_DEF
+bool operator==(Joystick::Power lhs, SDL_JoystickPowerLevel rhs) noexcept
+{
+  return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
+}
+
+CENTURION_DEF
+bool operator==(SDL_JoystickPowerLevel lhs, Joystick::Power rhs) noexcept
+{
+  return rhs == lhs;
+}
+
+CENTURION_DEF
+bool operator!=(Joystick::Power lhs, SDL_JoystickPowerLevel rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+CENTURION_DEF
+bool operator!=(SDL_JoystickPowerLevel lhs, Joystick::Power rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+CENTURION_DEF
+bool operator==(Joystick::Type lhs, SDL_JoystickType rhs) noexcept
+{
+  return static_cast<SDL_JoystickType>(lhs) == rhs;
+}
+
+CENTURION_DEF
+bool operator==(SDL_JoystickType lhs, Joystick::Type rhs) noexcept
+{
+  return rhs == lhs;
+}
+
+CENTURION_DEF
+bool operator!=(Joystick::Type lhs, SDL_JoystickType rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+CENTURION_DEF
+bool operator!=(SDL_JoystickType lhs, Joystick::Type rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
 }  // namespace centurion
 
 #endif  // CENTURION_JOYSTICK_SOURCE

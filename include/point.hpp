@@ -211,7 +211,7 @@ class Point final {
    * the x- and y-coordinates of the supplied points.
    * @since 4.0.0
    */
-  [[nodiscard]] friend constexpr Point<T> operator+
+  friend constexpr Point<T> operator+
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
@@ -288,7 +288,7 @@ class Point final {
    * subtracting the x- and y-coordinates of the supplied points.
    * @since 4.0.0
    */
-  [[nodiscard]] friend constexpr Point<T> operator-
+  friend constexpr Point<T> operator-
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
@@ -299,7 +299,7 @@ class Point final {
    * @return true if the points are equal; false otherwise.
    * @since 4.0.0
    */
-  [[nodiscard]] friend constexpr bool operator==
+  friend constexpr bool operator==
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
   /**
@@ -310,7 +310,7 @@ class Point final {
    * @return true if the points aren't equal; false otherwise.
    * @since 4.0.0
    */
-  [[nodiscard]] friend constexpr bool operator!=
+  friend constexpr bool operator!=
       <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
 
  private:

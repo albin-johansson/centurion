@@ -606,8 +606,8 @@ class Rect final {
       <T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
 
  private:
-  Point<T> m_position = {0, 0};
-  Area<T> m_size = {0, 0};
+  Point<T> m_position;
+  Area<T> m_size;
 
   static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
                 "Rect type must be either integral or floating-point!");

@@ -23,9 +23,9 @@
  */
 
 /**
- * @brief Provides the @link centurion::BlendMode @endlink enum.
+ * @brief Provides the `BlendMode` enum.
  *
- * @file blend_mode.h
+ * @file blend_mode.hpp
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -42,9 +42,11 @@ namespace centurion {
 
 /**
  * @enum BlendMode
- * @brief Mirrors the SDL_BlendMode enum.
- * @headerfile blend_mode.h
+ * @brief Mirrors the `SDL_BlendMode` enum.
+ *
  * @since 3.0.0
+ *
+ * @headerfile blend_mode.hpp
  */
 enum class BlendMode {
   None = SDL_BLENDMODE_NONE,      /**< Represents no blending. */
@@ -56,57 +58,55 @@ enum class BlendMode {
 };
 
 /**
- * Indicates whether the two blend mode values represent the same blend mode.
+ * @brief Indicates whether or not two blend mode values are the same;
  *
- * @param a the lhs Centurion blend mode.
- * @param b the rhs SDL blend mode.
- * @return true if the values represent the same blend mode; false otherwise.
+ * @param lhs the left-hand side blend mode value.
+ * @param rhs the right-hand side blend mode value.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
  * @since 3.0.0
  */
-[[nodiscard]] CENTURION_API bool operator==(BlendMode a,
-                                            SDL_BlendMode b) noexcept;
+[[nodiscard]] inline auto operator==(BlendMode lhs, SDL_BlendMode rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_BlendMode>(lhs) == rhs;
+}
 
 /**
- * Indicates whether the two blend mode values represent the same blend mode.
- *
- * @param a the lhs SDL blend mode.
- * @param b the rhs Centurion blend mode.
- * @return true if the values represent the same blend mode; false otherwise.
- * @since 3.0.0
+ * @copydoc operator==(BlendMode, SDL_BlendMode)
  */
-[[nodiscard]] CENTURION_API bool operator==(SDL_BlendMode a,
-                                            BlendMode b) noexcept;
+[[nodiscard]] inline auto operator==(SDL_BlendMode lhs, BlendMode rhs) noexcept
+    -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * Indicates whether the two blend mode values don't represent the same blend
- * mode.
+ * @brief Indicates whether or not two blend mode values aren't the same;
  *
- * @param a the lhs Centurion blend mode.
- * @param b the rhs SDL blend mode.
- * @return true if the values don't represent the same blend mode; false
- * otherwise.
+ * @param lhs the left-hand side blend mode value.
+ * @param rhs the right-hand side blend mode value.
+ *
+ * @return `true` if the values aren't the same; `false` otherwise.
+ *
  * @since 3.0.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(BlendMode a,
-                                            SDL_BlendMode b) noexcept;
+[[nodiscard]] inline auto operator!=(BlendMode lhs, SDL_BlendMode rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * Indicates whether the two blend mode values don't represent the same blend
- * mode.
- *
- * @param a the lhs SDL blend mode.
- * @param b the rhs Centurion blend mode.
- * @return true if the values don't represent the same blend mode; false
- * otherwise.
- * @since 3.0.0
+ * @copydoc operator!=(BlendMode, SDL_BlendMode)
  */
-[[nodiscard]] CENTURION_API bool operator!=(SDL_BlendMode a,
-                                            BlendMode b) noexcept;
+[[nodiscard]] inline auto operator!=(SDL_BlendMode lhs, BlendMode rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "blend_mode.cpp"
-#endif
 
 #endif  // CENTURION_BLEND_MODE_HEADER

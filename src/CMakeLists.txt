@@ -81,7 +81,6 @@ set(SOURCE_FILES
         timer.cpp
         message_box.cpp
         color.cpp
-        blend_mode.cpp
         key_state.cpp
         mouse_state.cpp
         error.cpp

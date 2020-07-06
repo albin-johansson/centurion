@@ -79,7 +79,6 @@ set(SOURCE_FILES
         log.cpp
         timer.cpp
         message_box.cpp
-        color.cpp
         key_state.cpp
         mouse_state.cpp
         error.cpp

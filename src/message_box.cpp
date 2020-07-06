@@ -42,7 +42,7 @@ ColorScheme::ColorScheme() noexcept
 CENTURION_DEF
 void ColorScheme::set_color(ColorType type, const Color& color) noexcept
 {
-  m_scheme.colors[index(type)] = color;
+  m_scheme.colors[index(type)] = static_cast<SDL_MessageBoxColor>(color);
 }
 
 CENTURION_DEF

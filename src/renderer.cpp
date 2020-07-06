@@ -749,7 +749,8 @@ UniquePtr<Texture> Renderer::text_blended(CZString text,
                                           const Font& font) const noexcept
 {
   return render_text(text, [this, &font](CZString text) noexcept {
-    return TTF_RenderText_Blended(font.get(), text, color());
+    return TTF_RenderText_Blended(
+        font.get(), text, static_cast<SDL_Color>(color()));
   });
 }
 
@@ -760,7 +761,8 @@ UniquePtr<Texture> Renderer::text_blended_wrapped(
     const Font& font) const noexcept
 {
   return render_text(text, [this, &font, wrap](CZString text) noexcept {
-    return TTF_RenderText_Blended_Wrapped(font.get(), text, color(), wrap);
+    return TTF_RenderText_Blended_Wrapped(
+        font.get(), text, static_cast<SDL_Color>(color()), wrap);
   });
 }
 
@@ -770,7 +772,10 @@ UniquePtr<Texture> Renderer::text_shaded(CZString text,
                                          const Font& font) const noexcept
 {
   return render_text(text, [this, &font, &bg](CZString text) noexcept {
-    return TTF_RenderText_Shaded(font.get(), text, color(), bg);
+    return TTF_RenderText_Shaded(font.get(),
+                                 text,
+                                 static_cast<SDL_Color>(color()),
+                                 static_cast<SDL_Color>(bg));
   });
 }
 
@@ -779,7 +784,8 @@ UniquePtr<Texture> Renderer::text_solid(CZString text,
                                         const Font& font) const noexcept
 {
   return render_text(text, [this, &font](CZString text) noexcept {
-    return TTF_RenderText_Solid(font.get(), text, color());
+    return TTF_RenderText_Solid(
+        font.get(), text, static_cast<SDL_Color>(color()));
   });
 }
 

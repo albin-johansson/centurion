@@ -282,8 +282,8 @@ inline auto Color::to_string() const -> std::string
                                                const Color& rhs) noexcept
     -> bool
 {
-  return lhs.red() == rhs.red() && lhs.green() == rhs.green() &&
-         lhs.blue() == rhs.blue() && lhs.alpha() == rhs.alpha();
+  return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
+         (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
 }
 
 /**

@@ -23,9 +23,11 @@
  */
 
 /**
+ * @file centurion_cfg.hpp
  * @brief Used for configuring the behaviour of the library.
+ *
  * @note You don't need to explicitly include this file!
- * @file centurion_cfg.h
+ *
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
@@ -41,11 +43,14 @@
 /**
  * @def CENTURION_HEADER_ONLY
  * @brief Indicates whether or not the header-only mode should be used.
+ *
  * @details If defined, the library will be usable without compiling it as a
  * shared library.
+ *
  * @note You have to include the source files of the library when using the
  * library in the "header-only" mode.
- * @headerfile centurion_cfg.h
+ *
+ * @headerfile centurion_cfg.hpp
  */
 #define CENTURION_HEADER_ONLY
 #endif  // CENTURION___DOXYGEN

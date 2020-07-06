@@ -27,7 +27,8 @@
  *
  * @details Provides utilities related to managing hints ("configuration
  * variables" on the SDL2 wiki). Refer to the official SDL2 wiki or the
- * <code>SDL_hints.hpp</code> header for details regarding any specific hint type.
+ * <code>SDL_hints.hpp</code> header for details regarding any specific hint
+ * type.
  *
  * @todo `WindowsIntResourceIcon`, `WindowsIntResourceIconSmall`,
  * `X11WindowVisualID` are string hints because the types of their values
@@ -1080,7 +1081,7 @@ enum class Prio {
 template <typename Hint,
           Prio priority = Prio::Normal,
           typename Value,
-          typename = detail::enable_if_t<Hint::template valid_arg<Value>()>>
+          typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
 bool set_hint(const Value& value) noexcept
 {
   return static_cast<bool>(

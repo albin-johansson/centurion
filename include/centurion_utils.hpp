@@ -50,18 +50,86 @@
 namespace centurion {
 
 /**
- * @brief The main namespace used for implementation details of the library.
- * @warning Do not use anything that resides in this namespace, the contents
- * may change at any time without warning.
- * @namespace centurion::detail
+ * @brief A type alias for gsl::owner. This is used to denote ownership of raw
+ * pointers.
+ *
+ * @since 4.0.0
  */
-namespace detail {
+template <typename T>
+using Owner = gsl::owner<T>;
 
 /**
- * Returns the corresponding SDL_bool value for the supplied boolean value.
+ * @brief A type alias for tl::optional.
+ *
+ * @since 4.0.0
+ */
+template <typename T>
+using Optional = tl::optional<T>;
+
+/**
+ * @brief A type alias for unique pointers.
+ *
+ * @since 4.0.0
+ */
+template <typename T, typename Deleter = std::default_delete<T>>
+using UniquePtr = std::unique_ptr<T, Deleter>;
+
+/**
+ * @brief A type alias for shared pointers.
+ *
+ * @since 4.0.0
+ */
+template <typename T>
+using SharedPtr = std::shared_ptr<T>;
+
+/**
+ * @brief A type alias for weak pointers.
+ *
+ * @since 4.0.0
+ */
+template <typename T>
+using WeakPtr = std::weak_ptr<T>;
+
+/**
+ * @brief A type alias for a const null-terminated C-style string.
+ *
+ * @since 4.0.0
+ */
+using CZString = gsl::czstring;
+
+/**
+ * @brief A type alias for a null-terminated C-style string.
+ *
+ * @since 4.0.0
+ */
+using ZString = gsl::zstring;
+
+/**
+ * @brief A constant that represents an empty Optional.
+ *
+ * @since 4.0.0
+ */
+constexpr tl::nullopt_t nothing = tl::nullopt;
+
+}  // namespace centurion
+
+/**
+ * @namespace centurion::detail
+ * @brief The main namespace used for implementation details of the library.
+ *
+ * @warning Do not use anything that resides in this namespace, the contents
+ * may change at any time without warning.
+ */
+namespace centurion::detail {
+
+/**
+ * @brief Returns the corresponding `SDL_bool` value for the supplied boolean
+ * value.
  *
  * @param b the boolean value that will be converted.
- * @return the corresponding SDL_bool value for the supplied boolean value.
+ *
+ * @return `SDL_TRUE` for `true`; `SDL_FALSE` for `false`.
+ *
  * @since 3.0.0
  */
 [[nodiscard]] constexpr SDL_bool convert_bool(bool b) noexcept
@@ -70,13 +138,17 @@ namespace detail {
 }
 
 /**
- * Returns a string that represents the memory address of the supplied
- * pointer. The empty string is returned if the supplied pointer is null.
+ * @brief Returns a string that represents the memory address of the supplied
+ * pointer.
+ *
+ * @details The empty string is returned if the supplied pointer is null.
  *
  * @tparam T the type of the pointer.
  * @param ptr the pointer that will be converted.
+ *
  * @return a string that represents the memory address of the supplied
  * pointer.
+ *
  * @since 3.0.0
  */
 template <typename T>
@@ -92,14 +164,17 @@ template <typename T>
 }
 
 /**
- * Returns the closest legal value that is inside the specified inclusive
+ * @brief Returns the closest legal value that is inside the specified inclusive
  * range based on the supplied value.
  *
  * @tparam T the type of the range.
+ *
  * @param range the inclusive range, the format is (min, max).
  * @param value the value that will be checked.
+ *
  * @return the closest legal value that is inside the specified inclusive
  * range.
+ *
  * @since 4.0.0
  */
 template <typename T>
@@ -118,111 +193,39 @@ template <typename T>
 }
 
 /**
- * Used to enable a template if a condition is true.
- *
- * @since 4.0.0
- */
-template <bool condition>
-using enable_if_t = typename std::enable_if<condition>::type;
-
-/**
- * Used to enable a template if a type is a floating-point type, such as
+ * @brief Used to enable a template if a type is a floating-point type, such as
  * float and double.
  *
  * @since 4.0.0
  */
 template <typename T>
-using type_if_floating = enable_if_t<std::is_floating_point<T>::value>;
+using type_if_floating = std::enable_if_t<std::is_floating_point_v<T>>;
 
 /**
- * Used to enable a template if a type is an integral type, such as
+ * @brief Used to enable a template if a type is an integral type, such as
  * int and long, etc.
  *
  * @since 4.0.0
  */
 template <typename T>
-using type_if_integral = enable_if_t<std::is_integral<T>::value>;
+using type_if_integral = std::enable_if_t<std::is_integral_v<T>>;
 
 /**
- * Used to enable a template if two types are the same.
+ * @brief Used to enable a template if two types are the same.
  *
  * @since 4.0.0
  */
 template <typename T, typename U>
-using type_if_same = typename std::enable_if<std::is_same<T, U>::value>::type;
-
-}  // namespace detail
+using type_if_same = typename std::enable_if_t<std::is_same_v<T, U>>;
 
 /**
- * A type alias for gsl::owner. This is used to denote ownership of raw
- * pointers.
- *
- * @since 4.0.0
- */
-template <typename T>
-using Owner = gsl::owner<T>;
-
-/**
- * A type alias for tl::optional.
- *
- * @since 4.0.0
- */
-template <typename T>
-using Optional = tl::optional<T>;
-
-/**
- * A type alias for unique pointers.
- *
- * @since 4.0.0
- */
-template <typename T, typename Deleter = std::default_delete<T>>
-using UniquePtr = std::unique_ptr<T, Deleter>;
-
-/**
- * A type alias for shared pointers.
- *
- * @since 4.0.0
- */
-template <typename T>
-using SharedPtr = std::shared_ptr<T>;
-
-/**
- * A type alias for weak pointers.
- *
- * @since 4.0.0
- */
-template <typename T>
-using WeakPtr = std::weak_ptr<T>;
-
-/**
- * A type alias for a const null-terminated C-style string.
- *
- * @since 4.0.0
- */
-using CZString = gsl::czstring;
-
-/**
- * A type alias for a null-terminated C-style string.
- *
- * @since 4.0.0
- */
-using ZString = gsl::zstring;
-
-/**
- * A constant that represents an empty Optional.
- *
- * @since 4.0.0
- */
-constexpr tl::nullopt_t nothing = tl::nullopt;
-
-namespace detail {
-
-/**
- * Indicates whether or not two C-style strings are equal.
+ * @brief Indicates whether or not two C-style strings are equal.
  *
  * @param lhs the left-hand side string, can safely be null.
  * @param rhs the right-hand side string, can safely be null.
- * @return true if the strings are equal; false otherwise.
+ *
+ * @return `true` if the strings are equal; `false` otherwise.
+ *
  * @since 4.1.0
  */
 [[nodiscard]] inline bool equal(CZString lhs, CZString rhs) noexcept
@@ -234,7 +237,6 @@ namespace detail {
   }
 }
 
-}  // namespace detail
-}  // namespace centurion
+}  // namespace centurion::detail
 
 #endif  // CENTURION_CENTURION_UTILS_HEADER

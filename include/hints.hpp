@@ -69,7 +69,7 @@ class CRTPHint {
   template <typename T>
   [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Arg>::value;
+    return std::is_same_v<T, Arg>;
   }
 
   [[nodiscard]] static constexpr CZString name() noexcept
@@ -95,7 +95,7 @@ class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
   template <typename T>
   [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, bool>::value;
+    return std::is_same_v<T, bool>;
   }
 
   [[nodiscard]] static Optional<bool> current_value() noexcept
@@ -116,7 +116,7 @@ class StringHint : public CRTPHint<StringHint<Hint>, CZString> {
   template <typename T>
   [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
-    return std::is_convertible<T, CZString>::value;
+    return std::is_convertible_v<T, CZString>;
   }
 
   [[nodiscard]] static Optional<CZString> current_value() noexcept
@@ -139,7 +139,7 @@ class IntHint : public CRTPHint<IntHint<Hint>, int> {
   template <typename T>
   [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, int>::value;
+    return std::is_same_v<T, int>;
   }
 
   [[nodiscard]] static Optional<int> current_value() noexcept
@@ -160,7 +160,7 @@ class UnsignedIntHint : public CRTPHint<IntHint<Hint>, unsigned int> {
   template <typename T>
   [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, unsigned int>::value;
+    return std::is_same_v<T, unsigned int>;
   }
 
   [[nodiscard]] static Optional<unsigned int> current_value() noexcept
@@ -181,7 +181,7 @@ class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
   template <typename T>
   [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, float>::value;
+    return std::is_same_v<T, float>;
   }
 
   [[nodiscard]] static Optional<float> current_value() noexcept
@@ -217,7 +217,7 @@ class RenderDriver final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept { return SDL_HINT_RENDER_DRIVER; }
@@ -273,7 +273,7 @@ class AudioResamplingMode final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept
@@ -323,7 +323,7 @@ class ScaleQuality final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept
@@ -378,7 +378,7 @@ class FramebufferAcceleration final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept
@@ -444,7 +444,7 @@ class AudioCategory final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept { return SDL_HINT_AUDIO_CATEGORY; }
@@ -484,7 +484,7 @@ class WinD3DCompiler final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept
@@ -531,7 +531,7 @@ class WAVERIFFChunkSize final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept
@@ -582,7 +582,7 @@ class WAVETruncation final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept { return SDL_HINT_WAVE_TRUNCATION; }
@@ -630,7 +630,7 @@ class WAVEFactChunk final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept { return SDL_HINT_WAVE_FACT_CHUNK; }
@@ -678,7 +678,7 @@ class LogicalSizeMode final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept
@@ -727,7 +727,7 @@ class QtWaylandContentOrientation final {
   template <typename T>
   static constexpr bool valid_arg() noexcept
   {
-    return std::is_same<T, Value>::value;
+    return std::is_same_v<T, Value>;
   }
 
   static constexpr CZString name() noexcept

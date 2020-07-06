@@ -155,12 +155,12 @@ class CommonEvent {
 template <typename T, typename E>
 [[nodiscard]] inline constexpr bool validate_event() noexcept
 {
-  return std::has_virtual_destructor<T>::value &&
-         std::is_nothrow_copy_constructible<T>::value &&
-         std::is_nothrow_copy_assignable<T>::value &&
-         std::is_nothrow_move_constructible<T>::value &&
-         std::is_nothrow_move_assignable<T>::value &&
-         std::is_nothrow_constructible<T, E>::value && !std::is_final<T>::value;
+  return std::has_virtual_destructor_v<T> &&
+         std::is_nothrow_copy_constructible_v<T> &&
+         std::is_nothrow_copy_assignable_v<T> &&
+         std::is_nothrow_move_constructible_v<T> &&
+         std::is_nothrow_move_assignable_v<T> &&
+         std::is_nothrow_constructible_v<T, E> && !std::is_final_v<T>;
 }
 
 }  // namespace event

@@ -182,8 +182,7 @@ class MouseButtonEvent : public CommonEvent<SDL_MouseButtonEvent> {
   [[nodiscard]] CENTURION_API Sint32 y() const noexcept;
 };
 
-static_assert(validate_event<MouseButtonEvent, SDL_MouseButtonEvent>(),
-              "MouseButtonEvent failed the event type specification!");
+static_assert(validate_event<MouseButtonEvent, SDL_MouseButtonEvent>());
 
 }  // namespace event
 }  // namespace centurion

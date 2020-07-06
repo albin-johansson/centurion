@@ -114,20 +114,11 @@ class TextureLoader final {
   SharedPtr<Renderer> m_renderer;
 };
 
-static_assert(std::is_final<TextureLoader>::value,
-              "ImageGenerator isn't final!");
-
-static_assert(std::is_nothrow_copy_assignable<TextureLoader>::value,
-              "ImageGenerator isn't nothrow copy assignable!");
-
-static_assert(std::is_nothrow_copy_constructible<TextureLoader>::value,
-              "ImageGenerator isn't nothrow copy constructible!");
-
-static_assert(std::is_nothrow_move_assignable<TextureLoader>::value,
-              "ImageGenerator isn't nothrow move assignable!");
-
-static_assert(std::is_nothrow_move_constructible<TextureLoader>::value,
-              "ImageGenerator isn't nothrow move constructible!");
+static_assert(std::is_final_v<TextureLoader>);
+static_assert(std::is_nothrow_copy_assignable_v<TextureLoader>);
+static_assert(std::is_nothrow_copy_constructible_v<TextureLoader>);
+static_assert(std::is_nothrow_move_assignable_v<TextureLoader>);
+static_assert(std::is_nothrow_move_constructible_v<TextureLoader>);
 
 }  // namespace centurion
 

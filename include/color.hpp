@@ -400,22 +400,12 @@ inline auto Color::to_string() const -> std::string
   return !(lhs == rhs);
 }
 
-static_assert(std::is_final<Color>::value, "Color isn't final!");
-
-static_assert(std::is_default_constructible<Color>::value,
-              "Color isn't default constructible!");
-
-static_assert(std::is_nothrow_copy_constructible<Color>::value,
-              "Color isn't copy constructible!");
-
-static_assert(std::is_nothrow_copy_assignable<Color>::value,
-              "Color isn't nothrow copy assignable!");
-
-static_assert(std::is_nothrow_move_constructible<Color>::value,
-              "Color isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_move_assignable<Color>::value,
-              "Color isn't nothrow move assignable!");
+static_assert(std::is_final_v<Color>);
+static_assert(std::is_default_constructible_v<Color>);
+static_assert(std::is_nothrow_copy_constructible_v<Color>);
+static_assert(std::is_nothrow_copy_assignable_v<Color>);
+static_assert(std::is_nothrow_move_constructible_v<Color>);
+static_assert(std::is_nothrow_move_assignable_v<Color>);
 
 }  // namespace centurion
 

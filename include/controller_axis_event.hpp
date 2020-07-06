@@ -121,8 +121,7 @@ class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
   [[nodiscard]] CENTURION_API Sint16 value() const noexcept;
 };
 
-static_assert(validate_event<ControllerAxisEvent, SDL_ControllerAxisEvent>(),
-              "ControllerAxisEvent failed event type specification!");
+static_assert(validate_event<ControllerAxisEvent, SDL_ControllerAxisEvent>());
 
 }  // namespace event
 }  // namespace centurion

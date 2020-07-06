@@ -76,8 +76,7 @@ class SysWMEvent : public CommonEvent<SDL_SysWMEvent> {
   [[nodiscard]] CENTURION_API SDL_SysWMmsg* message() const noexcept;
 };
 
-static_assert(validate_event<SysWMEvent, SDL_SysWMEvent>(),
-              "SysWMEvent failed the event type specification!");
+static_assert(validate_event<SysWMEvent, SDL_SysWMEvent>());
 
 }  // namespace event
 }  // namespace centurion

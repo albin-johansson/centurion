@@ -66,8 +66,7 @@ class QuitEvent : public CommonEvent<SDL_QuitEvent> {
   CENTURION_API explicit QuitEvent(SDL_QuitEvent&& event) noexcept;
 };
 
-static_assert(validate_event<QuitEvent, SDL_QuitEvent>(),
-              "QuitEvent failed event type specification!");
+static_assert(validate_event<QuitEvent, SDL_QuitEvent>());
 
 }  // namespace event
 }  // namespace centurion

@@ -361,22 +361,12 @@ class Music final {
   void move(Music&& other) noexcept;
 };
 
-static_assert(std::is_final<Music>::value, "Music isn't final!");
-
-static_assert(!std::is_nothrow_copy_constructible<Music>::value,
-              "Music is copyable!");
-
-static_assert(!std::is_nothrow_copy_assignable<Music>::value,
-              "Music is copy assignable!");
-
-static_assert(std::is_nothrow_move_constructible<Music>::value,
-              "Music isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_move_assignable<Music>::value,
-              "Music isn't nothrow move assignable!");
-
-static_assert(std::is_convertible<Music, Mix_Music*>::value,
-              "Music isn't convertible to Mix_Music*!");
+static_assert(std::is_final_v<Music>);
+static_assert(!std::is_nothrow_copy_constructible_v<Music>);
+static_assert(!std::is_nothrow_copy_assignable_v<Music>);
+static_assert(std::is_nothrow_move_constructible_v<Music>);
+static_assert(std::is_nothrow_move_assignable_v<Music>);
+static_assert(std::is_convertible_v<Music, Mix_Music*>);
 
 }  // namespace centurion
 

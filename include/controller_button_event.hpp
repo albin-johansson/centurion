@@ -122,8 +122,7 @@ class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
 };
 
 static_assert(
-    validate_event<ControllerButtonEvent, SDL_ControllerButtonEvent>(),
-    "ControllerButtonEvent failed event type specification!");
+    validate_event<ControllerButtonEvent, SDL_ControllerButtonEvent>());
 
 }  // namespace event
 }  // namespace centurion

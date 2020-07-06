@@ -1227,22 +1227,12 @@ class Renderer final {
   }
 };
 
-static_assert(std::is_final<Renderer>::value, "Renderer isn't final!");
-
-static_assert(std::is_nothrow_move_constructible<Renderer>::value,
-              "Renderer isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_move_assignable<Renderer>::value,
-              "Renderer isn't nothrow move assignable!");
-
-static_assert(!std::is_nothrow_copy_constructible<Renderer>::value,
-              "Renderer is copyable!");
-
-static_assert(!std::is_nothrow_copy_assignable<Renderer>::value,
-              "Renderer is copy assignable!");
-
-static_assert(std::is_convertible<Renderer, SDL_Renderer*>::value,
-              "Renderer isn't convertible to SDL_Renderer*!");
+static_assert(std::is_final_v<Renderer>);
+static_assert(std::is_nothrow_move_constructible_v<Renderer>);
+static_assert(std::is_nothrow_move_assignable_v<Renderer>);
+static_assert(!std::is_nothrow_copy_constructible_v<Renderer>);
+static_assert(!std::is_nothrow_copy_assignable_v<Renderer>);
+static_assert(std::is_convertible_v<Renderer, SDL_Renderer*>);
 
 }  // namespace centurion
 

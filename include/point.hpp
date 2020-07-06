@@ -317,9 +317,9 @@ class Point final {
   T m_x = 0;
   T m_y = 0;
 
-  static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>,
                 "Point type must be either integral or floating-point!");
-  static_assert(std::is_trivial<T>::value, "Point type must be trivial!");
+  static_assert(std::is_trivial_v<T>, "Point type must be trivial!");
 };
 
 template <typename T>
@@ -350,26 +350,13 @@ inline constexpr bool operator!=(const Point<T>& lhs,
   return !(lhs == rhs);
 }
 
-static_assert(std::is_nothrow_default_constructible<Point<float>>::value,
-              "Point isn't nothrow default constructible!");
-
-static_assert(std::is_nothrow_copy_constructible<Point<float>>::value,
-              "Point isn't nothrow copy constructible!");
-
-static_assert(std::is_nothrow_move_constructible<Point<float>>::value,
-              "Point isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_copy_assignable<Point<float>>::value,
-              "Point isn't nothrow copy assignable!");
-
-static_assert(std::is_nothrow_move_assignable<Point<float>>::value,
-              "Point isn't nothrow move assignable!");
-
-static_assert(sizeof(Point<int>) == sizeof(SDL_Point),
-              "Point<int> has invalid size!");
-
-static_assert(sizeof(Point<float>) == sizeof(SDL_FPoint),
-              "Point<float> has invalid size!");
+static_assert(std::is_nothrow_default_constructible_v<Point<float>>);
+static_assert(std::is_nothrow_copy_constructible_v<Point<float>>);
+static_assert(std::is_nothrow_move_constructible_v<Point<float>>);
+static_assert(std::is_nothrow_copy_assignable_v<Point<float>>);
+static_assert(std::is_nothrow_move_assignable_v<Point<float>>);
+static_assert(sizeof(Point<int>) == sizeof(SDL_Point));
+static_assert(sizeof(Point<float>) == sizeof(SDL_FPoint));
 
 /**
  * An alias for Point&lt;int&gt;.

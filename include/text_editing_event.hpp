@@ -130,8 +130,7 @@ class TextEditingEvent : public CommonEvent<SDL_TextEditingEvent> {
   void check_length() noexcept;
 };
 
-static_assert(validate_event<TextEditingEvent, SDL_TextEditingEvent>(),
-              "TextEditingEvent failed the event type specification!");
+static_assert(validate_event<TextEditingEvent, SDL_TextEditingEvent>());
 
 }  // namespace event
 }  // namespace centurion

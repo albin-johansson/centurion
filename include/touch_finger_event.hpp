@@ -217,8 +217,7 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
   [[nodiscard]] CENTURION_API float pressure() const noexcept;
 };
 
-static_assert(validate_event<TouchFingerEvent, SDL_TouchFingerEvent>(),
-              "TouchFingerEvent failed event type specification!");
+static_assert(validate_event<TouchFingerEvent, SDL_TouchFingerEvent>());
 
 }  // namespace event
 }  // namespace centurion

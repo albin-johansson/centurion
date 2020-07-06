@@ -64,10 +64,8 @@ struct Area {
   T width = 0;
   T height = 0;
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>,
-                "Area type must be either integral or floating-point!");
-
-  static_assert(!std::is_same_v<T, bool>, "Area type can't be bool!");
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(!std::is_same_v<T, bool>);
 };
 
 /**

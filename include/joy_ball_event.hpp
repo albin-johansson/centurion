@@ -135,8 +135,7 @@ class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
   [[nodiscard]] CENTURION_API Sint16 dy() const noexcept;
 };
 
-static_assert(validate_event<JoyBallEvent, SDL_JoyBallEvent>(),
-              "JoyBallEvent failed event type specification!");
+static_assert(validate_event<JoyBallEvent, SDL_JoyBallEvent>());
 
 }  // namespace event
 }  // namespace centurion

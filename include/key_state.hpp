@@ -144,25 +144,13 @@ class KeyState final {
   int m_nKeys = 0;
 };
 
-static_assert(std::is_final<KeyState>::value, "KeyState isn't final!");
-
-static_assert(std::is_default_constructible<KeyState>::value,
-              "KeyState isn't default constructible!");
-
-static_assert(std::is_nothrow_destructible<KeyState>::value,
-              "KeyState isn't nothrow destructible!");
-
-static_assert(std::is_nothrow_move_constructible<KeyState>::value,
-              "KeyState isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_move_assignable<KeyState>::value,
-              "KeyState isn't nothrow move assignable!");
-
-static_assert(std::is_nothrow_copy_constructible<KeyState>::value,
-              "KeyState isn't nothrow copy constructible!");
-
-static_assert(std::is_nothrow_copy_assignable<KeyState>::value,
-              "KeyState isn't nothrow copy assignable!");
+static_assert(std::is_final_v<KeyState>);
+static_assert(std::is_default_constructible_v<KeyState>);
+static_assert(std::is_nothrow_destructible_v<KeyState>);
+static_assert(std::is_nothrow_move_constructible_v<KeyState>);
+static_assert(std::is_nothrow_move_assignable_v<KeyState>);
+static_assert(std::is_nothrow_copy_constructible_v<KeyState>);
+static_assert(std::is_nothrow_copy_assignable_v<KeyState>);
 
 }  // namespace input
 }  // namespace centurion

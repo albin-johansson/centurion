@@ -275,8 +275,7 @@ class WindowEvent : public CommonEvent<SDL_WindowEvent> {
   [[nodiscard]] CENTURION_API Sint32 data_2() const noexcept;
 };
 
-static_assert(validate_event<WindowEvent, SDL_WindowEvent>(),
-              "WindowEvent failed the event type specification!");
+static_assert(validate_event<WindowEvent, SDL_WindowEvent>());
 
 }  // namespace event
 }  // namespace centurion

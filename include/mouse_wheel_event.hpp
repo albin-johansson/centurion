@@ -220,8 +220,7 @@ class MouseWheelEvent : public CommonEvent<SDL_MouseWheelEvent> {
   [[nodiscard]] CENTURION_API MouseWheelDirection direction() const noexcept;
 };
 
-static_assert(validate_event<MouseWheelEvent, SDL_MouseWheelEvent>(),
-              "MouseWheelEvent failed the event type specification!");
+static_assert(validate_event<MouseWheelEvent, SDL_MouseWheelEvent>());
 
 }  // namespace event
 }  // namespace centurion

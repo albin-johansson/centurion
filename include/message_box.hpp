@@ -440,13 +440,9 @@ struct MessageBoxConfig {
   MessageBox::ButtonOrder buttonOrder = MessageBox::ButtonOrder::LeftToRight;
 };
 
-static_assert(std::is_final<ColorScheme>::value, "ColorScheme isn't final!");
-
-static_assert(std::is_nothrow_default_constructible<ColorScheme>::value,
-              "ColorScheme isn't nothrow default constructible!");
-
-static_assert(std::is_nothrow_destructible<ColorScheme>::value,
-              "ColorScheme isn't nothrow destructible!");
+static_assert(std::is_final_v<ColorScheme>);
+static_assert(std::is_nothrow_default_constructible_v<ColorScheme>);
+static_assert(std::is_nothrow_destructible_v<ColorScheme>);
 
 }  // namespace messagebox
 }  // namespace centurion

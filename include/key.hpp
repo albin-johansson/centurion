@@ -156,13 +156,11 @@ class Key final {
   SDL_Keycode m_keycode;
 };
 
-static_assert(std::is_final<Key>::value, "Key isn't final!");
-
-static_assert(std::is_copy_constructible<Key>::value, "Key isn't copyable!");
-static_assert(std::is_copy_assignable<Key>::value, "Key isn't copyable!");
-
-static_assert(std::is_move_constructible<Key>::value, "Key isn't movable!");
-static_assert(std::is_move_assignable<Key>::value, "Key isn't movable!");
+static_assert(std::is_final_v<Key>);
+static_assert(std::is_copy_constructible_v<Key>);
+static_assert(std::is_copy_assignable_v<Key>);
+static_assert(std::is_move_constructible_v<Key>);
+static_assert(std::is_move_assignable_v<Key>);
 
 /**
  * Indicates whether or not two keys represent the same keyboard key.

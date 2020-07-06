@@ -116,8 +116,7 @@ class JoyHatEvent : public CommonEvent<SDL_JoyHatEvent> {
   [[nodiscard]] CENTURION_API JoyHatPosition position() const noexcept;
 };
 
-static_assert(validate_event<JoyHatEvent, SDL_JoyHatEvent>(),
-              "JoyHatEvent failed event type specification!");
+static_assert(validate_event<JoyHatEvent, SDL_JoyHatEvent>());
 
 }  // namespace event
 }  // namespace centurion

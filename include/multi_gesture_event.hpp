@@ -178,8 +178,7 @@ class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
   [[nodiscard]] CENTURION_API float fingers() const noexcept;
 };
 
-static_assert(validate_event<MultiGestureEvent, SDL_MultiGestureEvent>(),
-              "MultiGestureEvent failed the event type specification!");
+static_assert(validate_event<MultiGestureEvent, SDL_MultiGestureEvent>());
 
 }  // namespace event
 }  // namespace centurion

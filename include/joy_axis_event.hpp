@@ -115,8 +115,7 @@ class JoyAxisEvent : public CommonEvent<SDL_JoyAxisEvent> {
   [[nodiscard]] CENTURION_API Sint16 value() const noexcept;
 };
 
-static_assert(validate_event<JoyAxisEvent, SDL_JoyAxisEvent>(),
-              "JoyAxisEvent failed event type specification!");
+static_assert(validate_event<JoyAxisEvent, SDL_JoyAxisEvent>());
 
 }  // namespace event
 }  // namespace centurion

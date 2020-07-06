@@ -348,17 +348,10 @@ class Surface final {
   [[nodiscard]] SDL_Surface* copy_surface() const;
 };
 
-static_assert(!std::is_nothrow_copy_constructible<Surface>::value,
-              "Surface isn't nothrow copy constructible!");
-
-static_assert(!std::is_nothrow_copy_assignable<Surface>::value,
-              "Surface isn't nothrow copy assignable!");
-
-static_assert(std::is_nothrow_move_constructible<Surface>::value,
-              "Surface isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_move_assignable<Surface>::value,
-              "Surface isn't nothrow move assignable!");
+static_assert(!std::is_nothrow_copy_constructible_v<Surface>);
+static_assert(!std::is_nothrow_copy_assignable_v<Surface>);
+static_assert(std::is_nothrow_move_constructible_v<Surface>);
+static_assert(std::is_nothrow_move_assignable_v<Surface>);
 
 }  // namespace centurion
 

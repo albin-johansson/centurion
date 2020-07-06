@@ -147,8 +147,7 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
   bool m_willFreeFile = false;
 };
 
-static_assert(validate_event<DropEvent, SDL_DropEvent>(),
-              "DropEvent failed the event type specification!");
+static_assert(validate_event<DropEvent, SDL_DropEvent>());
 
 }  // namespace event
 }  // namespace centurion

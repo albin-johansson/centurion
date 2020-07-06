@@ -495,22 +495,12 @@ class Font final {
   void remove_style(int mask) noexcept;
 };
 
-static_assert(std::is_final<Font>::value, "Font isn't final!");
-
-static_assert(std::is_nothrow_move_constructible<Font>::value,
-              "Font isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_move_assignable<Font>::value,
-              "Font isn't nothrow move assignable!");
-
-static_assert(!std::is_copy_constructible<Font>::value,
-              "Font is copy constructible!");
-
-static_assert(!std::is_copy_assignable<Font>::value,
-              "Font is copy assignable!");
-
-static_assert(std::is_convertible<Font, TTF_Font*>::value,
-              "Font isn't convertible to TTF_Font*!");
+static_assert(std::is_final_v<Font>);
+static_assert(std::is_nothrow_move_constructible_v<Font>);
+static_assert(std::is_nothrow_move_assignable_v<Font>);
+static_assert(!std::is_copy_constructible_v<Font>);
+static_assert(!std::is_copy_assignable_v<Font>);
+static_assert(std::is_convertible_v<Font, TTF_Font*>);
 
 }  // namespace centurion
 

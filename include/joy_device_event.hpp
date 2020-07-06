@@ -84,8 +84,7 @@ class JoyDeviceEvent : public CommonEvent<SDL_JoyDeviceEvent> {
   [[nodiscard]] CENTURION_API Sint32 which() const noexcept;
 };
 
-static_assert(validate_event<JoyDeviceEvent, SDL_JoyDeviceEvent>(),
-              "JoyDeviceEvent failed event type specification!");
+static_assert(validate_event<JoyDeviceEvent, SDL_JoyDeviceEvent>());
 
 }  // namespace event
 }  // namespace centurion

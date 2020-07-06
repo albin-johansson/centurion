@@ -112,8 +112,7 @@ class AudioDeviceEvent : public CommonEvent<SDL_AudioDeviceEvent> {
   [[nodiscard]] CENTURION_API bool capture() const noexcept;
 };
 
-static_assert(validate_event<AudioDeviceEvent, SDL_AudioDeviceEvent>(),
-              "AudioDeviceEvent failed event type specification!");
+static_assert(validate_event<AudioDeviceEvent, SDL_AudioDeviceEvent>());
 
 }  // namespace event
 }  // namespace centurion

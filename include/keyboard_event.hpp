@@ -209,8 +209,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
   [[nodiscard]] CENTURION_API Uint32 window_id() const noexcept;
 };
 
-static_assert(validate_event<KeyboardEvent, SDL_KeyboardEvent>(),
-              "KeyboardEvent failed the event type specification!");
+static_assert(validate_event<KeyboardEvent, SDL_KeyboardEvent>());
 
 }  // namespace event
 }  // namespace centurion

@@ -705,32 +705,14 @@ class Window final {
   void move(Window&& other) noexcept;
 };
 
-static_assert(std::is_final<Window>::value, "Window isn't final!");
-
-static_assert(std::is_nothrow_move_assignable<Window>::value,
-              "Window isn't nothrow move assignable!");
-
-static_assert(std::is_nothrow_move_constructible<Window>::value,
-              "Window isn't nothrow move constructible!");
-
-static_assert(!std::is_copy_assignable<Window>::value,
-              "Window is copy assignable!");
-
-/* When a distinguished but elderly scientist states that something is
-   possible, he is almost certainly right. When he states that something is
-   impossible, he is very probably wrong. */
-
-static_assert(!std::is_copy_constructible<Window>::value,
-              "Window is copy constructible!");
-
-static_assert(std::is_convertible<Window, SDL_Window*>::value,
-              "Window isn't convertible to SDL_Window*!");
-
-static_assert(std::is_default_constructible<Window>::value,
-              "Window isn't default constructible!");
-
-static_assert(std::is_nothrow_destructible<Window>::value,
-              "Window isn't nothrow destructible!");
+static_assert(std::is_final_v<Window>);
+static_assert(std::is_nothrow_move_assignable_v<Window>);
+static_assert(std::is_nothrow_move_constructible_v<Window>);
+static_assert(!std::is_copy_assignable_v<Window>);
+static_assert(!std::is_copy_constructible_v<Window>);
+static_assert(std::is_convertible_v<Window, SDL_Window*>);
+static_assert(std::is_default_constructible_v<Window>);
+static_assert(std::is_nothrow_destructible_v<Window>);
 
 }  // namespace centurion
 

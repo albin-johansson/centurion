@@ -92,8 +92,7 @@ class TextInputEvent : public CommonEvent<SDL_TextInputEvent> {
   [[nodiscard]] CENTURION_API CZString text() const noexcept;
 };
 
-static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>(),
-              "TextInputEvent failed the event type specification!");
+static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>());
 
 }  // namespace event
 }  // namespace centurion

@@ -91,8 +91,7 @@ class ControllerDeviceEvent : public CommonEvent<SDL_ControllerDeviceEvent> {
 };
 
 static_assert(
-    validate_event<ControllerDeviceEvent, SDL_ControllerDeviceEvent>(),
-    "ControllerDeviceEvent failed the event type specification!");
+    validate_event<ControllerDeviceEvent, SDL_ControllerDeviceEvent>());
 
 }  // namespace event
 }  // namespace centurion

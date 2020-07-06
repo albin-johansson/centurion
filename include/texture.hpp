@@ -489,19 +489,11 @@ class Texture final {
   CENTURION_API void unlock() noexcept;
 };
 
-static_assert(std::is_final<Texture>::value, "Texture isn't final!");
-
-static_assert(std::is_nothrow_move_constructible<Texture>::value,
-              "Texture isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_move_assignable<Texture>::value,
-              "Texture isn't nothrow move assignable!");
-
-static_assert(!std::is_nothrow_copy_constructible<Texture>::value,
-              "Texture is copyable!");
-
-static_assert(!std::is_nothrow_copy_assignable<Texture>::value,
-              "Texture is assignable!");
+static_assert(std::is_final_v<Texture>);
+static_assert(std::is_nothrow_move_constructible_v<Texture>);
+static_assert(std::is_nothrow_move_assignable_v<Texture>);
+static_assert(!std::is_nothrow_copy_constructible_v<Texture>);
+static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
 
 /**
  * Indicates whether or not the two texture access values are the same.

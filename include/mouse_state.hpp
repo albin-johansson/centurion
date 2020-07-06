@@ -190,19 +190,11 @@ class MouseState final {
   bool m_prevRightPressed = false;
 };
 
-static_assert(std::is_final<MouseState>::value, "MouseState isn't final!");
-
-static_assert(std::is_nothrow_move_constructible<MouseState>::value,
-              "MouseState isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_move_assignable<MouseState>::value,
-              "MouseState isn't nothrow move assignable!");
-
-static_assert(std::is_nothrow_copy_constructible<MouseState>::value,
-              "MouseState isn't nothrow copy constructible!");
-
-static_assert(std::is_nothrow_copy_assignable<MouseState>::value,
-              "MouseState isn't nothrow copy assignable!");
+static_assert(std::is_final_v<MouseState>);
+static_assert(std::is_nothrow_move_constructible_v<MouseState>);
+static_assert(std::is_nothrow_move_assignable_v<MouseState>);
+static_assert(std::is_nothrow_copy_constructible_v<MouseState>);
+static_assert(std::is_nothrow_copy_assignable_v<MouseState>);
 
 }  // namespace input
 }  // namespace centurion

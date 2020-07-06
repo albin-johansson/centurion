@@ -97,22 +97,13 @@ class Error final {
       std::string message);
 };
 
-static_assert(std::is_final<Error>::value, "Error isn't final!");
-
-static_assert(std::is_nothrow_destructible<Error>::value,
-              "Error isn't nothrow destructible!");
-
-static_assert(!std::is_constructible<Error>::value, "Error is constructible!");
-
-static_assert(!std::is_copy_constructible<Error>::value, "Error is copyable!");
-
-static_assert(!std::is_move_constructible<Error>::value, "Error is movable!");
-
-static_assert(!std::is_copy_assignable<Error>::value,
-              "Error is copy assignable!");
-
-static_assert(!std::is_move_assignable<Error>::value,
-              "Error is move assignable!");
+static_assert(std::is_final_v<Error>);
+static_assert(std::is_nothrow_destructible_v<Error>);
+static_assert(!std::is_constructible_v<Error>);
+static_assert(!std::is_copy_constructible_v<Error>);
+static_assert(!std::is_move_constructible_v<Error>);
+static_assert(!std::is_copy_assignable_v<Error>);
+static_assert(!std::is_move_assignable_v<Error>);
 
 }  // namespace detail
 }  // namespace centurion

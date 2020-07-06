@@ -606,9 +606,8 @@ class Rect final {
   Point<T> m_position;
   Area<T> m_size;
 
-  static_assert(std::is_integral<T>::value || std::is_floating_point<T>::value,
-                "Rect type must be either integral or floating-point!");
-  static_assert(std::is_trivial<T>::value, "Rect type must be trivial!");
+  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
+  static_assert(std::is_trivial_v<T>);
 };
 
 template <typename T>
@@ -626,26 +625,13 @@ inline constexpr bool operator!=(const Rect<T>& lhs,
   return !(lhs == rhs);
 }
 
-static_assert(std::is_nothrow_default_constructible<Rect<float>>::value,
-              "Rect isn't nothrow default constructible!");
-
-static_assert(std::is_nothrow_copy_constructible<Rect<float>>::value,
-              "Rect isn't nothrow copy constructible!");
-
-static_assert(std::is_nothrow_move_constructible<Rect<float>>::value,
-              "Rect isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_copy_assignable<Rect<float>>::value,
-              "Rect isn't nothrow copy assignable!");
-
-static_assert(std::is_nothrow_move_assignable<Rect<float>>::value,
-              "Rect isn't nothrow move assignable!");
-
-static_assert(sizeof(Rect<int>) == sizeof(SDL_Rect),
-              "Rect<int> has invalid size!");
-
-static_assert(sizeof(Rect<float>) == sizeof(SDL_FRect),
-              "Rect<float> has invalid size!");
+static_assert(std::is_nothrow_default_constructible_v<Rect<float>>);
+static_assert(std::is_nothrow_copy_constructible_v<Rect<float>>);
+static_assert(std::is_nothrow_move_constructible_v<Rect<float>>);
+static_assert(std::is_nothrow_copy_assignable_v<Rect<float>>);
+static_assert(std::is_nothrow_move_assignable_v<Rect<float>>);
+static_assert(sizeof(Rect<int>) == sizeof(SDL_Rect));
+static_assert(sizeof(Rect<float>) == sizeof(SDL_FRect));
 
 using IRect = Rect<int>;
 using FRect = Rect<float>;

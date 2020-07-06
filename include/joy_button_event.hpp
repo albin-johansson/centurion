@@ -118,8 +118,7 @@ class JoyButtonEvent : public CommonEvent<SDL_JoyButtonEvent> {
   [[nodiscard]] CENTURION_API ButtonState state() const noexcept;
 };
 
-static_assert(validate_event<JoyButtonEvent, SDL_JoyButtonEvent>(),
-              "JoyButtonEvent failed event type specification!");
+static_assert(validate_event<JoyButtonEvent, SDL_JoyButtonEvent>());
 
 }  // namespace event
 }  // namespace centurion

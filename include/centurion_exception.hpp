@@ -82,17 +82,10 @@ class CenturionException final : public std::exception {
   std::string m_what;
 };
 
-static_assert(std::is_final<CenturionException>::value,
-              "CenturionException isn't final!");
-
-static_assert(std::is_default_constructible<CenturionException>::value,
-              "CenturionException isn't default constructible!");
-
-static_assert(std::is_nothrow_copy_constructible<CenturionException>::value,
-              "CenturionException isn't nothrow copy constructible!");
-
-static_assert(std::is_nothrow_destructible<CenturionException>::value,
-              "CenturionException isn't nothrow destructible!");
+static_assert(std::is_final_v<CenturionException>);
+static_assert(std::is_default_constructible_v<CenturionException>);
+static_assert(std::is_nothrow_copy_constructible_v<CenturionException>);
+static_assert(std::is_nothrow_destructible_v<CenturionException>);
 
 }  // namespace centurion
 

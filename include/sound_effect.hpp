@@ -245,22 +245,12 @@ class SoundEffect final {
   void activate(int nLoops) noexcept;
 };
 
-static_assert(std::is_final<SoundEffect>::value, "SoundEffect isn't final!");
-
-static_assert(std::is_nothrow_move_constructible<SoundEffect>::value,
-              "SoundEffect isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_move_assignable<SoundEffect>::value,
-              "SoundEffect isn't nothrow move assignable!");
-
-static_assert(!std::is_copy_constructible<SoundEffect>::value,
-              "SoundEffect is copy constructible!");
-
-static_assert(!std::is_copy_assignable<SoundEffect>::value,
-              "SoundEffect is copy assignable!");
-
-static_assert(std::is_convertible<SoundEffect, Mix_Chunk*>::value,
-              "SoundEffect isn't convertible to Mix_Chunk*!");
+static_assert(std::is_final_v<SoundEffect>);
+static_assert(std::is_nothrow_move_constructible_v<SoundEffect>);
+static_assert(std::is_nothrow_move_assignable_v<SoundEffect>);
+static_assert(!std::is_copy_constructible_v<SoundEffect>);
+static_assert(!std::is_copy_assignable_v<SoundEffect>);
+static_assert(std::is_convertible_v<SoundEffect, Mix_Chunk*>);
 
 }  // namespace centurion
 

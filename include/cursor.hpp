@@ -323,19 +323,11 @@ class Cursor final {
   void move(Cursor&& other) noexcept;
 };
 
-static_assert(std::is_final<Cursor>::value, "Cursor isn't final!");
-
-static_assert(std::is_nothrow_move_constructible<Cursor>::value,
-              "Cursor isn't nothrow move constructible!");
-
-static_assert(std::is_nothrow_move_assignable<Cursor>::value,
-              "Cursor isn't nothrow move assignable!");
-
-static_assert(!std::is_copy_constructible<Cursor>::value,
-              "Cursor is copy constructible!");
-
-static_assert(!std::is_copy_assignable<Cursor>::value,
-              "Cursor is copy assignable!");
+static_assert(std::is_final_v<Cursor>);
+static_assert(std::is_nothrow_move_constructible_v<Cursor>);
+static_assert(std::is_nothrow_move_assignable_v<Cursor>);
+static_assert(!std::is_copy_constructible_v<Cursor>);
+static_assert(!std::is_copy_assignable_v<Cursor>);
 
 }  // namespace centurion
 

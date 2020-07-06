@@ -353,19 +353,12 @@ class Log final {
   }
 };
 
-static_assert(std::is_final<Log>::value, "Log isn't final!");
-
-static_assert(!std::is_constructible<Log>::value, "Log is constructible!");
-
-static_assert(!std::is_copy_constructible<Log>::value,
-              "Log is copy constructible!");
-
-static_assert(!std::is_move_constructible<Log>::value,
-              "Log is move constructible!");
-
-static_assert(!std::is_copy_assignable<Log>::value, "Log is copy assignable!");
-
-static_assert(!std::is_move_assignable<Log>::value, "Log is move assignable!");
+static_assert(std::is_final_v<Log>);
+static_assert(!std::is_constructible_v<Log>);
+static_assert(!std::is_copy_constructible_v<Log>);
+static_assert(!std::is_move_constructible_v<Log>);
+static_assert(!std::is_copy_assignable_v<Log>);
+static_assert(!std::is_move_assignable_v<Log>);
 
 /**
  * Indicates whether or not the two log priorities represent the same priority.

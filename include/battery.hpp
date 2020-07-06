@@ -34,7 +34,7 @@
 #ifndef CENTURION_BATTERY_HEADER
 #define CENTURION_BATTERY_HEADER
 
-#include <SDL.h>
+#include <SDL_power.h>
 
 #include "centurion_api.hpp"
 #include "centurion_utils.hpp"

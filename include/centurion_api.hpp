@@ -34,7 +34,6 @@
 #ifndef CENTURION_API_HEADER
 #define CENTURION_API_HEADER
 
-#include <memory>
 #include <type_traits>
 
 #include "centurion_cfg.hpp"

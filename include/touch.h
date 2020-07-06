@@ -22,6 +22,15 @@
  * SOFTWARE.
  */
 
+/**
+ * @brief Provides the touch API.
+ * @file touch.h
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ * @since 4.3.0
+ */
+
 #ifndef CENTURION_TOUCH_HEADER
 #define CENTURION_TOUCH_HEADER
 
@@ -53,6 +62,11 @@ using GestureID = SDL_GestureID;
  */
 using FingerID = SDL_FingerID;
 
+/**
+ * @namespace touch
+ * @brief Provides the touch API components and methods.
+ * @since 4.3.0
+ */
 namespace touch {
 
 /**

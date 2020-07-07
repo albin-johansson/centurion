@@ -26,8 +26,6 @@
  * @file graphics.hpp
  * @brief Provides the graphics related API.
  *
- * @todo Rename this file to graphics.hpp
- *
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License

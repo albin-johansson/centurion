@@ -1,12 +1,9 @@
 #ifndef CENTURION_JOY_AXIS_EVENT_SOURCE
 #define CENTURION_JOY_AXIS_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion ::event {
 
 CENTURION_DEF
 JoyAxisEvent::JoyAxisEvent() noexcept : CommonEvent{}
@@ -15,11 +12,6 @@ JoyAxisEvent::JoyAxisEvent() noexcept : CommonEvent{}
 CENTURION_DEF
 JoyAxisEvent::JoyAxisEvent(const SDL_JoyAxisEvent& event) noexcept
     : CommonEvent{event}
-{}
-
-CENTURION_DEF
-JoyAxisEvent::JoyAxisEvent(SDL_JoyAxisEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF
@@ -41,24 +33,23 @@ void JoyAxisEvent::set_value(Sint16 value) noexcept
 }
 
 CENTURION_DEF
-JoystickID JoyAxisEvent::which() const noexcept
+auto JoyAxisEvent::which() const noexcept -> SDL_JoystickID
 {
   return m_event.which;
 }
 
 CENTURION_DEF
-Uint8 JoyAxisEvent::axis() const noexcept
+auto JoyAxisEvent::axis() const noexcept -> Uint8
 {
   return m_event.axis;
 }
 
 CENTURION_DEF
-Sint16 JoyAxisEvent::value() const noexcept
+auto JoyAxisEvent::value() const noexcept -> Sint16
 {
   return m_event.value;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_JOY_AXIS_EVENT_SOURCE

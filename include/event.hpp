@@ -849,16 +849,21 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
 static_assert(validate_event<DropEvent, SDL_DropEvent>());
 
 /**
- * The JoyAxisEvent class represents an event that occurs whenever a user
- * moves an axis on a joystick.
+ * @class JoyAxisEvent
  *
- * @see SDL_JoyAxisEvent
+ * @brief Represents an event that occurs whenever a user moves an axis on a
+ * joystick.
+ *
+ * @see `SDL_JoyAxisEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class JoyAxisEvent : public CommonEvent<SDL_JoyAxisEvent> {
  public:
   /**
-   * Creates a default-initialized joy axis event.
+   * @brief Creates a default-initialized joy axis event.
    *
    * @since 4.0.0
    */
@@ -866,73 +871,74 @@ class JoyAxisEvent : public CommonEvent<SDL_JoyAxisEvent> {
   JoyAxisEvent() noexcept;
 
   /**
-   * Creates a joy axis event based on the supplied SDL joy axis event.
+   * @brief Creates a joy axis event based on the supplied SDL joy axis event.
    *
    * @param event the SDL joy axis event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   JoyAxisEvent(const SDL_JoyAxisEvent& event) noexcept;
 
   /**
-   * Creates a joy axis event based on the supplied SDL joy axis event.
-   *
-   * @param event the SDL joy axis event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  JoyAxisEvent(SDL_JoyAxisEvent&& event) noexcept;
-
-  /**
-   * Sets the joystick instance ID associated with the event.
+   * @brief Sets the joystick instance ID associated with the event.
    *
    * @param which the joystick instance ID associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_which(JoystickID which) noexcept;
 
   /**
-   * Sets the joystick axis index associated with the event.
+   * @brief Sets the joystick axis index associated with the event.
    *
    * @param axis the joystick axis index associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_axis(Uint8 axis) noexcept;
 
   /**
-   * Sets the joystick axis value associated with the event.
+   * @brief Sets the joystick axis value associated with the event.
    *
    * @param value the joystick axis value associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_value(Sint16 value) noexcept;
 
   /**
-   * Returns the joystick instance ID associated with the event.
+   * @brief Returns the joystick instance ID associated with the event.
    *
    * @return the joystick instance ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY JoystickID which() const noexcept;
+  CENTURION_QUERY
+  auto which() const noexcept -> SDL_JoystickID;
 
   /**
-   * Returns the joystick axis index associated with the event.
+   * @brief Returns the joystick axis index associated with the event.
    *
    * @return the joystick axis index associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint8 axis() const noexcept;
+  CENTURION_QUERY
+  auto axis() const noexcept -> Uint8;
 
   /**
-   * Returns the joystick axis value associated with the event.
+   * @brief Returns the joystick axis value associated with the event.
    *
    * @return the joystick axis value associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint16 value() const noexcept;
+  CENTURION_QUERY
+  auto value() const noexcept -> Sint16;
 };
 
 static_assert(validate_event<JoyAxisEvent, SDL_JoyAxisEvent>());

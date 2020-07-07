@@ -4,11 +4,6 @@
 
 using namespace centurion::event;
 
-TEST_CASE("JoyAxisEvent move constructor", "[JoyAxisEvent]")
-{
-  CHECK_NOTHROW(JoyAxisEvent{{}});
-}
-
 TEST_CASE("JoyAxisEvent::set_which", "[JoyAxisEvent]")
 {
   JoyAxisEvent event;

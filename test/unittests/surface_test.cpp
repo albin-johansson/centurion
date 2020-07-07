@@ -7,8 +7,8 @@
 
 #include "centurion_exception.hpp"
 #include "colors.hpp"
+#include "graphics.hpp"
 #include "renderer.hpp"
-#include "texture.hpp"
 #include "window.hpp"
 
 using namespace centurion;
@@ -187,11 +187,11 @@ TEST_CASE("Surface::pixels", "[Surface]")
 TEST_CASE("Surface::to_texture", "[Surface]")
 {
   // TODO replace with other API
-//  const Surface surface{path};
-//  const Window window;
-//  const Renderer renderer{window};
-//
-//  CHECK(surface.to_texture(renderer));
+  //  const Surface surface{path};
+  //  const Window window;
+  //  const Renderer renderer{window};
+  //
+  //  CHECK(surface.to_texture(renderer));
 }
 
 TEST_CASE("Surface::convert", "[Surface]")

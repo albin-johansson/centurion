@@ -62,6 +62,23 @@ namespace centurion {
  * @class basic_renderer
  * @brief Provides the rendering API.
  *
+ * @par Examples
+ * Below is an example of a typical rendering method.
+ * @code{.cpp}
+ * #include <centurion_as_ctn.hpp>
+ * #include <graphics.hpp>
+ *
+ * void draw(ctn::renderer& renderer)
+ * {
+ *   renderer.set_color(ctn::color::black);
+ *   renderer.clear(); // clear rendering target
+ *
+ *   // Miscellaneous rendering calls...
+ *
+ *   renderer.present(); // apply the rendering operations to the target
+ * }
+ * @endcode
+ *
  * @tparam FontKey the key type used when storing associated fonts in a map.
  *
  * @since 3.0.0
@@ -156,6 +173,17 @@ class basic_renderer final {
    * @since 3.0.0
    */
   void clear() noexcept;
+
+  /**
+   * @brief Clears the rendering target with the specified color.
+   *
+   * @note This method doesn't change the currently selected color.
+   *
+   * @param color the color that will be used to clear the rendering target.
+   *
+   * @since 5.0.0
+   */
+  void clear_with(const Color& color) noexcept;
 
   /**
    * @brief Applies the previous rendering calls to the rendering target.
@@ -1720,6 +1748,17 @@ template <typename FontKey>
 void basic_renderer<FontKey>::clear() noexcept
 {
   SDL_RenderClear(m_renderer);
+}
+
+template <typename FontKey>
+void basic_renderer<FontKey>::clear_with(const Color& c) noexcept
+{
+  const auto oldColor = color();
+
+  set_color(c);
+  clear();
+
+  set_color(oldColor);
 }
 
 template <typename FontKey>

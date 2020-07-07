@@ -120,6 +120,17 @@ TEST_CASE("clear", "[renderer]")
   });
 }
 
+TEST_CASE("clear_with", "[renderer]")
+{
+  test([](const ctn::Window& window, ctn::renderer& renderer) {
+    const auto selectedColor = ctn::color::pink;
+    renderer.set_color(selectedColor);
+
+    CHECK_NOTHROW(renderer.clear_with(ctn::color::medium_aqua_marine));
+    CHECK(renderer.color() == selectedColor);
+  });
+}
+
 TEST_CASE("present", "[renderer]")
 {
   test([](const ctn::Window& window, ctn::renderer& renderer) {

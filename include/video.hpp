@@ -2190,7 +2190,7 @@ auto basic_renderer<FontKey>::vsync_enabled() const noexcept -> bool
 template <typename FontKey>
 auto basic_renderer<FontKey>::accelerated() const noexcept -> bool
 {
-  return flags() & SDL_RENDERER_ACCLERERATED;
+  return flags() & SDL_RENDERER_ACCELERATED;
 }
 
 template <typename FontKey>

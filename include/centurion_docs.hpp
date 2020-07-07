@@ -23,11 +23,10 @@
  * Centurion doesn't cover.
  *
  * @section why_use_centurion Why use Centurion?
- * Centurion is written in modern C++17 (and supports being used in C++11 and
- * C++14 environments) and as such is much more intuitive and easy to use that
- * raw SDL2, which is written in C. No need to worry about memory leaks and
- * ownership of resources! By using Centurion you will write code that is
- * type-safe, clear and efficient.
+ * Centurion is written in modern C++17 and as such is much more intuitive and
+ * easy to use that raw SDL2, which is written in C. No need to worry about
+ * memory leaks and ownership of resources! By using Centurion you will write
+ * code that is type-safe, clear and efficient.
  *
  * @section how_to_install How do I install Centurion?
  * There are two ways of installing the Centurion library in your project.
@@ -124,7 +123,8 @@
  * that you might have about the Centurion library.
  *
  * @section compatibility What versions of C++ can I use Centurion with?
- * Centurion is currently compatible with C++11, C++14 and C++17.
+ * Centurion 5.0.0 and later targets C++17. However, earlier versions (the
+ * latest being version 4.3.0) support C++11, C++14 and C++17.
  *
  * @section purpose What is Centurion meant to be used for?
  * Since Centurion is a wrapper for SDL2. You can basically use it for

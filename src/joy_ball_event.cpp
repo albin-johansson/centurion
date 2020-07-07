@@ -1,12 +1,9 @@
 #ifndef CENTURION_name_SOURCE
 #define CENTURION_name_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 JoyBallEvent::JoyBallEvent() noexcept : CommonEvent{}
@@ -18,12 +15,7 @@ JoyBallEvent::JoyBallEvent(const SDL_JoyBallEvent& event) noexcept
 {}
 
 CENTURION_DEF
-JoyBallEvent::JoyBallEvent(SDL_JoyBallEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
-{}
-
-CENTURION_DEF
-void JoyBallEvent::set_which(JoystickID which) noexcept
+void JoyBallEvent::set_which(SDL_JoystickID which) noexcept
 {
   m_event.which = which;
 }
@@ -47,30 +39,29 @@ void JoyBallEvent::set_dy(Sint16 dy) noexcept
 }
 
 CENTURION_DEF
-JoystickID JoyBallEvent::which() const noexcept
+auto JoyBallEvent::which() const noexcept -> SDL_JoystickID
 {
   return m_event.which;
 }
 
 CENTURION_DEF
-Uint8 JoyBallEvent::ball() const noexcept
+auto JoyBallEvent::ball() const noexcept -> Uint8
 {
   return m_event.ball;
 }
 
 CENTURION_DEF
-Sint16 JoyBallEvent::dx() const noexcept
+auto JoyBallEvent::dx() const noexcept -> Sint16
 {
   return m_event.xrel;
 }
 
 CENTURION_DEF
-Sint16 JoyBallEvent::dy() const noexcept
+auto JoyBallEvent::dy() const noexcept -> Sint16
 {
   return m_event.yrel;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_name_SOURCE

@@ -944,16 +944,21 @@ class JoyAxisEvent : public CommonEvent<SDL_JoyAxisEvent> {
 static_assert(validate_event<JoyAxisEvent, SDL_JoyAxisEvent>());
 
 /**
- * The JoyBallEvent class represents the event that is triggered when a user
- * moves a trackball on a joystick.
+ * @class JoyBallEvent
  *
- * @see SDL_JoyBallEvent
+ * @brief Represents the event that is triggered when a user moves a
+ * trackball on a joystick.
+ *
+ * @see `SDL_JoyBallEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
  public:
   /**
-   * Creates a default-initialized joy ball event.
+   * @brief Creates a default-initialized joy ball event.
    *
    * @since 4.0.0
    */
@@ -961,94 +966,100 @@ class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
   JoyBallEvent() noexcept;
 
   /**
-   * Creates a joy ball event based on the supplied SDL joy ball event.
+   * @brief Creates a joy ball event based on the supplied SDL joy ball event.
    *
    * @param event the SDL joy ball event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   JoyBallEvent(const SDL_JoyBallEvent& event) noexcept;
 
   /**
-   * Creates a joy ball event based on the supplied SDL joy ball event.
-   *
-   * @param event the SDL joy ball event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  JoyBallEvent(SDL_JoyBallEvent&& event) noexcept;
-
-  /**
-   * Sets the joystick instance ID associated with the event.
+   * @brief Sets the joystick instance ID associated with the event.
    *
    * @param which the joystick instance ID.
+   *
    * @since 4.0.0
    */
   CENTURION_API
-  void set_which(JoystickID which) noexcept;
+  void set_which(SDL_JoystickID which) noexcept;
 
   /**
-   * Sets the joystick trackball index associated with the event.
+   * @brief Sets the joystick trackball index associated with the event.
    *
    * @param ball the joystick trackball index.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_ball(Uint8 ball) noexcept;
 
   /**
-   * Sets the relative motion along the x-axis associated with the event.
+   * @brief Sets the relative motion along the x-axis associated with the event.
    *
    * @param dx the relative motion along the x-axis.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_dx(Sint16 dx) noexcept;
 
   /**
-   * Sets the relative motion along the y-axis associated with the event.
+   * @brief Sets the relative motion along the y-axis associated with the event.
    *
    * @param dy the relative motion along the y-axis.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_dy(Sint16 dy) noexcept;
 
   /**
-   * Returns the joystick instance ID associated with the event.
+   * @brief Returns the joystick instance ID associated with the event.
    *
    * @return the joystick instance ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY JoystickID which() const noexcept;
+  CENTURION_QUERY
+  auto which() const noexcept -> SDL_JoystickID;
 
   /**
-   * Returns the joystick trackball index associated with the event.
+   * @brief Returns the joystick trackball index associated with the event.
    *
    * @return the joystick trackball index associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint8 ball() const noexcept;
+  CENTURION_QUERY
+  auto ball() const noexcept -> Uint8;
 
   /**
-   * Returns the relative motion along the x-axis. Note that trackballs only
-   * return relative motion, i.e this is the change in position of the ball
-   * along the x-axis since it was last updated.
+   * @brief Returns the relative motion along the x-axis.
+   *
+   * @note Trackballs only return relative motion, i.e this is the change in
+   * position of the ball along the x-axis since it was last updated.
    *
    * @return the relative motion along the x-axis.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint16 dx() const noexcept;
+  CENTURION_QUERY
+  auto dx() const noexcept -> Sint16;
 
   /**
-   * Returns the relative motion along the y-axis. Note that trackballs only
-   * return relative motion, i.e this is the change in position of the ball
-   * along the y-axis since it was last updated.
+   * @brief Returns the relative motion along the y-axis.
+   *
+   * @note Trackballs only return relative motion, i.e this is the change in
+   * position of the ball along the y-axis since it was last updated.
    *
    * @return the relative motion along the y-axis.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint16 dy() const noexcept;
+  CENTURION_QUERY
+  auto dy() const noexcept -> Sint16;
 };
 
 static_assert(validate_event<JoyBallEvent, SDL_JoyBallEvent>());

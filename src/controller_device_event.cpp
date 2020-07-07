@@ -1,12 +1,9 @@
 #ifndef CENTURION_CONTROLLER_DEVICE_EVENT_SOURCE
 #define CENTURION_CONTROLLER_DEVICE_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 ControllerDeviceEvent::ControllerDeviceEvent() noexcept : CommonEvent{}
@@ -19,24 +16,17 @@ ControllerDeviceEvent::ControllerDeviceEvent(
 {}
 
 CENTURION_DEF
-ControllerDeviceEvent::ControllerDeviceEvent(
-    SDL_ControllerDeviceEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
-{}
-
-CENTURION_DEF
 void ControllerDeviceEvent::set_which(Sint32 which) noexcept
 {
   m_event.which = which;
 }
 
 CENTURION_DEF
-Sint32 ControllerDeviceEvent::which() const noexcept
+auto ControllerDeviceEvent::which() const noexcept -> Sint32
 {
   return m_event.which;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_CONTROLLER_DEVICE_EVENT_SOURCE

@@ -474,16 +474,21 @@ static_assert(
     validate_event<ControllerButtonEvent, SDL_ControllerButtonEvent>());
 
 /**
- * The ControllerDeviceEvent class represents events related to game
- * controller devices such as adding or removing game controller devices.
+ * @class ControllerDeviceEvent
  *
- * @see SDL_ControllerDeviceEvent
+ * @brief Represents events related to game controller devices such as adding
+ * or removing game controller devices.
+ *
+ * @see `SDL_ControllerDeviceEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class ControllerDeviceEvent : public CommonEvent<SDL_ControllerDeviceEvent> {
  public:
   /**
-   * Creates a default-initialized controller device event.
+   * @brief Creates a default-initialized controller device event.
    *
    * @since 4.0.0
    */
@@ -491,45 +496,43 @@ class ControllerDeviceEvent : public CommonEvent<SDL_ControllerDeviceEvent> {
   ControllerDeviceEvent() noexcept;
 
   /**
-   * Creates a controller device event that is based on the supplied SDL
+   * @brief Creates a controller device event that is based on the supplied SDL
    * controller device event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   ControllerDeviceEvent(const SDL_ControllerDeviceEvent& event) noexcept;
 
   /**
-   * Creates a controller device event by moving the supplied SDL controller
-   * device event.
+   * @brief Sets the joystick device index or instance ID.
    *
-   * @param event the SDL controller device event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  ControllerDeviceEvent(SDL_ControllerDeviceEvent&& event) noexcept;
-
-  /**
-   * If the event type is <code>Added</code>, then this value is the joystick
-   * device index. If the type of the event is either <code>Removed</code> or
-   * <code>Remapped</code>, then this value is the instance ID.
+   * @details If the event type is `Added`, then this value is the joystick
+   * device index. If the type of the event is either `Removed` or
+   * `Remapped`, then this value is the instance ID.
    *
    * @param which the joystick device index or instance ID.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_which(Sint32 which) noexcept;
 
   /**
-   * Returns the joystick device index if the type of the event is
-   * <code>Added</code>. Returns the instance ID if the type of the event is
-   * either <code>Removed</code> or <code>Remapped</code>.
+   * @brief Returns the joystick device index or instance ID.
+   *
+   * @details Returns the joystick device index if the type of the event is
+   * `Added`. Returns the instance ID if the type of the event is either
+   * `Removed` or `Remapped`.
    *
    * @return the joystick device index or instance ID.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint32 which() const noexcept;
+  CENTURION_QUERY
+  auto which() const noexcept -> Sint32;
 };
 
 static_assert(

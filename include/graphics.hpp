@@ -62,6 +62,40 @@ namespace centurion {
  * @class basic_renderer
  * @brief Provides the rendering API.
  *
+ * @details This class provides the general API for hardware-accelerated
+ * rendering. It's recommended to not use the `basic_renderer` name directly,
+ * use a custom typedef or the provided `renderer` alias.
+ *
+ * @par Rendering textures
+ * There are quite a number of methods provided for rendering `Texture`
+ * instances. There are two overload sets, `render` and `render_t`. These
+ * methods can be used with either integer or floating-point accuracy. The
+ * recommended general-purpose method for rendering textures is
+ * @link render(const Texture&, const IRect&, const Rect<T>&) @endlink.
+ *
+ * @par Translation
+ * Most games utilize some sort of viewport of what the player can see of the
+ * game world. If you're game features some sort of movable anchor for the
+ * rendering, then you need to translate the positions of the various game
+ * objects when rendering. This class provides a simple API for dealing with
+ * this easily. Specify the translation viewport with
+ * `set_translation_viewport(const FRect&)`, and use the rendering methods
+ * that feature the `_t` suffix in their names, such as `render_t`, to
+ * automatically render at translated positions.
+ *
+ * @par Font support
+ * When rendering text, it's often needed to pass around various font
+ * instances. Subsequently, this class provides an API for storing shared
+ * pointers to `Font` instances. The fonts are stored in an internal map, and
+ * it's possible to specify what you want to use as keys for the fonts. The
+ * `renderer` alias uses `std::string` for keys.
+ *
+ * @par Rendering text
+ * There is no method for directly rendering text. Instead, use one of the
+ * `text_` methods for creating a texture that contains a rendered piece
+ * of text, and render that texture when needed. Naturally, you should cache
+ * these textures instead of creating and destroying them in your game loop.
+ *
  * @par Examples
  * Below is an example of a typical rendering method.
  * @code{.cpp}
@@ -70,8 +104,7 @@ namespace centurion {
  *
  * void draw(ctn::renderer& renderer)
  * {
- *   renderer.set_color(ctn::color::black);
- *   renderer.clear(); // clear rendering target
+ *   renderer.clear_with(ctn::color::black); // clear rendering target
  *
  *   // Miscellaneous rendering calls...
  *
@@ -87,7 +120,7 @@ namespace centurion {
  *
  * @headerfile graphics.hpp
  */
-template <typename FontKey = std::string>
+template <typename FontKey>
 class basic_renderer final {
  public:
   /**
@@ -424,23 +457,109 @@ class basic_renderer final {
               const Point<T>& center,
               const SDL_RendererFlip flip) noexcept;
 
+  /**
+   * @brief Renders a texture at the specified position.
+   *
+   * @details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * @tparam T The type of the point coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param position the position (pre-translation) of the rendered texture.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render_t(const Texture& texture, const Point<T>& position) noexcept;
 
+  /**
+   * @brief Renders a texture according to the specified rectangle.
+   *
+   * @details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param destination the position (pre-translation) and size of the rendered
+   * texture.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render_t(const Texture& texture, const Rect<T>& destination) noexcept;
 
+  /**
+   * @brief Renders a texture.
+   *
+   * @details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * @remarks This should be your preferred method of rendering textures. This
+   * method is efficient and simple.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position (pre-translation) and size of the rendered
+   * texture.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render_t(const Texture& texture,
                 const IRect& source,
                 const Rect<T>& destination) noexcept;
 
+  /**
+   * @brief Renders a texture.
+   *
+   * @details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position (pre-translation) and size of the rendered
+   * texture.
+   * @param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render_t(const Texture& texture,
                 const IRect& source,
                 const Rect<T>& destination,
                 const double angle) noexcept;
 
+  /**
+   * @brief Renders a texture.
+   *
+   * @details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position (pre-translation) and size of the rendered
+   * texture.
+   * @param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * @param center specifies the point around which the rendered texture will be
+   * rotated.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render_t(const Texture& texture,
                 const IRect& source,
@@ -448,6 +567,24 @@ class basic_renderer final {
                 const double angle,
                 const Point<T>& center) noexcept;
 
+  /**
+   * @brief Renders a texture.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position (pre-translation) and size of the rendered
+   * texture.
+   * @param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * @param center specifies the point around which the rendered texture will be
+   * rotated.
+   * @param flip specifies how the rendered texture will be flipped.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render_t(const Texture& texture,
                 const IRect& source,
@@ -457,271 +594,330 @@ class basic_renderer final {
                 const SDL_RendererFlip flip) noexcept;
 
   /**
-   * Sets the color that will be used by the renderer.
+   * @brief Sets the color that will be used by the renderer.
    *
    * @param color the color that will be used by the renderer.
+   *
    * @since 3.0.0
    */
   void set_color(const Color& color) noexcept;
 
   /**
-   * Sets the clipping area rectangle. Clipping is disabled by default.
+   * @brief Sets the clipping area rectangle.
    *
-   * @param area the clip area rectangle; or nothing to disable clipping.
+   * @details Clipping is disabled by default.
+   *
+   * @param area the clip area rectangle; or `nothing` to disable clipping.
+   *
    * @since 3.0.0
    */
   void set_clip(Optional<IRect> area) noexcept;
 
   /**
-   * Sets the viewport that will be used by the renderer.
+   * @brief Sets the viewport that will be used by the renderer.
    *
    * @param viewport the viewport that will be used by the renderer.
+   *
    * @since 3.0.0
    */
   void set_viewport(const IRect& viewport) noexcept;
 
   /**
-   * Sets the translation viewport that will be used by the renderer. This
-   * method can be used in order to be able to use the various
-   * X_translated-methods.
+   * @brief Sets the translation viewport that will be used by the renderer.
+   *
+   * @details This method should be called before calling any of the `_t`
+   * rendering methods, for automatic translation.
    *
    * @param viewport the rectangle that will be used as the translation
    * viewport.
+   *
    * @since 3.0.0
    */
   void set_translation_viewport(const FRect& viewport) noexcept;
 
   /**
-   * Sets the blend mode that will be used by the renderer.
+   * @brief Sets the blend mode that will be used by the renderer.
    *
    * @param mode the blend mode that will be used by the renderer.
+   *
    * @since 3.0.0
    */
   void set_blend_mode(BlendMode mode) noexcept;
 
   /**
-   * Sets the rendering target of the renderer. The supplied image must
-   * support being a render target. Otherwise, this method will reset the
-   * render target.
+   * @brief Sets the rendering target of the renderer.
    *
-   * @param texture a pointer to the new target texture, can safely be null to
-   * indicate that the default rendering target should be used.
+   * @details The supplied texture must support being a render target.
+   * Otherwise, this method will reset the render target.
+   *
+   * @param texture a pointer to the new target texture; `nullptr` indicates
+   * that the default rendering target should be used.
+   *
    * @since 3.0.0
    */
   void set_target(const Texture* texture) noexcept;
 
   /**
-   * Sets the viewport that will be used by the renderer. This method has no
-   * effect if any of the arguments are less than or equal to zero.
+   * @brief Sets the rendering scale.
+   *
+   * @note This method has no effect if any of the arguments aren't
+   * greater than zero.
    *
    * @param xScale the x-axis scale that will be used.
    * @param yScale the y-axis scale that will be used.
+   *
    * @since 3.0.0
    */
   void set_scale(float xScale, float yScale) noexcept;
 
   /**
-   * Sets the logical dimensions of the renderer, which is useful for
-   * achieving resolution-independent rendering. This method has no effect if
-   * either of the supplied dimensions aren't greater than zero.
+   * @brief Sets the logical size used by the renderer.
+   *
+   * @details This method is useful for resolution-independent rendering.
+   *
+   * @remarks This is also known as *virtual size* in other frameworks.
+   *
+   * @note This method has no effect if either of the supplied dimensions
+   * aren't greater than zero.
    *
    * @param size the logical width and height that will be used.
+   *
    * @since 3.0.0
    */
-  void set_logical_size(area_i size) noexcept;
+  void set_logical_size(const area_i& size) noexcept;
 
   /**
-   * Sets whether or not to force integer scaling for the logical viewport. By
-   * default, this property is set to false.
+   * @brief Sets whether or not to force integer scaling for the logical
+   * viewport.
    *
-   * @param useLogicalIntegerScale true if integer scaling should be used;
-   * false otherwise.
+   * @details By default, this property is set to false. This method can be
+   * useful to combat visual artefacts when doing floating-point rendering.
+   *
+   * @param useLogicalIntegerScale `true` if integer scaling should be used;
+   * `false` otherwise.
+   *
    * @since 3.0.0
    */
   void set_logical_integer_scale(bool useLogicalIntegerScale) noexcept;
 
   /**
-   * Returns the logical width that the renderer uses. By default, this
-   * property is set to 0.
+   * @brief Returns the logical width that the renderer uses.
+   *
+   * @details By default, this property is set to 0.
    *
    * @return the logical width that the renderer uses.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto logical_width() const noexcept -> int;
 
   /**
-   * Returns the logical height that the renderer uses. By default, this
-   * property is set to 0.
+   * @brief Returns the logical height that the renderer uses.
+   *
+   * @details By default, this property is set to 0.
    *
    * @return the logical height that the renderer uses.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto logical_height() const noexcept -> int;
 
   /**
-   * Returns the x-axis scale that the renderer uses.
+   * @brief Returns the x-axis scale that the renderer uses.
    *
    * @return the x-axis scale that the renderer uses.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto x_scale() const noexcept -> float;
 
   /**
-   * Returns the y-axis scale that the renderer uses.
+   * @brief Returns the y-axis scale that the renderer uses.
    *
    * @return the y-axis scale that the renderer uses.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto y_scale() const noexcept -> float;
 
   /**
-   * Returns the current clipping rectangle, if there is one active.
+   * @brief Returns the current clipping rectangle, if there is one active.
    *
-   * @return the current clipping rectangle; or nothing if there is none.
+   * @return the current clipping rectangle; or `nothing` if there is none.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto clip() const noexcept -> Optional<IRect>;
 
   /**
-   * Returns information about the renderer.
+   * @brief Returns information about the renderer.
    *
-   * @return information about the renderer; nothing if something went wrong.
+   * @return information about the renderer; `nothing` if something went wrong.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto info() const noexcept -> Optional<SDL_RendererInfo>;
 
   /**
-   * Returns the output width of the renderer.
+   * @brief Returns the output width of the renderer.
    *
    * @return the output width of the renderer.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto output_width() const noexcept -> int;
 
   /**
-   * Returns the output height of the renderer.
+   * @brief Returns the output height of the renderer.
    *
    * @return the output height of the renderer.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto output_height() const noexcept -> int;
 
   /**
-   * Returns the output size of the renderer.
+   * @brief Returns the output size of the renderer.
    *
-   * @return the output size of the renderer, in the format (width, height).
+   * @return the current output size of the renderer.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto output_size() const noexcept -> area_i;
 
   /**
-   * Returns the blend mode that is being used by the renderer.
+   * @brief Returns the blend mode that is being used by the renderer.
    *
    * @return the blend mode that is being used.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] auto blend_mode() const noexcept -> BlendMode;
 
   /**
-   * Returns a bit mask that represents all of flags used when creating the
-   * renderer. The possible values are <ul> <li>a</li>
-   * </ul>
+   * @brief Returns a bit mask of the current renderer flags.
    *
-   * @return a bit mask that represents all of flags used when creating the
-   * renderer.
+   * @note There are multiple other methods for checking if a flag is set,
+   * such as `vsync_enabled` or `accelerated`, that are nicer to use than
+   * this method.
+   *
+   * @return a bit mask of the current renderer flags.
+   *
+   * @see `SDL_RendererFlags`
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto flags() const noexcept -> Uint32;
 
   /**
-   * Indicates whether or not the <code>present()</code> method is synced with
+   * @brief Indicates whether or not the `present` method is synced with
    * the refresh rate of the screen.
    *
-   * @return true if vsync is enabled; false otherwise.
+   * @return `true` if vsync is enabled; `false` otherwise.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto vsync_enabled() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the renderer is hardware accelerated.
+   * @brief Indicates whether or not the renderer is hardware accelerated.
    *
-   * @return true if the renderer is hardware accelerated; false otherwise.
+   * @return `true` if the renderer is hardware accelerated; `false` otherwise.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto accelerated() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the renderer is using software rendering.
+   * @brief Indicates whether or not the renderer is using software rendering.
    *
-   * @return true if the renderer is software-based; false otherwise.
+   * @return `true` if the renderer is software-based; `false` otherwise.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto software_based() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the renderer supports rendering to a target
+   * @brief Indicates whether or not the renderer supports rendering to a target
    * texture.
    *
-   * @return true if the renderer supports target texture rendering; false
+   * @return `true` if the renderer supports target texture rendering; `false`
    * otherwise.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto supports_target_textures() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the renderer uses integer scaling values for
-   * logical viewports. By default, this property is set to false.
+   * @brief Indicates whether or not the renderer uses integer scaling values
+   * for logical viewports.
    *
-   * @return true if the renderer uses integer scaling for logical viewports;
-   * false otherwise.
+   * @details By default, this property is set to false.
+   *
+   * @return `true` if the renderer uses integer scaling for logical viewports;
+   * `false` otherwise.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto using_integer_logical_scaling() const noexcept -> bool;
 
   /**
-   * Indicates whether or not clipping is enabled. This is disabled by
-   * default.
+   * @brief Indicates whether or not clipping is enabled.
    *
-   * @return true if clipping is enabled; false otherwise.
+   * @details This is disabled by default.
+   *
+   * @return `true` if clipping is enabled; `false` otherwise.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto clipping_enabled() const noexcept -> bool;
 
   /**
-   * Returns the currently selected rendering color. Set to black by default.
+   * @brief Returns the currently selected rendering color.
+   *
+   * @details The default color is black.
    *
    * @return the currently selected rendering color.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto color() const noexcept -> Color;
 
   /**
-   * Attempts to render the specified text in the supplied font using the
-   * currently selected color and return the texture that contains the result.
-   * Use the returned texture to actually render the text to the screen. This
-   * method doesn't throw but might return null if something goes wrong.
+   * @brief Creates and returns a texture of blended text.
    *
-   * <p> This method renders the text at the highest quality and uses
+   * @details Attempts to render the specified text in the supplied font using
+   * the currently selected color and return the texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen. This method doesn't throw but might return null if something
+   * goes wrong.
+   *
+   * This method renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
    * @param text the text that will be rendered, can safely be null.
    * @param font the font that the text will be rendered in.
+   *
    * @return a unique pointer to a texture that contains the rendered text;
-   * null if something went wrong.
+   * `nullptr` if something went wrong.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_blended(CZString text,
+  [[nodiscard]] auto text_blended(gsl::czstring text,
                                   const Font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
   /**
-   * Attempts to render the specified text in the supplied font using the
-   * currently selected color and return the texture that contains the result.
-   * Use the returned texture to actually render the text to the screen. This
-   * method doesn't throw but might return null if something goes wrong.
+   * @brief Creates and returns a texture of blended and wrapped text.
    *
-   * <p> This method renders the text at the highest quality and uses
+   * @details Attempts to render the specified text in the supplied font using
+   * the currently selected color and return the texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen. This method doesn't throw but might return null if something
+   * goes wrong.
+   *
+   * This method renders the text at the highest quality and uses
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative. This method will wrap the supplied text
    * to fit the specified width. Furthermore, you can also manually control
@@ -733,22 +929,27 @@ class basic_renderer final {
    * @param wrap the width in pixels which marks the point that the text will
    * be wrapped after.
    * @param font the font that the text will be rendered in.
+   *
    * @return a unique pointer to a texture that contains the rendered text;
-   * null if something went wrong.
+   * `nullptr` if something went wrong.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_blended_wrapped(CZString text,
+  [[nodiscard]] auto text_blended_wrapped(gsl::czstring text,
                                           Uint32 wrap,
                                           const Font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
   /**
-   * Attempts to render the specified text in the supplied font using the
-   * currently selected color and return the texture that contains the result.
-   * Use the returned texture to actually render the text to the screen. This
-   * method doesn't throw but might return null if something goes wrong.
+   * @brief Creates and returns a texture of shaded text.
    *
-   * <p> This method renders the text using anti-aliasing and with a box
+   * @details Attempts to render the specified text in the supplied font using
+   * the currently selected color and return the texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen. This method doesn't throw but might return null if something
+   * goes wrong.
+   *
+   * This method renders the text using anti-aliasing and with a box
    * behind the text. This alternative is probably a bit slower than
    * rendering solid text but about as fast as blended text. Use this
    * method when you want nice text, and can live with a box around it.
@@ -756,131 +957,157 @@ class basic_renderer final {
    * @param text the text that will be rendered, can safely be null.
    * @param bg the background color used for the box.
    * @param font the font that the text will be rendered in.
+   *
    * @return a unique pointer to a texture that contains the rendered text;
-   * null if something went wrong.
+   * `nullptr` if something went wrong.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_shaded(CZString text,
+  [[nodiscard]] auto text_shaded(gsl::czstring text,
                                  const Color& bg,
                                  const Font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
   /**
-   * Attempts to render the specified text in the supplied font using the
-   * currently selected color and return the texture that contains the result.
-   * Use the returned texture to actually render the text to the screen. This
-   * method doesn't throw but might return null if something goes wrong.
+   * @brief Creates and returns a texture of solid text.
    *
-   * <p> This method is the fastest at rendering text to a texture. It
+   * @details Attempts to render the specified text in the supplied font using
+   * the currently selected color and return the texture that contains the
+   * result. Use the returned texture to actually render the text to the screen.
+   * This method doesn't throw but might return null if something goes wrong.
+   *
+   * This method is the fastest at rendering text to a texture. It
    * doesn't use anti-aliasing so the text isn't very smooth. Use this method
    * when quality isn't as big of a concern and speed is important.
    *
    * @param text the text that will be rendered, can safely be null.
    * @param font the font that the text will be rendered in.
+   *
    * @return a unique pointer to a texture that contains the rendered text;
-   * null if something went wrong.
+   * `nullptr` if something went wrong.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_solid(CZString text, const Font& font) const noexcept
+  [[nodiscard]] auto text_solid(gsl::czstring text,
+                                const Font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
   /**
-   * Returns the font associated with the specified name. This method returns
-   * null if there is no font associated with the specified name.
+   * @brief Returns the font associated with the specified name.
+   *
+   * @details This method returns null if there is no font associated with the
+   * specified name.
    *
    * @param key the key associated with the desired font.
-   * @return the font associated with the specified name; null if there is no
-   * such font.
+   *
+   * @return the font associated with the specified name; `nullptr` if there is
+   * no such font.
+   *
    * @since 4.1.0
    */
   [[nodiscard]] auto font(const FontKey& key) noexcept -> std::shared_ptr<Font>;
 
   /**
-   * Indicates whether or not the renderer has a font associated with the
-   * specified name.
+   * @brief Indicates whether or not the renderer has a font associated with the
+   * specified key.
    *
    * @param key the key that will be checked.
-   * @return true if the renderer has a font associated with the specified
-   * name; false otherwise.
+   *
+   * @return `true` if the renderer has a font associated with the key; `false`
+   * otherwise.
+   *
    * @since 4.1.0
    */
   [[nodiscard]] auto has_font(const FontKey& key) const noexcept -> bool;
 
   /**
-   * Returns the viewport that the renderer uses.
+   * @brief Returns the viewport that the renderer uses.
    *
    * @return the viewport that the renderer uses.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto viewport() const noexcept -> IRect;
 
   /**
-   * Returns a textual representation of the renderer.
+   * @brief Returns a textual representation of the renderer.
    *
    * @return a textual representation of the renderer.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto to_string() const -> std::string;
 
   /**
-   * Returns the translation viewport that is currently being used. Set to (0,
-   * 0, 0, 0) by default.
+   * @brief Returns the translation viewport that is currently being used.
+   *
+   * @details Set to (0, 0, 0, 0) by default.
    *
    * @return the translation viewport that is currently being used.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] auto translation_viewport() const noexcept -> const FRect&;
 
   /**
-   * Returns a pointer to the internal SDL_Renderer. Use of this method is
-   * not recommended, since it purposefully breaks const-correctness. However
-   * it is useful since many SDL calls use non-const pointers even when no
-   * change will be applied.
+   * @brief Returns a pointer to the associated SDL_Renderer.
    *
-   * @return a pointer to the internal SDL_Renderer.
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However, it's useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated SDL_Renderer.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*;
 
   /**
-   * Converts to SDL_Renderer*.
+   * @brief Converts to `SDL_Renderer*`.
    *
-   * @return a pointer to the internal SDL_Renderer instance.
+   * @return a pointer to the associated `SDL_Renderer` instance.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] operator SDL_Renderer*() noexcept;
+  [[nodiscard]] explicit operator SDL_Renderer*() noexcept;
 
   /**
-   * Converts to SDL_Renderer*.
+   * @brief Converts to `const SDL_Renderer*`.
    *
-   * @return a pointer to the internal SDL_Renderer instance.
+   * @return a pointer to the associated `SDL_Renderer` instance.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] operator const SDL_Renderer*() const noexcept;
+  [[nodiscard]] explicit operator const SDL_Renderer*() const noexcept;
 
   /**
-   * Returns the number of available rendering drivers. Usually there is only
-   * 1 available rendering driver.
+   * @brief Returns the number of available rendering drivers.
+   *
+   * @note Usually there is only one available rendering driver.
    *
    * @return the number of available rendering drivers.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] static auto render_drivers() noexcept -> int;
 
   /**
-   * Returns the number of available video drivers compiled into SDL.
+   * @brief Returns the number of available video drivers compiled into SDL.
    *
    * @return the number of available video drivers compiled into SDL.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] static auto video_drivers() noexcept -> int;
 
   /**
-   * Returns the information associated with a rendering driver.
+   * @brief Returns the information associated with a rendering driver.
    *
    * @param index the index of the rendering driver to query.
-   * @return information about the specified rendering driver; nothing if
+   *
+   * @return information about the specified rendering driver; `nothing` if
    * something went wrong.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] static auto driver_info(int index) noexcept
@@ -896,7 +1123,7 @@ class basic_renderer final {
                                      SDL_RENDERER_PRESENTVSYNC);
 
   /**
-   * Destroys the resources associated with the renderer.
+   * @brief Destroys the resources associated with the renderer.
    *
    * @since 4.0.0
    */
@@ -908,9 +1135,11 @@ class basic_renderer final {
   }
 
   /**
-   * Moves the contents of the supplied renderer instance into this instance.
+   * @brief Moves the contents of the supplied renderer instance into this
+   * instance.
    *
    * @param other the instance that will be moved.
+   *
    * @since 4.0.0
    */
   void move(basic_renderer&& other) noexcept
@@ -924,17 +1153,20 @@ class basic_renderer final {
   }
 
   /**
-   * A helper method used by text rendering methods to create surfaces based
-   * on the text and then convert it to fast textures.
+   * @brief A helper method used by text rendering methods to create surfaces
+   * based on the text and then convert it to fast textures.
    *
    * @param text the text that will be rendered.
-   * @param render a lambda that creates a <code>SDL_Surface*</code> and
-   * takes a <code>CZString</code> as its parameter.
-   * @return a unique pointer to a texture; null if something went wrong.
+   * @param render a lambda with `void(SDL_Surface*, gsl::czstring)` as its
+   * signature.
+   *
+   * @return a unique pointer to a texture; `nullptr` if something went wrong.
+   *
    * @since 4.0.0
    */
   template <typename Lambda>
-  [[nodiscard]] auto render_text(CZString text, Lambda&& render) const noexcept
+  [[nodiscard]] auto render_text(gsl::czstring text,
+                                 Lambda&& render) const noexcept
       -> std::unique_ptr<Texture>
   {
     if (!text) {
@@ -957,12 +1189,14 @@ class basic_renderer final {
   }
 
   /**
-   * Returns the translated x-coordinate that corresponds to the supplied
+   * @brief Returns the translated x-coordinate that corresponds to the supplied
    * x-coordinate.
    *
    * @param x the x-coordinate that will be translated.
+   *
    * @return the translated x-coordinate that corresponds to the supplied
    * x-coordinate.
+   *
    * @since 4.1.0
    */
   template <typename T>
@@ -976,12 +1210,14 @@ class basic_renderer final {
   }
 
   /**
-   * Returns the translated y-coordinate that corresponds to the supplied
+   * @brief Returns the translated y-coordinate that corresponds to the supplied
    * y-coordinate.
    *
    * @param y the y-coordinate that will be translated.
+   *
    * @return the translated y-coordinate that corresponds to the supplied
    * y-coordinate.
+   *
    * @since 4.1.0
    */
   template <typename T>
@@ -1015,7 +1251,17 @@ class basic_renderer final {
  *
  * @headerfile graphics.hpp
  */
-using renderer = basic_renderer<>;
+using renderer = basic_renderer<std::string>;
+
+/**
+ * @typedef renderer_i
+ * @brief Alias for a renderer that uses `int` as keys for fonts.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile graphics.hpp
+ */
+using renderer_i = basic_renderer<int>;
 
 /**
  * The Texture class represents an texture that is hardware-accelerated.
@@ -1174,7 +1420,8 @@ class Texture final {
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
-                                   CZString path) -> std::unique_ptr<Texture>
+                                   gsl::czstring path)
+      -> std::unique_ptr<Texture>
   {
     return std::make_unique<Texture>(renderer, path);
   }
@@ -1242,7 +1489,8 @@ class Texture final {
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
-                                   CZString path) -> std::shared_ptr<Texture>
+                                   gsl::czstring path)
+      -> std::shared_ptr<Texture>
   {
     return std::make_shared<Texture>(renderer, path);
   }
@@ -1300,12 +1548,13 @@ class Texture final {
    */
   template <typename T>
   [[nodiscard]] static auto streaming(const basic_renderer<T>& renderer,
-                                      CZString path,
+                                      gsl::czstring path,
                                       PixelFormat format)
       -> std::unique_ptr<Texture>
   {
     const auto blendMode = BlendMode::Blend;
-    const auto createSurface = [blendMode](CZString path, PixelFormat format) {
+    const auto createSurface = [blendMode](gsl::czstring path,
+                                           PixelFormat format) {
       Surface source{path};
       source.set_blend_mode(blendMode);
       return source.convert(format);
@@ -2123,7 +2372,7 @@ void basic_renderer<FontKey>::set_scale(float xScale, float yScale) noexcept
 }
 
 template <typename FontKey>
-void basic_renderer<FontKey>::set_logical_size(area_i size) noexcept
+void basic_renderer<FontKey>::set_logical_size(const area_i& size) noexcept
 {
   if (size.width > 0 && size.height > 0) {
     SDL_RenderSetLogicalSize(m_renderer, size.width, size.height);
@@ -2282,11 +2531,11 @@ auto basic_renderer<FontKey>::color() const noexcept -> Color
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::text_blended(CZString text,
+auto basic_renderer<FontKey>::text_blended(gsl::czstring text,
                                            const Font& font) const noexcept
     -> std::unique_ptr<Texture>
 {
-  return render_text(text, [this, &font](CZString text) noexcept {
+  return render_text(text, [this, &font](gsl::czstring text) noexcept {
     return TTF_RenderText_Blended(
         font.get(), text, static_cast<SDL_Color>(color()));
   });
@@ -2294,23 +2543,23 @@ auto basic_renderer<FontKey>::text_blended(CZString text,
 
 template <typename FontKey>
 auto basic_renderer<FontKey>::text_blended_wrapped(
-    CZString text,
+    gsl::czstring text,
     Uint32 wrap,
     const Font& font) const noexcept -> std::unique_ptr<Texture>
 {
-  return render_text(text, [this, &font, wrap](CZString text) noexcept {
+  return render_text(text, [this, &font, wrap](gsl::czstring text) noexcept {
     return TTF_RenderText_Blended_Wrapped(
         font.get(), text, static_cast<SDL_Color>(color()), wrap);
   });
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::text_shaded(CZString text,
+auto basic_renderer<FontKey>::text_shaded(gsl::czstring text,
                                           const Color& bg,
                                           const Font& font) const noexcept
     -> std::unique_ptr<Texture>
 {
-  return render_text(text, [this, &font, &bg](CZString text) noexcept {
+  return render_text(text, [this, &font, &bg](gsl::czstring text) noexcept {
     return TTF_RenderText_Shaded(font.get(),
                                  text,
                                  static_cast<SDL_Color>(color()),
@@ -2319,11 +2568,11 @@ auto basic_renderer<FontKey>::text_shaded(CZString text,
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::text_solid(CZString text,
+auto basic_renderer<FontKey>::text_solid(gsl::czstring text,
                                          const Font& font) const noexcept
     -> std::unique_ptr<Texture>
 {
-  return render_text(text, [this, &font](CZString text) noexcept {
+  return render_text(text, [this, &font](gsl::czstring text) noexcept {
     return TTF_RenderText_Solid(
         font.get(), text, static_cast<SDL_Color>(color()));
   });

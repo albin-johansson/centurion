@@ -4,7 +4,7 @@
 namespace centurion {
 
 template <typename FontKey>
-class Renderer;
+class basic_renderer;
 
 class Texture;
 

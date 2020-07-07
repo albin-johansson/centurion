@@ -4,9 +4,9 @@
 
 #include "centurion_exception.hpp"
 #include "log.hpp"
-#include "renderer.hpp"
 #include "screen.hpp"
 #include "surface.hpp"
+#include "video.hpp"
 
 using namespace centurion;
 

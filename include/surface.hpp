@@ -31,15 +31,13 @@
 
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
+#include "centurion_fwd.hpp"
 #include "centurion_utils.hpp"
 #include "color.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 
 namespace centurion {
-
-class Texture;
-class Renderer;
 
 /**
  * The <code>Surface</code> class represents a non-accelerated image. In most
@@ -160,16 +158,21 @@ class Surface final {
    */
   [[nodiscard]] CENTURION_API BlendMode blend_mode() const noexcept;
 
-  /**
-   * Converts the surface into its texture equivalent.
-   *
-   * @param renderer the renderer that will be used to create the
-   * texture.
-   * @return a texture that is equivalent to the surface.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API Texture
-  to_texture(const Renderer& renderer) const noexcept;
+  // TODO add
+  //  /**
+  //   * Converts the surface into its texture equivalent.
+  //   *
+  //   * @param renderer the renderer that will be used to create the
+  //   * texture.
+  //   * @return a texture that is equivalent to the surface.
+  //   * @since 4.0.0
+  //   */
+  //  template <typename Renderer>
+  //  [[nodiscard]] auto to_texture(Renderer&& renderer) const noexcept ->
+  //  Texture
+  //  {
+  //    return {SDL_CreateTextureFromSurface(renderer.get(), m_surface)};
+  //  }
 
   /**
    * Creates and returns a surface based on this surface with the specified

@@ -71,7 +71,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/touch.hpp
         window.cpp
         font.cpp
-        renderer.cpp
         texture.cpp
         centurion.cpp
         texture_loader.cpp

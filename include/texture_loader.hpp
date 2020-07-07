@@ -22,108 +22,109 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_IMAGE_GENERATOR_HEADER
-#define CENTURION_IMAGE_GENERATOR_HEADER
 
-#include <memory>
-#include <type_traits>
+// TODO reimplement with new renderer
 
-#include "area.hpp"
-#include "centurion_api.hpp"
-#include "texture.hpp"
-
-namespace centurion {
-
-class Renderer;
-
-/**
- * The TextureLoader class is a utility class designed to make it easier to
- * create instances of the Texture class without passing a renderer instance
- * around. This can make it easier to keep renderer instances out of
- * logic-related code.
- *
- * @see Renderer
- * @see Texture
- * @since 3.0.0
- */
-class TextureLoader final {
- public:
-  /**
-   * @param renderer a shared pointer to the associated renderer instance, may
-   * not be null.
-   * @throws CenturionException if the supplied renderer is null.
-   * @since 3.0.0
-   */
-  CENTURION_API explicit TextureLoader(const SharedPtr<Renderer>& renderer);
-
-  CENTURION_API ~TextureLoader() noexcept;
-
-  /**
-   * Creates and returns a unique pointer to a texture.
-   *
-   * @param file the file path of the texture that will be loaded, may not be
-   * null.
-   * @return a unique pointer to a texture.
-   * @throws CenturionException if the texture cannot be loaded.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API UniquePtr<Texture> unique_img(
-      CZString file) const;
-
-  /**
-   * Creates and returns a unique pointer to a texture with the specified
-   * characteristics.
-   *
-   * @param format the pixel format of the texture.
-   * @param access the texture access of the texture.
-   * @param size the size of the texture.
-   * @return a unique pointer to a texture.
-   * @throws CenturionException if the texture cannot be created.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API UniquePtr<Texture>
-  unique_img(PixelFormat format, Texture::Access access, area_i size) const;
-
-  /**
-   * Creates and returns a shared pointer to a texture.
-   *
-   * @param file the file path of the texture that will be loaded, may not be
-   * null.
-   * @return a shared pointer to a texture.
-   * @throws CenturionException if the texture cannot be loaded.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API SharedPtr<Texture> shared_img(
-      CZString file) const;
-
-  /**
-   * Creates and returns a shared pointer to a texture with the specified
-   * characteristics.
-   *
-   * @param format the pixel format of the texture.
-   * @param access the texture access of the texture.
-   * @param size the size of the texture..
-   * @return a shared pointer to a texture.
-   * @throws CenturionException if the texture cannot be created.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API SharedPtr<Texture>
-  shared_img(PixelFormat format, Texture::Access access, area_i size) const;
-
- private:
-  SharedPtr<Renderer> m_renderer;
-};
-
-static_assert(std::is_final_v<TextureLoader>);
-static_assert(std::is_nothrow_copy_assignable_v<TextureLoader>);
-static_assert(std::is_nothrow_copy_constructible_v<TextureLoader>);
-static_assert(std::is_nothrow_move_assignable_v<TextureLoader>);
-static_assert(std::is_nothrow_move_constructible_v<TextureLoader>);
-
-}  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "texture_loader.cpp"
-#endif
-
-#endif  // CENTURION_IMAGE_GENERATOR_HEADER
+//#ifndef CENTURION_IMAGE_GENERATOR_HEADER
+//#define CENTURION_IMAGE_GENERATOR_HEADER
+//
+//#include <memory>
+//#include <type_traits>
+//
+//#include "area.hpp"
+//#include "centurion_api.hpp"
+//#include "texture.hpp"
+//
+//namespace centurion {
+//
+///**
+// * The TextureLoader class is a utility class designed to make it easier to
+// * create instances of the Texture class without passing a renderer instance
+// * around. This can make it easier to keep renderer instances out of
+// * logic-related code.
+// *
+// * @see Renderer
+// * @see Texture
+// * @since 3.0.0
+// */
+//class TextureLoader final {
+// public:
+//  /**
+//   * @param renderer a shared pointer to the associated renderer instance, may
+//   * not be null.
+//   * @throws CenturionException if the supplied renderer is null.
+//   * @since 3.0.0
+//   */
+//  CENTURION_API explicit TextureLoader(const SharedPtr<Renderer>& renderer);
+//
+//  CENTURION_API ~TextureLoader() noexcept;
+//
+//  /**
+//   * Creates and returns a unique pointer to a texture.
+//   *
+//   * @param file the file path of the texture that will be loaded, may not be
+//   * null.
+//   * @return a unique pointer to a texture.
+//   * @throws CenturionException if the texture cannot be loaded.
+//   * @since 3.0.0
+//   */
+//  [[nodiscard]] CENTURION_API UniquePtr<Texture> unique_img(
+//      CZString file) const;
+//
+//  /**
+//   * Creates and returns a unique pointer to a texture with the specified
+//   * characteristics.
+//   *
+//   * @param format the pixel format of the texture.
+//   * @param access the texture access of the texture.
+//   * @param size the size of the texture.
+//   * @return a unique pointer to a texture.
+//   * @throws CenturionException if the texture cannot be created.
+//   * @since 3.0.0
+//   */
+//  [[nodiscard]] CENTURION_API UniquePtr<Texture>
+//  unique_img(PixelFormat format, Texture::Access access, area_i size) const;
+//
+//  /**
+//   * Creates and returns a shared pointer to a texture.
+//   *
+//   * @param file the file path of the texture that will be loaded, may not be
+//   * null.
+//   * @return a shared pointer to a texture.
+//   * @throws CenturionException if the texture cannot be loaded.
+//   * @since 3.0.0
+//   */
+//  [[nodiscard]] CENTURION_API SharedPtr<Texture> shared_img(
+//      CZString file) const;
+//
+//  /**
+//   * Creates and returns a shared pointer to a texture with the specified
+//   * characteristics.
+//   *
+//   * @param format the pixel format of the texture.
+//   * @param access the texture access of the texture.
+//   * @param size the size of the texture..
+//   * @return a shared pointer to a texture.
+//   * @throws CenturionException if the texture cannot be created.
+//   * @since 3.0.0
+//   */
+//  [[nodiscard]] CENTURION_API SharedPtr<Texture>
+//  shared_img(PixelFormat format, Texture::Access access, area_i size) const;
+//
+// private:
+//  SharedPtr<Renderer> m_renderer;
+//};
+//
+//static_assert(std::is_final_v<TextureLoader>);
+//static_assert(std::is_nothrow_copy_assignable_v<TextureLoader>);
+//static_assert(std::is_nothrow_copy_constructible_v<TextureLoader>);
+//static_assert(std::is_nothrow_move_assignable_v<TextureLoader>);
+//static_assert(std::is_nothrow_move_constructible_v<TextureLoader>);
+//
+//}  // namespace centurion
+//
+//#ifdef CENTURION_HEADER_ONLY
+//#include "texture_loader.cpp"
+//#endif
+//
+//#endif  // CENTURION_IMAGE_GENERATOR_HEADER

@@ -1,5 +1,3 @@
-#include "renderer.hpp"
-
 #include <catch.hpp>
 #include <utility>
 
@@ -9,6 +7,7 @@
 #include "log.hpp"
 #include "rect.hpp"
 #include "texture.hpp"
+#include "video.hpp"
 #include "window.hpp"
 
 using namespace centurion;
@@ -120,29 +119,29 @@ TEST_CASE("Renderer::add_font(const std::string&, const SharedPtr<Font>&)",
   }
 }
 
-TEST_CASE("Renderer::add_font(const SharedPtr<Font>&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-
-  SECTION("Bad arguments")
-  {
-    CHECK_NOTHROW(renderer.add_font(nullptr));
-    CHECK(!renderer.add_font(nullptr));
-  }
-
-  SECTION("Normal arguments")
-  {
-    auto font = Font::shared("resources/daniel.ttf", 12);
-    const auto fontName = font->family_name();
-
-    const auto name = renderer.add_font(font);
-    CHECK(name);
-    CHECK(*name == fontName);
-
-    CHECK(!renderer.add_font(font));
-  }
-}
+// TEST_CASE("Renderer::add_font(const SharedPtr<Font>&)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//
+//  SECTION("Bad arguments")
+//  {
+//    CHECK_NOTHROW(renderer.add_font(nullptr));
+//    CHECK(!renderer.add_font(nullptr));
+//  }
+//
+//  SECTION("Normal arguments")
+//  {
+//    auto font = Font::shared("resources/daniel.ttf", 12);
+//    const auto fontName = font->family_name();
+//
+//    const auto name = renderer.add_font(font);
+//    CHECK(name);
+//    CHECK(*name == fontName);
+//
+//    CHECK(!renderer.add_font(font));
+//  }
+//}
 
 TEST_CASE("Renderer::remove_font", "[Renderer]")
 {
@@ -164,70 +163,40 @@ TEST_CASE("Renderer::draw_rect", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_rect({}));
+  CHECK_NOTHROW(renderer.draw_rect<int>({}));
+  CHECK_NOTHROW(renderer.draw_rect<float>({}));
 }
 
 TEST_CASE("Renderer::fill_rect", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK_NOTHROW(renderer.fill_rect({}));
-}
-
-TEST_CASE("Renderer::draw_rect_f", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_rect_f({}));
-}
-
-TEST_CASE("Renderer::fill_rect_f", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.fill_rect_f({}));
+  CHECK_NOTHROW(renderer.fill_rect<int>({}));
+  CHECK_NOTHROW(renderer.fill_rect<float>({}));
 }
 
 TEST_CASE("Renderer::draw_rect_t", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_rect_t({}));
+  CHECK_NOTHROW(renderer.draw_rect_t<int>({}));
+  CHECK_NOTHROW(renderer.draw_rect_t<float>({}));
 }
 
 TEST_CASE("Renderer::fill_rect_t", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK_NOTHROW(renderer.fill_rect_t({}));
-}
-
-TEST_CASE("Renderer::draw_rect_tf", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_rect_tf({}));
-}
-
-TEST_CASE("Renderer::fill_rect_tf", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.fill_rect_tf({}));
+  CHECK_NOTHROW(renderer.fill_rect_t<int>({}));
+  CHECK_NOTHROW(renderer.fill_rect_t<float>({}));
 }
 
 TEST_CASE("Renderer::draw_line", "[Renderer]")
 {
   Window window;
   Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_line({}, {}));
-}
-
-TEST_CASE("Renderer::draw_line_f", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_line_f({}, {}));
+  CHECK_NOTHROW(renderer.draw_line<int>({}, {}));
+  CHECK_NOTHROW(renderer.draw_line<float>({}, {}));
 }
 
 TEST_CASE("Renderer::draw_lines", "[Renderer]")
@@ -235,7 +204,7 @@ TEST_CASE("Renderer::draw_lines", "[Renderer]")
   Window window;
   Renderer renderer{window};
   const std::vector<IPoint> points{{4, 5}, {50, 2}, {-10, 7}};
-  CHECK_NOTHROW(renderer.draw_lines(points));
+  CHECK_NOTHROW(renderer.draw_lines<int>(points));
 }
 
 TEST_CASE("Renderer::render(Texture&, IPoint)", "[Renderer]")
@@ -246,292 +215,293 @@ TEST_CASE("Renderer::render(Texture&, IPoint)", "[Renderer]")
   CHECK_NOTHROW(renderer.render(texture, IPoint{-5, 410}));
 }
 
-TEST_CASE("Renderer::render(Texture&, IRect&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(texture, {{65, -35}, {124, 99}}));
-}
-
-TEST_CASE("Renderer::render(Texture&, IRect&, IRect&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(
-      texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}));
-}
-
-TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(
-      texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}, 17));
-}
-
-TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double, IPoint&)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(texture,
-                                IRect{{10, 15}, {20, 20}},
-                                IRect{{35, 92}, {15, 23}},
-                                17,
-                                IPoint{5, 9}));
-}
-
-TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, SDL_RendererFlip)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(texture,
-                                IRect{{10, 15}, {20, 20}},
-                                IRect{{35, 92}, {15, 23}},
-                                SDL_FLIP_HORIZONTAL));
-}
-
-TEST_CASE(
-    "Renderer::render(Texture&, IRect&, IRect&, double, "
-    "IPoint&,SDL_RendererFlip)",
-    "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture,
-                                  {{10, 15}, {20, 20}},
-                                  {{35, 92}, {15, 23}},
-                                  -5,
-                                  IPoint{5, 5},
-                                  SDL_FLIP_HORIZONTAL));
-}
-
-TEST_CASE("Renderer::render_f(Texture&, FPoint)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture, FPoint{83.6f, 523.3f}));
-}
-
-TEST_CASE("Renderer::render_f(Texture&, FRect&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture, {{146, 34}, {99, 58}}));
-}
-
-TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(
-      renderer.render_f(texture, {{5, 8}, {15, 15}}, {{77, 23}, {100, 59}}));
-}
-
-TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, double)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(
-      texture, {{1, 2}, {5, 8}}, {{774, 413}, {99, 224}}, 123));
-}
-
-TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, double, FPoint&)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture,
-                                  {{10, 15}, {20, 20}},
-                                  {{99, 35}, {185, 23}},
-                                  56,
-                                  FPoint{-2.4f, 14.3f}));
-}
-
-TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, SDL_RendererFlip)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture,
-                                  {{10, 15}, {20, 20}},
-                                  {{-67, 3}, {93, 110.5f}},
-                                  SDL_FLIP_HORIZONTAL));
-}
-
-TEST_CASE(
-    "Renderer::render_f(Texture&, IRect&, FRect&, double, "
-    "FPoint&, SDL_RendererFlip)",
-    "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture,
-                                  {{10, 8}, {8, 9}},
-                                  {{4.0f, -34}, {88, 105.9f}},
-                                  89,
-                                  FPoint{5, 5},
-                                  SDL_FLIP_VERTICAL));
-}
-
-TEST_CASE("Renderer::render_t(Texture&, IPoint)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture, IPoint{-5, 410}));
-}
-
-TEST_CASE("Renderer::render_t(Texture&, IRect&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture, {{65, -35}, {124, 99}}));
-}
-
-TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(
-      renderer.render_t(texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}));
-}
-
-TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, double)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(
-      texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}, 17));
-}
-
-TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, double, IPoint&)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(
-      texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}, 17, IPoint{5, 9}));
-}
-
-TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, SDL_RendererFlip)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture,
-                                  {{10, 15}, {20, 20}},
-                                  {{35, 92}, {15, 23}},
-                                  SDL_FLIP_HORIZONTAL));
-}
-
-TEST_CASE(
-    "Renderer::render_t(Texture&, IRect&, IRect&, double, "
-    "IPoint&,SDL_RendererFlip)",
-    "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture,
-                                  {{10, 15}, {20, 20}},
-                                  {{35, 92}, {15, 23}},
-                                  -5,
-                                  IPoint{5, 5},
-                                  SDL_FLIP_HORIZONTAL));
-}
-
-TEST_CASE("Renderer::render_tf(Texture&, FPoint)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture, FPoint{83.6f, 523.3f}));
-}
-
-TEST_CASE("Renderer::render_tf(Texture&, FRect&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture, {{146, 34}, {99, 58}}));
-}
-
-TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(
-      renderer.render_tf(texture, {{5, 8}, {15, 15}}, {{77, 23}, {100, 59}}));
-}
-
-TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(
-      texture, {{1, 2}, {5, 8}}, {{774, 413}, {99, 224}}, 123));
-}
-
-TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double, FPoint&)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture,
-                                   {{10, 15}, {20, 20}},
-                                   {{99, 35}, {185, 23}},
-                                   56,
-                                   FPoint{-2.4f, 14.3f}));
-}
-
-TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, SDL_RendererFlip)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture,
-                                   {{10, 15}, {20, 20}},
-                                   {{-67, 3}, {93, 110.5f}},
-                                   SDL_FLIP_HORIZONTAL));
-}
-
-TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double, ",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture,
-                                   {{10, 8}, {8, 9}},
-                                   {{4.0f, -34}, {88, 105.9f}},
-                                   89,
-                                   {5, 5},
-                                   SDL_FLIP_VERTICAL));
-}
+// TODO reimplement tests
+//TEST_CASE("Renderer::render(Texture&, IRect&)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render(texture, {{65, -35}, {124, 99}}));
+//}
+//
+//TEST_CASE("Renderer::render(Texture&, IRect&, IRect&)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render(
+//      texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}));
+//}
+//
+//TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render(
+//      texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}, 17));
+//}
+//
+//TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double, IPoint&)",
+//          "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render(texture,
+//                                IRect{{10, 15}, {20, 20}},
+//                                IRect{{35, 92}, {15, 23}},
+//                                17,
+//                                IPoint{5, 9}));
+//}
+//
+//TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, SDL_RendererFlip)",
+//          "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render(texture,
+//                                IRect{{10, 15}, {20, 20}},
+//                                IRect{{35, 92}, {15, 23}},
+//                                SDL_FLIP_HORIZONTAL));
+//}
+//
+//TEST_CASE(
+//    "Renderer::render(Texture&, IRect&, IRect&, double, "
+//    "IPoint&,SDL_RendererFlip)",
+//    "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_t(texture,
+//                                  {{10, 15}, {20, 20}},
+//                                  {{35, 92}, {15, 23}},
+//                                  -5,
+//                                  IPoint{5, 5},
+//                                  SDL_FLIP_HORIZONTAL));
+//}
+//
+//TEST_CASE("Renderer::render_f(Texture&, FPoint)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_f(texture, FPoint{83.6f, 523.3f}));
+//}
+//
+//TEST_CASE("Renderer::render_f(Texture&, FRect&)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_f(texture, {{146, 34}, {99, 58}}));
+//}
+//
+//TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(
+//      renderer.render_f(texture, {{5, 8}, {15, 15}}, {{77, 23}, {100, 59}}));
+//}
+//
+//TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, double)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_f(
+//      texture, {{1, 2}, {5, 8}}, {{774, 413}, {99, 224}}, 123));
+//}
+//
+//TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, double, FPoint&)",
+//          "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_f(texture,
+//                                  {{10, 15}, {20, 20}},
+//                                  {{99, 35}, {185, 23}},
+//                                  56,
+//                                  FPoint{-2.4f, 14.3f}));
+//}
+//
+//TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, SDL_RendererFlip)",
+//          "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_f(texture,
+//                                  {{10, 15}, {20, 20}},
+//                                  {{-67, 3}, {93, 110.5f}},
+//                                  SDL_FLIP_HORIZONTAL));
+//}
+//
+//TEST_CASE(
+//    "Renderer::render_f(Texture&, IRect&, FRect&, double, "
+//    "FPoint&, SDL_RendererFlip)",
+//    "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_f(texture,
+//                                  {{10, 8}, {8, 9}},
+//                                  {{4.0f, -34}, {88, 105.9f}},
+//                                  89,
+//                                  FPoint{5, 5},
+//                                  SDL_FLIP_VERTICAL));
+//}
+//
+//TEST_CASE("Renderer::render_t(Texture&, IPoint)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_t(texture, IPoint{-5, 410}));
+//}
+//
+//TEST_CASE("Renderer::render_t(Texture&, IRect&)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_t(texture, {{65, -35}, {124, 99}}));
+//}
+//
+//TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(
+//      renderer.render_t(texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}));
+//}
+//
+//TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, double)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_t(
+//      texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}, 17));
+//}
+//
+//TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, double, IPoint&)",
+//          "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_t(
+//      texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}, 17, IPoint{5, 9}));
+//}
+//
+//TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, SDL_RendererFlip)",
+//          "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_t(texture,
+//                                  {{10, 15}, {20, 20}},
+//                                  {{35, 92}, {15, 23}},
+//                                  SDL_FLIP_HORIZONTAL));
+//}
+//
+//TEST_CASE(
+//    "Renderer::render_t(Texture&, IRect&, IRect&, double, "
+//    "IPoint&,SDL_RendererFlip)",
+//    "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_t(texture,
+//                                  {{10, 15}, {20, 20}},
+//                                  {{35, 92}, {15, 23}},
+//                                  -5,
+//                                  IPoint{5, 5},
+//                                  SDL_FLIP_HORIZONTAL));
+//}
+//
+//TEST_CASE("Renderer::render_tf(Texture&, FPoint)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_tf(texture, FPoint{83.6f, 523.3f}));
+//}
+//
+//TEST_CASE("Renderer::render_tf(Texture&, FRect&)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_tf(texture, {{146, 34}, {99, 58}}));
+//}
+//
+//TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(
+//      renderer.render_tf(texture, {{5, 8}, {15, 15}}, {{77, 23}, {100, 59}}));
+//}
+//
+//TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double)", "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_tf(
+//      texture, {{1, 2}, {5, 8}}, {{774, 413}, {99, 224}}, 123));
+//}
+//
+//TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double, FPoint&)",
+//          "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_tf(texture,
+//                                   {{10, 15}, {20, 20}},
+//                                   {{99, 35}, {185, 23}},
+//                                   56,
+//                                   FPoint{-2.4f, 14.3f}));
+//}
+//
+//TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, SDL_RendererFlip)",
+//          "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_tf(texture,
+//                                   {{10, 15}, {20, 20}},
+//                                   {{-67, 3}, {93, 110.5f}},
+//                                   SDL_FLIP_HORIZONTAL));
+//}
+//
+//TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double, ",
+//          "[Renderer]")
+//{
+//  Window window;
+//  Renderer renderer{window};
+//  Texture texture{renderer, texturePath};
+//  CHECK_NOTHROW(renderer.render_tf(texture,
+//                                   {{10, 8}, {8, 9}},
+//                                   {{4.0f, -34}, {88, 105.9f}},
+//                                   89,
+//                                   {5, 5},
+//                                   SDL_FLIP_VERTICAL));
+//}
 
 TEST_CASE("Renderer::set_color", "[Renderer]")
 {

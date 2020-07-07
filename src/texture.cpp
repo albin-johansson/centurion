@@ -7,7 +7,6 @@
 
 #include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
-#include "error.hpp"
 #include "renderer.hpp"
 #include "surface.hpp"
 
@@ -20,44 +19,6 @@ Texture::Texture(Owner<SDL_Texture*> texture)
     throw CenturionException{"Texture can't be created from null SDL texture!"};
   }
   this->m_texture = texture;
-}
-
-CENTURION_DEF
-Texture::Texture(const Renderer& renderer, CZString path)
-{
-  if (!path) {
-    throw CenturionException{"Can't load texture from null path!"};
-  }
-
-  m_texture = IMG_LoadTexture(renderer.get(), path);
-  if (!m_texture) {
-    throw detail::Error::from_image("Failed to create Texture!");
-  }
-}
-
-CENTURION_DEF
-Texture::Texture(const Renderer& renderer, const Surface& surface)
-{
-  this->m_texture = SDL_CreateTextureFromSurface(renderer.get(), surface.get());
-  if (!m_texture) {
-    throw detail::Error::from_core("Failed to create Texture from Surface!");
-  }
-}
-
-CENTURION_DEF
-Texture::Texture(const Renderer& renderer,
-                 PixelFormat format,
-                 Access access,
-                 area_i size)
-{
-  m_texture = SDL_CreateTexture(renderer.get(),
-                                static_cast<Uint32>(format),
-                                static_cast<int>(access),
-                                size.width,
-                                size.height);
-  if (!m_texture) {
-    throw detail::Error::from_core("Failed to create Texture!");
-  }
 }
 
 CENTURION_DEF
@@ -125,84 +86,9 @@ UniquePtr<Texture> Texture::unique(Owner<SDL_Texture*> texture)
 }
 
 CENTURION_DEF
-UniquePtr<Texture> Texture::unique(const Renderer& renderer, CZString path)
-{
-  return std::make_unique<Texture>(renderer, path);
-}
-
-CENTURION_DEF
-UniquePtr<Texture> Texture::unique(const Renderer& renderer,
-                                   const Surface& surface)
-{
-  return std::make_unique<Texture>(renderer, surface);
-}
-
-CENTURION_DEF
-UniquePtr<Texture> Texture::unique(const Renderer& renderer,
-                                   PixelFormat format,
-                                   Access access,
-                                   area_i size)
-{
-  return std::make_unique<Texture>(renderer, format, access, size);
-}
-
-CENTURION_DEF
 SharedPtr<Texture> Texture::shared(Owner<SDL_Texture*> texture)
 {
   return std::make_shared<Texture>(texture);
-}
-
-CENTURION_DEF
-SharedPtr<Texture> Texture::shared(const Renderer& renderer, CZString path)
-{
-  return std::make_shared<Texture>(renderer, path);
-}
-
-CENTURION_DEF
-SharedPtr<Texture> Texture::shared(const Renderer& renderer,
-                                   const Surface& surface)
-{
-  return std::make_shared<Texture>(renderer, surface);
-}
-
-CENTURION_DEF
-SharedPtr<Texture> Texture::shared(const Renderer& renderer,
-                                   PixelFormat format,
-                                   Access access,
-                                   area_i size)
-{
-  return std::make_shared<Texture>(renderer, format, access, size);
-}
-
-CENTURION_DEF
-UniquePtr<Texture> Texture::streaming(const Renderer& renderer,
-                                      CZString path,
-                                      PixelFormat format)
-{
-  const auto blendMode = BlendMode::Blend;
-  const auto createSurface = [blendMode](CZString path, PixelFormat format) {
-    Surface source{path};
-    source.set_blend_mode(blendMode);
-    return source.convert(format);
-  };
-  const auto surface = createSurface(path, format);
-  auto texture = Texture::unique(
-      renderer, format, Access::Streaming, {surface.width(), surface.height()});
-  texture->set_blend_mode(blendMode);
-
-  Uint32* pixels = nullptr;
-  const auto success = texture->lock(&pixels);
-  if (!success) {
-    throw CenturionException{"Failed to lock texture!"};
-  }
-
-  const auto maxCount =
-      static_cast<std::size_t>(surface.pitch() * surface.height());
-  memcpy(pixels, surface.pixels(), maxCount);
-
-  texture->unlock();
-
-  return texture;
 }
 
 CENTURION_DEF
@@ -358,54 +244,6 @@ std::string Texture::to_string() const
   const auto w = std::to_string(width());
   const auto h = std::to_string(height());
   return "[Texture@" + address + " | Width: " + w + ", Height: " + h + "]";
-}
-
-CENTURION_DEF
-bool operator==(Texture::Access lhs, SDL_TextureAccess rhs) noexcept
-{
-  return static_cast<SDL_TextureAccess>(lhs) == rhs;
-}
-
-CENTURION_DEF
-bool operator==(SDL_TextureAccess lhs, Texture::Access rhs) noexcept
-{
-  return lhs == static_cast<SDL_TextureAccess>(rhs);
-}
-
-CENTURION_DEF
-bool operator!=(Texture::Access lhs, SDL_TextureAccess rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-CENTURION_DEF
-bool operator!=(SDL_TextureAccess lhs, Texture::Access rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-CENTURION_DEF
-bool operator==(Texture::ScaleMode lhs, SDL_ScaleMode rhs) noexcept
-{
-  return static_cast<SDL_ScaleMode>(lhs) == rhs;
-}
-
-CENTURION_DEF
-bool operator==(SDL_ScaleMode lhs, Texture::ScaleMode rhs) noexcept
-{
-  return lhs == static_cast<SDL_ScaleMode>(rhs);
-}
-
-CENTURION_DEF
-bool operator!=(Texture::ScaleMode lhs, SDL_ScaleMode rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-CENTURION_DEF
-bool operator!=(SDL_ScaleMode lhs, Texture::ScaleMode rhs) noexcept
-{
-  return !(lhs == rhs);
 }
 
 }  // namespace centurion

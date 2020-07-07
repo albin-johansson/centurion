@@ -1,12 +1,9 @@
 #ifndef CENTURION_CONTROLLER_BUTTON_EVENT_SOURCE
 #define CENTURION_CONTROLLER_BUTTON_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 ControllerButtonEvent::ControllerButtonEvent() noexcept : CommonEvent{}
@@ -15,12 +12,6 @@ ControllerButtonEvent::ControllerButtonEvent() noexcept : CommonEvent{}
 CENTURION_DEF ControllerButtonEvent::ControllerButtonEvent(
     const SDL_ControllerButtonEvent& event) noexcept
     : CommonEvent{event}
-{}
-
-CENTURION_DEF
-ControllerButtonEvent::ControllerButtonEvent(
-    SDL_ControllerButtonEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF
@@ -42,24 +33,23 @@ void ControllerButtonEvent::set_which(JoystickID id) noexcept
 }
 
 CENTURION_DEF
-GameControllerButton ControllerButtonEvent::button() const noexcept
+auto ControllerButtonEvent::button() const noexcept -> GameControllerButton
 {
   return static_cast<GameControllerButton>(m_event.button);
 }
 
 CENTURION_DEF
-ButtonState ControllerButtonEvent::state() const noexcept
+auto ControllerButtonEvent::state() const noexcept -> ButtonState
 {
   return static_cast<ButtonState>(m_event.state);
 }
 
 CENTURION_DEF
-JoystickID ControllerButtonEvent::which() const noexcept
+auto ControllerButtonEvent::which() const noexcept -> JoystickID
 {
   return m_event.which;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_CONTROLLER_BUTTON_EVENT_SOURCE

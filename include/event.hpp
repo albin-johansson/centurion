@@ -376,16 +376,21 @@ class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
 static_assert(validate_event<ControllerAxisEvent, SDL_ControllerAxisEvent>());
 
 /**
- * The ControllerButtonEvent class represents events associated with the
- * state of buttons of a game controller.
+ * @class ControllerButtonEvent
  *
- * @see SDL_ControllerButtonEvent
+ * @brief Represents events associated with the state of buttons of a game
+ * controller.
+ *
+ * @see `SDL_ControllerButtonEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
  public:
   /**
-   * Creates a default-initialized controller button event.
+   * @brief Creates a default-initialized controller button event.
    *
    * @since 4.0.0
    */
@@ -393,76 +398,76 @@ class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
   ControllerButtonEvent() noexcept;
 
   /**
-   * Creates a controller button event that is based on the supplied SDL
+   * @brief Creates a controller button event that is based on the supplied SDL
    * controller button event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   ControllerButtonEvent(const SDL_ControllerButtonEvent& event) noexcept;
 
   /**
-   * Creates a controller button event by moving the supplied SDL controller
-   * button event.
+   * @brief Sets the game controller button associated with the event.
    *
-   * @param event the SDL controller button event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  ControllerButtonEvent(SDL_ControllerButtonEvent&& event) noexcept;
-
-  /**
-   * Sets the game controller button associated with the event.
+   * @param button the game controller button associated with the event.
    *
-   * param button the game controller button associated with the event.
    * @since 4.0.0
    */
   CENTURION_API
   void set_button(GameControllerButton button) noexcept;
 
   /**
-   * Sets the button state associated with the event.
+   * @brief Sets the button state associated with the event.
    *
    * @param state the button state associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_state(ButtonState state) noexcept;
 
   /**
-   * Sets the joystick instance ID associated with the event.
+   * @brief Sets the joystick instance ID associated with the event.
    *
    * @param id the instance ID of the joystick that the event is associated
    * with.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_which(JoystickID id) noexcept;
 
   /**
-   * Returns the game controller button associated with the event.
+   * @brief Returns the game controller button associated with the event.
    *
    * @return the game controller button associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY GameControllerButton button() const noexcept;
+  CENTURION_QUERY
+  auto button() const noexcept -> GameControllerButton;
 
   /**
-   * Returns the button state associated with the event.
+   * @brief Returns the button state associated with the event.
    *
    * @return the button state associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY ButtonState state() const noexcept;
+  CENTURION_QUERY
+  auto state() const noexcept -> ButtonState;
 
   /**
-   * Returns the joystick instance ID associated with the event.
+   * @brief Returns the joystick instance ID associated with the event.
    *
    * @return the joystick instance ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY JoystickID which() const noexcept;
+  CENTURION_QUERY
+  auto which() const noexcept -> JoystickID;
 };
 
 static_assert(
@@ -3064,7 +3069,28 @@ class Event final {
 }  // namespace centurion::event
 
 #ifdef CENTURION_HEADER_ONLY
+#include "audio_device_event.cpp"
+#include "controller_axis_event.cpp"
+#include "controller_button_event.cpp"
+#include "controller_device_event.cpp"
+#include "dollar_gesture_event.cpp"
+#include "drop_event.cpp"
 #include "event.cpp"
+#include "joy_axis_event.cpp"
+#include "joy_ball_event.cpp"
+#include "joy_button_event.cpp"
+#include "joy_device_event.cpp"
+#include "joy_hat_event.cpp"
+#include "keyboard_event.cpp"
+#include "mouse_button_event.cpp"
+#include "mouse_motion_event.cpp"
+#include "mouse_wheel_event.cpp"
+#include "multi_gesture_event.cpp"
+#include "quit_event.cpp"
+#include "text_editing_event.cpp"
+#include "text_input_event.cpp"
+#include "touch_finger_event.cpp"
+#include "window_event.cpp"
 #endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_EVENT_HEADER

@@ -1,12 +1,9 @@
 #ifndef CENTURION_JOY_HAT_EVENT_SOURCE
 #define CENTURION_JOY_HAT_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 JoyHatEvent::JoyHatEvent() noexcept : CommonEvent{}
@@ -15,11 +12,6 @@ JoyHatEvent::JoyHatEvent() noexcept : CommonEvent{}
 CENTURION_DEF
 JoyHatEvent::JoyHatEvent(const SDL_JoyHatEvent& event) noexcept
     : CommonEvent{event}
-{}
-
-CENTURION_DEF
-JoyHatEvent::JoyHatEvent(SDL_JoyHatEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF
@@ -35,18 +27,17 @@ void JoyHatEvent::set_position(JoyHatPosition value) noexcept
 }
 
 CENTURION_DEF
-Uint8 JoyHatEvent::hat() const noexcept
+auto JoyHatEvent::hat() const noexcept -> Uint8
 {
   return m_event.hat;
 }
 
 CENTURION_DEF
-JoyHatPosition JoyHatEvent::position() const noexcept
+auto JoyHatEvent::position() const noexcept -> JoyHatPosition
 {
   return static_cast<JoyHatPosition>(m_event.value);
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_JOY_HAT_EVENT_SOURCE

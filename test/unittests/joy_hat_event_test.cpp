@@ -17,11 +17,6 @@ TEST_CASE("JoyHatValue enum values", "[JoyHatEvent]")
   CHECK(static_cast<Uint8>(JoyHatPosition::RightDown) == SDL_HAT_RIGHTDOWN);
 }
 
-TEST_CASE("JoyHatEvent move constructor", "[JoyHatEvent]")
-{
-  CHECK_NOTHROW(JoyHatEvent{{}});
-}
-
 TEST_CASE("JoyHatEvent::set_hat", "[JoyHatEvent]")
 {
   JoyHatEvent event;

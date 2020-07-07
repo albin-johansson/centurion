@@ -1221,8 +1221,9 @@ class JoyDeviceEvent : public CommonEvent<SDL_JoyDeviceEvent> {
 static_assert(validate_event<JoyDeviceEvent, SDL_JoyDeviceEvent>());
 
 /**
- * The JoyHatPosition enum class provides a wrapper for the SDL_HAT_x macro
- * values.
+ * @enum JoyHatPosition
+ *
+ * @brief Serves as a wrapper for the `SDL_HAT_x` macro values.
  *
  * @since 4.0.0
  */
@@ -1239,16 +1240,21 @@ enum class JoyHatPosition {
 };
 
 /**
- * The JoyHatEvent class represents an event that is triggered whenever a  user
- * moves a hat on a joystick.
+ * @class JoyHatEvent
  *
- * @see SDL_JoyHatEvent
+ * @brief Represents an event that is triggered whenever a user moves a hat
+ * on a joystick.
+ *
+ * @see `SDL_JoyHatEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class JoyHatEvent : public CommonEvent<SDL_JoyHatEvent> {
  public:
   /**
-   * Creates a default-initialized joy hat event.
+   * @brief Creates a default-initialized joy hat event.
    *
    * @since 4.0.0
    */
@@ -1256,56 +1262,54 @@ class JoyHatEvent : public CommonEvent<SDL_JoyHatEvent> {
   JoyHatEvent() noexcept;
 
   /**
-   * Creates a joy hat event based on the supplied SDL event.
+   * @brief Creates a joy hat event based on the supplied SDL event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   JoyHatEvent(const SDL_JoyHatEvent& event) noexcept;
 
   /**
-   * Creates a joy hat event based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  JoyHatEvent(SDL_JoyHatEvent&& event) noexcept;
-
-  /**
-   * Sets the hat index associated with the event.
+   * @brief Sets the hat index associated with the event.
    *
    * @param hat the hat index.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_hat(Uint8 hat) noexcept;
 
   /**
-   * Sets the joystick hat position associated with the event.
+   * @brief Sets the joystick hat position associated with the event.
    *
    * @param value the joystick hat position associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_position(JoyHatPosition value) noexcept;
 
   /**
-   * Returns the index of the hat that changed.
+   * @brief Returns the index of the hat that changed.
    *
    * @return the index of the hat that changed.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint8 hat() const noexcept;
+  CENTURION_QUERY
+  auto hat() const noexcept -> Uint8;
 
   /**
-   * Returns the position of the associated joystick hat.
+   * @brief Returns the position of the associated joystick hat.
    *
    * @return the position of the associated joystick hat.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY JoyHatPosition position() const noexcept;
+  CENTURION_QUERY
+  auto position() const noexcept -> JoyHatPosition;
 };
 
 static_assert(validate_event<JoyHatEvent, SDL_JoyHatEvent>());

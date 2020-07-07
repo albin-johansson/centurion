@@ -37,7 +37,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/mouse_button.hpp
         ${CTN_INCLUDE_DIR}/event_type.hpp
         ${CTN_INCLUDE_DIR}/event.hpp
-        ${CTN_INCLUDE_DIR}/syswm_event.hpp
         ${CTN_INCLUDE_DIR}/button_state.hpp
         ${CTN_INCLUDE_DIR}/game_controller.hpp
         ${CTN_INCLUDE_DIR}/area.hpp
@@ -90,7 +89,6 @@ set(SOURCE_FILES
         multi_gesture_event.cpp
         text_editing_event.cpp
         text_input_event.cpp
-        syswm_event.cpp
         joystick.cpp
         touch.cpp)
 

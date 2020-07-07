@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file event.hpp
+ *
+ * @brief Provides the event API.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_EVENT_HEADER
 #define CENTURION_EVENT_HEADER
 
@@ -37,66 +49,79 @@
 #include "joystick.hpp"
 #include "key.hpp"
 #include "key_modifier.hpp"
-#include "touch.hpp"
-// #include "syswm_event.hpp"
 #include "mouse_button.hpp"
-
-namespace centurion {
-namespace event {
+#include "touch.hpp"
 
 /**
- * This is the templated base class of all Centurion events. This class
- * provides the common API of all events and the storage of the SDL2 event.
+ * @namespace centurion::event
  *
- * @tparam T the SDL2 event type that the Centurion version represents.
+ * @brief Contains the event components.
+ *
+ * @headerfile event.hpp
+ */
+namespace centurion::event {
+
+/**
+ * @brief The templated base class of all Centurion events.
+ *
+ * @details This class defines the common API of all events and provides the
+ * storage of the SDL2 event.
+ *
+ * @tparam T an SDL event type.
+ *
  * @since 4.0.0
  */
 template <typename T>
 class CommonEvent {
  public:
   /**
-   * Creates a CommonEvent and default-initializes the internal event.
+   * @brief Creates a `CommonEvent` and default-initializes the internal event.
    *
    * @since 4.0.0
    */
   CommonEvent() noexcept : m_event{} {}
 
   /**
-   * Creates a CommonEvent and copies the supplied event.
+   * @brief Creates a CommonEvent and copies the supplied event.
    *
    * @param event the event that will be copied.
+   *
    * @since 4.0.0
    */
   explicit CommonEvent(const T& event) : m_event{event} {}
 
   /**
-   * Creates a CommonEvent and moves the contents of the supplied event.
+   * @brief Creates a CommonEvent and moves the contents of the supplied event.
    *
    * @param event the event that will be moved.
+   *
    * @since 4.0.0
    */
   explicit CommonEvent(T&& event) : m_event{std::move(event)} {}
 
   /**
-   * Default virtual destructor.
+   * @brief Default virtual destructor.
    *
    * @since 4.0.0
    */
-  virtual ~CommonEvent() noexcept {}
+  virtual ~CommonEvent() noexcept = default;
 
   /**
-   * Sets the timestamp that is associated with the creation of the event.
+   * @brief Sets the timestamp that is associated with the creation of the
+   * event.
    *
    * @param timestamp the timestamp that should be associated with the creation
    * of the event.
+   *
    * @since 4.0.0
    */
   void set_time(Uint32 timestamp) noexcept { m_event.timestamp = timestamp; }
 
   /**
-   * Sets the event type value associated with the event.
+   * @brief Sets the event type value associated with the event.
    *
    * @param type the event type value associated with the event.
+   *
    * @since 4.0.0
    */
   void set_type(EventType type) noexcept
@@ -105,18 +130,21 @@ class CommonEvent {
   }
 
   /**
-   * Returns the timestamp associated with the creation of the event.
+   * @brief Returns the timestamp associated with the creation of the event.
    *
    * @return the timestamp associated with the creation of the event.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] Uint32 time() const noexcept { return m_event.timestamp; }
 
   /**
-   * Returns the event type value associated with the event.
+   * @brief Returns the event type value associated with the event.
+   *
+   * @return the event type value associated with the event.
    *
    * @see EventType
-   * @return the event type value associated with the event.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] EventType type() const noexcept
@@ -125,25 +153,35 @@ class CommonEvent {
   }
 
   /**
-   * Implicitly converts the event to a reference to the SDL counterpart.
+   * @brief Implicitly converts the event to a reference to the SDL counterpart.
+   *
+   * @todo Make explicit.
    *
    * @return a reference to the internal SDL event.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] operator T&() noexcept { return m_event; }
 
   /**
-   * Implicitly converts the event to a const reference to the SDL counterpart.
+   * @brief Implicitly converts the event to a const reference to the SDL
+   * counterpart.
+   *
+   * @todo Make explicit.
    *
    * @return a const reference to the internal SDL event.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] operator const T&() const noexcept { return m_event; }
 
   /**
-   * Implicitly converts the event to its SDL counterpart.
+   * @brief Implicitly converts the event to its SDL counterpart.
+   *
+   * @todo Make explicit.
    *
    * @return a copy of the internal SDL event.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] operator T() const noexcept { return m_event; }
@@ -153,17 +191,19 @@ class CommonEvent {
 };
 
 /**
- * Indicates whether or not a Centurion event type has the properties that is
- * expected of it.
+ * @brief Indicates whether or not a Centurion event type fulfills the event
+ * type specification.
  *
  * @tparam T the Centurion event type that will be checked.
  * @tparam E the SDL event type that the Centurion event is mirroring.
- * @return true if the supplied event type passed the requirements; false
+ *
+ * @return `true` if the supplied event type passed the requirements; `false`
  * otherwise.
+ *
  * @since 4.0.0
  */
 template <typename T, typename E>
-[[nodiscard]] inline constexpr bool validate_event() noexcept
+[[nodiscard]] inline constexpr auto validate_event() noexcept -> bool
 {
   return std::has_virtual_destructor_v<T> &&
          std::is_nothrow_copy_constructible_v<T> &&
@@ -2891,17 +2931,6 @@ class Event final {
   [[nodiscard]] CENTURION_API Optional<WindowEvent> as_window_event()
       const noexcept;
 
-  //  /**
-  //   * Returns a SysWMEvent or nothing if the type of the event doesn't
-  //   * match.
-  //   *
-  //   * @return a SysWMEvent or nothing.
-  //   * @since 4.0.0
-  //   */
-  //  [[nodiscard]]
-  //  CENTURION_API
-  //  Optional<SysWMEvent> as_syswm_event() const noexcept;
-
   /**
    * Implicitly converts the event to a reference to the internal SDL_Event.
    *
@@ -2923,8 +2952,7 @@ class Event final {
   SDL_Event m_event;
 };
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #ifdef CENTURION_HEADER_ONLY
 #include "event.cpp"

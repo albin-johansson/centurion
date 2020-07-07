@@ -153,38 +153,13 @@ class CommonEvent {
   }
 
   /**
-   * @brief Implicitly converts the event to a reference to the SDL counterpart.
+   * @brief Returns the internal event.
    *
-   * @todo Make explicit.
+   * @return the internal event.
    *
-   * @return a reference to the internal SDL event.
-   *
-   * @since 4.0.0
+   * @since 5.0.0
    */
-  [[nodiscard]] operator T&() noexcept { return m_event; }
-
-  /**
-   * @brief Implicitly converts the event to a const reference to the SDL
-   * counterpart.
-   *
-   * @todo Make explicit.
-   *
-   * @return a const reference to the internal SDL event.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] operator const T&() const noexcept { return m_event; }
-
-  /**
-   * @brief Implicitly converts the event to its SDL counterpart.
-   *
-   * @todo Make explicit.
-   *
-   * @return a copy of the internal SDL event.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] operator T() const noexcept { return m_event; }
+  [[nodiscard]] const T& get() const noexcept { return m_event; }
 
  protected:
   T m_event{};

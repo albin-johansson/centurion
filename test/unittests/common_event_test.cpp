@@ -50,12 +50,11 @@ TEST_CASE("CommonEvent::type", "[CommonEvent]")
 
 TEST_CASE("CommonEvent conversions", "[CommonEvent]")
 {
-  STATIC_REQUIRE(std::is_convertible_v<CommonEvent<DummyType>, DummyType>);
-  STATIC_REQUIRE(std::is_convertible_v<CommonEvent<DummyType>, DummyType&>);
+  DummyType dummy;
+  dummy.type = SDL_MOUSEMOTION;
 
-  STATIC_REQUIRE(
-      std::is_convertible_v<CommonEvent<DummyType>, const DummyType&>);
+  CommonEvent<DummyType> event{dummy};
+  const auto internal = event.get();
 
-  STATIC_REQUIRE(
-      !std::is_convertible_v<CommonEvent<const DummyType>, DummyType&>);
+  CHECK(internal.type == dummy.type);
 }

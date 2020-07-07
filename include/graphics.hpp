@@ -1262,56 +1262,80 @@ using renderer = basic_renderer<std::string>;
 using renderer_i = basic_renderer<int>;
 
 /**
- * The Texture class represents an texture that is hardware-accelerated.
- * Instances of the Texture class can be implicitly converted to SDL_Texture*.
+ * @class Texture
  *
- * @see `SDL_Texture`
+ * @brief Represents an hardware-accelerated texture.
  *
  * @since 3.0.0
+ *
+ * @see `SDL_Texture`
  *
  * @headerfile graphics.hpp
  */
 class Texture final {
  public:
   /**
-   * The Access enum mirrors the SDL_TextureAccess enum.
+   * @enum Access
    *
-   * @see SDL_TextureAccess
+   * @brief Mirrors the `SDL_TextureAccess` enum.
+   *
    * @since 3.0.0
+   *
+   * @see `SDL_TextureAccess`
+   *
+   * @headerfile graphics.hpp
    */
   enum class Access {
-    Static = SDL_TEXTUREACCESS_STATIC,
-    Streaming = SDL_TEXTUREACCESS_STREAMING,
-    Target = SDL_TEXTUREACCESS_TARGET
+    Static = SDL_TEXTUREACCESS_STATIC, /**< Indicates that the texture changes
+                                          rarely, and isn't lockable. */
+    Streaming =
+        SDL_TEXTUREACCESS_STREAMING, /**< Indicates that the texture
+                                      * changes frequently, and is lockable. */
+
+    Target = SDL_TEXTUREACCESS_TARGET /**< Indicates that the texture can be
+                                       * used as a render target. */
   };
 
   /**
-   * The ScaleMode enum class mirrors the values of the SDL_ScaleMode enum.
+   * @enum ScaleMode
    *
-   * @see SDL_ScaleMode
+   * @brief Mirrors the `SDL_ScaleMode` enum.
+   *
    * @since 4.0.0
+   *
+   * @see `SDL_ScaleMode`
+   *
+   * @headerfile graphics.hpp
    */
   enum class ScaleMode {
-    Nearest = SDL_ScaleModeNearest,
-    Linear = SDL_ScaleModeLinear,
-    Best = SDL_ScaleModeBest
+    Nearest = SDL_ScaleModeNearest, /**< Represents nearest pixel sampling. */
+    Linear = SDL_ScaleModeLinear,   /**< Represents linear filtering. */
+    Best = SDL_ScaleModeBest        /**< Represents anisotropic filtering. */
   };
 
   /**
-   * Creates an texture from a pre-existing SDL texture. The created texture
-   * WILL claim ownership of the supplied pointer!
+   * @brief Creates an texture from a pre-existing SDL texture.
+   *
+   * @note The created texture will claim ownership of the supplied pointer.
    *
    * @param texture a pointer to the SDL_Texture that will be claimed, may not
    * be null.
+   *
    * @throws CenturionException if the supplied pointer is null.
+   *
    * @since 3.0.0
    */
-  CENTURION_API explicit Texture(Owner<SDL_Texture*> texture);
+  CENTURION_API
+  explicit Texture(gsl::owner<SDL_Texture*> texture);
 
   /**
+   * @brief Creates a texture based the image at the specified path.
+   *
    * @param renderer the renderer that will be used to create the texture.
    * @param path the file path of the texture, may not be null.
+   *
    * @throws CenturionException if the texture cannot be loaded.
+   *
    * @since 4.0.0
    */
   template <typename T>
@@ -1328,11 +1352,13 @@ class Texture final {
   }
 
   /**
-   * Creates an texture that is a copy of the supplied surface.
+   * @brief Creates an texture that is a copy of the supplied surface.
    *
    * @param renderer the renderer that will be used to create the texture.
    * @param surface the surface that the texture will be based on.
+   *
    * @throws CenturionException if the texture cannot be loaded.
+   *
    * @since 4.0.0
    */
   template <typename T>
@@ -1346,13 +1372,15 @@ class Texture final {
   }
 
   /**
-   * Creates an texture with the specified characteristics.
+   * @brief Creates an texture with the specified characteristics.
    *
    * @param renderer the associated renderer instance.
    * @param format the pixel format of the created texture.
    * @param access the access of the created texture.
    * @param size the size of the texture.
+   *
    * @throws CenturionException if the texture cannot be created.
+   *
    * @since 4.0.0
    */
   template <typename T>
@@ -1372,49 +1400,43 @@ class Texture final {
   }
 
   /**
-   * Creates an texture by moving the supplied texture.
+   * @brief Creates an texture by moving the supplied texture.
    *
    * @param other the texture that will be moved.
+   *
    * @since 3.0.0
    */
-  CENTURION_API Texture(Texture&& other) noexcept;
+  CENTURION_API
+  Texture(Texture&& other) noexcept;
 
-  Texture(const Texture&) noexcept = delete;
+  Texture(const Texture&) = delete;
 
-  CENTURION_API ~Texture() noexcept;
-
-  Texture& operator=(const Texture&) noexcept = delete;
+  auto operator=(const Texture&) -> Texture& = delete;
 
   /**
-   * Moves the supplied texture into this texture.
+   * @brief Moves the supplied texture into this texture.
    *
    * @param other the texture that will be moved.
+   *
    * @return the changed texture.
+   *
    * @since 3.0.0
    */
-  CENTURION_API Texture& operator=(Texture&& other) noexcept;
+  CENTURION_API
+  auto operator=(Texture&& other) noexcept -> Texture&;
+
+  CENTURION_API
+  ~Texture() noexcept;
 
   /**
-   * Creates and returns a unique texture from a pre-existing SDL texture. The
-   * created texture WILL claim ownership of the supplied pointer!
-   *
-   * @param texture a pointer to the SDL_Texture that will be claimed, may not
-   * be null.
-   * @returns a unique pointer to the created texture.
-   * @throws CenturionException if the supplied pointer is null.
-   * @since 3.0.0
+   * @copydoc Texture(gsl::owner<SDL_Texture*>)
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<Texture> unique(
-      Owner<SDL_Texture*> texture);
+  CENTURION_QUERY
+  static auto unique(gsl::owner<SDL_Texture*> texture)
+      -> std::unique_ptr<Texture>;
 
   /**
-   * Creates and returns a unique texture by loading it from a file.
-   *
-   * @param renderer the renderer that will be used when loading the texture.
-   * @param path the file path of the texture, may not be null.
-   * @return a unique pointer to the created texture.
-   * @throws CenturionException if the texture cannot be loaded.
-   * @since 3.0.0
+   * @copydoc Texture(const basic_renderer<T>&, gsl::czstring)
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
@@ -1425,14 +1447,7 @@ class Texture final {
   }
 
   /**
-   * Creates and returns a unique texture that is a copy of the supplied
-   * surface.
-   *
-   * @param renderer the associated renderer instance.
-   * @param surface the surface that the texture will be based on.
-   * @return a unique pointer to the created texture.
-   * @throws CenturionException if the texture cannot be loaded.
-   * @since 4.0.0
+   * @copydoc Texture(const basic_renderer<T>&, const Surface&)
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
@@ -1443,16 +1458,7 @@ class Texture final {
   }
 
   /**
-   * Creates and returns a unique pointer to an texture with the supplied
-   * characteristics.
-   *
-   * @param renderer the associated renderer that will be used.
-   * @param format the pixel format of the texture.
-   * @param access the access of the texture.
-   * @param size the size of the texture.
-   * @return a unique pointer to an texture.
-   * @throws CenturionException if the texture cannot be created.
-   * @since 3.1.0
+   * @copydoc Texture(const basic_renderer<T>&, PixelFormat, Access, area_i)
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
@@ -1464,26 +1470,14 @@ class Texture final {
   }
 
   /**
-   * Creates and returns a shared texture from a pre-existing SDL texture. The
-   * created texture WILL claim ownership of the supplied pointer!
-   *
-   * @param texture a pointer to the SDL_Texture that will be claimed, may not
-   * be null.
-   * @returns a shared pointer to the created texture.
-   * @throws CenturionException if the supplied pointer is null.
-   * @since 3.0.0
+   * @copydoc Texture(gsl::owner<SDL_Texture*>)
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<Texture> shared(
-      Owner<SDL_Texture*> texture);
+  CENTURION_QUERY
+  static auto shared(gsl::owner<SDL_Texture*> texture)
+      -> std::shared_ptr<Texture>;
 
   /**
-   * Creates and returns a shared texture by loading it from a file.
-   *
-   * @param renderer the renderer that will be used when loading the texture.
-   * @param path the file path of the texture, may not be null.
-   * @return a shared pointer to the created texture.
-   * @throws CenturionException if the texture cannot be loaded.
-   * @since 3.0.0
+   * @copydoc Texture(const basic_renderer<T>&, gsl::czstring)
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
@@ -1494,14 +1488,7 @@ class Texture final {
   }
 
   /**
-   * Creates and returns a shared texture that is a copy of the supplied
-   * surface.
-   *
-   * @param renderer the associated renderer instance.
-   * @param surface the surface that the texture will be based on.
-   * @return a shared pointer to the created texture.
-   * @throws CenturionException if the texture cannot be loaded.
-   * @since 3.0.0
+   * @copydoc Texture(const basic_renderer<T>&, const Surface&)
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
@@ -1512,16 +1499,7 @@ class Texture final {
   }
 
   /**
-   * Creates and returns a shared pointer to an texture with the supplied
-   * characteristics.
-   *
-   * @param renderer the associated renderer that will be used.
-   * @param format the pixel format of the texture.
-   * @param access the access of the texture.
-   * @param size the size of the texture.
-   * @return a shared pointer to an texture.
-   * @throws CenturionException if the texture cannot be created.
-   * @since 3.1.0
+   * @copydoc Texture(const basic_renderer<T>&, PixelFormat, Access, area_i)
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
@@ -1533,15 +1511,19 @@ class Texture final {
   }
 
   /**
-   * Creates and returns a unique pointer to a texture based on the image at
-   * the specified path with the <code>Streaming</code> texture access.
+   * @brief Creates and returns a unique pointer to a texture.
+   *
+   * @details The create texture is based on the image at the specified path
+   * with the `Streaming` texture access.
    *
    * @param renderer the renderer that will be used to create the texture.
    * @param path the path of the image file to base the texture on.
    * @param format the pixel format that will be used by the texture.
+   *
    * @throws CenturionException if something goes wrong.
-   * @return a unique pointer to a texture with <code>Streaming</code>
-   * texture access.
+   *
+   * @return a unique pointer to a texture with `Streaming` texture access.
+   *
    * @since 4.0.0
    */
   template <typename T>
@@ -1580,182 +1562,224 @@ class Texture final {
   }
 
   /**
-   * Sets the color of the pixel at the specified coordinate. This method has
-   * no effect if the texture access isn't <code>Streaming</code> or if the
-   * coordinate is out-of-bounds.
+   * @brief Sets the color of the pixel at the specified coordinate.
+   *
+   * @details This method has no effect if the texture access isn't
+   * `Streaming` or if the coordinate is out-of-bounds.
    *
    * @param pixel the pixel that will be changed.
    * @param color the new color of the pixel.
+   *
    * @since 4.0.0
    */
-  CENTURION_API void set_pixel(IPoint pixel, const Color& color) noexcept;
+  CENTURION_API
+  void set_pixel(IPoint pixel, const Color& color) noexcept;
 
   /**
-   * Sets the alpha value of the texture.
+   * @brief Sets the alpha value of the texture.
    *
    * @param alpha the alpha value, in the range [0, 255].
+   *
    * @since 3.0.0
    */
-  CENTURION_API void set_alpha(Uint8 alpha) noexcept;
+  CENTURION_API
+  void set_alpha(Uint8 alpha) noexcept;
 
   /**
-   * Sets the blend mode that will be used by the texture.
+   * @brief Sets the blend mode that will be used by the texture.
    *
    * @param mode the blend mode that will be used.
+   *
    * @since 3.0.0
    */
-  CENTURION_API void set_blend_mode(BlendMode mode) noexcept;
+  CENTURION_API
+  void set_blend_mode(BlendMode mode) noexcept;
 
   /**
-   * Sets the color modulation of the texture. Note, the alpha component in the
-   * color struct is ignored by this method.
+   * @brief Sets the color modulation of the texture.
+   *
+   * @note The alpha component in the color struct is ignored by this method.
    *
    * @param color the color that will be used to modulate the color of the
    * texture.
+   *
    * @since 3.0.0
    */
-  CENTURION_API void set_color_mod(Color color) noexcept;
+  CENTURION_API
+  void set_color_mod(Color color) noexcept;
 
   /**
-   * Sets the scale mode that will be used by the texture.
+   * @brief Sets the scale mode that will be used by the texture.
    *
    * @param mode the scale mode that will be used.
+   *
    * @since 4.0.0
    */
-  CENTURION_API void set_scale_mode(ScaleMode mode) noexcept;
+  CENTURION_API
+  void set_scale_mode(ScaleMode mode) noexcept;
 
   /**
-   * Returns the pixel format that is used by the texture.
+   * @brief Returns the pixel format that is used by the texture.
    *
    * @return the pixel format that is used by the texture.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API PixelFormat format() const noexcept;
+  CENTURION_QUERY
+  auto format() const noexcept -> PixelFormat;
 
   /**
-   * Returns the texture access of the texture.
+   * @brief Returns the texture access of the texture.
    *
    * @return the texture access of the texture.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API Access access() const noexcept;
+  CENTURION_QUERY
+  auto access() const noexcept -> Access;
 
   /**
-   * Returns the width of the texture.
+   * @brief Returns the width of the texture.
    *
    * @return the width of the texture.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API int width() const noexcept;
+  CENTURION_QUERY
+  auto width() const noexcept -> int;
 
   /**
-   * Returns the height of the texture.
+   * @brief Returns the height of the texture.
    *
    * @return the height of the texture.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API int height() const noexcept;
+  CENTURION_QUERY
+  auto height() const noexcept -> int;
 
   /**
-   * Returns the size (width and height) of the texture.
+   * @brief Returns the size of the texture.
    *
    * @return the size of the texture.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API area_i size() const noexcept;
+  CENTURION_QUERY
+  auto size() const noexcept -> area_i;
 
   /**
-   * Indicates whether or not the texture is a possible render target.
+   * @brief Indicates whether or not the texture is a possible render target.
    *
    * @return `true` if the texture is a possible render target; `false`
    * otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool is_target() const noexcept;
+  CENTURION_QUERY
+  auto is_target() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the texture has static texture access.
+   * @brief Indicates whether or not the texture has static texture access.
    *
    * @return `true` if the texture has static texture access.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool is_static() const noexcept;
+  CENTURION_QUERY
+  auto is_static() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the texture has streaming texture access.
+   * @brief Indicates whether or not the texture has streaming texture access.
    *
    * @return `true` if the texture has streaming texture access; `false`
    * otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool is_streaming() const noexcept;
+  CENTURION_QUERY
+  auto is_streaming() const noexcept -> bool;
 
   /**
-   * Returns the alpha value of the texture.
+   * @brief Returns the alpha value of the texture.
    *
    * @return the alpha value of the texture.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API Uint8 alpha() const noexcept;
+  CENTURION_QUERY
+  auto alpha() const noexcept -> Uint8;
 
   /**
-   * Returns the blend mode of the texture.
+   * @brief Returns the blend mode of the texture.
    *
    * @return the blend mode of the texture.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API BlendMode blend_mode() const noexcept;
+  CENTURION_QUERY
+  auto blend_mode() const noexcept -> BlendMode;
 
   /**
-   * Returns the color modulation of the texture.
+   * @brief Returns the color modulation of the texture.
    *
    * @return the modulation of the texture.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API Color color_mod() const noexcept;
+  CENTURION_QUERY
+  auto color_mod() const noexcept -> Color;
 
   /**
-   * Returns the scale mode that is used by the texture.
+   * @brief Returns the scale mode that is used by the texture.
    *
    * @return the scale mode that is used by the texture.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API ScaleMode scale_mode() const noexcept;
+  CENTURION_QUERY
+  auto scale_mode() const noexcept -> ScaleMode;
 
   /**
-   * Returns a string representation of the texture.
+   * @brief Returns a string representation of the texture.
    *
    * @return a string representation of the texture.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API std::string to_string() const;
+  CENTURION_QUERY
+  auto to_string() const -> std::string;
 
   /**
-   * Returns a pointer to the internal SDL_Texture. Use of this method is
-   * not recommended, since it purposefully breaks const-correctness. However
-   * it is useful since many SDL calls use non-const pointers even when no
-   * change will be applied.
+   * @brief Returns a pointer to the associated `SDL_Texture`.
    *
-   * @return a pointer to the internal SDL_Texture.
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However it's useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated `SDL_Texture`.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] SDL_Texture* get() const noexcept { return m_texture; }
+  [[nodiscard]] auto get() const noexcept -> SDL_Texture* { return m_texture; }
 
   /**
-   * Returns a pointer to the internal SDL_Texture.
+   * @brief Converts to `SDL_Texture*`.
    *
-   * @return a pointer to the internal SDL_Texture.
+   * @return a pointer to the associated `SDL_Texture`.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] operator SDL_Texture*() noexcept { return m_texture; }
+  [[nodiscard]] explicit operator SDL_Texture*() noexcept { return m_texture; }
 
   /**
-   * Returns a pointer to the internal SDL_Texture.
+   * @brief Converts to `const SDL_Texture*`.
    *
-   * @return a pointer to the internal SDL_Texture.
+   * @return a pointer to the associated `SDL_Texture`.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] operator const SDL_Texture*() const noexcept
+  [[nodiscard]] explicit operator const SDL_Texture*() const noexcept
   {
     return m_texture;
   }
@@ -1764,39 +1788,49 @@ class Texture final {
   SDL_Texture* m_texture = nullptr;
 
   /**
-   * Destroys the internal texture instance. This method has no effect if the
-   * associated texture is already null.
+   * @brief Destroys the internal texture instance.
+   *
+   * @details This method has no effect if the associated texture is already
+   * null.
    *
    * @since 4.0.0
    */
   void destroy() noexcept;
 
   /**
-   * Moves the contents of the supplied texture instance into this instance.
+   * @brief Moves the contents of the supplied texture instance into this
+   * instance.
    *
    * @param other the instance that will be moved.
+   *
    * @since 4.0.0
    */
   void move(Texture&& other) noexcept;
 
   /**
-   * Locks the texture for write-only pixel access. This method is only
-   * applicable if the texture access of the texture is <code>Streaming</code>.
+   * @brief Locks the texture for write-only pixel access.
+   *
+   * @remarks This method is only applicable if the texture access of the
+   * texture is `Streaming`.
    *
    * @param pixels this will be filled with a pointer to the locked pixels.
    * @param pitch This is filled in with the pitch of the locked pixels, can
    * safely be null if it isn't needed.
+   *
    * @return `true` if all went well; `false` otherwise.
-   * @since 4.0.0
-   */
-  CENTURION_API bool lock(Uint32** pixels, int* pitch = nullptr) noexcept;
-
-  /**
-   * Unlocks the texture.
    *
    * @since 4.0.0
    */
-  CENTURION_API void unlock() noexcept;
+  CENTURION_API
+  auto lock(Uint32** pixels, int* pitch = nullptr) noexcept -> bool;
+
+  /**
+   * @brief Unlocks the texture.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void unlock() noexcept;
 };
 
 static_assert(std::is_final_v<Texture>);

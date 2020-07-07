@@ -510,7 +510,7 @@ TEST_CASE("info", "[renderer]")
     const SDL_RendererInfo info = *optInfo;
 
     SDL_RendererInfo sdlInfo;
-    SDL_GetRendererInfo(renderer, &sdlInfo);
+    SDL_GetRendererInfo(renderer.get(), &sdlInfo);
 
     CHECK_THAT(info.name, Catch::Equals(sdlInfo.name));
     CHECK(info.flags == sdlInfo.flags);
@@ -553,7 +553,7 @@ TEST_CASE("blend_mode", "[renderer]")
     const auto mode = renderer.blend_mode();
 
     SDL_BlendMode sdlMode;
-    SDL_GetRenderDrawBlendMode(renderer, &sdlMode);
+    SDL_GetRenderDrawBlendMode(renderer.get(), &sdlMode);
 
     CHECK(mode == sdlMode);
   });
@@ -783,7 +783,7 @@ TEST_CASE("Renderer to SDL_Renderer*", "[renderer]")
   {
     ctn::Window window;
     const ctn::renderer renderer{window};
-    const SDL_Renderer* sdlRenderer = renderer;
+    const auto* sdlRenderer = static_cast<const SDL_Renderer*>(renderer);
     CHECK(sdlRenderer);
   }
 
@@ -791,7 +791,7 @@ TEST_CASE("Renderer to SDL_Renderer*", "[renderer]")
   {
     ctn::Window window;
     ctn::renderer renderer{window};
-    SDL_Renderer* sdlRenderer = renderer;
+    auto* sdlRenderer = static_cast<SDL_Renderer*>(renderer);
     CHECK(sdlRenderer);
   }
 }

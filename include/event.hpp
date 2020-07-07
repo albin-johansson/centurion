@@ -197,6 +197,8 @@ template <typename T, typename E>
  * @see `SDL_AudioDeviceEvent`
  *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class AudioDeviceEvent : public CommonEvent<SDL_AudioDeviceEvent> {
  public:
@@ -278,15 +280,18 @@ class AudioDeviceEvent : public CommonEvent<SDL_AudioDeviceEvent> {
 static_assert(validate_event<AudioDeviceEvent, SDL_AudioDeviceEvent>());
 
 /**
- * The ControllerAxisEvent represents an event triggered by game controller
- * axis motion.
+ * @class ControllerAxisEvent
+ *
+ * @brief Represents an event triggered by game controller axis motion.
  *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
  public:
   /**
-   * Creates a default-initialized controller axis event.
+   * @brief Creates a default-initialized controller axis event.
    *
    * @since 4.0.0
    */
@@ -294,77 +299,78 @@ class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
   ControllerAxisEvent() noexcept;
 
   /**
-   * Creates a controller axis event that is based on the supplied SDL
+   * @brief Creates a controller axis event that is based on the supplied SDL
    * controller axis event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   ControllerAxisEvent(const SDL_ControllerAxisEvent& event) noexcept;
 
   /**
-   * Creates a controller axis event by moving the supplied SDL controller
-   * axis event.
-   *
-   * @param event the SDL controller axis event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  ControllerAxisEvent(SDL_ControllerAxisEvent&& event) noexcept;
-
-  /**
-   * Sets the joystick instance ID associated with the event.
+   * @brief Sets the joystick instance ID associated with the event.
    *
    * @param which the instance ID of the joystick that the event is
    * associated with.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_which(JoystickID which) noexcept;
 
   /**
-   * Sets the game controller axis value associated with the event.
+   * @brief Sets the game controller axis value associated with the event.
    *
    * @param axis the game controller axis value associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_axis(GameControllerAxis axis) noexcept;
 
   /**
-   * Sets the axis value associated with the event.
+   * @brief Sets the axis value associated with the event.
    *
    * @param value the new axis value associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_value(Sint16 value) noexcept;
 
   /**
-   * Returns the joystick instance ID associated with the event.
+   * @brief Returns the joystick instance ID associated with the event.
    *
    * @return the joystick instance ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY JoystickID which() const noexcept;
+  CENTURION_QUERY
+  auto which() const noexcept -> JoystickID;
 
   /**
-   * Returns the game controller axis value associated with the event.
+   * @brief Returns the game controller axis value associated with the event.
    *
    * @return the game controller axis value associated with the event.
+   *
+   * @see `GameControllerAxis`
+   *
    * @since 4.0.0
-   * @see GameControllerAxis
    */
-  CENTURION_QUERY GameControllerAxis axis() const noexcept;
+  CENTURION_QUERY
+  auto axis() const noexcept -> GameControllerAxis;
 
   /**
-   * Returns the axis value associated with the event.
+   * @brief Returns the axis value associated with the event.
    *
    * @return the axis value associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint16 value() const noexcept;
+  CENTURION_QUERY
+  auto value() const noexcept -> Sint16;
 };
 
 static_assert(validate_event<ControllerAxisEvent, SDL_ControllerAxisEvent>());

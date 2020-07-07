@@ -1,12 +1,9 @@
 #ifndef CENTURION_CONTROLLER_AXIS_EVENT_SOURCE
 #define CENTURION_CONTROLLER_AXIS_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 ControllerAxisEvent::ControllerAxisEvent() noexcept : CommonEvent{}
@@ -16,12 +13,6 @@ CENTURION_DEF
 ControllerAxisEvent::ControllerAxisEvent(
     const SDL_ControllerAxisEvent& event) noexcept
     : CommonEvent{event}
-{}
-
-CENTURION_DEF
-ControllerAxisEvent::ControllerAxisEvent(
-    SDL_ControllerAxisEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF
@@ -43,24 +34,23 @@ void ControllerAxisEvent::set_value(Sint16 value) noexcept
 }
 
 CENTURION_DEF
-JoystickID ControllerAxisEvent::which() const noexcept
+auto ControllerAxisEvent::which() const noexcept -> JoystickID
 {
   return m_event.which;
 }
 
 CENTURION_DEF
-GameControllerAxis ControllerAxisEvent::axis() const noexcept
+auto ControllerAxisEvent::axis() const noexcept -> GameControllerAxis
 {
   return static_cast<GameControllerAxis>(m_event.axis);
 }
 
 CENTURION_DEF
-Sint16 ControllerAxisEvent::value() const noexcept
+auto ControllerAxisEvent::value() const noexcept -> Sint16
 {
   return m_event.value;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_CONTROLLER_AXIS_EVENT_SOURCE

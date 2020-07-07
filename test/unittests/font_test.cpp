@@ -342,14 +342,14 @@ TEST_CASE("Font to TTF_Font*", "[Font]")
   SECTION("Non-const")
   {
     Font font{type_writer_path, 12};
-    TTF_Font* sdlFont = font;
+    auto* sdlFont = static_cast<TTF_Font*>(font);
     CHECK(sdlFont);
   }
 
   SECTION("Const")
   {
     const Font font{type_writer_path, 12};
-    const TTF_Font* sdlFont = font;
+    const auto* sdlFont = static_cast<const TTF_Font*>(font);
     CHECK(sdlFont);
   }
 }

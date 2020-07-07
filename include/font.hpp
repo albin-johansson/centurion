@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file font.hpp
+ *
+ * @brief Provides the font API.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_FONT_HEADER
 #define CENTURION_FONT_HEADER
 
@@ -40,9 +52,13 @@
 namespace centurion {
 
 /**
- * The GlyphMetrics struct provides metrics about a glyph in a font.
+ * @struct GlyphMetrics
+ *
+ * @brief Provides metrics about a glyph in a font.
  *
  * @since 4.0.0
+ *
+ * @headerfile font.hpp
  */
 struct GlyphMetrics final {
   int minX;
@@ -53,17 +69,24 @@ struct GlyphMetrics final {
 };
 
 /**
- * The Font class represents a TrueType font.
+ * @brief Represents a True Type font.
+ *
+ * @see `TTF_Font`
  *
  * @since 3.0.0
+ *
+ * @headerfile font.hpp
  */
 class Font final {
  public:
   /**
-   * The Hint enum class represents different possible TrueType font hint
-   * values.
+   * @enum Hint
+   *
+   * @brief Provides different possible TrueType font hint values.
    *
    * @since 3.1.0
+   *
+   * @headerfile font.hpp
    */
   enum class Hint {
     Normal = TTF_HINTING_NORMAL,
@@ -73,386 +96,457 @@ class Font final {
   };
 
   /**
-   * Creates a Font based on the .ttf-file at the specified path.
+   * @brief Creates a Font based on the `.ttf`-file at the specified path.
    *
    * @param file the file path of the TrueType font file.
    * @param size the font size, must be greater than zero.
+   *
    * @throws CenturionException if the font cannot be loaded or if the supplied
    * size isn't greater than zero.
-   * @since 3.0.0
-   */
-  CENTURION_API Font(CZString file, int size);
-
-  /**
-   * The copy constructor is deleted for font instances.
    *
    * @since 3.0.0
    */
-  Font(const Font&) noexcept = delete;
+  CENTURION_API
+  Font(gsl::czstring file, int size);
+
+  Font(const Font&) = delete;
 
   /**
-   * Creates a font by moving the supplied font.
+   * @brief Creates a font by moving the supplied font.
    *
-   * @param other the font that will have its fields moved.
-   * @since 3.0.0
-   */
-  CENTURION_API Font(Font&& other) noexcept;
-
-  CENTURION_API ~Font() noexcept;
-
-  /**
-   * The copy assignment operator is deleted for font instances.
+   * @param other the font that will be moved.
    *
    * @since 3.0.0
    */
-  Font& operator=(const Font&) noexcept = delete;
+  CENTURION_API
+  Font(Font&& other) noexcept;
+
+  auto operator=(const Font&) -> Font& = delete;
 
   /**
-   * Moves the supplied font into this font.
+   * @brief Moves the supplied font into this font.
    *
-   * @param other the font that will have its fields moved.
-   * @return the created font.
-   * @since 3.0.0
-   */
-  CENTURION_API Font& operator=(Font&& other) noexcept;
-
-  /**
-   * Creates and returns a unique pointer to a font instance.
+   * @param other the font that will be moved.
    *
-   * @param file the file path of the TrueType font file.
-   * @param size the font size, must be greater than zero.
-   * @return a unique pointer to a font instance.
-   * @throws CenturionException if the font cannot be loaded or if the supplied
-   * size isn't greater than zero.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static UniquePtr<Font> unique(CZString file,
-                                                            int size);
-
-  /**
-   * Creates and returns a shared pointer to a font instance.
-   *
-   * @param file the file path of the TrueType font file.
-   * @param size the font size, must be greater than zero.
-   * @return a shared pointer to a font instance.
-   * @throws CenturionException if the font cannot be loaded or if the supplied
-   * size isn't greater than zero.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static SharedPtr<Font> shared(CZString file,
-                                                            int size);
-
-  /**
-   * Resets the style of the font.
+   * @return the font that absorbed the moved font.
    *
    * @since 3.0.0
    */
-  CENTURION_API void reset() noexcept;
+  CENTURION_API
+  auto operator=(Font&& other) noexcept -> Font&;
+
+  CENTURION_API
+  ~Font() noexcept;
 
   /**
-   * Sets the bold property of the font.
+   * @copydoc Font(gsl::czstring, int)
+   */
+  CENTURION_QUERY
+  static auto unique(gsl::czstring file, int size) -> std::unique_ptr<Font>;
+
+  /**
+   * @copydoc Font(gsl::czstring, int)
+   */
+  CENTURION_QUERY
+  static auto shared(gsl::czstring file, int size) -> std::shared_ptr<Font>;
+
+  /**
+   * @brief Resets the style of the font.
    *
-   * @param bold true if the font should be bold; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_bold(bool bold) noexcept;
+  CENTURION_API
+  void reset() noexcept;
 
   /**
-   * Sets the italic property of the font.
+   * @brief Sets whether the font is bold.
    *
-   * @param italic true if the font should be italic; false otherwise.
+   * @param bold `true` if the font should be bold; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  CENTURION_API void set_italic(bool italic) noexcept;
+  CENTURION_API
+  void set_bold(bool bold) noexcept;
 
   /**
-   * Sets the underlined property of the font.
+   * @brief Sets whether the font is italic.
    *
-   * @param underlined true if the font should be underlined; false otherwise.
+   * @param italic `true` if the font should be italic; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  CENTURION_API void set_underlined(bool underlined) noexcept;
+  CENTURION_API
+  void set_italic(bool italic) noexcept;
 
   /**
-   * Sets the strikethrough property of the font.
+   * @brief Sets whether the font is underlined.
    *
-   * @param strikethrough true if the font should be strikethrough; false
+   * @param underlined `true` if the font should be underlined; `false`
    * otherwise.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_strikethrough(bool strikethrough) noexcept;
-
-  /**
-   * Sets the outlined property of the font.
    *
-   * @param outlined true if the font should be outlined; false otherwise.
    * @since 3.0.0
    */
-  CENTURION_API void set_outlined(bool outlined) noexcept;
+  CENTURION_API
+  void set_underlined(bool underlined) noexcept;
 
   /**
-   * Sets the TrueType font hinting.
+   * @brief Sets whether the font is strikethrough.
+   *
+   * @param strikethrough `true` if the font should be strikethrough; `false`
+   * otherwise.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  void set_strikethrough(bool strikethrough) noexcept;
+
+  /**
+   * @brief Sets the outlined property of the font.
+   *
+   * @param outlined `true` if the font should be outlined; `false` otherwise.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  void set_outlined(bool outlined) noexcept;
+
+  /**
+   * @brief Sets the TrueType font hint of the font.
    *
    * @param hint the font hinting that will be used.
+   *
    * @since 3.1.0
    */
-  CENTURION_API void set_font_hinting(Hint hint) noexcept;
+  CENTURION_API
+  void set_font_hinting(Hint hint) noexcept;
 
   /**
-   * Sets whether or not font kerning is allowed. Kerning is the process of
-   * adjusting the spacing between certain characters in order to improve the
-   * appearance of a font.
+   * @brief Sets whether or not font kerning is allowed.
    *
-   * @param kerning true if kerning should be allowed; false otherwise.
+   * @details Kerning is the process of adjusting the spacing between certain
+   * characters in order to improve the appearance of a font.
+   *
+   * @param kerning `true` if kerning should be allowed; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_API void set_kerning(bool kerning) noexcept;
+  CENTURION_API
+  void set_kerning(bool kerning) noexcept;
 
   /**
-   * Returns the maximum height of a character in this font. This is usually the
-   * same as the point size.
+   * @brief Returns the maximum height of a character in this font.
+   *
+   * @details This is usually the same as the point size.
    *
    * @return the maximum height of a character in this font.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API int height() const noexcept;
+  CENTURION_QUERY
+  auto height() const noexcept -> int;
 
   /**
-   * Returns the offset from the baseline to the bottom of the font characters.
-   * The returned value is negative, relative to the baseline.
+   * @brief Returns the offset from the baseline to the bottom of the font
+   * characters.
+   *
+   * @details The returned value is negative, relative to the baseline.
    *
    * @return the offset from the baseline to the bottom of the font characters.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API int descent() const noexcept;
+  CENTURION_QUERY
+  auto descent() const noexcept -> int;
 
   /**
-   * Returns the offset from the baseline to the top of the font characters. The
-   * returned value is positive, relative to the baseline.
+   * @brief Returns the offset from the baseline to the top of the font
+   * characters.
+   *
+   * @details The returned value is positive, relative to the baseline.
    *
    * @return the offset from the baseline to the top of the font characters.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API int ascent() const noexcept;
+  CENTURION_QUERY
+  auto ascent() const noexcept -> int;
 
   /**
-   * Returns the recommended pixel height of rendered text in the font. The
-   * returned value is usually larger than the height of the font.
+   * @brief Returns the recommended pixel height of rendered text in the font.
+   *
+   * @details The returned value is usually larger than the height of the font.
    *
    * @return Returns the recommended pixel height of rendered text in the font.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API int line_skip() const noexcept;
+  CENTURION_QUERY
+  auto line_skip() const noexcept -> int;
 
   /**
-   * Returns the number of available font faces in the font.
+   * @brief Returns the number of available font faces in the font.
    *
    * @return the number of available font faces in the font.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API int font_faces() const noexcept;
+  CENTURION_QUERY
+  auto font_faces() const noexcept -> int;
 
   /**
-   * Returns the TrueType font hinting of the font. Set to FontHint::Normal by
-   * default.
+   * @brief Returns the TrueType font hinting of the font.
+   *
+   * @detauks This property is set to `Normal` by default.
    *
    * @return the TrueType font hinting of the font.
+   *
    * @since 3.1.0
    */
-  [[nodiscard]] CENTURION_API Hint font_hinting() const noexcept;
+  CENTURION_QUERY
+  auto font_hinting() const noexcept -> Hint;
 
   /**
-   * Indicates whether or not kerning is being used.
+   * @brief Indicates whether or not kerning is being used.
    *
-   * @return true if kerning is being used by the font; false otherwise.
+   * @return `true` if kerning is being used by the font; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API bool kerning() const noexcept;
+  CENTURION_QUERY
+  auto kerning() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the font is bold.
+   * @brief Indicates whether or not the font is bold.
    *
-   * @return true if the font is bold; false otherwise.
+   * @return `true` if the font is bold; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool bold() const noexcept;
+  CENTURION_QUERY
+  auto bold() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the font is italic.
+   * @brief Indicates whether or not the font is italic.
    *
-   * @return true if the font is italic; false otherwise.
+   * @return `true` if the font is italic; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool italic() const noexcept;
+  CENTURION_QUERY
+  auto italic() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the font is underlined.
+   * @brief Indicates whether or not the font is underlined.
    *
-   * @return true if the font is underlined; false otherwise.
+   * @return `true` if the font is underlined; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool underlined() const noexcept;
+  CENTURION_QUERY
+  auto underlined() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the font is a strikethrough font.
+   * @brief Indicates whether or not the font is a strikethrough font.
    *
-   * @return true if the font is a strikethrough font; false otherwise.
+   * @return `true` if the font is a strikethrough font; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool strikethrough() const noexcept;
+  CENTURION_QUERY
+  auto strikethrough() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the font is outlined.
+   * @brief Indicates whether or not the font is outlined.
    *
-   * @return true if the font is outlined; false otherwise.
+   * @return `true` if the font is outlined; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool outlined() const noexcept;
+  CENTURION_QUERY
+  auto outlined() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the font is fixed width.
+   * @brief Indicates whether or not the font is fixed width.
    *
-   * @return true if the font is fixed width; false otherwise.
+   * @return `true` if the font is fixed width; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool is_fixed_width() const noexcept;
+  CENTURION_QUERY
+  auto is_fixed_width() const noexcept -> bool;
 
   /**
-   * Returns the kerning amount between two glyphs in the font, if kerning
-   * would be enabled. In other words, you can use this method to obtain the
+   * @brief Returns the kerning amount between two glyphs in the font, if
+   * kerning would be enabled.
+   *
+   * @details In other words, you can use this method to obtain the
    * kerning amount between, for instance, the characters 'a' and 'V' if they
    * were to be rendered next to each other.
    *
    * @param firstGlyph the first glyph.
    * @param secondGlyph the second glyph.
+   *
    * @return the kerning amount between to glyphs in the font.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API int kerning_amount(
-      Uint16 firstGlyph,
-      Uint16 secondGlyph) const noexcept;
+  CENTURION_QUERY
+  auto kerning_amount(Uint16 firstGlyph, Uint16 secondGlyph) const noexcept
+      -> int;
 
   /**
-   * Indicates whether or not the specified glyph is available in the font.
+   * @brief Indicates whether or not the specified glyph is available in the
+   * font.
    *
    * @param glyph the unicode glyph that will be checked.
-   * @return true if the glyph is available in the font; false otherwise.
+   *
+   * @return `true` if the glyph is available in the font; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API bool is_glyph_provided(
-      Uint16 glyph) const noexcept;
+  CENTURION_QUERY
+  auto is_glyph_provided(Uint16 glyph) const noexcept -> bool;
 
   /**
-   * Returns the metrics of the specified glyph in this font.
+   * @brief Returns the metrics of the specified glyph in this font.
    *
    * @param glyph the glyph to obtain the metrics of.
+   *
    * @return the metrics of the specified glyph; nothing if the metrics
    * couldn't be obtained.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API Optional<GlyphMetrics> glyph_metrics(
-      Uint16 glyph) const noexcept;
+  CENTURION_QUERY
+  auto glyph_metrics(Uint16 glyph) const noexcept -> Optional<GlyphMetrics>;
 
   /**
-   * Returns the family name of the font.
+   * @brief Returns the family name of the font.
    *
    * @return the family name of the font.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API CZString family_name() const noexcept;
+  CENTURION_QUERY
+  auto family_name() const noexcept -> gsl::czstring;
 
   /**
-   * Returns the font face style name of the font. This information may not be
+   * @brief Returns the font face style name of the font.
+   *
+   * @note This information may not be available.
+   *
+   * @return the font face style name of the font; `nullptr` if it isn't
    * available.
    *
-   * @return the font face style name of the font; null if there is none
-   * available.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API CZString style_name() const noexcept;
+  CENTURION_QUERY
+  auto style_name() const noexcept -> gsl::czstring;
 
   /**
-   * Returns the width of the supplied string, if it was rendered using the
-   * font.
+   * @brief Returns the width of the supplied string, if it was rendered using
+   * the font.
    *
-   * @param s the string to determine the width of.
+   * @param string the string to determine the width of.
+   *
    * @return the width of the supplied string, if it was rendered using the
    * font. The returned value is 0 if the string is null.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API int string_width(CZString s) const noexcept;
+  CENTURION_QUERY
+  auto string_width(gsl::czstring string) const noexcept -> int;
 
   /**
-   * Returns the height of the supplied string, if it was rendered using the
-   * font.
+   * @brief Returns the height of the supplied string, if it was rendered
+   * using the font.
    *
-   * @param s the string to determine the height of.
+   * @param string the string to determine the height of.
+   *
    * @return the height of the supplied string, if it was rendered using the
    * font. The returned value is 0 if the string is null.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API int string_height(CZString s) const noexcept;
+  CENTURION_QUERY
+  auto string_height(gsl::czstring string) const noexcept -> int;
 
   /**
-   * Returns the size of the supplied string, if it was rendered using the font.
+   * @brief Returns the size of the supplied string, if it was rendered using
+   * the font.
    *
    * @param s the string to determine the size of.
+   *
    * @return the size of the string, if it was rendered using the font. The
    * returned size is 0x0 if the supplied string is null.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API area_i string_size(CZString s) const noexcept;
+  CENTURION_QUERY
+  auto string_size(gsl::czstring s) const noexcept -> area_i;
 
   /**
-   * Returns the compile-time version of SDL2_ttf that is being used.
+   * @brief Returns the compile-time version of SDL2_ttf that is being used.
    *
    * @return the compile-time version of SDL2_ttf that is being used.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static SDL_version ttf_version() noexcept;
+  CENTURION_QUERY
+  static auto ttf_version() noexcept -> SDL_version;
 
   /**
-   * Returns a textual representation of the font instance.
+   * @brief Returns a textual representation of the font instance.
    *
    * @return a textual representation of the font instance.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API std::string to_string() const;
+  CENTURION_QUERY
+  auto to_string() const -> std::string;
 
   /**
-   * Returns the size of the font.
+   * @brief Returns the size of the font.
    *
    * @return the size of the font.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] int size() const noexcept { return m_size; }
+  [[nodiscard]] auto size() const noexcept -> int { return m_size; }
 
   /**
-   * Returns a pointer to the internal TTF_Font. Use of this method is
-   * not recommended, since it purposefully breaks const-correctness. However
-   * it is useful since many SDL calls use non-const pointers even when no
-   * change will be applied.
+   * @brief Returns a pointer to the associated `TTF_Font`.
    *
-   * @return a pointer to the internal TTF_Font.
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However, it's useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated `TTF_Font`.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] TTF_Font* get() const noexcept { return m_font; }
+  [[nodiscard]] auto get() const noexcept -> TTF_Font* { return m_font; }
 
   /**
-   * Converts to TTF_Font*.
+   * @brief Converts to `TTF_Font*`.
    *
-   * @return a pointer to the internal TTF_Font instance.
+   * @return a pointer to the associated `TTF_Font` instance.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] operator TTF_Font*() noexcept { return m_font; }
+  [[nodiscard]] explicit operator TTF_Font*() noexcept { return m_font; }
 
   /**
-   * Converts to TTF_Font*.
+   * @brief Converts to `const TTF_Font*`.
    *
-   * @return a pointer to the internal TTF_Font instance.
+   * @return a pointer to the associated `TTF_Font` instance.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] operator const TTF_Font*() const noexcept { return m_font; }
+  [[nodiscard]] explicit operator const TTF_Font*() const noexcept
+  {
+    return m_font;
+  }
 
  private:
   TTF_Font* m_font = nullptr;
@@ -460,36 +554,41 @@ class Font final {
   int m_size = 0;
 
   /**
-   * Destroys the resources associated with the font.
+   * @brief Destroys the resources associated with the font.
    *
    * @since 4.0.0
    */
   void destroy() noexcept;
 
   /**
-   * Moves the contents of the supplied font instance into this instance.
+   * @brief Moves the contents of the supplied font instance into this instance.
    *
    * @param other the instance that will be moved.
+   *
    * @since 4.0.0
    */
   void move(Font&& other) noexcept;
 
   /**
-   * Enables the font style associated with the supplied bit mask. The possible
-   * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
-   * TTF_STYLE_STRIKETHROUGH.
+   * @brief Enables the font style associated with the supplied bit mask.
+   *
+   * @details The possible values are `TTF_STYLE_BOLD`, `TTF_STYLE_ITALIC`,
+   * `TTF_STYLE_UNDERLINE` and `TTF_STYLE_STRIKETHROUGH`.
    *
    * @param mask the bit mask of the font style to enable.
+   *
    * @since 3.0.0
    */
   void add_style(int mask) noexcept;
 
   /**
-   * Removes the font style associated with the supplied bit mask. The possible
-   * values are TTF_STYLE_BOLD, TTF_STYLE_ITALIC, TTF_STYLE_UNDERLINE and
-   * TTF_STYLE_STRIKETHROUGH.
+   * @brief Removes the font style associated with the supplied bit mask.
+   *
+   * @details The possible values are `TTF_STYLE_BOLD`, `TTF_STYLE_ITALIC`,
+   * `TTF_STYLE_UNDERLINE` and `TTF_STYLE_STRIKETHROUGH`.
    *
    * @param mask the bit mask of the font style to disable.
+   *
    * @since 3.0.0
    */
   void remove_style(int mask) noexcept;
@@ -500,7 +599,6 @@ static_assert(std::is_nothrow_move_constructible_v<Font>);
 static_assert(std::is_nothrow_move_assignable_v<Font>);
 static_assert(!std::is_copy_constructible_v<Font>);
 static_assert(!std::is_copy_assignable_v<Font>);
-static_assert(std::is_convertible_v<Font, TTF_Font*>);
 
 }  // namespace centurion
 

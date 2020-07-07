@@ -7,7 +7,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/window.hpp
         ${CTN_INCLUDE_DIR}/font.hpp
         ${CTN_INCLUDE_DIR}/renderer.hpp
-        ${CTN_INCLUDE_DIR}/texture.hpp
         ${CTN_INCLUDE_DIR}/centurion_exception.hpp
         ${CTN_INCLUDE_DIR}/centurion_api.hpp
         ${CTN_INCLUDE_DIR}/centurion.hpp

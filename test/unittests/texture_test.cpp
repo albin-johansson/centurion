@@ -4,6 +4,7 @@
 
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "colors.hpp"
 #include "log.hpp"
@@ -16,6 +17,26 @@ using namespace centurion;
 static constexpr auto* pandaPath = "resources/panda.png";
 static constexpr int pandaWidth = 200;
 static constexpr int pandaHeight = 150;
+
+namespace {
+
+template <typename Lambda>
+inline void test(Lambda&& lambda)
+{
+  ctn::Window window;
+  ctn::renderer renderer{window};
+  lambda(renderer);
+}
+
+template <typename Lambda>
+inline void test_with_window(Lambda&& lambda)
+{
+  ctn::Window window;
+  ctn::renderer renderer{window};
+  lambda(renderer, window);
+}
+
+}  // namespace
 
 TEST_CASE("Access enum values", "[Texture]")
 {
@@ -49,338 +70,334 @@ TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
 {
   CHECK_THROWS_AS(Texture(nullptr), CenturionException);
 
-  Window window;
-  Renderer renderer{window};
-  SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.get(), pandaPath);
-  CHECK_NOTHROW(Texture(sdlTexture));
+  test([](ctn::renderer& renderer) {
+    SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.get(), pandaPath);
+    CHECK_NOTHROW(Texture(sdlTexture));
+  });
 }
 
 TEST_CASE("Texture(Renderer&, char*)", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
+  test([](ctn::renderer& renderer) {
+    CHECK_THROWS_AS(Texture(renderer, nullptr), CenturionException);
+    CHECK_THROWS_AS(Texture(renderer, "badpath"), CenturionException);
 
-  CHECK_THROWS_AS(Texture(renderer, nullptr), CenturionException);
-  CHECK_THROWS_AS(Texture(renderer, "badpath"), CenturionException);
-
-  Texture texture{renderer, pandaPath};
-  CHECK(texture.width() == pandaWidth);
-  CHECK(texture.height() == pandaHeight);
+    Texture texture{renderer, pandaPath};
+    CHECK(texture.width() == pandaWidth);
+    CHECK(texture.height() == pandaHeight);
+  });
 }
 
 TEST_CASE("Texture(Renderer&, Surface&", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Surface surface{pandaPath};
-  CHECK_NOTHROW(Texture{renderer, surface});
+  test([](ctn::renderer& renderer) {
+    Surface surface{pandaPath};
+    CHECK_NOTHROW(Texture{renderer, surface});
+  });
 }
 
 TEST_CASE("Texture(Renderer&, PixelFormat, Access, int, int)", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
+  test([](ctn::renderer& renderer) {
+    const auto pixelFormat = PixelFormat::RGBA32;
+    const auto access = Texture::Access::Static;
+    const auto width = 145;
+    const auto height = 85;
 
-  const auto pixelFormat = PixelFormat::RGBA32;
-  const auto access = Texture::Access::Static;
-  const auto width = 145;
-  const auto height = 85;
-  Texture texture{renderer, pixelFormat, access, {width, height}};
-  CHECK(pixelFormat == texture.format());
-  CHECK(access == texture.access());
-  CHECK(width == texture.width());
-  CHECK(height == texture.height());
+    Texture texture{renderer, pixelFormat, access, {width, height}};
+
+    CHECK(pixelFormat == texture.format());
+    CHECK(access == texture.access());
+    CHECK(width == texture.width());
+    CHECK(height == texture.height());
+  });
 }
 
 TEST_CASE("Texture(Texture&&)", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
+    Texture other = std::move(texture);
 
-  Texture texture{renderer, pandaPath};
-  Texture other = std::move(texture);
-
-  CHECK(!texture.get());
-  CHECK(other.get());
+    CHECK(!texture.get());
+    CHECK(other.get());
+  });
 }
 
 TEST_CASE("Texture::operator=(Texture&&)", "[Texture]")
 {
   SECTION("Self-assignment")
   {
-    Window window;
-    Renderer renderer{window};
+    test([](ctn::renderer& renderer) {
+      Texture texture{renderer, pandaPath};
 
-    Texture texture{renderer, pandaPath};
-
-    texture = std::move(texture);
-    CHECK(texture.get());
+      texture = std::move(texture);
+      CHECK(texture.get());
+    });
   }
 
   SECTION("Normal usage")
   {
-    Window window;
-    Renderer renderer{window};
+    test([](ctn::renderer& renderer) {
+      Texture texture{renderer, pandaPath};
+      Texture other{renderer, pandaPath};
 
-    Texture texture{renderer, pandaPath};
-    Texture other{renderer, pandaPath};
+      other = std::move(texture);
 
-    other = std::move(texture);
-
-    CHECK(!texture.get());
-    CHECK(other.get());
+      CHECK(!texture.get());
+      CHECK(other.get());
+    });
   }
 }
 
 TEST_CASE("Texture::unique", "[Texture]")
 {
-  const Window window;
-  const Renderer renderer{window};
-  const Surface surface{pandaPath};
+  test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
+    const Surface surface{pandaPath};
 
-  CHECK_THROWS_AS(Texture::unique(nullptr), CenturionException);
+    CHECK_THROWS_AS(Texture::unique(nullptr), CenturionException);
 
-  CHECK(Texture::unique(renderer, pandaPath));
-  CHECK(Texture::unique(renderer, surface));
-  CHECK(Texture::unique(
-      renderer, window.pixel_format(), Texture::Access::Static, {100, 100}));
+    CHECK(Texture::unique(renderer, pandaPath));
+    CHECK(Texture::unique(renderer, surface));
+    CHECK(Texture::unique(
+        renderer, window.pixel_format(), Texture::Access::Static, {100, 100}));
+  });
 }
 
 TEST_CASE("Texture:::shared", "[Texture]")
 {
-  const Window window;
-  const Renderer renderer{window};
-  const Surface surface{pandaPath};
+  test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
+    const Surface surface{pandaPath};
 
-  CHECK_THROWS_AS(Texture::shared(nullptr), CenturionException);
+    CHECK_THROWS_AS(Texture::shared(nullptr), CenturionException);
 
-  CHECK(Texture::shared(renderer, pandaPath));
-  CHECK(Texture::shared(renderer, surface));
-  CHECK(Texture::shared(
-      renderer, window.pixel_format(), Texture::Access::Static, {100, 100}));
+    CHECK(Texture::shared(renderer, pandaPath));
+    CHECK(Texture::shared(renderer, surface));
+    CHECK(Texture::shared(
+        renderer, window.pixel_format(), Texture::Access::Static, {100, 100}));
+  });
 }
 
 TEST_CASE("Texture::streaming", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
+  test([](ctn::renderer& renderer) {
+    const auto pixelFormat = PixelFormat::RGBA8888;
+    auto texture = Texture::streaming(renderer, pandaPath, pixelFormat);
 
-  const auto pixelFormat = PixelFormat::RGBA8888;
-  auto texture = Texture::streaming(renderer, pandaPath, pixelFormat);
+    CHECK(texture->format() == pixelFormat);
 
-  CHECK(texture->format() == pixelFormat);
-
-  CHECK_THROWS_AS(Texture::streaming(renderer, "", PixelFormat::YUY2),
-                  CenturionException);
+    CHECK_THROWS_AS(Texture::streaming(renderer, "", PixelFormat::YUY2),
+                    CenturionException);
+  });
 }
 
 TEST_CASE("Texture::set_pixel", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  const auto texture =
-      Texture::streaming(renderer, pandaPath, PixelFormat::RGBA8888);
+  test([](ctn::renderer& renderer) {
+    const auto texture =
+        Texture::streaming(renderer, pandaPath, PixelFormat::RGBA8888);
 
-  const auto [width, height] = texture->size();
+    const auto [width, height] = texture->size();
 
-  CHECK_NOTHROW(texture->set_pixel({-1, -1}, color::black));
-  CHECK_NOTHROW(texture->set_pixel({-1, 0}, color::black));
-  CHECK_NOTHROW(texture->set_pixel({0, -1}, color::black));
-  CHECK_NOTHROW(texture->set_pixel({width, 0}, color::black));
-  CHECK_NOTHROW(texture->set_pixel({0, height}, color::black));
-  CHECK_NOTHROW(texture->set_pixel({width, height}, color::black));
+    CHECK_NOTHROW(texture->set_pixel({-1, -1}, color::black));
+    CHECK_NOTHROW(texture->set_pixel({-1, 0}, color::black));
+    CHECK_NOTHROW(texture->set_pixel({0, -1}, color::black));
+    CHECK_NOTHROW(texture->set_pixel({width, 0}, color::black));
+    CHECK_NOTHROW(texture->set_pixel({0, height}, color::black));
+    CHECK_NOTHROW(texture->set_pixel({width, height}, color::black));
 
-  CHECK_NOTHROW(texture->set_pixel({45, 23}, color::orange));
+    CHECK_NOTHROW(texture->set_pixel({45, 23}, color::orange));
+  });
 }
 
 TEST_CASE("Texture::set_blend_mode", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
 
-  const auto mode = BlendMode::Blend;
-  texture.set_blend_mode(mode);
+    const auto mode = BlendMode::Blend;
+    texture.set_blend_mode(mode);
 
-  CHECK(mode == texture.blend_mode());
+    CHECK(mode == texture.blend_mode());
+  });
 }
 
 TEST_CASE("Texture::set_alpha", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
 
-  const auto alpha = 0x3A;
-  texture.set_alpha(alpha);
+    const auto alpha = 0x3A;
+    texture.set_alpha(alpha);
 
-  CHECK(alpha == texture.alpha());
+    CHECK(alpha == texture.alpha());
+  });
 }
 
 TEST_CASE("Texture::set_color_mod", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
 
-  const auto color = color::misty_rose;
-  texture.set_color_mod(color);
+    const auto color = color::misty_rose;
+    texture.set_color_mod(color);
 
-  const auto actual = texture.color_mod();
-  CHECK(color.red() == actual.red());
-  CHECK(color.green() == actual.green());
-  CHECK(color.blue() == actual.blue());
-  CHECK(color.alpha() == actual.alpha());
+    const auto actual = texture.color_mod();
+    CHECK(color.red() == actual.red());
+    CHECK(color.green() == actual.green());
+    CHECK(color.blue() == actual.blue());
+    CHECK(color.alpha() == actual.alpha());
+  });
 }
 
 TEST_CASE("Texture::set_scale_mode", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
 
-  texture.set_scale_mode(Texture::ScaleMode::Nearest);
-  CHECK(texture.scale_mode() == Texture::ScaleMode::Nearest);
+    texture.set_scale_mode(Texture::ScaleMode::Nearest);
+    CHECK(texture.scale_mode() == Texture::ScaleMode::Nearest);
 
-  texture.set_scale_mode(Texture::ScaleMode::Linear);
-  CHECK(texture.scale_mode() == Texture::ScaleMode::Linear);
+    texture.set_scale_mode(Texture::ScaleMode::Linear);
+    CHECK(texture.scale_mode() == Texture::ScaleMode::Linear);
 
-  texture.set_scale_mode(Texture::ScaleMode::Best);
-  CHECK(texture.scale_mode() == Texture::ScaleMode::Best);
+    texture.set_scale_mode(Texture::ScaleMode::Best);
+    CHECK(texture.scale_mode() == Texture::ScaleMode::Best);
+  });
 }
 
 TEST_CASE("Texture::is_static", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{
-      renderer, window.pixel_format(), Texture::Access::Static, {10, 10}};
-  CHECK(texture.is_static());
+  test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
+    Texture texture{
+        renderer, window.pixel_format(), Texture::Access::Static, {10, 10}};
+    CHECK(texture.is_static());
+  });
 }
 
 TEST_CASE("Texture::is_streaming", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{
-      renderer, window.pixel_format(), Texture::Access::Streaming, {10, 10}};
-  CHECK(texture.is_streaming());
+  test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
+    Texture texture{
+        renderer, window.pixel_format(), Texture::Access::Streaming, {10, 10}};
+    CHECK(texture.is_streaming());
+  });
 }
 
 TEST_CASE("Texture::is_target", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{
-      renderer, window.pixel_format(), Texture::Access::Target, {10, 10}};
-  CHECK(texture.is_target());
+  test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
+    Texture texture{
+        renderer, window.pixel_format(), Texture::Access::Target, {10, 10}};
+    CHECK(texture.is_target());
+  });
 }
 
 TEST_CASE("Texture::to_string", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
-  Log::info(Log::Category::Test, "%s", texture.to_string().c_str());
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
+    Log::info(Log::Category::Test, "%s", texture.to_string().c_str());
+  });
 }
 
 TEST_CASE("Texture::get", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
-  CHECK(texture.get());
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
+    CHECK(texture.get());
+  });
 }
 
 TEST_CASE("Texture::format", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
-  SDL_Texture* sdlTexture = texture.get();
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
+    SDL_Texture* sdlTexture = texture.get();
 
-  Uint32 format = 0;
-  SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
+    Uint32 format = 0;
+    SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
 
-  CHECK(texture.format() == static_cast<PixelFormat>(format));
+    CHECK(texture.format() == static_cast<PixelFormat>(format));
+  });
 }
 
 TEST_CASE("Texture::access", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
-  SDL_Texture* sdlTexture = texture.get();
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
+    SDL_Texture* sdlTexture = texture.get();
 
-  int access = 0;
-  SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
+    int access = 0;
+    SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
 
-  CHECK(texture.access() == static_cast<Texture::Access>(access));
+    CHECK(texture.access() == static_cast<Texture::Access>(access));
+  });
 }
 
 TEST_CASE("Texture::color_mod", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
 
-  CHECK(texture.color_mod() == color::white);
+    CHECK(texture.color_mod() == color::white);
+  });
 }
 
 TEST_CASE("Texture::scale_mode", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
 
-  SDL_ScaleMode mode;
-  SDL_GetTextureScaleMode(texture.get(), &mode);
-  CHECK(static_cast<SDL_ScaleMode>(texture.scale_mode()) == mode);
+    SDL_ScaleMode mode;
+    SDL_GetTextureScaleMode(texture.get(), &mode);
+    CHECK(static_cast<SDL_ScaleMode>(texture.scale_mode()) == mode);
+  });
 }
 
 TEST_CASE("Texture::width", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture(renderer, pandaPath);
-  SDL_Texture* sdlTexture = texture.get();
+  test([](ctn::renderer& renderer) {
+    Texture texture(renderer, pandaPath);
+    SDL_Texture* sdlTexture = texture.get();
 
-  CHECK(texture.width() == pandaWidth);
+    CHECK(texture.width() == pandaWidth);
 
-  int width = 0;
-  SDL_QueryTexture(sdlTexture, nullptr, nullptr, &width, nullptr);
-  CHECK(texture.width() == width);
+    int width = 0;
+    SDL_QueryTexture(sdlTexture, nullptr, nullptr, &width, nullptr);
+    CHECK(texture.width() == width);
+  });
 }
 
 TEST_CASE("Texture::height", "[Texture]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, pandaPath};
-  SDL_Texture* sdlTexture = texture.get();
+  test([](ctn::renderer& renderer) {
+    Texture texture{renderer, pandaPath};
+    SDL_Texture* sdlTexture = texture.get();
 
-  CHECK(texture.height() == pandaHeight);
+    CHECK(texture.height() == pandaHeight);
 
-  int height = 0;
-  SDL_QueryTexture(sdlTexture, nullptr, nullptr, nullptr, &height);
-  CHECK(texture.height() == height);
+    int height = 0;
+    SDL_QueryTexture(sdlTexture, nullptr, nullptr, nullptr, &height);
+    CHECK(texture.height() == height);
+  });
 }
 
 TEST_CASE("Texture to SDL_Texture*", "[Texture]")
 {
   SECTION("Const")
   {
-    Window window;
-    Renderer renderer{window};
-    const Texture texture{renderer, pandaPath};
-    CHECK(texture.operator const SDL_Texture*());
+    test([](ctn::renderer& renderer) {
+      const Texture texture{renderer, pandaPath};
+      CHECK(texture.operator const SDL_Texture*());
+    });
   }
 
   SECTION("Non-const")
   {
-    Window window;
-    Renderer renderer{window};
-    Texture texture{renderer, pandaPath};
-    CHECK(texture.operator SDL_Texture*());
+    test([](ctn::renderer& renderer) {
+      Texture texture{renderer, pandaPath};
+      CHECK(texture.operator SDL_Texture*());
+    });
   }
 }

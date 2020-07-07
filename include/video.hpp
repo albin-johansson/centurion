@@ -269,8 +269,6 @@ class basic_renderer final {  // TODO rename and provide aliases
    * contiguously! The behaviour of this method is undefined if this condition
    * isn't met.
    *
-   * @tparam T the type of the point coordinates. Must be either `int` or
-   * `float`.
    * @tparam Container the container type. Must store its elements
    * contiguously, such as `std::vector` or `std::array`.
    *
@@ -279,8 +277,8 @@ class basic_renderer final {  // TODO rename and provide aliases
    *
    * @since 5.0.0
    */
-  template <typename T, typename Container>
-  void draw_lines(Container&& container) noexcept;
+  template <typename Container>
+  void draw_lines(const Container& container) noexcept;
 
   /**
    * @brief Renders a texture at the specified position.
@@ -969,9 +967,15 @@ class basic_renderer final {  // TODO rename and provide aliases
   }
 
   template <typename T>
+  [[nodiscard]] auto translate(const Point<T>& point) const noexcept -> Point<T>
+  {
+    return Point<T>{tx(point.x()), tx(point.y())};
+  }
+
+  template <typename T>
   [[nodiscard]] auto translate(const Rect<T>& rect) const noexcept -> Rect<T>
   {
-    return {{tx(rect.x()), ty(rect.y())}, rect.size()};
+    return {translate(rect.position()), rect.size()};
   }
 };
 
@@ -1791,15 +1795,22 @@ void basic_renderer<FontKey>::draw_line(const Point<T>& start,
 }
 
 template <typename FontKey>
-template <typename T, typename Container>
-void basic_renderer<FontKey>::draw_lines(Container&& container) noexcept
+template <typename Container>
+void basic_renderer<FontKey>::draw_lines(const Container& container) noexcept
 {
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+  // This must be a point of int or float
+  using point_t = typename Container::value_type;  // TODO doc
+
+  static_assert(std::is_same_v<point_t, Point<float>> ||
+                std::is_same_v<point_t, Point<int>>);
+
+  // This is either int or float
+  using value_t = typename point_t::value_type;
 
   if (!container.empty()) {
-    const Point<T>& front = container.front();
+    const Point<value_t>& front = container.front();
 
-    if constexpr (std::is_same_v<T, int>) {
+    if constexpr (std::is_same_v<value_t, int>) {
       const auto* first = static_cast<const SDL_Point*>(front);
       SDL_RenderDrawLines(m_renderer, first, container.size());
     } else {
@@ -1821,8 +1832,10 @@ void basic_renderer<FontKey>::render(const Texture& texture,
         position.x(), position.y(), texture.width(), texture.height()};
     SDL_RenderCopy(m_renderer, texture.get(), nullptr, &dst);
   } else {
-    const SDL_FRect dst{
-        position.x(), position.y(), texture.width(), texture.height()};
+    const SDL_FRect dst{position.x(),
+                        position.y(),
+                        static_cast<float>(texture.width()),
+                        static_cast<float>(texture.height())};
     SDL_RenderCopyF(m_renderer, texture.get(), nullptr, &dst);
   }
 }
@@ -1960,7 +1973,7 @@ template <typename T>
 void basic_renderer<FontKey>::render_t(const Texture& texture,
                                        const Point<T>& position) noexcept
 {
-  render(texture, {tx(position.x()), ty(position.y())});
+  render(texture, translate(position));
 }
 
 template <typename FontKey>

@@ -2,26 +2,25 @@
 
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "log.hpp"
 #include "screen.hpp"
 #include "surface.hpp"
 #include "video.hpp"
 
-using namespace centurion;
-
 namespace {
 
-inline Window create(SDL_WindowFlags flag)
+inline ctn::Window create(SDL_WindowFlags flag)
 {
-  return Window{SDL_CreateWindow("", 0, 0, 10, 10, flag)};
+  return ctn::Window{SDL_CreateWindow("", 0, 0, 10, 10, flag)};
 }
 
 }  // namespace
 
 TEST_CASE("Window()", "[Window]")
 {
-  const Window window;
+  const ctn::Window window;
 
   CHECK(window.width() == 800);
   CHECK(window.height() == 600);
@@ -34,27 +33,27 @@ TEST_CASE("Window(Owner<SDL_Window*>)", "[Window]")
   SECTION("Null pointer")
   {
     SDL_Window* w = nullptr;
-    CHECK_THROWS_AS(Window{w}, CenturionException);
+    CHECK_THROWS_AS(ctn::Window{w}, ctn::CenturionException);
   }
 
   SECTION("Good window")
   {
     SDL_Window* w = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
-    CHECK_NOTHROW(Window{w});
+    CHECK_NOTHROW(ctn::Window{w});
   }
 }
 
 TEST_CASE("Window(CZString, Area)", "[Window]")
 {
-  CHECK_THROWS_AS(Window("", {0, 10}), CenturionException);
-  CHECK_THROWS_AS(Window("", {10, 0}), CenturionException);
+  CHECK_THROWS_AS(ctn::Window("", {0, 10}), ctn::CenturionException);
+  CHECK_THROWS_AS(ctn::Window("", {10, 0}), ctn::CenturionException);
 
   SECTION("Normal")
   {
     const auto width = 123;
     const auto height = 321;
     const auto title = "Foo";
-    const Window window{title, {width, height}};
+    const ctn::Window window{title, {width, height}};
 
     CHECK(window.width() == width);
     CHECK(window.height() == height);
@@ -64,15 +63,15 @@ TEST_CASE("Window(CZString, Area)", "[Window]")
 
   SECTION("Null title")
   {
-    const Window window{nullptr, {10, 10}};
+    const ctn::Window window{nullptr, {10, 10}};
     CHECK_THAT(window.title(), Catch::Equals(""));
   }
 }
 
 TEST_CASE("Window(Window&&)", "[Window]")
 {
-  Window window;
-  Window other{std::move(window)};
+  ctn::Window window;
+  ctn::Window other{std::move(window)};
 
   CHECK(!window.get());
   CHECK(other.get());
@@ -82,15 +81,15 @@ TEST_CASE("Window::operator=(Window&&)", "[Window]")
 {
   SECTION("Self-assignment")
   {
-    Window window;
+    ctn::Window window;
     window = std::move(window);
     CHECK(window.get());
   }
 
   SECTION("Normal usage")
   {
-    Window window;
-    Window other;
+    ctn::Window window;
+    ctn::Window other;
 
     other = std::move(window);
 
@@ -101,51 +100,51 @@ TEST_CASE("Window::operator=(Window&&)", "[Window]")
 
 TEST_CASE("Window::unique", "[Window]")
 {
-  SECTION("Window::unique()") { CHECK(Window::unique()); }
+  SECTION("Window::unique()") { CHECK(ctn::Window::unique()); }
 
   SECTION("Window::unique(Owner<SDL_Window*>)")
   {
-    auto* bad = static_cast<Owner<SDL_Window*>>(nullptr);
-    CHECK_THROWS_AS(Window::unique(bad), CenturionException);
+    gsl::owner<SDL_Window*> bad = nullptr;
+    CHECK_THROWS_AS(ctn::Window::unique(bad), ctn::CenturionException);
 
     auto* good = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
-    CHECK(Window::unique(good));
+    CHECK(ctn::Window::unique(good));
   }
 
   SECTION("Window::unique(CZString, Area)")
   {
-    CHECK_THROWS_AS(Window::unique("", {0, 10}), CenturionException);
-    CHECK_THROWS_AS(Window::unique("", {10, 0}), CenturionException);
-    CHECK_NOTHROW(Window::unique(nullptr, {10, 10}));
-    CHECK(Window::unique("Foo", {10, 10}));
+    CHECK_THROWS_AS(ctn::Window::unique("", {0, 10}), ctn::CenturionException);
+    CHECK_THROWS_AS(ctn::Window::unique("", {10, 0}), ctn::CenturionException);
+    CHECK_NOTHROW(ctn::Window::unique(nullptr, {10, 10}));
+    CHECK(ctn::Window::unique("Foo", {10, 10}));
   }
 }
 
 TEST_CASE("Window::shared", "[Window]")
 {
-  SECTION("Window::shared()") { CHECK(Window::shared()); }
+  SECTION("Window::shared()") { CHECK(ctn::Window::shared()); }
 
   SECTION("Window::shared(Owner<SDL_Window*>)")
   {
-    auto* bad = static_cast<Owner<SDL_Window*>>(nullptr);
-    CHECK_THROWS_AS(Window::shared(bad), CenturionException);
+    auto* bad = static_cast<ctn::Owner<SDL_Window*>>(nullptr);
+    CHECK_THROWS_AS(ctn::Window::shared(bad), ctn::CenturionException);
 
     auto* good = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
-    CHECK(Window::shared(good));
+    CHECK(ctn::Window::shared(good));
   }
 
   SECTION("Window::shared(CZString, Area)")
   {
-    CHECK_THROWS_AS(Window::shared("", {0, 10}), CenturionException);
-    CHECK_THROWS_AS(Window::shared("", {10, 0}), CenturionException);
-    CHECK_NOTHROW(Window::shared(nullptr, {10, 10}));
-    CHECK(Window::shared("Foo", {10, 10}));
+    CHECK_THROWS_AS(ctn::Window::shared("", {0, 10}), ctn::CenturionException);
+    CHECK_THROWS_AS(ctn::Window::shared("", {10, 0}), ctn::CenturionException);
+    CHECK_NOTHROW(ctn::Window::shared(nullptr, {10, 10}));
+    CHECK(ctn::Window::shared("Foo", {10, 10}));
   }
 }
 
 TEST_CASE("Window::show", "[Window]")
 {
-  Window window;
+  ctn::Window window;
 
   window.show();
 
@@ -154,7 +153,7 @@ TEST_CASE("Window::show", "[Window]")
 
 TEST_CASE("Window::hide", "[Window]")
 {
-  Window window;
+  ctn::Window window;
 
   window.hide();
 
@@ -163,10 +162,10 @@ TEST_CASE("Window::hide", "[Window]")
 
 TEST_CASE("Window::center", "[Window]")
 {
-  Window window;
+  ctn::Window window;
 
-  const auto x = (Screen::width() - window.width()) / 2;
-  const auto y = (Screen::height() - window.height()) / 2;
+  const auto x = (ctn::Screen::width() - window.width()) / 2;
+  const auto y = (ctn::Screen::height() - window.height()) / 2;
 
   window.center();
 
@@ -177,7 +176,7 @@ TEST_CASE("Window::center", "[Window]")
 #ifndef TRAVIS_TEST
 TEST_CASE("Window::raise", "[Window]")
 {
-  Window window;
+  ctn::Window window;
 
   window.show();
   window.raise();
@@ -188,7 +187,7 @@ TEST_CASE("Window::raise", "[Window]")
 
 TEST_CASE("Window:maximize", "[Window]")
 {
-  Window window;
+  ctn::Window window;
 
   window.show();
   window.maximize();
@@ -199,7 +198,7 @@ TEST_CASE("Window:maximize", "[Window]")
 #ifndef TRAVIS_TEST
 TEST_CASE("Window::minimize", "[Window]")
 {
-  Window window;
+  ctn::Window window;
 
   window.show();
   window.minimize();
@@ -210,7 +209,7 @@ TEST_CASE("Window::minimize", "[Window]")
 
 TEST_CASE("Window::set_fullscreen", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   CHECK(!window.fullscreen());
 
   window.set_fullscreen(true);
@@ -222,7 +221,7 @@ TEST_CASE("Window::set_fullscreen", "[Window]")
 
 TEST_CASE("Window::set_fullscreen_desktop", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   CHECK(!window.fullscreen_desktop());
 
   window.set_fullscreen_desktop(true);
@@ -234,7 +233,7 @@ TEST_CASE("Window::set_fullscreen_desktop", "[Window]")
 
 TEST_CASE("Window::set_decorated", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   CHECK(window.decorated());
 
   window.set_decorated(false);
@@ -246,7 +245,7 @@ TEST_CASE("Window::set_decorated", "[Window]")
 
 TEST_CASE("Window::set_resizable", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   CHECK(!window.resizable());
 
   window.set_resizable(true);
@@ -260,7 +259,7 @@ TEST_CASE("Window::set_width", "[Window]")
 {
   SECTION("Invalid width")
   {
-    Window window;
+    ctn::Window window;
 
     const auto widthBefore = window.width();
 
@@ -270,7 +269,7 @@ TEST_CASE("Window::set_width", "[Window]")
     CHECK(window.width() == widthBefore);
   }
 
-  Window window;
+  ctn::Window window;
 
   const auto width = 812;
   window.set_width(width);
@@ -282,7 +281,7 @@ TEST_CASE("Window::set_height", "[Window]")
 {
   SECTION("Invalid height")
   {
-    Window window;
+    ctn::Window window;
 
     const auto heightBefore = window.height();
 
@@ -292,7 +291,7 @@ TEST_CASE("Window::set_height", "[Window]")
     CHECK(window.height() == heightBefore);
   }
 
-  Window window;
+  ctn::Window window;
 
   const auto height = 327;
   window.set_height(height);
@@ -302,16 +301,16 @@ TEST_CASE("Window::set_height", "[Window]")
 
 TEST_CASE("Window::set_icon", "[Window]")
 {
-  Window window;
-  Surface icon{"resources/panda.png"};
+  ctn::Window window;
+  ctn::Surface icon{"resources/panda.png"};
   CHECK_NOTHROW(window.set_icon(icon));
 }
 
 TEST_CASE("Window::set_title", "[Window]")
 {
-  Window window;
+  ctn::Window window;
 
-  CZString title = "foo";
+  ctn::CZString title = "foo";
   window.set_title(title);
 
   CHECK_THAT(window.title(), Catch::Equals(title));
@@ -319,7 +318,7 @@ TEST_CASE("Window::set_title", "[Window]")
 
 TEST_CASE("Window::set_opacity", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   CHECK(window.opacity() == 1);
 
   SECTION("Windowed mode")
@@ -344,7 +343,7 @@ TEST_CASE("Window::set_opacity", "[Window]")
 
 TEST_CASE("Window::set_min_size", "[Window]")
 {
-  Window window;
+  ctn::Window window;
 
   const auto width = 123;
   const auto height = 496;
@@ -358,7 +357,7 @@ TEST_CASE("Window::set_min_size", "[Window]")
 
 TEST_CASE("Window::set_max_size", "[Window]")
 {
-  Window window;
+  ctn::Window window;
 
   const auto width = 834;
   const auto height = 123;
@@ -374,7 +373,7 @@ TEST_CASE("Window::set_position", "[Window]")
   const auto x = 467;
   const auto y = 246;
 
-  Window window;
+  ctn::Window window;
   window.set_position(x, y);
 
   const auto pos = window.position();
@@ -385,7 +384,7 @@ TEST_CASE("Window::set_position", "[Window]")
 #ifndef TRAVIS_TEST
 TEST_CASE("Window::set_grab_mouse", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   CHECK(!window.grabbing_mouse());
 
   window.show();
@@ -401,7 +400,7 @@ TEST_CASE("Window::set_brightness", "[Window]")
 {
   SECTION("Only in fullscreen mode")
   {
-    Window window;
+    ctn::Window window;
     const auto brightness = 0.8f;
     window.set_brightness(brightness);
     CHECK(window.brightness() == 1);
@@ -413,7 +412,7 @@ TEST_CASE("Window::set_brightness", "[Window]")
 
   SECTION("Test clamping of bad arguments")
   {
-    Window window;
+    ctn::Window window;
     window.set_fullscreen(true);
 
     const auto tooHigh = 1.7f;
@@ -429,7 +428,7 @@ TEST_CASE("Window::set_brightness", "[Window]")
 #ifndef TRAVIS_TEST
 TEST_CASE("Window::set_capturing_mouse", "[Window]")
 {
-  Window window;
+  ctn::Window window;
 
   window.set_capturing_mouse(true);
   CHECK(!window.capturing_mouse());
@@ -448,12 +447,12 @@ TEST_CASE("Window::decorated", "[Window]")
 {
   SECTION("Normal")
   {
-    const Window window;
+    const ctn::Window window;
     CHECK(window.decorated());
   }
   SECTION("Not decorated")
   {
-    const Window window = create(SDL_WINDOW_BORDERLESS);
+    const ctn::Window window = create(SDL_WINDOW_BORDERLESS);
     CHECK(!window.decorated());
   }
 }
@@ -463,12 +462,12 @@ TEST_CASE("Window::grabbing_mouse", "[Window]")
 {
   SECTION("Normal")
   {
-    const Window window;
+    const ctn::Window window;
     CHECK(!window.grabbing_mouse());
   }
   SECTION("Grabbing mouse")
   {
-    const Window window = create(SDL_WINDOW_INPUT_GRABBED);
+    const ctn::Window window = create(SDL_WINDOW_INPUT_GRABBED);
     CHECK(window.grabbing_mouse());
   }
 }
@@ -478,12 +477,12 @@ TEST_CASE("Window::resizable", "[Window]")
 {
   SECTION("Normal")
   {
-    const Window window;
+    const ctn::Window window;
     CHECK(!window.resizable());
   }
   SECTION("Resizable")
   {
-    const Window window = create(SDL_WINDOW_RESIZABLE);
+    const ctn::Window window = create(SDL_WINDOW_RESIZABLE);
     CHECK(window.resizable());
   }
 }
@@ -492,12 +491,12 @@ TEST_CASE("Window::fullscreen", "[Window]")
 {
   SECTION("Normal")
   {
-    const Window window;
+    const ctn::Window window;
     CHECK(!window.fullscreen());
   }
   SECTION("Fullscreen")
   {
-    const Window window = create(SDL_WINDOW_FULLSCREEN);
+    const ctn::Window window = create(SDL_WINDOW_FULLSCREEN);
     CHECK(window.fullscreen());
   }
 }
@@ -506,12 +505,12 @@ TEST_CASE("Window::fullscreen_desktop", "[Window]")
 {
   SECTION("Normal")
   {
-    const Window window;
+    const ctn::Window window;
     CHECK(!window.fullscreen_desktop());
   }
   SECTION("Fullscreen desktop")
   {
-    const Window window = create(SDL_WINDOW_FULLSCREEN_DESKTOP);
+    const ctn::Window window = create(SDL_WINDOW_FULLSCREEN_DESKTOP);
     CHECK(window.fullscreen_desktop());
   }
 }
@@ -520,51 +519,51 @@ TEST_CASE("Window::visible", "[Window]")
 {
   SECTION("Normal")
   {
-    const Window window;
+    const ctn::Window window;
     CHECK(!window.visible());
   }
   SECTION("Visible")
   {
-    const Window window = create(SDL_WINDOW_SHOWN);
+    const ctn::Window window = create(SDL_WINDOW_SHOWN);
     CHECK(window.visible());
   }
 }
 
 TEST_CASE("Window::brightness", "[Window]")
 {
-  const Window window;
+  const ctn::Window window;
   CHECK(window.brightness() == 1);
 }
 
 TEST_CASE("Window::opacity", "[Window]")
 {
-  const Window window;
+  const ctn::Window window;
   CHECK(window.opacity() == 1);
 }
 
 TEST_CASE("Window::x", "[Window]")
 {
-  const Window window;
-  const auto x = (Screen::width() - window.width()) / 2;
+  const ctn::Window window;
+  const auto x = (ctn::Screen::width() - window.width()) / 2;
   CHECK(window.x() == x);
 }
 
 TEST_CASE("Window::y", "[Window]")
 {
-  const Window window;
-  const auto y = (Screen::height() - window.height()) / 2;
+  const ctn::Window window;
+  const auto y = (ctn::Screen::height() - window.height()) / 2;
   CHECK(window.y() == y);
 }
 
 TEST_CASE("Window::id", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   CHECK(window.id() == SDL_GetWindowID(window));
 }
 
 TEST_CASE("Window::display_index", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   const auto index = window.display_index();
   CHECK(index);
   CHECK(*index == SDL_GetWindowDisplayIndex(window));
@@ -572,11 +571,11 @@ TEST_CASE("Window::display_index", "[Window]")
 
 TEST_CASE("Window::position", "[Window]")
 {
-  const Window window;
+  const ctn::Window window;
   const auto position = window.position();
 
-  const auto x = (Screen::width() - window.width()) / 2;
-  const auto y = (Screen::height() - window.height()) / 2;
+  const auto x = (ctn::Screen::width() - window.width()) / 2;
+  const auto y = (ctn::Screen::height() - window.height()) / 2;
 
   CHECK(position.x() == x);
   CHECK(position.y() == y);
@@ -585,14 +584,14 @@ TEST_CASE("Window::position", "[Window]")
 TEST_CASE("Window::width", "[Window]")
 {
   const auto width = 921;
-  Window window{"", {width, 10}};
+  ctn::Window window{"", {width, 10}};
   CHECK(window.width() == width);
 }
 
 TEST_CASE("Window::height", "[Window]")
 {
   const auto height = 435;
-  Window window{"", {10, height}};
+  ctn::Window window{"", {10, height}};
   CHECK(window.height() == height);
 }
 
@@ -600,13 +599,13 @@ TEST_CASE("Window::opengl", "[Window]")
 {
   SECTION("Normal")
   {
-    const Window window;
+    const ctn::Window window;
     CHECK(!window.opengl());
   }
 
   SECTION("With OpenGL support")
   {
-    const Window window = create(SDL_WINDOW_OPENGL);
+    const ctn::Window window = create(SDL_WINDOW_OPENGL);
     CHECK(window.opengl());
   }
 }
@@ -616,20 +615,20 @@ TEST_CASE("Window::vulkan", "[Window]")
 {
   SECTION("Normal")
   {
-    const Window window;
+    const ctn::Window window;
     CHECK(!window.vulkan());
   }
 
   SECTION("With Vulkan support")
   {
-    const Window window = create(SDL_WINDOW_VULKAN);
+    const ctn::Window window = create(SDL_WINDOW_VULKAN);
     CHECK(window.vulkan());
   }
 }
 
 TEST_CASE("Window::has_input_focus", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   CHECK(!window.has_input_focus());
 
   window.show();
@@ -641,20 +640,20 @@ TEST_CASE("Window::has_input_focus", "[Window]")
 
 TEST_CASE("Window::has_mouse_focus", "[Window]")
 {
-  const Window window;
+  const ctn::Window window;
   CHECK(!window.has_mouse_focus());
 }
 
 TEST_CASE("Window::is_foreign", "[Window]")
 {
-  const Window window;
+  const ctn::Window window;
   CHECK(!window.is_foreign());
 }
 
 #ifndef TRAVIS_TEST
 TEST_CASE("Window::capturing_mouse", "[Window]")
 {
-  const Window window;
+  const ctn::Window window;
   CHECK(!window.capturing_mouse());
 }
 #endif  // TRAVIS_TEST
@@ -663,32 +662,32 @@ TEST_CASE("Window::always_on_top", "[Window]")
 {
   SECTION("Normal")
   {
-    const Window window;
+    const ctn::Window window;
     CHECK(!window.always_on_top());
   }
 
   SECTION("Always on top")
   {
-    const Window window = create(SDL_WINDOW_ALWAYS_ON_TOP);
+    const ctn::Window window = create(SDL_WINDOW_ALWAYS_ON_TOP);
     CHECK(window.always_on_top());
   }
 }
 
 TEST_CASE("Window::minimized", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   CHECK(!window.minimized());
 }
 
 TEST_CASE("Window::maximized", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   CHECK(!window.maximized());
 }
 
 TEST_CASE("Window::check_flag", "[Window]")
 {
-  const Window window;
+  const ctn::Window window;
   auto* sdlWindow = window.get();
 
   // returns true if the CTN and SDL queries match
@@ -829,43 +828,43 @@ TEST_CASE("Window::flags", "[Window]")
 {
   auto* win = SDL_CreateWindow(
       "", 0, 0, 10, 10, SDL_WINDOW_HIDDEN | SDL_WINDOW_MAXIMIZED);
-  const Window window{win};
+  const ctn::Window window{win};
 
   CHECK(window.flags() == SDL_GetWindowFlags(win));
 }
 
 TEST_CASE("Window::renderer", "[Window]")
 {
-  const Window window;
+  const ctn::Window window;
   CHECK(!window.renderer());
 
-  const Renderer renderer{window};
+  const ctn::renderer renderer{window};
   CHECK(window.renderer() == renderer.get());
 }
 
 TEST_CASE("Window::pixel_format", "[Window]")
 {
-  Window window;
+  ctn::Window window;
   const auto format = SDL_GetWindowPixelFormat(window);
-  CHECK(window.pixel_format() == static_cast<PixelFormat>(format));
+  CHECK(window.pixel_format() == static_cast<ctn::PixelFormat>(format));
 }
 
 TEST_CASE("Window::title", "[Window]")
 {
-  CZString title = "HelloWorld";
-  const Window window{title};
+  ctn::CZString title = "HelloWorld";
+  const ctn::Window window{title};
   CHECK_THAT(window.title(), Catch::Equals(title));
 }
 
 TEST_CASE("Window::to_string", "[Window]")
 {
-  const Window window;
-  Log::info(Log::Category::Test, "%s", window.to_string().c_str());
+  const ctn::Window window;
+  ctn::Log::info(ctn::Log::Category::Test, "%s", window.to_string().c_str());
 }
 
 TEST_CASE("Window::get", "[Window]")
 {
-  const Window window;
+  const ctn::Window window;
   CHECK(window.get());
 }
 
@@ -873,13 +872,13 @@ TEST_CASE("Window to SDL_Window*", "[Window]")
 {
   SECTION("Const")
   {
-    const Window window;
+    const ctn::Window window;
     CHECK(window.operator const SDL_Window*());
   }
 
   SECTION("Non-const")
   {
-    Window window;
+    ctn::Window window;
     CHECK(window.operator SDL_Window*());
   }
 }

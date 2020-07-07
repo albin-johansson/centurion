@@ -15,7 +15,7 @@ JoyAxisEvent::JoyAxisEvent(const SDL_JoyAxisEvent& event) noexcept
 {}
 
 CENTURION_DEF
-void JoyAxisEvent::set_which(JoystickID which) noexcept
+void JoyAxisEvent::set_which(SDL_JoystickID which) noexcept
 {
   m_event.which = which;
 }

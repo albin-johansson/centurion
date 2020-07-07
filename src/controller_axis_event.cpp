@@ -16,7 +16,7 @@ ControllerAxisEvent::ControllerAxisEvent(
 {}
 
 CENTURION_DEF
-void ControllerAxisEvent::set_which(JoystickID which) noexcept
+void ControllerAxisEvent::set_which(SDL_JoystickID which) noexcept
 {
   m_event.which = which;
 }
@@ -34,7 +34,7 @@ void ControllerAxisEvent::set_value(Sint16 value) noexcept
 }
 
 CENTURION_DEF
-auto ControllerAxisEvent::which() const noexcept -> JoystickID
+auto ControllerAxisEvent::which() const noexcept -> SDL_JoystickID
 {
   return m_event.which;
 }

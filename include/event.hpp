@@ -318,7 +318,7 @@ class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_which(JoystickID which) noexcept;
+  void set_which(SDL_JoystickID which) noexcept;
 
   /**
    * @brief Sets the game controller axis value associated with the event.
@@ -348,7 +348,7 @@ class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto which() const noexcept -> JoystickID;
+  auto which() const noexcept -> SDL_JoystickID;
 
   /**
    * @brief Returns the game controller axis value associated with the event.
@@ -437,7 +437,7 @@ class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_which(JoystickID id) noexcept;
+  void set_which(SDL_JoystickID id) noexcept;
 
   /**
    * @brief Returns the game controller button associated with the event.
@@ -467,7 +467,7 @@ class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto which() const noexcept -> JoystickID;
+  auto which() const noexcept -> SDL_JoystickID;
 };
 
 static_assert(
@@ -888,7 +888,7 @@ class JoyAxisEvent : public CommonEvent<SDL_JoyAxisEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_which(JoystickID which) noexcept;
+  void set_which(SDL_JoystickID which) noexcept;
 
   /**
    * @brief Sets the joystick axis index associated with the event.
@@ -1162,16 +1162,20 @@ class JoyButtonEvent : public CommonEvent<SDL_JoyButtonEvent> {
 static_assert(validate_event<JoyButtonEvent, SDL_JoyButtonEvent>());
 
 /**
- * The JoyDeviceEvent class represents an event triggered by adding or
- * removing a joystick device.
+ * @class JoyDeviceEvent
  *
- * @see SDL_JoyDeviceEvent
+ * @brief Represents an event triggered by adding or removing a joystick device.
+ *
+ * @see `SDL_JoyDeviceEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class JoyDeviceEvent : public CommonEvent<SDL_JoyDeviceEvent> {
  public:
   /**
-   * Creates a default-initialized JoyDeviceEvent.
+   * @brief Creates a default-initialized JoyDeviceEvent.
    *
    * @since 4.0.0
    */
@@ -1179,41 +1183,39 @@ class JoyDeviceEvent : public CommonEvent<SDL_JoyDeviceEvent> {
   JoyDeviceEvent() noexcept;
 
   /**
-   * Creates a JoyDeviceEvent that is based on the supplied SDL event.
+   * @brief Creates a JoyDeviceEvent that is based on the supplied SDL event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   JoyDeviceEvent(const SDL_JoyDeviceEvent& event) noexcept;
 
   /**
-   * Creates a JoyDeviceEvent that is based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  JoyDeviceEvent(SDL_JoyDeviceEvent&& event) noexcept;
-
-  /**
-   * Sets the joystick device index or instance ID, depending on the type of
-   * the event.
+   * @brief Sets the joystick device index or instance ID, depending on the type
+   * of the event.
    *
    * @param which the joystick device index or instance ID.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_which(Sint32 which) noexcept;
 
   /**
-   * Returns the joystick device index if the type is JoystickDeviceAdded
-   * or the joystick instance ID if the type is JoystickDeviceRemoved.
+   * @brief Returns the joystick device index or instance ID.
+   *
+   * @details The returned value is the joystick device index if the type is
+   * `JoystickDeviceAdded`, or the joystick instance ID if the type is
+   * `JoystickDeviceRemoved`.
    *
    * @return the joystick device index or instance ID.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint32 which() const noexcept;
+  CENTURION_QUERY
+  auto which() const noexcept -> Sint32;
 };
 
 static_assert(validate_event<JoyDeviceEvent, SDL_JoyDeviceEvent>());

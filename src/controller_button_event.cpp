@@ -27,7 +27,7 @@ void ControllerButtonEvent::set_state(ButtonState state) noexcept
 }
 
 CENTURION_DEF
-void ControllerButtonEvent::set_which(JoystickID id) noexcept
+void ControllerButtonEvent::set_which(SDL_JoystickID id) noexcept
 {
   m_event.which = id;
 }
@@ -45,7 +45,7 @@ auto ControllerButtonEvent::state() const noexcept -> ButtonState
 }
 
 CENTURION_DEF
-auto ControllerButtonEvent::which() const noexcept -> JoystickID
+auto ControllerButtonEvent::which() const noexcept -> SDL_JoystickID
 {
   return m_event.which;
 }

@@ -1,12 +1,9 @@
 #ifndef CENTURION_JOY_DEVICE_EVENT_SOURCE
 #define CENTURION_JOY_DEVICE_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 JoyDeviceEvent::JoyDeviceEvent() noexcept : CommonEvent{}
@@ -18,23 +15,17 @@ JoyDeviceEvent::JoyDeviceEvent(const SDL_JoyDeviceEvent& event) noexcept
 {}
 
 CENTURION_DEF
-JoyDeviceEvent::JoyDeviceEvent(SDL_JoyDeviceEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
-{}
-
-CENTURION_DEF
 void JoyDeviceEvent::set_which(Sint32 which) noexcept
 {
   m_event.which = which;
 }
 
 CENTURION_DEF
-Sint32 JoyDeviceEvent::which() const noexcept
+auto JoyDeviceEvent::which() const noexcept -> Sint32
 {
   return m_event.which;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_JOY_DEVICE_EVENT_SOURCE

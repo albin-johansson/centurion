@@ -54,25 +54,19 @@ namespace centurion::battery {
  *
  * @since 3.0.0
  *
- * @var PowerState::Unknown
- * The status is unknown.
- * @var PowerState::OnBattery
- * Not plugged in and running on battery.
- * @var PowerState::NoBattery
- * No battery available.
- * @var PowerState::Charging
- * Currently charging the battery.
- * @var PowerState::Charged
- * Currently plugged in and charged.
- *
  * @headerfile battery.hpp
  */
 enum class PowerState {
-  Unknown = SDL_POWERSTATE_UNKNOWN,
-  OnBattery = SDL_POWERSTATE_ON_BATTERY,
-  NoBattery = SDL_POWERSTATE_NO_BATTERY,
-  Charging = SDL_POWERSTATE_CHARGING,
-  Charged = SDL_POWERSTATE_CHARGED
+  Unknown = SDL_POWERSTATE_UNKNOWN, /**< The status is unknown. */
+
+  OnBattery =
+      SDL_POWERSTATE_ON_BATTERY, /**< Not plugged in and running on battery. */
+
+  NoBattery = SDL_POWERSTATE_NO_BATTERY, /**< No battery available. */
+
+  Charging = SDL_POWERSTATE_CHARGING, /**< Currently charging the battery. */
+
+  Charged = SDL_POWERSTATE_CHARGED /**< Currently plugged in and charged. */
 };
 
 /**

@@ -52,9 +52,9 @@ struct Area;
  *
  * @since 4.0.0
  *
- * @var area::width
+ * @var Area::width
  * The width of the area. Defaults to 0.
- * @var area::height
+ * @var Area::height
  * The height of the area. Defaults to 0.
  *
  * @headerfile area.hpp

@@ -298,7 +298,7 @@ inline auto Color::to_string() const -> std::string
 }
 
 /**
- * @copydoc operator(const Color&, const Color&)
+ * @copydoc operator==(const Color&, const Color&)
  */
 [[nodiscard]] inline constexpr auto operator==(const SDL_Color& lhs,
                                                const Color& rhs) noexcept
@@ -320,15 +320,15 @@ inline auto Color::to_string() const -> std::string
  * @since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(
-    const Color& color,
-    const SDL_MessageBoxColor& msgColor) noexcept -> bool
+    const Color& lhs,
+    const SDL_MessageBoxColor& rhs) noexcept -> bool
 {
-  return (color.red() == msgColor.r) && (color.green() == msgColor.g) &&
-         (color.blue() == msgColor.b);
+  return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) &&
+         (lhs.blue() == rhs.b);
 }
 
 /**
- * @copydoc operator(const Color&, const SDL_MessageBoxColor&)
+ * @copydoc operator==(const Color&, const SDL_MessageBoxColor&)
  */
 [[nodiscard]] inline constexpr auto operator==(const SDL_MessageBoxColor& lhs,
                                                const Color& rhs) noexcept

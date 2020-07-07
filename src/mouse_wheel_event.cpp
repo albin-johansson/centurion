@@ -1,9 +1,9 @@
 #ifndef CENTURION_MOUSE_WHEEL_EVENT_SOURCE
 #define CENTURION_MOUSE_WHEEL_EVENT_SOURCE
 
-#include "mouse_wheel_event.hpp"
-
 #include <utility>
+
+#include "event.hpp"
 
 namespace centurion {
 namespace event {

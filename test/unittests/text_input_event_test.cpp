@@ -1,6 +1,6 @@
-#include "text_input_event.hpp"
-
 #include <catch.hpp>
+
+#include "event.hpp"
 
 using namespace centurion::event;
 

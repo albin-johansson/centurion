@@ -1,9 +1,9 @@
 #ifndef CENTURION_AUDIO_DEVICE_EVENT_SOURCE
 #define CENTURION_AUDIO_DEVICE_EVENT_SOURCE
 
-#include "audio_device_event.hpp"
-
 #include <utility>
+
+#include "event.hpp"
 
 namespace centurion {
 namespace event {

@@ -1,9 +1,9 @@
 #ifndef CENTURION_CONTROLLER_AXIS_EVENT_SOURCE
 #define CENTURION_CONTROLLER_AXIS_EVENT_SOURCE
 
-#include "controller_axis_event.hpp"
-
 #include <utility>
+
+#include "event.hpp"
 
 namespace centurion {
 namespace event {

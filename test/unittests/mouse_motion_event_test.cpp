@@ -1,6 +1,6 @@
-#include "mouse_motion_event.hpp"
-
 #include <catch.hpp>
+
+#include "event.hpp"
 
 using namespace centurion;
 using namespace centurion::event;

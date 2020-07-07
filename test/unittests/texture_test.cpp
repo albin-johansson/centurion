@@ -1,5 +1,3 @@
-#include "graphics.hpp"
-
 #include <SDL_image.h>
 
 #include <catch.hpp>

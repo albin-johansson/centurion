@@ -3,9 +3,12 @@
 // *
 // * Copyright (c) 2019-2020 Albin Johansson
 // *
-// * Permission is hereby granted, free of charge, to any person obtaining a copy
-// * of this software and associated documentation files (the "Software"), to deal
-// * in the Software without restriction, including without limitation the rights
+// * Permission is hereby granted, free of charge, to any person obtaining a
+// copy
+// * of this software and associated documentation files (the "Software"), to
+// deal
+// * in the Software without restriction, including without limitation the
+// rights
 // * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // * copies of the Software, and to permit persons to whom the Software is
 // * furnished to do so, subject to the following conditions:
@@ -17,8 +20,10 @@
 // * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 // * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM,
+// * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE
 // * SOFTWARE.
 // */
 //
@@ -56,7 +61,7 @@
 //#include "texture.hpp"
 //#include "window.hpp"
 //
-//namespace centurion {
+// namespace centurion {
 //
 ///**
 // * @class Renderer
@@ -71,8 +76,8 @@
 // *
 // * @headerfile renderer.hpp
 // */
-//template <typename FontKey = std::string>
-//class Renderer final {  // TODO rename and provide aliases
+// template <typename FontKey = std::string>
+// class Renderer final {  // TODO rename and provide aliases
 // public:
 //  /**
 //   * Creates a renderer based on the supplied SDL_Renderer.
@@ -85,7 +90,8 @@
 //  explicit Renderer(gsl::owner<SDL_Renderer*> renderer)
 //  {
 //    if (!renderer) {
-//      throw CenturionException{"Can't create renderer from null SDL_Renderer!"};
+//      throw CenturionException{"Can't create renderer from null
+//      SDL_Renderer!"};
 //    }
 //    this->m_renderer = renderer;
 //
@@ -136,7 +142,8 @@
 //  /**
 //   * Creates and returns a unique pointer to a renderer.
 //   *
-//   * @param renderer a raw pointer to the SDL_Renderer that the created renderer
+//   * @param renderer a raw pointer to the SDL_Renderer that the created
+//   renderer
 //   * will be based on, may not be null.
 //   * @return a unique pointer to a renderer.
 //   * @throws CenturionException if the supplied renderer is null.
@@ -964,7 +971,8 @@
 //   * null if something went wrong.
 //   * @since 4.0.0
 //   */
-//  [[nodiscard]] auto text_solid(CZString text, const Font& font) const noexcept
+//  [[nodiscard]] auto text_solid(CZString text, const Font& font) const
+//  noexcept
 //      -> std::unique_ptr<Texture>
 //  {
 //    return render_text(text, [this, &font](CZString text) noexcept {
@@ -1170,7 +1178,8 @@
 //   * @since 4.0.0
 //   */
 //  template <typename Lambda>
-//  [[nodiscard]] auto render_text(CZString text, Lambda&& render) const noexcept
+//  [[nodiscard]] auto render_text(CZString text, Lambda&& render) const
+//  noexcept
 //      -> std::unique_ptr<Texture>
 //  {
 //    if (!text) {

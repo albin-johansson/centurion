@@ -1,9 +1,9 @@
 #ifndef CENTURION_TEXT_INPUT_EVENT_SOURCE
 #define CENTURION_TEXT_INPUT_EVENT_SOURCE
 
-#include "text_input_event.hpp"
-
 #include <utility>
+
+#include "event.hpp"
 
 namespace centurion {
 namespace event {

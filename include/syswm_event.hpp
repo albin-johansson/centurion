@@ -29,7 +29,7 @@
 #include <SDL_syswm.h>
 
 #include "centurion_api.hpp"
-#include "common_event.hpp"
+#include "event.hpp"
 
 namespace centurion {
 namespace event {
@@ -38,6 +38,8 @@ namespace event {
  * The SysWMEvent is a simple wrapper around SDL_SysWMEvent, only really in
  * the Centurion library to be accessible through the use of
  * <code>Event::poll()</code>.
+ *
+ * @todo Move this class to `event.hpp`
  *
  * @see SDL_SysWMEvent
  * @since 4.0.0

@@ -1,9 +1,9 @@
 #ifndef CENTURION_name_SOURCE
 #define CENTURION_name_SOURCE
 
-#include "joy_ball_event.hpp"
-
 #include <utility>
+
+#include "event.hpp"
 
 namespace centurion {
 namespace event {

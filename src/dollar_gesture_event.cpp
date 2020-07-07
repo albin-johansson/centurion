@@ -1,9 +1,9 @@
 #ifndef CENTURION_DOLLAR_GESTURE_EVENT_SOURCE
 #define CENTURION_DOLLAR_GESTURE_EVENT_SOURCE
 
-#include "dollar_gesture_event.hpp"
-
 #include <utility>
+
+#include "event.hpp"
 
 namespace centurion {
 namespace event {

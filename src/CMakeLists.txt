@@ -6,7 +6,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/centurion_docs.hpp
         ${CTN_INCLUDE_DIR}/window.hpp
         ${CTN_INCLUDE_DIR}/font.hpp
-        ${CTN_INCLUDE_DIR}/renderer.hpp
+        ${CTN_INCLUDE_DIR}/graphics.hpp
         ${CTN_INCLUDE_DIR}/centurion_exception.hpp
         ${CTN_INCLUDE_DIR}/centurion_api.hpp
         ${CTN_INCLUDE_DIR}/centurion.hpp
@@ -34,37 +34,14 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/screen.hpp
         ${CTN_INCLUDE_DIR}/key.hpp
         ${CTN_INCLUDE_DIR}/touch.hpp
-        ${CTN_INCLUDE_DIR}/event.hpp
-        ${CTN_INCLUDE_DIR}/event_type.hpp
         ${CTN_INCLUDE_DIR}/mouse_button.hpp
+        ${CTN_INCLUDE_DIR}/event_type.hpp
         ${CTN_INCLUDE_DIR}/event.hpp
-        ${CTN_INCLUDE_DIR}/keyboard_event.hpp
-        ${CTN_INCLUDE_DIR}/common_event.hpp
-        ${CTN_INCLUDE_DIR}/quit_event.hpp
+        ${CTN_INCLUDE_DIR}/syswm_event.hpp
         ${CTN_INCLUDE_DIR}/button_state.hpp
-        ${CTN_INCLUDE_DIR}/window_event.hpp
-        ${CTN_INCLUDE_DIR}/audio_device_event.hpp
-        ${CTN_INCLUDE_DIR}/controller_axis_event.hpp
-        ${CTN_INCLUDE_DIR}/controller_button_event.hpp
         ${CTN_INCLUDE_DIR}/game_controller.hpp
-        ${CTN_INCLUDE_DIR}/controller_device_event.hpp
-        ${CTN_INCLUDE_DIR}/dollar_gesture_event.hpp
-        ${CTN_INCLUDE_DIR}/drop_event.hpp
-        ${CTN_INCLUDE_DIR}/touch_finger_event.hpp
-        ${CTN_INCLUDE_DIR}/joy_axis_event.hpp
-        ${CTN_INCLUDE_DIR}/joy_ball_event.hpp
-        ${CTN_INCLUDE_DIR}/joy_hat_event.hpp
-        ${CTN_INCLUDE_DIR}/joy_button_event.hpp
-        ${CTN_INCLUDE_DIR}/joy_device_event.hpp
-        ${CTN_INCLUDE_DIR}/mouse_motion_event.hpp
-        ${CTN_INCLUDE_DIR}/mouse_button_event.hpp
-        ${CTN_INCLUDE_DIR}/mouse_wheel_event.hpp
-        ${CTN_INCLUDE_DIR}/multi_gesture_event.hpp
-        ${CTN_INCLUDE_DIR}/text_editing_event.hpp
-        ${CTN_INCLUDE_DIR}/text_input_event.hpp
         ${CTN_INCLUDE_DIR}/area.hpp
         ${CTN_INCLUDE_DIR}/key_modifier.hpp
-        ${CTN_INCLUDE_DIR}/syswm_event.hpp
         ${CTN_INCLUDE_DIR}/hints.hpp
         ${CTN_INCLUDE_DIR}/joystick.hpp
         ${CTN_INCLUDE_DIR}/touch.hpp

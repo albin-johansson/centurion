@@ -1,9 +1,8 @@
 #ifndef CENTURION_TOUCH_FINGER_EVENT_SOURCE
 #define CENTURION_TOUCH_FINGER_EVENT_SOURCE
 
-#include "touch_finger_event.hpp"
-
 #include "centurion_utils.hpp"
+#include "event.hpp"
 
 namespace centurion {
 namespace event {

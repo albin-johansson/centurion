@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-
 // TODO reimplement with new renderer
 
 //#ifndef CENTURION_IMAGE_GENERATOR_HEADER
@@ -35,7 +34,7 @@
 //#include "centurion_api.hpp"
 //#include "texture.hpp"
 //
-//namespace centurion {
+// namespace centurion {
 //
 ///**
 // * The TextureLoader class is a utility class designed to make it easier to
@@ -47,7 +46,7 @@
 // * @see Texture
 // * @since 3.0.0
 // */
-//class TextureLoader final {
+// class TextureLoader final {
 // public:
 //  /**
 //   * @param renderer a shared pointer to the associated renderer instance, may
@@ -115,11 +114,11 @@
 //  SharedPtr<Renderer> m_renderer;
 //};
 //
-//static_assert(std::is_final_v<TextureLoader>);
-//static_assert(std::is_nothrow_copy_assignable_v<TextureLoader>);
-//static_assert(std::is_nothrow_copy_constructible_v<TextureLoader>);
-//static_assert(std::is_nothrow_move_assignable_v<TextureLoader>);
-//static_assert(std::is_nothrow_move_constructible_v<TextureLoader>);
+// static_assert(std::is_final_v<TextureLoader>);
+// static_assert(std::is_nothrow_copy_assignable_v<TextureLoader>);
+// static_assert(std::is_nothrow_copy_constructible_v<TextureLoader>);
+// static_assert(std::is_nothrow_move_assignable_v<TextureLoader>);
+// static_assert(std::is_nothrow_move_constructible_v<TextureLoader>);
 //
 //}  // namespace centurion
 //

@@ -1,9 +1,9 @@
 #ifndef CENTURION_MULTI_GESTURE_EVENT_SOURCE
 #define CENTURION_MULTI_GESTURE_EVENT_SOURCE
 
-#include "multi_gesture_event.hpp"
-
 #include <utility>
+
+#include "event.hpp"
 
 namespace centurion {
 namespace event {

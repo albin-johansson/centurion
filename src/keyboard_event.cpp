@@ -1,9 +1,9 @@
 #ifndef CENTURION_KEYBOARD_EVENT_SOURCE
 #define CENTURION_KEYBOARD_EVENT_SOURCE
 
-#include "keyboard_event.hpp"
-
 #include <utility>
+
+#include "event.hpp"
 
 namespace centurion {
 namespace event {

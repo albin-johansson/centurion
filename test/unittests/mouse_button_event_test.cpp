@@ -1,6 +1,6 @@
-#include "mouse_button_event.hpp"
-
 #include <catch.hpp>
+
+#include "event.hpp"
 
 using namespace centurion;
 using namespace centurion::event;

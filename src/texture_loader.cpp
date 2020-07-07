@@ -7,43 +7,44 @@
 //#include "renderer.hpp"
 //#include "texture.hpp"
 //
-//namespace centurion {
+// namespace centurion {
 //
-//CENTURION_DEF
-//TextureLoader::TextureLoader(const SharedPtr<Renderer>& renderer)
+// CENTURION_DEF
+// TextureLoader::TextureLoader(const SharedPtr<Renderer>& renderer)
 //{
 //  if (renderer) {
 //    this->m_renderer = renderer;
 //  } else {
-//    throw CenturionException{"Cannot create TextureLoader from null renderer!"};
+//    throw CenturionException{"Cannot create TextureLoader from null
+//    renderer!"};
 //  }
 //}
 //
-//CENTURION_DEF
-//TextureLoader::~TextureLoader() noexcept = default;
+// CENTURION_DEF
+// TextureLoader::~TextureLoader() noexcept = default;
 //
-//CENTURION_DEF
-//UniquePtr<Texture> TextureLoader::unique_img(CZString file) const
+// CENTURION_DEF
+// UniquePtr<Texture> TextureLoader::unique_img(CZString file) const
 //{
 //  return Texture::unique(*m_renderer, file);
 //}
 //
-//CENTURION_DEF
-//UniquePtr<Texture> TextureLoader::unique_img(PixelFormat format,
+// CENTURION_DEF
+// UniquePtr<Texture> TextureLoader::unique_img(PixelFormat format,
 //                                             Texture::Access access,
 //                                             area_i size) const
 //{
 //  return Texture::unique(*m_renderer, format, access, size);
 //}
 //
-//CENTURION_DEF
-//SharedPtr<Texture> TextureLoader::shared_img(CZString file) const
+// CENTURION_DEF
+// SharedPtr<Texture> TextureLoader::shared_img(CZString file) const
 //{
 //  return Texture::shared(*m_renderer, file);
 //}
 //
-//CENTURION_DEF
-//SharedPtr<Texture> TextureLoader::shared_img(PixelFormat format,
+// CENTURION_DEF
+// SharedPtr<Texture> TextureLoader::shared_img(PixelFormat format,
 //                                             Texture::Access access,
 //                                             area_i size) const
 //{

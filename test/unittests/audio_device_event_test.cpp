@@ -1,6 +1,6 @@
-#include "audio_device_event.hpp"
-
 #include <catch.hpp>
+
+#include "event.hpp"
 
 using namespace centurion::event;
 

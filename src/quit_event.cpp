@@ -1,9 +1,9 @@
 #ifndef CENTURION_QUIT_EVENT_SOURCE
 #define CENTURION_QUIT_EVENT_SOURCE
 
-#include "quit_event.hpp"
-
 #include <utility>
+
+#include "event.hpp"
 
 namespace centurion {
 namespace event {

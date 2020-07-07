@@ -3,6 +3,8 @@
 
 #include "syswm_event.hpp"
 
+#include "event.hpp"
+
 namespace centurion {
 namespace event {
 

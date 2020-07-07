@@ -12,6 +12,6 @@ class Window;
 
 class Font;
 
-}
+}  // namespace centurion
 
 #endif  // CENTURION_FWD_HEADER

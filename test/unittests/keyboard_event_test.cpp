@@ -1,8 +1,8 @@
-#include "keyboard_event.hpp"
-
 #include <SDL.h>
 
 #include <catch.hpp>
+
+#include "event.hpp"
 
 using namespace centurion;
 using namespace event;

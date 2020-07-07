@@ -539,16 +539,20 @@ static_assert(
     validate_event<ControllerDeviceEvent, SDL_ControllerDeviceEvent>());
 
 /**
- * The DollarGestureEvent provides information about dollar gestures from
- * touch events.
+ * @class DollarGestureEvent
  *
- * @see SDL_DollarGestureEvent
+ * @brief Provides information about dollar gestures from touch events.
+ *
+ * @see `SDL_DollarGestureEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
  public:
   /**
-   * Creates a default-initialized dollar gesture event.
+   * @brief Creates a default-initialized dollar gesture event.
    *
    * @since 4.0.0
    */
@@ -556,129 +560,141 @@ class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
   DollarGestureEvent() noexcept;
 
   /**
-   * Creates a dollar gesture event that is based on the supplied SDL
+   * @brief Creates a dollar gesture event that is based on the supplied SDL
    * dollar gesture event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   DollarGestureEvent(const SDL_DollarGestureEvent& event) noexcept;
 
   /**
-   * Creates a dollar gesture event by moving the supplied SDL dollar gesture
-   * event.
-   *
-   * @param event the SDL dollar gesture event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  DollarGestureEvent(SDL_DollarGestureEvent&& event) noexcept;
-
-  /**
-   * Sets the touch device ID associated with the event.
+   * @brief Sets the touch device ID associated with the event.
    *
    * @param id the touch device ID associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
-  void set_touch_id(TouchID id) noexcept;
+  void set_touch_id(SDL_TouchID id) noexcept;
 
   /**
-   * Sets the gesture ID associated with the event.
+   * @brief Sets the gesture ID associated with the event.
    *
    * @param id the gesture ID associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
-  void set_gesture_id(GestureID id) noexcept;
+  void set_gesture_id(SDL_GestureID id) noexcept;
 
   /**
-   * Sets the amount of fingers used to draw the stroke.
+   * @brief Sets the amount of fingers used to draw the stroke.
    *
    * @param fingers the amount of fingers used to draw the stroke.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_fingers(Uint32 fingers) noexcept;
 
   /**
-   * Sets the error value for the performed stroke compared with the
+   * @brief Sets the error value for the performed stroke compared with the
    * gesture template associated with the event.
    *
    * @return the error value for the performed stroke.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_error(float error) noexcept;
 
   /**
-   * Sets the normalized x-coordinate of the center of the gesture.
+   * @brief Sets the normalized x-coordinate of the center of the gesture.
    *
    * @param x the normalized x-coordinate of the center of the gesture.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_x(float x) noexcept;
 
   /**
-   * Sets the normalized y-coordinate of the center of the gesture.
+   * @brief Sets the normalized y-coordinate of the center of the gesture.
    *
    * @param y the normalized y-coordinate of the center of the gesture.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_y(float y) noexcept;
 
   /**
-   * Returns the touch device ID associated with the event.
+   * @brief Returns the touch device ID associated with the event.
    *
    * @return the touch device ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY TouchID touch_id() const noexcept;
+  CENTURION_QUERY
+  auto touch_id() const noexcept -> SDL_TouchID;
 
   /**
-   * Returns the unique ID of the closest gesture to the performed stroke.
+   * @brief Returns the unique ID of the closest gesture to the performed
+   * stroke.
    *
    * @return the unique ID of the closest gesture to the performed stroke.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY GestureID gesture_id() const noexcept;
+  CENTURION_QUERY
+  auto gesture_id() const noexcept -> SDL_GestureID;
 
   /**
-   * Returns the amount of fingers used to draw the stroke.
+   * @brief Returns the amount of fingers used to draw the stroke.
    *
    * @return the amount of fingers used to draw the stroke.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint32 fingers() const noexcept;
+  CENTURION_QUERY
+  auto fingers() const noexcept -> Uint32;
 
   /**
-   * Returns the difference between the gesture template and the performed
-   * gesture. The lower the error, the better of a match.
+   * @brief Returns the difference between the gesture template and the
+   * performed gesture.
+   *
+   * @details The lower the error, the better the match.
    *
    * @return the difference between the gesture template and the performed
    * gesture.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float error() const noexcept;
+  CENTURION_QUERY
+  auto error() const noexcept -> float;
 
   /**
-   * Returns the x-coordinate of the normalized center of the gesture.
+   * @brief Returns the x-coordinate of the normalized center of the gesture.
    *
    * @return the x-coordinate of the normalized center of the gesture.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float x() const noexcept;
+  CENTURION_QUERY
+  auto x() const noexcept -> float;
 
   /**
-   * Returns the y-coordinate of the normalized center of the gesture.
+   * @brief Returns the y-coordinate of the normalized center of the gesture.
    *
    * @return the y-coordinate of the normalized center of the gesture.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float y() const noexcept;
+  CENTURION_QUERY
+  auto y() const noexcept -> float;
 };
 
 static_assert(validate_event<DollarGestureEvent, SDL_DollarGestureEvent>());

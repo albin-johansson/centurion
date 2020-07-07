@@ -1,12 +1,9 @@
 #ifndef CENTURION_DOLLAR_GESTURE_EVENT_SOURCE
 #define CENTURION_DOLLAR_GESTURE_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 DollarGestureEvent::DollarGestureEvent() noexcept : CommonEvent{}
@@ -16,11 +13,6 @@ CENTURION_DEF
 DollarGestureEvent::DollarGestureEvent(
     const SDL_DollarGestureEvent& event) noexcept
     : CommonEvent{event}
-{}
-
-CENTURION_DEF
-DollarGestureEvent::DollarGestureEvent(SDL_DollarGestureEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF
@@ -60,42 +52,41 @@ void DollarGestureEvent::set_y(float y) noexcept
 }
 
 CENTURION_DEF
-TouchID DollarGestureEvent::touch_id() const noexcept
+auto DollarGestureEvent::touch_id() const noexcept -> SDL_TouchID
 {
   return m_event.touchId;
 }
 
 CENTURION_DEF
-GestureID DollarGestureEvent::gesture_id() const noexcept
+auto DollarGestureEvent::gesture_id() const noexcept -> SDL_GestureID
 {
   return m_event.gestureId;
 }
 
 CENTURION_DEF
-Uint32 DollarGestureEvent::fingers() const noexcept
+auto DollarGestureEvent::fingers() const noexcept -> Uint32
 {
   return m_event.numFingers;
 }
 
 CENTURION_DEF
-float DollarGestureEvent::error() const noexcept
+auto DollarGestureEvent::error() const noexcept -> float
 {
   return m_event.error;
 }
 
 CENTURION_DEF
-float DollarGestureEvent::x() const noexcept
+auto DollarGestureEvent::x() const noexcept -> float
 {
   return m_event.x;
 }
 
 CENTURION_DEF
-float DollarGestureEvent::y() const noexcept
+auto DollarGestureEvent::y() const noexcept -> float
 {
   return m_event.y;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_DOLLAR_GESTURE_EVENT_SOURCE

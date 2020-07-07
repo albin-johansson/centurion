@@ -4,9 +4,9 @@
 #include "centurion_exception.hpp"
 #include "colors.hpp"
 #include "font.hpp"
+#include "graphics.hpp"
 #include "log.hpp"
 #include "rect.hpp"
-#include "video.hpp"
 #include "window.hpp"
 
 namespace {

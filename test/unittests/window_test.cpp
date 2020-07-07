@@ -4,10 +4,10 @@
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
+#include "graphics.hpp"
 #include "log.hpp"
 #include "screen.hpp"
 #include "surface.hpp"
-#include "video.hpp"
 
 namespace {
 

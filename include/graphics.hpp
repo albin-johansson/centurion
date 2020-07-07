@@ -23,7 +23,7 @@
  */
 
 /**
- * @file video.hpp
+ * @file graphics.hpp
  * @brief Provides the graphics related API.
  *
  * @todo Rename this file to graphics.hpp
@@ -68,10 +68,10 @@ namespace centurion {
  *
  * @see `SDL_Renderer`
  *
- * @headerfile video.hpp
+ * @headerfile graphics.hpp
  */
 template <typename FontKey = std::string>
-class basic_renderer final {  // TODO rename and provide aliases
+class basic_renderer final {
  public:
   /**
    * @brief Creates a renderer based on the supplied `SDL_Renderer`.
@@ -985,7 +985,7 @@ class basic_renderer final {  // TODO rename and provide aliases
  *
  * @since 5.0.0
  *
- * @headerfile video.hpp
+ * @headerfile graphics.hpp
  */
 using renderer = basic_renderer<>;
 
@@ -993,8 +993,11 @@ using renderer = basic_renderer<>;
  * The Texture class represents an texture that is hardware-accelerated.
  * Instances of the Texture class can be implicitly converted to SDL_Texture*.
  *
- * @see SDL_Texture
+ * @see `SDL_Texture`
+ *
  * @since 3.0.0
+ *
+ * @headerfile graphics.hpp
  */
 class Texture final {
  public:
@@ -2376,7 +2379,7 @@ auto basic_renderer<FontKey>::driver_info(int index) noexcept
 }  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
-// TODO include source here!
+#include "texture.cpp"
 #endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_VIDEO_HEADER

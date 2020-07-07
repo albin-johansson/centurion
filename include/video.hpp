@@ -48,137 +48,206 @@
 namespace centurion {
 
 /**
- * @class Renderer
- * @brief Responsible for providing the rendering API.
+ * @class basic_renderer
+ * @brief Provides the rendering API.
  *
  * @tparam FontKey the key type used when storing associated fonts in a map.
- *
  *
  * @since 3.0.0
  *
  * @see `SDL_Renderer`
  *
- * @headerfile renderer.hpp
+ * @headerfile video.hpp
  */
 template <typename FontKey = std::string>
 class basic_renderer final {  // TODO rename and provide aliases
  public:
   /**
-   * Creates a renderer based on the supplied SDL_Renderer.
+   * @brief Creates a renderer based on the supplied `SDL_Renderer`.
    *
-   * @param renderer a pointer to the SDL_Renderer that will be used by the
+   * @param renderer a pointer to the `SDL_Renderer` that will be used by the
    * renderer.
+   *
    * @throws CenturionException if the supplied pointer is null.
+   *
    * @since 3.0.0
    */
   explicit basic_renderer(gsl::owner<SDL_Renderer*> renderer);
 
   /**
-   * Creates a renderer based on the supplied window. By default, the
-   * internal renderer will be created using the SDL_RENDERER_ACCELERATED and
-   * SDL_RENDERER_PRESENTVSYNC flags.
+   * @brief Creates a renderer based on the supplied window.
+   *
+   * @details By default, the internal renderer will be created using the
+   * `SDL_RENDERER_ACCELERATED` and `SDL_RENDERER_PRESENTVSYNC` flags.
    *
    * @param window the associated window instance.
    * @param flags the renderer flags that will be used.
+   *
    * @throws CenturionException if something goes wrong when creating the
    * Renderer.
+   *
    * @since 4.0.0
    */
   explicit basic_renderer(const Window& window,
                           SDL_RendererFlags flags = defaultFlags);
 
+  /**
+   * @brief Creates a renderer by moving the supplied renderer into the new one.
+   *
+   * @param other the renderer that will be moved.
+   */
   basic_renderer(basic_renderer&& other) noexcept;
 
-  basic_renderer(const basic_renderer&) noexcept = delete;
+  basic_renderer(const basic_renderer&) = delete;
 
+  /**
+   * @brief Moves the supplied renderer into this renderer.
+   *
+   * @param other the renderer that will be moved.
+   *
+   * @return the renderer that claimed the supplied renderer.
+   */
   auto operator=(basic_renderer&& other) noexcept -> basic_renderer&;
 
-  auto operator=(const basic_renderer&) noexcept -> basic_renderer& = delete;
+  auto operator=(const basic_renderer&) -> basic_renderer& = delete;
 
   ~basic_renderer() noexcept;
 
   /**
-   * Creates and returns a unique pointer to a renderer.
-   *
-   * @param renderer a raw pointer to the SDL_Renderer that the created renderer
-   * will be based on, may not be null.
-   * @return a unique pointer to a renderer.
-   * @throws CenturionException if the supplied renderer is null.
-   * @since 3.0.0
+   * @copydoc basic_renderer(gsl::owner<SDL_Renderer*>)
    */
   [[nodiscard]] static auto unique(gsl::owner<SDL_Renderer*> renderer)
       -> std::unique_ptr<basic_renderer>;
 
   /**
-   * Creates and returns a unique pointer to a renderer instance.
-   *
-   * @param window the associated window instance.
-   * @param flags the renderer flags that will be used.
-   * @return a unique pointer to a renderer instance.
-   * @throws CenturionException if something goes wrong when creating the
-   * Renderer.
-   * @since 4.0.0
+   * @copydoc basic_renderer(const Window&, SDL_RendererFlags)
    */
   [[nodiscard]] static auto unique(const Window& window,
                                    SDL_RendererFlags flags = defaultFlags)
       -> std::unique_ptr<basic_renderer>;
 
   /**
-   * Creates and returns a shared pointer to a renderer.
-   *
-   * @param renderer a raw pointer to the SDL_Renderer that the created
-   * renderer will be based on, may not be null.
-   * @return a shared pointer to a renderer.
-   * @throws CenturionException if the supplied renderer is null.
-   * @since 3.0.0
+   * @copydoc basic_renderer(gsl::owner<SDL_Renderer*>)
    */
   [[nodiscard]] static auto shared(gsl::owner<SDL_Renderer*> renderer)
       -> std::shared_ptr<basic_renderer>;
 
   /**
-   * Creates and returns a shared pointer to a renderer instance.
-   *
-   * @param window the associated window instance.
-   * @param flags the renderer flags that will be used.
-   * @return a shared pointer to a renderer instance.
-   * @throws CenturionException if something goes wrong when creating the
-   * Renderer.
-   * @since 4.0.0
+   * @copydoc basic_renderer(const Window&, SDL_RendererFlags)
    */
   [[nodiscard]] static auto shared(const Window& window,
                                    SDL_RendererFlags flags = defaultFlags)
       -> std::shared_ptr<basic_renderer>;
 
   /**
-   * Clears the rendering target with the currently selected color.
+   * @brief Clears the rendering target with the currently selected color.
    *
    * @since 3.0.0
    */
   void clear() noexcept;
 
   /**
-   * Applies the previous rendering calls to the rendering target.
+   * @brief Applies the previous rendering calls to the rendering target.
    *
    * @since 3.0.0
    */
   void present() noexcept;
 
+  /**
+   * @brief Adds a font to the renderer.
+   *
+   * @details This method has no effect if the renderer already has a font
+   * associated with the specified key or if the supplied font is null.
+   *
+   * @param key the key that will be associated with the font.
+   * @param font the font that will be added, can safely be null.
+   *
+   * @since 5.0.0
+   */
   void add_font(const FontKey& key, const std::shared_ptr<Font>& font);
 
+  /**
+   * @brief Removes the font associated with the specified key.
+   *
+   * @details This method has no effect if there is no font associated with the
+   * specified key.
+   *
+   * @param key the key associated with the font that will be removed.
+   *
+   * @since 5.0.0
+   */
   void remove_font(const FontKey& key);
 
+  /**
+   * @brief Renders the outline of a rectangle in the currently selected color.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param rect the rectangle that will be rendered.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void draw_rect(const Rect<T>& rect) noexcept;
 
+  /**
+   * @brief Renders a filled rectangle in the currently selected color.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param rect the rectangle that will be rendered.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void fill_rect(const Rect<T>& rect) noexcept;
 
+  /**
+   * @brief Renders an outlined rectangle in the currently selected color.
+   *
+   * @details The rendered rectangle will be translated using the current
+   * translation viewport.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param rect the rectangle that will be rendered.
+   *
+   * @since 4.1.0
+   */
   template <typename T>
   void draw_rect_t(const Rect<T>& rect) noexcept;
 
+  /**
+   * @brief Renders a filled rectangle in the currently selected color.
+   *
+   * @details The rendered rectangle will be translated using the current
+   * translation viewport.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param rect the rectangle that will be rendered.
+   *
+   * @since 4.1.0
+   */
   template <typename T>
   void fill_rect_t(const Rect<T>& rect) noexcept;
 
+  /**
+   * @brief Renders a line between the supplied points, in the currently
+   * selected color.
+   *
+   * @tparam T The type of the point coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param start the start point of the line.
+   * @param end the end point of the line.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void draw_line(const Point<T>& start, const Point<T>& end) noexcept;
 
@@ -202,23 +271,90 @@ class basic_renderer final {  // TODO rename and provide aliases
   template <typename T, typename Container>
   void draw_lines(Container&& container) noexcept;
 
+  /**
+   * @brief Renders a texture at the specified position.
+   *
+   * @tparam T The type of the point coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param position the position of the rendered texture.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render(const Texture& texture, const Point<T>& position) noexcept;
 
+  /**
+   * @brief Renders a texture according to the specified rectangle.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param destination the position and size of the rendered texture.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render(const Texture& texture, const Rect<T>& destination) noexcept;
 
+  /**
+   * @brief Renders a texture.
+   *
+   * @remarks This should be your preferred method of rendering textures. This
+   * method is efficient and simple.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position and size of the rendered texture.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render(const Texture& texture,
               const IRect& source,
               const Rect<T>& destination) noexcept;
 
+  /**
+   * @brief Renders a texture.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position and size of the rendered texture.
+   * @param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render(const Texture& texture,
               const IRect& source,
               const Rect<T>& destination,
               const double angle) noexcept;
 
+  /**
+   * @brief Renders a texture.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position and size of the rendered texture.
+   * @param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * @param center specifies the point around which the rendered texture will be
+   * rotated.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render(const Texture& texture,
               const IRect& source,
@@ -226,6 +362,23 @@ class basic_renderer final {  // TODO rename and provide aliases
               const double angle,
               const Point<T>& center) noexcept;
 
+  /**
+   * @brief Renders a texture.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position and size of the rendered texture.
+   * @param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * @param center specifies the point around which the rendered texture will be
+   * rotated.
+   * @param flip specifies how the rendered texture will be flipped.
+   *
+   * @since 4.0.0
+   */
   template <typename T>
   void render(const Texture& texture,
               const IRect& source,
@@ -2018,7 +2171,7 @@ auto basic_renderer<FontKey>::vsync_enabled() const noexcept -> bool
 template <typename FontKey>
 auto basic_renderer<FontKey>::accelerated() const noexcept -> bool
 {
-  return flags() & SDL_RENDERER_PRESENTVSYNC;
+  return flags() & SDL_RENDERER_ACCLERERATED;
 }
 
 template <typename FontKey>

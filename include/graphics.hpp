@@ -1667,7 +1667,8 @@ class Texture final {
   /**
    * Indicates whether or not the texture is a possible render target.
    *
-   * @return true if the texture is a possible render target; false otherwise.
+   * @return `true` if the texture is a possible render target; `false`
+   * otherwise.
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API bool is_target() const noexcept;
@@ -1675,7 +1676,7 @@ class Texture final {
   /**
    * Indicates whether or not the texture has static texture access.
    *
-   * @return true if the texture has static texture access.
+   * @return `true` if the texture has static texture access.
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API bool is_static() const noexcept;
@@ -1683,7 +1684,8 @@ class Texture final {
   /**
    * Indicates whether or not the texture has streaming texture access.
    *
-   * @return true if the texture has streaming texture access; false otherwise.
+   * @return `true` if the texture has streaming texture access; `false`
+   * otherwise.
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API bool is_streaming() const noexcept;
@@ -1784,7 +1786,7 @@ class Texture final {
    * @param pixels this will be filled with a pointer to the locked pixels.
    * @param pitch This is filled in with the pitch of the locked pixels, can
    * safely be null if it isn't needed.
-   * @return true if all went well; false otherwise.
+   * @return `true` if all went well; `false` otherwise.
    * @since 4.0.0
    */
   CENTURION_API bool lock(Uint32** pixels, int* pitch = nullptr) noexcept;

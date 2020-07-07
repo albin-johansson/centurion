@@ -3,8 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 DropEvent::DropEvent() noexcept : CommonEvent{}
@@ -49,24 +48,23 @@ void DropEvent::set_window_id(Uint32 id) noexcept
 }
 
 CENTURION_DEF
-bool DropEvent::will_free_file() const noexcept
+auto DropEvent::will_free_file() const noexcept -> bool
 {
   return m_willFreeFile;
 }
 
 CENTURION_DEF
-char* DropEvent::file() const noexcept
+auto DropEvent::file() const noexcept -> char*
 {
   return m_event.file;
 }
 
 CENTURION_DEF
-Uint32 DropEvent::window_id() const noexcept
+auto DropEvent::window_id() const noexcept -> Uint32
 {
   return m_event.windowID;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_DROP_EVENT_SOURCE

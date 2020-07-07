@@ -700,15 +700,20 @@ class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
 static_assert(validate_event<DollarGestureEvent, SDL_DollarGestureEvent>());
 
 /**
- * The DropEvent class represents the event of requesting a file to be opened.
+ * @class DropEvent
  *
- * @see SDL_DropEvent
+ * @brief Represents the event of requesting a file to be opened.
+ *
+ * @see `SDL_DropEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class DropEvent : public CommonEvent<SDL_DropEvent> {
  public:
   /**
-   * Creates a default-initialized drop event.
+   * @brief Creates a default-initialized drop event.
    *
    * @since 4.0.0
    */
@@ -716,26 +721,30 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
   DropEvent() noexcept;
 
   /**
-   * Creates a drop event based on the supplied event.
+   * @brief Creates a drop event based on the supplied event.
    *
    * @param event the SDL drop event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   DropEvent(const SDL_DropEvent& event) noexcept;
 
   /**
-   * Creates a drop event based on the supplied event.
+   * @brief Creates a drop event based on the supplied event.
    *
    * @param event the SDL drop event that will be moved.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   DropEvent(SDL_DropEvent&& event) noexcept;
 
   /**
-   * Destroys the drop event. The associated file will be freed depending on
-   * the value returned from the <code>will_free_file()</code> method.
+   * @brief Destroys the drop event.
+   *
+   * @details The associated file will be freed depending on the value
+   * returned from the `will_free_file()` method.
    *
    * @since 4.0.0
    */
@@ -743,81 +752,98 @@ class DropEvent : public CommonEvent<SDL_DropEvent> {
   ~DropEvent() noexcept;
 
   /**
-   * Sets whether or not the associated file will be freed upon the
-   * destruction of this instance. If you set this property to false, you
-   * must remember to call <code>SDL_free</code> on the file pointer by
-   * yourself. Otherwise, you'll end up with a memory leak.
+   * @brief Sets whether or not the associated file will be freed by this event.
    *
-   * @param freeFile `true` if the associated file should be freed upon
-   * destruction; `false` otherwise.
+   * @details If you set this property to `false`, you **must** remember to
+   * call `SDL_free` on the file pointer by yourself. Otherwise, you'll end
+   * up with a memory leak!
+   *
+   * @param freeFile `true` if the associated file should be freed upon the
+   * destruction of the event; `false` otherwise.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_will_free_file(bool freeFile) noexcept;
 
   /**
-   * Sets the file associated with the drop event. The ownership of the
-   * supplied pointer will, by default, not be claimed by this event. Note
-   * that the supplied pointer will be freed using <code>SDL_free</code> upon
-   * the destruction of the event, if the <code>will_free_file</code>
-   * property is set to <b>true</b>.
+   * @brief Sets the file associated with the drop event.
    *
-   * <p> Note! If the <code>will_free_file</code> property is true, then <b>the
-   * previously set file pointer will be freed</b> by calling this method.
-   * However, if the <code>will_free_file</code> property is false, then the
-   * old file pointer is simply overridden. This may, if you're not careful,
-   * introduce a memory leak in your program.
+   * @details The ownership of the supplied pointer will, by default, not be
+   * claimed by this event.
    *
-   * <p> In other words, be careful when using this method.
+   * @note The supplied pointer will be freed using `SDL_free` upon the
+   * destruction of the event *if* the `will_free_file` property is set to
+   * **true**.
+   *
+   * @note If the `will_free_file` property is `true`, then **the previously
+   * set file pointer will be freed** by calling this method. However, if the
+   * `will_free_file` property is `false`, then the old file pointer is
+   * simply overridden. Of course, this may, if you're not careful, introduce a
+   * memory leak in your program!
+   *
+   * @warning Make sure you know what you are doing when using this method.
    *
    * @param file a pointer to a file, can safely be null.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_file(char* file) noexcept;
 
   /**
-   * Sets the ID of the window that is the target of the drop event.
+   * @brief Sets the ID of the window that is the target of the drop event.
    *
    * @param id the ID of the window that is the target of the drop event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_window_id(Uint32 id) noexcept;
 
   /**
-   * Indicates whether or not the file associated with the event will be
-   * freed upon the destruction of this instance. By default, this property
-   * is set to <b>false</b>.
+   * @brief Indicates whether or not the associated file will be freed by
+   * this event upon destruction.
+   *
+   * @details By default, this property is set to **false**.
    *
    * @return `true` if the associated file will be freed upon destruction;
    * `false` otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY bool will_free_file() const noexcept;
+  CENTURION_QUERY
+  auto will_free_file() const noexcept -> bool;
 
   /**
-   * Returns a pointer to the associated file. Do <b>NOT</b> claim ownership
-   * of the returned pointer without setting the <code>will_free_file</code>
-   * property to <b>false</b>. The returned pointer is null for
-   * <code>DropBegin</code> and <code>DropComplete</code> type drop events.
+   * @brief Returns a pointer to the associated file.
+   *
+   * @warning Do **not** claim ownership of the returned pointer *without*
+   * setting the `will_free_file` property to **false**.
+   *
+   * @note The returned pointer is always `nullptr` for `DropBegin` and
+   * `DropComplete` drop events.
    *
    * @return a pointer to the file associated with the event, might be null.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY char* file() const noexcept;
+  CENTURION_QUERY
+  auto file() const noexcept -> char*;
 
   /**
-   * Returns the ID of the window that is the target of the drop event, if
-   * there even is one.
+   * @brief Returns the ID of the window that is the target of the drop
+   * event, if there even is one.
    *
    * @return the ID of the window that is the target of the drop event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint32 window_id() const noexcept;
+  CENTURION_QUERY
+  auto window_id() const noexcept -> Uint32;
 
  private:
-  bool m_willFreeFile = false;
+  bool m_willFreeFile{false};
 };
 
 static_assert(validate_event<DropEvent, SDL_DropEvent>());

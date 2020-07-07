@@ -63,6 +63,10 @@ constexpr Point<U> operator+(const Point<U>& lhs, const Point<U>& rhs) noexcept;
 template <typename T = float>
 class Point final {
  public:
+  using value_type = T;
+  using pointer = T*;
+  using reference = T&;
+
   /**
    * Creates a point with coordinates (0, 0).
    *

@@ -22,6 +22,17 @@
  * SOFTWARE.
  */
 
+/**
+ * @file video.hpp
+ * @brief Provides the graphics related API.
+ *
+ * @todo Rename this file to graphics.hpp
+ *
+ * @author Albin Johansson
+ * @date 2019-2020
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_VIDEO_HEADER
 #define CENTURION_VIDEO_HEADER
 
@@ -964,7 +975,15 @@ class basic_renderer final {  // TODO rename and provide aliases
   }
 };
 
-using Renderer = basic_renderer<>;
+/**
+ * @typedef renderer
+ * @brief Alias for a renderer that uses `std::string` as keys for fonts.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile video.hpp
+ */
+using renderer = basic_renderer<>;
 
 /**
  * The Texture class represents an texture that is hardware-accelerated.

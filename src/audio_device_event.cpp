@@ -1,12 +1,9 @@
 #ifndef CENTURION_AUDIO_DEVICE_EVENT_SOURCE
 #define CENTURION_AUDIO_DEVICE_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 AudioDeviceEvent::AudioDeviceEvent() noexcept : CommonEvent{}
@@ -15,11 +12,6 @@ AudioDeviceEvent::AudioDeviceEvent() noexcept : CommonEvent{}
 CENTURION_DEF
 AudioDeviceEvent::AudioDeviceEvent(const SDL_AudioDeviceEvent& event) noexcept
     : CommonEvent{event}
-{}
-
-CENTURION_DEF
-AudioDeviceEvent::AudioDeviceEvent(SDL_AudioDeviceEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF
@@ -35,24 +27,23 @@ void AudioDeviceEvent::set_capture(bool capture) noexcept
 }
 
 CENTURION_DEF
-Uint32 AudioDeviceEvent::which() const noexcept
+auto AudioDeviceEvent::which() const noexcept -> Uint32
 {
   return m_event.which;
 }
 
 CENTURION_DEF
-bool AudioDeviceEvent::output() const noexcept
+auto AudioDeviceEvent::output() const noexcept -> bool
 {
   return !capture();
 }
 
 CENTURION_DEF
-bool AudioDeviceEvent::capture() const noexcept
+auto AudioDeviceEvent::capture() const noexcept -> bool
 {
   return m_event.iscapture;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_AUDIO_DEVICE_EVENT_SOURCE

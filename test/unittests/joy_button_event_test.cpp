@@ -5,11 +5,6 @@
 using namespace centurion;
 using namespace centurion::event;
 
-TEST_CASE("JoyButtonEvent move constructors", "[JoyButtonEvent]")
-{
-  CHECK_NOTHROW(JoyButtonEvent{{}});
-}
-
 TEST_CASE("JoyButtonEvent::set_which", "[JoyButtonEvent]")
 {
   JoyButtonEvent event;

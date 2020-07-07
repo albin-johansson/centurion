@@ -1,12 +1,9 @@
 #ifndef CENTURION_JOY_BUTTON_EVENT_SOURCE
 #define CENTURION_JOY_BUTTON_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 JoyButtonEvent::JoyButtonEvent() noexcept : CommonEvent{}
@@ -18,12 +15,7 @@ JoyButtonEvent::JoyButtonEvent(const SDL_JoyButtonEvent& event) noexcept
 {}
 
 CENTURION_DEF
-JoyButtonEvent::JoyButtonEvent(SDL_JoyButtonEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
-{}
-
-CENTURION_DEF
-void JoyButtonEvent::set_which(JoystickID which) noexcept
+void JoyButtonEvent::set_which(SDL_JoystickID which) noexcept
 {
   m_event.which = which;
 }
@@ -41,24 +33,23 @@ void JoyButtonEvent::set_state(ButtonState state) noexcept
 }
 
 CENTURION_DEF
-JoystickID JoyButtonEvent::which() const noexcept
+auto JoyButtonEvent::which() const noexcept -> SDL_JoystickID
 {
   return m_event.which;
 }
 
 CENTURION_DEF
-Uint8 JoyButtonEvent::button() const noexcept
+auto JoyButtonEvent::button() const noexcept -> Uint8
 {
   return m_event.button;
 }
 
 CENTURION_DEF
-ButtonState JoyButtonEvent::state() const noexcept
+auto JoyButtonEvent::state() const noexcept -> ButtonState
 {
   return static_cast<ButtonState>(m_event.state);
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_JOY_BUTTON_EVENT_SOURCE

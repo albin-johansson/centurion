@@ -1065,16 +1065,21 @@ class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
 static_assert(validate_event<JoyBallEvent, SDL_JoyBallEvent>());
 
 /**
- * The JoyButtonEvent class represents an event associated with the press or
- * release of a joystick button.
+ * @class JoyButtonEvent
  *
- * @see SDL_JoyButtonEvent
+ * @brief Represents an event associated with the press or release of a
+ * joystick button.
+ *
+ * @see `SDL_JoyButtonEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class JoyButtonEvent : public CommonEvent<SDL_JoyButtonEvent> {
  public:
   /**
-   * Creates a default-initialized JoyButtonEvent.
+   * @brief Creates a default-initialized JoyButtonEvent.
    *
    * @since 4.0.0
    */
@@ -1082,75 +1087,76 @@ class JoyButtonEvent : public CommonEvent<SDL_JoyButtonEvent> {
   JoyButtonEvent() noexcept;
 
   /**
-   * Creates a JoyButtonEvent based on the supplied SDL_JoyButtonEvent.
+   * @brief Creates a JoyButtonEvent based on the supplied event.
    *
    * @param event the event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   JoyButtonEvent(const SDL_JoyButtonEvent& event) noexcept;
 
   /**
-   * Creates a JoyButtonEvent based on the supplied SDL_JoyButtonEvent.
-   *
-   * @param event the event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  JoyButtonEvent(SDL_JoyButtonEvent&& event) noexcept;
-
-  /**
-   * Sets the joystick instance ID associated with the event.
+   * @brief Sets the joystick instance ID associated with the event.
    *
    * @param which the joystick instance ID associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
-  void set_which(JoystickID which) noexcept;
+  void set_which(SDL_JoystickID which) noexcept;
 
   /**
-   * Sets the button index associated with the event.
+   * @brief Sets the button index associated with the event.
    *
    * @param button the button index associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_button(Uint8 button) noexcept;
 
   /**
-   * Sets the button state that is associated with the button that triggered
-   * the event.
+   * @brief Sets the button state that is associated with the button that
+   * triggered the event.
    *
    * @param state the button state that is associated with the button that
    * triggered the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_state(ButtonState state) noexcept;
 
   /**
-   * Returns the joystick instance ID associated with the event.
+   * @brief Returns the joystick instance ID associated with the event.
    *
    * @return the joystick instance ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY JoystickID which() const noexcept;
+  CENTURION_QUERY
+  auto which() const noexcept -> SDL_JoystickID;
 
   /**
-   * Returns the index of the button that changed.
+   * @brief Returns the index of the button that changed.
    *
    * @return the index of the button that changed.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint8 button() const noexcept;
+  CENTURION_QUERY
+  auto button() const noexcept -> Uint8;
 
   /**
-   * Returns the state of the button associated with the event.
+   * @brief Returns the state of the button associated with the event.
    *
    * @return the state of the button associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY ButtonState state() const noexcept;
+  CENTURION_QUERY
+  auto state() const noexcept -> ButtonState;
 };
 
 static_assert(validate_event<JoyButtonEvent, SDL_JoyButtonEvent>());

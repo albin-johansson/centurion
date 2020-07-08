@@ -250,7 +250,7 @@ class MessageBox final {
    * used if the supplied string is null.
    * @since 3.0.0
    */
-  CENTURION_API explicit MessageBox(CZString title, CZString message = nullptr);
+  CENTURION_API explicit MessageBox(czstring title, czstring message = nullptr);
 
   CENTURION_API ~MessageBox() noexcept;
 
@@ -282,8 +282,8 @@ class MessageBox final {
    * indicate no parent.
    * @since 3.0.0
    */
-  CENTURION_API static void show(CZString title,
-                                 CZString message,
+  CENTURION_API static void show(czstring title,
+                                 czstring message,
                                  const MessageBoxConfig& config,
                                  SDL_Window* window = nullptr) noexcept;
 
@@ -298,7 +298,7 @@ class MessageBox final {
    */
   CENTURION_API void add_button(ButtonDataHint hint,
                                 int id,
-                                CZString text) noexcept;
+                                czstring text) noexcept;
 
   /**
    * Sets the title of the message box. This method has no effect if the
@@ -307,7 +307,7 @@ class MessageBox final {
    * @param title the title of the message box, can be null.
    * @since 3.0.0
    */
-  CENTURION_API void set_title(CZString title) noexcept;
+  CENTURION_API void set_title(czstring title) noexcept;
 
   /**
    * Sets the message of the message box. This method has no effect if the
@@ -316,7 +316,7 @@ class MessageBox final {
    * @param message the message of the message box, can be null.
    * @since 3.0.0
    */
-  CENTURION_API void set_message(CZString message) noexcept;
+  CENTURION_API void set_message(czstring message) noexcept;
 
   /**
    * Sets the type of message that the message box represents. By default,
@@ -354,7 +354,7 @@ class MessageBox final {
    * @return the title of the message box.
    * @since 4.0.0
    */
-  [[nodiscard]] CZString title() const noexcept { return m_title; }
+  [[nodiscard]] czstring title() const noexcept { return m_title; }
 
   /**
    * Returns the message of the message box. The default message is "N/A".
@@ -362,7 +362,7 @@ class MessageBox final {
    * @return the message of the message box.
    * @since 4.0.0
    */
-  [[nodiscard]] CZString message() const noexcept { return m_message; }
+  [[nodiscard]] czstring message() const noexcept { return m_message; }
 
   /**
    * Returns the color scheme that is used by the message box. Color schemes
@@ -399,8 +399,8 @@ class MessageBox final {
  private:
   Optional<ColorScheme> m_colorScheme = nothing;
   std::vector<SDL_MessageBoxButtonData> m_buttons;
-  CZString m_title = "Centurion message box";
-  CZString m_message = "N/A";
+  czstring m_title = "Centurion message box";
+  czstring m_message = "N/A";
   UniquePtr<MessageBoxConfig> m_config;
 
   /**

@@ -8,18 +8,17 @@
 #include "centurion_exception.hpp"
 #include "colors.hpp"
 #include "graphics.hpp"
-#include "renderer.hpp"
 #include "window.hpp"
 
 using namespace centurion;
 
-static constexpr CZString path = "resources/panda.png";
+static constexpr czstring path = "resources/panda.png";
 
 TEST_CASE("Surface(CZString)", "[Surface]")
 {
   SECTION("Null path")
   {
-    CZString c = nullptr;
+    czstring c = nullptr;
     CHECK_THROWS_AS(Surface{c}, CenturionException);
   }
 

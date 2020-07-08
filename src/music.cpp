@@ -9,7 +9,7 @@
 namespace centurion {
 
 CENTURION_DEF
-Music::Music(CZString file)
+Music::Music(czstring file)
 {
   m_music = Mix_LoadMUS(file);
   if (!m_music) {
@@ -55,13 +55,13 @@ void Music::move(Music&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Music> Music::unique(CZString file)
+UniquePtr<Music> Music::unique(czstring file)
 {
   return std::make_unique<Music>(file);
 }
 
 CENTURION_DEF
-SharedPtr<Music> Music::shared(CZString file)
+SharedPtr<Music> Music::shared(czstring file)
 {
   return std::make_shared<Music>(file);
 }

@@ -76,7 +76,7 @@ class Key final {
    * represent, can safely be null.
    * @since 4.1.0
    */
-  CENTURION_API explicit Key(CZString name) noexcept;
+  CENTURION_API explicit Key(czstring name) noexcept;
 
   /**
    * Sets the value of the key.

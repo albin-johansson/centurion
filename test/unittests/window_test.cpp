@@ -310,7 +310,7 @@ TEST_CASE("Window::set_title", "[Window]")
 {
   ctn::Window window;
 
-  ctn::CZString title = "foo";
+  ctn::czstring title = "foo";
   window.set_title(title);
 
   CHECK_THAT(window.title(), Catch::Equals(title));
@@ -851,7 +851,7 @@ TEST_CASE("Window::pixel_format", "[Window]")
 
 TEST_CASE("Window::title", "[Window]")
 {
-  ctn::CZString title = "HelloWorld";
+  ctn::czstring title = "HelloWorld";
   const ctn::Window window{title};
   CHECK_THAT(window.title(), Catch::Equals(title));
 }

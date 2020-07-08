@@ -123,7 +123,19 @@ set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
         CXX_EXTENSIONS OFF
         OUTPUT_NAME ${CENTURION_OUTPUT_NAME})
 
-centurion_add_header_only_lib(libGSL ${CTN_LIBRARY_DIR}/gsl ${CTN_LIBRARY_DIR}/gsl/gsl-lite.hpp)
+set(GSL_SOURCES
+        ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl
+        ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl_algorithm
+        ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl_assert
+        ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl_byte
+        ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl_util
+        ${CTN_LIBRARY_DIR}/microsoft/gsl/multi_span
+        ${CTN_LIBRARY_DIR}/microsoft/gsl/pointers
+        ${CTN_LIBRARY_DIR}/microsoft/gsl/span
+        ${CTN_LIBRARY_DIR}/microsoft/gsl/span_ext
+        ${CTN_LIBRARY_DIR}/microsoft/gsl/string_span)
+centurion_add_header_only_lib(libGSL "${CTN_LIBRARY_DIR}/microsoft" ${GSL_SOURCES})
+
 centurion_add_header_only_lib(libOptional ${CTN_LIBRARY_DIR}/optional
         ${CTN_LIBRARY_DIR}/optional/optional.hpp)
 

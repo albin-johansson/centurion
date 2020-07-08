@@ -95,7 +95,7 @@ class Log final {
   template <typename... Args>
   static void log(Priority priority,
                   Category category,
-                  CZString fmt,
+                  czstring fmt,
                   Args... args) noexcept
   {
     if (fmt) {
@@ -116,7 +116,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void info(CZString fmt, Args... args) noexcept
+  static void info(czstring fmt, Args... args) noexcept
   {
     Log::info(Category::App, fmt, args...);
   }
@@ -133,7 +133,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void info(Category category, CZString fmt, Args... args) noexcept
+  static void info(Category category, czstring fmt, Args... args) noexcept
   {
     Log::log(Priority::Info, category, fmt, args...);
   }
@@ -149,7 +149,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void warn(CZString fmt, Args... args) noexcept
+  static void warn(czstring fmt, Args... args) noexcept
   {
     Log::warn(Category::App, fmt, args...);
   }
@@ -166,7 +166,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void warn(Category category, CZString fmt, Args... args) noexcept
+  static void warn(Category category, czstring fmt, Args... args) noexcept
   {
     Log::log(Priority::Warn, category, fmt, args...);
   }
@@ -182,7 +182,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void verbose(CZString fmt, Args... args) noexcept
+  static void verbose(czstring fmt, Args... args) noexcept
   {
     Log::verbose(Category::App, fmt, args...);
   }
@@ -199,7 +199,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void verbose(Category category, CZString fmt, Args... args) noexcept
+  static void verbose(Category category, czstring fmt, Args... args) noexcept
   {
     Log::log(Priority::Verbose, category, fmt, args...);
   }
@@ -215,7 +215,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void debug(CZString fmt, Args... args) noexcept
+  static void debug(czstring fmt, Args... args) noexcept
   {
     Log::debug(Category::App, fmt, args...);
   }
@@ -232,7 +232,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void debug(Category category, CZString fmt, Args... args) noexcept
+  static void debug(Category category, czstring fmt, Args... args) noexcept
   {
     Log::log(Priority::Debug, category, fmt, args...);
   }
@@ -248,7 +248,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void critical(CZString fmt, Args... args) noexcept
+  static void critical(czstring fmt, Args... args) noexcept
   {
     Log::critical(Category::App, fmt, args...);
   }
@@ -265,7 +265,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void critical(Category category, CZString fmt, Args... args) noexcept
+  static void critical(Category category, czstring fmt, Args... args) noexcept
   {
     Log::log(Priority::Critical, category, fmt, args...);
   }
@@ -281,7 +281,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void error(CZString fmt, Args... args) noexcept
+  static void error(czstring fmt, Args... args) noexcept
   {
     Log::error(Category::App, fmt, args...);
   }
@@ -298,7 +298,7 @@ class Log final {
    * @since 4.0.0
    */
   template <typename... Args>
-  static void error(Category category, CZString fmt, Args... args) noexcept
+  static void error(Category category, czstring fmt, Args... args) noexcept
   {
     Log::log(Priority::Error, category, fmt, args...);
   }

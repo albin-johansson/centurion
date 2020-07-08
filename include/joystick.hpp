@@ -474,7 +474,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API static CZString name(int deviceIndex) noexcept;
+  [[nodiscard]] CENTURION_API static czstring name(int deviceIndex) noexcept;
 
   /**
    * @brief Returns a joystick GUID based on the supplied string.
@@ -487,7 +487,7 @@ class Joystick final {
    * @since 4.2.0
    */
   [[nodiscard]] CENTURION_API static SDL_JoystickGUID guid_from_string(
-      gsl::not_null<CZString> str) noexcept;
+      gsl::not_null<czstring> str) noexcept;
 
   /**
    * @brief Makes the joystick rumble.
@@ -687,7 +687,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API CZString name() const noexcept;
+  [[nodiscard]] CENTURION_API czstring name() const noexcept;
 
   /**
    * @brief Returns the current power level of the joystick.

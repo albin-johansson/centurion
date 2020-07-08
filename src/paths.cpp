@@ -63,7 +63,7 @@ SharedPtr<BasePath> BasePath::shared() noexcept
 }
 
 CENTURION_DEF
-PrefPath::PrefPath(CZString org, CZString app) noexcept
+PrefPath::PrefPath(czstring org, czstring app) noexcept
     : m_path{SDL_GetPrefPath(org, app)}
 {}
 
@@ -105,13 +105,13 @@ void PrefPath::move(PrefPath&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<PrefPath> PrefPath::unique(CZString org, CZString app) noexcept
+UniquePtr<PrefPath> PrefPath::unique(czstring org, czstring app) noexcept
 {
   return std::make_unique<PrefPath>(org, app);
 }
 
 CENTURION_DEF
-SharedPtr<PrefPath> PrefPath::shared(CZString org, CZString app) noexcept
+SharedPtr<PrefPath> PrefPath::shared(czstring org, czstring app) noexcept
 {
   return std::make_shared<PrefPath>(org, app);
 }

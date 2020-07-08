@@ -96,7 +96,7 @@ class Window final {
    * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
-  CENTURION_API explicit Window(CZString title, area_i size = {800, 600});
+  CENTURION_API explicit Window(czstring title, area_i size = {800, 600});
 
   /**
    * Creates a window by moving the contents of the supplied window into the new
@@ -156,7 +156,7 @@ class Window final {
    * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<Window> unique(CZString title,
+  [[nodiscard]] CENTURION_API static UniquePtr<Window> unique(czstring title,
                                                               area_i size = {
                                                                   800,
                                                                   600});
@@ -194,7 +194,7 @@ class Window final {
    * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<Window> shared(CZString title,
+  [[nodiscard]] CENTURION_API static SharedPtr<Window> shared(czstring title,
                                                               area_i size = {
                                                                   800,
                                                                   600});
@@ -311,7 +311,7 @@ class Window final {
    * @param title the title of the window, can safely be null.
    * @since 3.0.0
    */
-  CENTURION_API void set_title(CZString title) noexcept;
+  CENTURION_API void set_title(czstring title) noexcept;
 
   /**
    * Sets the opacity of the window.
@@ -649,7 +649,7 @@ class Window final {
    * @return the title of the window.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API CZString title() const noexcept;
+  [[nodiscard]] CENTURION_API czstring title() const noexcept;
 
   /**
    * Returns a textual representation of the window.

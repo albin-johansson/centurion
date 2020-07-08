@@ -116,7 +116,7 @@ TEST_CASE("Joystick::name(int)", "[Joystick]")
 
 TEST_CASE("Joystick::guid_from_string(int)", "[Joystick]")
 {
-  const CZString str = "";
+  const czstring str = "";
   CHECK_NOTHROW(Joystick::guid_from_string(str));
 }
 

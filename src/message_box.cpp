@@ -23,7 +23,7 @@ namespace {
  */
 inline SDL_MessageBoxButtonData create_button_data(ButtonDataHint hint,
                                                    int id,
-                                                   CZString text) noexcept
+                                                   czstring text) noexcept
 {
   return {static_cast<Uint32>(hint), id, text};
 }
@@ -56,7 +56,7 @@ MessageBox::MessageBox() : m_config{std::make_unique<MessageBoxConfig>()}
 {}
 
 CENTURION_DEF
-MessageBox::MessageBox(CZString title, CZString message) : MessageBox{}
+MessageBox::MessageBox(czstring title, czstring message) : MessageBox{}
 
 {
   set_title(title);
@@ -124,8 +124,8 @@ int MessageBox::show(SDL_Window* window)
 }
 
 CENTURION_DEF
-void MessageBox::show(CZString title,
-                      CZString message,
+void MessageBox::show(czstring title,
+                      czstring message,
                       const MessageBoxConfig& config,
                       SDL_Window* window) noexcept
 {
@@ -138,19 +138,19 @@ void MessageBox::show(CZString title,
 }
 
 CENTURION_DEF
-void MessageBox::add_button(ButtonDataHint hint, int id, CZString text) noexcept
+void MessageBox::add_button(ButtonDataHint hint, int id, czstring text) noexcept
 {
   m_buttons.emplace_back(create_button_data(hint, id, text));
 }
 
 CENTURION_DEF
-void MessageBox::set_title(CZString title) noexcept
+void MessageBox::set_title(czstring title) noexcept
 {
   m_title = title ? title : m_title;
 }
 
 CENTURION_DEF
-void MessageBox::set_message(CZString message) noexcept
+void MessageBox::set_message(czstring message) noexcept
 {
   m_message = message ? message : m_message;
 }

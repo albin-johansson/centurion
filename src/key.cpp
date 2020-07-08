@@ -18,7 +18,7 @@ Key::Key(SDL_Keycode keycode) noexcept
 }
 
 CENTURION_DEF
-Key::Key(CZString name) noexcept : Key{}
+Key::Key(czstring name) noexcept : Key{}
 {
   if (name) {
     set(SDL_GetScancodeFromName(name));

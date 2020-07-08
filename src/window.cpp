@@ -21,7 +21,7 @@ Window::Window(Owner<SDL_Window*> window) : m_window{window}
 }
 
 CENTURION_DEF
-Window::Window(CZString title, area_i size)
+Window::Window(czstring title, area_i size)
 {
   if ((size.width < 1) || (size.height < 1)) {
     throw CenturionException{"Invalid width or height!"};
@@ -87,7 +87,7 @@ UniquePtr<Window> Window::unique(Owner<SDL_Window*> window)
 }
 
 CENTURION_DEF
-UniquePtr<Window> Window::unique(CZString title, area_i size)
+UniquePtr<Window> Window::unique(czstring title, area_i size)
 {
   return std::make_unique<Window>(title, size);
 }
@@ -105,7 +105,7 @@ SharedPtr<Window> Window::shared(Owner<SDL_Window*> window)
 }
 
 CENTURION_DEF
-SharedPtr<Window> Window::shared(CZString title, area_i size)
+SharedPtr<Window> Window::shared(czstring title, area_i size)
 {
   return std::make_shared<Window>(title, size);
 }
@@ -200,7 +200,7 @@ void Window::set_icon(const Surface& icon) noexcept
 }
 
 CENTURION_DEF
-void Window::set_title(CZString title) noexcept
+void Window::set_title(czstring title) noexcept
 {
   if (title) {
     SDL_SetWindowTitle(m_window, title);
@@ -457,7 +457,7 @@ PixelFormat Window::pixel_format() const noexcept
 }
 
 CENTURION_DEF
-CZString Window::title() const noexcept
+czstring Window::title() const noexcept
 {
   return SDL_GetWindowTitle(m_window);
 }

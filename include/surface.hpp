@@ -52,7 +52,7 @@ class Surface final {
    * @throws CenturionException if the surface cannot be created.
    * @since 4.0.0
    */
-  CENTURION_API explicit Surface(CZString file);
+  CENTURION_API explicit Surface(czstring file);
 
   /**
    * @param surface a pointer to the SDL_Surface that will be used to create the

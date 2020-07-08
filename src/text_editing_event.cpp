@@ -50,7 +50,7 @@ auto TextEditingEvent::window_id() const noexcept -> Uint32
 }
 
 CENTURION_DEF
-auto TextEditingEvent::text() const noexcept -> gsl::czstring
+auto TextEditingEvent::text() const noexcept -> czstring
 {
   return m_event.text;
 }

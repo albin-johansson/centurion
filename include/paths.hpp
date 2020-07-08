@@ -109,10 +109,10 @@ class BasePath final {
    * @return the path of the application executable, can be null.
    * @since 3.0.0
    */
-  [[nodiscard]] CZString get() const noexcept { return m_path; }
+  [[nodiscard]] czstring get() const noexcept { return m_path; }
 
  private:
-  ZString m_path = nullptr;
+  zstring m_path = nullptr;
 
   /**
    * Destroys the resources associated with the BasePath instance.
@@ -146,7 +146,7 @@ class PrefPath final {
    * @param app the name of your application.
    * @since 3.0.0
    */
-  CENTURION_API PrefPath(CZString org, CZString app) noexcept;
+  CENTURION_API PrefPath(czstring org, czstring app) noexcept;
 
   /**
    * Moves the contents of the supplied PrefPath into this instance.
@@ -180,8 +180,8 @@ class PrefPath final {
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API static UniquePtr<PrefPath> unique(
-      CZString org,
-      CZString app) noexcept;
+      czstring org,
+      czstring app) noexcept;
 
   /**
    * Creates and returns a shared pointer to a PrefPath object. Only use
@@ -193,8 +193,8 @@ class PrefPath final {
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API static SharedPtr<PrefPath> shared(
-      CZString org,
-      CZString app) noexcept;
+      czstring org,
+      czstring app) noexcept;
 
   /**
    * Indicates whether or not the path object holds a non-null path.
@@ -213,10 +213,10 @@ class PrefPath final {
    * @return a string that represents the preferred path.
    * @since 3.0.0
    */
-  [[nodiscard]] CZString get() const noexcept { return m_path; }
+  [[nodiscard]] czstring get() const noexcept { return m_path; }
 
  private:
-  ZString m_path = nullptr;
+  zstring m_path = nullptr;
 
   /**
    * Destroys the resources associated with the PrefPath instance.

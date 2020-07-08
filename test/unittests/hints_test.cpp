@@ -124,7 +124,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("DisplayUsableBounds")
   {
     test_hint<DisplayUsableBounds>([] {
-      const CZString str = "10, 20, 30, 40";
+      const czstring str = "10, 20, 30, 40";
       CHECK(set_hint<DisplayUsableBounds>(str));
       CHECK_THAT(get_hint<DisplayUsableBounds>().value(), Catch::Equals(str));
     });
@@ -207,7 +207,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("GameControllerType")
   {
     test_hint<GameControllerType>([] {
-      const CZString str = "0x00FD/0xAAC3=PS4";
+      const czstring str = "0x00FD/0xAAC3=PS4";
       set_hint<GameControllerType>(str);
       CHECK_THAT(get_hint<GameControllerType>().value(), Catch::Equals(str));
     });
@@ -216,7 +216,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("GameControllerConfig")
   {
     test_hint<GameControllerConfig>([] {
-      const CZString str = "asd\nasd";
+      const czstring str = "asd\nasd";
       set_hint<GameControllerConfig>(str);
       CHECK_THAT(get_hint<GameControllerConfig>().value(), Catch::Equals(str));
     });
@@ -225,7 +225,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("GameControllerConfigFile")
   {
     test_hint<GameControllerConfigFile>([] {
-      const CZString str = "foo";
+      const czstring str = "foo";
       set_hint<GameControllerConfigFile>(str);
       CHECK_THAT(get_hint<GameControllerConfigFile>().value(),
                  Catch::Equals(str));
@@ -235,7 +235,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("GameControllerIgnoreDevices")
   {
     test_hint<GameControllerIgnoreDevices>([] {
-      const CZString str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+      const czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
       set_hint<GameControllerIgnoreDevices>(str);
       CHECK_THAT(get_hint<GameControllerIgnoreDevices>().value(),
                  Catch::Equals(str));
@@ -245,7 +245,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("GameControllerIgnoreDevicesExcept")
   {
     test_hint<GameControllerIgnoreDevicesExcept>([] {
-      const CZString str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+      const czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
       set_hint<GameControllerIgnoreDevicesExcept>(str);
       CHECK_THAT(get_hint<GameControllerIgnoreDevicesExcept>().value(),
                  Catch::Equals(str));
@@ -544,7 +544,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("WinRTPrivacyPolicyLabel")
   {
     test_hint<WinRTPrivacyPolicyLabel>([] {
-      const CZString str = "Hello this is GDPR speaking";
+      const czstring str = "Hello this is GDPR speaking";
       set_hint<WinRTPrivacyPolicyLabel>(str);
       CHECK_THAT(get_hint<WinRTPrivacyPolicyLabel>().value(),
                  Catch::Equals(str));
@@ -554,7 +554,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("WinRTPrivacyPolicyURL")
   {
     test_hint<WinRTPrivacyPolicyURL>([] {
-      const CZString str = "Hello this is GDPR URL speaking";
+      const czstring str = "Hello this is GDPR URL speaking";
       set_hint<WinRTPrivacyPolicyURL>(str);
       CHECK_THAT(get_hint<WinRTPrivacyPolicyURL>().value(), Catch::Equals(str));
     });
@@ -690,7 +690,7 @@ TEST_CASE("add_callback", "[Hints]")
 
   int data = 7;
   auto handle = add_callback<RenderDriver>(
-      [](void* data, CZString hint, CZString oldVal, CZString newVal) {
+      [](void* data, czstring hint, czstring oldVal, czstring newVal) {
         static bool first = true;
         if (first) {
           first = false;
@@ -719,7 +719,7 @@ TEST_CASE("clear_all", "[Hints]")
 TEST_CASE("user_data", "[hint::Callback]")
 {
   int i = 123;
-  Callback<RenderDriver> callback{[](void*, CZString, CZString, CZString) {},
+  Callback<RenderDriver> callback{[](void*, czstring, czstring, czstring) {},
                                   &i};
   CHECK(callback.user_data() == &i);
 }

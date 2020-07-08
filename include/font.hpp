@@ -107,7 +107,7 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_API
-  Font(gsl::czstring file, int size);
+  Font(czstring file, int size);
 
   Font(const Font&) = delete;
 
@@ -139,16 +139,16 @@ class Font final {
   ~Font() noexcept;
 
   /**
-   * @copydoc Font(gsl::czstring, int)
+   * @copydoc Font(czstring, int)
    */
   CENTURION_QUERY
-  static auto unique(gsl::czstring file, int size) -> std::unique_ptr<Font>;
+  static auto unique(czstring file, int size) -> std::unique_ptr<Font>;
 
   /**
-   * @copydoc Font(gsl::czstring, int)
+   * @copydoc Font(czstring, int)
    */
   CENTURION_QUERY
-  static auto shared(gsl::czstring file, int size) -> std::shared_ptr<Font>;
+  static auto shared(czstring file, int size) -> std::shared_ptr<Font>;
 
   /**
    * @brief Resets the style of the font.
@@ -428,7 +428,7 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto family_name() const noexcept -> gsl::czstring;
+  auto family_name() const noexcept -> czstring;
 
   /**
    * @brief Returns the font face style name of the font.
@@ -441,7 +441,7 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto style_name() const noexcept -> gsl::czstring;
+  auto style_name() const noexcept -> czstring;
 
   /**
    * @brief Returns the width of the supplied string, if it was rendered using
@@ -455,7 +455,7 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto string_width(gsl::czstring string) const noexcept -> int;
+  auto string_width(czstring string) const noexcept -> int;
 
   /**
    * @brief Returns the height of the supplied string, if it was rendered
@@ -469,7 +469,7 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto string_height(gsl::czstring string) const noexcept -> int;
+  auto string_height(czstring string) const noexcept -> int;
 
   /**
    * @brief Returns the size of the supplied string, if it was rendered using
@@ -483,7 +483,7 @@ class Font final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto string_size(gsl::czstring s) const noexcept -> area_i;
+  auto string_size(czstring s) const noexcept -> area_i;
 
   /**
    * @brief Returns the compile-time version of SDL2_ttf that is being used.

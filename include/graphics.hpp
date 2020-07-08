@@ -902,7 +902,7 @@ class basic_renderer final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_blended(gsl::czstring text,
+  [[nodiscard]] auto text_blended(czstring text,
                                   const Font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
@@ -933,7 +933,7 @@ class basic_renderer final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_blended_wrapped(gsl::czstring text,
+  [[nodiscard]] auto text_blended_wrapped(czstring text,
                                           Uint32 wrap,
                                           const Font& font) const noexcept
       -> std::unique_ptr<Texture>;
@@ -961,7 +961,7 @@ class basic_renderer final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_shaded(gsl::czstring text,
+  [[nodiscard]] auto text_shaded(czstring text,
                                  const Color& bg,
                                  const Font& font) const noexcept
       -> std::unique_ptr<Texture>;
@@ -986,8 +986,7 @@ class basic_renderer final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_solid(gsl::czstring text,
-                                const Font& font) const noexcept
+  [[nodiscard]] auto text_solid(czstring text, const Font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
   /**
@@ -1155,7 +1154,7 @@ class basic_renderer final {
    * based on the text and then convert it to fast textures.
    *
    * @param text the text that will be rendered.
-   * @param render a lambda with `void(SDL_Surface*, gsl::czstring)` as its
+   * @param render a lambda with `void(SDL_Surface*, czstring)` as its
    * signature.
    *
    * @return a unique pointer to a texture; `nullptr` if something went wrong.
@@ -1163,8 +1162,7 @@ class basic_renderer final {
    * @since 4.0.0
    */
   template <typename Lambda>
-  [[nodiscard]] auto render_text(gsl::czstring text,
-                                 Lambda&& render) const noexcept
+  [[nodiscard]] auto render_text(czstring text, Lambda&& render) const noexcept
       -> std::unique_ptr<Texture>
   {
     if (!text) {
@@ -1339,7 +1337,7 @@ class Texture final {
    * @since 4.0.0
    */
   template <typename T>
-  Texture(const basic_renderer<T>& renderer, gsl::czstring path)
+  Texture(const basic_renderer<T>& renderer, czstring path)
   {
     if (!path) {
       throw CenturionException{"Can't load texture from null path!"};
@@ -1436,12 +1434,11 @@ class Texture final {
       -> std::unique_ptr<Texture>;
 
   /**
-   * @copydoc Texture(const basic_renderer<T>&, gsl::czstring)
+   * @copydoc Texture(const basic_renderer<T>&, czstring)
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
-                                   gsl::czstring path)
-      -> std::unique_ptr<Texture>
+                                   czstring path) -> std::unique_ptr<Texture>
   {
     return std::make_unique<Texture>(renderer, path);
   }
@@ -1477,12 +1474,11 @@ class Texture final {
       -> std::shared_ptr<Texture>;
 
   /**
-   * @copydoc Texture(const basic_renderer<T>&, gsl::czstring)
+   * @copydoc Texture(const basic_renderer<T>&, czstring)
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
-                                   gsl::czstring path)
-      -> std::shared_ptr<Texture>
+                                   czstring path) -> std::shared_ptr<Texture>
   {
     return std::make_shared<Texture>(renderer, path);
   }
@@ -1528,13 +1524,12 @@ class Texture final {
    */
   template <typename T>
   [[nodiscard]] static auto streaming(const basic_renderer<T>& renderer,
-                                      gsl::czstring path,
+                                      czstring path,
                                       PixelFormat format)
       -> std::unique_ptr<Texture>
   {
     const auto blendMode = BlendMode::Blend;
-    const auto createSurface = [blendMode](gsl::czstring path,
-                                           PixelFormat format) {
+    const auto createSurface = [blendMode](czstring path, PixelFormat format) {
       Surface source{path};
       source.set_blend_mode(blendMode);
       return source.convert(format);
@@ -2565,11 +2560,11 @@ auto basic_renderer<FontKey>::color() const noexcept -> Color
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::text_blended(gsl::czstring text,
+auto basic_renderer<FontKey>::text_blended(czstring text,
                                            const Font& font) const noexcept
     -> std::unique_ptr<Texture>
 {
-  return render_text(text, [this, &font](gsl::czstring text) noexcept {
+  return render_text(text, [this, &font](czstring text) noexcept {
     return TTF_RenderText_Blended(
         font.get(), text, static_cast<SDL_Color>(color()));
   });
@@ -2577,23 +2572,23 @@ auto basic_renderer<FontKey>::text_blended(gsl::czstring text,
 
 template <typename FontKey>
 auto basic_renderer<FontKey>::text_blended_wrapped(
-    gsl::czstring text,
+    czstring text,
     Uint32 wrap,
     const Font& font) const noexcept -> std::unique_ptr<Texture>
 {
-  return render_text(text, [this, &font, wrap](gsl::czstring text) noexcept {
+  return render_text(text, [this, &font, wrap](czstring text) noexcept {
     return TTF_RenderText_Blended_Wrapped(
         font.get(), text, static_cast<SDL_Color>(color()), wrap);
   });
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::text_shaded(gsl::czstring text,
+auto basic_renderer<FontKey>::text_shaded(czstring text,
                                           const Color& bg,
                                           const Font& font) const noexcept
     -> std::unique_ptr<Texture>
 {
-  return render_text(text, [this, &font, &bg](gsl::czstring text) noexcept {
+  return render_text(text, [this, &font, &bg](czstring text) noexcept {
     return TTF_RenderText_Shaded(font.get(),
                                  text,
                                  static_cast<SDL_Color>(color()),
@@ -2602,11 +2597,11 @@ auto basic_renderer<FontKey>::text_shaded(gsl::czstring text,
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::text_solid(gsl::czstring text,
+auto basic_renderer<FontKey>::text_solid(czstring text,
                                          const Font& font) const noexcept
     -> std::unique_ptr<Texture>
 {
-  return render_text(text, [this, &font](gsl::czstring text) noexcept {
+  return render_text(text, [this, &font](czstring text) noexcept {
     return TTF_RenderText_Solid(
         font.get(), text, static_cast<SDL_Color>(color()));
   });

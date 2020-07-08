@@ -213,14 +213,14 @@ Optional<SDL_JoystickID> Joystick::instance_id(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-CZString Joystick::name(int deviceIndex) noexcept
+czstring Joystick::name(int deviceIndex) noexcept
 {
   return SDL_JoystickNameForIndex(deviceIndex);
 }
 
 CENTURION_DEF
 SDL_JoystickGUID Joystick::guid_from_string(
-    gsl::not_null<CZString> str) noexcept
+    gsl::not_null<czstring> str) noexcept
 {
   return SDL_JoystickGetGUIDFromString(str);
 }
@@ -368,7 +368,7 @@ SDL_JoystickGUID Joystick::guid() noexcept
 }
 
 CENTURION_DEF
-CZString Joystick::name() const noexcept
+czstring Joystick::name() const noexcept
 {
   return SDL_JoystickName(m_joystick);
 }

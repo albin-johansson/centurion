@@ -27,7 +27,7 @@ auto TextInputEvent::window_id() const noexcept -> Uint32
 }
 
 CENTURION_DEF
-auto TextInputEvent::text() const noexcept -> gsl::czstring
+auto TextInputEvent::text() const noexcept -> czstring
 {
   return m_event.text;
 }

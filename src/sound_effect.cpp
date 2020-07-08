@@ -8,7 +8,7 @@
 namespace centurion {
 
 CENTURION_DEF
-SoundEffect::SoundEffect(CZString file)
+SoundEffect::SoundEffect(czstring file)
 {
   if (!file) {
     throw CenturionException{"Cannot create sound effect from null file!"};
@@ -61,13 +61,13 @@ void SoundEffect::move(SoundEffect&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<SoundEffect> SoundEffect::unique(CZString file)
+UniquePtr<SoundEffect> SoundEffect::unique(czstring file)
 {
   return std::make_unique<SoundEffect>(file);
 }
 
 CENTURION_DEF
-SharedPtr<SoundEffect> SoundEffect::shared(CZString file)
+SharedPtr<SoundEffect> SoundEffect::shared(czstring file)
 {
   return std::make_shared<SoundEffect>(file);
 }

@@ -4,7 +4,6 @@
 //#include <string>
 //
 //#include "centurion_exception.hpp"
-//#include "renderer.hpp"
 //#include "window.hpp"
 //
 // using namespace centurion;

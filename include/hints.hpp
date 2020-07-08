@@ -72,7 +72,7 @@ class CRTPHint {
     return std::is_same_v<T, Arg>;
   }
 
-  [[nodiscard]] static constexpr CZString name() noexcept
+  [[nodiscard]] static constexpr czstring name() noexcept
   {
     return Derived::name();
   }
@@ -111,17 +111,17 @@ class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
 
 // A hint class that only accepts strings
 template <typename Hint>
-class StringHint : public CRTPHint<StringHint<Hint>, CZString> {
+class StringHint : public CRTPHint<StringHint<Hint>, czstring> {
  public:
   template <typename T>
   [[nodiscard]] static constexpr bool valid_arg() noexcept
   {
-    return std::is_convertible_v<T, CZString>;
+    return std::is_convertible_v<T, czstring>;
   }
 
-  [[nodiscard]] static Optional<CZString> current_value() noexcept
+  [[nodiscard]] static Optional<czstring> current_value() noexcept
   {
-    const CZString value = SDL_GetHint(Hint::name());
+    const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
       return nothing;
     } else {
@@ -129,7 +129,7 @@ class StringHint : public CRTPHint<StringHint<Hint>, CZString> {
     }
   }
 
-  [[nodiscard]] static std::string to_string(CZString value) { return value; }
+  [[nodiscard]] static std::string to_string(czstring value) { return value; }
 };
 
 // A hint class that only accepts integers
@@ -144,7 +144,7 @@ class IntHint : public CRTPHint<IntHint<Hint>, int> {
 
   [[nodiscard]] static Optional<int> current_value() noexcept
   {
-    const CZString value = SDL_GetHint(Hint::name());
+    const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
       return nothing;
     } else {
@@ -165,7 +165,7 @@ class UnsignedIntHint : public CRTPHint<IntHint<Hint>, unsigned int> {
 
   [[nodiscard]] static Optional<unsigned int> current_value() noexcept
   {
-    const CZString value = SDL_GetHint(Hint::name());
+    const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
       return nothing;
     } else {
@@ -186,7 +186,7 @@ class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
 
   [[nodiscard]] static Optional<float> current_value() noexcept
   {
-    const CZString value = SDL_GetHint(Hint::name());
+    const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
       return nothing;
     } else {
@@ -220,11 +220,11 @@ class RenderDriver final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept { return SDL_HINT_RENDER_DRIVER; }
+  static constexpr czstring name() noexcept { return SDL_HINT_RENDER_DRIVER; }
 
   static Optional<Value> current_value() noexcept
   {
-    CZString hint = SDL_GetHint(name());
+    czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -276,14 +276,14 @@ class AudioResamplingMode final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept
+  static constexpr czstring name() noexcept
   {
     return SDL_HINT_AUDIO_RESAMPLING_MODE;
   }
 
   static Optional<Value> current_value() noexcept
   {
-    const CZString hint = SDL_GetHint(name());
+    const czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -326,14 +326,14 @@ class ScaleQuality final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept
+  static constexpr czstring name() noexcept
   {
     return SDL_HINT_RENDER_SCALE_QUALITY;
   }
 
   static Optional<Value> current_value() noexcept
   {
-    const CZString hint = SDL_GetHint(name());
+    const czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -381,14 +381,14 @@ class FramebufferAcceleration final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept
+  static constexpr czstring name() noexcept
   {
     return SDL_HINT_FRAMEBUFFER_ACCELERATION;
   }
 
   static Optional<Value> current_value() noexcept
   {
-    const CZString hint = SDL_GetHint(name());
+    const czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -447,11 +447,11 @@ class AudioCategory final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept { return SDL_HINT_AUDIO_CATEGORY; }
+  static constexpr czstring name() noexcept { return SDL_HINT_AUDIO_CATEGORY; }
 
   static Optional<Value> current_value() noexcept
   {
-    const CZString hint = SDL_GetHint(name());
+    const czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -487,14 +487,14 @@ class WinD3DCompiler final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept
+  static constexpr czstring name() noexcept
   {
     return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
   }
 
   static Optional<Value> current_value() noexcept
   {
-    const CZString hint = SDL_GetHint(name());
+    const czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -534,14 +534,14 @@ class WAVERIFFChunkSize final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept
+  static constexpr czstring name() noexcept
   {
     return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
   }
 
   static Optional<Value> current_value() noexcept
   {
-    const CZString hint = SDL_GetHint(name());
+    const czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -585,11 +585,11 @@ class WAVETruncation final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept { return SDL_HINT_WAVE_TRUNCATION; }
+  static constexpr czstring name() noexcept { return SDL_HINT_WAVE_TRUNCATION; }
 
   static Optional<Value> current_value() noexcept
   {
-    const CZString hint = SDL_GetHint(name());
+    const czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -633,11 +633,11 @@ class WAVEFactChunk final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept { return SDL_HINT_WAVE_FACT_CHUNK; }
+  static constexpr czstring name() noexcept { return SDL_HINT_WAVE_FACT_CHUNK; }
 
   static Optional<Value> current_value() noexcept
   {
-    const CZString hint = SDL_GetHint(name());
+    const czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -681,14 +681,14 @@ class LogicalSizeMode final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept
+  static constexpr czstring name() noexcept
   {
     return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
   }
 
   static Optional<Value> current_value() noexcept
   {
-    const CZString hint = SDL_GetHint(name());
+    const czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -730,14 +730,14 @@ class QtWaylandContentOrientation final {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr CZString name() noexcept
+  static constexpr czstring name() noexcept
   {
     return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
   }
 
   static Optional<Value> current_value() noexcept
   {
-    const CZString hint = SDL_GetHint(name());
+    const czstring hint = SDL_GetHint(name());
     if (!hint) {
       return nothing;
     }
@@ -778,7 +778,7 @@ class QtWaylandContentOrientation final {
 #define CENTURION_HINT(Name, SDLName, Type)                 \
   class Name final : public detail::Type<Name> {            \
    public:                                                  \
-    [[nodiscard]] static constexpr CZString name() noexcept \
+    [[nodiscard]] static constexpr czstring name() noexcept \
     {                                                       \
       return SDLName;                                       \
     }                                                       \

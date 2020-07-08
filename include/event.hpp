@@ -2430,7 +2430,7 @@ class TextEditingEvent final : public CommonEvent<SDL_TextEditingEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto text() const noexcept -> gsl::czstring;
+  auto text() const noexcept -> czstring;
 
   /**
    * @brief Returns the location to begin editing from.
@@ -2519,7 +2519,7 @@ class TextInputEvent final : public CommonEvent<SDL_TextInputEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto text() const noexcept -> gsl::czstring;
+  auto text() const noexcept -> czstring;
 };
 
 static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>());

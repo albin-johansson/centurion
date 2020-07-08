@@ -57,7 +57,7 @@ class CenturionException final : public std::exception {
    * used.
    * @since 3.0.0
    */
-  explicit CenturionException(CZString what) noexcept
+  explicit CenturionException(czstring what) noexcept
       : m_what{what ? what : "N/A"} {};
 
   /**
@@ -73,7 +73,7 @@ class CenturionException final : public std::exception {
 
   ~CenturionException() noexcept override = default;
 
-  [[nodiscard]] CZString what() const noexcept override
+  [[nodiscard]] czstring what() const noexcept override
   {
     return m_what.c_str();
   }

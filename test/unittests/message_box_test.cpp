@@ -77,8 +77,8 @@ TEST_CASE("MessageBox(CZString, CZString)", "[MessageBox]")
   }
   SECTION("Normal arguments")
   {
-    CZString title = "This is a title";
-    CZString message = "This is a message";
+    czstring title = "This is a title";
+    czstring message = "This is a message";
     MessageBox mb{title, message};
     CHECK_THAT(mb.title(), Catch::Equals(title));
     CHECK_THAT(mb.message(), Catch::Equals(message));
@@ -90,15 +90,15 @@ TEST_CASE("MessageBox::show [static]", "[MessageBox]")
 {
   SECTION("Checking defaults")
   {
-    CZString title = nullptr;
-    CZString message = nullptr;
+    czstring title = nullptr;
+    czstring message = nullptr;
     MessageBoxConfig config;
     MessageBox::show(title, message, config, nullptr);
   }
   SECTION("Actual parameters")
   {
-    CZString title = "This is a title";
-    CZString message = "This message box was created with the static show!";
+    czstring title = "This is a title";
+    czstring message = "This message box was created with the static show!";
     MessageBoxConfig config;
     config.type = MessageBox::Type::Warning;
     config.buttonOrder = MessageBox::ButtonOrder::RightToLeft;
@@ -123,7 +123,7 @@ TEST_CASE("MessageBox::add_button", "[MessageBox]")
 TEST_CASE("MessageBox::set_title", "[MessageBox]")
 {
   MessageBox mb;
-  CZString title = "This is a title";
+  czstring title = "This is a title";
 
   mb.set_title(title);
   CHECK_THAT(mb.title(), Catch::Equals(title));
@@ -135,7 +135,7 @@ TEST_CASE("MessageBox::set_title", "[MessageBox]")
 TEST_CASE("MessageBox::set_message", "[MessageBox]")
 {
   MessageBox mb;
-  CZString msg = "Foobar";
+  czstring msg = "Foobar";
 
   mb.set_message(msg);
   CHECK_THAT(mb.message(), Catch::Equals(msg));

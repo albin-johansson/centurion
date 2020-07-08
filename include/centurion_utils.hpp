@@ -37,7 +37,7 @@
 #include <SDL.h>
 
 #include <cstring>
-#include <gsl-lite.hpp>
+#include <gsl/gsl>
 #include <memory>
 #include <optional.hpp>
 #include <sstream>
@@ -95,14 +95,14 @@ using WeakPtr = std::weak_ptr<T>;
  *
  * @since 4.0.0
  */
-using CZString = gsl::czstring;
+using czstring = gsl::czstring<>;
 
 /**
  * @brief A type alias for a null-terminated C-style string.
  *
  * @since 4.0.0
  */
-using ZString = gsl::zstring;
+using zstring = gsl::zstring<>;
 
 /**
  * @brief A constant that represents an empty Optional.
@@ -228,7 +228,7 @@ using type_if_same = typename std::enable_if_t<std::is_same_v<T, U>>;
  *
  * @since 4.1.0
  */
-[[nodiscard]] inline auto equal(CZString lhs, CZString rhs) noexcept -> bool
+[[nodiscard]] inline auto equal(czstring lhs, czstring rhs) noexcept -> bool
 {
   if (lhs && rhs) {
     return std::strcmp(lhs, rhs) == 0;

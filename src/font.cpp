@@ -11,7 +11,7 @@ namespace centurion {
 /* Any sufficiently advanced technology is indistinguishable from magic. */
 
 CENTURION_DEF
-Font::Font(CZString file, int size) : m_size{size}
+Font::Font(czstring file, int size) : m_size{size}
 {
   if (!file) {
     throw CenturionException{"Cannot create Font from null path!"};
@@ -71,13 +71,13 @@ void Font::move(Font&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Font> Font::unique(CZString file, int size)
+UniquePtr<Font> Font::unique(czstring file, int size)
 {
   return std::make_unique<Font>(file, size);
 }
 
 CENTURION_DEF
-SharedPtr<Font> Font::shared(CZString file, int size)
+SharedPtr<Font> Font::shared(czstring file, int size)
 {
   return std::make_shared<Font>(file, size);
 }
@@ -230,7 +230,7 @@ Optional<GlyphMetrics> Font::glyph_metrics(Uint16 glyph) const noexcept
 }
 
 CENTURION_DEF
-int Font::string_width(CZString s) const noexcept
+int Font::string_width(czstring s) const noexcept
 {
   int width = 0;
   TTF_SizeText(m_font, s, &width, nullptr);
@@ -238,7 +238,7 @@ int Font::string_width(CZString s) const noexcept
 }
 
 CENTURION_DEF
-int Font::string_height(CZString s) const noexcept
+int Font::string_height(czstring s) const noexcept
 {
   int height = 0;
   TTF_SizeText(m_font, s, nullptr, &height);
@@ -246,7 +246,7 @@ int Font::string_height(CZString s) const noexcept
 }
 
 CENTURION_DEF
-area_i Font::string_size(CZString s) const noexcept
+area_i Font::string_size(czstring s) const noexcept
 {
   int width = 0;
   int height = 0;
@@ -297,13 +297,13 @@ bool Font::kerning() const noexcept
 }
 
 CENTURION_DEF
-CZString Font::family_name() const noexcept
+czstring Font::family_name() const noexcept
 {
   return TTF_FontFaceFamilyName(m_font);
 }
 
 CENTURION_DEF
-CZString Font::style_name() const noexcept
+czstring Font::style_name() const noexcept
 {
   return TTF_FontFaceStyleName(m_font);
 }

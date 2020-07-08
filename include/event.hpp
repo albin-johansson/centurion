@@ -2107,16 +2107,21 @@ class MouseWheelEvent : public CommonEvent<SDL_MouseWheelEvent> {
 static_assert(validate_event<MouseWheelEvent, SDL_MouseWheelEvent>());
 
 /**
- * The MultiGestureEvent class provides information about events related to
- * touch events triggered by multiple fingers.
+ * @class MultiGestureEvent
  *
- * @see SDL_MultiGestureEvent
+ * @brief Provides information about events related to touch events triggered
+ * by multiple fingers.
+ *
+ * @see `SDL_MultiGestureEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
  public:
   /**
-   * Creates a default-initialized MultiGestureEvent.
+   * @brief Creates a default-initialized `MultiGestureEvent`.
    *
    * @since 4.0.0
    */
@@ -2124,139 +2129,150 @@ class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
   MultiGestureEvent() noexcept;
 
   /**
-   * Creates a MultiGestureEvent that is based on the supplied SDL event.
+   * @brief Creates a `MultiGestureEvent` that is based on the supplied SDL
+   * event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   MultiGestureEvent(const SDL_MultiGestureEvent& event) noexcept;
 
   /**
-   * Creates a MultiGestureEvent that is based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  MultiGestureEvent(SDL_MultiGestureEvent&& event) noexcept;
-
-  /**
-   * Sets the touch device ID associated with the event.
+   * @brief Sets the touch device ID associated with the event.
    *
    * @param id the touch device ID associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_touch_id(TouchID id) noexcept;
 
   /**
-   * Sets the amount that the fingers rotated during the gesture associated
-   * with the event.
+   * @brief Sets the amount that the fingers rotated during the gesture
+   * associated with the event.
    *
    * @param dTheta the amount that the fingers rotated.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_delta_theta(float dTheta) noexcept;
 
   /**
-   * Sets the amount that the fingers pinched during the gesture associated
-   * with the event.
+   * @brief Sets the amount that the fingers pinched during the gesture
+   * associated with the event.
    *
    * @param dDistance the amount that the fingers pinched.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_delta_distance(float dDistance) noexcept;
 
   /**
-   * Sets the x-coordinate of the normalized center of the gesture associated
-   * with the event.
+   * @brief Sets the x-coordinate of the normalized center of the gesture
+   * associated with the event.
    *
    * @param centerX the x-coordinate of the normalized center of the gesture
    * associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_center_x(float centerX) noexcept;
 
   /**
-   * Sets the y-coordinate of the normalized center of the gesture associated
-   * with the event.
+   * @brief Sets the y-coordinate of the normalized center of the gesture
+   * associated with the event.
    *
    * @param centerY the y-coordinate of the normalized center of the gesture
    * associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_center_y(float centerY) noexcept;
 
   /**
-   * Sets the number of fingers that was used in the gesture associated with
-   * the event.
+   * @brief Sets the number of fingers that was used in the gesture associated
+   * with the event.
    *
    * @param nFingers the number of fingers that was used in the gesture.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_fingers(Uint16 nFingers) noexcept;
 
   /**
-   * Returns the touch device ID associated with the event.
+   * @brief Returns the touch device ID associated with the event.
    *
    * @return the touch device ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY TouchID touch_id() const noexcept;
+  CENTURION_QUERY
+  auto touch_id() const noexcept -> SDL_TouchID;
 
   /**
-   * Returns the amount that the fingers rotated during the gesture
+   * @brief Returns the amount that the fingers rotated during the gesture
    * associated with the event.
    *
    * @return the amount that the fingers rotated.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float delta_theta() const noexcept;
+  CENTURION_QUERY
+  auto delta_theta() const noexcept -> float;
 
   /**
-   * Returns the amount that the fingers pinched during the gesture
+   * @brief Returns the amount that the fingers pinched during the gesture
    * associated with the event.
    *
    * @return the amount that the fingers pinched.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float delta_distance() const noexcept;
+  CENTURION_QUERY
+  auto delta_distance() const noexcept -> float;
 
   /**
-   * Returns the x-coordinate of the normalized center of gesture associated
-   * with the event.
+   * @brief Returns the x-coordinate of the normalized center of gesture
+   * associated with the event.
    *
    * @return the x-coordinate of the normalized center of gesture associated
    * with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float center_x() const noexcept;
+  CENTURION_QUERY
+  auto center_x() const noexcept -> float;
 
   /**
-   * Returns the y-coordinate of the normalized center of gesture associated
-   * with the event.
+   * @brief Returns the y-coordinate of the normalized center of gesture
+   * associated with the event.
    *
    * @return the y-coordinate of the normalized center of gesture associated
    * with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float center_y() const noexcept;
+  CENTURION_QUERY
+  auto center_y() const noexcept -> float;
 
   /**
-   * Returns the amount of fingers used in the gesture associated with the
-   * event.
+   * @brief Returns the amount of fingers used in the gesture associated with
+   * the event.
    *
    * @return the amount of fingers used in the gesture associated with the
    * event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float fingers() const noexcept;
+  CENTURION_QUERY
+  auto fingers() const noexcept -> float;
 };
 
 static_assert(validate_event<MultiGestureEvent, SDL_MultiGestureEvent>());

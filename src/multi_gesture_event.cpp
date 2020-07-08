@@ -1,12 +1,9 @@
 #ifndef CENTURION_MULTI_GESTURE_EVENT_SOURCE
 #define CENTURION_MULTI_GESTURE_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 MultiGestureEvent::MultiGestureEvent() noexcept : CommonEvent{}
@@ -16,11 +13,6 @@ CENTURION_DEF
 MultiGestureEvent::MultiGestureEvent(
     const SDL_MultiGestureEvent& event) noexcept
     : CommonEvent{event}
-{}
-
-CENTURION_DEF
-MultiGestureEvent::MultiGestureEvent(SDL_MultiGestureEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF
@@ -60,42 +52,41 @@ void MultiGestureEvent::set_fingers(Uint16 nFingers) noexcept
 }
 
 CENTURION_DEF
-TouchID MultiGestureEvent::touch_id() const noexcept
+auto MultiGestureEvent::touch_id() const noexcept -> SDL_TouchID
 {
   return m_event.touchId;
 }
 
 CENTURION_DEF
-float MultiGestureEvent::delta_theta() const noexcept
+auto MultiGestureEvent::delta_theta() const noexcept -> float
 {
   return m_event.dTheta;
 }
 
 CENTURION_DEF
-float MultiGestureEvent::delta_distance() const noexcept
+auto MultiGestureEvent::delta_distance() const noexcept -> float
 {
   return m_event.dDist;
 }
 
 CENTURION_DEF
-float MultiGestureEvent::center_x() const noexcept
+auto MultiGestureEvent::center_x() const noexcept -> float
 {
   return m_event.x;
 }
 
 CENTURION_DEF
-float MultiGestureEvent::center_y() const noexcept
+auto MultiGestureEvent::center_y() const noexcept -> float
 {
   return m_event.y;
 }
 
 CENTURION_DEF
-float MultiGestureEvent::fingers() const noexcept
+auto MultiGestureEvent::fingers() const noexcept -> float
 {
   return m_event.numFingers;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_MULTI_GESTURE_EVENT_SOURCE

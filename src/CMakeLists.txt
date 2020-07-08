@@ -60,7 +60,6 @@ set(SOURCE_FILES
         error.cpp
         surface.cpp
         cursor.cpp
-        pixel_format.cpp
         cpu.cpp
         ram.cpp
         battery.cpp

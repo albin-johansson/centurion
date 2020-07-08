@@ -101,53 +101,57 @@ enum class PixelFormat {
 };
 
 /**
- * Indicates whether or not the two pixel format values are the same.
+ * @brief Indicates whether or not the two pixel format values are the same.
  *
- * @param lhs the lhs Centurion pixel format.
- * @param rhs the rhs SDL pixel format.
- * @return true if the pixel format values are the same; false otherwise.
+ * @param lhs the left-hand side pixel format value.
+ * @param rhs the right-hand side pixel format value.
+ *
+ * @return `true` if the pixel format values are the same; `false` otherwise.
+ *
  * @since 3.1.0
  */
-[[nodiscard]] CENTURION_API bool operator==(PixelFormat lhs,
-                                            SDL_PixelFormatEnum rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(PixelFormat lhs,
+                                               SDL_PixelFormatEnum rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
+}
 
 /**
- * Indicates whether or not the two pixel format values are the same.
- *
- * @param lhs the lhs SDL pixel format.
- * @param rhs the rhs Centurion pixel format.
- * @return true if the pixel format values are the same; false otherwise.
- * @since 3.1.0
+ * @copydoc operator==(PixelFormat, SDL_PixelFormatEnum)
  */
-[[nodiscard]] CENTURION_API bool operator==(SDL_PixelFormatEnum lhs,
-                                            PixelFormat rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(SDL_PixelFormatEnum lhs,
+                                               PixelFormat rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * Indicates whether or not the two pixel format values aren't the same.
+ * @brief Indicates whether or not the two pixel format values aren't the same.
  *
- * @param lhs the lhs Centurion pixel format.
- * @param rhs the rhs SDL pixel format.
- * @return true if the pixel format values aren't the same; false otherwise.
+ * @param lhs the left-hand side pixel format value.
+ * @param rhs the right-hand side pixel format value.
+ *
+ * @return `true` if the pixel format values aren't the same; `false` otherwise.
+ *
  * @since 3.1.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(PixelFormat lhs,
-                                            SDL_PixelFormatEnum rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(PixelFormat lhs,
+                                               SDL_PixelFormatEnum rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * Indicates whether or not the two pixel format values aren't the same.
- *
- * @param lhs the lhs SDL pixel format.
- * @param rhs the rhs Centurion pixel format.
- * @return true if the pixel format values aren't the same; false otherwise.
- * @since 3.1.0
+ * @copydoc operator!=(PixelFormat, SDL_PixelFormatEnum)
  */
-[[nodiscard]] CENTURION_API bool operator!=(SDL_PixelFormatEnum lhs,
-                                            PixelFormat rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(SDL_PixelFormatEnum lhs,
+                                               PixelFormat rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "pixel_format.cpp"
-#endif
 
 #endif  // CENTURION_PIXEL_FORMAT_HEADER

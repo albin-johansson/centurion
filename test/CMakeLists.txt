@@ -94,7 +94,8 @@ add_test(NAME ${CENTURION_TEST_TARGET}
 
 target_include_directories(${CENTURION_TEST_TARGET}
         PUBLIC unittests
-        SYSTEM PUBLIC ${CTN_INCLUDE_DIR})
+        SYSTEM PUBLIC ${CTN_INCLUDE_DIR}
+        SYSTEM PUBLIC ${CTN_SOURCE_DIR}) # Source dir for header only test
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE

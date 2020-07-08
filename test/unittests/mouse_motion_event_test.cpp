@@ -150,8 +150,3 @@ TEST_CASE("MouseMotionEvent::dy", "[MouseMotionEvent]")
 
   CHECK(event.dy() == sdlEvent.yrel);
 }
-
-TEST_CASE("MouseMotionEvent move constructor", "[MouseMotionEvent]")
-{
-  CHECK_NOTHROW(MouseMotionEvent{{}});
-}

@@ -28,7 +28,7 @@ void DollarGestureEvent::set_gesture_id(GestureID id) noexcept
 }
 
 CENTURION_DEF
-void DollarGestureEvent::set_fingers(Uint32 fingers) noexcept
+void DollarGestureEvent::set_fingers(u32 fingers) noexcept
 {
   m_event.numFingers = fingers;
 }
@@ -64,7 +64,7 @@ auto DollarGestureEvent::gesture_id() const noexcept -> SDL_GestureID
 }
 
 CENTURION_DEF
-auto DollarGestureEvent::fingers() const noexcept -> Uint32
+auto DollarGestureEvent::fingers() const noexcept -> u32
 {
   return m_event.numFingers;
 }

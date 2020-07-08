@@ -42,7 +42,7 @@ void DropEvent::set_file(char* file) noexcept
 }
 
 CENTURION_DEF
-void DropEvent::set_window_id(Uint32 id) noexcept
+void DropEvent::set_window_id(u32 id) noexcept
 {
   m_event.windowID = id;
 }
@@ -60,7 +60,7 @@ auto DropEvent::file() const noexcept -> char*
 }
 
 CENTURION_DEF
-auto DropEvent::window_id() const noexcept -> Uint32
+auto DropEvent::window_id() const noexcept -> u32
 {
   return m_event.windowID;
 }

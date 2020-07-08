@@ -154,7 +154,7 @@ void Surface::set_pixel(IPoint pixel, const Color& color) noexcept
                                    color.green(),
                                    color.blue(),
                                    color.alpha());
-    Uint32* pixels = reinterpret_cast<Uint32*>(m_surface->pixels);
+    u32* pixels = reinterpret_cast<u32*>(m_surface->pixels);
     pixels[index] = value;
   }
 
@@ -162,7 +162,7 @@ void Surface::set_pixel(IPoint pixel, const Color& color) noexcept
 }
 
 CENTURION_DEF
-void Surface::set_alpha(Uint8 alpha) noexcept
+void Surface::set_alpha(u8 alpha) noexcept
 {
   SDL_SetSurfaceAlphaMod(m_surface, alpha);
 }
@@ -180,9 +180,9 @@ void Surface::set_blend_mode(BlendMode mode) noexcept
 }
 
 CENTURION_DEF
-Uint8 Surface::alpha() const noexcept
+u8 Surface::alpha() const noexcept
 {
-  Uint8 alpha = 0xFF;
+  u8 alpha = 0xFF;
   SDL_GetSurfaceAlphaMod(m_surface, &alpha);
   return alpha;
 }
@@ -190,7 +190,7 @@ Uint8 Surface::alpha() const noexcept
 CENTURION_DEF
 Color Surface::color_mod() const noexcept
 {
-  Uint8 r = 0, g = 0, b = 0;
+  u8 r = 0, g = 0, b = 0;
   SDL_GetSurfaceColorMod(m_surface, &r, &g, &b);
   return Color{r, g, b};
 }
@@ -212,7 +212,7 @@ BlendMode Surface::blend_mode() const noexcept
 CENTURION_DEF
 Surface Surface::convert(PixelFormat format) const
 {
-  const auto pixelFormat = static_cast<Uint32>(format);
+  const auto pixelFormat = static_cast<u32>(format);
   auto* converted = SDL_ConvertSurfaceFormat(m_surface, pixelFormat, 0);
   SDL_SetSurfaceBlendMode(converted, static_cast<SDL_BlendMode>(blend_mode()));
   return Surface{converted};

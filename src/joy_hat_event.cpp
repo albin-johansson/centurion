@@ -15,7 +15,7 @@ JoyHatEvent::JoyHatEvent(const SDL_JoyHatEvent& event) noexcept
 {}
 
 CENTURION_DEF
-void JoyHatEvent::set_hat(Uint8 hat) noexcept
+void JoyHatEvent::set_hat(u8 hat) noexcept
 {
   m_event.hat = hat;
 }
@@ -23,11 +23,11 @@ void JoyHatEvent::set_hat(Uint8 hat) noexcept
 CENTURION_DEF
 void JoyHatEvent::set_position(JoyHatPosition value) noexcept
 {
-  m_event.value = static_cast<Uint8>(value);
+  m_event.value = static_cast<u8>(value);
 }
 
 CENTURION_DEF
-auto JoyHatEvent::hat() const noexcept -> Uint8
+auto JoyHatEvent::hat() const noexcept -> u8
 {
   return m_event.hat;
 }

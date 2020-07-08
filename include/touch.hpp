@@ -211,7 +211,7 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] inline constexpr Uint32 touch_mouse_id() noexcept
+[[nodiscard]] inline constexpr u32 touch_mouse_id() noexcept
 {
   return SDL_TOUCH_MOUSEID;
 }

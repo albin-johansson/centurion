@@ -37,7 +37,7 @@ void MouseState::update(int windowWidth, int windowHeight) noexcept
   m_prevRightPressed = m_rightPressed;
 
   {
-    const Uint32 mask = SDL_GetMouseState(&m_mouseX, &m_mouseY);
+    const u32 mask = SDL_GetMouseState(&m_mouseX, &m_mouseY);
     m_leftPressed = mask & SDL_BUTTON(SDL_BUTTON_LEFT);
     m_rightPressed = mask & SDL_BUTTON(SDL_BUTTON_RIGHT);
   }

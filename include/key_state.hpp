@@ -139,8 +139,8 @@ class KeyState final {
   [[nodiscard]] int amount_of_keys() const noexcept { return m_nKeys; }
 
  private:
-  const Uint8* m_states = nullptr;
-  std::array<Uint8, static_cast<int>(SDL_NUM_SCANCODES)> m_previousStates;
+  const u8* m_states = nullptr;
+  std::array<u8, static_cast<int>(SDL_NUM_SCANCODES)> m_previousStates;
   int m_nKeys = 0;
 };
 

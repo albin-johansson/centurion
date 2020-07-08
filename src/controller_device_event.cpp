@@ -16,13 +16,13 @@ ControllerDeviceEvent::ControllerDeviceEvent(
 {}
 
 CENTURION_DEF
-void ControllerDeviceEvent::set_which(Sint32 which) noexcept
+void ControllerDeviceEvent::set_which(i32 which) noexcept
 {
   m_event.which = which;
 }
 
 CENTURION_DEF
-auto ControllerDeviceEvent::which() const noexcept -> Sint32
+auto ControllerDeviceEvent::which() const noexcept -> i32
 {
   return m_event.which;
 }

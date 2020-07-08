@@ -43,25 +43,25 @@ MouseWheelEvent::MouseWheelEvent(const SDL_MouseWheelEvent& event) noexcept
 {}
 
 CENTURION_DEF
-void MouseWheelEvent::set_window_id(Uint32 id) noexcept
+void MouseWheelEvent::set_window_id(u32 id) noexcept
 {
   m_event.windowID = id;
 }
 
 CENTURION_DEF
-void MouseWheelEvent::set_which(Uint32 which) noexcept
+void MouseWheelEvent::set_which(u32 which) noexcept
 {
   m_event.which = which;
 }
 
 CENTURION_DEF
-void MouseWheelEvent::set_x_scroll(Sint32 xScroll) noexcept
+void MouseWheelEvent::set_x_scroll(i32 xScroll) noexcept
 {
   m_event.x = xScroll;
 }
 
 CENTURION_DEF
-void MouseWheelEvent::set_y_scroll(Sint32 yScroll) noexcept
+void MouseWheelEvent::set_y_scroll(i32 yScroll) noexcept
 {
   m_event.y = yScroll;
 }
@@ -69,29 +69,29 @@ void MouseWheelEvent::set_y_scroll(Sint32 yScroll) noexcept
 CENTURION_DEF
 void MouseWheelEvent::set_direction(MouseWheelDirection direction) noexcept
 {
-  m_event.direction = static_cast<Uint32>(direction);
+  m_event.direction = static_cast<u32>(direction);
 }
 
 CENTURION_DEF
-auto MouseWheelEvent::window_id() const noexcept -> Uint32
+auto MouseWheelEvent::window_id() const noexcept -> u32
 {
   return m_event.windowID;
 }
 
 CENTURION_DEF
-auto MouseWheelEvent::which() const noexcept -> Uint32
+auto MouseWheelEvent::which() const noexcept -> u32
 {
   return m_event.which;
 }
 
 CENTURION_DEF
-auto MouseWheelEvent::x_scroll() const noexcept -> Sint32
+auto MouseWheelEvent::x_scroll() const noexcept -> i32
 {
   return m_event.x;
 }
 
 CENTURION_DEF
-auto MouseWheelEvent::y_scroll() const noexcept -> Sint32
+auto MouseWheelEvent::y_scroll() const noexcept -> i32
 {
   return m_event.y;
 }

@@ -17,13 +17,13 @@ CENTURION_DEF ControllerButtonEvent::ControllerButtonEvent(
 CENTURION_DEF
 void ControllerButtonEvent::set_button(GameControllerButton button) noexcept
 {
-  m_event.button = static_cast<Uint8>(button);
+  m_event.button = static_cast<u8>(button);
 }
 
 CENTURION_DEF
 void ControllerButtonEvent::set_state(ButtonState state) noexcept
 {
-  m_event.state = static_cast<Uint8>(state);
+  m_event.state = static_cast<u8>(state);
 }
 
 CENTURION_DEF

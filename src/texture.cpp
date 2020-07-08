@@ -57,7 +57,7 @@ void Texture::move(Texture&& other) noexcept
 }
 
 CENTURION_DEF
-bool Texture::lock(Uint32** pixels, int* pitch) noexcept
+bool Texture::lock(u32** pixels, int* pitch) noexcept
 {
   if (pitch) {
     const auto result = SDL_LockTexture(
@@ -97,7 +97,7 @@ void Texture::set_pixel(IPoint pixel, const Color& color) noexcept
     return;
   }
 
-  Uint32* pixels = nullptr;
+  u32* pixels = nullptr;
   int pitch;
   const auto success = lock(&pixels, &pitch);
   if (!success) {
@@ -108,7 +108,7 @@ void Texture::set_pixel(IPoint pixel, const Color& color) noexcept
   const int index = (pixel.y() * width()) + pixel.x();
 
   if ((index >= 0) && (index < nPixels)) {
-    auto* pixelFormat = SDL_AllocFormat(static_cast<Uint32>(format()));
+    auto* pixelFormat = SDL_AllocFormat(static_cast<u32>(format()));
     const auto value = SDL_MapRGBA(
         pixelFormat, color.red(), color.green(), color.blue(), color.alpha());
 
@@ -121,7 +121,7 @@ void Texture::set_pixel(IPoint pixel, const Color& color) noexcept
 }
 
 CENTURION_DEF
-void Texture::set_alpha(Uint8 alpha) noexcept
+void Texture::set_alpha(u8 alpha) noexcept
 {
   SDL_SetTextureAlphaMod(m_texture, alpha);
 }
@@ -147,7 +147,7 @@ void Texture::set_scale_mode(ScaleMode mode) noexcept
 CENTURION_DEF
 PixelFormat Texture::format() const noexcept
 {
-  Uint32 format = 0;
+  u32 format = 0;
   SDL_QueryTexture(m_texture, &format, nullptr, nullptr, nullptr);
   return static_cast<PixelFormat>(format);
 }
@@ -204,9 +204,9 @@ bool Texture::is_streaming() const noexcept
 }
 
 CENTURION_DEF
-Uint8 Texture::alpha() const noexcept
+u8 Texture::alpha() const noexcept
 {
-  Uint8 alpha;
+  u8 alpha;
   SDL_GetTextureAlphaMod(m_texture, &alpha);
   return alpha;
 }
@@ -222,7 +222,7 @@ BlendMode Texture::blend_mode() const noexcept
 CENTURION_DEF
 Color Texture::color_mod() const noexcept
 {
-  Uint8 r = 0, g = 0, b = 0;
+  u8 r = 0, g = 0, b = 0;
   SDL_GetTextureColorMod(m_texture, &r, &g, &b);
   return {r, g, b, 0xFF};
 }

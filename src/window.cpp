@@ -279,7 +279,7 @@ float Window::brightness() const noexcept
 }
 
 CENTURION_DEF
-Uint32 Window::id() const noexcept
+u32 Window::id() const noexcept
 {
   return SDL_GetWindowID(m_window);
 }
@@ -439,7 +439,7 @@ bool Window::check_flag(SDL_WindowFlags flag) const noexcept
 }
 
 CENTURION_DEF
-Uint32 Window::flags() const noexcept
+u32 Window::flags() const noexcept
 {
   return SDL_GetWindowFlags(m_window);
 }

@@ -43,6 +43,7 @@
 #include <SDL_ttf.h>
 
 #include "centurion_api.hpp"
+#include "centurion_types.hpp"
 
 /**
  * @namespace centurion
@@ -103,7 +104,7 @@ struct CenturionConfig final {
   bool initMixer = true;
   bool initTTF = true;
 
-  Uint32 coreFlags = SDL_INIT_EVERYTHING;
+  u32 coreFlags = SDL_INIT_EVERYTHING;
 
   int imageFlags = IMG_INIT_PNG | IMG_INIT_JPG | IMG_INIT_TIF | IMG_INIT_WEBP;
 
@@ -111,7 +112,7 @@ struct CenturionConfig final {
                    MIX_INIT_MOD | MIX_INIT_OPUS;
 
   int mixerFreq = MIX_DEFAULT_FREQUENCY;
-  Uint16 mixerFormat = MIX_DEFAULT_FORMAT;
+  u16 mixerFormat = MIX_DEFAULT_FORMAT;
   int mixerChannels = MIX_DEFAULT_CHANNELS;
   int mixerChunkSize = 4096;
 };

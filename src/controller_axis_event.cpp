@@ -24,11 +24,11 @@ void ControllerAxisEvent::set_which(SDL_JoystickID which) noexcept
 CENTURION_DEF
 void ControllerAxisEvent::set_axis(GameControllerAxis axis) noexcept
 {
-  m_event.axis = static_cast<Uint8>(axis);
+  m_event.axis = static_cast<u8>(axis);
 }
 
 CENTURION_DEF
-void ControllerAxisEvent::set_value(Sint16 value) noexcept
+void ControllerAxisEvent::set_value(i16 value) noexcept
 {
   m_event.value = value;
 }
@@ -46,7 +46,7 @@ auto ControllerAxisEvent::axis() const noexcept -> GameControllerAxis
 }
 
 CENTURION_DEF
-auto ControllerAxisEvent::value() const noexcept -> Sint16
+auto ControllerAxisEvent::value() const noexcept -> i16
 {
   return m_event.value;
 }

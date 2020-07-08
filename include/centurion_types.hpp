@@ -76,6 +76,64 @@ using zstring = char*;
 
 inline constexpr std::nullopt_t nothing = std::nullopt;
 
+// template <typename T>
+// using if_numeric_t = typename std::enable_if_t<std::is_integral_v<T> ||
+//                                               std::is_floating_point_v<T>>;
+
+// namespace skills {
+//
+// template <typename T>
+// struct Dividable : nt::crtp<T, Dividable> {
+//  constexpr auto operator/(const T& other) const -> T
+//  {
+//    return T(this->underlying().get() / other.get());
+//  }
+//};
+//
+//}  // namespace skills
+
+// template <typename T, typename = if_numeric_t<T>>
+// using x = nt::NamedType<T,
+//                        struct x_t,
+//                        nt::Addable,
+//                        nt::Subtractable,
+//                        nt::Comparable,
+//                        nt::FunctionCallable>;
+//
+// template <typename T, typename = if_numeric_t<T>>
+// using y = nt::NamedType<T,
+//                        struct y_t,
+//                        nt::Addable,
+//                        nt::Subtractable,
+//                        nt::Comparable,
+//                        nt::FunctionCallable>;
+//
+// template <typename T, typename = if_numeric_t<T>>
+// using width = nt::NamedType<T,
+//                            struct width_t,
+//                            nt::Addable,
+//                            nt::Subtractable,
+//                            nt::Comparable,
+//                            nt::FunctionCallable>;
+//
+// template <typename T, typename = if_numeric_t<T>>
+// using height = nt::NamedType<T,
+//                             struct height_t,
+//                             nt::Addable,
+//                             nt::Subtractable,
+//                             nt::Comparable,
+//                             nt::FunctionCallable>;
+
+// template <typename T, typename Tag, template <typename> class... Skills>
+// using numeric_type = nt::NamedType<T,
+//                                   Tag,
+//                                   nt::Addable,
+//                                   nt::Subtractable,
+//                                   nt::Multiplicable,
+//                                   skills::Dividable,
+//                                   nt::Comparable,
+//                                   Skills...>;
+
 using u64 = Uint64;
 using u32 = Uint32;
 using u16 = Uint16;
@@ -97,6 +155,106 @@ using microseconds = std::chrono::duration<T, std::micro>;
 
 template <typename T>
 using nanoseconds = std::chrono::duration<T, std::nano>;
+
+// using u64 = numeric_type<Uint64, struct u64_t>;
+//
+// using u32 =
+//    numeric_type<Uint32, struct u32_t,
+//    nt::ImplicitlyConvertibleTo<u64>::templ>;
+//
+// using u16 = numeric_type<Uint16,
+//                         struct u16_t,
+//                         nt::ImplicitlyConvertibleTo<u64>::templ,
+//                         nt::ImplicitlyConvertibleTo<u32>::templ>;
+//
+// using u8 = numeric_type<Uint8,
+//                        struct u8_t,
+//                        nt::ImplicitlyConvertibleTo<u64>::templ,
+//                        nt::ImplicitlyConvertibleTo<u32>::templ,
+//                        nt::ImplicitlyConvertibleTo<u16>::templ>;
+//
+// using i64 = numeric_type<Sint64, struct i64_t>;
+//
+// using i32 =
+//    numeric_type<Sint32, struct i32_t,
+//    nt::ImplicitlyConvertibleTo<i64>::templ>;
+//
+// using i16 = numeric_type<Sint16,
+//                         struct i16_t,
+//                         nt::ImplicitlyConvertibleTo<i64>::templ,
+//                         nt::ImplicitlyConvertibleTo<i32>::templ>;
+//
+// using i8 = numeric_type<Sint8,
+//                        struct i8_t,
+//                        nt::ImplicitlyConvertibleTo<i64>::templ,
+//                        nt::ImplicitlyConvertibleTo<i32>::templ,
+//                        nt::ImplicitlyConvertibleTo<i16>::templ>;
+
+// using namespace std::chrono_literals;
+
+// using x_i = x<int>;
+// using x_f = x<float>;
+//
+// using y_i = y<int>;
+// using y_f = y<float>;
+//
+// using width_i = width<int>;
+// using width_f = width<float>;
+//
+// using height_i = height<int>;
+// using height_f = height<float>;
+
+// namespace literals {
+
+// using int_t = unsigned long long int;
+//
+//[[nodiscard]] inline constexpr auto operator"" _xi(int_t i) noexcept -> x_i
+//{
+//  return static_cast<x_i>(i);
+//}
+//
+//[[nodiscard]] inline constexpr auto operator"" _yi(int_t i) noexcept -> y_i
+//{
+//  return static_cast<y_i>(i);
+//}
+//
+//[[nodiscard]] inline constexpr auto operator"" _wi(int_t i) noexcept ->
+// width_i
+//{
+//  return static_cast<width_i>(i);
+//}
+//
+//[[nodiscard]] inline constexpr auto operator"" _hi(int_t i) noexcept ->
+// height_i
+//{
+//  return static_cast<height_i>(i);
+//}
+//
+//[[nodiscard]] inline constexpr auto operator"" _xf(long double f) noexcept
+//    -> x_f
+//{
+//  return static_cast<x_f>(f);
+//}
+//
+//[[nodiscard]] inline constexpr auto operator"" _yf(long double f) noexcept
+//    -> y_f
+//{
+//  return static_cast<y_f>(f);
+//}
+//
+//[[nodiscard]] inline constexpr auto operator"" _wf(long double f) noexcept
+//    -> width_f
+//{
+//  return static_cast<width_f>(f);
+//}
+//
+//[[nodiscard]] inline constexpr auto operator"" _hf(long double f) noexcept
+//    -> height_f
+//{
+//  return static_cast<height_f>(f);
+//}
+
+//}  // namespace literals
 }  // namespace centurion
 
 #endif  // CENTURION_TYPES_HEADER

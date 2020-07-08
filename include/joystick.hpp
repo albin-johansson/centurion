@@ -405,7 +405,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API static std::optional<Uint16> vendor(
+  [[nodiscard]] CENTURION_API static std::optional<u16> vendor(
       int deviceIndex) noexcept;
 
   /**
@@ -419,7 +419,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API static std::optional<Uint16> product(
+  [[nodiscard]] CENTURION_API static std::optional<u16> product(
       int deviceIndex) noexcept;
 
   /**
@@ -433,7 +433,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API static std::optional<Uint16> product_version(
+  [[nodiscard]] CENTURION_API static std::optional<u16> product_version(
       int deviceIndex) noexcept;
 
   /**
@@ -501,9 +501,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_API void rumble(Uint16 lowFreq,
-                            Uint16 highFreq,
-                            Uint32 duration) noexcept;
+  CENTURION_API void rumble(u16 lowFreq, u16 highFreq, u32 duration) noexcept;
 
   /**
    * @brief Sets the player index to be associated with the joystick.
@@ -543,7 +541,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<Uint16> vendor() const noexcept;
+  [[nodiscard]] CENTURION_API std::optional<u16> vendor() const noexcept;
 
   /**
    * @brief Returns the USB product ID of the joystick.
@@ -553,7 +551,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<Uint16> product() const noexcept;
+  [[nodiscard]] CENTURION_API std::optional<u16> product() const noexcept;
 
   /**
    * @brief Returns the product version of the joystick, if available.
@@ -563,7 +561,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<Uint16> product_version()
+  [[nodiscard]] CENTURION_API std::optional<u16> product_version()
       const noexcept;
 
   /**
@@ -598,7 +596,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<Sint16> axis_pos(
+  [[nodiscard]] CENTURION_API std::optional<i16> axis_pos(
       unsigned int axis) const noexcept;
 
   /**
@@ -611,7 +609,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<Sint16> axis_initial_state(
+  [[nodiscard]] CENTURION_API std::optional<i16> axis_initial_state(
       unsigned int axis) const noexcept;
 
   /**
@@ -745,7 +743,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] static constexpr Sint16 axis_max() noexcept
+  [[nodiscard]] static constexpr i16 axis_max() noexcept
   {
     return SDL_JOYSTICK_AXIS_MAX;
   }
@@ -757,7 +755,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] static constexpr Sint16 axis_min() noexcept
+  [[nodiscard]] static constexpr i16 axis_min() noexcept
   {
     return SDL_JOYSTICK_AXIS_MIN;
   }

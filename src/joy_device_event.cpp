@@ -15,13 +15,13 @@ JoyDeviceEvent::JoyDeviceEvent(const SDL_JoyDeviceEvent& event) noexcept
 {}
 
 CENTURION_DEF
-void JoyDeviceEvent::set_which(Sint32 which) noexcept
+void JoyDeviceEvent::set_which(i32 which) noexcept
 {
   m_event.which = which;
 }
 
 CENTURION_DEF
-auto JoyDeviceEvent::which() const noexcept -> Sint32
+auto JoyDeviceEvent::which() const noexcept -> i32
 {
   return m_event.which;
 }

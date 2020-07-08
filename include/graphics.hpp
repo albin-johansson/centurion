@@ -806,7 +806,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto flags() const noexcept -> Uint32;
+  [[nodiscard]] auto flags() const noexcept -> u32;
 
   /**
    * @brief Indicates whether or not the `present` method is synced with
@@ -935,7 +935,7 @@ class basic_renderer final {
    * @since 4.0.0
    */
   [[nodiscard]] auto text_blended_wrapped(czstring text,
-                                          Uint32 wrap,
+                                          u32 wrap,
                                           const Font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
@@ -1389,7 +1389,7 @@ class Texture final {
           area_i size)
   {
     m_texture = SDL_CreateTexture(renderer.get(),
-                                  static_cast<Uint32>(format),
+                                  static_cast<u32>(format),
                                   static_cast<int>(access),
                                   size.width,
                                   size.height);
@@ -1542,7 +1542,7 @@ class Texture final {
                                    {surface.width(), surface.height()});
     texture->set_blend_mode(blendMode);
 
-    Uint32* pixels = nullptr;
+    u32* pixels = nullptr;
     const auto success = texture->lock(&pixels);
     if (!success) {
       throw CenturionException{"Failed to lock texture!"};
@@ -1579,7 +1579,7 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_alpha(Uint8 alpha) noexcept;
+  void set_alpha(u8 alpha) noexcept;
 
   /**
    * @brief Sets the blend mode that will be used by the texture.
@@ -1704,7 +1704,7 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto alpha() const noexcept -> Uint8;
+  auto alpha() const noexcept -> u8;
 
   /**
    * @brief Returns the blend mode of the texture.
@@ -1818,7 +1818,7 @@ class Texture final {
    * @since 4.0.0
    */
   CENTURION_API
-  auto lock(Uint32** pixels, int* pitch = nullptr) noexcept -> bool;
+  auto lock(u32** pixels, int* pitch = nullptr) noexcept -> bool;
 
   /**
    * @brief Unlocks the texture.
@@ -2508,7 +2508,7 @@ auto basic_renderer<FontKey>::blend_mode() const noexcept -> BlendMode
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::flags() const noexcept -> Uint32
+auto basic_renderer<FontKey>::flags() const noexcept -> u32
 {
   SDL_RendererInfo info;
   SDL_GetRendererInfo(m_renderer, &info);
@@ -2555,7 +2555,7 @@ auto basic_renderer<FontKey>::clipping_enabled() const noexcept -> bool
 template <typename FontKey>
 auto basic_renderer<FontKey>::color() const noexcept -> Color
 {
-  Uint8 red = 0, green = 0, blue = 0, alpha = 0;
+  u8 red = 0, green = 0, blue = 0, alpha = 0;
   SDL_GetRenderDrawColor(m_renderer, &red, &green, &blue, &alpha);
   return {red, green, blue, alpha};
 }
@@ -2574,7 +2574,7 @@ auto basic_renderer<FontKey>::text_blended(czstring text,
 template <typename FontKey>
 auto basic_renderer<FontKey>::text_blended_wrapped(
     czstring text,
-    Uint32 wrap,
+    u32 wrap,
     const Font& font) const noexcept -> std::unique_ptr<Texture>
 {
   return render_text(text, [this, &font, wrap](czstring text) noexcept {

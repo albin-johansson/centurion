@@ -198,7 +198,7 @@ bool Font::is_fixed_width() const noexcept
 }
 
 CENTURION_DEF
-int Font::kerning_amount(Uint16 firstGlyph, Uint16 secondGlyph) const noexcept
+int Font::kerning_amount(u16 firstGlyph, u16 secondGlyph) const noexcept
 {
   const auto amount =
       TTF_GetFontKerningSizeGlyphs(m_font, firstGlyph, secondGlyph);
@@ -206,13 +206,13 @@ int Font::kerning_amount(Uint16 firstGlyph, Uint16 secondGlyph) const noexcept
 }
 
 CENTURION_DEF
-bool Font::is_glyph_provided(Uint16 glyph) const noexcept
+bool Font::is_glyph_provided(u16 glyph) const noexcept
 {
   return TTF_GlyphIsProvided(m_font, glyph);
 }
 
 CENTURION_DEF
-std::optional<GlyphMetrics> Font::glyph_metrics(Uint16 glyph) const noexcept
+std::optional<GlyphMetrics> Font::glyph_metrics(u16 glyph) const noexcept
 {
   GlyphMetrics metrics;
   const auto result = TTF_GlyphMetrics(m_font,

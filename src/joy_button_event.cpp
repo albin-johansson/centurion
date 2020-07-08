@@ -21,7 +21,7 @@ void JoyButtonEvent::set_which(SDL_JoystickID which) noexcept
 }
 
 CENTURION_DEF
-void JoyButtonEvent::set_button(Uint8 button) noexcept
+void JoyButtonEvent::set_button(u8 button) noexcept
 {
   m_event.button = button;
 }
@@ -29,7 +29,7 @@ void JoyButtonEvent::set_button(Uint8 button) noexcept
 CENTURION_DEF
 void JoyButtonEvent::set_state(ButtonState state) noexcept
 {
-  m_event.state = static_cast<Uint8>(state);
+  m_event.state = static_cast<u8>(state);
 }
 
 CENTURION_DEF
@@ -39,7 +39,7 @@ auto JoyButtonEvent::which() const noexcept -> SDL_JoystickID
 }
 
 CENTURION_DEF
-auto JoyButtonEvent::button() const noexcept -> Uint8
+auto JoyButtonEvent::button() const noexcept -> u8
 {
   return m_event.button;
 }

@@ -471,7 +471,7 @@ class Window final {
    * @return a numerical ID of the window.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API Uint32 id() const noexcept;
+  [[nodiscard]] CENTURION_API u32 id() const noexcept;
 
   /**
    * Returns the display index associated with the window.
@@ -620,7 +620,7 @@ class Window final {
    * @since 4.0.0
    * @see SDL_WindowFlags
    */
-  [[nodiscard]] CENTURION_API Uint32 flags() const noexcept;
+  [[nodiscard]] CENTURION_API u32 flags() const noexcept;
 
   /**
    * Returns any renderer that is associated with this window. Note! If no

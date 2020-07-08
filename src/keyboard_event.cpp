@@ -19,16 +19,16 @@ void KeyboardEvent::set_key(const Key& key, ButtonState state) noexcept
 {
   m_event.keysym.scancode = key.scancode();
   m_event.keysym.sym = key.keycode();
-  m_event.state = static_cast<Uint8>(state);
+  m_event.state = static_cast<u8>(state);
 }
 
 CENTURION_DEF
 void KeyboardEvent::set_modifier(KeyModifier modifier, bool active) noexcept
 {
   if (active) {
-    m_event.keysym.mod |= static_cast<Uint16>(modifier);
+    m_event.keysym.mod |= static_cast<u16>(modifier);
   } else {
-    m_event.keysym.mod &= ~static_cast<Uint16>(modifier);
+    m_event.keysym.mod &= ~static_cast<u16>(modifier);
   }
 }
 
@@ -39,7 +39,7 @@ void KeyboardEvent::set_repeated(bool repeated) noexcept
 }
 
 CENTURION_DEF
-void KeyboardEvent::set_window_id(Uint32 id) noexcept
+void KeyboardEvent::set_window_id(u32 id) noexcept
 {
   m_event.windowID = id;
 }
@@ -53,7 +53,7 @@ auto KeyboardEvent::is_active(const Key& key) const noexcept -> bool
 CENTURION_DEF
 auto KeyboardEvent::modifier_active(KeyModifier modifier) const noexcept -> bool
 {
-  return m_event.keysym.mod & static_cast<Uint16>(modifier);
+  return m_event.keysym.mod & static_cast<u16>(modifier);
 }
 
 CENTURION_DEF
@@ -115,7 +115,7 @@ auto KeyboardEvent::key() const noexcept -> Key
 }
 
 CENTURION_DEF
-auto KeyboardEvent::window_id() const noexcept -> Uint32
+auto KeyboardEvent::window_id() const noexcept -> u32
 {
   return m_event.windowID;
 }

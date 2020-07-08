@@ -28,7 +28,7 @@ void TouchFingerEvent::set_finger_id(FingerID id) noexcept
 }
 
 CENTURION_DEF
-void TouchFingerEvent::set_window_id(Uint32 id) noexcept
+void TouchFingerEvent::set_window_id(u32 id) noexcept
 {
   m_event.windowID = id;
 }
@@ -76,7 +76,7 @@ auto TouchFingerEvent::finger_id() const noexcept -> SDL_FingerID
 }
 
 CENTURION_DEF
-auto TouchFingerEvent::window_id() const noexcept -> Uint32
+auto TouchFingerEvent::window_id() const noexcept -> u32
 {
   return m_event.windowID;
 }

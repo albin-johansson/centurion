@@ -21,19 +21,19 @@ void JoyBallEvent::set_which(SDL_JoystickID which) noexcept
 }
 
 CENTURION_DEF
-void JoyBallEvent::set_ball(Uint8 ball) noexcept
+void JoyBallEvent::set_ball(u8 ball) noexcept
 {
   m_event.ball = ball;
 }
 
 CENTURION_DEF
-void JoyBallEvent::set_dx(Sint16 dx) noexcept
+void JoyBallEvent::set_dx(i16 dx) noexcept
 {
   m_event.xrel = dx;
 }
 
 CENTURION_DEF
-void JoyBallEvent::set_dy(Sint16 dy) noexcept
+void JoyBallEvent::set_dy(i16 dy) noexcept
 {
   m_event.yrel = dy;
 }
@@ -45,19 +45,19 @@ auto JoyBallEvent::which() const noexcept -> SDL_JoystickID
 }
 
 CENTURION_DEF
-auto JoyBallEvent::ball() const noexcept -> Uint8
+auto JoyBallEvent::ball() const noexcept -> u8
 {
   return m_event.ball;
 }
 
 CENTURION_DEF
-auto JoyBallEvent::dx() const noexcept -> Sint16
+auto JoyBallEvent::dx() const noexcept -> i16
 {
   return m_event.xrel;
 }
 
 CENTURION_DEF
-auto JoyBallEvent::dy() const noexcept -> Sint16
+auto JoyBallEvent::dy() const noexcept -> i16
 {
   return m_event.yrel;
 }

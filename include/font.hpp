@@ -391,8 +391,7 @@ class Font final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto kerning_amount(Uint16 firstGlyph, Uint16 secondGlyph) const noexcept
-      -> int;
+  auto kerning_amount(u16 firstGlyph, u16 secondGlyph) const noexcept -> int;
 
   /**
    * @brief Indicates whether or not the specified glyph is available in the
@@ -405,7 +404,7 @@ class Font final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto is_glyph_provided(Uint16 glyph) const noexcept -> bool;
+  auto is_glyph_provided(u16 glyph) const noexcept -> bool;
 
   /**
    * @brief Returns the metrics of the specified glyph in this font.
@@ -418,8 +417,7 @@ class Font final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto glyph_metrics(Uint16 glyph) const noexcept
-      -> std::optional<GlyphMetrics>;
+  auto glyph_metrics(u16 glyph) const noexcept -> std::optional<GlyphMetrics>;
 
   /**
    * @brief Returns the family name of the font.

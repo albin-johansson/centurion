@@ -40,6 +40,7 @@
 #include <type_traits>
 
 #include "centurion_api.hpp"
+#include "centurion_types.hpp"
 
 namespace centurion {
 
@@ -61,7 +62,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  static inline constexpr Uint8 max = 0xFF;
+  static inline constexpr u8 max = 0xFF;
 
   /**
    * @brief Creates a color. The created color will be equal to #000000FF.
@@ -81,10 +82,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  constexpr Color(Uint8 red,
-                  Uint8 green,
-                  Uint8 blue,
-                  Uint8 alpha = 0xFF) noexcept
+  constexpr Color(u8 red, u8 green, u8 blue, u8 alpha = 0xFF) noexcept
       : m_red{red}, m_green{green}, m_blue{blue}, m_alpha{alpha}
   {}
 
@@ -120,7 +118,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  constexpr void set_red(Uint8 red) noexcept { m_red = red; }
+  constexpr void set_red(u8 red) noexcept { m_red = red; }
 
   /**
    * @brief Sets the value of the green component.
@@ -129,7 +127,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  constexpr void set_green(Uint8 green) noexcept { m_green = green; }
+  constexpr void set_green(u8 green) noexcept { m_green = green; }
 
   /**
    * @brief Sets the value of the blue component.
@@ -138,7 +136,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  constexpr void set_blue(Uint8 blue) noexcept { m_blue = blue; }
+  constexpr void set_blue(u8 blue) noexcept { m_blue = blue; }
 
   /**
    * @brief Sets the value of the alpha component.
@@ -147,7 +145,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  constexpr void set_alpha(Uint8 alpha) noexcept { m_alpha = alpha; }
+  constexpr void set_alpha(u8 alpha) noexcept { m_alpha = alpha; }
 
   /**
    * @brief Returns the value of the red component.
@@ -156,7 +154,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] constexpr auto red() const noexcept -> Uint8 { return m_red; }
+  [[nodiscard]] constexpr auto red() const noexcept -> u8 { return m_red; }
 
   /**
    * @brief Returns the value of the green component.
@@ -165,10 +163,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] constexpr auto green() const noexcept -> Uint8
-  {
-    return m_green;
-  }
+  [[nodiscard]] constexpr auto green() const noexcept -> u8 { return m_green; }
 
   /**
    * @brief Returns the value of the blue component.
@@ -177,7 +172,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] constexpr auto blue() const noexcept -> Uint8 { return m_blue; }
+  [[nodiscard]] constexpr auto blue() const noexcept -> u8 { return m_blue; }
 
   /**
    * @brief Returns the value of the alpha component.
@@ -186,10 +181,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] constexpr auto alpha() const noexcept -> Uint8
-  {
-    return m_alpha;
-  }
+  [[nodiscard]] constexpr auto alpha() const noexcept -> u8 { return m_alpha; }
 
   /**
    * @brief Returns a textual representation of the color.
@@ -253,10 +245,10 @@ class Color final {
   }
 
  private:
-  Uint8 m_red{0};
-  Uint8 m_green{0};
-  Uint8 m_blue{0};
-  Uint8 m_alpha{max};
+  u8 m_red{0};
+  u8 m_green{0};
+  u8 m_blue{0};
+  u8 m_alpha{max};
 };
 
 inline auto Color::to_string() const -> std::string

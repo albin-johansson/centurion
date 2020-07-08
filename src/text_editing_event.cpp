@@ -26,25 +26,25 @@ void TextEditingEvent::check_length() noexcept
 }
 
 CENTURION_DEF
-void TextEditingEvent::set_window_id(Uint32 id) noexcept
+void TextEditingEvent::set_window_id(u32 id) noexcept
 {
   m_event.windowID = id;
 }
 
 CENTURION_DEF
-void TextEditingEvent::set_start(Sint32 start) noexcept
+void TextEditingEvent::set_start(i32 start) noexcept
 {
   m_event.start = start;
 }
 
 CENTURION_DEF
-void TextEditingEvent::set_length(Sint32 length) noexcept
+void TextEditingEvent::set_length(i32 length) noexcept
 {
   m_event.length = detail::clamp_inclusive({0, 32}, length);
 }
 
 CENTURION_DEF
-auto TextEditingEvent::window_id() const noexcept -> Uint32
+auto TextEditingEvent::window_id() const noexcept -> u32
 {
   return m_event.windowID;
 }
@@ -56,13 +56,13 @@ auto TextEditingEvent::text() const noexcept -> czstring
 }
 
 CENTURION_DEF
-auto TextEditingEvent::start() const noexcept -> Sint32
+auto TextEditingEvent::start() const noexcept -> i32
 {
   return m_event.start;
 }
 
 CENTURION_DEF
-auto TextEditingEvent::length() const noexcept -> Sint32
+auto TextEditingEvent::length() const noexcept -> i32
 {
   return m_event.length;
 }

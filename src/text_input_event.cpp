@@ -15,13 +15,13 @@ TextInputEvent::TextInputEvent(const SDL_TextInputEvent& event) noexcept
 {}
 
 CENTURION_DEF
-void TextInputEvent::set_window_id(Uint32 id) noexcept
+void TextInputEvent::set_window_id(u32 id) noexcept
 {
   m_event.windowID = id;
 }
 
 CENTURION_DEF
-auto TextInputEvent::window_id() const noexcept -> Uint32
+auto TextInputEvent::window_id() const noexcept -> u32
 {
   return m_event.windowID;
 }

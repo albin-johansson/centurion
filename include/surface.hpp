@@ -115,7 +115,7 @@ class Surface final {
    * @param alpha the new alpha component value, in the range [0, 255].
    * @since 4.0.0
    */
-  CENTURION_API void set_alpha(Uint8 alpha) noexcept;
+  CENTURION_API void set_alpha(u8 alpha) noexcept;
 
   /**
    * Sets the color modulation that will be used by the surface.
@@ -140,7 +140,7 @@ class Surface final {
    * @return the alpha modulation value, in the range [0, 255].
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API Uint8 alpha() const noexcept;
+  [[nodiscard]] CENTURION_API u8 alpha() const noexcept;
 
   /**
    * Returns the color modulation of the surface.

@@ -21,13 +21,13 @@ auto WindowEvent::event_id() const noexcept -> WindowEventID
 }
 
 CENTURION_DEF
-auto WindowEvent::data_1() const noexcept -> Sint32
+auto WindowEvent::data_1() const noexcept -> i32
 {
   return m_event.data1;
 }
 
 CENTURION_DEF
-auto WindowEvent::data_2() const noexcept -> Sint32
+auto WindowEvent::data_2() const noexcept -> i32
 {
   return m_event.data2;
 }

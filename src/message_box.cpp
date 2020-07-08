@@ -25,7 +25,7 @@ inline SDL_MessageBoxButtonData create_button_data(ButtonDataHint hint,
                                                    int id,
                                                    czstring text) noexcept
 {
-  return {static_cast<Uint32>(hint), id, text};
+  return {static_cast<u32>(hint), id, text};
 }
 
 }  // namespace
@@ -86,8 +86,8 @@ SDL_MessageBoxData MessageBox::create_data(
     const SDL_MessageBoxButtonData* data,
     const SDL_MessageBoxColorScheme* scheme) const noexcept
 {
-  const auto flags = static_cast<Uint32>(m_config->type) |
-                     static_cast<Uint32>(m_config->buttonOrder);
+  const auto flags = static_cast<u32>(m_config->type) |
+                     static_cast<u32>(m_config->buttonOrder);
   return {flags,
           window,
           m_title,
@@ -129,8 +129,8 @@ void MessageBox::show(czstring title,
                       const MessageBoxConfig& config,
                       SDL_Window* window) noexcept
 {
-  const auto flags = static_cast<Uint32>(config.type) |
-                     static_cast<Uint32>(config.buttonOrder);
+  const auto flags =
+      static_cast<u32>(config.type) | static_cast<u32>(config.buttonOrder);
   SDL_ShowSimpleMessageBox(flags,
                            title ? title : "Centurion message box",
                            message ? message : "N/A",

@@ -46,7 +46,7 @@ void MultiGestureEvent::set_center_y(float centerY) noexcept
 }
 
 CENTURION_DEF
-void MultiGestureEvent::set_fingers(Uint16 nFingers) noexcept
+void MultiGestureEvent::set_fingers(u16 nFingers) noexcept
 {
   m_event.numFingers = nFingers;
 }

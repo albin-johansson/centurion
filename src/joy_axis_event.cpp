@@ -21,13 +21,13 @@ void JoyAxisEvent::set_which(SDL_JoystickID which) noexcept
 }
 
 CENTURION_DEF
-void JoyAxisEvent::set_axis(Uint8 axis) noexcept
+void JoyAxisEvent::set_axis(u8 axis) noexcept
 {
   m_event.axis = axis;
 }
 
 CENTURION_DEF
-void JoyAxisEvent::set_value(Sint16 value) noexcept
+void JoyAxisEvent::set_value(i16 value) noexcept
 {
   m_event.value = value;
 }
@@ -39,13 +39,13 @@ auto JoyAxisEvent::which() const noexcept -> SDL_JoystickID
 }
 
 CENTURION_DEF
-auto JoyAxisEvent::axis() const noexcept -> Uint8
+auto JoyAxisEvent::axis() const noexcept -> u8
 {
   return m_event.axis;
 }
 
 CENTURION_DEF
-auto JoyAxisEvent::value() const noexcept -> Sint16
+auto JoyAxisEvent::value() const noexcept -> i16
 {
   return m_event.value;
 }

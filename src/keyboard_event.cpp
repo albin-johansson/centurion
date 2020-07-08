@@ -25,11 +25,10 @@ void KeyboardEvent::set_key(const Key& key, ButtonState state) noexcept
 CENTURION_DEF
 void KeyboardEvent::set_modifier(KeyModifier modifier, bool active) noexcept
 {
-  const auto flag = static_cast<Uint16>(modifier);
   if (active) {
-    m_event.keysym.mod |= flag;
+    m_event.keysym.mod |= static_cast<Uint16>(modifier);
   } else {
-    m_event.keysym.mod &= ~flag;
+    m_event.keysym.mod &= ~static_cast<Uint16>(modifier);
   }
 }
 

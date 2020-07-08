@@ -2029,7 +2029,8 @@ class MouseWheelEvent : public CommonEvent<SDL_MouseWheelEvent> {
   /**
    * @brief Sets the vertically scrolled distance.
    *
-   * @copydetails set_x_scroll(Sint32)
+   * @details A positive value indicates that the user scrolled to the right
+   * and a negative value indicates that the user scrolled to the left.
    *
    * @param yScroll the vertically scrolled distance.
    *
@@ -2072,7 +2073,8 @@ class MouseWheelEvent : public CommonEvent<SDL_MouseWheelEvent> {
   /**
    * @brief Returns the horizontally scrolled distance
    *
-   * @copydetails set_x_scroll(Sint32)
+   * @details A positive value indicates that the user scrolled to the right
+   * and a negative value indicates that the user scrolled to the left.
    *
    * @return the horizontally scrolled distance.
    *
@@ -2084,7 +2086,8 @@ class MouseWheelEvent : public CommonEvent<SDL_MouseWheelEvent> {
   /**
    * @brief Returns the vertically scrolled distance.
    *
-   * @copydetails set_x_scroll(Sint32)
+   * @details A positive value indicates that the user scrolled to the right
+   * and a negative value indicates that the user scrolled to the left.
    *
    * @return the vertically scrolled distance.
    *
@@ -2492,16 +2495,20 @@ class TextInputEvent : public CommonEvent<SDL_TextInputEvent> {
 static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>());
 
 /**
- * The TouchFingerEvent class represents an event related to touch screen
- * actions.
+ * @class TouchFingerEvent
  *
- * @see SDL_TouchFingerEvent
+ * @brief Represents an event related to touch screen actions.
+ *
+ * @see `SDL_TouchFingerEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
  public:
   /**
-   * Creates a default-initialized touch finger event.
+   * @brief Creates a default-initialized touch finger event.
    *
    * @since 4.0.0
    */
@@ -2509,180 +2516,205 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
   TouchFingerEvent() noexcept;
 
   /**
-   * Creates a touch finger event that is based on the supplied SDL
+   * @brief Creates a touch finger event that is based on the supplied SDL
    * ouch finger event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   TouchFingerEvent(const SDL_TouchFingerEvent& event) noexcept;
 
   /**
-   * Creates a touch finger event by moving the supplied SDL touch finger
-   * event.
-   *
-   * @param event the SDL touch finger event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  TouchFingerEvent(SDL_TouchFingerEvent&& event) noexcept;
-
-  /**
-   * Sets the ID of the associated touch device.
+   * @brief Sets the ID of the associated touch device.
    *
    * @param id the ID of the associated touch device.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_touch_id(TouchID id) noexcept;
 
   /**
-   * Sets the finger ID associated with the event.
+   * @brief Sets the finger ID associated with the event.
    *
    * @param id the finger ID associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_finger_id(FingerID id) noexcept;
 
   /**
-   * Sets the window ID of the window under the finger.
+   * @brief Sets the window ID of the window under the finger.
    *
    * @param id the window ID of the window under the finger.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_window_id(Uint32 id) noexcept;
 
   /**
-   * Sets the normalized x-coordinate of the location of the event. The
-   * supplied value will be clamped in the range [0, 1].
+   * @brief Sets the normalized x-coordinate of the location of the event.
+   *
+   * @details The supplied value will be clamped to the range [0, 1].
    *
    * @param x the normalized x-coordinate of the location of the event,
    * clamped to the range [0, 1].
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_x(float x) noexcept;
 
   /**
-   * Sets the normalized y-coordinate of the location of the event. The
-   * supplied value will be clamped in the range [0, 1].
+   * @brief Sets the normalized y-coordinate of the location of the event.
+   *
+   * @details The supplied value will be clamped to the range [0, 1].
    *
    * @param y the normalized y-coordinate of the location of the event,
    * clamped to the range [0, 1].
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_y(float y) noexcept;
 
   /**
-   * Sets the normalized distance moved along the x-axis. The
-   * supplied value will be clamped in the range [-1, 1].
+   * @brief Sets the normalized distance moved along the x-axis.
+   *
+   * @details The supplied value will be clamped to the range [-1, 1].
    *
    * @param dx the normalized distance moved along the x-axis, clamped to the
    * range [-1, 1].
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_dx(float dx) noexcept;
 
   /**
-   * Sets the normalized distance moved along the y-axis. The
-   * supplied value will be clamped in the range [-1, 1].
+   * @brief Sets the normalized distance moved along the y-axis.
+   *
+   * @details The supplied value will be clamped to the range [-1, 1].
    *
    * @param dy the normalized distance moved along the y-axis, clamped to the
    * range [-1, 1].
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_dy(float dy) noexcept;
 
   /**
-   * Sets the normalized pressure associated with the event. The supplied
-   * value will be clamped in the range [0, 1].
+   * @brief Sets the normalized pressure associated with the event.
+   *
+   * @details The supplied value will be clamped to the range [0, 1].
    *
    * @param pressure the normalized pressure associated with the event, clamped
    * in the range [0, 1].
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_pressure(float pressure) noexcept;
 
   /**
-   * Returns the touch device ID associated with the event.
+   * @brief Returns the touch device ID associated with the event.
    *
    * @return the touch device ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY TouchID touch_id() const noexcept;
+  CENTURION_QUERY
+  auto touch_id() const noexcept -> SDL_TouchID;
 
   /**
-   * Returns the finger ID associated with the event.
+   * @brief Returns the finger ID associated with the event.
    *
    * @return the finger ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY FingerID finger_id() const noexcept;
+  CENTURION_QUERY
+  auto finger_id() const noexcept -> SDL_FingerID;
 
   /**
-   * Returns the window ID of the window under the finger.
+   * @brief Returns the window ID of the window under the finger.
    *
    * @return the window ID of the window under the finger.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint32 window_id() const noexcept;
+  CENTURION_QUERY
+  auto window_id() const noexcept -> Uint32;
 
   /**
-   * Returns the normalized x-coordinate of the location of the event. The
-   * returned value will be in the range [0, 1].
+   * @brief Returns the normalized x-coordinate of the location of the event.
+   *
+   * @details The returned value will be in the range [0, 1].
    *
    * @return the normalized x-coordinate of the location of the event, in the
    * range [0, 1].
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float x() const noexcept;
+  CENTURION_QUERY
+  auto x() const noexcept -> float;
 
   /**
-   * Returns the normalized y-coordinate of the location of the event. The
-   * returned value will be in the range [0, 1].
+   * @brief Returns the normalized y-coordinate of the location of the event.
+   *
+   * @details The returned value will be in the range [0, 1].
    *
    * @return the normalized y-coordinate of the location of the event, in the
    * range [0, 1].
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float y() const noexcept;
+  CENTURION_QUERY
+  auto y() const noexcept -> float;
 
   /**
-   * Returns the normalized distance moved along the x-axis. The
-   * returned value will be in the range [-1, 1].
+   * @brief Returns the normalized distance moved along the x-axis.
+   *
+   * @details The returned value will be in the range [-1, 1].
    *
    * @return the normalized distance moved along the x-axis, in the range
    * [-1, 1].
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float dx() const noexcept;
+  CENTURION_QUERY
+  auto dx() const noexcept -> float;
 
   /**
-   * Returns the normalized distance moved along the y-axis. The
-   * returned value will be in the range [-1, 1].
+   * @brief Returns the normalized distance moved along the y-axis.
+   *
+   * @details The returned value will be in the range [-1, 1].
    *
    * @return the normalized distance moved along the y-axis, in the range
    * [-1, 1].
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float dy() const noexcept;
+  CENTURION_QUERY
+  auto dy() const noexcept -> float;
 
   /**
-   * Returns the normalized pressure associated with the event. The
-   * returned value will be in the range [0, 1].
+   * @brief Returns the normalized pressure associated with the event.
+   *
+   * @details The returned value will be in the range [0, 1].
    *
    * @return the normalized pressure associated with the event, in the range
    * [0, 1].
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY float pressure() const noexcept;
+  CENTURION_QUERY
+  auto pressure() const noexcept -> float;
 };
 
 static_assert(validate_event<TouchFingerEvent, SDL_TouchFingerEvent>());

@@ -18,11 +18,6 @@ TextInputEvent::TextInputEvent(const SDL_TextInputEvent& event) noexcept
 {}
 
 CENTURION_DEF
-TextInputEvent::TextInputEvent(SDL_TextInputEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
-{}
-
-CENTURION_DEF
 void TextInputEvent::set_window_id(Uint32 id) noexcept
 {
   m_event.windowID = id;

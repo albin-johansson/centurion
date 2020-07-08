@@ -4,8 +4,7 @@
 #include "centurion_utils.hpp"
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 TouchFingerEvent::TouchFingerEvent() noexcept : CommonEvent{}
@@ -14,11 +13,6 @@ TouchFingerEvent::TouchFingerEvent() noexcept : CommonEvent{}
 CENTURION_DEF
 TouchFingerEvent::TouchFingerEvent(const SDL_TouchFingerEvent& event) noexcept
     : CommonEvent{event}
-{}
-
-CENTURION_DEF
-TouchFingerEvent::TouchFingerEvent(SDL_TouchFingerEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF
@@ -70,54 +64,53 @@ void TouchFingerEvent::set_pressure(float pressure) noexcept
 }
 
 CENTURION_DEF
-TouchID TouchFingerEvent::touch_id() const noexcept
+auto TouchFingerEvent::touch_id() const noexcept -> SDL_TouchID
 {
   return m_event.touchId;
 }
 
 CENTURION_DEF
-FingerID TouchFingerEvent::finger_id() const noexcept
+auto TouchFingerEvent::finger_id() const noexcept -> SDL_FingerID
 {
   return m_event.fingerId;
 }
 
 CENTURION_DEF
-Uint32 TouchFingerEvent::window_id() const noexcept
+auto TouchFingerEvent::window_id() const noexcept -> Uint32
 {
   return m_event.windowID;
 }
 
 CENTURION_DEF
-float TouchFingerEvent::x() const noexcept
+auto TouchFingerEvent::x() const noexcept -> float
 {
   return m_event.x;
 }
 
 CENTURION_DEF
-float TouchFingerEvent::y() const noexcept
+auto TouchFingerEvent::y() const noexcept -> float
 {
   return m_event.y;
 }
 
 CENTURION_DEF
-float TouchFingerEvent::dx() const noexcept
+auto TouchFingerEvent::dx() const noexcept -> float
 {
   return m_event.dx;
 }
 
 CENTURION_DEF
-float TouchFingerEvent::dy() const noexcept
+auto TouchFingerEvent::dy() const noexcept -> float
 {
   return m_event.dy;
 }
 
 CENTURION_DEF
-float TouchFingerEvent::pressure() const noexcept
+auto TouchFingerEvent::pressure() const noexcept -> float
 {
   return m_event.pressure;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_TOUCH_FINGER_EVENT_SOURCE

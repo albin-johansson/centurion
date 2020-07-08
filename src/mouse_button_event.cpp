@@ -1,12 +1,9 @@
 #ifndef CENTURION_MOUSE_BUTTON_EVENT_SOURCE
 #define CENTURION_MOUSE_BUTTON_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 MouseButtonEvent::MouseButtonEvent() noexcept : CommonEvent{}
@@ -15,11 +12,6 @@ MouseButtonEvent::MouseButtonEvent() noexcept : CommonEvent{}
 CENTURION_DEF
 MouseButtonEvent::MouseButtonEvent(const SDL_MouseButtonEvent& event) noexcept
     : CommonEvent{event}
-{}
-
-CENTURION_DEF
-MouseButtonEvent::MouseButtonEvent(SDL_MouseButtonEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF
@@ -65,48 +57,47 @@ void MouseButtonEvent::set_y(Sint32 y) noexcept
 }
 
 CENTURION_DEF
-Uint32 MouseButtonEvent::window_id() const noexcept
+auto MouseButtonEvent::window_id() const noexcept -> Uint32
 {
   return m_event.windowID;
 }
 
 CENTURION_DEF
-Uint32 MouseButtonEvent::which() const noexcept
+auto MouseButtonEvent::which() const noexcept -> Uint32
 {
   return m_event.which;
 }
 
 CENTURION_DEF
-MouseButton MouseButtonEvent::button() const noexcept
+auto MouseButtonEvent::button() const noexcept -> MouseButton
 {
   return static_cast<MouseButton>(m_event.button);
 }
 
 CENTURION_DEF
-ButtonState MouseButtonEvent::state() const noexcept
+auto MouseButtonEvent::state() const noexcept -> ButtonState
 {
   return static_cast<ButtonState>(m_event.state);
 }
 
 CENTURION_DEF
-Uint8 MouseButtonEvent::clicks() const noexcept
+auto MouseButtonEvent::clicks() const noexcept -> Uint8
 {
   return m_event.clicks;
 }
 
 CENTURION_DEF
-Sint32 MouseButtonEvent::x() const noexcept
+auto MouseButtonEvent::x() const noexcept -> Sint32
 {
   return m_event.x;
 }
 
 CENTURION_DEF
-Sint32 MouseButtonEvent::y() const noexcept
+auto MouseButtonEvent::y() const noexcept -> Sint32
 {
   return m_event.y;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_MOUSE_BUTTON_EVENT_SOURCE

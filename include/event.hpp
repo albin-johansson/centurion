@@ -1524,16 +1524,20 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
 static_assert(validate_event<KeyboardEvent, SDL_KeyboardEvent>());
 
 /**
- * The MouseButtonEvent class represents an event triggered by mouse button
- * presses or releases.
+ * @class MouseButtonEvent
  *
- * @see SDL_MouseButtonEvent
+ * @brief Represents an event triggered by mouse button presses or releases.
+ *
+ * @see `SDL_MouseButtonEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class MouseButtonEvent : public CommonEvent<SDL_MouseButtonEvent> {
  public:
   /**
-   * Creates a default-initialized MouseButtonEvent.
+   * @brief Creates a default-initialized `MouseButtonEvent`.
    *
    * @since 4.0.0
    */
@@ -1541,143 +1545,155 @@ class MouseButtonEvent : public CommonEvent<SDL_MouseButtonEvent> {
   MouseButtonEvent() noexcept;
 
   /**
-   * Creates a MouseButtonEvent that is based on the supplied SDL event.
+   * @brief Creates a MouseButtonEvent that is based on the supplied SDL event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   MouseButtonEvent(const SDL_MouseButtonEvent& event) noexcept;
 
   /**
-   * Creates a MouseButtonEvent that is based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  MouseButtonEvent(SDL_MouseButtonEvent&& event) noexcept;
-
-  /**
-   * Sets the window ID associated with the event.
+   * @brief Sets the window ID associated with the event.
    *
    * @param id the window ID associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_window_id(Uint32 id) noexcept;
 
   /**
-   * Sets the mouse instance ID, or SDL_TOUCH_MOUSEID if the event was
-   * triggered by a touch input device.
+   * @brief Sets the mouse instance ID.
    *
-   * @param which the mouse instance ID, or SDL_TOUCH_MOUSEID.
+   * @param which the mouse instance ID.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_which(Uint32 which) noexcept;
 
   /**
-   * Sets the mouse button associated with the event.
+   * @brief Sets the mouse button associated with the event.
    *
    * @param button the mouse button associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_button(MouseButton button) noexcept;
 
   /**
-   * Sets the button state associated with the event.
+   * @brief Sets the button state associated with the event.
    *
    * @param state the button state associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_state(ButtonState state) noexcept;
 
   /**
-   * Sets the amount of clicks associated with the event.
+   * @brief Sets the amount of clicks associated with the event.
    *
    * @param clicks the amount of clicks associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_clicks(Uint8 clicks) noexcept;
 
   /**
-   * Sets the x-coordinate of the mouse relative to the window.
+   * @brief Sets the x-coordinate of the mouse relative to the window.
    *
    * @param x the x-coordinate of the mouse relative to the window.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_x(Sint32 x) noexcept;
 
   /**
-   * Sets the y-coordinate of the mouse relative to the window.
+   * @brief Sets the y-coordinate of the mouse relative to the window.
    *
    * @param y the y-coordinate of the mouse relative to the window.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_y(Sint32 y) noexcept;
 
   /**
-   * Returns the ID of the window associated with the event.
+   * @brief Returns the ID of the window associated with the event.
    *
    * @return the ID of the window associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint32 window_id() const noexcept;
+  CENTURION_QUERY
+  auto window_id() const noexcept -> Uint32;
 
   /**
-   * Returns the mouse instance ID, or SDL_TOUCH_MOUSEID if the event was
+   * @brief Returns the mouse instance ID, or SDL_TOUCH_MOUSEID if the event was
    * triggered by a touch input device.
    *
    * @return the mouse instance ID, or SDL_TOUCH_MOUSEID.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint32 which() const noexcept;
+  CENTURION_QUERY
+  auto which() const noexcept -> Uint32;
 
   /**
-   * Returns the mouse button associated with the event.
+   * @brief Returns the mouse button associated with the event.
    *
    * @return the mouse button associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY MouseButton button() const noexcept;
+  CENTURION_QUERY
+  auto button() const noexcept -> MouseButton;
 
   /**
-   * Returns the state of the mouse button associated with the event.
+   * @brief Returns the state of the mouse button associated with the event.
    *
    * @return the state of the mouse button associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY ButtonState state() const noexcept;
+  CENTURION_QUERY
+  auto state() const noexcept -> ButtonState;
 
   /**
-   * Returns the number of mouse clicks associated with the event.
+   * @brief Returns the number of mouse clicks associated with the event.
    *
    * @return the number of mouse clicks associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint8 clicks() const noexcept;
+  CENTURION_QUERY
+  auto clicks() const noexcept -> Uint8;
 
   /**
-   * Returns the x-coordinate of the mouse relative to the window.
+   * @brief Returns the x-coordinate of the mouse relative to the window.
    *
    * @return the x-coordinate of the mouse relative to the window.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint32 x() const noexcept;
+  CENTURION_QUERY
+  auto x() const noexcept -> Sint32;
 
   /**
-   * Returns the y-coordinate of the mouse relative to the window.
+   * @brief Returns the y-coordinate of the mouse relative to the window.
    *
    * @return the y-coordinate of the mouse relative to the window.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint32 y() const noexcept;
+  CENTURION_QUERY
+  auto y() const noexcept -> Sint32;
 };
 
 static_assert(validate_event<MouseButtonEvent, SDL_MouseButtonEvent>());

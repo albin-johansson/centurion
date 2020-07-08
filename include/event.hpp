@@ -2313,17 +2313,22 @@ class QuitEvent : public CommonEvent<SDL_QuitEvent> {
 static_assert(validate_event<QuitEvent, SDL_QuitEvent>());
 
 /**
- * The TextEditingEvent class represents an event triggered by keyboard text
- * editing. Note that this class doesn't provide a setter for the text, since
- * it's impossible to assign a value to a variable of type char[32] in C++.
+ * @class TextEditingEvent
  *
- * @see SDL_TextEditingEvent
+ * @brief Represents an event triggered by keyboard text editing. Note that
+ * this class doesn't provide a setter for the text, since it's impossible to
+ * assign a value to a variable of type `char[32]` in C++.
+ *
+ * @see `SDL_TextEditingEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class TextEditingEvent : public CommonEvent<SDL_TextEditingEvent> {
  public:
   /**
-   * Creates a default-initialized TextEditingEvent.
+   * @brief Creates a default-initialized `TextEditingEvent`.
    *
    * @since 4.0.0
    */
@@ -2331,84 +2336,90 @@ class TextEditingEvent : public CommonEvent<SDL_TextEditingEvent> {
   TextEditingEvent() noexcept;
 
   /**
-   * Creates a TextEditingEvent that is based on the supplied SDL event.
+   * @brief Creates a `TextEditingEvent` that is based on the supplied SDL
+   * event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   TextEditingEvent(const SDL_TextEditingEvent& event) noexcept;
 
   /**
-   * Creates a TextEditingEvent that is based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  TextEditingEvent(SDL_TextEditingEvent&& event) noexcept;
-
-  /**
-   * Sets the window ID associated with the event.
+   * @brief Sets the window ID associated with the event.
    *
    * @param id the window ID associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_window_id(Uint32 id) noexcept;
 
   /**
-   * Sets the location to begin editing from.
+   * @brief Sets the location to begin editing from.
    *
    * @param start the location to begin editing from.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_start(Sint32 start) noexcept;
 
   /**
-   * Sets the number of characters to edit from the start point. The supplied
-   * value will be capped to always be in the range [0, 32].
+   * @brief Sets the number of characters to edit from the start point.
+   *
+   * @details The supplied value will be clamped to the range [0, 32].
    *
    * @param length the number of characters to edit from the start point.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_length(Sint32 length) noexcept;
 
   /**
-   * Returns the window ID associated with the event.
+   * @brief Returns the window ID associated with the event.
    *
    * @return the window ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint32 window_id() const noexcept;
+  CENTURION_QUERY
+  auto window_id() const noexcept -> Uint32;
 
   /**
-   * Returns the text that will be used, as a null-terminated string in UTF-8
-   * encoding.
+   * @brief Returns the text that will be used, as a null-terminated string in
+   * UTF-8 encoding.
    *
    * @return the text that will be used.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY CZString text() const noexcept;
+  CENTURION_QUERY
+  auto text() const noexcept -> gsl::czstring;
 
   /**
-   * Returns the location to begin editing from.
+   * @brief Returns the location to begin editing from.
    *
    * @return the location to begin editing from.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint32 start() const noexcept;
+  CENTURION_QUERY
+  auto start() const noexcept -> Sint32;
 
   /**
-   * Returns the number of characters to edit from the start point. The
-   * returned value will always be in the range [0, 32].
+   * @brief Returns the number of characters to edit from the start point.
+   *
+   * @details The returned value will always be in the range [0, 32].
    *
    * @return the number of characters to edit from the start point.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint32 length() const noexcept;
+  CENTURION_QUERY
+  auto length() const noexcept -> Sint32;
 
  private:
   void check_length() noexcept;

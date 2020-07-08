@@ -4,8 +4,7 @@
 #include "centurion_utils.hpp"
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 TextEditingEvent::TextEditingEvent() noexcept : CommonEvent{}
@@ -16,13 +15,6 @@ TextEditingEvent::TextEditingEvent() noexcept : CommonEvent{}
 CENTURION_DEF
 TextEditingEvent::TextEditingEvent(const SDL_TextEditingEvent& event) noexcept
     : CommonEvent{event}
-{
-  check_length();
-}
-
-CENTURION_DEF
-TextEditingEvent::TextEditingEvent(SDL_TextEditingEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {
   check_length();
 }
@@ -52,30 +44,29 @@ void TextEditingEvent::set_length(Sint32 length) noexcept
 }
 
 CENTURION_DEF
-Uint32 TextEditingEvent::window_id() const noexcept
+auto TextEditingEvent::window_id() const noexcept -> Uint32
 {
   return m_event.windowID;
 }
 
 CENTURION_DEF
-CZString TextEditingEvent::text() const noexcept
+auto TextEditingEvent::text() const noexcept -> gsl::czstring
 {
   return m_event.text;
 }
 
 CENTURION_DEF
-Sint32 TextEditingEvent::start() const noexcept
+auto TextEditingEvent::start() const noexcept -> Sint32
 {
   return m_event.start;
 }
 
 CENTURION_DEF
-Sint32 TextEditingEvent::length() const noexcept
+auto TextEditingEvent::length() const noexcept -> Sint32
 {
   return m_event.length;
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_TEXT_EDITING_EVENT_SOURCE

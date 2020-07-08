@@ -4,6 +4,17 @@
 
 using namespace centurion::event;
 
+namespace {
+
+[[nodiscard]] auto create_event(Uint32 type) -> Event
+{
+  SDL_Event sdlEvent;
+  sdlEvent.type = type;
+  return {sdlEvent};
+}
+
+}  // namespace
+
 TEST_CASE("EventType operator==", "[EventType]")
 {
   CHECK(EventType::Quit == SDL_EventType::SDL_QUIT);
@@ -165,26 +176,28 @@ TEST_CASE("Event::poll", "[Event]")
 
   Event event;
   CHECK(event.poll());
-  CHECK(event.type() == static_cast<EventType>(sdlEvent.type));
 
-  auto motionEvent = event.as_mouse_motion_event();
-  REQUIRE(motionEvent);
-  CHECK(motionEvent->x() == sdlEvent.motion.x);
-  CHECK(motionEvent->y() == sdlEvent.motion.y);
+  REQUIRE(event.type() == EventType::MouseMotion);
+  REQUIRE(event.is<MouseMotionEvent>());
+
+  auto& motionEvent = event.get<MouseMotionEvent>();
+
+  CHECK(motionEvent.x() == sdlEvent.motion.x);
+  CHECK(motionEvent.y() == sdlEvent.motion.y);
 
   Event::flush_all();
 }
 
 TEST_CASE("Event::type", "[Event]")
 {
-  const auto makeEvent = [](EventType type) noexcept {
+  const auto create_sdl_event = [](EventType type) noexcept {
     SDL_Event event{};
     event.type = static_cast<Uint32>(type);
     return event;
   };
 
   const auto type = EventType::TouchMotion;
-  auto sdlEvent = makeEvent(type);
+  auto sdlEvent = create_sdl_event(type);
 
   Event::flush_all();
   SDL_PushEvent(&sdlEvent);
@@ -196,573 +209,275 @@ TEST_CASE("Event::type", "[Event]")
   Event::flush_all();
 }
 
-TEST_CASE("Event::as_audio_device_event", "[Event]")
+TEST_CASE("Event::empty", "[Event]")
 {
-  SECTION("SDL_AUDIODEVICEADDED")
+  SECTION("Empty")
   {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_AUDIODEVICEADDED;
-    Event event{sdlEvent};
-
-    CHECK(event.as_audio_device_event());
+    Event event;
+    CHECK(event.empty());
   }
 
-  SECTION("SDL_AUDIODEVICEREMOVED")
+  SECTION("Not empty")
   {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_AUDIODEVICEREMOVED;
-    Event event{sdlEvent};
-
-    CHECK(event.as_audio_device_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_QUIT;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_audio_device_event());
+    const auto event = create_event(SDL_AUDIODEVICEADDED);
+    CHECK(!event.empty());
   }
 }
 
-TEST_CASE("Event::as_controller_axis_event", "[Event]")
+TEST_CASE("Event::is", "[Event]")
 {
-  SECTION("SDL_CONTROLLERAXISMOTION")
+  SECTION("AudioDeviceEvent")
   {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_CONTROLLERAXISMOTION;
-    Event event{sdlEvent};
+    const auto added = create_event(SDL_AUDIODEVICEADDED);
+    const auto removed = create_event(SDL_AUDIODEVICEREMOVED);
+    const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(event.as_controller_axis_event());
+    CHECK(added.is<AudioDeviceEvent>());
+    CHECK(removed.is<AudioDeviceEvent>());
+    CHECK(!wrong.is<AudioDeviceEvent>());
   }
 
-  SECTION("Wrong type")
+  SECTION("ControllerAxisEvent")
   {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_MOUSEWHEEL;
-    Event event{sdlEvent};
+    const auto event = create_event(SDL_CONTROLLERAXISMOTION);
+    const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(!event.as_controller_axis_event());
+    CHECK(event.is<ControllerAxisEvent>());
+    CHECK(!wrong.is<ControllerAxisEvent>());
+  }
+
+  SECTION("ControllerButtonEvent")
+  {
+    const auto up = create_event(SDL_CONTROLLERBUTTONUP);
+    const auto down = create_event(SDL_CONTROLLERBUTTONDOWN);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(up.is<ControllerButtonEvent>());
+    CHECK(down.is<ControllerButtonEvent>());
+    CHECK(!wrong.is<ControllerButtonEvent>());
+  }
+
+  SECTION("ControllerDeviceEvent")
+  {
+    const auto added = create_event(SDL_CONTROLLERDEVICEADDED);
+    const auto removed = create_event(SDL_CONTROLLERDEVICEREMOVED);
+    const auto remapped = create_event(SDL_CONTROLLERDEVICEREMAPPED);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(added.is<ControllerDeviceEvent>());
+    CHECK(removed.is<ControllerDeviceEvent>());
+    CHECK(remapped.is<ControllerDeviceEvent>());
+    CHECK(!wrong.is<ControllerDeviceEvent>());
+  }
+
+  SECTION("DollarGestureEvent")
+  {
+    const auto gesture = create_event(SDL_DOLLARGESTURE);
+    const auto record = create_event(SDL_DOLLARRECORD);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(gesture.is<DollarGestureEvent>());
+    CHECK(record.is<DollarGestureEvent>());
+    CHECK(!wrong.is<DollarGestureEvent>());
+  }
+
+  SECTION("DropEvent")
+  {
+    const auto begin = create_event(SDL_DROPBEGIN);
+    const auto complete = create_event(SDL_DROPCOMPLETE);
+    const auto file = create_event(SDL_DROPFILE);
+    const auto text = create_event(SDL_DROPTEXT);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(begin.is<DropEvent>());
+    CHECK(complete.is<DropEvent>());
+    CHECK(file.is<DropEvent>());
+    CHECK(text.is<DropEvent>());
+    CHECK(!wrong.is<DropEvent>());
+  }
+
+  SECTION("JoyAxisEvent")
+  {
+    const auto motion = create_event(SDL_JOYAXISMOTION);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(motion.is<JoyAxisEvent>());
+    CHECK(!wrong.is<JoyAxisEvent>());
+  }
+
+  SECTION("JoyBallEvent")
+  {
+    const auto motion = create_event(SDL_JOYBALLMOTION);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(motion.is<JoyBallEvent>());
+    CHECK(!wrong.is<JoyBallEvent>());
+  }
+
+  SECTION("JoyButtonEvent")
+  {
+    const auto up = create_event(SDL_JOYBUTTONUP);
+    const auto down = create_event(SDL_JOYBUTTONDOWN);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(up.is<JoyButtonEvent>());
+    CHECK(down.is<JoyButtonEvent>());
+    CHECK(!wrong.is<JoyButtonEvent>());
+  }
+
+  SECTION("JoyDeviceEvent")
+  {
+    const auto added = create_event(SDL_JOYDEVICEADDED);
+    const auto removed = create_event(SDL_JOYDEVICEREMOVED);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(added.is<JoyDeviceEvent>());
+    CHECK(removed.is<JoyDeviceEvent>());
+    CHECK(!wrong.is<JoyDeviceEvent>());
+  }
+
+  SECTION("JoyHatEvent")
+  {
+    const auto motion = create_event(SDL_JOYHATMOTION);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(motion.is<JoyHatEvent>());
+    CHECK(!wrong.is<JoyHatEvent>());
+  }
+
+  SECTION("KeyboardEvent")
+  {
+    const auto up = create_event(SDL_KEYUP);
+    const auto down = create_event(SDL_KEYDOWN);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(up.is<KeyboardEvent>());
+    CHECK(down.is<KeyboardEvent>());
+    CHECK(!wrong.is<KeyboardEvent>());
+  }
+
+  SECTION("MouseButtonEvent")
+  {
+    const auto up = create_event(SDL_MOUSEBUTTONUP);
+    const auto down = create_event(SDL_MOUSEBUTTONDOWN);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(up.is<MouseButtonEvent>());
+    CHECK(down.is<MouseButtonEvent>());
+    CHECK(!wrong.is<MouseButtonEvent>());
+  }
+
+  SECTION("MouseMotionEvent")
+  {
+    const auto motion = create_event(SDL_MOUSEMOTION);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(motion.is<MouseMotionEvent>());
+    CHECK(!wrong.is<MouseButtonEvent>());
+  }
+
+  SECTION("MouseWheelEvent")
+  {
+    const auto wheel = create_event(SDL_MOUSEWHEEL);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(wheel.is<MouseWheelEvent>());
+    CHECK(!wrong.is<MouseWheelEvent>());
+  }
+
+  SECTION("MultiGestureEvent")
+  {
+    const auto gesture = create_event(SDL_MULTIGESTURE);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(gesture.is<MultiGestureEvent>());
+    CHECK(!wrong.is<MultiGestureEvent>());
+  }
+
+  SECTION("QuitEvent")
+  {
+    const auto quit = create_event(SDL_QUIT);
+    const auto wrong = create_event(SDL_KEYUP);
+
+    CHECK(quit.is<QuitEvent>());
+    CHECK(!wrong.is<QuitEvent>());
+  }
+
+  SECTION("TextEditingEvent")
+  {
+    const auto editing = create_event(SDL_TEXTEDITING);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(editing.is<TextEditingEvent>());
+    CHECK(!wrong.is<TextEditingEvent>());
+  }
+
+  SECTION("TextInputEvent")
+  {
+    const auto input = create_event(SDL_TEXTINPUT);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(input.is<TextInputEvent>());
+    CHECK(!wrong.is<TextInputEvent>());
+  }
+
+  SECTION("TouchFingerEvent")
+  {
+    const auto motion = create_event(SDL_FINGERMOTION);
+    const auto up = create_event(SDL_FINGERUP);
+    const auto down = create_event(SDL_FINGERDOWN);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(motion.is<TouchFingerEvent>());
+    CHECK(up.is<TouchFingerEvent>());
+    CHECK(down.is<TouchFingerEvent>());
+    CHECK(!wrong.is<TouchFingerEvent>());
+  }
+
+  SECTION("WindowEvent")
+  {
+    const auto window = create_event(SDL_WINDOWEVENT);
+    const auto wrong = create_event(SDL_QUIT);
+
+    CHECK(window.is<WindowEvent>());
+    CHECK(!wrong.is<WindowEvent>());
   }
 }
 
-TEST_CASE("Event::as_controller_button_event", "[Event]")
+TEST_CASE("Event::get", "[Event]")
 {
-  SECTION("SDL_CONTROLLERBUTTONUP")
+  SECTION("Const")
   {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_CONTROLLERBUTTONUP;
-    Event event{sdlEvent};
+    const auto quit = create_event(SDL_QUIT);
 
-    CHECK(event.as_controller_button_event());
+    CHECK_NOTHROW(quit.get<QuitEvent>());
+    CHECK_THROWS(quit.get<WindowEvent>());
   }
 
-  SECTION("SDL_CONTROLLERBUTTONDOWN")
+  SECTION("Non-const")
   {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_CONTROLLERBUTTONDOWN;
-    Event event{sdlEvent};
+    auto quit = create_event(SDL_QUIT);
 
-    CHECK(event.as_controller_button_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_FINGERDOWN;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_controller_button_event());
+    CHECK_NOTHROW(quit.get<QuitEvent>());
+    CHECK_THROWS(quit.get<WindowEvent>());
   }
 }
 
-TEST_CASE("Event::as_controller_device_event", "[Event]")
+TEST_CASE("Event::try_get", "[Event]")
 {
-  SECTION("SDL_CONTROLLERDEVICEADDED")
+  SECTION("Const")
   {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_CONTROLLERDEVICEADDED;
-    Event event{sdlEvent};
+    const auto event = create_event(SDL_MOUSEMOTION);
 
-    CHECK(event.as_controller_device_event());
+    CHECK(event.try_get<MouseMotionEvent>());
+    CHECK(!event.try_get<WindowEvent>());
   }
 
-  SECTION("SDL_CONTROLLERDEVICEREMOVED")
+  SECTION("Non-const")
   {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_CONTROLLERDEVICEREMOVED;
-    Event event{sdlEvent};
+    auto event = create_event(SDL_MULTIGESTURE);
 
-    CHECK(event.as_controller_device_event());
-  }
-
-  SECTION("SDL_CONTROLLERDEVICEREMAPPED")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_CONTROLLERDEVICEREMAPPED;
-    Event event{sdlEvent};
-
-    CHECK(event.as_controller_device_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_DOLLARGESTURE;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_controller_device_event());
-  }
-}
-
-TEST_CASE("Event::as_dollar_gesture_event", "[Event]")
-{
-  SECTION("SDL_DOLLARGESTURE")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_DOLLARGESTURE;
-    Event event{sdlEvent};
-
-    CHECK(event.as_dollar_gesture_event());
-  }
-
-  SECTION("SDL_DOLLARRECORD")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_DOLLARRECORD;
-    Event event{sdlEvent};
-
-    CHECK(event.as_dollar_gesture_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_WINDOWEVENT;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_dollar_gesture_event());
-  }
-}
-
-TEST_CASE("Event::as_drop_event", "[Event]")
-{
-  SECTION("SDL_DROPBEGIN")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_DROPBEGIN;
-    sdlEvent.drop.file = nullptr;
-    Event event{sdlEvent};
-
-    CHECK(event.as_drop_event());
-  }
-
-  SECTION("SDL_DROPCOMPLETE")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_DROPCOMPLETE;
-    sdlEvent.drop.file = nullptr;
-    Event event{sdlEvent};
-
-    CHECK(event.as_drop_event());
-  }
-
-  SECTION("SDL_DROPFILE")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_DROPFILE;
-    sdlEvent.drop.file = nullptr;
-    Event event{sdlEvent};
-
-    CHECK(event.as_drop_event());
-  }
-
-  SECTION("SDL_DROPTEXT")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_DROPTEXT;
-    sdlEvent.drop.file = nullptr;
-    Event event{sdlEvent};
-
-    CHECK(event.as_drop_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_MOUSEWHEEL;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_drop_event());
-  }
-}
-
-TEST_CASE("Event::as_joy_axis_event", "[Event]")
-{
-  SECTION("SDL_JOYAXISMOTION")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_JOYAXISMOTION;
-    Event event{sdlEvent};
-
-    CHECK(event.as_joy_axis_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_FINGERUP;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_joy_axis_event());
-  }
-}
-
-TEST_CASE("Event::as_joy_ball_event", "[Event]")
-{
-  SECTION("SDL_JOYBALLMOTION")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_JOYBALLMOTION;
-    Event event{sdlEvent};
-
-    CHECK(event.as_joy_ball_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_WINDOWEVENT;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_joy_ball_event());
-  }
-}
-
-TEST_CASE("Event::as_joy_button_event", "[Event]")
-{
-  SECTION("SDL_JOYBUTTONUP")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_JOYBUTTONUP;
-    Event event{sdlEvent};
-
-    CHECK(event.as_joy_button_event());
-  }
-
-  SECTION("SDL_JOYBUTTONDOWN")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_JOYBUTTONDOWN;
-    Event event{sdlEvent};
-
-    CHECK(event.as_joy_button_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_KEYMAPCHANGED;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_joy_button_event());
-  }
-}
-
-TEST_CASE("Event::as_joy_device_event", "[Event]")
-{
-  SECTION("SDL_JOYDEVICEADDED")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_JOYDEVICEADDED;
-    Event event{sdlEvent};
-
-    CHECK(event.as_joy_device_event());
-  }
-
-  SECTION("SDL_JOYDEVICEREMOVED")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_JOYDEVICEREMOVED;
-    Event event{sdlEvent};
-
-    CHECK(event.as_joy_device_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_MOUSEMOTION;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_joy_device_event());
-  }
-}
-
-TEST_CASE("Event::as_joy_hat_event", "[Event]")
-{
-  SECTION("SDL_JOYHATMOTION")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_JOYHATMOTION;
-    Event event{sdlEvent};
-
-    CHECK(event.as_joy_hat_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_DOLLARGESTURE;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_joy_hat_event());
-  }
-}
-
-TEST_CASE("Event::as_keyboard_event", "[Event]")
-{
-  SECTION("SDL_KEYUP")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_KEYUP;
-    Event event{sdlEvent};
-
-    CHECK(event.as_keyboard_event());
-  }
-
-  SECTION("SDL_KEYDOWN")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_KEYDOWN;
-    Event event{sdlEvent};
-
-    CHECK(event.as_keyboard_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_JOYBALLMOTION;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_keyboard_event());
-  }
-}
-
-TEST_CASE("Event::as_mouse_button_event", "[Event]")
-{
-  SECTION("SDL_MOUSEBUTTONUP")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_MOUSEBUTTONUP;
-    Event event{sdlEvent};
-
-    CHECK(event.as_mouse_button_event());
-  }
-
-  SECTION("SDL_MOUSEBUTTONDOWN")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_MOUSEBUTTONDOWN;
-    Event event{sdlEvent};
-
-    CHECK(event.as_mouse_button_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_SENSORUPDATE;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_mouse_button_event());
-  }
-}
-
-TEST_CASE("Event::as_mouse_motion_event", "[Event]")
-{
-  SECTION("SDL_MOUSEMOTION")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_MOUSEMOTION;
-    Event event{sdlEvent};
-
-    CHECK(event.as_mouse_motion_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_SYSWMEVENT;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_mouse_motion_event());
-  }
-}
-
-TEST_CASE("Event::as_mouse_wheel_event", "[Event]")
-{
-  SECTION("SDL_MOUSEWHEEL")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_MOUSEWHEEL;
-    Event event{sdlEvent};
-
-    CHECK(event.as_mouse_wheel_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_FINGERMOTION;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_mouse_wheel_event());
-  }
-}
-
-TEST_CASE("Event::as_multi_gesture_event", "[Event]")
-{
-  SECTION("SDL_MULTIGESTURE")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_MULTIGESTURE;
-    Event event{sdlEvent};
-
-    CHECK(event.as_multi_gesture_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_MOUSEBUTTONUP;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_multi_gesture_event());
-  }
-}
-
-TEST_CASE("Event::as_quit_event", "[Event]")
-{
-  SECTION("SDL_QUIT")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_QUIT;
-    Event event{sdlEvent};
-
-    CHECK(event.as_quit_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_APP_WILLENTERFOREGROUND;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_quit_event());
-  }
-}
-
-TEST_CASE("Event::as_text_editing_event", "[Event]")
-{
-  SECTION("SDL_TEXTEDITING")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_TEXTEDITING;
-    Event event{sdlEvent};
-
-    CHECK(event.as_text_editing_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_KEYMAPCHANGED;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_text_editing_event());
-  }
-}
-
-TEST_CASE("Event::as_text_input_event", "[Event]")
-{
-  SECTION("SDL_TEXTINPUT")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_TEXTINPUT;
-    Event event{sdlEvent};
-
-    CHECK(event.as_text_input_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_CONTROLLERBUTTONUP;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_text_input_event());
-  }
-}
-
-TEST_CASE("Event::as_touch_finger_event", "[Event]")
-{
-  SECTION("SDL_FINGERMOTION")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_FINGERMOTION;
-    Event event{sdlEvent};
-
-    CHECK(event.as_touch_finger_event());
-  }
-
-  SECTION("SDL_FINGERDOWN")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_FINGERDOWN;
-    Event event{sdlEvent};
-
-    CHECK(event.as_touch_finger_event());
-  }
-
-  SECTION("SDL_FINGERUP")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_FINGERUP;
-    Event event{sdlEvent};
-
-    CHECK(event.as_touch_finger_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_DISPLAYEVENT;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_touch_finger_event());
-  }
-}
-
-TEST_CASE("Event::as_window_event", "[Event]")
-{
-  SECTION("SDL_WINDOWEVENT")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_WINDOWEVENT;
-    Event event{sdlEvent};
-
-    CHECK(event.as_window_event());
-  }
-
-  SECTION("Wrong type")
-  {
-    SDL_Event sdlEvent;
-    sdlEvent.type = SDL_AUDIODEVICEADDED;
-    Event event{sdlEvent};
-
-    CHECK(!event.as_window_event());
+    CHECK(event.try_get<MultiGestureEvent>());
+    CHECK(!event.try_get<JoyHatEvent>());
   }
 }

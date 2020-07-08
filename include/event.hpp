@@ -41,6 +41,7 @@
 
 #include <type_traits>
 #include <utility>
+#include <variant>
 
 #include "centurion_api.hpp"
 #include "centurion_utils.hpp"
@@ -56,6 +57,33 @@
  * @namespace centurion::event
  *
  * @brief Contains the event components.
+ *
+ * @par Typical usage
+ * The idiomatic usage of the event API is provided in the following example.
+ * @code{.cpp}
+ *   #include <centurion_as_ctn.hpp>
+ *   #include <event.hpp>
+ *
+ *   using namespace ctn::event;
+ *
+ *   void run()
+ *   {
+ *     bool running = true;
+ *     Event event;
+ *
+ *     while (running) {
+ *       while (event.poll()) {
+ *         if (event.is<QuitEvent>()) {
+ *           running = false;
+ *           break;
+ *         }
+ *         // handle more events...
+ *       }
+ *
+ *       // handle miscellaneous logic and rendering here
+ *     }
+ *   }
+ * @endcode
  *
  * @todo Consider removing the event namespace.
  *
@@ -187,7 +215,7 @@ template <typename T, typename E>
          std::is_nothrow_copy_assignable_v<T> &&
          std::is_nothrow_move_constructible_v<T> &&
          std::is_nothrow_move_assignable_v<T> &&
-         std::is_nothrow_constructible_v<T, E> && !std::is_final_v<T>;
+         std::is_nothrow_constructible_v<T, E> && std::is_final_v<T>;
 }
 
 /**
@@ -202,7 +230,7 @@ template <typename T, typename E>
  *
  * @headerfile event.hpp
  */
-class AudioDeviceEvent : public CommonEvent<SDL_AudioDeviceEvent> {
+class AudioDeviceEvent final : public CommonEvent<SDL_AudioDeviceEvent> {
  public:
   /**
    * @brief Creates a default-initialized audio device event.
@@ -290,7 +318,7 @@ static_assert(validate_event<AudioDeviceEvent, SDL_AudioDeviceEvent>());
  *
  * @headerfile event.hpp
  */
-class ControllerAxisEvent : public CommonEvent<SDL_ControllerAxisEvent> {
+class ControllerAxisEvent final : public CommonEvent<SDL_ControllerAxisEvent> {
  public:
   /**
    * @brief Creates a default-initialized controller axis event.
@@ -389,7 +417,8 @@ static_assert(validate_event<ControllerAxisEvent, SDL_ControllerAxisEvent>());
  *
  * @headerfile event.hpp
  */
-class ControllerButtonEvent : public CommonEvent<SDL_ControllerButtonEvent> {
+class ControllerButtonEvent final
+    : public CommonEvent<SDL_ControllerButtonEvent> {
  public:
   /**
    * @brief Creates a default-initialized controller button event.
@@ -487,7 +516,8 @@ static_assert(
  *
  * @headerfile event.hpp
  */
-class ControllerDeviceEvent : public CommonEvent<SDL_ControllerDeviceEvent> {
+class ControllerDeviceEvent final
+    : public CommonEvent<SDL_ControllerDeviceEvent> {
  public:
   /**
    * @brief Creates a default-initialized controller device event.
@@ -551,7 +581,7 @@ static_assert(
  *
  * @headerfile event.hpp
  */
-class DollarGestureEvent : public CommonEvent<SDL_DollarGestureEvent> {
+class DollarGestureEvent final : public CommonEvent<SDL_DollarGestureEvent> {
  public:
   /**
    * @brief Creates a default-initialized dollar gesture event.
@@ -712,7 +742,7 @@ static_assert(validate_event<DollarGestureEvent, SDL_DollarGestureEvent>());
  *
  * @headerfile event.hpp
  */
-class DropEvent : public CommonEvent<SDL_DropEvent> {
+class DropEvent final : public CommonEvent<SDL_DropEvent> {
  public:
   /**
    * @brief Creates a default-initialized drop event.
@@ -862,7 +892,7 @@ static_assert(validate_event<DropEvent, SDL_DropEvent>());
  *
  * @headerfile event.hpp
  */
-class JoyAxisEvent : public CommonEvent<SDL_JoyAxisEvent> {
+class JoyAxisEvent final : public CommonEvent<SDL_JoyAxisEvent> {
  public:
   /**
    * @brief Creates a default-initialized joy axis event.
@@ -957,7 +987,7 @@ static_assert(validate_event<JoyAxisEvent, SDL_JoyAxisEvent>());
  *
  * @headerfile event.hpp
  */
-class JoyBallEvent : public CommonEvent<SDL_JoyBallEvent> {
+class JoyBallEvent final : public CommonEvent<SDL_JoyBallEvent> {
  public:
   /**
    * @brief Creates a default-initialized joy ball event.
@@ -1078,7 +1108,7 @@ static_assert(validate_event<JoyBallEvent, SDL_JoyBallEvent>());
  *
  * @headerfile event.hpp
  */
-class JoyButtonEvent : public CommonEvent<SDL_JoyButtonEvent> {
+class JoyButtonEvent final : public CommonEvent<SDL_JoyButtonEvent> {
  public:
   /**
    * @brief Creates a default-initialized JoyButtonEvent.
@@ -1174,7 +1204,7 @@ static_assert(validate_event<JoyButtonEvent, SDL_JoyButtonEvent>());
  *
  * @headerfile event.hpp
  */
-class JoyDeviceEvent : public CommonEvent<SDL_JoyDeviceEvent> {
+class JoyDeviceEvent final : public CommonEvent<SDL_JoyDeviceEvent> {
  public:
   /**
    * @brief Creates a default-initialized JoyDeviceEvent.
@@ -1253,7 +1283,7 @@ enum class JoyHatPosition {
  *
  * @headerfile event.hpp
  */
-class JoyHatEvent : public CommonEvent<SDL_JoyHatEvent> {
+class JoyHatEvent final : public CommonEvent<SDL_JoyHatEvent> {
  public:
   /**
    * @brief Creates a default-initialized joy hat event.
@@ -1328,7 +1358,7 @@ static_assert(validate_event<JoyHatEvent, SDL_JoyHatEvent>());
  *
  * @headerfile event.hpp
  */
-class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
+class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
  public:
   /**
    * @brief Creates a default-initialized keyboard event.
@@ -1536,7 +1566,7 @@ static_assert(validate_event<KeyboardEvent, SDL_KeyboardEvent>());
  *
  * @headerfile event.hpp
  */
-class MouseButtonEvent : public CommonEvent<SDL_MouseButtonEvent> {
+class MouseButtonEvent final : public CommonEvent<SDL_MouseButtonEvent> {
  public:
   /**
    * @brief Creates a default-initialized `MouseButtonEvent`.
@@ -1711,7 +1741,7 @@ static_assert(validate_event<MouseButtonEvent, SDL_MouseButtonEvent>());
  *
  * @headerfile event.hpp
  */
-class MouseMotionEvent : public CommonEvent<SDL_MouseMotionEvent> {
+class MouseMotionEvent final : public CommonEvent<SDL_MouseMotionEvent> {
  public:
   /**
    * @brief Creates a default-initialized MouseMotionEvent.
@@ -1972,7 +2002,7 @@ auto operator!=(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
  *
  * @headerfile event.hpp
  */
-class MouseWheelEvent : public CommonEvent<SDL_MouseWheelEvent> {
+class MouseWheelEvent final : public CommonEvent<SDL_MouseWheelEvent> {
  public:
   /**
    * @brief Creates a default-initialized MouseWheelEvent.
@@ -2121,7 +2151,7 @@ static_assert(validate_event<MouseWheelEvent, SDL_MouseWheelEvent>());
  *
  * @headerfile event.hpp
  */
-class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
+class MultiGestureEvent final : public CommonEvent<SDL_MultiGestureEvent> {
  public:
   /**
    * @brief Creates a default-initialized `MultiGestureEvent`.
@@ -2292,7 +2322,7 @@ static_assert(validate_event<MultiGestureEvent, SDL_MultiGestureEvent>());
  *
  * @headerfile event.hpp
  */
-class QuitEvent : public CommonEvent<SDL_QuitEvent> {
+class QuitEvent final : public CommonEvent<SDL_QuitEvent> {
  public:
   /**
    * @brief Creates a default-initialized quit event.
@@ -2328,7 +2358,7 @@ static_assert(validate_event<QuitEvent, SDL_QuitEvent>());
  *
  * @headerfile event.hpp
  */
-class TextEditingEvent : public CommonEvent<SDL_TextEditingEvent> {
+class TextEditingEvent final : public CommonEvent<SDL_TextEditingEvent> {
  public:
   /**
    * @brief Creates a default-initialized `TextEditingEvent`.
@@ -2441,7 +2471,7 @@ static_assert(validate_event<TextEditingEvent, SDL_TextEditingEvent>());
  *
  * @headerfile event.hpp
  */
-class TextInputEvent : public CommonEvent<SDL_TextInputEvent> {
+class TextInputEvent final : public CommonEvent<SDL_TextInputEvent> {
  public:
   /**
    * @brief Creates a default-initialized TextInputEvent.
@@ -2505,7 +2535,7 @@ static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>());
  *
  * @headerfile event.hpp
  */
-class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
+class TouchFingerEvent final : public CommonEvent<SDL_TouchFingerEvent> {
  public:
   /**
    * @brief Creates a default-initialized touch finger event.
@@ -2912,7 +2942,7 @@ enum class WindowEventID {
  *
  * @headerfile event.hpp
  */
-class WindowEvent : public CommonEvent<SDL_WindowEvent> {
+class WindowEvent final : public CommonEvent<SDL_WindowEvent> {
  public:
   /**
    * @brief Creates a default-initialized window event.
@@ -3091,248 +3121,174 @@ class Event final {
   auto type() const noexcept -> EventType;
 
   /**
-   * @brief Returns an `AudioDeviceEvent` or `nothing` if the type of the event
-   * doesn't match.
+   * @brief Indicates whether or not the event is of a particular type.
    *
-   * @return an `AudioDeviceEvent` or `nothing`.
+   * @details This method is useful for checking the event type before
+   * calling `get<T>`, to avoid exceptions being thrown.
    *
-   * @since 4.0.0
+   * @tparam T the event type that will be checked, e.g. `WindowEvent`.
+   *
+   * @return `true` if the event is of the specified type; `false` otherwise.
+   *
+   * @see `get`
+   * @see `try_get`
+   *
+   * @since 5.0.0
    */
-  CENTURION_QUERY
-  auto as_audio_device_event() const noexcept -> Optional<AudioDeviceEvent>;
-
-  /**
-   * @brief Returns a `ControllerAxisEvent` or `nothing` if the type of the
-   * event doesn't match.
-   *
-   * @return a `ControllerAxisEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_controller_axis_event() const noexcept
-      -> Optional<ControllerAxisEvent>;
-
-  /**
-   * @brief Returns a `ControllerButtonEvent` or `nothing` if the type of the
-   * event doesn't match.
-   *
-   * @return a ControllerButtonEvent or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_controller_button_event() const noexcept
-      -> Optional<ControllerButtonEvent>;
-
-  /**
-   * @brief Returns a `ControllerDeviceEvent` or `nothing` if the type of the
-   * event doesn't match.
-   *
-   * @return a `ControllerDeviceEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_controller_device_event() const noexcept
-      -> Optional<ControllerDeviceEvent>;
-
-  /**
-   * @brief Returns a `DollarGestureEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `DollarGestureEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_dollar_gesture_event() const noexcept -> Optional<DollarGestureEvent>;
-
-  /**
-   * @brief Returns a `DropEvent` or `nothing` if the type of the event doesn't
-   * match.
-   *
-   * @return a `DropEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_drop_event() const noexcept -> Optional<DropEvent>;
-
-  /**
-   * @brief Returns a `JoyAxisEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `JoyAxisEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_joy_axis_event() const noexcept -> Optional<JoyAxisEvent>;
-
-  /**
-   * @brief Returns a `JoyBallEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `JoyBallEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_joy_ball_event() const noexcept -> Optional<JoyBallEvent>;
-
-  /**
-   * @brief Returns a `JoyButtonEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `JoyButtonEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_joy_button_event() const noexcept -> Optional<JoyButtonEvent>;
-
-  /**
-   * @brief Returns a `JoyDeviceEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `JoyDeviceEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_joy_device_event() const noexcept -> Optional<JoyDeviceEvent>;
-
-  /**
-   * @brief Returns a `JoyHatEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `JoyHatEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_joy_hat_event() const noexcept -> Optional<JoyHatEvent>;
-
-  /**
-   * @brief Returns a `KeyboardEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `KeyboardEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_keyboard_event() const noexcept -> Optional<KeyboardEvent>;
-
-  /**
-   * @brief Returns a `MouseButtonEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `MouseButtonEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_mouse_button_event() const noexcept -> Optional<MouseButtonEvent>;
-
-  /**
-   * @brief Returns a `MouseMotionEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `MouseMotionEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_mouse_motion_event() const noexcept -> Optional<MouseMotionEvent>;
-
-  /**
-   * @brief Returns a `MouseWheelEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `MouseWheelEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_mouse_wheel_event() const noexcept -> Optional<MouseWheelEvent>;
-
-  /**
-   * @brief Returns a `MultiGestureEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `MultiGestureEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_multi_gesture_event() const noexcept -> Optional<MultiGestureEvent>;
-
-  /**
-   * Returns a QuitEvent or `nothing` if the type of the event doesn't
-   * match.
-   *
-   * @return a QuitEvent or `nothing`.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_quit_event() const noexcept -> Optional<QuitEvent>;
-
-  /**
-   * @brief Returns a `TextEditingEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `TextEditingEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_text_editing_event() const noexcept -> Optional<TextEditingEvent>;
-
-  /**
-   * @brief Returns a `TextInputEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `TextInputEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_text_input_event() const noexcept -> Optional<TextInputEvent>;
-
-  /**
-   * @brief Returns a `TouchFingerEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a `TouchFingerEvent` or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_touch_finger_event() const noexcept -> Optional<TouchFingerEvent>;
-
-  /**
-   * @brief Returns a `WindowEvent` or `nothing` if the type of the event
-   * doesn't match.
-   *
-   * @return a WindowEvent or `nothing`.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto as_window_event() const noexcept -> Optional<WindowEvent>;
-
-  [[nodiscard]] auto get() noexcept -> SDL_Event& { return m_event; }
-
-  [[nodiscard]] auto get() const noexcept -> const SDL_Event&
+  template <typename T>
+  [[nodiscard]] auto is() const noexcept -> bool
   {
-    return m_event;
+    return std::holds_alternative<T>(m_data);
+  }
+
+  /**
+   * @brief Attempts to return the internal event instance.
+   *
+   * @par Examples
+   * If you're certain about the internal type, then you could use this
+   * method to simply extract the internal event.
+   * @code{.cpp}
+   *   Event event; // assume that we know that this is a window event
+   *   auto& windowEvent = event.get<WindowEvent>();
+   * @endcode
+   *
+   * @note This method throws if the internal event isn't of the specified
+   * type! You might want to make sure that the internal type is `T` with the
+   * `is()` method before calling this method, or use `try_get()`.
+   *
+   * @tparam T the event type to obtain.
+   *
+   * @return a reference to the internal event type.
+   *
+   * @throws std::bad_variant_access if the internal event type isn't `T`.
+   *
+   * @see `is`
+   * @see `try_get`
+   *
+   * @since 5.0.0
+   */
+  template <typename T>
+  [[nodiscard]] auto get() -> T&
+  {
+    return std::get<T>(m_data);
+  }
+
+  /**
+   * @copydoc get()
+   */
+  template <typename T>
+  [[nodiscard]] auto get() const -> const T&
+  {
+    return std::get<T>(m_data);
+  }
+
+  /**
+   * @brief Attempts to return the internal event instance.
+   *
+   * @details This method simply returns `nullptr` if the internal event
+   * doesn't match the specified type.
+   *
+   * @par Examples
+   * This method is useful when used with if-with-initializer statements.
+   * @code{.cpp}
+   *   Event event;
+   *   while (event.poll()) {
+   *     if (auto* windowEvent = event.try_get<WindowEvent>(); windowEvent) {
+   *       // safe to use windowEvent
+   *     }
+   *   }
+   * @endcode
+   *
+   * @tparam T the event type to obtain.
+   *
+   * @return a pointer to the internal event type, might be `nullptr`.
+   *
+   * @see `is`
+   * @see `get`
+   *
+   * @since 5.0.0
+   */
+  template <typename T>
+  [[nodiscard]] auto try_get() noexcept -> T*
+  {
+    return std::get_if<T>(&m_data);
+  }
+
+  /**
+   * @copybrief try_get
+   *
+   * @details This method simply returns `nullptr` if the internal event
+   * doesn't match the specified type.
+   *
+   * @par Examples
+   * This method is useful when used with if-with-initializer statements.
+   * @code{.cpp}
+   *   const Event event;
+   *   while (event.poll()) {
+   *     if (const auto* windowEvent = event.try_get<WindowEvent>();
+   *         windowEvent) {
+   *       // safe to use windowEvent
+   *     }
+   *   }
+   * @endcode
+   *
+   * @tparam T the event type to obtain.
+   *
+   * @return a pointer to the internal event type, might be `nullptr`.
+   *
+   * @see `is`
+   * @see `get`
+   *
+   * @since 5.0.0
+   */
+  template <typename T>
+  [[nodiscard]] auto try_get() const noexcept -> const T*
+  {
+    return std::get_if<T>(&m_data);
+  }
+
+  /**
+   * @brief Indicates whether or not there is an internal event stored in the
+   * instance.
+   *
+   * @return `true` if there is no internal event; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto empty() const noexcept -> bool
+  {
+    return is<std::monostate>();
   }
 
  private:
   SDL_Event m_event;
-  // TODO consider std::variant
+
+  // behold, the beast!
+  std::variant<std::monostate,
+               AudioDeviceEvent,
+               ControllerAxisEvent,
+               ControllerButtonEvent,
+               ControllerDeviceEvent,
+               DollarGestureEvent,
+               DropEvent,
+               JoyAxisEvent,
+               JoyBallEvent,
+               JoyButtonEvent,
+               JoyDeviceEvent,
+               JoyHatEvent,
+               KeyboardEvent,
+               MouseButtonEvent,
+               MouseMotionEvent,
+               MouseWheelEvent,
+               MultiGestureEvent,
+               QuitEvent,
+               TextEditingEvent,
+               TextInputEvent,
+               TouchFingerEvent,
+               WindowEvent>
+      m_data;
+
+  void update_data() noexcept;
 };
 
 }  // namespace centurion::event

@@ -2278,16 +2278,21 @@ class MultiGestureEvent : public CommonEvent<SDL_MultiGestureEvent> {
 static_assert(validate_event<MultiGestureEvent, SDL_MultiGestureEvent>());
 
 /**
- * The QuitEvent class represents the event of the user wanting to close the
- * application, usually by pressing the "X"-button on the window frame.
+ * @class QuitEvent
  *
- * @see SDL_QuitEvent
+ * @brief Represents the event of the user wanting to close the application,
+ * usually by pressing the "X"-button on the window frame.
+ *
+ * @see `SDL_QuitEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class QuitEvent : public CommonEvent<SDL_QuitEvent> {
  public:
   /**
-   * Creates a default-initialized quit event.
+   * @brief Creates a default-initialized quit event.
    *
    * @since 4.0.0
    */
@@ -2295,22 +2300,14 @@ class QuitEvent : public CommonEvent<SDL_QuitEvent> {
   QuitEvent() noexcept;
 
   /**
-   * Creates a quit event based on the supplied SDL event.
+   * @brief Creates a quit event based on the supplied SDL event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   explicit QuitEvent(const SDL_QuitEvent& event) noexcept;
-
-  /**
-   * Creates a quit event based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  explicit QuitEvent(SDL_QuitEvent&& event) noexcept;
 };
 
 static_assert(validate_event<QuitEvent, SDL_QuitEvent>());

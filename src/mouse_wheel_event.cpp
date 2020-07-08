@@ -1,33 +1,34 @@
 #ifndef CENTURION_MOUSE_WHEEL_EVENT_SOURCE
 #define CENTURION_MOUSE_WHEEL_EVENT_SOURCE
 
-#include <utility>
-
 #include "event.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
-bool operator==(MouseWheelDirection lhs, SDL_MouseWheelDirection rhs) noexcept
+auto operator==(MouseWheelDirection lhs, SDL_MouseWheelDirection rhs) noexcept
+    -> bool
 {
   return lhs == static_cast<MouseWheelDirection>(rhs);
 }
 
 CENTURION_DEF
-bool operator==(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
+auto operator==(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
+    -> bool
 {
-  return static_cast<MouseWheelDirection>(lhs) == rhs;
+  return rhs == lhs;
 }
 
 CENTURION_DEF
-bool operator!=(MouseWheelDirection lhs, SDL_MouseWheelDirection rhs) noexcept
+auto operator!=(MouseWheelDirection lhs, SDL_MouseWheelDirection rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 CENTURION_DEF
-bool operator!=(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
+auto operator!=(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -39,11 +40,6 @@ MouseWheelEvent::MouseWheelEvent() noexcept : CommonEvent{}
 CENTURION_DEF
 MouseWheelEvent::MouseWheelEvent(const SDL_MouseWheelEvent& event) noexcept
     : CommonEvent{event}
-{}
-
-CENTURION_DEF
-MouseWheelEvent::MouseWheelEvent(SDL_MouseWheelEvent&& event) noexcept
-    : CommonEvent{std::move(event)}
 {}
 
 CENTURION_DEF
@@ -77,36 +73,35 @@ void MouseWheelEvent::set_direction(MouseWheelDirection direction) noexcept
 }
 
 CENTURION_DEF
-Uint32 MouseWheelEvent::window_id() const noexcept
+auto MouseWheelEvent::window_id() const noexcept -> Uint32
 {
   return m_event.windowID;
 }
 
 CENTURION_DEF
-Uint32 MouseWheelEvent::which() const noexcept
+auto MouseWheelEvent::which() const noexcept -> Uint32
 {
   return m_event.which;
 }
 
 CENTURION_DEF
-Sint32 MouseWheelEvent::x_scroll() const noexcept
+auto MouseWheelEvent::x_scroll() const noexcept -> Sint32
 {
   return m_event.x;
 }
 
 CENTURION_DEF
-Sint32 MouseWheelEvent::y_scroll() const noexcept
+auto MouseWheelEvent::y_scroll() const noexcept -> Sint32
 {
   return m_event.y;
 }
 
 CENTURION_DEF
-MouseWheelDirection MouseWheelEvent::direction() const noexcept
+auto MouseWheelEvent::direction() const noexcept -> MouseWheelDirection
 {
   return static_cast<MouseWheelDirection>(m_event.direction);
 }
 
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_MOUSE_WHEEL_EVENT_SOURCE

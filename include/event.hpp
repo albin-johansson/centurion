@@ -1874,78 +1874,81 @@ class MouseMotionEvent : public CommonEvent<SDL_MouseMotionEvent> {
 static_assert(validate_event<MouseMotionEvent, SDL_MouseMotionEvent>());
 
 /**
- * The MouseWheelDirection enum class mirrors the values of the
- * SDL_MouseWheelDirection enum.
+ * @enum MouseWheelDirection
  *
- * @see SDL_MouseWheelDirection
+ * @brief Mirrors the the `SDL_MouseWheelDirection` enum.
+ *
+ * @see `SDL_MouseWheelDirection`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 enum class MouseWheelDirection {
-  Normal = SDL_MOUSEWHEEL_NORMAL,
-  Flipped = SDL_MOUSEWHEEL_FLIPPED
+  Normal = SDL_MOUSEWHEEL_NORMAL, /**< The scroll direction is normal */
+
+  Flipped = SDL_MOUSEWHEEL_FLIPPED /**< The scroll direction is flipped /
+                                    * natural */
 };
 
 /**
- * Indicates whether or not the two mouse wheel direction values are the same.
+ * @brief Indicates whether or not two mouse wheel direction values are equal.
  *
- * @param lhs the left-hand side Centurion mouse wheel direction.
- * @param rhs the right-hand side SDL mouse wheel direction.
- * @return `true` if the two mouse wheel direction values are the same; false
- * otherwise.
+ * @param lhs the left-hand side mouse wheel direction value.
+ * @param rhs the right-hand side mouse wheel direction value.
+ *
+ * @return `true` if the two values are equal; `false` otherwise.
+ *
  * @since 4.0.0
  */
-CENTURION_QUERY bool operator==(MouseWheelDirection lhs,
-                                SDL_MouseWheelDirection rhs) noexcept;
+CENTURION_QUERY
+auto operator==(MouseWheelDirection lhs, SDL_MouseWheelDirection rhs) noexcept
+    -> bool;
 
 /**
- * Indicates whether or not the two mouse wheel direction values are the same.
+ * @copydoc operator==(MouseWheelDirection, SDL_MouseWheelDirection)
+ */
+CENTURION_QUERY
+auto operator==(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
+    -> bool;
+
+/**
+ * @brief Indicates whether or not two mouse wheel direction values aren't
+ * equal.
  *
- * @param lhs the left-hand side SDL mouse wheel direction.
- * @param rhs the right-hand side Centurion mouse wheel direction.
- * @return `true` if the two mouse wheel direction values are the same; false
- * otherwise.
+ * @param lhs the left-hand side mouse wheel direction value.
+ * @param rhs the right-hand side mouse wheel direction value.
+ *
+ * @return `true` if the two values aren't equal; `false` otherwise.
+ *
  * @since 4.0.0
  */
-CENTURION_QUERY bool operator==(SDL_MouseWheelDirection lhs,
-                                MouseWheelDirection rhs) noexcept;
+CENTURION_QUERY
+auto operator!=(MouseWheelDirection lhs, SDL_MouseWheelDirection rhs) noexcept
+    -> bool;
 
 /**
- * Indicates whether or not the two mouse wheel direction values aren't the
- * same.
- *
- * @param lhs the left-hand side Centurion mouse wheel direction.
- * @param rhs the right-hand side SDL mouse wheel direction.
- * @return `true` if the two mouse wheel direction values aren't the same; false
- * otherwise.
- * @since 4.0.0
+ * @copydoc operator!=(MouseWheelDirection, SDL_MouseWheelDirection)
  */
-CENTURION_QUERY bool operator!=(MouseWheelDirection lhs,
-                                SDL_MouseWheelDirection rhs) noexcept;
+CENTURION_QUERY
+auto operator!=(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
+    -> bool;
 
 /**
- * Indicates whether or not the two mouse wheel direction values aren't the
- * same.
+ * @class MouseWheelEvent
  *
- * @param lhs the left-hand side SDL mouse wheel direction.
- * @param rhs the right-hand side Centurion mouse wheel direction.
- * @return `true` if the two mouse wheel direction values aren't the same; false
- * otherwise.
- * @since 4.0.0
- */
-CENTURION_QUERY bool operator!=(SDL_MouseWheelDirection lhs,
-                                MouseWheelDirection rhs) noexcept;
-
-/**
- * The MouseWheelEvent class represents events triggered when a user moves
- * the mouse wheel.
+ * @brief Represents events triggered when a user moves the mouse wheel.
  *
- * @see SDL_MouseWheelEvent
+ * @see `SDL_MouseWheelEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class MouseWheelEvent : public CommonEvent<SDL_MouseWheelEvent> {
  public:
   /**
-   * Creates a default-initialized MouseWheelEvent.
+   * @brief Creates a default-initialized MouseWheelEvent.
    *
    * @since 4.0.0
    */
@@ -1953,117 +1956,125 @@ class MouseWheelEvent : public CommonEvent<SDL_MouseWheelEvent> {
   MouseWheelEvent() noexcept;
 
   /**
-   * Creates a MouseMotionEvent that is based on the supplied SDL event.
+   * @brief Creates a `MouseMotionEvent` that is based on the supplied SDL
+   * event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   MouseWheelEvent(const SDL_MouseWheelEvent& event) noexcept;
 
   /**
-   * Creates a MouseMotionEvent that is based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  MouseWheelEvent(SDL_MouseWheelEvent&& event) noexcept;
-
-  /**
-   * Sets the window ID associated with the event.
+   * @brief Sets the window ID associated with the event.
    *
    * @param id the window ID associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_window_id(Uint32 id) noexcept;
 
   /**
-   * Sets the mouse instance ID, or SDL_TOUCH_MOUSEID if the event was
-   * triggered by a touch input device.
+   * @brief Sets the mouse instance ID.
    *
-   * @param which the mouse instance ID, or SDL_TOUCH_MOUSEID.
+   * @param which the mouse instance ID.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_which(Uint32 which) noexcept;
 
   /**
-   * Returns the horizontally scrolled distance, a positive value indicates that
-   * the user scrolled to the right and a negative value indicates that the
-   * user scrolled to the left.
+   * @brief Sets the horizontally scrolled distance.
+   *
+   * @details A positive value indicates that the user scrolled to the right
+   * and a negative value indicates that the user scrolled to the left.
    *
    * @param xScroll the horizontally scrolled distance.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_x_scroll(Sint32 xScroll) noexcept;
 
   /**
-   * Returns the vertically scrolled distance, a positive value indicates that
-   * the user scrolled away from the user and a negative value indicates that
-   * the user scrolled towards the user.
+   * @brief Sets the vertically scrolled distance.
+   *
+   * @copydetails set_x_scroll(Sint32)
    *
    * @param yScroll the vertically scrolled distance.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_y_scroll(Sint32 yScroll) noexcept;
 
   /**
-   * Sets the mouse wheel direction mode associated with the event.
+   * @brief Sets the mouse wheel direction mode associated with the event.
    *
    * @param direction the mouse wheel direction mode associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_direction(MouseWheelDirection direction) noexcept;
 
   /**
-   * Returns the ID of the window associated with the event.
+   * @brief Returns the ID of the window associated with the event.
    *
    * @return the ID of the window associated with the event.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Uint32 window_id() const noexcept;
-
-  /**
-   * Returns the mouse instance ID, or SDL_TOUCH_MOUSEID if the event was
-   * triggered by a touch input device.
    *
-   * @return the mouse instance ID, or SDL_TOUCH_MOUSEID.
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint32 which() const noexcept;
+  CENTURION_QUERY
+  auto window_id() const noexcept -> Uint32;
 
   /**
-   * Returns the horizontally scrolled distance, a positive value indicates that
-   * the user scrolled to the right and a negative value indicates that the
-   * user scrolled to the left.
+   * @brief Returns the mouse instance ID, or `SDL_TOUCH_MOUSEID` if the event
+   * was triggered by a touch input device.
+   *
+   * @return the mouse instance ID, or `SDL_TOUCH_MOUSEID`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto which() const noexcept -> Uint32;
+
+  /**
+   * @brief Returns the horizontally scrolled distance
+   *
+   * @copydetails set_x_scroll(Sint32)
    *
    * @return the horizontally scrolled distance.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint32 x_scroll() const noexcept;
+  CENTURION_QUERY
+  auto x_scroll() const noexcept -> Sint32;
 
   /**
-   * Returns the vertically scrolled distance, a positive value indicates that
-   * the user scrolled away from the user and a negative value indicates that
-   * the user scrolled towards the user.
+   * @brief Returns the vertically scrolled distance.
+   *
+   * @copydetails set_x_scroll(Sint32)
    *
    * @return the vertically scrolled distance.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint32 y_scroll() const noexcept;
+  CENTURION_QUERY
+  auto y_scroll() const noexcept -> Sint32;
 
   /**
-   * Returns the mouse wheel direction mode associated with the event.
+   * @brief Returns the mouse wheel direction mode associated with the event.
    *
    * @return the mouse wheel direction mode associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY MouseWheelDirection direction() const noexcept;
+  CENTURION_QUERY
+  auto direction() const noexcept -> MouseWheelDirection;
 };
 
 static_assert(validate_event<MouseWheelEvent, SDL_MouseWheelEvent>());

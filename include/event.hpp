@@ -90,7 +90,7 @@ class CommonEvent {
    *
    * @since 4.0.0
    */
-  explicit CommonEvent(const T& event) : m_event{event} {}
+  CommonEvent(const T& event) : m_event{event} {}
 
   /**
    * @brief Creates a CommonEvent and moves the contents of the supplied event.
@@ -99,7 +99,7 @@ class CommonEvent {
    *
    * @since 4.0.0
    */
-  explicit CommonEvent(T&& event) : m_event{std::move(event)} {}
+  CommonEvent(T&& event) : m_event{std::move(event)} {}
 
   /**
    * @brief Default virtual destructor.
@@ -1346,7 +1346,7 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit KeyboardEvent(const SDL_KeyboardEvent& event) noexcept;
+  KeyboardEvent(const SDL_KeyboardEvent& event) noexcept;
 
   /**
    * @brief Sets the button state associated with a key.
@@ -2310,7 +2310,7 @@ class QuitEvent : public CommonEvent<SDL_QuitEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit QuitEvent(const SDL_QuitEvent& event) noexcept;
+  QuitEvent(const SDL_QuitEvent& event) noexcept;
 };
 
 static_assert(validate_event<QuitEvent, SDL_QuitEvent>());
@@ -2720,10 +2720,13 @@ class TouchFingerEvent : public CommonEvent<SDL_TouchFingerEvent> {
 static_assert(validate_event<TouchFingerEvent, SDL_TouchFingerEvent>());
 
 /**
+ * @enum WindowEventID
  *
- * The WindowEventID enum class mirrors the SDL_WindowEventID enum. Depending
- * on the event ID of a WindowEvent instance, the <code>data_1()</code> and
- * <code>data_2()</code> methods have special meanings.
+ * @brief Mirrors the `SDL_WindowEventID` enum.
+ *
+ * @details Depending on the event ID of a `WindowEvent` instance, the
+ * `WindowEvent::data_1()` and `WindowEvent::data_2()` methods have special
+ * meanings.
  *
  * <table style="width:100%">
  *   <tr>
@@ -2819,6 +2822,8 @@ static_assert(validate_event<TouchFingerEvent, SDL_TouchFingerEvent>());
  * </table>
  *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 enum class WindowEventID {
   None = SDL_WINDOWEVENT_NONE,
@@ -2841,63 +2846,76 @@ enum class WindowEventID {
 };
 
 /**
- * Indicates whether or not two window event ID values are the same.
+ * @brief Indicates whether or not two window event ID values are the same.
  *
- * @param eventId the Centurion window event ID.
- * @param sdlEventId the SDL window event ID.
+ * @param lhs the left-hand side window event ID value.
+ * @param rhs the right-hand side window event ID value.
+ *
  * @return `true` if the window event ID values are the same; `false` otherwise.
+ *
  * @since 4.0.0
  */
-CENTURION_QUERY bool operator==(WindowEventID eventId,
-                                SDL_WindowEventID sdlEventId) noexcept;
+[[nodiscard]] inline constexpr auto operator==(WindowEventID lhs,
+                                               SDL_WindowEventID rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_WindowEventID>(lhs) == rhs;
+}
 
 /**
- * Indicates whether or not two window event ID values are the same.
- *
- * @param eventId the SDL window event ID.
- * @param sdlEventId the Centurion window event ID.
- * @return `true` if the window event ID values are the same; `false` otherwise.
- * @since 4.0.0
+ * @copydoc operator==(WindowEventID, SDL_WindowEventID)
  */
-CENTURION_QUERY bool operator==(SDL_WindowEventID sdlEventId,
-                                WindowEventID eventId) noexcept;
+[[nodiscard]] inline constexpr auto operator==(SDL_WindowEventID lhs,
+                                               WindowEventID rhs) noexcept
+    -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * Indicates whether or not two window event ID values aren't the same.
+ * @brief Indicates whether or not two window event ID values aren't the same.
  *
- * @param eventId the Centurion window event ID.
- * @param sdlEventId the SDL window event ID.
+ * @param lhs the left-hand side window event ID value.
+ * @param rhs the right-hand side window event ID value.
+ *
  * @return `true` if the window event ID values aren't the same; `false`
  * otherwise.
+ *
  * @since 4.0.0
  */
-CENTURION_QUERY bool operator!=(WindowEventID eventId,
-                                SDL_WindowEventID sdlEventId) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(WindowEventID lhs,
+                                               SDL_WindowEventID rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * Indicates whether or not two window event ID values aren't the same.
- *
- * @param eventId the SDL window event ID.
- * @param sdlEventId the Centurion window event ID.
- * @return `true` if the window event ID values aren't the same; `false`
- * otherwise.
- * @since 4.0.0
+ * @copydoc operator!=(WindowEventID, SDL_WindowEventID)
  */
-CENTURION_QUERY bool operator!=(SDL_WindowEventID sdlEventId,
-                                WindowEventID eventId) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(SDL_WindowEventID lhs,
+                                               WindowEventID rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * The WindowEvent class represents an event that is associated with an
- * action related to a window. This class is a subclass of
- * BaseEvent&lt;SDL_WindowEvent&gt;.
+ * @class WindowEvent
  *
- * @see SDL_WindowEvent
+ * @brief Represents an event that is associated with an action related to a
+ * window.
+ *
+ * @see `SDL_WindowEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class WindowEvent : public CommonEvent<SDL_WindowEvent> {
  public:
   /**
-   * Creates a default-initialized window event.
+   * @brief Creates a default-initialized window event.
    *
    * @since 4.0.0
    */
@@ -2905,62 +2923,63 @@ class WindowEvent : public CommonEvent<SDL_WindowEvent> {
   WindowEvent() noexcept;
 
   /**
-   * Creates a window event based on the supplied SDL window event.
+   * @brief Creates a window event based on the supplied SDL window event.
    *
    * @param event the SDL window event that will be copied.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  explicit WindowEvent(const SDL_WindowEvent& event) noexcept;
-
-  /**
-   * Creates a window event based on the supplied SDL window event.
    *
-   * @param event the SDL window event that will be moved.
    * @since 4.0.0
    */
   CENTURION_API
-  explicit WindowEvent(SDL_WindowEvent&& event) noexcept;
+  WindowEvent(const SDL_WindowEvent& event) noexcept;
 
   /**
-   * Returns the event ID of this window event. There are many different
-   * kinds of window events, use this method to check what kind of action
-   * that triggered this event.
+   * @brief Returns the event ID of this window event.
+   *
+   * @details There are many different kinds of window events, use this
+   * method to check what kind of action that triggered this event.
    *
    * @return the event ID of this window event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY WindowEventID event_id() const noexcept;
+  CENTURION_QUERY
+  auto event_id() const noexcept -> WindowEventID;
 
   /**
-   * Returns the value of the first data value. The meaning of this value is
-   * dependent on the window event ID of this window event.
+   * @brief Returns the value of the first data value.
    *
-   * <p> For instance, if the event ID is <code>SizeChanged</code>, then
-   * data1 and data2 represent the new width and height of the window
-   * respectively. See the <code>WindowEventID</code> documentation for more
-   * details about whether the value returned from this method is meaningful
-   * in regard to the window event ID.
+   * @details The meaning of this value is dependent on the window event ID
+   * of this window event.
+   *
+   * For instance, if the event ID is `SizeChanged`, then data1 and data2
+   * represent the new width and height of the window respectively. See the
+   * `WindowEventID` documentation for more details about whether the value
+   * returned from this method is meaningful in regard to the window event ID.
    *
    * @return the value of the first data value.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint32 data_1() const noexcept;
+  CENTURION_QUERY
+  auto data_1() const noexcept -> Sint32;
 
   /**
-   * Returns the value of the second data value. The meaning of this value is
-   * dependent on the window event ID of this window event.
+   * @brief Returns the value of the second data value.
    *
-   * <p> For instance, if the event ID is <code>SizeChanged</code>, then
-   * data1 and data2 represent the new width and height of the window
-   * respectively. See the <code>WindowEventID</code> documentation for more
-   * details about whether the value returned from this method is meaningful
-   * in regard to the window event ID.
+   * @details The meaning of this value is dependent on the window event ID
+   * of this window event.
+   *
+   * For instance, if the event ID is `SizeChanged`, then data1 and data2
+   * represent the new width and height of the window respectively. See the
+   * `WindowEventID` documentation for more details about whether the value
+   * returned from this method is meaningful in regard to the window event ID.
    *
    * @return the value of the second data value.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Sint32 data_2() const noexcept;
+  CENTURION_QUERY
+  auto data_2() const noexcept -> Sint32;
 };
 
 static_assert(validate_event<WindowEvent, SDL_WindowEvent>());

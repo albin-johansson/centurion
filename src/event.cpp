@@ -5,8 +5,7 @@
 
 #include <utility>
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 CENTURION_DEF
 Event::Event() noexcept
@@ -29,7 +28,7 @@ void Event::refresh() noexcept
 CENTURION_DEF
 void Event::push(Event& event) noexcept
 {
-  SDL_Event& sdlEvent = event;
+  SDL_Event& sdlEvent = event.get();
   SDL_PushEvent(&sdlEvent);
 }
 
@@ -47,19 +46,19 @@ void Event::flush_all() noexcept
 }
 
 CENTURION_DEF
-bool Event::poll() noexcept
+auto Event::poll() noexcept -> bool
 {
   return SDL_PollEvent(&m_event);
 }
 
 CENTURION_DEF
-EventType Event::type() const noexcept
+auto Event::type() const noexcept -> EventType
 {
   return static_cast<EventType>(m_event.type);
 }
 
 CENTURION_DEF
-Optional<QuitEvent> Event::as_quit_event() const noexcept
+auto Event::as_quit_event() const noexcept -> Optional<QuitEvent>
 {
   if (type() == EventType::Quit) {
     return QuitEvent{m_event.quit};
@@ -69,7 +68,7 @@ Optional<QuitEvent> Event::as_quit_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<AudioDeviceEvent> Event::as_audio_device_event() const noexcept
+auto Event::as_audio_device_event() const noexcept -> Optional<AudioDeviceEvent>
 {
   const auto isAudioEvent = type() == EventType::AudioDeviceAdded ||
                             type() == EventType::AudioDeviceRemoved;
@@ -81,7 +80,8 @@ Optional<AudioDeviceEvent> Event::as_audio_device_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<ControllerAxisEvent> Event::as_controller_axis_event() const noexcept
+auto Event::as_controller_axis_event() const noexcept
+    -> Optional<ControllerAxisEvent>
 {
   if (type() == EventType::ControllerAxisMotion) {
     return ControllerAxisEvent{m_event.caxis};
@@ -91,8 +91,8 @@ Optional<ControllerAxisEvent> Event::as_controller_axis_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<ControllerButtonEvent> Event::as_controller_button_event()
-    const noexcept
+auto Event::as_controller_button_event() const noexcept
+    -> Optional<ControllerButtonEvent>
 {
   const auto isContButtonEvent = type() == EventType::ControllerButtonDown ||
                                  type() == EventType::ControllerButtonUp;
@@ -104,8 +104,8 @@ Optional<ControllerButtonEvent> Event::as_controller_button_event()
 }
 
 CENTURION_DEF
-Optional<ControllerDeviceEvent> Event::as_controller_device_event()
-    const noexcept
+auto Event::as_controller_device_event() const noexcept
+    -> Optional<ControllerDeviceEvent>
 {
   const auto isContDeviceEvent = type() == EventType::ControllerDeviceAdded ||
                                  type() == EventType::ControllerDeviceRemoved ||
@@ -118,7 +118,8 @@ Optional<ControllerDeviceEvent> Event::as_controller_device_event()
 }
 
 CENTURION_DEF
-Optional<DollarGestureEvent> Event::as_dollar_gesture_event() const noexcept
+auto Event::as_dollar_gesture_event() const noexcept
+    -> Optional<DollarGestureEvent>
 {
   const auto isDollarGestureEvent =
       type() == EventType::DollarGesture || type() == EventType::DollarRecord;
@@ -130,7 +131,7 @@ Optional<DollarGestureEvent> Event::as_dollar_gesture_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<DropEvent> Event::as_drop_event() const noexcept
+auto Event::as_drop_event() const noexcept -> Optional<DropEvent>
 {
   const auto isDropEvent =
       type() == EventType::DropBegin || type() == EventType::DropComplete ||
@@ -143,7 +144,7 @@ Optional<DropEvent> Event::as_drop_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<JoyAxisEvent> Event::as_joy_axis_event() const noexcept
+auto Event::as_joy_axis_event() const noexcept -> Optional<JoyAxisEvent>
 {
   if (type() == EventType::JoystickAxisMotion) {
     return JoyAxisEvent{m_event.jaxis};
@@ -153,7 +154,7 @@ Optional<JoyAxisEvent> Event::as_joy_axis_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<JoyBallEvent> Event::as_joy_ball_event() const noexcept
+auto Event::as_joy_ball_event() const noexcept -> Optional<JoyBallEvent>
 {
   if (type() == EventType::JoystickBallMotion) {
     return JoyBallEvent{m_event.jball};
@@ -163,7 +164,7 @@ Optional<JoyBallEvent> Event::as_joy_ball_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<JoyButtonEvent> Event::as_joy_button_event() const noexcept
+auto Event::as_joy_button_event() const noexcept -> Optional<JoyButtonEvent>
 {
   const auto isJoyButtonEvent = type() == EventType::JoystickButtonUp ||
                                 type() == EventType::JoystickButtonDown;
@@ -175,7 +176,7 @@ Optional<JoyButtonEvent> Event::as_joy_button_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<JoyDeviceEvent> Event::as_joy_device_event() const noexcept
+auto Event::as_joy_device_event() const noexcept -> Optional<JoyDeviceEvent>
 {
   const auto isJoyDeviceEvent = type() == EventType::JoystickDeviceAdded ||
                                 type() == EventType::JoystickDeviceRemoved;
@@ -187,7 +188,7 @@ Optional<JoyDeviceEvent> Event::as_joy_device_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<JoyHatEvent> Event::as_joy_hat_event() const noexcept
+auto Event::as_joy_hat_event() const noexcept -> Optional<JoyHatEvent>
 {
   if (type() == EventType::JoystickHatMotion) {
     return JoyHatEvent{m_event.jhat};
@@ -197,7 +198,7 @@ Optional<JoyHatEvent> Event::as_joy_hat_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<KeyboardEvent> Event::as_keyboard_event() const noexcept
+auto Event::as_keyboard_event() const noexcept -> Optional<KeyboardEvent>
 {
   const auto isKeyboardEvent =
       type() == EventType::KeyDown || type() == EventType::KeyUp;
@@ -209,7 +210,7 @@ Optional<KeyboardEvent> Event::as_keyboard_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<MouseButtonEvent> Event::as_mouse_button_event() const noexcept
+auto Event::as_mouse_button_event() const noexcept -> Optional<MouseButtonEvent>
 {
   const auto isMouseButtonEvent = type() == EventType::MouseButtonUp ||
                                   type() == EventType::MouseButtonDown;
@@ -221,7 +222,7 @@ Optional<MouseButtonEvent> Event::as_mouse_button_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<MouseMotionEvent> Event::as_mouse_motion_event() const noexcept
+auto Event::as_mouse_motion_event() const noexcept -> Optional<MouseMotionEvent>
 {
   if (type() == EventType::MouseMotion) {
     return MouseMotionEvent{m_event.motion};
@@ -231,7 +232,7 @@ Optional<MouseMotionEvent> Event::as_mouse_motion_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<MouseWheelEvent> Event::as_mouse_wheel_event() const noexcept
+auto Event::as_mouse_wheel_event() const noexcept -> Optional<MouseWheelEvent>
 {
   if (type() == EventType::MouseWheel) {
     return MouseWheelEvent{m_event.wheel};
@@ -241,7 +242,8 @@ Optional<MouseWheelEvent> Event::as_mouse_wheel_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<MultiGestureEvent> Event::as_multi_gesture_event() const noexcept
+auto Event::as_multi_gesture_event() const noexcept
+    -> Optional<MultiGestureEvent>
 {
   if (type() == EventType::MultiGesture) {
     return MultiGestureEvent{m_event.mgesture};
@@ -251,7 +253,7 @@ Optional<MultiGestureEvent> Event::as_multi_gesture_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<TextEditingEvent> Event::as_text_editing_event() const noexcept
+auto Event::as_text_editing_event() const noexcept -> Optional<TextEditingEvent>
 {
   if (type() == EventType::TextEditing) {
     return TextEditingEvent{m_event.edit};
@@ -261,7 +263,7 @@ Optional<TextEditingEvent> Event::as_text_editing_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<TextInputEvent> Event::as_text_input_event() const noexcept
+auto Event::as_text_input_event() const noexcept -> Optional<TextInputEvent>
 {
   if (type() == EventType::TextInput) {
     return TextInputEvent{m_event.text};
@@ -271,7 +273,7 @@ Optional<TextInputEvent> Event::as_text_input_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<TouchFingerEvent> Event::as_touch_finger_event() const noexcept
+auto Event::as_touch_finger_event() const noexcept -> Optional<TouchFingerEvent>
 {
   const auto isTouchFingerEvent = type() == EventType::TouchMotion ||
                                   type() == EventType::TouchDown ||
@@ -284,7 +286,7 @@ Optional<TouchFingerEvent> Event::as_touch_finger_event() const noexcept
 }
 
 CENTURION_DEF
-Optional<WindowEvent> Event::as_window_event() const noexcept
+auto Event::as_window_event() const noexcept -> Optional<WindowEvent>
 {
   if (type() == EventType::Window) {
     return WindowEvent{m_event.window};
@@ -293,17 +295,6 @@ Optional<WindowEvent> Event::as_window_event() const noexcept
   }
 }
 
-// CENTURION_DEF
-// Optional<SysWMEvent> Event::as_syswm_event() const noexcept
-//{
-//  if (type() == EventType::System) {
-//    return SysWMEvent{m_event.syswm};
-//  } else {
-//    return nothing;
-//  }
-//}
-
-}  // namespace event
-}  // namespace centurion
+}  // namespace centurion::event
 
 #endif  // CENTURION_EVENT_SOURCE

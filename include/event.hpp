@@ -2985,18 +2985,20 @@ class WindowEvent : public CommonEvent<SDL_WindowEvent> {
 static_assert(validate_event<WindowEvent, SDL_WindowEvent>());
 
 /**
- * The Event class serves as the main interface for dealing with events in
- * the Centurion library.
+ * @class Event
  *
- * @todo Look into `SysWMEvent` breaking includes on Travis.
+ * @brief Serves as the main interface for dealing with events.
  *
- * @see SDL_Event
+ * @see `SDL_Event`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class Event final {
  public:
   /**
-   * Creates an empty event.
+   * @brief Creates an empty event.
    *
    * @since 4.0.0
    */
@@ -3004,46 +3006,52 @@ class Event final {
   Event() noexcept;
 
   /**
-   * Creates an event based on the supplied event.
+   * @brief Creates an event based on the supplied event.
    *
    * @param event the event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   Event(const SDL_Event& event) noexcept;
 
   /**
-   * Creates an event based on the supplied event.
+   * @brief Creates an event based on the supplied event.
    *
    * @param event the event that will be moved.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   Event(SDL_Event&& event) noexcept;
 
   /**
-   * Refresh the event loop, gathering events from the input devices. Note that
-   * you might not have to call this method by yourself.
+   * @brief Refresh the event loop, gathering events from the input devices.
    *
-   * @see SDL_PumpEvents
+   * @note You might not have to call this method by yourself.
+   *
+   * @see `SDL_PumpEvents`
+   *
    * @since 3.1.0
    */
   CENTURION_API
   static void refresh() noexcept;
 
   /**
-   * Pushes an event onto the event queue.
+   * @brief Pushes an event onto the event queue.
    *
    * @param event the event that will be added to the event queue.
+   *
    * @since 3.1.0
    */
   CENTURION_API
   static void push(Event& event) noexcept;
 
   /**
-   * Flushes all current events from the event queue.
+   * @brief Flushes all current events from the event queue.
    *
-   * @see
+   * @see `SDL_FlushEvents`
+   *
    * @since 3.1.0
    */
   CENTURION_API
@@ -3059,242 +3067,272 @@ class Event final {
   static void flush_all() noexcept;
 
   /**
-   * Polls the next available event, if there is one. This is meant to be
-   * called inside a while-loop.
+   * @brief Polls the next available event, if there is one.
+   *
+   * @details This is meant to be called inside a while-loop.
    *
    * @return `true` if there are any pending events; `false` otherwise.
+   *
    * @since 3.1.0
    */
-  CENTURION_QUERY bool poll() noexcept;
+  CENTURION_QUERY
+  auto poll() noexcept -> bool;
 
   /**
-   * Returns the type of the event. This method can always be safely called on
-   * an event instance.
+   * @brief Returns the type of the event.
+   *
+   * @details This method can always be safely called on an event instance.
    *
    * @return the type of the event.
+   *
    * @since 3.1.0
    */
-  CENTURION_QUERY EventType type() const noexcept;
+  CENTURION_QUERY
+  auto type() const noexcept -> EventType;
 
   /**
-   * Returns an AudioDeviceEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return an AudioDeviceEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<AudioDeviceEvent> as_audio_device_event()
-      const noexcept;
-
-  /**
-   * Returns a ControllerAxisEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a ControllerAxisEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<ControllerAxisEvent> as_controller_axis_event()
-      const noexcept;
-
-  /**
-   * Returns a ControllerButtonEvent or nothing if the type of the event
+   * @brief Returns an `AudioDeviceEvent` or `nothing` if the type of the event
    * doesn't match.
    *
-   * @return a ControllerButtonEvent or nothing.
+   * @return an `AudioDeviceEvent` or `nothing`.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Optional<ControllerButtonEvent> as_controller_button_event()
-      const noexcept;
+  CENTURION_QUERY
+  auto as_audio_device_event() const noexcept -> Optional<AudioDeviceEvent>;
 
   /**
-   * Returns a ControllerDeviceEvent or nothing if the type of the event
+   * @brief Returns a `ControllerAxisEvent` or `nothing` if the type of the
+   * event doesn't match.
+   *
+   * @return a `ControllerAxisEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_controller_axis_event() const noexcept
+      -> Optional<ControllerAxisEvent>;
+
+  /**
+   * @brief Returns a `ControllerButtonEvent` or `nothing` if the type of the
+   * event doesn't match.
+   *
+   * @return a ControllerButtonEvent or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_controller_button_event() const noexcept
+      -> Optional<ControllerButtonEvent>;
+
+  /**
+   * @brief Returns a `ControllerDeviceEvent` or `nothing` if the type of the
+   * event doesn't match.
+   *
+   * @return a `ControllerDeviceEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_controller_device_event() const noexcept
+      -> Optional<ControllerDeviceEvent>;
+
+  /**
+   * @brief Returns a `DollarGestureEvent` or `nothing` if the type of the event
    * doesn't match.
    *
-   * @return a ControllerDeviceEvent or nothing.
+   * @return a `DollarGestureEvent` or `nothing`.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Optional<ControllerDeviceEvent> as_controller_device_event()
-      const noexcept;
+  CENTURION_QUERY
+  auto as_dollar_gesture_event() const noexcept -> Optional<DollarGestureEvent>;
 
   /**
-   * Returns a DollarGestureEvent or nothing if the type of the event doesn't
+   * @brief Returns a `DropEvent` or `nothing` if the type of the event doesn't
    * match.
    *
-   * @return a DollarGestureEvent or nothing.
+   * @return a `DropEvent` or `nothing`.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Optional<DollarGestureEvent> as_dollar_gesture_event()
-      const noexcept;
+  CENTURION_QUERY
+  auto as_drop_event() const noexcept -> Optional<DropEvent>;
 
   /**
-   * Returns a DropEvent or nothing if the type of the event doesn't
+   * @brief Returns a `JoyAxisEvent` or `nothing` if the type of the event
+   * doesn't match.
+   *
+   * @return a `JoyAxisEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_joy_axis_event() const noexcept -> Optional<JoyAxisEvent>;
+
+  /**
+   * @brief Returns a `JoyBallEvent` or `nothing` if the type of the event
+   * doesn't match.
+   *
+   * @return a `JoyBallEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_joy_ball_event() const noexcept -> Optional<JoyBallEvent>;
+
+  /**
+   * @brief Returns a `JoyButtonEvent` or `nothing` if the type of the event
+   * doesn't match.
+   *
+   * @return a `JoyButtonEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_joy_button_event() const noexcept -> Optional<JoyButtonEvent>;
+
+  /**
+   * @brief Returns a `JoyDeviceEvent` or `nothing` if the type of the event
+   * doesn't match.
+   *
+   * @return a `JoyDeviceEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_joy_device_event() const noexcept -> Optional<JoyDeviceEvent>;
+
+  /**
+   * @brief Returns a `JoyHatEvent` or `nothing` if the type of the event
+   * doesn't match.
+   *
+   * @return a `JoyHatEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_joy_hat_event() const noexcept -> Optional<JoyHatEvent>;
+
+  /**
+   * @brief Returns a `KeyboardEvent` or `nothing` if the type of the event
+   * doesn't match.
+   *
+   * @return a `KeyboardEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_keyboard_event() const noexcept -> Optional<KeyboardEvent>;
+
+  /**
+   * @brief Returns a `MouseButtonEvent` or `nothing` if the type of the event
+   * doesn't match.
+   *
+   * @return a `MouseButtonEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_mouse_button_event() const noexcept -> Optional<MouseButtonEvent>;
+
+  /**
+   * @brief Returns a `MouseMotionEvent` or `nothing` if the type of the event
+   * doesn't match.
+   *
+   * @return a `MouseMotionEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_mouse_motion_event() const noexcept -> Optional<MouseMotionEvent>;
+
+  /**
+   * @brief Returns a `MouseWheelEvent` or `nothing` if the type of the event
+   * doesn't match.
+   *
+   * @return a `MouseWheelEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_mouse_wheel_event() const noexcept -> Optional<MouseWheelEvent>;
+
+  /**
+   * @brief Returns a `MultiGestureEvent` or `nothing` if the type of the event
+   * doesn't match.
+   *
+   * @return a `MultiGestureEvent` or `nothing`.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto as_multi_gesture_event() const noexcept -> Optional<MultiGestureEvent>;
+
+  /**
+   * Returns a QuitEvent or `nothing` if the type of the event doesn't
    * match.
    *
-   * @return a DropEvent or nothing.
+   * @return a QuitEvent or `nothing`.
    * @since 4.0.0
    */
-  CENTURION_QUERY Optional<DropEvent> as_drop_event() const noexcept;
+  CENTURION_QUERY
+  auto as_quit_event() const noexcept -> Optional<QuitEvent>;
 
   /**
-   * Returns a JoyAxisEvent or nothing if the type of the event doesn't
-   * match.
+   * @brief Returns a `TextEditingEvent` or `nothing` if the type of the event
+   * doesn't match.
    *
-   * @return a JoyAxisEvent or nothing.
+   * @return a `TextEditingEvent` or `nothing`.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Optional<JoyAxisEvent> as_joy_axis_event() const noexcept;
+  CENTURION_QUERY
+  auto as_text_editing_event() const noexcept -> Optional<TextEditingEvent>;
 
   /**
-   * Returns a JoyBallEvent or nothing if the type of the event doesn't
-   * match.
+   * @brief Returns a `TextInputEvent` or `nothing` if the type of the event
+   * doesn't match.
    *
-   * @return a JoyBallEvent or nothing.
+   * @return a `TextInputEvent` or `nothing`.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Optional<JoyBallEvent> as_joy_ball_event() const noexcept;
+  CENTURION_QUERY
+  auto as_text_input_event() const noexcept -> Optional<TextInputEvent>;
 
   /**
-   * Returns a JoyButtonEvent or nothing if the type of the event doesn't
-   * match.
+   * @brief Returns a `TouchFingerEvent` or `nothing` if the type of the event
+   * doesn't match.
    *
-   * @return a JoyButtonEvent or nothing.
+   * @return a `TouchFingerEvent` or `nothing`.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Optional<JoyButtonEvent> as_joy_button_event() const noexcept;
+  CENTURION_QUERY
+  auto as_touch_finger_event() const noexcept -> Optional<TouchFingerEvent>;
 
   /**
-   * Returns a JoyDeviceEvent or nothing if the type of the event doesn't
-   * match.
+   * @brief Returns a `WindowEvent` or `nothing` if the type of the event
+   * doesn't match.
    *
-   * @return a JoyDeviceEvent or nothing.
+   * @return a WindowEvent or `nothing`.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Optional<JoyDeviceEvent> as_joy_device_event() const noexcept;
+  CENTURION_QUERY
+  auto as_window_event() const noexcept -> Optional<WindowEvent>;
 
-  /**
-   * Returns a JoyHatEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a JoyHatEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<JoyHatEvent> as_joy_hat_event() const noexcept;
+  [[nodiscard]] auto get() noexcept -> SDL_Event& { return m_event; }
 
-  /**
-   * Returns a KeyboardEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a KeyboardEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<KeyboardEvent> as_keyboard_event() const noexcept;
-
-  /**
-   * Returns a MouseButtonEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a MouseButtonEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<MouseButtonEvent> as_mouse_button_event()
-      const noexcept;
-
-  /**
-   * Returns a MouseMotionEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a MouseMotionEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<MouseMotionEvent> as_mouse_motion_event()
-      const noexcept;
-
-  /**
-   * Returns a MouseWheelEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a MouseWheelEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<MouseWheelEvent> as_mouse_wheel_event()
-      const noexcept;
-
-  /**
-   * Returns a MultiGestureEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a MultiGestureEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<MultiGestureEvent> as_multi_gesture_event()
-      const noexcept;
-
-  /**
-   * Returns a QuitEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a QuitEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<QuitEvent> as_quit_event() const noexcept;
-
-  /**
-   * Returns a TextEditingEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a TextEditingEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<TextEditingEvent> as_text_editing_event()
-      const noexcept;
-
-  /**
-   * Returns a TextInputEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a TextInputEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<TextInputEvent> as_text_input_event() const noexcept;
-
-  /**
-   * Returns a TouchFingerEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a TouchFingerEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<TouchFingerEvent> as_touch_finger_event()
-      const noexcept;
-
-  /**
-   * Returns a WindowEvent or nothing if the type of the event doesn't
-   * match.
-   *
-   * @return a WindowEvent or nothing.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY Optional<WindowEvent> as_window_event() const noexcept;
-
-  /**
-   * Implicitly converts the event to a reference to the internal SDL_Event.
-   *
-   * @return a reference to the internal SDL_Event.
-   * @since 4.0.0
-   */
-  [[nodiscard]] operator SDL_Event&() noexcept { return m_event; }
-
-  /**
-   * Implicitly converts the event to a const reference to the internal
-   * SDL_Event.
-   *
-   * @return a const reference to the internal SDL_Event.
-   * @since 4.0.0
-   */
-  [[nodiscard]] operator const SDL_Event&() const noexcept { return m_event; }
+  [[nodiscard]] auto get() const noexcept -> const SDL_Event&
+  {
+    return m_event;
+  }
 
  private:
   SDL_Event m_event;
+  // TODO consider std::variant
 };
 
 }  // namespace centurion::event

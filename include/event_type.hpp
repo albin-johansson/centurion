@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file event_type.hpp
+ *
+ * @brief Provides the `EventType` enum.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_EVENT_TYPE_HEADER
 #define CENTURION_EVENT_TYPE_HEADER
 
@@ -29,14 +41,18 @@
 
 #include "centurion_api.hpp"
 
-namespace centurion {
-namespace event {
+namespace centurion::event {
 
 /**
- * The EventType enum class mirrors the SDL_EventType enum.
+ * @enum EventType
  *
- * @see SDL_EventType
+ * @brief Mirrors the `SDL_EventType` enum.
+ *
+ * @see `SDL_EventType`
+ *
  * @since 3.1.0
+ *
+ * @headerfile event_type.hpp
  */
 enum class EventType {
   Quit = SDL_QUIT,
@@ -105,56 +121,57 @@ enum class EventType {
 };
 
 /**
- * Indicates whether or not two event type values are the same.
+ * @brief Indicates whether or not two event type values are the same.
  *
- * @param lhs the left-hand side Centurion value.
- * @param rhs the right-hand side SDL value.
- * @return true if the values represent the same event type; false otherwise.
+ * @param lhs the left-hand side event type value
+ * @param rhs the right-hand side event type value
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
  * @since 3.1.0
  */
-[[nodiscard]] CENTURION_API bool operator==(EventType lhs,
-                                            SDL_EventType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(EventType lhs,
+                                               SDL_EventType rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_EventType>(lhs) == rhs;
+}
 
 /**
- * Indicates whether or not two event type values are the same.
- *
- * @param lhs the left-hand side SDL value.
- * @param rhs the right-hand side Centurion value.
- * @return true if the values represent the same event type; false otherwise.
- * @since 3.1.0
+ * @copydoc operator==(EventType, SDL_EventType)
  */
-[[nodiscard]] CENTURION_API bool operator==(SDL_EventType lhs,
-                                            EventType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(SDL_EventType lhs,
+                                               EventType rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * Indicates whether or not two event type values aren't the same.
+ * @brief Indicates whether or not two event type values aren't the same.
  *
- * @param lhs the left-hand side Centurion value.
- * @param rhs the right-hand side SDL value.
- * @return true if the values don't represent the same event type; false
- * otherwise.
+ * @param lhs the left-hand side event type value
+ * @param rhs the right-hand side event type value
+ *
+ * @return `true` if the values aren't the same; `false` otherwise.
+ *
  * @since 3.1.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(EventType lhs,
-                                            SDL_EventType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(EventType lhs,
+                                               SDL_EventType rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * Indicates whether or not two event type values aren't the same.
- *
- * @param lhs the left-hand side SDL value.
- * @param rhs the right-hand side Centurion value.
- * @return true if the values don't represent the same event type; false
- * otherwise.
- * @since 3.1.0
+ * @copydoc operator!=(EventType, SDL_EventType)
  */
-[[nodiscard]] CENTURION_API bool operator!=(SDL_EventType lhs,
-                                            EventType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(SDL_EventType lhs,
+                                               EventType rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
-}  // namespace event
-}  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "event_type.cpp"
-#endif  // CENTURION_HEADER_ONLY
+}  // namespace centurion::event
 
 #endif  // CENTURION_EVENT_TYPE_HEADER

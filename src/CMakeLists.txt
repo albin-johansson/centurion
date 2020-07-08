@@ -66,7 +66,6 @@ set(SOURCE_FILES
         screen.cpp
         key.cpp
         event.cpp
-        event_type.cpp
         quit_event.cpp
         window_event.cpp
         keyboard_event.cpp

@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(CenturionSrcProj)
 
 set(SOURCE_FILES
+        ${CTN_INCLUDE_DIR}/centurion_cfg.hpp
         ${CTN_INCLUDE_DIR}/centurion_fwd.hpp
         ${CTN_INCLUDE_DIR}/centurion_docs.hpp
         ${CTN_INCLUDE_DIR}/window.hpp

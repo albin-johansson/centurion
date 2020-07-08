@@ -1315,16 +1315,21 @@ class JoyHatEvent : public CommonEvent<SDL_JoyHatEvent> {
 static_assert(validate_event<JoyHatEvent, SDL_JoyHatEvent>());
 
 /**
- * The KeyboardEvent class represents an event associated with some sort of
- * key action, such as the release or pressing of a key.
+ * @class KeyboardEvent
  *
- * @see SDL_KeyboardEvent
+ * @brief Represents an event associated with some sort of key action, such
+ * as the release or pressing of a key.
+ *
+ * @see `SDL_KeyboardEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
  public:
   /**
-   * Creates a default-initialized keyboard event.
+   * @brief Creates a default-initialized keyboard event.
    *
    * @since 4.0.0
    */
@@ -1332,165 +1337,188 @@ class KeyboardEvent : public CommonEvent<SDL_KeyboardEvent> {
   KeyboardEvent() noexcept;
 
   /**
-   * Creates a keyboard event based on the supplied SDL event.
+   * @brief Creates a keyboard event based on the supplied SDL event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   explicit KeyboardEvent(const SDL_KeyboardEvent& event) noexcept;
 
   /**
-   * Creates a keyboard event based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  explicit KeyboardEvent(SDL_KeyboardEvent&& event) noexcept;
-
-  /**
-   * Sets the button state associated with a key.
+   * @brief Sets the button state associated with a key.
    *
    * @param key the key to set the button state of.
    * @param state the new button state of the key.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_key(const Key& key, ButtonState state) noexcept;
 
   /**
-   * Sets the status of a key modifier.
+   * @brief Sets the status of a key modifier.
    *
    * @param modifier the key modifier that will be affected.
    * @param active `true` if the key modifier is active; `false` otherwise.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_modifier(KeyModifier modifier, bool active) noexcept;
 
   /**
-   * Sets the flag that indicates whether or not the key associated with this
-   * key event was repeatedly triggered.
+   * @brief Sets the flag that indicates whether or not the key associated with
+   * this key event was repeatedly triggered.
    *
    * @param repeated `true` if the key was repeatedly triggered; `false`
    * otherwise.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_repeated(bool repeated) noexcept;
 
   /**
-   * Sets the window ID that is associated with this key event.
+   * @brief Sets the window ID that is associated with this key event.
    *
    * @param id the window ID that should be associated with the key event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_window_id(Uint32 id) noexcept;
 
   /**
-   * Indicates whether or not the supplied key represents the same key that
-   * triggered this keyboard event.
+   * @brief Indicates whether or not the supplied key represents the same key
+   * that triggered this keyboard event.
    *
    * @param key the key that will be checked.
+   *
    * @return `true` if the supplied key caused this keyboard event; false
    * otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY bool is_active(const Key& key) const noexcept;
+  CENTURION_QUERY
+  auto is_active(const Key& key) const noexcept -> bool;
 
   /**
-   * Indicates whether or not the specified key modifier is active. Multiple key
-   * modifiers can be active at the same time.
+   * @brief Indicates whether or not the specified key modifier is active.
+   *
+   * @note Multiple key modifiers can be active at the same time.
    *
    * @param modifier the key modifier that will be checked.
+   *
    * @return `true` if the specified key modifier is active; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY bool modifier_active(KeyModifier modifier) const noexcept;
+  CENTURION_QUERY
+  auto modifier_active(KeyModifier modifier) const noexcept -> bool;
 
   /**
-   * Indicates whether or not any of the SHIFT modifiers are active.
+   * @brief Indicates whether or not any of the SHIFT modifiers are active.
    *
    * @return `true` if any of the SHIFT modifiers are active; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY bool shift_active() const noexcept;
+  CENTURION_QUERY
+  auto shift_active() const noexcept -> bool;
 
   /**
-   * Indicates whether or not any of the CTRL modifiers are active.
+   * @brief Indicates whether or not any of the CTRL modifiers are active.
    *
    * @return `true` if any of the CTRL modifiers are active; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY bool ctrl_active() const noexcept;
+  CENTURION_QUERY
+  auto ctrl_active() const noexcept -> bool;
 
   /**
-   * Indicates whether or not any of the ALT modifiers are active.
+   * @brief Indicates whether or not any of the ALT modifiers are active.
    *
    * @return `true` if any of the ALT modifiers are active; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY bool alt_active() const noexcept;
+  CENTURION_QUERY
+  auto alt_active() const noexcept -> bool;
 
   /**
-   * Indicates whether or not any of the GUI modifiers are active.
+   * @brief Indicates whether or not any of the GUI modifiers are active.
    *
    * @return `true` if any of the GUI modifiers are active; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY bool gui_active() const noexcept;
+  CENTURION_QUERY
+  auto gui_active() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the CAPS modifier is active.
+   * @brief Indicates whether or not the CAPS modifier is active.
    *
    * @return `true` if the CAPS modifier is active; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY bool caps_active() const noexcept;
+  CENTURION_QUERY
+  auto caps_active() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the NUM modifier is active.
+   * @brief Indicates whether or not the NUM modifier is active.
    *
    * @return `true` if the NUM modifier is active; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY bool num_active() const noexcept;
+  CENTURION_QUERY
+  auto num_active() const noexcept -> bool;
 
   /**
-   * Indicates whether or not the key associated with this key event has been
-   * repeatedly triggered.
+   * @brief Indicates whether or not the key associated with this key event has
+   * been repeatedly triggered.
    *
    * @return `true` if the key associated with the event was repeated; false
    * otherwise.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY bool repeated() const noexcept;
+  CENTURION_QUERY
+  auto repeated() const noexcept -> bool;
 
   /**
-   * Returns the button state of the key associated with the event.
+   * @brief Returns the button state of the key associated with the event.
    *
    * @return the button state of the key associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY ButtonState state() const noexcept;
+  CENTURION_QUERY
+  auto state() const noexcept -> ButtonState;
 
   /**
-   * Returns the key that triggered this keyboard event.
+   * @brief Returns the key that triggered this keyboard event.
    *
    * @return the key that triggered this keyboard event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Key key() const noexcept;
+  CENTURION_QUERY
+  auto key() const noexcept -> Key;
 
   /**
-   * Returns the ID of the window associated with the event.
+   * @brief Returns the ID of the window associated with the event.
    *
    * @return the ID of the window associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint32 window_id() const noexcept;
+  CENTURION_QUERY
+  auto window_id() const noexcept -> Uint32;
 };
 
 static_assert(validate_event<KeyboardEvent, SDL_KeyboardEvent>());

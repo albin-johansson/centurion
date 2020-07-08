@@ -2428,16 +2428,20 @@ class TextEditingEvent : public CommonEvent<SDL_TextEditingEvent> {
 static_assert(validate_event<TextEditingEvent, SDL_TextEditingEvent>());
 
 /**
- * The TextInputEvent class contains information about keyboard text input
- * events.
+ * @class TextInputEvent
  *
- * @see SDL_TextInputEvent
+ * @brief Provides information about keyboard text input events.
+ *
+ * @see `SDL_TextInputEvent`
+ *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 class TextInputEvent : public CommonEvent<SDL_TextInputEvent> {
  public:
   /**
-   * Creates a default-initialized TextInputEvent.
+   * @brief Creates a default-initialized TextInputEvent.
    *
    * @since 4.0.0
    */
@@ -2445,39 +2449,34 @@ class TextInputEvent : public CommonEvent<SDL_TextInputEvent> {
   TextInputEvent() noexcept;
 
   /**
-   * Creates a TextInputEvent that is based on the supplied SDL event.
+   * @brief Creates a `TextInputEvent` that is based on the supplied SDL event.
    *
    * @param event the SDL event that will be copied.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   TextInputEvent(const SDL_TextInputEvent& event) noexcept;
 
   /**
-   * Creates a TextInputEvent that is based on the supplied SDL event.
-   *
-   * @param event the SDL event that will be moved.
-   * @since 4.0.0
-   */
-  CENTURION_API
-  TextInputEvent(SDL_TextInputEvent&& event) noexcept;
-
-  /**
-   * Sets the window ID associated with the event.
+   * @brief Sets the window ID associated with the event.
    *
    * @param id the window ID associated with the event.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   void set_window_id(Uint32 id) noexcept;
 
   /**
-   * Returns the window ID associated with the event.
+   * @brief Returns the window ID associated with the event.
    *
    * @return the window ID associated with the event.
+   *
    * @since 4.0.0
    */
-  CENTURION_QUERY Uint32 window_id() const noexcept;
+  CENTURION_QUERY
+  auto window_id() const noexcept -> Uint32;
 
   /**
    * Returns the text that will be used, as a null-terminated string in UTF-8
@@ -2486,7 +2485,8 @@ class TextInputEvent : public CommonEvent<SDL_TextInputEvent> {
    * @return the text that will be used.
    * @since 4.0.0
    */
-  CENTURION_QUERY CZString text() const noexcept;
+  CENTURION_QUERY
+  auto text() const noexcept -> gsl::czstring;
 };
 
 static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>());

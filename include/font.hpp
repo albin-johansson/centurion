@@ -296,7 +296,7 @@ class Font final {
   /**
    * @brief Returns the TrueType font hinting of the font.
    *
-   * @detauks This property is set to `Normal` by default.
+   * @details This property is set to `Normal` by default.
    *
    * @return the TrueType font hinting of the font.
    *

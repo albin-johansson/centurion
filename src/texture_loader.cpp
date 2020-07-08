@@ -10,7 +10,7 @@
 // namespace centurion {
 //
 // CENTURION_DEF
-// TextureLoader::TextureLoader(const SharedPtr<Renderer>& renderer)
+// TextureLoader::TextureLoader(const std::shared_ptr<Renderer>& renderer)
 //{
 //  if (renderer) {
 //    this->m_renderer = renderer;
@@ -24,13 +24,13 @@
 // TextureLoader::~TextureLoader() noexcept = default;
 //
 // CENTURION_DEF
-// UniquePtr<Texture> TextureLoader::unique_img(CZString file) const
+// std::unique_ptr<Texture> TextureLoader::unique_img(CZString file) const
 //{
 //  return Texture::unique(*m_renderer, file);
 //}
 //
 // CENTURION_DEF
-// UniquePtr<Texture> TextureLoader::unique_img(PixelFormat format,
+// std::unique_ptr<Texture> TextureLoader::unique_img(PixelFormat format,
 //                                             Texture::Access access,
 //                                             area_i size) const
 //{
@@ -38,13 +38,13 @@
 //}
 //
 // CENTURION_DEF
-// SharedPtr<Texture> TextureLoader::shared_img(CZString file) const
+// std::shared_ptr<Texture> TextureLoader::shared_img(CZString file) const
 //{
 //  return Texture::shared(*m_renderer, file);
 //}
 //
 // CENTURION_DEF
-// SharedPtr<Texture> TextureLoader::shared_img(PixelFormat format,
+// std::shared_ptr<Texture> TextureLoader::shared_img(PixelFormat format,
 //                                             Texture::Access access,
 //                                             area_i size) const
 //{

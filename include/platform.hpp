@@ -65,7 +65,7 @@ class Platform final {
    * be deduced.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static Optional<std::string> name() noexcept;
+  [[nodiscard]] CENTURION_API static std::optional<std::string> name() noexcept;
 };
 
 }  // namespace centurion

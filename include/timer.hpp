@@ -38,6 +38,7 @@
 #include <SDL_timer.h>
 
 #include "centurion_api.hpp"
+#include "centurion_types.hpp"
 
 namespace centurion {
 
@@ -51,41 +52,51 @@ class Timer final {
   Timer() = delete;
 
   /**
-   * Forces the currently executing thread to halt for at least the specified
-   * amount of milliseconds. However, the actual time spent sleeping may be
-   * longer, depending on the scheduling of the operating system.
+   * @brief Forces the currently executing thread to halt for at least the
+   * specified amount of milliseconds.
+   *
+   * @note The actual time spent sleeping may be longer, depending on the
+   * scheduling of the operating system.
    *
    * @param ms the minimum amount of time to sleep for, in milliseconds.
+   *
    * @since 3.0.0
    */
-  CENTURION_API static void delay(Uint32 ms) noexcept;
+  CENTURION_API static void delay(milliseconds<u32> ms) noexcept;
 
   /**
-   * Returns the frequency of the system high-performance counter.
+   * @brief Returns the frequency of the system high-performance counter.
    *
    * @return the frequency of the system high-performance counter.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static Uint64 high_res_freq() noexcept;
+  CENTURION_QUERY static auto high_res_freq() noexcept -> u64;
 
   /**
-   * Returns the current value of the system high-performance counter.
+   * @brief Returns the current value of the system high-performance counter.
    *
    * @return the current value of the system high-performance counter.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] static Uint64 high_res() noexcept
+  [[nodiscard]] static auto now() noexcept -> u64
   {
     return SDL_GetPerformanceCounter();
   }
 
   /**
-   * Returns the amount of milliseconds since the library was initialized.
+   * @brief Returns the amount of milliseconds since the library was
+   * initialized.
    *
    * @return the amount of milliseconds since the library was initialized.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] static Uint32 millis() noexcept { return SDL_GetTicks(); }
+  [[nodiscard]] static auto now_ms() noexcept -> milliseconds<u32>
+  {
+    return milliseconds<u32>{SDL_GetTicks()};
+  }
 };
 
 }  // namespace centurion

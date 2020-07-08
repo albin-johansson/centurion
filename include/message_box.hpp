@@ -345,7 +345,8 @@ class MessageBox final {
    * that the system defaults should be used.
    * @since 3.0.0
    */
-  CENTURION_API void set_color_scheme(Optional<ColorScheme> scheme) noexcept;
+  CENTURION_API
+  void set_color_scheme(std::optional<ColorScheme> scheme) noexcept;
 
   /**
    * Returns the title of the message box. The default title is "Centurion
@@ -373,7 +374,7 @@ class MessageBox final {
    * there is none.
    * @since 4.0.0
    */
-  [[nodiscard]] Optional<ColorScheme> color_scheme() const noexcept
+  [[nodiscard]] std::optional<ColorScheme> color_scheme() const noexcept
   {
     return m_colorScheme;
   }
@@ -397,11 +398,11 @@ class MessageBox final {
   [[nodiscard]] CENTURION_API ButtonOrder button_order() const noexcept;
 
  private:
-  Optional<ColorScheme> m_colorScheme = nothing;
+  std::optional<ColorScheme> m_colorScheme = nothing;
   std::vector<SDL_MessageBoxButtonData> m_buttons;
   czstring m_title = "Centurion message box";
   czstring m_message = "N/A";
-  UniquePtr<MessageBoxConfig> m_config;
+  std::unique_ptr<MessageBoxConfig> m_config;
 
   /**
    * Creates and returns a vector of SDL_MessageBoxButtonData instances.

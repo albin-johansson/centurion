@@ -36,8 +36,9 @@
 
 #include <SDL_power.h>
 
+#include <optional>
+
 #include "centurion_api.hpp"
-#include "centurion_utils.hpp"
 
 /**
  * @namespace centurion::battery
@@ -102,7 +103,7 @@ enum class PowerState {
  *
  * @since 3.0.0
  */
-CENTURION_QUERY auto seconds_left() noexcept -> Optional<int>;
+CENTURION_QUERY auto seconds_left() noexcept -> std::optional<int>;
 
 /**
  * @brief Returns the amount of minutes of battery life that is remaining.
@@ -112,7 +113,7 @@ CENTURION_QUERY auto seconds_left() noexcept -> Optional<int>;
  *
  * @since 3.0.0
  */
-CENTURION_QUERY auto minutes_left() noexcept -> Optional<int>;
+CENTURION_QUERY auto minutes_left() noexcept -> std::optional<int>;
 
 /**
  * @brief Returns the percentage of battery life that is currently left.
@@ -122,7 +123,7 @@ CENTURION_QUERY auto minutes_left() noexcept -> Optional<int>;
  *
  * @since 3.0.0
  */
-CENTURION_QUERY auto percentage() noexcept -> Optional<int>;
+CENTURION_QUERY auto percentage() noexcept -> std::optional<int>;
 
 /**
  * @brief Returns the current power state.

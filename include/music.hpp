@@ -173,7 +173,8 @@ class Music final {
    * @throws CenturionException if the music file cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<Music> unique(czstring file);
+  [[nodiscard]] CENTURION_API static std::unique_ptr<Music> unique(
+      czstring file);
 
   /**
    * Creates and returns a shared pointer to a Music instance.
@@ -183,7 +184,8 @@ class Music final {
    * @throws CenturionException if the music file cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<Music> shared(czstring file);
+  [[nodiscard]] CENTURION_API static std::shared_ptr<Music> shared(
+      czstring file);
 
   /**
    * Plays the music. Previously playing music will be halted. However, this

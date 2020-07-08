@@ -55,13 +55,13 @@ void Music::move(Music&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Music> Music::unique(czstring file)
+std::unique_ptr<Music> Music::unique(czstring file)
 {
   return std::make_unique<Music>(file);
 }
 
 CENTURION_DEF
-SharedPtr<Music> Music::shared(czstring file)
+std::shared_ptr<Music> Music::shared(czstring file)
 {
   return std::make_shared<Music>(file);
 }

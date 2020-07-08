@@ -47,7 +47,7 @@
 #include "area.hpp"
 #include "centurion_api.hpp"
 #include "centurion_exception.hpp"
-#include "centurion_utils.hpp"
+#include "centurion_types.hpp"
 
 namespace centurion {
 
@@ -418,7 +418,8 @@ class Font final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto glyph_metrics(Uint16 glyph) const noexcept -> Optional<GlyphMetrics>;
+  auto glyph_metrics(Uint16 glyph) const noexcept
+      -> std::optional<GlyphMetrics>;
 
   /**
    * @brief Returns the family name of the font.

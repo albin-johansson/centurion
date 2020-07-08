@@ -37,81 +37,13 @@
 #include <SDL.h>
 
 #include <cstring>
-#include <gsl/gsl>
-#include <memory>
-#include <optional.hpp>
 #include <sstream>
 #include <string>
 #include <type_traits>
 #include <utility>
 
 #include "centurion_api.hpp"
-
-namespace centurion {
-
-/**
- * @brief A type alias for gsl::owner. This is used to denote ownership of raw
- * pointers.
- *
- * @since 4.0.0
- */
-template <typename T>
-using Owner = gsl::owner<T>;
-
-/**
- * @brief A type alias for tl::optional.
- *
- * @since 4.0.0
- */
-template <typename T>
-using Optional = tl::optional<T>;
-
-/**
- * @brief A type alias for unique pointers.
- *
- * @since 4.0.0
- */
-template <typename T, typename Deleter = std::default_delete<T>>
-using UniquePtr = std::unique_ptr<T, Deleter>;
-
-/**
- * @brief A type alias for shared pointers.
- *
- * @since 4.0.0
- */
-template <typename T>
-using SharedPtr = std::shared_ptr<T>;
-
-/**
- * @brief A type alias for weak pointers.
- *
- * @since 4.0.0
- */
-template <typename T>
-using WeakPtr = std::weak_ptr<T>;
-
-/**
- * @brief A type alias for a const null-terminated C-style string.
- *
- * @since 4.0.0
- */
-using czstring = gsl::czstring<>;
-
-/**
- * @brief A type alias for a null-terminated C-style string.
- *
- * @since 4.0.0
- */
-using zstring = gsl::zstring<>;
-
-/**
- * @brief A constant that represents an empty Optional.
- *
- * @since 4.0.0
- */
-constexpr tl::nullopt_t nothing = tl::nullopt;
-
-}  // namespace centurion
+#include "centurion_types.hpp"
 
 /**
  * @namespace centurion::detail
@@ -191,32 +123,6 @@ template <typename T>
     return value;
   }
 }
-
-/**
- * @brief Used to enable a template if a type is a floating-point type, such as
- * float and double.
- *
- * @since 4.0.0
- */
-template <typename T>
-using type_if_floating = std::enable_if_t<std::is_floating_point_v<T>>;
-
-/**
- * @brief Used to enable a template if a type is an integral type, such as
- * int and long, etc.
- *
- * @since 4.0.0
- */
-template <typename T>
-using type_if_integral = std::enable_if_t<std::is_integral_v<T>>;
-
-/**
- * @brief Used to enable a template if two types are the same.
- *
- * @since 4.0.0
- */
-template <typename T, typename U>
-using type_if_same = typename std::enable_if_t<std::is_same_v<T, U>>;
 
 /**
  * @brief Indicates whether or not two C-style strings are equal.

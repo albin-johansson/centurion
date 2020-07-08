@@ -37,7 +37,7 @@ int num_devices() noexcept
 }
 
 CENTURION_DEF
-Optional<TouchID> get_device(int index) noexcept
+std::optional<TouchID> get_device(int index) noexcept
 {
   const auto device = SDL_GetTouchDevice(index);
   if (device == 0) {
@@ -60,7 +60,7 @@ int num_fingers(centurion::TouchID id) noexcept
 }
 
 CENTURION_DEF
-Optional<SDL_Finger> get_finger(centurion::TouchID id, int index) noexcept
+std::optional<SDL_Finger> get_finger(centurion::TouchID id, int index) noexcept
 {
   const auto* finger = SDL_GetTouchFinger(id, index);
   if (finger) {

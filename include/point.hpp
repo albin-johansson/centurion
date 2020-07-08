@@ -32,7 +32,7 @@
 #include <type_traits>
 
 #include "centurion_api.hpp"
-#include "centurion_utils.hpp"
+#include "centurion_types.hpp"
 
 namespace centurion {
 
@@ -175,7 +175,7 @@ class Point final {
    * difference between the coordinates of the points.
    * @since 4.0.0
    */
-  template <typename U = T, typename X = detail::type_if_floating<U>>
+  template <typename U = T, typename X = detail::if_floating_t<U>>
   [[nodiscard]] bool equals(const Point<T>& other,
                             T epsilon = 0.0001) const noexcept
   {
@@ -228,7 +228,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, int>>
+  template <typename U = T, typename = detail::if_same_t<U, int>>
   [[nodiscard]] explicit operator SDL_Point*() noexcept
   {
     return reinterpret_cast<SDL_Point*>(this);
@@ -244,7 +244,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, int>>
+  template <typename U = T, typename = detail::if_same_t<U, int>>
   [[nodiscard]] explicit operator const SDL_Point*() const noexcept
   {
     return reinterpret_cast<const SDL_Point*>(this);
@@ -260,7 +260,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, float>>
+  template <typename U = T, typename = detail::if_same_t<U, float>>
   [[nodiscard]] explicit operator SDL_FPoint*() noexcept
   {
     return reinterpret_cast<SDL_FPoint*>(this);
@@ -276,7 +276,7 @@ class Point final {
    * invoked point.
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, float>>
+  template <typename U = T, typename = detail::if_same_t<U, float>>
   [[nodiscard]] explicit operator const SDL_FPoint*() const noexcept
   {
     return reinterpret_cast<const SDL_FPoint*>(this);

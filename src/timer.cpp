@@ -6,13 +6,13 @@
 namespace centurion {
 
 CENTURION_DEF
-void Timer::delay(Uint32 ms) noexcept
+void Timer::delay(milliseconds<u32> ms) noexcept
 {
-  SDL_Delay(ms);
+  SDL_Delay(ms.count());
 }
 
 CENTURION_DEF
-Uint64 Timer::high_res_freq() noexcept
+auto Timer::high_res_freq() noexcept -> u64
 {
   return SDL_GetPerformanceFrequency();
 }

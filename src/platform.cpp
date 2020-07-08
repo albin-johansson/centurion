@@ -28,7 +28,7 @@ PlatformID Platform::id() noexcept
 }
 
 CENTURION_DEF
-Optional<std::string> Platform::name() noexcept
+std::optional<std::string> Platform::name() noexcept
 {
   const std::string name{SDL_GetPlatform()};
   if (name == "Unknown") {

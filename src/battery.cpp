@@ -3,10 +3,12 @@
 
 #include "battery.hpp"
 
+#include "centurion_types.hpp"
+
 namespace centurion::battery {
 
 CENTURION_DEF
-auto seconds_left() noexcept -> Optional<int>
+auto seconds_left() noexcept -> std::optional<int>
 {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
@@ -18,7 +20,7 @@ auto seconds_left() noexcept -> Optional<int>
 }
 
 CENTURION_DEF
-auto minutes_left() noexcept -> Optional<int>
+auto minutes_left() noexcept -> std::optional<int>
 {
   const auto secondsLeft = seconds_left();
   if (secondsLeft) {
@@ -29,7 +31,7 @@ auto minutes_left() noexcept -> Optional<int>
 }
 
 CENTURION_DEF
-auto percentage() noexcept -> Optional<int>
+auto percentage() noexcept -> std::optional<int>
 {
   int percentageLeft = -1;
   SDL_GetPowerInfo(nullptr, &percentageLeft);

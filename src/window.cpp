@@ -13,7 +13,7 @@ Window::Window() : Window{"Centurion window"}
 {}
 
 CENTURION_DEF
-Window::Window(Owner<SDL_Window*> window) : m_window{window}
+Window::Window(owner<SDL_Window*> window) : m_window{window}
 {
   if (!window) {
     throw CenturionException{"Cannot create Window from null SDL_Window!"};
@@ -75,37 +75,37 @@ void Window::move(Window&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Window> Window::unique()
+std::unique_ptr<Window> Window::unique()
 {
   return std::make_unique<Window>();
 }
 
 CENTURION_DEF
-UniquePtr<Window> Window::unique(Owner<SDL_Window*> window)
+std::unique_ptr<Window> Window::unique(owner<SDL_Window*> window)
 {
   return std::make_unique<Window>(window);
 }
 
 CENTURION_DEF
-UniquePtr<Window> Window::unique(czstring title, area_i size)
+std::unique_ptr<Window> Window::unique(czstring title, area_i size)
 {
   return std::make_unique<Window>(title, size);
 }
 
 CENTURION_DEF
-SharedPtr<Window> Window::shared()
+std::shared_ptr<Window> Window::shared()
 {
   return std::make_shared<Window>();
 }
 
 CENTURION_DEF
-SharedPtr<Window> Window::shared(Owner<SDL_Window*> window)
+std::shared_ptr<Window> Window::shared(owner<SDL_Window*> window)
 {
   return std::make_shared<Window>(window);
 }
 
 CENTURION_DEF
-SharedPtr<Window> Window::shared(czstring title, area_i size)
+std::shared_ptr<Window> Window::shared(czstring title, area_i size)
 {
   return std::make_shared<Window>(title, size);
 }
@@ -285,7 +285,7 @@ Uint32 Window::id() const noexcept
 }
 
 CENTURION_DEF
-Optional<int> Window::display_index() const noexcept
+std::optional<int> Window::display_index() const noexcept
 {
   const auto index = SDL_GetWindowDisplayIndex(m_window);
   if (index != -1) {

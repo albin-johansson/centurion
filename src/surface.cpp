@@ -22,7 +22,7 @@ Surface::Surface(czstring file)
 }
 
 CENTURION_DEF
-Surface::Surface(Owner<SDL_Surface*> surface)
+Surface::Surface(owner<SDL_Surface*> surface)
 {
   if (!surface) {
     throw CenturionException{"Cannot create Surface from null SDL_Surface!"};

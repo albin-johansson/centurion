@@ -51,13 +51,13 @@ void BasePath::move(BasePath&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<BasePath> BasePath::unique() noexcept
+std::unique_ptr<BasePath> BasePath::unique() noexcept
 {
   return std::make_unique<BasePath>();
 }
 
 CENTURION_DEF
-SharedPtr<BasePath> BasePath::shared() noexcept
+std::shared_ptr<BasePath> BasePath::shared() noexcept
 {
   return std::make_shared<BasePath>();
 }
@@ -105,13 +105,13 @@ void PrefPath::move(PrefPath&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<PrefPath> PrefPath::unique(czstring org, czstring app) noexcept
+std::unique_ptr<PrefPath> PrefPath::unique(czstring org, czstring app) noexcept
 {
   return std::make_unique<PrefPath>(org, app);
 }
 
 CENTURION_DEF
-SharedPtr<PrefPath> PrefPath::shared(czstring org, czstring app) noexcept
+std::shared_ptr<PrefPath> PrefPath::shared(czstring org, czstring app) noexcept
 {
   return std::make_shared<PrefPath>(org, app);
 }

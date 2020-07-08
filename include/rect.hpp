@@ -90,20 +90,17 @@ class Rect final {
    */
   constexpr Rect() noexcept = default;
 
-  /**
-   * @param x the x-coordinate of the rectangle.
-   * @param y the y-coordinate of the rectangle.
-   * @param width the width of the rectangle.
-   * @param height the height of the rectangle.
-   *
-   * @deprecated this constructor is deprecated in favor of <code>Rect
-   * (Point, TArea)</code> since 4.1.0.
-   *
-   * @since 4.0.0
-   */
-  [[deprecated]] constexpr Rect(T x, T y, T width, T height) noexcept
-      : Rect{{x, y}, {width, height}}
-  {}
+  //  /**
+  //   * @brief Creates a rectangle.
+  //   *
+  //   * @param x the x-coordinate of the rectangle.
+  //   * @param y the y-coordinate of the rectangle.
+  //   * @param width the width of the rectangle.
+  //   * @param height the height of the rectangle.
+  //   *
+  //   * @since 5.0.0
+  //   */
+  //  constexpr Rect(x<T> x, y<T> y, width<T> width, height<T> height) {}
 
   /**
    * @param position the position of the rectangle.
@@ -429,7 +426,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, int>>
+  template <typename U = T, typename = detail::if_same_t<U, int>>
   [[nodiscard]] Rect<T> get_union(const Rect<T>& other) const noexcept
   {
     SDL_Rect result{0, 0, 0, 0};
@@ -472,7 +469,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, int>>
+  template <typename U = T, typename = detail::if_same_t<U, int>>
   [[nodiscard]] constexpr explicit operator SDL_Rect*() noexcept
   {
     return reinterpret_cast<SDL_Rect*>(this);
@@ -492,7 +489,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, int>>
+  template <typename U = T, typename = detail::if_same_t<U, int>>
   [[nodiscard]] constexpr explicit operator const SDL_Rect*() const noexcept
   {
     return reinterpret_cast<const SDL_Rect*>(this);
@@ -512,7 +509,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, float>>
+  template <typename U = T, typename = detail::if_same_t<U, float>>
   [[nodiscard]] constexpr explicit operator SDL_FRect*() noexcept
   {
     return reinterpret_cast<SDL_FRect*>(this);
@@ -532,7 +529,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, float>>
+  template <typename U = T, typename = detail::if_same_t<U, float>>
   [[nodiscard]] constexpr explicit operator const SDL_FRect*() const noexcept
   {
     return reinterpret_cast<const SDL_FRect*>(this);
@@ -551,7 +548,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, int>>
+  template <typename U = T, typename = detail::if_same_t<U, int>>
   [[nodiscard]] constexpr operator SDL_Rect() const noexcept
   {
     return {m_position.x(), m_position.y(), m_size.width, m_size.height};
@@ -570,7 +567,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  template <typename U = T, typename = detail::type_if_same<U, float>>
+  template <typename U = T, typename = detail::if_same_t<U, float>>
   [[nodiscard]] constexpr operator SDL_FRect() const noexcept
   {
     return {m_position.x(), m_position.y(), m_size.width, m_size.height};

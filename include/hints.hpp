@@ -77,7 +77,7 @@ class CRTPHint {
     return Derived::name();
   }
 
-  [[nodiscard]] static Optional<Arg> value() noexcept
+  [[nodiscard]] static std::optional<Arg> value() noexcept
   {
     return Derived::current_value();
   }
@@ -98,7 +98,7 @@ class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
     return std::is_same_v<T, bool>;
   }
 
-  [[nodiscard]] static Optional<bool> current_value() noexcept
+  [[nodiscard]] static std::optional<bool> current_value() noexcept
   {
     return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
   }
@@ -119,7 +119,7 @@ class StringHint : public CRTPHint<StringHint<Hint>, czstring> {
     return std::is_convertible_v<T, czstring>;
   }
 
-  [[nodiscard]] static Optional<czstring> current_value() noexcept
+  [[nodiscard]] static std::optional<czstring> current_value() noexcept
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -142,7 +142,7 @@ class IntHint : public CRTPHint<IntHint<Hint>, int> {
     return std::is_same_v<T, int>;
   }
 
-  [[nodiscard]] static Optional<int> current_value() noexcept
+  [[nodiscard]] static std::optional<int> current_value() noexcept
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -163,7 +163,7 @@ class UnsignedIntHint : public CRTPHint<IntHint<Hint>, unsigned int> {
     return std::is_same_v<T, unsigned int>;
   }
 
-  [[nodiscard]] static Optional<unsigned int> current_value() noexcept
+  [[nodiscard]] static std::optional<unsigned int> current_value() noexcept
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -184,7 +184,7 @@ class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
     return std::is_same_v<T, float>;
   }
 
-  [[nodiscard]] static Optional<float> current_value() noexcept
+  [[nodiscard]] static std::optional<float> current_value() noexcept
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -222,7 +222,7 @@ class RenderDriver final {
 
   static constexpr czstring name() noexcept { return SDL_HINT_RENDER_DRIVER; }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -281,7 +281,7 @@ class AudioResamplingMode final {
     return SDL_HINT_AUDIO_RESAMPLING_MODE;
   }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -331,7 +331,7 @@ class ScaleQuality final {
     return SDL_HINT_RENDER_SCALE_QUALITY;
   }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -386,7 +386,7 @@ class FramebufferAcceleration final {
     return SDL_HINT_FRAMEBUFFER_ACCELERATION;
   }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -449,7 +449,7 @@ class AudioCategory final {
 
   static constexpr czstring name() noexcept { return SDL_HINT_AUDIO_CATEGORY; }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -492,7 +492,7 @@ class WinD3DCompiler final {
     return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
   }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -539,7 +539,7 @@ class WAVERIFFChunkSize final {
     return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
   }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -587,7 +587,7 @@ class WAVETruncation final {
 
   static constexpr czstring name() noexcept { return SDL_HINT_WAVE_TRUNCATION; }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -635,7 +635,7 @@ class WAVEFactChunk final {
 
   static constexpr czstring name() noexcept { return SDL_HINT_WAVE_FACT_CHUNK; }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -686,7 +686,7 @@ class LogicalSizeMode final {
     return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
   }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -735,7 +735,7 @@ class QtWaylandContentOrientation final {
     return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
   }
 
-  static Optional<Value> current_value() noexcept
+  static std::optional<Value> current_value() noexcept
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -1092,7 +1092,7 @@ bool set_hint(const Value& value) noexcept
 
 /**
  * Returns the current value of the specified hint. This method returns an
- * <code>Optional</code> of the hint value type.
+ * <code>std::optional</code> of the hint value type.
  *
  * @par Examples
  * Many hints aren't actually set by default, so if the specified hint

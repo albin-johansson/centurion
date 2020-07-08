@@ -4,6 +4,7 @@ project(CenturionSrcProj)
 set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/centurion_cfg.hpp
         ${CTN_INCLUDE_DIR}/centurion_fwd.hpp
+        ${CTN_INCLUDE_DIR}/centurion_types.hpp
         ${CTN_INCLUDE_DIR}/centurion_docs.hpp
         ${CTN_INCLUDE_DIR}/window.hpp
         ${CTN_INCLUDE_DIR}/font.hpp
@@ -136,8 +137,12 @@ set(GSL_SOURCES
         ${CTN_LIBRARY_DIR}/microsoft/gsl/string_span)
 centurion_add_header_only_lib(libGSL "${CTN_LIBRARY_DIR}/microsoft" ${GSL_SOURCES})
 
-centurion_add_header_only_lib(libOptional ${CTN_LIBRARY_DIR}/optional
-        ${CTN_LIBRARY_DIR}/optional/optional.hpp)
+set(NAMED_TYPE_SOURCES
+        ${CTN_LIBRARY_DIR}/namedtype/named_type.hpp
+        ${CTN_LIBRARY_DIR}/namedtype/named_type_impl.hpp
+        ${CTN_LIBRARY_DIR}/namedtype/crtp.hpp
+        ${CTN_LIBRARY_DIR}/namedtype/underlying_functionalities.hpp)
+centurion_add_header_only_lib(libNamedType ${CTN_LIBRARY_DIR}/namedtype ${NAMED_TYPE_SOURCES})
 
 target_include_directories(${CENTURION_LIB_TARGET}
         PRIVATE ${CTN_INCLUDE_DIR}
@@ -150,7 +155,7 @@ target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
         PUBLIC libGSL
-        PUBLIC libOptional)
+        PUBLIC libNamedType)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE

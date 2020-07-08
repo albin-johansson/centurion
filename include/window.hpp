@@ -83,7 +83,7 @@ class Window final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 4.0.0
    */
-  CENTURION_API explicit Window(Owner<SDL_Window*> window);
+  CENTURION_API explicit Window(owner<SDL_Window*> window);
 
   /**
    * Creates a window instance. The window will be hidden by default.
@@ -129,7 +129,7 @@ class Window final {
    * @throws CenturionException if the window cannot be created.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<Window> unique();
+  [[nodiscard]] CENTURION_API static std::unique_ptr<Window> unique();
 
   /**
    * Creates and returns a unique pointer to a window instance. The created
@@ -141,8 +141,8 @@ class Window final {
    * cannot be created.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<Window> unique(
-      Owner<SDL_Window*> window);
+  [[nodiscard]] CENTURION_API static std::unique_ptr<Window> unique(
+      owner<SDL_Window*> window);
 
   /**
    * Creates and returns a unique pointer to a window instance.
@@ -156,10 +156,9 @@ class Window final {
    * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<Window> unique(czstring title,
-                                                              area_i size = {
-                                                                  800,
-                                                                  600});
+  [[nodiscard]] CENTURION_API static std::unique_ptr<Window> unique(
+      czstring title,
+      area_i size = {800, 600});
 
   /**
    * Creates and returns a shared pointer to a Window instance.
@@ -168,7 +167,7 @@ class Window final {
    * @throws CenturionException if the window cannot be created.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<Window> shared();
+  [[nodiscard]] CENTURION_API static std::shared_ptr<Window> shared();
 
   /**
    * Creates and returns a shared pointer to a window instance. The created
@@ -179,8 +178,8 @@ class Window final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<Window> shared(
-      Owner<SDL_Window*> window);
+  [[nodiscard]] CENTURION_API static std::shared_ptr<Window> shared(
+      owner<SDL_Window*> window);
 
   /**
    * Creates and returns a shared pointer to a window instance.
@@ -194,10 +193,9 @@ class Window final {
    * greater than zero or if the window cannot be created.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<Window> shared(czstring title,
-                                                              area_i size = {
-                                                                  800,
-                                                                  600});
+  [[nodiscard]] CENTURION_API static std::shared_ptr<Window> shared(
+      czstring title,
+      area_i size = {800, 600});
 
   /**
    * Makes the window visible.
@@ -482,7 +480,7 @@ class Window final {
    * display index cannot be obtained.
    * @since 3.1.0
    */
-  [[nodiscard]] CENTURION_API Optional<int> display_index() const noexcept;
+  [[nodiscard]] CENTURION_API std::optional<int> display_index() const noexcept;
 
   /**
    * Returns the current position of the window. Windows are centered by

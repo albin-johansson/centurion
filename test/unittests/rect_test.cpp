@@ -16,19 +16,25 @@ TEST_CASE("IRect()", "[Rect]")
   CHECK(rect.height() == 0);
 }
 
-TEST_CASE("IRect(int, int, int, int)", "[Rect]")
-{
-  const auto x = 124;
-  const auto y = 2145;
-  const auto w = -124;
-  const auto h = 912;
-  const IRect rect{{x, y}, {w, h}};
-
-  CHECK(rect.x() == x);
-  CHECK(rect.y() == y);
-  CHECK(rect.width() == w);
-  CHECK(rect.height() == h);
-}
+// TEST_CASE("IRect(x, y, width, height)", "[Rect]")
+//{
+//  using namespace literals;
+//
+//  const x_i x{124};
+//  const y_i y{2145};
+//  const width_i w{-124};
+//  const height_i h{912};
+//
+//  const IRect rect{x, y, w, h};
+//
+//  IRect{1_xi, 2_yi, 100_wi, 100_hi};
+//  FRect{1.0_xf, 2.0_yf, 100.0_wf, 100.0_hf};
+//
+//  //  CHECK(rect.x() == *x);
+//  //  CHECK(rect.y() == y);
+//  //  CHECK(rect.width() == w);
+//  //  CHECK(rect.height() == h);
+//}
 
 TEST_CASE("IRect copy ctor", "[Rect]")
 {

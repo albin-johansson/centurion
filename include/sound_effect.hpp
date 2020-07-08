@@ -92,7 +92,7 @@ class SoundEffect final {
    * @throws CenturionException if the audio file cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<SoundEffect> unique(
+  [[nodiscard]] CENTURION_API static std::unique_ptr<SoundEffect> unique(
       czstring file);
 
   /**
@@ -103,7 +103,7 @@ class SoundEffect final {
    * @throws CenturionException if the audio file cannot be loaded.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<SoundEffect> shared(
+  [[nodiscard]] CENTURION_API static std::shared_ptr<SoundEffect> shared(
       czstring file);
 
   /**

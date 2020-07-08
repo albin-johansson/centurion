@@ -56,7 +56,7 @@ class KeyState final {
    * @return a unique pointer to a KeyState instance.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<KeyState> unique();
+  [[nodiscard]] CENTURION_API static std::unique_ptr<KeyState> unique();
 
   /**
    * Creates and returns a shared pointer to a KeyState instance.
@@ -64,7 +64,7 @@ class KeyState final {
    * @return a shared pointer to a KeyState instance.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<KeyState> shared();
+  [[nodiscard]] CENTURION_API static std::shared_ptr<KeyState> shared();
 
   /**
    * Updates the state of the key state object. Note! SDL_PumpEvents isn't

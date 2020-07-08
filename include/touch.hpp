@@ -163,7 +163,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API Optional<TouchID> get_device(int index) noexcept;
+[[nodiscard]] CENTURION_API std::optional<TouchID> get_device(
+    int index) noexcept;
 
 /**
  * @brief Returns the type of a touch device.
@@ -198,8 +199,9 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API Optional<SDL_Finger> get_finger(TouchID id,
-                                                            int index) noexcept;
+[[nodiscard]] CENTURION_API std::optional<SDL_Finger> get_finger(
+    TouchID id,
+    int index) noexcept;
 
 /**
  * @brief Returns the device ID used for mouse events simulated with touch

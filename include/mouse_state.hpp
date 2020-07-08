@@ -50,7 +50,7 @@ class MouseState final {
    * @return a unique pointer to a MouseState instance.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<MouseState> unique();
+  [[nodiscard]] CENTURION_API static std::unique_ptr<MouseState> unique();
 
   /**
    * Creates and returns a shared pointer to a MouseState instance.
@@ -58,7 +58,7 @@ class MouseState final {
    * @return a shared pointer to a MouseState instance.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<MouseState> shared();
+  [[nodiscard]] CENTURION_API static std::shared_ptr<MouseState> shared();
 
   /**
    * Updates the mouse state. The window width and height will be adjusted to

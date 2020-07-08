@@ -107,7 +107,7 @@ int MessageBox::show(SDL_Window* window)
 
   const auto buttons = create_buttons();
 
-  Optional<SDL_MessageBoxColorScheme> optScheme;
+  std::optional<SDL_MessageBoxColorScheme> optScheme;
   if (m_colorScheme) {
     optScheme.emplace(m_colorScheme->convert());
   }
@@ -168,7 +168,7 @@ void MessageBox::set_button_order(ButtonOrder order) noexcept
 }
 
 CENTURION_DEF
-void MessageBox::set_color_scheme(Optional<ColorScheme> scheme) noexcept
+void MessageBox::set_color_scheme(std::optional<ColorScheme> scheme) noexcept
 {
   this->m_colorScheme = scheme;
 }

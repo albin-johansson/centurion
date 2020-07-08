@@ -107,7 +107,7 @@
  * Centurion component returns <code>T*</code>, then you <b>shouldn't</b> claim
  * ownership of that pointer. Likewise, if a Centurion method takes a
  * <code>T*</code> as its parameter, then the method doesn't claim ownership
- * of the pointer. See the <code>Owner</code> template for explicit markup of
+ * of the pointer. See the <code>owner</code> template for explicit markup of
  * ownership.
  *
  * @subsection strings Strings

@@ -54,7 +54,8 @@
 //   * @throws CenturionException if the supplied renderer is null.
 //   * @since 3.0.0
 //   */
-//  CENTURION_API explicit TextureLoader(const SharedPtr<Renderer>& renderer);
+//  CENTURION_API explicit TextureLoader(const std::shared_ptr<Renderer>&
+//  renderer);
 //
 //  CENTURION_API ~TextureLoader() noexcept;
 //
@@ -67,7 +68,7 @@
 //   * @throws CenturionException if the texture cannot be loaded.
 //   * @since 3.0.0
 //   */
-//  [[nodiscard]] CENTURION_API UniquePtr<Texture> unique_img(
+//  [[nodiscard]] CENTURION_API std::unique_ptr<Texture> unique_img(
 //      CZString file) const;
 //
 //  /**
@@ -81,7 +82,7 @@
 //   * @throws CenturionException if the texture cannot be created.
 //   * @since 3.0.0
 //   */
-//  [[nodiscard]] CENTURION_API UniquePtr<Texture>
+//  [[nodiscard]] CENTURION_API std::unique_ptr<Texture>
 //  unique_img(PixelFormat format, Texture::Access access, area_i size) const;
 //
 //  /**
@@ -93,7 +94,7 @@
 //   * @throws CenturionException if the texture cannot be loaded.
 //   * @since 3.0.0
 //   */
-//  [[nodiscard]] CENTURION_API SharedPtr<Texture> shared_img(
+//  [[nodiscard]] CENTURION_API std::shared_ptr<Texture> shared_img(
 //      CZString file) const;
 //
 //  /**
@@ -107,11 +108,11 @@
 //   * @throws CenturionException if the texture cannot be created.
 //   * @since 3.0.0
 //   */
-//  [[nodiscard]] CENTURION_API SharedPtr<Texture>
+//  [[nodiscard]] CENTURION_API std::shared_ptr<Texture>
 //  shared_img(PixelFormat format, Texture::Access access, area_i size) const;
 //
 // private:
-//  SharedPtr<Renderer> m_renderer;
+//  std::shared_ptr<Renderer> m_renderer;
 //};
 //
 // static_assert(std::is_final_v<TextureLoader>);

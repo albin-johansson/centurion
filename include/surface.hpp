@@ -60,7 +60,7 @@ class Surface final {
    * @throws CenturionException if the supplied pointer is null.
    * @since 4.0.0
    */
-  CENTURION_API explicit Surface(Owner<SDL_Surface*> surface);
+  CENTURION_API explicit Surface(owner<SDL_Surface*> surface);
 
   /**
    * Creates a copy of the supplied surface.

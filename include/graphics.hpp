@@ -38,6 +38,7 @@
 #include <SDL_render.h>
 #include <SDL_video.h>
 
+#include <optional>
 #include <type_traits>
 
 #include "blend_mode.hpp"
@@ -609,7 +610,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  void set_clip(Optional<IRect> area) noexcept;
+  void set_clip(std::optional<IRect> area) noexcept;
 
   /**
    * @brief Sets the viewport that will be used by the renderer.
@@ -745,7 +746,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto clip() const noexcept -> Optional<IRect>;
+  [[nodiscard]] auto clip() const noexcept -> std::optional<IRect>;
 
   /**
    * @brief Returns information about the renderer.
@@ -754,7 +755,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto info() const noexcept -> Optional<SDL_RendererInfo>;
+  [[nodiscard]] auto info() const noexcept -> std::optional<SDL_RendererInfo>;
 
   /**
    * @brief Returns the output width of the renderer.
@@ -1108,7 +1109,7 @@ class basic_renderer final {
    * @since 4.0.0
    */
   [[nodiscard]] static auto driver_info(int index) noexcept
-      -> Optional<SDL_RendererInfo>;
+      -> std::optional<SDL_RendererInfo>;
 
  private:
   SDL_Renderer* m_renderer = nullptr;
@@ -2354,7 +2355,7 @@ void basic_renderer<FontKey>::set_color(const Color& color) noexcept
 }
 
 template <typename FontKey>
-void basic_renderer<FontKey>::set_clip(Optional<IRect> area) noexcept
+void basic_renderer<FontKey>::set_clip(std::optional<IRect> area) noexcept
 {
   if (area) {
     SDL_RenderSetClipRect(m_renderer, static_cast<const SDL_Rect*>(*area));
@@ -2449,7 +2450,7 @@ auto basic_renderer<FontKey>::y_scale() const noexcept -> float
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::clip() const noexcept -> Optional<IRect>
+auto basic_renderer<FontKey>::clip() const noexcept -> std::optional<IRect>
 {
   IRect rect;
   SDL_RenderGetClipRect(m_renderer, static_cast<SDL_Rect*>(rect));
@@ -2462,7 +2463,7 @@ auto basic_renderer<FontKey>::clip() const noexcept -> Optional<IRect>
 
 template <typename FontKey>
 auto basic_renderer<FontKey>::info() const noexcept
-    -> Optional<SDL_RendererInfo>
+    -> std::optional<SDL_RendererInfo>
 {
   SDL_RendererInfo info;
   const auto result = SDL_GetRendererInfo(m_renderer, &info);
@@ -2682,7 +2683,7 @@ auto basic_renderer<FontKey>::video_drivers() noexcept -> int
 
 template <typename FontKey>
 auto basic_renderer<FontKey>::driver_info(int index) noexcept
-    -> Optional<SDL_RendererInfo>
+    -> std::optional<SDL_RendererInfo>
 {
   SDL_RendererInfo info;
   const auto result = SDL_GetRenderDriverInfo(index, &info);

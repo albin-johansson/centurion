@@ -23,7 +23,7 @@ Joystick::Joystick(int deviceIndex)
 }
 
 CENTURION_DEF
-Joystick::Joystick(Owner<SDL_Joystick*> joystick) : m_joystick{joystick}
+Joystick::Joystick(owner<SDL_Joystick*> joystick) : m_joystick{joystick}
 {
   if (!joystick) {
     throw CenturionException{"Cannot create Joystick from null SDL_Joystick!"};
@@ -69,25 +69,25 @@ void Joystick::destroy() noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Joystick> Joystick::unique(int deviceIndex)
+std::unique_ptr<Joystick> Joystick::unique(int deviceIndex)
 {
   return std::make_unique<Joystick>(deviceIndex);
 }
 
 CENTURION_DEF
-UniquePtr<Joystick> Joystick::unique(SDL_Joystick* joystick)
+std::unique_ptr<Joystick> Joystick::unique(SDL_Joystick* joystick)
 {
   return std::make_unique<Joystick>(joystick);
 }
 
 CENTURION_DEF
-SharedPtr<Joystick> Joystick::shared(int deviceIndex)
+std::shared_ptr<Joystick> Joystick::shared(int deviceIndex)
 {
   return std::make_shared<Joystick>(deviceIndex);
 }
 
 CENTURION_DEF
-SharedPtr<Joystick> Joystick::shared(SDL_Joystick* joystick)
+std::shared_ptr<Joystick> Joystick::shared(SDL_Joystick* joystick)
 {
   return std::make_shared<Joystick>(joystick);
 }
@@ -135,7 +135,7 @@ SDL_Joystick* Joystick::from_player_index(int playerIndex) noexcept
 }
 
 CENTURION_DEF
-Optional<int> Joystick::amount() noexcept
+std::optional<int> Joystick::amount() noexcept
 {
   const auto result = SDL_NumJoysticks();
   if (result < 0) {
@@ -152,7 +152,7 @@ SDL_JoystickGUID Joystick::guid(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-Optional<int> Joystick::player_index(int deviceIndex) noexcept
+std::optional<int> Joystick::player_index(int deviceIndex) noexcept
 {
   const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
   if (index == -1) {
@@ -163,7 +163,7 @@ Optional<int> Joystick::player_index(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-Optional<Uint16> Joystick::vendor(int deviceIndex) noexcept
+std::optional<Uint16> Joystick::vendor(int deviceIndex) noexcept
 {
   const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
   if (vendor == 0) {
@@ -174,7 +174,7 @@ Optional<Uint16> Joystick::vendor(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-Optional<Uint16> Joystick::product(int deviceIndex) noexcept
+std::optional<Uint16> Joystick::product(int deviceIndex) noexcept
 {
   const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
   if (product == 0) {
@@ -185,7 +185,7 @@ Optional<Uint16> Joystick::product(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-Optional<Uint16> Joystick::product_version(int deviceIndex) noexcept
+std::optional<Uint16> Joystick::product_version(int deviceIndex) noexcept
 {
   const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
   if (version == 0) {
@@ -202,7 +202,7 @@ Joystick::Type Joystick::type(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-Optional<SDL_JoystickID> Joystick::instance_id(int deviceIndex) noexcept
+std::optional<SDL_JoystickID> Joystick::instance_id(int deviceIndex) noexcept
 {
   const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
   if (id == -1) {
@@ -238,7 +238,7 @@ void Joystick::set_player_index(int index) noexcept
 }
 
 CENTURION_DEF
-Optional<int> Joystick::player_index() const noexcept
+std::optional<int> Joystick::player_index() const noexcept
 {
   const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
   if (index == -1) {
@@ -255,7 +255,7 @@ Joystick::Type Joystick::type() const noexcept
 }
 
 CENTURION_DEF
-Optional<Uint16> Joystick::vendor() const noexcept
+std::optional<Uint16> Joystick::vendor() const noexcept
 {
   const auto vendor = SDL_JoystickGetVendor(m_joystick);
   if (vendor == 0) {
@@ -266,7 +266,7 @@ Optional<Uint16> Joystick::vendor() const noexcept
 }
 
 CENTURION_DEF
-Optional<Uint16> Joystick::product() const noexcept
+std::optional<Uint16> Joystick::product() const noexcept
 {
   const auto product = SDL_JoystickGetProduct(m_joystick);
   if (product == 0) {
@@ -277,7 +277,7 @@ Optional<Uint16> Joystick::product() const noexcept
 }
 
 CENTURION_DEF
-Optional<Uint16> Joystick::product_version() const noexcept
+std::optional<Uint16> Joystick::product_version() const noexcept
 {
   const auto version = SDL_JoystickGetProductVersion(m_joystick);
   if (version == 0) {
@@ -288,7 +288,7 @@ Optional<Uint16> Joystick::product_version() const noexcept
 }
 
 CENTURION_DEF
-Optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
+std::optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
     int ball) const noexcept
 {
   BallAxisChange change{};
@@ -302,7 +302,7 @@ Optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
 }
 
 CENTURION_DEF
-Optional<Sint16> Joystick::axis_pos(unsigned int axis) const noexcept
+std::optional<Sint16> Joystick::axis_pos(unsigned int axis) const noexcept
 {
   const auto result = SDL_JoystickGetAxis(m_joystick, static_cast<int>(axis));
   if (result == 0) {
@@ -313,7 +313,8 @@ Optional<Sint16> Joystick::axis_pos(unsigned int axis) const noexcept
 }
 
 CENTURION_DEF
-Optional<Sint16> Joystick::axis_initial_state(unsigned int axis) const noexcept
+std::optional<Sint16> Joystick::axis_initial_state(
+    unsigned int axis) const noexcept
 {
   Sint16 state{};
   const auto hadInitialState = SDL_JoystickGetAxisInitialState(

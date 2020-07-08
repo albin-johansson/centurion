@@ -78,13 +78,13 @@ void Texture::unlock() noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Texture> Texture::unique(gsl::owner<SDL_Texture*> texture)
+std::unique_ptr<Texture> Texture::unique(gsl::owner<SDL_Texture*> texture)
 {
   return std::make_unique<Texture>(texture);
 }
 
 CENTURION_DEF
-SharedPtr<Texture> Texture::shared(gsl::owner<SDL_Texture*> texture)
+std::shared_ptr<Texture> Texture::shared(gsl::owner<SDL_Texture*> texture)
 {
   return std::make_shared<Texture>(texture);
 }

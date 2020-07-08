@@ -126,7 +126,7 @@ TEST_CASE("Window::shared", "[Window]")
 
   SECTION("Window::shared(Owner<SDL_Window*>)")
   {
-    auto* bad = static_cast<ctn::Owner<SDL_Window*>>(nullptr);
+    auto* bad = static_cast<ctn::owner<SDL_Window*>>(nullptr);
     CHECK_THROWS_AS(ctn::Window::shared(bad), ctn::CenturionException);
 
     auto* good = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);

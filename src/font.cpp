@@ -71,13 +71,13 @@ void Font::move(Font&& other) noexcept
 }
 
 CENTURION_DEF
-UniquePtr<Font> Font::unique(czstring file, int size)
+std::unique_ptr<Font> Font::unique(czstring file, int size)
 {
   return std::make_unique<Font>(file, size);
 }
 
 CENTURION_DEF
-SharedPtr<Font> Font::shared(czstring file, int size)
+std::shared_ptr<Font> Font::shared(czstring file, int size)
 {
   return std::make_shared<Font>(file, size);
 }
@@ -212,7 +212,7 @@ bool Font::is_glyph_provided(Uint16 glyph) const noexcept
 }
 
 CENTURION_DEF
-Optional<GlyphMetrics> Font::glyph_metrics(Uint16 glyph) const noexcept
+std::optional<GlyphMetrics> Font::glyph_metrics(Uint16 glyph) const noexcept
 {
   GlyphMetrics metrics;
   const auto result = TTF_GlyphMetrics(m_font,

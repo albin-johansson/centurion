@@ -78,7 +78,8 @@ class BasePath final {
    * @return a unique pointer to an BasePath instance.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<BasePath> unique() noexcept;
+  [[nodiscard]] CENTURION_API static std::unique_ptr<BasePath>
+  unique() noexcept;
 
   /**
    * Creates and returns a shared pointer to an BasePath object that represents
@@ -89,7 +90,8 @@ class BasePath final {
    * @return a shared pointer to an BasePath instance.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<BasePath> shared() noexcept;
+  [[nodiscard]] CENTURION_API static std::shared_ptr<BasePath>
+  shared() noexcept;
 
   /**
    * Indicates whether or not there is a non-null string in the BasePath object.
@@ -179,7 +181,7 @@ class PrefPath final {
    * @return a unique pointer to a PrefPath instance.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static UniquePtr<PrefPath> unique(
+  [[nodiscard]] CENTURION_API static std::unique_ptr<PrefPath> unique(
       czstring org,
       czstring app) noexcept;
 
@@ -192,7 +194,7 @@ class PrefPath final {
    * @return a shared pointer to a PrefPath instance.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static SharedPtr<PrefPath> shared(
+  [[nodiscard]] CENTURION_API static std::shared_ptr<PrefPath> shared(
       czstring org,
       czstring app) noexcept;
 

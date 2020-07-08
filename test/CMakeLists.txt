@@ -121,7 +121,7 @@ target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_TTF_LIBRARIES}
         PUBLIC ${CENTURION_LIBRARIES}
         PUBLIC libGSL
-        PUBLIC libOptional
+        PUBLIC libNamedType
         PUBLIC Catch2)
 
 catch_discover_tests(${CENTURION_TEST_TARGET})

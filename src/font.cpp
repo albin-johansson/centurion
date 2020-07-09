@@ -8,8 +8,6 @@
 
 namespace centurion {
 
-/* Any sufficiently advanced technology is indistinguishable from magic. */
-
 CENTURION_DEF
 Font::Font(czstring file, int size) : m_size{size}
 {
@@ -42,7 +40,7 @@ Font::~Font() noexcept
 }
 
 CENTURION_DEF
-Font& Font::operator=(Font&& other) noexcept
+auto Font::operator=(Font&& other) noexcept -> Font&
 {
   if (this != &other) {
     move(std::move(other));
@@ -71,13 +69,13 @@ void Font::move(Font&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Font> Font::unique(czstring file, int size)
+auto Font::unique(czstring file, int size) -> std::unique_ptr<Font>
 {
   return std::make_unique<Font>(file, size);
 }
 
 CENTURION_DEF
-std::shared_ptr<Font> Font::shared(czstring file, int size)
+auto Font::shared(czstring file, int size) -> std::shared_ptr<Font>
 {
   return std::make_shared<Font>(file, size);
 }
@@ -162,43 +160,43 @@ void Font::set_kerning(bool kerning) noexcept
 }
 
 CENTURION_DEF
-bool Font::bold() const noexcept
+auto Font::bold() const noexcept -> bool
 {
   return m_style & TTF_STYLE_BOLD;
 }
 
 CENTURION_DEF
-bool Font::italic() const noexcept
+auto Font::italic() const noexcept -> bool
 {
   return m_style & TTF_STYLE_ITALIC;
 }
 
 CENTURION_DEF
-bool Font::underlined() const noexcept
+auto Font::underlined() const noexcept -> bool
 {
   return m_style & TTF_STYLE_UNDERLINE;
 }
 
 CENTURION_DEF
-bool Font::strikethrough() const noexcept
+auto Font::strikethrough() const noexcept -> bool
 {
   return m_style & TTF_STYLE_STRIKETHROUGH;
 }
 
 CENTURION_DEF
-bool Font::outlined() const noexcept
+auto Font::outlined() const noexcept -> bool
 {
   return TTF_GetFontOutline(m_font);
 }
 
 CENTURION_DEF
-bool Font::is_fixed_width() const noexcept
+auto Font::is_fixed_width() const noexcept -> bool
 {
   return TTF_FontFaceIsFixedWidth(m_font);
 }
 
 CENTURION_DEF
-int Font::kerning_amount(u16 firstGlyph, u16 secondGlyph) const noexcept
+auto Font::kerning_amount(u16 firstGlyph, u16 secondGlyph) const noexcept -> int
 {
   const auto amount =
       TTF_GetFontKerningSizeGlyphs(m_font, firstGlyph, secondGlyph);
@@ -206,13 +204,14 @@ int Font::kerning_amount(u16 firstGlyph, u16 secondGlyph) const noexcept
 }
 
 CENTURION_DEF
-bool Font::is_glyph_provided(u16 glyph) const noexcept
+auto Font::is_glyph_provided(u16 glyph) const noexcept -> bool
 {
   return TTF_GlyphIsProvided(m_font, glyph);
 }
 
 CENTURION_DEF
-std::optional<GlyphMetrics> Font::glyph_metrics(u16 glyph) const noexcept
+auto Font::glyph_metrics(u16 glyph) const noexcept
+    -> std::optional<GlyphMetrics>
 {
   GlyphMetrics metrics;
   const auto result = TTF_GlyphMetrics(m_font,
@@ -230,7 +229,7 @@ std::optional<GlyphMetrics> Font::glyph_metrics(u16 glyph) const noexcept
 }
 
 CENTURION_DEF
-int Font::string_width(czstring s) const noexcept
+auto Font::string_width(czstring s) const noexcept -> int
 {
   int width = 0;
   TTF_SizeText(m_font, s, &width, nullptr);
@@ -238,7 +237,7 @@ int Font::string_width(czstring s) const noexcept
 }
 
 CENTURION_DEF
-int Font::string_height(czstring s) const noexcept
+auto Font::string_height(czstring s) const noexcept -> int
 {
   int height = 0;
   TTF_SizeText(m_font, s, nullptr, &height);
@@ -246,7 +245,7 @@ int Font::string_height(czstring s) const noexcept
 }
 
 CENTURION_DEF
-area_i Font::string_size(czstring s) const noexcept
+auto Font::string_size(czstring s) const noexcept -> area_i
 {
   int width = 0;
   int height = 0;
@@ -255,61 +254,61 @@ area_i Font::string_size(czstring s) const noexcept
 }
 
 CENTURION_DEF
-int Font::height() const noexcept
+auto Font::height() const noexcept -> int
 {
   return TTF_FontHeight(m_font);
 }
 
 CENTURION_DEF
-int Font::descent() const noexcept
+auto Font::descent() const noexcept -> int
 {
   return TTF_FontDescent(m_font);
 }
 
 CENTURION_DEF
-int Font::ascent() const noexcept
+auto Font::ascent() const noexcept -> int
 {
   return TTF_FontAscent(m_font);
 }
 
 CENTURION_DEF
-int Font::line_skip() const noexcept
+auto Font::line_skip() const noexcept -> int
 {
   return TTF_FontLineSkip(m_font);
 }
 
 CENTURION_DEF
-int Font::font_faces() const noexcept
+auto Font::font_faces() const noexcept -> int
 {
   return static_cast<int>(TTF_FontFaces(m_font));
 }
 
 CENTURION_DEF
-Font::Hint Font::font_hinting() const noexcept
+auto Font::font_hinting() const noexcept -> Font::Hint
 {
   return static_cast<Font::Hint>(TTF_GetFontHinting(m_font));
 }
 
 CENTURION_DEF
-bool Font::kerning() const noexcept
+auto Font::kerning() const noexcept -> bool
 {
   return TTF_GetFontKerning(m_font);
 }
 
 CENTURION_DEF
-czstring Font::family_name() const noexcept
+auto Font::family_name() const noexcept -> czstring
 {
   return TTF_FontFaceFamilyName(m_font);
 }
 
 CENTURION_DEF
-czstring Font::style_name() const noexcept
+auto Font::style_name() const noexcept -> czstring
 {
   return TTF_FontFaceStyleName(m_font);
 }
 
 CENTURION_DEF
-SDL_version Font::ttf_version() noexcept
+auto Font::ttf_version() noexcept -> SDL_version
 {
   SDL_version version;
   SDL_TTF_VERSION(&version);
@@ -317,7 +316,7 @@ SDL_version Font::ttf_version() noexcept
 }
 
 CENTURION_DEF
-std::string Font::to_string() const
+auto Font::to_string() const -> std::string
 {
   const auto idStr = "Font@" + detail::address_of(this);
   const auto nameStr = " | Name: " + std::string{family_name()};

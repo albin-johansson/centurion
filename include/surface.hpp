@@ -156,7 +156,7 @@ class Surface final {
    * @return the blend mode that the surface uses.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API blend_mode blend_mode() const noexcept;
+  [[nodiscard]] CENTURION_API enum blend_mode blend_mode() const noexcept;
 
   // TODO add
   //  /**

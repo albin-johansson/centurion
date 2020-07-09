@@ -58,147 +58,19 @@
 namespace centurion {
 
 /**
- * @class basic_renderer
- * @brief Provides the rendering API.
+ * @class renderer_base
  *
- * @details This class provides the general API for hardware-accelerated
- * rendering. It's recommended to not use the `basic_renderer` name directly,
- * use a custom typedef or the provided `renderer` alias.
+ * @brief Provides the base implementation of renderers.
  *
- * @par Rendering textures
- * There are quite a number of methods provided for rendering `Texture`
- * instances. There are two overload sets, `render` and `render_t`. These
- * methods can be used with either integer or floating-point accuracy. The
- * recommended general-purpose method for rendering textures is
- * `render(const Texture&, const rect_i&, const basic_rect<T>&)`.
+ * @since 5.0.0
  *
- * @par Translation
- * Most games utilize some sort of viewport of what the player can see of the
- * game world. If you're game features some sort of movable anchor for the
- * rendering, then you need to translate the positions of the various game
- * objects when rendering. This class provides a simple API for dealing with
- * this easily. Specify the translation viewport with
- * `set_translation_viewport(const rect_f&)`, and use the rendering methods
- * that feature the `_t` suffix in their names, such as `render_t`, to
- * automatically render at translated positions.
- *
- * @par Font support
- * When rendering text, it's often needed to pass around various font
- * instances. Subsequently, this class provides an API for storing shared
- * pointers to `Font` instances. The fonts are stored in an internal map, and
- * it's possible to specify what you want to use as keys for the fonts. The
- * `renderer` alias uses `std::string` for keys.
- *
- * @par Rendering text
- * There is no method for directly rendering text. Instead, use one of the
- * `text_` methods for creating a texture that contains a rendered piece
- * of text, and render that texture when needed. Naturally, you should cache
- * these textures instead of creating and destroying them in your game loop.
- *
- * @par Examples
- * Below is an example of a typical rendering method.
- * @code{.cpp}
- * #include <centurion_as_ctn.hpp>
- * #include <graphics.hpp>
- *
- * void draw(ctn::renderer& renderer)
- * {
- *   renderer.clear_with(ctn::color::black); // clear rendering target
- *
- *   // Miscellaneous rendering calls...
- *
- *   renderer.present(); // apply the rendering operations to the target
- * }
- * @endcode
- *
- * @tparam FontKey the key type used when storing associated fonts in a map.
- *
- * @since 3.0.0
- *
- * @see `SDL_Renderer`
+ * @see basic_renderer
+ * @see renderer_view
  *
  * @headerfile graphics.hpp
  */
-template <typename FontKey>
-class basic_renderer final {
+class renderer_base {
  public:
-  /**
-   * @brief Creates a renderer based on the supplied `SDL_Renderer`.
-   *
-   * @param renderer a pointer to the `SDL_Renderer` that will be used by the
-   * renderer.
-   *
-   * @throws centurion_exception if the supplied pointer is null.
-   *
-   * @since 3.0.0
-   */
-  explicit basic_renderer(gsl::owner<SDL_Renderer*> renderer);
-
-  /**
-   * @brief Creates a renderer based on the supplied window.
-   *
-   * @details By default, the internal renderer will be created using the
-   * `SDL_RENDERER_ACCELERATED` and `SDL_RENDERER_PRESENTVSYNC` flags.
-   *
-   * @param window the associated window instance.
-   * @param flags the renderer flags that will be used.
-   *
-   * @throws centurion_exception if something goes wrong when creating the
-   * Renderer.
-   *
-   * @since 4.0.0
-   */
-  explicit basic_renderer(const Window& window,
-                          SDL_RendererFlags flags = defaultFlags);
-
-  /**
-   * @brief Creates a renderer by moving the supplied renderer into the new one.
-   *
-   * @param other the renderer that will be moved.
-   */
-  basic_renderer(basic_renderer&& other) noexcept;
-
-  basic_renderer(const basic_renderer&) = delete;
-
-  /**
-   * @brief Moves the supplied renderer into this renderer.
-   *
-   * @param other the renderer that will be moved.
-   *
-   * @return the renderer that claimed the supplied renderer.
-   */
-  auto operator=(basic_renderer&& other) noexcept -> basic_renderer&;
-
-  auto operator=(const basic_renderer&) -> basic_renderer& = delete;
-
-  ~basic_renderer() noexcept;
-
-  /**
-   * @copydoc basic_renderer(gsl::owner<SDL_Renderer*>)
-   */
-  [[nodiscard]] static auto unique(gsl::owner<SDL_Renderer*> renderer)
-      -> std::unique_ptr<basic_renderer>;
-
-  /**
-   * @copydoc basic_renderer(const Window&, SDL_RendererFlags)
-   */
-  [[nodiscard]] static auto unique(const Window& window,
-                                   SDL_RendererFlags flags = defaultFlags)
-      -> std::unique_ptr<basic_renderer>;
-
-  /**
-   * @copydoc basic_renderer(gsl::owner<SDL_Renderer*>)
-   */
-  [[nodiscard]] static auto shared(gsl::owner<SDL_Renderer*> renderer)
-      -> std::shared_ptr<basic_renderer>;
-
-  /**
-   * @copydoc basic_renderer(const Window&, SDL_RendererFlags)
-   */
-  [[nodiscard]] static auto shared(const Window& window,
-                                   SDL_RendererFlags flags = defaultFlags)
-      -> std::shared_ptr<basic_renderer>;
-
   /**
    * @brief Clears the rendering target with the currently selected color.
    *
@@ -225,31 +97,6 @@ class basic_renderer final {
   void present() noexcept;
 
   /**
-   * @brief Adds a font to the renderer.
-   *
-   * @details This method has no effect if the renderer already has a font
-   * associated with the specified key or if the supplied font is null.
-   *
-   * @param key the key that will be associated with the font.
-   * @param font the font that will be added, can safely be null.
-   *
-   * @since 5.0.0
-   */
-  void add_font(const FontKey& key, const std::shared_ptr<Font>& font);
-
-  /**
-   * @brief Removes the font associated with the specified key.
-   *
-   * @details This method has no effect if there is no font associated with the
-   * specified key.
-   *
-   * @param key the key associated with the font that will be removed.
-   *
-   * @since 5.0.0
-   */
-  void remove_font(const FontKey& key);
-
-  /**
    * @brief Renders the outline of a rectangle in the currently selected color.
    *
    * @tparam T The type of the rectangle coordinates. Must be either `int` or
@@ -274,38 +121,6 @@ class basic_renderer final {
    */
   template <typename T>
   void fill_rect(const basic_rect<T>& rect) noexcept;
-
-  /**
-   * @brief Renders an outlined rectangle in the currently selected color.
-   *
-   * @details The rendered rectangle will be translated using the current
-   * translation viewport.
-   *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
-   *
-   * @param rect the rectangle that will be rendered.
-   *
-   * @since 4.1.0
-   */
-  template <typename T>
-  void draw_rect_t(const basic_rect<T>& rect) noexcept;
-
-  /**
-   * @brief Renders a filled rectangle in the currently selected color.
-   *
-   * @details The rendered rectangle will be translated using the current
-   * translation viewport.
-   *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
-   *
-   * @param rect the rectangle that will be rendered.
-   *
-   * @since 4.1.0
-   */
-  template <typename T>
-  void fill_rect_t(const basic_rect<T>& rect) noexcept;
 
   /**
    * @brief Renders a line between the supplied points, in the currently
@@ -459,144 +274,6 @@ class basic_renderer final {
               const SDL_RendererFlip flip) noexcept;
 
   /**
-   * @brief Renders a texture at the specified position.
-   *
-   * @details The rendered texture will be translated using the translation
-   * viewport.
-   *
-   * @tparam T The type of the point coordinates. Must be either `int` or
-   * `float`.
-   *
-   * @param texture the texture that will be rendered.
-   * @param position the position (pre-translation) of the rendered texture.
-   *
-   * @since 4.0.0
-   */
-  template <typename T>
-  void render_t(const Texture& texture,
-                const basic_point<T>& position) noexcept;
-
-  /**
-   * @brief Renders a texture according to the specified rectangle.
-   *
-   * @details The rendered texture will be translated using the translation
-   * viewport.
-   *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
-   *
-   * @param texture the texture that will be rendered.
-   * @param destination the position (pre-translation) and size of the rendered
-   * texture.
-   *
-   * @since 4.0.0
-   */
-  template <typename T>
-  void render_t(const Texture& texture,
-                const basic_rect<T>& destination) noexcept;
-
-  /**
-   * @brief Renders a texture.
-   *
-   * @details The rendered texture will be translated using the translation
-   * viewport.
-   *
-   * @remarks This should be your preferred method of rendering textures. This
-   * method is efficient and simple.
-   *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
-   *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position (pre-translation) and size of the rendered
-   * texture.
-   *
-   * @since 4.0.0
-   */
-  template <typename T>
-  void render_t(const Texture& texture,
-                const rect_i& source,
-                const basic_rect<T>& destination) noexcept;
-
-  /**
-   * @brief Renders a texture.
-   *
-   * @details The rendered texture will be translated using the translation
-   * viewport.
-   *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
-   *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position (pre-translation) and size of the rendered
-   * texture.
-   * @param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   *
-   * @since 4.0.0
-   */
-  template <typename T>
-  void render_t(const Texture& texture,
-                const rect_i& source,
-                const basic_rect<T>& destination,
-                const double angle) noexcept;
-
-  /**
-   * @brief Renders a texture.
-   *
-   * @details The rendered texture will be translated using the translation
-   * viewport.
-   *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
-   *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position (pre-translation) and size of the rendered
-   * texture.
-   * @param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * @param center specifies the point around which the rendered texture will be
-   * rotated.
-   *
-   * @since 4.0.0
-   */
-  template <typename T>
-  void render_t(const Texture& texture,
-                const rect_i& source,
-                const basic_rect<T>& destination,
-                const double angle,
-                const basic_point<T>& center) noexcept;
-
-  /**
-   * @brief Renders a texture.
-   *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
-   *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position (pre-translation) and size of the rendered
-   * texture.
-   * @param angle the clockwise angle, in degrees, with which the rendered
-   * texture will be rotated.
-   * @param center specifies the point around which the rendered texture will be
-   * rotated.
-   * @param flip specifies how the rendered texture will be flipped.
-   *
-   * @since 4.0.0
-   */
-  template <typename T>
-  void render_t(const Texture& texture,
-                const rect_i& source,
-                const basic_rect<T>& destination,
-                const double angle,
-                const basic_point<T>& center,
-                const SDL_RendererFlip flip) noexcept;
-
-  /**
    * @brief Sets the color that will be used by the renderer.
    *
    * @param color the color that will be used by the renderer.
@@ -624,19 +301,6 @@ class basic_renderer final {
    * @since 3.0.0
    */
   void set_viewport(const rect_i& viewport) noexcept;
-
-  /**
-   * @brief Sets the translation viewport that will be used by the renderer.
-   *
-   * @details This method should be called before calling any of the `_t`
-   * rendering methods, for automatic translation.
-   *
-   * @param viewport the rectangle that will be used as the translation
-   * viewport.
-   *
-   * @since 3.0.0
-   */
-  void set_translation_viewport(const rect_f& viewport) noexcept;
 
   /**
    * @brief Sets the blend mode that will be used by the renderer.
@@ -887,6 +551,492 @@ class basic_renderer final {
   [[nodiscard]] auto color() const noexcept -> Color;
 
   /**
+   * @brief Returns the viewport that the renderer uses.
+   *
+   * @return the viewport that the renderer uses.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto viewport() const noexcept -> rect_i;
+
+  /**
+   * @brief Returns a textual representation of the renderer.
+   *
+   * @return a textual representation of the renderer.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto to_string() const -> std::string;
+
+  /**
+   * @brief Returns a pointer to the associated SDL_Renderer.
+   *
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However, it's useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated SDL_Renderer.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Renderer*;
+
+  /**
+   * @brief Converts to `SDL_Renderer*`.
+   *
+   * @return a pointer to the associated `SDL_Renderer` instance.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] explicit operator SDL_Renderer*() noexcept;
+
+  /**
+   * @brief Converts to `const SDL_Renderer*`.
+   *
+   * @return a pointer to the associated `SDL_Renderer` instance.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] explicit operator const SDL_Renderer*() const noexcept;
+
+  /**
+   * @brief Returns the number of available rendering drivers.
+   *
+   * @note Usually there is only one available rendering driver.
+   *
+   * @return the number of available rendering drivers.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] static auto render_drivers() noexcept -> int;
+
+  /**
+   * @brief Returns the number of available video drivers compiled into SDL.
+   *
+   * @return the number of available video drivers compiled into SDL.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] static auto video_drivers() noexcept -> int;
+
+  /**
+   * @brief Returns the information associated with a rendering driver.
+   *
+   * @param index the index of the rendering driver to query.
+   *
+   * @return information about the specified rendering driver; `nothing` if
+   * something went wrong.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] static auto driver_info(int index) noexcept
+      -> std::optional<SDL_RendererInfo>;
+
+ protected:
+  /**
+   * @brief Creates a renderer base instance.
+   *
+   * @param renderer the renderer that will be used.
+   *
+   * @since 5.0.0
+   */
+  explicit renderer_base(gsl::not_null<SDL_Renderer*> renderer)
+      : m_renderer{renderer}
+  {}
+
+  SDL_Renderer* m_renderer;
+};
+
+/**
+ * @class basic_renderer
+ * @brief Provides the rendering API.
+ *
+ * @details This class provides the general API for hardware-accelerated
+ * rendering. It's recommended to not use the `basic_renderer` name directly,
+ * use a custom typedef or the provided `renderer` alias.
+ *
+ * @par Rendering textures
+ * There are quite a number of methods provided for rendering `Texture`
+ * instances. There are two overload sets, `render` and `render_t`. These
+ * methods can be used with either integer or floating-point accuracy. The
+ * recommended general-purpose method for rendering textures is
+ * `render(const Texture&, const rect_i&, const basic_rect<T>&)`.
+ *
+ * @par Translation
+ * Most games utilize some sort of viewport of what the player can see of the
+ * game world. If you're game features some sort of movable anchor for the
+ * rendering, then you need to translate the positions of the various game
+ * objects when rendering. This class provides a simple API for dealing with
+ * this easily. Specify the translation viewport with
+ * `set_translation_viewport(const rect_f&)`, and use the rendering methods
+ * that feature the `_t` suffix in their names, such as `render_t`, to
+ * automatically render at translated positions.
+ *
+ * @par Font support
+ * When rendering text, it's often needed to pass around various font
+ * instances. Subsequently, this class provides an API for storing shared
+ * pointers to `Font` instances. The fonts are stored in an internal map, and
+ * it's possible to specify what you want to use as keys for the fonts. The
+ * `renderer` alias uses `std::string` for keys.
+ *
+ * @par Rendering text
+ * There is no method for directly rendering text. Instead, use one of the
+ * `text_` methods for creating a texture that contains a rendered piece
+ * of text, and render that texture when needed. Naturally, you should cache
+ * these textures instead of creating and destroying them in your game loop.
+ *
+ * @par Examples
+ * Below is an example of a typical rendering method.
+ * @code{.cpp}
+ * #include <centurion_as_ctn.hpp>
+ * #include <graphics.hpp>
+ *
+ * void draw(ctn::renderer& renderer)
+ * {
+ *   renderer.clear_with(ctn::color::black); // clear rendering target
+ *
+ *   // Miscellaneous rendering calls...
+ *
+ *   renderer.present(); // apply the rendering operations to the target
+ * }
+ * @endcode
+ *
+ * @tparam FontKey the key type used when storing associated fonts in a map.
+ *
+ * @since 3.0.0
+ *
+ * @see `SDL_Renderer`
+ *
+ * @headerfile graphics.hpp
+ */
+template <typename FontKey>
+class basic_renderer final : public renderer_base {
+ public:
+  /**
+   * @brief Creates a renderer based on the supplied `SDL_Renderer`.
+   *
+   * @param renderer a pointer to the `SDL_Renderer` that will be used by the
+   * renderer.
+   *
+   * @throws centurion_exception if the supplied pointer is null.
+   *
+   * @since 3.0.0
+   */
+  explicit basic_renderer(gsl::owner<SDL_Renderer*> renderer);
+
+  /**
+   * @brief Creates a renderer based on the supplied window.
+   *
+   * @details By default, the internal renderer will be created using the
+   * `SDL_RENDERER_ACCELERATED` and `SDL_RENDERER_PRESENTVSYNC` flags.
+   *
+   * @param window the associated window instance.
+   * @param flags the renderer flags that will be used.
+   *
+   * @throws centurion_exception if something goes wrong when creating the
+   * Renderer.
+   *
+   * @since 4.0.0
+   */
+  explicit basic_renderer(const Window& window,
+                          SDL_RendererFlags flags = defaultFlags);
+
+  /**
+   * @brief Creates a renderer by moving the supplied renderer into the new one.
+   *
+   * @param other the renderer that will be moved.
+   */
+  basic_renderer(basic_renderer&& other) noexcept;
+
+  basic_renderer(const basic_renderer&) = delete;
+
+  /**
+   * @brief Moves the supplied renderer into this renderer.
+   *
+   * @param other the renderer that will be moved.
+   *
+   * @return the renderer that claimed the supplied renderer.
+   */
+  auto operator=(basic_renderer&& other) noexcept -> basic_renderer&;
+
+  auto operator=(const basic_renderer&) -> basic_renderer& = delete;
+
+  ~basic_renderer() noexcept;
+
+  /**
+   * @copydoc basic_renderer(gsl::owner<SDL_Renderer*>)
+   */
+  [[nodiscard]] static auto unique(gsl::owner<SDL_Renderer*> renderer)
+      -> std::unique_ptr<basic_renderer>;
+
+  /**
+   * @copydoc basic_renderer(const Window&, SDL_RendererFlags)
+   */
+  [[nodiscard]] static auto unique(const Window& window,
+                                   SDL_RendererFlags flags = defaultFlags)
+      -> std::unique_ptr<basic_renderer>;
+
+  /**
+   * @copydoc basic_renderer(gsl::owner<SDL_Renderer*>)
+   */
+  [[nodiscard]] static auto shared(gsl::owner<SDL_Renderer*> renderer)
+      -> std::shared_ptr<basic_renderer>;
+
+  /**
+   * @copydoc basic_renderer(const Window&, SDL_RendererFlags)
+   */
+  [[nodiscard]] static auto shared(const Window& window,
+                                   SDL_RendererFlags flags = defaultFlags)
+      -> std::shared_ptr<basic_renderer>;
+
+  /**
+   * @brief Adds a font to the renderer.
+   *
+   * @details This method has no effect if the renderer already has a font
+   * associated with the specified key or if the supplied font is null.
+   *
+   * @param key the key that will be associated with the font.
+   * @param font the font that will be added, can safely be null.
+   *
+   * @since 5.0.0
+   */
+  void add_font(const FontKey& key, const std::shared_ptr<Font>& font);
+
+  /**
+   * @brief Removes the font associated with the specified key.
+   *
+   * @details This method has no effect if there is no font associated with the
+   * specified key.
+   *
+   * @param key the key associated with the font that will be removed.
+   *
+   * @since 5.0.0
+   */
+  void remove_font(const FontKey& key);
+
+  /**
+   * @brief Sets the translation viewport that will be used by the renderer.
+   *
+   * @details This method should be called before calling any of the `_t`
+   * rendering methods, for automatic translation.
+   *
+   * @param viewport the rectangle that will be used as the translation
+   * viewport.
+   *
+   * @since 3.0.0
+   */
+  void set_translation_viewport(const rect_f& viewport) noexcept;
+
+  /**
+   * @brief Renders an outlined rectangle in the currently selected color.
+   *
+   * @details The rendered rectangle will be translated using the current
+   * translation viewport.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param rect the rectangle that will be rendered.
+   *
+   * @since 4.1.0
+   */
+  template <typename T>
+  void draw_rect_t(const basic_rect<T>& rect) noexcept;
+
+  /**
+   * @brief Renders a filled rectangle in the currently selected color.
+   *
+   * @details The rendered rectangle will be translated using the current
+   * translation viewport.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param rect the rectangle that will be rendered.
+   *
+   * @since 4.1.0
+   */
+  template <typename T>
+  void fill_rect_t(const basic_rect<T>& rect) noexcept;
+
+  /**
+   * @brief Renders a texture at the specified position.
+   *
+   * @details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * @tparam T The type of the point coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param position the position (pre-translation) of the rendered texture.
+   *
+   * @since 4.0.0
+   */
+  template <typename T>
+  void render_t(const Texture& texture,
+                const basic_point<T>& position) noexcept;
+
+  /**
+   * @brief Renders a texture according to the specified rectangle.
+   *
+   * @details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param destination the position (pre-translation) and size of the rendered
+   * texture.
+   *
+   * @since 4.0.0
+   */
+  template <typename T>
+  void render_t(const Texture& texture,
+                const basic_rect<T>& destination) noexcept;
+
+  /**
+   * @brief Renders a texture.
+   *
+   * @details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * @remarks This should be your preferred method of rendering textures. This
+   * method is efficient and simple.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position (pre-translation) and size of the rendered
+   * texture.
+   *
+   * @since 4.0.0
+   */
+  template <typename T>
+  void render_t(const Texture& texture,
+                const rect_i& source,
+                const basic_rect<T>& destination) noexcept;
+
+  /**
+   * @brief Renders a texture.
+   *
+   * @details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position (pre-translation) and size of the rendered
+   * texture.
+   * @param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   *
+   * @since 4.0.0
+   */
+  template <typename T>
+  void render_t(const Texture& texture,
+                const rect_i& source,
+                const basic_rect<T>& destination,
+                const double angle) noexcept;
+
+  /**
+   * @brief Renders a texture.
+   *
+   * @details The rendered texture will be translated using the translation
+   * viewport.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position (pre-translation) and size of the rendered
+   * texture.
+   * @param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * @param center specifies the point around which the rendered texture will be
+   * rotated.
+   *
+   * @since 4.0.0
+   */
+  template <typename T>
+  void render_t(const Texture& texture,
+                const rect_i& source,
+                const basic_rect<T>& destination,
+                const double angle,
+                const basic_point<T>& center) noexcept;
+
+  /**
+   * @brief Renders a texture.
+   *
+   * @tparam T The type of the rectangle coordinates. Must be either `int` or
+   * `float`.
+   *
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position (pre-translation) and size of the rendered
+   * texture.
+   * @param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * @param center specifies the point around which the rendered texture will be
+   * rotated.
+   * @param flip specifies how the rendered texture will be flipped.
+   *
+   * @since 4.0.0
+   */
+  template <typename T>
+  void render_t(const Texture& texture,
+                const rect_i& source,
+                const basic_rect<T>& destination,
+                const double angle,
+                const basic_point<T>& center,
+                const SDL_RendererFlip flip) noexcept;
+
+  /**
+   * @brief Returns the font associated with the specified name.
+   *
+   * @details This method returns null if there is no font associated with
+   * the specified name.
+   *
+   * @param key the key associated with the desired font.
+   *
+   * @return the font associated with the specified name; `nullptr` if there
+   * is no such font.
+   *
+   * @since 4.1.0
+   */
+  [[nodiscard]] auto font(const FontKey& key) noexcept -> std::shared_ptr<Font>;
+
+  /**
+   * @brief Indicates whether or not the renderer has a font associated with the
+   * specified key.
+   *
+   * @param key the key that will be checked.
+   *
+   * @return `true` if the renderer has a font associated with the key; `false`
+   * otherwise.
+   *
+   * @since 4.1.0
+   */
+  [[nodiscard]] auto has_font(const FontKey& key) const noexcept -> bool;
+
+  /**
+   * @brief Returns the translation viewport that is currently being used.
+   *
+   * @details Set to (0, 0, 0, 0) by default.
+   *
+   * @return the translation viewport that is currently being used.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto translation_viewport() const noexcept -> const rect_f&;
+
+  /**
    * @brief Creates and returns a texture of blended text.
    *
    * @details Attempts to render the specified text in the supplied font using
@@ -994,129 +1144,7 @@ class basic_renderer final {
   [[nodiscard]] auto text_solid(czstring text, const Font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
-  /**
-   * @brief Returns the font associated with the specified name.
-   *
-   * @details This method returns null if there is no font associated with the
-   * specified name.
-   *
-   * @param key the key associated with the desired font.
-   *
-   * @return the font associated with the specified name; `nullptr` if there is
-   * no such font.
-   *
-   * @since 4.1.0
-   */
-  [[nodiscard]] auto font(const FontKey& key) noexcept -> std::shared_ptr<Font>;
-
-  /**
-   * @brief Indicates whether or not the renderer has a font associated with the
-   * specified key.
-   *
-   * @param key the key that will be checked.
-   *
-   * @return `true` if the renderer has a font associated with the key; `false`
-   * otherwise.
-   *
-   * @since 4.1.0
-   */
-  [[nodiscard]] auto has_font(const FontKey& key) const noexcept -> bool;
-
-  /**
-   * @brief Returns the viewport that the renderer uses.
-   *
-   * @return the viewport that the renderer uses.
-   *
-   * @since 3.0.0
-   */
-  [[nodiscard]] auto viewport() const noexcept -> rect_i;
-
-  /**
-   * @brief Returns a textual representation of the renderer.
-   *
-   * @return a textual representation of the renderer.
-   *
-   * @since 3.0.0
-   */
-  [[nodiscard]] auto to_string() const -> std::string;
-
-  /**
-   * @brief Returns the translation viewport that is currently being used.
-   *
-   * @details Set to (0, 0, 0, 0) by default.
-   *
-   * @return the translation viewport that is currently being used.
-   *
-   * @since 3.0.0
-   */
-  [[nodiscard]] auto translation_viewport() const noexcept -> const rect_f&;
-
-  /**
-   * @brief Returns a pointer to the associated SDL_Renderer.
-   *
-   * @warning Use of this method is not recommended, since it purposefully
-   * breaks const-correctness. However, it's useful since many SDL calls use
-   * non-const pointers even when no change will be applied.
-   *
-   * @return a pointer to the associated SDL_Renderer.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_Renderer*;
-
-  /**
-   * @brief Converts to `SDL_Renderer*`.
-   *
-   * @return a pointer to the associated `SDL_Renderer` instance.
-   *
-   * @since 3.0.0
-   */
-  [[nodiscard]] explicit operator SDL_Renderer*() noexcept;
-
-  /**
-   * @brief Converts to `const SDL_Renderer*`.
-   *
-   * @return a pointer to the associated `SDL_Renderer` instance.
-   *
-   * @since 3.0.0
-   */
-  [[nodiscard]] explicit operator const SDL_Renderer*() const noexcept;
-
-  /**
-   * @brief Returns the number of available rendering drivers.
-   *
-   * @note Usually there is only one available rendering driver.
-   *
-   * @return the number of available rendering drivers.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] static auto render_drivers() noexcept -> int;
-
-  /**
-   * @brief Returns the number of available video drivers compiled into SDL.
-   *
-   * @return the number of available video drivers compiled into SDL.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] static auto video_drivers() noexcept -> int;
-
-  /**
-   * @brief Returns the information associated with a rendering driver.
-   *
-   * @param index the index of the rendering driver to query.
-   *
-   * @return information about the specified rendering driver; `nothing` if
-   * something went wrong.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] static auto driver_info(int index) noexcept
-      -> std::optional<SDL_RendererInfo>;
-
  private:
-  SDL_Renderer* m_renderer = nullptr;
   rect_f m_translationViewport;
   std::unordered_map<FontKey, std::shared_ptr<Font>> m_fonts;
 
@@ -1131,8 +1159,9 @@ class basic_renderer final {
    */
   void destroy() noexcept
   {
-    if (m_renderer) {
-      SDL_DestroyRenderer(m_renderer);
+    auto* renderer = this->get();
+    if (renderer) {
+      SDL_DestroyRenderer(renderer);
     }
   }
 
@@ -1148,7 +1177,7 @@ class basic_renderer final {
   {
     destroy();
 
-    m_renderer = other.m_renderer;
+    renderer_base::m_renderer = other.m_renderer;
     m_translationViewport = other.m_translationViewport;
 
     other.m_renderer = nullptr;
@@ -1179,7 +1208,7 @@ class basic_renderer final {
       return nullptr;
     }
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, surface);
+    auto* texture = SDL_CreateTextureFromSurface(this->get(), surface);
     SDL_FreeSurface(surface);
 
     if (texture) {
@@ -1203,10 +1232,13 @@ class basic_renderer final {
   template <typename T>
   [[nodiscard]] auto tx(T x) const noexcept -> T
   {
+    SDL_Rect vp{};
+    SDL_RenderGetViewport(m_renderer, &vp);
+
     if constexpr (std::is_same_v<T, int>) {
-      return x - static_cast<T>(m_translationViewport.x());
+      return x - static_cast<T>(vp.x);
     } else {
-      return x - m_translationViewport.x();
+      return x - vp.x;
     }
   }
 
@@ -1224,10 +1256,13 @@ class basic_renderer final {
   template <typename T>
   [[nodiscard]] auto ty(T y) const noexcept -> T
   {
+    SDL_Rect vp{};
+    SDL_RenderGetViewport(m_renderer, &vp);
+
     if constexpr (std::is_same_v<T, int>) {
-      return y - static_cast<T>(m_translationViewport.y());
+      return y - static_cast<T>(vp.y);
     } else {
-      return y - m_translationViewport.y();
+      return y - vp.y;
     }
   }
 
@@ -1244,6 +1279,80 @@ class basic_renderer final {
   {
     return {translate(rect.position()), rect.size()};
   }
+};
+
+/**
+ * @class renderer_view
+ *
+ * @brief Represents a non-owning renderer.
+ *
+ * @details This class is meant to be used when you want to utilize the same
+ * rendering API as with the the `basic_renderer` class, but you don't want the
+ * renderer to claim ownership of the SDL renderer. In a nutshell, this class
+ * is merely a wrapper around an `SDL_Renderer*`.
+ *
+ * However, there are some differences in functionality compared to the
+ * `basic_renderer` class. Firstly, renderer views don't support storing
+ * fonts. Secondly, the translation viewport API isn't available with views.
+ *
+ * @note Naturally, since instances of this class don't own the associated
+ * SDL renderer, you'll have to manually manage the lifetime of the
+ * SDL renderer. In general, prefer `basic_renderer` unless you absolutely
+ * cannot claim ownership of the SDL renderer.
+ *
+ * @par Examples
+ * The following example displays how one could utilize this class to take
+ * advantage of the Centurion rendering API, that would't be possible with
+ * `basic_renderer`.
+ * @code{.cpp}
+ *   #include <centurion_as_ctn.hpp>
+ *   #include <graphics.hpp>
+ *
+ *   // Assume that we can't change the parameter of this method
+ *   void draw(SDL_Renderer* renderer)
+ *   {
+ *     ctn::renderer_view view{renderer};
+ *
+ *     view.clear_with(ctn::color::black);
+ *
+ *     view.set_color(ctn::color::pink);
+ *     view.fill_rect({{15, 20}, {100, 100});
+ *
+ *     view.present();
+ *   }
+ * @endcode
+ *
+ * @since 5.0.0
+ *
+ * @headerfile graphics.hpp
+ */
+class renderer_view final : public renderer_base {
+ public:
+  /**
+   * @brief Creates a renderer view instance.
+   *
+   * @param renderer a pointer to the SDL renderer that will be used, mustn't
+   * be null.
+   *
+   * @since 5.0.0
+   */
+  explicit renderer_view(gsl::not_null<SDL_Renderer*> renderer) noexcept
+      : renderer_base{renderer}
+  {}
+
+  /**
+   * @brief Creates a view based on an existing `basic_renderer`.
+   *
+   * @tparam FontKey the type of the font keys used by the renderer.
+   *
+   * @param renderer the renderer that will be viewed.
+   *
+   * @since 5.0.0
+   */
+  template <typename FontKey>
+  explicit renderer_view(const basic_renderer<FontKey>& renderer) noexcept
+      : renderer_base{renderer.get()}
+  {}
 };
 
 /**
@@ -1953,32 +2062,37 @@ static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
 
 template <typename FontKey>
 basic_renderer<FontKey>::basic_renderer(gsl::owner<SDL_Renderer*> renderer)
+    : renderer_base{renderer}
 {
-  if (!renderer) {
-    throw centurion_exception{"Can't create renderer from null SDL_Renderer!"};
-  }
-  this->m_renderer = renderer;
+  //  if (!renderer) {
+  //    throw centurion_exception{"Can't create renderer from null
+  //    SDL_Renderer!"};
+  //  }
+  //  this->m_renderer = renderer;
 
-  set_color(color::black);
-  set_logical_integer_scale(false);
+  this->set_color(color::black);
+  this->set_logical_integer_scale(false);
 }
 
 template <typename FontKey>
 basic_renderer<FontKey>::basic_renderer(const Window& window,
                                         SDL_RendererFlags flags)
+    : renderer_base{SDL_CreateRenderer(window.get(), -1, flags)}
 {
-  m_renderer = SDL_CreateRenderer(window.get(), -1, flags);
-  if (!m_renderer) {
-    throw detail::Error::from_core("Failed to create Renderer!");
-  }
+  //  renderer_base::m_renderer =
+  //      SDL_CreateRenderer(window.get(), -1, flags);
+  //  if (!renderer_base::m_renderer) {
+  //    throw detail::Error::from_core("Failed to create Renderer!");
+  //  }
 
-  set_blend_mode(blend_mode::blend);
-  set_color(color::black);
-  set_logical_integer_scale(false);
+  this->set_blend_mode(blend_mode::blend);
+  this->set_color(color::black);
+  this->set_logical_integer_scale(false);
 }
 
 template <typename FontKey>
 basic_renderer<FontKey>::basic_renderer(basic_renderer&& other) noexcept
+    : renderer_base{other.get()}
 {
   move(std::move(other));
 }
@@ -2027,544 +2141,6 @@ auto basic_renderer<FontKey>::shared(const Window& window,
     -> std::shared_ptr<basic_renderer>
 {
   return std::make_shared<basic_renderer<FontKey>>(window, flags);
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::clear() noexcept
-{
-  SDL_RenderClear(m_renderer);
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::clear_with(const Color& c) noexcept
-{
-  const auto oldColor = color();
-
-  set_color(c);
-  clear();
-
-  set_color(oldColor);
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::present() noexcept
-{
-  SDL_RenderPresent(m_renderer);
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::add_font(const FontKey& key,
-                                       const std::shared_ptr<Font>& font)
-{
-  if (!m_fonts.count(key)) {
-    m_fonts.emplace(key, font);
-  }
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::remove_font(const FontKey& key)
-{
-  m_fonts.erase(key);
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::draw_rect(const basic_rect<T>& rect) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderDrawRect(m_renderer, static_cast<const SDL_Rect*>(rect));
-  } else {
-    SDL_RenderDrawRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
-  }
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::fill_rect(const basic_rect<T>& rect) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderFillRect(m_renderer, static_cast<const SDL_Rect*>(rect));
-  } else {
-    SDL_RenderFillRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
-  }
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::draw_rect_t(const basic_rect<T>& rect) noexcept
-{
-  draw_rect(translate(rect));
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::fill_rect_t(const basic_rect<T>& rect) noexcept
-{
-  fill_rect(translate(rect));
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::draw_line(const basic_point<T>& start,
-                                        const basic_point<T>& end) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderDrawLine(m_renderer, start.x(), start.y(), end.x(), end.y());
-  } else {
-    SDL_RenderDrawLineF(m_renderer, start.x(), start.y(), end.x(), end.y());
-  }
-}
-
-template <typename FontKey>
-template <typename Container>
-void basic_renderer<FontKey>::draw_lines(const Container& container) noexcept
-{
-  // This must be a point of int or float
-  using point_t = typename Container::value_type;  // TODO doc
-
-  static_assert(std::is_same_v<point_t, basic_point<float>> ||
-                std::is_same_v<point_t, basic_point<int>>);
-
-  // This is either int or float
-  using value_t = typename point_t::value_type;
-
-  if (!container.empty()) {
-    const basic_point<value_t>& front = container.front();
-
-    if constexpr (std::is_same_v<value_t, int>) {
-      const auto* first = static_cast<const SDL_Point*>(front);
-      SDL_RenderDrawLines(m_renderer, first, container.size());
-    } else {
-      const auto* first = static_cast<const SDL_FPoint*>(front);
-      SDL_RenderDrawLinesF(m_renderer, first, container.size());
-    }
-  }
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const basic_point<T>& position) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    const SDL_Rect dst{
-        position.x(), position.y(), texture.width(), texture.height()};
-    SDL_RenderCopy(m_renderer, texture.get(), nullptr, &dst);
-  } else {
-    const SDL_FRect dst{position.x(),
-                        position.y(),
-                        static_cast<float>(texture.width()),
-                        static_cast<float>(texture.height())};
-    SDL_RenderCopyF(m_renderer, texture.get(), nullptr, &dst);
-  }
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const basic_rect<T>& destination) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderCopy(m_renderer,
-                   texture.get(),
-                   nullptr,
-                   static_cast<const SDL_Rect*>(destination));
-  } else {
-    SDL_RenderCopyF(m_renderer,
-                    texture.get(),
-                    nullptr,
-                    static_cast<const SDL_FRect*>(destination));
-  }
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const rect_i& source,
-                                     const basic_rect<T>& destination) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderCopy(m_renderer,
-                   texture.get(),
-                   static_cast<const SDL_Rect*>(source),
-                   static_cast<const SDL_Rect*>(destination));
-  } else {
-    SDL_RenderCopyF(m_renderer,
-                    texture.get(),
-                    static_cast<const SDL_Rect*>(source),
-                    static_cast<const SDL_FRect*>(destination));
-  }
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const rect_i& source,
-                                     const basic_rect<T>& destination,
-                                     const double angle) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderCopyEx(m_renderer,
-                     texture.get(),
-                     static_cast<const SDL_Rect*>(source),
-                     static_cast<const SDL_Rect*>(destination),
-                     angle,
-                     nullptr,
-                     SDL_FLIP_NONE);
-  } else {
-    SDL_RenderCopyExF(m_renderer,
-                      texture.get(),
-                      static_cast<const SDL_Rect*>(source),
-                      static_cast<const SDL_FRect*>(destination),
-                      angle,
-                      nullptr,
-                      SDL_FLIP_NONE);
-  }
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const rect_i& source,
-                                     const basic_rect<T>& destination,
-                                     const double angle,
-                                     const basic_point<T>& center) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderCopyEx(m_renderer,
-                     texture.get(),
-                     static_cast<const SDL_Rect*>(source),
-                     static_cast<const SDL_Rect*>(destination),
-                     angle,
-                     static_cast<const SDL_Point*>(center),
-                     SDL_FLIP_NONE);
-  } else {
-    SDL_RenderCopyExF(m_renderer,
-                      texture.get(),
-                      static_cast<const SDL_Rect*>(source),
-                      static_cast<const SDL_FRect*>(destination),
-                      angle,
-                      static_cast<const SDL_FPoint*>(center),
-                      SDL_FLIP_NONE);
-  }
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const rect_i& source,
-                                     const basic_rect<T>& destination,
-                                     const double angle,
-                                     const basic_point<T>& center,
-                                     const SDL_RendererFlip flip) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderCopyEx(m_renderer,
-                     texture.get(),
-                     static_cast<const SDL_Rect*>(source),
-                     static_cast<const SDL_Rect*>(destination),
-                     angle,
-                     static_cast<const SDL_Point*>(center),
-                     flip);
-  } else {
-    SDL_RenderCopyExF(m_renderer,
-                      texture.get(),
-                      static_cast<const SDL_Rect*>(source),
-                      static_cast<const SDL_FRect*>(destination),
-                      angle,
-                      static_cast<const SDL_FPoint*>(center),
-                      flip);
-  }
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render_t(const Texture& texture,
-                                       const basic_point<T>& position) noexcept
-{
-  render(texture, translate(position));
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render_t(
-    const Texture& texture,
-    const basic_rect<T>& destination) noexcept
-{
-  render(texture, translate(destination));
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render_t(
-    const Texture& texture,
-    const rect_i& source,
-    const basic_rect<T>& destination) noexcept
-{
-  render(texture, source, translate(destination));
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render_t(const Texture& texture,
-                                       const rect_i& source,
-                                       const basic_rect<T>& destination,
-                                       const double angle) noexcept
-{
-  render(texture, source, translate(destination), angle);
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render_t(const Texture& texture,
-                                       const rect_i& source,
-                                       const basic_rect<T>& destination,
-                                       const double angle,
-                                       const basic_point<T>& center) noexcept
-{
-  render(texture, source, translate(destination), angle, center);
-}
-
-template <typename FontKey>
-template <typename T>
-void basic_renderer<FontKey>::render_t(const Texture& texture,
-                                       const rect_i& source,
-                                       const basic_rect<T>& destination,
-                                       const double angle,
-                                       const basic_point<T>& center,
-                                       const SDL_RendererFlip flip) noexcept
-{
-  render(texture, source, translate(destination), angle, center, flip);
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::set_color(const Color& color) noexcept
-{
-  SDL_SetRenderDrawColor(
-      m_renderer, color.red(), color.green(), color.blue(), color.alpha());
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::set_clip(std::optional<rect_i> area) noexcept
-{
-  if (area) {
-    SDL_RenderSetClipRect(m_renderer, static_cast<const SDL_Rect*>(*area));
-  } else {
-    SDL_RenderSetClipRect(m_renderer, nullptr);
-  }
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::set_viewport(const rect_i& viewport) noexcept
-{
-  SDL_RenderSetViewport(m_renderer, static_cast<const SDL_Rect*>(viewport));
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::set_translation_viewport(
-    const rect_f& viewport) noexcept
-{
-  m_translationViewport = viewport;
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::set_blend_mode(enum blend_mode mode) noexcept
-{
-  SDL_SetRenderDrawBlendMode(m_renderer, static_cast<SDL_BlendMode>(mode));
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::set_target(const Texture* texture) noexcept
-{
-  if (texture && texture->is_target()) {
-    SDL_SetRenderTarget(m_renderer, texture->get());
-  } else {
-    SDL_SetRenderTarget(m_renderer, nullptr);
-  }
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::set_scale(float xScale, float yScale) noexcept
-{
-  if (xScale > 0 && yScale > 0) {
-    SDL_RenderSetScale(m_renderer, xScale, yScale);
-  }
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::set_logical_size(const area_i& size) noexcept
-{
-  if (size.width > 0 && size.height > 0) {
-    SDL_RenderSetLogicalSize(m_renderer, size.width, size.height);
-  }
-}
-
-template <typename FontKey>
-void basic_renderer<FontKey>::set_logical_integer_scale(
-    bool useLogicalIntegerScale) noexcept
-{
-  SDL_RenderSetIntegerScale(m_renderer,
-                            detail::convert_bool(useLogicalIntegerScale));
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::logical_width() const noexcept -> int
-{
-  int width = 0;
-  SDL_RenderGetLogicalSize(m_renderer, &width, nullptr);
-  return width;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::logical_height() const noexcept -> int
-{
-  int height = 0;
-  SDL_RenderGetLogicalSize(m_renderer, nullptr, &height);
-  return height;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::x_scale() const noexcept -> float
-{
-  float xScale = 0;
-  SDL_RenderGetScale(m_renderer, &xScale, nullptr);
-  return xScale;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::y_scale() const noexcept -> float
-{
-  float yScale = 0;
-  SDL_RenderGetScale(m_renderer, nullptr, &yScale);
-  return yScale;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::clip() const noexcept -> std::optional<rect_i>
-{
-  rect_i rect;
-  SDL_RenderGetClipRect(m_renderer, static_cast<SDL_Rect*>(rect));
-  if (!rect.has_area()) {
-    return nothing;
-  } else {
-    return rect;
-  }
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::info() const noexcept
-    -> std::optional<SDL_RendererInfo>
-{
-  SDL_RendererInfo info;
-  const auto result = SDL_GetRendererInfo(m_renderer, &info);
-  if (result == 0) {
-    return info;
-  } else {
-    return nothing;
-  }
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::output_width() const noexcept -> int
-{
-  int width = 0;
-  SDL_GetRendererOutputSize(m_renderer, &width, nullptr);
-  return width;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::output_height() const noexcept -> int
-{
-  int height = 0;
-  SDL_GetRendererOutputSize(m_renderer, nullptr, &height);
-  return height;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::output_size() const noexcept -> area_i
-{
-  int width = 0;
-  int height = 0;
-  SDL_GetRendererOutputSize(m_renderer, &width, &height);
-  return {width, height};
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::blend_mode() const noexcept -> enum blend_mode {
-  SDL_BlendMode mode;  //
-  SDL_GetRenderDrawBlendMode(m_renderer, &mode);
-  return static_cast<enum blend_mode>(mode);
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::flags() const noexcept -> u32
-{
-  SDL_RendererInfo info;
-  SDL_GetRendererInfo(m_renderer, &info);
-  return info.flags;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::vsync_enabled() const noexcept -> bool
-{
-  return flags() & SDL_RENDERER_PRESENTVSYNC;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::accelerated() const noexcept -> bool
-{
-  return flags() & SDL_RENDERER_ACCELERATED;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::software_based() const noexcept -> bool
-{
-  return flags() & SDL_RENDERER_SOFTWARE;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::supports_target_textures() const noexcept -> bool
-{
-  return flags() & SDL_RENDERER_TARGETTEXTURE;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::using_integer_logical_scaling() const noexcept
-    -> bool
-{
-  return SDL_RenderGetIntegerScale(m_renderer);
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::clipping_enabled() const noexcept -> bool
-{
-  return SDL_RenderIsClipEnabled(m_renderer);
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::color() const noexcept -> Color
-{
-  u8 red = 0, green = 0, blue = 0, alpha = 0;
-  SDL_GetRenderDrawColor(m_renderer, &red, &green, &blue, &alpha);
-  return {red, green, blue, alpha};
 }
 
 template <typename FontKey>
@@ -2634,15 +2210,519 @@ auto basic_renderer<FontKey>::has_font(const FontKey& key) const noexcept
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::viewport() const noexcept -> rect_i
+auto basic_renderer<FontKey>::translation_viewport() const noexcept
+    -> const rect_f&
+{
+  return m_translationViewport;
+}
+
+template <typename FontKey>
+void basic_renderer<FontKey>::set_translation_viewport(
+    const rect_f& viewport) noexcept
+{
+  m_translationViewport = viewport;
+}
+
+template <typename FontKey>
+void basic_renderer<FontKey>::add_font(const FontKey& key,
+                                       const std::shared_ptr<Font>& font)
+{
+  if (!m_fonts.count(key)) {
+    m_fonts.emplace(key, font);
+  }
+}
+
+template <typename FontKey>
+void basic_renderer<FontKey>::remove_font(const FontKey& key)
+{
+  m_fonts.erase(key);
+}
+
+template <typename FontKey>
+template <typename T>
+void basic_renderer<FontKey>::draw_rect_t(const basic_rect<T>& rect) noexcept
+{
+  draw_rect(translate(rect));
+}
+
+template <typename FontKey>
+template <typename T>
+void basic_renderer<FontKey>::fill_rect_t(const basic_rect<T>& rect) noexcept
+{
+  fill_rect(translate(rect));
+}
+
+template <typename FontKey>
+template <typename T>
+void basic_renderer<FontKey>::render_t(const Texture& texture,
+                                       const basic_point<T>& position) noexcept
+{
+  render(texture, translate(position));
+}
+
+template <typename FontKey>
+template <typename T>
+void basic_renderer<FontKey>::render_t(
+    const Texture& texture,
+    const basic_rect<T>& destination) noexcept
+{
+  render(texture, translate(destination));
+}
+
+template <typename FontKey>
+template <typename T>
+void basic_renderer<FontKey>::render_t(
+    const Texture& texture,
+    const rect_i& source,
+    const basic_rect<T>& destination) noexcept
+{
+  render(texture, source, translate(destination));
+}
+
+template <typename FontKey>
+template <typename T>
+void basic_renderer<FontKey>::render_t(const Texture& texture,
+                                       const rect_i& source,
+                                       const basic_rect<T>& destination,
+                                       const double angle) noexcept
+{
+  render(texture, source, translate(destination), angle);
+}
+
+template <typename FontKey>
+template <typename T>
+void basic_renderer<FontKey>::render_t(const Texture& texture,
+                                       const rect_i& source,
+                                       const basic_rect<T>& destination,
+                                       const double angle,
+                                       const basic_point<T>& center) noexcept
+{
+  render(texture, source, translate(destination), angle, center);
+}
+
+template <typename FontKey>
+template <typename T>
+void basic_renderer<FontKey>::render_t(const Texture& texture,
+                                       const rect_i& source,
+                                       const basic_rect<T>& destination,
+                                       const double angle,
+                                       const basic_point<T>& center,
+                                       const SDL_RendererFlip flip) noexcept
+{
+  render(texture, source, translate(destination), angle, center, flip);
+}
+
+inline void renderer_base::clear() noexcept
+{
+  SDL_RenderClear(m_renderer);
+}
+
+inline void renderer_base::clear_with(const Color& c) noexcept
+{
+  const auto oldColor = color();
+
+  set_color(c);
+  clear();
+
+  set_color(oldColor);
+}
+
+inline void renderer_base::present() noexcept
+{
+  SDL_RenderPresent(m_renderer);
+}
+
+template <typename T>
+void renderer_base::draw_rect(const basic_rect<T>& rect) noexcept
+{
+  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+  if constexpr (std::is_same_v<T, int>) {
+    SDL_RenderDrawRect(m_renderer, static_cast<const SDL_Rect*>(rect));
+  } else {
+    SDL_RenderDrawRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
+  }
+}
+
+template <typename T>
+void renderer_base::fill_rect(const basic_rect<T>& rect) noexcept
+{
+  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+  if constexpr (std::is_same_v<T, int>) {
+    SDL_RenderFillRect(m_renderer, static_cast<const SDL_Rect*>(rect));
+  } else {
+    SDL_RenderFillRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
+  }
+}
+
+template <typename T>
+void renderer_base::draw_line(const basic_point<T>& start,
+                              const basic_point<T>& end) noexcept
+{
+  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+  if constexpr (std::is_same_v<T, int>) {
+    SDL_RenderDrawLine(m_renderer, start.x(), start.y(), end.x(), end.y());
+  } else {
+    SDL_RenderDrawLineF(m_renderer, start.x(), start.y(), end.x(), end.y());
+  }
+}
+
+template <typename Container>
+void renderer_base::draw_lines(const Container& container) noexcept
+{
+  // This must be a point of int or float
+  using point_t = typename Container::value_type;  // TODO doc
+
+  static_assert(std::is_same_v<point_t, basic_point<float>> ||
+                std::is_same_v<point_t, basic_point<int>>);
+
+  // This is either int or float
+  using value_t = typename point_t::value_type;
+
+  if (!container.empty()) {
+    const basic_point<value_t>& front = container.front();
+
+    if constexpr (std::is_same_v<value_t, int>) {
+      const auto* first = static_cast<const SDL_Point*>(front);
+      SDL_RenderDrawLines(m_renderer, first, container.size());
+    } else {
+      const auto* first = static_cast<const SDL_FPoint*>(front);
+      SDL_RenderDrawLinesF(m_renderer, first, container.size());
+    }
+  }
+}
+
+template <typename T>
+void renderer_base::render(const Texture& texture,
+                           const basic_point<T>& position) noexcept
+{
+  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+  if constexpr (std::is_same_v<T, int>) {
+    const SDL_Rect dst{
+        position.x(), position.y(), texture.width(), texture.height()};
+    SDL_RenderCopy(m_renderer, texture.get(), nullptr, &dst);
+  } else {
+    const SDL_FRect dst{position.x(),
+                        position.y(),
+                        static_cast<float>(texture.width()),
+                        static_cast<float>(texture.height())};
+    SDL_RenderCopyF(m_renderer, texture.get(), nullptr, &dst);
+  }
+}
+
+template <typename T>
+void renderer_base::render(const Texture& texture,
+                           const basic_rect<T>& destination) noexcept
+{
+  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+  if constexpr (std::is_same_v<T, int>) {
+    SDL_RenderCopy(m_renderer,
+                   texture.get(),
+                   nullptr,
+                   static_cast<const SDL_Rect*>(destination));
+  } else {
+    SDL_RenderCopyF(m_renderer,
+                    texture.get(),
+                    nullptr,
+                    static_cast<const SDL_FRect*>(destination));
+  }
+}
+
+template <typename T>
+void renderer_base::render(const Texture& texture,
+                           const rect_i& source,
+                           const basic_rect<T>& destination) noexcept
+{
+  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+  if constexpr (std::is_same_v<T, int>) {
+    SDL_RenderCopy(m_renderer,
+                   texture.get(),
+                   static_cast<const SDL_Rect*>(source),
+                   static_cast<const SDL_Rect*>(destination));
+  } else {
+    SDL_RenderCopyF(m_renderer,
+                    texture.get(),
+                    static_cast<const SDL_Rect*>(source),
+                    static_cast<const SDL_FRect*>(destination));
+  }
+}
+
+template <typename T>
+void renderer_base::render(const Texture& texture,
+                           const rect_i& source,
+                           const basic_rect<T>& destination,
+                           const double angle) noexcept
+{
+  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+  if constexpr (std::is_same_v<T, int>) {
+    SDL_RenderCopyEx(m_renderer,
+                     texture.get(),
+                     static_cast<const SDL_Rect*>(source),
+                     static_cast<const SDL_Rect*>(destination),
+                     angle,
+                     nullptr,
+                     SDL_FLIP_NONE);
+  } else {
+    SDL_RenderCopyExF(m_renderer,
+                      texture.get(),
+                      static_cast<const SDL_Rect*>(source),
+                      static_cast<const SDL_FRect*>(destination),
+                      angle,
+                      nullptr,
+                      SDL_FLIP_NONE);
+  }
+}
+
+template <typename T>
+void renderer_base::render(const Texture& texture,
+                           const rect_i& source,
+                           const basic_rect<T>& destination,
+                           const double angle,
+                           const basic_point<T>& center) noexcept
+{
+  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+  if constexpr (std::is_same_v<T, int>) {
+    SDL_RenderCopyEx(m_renderer,
+                     texture.get(),
+                     static_cast<const SDL_Rect*>(source),
+                     static_cast<const SDL_Rect*>(destination),
+                     angle,
+                     static_cast<const SDL_Point*>(center),
+                     SDL_FLIP_NONE);
+  } else {
+    SDL_RenderCopyExF(m_renderer,
+                      texture.get(),
+                      static_cast<const SDL_Rect*>(source),
+                      static_cast<const SDL_FRect*>(destination),
+                      angle,
+                      static_cast<const SDL_FPoint*>(center),
+                      SDL_FLIP_NONE);
+  }
+}
+
+template <typename T>
+void renderer_base::render(const Texture& texture,
+                           const rect_i& source,
+                           const basic_rect<T>& destination,
+                           const double angle,
+                           const basic_point<T>& center,
+                           const SDL_RendererFlip flip) noexcept
+{
+  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+  if constexpr (std::is_same_v<T, int>) {
+    SDL_RenderCopyEx(m_renderer,
+                     texture.get(),
+                     static_cast<const SDL_Rect*>(source),
+                     static_cast<const SDL_Rect*>(destination),
+                     angle,
+                     static_cast<const SDL_Point*>(center),
+                     flip);
+  } else {
+    SDL_RenderCopyExF(m_renderer,
+                      texture.get(),
+                      static_cast<const SDL_Rect*>(source),
+                      static_cast<const SDL_FRect*>(destination),
+                      angle,
+                      static_cast<const SDL_FPoint*>(center),
+                      flip);
+  }
+}
+
+inline void renderer_base::set_color(const Color& color) noexcept
+{
+  SDL_SetRenderDrawColor(
+      m_renderer, color.red(), color.green(), color.blue(), color.alpha());
+}
+
+inline void renderer_base::set_clip(std::optional<rect_i> area) noexcept
+{
+  if (area) {
+    SDL_RenderSetClipRect(m_renderer, static_cast<const SDL_Rect*>(*area));
+  } else {
+    SDL_RenderSetClipRect(m_renderer, nullptr);
+  }
+}
+
+inline void renderer_base::set_viewport(const rect_i& viewport) noexcept
+{
+  SDL_RenderSetViewport(m_renderer, static_cast<const SDL_Rect*>(viewport));
+}
+
+inline void renderer_base::set_blend_mode(enum blend_mode mode) noexcept
+{
+  SDL_SetRenderDrawBlendMode(m_renderer, static_cast<SDL_BlendMode>(mode));
+}
+
+inline void renderer_base::set_target(const Texture* texture) noexcept
+{
+  if (texture && texture->is_target()) {
+    SDL_SetRenderTarget(m_renderer, texture->get());
+  } else {
+    SDL_SetRenderTarget(m_renderer, nullptr);
+  }
+}
+
+inline void renderer_base::set_scale(float xScale, float yScale) noexcept
+{
+  if (xScale > 0 && yScale > 0) {
+    SDL_RenderSetScale(m_renderer, xScale, yScale);
+  }
+}
+
+inline void renderer_base::set_logical_size(const area_i& size) noexcept
+{
+  if (size.width > 0 && size.height > 0) {
+    SDL_RenderSetLogicalSize(m_renderer, size.width, size.height);
+  }
+}
+
+inline void renderer_base::set_logical_integer_scale(
+    bool useLogicalIntegerScale) noexcept
+{
+  SDL_RenderSetIntegerScale(m_renderer,
+                            detail::convert_bool(useLogicalIntegerScale));
+}
+
+inline auto renderer_base::logical_width() const noexcept -> int
+{
+  int width = 0;
+  SDL_RenderGetLogicalSize(m_renderer, &width, nullptr);
+  return width;
+}
+
+inline auto renderer_base::logical_height() const noexcept -> int
+{
+  int height = 0;
+  SDL_RenderGetLogicalSize(m_renderer, nullptr, &height);
+  return height;
+}
+
+inline auto renderer_base::x_scale() const noexcept -> float
+{
+  float xScale = 0;
+  SDL_RenderGetScale(m_renderer, &xScale, nullptr);
+  return xScale;
+}
+
+inline auto renderer_base::y_scale() const noexcept -> float
+{
+  float yScale = 0;
+  SDL_RenderGetScale(m_renderer, nullptr, &yScale);
+  return yScale;
+}
+
+inline auto renderer_base::clip() const noexcept -> std::optional<rect_i>
+{
+  rect_i rect;
+  SDL_RenderGetClipRect(m_renderer, static_cast<SDL_Rect*>(rect));
+  if (!rect.has_area()) {
+    return nothing;
+  } else {
+    return rect;
+  }
+}
+
+inline auto renderer_base::info() const noexcept
+    -> std::optional<SDL_RendererInfo>
+{
+  SDL_RendererInfo info;
+  const auto result = SDL_GetRendererInfo(m_renderer, &info);
+  if (result == 0) {
+    return info;
+  } else {
+    return nothing;
+  }
+}
+
+inline auto renderer_base::output_width() const noexcept -> int
+{
+  int width = 0;
+  SDL_GetRendererOutputSize(m_renderer, &width, nullptr);
+  return width;
+}
+
+inline auto renderer_base::output_height() const noexcept -> int
+{
+  int height = 0;
+  SDL_GetRendererOutputSize(m_renderer, nullptr, &height);
+  return height;
+}
+
+inline auto renderer_base::output_size() const noexcept -> area_i
+{
+  int width = 0;
+  int height = 0;
+  SDL_GetRendererOutputSize(m_renderer, &width, &height);
+  return {width, height};
+}
+
+inline auto renderer_base::blend_mode() const noexcept -> enum blend_mode {
+  SDL_BlendMode mode;  //
+  SDL_GetRenderDrawBlendMode(m_renderer, &mode);
+  return static_cast<enum blend_mode>(mode);
+}
+
+inline auto renderer_base::flags() const noexcept -> u32
+{
+  SDL_RendererInfo info;
+  SDL_GetRendererInfo(m_renderer, &info);
+  return info.flags;
+}
+
+inline auto renderer_base::vsync_enabled() const noexcept -> bool
+{
+  return flags() & SDL_RENDERER_PRESENTVSYNC;
+}
+
+inline auto renderer_base::accelerated() const noexcept -> bool
+{
+  return flags() & SDL_RENDERER_ACCELERATED;
+}
+
+inline auto renderer_base::software_based() const noexcept -> bool
+{
+  return flags() & SDL_RENDERER_SOFTWARE;
+}
+
+inline auto renderer_base::supports_target_textures() const noexcept -> bool
+{
+  return flags() & SDL_RENDERER_TARGETTEXTURE;
+}
+
+inline auto renderer_base::using_integer_logical_scaling() const noexcept
+    -> bool
+{
+  return SDL_RenderGetIntegerScale(m_renderer);
+}
+
+inline auto renderer_base::clipping_enabled() const noexcept -> bool
+{
+  return SDL_RenderIsClipEnabled(m_renderer);
+}
+
+inline auto renderer_base::color() const noexcept -> Color
+{
+  u8 red = 0, green = 0, blue = 0, alpha = 0;
+  SDL_GetRenderDrawColor(m_renderer, &red, &green, &blue, &alpha);
+  return {red, green, blue, alpha};
+}
+
+inline auto renderer_base::viewport() const noexcept -> rect_i
 {
   rect_i viewport;
   SDL_RenderGetViewport(m_renderer, static_cast<SDL_Rect*>(viewport));
   return viewport;
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::to_string() const -> std::string
+inline auto renderer_base::to_string() const -> std::string
 {
   const auto address = detail::address_of(this);
   const auto owidth = std::to_string(output_width());
@@ -2651,45 +2731,32 @@ auto basic_renderer<FontKey>::to_string() const -> std::string
          ", Output height: " + oheight + "]";
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::translation_viewport() const noexcept
-    -> const rect_f&
-{
-  return m_translationViewport;
-}
-
-template <typename FontKey>
-auto basic_renderer<FontKey>::get() const noexcept -> SDL_Renderer*
+inline auto renderer_base::get() const noexcept -> SDL_Renderer*
 {
   return m_renderer;
 }
 
-template <typename FontKey>
-basic_renderer<FontKey>::operator SDL_Renderer*() noexcept
+inline renderer_base::operator SDL_Renderer*() noexcept
 {
   return m_renderer;
 }
 
-template <typename FontKey>
-basic_renderer<FontKey>::operator const SDL_Renderer*() const noexcept
+inline renderer_base::operator const SDL_Renderer*() const noexcept
 {
   return m_renderer;
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::render_drivers() noexcept -> int
+inline auto renderer_base::render_drivers() noexcept -> int
 {
   return SDL_GetNumRenderDrivers();
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::video_drivers() noexcept -> int
+inline auto renderer_base::video_drivers() noexcept -> int
 {
   return SDL_GetNumVideoDrivers();
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::driver_info(int index) noexcept
+inline auto renderer_base::driver_info(int index) noexcept
     -> std::optional<SDL_RendererInfo>
 {
   SDL_RendererInfo info;

@@ -706,7 +706,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API ButtonState
+  [[nodiscard]] CENTURION_API button_state
   button_state(int button) const noexcept;
 
   /**

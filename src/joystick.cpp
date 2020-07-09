@@ -381,9 +381,10 @@ Joystick::Power Joystick::power() const noexcept
 }
 
 CENTURION_DEF
-ButtonState Joystick::button_state(int button) const noexcept
+button_state Joystick::button_state(int button) const noexcept
 {
-  return static_cast<ButtonState>(SDL_JoystickGetButton(m_joystick, button));
+  return static_cast<enum button_state>(
+      SDL_JoystickGetButton(m_joystick, button));
 }
 
 CENTURION_DEF

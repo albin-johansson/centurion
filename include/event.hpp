@@ -457,7 +457,7 @@ class ControllerButtonEvent final
    * @since 4.0.0
    */
   CENTURION_API
-  void set_state(ButtonState state) noexcept;
+  void set_state(button_state state) noexcept;
 
   /**
    * @brief Sets the joystick instance ID associated with the event.
@@ -488,7 +488,7 @@ class ControllerButtonEvent final
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto state() const noexcept -> ButtonState;
+  auto state() const noexcept -> button_state;
 
   /**
    * @brief Returns the joystick instance ID associated with the event.
@@ -1158,7 +1158,7 @@ class JoyButtonEvent final : public CommonEvent<SDL_JoyButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_state(ButtonState state) noexcept;
+  void set_state(button_state state) noexcept;
 
   /**
    * @brief Returns the joystick instance ID associated with the event.
@@ -1188,7 +1188,7 @@ class JoyButtonEvent final : public CommonEvent<SDL_JoyButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto state() const noexcept -> ButtonState;
+  auto state() const noexcept -> button_state;
 };
 
 static_assert(validate_event<JoyButtonEvent, SDL_JoyButtonEvent>());
@@ -1387,7 +1387,7 @@ class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_key(const Key& key, ButtonState state) noexcept;
+  void set_key(const Key& key, button_state state) noexcept;
 
   /**
    * @brief Sets the status of a key modifier.
@@ -1530,7 +1530,7 @@ class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto state() const noexcept -> ButtonState;
+  auto state() const noexcept -> button_state;
 
   /**
    * @brief Returns the key that triggered this keyboard event.
@@ -1624,7 +1624,7 @@ class MouseButtonEvent final : public CommonEvent<SDL_MouseButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_state(ButtonState state) noexcept;
+  void set_state(button_state state) noexcept;
 
   /**
    * @brief Sets the amount of clicks associated with the event.
@@ -1695,7 +1695,7 @@ class MouseButtonEvent final : public CommonEvent<SDL_MouseButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto state() const noexcept -> ButtonState;
+  auto state() const noexcept -> button_state;
 
   /**
    * @brief Returns the number of mouse clicks associated with the event.

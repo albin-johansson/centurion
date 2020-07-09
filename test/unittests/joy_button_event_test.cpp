@@ -29,7 +29,7 @@ TEST_CASE("JoyButtonEvent::set_state", "[JoyButtonEvent]")
 {
   JoyButtonEvent event;
 
-  const auto state = ButtonState::Pressed;
+  const auto state = button_state::pressed;
   event.set_state(state);
 
   CHECK(event.state() == state);
@@ -59,5 +59,5 @@ TEST_CASE("JoyButtonEvent::state", "[JoyButtonEvent]")
   sdlEvent.state = SDL_RELEASED;
   JoyButtonEvent event{sdlEvent};
 
-  CHECK(event.state() == ButtonState::Released);
+  CHECK(event.state() == button_state::released);
 }

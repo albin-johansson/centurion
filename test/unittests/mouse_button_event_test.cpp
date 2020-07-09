@@ -39,7 +39,7 @@ TEST_CASE("MouseButtonEvent::set_state", "[MouseButtonEvent]")
 {
   MouseButtonEvent event;
 
-  const auto state = ButtonState::Released;
+  const auto state = button_state::released;
   event.set_state(state);
 
   CHECK(event.state() == state);
@@ -108,7 +108,7 @@ TEST_CASE("MouseButtonEvent::state", "[MouseButtonEvent]")
   sdlEvent.state = SDL_PRESSED;
   MouseButtonEvent event{sdlEvent};
 
-  CHECK(event.state() == static_cast<ButtonState>(sdlEvent.state));
+  CHECK(event.state() == static_cast<button_state>(sdlEvent.state));
 }
 
 TEST_CASE("MouseButtonEvent::clicks", "[MouseButtonEvent]")

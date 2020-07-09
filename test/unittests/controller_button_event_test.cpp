@@ -19,7 +19,7 @@ TEST_CASE("ControllerButtonEvent::set_state", "[ControllerButtonEvent]")
 {
   ControllerButtonEvent event;
 
-  const auto state = ButtonState::Pressed;
+  const auto state = button_state::pressed;
   event.set_state(state);
 
   CHECK(event.state() == state);
@@ -50,7 +50,7 @@ TEST_CASE("ControllerButtonEvent::state", "[ControllerButtonEvent]")
   sdlEvent.state = SDL_RELEASED;
 
   ControllerButtonEvent event{sdlEvent};
-  CHECK(event.state() == ButtonState::Released);
+  CHECK(event.state() == button_state::released);
 }
 
 TEST_CASE("ControllerButtonEvent::which", "[ControllerButtonEvent]")

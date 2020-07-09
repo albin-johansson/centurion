@@ -15,7 +15,7 @@ KeyboardEvent::KeyboardEvent(const SDL_KeyboardEvent& event) noexcept
 {}
 
 CENTURION_DEF
-void KeyboardEvent::set_key(const Key& key, ButtonState state) noexcept
+void KeyboardEvent::set_key(const Key& key, button_state state) noexcept
 {
   m_event.keysym.scancode = key.scancode();
   m_event.keysym.sym = key.keycode();
@@ -103,9 +103,9 @@ auto KeyboardEvent::repeated() const noexcept -> bool
 }
 
 CENTURION_DEF
-auto KeyboardEvent::state() const noexcept -> ButtonState
+auto KeyboardEvent::state() const noexcept -> button_state
 {
-  return static_cast<ButtonState>(m_event.state);
+  return static_cast<button_state>(m_event.state);
 }
 
 CENTURION_DEF

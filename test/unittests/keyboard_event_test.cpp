@@ -38,13 +38,13 @@ TEST_CASE("KeyboardEvent::set_key", "[KeyboardEvent]")
 {
   KeyboardEvent event;
 
-  event.set_key(SDLK_b, ButtonState::Pressed);
+  event.set_key(SDLK_b, button_state::pressed);
   CHECK(event.key() == Key{SDLK_b});
-  CHECK(event.state() == ButtonState::Pressed);
+  CHECK(event.state() == button_state::pressed);
 
-  event.set_key(SDL_SCANCODE_Q, ButtonState::Released);
+  event.set_key(SDL_SCANCODE_Q, button_state::released);
   CHECK(event.key() == Key{SDL_SCANCODE_Q});
-  CHECK(event.state() == ButtonState::Released);
+  CHECK(event.state() == button_state::released);
 }
 
 TEST_CASE("KeyboardEvent::set_modifier", "[KeyboardEvent]")
@@ -315,13 +315,13 @@ TEST_CASE("KeyboardEvent::state", "[KeyboardEvent]")
 
       return KeyboardEvent{sdlEvent};
     }();
-    CHECK(event.state() == ButtonState::Pressed);
+    CHECK(event.state() == button_state::pressed);
   }
 
   SECTION("Default button state")
   {
     const KeyboardEvent event{{}};
-    CHECK(event.state() == ButtonState::Released);
+    CHECK(event.state() == button_state::released);
   }
 }
 
@@ -330,7 +330,7 @@ TEST_CASE("KeyboardEvent::key", "[KeyboardEvent]")
   KeyboardEvent event;
   const Key original = SDLK_b;
 
-  event.set_key(original, ButtonState::Pressed);
+  event.set_key(original, button_state::pressed);
   const auto copy = event.key();
 
   CHECK(original == copy);

@@ -21,7 +21,7 @@ void ControllerButtonEvent::set_button(GameControllerButton button) noexcept
 }
 
 CENTURION_DEF
-void ControllerButtonEvent::set_state(ButtonState state) noexcept
+void ControllerButtonEvent::set_state(button_state state) noexcept
 {
   m_event.state = static_cast<u8>(state);
 }
@@ -39,9 +39,9 @@ auto ControllerButtonEvent::button() const noexcept -> GameControllerButton
 }
 
 CENTURION_DEF
-auto ControllerButtonEvent::state() const noexcept -> ButtonState
+auto ControllerButtonEvent::state() const noexcept -> button_state
 {
-  return static_cast<ButtonState>(m_event.state);
+  return static_cast<button_state>(m_event.state);
 }
 
 CENTURION_DEF

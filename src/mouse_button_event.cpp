@@ -33,7 +33,7 @@ void MouseButtonEvent::set_button(MouseButton button) noexcept
 }
 
 CENTURION_DEF
-void MouseButtonEvent::set_state(ButtonState state) noexcept
+void MouseButtonEvent::set_state(button_state state) noexcept
 {
   m_event.state = static_cast<u8>(state);
 }
@@ -75,9 +75,9 @@ auto MouseButtonEvent::button() const noexcept -> MouseButton
 }
 
 CENTURION_DEF
-auto MouseButtonEvent::state() const noexcept -> ButtonState
+auto MouseButtonEvent::state() const noexcept -> button_state
 {
-  return static_cast<ButtonState>(m_event.state);
+  return static_cast<button_state>(m_event.state);
 }
 
 CENTURION_DEF

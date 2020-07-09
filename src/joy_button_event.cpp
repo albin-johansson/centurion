@@ -27,7 +27,7 @@ void JoyButtonEvent::set_button(u8 button) noexcept
 }
 
 CENTURION_DEF
-void JoyButtonEvent::set_state(ButtonState state) noexcept
+void JoyButtonEvent::set_state(button_state state) noexcept
 {
   m_event.state = static_cast<u8>(state);
 }
@@ -45,9 +45,9 @@ auto JoyButtonEvent::button() const noexcept -> u8
 }
 
 CENTURION_DEF
-auto JoyButtonEvent::state() const noexcept -> ButtonState
+auto JoyButtonEvent::state() const noexcept -> button_state
 {
-  return static_cast<ButtonState>(m_event.state);
+  return static_cast<button_state>(m_event.state);
 }
 
 }  // namespace centurion::event

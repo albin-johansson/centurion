@@ -13,7 +13,7 @@ CENTURION_DEF
 Surface::Surface(czstring file)
 {
   if (!file) {
-    throw CenturionException{"Can't create Surface from null path!"};
+    throw centurion_exception{"Can't create Surface from null path!"};
   }
   m_surface = IMG_Load(file);
   if (!m_surface) {
@@ -25,7 +25,7 @@ CENTURION_DEF
 Surface::Surface(owner<SDL_Surface*> surface)
 {
   if (!surface) {
-    throw CenturionException{"Cannot create Surface from null SDL_Surface!"};
+    throw centurion_exception{"Cannot create Surface from null SDL_Surface!"};
   } else {
     this->m_surface = surface;
   }

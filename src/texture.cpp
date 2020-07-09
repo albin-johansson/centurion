@@ -127,7 +127,7 @@ void Texture::set_alpha(u8 alpha) noexcept
 }
 
 CENTURION_DEF
-void Texture::set_blend_mode(BlendMode mode) noexcept
+void Texture::set_blend_mode(enum blend_mode mode) noexcept
 {
   SDL_SetTextureBlendMode(m_texture, static_cast<SDL_BlendMode>(mode));
 }
@@ -212,11 +212,11 @@ u8 Texture::alpha() const noexcept
 }
 
 CENTURION_DEF
-BlendMode Texture::blend_mode() const noexcept
+blend_mode Texture::blend_mode() const noexcept
 {
   SDL_BlendMode mode;
   SDL_GetTextureBlendMode(m_texture, &mode);
-  return static_cast<BlendMode>(mode);
+  return static_cast<enum blend_mode>(mode);
 }
 
 CENTURION_DEF

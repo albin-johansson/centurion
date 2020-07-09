@@ -126,7 +126,7 @@ TEST_CASE("Surface::set_blend_mode", "[Surface]")
 {
   Surface surface{path};
 
-  const auto mode = BlendMode::Mod;
+  const auto mode = blend_mode::mod;
   surface.set_blend_mode(mode);
 
   CHECK(mode == surface.blend_mode());
@@ -196,7 +196,7 @@ TEST_CASE("Surface::to_texture", "[Surface]")
 TEST_CASE("Surface::convert", "[Surface]")
 {
   Surface original{path};
-  original.set_blend_mode(BlendMode::Blend);
+  original.set_blend_mode(blend_mode::blend);
   original.set_alpha(0xAE);
   original.set_color_mod(color::red);
 

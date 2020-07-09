@@ -213,7 +213,7 @@ TEST_CASE("Texture::set_blend_mode", "[Texture]")
   test([](ctn::renderer& renderer) {
     Texture texture{renderer, pandaPath};
 
-    const auto mode = BlendMode::Blend;
+    const auto mode = blend_mode::blend;
     texture.set_blend_mode(mode);
 
     CHECK(mode == texture.blend_mode());

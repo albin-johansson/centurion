@@ -174,7 +174,7 @@ void Surface::set_color_mod(const Color& color) noexcept
 }
 
 CENTURION_DEF
-void Surface::set_blend_mode(BlendMode mode) noexcept
+void Surface::set_blend_mode(enum blend_mode mode) noexcept
 {
   SDL_SetSurfaceBlendMode(m_surface, static_cast<SDL_BlendMode>(mode));
 }
@@ -196,11 +196,11 @@ Color Surface::color_mod() const noexcept
 }
 
 CENTURION_DEF
-BlendMode Surface::blend_mode() const noexcept
+blend_mode Surface::blend_mode() const noexcept
 {
   SDL_BlendMode mode;
   SDL_GetSurfaceBlendMode(m_surface, &mode);
-  return static_cast<BlendMode>(mode);
+  return static_cast<enum blend_mode>(mode);
 }
 
 // CENTURION_DEF

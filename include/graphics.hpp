@@ -645,7 +645,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  void set_blend_mode(BlendMode mode) noexcept;
+  void set_blend_mode(blend_mode mode) noexcept;
 
   /**
    * @brief Sets the rendering target of the renderer.
@@ -795,7 +795,7 @@ class basic_renderer final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto blend_mode() const noexcept -> BlendMode;
+  [[nodiscard]] auto blend_mode() const noexcept -> blend_mode;
 
   /**
    * @brief Returns a bit mask of the current renderer flags.
@@ -1535,7 +1535,7 @@ class Texture final {
                                       PixelFormat format)
       -> std::unique_ptr<Texture>
   {
-    const auto blendMode = BlendMode::Blend;
+    const auto blendMode = blend_mode::blend;
     const auto createSurface = [blendMode](czstring path, PixelFormat format) {
       Surface source{path};
       source.set_blend_mode(blendMode);
@@ -1595,7 +1595,7 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_blend_mode(BlendMode mode) noexcept;
+  void set_blend_mode(blend_mode mode) noexcept;
 
   /**
    * @brief Sets the color modulation of the texture.
@@ -1720,7 +1720,7 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto blend_mode() const noexcept -> BlendMode;
+  auto blend_mode() const noexcept -> blend_mode;
 
   /**
    * @brief Returns the color modulation of the texture.
@@ -1972,7 +1972,7 @@ basic_renderer<FontKey>::basic_renderer(const Window& window,
     throw detail::Error::from_core("Failed to create Renderer!");
   }
 
-  set_blend_mode(BlendMode::Blend);
+  set_blend_mode(blend_mode::blend);
   set_color(color::black);
   set_logical_integer_scale(false);
 }
@@ -2386,7 +2386,7 @@ void basic_renderer<FontKey>::set_translation_viewport(
 }
 
 template <typename FontKey>
-void basic_renderer<FontKey>::set_blend_mode(BlendMode mode) noexcept
+void basic_renderer<FontKey>::set_blend_mode(enum blend_mode mode) noexcept
 {
   SDL_SetRenderDrawBlendMode(m_renderer, static_cast<SDL_BlendMode>(mode));
 }
@@ -2508,11 +2508,10 @@ auto basic_renderer<FontKey>::output_size() const noexcept -> area_i
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::blend_mode() const noexcept -> BlendMode
-{
-  SDL_BlendMode mode;
+auto basic_renderer<FontKey>::blend_mode() const noexcept -> enum blend_mode {
+  SDL_BlendMode mode;  //
   SDL_GetRenderDrawBlendMode(m_renderer, &mode);
-  return static_cast<BlendMode>(mode);
+  return static_cast<enum blend_mode>(mode);
 }
 
 template <typename FontKey>

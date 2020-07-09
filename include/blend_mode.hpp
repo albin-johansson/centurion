@@ -23,11 +23,14 @@
  */
 
 /**
+ * @file blend_mode.hpp
+ *
  * @brief Provides the `BlendMode` enum.
  *
- * @file blend_mode.hpp
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -41,20 +44,21 @@
 namespace centurion {
 
 /**
- * @enum BlendMode
+ * @enum blend_mode
+ *
  * @brief Mirrors the `SDL_BlendMode` enum.
  *
  * @since 3.0.0
  *
  * @headerfile blend_mode.hpp
  */
-enum class BlendMode {
-  None = SDL_BLENDMODE_NONE,      /**< Represents no blending. */
-  Blend = SDL_BLENDMODE_BLEND,    /**< Represents alpha blending. */
-  Add = SDL_BLENDMODE_ADD,        /**< Represents additive blending. */
-  Mod = SDL_BLENDMODE_MOD,        /**< Represents color modulation. */
-  Mul = SDL_BLENDMODE_MUL,        /**< Represents color multiplication. */
-  Invalid = SDL_BLENDMODE_INVALID /**< Represents an invalid blend mode. */
+enum class blend_mode {
+  none = SDL_BLENDMODE_NONE,      /**< Represents no blending. */
+  blend = SDL_BLENDMODE_BLEND,    /**< Represents alpha blending. */
+  add = SDL_BLENDMODE_ADD,        /**< Represents additive blending. */
+  mod = SDL_BLENDMODE_MOD,        /**< Represents color modulation. */
+  mul = SDL_BLENDMODE_MUL,        /**< Represents color multiplication. */
+  invalid = SDL_BLENDMODE_INVALID /**< Represents an invalid blend mode. */
 };
 
 /**
@@ -67,7 +71,7 @@ enum class BlendMode {
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline auto operator==(BlendMode lhs, SDL_BlendMode rhs) noexcept
+[[nodiscard]] inline auto operator==(blend_mode lhs, SDL_BlendMode rhs) noexcept
     -> bool
 {
   return static_cast<SDL_BlendMode>(lhs) == rhs;
@@ -76,7 +80,7 @@ enum class BlendMode {
 /**
  * @copydoc operator==(BlendMode, SDL_BlendMode)
  */
-[[nodiscard]] inline auto operator==(SDL_BlendMode lhs, BlendMode rhs) noexcept
+[[nodiscard]] inline auto operator==(SDL_BlendMode lhs, blend_mode rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -92,7 +96,7 @@ enum class BlendMode {
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline auto operator!=(BlendMode lhs, SDL_BlendMode rhs) noexcept
+[[nodiscard]] inline auto operator!=(blend_mode lhs, SDL_BlendMode rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -101,7 +105,7 @@ enum class BlendMode {
 /**
  * @copydoc operator!=(BlendMode, SDL_BlendMode)
  */
-[[nodiscard]] inline auto operator!=(SDL_BlendMode lhs, BlendMode rhs) noexcept
+[[nodiscard]] inline auto operator!=(SDL_BlendMode lhs, blend_mode rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);

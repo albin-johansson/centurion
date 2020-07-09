@@ -44,7 +44,7 @@ TEST_CASE("Constructor: (gsl::owner<SDL_Renderer*>)", "[renderer]")
   CHECK_THROWS_AS(ctn::renderer{nullptr}, ctn::centurion_exception);
 
   ctn::Window window;
-  SDL_Renderer* ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
+  auto* ren = SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE);
   CHECK_NOTHROW(ctn::renderer{ren});
 }
 

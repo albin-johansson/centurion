@@ -53,12 +53,11 @@
  * need to initialize the library! Here's how to do just that. See the
  * documentation for the various Centurion components for details and examples.
  * @code{.cpp}
- *   #include <centurion.hpp>
+ *   #include <centurion_as_ctn.hpp>
  *
  *   int main(int, char**)
  *   {
- *     using namespace centurion;
- *     Centurion c;
+ *     ctn::Centurion c;
  *
  *     // The library is now initialized and ready for use!
  *

@@ -157,14 +157,14 @@ TEST_CASE("Surface::clip", "[Surface]")
   SECTION("Non-const")
   {
     Surface surface{path};
-    surface.get()->clip_rect = rect;
+    surface.get()->clip_rect = static_cast<SDL_Rect>(rect);
     CHECK(surface.clip() == rect);
   }
 
   SECTION("Const")
   {
     const Surface surface{path};
-    surface.get()->clip_rect = rect;
+    surface.get()->clip_rect = static_cast<SDL_Rect>(rect);
     CHECK(surface.clip() == rect);
   }
 }

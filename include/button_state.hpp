@@ -50,14 +50,14 @@ namespace centurion {
  *
  * @since 3.1.0
  *
- * @var button_state::Released
- * Button is released. Corresponds to `SDL_RELEASED`.
- * @var button_state::Pressed
- * Button is pressed. Corresponds to `SDL_PRESSED`.
- *
  * @headerfile button_state.hpp
  */
-enum class button_state { released = SDL_RELEASED, pressed = SDL_PRESSED };
+enum class button_state {
+  released =
+      SDL_RELEASED, /**< Button is released. Corresponds to `SDL_RELEASED`.*/
+
+  pressed = SDL_PRESSED /**< Button is pressed. Corresponds to `SDL_PRESSED`.*/
+};
 
 }  // namespace centurion
 

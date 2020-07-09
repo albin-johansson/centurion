@@ -260,7 +260,7 @@ class basic_renderer final {
    * @since 4.0.0
    */
   template <typename T>
-  void draw_rect(const Rect<T>& rect) noexcept;
+  void draw_rect(const basic_rect<T>& rect) noexcept;
 
   /**
    * @brief Renders a filled rectangle in the currently selected color.
@@ -273,7 +273,7 @@ class basic_renderer final {
    * @since 4.0.0
    */
   template <typename T>
-  void fill_rect(const Rect<T>& rect) noexcept;
+  void fill_rect(const basic_rect<T>& rect) noexcept;
 
   /**
    * @brief Renders an outlined rectangle in the currently selected color.
@@ -289,7 +289,7 @@ class basic_renderer final {
    * @since 4.1.0
    */
   template <typename T>
-  void draw_rect_t(const Rect<T>& rect) noexcept;
+  void draw_rect_t(const basic_rect<T>& rect) noexcept;
 
   /**
    * @brief Renders a filled rectangle in the currently selected color.
@@ -305,7 +305,7 @@ class basic_renderer final {
    * @since 4.1.0
    */
   template <typename T>
-  void fill_rect_t(const Rect<T>& rect) noexcept;
+  void fill_rect_t(const basic_rect<T>& rect) noexcept;
 
   /**
    * @brief Renders a line between the supplied points, in the currently
@@ -320,7 +320,8 @@ class basic_renderer final {
    * @since 4.0.0
    */
   template <typename T>
-  void draw_line(const Point<T>& start, const Point<T>& end) noexcept;
+  void draw_line(const basic_point<T>& start,
+                 const basic_point<T>& end) noexcept;
 
   /**
    * @brief Renders a collection of lines.
@@ -352,7 +353,7 @@ class basic_renderer final {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const Texture& texture, const Point<T>& position) noexcept;
+  void render(const Texture& texture, const basic_point<T>& position) noexcept;
 
   /**
    * @brief Renders a texture according to the specified rectangle.
@@ -366,7 +367,8 @@ class basic_renderer final {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const Texture& texture, const Rect<T>& destination) noexcept;
+  void render(const Texture& texture,
+              const basic_rect<T>& destination) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -385,8 +387,8 @@ class basic_renderer final {
    */
   template <typename T>
   void render(const Texture& texture,
-              const IRect& source,
-              const Rect<T>& destination) noexcept;
+              const rect_i& source,
+              const basic_rect<T>& destination) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -404,8 +406,8 @@ class basic_renderer final {
    */
   template <typename T>
   void render(const Texture& texture,
-              const IRect& source,
-              const Rect<T>& destination,
+              const rect_i& source,
+              const basic_rect<T>& destination,
               const double angle) noexcept;
 
   /**
@@ -426,10 +428,10 @@ class basic_renderer final {
    */
   template <typename T>
   void render(const Texture& texture,
-              const IRect& source,
-              const Rect<T>& destination,
+              const rect_i& source,
+              const basic_rect<T>& destination,
               const double angle,
-              const Point<T>& center) noexcept;
+              const basic_point<T>& center) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -450,10 +452,10 @@ class basic_renderer final {
    */
   template <typename T>
   void render(const Texture& texture,
-              const IRect& source,
-              const Rect<T>& destination,
+              const rect_i& source,
+              const basic_rect<T>& destination,
               const double angle,
-              const Point<T>& center,
+              const basic_point<T>& center,
               const SDL_RendererFlip flip) noexcept;
 
   /**
@@ -471,7 +473,8 @@ class basic_renderer final {
    * @since 4.0.0
    */
   template <typename T>
-  void render_t(const Texture& texture, const Point<T>& position) noexcept;
+  void render_t(const Texture& texture,
+                const basic_point<T>& position) noexcept;
 
   /**
    * @brief Renders a texture according to the specified rectangle.
@@ -489,7 +492,8 @@ class basic_renderer final {
    * @since 4.0.0
    */
   template <typename T>
-  void render_t(const Texture& texture, const Rect<T>& destination) noexcept;
+  void render_t(const Texture& texture,
+                const basic_rect<T>& destination) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -512,8 +516,8 @@ class basic_renderer final {
    */
   template <typename T>
   void render_t(const Texture& texture,
-                const IRect& source,
-                const Rect<T>& destination) noexcept;
+                const rect_i& source,
+                const basic_rect<T>& destination) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -535,8 +539,8 @@ class basic_renderer final {
    */
   template <typename T>
   void render_t(const Texture& texture,
-                const IRect& source,
-                const Rect<T>& destination,
+                const rect_i& source,
+                const basic_rect<T>& destination,
                 const double angle) noexcept;
 
   /**
@@ -561,10 +565,10 @@ class basic_renderer final {
    */
   template <typename T>
   void render_t(const Texture& texture,
-                const IRect& source,
-                const Rect<T>& destination,
+                const rect_i& source,
+                const basic_rect<T>& destination,
                 const double angle,
-                const Point<T>& center) noexcept;
+                const basic_point<T>& center) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -586,10 +590,10 @@ class basic_renderer final {
    */
   template <typename T>
   void render_t(const Texture& texture,
-                const IRect& source,
-                const Rect<T>& destination,
+                const rect_i& source,
+                const basic_rect<T>& destination,
                 const double angle,
-                const Point<T>& center,
+                const basic_point<T>& center,
                 const SDL_RendererFlip flip) noexcept;
 
   /**
@@ -610,7 +614,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  void set_clip(std::optional<IRect> area) noexcept;
+  void set_clip(std::optional<rect_i> area) noexcept;
 
   /**
    * @brief Sets the viewport that will be used by the renderer.
@@ -619,7 +623,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  void set_viewport(const IRect& viewport) noexcept;
+  void set_viewport(const rect_i& viewport) noexcept;
 
   /**
    * @brief Sets the translation viewport that will be used by the renderer.
@@ -632,7 +636,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  void set_translation_viewport(const FRect& viewport) noexcept;
+  void set_translation_viewport(const rect_f& viewport) noexcept;
 
   /**
    * @brief Sets the blend mode that will be used by the renderer.
@@ -746,7 +750,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto clip() const noexcept -> std::optional<IRect>;
+  [[nodiscard]] auto clip() const noexcept -> std::optional<rect_i>;
 
   /**
    * @brief Returns information about the renderer.
@@ -1025,7 +1029,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto viewport() const noexcept -> IRect;
+  [[nodiscard]] auto viewport() const noexcept -> rect_i;
 
   /**
    * @brief Returns a textual representation of the renderer.
@@ -1045,7 +1049,7 @@ class basic_renderer final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto translation_viewport() const noexcept -> const FRect&;
+  [[nodiscard]] auto translation_viewport() const noexcept -> const rect_f&;
 
   /**
    * @brief Returns a pointer to the associated SDL_Renderer.
@@ -1113,7 +1117,7 @@ class basic_renderer final {
 
  private:
   SDL_Renderer* m_renderer = nullptr;
-  FRect m_translationViewport;
+  rect_f m_translationViewport;
   std::unordered_map<FontKey, std::shared_ptr<Font>> m_fonts;
 
   static constexpr SDL_RendererFlags defaultFlags =
@@ -1228,13 +1232,15 @@ class basic_renderer final {
   }
 
   template <typename T>
-  [[nodiscard]] auto translate(const Point<T>& point) const noexcept -> Point<T>
+  [[nodiscard]] auto translate(const basic_point<T>& point) const noexcept
+      -> basic_point<T>
   {
-    return Point<T>{tx(point.x()), tx(point.y())};
+    return basic_point<T>{tx(point.x()), tx(point.y())};
   }
 
   template <typename T>
-  [[nodiscard]] auto translate(const Rect<T>& rect) const noexcept -> Rect<T>
+  [[nodiscard]] auto translate(const basic_rect<T>& rect) const noexcept
+      -> basic_rect<T>
   {
     return {translate(rect.position()), rect.size()};
   }
@@ -1569,7 +1575,7 @@ class Texture final {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_pixel(IPoint pixel, const Color& color) noexcept;
+  void set_pixel(point_i pixel, const Color& color) noexcept;
 
   /**
    * @brief Sets the alpha value of the texture.
@@ -2063,7 +2069,7 @@ void basic_renderer<FontKey>::remove_font(const FontKey& key)
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::draw_rect(const Rect<T>& rect) noexcept
+void basic_renderer<FontKey>::draw_rect(const basic_rect<T>& rect) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
@@ -2076,7 +2082,7 @@ void basic_renderer<FontKey>::draw_rect(const Rect<T>& rect) noexcept
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::fill_rect(const Rect<T>& rect) noexcept
+void basic_renderer<FontKey>::fill_rect(const basic_rect<T>& rect) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
@@ -2089,22 +2095,22 @@ void basic_renderer<FontKey>::fill_rect(const Rect<T>& rect) noexcept
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::draw_rect_t(const Rect<T>& rect) noexcept
+void basic_renderer<FontKey>::draw_rect_t(const basic_rect<T>& rect) noexcept
 {
   draw_rect(translate(rect));
 }
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::fill_rect_t(const Rect<T>& rect) noexcept
+void basic_renderer<FontKey>::fill_rect_t(const basic_rect<T>& rect) noexcept
 {
   fill_rect(translate(rect));
 }
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::draw_line(const Point<T>& start,
-                                        const Point<T>& end) noexcept
+void basic_renderer<FontKey>::draw_line(const basic_point<T>& start,
+                                        const basic_point<T>& end) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
@@ -2122,14 +2128,14 @@ void basic_renderer<FontKey>::draw_lines(const Container& container) noexcept
   // This must be a point of int or float
   using point_t = typename Container::value_type;  // TODO doc
 
-  static_assert(std::is_same_v<point_t, Point<float>> ||
-                std::is_same_v<point_t, Point<int>>);
+  static_assert(std::is_same_v<point_t, basic_point<float>> ||
+                std::is_same_v<point_t, basic_point<int>>);
 
   // This is either int or float
   using value_t = typename point_t::value_type;
 
   if (!container.empty()) {
-    const Point<value_t>& front = container.front();
+    const basic_point<value_t>& front = container.front();
 
     if constexpr (std::is_same_v<value_t, int>) {
       const auto* first = static_cast<const SDL_Point*>(front);
@@ -2144,7 +2150,7 @@ void basic_renderer<FontKey>::draw_lines(const Container& container) noexcept
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const Point<T>& position) noexcept
+                                     const basic_point<T>& position) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
@@ -2164,7 +2170,7 @@ void basic_renderer<FontKey>::render(const Texture& texture,
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const Rect<T>& destination) noexcept
+                                     const basic_rect<T>& destination) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
@@ -2184,8 +2190,8 @@ void basic_renderer<FontKey>::render(const Texture& texture,
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const IRect& source,
-                                     const Rect<T>& destination) noexcept
+                                     const rect_i& source,
+                                     const basic_rect<T>& destination) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
@@ -2205,8 +2211,8 @@ void basic_renderer<FontKey>::render(const Texture& texture,
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const IRect& source,
-                                     const Rect<T>& destination,
+                                     const rect_i& source,
+                                     const basic_rect<T>& destination,
                                      const double angle) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
@@ -2233,10 +2239,10 @@ void basic_renderer<FontKey>::render(const Texture& texture,
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const IRect& source,
-                                     const Rect<T>& destination,
+                                     const rect_i& source,
+                                     const basic_rect<T>& destination,
                                      const double angle,
-                                     const Point<T>& center) noexcept
+                                     const basic_point<T>& center) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
@@ -2262,10 +2268,10 @@ void basic_renderer<FontKey>::render(const Texture& texture,
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render(const Texture& texture,
-                                     const IRect& source,
-                                     const Rect<T>& destination,
+                                     const rect_i& source,
+                                     const basic_rect<T>& destination,
                                      const double angle,
-                                     const Point<T>& center,
+                                     const basic_point<T>& center,
                                      const SDL_RendererFlip flip) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
@@ -2292,24 +2298,26 @@ void basic_renderer<FontKey>::render(const Texture& texture,
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render_t(const Texture& texture,
-                                       const Point<T>& position) noexcept
+                                       const basic_point<T>& position) noexcept
 {
   render(texture, translate(position));
 }
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(const Texture& texture,
-                                       const Rect<T>& destination) noexcept
+void basic_renderer<FontKey>::render_t(
+    const Texture& texture,
+    const basic_rect<T>& destination) noexcept
 {
   render(texture, translate(destination));
 }
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(const Texture& texture,
-                                       const IRect& source,
-                                       const Rect<T>& destination) noexcept
+void basic_renderer<FontKey>::render_t(
+    const Texture& texture,
+    const rect_i& source,
+    const basic_rect<T>& destination) noexcept
 {
   render(texture, source, translate(destination));
 }
@@ -2317,8 +2325,8 @@ void basic_renderer<FontKey>::render_t(const Texture& texture,
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render_t(const Texture& texture,
-                                       const IRect& source,
-                                       const Rect<T>& destination,
+                                       const rect_i& source,
+                                       const basic_rect<T>& destination,
                                        const double angle) noexcept
 {
   render(texture, source, translate(destination), angle);
@@ -2327,10 +2335,10 @@ void basic_renderer<FontKey>::render_t(const Texture& texture,
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render_t(const Texture& texture,
-                                       const IRect& source,
-                                       const Rect<T>& destination,
+                                       const rect_i& source,
+                                       const basic_rect<T>& destination,
                                        const double angle,
-                                       const Point<T>& center) noexcept
+                                       const basic_point<T>& center) noexcept
 {
   render(texture, source, translate(destination), angle, center);
 }
@@ -2338,10 +2346,10 @@ void basic_renderer<FontKey>::render_t(const Texture& texture,
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render_t(const Texture& texture,
-                                       const IRect& source,
-                                       const Rect<T>& destination,
+                                       const rect_i& source,
+                                       const basic_rect<T>& destination,
                                        const double angle,
-                                       const Point<T>& center,
+                                       const basic_point<T>& center,
                                        const SDL_RendererFlip flip) noexcept
 {
   render(texture, source, translate(destination), angle, center, flip);
@@ -2355,7 +2363,7 @@ void basic_renderer<FontKey>::set_color(const Color& color) noexcept
 }
 
 template <typename FontKey>
-void basic_renderer<FontKey>::set_clip(std::optional<IRect> area) noexcept
+void basic_renderer<FontKey>::set_clip(std::optional<rect_i> area) noexcept
 {
   if (area) {
     SDL_RenderSetClipRect(m_renderer, static_cast<const SDL_Rect*>(*area));
@@ -2365,14 +2373,14 @@ void basic_renderer<FontKey>::set_clip(std::optional<IRect> area) noexcept
 }
 
 template <typename FontKey>
-void basic_renderer<FontKey>::set_viewport(const IRect& viewport) noexcept
+void basic_renderer<FontKey>::set_viewport(const rect_i& viewport) noexcept
 {
   SDL_RenderSetViewport(m_renderer, static_cast<const SDL_Rect*>(viewport));
 }
 
 template <typename FontKey>
 void basic_renderer<FontKey>::set_translation_viewport(
-    const FRect& viewport) noexcept
+    const rect_f& viewport) noexcept
 {
   m_translationViewport = viewport;
 }
@@ -2450,9 +2458,9 @@ auto basic_renderer<FontKey>::y_scale() const noexcept -> float
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::clip() const noexcept -> std::optional<IRect>
+auto basic_renderer<FontKey>::clip() const noexcept -> std::optional<rect_i>
 {
-  IRect rect;
+  rect_i rect;
   SDL_RenderGetClipRect(m_renderer, static_cast<SDL_Rect*>(rect));
   if (!rect.has_area()) {
     return nothing;
@@ -2627,9 +2635,9 @@ auto basic_renderer<FontKey>::has_font(const FontKey& key) const noexcept
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::viewport() const noexcept -> IRect
+auto basic_renderer<FontKey>::viewport() const noexcept -> rect_i
 {
-  IRect viewport;
+  rect_i viewport;
   SDL_RenderGetViewport(m_renderer, static_cast<SDL_Rect*>(viewport));
   return viewport;
 }
@@ -2646,7 +2654,7 @@ auto basic_renderer<FontKey>::to_string() const -> std::string
 
 template <typename FontKey>
 auto basic_renderer<FontKey>::translation_viewport() const noexcept
-    -> const FRect&
+    -> const rect_f&
 {
   return m_translationViewport;
 }

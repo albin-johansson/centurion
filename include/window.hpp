@@ -489,7 +489,7 @@ class Window final {
    * @return the current position of the window.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API IPoint position() const noexcept;
+  [[nodiscard]] CENTURION_API point_i position() const noexcept;
 
   /**
    * Returns the minimum size of the window.

@@ -182,7 +182,7 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit Cursor(const Surface& surface, const IPoint& hotspot);
+  explicit Cursor(const Surface& surface, const point_i& hotspot);
 
   /**
    * @brief Creates a cursor by moving the supplied cursor.
@@ -229,7 +229,7 @@ class Cursor final {
    * @copydoc Cursor(const Surface&, const IPoint&)
    */
   CENTURION_QUERY
-  static auto unique(const Surface& surface, const IPoint& hotspot)
+  static auto unique(const Surface& surface, const point_i& hotspot)
       -> std::unique_ptr<Cursor>;
 
   /**
@@ -248,7 +248,7 @@ class Cursor final {
    * @copydoc Cursor(const Surface&, const IPoint&)
    */
   CENTURION_QUERY
-  static auto shared(const Surface& surface, const IPoint& hotspot)
+  static auto shared(const Surface& surface, const point_i& hotspot)
       -> std::shared_ptr<Cursor>;
 
   /**

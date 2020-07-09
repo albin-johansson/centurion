@@ -23,11 +23,14 @@
  */
 
 /**
+ * @file area.hpp
+ *
  * @brief Provides a simple area struct.
  *
- * @file area.hpp
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -41,10 +44,11 @@
 namespace centurion {
 
 template <typename T>
-struct Area;
+struct basic_area;
 
 /**
- * @struct Area
+ * @struct basic_area
+ *
  * @brief Simply represents an area with a width and height.
  *
  * @tparam T the type of the components of the area, defaults to float. Must
@@ -52,15 +56,18 @@ struct Area;
  *
  * @since 4.0.0
  *
- * @var Area::width
+ * @see `area_i`
+ * @see `area_f`
+ *
+ * @var basic_area::width
  * The width of the area. Defaults to 0.
- * @var Area::height
+ * @var basic_area::height
  * The height of the area. Defaults to 0.
  *
  * @headerfile area.hpp
  */
 template <typename T = float>
-struct Area {
+struct basic_area {
   T width = 0;
   T height = 0;
 
@@ -74,7 +81,7 @@ struct Area {
  *
  * @since 4.1.0
  */
-using area_i = Area<int>;
+using area_i = basic_area<int>;
 
 /**
  * @typedef area_f
@@ -82,15 +89,7 @@ using area_i = Area<int>;
  *
  * @since 4.1.0
  */
-using area_f = Area<float>;
-
-/**
- * @typedef area_d
- * @brief An alias for `double` areas.
- *
- * @since 4.1.0
- */
-using area_d = Area<double>;
+using area_f = basic_area<float>;
 
 /**
  * @brief Indicates whether or not two areas are considered to be equal.
@@ -103,9 +102,9 @@ using area_d = Area<double>;
  * @since 4.1.0
  */
 template <typename T>
-[[nodiscard]] inline constexpr auto operator==(const Area<T>& lhs,
-                                               const Area<T>& rhs) noexcept
-    -> bool
+[[nodiscard]] inline constexpr auto operator==(
+    const basic_area<T>& lhs,
+    const basic_area<T>& rhs) noexcept -> bool
 {
   return (lhs.width == rhs.width) && (lhs.height == rhs.height);
 }
@@ -121,9 +120,9 @@ template <typename T>
  * @since 4.1.0
  */
 template <typename T>
-[[nodiscard]] inline constexpr auto operator!=(const Area<T>& lhs,
-                                               const Area<T>& rhs) noexcept
-    -> bool
+[[nodiscard]] inline constexpr auto operator!=(
+    const basic_area<T>& lhs,
+    const basic_area<T>& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

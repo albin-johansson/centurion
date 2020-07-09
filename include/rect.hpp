@@ -23,11 +23,14 @@
  */
 
 /**
+ * @file rect.hpp
+ *
  * @brief Provides a generic rectangle implementation.
  *
- * @file rect.hpp
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -44,16 +47,19 @@
 namespace centurion {
 
 template <typename T>
-class Rect;
+class basic_rect;
 
 template <typename U>
-constexpr bool operator==(const Rect<U>& lhs, const Rect<U>& rhs) noexcept;
+constexpr auto operator==(const basic_rect<U>& lhs,
+                          const basic_rect<U>& rhs) noexcept -> bool;
 
 template <typename U>
-constexpr bool operator!=(const Rect<U>& lhs, const Rect<U>& rhs) noexcept;
+constexpr auto operator!=(const basic_rect<U>& lhs,
+                          const basic_rect<U>& rhs) noexcept -> bool;
 
 /**
- * @class Rect
+ * @class basic_rect
+ *
  * @brief A rectangle that supports integral and floating-point components.
  *
  * @details `Rect<int>` and `Rect<float>` can safely be explicitly casted to
@@ -77,38 +83,32 @@ constexpr bool operator!=(const Rect<U>& lhs, const Rect<U>& rhs) noexcept;
  * @tparam T the type of the components of the rectangle. Set to float by
  * default.
  *
- * @headerfile rect.hpp
  * @since 4.0.0
+ *
+ * @see `rect_i`
+ * @see `rect_f`
+ *
+ * @headerfile rect.hpp
  */
 template <typename T = float>
-class Rect final {
+class basic_rect final {
  public:
   /**
    * @brief Creates a rectangle with the components (0, 0, 0, 0).
    *
    * @since 4.0.0
    */
-  constexpr Rect() noexcept = default;
-
-  //  /**
-  //   * @brief Creates a rectangle.
-  //   *
-  //   * @param x the x-coordinate of the rectangle.
-  //   * @param y the y-coordinate of the rectangle.
-  //   * @param width the width of the rectangle.
-  //   * @param height the height of the rectangle.
-  //   *
-  //   * @since 5.0.0
-  //   */
-  //  constexpr Rect(x<T> x, y<T> y, width<T> width, height<T> height) {}
+  constexpr basic_rect() noexcept = default;
 
   /**
+   * @brief Creates a rectangle with the supplied position and size.
+   *
    * @param position the position of the rectangle.
    * @param size the size of the rectangle.
    *
    * @since 4.1.0
    */
-  constexpr Rect(Point<T> position, Area<T> size) noexcept
+  constexpr basic_rect(basic_point<T> position, basic_area<T> size) noexcept
       : m_position{position}, m_size{size}
   {}
 
@@ -141,7 +141,7 @@ class Rect final {
    *
    * @since 4.2.0
    */
-  constexpr void move_to(Point<T> pos) noexcept { m_position.set(pos); }
+  constexpr void move_to(basic_point<T> pos) noexcept { m_position.set(pos); }
 
   /**
    * @brief Sets the width of the rectangle.
@@ -168,7 +168,7 @@ class Rect final {
    *
    * @since 4.2.0
    */
-  constexpr void resize(Area<T> size) noexcept
+  constexpr void resize(basic_area<T> size) noexcept
   {
     m_size.width = size.width;
     m_size.height = size.height;
@@ -200,7 +200,7 @@ class Rect final {
    *
    * @since 4.1.0
    */
-  constexpr void set(Point<T> position, Area<T> size) noexcept
+  constexpr void set(basic_point<T> position, basic_area<T> size) noexcept
   {
     m_position = position;
     m_size = size;
@@ -215,7 +215,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  constexpr void set(const Rect<T>& other) noexcept
+  constexpr void set(const basic_rect<T>& other) noexcept
   {
     m_position.set_x(other.x());
     m_position.set_y(other.y());
@@ -232,28 +232,11 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr bool intersects(const Rect<T>& other) const noexcept
+  [[nodiscard]] constexpr auto intersects(
+      const basic_rect<T>& other) const noexcept -> bool
   {
     return !(x() >= other.max_x() || max_x() <= other.x() ||
              y() >= other.max_y() || max_y() <= other.y());
-  }
-
-  /**
-   * @brief Indicates whether or not the rectangle contains the point.
-   *
-   * @param px the x-coordinate of the point.
-   * @param py the y-coordinate of the point.
-   *
-   * @return `true` if the rectangle contains the point; `false` otherwise.
-   *
-   * @deprecated this method is deprecated in favor of <code>contains(Point)
-   * </code> since 4.1.0.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard, deprecated]] constexpr bool contains(T px, T py) const noexcept
-  {
-    return contains({px, py});
   }
 
   /**
@@ -265,7 +248,8 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr bool contains(Point<T> point) const noexcept
+  [[nodiscard]] constexpr auto contains(basic_point<T> point) const noexcept
+      -> bool
   {
     const auto px = point.x();
     const auto py = point.y();
@@ -279,7 +263,10 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr T x() const noexcept { return m_position.x(); }
+  [[nodiscard]] constexpr auto x() const noexcept -> T
+  {
+    return m_position.x();
+  }
 
   /**
    * @brief Returns the y-coordinate of the rectangle.
@@ -288,7 +275,10 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr T y() const noexcept { return m_position.y(); }
+  [[nodiscard]] constexpr auto y() const noexcept -> T
+  {
+    return m_position.y();
+  }
 
   /**
    * @brief Returns the position of the rectangle.
@@ -297,7 +287,7 @@ class Rect final {
    *
    * @since 4.1.0
    */
-  [[nodiscard]] constexpr Point<T> position() const noexcept
+  [[nodiscard]] constexpr auto position() const noexcept -> basic_point<T>
   {
     return m_position;
   }
@@ -309,7 +299,10 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr T width() const noexcept { return m_size.width; }
+  [[nodiscard]] constexpr auto width() const noexcept -> T
+  {
+    return m_size.width;
+  }
 
   /**
    * @brief Returns the height of the rectangle.
@@ -318,7 +311,10 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr T height() const noexcept { return m_size.height; }
+  [[nodiscard]] constexpr auto height() const noexcept -> T
+  {
+    return m_size.height;
+  }
 
   /**
    * @brief Returns the size of the rectangle.
@@ -327,7 +323,10 @@ class Rect final {
    *
    * @since 4.1.0
    */
-  [[nodiscard]] constexpr Area<T> size() const noexcept { return m_size; }
+  [[nodiscard]] constexpr auto size() const noexcept -> basic_area<T>
+  {
+    return m_size;
+  }
 
   /**
    * @brief Returns the maximum x-coordinate of the rectangle.
@@ -336,7 +335,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr T max_x() const noexcept
+  [[nodiscard]] constexpr auto max_x() const noexcept -> T
   {
     return x() + m_size.width;
   }
@@ -348,7 +347,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr T max_y() const noexcept
+  [[nodiscard]] constexpr auto max_y() const noexcept -> T
   {
     return y() + m_size.height;
   }
@@ -360,7 +359,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr T center_x() const noexcept
+  [[nodiscard]] constexpr auto center_x() const noexcept -> T
   {
     return x() + (m_size.width / 2);
   }
@@ -372,7 +371,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr T center_y() const noexcept
+  [[nodiscard]] constexpr auto center_y() const noexcept -> T
   {
     return y() + (m_size.height / 2);
   }
@@ -384,7 +383,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr Point<T> center() const noexcept
+  [[nodiscard]] constexpr auto center() const noexcept -> basic_point<T>
   {
     return {center_x(), center_y()};
   }
@@ -396,7 +395,7 @@ class Rect final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] constexpr T area() const noexcept
+  [[nodiscard]] constexpr auto area() const noexcept -> T
   {
     return m_size.width * m_size.height;
   }
@@ -411,7 +410,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr bool has_area() const noexcept
+  [[nodiscard]] constexpr auto has_area() const noexcept -> bool
   {
     return m_size.width > 0 && m_size.height > 0;
   }
@@ -427,7 +426,8 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::if_same_t<U, int>>
-  [[nodiscard]] Rect<T> get_union(const Rect<T>& other) const noexcept
+  [[nodiscard]] auto get_union(const basic_rect<T>& other) const noexcept
+      -> basic_rect<T>
   {
     SDL_Rect result{0, 0, 0, 0};
 
@@ -445,7 +445,7 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] std::string to_string() const
+  [[nodiscard]] auto to_string() const -> std::string
   {
     const auto sx = std::to_string(m_position.x());
     const auto sy = std::to_string(m_position.y());
@@ -549,7 +549,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::if_same_t<U, int>>
-  [[nodiscard]] constexpr operator SDL_Rect() const noexcept
+  [[nodiscard]] constexpr explicit operator SDL_Rect() const noexcept
   {
     return {m_position.x(), m_position.y(), m_size.width, m_size.height};
   }
@@ -568,7 +568,7 @@ class Rect final {
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::if_same_t<U, float>>
-  [[nodiscard]] constexpr operator SDL_FRect() const noexcept
+  [[nodiscard]] constexpr explicit operator SDL_FRect() const noexcept
   {
     return {m_position.x(), m_position.y(), m_size.width, m_size.height};
   }
@@ -583,8 +583,8 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  friend constexpr bool operator==
-      <T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
+  friend constexpr auto operator==
+      <T>(const basic_rect<T>& lhs, const basic_rect<T>& rhs) noexcept -> bool;
 
   /**
    * @brief Indicates whether or not two rectangles aren't equal.
@@ -596,42 +596,42 @@ class Rect final {
    *
    * @since 4.0.0
    */
-  friend constexpr bool operator!=
-      <T>(const Rect<T>& lhs, const Rect<T>& rhs) noexcept;
+  friend constexpr auto operator!=
+      <T>(const basic_rect<T>& lhs, const basic_rect<T>& rhs) noexcept -> bool;
 
  private:
-  Point<T> m_position;
-  Area<T> m_size;
+  basic_point<T> m_position;
+  basic_area<T> m_size;
 
   static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
   static_assert(std::is_trivial_v<T>);
 };
 
 template <typename T>
-inline constexpr bool operator==(const Rect<T>& lhs,
-                                 const Rect<T>& rhs) noexcept
+inline constexpr auto operator==(const basic_rect<T>& lhs,
+                                 const basic_rect<T>& rhs) noexcept -> bool
 {
   return lhs.x() == rhs.x() && lhs.y() == rhs.y() &&
          lhs.width() == rhs.width() && lhs.height() == rhs.height();
 }
 
 template <typename T>
-inline constexpr bool operator!=(const Rect<T>& lhs,
-                                 const Rect<T>& rhs) noexcept
+inline constexpr auto operator!=(const basic_rect<T>& lhs,
+                                 const basic_rect<T>& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-static_assert(std::is_nothrow_default_constructible_v<Rect<float>>);
-static_assert(std::is_nothrow_copy_constructible_v<Rect<float>>);
-static_assert(std::is_nothrow_move_constructible_v<Rect<float>>);
-static_assert(std::is_nothrow_copy_assignable_v<Rect<float>>);
-static_assert(std::is_nothrow_move_assignable_v<Rect<float>>);
-static_assert(sizeof(Rect<int>) == sizeof(SDL_Rect));
-static_assert(sizeof(Rect<float>) == sizeof(SDL_FRect));
+static_assert(std::is_nothrow_default_constructible_v<basic_rect<float>>);
+static_assert(std::is_nothrow_copy_constructible_v<basic_rect<float>>);
+static_assert(std::is_nothrow_move_constructible_v<basic_rect<float>>);
+static_assert(std::is_nothrow_copy_assignable_v<basic_rect<float>>);
+static_assert(std::is_nothrow_move_assignable_v<basic_rect<float>>);
+static_assert(sizeof(basic_rect<int>) == sizeof(SDL_Rect));
+static_assert(sizeof(basic_rect<float>) == sizeof(SDL_FRect));
 
-using IRect = Rect<int>;
-using FRect = Rect<float>;
+using rect_i = basic_rect<int>;
+using rect_f = basic_rect<float>;
 
 }  // namespace centurion
 

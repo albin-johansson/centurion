@@ -90,7 +90,7 @@ std::shared_ptr<Texture> Texture::shared(gsl::owner<SDL_Texture*> texture)
 }
 
 CENTURION_DEF
-void Texture::set_pixel(IPoint pixel, const Color& color) noexcept
+void Texture::set_pixel(point_i pixel, const Color& color) noexcept
 {
   if (access() != Access::Streaming || pixel.x() < 0 || pixel.y() < 0 ||
       pixel.x() >= width() || pixel.y() >= height()) {

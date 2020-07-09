@@ -312,7 +312,7 @@ int Window::y() const noexcept
 }
 
 CENTURION_DEF
-IPoint Window::position() const noexcept
+point_i Window::position() const noexcept
 {
   int x = 0;
   int y = 0;

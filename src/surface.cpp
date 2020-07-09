@@ -91,7 +91,7 @@ void Surface::copy(const Surface& other) noexcept
 }
 
 CENTURION_DEF
-bool Surface::in_bounds(IPoint point) const noexcept
+bool Surface::in_bounds(point_i point) const noexcept
 {
   return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
            point.y() >= height());
@@ -134,7 +134,7 @@ SDL_Surface* Surface::copy_surface() const
 }
 
 CENTURION_DEF
-void Surface::set_pixel(IPoint pixel, const Color& color) noexcept
+void Surface::set_pixel(point_i pixel, const Color& color) noexcept
 {
   if (!in_bounds(pixel)) {
     return;

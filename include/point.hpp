@@ -37,31 +37,44 @@
 namespace centurion {
 
 template <typename T>
-class Point;
+class basic_point;
 
 template <typename U>
-constexpr bool operator==(const Point<U>& lhs, const Point<U>& rhs) noexcept;
+constexpr bool operator==(const basic_point<U>& lhs,
+                          const basic_point<U>& rhs) noexcept;
 
 template <typename U>
-constexpr bool operator!=(const Point<U>& lhs, const Point<U>& rhs) noexcept;
+constexpr bool operator!=(const basic_point<U>& lhs,
+                          const basic_point<U>& rhs) noexcept;
 
 template <typename U>
-constexpr Point<U> operator-(const Point<U>& lhs, const Point<U>& rhs) noexcept;
+constexpr basic_point<U> operator-(const basic_point<U>& lhs,
+                                   const basic_point<U>& rhs) noexcept;
 
 template <typename U>
-constexpr Point<U> operator+(const Point<U>& lhs, const Point<U>& rhs) noexcept;
+constexpr basic_point<U> operator+(const basic_point<U>& lhs,
+                                   const basic_point<U>& rhs) noexcept;
 
 /**
- * The Point class represents an integer or floating-point based 2D point.
- * There are two pre-defined type aliases pre-defined for this class: IPoint and
- * FPoint.
+ * @class basic_point
+ *
+ * @brief Represents an integer or floating-point based 2D point.
+ *
+ * @details There are two pre-defined type aliases pre-defined for this
+ * class, `point_i` and `point_f`.
  *
  * @tparam T the type of the components of the point. Must be either integral
- * or real. Defaults to float.
+ * or real. Defaults to `float`.
+ *
  * @since 4.0.0
+ *
+ * @see `point_i`
+ * @see `point_f`
+ *
+ * @headerfile point.hpp
  */
 template <typename T = float>
-class Point final {
+class basic_point final {
  public:
   using value_type = T;
   using pointer = T*;
@@ -72,7 +85,7 @@ class Point final {
    *
    * @since 4.0.0
    */
-  constexpr Point() noexcept = default;
+  constexpr basic_point() noexcept = default;
 
   /**
    * Creates a point with the specified coordinates.
@@ -81,7 +94,7 @@ class Point final {
    * @param py the y-coordinate of the point.
    * @since 4.0.0
    */
-  constexpr Point(T px, T py) noexcept : m_x{px}, m_y{py} {}
+  constexpr basic_point(T px, T py) noexcept : m_x{px}, m_y{py} {}
 
   /**
    * Sets the x-coordinate of the point.
@@ -118,7 +131,7 @@ class Point final {
    * @param other the point that will be copied.
    * @since 4.0.0
    */
-  constexpr void set(const Point<T>& other) noexcept
+  constexpr void set(const basic_point<T>& other) noexcept
   {
     m_x = other.m_x;
     m_y = other.m_y;
@@ -132,7 +145,7 @@ class Point final {
    * @param other the point to calculate the distance to.
    * @since 4.0.0
    */
-  [[nodiscard]] T distance_to(const Point<T>& other) const noexcept
+  [[nodiscard]] T distance_to(const basic_point<T>& other) const noexcept
   {
     return std::sqrt(std::abs(m_x - other.m_x) + std::abs(m_y - other.m_y));
   }
@@ -176,7 +189,7 @@ class Point final {
    * @since 4.0.0
    */
   template <typename U = T, typename X = detail::if_floating_t<U>>
-  [[nodiscard]] bool equals(const Point<T>& other,
+  [[nodiscard]] bool equals(const basic_point<T>& other,
                             T epsilon = 0.0001) const noexcept
   {
     return std::abs(m_x - other.m_x) < epsilon &&
@@ -215,8 +228,8 @@ class Point final {
    * the x- and y-coordinates of the supplied points.
    * @since 4.0.0
    */
-  friend constexpr Point<T> operator+
-      <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+  friend constexpr basic_point<T> operator+
+      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept;
 
   /**
    * Converts the point to a pointer to an SDL_Point instance. This
@@ -292,8 +305,8 @@ class Point final {
    * subtracting the x- and y-coordinates of the supplied points.
    * @since 4.0.0
    */
-  friend constexpr Point<T> operator-
-      <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+  friend constexpr basic_point<T> operator-
+      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept;
 
   /**
    * Indicates whether or not two points are considered to be equal.
@@ -304,7 +317,7 @@ class Point final {
    * @since 4.0.0
    */
   friend constexpr bool operator==
-      <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept;
 
   /**
    * Indicates whether or not two points aren't considered to be equal.
@@ -315,7 +328,7 @@ class Point final {
    * @since 4.0.0
    */
   friend constexpr bool operator!=
-      <T>(const Point<T>& lhs, const Point<T>& rhs) noexcept;
+      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept;
 
  private:
   T m_x = 0;
@@ -327,54 +340,58 @@ class Point final {
 };
 
 template <typename T>
-inline constexpr Point<T> operator+(const Point<T>& lhs,
-                                    const Point<T>& rhs) noexcept
+inline constexpr basic_point<T> operator+(const basic_point<T>& lhs,
+                                          const basic_point<T>& rhs) noexcept
 {
-  return Point<T>{lhs.m_x + rhs.m_x, lhs.m_y + rhs.m_y};
+  return basic_point<T>{lhs.m_x + rhs.m_x, lhs.m_y + rhs.m_y};
 }
 
 template <typename T>
-inline constexpr Point<T> operator-(const Point<T>& lhs,
-                                    const Point<T>& rhs) noexcept
+inline constexpr basic_point<T> operator-(const basic_point<T>& lhs,
+                                          const basic_point<T>& rhs) noexcept
 {
-  return Point<T>{lhs.m_x - rhs.m_x, lhs.m_y - rhs.m_y};
+  return basic_point<T>{lhs.m_x - rhs.m_x, lhs.m_y - rhs.m_y};
 }
 
 template <typename T>
-inline constexpr bool operator==(const Point<T>& lhs,
-                                 const Point<T>& rhs) noexcept
+inline constexpr bool operator==(const basic_point<T>& lhs,
+                                 const basic_point<T>& rhs) noexcept
 {
   return lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y;
 }
 
 template <typename T>
-inline constexpr bool operator!=(const Point<T>& lhs,
-                                 const Point<T>& rhs) noexcept
+inline constexpr bool operator!=(const basic_point<T>& lhs,
+                                 const basic_point<T>& rhs) noexcept
 {
   return !(lhs == rhs);
 }
 
-static_assert(std::is_nothrow_default_constructible_v<Point<float>>);
-static_assert(std::is_nothrow_copy_constructible_v<Point<float>>);
-static_assert(std::is_nothrow_move_constructible_v<Point<float>>);
-static_assert(std::is_nothrow_copy_assignable_v<Point<float>>);
-static_assert(std::is_nothrow_move_assignable_v<Point<float>>);
-static_assert(sizeof(Point<int>) == sizeof(SDL_Point));
-static_assert(sizeof(Point<float>) == sizeof(SDL_FPoint));
+static_assert(std::is_nothrow_default_constructible_v<basic_point<float>>);
+static_assert(std::is_nothrow_copy_constructible_v<basic_point<float>>);
+static_assert(std::is_nothrow_move_constructible_v<basic_point<float>>);
+static_assert(std::is_nothrow_copy_assignable_v<basic_point<float>>);
+static_assert(std::is_nothrow_move_assignable_v<basic_point<float>>);
+static_assert(sizeof(basic_point<int>) == sizeof(SDL_Point));
+static_assert(sizeof(basic_point<float>) == sizeof(SDL_FPoint));
 
 /**
- * An alias for Point&lt;int&gt;.
+ * @typedef point_i
+ *
+ * @brief Alias for `int` points.
  *
  * @since 4.0.0
  */
-using IPoint = Point<int>;
+using point_i = basic_point<int>;
 
 /**
- * An alias for Point&lt;float&gt;.
+ * @typedef point_f
+ *
+ * @brief Alias for `float` points.
  *
  * @since 4.0.0
  */
-using FPoint = Point<float>;
+using point_f = basic_point<float>;
 
 }  // namespace centurion
 

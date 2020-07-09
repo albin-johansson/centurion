@@ -558,7 +558,7 @@ TEST_CASE("Window::y", "[Window]")
 TEST_CASE("Window::id", "[Window]")
 {
   ctn::Window window;
-  CHECK(window.id() == SDL_GetWindowID(window));
+  CHECK(window.id() == SDL_GetWindowID(window.get()));
 }
 
 TEST_CASE("Window::display_index", "[Window]")
@@ -566,7 +566,7 @@ TEST_CASE("Window::display_index", "[Window]")
   ctn::Window window;
   const auto index = window.display_index();
   CHECK(index);
-  CHECK(*index == SDL_GetWindowDisplayIndex(window));
+  CHECK(*index == SDL_GetWindowDisplayIndex(window.get()));
 }
 
 TEST_CASE("Window::position", "[Window]")
@@ -845,7 +845,7 @@ TEST_CASE("Window::renderer", "[Window]")
 TEST_CASE("Window::pixel_format", "[Window]")
 {
   ctn::Window window;
-  const auto format = SDL_GetWindowPixelFormat(window);
+  const auto format = SDL_GetWindowPixelFormat(window.get());
   CHECK(window.pixel_format() == static_cast<ctn::PixelFormat>(format));
 }
 

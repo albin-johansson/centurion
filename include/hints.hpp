@@ -1098,16 +1098,6 @@ bool set_hint(const Value& value) noexcept
  * Many hints aren't actually set by default, so if the specified hint
  * doesn't have a set value, then this method will return a null optional.
  * @code{.cpp}
- *  const auto value = get_hint<RenderDriver>();
- *  if (value) {
- *    // the hint was set!
- *  } else {
- *    // the hint had no set value!
- *  }
- * @endcode
- * With C++17 checking if there is a set value can be made more elegant using
- * the if-with-initializer statement.
- * @code{.cpp}
  *  if (const auto value = get_hint<RenderDriver>(); value) {
  *    // the hint was set!
  *  } else {

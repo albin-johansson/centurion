@@ -62,22 +62,20 @@ constexpr auto operator!=(const basic_rect<U>& lhs,
  *
  * @brief A rectangle that supports integral and floating-point components.
  *
- * @details `Rect<int>` and `Rect<float>` can safely be explicitly casted to
- * pointers to `SDL_Rect` and `SDL_FRect` respectively.
  *
  * @par Examples
  * The following are some examples of interaction with the SDL rectangle
  * structs.
  * @code{.cpp}
- *   FRect frect{};
+ *   rect_f frect{};
  *   auto* a = static_cast<SDL_FRect*>(frect);
  *   const auto* b = static_cast<const SDL_FRect*>(frect);
- *   SDL_FRect c = frect;
+ *   SDL_FRect c = static_cast<SDL_FRect>(frect);
  *
- *   IRect rect{};
+ *   rect_i rect{};
  *   auto* d = static_cast<SDL_Rect*>(rect);
  *   const auto* e = static_cast<const SDL_Rect*>(rect);
- *   SDL_Rect f = rect;
+ *   SDL_Rect f = static_cast<SDL_Rect>(rect);
  * @endcode
  *
  * @tparam T the type of the components of the rectangle. Set to float by

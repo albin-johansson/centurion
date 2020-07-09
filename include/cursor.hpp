@@ -226,7 +226,7 @@ class Cursor final {
   static auto unique(gsl::owner<SDL_Cursor*> cursor) -> std::unique_ptr<Cursor>;
 
   /**
-   * @copydoc Cursor(const Surface&, const IPoint&)
+   * @copydoc Cursor(const Surface&, const point_i&)
    */
   CENTURION_QUERY
   static auto unique(const Surface& surface, const point_i& hotspot)
@@ -245,7 +245,7 @@ class Cursor final {
   static auto shared(gsl::owner<SDL_Cursor*> cursor) -> std::shared_ptr<Cursor>;
 
   /**
-   * @copydoc Cursor(const Surface&, const IPoint&)
+   * @copydoc Cursor(const Surface&, const point_i&)
    */
   CENTURION_QUERY
   static auto shared(const Surface& surface, const point_i& hotspot)

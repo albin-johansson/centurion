@@ -70,7 +70,7 @@ namespace centurion {
  * instances. There are two overload sets, `render` and `render_t`. These
  * methods can be used with either integer or floating-point accuracy. The
  * recommended general-purpose method for rendering textures is
- * @link render(const Texture&, const IRect&, const Rect<T>&) @endlink.
+ * `render(const Texture&, const rect_i&, const basic_rect<T>&)`.
  *
  * @par Translation
  * Most games utilize some sort of viewport of what the player can see of the
@@ -78,7 +78,7 @@ namespace centurion {
  * rendering, then you need to translate the positions of the various game
  * objects when rendering. This class provides a simple API for dealing with
  * this easily. Specify the translation viewport with
- * `set_translation_viewport(const FRect&)`, and use the rendering methods
+ * `set_translation_viewport(const rect_f&)`, and use the rendering methods
  * that feature the `_t` suffix in their names, such as `render_t`, to
  * automatically render at translated positions.
  *

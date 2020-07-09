@@ -48,7 +48,7 @@ Window::~Window() noexcept
 }
 
 CENTURION_DEF
-Window& Window::operator=(Window&& other) noexcept
+auto Window::operator=(Window&& other) noexcept -> Window&
 {
   if (this != &other) {
     move(std::move(other));
@@ -75,37 +75,37 @@ void Window::move(Window&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Window> Window::unique()
+auto Window::unique() -> std::unique_ptr<Window>
 {
   return std::make_unique<Window>();
 }
 
 CENTURION_DEF
-std::unique_ptr<Window> Window::unique(owner<SDL_Window*> window)
+auto Window::unique(owner<SDL_Window*> window) -> std::unique_ptr<Window>
 {
   return std::make_unique<Window>(window);
 }
 
 CENTURION_DEF
-std::unique_ptr<Window> Window::unique(czstring title, area_i size)
+auto Window::unique(czstring title, area_i size) -> std::unique_ptr<Window>
 {
   return std::make_unique<Window>(title, size);
 }
 
 CENTURION_DEF
-std::shared_ptr<Window> Window::shared()
+auto Window::shared() -> std::shared_ptr<Window>
 {
   return std::make_shared<Window>();
 }
 
 CENTURION_DEF
-std::shared_ptr<Window> Window::shared(owner<SDL_Window*> window)
+auto Window::shared(owner<SDL_Window*> window) -> std::shared_ptr<Window>
 {
   return std::make_shared<Window>(window);
 }
 
 CENTURION_DEF
-std::shared_ptr<Window> Window::shared(czstring title, area_i size)
+auto Window::shared(czstring title, area_i size) -> std::shared_ptr<Window>
 {
   return std::make_shared<Window>(title, size);
 }
@@ -253,19 +253,19 @@ void Window::set_capturing_mouse(bool capturingMouse) noexcept
 }
 
 CENTURION_DEF
-bool Window::decorated() const noexcept
+auto Window::decorated() const noexcept -> bool
 {
   return !(flags() & SDL_WINDOW_BORDERLESS);
 }
 
 CENTURION_DEF
-bool Window::grabbing_mouse() const noexcept
+auto Window::grabbing_mouse() const noexcept -> bool
 {
   return SDL_GetWindowGrab(m_window);
 }
 
 CENTURION_DEF
-float Window::opacity() const noexcept
+auto Window::opacity() const noexcept -> float
 {
   float opacity = 1;
   SDL_GetWindowOpacity(m_window, &opacity);
@@ -273,19 +273,19 @@ float Window::opacity() const noexcept
 }
 
 CENTURION_DEF
-float Window::brightness() const noexcept
+auto Window::brightness() const noexcept -> float
 {
   return SDL_GetWindowBrightness(m_window);
 }
 
 CENTURION_DEF
-u32 Window::id() const noexcept
+auto Window::id() const noexcept -> u32
 {
   return SDL_GetWindowID(m_window);
 }
 
 CENTURION_DEF
-std::optional<int> Window::display_index() const noexcept
+auto Window::display_index() const noexcept -> std::optional<int>
 {
   const auto index = SDL_GetWindowDisplayIndex(m_window);
   if (index != -1) {
@@ -296,7 +296,7 @@ std::optional<int> Window::display_index() const noexcept
 }
 
 CENTURION_DEF
-int Window::x() const noexcept
+auto Window::x() const noexcept -> int
 {
   int x = 0;
   SDL_GetWindowPosition(m_window, &x, nullptr);
@@ -304,7 +304,7 @@ int Window::x() const noexcept
 }
 
 CENTURION_DEF
-int Window::y() const noexcept
+auto Window::y() const noexcept -> int
 {
   int y = 0;
   SDL_GetWindowPosition(m_window, nullptr, &y);
@@ -312,7 +312,7 @@ int Window::y() const noexcept
 }
 
 CENTURION_DEF
-point_i Window::position() const noexcept
+auto Window::position() const noexcept -> point_i
 {
   int x = 0;
   int y = 0;
@@ -321,7 +321,7 @@ point_i Window::position() const noexcept
 }
 
 CENTURION_DEF
-area_i Window::min_size() const noexcept
+auto Window::min_size() const noexcept -> area_i
 {
   int w = 0;
   int h = 0;
@@ -330,7 +330,7 @@ area_i Window::min_size() const noexcept
 }
 
 CENTURION_DEF
-area_i Window::max_size() const noexcept
+auto Window::max_size() const noexcept -> area_i
 {
   int w = 0;
   int h = 0;
@@ -339,7 +339,7 @@ area_i Window::max_size() const noexcept
 }
 
 CENTURION_DEF
-int Window::width() const noexcept
+auto Window::width() const noexcept -> int
 {
   int width = 0;
   SDL_GetWindowSize(m_window, &width, nullptr);
@@ -347,7 +347,7 @@ int Window::width() const noexcept
 }
 
 CENTURION_DEF
-int Window::height() const noexcept
+auto Window::height() const noexcept -> int
 {
   int height = 0;
   SDL_GetWindowSize(m_window, nullptr, &height);
@@ -355,115 +355,115 @@ int Window::height() const noexcept
 }
 
 CENTURION_DEF
-bool Window::resizable() const noexcept
+auto Window::resizable() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_RESIZABLE;
 }
 
 CENTURION_DEF
-bool Window::fullscreen() const noexcept
+auto Window::fullscreen() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_FULLSCREEN;
 }
 
 CENTURION_DEF
-bool Window::fullscreen_desktop() const noexcept
+auto Window::fullscreen_desktop() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_FULLSCREEN_DESKTOP;
 }
 
 CENTURION_DEF
-bool Window::visible() const noexcept
+auto Window::visible() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_SHOWN;
 }
 
 CENTURION_DEF
-bool Window::opengl() const noexcept
+auto Window::opengl() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_OPENGL;
 }
 
 CENTURION_DEF
-bool Window::vulkan() const noexcept
+auto Window::vulkan() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_VULKAN;
 }
 
 CENTURION_DEF
-bool Window::has_input_focus() const noexcept
+auto Window::has_input_focus() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_INPUT_FOCUS;
 }
 
 CENTURION_DEF
-bool Window::has_mouse_focus() const noexcept
+auto Window::has_mouse_focus() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_MOUSE_FOCUS;
 }
 
 CENTURION_DEF
-bool Window::is_foreign() const noexcept
+auto Window::is_foreign() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_FOREIGN;
 }
 
 CENTURION_DEF
-bool Window::capturing_mouse() const noexcept
+auto Window::capturing_mouse() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_MOUSE_CAPTURE;
 }
 
 CENTURION_DEF
-bool Window::always_on_top() const noexcept
+auto Window::always_on_top() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_ALWAYS_ON_TOP;
 }
 
 CENTURION_DEF
-bool Window::minimized() const noexcept
+auto Window::minimized() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_MINIMIZED;
 }
 
 CENTURION_DEF
-bool Window::maximized() const noexcept
+auto Window::maximized() const noexcept -> bool
 {
   return flags() & SDL_WINDOW_MAXIMIZED;
 }
 
 CENTURION_DEF
-bool Window::check_flag(SDL_WindowFlags flag) const noexcept
+auto Window::check_flag(SDL_WindowFlags flag) const noexcept -> bool
 {
   return flags() & flag;
 }
 
 CENTURION_DEF
-u32 Window::flags() const noexcept
+auto Window::flags() const noexcept -> u32
 {
   return SDL_GetWindowFlags(m_window);
 }
 
 CENTURION_DEF
-const SDL_Renderer* Window::renderer() const noexcept
+auto Window::renderer() const noexcept -> const SDL_Renderer*
 {
   return SDL_GetRenderer(m_window);
 }
 
 CENTURION_DEF
-PixelFormat Window::pixel_format() const noexcept
+auto Window::pixel_format() const noexcept -> PixelFormat
 {
   return static_cast<PixelFormat>(SDL_GetWindowPixelFormat(m_window));
 }
 
 CENTURION_DEF
-czstring Window::title() const noexcept
+auto Window::title() const noexcept -> czstring
 {
   return SDL_GetWindowTitle(m_window);
 }
 
 CENTURION_DEF
-std::string Window::to_string() const
+auto Window::to_string() const -> std::string
 {
   const auto address = detail::address_of(this);
   const auto w = std::to_string(width());

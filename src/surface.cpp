@@ -196,7 +196,7 @@ Color Surface::color_mod() const noexcept
 }
 
 CENTURION_DEF
-blend_mode Surface::blend_mode() const noexcept
+enum blend_mode Surface::blend_mode() const noexcept
 {
   SDL_BlendMode mode;
   SDL_GetSurfaceBlendMode(m_surface, &mode);

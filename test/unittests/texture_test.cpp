@@ -66,7 +66,7 @@ TEST_CASE("ScaleMode enum values", "[ScaleMode]")
 
 TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
 {
-  CHECK_THROWS_AS(Texture(nullptr), CenturionException);
+  CHECK_THROWS_AS(Texture(nullptr), centurion_exception);
 
   test([](ctn::renderer& renderer) {
     SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.get(), pandaPath);
@@ -77,8 +77,8 @@ TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
 TEST_CASE("Texture(Renderer&, char*)", "[Texture]")
 {
   test([](ctn::renderer& renderer) {
-    CHECK_THROWS_AS(Texture(renderer, nullptr), CenturionException);
-    CHECK_THROWS_AS(Texture(renderer, "badpath"), CenturionException);
+    CHECK_THROWS_AS(Texture(renderer, nullptr), centurion_exception);
+    CHECK_THROWS_AS(Texture(renderer, "badpath"), centurion_exception);
 
     Texture texture{renderer, pandaPath};
     CHECK(texture.width() == pandaWidth);
@@ -153,7 +153,7 @@ TEST_CASE("Texture::unique", "[Texture]")
   test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
     const Surface surface{pandaPath};
 
-    CHECK_THROWS_AS(Texture::unique(nullptr), CenturionException);
+    CHECK_THROWS_AS(Texture::unique(nullptr), centurion_exception);
 
     CHECK(Texture::unique(renderer, pandaPath));
     CHECK(Texture::unique(renderer, surface));
@@ -167,7 +167,7 @@ TEST_CASE("Texture:::shared", "[Texture]")
   test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
     const Surface surface{pandaPath};
 
-    CHECK_THROWS_AS(Texture::shared(nullptr), CenturionException);
+    CHECK_THROWS_AS(Texture::shared(nullptr), centurion_exception);
 
     CHECK(Texture::shared(renderer, pandaPath));
     CHECK(Texture::shared(renderer, surface));
@@ -185,7 +185,7 @@ TEST_CASE("Texture::streaming", "[Texture]")
     CHECK(texture->format() == pixelFormat);
 
     CHECK_THROWS_AS(Texture::streaming(renderer, "", PixelFormat::YUY2),
-                    CenturionException);
+                    centurion_exception);
   });
 }
 

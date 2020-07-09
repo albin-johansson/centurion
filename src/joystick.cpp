@@ -13,12 +13,12 @@ CENTURION_DEF
 Joystick::Joystick(int deviceIndex)
 {
   if (SDL_NumJoysticks() == 0) {
-    throw CenturionException{"There are no available joysticks!"};
+    throw centurion_exception{"There are no available joysticks!"};
   }
 
   m_joystick = SDL_JoystickOpen(deviceIndex);
   if (!m_joystick) {
-    throw CenturionException{"Failed to open joystick!"};
+    throw centurion_exception{"Failed to open joystick!"};
   }
 }
 
@@ -26,7 +26,7 @@ CENTURION_DEF
 Joystick::Joystick(owner<SDL_Joystick*> joystick) : m_joystick{joystick}
 {
   if (!joystick) {
-    throw CenturionException{"Cannot create Joystick from null SDL_Joystick!"};
+    throw centurion_exception{"Cannot create Joystick from null SDL_Joystick!"};
   }
 }
 
@@ -381,7 +381,7 @@ Joystick::Power Joystick::power() const noexcept
 }
 
 CENTURION_DEF
-button_state Joystick::button_state(int button) const noexcept
+enum button_state Joystick::button_state(int button) const noexcept
 {
   return static_cast<enum button_state>(
       SDL_JoystickGetButton(m_joystick, button));

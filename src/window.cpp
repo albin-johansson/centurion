@@ -16,7 +16,7 @@ CENTURION_DEF
 Window::Window(owner<SDL_Window*> window) : m_window{window}
 {
   if (!window) {
-    throw CenturionException{"Cannot create Window from null SDL_Window!"};
+    throw centurion_exception{"Cannot create Window from null SDL_Window!"};
   }
 }
 
@@ -24,7 +24,7 @@ CENTURION_DEF
 Window::Window(czstring title, area_i size)
 {
   if ((size.width < 1) || (size.height < 1)) {
-    throw CenturionException{"Invalid width or height!"};
+    throw centurion_exception{"Invalid width or height!"};
   }
 
   const auto pos = SDL_WINDOWPOS_CENTERED;

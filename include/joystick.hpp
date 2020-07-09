@@ -151,7 +151,7 @@ class Joystick final {
    * @param deviceIndex refers to the N'th joystick that is currently
    * recognized by SDL.
    *
-   * @throws CenturionException if the joystick cannot be created.
+   * @throws centurion_exception if the joystick cannot be created.
    *
    * @since 4.2.0
    */
@@ -164,7 +164,7 @@ class Joystick final {
    *
    * @param joystick a pointer to the `SDL_Joystick` that will be claimed.
    *
-   * @throws CenturionException if the joystick cannot be created.
+   * @throws centurion_exception if the joystick cannot be created.
    *
    * @since 4.2.0
    */
@@ -207,7 +207,7 @@ class Joystick final {
    *
    * @return a unique pointer to a `Joystick` instance.
    *
-   * @throws CenturionException if the joystick cannot be created.
+   * @throws centurion_exception if the joystick cannot be created.
    *
    * @since 4.2.0
    */
@@ -225,7 +225,7 @@ class Joystick final {
    *
    * @return a unique pointer to a `Joystick` instance.
    *
-   * @throws CenturionException if the joystick cannot be created.
+   * @throws centurion_exception if the joystick cannot be created.
    *
    * @since 4.2.0
    */
@@ -242,7 +242,7 @@ class Joystick final {
    *
    * @return a shared pointer to a `Joystick` instance.
    *
-   * @throws CenturionException if the joystick cannot be created.
+   * @throws centurion_exception if the joystick cannot be created.
    *
    * @since 4.2.0
    */
@@ -260,7 +260,7 @@ class Joystick final {
    *
    * @return a shared pointer to a `Joystick` instance.
    *
-   * @throws CenturionException if the joystick cannot be created.
+   * @throws centurion_exception if the joystick cannot be created.
    *
    * @since 4.2.0
    */
@@ -706,8 +706,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API button_state
-  button_state(int button) const noexcept;
+  CENTURION_QUERY
+  auto button_state(int button) const noexcept -> enum button_state;
 
   /**
    * @brief Returns the state of a specific joystick hat.

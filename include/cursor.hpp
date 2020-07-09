@@ -145,7 +145,7 @@ class Cursor final {
    *
    * @param id the cursor type that will be used.
    *
-   * @throws CenturionException if the cursor cannot be created.
+   * @throws centurion_exception if the cursor cannot be created.
    *
    * @since 4.0.0
    */
@@ -160,7 +160,7 @@ class Cursor final {
    *
    * @param cursor a pointer to an `SDL_Cursor` that will be adopted.
    *
-   * @throws CenturionException if the supplied pointer is null.
+   * @throws centurion_exception if the supplied pointer is null.
    *
    * @since 4.0.0
    */
@@ -177,7 +177,7 @@ class Cursor final {
    * @param hotspot the point used to determine where the mouse
    * actually is.
    *
-   * @throws CenturionException if the cursor cannot be created.
+   * @throws centurion_exception if the cursor cannot be created.
    *
    * @since 4.0.0
    */

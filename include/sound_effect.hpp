@@ -56,7 +56,7 @@ class SoundEffect final {
 
   /**
    * @param file the file path of the audio file.
-   * @throws CenturionException if the audio file cannot be loaded.
+   * @throws centurion_exception if the audio file cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_API explicit SoundEffect(czstring file);
@@ -89,7 +89,7 @@ class SoundEffect final {
    *
    * @param file the file path of the audio file.
    * @return a unique pointer to a SoundEffect instance.
-   * @throws CenturionException if the audio file cannot be loaded.
+   * @throws centurion_exception if the audio file cannot be loaded.
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API static std::unique_ptr<SoundEffect> unique(
@@ -100,7 +100,7 @@ class SoundEffect final {
    *
    * @param file the file path of the audio file.
    * @return a shared pointer to a SoundEffect instance.
-   * @throws CenturionException if the audio file cannot be loaded.
+   * @throws centurion_exception if the audio file cannot be loaded.
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API static std::shared_ptr<SoundEffect> shared(

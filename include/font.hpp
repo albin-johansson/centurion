@@ -101,7 +101,7 @@ class Font final {
    * @param file the file path of the TrueType font file.
    * @param size the font size, must be greater than zero.
    *
-   * @throws CenturionException if the font cannot be loaded or if the supplied
+   * @throws centurion_exception if the font cannot be loaded or if the supplied
    * size isn't greater than zero.
    *
    * @since 3.0.0

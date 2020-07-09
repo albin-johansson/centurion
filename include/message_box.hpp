@@ -262,7 +262,7 @@ class MessageBox final {
    * @param window a pointer to the parent window, can safely be null to
    * indicate no parent.
    * @return the ID of the pressed button; -1 if no button was pressed.
-   * @throws CenturionException if the message box cannot be displayed.
+   * @throws centurion_exception if the message box cannot be displayed.
    * @since 3.0.0
    */
   CENTURION_API int show(SDL_Window* window = nullptr);

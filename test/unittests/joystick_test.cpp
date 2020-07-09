@@ -11,12 +11,12 @@ using namespace centurion;
 
 TEST_CASE("Constructors", "[Joystick]")
 {
-  SECTION("Index ctor") { CHECK_THROWS_AS(Joystick{0}, CenturionException); }
+  SECTION("Index ctor") { CHECK_THROWS_AS(Joystick{0}, centurion_exception); }
 
   SECTION("SDL_Joystick* ctor")
   {
     SDL_Joystick* ptr = nullptr;
-    CHECK_THROWS_AS(Joystick{ptr}, CenturionException);
+    CHECK_THROWS_AS(Joystick{ptr}, centurion_exception);
   }
 }
 
@@ -24,14 +24,14 @@ TEST_CASE("Smart pointer factory methods", "[Joystick]")
 {
   SECTION("Unique")
   {
-    CHECK_THROWS_AS(Joystick::unique(0), CenturionException);
-    CHECK_THROWS_AS(Joystick::unique(nullptr), CenturionException);
+    CHECK_THROWS_AS(Joystick::unique(0), centurion_exception);
+    CHECK_THROWS_AS(Joystick::unique(nullptr), centurion_exception);
   }
 
   SECTION("Shared")
   {
-    CHECK_THROWS_AS(Joystick::shared(0), CenturionException);
-    CHECK_THROWS_AS(Joystick::shared(nullptr), CenturionException);
+    CHECK_THROWS_AS(Joystick::shared(0), centurion_exception);
+    CHECK_THROWS_AS(Joystick::shared(nullptr), centurion_exception);
   }
 }
 

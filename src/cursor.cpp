@@ -23,7 +23,7 @@ Cursor::Cursor(gsl::owner<SDL_Cursor*> cursor)
   if (cursor) {
     m_cursor = cursor;
   } else {
-    throw CenturionException{"Can't create Cursor from null SDL_Cursor!"};
+    throw centurion_exception{"Can't create Cursor from null SDL_Cursor!"};
   }
 }
 

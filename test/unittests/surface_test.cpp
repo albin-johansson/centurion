@@ -19,10 +19,10 @@ TEST_CASE("Surface(CZString)", "[Surface]")
   SECTION("Null path")
   {
     czstring c = nullptr;
-    CHECK_THROWS_AS(Surface{c}, CenturionException);
+    CHECK_THROWS_AS(Surface{c}, centurion_exception);
   }
 
-  SECTION("Bad path") { CHECK_THROWS_AS(Surface{""}, CenturionException); }
+  SECTION("Bad path") { CHECK_THROWS_AS(Surface{""}, centurion_exception); }
 
   CHECK_NOTHROW(Surface{path});
 }
@@ -32,7 +32,7 @@ TEST_CASE("Surface(SDL_Surface*)", "[Surface]")
   SECTION("Null surface")
   {
     SDL_Surface* s = nullptr;
-    CHECK_THROWS_AS(Surface{s}, CenturionException);
+    CHECK_THROWS_AS(Surface{s}, centurion_exception);
   }
 
   SDL_Surface* surface = IMG_Load(path);

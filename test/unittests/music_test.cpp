@@ -12,8 +12,8 @@ static constexpr auto path = "resources/hiddenPond.mp3";
 
 TEST_CASE("Music::Music(CZString)", "[Music]")
 {
-  CHECK_THROWS_AS(Music{""}, CenturionException);
-  CHECK_THROWS_AS(Music{nullptr}, CenturionException);
+  CHECK_THROWS_AS(Music{""}, centurion_exception);
+  CHECK_THROWS_AS(Music{nullptr}, centurion_exception);
   CHECK_NOTHROW(Music{path});
 }
 
@@ -49,8 +49,8 @@ TEST_CASE("Music::operator=(Music&&)", "[Music]")
 
 TEST_CASE("Music smart pointer factory methods", "[Music]")
 {
-  CHECK_THROWS_AS(Music::unique(""), CenturionException);
-  CHECK_THROWS_AS(Music::unique(""), CenturionException);
+  CHECK_THROWS_AS(Music::unique(""), centurion_exception);
+  CHECK_THROWS_AS(Music::unique(""), centurion_exception);
   CHECK_NOTHROW(Music::unique(path));
   CHECK_NOTHROW(Music::shared(path));
 }

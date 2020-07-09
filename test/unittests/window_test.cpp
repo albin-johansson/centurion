@@ -33,7 +33,7 @@ TEST_CASE("Window(Owner<SDL_Window*>)", "[Window]")
   SECTION("Null pointer")
   {
     SDL_Window* w = nullptr;
-    CHECK_THROWS_AS(ctn::Window{w}, ctn::CenturionException);
+    CHECK_THROWS_AS(ctn::Window{w}, ctn::centurion_exception);
   }
 
   SECTION("Good window")
@@ -45,8 +45,8 @@ TEST_CASE("Window(Owner<SDL_Window*>)", "[Window]")
 
 TEST_CASE("Window(CZString, Area)", "[Window]")
 {
-  CHECK_THROWS_AS(ctn::Window("", {0, 10}), ctn::CenturionException);
-  CHECK_THROWS_AS(ctn::Window("", {10, 0}), ctn::CenturionException);
+  CHECK_THROWS_AS(ctn::Window("", {0, 10}), ctn::centurion_exception);
+  CHECK_THROWS_AS(ctn::Window("", {10, 0}), ctn::centurion_exception);
 
   SECTION("Normal")
   {
@@ -105,7 +105,7 @@ TEST_CASE("Window::unique", "[Window]")
   SECTION("Window::unique(Owner<SDL_Window*>)")
   {
     gsl::owner<SDL_Window*> bad = nullptr;
-    CHECK_THROWS_AS(ctn::Window::unique(bad), ctn::CenturionException);
+    CHECK_THROWS_AS(ctn::Window::unique(bad), ctn::centurion_exception);
 
     auto* good = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
     CHECK(ctn::Window::unique(good));
@@ -113,8 +113,8 @@ TEST_CASE("Window::unique", "[Window]")
 
   SECTION("Window::unique(CZString, Area)")
   {
-    CHECK_THROWS_AS(ctn::Window::unique("", {0, 10}), ctn::CenturionException);
-    CHECK_THROWS_AS(ctn::Window::unique("", {10, 0}), ctn::CenturionException);
+    CHECK_THROWS_AS(ctn::Window::unique("", {0, 10}), ctn::centurion_exception);
+    CHECK_THROWS_AS(ctn::Window::unique("", {10, 0}), ctn::centurion_exception);
     CHECK_NOTHROW(ctn::Window::unique(nullptr, {10, 10}));
     CHECK(ctn::Window::unique("Foo", {10, 10}));
   }
@@ -127,7 +127,7 @@ TEST_CASE("Window::shared", "[Window]")
   SECTION("Window::shared(Owner<SDL_Window*>)")
   {
     auto* bad = static_cast<ctn::owner<SDL_Window*>>(nullptr);
-    CHECK_THROWS_AS(ctn::Window::shared(bad), ctn::CenturionException);
+    CHECK_THROWS_AS(ctn::Window::shared(bad), ctn::centurion_exception);
 
     auto* good = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
     CHECK(ctn::Window::shared(good));
@@ -135,8 +135,8 @@ TEST_CASE("Window::shared", "[Window]")
 
   SECTION("Window::shared(CZString, Area)")
   {
-    CHECK_THROWS_AS(ctn::Window::shared("", {0, 10}), ctn::CenturionException);
-    CHECK_THROWS_AS(ctn::Window::shared("", {10, 0}), ctn::CenturionException);
+    CHECK_THROWS_AS(ctn::Window::shared("", {0, 10}), ctn::centurion_exception);
+    CHECK_THROWS_AS(ctn::Window::shared("", {10, 0}), ctn::centurion_exception);
     CHECK_NOTHROW(ctn::Window::shared(nullptr, {10, 10}));
     CHECK(ctn::Window::shared("Foo", {10, 10}));
   }

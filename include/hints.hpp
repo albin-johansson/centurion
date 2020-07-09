@@ -1136,7 +1136,7 @@ class Callback final {
    * associated hint is updated. The signature should be <code>void(void*
    * userData, CZString hint, CZString oldValue, CZString newValue)</code>.
    * @param userData a pointer to some user data. Defaults to null.
-   * @throws CenturionException if the supplied function pointer is null.
+   * @throws centurion_exception if the supplied function pointer is null.
    * @since 4.1.0
    */
   Callback(SDL_HintCallback callback, UserData* userData = nullptr)
@@ -1144,7 +1144,7 @@ class Callback final {
   {
     if (!callback) {
       const auto* msg = "Can't create HintCallback from null function pointer!";
-      throw CenturionException{msg};
+      throw centurion_exception{msg};
     }
   }
 

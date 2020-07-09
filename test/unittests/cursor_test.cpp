@@ -16,7 +16,7 @@ TEST_CASE("Cursor(gsl::owner<SDL_Cursor*>)", "[Cursor]")
   SDL_Cursor* sdlCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
   Cursor cursor{sdlCursor};
 
-  CHECK_THROWS_AS(Cursor{nullptr}, CenturionException);
+  CHECK_THROWS_AS(Cursor{nullptr}, centurion_exception);
 }
 
 TEST_CASE("Cursor(Surface, IPoint)", "[Cursor]")
@@ -70,7 +70,7 @@ TEST_CASE("Cursor::unique", "[Cursor]")
   CHECK(Cursor::unique(SystemCursor::ArrowAll));
 
   CHECK(Cursor::unique(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW)));
-  CHECK_THROWS_AS(Cursor::unique(nullptr), CenturionException);
+  CHECK_THROWS_AS(Cursor::unique(nullptr), centurion_exception);
 
   CHECK(Cursor::unique(Surface{"resources/panda.png"}, {10, 10}));
 
@@ -78,7 +78,7 @@ TEST_CASE("Cursor::unique", "[Cursor]")
   {
     Surface surface{"resources/panda.png"};
     point_i hotspot{1, surface.height() + 1};
-    CHECK_THROWS_AS(Cursor::unique(surface, hotspot), CenturionException);
+    CHECK_THROWS_AS(Cursor::unique(surface, hotspot), centurion_exception);
   }
 }
 
@@ -87,7 +87,7 @@ TEST_CASE("Cursor::shared", "[Cursor]")
   CHECK(Cursor::shared(SystemCursor::Hand));
 
   CHECK(Cursor::shared(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE)));
-  CHECK_THROWS_AS(Cursor::shared(nullptr), CenturionException);
+  CHECK_THROWS_AS(Cursor::shared(nullptr), centurion_exception);
 
   CHECK(Cursor::shared(Surface{"resources/panda.png"}, {8, 28}));
 
@@ -95,7 +95,7 @@ TEST_CASE("Cursor::shared", "[Cursor]")
   {
     Surface surface{"resources/panda.png"};
     point_i hotspot{surface.width() + 1, 1};
-    CHECK_THROWS_AS(Cursor::shared(surface, hotspot), CenturionException);
+    CHECK_THROWS_AS(Cursor::shared(surface, hotspot), centurion_exception);
   }
 }
 

@@ -49,7 +49,7 @@ class Surface final {
  public:
   /**
    * @param file the file path of the image file that will be loaded.
-   * @throws CenturionException if the surface cannot be created.
+   * @throws centurion_exception if the surface cannot be created.
    * @since 4.0.0
    */
   CENTURION_API explicit Surface(czstring file);
@@ -57,7 +57,7 @@ class Surface final {
   /**
    * @param surface a pointer to the SDL_Surface that will be used to create the
    * surface. Mustn't be null.
-   * @throws CenturionException if the supplied pointer is null.
+   * @throws centurion_exception if the supplied pointer is null.
    * @since 4.0.0
    */
   CENTURION_API explicit Surface(owner<SDL_Surface*> surface);
@@ -66,7 +66,7 @@ class Surface final {
    * Creates a copy of the supplied surface.
    *
    * @param other the surface that will be copied.
-   * @throws CenturionException if the supplied surface couldn't be copied.
+   * @throws centurion_exception if the supplied surface couldn't be copied.
    * @since 4.0.0
    */
   CENTURION_API Surface(const Surface& other);
@@ -83,7 +83,7 @@ class Surface final {
    * Copies the supplied surface and saves the result in the invoked surface.
    *
    * @param other the surface that will be copied.
-   * @throws CenturionException if the supplied surface couldn't be copied.
+   * @throws centurion_exception if the supplied surface couldn't be copied.
    * @since 4.0.0
    */
   CENTURION_API Surface& operator=(const Surface& other);
@@ -181,7 +181,7 @@ class Surface final {
    * @param format the pixel format that will be used by the new surface.
    * @return a surface based on this surface with the specified
    * pixel format.
-   * @throws CenturionException if the surface cannot be created.
+   * @throws centurion_exception if the surface cannot be created.
    * @since 4.0.0
    */
   [[nodiscard]] CENTURION_API Surface convert(PixelFormat format) const;
@@ -345,7 +345,7 @@ class Surface final {
    *
    * @return a copy of the internal SDL_Surface, the returned pointer won't be
    * null.
-   * @throws CenturionException if the copy couldn't be created.
+   * @throws centurion_exception if the copy couldn't be created.
    * @since 4.0.0
    */
   [[nodiscard]] SDL_Surface* copy_surface() const;

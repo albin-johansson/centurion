@@ -24,10 +24,13 @@
 
 /**
  * @file centurion_exception.hpp
+ *
  * @brief Provides the general exception class used by the library.
  *
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -37,41 +40,45 @@
 #include <exception>
 
 #include "centurion_api.hpp"
-#include "centurion_utils.hpp"
+#include "centurion_types.hpp"
 
 namespace centurion {
 
 /**
- * @class CenturionException
+ * @class centurion_exception
+ *
  * @brief The only exception explicitly thrown by the library.
  *
  * @headerfile centurion_exception.hpp
+ *
  * @since 3.0.0
  */
-class CenturionException final : public std::exception {
+class centurion_exception final : public std::exception {
  public:
-  CenturionException() = default;
+  centurion_exception() = default;
 
   /**
    * @param what the message of the exception. If the string is null, "N/A" is
    * used.
+   *
    * @since 3.0.0
    */
-  explicit CenturionException(czstring what) noexcept
+  explicit centurion_exception(czstring what) noexcept
       : m_what{what ? what : "N/A"} {};
 
   /**
    * @param what the message of the exception. If the string is empty, "N/A"
    * is used.
+   *
    * @since 3.0.0
    */
-  explicit CenturionException(std::string what) noexcept
-      : m_what{what.empty() ? "N/A" : what} {};
+  explicit centurion_exception(std::string what) noexcept
+      : m_what{what.empty() ? "N/A" : std::move(what)} {};
 
-  CenturionException(const CenturionException& other) noexcept
+  centurion_exception(const centurion_exception& other) noexcept
       : m_what{other.m_what} {};
 
-  ~CenturionException() noexcept override = default;
+  ~centurion_exception() noexcept override = default;
 
   [[nodiscard]] czstring what() const noexcept override
   {
@@ -82,10 +89,10 @@ class CenturionException final : public std::exception {
   std::string m_what;
 };
 
-static_assert(std::is_final_v<CenturionException>);
-static_assert(std::is_default_constructible_v<CenturionException>);
-static_assert(std::is_nothrow_copy_constructible_v<CenturionException>);
-static_assert(std::is_nothrow_destructible_v<CenturionException>);
+static_assert(std::is_final_v<centurion_exception>);
+static_assert(std::is_default_constructible_v<centurion_exception>);
+static_assert(std::is_nothrow_copy_constructible_v<centurion_exception>);
+static_assert(std::is_nothrow_destructible_v<centurion_exception>);
 
 }  // namespace centurion
 

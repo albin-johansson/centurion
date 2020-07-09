@@ -37,6 +37,8 @@
 #ifndef CENTURION_TYPES_HEADER
 #define CENTURION_TYPES_HEADER
 
+#include <SDL_stdinc.h>
+
 #include <chrono>
 #include <gsl/gsl>
 #include <named_type.hpp>

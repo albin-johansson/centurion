@@ -134,7 +134,7 @@ class Music final {
 
   /**
    * @param file the file path of the music file that will be loaded.
-   * @throws CenturionException if the music file cannot be loaded.
+   * @throws centurion_exception if the music file cannot be loaded.
    * @since 3.0.0
    */
   CENTURION_API explicit Music(czstring file);
@@ -170,7 +170,7 @@ class Music final {
    *
    * @param file the file path of the music file that will be loaded.
    * @return a unique pointer to a Music instance.
-   * @throws CenturionException if the music file cannot be loaded.
+   * @throws centurion_exception if the music file cannot be loaded.
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API static std::unique_ptr<Music> unique(
@@ -181,7 +181,7 @@ class Music final {
    *
    * @param file the file path of the music file that will be loaded.
    * @return a shared pointer to a Music instance.
-   * @throws CenturionException if the music file cannot be loaded.
+   * @throws centurion_exception if the music file cannot be loaded.
    * @since 3.0.0
    */
   [[nodiscard]] CENTURION_API static std::shared_ptr<Music> shared(

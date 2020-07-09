@@ -14,11 +14,11 @@ CENTURION_DEF
 Font::Font(czstring file, int size) : m_size{size}
 {
   if (!file) {
-    throw CenturionException{"Cannot create Font from null path!"};
+    throw centurion_exception{"Cannot create Font from null path!"};
   }
 
   if (size <= 0) {
-    throw CenturionException{"Bad font size!"};
+    throw centurion_exception{"Bad font size!"};
   }
 
   m_font = TTF_OpenFont(file, size);

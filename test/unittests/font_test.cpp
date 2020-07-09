@@ -13,9 +13,9 @@ static constexpr auto daniel_path = "resources/daniel.ttf";
 
 TEST_CASE("Font(CZString, int)", "[Font]")
 {
-  CHECK_THROWS_AS(Font(nullptr, 1), CenturionException);
-  CHECK_THROWS_AS(Font("", 1), CenturionException);
-  CHECK_THROWS_AS(Font("", 0), CenturionException);
+  CHECK_THROWS_AS(Font(nullptr, 1), centurion_exception);
+  CHECK_THROWS_AS(Font("", 1), centurion_exception);
+  CHECK_THROWS_AS(Font("", 0), centurion_exception);
 }
 
 TEST_CASE("Font(Font&&)", "[Font]")
@@ -50,13 +50,13 @@ TEST_CASE("Font::operator=(Font&&)", "[Font]")
 
 TEST_CASE("Font::unique", "[Font]")
 {
-  CHECK_THROWS_AS(Font::unique("", 1), CenturionException);
+  CHECK_THROWS_AS(Font::unique("", 1), centurion_exception);
   CHECK(Font::unique(type_writer_path, 12));
 }
 
 TEST_CASE("Font::shared", "[Font]")
 {
-  CHECK_THROWS_AS(Font::shared("", 1), CenturionException);
+  CHECK_THROWS_AS(Font::shared("", 1), centurion_exception);
   CHECK(Font::shared(type_writer_path, 12));
 }
 

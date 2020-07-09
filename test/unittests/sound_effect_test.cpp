@@ -14,8 +14,8 @@ static constexpr auto path = "resources/click.wav";
 
 TEST_CASE("SoundEffect(CZString)", "[SoundEffect]")
 {
-  CHECK_THROWS_AS(SoundEffect("somebadpath"), CenturionException);
-  CHECK_THROWS_AS(SoundEffect(nullptr), CenturionException);
+  CHECK_THROWS_AS(SoundEffect("somebadpath"), centurion_exception);
+  CHECK_THROWS_AS(SoundEffect(nullptr), centurion_exception);
 }
 
 TEST_CASE("SoundEffect(SoundEffect&&)", "[SoundEffect]")
@@ -53,10 +53,10 @@ TEST_CASE("SoundEffect smart pointer factory methods", "[SoundEffect]")
 {
   CHECK(SoundEffect::unique(path));
   CHECK(SoundEffect::shared(path));
-  CHECK_THROWS_AS(SoundEffect::unique(""), CenturionException);
-  CHECK_THROWS_AS(SoundEffect::unique(nullptr), CenturionException);
-  CHECK_THROWS_AS(SoundEffect::shared(""), CenturionException);
-  CHECK_THROWS_AS(SoundEffect::shared(nullptr), CenturionException);
+  CHECK_THROWS_AS(SoundEffect::unique(""), centurion_exception);
+  CHECK_THROWS_AS(SoundEffect::unique(nullptr), centurion_exception);
+  CHECK_THROWS_AS(SoundEffect::shared(""), centurion_exception);
+  CHECK_THROWS_AS(SoundEffect::shared(nullptr), centurion_exception);
 }
 
 TEST_CASE("SoundEffect::play", "[SoundEffect]")

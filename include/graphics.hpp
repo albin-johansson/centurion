@@ -128,7 +128,7 @@ class basic_renderer final {
    * @param renderer a pointer to the `SDL_Renderer` that will be used by the
    * renderer.
    *
-   * @throws CenturionException if the supplied pointer is null.
+   * @throws centurion_exception if the supplied pointer is null.
    *
    * @since 3.0.0
    */
@@ -143,7 +143,7 @@ class basic_renderer final {
    * @param window the associated window instance.
    * @param flags the renderer flags that will be used.
    *
-   * @throws CenturionException if something goes wrong when creating the
+   * @throws centurion_exception if something goes wrong when creating the
    * Renderer.
    *
    * @since 4.0.0
@@ -1326,7 +1326,7 @@ class Texture final {
    * @param texture a pointer to the SDL_Texture that will be claimed, may not
    * be null.
    *
-   * @throws CenturionException if the supplied pointer is null.
+   * @throws centurion_exception if the supplied pointer is null.
    *
    * @since 3.0.0
    */
@@ -1339,7 +1339,7 @@ class Texture final {
    * @param renderer the renderer that will be used to create the texture.
    * @param path the file path of the texture, may not be null.
    *
-   * @throws CenturionException if the texture cannot be loaded.
+   * @throws centurion_exception if the texture cannot be loaded.
    *
    * @since 4.0.0
    */
@@ -1347,7 +1347,7 @@ class Texture final {
   Texture(const basic_renderer<T>& renderer, czstring path)
   {
     if (!path) {
-      throw CenturionException{"Can't load texture from null path!"};
+      throw centurion_exception{"Can't load texture from null path!"};
     }
 
     m_texture = IMG_LoadTexture(renderer.get(), path);
@@ -1362,7 +1362,7 @@ class Texture final {
    * @param renderer the renderer that will be used to create the texture.
    * @param surface the surface that the texture will be based on.
    *
-   * @throws CenturionException if the texture cannot be loaded.
+   * @throws centurion_exception if the texture cannot be loaded.
    *
    * @since 4.0.0
    */
@@ -1384,7 +1384,7 @@ class Texture final {
    * @param access the access of the created texture.
    * @param size the size of the texture.
    *
-   * @throws CenturionException if the texture cannot be created.
+   * @throws centurion_exception if the texture cannot be created.
    *
    * @since 4.0.0
    */
@@ -1523,7 +1523,7 @@ class Texture final {
    * @param path the path of the image file to base the texture on.
    * @param format the pixel format that will be used by the texture.
    *
-   * @throws CenturionException if something goes wrong.
+   * @throws centurion_exception if something goes wrong.
    *
    * @return a unique pointer to a texture with `Streaming` texture access.
    *
@@ -1551,7 +1551,7 @@ class Texture final {
     u32* pixels = nullptr;
     const auto success = texture->lock(&pixels);
     if (!success) {
-      throw CenturionException{"Failed to lock texture!"};
+      throw centurion_exception{"Failed to lock texture!"};
     }
 
     const auto maxCount =
@@ -1955,7 +1955,7 @@ template <typename FontKey>
 basic_renderer<FontKey>::basic_renderer(gsl::owner<SDL_Renderer*> renderer)
 {
   if (!renderer) {
-    throw CenturionException{"Can't create renderer from null SDL_Renderer!"};
+    throw centurion_exception{"Can't create renderer from null SDL_Renderer!"};
   }
   this->m_renderer = renderer;
 

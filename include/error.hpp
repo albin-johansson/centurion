@@ -53,11 +53,11 @@ class Error final {
    * error obtained from SDL_GetError().
    *
    * @param message the message that will be included in the exception.
-   * @return a CenturionException with the supplied message along with the
+   * @return a centurion_exception with the supplied message along with the
    * latest SDL_GetError() message.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static CenturionException from_core(
+  [[nodiscard]] CENTURION_API static centurion_exception from_core(
       std::string message);
 
   /**
@@ -65,11 +65,11 @@ class Error final {
    * error obtained from IMG_GetError().
    *
    * @param message the message that will be included in the exception.
-   * @return a CenturionException with the supplied message along with the
+   * @return a centurion_exception with the supplied message along with the
    * latest IMG_GetError() message.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static CenturionException from_image(
+  [[nodiscard]] CENTURION_API static centurion_exception from_image(
       std::string message);
 
   /**
@@ -77,11 +77,11 @@ class Error final {
    * error obtained from TTF_GetError().
    *
    * @param message the message that will be included in the exception.
-   * @return a CenturionException with the supplied message along with the
+   * @return a centurion_exception with the supplied message along with the
    * latest TTF_GetError() message.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static CenturionException from_ttf(
+  [[nodiscard]] CENTURION_API static centurion_exception from_ttf(
       std::string message);
 
   /**
@@ -89,11 +89,11 @@ class Error final {
    * error obtained from Mix_GetError().
    *
    * @param message the message that will be included in the exception.
-   * @return a CenturionException with the supplied message along with the
+   * @return a centurion_exception with the supplied message along with the
    * latest Mix_GetError() message.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static CenturionException from_mixer(
+  [[nodiscard]] CENTURION_API static centurion_exception from_mixer(
       std::string message);
 };
 

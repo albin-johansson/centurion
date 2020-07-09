@@ -51,7 +51,7 @@
 //  /**
 //   * @param renderer a shared pointer to the associated renderer instance, may
 //   * not be null.
-//   * @throws CenturionException if the supplied renderer is null.
+//   * @throws centurion_exception if the supplied renderer is null.
 //   * @since 3.0.0
 //   */
 //  CENTURION_API explicit TextureLoader(const std::shared_ptr<Renderer>&
@@ -65,7 +65,7 @@
 //   * @param file the file path of the texture that will be loaded, may not be
 //   * null.
 //   * @return a unique pointer to a texture.
-//   * @throws CenturionException if the texture cannot be loaded.
+//   * @throws centurion_exception if the texture cannot be loaded.
 //   * @since 3.0.0
 //   */
 //  [[nodiscard]] CENTURION_API std::unique_ptr<Texture> unique_img(
@@ -79,7 +79,7 @@
 //   * @param access the texture access of the texture.
 //   * @param size the size of the texture.
 //   * @return a unique pointer to a texture.
-//   * @throws CenturionException if the texture cannot be created.
+//   * @throws centurion_exception if the texture cannot be created.
 //   * @since 3.0.0
 //   */
 //  [[nodiscard]] CENTURION_API std::unique_ptr<Texture>
@@ -91,7 +91,7 @@
 //   * @param file the file path of the texture that will be loaded, may not be
 //   * null.
 //   * @return a shared pointer to a texture.
-//   * @throws CenturionException if the texture cannot be loaded.
+//   * @throws centurion_exception if the texture cannot be loaded.
 //   * @since 3.0.0
 //   */
 //  [[nodiscard]] CENTURION_API std::shared_ptr<Texture> shared_img(
@@ -105,7 +105,7 @@
 //   * @param access the texture access of the texture.
 //   * @param size the size of the texture..
 //   * @return a shared pointer to a texture.
-//   * @throws CenturionException if the texture cannot be created.
+//   * @throws centurion_exception if the texture cannot be created.
 //   * @since 3.0.0
 //   */
 //  [[nodiscard]] CENTURION_API std::shared_ptr<Texture>

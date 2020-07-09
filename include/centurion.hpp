@@ -170,7 +170,7 @@ class Centurion final {
    * @pre there mustn't exist any other instances of this class at the time of
    * invocation of this constructor.
    *
-   * @throws CenturionException if any of the SDL libraries can't be loaded.
+   * @throws centurion_exception if any of the SDL libraries can't be loaded.
    *
    * @since 3.0.0
    */
@@ -184,7 +184,7 @@ class Centurion final {
    *
    * @param cfg the configuration spec, determines what gets initialized.
    *
-   * @throws CenturionException if any of the SDL libraries can't be loaded.
+   * @throws centurion_exception if any of the SDL libraries can't be loaded.
    *
    * @since 4.0.0
    */

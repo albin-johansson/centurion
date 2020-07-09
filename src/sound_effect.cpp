@@ -11,7 +11,7 @@ CENTURION_DEF
 SoundEffect::SoundEffect(czstring file)
 {
   if (!file) {
-    throw CenturionException{"Cannot create sound effect from null file!"};
+    throw centurion_exception{"Cannot create sound effect from null file!"};
   }
   m_chunk = Mix_LoadWAV(file);
   if (!m_chunk) {

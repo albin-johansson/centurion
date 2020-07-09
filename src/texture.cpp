@@ -14,7 +14,7 @@ CENTURION_DEF
 Texture::Texture(gsl::owner<SDL_Texture*> texture)
 {
   if (!texture) {
-    throw CenturionException{"Texture can't be created from null SDL texture!"};
+    throw centurion_exception{"Texture can't be created from null SDL texture!"};
   }
   this->m_texture = texture;
 }

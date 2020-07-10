@@ -52,6 +52,7 @@
 #include "font.hpp"
 #include "point.hpp"
 #include "rect.hpp"
+#include "renderer_base.hpp"
 #include "surface.hpp"
 #include "window.hpp"
 
@@ -62,12 +63,15 @@ namespace centurion {
  *
  * @brief Provides the base implementation of renderers.
  *
+ * @details This class provides the general API for hardware-accelerated
+ * rendering.
+ *
  * @since 5.0.0
  *
- * @see basic_renderer
- * @see renderer_view
+ * @see `basic_renderer`
+ * @see `renderer_view`
  *
- * @headerfile graphics.hpp
+ * @headerfile renderer_base.hpp
  */
 class renderer_base {
  public:
@@ -649,11 +653,15 @@ class renderer_base {
 
 /**
  * @class basic_renderer
- * @brief Provides the rendering API.
+ * @brief Represents an owning renderer.
  *
- * @details This class provides the general API for hardware-accelerated
- * rendering. It's recommended to not use the `basic_renderer` name directly,
- * use a custom typedef or the provided `renderer` alias.
+ * @details This class is designed to the main class used for
+ * hardware-accelerated rendering. However, there is also the
+ * `renderer_view` that can be used if you don't want the renderer to claim
+ * ownership of the `SDL_Renderer` pointer.
+ *
+ * @note It's recommended to not use the `basic_renderer` name directly, use
+ * a custom typedef or the provided `renderer` or `renderer_i` aliases..
  *
  * @par Rendering textures
  * There are quite a number of methods provided for rendering `Texture`
@@ -706,6 +714,7 @@ class renderer_base {
  * @since 3.0.0
  *
  * @see `SDL_Renderer`
+ * @see `renderer_view`
  *
  * @headerfile graphics.hpp
  */
@@ -1323,6 +1332,8 @@ class basic_renderer final : public renderer_base {
  * @endcode
  *
  * @since 5.0.0
+ *
+ * @see `basic_renderer`
  *
  * @headerfile graphics.hpp
  */

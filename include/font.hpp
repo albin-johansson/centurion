@@ -69,6 +69,8 @@ struct glyph_metrics final {
 };
 
 /**
+ * @class font
+ *
  * @brief Represents a True Type font.
  *
  * @see `TTF_Font`
@@ -77,7 +79,7 @@ struct glyph_metrics final {
  *
  * @headerfile font.hpp
  */
-class Font final {
+class font final {
  public:
   /**
    * @enum Hint
@@ -107,9 +109,9 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_API
-  Font(czstring file, int size);
+  font(czstring file, int size);
 
-  Font(const Font&) = delete;
+  font(const font&) = delete;
 
   /**
    * @brief Creates a font by moving the supplied font.
@@ -119,9 +121,9 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_API
-  Font(Font&& other) noexcept;
+  font(font&& other) noexcept;
 
-  auto operator=(const Font&) -> Font& = delete;
+  auto operator=(const font&) -> font& = delete;
 
   /**
    * @brief Moves the supplied font into this font.
@@ -133,22 +135,22 @@ class Font final {
    * @since 3.0.0
    */
   CENTURION_API
-  auto operator=(Font&& other) noexcept -> Font&;
+  auto operator=(font&& other) noexcept -> font&;
 
   CENTURION_API
-  ~Font() noexcept;
+  ~font() noexcept;
 
   /**
    * @copydoc Font(czstring, int)
    */
   CENTURION_QUERY
-  static auto unique(czstring file, int size) -> std::unique_ptr<Font>;
+  static auto unique(czstring file, int size) -> std::unique_ptr<font>;
 
   /**
    * @copydoc Font(czstring, int)
    */
   CENTURION_QUERY
-  static auto shared(czstring file, int size) -> std::shared_ptr<Font>;
+  static auto shared(czstring file, int size) -> std::shared_ptr<font>;
 
   /**
    * @brief Resets the style of the font.
@@ -567,7 +569,7 @@ class Font final {
    *
    * @since 4.0.0
    */
-  void move(Font&& other) noexcept;
+  void move(font&& other) noexcept;
 
   /**
    * @brief Enables the font style associated with the supplied bit mask.
@@ -594,11 +596,11 @@ class Font final {
   void remove_style(int mask) noexcept;
 };
 
-static_assert(std::is_final_v<Font>);
-static_assert(std::is_nothrow_move_constructible_v<Font>);
-static_assert(std::is_nothrow_move_assignable_v<Font>);
-static_assert(!std::is_copy_constructible_v<Font>);
-static_assert(!std::is_copy_assignable_v<Font>);
+static_assert(std::is_final_v<font>);
+static_assert(std::is_nothrow_move_constructible_v<font>);
+static_assert(std::is_nothrow_move_assignable_v<font>);
+static_assert(!std::is_copy_constructible_v<font>);
+static_assert(!std::is_copy_assignable_v<font>);
 
 }  // namespace centurion
 

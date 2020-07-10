@@ -33,7 +33,7 @@ inline void font_test(Lambda&& lambda)
 {
   ctn::window window;
   ctn::renderer renderer{window};
-  ctn::Font font{"resources/daniel.ttf", 12};
+  ctn::font font{"resources/daniel.ttf", 12};
   lambda(renderer, font);
 }
 
@@ -145,7 +145,7 @@ TEST_CASE("add_font", "[renderer]")
 
     SECTION("Normal arguments")
     {
-      auto font = ctn::Font::shared("resources/daniel.ttf", 12);
+      auto font = ctn::font::shared("resources/daniel.ttf", 12);
       const auto fontName = font->family_name();
 
       renderer.add_font(fontName, font);
@@ -160,7 +160,7 @@ TEST_CASE("remove_font", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const std::string name = "foo";
-    const auto font = ctn::Font::shared("resources/daniel.ttf", 12);
+    const auto font = ctn::font::shared("resources/daniel.ttf", 12);
 
     CHECK_NOTHROW(renderer.remove_font(""));
 
@@ -615,7 +615,7 @@ TEST_CASE("color", "[renderer]")
 
 TEST_CASE("text_blended", "[renderer]")
 {
-  font_test([](const ctn::renderer& renderer, const ctn::Font& font) {
+  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
     CHECK(!renderer.text_blended(nullptr, font));
     CHECK(!renderer.text_blended("", font));
     CHECK(renderer.text_blended("Hello", font));
@@ -624,7 +624,7 @@ TEST_CASE("text_blended", "[renderer]")
 
 TEST_CASE("text_blended_wrapped", "[renderer]")
 {
-  font_test([](const ctn::renderer& renderer, const ctn::Font& font) {
+  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
     CHECK(!renderer.text_blended_wrapped(nullptr, 500, font));
     CHECK(!renderer.text_blended_wrapped("", 500, font));
     CHECK(renderer.text_blended_wrapped("Hello", 500, font));
@@ -633,7 +633,7 @@ TEST_CASE("text_blended_wrapped", "[renderer]")
 
 TEST_CASE("text_shaded", "[renderer]")
 {
-  font_test([](const ctn::renderer& renderer, const ctn::Font& font) {
+  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
     CHECK(!renderer.text_shaded(nullptr, ctn::color::black, font));
     CHECK(!renderer.text_shaded("", ctn::color::black, font));
     CHECK(renderer.text_shaded("Hello", ctn::color::black, font));
@@ -642,7 +642,7 @@ TEST_CASE("text_shaded", "[renderer]")
 
 TEST_CASE("text_solid", "[renderer]")
 {
-  font_test([](const ctn::renderer& renderer, const ctn::Font& font) {
+  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
     CHECK(!renderer.text_solid(nullptr, font));
     CHECK(!renderer.text_solid("", font));
     CHECK(renderer.text_solid("Hello", font));
@@ -662,7 +662,7 @@ TEST_CASE("font", "[renderer]")
 
   CHECK(!renderer.font(name));
 
-  auto font = ctn::Font::shared("resources/daniel.ttf", 12);
+  auto font = ctn::font::shared("resources/daniel.ttf", 12);
   renderer.add_font(name, font);
 
   CHECK(renderer.font(name));

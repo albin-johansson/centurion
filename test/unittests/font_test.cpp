@@ -2,6 +2,7 @@
 
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "log.hpp"
 
 using namespace centurion;
@@ -13,15 +14,15 @@ static constexpr auto daniel_path = "resources/daniel.ttf";
 
 TEST_CASE("Font(CZString, int)", "[Font]")
 {
-  CHECK_THROWS_AS(Font(nullptr, 1), centurion_exception);
-  CHECK_THROWS_AS(Font("", 1), centurion_exception);
-  CHECK_THROWS_AS(Font("", 0), centurion_exception);
+  CHECK_THROWS_AS(font(nullptr, 1), centurion_exception);
+  CHECK_THROWS_AS(font("", 1), centurion_exception);
+  CHECK_THROWS_AS(font("", 0), centurion_exception);
 }
 
 TEST_CASE("Font(Font&&)", "[Font]")
 {
-  Font font{type_writer_path, 12};
-  Font other{std::move(font)};
+  ctn::font font{type_writer_path, 12};
+  ctn::font other{std::move(font)};
 
   CHECK(!font.get());
   CHECK(other.get());
@@ -31,15 +32,15 @@ TEST_CASE("Font::operator=(Font&&)", "[Font]")
 {
   SECTION("Self-assignment")
   {
-    Font font{type_writer_path, 12};
+    ctn::font font{type_writer_path, 12};
     font = std::move(font);
     CHECK(font.get());
   }
 
   SECTION("Normal usage")
   {
-    Font font{type_writer_path, 12};
-    Font other{daniel_path, 16};
+    ctn::font font{type_writer_path, 12};
+    ctn::font other{daniel_path, 16};
 
     other = std::move(font);
 
@@ -50,19 +51,19 @@ TEST_CASE("Font::operator=(Font&&)", "[Font]")
 
 TEST_CASE("Font::unique", "[Font]")
 {
-  CHECK_THROWS_AS(Font::unique("", 1), centurion_exception);
-  CHECK(Font::unique(type_writer_path, 12));
+  CHECK_THROWS_AS(font::unique("", 1), centurion_exception);
+  CHECK(font::unique(type_writer_path, 12));
 }
 
 TEST_CASE("Font::shared", "[Font]")
 {
-  CHECK_THROWS_AS(Font::shared("", 1), centurion_exception);
-  CHECK(Font::shared(type_writer_path, 12));
+  CHECK_THROWS_AS(font::shared("", 1), centurion_exception);
+  CHECK(font::shared(type_writer_path, 12));
 }
 
 TEST_CASE("Font::reset", "[Font]")
 {
-  Font font{type_writer_path, 12};
+  ctn::font font{type_writer_path, 12};
 
   font.set_bold(true);
   font.set_italic(true);
@@ -78,7 +79,7 @@ TEST_CASE("Font::reset", "[Font]")
 
 TEST_CASE("Font::set_bold", "[Font]")
 {
-  Font font{type_writer_path, 12};
+  ctn::font font{type_writer_path, 12};
 
   CHECK(!font.bold());
 
@@ -91,7 +92,7 @@ TEST_CASE("Font::set_bold", "[Font]")
 
 TEST_CASE("Font::set_italic", "[Font]")
 {
-  Font font{type_writer_path, 12};
+  ctn::font font{type_writer_path, 12};
 
   CHECK(!font.italic());
 
@@ -104,7 +105,7 @@ TEST_CASE("Font::set_italic", "[Font]")
 
 TEST_CASE("Font::set_underlined", "[Font]")
 {
-  Font font{type_writer_path, 12};
+  ctn::font font{type_writer_path, 12};
 
   CHECK(!font.underlined());
 
@@ -117,7 +118,7 @@ TEST_CASE("Font::set_underlined", "[Font]")
 
 TEST_CASE("Font::set_strikethrough", "[Font]")
 {
-  Font font{type_writer_path, 12};
+  ctn::font font{type_writer_path, 12};
 
   CHECK(!font.strikethrough());
 
@@ -130,7 +131,7 @@ TEST_CASE("Font::set_strikethrough", "[Font]")
 
 TEST_CASE("Font::set_outlined", "[Font]")
 {
-  Font font{type_writer_path, 12};
+  ctn::font font{type_writer_path, 12};
 
   CHECK(!font.outlined());
 
@@ -143,36 +144,36 @@ TEST_CASE("Font::set_outlined", "[Font]")
 
 TEST_CASE("Font::set_font_hinting", "[Font]")
 {
-  Font font{type_writer_path, 12};
+  ctn::font font{type_writer_path, 12};
 
   SECTION("Mono")
   {
-    font.set_font_hinting(Font::Hint::Mono);
-    CHECK(font.font_hinting() == Font::Hint::Mono);
+    font.set_font_hinting(font::Hint::Mono);
+    CHECK(font.font_hinting() == font::Hint::Mono);
   }
 
   SECTION("None")
   {
-    font.set_font_hinting(Font::Hint::None);
-    CHECK(font.font_hinting() == Font::Hint::None);
+    font.set_font_hinting(font::Hint::None);
+    CHECK(font.font_hinting() == font::Hint::None);
   }
 
   SECTION("Light")
   {
-    font.set_font_hinting(Font::Hint::Light);
-    CHECK(font.font_hinting() == Font::Hint::Light);
+    font.set_font_hinting(font::Hint::Light);
+    CHECK(font.font_hinting() == font::Hint::Light);
   }
 
   SECTION("Normal")
   {
-    font.set_font_hinting(Font::Hint::Normal);
-    CHECK(font.font_hinting() == Font::Hint::Normal);
+    font.set_font_hinting(font::Hint::Normal);
+    CHECK(font.font_hinting() == font::Hint::Normal);
   }
 }
 
 TEST_CASE("Font::set_kerning", "[Font]")
 {
-  Font font{daniel_path, 12};
+  ctn::font font{daniel_path, 12};
 
   font.set_kerning(true);
   CHECK(font.kerning());
@@ -184,7 +185,7 @@ TEST_CASE("Font::set_kerning", "[Font]")
 TEST_CASE("Font::size", "[Font]")
 {
   const auto size = 12;
-  Font font{type_writer_path, size};
+  ctn::font font{type_writer_path, size};
 
   CHECK(size == font.size());
 }
@@ -192,15 +193,15 @@ TEST_CASE("Font::size", "[Font]")
 TEST_CASE("Font::height", "[Font]")
 {
   const auto size = 16;
-  Font font{type_writer_path, size};
+  ctn::font font{type_writer_path, size};
   CHECK(size ==
         font.height());  // doesn't have to be equal, but should be close
 }
 
 TEST_CASE("Font::is_fixed_width", "[Font]")
 {
-  Font firaCode{fira_code_path, 12};  // Fixed width
-  Font daniel{daniel_path, 12};       // Not fixed width
+  ctn::font firaCode{fira_code_path, 12};  // Fixed width
+  ctn::font daniel{daniel_path, 12};       // Not fixed width
 
   CHECK(firaCode.is_fixed_width());
   CHECK(!daniel.is_fixed_width());
@@ -208,7 +209,7 @@ TEST_CASE("Font::is_fixed_width", "[Font]")
 
 TEST_CASE("Font::kerning_amount", "[Font]")
 {
-  Font font{daniel_path, 36};
+  ctn::font font{daniel_path, 36};
   font.set_kerning(true);
 
   const auto a = font.kerning_amount('A', 'A');
@@ -219,14 +220,14 @@ TEST_CASE("Font::kerning_amount", "[Font]")
 
 TEST_CASE("Font::glyph_metrics", "[Font]")
 {
-  Font font{daniel_path, 12};
+  ctn::font font{daniel_path, 12};
   const auto metrics = font.glyph_metrics('A');
   CHECK(metrics);
 }
 
 TEST_CASE("Font::is_glyph_available", "[Font]")
 {
-  Font firaCode{fira_code_path, 12};
+  ctn::font firaCode{fira_code_path, 12};
 
   CHECK(firaCode.is_glyph_provided('A'));
   CHECK(firaCode.is_glyph_provided(0x003D));  // U+003D is an equal sign
@@ -234,33 +235,33 @@ TEST_CASE("Font::is_glyph_available", "[Font]")
 
 TEST_CASE("Font::family_name", "[Font]")
 {
-  Font font{type_writer_path, 12};
+  ctn::font font{type_writer_path, 12};
   CHECK_THAT(font.family_name(), Catch::Equals("Type Writer"));
 }
 
 TEST_CASE("Font::style_name", "[Font]")
 {
-  const Font font{type_writer_path, 12};
+  const ctn::font font{type_writer_path, 12};
   CHECK_THAT(font.style_name(), Equals("Regular"));
 }
 
 TEST_CASE("Font::string_width", "[Font]")
 {
-  const Font font{type_writer_path, 12};
+  const ctn::font font{type_writer_path, 12};
   CHECK(font.string_width("foo") > 0);
   CHECK(font.string_width(nullptr) == 0);
 }
 
 TEST_CASE("Font::string_height", "[Font]")
 {
-  const Font font{type_writer_path, 12};
+  const ctn::font font{type_writer_path, 12};
   CHECK(font.string_height("foo") > 0);
   CHECK(font.string_height(nullptr) == 0);
 }
 
 TEST_CASE("Font::string_size", "[Font]")
 {
-  const Font font{type_writer_path, 12};
+  const ctn::font font{type_writer_path, 12};
 
   SECTION("Normal string")
   {
@@ -279,37 +280,37 @@ TEST_CASE("Font::string_size", "[Font]")
 
 TEST_CASE("Font::font_faces", "[Font]")
 {
-  const Font font{type_writer_path, 12};
+  const ctn::font font{type_writer_path, 12};
   CHECK_NOTHROW(font.font_faces());
 }
 
 TEST_CASE("Font::font_hinting", "[Font]")
 {
-  const Font font{type_writer_path, 12};
-  CHECK(font.font_hinting() == Font::Hint::Normal);
+  const ctn::font font{type_writer_path, 12};
+  CHECK(font.font_hinting() == font::Hint::Normal);
 }
 
 TEST_CASE("Font::kerning", "[Font]")
 {
-  const Font font{daniel_path, 12};
+  const ctn::font font{daniel_path, 12};
   CHECK(font.kerning());
 }
 
 TEST_CASE("Font::line_skip", "[Font]")
 {
-  const Font font{type_writer_path, 12};
+  const ctn::font font{type_writer_path, 12};
   CHECK(font.line_skip() > 0);
 }
 
 TEST_CASE("Font::ascent", "[Font]")
 {
-  const Font font{type_writer_path, 12};
+  const ctn::font font{type_writer_path, 12};
   CHECK(font.ascent() > 0);
 }
 
 TEST_CASE("Font::descent", "[Font]")
 {
-  const Font font{type_writer_path, 12};
+  const ctn::font font{type_writer_path, 12};
   CHECK(font.descent() < 0);
 }
 
@@ -318,7 +319,7 @@ TEST_CASE("Font::ttf_version", "[Font]")
   SDL_version sdl;
   SDL_TTF_VERSION(&sdl);
 
-  const SDL_version v = Font::ttf_version();
+  const SDL_version v = font::ttf_version();
 
   CHECK(sdl.major == v.major);
   CHECK(sdl.minor == v.minor);
@@ -327,13 +328,13 @@ TEST_CASE("Font::ttf_version", "[Font]")
 
 TEST_CASE("Font::to_string", "[Font]")
 {
-  Font font{type_writer_path, 12};
+  ctn::font font{type_writer_path, 12};
   Log::info(Log::Category::Test, "%s", font.to_string().c_str());
 }
 
 TEST_CASE("Font::get", "[Font]")
 {
-  Font font{type_writer_path, 12};
+  ctn::font font{type_writer_path, 12};
   CHECK(font.get());
 }
 
@@ -341,14 +342,14 @@ TEST_CASE("Font to TTF_Font*", "[Font]")
 {
   SECTION("Non-const")
   {
-    Font font{type_writer_path, 12};
+    ctn::font font{type_writer_path, 12};
     auto* sdlFont = static_cast<TTF_Font*>(font);
     CHECK(sdlFont);
   }
 
   SECTION("Const")
   {
-    const Font font{type_writer_path, 12};
+    const ctn::font font{type_writer_path, 12};
     const auto* sdlFont = static_cast<const TTF_Font*>(font);
     CHECK(sdlFont);
   }

@@ -808,7 +808,7 @@ class basic_renderer final : public renderer_base {
    *
    * @since 5.0.0
    */
-  void add_font(const FontKey& key, const std::shared_ptr<Font>& font);
+  void add_font(const FontKey& key, const std::shared_ptr<font>& font);
 
   /**
    * @brief Removes the font associated with the specified key.
@@ -1018,7 +1018,7 @@ class basic_renderer final : public renderer_base {
    *
    * @since 4.1.0
    */
-  [[nodiscard]] auto font(const FontKey& key) noexcept -> std::shared_ptr<Font>;
+  [[nodiscard]] auto font(const FontKey& key) noexcept -> std::shared_ptr<font>;
 
   /**
    * @brief Indicates whether or not the renderer has a font associated with the
@@ -1066,7 +1066,7 @@ class basic_renderer final : public renderer_base {
    * @since 4.0.0
    */
   [[nodiscard]] auto text_blended(czstring text,
-                                  const Font& font) const noexcept
+                                  const centurion::font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
   /**
@@ -1096,10 +1096,10 @@ class basic_renderer final : public renderer_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_blended_wrapped(czstring text,
-                                          u32 wrap,
-                                          const Font& font) const noexcept
-      -> std::unique_ptr<Texture>;
+  [[nodiscard]] auto text_blended_wrapped(
+      czstring text,
+      u32 wrap,
+      const centurion::font& font) const noexcept -> std::unique_ptr<Texture>;
 
   /**
    * @brief Creates and returns a texture of shaded text.
@@ -1126,7 +1126,7 @@ class basic_renderer final : public renderer_base {
    */
   [[nodiscard]] auto text_shaded(czstring text,
                                  const Color& bg,
-                                 const Font& font) const noexcept
+                                 const centurion::font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
   /**
@@ -1149,12 +1149,13 @@ class basic_renderer final : public renderer_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_solid(czstring text, const Font& font) const noexcept
+  [[nodiscard]] auto text_solid(czstring text,
+                                const centurion::font& font) const noexcept
       -> std::unique_ptr<Texture>;
 
  private:
   rect_f m_translationViewport;
-  std::unordered_map<FontKey, std::shared_ptr<Font>> m_fonts;
+  std::unordered_map<FontKey, std::shared_ptr<class font>> m_fonts;
 
   static constexpr SDL_RendererFlags defaultFlags =
       static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |
@@ -2154,9 +2155,9 @@ auto basic_renderer<FontKey>::shared(const window& window,
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::text_blended(czstring text,
-                                           const Font& font) const noexcept
-    -> std::unique_ptr<Texture>
+auto basic_renderer<FontKey>::text_blended(
+    czstring text,
+    const centurion::font& font) const noexcept -> std::unique_ptr<Texture>
 {
   return render_text(text, [this, &font](czstring text) noexcept {
     return TTF_RenderText_Blended(
@@ -2168,7 +2169,7 @@ template <typename FontKey>
 auto basic_renderer<FontKey>::text_blended_wrapped(
     czstring text,
     u32 wrap,
-    const Font& font) const noexcept -> std::unique_ptr<Texture>
+    const centurion::font& font) const noexcept -> std::unique_ptr<Texture>
 {
   return render_text(text, [this, &font, wrap](czstring text) noexcept {
     return TTF_RenderText_Blended_Wrapped(
@@ -2177,10 +2178,10 @@ auto basic_renderer<FontKey>::text_blended_wrapped(
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::text_shaded(czstring text,
-                                          const Color& bg,
-                                          const Font& font) const noexcept
-    -> std::unique_ptr<Texture>
+auto basic_renderer<FontKey>::text_shaded(
+    czstring text,
+    const Color& bg,
+    const centurion::font& font) const noexcept -> std::unique_ptr<Texture>
 {
   return render_text(text, [this, &font, &bg](czstring text) noexcept {
     return TTF_RenderText_Shaded(font.get(),
@@ -2191,9 +2192,9 @@ auto basic_renderer<FontKey>::text_shaded(czstring text,
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::text_solid(czstring text,
-                                         const Font& font) const noexcept
-    -> std::unique_ptr<Texture>
+auto basic_renderer<FontKey>::text_solid(
+    czstring text,
+    const centurion::font& font) const noexcept -> std::unique_ptr<Texture>
 {
   return render_text(text, [this, &font](czstring text) noexcept {
     return TTF_RenderText_Solid(
@@ -2203,7 +2204,7 @@ auto basic_renderer<FontKey>::text_solid(czstring text,
 
 template <typename FontKey>
 auto basic_renderer<FontKey>::font(const FontKey& key) noexcept
-    -> std::shared_ptr<Font>
+    -> std::shared_ptr<class font>
 {
   if (m_fonts.count(key)) {
     return m_fonts.at(key);
@@ -2235,7 +2236,7 @@ void basic_renderer<FontKey>::set_translation_viewport(
 
 template <typename FontKey>
 void basic_renderer<FontKey>::add_font(const FontKey& key,
-                                       const std::shared_ptr<Font>& font)
+                                       const std::shared_ptr<class font>& font)
 {
   if (!m_fonts.count(key)) {
     m_fonts.emplace(key, font);

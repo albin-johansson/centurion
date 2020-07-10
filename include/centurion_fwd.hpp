@@ -27,7 +27,7 @@ class Surface;
 
 class window;
 
-class Font;
+class font;
 
 }  // namespace centurion
 

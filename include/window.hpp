@@ -688,6 +688,51 @@ class window_base {
  * this class and `window_view` is identical, except for the RAII semantics
  * of this class.
  *
+ * @par Examples
+ * The following example illustrates a typical setup for a responsive window.
+ * Of course, the example assumes that the library has been initialized.
+ * @code{.cpp}
+ *   #include <centurion_as_ctn.hpp>
+ *   #include <window.hpp>
+ *   #include <graphics.hpp>
+ *   #include <event.hpp>
+ *   #include <rect.hpp>
+ *
+ *   void demo()
+ *   {
+ *     using namespace ctn::event;
+ *
+ *     ctn::window window;
+ *     ctn::renderer renderer{window};
+ *
+ *     window.set_title("Window demo");
+ *
+ *     Event event;
+ *     bool running = true;
+ *
+ *     window.show();
+ *     while (running) {
+ *       while (event.poll()) {
+ *         if (event.is<QuitEvent>()) {
+ *           running = false;
+ *           break;
+ *         }
+ *       }
+ *
+ *       renderer.clear_with(ctn::color::black);
+ *
+ *       const ctn::rect_i rect{{100, 100}, {150, 80}};
+ *
+ *       renderer.set_color(ctn::color::pink);
+ *       renderer.fill_rect(rect);
+ *
+ *       renderer.present();
+ *     }
+ *     window.hide();
+ *   }
+ *
+ * @endcode
+ *
  * @since 3.0.0
  *
  * @see `window_view`

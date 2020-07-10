@@ -746,7 +746,7 @@ class basic_renderer final : public renderer_base {
    *
    * @since 4.0.0
    */
-  explicit basic_renderer(const Window& window,
+  explicit basic_renderer(const window& window,
                           SDL_RendererFlags flags = defaultFlags);
 
   /**
@@ -778,9 +778,9 @@ class basic_renderer final : public renderer_base {
       -> std::unique_ptr<basic_renderer>;
 
   /**
-   * @copydoc basic_renderer(const Window&, SDL_RendererFlags)
+   * @copydoc basic_renderer(const window&, SDL_RendererFlags)
    */
-  [[nodiscard]] static auto unique(const Window& window,
+  [[nodiscard]] static auto unique(const window& window,
                                    SDL_RendererFlags flags = defaultFlags)
       -> std::unique_ptr<basic_renderer>;
 
@@ -791,9 +791,9 @@ class basic_renderer final : public renderer_base {
       -> std::shared_ptr<basic_renderer>;
 
   /**
-   * @copydoc basic_renderer(const Window&, SDL_RendererFlags)
+   * @copydoc basic_renderer(const window&, SDL_RendererFlags)
    */
-  [[nodiscard]] static auto shared(const Window& window,
+  [[nodiscard]] static auto shared(const window& window,
                                    SDL_RendererFlags flags = defaultFlags)
       -> std::shared_ptr<basic_renderer>;
 
@@ -2085,7 +2085,7 @@ basic_renderer<FontKey>::basic_renderer(gsl::owner<SDL_Renderer*> renderer)
 }
 
 template <typename FontKey>
-basic_renderer<FontKey>::basic_renderer(const Window& window,
+basic_renderer<FontKey>::basic_renderer(const window& window,
                                         SDL_RendererFlags flags)
     : renderer_base{SDL_CreateRenderer(window.get(), -1, flags)}
 {
@@ -2131,7 +2131,7 @@ auto basic_renderer<FontKey>::unique(gsl::owner<SDL_Renderer*> renderer)
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::unique(const Window& window,
+auto basic_renderer<FontKey>::unique(const window& window,
                                      SDL_RendererFlags flags)
     -> std::unique_ptr<basic_renderer>
 {
@@ -2146,7 +2146,7 @@ auto basic_renderer<FontKey>::shared(gsl::owner<SDL_Renderer*> renderer)
 }
 
 template <typename FontKey>
-auto basic_renderer<FontKey>::shared(const Window& window,
+auto basic_renderer<FontKey>::shared(const window& window,
                                      SDL_RendererFlags flags)
     -> std::shared_ptr<basic_renderer>
 {

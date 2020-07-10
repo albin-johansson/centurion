@@ -527,7 +527,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("WindowSharePixelFormat")
   {
     test_hint<WindowSharePixelFormat>([] {
-      Window window;
+      window window;
       const auto str = centurion::detail::address_of(window.get());
 
       CHECK(set_hint<WindowSharePixelFormat>(str.c_str()));

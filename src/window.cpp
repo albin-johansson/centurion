@@ -4,16 +4,15 @@
 #include "window.hpp"
 
 #include "error.hpp"
-#include "surface.hpp"
 
 namespace centurion {
 
 CENTURION_DEF
-Window::Window() : Window{"Centurion window"}
+window::window() : window{"Centurion window"}
 {}
 
 CENTURION_DEF
-Window::Window(owner<SDL_Window*> window) : window_base{window}
+window::window(owner<SDL_Window*> window) : window_base{window}
 {
   if (!window) {
     throw centurion_exception{"Cannot create Window from null SDL_Window!"};
@@ -21,7 +20,7 @@ Window::Window(owner<SDL_Window*> window) : window_base{window}
 }
 
 CENTURION_DEF
-Window::Window(czstring title, area_i size)
+window::window(czstring title, area_i size)
 {
   if ((size.width < 1) || (size.height < 1)) {
     throw centurion_exception{"Invalid width or height!"};
@@ -36,19 +35,19 @@ Window::Window(czstring title, area_i size)
 }
 
 CENTURION_DEF
-Window::Window(Window&& other) noexcept
+window::window(window&& other) noexcept
 {
   move(std::move(other));
 }
 
 CENTURION_DEF
-Window::~Window() noexcept
+window::~window() noexcept
 {
   destroy();
 }
 
 CENTURION_DEF
-auto Window::operator=(Window&& other) noexcept -> Window&
+auto window::operator=(window&& other) noexcept -> window&
 {
   if (this != &other) {
     move(std::move(other));
@@ -57,7 +56,7 @@ auto Window::operator=(Window&& other) noexcept -> Window&
 }
 
 CENTURION_DEF
-void Window::destroy() noexcept
+void window::destroy() noexcept
 {
   if (m_window) {
     SDL_DestroyWindow(m_window);
@@ -65,7 +64,7 @@ void Window::destroy() noexcept
 }
 
 CENTURION_DEF
-void Window::move(Window&& other) noexcept
+void window::move(window&& other) noexcept
 {
   destroy();
 
@@ -75,39 +74,39 @@ void Window::move(Window&& other) noexcept
 }
 
 CENTURION_DEF
-auto Window::unique() -> std::unique_ptr<Window>
+auto window::unique() -> std::unique_ptr<window>
 {
-  return std::make_unique<Window>();
+  return std::make_unique<window>();
 }
 
 CENTURION_DEF
-auto Window::unique(owner<SDL_Window*> window) -> std::unique_ptr<Window>
+auto window::unique(owner<SDL_Window*> sdlWindow) -> std::unique_ptr<window>
 {
-  return std::make_unique<Window>(window);
+  return std::make_unique<window>(sdlWindow);
 }
 
 CENTURION_DEF
-auto Window::unique(czstring title, area_i size) -> std::unique_ptr<Window>
+auto window::unique(czstring title, area_i size) -> std::unique_ptr<window>
 {
-  return std::make_unique<Window>(title, size);
+  return std::make_unique<window>(title, size);
 }
 
 CENTURION_DEF
-auto Window::shared() -> std::shared_ptr<Window>
+auto window::shared() -> std::shared_ptr<window>
 {
-  return std::make_shared<Window>();
+  return std::make_shared<window>();
 }
 
 CENTURION_DEF
-auto Window::shared(owner<SDL_Window*> window) -> std::shared_ptr<Window>
+auto window::shared(owner<SDL_Window*> sdlWindow) -> std::shared_ptr<window>
 {
-  return std::make_shared<Window>(window);
+  return std::make_shared<window>(sdlWindow);
 }
 
 CENTURION_DEF
-auto Window::shared(czstring title, area_i size) -> std::shared_ptr<Window>
+auto window::shared(czstring title, area_i size) -> std::shared_ptr<window>
 {
-  return std::make_shared<Window>(title, size);
+  return std::make_shared<window>(title, size);
 }
 
 }  // namespace centurion

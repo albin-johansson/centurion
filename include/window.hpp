@@ -57,7 +57,7 @@ namespace centurion {
  *
  * @since 5.0.0
  *
- * @see `Window`
+ * @see `window`
  * @see `window_view`
  *
  * @headerfile window.hpp
@@ -679,7 +679,7 @@ class window_base {
 };
 
 /**
- * @class Window
+ * @class window
  *
  * @brief Represents an owning window.
  *
@@ -694,7 +694,7 @@ class window_base {
  *
  * @headerfile window.hpp
  */
-class Window final : public window_base {
+class window final : public window_base {
  public:
   /**
    * @brief Creates a 800x600 window. The window will be hidden by default.
@@ -703,21 +703,21 @@ class Window final : public window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API Window();
+  CENTURION_API window();
 
   /**
    * @brief Creates a window based on the supplied SDL_Window instance.
    *
    * @details The created window will claim ownership of the supplied pointer.
    *
-   * @param window a pointer to the window that will be claimed.
+   * @param sdlWindow a pointer to the window that will be claimed.
    *
    * @throws centurion_exception if the supplied pointer is null.
    *
    * @since 4.0.0
    */
   CENTURION_API
-  explicit Window(owner<SDL_Window*> window);
+  explicit window(owner<SDL_Window*> sdlWindow);
 
   /**
    * @brief Creates a window instance.
@@ -735,7 +735,7 @@ class Window final : public window_base {
    * @since 3.0.0
    */
   CENTURION_API
-  explicit Window(czstring title, area_i size = {800, 600});
+  explicit window(czstring title, area_i size = {800, 600});
 
   /**
    * @brief Creates a window by moving the supplied window.
@@ -745,14 +745,14 @@ class Window final : public window_base {
    * @since 3.0.0
    */
   CENTURION_API
-  Window(Window&& other) noexcept;
+  window(window&& other) noexcept;
 
-  Window(const Window&) noexcept = delete;
+  window(const window&) noexcept = delete;
 
   CENTURION_API
-  ~Window() noexcept;
+  ~window() noexcept;
 
-  auto operator=(const Window&) noexcept -> Window& = delete;
+  auto operator=(const window&) noexcept -> window& = delete;
 
   /**
    * @brief Moves the contents of the supplied window into this window.
@@ -764,45 +764,45 @@ class Window final : public window_base {
    * @since 3.0.0
    */
   CENTURION_API
-  auto operator=(Window&& other) noexcept -> Window&;
+  auto operator=(window&& other) noexcept -> window&;
 
   /**
-   * @copydoc Window()
+   * @copydoc window()
    */
   CENTURION_QUERY
-  static auto unique() -> std::unique_ptr<Window>;
+  static auto unique() -> std::unique_ptr<window>;
 
   /**
-   * @copydoc Window(owner<SDL_Window*>)
+   * @copydoc window(owner<SDL_Window*>)
    */
   CENTURION_QUERY
-  static auto unique(owner<SDL_Window*> window) -> std::unique_ptr<Window>;
+  static auto unique(owner<SDL_Window*> sdlWindow) -> std::unique_ptr<window>;
 
   /**
-   * @copydoc Window(czstring, area_i)
+   * @copydoc window(czstring, area_i)
    */
   CENTURION_QUERY
   static auto unique(czstring title, area_i size = {800, 600})
-      -> std::unique_ptr<Window>;
+      -> std::unique_ptr<window>;
 
   /**
-   * @copydoc Window()
+   * @copydoc window()
    */
   CENTURION_QUERY
-  static auto shared() -> std::shared_ptr<Window>;
+  static auto shared() -> std::shared_ptr<window>;
 
   /**
-   * @copydoc Window(owner<SDL_Window*>)
+   * @copydoc window(owner<SDL_Window*>)
    */
   CENTURION_QUERY
-  static auto shared(owner<SDL_Window*> window) -> std::shared_ptr<Window>;
+  static auto shared(owner<SDL_Window*> sdlWindow) -> std::shared_ptr<window>;
 
   /**
-   * @copydoc Window(czstring, area_i)
+   * @copydoc window(czstring, area_i)
    */
   CENTURION_QUERY
   static auto shared(czstring title, area_i size = {800, 600})
-      -> std::shared_ptr<Window>;
+      -> std::shared_ptr<window>;
 
   /**
    * @brief Converts to `SDL_Window*`.
@@ -841,7 +841,7 @@ class Window final : public window_base {
    *
    * @since 4.0.0
    */
-  void move(Window&& other) noexcept;
+  void move(window&& other) noexcept;
 };
 
 /**
@@ -850,19 +850,19 @@ class Window final : public window_base {
  * @brief Represents a non-owning window.
  *
  * @details This class is meant to be used when you want to utilize the same
- * window API as with the the `Window` class, but you don't want the
+ * window API as with the the `window` class, but you don't want the
  * window to claim ownership of the SDL window. In a nutshell, this class
  * is merely a wrapper around an `SDL_Window*`.
  *
  * @note Naturally, since instances of this class don't own the associated
  * SDL window, you'll have to manually manage the lifetime of the
- * SDL window. In general, prefer `Window` unless you absolutely
+ * SDL window. In general, prefer `window` unless you absolutely
  * cannot claim ownership of the SDL window.
  *
  * @par Examples
  * The following example displays how one could utilize this class to take
  * advantage of the Centurion window API, that would't be possible with
- * `Window`.
+ * `window`.
  * @code{.cpp}
  *   #include <centurion_as_ctn.hpp>
  *   #include <window.hpp>
@@ -885,7 +885,7 @@ class Window final : public window_base {
  *
  * @since 5.0.0
  *
- * @see `Window`
+ * @see `window`
  *
  * @headerfile window.hpp
  */
@@ -895,18 +895,18 @@ class window_view final : public window_base {
       : window_base{window}
   {}
 
-  explicit window_view(const Window& window) noexcept
+  explicit window_view(const window& window) noexcept
       : window_base{window.get()}
   {}
 };
 
-static_assert(std::is_final_v<Window>);
-static_assert(std::is_nothrow_move_assignable_v<Window>);
-static_assert(std::is_nothrow_move_constructible_v<Window>);
-static_assert(!std::is_copy_assignable_v<Window>);
-static_assert(!std::is_copy_constructible_v<Window>);
-static_assert(std::is_default_constructible_v<Window>);
-static_assert(std::is_nothrow_destructible_v<Window>);
+static_assert(std::is_final_v<window>);
+static_assert(std::is_nothrow_move_assignable_v<window>);
+static_assert(std::is_nothrow_move_constructible_v<window>);
+static_assert(!std::is_copy_assignable_v<window>);
+static_assert(!std::is_copy_constructible_v<window>);
+static_assert(std::is_default_constructible_v<window>);
+static_assert(std::is_nothrow_destructible_v<window>);
 
 }  // namespace centurion
 

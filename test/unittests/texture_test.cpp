@@ -21,7 +21,7 @@ namespace {
 template <typename Lambda>
 inline void test(Lambda&& lambda)
 {
-  ctn::Window window;
+  ctn::window window;
   ctn::renderer renderer{window};
   lambda(renderer);
 }
@@ -29,7 +29,7 @@ inline void test(Lambda&& lambda)
 template <typename Lambda>
 inline void test_with_window(Lambda&& lambda)
 {
-  ctn::Window window;
+  ctn::window window;
   ctn::renderer renderer{window};
   lambda(renderer, window);
 }
@@ -150,7 +150,7 @@ TEST_CASE("Texture::operator=(Texture&&)", "[Texture]")
 
 TEST_CASE("Texture::unique", "[Texture]")
 {
-  test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
+  test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     const Surface surface{pandaPath};
 
     CHECK_THROWS_AS(Texture::unique(nullptr), centurion_exception);
@@ -164,7 +164,7 @@ TEST_CASE("Texture::unique", "[Texture]")
 
 TEST_CASE("Texture:::shared", "[Texture]")
 {
-  test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
+  test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     const Surface surface{pandaPath};
 
     CHECK_THROWS_AS(Texture::shared(nullptr), centurion_exception);
@@ -266,7 +266,7 @@ TEST_CASE("Texture::set_scale_mode", "[Texture]")
 
 TEST_CASE("Texture::is_static", "[Texture]")
 {
-  test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
+  test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     Texture texture{
         renderer, window.pixel_format(), Texture::Access::Static, {10, 10}};
     CHECK(texture.is_static());
@@ -275,7 +275,7 @@ TEST_CASE("Texture::is_static", "[Texture]")
 
 TEST_CASE("Texture::is_streaming", "[Texture]")
 {
-  test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
+  test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     Texture texture{
         renderer, window.pixel_format(), Texture::Access::Streaming, {10, 10}};
     CHECK(texture.is_streaming());
@@ -284,7 +284,7 @@ TEST_CASE("Texture::is_streaming", "[Texture]")
 
 TEST_CASE("Texture::is_target", "[Texture]")
 {
-  test_with_window([](ctn::renderer& renderer, const ctn::Window& window) {
+  test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     Texture texture{
         renderer, window.pixel_format(), Texture::Access::Target, {10, 10}};
     CHECK(texture.is_target());

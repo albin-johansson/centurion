@@ -25,7 +25,7 @@ class Texture;
 
 class Surface;
 
-class Window;
+class window;
 
 class Font;
 

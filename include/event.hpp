@@ -1362,7 +1362,7 @@ class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_modifier(KeyModifier modifier, bool active) noexcept;
+  void set_modifier(key_modifier modifier, bool active) noexcept;
 
   /**
    * @brief Sets the flag that indicates whether or not the key associated with
@@ -1412,7 +1412,7 @@ class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto modifier_active(KeyModifier modifier) const noexcept -> bool;
+  auto modifier_active(key_modifier modifier) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not any of the SHIFT modifiers are active.

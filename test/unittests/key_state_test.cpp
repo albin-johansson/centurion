@@ -57,11 +57,11 @@ TEST_CASE("KeyState::modifier_active", "[KeyState]")
 {
   // If this test fails, make sure that CAPS isn't enabled on your computer :)
   KeyState state;
-  CHECK(!state.modifier_active(KeyModifier::Caps));
+  CHECK(!state.modifier_active(key_modifier::caps));
 
   SDL_SetModState(SDL_Keymod::KMOD_CAPS);
 
-  CHECK(state.modifier_active(KeyModifier::Caps));
+  CHECK(state.modifier_active(key_modifier::caps));
 }
 
 TEST_CASE("KeyState::amount_of_keys", "[KeyState]")

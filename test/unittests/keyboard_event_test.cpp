@@ -8,10 +8,10 @@ using namespace centurion;
 
 namespace {
 
-auto get_events_one_mod_active(KeyModifier leftMod,
-                               KeyModifier rightMod) noexcept
+auto get_events_one_mod_active(key_modifier leftMod,
+                               key_modifier rightMod) noexcept
 {
-  const auto createEvent = [](KeyModifier modifier) noexcept {
+  const auto createEvent = [](key_modifier modifier) noexcept {
     SDL_KeyboardEvent sdlEvent{};
     sdlEvent.keysym.mod = static_cast<int>(modifier);
     return KeyboardEvent{sdlEvent};
@@ -50,8 +50,8 @@ TEST_CASE("KeyboardEvent::set_modifier", "[KeyboardEvent]")
 {
   KeyboardEvent event;
 
-  const auto shift = KeyModifier::LeftShift;
-  const auto caps = KeyModifier::Caps;
+  const auto shift = key_modifier::left_shift;
+  const auto caps = key_modifier::caps;
 
   event.set_modifier(shift, true);
   CHECK(event.modifier_active(shift));
@@ -114,8 +114,8 @@ TEST_CASE("KeyboardEvent::modifier_active", "[KeyboardEvent]")
 
   SECTION("Check that multiple key modifiers can be active at the same time")
   {
-    CHECK(event.modifier_active(KeyModifier::LeftAlt));
-    CHECK(event.modifier_active(KeyModifier::Caps));
+    CHECK(event.modifier_active(key_modifier::left_alt));
+    CHECK(event.modifier_active(key_modifier::caps));
   }
 }
 
@@ -130,7 +130,7 @@ TEST_CASE("KeyboardEvent::shift_active", "[KeyboardEvent]")
   SECTION("One active modifier")
   {
     const auto [left, right] = get_events_one_mod_active(
-        KeyModifier::LeftShift, KeyModifier::RightShift);
+        key_modifier::left_shift, key_modifier::right_shift);
     CHECK(left.shift_active());
     CHECK(right.shift_active());
   }
@@ -160,7 +160,7 @@ TEST_CASE("KeyboardEvent::ctrl_active", "[KeyboardEvent]")
   SECTION("One active modifier")
   {
     const auto [left, right] = get_events_one_mod_active(
-        KeyModifier::LeftControl, KeyModifier::RightControl);
+        key_modifier::left_ctrl, key_modifier::right_ctrl);
     CHECK(left.ctrl_active());
     CHECK(right.ctrl_active());
   }
@@ -190,7 +190,8 @@ TEST_CASE("KeyboardEvent::alt_active", "[KeyboardEvent]")
   SECTION("One active modifier")
   {
     const auto [left, right] =
-        get_events_one_mod_active(KeyModifier::LeftAlt, KeyModifier::RightAlt);
+        get_events_one_mod_active(
+        key_modifier::left_alt, key_modifier::right_alt);
     CHECK(left.alt_active());
     CHECK(right.alt_active());
   }
@@ -220,7 +221,8 @@ TEST_CASE("KeyboardEvent::gui_active", "[KeyboardEvent]")
   SECTION("One active modifier")
   {
     const auto [left, right] =
-        get_events_one_mod_active(KeyModifier::LeftGUI, KeyModifier::RightGUI);
+        get_events_one_mod_active(
+        key_modifier::left_gui, key_modifier::right_gui);
     CHECK(left.gui_active());
     CHECK(right.gui_active());
   }
@@ -250,7 +252,7 @@ TEST_CASE("KeyboardEvent::caps_active", "[KeyboardEvent]")
   SECTION("Active")
   {
     KeyboardEvent event;
-    event.set_modifier(KeyModifier::Caps, true);
+    event.set_modifier(key_modifier::caps, true);
     CHECK(event.caps_active());
   }
 
@@ -273,7 +275,7 @@ TEST_CASE("KeyboardEvent::num_active", "[KeyboardEvent]")
   SECTION("Active")
   {
     KeyboardEvent event;
-    event.set_modifier(KeyModifier::Num, true);
+    event.set_modifier(key_modifier::num, true);
     CHECK(event.num_active());
   }
 

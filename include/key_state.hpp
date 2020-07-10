@@ -128,7 +128,7 @@ class KeyState final {
    * @since 4.0.0
    */
   [[nodiscard]] CENTURION_API bool modifier_active(
-      KeyModifier modifier) const noexcept;
+      key_modifier modifier) const noexcept;
 
   /**
    * Returns the total amount of keys.

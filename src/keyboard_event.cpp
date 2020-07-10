@@ -23,7 +23,7 @@ void KeyboardEvent::set_key(const Key& key, button_state state) noexcept
 }
 
 CENTURION_DEF
-void KeyboardEvent::set_modifier(KeyModifier modifier, bool active) noexcept
+void KeyboardEvent::set_modifier(key_modifier modifier, bool active) noexcept
 {
   if (active) {
     m_event.keysym.mod |= static_cast<u16>(modifier);
@@ -51,7 +51,7 @@ auto KeyboardEvent::is_active(const Key& key) const noexcept -> bool
 }
 
 CENTURION_DEF
-auto KeyboardEvent::modifier_active(KeyModifier modifier) const noexcept -> bool
+auto KeyboardEvent::modifier_active(key_modifier modifier) const noexcept -> bool
 {
   return m_event.keysym.mod & static_cast<u16>(modifier);
 }
@@ -59,41 +59,41 @@ auto KeyboardEvent::modifier_active(KeyModifier modifier) const noexcept -> bool
 CENTURION_DEF
 auto KeyboardEvent::shift_active() const noexcept -> bool
 {
-  return modifier_active(KeyModifier::LeftShift) ||
-         modifier_active(KeyModifier::RightShift);
+  return modifier_active(key_modifier::left_shift) ||
+         modifier_active(key_modifier::right_shift);
 }
 
 CENTURION_DEF
 auto KeyboardEvent::ctrl_active() const noexcept -> bool
 {
-  return modifier_active(KeyModifier::LeftControl) ||
-         modifier_active(KeyModifier::RightControl);
+  return modifier_active(key_modifier::left_ctrl) ||
+         modifier_active(key_modifier::right_ctrl);
 }
 
 CENTURION_DEF
 auto KeyboardEvent::alt_active() const noexcept -> bool
 {
-  return modifier_active(KeyModifier::LeftAlt) ||
-         modifier_active(KeyModifier::RightAlt);
+  return modifier_active(key_modifier::left_alt) ||
+         modifier_active(key_modifier::right_alt);
 }
 
 CENTURION_DEF
 auto KeyboardEvent::gui_active() const noexcept -> bool
 {
-  return modifier_active(KeyModifier::LeftGUI) ||
-         modifier_active(KeyModifier::RightGUI);
+  return modifier_active(key_modifier::left_gui) ||
+         modifier_active(key_modifier::right_gui);
 }
 
 CENTURION_DEF
 auto KeyboardEvent::caps_active() const noexcept -> bool
 {
-  return modifier_active(KeyModifier::Caps);
+  return modifier_active(key_modifier::caps);
 }
 
 CENTURION_DEF
 auto KeyboardEvent::num_active() const noexcept -> bool
 {
-  return modifier_active(KeyModifier::Num);
+  return modifier_active(key_modifier::num);
 }
 
 CENTURION_DEF

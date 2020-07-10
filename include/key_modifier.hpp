@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file key_modifier.hpp
+ *
+ * @brief Provides the `key_modifier` enum.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_KEY_MODIFIER_HEADER
 #define CENTURION_KEY_MODIFIER_HEADER
 
@@ -32,24 +44,29 @@
 namespace centurion {
 
 /**
- * The KeyModifier enum class mirrors the values of the SDL_Keymod enum.
+ * @enum key_modifier
  *
- * @see SDL_Keymod
+ * @brief Mirrors the values of the `SDL_Keymod` enum.
+ *
+ * @see `SDL_Keymod`
+ *
  * @since 3.1.0
+ *
+ * @headerfile key_modifier.hpp
  */
-enum class KeyModifier {
-  None = KMOD_NONE,
-  LeftShift = KMOD_LSHIFT,
-  RightShift = KMOD_RSHIFT,
-  LeftControl = KMOD_LCTRL,
-  RightControl = KMOD_RCTRL,
-  LeftAlt = KMOD_LALT,
-  RightAlt = KMOD_RALT,
-  LeftGUI = KMOD_LGUI,
-  RightGUI = KMOD_RGUI,
-  Num = KMOD_NUM,
-  Caps = KMOD_CAPS,
-  Mode = KMOD_MODE
+enum class key_modifier {
+  none = KMOD_NONE,
+  left_shift = KMOD_LSHIFT,
+  right_shift = KMOD_RSHIFT,
+  left_ctrl = KMOD_LCTRL,
+  right_ctrl = KMOD_RCTRL,
+  left_alt = KMOD_LALT,
+  right_alt = KMOD_RALT,
+  left_gui = KMOD_LGUI,
+  right_gui = KMOD_RGUI,
+  num = KMOD_NUM,
+  caps = KMOD_CAPS,
+  mode = KMOD_MODE
 };
 
 }  // namespace centurion

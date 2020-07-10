@@ -73,7 +73,7 @@ TEST_CASE("IPoint::set(int, int)", "[Point]")
 TEST_CASE("IPoint::to_string", "[Point]")
 {
   const point_i point{27, 82};
-  Log::info(Log::Category::Test, "%s", point.to_string().c_str());
+  log::info(log::category::test, "%s", point.to_string().c_str());
 }
 
 TEST_CASE("Point to SDL_Point", "[Point]")
@@ -237,7 +237,7 @@ TEST_CASE("FPoint::set(float, float)", "[FPoint]")
 TEST_CASE("FPoint::to_string", "[FPoint]")
 {
   const point_f point{45.5f, 77.2f};
-  Log::info(Log::Category::Test, "%s", point.to_string().c_str());
+  log::info(log::category::test, "%s", point.to_string().c_str());
 }
 
 TEST_CASE("FPoint to SDL_FPoint", "[FPoint]")

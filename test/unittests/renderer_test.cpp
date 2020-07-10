@@ -752,7 +752,7 @@ TEST_CASE("to_string", "[renderer]")
 {
   ctn::window window;
   ctn::renderer renderer{window};
-  ctn::Log::info(ctn::Log::Category::Test, "%s", renderer.to_string().c_str());
+  ctn::log::info(ctn::log::category::test, "%s", renderer.to_string().c_str());
 }
 
 TEST_CASE("render_drivers", "[renderer]")

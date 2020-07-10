@@ -295,7 +295,7 @@ TEST_CASE("Texture::to_string", "[Texture]")
 {
   test([](ctn::renderer& renderer) {
     Texture texture{renderer, pandaPath};
-    Log::info(Log::Category::Test, "%s", texture.to_string().c_str());
+    log::info(log::category::test, "%s", texture.to_string().c_str());
   });
 }
 

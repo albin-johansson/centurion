@@ -863,7 +863,7 @@ TEST_CASE("Window::title", "[Window]")
 TEST_CASE("Window::to_string", "[Window]")
 {
   const ctn::window window;
-  ctn::Log::info(ctn::Log::Category::Test, "%s", window.to_string().c_str());
+  ctn::log::info(ctn::log::category::test, "%s", window.to_string().c_str());
 }
 
 TEST_CASE("Window::get", "[Window]")

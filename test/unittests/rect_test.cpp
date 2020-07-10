@@ -385,7 +385,7 @@ TEST_CASE("IRect::center", "[Rect]")
 TEST_CASE("IRect::to_string", "[Rect]")
 {
   const rect_i rect{{20, 45}, {100, 150}};
-  Log::info(Log::Category::Test, "%s", rect.to_string().c_str());
+  log::info(log::category::test, "%s", rect.to_string().c_str());
 }
 
 TEST_CASE("IRect to SDL_Rect*", "[Rect]")
@@ -749,7 +749,7 @@ TEST_CASE("FRect::height", "[FRect]")
 TEST_CASE("FRect::to_string", "[FRect]")
 {
   const rect_f rect{{17.5f, 72.9f}, {65.2f, 124.1f}};
-  Log::info(Log::Category::Test, "%s", rect.to_string().c_str());
+  log::info(log::category::test, "%s", rect.to_string().c_str());
 }
 
 // TEST_CASE("FRect::equals", "[FRect]") {

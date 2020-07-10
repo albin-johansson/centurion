@@ -256,5 +256,5 @@ TEST_CASE("Color conversions", "[Color]")
 TEST_CASE("Color::to_string", "[Color]")
 {
   const auto color = Color{0x12, 0xFA, 0xCC, 0xAD};
-  Log::info(Log::Category::Test, "%s", color.to_string().c_str());
+  log::info(log::category::test, "%s", color.to_string().c_str());
 }

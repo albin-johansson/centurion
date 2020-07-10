@@ -181,7 +181,7 @@ TEST_CASE("SoundEffect::playing", "[SoundEffect]")
 TEST_CASE("SoundEffect::to_string", "[SoundEffect]")
 {
   SoundEffect sound{path};
-  Log::info(Log::Category::Test, "%s", sound.to_string().c_str());
+  log::info(log::category::test, "%s", sound.to_string().c_str());
 }
 
 TEST_CASE("SoundEffect::max_volume", "[SoundEffect]")

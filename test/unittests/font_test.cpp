@@ -329,7 +329,7 @@ TEST_CASE("Font::ttf_version", "[Font]")
 TEST_CASE("Font::to_string", "[Font]")
 {
   ctn::font font{type_writer_path, 12};
-  Log::info(Log::Category::Test, "%s", font.to_string().c_str());
+  log::info(log::category::test, "%s", font.to_string().c_str());
 }
 
 TEST_CASE("Font::get", "[Font]")

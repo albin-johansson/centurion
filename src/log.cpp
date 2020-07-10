@@ -3,84 +3,37 @@
 
 #include "log.hpp"
 
-namespace centurion {
+namespace centurion::log {
 
 CENTURION_DEF
-void Log::reset_priorities() noexcept
+void reset_priorities() noexcept
 {
   SDL_LogResetPriorities();
 }
 
 CENTURION_DEF
-void Log::set_priority(Log::Category category, Log::Priority prio) noexcept
+void set_priority(category category, priority prio) noexcept
 {
   SDL_LogSetPriority(static_cast<int>(category),
                      static_cast<SDL_LogPriority>(prio));
 }
 
 CENTURION_DEF
-void Log::set_priority(Log::Priority prio) noexcept
+void set_priority(priority prio) noexcept
 {
   const auto p = static_cast<SDL_LogPriority>(prio);
   SDL_LogSetAllPriority(p);
-  SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p);  // Apparently not set by SDL
+
+  // Apparently not set by SDL
+  SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p);
 }
 
 CENTURION_DEF
-Log::Priority Log::priority(Log::Category category) noexcept
+auto get_priority(category category) noexcept -> priority
 {
-  return static_cast<Log::Priority>(
-      SDL_LogGetPriority(static_cast<int>(category)));
+  return static_cast<priority>(SDL_LogGetPriority(static_cast<int>(category)));
 }
 
-CENTURION_DEF
-bool operator==(Log::Category lhs, SDL_LogCategory rhs) noexcept
-{
-  return static_cast<SDL_LogCategory>(lhs) == rhs;
-}
-
-CENTURION_DEF
-bool operator==(SDL_LogCategory lhs, Log::Category rhs) noexcept
-{
-  return lhs == static_cast<SDL_LogCategory>(rhs);
-}
-
-CENTURION_DEF
-bool operator!=(Log::Category lhs, SDL_LogCategory rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-CENTURION_DEF
-bool operator!=(SDL_LogCategory lhs, Log::Category rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-CENTURION_DEF
-bool operator==(Log::Priority lhs, SDL_LogPriority rhs) noexcept
-{
-  return static_cast<SDL_LogPriority>(lhs) == rhs;
-}
-
-CENTURION_DEF
-bool operator==(SDL_LogPriority lhs, Log::Priority rhs) noexcept
-{
-  return lhs == static_cast<SDL_LogPriority>(rhs);
-}
-
-CENTURION_DEF
-bool operator!=(Log::Priority lhs, SDL_LogPriority rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-CENTURION_DEF
-bool operator!=(SDL_LogPriority lhs, Log::Priority rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-}  // namespace centurion
+}  // namespace centurion::log
 
 #endif  // CENTURION_LOG_SOURCE

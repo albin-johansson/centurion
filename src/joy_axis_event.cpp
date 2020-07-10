@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion ::event {
+namespace centurion {
 
 CENTURION_DEF
 JoyAxisEvent::JoyAxisEvent() noexcept : CommonEvent{}
@@ -50,6 +50,6 @@ auto JoyAxisEvent::value() const noexcept -> i16
   return m_event.value;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_JOY_AXIS_EVENT_SOURCE

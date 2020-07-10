@@ -53,43 +53,7 @@
 #include "mouse_button.hpp"
 #include "touch.hpp"
 
-/**
- * @namespace centurion::event
- *
- * @brief Contains the event components.
- *
- * @par Typical usage
- * The idiomatic usage of the event API is provided in the following example.
- * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
- *   #include <event.hpp>
- *
- *   using namespace ctn::event;
- *
- *   void run()
- *   {
- *     bool running = true;
- *     Event event;
- *
- *     while (running) {
- *       while (event.poll()) {
- *         if (event.is<QuitEvent>()) {
- *           running = false;
- *           break;
- *         }
- *         // handle more events...
- *       }
- *
- *       // handle miscellaneous logic and rendering here
- *     }
- *   }
- * @endcode
- *
- * @todo Consider removing the event namespace.
- *
- * @headerfile event.hpp
- */
-namespace centurion::event {
+namespace centurion {
 
 /**
  * @brief The templated base class of all Centurion events.
@@ -3019,6 +2983,31 @@ static_assert(validate_event<WindowEvent, SDL_WindowEvent>());
  *
  * @brief Serves as the main interface for dealing with events.
  *
+ * @par Usage
+ * The idiomatic usage of the event API is provided in the following example.
+ * @code{.cpp}
+ *   #include <centurion_as_ctn.hpp>
+ *   #include <event.hpp>
+ *
+ *   void event_demo()
+ *   {
+ *     ctn::Event event;
+ *     bool running = true;
+ *
+ *     while (running) {
+ *       while (event.poll()) {
+ *         if (event.is<ctn::QuitEvent>()) {
+ *           running = false;
+ *           break;
+ *         }
+ *         // handle more events...
+ *       }
+ *
+ *       // handle miscellaneous logic and rendering here
+ *     }
+ *   }
+ * @endcode
+ *
  * @see `SDL_Event`
  *
  * @since 4.0.0
@@ -3291,7 +3280,7 @@ class Event final {
   void update_data() noexcept;
 };
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
 #include "audio_device_event.cpp"

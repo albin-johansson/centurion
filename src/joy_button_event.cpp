@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 JoyButtonEvent::JoyButtonEvent() noexcept : CommonEvent{}
@@ -50,6 +50,6 @@ auto JoyButtonEvent::state() const noexcept -> button_state
   return static_cast<button_state>(m_event.state);
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_JOY_BUTTON_EVENT_SOURCE

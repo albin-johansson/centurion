@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 MultiGestureEvent::MultiGestureEvent() noexcept : CommonEvent{}
@@ -87,6 +87,6 @@ auto MultiGestureEvent::fingers() const noexcept -> float
   return m_event.numFingers;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_MULTI_GESTURE_EVENT_SOURCE

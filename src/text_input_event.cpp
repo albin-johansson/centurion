@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 TextInputEvent::TextInputEvent() noexcept : CommonEvent{}
@@ -32,6 +32,6 @@ auto TextInputEvent::text() const noexcept -> czstring
   return m_event.text;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_TEXT_INPUT_EVENT_SOURCE

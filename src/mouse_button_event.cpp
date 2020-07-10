@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 MouseButtonEvent::MouseButtonEvent() noexcept : CommonEvent{}
@@ -98,6 +98,6 @@ auto MouseButtonEvent::y() const noexcept -> i32
   return m_event.y;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_MOUSE_BUTTON_EVENT_SOURCE

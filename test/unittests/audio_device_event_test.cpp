@@ -2,7 +2,7 @@
 
 #include "event.hpp"
 
-using namespace centurion::event;
+using namespace centurion;
 
 TEST_CASE("AudioDeviceEvent constructors", "[AudioDeviceEvent]")
 {

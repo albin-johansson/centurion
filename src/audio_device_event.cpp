@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 AudioDeviceEvent::AudioDeviceEvent() noexcept : CommonEvent{}
@@ -44,6 +44,6 @@ auto AudioDeviceEvent::capture() const noexcept -> bool
   return m_event.iscapture;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_AUDIO_DEVICE_EVENT_SOURCE

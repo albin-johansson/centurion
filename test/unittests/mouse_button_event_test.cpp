@@ -3,7 +3,7 @@
 #include "event.hpp"
 
 using namespace centurion;
-using namespace centurion::event;
+using namespace centurion;
 
 TEST_CASE("MouseButtonEvent::set_window_id", "[MouseButtonEvent]")
 {

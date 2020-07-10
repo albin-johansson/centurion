@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 ControllerDeviceEvent::ControllerDeviceEvent() noexcept : CommonEvent{}
@@ -27,6 +27,6 @@ auto ControllerDeviceEvent::which() const noexcept -> i32
   return m_event.which;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_CONTROLLER_DEVICE_EVENT_SOURCE

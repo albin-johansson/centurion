@@ -2,7 +2,7 @@
 
 #include <catch.hpp>
 
-using namespace centurion::event;
+using namespace centurion;
 
 namespace {
 

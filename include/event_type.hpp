@@ -41,7 +41,7 @@
 
 #include "centurion_api.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 /**
  * @enum EventType
@@ -172,6 +172,6 @@ enum class EventType {
   return !(lhs == rhs);
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_EVENT_TYPE_HEADER

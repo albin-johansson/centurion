@@ -5,7 +5,7 @@
 
 #include <utility>
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 Event::Event() noexcept
@@ -145,6 +145,6 @@ auto Event::type() const noexcept -> EventType
   return static_cast<EventType>(m_event.type);
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_EVENT_SOURCE

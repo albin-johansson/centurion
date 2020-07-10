@@ -700,20 +700,18 @@ class window_base {
  *
  *   void demo()
  *   {
- *     using namespace ctn::event;
- *
  *     ctn::window window;
  *     ctn::renderer renderer{window};
  *
  *     window.set_title("Window demo");
  *
- *     Event event;
+ *     ctn::Event event;
  *     bool running = true;
  *
  *     window.show();
  *     while (running) {
  *       while (event.poll()) {
- *         if (event.is<QuitEvent>()) {
+ *         if (event.is<ctn::QuitEvent>()) {
  *           running = false;
  *           break;
  *         }

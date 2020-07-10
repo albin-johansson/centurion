@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 QuitEvent::QuitEvent() noexcept : CommonEvent{}
@@ -13,6 +13,6 @@ CENTURION_DEF
 QuitEvent::QuitEvent(const SDL_QuitEvent& event) noexcept : CommonEvent{event}
 {}
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_QUIT_EVENT_SOURCE

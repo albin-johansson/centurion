@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 ControllerButtonEvent::ControllerButtonEvent() noexcept : CommonEvent{}
@@ -50,6 +50,6 @@ auto ControllerButtonEvent::which() const noexcept -> SDL_JoystickID
   return m_event.which;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_CONTROLLER_BUTTON_EVENT_SOURCE

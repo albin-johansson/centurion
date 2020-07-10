@@ -5,7 +5,6 @@
 #include "event.hpp"
 
 using namespace centurion;
-using namespace event;
 
 namespace {
 

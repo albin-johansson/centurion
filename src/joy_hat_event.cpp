@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 JoyHatEvent::JoyHatEvent() noexcept : CommonEvent{}
@@ -38,6 +38,6 @@ auto JoyHatEvent::position() const noexcept -> JoyHatPosition
   return static_cast<JoyHatPosition>(m_event.value);
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_JOY_HAT_EVENT_SOURCE

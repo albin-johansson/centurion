@@ -4,7 +4,7 @@
 #include "centurion_utils.hpp"
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 TextEditingEvent::TextEditingEvent() noexcept : CommonEvent{}
@@ -67,6 +67,6 @@ auto TextEditingEvent::length() const noexcept -> i32
   return m_event.length;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_TEXT_EDITING_EVENT_SOURCE

@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 JoyBallEvent::JoyBallEvent() noexcept : CommonEvent{}
@@ -62,6 +62,6 @@ auto JoyBallEvent::dy() const noexcept -> i16
   return m_event.yrel;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_name_SOURCE

@@ -4,7 +4,7 @@
 #include "centurion_utils.hpp"
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 TouchFingerEvent::TouchFingerEvent() noexcept : CommonEvent{}
@@ -111,6 +111,6 @@ auto TouchFingerEvent::pressure() const noexcept -> float
   return m_event.pressure;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_TOUCH_FINGER_EVENT_SOURCE

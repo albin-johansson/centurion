@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 ControllerAxisEvent::ControllerAxisEvent() noexcept : CommonEvent{}
@@ -51,6 +51,6 @@ auto ControllerAxisEvent::value() const noexcept -> i16
   return m_event.value;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_CONTROLLER_AXIS_EVENT_SOURCE

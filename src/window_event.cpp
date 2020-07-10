@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 WindowEvent::WindowEvent() noexcept : CommonEvent{}
@@ -32,6 +32,6 @@ auto WindowEvent::data_2() const noexcept -> i32
   return m_event.data2;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_WINDOW_EVENT_SOURCE

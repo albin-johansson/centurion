@@ -3,7 +3,7 @@
 
 #include "event.hpp"
 
-namespace centurion::event {
+namespace centurion {
 
 CENTURION_DEF
 KeyboardEvent::KeyboardEvent() noexcept : CommonEvent{}
@@ -120,6 +120,6 @@ auto KeyboardEvent::window_id() const noexcept -> u32
   return m_event.windowID;
 }
 
-}  // namespace centurion::event
+}  // namespace centurion
 
 #endif  // CENTURION_KEYBOARD_EVENT_SOURCE

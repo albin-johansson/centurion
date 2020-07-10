@@ -203,7 +203,7 @@ class Centurion final {
 
   auto operator=(const Centurion&) -> Centurion& = delete;
 
-  auto operator=(Centurion&&) -> Centurion& = delete;
+  auto operator=(Centurion &&) -> Centurion& = delete;
 
  private:
   CenturionConfig cfg;

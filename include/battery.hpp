@@ -39,6 +39,7 @@
 #include <optional>
 
 #include "centurion_api.hpp"
+#include "centurion_types.hpp"
 
 /**
  * @namespace centurion::battery
@@ -51,6 +52,7 @@ namespace centurion::battery {
 
 /**
  * @enum PowerState
+ *
  * @brief Mirrors the values of the `SDL_PowerState` enum.
  *
  * @since 3.0.0
@@ -80,8 +82,9 @@ enum class PowerState {
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline auto operator==(PowerState lhs,
-                                     SDL_PowerState rhs) noexcept -> bool
+[[nodiscard]] inline constexpr auto operator==(PowerState lhs,
+                                               SDL_PowerState rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_PowerState>(lhs) == rhs;
 }
@@ -89,10 +92,36 @@ enum class PowerState {
 /**
  * @copydoc operator==(PowerState, SDL_PowerState)
  */
-[[nodiscard]] inline auto operator==(SDL_PowerState lhs,
-                                     PowerState rhs) noexcept -> bool
+[[nodiscard]] inline constexpr auto operator==(SDL_PowerState lhs,
+                                               PowerState rhs) noexcept -> bool
 {
   return rhs == lhs;
+}
+
+/**
+ * @brief Indicates whether or not two power states values aren't the same.
+ *
+ * @param lhs the left-hand side power state value.
+ * @param rhs the right-hand side power state value.
+ *
+ * @return `true` if the power states aren't the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline constexpr auto operator!=(PowerState lhs,
+                                               SDL_PowerState rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @copydoc operator!=(PowerState, SDL_PowerState)
+ */
+[[nodiscard]] inline constexpr auto operator!=(SDL_PowerState lhs,
+                                               PowerState rhs) noexcept -> bool
+{
+  return rhs != lhs;
 }
 
 /**
@@ -101,11 +130,10 @@ enum class PowerState {
  * @return seconds of remaining battery life; `nothing` if the value cannot
  * be computed.
  *
- * @todo use `seconds<int>` instead of `int`.
- *
  * @since 3.0.0
  */
-CENTURION_QUERY auto seconds_left() noexcept -> std::optional<int>;
+CENTURION_QUERY
+auto seconds_left() noexcept -> std::optional<seconds<int>>;
 
 /**
  * @brief Returns the amount of minutes of battery life that is remaining.
@@ -113,11 +141,10 @@ CENTURION_QUERY auto seconds_left() noexcept -> std::optional<int>;
  * @return minutes of remaining battery life; `nothing` if the value cannot
  * be computed.
  *
- * @todo use `minutes<int>` instead of `int`.
- *
  * @since 3.0.0
  */
-CENTURION_QUERY auto minutes_left() noexcept -> std::optional<int>;
+CENTURION_QUERY
+auto minutes_left() noexcept -> std::optional<minutes<int>>;
 
 /**
  * @brief Returns the percentage of battery life that is currently left.
@@ -127,7 +154,8 @@ CENTURION_QUERY auto minutes_left() noexcept -> std::optional<int>;
  *
  * @since 3.0.0
  */
-CENTURION_QUERY auto percentage() noexcept -> std::optional<int>;
+CENTURION_QUERY
+auto percentage() noexcept -> std::optional<int>;
 
 /**
  * @brief Returns the current power state.
@@ -136,7 +164,8 @@ CENTURION_QUERY auto percentage() noexcept -> std::optional<int>;
  *
  * @since 3.0.0
  */
-CENTURION_QUERY auto state() noexcept -> PowerState;
+CENTURION_QUERY
+auto state() noexcept -> PowerState;
 
 /**
  * @brief Indicates whether or not the system is running on a battery.
@@ -148,7 +177,8 @@ CENTURION_QUERY auto state() noexcept -> PowerState;
  *
  * @since 4.0.0
  */
-CENTURION_QUERY auto exists() noexcept -> bool;
+CENTURION_QUERY
+auto exists() noexcept -> bool;
 
 }  // namespace centurion::battery
 

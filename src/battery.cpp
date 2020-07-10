@@ -8,23 +8,23 @@
 namespace centurion::battery {
 
 CENTURION_DEF
-auto seconds_left() noexcept -> std::optional<int>
+auto seconds_left() noexcept -> std::optional<seconds<int>>
 {
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
   if (secondsLeft == -1) {
     return nothing;
   } else {
-    return secondsLeft;
+    return seconds<int>{secondsLeft};
   }
 }
 
 CENTURION_DEF
-auto minutes_left() noexcept -> std::optional<int>
+auto minutes_left() noexcept -> std::optional<minutes<int>>
 {
   const auto secondsLeft = seconds_left();
   if (secondsLeft) {
-    return *secondsLeft / 60;
+    return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
   } else {
     return nothing;
   }

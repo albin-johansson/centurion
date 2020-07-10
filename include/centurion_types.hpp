@@ -158,6 +158,9 @@ using microseconds = std::chrono::duration<T, std::micro>;
 template <typename T>
 using nanoseconds = std::chrono::duration<T, std::nano>;
 
+template <typename T>
+using minutes = std::chrono::duration<T, std::ratio<60>>;
+
 }  // namespace centurion
 
 #endif  // CENTURION_TYPES_HEADER

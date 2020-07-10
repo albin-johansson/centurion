@@ -18,6 +18,9 @@ TEST_CASE("PowerState enum values", "[PowerState]")
   CHECK(SDL_POWERSTATE_NO_BATTERY == PowerState::NoBattery);
   CHECK(SDL_POWERSTATE_CHARGING == PowerState::Charging);
   CHECK(SDL_POWERSTATE_CHARGED == PowerState::Charged);
+
+  CHECK(PowerState::Charged != SDL_POWERSTATE_ON_BATTERY);
+  CHECK(SDL_POWERSTATE_CHARGING != PowerState::Unknown);
 }
 
 TEST_CASE("battery::percentage", "[battery]")
@@ -32,6 +35,21 @@ TEST_CASE("battery::percentage", "[battery]")
   }
 }
 
+TEST_CASE("battery::seconds_left", "[battery]")
+{
+  CHECK_NOTHROW(battery::seconds_left());
+
+  int actual = 0;
+
+  const auto secs = battery::seconds_left();
+  SDL_GetPowerInfo(&actual, nullptr);
+
+  if (secs) {
+    const seconds<int> actualSeconds{actual};
+    CHECK(secs.value() == actualSeconds);
+  }
+}
+
 TEST_CASE("battery::minutes_left", "[battery]")
 {
   CHECK_NOTHROW(battery::minutes_left());
@@ -40,7 +58,10 @@ TEST_CASE("battery::minutes_left", "[battery]")
   if (minutes) {
     int secs = -1;
     SDL_GetPowerInfo(&secs, nullptr);
-    CHECK(minutes == (secs / 60));
+
+    const seconds<int> seconds{secs};
+
+    CHECK(minutes.value() == seconds);
   }
 }
 

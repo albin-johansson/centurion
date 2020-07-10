@@ -99,9 +99,9 @@ TEST_CASE("Joystick::product_version(int)", "[Joystick]")
   CHECK_NOTHROW(joystick::product_version(0));
 }
 
-TEST_CASE("Joystick::type(int)", "[Joystick]")
+TEST_CASE("Joystick::get_type(int)", "[Joystick]")
 {
-  CHECK_NOTHROW(joystick::type(0));
+  CHECK_NOTHROW(joystick::get_type(0));
 }
 
 TEST_CASE("Joystick::instance_id(int)", "[Joystick]")
@@ -132,7 +132,7 @@ TEST_CASE("Joystick::axis_min", "[Joystick]")
 
 TEST_CASE("Joystick::Power values", "[Joystick]")
 {
-  using JPower = joystick::Power;
+  using JPower = joystick::power;
 
   SECTION("Operator ==")
   {
@@ -162,7 +162,7 @@ TEST_CASE("Joystick::Power values", "[Joystick]")
 
 TEST_CASE("Joystick::HatState values", "[Joystick]")
 {
-  using HS = joystick::HatState;
+  using HS = joystick::hat_state;
 
   CHECK(HS::Centered == static_cast<HS>(SDL_HAT_CENTERED));
   CHECK(HS::Up == static_cast<HS>(SDL_HAT_UP));
@@ -177,7 +177,7 @@ TEST_CASE("Joystick::HatState values", "[Joystick]")
 
 TEST_CASE("Joystick::Type values", "[Joystick]")
 {
-  using Type = joystick::Type;
+  using Type = joystick::type;
 
   SECTION("Operator ==")
   {

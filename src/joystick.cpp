@@ -196,9 +196,9 @@ auto joystick::product_version(int deviceIndex) noexcept -> std::optional<u16>
 }
 
 CENTURION_DEF
-auto joystick::type(int deviceIndex) noexcept -> joystick::Type
+auto joystick::get_type(int deviceIndex) noexcept -> joystick::type
 {
-  return static_cast<Type>(SDL_JoystickGetDeviceType(deviceIndex));
+  return static_cast<type>(SDL_JoystickGetDeviceType(deviceIndex));
 }
 
 CENTURION_DEF
@@ -252,9 +252,9 @@ auto joystick::player_index() const noexcept -> std::optional<int>
 }
 
 CENTURION_DEF
-auto joystick::type() const noexcept -> joystick::Type
+auto joystick::get_type() const noexcept -> joystick::type
 {
-  return static_cast<Type>(SDL_JoystickGetType(m_joystick));
+  return static_cast<type>(SDL_JoystickGetType(m_joystick));
 }
 
 CENTURION_DEF
@@ -291,10 +291,10 @@ auto joystick::product_version() const noexcept -> std::optional<u16>
 }
 
 CENTURION_DEF
-auto joystick::ball_axis_change(int ball) const noexcept
-    -> std::optional<joystick::BallAxisChange>
+auto joystick::get_ball_axis_change(int ball) const noexcept
+    -> std::optional<joystick::ball_axis_change>
 {
-  BallAxisChange change{};
+  ball_axis_change change{};
   const auto result =
       SDL_JoystickGetBall(m_joystick, ball, &change.dx, &change.dy);
   if (result == 0) {
@@ -377,21 +377,21 @@ auto joystick::name() const noexcept -> czstring
 }
 
 CENTURION_DEF
-auto joystick::power() const noexcept -> joystick::Power
+auto joystick::get_power() const noexcept -> joystick::power
 {
-  return static_cast<Power>(SDL_JoystickCurrentPowerLevel(m_joystick));
+  return static_cast<power>(SDL_JoystickCurrentPowerLevel(m_joystick));
 }
 
 CENTURION_DEF
-auto joystick::button_state(int button) const noexcept -> enum button_state {
-  return static_cast<enum button_state>(SDL_JoystickGetButton(m_joystick,
-                                                              button));
+auto joystick::get_button_state(int button) const noexcept -> button_state
+{
+  return static_cast<button_state>(SDL_JoystickGetButton(m_joystick, button));
 }
 
 CENTURION_DEF
-auto joystick::hat_state(int hat) const noexcept -> joystick::HatState
+auto joystick::get_hat_state(int hat) const noexcept -> joystick::hat_state
 {
-  return static_cast<HatState>(SDL_JoystickGetHat(m_joystick, hat));
+  return static_cast<hat_state>(SDL_JoystickGetHat(m_joystick, hat));
 }
 
 }  // namespace centurion

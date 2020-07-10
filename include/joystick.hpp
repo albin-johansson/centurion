@@ -62,13 +62,15 @@ namespace centurion {
 class joystick final {
  public:
   /**
-   * @enum Power
-   * @brief Mirrors the SDL_JoystickPowerLevel enum.
+   * @enum power
+   *
+   * @brief Mirrors the `SDL_JoystickPowerLevel` enum.
+   *
+   * @since 4.2.0
    *
    * @headerfile joystick.hpp
-   * @since 4.2.0
    */
-  enum class Power {
+  enum class power {
     Unknown = SDL_JOYSTICK_POWER_UNKNOWN, /**< Unknown power level. */
     Empty = SDL_JOYSTICK_POWER_EMPTY,     /**< Indicates <= 5% power. */
     Low = SDL_JOYSTICK_POWER_LOW,         /**< Indicates <= 20% power. */
@@ -80,13 +82,15 @@ class joystick final {
   };
 
   /**
-   * @enum HatState
+   * @enum hat_state
+   *
    * @brief Represents the various states of a joystick hat.
    *
-   * @headerfile joystick.hpp
    * @since 4.2.0
+   *
+   * @headerfile joystick.hpp
    */
-  enum class HatState {
+  enum class hat_state {
     Centered = SDL_HAT_CENTERED,   /**< The hat is centered. */
     Up = SDL_HAT_UP,               /**< The hat is directed "north". */
     Right = SDL_HAT_RIGHT,         /**< The hat is directed "east". */
@@ -99,13 +103,15 @@ class joystick final {
   };
 
   /**
-   * @enum Type
-   * @brief Mirrors the SDL_JoystickType enum.
+   * @enum type
+   *
+   * @brief Mirrors the `SDL_JoystickType` enum.
    *
    * @since 4.2.0
+   *
    * @headerfile joystick.hpp
    */
-  enum class Type {
+  enum class type {
     Unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
     GameController = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
     Wheel = SDL_JOYSTICK_TYPE_WHEEL,
@@ -119,19 +125,20 @@ class joystick final {
   };
 
   /**
-   * @struct BallAxisChange
+   * @struct ball_axis_change
+   *
    * @brief Represents the difference in a joystick ball axis position.
    *
    * @since 4.2.0
    * @headerfile joystick.hpp
    *
-   * @var BallAxisChange::dx
+   * @var ball_axis_change::dx
    * Difference in x-axis position since last poll.
    *
-   * @var BallAxisChange::dy
+   * @var ball_axis_change::dy
    * Difference in y-axis position since last poll.
    */
-  struct BallAxisChange {
+  struct ball_axis_change {
     int dx;
     int dy;
   };
@@ -268,7 +275,7 @@ class joystick final {
    * @since 4.2.0
    */
   CENTURION_QUERY
-  auto type() const noexcept -> Type;
+  auto get_type() const noexcept -> type;
 
   /**
    * @brief Returns the USB vendor ID of the joystick.
@@ -317,8 +324,8 @@ class joystick final {
    * @since 4.2.0
    */
   CENTURION_QUERY
-  auto ball_axis_change(int ball) const noexcept
-      -> std::optional<BallAxisChange>;
+  auto get_ball_axis_change(int ball) const noexcept
+      -> std::optional<ball_axis_change>;
 
   /**
    * @brief Returns the current position of the specified axis.
@@ -445,7 +452,7 @@ class joystick final {
    * @since 4.2.0
    */
   CENTURION_QUERY
-  auto power() const noexcept -> Power;
+  auto get_power() const noexcept -> power;
 
   /**
    * @brief Returns the button state of the button associated with the index.
@@ -457,7 +464,7 @@ class joystick final {
    * @since 4.2.0
    */
   CENTURION_QUERY
-  auto button_state(int button) const noexcept -> enum button_state;
+  auto get_button_state(int button) const noexcept -> button_state;
 
   /**
    * @brief Returns the state of a specific joystick hat.
@@ -471,7 +478,7 @@ class joystick final {
    * @see `joystick::HatState`
    */
   CENTURION_QUERY
-  auto hat_state(int hat) const noexcept -> HatState;
+  auto get_hat_state(int hat) const noexcept -> hat_state;
 
   /**
    * @brief Returns a pointer to the associated `SDL_Joystick`.
@@ -676,7 +683,7 @@ class joystick final {
    * @since 4.2.0
    */
   CENTURION_QUERY
-  static auto type(int deviceIndex) noexcept -> Type;
+  static auto get_type(int deviceIndex) noexcept -> type;
 
   /**
    * @brief Returns the instance ID for the joystick associated with the
@@ -765,7 +772,7 @@ class joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator==(
-    joystick::Power lhs,
+    joystick::power lhs,
     SDL_JoystickPowerLevel rhs) noexcept -> bool
 {
   return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
@@ -782,7 +789,7 @@ class joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_JoystickPowerLevel lhs,
-                                               joystick::Power rhs) noexcept
+                                               joystick::power rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -799,7 +806,7 @@ class joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator!=(
-    joystick::Power lhs,
+    joystick::power lhs,
     SDL_JoystickPowerLevel rhs) noexcept -> bool
 {
   return !(lhs == rhs);
@@ -816,7 +823,7 @@ class joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_JoystickPowerLevel lhs,
-                                               joystick::Power rhs) noexcept
+                                               joystick::power rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -832,7 +839,7 @@ class joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator==(joystick::Type lhs,
+[[nodiscard]] inline constexpr auto operator==(joystick::type lhs,
                                                SDL_JoystickType rhs) noexcept
     -> bool
 {
@@ -850,7 +857,7 @@ class joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_JoystickType lhs,
-                                               joystick::Type rhs) noexcept
+                                               joystick::type rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -866,7 +873,7 @@ class joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator!=(joystick::Type lhs,
+[[nodiscard]] inline constexpr auto operator!=(joystick::type lhs,
                                                SDL_JoystickType rhs) noexcept
     -> bool
 {
@@ -884,7 +891,7 @@ class joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_JoystickType lhs,
-                                               joystick::Type rhs) noexcept
+                                               joystick::type rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);

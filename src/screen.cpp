@@ -5,10 +5,10 @@
 
 #include <SDL.h>
 
-namespace centurion {
+namespace centurion::screen {
 
 CENTURION_DEF
-void Screen::set_screen_saver_enabled(bool enabled) noexcept
+void set_screen_saver_enabled(bool enabled) noexcept
 {
   if (enabled) {
     SDL_EnableScreenSaver();
@@ -18,13 +18,13 @@ void Screen::set_screen_saver_enabled(bool enabled) noexcept
 }
 
 CENTURION_DEF
-bool Screen::screen_saver_enabled() noexcept
+auto screen_saver_enabled() noexcept -> bool
 {
   return SDL_IsScreenSaverEnabled();
 }
 
 CENTURION_DEF
-int Screen::width() noexcept
+auto width() noexcept -> int
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
@@ -32,7 +32,7 @@ int Screen::width() noexcept
 }
 
 CENTURION_DEF
-int Screen::height() noexcept
+auto height() noexcept -> int
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
@@ -40,7 +40,7 @@ int Screen::height() noexcept
 }
 
 CENTURION_DEF
-area_i Screen::size() noexcept
+auto size() noexcept -> area_i
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
@@ -48,7 +48,7 @@ area_i Screen::size() noexcept
 }
 
 CENTURION_DEF
-int Screen::refresh_rate() noexcept
+auto refresh_rate() noexcept -> int
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
@@ -56,13 +56,13 @@ int Screen::refresh_rate() noexcept
 }
 
 CENTURION_DEF
-PixelFormat Screen::pixel_format() noexcept
+auto pixel_format() noexcept -> PixelFormat
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
   return static_cast<PixelFormat>(mode.format);
 }
 
-}  // namespace centurion
+}  // namespace centurion::screen
 
 #endif  // CENTURION_SCREEN_SOURCE

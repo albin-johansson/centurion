@@ -4,51 +4,51 @@
 
 using namespace centurion;
 
-TEST_CASE("Screen::set_screen_saver_enabled", "[Screen]")
+TEST_CASE("screen::set_screen_saver_enabled", "[screen]")
 {
-  CHECK(!Screen::screen_saver_enabled());
+  CHECK(!screen::screen_saver_enabled());
 
-  Screen::set_screen_saver_enabled(true);
-  CHECK(Screen::screen_saver_enabled());
+  screen::set_screen_saver_enabled(true);
+  CHECK(screen::screen_saver_enabled());
 
-  Screen::set_screen_saver_enabled(false);
-  CHECK(!Screen::screen_saver_enabled());
+  screen::set_screen_saver_enabled(false);
+  CHECK(!screen::screen_saver_enabled());
 }
 
-TEST_CASE("Screen::width", "[Screen]")
+TEST_CASE("screen::width", "[screen]")
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  CHECK(Screen::width() == mode.w);
+  CHECK(screen::width() == mode.w);
 }
 
-TEST_CASE("Screen::height", "[Screen]")
+TEST_CASE("screen::height", "[screen]")
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  CHECK(Screen::height() == mode.h);
+  CHECK(screen::height() == mode.h);
 }
 
-TEST_CASE("Screen::size", "[Screen]")
+TEST_CASE("screen::size", "[screen]")
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
 
-  const auto size = Screen::size();
+  const auto size = screen::size();
   CHECK(size.width == mode.w);
   CHECK(size.height == mode.h);
 }
 
-TEST_CASE("Screen::refresh_rate", "[Screen]")
+TEST_CASE("screen::refresh_rate", "[screen]")
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  CHECK(Screen::refresh_rate() == mode.refresh_rate);
+  CHECK(screen::refresh_rate() == mode.refresh_rate);
 }
 
-TEST_CASE("Screen::pixel_format", "[Screen]")
+TEST_CASE("screen::pixel_format", "[screen]")
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  CHECK(Screen::pixel_format() == static_cast<PixelFormat>(mode.format));
+  CHECK(screen::pixel_format() == static_cast<PixelFormat>(mode.format));
 }

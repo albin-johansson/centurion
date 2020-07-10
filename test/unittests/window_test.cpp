@@ -164,8 +164,8 @@ TEST_CASE("Window::center", "[Window]")
 {
   ctn::window window;
 
-  const auto x = (ctn::Screen::width() - window.width()) / 2;
-  const auto y = (ctn::Screen::height() - window.height()) / 2;
+  const auto x = (ctn::screen::width() - window.width()) / 2;
+  const auto y = (ctn::screen::height() - window.height()) / 2;
 
   window.center();
 
@@ -544,14 +544,14 @@ TEST_CASE("Window::opacity", "[Window]")
 TEST_CASE("Window::x", "[Window]")
 {
   const ctn::window window;
-  const auto x = (ctn::Screen::width() - window.width()) / 2;
+  const auto x = (ctn::screen::width() - window.width()) / 2;
   CHECK(window.x() == x);
 }
 
 TEST_CASE("Window::y", "[Window]")
 {
   const ctn::window window;
-  const auto y = (ctn::Screen::height() - window.height()) / 2;
+  const auto y = (ctn::screen::height() - window.height()) / 2;
   CHECK(window.y() == y);
 }
 
@@ -574,8 +574,8 @@ TEST_CASE("Window::position", "[Window]")
   const ctn::window window;
   const auto position = window.position();
 
-  const auto x = (ctn::Screen::width() - window.width()) / 2;
-  const auto y = (ctn::Screen::height() - window.height()) / 2;
+  const auto x = (ctn::screen::width() - window.width()) / 2;
+  const auto y = (ctn::screen::height() - window.height()) / 2;
 
   CHECK(position.x() == x);
   CHECK(position.y() == y);

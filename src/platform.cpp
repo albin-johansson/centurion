@@ -3,8 +3,6 @@
 
 #include "platform.hpp"
 
-#include <string>
-
 namespace centurion::platform {
 
 CENTURION_DEF

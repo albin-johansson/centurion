@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file screen.hpp
+ *
+ * @brief Provides information about the system screen.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_SCREEN_HEADER
 #define CENTURION_SCREEN_HEADER
 
@@ -29,77 +41,92 @@
 #include "centurion_api.hpp"
 #include "pixel_format.hpp"
 
-namespace centurion {
+/**
+ * @namespace centurion::screen
+ *
+ * @brief Contains functions that provide information about the screen.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile screen.hpp
+ */
+namespace centurion::screen {
 
 /**
- * The Screen class provides information about the primary screen monitor.
+ * @brief Sets whether or not screen savers are enabled.
+ *
+ * @note By default, screen savers are disabled.
+ *
+ * @param enabled `true` if screen savers should be enabled; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+CENTURION_API
+void set_screen_saver_enabled(bool enabled) noexcept;
+
+/**
+ * @brief Indicates whether or not screen savers are enabled.
+ *
+ * @note By default, screen savers are disabled.
+ *
+ * @return `true` if screen savers are enabled; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+CENTURION_QUERY
+auto screen_saver_enabled() noexcept -> bool;
+
+/**
+ * @brief Returns the width of the screen.
+ *
+ * @return the width of the screen.
  *
  * @since 3.0.0
  */
-class Screen final {
- public:
-  Screen() = delete;
+CENTURION_QUERY
+auto width() noexcept -> int;
 
-  /**
-   * Sets whether or not screen savers are enabled. By default, screen
-   * savers are disabled.
-   *
-   * @param enabled true if screen savers should be enabled; false otherwise.
-   * @since 4.0.0
-   */
-  CENTURION_API static void set_screen_saver_enabled(bool enabled) noexcept;
+/**
+ * @brief Returns the height of the screen.
+ *
+ * @return the height of the screen.
+ *
+ * @since 3.0.0
+ */
+CENTURION_QUERY
+auto height() noexcept -> int;
 
-  /**
-   * Indicates whether or not screen savers are enabled. By default, screen
-   * savers are disabled.
-   *
-   * @return true if screen savers are enabled; false otherwise.
-   * @since 4.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool screen_saver_enabled() noexcept;
+/**
+ * @brief Returns the size of the screen.
+ *
+ * @return the size of the screen.
+ *
+ * @since 4.1.0
+ */
+CENTURION_QUERY
+auto size() noexcept -> area_i;
 
-  /**
-   * Returns the width of the screen.
-   *
-   * @return the width of the screen.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static int width() noexcept;
+/**
+ * @brief Returns the refresh rate of the screen.
+ *
+ * @return the refresh rate of the screen.
+ *
+ * @since 3.0.0
+ */
+CENTURION_QUERY
+auto refresh_rate() noexcept -> int;
 
-  /**
-   * Returns the height of the screen.
-   *
-   * @return the height of the screen.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static int height() noexcept;
+/**
+ * @brief Returns the pixel format of the desktop display mode.
+ *
+ * @return the pixel format of the desktop display mode.
+ *
+ * @since 3.0.0
+ */
+CENTURION_QUERY
+auto pixel_format() noexcept -> PixelFormat;
 
-  /**
-   * Returns the size of the screen.
-   *
-   * @return the size of the screen.
-   * @since 4.1.0
-   */
-  [[nodiscard]] CENTURION_API static area_i size() noexcept;
-
-  /**
-   * Returns the refresh rate of the screen.
-   *
-   * @return the refresh rate of the screen.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static int refresh_rate() noexcept;
-
-  /**
-   * Returns the pixel format of the desktop display mode.
-   *
-   * @return the pixel format of the desktop display mode.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static PixelFormat pixel_format() noexcept;
-};
-
-}  // namespace centurion
+}  // namespace centurion::screen
 
 #ifdef CENTURION_HEADER_ONLY
 #include "screen.cpp"

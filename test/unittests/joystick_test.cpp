@@ -11,12 +11,12 @@ using namespace centurion;
 
 TEST_CASE("Constructors", "[Joystick]")
 {
-  SECTION("Index ctor") { CHECK_THROWS_AS(Joystick{0}, centurion_exception); }
+  SECTION("Index ctor") { CHECK_THROWS_AS(joystick{0}, centurion_exception); }
 
   SECTION("SDL_Joystick* ctor")
   {
     SDL_Joystick* ptr = nullptr;
-    CHECK_THROWS_AS(Joystick{ptr}, centurion_exception);
+    CHECK_THROWS_AS(joystick{ptr}, centurion_exception);
   }
 }
 
@@ -24,115 +24,115 @@ TEST_CASE("Smart pointer factory methods", "[Joystick]")
 {
   SECTION("Unique")
   {
-    CHECK_THROWS_AS(Joystick::unique(0), centurion_exception);
-    CHECK_THROWS_AS(Joystick::unique(nullptr), centurion_exception);
+    CHECK_THROWS_AS(joystick::unique(0), centurion_exception);
+    CHECK_THROWS_AS(joystick::unique(nullptr), centurion_exception);
   }
 
   SECTION("Shared")
   {
-    CHECK_THROWS_AS(Joystick::shared(0), centurion_exception);
-    CHECK_THROWS_AS(Joystick::shared(nullptr), centurion_exception);
+    CHECK_THROWS_AS(joystick::shared(0), centurion_exception);
+    CHECK_THROWS_AS(joystick::shared(nullptr), centurion_exception);
   }
 }
 
 TEST_CASE("Joystick::update", "[Joystick]")
 {
-  CHECK_NOTHROW(Joystick::update());
+  CHECK_NOTHROW(joystick::update());
 }
 
 TEST_CASE("Joystick locking/unlocking", "[Joystick]")
 {
-  CHECK_NOTHROW(Joystick::lock());
-  CHECK_NOTHROW(Joystick::unlock());
+  CHECK_NOTHROW(joystick::lock());
+  CHECK_NOTHROW(joystick::unlock());
 }
 
 TEST_CASE("Joystick polling", "[Joystick]")
 {
-  Joystick::set_polling(false);
-  CHECK(!Joystick::polling());
+  joystick::set_polling(false);
+  CHECK(!joystick::polling());
 
-  Joystick::set_polling(true);
-  CHECK(Joystick::polling());
+  joystick::set_polling(true);
+  CHECK(joystick::polling());
 }
 
 TEST_CASE("Joystick::from_instance_id", "[Joystick]")
 {
-  const auto* ptr = Joystick::from_instance_id(0);
+  const auto* ptr = joystick::from_instance_id(0);
   CHECK(!ptr);
 }
 
 TEST_CASE("Joystick::from_player_index", "[Joystick]")
 {
-  const auto* ptr = Joystick::from_player_index(0);
+  const auto* ptr = joystick::from_player_index(0);
   CHECK(!ptr);
 }
 
 TEST_CASE("Joystick::amount", "[Joystick]")
 {
-  const auto amount = Joystick::amount();
+  const auto amount = joystick::amount();
   REQUIRE(amount.has_value());
   CHECK(*amount == 0);
 }
 
 TEST_CASE("Joystick::guid(int)", "[Joystick]")
 {
-  CHECK_NOTHROW(Joystick::guid(0));
+  CHECK_NOTHROW(joystick::guid(0));
 }
 
 TEST_CASE("Joystick::player_index(int)", "[Joystick]")
 {
-  CHECK_NOTHROW(Joystick::player_index(0));
+  CHECK_NOTHROW(joystick::player_index(0));
 }
 
 TEST_CASE("Joystick::vendor(int)", "[Joystick]")
 {
-  CHECK_NOTHROW(Joystick::vendor(0));
+  CHECK_NOTHROW(joystick::vendor(0));
 }
 
 TEST_CASE("Joystick::product(int)", "[Joystick]")
 {
-  CHECK_NOTHROW(Joystick::product(0));
+  CHECK_NOTHROW(joystick::product(0));
 }
 
 TEST_CASE("Joystick::product_version(int)", "[Joystick]")
 {
-  CHECK_NOTHROW(Joystick::product_version(0));
+  CHECK_NOTHROW(joystick::product_version(0));
 }
 
 TEST_CASE("Joystick::type(int)", "[Joystick]")
 {
-  CHECK_NOTHROW(Joystick::type(0));
+  CHECK_NOTHROW(joystick::type(0));
 }
 
 TEST_CASE("Joystick::instance_id(int)", "[Joystick]")
 {
-  CHECK_NOTHROW(Joystick::instance_id(0));
+  CHECK_NOTHROW(joystick::instance_id(0));
 }
 
 TEST_CASE("Joystick::name(int)", "[Joystick]")
 {
-  CHECK_NOTHROW(Joystick::name(0));
+  CHECK_NOTHROW(joystick::name(0));
 }
 
 TEST_CASE("Joystick::guid_from_string(int)", "[Joystick]")
 {
   const czstring str = "";
-  CHECK_NOTHROW(Joystick::guid_from_string(str));
+  CHECK_NOTHROW(joystick::guid_from_string(str));
 }
 
 TEST_CASE("Joystick::axis_max", "[Joystick]")
 {
-  CHECK(Joystick::axis_max() == SDL_JOYSTICK_AXIS_MAX);
+  CHECK(joystick::axis_max() == SDL_JOYSTICK_AXIS_MAX);
 }
 
 TEST_CASE("Joystick::axis_min", "[Joystick]")
 {
-  CHECK(Joystick::axis_min() == SDL_JOYSTICK_AXIS_MIN);
+  CHECK(joystick::axis_min() == SDL_JOYSTICK_AXIS_MIN);
 }
 
 TEST_CASE("Joystick::Power values", "[Joystick]")
 {
-  using JPower = Joystick::Power;
+  using JPower = joystick::Power;
 
   SECTION("Operator ==")
   {
@@ -162,7 +162,7 @@ TEST_CASE("Joystick::Power values", "[Joystick]")
 
 TEST_CASE("Joystick::HatState values", "[Joystick]")
 {
-  using HS = Joystick::HatState;
+  using HS = joystick::HatState;
 
   CHECK(HS::Centered == static_cast<HS>(SDL_HAT_CENTERED));
   CHECK(HS::Up == static_cast<HS>(SDL_HAT_UP));
@@ -177,7 +177,7 @@ TEST_CASE("Joystick::HatState values", "[Joystick]")
 
 TEST_CASE("Joystick::Type values", "[Joystick]")
 {
-  using Type = Joystick::Type;
+  using Type = joystick::Type;
 
   SECTION("Operator ==")
   {

@@ -47,7 +47,7 @@
 namespace centurion {
 
 /**
- * @class Joystick
+ * @class joystick
  *
  * @brief Represents various types of joysticks.
  *
@@ -59,7 +59,7 @@ namespace centurion {
  *
  * @headerfile joystick.hpp
  */
-class Joystick final {
+class joystick final {
  public:
   /**
    * @enum Power
@@ -137,7 +137,7 @@ class Joystick final {
   };
 
   /**
-   * @brief Creates a `Joystick` instance based on a device index.
+   * @brief Creates a `joystick` instance based on a device index.
    *
    * @warning The device index is not the same as the instance ID used to
    * identify the joystick in future events.
@@ -150,24 +150,24 @@ class Joystick final {
    * @since 4.2.0
    */
   CENTURION_API
-  explicit Joystick(int deviceIndex);
+  explicit joystick(int deviceIndex);
 
   /**
-   * @brief Creates a `Joystick` instance based on an existing `SDL_Joystick*`.
+   * @brief Creates a `joystick` instance based on an existing `SDL_Joystick*`.
    *
-   * @pre `joystick` must not be null.
+   * @pre `sdlJoystick` must not be null.
    *
-   * @param joystick a pointer to the `SDL_Joystick` that will be claimed.
+   * @param sdlJoystick a pointer to the `SDL_Joystick` that will be claimed.
    *
    * @throws centurion_exception if the joystick cannot be created.
    *
    * @since 4.2.0
    */
   CENTURION_API
-  explicit Joystick(owner<SDL_Joystick*> joystick);
+  explicit joystick(owner<SDL_Joystick*> sdlJoystick);
 
   /**
-   * @brief Creates a `Joystick` instance by moving the supplied joystick
+   * @brief Creates a `joystick` instance by moving the supplied joystick
    * into this one.
    *
    * @param other the joystick that will be moved.
@@ -175,9 +175,9 @@ class Joystick final {
    * @since 4.2.0
    */
   CENTURION_API
-  Joystick(Joystick&& other) noexcept;
+  joystick(joystick&& other) noexcept;
 
-  Joystick(const Joystick&) = delete;
+  joystick(const joystick&) = delete;
 
   /**
    * @brief Moves the contents of the supplied joystick into this one.
@@ -189,38 +189,38 @@ class Joystick final {
    * @since 4.2.0
    */
   CENTURION_API
-  auto operator=(Joystick&& other) noexcept -> Joystick&;
+  auto operator=(joystick&& other) noexcept -> joystick&;
 
-  auto operator=(const Joystick&) -> Joystick& = delete;
+  auto operator=(const joystick&) -> joystick& = delete;
 
   CENTURION_API
-  ~Joystick() noexcept;
+  ~joystick() noexcept;
 
   /**
-   * @copydoc Joystick(int)
+   * @copydoc joystick(int)
    */
   CENTURION_QUERY
-  static auto unique(int deviceIndex) -> std::unique_ptr<Joystick>;
+  static auto unique(int deviceIndex) -> std::unique_ptr<joystick>;
 
   /**
-   * @copydoc Joystick(owner<SDL_Joystick*>)
+   * @copydoc joystick(owner<SDL_Joystick*>)
    */
   CENTURION_QUERY
-  static auto unique(owner<SDL_Joystick*> joystick)
-      -> std::unique_ptr<Joystick>;
+  static auto unique(owner<SDL_Joystick*> sdlJoystick)
+      -> std::unique_ptr<joystick>;
 
   /**
-   * @copydoc Joystick(int)
+   * @copydoc joystick(int)
    */
   CENTURION_QUERY
-  static auto shared(int deviceIndex) -> std::shared_ptr<Joystick>;
+  static auto shared(int deviceIndex) -> std::shared_ptr<joystick>;
 
   /**
-   * @copydoc Joystick(owner<SDL_Joystick*>)
+   * @copydoc joystick(owner<SDL_Joystick*>)
    */
   CENTURION_QUERY
-  static auto shared(owner<SDL_Joystick*> joystick)
-      -> std::shared_ptr<Joystick>;
+  static auto shared(owner<SDL_Joystick*> sdlJoystick)
+      -> std::shared_ptr<joystick>;
 
   /**
    * @brief Makes the joystick rumble.
@@ -263,7 +263,7 @@ class Joystick final {
   /**
    * @brief Returns the type associated with the joystick.
    *
-   * @return a `Joystick::Type` value that represents the type of the joystick.
+   * @return a `joystick::Type` value that represents the type of the joystick.
    *
    * @since 4.2.0
    */
@@ -440,7 +440,7 @@ class Joystick final {
   /**
    * @brief Returns the current power level of the joystick.
    *
-   * @return a `Joystick::Power` value that represents the current power level.
+   * @return a `joystick::Power` value that represents the current power level.
    *
    * @since 4.2.0
    */
@@ -468,7 +468,7 @@ class Joystick final {
    *
    * @since 4.2.0
    *
-   * @see `Joystick::HatState`
+   * @see `joystick::HatState`
    */
   CENTURION_QUERY
   auto hat_state(int hat) const noexcept -> HatState;
@@ -526,7 +526,7 @@ class Joystick final {
    * @brief Specifies whether or not joystick event polling is enabled.
    *
    * @details If joystick event polling is disabled, then you must manually call
-   * `Joystick::update()` in order to update the joystick state.
+   * `joystick::update()` in order to update the joystick state.
    *
    * @note It's recommended to leave joystick event polling enabled.
    *
@@ -749,7 +749,7 @@ class Joystick final {
  private:
   SDL_Joystick* m_joystick;
 
-  void move(Joystick&& other) noexcept;
+  void move(joystick&& other) noexcept;
 
   void destroy() noexcept;
 };
@@ -765,7 +765,7 @@ class Joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator==(
-    Joystick::Power lhs,
+    joystick::Power lhs,
     SDL_JoystickPowerLevel rhs) noexcept -> bool
 {
   return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
@@ -782,7 +782,7 @@ class Joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_JoystickPowerLevel lhs,
-                                               Joystick::Power rhs) noexcept
+                                               joystick::Power rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -799,7 +799,7 @@ class Joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator!=(
-    Joystick::Power lhs,
+    joystick::Power lhs,
     SDL_JoystickPowerLevel rhs) noexcept -> bool
 {
   return !(lhs == rhs);
@@ -816,7 +816,7 @@ class Joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_JoystickPowerLevel lhs,
-                                               Joystick::Power rhs) noexcept
+                                               joystick::Power rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -832,7 +832,7 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator==(Joystick::Type lhs,
+[[nodiscard]] inline constexpr auto operator==(joystick::Type lhs,
                                                SDL_JoystickType rhs) noexcept
     -> bool
 {
@@ -850,7 +850,7 @@ class Joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_JoystickType lhs,
-                                               Joystick::Type rhs) noexcept
+                                               joystick::Type rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -866,7 +866,7 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator!=(Joystick::Type lhs,
+[[nodiscard]] inline constexpr auto operator!=(joystick::Type lhs,
                                                SDL_JoystickType rhs) noexcept
     -> bool
 {
@@ -884,7 +884,7 @@ class Joystick final {
  * @since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_JoystickType lhs,
-                                               Joystick::Type rhs) noexcept
+                                               joystick::Type rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);

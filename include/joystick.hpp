@@ -38,6 +38,7 @@
 
 #include "button_state.hpp"
 #include "centurion_api.hpp"
+#include "centurion_types.hpp"
 #include "centurion_utils.hpp"
 
 namespace centurion {
@@ -499,11 +500,10 @@ class Joystick final {
    * @param highFreq the intensity of the high frequency (right) motor.
    * @param duration the duration of the rumble effect, in milliseconds.
    *
-   * @todo Use `milliseconds<u32>` for the duration.
-   *
    * @since 4.2.0
    */
-  CENTURION_API void rumble(u16 lowFreq, u16 highFreq, u32 duration) noexcept;
+  CENTURION_API
+  void rumble(u16 lowFreq, u16 highFreq, milliseconds<u32> duration) noexcept;
 
   /**
    * @brief Sets the player index to be associated with the joystick.

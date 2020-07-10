@@ -226,9 +226,11 @@ SDL_JoystickGUID Joystick::guid_from_string(
 }
 
 CENTURION_DEF
-void Joystick::rumble(u16 lowFreq, u16 highFreq, u32 duration) noexcept
+void Joystick::rumble(u16 lowFreq,
+                      u16 highFreq,
+                      milliseconds<u32> duration) noexcept
 {
-  SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration);
+  SDL_JoystickRumble(m_joystick, lowFreq, highFreq, duration.count());
 }
 
 CENTURION_DEF

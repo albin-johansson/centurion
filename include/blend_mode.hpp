@@ -78,7 +78,7 @@ enum class blend_mode {
 }
 
 /**
- * @copydoc operator==(BlendMode, SDL_BlendMode)
+ * @copydoc operator==(blend_mode, SDL_BlendMode)
  */
 [[nodiscard]] inline auto operator==(SDL_BlendMode lhs, blend_mode rhs) noexcept
     -> bool
@@ -103,7 +103,7 @@ enum class blend_mode {
 }
 
 /**
- * @copydoc operator!=(BlendMode, SDL_BlendMode)
+ * @copydoc operator!=(blend_mode, SDL_BlendMode)
  */
 [[nodiscard]] inline auto operator!=(SDL_BlendMode lhs, blend_mode rhs) noexcept
     -> bool

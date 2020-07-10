@@ -44,16 +44,6 @@
 namespace centurion {
 
 /**
- * @typedef JoystickID
- * @brief A type alias for SDL_JoystickID.
- *
- * @deprecated since 4.2.0, prefer `SDL_JoystickID`.
- *
- * @since 4.0.0
- */
-using JoystickID = SDL_JoystickID;
-
-/**
  * @class Joystick
  * @brief Represents various types of joysticks.
  *

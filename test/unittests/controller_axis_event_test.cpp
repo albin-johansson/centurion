@@ -15,7 +15,7 @@ TEST_CASE("ControllerAxisEvent::set_which", "[ControllerAxisEvent]")
 {
   ControllerAxisEvent event;
 
-  const JoystickID id = 53;
+  const SDL_JoystickID id = 53;
   event.set_which(id);
 
   CHECK(event.which() == id);

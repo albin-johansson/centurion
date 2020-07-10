@@ -52,7 +52,6 @@
 #include "font.hpp"
 #include "point.hpp"
 #include "rect.hpp"
-#include "renderer_base.hpp"
 #include "surface.hpp"
 #include "window.hpp"
 

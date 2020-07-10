@@ -106,13 +106,15 @@ TEST_CASE("SoundEffect::fade_in", "[SoundEffect]")
 {
   SoundEffect sound{path};
 
-  sound.fade_in(-1);
+  using ms = milliseconds<int>;
+
+  CHECK_NOTHROW(sound.fade_in(ms{-1}));
   sound.stop();
 
-  CHECK_NOTHROW(sound.fade_in(0));
+  CHECK_NOTHROW(sound.fade_in(ms{0}));
   CHECK(!sound.playing());
 
-  sound.fade_in(100);
+  sound.fade_in(ms{100});
   CHECK(sound.playing());
 }
 
@@ -120,11 +122,13 @@ TEST_CASE("SoundEffect::fade_out", "[SoundEffect]")
 {
   SoundEffect sound{path};
 
-  CHECK_NOTHROW(sound.fade_out(0));
+  using ms = milliseconds<int>;
+
+  CHECK_NOTHROW(sound.fade_out(ms{0}));
   CHECK(!sound.playing());
 
   sound.play();
-  sound.fade_out(10);
+  sound.fade_out(ms{50});
   CHECK(sound.playing());
 
   Timer::delay(seconds<u32>(1));

@@ -40,6 +40,7 @@
 #include <SDL_mixer.h>
 
 #include "centurion_api.hpp"
+#include "centurion_types.hpp"
 #include "centurion_utils.hpp"
 
 namespace centurion {
@@ -162,12 +163,10 @@ class SoundEffect final {
    *
    * @param ms the duration to fade in, in milliseconds.
    *
-   * @todo Use `milliseconds<int>` as parameter type.
-   *
    * @since 3.0.0
    */
   CENTURION_API
-  void fade_in(int ms) noexcept;
+  void fade_in(milliseconds<int> ms) noexcept;
 
   /**
    * @brief Fades out the sound effect.
@@ -177,12 +176,10 @@ class SoundEffect final {
    *
    * @param ms the duration to fade in, in milliseconds.
    *
-   * @todo Use `milliseconds<int>` as parameter type.
-   *
    * @since 3.0.0
    */
   CENTURION_API
-  void fade_out(int ms) noexcept;
+  void fade_out(milliseconds<int> ms) noexcept;
 
   /**
    * @brief Sets the volume of the sound effect.

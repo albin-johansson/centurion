@@ -101,22 +101,23 @@ void SoundEffect::stop() noexcept
 }
 
 CENTURION_DEF
-void SoundEffect::fade_in(int ms) noexcept
+void SoundEffect::fade_in(milliseconds<int> ms) noexcept
 {
-  if (ms > 0 && !playing()) {
+  if (ms.count() > 0 && !playing()) {
     if (m_channel != undefinedChannel) {
-      Mix_FadeInChannelTimed(m_channel, m_chunk, 0, ms, -1);
+      Mix_FadeInChannelTimed(m_channel, m_chunk, 0, ms.count(), -1);
     } else {
-      m_channel = Mix_FadeInChannelTimed(undefinedChannel, m_chunk, 0, ms, -1);
+      m_channel =
+          Mix_FadeInChannelTimed(undefinedChannel, m_chunk, 0, ms.count(), -1);
     }
   }
 }
 
 CENTURION_DEF
-void SoundEffect::fade_out(int ms) noexcept
+void SoundEffect::fade_out(milliseconds<int> ms) noexcept
 {
-  if ((ms > 0) && playing()) {
-    Mix_FadeOutChannel(m_channel, ms);
+  if ((ms.count() > 0) && playing()) {
+    Mix_FadeOutChannel(m_channel, ms.count());
   }
 }
 

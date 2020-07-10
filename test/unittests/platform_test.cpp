@@ -1,4 +1,4 @@
-#include "platform.hpp"
+//#include "platform.hpp"
 
 #include <catch.hpp>
 #include <string>

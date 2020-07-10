@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file surface.hpp
+ *
+ * @brief Provides the `Surface` class.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_SURFACE_HEADER
 #define CENTURION_SURFACE_HEADER
 
@@ -40,123 +52,165 @@
 namespace centurion {
 
 /**
- * The <code>Surface</code> class represents a non-accelerated image. In most
- * cases, it's preferable to use the <code>Texture</code> class instead.
+ * @class Surface
+ *
+ * @brief Represents a non-accelerated image.
+ *
+ * @note In most cases, it's preferable to use the `Texture` class instead.
  *
  * @since 4.0.0
+ *
+ * @headerfile surface.hpp
  */
 class Surface final {
  public:
   /**
+   * @brief Creates a surface based on the image at the specified path.
+   *
    * @param file the file path of the image file that will be loaded.
+   *
    * @throws centurion_exception if the surface cannot be created.
+   *
    * @since 4.0.0
    */
-  CENTURION_API explicit Surface(czstring file);
+  CENTURION_API
+  explicit Surface(czstring file);
 
   /**
-   * @param surface a pointer to the SDL_Surface that will be used to create the
-   * surface. Mustn't be null.
+   * @brief Creates a surface by claiming the supplied SDL surface.
+   *
+   * @param surface a pointer to the surface that will be claimed, mustn't be
+   * null.
+   *
    * @throws centurion_exception if the supplied pointer is null.
+   *
    * @since 4.0.0
    */
-  CENTURION_API explicit Surface(owner<SDL_Surface*> surface);
+  CENTURION_API
+  explicit Surface(owner<SDL_Surface*> surface);
 
   /**
-   * Creates a copy of the supplied surface.
+   * @brief Creates a copy of the supplied surface.
    *
    * @param other the surface that will be copied.
+   *
    * @throws centurion_exception if the supplied surface couldn't be copied.
+   *
    * @since 4.0.0
    */
-  CENTURION_API Surface(const Surface& other);
+  CENTURION_API
+  Surface(const Surface& other);
 
   /**
-   * Creates a surface by moving the supplied surface.
+   * @brief Creates a surface by moving the supplied surface.
    *
    * @param other the surface that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API Surface(Surface&& other) noexcept;
+  CENTURION_API
+  Surface(Surface&& other) noexcept;
 
   /**
-   * Copies the supplied surface and saves the result in the invoked surface.
+   * @brief Copies the supplied surface.
    *
    * @param other the surface that will be copied.
+   *
    * @throws centurion_exception if the supplied surface couldn't be copied.
+   *
    * @since 4.0.0
    */
-  CENTURION_API Surface& operator=(const Surface& other);
+  CENTURION_API
+  auto operator=(const Surface& other) -> Surface&;
 
   /**
-   * Moves the supplied surface into this surface.
+   * @brief Moves the supplied surface into this surface.
    *
    * @param other the surface that will be moved.
+   *
+   * @return the surface that claimed the supplied surface.
+   *
    * @since 4.0.0
    */
-  CENTURION_API Surface& operator=(Surface&& other) noexcept;
+  CENTURION_API
+  auto operator=(Surface&& other) noexcept -> Surface&;
 
-  CENTURION_API ~Surface() noexcept;
+  CENTURION_API
+  ~Surface() noexcept;
 
   /**
-   * Sets the color of the pixel at the specified coordinate. This method has
-   * no effect if the coordinate is out-of-bounds of if something goes wrong
-   * when attempting to modify the pixel data.
+   * @brief Sets the color of the pixel at the specified coordinate.
+   *
+   * @details This method has no effect if the coordinate is out-of-bounds or if
+   * something goes wrong when attempting to modify the pixel data.
    *
    * @param pixel the pixel that will be changed.
    * @param color the new color of the pixel.
+   *
    * @since 4.0.0
    */
-  CENTURION_API void set_pixel(point_i pixel, const Color& color) noexcept;
+  CENTURION_API
+  void set_pixel(const point_i& pixel, const Color& color) noexcept;
 
   /**
-   * Sets the alpha component modulation value.
+   * @brief Sets the alpha component modulation value.
    *
    * @param alpha the new alpha component value, in the range [0, 255].
+   *
    * @since 4.0.0
    */
-  CENTURION_API void set_alpha(u8 alpha) noexcept;
+  CENTURION_API
+  void set_alpha(u8 alpha) noexcept;
 
   /**
-   * Sets the color modulation that will be used by the surface.
+   * @brief Sets the color modulation that will be used by the surface.
    *
    * @param color the color that represents the color modulation that will be
    * used.
+   *
    * @since 4.0.0
    */
-  CENTURION_API void set_color_mod(const Color& color) noexcept;
+  CENTURION_API
+  void set_color_mod(const Color& color) noexcept;
 
   /**
-   * Sets the blend mode that will be used by the surface.
+   * @brief Sets the blend mode that will be used by the surface.
    *
    * @param mode the blend mode that will be used.
+   *
    * @since 4.0.0
    */
-  CENTURION_API void set_blend_mode(blend_mode mode) noexcept;
+  CENTURION_API
+  void set_blend_mode(blend_mode mode) noexcept;
 
   /**
-   * Returns the alpha component modulation of the surface.
+   * @brief Returns the alpha component modulation of the surface.
    *
    * @return the alpha modulation value, in the range [0, 255].
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API u8 alpha() const noexcept;
+  CENTURION_QUERY
+  auto alpha() const noexcept -> u8;
 
   /**
-   * Returns the color modulation of the surface.
+   * @brief Returns the color modulation of the surface.
    *
    * @return a color that represents the color modulation of the surface.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API Color color_mod() const noexcept;
+  CENTURION_QUERY
+  auto color_mod() const noexcept -> Color;
 
   /**
-   * Returns the blend mode that is being used by the surface.
+   * @brief Returns the blend mode that is being used by the surface.
    *
    * @return the blend mode that the surface uses.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API enum blend_mode blend_mode() const noexcept;
+  CENTURION_QUERY
+  auto blend_mode() const noexcept -> enum blend_mode;
 
   // TODO add
   //  /**
@@ -175,100 +229,116 @@ class Surface final {
   //  }
 
   /**
-   * Creates and returns a surface based on this surface with the specified
-   * pixel format.
+   * @brief Creates and returns a surface based on this surface with the
+   * specified pixel format.
    *
    * @param format the pixel format that will be used by the new surface.
+   *
    * @return a surface based on this surface with the specified
    * pixel format.
+   *
    * @throws centurion_exception if the surface cannot be created.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API Surface convert(PixelFormat format) const;
+  CENTURION_QUERY
+  auto convert(PixelFormat format) const -> Surface;
 
   /**
-   * Returns the width of the surface.
+   * @brief Returns the width of the surface.
    *
    * @return the width of the surface.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] int width() const noexcept { return m_surface->w; }
+  [[nodiscard]] auto width() const noexcept -> int { return m_surface->w; }
 
   /**
-   * Returns the height of the surface.
+   * @brief Returns the height of the surface.
    *
    * @return the height of the surface.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] int height() const noexcept { return m_surface->h; }
+  [[nodiscard]] auto height() const noexcept -> int { return m_surface->h; }
 
   /**
-   * Returns the pitch (the length of a row of pixels in bytes) of the surface.
+   * @brief Returns the pitch (the length of a row of pixels in bytes) of the
+   * surface.
    *
    * @return the pitch of the surface.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] int pitch() const noexcept { return m_surface->pitch; }
+  [[nodiscard]] auto pitch() const noexcept -> int { return m_surface->pitch; }
 
   /**
-   * Returns a pointer to the pixel data of the surface. It's possible to
-   * modify the surface through this pointer.
+   * @brief Returns a pointer to the pixel data of the surface.
+   *
+   * @details It's possible to modify the surface through the returned pointer.
    *
    * @return a pointer to the pixel data of the surface.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] void* pixels() noexcept { return m_surface->pixels; }
+  [[nodiscard]] auto pixels() noexcept -> void* { return m_surface->pixels; }
 
   /**
-   * Returns a const pointer to the pixel data of the surface.
+   * @brief Returns a const pointer to the pixel data of the surface.
    *
    * @return a const pointer to the pixel data of the surface.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] const void* pixels() const noexcept
+  [[nodiscard]] auto pixels() const noexcept -> const void*
   {
     return m_surface->pixels;
   }
 
   /**
-   * Returns the clipping information associated with the surface.
+   * @brief Returns the clipping information associated with the surface.
    *
    * @return the clipping information associated with the surface.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] rect_i clip() const noexcept
+  [[nodiscard]] auto clip() const noexcept -> rect_i
   {
     const auto rect = m_surface->clip_rect;
     return {{rect.x, rect.y}, {rect.w, rect.h}};
   }
 
   /**
-   * Returns a pointer to the internal SDL_Surface. Use of this method is
-   * not recommended, since it purposefully breaks const-correctness. However
-   * it is useful since many SDL calls use non-const pointers even when no
-   * change will be applied. Don't take ownership of the returned pointer, or
-   * bad things will happen.
+   * @brief Returns a pointer to the associated `SDL_Surface`.
    *
-   * @return a pointer to the internal SDL_Surface.
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However it is useful since many SDL calls use
+   * non-const pointers even when no change will be applied. Don't take
+   * ownership of the returned pointer, or bad things will happen.
+   *
+   * @return a pointer to the associated `SDL_Surface`.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] SDL_Surface* get() const noexcept { return m_surface; }
+  [[nodiscard]] auto get() const noexcept -> SDL_Surface* { return m_surface; }
 
   /**
-   * Implicitly converts to SDL_Surface*.
+   * @brief Converts to `SDL_Surface*`.
    *
-   * @return a pointer to the internal SDL_Surface.
+   * @return a pointer to the associated `SDL_Surface`.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] operator SDL_Surface*() noexcept { return m_surface; }
+  [[nodiscard]] explicit operator SDL_Surface*() noexcept { return m_surface; }
 
   /**
-   * Implicitly converts to SDL_Surface*.
+   * @brief Converts to `const SDL_Surface*`.
    *
-   * @return a pointer to the internal SDL_Surface.
+   * @return a pointer to the associated `SDL_Surface`.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] operator const SDL_Surface*() const noexcept
+  [[nodiscard]] explicit operator const SDL_Surface*() const noexcept
   {
     return m_surface;
   }
@@ -277,78 +347,91 @@ class Surface final {
   SDL_Surface* m_surface = nullptr;
 
   /**
-   * Destroys the associated SDL_Surface. This method has no effect if the
-   * associated surface is null.
+   * @brief Destroys the associated SDL_Surface.
+   *
+   * @details This method has no effect if the associated surface is null.
    *
    * @since 4.0.0
    */
   void destroy() noexcept;
 
   /**
-   * Moves the contents of the supplied Surface instance into this instance.
+   * @brief Moves the contents of the supplied Surface instance into this
+   * instance.
    *
    * @param other the instance that will be moved.
+   *
    * @since 4.0.0
    */
   void move(Surface&& other) noexcept;
 
   /**
-   * Copies the contents of the supplied Surface instance into this instance.
+   * @brief Copies the contents of the supplied Surface instance into this
+   * instance.
    *
    * @param other the instance that will be copied.
+   *
    * @since 4.0.0
    */
   void copy(const Surface& other) noexcept;
 
   /**
-   * Indicates whether or not the supplied point is within the bounds of the
-   * surface.
+   * @brief Indicates whether or not the supplied point is within the bounds of
+   * the surface.
    *
    * @param point the point that will be checked.
+   *
    * @return true if the point is within the bounds of the surface; false
    * otherwise.
+   *
    * @since 4.0.0
    */
-  bool in_bounds(point_i point) const noexcept;
+  [[nodiscard]] auto in_bounds(const point_i& point) const noexcept -> bool;
 
   /**
-   * Indicates whether or not the surface must be locked before modifying the
-   * pixel data associated with the surface.
+   * @brief Indicates whether or not the surface must be locked before modifying
+   * the pixel data associated with the surface.
    *
-   * @return true if the surface must be locked before modification; false
+   * @return `true` if the surface must be locked before modification; `false`
    * otherwise.
-   * @since 4.0.0
-   */
-  bool must_lock() const noexcept;
-
-  /**
-   * Attempts to lock the surface, so that the associated pixel data can be
-   * modified. This method has no effect if <code>must_lock()</code> returns
-   * false.
    *
-   * @return true if the locking of the surface was successful or if locking
-   * isn't required for modifying the surface; false if something went wrong.
    * @since 4.0.0
    */
-  bool lock() noexcept;
+  [[nodiscard]] auto must_lock() const noexcept -> bool;
 
   /**
-   * Unlocks the surface. This method has no effect if <code>must_lock()
-   * </code> returns false.
+   * @brief Attempts to lock the surface, so that the associated pixel data can
+   * be modified.
+   *
+   * @details This method has no effect if `must_lock()` returns `false`.
+   *
+   * @return `true` if the locking of the surface was successful or if locking
+   * isn't required for modifying the surface; `false` if something went wrong.
+   *
+   * @since 4.0.0
+   */
+  auto lock() noexcept -> bool;
+
+  /**
+   * @brief Unlocks the surface.
+   *
+   * @details This method has no effect if `must_lock()` returns `false`.
    *
    * @since 4.0.0
    */
   void unlock() noexcept;
 
   /**
-   * Creates a copy of the internal SDL_Surface, and returns a pointer to it.
+   * @brief Creates and returns copy of the associated `SDL_Surface`.
    *
-   * @return a copy of the internal SDL_Surface, the returned pointer won't be
-   * null.
+   * @return a copy of the associated `SDL_Surface`, the returned pointer won't
+   * be null.
+   *
    * @throws centurion_exception if the copy couldn't be created.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] SDL_Surface* copy_surface() const;
+  [[nodiscard]] auto copy_surface() const -> SDL_Surface*;
 };
 
 static_assert(!std::is_nothrow_copy_constructible_v<Surface>);

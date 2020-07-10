@@ -79,7 +79,7 @@ TEST_CASE("IPoint::to_string", "[Point]")
 TEST_CASE("Point to SDL_Point", "[Point]")
 {
   const point_i point{124, 82};
-  const SDL_Point sdlPoint = point.to_sdl_point();
+  const SDL_Point sdlPoint = static_cast<SDL_Point>(point);
 
   CHECK(point.x() == sdlPoint.x);
   CHECK(point.y() == sdlPoint.y);
@@ -240,10 +240,10 @@ TEST_CASE("FPoint::to_string", "[FPoint]")
   Log::info(Log::Category::Test, "%s", point.to_string().c_str());
 }
 
-TEST_CASE("Point::to_sdl_fpoint", "[FPoint]")
+TEST_CASE("FPoint to SDL_FPoint", "[FPoint]")
 {
   const point_f point{76.2f, 91.2f};
-  const SDL_FPoint sdlPoint = point.to_sdl_fpoint();
+  const SDL_FPoint sdlPoint = static_cast<SDL_FPoint>(point);
 
   CHECK(point.x() == sdlPoint.x);
   CHECK(point.y() == sdlPoint.y);

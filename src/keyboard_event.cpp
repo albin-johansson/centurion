@@ -111,7 +111,7 @@ auto KeyboardEvent::state() const noexcept -> button_state
 CENTURION_DEF
 auto KeyboardEvent::key() const noexcept -> Key
 {
-  return m_event.keysym.scancode;
+  return Key{m_event.keysym.scancode};
 }
 
 CENTURION_DEF

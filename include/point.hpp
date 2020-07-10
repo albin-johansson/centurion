@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file point.hpp
+ *
+ * @brief Provides a simple two-dimensional point class.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 
@@ -81,42 +93,46 @@ class basic_point final {
   using reference = T&;
 
   /**
-   * Creates a point with coordinates (0, 0).
+   * @brief Creates a point with coordinates (0, 0).
    *
    * @since 4.0.0
    */
   constexpr basic_point() noexcept = default;
 
   /**
-   * Creates a point with the specified coordinates.
+   * @brief Creates a point with the specified coordinates.
    *
    * @param px the x-coordinate of the point.
    * @param py the y-coordinate of the point.
+   *
    * @since 4.0.0
    */
   constexpr basic_point(T px, T py) noexcept : m_x{px}, m_y{py} {}
 
   /**
-   * Sets the x-coordinate of the point.
+   * @brief Sets the x-coordinate of the point.
    *
    * @param px the new x-coordinate of the point.
+   *
    * @since 4.0.0
    */
   constexpr void set_x(T px) noexcept { m_x = px; }
 
   /**
-   * Sets the y-coordinate of the point.
+   * @brief Sets the y-coordinate of the point.
    *
    * @param py the new y-coordinate of the point.
+   *
    * @since 4.0.0
    */
   constexpr void set_y(T py) noexcept { m_y = py; }
 
   /**
-   * Sets the values of the x- and y-coordinates of the point.
+   * @brief Sets the values of the x- and y-coordinates of the point.
    *
    * @param px the new x-coordinate of the point.
    * @param py the new y-coordinate of the point.
+   *
    * @since 4.0.0
    */
   constexpr void set(T px, T py) noexcept
@@ -126,9 +142,10 @@ class basic_point final {
   }
 
   /**
-   * Copies the components of the supplied point into this point.
+   * @brief Copies the components of the supplied point into this point.
    *
    * @param other the point that will be copied.
+   *
    * @since 4.0.0
    */
   constexpr void set(const basic_point<T>& other) noexcept
@@ -138,107 +155,125 @@ class basic_point final {
   }
 
   /**
-   * Calculates and returns the distance from this point to the supplied
-   * point. It doesn't matter in which order the method call is performed
-   * (i.e. <code>a.distance_to(b) == b.distance_to(a)</code>)
+   * @brief Calculates and returns the distance from this point to the supplied
+   * point.
+   *
+   * @details It doesn't matter in which order the method call is performed
+   * (i.e. `a.distance_to(b) == b.distance_to(a)`)
    *
    * @param other the point to calculate the distance to.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] T distance_to(const basic_point<T>& other) const noexcept
+  [[nodiscard]] auto distance_to(const basic_point<T>& other) const noexcept
+      -> T
   {
     return std::sqrt(std::abs(m_x - other.m_x) + std::abs(m_y - other.m_y));
   }
 
   /**
-   * Returns a textual representation of the point.
+   * @brief Returns a textual representation of the point.
    *
    * @return a textual representation of the point.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] std::string to_string() const
+  [[nodiscard]] auto to_string() const -> std::string
   {
     return "[Point | X: " + std::to_string(m_x) +
            ", Y: " + std::to_string(m_y) + "]";
   }
 
   /**
-   * Returns the x-coordinate of the point.
+   * @brief Returns the x-coordinate of the point.
    *
    * @return the x-coordinate of the point.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr T x() const noexcept { return m_x; }
+  [[nodiscard]] constexpr auto x() const noexcept -> T { return m_x; }
 
   /**
-   * Returns the y-coordinate of the point.
+   * @brief Returns the y-coordinate of the point.
    *
    * @return the y-coordinate of the point.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr T y() const noexcept { return m_y; }
+  [[nodiscard]] constexpr auto y() const noexcept -> T { return m_y; }
 
   /**
-   * Indicates whether or not the point is considered to be equal to the
-   * supplied point. This method is only enabled if the points are
-   * floating-point based.
+   * @brief Indicates whether or not the point is considered to be equal to the
+   * supplied point.
+   *
+   * @details This method is only available if the points are floating-point
+   * based.
    *
    * @param other the other point to compare this point with.
    * @param epsilon the exclusive limit on the maximum allowed absolute
    * difference between the coordinates of the points.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename X = detail::if_floating_t<U>>
-  [[nodiscard]] bool equals(const basic_point<T>& other,
-                            T epsilon = 0.0001) const noexcept
+  [[nodiscard]] auto equals(const basic_point<T>& other,
+                            T epsilon = 0.0001) const noexcept -> bool
   {
     return std::abs(m_x - other.m_x) < epsilon &&
            std::abs(m_y - other.m_y) < epsilon;
   }
 
   /**
-   * Returns an SDL_Point instance based on the point.
+   * @brief Converts to `SDL_Point`.
    *
-   * @return an SDL_Point instance based on the point.
+   * @return an `SDL_Point` instance based on the point.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr SDL_Point to_sdl_point() const noexcept
+  [[nodiscard]] constexpr explicit operator SDL_Point() const noexcept
   {
     return {static_cast<int>(m_x), static_cast<int>(m_y)};
   }
 
   /**
-   * Returns an SDL_FPoint instance based on the point.
+   * @brief Converts to `SDL_Point`.
    *
-   * @return an SDL_FPoint instance based on the point.
+   * @return an `SDL_FPoint` instance based on the point.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr SDL_FPoint to_sdl_fpoint() const noexcept
+  [[nodiscard]] constexpr explicit operator SDL_FPoint() const noexcept
   {
     return {static_cast<float>(m_x), static_cast<float>(m_y)};
   }
 
   /**
-   * Creates and returns a point in which the coordinates are the sums
+   * @brief Creates and returns a point in which the coordinates are the sums
    * obtained by adding the x- and y-coordinates of the supplied points.
    *
    * @param lhs the left-hand side point.
    * @param rhs the right-hand side point.
+   *
    * @return a point in which the coordinates are the sums obtained by adding
    * the x- and y-coordinates of the supplied points.
+   *
    * @since 4.0.0
    */
-  friend constexpr basic_point<T> operator+
-      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept;
+  friend constexpr auto operator+
+      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept
+      -> basic_point<T>;
 
   /**
-   * Converts the point to a pointer to an SDL_Point instance. This
-   * conversion is only available if the point is based on <code>int</code>.
+   * @brief Converts to `SDL_Point*`.
+   *
+   * @note This conversion is only available if the point is based on `int`.
    *
    * @tparam U the type parameter, defaults to the type of the point
    * components.
-   * @return an SDL_Point pointer that is produced by reinterpreting the
+   *
+   * @return an `SDL_Point` pointer that is produced by reinterpreting the
    * invoked point.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::if_same_t<U, int>>
@@ -248,13 +283,16 @@ class basic_point final {
   }
 
   /**
-   * Converts the point to a pointer to an SDL_Point instance. This
-   * conversion is only available if the point is based on <code>int</code>.
+   * @brief Converts to `const SDL_Point*`.
+   *
+   * @note This conversion is only available if the point is based on `int`.
    *
    * @tparam U the type parameter, defaults to the type of the point
    * components.
-   * @return an SDL_Point pointer that is produced by reinterpreting the
+   *
+   * @return a `const SDL_Point` pointer that is produced by reinterpreting the
    * invoked point.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::if_same_t<U, int>>
@@ -264,13 +302,16 @@ class basic_point final {
   }
 
   /**
-   * Converts the point to a pointer to an SDL_FPoint instance. This
-   * conversion is only available if the point is based on <code>float</code>.
+   * @brief Converts to `SDL_FPoint*`.
+   *
+   * @note This conversion is only available if the point is based on `int`.
    *
    * @tparam U the type parameter, defaults to the type of the point
    * components.
-   * @return an SDL_FPoint pointer that is produced by reinterpreting the
+   *
+   * @return an `SDL_FPoint` pointer that is produced by reinterpreting the
    * invoked point.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::if_same_t<U, float>>
@@ -280,13 +321,16 @@ class basic_point final {
   }
 
   /**
-   * Converts the point to a pointer to an SDL_FPoint instance. This
-   * conversion is only available if the point is based on <code>float</code>.
+   * @brief Converts to `const SDL_FPoint*`.
+   *
+   * @note This conversion is only available if the point is based on `int`.
    *
    * @tparam U the type parameter, defaults to the type of the point
    * components.
-   * @return an SDL_FPoint pointer that is produced by reinterpreting the
+   *
+   * @return a `const SDL_FPoint` pointer that is produced by reinterpreting the
    * invoked point.
+   *
    * @since 4.0.0
    */
   template <typename U = T, typename = detail::if_same_t<U, float>>
@@ -296,39 +340,49 @@ class basic_point final {
   }
 
   /**
-   * Creates and returns a point in which the coordinates are the differences
-   * obtained by subtracting the x- and y-coordinates of the supplied points.
+   * @brief Creates and returns a point in which the coordinates are the
+   * differences obtained by subtracting the x- and y-coordinates of the
+   * supplied points.
    *
    * @param lhs the left-hand side point.
    * @param rhs the right-hand side point.
+   *
    * @return a point in which the coordinates are the differences obtained by
    * subtracting the x- and y-coordinates of the supplied points.
+   *
    * @since 4.0.0
    */
-  friend constexpr basic_point<T> operator-
-      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept;
+  friend constexpr auto operator-
+      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept
+      -> basic_point<T>;
 
   /**
-   * Indicates whether or not two points are considered to be equal.
+   * @brief Indicates whether or not two points are considered to be equal.
    *
    * @param lhs the left-hand side point.
    * @param rhs the right-hand side point.
-   * @return true if the points are equal; false otherwise.
+   *
+   * @return `true` if the points are equal; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  friend constexpr bool operator==
-      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept;
+  friend constexpr auto operator==
+      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept
+      -> bool;
 
   /**
-   * Indicates whether or not two points aren't considered to be equal.
+   * @brief Indicates whether or not two points aren't considered to be equal.
    *
    * @param lhs the left-hand side point.
    * @param rhs the right-hand side point.
-   * @return true if the points aren't equal; false otherwise.
+   *
+   * @return `true` if the points aren't equal; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  friend constexpr bool operator!=
-      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept;
+  friend constexpr auto operator!=
+      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept
+      -> bool;
 
  private:
   T m_x = 0;
@@ -340,29 +394,31 @@ class basic_point final {
 };
 
 template <typename T>
-inline constexpr basic_point<T> operator+(const basic_point<T>& lhs,
-                                          const basic_point<T>& rhs) noexcept
+inline constexpr auto operator+(const basic_point<T>& lhs,
+                                const basic_point<T>& rhs) noexcept
+    -> basic_point<T>
 {
   return basic_point<T>{lhs.m_x + rhs.m_x, lhs.m_y + rhs.m_y};
 }
 
 template <typename T>
-inline constexpr basic_point<T> operator-(const basic_point<T>& lhs,
-                                          const basic_point<T>& rhs) noexcept
+inline constexpr auto operator-(const basic_point<T>& lhs,
+                                const basic_point<T>& rhs) noexcept
+    -> basic_point<T>
 {
   return basic_point<T>{lhs.m_x - rhs.m_x, lhs.m_y - rhs.m_y};
 }
 
 template <typename T>
-inline constexpr bool operator==(const basic_point<T>& lhs,
-                                 const basic_point<T>& rhs) noexcept
+inline constexpr auto operator==(const basic_point<T>& lhs,
+                                 const basic_point<T>& rhs) noexcept -> bool
 {
-  return lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y;
+  return (lhs.m_x == rhs.m_x) && (lhs.m_y == rhs.m_y);
 }
 
 template <typename T>
-inline constexpr bool operator!=(const basic_point<T>& lhs,
-                                 const basic_point<T>& rhs) noexcept
+inline constexpr auto operator!=(const basic_point<T>& lhs,
+                                 const basic_point<T>& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

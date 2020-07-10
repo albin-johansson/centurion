@@ -121,7 +121,7 @@ TEST_CASE("Key to SDL_Scancode", "[Key]")
   const auto scancode = SDL_SCANCODE_G;
   const Key key{scancode};
 
-  const SDL_Scancode copy = key;
+  const auto copy = static_cast<SDL_Scancode>(key);
 
   CHECK(copy == scancode);
 }
@@ -131,7 +131,7 @@ TEST_CASE("Key to SDL_Keycode", "[Key]")
   const auto keycode = SDLK_q;
   const Key key{keycode};
 
-  const SDL_Keycode copy = key;
+  const auto copy = static_cast<SDL_Keycode>(key);
 
   CHECK(copy == keycode);
 }

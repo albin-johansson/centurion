@@ -46,21 +46,9 @@ void Key::set(SDL_Keycode keycode) noexcept
 }
 
 CENTURION_DEF
-std::string Key::name() const noexcept
+auto Key::name() const -> std::string
 {
   return SDL_GetScancodeName(m_scancode);
-}
-
-CENTURION_DEF
-bool operator==(const Key& lhs, const Key& rhs) noexcept
-{
-  return lhs.scancode() == rhs.scancode();
-}
-
-CENTURION_DEF
-bool operator!=(const Key& lhs, const Key& rhs) noexcept
-{
-  return !(lhs == rhs);
 }
 
 }  // namespace centurion

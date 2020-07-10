@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file sound_effect.hpp
+ *
+ * @brief Provides the `SoundEffect` class.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
 
@@ -33,184 +45,232 @@
 namespace centurion {
 
 /**
- * The SoundEffect class represents sound effects in various file formats.
+ * @class SoundEffect
+ *
+ * @brief Represents a sound effect.
+ *
+ * @details Multiple various file formats are supported.
+ *
+ * @todo List the supported file formats.
  *
  * @since 3.0.0
+ *
+ * @see `Mix_Chunk`
+ * @see `Music`
+ *
+ * @headerfile sound_effect.hpp
  */
 class SoundEffect final {
  public:
   /**
-   * The maximum possible volume value.
+   * @brief The maximum possible volume value.
    *
    * @since 4.0.0
    */
-  static constexpr int maxVolume = MIX_MAX_VOLUME;
+  inline static constexpr int maxVolume = MIX_MAX_VOLUME;
 
   /**
-   * A constant that indicates that an audio snippet should be looped
-   * indefinitely.
+   * @brief Indicates that an audio snippet should be looped indefinitely.
    *
    * @since 4.0.0
    */
-  static constexpr int loopForever = -1;
+  inline static constexpr int loopForever = -1;
 
   /**
+   * @brief Creates a sound effect based on the audio file at the specified
+   * location.
+   *
    * @param file the file path of the audio file.
+   *
    * @throws centurion_exception if the audio file cannot be loaded.
+   *
    * @since 3.0.0
    */
-  CENTURION_API explicit SoundEffect(czstring file);
+  CENTURION_API
+  explicit SoundEffect(czstring file);
 
   /**
-   * Creates a sound effect by moving the contents of the supplied sound effect.
+   * @brief Creates a sound effect by moving the contents of the supplied sound
+   * effect.
    *
    * @param other the sound effect that will be moved.
+   *
    * @since 3.0.0
    */
-  CENTURION_API SoundEffect(SoundEffect&& other) noexcept;
+  CENTURION_API
+  SoundEffect(SoundEffect&& other) noexcept;
 
-  SoundEffect(const SoundEffect&) noexcept = delete;
-
-  CENTURION_API ~SoundEffect();
-
-  SoundEffect& operator=(const SoundEffect&) noexcept = delete;
+  SoundEffect(const SoundEffect&) = delete;
 
   /**
-   * Moves the contents of the supplied sound effect into this one.
+   * @brief Moves the contents of the supplied sound effect into this one.
    *
    * @param other the sound effect that will be moved.
-   * @return the changed sound effect.
-   * @since 3.0.0
-   */
-  CENTURION_API SoundEffect& operator=(SoundEffect&& other) noexcept;
-
-  /**
-   * Creates and returns a unique pointer to a SoundEffect instance.
    *
-   * @param file the file path of the audio file.
-   * @return a unique pointer to a SoundEffect instance.
-   * @throws centurion_exception if the audio file cannot be loaded.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static std::unique_ptr<SoundEffect> unique(
-      czstring file);
-
-  /**
-   * Creates and returns a shared pointer to a SoundEffect instance.
-   *
-   * @param file the file path of the audio file.
-   * @return a shared pointer to a SoundEffect instance.
-   * @throws centurion_exception if the audio file cannot be loaded.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static std::shared_ptr<SoundEffect> shared(
-      czstring file);
-
-  /**
-   * Plays the sound effect.
-   *
-   * @param nLoops the amount of loops. A negative value indicates that the
-   * sound effect should be looped forever.
-   * @since 3.0.0
-   */
-  CENTURION_API void play(int nLoops = 0) noexcept;
-
-  /**
-   * Stops the sound effect from playing.
+   * @return the sound effect that absorbed the supplied sound effect.
    *
    * @since 3.0.0
    */
-  CENTURION_API void stop() noexcept;
+  CENTURION_API
+  auto operator=(SoundEffect&& other) noexcept -> SoundEffect&;
+
+  auto operator=(const SoundEffect&) -> SoundEffect& = delete;
+
+  CENTURION_API
+  ~SoundEffect();
 
   /**
-   * Fades in the sound effect. This method has no effect if the supplied
-   * duration isn't greater than zero or if the sound effect is currently
-   * playing.
+   * @copydoc SoundEffect(czstring)
+   */
+  CENTURION_QUERY
+  static auto unique(czstring file) -> std::unique_ptr<SoundEffect>;
+
+  /**
+   * @copydoc SoundEffect(czstring)
+   */
+  CENTURION_QUERY
+  static auto shared(czstring file) -> std::shared_ptr<SoundEffect>;
+
+  /**
+   * @brief Plays the sound effect.
    *
-   * @param ms the duration to fade in, in milliseconds.
+   * @note A negative value indicates that the sound effect should be looped
+   * forever.
+   *
+   * @param nLoops the amount of loops, can be negative.
+   *
+   * @see `SoundEffect::loopForever`
+   *
    * @since 3.0.0
    */
-  CENTURION_API void fade_in(int ms) noexcept;
+  CENTURION_API
+  void play(int nLoops = 0) noexcept;
 
   /**
-   * Fades out the sound effect. This method has no effect if the supplied
-   * duration isn't greater than zero or if the sound effect isn't currently
-   * playing.
+   * @brief Stops the sound effect from playing.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  void stop() noexcept;
+
+  /**
+   * @brief Fades in the sound effect.
+   *
+   * @details This method has no effect if the supplied duration isn't greater
+   * than zero or if the sound effect is currently playing.
    *
    * @param ms the duration to fade in, in milliseconds.
+   *
+   * @todo Use `milliseconds<int>` as parameter type.
+   *
    * @since 3.0.0
    */
-  CENTURION_API void fade_out(int ms) noexcept;
+  CENTURION_API
+  void fade_in(int ms) noexcept;
 
   /**
-   * Sets the volume of the sound effect. This method will adjust input values
-   * outside the legal range to the closest legal value.
+   * @brief Fades out the sound effect.
+   *
+   * @details This method has no effect if the supplied duration isn't greater
+   * than zero or if the sound effect isn't currently playing.
+   *
+   * @param ms the duration to fade in, in milliseconds.
+   *
+   * @todo Use `milliseconds<int>` as parameter type.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  void fade_out(int ms) noexcept;
+
+  /**
+   * @brief Sets the volume of the sound effect.
+   *
+   * @details This method will adjust input values outside the legal range to
+   * the closest legal value.
    *
    * @param volume the volume of the sound effect, in the range [0,
-   * SoundEffect::maxVolume].
-   * @since 3.0.0
-   */
-  CENTURION_API void set_volume(int volume) noexcept;
-
-  /**
-   * Indicates whether or not the sound effect is currently playing.
+   * `SoundEffect::maxVolume`].
    *
-   * @return true if the sound effect is playing; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool playing() const noexcept;
+  CENTURION_API
+  void set_volume(int volume) noexcept;
 
   /**
-   * Returns a textual representation of the sound effect.
+   * @brief Indicates whether or not the sound effect is currently playing.
+   *
+   * @return `true` if the sound effect is playing; `false` otherwise.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_QUERY
+  auto playing() const noexcept -> bool;
+
+  /**
+   * @brief Returns a textual representation of the sound effect.
    *
    * @return a textual representation of the sound effect.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API std::string to_string() const;
+  CENTURION_QUERY
+  auto to_string() const -> std::string;
 
   /**
-   * Returns the current volume of the sound effect. By default, this property
-   * is set to 128.
+   * @brief Returns the current volume of the sound effect.
+   *
+   * @details By default, this property is set to 128.
    *
    * @return the current volume of the sound effect.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] int volume() const noexcept { return m_chunk->volume; }
+  [[nodiscard]] auto volume() const noexcept -> int { return m_chunk->volume; }
 
   /**
-   * Returns a pointer to the internal Mix_Chunk. Use of this method is
-   * not recommended, since it purposefully breaks const-correctness. However
-   * it is useful since many SDL calls use non-const pointers even when no
-   * change will be applied.
+   * @brief Returns a pointer to the associated `Mix_Chunk`.
    *
-   * @return a pointer to the internal Mix_Chunk.
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However it is useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated `Mix_Chunk`.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] Mix_Chunk* get() const noexcept { return m_chunk; }
+  [[nodiscard]] auto get() const noexcept -> Mix_Chunk* { return m_chunk; }
 
   /**
-   * Converts to a Mix_Chunk pointer.
+   * @brief Converts to `Mix_Chunk*`.
    *
-   * @return a pointer to the internal Mix_Chunk instance.
+   * @return a pointer to the associated `Mix_Chunk` instance.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] operator Mix_Chunk*() noexcept { return m_chunk; }
+  [[nodiscard]] explicit operator Mix_Chunk*() noexcept { return m_chunk; }
 
   /**
-   * Converts to a Mix_Chunk pointer.
+   * @brief Converts to `const Mix_Chunk*`.
    *
-   * @return a pointer to the internal Mix_Chunk instance.
+   * @return a pointer to the associated `Mix_Chunk` instance.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] operator const Mix_Chunk*() const noexcept { return m_chunk; }
+  [[nodiscard]] explicit operator const Mix_Chunk*() const noexcept
+  {
+    return m_chunk;
+  }
 
   /**
-   * Returns the maximum possible volume value.
+   * @brief Returns the maximum possible volume value.
    *
    * @return the maximum possible volume value.
+   *
    * @since 3.1.0
    */
-  [[nodiscard]] static constexpr int max_volume() noexcept
+  [[nodiscard]] static constexpr auto max_volume() noexcept -> int
   {
     return MIX_MAX_VOLUME;
   }
@@ -222,24 +282,28 @@ class SoundEffect final {
   int m_channel = undefinedChannel;
 
   /**
-   * Destroys the resources associated with the sound effect.
+   * @brief Destroys the resources associated with the sound effect.
    *
    * @since 4.0.0
    */
   void destroy() noexcept;
 
   /**
-   * Moves the contents of the supplied SoundEffect instance into this instance.
+   * @brief Moves the contents of the supplied sound effect instance into this
+   * instance.
    *
    * @param other the instance that will be moved.
+   *
    * @since 4.0.0
    */
   void move(SoundEffect&& other) noexcept;
 
   /**
-   * Activates the sound effect by playing it the specified amount of times.
+   * @brief Activates the sound effect by playing it the specified amount of
+   * times.
    *
    * @param nLoops the amount of times to play the sound effect.
+   *
    * @since 3.0.0
    */
   void activate(int nLoops) noexcept;
@@ -250,7 +314,6 @@ static_assert(std::is_nothrow_move_constructible_v<SoundEffect>);
 static_assert(std::is_nothrow_move_assignable_v<SoundEffect>);
 static_assert(!std::is_copy_constructible_v<SoundEffect>);
 static_assert(!std::is_copy_assignable_v<SoundEffect>);
-static_assert(std::is_convertible_v<SoundEffect, Mix_Chunk*>);
 
 }  // namespace centurion
 

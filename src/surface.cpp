@@ -50,7 +50,7 @@ Surface::~Surface() noexcept
 }
 
 CENTURION_DEF
-Surface& Surface::operator=(Surface&& other) noexcept
+auto Surface::operator=(Surface&& other) noexcept -> Surface&
 {
   if (this != &other) {
     move(std::move(other));
@@ -59,7 +59,7 @@ Surface& Surface::operator=(Surface&& other) noexcept
 }
 
 CENTURION_DEF
-Surface& Surface::operator=(const Surface& other)
+auto Surface::operator=(const Surface& other) -> Surface&
 {
   if (this != &other) {
     copy(other);
@@ -91,20 +91,20 @@ void Surface::copy(const Surface& other) noexcept
 }
 
 CENTURION_DEF
-bool Surface::in_bounds(point_i point) const noexcept
+auto Surface::in_bounds(const point_i& point) const noexcept -> bool
 {
   return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
            point.y() >= height());
 }
 
 CENTURION_DEF
-bool Surface::must_lock() const noexcept
+auto Surface::must_lock() const noexcept -> bool
 {
   return SDL_MUSTLOCK(m_surface);
 }
 
 CENTURION_DEF
-bool Surface::lock() noexcept
+auto Surface::lock() noexcept -> bool
 {
   if (must_lock()) {
     const auto result = SDL_LockSurface(m_surface);
@@ -123,7 +123,7 @@ void Surface::unlock() noexcept
 }
 
 CENTURION_DEF
-SDL_Surface* Surface::copy_surface() const
+auto Surface::copy_surface() const -> SDL_Surface*
 {
   auto* copy = SDL_DuplicateSurface(m_surface);
   if (!copy) {
@@ -134,7 +134,7 @@ SDL_Surface* Surface::copy_surface() const
 }
 
 CENTURION_DEF
-void Surface::set_pixel(point_i pixel, const Color& color) noexcept
+void Surface::set_pixel(const point_i& pixel, const Color& color) noexcept
 {
   if (!in_bounds(pixel)) {
     return;
@@ -154,7 +154,7 @@ void Surface::set_pixel(point_i pixel, const Color& color) noexcept
                                    color.green(),
                                    color.blue(),
                                    color.alpha());
-    u32* pixels = reinterpret_cast<u32*>(m_surface->pixels);
+    auto* pixels = reinterpret_cast<u32*>(m_surface->pixels);
     pixels[index] = value;
   }
 
@@ -180,7 +180,7 @@ void Surface::set_blend_mode(enum blend_mode mode) noexcept
 }
 
 CENTURION_DEF
-u8 Surface::alpha() const noexcept
+auto Surface::alpha() const noexcept -> u8
 {
   u8 alpha = 0xFF;
   SDL_GetSurfaceAlphaMod(m_surface, &alpha);
@@ -188,7 +188,7 @@ u8 Surface::alpha() const noexcept
 }
 
 CENTURION_DEF
-Color Surface::color_mod() const noexcept
+auto Surface::color_mod() const noexcept -> Color
 {
   u8 r = 0, g = 0, b = 0;
   SDL_GetSurfaceColorMod(m_surface, &r, &g, &b);
@@ -196,9 +196,9 @@ Color Surface::color_mod() const noexcept
 }
 
 CENTURION_DEF
-enum blend_mode Surface::blend_mode() const noexcept
-{
-  SDL_BlendMode mode;
+auto Surface::blend_mode() const noexcept -> enum blend_mode  //
+{                                                             //
+  SDL_BlendMode mode;                                         //
   SDL_GetSurfaceBlendMode(m_surface, &mode);
   return static_cast<enum blend_mode>(mode);
 }
@@ -210,7 +210,7 @@ enum blend_mode Surface::blend_mode() const noexcept
 //}
 
 CENTURION_DEF
-Surface Surface::convert(PixelFormat format) const
+auto Surface::convert(PixelFormat format) const -> Surface
 {
   const auto pixelFormat = static_cast<u32>(format);
   auto* converted = SDL_ConvertSurfaceFormat(m_surface, pixelFormat, 0);

@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file paths.hpp
+ *
+ * @brief Provides the `base_path` and `pref_path` classes.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_PATHS_HEADER
 #define CENTURION_PATHS_HEADER
 
@@ -31,72 +43,89 @@
 namespace centurion {
 
 /**
- * The BasePath class is a simple wrapper class for a string that represents the
- * application path obtained by SDL_GetBasePath.
+ * @class base_path
+ *
+ * @brief A wrapper for the application path obtained through `SDL_GetBasePath`.
+ *
+ * @details There is no guarantee that the application path is obtainable, so
+ * you should always check for null when dealing with a base path instance.
+ * See the following example.
+ * @code{.cpp}
+ *   ctn::base_path basePath;
+ *   if (basePath) {
+ *     // the application path was successfully obtained
+ *   } else {
+ *     // failed to obtain the application path
+ *   }
+ * @endcode
+ *
+ * @see `SDL_GetBasePath`
  *
  * @since 3.0.0
  */
-class BasePath final {
+class base_path final {
  public:
   /**
-   * Constructs an BasePath object that represents the path of the application
-   * executable. Note! This might be an expensive operation, so it is
-   * recommended to create only one instance of this class and cache it.
+   * @brief Obtains the path of the application executable.
+   *
+   * @note This might be an expensive operation, so it's recommended to create
+   * only one instance of this class and cache it.
    *
    * @since 3.0.0
    */
-  CENTURION_API BasePath() noexcept;
+  CENTURION_API
+  base_path() noexcept;
 
   /**
-   * Moves the contents of the supplied BasePath into this instance.
+   * @brief Moves the supplied base path into a new base path instance.
    *
-   * @param other the BasePath that will be moved.
+   * @param other the base path instance that will be moved.
+   *
    * @since 4.0.0
    */
-  CENTURION_API BasePath(BasePath&& other) noexcept;
+  CENTURION_API
+  base_path(base_path&& other) noexcept;
 
-  BasePath(const BasePath&) = delete;
-
-  CENTURION_API ~BasePath() noexcept;
+  base_path(const base_path&) = delete;
 
   /**
-   * Moves the contents of the supplied BasePath into this instance.
+   * @brief Moves the contents of the supplied base path into this instance.
    *
-   * @param other the BasePath that will be moved.
+   * @param other the base path instance that will be moved.
+   *
+   * @return the base path that absorbed the supplied base path.
+   *
    * @since 4.0.0
    */
-  CENTURION_API BasePath& operator=(BasePath&& other) noexcept;
+  CENTURION_API
+  auto operator=(base_path&& other) noexcept -> base_path&;
 
-  BasePath& operator=(const BasePath&) = delete;
+  auto operator=(const base_path&) -> base_path& = delete;
 
   /**
-   * Creates and returns a unique pointer to an BasePath object that represents
-   * the path of the application executable. Note! This might be an expensive
-   * operation, so it is recommended to create only one instance of this class
-   * and cache it.
-   *
-   * @return a unique pointer to an BasePath instance.
-   * @since 3.0.0
+   * @brief Frees the base path string.
    */
-  [[nodiscard]] CENTURION_API static std::unique_ptr<BasePath>
-  unique() noexcept;
+  CENTURION_API
+  ~base_path() noexcept;
 
   /**
-   * Creates and returns a shared pointer to an BasePath object that represents
-   * the path of the application executable. Note! This might be an expensive
-   * operation, so it is recommended to create only one instance of this class
-   * and cache it.
-   *
-   * @return a shared pointer to an BasePath instance.
-   * @since 3.0.0
+   * @copydoc BasePath()
    */
-  [[nodiscard]] CENTURION_API static std::shared_ptr<BasePath>
-  shared() noexcept;
+  CENTURION_QUERY
+  static auto unique() -> std::unique_ptr<base_path>;
 
   /**
-   * Indicates whether or not there is a non-null string in the BasePath object.
+   * @copydoc BasePath()
+   */
+  CENTURION_QUERY
+  static auto shared() -> std::shared_ptr<base_path>;
+
+  /**
+   * @brief Indicates whether or not there is a non-null string in the base path
+   * instance.
    *
-   * @return true if the internal string pointer isn't null; false otherwise.
+   * @return `true` if the internal string is non-null; `false` otherwise.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] explicit operator bool() const noexcept
@@ -105,103 +134,131 @@ class BasePath final {
   }
 
   /**
-   * Returns the path of the application executable. The returned pointer might
-   * be null!
+   * @brief Returns the path of the application executable.
    *
-   * @return the path of the application executable, can be null.
+   * @note The returned pointer might be null! You should always check the
+   * returned pointer.
+   *
+   * @return the path of the application executable, might be `nullptr`.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] czstring get() const noexcept { return m_path; }
+  [[nodiscard]] auto get() const noexcept -> czstring { return m_path; }
 
  private:
-  zstring m_path = nullptr;
+  zstring m_path{nullptr};
 
   /**
-   * Destroys the resources associated with the BasePath instance.
+   * @brief Destroys the resources associated with the base path instance.
    *
    * @since 4.0.0
    */
   void destroy() noexcept;
 
   /**
-   * Moves the contents of the supplied BasePath instance into this instance.
+   * @brief Moves the contents of the supplied base path instance into this
+   * instance.
    *
-   * @param other the instance that will be moved.
+   * @param other the base path that will be moved.
+   *
    * @since 4.0.0
    */
-  void move(BasePath&& other) noexcept;
+  void move(base_path&& other) noexcept;
 };
 
 /**
- * The PrefPath class provides a way to obtain the preferred path for where you
- * should store application related files.
+ * @class pref_path
+ *
+ * @brief A wrapper for the preferred path for storing application related
+ * files.
+ *
+ * @details This class is used to obtain the "pref dir". Where users are
+ * meant to write personal files (such as preferences and save games, etc) that
+ * are specific to your application. This directory is unique per user, per
+ * application.
+ *
+ * @par Usage
+ * You should always check that a `pref_path` instance holds a valid string
+ * before using the associated string. See the following example.
+ * @code{.cpp}
+ *   ctn::pref_path prefPath{"my organization", "my awesome app"};
+ *   if (prefPath) {
+ *     // the preferred path was successfully obtained
+ *   } else {
+ *     // failed to obtain the preferred path
+ *   }
+ * @endcode
  *
  * @since 3.0.0
+ *
+ * @see `SDL_GetPrefPath`
+ *
+ * @headerfile paths.hpp
  */
-class PrefPath final {
+class pref_path final {
  public:
   /**
-   * Constructs a PrefPath object. Only use letters, numbers, and spaces in the
-   * supplied strings!
+   * @brief Constructs a `pref_path` instance.
+   *
+   * @note Only use letters, numbers, and spaces in the supplied strings!
    *
    * @param org the name of your organization.
    * @param app the name of your application.
+   *
    * @since 3.0.0
    */
-  CENTURION_API PrefPath(czstring org, czstring app) noexcept;
+  CENTURION_API
+  pref_path(czstring org, czstring app) noexcept;
 
   /**
-   * Moves the contents of the supplied PrefPath into this instance.
+   * @brief Creates a `pref_path` instance by moving the supplied instance.
    *
-   * @param other the PrefPath that will be moved.
+   * @param other the `pref_path` instance that will be moved.
+   *
    * @since 4.0.0
    */
-  CENTURION_API PrefPath(PrefPath&& other) noexcept;
+  CENTURION_API
+  pref_path(pref_path&& other) noexcept;
 
-  PrefPath(const PrefPath&) = delete;
-
-  CENTURION_API ~PrefPath() noexcept;
+  pref_path(const pref_path&) = delete;
 
   /**
-   * Moves the contents of the supplied PrefPath into this instance.
+   * @brief Frees the associated string.
+   */
+  CENTURION_API
+  ~pref_path() noexcept;
+
+  /**
+   * @brief Moves the contents of the supplied `pref_path` into this instance.
    *
-   * @param other the PrefPath that will be moved.
+   * @param other the instance that will be moved.
+   *
    * @since 4.0.0
    */
-  CENTURION_API PrefPath& operator=(PrefPath&& other) noexcept;
+  CENTURION_API
+  auto operator=(pref_path&& other) noexcept -> pref_path&;
 
-  PrefPath& operator=(const PrefPath&) = delete;
+  auto operator=(const pref_path&) -> pref_path& = delete;
 
   /**
-   * Creates and returns a unique pointer to a PrefPath object. Only use
-   * letters, numbers, and spaces in the supplied strings!
-   *
-   * @param org the name of your organization.
-   * @param app the name of your application.
-   * @return a unique pointer to a PrefPath instance.
-   * @since 3.0.0
+   * @copydoc pref_path(czstring, czstring)
    */
-  [[nodiscard]] CENTURION_API static std::unique_ptr<PrefPath> unique(
-      czstring org,
-      czstring app) noexcept;
+  CENTURION_QUERY
+  static auto unique(czstring org, czstring app) noexcept
+      -> std::unique_ptr<pref_path>;
 
   /**
-   * Creates and returns a shared pointer to a PrefPath object. Only use
-   * letters, numbers, and spaces in the supplied strings!
-   *
-   * @param org the name of your organization.
-   * @param app the name of your application.
-   * @return a shared pointer to a PrefPath instance.
-   * @since 3.0.0
+   * @copydoc pref_path(czstring, czstring)
    */
-  [[nodiscard]] CENTURION_API static std::shared_ptr<PrefPath> shared(
-      czstring org,
-      czstring app) noexcept;
+  CENTURION_QUERY
+  static auto shared(czstring org, czstring app) noexcept
+      -> std::shared_ptr<pref_path>;
 
   /**
-   * Indicates whether or not the path object holds a non-null path.
+   * @brief Indicates whether or not the instance holds a non-null path.
    *
-   * @return true if the object holds a non-null path; false otherwise.
+   * @return `true` if the object holds a non-null path; `false` otherwise.
+   *
    * @since 3.0.0
    */
   [[nodiscard]] explicit operator bool() const noexcept
@@ -210,30 +267,33 @@ class PrefPath final {
   }
 
   /**
-   * Returns a string that represents the preferred path.
+   * @brief Returns a string that represents the preferred path.
    *
    * @return a string that represents the preferred path.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] czstring get() const noexcept { return m_path; }
+  [[nodiscard]] auto get() const noexcept -> czstring { return m_path; }
 
  private:
-  zstring m_path = nullptr;
+  zstring m_path{nullptr};
 
   /**
-   * Destroys the resources associated with the PrefPath instance.
+   * @brief Destroys the resources associated with the instance.
    *
    * @since 4.0.0
    */
   void destroy() noexcept;
 
   /**
-   * Moves the contents of the supplied PrefPath instance into this instance.
+   * @briefMoves the contents of the supplied `pref_path` instance into this
+   * instance.
    *
    * @param other the instance that will be moved.
+   *
    * @since 4.0.0
    */
-  void move(PrefPath&& other) noexcept;
+  void move(pref_path&& other) noexcept;
 };
 
 }  // namespace centurion

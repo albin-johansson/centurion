@@ -5,22 +5,23 @@
 
 #include <SDL.h>
 
+#include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
 
 namespace centurion {
 
 CENTURION_DEF
-BasePath::BasePath() noexcept : m_path{SDL_GetBasePath()}
+base_path::base_path() noexcept : m_path{SDL_GetBasePath()}
 {}
 
 CENTURION_DEF
-BasePath::BasePath(BasePath&& other) noexcept
+base_path::base_path(base_path&& other) noexcept
 {
   move(std::move(other));
 }
 
 CENTURION_DEF
-BasePath& BasePath::operator=(BasePath&& other) noexcept
+auto base_path::operator=(base_path&& other) noexcept -> base_path&
 {
   if (this != &other) {
     move(std::move(other));
@@ -29,13 +30,13 @@ BasePath& BasePath::operator=(BasePath&& other) noexcept
 }
 
 CENTURION_DEF
-BasePath::~BasePath() noexcept
+base_path::~base_path() noexcept
 {
   destroy();
 }
 
 CENTURION_DEF
-void BasePath::destroy() noexcept
+void base_path::destroy() noexcept
 {
   if (m_path) {
     SDL_free(m_path);
@@ -43,7 +44,7 @@ void BasePath::destroy() noexcept
 }
 
 CENTURION_DEF
-void BasePath::move(BasePath&& other) noexcept
+void base_path::move(base_path&& other) noexcept
 {
   destroy();
   m_path = other.m_path;
@@ -51,30 +52,34 @@ void BasePath::move(BasePath&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<BasePath> BasePath::unique() noexcept
+auto base_path::unique() -> std::unique_ptr<base_path>
 {
-  return std::make_unique<BasePath>();
+  return std::make_unique<base_path>();
 }
 
 CENTURION_DEF
-std::shared_ptr<BasePath> BasePath::shared() noexcept
+auto base_path::shared() -> std::shared_ptr<base_path>
 {
-  return std::make_shared<BasePath>();
+  return std::make_shared<base_path>();
 }
 
 CENTURION_DEF
-PrefPath::PrefPath(czstring org, czstring app) noexcept
+pref_path::pref_path(czstring org, czstring app) noexcept
     : m_path{SDL_GetPrefPath(org, app)}
-{}
+{
+  if (base_path path; path) {
+    std::cout << path.get() << '\n';
+  }
+}
 
 CENTURION_DEF
-PrefPath::PrefPath(PrefPath&& other) noexcept
+pref_path::pref_path(pref_path&& other) noexcept
 {
   move(std::move(other));
 }
 
 CENTURION_DEF
-PrefPath& PrefPath::operator=(PrefPath&& other) noexcept
+pref_path& pref_path::operator=(pref_path&& other) noexcept
 {
   if (this != &other) {
     move(std::move(other));
@@ -83,13 +88,13 @@ PrefPath& PrefPath::operator=(PrefPath&& other) noexcept
 }
 
 CENTURION_DEF
-PrefPath::~PrefPath() noexcept
+pref_path::~pref_path() noexcept
 {
   destroy();
 }
 
 CENTURION_DEF
-void PrefPath::destroy() noexcept
+void pref_path::destroy() noexcept
 {
   if (m_path) {
     SDL_free(m_path);
@@ -97,7 +102,7 @@ void PrefPath::destroy() noexcept
 }
 
 CENTURION_DEF
-void PrefPath::move(PrefPath&& other) noexcept
+void pref_path::move(pref_path&& other) noexcept
 {
   destroy();
   m_path = other.m_path;
@@ -105,15 +110,15 @@ void PrefPath::move(PrefPath&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<PrefPath> PrefPath::unique(czstring org, czstring app) noexcept
+std::unique_ptr<pref_path> pref_path::unique(czstring org, czstring app) noexcept
 {
-  return std::make_unique<PrefPath>(org, app);
+  return std::make_unique<pref_path>(org, app);
 }
 
 CENTURION_DEF
-std::shared_ptr<PrefPath> PrefPath::shared(czstring org, czstring app) noexcept
+std::shared_ptr<pref_path> pref_path::shared(czstring org, czstring app) noexcept
 {
-  return std::make_shared<PrefPath>(org, app);
+  return std::make_shared<pref_path>(org, app);
 }
 
 }  // namespace centurion

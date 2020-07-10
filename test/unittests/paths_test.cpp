@@ -4,33 +4,33 @@
 
 using namespace centurion;
 
-TEST_CASE("BasePath()", "[BasePath]")
+TEST_CASE("base_path()", "[base_path]")
 {
-  CHECK_NOTHROW(BasePath{});
+  CHECK_NOTHROW(base_path{});
 }
 
-TEST_CASE("BasePath(BasePath&&)", "[BasePath]")
+TEST_CASE("base_path(base_path&&)", "[base_path]")
 {
-  BasePath path;
-  BasePath other{std::move(path)};
+  base_path path;
+  base_path other{std::move(path)};
 
   CHECK(!path.get());
   CHECK(other.get());
 }
 
-TEST_CASE("BasePath::operator=(BasePath&&)", "[BasePath]")
+TEST_CASE("base_path::operator=(base_path&&)", "[base_path]")
 {
   SECTION("Self-assignment")
   {
-    BasePath path;
+    base_path path;
     path = std::move(path);
     CHECK(path.get());
   }
 
   SECTION("Normal usage")
   {
-    BasePath path;
-    BasePath other;
+    base_path path;
+    base_path other;
 
     other = std::move(path);
 
@@ -39,57 +39,57 @@ TEST_CASE("BasePath::operator=(BasePath&&)", "[BasePath]")
   }
 }
 
-TEST_CASE("BasePath::unique", "[BasePath]")
+TEST_CASE("base_path::unique", "[base_path]")
 {
-  const auto path = BasePath::unique();
+  const auto path = base_path::unique();
   CHECK(path);
 }
 
-TEST_CASE("BasePath::shared", "[BasePath]")
+TEST_CASE("base_path::shared", "[base_path]")
 {
-  const auto path = BasePath::shared();
+  const auto path = base_path::shared();
   CHECK(path);
 }
 
-TEST_CASE("BasePath::operator bool", "[BasePath]")
+TEST_CASE("base_path::operator bool", "[base_path]")
 {
-  const BasePath path;
+  const base_path path;
   CHECK(path);
 }
 
-TEST_CASE("BasePath::get", "[BasePath]")
+TEST_CASE("base_path::get", "[base_path]")
 {
-  const BasePath path;
+  const base_path path;
   CHECK(path.get());
 }
 
-TEST_CASE("PrefPath(string&, string&)", "[PrefPath]")
+TEST_CASE("pref_path(string&, string&)", "[pref_path]")
 {
-  CHECK_NOTHROW(PrefPath{"centurion", "tests"});
+  CHECK_NOTHROW(pref_path{"centurion", "tests"});
 }
 
-TEST_CASE("PrefPath(PrefPath&&)", "[PrefPath]")
+TEST_CASE("pref_path(pref_path&&)", "[pref_path]")
 {
-  PrefPath path{"centurion", "tests"};
-  PrefPath other{std::move(path)};
+  pref_path path{"centurion", "tests"};
+  pref_path other{std::move(path)};
 
   CHECK(!path.get());
   CHECK(other.get());
 }
 
-TEST_CASE("PrefPath::operator=(PrefPath&&)", "[PrefPath]")
+TEST_CASE("pref_path::operator=(pref_path&&)", "[pref_path]")
 {
   SECTION("Self-assignment")
   {
-    PrefPath path{"centurion", "tests"};
+    pref_path path{"centurion", "tests"};
     path = std::move(path);
     CHECK(path.get());
   }
 
   SECTION("Normal usage")
   {
-    PrefPath path{"centurion", "tests"};
-    PrefPath other{"centurion", "tests"};
+    pref_path path{"centurion", "tests"};
+    pref_path other{"centurion", "tests"};
 
     other = std::move(path);
 
@@ -98,24 +98,24 @@ TEST_CASE("PrefPath::operator=(PrefPath&&)", "[PrefPath]")
   }
 }
 
-TEST_CASE("PrefPath::unique", "[PrefPath]")
+TEST_CASE("pref_path::unique", "[pref_path]")
 {
-  CHECK(PrefPath::unique("centurion", "tests"));
+  CHECK(pref_path::unique("centurion", "tests"));
 }
 
-TEST_CASE("PrefPath::shared", "[PrefPath]")
+TEST_CASE("pref_path::shared", "[pref_path]")
 {
-  CHECK(PrefPath::shared("centurion", "tests"));
+  CHECK(pref_path::shared("centurion", "tests"));
 }
 
-TEST_CASE("PrefPath::operator bool", "[PrefPath]")
+TEST_CASE("pref_path::operator bool", "[pref_path]")
 {
-  const PrefPath prefPath{"centurion", "tests"};
-  CHECK(prefPath);
+  const pref_path pref_path{"centurion", "tests"};
+  CHECK(pref_path);
 }
 
-TEST_CASE("PrefPath::get", "[PrefPath]")
+TEST_CASE("pref_path::get", "[pref_path]")
 {
-  const PrefPath prefPath{"centurion", "tests"};
-  CHECK(prefPath.get());
+  const pref_path pref_path{"centurion", "tests"};
+  CHECK(pref_path.get());
 }

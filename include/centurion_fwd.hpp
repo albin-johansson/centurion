@@ -19,7 +19,11 @@ namespace centurion {
 template <typename FontKey>
 class basic_renderer;
 
+class renderer_view;
+
 class Texture;
+
+class Surface;
 
 class Window;
 

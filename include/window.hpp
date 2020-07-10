@@ -39,15 +39,16 @@
 
 #include <SDL.h>
 
+#include <optional>
+
 #include "area.hpp"
 #include "centurion_api.hpp"
+#include "centurion_fwd.hpp"
 #include "centurion_utils.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
 
 namespace centurion {
-
-class Surface;
 
 /**
  * @class Window
@@ -721,22 +722,15 @@ class Window final {
   auto flags() const noexcept -> u32;
 
   /**
-   * @brief Returns any renderer that is associated with this window.
+   * @brief Returns a view to the renderer that is associated with this window.
    *
-   * @note If no renderer is associated with the window, then a null pointer is
-   * returned.
-   *
-   * @warning Don't take ownership of the returned pointer.
-   * 
-   * @todo Make this method return a view for a renderer instead.
-   *
-   * @return a pointer to the renderer that is associated with this window;
-   * `nullptr` if no such renderer exists.
+   * @return a view to the renderer that is associated with this window;
+   * `nothing` if no such renderer exists.
    *
    * @since 3.1.0
    */
   CENTURION_QUERY
-  auto renderer() const noexcept -> const SDL_Renderer*;
+  auto renderer() noexcept -> std::optional<renderer_view>;
 
   /**
    * @brief Returns the pixel format of the window.
@@ -832,6 +826,8 @@ static_assert(std::is_default_constructible_v<Window>);
 static_assert(std::is_nothrow_destructible_v<Window>);
 
 }  // namespace centurion
+
+#include "graphics.hpp"  // for renderer_view definition
 
 #ifdef CENTURION_HEADER_ONLY
 #include "window.cpp"

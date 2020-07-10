@@ -445,9 +445,14 @@ auto Window::flags() const noexcept -> u32
 }
 
 CENTURION_DEF
-auto Window::renderer() const noexcept -> const SDL_Renderer*
+auto Window::renderer() noexcept -> std::optional<renderer_view>
 {
-  return SDL_GetRenderer(m_window);
+  auto* renderer = SDL_GetRenderer(m_window);
+  if (renderer) {
+    return renderer_view{renderer};
+  } else {
+    return nothing;
+  }
 }
 
 CENTURION_DEF

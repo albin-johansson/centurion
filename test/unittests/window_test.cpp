@@ -835,11 +835,14 @@ TEST_CASE("Window::flags", "[Window]")
 
 TEST_CASE("Window::renderer", "[Window]")
 {
-  const ctn::Window window;
+  ctn::Window window;
   CHECK(!window.renderer());
 
-  const ctn::renderer renderer{window};
-  CHECK(window.renderer() == renderer.get());
+  ctn::renderer renderer{window};
+  auto view = window.renderer();
+
+  REQUIRE(view.has_value());
+  CHECK(view->get() == renderer.get());
 }
 
 TEST_CASE("Window::pixel_format", "[Window]")

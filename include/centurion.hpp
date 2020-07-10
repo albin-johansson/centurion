@@ -24,13 +24,16 @@
 
 /**
  * @file centurion.hpp
+ *
  * @brief The main header file for the library.
  *
- * @details Provides the `Centurion` and `CenturionConfig` classes, which are
- * related to the initialization of the library.
+ * @details Provides the `centurion_lib` and `centurion_config` classes, which
+ * are related to the initialization of the library.
  *
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -47,12 +50,14 @@
 
 /**
  * @namespace centurion
+ *
  * @brief The top-level namespace that all components of the library reside in.
  */
 namespace centurion {
 
 /**
- * @struct CenturionConfig
+ * @struct centurion_config
+ *
  * @brief Used to specify how the library is initialized.
  *
  * @details All fields are initialized to the default values used by the
@@ -60,45 +65,47 @@ namespace centurion {
  *
  * @since 4.0.0
  *
- * @var CenturionConfig::initCore
+ * @var centurion_config::initCore
  * Indicates whether or not the SDL2 core is initialized.
  *
- * @var CenturionConfig::initImage
+ * @var centurion_config::initImage
  * Indicates whether or not SDL2_image is initialized.
  *
- * @var CenturionConfig::initMixer
+ * @var centurion_config::initMixer
  * Indicates whether or not SDL2_mixer is initialized.
  *
- * @var CenturionConfig::initTTF
+ * @var centurion_config::initTTF
  * Indicates whether or not SDL2_ttf is initialized.
  *
- * @var CenturionConfig::coreFlags
- * Flags passed on to `SDL_Init()`, if @ref CenturionConfig.initCore is `true`.
+ * @var centurion_config::coreFlags
+ * Flags passed on to `SDL_Init()`, if @ref centurion_config.initCore is `true`.
  *
- * @var CenturionConfig::imageFlags
- * Flags passed on to `IMG_Init()`, if @ref CenturionConfig.initImage is `true`.
- *
- * @var CenturionConfig::mixerFlags
- * Flags passed on to `MIX_Init()`, if @ref CenturionConfig.initMixer is `true`.
- *
- * @var CenturionConfig::mixerFreq
- * The frequency used by SDL2_mixer, if @ref CenturionConfig.initMixer is
+ * @var centurion_config::imageFlags
+ * Flags passed on to `IMG_Init()`, if @ref centurion_config.initImage is
  * `true`.
  *
- * @var CenturionConfig::mixerFormat
- * The format used by SDL2_mixer, if @ref CenturionConfig.initMixer is `true`.
+ * @var centurion_config::mixerFlags
+ * Flags passed on to `Mix_Init()`, if @ref centurion_config.initMixer is
+ * `true`.
  *
- * @var CenturionConfig::mixerChannels
- * The amount of channels used by SDL2_mixer, if @ref CenturionConfig.initMixer
+ * @var centurion_config::mixerFreq
+ * The frequency used by SDL2_mixer, if @ref centurion_config.initMixer is
+ * `true`.
+ *
+ * @var centurion_config::mixerFormat
+ * The format used by SDL2_mixer, if @ref centurion_config.initMixer is `true`.
+ *
+ * @var centurion_config::mixerChannels
+ * The amount of channels used by SDL2_mixer, if @ref centurion_config.initMixer
  * is `true`.
  *
- * @var CenturionConfig::mixerChunkSize
- * The chunk size used by SDL2_mixer, if @ref CenturionConfig.initMixer is
+ * @var centurion_config::mixerChunkSize
+ * The chunk size used by SDL2_mixer, if @ref centurion_config.initMixer is
  * `true`.
  *
  * @headerfile centurion.hpp
  */
-struct CenturionConfig final {
+struct centurion_config final {
   bool initCore = true;
   bool initImage = true;
   bool initMixer = true;
@@ -118,21 +125,23 @@ struct CenturionConfig final {
 };
 
 /**
- * @class Centurion
+ * @class centurion_lib
+ *
  * @brief Used to initialize and de-initialize the library.
  *
  * @since 3.0.0
  *
+ * @note The signature of the main-method must be `ìnt(int, char**)` when
+ * using the Centurion library!
+ *
  * @par Examples
  * This is how you should initialize the library.
  * @code{.cpp}
- * #include <centurion.hpp>
- *
- * using namespace centurion;
+ * #include <centurion_as_ctn.hpp>
  *
  * int main(int, char**)
  * {
- *   Centurion c;
+ *   ctn::centurion_lib c;
  *
  *   // The library is now initialized, proceed to using it!
  *
@@ -140,19 +149,17 @@ struct CenturionConfig final {
  * }
  * @endcode
  * You can also manually configure exactly how the library is initialized, using
- * the @link centurion::CenturionConfig @endlink struct.
+ * the @link centurion::centurion_config @endlink struct.
  * @code{.cpp}
- * #include <centurion.hpp>
- *
- * using namespace centurion;
+ * #include <centurion_as_ctn.hpp>
  *
  * int main(int, char**)
  * {
- *   CenturionConfig cfg;
+ *   ctn::centurion_config cfg;
  *   cfg.initMixer = false;
  *   // ...
  *
- *   Centurion c{cfg};
+ *   ctn::centurion_lib c{cfg};
  *
  *   // The library is now initialized, proceed to using it!
  *
@@ -162,7 +169,7 @@ struct CenturionConfig final {
  *
  * @headerfile centurion.hpp
  */
-class Centurion final {
+class centurion_lib final {
  public:
   /**
    * @brief Initializes the library.
@@ -174,7 +181,8 @@ class Centurion final {
    *
    * @since 3.0.0
    */
-  CENTURION_API Centurion();
+  CENTURION_API
+  centurion_lib();
 
   /**
    * @brief Initializes the library according to the supplied configuration.
@@ -188,37 +196,39 @@ class Centurion final {
    *
    * @since 4.0.0
    */
-  CENTURION_API explicit Centurion(const CenturionConfig& cfg);
+  CENTURION_API
+  explicit centurion_lib(const centurion_config& cfg);
 
   /**
    * @brief Closes the Centurion library.
    *
    * @since 3.0.0
    */
-  CENTURION_API ~Centurion() noexcept;
+  CENTURION_API
+  ~centurion_lib() noexcept;
 
-  Centurion(const Centurion&) = delete;
+  centurion_lib(const centurion_lib&) = delete;
 
-  Centurion(Centurion&&) = delete;
+  centurion_lib(centurion_lib&&) = delete;
 
-  auto operator=(const Centurion&) -> Centurion& = delete;
+  auto operator=(const centurion_lib&) -> centurion_lib& = delete;
 
-  auto operator=(Centurion &&) -> Centurion& = delete;
+  auto operator=(centurion_lib &&) -> centurion_lib& = delete;
 
  private:
-  CenturionConfig cfg;
+  centurion_config cfg;
 
-  CENTURION_API void init_sdl();
+  void init_sdl();
 
-  CENTURION_API void init_ttf();
+  void init_ttf();
 
-  CENTURION_API void init_img();
+  void init_img();
 
-  CENTURION_API void init_mix();
+  void init_mix();
 
-  CENTURION_API void init();
+  void init();
 
-  CENTURION_API void close() noexcept;
+  void close() noexcept;
 };
 
 }  // namespace centurion

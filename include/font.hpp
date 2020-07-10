@@ -98,7 +98,7 @@ class font final {
   };
 
   /**
-   * @brief Creates a Font based on the `.ttf`-file at the specified path.
+   * @brief Creates a font based on the `.ttf`-file at the specified path.
    *
    * @param file the file path of the TrueType font file.
    * @param size the font size, must be greater than zero.
@@ -141,13 +141,13 @@ class font final {
   ~font() noexcept;
 
   /**
-   * @copydoc Font(czstring, int)
+   * @copydoc font(czstring, int)
    */
   CENTURION_QUERY
   static auto unique(czstring file, int size) -> std::unique_ptr<font>;
 
   /**
-   * @copydoc Font(czstring, int)
+   * @copydoc font(czstring, int)
    */
   CENTURION_QUERY
   static auto shared(czstring file, int size) -> std::shared_ptr<font>;

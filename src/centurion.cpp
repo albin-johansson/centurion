@@ -8,7 +8,7 @@
 namespace centurion {
 
 CENTURION_DEF
-void Centurion::init_sdl()
+void centurion_lib::init_sdl()
 {
   const auto result = SDL_Init(cfg.coreFlags);
   if (result < 0) {
@@ -17,7 +17,7 @@ void Centurion::init_sdl()
 }
 
 CENTURION_DEF
-void Centurion::init_ttf()
+void centurion_lib::init_ttf()
 {
   const auto result = TTF_Init();
   if (result == -1) {
@@ -26,7 +26,7 @@ void Centurion::init_ttf()
 }
 
 CENTURION_DEF
-void Centurion::init_img()
+void centurion_lib::init_img()
 {
   const auto flags = IMG_Init(cfg.imageFlags);
   if (!flags) {
@@ -35,7 +35,7 @@ void Centurion::init_img()
 }
 
 CENTURION_DEF
-void Centurion::init_mix()
+void centurion_lib::init_mix()
 {
   const auto flags = Mix_Init(cfg.mixerFlags);
   if (!flags) {
@@ -51,25 +51,25 @@ void Centurion::init_mix()
 }
 
 CENTURION_DEF
-Centurion::Centurion()
+centurion_lib::centurion_lib()
 {
   init();
 }
 
 CENTURION_DEF
-Centurion::Centurion(const CenturionConfig& cfg_) : cfg{cfg_}
+centurion_lib::centurion_lib(const centurion_config& cfg_) : cfg{cfg_}
 {
   init();
 }
 
 CENTURION_DEF
-Centurion::~Centurion() noexcept
+centurion_lib::~centurion_lib() noexcept
 {
   close();
 }
 
 CENTURION_DEF
-void Centurion::init()
+void centurion_lib::init()
 {
   if (cfg.initCore) {
     init_sdl();
@@ -89,7 +89,7 @@ void Centurion::init()
 }
 
 CENTURION_DEF
-void Centurion::close() noexcept
+void centurion_lib::close() noexcept
 {
   if (cfg.initImage) {
     IMG_Quit();

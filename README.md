@@ -27,7 +27,7 @@ Before you can get started with using the Centurion components, you must initial
 
 int main(int, char**)
 {
-  ctn::Centurion c;
+  ctn::centurion_lib c;
   // Start using Centurion!
 }
 ```

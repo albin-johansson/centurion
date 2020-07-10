@@ -109,13 +109,13 @@ class base_path final {
   ~base_path() noexcept;
 
   /**
-   * @copydoc BasePath()
+   * @copydoc base_path()
    */
   CENTURION_QUERY
   static auto unique() -> std::unique_ptr<base_path>;
 
   /**
-   * @copydoc BasePath()
+   * @copydoc base_path()
    */
   CENTURION_QUERY
   static auto shared() -> std::shared_ptr<base_path>;

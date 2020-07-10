@@ -52,7 +52,7 @@
 namespace centurion {
 
 /**
- * @struct GlyphMetrics
+ * @struct glyph_metrics
  *
  * @brief Provides metrics about a glyph in a font.
  *
@@ -60,7 +60,7 @@ namespace centurion {
  *
  * @headerfile font.hpp
  */
-struct GlyphMetrics final {
+struct glyph_metrics final {
   int minX;
   int minY;
   int maxX;
@@ -417,7 +417,8 @@ class Font final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto glyph_metrics(u16 glyph) const noexcept -> std::optional<GlyphMetrics>;
+  auto glyph_metrics(u16 glyph) const noexcept
+      -> std::optional<struct glyph_metrics>;
 
   /**
    * @brief Returns the family name of the font.

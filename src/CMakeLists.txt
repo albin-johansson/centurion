@@ -63,7 +63,6 @@ set(SOURCE_FILES
         surface.cpp
         cursor.cpp
         cpu.cpp
-        ram.cpp
         battery.cpp
         screen.cpp
         key.cpp

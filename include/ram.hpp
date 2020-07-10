@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file ram.hpp
+ *
+ * @brief Provides information related to the system memory.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_RAM_HEADER
 #define CENTURION_RAM_HEADER
 
@@ -29,39 +41,32 @@
 
 #include "centurion_api.hpp"
 
-namespace centurion {
+namespace centurion::ram {
 
 /**
- * The RAM class is a utility class that provides information related to,
- * unsurprisingly, the system RAM.
+ * @brief Returns the total amount of system RAM in megabytes.
+ *
+ * @return the total amount of system RAM in megabytes.
  *
  * @since 3.0.0
  */
-class RAM final {
- public:
-  RAM() = delete;
+[[nodiscard]] inline auto amount_mb() noexcept -> int
+{
+  return SDL_GetSystemRAM();
+}
 
-  /**
-   * Returns the total amount of system RAM in megabytes.
-   *
-   * @return the total amount of system RAM in megabytes.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static int size_mb() noexcept;
+/**
+ * @brief Returns the total amount of system RAM in gigabytes.
+ *
+ * @return the total amount of system RAM in gigabytes.
+ *
+ * @since 3.0.0
+ */
+[[nodiscard]] inline auto amount_gb() noexcept -> int
+{
+  return amount_mb() / 1'000;
+}
 
-  /**
-   * Returns the total amount of system RAM in gigabytes.
-   *
-   * @return the total amount of system RAM in gigabytes.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static int size_gb() noexcept;
-};
-
-}  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "ram.cpp"
-#endif
+}  // namespace centurion::ram
 
 #endif  // CENTURION_RAM_HEADER

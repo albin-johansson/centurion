@@ -101,6 +101,8 @@ enum class PowerState {
  * @return seconds of remaining battery life; `nothing` if the value cannot
  * be computed.
  *
+ * @todo use `seconds<int>` instead of `int`.
+ *
  * @since 3.0.0
  */
 CENTURION_QUERY auto seconds_left() noexcept -> std::optional<int>;
@@ -110,6 +112,8 @@ CENTURION_QUERY auto seconds_left() noexcept -> std::optional<int>;
  *
  * @return minutes of remaining battery life; `nothing` if the value cannot
  * be computed.
+ *
+ * @todo use `minutes<int>` instead of `int`.
  *
  * @since 3.0.0
  */

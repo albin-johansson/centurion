@@ -233,6 +233,9 @@ class Music final {
    * @param nLoops the number of iterations to play the music, a value less than
    * -1 will be clamped to -1, which indicates that the music should be played
    * forever.
+   *
+   * @todo Use `milliseconds<int>` instead of `int`.
+   *
    * @since 3.0.0
    */
   CENTURION_API void fade_in(int ms, int nLoops = 1) noexcept;
@@ -245,6 +248,9 @@ class Music final {
    *
    * @param ms the amount of time for the fade to complete, in milliseconds. A
    * negative value is clamped to zero.
+   *
+   * @todo Use `milliseconds<int>` instead of `int`.
+   *
    * @since 3.0.0
    */
   CENTURION_API static void fade_out(int ms);

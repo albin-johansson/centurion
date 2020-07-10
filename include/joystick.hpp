@@ -499,6 +499,8 @@ class Joystick final {
    * @param highFreq the intensity of the high frequency (right) motor.
    * @param duration the duration of the rumble effect, in milliseconds.
    *
+   * @todo Use `milliseconds<u32>` for the duration.
+   *
    * @since 4.2.0
    */
   CENTURION_API void rumble(u16 lowFreq, u16 highFreq, u32 duration) noexcept;

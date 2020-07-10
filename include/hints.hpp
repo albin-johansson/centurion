@@ -200,10 +200,10 @@ class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
 /// @endcond
 
 /**
- * The <code>hint</code> namespace contains all of the Centurion components
- * related to hints (configuration variables).
- *
  * @namespace centurion::hint
+ *
+ * @brief Contains components related to hints (configuration variables).
+ *
  * @since 4.1.0
  */
 namespace hint {
@@ -1023,11 +1023,16 @@ CENTURION_HINT(XinputUseOldJoystickMapping,
 /// @endcond
 
 /**
- * The <code>Prio</code> enum class provides three different priorities that
- * can be specified when setting the value of a hint.
+ * @enum Prio
+ *
+ * @brief Provides three different priorities that can be specified when
+ * setting the value of a hint.
  *
  * @since 4.1.0
- * @see SDL_HintPriority
+ *
+ * @see `SDL_HintPriority`
+ *
+ * @headerfile hints.hpp
  */
 enum class Prio {
   Default =
@@ -1038,13 +1043,15 @@ enum class Prio {
 };
 
 /**
- * Sets the value of the specified hint. This method will only accept values
- * that are related to the specified hint, supplying the wrong kind of value
- * causes a compile-time error. See the related hint class for more details
- * about the associated value type. However, whilst this method is type-safe,
- * it doesn't ensure that <i>correct</i> values are specified for the hints.
+ * @brief Sets the value of the specified hint.
  *
- * \par Examples
+ * @details This method will only accept values that are related to the
+ * specified hint, supplying the wrong kind of value causes a compile-time
+ * error. See the related hint class for more details about the associated
+ * value type. However, whilst this method is type-safe, it doesn't ensure
+ * that *correct* values are specified for the hints.
+ *
+ * @par Examples
  * The following is an example of how you could use this method to
  * specify the render driver that SDL should use, and the value is specified
  * with an enum value associated with the <code>RenderDriver</code> class.
@@ -1052,11 +1059,9 @@ enum class Prio {
  *   set_hint<RenderDriver>(RenderDriver::OpenGL);
  * @endcode
  * Most hints only accept boolean or integer values. As in the following
- * examples.
+ * example.
  * @code{.cpp}
  *   set_hint<EnableVSync>(true);
- * @endcode
- * @code{.cpp}
  *   set_hint<EventLogging>(2);
  * @endcode
  * Sometimes, it's useful to know whether or not the hint was actually set
@@ -1071,11 +1076,13 @@ enum class Prio {
  * @endcode
  *
  * @tparam Hint the type of the hint that will be modified.
- * @tparam priority the priority that will be used, defaults to
- * <code>Normal</code>.
+ * @tparam priority the priority that will be used, defaults to `Normal`.
  * @tparam Value the type of the hint value.
+ *
  * @param value the new value that will be set for the specified hint.
- * @return true if the hint was successfully set; false otherwise.
+ *
+ * @return `true` if the hint was successfully set; `false` otherwise.
+ *
  * @since 4.1.0
  */
 template <typename Hint,
@@ -1091,8 +1098,9 @@ bool set_hint(const Value& value) noexcept
 }
 
 /**
- * Returns the current value of the specified hint. This method returns an
- * <code>std::optional</code> of the hint value type.
+ * @brief Returns the current value of the specified hint.
+ *
+ * @note The returned value is a `std::optional` of the hint value type.
  *
  * @par Examples
  * Many hints aren't actually set by default, so if the specified hint
@@ -1106,8 +1114,10 @@ bool set_hint(const Value& value) noexcept
  * @endcode
  *
  * @tparam Hint the type of the Hint to obtain the value of.
- * @return the current value of the specified hint; nothing if there is no
+ *
+ * @return the current value of the specified hint; `nothing` if there is no
  * value set for the hint.
+ *
  * @since 4.1.0
  */
 template <typename Hint>
@@ -1117,26 +1127,35 @@ template <typename Hint>
 }
 
 /**
- * The <code>Callback</code> class is a simple handle object for dealing
- * with callbacks related to hints. It provides means for easily connecting
- * and disconnecting a callback from receiving updates.
+ * @class Callback
+ *
+ * @brief Represents a handle for dealing with hint callbacks.
+ *
+ * @details This class provides methods for easily connecting and disconnecting
+ * a callback from receiving updates.
  *
  * @tparam Hint the type of the associated hint. Should be one of the hint
- * types defined in the <code>hints.hpp</code> header.
- * @tparam UserData the type of the user data, defaults to void.
+ * types defined in the `hints.hpp` header.
+ *
+ * @tparam UserData the type of the user data, defaults to `void`.
+ *
  * @since 4.1.0
+ *
+ * @headerfile hints.hpp
  */
 template <typename Hint, typename UserData = void>
 class Callback final {
  public:
   /**
-   * Creates a <code>HintCallback</code>.
+   * @brief Creates a `HintCallback`.
    *
    * @param callback the function object that will be called whenever the
-   * associated hint is updated. The signature should be <code>void(void*
-   * userData, CZString hint, CZString oldValue, CZString newValue)</code>.
-   * @param userData a pointer to some user data. Defaults to null.
+   * associated hint is updated. The signature should be `void(void*,
+   * czstring, czstring, czstring)`.
+   * @param userData a pointer to some user data. Defaults to `nullptr`.
+   *
    * @throws centurion_exception if the supplied function pointer is null.
+   *
    * @since 4.1.0
    */
   Callback(SDL_HintCallback callback, UserData* userData = nullptr)
@@ -1149,11 +1168,12 @@ class Callback final {
   }
 
   /**
-   * Registers the callback to be invoked whenever the associated hint is
+   * @brief Registers the callback to be invoked whenever the associated hint is
    * updated.
    *
+   * @see `SDL_AddHintCallback`
+   *
    * @since 4.1.0
-   * @see SDL_AddHintCallback
    */
   void connect() noexcept
   {
@@ -1162,8 +1182,10 @@ class Callback final {
   }
 
   /**
-   * Unregisters the callback from being updated whenever the associated hint
-   * is updated.
+   * @brief Unregisters the callback from being updated whenever the associated
+   * hint is updated.
+   *
+   * @see `SDL_DelHintCallback`
    *
    * @since 4.1.0
    */
@@ -1174,23 +1196,28 @@ class Callback final {
   }
 
   /**
-   * Returns a pointer to the function that is invoked when the associated
-   * hint is updated.
+   * @brief Returns a pointer to the function that is invoked when the
+   * associated hint is updated.
    *
    * @return a pointer to the function that is invoked when the associated
    * hint is updated.
+   *
    * @since 4.1.0
    */
-  [[nodiscard]] SDL_HintCallback get() noexcept { return m_callback; }
+  [[nodiscard]] auto get() noexcept -> SDL_HintCallback { return m_callback; }
 
   /**
-   * Returns a pointer to the user data associated with the callback.
+   * @brief Returns a pointer to the user data associated with the callback.
    *
    * @return a pointer to the user data associated with the callback, can be
    * null.
+   *
    * @since 4.1.0
    */
-  [[nodiscard]] UserData* user_data() const noexcept { return m_userData; }
+  [[nodiscard]] auto user_data() const noexcept -> UserData*
+  {
+    return m_userData;
+  }
 
  private:
   SDL_HintCallback m_callback;
@@ -1198,10 +1225,19 @@ class Callback final {
 };
 
 /**
- * Adds a callback that will be connected to observe changes of the value of
- * the specified hint is updated. A callback handle object is returned, which
- * can be used to easily disconnect the callback later. Note! The callback
- * will be immediately invoked with the current value of the hint.
+ * @brief Adds a callback to observe changes of the value of the specified
+ * hint is updated.
+ *
+ * @details A callback handle object is returned, which can be used to easily
+ * disconnect the callback later.
+ *
+ * @note The callback will be immediately invoked with the current value of
+ * the hint.
+ *
+ * @note In a future version of centurion (that supports C++20), the
+ * signature of the function object will be dependent on the `UserData` type.
+ * Unfortunately, this isn't really doable with C++17. Since it requires
+ * default-constructible stateless lambdas.
  *
  * @par Examples
  * This method can be used with any function object that is stateless, such
@@ -1209,9 +1245,9 @@ class Callback final {
  * callback is with a lambda and no explicit user data.
  * @code{.cpp}
  *   auto handle = add_callback([](void* userData,
- *                                 CZString hint,
- *                                 CZString oldValue,
- *                                 CZString newValue) {
+ *                                 czstring hint,
+ *                                 czstring oldValue,
+ *                                 czstring newValue) {
  *     // code that handles the update
  *   });
  * @endcode
@@ -1220,9 +1256,9 @@ class Callback final {
  * @code{.cpp}
  *   int data = 8; // shouldn't be local in real code
  *   auto handle = add_callback([](void* userData,
- *                                 CZString hint,
- *                                 CZString oldValue,
- *                                 CZString newValue) {
+ *                                 czstring hint,
+ *                                 czstring oldValue,
+ *                                 czstring newValue) {
  *     // code that handles the update
  *   },
  *   &data);
@@ -1230,21 +1266,16 @@ class Callback final {
  *
  * @tparam Hint should one of the many hint types defined in this header.
  * However, all it requires is that the type provides a static method that
- * returns a <code>CZString</code>.
+ * returns a `czstring`.
  * @tparam UserData the type of the user data, defaults to void.
  *
  * @param callback the function object that will be invoked when the hint is
- * updated. The signature should be <code>void(void* userData, CZString hint,
- * CZString oldValue, CZString newValue)</code>.
+ * updated. The signature should be `void(void*, czstring, czstring, czstring)`.
  * @param userData the user data to associate with the callback, defaults to
- * null.
+ * `nullptr`.
+ *
  * @return a handle to the added callback.
  *
- * @note In a future version of Centurion (that supports C++20), the
- * signature of the function object will be dependent of the
- * <code>UserData</code> type. Unfortunately, this isn't really doable with
- * C++11, C++14 nor C++17. Since it requires default-constructible stateless
- * lambdas.
  * @since 4.1.0
  */
 template <typename Hint, typename UserData = void>
@@ -1257,10 +1288,11 @@ Callback<Hint, UserData> add_callback(SDL_HintCallback callback,
 }
 
 /**
- * Clears all stored hints.
+ * @brief Clears all stored hints.
+ *
+ * @see `SDL_ClearHints`
  *
  * @since 4.1.0
- * @see SDL_ClearHints
  */
 inline void clear_all() noexcept
 {

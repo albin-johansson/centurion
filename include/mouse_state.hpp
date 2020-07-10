@@ -22,182 +22,226 @@
  * SOFTWARE.
  */
 
+/**
+ * @file mouse_state.hpp
+ *
+ * @brief Provides the `mouse_state` class.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_MOUSE_STATE_HEADER
 #define CENTURION_MOUSE_STATE_HEADER
 
 #include "centurion_api.hpp"
 #include "centurion_utils.hpp"
 
-namespace centurion {
-namespace input {
+namespace centurion::input {
 
 /**
- * The MouseState class provides information about the mouse state, which is an
+ * @class mouse_state
+ *
+ * @brief Provides information about the mouse state, which is an
  * alternative to dealing with mouse events.
  *
  * @since 3.0.0
+ *
+ * @headerfile mouse_state.hpp
  */
-class MouseState final {
+class mouse_state final {
  public:
   /**
-   * @since 3.0.0
-   */
-  CENTURION_API MouseState() noexcept;
-
-  /**
-   * Creates and returns a unique pointer to a MouseState instance.
+   * @brief Creates a `mouse_state` instance.
    *
-   * @return a unique pointer to a MouseState instance.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static std::unique_ptr<MouseState> unique();
+  CENTURION_API
+  mouse_state() noexcept;
 
   /**
-   * Creates and returns a shared pointer to a MouseState instance.
-   *
-   * @return a shared pointer to a MouseState instance.
-   * @since 3.0.0
+   * @copyright mouse_state()
    */
-  [[nodiscard]] CENTURION_API static std::shared_ptr<MouseState> shared();
+  CENTURION_QUERY
+  static auto unique() -> std::unique_ptr<mouse_state>;
 
   /**
-   * Updates the mouse state. The window width and height will be adjusted to
-   * be at least 1.
+   * @copyright mouse_state()
+   */
+  CENTURION_QUERY
+  static auto shared() -> std::shared_ptr<mouse_state>;
+
+  /**
+   * @brief Updates the mouse state. The window width and height will be
+   * adjusted to be at least 1.
    *
    * @param windowWidth the current window width, set to 1 by default.
    * @param windowHeight the current window height, set to 1 by default.
-   * @since 3.0.0
-   */
-  CENTURION_API void update(int windowWidth = 1, int windowHeight = 1) noexcept;
-
-  /**
-   * Resets the screen and logical dimensions of the mouse state instance.
    *
    * @since 3.0.0
    */
-  CENTURION_API void reset() noexcept;
+  CENTURION_API
+  void update(int windowWidth = 1, int windowHeight = 1) noexcept;
 
   /**
-   * Sets the logical width that will be used to determine the mouse position.
-   * The supplied value will be adjusted to be at least 1.
+   * @brief Resets the screen and logical dimensions of the mouse state
+   * instance.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  void reset() noexcept;
+
+  /**
+   * @brief Sets the logical width that will be used to determine the mouse
+   * position.
+   *
+   * @details The supplied value will be adjusted to be at least 1.
    *
    * @param logicalWidth the logical width that will be used to determine the
    * mouse position.
+   *
    * @since 3.0.0
    */
-  CENTURION_API void set_logical_width(int logicalWidth) noexcept;
+  CENTURION_API
+  void set_logical_width(int logicalWidth) noexcept;
 
   /**
-   * Sets the logical height that will be used to determine the mouse position.
-   * The supplied value will be adjusted to be at least 1.
+   * @brief Sets the logical height that will be used to determine the mouse
+   * position.
+   *
+   * @details The supplied value will be adjusted to be at least 1.
    *
    * @param logicalHeight the logical height that will be used to determine the
    * mouse position.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_logical_height(int logicalHeight) noexcept;
-
-  /**
-   * Indicates whether or not the left mouse button was released.
    *
-   * @return true if the left mouse button was released; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool was_left_button_released() const noexcept;
+  CENTURION_API
+  void set_logical_height(int logicalHeight) noexcept;
 
   /**
-   * Indicates whether or not the right mouse button was released.
+   * @brief Indicates whether or not the left mouse button was released.
    *
-   * @return true if the right mouse button was released; false otherwise.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API bool was_right_button_released() const noexcept;
-
-  /**
-   * Indicates whether or not the mouse was moved.
+   * @return `true` if the left mouse button was released; `false` otherwise.
    *
-   * @return true if the mouse was moved; false otherwise.
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool was_mouse_moved() const noexcept;
+  CENTURION_QUERY
+  auto was_left_button_released() const noexcept -> bool;
 
   /**
-   * Returns the x-coordinate of the mouse.
+   * @brief Indicates whether or not the right mouse button was released.
+   *
+   * @return `true` if the right mouse button was released; `false` otherwise.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_QUERY
+  auto was_right_button_released() const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the mouse was moved.
+   *
+   * @return `true` if the mouse was moved; `false` otherwise.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_QUERY
+  auto was_mouse_moved() const noexcept -> bool;
+
+  /**
+   * @brief Returns the x-coordinate of the mouse.
    *
    * @return the x-coordinate of the mouse.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] int mouse_x() const noexcept { return m_mouseX; }
+  [[nodiscard]] auto mouse_x() const noexcept -> int { return m_mouseX; }
 
   /**
-   * Returns the y-coordinate of the mouse.
+   * @brief Returns the y-coordinate of the mouse.
    *
    * @return the y-coordinate of the mouse.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] int mouse_y() const noexcept { return m_mouseY; }
+  [[nodiscard]] auto mouse_y() const noexcept -> int { return m_mouseY; }
 
   /**
-   * Returns the logical width used by the mouse state instance.
+   * @brief Returns the logical width used by the mouse state instance.
    *
    * @return the logical width used by the mouse state instance, 1 is used by
    * default.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] int logical_width() const noexcept { return m_logicalWidth; }
+  [[nodiscard]] auto logical_width() const noexcept -> int
+  {
+    return m_logicalWidth;
+  }
 
   /**
-   * Returns the logical height used by the mouse state instance.
+   * @brief Returns the logical height used by the mouse state instance.
    *
    * @return the logical height used by the mouse state instance, 1 is used by
    * default.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] int logical_height() const noexcept { return m_logicalHeight; }
+  [[nodiscard]] auto logical_height() const noexcept -> int
+  {
+    return m_logicalHeight;
+  }
 
   /**
-   * Indicates whether or not the left mouse button is currently pressed.
+   * @brief Indicates whether or not the left mouse button is currently pressed.
    *
-   * @return true if the left mouse button is pressed; false otherwise.
+   * @return `true` if the left mouse button is pressed; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] bool is_left_button_pressed() const noexcept
+  [[nodiscard]] auto is_left_button_pressed() const noexcept -> bool
   {
     return m_leftPressed;
   }
 
   /**
-   * Indicates whether or not the right mouse button is currently pressed.
+   * @brief Indicates whether or not the right mouse button is currently
+   * pressed.
    *
-   * @return true if the right mouse button is pressed; false otherwise.
+   * @return `true` if the right mouse button is pressed; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] bool is_right_button_pressed() const noexcept
+  [[nodiscard]] auto is_right_button_pressed() const noexcept -> bool
   {
     return m_rightPressed;
   }
 
  private:
-  int m_mouseX = 0;
-  int m_mouseY = 0;
-  int m_oldX = 0;
-  int m_oldY = 0;
-  int m_logicalWidth = 1;
-  int m_logicalHeight = 1;
-  bool m_leftPressed = false;
-  bool m_rightPressed = false;
-  bool m_prevLeftPressed = false;
-  bool m_prevRightPressed = false;
+  int m_mouseX{0};
+  int m_mouseY{0};
+  int m_oldX{0};
+  int m_oldY{0};
+  int m_logicalWidth{1};
+  int m_logicalHeight{1};
+  bool m_leftPressed{false};
+  bool m_rightPressed{false};
+  bool m_prevLeftPressed{false};
+  bool m_prevRightPressed{false};
 };
 
-static_assert(std::is_final_v<MouseState>);
-static_assert(std::is_nothrow_move_constructible_v<MouseState>);
-static_assert(std::is_nothrow_move_assignable_v<MouseState>);
-static_assert(std::is_nothrow_copy_constructible_v<MouseState>);
-static_assert(std::is_nothrow_copy_assignable_v<MouseState>);
+static_assert(std::is_final_v<mouse_state>);
+static_assert(std::is_nothrow_move_constructible_v<mouse_state>);
+static_assert(std::is_nothrow_move_assignable_v<mouse_state>);
+static_assert(std::is_nothrow_copy_constructible_v<mouse_state>);
+static_assert(std::is_nothrow_copy_assignable_v<mouse_state>);
 
-}  // namespace input
-}  // namespace centurion
+}  // namespace centurion::input
 
 #ifdef CENTURION_HEADER_ONLY
 #include "mouse_state.cpp"

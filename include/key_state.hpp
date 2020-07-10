@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file key_state.hpp
+ *
+ * @brief Provides the `key_state` class.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_KEY_STATE_HEADER
 #define CENTURION_KEY_STATE_HEADER
 
@@ -34,126 +46,160 @@
 #include "key.hpp"
 #include "key_modifier.hpp"
 
-namespace centurion {
-namespace input {
+/**
+ * @namespace centurion::input
+ *
+ * @brief Contains components related to input state.
+ *
+ * @details This namespace provides components that are an alternative to the
+ * traditional events.
+ *
+ * @see `key_state`
+ * @see `mouse_state`
+ */
+namespace centurion::input {
 
 /**
- * The KeyState class provides information about the keyboard state. Using the
- * keyboard state is an alternative to using events for keyboard input.
+ * @class key_state
+ *
+ * @brief Provides information about the keyboard state.
+ *
+ * @details Using the keyboard state is an alternative to using events for
+ * keyboard input.
  *
  * @since 3.0.0
+ *
+ * @headerfile key_state.hpp
  */
-class KeyState final {
+class key_state final {
  public:
   /**
-   * @since 3.0.0
-   */
-  CENTURION_API KeyState() noexcept;
-
-  /**
-   * Creates and returns a unique pointer to a KeyState instance.
-   *
-   * @return a unique pointer to a KeyState instance.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static std::unique_ptr<KeyState> unique();
-
-  /**
-   * Creates and returns a shared pointer to a KeyState instance.
-   *
-   * @return a shared pointer to a KeyState instance.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static std::shared_ptr<KeyState> shared();
-
-  /**
-   * Updates the state of the key state object. Note! SDL_PumpEvents isn't
-   * invoked by this method.
+   * @brief Creates a `key_state` instance.
    *
    * @since 3.0.0
    */
-  CENTURION_API void update() noexcept;
+  CENTURION_API
+  key_state() noexcept;
 
   /**
-   * Indicates whether or not the specified key is being pressed. This method
-   * returns false if the supplied key isn't recognized.
+   * @copydoc key_state()
+   */
+  CENTURION_QUERY
+  static auto unique() -> std::unique_ptr<key_state>;
+
+  /**
+   * @copydoc key_state()
+   */
+  CENTURION_QUERY
+  static auto shared() -> std::shared_ptr<key_state>;
+
+  /**
+   * @brief Updates the state of the key state object.
    *
-   * @param key the key that will be checked.
-   * @return true if the key is being pressed; false otherwise.
+   * @note `SDL_PumpEvents` isn't invoked by this method.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool is_pressed(const Key& key) const noexcept;
+  CENTURION_API
+  void update() noexcept;
 
   /**
-   * Indicates whether or not the specified key has been pressed during more
-   * than one update of the key state. This method returns false if the
-   * supplied key isn't recognized.
+   * @brief Indicates whether or not the specified key is being pressed.
+   *
+   * @details This method returns false if the supplied key isn't recognized.
    *
    * @param key the key that will be checked.
-   * @return true if the key has been held down; false otherwise.
+   *
+   * @return `true` if the key is being pressed; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool is_held(const Key& key) const noexcept;
+  CENTURION_QUERY
+  auto is_pressed(const Key& key) const noexcept -> bool;
 
   /**
-   * Indicates whether or not a key just became pressed in the last update of
-   * the key state. This method returns false if the supplied key isn't
-   * recognized.
+   * @brief Indicates whether or not the specified key has been pressed during
+   * more than one update of the key state.
+   *
+   * @details This method returns false if the supplied key isn't recognized.
    *
    * @param key the key that will be checked.
-   * @return true if the key has just been pressed; false otherwise.
+   *
+   * @return `true` if the key has been held down; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool was_just_pressed(
-      const Key& key) const noexcept;
+  CENTURION_QUERY
+  auto is_held(const Key& key) const noexcept -> bool;
 
   /**
-   * Indicates whether or not the specified key was released in the last update
-   * of the key state. This method returns false if the supplied key isn't
-   * recognized.
+   * @brief Indicates whether or not a key just became pressed in the last
+   * update of the key state.
+   *
+   * @details This method returns false if the supplied key isn't recognized.
    *
    * @param key the key that will be checked.
-   * @return true if the key was released; false otherwise.
+   *
+   * @return `true` if the key has just been pressed; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API bool was_just_released(
-      const Key& key) const noexcept;
+  CENTURION_QUERY
+  auto was_just_pressed(const Key& key) const noexcept -> bool;
 
   /**
-   * Indicates whether or not the specified key modifier is active. Multiple key
-   * modifiers can be active at the same time.
+   * @brief Indicates whether or not the specified key was released in the last
+   * update of the key state.
+   *
+   * @details This method returns false if the supplied key isn't recognized.
+   *
+   * @param key the key that will be checked.
+   *
+   * @return `true` if the key was released; `false` otherwise.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_QUERY
+  auto was_just_released(const Key& key) const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the specified key modifier is active.
+   *
+   * @note Multiple key modifiers can be active at the same time.
    *
    * @param modifier the key modifier that will be checked.
-   * @return true if the specified key modifier is active; false otherwise.
+   *
+   * @return `true` if the specified key modifier is active; `false` otherwise.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API bool modifier_active(
-      key_modifier modifier) const noexcept;
+  CENTURION_QUERY
+  auto modifier_active(key_modifier modifier) const noexcept -> bool;
 
   /**
-   * Returns the total amount of keys.
+   * @brief Returns the total amount of keys.
    *
    * @return the total amount of keys.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] int amount_of_keys() const noexcept { return m_nKeys; }
+  [[nodiscard]] auto amount_of_keys() const noexcept -> int { return m_nKeys; }
 
  private:
-  const u8* m_states = nullptr;
+  const u8* m_states{nullptr};
   std::array<u8, static_cast<int>(SDL_NUM_SCANCODES)> m_previousStates;
-  int m_nKeys = 0;
+  int m_nKeys{};
 };
 
-static_assert(std::is_final_v<KeyState>);
-static_assert(std::is_default_constructible_v<KeyState>);
-static_assert(std::is_nothrow_destructible_v<KeyState>);
-static_assert(std::is_nothrow_move_constructible_v<KeyState>);
-static_assert(std::is_nothrow_move_assignable_v<KeyState>);
-static_assert(std::is_nothrow_copy_constructible_v<KeyState>);
-static_assert(std::is_nothrow_copy_assignable_v<KeyState>);
+static_assert(std::is_final_v<key_state>);
+static_assert(std::is_default_constructible_v<key_state>);
+static_assert(std::is_nothrow_destructible_v<key_state>);
+static_assert(std::is_nothrow_move_constructible_v<key_state>);
+static_assert(std::is_nothrow_move_assignable_v<key_state>);
+static_assert(std::is_nothrow_copy_constructible_v<key_state>);
+static_assert(std::is_nothrow_copy_assignable_v<key_state>);
 
-}  // namespace input
-}  // namespace centurion
+}  // namespace centurion::input
 
 #ifdef CENTURION_HEADER_ONLY
 #include "key_state.cpp"

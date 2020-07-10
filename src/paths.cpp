@@ -110,13 +110,15 @@ void pref_path::move(pref_path&& other) noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<pref_path> pref_path::unique(czstring org, czstring app) noexcept
+std::unique_ptr<pref_path> pref_path::unique(czstring org,
+                                             czstring app) noexcept
 {
   return std::make_unique<pref_path>(org, app);
 }
 
 CENTURION_DEF
-std::shared_ptr<pref_path> pref_path::shared(czstring org, czstring app) noexcept
+std::shared_ptr<pref_path> pref_path::shared(czstring org,
+                                             czstring app) noexcept
 {
   return std::make_shared<pref_path>(org, app);
 }

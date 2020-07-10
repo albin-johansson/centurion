@@ -8,36 +8,35 @@
 
 #include "centurion_utils.hpp"
 
-namespace centurion {
-namespace input {
+namespace centurion::input {
 
 CENTURION_DEF
-KeyState::KeyState() noexcept
+key_state::key_state() noexcept
 {
   m_states = SDL_GetKeyboardState(&m_nKeys);
   std::fill(m_previousStates.begin(), m_previousStates.end(), 0);
 }
 
 CENTURION_DEF
-std::unique_ptr<KeyState> KeyState::unique()
+auto key_state::unique() -> std::unique_ptr<key_state>
 {
-  return std::make_unique<KeyState>();
+  return std::make_unique<key_state>();
 }
 
 CENTURION_DEF
-std::shared_ptr<KeyState> KeyState::shared()
+auto key_state::shared() -> std::shared_ptr<key_state>
 {
-  return std::make_shared<KeyState>();
+  return std::make_shared<key_state>();
 }
 
 CENTURION_DEF
-void KeyState::update() noexcept
+void key_state::update() noexcept
 {
   std::copy(m_states, m_states + m_nKeys, m_previousStates.begin());
 }
 
 CENTURION_DEF
-bool KeyState::is_pressed(const Key& key) const noexcept
+auto key_state::is_pressed(const Key& key) const noexcept -> bool
 {
   const auto code = key.scancode();
   if (code >= 0 && code < m_nKeys) {
@@ -48,7 +47,7 @@ bool KeyState::is_pressed(const Key& key) const noexcept
 }
 
 CENTURION_DEF
-bool KeyState::is_held(const Key& key) const noexcept
+auto key_state::is_held(const Key& key) const noexcept -> bool
 {
   const auto code = key.scancode();
   if (code >= 0 && code < m_nKeys) {
@@ -59,7 +58,7 @@ bool KeyState::is_held(const Key& key) const noexcept
 }
 
 CENTURION_DEF
-bool KeyState::was_just_pressed(const Key& key) const noexcept
+auto key_state::was_just_pressed(const Key& key) const noexcept -> bool
 {
   const auto code = key.scancode();
   if (code >= 0 && code < m_nKeys) {
@@ -70,7 +69,7 @@ bool KeyState::was_just_pressed(const Key& key) const noexcept
 }
 
 CENTURION_DEF
-bool KeyState::was_just_released(const Key& key) const noexcept
+auto key_state::was_just_released(const Key& key) const noexcept -> bool
 {
   const auto code = key.scancode();
   if (code >= 0 && code < m_nKeys) {
@@ -81,12 +80,11 @@ bool KeyState::was_just_released(const Key& key) const noexcept
 }
 
 CENTURION_DEF
-bool KeyState::modifier_active(key_modifier modifier) const noexcept
+auto key_state::modifier_active(key_modifier modifier) const noexcept -> bool
 {
   return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
 }
 
-}  // namespace input
-}  // namespace centurion
+}  // namespace centurion::input
 
 #endif  // CENTURION_KEY_STATE_SOURCE

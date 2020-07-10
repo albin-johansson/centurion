@@ -51,7 +51,8 @@ auto KeyboardEvent::is_active(const Key& key) const noexcept -> bool
 }
 
 CENTURION_DEF
-auto KeyboardEvent::modifier_active(key_modifier modifier) const noexcept -> bool
+auto KeyboardEvent::modifier_active(key_modifier modifier) const noexcept
+    -> bool
 {
   return m_event.keysym.mod & static_cast<u16>(modifier);
 }

@@ -189,8 +189,7 @@ TEST_CASE("KeyboardEvent::alt_active", "[KeyboardEvent]")
 
   SECTION("One active modifier")
   {
-    const auto [left, right] =
-        get_events_one_mod_active(
+    const auto [left, right] = get_events_one_mod_active(
         key_modifier::left_alt, key_modifier::right_alt);
     CHECK(left.alt_active());
     CHECK(right.alt_active());
@@ -220,8 +219,7 @@ TEST_CASE("KeyboardEvent::gui_active", "[KeyboardEvent]")
 
   SECTION("One active modifier")
   {
-    const auto [left, right] =
-        get_events_one_mod_active(
+    const auto [left, right] = get_events_one_mod_active(
         key_modifier::left_gui, key_modifier::right_gui);
     CHECK(left.gui_active());
     CHECK(right.gui_active());

@@ -1325,7 +1325,7 @@ class basic_renderer final : public renderer_base {
  *     view.clear_with(ctn::color::black);
  *
  *     view.set_color(ctn::color::pink);
- *     view.fill_rect({{15, 20}, {100, 100});
+ *     view.fill_rect(ctn::rect_i{{15, 20}, {100, 100}});
  *
  *     view.present();
  *   }

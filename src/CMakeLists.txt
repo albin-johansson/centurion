@@ -47,6 +47,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/joystick.hpp
         ${CTN_INCLUDE_DIR}/touch.hpp
         window.cpp
+        window_base.cpp
         font.cpp
         texture.cpp
         centurion.cpp

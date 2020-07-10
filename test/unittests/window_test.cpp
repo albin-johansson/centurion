@@ -824,6 +824,7 @@ TEST_CASE("Window::check_flag", "[Window]")
     CHECK(validate(SDL_WINDOW_VULKAN));
   }
 }
+
 TEST_CASE("Window::flags", "[Window]")
 {
   auto* win = SDL_CreateWindow(

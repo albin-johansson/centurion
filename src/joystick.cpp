@@ -37,7 +37,7 @@ Joystick::Joystick(Joystick&& other) noexcept
 }
 
 CENTURION_DEF
-Joystick& Joystick::operator=(Joystick&& other) noexcept
+auto Joystick::operator=(Joystick&& other) noexcept -> Joystick&
 {
   if (this != &other) {
     move(std::move(other));
@@ -69,25 +69,25 @@ void Joystick::destroy() noexcept
 }
 
 CENTURION_DEF
-std::unique_ptr<Joystick> Joystick::unique(int deviceIndex)
+auto Joystick::unique(int deviceIndex) -> std::unique_ptr<Joystick>
 {
   return std::make_unique<Joystick>(deviceIndex);
 }
 
 CENTURION_DEF
-std::unique_ptr<Joystick> Joystick::unique(SDL_Joystick* joystick)
+auto Joystick::unique(SDL_Joystick* joystick) -> std::unique_ptr<Joystick>
 {
   return std::make_unique<Joystick>(joystick);
 }
 
 CENTURION_DEF
-std::shared_ptr<Joystick> Joystick::shared(int deviceIndex)
+auto Joystick::shared(int deviceIndex) -> std::shared_ptr<Joystick>
 {
   return std::make_shared<Joystick>(deviceIndex);
 }
 
 CENTURION_DEF
-std::shared_ptr<Joystick> Joystick::shared(SDL_Joystick* joystick)
+auto Joystick::shared(SDL_Joystick* joystick) -> std::shared_ptr<Joystick>
 {
   return std::make_shared<Joystick>(joystick);
 }
@@ -117,25 +117,25 @@ void Joystick::set_polling(bool enabled) noexcept
 }
 
 CENTURION_DEF
-bool Joystick::polling() noexcept
+auto Joystick::polling() noexcept -> bool
 {
   return SDL_JoystickEventState(SDL_QUERY);
 }
 
 CENTURION_DEF
-SDL_Joystick* Joystick::from_instance_id(SDL_JoystickID id) noexcept
+auto Joystick::from_instance_id(SDL_JoystickID id) noexcept -> SDL_Joystick*
 {
   return SDL_JoystickFromInstanceID(id);
 }
 
 CENTURION_DEF
-SDL_Joystick* Joystick::from_player_index(int playerIndex) noexcept
+auto Joystick::from_player_index(int playerIndex) noexcept -> SDL_Joystick*
 {
   return SDL_JoystickFromPlayerIndex(playerIndex);
 }
 
 CENTURION_DEF
-std::optional<int> Joystick::amount() noexcept
+auto Joystick::amount() noexcept -> std::optional<int>
 {
   const auto result = SDL_NumJoysticks();
   if (result < 0) {
@@ -146,13 +146,13 @@ std::optional<int> Joystick::amount() noexcept
 }
 
 CENTURION_DEF
-SDL_JoystickGUID Joystick::guid(int deviceIndex) noexcept
+auto Joystick::guid(int deviceIndex) noexcept -> SDL_JoystickGUID
 {
   return SDL_JoystickGetDeviceGUID(deviceIndex);
 }
 
 CENTURION_DEF
-std::optional<int> Joystick::player_index(int deviceIndex) noexcept
+auto Joystick::player_index(int deviceIndex) noexcept -> std::optional<int>
 {
   const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
   if (index == -1) {
@@ -163,7 +163,7 @@ std::optional<int> Joystick::player_index(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-std::optional<u16> Joystick::vendor(int deviceIndex) noexcept
+auto Joystick::vendor(int deviceIndex) noexcept -> std::optional<u16>
 {
   const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
   if (vendor == 0) {
@@ -174,7 +174,7 @@ std::optional<u16> Joystick::vendor(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-std::optional<u16> Joystick::product(int deviceIndex) noexcept
+auto Joystick::product(int deviceIndex) noexcept -> std::optional<u16>
 {
   const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
   if (product == 0) {
@@ -185,7 +185,7 @@ std::optional<u16> Joystick::product(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-std::optional<u16> Joystick::product_version(int deviceIndex) noexcept
+auto Joystick::product_version(int deviceIndex) noexcept -> std::optional<u16>
 {
   const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
   if (version == 0) {
@@ -196,13 +196,14 @@ std::optional<u16> Joystick::product_version(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-Joystick::Type Joystick::type(int deviceIndex) noexcept
+auto Joystick::type(int deviceIndex) noexcept -> Joystick::Type
 {
   return static_cast<Type>(SDL_JoystickGetDeviceType(deviceIndex));
 }
 
 CENTURION_DEF
-std::optional<SDL_JoystickID> Joystick::instance_id(int deviceIndex) noexcept
+auto Joystick::instance_id(int deviceIndex) noexcept
+    -> std::optional<SDL_JoystickID>
 {
   const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
   if (id == -1) {
@@ -213,14 +214,14 @@ std::optional<SDL_JoystickID> Joystick::instance_id(int deviceIndex) noexcept
 }
 
 CENTURION_DEF
-czstring Joystick::name(int deviceIndex) noexcept
+auto Joystick::name(int deviceIndex) noexcept -> czstring
 {
   return SDL_JoystickNameForIndex(deviceIndex);
 }
 
 CENTURION_DEF
-SDL_JoystickGUID Joystick::guid_from_string(
-    gsl::not_null<czstring> str) noexcept
+auto Joystick::guid_from_string(gsl::not_null<czstring> str) noexcept
+    -> SDL_JoystickGUID
 {
   return SDL_JoystickGetGUIDFromString(str);
 }
@@ -240,7 +241,7 @@ void Joystick::set_player_index(int index) noexcept
 }
 
 CENTURION_DEF
-std::optional<int> Joystick::player_index() const noexcept
+auto Joystick::player_index() const noexcept -> std::optional<int>
 {
   const auto index = SDL_JoystickGetPlayerIndex(m_joystick);
   if (index == -1) {
@@ -251,13 +252,13 @@ std::optional<int> Joystick::player_index() const noexcept
 }
 
 CENTURION_DEF
-Joystick::Type Joystick::type() const noexcept
+auto Joystick::type() const noexcept -> Joystick::Type
 {
   return static_cast<Type>(SDL_JoystickGetType(m_joystick));
 }
 
 CENTURION_DEF
-std::optional<u16> Joystick::vendor() const noexcept
+auto Joystick::vendor() const noexcept -> std::optional<u16>
 {
   const auto vendor = SDL_JoystickGetVendor(m_joystick);
   if (vendor == 0) {
@@ -268,7 +269,7 @@ std::optional<u16> Joystick::vendor() const noexcept
 }
 
 CENTURION_DEF
-std::optional<u16> Joystick::product() const noexcept
+auto Joystick::product() const noexcept -> std::optional<u16>
 {
   const auto product = SDL_JoystickGetProduct(m_joystick);
   if (product == 0) {
@@ -279,7 +280,7 @@ std::optional<u16> Joystick::product() const noexcept
 }
 
 CENTURION_DEF
-std::optional<u16> Joystick::product_version() const noexcept
+auto Joystick::product_version() const noexcept -> std::optional<u16>
 {
   const auto version = SDL_JoystickGetProductVersion(m_joystick);
   if (version == 0) {
@@ -290,8 +291,8 @@ std::optional<u16> Joystick::product_version() const noexcept
 }
 
 CENTURION_DEF
-std::optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
-    int ball) const noexcept
+auto Joystick::ball_axis_change(int ball) const noexcept
+    -> std::optional<Joystick::BallAxisChange>
 {
   BallAxisChange change{};
   const auto result =
@@ -304,7 +305,7 @@ std::optional<Joystick::BallAxisChange> Joystick::ball_axis_change(
 }
 
 CENTURION_DEF
-std::optional<i16> Joystick::axis_pos(unsigned int axis) const noexcept
+auto Joystick::axis_pos(unsigned int axis) const noexcept -> std::optional<i16>
 {
   const auto result = SDL_JoystickGetAxis(m_joystick, static_cast<int>(axis));
   if (result == 0) {
@@ -315,8 +316,8 @@ std::optional<i16> Joystick::axis_pos(unsigned int axis) const noexcept
 }
 
 CENTURION_DEF
-std::optional<i16> Joystick::axis_initial_state(
-    unsigned int axis) const noexcept
+auto Joystick::axis_initial_state(unsigned int axis) const noexcept
+    -> std::optional<i16>
 {
   i16 state{};
   const auto hadInitialState = SDL_JoystickGetAxisInitialState(
@@ -329,118 +330,68 @@ std::optional<i16> Joystick::axis_initial_state(
 }
 
 CENTURION_DEF
-bool Joystick::attached() const noexcept
+auto Joystick::attached() const noexcept -> bool
 {
   return SDL_JoystickGetAttached(m_joystick);
 }
 
 CENTURION_DEF
-int Joystick::num_hats() const noexcept
+auto Joystick::num_hats() const noexcept -> int
 {
   return SDL_JoystickNumHats(m_joystick);
 }
 
 CENTURION_DEF
-int Joystick::num_axes() const noexcept
+auto Joystick::num_axes() const noexcept -> int
 {
   return SDL_JoystickNumAxes(m_joystick);
 }
 CENTURION_DEF
-int Joystick::num_trackballs() const noexcept
+auto Joystick::num_trackballs() const noexcept -> int
 {
   return SDL_JoystickNumBalls(m_joystick);
 }
 
 CENTURION_DEF
-int Joystick::num_buttons() const noexcept
+auto Joystick::num_buttons() const noexcept -> int
 {
   return SDL_JoystickNumButtons(m_joystick);
 }
 
 CENTURION_DEF
-SDL_JoystickID Joystick::instance_id() const noexcept
+auto Joystick::instance_id() const noexcept -> SDL_JoystickID
 {
-  // Can fail for null joysticks, but that can't happen due to class invariant.
   return SDL_JoystickInstanceID(m_joystick);
 }
 
 CENTURION_DEF
-SDL_JoystickGUID Joystick::guid() noexcept
+auto Joystick::guid() noexcept -> SDL_JoystickGUID
 {
   return SDL_JoystickGetGUID(m_joystick);
 }
 
 CENTURION_DEF
-czstring Joystick::name() const noexcept
+auto Joystick::name() const noexcept -> czstring
 {
   return SDL_JoystickName(m_joystick);
 }
 
 CENTURION_DEF
-Joystick::Power Joystick::power() const noexcept
+auto Joystick::power() const noexcept -> Joystick::Power
 {
   return static_cast<Power>(SDL_JoystickCurrentPowerLevel(m_joystick));
 }
 
 CENTURION_DEF
-enum button_state Joystick::button_state(int button) const noexcept
-{
-  return static_cast<enum button_state>(
-      SDL_JoystickGetButton(m_joystick, button));
+auto Joystick::button_state(int button) const noexcept -> enum button_state {
+  return static_cast<enum button_state>(SDL_JoystickGetButton(m_joystick,
+                                                              button));
 }
 
 CENTURION_DEF
-Joystick::HatState Joystick::hat_state(int hat) const noexcept
+auto Joystick::hat_state(int hat) const noexcept -> Joystick::HatState
 {
   return static_cast<HatState>(SDL_JoystickGetHat(m_joystick, hat));
-}
-
-CENTURION_DEF
-bool operator==(Joystick::Power lhs, SDL_JoystickPowerLevel rhs) noexcept
-{
-  return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
-}
-
-CENTURION_DEF
-bool operator==(SDL_JoystickPowerLevel lhs, Joystick::Power rhs) noexcept
-{
-  return rhs == lhs;
-}
-
-CENTURION_DEF
-bool operator!=(Joystick::Power lhs, SDL_JoystickPowerLevel rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-CENTURION_DEF
-bool operator!=(SDL_JoystickPowerLevel lhs, Joystick::Power rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-CENTURION_DEF
-bool operator==(Joystick::Type lhs, SDL_JoystickType rhs) noexcept
-{
-  return static_cast<SDL_JoystickType>(lhs) == rhs;
-}
-
-CENTURION_DEF
-bool operator==(SDL_JoystickType lhs, Joystick::Type rhs) noexcept
-{
-  return rhs == lhs;
-}
-
-CENTURION_DEF
-bool operator!=(Joystick::Type lhs, SDL_JoystickType rhs) noexcept
-{
-  return !(lhs == rhs);
-}
-
-CENTURION_DEF
-bool operator!=(SDL_JoystickType lhs, Joystick::Type rhs) noexcept
-{
-  return !(lhs == rhs);
 }
 
 }  // namespace centurion

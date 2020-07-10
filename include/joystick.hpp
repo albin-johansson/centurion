@@ -23,11 +23,14 @@
  */
 
 /**
+ * @file joystick.hpp
+ *
  * @brief Provides the joystick API.
  *
- * @file joystick.hpp
  * @author Albin Johansson
+ *
  * @copyright MIT License
+ *
  * @date 2019-2020
  */
 
@@ -45,16 +48,16 @@ namespace centurion {
 
 /**
  * @class Joystick
- * @brief Represents various types of joysticks.
  *
- * @details `Joystick` instances are movable but not copyable.
+ * @brief Represents various types of joysticks.
  *
  * @todo Cover `SDL_JoystickGetGUIDString`.
  *
- * @headerfile joystick.hpp
  * @since 4.2.0
  *
  * @see `SDL_Joystick`
+ *
+ * @headerfile joystick.hpp
  */
 class Joystick final {
  public:
@@ -146,7 +149,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_API explicit Joystick(int deviceIndex);
+  CENTURION_API
+  explicit Joystick(int deviceIndex);
 
   /**
    * @brief Creates a `Joystick` instance based on an existing `SDL_Joystick*`.
@@ -159,7 +163,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_API explicit Joystick(owner<SDL_Joystick*> joystick);
+  CENTURION_API
+  explicit Joystick(owner<SDL_Joystick*> joystick);
 
   /**
    * @brief Creates a `Joystick` instance by moving the supplied joystick
@@ -169,7 +174,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_API Joystick(Joystick&& other) noexcept;
+  CENTURION_API
+  Joystick(Joystick&& other) noexcept;
 
   Joystick(const Joystick&) = delete;
 
@@ -182,303 +188,39 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_API Joystick& operator=(Joystick&& other) noexcept;
+  CENTURION_API
+  auto operator=(Joystick&& other) noexcept -> Joystick&;
 
-  Joystick& operator=(const Joystick&) = delete;
+  auto operator=(const Joystick&) -> Joystick& = delete;
 
-  CENTURION_API ~Joystick() noexcept;
-
-  /**
-   * @brief Creates and returns a unique pointer to a `Joystick` instance.
-   *
-   * @invariant This method never returns a null pointer.
-   *
-   * @param deviceIndex refers to the N'th joystick that is currently
-   * recognized by SDL.
-   *
-   * @return a unique pointer to a `Joystick` instance.
-   *
-   * @throws centurion_exception if the joystick cannot be created.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static std::unique_ptr<Joystick> unique(
-      int deviceIndex);
+  CENTURION_API
+  ~Joystick() noexcept;
 
   /**
-   * @brief Creates and returns a unique pointer to a `Joystick` instance.
-   *
-   * @pre `joystick` must not be null.
-   *
-   * @invariant This method never returns a null pointer.
-   *
-   * @param joystick a pointer to the `SDL_Joystick` that will be claimed.
-   *
-   * @return a unique pointer to a `Joystick` instance.
-   *
-   * @throws centurion_exception if the joystick cannot be created.
-   *
-   * @since 4.2.0
+   * @copydoc Joystick(int)
    */
-  [[nodiscard]] CENTURION_API static std::unique_ptr<Joystick> unique(
-      owner<SDL_Joystick*> joystick);
+  CENTURION_QUERY
+  static auto unique(int deviceIndex) -> std::unique_ptr<Joystick>;
 
   /**
-   * @brief Creates and returns a shared pointer to a `Joystick` instance.
-   *
-   * @invariant This method never returns a null pointer.
-   *
-   * @param deviceIndex refers to the N'th joystick that is currently
-   * recognized by SDL.
-   *
-   * @return a shared pointer to a `Joystick` instance.
-   *
-   * @throws centurion_exception if the joystick cannot be created.
-   *
-   * @since 4.2.0
+   * @copydoc Joystick(owner<SDL_Joystick*>)
    */
-  [[nodiscard]] CENTURION_API static std::shared_ptr<Joystick> shared(
-      int deviceIndex);
+  CENTURION_QUERY
+  static auto unique(owner<SDL_Joystick*> joystick)
+      -> std::unique_ptr<Joystick>;
 
   /**
-   * @brief Creates and returns a shared pointer to a `Joystick` instance.
-   *
-   * @pre `joystick` must not be null.
-   *
-   * @invariant This method never returns a null pointer.
-   *
-   * @param joystick a pointer to the `SDL_Joystick` that will be claimed.
-   *
-   * @return a shared pointer to a `Joystick` instance.
-   *
-   * @throws centurion_exception if the joystick cannot be created.
-   *
-   * @since 4.2.0
+   * @copydoc Joystick(int)
    */
-  [[nodiscard]] CENTURION_API static std::shared_ptr<Joystick> shared(
-      owner<SDL_Joystick*> joystick);
+  CENTURION_QUERY
+  static auto shared(int deviceIndex) -> std::shared_ptr<Joystick>;
 
   /**
-   * @brief Updates the state of all open joysticks.
-   *
-   * @note This is done automatically by the event loop if any joystick
-   * events are enabled.
-   *
-   * @since 4.2.0
+   * @copydoc Joystick(owner<SDL_Joystick*>)
    */
-  CENTURION_API static void update() noexcept;
-
-  /**
-   * @brief Locks the access to all joysticks.
-   *
-   * @details If you are using the joystick API from multiple threads you
-   * should use this method to restrict access to the joysticks.
-   *
-   * @see SDL_LockJoysticks
-   * @since 4.2.0
-   */
-  CENTURION_API static void lock() noexcept;
-
-  /**
-   * @brief Unlocks the access to all joysticks.
-   *
-   * @see SDL_UnlockJoysticks
-   * @since 4.2.0
-   */
-  CENTURION_API static void unlock() noexcept;
-
-  /**
-   * @brief Specifies whether or not joystick event polling is enabled.
-   *
-   * @details If joystick event polling is disabled, then you must manually call
-   * `Joystick::update()` in order to update the joystick state.
-   *
-   * @note It's recommended to leave joystick event polling enabled.
-   *
-   * @warning Calling this function might cause all events currently in
-   * the event queue to be deleted.
-   *
-   * @param enabled `true` if joystick event polling should be enabled;
-   * `false` otherwise.
-   *
-   * @see SDL_JoystickEventState(int)
-   *
-   * @since 4.2.0
-   */
-  CENTURION_API static void set_polling(bool enabled) noexcept;
-
-  /**
-   * @brief Indicates whether or not joystick event polling is enabled.
-   *
-   * @return `true` if joystick event polling is enabled; `false` otherwise.
-   *
-   * @since 4.2.0
-   */
-  CENTURION_API static bool polling() noexcept;
-
-  /**
-   * @brief Returns a pointer to an `SDL_Joystick` associated with the ID.
-   *
-   * @param id the joystick ID associated with the desired joystick.
-   *
-   * @return a pointer to an `SDL_Joystick` instance if there is a joystick
-   * associated with the supplied ID; null otherwise.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static SDL_Joystick* from_instance_id(
-      SDL_JoystickID id) noexcept;
-
-  /**
-   * @brief Returns a pointer to the joystick associated with the specified
-   * player index.
-   *
-   * @param playerIndex the player index of the desired joystick.
-   *
-   * @return a pointer to the associated joystick; `nullptr` if there is none.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static SDL_Joystick* from_player_index(
-      int playerIndex) noexcept;
-
-  /**
-   * @brief Returns the amount of currently available joysticks.
-   *
-   * @return the current amount of available joysticks; `nothing` if
-   * something goes wrong.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static std::optional<int> amount() noexcept;
-
-  /**
-   * @brief Returns the GUID for the joystick associated with the specified
-   * device index.
-   *
-   * @note The GUID is implementation-dependent.
-   * @note This function can be called before any joysticks are opened.
-   *
-   * @param deviceIndex refers to the N'th joystick that is currently recognized
-   * by SDL.
-   *
-   * @return the GUID of the joystick associated with the device index.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static SDL_JoystickGUID guid(
-      int deviceIndex) noexcept;
-
-  /**
-   * @brief Returns the player index of the joystick associated with the
-   * specified device index.
-   *
-   * @note This method can be called before any joysticks are opened.
-   *
-   * @param deviceIndex the device index of the joystick that will be queried.
-   *
-   * @return the player index of the desired joystick; `nothing` if it can't
-   * be obtained.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static std::optional<int> player_index(
-      int deviceIndex) noexcept;
-
-  /**
-   * @brief Returns the USB vendor ID for the joystick associated with the
-   * specified device index.
-   *
-   * @param deviceIndex the device index of the joystick that will be queried.
-   *
-   * @return the USB vendor ID of the desired joystick; `nothing` if it can't
-   * be obtained.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static std::optional<u16> vendor(
-      int deviceIndex) noexcept;
-
-  /**
-   * @brief Returns the USB product ID for the joystick associated with the
-   * specified device index.
-   *
-   * @param deviceIndex the device index of the joystick that will be queried.
-   *
-   * @return the USB product ID of the desired joystick; `nothing` if it can't
-   * be obtained.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static std::optional<u16> product(
-      int deviceIndex) noexcept;
-
-  /**
-   * @brief Returns the product version for the joystick associated with the
-   * specified device index.
-   *
-   * @param deviceIndex the device index of the joystick that will be queried.
-   *
-   * @return the product version of the desired joystick; `nothing` if it
-   * can't be obtained.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static std::optional<u16> product_version(
-      int deviceIndex) noexcept;
-
-  /**
-   * @brief Returns the type of the joystick associated with the specified
-   * device index.
-   *
-   * @param deviceIndex the device index of the joystick that will be queried.
-   *
-   * @return the type of the specified joystick.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static Type type(int deviceIndex) noexcept;
-
-  /**
-   * @brief Returns the instance ID for the joystick associated with the
-   * specified device index.
-   *
-   * @param deviceIndex the device index of the joystick that will be queried.
-   *
-   * @return the instance ID of the desired joystick; `nothing` if it can't
-   * be obtained.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static std::optional<SDL_JoystickID> instance_id(
-      int deviceIndex) noexcept;
-
-  /**
-   * @brief Returns the associated with the joystick with the specified
-   * device index.
-   *
-   * @param deviceIndex refers to the N'th joystick that is currently recognized
-   * by SDL.
-   *
-   * @return the name associated with the joystick; `nullptr` if no name is
-   * found.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static czstring name(int deviceIndex) noexcept;
-
-  /**
-   * @brief Returns a joystick GUID based on the supplied string.
-   *
-   * @param str the string used to obtain the GUID, can't be null.
-   *
-   * @return the obtained GUID.
-   *
-   * @see `SDL_JoystickGetGUIDFromString`
-   * @since 4.2.0
-   */
-  [[nodiscard]] CENTURION_API static SDL_JoystickGUID guid_from_string(
-      gsl::not_null<czstring> str) noexcept;
+  CENTURION_QUERY
+  static auto shared(owner<SDL_Joystick*> joystick)
+      -> std::shared_ptr<Joystick>;
 
   /**
    * @brief Makes the joystick rumble.
@@ -502,7 +244,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  CENTURION_API void set_player_index(int index) noexcept;
+  CENTURION_API
+  void set_player_index(int index) noexcept;
 
   /**
    * @brief Returns the player index of the joystick, if available.
@@ -514,7 +257,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<int> player_index() const noexcept;
+  CENTURION_QUERY
+  auto player_index() const noexcept -> std::optional<int>;
 
   /**
    * @brief Returns the type associated with the joystick.
@@ -523,7 +267,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API Type type() const noexcept;
+  CENTURION_QUERY
+  auto type() const noexcept -> Type;
 
   /**
    * @brief Returns the USB vendor ID of the joystick.
@@ -533,7 +278,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<u16> vendor() const noexcept;
+  CENTURION_QUERY
+  auto vendor() const noexcept -> std::optional<u16>;
 
   /**
    * @brief Returns the USB product ID of the joystick.
@@ -543,7 +289,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<u16> product() const noexcept;
+  CENTURION_QUERY
+  auto product() const noexcept -> std::optional<u16>;
 
   /**
    * @brief Returns the product version of the joystick, if available.
@@ -553,8 +300,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<u16> product_version()
-      const noexcept;
+  CENTURION_QUERY
+  auto product_version() const noexcept -> std::optional<u16>;
 
   /**
    * @brief Returns the ball axis change since the last poll.
@@ -569,8 +316,9 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<BallAxisChange> ball_axis_change(
-      int ball) const noexcept;
+  CENTURION_QUERY
+  auto ball_axis_change(int ball) const noexcept
+      -> std::optional<BallAxisChange>;
 
   /**
    * @brief Returns the current position of the specified axis.
@@ -588,8 +336,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<i16> axis_pos(
-      unsigned int axis) const noexcept;
+  CENTURION_QUERY
+  auto axis_pos(unsigned int axis) const noexcept -> std::optional<i16>;
 
   /**
    * @brief Returns the initial state of the specified axis on the joystick.
@@ -601,8 +349,9 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API std::optional<i16> axis_initial_state(
-      unsigned int axis) const noexcept;
+  CENTURION_QUERY
+  auto axis_initial_state(unsigned int axis) const noexcept
+      -> std::optional<i16>;
 
   /**
    * @brief Indicates whether or not the joystick is attached to the system.
@@ -611,7 +360,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API bool attached() const noexcept;
+  CENTURION_QUERY
+  auto attached() const noexcept -> bool;
 
   /**
    * @brief Returns the amount of hats on the joystick.
@@ -620,7 +370,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API int num_hats() const noexcept;
+  CENTURION_QUERY
+  auto num_hats() const noexcept -> int;
 
   /**
    * @brief Returns the amount of general axis controls on the joystick.
@@ -629,7 +380,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API int num_axes() const noexcept;
+  CENTURION_QUERY
+  auto num_axes() const noexcept -> int;
 
   /**
    * @brief Returns the amount of trackballs on the joystick.
@@ -638,7 +390,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API int num_trackballs() const noexcept;
+  CENTURION_QUERY
+  auto num_trackballs() const noexcept -> int;
 
   /**
    * @brief Returns the amount of buttons on the joystick.
@@ -647,7 +400,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API int num_buttons() const noexcept;
+  CENTURION_QUERY
+  auto num_buttons() const noexcept -> int;
 
   /**
    * @brief Returns the instance ID associated with the joystick.
@@ -656,7 +410,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API SDL_JoystickID instance_id() const noexcept;
+  CENTURION_QUERY
+  auto instance_id() const noexcept -> SDL_JoystickID;
 
   /**
    * @brief Returns the GUID associated with the joystick.
@@ -667,7 +422,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API SDL_JoystickGUID guid() noexcept;
+  CENTURION_QUERY
+  auto guid() noexcept -> SDL_JoystickGUID;
 
   /**
    * @brief Returns the name associated with the joystick.
@@ -678,7 +434,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API czstring name() const noexcept;
+  CENTURION_QUERY
+  auto name() const noexcept -> czstring;
 
   /**
    * @brief Returns the current power level of the joystick.
@@ -687,7 +444,8 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] CENTURION_API Power power() const noexcept;
+  CENTURION_QUERY
+  auto power() const noexcept -> Power;
 
   /**
    * @brief Returns the button state of the button associated with the index.
@@ -712,7 +470,8 @@ class Joystick final {
    *
    * @see `Joystick::HatState`
    */
-  [[nodiscard]] CENTURION_API HatState hat_state(int hat) const noexcept;
+  CENTURION_QUERY
+  auto hat_state(int hat) const noexcept -> HatState;
 
   /**
    * @brief Returns a pointer to the associated `SDL_Joystick`.
@@ -726,7 +485,242 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] SDL_Joystick* get() const noexcept { return m_joystick; }
+  [[nodiscard]] auto get() const noexcept -> SDL_Joystick*
+  {
+    return m_joystick;
+  }
+
+  /**
+   * @brief Updates the state of all open joysticks.
+   *
+   * @note This is done automatically by the event loop if any joystick
+   * events are enabled.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_API
+  static void update() noexcept;
+
+  /**
+   * @brief Locks the access to all joysticks.
+   *
+   * @details If you are using the joystick API from multiple threads you
+   * should use this method to restrict access to the joysticks.
+   *
+   * @see SDL_LockJoysticks
+   * @since 4.2.0
+   */
+  CENTURION_API
+  static void lock() noexcept;
+
+  /**
+   * @brief Unlocks the access to all joysticks.
+   *
+   * @see SDL_UnlockJoysticks
+   * @since 4.2.0
+   */
+  CENTURION_API
+  static void unlock() noexcept;
+
+  /**
+   * @brief Specifies whether or not joystick event polling is enabled.
+   *
+   * @details If joystick event polling is disabled, then you must manually call
+   * `Joystick::update()` in order to update the joystick state.
+   *
+   * @note It's recommended to leave joystick event polling enabled.
+   *
+   * @warning Calling this function might cause all events currently in
+   * the event queue to be deleted.
+   *
+   * @param enabled `true` if joystick event polling should be enabled;
+   * `false` otherwise.
+   *
+   * @see SDL_JoystickEventState(int)
+   *
+   * @since 4.2.0
+   */
+  CENTURION_API
+  static void set_polling(bool enabled) noexcept;
+
+  /**
+   * @brief Indicates whether or not joystick event polling is enabled.
+   *
+   * @return `true` if joystick event polling is enabled; `false` otherwise.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_API
+  static auto polling() noexcept -> bool;
+
+  /**
+   * @brief Returns a pointer to an `SDL_Joystick` associated with the ID.
+   *
+   * @param id the joystick ID associated with the desired joystick.
+   *
+   * @return a pointer to an `SDL_Joystick` instance if there is a joystick
+   * associated with the supplied ID; null otherwise.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto from_instance_id(SDL_JoystickID id) noexcept -> SDL_Joystick*;
+
+  /**
+   * @brief Returns a pointer to the joystick associated with the specified
+   * player index.
+   *
+   * @param playerIndex the player index of the desired joystick.
+   *
+   * @return a pointer to the associated joystick; `nullptr` if there is none.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto from_player_index(int playerIndex) noexcept -> SDL_Joystick*;
+
+  /**
+   * @brief Returns the amount of currently available joysticks.
+   *
+   * @return the current amount of available joysticks; `nothing` if
+   * something goes wrong.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto amount() noexcept -> std::optional<int>;
+
+  /**
+   * @brief Returns the GUID for the joystick associated with the specified
+   * device index.
+   *
+   * @note The GUID is implementation-dependent.
+   * @note This function can be called before any joysticks are opened.
+   *
+   * @param deviceIndex refers to the N'th joystick that is currently recognized
+   * by SDL.
+   *
+   * @return the GUID of the joystick associated with the device index.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto guid(int deviceIndex) noexcept -> SDL_JoystickGUID;
+
+  /**
+   * @brief Returns the player index of the joystick associated with the
+   * specified device index.
+   *
+   * @note This method can be called before any joysticks are opened.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the player index of the desired joystick; `nothing` if it can't
+   * be obtained.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto player_index(int deviceIndex) noexcept -> std::optional<int>;
+
+  /**
+   * @brief Returns the USB vendor ID for the joystick associated with the
+   * specified device index.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the USB vendor ID of the desired joystick; `nothing` if it can't
+   * be obtained.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto vendor(int deviceIndex) noexcept -> std::optional<u16>;
+
+  /**
+   * @brief Returns the USB product ID for the joystick associated with the
+   * specified device index.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the USB product ID of the desired joystick; `nothing` if it can't
+   * be obtained.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto product(int deviceIndex) noexcept -> std::optional<u16>;
+
+  /**
+   * @brief Returns the product version for the joystick associated with the
+   * specified device index.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the product version of the desired joystick; `nothing` if it
+   * can't be obtained.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto product_version(int deviceIndex) noexcept -> std::optional<u16>;
+
+  /**
+   * @brief Returns the type of the joystick associated with the specified
+   * device index.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the type of the specified joystick.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto type(int deviceIndex) noexcept -> Type;
+
+  /**
+   * @brief Returns the instance ID for the joystick associated with the
+   * specified device index.
+   *
+   * @param deviceIndex the device index of the joystick that will be queried.
+   *
+   * @return the instance ID of the desired joystick; `nothing` if it can't
+   * be obtained.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto instance_id(int deviceIndex) noexcept
+      -> std::optional<SDL_JoystickID>;
+
+  /**
+   * @brief Returns the associated with the joystick with the specified
+   * device index.
+   *
+   * @param deviceIndex refers to the N'th joystick that is currently recognized
+   * by SDL.
+   *
+   * @return the name associated with the joystick; `nullptr` if no name is
+   * found.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto name(int deviceIndex) noexcept -> czstring;
+
+  /**
+   * @brief Returns a joystick GUID based on the supplied string.
+   *
+   * @param str the string used to obtain the GUID, can't be null.
+   *
+   * @return the obtained GUID.
+   *
+   * @see `SDL_JoystickGetGUIDFromString`
+   * @since 4.2.0
+   */
+  CENTURION_QUERY
+  static auto guid_from_string(gsl::not_null<czstring> str) noexcept
+      -> SDL_JoystickGUID;
 
   /**
    * @brief Returns the maximum possible value of an axis control on a joystick.
@@ -735,7 +729,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] static constexpr i16 axis_max() noexcept
+  [[nodiscard]] static constexpr auto axis_max() noexcept -> i16
   {
     return SDL_JOYSTICK_AXIS_MAX;
   }
@@ -747,7 +741,7 @@ class Joystick final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] static constexpr i16 axis_min() noexcept
+  [[nodiscard]] static constexpr auto axis_min() noexcept -> i16
   {
     return SDL_JOYSTICK_AXIS_MIN;
   }
@@ -770,9 +764,12 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator==(
+[[nodiscard]] inline constexpr auto operator==(
     Joystick::Power lhs,
-    SDL_JoystickPowerLevel rhs) noexcept;
+    SDL_JoystickPowerLevel rhs) noexcept -> bool
+{
+  return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
+}
 
 /**
  * @brief Indicates whether or not two joystick power values are the same.
@@ -784,8 +781,12 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator==(SDL_JoystickPowerLevel lhs,
-                                            Joystick::Power rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(SDL_JoystickPowerLevel lhs,
+                                               Joystick::Power rhs) noexcept
+    -> bool
+{
+  return rhs == lhs;
+}
 
 /**
  * @brief Indicates whether or not two joystick power values aren't the same.
@@ -797,9 +798,12 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(
+[[nodiscard]] inline constexpr auto operator!=(
     Joystick::Power lhs,
-    SDL_JoystickPowerLevel rhs) noexcept;
+    SDL_JoystickPowerLevel rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
  * @brief Indicates whether or not two joystick power values aren't the same.
@@ -811,8 +815,12 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(SDL_JoystickPowerLevel lhs,
-                                            Joystick::Power rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(SDL_JoystickPowerLevel lhs,
+                                               Joystick::Power rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
  * @brief Indicates whether or not two joystick type values are the same.
@@ -824,8 +832,12 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator==(Joystick::Type lhs,
-                                            SDL_JoystickType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(Joystick::Type lhs,
+                                               SDL_JoystickType rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_JoystickType>(lhs) == rhs;
+}
 
 /**
  * @brief Indicates whether or not two joystick type values are the same.
@@ -837,8 +849,12 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator==(SDL_JoystickType lhs,
-                                            Joystick::Type rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(SDL_JoystickType lhs,
+                                               Joystick::Type rhs) noexcept
+    -> bool
+{
+  return rhs == lhs;
+}
 
 /**
  * @brief Indicates whether or not two joystick type values aren't the same.
@@ -850,8 +866,12 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(Joystick::Type lhs,
-                                            SDL_JoystickType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(Joystick::Type lhs,
+                                               SDL_JoystickType rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
  * @brief Indicates whether or not two joystick type values aren't the same.
@@ -863,8 +883,12 @@ class Joystick final {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(SDL_JoystickType lhs,
-                                            Joystick::Type rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(SDL_JoystickType lhs,
+                                               Joystick::Type rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 }  // namespace centurion
 

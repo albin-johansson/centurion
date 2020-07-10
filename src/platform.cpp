@@ -4,40 +4,39 @@
 #include "platform.hpp"
 
 #include <string>
-#include <utility>
 
-namespace centurion {
+namespace centurion::platform {
 
 CENTURION_DEF
-PlatformID Platform::id() noexcept
+auto id() noexcept -> platform_id
 {
   const auto platform = name();
   if (platform == "Windows") {
-    return PlatformID::Windows;
+    return platform_id::windows;
   } else if (platform == "Mac OS X") {
-    return PlatformID::MacOSX;
+    return platform_id::mac_osx;
   } else if (platform == "Linux") {
-    return PlatformID::Linux;
+    return platform_id::linux;
   } else if (platform == "iOS") {
-    return PlatformID::Ios;
+    return platform_id::ios;
   } else if (platform == "Android") {
-    return PlatformID::Android;
+    return platform_id::android;
   } else {
-    return PlatformID::Unknown;
+    return platform_id::unknown;
   }
 }
 
 CENTURION_DEF
-std::optional<std::string> Platform::name() noexcept
+auto name() noexcept -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
   if (name == "Unknown") {
     return nothing;
   } else {
-    return std::move(name);
+    return name;
   }
 }
 
-}  // namespace centurion
+}  // namespace centurion::platform
 
 #endif  // CENTURION_PLATFORM_SOURCE

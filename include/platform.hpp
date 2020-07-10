@@ -22,6 +22,19 @@
  * SOFTWARE.
  */
 
+/**
+ * @file platform.hpp
+ *
+ * @brief Provides utilities for obtaining information about the current
+ * platform.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_PLATFORM_HEADER
 #define CENTURION_PLATFORM_HEADER
 
@@ -31,44 +44,69 @@
 #include "centurion_utils.hpp"
 #include "pixel_format.hpp"
 
-namespace centurion {
+/**
+ * @namespace centurion::platform
+ *
+ * @brief Contains utilities related to platform information.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile platform.hpp
+ */
+namespace centurion::platform {
 
 /**
- * An enum class that provides values that represent various different operating
+ * @enum platform_id
+ *
+ * @brief Provides values that represent various different operating
  * systems.
  *
  * @since 3.0.0
- */
-enum class PlatformID { Unknown, Windows, MacOSX, Linux, Ios, Android };
-
-/**
- * The Platform class provides information about the system platform.
  *
- * @since 4.0.0
+ * @headerfile platform.hpp
+ *
+ * @var platform_id::windows
+ * Represents the Windows platform.
+ * @var platform_id::mac_osx
+ * Represents the Apple OSX platform.
+ * @var platform_id::linux
+ * Represents the Linux platform.
+ * @var platform_id::ios
+ * Represents the Apple iOS platform.
+ * @var platform_id::android
+ * Represents the Android platform.
  */
-class Platform final {
- public:
-  Platform() = delete;
-
-  /**
-   * Returns the value that represents the current platform.
-   *
-   * @return the value that represents the current platform.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static PlatformID id() noexcept;
-
-  /**
-   * Returns the name of the current platform.
-   *
-   * @return the name of the current platform; nothing if the name cannot
-   * be deduced.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static std::optional<std::string> name() noexcept;
+enum class platform_id {
+  unknown, /**< Indicates that the platform is unknown. */
+  windows,
+  mac_osx,
+  linux,
+  ios,
+  android
 };
 
-}  // namespace centurion
+/**
+ * @brief Returns the value that represents the current platform.
+ *
+ * @return the value that represents the current platform.
+ *
+ * @since 3.0.0
+ */
+CENTURION_QUERY
+auto id() noexcept -> platform_id;
+
+/**
+ * @brief Returns the name of the current platform.
+ *
+ * @return the name of the current platform; `nothing` if the name cannot
+ * be deduced.
+ *
+ * @since 3.0.0
+ */
+CENTURION_QUERY
+auto name() noexcept -> std::optional<std::string>;
+
+}  // namespace centurion::platform
 
 #ifdef CENTURION_HEADER_ONLY
 #include "platform.cpp"

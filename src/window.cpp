@@ -30,7 +30,7 @@ window::window(czstring title, area_i size)
   m_window = SDL_CreateWindow(
       title ? title : "", pos, pos, size.width, size.height, SDL_WINDOW_HIDDEN);
   if (!m_window) {
-    throw detail::Error::from_core("Failed to create Window!");
+    throw detail::core_error("Failed to create Window!");
   }
 }
 

@@ -4,45 +4,45 @@
 
 using namespace centurion::detail;
 
-TEST_CASE("Error::from_core", "[Error]")
+TEST_CASE("core_error", "[error]")
 {
   const std::string expected = "Core message! Error: SDL error";
 
   SDL_SetError("SDL error");
-  auto err = Error::from_core("Core message!");
+  auto err = core_error("Core message!");
   SDL_ClearError();
 
   CHECK_THAT(expected, Catch::Equals(err.what()));
 }
 
-TEST_CASE("Error::from_image", "[Error]")
+TEST_CASE("img_error", "[error]")
 {
   const std::string expected = "IMG message! Error: SDL_image error";
 
   SDL_SetError("SDL_image error");
-  auto err = Error::from_image("IMG message!");
+  auto err = img_error("IMG message!");
   SDL_ClearError();
 
   CHECK_THAT(expected, Catch::Equals(err.what()));
 }
 
-TEST_CASE("Error::from_ttf", "[Error]")
+TEST_CASE("ttf_error", "[error]")
 {
   const std::string expected = "TTF message! Error: SDL_ttf error";
 
   SDL_SetError("SDL_ttf error");
-  auto err = Error::from_ttf("TTF message!");
+  auto err = ttf_error("TTF message!");
   SDL_ClearError();
 
   CHECK_THAT(expected, Catch::Equals(err.what()));
 }
 
-TEST_CASE("Error::from_mixer", "[Error]")
+TEST_CASE("mix_error", "[error]")
 {
   const std::string expected = "MIX message! Error: SDL_mixer error";
 
   SDL_SetError("SDL_mixer error");
-  auto err = Error::from_mixer("MIX message!");
+  auto err = mix_error("MIX message!");
   SDL_ClearError();
 
   CHECK_THAT(expected, Catch::Equals(err.what()));

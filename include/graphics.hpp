@@ -1475,7 +1475,7 @@ class texture final {
 
     m_texture = IMG_LoadTexture(renderer.get(), path);
     if (!m_texture) {
-      throw detail::Error::from_image("Failed to create texture!");
+      throw detail::img_error("Failed to create texture!");
     }
   }
 
@@ -1495,7 +1495,7 @@ class texture final {
     this->m_texture =
         SDL_CreateTextureFromSurface(renderer.get(), surface.get());
     if (!m_texture) {
-      throw detail::Error::from_core("Failed to create texture from surface!");
+      throw detail::core_error("Failed to create texture from surface!");
     }
   }
 
@@ -1523,7 +1523,7 @@ class texture final {
                                   size.width,
                                   size.height);
     if (!m_texture) {
-      throw detail::Error::from_core("Failed to create texture!");
+      throw detail::core_error("Failed to create texture!");
     }
   }
 

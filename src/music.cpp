@@ -13,7 +13,7 @@ music::music(czstring file)
 {
   m_music = Mix_LoadMUS(file);
   if (!m_music) {
-    throw detail::Error::from_mixer("Failed to create Music instance!");
+    throw detail::mix_error("Failed to create Music instance!");
   }
 }
 

@@ -13,7 +13,7 @@ cursor::cursor(system_cursor id)
 {
   m_cursor = SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(id));
   if (!m_cursor) {
-    throw detail::Error::from_core("Failed to create system cursor!");
+    throw detail::core_error("Failed to create system cursor!");
   }
 }
 
@@ -32,12 +32,12 @@ cursor::cursor(const Surface& surface, const point_i& hotspot)
 {
   m_surface = SDL_DuplicateSurface(surface.get());
   if (!m_surface) {
-    throw detail::Error::from_core("Failed to create color cursor!");
+    throw detail::core_error("Failed to create color cursor!");
   }
 
   m_cursor = SDL_CreateColorCursor(m_surface, hotspot.x(), hotspot.y());
   if (!m_cursor) {
-    throw detail::Error::from_core("Failed to create color cursor!");
+    throw detail::core_error("Failed to create color cursor!");
   }
 }
 

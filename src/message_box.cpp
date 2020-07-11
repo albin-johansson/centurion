@@ -115,7 +115,7 @@ auto message_box::show(SDL_Window* window) -> int
 
   int button = -1;
   if (SDL_ShowMessageBox(&data, &button) == -1) {
-    throw detail::Error::from_core("Failed to show message box!");
+    throw detail::core_error("Failed to show message box!");
   }
 
   return button;

@@ -27,87 +27,69 @@
 #ifndef CENTURION_ERROR_HEADER
 #define CENTURION_ERROR_HEADER
 
+#include <string_view>
+
 #include "centurion_api.hpp"
 #include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
 
 namespace centurion::detail {
 
-// TODO overhaul
+/**
+ * @brief Returns an exception with the supplied message along with the latest
+ * error obtained from `SDL_GetError()`.
+ *
+ * @param message the message that will be included in the exception.
+ *
+ * @return a centurion_exception with the supplied message along with the
+ * latest `SDL_GetError()` message.
+ *
+ * @since 4.0.0
+ */
+CENTURION_QUERY
+auto core_error(std::string_view message) -> centurion_exception;
 
 /**
+ * @brief Returns an exception with the supplied message along with the latest
+ * error obtained from `IMG_GetError()`.
  *
- * The Error class is a utility for dealing with SDL errors. The main idea is
- * to provide a simple way to combine error messages from the Centurion
- * library and SDL. The Error class is <b>not</b> meant to be used outside of
- * the implementation of the Centurion library.
+ * @param message the message that will be included in the exception.
  *
- * @since 3.0.0
+ * @return a centurion_exception with the supplied message along with the
+ * latest `IMG_GetError()` message.
+ *
+ * @since 4.0.0
  */
-class Error final {
- public:
-  Error() = delete;
-  Error(const Error&) = delete;
-  Error(Error&&) = delete;
-  auto operator=(const Error&) -> Error& = delete;
-  auto operator=(Error&&) -> Error& = delete;
+CENTURION_QUERY
+auto img_error(std::string_view message) -> centurion_exception;
 
-  /**
-   * Returns an exception with the supplied message along with the latest
-   * error obtained from SDL_GetError().
-   *
-   * @param message the message that will be included in the exception.
-   * @return a centurion_exception with the supplied message along with the
-   * latest SDL_GetError() message.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  static auto from_core(const std::string& message) -> centurion_exception;
+/**
+ * @brief Returns an exception with the supplied message along with the latest
+ * error obtained from `TTF_GetError()`.
+ *
+ * @param message the message that will be included in the exception.
+ *
+ * @return a centurion_exception with the supplied message along with the
+ * latest `TTF_GetError()` message.
+ *
+ * @since 4.0.0
+ */
+CENTURION_QUERY
+auto ttf_error(std::string_view message) -> centurion_exception;
 
-  /**
-   * Returns an exception with the supplied message along with the latest
-   * error obtained from IMG_GetError().
-   *
-   * @param message the message that will be included in the exception.
-   * @return a centurion_exception with the supplied message along with the
-   * latest IMG_GetError() message.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  static auto from_image(const std::string& message) -> centurion_exception;
-
-  /**
-   * Returns an exception with the supplied message along with the latest
-   * error obtained from TTF_GetError().
-   *
-   * @param message the message that will be included in the exception.
-   * @return a centurion_exception with the supplied message along with the
-   * latest TTF_GetError() message.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  static auto from_ttf(const std::string& message) -> centurion_exception;
-
-  /**
-   * Returns an exception with the supplied message along with the latest
-   * error obtained from Mix_GetError().
-   *
-   * @param message the message that will be included in the exception.
-   * @return a centurion_exception with the supplied message along with the
-   * latest Mix_GetError() message.
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  static auto from_mixer(const std::string& message) -> centurion_exception;
-};
-
-static_assert(std::is_final_v<Error>);
-static_assert(std::is_nothrow_destructible_v<Error>);
-static_assert(!std::is_constructible_v<Error>);
-static_assert(!std::is_copy_constructible_v<Error>);
-static_assert(!std::is_move_constructible_v<Error>);
-static_assert(!std::is_copy_assignable_v<Error>);
-static_assert(!std::is_move_assignable_v<Error>);
+/**
+ * @brief Returns an exception with the supplied message along with the latest
+ * error obtained from `Mix_GetError()`.
+ *
+ * @param message the message that will be included in the exception.
+ *
+ * @return a centurion_exception with the supplied message along with the
+ * latest `Mix_GetError()` message.
+ *
+ * @since 4.0.0
+ */
+CENTURION_QUERY
+auto mix_error(std::string_view message) -> centurion_exception;
 
 }  // namespace centurion::detail
 

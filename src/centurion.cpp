@@ -12,7 +12,7 @@ void centurion_lib::init_sdl()
 {
   const auto result = SDL_Init(cfg.coreFlags);
   if (result < 0) {
-    throw detail::Error::from_core("Failed to load SDL2!");
+    throw detail::core_error("Failed to load SDL2!");
   }
 }
 
@@ -21,7 +21,7 @@ void centurion_lib::init_ttf()
 {
   const auto result = TTF_Init();
   if (result == -1) {
-    throw detail::Error::from_ttf("Failed to load SDL2_ttf!");
+    throw detail::ttf_error("Failed to load SDL2_ttf!");
   }
 }
 
@@ -30,7 +30,7 @@ void centurion_lib::init_img()
 {
   const auto flags = IMG_Init(cfg.imageFlags);
   if (!flags) {
-    throw detail::Error::from_image("Failed to load SDL2_image!");
+    throw detail::img_error("Failed to load SDL2_image!");
   }
 }
 
@@ -39,14 +39,14 @@ void centurion_lib::init_mix()
 {
   const auto flags = Mix_Init(cfg.mixerFlags);
   if (!flags) {
-    throw detail::Error::from_mixer("Failed to load SDL2_mixer!");
+    throw detail::mix_error("Failed to load SDL2_mixer!");
   }
 
   if (Mix_OpenAudio(cfg.mixerFreq,
                     cfg.mixerFormat,
                     cfg.mixerChannels,
                     cfg.mixerChunkSize) == -1) {
-    throw detail::Error::from_mixer("Failed to open audio!");
+    throw detail::mix_error("Failed to open audio!");
   }
 }
 

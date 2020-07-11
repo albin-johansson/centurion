@@ -8,30 +8,36 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
+#include <string>
+
 namespace centurion::detail {
 
 CENTURION_DEF
-auto Error::from_core(const std::string& message) -> centurion_exception
+auto core_error(std::string_view message) -> centurion_exception
 {
-  return centurion_exception{message + " Error: " + SDL_GetError()};
+  using namespace std::string_literals;
+  return centurion_exception{message.data() + " Error: "s + SDL_GetError()};
 }
 
 CENTURION_DEF
-auto Error::from_image(const std::string& message) -> centurion_exception
+auto img_error(std::string_view message) -> centurion_exception
 {
-  return centurion_exception{message + " Error: " + IMG_GetError()};
+  using namespace std::string_literals;
+  return centurion_exception{message.data() + " Error: "s + IMG_GetError()};
 }
 
 CENTURION_DEF
-auto Error::from_ttf(const std::string& message) -> centurion_exception
+auto ttf_error(std::string_view message) -> centurion_exception
 {
-  return centurion_exception{message + " Error: " + TTF_GetError()};
+  using namespace std::string_literals;
+  return centurion_exception{message.data() + " Error: "s + TTF_GetError()};
 }
 
 CENTURION_DEF
-auto Error::from_mixer(const std::string& message) -> centurion_exception
+auto mix_error(std::string_view message) -> centurion_exception
 {
-  return centurion_exception{message + " Error: " + Mix_GetError()};
+  using namespace std::string_literals;
+  return centurion_exception{message.data() + " Error: "s + Mix_GetError()};
 }
 
 }  // namespace centurion::detail

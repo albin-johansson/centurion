@@ -242,7 +242,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto convert(PixelFormat format) const -> Surface;
+  auto convert(pixel_format format) const -> Surface;
 
   /**
    * @brief Returns the width of the surface.

@@ -146,11 +146,11 @@ void Texture::set_scale_mode(ScaleMode mode) noexcept
 }
 
 CENTURION_DEF
-PixelFormat Texture::format() const noexcept
+pixel_format Texture::format() const noexcept
 {
   u32 format = 0;
   SDL_QueryTexture(m_texture, &format, nullptr, nullptr, nullptr);
-  return static_cast<PixelFormat>(format);
+  return static_cast<pixel_format>(format);
 }
 
 CENTURION_DEF

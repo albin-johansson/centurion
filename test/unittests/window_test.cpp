@@ -850,7 +850,7 @@ TEST_CASE("Window::pixel_format", "[Window]")
 {
   ctn::window window;
   const auto format = SDL_GetWindowPixelFormat(window.get());
-  CHECK(window.pixel_format() == static_cast<ctn::PixelFormat>(format));
+  CHECK(window.get_pixel_format() == static_cast<ctn::pixel_format>(format));
 }
 
 TEST_CASE("Window::title", "[Window]")

@@ -1510,7 +1510,7 @@ class Texture final {
    */
   template <typename T>
   Texture(const basic_renderer<T>& renderer,
-          PixelFormat format,
+          pixel_format format,
           Access access,
           area_i size)
   {
@@ -1582,11 +1582,11 @@ class Texture final {
   }
 
   /**
-   * @copydoc Texture(const basic_renderer<T>&, PixelFormat, Access, area_i)
+   * @copydoc Texture(const basic_renderer<T>&, pixel_format, Access, area_i)
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
-                                   PixelFormat format,
+                                   pixel_format format,
                                    Access access,
                                    area_i size) -> std::unique_ptr<Texture>
   {
@@ -1622,11 +1622,11 @@ class Texture final {
   }
 
   /**
-   * @copydoc Texture(const basic_renderer<T>&, PixelFormat, Access, area_i)
+   * @copydoc Texture(const basic_renderer<T>&, pixel_format, Access, area_i)
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
-                                   PixelFormat format,
+                                   pixel_format format,
                                    Access access,
                                    area_i size) -> std::shared_ptr<Texture>
   {
@@ -1652,11 +1652,11 @@ class Texture final {
   template <typename T>
   [[nodiscard]] static auto streaming(const basic_renderer<T>& renderer,
                                       czstring path,
-                                      PixelFormat format)
+                                      pixel_format format)
       -> std::unique_ptr<Texture>
   {
     const auto blendMode = blend_mode::blend;
-    const auto createSurface = [blendMode](czstring path, PixelFormat format) {
+    const auto createSurface = [blendMode](czstring path, pixel_format format) {
       Surface source{path};
       source.set_blend_mode(blendMode);
       return source.convert(format);
@@ -1748,7 +1748,7 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto format() const noexcept -> PixelFormat;
+  auto format() const noexcept -> pixel_format;
 
   /**
    * @brief Returns the texture access of the texture.

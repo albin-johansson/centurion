@@ -351,9 +351,9 @@ auto window_base::renderer() noexcept -> std::optional<renderer_view>
 }
 
 CENTURION_DEF
-auto window_base::pixel_format() const noexcept -> PixelFormat
+auto window_base::get_pixel_format() const noexcept -> pixel_format
 {
-  return static_cast<PixelFormat>(SDL_GetWindowPixelFormat(m_window));
+  return static_cast<pixel_format>(SDL_GetWindowPixelFormat(m_window));
 }
 
 CENTURION_DEF

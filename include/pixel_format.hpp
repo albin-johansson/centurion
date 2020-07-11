@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file pixel_format.hpp
+ *
+ * @brief Provides the `pixel_format` enum.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_PIXEL_FORMAT_HEADER
 #define CENTURION_PIXEL_FORMAT_HEADER
 
@@ -32,72 +44,78 @@
 namespace centurion {
 
 /**
- * The PixelFormat enum class mirrors the values of the SDL_PixelFormatEnum.
+ * @enum pixel_format
+ *
+ * @brief Mirrors the values of the `SDL_PixelFormatEnum`.
+ *
+ * @see `SDL_PixelFormatEnum`
  *
  * @since 3.1.0
+ *
+ * @headerfile pixel_format.hpp
  */
-enum class PixelFormat {
-  Unknown = SDL_PIXELFORMAT_UNKNOWN,
+enum class pixel_format {
+  unknown = SDL_PIXELFORMAT_UNKNOWN,
 
-  Index1LSB = SDL_PIXELFORMAT_INDEX1LSB,
-  Index1MSB = SDL_PIXELFORMAT_INDEX1MSB,
-  Index4LSB = SDL_PIXELFORMAT_INDEX4LSB,
-  Index4MSB = SDL_PIXELFORMAT_INDEX4MSB,
-  Index8 = SDL_PIXELFORMAT_INDEX8,
+  index1lsb = SDL_PIXELFORMAT_INDEX1LSB,
+  index1msb = SDL_PIXELFORMAT_INDEX1MSB,
+  index4lsb = SDL_PIXELFORMAT_INDEX4LSB,
+  index4msb = SDL_PIXELFORMAT_INDEX4MSB,
+  index8 = SDL_PIXELFORMAT_INDEX8,
 
-  RGB332 = SDL_PIXELFORMAT_RGB332,
-  RGB444 = SDL_PIXELFORMAT_RGB444,
-  RGB555 = SDL_PIXELFORMAT_RGB555,
-  BGR555 = SDL_PIXELFORMAT_BGR555,
+  rgb332 = SDL_PIXELFORMAT_RGB332,
+  rgb444 = SDL_PIXELFORMAT_RGB444,
+  rgb555 = SDL_PIXELFORMAT_RGB555,
+  bgr555 = SDL_PIXELFORMAT_BGR555,
 
-  ARGB4444 = SDL_PIXELFORMAT_ARGB4444,
-  RGBA4444 = SDL_PIXELFORMAT_RGBA4444,
-  ABGR4444 = SDL_PIXELFORMAT_ABGR4444,
-  BGRA4444 = SDL_PIXELFORMAT_BGRA4444,
+  argb4444 = SDL_PIXELFORMAT_ARGB4444,
+  rgba4444 = SDL_PIXELFORMAT_RGBA4444,
+  abgr4444 = SDL_PIXELFORMAT_ABGR4444,
+  bgra4444 = SDL_PIXELFORMAT_BGRA4444,
 
-  ARGB1555 = SDL_PIXELFORMAT_ARGB1555,
-  RGBA5551 = SDL_PIXELFORMAT_RGBA5551,
-  ABGR1555 = SDL_PIXELFORMAT_ABGR1555,
-  BGRA5551 = SDL_PIXELFORMAT_BGRA5551,
+  argb1555 = SDL_PIXELFORMAT_ARGB1555,
+  rgba5551 = SDL_PIXELFORMAT_RGBA5551,
+  abgr1555 = SDL_PIXELFORMAT_ABGR1555,
+  bgra5551 = SDL_PIXELFORMAT_BGRA5551,
 
-  RGB565 = SDL_PIXELFORMAT_RGB565,
-  BGR565 = SDL_PIXELFORMAT_BGR565,
+  rgb565 = SDL_PIXELFORMAT_RGB565,
+  bgr565 = SDL_PIXELFORMAT_BGR565,
 
-  RGB24 = SDL_PIXELFORMAT_RGB24,
-  BGR24 = SDL_PIXELFORMAT_BGR24,
+  rgb24 = SDL_PIXELFORMAT_RGB24,
+  bgr24 = SDL_PIXELFORMAT_BGR24,
 
-  RGB888 = SDL_PIXELFORMAT_RGB888,
-  RGBX8888 = SDL_PIXELFORMAT_RGBX8888,
-  BGR888 = SDL_PIXELFORMAT_BGR888,
-  BGRX8888 = SDL_PIXELFORMAT_BGRX8888,
+  rgb888 = SDL_PIXELFORMAT_RGB888,
+  rgbx8888 = SDL_PIXELFORMAT_RGBX8888,
+  bgr888 = SDL_PIXELFORMAT_BGR888,
+  bgrx8888 = SDL_PIXELFORMAT_BGRX8888,
 
-  ARGB8888 = SDL_PIXELFORMAT_ARGB8888,
-  RGBA8888 = SDL_PIXELFORMAT_RGBA8888,
-  ABGR8888 = SDL_PIXELFORMAT_ABGR8888,
-  BGRA8888 = SDL_PIXELFORMAT_BGRA8888,
+  argb8888 = SDL_PIXELFORMAT_ARGB8888,
+  rgba8888 = SDL_PIXELFORMAT_RGBA8888,
+  abgr8888 = SDL_PIXELFORMAT_ABGR8888,
+  bgra8888 = SDL_PIXELFORMAT_BGRA8888,
 
-  ARGB2101010 = SDL_PIXELFORMAT_ARGB2101010,
+  argb2101010 = SDL_PIXELFORMAT_ARGB2101010,
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  RGBA32 = SDL_PIXELFORMAT_RGBA8888,
-  ARGB32 = SDL_PIXELFORMAT_ARGB8888,
-  BGRA32 = SDL_PIXELFORMAT_BGRA8888,
-  ABGR32 = SDL_PIXELFORMAT_ABGR8888,
+  rgba32 = SDL_PIXELFORMAT_RGBA8888,
+  argb32 = SDL_PIXELFORMAT_ARGB8888,
+  bgra32 = SDL_PIXELFORMAT_BGRA8888,
+  abgr32 = SDL_PIXELFORMAT_ABGR8888,
 #else
-  RGBA32 = SDL_PIXELFORMAT_ABGR8888,
-  ARGB32 = SDL_PIXELFORMAT_BGRA8888,
-  BGRA32 = SDL_PIXELFORMAT_ARGB8888,
-  ABGR32 = SDL_PIXELFORMAT_RGBA8888,
+  rgba32 = SDL_PIXELFORMAT_ABGR8888,
+  argb32 = SDL_PIXELFORMAT_BGRA8888,
+  bgra32 = SDL_PIXELFORMAT_ARGB8888,
+  abgr32 = SDL_PIXELFORMAT_RGBA8888,
 #endif
 
-  YV12 = SDL_PIXELFORMAT_YV12,
-  IYUV = SDL_PIXELFORMAT_IYUV,
-  YUY2 = SDL_PIXELFORMAT_YUY2,
-  UYVY = SDL_PIXELFORMAT_UYVY,
-  YVYU = SDL_PIXELFORMAT_YVYU,
-  NV12 = SDL_PIXELFORMAT_NV12,
-  NV21 = SDL_PIXELFORMAT_NV21,
-  ExternalOES = SDL_PIXELFORMAT_EXTERNAL_OES
+  yv12 = SDL_PIXELFORMAT_YV12,
+  iyuv = SDL_PIXELFORMAT_IYUV,
+  yuy2 = SDL_PIXELFORMAT_YUY2,
+  uyvy = SDL_PIXELFORMAT_UYVY,
+  yvyu = SDL_PIXELFORMAT_YVYU,
+  nv12 = SDL_PIXELFORMAT_NV12,
+  nv21 = SDL_PIXELFORMAT_NV21,
+  external_oes = SDL_PIXELFORMAT_EXTERNAL_OES
 };
 
 /**
@@ -110,7 +128,7 @@ enum class PixelFormat {
  *
  * @since 3.1.0
  */
-[[nodiscard]] inline constexpr auto operator==(PixelFormat lhs,
+[[nodiscard]] inline constexpr auto operator==(pixel_format lhs,
                                                SDL_PixelFormatEnum rhs) noexcept
     -> bool
 {
@@ -118,10 +136,11 @@ enum class PixelFormat {
 }
 
 /**
- * @copydoc operator==(PixelFormat, SDL_PixelFormatEnum)
+ * @copydoc operator==(pixel_format, SDL_PixelFormatEnum)
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_PixelFormatEnum lhs,
-                                               PixelFormat rhs) noexcept -> bool
+                                               pixel_format rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -136,7 +155,7 @@ enum class PixelFormat {
  *
  * @since 3.1.0
  */
-[[nodiscard]] inline constexpr auto operator!=(PixelFormat lhs,
+[[nodiscard]] inline constexpr auto operator!=(pixel_format lhs,
                                                SDL_PixelFormatEnum rhs) noexcept
     -> bool
 {
@@ -144,10 +163,11 @@ enum class PixelFormat {
 }
 
 /**
- * @copydoc operator!=(PixelFormat, SDL_PixelFormatEnum)
+ * @copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_PixelFormatEnum lhs,
-                                               PixelFormat rhs) noexcept -> bool
+                                               pixel_format rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

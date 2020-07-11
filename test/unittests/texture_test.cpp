@@ -97,7 +97,7 @@ TEST_CASE("Texture(Renderer&, Surface&", "[Texture]")
 TEST_CASE("Texture(Renderer&, PixelFormat, Access, int, int)", "[Texture]")
 {
   test([](ctn::renderer& renderer) {
-    const auto pixelFormat = PixelFormat::RGBA32;
+    const auto pixelFormat = pixel_format::rgba32;
     const auto access = Texture::Access::Static;
     const auto width = 145;
     const auto height = 85;
@@ -158,7 +158,8 @@ TEST_CASE("Texture::unique", "[Texture]")
     CHECK(Texture::unique(renderer, pandaPath));
     CHECK(Texture::unique(renderer, surface));
     CHECK(Texture::unique(
-        renderer, window.pixel_format(), Texture::Access::Static, {100, 100}));
+        renderer,
+                          window.get_pixel_format(), Texture::Access::Static, {100, 100}));
   });
 }
 
@@ -172,19 +173,20 @@ TEST_CASE("Texture:::shared", "[Texture]")
     CHECK(Texture::shared(renderer, pandaPath));
     CHECK(Texture::shared(renderer, surface));
     CHECK(Texture::shared(
-        renderer, window.pixel_format(), Texture::Access::Static, {100, 100}));
+        renderer,
+                          window.get_pixel_format(), Texture::Access::Static, {100, 100}));
   });
 }
 
 TEST_CASE("Texture::streaming", "[Texture]")
 {
   test([](ctn::renderer& renderer) {
-    const auto pixelFormat = PixelFormat::RGBA8888;
+    const auto pixelFormat = pixel_format::rgba8888;
     auto texture = Texture::streaming(renderer, pandaPath, pixelFormat);
 
     CHECK(texture->format() == pixelFormat);
 
-    CHECK_THROWS_AS(Texture::streaming(renderer, "", PixelFormat::YUY2),
+    CHECK_THROWS_AS(Texture::streaming(renderer, "", pixel_format::yuy2),
                     centurion_exception);
   });
 }
@@ -193,7 +195,7 @@ TEST_CASE("Texture::set_pixel", "[Texture]")
 {
   test([](ctn::renderer& renderer) {
     const auto texture =
-        Texture::streaming(renderer, pandaPath, PixelFormat::RGBA8888);
+        Texture::streaming(renderer, pandaPath, pixel_format::rgba8888);
 
     const auto [width, height] = texture->size();
 
@@ -268,7 +270,7 @@ TEST_CASE("Texture::is_static", "[Texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     Texture texture{
-        renderer, window.pixel_format(), Texture::Access::Static, {10, 10}};
+        renderer, window.get_pixel_format(), Texture::Access::Static, {10, 10}};
     CHECK(texture.is_static());
   });
 }
@@ -277,7 +279,8 @@ TEST_CASE("Texture::is_streaming", "[Texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     Texture texture{
-        renderer, window.pixel_format(), Texture::Access::Streaming, {10, 10}};
+        renderer,
+                    window.get_pixel_format(), Texture::Access::Streaming, {10, 10}};
     CHECK(texture.is_streaming());
   });
 }
@@ -286,7 +289,7 @@ TEST_CASE("Texture::is_target", "[Texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     Texture texture{
-        renderer, window.pixel_format(), Texture::Access::Target, {10, 10}};
+        renderer, window.get_pixel_format(), Texture::Access::Target, {10, 10}};
     CHECK(texture.is_target());
   });
 }
@@ -316,7 +319,7 @@ TEST_CASE("Texture::format", "[Texture]")
     Uint32 format = 0;
     SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
 
-    CHECK(texture.format() == static_cast<PixelFormat>(format));
+    CHECK(texture.format() == static_cast<pixel_format>(format));
   });
 }
 

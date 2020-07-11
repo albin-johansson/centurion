@@ -56,11 +56,11 @@ auto refresh_rate() noexcept -> int
 }
 
 CENTURION_DEF
-auto pixel_format() noexcept -> PixelFormat
+auto get_pixel_format() noexcept -> pixel_format
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  return static_cast<PixelFormat>(mode.format);
+  return static_cast<pixel_format>(mode.format);
 }
 
 }  // namespace centurion::screen

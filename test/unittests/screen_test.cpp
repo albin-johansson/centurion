@@ -50,5 +50,5 @@ TEST_CASE("screen::pixel_format", "[screen]")
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  CHECK(screen::pixel_format() == static_cast<PixelFormat>(mode.format));
+  CHECK(screen::get_pixel_format() == static_cast<pixel_format>(mode.format));
 }

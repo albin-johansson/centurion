@@ -635,7 +635,7 @@ class window_base {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto pixel_format() const noexcept -> PixelFormat;
+  auto get_pixel_format() const noexcept -> pixel_format;
 
   /**
    * @brief Returns the title of the window.

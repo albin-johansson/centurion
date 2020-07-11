@@ -200,7 +200,7 @@ TEST_CASE("Surface::convert", "[Surface]")
   original.set_alpha(0xAE);
   original.set_color_mod(color::red);
 
-  const auto pixelFormat = PixelFormat::RGBA8888;
+  const auto pixelFormat = pixel_format::rgba8888;
   Surface converted = original.convert(pixelFormat);
 
   CHECK(converted.blend_mode() == original.blend_mode());

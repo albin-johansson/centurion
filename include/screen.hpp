@@ -124,7 +124,7 @@ auto refresh_rate() noexcept -> int;
  * @since 3.0.0
  */
 CENTURION_QUERY
-auto pixel_format() noexcept -> PixelFormat;
+auto get_pixel_format() noexcept -> pixel_format;
 
 }  // namespace centurion::screen
 

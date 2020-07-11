@@ -210,7 +210,7 @@ auto Surface::blend_mode() const noexcept -> enum blend_mode  //
 //}
 
 CENTURION_DEF
-auto Surface::convert(PixelFormat format) const -> Surface
+auto Surface::convert(pixel_format format) const -> Surface
 {
   const auto pixelFormat = static_cast<u32>(format);
   auto* converted = SDL_ConvertSurfaceFormat(m_surface, pixelFormat, 0);

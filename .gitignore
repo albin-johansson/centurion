@@ -42,6 +42,7 @@
 *.afdesign
 cmake-build-*
 build
+bin-*
 doc/html
 doc/latex
 .idea

@@ -24,6 +24,7 @@
 
 /**
  * @file cpu.hpp
+ *
  * @brief Provides an API for querying information about the processor.
  *
  * @details Provides information about the system processor, such as whether it
@@ -31,7 +32,9 @@
  * etc.
  *
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -44,10 +47,12 @@
 
 /**
  * @namespace centurion::cpu
+ *
  * @brief Provides methods for obtaining information about the processor.
  *
- * @headerfile cpu.hpp
  * @since 5.0.0
+ *
+ * @headerfile cpu.hpp
  */
 namespace centurion::cpu {
 

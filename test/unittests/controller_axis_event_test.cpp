@@ -25,7 +25,7 @@ TEST_CASE("ControllerAxisEvent::set_axis", "[ControllerAxisEvent]")
 {
   ControllerAxisEvent event;
 
-  const auto axis = GameControllerAxis::TriggerRight;
+  const auto axis = game_controller_axis::trigger_right;
   event.set_axis(axis);
 
   CHECK(event.axis() == axis);

@@ -15,7 +15,7 @@ CENTURION_DEF ControllerButtonEvent::ControllerButtonEvent(
 {}
 
 CENTURION_DEF
-void ControllerButtonEvent::set_button(GameControllerButton button) noexcept
+void ControllerButtonEvent::set_button(game_controller_button button) noexcept
 {
   m_event.button = static_cast<u8>(button);
 }
@@ -33,9 +33,9 @@ void ControllerButtonEvent::set_which(SDL_JoystickID id) noexcept
 }
 
 CENTURION_DEF
-auto ControllerButtonEvent::button() const noexcept -> GameControllerButton
+auto ControllerButtonEvent::button() const noexcept -> game_controller_button
 {
-  return static_cast<GameControllerButton>(m_event.button);
+  return static_cast<game_controller_button>(m_event.button);
 }
 
 CENTURION_DEF

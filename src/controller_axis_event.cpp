@@ -22,7 +22,7 @@ void ControllerAxisEvent::set_which(SDL_JoystickID which) noexcept
 }
 
 CENTURION_DEF
-void ControllerAxisEvent::set_axis(GameControllerAxis axis) noexcept
+void ControllerAxisEvent::set_axis(game_controller_axis axis) noexcept
 {
   m_event.axis = static_cast<u8>(axis);
 }
@@ -40,9 +40,9 @@ auto ControllerAxisEvent::which() const noexcept -> SDL_JoystickID
 }
 
 CENTURION_DEF
-auto ControllerAxisEvent::axis() const noexcept -> GameControllerAxis
+auto ControllerAxisEvent::axis() const noexcept -> game_controller_axis
 {
-  return static_cast<GameControllerAxis>(m_event.axis);
+  return static_cast<game_controller_axis>(m_event.axis);
 }
 
 CENTURION_DEF

@@ -22,163 +22,192 @@
  * SOFTWARE.
  */
 
+/**
+ * @file game_controller.hpp
+ *
+ * @brief Provides the game controller API.
+ *
+ * @todo Expand the game controller API.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 
 #include <SDL_gamecontroller.h>
 
 #include "centurion_api.hpp"
-#include "joystick.hpp"  // because JoystickID was prev. defined in this header
 
 namespace centurion {
 
 /**
- * The GameControllerAxis enum class mirrors the values of the
- * SDL_GameControllerAxis enum.
+ * @enum game_controller_axis
  *
- * @see SDL_GameControllerAxis
+ * @brief Mirrors the values of the `SDL_GameControllerAxis` enum.
+ *
+ * @see `SDL_GameControllerAxis`
+ *
  * @since 4.0.0
+ *
+ * @headerfile game_controller.hpp
  */
-enum class GameControllerAxis {
-  Invalid = SDL_CONTROLLER_AXIS_INVALID,
-  LeftX = SDL_CONTROLLER_AXIS_LEFTX,
-  LeftY = SDL_CONTROLLER_AXIS_LEFTY,
-  RightX = SDL_CONTROLLER_AXIS_RIGHTX,
-  RightY = SDL_CONTROLLER_AXIS_RIGHTY,
-  TriggerLeft = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
-  TriggerRight = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
-  Max = SDL_CONTROLLER_AXIS_MAX
+enum class game_controller_axis {
+  invalid = SDL_CONTROLLER_AXIS_INVALID,
+  left_x = SDL_CONTROLLER_AXIS_LEFTX,
+  left_y = SDL_CONTROLLER_AXIS_LEFTY,
+  right_x = SDL_CONTROLLER_AXIS_RIGHTX,
+  right_y = SDL_CONTROLLER_AXIS_RIGHTY,
+  trigger_left = SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+  trigger_right = SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+  max = SDL_CONTROLLER_AXIS_MAX
 };
 
 /**
- * Indicates whether or not the two game controller axis values are the same.
+ * @brief Indicates whether or not two game controller axis values are the same.
  *
- * @param axis the lhs Centurion game controller axis value.
- * @param sdlAxis the rhs SDL game controller axis value.
- * @return true if the game controller axis values are the same; false
- * otherwise.
+ * @param lhs the left-hand-side game controller axis value.
+ * @param rhs the right-hand-side game controller axis value.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
  * @since 4.0.0
  */
-CENTURION_QUERY
-auto operator==(GameControllerAxis axis,
-                SDL_GameControllerAxis sdlAxis) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator==(
+    game_controller_axis lhs,
+    SDL_GameControllerAxis rhs) noexcept -> bool
+{
+  return static_cast<SDL_GameControllerAxis>(lhs) == rhs;
+}
 
 /**
- * Indicates whether or not the two game controller axis values are the same.
- *
- * @param sdlAxis the lhs SDL game controller axis value.
- * @param axis the rhs Centurion game controller axis value.
- * @return true if the game controller axis values are the same; false
- * otherwise.
- * @since 4.0.0
+ * @copydoc operator==(game_controller_axis, SDL_GameControllerAxis)
  */
-CENTURION_QUERY
-auto operator==(SDL_GameControllerAxis sdlAxis,
-                GameControllerAxis axis) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator==(
+    SDL_GameControllerAxis lhs,
+    game_controller_axis rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * Indicates whether or not the two game controller axis values aren't the same.
+ * @brief Indicates whether or not two game controller axis values aren't the
+ * same.
  *
- * @param axis the lhs Centurion game controller axis value.
- * @param sdlAxis the rhs SDL game controller axis value.
- * @return true if the game controller axis values aren't the same; false
- * otherwise.
+ * @param lhs the left-hand-side game controller axis value.
+ * @param rhs the right-hand-side game controller axis value.
+ *
+ * @return `true` if the values aren't the same; `false` otherwise.
+ *
  * @since 4.0.0
  */
-CENTURION_QUERY
-auto operator!=(GameControllerAxis axis,
-                SDL_GameControllerAxis sdlAxis) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator!=(
+    game_controller_axis lhs,
+    SDL_GameControllerAxis rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * Indicates whether or not the two game controller axis values aren't the same.
- *
- * @param sdlAxis the lhs SDL game controller axis value.
- * @param axis the rhs Centurion game controller axis value.
- * @return true if the game controller axis values aren't the same; false
- * otherwise.
- * @since 4.0.0
+ * @copydoc operator!=(game_controller_axis, SDL_GameControllerAxis)
  */
-CENTURION_QUERY
-auto operator!=(SDL_GameControllerAxis sdlAxis,
-                GameControllerAxis axis) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator!=(
+    SDL_GameControllerAxis lhs,
+    game_controller_axis rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * The GameControllerButton enum class mirrors the values of the
- * SDL_GameControllerButton enum.
+ * @enum game_controller_button
+ *
+ * @brief Mirrors the values of the `SDL_GameControllerButton` enum.
  *
  * @since 4.0.0
+ *
+ * @headerfile game_controller.hpp
  */
-enum class GameControllerButton {
-  Invalid = SDL_CONTROLLER_BUTTON_INVALID,
-  A = SDL_CONTROLLER_BUTTON_A,
-  B = SDL_CONTROLLER_BUTTON_B,
-  X = SDL_CONTROLLER_BUTTON_X,
-  Y = SDL_CONTROLLER_BUTTON_Y,
-  Back = SDL_CONTROLLER_BUTTON_BACK,
-  Guide = SDL_CONTROLLER_BUTTON_GUIDE,
-  Start = SDL_CONTROLLER_BUTTON_START,
-  LeftStick = SDL_CONTROLLER_BUTTON_LEFTSTICK,
-  RightStick = SDL_CONTROLLER_BUTTON_RIGHTSTICK,
-  LeftShoulder = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
-  RightShoulder = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
-  DpadUp = SDL_CONTROLLER_BUTTON_DPAD_UP,
-  DpadDown = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
-  DpadLeft = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
-  DpadRight = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
-  Max = SDL_CONTROLLER_BUTTON_MAX
+enum class game_controller_button {
+  invalid = SDL_CONTROLLER_BUTTON_INVALID,
+  a = SDL_CONTROLLER_BUTTON_A,
+  b = SDL_CONTROLLER_BUTTON_B,
+  x = SDL_CONTROLLER_BUTTON_X,
+  y = SDL_CONTROLLER_BUTTON_Y,
+  back = SDL_CONTROLLER_BUTTON_BACK,
+  guide = SDL_CONTROLLER_BUTTON_GUIDE,
+  start = SDL_CONTROLLER_BUTTON_START,
+  left_stick = SDL_CONTROLLER_BUTTON_LEFTSTICK,
+  right_stick = SDL_CONTROLLER_BUTTON_RIGHTSTICK,
+  left_shoulder = SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+  right_shoulder = SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+  dpad_up = SDL_CONTROLLER_BUTTON_DPAD_UP,
+  dpad_down = SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+  dpad_left = SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+  dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+  max = SDL_CONTROLLER_BUTTON_MAX
 };
 
 /**
- * Indicates whether or not two game controller button values are the same.
+ * @brief Indicates whether or not two game controller button values are the
+ * same.
  *
- * @param button the lhs Centurion game controller button.
- * @param sdlButton the rhs SDL game controller button.
- * @return true if the game controller button values are the same; false
+ * @param button the left-hand side game controller button value.
+ * @param sdlButton the right-hand side game controller button value.
+ *
+ * @return `true` if the game controller button values are the same; `false`
  * otherwise.
+ *
  * @since 4.0.0
  */
-CENTURION_QUERY
-auto operator==(GameControllerButton button,
-                SDL_GameControllerButton sdlButton) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator==(
+    game_controller_button lhs,
+    SDL_GameControllerButton rhs) noexcept -> bool
+{
+  return static_cast<SDL_GameControllerButton>(lhs) == rhs;
+}
 
 /**
- * Indicates whether or not two game controller button values are the same.
- *
- * @param button the lhs SDL game controller button.
- * @param sdlButton the rhs Centurion game controller button.
- * @return true if the game controller button values are the same; false
- * otherwise.
- * @since 4.0.0
+ * @copydoc operator==(game_controller_button, SDL_GameControllerButton)
  */
-CENTURION_QUERY
-auto operator==(SDL_GameControllerButton sdlButton,
-                GameControllerButton button) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator==(
+    SDL_GameControllerButton lhs,
+    game_controller_button rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * Indicates whether or not two game controller button values aren't the same.
+ * @brief Indicates whether or not two game controller button values aren't the
+ * same.
  *
- * @param button the lhs Centurion game controller button.
- * @param sdlButton the rhs SDL game controller button.
- * @return true if the game controller button values aren't the same; false
+ * @param button the left-hand side game controller button value.
+ * @param sdlButton the right-hand side game controller button value.
+ *
+ * @return `true` if the game controller button values aren't the same; `false`
  * otherwise.
+ *
  * @since 4.0.0
  */
-CENTURION_QUERY
-auto operator!=(GameControllerButton button,
-                SDL_GameControllerButton sdlButton) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator!=(
+    game_controller_button lhs,
+    SDL_GameControllerButton rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * Indicates whether or not two game controller button values aren't the same.
- *
- * @param button the lhs SDL game controller button.
- * @param sdlButton the rhs Centurion game controller button.
- * @return true if the game controller button values aren't the same; false
- * otherwise.
- * @since 4.0.0
+ * @copydoc operator!=(game_controller_button, SDL_GameControllerButton)
  */
-CENTURION_QUERY
-auto operator!=(SDL_GameControllerButton sdlButton,
-                GameControllerButton button) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator!=(
+    SDL_GameControllerButton lhs,
+    game_controller_button rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 }  // namespace centurion
 

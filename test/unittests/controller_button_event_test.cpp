@@ -9,7 +9,7 @@ TEST_CASE("ControllerButtonEvent::set_button", "[ControllerButtonEvent]")
 {
   ControllerButtonEvent event;
 
-  const auto button = GameControllerButton::A;
+  const auto button = game_controller_button::a;
   event.set_button(button);
 
   CHECK(event.button() == button);
@@ -41,7 +41,7 @@ TEST_CASE("ControllerButtonEvent::button", "[ControllerButtonEvent]")
   sdlEvent.button = SDL_CONTROLLER_BUTTON_A;
 
   ControllerButtonEvent event{sdlEvent};
-  CHECK(event.button() == GameControllerButton::A);
+  CHECK(event.button() == game_controller_button::a);
 }
 
 TEST_CASE("ControllerButtonEvent::state", "[ControllerButtonEvent]")

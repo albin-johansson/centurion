@@ -4,52 +4,53 @@
 
 using namespace centurion;
 
-TEST_CASE("GameControllerButton operator==", "[ControllerButtonEvent]")
+TEST_CASE("game_controller_button operator==", "[game_controller_button]")
 {
-  using Button = GameControllerButton;
-  CHECK(Button::Invalid == SDL_CONTROLLER_BUTTON_INVALID);
-  CHECK(Button::A == SDL_CONTROLLER_BUTTON_A);
-  CHECK(Button::B == SDL_CONTROLLER_BUTTON_B);
-  CHECK(Button::X == SDL_CONTROLLER_BUTTON_X);
-  CHECK(Button::Y == SDL_CONTROLLER_BUTTON_Y);
-  CHECK(Button::Back == SDL_CONTROLLER_BUTTON_BACK);
-  CHECK(Button::Guide == SDL_CONTROLLER_BUTTON_GUIDE);
-  CHECK(Button::Start == SDL_CONTROLLER_BUTTON_START);
-  CHECK(Button::LeftStick == SDL_CONTROLLER_BUTTON_LEFTSTICK);
-  CHECK(Button::RightStick == SDL_CONTROLLER_BUTTON_RIGHTSTICK);
-  CHECK(Button::LeftShoulder == SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-  CHECK(Button::RightShoulder == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
-  CHECK(Button::DpadUp == SDL_CONTROLLER_BUTTON_DPAD_UP);
-  CHECK(Button::DpadDown == SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-  CHECK(Button::DpadLeft == SDL_CONTROLLER_BUTTON_DPAD_LEFT);
-  CHECK(Button::DpadRight == SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-  CHECK(Button::Max == SDL_CONTROLLER_BUTTON_MAX);
+  using button = game_controller_button;
 
-  CHECK(SDL_CONTROLLER_BUTTON_INVALID == Button::Invalid);
-  CHECK(SDL_CONTROLLER_BUTTON_A == Button::A);
-  CHECK(SDL_CONTROLLER_BUTTON_B == Button::B);
-  CHECK(SDL_CONTROLLER_BUTTON_X == Button::X);
-  CHECK(SDL_CONTROLLER_BUTTON_Y == Button::Y);
-  CHECK(SDL_CONTROLLER_BUTTON_BACK == Button::Back);
-  CHECK(SDL_CONTROLLER_BUTTON_GUIDE == Button::Guide);
-  CHECK(SDL_CONTROLLER_BUTTON_START == Button::Start);
-  CHECK(SDL_CONTROLLER_BUTTON_LEFTSTICK == Button::LeftStick);
-  CHECK(SDL_CONTROLLER_BUTTON_RIGHTSTICK == Button::RightStick);
-  CHECK(SDL_CONTROLLER_BUTTON_LEFTSHOULDER == Button::LeftShoulder);
-  CHECK(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER == Button::RightShoulder);
-  CHECK(SDL_CONTROLLER_BUTTON_DPAD_UP == Button::DpadUp);
-  CHECK(SDL_CONTROLLER_BUTTON_DPAD_DOWN == Button::DpadDown);
-  CHECK(SDL_CONTROLLER_BUTTON_DPAD_LEFT == Button::DpadLeft);
-  CHECK(SDL_CONTROLLER_BUTTON_DPAD_RIGHT == Button::DpadRight);
-  CHECK(SDL_CONTROLLER_BUTTON_MAX == Button::Max);
+  CHECK(button::invalid == SDL_CONTROLLER_BUTTON_INVALID);
+  CHECK(button::a == SDL_CONTROLLER_BUTTON_A);
+  CHECK(button::b == SDL_CONTROLLER_BUTTON_B);
+  CHECK(button::x == SDL_CONTROLLER_BUTTON_X);
+  CHECK(button::y == SDL_CONTROLLER_BUTTON_Y);
+  CHECK(button::back == SDL_CONTROLLER_BUTTON_BACK);
+  CHECK(button::guide == SDL_CONTROLLER_BUTTON_GUIDE);
+  CHECK(button::start == SDL_CONTROLLER_BUTTON_START);
+  CHECK(button::left_stick == SDL_CONTROLLER_BUTTON_LEFTSTICK);
+  CHECK(button::right_stick == SDL_CONTROLLER_BUTTON_RIGHTSTICK);
+  CHECK(button::left_shoulder == SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+  CHECK(button::right_shoulder == SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+  CHECK(button::dpad_up == SDL_CONTROLLER_BUTTON_DPAD_UP);
+  CHECK(button::dpad_down == SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+  CHECK(button::dpad_left == SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+  CHECK(button::dpad_right == SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+  CHECK(button::max == SDL_CONTROLLER_BUTTON_MAX);
+
+  CHECK(SDL_CONTROLLER_BUTTON_INVALID == button::invalid);
+  CHECK(SDL_CONTROLLER_BUTTON_A == button::a);
+  CHECK(SDL_CONTROLLER_BUTTON_B == button::b);
+  CHECK(SDL_CONTROLLER_BUTTON_X == button::x);
+  CHECK(SDL_CONTROLLER_BUTTON_Y == button::y);
+  CHECK(SDL_CONTROLLER_BUTTON_BACK == button::back);
+  CHECK(SDL_CONTROLLER_BUTTON_GUIDE == button::guide);
+  CHECK(SDL_CONTROLLER_BUTTON_START == button::start);
+  CHECK(SDL_CONTROLLER_BUTTON_LEFTSTICK == button::left_stick);
+  CHECK(SDL_CONTROLLER_BUTTON_RIGHTSTICK == button::right_stick);
+  CHECK(SDL_CONTROLLER_BUTTON_LEFTSHOULDER == button::left_shoulder);
+  CHECK(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER == button::right_shoulder);
+  CHECK(SDL_CONTROLLER_BUTTON_DPAD_UP == button::dpad_up);
+  CHECK(SDL_CONTROLLER_BUTTON_DPAD_DOWN == button::dpad_down);
+  CHECK(SDL_CONTROLLER_BUTTON_DPAD_LEFT == button::dpad_left);
+  CHECK(SDL_CONTROLLER_BUTTON_DPAD_RIGHT == button::dpad_right);
+  CHECK(SDL_CONTROLLER_BUTTON_MAX == button::max);
 }
 
-TEST_CASE("GameControllerButton operator!=", "[ControllerButtonEvent]")
+TEST_CASE("game_controller_button operator!=", "[game_controller_button]")
 {
-  using Button = GameControllerButton;
+  using button = game_controller_button;
 
-  CHECK(Button::DpadRight != SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-  CHECK(SDL_CONTROLLER_BUTTON_X != Button::A);
+  CHECK(button::dpad_right != SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+  CHECK(SDL_CONTROLLER_BUTTON_X != button::a);
 
-  CHECK(!(SDL_CONTROLLER_BUTTON_INVALID != Button::Invalid));
+  CHECK(!(SDL_CONTROLLER_BUTTON_INVALID != button::invalid));
 }

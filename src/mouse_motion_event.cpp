@@ -75,7 +75,7 @@ auto MouseMotionEvent::state() const noexcept -> u32
 }
 
 CENTURION_DEF
-auto MouseMotionEvent::pressed(MouseButton button) const noexcept -> bool
+auto MouseMotionEvent::pressed(mouse_button button) const noexcept -> bool
 {
   return m_event.state & SDL_BUTTON(static_cast<u32>(button));
 }

@@ -29,7 +29,7 @@ TEST_CASE("MouseButtonEvent::set_button", "[MouseButtonEvent]")
 {
   MouseButtonEvent event;
 
-  const auto button = MouseButton::Right;
+  const auto button = mouse_button::right;
   event.set_button(button);
 
   CHECK(event.button() == button);
@@ -99,7 +99,7 @@ TEST_CASE("MouseButtonEvent::button", "[MouseButtonEvent]")
   sdlEvent.button = SDL_BUTTON_X1;
   MouseButtonEvent event{sdlEvent};
 
-  CHECK(event.button() == static_cast<MouseButton>(sdlEvent.button));
+  CHECK(event.button() == static_cast<mouse_button>(sdlEvent.button));
 }
 
 TEST_CASE("MouseButtonEvent::state", "[MouseButtonEvent]")

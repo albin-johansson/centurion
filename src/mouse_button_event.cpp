@@ -27,7 +27,7 @@ void MouseButtonEvent::set_which(u32 which) noexcept
 }
 
 CENTURION_DEF
-void MouseButtonEvent::set_button(MouseButton button) noexcept
+void MouseButtonEvent::set_button(mouse_button button) noexcept
 {
   m_event.button = static_cast<u8>(button);
 }
@@ -69,9 +69,9 @@ auto MouseButtonEvent::which() const noexcept -> u32
 }
 
 CENTURION_DEF
-auto MouseButtonEvent::button() const noexcept -> MouseButton
+auto MouseButtonEvent::button() const noexcept -> mouse_button
 {
-  return static_cast<MouseButton>(m_event.button);
+  return static_cast<mouse_button>(m_event.button);
 }
 
 CENTURION_DEF

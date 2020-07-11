@@ -80,12 +80,12 @@ TEST_CASE("MouseMotionEvent::pressed", "[MouseMotionEvent]")
   MouseMotionEvent event;
   event.set_state(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
 
-  CHECK(event.pressed(MouseButton::Left));
-  CHECK(event.pressed(MouseButton::Middle));
+  CHECK(event.pressed(mouse_button::left));
+  CHECK(event.pressed(mouse_button::middle));
 
-  CHECK(!event.pressed(MouseButton::Right));
-  CHECK(!event.pressed(MouseButton::X1));
-  CHECK(!event.pressed(MouseButton::X2));
+  CHECK(!event.pressed(mouse_button::right));
+  CHECK(!event.pressed(mouse_button::x1));
+  CHECK(!event.pressed(mouse_button::x2));
 }
 
 TEST_CASE("MouseMotionEvent::window_id", "[MouseMotionEvent]")

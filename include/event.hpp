@@ -1578,7 +1578,7 @@ class MouseButtonEvent final : public CommonEvent<SDL_MouseButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_button(MouseButton button) noexcept;
+  void set_button(mouse_button button) noexcept;
 
   /**
    * @brief Sets the button state associated with the event.
@@ -1649,7 +1649,7 @@ class MouseButtonEvent final : public CommonEvent<SDL_MouseButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto button() const noexcept -> MouseButton;
+  auto button() const noexcept -> mouse_button;
 
   /**
    * @brief Returns the state of the mouse button associated with the event.
@@ -1849,7 +1849,7 @@ class MouseMotionEvent final : public CommonEvent<SDL_MouseMotionEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  bool pressed(MouseButton button) const noexcept;
+  bool pressed(mouse_button button) const noexcept;
 
   /**
    * @brief Returns the x-coordinate of the mouse relative to the window.

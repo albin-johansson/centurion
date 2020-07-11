@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file mouse_button.hpp
+ *
+ * @brief Provides the `mouse_button` enum
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_MOUSE_BUTTON_HEADER
 #define CENTURION_MOUSE_BUTTON_HEADER
 
@@ -32,17 +44,20 @@
 namespace centurion {
 
 /**
- * The MouseButton enum class provides values that represent various mouse
- * buttons.
+ * @enum mouse_button
+ *
+ * @brief Provides values that represent various mouse buttons.
  *
  * @since 3.1.0
+ *
+ * @headerfile mouse_button.hpp
  */
-enum class MouseButton {
-  Left = SDL_BUTTON_LEFT,
-  Middle = SDL_BUTTON_MIDDLE,
-  Right = SDL_BUTTON_RIGHT,
-  X1 = SDL_BUTTON_X1,
-  X2 = SDL_BUTTON_X2
+enum class mouse_button {
+  left = SDL_BUTTON_LEFT,
+  middle = SDL_BUTTON_MIDDLE,
+  right = SDL_BUTTON_RIGHT,
+  x1 = SDL_BUTTON_X1,
+  x2 = SDL_BUTTON_X2
 };
 
 }  // namespace centurion

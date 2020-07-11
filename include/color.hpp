@@ -54,6 +54,8 @@ namespace centurion {
  *
  * @headerfile color.hpp
  *
+ * @see `colors.hpp`
+ *
  * @since 3.0.0
  */
 class color final {

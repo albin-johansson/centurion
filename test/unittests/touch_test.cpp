@@ -34,15 +34,11 @@ TEST_CASE("touch::num_devices", "[Touch]")
   CHECK(num_devices() == SDL_GetNumTouchDevices());
 }
 
-#ifndef TRAVIS_TEST
-
-TEST_CASE("touch::get_device", "[Touch]")
+TEST_CASE("touch::get_device", "[!mayfail][Touch]")
 {
   const auto device = get_device(0);
   CHECK(!device.has_value());
 }
-
-#endif  // TRAVIS_TEST
 
 TEST_CASE("touch::type_of", "[Touch]")
 {

@@ -173,8 +173,7 @@ TEST_CASE("Window::center", "[Window]")
   CHECK(y == window.y());
 }
 
-#ifndef TRAVIS_TEST
-TEST_CASE("Window::raise", "[Window]")
+TEST_CASE("Window::raise", "[!mayfail][Window]")
 {
   ctn::window window;
 
@@ -183,7 +182,6 @@ TEST_CASE("Window::raise", "[Window]")
 
   CHECK(window.has_input_focus());
 }
-#endif  // TRAVIS_TEST
 
 TEST_CASE("Window:maximize", "[Window]")
 {
@@ -195,8 +193,7 @@ TEST_CASE("Window:maximize", "[Window]")
   CHECK(window.maximized());
 }
 
-#ifndef TRAVIS_TEST
-TEST_CASE("Window::minimize", "[Window]")
+TEST_CASE("Window::minimize", "[!mayfail][Window]")
 {
   ctn::window window;
 
@@ -205,7 +202,6 @@ TEST_CASE("Window::minimize", "[Window]")
 
   CHECK(window.minimized());
 }
-#endif  // TRAVIS_TEST
 
 TEST_CASE("Window::set_fullscreen", "[Window]")
 {
@@ -381,8 +377,7 @@ TEST_CASE("Window::set_position", "[Window]")
   CHECK(y == pos.y());
 }
 
-#ifndef TRAVIS_TEST
-TEST_CASE("Window::set_grab_mouse", "[Window]")
+TEST_CASE("Window::set_grab_mouse", "[!mayfail][Window]")
 {
   ctn::window window;
   CHECK(!window.grabbing_mouse());
@@ -394,7 +389,6 @@ TEST_CASE("Window::set_grab_mouse", "[Window]")
   window.set_grab_mouse(false);
   CHECK(!window.grabbing_mouse());
 }
-#endif  // TRAVIS_TEST
 
 TEST_CASE("Window::set_brightness", "[Window]")
 {
@@ -425,8 +419,7 @@ TEST_CASE("Window::set_brightness", "[Window]")
   }
 }
 
-#ifndef TRAVIS_TEST
-TEST_CASE("Window::set_capturing_mouse", "[Window]")
+TEST_CASE("Window::set_capturing_mouse", "[!mayfail][Window]")
 {
   ctn::window window;
 
@@ -441,7 +434,6 @@ TEST_CASE("Window::set_capturing_mouse", "[Window]")
   window.set_capturing_mouse(true);
   CHECK(window.capturing_mouse());
 }
-#endif  // TRAVIS_TEST
 
 TEST_CASE("Window::decorated", "[Window]")
 {
@@ -457,8 +449,7 @@ TEST_CASE("Window::decorated", "[Window]")
   }
 }
 
-#ifndef TRAVIS_TEST
-TEST_CASE("Window::grabbing_mouse", "[Window]")
+TEST_CASE("Window::grabbing_mouse", "[!mayfail][Window]")
 {
   SECTION("Normal")
   {
@@ -471,7 +462,6 @@ TEST_CASE("Window::grabbing_mouse", "[Window]")
     CHECK(window.grabbing_mouse());
   }
 }
-#endif  // TRAVIS_TEST
 
 TEST_CASE("Window::resizable", "[Window]")
 {
@@ -610,8 +600,7 @@ TEST_CASE("Window::opengl", "[Window]")
   }
 }
 
-#ifndef TRAVIS_TEST
-TEST_CASE("Window::vulkan", "[Window]")
+TEST_CASE("Window::vulkan", "[!mayfail][Window]")
 {
   SECTION("Normal")
   {
@@ -626,7 +615,7 @@ TEST_CASE("Window::vulkan", "[Window]")
   }
 }
 
-TEST_CASE("Window::has_input_focus", "[Window]")
+TEST_CASE("Window::has_input_focus", "[!mayfail][Window]")
 {
   ctn::window window;
   CHECK(!window.has_input_focus());
@@ -636,7 +625,6 @@ TEST_CASE("Window::has_input_focus", "[Window]")
 
   CHECK(window.has_input_focus());
 }
-#endif  // TRAVIS_TEST
 
 TEST_CASE("Window::has_mouse_focus", "[Window]")
 {
@@ -650,13 +638,11 @@ TEST_CASE("Window::is_foreign", "[Window]")
   CHECK(!window.is_foreign());
 }
 
-#ifndef TRAVIS_TEST
-TEST_CASE("Window::capturing_mouse", "[Window]")
+TEST_CASE("Window::capturing_mouse", "[!mayfail][Window]")
 {
   const ctn::window window;
   CHECK(!window.capturing_mouse());
 }
-#endif  // TRAVIS_TEST
 
 TEST_CASE("Window::always_on_top", "[Window]")
 {

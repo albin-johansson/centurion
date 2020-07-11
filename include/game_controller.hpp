@@ -155,8 +155,8 @@ enum class game_controller_button {
  * @brief Indicates whether or not two game controller button values are the
  * same.
  *
- * @param button the left-hand side game controller button value.
- * @param sdlButton the right-hand side game controller button value.
+ * @param lhs the left-hand side game controller button value.
+ * @param rhs the right-hand side game controller button value.
  *
  * @return `true` if the game controller button values are the same; `false`
  * otherwise.
@@ -184,8 +184,8 @@ enum class game_controller_button {
  * @brief Indicates whether or not two game controller button values aren't the
  * same.
  *
- * @param button the left-hand side game controller button value.
- * @param sdlButton the right-hand side game controller button value.
+ * @param lhs the left-hand side game controller button value.
+ * @param rhs the right-hand side game controller button value.
  *
  * @return `true` if the game controller button values aren't the same; `false`
  * otherwise.

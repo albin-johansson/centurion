@@ -24,10 +24,13 @@
 
 /**
  * @file cursor.hpp
+ *
  * @brief Provides the cursor API.
  *
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -47,6 +50,8 @@
 namespace centurion {
 
 /**
+ * @enum system_cursor
+ *
  * @brief Represents the various available system cursors.
  *
  * @details Mirrors the values of the `SDL_SystemCursor` enum.
@@ -57,19 +62,19 @@ namespace centurion {
  *
  * @headerfile cursor.hpp
  */
-enum class SystemCursor {
-  Arrow = SDL_SYSTEM_CURSOR_ARROW,
-  IBeam = SDL_SYSTEM_CURSOR_IBEAM,
-  Wait = SDL_SYSTEM_CURSOR_WAIT,
-  Crosshair = SDL_SYSTEM_CURSOR_CROSSHAIR,
-  WaitArrow = SDL_SYSTEM_CURSOR_WAITARROW,
-  Arrow_NW_SE = SDL_SYSTEM_CURSOR_SIZENWSE,
-  Arrow_NE_SW = SDL_SYSTEM_CURSOR_SIZENESW,
-  Arrow_W_E = SDL_SYSTEM_CURSOR_SIZEWE,
-  Arrow_N_S = SDL_SYSTEM_CURSOR_SIZENS,
-  ArrowAll = SDL_SYSTEM_CURSOR_SIZEALL,
-  No = SDL_SYSTEM_CURSOR_NO,
-  Hand = SDL_SYSTEM_CURSOR_HAND
+enum class system_cursor {
+  arrow = SDL_SYSTEM_CURSOR_ARROW,
+  ibeam = SDL_SYSTEM_CURSOR_IBEAM,
+  wait = SDL_SYSTEM_CURSOR_WAIT,
+  crosshair = SDL_SYSTEM_CURSOR_CROSSHAIR,
+  wait_arrow = SDL_SYSTEM_CURSOR_WAITARROW,
+  arrow_nw_se = SDL_SYSTEM_CURSOR_SIZENWSE,
+  arrow_ne_sw = SDL_SYSTEM_CURSOR_SIZENESW,
+  arrow_w_e = SDL_SYSTEM_CURSOR_SIZEWE,
+  arrow_n_s = SDL_SYSTEM_CURSOR_SIZENS,
+  arrow_all = SDL_SYSTEM_CURSOR_SIZEALL,
+  no = SDL_SYSTEM_CURSOR_NO,
+  hand = SDL_SYSTEM_CURSOR_HAND
 };
 
 /**
@@ -82,7 +87,7 @@ enum class SystemCursor {
  *
  * @since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(SystemCursor lhs,
+[[nodiscard]] inline constexpr auto operator==(system_cursor lhs,
                                                SDL_SystemCursor rhs) noexcept
     -> bool
 {
@@ -90,10 +95,10 @@ enum class SystemCursor {
 }
 
 /**
- * @copydoc operator==(SystemCursor, SDL_SystemCursor)
+ * @copydoc operator==(system_cursor, SDL_SystemCursor)
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_SystemCursor lhs,
-                                               SystemCursor rhs) noexcept
+                                               system_cursor rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -110,7 +115,7 @@ enum class SystemCursor {
  *
  * @since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(SystemCursor lhs,
+[[nodiscard]] inline constexpr auto operator!=(system_cursor lhs,
                                                SDL_SystemCursor rhs) noexcept
     -> bool
 {
@@ -118,17 +123,18 @@ enum class SystemCursor {
 }
 
 /**
- * @copydoc operator!=(SystemCursor, SDL_SystemCursor)
+ * @copydoc operator!=(system_cursor, SDL_SystemCursor)
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_SystemCursor lhs,
-                                               SystemCursor rhs) noexcept
+                                               system_cursor rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
- * @class Cursor
+ * @class cursor
+ *
  * @brief Represents a mouse cursor.
  *
  * @details Cursors can be created from various preset shapes or from images
@@ -138,7 +144,7 @@ enum class SystemCursor {
  *
  * @headerfile cursor.hpp
  */
-class Cursor final {
+class cursor final {
  public:
   /**
    * @brief Creates a cursor based on the specified cursor type.
@@ -150,7 +156,7 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit Cursor(SystemCursor id);
+  explicit cursor(system_cursor id);
 
   /**
    * @brief Creates a cursor based on the supplied `SDL_Cursor`.
@@ -158,14 +164,14 @@ class Cursor final {
    * @details The ownership of the supplied pointer will be claimed by the
    * created cursor instance.
    *
-   * @param cursor a pointer to an `SDL_Cursor` that will be adopted.
+   * @param sdlCursor a pointer to an `SDL_Cursor` that will be adopted.
    *
    * @throws centurion_exception if the supplied pointer is null.
    *
    * @since 4.0.0
    */
   CENTURION_API
-  explicit Cursor(gsl::owner<SDL_Cursor*> cursor);
+  explicit cursor(gsl::owner<SDL_Cursor*> sdlCursor);
 
   /**
    * @brief Creates a cursor based on the supplied surface.
@@ -182,7 +188,7 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit Cursor(const Surface& surface, const point_i& hotspot);
+  explicit cursor(const Surface& surface, const point_i& hotspot);
 
   /**
    * @brief Creates a cursor by moving the supplied cursor.
@@ -192,12 +198,12 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_API
-  Cursor(Cursor&& other) noexcept;
+  cursor(cursor&& other) noexcept;
 
-  Cursor(const Cursor&) = delete;
+  cursor(const cursor&) = delete;
 
   CENTURION_API
-  ~Cursor() noexcept;
+  ~cursor() noexcept;
 
   /**
    * @brief Moves the contents of the supplied cursor into this cursor.
@@ -209,50 +215,51 @@ class Cursor final {
    * @since 4.0.0
    */
   CENTURION_API
-  auto operator=(Cursor&& other) noexcept -> Cursor&;
+  auto operator=(cursor&& other) noexcept -> cursor&;
 
-  auto operator=(const Cursor&) -> Cursor& = delete;
+  auto operator=(const cursor&) -> cursor& = delete;
 
   /**
-   * @copydoc Cursor(SystemCursor)
+   * @copydoc cursor(system_cursor)
    */
   CENTURION_QUERY
-  static auto unique(SystemCursor id) -> std::unique_ptr<Cursor>;
+  static auto unique(system_cursor id) -> std::unique_ptr<cursor>;
 
   /**
-   * @copydoc Cursor(gsl::owner<SDL_Cursor*>)
+   * @copydoc cursor(gsl::owner<SDL_Cursor*>)
    */
   CENTURION_QUERY
-  static auto unique(gsl::owner<SDL_Cursor*> cursor) -> std::unique_ptr<Cursor>;
+  static auto unique(gsl::owner<SDL_Cursor*> sdlCursor) -> std::unique_ptr<cursor>;
 
   /**
-   * @copydoc Cursor(const Surface&, const point_i&)
+   * @copydoc cursor(const Surface&, const point_i&)
    */
   CENTURION_QUERY
   static auto unique(const Surface& surface, const point_i& hotspot)
-      -> std::unique_ptr<Cursor>;
+      -> std::unique_ptr<cursor>;
 
   /**
-   * @copydoc Cursor(SystemCursor)
+   * @copydoc cursor(system_cursor)
    */
   CENTURION_QUERY
-  static auto shared(SystemCursor id) -> std::shared_ptr<Cursor>;
+  static auto shared(system_cursor id) -> std::shared_ptr<cursor>;
 
   /**
-   * @copydoc Cursor(gsl::owner<SDL_Cursor*>)
+   * @copydoc cursor(gsl::owner<SDL_Cursor*>)
    */
   CENTURION_QUERY
-  static auto shared(gsl::owner<SDL_Cursor*> cursor) -> std::shared_ptr<Cursor>;
+  static auto shared(gsl::owner<SDL_Cursor*> sdlCursor) ->
+      std::shared_ptr<cursor>;
 
   /**
-   * @copydoc Cursor(const Surface&, const point_i&)
+   * @copydoc cursor(const Surface&, const point_i&)
    */
   CENTURION_QUERY
   static auto shared(const Surface& surface, const point_i& hotspot)
-      -> std::shared_ptr<Cursor>;
+      -> std::shared_ptr<cursor>;
 
   /**
-   * Forces a cursor redraw.
+   * @brief Forces a cursor redraw.
    *
    * @since 4.0.0
    */
@@ -260,7 +267,7 @@ class Cursor final {
   static void force_redraw() noexcept;
 
   /**
-   * Resets the cursor to the system default.
+   * @brief Resets the cursor to the system default.
    *
    * @since 4.0.0
    */
@@ -268,18 +275,21 @@ class Cursor final {
   static void reset() noexcept;
 
   /**
-   * Sets whether or not the cursor is visible.
+   * @brief Sets whether or not the cursor is visible.
    *
-   * @param visible true if the cursor should be made visible; false otherwise.
+   * @param visible `true` if the cursor should be made visible; `false`
+   * otherwise.
+   *
    * @since 4.0.0
    */
   CENTURION_API
   static void set_visible(bool visible) noexcept;
 
   /**
-   * Indicates whether or not the cursor is visible.
+   * @brief Indicates whether or not the cursor is visible.
    *
-   * @return true if the cursor is visible; false otherwise.
+   * @return `true` if the cursor is visible; `false` otherwise.
+   *
    * @since 4.0.0
    */
   CENTURION_QUERY
@@ -299,7 +309,7 @@ class Cursor final {
    * @note This method only checks if the currently used SDL cursor is the
    * same instance referenced in the invoked Centurion cursor. In other
    * words, if two cursors of the same type has been created, and one of them
-   * is enabled, then this method could still return false even if the
+   * is enabled, then this method could still return `false` even if the
    * cursors have the same type.
    *
    * @return `true` if the cursor is being used; `false` otherwise.
@@ -310,12 +320,14 @@ class Cursor final {
   auto is_enabled() const noexcept -> bool;
 
   /**
-   * Returns a pointer to the internal SDL_Cursor. Use of this method is
-   * not recommended, since it purposefully breaks const-correctness. However
-   * it is useful since many SDL calls use non-const pointers even when no
-   * change will be applied.
+   * @brief Returns a pointer to the associated `SDL_Cursor`.
    *
-   * @return a pointer to the internal SDL_Cursor.
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However, it's' useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated `SDL_Cursor`.
+   *
    * @since 4.0.0
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Cursor* { return m_cursor; }
@@ -325,26 +337,28 @@ class Cursor final {
   SDL_Surface* m_surface = nullptr;
 
   /**
-   * Destroys the components in the Cursor instance.
+   * @brief Destroys the components in the cursor instance.
    *
    * @since 4.0.0
    */
   void destroy() noexcept;
 
   /**
-   * Moves the contents of the supplied cursor instance into this instance.
+   * @brief Moves the contents of the supplied cursor instance into this
+   * instance.
    *
    * @param other the instance that will be moved.
+   *
    * @since 4.0.0
    */
-  void move(Cursor&& other) noexcept;
+  void move(cursor&& other) noexcept;
 };
 
-static_assert(std::is_final_v<Cursor>);
-static_assert(std::is_nothrow_move_constructible_v<Cursor>);
-static_assert(std::is_nothrow_move_assignable_v<Cursor>);
-static_assert(!std::is_copy_constructible_v<Cursor>);
-static_assert(!std::is_copy_assignable_v<Cursor>);
+static_assert(std::is_final_v<cursor>);
+static_assert(std::is_nothrow_move_constructible_v<cursor>);
+static_assert(std::is_nothrow_move_assignable_v<cursor>);
+static_assert(!std::is_copy_constructible_v<cursor>);
+static_assert(!std::is_copy_assignable_v<cursor>);
 
 }  // namespace centurion
 

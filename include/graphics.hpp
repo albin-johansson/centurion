@@ -1585,7 +1585,7 @@ class texture final {
   }
 
   /**
-   * @copydoc texture(const basic_renderer<T>&, pixel_format, Access, area_i)
+   * @copydoc texture(const basic_renderer<T>&, pixel_format, access, area_i)
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
@@ -1625,7 +1625,7 @@ class texture final {
   }
 
   /**
-   * @copydoc texture(const basic_renderer<T>&, pixel_format, Access, area_i)
+   * @copydoc texture(const basic_renderer<T>&, pixel_format, access, area_i)
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
@@ -1640,7 +1640,7 @@ class texture final {
    * @brief Creates and returns a unique pointer to a texture.
    *
    * @details The create texture is based on the image at the specified path
-   * with the `Streaming` texture access.
+   * with the `streaming` texture access.
    *
    * @param renderer the renderer that will be used to create the texture.
    * @param path the path of the image file to base the texture on.
@@ -1648,7 +1648,7 @@ class texture final {
    *
    * @throws centurion_exception if something goes wrong.
    *
-   * @return a unique pointer to a texture with `Streaming` texture access.
+   * @return a unique pointer to a texture with `streaming` texture access.
    *
    * @since 4.0.0
    */

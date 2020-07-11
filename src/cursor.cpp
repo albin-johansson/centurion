@@ -9,7 +9,7 @@
 namespace centurion {
 
 CENTURION_DEF
-Cursor::Cursor(SystemCursor id)
+cursor::cursor(system_cursor id)
 {
   m_cursor = SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(id));
   if (!m_cursor) {
@@ -18,17 +18,17 @@ Cursor::Cursor(SystemCursor id)
 }
 
 CENTURION_DEF
-Cursor::Cursor(gsl::owner<SDL_Cursor*> cursor)
+cursor::cursor(gsl::owner<SDL_Cursor*> sdlCursor)
 {
-  if (cursor) {
-    m_cursor = cursor;
+  if (sdlCursor) {
+    m_cursor = sdlCursor;
   } else {
     throw centurion_exception{"Can't create Cursor from null SDL_Cursor!"};
   }
 }
 
 CENTURION_DEF
-Cursor::Cursor(const Surface& surface, const point_i& hotspot)
+cursor::cursor(const Surface& surface, const point_i& hotspot)
 {
   m_surface = SDL_DuplicateSurface(surface.get());
   if (!m_surface) {
@@ -42,19 +42,19 @@ Cursor::Cursor(const Surface& surface, const point_i& hotspot)
 }
 
 CENTURION_DEF
-Cursor::Cursor(Cursor&& other) noexcept
+cursor::cursor(cursor&& other) noexcept
 {
   move(std::move(other));
 }
 
 CENTURION_DEF
-Cursor::~Cursor() noexcept
+cursor::~cursor() noexcept
 {
   destroy();
 }
 
 CENTURION_DEF
-void Cursor::destroy() noexcept
+void cursor::destroy() noexcept
 {
   if (m_cursor) {
     SDL_FreeCursor(m_cursor);
@@ -66,7 +66,7 @@ void Cursor::destroy() noexcept
 }
 
 CENTURION_DEF
-void Cursor::move(Cursor&& other) noexcept
+void cursor::move(cursor&& other) noexcept
 {
   destroy();
 
@@ -78,7 +78,7 @@ void Cursor::move(Cursor&& other) noexcept
 }
 
 CENTURION_DEF
-auto Cursor::operator=(Cursor&& other) noexcept -> Cursor&
+auto cursor::operator=(cursor&& other) noexcept -> cursor&
 {
   if (this != &other) {
     move(std::move(other));
@@ -87,75 +87,77 @@ auto Cursor::operator=(Cursor&& other) noexcept -> Cursor&
 }
 
 CENTURION_DEF
-auto Cursor::unique(SystemCursor id) -> std::unique_ptr<Cursor>
+auto cursor::unique(system_cursor id) -> std::unique_ptr<cursor>
 {
-  return std::make_unique<Cursor>(id);
+  return std::make_unique<cursor>(id);
 }
 
 CENTURION_DEF
-auto Cursor::unique(gsl::owner<SDL_Cursor*> cursor) -> std::unique_ptr<Cursor>
+auto cursor::unique(gsl::owner<SDL_Cursor*> sdlCursor)
+    -> std::unique_ptr<cursor>
 {
-  return std::make_unique<Cursor>(cursor);
+  return std::make_unique<cursor>(sdlCursor);
 }
 
 CENTURION_DEF
-auto Cursor::unique(const Surface& surface, const point_i& hotspot)
-    -> std::unique_ptr<Cursor>
+auto cursor::unique(const Surface& surface, const point_i& hotspot)
+    -> std::unique_ptr<cursor>
 {
-  return std::make_unique<Cursor>(surface, hotspot);
+  return std::make_unique<cursor>(surface, hotspot);
 }
 
 CENTURION_DEF
-auto Cursor::shared(SystemCursor id) -> std::shared_ptr<Cursor>
+auto cursor::shared(system_cursor id) -> std::shared_ptr<cursor>
 {
-  return std::make_shared<Cursor>(id);
+  return std::make_shared<cursor>(id);
 }
 
 CENTURION_DEF
-auto Cursor::shared(gsl::owner<SDL_Cursor*> cursor) -> std::shared_ptr<Cursor>
+auto cursor::shared(gsl::owner<SDL_Cursor*> sdlCursor)
+    -> std::shared_ptr<cursor>
 {
-  return std::make_shared<Cursor>(cursor);
+  return std::make_shared<cursor>(sdlCursor);
 }
 
 CENTURION_DEF
-auto Cursor::shared(const Surface& surface, const point_i& hotspot)
-    -> std::shared_ptr<Cursor>
+auto cursor::shared(const Surface& surface, const point_i& hotspot)
+    -> std::shared_ptr<cursor>
 {
-  return std::make_shared<Cursor>(surface, hotspot);
+  return std::make_shared<cursor>(surface, hotspot);
 }
 
 CENTURION_DEF
-void Cursor::enable() noexcept
+void cursor::enable() noexcept
 {
   SDL_SetCursor(m_cursor);
 }
 
 CENTURION_DEF
-auto Cursor::is_enabled() const noexcept -> bool
+auto cursor::is_enabled() const noexcept -> bool
 {
   return SDL_GetCursor() == m_cursor;
 }
 
 CENTURION_DEF
-void Cursor::force_redraw() noexcept
+void cursor::force_redraw() noexcept
 {
   SDL_SetCursor(nullptr);
 }
 
 CENTURION_DEF
-void Cursor::reset() noexcept
+void cursor::reset() noexcept
 {
   SDL_SetCursor(SDL_GetDefaultCursor());
 }
 
 CENTURION_DEF
-void Cursor::set_visible(bool visible) noexcept
+void cursor::set_visible(bool visible) noexcept
 {
   SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
 }
 
 CENTURION_DEF
-auto Cursor::visible() noexcept -> bool
+auto cursor::visible() noexcept -> bool
 {
   return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
 }

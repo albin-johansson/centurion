@@ -24,13 +24,16 @@
 
 /**
  * @file centurion_as_ctn.hpp
+ *
  * @brief Convenience header that defines the `::ctn` namespace alias.
  *
- * Includes the `centurion.hpp` header whilst also defining a
+ * @details Includes the `centurion.hpp` header whilst also defining a
  * namespace alias for the `::centurion` namespace, `::ctn`.
  *
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -41,14 +44,15 @@
 
 /**
  * @namespace ctn
+ *
  * @brief Alias for `::centurion`.
  *
  * @details This alias can make header files look a bit nicer when dealing with
  * centurion components.
  *
- * @headerfile centurion_as_ctn.hpp
- *
  * @since 4.1.0
+ *
+ * @headerfile centurion_as_ctn.hpp
  */
 namespace ctn = centurion;
 

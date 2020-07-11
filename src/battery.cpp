@@ -43,15 +43,15 @@ auto percentage() noexcept -> std::optional<int>
 }
 
 CENTURION_DEF
-auto state() noexcept -> PowerState
+auto state() noexcept -> power_state
 {
-  return static_cast<PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
+  return static_cast<power_state>(SDL_GetPowerInfo(nullptr, nullptr));
 }
 
 CENTURION_DEF
 auto exists() noexcept -> bool
 {
-  return state() == PowerState::OnBattery;
+  return state() == power_state::on_battery;
 }
 
 }  // namespace centurion::battery

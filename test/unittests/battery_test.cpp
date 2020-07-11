@@ -7,20 +7,20 @@ using namespace centurion;
 TEST_CASE("PowerState enum values", "[PowerState]")
 {
   using namespace battery;
-  CHECK(PowerState::Unknown == SDL_POWERSTATE_UNKNOWN);
-  CHECK(PowerState::OnBattery == SDL_POWERSTATE_ON_BATTERY);
-  CHECK(PowerState::NoBattery == SDL_POWERSTATE_NO_BATTERY);
-  CHECK(PowerState::Charging == SDL_POWERSTATE_CHARGING);
-  CHECK(PowerState::Charged == SDL_POWERSTATE_CHARGED);
+  CHECK(power_state::unknown == SDL_POWERSTATE_UNKNOWN);
+  CHECK(power_state::on_battery == SDL_POWERSTATE_ON_BATTERY);
+  CHECK(power_state::no_battery == SDL_POWERSTATE_NO_BATTERY);
+  CHECK(power_state::charging == SDL_POWERSTATE_CHARGING);
+  CHECK(power_state::charged == SDL_POWERSTATE_CHARGED);
 
-  CHECK(SDL_POWERSTATE_UNKNOWN == PowerState::Unknown);
-  CHECK(SDL_POWERSTATE_ON_BATTERY == PowerState::OnBattery);
-  CHECK(SDL_POWERSTATE_NO_BATTERY == PowerState::NoBattery);
-  CHECK(SDL_POWERSTATE_CHARGING == PowerState::Charging);
-  CHECK(SDL_POWERSTATE_CHARGED == PowerState::Charged);
+  CHECK(SDL_POWERSTATE_UNKNOWN == power_state::unknown);
+  CHECK(SDL_POWERSTATE_ON_BATTERY == power_state::on_battery);
+  CHECK(SDL_POWERSTATE_NO_BATTERY == power_state::no_battery);
+  CHECK(SDL_POWERSTATE_CHARGING == power_state::charging);
+  CHECK(SDL_POWERSTATE_CHARGED == power_state::charged);
 
-  CHECK(PowerState::Charged != SDL_POWERSTATE_ON_BATTERY);
-  CHECK(SDL_POWERSTATE_CHARGING != PowerState::Unknown);
+  CHECK(power_state::charged != SDL_POWERSTATE_ON_BATTERY);
+  CHECK(SDL_POWERSTATE_CHARGING != power_state::unknown);
 }
 
 TEST_CASE("battery::percentage", "[battery]")
@@ -71,7 +71,7 @@ TEST_CASE("battery::state", "[battery]")
 
   const auto state = battery::state();
   const auto actual =
-      static_cast<battery::PowerState>(SDL_GetPowerInfo(nullptr, nullptr));
+      static_cast<battery::power_state>(SDL_GetPowerInfo(nullptr, nullptr));
 
   CHECK(state == actual);
 }
@@ -79,5 +79,5 @@ TEST_CASE("battery::state", "[battery]")
 TEST_CASE("battery::exists", "[battery]")
 {
   CHECK(battery::exists() ==
-        (battery::state() == battery::PowerState::OnBattery));
+        (battery::state() == battery::power_state::on_battery));
 }

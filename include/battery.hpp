@@ -23,11 +23,14 @@
  */
 
 /**
+ * @file battery.hpp
+ *
  * @brief Provides battery related utilities.
  *
- * @file battery.hpp
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -51,7 +54,7 @@
 namespace centurion::battery {
 
 /**
- * @enum PowerState
+ * @enum power_state
  *
  * @brief Mirrors the values of the `SDL_PowerState` enum.
  *
@@ -59,17 +62,17 @@ namespace centurion::battery {
  *
  * @headerfile battery.hpp
  */
-enum class PowerState {
-  Unknown = SDL_POWERSTATE_UNKNOWN, /**< The status is unknown. */
+enum class power_state {
+  unknown = SDL_POWERSTATE_UNKNOWN, /**< The status is unknown. */
 
-  OnBattery =
+  on_battery =
       SDL_POWERSTATE_ON_BATTERY, /**< Not plugged in and running on battery. */
 
-  NoBattery = SDL_POWERSTATE_NO_BATTERY, /**< No battery available. */
+  no_battery = SDL_POWERSTATE_NO_BATTERY, /**< No battery available. */
 
-  Charging = SDL_POWERSTATE_CHARGING, /**< Currently charging the battery. */
+  charging = SDL_POWERSTATE_CHARGING, /**< Currently charging the battery. */
 
-  Charged = SDL_POWERSTATE_CHARGED /**< Currently plugged in and charged. */
+  charged = SDL_POWERSTATE_CHARGED /**< Currently plugged in and charged. */
 };
 
 /**
@@ -82,7 +85,7 @@ enum class PowerState {
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(PowerState lhs,
+[[nodiscard]] inline constexpr auto operator==(power_state lhs,
                                                SDL_PowerState rhs) noexcept
     -> bool
 {
@@ -90,10 +93,10 @@ enum class PowerState {
 }
 
 /**
- * @copydoc operator==(PowerState, SDL_PowerState)
+ * @copydoc operator==(power_state, SDL_PowerState)
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_PowerState lhs,
-                                               PowerState rhs) noexcept -> bool
+                                               power_state rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -108,7 +111,7 @@ enum class PowerState {
  *
  * @since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(PowerState lhs,
+[[nodiscard]] inline constexpr auto operator!=(power_state lhs,
                                                SDL_PowerState rhs) noexcept
     -> bool
 {
@@ -116,10 +119,10 @@ enum class PowerState {
 }
 
 /**
- * @copydoc operator!=(PowerState, SDL_PowerState)
+ * @copydoc operator!=(power_state, SDL_PowerState)
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_PowerState lhs,
-                                               PowerState rhs) noexcept -> bool
+                                               power_state rhs) noexcept -> bool
 {
   return rhs != lhs;
 }
@@ -165,7 +168,7 @@ auto percentage() noexcept -> std::optional<int>;
  * @since 3.0.0
  */
 CENTURION_QUERY
-auto state() noexcept -> PowerState;
+auto state() noexcept -> power_state;
 
 /**
  * @brief Indicates whether or not the system is running on a battery.

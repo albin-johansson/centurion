@@ -252,85 +252,85 @@ auto window_base::height() const noexcept -> int
 CENTURION_DEF
 auto window_base::resizable() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_RESIZABLE;
+  return static_cast<bool>(flags() & SDL_WINDOW_RESIZABLE);
 }
 
 CENTURION_DEF
 auto window_base::fullscreen() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_FULLSCREEN;
+  return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN);
 }
 
 CENTURION_DEF
 auto window_base::fullscreen_desktop() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_FULLSCREEN_DESKTOP;
+  return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 CENTURION_DEF
 auto window_base::visible() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_SHOWN;
+  return static_cast<bool>(flags() & SDL_WINDOW_SHOWN);
 }
 
 CENTURION_DEF
 auto window_base::opengl() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_OPENGL;
+  return static_cast<bool>(flags() & SDL_WINDOW_OPENGL);
 }
 
 CENTURION_DEF
 auto window_base::vulkan() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_VULKAN;
+  return static_cast<bool>(flags() & SDL_WINDOW_VULKAN);
 }
 
 CENTURION_DEF
 auto window_base::has_input_focus() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_INPUT_FOCUS;
+  return static_cast<bool>(flags() & SDL_WINDOW_INPUT_FOCUS);
 }
 
 CENTURION_DEF
 auto window_base::has_mouse_focus() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_MOUSE_FOCUS;
+  return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_FOCUS);
 }
 
 CENTURION_DEF
 auto window_base::is_foreign() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_FOREIGN;
+  return static_cast<bool>(flags() & SDL_WINDOW_FOREIGN);
 }
 
 CENTURION_DEF
 auto window_base::capturing_mouse() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_MOUSE_CAPTURE;
+  return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_CAPTURE);
 }
 
 CENTURION_DEF
 auto window_base::always_on_top() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_ALWAYS_ON_TOP;
+  return static_cast<bool>(flags() & SDL_WINDOW_ALWAYS_ON_TOP);
 }
 
 CENTURION_DEF
 auto window_base::minimized() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_MINIMIZED;
+  return static_cast<bool>(flags() & SDL_WINDOW_MINIMIZED);
 }
 
 CENTURION_DEF
 auto window_base::maximized() const noexcept -> bool
 {
-  return flags() & SDL_WINDOW_MAXIMIZED;
+  return static_cast<bool>(flags() & SDL_WINDOW_MAXIMIZED);
 }
 
 CENTURION_DEF
 auto window_base::check_flag(SDL_WindowFlags flag) const noexcept -> bool
 {
-  return flags() & flag;
+  return static_cast<bool>(flags() & flag);
 }
 
 CENTURION_DEF

@@ -3,41 +3,40 @@
 
 #include "touch.hpp"
 
-namespace centurion {
-namespace touch {
+namespace centurion::touch {
 
 CENTURION_DEF
-bool operator==(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept
+auto operator==(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept -> bool
 {
   return static_cast<SDL_TouchDeviceType>(lhs) == rhs;
 }
 
 CENTURION_DEF
-bool operator==(SDL_TouchDeviceType lhs, DeviceType rhs) noexcept
+auto operator==(SDL_TouchDeviceType lhs, DeviceType rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
 
 CENTURION_DEF
-bool operator!=(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept
+auto operator!=(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 CENTURION_DEF
-bool operator!=(SDL_TouchDeviceType lhs, DeviceType rhs) noexcept
+auto operator!=(SDL_TouchDeviceType lhs, DeviceType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 CENTURION_DEF
-int num_devices() noexcept
+auto num_devices() noexcept -> int
 {
   return SDL_GetNumTouchDevices();
 }
 
 CENTURION_DEF
-std::optional<TouchID> get_device(int index) noexcept
+auto get_device(int index) noexcept -> std::optional<TouchID>
 {
   const auto device = SDL_GetTouchDevice(index);
   if (device == 0) {
@@ -48,19 +47,20 @@ std::optional<TouchID> get_device(int index) noexcept
 }
 
 CENTURION_DEF
-DeviceType type_of(centurion::TouchID id) noexcept
+auto type_of(centurion::TouchID id) noexcept -> DeviceType
 {
   return static_cast<DeviceType>(SDL_GetTouchDeviceType(id));
 }
 
 CENTURION_DEF
-int num_fingers(centurion::TouchID id) noexcept
+auto num_fingers(centurion::TouchID id) noexcept -> int
 {
   return SDL_GetNumTouchFingers(id);
 }
 
 CENTURION_DEF
-std::optional<SDL_Finger> get_finger(centurion::TouchID id, int index) noexcept
+auto get_finger(centurion::TouchID id, int index) noexcept
+    -> std::optional<SDL_Finger>
 {
   const auto* finger = SDL_GetTouchFinger(id, index);
   if (finger) {
@@ -70,7 +70,6 @@ std::optional<SDL_Finger> get_finger(centurion::TouchID id, int index) noexcept
   }
 }
 
-}  // namespace touch
-}  // namespace centurion
+}  // namespace centurion::touch
 
 #endif  // CENTURION_TOUCH_SOURCE

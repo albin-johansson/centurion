@@ -174,7 +174,7 @@ class key_state final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto modifier_active(key_modifier modifier) const noexcept -> bool;
+  static auto modifier_active(key_modifier modifier) noexcept -> bool;
 
   /**
    * @brief Returns the total amount of keys.
@@ -186,7 +186,7 @@ class key_state final {
   [[nodiscard]] auto amount_of_keys() const noexcept -> int { return m_nKeys; }
 
  private:
-  const u8* m_states{nullptr};
+  const u8* m_states{};
   std::array<u8, static_cast<int>(SDL_NUM_SCANCODES)> m_previousStates;
   int m_nKeys{};
 };

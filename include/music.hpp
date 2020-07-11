@@ -110,7 +110,7 @@ enum class fade_status {
 [[nodiscard]] inline constexpr auto operator!=(Mix_Fading lhs,
                                                Mix_Fading rhs) noexcept -> bool
 {
-  return !(lhs == rhs);
+  return !(lhs == rhs);  // NOLINT
 }
 
 /**

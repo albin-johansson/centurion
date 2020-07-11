@@ -8,34 +8,32 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-namespace centurion {
-namespace detail {
+namespace centurion::detail {
 
 CENTURION_DEF
-centurion_exception Error::from_core(std::string message)
+auto Error::from_core(const std::string& message) -> centurion_exception
 {
   return centurion_exception{message + " Error: " + SDL_GetError()};
 }
 
 CENTURION_DEF
-centurion_exception Error::from_image(std::string message)
+auto Error::from_image(const std::string& message) -> centurion_exception
 {
   return centurion_exception{message + " Error: " + IMG_GetError()};
 }
 
 CENTURION_DEF
-centurion_exception Error::from_ttf(std::string message)
+auto Error::from_ttf(const std::string& message) -> centurion_exception
 {
   return centurion_exception{message + " Error: " + TTF_GetError()};
 }
 
 CENTURION_DEF
-centurion_exception Error::from_mixer(std::string message)
+auto Error::from_mixer(const std::string& message) -> centurion_exception
 {
   return centurion_exception{message + " Error: " + Mix_GetError()};
 }
 
-}  // namespace detail
-}  // namespace centurion
+}  // namespace centurion::detail
 
 #endif  // CENTURION_ERROR_SOURCE

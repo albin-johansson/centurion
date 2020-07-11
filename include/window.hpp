@@ -306,7 +306,7 @@ class window_base {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_capturing_mouse(bool capturingMouse) noexcept;
+  static void set_capturing_mouse(bool capturingMouse) noexcept;
 
   /**
    * @brief Indicates whether or not the window is decorated.

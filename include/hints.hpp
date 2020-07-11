@@ -67,22 +67,22 @@ template <typename Derived, typename Arg>
 class CRTPHint {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Arg>;
   }
 
-  [[nodiscard]] static constexpr czstring name() noexcept
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return Derived::name();
   }
 
-  [[nodiscard]] static std::optional<Arg> value() noexcept
+  [[nodiscard]] static auto value() noexcept -> std::optional<Arg>
   {
     return Derived::current_value();
   }
 
-  [[nodiscard]] static std::string to_string(Arg value) noexcept
+  [[nodiscard]] static auto to_string(Arg value) noexcept -> std::string
   {
     return std::to_string(value);
   }
@@ -93,17 +93,17 @@ template <typename Hint>
 class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, bool>;
   }
 
-  [[nodiscard]] static std::optional<bool> current_value() noexcept
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<bool>
   {
     return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
   }
 
-  [[nodiscard]] static std::string to_string(bool value) noexcept
+  [[nodiscard]] static auto to_string(bool value) noexcept -> std::string
   {
     return value ? "1" : "0";
   }
@@ -114,12 +114,12 @@ template <typename Hint>
 class StringHint : public CRTPHint<StringHint<Hint>, czstring> {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_convertible_v<T, czstring>;
   }
 
-  [[nodiscard]] static std::optional<czstring> current_value() noexcept
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<czstring>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -129,7 +129,10 @@ class StringHint : public CRTPHint<StringHint<Hint>, czstring> {
     }
   }
 
-  [[nodiscard]] static std::string to_string(czstring value) { return value; }
+  [[nodiscard]] static auto to_string(czstring value) -> std::string
+  {
+    return value;
+  }
 };
 
 // A hint class that only accepts integers
@@ -137,12 +140,12 @@ template <typename Hint>
 class IntHint : public CRTPHint<IntHint<Hint>, int> {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, int>;
   }
 
-  [[nodiscard]] static std::optional<int> current_value() noexcept
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<int>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -158,12 +161,13 @@ template <typename Hint>
 class UnsignedIntHint : public CRTPHint<IntHint<Hint>, unsigned int> {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, unsigned int>;
   }
 
-  [[nodiscard]] static std::optional<unsigned int> current_value() noexcept
+  [[nodiscard]] static auto current_value() noexcept
+      -> std::optional<unsigned int>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -179,12 +183,12 @@ template <typename Hint>
 class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr bool valid_arg() noexcept
+  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, float>;
   }
 
-  [[nodiscard]] static std::optional<float> current_value() noexcept
+  [[nodiscard]] static auto current_value() noexcept -> std::optional<float>
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
@@ -215,14 +219,17 @@ class RenderDriver final {
   enum Value { Direct3D, OpenGL, OpenGLES, OpenGLES2, Metal, Software };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept { return SDL_HINT_RENDER_DRIVER; }
+  static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_DRIVER;
+  }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -245,7 +252,7 @@ class RenderDriver final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       case Direct3D:
@@ -271,17 +278,17 @@ class AudioResamplingMode final {
   enum Value { Default = 0, Fast = 1, Medium = 2, Best = 3 };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept
+  static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_AUDIO_RESAMPLING_MODE;
   }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -300,7 +307,7 @@ class AudioResamplingMode final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       case Default:
@@ -321,17 +328,17 @@ class ScaleQuality final {
   enum Value { Nearest = 0, Linear = 1, Best = 2 };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept
+  static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_SCALE_QUALITY;
   }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -348,7 +355,7 @@ class ScaleQuality final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       default:
@@ -376,17 +383,17 @@ class FramebufferAcceleration final {
   };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept
+  static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_FRAMEBUFFER_ACCELERATION;
   }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -413,7 +420,7 @@ class FramebufferAcceleration final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       default:
@@ -442,14 +449,17 @@ class AudioCategory final {
   enum Value { Ambient, Playback };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept { return SDL_HINT_AUDIO_CATEGORY; }
+  static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_AUDIO_CATEGORY;
+  }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -464,7 +474,7 @@ class AudioCategory final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       default:
@@ -482,17 +492,17 @@ class WinD3DCompiler final {
   enum Value { D3DCompiler46, D3DCompiler43, None };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept
+  static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
   }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -509,7 +519,7 @@ class WinD3DCompiler final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       default:
@@ -529,17 +539,17 @@ class WAVERIFFChunkSize final {
   enum Value { Force, IgnoreZero, Ignore, Maximum };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept
+  static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
   }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -558,7 +568,7 @@ class WAVERIFFChunkSize final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       default:
@@ -580,14 +590,17 @@ class WAVETruncation final {
   enum Value { VeryStrict, Strict, DropFrame, DropBlock };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept { return SDL_HINT_WAVE_TRUNCATION; }
+  static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WAVE_TRUNCATION;
+  }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -606,7 +619,7 @@ class WAVETruncation final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       default:
@@ -628,14 +641,17 @@ class WAVEFactChunk final {
   enum Value { Truncate, Strict, IgnoreZero, Ignore };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept { return SDL_HINT_WAVE_FACT_CHUNK; }
+  static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WAVE_FACT_CHUNK;
+  }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -654,7 +670,7 @@ class WAVEFactChunk final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       default:
@@ -676,17 +692,17 @@ class LogicalSizeMode final {
   enum Value { Letterbox, Overscan };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept
+  static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
   }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -701,7 +717,7 @@ class LogicalSizeMode final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       default:
@@ -725,17 +741,17 @@ class QtWaylandContentOrientation final {
   };
 
   template <typename T>
-  static constexpr bool valid_arg() noexcept
+  static constexpr auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Value>;
   }
 
-  static constexpr czstring name() noexcept
+  static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
   }
 
-  static std::optional<Value> current_value() noexcept
+  static auto current_value() noexcept -> std::optional<Value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -756,7 +772,7 @@ class QtWaylandContentOrientation final {
     }
   }
 
-  static std::string to_string(Value value) noexcept
+  static auto to_string(Value value) noexcept -> std::string
   {
     switch (value) {
       default:
@@ -1089,7 +1105,7 @@ template <typename Hint,
           Prio priority = Prio::Normal,
           typename Value,
           typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
-bool set_hint(const Value& value) noexcept
+auto set_hint(const Value& value) noexcept -> bool
 {
   return static_cast<bool>(
       SDL_SetHintWithPriority(Hint::name(),
@@ -1279,8 +1295,9 @@ class Callback final {
  * @since 4.1.0
  */
 template <typename Hint, typename UserData = void>
-Callback<Hint, UserData> add_callback(SDL_HintCallback callback,
-                                      UserData* userData = nullptr) noexcept
+auto add_callback(SDL_HintCallback callback,
+                  UserData* userData = nullptr) noexcept
+    -> Callback<Hint, UserData>
 {
   Callback<Hint, UserData> hintCallback{callback, userData};
   hintCallback.connect();

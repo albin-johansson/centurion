@@ -213,7 +213,7 @@ CENTURION_DEF
 auto font::glyph_metrics(u16 glyph) const noexcept
     -> std::optional<struct glyph_metrics>
 {
-  centurion::glyph_metrics metrics;
+  centurion::glyph_metrics metrics{};
   const auto result = TTF_GlyphMetrics(m_font,
                                        glyph,
                                        &metrics.minX,

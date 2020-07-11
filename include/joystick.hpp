@@ -754,7 +754,7 @@ class joystick final {
   }
 
  private:
-  SDL_Joystick* m_joystick;
+  SDL_Joystick* m_joystick{};
 
   void move(joystick&& other) noexcept;
 

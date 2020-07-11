@@ -80,7 +80,7 @@ auto key_state::was_just_released(const Key& key) const noexcept -> bool
 }
 
 CENTURION_DEF
-auto key_state::modifier_active(key_modifier modifier) const noexcept -> bool
+auto key_state::modifier_active(key_modifier modifier) noexcept -> bool
 {
   return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
 }

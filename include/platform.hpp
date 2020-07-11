@@ -95,7 +95,7 @@ enum class platform_id {
  * @since 3.0.0
  */
 CENTURION_QUERY
-auto id() noexcept -> enum platform_id;
+auto id() noexcept -> platform_id;
 
 /**
  * @brief Returns the name of the current platform.

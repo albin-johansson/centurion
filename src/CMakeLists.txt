@@ -61,7 +61,6 @@ set(SOURCE_FILES
         error.cpp
         surface.cpp
         cursor.cpp
-        cpu.cpp
         battery.cpp
         screen.cpp
         key.cpp

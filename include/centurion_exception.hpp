@@ -80,7 +80,7 @@ class centurion_exception final : public std::exception {
 
   ~centurion_exception() noexcept override = default;
 
-  [[nodiscard]] czstring what() const noexcept override
+  [[nodiscard]] auto what() const noexcept -> czstring override
   {
     return m_what.c_str();
   }

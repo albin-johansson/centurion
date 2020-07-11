@@ -21,7 +21,7 @@ class basic_renderer;
 
 class renderer_view;
 
-class Texture;
+class texture;
 
 class Surface;
 

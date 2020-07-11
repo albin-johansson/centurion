@@ -202,8 +202,8 @@ class Key final {
   }
 
  private:
-  SDL_Scancode m_scancode;
-  SDL_Keycode m_keycode;
+  SDL_Scancode m_scancode{SDL_SCANCODE_UNKNOWN};
+  SDL_Keycode m_keycode{SDLK_UNKNOWN};
 };
 
 static_assert(std::is_final_v<Key>);

@@ -24,7 +24,7 @@ inline void texture_test(Lambda&& lambda)
 {
   ctn::window window;
   ctn::renderer renderer{window};
-  ctn::Texture texture{renderer, "resources/panda.png"};
+  ctn::texture texture{renderer, "resources/panda.png"};
   lambda(renderer, texture);
 }
 
@@ -241,7 +241,7 @@ TEST_CASE("renderer::draw_lines", "[renderer]")
 
 TEST_CASE("render(Texture, Point<T>)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::point_i position_i{3, 57};
     const ctn::point_f position_f{26.4f, 68.2f};
 
@@ -252,7 +252,7 @@ TEST_CASE("render(Texture, Point<T>)", "[renderer]")
 
 TEST_CASE("render(Texture, Rect<T>)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i rect_i{{12, 57}, {175, 218}};
     const ctn::rect_f rect_f{{23.7f, 36.3f}, {317.3f, 348.3f}};
 
@@ -263,7 +263,7 @@ TEST_CASE("render(Texture, Rect<T>)", "[renderer]")
 
 TEST_CASE("render(Texture, IRect, Rect<T>)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
 
     const ctn::rect_i dst_i{{35, 92}, {15, 23}};
@@ -276,7 +276,7 @@ TEST_CASE("render(Texture, IRect, Rect<T>)", "[renderer]")
 
 TEST_CASE("render(Texture, IRect, Rect<T>, double)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
     const auto angle = 182;
 
@@ -290,7 +290,7 @@ TEST_CASE("render(Texture, IRect, Rect<T>, double)", "[renderer]")
 
 TEST_CASE("render(Texture, IRect, Rect<T>, double, Point<T>)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{16, 11}, {37, 77}};
     const auto angle = 359;
 
@@ -307,7 +307,7 @@ TEST_CASE("render(Texture, IRect, Rect<T>, double, Point<T>)", "[renderer]")
 
 TEST_CASE("render(Texture, IRect, Rect<T>, SDL_RendererFlip)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     CHECK_NOTHROW(renderer.render(texture,
                                   ctn::rect_i{{10, 15}, {20, 20}},
                                   ctn::rect_i{{35, 92}, {15, 23}},
@@ -318,7 +318,7 @@ TEST_CASE("render(Texture, IRect, Rect<T>, SDL_RendererFlip)", "[renderer]")
 TEST_CASE("render(Texture, IRect, Rect<T>, double, Point<T>, SDL_RendererFlip)",
           "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     CHECK_NOTHROW(renderer.render(texture,
                                   {{10, 15}, {20, 20}},
                                   {{35, 92}, {15, 23}},
@@ -330,7 +330,7 @@ TEST_CASE("render(Texture, IRect, Rect<T>, double, Point<T>, SDL_RendererFlip)",
 
 TEST_CASE("render_t(Texture, Point<T>)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::point_i pos_i{-5, 66};
     const ctn::point_f pos_f{3.8f, 43.3f};
 
@@ -341,7 +341,7 @@ TEST_CASE("render_t(Texture, Point<T>)", "[renderer]")
 
 TEST_CASE("render_t(Texture, Rect<T>)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i rect_i{{12, 7}, {115, 876}};
     const ctn::rect_f rect_f{{7.4f, 2.3f}, {175.3f, 412.8f}};
 
@@ -352,7 +352,7 @@ TEST_CASE("render_t(Texture, Rect<T>)", "[renderer]")
 
 TEST_CASE("render_t(Texture, IRect, Rect<T>)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{123, 444}, {467, 221}};
 
     const ctn::rect_i dst_i{{5, 34}, {123, 321}};
@@ -365,7 +365,7 @@ TEST_CASE("render_t(Texture, IRect, Rect<T>)", "[renderer]")
 
 TEST_CASE("render_t(Texture, IRect, Rect<T>, double)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
     const auto angle = 17;
 
@@ -379,7 +379,7 @@ TEST_CASE("render_t(Texture, IRect, Rect<T>, double)", "[renderer]")
 
 TEST_CASE("render_t(Texture, IRect, Rect<T>, double, Point<T>)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
     const auto angle = 23;
 
@@ -396,7 +396,7 @@ TEST_CASE("render_t(Texture, IRect, Rect<T>, double, Point<T>)", "[renderer]")
 
 TEST_CASE("render_t(Texture, IRect, Rect<T>, SDL_RendererFlip)", "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
     const SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
 
@@ -412,7 +412,7 @@ TEST_CASE(
     "render_t(Texture, IRect, Rect<T>, double, Point<T>, SDL_RendererFlip)",
     "[renderer]")
 {
-  texture_test([](ctn::renderer& renderer, const ctn::Texture& texture) {
+  texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
     const SDL_RendererFlip flip = SDL_FLIP_VERTICAL;
     const auto angle = 126;

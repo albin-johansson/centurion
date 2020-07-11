@@ -171,7 +171,7 @@ class renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const Texture& texture, const basic_point<T>& position) noexcept;
+  void render(const texture& texture, const basic_point<T>& position) noexcept;
 
   /**
    * @brief Renders a texture according to the specified rectangle.
@@ -185,7 +185,7 @@ class renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const Texture& texture,
+  void render(const texture& texture,
               const basic_rect<T>& destination) noexcept;
 
   /**
@@ -204,7 +204,7 @@ class renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const Texture& texture,
+  void render(const texture& texture,
               const rect_i& source,
               const basic_rect<T>& destination) noexcept;
 
@@ -223,10 +223,10 @@ class renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const Texture& texture,
+  void render(const texture& texture,
               const rect_i& source,
               const basic_rect<T>& destination,
-              const double angle) noexcept;
+              double angle) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -245,10 +245,10 @@ class renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const Texture& texture,
+  void render(const texture& texture,
               const rect_i& source,
               const basic_rect<T>& destination,
-              const double angle,
+              double angle,
               const basic_point<T>& center) noexcept;
 
   /**
@@ -269,12 +269,12 @@ class renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const Texture& texture,
+  void render(const texture& texture,
               const rect_i& source,
               const basic_rect<T>& destination,
-              const double angle,
+              double angle,
               const basic_point<T>& center,
-              const SDL_RendererFlip flip) noexcept;
+              SDL_RendererFlip flip) noexcept;
 
   /**
    * @brief Sets the color that will be used by the renderer.
@@ -325,7 +325,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_target(const Texture* texture) noexcept;
+  void set_target(const texture* texture) noexcept;
 
   /**
    * @brief Sets the rendering scale.
@@ -663,11 +663,11 @@ class renderer_base {
  * a custom typedef or the provided `renderer` or `renderer_i` aliases..
  *
  * @par Rendering textures
- * There are quite a number of methods provided for rendering `Texture`
+ * There are quite a number of methods provided for rendering `texture`
  * instances. There are two overload sets, `render` and `render_t`. These
  * methods can be used with either integer or floating-point accuracy. The
  * recommended general-purpose method for rendering textures is
- * `render(const Texture&, const rect_i&, const basic_rect<T>&)`.
+ * `render(const texture&, const rect_i&, const basic_rect<T>&)`.
  *
  * @par Translation
  * Most games utilize some sort of viewport of what the player can see of the
@@ -882,7 +882,7 @@ class basic_renderer final : public renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render_t(const Texture& texture,
+  void render_t(const texture& texture,
                 const basic_point<T>& position) noexcept;
 
   /**
@@ -901,7 +901,7 @@ class basic_renderer final : public renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render_t(const Texture& texture,
+  void render_t(const texture& texture,
                 const basic_rect<T>& destination) noexcept;
 
   /**
@@ -924,7 +924,7 @@ class basic_renderer final : public renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render_t(const Texture& texture,
+  void render_t(const texture& texture,
                 const rect_i& source,
                 const basic_rect<T>& destination) noexcept;
 
@@ -947,10 +947,10 @@ class basic_renderer final : public renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render_t(const Texture& texture,
+  void render_t(const texture& texture,
                 const rect_i& source,
                 const basic_rect<T>& destination,
-                const double angle) noexcept;
+                double angle) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -973,10 +973,10 @@ class basic_renderer final : public renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render_t(const Texture& texture,
+  void render_t(const texture& texture,
                 const rect_i& source,
                 const basic_rect<T>& destination,
-                const double angle,
+                double angle,
                 const basic_point<T>& center) noexcept;
 
   /**
@@ -998,12 +998,12 @@ class basic_renderer final : public renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render_t(const Texture& texture,
+  void render_t(const texture& texture,
                 const rect_i& source,
                 const basic_rect<T>& destination,
-                const double angle,
+                double angle,
                 const basic_point<T>& center,
-                const SDL_RendererFlip flip) noexcept;
+                SDL_RendererFlip flip) noexcept;
 
   /**
    * @brief Returns the font associated with the specified name.
@@ -1067,7 +1067,7 @@ class basic_renderer final : public renderer_base {
    */
   [[nodiscard]] auto text_blended(czstring text,
                                   const centurion::font& font) const noexcept
-      -> std::unique_ptr<Texture>;
+      -> std::unique_ptr<texture>;
 
   /**
    * @brief Creates and returns a texture of blended and wrapped text.
@@ -1099,7 +1099,7 @@ class basic_renderer final : public renderer_base {
   [[nodiscard]] auto text_blended_wrapped(
       czstring text,
       u32 wrap,
-      const centurion::font& font) const noexcept -> std::unique_ptr<Texture>;
+      const centurion::font& font) const noexcept -> std::unique_ptr<texture>;
 
   /**
    * @brief Creates and returns a texture of shaded text.
@@ -1127,7 +1127,7 @@ class basic_renderer final : public renderer_base {
   [[nodiscard]] auto text_shaded(czstring text,
                                  const Color& bg,
                                  const centurion::font& font) const noexcept
-      -> std::unique_ptr<Texture>;
+      -> std::unique_ptr<texture>;
 
   /**
    * @brief Creates and returns a texture of solid text.
@@ -1151,7 +1151,7 @@ class basic_renderer final : public renderer_base {
    */
   [[nodiscard]] auto text_solid(czstring text,
                                 const centurion::font& font) const noexcept
-      -> std::unique_ptr<Texture>;
+      -> std::unique_ptr<texture>;
 
  private:
   rect_f m_translationViewport;
@@ -1206,7 +1206,7 @@ class basic_renderer final : public renderer_base {
    */
   template <typename Lambda>
   [[nodiscard]] auto render_text(czstring text, Lambda&& render) const noexcept
-      -> std::unique_ptr<Texture>
+      -> std::unique_ptr<texture>
   {
     if (!text) {
       return nullptr;
@@ -1217,11 +1217,11 @@ class basic_renderer final : public renderer_base {
       return nullptr;
     }
 
-    auto* texture = SDL_CreateTextureFromSurface(this->get(), surface);
+    auto* sdlTexture = SDL_CreateTextureFromSurface(this->get(), surface);
     SDL_FreeSurface(surface);
 
-    if (texture) {
-      return std::make_unique<Texture>(texture);
+    if (sdlTexture) {
+      return std::make_unique<texture>(sdlTexture);
     } else {
       return nullptr;
     }
@@ -1387,9 +1387,9 @@ using renderer = basic_renderer<std::string>;
 using renderer_i = basic_renderer<int>;
 
 /**
- * @class Texture
+ * @class texture
  *
- * @brief Represents an hardware-accelerated texture.
+ * @brief Represents an hardware-accelerated image.
  *
  * @since 3.0.0
  *
@@ -1397,7 +1397,7 @@ using renderer_i = basic_renderer<int>;
  *
  * @headerfile graphics.hpp
  */
-class Texture final {
+class texture final {
  public:
   /**
    * @enum Access
@@ -1443,15 +1443,15 @@ class Texture final {
    *
    * @note The created texture will claim ownership of the supplied pointer.
    *
-   * @param texture a pointer to the SDL_Texture that will be claimed, may not
-   * be null.
+   * @param sdlTexture a pointer to the SDL_Texture that will be claimed, may
+   * not be null.
    *
    * @throws centurion_exception if the supplied pointer is null.
    *
    * @since 3.0.0
    */
   CENTURION_API
-  explicit Texture(gsl::owner<SDL_Texture*> texture);
+  explicit texture(gsl::owner<SDL_Texture*> sdlTexture);
 
   /**
    * @brief Creates a texture based the image at the specified path.
@@ -1464,7 +1464,7 @@ class Texture final {
    * @since 4.0.0
    */
   template <typename T>
-  Texture(const basic_renderer<T>& renderer, czstring path)
+  texture(const basic_renderer<T>& renderer, czstring path)
   {
     if (!path) {
       throw centurion_exception{"Can't load texture from null path!"};
@@ -1472,7 +1472,7 @@ class Texture final {
 
     m_texture = IMG_LoadTexture(renderer.get(), path);
     if (!m_texture) {
-      throw detail::Error::from_image("Failed to create Texture!");
+      throw detail::Error::from_image("Failed to create texture!");
     }
   }
 
@@ -1487,12 +1487,12 @@ class Texture final {
    * @since 4.0.0
    */
   template <typename T>
-  Texture(const basic_renderer<T>& renderer, const Surface& surface)
+  texture(const basic_renderer<T>& renderer, const Surface& surface)
   {
     this->m_texture =
         SDL_CreateTextureFromSurface(renderer.get(), surface.get());
     if (!m_texture) {
-      throw detail::Error::from_core("Failed to create Texture from Surface!");
+      throw detail::Error::from_core("Failed to create texture from surface!");
     }
   }
 
@@ -1509,7 +1509,7 @@ class Texture final {
    * @since 4.0.0
    */
   template <typename T>
-  Texture(const basic_renderer<T>& renderer,
+  texture(const basic_renderer<T>& renderer,
           pixel_format format,
           Access access,
           area_i size)
@@ -1520,7 +1520,7 @@ class Texture final {
                                   size.width,
                                   size.height);
     if (!m_texture) {
-      throw detail::Error::from_core("Failed to create Texture!");
+      throw detail::Error::from_core("Failed to create texture!");
     }
   }
 
@@ -1532,11 +1532,11 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_API
-  Texture(Texture&& other) noexcept;
+  texture(texture&& other) noexcept;
 
-  Texture(const Texture&) = delete;
+  texture(const texture&) = delete;
 
-  auto operator=(const Texture&) -> Texture& = delete;
+  auto operator=(const texture&) -> texture& = delete;
 
   /**
    * @brief Moves the supplied texture into this texture.
@@ -1548,89 +1548,89 @@ class Texture final {
    * @since 3.0.0
    */
   CENTURION_API
-  auto operator=(Texture&& other) noexcept -> Texture&;
+  auto operator=(texture&& other) noexcept -> texture&;
 
   CENTURION_API
-  ~Texture() noexcept;
+  ~texture() noexcept;
 
   /**
-   * @copydoc Texture(gsl::owner<SDL_Texture*>)
+   * @copydoc texture(gsl::owner<SDL_Texture*>)
    */
   CENTURION_QUERY
-  static auto unique(gsl::owner<SDL_Texture*> texture)
-      -> std::unique_ptr<Texture>;
+  static auto unique(gsl::owner<SDL_Texture*> sdlTexture)
+      -> std::unique_ptr<texture>;
 
   /**
-   * @copydoc Texture(const basic_renderer<T>&, czstring)
+   * @copydoc texture(const basic_renderer<T>&, czstring)
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
-                                   czstring path) -> std::unique_ptr<Texture>
+                                   czstring path) -> std::unique_ptr<texture>
   {
-    return std::make_unique<Texture>(renderer, path);
+    return std::make_unique<texture>(renderer, path);
   }
 
   /**
-   * @copydoc Texture(const basic_renderer<T>&, const Surface&)
+   * @copydoc texture(const basic_renderer<T>&, const Surface&)
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
                                    const Surface& surface)
-      -> std::unique_ptr<Texture>
+      -> std::unique_ptr<texture>
   {
-    return std::make_unique<Texture>(renderer, surface);
+    return std::make_unique<texture>(renderer, surface);
   }
 
   /**
-   * @copydoc Texture(const basic_renderer<T>&, pixel_format, Access, area_i)
+   * @copydoc texture(const basic_renderer<T>&, pixel_format, Access, area_i)
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
                                    pixel_format format,
                                    Access access,
-                                   area_i size) -> std::unique_ptr<Texture>
+                                   area_i size) -> std::unique_ptr<texture>
   {
-    return std::make_unique<Texture>(renderer, format, access, size);
+    return std::make_unique<texture>(renderer, format, access, size);
   }
 
   /**
-   * @copydoc Texture(gsl::owner<SDL_Texture*>)
+   * @copydoc texture(gsl::owner<SDL_Texture*>)
    */
   CENTURION_QUERY
-  static auto shared(gsl::owner<SDL_Texture*> texture)
-      -> std::shared_ptr<Texture>;
+  static auto shared(gsl::owner<SDL_Texture*> sdlTexture)
+      -> std::shared_ptr<texture>;
 
   /**
-   * @copydoc Texture(const basic_renderer<T>&, czstring)
+   * @copydoc texture(const basic_renderer<T>&, czstring)
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
-                                   czstring path) -> std::shared_ptr<Texture>
+                                   czstring path) -> std::shared_ptr<texture>
   {
-    return std::make_shared<Texture>(renderer, path);
+    return std::make_shared<texture>(renderer, path);
   }
 
   /**
-   * @copydoc Texture(const basic_renderer<T>&, const Surface&)
+   * @copydoc texture(const basic_renderer<T>&, const Surface&)
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
                                    const Surface& surface)
-      -> std::shared_ptr<Texture>
+      -> std::shared_ptr<texture>
   {
-    return std::make_shared<Texture>(renderer, surface);
+    return std::make_shared<texture>(renderer, surface);
   }
 
   /**
-   * @copydoc Texture(const basic_renderer<T>&, pixel_format, Access, area_i)
+   * @copydoc texture(const basic_renderer<T>&, pixel_format, Access, area_i)
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
                                    pixel_format format,
                                    Access access,
-                                   area_i size) -> std::shared_ptr<Texture>
+                                   area_i size) -> std::shared_ptr<texture>
   {
-    return std::make_shared<Texture>(renderer, format, access, size);
+    return std::make_shared<texture>(renderer, format, access, size);
   }
 
   /**
@@ -1653,7 +1653,7 @@ class Texture final {
   [[nodiscard]] static auto streaming(const basic_renderer<T>& renderer,
                                       czstring path,
                                       pixel_format format)
-      -> std::unique_ptr<Texture>
+      -> std::unique_ptr<texture>
   {
     const auto blendMode = blend_mode::blend;
     const auto createSurface = [blendMode](czstring path, pixel_format format) {
@@ -1662,7 +1662,7 @@ class Texture final {
       return source.convert(format);
     };
     const auto surface = createSurface(path, format);
-    auto texture = Texture::unique(renderer,
+    auto texture = texture::unique(renderer,
                                    format,
                                    Access::Streaming,
                                    {surface.width(), surface.height()});
@@ -1927,7 +1927,7 @@ class Texture final {
    *
    * @since 4.0.0
    */
-  void move(Texture&& other) noexcept;
+  void move(texture&& other) noexcept;
 
   /**
    * @brief Locks the texture for write-only pixel access.
@@ -1955,11 +1955,11 @@ class Texture final {
   void unlock() noexcept;
 };
 
-static_assert(std::is_final_v<Texture>);
-static_assert(std::is_nothrow_move_constructible_v<Texture>);
-static_assert(std::is_nothrow_move_assignable_v<Texture>);
-static_assert(!std::is_nothrow_copy_constructible_v<Texture>);
-static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
+static_assert(std::is_final_v<texture>);
+static_assert(std::is_nothrow_move_constructible_v<texture>);
+static_assert(std::is_nothrow_move_assignable_v<texture>);
+static_assert(!std::is_nothrow_copy_constructible_v<texture>);
+static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 
 /**
  * @brief Indicates whether or not the two texture access values are the same.
@@ -1971,7 +1971,7 @@ static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(Texture::Access lhs,
+[[nodiscard]] inline constexpr auto operator==(texture::Access lhs,
                                                SDL_TextureAccess rhs) noexcept
     -> bool
 {
@@ -1979,10 +1979,10 @@ static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
 }
 
 /**
- * @copydoc operator==(Texture::Access, SDL_TextureAccess)
+ * @copydoc operator==(texture::Access, SDL_TextureAccess)
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_TextureAccess lhs,
-                                               Texture::Access rhs) noexcept
+                                               texture::Access rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -2000,7 +2000,7 @@ static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(Texture::Access lhs,
+[[nodiscard]] inline constexpr auto operator!=(texture::Access lhs,
                                                SDL_TextureAccess rhs) noexcept
     -> bool
 {
@@ -2008,10 +2008,10 @@ static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
 }
 
 /**
- * @copydoc operator!=(Texture::Access, SDL_TextureAccess)
+ * @copydoc operator!=(texture::Access, SDL_TextureAccess)
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_TextureAccess lhs,
-                                               Texture::Access rhs) noexcept
+                                               texture::Access rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -2027,7 +2027,7 @@ static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
  *
  * @since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(Texture::ScaleMode lhs,
+[[nodiscard]] inline constexpr auto operator==(texture::ScaleMode lhs,
                                                SDL_ScaleMode rhs) noexcept
     -> bool
 {
@@ -2035,10 +2035,10 @@ static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
 }
 
 /**
- * @copydoc operator==(Texture::ScaleMode, SDL_ScaleMode)
+ * @copydoc operator==(texture::ScaleMode, SDL_ScaleMode)
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_ScaleMode lhs,
-                                               Texture::ScaleMode rhs) noexcept
+                                               texture::ScaleMode rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -2054,7 +2054,7 @@ static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
  *
  * @since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(Texture::ScaleMode lhs,
+[[nodiscard]] inline constexpr auto operator!=(texture::ScaleMode lhs,
                                                SDL_ScaleMode rhs) noexcept
     -> bool
 {
@@ -2062,10 +2062,10 @@ static_assert(!std::is_nothrow_copy_assignable_v<Texture>);
 }
 
 /**
- * @copydoc operator!=(Texture::ScaleMode, SDL_ScaleMode)
+ * @copydoc operator!=(texture::ScaleMode, SDL_ScaleMode)
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_ScaleMode lhs,
-                                               Texture::ScaleMode rhs) noexcept
+                                               texture::ScaleMode rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -2087,7 +2087,7 @@ basic_renderer<FontKey>::basic_renderer(gsl::owner<SDL_Renderer*> renderer)
 
 template <typename FontKey>
 basic_renderer<FontKey>::basic_renderer(const window& window,
-                                        SDL_RendererFlags flags)
+                                        const SDL_RendererFlags flags)
     : renderer_base{SDL_CreateRenderer(window.get(), -1, flags)}
 {
   //  renderer_base::m_renderer =
@@ -2133,7 +2133,7 @@ auto basic_renderer<FontKey>::unique(gsl::owner<SDL_Renderer*> renderer)
 
 template <typename FontKey>
 auto basic_renderer<FontKey>::unique(const window& window,
-                                     SDL_RendererFlags flags)
+                                     const SDL_RendererFlags flags)
     -> std::unique_ptr<basic_renderer>
 {
   return std::make_unique<basic_renderer<FontKey>>(window, flags);
@@ -2148,7 +2148,7 @@ auto basic_renderer<FontKey>::shared(gsl::owner<SDL_Renderer*> renderer)
 
 template <typename FontKey>
 auto basic_renderer<FontKey>::shared(const window& window,
-                                     SDL_RendererFlags flags)
+                                     const SDL_RendererFlags flags)
     -> std::shared_ptr<basic_renderer>
 {
   return std::make_shared<basic_renderer<FontKey>>(window, flags);
@@ -2157,7 +2157,7 @@ auto basic_renderer<FontKey>::shared(const window& window,
 template <typename FontKey>
 auto basic_renderer<FontKey>::text_blended(
     czstring text,
-    const centurion::font& font) const noexcept -> std::unique_ptr<Texture>
+    const centurion::font& font) const noexcept -> std::unique_ptr<texture>
 {
   return render_text(text, [this, &font](czstring text) noexcept {
     return TTF_RenderText_Blended(
@@ -2168,8 +2168,8 @@ auto basic_renderer<FontKey>::text_blended(
 template <typename FontKey>
 auto basic_renderer<FontKey>::text_blended_wrapped(
     czstring text,
-    u32 wrap,
-    const centurion::font& font) const noexcept -> std::unique_ptr<Texture>
+    const u32 wrap,
+    const centurion::font& font) const noexcept -> std::unique_ptr<texture>
 {
   return render_text(text, [this, &font, wrap](czstring text) noexcept {
     return TTF_RenderText_Blended_Wrapped(
@@ -2181,7 +2181,7 @@ template <typename FontKey>
 auto basic_renderer<FontKey>::text_shaded(
     czstring text,
     const Color& bg,
-    const centurion::font& font) const noexcept -> std::unique_ptr<Texture>
+    const centurion::font& font) const noexcept -> std::unique_ptr<texture>
 {
   return render_text(text, [this, &font, &bg](czstring text) noexcept {
     return TTF_RenderText_Shaded(font.get(),
@@ -2194,7 +2194,7 @@ auto basic_renderer<FontKey>::text_shaded(
 template <typename FontKey>
 auto basic_renderer<FontKey>::text_solid(
     czstring text,
-    const centurion::font& font) const noexcept -> std::unique_ptr<Texture>
+    const centurion::font& font) const noexcept -> std::unique_ptr<texture>
 {
   return render_text(text, [this, &font](czstring text) noexcept {
     return TTF_RenderText_Solid(
@@ -2217,7 +2217,7 @@ template <typename FontKey>
 auto basic_renderer<FontKey>::has_font(const FontKey& key) const noexcept
     -> bool
 {
-  return m_fonts.count(key);
+  return static_cast<bool>(m_fonts.count(key));
 }
 
 template <typename FontKey>
@@ -2265,7 +2265,7 @@ void basic_renderer<FontKey>::fill_rect_t(const basic_rect<T>& rect) noexcept
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(const Texture& texture,
+void basic_renderer<FontKey>::render_t(const texture& texture,
                                        const basic_point<T>& position) noexcept
 {
   render(texture, translate(position));
@@ -2274,7 +2274,7 @@ void basic_renderer<FontKey>::render_t(const Texture& texture,
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render_t(
-    const Texture& texture,
+    const texture& texture,
     const basic_rect<T>& destination) noexcept
 {
   render(texture, translate(destination));
@@ -2283,7 +2283,7 @@ void basic_renderer<FontKey>::render_t(
 template <typename FontKey>
 template <typename T>
 void basic_renderer<FontKey>::render_t(
-    const Texture& texture,
+    const texture& texture,
     const rect_i& source,
     const basic_rect<T>& destination) noexcept
 {
@@ -2292,7 +2292,7 @@ void basic_renderer<FontKey>::render_t(
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(const Texture& texture,
+void basic_renderer<FontKey>::render_t(const texture& texture,
                                        const rect_i& source,
                                        const basic_rect<T>& destination,
                                        const double angle) noexcept
@@ -2302,7 +2302,7 @@ void basic_renderer<FontKey>::render_t(const Texture& texture,
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(const Texture& texture,
+void basic_renderer<FontKey>::render_t(const texture& texture,
                                        const rect_i& source,
                                        const basic_rect<T>& destination,
                                        const double angle,
@@ -2313,7 +2313,7 @@ void basic_renderer<FontKey>::render_t(const Texture& texture,
 
 template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(const Texture& texture,
+void basic_renderer<FontKey>::render_t(const texture& texture,
                                        const rect_i& source,
                                        const basic_rect<T>& destination,
                                        const double angle,
@@ -2406,7 +2406,7 @@ void renderer_base::draw_lines(const Container& container) noexcept
 }
 
 template <typename T>
-void renderer_base::render(const Texture& texture,
+void renderer_base::render(const texture& texture,
                            const basic_point<T>& position) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
@@ -2425,7 +2425,7 @@ void renderer_base::render(const Texture& texture,
 }
 
 template <typename T>
-void renderer_base::render(const Texture& texture,
+void renderer_base::render(const texture& texture,
                            const basic_rect<T>& destination) noexcept
 {
   static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
@@ -2444,7 +2444,7 @@ void renderer_base::render(const Texture& texture,
 }
 
 template <typename T>
-void renderer_base::render(const Texture& texture,
+void renderer_base::render(const texture& texture,
                            const rect_i& source,
                            const basic_rect<T>& destination) noexcept
 {
@@ -2464,7 +2464,7 @@ void renderer_base::render(const Texture& texture,
 }
 
 template <typename T>
-void renderer_base::render(const Texture& texture,
+void renderer_base::render(const texture& texture,
                            const rect_i& source,
                            const basic_rect<T>& destination,
                            const double angle) noexcept
@@ -2491,7 +2491,7 @@ void renderer_base::render(const Texture& texture,
 }
 
 template <typename T>
-void renderer_base::render(const Texture& texture,
+void renderer_base::render(const texture& texture,
                            const rect_i& source,
                            const basic_rect<T>& destination,
                            const double angle,
@@ -2519,7 +2519,7 @@ void renderer_base::render(const Texture& texture,
 }
 
 template <typename T>
-void renderer_base::render(const Texture& texture,
+void renderer_base::render(const texture& texture,
                            const rect_i& source,
                            const basic_rect<T>& destination,
                            const double angle,
@@ -2553,7 +2553,7 @@ inline void renderer_base::set_color(const Color& color) noexcept
       m_renderer, color.red(), color.green(), color.blue(), color.alpha());
 }
 
-inline void renderer_base::set_clip(std::optional<rect_i> area) noexcept
+inline void renderer_base::set_clip(const std::optional<rect_i> area) noexcept
 {
   if (area) {
     SDL_RenderSetClipRect(m_renderer, static_cast<const SDL_Rect*>(*area));
@@ -2567,12 +2567,12 @@ inline void renderer_base::set_viewport(const rect_i& viewport) noexcept
   SDL_RenderSetViewport(m_renderer, static_cast<const SDL_Rect*>(viewport));
 }
 
-inline void renderer_base::set_blend_mode(enum blend_mode mode) noexcept
+inline void renderer_base::set_blend_mode(const enum blend_mode mode) noexcept
 {
   SDL_SetRenderDrawBlendMode(m_renderer, static_cast<SDL_BlendMode>(mode));
 }
 
-inline void renderer_base::set_target(const Texture* texture) noexcept
+inline void renderer_base::set_target(const texture* texture) noexcept
 {
   if (texture && texture->is_target()) {
     SDL_SetRenderTarget(m_renderer, texture->get());
@@ -2581,7 +2581,8 @@ inline void renderer_base::set_target(const Texture* texture) noexcept
   }
 }
 
-inline void renderer_base::set_scale(float xScale, float yScale) noexcept
+inline void renderer_base::set_scale(const float xScale,
+                                     const float yScale) noexcept
 {
   if (xScale > 0 && yScale > 0) {
     SDL_RenderSetScale(m_renderer, xScale, yScale);
@@ -2596,7 +2597,7 @@ inline void renderer_base::set_logical_size(const area_i& size) noexcept
 }
 
 inline void renderer_base::set_logical_integer_scale(
-    bool useLogicalIntegerScale) noexcept
+    const bool useLogicalIntegerScale) noexcept
 {
   SDL_RenderSetIntegerScale(m_renderer,
                             detail::convert_bool(useLogicalIntegerScale));
@@ -2690,22 +2691,22 @@ inline auto renderer_base::flags() const noexcept -> u32
 
 inline auto renderer_base::vsync_enabled() const noexcept -> bool
 {
-  return flags() & SDL_RENDERER_PRESENTVSYNC;
+  return static_cast<bool>(flags() & SDL_RENDERER_PRESENTVSYNC);
 }
 
 inline auto renderer_base::accelerated() const noexcept -> bool
 {
-  return flags() & SDL_RENDERER_ACCELERATED;
+  return static_cast<bool>(flags() & SDL_RENDERER_ACCELERATED);
 }
 
 inline auto renderer_base::software_based() const noexcept -> bool
 {
-  return flags() & SDL_RENDERER_SOFTWARE;
+  return static_cast<bool>(flags() & SDL_RENDERER_SOFTWARE);
 }
 
 inline auto renderer_base::supports_target_textures() const noexcept -> bool
 {
-  return flags() & SDL_RENDERER_TARGETTEXTURE;
+  return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
 }
 
 inline auto renderer_base::using_integer_logical_scaling() const noexcept

@@ -39,6 +39,7 @@
 
 #include <SDL_events.h>
 
+#include <string_view>
 #include <type_traits>
 #include <utility>
 #include <variant>
@@ -73,7 +74,7 @@ class CommonEvent {
    *
    * @since 4.0.0
    */
-  CommonEvent() noexcept : m_event{} {}
+  CommonEvent() noexcept = default;
 
   /**
    * @brief Creates a CommonEvent and copies the supplied event.
@@ -130,7 +131,7 @@ class CommonEvent {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] u32 time() const noexcept { return m_event.timestamp; }
+  [[nodiscard]] auto time() const noexcept -> u32 { return m_event.timestamp; }
 
   /**
    * @brief Returns the event type value associated with the event.
@@ -141,7 +142,7 @@ class CommonEvent {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] EventType type() const noexcept
+  [[nodiscard]] auto type() const noexcept -> EventType
   {
     return static_cast<EventType>(m_event.type);
   }
@@ -153,7 +154,7 @@ class CommonEvent {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] const T& get() const noexcept { return m_event; }
+  [[nodiscard]] auto get() const noexcept -> const T& { return m_event; }
 
  protected:
   T m_event{};
@@ -745,7 +746,7 @@ class DropEvent final : public CommonEvent<SDL_DropEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  ~DropEvent() noexcept;
+  ~DropEvent() noexcept override;
 
   /**
    * @brief Sets whether or not the associated file will be freed by this event.
@@ -1849,7 +1850,7 @@ class MouseMotionEvent final : public CommonEvent<SDL_MouseMotionEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  bool pressed(mouse_button button) const noexcept;
+  auto pressed(mouse_button button) const noexcept -> bool;
 
   /**
    * @brief Returns the x-coordinate of the mouse relative to the window.
@@ -2395,7 +2396,7 @@ class TextEditingEvent final : public CommonEvent<SDL_TextEditingEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto text() const noexcept -> czstring;
+  auto text() const noexcept -> std::string_view;
 
   /**
    * @brief Returns the location to begin editing from.
@@ -2484,7 +2485,7 @@ class TextInputEvent final : public CommonEvent<SDL_TextInputEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto text() const noexcept -> czstring;
+  auto text() const noexcept -> std::string_view;
 };
 
 static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>());
@@ -3252,7 +3253,7 @@ class Event final {
   }
 
  private:
-  SDL_Event m_event;
+  SDL_Event m_event{};
 
   // behold, the beast!
   std::variant<std::monostate,

@@ -244,7 +244,7 @@ class color_scheme final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] int index(color_type type) const noexcept
+  [[nodiscard]] static auto index(color_type type) noexcept -> int
   {
     return static_cast<int>(type);
   }

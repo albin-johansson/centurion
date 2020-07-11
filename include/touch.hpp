@@ -103,8 +103,9 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator==(DeviceType lhs,
-                                            SDL_TouchDeviceType rhs) noexcept;
+[[nodiscard]] CENTURION_API auto operator==(DeviceType lhs,
+                                            SDL_TouchDeviceType rhs) noexcept
+    -> bool;
 
 /**
  * @brief Indicates whether or not two touch device types are the same.
@@ -116,8 +117,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator==(SDL_TouchDeviceType lhs,
-                                            DeviceType rhs) noexcept;
+[[nodiscard]] CENTURION_API auto operator==(SDL_TouchDeviceType lhs,
+                                            DeviceType rhs) noexcept -> bool;
 
 /**
  * @brief Indicates whether or not two touch device types aren't the same.
@@ -129,8 +130,9 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(DeviceType lhs,
-                                            SDL_TouchDeviceType rhs) noexcept;
+[[nodiscard]] CENTURION_API auto operator!=(DeviceType lhs,
+                                            SDL_TouchDeviceType rhs) noexcept
+    -> bool;
 
 /**
  * @brief Indicates whether or not two touch device types aren't the same.
@@ -142,8 +144,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(SDL_TouchDeviceType lhs,
-                                            DeviceType rhs) noexcept;
+[[nodiscard]] CENTURION_API auto operator!=(SDL_TouchDeviceType lhs,
+                                            DeviceType rhs) noexcept -> bool;
 
 /**
  * @brief Returns the number of registered touch devices.
@@ -152,7 +154,7 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API int num_devices() noexcept;
+[[nodiscard]] CENTURION_API auto num_devices() noexcept -> int;
 
 /**
  * @brief Returns the touch device ID associated with the specified index.
@@ -163,8 +165,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API std::optional<TouchID> get_device(
-    int index) noexcept;
+[[nodiscard]] CENTURION_API auto get_device(int index) noexcept
+    -> std::optional<TouchID>;
 
 /**
  * @brief Returns the type of a touch device.
@@ -175,7 +177,7 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API DeviceType type_of(TouchID id) noexcept;
+[[nodiscard]] CENTURION_API auto type_of(TouchID id) noexcept -> DeviceType;
 
 /**
  * @brief Returns the number of active fingers for a given touch device.
@@ -186,7 +188,7 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API int num_fingers(TouchID id) noexcept;
+[[nodiscard]] CENTURION_API auto num_fingers(TouchID id) noexcept -> int;
 
 /**
  * @brief Returns the finger associated with the specified touch ID and index.
@@ -199,9 +201,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API std::optional<SDL_Finger> get_finger(
-    TouchID id,
-    int index) noexcept;
+[[nodiscard]] CENTURION_API auto get_finger(TouchID id, int index) noexcept
+    -> std::optional<SDL_Finger>;
 
 /**
  * @brief Returns the device ID used for mouse events simulated with touch
@@ -211,7 +212,7 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] inline constexpr u32 touch_mouse_id() noexcept
+[[nodiscard]] inline constexpr auto touch_mouse_id() noexcept -> u32
 {
   return SDL_TOUCH_MOUSEID;
 }
@@ -224,7 +225,7 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] inline constexpr TouchID mouse_touch_id() noexcept
+[[nodiscard]] inline constexpr auto mouse_touch_id() noexcept -> TouchID
 {
   return SDL_MOUSE_TOUCHID;
 }

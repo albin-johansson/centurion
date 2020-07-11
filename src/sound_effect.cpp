@@ -114,7 +114,7 @@ void sound_effect::fade_in(milliseconds<int> ms) noexcept
 }
 
 CENTURION_DEF
-void sound_effect::fade_out(milliseconds<int> ms) noexcept
+void sound_effect::fade_out(milliseconds<int> ms) noexcept  // NOLINT
 {
   if ((ms.count() > 0) && is_playing()) {
     Mix_FadeOutChannel(m_channel, ms.count());

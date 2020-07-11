@@ -50,9 +50,9 @@ auto TextEditingEvent::window_id() const noexcept -> u32
 }
 
 CENTURION_DEF
-auto TextEditingEvent::text() const noexcept -> czstring
+auto TextEditingEvent::text() const noexcept -> std::string_view
 {
-  return m_event.text;
+  return std::string_view{static_cast<czstring>(m_event.text)};
 }
 
 CENTURION_DEF

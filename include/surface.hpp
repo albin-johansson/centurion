@@ -56,7 +56,7 @@ namespace centurion {
  *
  * @brief Represents a non-accelerated image.
  *
- * @note In most cases, it's preferable to use the `Texture` class instead.
+ * @note In most cases, it's preferable to use the `texture` class instead.
  *
  * @since 4.0.0
  *

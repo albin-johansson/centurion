@@ -38,6 +38,7 @@
 #define CENTURION_PATHS_HEADER
 
 #include "centurion_api.hpp"
+#include "centurion_types.hpp"
 #include "centurion_utils.hpp"
 
 namespace centurion {
@@ -146,7 +147,7 @@ class base_path final {
   [[nodiscard]] auto get() const noexcept -> czstring { return m_path; }
 
  private:
-  zstring m_path{nullptr};
+  owner<zstring> m_path{nullptr};
 
   /**
    * @brief Destroys the resources associated with the base path instance.
@@ -276,7 +277,7 @@ class pref_path final {
   [[nodiscard]] auto get() const noexcept -> czstring { return m_path; }
 
  private:
-  zstring m_path{nullptr};
+  owner<zstring> m_path{nullptr};
 
   /**
    * @brief Destroys the resources associated with the instance.

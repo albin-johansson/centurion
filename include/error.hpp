@@ -31,8 +31,7 @@
 #include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
 
-namespace centurion {
-namespace detail {
+namespace centurion::detail {
 
 // TODO overhaul
 
@@ -50,8 +49,8 @@ class Error final {
   Error() = delete;
   Error(const Error&) = delete;
   Error(Error&&) = delete;
-  Error& operator=(const Error&) = delete;
-  Error& operator=(Error&&) = delete;
+  auto operator=(const Error&) -> Error& = delete;
+  auto operator=(Error&&) -> Error& = delete;
 
   /**
    * Returns an exception with the supplied message along with the latest
@@ -62,8 +61,8 @@ class Error final {
    * latest SDL_GetError() message.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static centurion_exception from_core(
-      std::string message);
+  CENTURION_QUERY
+  static auto from_core(const std::string& message) -> centurion_exception;
 
   /**
    * Returns an exception with the supplied message along with the latest
@@ -74,8 +73,8 @@ class Error final {
    * latest IMG_GetError() message.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static centurion_exception from_image(
-      std::string message);
+  CENTURION_QUERY
+  static auto from_image(const std::string& message) -> centurion_exception;
 
   /**
    * Returns an exception with the supplied message along with the latest
@@ -86,8 +85,8 @@ class Error final {
    * latest TTF_GetError() message.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static centurion_exception from_ttf(
-      std::string message);
+  CENTURION_QUERY
+  static auto from_ttf(const std::string& message) -> centurion_exception;
 
   /**
    * Returns an exception with the supplied message along with the latest
@@ -98,8 +97,8 @@ class Error final {
    * latest Mix_GetError() message.
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API static centurion_exception from_mixer(
-      std::string message);
+  CENTURION_QUERY
+  static auto from_mixer(const std::string& message) -> centurion_exception;
 };
 
 static_assert(std::is_final_v<Error>);
@@ -110,8 +109,7 @@ static_assert(!std::is_move_constructible_v<Error>);
 static_assert(!std::is_copy_assignable_v<Error>);
 static_assert(!std::is_move_assignable_v<Error>);
 
-}  // namespace detail
-}  // namespace centurion
+}  // namespace centurion::detail
 
 #ifdef CENTURION_HEADER_ONLY
 #include "error.cpp"

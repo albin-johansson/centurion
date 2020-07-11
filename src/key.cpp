@@ -8,10 +8,6 @@
 namespace centurion {
 
 CENTURION_DEF
-Key::Key() noexcept : m_scancode{SDL_SCANCODE_UNKNOWN}, m_keycode{SDLK_UNKNOWN}
-{}
-
-CENTURION_DEF
 Key::Key(SDL_Keycode keycode) noexcept
 {
   set(keycode);

@@ -66,8 +66,7 @@ class Key final {
    *
    * @since 4.0.0
    */
-  CENTURION_API
-  Key() noexcept;
+  Key() noexcept = default;
 
   /**
    * @brief Creates a Key instance based on the supplied scancode.

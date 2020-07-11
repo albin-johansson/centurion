@@ -26,7 +26,7 @@ TEST_CASE("TextInputEvent::text", "[TextInputEvent]")
 {
   SDL_TextInputEvent sdlEvent{SDL_TEXTINPUT, 1, 1, "hello"};
   TextInputEvent event{sdlEvent};
-  CHECK_THAT(event.text(), Catch::Equals("hello"));
+  CHECK_THAT(event.text().data(), Catch::Equals("hello"));
 }
 
 TEST_CASE("TextInputEvent()", "[TextInputEvent]")

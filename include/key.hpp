@@ -27,6 +27,8 @@
  *
  * @brief Provides the `Key` class.
  *
+ * @todo Add Key constants.
+ *
  * @author Albin Johansson
  *
  * @date 2019-2020

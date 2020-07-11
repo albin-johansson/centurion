@@ -99,7 +99,7 @@ namespace centurion {
  * @since 3.0.0
  *
  * @see `Mix_Chunk`
- * @see `Music`
+ * @see `music`
  *
  * @headerfile sound_effect.hpp
  */

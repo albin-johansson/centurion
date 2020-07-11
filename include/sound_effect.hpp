@@ -46,13 +46,55 @@
 namespace centurion {
 
 /**
- * @class SoundEffect
+ * @class sound_effect
  *
  * @brief Represents a sound effect.
  *
- * @details Multiple various file formats are supported.
+ * @details The supported file formats are the following:
+ * <ul>
+ *   <li>WAVE/RIFF (.wav)</li>
+ *   <li>AIFF (.aiff)</li>
+ *   <li>VOC (.voc)</li>
+ *   <li>OGG (.ogg)</li>
+ *   <li>VOC (.voc)</li>
+ * </ul>
  *
- * @todo List the supported file formats.
+ * @par Usage
+ * Usage of this class is pretty straightforward and self-explanatory. The
+ * fundamental methods are `play()` and `stop()`, with additional support for
+ * effects such as fading and looping.
+ * @code{.cpp}
+ *   #include <centurion_as_ctn.hpp>
+ *   #include <sound_effect.hpp>
+ *
+ *   void demo()
+ *   {
+ *     // supports .wav, .aiff, .voc, .ogg and .voc files
+ *     ctn::sound_effect sfx{"foo.wav"};
+ *
+ *     // sets the volume (range: [0, sound_effect::max_volume()])
+ *     sfx.set_volume(98);
+ *
+ *     // play sound effect once
+ *     sfx.play();
+ *
+ *     // play sound effect twice
+ *     sfx.play(2);
+ *
+ *     // loop sound effect forever
+ *     sfx.play(ctn::sound_effect::loopForever);
+ *
+ *     // stops playing the sound effect
+ *     sfx.stop();
+ *
+ *     // fades in the sound effect over 500 milliseconds
+ *     sfx.fade_in(ctn::milliseconds<int>{500});
+ *
+ *     if (sfx.is_fading()) {
+ *       // ...
+ *     }
+ *   }
+ * @endcode
  *
  * @since 3.0.0
  *
@@ -61,7 +103,7 @@ namespace centurion {
  *
  * @headerfile sound_effect.hpp
  */
-class SoundEffect final {
+class sound_effect final {
  public:
   /**
    * @brief The maximum possible volume value.
@@ -88,7 +130,7 @@ class SoundEffect final {
    * @since 3.0.0
    */
   CENTURION_API
-  explicit SoundEffect(czstring file);
+  explicit sound_effect(czstring file);
 
   /**
    * @brief Creates a sound effect by moving the contents of the supplied sound
@@ -99,9 +141,9 @@ class SoundEffect final {
    * @since 3.0.0
    */
   CENTURION_API
-  SoundEffect(SoundEffect&& other) noexcept;
+  sound_effect(sound_effect&& other) noexcept;
 
-  SoundEffect(const SoundEffect&) = delete;
+  sound_effect(const sound_effect&) = delete;
 
   /**
    * @brief Moves the contents of the supplied sound effect into this one.
@@ -113,24 +155,24 @@ class SoundEffect final {
    * @since 3.0.0
    */
   CENTURION_API
-  auto operator=(SoundEffect&& other) noexcept -> SoundEffect&;
+  auto operator=(sound_effect&& other) noexcept -> sound_effect&;
 
-  auto operator=(const SoundEffect&) -> SoundEffect& = delete;
+  auto operator=(const sound_effect&) -> sound_effect& = delete;
 
   CENTURION_API
-  ~SoundEffect();
+  ~sound_effect();
 
   /**
-   * @copydoc SoundEffect(czstring)
+   * @copydoc sound_effect(czstring)
    */
   CENTURION_QUERY
-  static auto unique(czstring file) -> std::unique_ptr<SoundEffect>;
+  static auto unique(czstring file) -> std::unique_ptr<sound_effect>;
 
   /**
-   * @copydoc SoundEffect(czstring)
+   * @copydoc sound_effect(czstring)
    */
   CENTURION_QUERY
-  static auto shared(czstring file) -> std::shared_ptr<SoundEffect>;
+  static auto shared(czstring file) -> std::shared_ptr<sound_effect>;
 
   /**
    * @brief Plays the sound effect.
@@ -140,7 +182,7 @@ class SoundEffect final {
    *
    * @param nLoops the amount of loops, can be negative.
    *
-   * @see `SoundEffect::loopForever`
+   * @see `sound_effect::loopForever`
    *
    * @since 3.0.0
    */
@@ -188,7 +230,7 @@ class SoundEffect final {
    * the closest legal value.
    *
    * @param volume the volume of the sound effect, in the range [0,
-   * `SoundEffect::maxVolume`].
+   * `sound_effect::maxVolume`].
    *
    * @since 3.0.0
    */
@@ -203,7 +245,21 @@ class SoundEffect final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto playing() const noexcept -> bool;
+  auto is_playing() const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the sound effect is being faded.
+   *
+   * @note If the sound effect is being faded, it's also playing so
+   * `is_playing()` will also return `true`. Keep this in mind if you want to
+   * differentiate between the two.
+   *
+   * @return `true` if the sound effect is being faded; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto is_fading() const noexcept -> bool;
 
   /**
    * @brief Returns a textual representation of the sound effect.
@@ -293,7 +349,7 @@ class SoundEffect final {
    *
    * @since 4.0.0
    */
-  void move(SoundEffect&& other) noexcept;
+  void move(sound_effect&& other) noexcept;
 
   /**
    * @brief Activates the sound effect by playing it the specified amount of
@@ -306,11 +362,11 @@ class SoundEffect final {
   void activate(int nLoops) noexcept;
 };
 
-static_assert(std::is_final_v<SoundEffect>);
-static_assert(std::is_nothrow_move_constructible_v<SoundEffect>);
-static_assert(std::is_nothrow_move_assignable_v<SoundEffect>);
-static_assert(!std::is_copy_constructible_v<SoundEffect>);
-static_assert(!std::is_copy_assignable_v<SoundEffect>);
+static_assert(std::is_final_v<sound_effect>);
+static_assert(std::is_nothrow_move_constructible_v<sound_effect>);
+static_assert(std::is_nothrow_move_assignable_v<sound_effect>);
+static_assert(!std::is_copy_constructible_v<sound_effect>);
+static_assert(!std::is_copy_assignable_v<sound_effect>);
 
 }  // namespace centurion
 

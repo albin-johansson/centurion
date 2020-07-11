@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file message_box.hpp
+ *
+ * @brief Provides the message box API.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_MESSAGE_BOX_HEADER
 #define CENTURION_MESSAGE_BOX_HEADER
 
@@ -33,244 +45,302 @@
 #include "centurion_utils.hpp"
 #include "color.hpp"
 
-namespace centurion {
-namespace messagebox {
+/**
+ * @namespace centurion::messagebox
+ *
+ * @brief Contains the message box API components.
+ */
+namespace centurion::messagebox {
 
 /**
- * The ButtonDataHint enum class mirrors the SDL_MessageBoxButtonFlags enum.
+ * @enum button_data_hint
+ *
+ * @brief Mirrors the `SDL_MessageBoxButtonFlags` enum.
  *
  * @since 3.0.0
+ *
+ * @headerfile message_box.hpp
  */
-enum class ButtonDataHint {
-  None = 0,
-  ReturnKey = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
-  EscapeKey = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
+enum class button_data_hint {
+  none = 0,
+  return_key = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
+  escape_key = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
 };
 
 /**
- * Indicates whether or not the flags represent the same value.
+ * @brief Indicates whether or not the flags represent the same value.
  *
- * @param lhs the lhs Centurion message box button data hint.
- * @param rhs the rhs SDL message box button data flags.
- * @return true if the values represent the same thing; false otherwise.
+ * @param lhs the left-hand side message box button data hint.
+ * @param rhs the right-hand side message box button data hint.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
  * @since 3.0.0
  */
-[[nodiscard]] CENTURION_API bool operator==(
-    ButtonDataHint lhs,
-    SDL_MessageBoxButtonFlags rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(
+    button_data_hint lhs,
+    SDL_MessageBoxButtonFlags rhs) noexcept -> bool
+{
+  return static_cast<SDL_MessageBoxButtonFlags>(lhs) == rhs;
+}
 
 /**
- * Indicates whether or not the flags represent the same value.
- *
- * @param lhs the lhs SDL message box button data flags.
- * @param rhs the rhs Centurion message box button data hint.
- * @return true if the values represent the same thing; false otherwise.
- * @since 3.0.0
+ * @copydoc operator==(button_data_hint, SDL_MessageBoxButtonFlags)
  */
-[[nodiscard]] CENTURION_API bool operator==(SDL_MessageBoxButtonFlags lhs,
-                                            ButtonDataHint rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(SDL_MessageBoxButtonFlags lhs,
+                                               button_data_hint rhs) noexcept
+    -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * Indicates whether or not the flags don't represent the same value.
+ * @brief Indicates whether or not the flags represent the same value.
  *
- * @param lhs the lhs Centurion message box button data hint.
- * @param rhs the rhs SDL message box button data flags.
- * @return true if the values don't represent the same thing; false otherwise.
+ * @param lhs the left-hand side message box button data hint.
+ * @param rhs the right-hand side message box button data hint.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
  * @since 3.0.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(
-    ButtonDataHint lhs,
-    SDL_MessageBoxButtonFlags rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(
+    button_data_hint lhs,
+    SDL_MessageBoxButtonFlags rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * Indicates whether or not the flags don't represent the same value.
- *
- * @param lhs the lhs SDL message box button data flags.
- * @param rhs the rhs Centurion message box button data hint.
- * @return true if the values don't represent the same thing; false otherwise.
- * @since 3.0.0
+ * @copydoc operator!=(button_data_hint, SDL_MessageBoxButtonFlags)
  */
-[[nodiscard]] CENTURION_API bool operator!=(SDL_MessageBoxButtonFlags lhs,
-                                            ButtonDataHint rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(SDL_MessageBoxButtonFlags lhs,
+                                               button_data_hint rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * The ColorType enum class mirrors the SDL_MessageBoxColorType enum.
+ * @enum color_type
+ *
+ * @brief Mirrors the `SDL_MessageBoxColorType` enum.
  *
  * @since 3.0.0
+ *
+ * @headerfile message_box.hpp
  */
-enum class ColorType {
-  Background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
-  ButtonBorder = SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,
-  ButtonBackground = SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND,
-  ButtonSelected = SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED,
+enum class color_type {
+  background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
+  button_border = SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,
+  button_background = SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND,
+  button_selected = SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED,
 };
 
 /**
- * Indicates whether or not the message box color types represent the same
- * value.
+ * @brief Indicates whether or not two message box are colors the same.
  *
- * @param lhs the lhs SDL message box color type.
- * @param rhs the rhs Centurion message box color type.
- * @return true if the color types represent the same value; false otherwise.
+ * @param lhs the left-hand side message box color.
+ * @param rhs the right-hand side message box color.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
  * @since 3.0.0
  */
-[[nodiscard]] CENTURION_API bool operator==(SDL_MessageBoxColorType lhs,
-                                            ColorType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(SDL_MessageBoxColorType lhs,
+                                               color_type rhs) noexcept -> bool
+{
+  return lhs == static_cast<SDL_MessageBoxColorType>(rhs);
+}
 
 /**
- * Indicates whether or not the message box color types represent the same
- * value.
- *
- * @param lhs the lhs Centurion message box color type.
- * @param rhs the rhs SDL message box color type.
- * @return true if the color types represent the same value; false otherwise.
- * @since 3.0.0
+ * @copydoc operator==(SDL_MessageBoxColorType, color_type)
  */
-[[nodiscard]] CENTURION_API bool operator==(
-    ColorType lhs,
-    SDL_MessageBoxColorType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(
+    color_type lhs,
+    SDL_MessageBoxColorType rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * Indicates whether or not the message box color types don't represent the same
- * value.
+ * @brief Indicates whether or not two message box colors aren't the same.
  *
- * @param lhs the lhs SDL message box color type.
- * @param rhs the rhs Centurion message box color type.
- * @return true if the color types don't represent the same value; false
- * otherwise.
+ * @param lhs the left-hand side message box color.
+ * @param rhs the right-hand side message box color.
+ *
+ * @return `true` if the values aren't the same; `false` otherwise.
+ *
  * @since 3.0.0
  */
-[[nodiscard]] CENTURION_API bool operator!=(SDL_MessageBoxColorType lhs,
-                                            ColorType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(SDL_MessageBoxColorType lhs,
+                                               color_type rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * Indicates whether or not the message box color types don't represent the same
- * value.
- *
- * @param lhs the lhs Centurion message box color type.
- * @param rhs the rhs SDL message box color type.
- * @return true if the color types don't represent the same value; false
- * otherwise.
- * @since 3.0.0
+ * @copydoc operator!=(SDL_MessageBoxColorType, color_type)
  */
-[[nodiscard]] CENTURION_API bool operator!=(
-    ColorType lhs,
-    SDL_MessageBoxColorType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator!=(
+    color_type lhs,
+    SDL_MessageBoxColorType rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
- * The ColorScheme class is a simple wrapper around an SDL_MessageBoxColorScheme
- * struct.
+ * @class color_scheme
+ *
+ * @brief A simple wrapper around an `SDL_MessageBoxColorScheme` instance.
  *
  * @since 3.0.0
+ *
+ * @headerfile message_box.hpp
  */
-class ColorScheme final {
+class color_scheme final {
  public:
   /**
+   * @brief Creates a `color_scheme` instance.
+   *
    * @since 3.0.0
    */
   CENTURION_API
-  ColorScheme() noexcept;
+  color_scheme() noexcept;
 
   /**
-   * Sets the color of a color scheme component.
+   * @brief Sets the color of a color scheme component.
    *
    * @param type the color scheme component that will be set.
    * @param color the color that will be used.
+   *
    * @since 3.0.0
    */
   CENTURION_API
-  void set_color(ColorType type, const Color& color) noexcept;
+  void set_color(color_type type, const Color& color) noexcept;
 
   /**
-   * Creates and returns the SDL_MessageBoxColorScheme equivalent of the color
-   * scheme
+   * @brief Creates and returns the `SDL_MessageBoxColorScheme` equivalent of
+   * the color scheme.
    *
-   * @return a SDL_MessageBoxColorScheme that is equivalent to the color
-   * scheme.
+   * @return a `SDL_MessageBoxColorScheme` instance that is equivalent to the
+   * color scheme.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API SDL_MessageBoxColorScheme
-  convert() const noexcept;
+  CENTURION_QUERY
+  auto convert() const noexcept -> SDL_MessageBoxColorScheme;
 
  private:
   SDL_MessageBoxColorScheme m_scheme{};
 
   /**
-   * Returns the array index associated with the supplied color scheme type.
+   * @brief Returns the array index associated with the supplied color scheme
+   * type.
    *
    * @param type color scheme type to obtain the index for.
+   *
    * @return the array index associated with the supplied color scheme type.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] int index(ColorType type) const noexcept
+  [[nodiscard]] int index(color_type type) const noexcept
   {
     return static_cast<int>(type);
   }
 };
 
-struct MessageBoxConfig;
+struct message_box_config;
 
 /**
- * The MessageBox class represents a modal message box that can be used display
+ * @class message_box
+ *
+ * @brief Represents a modal message box that can be used display
  * information, warnings and errors.
  *
  * @since 3.0.0
+ *
+ * @headerfile message_box.hpp
  */
-class MessageBox final {
+class message_box final {
  public:
   /**
-   * The ButtonOrder enum class provides hints for how the buttons in a message
-   * box should be aligned, either left-to-right or right-to-left.
+   * @enum button_order
+   *
+   * @brief Provides hints for how the buttons in a message box should be
+   * aligned, either left-to-right or right-to-left.
    *
    * @since 4.0.0
+   *
+   * @headerfile message_box.hpp
    */
-  enum class ButtonOrder { LeftToRight, RightToLeft };
+  enum class button_order { left_to_right, right_to_left };
 
   /**
-   * The MessageBoxType enum class serves as a hint of the purpose of a message
-   * box. Message boxes can indicate errors, warnings and general information.
+   * @enum type
+   *
+   * @brief Serves as a hint of the purpose of a message box. Message boxes
+   * can indicate errors, warnings and general information.
    *
    * @since 4.0.0
+   *
+   * @headerfile message_box.hpp
    */
-  enum class Type {
-    Error = SDL_MESSAGEBOX_ERROR,
-    Warning = SDL_MESSAGEBOX_WARNING,
-    Information = SDL_MESSAGEBOX_INFORMATION
+  enum class type {
+    error = SDL_MESSAGEBOX_ERROR,
+    warning = SDL_MESSAGEBOX_WARNING,
+    information = SDL_MESSAGEBOX_INFORMATION
   };
 
   /**
+   * @brief Creates a `message_box` instance.
+   *
    * @since 3.0.0
    */
-  CENTURION_API MessageBox();
+  CENTURION_API
+  message_box();
 
   /**
+   * @brief Creates a message box with the specified title and message.
+   *
    * @param title the title of the message box, can be null. "Centurion message
    * box" is used if the supplied string is null.
    * @param message the message of the message box, can be null. "N/A" is
    * used if the supplied string is null.
+   *
    * @since 3.0.0
    */
-  CENTURION_API explicit MessageBox(czstring title, czstring message = nullptr);
-
-  CENTURION_API ~MessageBox() noexcept;
+  CENTURION_API
+  explicit message_box(czstring title, czstring message = nullptr);
 
   /**
-   * Displays the message box. If no buttons have been added, the message box
-   * will feature an "OK" button. This method will block the invoking thread
-   * until the user closes the message box.
+   * @brief Displays the message box.
+   *
+   * @details If no buttons have been added, the message box will feature an
+   * "OK" button.
+   *
+   * @note This method will block the invoking thread until the user closes
+   * the message box.
    *
    * @param window a pointer to the parent window, can safely be null to
    * indicate no parent.
+   *
    * @return the ID of the pressed button; -1 if no button was pressed.
+   *
    * @throws centurion_exception if the message box cannot be displayed.
+   *
    * @since 3.0.0
    */
-  CENTURION_API int show(SDL_Window* window = nullptr);
+  CENTURION_API
+  auto show(SDL_Window* window = nullptr) -> int;
 
   /**
-   * Creates and displays a message box. This method provides a simpler way to
-   * create message boxes, compared to creating instances of the MessageBox
-   * class. This method will block the invoking thread until the user closes
+   * @brief Creates and displays a message box.
+   *
+   * @details This method provides a simpler way to create message boxes,
+   * compared to creating instances of the `message_box` class.
+   *
+   * @note This method will block the invoking thread until the user closes
    * the message box.
    *
    * @param title the title of the message box window, can be null. "Centurion
@@ -280,173 +350,215 @@ class MessageBox final {
    * @param config the configuration hints of the message box.
    * @param window a pointer to the parent window, can safely be null to
    * indicate no parent.
+   *
    * @since 3.0.0
    */
-  CENTURION_API static void show(czstring title,
-                                 czstring message,
-                                 const MessageBoxConfig& config,
-                                 SDL_Window* window = nullptr) noexcept;
+  CENTURION_API
+  static void show(czstring title,
+                   czstring message,
+                   const message_box_config& config,
+                   SDL_Window* window = nullptr) noexcept;
 
   /**
-   * Adds a button to the message box. If you don't explicitly add a
-   * button, there will be an "OK" button added automatically.
+   * @brief Adds a button to the message box.
+   *
+   * @note If you don't explicitly add a button, there will be an "OK" button
+   * added automatically.
    *
    * @param hint the data hint of the button.
    * @param id the ID of the button.
    * @param text the text of the button, if null then the empty string is used.
-   * @since 3.0.0
-   */
-  CENTURION_API void add_button(ButtonDataHint hint,
-                                int id,
-                                czstring text) noexcept;
-
-  /**
-   * Sets the title of the message box. This method has no effect if the
-   * supplied string is null.
    *
-   * @param title the title of the message box, can be null.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_title(czstring title) noexcept;
-
-  /**
-   * Sets the message of the message box. This method has no effect if the
-   * supplied string is null.
-   *
-   * @param message the message of the message box, can be null.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_message(czstring message) noexcept;
-
-  /**
-   * Sets the type of message that the message box represents. By default,
-   * this property is set to <code>Information</code>.
-   *
-   * @param type the type of the message box.
-   * @since 3.0.0
-   */
-  CENTURION_API void set_type(Type type) noexcept;
-
-  /**
-   * Sets the button order of the buttons in the message box. By default,
-   * this property is set to <code>LeftToRight</code>.
-   *
-   * @param order the button order that will be used.
-   * @since 4.0.0
-   */
-  CENTURION_API void set_button_order(ButtonOrder order) noexcept;
-
-  /**
-   * Sets the color scheme that will be used by the message box. Color schemes
-   * aren't supported on all platforms, so the default value is nothing for
-   * the color scheme.
-   *
-   * @param scheme the color scheme that will be used; nothing indicates
-   * that the system defaults should be used.
    * @since 3.0.0
    */
   CENTURION_API
-  void set_color_scheme(std::optional<ColorScheme> scheme) noexcept;
+  void add_button(button_data_hint hint, int id, czstring text) noexcept;
 
   /**
-   * Returns the title of the message box. The default title is "Centurion
-   * message box".
+   * @brief Sets the title of the message box.
+   *
+   * @details This method has no effect if the supplied string is null.
+   *
+   * @param title the title of the message box, can be null.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  void set_title(czstring title) noexcept;
+
+  /**
+   * @brief Sets the message of the message box.
+   *
+   * @details This method has no effect if the supplied string is null.
+   *
+   * @param message the message of the message box, can be null.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  void set_message(czstring message) noexcept;
+
+  /**
+   * @brief Sets the type of message that the message box represents.
+   *
+   * @note By default, this property is set to `type::information`.
+   *
+   * @param type the type of the message box.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  void set_type(type type) noexcept;
+
+  /**
+   * @brief Sets the button order of the buttons in the message box.
+   *
+   * @note By default, this property is set to `button_order::left_to_right`.
+   *
+   * @param order the button order that will be used.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API
+  void set_button_order(button_order order) noexcept;
+
+  /**
+   * @brief Sets the color scheme that will be used by the message box.
+   *
+   * @note Color schemes aren't supported on all platforms, so the default
+   * value is `nothing` for the color scheme.
+   *
+   * @param scheme the color scheme that will be used; `nothing` indicates
+   * that the system defaults should be used.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  void set_color_scheme(std::optional<color_scheme> scheme) noexcept;
+
+  /**
+   * @brief Returns the title of the message box.
+   *
+   * @details The default title is "Centurion message box".
    *
    * @return the title of the message box.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] czstring title() const noexcept { return m_title; }
+  [[nodiscard]] auto title() const noexcept -> czstring { return m_title; }
 
   /**
-   * Returns the message of the message box. The default message is "N/A".
+   * @brief Returns the message of the message box.
+   *
+   * @details The default message is "N/A".
    *
    * @return the message of the message box.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] czstring message() const noexcept { return m_message; }
+  [[nodiscard]] auto message() const noexcept -> czstring { return m_message; }
 
   /**
-   * Returns the color scheme that is used by the message box. Color schemes
-   * aren't supported on all platforms, so the default value is nothing for
-   * the color scheme.
+   * @brief Returns the color scheme that is used by the message box.
    *
-   * @return the color scheme that is used by the message box; nothing if
+   * @note Color schemes aren't supported on all platforms, so the default
+   * value is `nothing` for the color scheme.
+   *
+   * @return the color scheme that is used by the message box; `nothing` if
    * there is none.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] std::optional<ColorScheme> color_scheme() const noexcept
+  [[nodiscard]] auto get_color_scheme() const noexcept
+      -> std::optional<color_scheme>
   {
     return m_colorScheme;
   }
 
   /**
-   * Returns the type of the message box. By default, this property is set to
-   * <code>Information</code>.
+   * @brief Returns the type of the message box.
+   *
+   * @note By default, this property is set to `type::information`.
    *
    * @return the type of the message box.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API Type type() const noexcept;
+  CENTURION_QUERY
+  auto get_type() const noexcept -> type;
 
   /**
-   * Returns the button order that is used by the buttons in the message box. By
-   * default, this property is set to <code>LeftToRight</code>.
+   * @brief Returns the button order that is used by the buttons in the message
+   * box.
+   *
+   * @details By default, this property is set to `button_order::left_to_right`.
    *
    * @return the button order that is used by the buttons in the message box.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] CENTURION_API ButtonOrder button_order() const noexcept;
+  CENTURION_QUERY
+  auto get_button_order() const noexcept -> button_order;
 
  private:
-  std::optional<ColorScheme> m_colorScheme = nothing;
+  std::optional<color_scheme> m_colorScheme;
   std::vector<SDL_MessageBoxButtonData> m_buttons;
-  czstring m_title = "Centurion message box";
-  czstring m_message = "N/A";
-  std::unique_ptr<MessageBoxConfig> m_config;
+  czstring m_title{"Centurion message box"};
+  czstring m_message{"N/A"};
+  std::unique_ptr<message_box_config> m_config;
 
   /**
-   * Creates and returns a vector of SDL_MessageBoxButtonData instances.
+   * @brief Creates and returns a vector of `SDL_MessageBoxButtonData`
+   * instances.
    *
-   * @return a vector of SDL_MessageBoxButtonData instances.
+   * @return a vector of `SDL_MessageBoxButtonData` instances.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API std::vector<SDL_MessageBoxButtonData>
-  create_buttons() const noexcept;
+  [[nodiscard]] auto create_buttons() const noexcept
+      -> std::vector<SDL_MessageBoxButtonData>;
 
   /**
-   * Creates and returns an SDL_MessageBoxData based on the MessageBox.
+   * @brief Creates and returns an `SDL_MessageBoxData` based on the
+   * `message_box`.
    *
    * @param window the parent window, can safely be null.
    * @param data a pointer to the first element in the array of buttons.
    * @param scheme a pointer to the color scheme that will be used, set to null
    * by default.
-   * @return an SDL_MessageBoxData based on the MessageBox.
+   *
+   * @return an `SDL_MessageBoxData` based on the `message_box`.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API SDL_MessageBoxData
-  create_data(SDL_Window* window,
-              const SDL_MessageBoxButtonData* data,
-              const SDL_MessageBoxColorScheme* scheme = nullptr) const noexcept;
+  [[nodiscard]] auto create_data(
+      SDL_Window* window,
+      const SDL_MessageBoxButtonData* data,
+      const SDL_MessageBoxColorScheme* scheme = nullptr) const noexcept
+      -> SDL_MessageBoxData;
 };
 
 /**
- * The MessageBoxConfig enum class represents as a configuration hint for
- * message boxes and specifies the desired type and button order of a
- * message box.
+ * @struct message_box_config
+ *
+ * @brief Represents a configuration specification for message boxes and
+ * provides the desired type and button order of a message box.
  *
  * @since 4.0.0
+ *
+ * @headerfile message_box.hpp
  */
-struct MessageBoxConfig {
-  MessageBox::Type type = MessageBox::Type::Information;
-  MessageBox::ButtonOrder buttonOrder = MessageBox::ButtonOrder::LeftToRight;
+struct message_box_config final {
+  message_box::type type = message_box::type::information;
+  message_box::button_order buttonOrder =
+      message_box::button_order::left_to_right;
 };
 
-static_assert(std::is_final_v<ColorScheme>);
-static_assert(std::is_nothrow_default_constructible_v<ColorScheme>);
-static_assert(std::is_nothrow_destructible_v<ColorScheme>);
+static_assert(std::is_final_v<color_scheme>);
+static_assert(std::is_nothrow_default_constructible_v<color_scheme>);
+static_assert(std::is_nothrow_destructible_v<color_scheme>);
 
-}  // namespace messagebox
-}  // namespace centurion
+}  // namespace centurion::messagebox
 
 #ifdef CENTURION_HEADER_ONLY
 #include "message_box.cpp"

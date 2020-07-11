@@ -4,7 +4,7 @@
 
 using namespace centurion;
 
-TEST_CASE("Log priority test", "[Log]")
+TEST_CASE("Priority test", "[log]")
 {
   log::set_priority(log::priority::verbose);
 
@@ -18,49 +18,49 @@ TEST_CASE("Log priority test", "[Log]")
   log::reset_priorities();
 }
 
-TEST_CASE("Log::set_priority(Priority)", "[Log]")
+TEST_CASE("log::set_priority(priority)", "[log]")
 {
   const auto priority = log::priority::critical;
   log::set_priority(priority);
 
-  CHECK(priority == log::priority(log::category::app));
-  CHECK(priority == log::priority(log::category::error));
-  CHECK(priority == log::priority(log::category::assert));
-  CHECK(priority == log::priority(log::category::system));
-  CHECK(priority == log::priority(log::category::audio));
-  CHECK(priority == log::priority(log::category::video));
-  CHECK(priority == log::priority(log::category::render));
-  CHECK(priority == log::priority(log::category::input));
-  CHECK(priority == log::priority(log::category::test));
-  CHECK(priority == log::priority(log::category::misc));
+  CHECK(priority == log::get_priority(log::category::app));
+  CHECK(priority == log::get_priority(log::category::error));
+  CHECK(priority == log::get_priority(log::category::assert));
+  CHECK(priority == log::get_priority(log::category::system));
+  CHECK(priority == log::get_priority(log::category::audio));
+  CHECK(priority == log::get_priority(log::category::video));
+  CHECK(priority == log::get_priority(log::category::render));
+  CHECK(priority == log::get_priority(log::category::input));
+  CHECK(priority == log::get_priority(log::category::test));
+  CHECK(priority == log::get_priority(log::category::misc));
 
   log::reset_priorities();
 }
 
-TEST_CASE("Log::set_priority(Category, Priority)", "[Log]")
+TEST_CASE("log::set_priority(category, priority)", "[log]")
 {
   const auto category = log::category::app;
   const auto priority = log::priority::debug;
 
   log::set_priority(category, priority);
-  CHECK(priority == log::priority(category));
+  CHECK(priority == log::get_priority(category));
 
   log::reset_priorities();
 }
 
-TEST_CASE("Log::priority", "[Log]")
+TEST_CASE("log::get_priority", "[log]")
 {
-  const auto prio = log::priority(log::category::app);
+  const auto prio = log::get_priority(log::category::app);
   const auto sdlPrio = SDL_LogGetPriority(SDL_LOG_CATEGORY_APPLICATION);
   CHECK(prio == sdlPrio);
 }
 
-TEST_CASE("Log::max_message_size", "[Log]")
+TEST_CASE("log::max_message_size", "[log]")
 {
   CHECK(log::max_message_size() == SDL_MAX_LOG_MESSAGE);
 }
 
-TEST_CASE("Log::Priority", "[Log]")
+TEST_CASE("pog::priority values", "[log]")
 {
   SECTION("operator==")
   {
@@ -86,7 +86,7 @@ TEST_CASE("Log::Priority", "[Log]")
   }
 }
 
-TEST_CASE("Log::Category", "[Log]")
+TEST_CASE("log::category values", "[log]")
 {
   SECTION("operator==")
   {

@@ -238,6 +238,7 @@ enum class music_type {
  * @note Only one music instance can ever be playing at any time.
  *
  * @see `Mix_Music`
+ * @see `sound_effect`
  *
  * @since 3.0.0
  *

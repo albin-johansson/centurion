@@ -34,37 +34,37 @@ inline void test_with_window(Lambda&& lambda)
 
 }  // namespace
 
-TEST_CASE("Access enum values", "[Texture]")
+TEST_CASE("texture::access enum values", "[texture]")
 {
-  using tex_access = ctn::texture::Access;
-  CHECK(tex_access::Static == SDL_TEXTUREACCESS_STATIC);
-  CHECK(tex_access::Streaming == SDL_TEXTUREACCESS_STREAMING);
-  CHECK(tex_access::Target == SDL_TEXTUREACCESS_TARGET);
+  using tex_access = ctn::texture::access;
+  CHECK(tex_access::no_lock == SDL_TEXTUREACCESS_STATIC);
+  CHECK(tex_access::streaming == SDL_TEXTUREACCESS_STREAMING);
+  CHECK(tex_access::target == SDL_TEXTUREACCESS_TARGET);
 
-  CHECK(SDL_TEXTUREACCESS_STATIC == tex_access::Static);
-  CHECK(SDL_TEXTUREACCESS_STREAMING == tex_access::Streaming);
-  CHECK(SDL_TEXTUREACCESS_TARGET == tex_access::Target);
+  CHECK(SDL_TEXTUREACCESS_STATIC == tex_access::no_lock);
+  CHECK(SDL_TEXTUREACCESS_STREAMING == tex_access::streaming);
+  CHECK(SDL_TEXTUREACCESS_TARGET == tex_access::target);
 
-  CHECK(tex_access::Static != SDL_TEXTUREACCESS_STREAMING);
-  CHECK(SDL_TEXTUREACCESS_STREAMING != tex_access::Static);
+  CHECK(tex_access::no_lock != SDL_TEXTUREACCESS_STREAMING);
+  CHECK(SDL_TEXTUREACCESS_STREAMING != tex_access::no_lock);
 }
 
-TEST_CASE("ScaleMode enum values", "[ScaleMode]")
+TEST_CASE("texture::scale_mode enum values", "[texture]")
 {
-  using tex_scale = ctn::texture::ScaleMode;
-  CHECK(tex_scale::Linear == SDL_ScaleModeLinear);
-  CHECK(tex_scale::Nearest == SDL_ScaleModeNearest);
-  CHECK(tex_scale::Best == SDL_ScaleModeBest);
+  using tex_scale = ctn::texture::scale_mode;
+  CHECK(tex_scale::linear == SDL_ScaleModeLinear);
+  CHECK(tex_scale::nearest == SDL_ScaleModeNearest);
+  CHECK(tex_scale::best == SDL_ScaleModeBest);
 
-  CHECK(SDL_ScaleModeLinear == tex_scale::Linear);
-  CHECK(SDL_ScaleModeNearest == tex_scale::Nearest);
-  CHECK(SDL_ScaleModeBest == tex_scale::Best);
+  CHECK(SDL_ScaleModeLinear == tex_scale::linear);
+  CHECK(SDL_ScaleModeNearest == tex_scale::nearest);
+  CHECK(SDL_ScaleModeBest == tex_scale::best);
 
-  CHECK(tex_scale::Linear != SDL_ScaleModeNearest);
-  CHECK(SDL_ScaleModeBest != tex_scale::Nearest);
+  CHECK(tex_scale::linear != SDL_ScaleModeNearest);
+  CHECK(SDL_ScaleModeBest != tex_scale::nearest);
 }
 
-TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
+TEST_CASE("texture(SDL_Texture*)", "[texture]")
 {
   CHECK_THROWS_AS(ctn::texture(nullptr), ctn::centurion_exception);
 
@@ -74,7 +74,7 @@ TEST_CASE("Texture(SDL_Texture*)", "[Texture]")
   });
 }
 
-TEST_CASE("Texture(Renderer&, char*)", "[Texture]")
+TEST_CASE("texture(Renderer&, char*)", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     CHECK_THROWS_AS(ctn::texture(renderer, nullptr), ctn::centurion_exception);
@@ -87,7 +87,7 @@ TEST_CASE("Texture(Renderer&, char*)", "[Texture]")
   });
 }
 
-TEST_CASE("Texture(Renderer&, Surface&", "[Texture]")
+TEST_CASE("texture(Renderer&, Surface&", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::Surface surface{pandaPath};
@@ -95,24 +95,24 @@ TEST_CASE("Texture(Renderer&, Surface&", "[Texture]")
   });
 }
 
-TEST_CASE("Texture(Renderer&, PixelFormat, Access, int, int)", "[Texture]")
+TEST_CASE("texture(Renderer&, PixelFormat, Access, int, int)", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     const auto pixelFormat = ctn::pixel_format::rgba32;
-    const auto access = ctn::texture::Access::Static;
+    const auto access = ctn::texture::access::no_lock;
     const auto width = 145;
     const auto height = 85;
 
     ctn::texture texture{renderer, pixelFormat, access, {width, height}};
 
     CHECK(pixelFormat == texture.format());
-    CHECK(access == texture.access());
+    CHECK(access == texture.get_access());
     CHECK(width == texture.width());
     CHECK(height == texture.height());
   });
 }
 
-TEST_CASE("Texture(Texture&&)", "[Texture]")
+TEST_CASE("texture(texture&&)", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
@@ -123,7 +123,7 @@ TEST_CASE("Texture(Texture&&)", "[Texture]")
   });
 }
 
-TEST_CASE("Texture::operator=(Texture&&)", "[Texture]")
+TEST_CASE("texture::operator=(texture&&)", "[texture]")
 {
   SECTION("Self-assignment")
   {
@@ -149,7 +149,7 @@ TEST_CASE("Texture::operator=(Texture&&)", "[Texture]")
   }
 }
 
-TEST_CASE("Texture::unique", "[Texture]")
+TEST_CASE("texture::unique", "[texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     const ctn::Surface surface{pandaPath};
@@ -160,12 +160,12 @@ TEST_CASE("Texture::unique", "[Texture]")
     CHECK(ctn::texture::unique(renderer, surface));
     CHECK(ctn::texture::unique(renderer,
                                window.get_pixel_format(),
-                               ctn::texture::Access::Static,
+                               ctn::texture::access::no_lock,
                                {100, 100}));
   });
 }
 
-TEST_CASE("Texture:::shared", "[Texture]")
+TEST_CASE("texture:::shared", "[texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     const ctn::Surface surface{pandaPath};
@@ -176,12 +176,12 @@ TEST_CASE("Texture:::shared", "[Texture]")
     CHECK(ctn::texture::shared(renderer, surface));
     CHECK(ctn::texture::shared(renderer,
                                window.get_pixel_format(),
-                               ctn::texture::Access::Static,
+                               ctn::texture::access::no_lock,
                                {100, 100}));
   });
 }
 
-TEST_CASE("Texture::streaming", "[Texture]")
+TEST_CASE("texture::streaming", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     const auto pixelFormat = ctn::pixel_format::rgba8888;
@@ -195,7 +195,7 @@ TEST_CASE("Texture::streaming", "[Texture]")
   });
 }
 
-TEST_CASE("Texture::set_pixel", "[Texture]")
+TEST_CASE("texture::set_pixel", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     const auto texture = ctn::texture::streaming(
@@ -214,7 +214,7 @@ TEST_CASE("Texture::set_pixel", "[Texture]")
   });
 }
 
-TEST_CASE("Texture::set_blend_mode", "[Texture]")
+TEST_CASE("texture::set_blend_mode", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
@@ -222,11 +222,11 @@ TEST_CASE("Texture::set_blend_mode", "[Texture]")
     const auto mode = ctn::blend_mode::blend;
     texture.set_blend_mode(mode);
 
-    CHECK(mode == texture.blend_mode());
+    CHECK(mode == texture.get_blend_mode());
   });
 }
 
-TEST_CASE("Texture::set_alpha", "[Texture]")
+TEST_CASE("texture::set_alpha", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
@@ -238,7 +238,7 @@ TEST_CASE("Texture::set_alpha", "[Texture]")
   });
 }
 
-TEST_CASE("Texture::set_color_mod", "[Texture]")
+TEST_CASE("texture::set_color_mod", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
@@ -254,56 +254,56 @@ TEST_CASE("Texture::set_color_mod", "[Texture]")
   });
 }
 
-TEST_CASE("Texture::set_scale_mode", "[Texture]")
+TEST_CASE("texture::set_scale_mode", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
 
-    texture.set_scale_mode(ctn::texture::ScaleMode::Nearest);
-    CHECK(texture.scale_mode() == ctn::texture::ScaleMode::Nearest);
+    texture.set_scale_mode(ctn::texture::scale_mode::nearest);
+    CHECK(texture.get_scale_mode() == ctn::texture::scale_mode::nearest);
 
-    texture.set_scale_mode(ctn::texture::ScaleMode::Linear);
-    CHECK(texture.scale_mode() == ctn::texture::ScaleMode::Linear);
+    texture.set_scale_mode(ctn::texture::scale_mode::linear);
+    CHECK(texture.get_scale_mode() == ctn::texture::scale_mode::linear);
 
-    texture.set_scale_mode(ctn::texture::ScaleMode::Best);
-    CHECK(texture.scale_mode() == ctn::texture::ScaleMode::Best);
+    texture.set_scale_mode(ctn::texture::scale_mode::best);
+    CHECK(texture.get_scale_mode() == ctn::texture::scale_mode::best);
   });
 }
 
-TEST_CASE("Texture::is_static", "[Texture]")
+TEST_CASE("texture::is_static", "[texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     ctn::texture texture{renderer,
                          window.get_pixel_format(),
-                         ctn::texture::Access::Static,
+                         ctn::texture::access::no_lock,
                          {10, 10}};
     CHECK(texture.is_static());
   });
 }
 
-TEST_CASE("Texture::is_streaming", "[Texture]")
+TEST_CASE("texture::is_streaming", "[texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     ctn::texture texture{renderer,
                          window.get_pixel_format(),
-                         ctn::texture::Access::Streaming,
+                         ctn::texture::access::streaming,
                          {10, 10}};
     CHECK(texture.is_streaming());
   });
 }
 
-TEST_CASE("Texture::is_target", "[Texture]")
+TEST_CASE("texture::is_target", "[texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     ctn::texture texture{renderer,
                          window.get_pixel_format(),
-                         ctn::texture::Access::Target,
+                         ctn::texture::access::target,
                          {10, 10}};
     CHECK(texture.is_target());
   });
 }
 
-TEST_CASE("Texture::to_string", "[Texture]")
+TEST_CASE("texture::to_string", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
@@ -311,7 +311,7 @@ TEST_CASE("Texture::to_string", "[Texture]")
   });
 }
 
-TEST_CASE("Texture::get", "[Texture]")
+TEST_CASE("texture::get", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
@@ -319,7 +319,7 @@ TEST_CASE("Texture::get", "[Texture]")
   });
 }
 
-TEST_CASE("Texture::format", "[Texture]")
+TEST_CASE("texture::format", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
@@ -332,7 +332,7 @@ TEST_CASE("Texture::format", "[Texture]")
   });
 }
 
-TEST_CASE("Texture::access", "[Texture]")
+TEST_CASE("texture::get_access", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
@@ -341,11 +341,11 @@ TEST_CASE("Texture::access", "[Texture]")
     int access = 0;
     SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
 
-    CHECK(texture.access() == static_cast<ctn::texture::Access>(access));
+    CHECK(texture.get_access() == static_cast<ctn::texture::access>(access));
   });
 }
 
-TEST_CASE("Texture::color_mod", "[Texture]")
+TEST_CASE("texture::color_mod", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
@@ -354,18 +354,18 @@ TEST_CASE("Texture::color_mod", "[Texture]")
   });
 }
 
-TEST_CASE("Texture::scale_mode", "[Texture]")
+TEST_CASE("texture::get_scale_mode", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
 
     SDL_ScaleMode mode;
     SDL_GetTextureScaleMode(texture.get(), &mode);
-    CHECK(static_cast<SDL_ScaleMode>(texture.scale_mode()) == mode);
+    CHECK(static_cast<SDL_ScaleMode>(texture.get_scale_mode()) == mode);
   });
 }
 
-TEST_CASE("Texture::width", "[Texture]")
+TEST_CASE("texture::width", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture(renderer, pandaPath);
@@ -379,7 +379,7 @@ TEST_CASE("Texture::width", "[Texture]")
   });
 }
 
-TEST_CASE("Texture::height", "[Texture]")
+TEST_CASE("texture::height", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
@@ -393,7 +393,7 @@ TEST_CASE("Texture::height", "[Texture]")
   });
 }
 
-TEST_CASE("Texture to SDL_Texture*", "[Texture]")
+TEST_CASE("texture to SDL_Texture*", "[texture]")
 {
   SECTION("Const")
   {

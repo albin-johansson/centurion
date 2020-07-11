@@ -95,7 +95,7 @@ auto texture::shared(gsl::owner<SDL_Texture*> sdlTexture)
 CENTURION_DEF
 void texture::set_pixel(point_i pixel, const Color& color) noexcept
 {
-  if (access() != Access::Streaming || pixel.x() < 0 || pixel.y() < 0 ||
+  if (get_access() != access::streaming || pixel.x() < 0 || pixel.y() < 0 ||
       pixel.x() >= width() || pixel.y() >= height()) {
     return;
   }
@@ -142,7 +142,7 @@ void texture::set_color_mod(Color color) noexcept
 }
 
 CENTURION_DEF
-void texture::set_scale_mode(ScaleMode mode) noexcept
+void texture::set_scale_mode(enum scale_mode mode) noexcept
 {
   SDL_SetTextureScaleMode(m_texture, static_cast<SDL_ScaleMode>(mode));
 }
@@ -156,11 +156,11 @@ auto texture::format() const noexcept -> pixel_format
 }
 
 CENTURION_DEF
-auto texture::access() const noexcept -> texture::Access
+auto texture::get_access() const noexcept -> texture::access
 {
   int access = 0;
   SDL_QueryTexture(m_texture, nullptr, &access, nullptr, nullptr);
-  return static_cast<Access>(access);
+  return static_cast<enum access>(access);
 }
 
 CENTURION_DEF
@@ -191,19 +191,19 @@ auto texture::size() const noexcept -> area_i
 CENTURION_DEF
 auto texture::is_target() const noexcept -> bool
 {
-  return access() == Access::Target;
+  return get_access() == access::target;
 }
 
 CENTURION_DEF
 auto texture::is_static() const noexcept -> bool
 {
-  return access() == Access::Static;
+  return get_access() == access::no_lock;
 }
 
 CENTURION_DEF
 auto texture::is_streaming() const noexcept -> bool
 {
-  return access() == Access::Streaming;
+  return get_access() == access::streaming;
 }
 
 CENTURION_DEF
@@ -215,9 +215,10 @@ auto texture::alpha() const noexcept -> u8
 }
 
 CENTURION_DEF
-auto texture::blend_mode() const noexcept -> enum blend_mode  //
-{                                                             //
-  SDL_BlendMode mode; SDL_GetTextureBlendMode(m_texture, &mode);
+auto texture::get_blend_mode() const noexcept -> blend_mode
+{
+  SDL_BlendMode mode;
+  SDL_GetTextureBlendMode(m_texture, &mode);
   return static_cast<enum blend_mode>(mode);
 }
 
@@ -230,11 +231,11 @@ auto texture::color_mod() const noexcept -> Color
 }
 
 CENTURION_DEF
-auto texture::scale_mode() const noexcept -> texture::ScaleMode
+auto texture::get_scale_mode() const noexcept -> texture::scale_mode
 {
   SDL_ScaleMode mode;
   SDL_GetTextureScaleMode(m_texture, &mode);
-  return static_cast<ScaleMode>(mode);
+  return static_cast<enum scale_mode>(mode);
 }
 
 CENTURION_DEF

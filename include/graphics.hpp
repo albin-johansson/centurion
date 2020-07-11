@@ -1400,9 +1400,12 @@ using renderer_i = basic_renderer<int>;
 class texture final {
  public:
   /**
-   * @enum Access
+   * @enum access
    *
    * @brief Mirrors the `SDL_TextureAccess` enum.
+   *
+   * @note The `no_lock` enumerator is also referred to as "static" texture
+   * access.
    *
    * @since 3.0.0
    *
@@ -1410,19 +1413,19 @@ class texture final {
    *
    * @headerfile graphics.hpp
    */
-  enum class Access {
-    Static = SDL_TEXTUREACCESS_STATIC, /**< Indicates that the texture changes
+  enum class access {
+    no_lock = SDL_TEXTUREACCESS_STATIC, /**< Indicates that the texture changes
                                           rarely, and isn't lockable. */
-    Streaming =
+    streaming =
         SDL_TEXTUREACCESS_STREAMING, /**< Indicates that the texture
                                       * changes frequently, and is lockable. */
 
-    Target = SDL_TEXTUREACCESS_TARGET /**< Indicates that the texture can be
+    target = SDL_TEXTUREACCESS_TARGET /**< Indicates that the texture can be
                                        * used as a render target. */
   };
 
   /**
-   * @enum ScaleMode
+   * @enum scale_mode
    *
    * @brief Mirrors the `SDL_ScaleMode` enum.
    *
@@ -1432,10 +1435,10 @@ class texture final {
    *
    * @headerfile graphics.hpp
    */
-  enum class ScaleMode {
-    Nearest = SDL_ScaleModeNearest, /**< Represents nearest pixel sampling. */
-    Linear = SDL_ScaleModeLinear,   /**< Represents linear filtering. */
-    Best = SDL_ScaleModeBest        /**< Represents anisotropic filtering. */
+  enum class scale_mode {
+    nearest = SDL_ScaleModeNearest, /**< Represents nearest pixel sampling. */
+    linear = SDL_ScaleModeLinear,   /**< Represents linear filtering. */
+    best = SDL_ScaleModeBest        /**< Represents anisotropic filtering. */
   };
 
   /**
@@ -1511,7 +1514,7 @@ class texture final {
   template <typename T>
   texture(const basic_renderer<T>& renderer,
           pixel_format format,
-          Access access,
+          access access,
           area_i size)
   {
     m_texture = SDL_CreateTexture(renderer.get(),
@@ -1587,7 +1590,7 @@ class texture final {
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
                                    pixel_format format,
-                                   Access access,
+                                   access access,
                                    area_i size) -> std::unique_ptr<texture>
   {
     return std::make_unique<texture>(renderer, format, access, size);
@@ -1627,7 +1630,7 @@ class texture final {
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
                                    pixel_format format,
-                                   Access access,
+                                   access access,
                                    area_i size) -> std::shared_ptr<texture>
   {
     return std::make_shared<texture>(renderer, format, access, size);
@@ -1664,7 +1667,7 @@ class texture final {
     const auto surface = createSurface(path, format);
     auto texture = texture::unique(renderer,
                                    format,
-                                   Access::Streaming,
+                                   access::streaming,
                                    {surface.width(), surface.height()});
     texture->set_blend_mode(blendMode);
 
@@ -1738,7 +1741,7 @@ class texture final {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_scale_mode(ScaleMode mode) noexcept;
+  void set_scale_mode(scale_mode mode) noexcept;
 
   /**
    * @brief Returns the pixel format that is used by the texture.
@@ -1758,7 +1761,7 @@ class texture final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto access() const noexcept -> Access;
+  auto get_access() const noexcept -> access;
 
   /**
    * @brief Returns the width of the texture.
@@ -1840,7 +1843,7 @@ class texture final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto blend_mode() const noexcept -> blend_mode;
+  auto get_blend_mode() const noexcept -> blend_mode;
 
   /**
    * @brief Returns the color modulation of the texture.
@@ -1860,7 +1863,7 @@ class texture final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto scale_mode() const noexcept -> ScaleMode;
+  auto get_scale_mode() const noexcept -> scale_mode;
 
   /**
    * @brief Returns a string representation of the texture.
@@ -1971,7 +1974,7 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(texture::Access lhs,
+[[nodiscard]] inline constexpr auto operator==(enum texture::access lhs,
                                                SDL_TextureAccess rhs) noexcept
     -> bool
 {
@@ -1979,11 +1982,11 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 }
 
 /**
- * @copydoc operator==(texture::Access, SDL_TextureAccess)
+ * @copydoc operator==(texture::access, SDL_TextureAccess)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_TextureAccess lhs,
-                                               texture::Access rhs) noexcept
-    -> bool
+[[nodiscard]] inline constexpr auto operator==(
+    SDL_TextureAccess lhs,
+    enum texture::access rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -2000,7 +2003,7 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(texture::Access lhs,
+[[nodiscard]] inline constexpr auto operator!=(enum texture::access lhs,
                                                SDL_TextureAccess rhs) noexcept
     -> bool
 {
@@ -2008,11 +2011,11 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 }
 
 /**
- * @copydoc operator!=(texture::Access, SDL_TextureAccess)
+ * @copydoc operator!=(texture::access, SDL_TextureAccess)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_TextureAccess lhs,
-                                               texture::Access rhs) noexcept
-    -> bool
+[[nodiscard]] inline constexpr auto operator!=(
+    SDL_TextureAccess lhs,
+    enum texture::access rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -2027,7 +2030,7 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
  *
  * @since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(texture::ScaleMode lhs,
+[[nodiscard]] inline constexpr auto operator==(enum texture::scale_mode lhs,
                                                SDL_ScaleMode rhs) noexcept
     -> bool
 {
@@ -2035,11 +2038,11 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 }
 
 /**
- * @copydoc operator==(texture::ScaleMode, SDL_ScaleMode)
+ * @copydoc operator==(texture::scale_mode, SDL_ScaleMode)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_ScaleMode lhs,
-                                               texture::ScaleMode rhs) noexcept
-    -> bool
+[[nodiscard]] inline constexpr auto operator==(
+    SDL_ScaleMode lhs,
+    enum texture::scale_mode rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -2054,7 +2057,7 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
  *
  * @since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(texture::ScaleMode lhs,
+[[nodiscard]] inline constexpr auto operator!=(enum texture::scale_mode lhs,
                                                SDL_ScaleMode rhs) noexcept
     -> bool
 {
@@ -2062,11 +2065,11 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 }
 
 /**
- * @copydoc operator!=(texture::ScaleMode, SDL_ScaleMode)
+ * @copydoc operator!=(texture::scale_mode, SDL_ScaleMode)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_ScaleMode lhs,
-                                               texture::ScaleMode rhs) noexcept
-    -> bool
+[[nodiscard]] inline constexpr auto operator!=(
+    SDL_ScaleMode lhs,
+    enum texture::scale_mode rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

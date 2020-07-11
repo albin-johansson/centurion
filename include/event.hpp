@@ -2312,9 +2312,10 @@ static_assert(validate_event<QuitEvent, SDL_QuitEvent>());
 /**
  * @class TextEditingEvent
  *
- * @brief Represents an event triggered by keyboard text editing. Note that
- * this class doesn't provide a setter for the text, since it's impossible to
- * assign a value to a variable of type `char[32]` in C++.
+ * @brief Represents an event triggered by keyboard text editing.
+ *
+ * @note This class doesn't provide a setter for the text, since it's
+ * impossible to assign a value to a variable of type `char[32]` in C++.
  *
  * @see `SDL_TextEditingEvent`
  *

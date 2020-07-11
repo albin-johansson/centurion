@@ -3183,8 +3183,9 @@ class Event final {
    * @code{.cpp}
    *   Event event;
    *   while (event.poll()) {
-   *     if (auto* windowEvent = event.try_get<WindowEvent>(); windowEvent) {
-   *       // safe to use windowEvent
+   *     if (auto* keyEvent = event.try_get<KeyboardEvent>();
+   *         keyEvent && keyEvent->state() == ctn::button_state::released) {
+   *       // handle key released event
    *     }
    *   }
    * @endcode

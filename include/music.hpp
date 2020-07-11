@@ -203,6 +203,38 @@ enum class music_type {
  *   <li>FLAC (.flac)</li>
  * </ul>
  *
+ * @par Examples
+ * The following demonstrates some of the options available for playing
+ * music with this class.
+ * @code{.cpp}
+ *   #include <centurion_as_ctn.hpp>
+ *   #include <music.hpp>
+ *
+ *   void demo()
+ *   {
+ *     ctn::music music{"never_gonna_give_you_up.mp3"};
+ *
+ *     // sets the volume of the music (range: [0, 128])
+ *     music.set_volume(64);
+ *
+ *     // plays the music one time
+ *     music.play();
+ *
+ *     // halts currently playing music
+ *     ctn::music::halt();
+ *
+ *     // plays the music two times
+ *     music.play(2);
+ *     ctn::music::halt();
+ *
+ *     // fade in the music over 576 milliseconds
+ *     music.fade_in(ctn::milliseconds<int>{576});
+ *
+ *     // fade out the music over 5 seconds
+ *     music.fade_out(ctn::seconds<int>{5});
+ *   }
+ * @endcode
+ *
  * @note Only one music instance can ever be playing at any time.
  *
  * @see `Mix_Music`
@@ -285,10 +317,11 @@ class music final {
    * @details Any previously playing music will be halted. However, this
    * method will wait for music that was fading out to complete.
    *
-   * @note The term loops is a little bit confusing here, even in the SDL_mixer documentation. A
-   * negative value indicates that the music should be played forever. Furthermore, the values 0
-   * and 1 both results in the music being played *one time*. Except for these "special" values,
-   * the method behaves as expected.
+   * @note The term loops is a little bit confusing here, even in the SDL_mixer
+   * documentation. A negative value indicates that the music should be played
+   * forever. Furthermore, the values 0 and 1 both results in the music being
+   * played *one time*. Except for these "special" values, the method behaves as
+   * expected.
    *
    * @param nLoops the number of times to loop the music, a negative value is
    * indicates that the music should be looped forever. The default value is 1.
@@ -338,10 +371,11 @@ class music final {
    * However, if other music is currently being faded out, this music will
    * wait for that to complete.
    *
-   * @note The term loops is a little bit confusing here, even in the SDL_mixer documentation. A
-   * negative value indicates that the music should be played forever. Furthermore, the values 0
-   * and 1 both results in the music being played *one time*. Except for these "special" values,
-   * the method behaves as expected.
+   * @note The term loops is a little bit confusing here, even in the SDL_mixer
+   * documentation. A negative value indicates that the music should be played
+   * forever. Furthermore, the values 0 and 1 both results in the music being
+   * played *one time*. Except for these "special" values, the method behaves as
+   * expected.
    *
    * @param ms the amount of time for the fade to complete, in milliseconds. A
    * negative value is clamped to 0.

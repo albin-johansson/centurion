@@ -3,9 +3,9 @@
 #include <catch.hpp>
 #include <string>
 
-//using namespace centurion;
+// using namespace centurion;
 
-//TEST_CASE("platform::id", "[platform]")
+// TEST_CASE("platform::id", "[platform]")
 //{
 //  CHECK_NOTHROW(platform::id());
 //
@@ -20,7 +20,7 @@
 ////#endif
 //}
 //
-//TEST_CASE("platform::name", "[platform]")
+// TEST_CASE("platform::name", "[platform]")
 //{
 //  CHECK(*platform::name() == std::string{SDL_GetPlatform()});
 //}

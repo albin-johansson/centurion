@@ -6,7 +6,7 @@
 
 #include "centurion_exception.hpp"
 #include "log.hpp"
-#include "timer.hpp"
+#include "sleep.hpp"
 
 using namespace centurion;
 
@@ -131,7 +131,7 @@ TEST_CASE("SoundEffect::fade_out", "[SoundEffect]")
   sound.fade_out(ms{50});
   CHECK(sound.playing());
 
-  Timer::delay(seconds<u32>(1));
+  sleep(seconds<u32>(1));
   CHECK(!sound.playing());
 }
 

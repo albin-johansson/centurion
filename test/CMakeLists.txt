@@ -20,7 +20,7 @@ set(TEST_FILES
         unittests/rect_test.cpp
         unittests/centurion_exception_test.cpp
         unittests/error_test.cpp
-        unittests/timer_test.cpp
+        unittests/counter_test.cpp
         unittests/paths_test.cpp
         unittests/platform_test.cpp
         unittests/cpu_test.cpp
@@ -59,7 +59,8 @@ set(TEST_FILES
         unittests/area_test.cpp
         unittests/hints_test.cpp
         unittests/joystick_test.cpp
-        unittests/touch_test.cpp)
+        unittests/touch_test.cpp
+        unittests/sleep_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

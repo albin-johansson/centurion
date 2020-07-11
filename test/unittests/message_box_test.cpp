@@ -10,25 +10,32 @@ using namespace centurion::messagebox;
 
 TEST_CASE("button_data_hint enum values", "[message_box]")
 {
-  CHECK(button_data_hint::return_key == SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
-  CHECK(button_data_hint::escape_key == SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
+  CHECK(button_data_hint::return_key ==
+        SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
+  CHECK(button_data_hint::escape_key ==
+        SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
 
-  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT == button_data_hint::return_key);
-  CHECK(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT == button_data_hint::escape_key);
+  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT ==
+        button_data_hint::return_key);
+  CHECK(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT ==
+        button_data_hint::escape_key);
 
   CHECK(button_data_hint::none != SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
-  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT != button_data_hint::escape_key);
+  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT !=
+        button_data_hint::escape_key);
 }
 
 TEST_CASE("color_type enum values", "[message_box]")
 {
   CHECK(color_type::button_selected == SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
-  CHECK(color_type::button_background == SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
+  CHECK(color_type::button_background ==
+        SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
   CHECK(color_type::button_border == SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);
   CHECK(color_type::background == SDL_MESSAGEBOX_COLOR_BACKGROUND);
 
   CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED == color_type::button_selected);
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND == color_type::button_background);
+  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND ==
+        color_type::button_background);
   CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER == color_type::button_border);
   CHECK(SDL_MESSAGEBOX_COLOR_BACKGROUND == color_type::background);
 
@@ -54,7 +61,8 @@ TEST_CASE("color_scheme::set_color", "[message_box]")
   CHECK(sdlScheme.colors[index(color_type::background)] == color::aquamarine);
   CHECK(sdlScheme.colors[index(color_type::button_background)] == color::azure);
   CHECK(sdlScheme.colors[index(color_type::button_border)] == color::tomato);
-  CHECK(sdlScheme.colors[index(color_type::button_selected)] == color::cornsilk);
+  CHECK(sdlScheme.colors[index(color_type::button_selected)] ==
+        color::cornsilk);
 }
 
 TEST_CASE("message_box()", "[message_box]")

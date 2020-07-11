@@ -157,9 +157,10 @@ TEST_CASE("Texture::unique", "[Texture]")
 
     CHECK(Texture::unique(renderer, pandaPath));
     CHECK(Texture::unique(renderer, surface));
-    CHECK(Texture::unique(
-        renderer,
-                          window.get_pixel_format(), Texture::Access::Static, {100, 100}));
+    CHECK(Texture::unique(renderer,
+                          window.get_pixel_format(),
+                          Texture::Access::Static,
+                          {100, 100}));
   });
 }
 
@@ -172,9 +173,10 @@ TEST_CASE("Texture:::shared", "[Texture]")
 
     CHECK(Texture::shared(renderer, pandaPath));
     CHECK(Texture::shared(renderer, surface));
-    CHECK(Texture::shared(
-        renderer,
-                          window.get_pixel_format(), Texture::Access::Static, {100, 100}));
+    CHECK(Texture::shared(renderer,
+                          window.get_pixel_format(),
+                          Texture::Access::Static,
+                          {100, 100}));
   });
 }
 
@@ -278,9 +280,10 @@ TEST_CASE("Texture::is_static", "[Texture]")
 TEST_CASE("Texture::is_streaming", "[Texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
-    Texture texture{
-        renderer,
-                    window.get_pixel_format(), Texture::Access::Streaming, {10, 10}};
+    Texture texture{renderer,
+                    window.get_pixel_format(),
+                    Texture::Access::Streaming,
+                    {10, 10}};
     CHECK(texture.is_streaming());
   });
 }

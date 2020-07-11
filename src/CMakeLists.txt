@@ -16,7 +16,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/texture_loader.hpp
         ${CTN_INCLUDE_DIR}/paths.hpp
         ${CTN_INCLUDE_DIR}/platform.hpp
-        ${CTN_INCLUDE_DIR}/timer.hpp
+        ${CTN_INCLUDE_DIR}/counter.hpp
         ${CTN_INCLUDE_DIR}/log.hpp
         ${CTN_INCLUDE_DIR}/blend_mode.hpp
         ${CTN_INCLUDE_DIR}/message_box.hpp
@@ -55,7 +55,6 @@ set(SOURCE_FILES
         paths.cpp
         platform.cpp
         log.cpp
-        timer.cpp
         message_box.cpp
         key_state.cpp
         mouse_state.cpp

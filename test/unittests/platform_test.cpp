@@ -3,7 +3,7 @@
 #include <catch.hpp>
 #include <string>
 
-using namespace centurion;
+//using namespace centurion;
 
 //TEST_CASE("platform::id", "[platform]")
 //{

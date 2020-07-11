@@ -23,11 +23,14 @@
  */
 
 /**
+ * @file centurion_api.hpp
+ *
  * @brief Defines various macros.
  *
- * @file centurion_api.hpp
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -39,10 +42,12 @@
 #include "centurion_cfg.hpp"
 
 /**
+ * @def CENTURION_API
+ *
  * @brief Used for exporting entities in generated Windows DLL.
  *
- * @def CENTURION_API
  * @headerfile centurion_api.hpp
+ *
  * @internal https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html
  */
 #if defined(_WIN32) && !defined(CENTURION_HEADER_ONLY)
@@ -56,12 +61,13 @@
 #endif  // defined(_WIN32) && !defined(CENTURION_HEADER_ONLY)
 
 /**
+ * @def CENTURION_DEF
+ *
  * @brief Used when the pseudo-header-only mode is enabled.
  *
  * @details When header-only mode is enabled, definitions are specified as
  * `inline`.
  *
- * @def CENTURION_DEF
  * @headerfile centurion_api.hpp
  */
 #if !defined(CENTURION_DEF) && defined(CENTURION_HEADER_ONLY)
@@ -74,6 +80,7 @@
  * @brief Used for methods that return something and aren't inlined.
  *
  * @since 5.0.0
+ *
  * @headerfile centurion_api.hpp
  */
 #define CENTURION_QUERY [[nodiscard]] CENTURION_API

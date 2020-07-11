@@ -16,7 +16,7 @@ MultiGestureEvent::MultiGestureEvent(
 {}
 
 CENTURION_DEF
-void MultiGestureEvent::set_touch_id(TouchID id) noexcept
+void MultiGestureEvent::set_touch_id(SDL_TouchID id) noexcept
 {
   m_event.touchId = id;
 }

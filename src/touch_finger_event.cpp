@@ -16,13 +16,13 @@ TouchFingerEvent::TouchFingerEvent(const SDL_TouchFingerEvent& event) noexcept
 {}
 
 CENTURION_DEF
-void TouchFingerEvent::set_touch_id(TouchID id) noexcept
+void TouchFingerEvent::set_touch_id(SDL_TouchID id) noexcept
 {
   m_event.touchId = id;
 }
 
 CENTURION_DEF
-void TouchFingerEvent::set_finger_id(FingerID id) noexcept
+void TouchFingerEvent::set_finger_id(SDL_FingerID id) noexcept
 {
   m_event.fingerId = id;
 }

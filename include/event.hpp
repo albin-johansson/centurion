@@ -2145,7 +2145,7 @@ class MultiGestureEvent final : public CommonEvent<SDL_MultiGestureEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_touch_id(TouchID id) noexcept;
+  void set_touch_id(SDL_TouchID id) noexcept;
 
   /**
    * @brief Sets the amount that the fingers rotated during the gesture
@@ -2530,7 +2530,7 @@ class TouchFingerEvent final : public CommonEvent<SDL_TouchFingerEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_touch_id(TouchID id) noexcept;
+  void set_touch_id(SDL_TouchID id) noexcept;
 
   /**
    * @brief Sets the finger ID associated with the event.
@@ -2540,7 +2540,7 @@ class TouchFingerEvent final : public CommonEvent<SDL_TouchFingerEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_finger_id(FingerID id) noexcept;
+  void set_finger_id(SDL_FingerID id) noexcept;
 
   /**
    * @brief Sets the window ID of the window under the finger.

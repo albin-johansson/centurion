@@ -36,7 +36,7 @@ auto num_devices() noexcept -> int
 }
 
 CENTURION_DEF
-auto get_device(int index) noexcept -> std::optional<TouchID>
+auto get_device(int index) noexcept -> std::optional<SDL_TouchID>
 {
   const auto device = SDL_GetTouchDevice(index);
   if (device == 0) {
@@ -47,20 +47,19 @@ auto get_device(int index) noexcept -> std::optional<TouchID>
 }
 
 CENTURION_DEF
-auto type_of(centurion::TouchID id) noexcept -> DeviceType
+auto type_of(SDL_TouchID id) noexcept -> DeviceType
 {
   return static_cast<DeviceType>(SDL_GetTouchDeviceType(id));
 }
 
 CENTURION_DEF
-auto num_fingers(centurion::TouchID id) noexcept -> int
+auto num_fingers(SDL_TouchID id) noexcept -> int
 {
   return SDL_GetNumTouchFingers(id);
 }
 
 CENTURION_DEF
-auto get_finger(centurion::TouchID id, int index) noexcept
-    -> std::optional<SDL_Finger>
+auto get_finger(SDL_TouchID id, int index) noexcept -> std::optional<SDL_Finger>
 {
   const auto* finger = SDL_GetTouchFinger(id, index);
   if (finger) {

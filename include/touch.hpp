@@ -39,35 +39,14 @@
 #include "centurion_api.hpp"
 #include "centurion_utils.hpp"
 
-namespace centurion {
-
 /**
- * A type alias for SDL_TouchID.
+ * @namespace centurion::touch
  *
- * @since 4.0.0
- */
-using TouchID = SDL_TouchID;
-
-/**
- * A type alias for SDL_GestureID.
- *
- * @since 4.0.0
- */
-using GestureID = SDL_GestureID;
-
-/**
- * A type alias for SDL_FingerID.
- *
- * @since 4.0.0
- */
-using FingerID = SDL_FingerID;
-
-/**
- * @namespace touch
  * @brief Provides the touch API components and methods.
+ *
  * @since 4.3.0
  */
-namespace touch {
+namespace centurion::touch {
 
 /**
  * @enum DeviceType
@@ -103,9 +82,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API auto operator==(DeviceType lhs,
-                                            SDL_TouchDeviceType rhs) noexcept
-    -> bool;
+CENTURION_QUERY
+auto operator==(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept -> bool;
 
 /**
  * @brief Indicates whether or not two touch device types are the same.
@@ -117,8 +95,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API auto operator==(SDL_TouchDeviceType lhs,
-                                            DeviceType rhs) noexcept -> bool;
+CENTURION_QUERY
+auto operator==(SDL_TouchDeviceType lhs, DeviceType rhs) noexcept -> bool;
 
 /**
  * @brief Indicates whether or not two touch device types aren't the same.
@@ -130,9 +108,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API auto operator!=(DeviceType lhs,
-                                            SDL_TouchDeviceType rhs) noexcept
-    -> bool;
+CENTURION_QUERY
+auto operator!=(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept -> bool;
 
 /**
  * @brief Indicates whether or not two touch device types aren't the same.
@@ -144,8 +121,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API auto operator!=(SDL_TouchDeviceType lhs,
-                                            DeviceType rhs) noexcept -> bool;
+CENTURION_QUERY
+auto operator!=(SDL_TouchDeviceType lhs, DeviceType rhs) noexcept -> bool;
 
 /**
  * @brief Returns the number of registered touch devices.
@@ -154,19 +131,20 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API auto num_devices() noexcept -> int;
+CENTURION_QUERY
+auto num_devices() noexcept -> int;
 
 /**
  * @brief Returns the touch device ID associated with the specified index.
  *
  * @param index the index of the desired touch device.
  *
- * @return a `TouchID` value; or `nothing` if there is no such value.
+ * @return a `SDL_TouchID` value; or `nothing` if there is no such value.
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API auto get_device(int index) noexcept
-    -> std::optional<TouchID>;
+CENTURION_QUERY
+auto get_device(int index) noexcept -> std::optional<SDL_TouchID>;
 
 /**
  * @brief Returns the type of a touch device.
@@ -177,7 +155,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API auto type_of(TouchID id) noexcept -> DeviceType;
+CENTURION_QUERY
+auto type_of(SDL_TouchID id) noexcept -> DeviceType;
 
 /**
  * @brief Returns the number of active fingers for a given touch device.
@@ -188,7 +167,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API auto num_fingers(TouchID id) noexcept -> int;
+CENTURION_QUERY
+auto num_fingers(SDL_TouchID id) noexcept -> int;
 
 /**
  * @brief Returns the finger associated with the specified touch ID and index.
@@ -201,7 +181,8 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-[[nodiscard]] CENTURION_API auto get_finger(TouchID id, int index) noexcept
+CENTURION_QUERY
+auto get_finger(SDL_TouchID id, int index) noexcept
     -> std::optional<SDL_Finger>;
 
 /**
@@ -218,20 +199,19 @@ enum class DeviceType {
 }
 
 /**
- * @brief Returns the `TouchID` used by touch events simulated with mouse
+ * @brief Returns the `SDL_TouchID` used by touch events simulated with mouse
  * input.
  *
- * @return a `TouchID` value.
+ * @return a `SDL_TouchID` value.
  *
  * @since 4.3.0
  */
-[[nodiscard]] inline constexpr auto mouse_touch_id() noexcept -> TouchID
+[[nodiscard]] inline constexpr auto mouse_touch_id() noexcept -> SDL_TouchID
 {
   return SDL_MOUSE_TOUCHID;
 }
 
-}  // namespace touch
-}  // namespace centurion
+}  // namespace centurion::touch
 
 #ifdef CENTURION_HEADER_ONLY
 #include "touch.cpp"

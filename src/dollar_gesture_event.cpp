@@ -16,13 +16,13 @@ DollarGestureEvent::DollarGestureEvent(
 {}
 
 CENTURION_DEF
-void DollarGestureEvent::set_touch_id(TouchID id) noexcept
+void DollarGestureEvent::set_touch_id(SDL_TouchID id) noexcept
 {
   m_event.touchId = id;
 }
 
 CENTURION_DEF
-void DollarGestureEvent::set_gesture_id(GestureID id) noexcept
+void DollarGestureEvent::set_gesture_id(SDL_GestureID id) noexcept
 {
   m_event.gestureId = id;
 }

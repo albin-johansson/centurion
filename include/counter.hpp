@@ -27,6 +27,8 @@
  *
  * @brief Provides utilities related to to the system clock.
  *
+ * @since 5.0.0
+ *
  * @author Albin Johansson
  *
  * @date 2019-2020

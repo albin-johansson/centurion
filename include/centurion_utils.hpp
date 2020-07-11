@@ -24,10 +24,13 @@
 
 /**
  * @file centurion_utils.hpp
+ *
  * @brief Provides utilities used in the implementation of the library.
  *
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -47,6 +50,7 @@
 
 /**
  * @namespace centurion::detail
+ *
  * @brief The main namespace used for implementation details of the library.
  *
  * @warning Do not use anything that resides in this namespace, the contents

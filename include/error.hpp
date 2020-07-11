@@ -32,6 +32,8 @@
 namespace centurion {
 namespace detail {
 
+//! @cond FALSE
+
 /**
  * The Error class is a utility for dealing with SDL errors. The main idea is
  * to provide a simple way to combine error messages from the Centurion
@@ -104,6 +106,8 @@ static_assert(!std::is_copy_constructible_v<Error>);
 static_assert(!std::is_move_constructible_v<Error>);
 static_assert(!std::is_copy_assignable_v<Error>);
 static_assert(!std::is_move_assignable_v<Error>);
+
+//! @endcond
 
 }  // namespace detail
 }  // namespace centurion

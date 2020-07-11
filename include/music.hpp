@@ -22,56 +22,107 @@
  * SOFTWARE.
  */
 
+/**
+ * @file music.hpp
+ *
+ * @brief Provides the music API.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_MUSIC_HEADER
 #define CENTURION_MUSIC_HEADER
 
 #include <SDL_mixer.h>
 
 #include "centurion_api.hpp"
+#include "centurion_types.hpp"
 #include "centurion_utils.hpp"
 
 namespace centurion {
 
 /**
  * @enum FadeStatus
- * @brief Mirrors the values of the Mix_Fading enum.
- * @headerfile music.hpp
+ *
+ * @brief Mirrors the values of the `Mix_Fading` enum.
+ *
  * @since 3.0.0
+ *
+ * @headerfile music.hpp
  */
-enum class FadeStatus {
-  None = MIX_NO_FADING, /**< No currently fading music. */
-  In = MIX_FADING_IN,   /**< Currently fading in music. */
-  Out = MIX_FADING_OUT  /**< Currently fading out music. */
+enum class fade_status {
+  none = MIX_NO_FADING, /**< No currently fading music. */
+  in = MIX_FADING_IN,   /**< Currently fading in music. */
+  out = MIX_FADING_OUT  /**< Currently fading out music. */
 };
 
 /**
- * Indicates whether or not the fading status values represent the same thing.
+ * @brief Indicates whether or not the fading status values represent are the
+ * same.
  *
- * @param lhs the Centurion fade status value.
- * @param rhs the SDL fade status value.
- * @return true if the fading status hints represent the same thing.
+ * @param lhs the left-hand side fading status value.
+ * @param rhs the right-hand side fading status value.
+ *
+ * @return `true` if the fading status values are the same; `false` otherwise.
+ *
  * @since 3.0.0
  */
-[[nodiscard]] CENTURION_API bool operator==(FadeStatus lhs,
-                                            Mix_Fading rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(fade_status lhs,
+                                               Mix_Fading rhs) noexcept -> bool
+{
+  return static_cast<Mix_Fading>(lhs) == rhs;
+}
 
 /**
- * Indicates whether or not the fading status values represent the same thing.
- *
- * @param lhs the SDL fade status value.
- * @param rhs the Centurion fade status value.
- * @return true if the fading status hints represent the same thing.
- * @since 3.0.0
+ * @copydoc operator==(fade_status, Mix_Fading)
  */
-[[nodiscard]] CENTURION_API bool operator==(Mix_Fading lhs,
-                                            FadeStatus rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(Mix_Fading lhs,
+                                               fade_status rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * The MusicType enum class mirrors the values of the Mix_MusicType enum.
+ * @brief Indicates whether or not the fading status values represent aren't the
+ * same.
+ *
+ * @param lhs the left-hand side fading status value.
+ * @param rhs the right-hand side fading status value.
+ *
+ * @return `true` if the fading status values aren't the same; `false`
+ * otherwise.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline constexpr auto operator!=(fade_status lhs,
+                                               Mix_Fading rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @copydoc operator!=(fade_status, Mix_Fading)
+ */
+[[nodiscard]] inline constexpr auto operator!=(Mix_Fading lhs,
+                                               Mix_Fading rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @enum music_type
+ *
+ * @brief Mirrors the values of the `Mix_MusicType` enum.
  *
  * @since 3.0.0
+ *
+ * @headerfile music.hpp
  */
-enum class MusicType {
+enum class music_type {
   Unknown = MUS_NONE,
   MP3 = MUS_MP3,
   WAV = MUS_WAV,
@@ -84,75 +135,125 @@ enum class MusicType {
 };
 
 /**
- * Indicates whether or not the music type values represent the same thing.
+ * @brief Indicates whether or not the music type values are the same.
  *
- * @param lhs the Centurion music type value.
- * @param rhs the SDL music type value.
- * @return true if the music type values represent the same thing.
+ * @param lhs the left-hand side music type value.
+ * @param rhs the right-hand side music type value.
+ *
+ * @return `true` if the music type values are the same; `false` otherwise.
+ *
  * @since 3.0.0
  */
-[[nodiscard]] CENTURION_API bool operator==(MusicType lhs,
-                                            Mix_MusicType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(music_type lhs,
+                                               Mix_MusicType rhs) noexcept
+    -> bool
+{
+  return static_cast<Mix_MusicType>(lhs) == rhs;
+}
 
 /**
- * Indicates whether or not the music type values represent the same thing.
- *
- * @param lhs the SDL music type value.
- * @param rhs the Centurion music type value.
- * @return true if the music type values represent the same thing.
- * @since 3.0.0
+ * @copydoc operator==(music_type, Mix_MusicType)
  */
-[[nodiscard]] CENTURION_API bool operator==(Mix_MusicType lhs,
-                                            MusicType rhs) noexcept;
+[[nodiscard]] inline constexpr auto operator==(Mix_MusicType lhs,
+                                               music_type rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
 
 /**
- * The Music class represents audio files of music. Note! Only one music
- * instance can ever be playing at any time. The supported audio formats are the
- * following: <ul> <li>WAVE/RIFF (.wav)</li> <li>AIFF (.aiff)</li> <li>VOC
- * (.voc)</li> <li>MOD (.mod .xm .s3m .669 .it .med and more)</li> <li>MIDI
- * (.mid)</li> <li>OggVorbis (.ogg)</li> <li>MP3 (.mp3)</li> <li>FLAC
- * (.flac)</li>
+ * @brief Indicates whether or not the music type values aren't the same.
+ *
+ * @param lhs the left-hand side music type value.
+ * @param rhs the right-hand side music type value.
+ *
+ * @return `true` if the music type values aren't the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline constexpr auto operator!=(music_type lhs,
+                                               Mix_MusicType rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @copydoc operator!=(music_type, Mix_MusicType)
+ */
+[[nodiscard]] inline constexpr auto operator!=(Mix_MusicType lhs,
+                                               music_type rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @class music
+ *
+ * @brief Represents a music file.
+ *
+ * @details The supported audio formats are the following:
+ * <ul>
+ *   <li>WAVE/RIFF (.wav)</li>
+ *   <li>AIFF (.aiff)</li>
+ *   <li>VOC (.voc)</li>
+ *   <li>MOD (.mod .xm .s3m .669 .it .med and more)</li>
+ *   <li>MIDI (.mid)</li>
+ *   <li>OggVorbis (.ogg)</li>
+ *   <li>MP3 (.mp3)</li>
+ *   <li>FLAC (.flac)</li>
  * </ul>
+ *
+ * @note Only one music instance can ever be playing at any time.
+ *
+ * @see `Mix_Music`
+ *
  * @since 3.0.0
+ *
+ * @headerfile music.hpp
  */
-class Music final {
+class music final {
  public:
   /**
-   * The maximum possible volume value.
+   * @brief The maximum possible volume value.
    *
    * @since 4.0.0
    */
-  static constexpr int maxVolume = MIX_MAX_VOLUME;
+  inline static constexpr int maxVolume = MIX_MAX_VOLUME;
 
   /**
-   * A constant that indicates that an audio snippet should be looped
+   * @brief A constant that indicates that an audio snippet should be looped
    * indefinitely.
    *
    * @since 4.0.0
    */
-  static constexpr int loopForever = -1;
+  inline static constexpr int loopForever = -1;
 
   /**
-   * @param file the file path of the music file that will be loaded.
-   * @throws centurion_exception if the music file cannot be loaded.
-   * @since 3.0.0
-   */
-  CENTURION_API explicit Music(czstring file);
-
-  /**
-   * Creates a Music instance by moving the supplied Music instance.
+   * @brief Creates a `music` instance based on the file at the specified path.
    *
-   * @param other the Music instance that will be moved.
+   * @param file the file path of the music file that will be loaded.
+   *
+   * @throws centurion_exception if the music file cannot be loaded.
+   *
    * @since 3.0.0
    */
-  CENTURION_API Music(Music&& other) noexcept;
-
-  Music(const Music&) = delete;
+  CENTURION_API
+  explicit music(czstring file);
 
   /**
+   * @brief Creates a `music` instance by moving the supplied instance.
+   *
+   * @param other the instance that will be moved.
+   *
    * @since 3.0.0
    */
-  CENTURION_API ~Music() noexcept;
+  CENTURION_API
+  music(music&& other) noexcept;
+
+  music(const music&) = delete;
+
+  CENTURION_API
+  ~music() noexcept;
 
   /**
    * Moves the contents of the supplied Music into this Music instance.
@@ -161,220 +262,260 @@ class Music final {
    * @return the assigned Music instance.
    * @since 3.0.0
    */
-  CENTURION_API Music& operator=(Music&& other) noexcept;
+  CENTURION_API
+  auto operator=(music&& other) noexcept -> music&;
 
-  Music& operator=(const Music&) = delete;
+  auto operator=(const music&) -> music& = delete;
 
   /**
-   * Creates and returns a unique pointer to a Music instance.
-   *
-   * @param file the file path of the music file that will be loaded.
-   * @return a unique pointer to a Music instance.
-   * @throws centurion_exception if the music file cannot be loaded.
-   * @since 3.0.0
+   * @copydoc music(czstring)
    */
-  [[nodiscard]] CENTURION_API static std::unique_ptr<Music> unique(
-      czstring file);
+  CENTURION_QUERY
+  static auto unique(czstring file) -> std::unique_ptr<music>;
 
   /**
-   * Creates and returns a shared pointer to a Music instance.
-   *
-   * @param file the file path of the music file that will be loaded.
-   * @return a shared pointer to a Music instance.
-   * @throws centurion_exception if the music file cannot be loaded.
-   * @since 3.0.0
+   * @copydoc music(czstring)
    */
-  [[nodiscard]] CENTURION_API static std::shared_ptr<Music> shared(
-      czstring file);
+  CENTURION_QUERY
+  static auto shared(czstring file) -> std::shared_ptr<music>;
 
   /**
-   * Plays the music. Previously playing music will be halted. However, this
+   * @brief Plays the music associated with this instance.
+   *
+   * @details Any previously playing music will be halted. However, this
    * method will wait for music that was fading out to complete.
+   *
+   * @note The term loops is a little bit confusing here, even in the SDL_mixer documentation. A
+   * negative value indicates that the music should be played forever. Furthermore, the values 0
+   * and 1 both results in the music being played *one time*. Except for these "special" values,
+   * the method behaves as expected.
    *
    * @param nLoops the number of times to loop the music, a negative value is
    * indicates that the music should be looped forever. The default value is 1.
-   * @since 3.0.0
-   */
-  CENTURION_API void play(int nLoops = 1) noexcept;
-
-  /**
-   * Resumes the music. This method can safely be invoked on halted, paused and
-   * even currently playing music.
    *
    * @since 3.0.0
    */
-  CENTURION_API static void resume() noexcept;
+  CENTURION_API
+  void play(int nLoops = 1) noexcept;
 
   /**
-   * Pauses any currently playing music. Note! This method only affects music
-   * that is currently playing, which doesn't include music that is being faded
-   * in/out.
+   * @brief Resumes playing the music.
+   *
+   * @details This method can safely be invoked with halted, paused and even
+   * currently playing music.
    *
    * @since 3.0.0
    */
-  CENTURION_API static void pause() noexcept;
+  CENTURION_API
+  static void resume() noexcept;
 
   /**
-   * Stops ALL currently playing and fading music. Unlike <code>pause</code>,
-   * this method affects all kinds of music.
+   * @brief Pauses any currently playing music.
+   *
+   * @note This method only affects music that is currently playing, which
+   * doesn't include music that is being faded in/out.
    *
    * @since 3.0.0
    */
-  CENTURION_API static void halt() noexcept;
+  CENTURION_API
+  static void pause() noexcept;
 
   /**
-   * Plays the music by fading it in by the specified amount of time. The fade
-   * effect is only applied to the first iteration of playing the music. Any
-   * previously playing music will be halted. However, if other music is
-   * currently being faded out, this music will wait for that to complete.
+   * @brief Stops ALL currently playing and fading music.
+   *
+   * @details Unlike `pause()`, this method affects all kinds of music.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  static void halt() noexcept;
+
+  /**
+   * @brief Plays the music by fading it in by the specified amount of time.
+   *
+   * @details The fade effect is only applied to the first iteration of
+   * the playback of the music. Any previously playing music will be halted.
+   * However, if other music is currently being faded out, this music will
+   * wait for that to complete.
+   *
+   * @note The term loops is a little bit confusing here, even in the SDL_mixer documentation. A
+   * negative value indicates that the music should be played forever. Furthermore, the values 0
+   * and 1 both results in the music being played *one time*. Except for these "special" values,
+   * the method behaves as expected.
    *
    * @param ms the amount of time for the fade to complete, in milliseconds. A
    * negative value is clamped to 0.
-   * @param nLoops the number of iterations to play the music, a value less than
-   * -1 will be clamped to -1, which indicates that the music should be played
-   * forever.
    *
-   * @todo Use `milliseconds<int>` instead of `int`.
+   * @param nLoops the number of iterations to play the music, a negative value
+   * indicates that the music should be looped forever.
    *
    * @since 3.0.0
    */
-  CENTURION_API void fade_in(int ms, int nLoops = 1) noexcept;
+  CENTURION_API
+  void fade_in(milliseconds<int> ms, int nLoops = 1) noexcept;
 
   /**
-   * Fades out any currently playing music over the specified amount of time.
-   * This method only affects music that is currently playing and not currently
-   * fading out. In other words, this method has no effect if music is currently
-   * being faded by the time the method is invoked.
+   * @brief Fades out any currently playing music over the specified amount of
+   * time.
+   *
+   * @details This method only affects music that is currently playing and
+   * not currently fading out. In other words, this method has no effect if
+   * music is currently being faded by the time the method is invoked.
    *
    * @param ms the amount of time for the fade to complete, in milliseconds. A
    * negative value is clamped to zero.
    *
-   * @todo Use `milliseconds<int>` instead of `int`.
-   *
    * @since 3.0.0
    */
-  CENTURION_API static void fade_out(int ms);
+  CENTURION_API
+  static void fade_out(milliseconds<int> ms) noexcept;
 
   /**
-   * Sets the volume of all music.
+   * @brief Sets the volume of all music.
    *
    * @param volume the volume that will be used, in the range [0,
-   * Music::maxVolume]. An out-of-bounds value will be clamped to the closest
-   * valid value.
+   * `music::maxVolume`]. An out-of-bounds value will be clamped to the
+   * closest valid value.
+   *
    * @since 3.0.0
    */
-  CENTURION_API static void set_volume(int volume) noexcept;
+  CENTURION_API
+  static void set_volume(int volume) noexcept;
 
   /**
-   * Indicates whether or not any music is currently playing.
+   * @brief Indicates whether or not any music is currently playing.
    *
-   * @return true if music is currently being played; false otherwise.
+   * @return `true` if music is currently being played; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static bool playing() noexcept;
+  CENTURION_QUERY
+  static auto is_playing() noexcept -> bool;
 
   /**
-   * Indicates whether or not any music is paused.
+   * @brief Indicates whether or not any music is paused.
    *
-   * @return true if any music is paused; false otherwise.
+   * @return `true` if the music is paused; `false` otherwise.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static bool paused() noexcept;
+  CENTURION_QUERY
+  static auto is_paused() noexcept -> bool;
 
   /**
-   * Indicates whether or not any music is currently being faded in or out.
+   * @brief Indicates whether or not any music is currently being faded in or
+   * out.
    *
-   * @return true if any music is currently being faded in or out; false
+   * @return `true` if music is currently being faded in or out; `false`
    * otherwise.
-   * @since 3.0.0
-   */
-  [[nodiscard]] CENTURION_API static bool fading() noexcept;
-
-  /**
-   * Returns the volume of all music. The default value is set to
-   * Music::maxVolume.
    *
-   * @return the volume of all music, in the range [0, Music::maxVolume].
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static int volume() noexcept;
+  CENTURION_QUERY
+  static auto is_fading() noexcept -> bool;
 
   /**
-   * Returns the current fade status of the music playback.
+   * @brief Returns the volume of the music.
+   *
+   * @details The default value is set to `music::maxVolume`.
+   *
+   * @return the volume of the music, in the range [0, `music::maxVolume`].
+   *
+   * @since 3.0.0
+   */
+  CENTURION_QUERY
+  static auto volume() noexcept -> int;
+
+  /**
+   * @brief Returns the current fade status of the music playback.
    *
    * @return the current fade status.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API static FadeStatus fade_status() noexcept;
+  CENTURION_QUERY
+  static auto get_fade_status() noexcept -> fade_status;
 
   /**
-   * Returns the type of the music.
+   * @brief Returns the type of the music.
    *
    * @return the type of the music.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API MusicType music_type() const noexcept;
+  CENTURION_QUERY
+  auto type() const noexcept -> music_type;
 
   /**
-   * Returns a textual representation of the Music instance.
+   * @brief Returns a textual representation of the instance.
    *
-   * @return a textual representation of the Music instance.
+   * @return a textual representation of the `music` instance.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] CENTURION_API std::string to_string() const;
+  CENTURION_QUERY
+  auto to_string() const -> std::string;
 
   /**
-   * Returns a pointer to the internal Mix_Music. Use of this method is
-   * not recommended, since it purposefully breaks const-correctness. However
-   * it is useful since many SDL calls use non-const pointers even when no
-   * change will be applied.
+   * @brief Returns a pointer to the associated `Mix_Music`.
    *
-   * @return a pointer to the internal Mix_Music.
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However, it's useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated `Mix_Music`.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] Mix_Music* get() const noexcept { return m_music; }
+  [[nodiscard]] auto get() const noexcept -> Mix_Music* { return m_music; }
 
   /**
-   * Converts the Music instance into a pointer to a Mix_Music instance.
+   * @brief Converts to `Mix_Music*`.
    *
-   * @return a pointer to the internal Mix_Music instance.
+   * @return a pointer to the associated `Mix_Music` instance.
+   *
    * @since 4.0.0
    */
-  [[nodiscard]] operator Mix_Music*() noexcept { return m_music; }
+  [[nodiscard]] explicit operator Mix_Music*() noexcept { return m_music; }
 
   /**
-   * Converts the Music instance into a pointer to a Mix_Music instance.
+   * @brief Converts to `const Mix_Music*`.
    *
-   * @return a pointer to the internal Mix_Music instance.
+   * @return a pointer to the associated `Mix_Music` instance.
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] operator const Mix_Music*() const noexcept { return m_music; }
+  [[nodiscard]] explicit operator const Mix_Music*() const noexcept
+  {
+    return m_music;
+  }
 
  private:
   Mix_Music* m_music = nullptr;
 
   /**
-   * Destroys the resources associated with the Music instance.
+   * @brief Destroys the resources associated with the `music` instance.
    *
    * @since 4.0.0
    */
   void destroy() noexcept;
 
   /**
-   * Moves the contents of the supplied music instance into this instance.
+   * @brief Moves the contents of the supplied music instance into this
+   * instance.
    *
    * @param other the instance that will be moved.
+   *
    * @since 4.0.0
    */
-  void move(Music&& other) noexcept;
+  void move(music&& other) noexcept;
 };
 
-static_assert(std::is_final_v<Music>);
-static_assert(!std::is_nothrow_copy_constructible_v<Music>);
-static_assert(!std::is_nothrow_copy_assignable_v<Music>);
-static_assert(std::is_nothrow_move_constructible_v<Music>);
-static_assert(std::is_nothrow_move_assignable_v<Music>);
-static_assert(std::is_convertible_v<Music, Mix_Music*>);
+static_assert(std::is_final_v<music>);
+static_assert(!std::is_nothrow_copy_constructible_v<music>);
+static_assert(!std::is_nothrow_copy_assignable_v<music>);
+static_assert(std::is_nothrow_move_constructible_v<music>);
+static_assert(std::is_nothrow_move_assignable_v<music>);
 
 }  // namespace centurion
 

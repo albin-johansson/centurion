@@ -717,11 +717,11 @@ class window_base {
  *         }
  *       }
  *
- *       renderer.clear_with(ctn::color::black);
+ *       renderer.clear_with(ctn::black);
  *
  *       const ctn::rect_i rect{{100, 100}, {150, 80}};
  *
- *       renderer.set_color(ctn::color::pink);
+ *       renderer.set_color(ctn::pink);
  *       renderer.fill_rect(rect);
  *
  *       renderer.present();

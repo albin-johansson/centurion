@@ -93,7 +93,7 @@ auto texture::shared(gsl::owner<SDL_Texture*> sdlTexture)
 }
 
 CENTURION_DEF
-void texture::set_pixel(point_i pixel, const Color& color) noexcept
+void texture::set_pixel(point_i pixel, const color& color) noexcept
 {
   if (get_access() != access::streaming || pixel.x() < 0 || pixel.y() < 0 ||
       pixel.x() >= width() || pixel.y() >= height()) {
@@ -136,7 +136,7 @@ void texture::set_blend_mode(enum blend_mode mode) noexcept
 }
 
 CENTURION_DEF
-void texture::set_color_mod(Color color) noexcept
+void texture::set_color_mod(color color) noexcept
 {
   SDL_SetTextureColorMod(m_texture, color.red(), color.green(), color.blue());
 }
@@ -223,7 +223,7 @@ auto texture::get_blend_mode() const noexcept -> blend_mode
 }
 
 CENTURION_DEF
-auto texture::color_mod() const noexcept -> Color
+auto texture::color_mod() const noexcept -> color
 {
   u8 r = 0, g = 0, b = 0;
   SDL_GetTextureColorMod(m_texture, &r, &g, &b);

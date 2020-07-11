@@ -149,7 +149,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_pixel(const point_i& pixel, const Color& color) noexcept;
+  void set_pixel(const point_i& pixel, const color& color) noexcept;
 
   /**
    * @brief Sets the alpha component modulation value.
@@ -170,7 +170,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_color_mod(const Color& color) noexcept;
+  void set_color_mod(const color& color) noexcept;
 
   /**
    * @brief Sets the blend mode that will be used by the surface.
@@ -200,7 +200,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto color_mod() const noexcept -> Color;
+  auto color_mod() const noexcept -> color;
 
   /**
    * @brief Returns the blend mode that is being used by the surface.

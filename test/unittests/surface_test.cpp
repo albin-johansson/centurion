@@ -94,12 +94,12 @@ TEST_CASE("Surface::set_pixel", "[Surface]")
 {
   Surface surface{path};
 
-  CHECK_NOTHROW(surface.set_pixel({-1, 0}, color::red));
-  CHECK_NOTHROW(surface.set_pixel({0, -1}, color::red));
-  CHECK_NOTHROW(surface.set_pixel({surface.width(), 0}, color::red));
-  CHECK_NOTHROW(surface.set_pixel({0, surface.height()}, color::red));
+  CHECK_NOTHROW(surface.set_pixel({-1, 0}, red));
+  CHECK_NOTHROW(surface.set_pixel({0, -1}, red));
+  CHECK_NOTHROW(surface.set_pixel({surface.width(), 0}, red));
+  CHECK_NOTHROW(surface.set_pixel({0, surface.height()}, red));
 
-  CHECK_NOTHROW(surface.set_pixel({43, 12}, color::orange));
+  CHECK_NOTHROW(surface.set_pixel({43, 12}, orange));
 }
 
 TEST_CASE("Surface::set_alpha", "[Surface]")
@@ -116,7 +116,7 @@ TEST_CASE("Surface::set_color_mod", "[Surface]")
 {
   Surface surface{path};
 
-  const auto& color = color::hot_pink;
+  const auto& color = hot_pink;
   surface.set_color_mod(color);
 
   CHECK(color == surface.color_mod());
@@ -198,7 +198,7 @@ TEST_CASE("Surface::convert", "[Surface]")
   Surface original{path};
   original.set_blend_mode(blend_mode::blend);
   original.set_alpha(0xAE);
-  original.set_color_mod(color::red);
+  original.set_color_mod(red);
 
   const auto pixelFormat = pixel_format::rgba8888;
   Surface converted = original.convert(pixelFormat);

@@ -217,7 +217,7 @@ class color_scheme final {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_color(color_type type, const Color& color) noexcept;
+  void set_color(color_type type, const color& color) noexcept;
 
   /**
    * @brief Creates and returns the `SDL_MessageBoxColorScheme` equivalent of

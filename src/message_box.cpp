@@ -34,14 +34,14 @@ inline auto create_button_data(button_data_hint hint,
 CENTURION_DEF
 color_scheme::color_scheme() noexcept
 {
-  set_color(color_type::background, color::black);
-  set_color(color_type::button_border, color::black);
-  set_color(color_type::button_background, color::black);
-  set_color(color_type::button_selected, color::black);
+  set_color(color_type::background, black);
+  set_color(color_type::button_border, black);
+  set_color(color_type::button_background, black);
+  set_color(color_type::button_selected, black);
 }
 
 CENTURION_DEF
-void color_scheme::set_color(color_type type, const Color& color) noexcept
+void color_scheme::set_color(color_type type, const color& color) noexcept
 {
   m_scheme.colors[index(type)] = static_cast<SDL_MessageBoxColor>(color);
 }

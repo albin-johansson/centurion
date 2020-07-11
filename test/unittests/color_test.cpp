@@ -3,14 +3,13 @@
 #include <catch.hpp>
 #include <utility>
 
+#include "centurion_as_ctn.hpp"
 #include "colors.hpp"
 #include "log.hpp"
 
-using namespace centurion;
-
 TEST_CASE("Color()", "[Color]")
 {
-  Color c;
+  ctn::color c;
   CHECK(0 == c.red());
   CHECK(0 == c.red());
   CHECK(0 == c.red());
@@ -23,8 +22,8 @@ TEST_CASE("Color(Color&&)", "[Color]")
   const auto g = 0xDD;
   const auto b = 0xC5;
   const auto a = 0x38;
-  Color color{r, g, b, a};
-  Color other{std::move(color)};
+  ctn::color color{r, g, b, a};
+  ctn::color other{std::move(color)};
   CHECK(r == other.red());
   CHECK(g == other.green());
   CHECK(b == other.blue());
@@ -40,7 +39,7 @@ TEST_CASE("Color(Uint8, Uint8, Uint8, Uint8)", "[Color]")
 
   SECTION("Full ctor")
   {
-    const Color c{r, g, b, a};
+    const ctn::color c{r, g, b, a};
 
     CHECK(r == c.red());
     CHECK(g == c.green());
@@ -50,19 +49,19 @@ TEST_CASE("Color(Uint8, Uint8, Uint8, Uint8)", "[Color]")
 
   SECTION("Defaulted alpha value")
   {
-    const Color c{r, g, b};
+    const ctn::color c{r, g, b};
 
     CHECK(r == c.red());
     CHECK(g == c.green());
     CHECK(b == c.blue());
-    CHECK(c.alpha() == Color::max);
+    CHECK(c.alpha() == ctn::color::max);
   }
 }
 
 TEST_CASE("Color::operator=(Color&)", "[Color]")
 {
-  Color color{0xFE, 0x13, 0xA8, 0xCA};
-  const Color other{0xBE, 0x44, 0xAC, 0xFD};
+  ctn::color color{0xFE, 0x13, 0xA8, 0xCA};
+  const ctn::color other{0xBE, 0x44, 0xAC, 0xFD};
 
   REQUIRE(color != other);
 
@@ -73,13 +72,13 @@ TEST_CASE("Color::operator=(Color&)", "[Color]")
 
 TEST_CASE("Color::operator=(Color&&)", "[Color]")
 {
-  Color color{0xFE, 0x13, 0xA8, 0xCA};
+  ctn::color color{0xFE, 0x13, 0xA8, 0xCA};
   const auto r = 0xCC;
   const auto g = 0xCE;
   const auto b = 0x71;
   const auto a = 0x99;
 
-  color = Color{r, g, b, a};
+  color = ctn::color{r, g, b, a};
 
   CHECK(r == color.red());
   CHECK(g == color.green());
@@ -93,7 +92,7 @@ TEST_CASE("Color from SDL_Color", "[Color]")
 
   SECTION("Copy constructor")
   {
-    const auto c = Color{sc};
+    const ctn::color c{sc};
     CHECK(c == sc);
     CHECK(c.red() == sc.r);
     CHECK(c.green() == sc.g);
@@ -103,7 +102,7 @@ TEST_CASE("Color from SDL_Color", "[Color]")
 
   SECTION("Move constructor")
   {
-    const auto c = Color{SDL_Color{sc.r, sc.g, sc.b, sc.a}};
+    const ctn::color c{SDL_Color{sc.r, sc.g, sc.b, sc.a}};
     CHECK(c == sc);
     CHECK(c.red() == sc.r);
     CHECK(c.green() == sc.g);
@@ -114,11 +113,11 @@ TEST_CASE("Color from SDL_Color", "[Color]")
 
 TEST_CASE("Color from SDL_MessageBoxColor", "[Color]")
 {
-  const auto sc = SDL_MessageBoxColor{0xDA, 0x5E, 0x81};
+  const SDL_MessageBoxColor sc{0xDA, 0x5E, 0x81};
 
   SECTION("Copy constructor")
   {
-    const auto c = Color{sc};
+    const auto c = ctn::color{sc};
     CHECK(c == sc);
     CHECK(c.red() == sc.r);
     CHECK(c.green() == sc.g);
@@ -127,7 +126,7 @@ TEST_CASE("Color from SDL_MessageBoxColor", "[Color]")
 
   SECTION("Move constructor")
   {
-    const auto c = Color{SDL_MessageBoxColor{sc.r, sc.g, sc.b}};
+    const ctn::color c{SDL_MessageBoxColor{sc.r, sc.g, sc.b}};
     CHECK(c == sc);
     CHECK(c.red() == sc.r);
     CHECK(c.green() == sc.g);
@@ -139,7 +138,7 @@ TEST_CASE("Equality operators", "[Color]")
 {
   SECTION("Reflexivity")
   {
-    const auto color = Color{10, 20, 30, 40};
+    const ctn::color color{10, 20, 30, 40};
     CHECK(color == color);
     CHECK(!(color != color));
   }
@@ -151,9 +150,9 @@ TEST_CASE("Equality operators", "[Color]")
     const auto b = 0x14;
     const auto a = 0x86;
 
-    const auto sdlColor = SDL_Color{r, g, b, a};
-    const auto msgColor = SDL_MessageBoxColor{r, g, b};
-    const auto color = Color{r, g, b, a};
+    const SDL_Color sdlColor{r, g, b, a};
+    const SDL_MessageBoxColor msgColor{r, g, b};
+    const ctn::color color{r, g, b, a};
 
     CHECK(color == sdlColor);
     CHECK(sdlColor == color);
@@ -164,9 +163,9 @@ TEST_CASE("Equality operators", "[Color]")
 
   SECTION("Non-equal colors")
   {
-    const auto color = Color{0x34, 0xD2, 0xCA, 0xDE};
-    const auto sdlColor = SDL_Color{0x84, 0x45, 0x11, 0xFA};
-    const auto msgColor = SDL_MessageBoxColor{0xAA, 0x57, 0x99};
+    const ctn::color color{0x34, 0xD2, 0xCA, 0xDE};
+    const SDL_Color sdlColor{0x84, 0x45, 0x11, 0xFA};
+    const SDL_MessageBoxColor msgColor{0xAA, 0x57, 0x99};
 
     CHECK(color != sdlColor);
     CHECK(sdlColor != color);
@@ -178,7 +177,7 @@ TEST_CASE("Equality operators", "[Color]")
 
 TEST_CASE("Color setters", "[Color]")
 {
-  Color c;
+  ctn::color c;
   SECTION("Red")
   {
     const auto r = 0x3C;
@@ -212,7 +211,7 @@ TEST_CASE("Color conversions", "[Color]")
 {
   SECTION("Convert to SDL_Color")
   {
-    const auto& color = color::dark_orchid;
+    const auto& color = ctn::dark_orchid;
     const auto sdlColor = static_cast<SDL_Color>(color);
 
     CHECK(color == sdlColor);
@@ -226,7 +225,7 @@ TEST_CASE("Color conversions", "[Color]")
 
   SECTION("Convert to SDL_MessageBoxColor")
   {
-    const auto& color = color::dark_orchid;
+    const auto& color = ctn::dark_orchid;
     const auto msgColor = static_cast<SDL_MessageBoxColor>(color);
 
     CHECK(color == msgColor);
@@ -239,7 +238,7 @@ TEST_CASE("Color conversions", "[Color]")
 
   SECTION("Reinterpret to SDL_Color*")
   {
-    const Color color = color::bisque;
+    const ctn::color color = ctn::bisque;
     const auto* sdlColor = static_cast<const SDL_Color*>(color);
 
     const void* adr = &color;
@@ -255,6 +254,6 @@ TEST_CASE("Color conversions", "[Color]")
 
 TEST_CASE("Color::to_string", "[Color]")
 {
-  const auto color = Color{0x12, 0xFA, 0xCC, 0xAD};
-  log::info(log::category::test, "%s", color.to_string().c_str());
+  const ctn::color color{0x12, 0xFA, 0xCC, 0xAD};
+  ctn::log::info(ctn::log::category::test, "%s", color.to_string().c_str());
 }

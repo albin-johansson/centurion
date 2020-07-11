@@ -5,8 +5,6 @@
 
 namespace centurion {
 
-
-
 }  // namespace centurion
 
 #endif  // CENTURION_GAME_CONTROLLER_SOURCE

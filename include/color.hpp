@@ -24,7 +24,7 @@
 
 /**
  * @file color.hpp
- * @brief Provides the `Color` class.
+ * @brief Provides the `color` class.
  *
  * @author Albin Johansson
  * @date 2019-2020
@@ -45,19 +45,21 @@
 namespace centurion {
 
 /**
- * @class Color
+ * @class color
+ *
  * @brief An 8-bit accuracy RGBA color.
  *
- * @details This class is designed to be easily be created and converted
- * from/to SDL colors, such as `SDL_Color` and `SDL_MessageBoxColor`.
+ * @details This class is designed to interact with the SDL colors,
+ * `SDL_Color` and `SDL_MessageBoxColor`.
  *
  * @headerfile color.hpp
+ *
  * @since 3.0.0
  */
-class Color final {
+class color final {
  public:
   /**
-   * @var Color::max
+   * @var color::max
    * @brief The maximum possible value of a color component.
    *
    * @since 3.0.0
@@ -69,7 +71,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  constexpr Color() noexcept = default;
+  constexpr color() noexcept = default;
 
   /**
    * @brief Creates a color.
@@ -82,7 +84,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  constexpr Color(u8 red, u8 green, u8 blue, u8 alpha = 0xFF) noexcept
+  constexpr color(u8 red, u8 green, u8 blue, u8 alpha = 0xFF) noexcept
       : m_red{red}, m_green{green}, m_blue{blue}, m_alpha{alpha}
   {}
 
@@ -93,7 +95,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  constexpr explicit Color(const SDL_Color& color) noexcept
+  constexpr explicit color(const SDL_Color& color) noexcept
       : m_red{color.r}, m_green{color.g}, m_blue{color.b}, m_alpha{color.a}
   {}
 
@@ -107,7 +109,7 @@ class Color final {
    *
    * @since 3.0.0
    */
-  constexpr explicit Color(const SDL_MessageBoxColor& color) noexcept
+  constexpr explicit color(const SDL_MessageBoxColor& color) noexcept
       : m_red{color.r}, m_green{color.g}, m_blue{color.b}, m_alpha{max}
   {}
 
@@ -223,7 +225,7 @@ class Color final {
    *
    * @warning The returned pointer is not to be freed or stored away!
    *
-   * @return a reinterpreted pointer to the Color instance.
+   * @return a reinterpreted pointer to the color instance.
    *
    * @since 4.0,0
    */
@@ -235,7 +237,7 @@ class Color final {
   /**
    * Converts the color to a pointer to a SDL_Color instance.
    *
-   * @return a pointer to the Color instance reinterpreted as a SDL_Color
+   * @return a pointer to the color instance reinterpreted as a SDL_Color
    * instance.
    * @since 4.0,0
    */
@@ -251,7 +253,7 @@ class Color final {
   u8 m_alpha{max};
 };
 
-inline auto Color::to_string() const -> std::string
+inline auto color::to_string() const -> std::string
 {
   const auto r = std::to_string(m_red);
   const auto g = std::to_string(m_green);
@@ -270,8 +272,8 @@ inline auto Color::to_string() const -> std::string
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(const Color& lhs,
-                                               const Color& rhs) noexcept
+[[nodiscard]] inline constexpr auto operator==(const color& lhs,
+                                               const color& rhs) noexcept
     -> bool
 {
   return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
@@ -279,9 +281,9 @@ inline auto Color::to_string() const -> std::string
 }
 
 /**
- * @copydoc operator==(const Color&, const Color&)
+ * @copydoc operator==(const color&, const color&)
  */
-[[nodiscard]] inline constexpr auto operator==(const Color& lhs,
+[[nodiscard]] inline constexpr auto operator==(const color& lhs,
                                                const SDL_Color& rhs) noexcept
     -> bool
 {
@@ -290,17 +292,17 @@ inline auto Color::to_string() const -> std::string
 }
 
 /**
- * @copydoc operator==(const Color&, const Color&)
+ * @copydoc operator==(const color&, const color&)
  */
 [[nodiscard]] inline constexpr auto operator==(const SDL_Color& lhs,
-                                               const Color& rhs) noexcept
+                                               const color& rhs) noexcept
     -> bool
 {
   return rhs == lhs;
 }
 
 /**
- * @copybrief operator==(const Color&, const Color&)
+ * @copybrief operator==(const color&, const color&)
  *
  * @note The alpha components are not taken into account.
  *
@@ -312,7 +314,7 @@ inline auto Color::to_string() const -> std::string
  * @since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(
-    const Color& lhs,
+    const color& lhs,
     const SDL_MessageBoxColor& rhs) noexcept -> bool
 {
   return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) &&
@@ -320,10 +322,10 @@ inline auto Color::to_string() const -> std::string
 }
 
 /**
- * @copydoc operator==(const Color&, const SDL_MessageBoxColor&)
+ * @copydoc operator==(const color&, const SDL_MessageBoxColor&)
  */
 [[nodiscard]] inline constexpr auto operator==(const SDL_MessageBoxColor& lhs,
-                                               const Color& rhs) noexcept
+                                               const color& rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -339,17 +341,17 @@ inline auto Color::to_string() const -> std::string
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(const Color& lhs,
-                                               const Color& rhs) noexcept
+[[nodiscard]] inline constexpr auto operator!=(const color& lhs,
+                                               const color& rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
- * @copydoc operator!=(const Color&, const Color&)
+ * @copydoc operator!=(const color&, const color&)
  */
-[[nodiscard]] inline constexpr auto operator!=(const Color& lhs,
+[[nodiscard]] inline constexpr auto operator!=(const color& lhs,
                                                const SDL_Color& rhs) noexcept
     -> bool
 {
@@ -357,17 +359,17 @@ inline auto Color::to_string() const -> std::string
 }
 
 /**
- * @copydoc operator!=(const Color&, const Color&)
+ * @copydoc operator!=(const color&, const color&)
  */
 [[nodiscard]] inline constexpr auto operator!=(const SDL_Color& lhs,
-                                               const Color& rhs) noexcept
+                                               const color& rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
- * @copybrief operator!=(const Color&, const Color&)
+ * @copybrief operator!=(const color&, const color&)
  *
  * @note The alpha components are not taken into account.
  *
@@ -379,28 +381,28 @@ inline auto Color::to_string() const -> std::string
  * @since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(
-    const Color& lhs,
+    const color& lhs,
     const SDL_MessageBoxColor& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
- * @copydoc operator!=(const Color&, const SDL_MessageBoxColor&)
+ * @copydoc operator!=(const color&, const SDL_MessageBoxColor&)
  */
 [[nodiscard]] inline constexpr auto operator!=(const SDL_MessageBoxColor& lhs,
-                                               const Color& rhs) noexcept
+                                               const color& rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
 }
 
-static_assert(std::is_final_v<Color>);
-static_assert(std::is_default_constructible_v<Color>);
-static_assert(std::is_nothrow_copy_constructible_v<Color>);
-static_assert(std::is_nothrow_copy_assignable_v<Color>);
-static_assert(std::is_nothrow_move_constructible_v<Color>);
-static_assert(std::is_nothrow_move_assignable_v<Color>);
+static_assert(std::is_final_v<color>);
+static_assert(std::is_default_constructible_v<color>);
+static_assert(std::is_nothrow_copy_constructible_v<color>);
+static_assert(std::is_nothrow_copy_assignable_v<color>);
+static_assert(std::is_nothrow_move_constructible_v<color>);
+static_assert(std::is_nothrow_move_assignable_v<color>);
 
 }  // namespace centurion
 

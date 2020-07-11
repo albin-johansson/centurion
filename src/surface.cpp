@@ -134,7 +134,7 @@ auto Surface::copy_surface() const -> SDL_Surface*
 }
 
 CENTURION_DEF
-void Surface::set_pixel(const point_i& pixel, const Color& color) noexcept
+void Surface::set_pixel(const point_i& pixel, const color& color) noexcept
 {
   if (!in_bounds(pixel)) {
     return;
@@ -168,7 +168,7 @@ void Surface::set_alpha(u8 alpha) noexcept
 }
 
 CENTURION_DEF
-void Surface::set_color_mod(const Color& color) noexcept
+void Surface::set_color_mod(const color& color) noexcept
 {
   SDL_SetSurfaceColorMod(m_surface, color.red(), color.green(), color.blue());
 }
@@ -188,11 +188,11 @@ auto Surface::alpha() const noexcept -> u8
 }
 
 CENTURION_DEF
-auto Surface::color_mod() const noexcept -> Color
+auto Surface::color_mod() const noexcept -> color
 {
   u8 r = 0, g = 0, b = 0;
   SDL_GetSurfaceColorMod(m_surface, &r, &g, &b);
-  return Color{r, g, b};
+  return color{r, g, b};
 }
 
 CENTURION_DEF

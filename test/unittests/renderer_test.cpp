@@ -125,11 +125,11 @@ TEST_CASE("clear", "[renderer]")
 TEST_CASE("clear_with", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const auto selectedColor = ctn::color::pink;
+    const auto selectedColor = ctn::pink;
     renderer.set_color(selectedColor);
 
-    CHECK_NOTHROW(renderer.clear_with(ctn::color::medium_aqua_marine));
-    CHECK(renderer.color() == selectedColor);
+    CHECK_NOTHROW(renderer.clear_with(ctn::medium_aqua_marine));
+    CHECK(renderer.get_color() == selectedColor);
   });
 }
 
@@ -434,10 +434,10 @@ TEST_CASE(
 TEST_CASE("set_color", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const auto& color = ctn::color::pale_violet_red;
+    const auto& color = ctn::pale_violet_red;
 
     renderer.set_color(color);
-    CHECK(color == renderer.color());
+    CHECK(color == renderer.get_color());
   });
 }
 
@@ -607,7 +607,7 @@ TEST_CASE("using_integer_logical_scaling", "[renderer]")
 TEST_CASE("color", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const auto color = renderer.color();
+    const auto color = renderer.get_color();
     CHECK(color.red() == 0);
     CHECK(color.green() == 0);
     CHECK(color.blue() == 0);
@@ -636,9 +636,9 @@ TEST_CASE("text_blended_wrapped", "[renderer]")
 TEST_CASE("text_shaded", "[renderer]")
 {
   font_test([](const ctn::renderer& renderer, const ctn::font& font) {
-    CHECK(!renderer.text_shaded(nullptr, ctn::color::black, font));
-    CHECK(!renderer.text_shaded("", ctn::color::black, font));
-    CHECK(renderer.text_shaded("Hello", ctn::color::black, font));
+    CHECK(!renderer.text_shaded(nullptr, ctn::black, font));
+    CHECK(!renderer.text_shaded("", ctn::black, font));
+    CHECK(renderer.text_shaded("Hello", ctn::black, font));
   });
 }
 

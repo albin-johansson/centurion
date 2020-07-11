@@ -90,7 +90,7 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  void clear_with(const Color& color) noexcept;
+  void clear_with(const color& color) noexcept;
 
   /**
    * @brief Applies the previous rendering calls to the rendering target.
@@ -283,7 +283,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_color(const Color& color) noexcept;
+  void set_color(const color& color) noexcept;
 
   /**
    * @brief Sets the clipping area rectangle.
@@ -551,7 +551,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto color() const noexcept -> Color;
+  [[nodiscard]] auto get_color() const noexcept -> color;
 
   /**
    * @brief Returns the viewport that the renderer uses.
@@ -700,7 +700,7 @@ class renderer_base {
  *
  * void draw(ctn::renderer& renderer)
  * {
- *   renderer.clear_with(ctn::color::black); // clear rendering target
+ *   renderer.clear_with(ctn::black); // clear rendering target
  *
  *   // Miscellaneous rendering calls...
  *
@@ -1125,7 +1125,7 @@ class basic_renderer final : public renderer_base {
    * @since 4.0.0
    */
   [[nodiscard]] auto text_shaded(czstring text,
-                                 const Color& bg,
+                                 const color& bg,
                                  const centurion::font& font) const noexcept
       -> std::unique_ptr<texture>;
 
@@ -1322,9 +1322,9 @@ class basic_renderer final : public renderer_base {
  *   {
  *     ctn::renderer_view view{renderer};
  *
- *     view.clear_with(ctn::color::black);
+ *     view.clear_with(ctn::black);
  *
- *     view.set_color(ctn::color::pink);
+ *     view.set_color(ctn::pink);
  *     view.fill_rect(ctn::rect_i{{15, 20}, {100, 100}});
  *
  *     view.present();
@@ -1698,7 +1698,7 @@ class texture final {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_pixel(point_i pixel, const Color& color) noexcept;
+  void set_pixel(point_i pixel, const color& color) noexcept;
 
   /**
    * @brief Sets the alpha value of the texture.
@@ -1731,7 +1731,7 @@ class texture final {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_color_mod(Color color) noexcept;
+  void set_color_mod(color color) noexcept;
 
   /**
    * @brief Sets the scale mode that will be used by the texture.
@@ -1853,7 +1853,7 @@ class texture final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto color_mod() const noexcept -> Color;
+  auto color_mod() const noexcept -> color;
 
   /**
    * @brief Returns the scale mode that is used by the texture.
@@ -2084,7 +2084,7 @@ basic_renderer<FontKey>::basic_renderer(gsl::owner<SDL_Renderer*> renderer)
   //  }
   //  this->m_renderer = renderer;
 
-  this->set_color(color::black);
+  this->set_color(black);
   this->set_logical_integer_scale(false);
 }
 
@@ -2100,7 +2100,7 @@ basic_renderer<FontKey>::basic_renderer(const window& window,
   //  }
 
   this->set_blend_mode(blend_mode::blend);
-  this->set_color(color::black);
+  this->set_color(black);
   this->set_logical_integer_scale(false);
 }
 
@@ -2164,7 +2164,7 @@ auto basic_renderer<FontKey>::text_blended(
 {
   return render_text(text, [this, &font](czstring text) noexcept {
     return TTF_RenderText_Blended(
-        font.get(), text, static_cast<SDL_Color>(color()));
+        font.get(), text, static_cast<SDL_Color>(get_color()));
   });
 }
 
@@ -2176,20 +2176,20 @@ auto basic_renderer<FontKey>::text_blended_wrapped(
 {
   return render_text(text, [this, &font, wrap](czstring text) noexcept {
     return TTF_RenderText_Blended_Wrapped(
-        font.get(), text, static_cast<SDL_Color>(color()), wrap);
+        font.get(), text, static_cast<SDL_Color>(get_color()), wrap);
   });
 }
 
 template <typename FontKey>
 auto basic_renderer<FontKey>::text_shaded(
     czstring text,
-    const Color& bg,
+    const color& bg,
     const centurion::font& font) const noexcept -> std::unique_ptr<texture>
 {
   return render_text(text, [this, &font, &bg](czstring text) noexcept {
     return TTF_RenderText_Shaded(font.get(),
                                  text,
-                                 static_cast<SDL_Color>(color()),
+                                 static_cast<SDL_Color>(get_color()),
                                  static_cast<SDL_Color>(bg));
   });
 }
@@ -2201,7 +2201,7 @@ auto basic_renderer<FontKey>::text_solid(
 {
   return render_text(text, [this, &font](czstring text) noexcept {
     return TTF_RenderText_Solid(
-        font.get(), text, static_cast<SDL_Color>(color()));
+        font.get(), text, static_cast<SDL_Color>(get_color()));
   });
 }
 
@@ -2331,9 +2331,9 @@ inline void renderer_base::clear() noexcept
   SDL_RenderClear(m_renderer);
 }
 
-inline void renderer_base::clear_with(const Color& c) noexcept
+inline void renderer_base::clear_with(const color& c) noexcept
 {
-  const auto oldColor = color();
+  const auto oldColor = get_color();
 
   set_color(c);
   clear();
@@ -2550,7 +2550,7 @@ void renderer_base::render(const texture& texture,
   }
 }
 
-inline void renderer_base::set_color(const Color& color) noexcept
+inline void renderer_base::set_color(const color& color) noexcept
 {
   SDL_SetRenderDrawColor(
       m_renderer, color.red(), color.green(), color.blue(), color.alpha());
@@ -2723,7 +2723,7 @@ inline auto renderer_base::clipping_enabled() const noexcept -> bool
   return SDL_RenderIsClipEnabled(m_renderer);
 }
 
-inline auto renderer_base::color() const noexcept -> Color
+inline auto renderer_base::get_color() const noexcept -> color
 {
   u8 red = 0, green = 0, blue = 0, alpha = 0;
   SDL_GetRenderDrawColor(m_renderer, &red, &green, &blue, &alpha);

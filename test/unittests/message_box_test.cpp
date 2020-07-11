@@ -85,8 +85,7 @@ TEST_CASE("MessageBox(CZString, CZString)", "[MessageBox]")
   }
 }
 
-#ifndef TRAVIS_TEST
-TEST_CASE("MessageBox::show [static]", "[MessageBox]")
+TEST_CASE("MessageBox::show [static]", "[.MessageBox]")
 {
   SECTION("Checking defaults")
   {
@@ -106,12 +105,11 @@ TEST_CASE("MessageBox::show [static]", "[MessageBox]")
   }
 }
 
-TEST_CASE("MessageBox::show [non-static]", "[MessageBox]")
+TEST_CASE("MessageBox::show [non-static]", "[.MessageBox]")
 {
   MessageBox mb;
   mb.show(nullptr);
 }
-#endif  // TRAVIS_TEST
 
 TEST_CASE("MessageBox::add_button", "[MessageBox]")
 {

@@ -43,8 +43,7 @@
 cmake-build-*
 build
 bin-*
-doc/html
-doc/latex
+doxygen-out
 .idea
 .vs
 .vscode

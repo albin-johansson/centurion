@@ -43,7 +43,7 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 # Breathe Configuration
-breathe_projects = { "Centurion": "../../doxygen-out/xml/" }
+breathe_projects = { "Centurion": "../doxygen-out/xml/" }
 breathe_default_project = "Centurion"
 
 # -- Options for HTML output -------------------------------------------------

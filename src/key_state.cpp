@@ -36,7 +36,7 @@ void key_state::update() noexcept
 }
 
 CENTURION_DEF
-auto key_state::is_pressed(const Key& key) const noexcept -> bool
+auto key_state::is_pressed(const key& key) const noexcept -> bool
 {
   const auto code = key.scancode();
   if (code >= 0 && code < m_nKeys) {
@@ -47,7 +47,7 @@ auto key_state::is_pressed(const Key& key) const noexcept -> bool
 }
 
 CENTURION_DEF
-auto key_state::is_held(const Key& key) const noexcept -> bool
+auto key_state::is_held(const key& key) const noexcept -> bool
 {
   const auto code = key.scancode();
   if (code >= 0 && code < m_nKeys) {
@@ -58,7 +58,7 @@ auto key_state::is_held(const Key& key) const noexcept -> bool
 }
 
 CENTURION_DEF
-auto key_state::was_just_pressed(const Key& key) const noexcept -> bool
+auto key_state::was_just_pressed(const key& key) const noexcept -> bool
 {
   const auto code = key.scancode();
   if (code >= 0 && code < m_nKeys) {
@@ -69,7 +69,7 @@ auto key_state::was_just_pressed(const Key& key) const noexcept -> bool
 }
 
 CENTURION_DEF
-auto key_state::was_just_released(const Key& key) const noexcept -> bool
+auto key_state::was_just_released(const key& key) const noexcept -> bool
 {
   const auto code = key.scancode();
   if (code >= 0 && code < m_nKeys) {

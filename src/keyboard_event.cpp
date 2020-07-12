@@ -15,7 +15,8 @@ KeyboardEvent::KeyboardEvent(const SDL_KeyboardEvent& event) noexcept
 {}
 
 CENTURION_DEF
-void KeyboardEvent::set_key(const Key& key, button_state state) noexcept
+void KeyboardEvent::set_key(const centurion::key& key,
+                            button_state state) noexcept
 {
   m_event.keysym.scancode = key.scancode();
   m_event.keysym.sym = key.keycode();
@@ -45,7 +46,7 @@ void KeyboardEvent::set_window_id(u32 id) noexcept
 }
 
 CENTURION_DEF
-auto KeyboardEvent::is_active(const Key& key) const noexcept -> bool
+auto KeyboardEvent::is_active(const centurion::key& key) const noexcept -> bool
 {
   return m_event.keysym.sym == key.keycode();
 }
@@ -110,9 +111,9 @@ auto KeyboardEvent::state() const noexcept -> button_state
 }
 
 CENTURION_DEF
-auto KeyboardEvent::key() const noexcept -> Key
+auto KeyboardEvent::key() const noexcept -> centurion::key
 {
-  return Key{m_event.keysym.scancode};
+  return centurion::key{m_event.keysym.scancode};
 }
 
 CENTURION_DEF

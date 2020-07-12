@@ -37,12 +37,12 @@ TEST_CASE("KeyboardEvent::set_key", "[KeyboardEvent]")
 {
   KeyboardEvent event;
 
-  event.set_key(Key{SDLK_b}, button_state::pressed);
-  CHECK(event.key() == Key{SDLK_b});
+  event.set_key(key{SDLK_b}, button_state::pressed);
+  CHECK(event.key() == key{SDLK_b});
   CHECK(event.state() == button_state::pressed);
 
-  event.set_key(Key{SDL_SCANCODE_Q}, button_state::released);
-  CHECK(event.key() == Key{SDL_SCANCODE_Q});
+  event.set_key(key{SDL_SCANCODE_Q}, button_state::released);
+  CHECK(event.key() == key{SDL_SCANCODE_Q});
   CHECK(event.state() == button_state::released);
 }
 
@@ -85,19 +85,19 @@ TEST_CASE("KeyboardEvent::set_window_id", "[KeyboardEvent]")
 
 TEST_CASE("KeyboardEvent::is_active", "[KeyboardEvent]")
 {
-  const auto createEvent = [](Key key) noexcept {
+  const auto createEvent = [](key key) noexcept {
     SDL_KeyboardEvent keyboardEvent{};
     keyboardEvent.keysym.scancode = key.scancode();
     keyboardEvent.keysym.sym = key.keycode();
     return keyboardEvent;
   };
 
-  const KeyboardEvent event{createEvent(Key{SDLK_q})};
+  const KeyboardEvent event{createEvent(key{SDLK_q})};
 
-  CHECK(event.is_active(Key{SDLK_q}));
-  CHECK(event.is_active(Key{SDL_SCANCODE_Q}));
+  CHECK(event.is_active(key{SDLK_q}));
+  CHECK(event.is_active(key{SDL_SCANCODE_Q}));
 
-  CHECK(!event.is_active(Key{SDLK_e}));
+  CHECK(!event.is_active(key{SDLK_e}));
 }
 
 TEST_CASE("KeyboardEvent::modifier_active", "[KeyboardEvent]")
@@ -327,7 +327,7 @@ TEST_CASE("KeyboardEvent::state", "[KeyboardEvent]")
 TEST_CASE("KeyboardEvent::key", "[KeyboardEvent]")
 {
   KeyboardEvent event;
-  const Key original{SDLK_b};
+  const key original{SDLK_b};
 
   event.set_key(original, button_state::pressed);
   const auto copy = event.key();

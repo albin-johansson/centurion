@@ -35,6 +35,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/battery.hpp
         ${CTN_INCLUDE_DIR}/screen.hpp
         ${CTN_INCLUDE_DIR}/key.hpp
+        ${CTN_INCLUDE_DIR}/scan_code.hpp
         ${CTN_INCLUDE_DIR}/touch.hpp
         ${CTN_INCLUDE_DIR}/mouse_button.hpp
         ${CTN_INCLUDE_DIR}/event_type.hpp
@@ -63,7 +64,6 @@ set(SOURCE_FILES
         cursor.cpp
         battery.cpp
         screen.cpp
-        key.cpp
         event.cpp
         quit_event.cpp
         window_event.cpp

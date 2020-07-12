@@ -1352,7 +1352,7 @@ class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_key(const Key& key, button_state state) noexcept;
+  void set_key(const key& key, button_state state) noexcept;
 
   /**
    * @brief Sets the status of a key modifier.
@@ -1399,7 +1399,7 @@ class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto is_active(const Key& key) const noexcept -> bool;
+  auto is_active(const key& key) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the specified key modifier is active.
@@ -1505,7 +1505,7 @@ class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto key() const noexcept -> Key;
+  auto key() const noexcept -> key;
 
   /**
    * @brief Returns the ID of the window associated with the event.

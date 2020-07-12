@@ -20,37 +20,37 @@ TEST_CASE("key_state::update", "[key_state]")
 TEST_CASE("key_state::is_pressed", "[key_state]")
 {
   key_state state;
-  CHECK(!state.is_pressed(Key{SDL_SCANCODE_A}));
-  CHECK(!state.is_pressed(Key{-1}));
-  CHECK(!state.is_pressed(Key{SDL_NUM_SCANCODES}));
-  CHECK(!state.is_pressed(Key{SDL_NUM_SCANCODES + 1}));
+  CHECK(!state.is_pressed(key{SDL_SCANCODE_A}));
+  CHECK(!state.is_pressed(key{-1}));
+  CHECK(!state.is_pressed(key{SDL_NUM_SCANCODES}));
+  CHECK(!state.is_pressed(key{SDL_NUM_SCANCODES + 1}));
 }
 
 TEST_CASE("key_state::is_held", "[key_state]")
 {
   key_state state;
-  CHECK(!state.is_held(Key{SDLK_x}));
-  CHECK(!state.is_held(Key{-1}));
-  CHECK(!state.is_held(Key{SDL_NUM_SCANCODES}));
-  CHECK(!state.is_held(Key{SDL_NUM_SCANCODES + 1}));
+  CHECK(!state.is_held(key{SDLK_x}));
+  CHECK(!state.is_held(key{-1}));
+  CHECK(!state.is_held(key{SDL_NUM_SCANCODES}));
+  CHECK(!state.is_held(key{SDL_NUM_SCANCODES + 1}));
 }
 
 TEST_CASE("key_state::was_just_pressed", "[key_state]")
 {
   key_state state;
-  CHECK(!state.was_just_pressed(Key{SDL_SCANCODE_V}));
-  CHECK(!state.was_just_pressed(Key{-1}));
-  CHECK(!state.was_just_pressed(Key{SDL_NUM_SCANCODES}));
-  CHECK(!state.was_just_pressed(Key{SDL_NUM_SCANCODES + 1}));
+  CHECK(!state.was_just_pressed(key{SDL_SCANCODE_V}));
+  CHECK(!state.was_just_pressed(key{-1}));
+  CHECK(!state.was_just_pressed(key{SDL_NUM_SCANCODES}));
+  CHECK(!state.was_just_pressed(key{SDL_NUM_SCANCODES + 1}));
 }
 
 TEST_CASE("key_state::was_just_released", "[key_state]")
 {
   key_state state;
-  CHECK(!state.was_just_released(Key{SDLK_u}));
-  CHECK(!state.was_just_released(Key{-1}));
-  CHECK(!state.was_just_released(Key{SDL_NUM_SCANCODES}));
-  CHECK(!state.was_just_released(Key{SDL_NUM_SCANCODES + 1}));
+  CHECK(!state.was_just_released(key{SDLK_u}));
+  CHECK(!state.was_just_released(key{-1}));
+  CHECK(!state.was_just_released(key{SDL_NUM_SCANCODES}));
+  CHECK(!state.was_just_released(key{SDL_NUM_SCANCODES + 1}));
 }
 
 TEST_CASE("key_state::modifier_active", "[key_state]")

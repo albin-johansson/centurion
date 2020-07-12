@@ -23,11 +23,9 @@
  */
 
 /**
- * @file key.hpp
+ * @file scan_code.hpp
  *
- * @brief Provides the `key` class.
- *
- * @todo Add Key constants.
+ * @brief Provides the `scan_code` class and constants.
  *
  * @author Albin Johansson
  *
@@ -36,248 +34,224 @@
  * @copyright MIT License
  */
 
-#ifndef CENTURION_KEY_HEADER
-#define CENTURION_KEY_HEADER
+#ifndef CENTURION_SCAN_CODE_HEADER
+#define CENTURION_SCAN_CODE_HEADER
 
+#include <SDL_keyboard.h>
 #include <SDL_keycode.h>
 #include <SDL_scancode.h>
 
 #include "centurion_api.hpp"
-#include "centurion_utils.hpp"
+#include "centurion_types.hpp"
 
 namespace centurion {
 
 /**
- * @class key
+ * @class scan_code
  *
- * @brief Represents a keyboard key.
+ * @brief Represents a scan code.
  *
- * @details Instances of this class can be created from both `SDL_Scancode` and
- * `SDL_Keycode` values.
+ * @details Scan codes represent the physical location of a key on the
+ * keyboard. Use the associated key code associated with the location to give
+ * the key press meaning.
  *
- * @see `SDL_Scancode`
- * @see `SDL_Keycode`
+ * Scan codes are meant to be layout-independent. Think of this as "the user
+ * pressed the Q key as it would be on a US QWERTY keyboard" regardless of
+ * whether this is actually a European keyboard or a Dvorak keyboard or
+ * whatever. *The scancode is always the same key position.*
  *
- * @since 4.0.0
+ * @since 5.0.0
+ *
+ * @see `key_code`
+ * @see `centurion::scancodes`
+ *
+ * @headerfile scan_code.hpp
  */
-class [[deprecated]] key final {
+class scan_code final {
  public:
   /**
-   * @brief Creates a key instance with the `UNKNOWN` scancode and keycode
-   * values.
-   *
-   * @since 4.0.0
-   */
-  key() noexcept = default;
-
-  /**
-   * @brief Creates a key instance based on the supplied scancode.
-   *
-   * @param scancode the scancode that the key will be based on.
-   *
-   * @since 4.0.0
-   */
-  explicit key(SDL_Scancode scancode) noexcept { set(scancode); }
-
-  /**
-   * @brief Creates a key instance based on the supplied keycode.
-   *
-   * @param keycode the keycode that the key will be based on.
-   *
-   * @since 4.0.0
-   */
-  explicit key(SDL_Keycode keycode) noexcept { set(keycode); }
-
-  /**
-   * @brief `constexpr`-enabled constructor for keys.
-   *
-   * @param scancode the scancode that will be used.
-   * @param keycode the keycode that will be used.
+   * @brief Creates a `scan_code` instance with the `SDL_SCANCODE_UNKNOWN` scan
+   * code.
    *
    * @since 5.0.0
    */
-  constexpr explicit key(SDL_Scancode scancode, SDL_KeyCode keycode) noexcept
-      : m_scancode{scancode}, m_keycode{keycode}
+  constexpr scan_code() noexcept = default;
+
+  constexpr scan_code(const scan_code&) noexcept = default;
+
+  constexpr scan_code(scan_code&&) noexcept = default;
+
+  /**
+   * @brief Creates a `scan_code` instance with the specified scan code.
+   *
+   * @param scancode the scan code that will be used.
+   *
+   * @since 5.0.0
+   */
+  constexpr explicit scan_code(SDL_Scancode scancode) noexcept
+      : m_code{scancode}
   {}
 
   /**
-   * @brief Creates a key instance from the specified key name.
+   * @brief Creates a `scan_code` instance based on a key code.
    *
-   * @details If no key is associated with the specified name, then the created
-   * instance will assume the key- and scancodes that represent an unknown key.
+   * @details The created `scan_code` will use the scan code obtained
+   * by converting the specified key code.
    *
-   * @param name the name of the key that the created instance will
-   * represent, can safely be null.
+   * @param key the key code that will be converted and used.
    *
-   * @since 4.1.0
+   * @since 5.0.0
    */
-  explicit key(czstring name) noexcept
+  explicit scan_code(SDL_Keycode key) noexcept
+      : m_code{SDL_GetScancodeFromKey(key)}
+  {}
+
+  /**
+   * @brief Creates a `scan_code` instance based on the specified name.
+   *
+   * @details If the specified name isn't recognized, `SDL_SCANCODE_UNKNOWN` is
+   * used as the scan code.
+   *
+   * @param name the name of the key, mustn't be null.
+   *
+   * @see `SDL_GetScancodeFromName`
+   *
+   * @since 5.0.0
+   */
+  explicit scan_code(gsl::not_null<czstring> name) noexcept
+      : m_code{SDL_GetScancodeFromName(name)}
+  {}
+
+  auto operator=(const scan_code&) noexcept -> scan_code& = default;
+
+  auto operator=(scan_code&&) noexcept -> scan_code& = default;
+
+  /**
+   * @brief Sets the scan code used to the specified scan code.
+   *
+   * @param code the scan code that will be used.
+   *
+   * @return the `scan_code` instance.
+   *
+   * @since 5.0.0
+   */
+  auto operator=(SDL_Scancode code) noexcept -> scan_code&
   {
-    if (name) {
-      set(SDL_GetScancodeFromName(name));
-    }
+    m_code = code;
+    return *this;
   }
 
   /**
-   * @brief Sets the value of the key.
+   * @brief Sets the scan code used to be the converted version of the
+   * supplied key code.
    *
-   * @param scancode the scancode of the key that the key instance will
-   * represent.
+   * @param keycode the key code that will be converted and used.
    *
-   * @since 4.0.0
+   * @return the `scan_code` instance.
+   *
+   * @since 5.0.0
    */
-  void set(SDL_Scancode scancode) noexcept
+  auto operator=(SDL_Keycode keycode) noexcept -> scan_code&
   {
-    m_scancode = scancode;
-    m_keycode = SDL_GetKeyFromScancode(scancode);
+    m_code = SDL_GetScancodeFromKey(keycode);
+    return *this;
   }
 
   /**
-   * @brief Sets the value of the key.
+   * @brief Sets the scan code used to be the one associated with the
+   * specified name.
    *
-   * @param keycode the keycode of the key that the key instance will
-   * represent.
+   * @details If the specified name isn't recognized, `SDL_SCANCODE_UNKNOWN` is
+   * used as the scan code.
    *
-   * @since 4.0.0
+   * @param name the name of the key, mustn't be null.
+   *
+   * @return the `scan_code` instance.
+   *
+   * @since 5.0.0
    */
-  void set(SDL_Keycode keycode) noexcept
+  auto operator=(gsl::not_null<czstring> name) noexcept -> scan_code&
   {
-    m_scancode = SDL_GetScancodeFromKey(keycode);
-    m_keycode = keycode;
+    m_code = SDL_GetScancodeFromName(name);
+    return *this;
   }
 
   /**
-   * @brief Returns the name of the key associated with the key instance.
+   * @brief Indicates whether or not the stored scan code is
+   * `SDL_SCANCODE_UNKNOWN`.
    *
-   * @details This method returns the empty string if no name is found to be
-   * associated with the key that the key instance represents.
+   * @return `true` if the internal scan code is `SDL_SCANCODE_UNKNOWN`;
+   * `false` otherwise.
    *
-   * @return the name of the key associated with this key instance; the empty
-   * string if the name couldn't be deduced.
-   *
-   * @since 4.1.0
-   */
-  [[nodiscard]] auto name() const -> std::string
-  {
-    return SDL_GetScancodeName(m_scancode);
-  }
-
-  /**
-   * @brief Indicates whether or not the key instance is associated with a known
-   * key.
-   *
-   * @return `true` if no key is associated with the key instance; `false`
-   * otherwise.
-   *
-   * @since 4.1.0
+   * @since 5.0.0
    */
   [[nodiscard]] auto unknown() const noexcept -> bool
   {
-    return m_scancode == SDL_SCANCODE_UNKNOWN;
+    return m_code == SDL_SCANCODE_UNKNOWN;
   }
 
   /**
-   * @brief Returns the scancode associated with the key.
+   * @brief Returns the name associated with the scan code.
    *
-   * @return the scancode associated with the key.
+   * @return the name associated with the scan code.
    *
-   * @since 4.0.0
+   * @since 5.0.0
    */
-  [[nodiscard]] auto scancode() const noexcept -> SDL_Scancode
+  [[nodiscard]] auto name() const -> std::string
   {
-    return m_scancode;
+    return SDL_GetScancodeName(m_code);
   }
 
   /**
-   * @brief Returns the keycode associated with the key.
+   * @brief Returns the internal scan code.
    *
-   * @return the keycode associated with the key.
+   * @return the internal scan code.
    *
-   * @since 4.0.0
+   * @since 5.0.0
    */
-  [[nodiscard]] auto keycode() const noexcept -> SDL_Keycode
-  {
-    return m_keycode;
-  }
+  [[nodiscard]] auto get() const noexcept -> SDL_Scancode { return m_code; }
 
   /**
-   * @brief Converts to a scancode value.
+   * @brief Converts to `SDL_Scancode`.
    *
-   * @return an `SDL_Scancode` value.
+   * @return the internal scan code.
    *
-   * @since 4.0.0
+   * @since 5.0.0
    */
-  [[nodiscard]] explicit operator SDL_Scancode() const noexcept
-  {
-    return m_scancode;
-  }
+  explicit operator SDL_Scancode() const noexcept { return m_code; }
 
   /**
-   * @brief Converts to a keycode value.
+   * @brief Converts to `SDL_Keycode`.
    *
-   * @return an `SDL_Keycode` value.
+   * @return the key code associated with the internal scan code.
    *
-   * @since 4.0.0
+   * @see `SDL_GetKeyFromScancode`
+   *
+   * @since 5.0.0
    */
-  [[nodiscard]] explicit operator SDL_Keycode() const noexcept
+  explicit operator SDL_Keycode() const noexcept
   {
-    return m_keycode;
+    return SDL_GetKeyFromScancode(m_code);
   }
 
  private:
-  SDL_Scancode m_scancode{SDL_SCANCODE_UNKNOWN};
-  SDL_Keycode m_keycode{SDLK_UNKNOWN};
+  SDL_Scancode m_code{SDL_SCANCODE_UNKNOWN};
 };
 
-static_assert(std::is_final_v<key>);
-static_assert(std::is_copy_constructible_v<key>);
-static_assert(std::is_copy_assignable_v<key>);
-static_assert(std::is_move_constructible_v<key>);
-static_assert(std::is_move_assignable_v<key>);
-
 /**
- * @brief Indicates whether or not two key instances represent the same keyboard
- * key.
+ * @namespace centurion::scancodes
  *
- * @param lhs the left-hand side key.
- * @param rhs the right-hand side key.
+ * @brief Provides a collection of `scan_code` constants.
  *
- * @return `true` if the two keys are the same; `false` otherwise.
+ * @details Far from all scan codes are provided. Instead, the most
+ * commonly used scan codes are available.
  *
- * @since 4.0.0
+ * @todo Update the documentation of the constants to clarify that they
+ * represent the position and not the key with a specific label.
+ *
+ * @since 5.0.0
  */
-[[nodiscard]] inline auto operator==(const key& lhs, const key& rhs) noexcept
-    -> bool
-{
-  return (lhs.scancode() == rhs.scancode()) && (lhs.keycode() == rhs.keycode());
-}
-
-/**
- * @brief Indicates whether or not two key instances don't represent the same
- * keyboard key.
- *
- * @param lhs the left-hand side key.
- * @param rhs the right-hand side key.
- *
- * @return `true` if the two keys aren't the same; `false` otherwise.
- *
- * @since 4.0.0
- */
-[[nodiscard]] inline auto operator!=(const key& lhs, const key& rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * @namespace centurion::keys
- *
- * @brief Provides a limited collection of `key` constants.
- *
- * @details Far from all possible keys are provided. Instead, the most
- * commonly used keys are available.
- */
-namespace keys {
+namespace scancodes {
 
 /**
  * @brief Represents an unknown key.
@@ -286,7 +260,7 @@ namespace keys {
  *
  * @headerfile key.hpp
  */
-inline constexpr key unknown{SDL_SCANCODE_UNKNOWN, SDLK_UNKNOWN};
+inline constexpr scan_code unknown;
 
 /**
  * @brief Represents the key "A".
@@ -295,7 +269,7 @@ inline constexpr key unknown{SDL_SCANCODE_UNKNOWN, SDLK_UNKNOWN};
  *
  * @headerfile key.hpp
  */
-inline constexpr key a{SDL_SCANCODE_A, SDLK_a};
+inline constexpr scan_code a{SDL_SCANCODE_A};
 
 /**
  * @brief Represents the key "B".
@@ -304,7 +278,7 @@ inline constexpr key a{SDL_SCANCODE_A, SDLK_a};
  *
  * @headerfile key.hpp
  */
-inline constexpr key b{SDL_SCANCODE_B, SDLK_b};
+inline constexpr scan_code b{SDL_SCANCODE_B};
 
 /**
  * @brief Represents the key "C".
@@ -313,7 +287,7 @@ inline constexpr key b{SDL_SCANCODE_B, SDLK_b};
  *
  * @headerfile key.hpp
  */
-inline constexpr key c{SDL_SCANCODE_C, SDLK_c};
+inline constexpr scan_code c{SDL_SCANCODE_C};
 
 /**
  * @brief Represents the key "D".
@@ -322,7 +296,7 @@ inline constexpr key c{SDL_SCANCODE_C, SDLK_c};
  *
  * @headerfile key.hpp
  */
-inline constexpr key d{SDL_SCANCODE_D, SDLK_d};
+inline constexpr scan_code d{SDL_SCANCODE_D};
 
 /**
  * @brief Represents the key "E".
@@ -331,7 +305,7 @@ inline constexpr key d{SDL_SCANCODE_D, SDLK_d};
  *
  * @headerfile key.hpp
  */
-inline constexpr key e{SDL_SCANCODE_E, SDLK_e};
+inline constexpr scan_code e{SDL_SCANCODE_E};
 
 /**
  * @brief Represents the key "F".
@@ -340,7 +314,7 @@ inline constexpr key e{SDL_SCANCODE_E, SDLK_e};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f{SDL_SCANCODE_F, SDLK_f};
+inline constexpr scan_code f{SDL_SCANCODE_F};
 
 /**
  * @brief Represents the key "G".
@@ -349,7 +323,7 @@ inline constexpr key f{SDL_SCANCODE_F, SDLK_f};
  *
  * @headerfile key.hpp
  */
-inline constexpr key g{SDL_SCANCODE_G, SDLK_g};
+inline constexpr scan_code g{SDL_SCANCODE_G};
 
 /**
  * @brief Represents the key "H".
@@ -358,7 +332,7 @@ inline constexpr key g{SDL_SCANCODE_G, SDLK_g};
  *
  * @headerfile key.hpp
  */
-inline constexpr key h{SDL_SCANCODE_H, SDLK_h};
+inline constexpr scan_code h{SDL_SCANCODE_H};
 
 /**
  * @brief Represents the key "I".
@@ -367,7 +341,7 @@ inline constexpr key h{SDL_SCANCODE_H, SDLK_h};
  *
  * @headerfile key.hpp
  */
-inline constexpr key i{SDL_SCANCODE_I, SDLK_i};
+inline constexpr scan_code i{SDL_SCANCODE_I};
 
 /**
  * @brief Represents the key "J".
@@ -376,7 +350,7 @@ inline constexpr key i{SDL_SCANCODE_I, SDLK_i};
  *
  * @headerfile key.hpp
  */
-inline constexpr key j{SDL_SCANCODE_J, SDLK_j};
+inline constexpr scan_code j{SDL_SCANCODE_J};
 
 /**
  * @brief Represents the key "K".
@@ -385,7 +359,7 @@ inline constexpr key j{SDL_SCANCODE_J, SDLK_j};
  *
  * @headerfile key.hpp
  */
-inline constexpr key k{SDL_SCANCODE_K, SDLK_k};
+inline constexpr scan_code k{SDL_SCANCODE_K};
 
 /**
  * @brief Represents the key "L".
@@ -394,7 +368,7 @@ inline constexpr key k{SDL_SCANCODE_K, SDLK_k};
  *
  * @headerfile key.hpp
  */
-inline constexpr key l{SDL_SCANCODE_L, SDLK_l};
+inline constexpr scan_code l{SDL_SCANCODE_L};
 
 /**
  * @brief Represents the key "M".
@@ -403,7 +377,7 @@ inline constexpr key l{SDL_SCANCODE_L, SDLK_l};
  *
  * @headerfile key.hpp
  */
-inline constexpr key m{SDL_SCANCODE_M, SDLK_m};
+inline constexpr scan_code m{SDL_SCANCODE_M};
 
 /**
  * @brief Represents the key "N".
@@ -412,7 +386,7 @@ inline constexpr key m{SDL_SCANCODE_M, SDLK_m};
  *
  * @headerfile key.hpp
  */
-inline constexpr key n{SDL_SCANCODE_N, SDLK_n};
+inline constexpr scan_code n{SDL_SCANCODE_N};
 
 /**
  * @brief Represents the key "O".
@@ -421,7 +395,7 @@ inline constexpr key n{SDL_SCANCODE_N, SDLK_n};
  *
  * @headerfile key.hpp
  */
-inline constexpr key o{SDL_SCANCODE_O, SDLK_o};
+inline constexpr scan_code o{SDL_SCANCODE_O};
 
 /**
  * @brief Represents the key "P".
@@ -430,7 +404,7 @@ inline constexpr key o{SDL_SCANCODE_O, SDLK_o};
  *
  * @headerfile key.hpp
  */
-inline constexpr key p{SDL_SCANCODE_P, SDLK_p};
+inline constexpr scan_code p{SDL_SCANCODE_P};
 
 /**
  * @brief Represents the key "Q".
@@ -439,7 +413,7 @@ inline constexpr key p{SDL_SCANCODE_P, SDLK_p};
  *
  * @headerfile key.hpp
  */
-inline constexpr key q{SDL_SCANCODE_Q, SDLK_q};
+inline constexpr scan_code q{SDL_SCANCODE_Q};
 
 /**
  * @brief Represents the key "R".
@@ -448,7 +422,7 @@ inline constexpr key q{SDL_SCANCODE_Q, SDLK_q};
  *
  * @headerfile key.hpp
  */
-inline constexpr key r{SDL_SCANCODE_R, SDLK_r};
+inline constexpr scan_code r{SDL_SCANCODE_R};
 
 /**
  * @brief Represents the key "S".
@@ -457,7 +431,7 @@ inline constexpr key r{SDL_SCANCODE_R, SDLK_r};
  *
  * @headerfile key.hpp
  */
-inline constexpr key s{SDL_SCANCODE_S, SDLK_s};
+inline constexpr scan_code s{SDL_SCANCODE_S};
 
 /**
  * @brief Represents the key "T".
@@ -466,7 +440,7 @@ inline constexpr key s{SDL_SCANCODE_S, SDLK_s};
  *
  * @headerfile key.hpp
  */
-inline constexpr key t{SDL_SCANCODE_T, SDLK_t};
+inline constexpr scan_code t{SDL_SCANCODE_T};
 
 /**
  * @brief Represents the key "U".
@@ -475,7 +449,7 @@ inline constexpr key t{SDL_SCANCODE_T, SDLK_t};
  *
  * @headerfile key.hpp
  */
-inline constexpr key u{SDL_SCANCODE_U, SDLK_u};
+inline constexpr scan_code u{SDL_SCANCODE_U};
 
 /**
  * @brief Represents the key "V".
@@ -484,7 +458,7 @@ inline constexpr key u{SDL_SCANCODE_U, SDLK_u};
  *
  * @headerfile key.hpp
  */
-inline constexpr key v{SDL_SCANCODE_V, SDLK_v};
+inline constexpr scan_code v{SDL_SCANCODE_V};
 
 /**
  * @brief Represents the key "W".
@@ -493,7 +467,7 @@ inline constexpr key v{SDL_SCANCODE_V, SDLK_v};
  *
  * @headerfile key.hpp
  */
-inline constexpr key w{SDL_SCANCODE_W, SDLK_w};
+inline constexpr scan_code w{SDL_SCANCODE_W};
 
 /**
  * @brief Represents the key "X".
@@ -502,7 +476,7 @@ inline constexpr key w{SDL_SCANCODE_W, SDLK_w};
  *
  * @headerfile key.hpp
  */
-inline constexpr key x{SDL_SCANCODE_X, SDLK_x};
+inline constexpr scan_code x{SDL_SCANCODE_X};
 
 /**
  * @brief Represents the key "Y".
@@ -511,7 +485,7 @@ inline constexpr key x{SDL_SCANCODE_X, SDLK_x};
  *
  * @headerfile key.hpp
  */
-inline constexpr key y{SDL_SCANCODE_Y, SDLK_y};
+inline constexpr scan_code y{SDL_SCANCODE_Y};
 
 /**
  * @brief Represents the key "Z".
@@ -520,7 +494,7 @@ inline constexpr key y{SDL_SCANCODE_Y, SDLK_y};
  *
  * @headerfile key.hpp
  */
-inline constexpr key z{SDL_SCANCODE_Z, SDLK_z};
+inline constexpr scan_code z{SDL_SCANCODE_Z};
 
 /**
  * @brief Represents the key "1".
@@ -531,7 +505,7 @@ inline constexpr key z{SDL_SCANCODE_Z, SDLK_z};
  *
  * @headerfile key.hpp
  */
-inline constexpr key one{SDL_SCANCODE_1, SDLK_1};
+inline constexpr scan_code one{SDL_SCANCODE_1};
 
 /**
  * @brief Represents the key "2".
@@ -542,7 +516,7 @@ inline constexpr key one{SDL_SCANCODE_1, SDLK_1};
  *
  * @headerfile key.hpp
  */
-inline constexpr key two{SDL_SCANCODE_2, SDLK_2};
+inline constexpr scan_code two{SDL_SCANCODE_2};
 
 /**
  * @brief Represents the key "3".
@@ -553,7 +527,7 @@ inline constexpr key two{SDL_SCANCODE_2, SDLK_2};
  *
  * @headerfile key.hpp
  */
-inline constexpr key three{SDL_SCANCODE_3, SDLK_3};
+inline constexpr scan_code three{SDL_SCANCODE_3};
 
 /**
  * @brief Represents the key "4".
@@ -564,7 +538,7 @@ inline constexpr key three{SDL_SCANCODE_3, SDLK_3};
  *
  * @headerfile key.hpp
  */
-inline constexpr key four{SDL_SCANCODE_4, SDLK_4};
+inline constexpr scan_code four{SDL_SCANCODE_4};
 
 /**
  * @brief Represents the key "5".
@@ -575,7 +549,7 @@ inline constexpr key four{SDL_SCANCODE_4, SDLK_4};
  *
  * @headerfile key.hpp
  */
-inline constexpr key five{SDL_SCANCODE_5, SDLK_5};
+inline constexpr scan_code five{SDL_SCANCODE_5};
 
 /**
  * @brief Represents the key "6".
@@ -586,7 +560,7 @@ inline constexpr key five{SDL_SCANCODE_5, SDLK_5};
  *
  * @headerfile key.hpp
  */
-inline constexpr key six{SDL_SCANCODE_6, SDLK_6};
+inline constexpr scan_code six{SDL_SCANCODE_6};
 
 /**
  * @brief Represents the key "7".
@@ -597,7 +571,7 @@ inline constexpr key six{SDL_SCANCODE_6, SDLK_6};
  *
  * @headerfile key.hpp
  */
-inline constexpr key seven{SDL_SCANCODE_7, SDLK_7};
+inline constexpr scan_code seven{SDL_SCANCODE_7};
 
 /**
  * @brief Represents the key "8".
@@ -608,7 +582,7 @@ inline constexpr key seven{SDL_SCANCODE_7, SDLK_7};
  *
  * @headerfile key.hpp
  */
-inline constexpr key eight{SDL_SCANCODE_8, SDLK_8};
+inline constexpr scan_code eight{SDL_SCANCODE_8};
 
 /**
  * @brief Represents the key "9".
@@ -619,7 +593,7 @@ inline constexpr key eight{SDL_SCANCODE_8, SDLK_8};
  *
  * @headerfile key.hpp
  */
-inline constexpr key nine{SDL_SCANCODE_9, SDLK_9};
+inline constexpr scan_code nine{SDL_SCANCODE_9};
 
 /**
  * @brief Represents the key "0".
@@ -630,7 +604,7 @@ inline constexpr key nine{SDL_SCANCODE_9, SDLK_9};
  *
  * @headerfile key.hpp
  */
-inline constexpr key zero{SDL_SCANCODE_0, SDLK_0};
+inline constexpr scan_code zero{SDL_SCANCODE_0};
 
 /**
  * @brief Represents the function key "F1".
@@ -639,7 +613,7 @@ inline constexpr key zero{SDL_SCANCODE_0, SDLK_0};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f1{SDL_SCANCODE_F1, SDLK_F1};
+inline constexpr scan_code f1{SDL_SCANCODE_F1};
 
 /**
  * @brief Represents the function key "F2".
@@ -648,7 +622,7 @@ inline constexpr key f1{SDL_SCANCODE_F1, SDLK_F1};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f2{SDL_SCANCODE_F2, SDLK_F2};
+inline constexpr scan_code f2{SDL_SCANCODE_F2};
 
 /**
  * @brief Represents the function key "F3".
@@ -657,7 +631,7 @@ inline constexpr key f2{SDL_SCANCODE_F2, SDLK_F2};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f3{SDL_SCANCODE_F3, SDLK_F3};
+inline constexpr scan_code f3{SDL_SCANCODE_F3};
 
 /**
  * @brief Represents the function key "F4".
@@ -666,7 +640,7 @@ inline constexpr key f3{SDL_SCANCODE_F3, SDLK_F3};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f4{SDL_SCANCODE_F4, SDLK_F4};
+inline constexpr scan_code f4{SDL_SCANCODE_F4};
 
 /**
  * @brief Represents the function key "F5".
@@ -675,7 +649,7 @@ inline constexpr key f4{SDL_SCANCODE_F4, SDLK_F4};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f5{SDL_SCANCODE_F5, SDLK_F5};
+inline constexpr scan_code f5{SDL_SCANCODE_F5};
 
 /**
  * @brief Represents the function key "F6".
@@ -684,7 +658,7 @@ inline constexpr key f5{SDL_SCANCODE_F5, SDLK_F5};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f6{SDL_SCANCODE_F6, SDLK_F6};
+inline constexpr scan_code f6{SDL_SCANCODE_F6};
 
 /**
  * @brief Represents the function key "F7".
@@ -693,7 +667,7 @@ inline constexpr key f6{SDL_SCANCODE_F6, SDLK_F6};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f7{SDL_SCANCODE_F7, SDLK_F7};
+inline constexpr scan_code f7{SDL_SCANCODE_F7};
 
 /**
  * @brief Represents the function key "F8".
@@ -702,7 +676,7 @@ inline constexpr key f7{SDL_SCANCODE_F7, SDLK_F7};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f8{SDL_SCANCODE_F8, SDLK_F8};
+inline constexpr scan_code f8{SDL_SCANCODE_F8};
 
 /**
  * @brief Represents the function key "F9".
@@ -711,7 +685,7 @@ inline constexpr key f8{SDL_SCANCODE_F8, SDLK_F8};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f9{SDL_SCANCODE_F9, SDLK_F9};
+inline constexpr scan_code f9{SDL_SCANCODE_F9};
 
 /**
  * @brief Represents the function key "F10".
@@ -720,7 +694,7 @@ inline constexpr key f9{SDL_SCANCODE_F9, SDLK_F9};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f10{SDL_SCANCODE_F10, SDLK_F10};
+inline constexpr scan_code f10{SDL_SCANCODE_F10};
 
 /**
  * @brief Represents the function key "F11".
@@ -729,7 +703,7 @@ inline constexpr key f10{SDL_SCANCODE_F10, SDLK_F10};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f11{SDL_SCANCODE_F11, SDLK_F11};
+inline constexpr scan_code f11{SDL_SCANCODE_F11};
 
 /**
  * @brief Represents the function key "F12".
@@ -738,7 +712,7 @@ inline constexpr key f11{SDL_SCANCODE_F11, SDLK_F11};
  *
  * @headerfile key.hpp
  */
-inline constexpr key f12{SDL_SCANCODE_F12, SDLK_F12};
+inline constexpr scan_code f12{SDL_SCANCODE_F12};
 
 /**
  * @brief Represents the left arrow key.
@@ -747,7 +721,7 @@ inline constexpr key f12{SDL_SCANCODE_F12, SDLK_F12};
  *
  * @headerfile key.hpp
  */
-inline constexpr key left{SDL_SCANCODE_LEFT, SDLK_LEFT};
+inline constexpr scan_code left{SDL_SCANCODE_LEFT};
 
 /**
  * @brief Represents the right arrow key.
@@ -756,7 +730,7 @@ inline constexpr key left{SDL_SCANCODE_LEFT, SDLK_LEFT};
  *
  * @headerfile key.hpp
  */
-inline constexpr key right{SDL_SCANCODE_RIGHT, SDLK_RIGHT};
+inline constexpr scan_code right{SDL_SCANCODE_RIGHT};
 
 /**
  * @brief Represents the up arrow key.
@@ -765,7 +739,7 @@ inline constexpr key right{SDL_SCANCODE_RIGHT, SDLK_RIGHT};
  *
  * @headerfile key.hpp
  */
-inline constexpr key up{SDL_SCANCODE_UP, SDLK_UP};
+inline constexpr scan_code up{SDL_SCANCODE_UP};
 
 /**
  * @brief Represents the down arrow key.
@@ -774,7 +748,7 @@ inline constexpr key up{SDL_SCANCODE_UP, SDLK_UP};
  *
  * @headerfile key.hpp
  */
-inline constexpr key down{SDL_SCANCODE_DOWN, SDLK_DOWN};
+inline constexpr scan_code down{SDL_SCANCODE_DOWN};
 
 /**
  * @brief Represents the "Space" key.
@@ -783,7 +757,7 @@ inline constexpr key down{SDL_SCANCODE_DOWN, SDLK_DOWN};
  *
  * @headerfile key.hpp
  */
-inline constexpr key space{SDL_SCANCODE_SPACE, SDLK_SPACE};
+inline constexpr scan_code space{SDL_SCANCODE_SPACE};
 
 /**
  * @brief Represents the "Enter" key.
@@ -794,7 +768,7 @@ inline constexpr key space{SDL_SCANCODE_SPACE, SDLK_SPACE};
  *
  * @headerfile key.hpp
  */
-inline constexpr key enter{SDL_SCANCODE_RETURN, SDLK_RETURN};
+inline constexpr scan_code enter{SDL_SCANCODE_RETURN};
 
 /**
  * @brief Represents the "Escape" key.
@@ -803,7 +777,7 @@ inline constexpr key enter{SDL_SCANCODE_RETURN, SDLK_RETURN};
  *
  * @headerfile key.hpp
  */
-inline constexpr key escape{SDL_SCANCODE_ESCAPE, SDLK_ESCAPE};
+inline constexpr scan_code escape{SDL_SCANCODE_ESCAPE};
 
 /**
  * @brief Represents the "Backspace" key.
@@ -812,7 +786,7 @@ inline constexpr key escape{SDL_SCANCODE_ESCAPE, SDLK_ESCAPE};
  *
  * @headerfile key.hpp
  */
-inline constexpr key backspace{SDL_SCANCODE_BACKSPACE, SDLK_BACKSPACE};
+inline constexpr scan_code backspace{SDL_SCANCODE_BACKSPACE};
 
 /**
  * @brief Represents the "Tab" key.
@@ -821,7 +795,7 @@ inline constexpr key backspace{SDL_SCANCODE_BACKSPACE, SDLK_BACKSPACE};
  *
  * @headerfile key.hpp
  */
-inline constexpr key tab{SDL_SCANCODE_TAB, SDLK_TAB};
+inline constexpr scan_code tab{SDL_SCANCODE_TAB};
 
 /**
  * @brief Represents the "Caps Lock" key.
@@ -830,7 +804,7 @@ inline constexpr key tab{SDL_SCANCODE_TAB, SDLK_TAB};
  *
  * @headerfile key.hpp
  */
-inline constexpr key caps_lock{SDL_SCANCODE_CAPSLOCK, SDLK_CAPSLOCK};
+inline constexpr scan_code caps_lock{SDL_SCANCODE_CAPSLOCK};
 
 /**
  * @brief Represents the left "Shift" key.
@@ -839,7 +813,7 @@ inline constexpr key caps_lock{SDL_SCANCODE_CAPSLOCK, SDLK_CAPSLOCK};
  *
  * @headerfile key.hpp
  */
-inline constexpr key left_shift{SDL_SCANCODE_LSHIFT, SDLK_LSHIFT};
+inline constexpr scan_code left_shift{SDL_SCANCODE_LSHIFT};
 
 /**
  * @brief Represents the right "Shift" key.
@@ -848,7 +822,7 @@ inline constexpr key left_shift{SDL_SCANCODE_LSHIFT, SDLK_LSHIFT};
  *
  * @headerfile key.hpp
  */
-inline constexpr key right_shift{SDL_SCANCODE_RSHIFT, SDLK_RSHIFT};
+inline constexpr scan_code right_shift{SDL_SCANCODE_RSHIFT};
 
 /**
  * @brief Represents the left "CTRL" key.
@@ -857,7 +831,7 @@ inline constexpr key right_shift{SDL_SCANCODE_RSHIFT, SDLK_RSHIFT};
  *
  * @headerfile key.hpp
  */
-inline constexpr key left_ctrl{SDL_SCANCODE_LCTRL, SDLK_LCTRL};
+inline constexpr scan_code left_ctrl{SDL_SCANCODE_LCTRL};
 
 /**
  * @brief Represents the right "CTRL" key.
@@ -866,7 +840,7 @@ inline constexpr key left_ctrl{SDL_SCANCODE_LCTRL, SDLK_LCTRL};
  *
  * @headerfile key.hpp
  */
-inline constexpr key right_ctrl{SDL_SCANCODE_RCTRL, SDLK_RCTRL};
+inline constexpr scan_code right_ctrl{SDL_SCANCODE_RCTRL};
 
 /**
  * @brief Represents the left "Alt" key.
@@ -875,7 +849,7 @@ inline constexpr key right_ctrl{SDL_SCANCODE_RCTRL, SDLK_RCTRL};
  *
  * @headerfile key.hpp
  */
-inline constexpr key left_alt{SDL_SCANCODE_LALT, SDLK_LALT};
+inline constexpr scan_code left_alt{SDL_SCANCODE_LALT};
 
 /**
  * @brief Represents the right "Alt" key.
@@ -884,7 +858,7 @@ inline constexpr key left_alt{SDL_SCANCODE_LALT, SDLK_LALT};
  *
  * @headerfile key.hpp
  */
-inline constexpr key right_alt{SDL_SCANCODE_RALT, SDLK_RALT};
+inline constexpr scan_code right_alt{SDL_SCANCODE_RALT};
 
 /**
  * @brief Represents the left "GUI" key.
@@ -896,7 +870,7 @@ inline constexpr key right_alt{SDL_SCANCODE_RALT, SDLK_RALT};
  *
  * @headerfile key.hpp
  */
-inline constexpr key left_gui{SDL_SCANCODE_LGUI, SDLK_LGUI};
+inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
 
 /**
  * @brief Represents the right "GUI" key.
@@ -908,9 +882,9 @@ inline constexpr key left_gui{SDL_SCANCODE_LGUI, SDLK_LGUI};
  *
  * @headerfile key.hpp
  */
-inline constexpr key right_gui{SDL_SCANCODE_RGUI, SDLK_RGUI};
+inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
-}  // namespace keys
+}  // namespace scancodes
 }  // namespace centurion
 
-#endif  // CENTURION_KEY_HEADER
+#endif  // CENTURION_SCAN_CODE_HEADER

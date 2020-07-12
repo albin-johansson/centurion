@@ -115,7 +115,7 @@ class key_state final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto is_pressed(const Key& key) const noexcept -> bool;
+  auto is_pressed(const key& key) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the specified key has been pressed during
@@ -130,7 +130,7 @@ class key_state final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto is_held(const Key& key) const noexcept -> bool;
+  auto is_held(const key& key) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not a key just became pressed in the last
@@ -145,7 +145,7 @@ class key_state final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto was_just_pressed(const Key& key) const noexcept -> bool;
+  auto was_just_pressed(const key& key) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the specified key was released in the last
@@ -160,7 +160,7 @@ class key_state final {
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto was_just_released(const Key& key) const noexcept -> bool;
+  auto was_just_released(const key& key) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the specified key modifier is active.

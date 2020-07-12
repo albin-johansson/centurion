@@ -6,7 +6,7 @@ documentation.
 Implementation details
 ~~~~~~~~~~~~~~~~~~~~~~
 All aspects of the Centurion library that are considered to be implementation details, are
-located in the ``centurion::detail`` namespace. You should never anything that resides in this
+located in the ``centurion::detail`` namespace. You should never use anything that resides in this
 namespace directly. The members of the detail namespace are subject to change at any time, and
 may not even be documented.
 
@@ -30,5 +30,5 @@ always a factory method for each constructor. For instance, you can create a uni
 ``ctn::window`` instance with ``ctn::window::unique()``. The factory methods are always called
 ``unique`` or ``shared``, for ``std::unique_ptr`` and ``std::shared_ptr`` respectively.
 
-Another convenience that most classes provide is a `to_string()` method, which is useful for
+Another convenience that most classes provide is a ``to_string()`` method, which is useful for
 debugging and logging purposes.

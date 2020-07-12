@@ -98,11 +98,6 @@
  * returns a textual representation of the component, which can be useful for
  * logging and general debugging.
  *
- * @subsection naming_style Naming style
- * Centurion utilizes a naming convention of setters and getters inspired by Qt.
- * Where if a component has a setter <code>void set_foo(int foo);</code> then
- * you would expect the corresponding getter to be <code>int foo();</code>.
- *
  * @subsection ownership Ownership
  * Since Centurion is a wrapper library for SDL2, it would be very hard to avoid
  * raw pointers completely. The Centurion library adheres to the principle that

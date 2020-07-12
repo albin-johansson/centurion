@@ -1,5 +1,5 @@
 FAQ
-=====================================
+===
 
 This document provides answers to some of the common questions and thoughts
 that you might have about the Centurion library.

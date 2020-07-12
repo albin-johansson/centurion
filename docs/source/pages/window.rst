@@ -1,0 +1,4 @@
+Window
+=====================================
+
+.. doxygenclass:: centurion::window

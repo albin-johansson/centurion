@@ -2,11 +2,11 @@
 
 #include <catch.hpp>
 
-using namespace centurion;
+#include "centurion_as_ctn.hpp"
 
-TEST_CASE("PowerState enum values", "[PowerState]")
+TEST_CASE("power_state enum values", "[power_state]")
 {
-  using namespace battery;
+  using namespace ctn::battery;
   CHECK(power_state::unknown == SDL_POWERSTATE_UNKNOWN);
   CHECK(power_state::on_battery == SDL_POWERSTATE_ON_BATTERY);
   CHECK(power_state::no_battery == SDL_POWERSTATE_NO_BATTERY);
@@ -25,9 +25,9 @@ TEST_CASE("PowerState enum values", "[PowerState]")
 
 TEST_CASE("battery::percentage", "[battery]")
 {
-  CHECK_NOTHROW(battery::percentage());
+  CHECK_NOTHROW(ctn::battery::percentage());
 
-  const auto percentage = battery::percentage();
+  const auto percentage = ctn::battery::percentage();
   if (percentage) {
     int actual = -1;
     SDL_GetPowerInfo(nullptr, &actual);
@@ -37,29 +37,29 @@ TEST_CASE("battery::percentage", "[battery]")
 
 TEST_CASE("battery::seconds_left", "[battery]")
 {
-  CHECK_NOTHROW(battery::seconds_left());
+  CHECK_NOTHROW(ctn::battery::seconds_left());
 
   int actual = 0;
 
-  const auto secs = battery::seconds_left();
+  const auto secs = ctn::battery::seconds_left();
   SDL_GetPowerInfo(&actual, nullptr);
 
   if (secs) {
-    const seconds<int> actualSeconds{actual};
+    const ctn::seconds<int> actualSeconds{actual};
     CHECK(secs.value() == actualSeconds);
   }
 }
 
 TEST_CASE("battery::minutes_left", "[battery]")
 {
-  CHECK_NOTHROW(battery::minutes_left());
+  CHECK_NOTHROW(ctn::battery::minutes_left());
 
-  const auto minutes = battery::minutes_left();
+  const auto minutes = ctn::battery::minutes_left();
   if (minutes) {
     int secs = -1;
     SDL_GetPowerInfo(&secs, nullptr);
 
-    const seconds<int> seconds{secs};
+    const ctn::seconds<int> seconds{secs};
 
     CHECK(minutes.value() == seconds);
   }
@@ -67,17 +67,17 @@ TEST_CASE("battery::minutes_left", "[battery]")
 
 TEST_CASE("battery::state", "[battery]")
 {
-  CHECK_NOTHROW(battery::state());
+  CHECK_NOTHROW(ctn::battery::state());
 
-  const auto state = battery::state();
-  const auto actual =
-      static_cast<battery::power_state>(SDL_GetPowerInfo(nullptr, nullptr));
+  const auto state = ctn::battery::state();
+  const auto actual = static_cast<ctn::battery::power_state>(
+      SDL_GetPowerInfo(nullptr, nullptr));
 
   CHECK(state == actual);
 }
 
 TEST_CASE("battery::exists", "[battery]")
 {
-  CHECK(battery::exists() ==
-        (battery::state() == battery::power_state::on_battery));
+  CHECK(ctn::battery::exists() ==
+        (ctn::battery::state() == ctn::battery::power_state::on_battery));
 }

@@ -3,35 +3,36 @@
 #include <catch.hpp>
 #include <string>
 
-using namespace centurion;
+#include "centurion_as_ctn.hpp"
+
 using namespace Catch;
 
-TEST_CASE("CenturionException(CZString)", "[CenturionException]")
+TEST_CASE("centurion_exception(CZString)", "[centurion_exception]")
 {
   SECTION("Null string")
   {
-    centurion_exception ce{nullptr};
+    ctn::centurion_exception ce{nullptr};
     CHECK_THAT(ce.what(), Equals("N/A"));
   }
 
   SECTION("Normal argument")
   {
     const auto* msg = "Foo";
-    centurion_exception ce{msg};
+    ctn::centurion_exception ce{msg};
     CHECK_THAT(ce.what(), Equals(msg));
   }
 }
 
-TEST_CASE("CenturionException(std::string)", "[CenturionException]")
+TEST_CASE("centurion_exception(std::string)", "[centurion_exception]")
 {
   const std::string msg{"Hello"};
-  centurion_exception ce{msg};
+  ctn::centurion_exception ce{msg};
   CHECK_THAT(ce.what(), Equals(msg));
 }
 
-TEST_CASE("CenturionException(CenturionException&)", "[CenturionException]")
+TEST_CASE("centurion_exception(centurion_exception&)", "[centurion_exception]")
 {
-  const centurion_exception ce{"message"};
-  const centurion_exception ce2{ce};
+  const ctn::centurion_exception ce{"message"};
+  const ctn::centurion_exception ce2{ce};
   CHECK_THAT(ce.what(), Equals(ce2.what()));
 }

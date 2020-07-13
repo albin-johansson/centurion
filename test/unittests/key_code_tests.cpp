@@ -200,7 +200,7 @@ TEST_CASE("key_code constants", "[key_code]")
     const ctn::key_code code{keycode};
     CHECK(constant == code);
   };
-SDL_KeyCode c;
+  SDL_KeyCode c;
   SECTION("Unknown") { test_key(ctn::keycodes::unknown, SDLK_UNKNOWN); }
 
   SECTION("Alphabetical keys")
@@ -327,37 +327,22 @@ SDL_KeyCode c;
 
     SECTION("Escape") { test_key(ctn::keycodes::escape, SDLK_ESCAPE); }
 
-    SECTION("Backspace")
-    {
-      test_key(ctn::keycodes::backspace, SDLK_BACKSPACE);
-    }
+    SECTION("Backspace") { test_key(ctn::keycodes::backspace, SDLK_BACKSPACE); }
 
     SECTION("Tab") { test_key(ctn::keycodes::tab, SDLK_TAB); }
 
-    SECTION("Caps")
-    {
-      test_key(ctn::keycodes::caps_lock, SDLK_CAPSLOCK);
-    }
+    SECTION("Caps") { test_key(ctn::keycodes::caps_lock, SDLK_CAPSLOCK); }
   }
 
   SECTION("Modifiers")
   {
-    SECTION("LSHIFT")
-    {
-      test_key(ctn::keycodes::left_shift, SDLK_LSHIFT);
-    }
+    SECTION("LSHIFT") { test_key(ctn::keycodes::left_shift, SDLK_LSHIFT); }
 
-    SECTION("RSHIFT")
-    {
-      test_key(ctn::keycodes::right_shift, SDLK_RSHIFT);
-    }
+    SECTION("RSHIFT") { test_key(ctn::keycodes::right_shift, SDLK_RSHIFT); }
 
     SECTION("LCTRL") { test_key(ctn::keycodes::left_ctrl, SDLK_LCTRL); }
 
-    SECTION("RCTRL")
-    {
-      test_key(ctn::keycodes::right_ctrl, SDLK_RCTRL);
-    }
+    SECTION("RCTRL") { test_key(ctn::keycodes::right_ctrl, SDLK_RCTRL); }
 
     SECTION("LALT") { test_key(ctn::keycodes::left_alt, SDLK_LALT); }
 

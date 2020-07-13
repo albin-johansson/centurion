@@ -196,7 +196,7 @@ class window_base {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_icon(const Surface& icon) noexcept;
+  void set_icon(const surface& icon) noexcept;
 
   /**
    * @brief Sets the title of the window.

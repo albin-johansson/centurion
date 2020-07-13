@@ -1490,7 +1490,7 @@ class texture final {
    * @since 4.0.0
    */
   template <typename T>
-  texture(const basic_renderer<T>& renderer, const Surface& surface)
+  texture(const basic_renderer<T>& renderer, const surface& surface)
   {
     this->m_texture =
         SDL_CreateTextureFromSurface(renderer.get(), surface.get());
@@ -1574,11 +1574,11 @@ class texture final {
   }
 
   /**
-   * @copydoc texture(const basic_renderer<T>&, const Surface&)
+   * @copydoc texture(const basic_renderer<T>&, const surface&)
    */
   template <typename T>
   [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
-                                   const Surface& surface)
+                                   const surface& surface)
       -> std::unique_ptr<texture>
   {
     return std::make_unique<texture>(renderer, surface);
@@ -1614,11 +1614,11 @@ class texture final {
   }
 
   /**
-   * @copydoc texture(const basic_renderer<T>&, const Surface&)
+   * @copydoc texture(const basic_renderer<T>&, const surface&)
    */
   template <typename T>
   [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
-                                   const Surface& surface)
+                                   const surface& surface)
       -> std::shared_ptr<texture>
   {
     return std::make_shared<texture>(renderer, surface);
@@ -1660,7 +1660,7 @@ class texture final {
   {
     const auto blendMode = blend_mode::blend;
     const auto createSurface = [blendMode](czstring path, pixel_format format) {
-      Surface source{path};
+      surface source{path};
       source.set_blend_mode(blendMode);
       return source.convert(format);
     };

@@ -25,7 +25,7 @@
 /**
  * @file surface.hpp
  *
- * @brief Provides the `Surface` class.
+ * @brief Provides the `surface` class.
  *
  * @author Albin Johansson
  *
@@ -52,7 +52,7 @@
 namespace centurion {
 
 /**
- * @class Surface
+ * @class surface
  *
  * @brief Represents a non-accelerated image.
  *
@@ -62,7 +62,7 @@ namespace centurion {
  *
  * @headerfile surface.hpp
  */
-class Surface final {
+class surface final {
  public:
   /**
    * @brief Creates a surface based on the image at the specified path.
@@ -74,7 +74,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit Surface(czstring file);
+  explicit surface(czstring file);
 
   /**
    * @brief Creates a surface by claiming the supplied SDL surface.
@@ -87,7 +87,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit Surface(owner<SDL_Surface*> surface);
+  explicit surface(owner<SDL_Surface*> surface);
 
   /**
    * @brief Creates a copy of the supplied surface.
@@ -99,7 +99,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  Surface(const Surface& other);
+  surface(const surface& other);
 
   /**
    * @brief Creates a surface by moving the supplied surface.
@@ -108,7 +108,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  Surface(Surface&& other) noexcept;
+  surface(surface&& other) noexcept;
 
   /**
    * @brief Copies the supplied surface.
@@ -120,7 +120,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  auto operator=(const Surface& other) -> Surface&;
+  auto operator=(const surface& other) -> surface&;
 
   /**
    * @brief Moves the supplied surface into this surface.
@@ -132,10 +132,10 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  auto operator=(Surface&& other) noexcept -> Surface&;
+  auto operator=(surface&& other) noexcept -> surface&;
 
   CENTURION_API
-  ~Surface() noexcept;
+  ~surface() noexcept;
 
   /**
    * @brief Sets the color of the pixel at the specified coordinate.
@@ -242,7 +242,7 @@ class Surface final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto convert(pixel_format format) const -> Surface;
+  auto convert(pixel_format format) const -> surface;
 
   /**
    * @brief Returns the width of the surface.
@@ -356,24 +356,24 @@ class Surface final {
   void destroy() noexcept;
 
   /**
-   * @brief Moves the contents of the supplied Surface instance into this
+   * @brief Moves the contents of the supplied surface instance into this
    * instance.
    *
    * @param other the instance that will be moved.
    *
    * @since 4.0.0
    */
-  void move(Surface&& other) noexcept;
+  void move(surface&& other) noexcept;
 
   /**
-   * @brief Copies the contents of the supplied Surface instance into this
+   * @brief Copies the contents of the supplied surface instance into this
    * instance.
    *
    * @param other the instance that will be copied.
    *
    * @since 4.0.0
    */
-  void copy(const Surface& other) noexcept;
+  void copy(const surface& other) noexcept;
 
   /**
    * @brief Indicates whether or not the supplied point is within the bounds of
@@ -381,7 +381,7 @@ class Surface final {
    *
    * @param point the point that will be checked.
    *
-   * @return true if the point is within the bounds of the surface; false
+   * @return `true` if the point is within the bounds of the surface; `false`
    * otherwise.
    *
    * @since 4.0.0
@@ -434,10 +434,10 @@ class Surface final {
   [[nodiscard]] auto copy_surface() const -> SDL_Surface*;
 };
 
-static_assert(!std::is_nothrow_copy_constructible_v<Surface>);
-static_assert(!std::is_nothrow_copy_assignable_v<Surface>);
-static_assert(std::is_nothrow_move_constructible_v<Surface>);
-static_assert(std::is_nothrow_move_assignable_v<Surface>);
+static_assert(!std::is_nothrow_copy_constructible_v<surface>);
+static_assert(!std::is_nothrow_copy_assignable_v<surface>);
+static_assert(std::is_nothrow_move_constructible_v<surface>);
+static_assert(std::is_nothrow_move_assignable_v<surface>);
 
 }  // namespace centurion
 

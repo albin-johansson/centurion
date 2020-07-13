@@ -298,7 +298,7 @@ TEST_CASE("Window::set_height", "[Window]")
 TEST_CASE("Window::set_icon", "[Window]")
 {
   ctn::window window;
-  ctn::Surface icon{"resources/panda.png"};
+  ctn::surface icon{"resources/panda.png"};
   CHECK_NOTHROW(window.set_icon(icon));
 }
 

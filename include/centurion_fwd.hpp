@@ -23,7 +23,7 @@ class renderer_view;
 
 class texture;
 
-class Surface;
+class surface;
 
 class window;
 

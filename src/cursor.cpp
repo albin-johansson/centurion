@@ -28,7 +28,7 @@ cursor::cursor(gsl::owner<SDL_Cursor*> sdlCursor)
 }
 
 CENTURION_DEF
-cursor::cursor(const Surface& surface, const point_i& hotspot)
+cursor::cursor(const surface& surface, const point_i& hotspot)
 {
   m_surface = SDL_DuplicateSurface(surface.get());
   if (!m_surface) {
@@ -100,7 +100,7 @@ auto cursor::unique(gsl::owner<SDL_Cursor*> sdlCursor)
 }
 
 CENTURION_DEF
-auto cursor::unique(const Surface& surface, const point_i& hotspot)
+auto cursor::unique(const surface& surface, const point_i& hotspot)
     -> std::unique_ptr<cursor>
 {
   return std::make_unique<cursor>(surface, hotspot);
@@ -120,7 +120,7 @@ auto cursor::shared(gsl::owner<SDL_Cursor*> sdlCursor)
 }
 
 CENTURION_DEF
-auto cursor::shared(const Surface& surface, const point_i& hotspot)
+auto cursor::shared(const surface& surface, const point_i& hotspot)
     -> std::shared_ptr<cursor>
 {
   return std::make_shared<cursor>(surface, hotspot);

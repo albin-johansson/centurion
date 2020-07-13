@@ -5,74 +5,76 @@
 #include <catch.hpp>
 #include <utility>
 
+#include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "colors.hpp"
 #include "graphics.hpp"
 #include "window.hpp"
 
-using namespace centurion;
+static constexpr ctn::czstring path = "resources/panda.png";
 
-static constexpr czstring path = "resources/panda.png";
-
-TEST_CASE("Surface(CZString)", "[Surface]")
+TEST_CASE("Surface(CZString)", "[surface]")
 {
   SECTION("Null path")
   {
-    czstring c = nullptr;
-    CHECK_THROWS_AS(Surface{c}, centurion_exception);
+    ctn::czstring c = nullptr;
+    CHECK_THROWS_AS(ctn::surface{c}, ctn::centurion_exception);
   }
 
-  SECTION("Bad path") { CHECK_THROWS_AS(Surface{""}, centurion_exception); }
+  SECTION("Bad path")
+  {
+    CHECK_THROWS_AS(ctn::surface{""}, ctn::centurion_exception);
+  }
 
-  CHECK_NOTHROW(Surface{path});
+  CHECK_NOTHROW(ctn::surface{path});
 }
 
-TEST_CASE("Surface(SDL_Surface*)", "[Surface]")
+TEST_CASE("Surface(SDL_Surface*)", "[surface]")
 {
   SECTION("Null surface")
   {
     SDL_Surface* s = nullptr;
-    CHECK_THROWS_AS(Surface{s}, centurion_exception);
+    CHECK_THROWS_AS(ctn::surface{s}, ctn::centurion_exception);
   }
 
   SDL_Surface* surface = IMG_Load(path);
-  CHECK_NOTHROW(Surface{surface});
+  CHECK_NOTHROW(ctn::surface{surface});
 }
 
-TEST_CASE("Surface(const Surface&)", "[Surface]")
+TEST_CASE("Surface(const Surface&)", "[surface]")
 {
-  const Surface surface{path};
-  const Surface copy{surface};
+  const ctn::surface surface{path};
+  const ctn::surface copy{surface};
 
   CHECK(surface.get() != copy.get());
   CHECK(surface.get());
   CHECK(copy.get());
 }
 
-TEST_CASE("Surface(Surface&&)", "[Surface]")
+TEST_CASE("Surface(Surface&&)", "[surface]")
 {
-  Surface surface{path};
-  Surface other{std::move(surface)};
+  ctn::surface surface{path};
+  ctn::surface other{std::move(surface)};
 
   CHECK(!surface.get());
   CHECK(other.get());
 }
 
-TEST_CASE("Surface::operator=(const Surface&)", "[Surface]")
+TEST_CASE("Surface::operator=(const Surface&)", "[surface]")
 {
-  Surface fst{path};
-  Surface copy{path};
+  ctn::surface fst{path};
+  ctn::surface copy{path};
 
   copy = fst;
 
   CHECK(fst.get() != copy.get());
 }
 
-TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
+TEST_CASE("Surface::operator=(Surface&&)", "[surface]")
 {
   SECTION("Self-assignment")
   {
-    Surface surface{path};
+    ctn::surface surface{path};
 
     surface = std::move(surface);
     CHECK(surface.get());
@@ -80,8 +82,8 @@ TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
 
   SECTION("Normal usage")
   {
-    Surface surface{path};
-    Surface other{path};
+    ctn::surface surface{path};
+    ctn::surface other{path};
 
     other = std::move(surface);
 
@@ -90,21 +92,21 @@ TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
   }
 }
 
-TEST_CASE("Surface::set_pixel", "[Surface]")
+TEST_CASE("Surface::set_pixel", "[surface]")
 {
-  Surface surface{path};
+  ctn::surface surface{path};
 
-  CHECK_NOTHROW(surface.set_pixel({-1, 0}, red));
-  CHECK_NOTHROW(surface.set_pixel({0, -1}, red));
-  CHECK_NOTHROW(surface.set_pixel({surface.width(), 0}, red));
-  CHECK_NOTHROW(surface.set_pixel({0, surface.height()}, red));
+  CHECK_NOTHROW(surface.set_pixel({-1, 0}, ctn::red));
+  CHECK_NOTHROW(surface.set_pixel({0, -1}, ctn::red));
+  CHECK_NOTHROW(surface.set_pixel({surface.width(), 0}, ctn::red));
+  CHECK_NOTHROW(surface.set_pixel({0, surface.height()}, ctn::red));
 
-  CHECK_NOTHROW(surface.set_pixel({43, 12}, orange));
+  CHECK_NOTHROW(surface.set_pixel({43, 12}, ctn::orange));
 }
 
-TEST_CASE("Surface::set_alpha", "[Surface]")
+TEST_CASE("Surface::set_alpha", "[surface]")
 {
-  Surface surface{path};
+  ctn::surface surface{path};
 
   const auto alpha = 0xCF;
   surface.set_alpha(alpha);
@@ -112,78 +114,78 @@ TEST_CASE("Surface::set_alpha", "[Surface]")
   CHECK(alpha == surface.alpha());
 }
 
-TEST_CASE("Surface::set_color_mod", "[Surface]")
+TEST_CASE("Surface::set_color_mod", "[surface]")
 {
-  Surface surface{path};
+  ctn::surface surface{path};
 
-  const auto& color = hot_pink;
+  const auto& color = ctn::hot_pink;
   surface.set_color_mod(color);
 
   CHECK(color == surface.color_mod());
 }
 
-TEST_CASE("Surface::set_blend_mode", "[Surface]")
+TEST_CASE("Surface::set_blend_mode", "[surface]")
 {
-  Surface surface{path};
+  ctn::surface surface{path};
 
-  const auto mode = blend_mode::mod;
+  const auto mode = ctn::blend_mode::mod;
   surface.set_blend_mode(mode);
 
   CHECK(mode == surface.blend_mode());
 }
 
-TEST_CASE("Surface::width", "[Surface]")
+TEST_CASE("Surface::width", "[surface]")
 {
-  const Surface surface{path};
+  const ctn::surface surface{path};
   CHECK(surface.width() == 200);
 }
 
-TEST_CASE("Surface::height", "[Surface]")
+TEST_CASE("Surface::height", "[surface]")
 {
-  const Surface surface{path};
+  const ctn::surface surface{path};
   CHECK(surface.height() == 150);
 }
 
-TEST_CASE("Surface::pitch", "[Surface]")
+TEST_CASE("Surface::pitch", "[surface]")
 {
-  const Surface surface{path};
+  const ctn::surface surface{path};
   CHECK(surface.pitch() == (4 * surface.width()));
 }
 
-TEST_CASE("Surface::clip", "[Surface]")
+TEST_CASE("Surface::clip", "[surface]")
 {
-  const rect_i rect{{48, 29}, {34, 89}};
+  const ctn::rect_i rect{{48, 29}, {34, 89}};
 
   SECTION("Non-const")
   {
-    Surface surface{path};
+    ctn::surface surface{path};
     surface.get()->clip_rect = static_cast<SDL_Rect>(rect);
     CHECK(surface.clip() == rect);
   }
 
   SECTION("Const")
   {
-    const Surface surface{path};
+    const ctn::surface surface{path};
     surface.get()->clip_rect = static_cast<SDL_Rect>(rect);
     CHECK(surface.clip() == rect);
   }
 }
 
-TEST_CASE("Surface::pixels", "[Surface]")
+TEST_CASE("Surface::pixels", "[surface]")
 {
   SECTION("Const")
   {
-    const Surface surface{path};
+    const ctn::surface surface{path};
     CHECK(surface.pixels());
   }
   SECTION("Non-const")
   {
-    Surface surface{path};
+    ctn::surface surface{path};
     CHECK(surface.pixels());
   }
 }
 
-TEST_CASE("Surface::to_texture", "[Surface]")
+TEST_CASE("Surface::to_texture", "[surface]")
 {
   // TODO replace with other API
   //  const Surface surface{path};
@@ -193,38 +195,38 @@ TEST_CASE("Surface::to_texture", "[Surface]")
   //  CHECK(surface.to_texture(renderer));
 }
 
-TEST_CASE("Surface::convert", "[Surface]")
+TEST_CASE("Surface::convert", "[surface]")
 {
-  Surface original{path};
-  original.set_blend_mode(blend_mode::blend);
+  ctn::surface original{path};
+  original.set_blend_mode(ctn::blend_mode::blend);
   original.set_alpha(0xAE);
-  original.set_color_mod(red);
+  original.set_color_mod(ctn::red);
 
-  const auto pixelFormat = pixel_format::rgba8888;
-  Surface converted = original.convert(pixelFormat);
+  const auto pixelFormat = ctn::pixel_format::rgba8888;
+  ctn::surface converted = original.convert(pixelFormat);
 
   CHECK(converted.blend_mode() == original.blend_mode());
   CHECK(converted.alpha() == original.alpha());
   CHECK(converted.color_mod() == original.color_mod());
 }
 
-TEST_CASE("Surface::get", "[Surface]")
+TEST_CASE("Surface::get", "[surface]")
 {
-  Surface surface{path};
+  ctn::surface surface{path};
   CHECK(surface.get());
 }
 
-TEST_CASE("Surface to SDL_Surface*", "[Surface]")
+TEST_CASE("Surface to SDL_Surface*", "[surface]")
 {
   SECTION("Const")
   {
-    const Surface surface{path};
+    const ctn::surface surface{path};
     CHECK(surface.operator const SDL_Surface*());
   }
 
   SECTION("Non-const")
   {
-    Surface surface{path};
+    ctn::surface surface{path};
     CHECK(surface.operator SDL_Surface*());
   }
 }

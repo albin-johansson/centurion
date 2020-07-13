@@ -20,14 +20,14 @@ TEST_CASE("cursor(gsl::owner<SDL_Cursor*>)", "[cursor]")
 
 TEST_CASE("cursor(Surface, IPoint)", "[cursor]")
 {
-  const ctn::Surface surface{"resources/panda.png"};
+  const ctn::surface surface{"resources/panda.png"};
   const ctn::point_i hotspot{12, 14};
   ctn::cursor cursor{surface, hotspot};
 }
 
 TEST_CASE("cursor(cursor&&)", "[cursor]")
 {
-  const ctn::Surface surface{"resources/panda.png"};
+  const ctn::surface surface{"resources/panda.png"};
   const ctn::point_i hotspot{12, 14};
   ctn::cursor cursor{surface, hotspot};
 
@@ -41,7 +41,7 @@ TEST_CASE("cursor::operator=(cursor&&)", "[cursor]")
 {
   SECTION("Self-assignment")
   {
-    const ctn::Surface surface{"resources/panda.png"};
+    const ctn::surface surface{"resources/panda.png"};
     const ctn::point_i hotspot{12, 14};
     ctn::cursor cursor{surface, hotspot};
 
@@ -52,7 +52,7 @@ TEST_CASE("cursor::operator=(cursor&&)", "[cursor]")
 
   SECTION("Normal usage")
   {
-    const ctn::Surface surface{"resources/panda.png"};
+    const ctn::surface surface{"resources/panda.png"};
     const ctn::point_i hotspot{12, 14};
     ctn::cursor cursor{surface, hotspot};
     ctn::cursor other{surface, hotspot};
@@ -71,11 +71,11 @@ TEST_CASE("cursor::unique", "[cursor]")
   CHECK(ctn::cursor::unique(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW)));
   CHECK_THROWS_AS(ctn::cursor::unique(nullptr), ctn::centurion_exception);
 
-  CHECK(ctn::cursor::unique(ctn::Surface{"resources/panda.png"}, {10, 10}));
+  CHECK(ctn::cursor::unique(ctn::surface{"resources/panda.png"}, {10, 10}));
 
   SECTION("Out-of-bounds hotspot")
   {
-    ctn::Surface surface{"resources/panda.png"};
+    ctn::surface surface{"resources/panda.png"};
     ctn::point_i hotspot{1, surface.height() + 1};
     CHECK_THROWS_AS(ctn::cursor::unique(surface, hotspot),
                     ctn::centurion_exception);
@@ -89,11 +89,11 @@ TEST_CASE("cursor::shared", "[cursor]")
   CHECK(ctn::cursor::shared(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE)));
   CHECK_THROWS_AS(ctn::cursor::shared(nullptr), ctn::centurion_exception);
 
-  CHECK(ctn::cursor::shared(ctn::Surface{"resources/panda.png"}, {8, 28}));
+  CHECK(ctn::cursor::shared(ctn::surface{"resources/panda.png"}, {8, 28}));
 
   SECTION("Out-of-bounds hotspot")
   {
-    ctn::Surface surface{"resources/panda.png"};
+    ctn::surface surface{"resources/panda.png"};
     ctn::point_i hotspot{surface.width() + 1, 1};
     CHECK_THROWS_AS(ctn::cursor::shared(surface, hotspot),
                     ctn::centurion_exception);

@@ -1,12 +1,11 @@
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "event.hpp"
 
-using namespace centurion;
-
-TEST_CASE("ControllerDeviceEvent::set_which", "[ControllerDeviceEvent]")
+TEST_CASE("controller_device_event::set_which", "[controller_device_event]")
 {
-  controller_device_event event;
+  ctn::controller_device_event event;
 
   const auto which = 7;
   event.set_which(which);
@@ -14,16 +13,16 @@ TEST_CASE("ControllerDeviceEvent::set_which", "[ControllerDeviceEvent]")
   CHECK(which == event.which());
 }
 
-TEST_CASE("ControllerDeviceEvent::which", "[ControllerDeviceEvent]")
+TEST_CASE("controller_device_event::which", "[controller_device_event]")
 {
   SDL_ControllerDeviceEvent sdlEvent;
   sdlEvent.which = 11;
-  controller_device_event event{sdlEvent};
+  ctn::controller_device_event event{sdlEvent};
 
   CHECK(event.which() == 11);
 }
 
-TEST_CASE("ControllerDeviceEvent()", "[ControllerDeviceEvent]")
+TEST_CASE("controller_device_event()", "[controller_device_event]")
 {
-  CHECK_NOTHROW(controller_device_event{{}});
+  CHECK_NOTHROW(ctn::controller_device_event{{}});
 }

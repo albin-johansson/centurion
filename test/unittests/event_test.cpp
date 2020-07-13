@@ -6,7 +6,7 @@ using namespace centurion;
 
 namespace {
 
-[[nodiscard]] auto create_event(Uint32 type) -> event
+[[nodiscard]] auto create_event(u32 type) -> event
 {
   SDL_Event sdlEvent;
   sdlEvent.type = type;
@@ -192,7 +192,7 @@ TEST_CASE("Event::type", "[Event]")
 {
   const auto create_sdl_event = [](EventType type) noexcept {
     SDL_Event event{};
-    event.type = static_cast<Uint32>(type);
+    event.type = static_cast<u32>(type);
     return event;
   };
 

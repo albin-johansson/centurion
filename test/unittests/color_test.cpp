@@ -7,7 +7,7 @@
 #include "colors.hpp"
 #include "log.hpp"
 
-TEST_CASE("Color()", "[Color]")
+TEST_CASE("color()", "[color]")
 {
   ctn::color c;
   CHECK(0 == c.red());
@@ -16,7 +16,7 @@ TEST_CASE("Color()", "[Color]")
   CHECK(0xFF == c.alpha());
 }
 
-TEST_CASE("Color(Color&&)", "[Color]")
+TEST_CASE("color(color&&)", "[color]")
 {
   const auto r = 0xAE;
   const auto g = 0xDD;
@@ -30,7 +30,7 @@ TEST_CASE("Color(Color&&)", "[Color]")
   CHECK(a == other.alpha());
 }
 
-TEST_CASE("Color(Uint8, Uint8, Uint8, Uint8)", "[Color]")
+TEST_CASE("color(u8, u8, u8, u8)", "[color]")
 {
   const auto r = 0xA5;
   const auto g = 0xB3;
@@ -58,7 +58,7 @@ TEST_CASE("Color(Uint8, Uint8, Uint8, Uint8)", "[Color]")
   }
 }
 
-TEST_CASE("Color::operator=(Color&)", "[Color]")
+TEST_CASE("color::operator=(color&)", "[color]")
 {
   ctn::color color{0xFE, 0x13, 0xA8, 0xCA};
   const ctn::color other{0xBE, 0x44, 0xAC, 0xFD};
@@ -70,7 +70,7 @@ TEST_CASE("Color::operator=(Color&)", "[Color]")
   CHECK(color == other);
 }
 
-TEST_CASE("Color::operator=(Color&&)", "[Color]")
+TEST_CASE("color::operator=(color&&)", "[color]")
 {
   ctn::color color{0xFE, 0x13, 0xA8, 0xCA};
   const auto r = 0xCC;
@@ -86,7 +86,7 @@ TEST_CASE("Color::operator=(Color&&)", "[Color]")
   CHECK(a == color.alpha());
 }
 
-TEST_CASE("Color from SDL_Color", "[Color]")
+TEST_CASE("color from SDL_Color", "[color]")
 {
   const auto sc = SDL_Color{0x3F, 0x9A, 0xCC, 0x17};
 
@@ -111,7 +111,7 @@ TEST_CASE("Color from SDL_Color", "[Color]")
   }
 }
 
-TEST_CASE("Color from SDL_MessageBoxColor", "[Color]")
+TEST_CASE("color from SDL_MessageBoxColor", "[color]")
 {
   const SDL_MessageBoxColor sc{0xDA, 0x5E, 0x81};
 
@@ -134,7 +134,7 @@ TEST_CASE("Color from SDL_MessageBoxColor", "[Color]")
   }
 }
 
-TEST_CASE("Equality operators", "[Color]")
+TEST_CASE("Equality operators", "[color]")
 {
   SECTION("Reflexivity")
   {
@@ -175,7 +175,7 @@ TEST_CASE("Equality operators", "[Color]")
   }
 }
 
-TEST_CASE("Color setters", "[Color]")
+TEST_CASE("color setters", "[color]")
 {
   ctn::color c;
   SECTION("Red")
@@ -207,7 +207,7 @@ TEST_CASE("Color setters", "[Color]")
   }
 }
 
-TEST_CASE("Color conversions", "[Color]")
+TEST_CASE("color conversions", "[color]")
 {
   SECTION("Convert to SDL_Color")
   {
@@ -252,7 +252,7 @@ TEST_CASE("Color conversions", "[Color]")
   }
 }
 
-TEST_CASE("Color::to_string", "[Color]")
+TEST_CASE("color::to_string", "[color]")
 {
   const ctn::color color{0x12, 0xFA, 0xCC, 0xAD};
   ctn::log::info(ctn::log::category::test, "%s", color.to_string().c_str());

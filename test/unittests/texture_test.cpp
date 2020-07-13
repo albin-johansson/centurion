@@ -325,7 +325,7 @@ TEST_CASE("texture::format", "[texture]")
     ctn::texture texture{renderer, pandaPath};
     SDL_Texture* sdlTexture = texture.get();
 
-    u32 format = 0;
+    ctn::u32 format = 0;
     SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
 
     CHECK(texture.format() == static_cast<ctn::pixel_format>(format));

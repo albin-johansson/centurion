@@ -681,7 +681,7 @@ TEST_CASE("Window::check_flag", "[Window]")
   const auto validate = [&window, sdlWindow](SDL_WindowFlags flag) noexcept {
     const bool ctnValue = window.check_flag(flag);
     const bool sdlValue =
-        SDL_GetWindowFlags(sdlWindow) & static_cast<u32>(flag);
+        SDL_GetWindowFlags(sdlWindow) & static_cast<ctn::u32>(flag);
     return ctnValue == sdlValue;
   };
 

@@ -119,7 +119,7 @@ The following example demonstrates all of the various methods available for font
 Text rendering
 ~~~~~~~~~~~~~~
 There are four options when rendering text. You can render text that is "blended",
-"shaded", "solid" and "blended and wrapped". The following image displays a piece of text
+"shaded", "solid" or "blended and wrapped". The following image displays a piece of text
 rendered with the various options.
 
 .. image:: ../../meta/text_rendering.png

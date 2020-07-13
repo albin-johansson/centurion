@@ -89,7 +89,7 @@ void window_base::set_height(int height) noexcept
 }
 
 CENTURION_DEF
-void window_base::set_icon(const Surface& icon) noexcept
+void window_base::set_icon(const surface& icon) noexcept
 {
   SDL_SetWindowIcon(m_window, icon.get());
 }

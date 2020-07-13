@@ -6,7 +6,7 @@ using namespace centurion;
 
 TEST_CASE("JoyDeviceEvent::set_which", "[JoyDeviceEvent]")
 {
-  JoyDeviceEvent event;
+  joy_device_event event;
 
   const auto which = 84;
   event.set_which(which);
@@ -18,7 +18,7 @@ TEST_CASE("JoyDeviceEvent::which", "[JoyDeviceEvent]")
 {
   SDL_JoyDeviceEvent sdlEvent;
   sdlEvent.which = 27;
-  JoyDeviceEvent event{sdlEvent};
+  joy_device_event event{sdlEvent};
 
   CHECK(event.which() == sdlEvent.which);
 }

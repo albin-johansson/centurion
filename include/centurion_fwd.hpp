@@ -16,6 +16,15 @@
 
 namespace centurion {
 
+template <typename T>
+struct basic_area;
+
+template <typename T>
+struct basic_rect;
+
+template <typename T>
+class basic_point;
+
 template <typename FontKey>
 class basic_renderer;
 
@@ -23,11 +32,45 @@ class renderer_view;
 
 class texture;
 
-class Surface;
+class surface;
 
 class window;
 
+class window_view;
+
 class font;
+
+class color;
+
+class cursor;
+
+class event;
+
+class scan_code;
+
+class key_code;
+
+class sound_effect;
+
+class music;
+
+class pref_path;
+
+class base_path;
+
+namespace input {
+
+class key_state;
+
+class mouse_state;
+
+}  // namespace input
+
+namespace messagebox {
+
+class message_box;
+
+}
 
 }  // namespace centurion
 

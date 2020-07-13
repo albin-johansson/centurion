@@ -6,22 +6,22 @@
 namespace centurion {
 
 CENTURION_DEF
-JoyDeviceEvent::JoyDeviceEvent() noexcept : CommonEvent{}
+joy_device_event::joy_device_event() noexcept : common_event{}
 {}
 
 CENTURION_DEF
-JoyDeviceEvent::JoyDeviceEvent(const SDL_JoyDeviceEvent& event) noexcept
-    : CommonEvent{event}
+joy_device_event::joy_device_event(const SDL_JoyDeviceEvent& event) noexcept
+    : common_event{event}
 {}
 
 CENTURION_DEF
-void JoyDeviceEvent::set_which(i32 which) noexcept
+void joy_device_event::set_which(i32 which) noexcept
 {
   m_event.which = which;
 }
 
 CENTURION_DEF
-auto JoyDeviceEvent::which() const noexcept -> i32
+auto joy_device_event::which() const noexcept -> i32
 {
   return m_event.which;
 }

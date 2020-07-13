@@ -6,7 +6,7 @@ using namespace centurion;
 
 TEST_CASE("ControllerDeviceEvent::set_which", "[ControllerDeviceEvent]")
 {
-  ControllerDeviceEvent event;
+  controller_device_event event;
 
   const auto which = 7;
   event.set_which(which);
@@ -18,12 +18,12 @@ TEST_CASE("ControllerDeviceEvent::which", "[ControllerDeviceEvent]")
 {
   SDL_ControllerDeviceEvent sdlEvent;
   sdlEvent.which = 11;
-  ControllerDeviceEvent event{sdlEvent};
+  controller_device_event event{sdlEvent};
 
   CHECK(event.which() == 11);
 }
 
 TEST_CASE("ControllerDeviceEvent()", "[ControllerDeviceEvent]")
 {
-  CHECK_NOTHROW(ControllerDeviceEvent{{}});
+  CHECK_NOTHROW(controller_device_event{{}});
 }

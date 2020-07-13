@@ -90,7 +90,7 @@ TEST_CASE("texture(Renderer&, char*)", "[texture]")
 TEST_CASE("texture(Renderer&, Surface&", "[texture]")
 {
   test([](ctn::renderer& renderer) {
-    ctn::Surface surface{pandaPath};
+    ctn::surface surface{pandaPath};
     CHECK_NOTHROW(ctn::texture{renderer, surface});
   });
 }
@@ -152,7 +152,7 @@ TEST_CASE("texture::operator=(texture&&)", "[texture]")
 TEST_CASE("texture::unique", "[texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
-    const ctn::Surface surface{pandaPath};
+    const ctn::surface surface{pandaPath};
 
     CHECK_THROWS_AS(ctn::texture::unique(nullptr), ctn::centurion_exception);
 
@@ -168,7 +168,7 @@ TEST_CASE("texture::unique", "[texture]")
 TEST_CASE("texture:::shared", "[texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
-    const ctn::Surface surface{pandaPath};
+    const ctn::surface surface{pandaPath};
 
     CHECK_THROWS_AS(ctn::texture::shared(nullptr), ctn::centurion_exception);
 

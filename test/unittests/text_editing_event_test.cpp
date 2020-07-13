@@ -6,7 +6,7 @@ using namespace centurion;
 
 TEST_CASE("TextEditingEvent::set_window_id", "[TextEditingEvent]")
 {
-  TextEditingEvent event;
+  text_editing_event event;
 
   const auto id = 8;
   event.set_window_id(id);
@@ -16,7 +16,7 @@ TEST_CASE("TextEditingEvent::set_window_id", "[TextEditingEvent]")
 
 TEST_CASE("TextEditingEvent::set_start", "[TextEditingEvent]")
 {
-  TextEditingEvent event;
+  text_editing_event event;
 
   const auto start = 4;
   event.set_start(start);
@@ -26,7 +26,7 @@ TEST_CASE("TextEditingEvent::set_start", "[TextEditingEvent]")
 
 TEST_CASE("TextEditingEvent::set_length", "[TextEditingEvent]")
 {
-  TextEditingEvent event;
+  text_editing_event event;
 
   const auto length = 9;
   event.set_length(length);
@@ -50,7 +50,7 @@ TEST_CASE("TextEditingEvent::window_id", "[TextEditingEvent]")
 {
   SDL_TextEditingEvent sdlEvent;
   sdlEvent.windowID = 7;
-  TextEditingEvent event{sdlEvent};
+  text_editing_event event{sdlEvent};
 
   CHECK(event.window_id() == sdlEvent.windowID);
 }
@@ -59,7 +59,7 @@ TEST_CASE("TextEditingEvent::start", "[TextEditingEvent]")
 {
   SDL_TextEditingEvent sdlEvent;
   sdlEvent.start = 4;
-  TextEditingEvent event{sdlEvent};
+  text_editing_event event{sdlEvent};
 
   CHECK(event.start() == sdlEvent.start);
 }
@@ -70,7 +70,7 @@ TEST_CASE("TextEditingEvent::length", "[TextEditingEvent]")
   {
     SDL_TextEditingEvent sdlEvent;
     sdlEvent.length = 4;
-    TextEditingEvent event{sdlEvent};
+    text_editing_event event{sdlEvent};
 
     CHECK(event.length() == sdlEvent.length);
   }
@@ -79,7 +79,7 @@ TEST_CASE("TextEditingEvent::length", "[TextEditingEvent]")
   {
     SDL_TextEditingEvent sdlEvent;
     sdlEvent.length = -1;
-    TextEditingEvent event{sdlEvent};
+    text_editing_event event{sdlEvent};
 
     CHECK(event.length() == 0);
   }
@@ -88,7 +88,7 @@ TEST_CASE("TextEditingEvent::length", "[TextEditingEvent]")
   {
     SDL_TextEditingEvent sdlEvent;
     sdlEvent.length = 33;
-    TextEditingEvent event{sdlEvent};
+    text_editing_event event{sdlEvent};
 
     CHECK(event.length() == 32);
   }
@@ -96,5 +96,5 @@ TEST_CASE("TextEditingEvent::length", "[TextEditingEvent]")
 
 TEST_CASE("TextEditingEvent()", "[TextEditingEvent]")
 {
-  CHECK_NOTHROW(TextEditingEvent{{}});
+  CHECK_NOTHROW(text_editing_event{{}});
 }

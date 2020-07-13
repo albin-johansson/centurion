@@ -40,10 +40,11 @@
 #include <SDL.h>
 
 #include <array>
+#include <type_traits>
 
 #include "centurion_api.hpp"
+#include "centurion_fwd.hpp"
 #include "centurion_utils.hpp"
-#include "key.hpp"
 #include "key_modifier.hpp"
 
 /**
@@ -108,14 +109,30 @@ class key_state final {
    *
    * @details This method returns false if the supplied key isn't recognized.
    *
-   * @param key the key that will be checked.
+   * @param code the scan code that will be checked.
    *
    * @return `true` if the key is being pressed; `false` otherwise.
    *
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto is_pressed(const key& key) const noexcept -> bool;
+  auto is_pressed(const scan_code& code) const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the specified key is being pressed.
+   *
+   * @details This method returns false if the supplied key isn't recognized.
+   *
+   * @note This method is slightly slower that the `scan_code` version.
+   *
+   * @param code the key code that will be checked.
+   *
+   * @return `true` if the key is being pressed; `false` otherwise.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_QUERY
+  auto is_pressed(const key_code& code) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the specified key has been pressed during
@@ -123,14 +140,31 @@ class key_state final {
    *
    * @details This method returns false if the supplied key isn't recognized.
    *
-   * @param key the key that will be checked.
+   * @param code the scan code that will be checked.
    *
    * @return `true` if the key has been held down; `false` otherwise.
    *
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto is_held(const key& key) const noexcept -> bool;
+  auto is_held(const scan_code& code) const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the specified key has been pressed during
+   * more than one update of the key state.
+   *
+   * @details This method returns false if the supplied key isn't recognized.
+   *
+   * @note This method is slightly slower that the `scan_code` version.
+   *
+   * @param code the key code that will be checked.
+   *
+   * @return `true` if the key has been held down; `false` otherwise.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_QUERY
+  auto is_held(const key_code& code) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not a key just became pressed in the last
@@ -138,14 +172,31 @@ class key_state final {
    *
    * @details This method returns false if the supplied key isn't recognized.
    *
-   * @param key the key that will be checked.
+   * @param code the scan code that will be checked.
    *
    * @return `true` if the key has just been pressed; `false` otherwise.
    *
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto was_just_pressed(const key& key) const noexcept -> bool;
+  auto was_just_pressed(const scan_code& code) const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not a key just became pressed in the last
+   * update of the key state.
+   *
+   * @details This method returns false if the supplied key isn't recognized.
+   *
+   * @note This method is slightly slower that the `scan_code` version.
+   *
+   * @param code the key code that will be checked.
+   *
+   * @return `true` if the key has just been pressed; `false` otherwise.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_QUERY
+  auto was_just_pressed(const key_code& code) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the specified key was released in the last
@@ -153,14 +204,31 @@ class key_state final {
    *
    * @details This method returns false if the supplied key isn't recognized.
    *
-   * @param key the key that will be checked.
+   * @param key the scan code that will be checked.
    *
    * @return `true` if the key was released; `false` otherwise.
    *
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto was_just_released(const key& key) const noexcept -> bool;
+  auto was_just_released(const scan_code& code) const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the specified key was released in the last
+   * update of the key state.
+   *
+   * @details This method returns false if the supplied key isn't recognized.
+   *
+   * @note This method is slightly slower that the `scan_code` version.
+   *
+   * @param key the key code that will be checked.
+   *
+   * @return `true` if the key was released; `false` otherwise.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_QUERY
+  auto was_just_released(const key_code& code) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the specified key modifier is active.

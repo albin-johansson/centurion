@@ -88,9 +88,7 @@ class scan_code final {
    *
    * @since 5.0.0
    */
-  constexpr explicit scan_code(SDL_Scancode scancode) noexcept
-      : m_code{scancode}
-  {}
+  constexpr scan_code(SDL_Scancode scancode) noexcept : m_code{scancode} {}
 
   /**
    * @brief Creates a `scan_code` instance based on a key code.
@@ -221,7 +219,7 @@ class scan_code final {
   explicit operator SDL_Scancode() const noexcept { return m_code; }
 
   /**
-   * @brief Converts to `SDL_Keycode`.
+   * @brief Converts to `SDL_KeyCode`.
    *
    * @return the key code associated with the internal scan code.
    *
@@ -229,14 +227,46 @@ class scan_code final {
    *
    * @since 5.0.0
    */
-  explicit operator SDL_Keycode() const noexcept
+  explicit operator SDL_KeyCode() const noexcept
   {
-    return SDL_GetKeyFromScancode(m_code);
+    return static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(m_code));
   }
 
  private:
   SDL_Scancode m_code{SDL_SCANCODE_UNKNOWN};
 };
+
+/**
+ * @brief Indicates whether or not two scan codes are the same.
+ *
+ * @param lhs the left-hand side scan code.
+ * @param rhs the right-hand side scan code.
+ *
+ * @return `true` if the scan codes are the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto operator==(const scan_code& lhs,
+                                     const scan_code& rhs) noexcept -> bool
+{
+  return lhs.get() == rhs.get();
+}
+
+/**
+ * @brief Indicates whether or not two scan codes aren't the same.
+ *
+ * @param lhs the left-hand side scan code.
+ * @param rhs the right-hand side scan code.
+ *
+ * @return `true` if the scan codes aren't the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto operator!=(const scan_code& lhs,
+                                     const scan_code& rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
  * @namespace centurion::scancodes

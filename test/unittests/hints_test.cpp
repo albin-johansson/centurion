@@ -18,7 +18,7 @@ void test_hint(Lambda&& lambda)
   lambda();
 
   if (optPrev) {
-    set_hint<Hint, Prio::Default>(*optPrev);
+    set_hint<Hint, hint_prio::low>(*optPrev);
   }
 }
 
@@ -36,15 +36,15 @@ void test_bool_hint()
 
 }  // namespace
 
-TEST_CASE("HintPrio", "[Hints]")
+TEST_CASE("hint_prio", "[Hints]")
 {
-  CHECK(Prio::Default == static_cast<Prio>(SDL_HINT_DEFAULT));
-  CHECK(Prio::Normal == static_cast<Prio>(SDL_HINT_NORMAL));
-  CHECK(Prio::Override == static_cast<Prio>(SDL_HINT_OVERRIDE));
+  CHECK(hint_prio::low == static_cast<hint_prio>(SDL_HINT_DEFAULT));
+  CHECK(hint_prio::normal == static_cast<hint_prio>(SDL_HINT_NORMAL));
+  CHECK(hint_prio::override == static_cast<hint_prio>(SDL_HINT_OVERRIDE));
 
-  CHECK(static_cast<Prio>(SDL_HINT_DEFAULT) == Prio::Default);
-  CHECK(static_cast<Prio>(SDL_HINT_NORMAL) == Prio::Normal);
-  CHECK(static_cast<Prio>(SDL_HINT_OVERRIDE) == Prio::Override);
+  CHECK(static_cast<hint_prio>(SDL_HINT_DEFAULT) == hint_prio::low);
+  CHECK(static_cast<hint_prio>(SDL_HINT_NORMAL) == hint_prio::normal);
+  CHECK(static_cast<hint_prio>(SDL_HINT_OVERRIDE) == hint_prio::override);
 }
 
 TEST_CASE("set_hint", "[Hints]")
@@ -336,15 +336,15 @@ TEST_CASE("set_hint", "[Hints]")
     });
   }
 
-  SECTION("NoSignalHandlers") { test_bool_hint<NoSignalHandlers>(); };
+  SECTION("NoSignalHandlers") { test_bool_hint<NoSignalHandlers>(); }
 
-  SECTION("Direct3D11Debug") { test_bool_hint<Direct3D11Debug>(); };
+  SECTION("Direct3D11Debug") { test_bool_hint<Direct3D11Debug>(); }
 
-  SECTION("Direct3DThreadSafe") { test_bool_hint<Direct3DThreadSafe>(); };
+  SECTION("Direct3DThreadSafe") { test_bool_hint<Direct3DThreadSafe>(); }
 
-  SECTION("EnableOpenGLShaders") { test_bool_hint<EnableOpenGLShaders>(); };
+  SECTION("EnableOpenGLShaders") { test_bool_hint<EnableOpenGLShaders>(); }
 
-  SECTION("OpenGLESDriver") { test_bool_hint<OpenGLESDriver>(); };
+  SECTION("OpenGLESDriver") { test_bool_hint<OpenGLESDriver>(); }
 
   SECTION("Orientations")
   {
@@ -368,13 +368,13 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK_THAT(get_hint<Orientations>().value(),
                  Catch::Equals("PortraitUpsideDown LandscapeRight"));
     });
-  };
+  }
 
   SECTION("EnableVSync")
   {
     test_bool_hint<EnableVSync>();
     set_hint<EnableVSync>(true);
-  };
+  }
 
   SECTION("ScaleQuality")
   {
@@ -388,32 +388,32 @@ TEST_CASE("set_hint", "[Hints]")
       set_hint<ScaleQuality>(ScaleQuality::Best);
       CHECK(get_hint<ScaleQuality>() == ScaleQuality::Best);
     });
-  };
+  }
 
-  SECTION("AllowScreensaver") { test_bool_hint<AllowScreensaver>(); };
+  SECTION("AllowScreensaver") { test_bool_hint<AllowScreensaver>(); }
 
-  SECTION("VideoExternalContext") { test_bool_hint<VideoExternalContext>(); };
+  SECTION("VideoExternalContext") { test_bool_hint<VideoExternalContext>(); }
 
-  SECTION("DisableHighDPI") { test_bool_hint<DisableHighDPI>(); };
+  SECTION("DisableHighDPI") { test_bool_hint<DisableHighDPI>(); }
 
-  SECTION("MacFullscreenSpaces") { test_bool_hint<MacFullscreenSpaces>(); };
+  SECTION("MacFullscreenSpaces") { test_bool_hint<MacFullscreenSpaces>(); }
 
-  SECTION("MinimizeOnFocusLoss") { test_bool_hint<MinimizeOnFocusLoss>(); };
+  SECTION("MinimizeOnFocusLoss") { test_bool_hint<MinimizeOnFocusLoss>(); }
 
-  SECTION("X11NetWMPing") { test_bool_hint<X11NetWMPing>(); };
+  SECTION("X11NetWMPing") { test_bool_hint<X11NetWMPing>(); }
 
   SECTION("X11XNetWMBypassCompositor")
   {
     test_bool_hint<X11XNetWMBypassCompositor>();
-  };
+  }
 
-  SECTION("X11ForceEGL") { test_bool_hint<X11ForceEGL>(); };
+  SECTION("X11ForceEGL") { test_bool_hint<X11ForceEGL>(); }
 
-  SECTION("X11Xinerama") { test_bool_hint<X11Xinerama>(); };
+  SECTION("X11Xinerama") { test_bool_hint<X11Xinerama>(); }
 
-  SECTION("X11XRandR") { test_bool_hint<X11XRandR>(); };
+  SECTION("X11XRandR") { test_bool_hint<X11XRandR>(); }
 
-  SECTION("X11XVidMode") { test_bool_hint<X11XVidMode>(); };
+  SECTION("X11XVidMode") { test_bool_hint<X11XVidMode>(); }
 
   SECTION("X11WindowVisualID")
   {
@@ -423,7 +423,7 @@ TEST_CASE("set_hint", "[Hints]")
 
       set_hint<X11WindowVisualID>("");
     });
-  };
+  }
 
   SECTION("WAVERIFFChunkSize")
   {
@@ -440,7 +440,7 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK(set_hint<WAVERIFFChunkSize>(WAVERIFFChunkSize::Maximum));
       CHECK(get_hint<WAVERIFFChunkSize>() == WAVERIFFChunkSize::Maximum);
     });
-  };
+  }
 
   SECTION("WAVETruncation")
   {
@@ -457,7 +457,7 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK(set_hint<WAVETruncation>(WAVETruncation::DropBlock));
       CHECK(get_hint<WAVETruncation>() == WAVETruncation::DropBlock);
     });
-  };
+  }
 
   SECTION("WAVEFactChunk")
   {
@@ -474,12 +474,12 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK(set_hint<WAVEFactChunk>(WAVEFactChunk::Strict));
       CHECK(get_hint<WAVEFactChunk>() == WAVEFactChunk::Strict);
     });
-  };
+  }
 
   SECTION("WindowsDisableThreadNaming")
   {
     test_bool_hint<WindowsDisableThreadNaming>();
-  };
+  }
 
   SECTION("WindowsIntResourceIcon")
   {
@@ -490,7 +490,7 @@ TEST_CASE("set_hint", "[Hints]")
 
       set_hint<WindowsIntResourceIcon>("");
     });
-  };
+  }
 
   SECTION("WindowsIntResourceIconSmall")
   {
@@ -501,7 +501,7 @@ TEST_CASE("set_hint", "[Hints]")
 
       set_hint<WindowsIntResourceIcon>("");
     });
-  };
+  }
 
   SECTION("WinD3DCompiler")
   {
@@ -520,9 +520,9 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("WindowsEnableMessageLoop")
   {
     test_bool_hint<WindowsEnableMessageLoop>();
-  };
+  }
 
-  SECTION("WindowsNoCloseOnAltF4") { test_bool_hint<WindowsNoCloseOnAltF4>(); };
+  SECTION("WindowsNoCloseOnAltF4") { test_bool_hint<WindowsNoCloseOnAltF4>(); }
 
   SECTION("WindowSharePixelFormat")
   {
@@ -532,14 +532,14 @@ TEST_CASE("set_hint", "[Hints]")
 
       CHECK(set_hint<WindowSharePixelFormat>(str.c_str()));
       CHECK_THAT(get_hint<WindowSharePixelFormat>().value(),
-                 Catch::Equals(str.c_str()));
+                 Catch::Equals(str));
     });
-  };
+  }
 
   SECTION("WindowFrameUsableWhileCursorHidden")
   {
     test_bool_hint<WindowFrameUsableWhileCursorHidden>();
-  };
+  }
 
   SECTION("WinRTPrivacyPolicyLabel")
   {
@@ -560,7 +560,7 @@ TEST_CASE("set_hint", "[Hints]")
     });
   }
 
-  SECTION("MouseTouchEvents") { test_bool_hint<MouseTouchEvents>(); };
+  SECTION("MouseTouchEvents") { test_bool_hint<MouseTouchEvents>(); }
 
   SECTION("MouseNormalSpeedScale")
   {
@@ -568,7 +568,7 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK(set_hint<MouseNormalSpeedScale>(2.3f));
       CHECK(get_hint<MouseNormalSpeedScale>().value() == 2.3f);
     });
-  };
+  }
 
   SECTION("MouseRelativeSpeedScale")
   {
@@ -576,7 +576,7 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK(set_hint<MouseRelativeSpeedScale>(6.7f));
       CHECK(get_hint<MouseRelativeSpeedScale>().value() == 6.7f);
     });
-  };
+  }
 
   SECTION("RaspberryPIVideoLayer")
   {
@@ -584,13 +584,13 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK(set_hint<RaspberryPIVideoLayer>(8'000));
       CHECK(get_hint<RaspberryPIVideoLayer>().value() == 8'000);
     });
-  };
+  }
 
-  SECTION("RenderBatching") { test_bool_hint<RenderBatching>(); };
+  SECTION("RenderBatching") { test_bool_hint<RenderBatching>(); }
 
-  SECTION("ReturnKeyHidesIME") { test_bool_hint<ReturnKeyHidesIME>(); };
+  SECTION("ReturnKeyHidesIME") { test_bool_hint<ReturnKeyHidesIME>(); }
 
-  SECTION("TouchMouseEvents") { test_bool_hint<TouchMouseEvents>(); };
+  SECTION("TouchMouseEvents") { test_bool_hint<TouchMouseEvents>(); }
 
   SECTION("ThreadStackSize")
   {
@@ -600,7 +600,7 @@ TEST_CASE("set_hint", "[Hints]")
 
       set_hint<ThreadStackSize>(0U);
     });
-  };
+  }
 
   SECTION("TimerResolution")
   {
@@ -610,9 +610,9 @@ TEST_CASE("set_hint", "[Hints]")
 
       set_hint<TimerResolution>(1U);
     });
-  };
+  }
 
-  SECTION("TVRemoteAsJoystick") { test_bool_hint<TVRemoteAsJoystick>(); };
+  SECTION("TVRemoteAsJoystick") { test_bool_hint<TVRemoteAsJoystick>(); }
 
   SECTION("QtWaylandContentOrientation")
   {
@@ -633,7 +633,7 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK(set_hint<Hint>(Hint::InvertedLandscape));
       CHECK(get_hint<Hint>() == Hint::InvertedLandscape);
     });
-  };
+  }
 
   SECTION("QtWaylandWindowFlags")
   {
@@ -649,14 +649,14 @@ TEST_CASE("set_hint", "[Hints]")
 
       CHECK(set_hint<Hint>(""));
     });
-  };
+  }
 
-  SECTION("XinputEnabled") { test_bool_hint<XinputEnabled>(); };
+  SECTION("XinputEnabled") { test_bool_hint<XinputEnabled>(); }
 
   SECTION("XinputUseOldJoystickMapping")
   {
     test_bool_hint<XinputUseOldJoystickMapping>();
-  };
+  }
 
   SECTION("RenderDriver")
   {
@@ -704,11 +704,11 @@ TEST_CASE("add_callback", "[Hints]")
       },
       &data);
 
-  set_hint<RenderDriver, Prio::Override>(RenderDriver::Software);
+  set_hint<RenderDriver, hint_prio::override>(RenderDriver::Software);
 
   handle.disconnect();
 
-  set_hint<RenderDriver, Prio::Override>(RenderDriver::OpenGL);
+  set_hint<RenderDriver, hint_prio::override>(RenderDriver::OpenGL);
 }
 
 TEST_CASE("clear_all", "[Hints]")
@@ -716,10 +716,10 @@ TEST_CASE("clear_all", "[Hints]")
   CHECK_NOTHROW(clear_all());
 }
 
-TEST_CASE("user_data", "[hint::Callback]")
+TEST_CASE("user_data", "[Hints]")
 {
   int i = 123;
-  Callback<RenderDriver> callback{[](void*, czstring, czstring, czstring) {},
+  callback<RenderDriver> callback{[](void*, czstring, czstring, czstring) {},
                                   &i};
   CHECK(callback.user_data() == &i);
 }

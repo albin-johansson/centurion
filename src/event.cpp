@@ -8,129 +8,129 @@
 namespace centurion {
 
 CENTURION_DEF
-Event::Event() noexcept
+event::event() noexcept
 {
   m_data.emplace<std::monostate>();
 }
 
 CENTURION_DEF
-Event::Event(const SDL_Event& event) noexcept : m_event{event}
+event::event(const SDL_Event& event) noexcept : m_event{event}
 {
   update_data();
 }
 
 CENTURION_DEF
-Event::Event(SDL_Event&& event) noexcept : m_event{event}
+event::event(SDL_Event&& event) noexcept : m_event{event}
 {
   update_data();
 }
 
 CENTURION_DEF
-void Event::update_data() noexcept
+void event::update_data() noexcept
 {
   const auto t = type();
 
   if (t == EventType::Quit) {
-    m_data.emplace<QuitEvent>(m_event.quit);
+    m_data.emplace<quit_event>(m_event.quit);
 
   } else if (t == EventType::AudioDeviceAdded ||
              t == EventType::AudioDeviceRemoved) {
-    m_data.emplace<AudioDeviceEvent>(m_event.adevice);
+    m_data.emplace<audio_device_event>(m_event.adevice);
 
   } else if (t == EventType::ControllerAxisMotion) {
-    m_data.emplace<ControllerAxisEvent>(m_event.caxis);
+    m_data.emplace<controller_axis_event>(m_event.caxis);
 
   } else if (t == EventType::ControllerButtonDown ||
              t == EventType::ControllerButtonUp) {
-    m_data.emplace<ControllerButtonEvent>(m_event.cbutton);
+    m_data.emplace<controller_button_event>(m_event.cbutton);
 
   } else if (t == EventType::ControllerDeviceAdded ||
              t == EventType::ControllerDeviceRemoved ||
              t == EventType::ControllerDeviceRemapped) {
-    m_data.emplace<ControllerDeviceEvent>(m_event.cdevice);
+    m_data.emplace<controller_device_event>(m_event.cdevice);
 
   } else if (t == EventType::DollarGesture || t == EventType::DollarRecord) {
-    m_data.emplace<DollarGestureEvent>(m_event.dgesture);
+    m_data.emplace<dollar_gesture_event>(m_event.dgesture);
 
   } else if (t == EventType::DropBegin || t == EventType::DropComplete ||
              t == EventType::DropFile || t == EventType::DropText) {
-    m_data.emplace<DropEvent>(m_event.drop);
+    m_data.emplace<drop_event>(m_event.drop);
 
   } else if (t == EventType::JoystickAxisMotion) {
-    m_data.emplace<JoyAxisEvent>(m_event.jaxis);
+    m_data.emplace<joy_axis_event>(m_event.jaxis);
 
   } else if (t == EventType::JoystickBallMotion) {
-    m_data.emplace<JoyBallEvent>(m_event.jball);
+    m_data.emplace<joy_ball_event>(m_event.jball);
 
   } else if (t == EventType::JoystickButtonUp ||
              t == EventType::JoystickButtonDown) {
-    m_data.emplace<JoyButtonEvent>(m_event.jbutton);
+    m_data.emplace<joy_button_event>(m_event.jbutton);
 
   } else if (t == EventType::JoystickDeviceAdded ||
              t == EventType::JoystickDeviceRemoved) {
-    m_data.emplace<JoyDeviceEvent>(m_event.jdevice);
+    m_data.emplace<joy_device_event>(m_event.jdevice);
 
   } else if (t == EventType::JoystickHatMotion) {
-    m_data.emplace<JoyHatEvent>(m_event.jhat);
+    m_data.emplace<joy_hat_event>(m_event.jhat);
 
   } else if (t == EventType::KeyDown || t == EventType::KeyUp) {
-    m_data.emplace<KeyboardEvent>(m_event.key);
+    m_data.emplace<keyboard_event>(m_event.key);
 
   } else if (t == EventType::MouseButtonUp || t == EventType::MouseButtonDown) {
-    m_data.emplace<MouseButtonEvent>(m_event.button);
+    m_data.emplace<mouse_button_event>(m_event.button);
 
   } else if (t == EventType::MouseMotion) {
-    m_data.emplace<MouseMotionEvent>(m_event.motion);
+    m_data.emplace<mouse_motion_event>(m_event.motion);
 
   } else if (t == EventType::MouseWheel) {
-    m_data.emplace<MouseWheelEvent>(m_event.wheel);
+    m_data.emplace<mouse_wheel_event>(m_event.wheel);
 
   } else if (t == EventType::MultiGesture) {
-    m_data.emplace<MultiGestureEvent>(m_event.mgesture);
+    m_data.emplace<multi_gesture_event>(m_event.mgesture);
 
   } else if (t == EventType::TextEditing) {
-    m_data.emplace<TextEditingEvent>(m_event.edit);
+    m_data.emplace<text_editing_event>(m_event.edit);
 
   } else if (t == EventType::TextInput) {
-    m_data.emplace<TextInputEvent>(m_event.text);
+    m_data.emplace<text_input_event>(m_event.text);
 
   } else if (t == EventType::TouchMotion || t == EventType::TouchDown ||
              t == EventType::TouchUp) {
-    m_data.emplace<TouchFingerEvent>(m_event.tfinger);
+    m_data.emplace<touch_finger_event>(m_event.tfinger);
 
   } else if (t == EventType::Window) {
-    m_data.emplace<WindowEvent>(m_event.window);
+    m_data.emplace<window_event>(m_event.window);
   }
 }
 
 CENTURION_DEF
-void Event::refresh() noexcept
+void event::refresh() noexcept
 {
   SDL_PumpEvents();
 }
 
 CENTURION_DEF
-void Event::push(Event& event) noexcept
+void event::push(event& event) noexcept
 {
   SDL_Event& sdlEvent = event.m_event;
   SDL_PushEvent(&sdlEvent);
 }
 
 CENTURION_DEF
-void Event::flush() noexcept
+void event::flush() noexcept
 {
   SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 }
 
 CENTURION_DEF
-void Event::flush_all() noexcept
+void event::flush_all() noexcept
 {
   SDL_PumpEvents();
   SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 }
 
 CENTURION_DEF
-auto Event::poll() noexcept -> bool
+auto event::poll() noexcept -> bool
 {
   const bool result = SDL_PollEvent(&m_event);
 
@@ -140,7 +140,7 @@ auto Event::poll() noexcept -> bool
 }
 
 CENTURION_DEF
-auto Event::type() const noexcept -> EventType
+auto event::type() const noexcept -> EventType
 {
   return static_cast<EventType>(m_event.type);
 }

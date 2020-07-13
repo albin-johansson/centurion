@@ -10,7 +10,7 @@
 namespace centurion {
 
 CENTURION_DEF
-Surface::Surface(czstring file)
+surface::surface(czstring file)
 {
   if (!file) {
     throw centurion_exception{"Can't create Surface from null path!"};
@@ -22,7 +22,7 @@ Surface::Surface(czstring file)
 }
 
 CENTURION_DEF
-Surface::Surface(owner<SDL_Surface*> surface)
+surface::surface(owner<SDL_Surface*> surface)
 {
   if (!surface) {
     throw centurion_exception{"Cannot create Surface from null SDL_Surface!"};
@@ -32,25 +32,25 @@ Surface::Surface(owner<SDL_Surface*> surface)
 }
 
 CENTURION_DEF
-Surface::Surface(const Surface& other)
+surface::surface(const surface& other)
 {
   copy(other);
 }
 
 CENTURION_DEF
-Surface::Surface(Surface&& other) noexcept
+surface::surface(surface&& other) noexcept
 {
   move(std::move(other));
 }
 
 CENTURION_DEF
-Surface::~Surface() noexcept
+surface::~surface() noexcept
 {
   destroy();
 }
 
 CENTURION_DEF
-auto Surface::operator=(Surface&& other) noexcept -> Surface&
+auto surface::operator=(surface&& other) noexcept -> surface&
 {
   if (this != &other) {
     move(std::move(other));
@@ -59,7 +59,7 @@ auto Surface::operator=(Surface&& other) noexcept -> Surface&
 }
 
 CENTURION_DEF
-auto Surface::operator=(const Surface& other) -> Surface&
+auto surface::operator=(const surface& other) -> surface&
 {
   if (this != &other) {
     copy(other);
@@ -68,7 +68,7 @@ auto Surface::operator=(const Surface& other) -> Surface&
 }
 
 CENTURION_DEF
-void Surface::destroy() noexcept
+void surface::destroy() noexcept
 {
   if (m_surface) {
     SDL_FreeSurface(m_surface);
@@ -76,7 +76,7 @@ void Surface::destroy() noexcept
 }
 
 CENTURION_DEF
-void Surface::move(Surface&& other) noexcept
+void surface::move(surface&& other) noexcept
 {
   destroy();
   m_surface = other.m_surface;
@@ -84,27 +84,27 @@ void Surface::move(Surface&& other) noexcept
 }
 
 CENTURION_DEF
-void Surface::copy(const Surface& other) noexcept
+void surface::copy(const surface& other) noexcept
 {
   destroy();
   m_surface = other.copy_surface();
 }
 
 CENTURION_DEF
-auto Surface::in_bounds(const point_i& point) const noexcept -> bool
+auto surface::in_bounds(const point_i& point) const noexcept -> bool
 {
   return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
            point.y() >= height());
 }
 
 CENTURION_DEF
-auto Surface::must_lock() const noexcept -> bool
+auto surface::must_lock() const noexcept -> bool
 {
   return SDL_MUSTLOCK(m_surface);
 }
 
 CENTURION_DEF
-auto Surface::lock() noexcept -> bool
+auto surface::lock() noexcept -> bool
 {
   if (must_lock()) {
     const auto result = SDL_LockSurface(m_surface);
@@ -115,7 +115,7 @@ auto Surface::lock() noexcept -> bool
 }
 
 CENTURION_DEF
-void Surface::unlock() noexcept
+void surface::unlock() noexcept
 {
   if (must_lock()) {
     SDL_UnlockSurface(m_surface);
@@ -123,7 +123,7 @@ void Surface::unlock() noexcept
 }
 
 CENTURION_DEF
-auto Surface::copy_surface() const -> SDL_Surface*
+auto surface::copy_surface() const -> SDL_Surface*
 {
   auto* copy = SDL_DuplicateSurface(m_surface);
   if (!copy) {
@@ -134,7 +134,7 @@ auto Surface::copy_surface() const -> SDL_Surface*
 }
 
 CENTURION_DEF
-void Surface::set_pixel(const point_i& pixel, const color& color) noexcept
+void surface::set_pixel(const point_i& pixel, const color& color) noexcept
 {
   if (!in_bounds(pixel)) {
     return;
@@ -162,25 +162,25 @@ void Surface::set_pixel(const point_i& pixel, const color& color) noexcept
 }
 
 CENTURION_DEF
-void Surface::set_alpha(u8 alpha) noexcept
+void surface::set_alpha(u8 alpha) noexcept
 {
   SDL_SetSurfaceAlphaMod(m_surface, alpha);
 }
 
 CENTURION_DEF
-void Surface::set_color_mod(const color& color) noexcept
+void surface::set_color_mod(const color& color) noexcept
 {
   SDL_SetSurfaceColorMod(m_surface, color.red(), color.green(), color.blue());
 }
 
 CENTURION_DEF
-void Surface::set_blend_mode(enum blend_mode mode) noexcept
+void surface::set_blend_mode(enum blend_mode mode) noexcept
 {
   SDL_SetSurfaceBlendMode(m_surface, static_cast<SDL_BlendMode>(mode));
 }
 
 CENTURION_DEF
-auto Surface::alpha() const noexcept -> u8
+auto surface::alpha() const noexcept -> u8
 {
   u8 alpha = 0xFF;
   SDL_GetSurfaceAlphaMod(m_surface, &alpha);
@@ -188,7 +188,7 @@ auto Surface::alpha() const noexcept -> u8
 }
 
 CENTURION_DEF
-auto Surface::color_mod() const noexcept -> color
+auto surface::color_mod() const noexcept -> color
 {
   u8 r = 0, g = 0, b = 0;
   SDL_GetSurfaceColorMod(m_surface, &r, &g, &b);
@@ -196,7 +196,7 @@ auto Surface::color_mod() const noexcept -> color
 }
 
 CENTURION_DEF
-auto Surface::blend_mode() const noexcept -> enum blend_mode  //
+auto surface::blend_mode() const noexcept -> enum blend_mode  //
 {                                                             //
   SDL_BlendMode mode;                                         //
   SDL_GetSurfaceBlendMode(m_surface, &mode);
@@ -210,12 +210,12 @@ auto Surface::blend_mode() const noexcept -> enum blend_mode  //
 //}
 
 CENTURION_DEF
-auto Surface::convert(pixel_format format) const -> Surface
+auto surface::convert(pixel_format format) const -> surface
 {
   const auto pixelFormat = static_cast<u32>(format);
   auto* converted = SDL_ConvertSurfaceFormat(m_surface, pixelFormat, 0);
   SDL_SetSurfaceBlendMode(converted, static_cast<SDL_BlendMode>(blend_mode()));
-  return Surface{converted};
+  return surface{converted};
 }
 
 }  // namespace centurion

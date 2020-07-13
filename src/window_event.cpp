@@ -6,28 +6,28 @@
 namespace centurion {
 
 CENTURION_DEF
-WindowEvent::WindowEvent() noexcept : CommonEvent{}
+window_event::window_event() noexcept : common_event{}
 {}
 
 CENTURION_DEF
-WindowEvent::WindowEvent(const SDL_WindowEvent& event) noexcept
-    : CommonEvent{event}
+window_event::window_event(const SDL_WindowEvent& event) noexcept
+    : common_event{event}
 {}
 
 CENTURION_DEF
-auto WindowEvent::event_id() const noexcept -> WindowEventID
+auto window_event::event_id() const noexcept -> window_event_id
 {
-  return static_cast<WindowEventID>(m_event.event);
+  return static_cast<window_event_id>(m_event.event);
 }
 
 CENTURION_DEF
-auto WindowEvent::data_1() const noexcept -> i32
+auto window_event::data_1() const noexcept -> i32
 {
   return m_event.data1;
 }
 
 CENTURION_DEF
-auto WindowEvent::data_2() const noexcept -> i32
+auto window_event::data_2() const noexcept -> i32
 {
   return m_event.data2;
 }

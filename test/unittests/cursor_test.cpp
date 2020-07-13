@@ -5,12 +5,12 @@
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 
-TEST_CASE("cursor(SystemCursor)", "[cursor]")
+TEST_CASE("cursor(system_cursor)", "[cursor]")
 {
   CHECK_NOTHROW(ctn::cursor{ctn::system_cursor::crosshair});
 }
 
-TEST_CASE("cursor(gsl::owner<SDL_Cursor*>)", "[cursor]")
+TEST_CASE("cursor(owner<SDL_Cursor*>)", "[cursor]")
 {
   SDL_Cursor* sdlCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
   ctn::cursor cursor{sdlCursor};

@@ -18,7 +18,7 @@ void test_hint(Lambda&& lambda)
   lambda();
 
   if (optPrev) {
-    set_hint<Hint, Prio::Default>(*optPrev);
+    set_hint<Hint, hint_prio::low>(*optPrev);
   }
 }
 
@@ -36,15 +36,15 @@ void test_bool_hint()
 
 }  // namespace
 
-TEST_CASE("HintPrio", "[Hints]")
+TEST_CASE("hint_prio", "[Hints]")
 {
-  CHECK(Prio::Default == static_cast<Prio>(SDL_HINT_DEFAULT));
-  CHECK(Prio::Normal == static_cast<Prio>(SDL_HINT_NORMAL));
-  CHECK(Prio::Override == static_cast<Prio>(SDL_HINT_OVERRIDE));
+  CHECK(hint_prio::low == static_cast<hint_prio>(SDL_HINT_DEFAULT));
+  CHECK(hint_prio::normal == static_cast<hint_prio>(SDL_HINT_NORMAL));
+  CHECK(hint_prio::override == static_cast<hint_prio>(SDL_HINT_OVERRIDE));
 
-  CHECK(static_cast<Prio>(SDL_HINT_DEFAULT) == Prio::Default);
-  CHECK(static_cast<Prio>(SDL_HINT_NORMAL) == Prio::Normal);
-  CHECK(static_cast<Prio>(SDL_HINT_OVERRIDE) == Prio::Override);
+  CHECK(static_cast<hint_prio>(SDL_HINT_DEFAULT) == hint_prio::low);
+  CHECK(static_cast<hint_prio>(SDL_HINT_NORMAL) == hint_prio::normal);
+  CHECK(static_cast<hint_prio>(SDL_HINT_OVERRIDE) == hint_prio::override);
 }
 
 TEST_CASE("set_hint", "[Hints]")
@@ -704,11 +704,11 @@ TEST_CASE("add_callback", "[Hints]")
       },
       &data);
 
-  set_hint<RenderDriver, Prio::Override>(RenderDriver::Software);
+  set_hint<RenderDriver, hint_prio::override>(RenderDriver::Software);
 
   handle.disconnect();
 
-  set_hint<RenderDriver, Prio::Override>(RenderDriver::OpenGL);
+  set_hint<RenderDriver, hint_prio::override>(RenderDriver::OpenGL);
 }
 
 TEST_CASE("clear_all", "[Hints]")
@@ -716,10 +716,10 @@ TEST_CASE("clear_all", "[Hints]")
   CHECK_NOTHROW(clear_all());
 }
 
-TEST_CASE("user_data", "[hint::Callback]")
+TEST_CASE("user_data", "[Hints]")
 {
   int i = 123;
-  Callback<RenderDriver> callback{[](void*, czstring, czstring, czstring) {},
+  callback<RenderDriver> callback{[](void*, czstring, czstring, czstring) {},
                                   &i};
   CHECK(callback.user_data() == &i);
 }

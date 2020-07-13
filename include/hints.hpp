@@ -1039,7 +1039,7 @@ CENTURION_HINT(XinputUseOldJoystickMapping,
 /// @endcond
 
 /**
- * @enum Prio
+ * @enum hint_prio
  *
  * @brief Provides three different priorities that can be specified when
  * setting the value of a hint.
@@ -1050,12 +1050,11 @@ CENTURION_HINT(XinputUseOldJoystickMapping,
  *
  * @headerfile hints.hpp
  */
-enum class Prio {
-  Default =
-      SDL_HINT_DEFAULT,     /**< The lowest priority, used for default values.*/
-  Normal = SDL_HINT_NORMAL, /**< The priority used by default by
+enum class hint_prio {
+  low = SDL_HINT_DEFAULT,   /**< The lowest priority, used for default values.*/
+  normal = SDL_HINT_NORMAL, /**< The priority used by default by
                              * <code>set_hint</code>.*/
-  Override = SDL_HINT_OVERRIDE /**< The highest priority.*/
+  override = SDL_HINT_OVERRIDE /**< The highest priority.*/
 };
 
 /**
@@ -1102,7 +1101,7 @@ enum class Prio {
  * @since 4.1.0
  */
 template <typename Hint,
-          Prio priority = Prio::Normal,
+          hint_prio priority = hint_prio::normal,
           typename Value,
           typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
 auto set_hint(const Value& value) noexcept -> bool
@@ -1160,7 +1159,7 @@ template <typename Hint>
  * @headerfile hints.hpp
  */
 template <typename Hint, typename UserData = void>
-class Callback final {
+class callback final {
  public:
   /**
    * @brief Creates a `HintCallback`.
@@ -1174,7 +1173,7 @@ class Callback final {
    *
    * @since 4.1.0
    */
-  Callback(SDL_HintCallback callback, UserData* userData = nullptr)
+  callback(SDL_HintCallback callback, UserData* userData = nullptr)
       : m_callback{callback}, m_userData{userData}
   {
     if (!callback) {
@@ -1285,7 +1284,7 @@ class Callback final {
  * returns a `czstring`.
  * @tparam UserData the type of the user data, defaults to void.
  *
- * @param callback the function object that will be invoked when the hint is
+ * @param fun the function object that will be invoked when the hint is
  * updated. The signature should be `void(void*, czstring, czstring, czstring)`.
  * @param userData the user data to associate with the callback, defaults to
  * `nullptr`.
@@ -1295,11 +1294,10 @@ class Callback final {
  * @since 4.1.0
  */
 template <typename Hint, typename UserData = void>
-auto add_callback(SDL_HintCallback callback,
-                  UserData* userData = nullptr) noexcept
-    -> Callback<Hint, UserData>
+auto add_callback(SDL_HintCallback fun, UserData* userData = nullptr) noexcept
+    -> callback<Hint, UserData>
 {
-  Callback<Hint, UserData> hintCallback{callback, userData};
+  callback<Hint, UserData> hintCallback{fun, userData};
   hintCallback.connect();
   return hintCallback;
 }

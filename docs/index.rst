@@ -16,6 +16,8 @@ Welcome to Centurion's documentation!
    pages/overview
    pages/window
    pages/window_view
+   pages/renderer
+   pages/renderer_view
 
 .. toctree::
    :maxdepth: 2

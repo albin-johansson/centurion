@@ -28,8 +28,8 @@ Example
 -------
 The following example demonstrates how ``window_view`` can be used to enable use of the
 user-friendly Centurion window API, without actually claiming ownership. The example assumes that
-you, for some reason, can't change the parameter of a function that takes a ``SDL_Window*``
-parameter. This is the main use case of the ``window_view`` class!
+you, for some reason, can't change the signature of a function that takes a ``SDL_Window*``
+parameter. Which is the main use case of the ``window_view`` class.
 
 .. note::
 

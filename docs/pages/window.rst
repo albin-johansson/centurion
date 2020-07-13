@@ -64,13 +64,6 @@ assumes that the library has been initialized.
     window.hide();
   }
 
-API
----
-
-.. doxygenclass:: centurion::window
-   :members:
-   :outline:
-
 See also
 --------
 * :doc:`Window view </pages/window_view>`

@@ -4,6 +4,7 @@
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
+#include "centurion_types.hpp"
 #include "graphics.hpp"
 #include "log.hpp"
 #include "screen.hpp"

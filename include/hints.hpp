@@ -1142,7 +1142,7 @@ template <typename Hint>
 }
 
 /**
- * @class Callback
+ * @class callback
  *
  * @brief Represents a handle for dealing with hint callbacks.
  *

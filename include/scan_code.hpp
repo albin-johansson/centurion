@@ -120,9 +120,9 @@ class scan_code final {
       : m_code{SDL_GetScancodeFromName(name)}
   {}
 
-  auto operator=(const scan_code&) noexcept -> scan_code& = default;
+  constexpr auto operator=(const scan_code&) noexcept -> scan_code& = default;
 
-  auto operator=(scan_code&&) noexcept -> scan_code& = default;
+  constexpr auto operator=(scan_code&&) noexcept -> scan_code& = default;
 
   /**
    * @brief Sets the scan code used to the specified scan code.
@@ -133,7 +133,7 @@ class scan_code final {
    *
    * @since 5.0.0
    */
-  auto operator=(SDL_Scancode code) noexcept -> scan_code&
+  constexpr auto operator=(SDL_Scancode code) noexcept -> scan_code&
   {
     m_code = code;
     return *this;
@@ -183,7 +183,7 @@ class scan_code final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto unknown() const noexcept -> bool
+  [[nodiscard]] constexpr auto unknown() const noexcept -> bool
   {
     return m_code == SDL_SCANCODE_UNKNOWN;
   }
@@ -207,7 +207,10 @@ class scan_code final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Scancode { return m_code; }
+  [[nodiscard]] constexpr auto get() const noexcept -> SDL_Scancode
+  {
+    return m_code;
+  }
 
   /**
    * @brief Converts to `SDL_Scancode`.
@@ -216,7 +219,7 @@ class scan_code final {
    *
    * @since 5.0.0
    */
-  explicit operator SDL_Scancode() const noexcept { return m_code; }
+  constexpr explicit operator SDL_Scancode() const noexcept { return m_code; }
 
   /**
    * @brief Converts to `SDL_KeyCode`.

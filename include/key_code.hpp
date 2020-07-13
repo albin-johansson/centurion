@@ -143,9 +143,9 @@ class key_code final {
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
-  auto operator=(const key_code&) noexcept -> key_code& = default;
+  constexpr auto operator=(const key_code&) noexcept -> key_code& = default;
 
-  auto operator=(key_code&&) noexcept -> key_code& = default;
+  constexpr auto operator=(key_code&&) noexcept -> key_code& = default;
 
   /**
    * @brief Sets the key code used to the specified key code.
@@ -156,7 +156,7 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  auto operator=(SDL_KeyCode key) noexcept -> key_code&
+  constexpr auto operator=(SDL_KeyCode key) noexcept -> key_code&
   {
     m_key = key;
     return *this;
@@ -205,7 +205,7 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto unknown() const noexcept -> bool
+  [[nodiscard]] constexpr auto unknown() const noexcept -> bool
   {
     return m_key == SDLK_UNKNOWN;
   }
@@ -229,7 +229,10 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_KeyCode { return m_key; }
+  [[nodiscard]] constexpr auto get() const noexcept -> SDL_KeyCode
+  {
+    return m_key;
+  }
 
   /**
    * @brief Converts to `SDL_KeyCode`.
@@ -238,7 +241,7 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  explicit operator SDL_KeyCode() const noexcept { return m_key; }
+  constexpr explicit operator SDL_KeyCode() const noexcept { return m_key; }
 
   /**
    * @brief Converts to `SDL_Keycode`.
@@ -249,7 +252,7 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  explicit operator SDL_Keycode() const noexcept { return m_key; }
+  constexpr explicit operator SDL_Keycode() const noexcept { return m_key; }
 
   /**
    * @brief Converts to `SDL_Scancode`.

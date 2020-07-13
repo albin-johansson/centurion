@@ -8,7 +8,7 @@ using DummyType = SDL_QuitEvent;
 
 TEST_CASE("CommonEvent::set_time", "[CommonEvent]")
 {
-  CommonEvent<DummyType> event;
+  common_event<DummyType> event;
 
   const auto time = 8934;
   event.set_time(time);
@@ -18,7 +18,7 @@ TEST_CASE("CommonEvent::set_time", "[CommonEvent]")
 
 TEST_CASE("CommonEvent::set_type", "[CommonEvent]")
 {
-  CommonEvent<DummyType> event;
+  common_event<DummyType> event;
 
   const auto type = EventType::AppLowMemory;
   event.set_type(type);
@@ -33,7 +33,7 @@ TEST_CASE("CommonEvent::time", "[CommonEvent]")
   DummyType dummy;
   dummy.timestamp = time;
 
-  CommonEvent<DummyType> event{dummy};
+  common_event<DummyType> event{dummy};
 
   CHECK(event.time() == time);
 }
@@ -43,7 +43,7 @@ TEST_CASE("CommonEvent::type", "[CommonEvent]")
   DummyType dummy;
   dummy.type = SDL_MOUSEMOTION;
 
-  CommonEvent<DummyType> event{dummy};
+  common_event<DummyType> event{dummy};
 
   CHECK(event.type() == EventType::MouseMotion);
 }
@@ -53,7 +53,7 @@ TEST_CASE("CommonEvent conversions", "[CommonEvent]")
   DummyType dummy;
   dummy.type = SDL_MOUSEMOTION;
 
-  CommonEvent<DummyType> event{dummy};
+  common_event<DummyType> event{dummy};
   const auto internal = event.get();
 
   CHECK(internal.type == dummy.type);

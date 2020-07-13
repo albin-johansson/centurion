@@ -6,46 +6,46 @@
 namespace centurion {
 
 CENTURION_DEF
-JoyAxisEvent::JoyAxisEvent() noexcept : CommonEvent{}
+joy_axis_event::joy_axis_event() noexcept : common_event{}
 {}
 
 CENTURION_DEF
-JoyAxisEvent::JoyAxisEvent(const SDL_JoyAxisEvent& event) noexcept
-    : CommonEvent{event}
+joy_axis_event::joy_axis_event(const SDL_JoyAxisEvent& event) noexcept
+    : common_event{event}
 {}
 
 CENTURION_DEF
-void JoyAxisEvent::set_which(SDL_JoystickID which) noexcept
+void joy_axis_event::set_which(SDL_JoystickID which) noexcept
 {
   m_event.which = which;
 }
 
 CENTURION_DEF
-void JoyAxisEvent::set_axis(u8 axis) noexcept
+void joy_axis_event::set_axis(u8 axis) noexcept
 {
   m_event.axis = axis;
 }
 
 CENTURION_DEF
-void JoyAxisEvent::set_value(i16 value) noexcept
+void joy_axis_event::set_value(i16 value) noexcept
 {
   m_event.value = value;
 }
 
 CENTURION_DEF
-auto JoyAxisEvent::which() const noexcept -> SDL_JoystickID
+auto joy_axis_event::which() const noexcept -> SDL_JoystickID
 {
   return m_event.which;
 }
 
 CENTURION_DEF
-auto JoyAxisEvent::axis() const noexcept -> u8
+auto joy_axis_event::axis() const noexcept -> u8
 {
   return m_event.axis;
 }
 
 CENTURION_DEF
-auto JoyAxisEvent::value() const noexcept -> i16
+auto joy_axis_event::value() const noexcept -> i16
 {
   return m_event.value;
 }

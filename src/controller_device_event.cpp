@@ -6,23 +6,23 @@
 namespace centurion {
 
 CENTURION_DEF
-ControllerDeviceEvent::ControllerDeviceEvent() noexcept : CommonEvent{}
+controller_device_event::controller_device_event() noexcept : common_event{}
 {}
 
 CENTURION_DEF
-ControllerDeviceEvent::ControllerDeviceEvent(
+controller_device_event::controller_device_event(
     const SDL_ControllerDeviceEvent& event) noexcept
-    : CommonEvent{event}
+    : common_event{event}
 {}
 
 CENTURION_DEF
-void ControllerDeviceEvent::set_which(i32 which) noexcept
+void controller_device_event::set_which(i32 which) noexcept
 {
   m_event.which = which;
 }
 
 CENTURION_DEF
-auto ControllerDeviceEvent::which() const noexcept -> i32
+auto controller_device_event::which() const noexcept -> i32
 {
   return m_event.which;
 }

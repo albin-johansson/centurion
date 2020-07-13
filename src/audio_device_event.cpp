@@ -6,40 +6,41 @@
 namespace centurion {
 
 CENTURION_DEF
-AudioDeviceEvent::AudioDeviceEvent() noexcept : CommonEvent{}
+audio_device_event::audio_device_event() noexcept : common_event{}
 {}
 
 CENTURION_DEF
-AudioDeviceEvent::AudioDeviceEvent(const SDL_AudioDeviceEvent& event) noexcept
-    : CommonEvent{event}
+audio_device_event::audio_device_event(
+    const SDL_AudioDeviceEvent& event) noexcept
+    : common_event{event}
 {}
 
 CENTURION_DEF
-void AudioDeviceEvent::set_which(u32 which) noexcept
+void audio_device_event::set_which(u32 which) noexcept
 {
   m_event.which = which;
 }
 
 CENTURION_DEF
-void AudioDeviceEvent::set_capture(bool capture) noexcept
+void audio_device_event::set_capture(bool capture) noexcept
 {
   m_event.iscapture = capture;
 }
 
 CENTURION_DEF
-auto AudioDeviceEvent::which() const noexcept -> u32
+auto audio_device_event::which() const noexcept -> u32
 {
   return m_event.which;
 }
 
 CENTURION_DEF
-auto AudioDeviceEvent::output() const noexcept -> bool
+auto audio_device_event::output() const noexcept -> bool
 {
   return !capture();
 }
 
 CENTURION_DEF
-auto AudioDeviceEvent::capture() const noexcept -> bool
+auto audio_device_event::capture() const noexcept -> bool
 {
   return m_event.iscapture;
 }

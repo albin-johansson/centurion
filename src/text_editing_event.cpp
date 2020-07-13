@@ -7,62 +7,63 @@
 namespace centurion {
 
 CENTURION_DEF
-TextEditingEvent::TextEditingEvent() noexcept : CommonEvent{}
+text_editing_event::text_editing_event() noexcept : common_event{}
 {
   check_length();
 }
 
 CENTURION_DEF
-TextEditingEvent::TextEditingEvent(const SDL_TextEditingEvent& event) noexcept
-    : CommonEvent{event}
+text_editing_event::text_editing_event(
+    const SDL_TextEditingEvent& event) noexcept
+    : common_event{event}
 {
   check_length();
 }
 
 CENTURION_DEF
-void TextEditingEvent::check_length() noexcept
+void text_editing_event::check_length() noexcept
 {
   m_event.length = detail::clamp_inclusive({0, 32}, m_event.length);
 }
 
 CENTURION_DEF
-void TextEditingEvent::set_window_id(u32 id) noexcept
+void text_editing_event::set_window_id(u32 id) noexcept
 {
   m_event.windowID = id;
 }
 
 CENTURION_DEF
-void TextEditingEvent::set_start(i32 start) noexcept
+void text_editing_event::set_start(i32 start) noexcept
 {
   m_event.start = start;
 }
 
 CENTURION_DEF
-void TextEditingEvent::set_length(i32 length) noexcept
+void text_editing_event::set_length(i32 length) noexcept
 {
   m_event.length = detail::clamp_inclusive({0, 32}, length);
 }
 
 CENTURION_DEF
-auto TextEditingEvent::window_id() const noexcept -> u32
+auto text_editing_event::window_id() const noexcept -> u32
 {
   return m_event.windowID;
 }
 
 CENTURION_DEF
-auto TextEditingEvent::text() const noexcept -> std::string_view
+auto text_editing_event::text() const noexcept -> std::string_view
 {
   return std::string_view{static_cast<czstring>(m_event.text)};
 }
 
 CENTURION_DEF
-auto TextEditingEvent::start() const noexcept -> i32
+auto text_editing_event::start() const noexcept -> i32
 {
   return m_event.start;
 }
 
 CENTURION_DEF
-auto TextEditingEvent::length() const noexcept -> i32
+auto text_editing_event::length() const noexcept -> i32
 {
   return m_event.length;
 }

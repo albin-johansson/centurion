@@ -6,7 +6,7 @@ using namespace centurion;
 
 namespace {
 
-[[nodiscard]] auto create_event(Uint32 type) -> Event
+[[nodiscard]] auto create_event(Uint32 type) -> event
 {
   SDL_Event sdlEvent;
   sdlEvent.type = type;
@@ -124,43 +124,43 @@ TEST_CASE("EventType operator!=", "[EventType]")
 
 TEST_CASE("Event move constructor", "[Event]")
 {
-  CHECK_NOTHROW(Event{{}});
+  CHECK_NOTHROW(event{{}});
 }
 
 TEST_CASE("Event::refresh", "[Event]")
 {
-  CHECK_NOTHROW(Event::refresh());
+  CHECK_NOTHROW(event::refresh());
 }
 
 TEST_CASE("Event::push", "[Event]")
 {
-  Event::flush_all();
+  event::flush_all();
   {
     SDL_Event sdlEvent{};
     sdlEvent.type = SDL_KEYDOWN;
-    Event event{sdlEvent};
-    Event::push(event);
+    event event{sdlEvent};
+    event::push(event);
   }
 
-  Event event;
+  event event;
   CHECK(event.poll());
   CHECK(event.type() == EventType::KeyDown);
 }
 
 TEST_CASE("Event::flush", "[Event]")
 {
-  Event::refresh();
-  Event::flush();
+  event::refresh();
+  event::flush();
 
-  Event event;
+  event event;
   CHECK(!event.poll());
 }
 
 TEST_CASE("Event::flush_all", "[Event]")
 {
-  Event::flush_all();
+  event::flush_all();
 
-  Event event;
+  event event;
   CHECK(!event.poll());
 }
 
@@ -171,21 +171,21 @@ TEST_CASE("Event::poll", "[Event]")
   sdlEvent.motion.x = 839;
   sdlEvent.motion.y = 351;
 
-  Event::flush();
+  event::flush();
   SDL_PushEvent(&sdlEvent);
 
-  Event event;
+  event event;
   CHECK(event.poll());
 
   REQUIRE(event.type() == EventType::MouseMotion);
-  REQUIRE(event.is<MouseMotionEvent>());
+  REQUIRE(event.is<mouse_motion_event>());
 
-  auto& motionEvent = event.get<MouseMotionEvent>();
+  auto& motionEvent = event.get<mouse_motion_event>();
 
   CHECK(motionEvent.x() == sdlEvent.motion.x);
   CHECK(motionEvent.y() == sdlEvent.motion.y);
 
-  Event::flush_all();
+  event::flush_all();
 }
 
 TEST_CASE("Event::type", "[Event]")
@@ -199,21 +199,21 @@ TEST_CASE("Event::type", "[Event]")
   const auto type = EventType::TouchMotion;
   auto sdlEvent = create_sdl_event(type);
 
-  Event::flush_all();
+  event::flush_all();
   SDL_PushEvent(&sdlEvent);
 
-  Event event;
+  event event;
   CHECK(event.poll());
   CHECK(event.type() == type);
 
-  Event::flush_all();
+  event::flush_all();
 }
 
 TEST_CASE("Event::empty", "[Event]")
 {
   SECTION("Empty")
   {
-    Event event;
+    event event;
     CHECK(event.empty());
   }
 
@@ -232,9 +232,9 @@ TEST_CASE("Event::is", "[Event]")
     const auto removed = create_event(SDL_AUDIODEVICEREMOVED);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(added.is<AudioDeviceEvent>());
-    CHECK(removed.is<AudioDeviceEvent>());
-    CHECK(!wrong.is<AudioDeviceEvent>());
+    CHECK(added.is<audio_device_event>());
+    CHECK(removed.is<audio_device_event>());
+    CHECK(!wrong.is<audio_device_event>());
   }
 
   SECTION("ControllerAxisEvent")
@@ -242,8 +242,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto event = create_event(SDL_CONTROLLERAXISMOTION);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(event.is<ControllerAxisEvent>());
-    CHECK(!wrong.is<ControllerAxisEvent>());
+    CHECK(event.is<controller_axis_event>());
+    CHECK(!wrong.is<controller_axis_event>());
   }
 
   SECTION("ControllerButtonEvent")
@@ -252,9 +252,9 @@ TEST_CASE("Event::is", "[Event]")
     const auto down = create_event(SDL_CONTROLLERBUTTONDOWN);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(up.is<ControllerButtonEvent>());
-    CHECK(down.is<ControllerButtonEvent>());
-    CHECK(!wrong.is<ControllerButtonEvent>());
+    CHECK(up.is<controller_button_event>());
+    CHECK(down.is<controller_button_event>());
+    CHECK(!wrong.is<controller_button_event>());
   }
 
   SECTION("ControllerDeviceEvent")
@@ -264,10 +264,10 @@ TEST_CASE("Event::is", "[Event]")
     const auto remapped = create_event(SDL_CONTROLLERDEVICEREMAPPED);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(added.is<ControllerDeviceEvent>());
-    CHECK(removed.is<ControllerDeviceEvent>());
-    CHECK(remapped.is<ControllerDeviceEvent>());
-    CHECK(!wrong.is<ControllerDeviceEvent>());
+    CHECK(added.is<controller_device_event>());
+    CHECK(removed.is<controller_device_event>());
+    CHECK(remapped.is<controller_device_event>());
+    CHECK(!wrong.is<controller_device_event>());
   }
 
   SECTION("DollarGestureEvent")
@@ -276,9 +276,9 @@ TEST_CASE("Event::is", "[Event]")
     const auto record = create_event(SDL_DOLLARRECORD);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(gesture.is<DollarGestureEvent>());
-    CHECK(record.is<DollarGestureEvent>());
-    CHECK(!wrong.is<DollarGestureEvent>());
+    CHECK(gesture.is<dollar_gesture_event>());
+    CHECK(record.is<dollar_gesture_event>());
+    CHECK(!wrong.is<dollar_gesture_event>());
   }
 
   SECTION("DropEvent")
@@ -289,11 +289,11 @@ TEST_CASE("Event::is", "[Event]")
     const auto text = create_event(SDL_DROPTEXT);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(begin.is<DropEvent>());
-    CHECK(complete.is<DropEvent>());
-    CHECK(file.is<DropEvent>());
-    CHECK(text.is<DropEvent>());
-    CHECK(!wrong.is<DropEvent>());
+    CHECK(begin.is<drop_event>());
+    CHECK(complete.is<drop_event>());
+    CHECK(file.is<drop_event>());
+    CHECK(text.is<drop_event>());
+    CHECK(!wrong.is<drop_event>());
   }
 
   SECTION("JoyAxisEvent")
@@ -301,8 +301,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto motion = create_event(SDL_JOYAXISMOTION);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(motion.is<JoyAxisEvent>());
-    CHECK(!wrong.is<JoyAxisEvent>());
+    CHECK(motion.is<joy_axis_event>());
+    CHECK(!wrong.is<joy_axis_event>());
   }
 
   SECTION("JoyBallEvent")
@@ -310,8 +310,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto motion = create_event(SDL_JOYBALLMOTION);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(motion.is<JoyBallEvent>());
-    CHECK(!wrong.is<JoyBallEvent>());
+    CHECK(motion.is<joy_ball_event>());
+    CHECK(!wrong.is<joy_ball_event>());
   }
 
   SECTION("JoyButtonEvent")
@@ -320,9 +320,9 @@ TEST_CASE("Event::is", "[Event]")
     const auto down = create_event(SDL_JOYBUTTONDOWN);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(up.is<JoyButtonEvent>());
-    CHECK(down.is<JoyButtonEvent>());
-    CHECK(!wrong.is<JoyButtonEvent>());
+    CHECK(up.is<joy_button_event>());
+    CHECK(down.is<joy_button_event>());
+    CHECK(!wrong.is<joy_button_event>());
   }
 
   SECTION("JoyDeviceEvent")
@@ -331,9 +331,9 @@ TEST_CASE("Event::is", "[Event]")
     const auto removed = create_event(SDL_JOYDEVICEREMOVED);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(added.is<JoyDeviceEvent>());
-    CHECK(removed.is<JoyDeviceEvent>());
-    CHECK(!wrong.is<JoyDeviceEvent>());
+    CHECK(added.is<joy_device_event>());
+    CHECK(removed.is<joy_device_event>());
+    CHECK(!wrong.is<joy_device_event>());
   }
 
   SECTION("JoyHatEvent")
@@ -341,8 +341,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto motion = create_event(SDL_JOYHATMOTION);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(motion.is<JoyHatEvent>());
-    CHECK(!wrong.is<JoyHatEvent>());
+    CHECK(motion.is<joy_hat_event>());
+    CHECK(!wrong.is<joy_hat_event>());
   }
 
   SECTION("KeyboardEvent")
@@ -351,9 +351,9 @@ TEST_CASE("Event::is", "[Event]")
     const auto down = create_event(SDL_KEYDOWN);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(up.is<KeyboardEvent>());
-    CHECK(down.is<KeyboardEvent>());
-    CHECK(!wrong.is<KeyboardEvent>());
+    CHECK(up.is<keyboard_event>());
+    CHECK(down.is<keyboard_event>());
+    CHECK(!wrong.is<keyboard_event>());
   }
 
   SECTION("MouseButtonEvent")
@@ -362,9 +362,9 @@ TEST_CASE("Event::is", "[Event]")
     const auto down = create_event(SDL_MOUSEBUTTONDOWN);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(up.is<MouseButtonEvent>());
-    CHECK(down.is<MouseButtonEvent>());
-    CHECK(!wrong.is<MouseButtonEvent>());
+    CHECK(up.is<mouse_button_event>());
+    CHECK(down.is<mouse_button_event>());
+    CHECK(!wrong.is<mouse_button_event>());
   }
 
   SECTION("MouseMotionEvent")
@@ -372,8 +372,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto motion = create_event(SDL_MOUSEMOTION);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(motion.is<MouseMotionEvent>());
-    CHECK(!wrong.is<MouseButtonEvent>());
+    CHECK(motion.is<mouse_motion_event>());
+    CHECK(!wrong.is<mouse_button_event>());
   }
 
   SECTION("MouseWheelEvent")
@@ -381,8 +381,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto wheel = create_event(SDL_MOUSEWHEEL);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(wheel.is<MouseWheelEvent>());
-    CHECK(!wrong.is<MouseWheelEvent>());
+    CHECK(wheel.is<mouse_wheel_event>());
+    CHECK(!wrong.is<mouse_wheel_event>());
   }
 
   SECTION("MultiGestureEvent")
@@ -390,8 +390,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto gesture = create_event(SDL_MULTIGESTURE);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(gesture.is<MultiGestureEvent>());
-    CHECK(!wrong.is<MultiGestureEvent>());
+    CHECK(gesture.is<multi_gesture_event>());
+    CHECK(!wrong.is<multi_gesture_event>());
   }
 
   SECTION("QuitEvent")
@@ -399,8 +399,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto quit = create_event(SDL_QUIT);
     const auto wrong = create_event(SDL_KEYUP);
 
-    CHECK(quit.is<QuitEvent>());
-    CHECK(!wrong.is<QuitEvent>());
+    CHECK(quit.is<quit_event>());
+    CHECK(!wrong.is<quit_event>());
   }
 
   SECTION("TextEditingEvent")
@@ -408,8 +408,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto editing = create_event(SDL_TEXTEDITING);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(editing.is<TextEditingEvent>());
-    CHECK(!wrong.is<TextEditingEvent>());
+    CHECK(editing.is<text_editing_event>());
+    CHECK(!wrong.is<text_editing_event>());
   }
 
   SECTION("TextInputEvent")
@@ -417,8 +417,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto input = create_event(SDL_TEXTINPUT);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(input.is<TextInputEvent>());
-    CHECK(!wrong.is<TextInputEvent>());
+    CHECK(input.is<text_input_event>());
+    CHECK(!wrong.is<text_input_event>());
   }
 
   SECTION("TouchFingerEvent")
@@ -428,10 +428,10 @@ TEST_CASE("Event::is", "[Event]")
     const auto down = create_event(SDL_FINGERDOWN);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(motion.is<TouchFingerEvent>());
-    CHECK(up.is<TouchFingerEvent>());
-    CHECK(down.is<TouchFingerEvent>());
-    CHECK(!wrong.is<TouchFingerEvent>());
+    CHECK(motion.is<touch_finger_event>());
+    CHECK(up.is<touch_finger_event>());
+    CHECK(down.is<touch_finger_event>());
+    CHECK(!wrong.is<touch_finger_event>());
   }
 
   SECTION("WindowEvent")
@@ -439,8 +439,8 @@ TEST_CASE("Event::is", "[Event]")
     const auto window = create_event(SDL_WINDOWEVENT);
     const auto wrong = create_event(SDL_QUIT);
 
-    CHECK(window.is<WindowEvent>());
-    CHECK(!wrong.is<WindowEvent>());
+    CHECK(window.is<window_event>());
+    CHECK(!wrong.is<window_event>());
   }
 }
 
@@ -450,16 +450,16 @@ TEST_CASE("Event::get", "[Event]")
   {
     const auto quit = create_event(SDL_QUIT);
 
-    CHECK_NOTHROW(quit.get<QuitEvent>());
-    CHECK_THROWS(quit.get<WindowEvent>());
+    CHECK_NOTHROW(quit.get<quit_event>());
+    CHECK_THROWS(quit.get<window_event>());
   }
 
   SECTION("Non-const")
   {
     auto quit = create_event(SDL_QUIT);
 
-    CHECK_NOTHROW(quit.get<QuitEvent>());
-    CHECK_THROWS(quit.get<WindowEvent>());
+    CHECK_NOTHROW(quit.get<quit_event>());
+    CHECK_THROWS(quit.get<window_event>());
   }
 }
 
@@ -469,15 +469,15 @@ TEST_CASE("Event::try_get", "[Event]")
   {
     const auto event = create_event(SDL_MOUSEMOTION);
 
-    CHECK(event.try_get<MouseMotionEvent>());
-    CHECK(!event.try_get<WindowEvent>());
+    CHECK(event.try_get<mouse_motion_event>());
+    CHECK(!event.try_get<window_event>());
   }
 
   SECTION("Non-const")
   {
     auto event = create_event(SDL_MULTIGESTURE);
 
-    CHECK(event.try_get<MultiGestureEvent>());
-    CHECK(!event.try_get<JoyHatEvent>());
+    CHECK(event.try_get<multi_gesture_event>());
+    CHECK(!event.try_get<joy_hat_event>());
   }
 }

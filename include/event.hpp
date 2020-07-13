@@ -57,6 +57,8 @@
 namespace centurion {
 
 /**
+ * @class common_event
+ *
  * @brief The templated base class of all Centurion events.
  *
  * @details This class defines the common API of all events and provides the
@@ -65,16 +67,18 @@ namespace centurion {
  * @tparam T an SDL event type.
  *
  * @since 4.0.0
+ *
+ * @headerfile event.hpp
  */
 template <typename T>
-class CommonEvent {
+class common_event {
  public:
   /**
    * @brief Creates a `CommonEvent` and default-initializes the internal event.
    *
    * @since 4.0.0
    */
-  CommonEvent() noexcept = default;
+  common_event() noexcept = default;
 
   /**
    * @brief Creates a CommonEvent and copies the supplied event.
@@ -83,7 +87,7 @@ class CommonEvent {
    *
    * @since 4.0.0
    */
-  CommonEvent(const T& event) : m_event{event} {}
+  common_event(const T& event) : m_event{event} {}
 
   /**
    * @brief Creates a CommonEvent and moves the contents of the supplied event.
@@ -92,14 +96,14 @@ class CommonEvent {
    *
    * @since 4.0.0
    */
-  CommonEvent(T&& event) : m_event{std::move(event)} {}
+  common_event(T&& event) : m_event{std::move(event)} {}
 
   /**
    * @brief Default virtual destructor.
    *
    * @since 4.0.0
    */
-  virtual ~CommonEvent() noexcept = default;
+  virtual ~common_event() noexcept = default;
 
   /**
    * @brief Sets the timestamp that is associated with the creation of the
@@ -184,7 +188,7 @@ template <typename T, typename E>
 }
 
 /**
- * @class AudioDeviceEvent
+ * @class audio_device_event
  *
  * @brief Represents an event that is associated with some sort of audio
  * device, either capture of output.
@@ -195,7 +199,7 @@ template <typename T, typename E>
  *
  * @headerfile event.hpp
  */
-class AudioDeviceEvent final : public CommonEvent<SDL_AudioDeviceEvent> {
+class audio_device_event final : public common_event<SDL_AudioDeviceEvent> {
  public:
   /**
    * @brief Creates a default-initialized audio device event.
@@ -203,7 +207,7 @@ class AudioDeviceEvent final : public CommonEvent<SDL_AudioDeviceEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  AudioDeviceEvent() noexcept;
+  audio_device_event() noexcept;
 
   /**
    * @brief Creates a audio device event based on the supplied SDL event.
@@ -213,7 +217,7 @@ class AudioDeviceEvent final : public CommonEvent<SDL_AudioDeviceEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  AudioDeviceEvent(const SDL_AudioDeviceEvent& event) noexcept;
+  audio_device_event(const SDL_AudioDeviceEvent& event) noexcept;
 
   /**
    * @brief Sets the audio device ID that is associated with the event.
@@ -272,10 +276,10 @@ class AudioDeviceEvent final : public CommonEvent<SDL_AudioDeviceEvent> {
   auto capture() const noexcept -> bool;
 };
 
-static_assert(validate_event<AudioDeviceEvent, SDL_AudioDeviceEvent>());
+static_assert(validate_event<audio_device_event, SDL_AudioDeviceEvent>());
 
 /**
- * @class ControllerAxisEvent
+ * @class controller_axis_event
  *
  * @brief Represents an event triggered by game controller axis motion.
  *
@@ -283,7 +287,8 @@ static_assert(validate_event<AudioDeviceEvent, SDL_AudioDeviceEvent>());
  *
  * @headerfile event.hpp
  */
-class ControllerAxisEvent final : public CommonEvent<SDL_ControllerAxisEvent> {
+class controller_axis_event final
+    : public common_event<SDL_ControllerAxisEvent> {
  public:
   /**
    * @brief Creates a default-initialized controller axis event.
@@ -291,7 +296,7 @@ class ControllerAxisEvent final : public CommonEvent<SDL_ControllerAxisEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  ControllerAxisEvent() noexcept;
+  controller_axis_event() noexcept;
 
   /**
    * @brief Creates a controller axis event that is based on the supplied SDL
@@ -302,7 +307,7 @@ class ControllerAxisEvent final : public CommonEvent<SDL_ControllerAxisEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  ControllerAxisEvent(const SDL_ControllerAxisEvent& event) noexcept;
+  controller_axis_event(const SDL_ControllerAxisEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick instance ID associated with the event.
@@ -368,10 +373,10 @@ class ControllerAxisEvent final : public CommonEvent<SDL_ControllerAxisEvent> {
   auto value() const noexcept -> i16;
 };
 
-static_assert(validate_event<ControllerAxisEvent, SDL_ControllerAxisEvent>());
+static_assert(validate_event<controller_axis_event, SDL_ControllerAxisEvent>());
 
 /**
- * @class ControllerButtonEvent
+ * @class controller_button_event
  *
  * @brief Represents events associated with the state of buttons of a game
  * controller.
@@ -382,8 +387,8 @@ static_assert(validate_event<ControllerAxisEvent, SDL_ControllerAxisEvent>());
  *
  * @headerfile event.hpp
  */
-class ControllerButtonEvent final
-    : public CommonEvent<SDL_ControllerButtonEvent> {
+class controller_button_event final
+    : public common_event<SDL_ControllerButtonEvent> {
  public:
   /**
    * @brief Creates a default-initialized controller button event.
@@ -391,7 +396,7 @@ class ControllerButtonEvent final
    * @since 4.0.0
    */
   CENTURION_API
-  ControllerButtonEvent() noexcept;
+  controller_button_event() noexcept;
 
   /**
    * @brief Creates a controller button event that is based on the supplied SDL
@@ -402,7 +407,7 @@ class ControllerButtonEvent final
    * @since 4.0.0
    */
   CENTURION_API
-  ControllerButtonEvent(const SDL_ControllerButtonEvent& event) noexcept;
+  controller_button_event(const SDL_ControllerButtonEvent& event) noexcept;
 
   /**
    * @brief Sets the game controller button associated with the event.
@@ -467,10 +472,10 @@ class ControllerButtonEvent final
 };
 
 static_assert(
-    validate_event<ControllerButtonEvent, SDL_ControllerButtonEvent>());
+    validate_event<controller_button_event, SDL_ControllerButtonEvent>());
 
 /**
- * @class ControllerDeviceEvent
+ * @class controller_device_event
  *
  * @brief Represents events related to game controller devices such as adding
  * or removing game controller devices.
@@ -481,8 +486,8 @@ static_assert(
  *
  * @headerfile event.hpp
  */
-class ControllerDeviceEvent final
-    : public CommonEvent<SDL_ControllerDeviceEvent> {
+class controller_device_event final
+    : public common_event<SDL_ControllerDeviceEvent> {
  public:
   /**
    * @brief Creates a default-initialized controller device event.
@@ -490,7 +495,7 @@ class ControllerDeviceEvent final
    * @since 4.0.0
    */
   CENTURION_API
-  ControllerDeviceEvent() noexcept;
+  controller_device_event() noexcept;
 
   /**
    * @brief Creates a controller device event that is based on the supplied SDL
@@ -501,7 +506,7 @@ class ControllerDeviceEvent final
    * @since 4.0.0
    */
   CENTURION_API
-  ControllerDeviceEvent(const SDL_ControllerDeviceEvent& event) noexcept;
+  controller_device_event(const SDL_ControllerDeviceEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick device index or instance ID.
@@ -533,10 +538,10 @@ class ControllerDeviceEvent final
 };
 
 static_assert(
-    validate_event<ControllerDeviceEvent, SDL_ControllerDeviceEvent>());
+    validate_event<controller_device_event, SDL_ControllerDeviceEvent>());
 
 /**
- * @class DollarGestureEvent
+ * @class dollar_gesture_event
  *
  * @brief Provides information about dollar gestures from touch events.
  *
@@ -546,7 +551,7 @@ static_assert(
  *
  * @headerfile event.hpp
  */
-class DollarGestureEvent final : public CommonEvent<SDL_DollarGestureEvent> {
+class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent> {
  public:
   /**
    * @brief Creates a default-initialized dollar gesture event.
@@ -554,7 +559,7 @@ class DollarGestureEvent final : public CommonEvent<SDL_DollarGestureEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  DollarGestureEvent() noexcept;
+  dollar_gesture_event() noexcept;
 
   /**
    * @brief Creates a dollar gesture event that is based on the supplied SDL
@@ -565,7 +570,7 @@ class DollarGestureEvent final : public CommonEvent<SDL_DollarGestureEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  DollarGestureEvent(const SDL_DollarGestureEvent& event) noexcept;
+  dollar_gesture_event(const SDL_DollarGestureEvent& event) noexcept;
 
   /**
    * @brief Sets the touch device ID associated with the event.
@@ -694,10 +699,10 @@ class DollarGestureEvent final : public CommonEvent<SDL_DollarGestureEvent> {
   auto y() const noexcept -> float;
 };
 
-static_assert(validate_event<DollarGestureEvent, SDL_DollarGestureEvent>());
+static_assert(validate_event<dollar_gesture_event, SDL_DollarGestureEvent>());
 
 /**
- * @class DropEvent
+ * @class drop_event
  *
  * @brief Represents the event of requesting a file to be opened.
  *
@@ -707,7 +712,7 @@ static_assert(validate_event<DollarGestureEvent, SDL_DollarGestureEvent>());
  *
  * @headerfile event.hpp
  */
-class DropEvent final : public CommonEvent<SDL_DropEvent> {
+class drop_event final : public common_event<SDL_DropEvent> {
  public:
   /**
    * @brief Creates a default-initialized drop event.
@@ -715,7 +720,7 @@ class DropEvent final : public CommonEvent<SDL_DropEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  DropEvent() noexcept;
+  drop_event() noexcept;
 
   /**
    * @brief Creates a drop event based on the supplied event.
@@ -725,7 +730,7 @@ class DropEvent final : public CommonEvent<SDL_DropEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  DropEvent(const SDL_DropEvent& event) noexcept;
+  drop_event(const SDL_DropEvent& event) noexcept;
 
   /**
    * @brief Creates a drop event based on the supplied event.
@@ -735,7 +740,7 @@ class DropEvent final : public CommonEvent<SDL_DropEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  DropEvent(SDL_DropEvent&& event) noexcept;
+  drop_event(SDL_DropEvent&& event) noexcept;
 
   /**
    * @brief Destroys the drop event.
@@ -746,7 +751,7 @@ class DropEvent final : public CommonEvent<SDL_DropEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  ~DropEvent() noexcept override;
+  ~drop_event() noexcept override;
 
   /**
    * @brief Sets whether or not the associated file will be freed by this event.
@@ -843,10 +848,10 @@ class DropEvent final : public CommonEvent<SDL_DropEvent> {
   bool m_willFreeFile{false};
 };
 
-static_assert(validate_event<DropEvent, SDL_DropEvent>());
+static_assert(validate_event<drop_event, SDL_DropEvent>());
 
 /**
- * @class JoyAxisEvent
+ * @class joy_axis_event
  *
  * @brief Represents an event that occurs whenever a user moves an axis on a
  * joystick.
@@ -857,7 +862,7 @@ static_assert(validate_event<DropEvent, SDL_DropEvent>());
  *
  * @headerfile event.hpp
  */
-class JoyAxisEvent final : public CommonEvent<SDL_JoyAxisEvent> {
+class joy_axis_event final : public common_event<SDL_JoyAxisEvent> {
  public:
   /**
    * @brief Creates a default-initialized joy axis event.
@@ -865,7 +870,7 @@ class JoyAxisEvent final : public CommonEvent<SDL_JoyAxisEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  JoyAxisEvent() noexcept;
+  joy_axis_event() noexcept;
 
   /**
    * @brief Creates a joy axis event based on the supplied SDL joy axis event.
@@ -875,7 +880,7 @@ class JoyAxisEvent final : public CommonEvent<SDL_JoyAxisEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  JoyAxisEvent(const SDL_JoyAxisEvent& event) noexcept;
+  joy_axis_event(const SDL_JoyAxisEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick instance ID associated with the event.
@@ -938,10 +943,10 @@ class JoyAxisEvent final : public CommonEvent<SDL_JoyAxisEvent> {
   auto value() const noexcept -> i16;
 };
 
-static_assert(validate_event<JoyAxisEvent, SDL_JoyAxisEvent>());
+static_assert(validate_event<joy_axis_event, SDL_JoyAxisEvent>());
 
 /**
- * @class JoyBallEvent
+ * @class joy_ball_event
  *
  * @brief Represents the event that is triggered when a user moves a
  * trackball on a joystick.
@@ -952,7 +957,7 @@ static_assert(validate_event<JoyAxisEvent, SDL_JoyAxisEvent>());
  *
  * @headerfile event.hpp
  */
-class JoyBallEvent final : public CommonEvent<SDL_JoyBallEvent> {
+class joy_ball_event final : public common_event<SDL_JoyBallEvent> {
  public:
   /**
    * @brief Creates a default-initialized joy ball event.
@@ -960,7 +965,7 @@ class JoyBallEvent final : public CommonEvent<SDL_JoyBallEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  JoyBallEvent() noexcept;
+  joy_ball_event() noexcept;
 
   /**
    * @brief Creates a joy ball event based on the supplied SDL joy ball event.
@@ -970,7 +975,7 @@ class JoyBallEvent final : public CommonEvent<SDL_JoyBallEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  JoyBallEvent(const SDL_JoyBallEvent& event) noexcept;
+  joy_ball_event(const SDL_JoyBallEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick instance ID associated with the event.
@@ -1059,10 +1064,10 @@ class JoyBallEvent final : public CommonEvent<SDL_JoyBallEvent> {
   auto dy() const noexcept -> i16;
 };
 
-static_assert(validate_event<JoyBallEvent, SDL_JoyBallEvent>());
+static_assert(validate_event<joy_ball_event, SDL_JoyBallEvent>());
 
 /**
- * @class JoyButtonEvent
+ * @class joy_button_event
  *
  * @brief Represents an event associated with the press or release of a
  * joystick button.
@@ -1073,7 +1078,7 @@ static_assert(validate_event<JoyBallEvent, SDL_JoyBallEvent>());
  *
  * @headerfile event.hpp
  */
-class JoyButtonEvent final : public CommonEvent<SDL_JoyButtonEvent> {
+class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
  public:
   /**
    * @brief Creates a default-initialized JoyButtonEvent.
@@ -1081,7 +1086,7 @@ class JoyButtonEvent final : public CommonEvent<SDL_JoyButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  JoyButtonEvent() noexcept;
+  joy_button_event() noexcept;
 
   /**
    * @brief Creates a JoyButtonEvent based on the supplied event.
@@ -1091,7 +1096,7 @@ class JoyButtonEvent final : public CommonEvent<SDL_JoyButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  JoyButtonEvent(const SDL_JoyButtonEvent& event) noexcept;
+  joy_button_event(const SDL_JoyButtonEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick instance ID associated with the event.
@@ -1156,10 +1161,10 @@ class JoyButtonEvent final : public CommonEvent<SDL_JoyButtonEvent> {
   auto state() const noexcept -> button_state;
 };
 
-static_assert(validate_event<JoyButtonEvent, SDL_JoyButtonEvent>());
+static_assert(validate_event<joy_button_event, SDL_JoyButtonEvent>());
 
 /**
- * @class JoyDeviceEvent
+ * @class joy_device_event
  *
  * @brief Represents an event triggered by adding or removing a joystick device.
  *
@@ -1169,7 +1174,7 @@ static_assert(validate_event<JoyButtonEvent, SDL_JoyButtonEvent>());
  *
  * @headerfile event.hpp
  */
-class JoyDeviceEvent final : public CommonEvent<SDL_JoyDeviceEvent> {
+class joy_device_event final : public common_event<SDL_JoyDeviceEvent> {
  public:
   /**
    * @brief Creates a default-initialized JoyDeviceEvent.
@@ -1177,7 +1182,7 @@ class JoyDeviceEvent final : public CommonEvent<SDL_JoyDeviceEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  JoyDeviceEvent() noexcept;
+  joy_device_event() noexcept;
 
   /**
    * @brief Creates a JoyDeviceEvent that is based on the supplied SDL event.
@@ -1187,7 +1192,7 @@ class JoyDeviceEvent final : public CommonEvent<SDL_JoyDeviceEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  JoyDeviceEvent(const SDL_JoyDeviceEvent& event) noexcept;
+  joy_device_event(const SDL_JoyDeviceEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick device index or instance ID, depending on the type
@@ -1215,29 +1220,29 @@ class JoyDeviceEvent final : public CommonEvent<SDL_JoyDeviceEvent> {
   auto which() const noexcept -> i32;
 };
 
-static_assert(validate_event<JoyDeviceEvent, SDL_JoyDeviceEvent>());
+static_assert(validate_event<joy_device_event, SDL_JoyDeviceEvent>());
 
 /**
- * @enum JoyHatPosition
+ * @enum joy_hat_position
  *
  * @brief Serves as a wrapper for the `SDL_HAT_x` macro values.
  *
  * @since 4.0.0
  */
-enum class JoyHatPosition {
-  LeftUp = SDL_HAT_LEFTUP,
-  Left = SDL_HAT_LEFT,
-  LeftDown = SDL_HAT_LEFTDOWN,
-  Up = SDL_HAT_UP,
-  Centered = SDL_HAT_CENTERED,
-  Down = SDL_HAT_DOWN,
-  RightUp = SDL_HAT_RIGHTUP,
-  Right = SDL_HAT_RIGHT,
-  RightDown = SDL_HAT_RIGHTDOWN
+enum class joy_hat_position {
+  left_up = SDL_HAT_LEFTUP,
+  left = SDL_HAT_LEFT,
+  left_down = SDL_HAT_LEFTDOWN,
+  up = SDL_HAT_UP,
+  centered = SDL_HAT_CENTERED,
+  down = SDL_HAT_DOWN,
+  right_up = SDL_HAT_RIGHTUP,
+  right = SDL_HAT_RIGHT,
+  right_down = SDL_HAT_RIGHTDOWN
 };
 
 /**
- * @class JoyHatEvent
+ * @class joy_hat_event
  *
  * @brief Represents an event that is triggered whenever a user moves a hat
  * on a joystick.
@@ -1248,7 +1253,7 @@ enum class JoyHatPosition {
  *
  * @headerfile event.hpp
  */
-class JoyHatEvent final : public CommonEvent<SDL_JoyHatEvent> {
+class joy_hat_event final : public common_event<SDL_JoyHatEvent> {
  public:
   /**
    * @brief Creates a default-initialized joy hat event.
@@ -1256,7 +1261,7 @@ class JoyHatEvent final : public CommonEvent<SDL_JoyHatEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  JoyHatEvent() noexcept;
+  joy_hat_event() noexcept;
 
   /**
    * @brief Creates a joy hat event based on the supplied SDL event.
@@ -1266,7 +1271,7 @@ class JoyHatEvent final : public CommonEvent<SDL_JoyHatEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  JoyHatEvent(const SDL_JoyHatEvent& event) noexcept;
+  joy_hat_event(const SDL_JoyHatEvent& event) noexcept;
 
   /**
    * @brief Sets the hat index associated with the event.
@@ -1286,7 +1291,7 @@ class JoyHatEvent final : public CommonEvent<SDL_JoyHatEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_position(JoyHatPosition value) noexcept;
+  void set_position(joy_hat_position value) noexcept;
 
   /**
    * @brief Returns the index of the hat that changed.
@@ -1306,13 +1311,13 @@ class JoyHatEvent final : public CommonEvent<SDL_JoyHatEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto position() const noexcept -> JoyHatPosition;
+  auto position() const noexcept -> joy_hat_position;
 };
 
-static_assert(validate_event<JoyHatEvent, SDL_JoyHatEvent>());
+static_assert(validate_event<joy_hat_event, SDL_JoyHatEvent>());
 
 /**
- * @class KeyboardEvent
+ * @class keyboard_event
  *
  * @brief Represents an event associated with some sort of key action, such
  * as the release or pressing of a key.
@@ -1323,7 +1328,7 @@ static_assert(validate_event<JoyHatEvent, SDL_JoyHatEvent>());
  *
  * @headerfile event.hpp
  */
-class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
+class keyboard_event final : public common_event<SDL_KeyboardEvent> {
  public:
   /**
    * @brief Creates a default-initialized keyboard event.
@@ -1331,7 +1336,7 @@ class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  KeyboardEvent() noexcept;
+  keyboard_event() noexcept;
 
   /**
    * @brief Creates a keyboard event based on the supplied SDL event.
@@ -1341,7 +1346,7 @@ class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  KeyboardEvent(const SDL_KeyboardEvent& event) noexcept;
+  keyboard_event(const SDL_KeyboardEvent& event) noexcept;
 
   /**
    * @brief Sets the button state associated with a key.
@@ -1518,10 +1523,10 @@ class KeyboardEvent final : public CommonEvent<SDL_KeyboardEvent> {
   auto window_id() const noexcept -> u32;
 };
 
-static_assert(validate_event<KeyboardEvent, SDL_KeyboardEvent>());
+static_assert(validate_event<keyboard_event, SDL_KeyboardEvent>());
 
 /**
- * @class MouseButtonEvent
+ * @class mouse_button_event
  *
  * @brief Represents an event triggered by mouse button presses or releases.
  *
@@ -1531,7 +1536,7 @@ static_assert(validate_event<KeyboardEvent, SDL_KeyboardEvent>());
  *
  * @headerfile event.hpp
  */
-class MouseButtonEvent final : public CommonEvent<SDL_MouseButtonEvent> {
+class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
  public:
   /**
    * @brief Creates a default-initialized `MouseButtonEvent`.
@@ -1539,7 +1544,7 @@ class MouseButtonEvent final : public CommonEvent<SDL_MouseButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  MouseButtonEvent() noexcept;
+  mouse_button_event() noexcept;
 
   /**
    * @brief Creates a MouseButtonEvent that is based on the supplied SDL event.
@@ -1549,7 +1554,7 @@ class MouseButtonEvent final : public CommonEvent<SDL_MouseButtonEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  MouseButtonEvent(const SDL_MouseButtonEvent& event) noexcept;
+  mouse_button_event(const SDL_MouseButtonEvent& event) noexcept;
 
   /**
    * @brief Sets the window ID associated with the event.
@@ -1693,10 +1698,10 @@ class MouseButtonEvent final : public CommonEvent<SDL_MouseButtonEvent> {
   auto y() const noexcept -> i32;
 };
 
-static_assert(validate_event<MouseButtonEvent, SDL_MouseButtonEvent>());
+static_assert(validate_event<mouse_button_event, SDL_MouseButtonEvent>());
 
 /**
- * @class MouseMotionEvent
+ * @class mouse_motion_event
  *
  * @brief Represents events that are triggered by the movement of the mouse.
  *
@@ -1706,7 +1711,7 @@ static_assert(validate_event<MouseButtonEvent, SDL_MouseButtonEvent>());
  *
  * @headerfile event.hpp
  */
-class MouseMotionEvent final : public CommonEvent<SDL_MouseMotionEvent> {
+class mouse_motion_event final : public common_event<SDL_MouseMotionEvent> {
  public:
   /**
    * @brief Creates a default-initialized MouseMotionEvent.
@@ -1714,7 +1719,7 @@ class MouseMotionEvent final : public CommonEvent<SDL_MouseMotionEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  MouseMotionEvent() noexcept;
+  mouse_motion_event() noexcept;
 
   /**
    * @brief Creates a `MouseMotionEvent` that is based on the supplied SDL
@@ -1725,7 +1730,7 @@ class MouseMotionEvent final : public CommonEvent<SDL_MouseMotionEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  MouseMotionEvent(const SDL_MouseMotionEvent& event) noexcept;
+  mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept;
 
   /**
    * @brief Sets the window ID associated with the event.
@@ -1893,10 +1898,10 @@ class MouseMotionEvent final : public CommonEvent<SDL_MouseMotionEvent> {
   auto dy() const noexcept -> i32;
 };
 
-static_assert(validate_event<MouseMotionEvent, SDL_MouseMotionEvent>());
+static_assert(validate_event<mouse_motion_event, SDL_MouseMotionEvent>());
 
 /**
- * @enum MouseWheelDirection
+ * @enum mouse_wheel_direction
  *
  * @brief Mirrors the the `SDL_MouseWheelDirection` enum.
  *
@@ -1906,10 +1911,9 @@ static_assert(validate_event<MouseMotionEvent, SDL_MouseMotionEvent>());
  *
  * @headerfile event.hpp
  */
-enum class MouseWheelDirection {
-  Normal = SDL_MOUSEWHEEL_NORMAL, /**< The scroll direction is normal */
-
-  Flipped = SDL_MOUSEWHEEL_FLIPPED /**< The scroll direction is flipped /
+enum class mouse_wheel_direction {
+  normal = SDL_MOUSEWHEEL_NORMAL,  /**< The scroll direction is normal */
+  flipped = SDL_MOUSEWHEEL_FLIPPED /**< The scroll direction is flipped /
                                     * natural */
 };
 
@@ -1924,14 +1928,14 @@ enum class MouseWheelDirection {
  * @since 4.0.0
  */
 CENTURION_QUERY
-auto operator==(MouseWheelDirection lhs, SDL_MouseWheelDirection rhs) noexcept
+auto operator==(mouse_wheel_direction lhs, SDL_MouseWheelDirection rhs) noexcept
     -> bool;
 
 /**
- * @copydoc operator==(MouseWheelDirection, SDL_MouseWheelDirection)
+ * @copydoc operator==(mouse_wheel_direction, SDL_MouseWheelDirection)
  */
 CENTURION_QUERY
-auto operator==(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
+auto operator==(SDL_MouseWheelDirection lhs, mouse_wheel_direction rhs) noexcept
     -> bool;
 
 /**
@@ -1946,18 +1950,18 @@ auto operator==(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
  * @since 4.0.0
  */
 CENTURION_QUERY
-auto operator!=(MouseWheelDirection lhs, SDL_MouseWheelDirection rhs) noexcept
+auto operator!=(mouse_wheel_direction lhs, SDL_MouseWheelDirection rhs) noexcept
     -> bool;
 
 /**
- * @copydoc operator!=(MouseWheelDirection, SDL_MouseWheelDirection)
+ * @copydoc operator!=(mouse_wheel_direction, SDL_MouseWheelDirection)
  */
 CENTURION_QUERY
-auto operator!=(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
+auto operator!=(SDL_MouseWheelDirection lhs, mouse_wheel_direction rhs) noexcept
     -> bool;
 
 /**
- * @class MouseWheelEvent
+ * @class mouse_wheel_event
  *
  * @brief Represents events triggered when a user moves the mouse wheel.
  *
@@ -1967,7 +1971,7 @@ auto operator!=(SDL_MouseWheelDirection lhs, MouseWheelDirection rhs) noexcept
  *
  * @headerfile event.hpp
  */
-class MouseWheelEvent final : public CommonEvent<SDL_MouseWheelEvent> {
+class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent> {
  public:
   /**
    * @brief Creates a default-initialized MouseWheelEvent.
@@ -1975,7 +1979,7 @@ class MouseWheelEvent final : public CommonEvent<SDL_MouseWheelEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  MouseWheelEvent() noexcept;
+  mouse_wheel_event() noexcept;
 
   /**
    * @brief Creates a `MouseMotionEvent` that is based on the supplied SDL
@@ -1986,7 +1990,7 @@ class MouseWheelEvent final : public CommonEvent<SDL_MouseWheelEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  MouseWheelEvent(const SDL_MouseWheelEvent& event) noexcept;
+  mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept;
 
   /**
    * @brief Sets the window ID associated with the event.
@@ -2042,7 +2046,7 @@ class MouseWheelEvent final : public CommonEvent<SDL_MouseWheelEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_direction(MouseWheelDirection direction) noexcept;
+  void set_direction(mouse_wheel_direction direction) noexcept;
 
   /**
    * @brief Returns the ID of the window associated with the event.
@@ -2099,13 +2103,13 @@ class MouseWheelEvent final : public CommonEvent<SDL_MouseWheelEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto direction() const noexcept -> MouseWheelDirection;
+  auto direction() const noexcept -> mouse_wheel_direction;
 };
 
-static_assert(validate_event<MouseWheelEvent, SDL_MouseWheelEvent>());
+static_assert(validate_event<mouse_wheel_event, SDL_MouseWheelEvent>());
 
 /**
- * @class MultiGestureEvent
+ * @class multi_gesture_event
  *
  * @brief Provides information about events related to touch events triggered
  * by multiple fingers.
@@ -2116,7 +2120,7 @@ static_assert(validate_event<MouseWheelEvent, SDL_MouseWheelEvent>());
  *
  * @headerfile event.hpp
  */
-class MultiGestureEvent final : public CommonEvent<SDL_MultiGestureEvent> {
+class multi_gesture_event final : public common_event<SDL_MultiGestureEvent> {
  public:
   /**
    * @brief Creates a default-initialized `MultiGestureEvent`.
@@ -2124,7 +2128,7 @@ class MultiGestureEvent final : public CommonEvent<SDL_MultiGestureEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  MultiGestureEvent() noexcept;
+  multi_gesture_event() noexcept;
 
   /**
    * @brief Creates a `MultiGestureEvent` that is based on the supplied SDL
@@ -2135,7 +2139,7 @@ class MultiGestureEvent final : public CommonEvent<SDL_MultiGestureEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  MultiGestureEvent(const SDL_MultiGestureEvent& event) noexcept;
+  multi_gesture_event(const SDL_MultiGestureEvent& event) noexcept;
 
   /**
    * @brief Sets the touch device ID associated with the event.
@@ -2273,10 +2277,10 @@ class MultiGestureEvent final : public CommonEvent<SDL_MultiGestureEvent> {
   auto fingers() const noexcept -> float;
 };
 
-static_assert(validate_event<MultiGestureEvent, SDL_MultiGestureEvent>());
+static_assert(validate_event<multi_gesture_event, SDL_MultiGestureEvent>());
 
 /**
- * @class QuitEvent
+ * @class quit_event
  *
  * @brief Represents the event of the user wanting to close the application,
  * usually by pressing the "X"-button on the window frame.
@@ -2287,7 +2291,7 @@ static_assert(validate_event<MultiGestureEvent, SDL_MultiGestureEvent>());
  *
  * @headerfile event.hpp
  */
-class QuitEvent final : public CommonEvent<SDL_QuitEvent> {
+class quit_event final : public common_event<SDL_QuitEvent> {
  public:
   /**
    * @brief Creates a default-initialized quit event.
@@ -2295,7 +2299,7 @@ class QuitEvent final : public CommonEvent<SDL_QuitEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  QuitEvent() noexcept;
+  quit_event() noexcept;
 
   /**
    * @brief Creates a quit event based on the supplied SDL event.
@@ -2305,13 +2309,13 @@ class QuitEvent final : public CommonEvent<SDL_QuitEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  QuitEvent(const SDL_QuitEvent& event) noexcept;
+  quit_event(const SDL_QuitEvent& event) noexcept;
 };
 
-static_assert(validate_event<QuitEvent, SDL_QuitEvent>());
+static_assert(validate_event<quit_event, SDL_QuitEvent>());
 
 /**
- * @class TextEditingEvent
+ * @class text_editing_event
  *
  * @brief Represents an event triggered by keyboard text editing.
  *
@@ -2324,7 +2328,7 @@ static_assert(validate_event<QuitEvent, SDL_QuitEvent>());
  *
  * @headerfile event.hpp
  */
-class TextEditingEvent final : public CommonEvent<SDL_TextEditingEvent> {
+class text_editing_event final : public common_event<SDL_TextEditingEvent> {
  public:
   /**
    * @brief Creates a default-initialized `TextEditingEvent`.
@@ -2332,7 +2336,7 @@ class TextEditingEvent final : public CommonEvent<SDL_TextEditingEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  TextEditingEvent() noexcept;
+  text_editing_event() noexcept;
 
   /**
    * @brief Creates a `TextEditingEvent` that is based on the supplied SDL
@@ -2343,7 +2347,7 @@ class TextEditingEvent final : public CommonEvent<SDL_TextEditingEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  TextEditingEvent(const SDL_TextEditingEvent& event) noexcept;
+  text_editing_event(const SDL_TextEditingEvent& event) noexcept;
 
   /**
    * @brief Sets the window ID associated with the event.
@@ -2424,10 +2428,10 @@ class TextEditingEvent final : public CommonEvent<SDL_TextEditingEvent> {
   void check_length() noexcept;
 };
 
-static_assert(validate_event<TextEditingEvent, SDL_TextEditingEvent>());
+static_assert(validate_event<text_editing_event, SDL_TextEditingEvent>());
 
 /**
- * @class TextInputEvent
+ * @class text_input_event
  *
  * @brief Provides information about keyboard text input events.
  *
@@ -2437,7 +2441,7 @@ static_assert(validate_event<TextEditingEvent, SDL_TextEditingEvent>());
  *
  * @headerfile event.hpp
  */
-class TextInputEvent final : public CommonEvent<SDL_TextInputEvent> {
+class text_input_event final : public common_event<SDL_TextInputEvent> {
  public:
   /**
    * @brief Creates a default-initialized TextInputEvent.
@@ -2445,7 +2449,7 @@ class TextInputEvent final : public CommonEvent<SDL_TextInputEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  TextInputEvent() noexcept;
+  text_input_event() noexcept;
 
   /**
    * @brief Creates a `TextInputEvent` that is based on the supplied SDL event.
@@ -2455,7 +2459,7 @@ class TextInputEvent final : public CommonEvent<SDL_TextInputEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  TextInputEvent(const SDL_TextInputEvent& event) noexcept;
+  text_input_event(const SDL_TextInputEvent& event) noexcept;
 
   /**
    * @brief Sets the window ID associated with the event.
@@ -2488,10 +2492,10 @@ class TextInputEvent final : public CommonEvent<SDL_TextInputEvent> {
   auto text() const noexcept -> std::string_view;
 };
 
-static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>());
+static_assert(validate_event<text_input_event, SDL_TextInputEvent>());
 
 /**
- * @class TouchFingerEvent
+ * @class touch_finger_event
  *
  * @brief Represents an event related to touch screen actions.
  *
@@ -2501,7 +2505,7 @@ static_assert(validate_event<TextInputEvent, SDL_TextInputEvent>());
  *
  * @headerfile event.hpp
  */
-class TouchFingerEvent final : public CommonEvent<SDL_TouchFingerEvent> {
+class touch_finger_event final : public common_event<SDL_TouchFingerEvent> {
  public:
   /**
    * @brief Creates a default-initialized touch finger event.
@@ -2509,7 +2513,7 @@ class TouchFingerEvent final : public CommonEvent<SDL_TouchFingerEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  TouchFingerEvent() noexcept;
+  touch_finger_event() noexcept;
 
   /**
    * @brief Creates a touch finger event that is based on the supplied SDL
@@ -2520,7 +2524,7 @@ class TouchFingerEvent final : public CommonEvent<SDL_TouchFingerEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  TouchFingerEvent(const SDL_TouchFingerEvent& event) noexcept;
+  touch_finger_event(const SDL_TouchFingerEvent& event) noexcept;
 
   /**
    * @brief Sets the ID of the associated touch device.
@@ -2713,10 +2717,10 @@ class TouchFingerEvent final : public CommonEvent<SDL_TouchFingerEvent> {
   auto pressure() const noexcept -> float;
 };
 
-static_assert(validate_event<TouchFingerEvent, SDL_TouchFingerEvent>());
+static_assert(validate_event<touch_finger_event, SDL_TouchFingerEvent>());
 
 /**
- * @enum WindowEventID
+ * @enum window_event_id
  *
  * @brief Mirrors the `SDL_WindowEventID` enum.
  *
@@ -2821,24 +2825,24 @@ static_assert(validate_event<TouchFingerEvent, SDL_TouchFingerEvent>());
  *
  * @headerfile event.hpp
  */
-enum class WindowEventID {
-  None = SDL_WINDOWEVENT_NONE,
-  Shown = SDL_WINDOWEVENT_SHOWN,
-  Hidden = SDL_WINDOWEVENT_HIDDEN,
-  Exposed = SDL_WINDOWEVENT_EXPOSED,
-  Moved = SDL_WINDOWEVENT_MOVED,
-  Resized = SDL_WINDOWEVENT_RESIZED,
-  SizeChanged = SDL_WINDOWEVENT_SIZE_CHANGED,
-  Minimized = SDL_WINDOWEVENT_MINIMIZED,
-  Maximized = SDL_WINDOWEVENT_MAXIMIZED,
-  Restored = SDL_WINDOWEVENT_RESTORED,
-  Enter = SDL_WINDOWEVENT_ENTER,
-  Leave = SDL_WINDOWEVENT_LEAVE,
-  FocusGained = SDL_WINDOWEVENT_FOCUS_GAINED,
-  FocusLost = SDL_WINDOWEVENT_FOCUS_LOST,
-  Close = SDL_WINDOWEVENT_CLOSE,
-  TakeFocus = SDL_WINDOWEVENT_TAKE_FOCUS,
-  HitTest = SDL_WINDOWEVENT_HIT_TEST
+enum class window_event_id {
+  none = SDL_WINDOWEVENT_NONE,
+  shown = SDL_WINDOWEVENT_SHOWN,
+  hidden = SDL_WINDOWEVENT_HIDDEN,
+  exposed = SDL_WINDOWEVENT_EXPOSED,
+  moved = SDL_WINDOWEVENT_MOVED,
+  resized = SDL_WINDOWEVENT_RESIZED,
+  size_changed = SDL_WINDOWEVENT_SIZE_CHANGED,
+  minimized = SDL_WINDOWEVENT_MINIMIZED,
+  maximized = SDL_WINDOWEVENT_MAXIMIZED,
+  restored = SDL_WINDOWEVENT_RESTORED,
+  enter = SDL_WINDOWEVENT_ENTER,
+  leave = SDL_WINDOWEVENT_LEAVE,
+  focus_gained = SDL_WINDOWEVENT_FOCUS_GAINED,
+  focus_lost = SDL_WINDOWEVENT_FOCUS_LOST,
+  close = SDL_WINDOWEVENT_CLOSE,
+  take_focus = SDL_WINDOWEVENT_TAKE_FOCUS,
+  hit_test = SDL_WINDOWEVENT_HIT_TEST
 };
 
 /**
@@ -2851,7 +2855,7 @@ enum class WindowEventID {
  *
  * @since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(WindowEventID lhs,
+[[nodiscard]] inline constexpr auto operator==(window_event_id lhs,
                                                SDL_WindowEventID rhs) noexcept
     -> bool
 {
@@ -2859,10 +2863,10 @@ enum class WindowEventID {
 }
 
 /**
- * @copydoc operator==(WindowEventID, SDL_WindowEventID)
+ * @copydoc operator==(window_event_id, SDL_WindowEventID)
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_WindowEventID lhs,
-                                               WindowEventID rhs) noexcept
+                                               window_event_id rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -2879,7 +2883,7 @@ enum class WindowEventID {
  *
  * @since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(WindowEventID lhs,
+[[nodiscard]] inline constexpr auto operator!=(window_event_id lhs,
                                                SDL_WindowEventID rhs) noexcept
     -> bool
 {
@@ -2887,17 +2891,17 @@ enum class WindowEventID {
 }
 
 /**
- * @copydoc operator!=(WindowEventID, SDL_WindowEventID)
+ * @copydoc operator!=(window_event_id, SDL_WindowEventID)
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_WindowEventID lhs,
-                                               WindowEventID rhs) noexcept
+                                               window_event_id rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
- * @class WindowEvent
+ * @class window_event
  *
  * @brief Represents an event that is associated with an action related to a
  * window.
@@ -2908,7 +2912,7 @@ enum class WindowEventID {
  *
  * @headerfile event.hpp
  */
-class WindowEvent final : public CommonEvent<SDL_WindowEvent> {
+class window_event final : public common_event<SDL_WindowEvent> {
  public:
   /**
    * @brief Creates a default-initialized window event.
@@ -2916,7 +2920,7 @@ class WindowEvent final : public CommonEvent<SDL_WindowEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  WindowEvent() noexcept;
+  window_event() noexcept;
 
   /**
    * @brief Creates a window event based on the supplied SDL window event.
@@ -2926,7 +2930,7 @@ class WindowEvent final : public CommonEvent<SDL_WindowEvent> {
    * @since 4.0.0
    */
   CENTURION_API
-  WindowEvent(const SDL_WindowEvent& event) noexcept;
+  window_event(const SDL_WindowEvent& event) noexcept;
 
   /**
    * @brief Returns the event ID of this window event.
@@ -2939,7 +2943,7 @@ class WindowEvent final : public CommonEvent<SDL_WindowEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto event_id() const noexcept -> WindowEventID;
+  auto event_id() const noexcept -> window_event_id;
 
   /**
    * @brief Returns the value of the first data value.
@@ -2978,10 +2982,10 @@ class WindowEvent final : public CommonEvent<SDL_WindowEvent> {
   auto data_2() const noexcept -> i32;
 };
 
-static_assert(validate_event<WindowEvent, SDL_WindowEvent>());
+static_assert(validate_event<window_event, SDL_WindowEvent>());
 
 /**
- * @class Event
+ * @class event
  *
  * @brief Serves as the main interface for dealing with events.
  *
@@ -2993,12 +2997,12 @@ static_assert(validate_event<WindowEvent, SDL_WindowEvent>());
  *
  *   void event_demo()
  *   {
- *     ctn::Event event;
+ *     ctn::event event;
  *     bool running = true;
  *
  *     while (running) {
  *       while (event.poll()) {
- *         if (event.is<ctn::QuitEvent>()) {
+ *         if (event.is<ctn::quit_event>()) {
  *           running = false;
  *           break;
  *         }
@@ -3016,7 +3020,7 @@ static_assert(validate_event<WindowEvent, SDL_WindowEvent>());
  *
  * @headerfile event.hpp
  */
-class Event final {
+class event final {
  public:
   /**
    * @brief Creates an empty event.
@@ -3024,7 +3028,7 @@ class Event final {
    * @since 4.0.0
    */
   CENTURION_API
-  Event() noexcept;
+  event() noexcept;
 
   /**
    * @brief Creates an event based on the supplied event.
@@ -3034,7 +3038,7 @@ class Event final {
    * @since 4.0.0
    */
   CENTURION_API
-  Event(const SDL_Event& event) noexcept;
+  event(const SDL_Event& event) noexcept;
 
   /**
    * @brief Creates an event based on the supplied event.
@@ -3044,7 +3048,7 @@ class Event final {
    * @since 4.0.0
    */
   CENTURION_API
-  Event(SDL_Event&& event) noexcept;
+  event(SDL_Event&& event) noexcept;
 
   /**
    * @brief Refresh the event loop, gathering events from the input devices.
@@ -3066,7 +3070,7 @@ class Event final {
    * @since 3.1.0
    */
   CENTURION_API
-  static void push(Event& event) noexcept;
+  static void push(event& event) noexcept;
 
   /**
    * @brief Flushes all current events from the event queue.
@@ -3257,27 +3261,27 @@ class Event final {
 
   // behold, the beast!
   std::variant<std::monostate,
-               AudioDeviceEvent,
-               ControllerAxisEvent,
-               ControllerButtonEvent,
-               ControllerDeviceEvent,
-               DollarGestureEvent,
-               DropEvent,
-               JoyAxisEvent,
-               JoyBallEvent,
-               JoyButtonEvent,
-               JoyDeviceEvent,
-               JoyHatEvent,
-               KeyboardEvent,
-               MouseButtonEvent,
-               MouseMotionEvent,
-               MouseWheelEvent,
-               MultiGestureEvent,
-               QuitEvent,
-               TextEditingEvent,
-               TextInputEvent,
-               TouchFingerEvent,
-               WindowEvent>
+               audio_device_event,
+               controller_axis_event,
+               controller_button_event,
+               controller_device_event,
+               dollar_gesture_event,
+               drop_event,
+               joy_axis_event,
+               joy_ball_event,
+               joy_button_event,
+               joy_device_event,
+               joy_hat_event,
+               keyboard_event,
+               mouse_button_event,
+               mouse_motion_event,
+               mouse_wheel_event,
+               multi_gesture_event,
+               quit_event,
+               text_editing_event,
+               text_input_event,
+               touch_finger_event,
+               window_event>
       m_data;
 
   void update_data() noexcept;

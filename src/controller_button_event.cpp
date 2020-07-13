@@ -6,46 +6,46 @@
 namespace centurion {
 
 CENTURION_DEF
-ControllerButtonEvent::ControllerButtonEvent() noexcept : CommonEvent{}
+controller_button_event::controller_button_event() noexcept : common_event{}
 {}
 
-CENTURION_DEF ControllerButtonEvent::ControllerButtonEvent(
+CENTURION_DEF controller_button_event::controller_button_event(
     const SDL_ControllerButtonEvent& event) noexcept
-    : CommonEvent{event}
+    : common_event{event}
 {}
 
 CENTURION_DEF
-void ControllerButtonEvent::set_button(game_controller_button button) noexcept
+void controller_button_event::set_button(game_controller_button button) noexcept
 {
   m_event.button = static_cast<u8>(button);
 }
 
 CENTURION_DEF
-void ControllerButtonEvent::set_state(button_state state) noexcept
+void controller_button_event::set_state(button_state state) noexcept
 {
   m_event.state = static_cast<u8>(state);
 }
 
 CENTURION_DEF
-void ControllerButtonEvent::set_which(SDL_JoystickID id) noexcept
+void controller_button_event::set_which(SDL_JoystickID id) noexcept
 {
   m_event.which = id;
 }
 
 CENTURION_DEF
-auto ControllerButtonEvent::button() const noexcept -> game_controller_button
+auto controller_button_event::button() const noexcept -> game_controller_button
 {
   return static_cast<game_controller_button>(m_event.button);
 }
 
 CENTURION_DEF
-auto ControllerButtonEvent::state() const noexcept -> button_state
+auto controller_button_event::state() const noexcept -> button_state
 {
   return static_cast<button_state>(m_event.state);
 }
 
 CENTURION_DEF
-auto ControllerButtonEvent::which() const noexcept -> SDL_JoystickID
+auto controller_button_event::which() const noexcept -> SDL_JoystickID
 {
   return m_event.which;
 }

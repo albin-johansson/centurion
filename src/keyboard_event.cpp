@@ -6,17 +6,17 @@
 namespace centurion {
 
 CENTURION_DEF
-KeyboardEvent::KeyboardEvent() noexcept : CommonEvent{}
+keyboard_event::keyboard_event() noexcept : common_event{}
 {}
 
 CENTURION_DEF
-KeyboardEvent::KeyboardEvent(const SDL_KeyboardEvent& event) noexcept
-    : CommonEvent{event}
+keyboard_event::keyboard_event(const SDL_KeyboardEvent& event) noexcept
+    : common_event{event}
 {}
 
 CENTURION_DEF
-void KeyboardEvent::set_key(const centurion::key& key,
-                            button_state state) noexcept
+void keyboard_event::set_key(const centurion::key& key,
+                             button_state state) noexcept
 {
   m_event.keysym.scancode = key.scancode();
   m_event.keysym.sym = key.keycode();
@@ -24,7 +24,7 @@ void KeyboardEvent::set_key(const centurion::key& key,
 }
 
 CENTURION_DEF
-void KeyboardEvent::set_modifier(key_modifier modifier, bool active) noexcept
+void keyboard_event::set_modifier(key_modifier modifier, bool active) noexcept
 {
   if (active) {
     m_event.keysym.mod |= static_cast<u16>(modifier);
@@ -34,90 +34,90 @@ void KeyboardEvent::set_modifier(key_modifier modifier, bool active) noexcept
 }
 
 CENTURION_DEF
-void KeyboardEvent::set_repeated(bool repeated) noexcept
+void keyboard_event::set_repeated(bool repeated) noexcept
 {
   m_event.repeat = repeated;
 }
 
 CENTURION_DEF
-void KeyboardEvent::set_window_id(u32 id) noexcept
+void keyboard_event::set_window_id(u32 id) noexcept
 {
   m_event.windowID = id;
 }
 
 CENTURION_DEF
-auto KeyboardEvent::is_active(const centurion::key& key) const noexcept -> bool
+auto keyboard_event::is_active(const centurion::key& key) const noexcept -> bool
 {
   return m_event.keysym.sym == key.keycode();
 }
 
 CENTURION_DEF
-auto KeyboardEvent::modifier_active(key_modifier modifier) const noexcept
+auto keyboard_event::modifier_active(key_modifier modifier) const noexcept
     -> bool
 {
   return m_event.keysym.mod & static_cast<u16>(modifier);
 }
 
 CENTURION_DEF
-auto KeyboardEvent::shift_active() const noexcept -> bool
+auto keyboard_event::shift_active() const noexcept -> bool
 {
   return modifier_active(key_modifier::left_shift) ||
          modifier_active(key_modifier::right_shift);
 }
 
 CENTURION_DEF
-auto KeyboardEvent::ctrl_active() const noexcept -> bool
+auto keyboard_event::ctrl_active() const noexcept -> bool
 {
   return modifier_active(key_modifier::left_ctrl) ||
          modifier_active(key_modifier::right_ctrl);
 }
 
 CENTURION_DEF
-auto KeyboardEvent::alt_active() const noexcept -> bool
+auto keyboard_event::alt_active() const noexcept -> bool
 {
   return modifier_active(key_modifier::left_alt) ||
          modifier_active(key_modifier::right_alt);
 }
 
 CENTURION_DEF
-auto KeyboardEvent::gui_active() const noexcept -> bool
+auto keyboard_event::gui_active() const noexcept -> bool
 {
   return modifier_active(key_modifier::left_gui) ||
          modifier_active(key_modifier::right_gui);
 }
 
 CENTURION_DEF
-auto KeyboardEvent::caps_active() const noexcept -> bool
+auto keyboard_event::caps_active() const noexcept -> bool
 {
   return modifier_active(key_modifier::caps);
 }
 
 CENTURION_DEF
-auto KeyboardEvent::num_active() const noexcept -> bool
+auto keyboard_event::num_active() const noexcept -> bool
 {
   return modifier_active(key_modifier::num);
 }
 
 CENTURION_DEF
-auto KeyboardEvent::repeated() const noexcept -> bool
+auto keyboard_event::repeated() const noexcept -> bool
 {
   return m_event.repeat;
 }
 
 CENTURION_DEF
-auto KeyboardEvent::state() const noexcept -> button_state
+auto keyboard_event::state() const noexcept -> button_state
 {
   return static_cast<button_state>(m_event.state);
 }
 
 CENTURION_DEF
-auto KeyboardEvent::key() const noexcept -> centurion::key
+auto keyboard_event::key() const noexcept -> centurion::key
 {
   return centurion::key{m_event.keysym.scancode};
 }
 
 CENTURION_DEF
-auto KeyboardEvent::window_id() const noexcept -> u32
+auto keyboard_event::window_id() const noexcept -> u32
 {
   return m_event.windowID;
 }

@@ -6,19 +6,20 @@
 namespace centurion {
 
 CENTURION_DEF
-DropEvent::DropEvent() noexcept : CommonEvent{}
+drop_event::drop_event() noexcept : common_event{}
 {}
 
 CENTURION_DEF
-DropEvent::DropEvent(const SDL_DropEvent& event) noexcept : CommonEvent{event}
+drop_event::drop_event(const SDL_DropEvent& event) noexcept
+    : common_event{event}
 {}
 
 CENTURION_DEF
-DropEvent::DropEvent(SDL_DropEvent&& event) noexcept : CommonEvent{event}
+drop_event::drop_event(SDL_DropEvent&& event) noexcept : common_event{event}
 {}
 
 CENTURION_DEF
-DropEvent::~DropEvent() noexcept
+drop_event::~drop_event() noexcept
 {
   if (m_event.file && m_willFreeFile) {
     SDL_free(m_event.file);
@@ -26,13 +27,13 @@ DropEvent::~DropEvent() noexcept
 }
 
 CENTURION_DEF
-void DropEvent::set_will_free_file(bool freeFile) noexcept
+void drop_event::set_will_free_file(bool freeFile) noexcept
 {
   m_willFreeFile = freeFile;
 }
 
 CENTURION_DEF
-void DropEvent::set_file(char* file) noexcept
+void drop_event::set_file(char* file) noexcept
 {
   if (m_event.file && m_willFreeFile) {
     SDL_free(m_event.file);
@@ -41,25 +42,25 @@ void DropEvent::set_file(char* file) noexcept
 }
 
 CENTURION_DEF
-void DropEvent::set_window_id(u32 id) noexcept
+void drop_event::set_window_id(u32 id) noexcept
 {
   m_event.windowID = id;
 }
 
 CENTURION_DEF
-auto DropEvent::will_free_file() const noexcept -> bool
+auto drop_event::will_free_file() const noexcept -> bool
 {
   return m_willFreeFile;
 }
 
 CENTURION_DEF
-auto DropEvent::file() const noexcept -> char*
+auto drop_event::file() const noexcept -> char*
 {
   return m_event.file;
 }
 
 CENTURION_DEF
-auto DropEvent::window_id() const noexcept -> u32
+auto drop_event::window_id() const noexcept -> u32
 {
   return m_event.windowID;
 }

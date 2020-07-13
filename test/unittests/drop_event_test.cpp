@@ -6,12 +6,12 @@ using namespace centurion;
 
 TEST_CASE("DropEvent move constructor", "[DropEvent]")
 {
-  CHECK_NOTHROW(DropEvent{{}});
+  CHECK_NOTHROW(drop_event{{}});
 }
 
 TEST_CASE("DropEvent::set_will_free_file", "[DropEvent]")
 {
-  DropEvent event;
+  drop_event event;
 
   event.set_will_free_file(true);
   CHECK(event.will_free_file());
@@ -22,7 +22,7 @@ TEST_CASE("DropEvent::set_will_free_file", "[DropEvent]")
 
 TEST_CASE("DropEvent::set_file", "[DropEvent]")
 {
-  DropEvent event;
+  drop_event event;
   CHECK_NOTHROW(event.set_file(nullptr));
 
   // This is the only time in the tests that a DropEvent should free the file,
@@ -34,7 +34,7 @@ TEST_CASE("DropEvent::set_file", "[DropEvent]")
 
 TEST_CASE("DropEvent::set_window_id", "[DropEvent]")
 {
-  DropEvent event;
+  drop_event event;
 
   const auto id = 84;
   event.set_window_id(id);
@@ -44,7 +44,7 @@ TEST_CASE("DropEvent::set_window_id", "[DropEvent]")
 
 TEST_CASE("DropEvent::will_free_file", "[DropEvent]")
 {
-  DropEvent event;
+  drop_event event;
   CHECK(!event.will_free_file());
 }
 
@@ -54,7 +54,7 @@ TEST_CASE("DropEvent::file", "[DropEvent]")
   SDL_DropEvent sdlEvent;
   sdlEvent.file = &file;  // shouldn't be deleted, otherwise we're in trouble
 
-  DropEvent event{sdlEvent};
+  drop_event event{sdlEvent};
 
   CHECK(event.file());
   CHECK(*event.file() == file);
@@ -66,7 +66,7 @@ TEST_CASE("DropEvent::window_id", "[DropEvent]")
   sdlEvent.windowID = 32;
   sdlEvent.file = nullptr;
 
-  DropEvent event{sdlEvent};
+  drop_event event{sdlEvent};
 
   CHECK(event.window_id() == sdlEvent.windowID);
 }

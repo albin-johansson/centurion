@@ -6,11 +6,12 @@
 namespace centurion {
 
 CENTURION_DEF
-QuitEvent::QuitEvent() noexcept : CommonEvent{}
+quit_event::quit_event() noexcept : common_event{}
 {}
 
 CENTURION_DEF
-QuitEvent::QuitEvent(const SDL_QuitEvent& event) noexcept : CommonEvent{event}
+quit_event::quit_event(const SDL_QuitEvent& event) noexcept
+    : common_event{event}
 {}
 
 }  // namespace centurion

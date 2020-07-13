@@ -322,7 +322,7 @@ TEST_CASE("Manual testing of music playback", "[.music]")
   window.set_title("Centurion music test");
 
   ctn::renderer renderer{window};
-  ctn::Event event;
+  ctn::event event;
 
   ctn::music music{"resources/hiddenPond.mp3"};
   ctn::music click{"resources/click.wav"};
@@ -358,10 +358,10 @@ TEST_CASE("Manual testing of music playback", "[.music]")
   window.show();
   while (running) {
     while (event.poll()) {
-      if (event.is<ctn::QuitEvent>()) {
+      if (event.is<ctn::quit_event>()) {
         running = false;
         break;
-      } else if (const auto* key = event.try_get<ctn::KeyboardEvent>();
+      } else if (const auto* key = event.try_get<ctn::keyboard_event>();
                  key && key->state() == ctn::button_state::released) {
         if (key->is_active(ctn::key{SDLK_0})) {
           click.play(0);

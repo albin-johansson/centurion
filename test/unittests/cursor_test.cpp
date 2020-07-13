@@ -177,11 +177,11 @@ TEST_CASE("SystemCursor enum values", "[cursor]")
 
   CHECK(SDL_SYSTEM_CURSOR_ARROW == ctn::system_cursor::arrow);
   CHECK(SDL_SYSTEM_CURSOR_IBEAM == ctn::system_cursor::ibeam);
-  CHECK(SDL_SYSTEM_CURSOR_WAIT ==  ctn::system_cursor::wait);
+  CHECK(SDL_SYSTEM_CURSOR_WAIT == ctn::system_cursor::wait);
   CHECK(SDL_SYSTEM_CURSOR_CROSSHAIR == ctn::system_cursor::crosshair);
   CHECK(SDL_SYSTEM_CURSOR_WAITARROW == ctn::system_cursor::wait_arrow);
-  CHECK(SDL_SYSTEM_CURSOR_SIZENWSE ==  ctn::system_cursor::arrow_nw_se);
-  CHECK(SDL_SYSTEM_CURSOR_SIZENESW ==  ctn::system_cursor::arrow_ne_sw);
+  CHECK(SDL_SYSTEM_CURSOR_SIZENWSE == ctn::system_cursor::arrow_nw_se);
+  CHECK(SDL_SYSTEM_CURSOR_SIZENESW == ctn::system_cursor::arrow_ne_sw);
   CHECK(SDL_SYSTEM_CURSOR_SIZEWE == ctn::system_cursor::arrow_w_e);
   CHECK(SDL_SYSTEM_CURSOR_SIZENS == ctn::system_cursor::arrow_n_s);
   CHECK(SDL_SYSTEM_CURSOR_SIZEALL == ctn::system_cursor::arrow_all);

@@ -109,7 +109,7 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  constexpr explicit key_code(SDL_Keycode key) noexcept : m_key{key} {}
+  constexpr explicit key_code(SDL_KeyCode key) noexcept : m_key{key} {}
 
   /**
    * @brief Creates a `key_code` instance based on a scan code.
@@ -124,7 +124,7 @@ class key_code final {
    * @since 5.0.0
    */
   explicit key_code(SDL_Scancode scancode) noexcept
-      : m_key{SDL_GetKeyFromScancode(scancode)}
+      : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(scancode))}
   {}
 
   /**
@@ -140,7 +140,7 @@ class key_code final {
    * @since 5.0.0
    */
   explicit key_code(gsl::not_null<czstring> name) noexcept
-      : m_key{SDL_GetKeyFromName(name)}
+      : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
   auto operator=(const key_code&) noexcept -> key_code& = default;
@@ -156,7 +156,7 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  auto operator=(SDL_Keycode key) noexcept -> key_code&
+  auto operator=(SDL_KeyCode key) noexcept -> key_code&
   {
     m_key = key;
     return *this;
@@ -174,7 +174,7 @@ class key_code final {
    */
   auto operator=(SDL_Scancode scancode) noexcept -> key_code&
   {
-    m_key = SDL_GetKeyFromScancode(scancode);
+    m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(scancode));
     return *this;
   }
 
@@ -193,7 +193,7 @@ class key_code final {
    */
   auto operator=(gsl::not_null<czstring> name) noexcept -> key_code&
   {
-    m_key = SDL_GetKeyFromName(name);
+    m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name));
     return *this;
   }
 
@@ -229,12 +229,23 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Keycode { return m_key; }
+  [[nodiscard]] auto get() const noexcept -> SDL_KeyCode { return m_key; }
+
+  /**
+   * @brief Converts to `SDL_KeyCode`.
+   *
+   * @return the internal key code.
+   *
+   * @since 5.0.0
+   */
+  explicit operator SDL_KeyCode() const noexcept { return m_key; }
 
   /**
    * @brief Converts to `SDL_Keycode`.
    *
    * @return the internal key code.
+   *
+   * @note `SDL_Keycode` is just an alias for `i32`.
    *
    * @since 5.0.0
    */
@@ -255,8 +266,40 @@ class key_code final {
   }
 
  private:
-  SDL_Keycode m_key{SDLK_UNKNOWN};
+  SDL_KeyCode m_key{SDLK_UNKNOWN};
 };
+
+/**
+ * @brief Indicates whether or not two key codes are the same.
+ *
+ * @param lhs the left-hand side key code.
+ * @param rhs the right-hand side key code.
+ *
+ * @return `true` if the key codes are the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto operator==(const key_code& lhs,
+                                     const key_code& rhs) noexcept -> bool
+{
+  return lhs.get() == rhs.get();
+}
+
+/**
+ * @brief Indicates whether or not two key codes aren't the same.
+ *
+ * @param lhs the left-hand side key code.
+ * @param rhs the right-hand side key code.
+ *
+ * @return `true` if the key codes aren't the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto operator!=(const key_code& lhs,
+                                     const key_code& rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
  * @namespace centurion::keycodes

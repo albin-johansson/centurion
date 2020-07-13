@@ -129,11 +129,11 @@ TEST_CASE("scan_code::operator SDL_Keycode", "[scan_code]")
 {
   ctn::scan_code code;
 
-  const auto unknown = static_cast<SDL_Keycode>(code);
+  const auto unknown = static_cast<SDL_KeyCode>(code);
   CHECK(unknown == SDLK_UNKNOWN);
 
   code = SDL_SCANCODE_H;
-  const auto h = static_cast<SDL_Keycode>(code);
+  const auto h = static_cast<SDL_KeyCode>(code);
   CHECK(h == SDLK_h);
 }
 

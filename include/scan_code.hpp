@@ -221,7 +221,7 @@ class scan_code final {
   explicit operator SDL_Scancode() const noexcept { return m_code; }
 
   /**
-   * @brief Converts to `SDL_Keycode`.
+   * @brief Converts to `SDL_KeyCode`.
    *
    * @return the key code associated with the internal scan code.
    *
@@ -229,9 +229,9 @@ class scan_code final {
    *
    * @since 5.0.0
    */
-  explicit operator SDL_Keycode() const noexcept
+  explicit operator SDL_KeyCode() const noexcept
   {
-    return SDL_GetKeyFromScancode(m_code);
+    return static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(m_code));
   }
 
  private:

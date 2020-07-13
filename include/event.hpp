@@ -124,7 +124,7 @@ class common_event {
    *
    * @since 4.0.0
    */
-  void set_type(EventType type) noexcept
+  void set_type(event_type type) noexcept
   {
     m_event.type = static_cast<u32>(type);
   }
@@ -147,9 +147,9 @@ class common_event {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto type() const noexcept -> EventType
+  [[nodiscard]] auto type() const noexcept -> event_type
   {
-    return static_cast<EventType>(m_event.type);
+    return static_cast<event_type>(m_event.type);
   }
 
   /**
@@ -3157,7 +3157,7 @@ class event final {
    * @since 3.1.0
    */
   CENTURION_QUERY
-  auto type() const noexcept -> EventType;
+  auto type() const noexcept -> event_type;
 
   /**
    * @brief Indicates whether or not the event is of a particular type.

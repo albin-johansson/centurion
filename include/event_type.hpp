@@ -54,7 +54,7 @@ namespace centurion {
  *
  * @headerfile event_type.hpp
  */
-enum class EventType {
+enum class event_type {
   Quit = SDL_QUIT,
 
   AppTerminating = SDL_APP_TERMINATING,
@@ -130,7 +130,7 @@ enum class EventType {
  *
  * @since 3.1.0
  */
-[[nodiscard]] inline constexpr auto operator==(EventType lhs,
+[[nodiscard]] inline constexpr auto operator==(event_type lhs,
                                                SDL_EventType rhs) noexcept
     -> bool
 {
@@ -141,7 +141,7 @@ enum class EventType {
  * @copydoc operator==(EventType, SDL_EventType)
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_EventType lhs,
-                                               EventType rhs) noexcept -> bool
+                                               event_type rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -156,7 +156,7 @@ enum class EventType {
  *
  * @since 3.1.0
  */
-[[nodiscard]] inline constexpr auto operator!=(EventType lhs,
+[[nodiscard]] inline constexpr auto operator!=(event_type lhs,
                                                SDL_EventType rhs) noexcept
     -> bool
 {
@@ -167,7 +167,7 @@ enum class EventType {
  * @copydoc operator!=(EventType, SDL_EventType)
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_EventType lhs,
-                                               EventType rhs) noexcept -> bool
+                                               event_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

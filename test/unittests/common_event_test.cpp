@@ -1,14 +1,13 @@
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "event.hpp"
 
-using namespace centurion;
+using dummy_t = SDL_QuitEvent;
 
-using DummyType = SDL_QuitEvent;
-
-TEST_CASE("CommonEvent::set_time", "[CommonEvent]")
+TEST_CASE("common_event::set_time", "[common_event]")
 {
-  common_event<DummyType> event;
+  ctn::common_event<dummy_t> event;
 
   const auto time = 8934;
   event.set_time(time);
@@ -16,44 +15,44 @@ TEST_CASE("CommonEvent::set_time", "[CommonEvent]")
   CHECK(event.time() == time);
 }
 
-TEST_CASE("CommonEvent::set_type", "[CommonEvent]")
+TEST_CASE("common_event::set_type", "[common_event]")
 {
-  common_event<DummyType> event;
+  ctn::common_event<dummy_t> event;
 
-  const auto type = EventType::AppLowMemory;
+  const auto type = ctn::event_type::AppLowMemory;
   event.set_type(type);
 
   CHECK(event.type() == type);
 }
 
-TEST_CASE("CommonEvent::time", "[CommonEvent]")
+TEST_CASE("common_event::time", "[common_event]")
 {
   const auto time = 735;
 
-  DummyType dummy;
+  dummy_t dummy;
   dummy.timestamp = time;
 
-  common_event<DummyType> event{dummy};
+  ctn::common_event<dummy_t> event{dummy};
 
   CHECK(event.time() == time);
 }
 
-TEST_CASE("CommonEvent::type", "[CommonEvent]")
+TEST_CASE("common_event::type", "[common_event]")
 {
-  DummyType dummy;
+  dummy_t dummy;
   dummy.type = SDL_MOUSEMOTION;
 
-  common_event<DummyType> event{dummy};
+  ctn::common_event<dummy_t> event{dummy};
 
-  CHECK(event.type() == EventType::MouseMotion);
+  CHECK(event.type() == ctn::event_type::MouseMotion);
 }
 
-TEST_CASE("CommonEvent conversions", "[CommonEvent]")
+TEST_CASE("common_event conversions", "[common_event]")
 {
-  DummyType dummy;
+  dummy_t dummy;
   dummy.type = SDL_MOUSEMOTION;
 
-  common_event<DummyType> event{dummy};
+  ctn::common_event<dummy_t> event{dummy};
   const auto internal = event.get();
 
   CHECK(internal.type == dummy.type);

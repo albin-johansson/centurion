@@ -57,7 +57,7 @@ void keyboard_event::set_window_id(u32 id) noexcept
 CENTURION_DEF
 auto keyboard_event::is_active(const scan_code& code) const noexcept -> bool
 {
-  return m_event.keysym.sym == code.get();
+  return m_event.keysym.scancode == code.get();
 }
 
 CENTURION_DEF

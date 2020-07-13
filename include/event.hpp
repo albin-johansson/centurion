@@ -49,9 +49,10 @@
 #include "event_type.hpp"
 #include "game_controller.hpp"
 #include "joystick.hpp"
-#include "key.hpp"
+#include "key_code.hpp"
 #include "key_modifier.hpp"
 #include "mouse_button.hpp"
+#include "scan_code.hpp"
 #include "touch.hpp"
 
 namespace centurion {
@@ -1349,15 +1350,34 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
   keyboard_event(const SDL_KeyboardEvent& event) noexcept;
 
   /**
-   * @brief Sets the button state associated with a key.
+   * @brief Sets the scan code that is associated with the event.
    *
-   * @param key the key to set the button state of.
-   * @param state the new button state of the key.
+   * @param code the scan code that will be associated with the event.
    *
-   * @since 4.0.0
+   * @since 5.0.0
    */
   CENTURION_API
-  void set_key(const key& key, button_state state) noexcept;
+  void set_scan_code(const scan_code& code) noexcept;
+
+  /**
+   * @brief Sets the key code that is associated with the event.
+   *
+   * @param code the key code that will be associated with the event.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void set_key_code(const key_code& code) noexcept;
+
+  /**
+   * @brief Sets the button state associated with the event.
+   *
+   * @param state the button state that will be associated with the event
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void set_button_state(button_state state) noexcept;
 
   /**
    * @brief Sets the status of a key modifier.
@@ -1393,18 +1413,32 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
   void set_window_id(u32 id) noexcept;
 
   /**
-   * @brief Indicates whether or not the supplied key represents the same key
-   * that triggered this keyboard event.
+   * @brief Indicates whether or not the event is associated with the
+   * specified scan code.
    *
-   * @param key the key that will be checked.
+   * @param code the scan code that will be checked.
    *
-   * @return `true` if the supplied key caused this keyboard event; false
-   * otherwise.
+   * @return `true` if the supplied scan code is associated with the event;
+   * `false` otherwise.
    *
-   * @since 4.0.0
+   * @since 5.0.0
    */
   CENTURION_QUERY
-  auto is_active(const key& key) const noexcept -> bool;
+  auto is_active(const scan_code& code) const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the event is associated with the
+   * specified key code.
+   *
+   * @param code the key code that will be checked.
+   *
+   * @return `true` if the supplied key code is associated with the event;
+   * `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto is_active(const key_code& code) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the specified key modifier is active.
@@ -1503,14 +1537,24 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
   auto state() const noexcept -> button_state;
 
   /**
-   * @brief Returns the key that triggered this keyboard event.
+   * @brief Returns the scan code that is associated with the event.
    *
-   * @return the key that triggered this keyboard event.
+   * @return the scan code that is associated with the event.
    *
-   * @since 4.0.0
+   * @since 5.0.0
    */
   CENTURION_QUERY
-  auto key() const noexcept -> key;
+  auto get_scan_code() const noexcept -> scan_code;
+
+  /**
+   * @brief Returns the key code that is associated with the event.
+   *
+   * @return the key code that is associated with the event.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto get_key_code() const noexcept -> key_code;
 
   /**
    * @brief Returns the ID of the window associated with the event.

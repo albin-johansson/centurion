@@ -7,6 +7,8 @@
 #include <string>
 
 #include "centurion_utils.hpp"
+#include "key_code.hpp"
+#include "scan_code.hpp"
 
 namespace centurion::input {
 
@@ -36,47 +38,68 @@ void key_state::update() noexcept
 }
 
 CENTURION_DEF
-auto key_state::is_pressed(const key& key) const noexcept -> bool
+auto key_state::is_pressed(const scan_code& code) const noexcept -> bool
 {
-  const auto code = key.scancode();
-  if (code >= 0 && code < m_nKeys) {
-    return m_states[code];
+  const auto scanCode = code.get();
+  if (scanCode >= 0 && scanCode < m_nKeys) {
+    return m_states[scanCode];
   } else {
     return false;
   }
 }
 
 CENTURION_DEF
-auto key_state::is_held(const key& key) const noexcept -> bool
+auto key_state::is_pressed(const key_code& code) const noexcept -> bool
 {
-  const auto code = key.scancode();
-  if (code >= 0 && code < m_nKeys) {
-    return m_states[code] && m_previousStates[code];
+  return is_pressed(scan_code{code.get()});
+}
+
+CENTURION_DEF
+auto key_state::is_held(const scan_code& code) const noexcept -> bool
+{
+  const auto scanCode = code.get();
+  if (scanCode >= 0 && scanCode < m_nKeys) {
+    return m_states[scanCode] && m_previousStates[scanCode];
   } else {
     return false;
   }
 }
 
-CENTURION_DEF
-auto key_state::was_just_pressed(const key& key) const noexcept -> bool
+auto key_state::is_held(const key_code& code) const noexcept -> bool
 {
-  const auto code = key.scancode();
-  if (code >= 0 && code < m_nKeys) {
-    return m_states[code] && !m_previousStates[code];
+  return is_held(scan_code{code.get()});
+}
+
+CENTURION_DEF
+auto key_state::was_just_pressed(const scan_code& code) const noexcept -> bool
+{
+  const auto scanCode = code.get();
+  if (scanCode >= 0 && scanCode < m_nKeys) {
+    return m_states[scanCode] && !m_previousStates[scanCode];
   } else {
     return false;
   }
 }
 
-CENTURION_DEF
-auto key_state::was_just_released(const key& key) const noexcept -> bool
+auto key_state::was_just_pressed(const key_code& code) const noexcept -> bool
 {
-  const auto code = key.scancode();
-  if (code >= 0 && code < m_nKeys) {
-    return !m_states[code] && m_previousStates[code];
+  return was_just_pressed(scan_code{code.get()});
+}
+
+CENTURION_DEF
+auto key_state::was_just_released(const scan_code& code) const noexcept -> bool
+{
+  const auto scanCode = code.get();
+  if (scanCode >= 0 && scanCode < m_nKeys) {
+    return !m_states[scanCode] && m_previousStates[scanCode];
   } else {
     return false;
   }
+}
+
+auto key_state::was_just_released(const key_code& code) const noexcept -> bool
+{
+  return was_just_released(scan_code{code.get()});
 }
 
 CENTURION_DEF

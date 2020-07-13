@@ -363,22 +363,22 @@ TEST_CASE("Manual testing of music playback", "[.music]")
         break;
       } else if (const auto* key = event.try_get<ctn::keyboard_event>();
                  key && key->state() == ctn::button_state::released) {
-        if (key->is_active(ctn::key{SDLK_0})) {
+        if (key->is_active(SDLK_0)) {
           click.play(0);
 
-        } else if (key->is_active(ctn::key{SDLK_1})) {
+        } else if (key->is_active(SDLK_1)) {
           click.play(1);
 
-        } else if (key->is_active(ctn::key{SDLK_2})) {
+        } else if (key->is_active(SDLK_2)) {
           click.play(2);
 
-        } else if (key->is_active(ctn::key{SDLK_9})) {
+        } else if (key->is_active(SDLK_9)) {
           click.play(-1);
 
-        } else if (key->is_active(ctn::key{SDLK_f})) {
+        } else if (key->is_active(SDLK_f)) {
           music.fade_in(ctn::seconds<int>{5});
 
-        } else if (key->is_active(ctn::key{SDLK_ESCAPE})) {
+        } else if (key->is_active(SDLK_ESCAPE)) {
           ctn::music::halt();
         }
       }

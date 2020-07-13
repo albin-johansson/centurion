@@ -109,7 +109,7 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  constexpr explicit key_code(SDL_KeyCode key) noexcept : m_key{key} {}
+  constexpr key_code(SDL_KeyCode key) noexcept : m_key{key} {}
 
   /**
    * @brief Creates a `key_code` instance based on a scan code.

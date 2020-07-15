@@ -23,4 +23,5 @@ Welcome to Centurion's documentation!
    :maxdepth: 2
    :caption: Tutorials
 
-   pages/tutorials/hello_centurion.rst
+   pages/tutorials/installation
+   pages/tutorials/hello_centurion

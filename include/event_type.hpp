@@ -25,7 +25,7 @@
 /**
  * @file event_type.hpp
  *
- * @brief Provides the `EventType` enum.
+ * @brief Provides the `event_type` enum.
  *
  * @author Albin Johansson
  *
@@ -44,7 +44,7 @@
 namespace centurion {
 
 /**
- * @enum EventType
+ * @enum event_type
  *
  * @brief Mirrors the `SDL_EventType` enum.
  *
@@ -55,69 +55,69 @@ namespace centurion {
  * @headerfile event_type.hpp
  */
 enum class event_type {
-  Quit = SDL_QUIT,
+  quit = SDL_QUIT,
 
-  AppTerminating = SDL_APP_TERMINATING,
-  AppLowMemory = SDL_APP_LOWMEMORY,
-  AppWillEnterBackground = SDL_APP_WILLENTERBACKGROUND,
-  AppDidEnterBackground = SDL_APP_DIDENTERBACKGROUND,
-  AppDidEnterForeground = SDL_APP_DIDENTERFOREGROUND,
+  app_terminating = SDL_APP_TERMINATING,
+  app_low_memory = SDL_APP_LOWMEMORY,
+  app_will_enter_background = SDL_APP_WILLENTERBACKGROUND,
+  app_did_enter_background = SDL_APP_DIDENTERBACKGROUND,
+  app_did_enter_foreground = SDL_APP_DIDENTERFOREGROUND,
 
-  Display = SDL_DISPLAYEVENT,
+  display = SDL_DISPLAYEVENT,
 
-  Window = SDL_WINDOWEVENT,
-  System = SDL_SYSWMEVENT,
+  window = SDL_WINDOWEVENT,
+  system = SDL_SYSWMEVENT,
 
-  KeyDown = SDL_KEYDOWN,
-  KeyUp = SDL_KEYUP,
-  TextEditing = SDL_TEXTEDITING,
-  TextInput = SDL_TEXTINPUT,
-  KeymapChanged = SDL_KEYMAPCHANGED,
+  key_down = SDL_KEYDOWN,
+  key_up = SDL_KEYUP,
+  text_editing = SDL_TEXTEDITING,
+  text_input = SDL_TEXTINPUT,
+  keymap_changed = SDL_KEYMAPCHANGED,
 
-  MouseMotion = SDL_MOUSEMOTION,
-  MouseButtonDown = SDL_MOUSEBUTTONDOWN,
-  MouseButtonUp = SDL_MOUSEBUTTONUP,
-  MouseWheel = SDL_MOUSEWHEEL,
+  mouse_motion = SDL_MOUSEMOTION,
+  mouse_button_down = SDL_MOUSEBUTTONDOWN,
+  mouse_button_up = SDL_MOUSEBUTTONUP,
+  mouse_wheel = SDL_MOUSEWHEEL,
 
-  JoystickAxisMotion = SDL_JOYAXISMOTION,
-  JoystickBallMotion = SDL_JOYBALLMOTION,
-  JoystickHatMotion = SDL_JOYHATMOTION,
-  JoystickButtonDown = SDL_JOYBUTTONDOWN,
-  JoystickButtonUp = SDL_JOYBUTTONUP,
-  JoystickDeviceAdded = SDL_JOYDEVICEADDED,
-  JoystickDeviceRemoved = SDL_JOYDEVICEREMOVED,
+  joystick_axis_motion = SDL_JOYAXISMOTION,
+  joystick_ball_motion = SDL_JOYBALLMOTION,
+  joystick_hat_motion = SDL_JOYHATMOTION,
+  joystick_button_down = SDL_JOYBUTTONDOWN,
+  joystick_button_up = SDL_JOYBUTTONUP,
+  joystick_device_added = SDL_JOYDEVICEADDED,
+  joystick_device_removed = SDL_JOYDEVICEREMOVED,
 
-  ControllerAxisMotion = SDL_CONTROLLERAXISMOTION,
-  ControllerButtonDown = SDL_CONTROLLERBUTTONDOWN,
-  ControllerButtonUp = SDL_CONTROLLERBUTTONUP,
-  ControllerDeviceAdded = SDL_CONTROLLERDEVICEADDED,
-  ControllerDeviceRemoved = SDL_CONTROLLERDEVICEREMOVED,
-  ControllerDeviceRemapped = SDL_CONTROLLERDEVICEREMAPPED,
+  controller_axis_motion = SDL_CONTROLLERAXISMOTION,
+  controller_button_down = SDL_CONTROLLERBUTTONDOWN,
+  controller_button_up = SDL_CONTROLLERBUTTONUP,
+  controller_device_added = SDL_CONTROLLERDEVICEADDED,
+  controller_device_removed = SDL_CONTROLLERDEVICEREMOVED,
+  controller_device_remapped = SDL_CONTROLLERDEVICEREMAPPED,
 
-  TouchDown = SDL_FINGERDOWN,
-  TouchUp = SDL_FINGERUP,
-  TouchMotion = SDL_FINGERMOTION,
+  touch_down = SDL_FINGERDOWN,
+  touch_up = SDL_FINGERUP,
+  touch_motion = SDL_FINGERMOTION,
 
-  DollarGesture = SDL_DOLLARGESTURE,
-  DollarRecord = SDL_DOLLARRECORD,
-  MultiGesture = SDL_MULTIGESTURE,
+  dollar_gesture = SDL_DOLLARGESTURE,
+  dollar_record = SDL_DOLLARRECORD,
+  multi_gesture = SDL_MULTIGESTURE,
 
-  ClipboardUpdate = SDL_CLIPBOARDUPDATE,
+  clipboard_update = SDL_CLIPBOARDUPDATE,
 
-  DropFile = SDL_DROPFILE,
-  DropText = SDL_DROPTEXT,
-  DropBegin = SDL_DROPBEGIN,
-  DropComplete = SDL_DROPCOMPLETE,
+  drop_file = SDL_DROPFILE,
+  drop_text = SDL_DROPTEXT,
+  drop_begin = SDL_DROPBEGIN,
+  drop_complete = SDL_DROPCOMPLETE,
 
-  AudioDeviceAdded = SDL_AUDIODEVICEADDED,
-  AudioDeviceRemoved = SDL_AUDIODEVICEREMOVED,
+  audio_device_added = SDL_AUDIODEVICEADDED,
+  audio_device_removed = SDL_AUDIODEVICEREMOVED,
 
-  SensorUpdate = SDL_SENSORUPDATE,
+  sensor_update = SDL_SENSORUPDATE,
 
-  RenderTargetsReset = SDL_RENDER_TARGETS_RESET,
-  RenderDeviceReset = SDL_RENDER_DEVICE_RESET,
+  render_targets_reset = SDL_RENDER_TARGETS_RESET,
+  render_device_reset = SDL_RENDER_DEVICE_RESET,
 
-  User = SDL_USEREVENT
+  user = SDL_USEREVENT
 };
 
 /**
@@ -138,7 +138,7 @@ enum class event_type {
 }
 
 /**
- * @copydoc operator==(EventType, SDL_EventType)
+ * @copydoc operator==(event_type, SDL_EventType)
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_EventType lhs,
                                                event_type rhs) noexcept -> bool
@@ -164,7 +164,7 @@ enum class event_type {
 }
 
 /**
- * @copydoc operator!=(EventType, SDL_EventType)
+ * @copydoc operator!=(event_type, SDL_EventType)
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_EventType lhs,
                                                event_type rhs) noexcept -> bool

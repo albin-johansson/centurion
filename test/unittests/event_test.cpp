@@ -17,113 +17,119 @@ namespace {
 
 TEST_CASE("event_type operator==", "[event_type]")
 {
-  CHECK(ctn::event_type::Quit == SDL_EventType::SDL_QUIT);
-  CHECK(ctn::event_type::AppTerminating == SDL_APP_TERMINATING);
-  CHECK(ctn::event_type::AppLowMemory == SDL_APP_LOWMEMORY);
-  CHECK(ctn::event_type::AppWillEnterBackground == SDL_APP_WILLENTERBACKGROUND);
-  CHECK(ctn::event_type::AppDidEnterBackground == SDL_APP_DIDENTERBACKGROUND);
-  CHECK(ctn::event_type::AppDidEnterForeground == SDL_APP_DIDENTERFOREGROUND);
-  CHECK(ctn::event_type::Display == SDL_DISPLAYEVENT);
-  CHECK(ctn::event_type::Window == SDL_WINDOWEVENT);
-  CHECK(ctn::event_type::System == SDL_SYSWMEVENT);
-  CHECK(ctn::event_type::KeyDown == SDL_KEYDOWN);
-  CHECK(ctn::event_type::KeyUp == SDL_KEYUP);
-  CHECK(ctn::event_type::TextEditing == SDL_TEXTEDITING);
-  CHECK(ctn::event_type::TextInput == SDL_TEXTINPUT);
-  CHECK(ctn::event_type::KeymapChanged == SDL_KEYMAPCHANGED);
-  CHECK(ctn::event_type::MouseMotion == SDL_MOUSEMOTION);
-  CHECK(ctn::event_type::MouseButtonDown == SDL_MOUSEBUTTONDOWN);
-  CHECK(ctn::event_type::MouseButtonUp == SDL_MOUSEBUTTONUP);
-  CHECK(ctn::event_type::MouseWheel == SDL_MOUSEWHEEL);
-  CHECK(ctn::event_type::JoystickAxisMotion == SDL_JOYAXISMOTION);
-  CHECK(ctn::event_type::JoystickBallMotion == SDL_JOYBALLMOTION);
-  CHECK(ctn::event_type::JoystickHatMotion == SDL_JOYHATMOTION);
-  CHECK(ctn::event_type::JoystickButtonDown == SDL_JOYBUTTONDOWN);
-  CHECK(ctn::event_type::JoystickButtonUp == SDL_JOYBUTTONUP);
-  CHECK(ctn::event_type::JoystickDeviceAdded == SDL_JOYDEVICEADDED);
-  CHECK(ctn::event_type::JoystickDeviceRemoved == SDL_JOYDEVICEREMOVED);
-  CHECK(ctn::event_type::ControllerAxisMotion == SDL_CONTROLLERAXISMOTION);
-  CHECK(ctn::event_type::ControllerButtonDown == SDL_CONTROLLERBUTTONDOWN);
-  CHECK(ctn::event_type::ControllerButtonUp == SDL_CONTROLLERBUTTONUP);
-  CHECK(ctn::event_type::ControllerDeviceAdded == SDL_CONTROLLERDEVICEADDED);
-  CHECK(ctn::event_type::ControllerDeviceRemoved ==
+  CHECK(ctn::event_type::quit == SDL_EventType::SDL_QUIT);
+  CHECK(ctn::event_type::app_terminating == SDL_APP_TERMINATING);
+  CHECK(ctn::event_type::app_low_memory == SDL_APP_LOWMEMORY);
+  CHECK(ctn::event_type::app_will_enter_background ==
+        SDL_APP_WILLENTERBACKGROUND);
+  CHECK(ctn::event_type::app_did_enter_background ==
+        SDL_APP_DIDENTERBACKGROUND);
+  CHECK(ctn::event_type::app_did_enter_foreground ==
+        SDL_APP_DIDENTERFOREGROUND);
+  CHECK(ctn::event_type::display == SDL_DISPLAYEVENT);
+  CHECK(ctn::event_type::window == SDL_WINDOWEVENT);
+  CHECK(ctn::event_type::system == SDL_SYSWMEVENT);
+  CHECK(ctn::event_type::key_down == SDL_KEYDOWN);
+  CHECK(ctn::event_type::key_up == SDL_KEYUP);
+  CHECK(ctn::event_type::text_editing == SDL_TEXTEDITING);
+  CHECK(ctn::event_type::text_input == SDL_TEXTINPUT);
+  CHECK(ctn::event_type::keymap_changed == SDL_KEYMAPCHANGED);
+  CHECK(ctn::event_type::mouse_motion == SDL_MOUSEMOTION);
+  CHECK(ctn::event_type::mouse_button_down == SDL_MOUSEBUTTONDOWN);
+  CHECK(ctn::event_type::mouse_button_up == SDL_MOUSEBUTTONUP);
+  CHECK(ctn::event_type::mouse_wheel == SDL_MOUSEWHEEL);
+  CHECK(ctn::event_type::joystick_axis_motion == SDL_JOYAXISMOTION);
+  CHECK(ctn::event_type::joystick_ball_motion == SDL_JOYBALLMOTION);
+  CHECK(ctn::event_type::joystick_hat_motion == SDL_JOYHATMOTION);
+  CHECK(ctn::event_type::joystick_button_down == SDL_JOYBUTTONDOWN);
+  CHECK(ctn::event_type::joystick_button_up == SDL_JOYBUTTONUP);
+  CHECK(ctn::event_type::joystick_device_added == SDL_JOYDEVICEADDED);
+  CHECK(ctn::event_type::joystick_device_removed == SDL_JOYDEVICEREMOVED);
+  CHECK(ctn::event_type::controller_axis_motion == SDL_CONTROLLERAXISMOTION);
+  CHECK(ctn::event_type::controller_button_down == SDL_CONTROLLERBUTTONDOWN);
+  CHECK(ctn::event_type::controller_button_up == SDL_CONTROLLERBUTTONUP);
+  CHECK(ctn::event_type::controller_device_added == SDL_CONTROLLERDEVICEADDED);
+  CHECK(ctn::event_type::controller_device_removed ==
         SDL_CONTROLLERDEVICEREMOVED);
-  CHECK(ctn::event_type::ControllerDeviceRemapped ==
+  CHECK(ctn::event_type::controller_device_remapped ==
         SDL_CONTROLLERDEVICEREMAPPED);
-  CHECK(ctn::event_type::TouchDown == SDL_FINGERDOWN);
-  CHECK(ctn::event_type::TouchUp == SDL_FINGERUP);
-  CHECK(ctn::event_type::TouchMotion == SDL_FINGERMOTION);
-  CHECK(ctn::event_type::DollarGesture == SDL_DOLLARGESTURE);
-  CHECK(ctn::event_type::DollarRecord == SDL_DOLLARRECORD);
-  CHECK(ctn::event_type::MultiGesture == SDL_MULTIGESTURE);
-  CHECK(ctn::event_type::ClipboardUpdate == SDL_CLIPBOARDUPDATE);
-  CHECK(ctn::event_type::DropFile == SDL_DROPFILE);
-  CHECK(ctn::event_type::DropText == SDL_DROPTEXT);
-  CHECK(ctn::event_type::DropBegin == SDL_DROPBEGIN);
-  CHECK(ctn::event_type::DropComplete == SDL_DROPCOMPLETE);
-  CHECK(ctn::event_type::AudioDeviceAdded == SDL_AUDIODEVICEADDED);
-  CHECK(ctn::event_type::AudioDeviceRemoved == SDL_AUDIODEVICEREMOVED);
-  CHECK(ctn::event_type::SensorUpdate == SDL_SENSORUPDATE);
-  CHECK(ctn::event_type::RenderTargetsReset == SDL_RENDER_TARGETS_RESET);
-  CHECK(ctn::event_type::RenderDeviceReset == SDL_RENDER_DEVICE_RESET);
-  CHECK(ctn::event_type::User == SDL_USEREVENT);
+  CHECK(ctn::event_type::touch_down == SDL_FINGERDOWN);
+  CHECK(ctn::event_type::touch_up == SDL_FINGERUP);
+  CHECK(ctn::event_type::touch_motion == SDL_FINGERMOTION);
+  CHECK(ctn::event_type::dollar_gesture == SDL_DOLLARGESTURE);
+  CHECK(ctn::event_type::dollar_record == SDL_DOLLARRECORD);
+  CHECK(ctn::event_type::multi_gesture == SDL_MULTIGESTURE);
+  CHECK(ctn::event_type::clipboard_update == SDL_CLIPBOARDUPDATE);
+  CHECK(ctn::event_type::drop_file == SDL_DROPFILE);
+  CHECK(ctn::event_type::drop_text == SDL_DROPTEXT);
+  CHECK(ctn::event_type::drop_begin == SDL_DROPBEGIN);
+  CHECK(ctn::event_type::drop_complete == SDL_DROPCOMPLETE);
+  CHECK(ctn::event_type::audio_device_added == SDL_AUDIODEVICEADDED);
+  CHECK(ctn::event_type::audio_device_removed == SDL_AUDIODEVICEREMOVED);
+  CHECK(ctn::event_type::sensor_update == SDL_SENSORUPDATE);
+  CHECK(ctn::event_type::render_targets_reset == SDL_RENDER_TARGETS_RESET);
+  CHECK(ctn::event_type::render_device_reset == SDL_RENDER_DEVICE_RESET);
+  CHECK(ctn::event_type::user == SDL_USEREVENT);
 
-  CHECK(SDL_QUIT == ctn::event_type::Quit);
-  CHECK(SDL_APP_TERMINATING == ctn::event_type::AppTerminating);
-  CHECK(SDL_APP_LOWMEMORY == ctn::event_type::AppLowMemory);
-  CHECK(SDL_APP_WILLENTERBACKGROUND == ctn::event_type::AppWillEnterBackground);
-  CHECK(SDL_APP_DIDENTERBACKGROUND == ctn::event_type::AppDidEnterBackground);
-  CHECK(SDL_APP_DIDENTERFOREGROUND == ctn::event_type::AppDidEnterForeground);
-  CHECK(SDL_DISPLAYEVENT == ctn::event_type::Display);
-  CHECK(SDL_WINDOWEVENT == ctn::event_type::Window);
-  CHECK(SDL_SYSWMEVENT == ctn::event_type::System);
-  CHECK(SDL_KEYDOWN == ctn::event_type::KeyDown);
-  CHECK(SDL_KEYUP == ctn::event_type::KeyUp);
-  CHECK(SDL_TEXTEDITING == ctn::event_type::TextEditing);
-  CHECK(SDL_TEXTINPUT == ctn::event_type::TextInput);
-  CHECK(SDL_KEYMAPCHANGED == ctn::event_type::KeymapChanged);
-  CHECK(SDL_MOUSEMOTION == ctn::event_type::MouseMotion);
-  CHECK(SDL_MOUSEBUTTONDOWN == ctn::event_type::MouseButtonDown);
-  CHECK(SDL_MOUSEBUTTONUP == ctn::event_type::MouseButtonUp);
-  CHECK(SDL_MOUSEWHEEL == ctn::event_type::MouseWheel);
-  CHECK(SDL_JOYAXISMOTION == ctn::event_type::JoystickAxisMotion);
-  CHECK(SDL_JOYBALLMOTION == ctn::event_type::JoystickBallMotion);
-  CHECK(SDL_JOYHATMOTION == ctn::event_type::JoystickHatMotion);
-  CHECK(SDL_JOYBUTTONDOWN == ctn::event_type::JoystickButtonDown);
-  CHECK(SDL_JOYBUTTONUP == ctn::event_type::JoystickButtonUp);
-  CHECK(SDL_JOYDEVICEADDED == ctn::event_type::JoystickDeviceAdded);
-  CHECK(SDL_JOYDEVICEREMOVED == ctn::event_type::JoystickDeviceRemoved);
-  CHECK(SDL_CONTROLLERAXISMOTION == ctn::event_type::ControllerAxisMotion);
-  CHECK(SDL_CONTROLLERBUTTONDOWN == ctn::event_type::ControllerButtonDown);
-  CHECK(SDL_CONTROLLERBUTTONUP == ctn::event_type::ControllerButtonUp);
-  CHECK(SDL_CONTROLLERDEVICEADDED == ctn::event_type::ControllerDeviceAdded);
+  CHECK(SDL_QUIT == ctn::event_type::quit);
+  CHECK(SDL_APP_TERMINATING == ctn::event_type::app_terminating);
+  CHECK(SDL_APP_LOWMEMORY == ctn::event_type::app_low_memory);
+  CHECK(SDL_APP_WILLENTERBACKGROUND ==
+        ctn::event_type::app_will_enter_background);
+  CHECK(SDL_APP_DIDENTERBACKGROUND ==
+        ctn::event_type::app_did_enter_background);
+  CHECK(SDL_APP_DIDENTERFOREGROUND ==
+        ctn::event_type::app_did_enter_foreground);
+  CHECK(SDL_DISPLAYEVENT == ctn::event_type::display);
+  CHECK(SDL_WINDOWEVENT == ctn::event_type::window);
+  CHECK(SDL_SYSWMEVENT == ctn::event_type::system);
+  CHECK(SDL_KEYDOWN == ctn::event_type::key_down);
+  CHECK(SDL_KEYUP == ctn::event_type::key_up);
+  CHECK(SDL_TEXTEDITING == ctn::event_type::text_editing);
+  CHECK(SDL_TEXTINPUT == ctn::event_type::text_input);
+  CHECK(SDL_KEYMAPCHANGED == ctn::event_type::keymap_changed);
+  CHECK(SDL_MOUSEMOTION == ctn::event_type::mouse_motion);
+  CHECK(SDL_MOUSEBUTTONDOWN == ctn::event_type::mouse_button_down);
+  CHECK(SDL_MOUSEBUTTONUP == ctn::event_type::mouse_button_up);
+  CHECK(SDL_MOUSEWHEEL == ctn::event_type::mouse_wheel);
+  CHECK(SDL_JOYAXISMOTION == ctn::event_type::joystick_axis_motion);
+  CHECK(SDL_JOYBALLMOTION == ctn::event_type::joystick_ball_motion);
+  CHECK(SDL_JOYHATMOTION == ctn::event_type::joystick_hat_motion);
+  CHECK(SDL_JOYBUTTONDOWN == ctn::event_type::joystick_button_down);
+  CHECK(SDL_JOYBUTTONUP == ctn::event_type::joystick_button_up);
+  CHECK(SDL_JOYDEVICEADDED == ctn::event_type::joystick_device_added);
+  CHECK(SDL_JOYDEVICEREMOVED == ctn::event_type::joystick_device_removed);
+  CHECK(SDL_CONTROLLERAXISMOTION == ctn::event_type::controller_axis_motion);
+  CHECK(SDL_CONTROLLERBUTTONDOWN == ctn::event_type::controller_button_down);
+  CHECK(SDL_CONTROLLERBUTTONUP == ctn::event_type::controller_button_up);
+  CHECK(SDL_CONTROLLERDEVICEADDED == ctn::event_type::controller_device_added);
   CHECK(SDL_CONTROLLERDEVICEREMOVED ==
-        ctn::event_type::ControllerDeviceRemoved);
+        ctn::event_type::controller_device_removed);
   CHECK(SDL_CONTROLLERDEVICEREMAPPED ==
-        ctn::event_type::ControllerDeviceRemapped);
-  CHECK(SDL_FINGERDOWN == ctn::event_type::TouchDown);
-  CHECK(SDL_FINGERUP == ctn::event_type::TouchUp);
-  CHECK(SDL_FINGERMOTION == ctn::event_type::TouchMotion);
-  CHECK(SDL_DOLLARGESTURE == ctn::event_type::DollarGesture);
-  CHECK(SDL_DOLLARRECORD == ctn::event_type::DollarRecord);
-  CHECK(SDL_MULTIGESTURE == ctn::event_type::MultiGesture);
-  CHECK(SDL_CLIPBOARDUPDATE == ctn::event_type::ClipboardUpdate);
-  CHECK(SDL_DROPFILE == ctn::event_type::DropFile);
-  CHECK(SDL_DROPTEXT == ctn::event_type::DropText);
-  CHECK(SDL_DROPBEGIN == ctn::event_type::DropBegin);
-  CHECK(SDL_DROPCOMPLETE == ctn::event_type::DropComplete);
-  CHECK(SDL_AUDIODEVICEADDED == ctn::event_type::AudioDeviceAdded);
-  CHECK(SDL_AUDIODEVICEREMOVED == ctn::event_type::AudioDeviceRemoved);
-  CHECK(SDL_SENSORUPDATE == ctn::event_type::SensorUpdate);
-  CHECK(SDL_RENDER_TARGETS_RESET == ctn::event_type::RenderTargetsReset);
-  CHECK(SDL_RENDER_DEVICE_RESET == ctn::event_type::RenderDeviceReset);
-  CHECK(SDL_USEREVENT == ctn::event_type::User);
+        ctn::event_type::controller_device_remapped);
+  CHECK(SDL_FINGERDOWN == ctn::event_type::touch_down);
+  CHECK(SDL_FINGERUP == ctn::event_type::touch_up);
+  CHECK(SDL_FINGERMOTION == ctn::event_type::touch_motion);
+  CHECK(SDL_DOLLARGESTURE == ctn::event_type::dollar_gesture);
+  CHECK(SDL_DOLLARRECORD == ctn::event_type::dollar_record);
+  CHECK(SDL_MULTIGESTURE == ctn::event_type::multi_gesture);
+  CHECK(SDL_CLIPBOARDUPDATE == ctn::event_type::clipboard_update);
+  CHECK(SDL_DROPFILE == ctn::event_type::drop_file);
+  CHECK(SDL_DROPTEXT == ctn::event_type::drop_text);
+  CHECK(SDL_DROPBEGIN == ctn::event_type::drop_begin);
+  CHECK(SDL_DROPCOMPLETE == ctn::event_type::drop_complete);
+  CHECK(SDL_AUDIODEVICEADDED == ctn::event_type::audio_device_added);
+  CHECK(SDL_AUDIODEVICEREMOVED == ctn::event_type::audio_device_removed);
+  CHECK(SDL_SENSORUPDATE == ctn::event_type::sensor_update);
+  CHECK(SDL_RENDER_TARGETS_RESET == ctn::event_type::render_targets_reset);
+  CHECK(SDL_RENDER_DEVICE_RESET == ctn::event_type::render_device_reset);
+  CHECK(SDL_USEREVENT == ctn::event_type::user);
 }
 
 TEST_CASE("event_type operator!=", "[event_type]")
 {
-  CHECK(ctn::event_type::DollarGesture != SDL_RENDER_DEVICE_RESET);
-  CHECK(SDL_MOUSEMOTION != ctn::event_type::ControllerDeviceRemoved);
+  CHECK(ctn::event_type::dollar_gesture != SDL_RENDER_DEVICE_RESET);
+  CHECK(SDL_MOUSEMOTION != ctn::event_type::controller_device_removed);
 }
 
 TEST_CASE("event move constructor", "[event]")
@@ -148,7 +154,7 @@ TEST_CASE("event::push", "[event]")
 
   ctn::event event;
   CHECK(event.poll());
-  CHECK(event.type() == ctn::event_type::KeyDown);
+  CHECK(event.type() == ctn::event_type::key_down);
 }
 
 TEST_CASE("event::flush", "[event]")
@@ -181,7 +187,7 @@ TEST_CASE("event::poll", "[event]")
   ctn::event event;
   CHECK(event.poll());
 
-  REQUIRE(event.type() == ctn::event_type::MouseMotion);
+  REQUIRE(event.type() == ctn::event_type::mouse_motion);
   REQUIRE(event.is<ctn::mouse_motion_event>());
 
   auto& motionEvent = event.get<ctn::mouse_motion_event>();
@@ -200,7 +206,7 @@ TEST_CASE("event::type", "[event]")
     return event;
   };
 
-  const auto type = ctn::event_type::TouchMotion;
+  const auto type = ctn::event_type::touch_motion;
   auto sdlEvent = create_sdl_event(type);
 
   ctn::event::flush_all();

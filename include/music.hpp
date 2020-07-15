@@ -237,6 +237,8 @@ enum class music_type {
  *
  * @note Only one music instance can ever be playing at any time.
  *
+ * @todo Look into special effects API (also applies for sound effects).
+ *
  * @see `Mix_Music`
  * @see `sound_effect`
  *

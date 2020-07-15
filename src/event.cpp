@@ -76,7 +76,8 @@ void event::update_data() noexcept
   } else if (t == event_type::KeyDown || t == event_type::KeyUp) {
     m_data.emplace<keyboard_event>(m_event.key);
 
-  } else if (t == event_type::MouseButtonUp || t == event_type::MouseButtonDown) {
+  } else if (t == event_type::MouseButtonUp ||
+             t == event_type::MouseButtonDown) {
     m_data.emplace<mouse_button_event>(m_event.button);
 
   } else if (t == event_type::MouseMotion) {

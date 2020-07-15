@@ -1,7 +1,7 @@
 #include <catch.hpp>
 
-#include "event.hpp"
 #include "centurion_as_ctn.hpp"
+#include "event.hpp"
 
 TEST_CASE("drop_event move constructor", "[drop_event]")
 {

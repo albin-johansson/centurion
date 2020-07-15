@@ -64,7 +64,7 @@ namespace centurion {
 namespace detail {
 
 template <typename Derived, typename Arg>
-class CRTPHint {
+class crtp_hint {
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -82,7 +82,7 @@ class CRTPHint {
     return Derived::current_value();
   }
 
-  [[nodiscard]] static auto to_string(Arg value) noexcept -> std::string
+  [[nodiscard]] static auto to_string(Arg value) -> std::string
   {
     return std::to_string(value);
   }
@@ -90,7 +90,7 @@ class CRTPHint {
 
 // A hint class that only accepts booleans
 template <typename Hint>
-class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
+class bool_hint : public crtp_hint<bool_hint<Hint>, bool> {
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -103,7 +103,7 @@ class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
     return static_cast<bool>(SDL_GetHintBoolean(Hint::name(), SDL_FALSE));
   }
 
-  [[nodiscard]] static auto to_string(bool value) noexcept -> std::string
+  [[nodiscard]] static auto to_string(bool value) -> std::string
   {
     return value ? "1" : "0";
   }
@@ -111,7 +111,7 @@ class BoolHint : public CRTPHint<BoolHint<Hint>, bool> {
 
 // A hint class that only accepts strings
 template <typename Hint>
-class StringHint : public CRTPHint<StringHint<Hint>, czstring> {
+class string_hint : public crtp_hint<string_hint<Hint>, czstring> {
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -137,7 +137,7 @@ class StringHint : public CRTPHint<StringHint<Hint>, czstring> {
 
 // A hint class that only accepts integers
 template <typename Hint>
-class IntHint : public CRTPHint<IntHint<Hint>, int> {
+class int_hint : public crtp_hint<int_hint<Hint>, int> {
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -158,7 +158,7 @@ class IntHint : public CRTPHint<IntHint<Hint>, int> {
 
 // A hint class that only accepts unsigned integers
 template <typename Hint>
-class UnsignedIntHint : public CRTPHint<IntHint<Hint>, unsigned int> {
+class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int> {
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -180,7 +180,7 @@ class UnsignedIntHint : public CRTPHint<IntHint<Hint>, unsigned int> {
 
 // A hint class that only accepts floats
 template <typename Hint>
-class FloatHint : public CRTPHint<FloatHint<Hint>, float> {
+class float_hint : public crtp_hint<float_hint<Hint>, float> {
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -214,9 +214,9 @@ namespace hint {
 
 /// @cond FALSE
 
-class RenderDriver final {
+class render_driver final {
  public:
-  enum Value { Direct3D, OpenGL, OpenGLES, OpenGLES2, Metal, Software };
+  enum Value { direct_3d, open_gl, open_gles, open_gles2, metal, software };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
@@ -238,44 +238,44 @@ class RenderDriver final {
 
     using detail::equal;
     if (equal(hint, "direct3d")) {
-      return Direct3D;
+      return direct_3d;
     } else if (equal(hint, "opengl")) {
-      return OpenGL;
+      return open_gl;
     } else if (equal(hint, "opengles")) {
-      return OpenGLES;
+      return open_gles;
     } else if (equal(hint, "opengles2")) {
-      return OpenGLES2;
+      return open_gles2;
     } else if (equal(hint, "metal")) {
-      return Metal;
+      return metal;
     } else {
-      return Software;
+      return software;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
-      case Direct3D:
+      case direct_3d:
         return "direct3d";
-      case OpenGL:
+      case open_gl:
         return "opengl";
-      case OpenGLES:
+      case open_gles:
         return "opengles";
-      case OpenGLES2:
+      case open_gles2:
         return "opengles2";
-      case Metal:
+      case metal:
         return "metal";
       default:
         /* FALLTHROUGH */
-      case Software:
+      case software:
         return "software";
     }
   }
 };
 
-class AudioResamplingMode final {
+class audio_resampling_mode final {
  public:
-  enum Value { Default = 0, Fast = 1, Medium = 2, Best = 3 };
+  enum Value { normal = 0, fast = 1, medium = 2, best = 3 };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
@@ -297,35 +297,35 @@ class AudioResamplingMode final {
 
     using detail::equal;
     if (equal(hint, "default")) {
-      return Default;
+      return normal;
     } else if (equal(hint, "fast")) {
-      return Fast;
+      return fast;
     } else if (equal(hint, "medium")) {
-      return Medium;
+      return medium;
     } else /*if (equal(hint, "best"))*/ {
-      return Best;
+      return best;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
-      case Default:
+      case normal:
       default:
         return "default";
-      case Fast:
+      case fast:
         return "fast";
-      case Medium:
+      case medium:
         return "medium";
-      case Best:
+      case best:
         return "best";
     }
   }
 };
 
-class ScaleQuality final {
+class scale_quality final {
  public:
-  enum Value { Nearest = 0, Linear = 1, Best = 2 };
+  enum Value { nearest = 0, linear = 1, best = 2 };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
@@ -347,39 +347,39 @@ class ScaleQuality final {
 
     using detail::equal;
     if (equal(hint, "nearest")) {
-      return Nearest;
+      return nearest;
     } else if (equal(hint, "linear")) {
-      return Linear;
+      return linear;
     } else /*if (equal(hint, "best"))*/ {
-      return Best;
+      return best;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
       default:
-      case Nearest:
+      case nearest:
         return "nearest";
-      case Linear:
+      case linear:
         return "linear";
-      case Best:
+      case best:
         return "best";
     }
   }
 };
 
-class FramebufferAcceleration final {
+class framebuffer_acceleration final {
  public:
   enum Value {
-    Off,
-    On,
-    Direct3D,
-    OpenGL,
-    OpenGLES,
-    OpenGLES2,
-    Metal,
-    Software
+    off,
+    on,
+    direct_3d,
+    open_gl,
+    open_gles,
+    open_gles2,
+    metal,
+    software
   };
 
   template <typename T>
@@ -402,51 +402,52 @@ class FramebufferAcceleration final {
 
     using detail::equal;
     if (equal(hint, "0")) {
-      return Off;
+      return off;
     } else if (equal(hint, "1")) {
-      return On;
+      return on;
     } else if (equal(hint, "direct3d")) {
-      return Direct3D;
+      return direct_3d;
     } else if (equal(hint, "opengl")) {
-      return OpenGL;
+      return open_gl;
     } else if (equal(hint, "opengles")) {
-      return OpenGLES;
+      return open_gles;
     } else if (equal(hint, "opengles2")) {
-      return OpenGLES2;
+      return open_gles2;
     } else if (equal(hint, "metal")) {
-      return Metal;
+      return metal;
     } else {
-      return Software;
+      return software;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
       default:
-      case Off:
+        [[fallthrough]];
+      case off:
         return "0";
-      case On:
+      case on:
         return "1";
-      case Direct3D:
+      case direct_3d:
         return "direct3d";
-      case OpenGL:
+      case open_gl:
         return "opengl";
-      case OpenGLES:
+      case open_gles:
         return "opengles";
-      case OpenGLES2:
+      case open_gles2:
         return "opengles2";
-      case Metal:
+      case metal:
         return "metal";
-      case Software:
+      case software:
         return "software";
     }
   }
 };
 
-class AudioCategory final {
+class audio_category final {
  public:
-  enum Value { Ambient, Playback };
+  enum Value { ambient, playback };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
@@ -468,28 +469,28 @@ class AudioCategory final {
 
     using detail::equal;
     if (equal(hint, "ambient")) {
-      return Ambient;
+      return ambient;
     } else /*if (equal(hint, "playback"))*/ {
-      return Playback;
+      return playback;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
       default:
-        /* FALLTHROUGH */
-      case Ambient:
+        [[fallthrough]];
+      case ambient:
         return "ambient";
-      case Playback:
+      case playback:
         return "playback";
     }
   }
 };
 
-class WinD3DCompiler final {
+class win_d3d_compiler final {
  public:
-  enum Value { D3DCompiler46, D3DCompiler43, None };
+  enum Value { d3d_compiler_46, d3d_compiler_43, none };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
@@ -511,32 +512,32 @@ class WinD3DCompiler final {
 
     using detail::equal;
     if (equal(hint, "d3dcompiler_46.dll")) {
-      return D3DCompiler46;
+      return d3d_compiler_46;
     } else if (equal(hint, "d3dcompiler_43.dll")) {
-      return D3DCompiler43;
+      return d3d_compiler_43;
     } else {
-      return None;
+      return none;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
       default:
-        /* FALLTHROUGH */
-      case None:
+        [[fallthrough]];
+      case none:
         return "none";
-      case D3DCompiler43:
+      case d3d_compiler_43:
         return "d3dcompiler_43.dll";
-      case D3DCompiler46:
+      case d3d_compiler_46:
         return "d3dcompiler_46.dll";
     }
   }
 };
 
-class WAVERIFFChunkSize final {
+class wave_riff_chunk_size final {
  public:
-  enum Value { Force, IgnoreZero, Ignore, Maximum };
+  enum Value { force, ignore_zero, ignore, maximum };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
@@ -558,36 +559,36 @@ class WAVERIFFChunkSize final {
 
     using detail::equal;
     if (equal(hint, "force")) {
-      return Force;
+      return force;
     } else if (equal(hint, "ignorezero")) {
-      return IgnoreZero;
+      return ignore_zero;
     } else if (equal(hint, "ignore")) {
-      return Ignore;
+      return ignore;
     } else /* if (equal(hint, "maximum")) */ {
-      return Maximum;
+      return maximum;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
       default:
-        /* FALLTHROUGH */
-      case IgnoreZero:
+        [[fallthrough]];
+      case ignore_zero:
         return "ignorezero";
-      case Ignore:
+      case ignore:
         return "ignore";
-      case Force:
+      case force:
         return "force";
-      case Maximum:
+      case maximum:
         return "maximum";
     }
   }
 };
 
-class WAVETruncation final {
+class wave_truncation final {
  public:
-  enum Value { VeryStrict, Strict, DropFrame, DropBlock };
+  enum Value { very_strict, strict, drop_frame, drop_block };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
@@ -609,36 +610,36 @@ class WAVETruncation final {
 
     using detail::equal;
     if (equal(hint, "verystrict")) {
-      return VeryStrict;
+      return very_strict;
     } else if (equal(hint, "strict")) {
-      return Strict;
+      return strict;
     } else if (equal(hint, "dropframe")) {
-      return DropFrame;
+      return drop_frame;
     } else /* if (equal(hint, "dropblock")) */ {
-      return DropBlock;
+      return drop_block;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
       default:
-        /* FALLTHROUGH */
-      case DropBlock:
+        [[fallthrough]];
+      case drop_block:
         return "dropblock";
-      case DropFrame:
+      case drop_frame:
         return "dropframe";
-      case VeryStrict:
+      case very_strict:
         return "verystrict";
-      case Strict:
+      case strict:
         return "strict";
     }
   }
 };
 
-class WAVEFactChunk final {
+class wave_fact_chunk final {
  public:
-  enum Value { Truncate, Strict, IgnoreZero, Ignore };
+  enum Value { truncate, strict, ignore_zero, ignore };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
@@ -660,36 +661,36 @@ class WAVEFactChunk final {
 
     using detail::equal;
     if (equal(hint, "truncate")) {
-      return Truncate;
+      return truncate;
     } else if (equal(hint, "strict")) {
-      return Strict;
+      return strict;
     } else if (equal(hint, "ignorezero")) {
-      return IgnoreZero;
+      return ignore_zero;
     } else /* if (equal(hint, "ignore")) */ {
-      return Ignore;
+      return ignore;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
       default:
-        /* FALLTHROUGH */
-      case Ignore:
+        [[fallthrough]];
+      case ignore:
         return "ignore";
-      case IgnoreZero:
+      case ignore_zero:
         return "ignorezero";
-      case Truncate:
+      case truncate:
         return "truncate";
-      case Strict:
+      case strict:
         return "strict";
     }
   }
 };
 
-class LogicalSizeMode final {
+class logical_size_mode final {
  public:
-  enum Value { Letterbox, Overscan };
+  enum Value { letterbox, overscan };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
@@ -711,33 +712,33 @@ class LogicalSizeMode final {
 
     using detail::equal;
     if (equal(hint, "0") || equal(hint, "letterbox")) {
-      return Letterbox;
+      return letterbox;
     } else /*if (equal(hint, "1") || equal(hint, "overscan"))*/ {
-      return Overscan;
+      return overscan;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
       default:
-        /* FALLTHROUGH */
-      case Letterbox:
+        [[fallthrough]];
+      case letterbox:
         return "letterbox";
-      case Overscan:
+      case overscan:
         return "overscan";
     }
   }
 };
 
-class QtWaylandContentOrientation final {
+class qt_wayland_content_orientation final {
  public:
   enum Value {
-    Primary,
-    Portrait,
-    Landscape,
-    InvertedPortrait,
-    InvertedLandscape
+    primary,
+    portrait,
+    landscape,
+    inverted_portrait,
+    inverted_landscape
   };
 
   template <typename T>
@@ -760,281 +761,297 @@ class QtWaylandContentOrientation final {
 
     using detail::equal;
     if (equal(hint, "primary")) {
-      return Primary;
+      return primary;
     } else if (equal(hint, "portrait")) {
-      return Portrait;
+      return portrait;
     } else if (equal(hint, "landscape")) {
-      return Landscape;
+      return landscape;
     } else if (equal(hint, "inverted-portrait")) {
-      return InvertedPortrait;
+      return inverted_portrait;
     } else /*if (equal(hint, "inverted-landscape"))*/ {
-      return InvertedLandscape;
+      return inverted_landscape;
     }
   }
 
-  static auto to_string(Value value) noexcept -> std::string
+  static auto to_string(Value value) -> std::string
   {
     switch (value) {
       default:
-        /* FALLTHROUGH */
-      case Primary:
+        [[fallthrough]];
+      case primary:
         return "primary";
-      case Portrait:
+      case portrait:
         return "portrait";
-      case Landscape:
+      case landscape:
         return "landscape";
-      case InvertedPortrait:
+      case inverted_portrait:
         return "inverted-portrait";
-      case InvertedLandscape:
+      case inverted_landscape:
         return "inverted-landscape";
     }
   }
 };
 
-#define CENTURION_HINT(Name, SDLName, Type)                 \
-  class Name final : public detail::Type<Name> {            \
-   public:                                                  \
-    [[nodiscard]] static constexpr czstring name() noexcept \
-    {                                                       \
-      return SDLName;                                       \
-    }                                                       \
+#define CENTURION_HINT(Name, SDLName, Type)                         \
+  class Name final : public detail::Type<Name> {                    \
+   public:                                                          \
+    [[nodiscard]] static constexpr auto name() noexcept -> czstring \
+    {                                                               \
+      return SDLName;                                               \
+    }                                                               \
   };
 
-CENTURION_HINT(AccelerometerAsJoystick,
+CENTURION_HINT(accelerometer_as_joystick,
                SDL_HINT_ACCELEROMETER_AS_JOYSTICK,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(AllowTopMost, SDL_HINT_ALLOW_TOPMOST, BoolHint)
+CENTURION_HINT(allow_top_most, SDL_HINT_ALLOW_TOPMOST, bool_hint)
 
-CENTURION_HINT(AndroidBlockOnPause, SDL_HINT_ANDROID_BLOCK_ON_PAUSE, BoolHint)
+CENTURION_HINT(android_block_on_pause,
+               SDL_HINT_ANDROID_BLOCK_ON_PAUSE,
+               bool_hint)
 
-CENTURION_HINT(AndroidTrapBackButton,
+CENTURION_HINT(android_trap_back_button,
                SDL_HINT_ANDROID_TRAP_BACK_BUTTON,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(AndroidAPKExpansionMainFileVersion,
+CENTURION_HINT(android_apk_expansion_main_file_version,
                SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION,
-               IntHint)
+               int_hint)
 
-CENTURION_HINT(AndroidAPKExpansionPatchFileVersion,
+CENTURION_HINT(android_apk_expansion_patch_file_version,
                SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION,
-               IntHint)
+               int_hint)
 
-CENTURION_HINT(AppleTVControllerUIEvents,
+CENTURION_HINT(apple_tv_controller_ui_events,
                SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(AppleTVRemoteAllowRotation,
+CENTURION_HINT(apple_tv_remote_allow_rotation,
                SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(BMPSaveLegacyFormat, SDL_HINT_BMP_SAVE_LEGACY_FORMAT, BoolHint)
+CENTURION_HINT(bmp_save_legacy_format,
+               SDL_HINT_BMP_SAVE_LEGACY_FORMAT,
+               bool_hint)
 
-CENTURION_HINT(DoubleBuffer, SDL_HINT_VIDEO_DOUBLE_BUFFER, BoolHint)
+CENTURION_HINT(double_buffer, SDL_HINT_VIDEO_DOUBLE_BUFFER, bool_hint)
 
-CENTURION_HINT(DisplayUsableBounds, SDL_HINT_DISPLAY_USABLE_BOUNDS, StringHint)
+CENTURION_HINT(display_usable_bounds,
+               SDL_HINT_DISPLAY_USABLE_BOUNDS,
+               string_hint)
 
-CENTURION_HINT(EmscriptenKeyboardElement,
+CENTURION_HINT(emscripten_keyboard_element,
                SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT,
-               StringHint)
+               string_hint)
 
-CENTURION_HINT(EventLogging, SDL_HINT_EVENT_LOGGING, IntHint)
+CENTURION_HINT(event_logging, SDL_HINT_EVENT_LOGGING, int_hint)
 
-CENTURION_HINT(EnableSteamControllers,
+CENTURION_HINT(enable_steam_controllers,
                SDL_HINT_ENABLE_STEAM_CONTROLLERS,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(GameControllerUseButtonLabels,
+CENTURION_HINT(game_controller_use_button_labels,
                SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(GameControllerType, SDL_HINT_GAMECONTROLLERTYPE, StringHint)
+CENTURION_HINT(game_controller_type, SDL_HINT_GAMECONTROLLERTYPE, string_hint)
 
-CENTURION_HINT(GameControllerConfig, SDL_HINT_GAMECONTROLLERCONFIG, StringHint)
+CENTURION_HINT(game_controller_config,
+               SDL_HINT_GAMECONTROLLERCONFIG,
+               string_hint)
 
-CENTURION_HINT(GameControllerConfigFile,
+CENTURION_HINT(game_controller_config_file,
                SDL_HINT_GAMECONTROLLERCONFIG_FILE,
-               StringHint)
+               string_hint)
 
-CENTURION_HINT(GameControllerIgnoreDevices,
+CENTURION_HINT(game_controller_ignore_devices,
                SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES,
-               StringHint)
+               string_hint)
 
-CENTURION_HINT(GameControllerIgnoreDevicesExcept,
+CENTURION_HINT(game_controller_ignore_devices_except,
                SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT,
-               StringHint)
+               string_hint)
 
-CENTURION_HINT(GrabKeyboard, SDL_HINT_GRAB_KEYBOARD, BoolHint)
+CENTURION_HINT(grab_keyboard, SDL_HINT_GRAB_KEYBOARD, bool_hint)
 
-CENTURION_HINT(IdleTimerDisabled, SDL_HINT_IDLE_TIMER_DISABLED, BoolHint)
+CENTURION_HINT(idle_timer_disabled, SDL_HINT_IDLE_TIMER_DISABLED, bool_hint)
 
-CENTURION_HINT(IMEInternalEditing, SDL_HINT_IME_INTERNAL_EDITING, BoolHint)
+CENTURION_HINT(ime_internal_editing, SDL_HINT_IME_INTERNAL_EDITING, bool_hint)
 
-CENTURION_HINT(JoystickAllowBackgroundEvents,
+CENTURION_HINT(joystick_allow_background_events,
                SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(JoystickUseHIDAPI, SDL_HINT_JOYSTICK_HIDAPI, BoolHint)
+CENTURION_HINT(joystick_use_hidapi, SDL_HINT_JOYSTICK_HIDAPI, bool_hint)
 
-CENTURION_HINT(JoystickUseHIDAPIPS4, SDL_HINT_JOYSTICK_HIDAPI_PS4, BoolHint)
+CENTURION_HINT(joystick_use_hidapi_ps4, SDL_HINT_JOYSTICK_HIDAPI_PS4, bool_hint)
 
 CENTURION_HINT(JoystickUseHIDAPIRumble,
                SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(JoystickUseHIDAPISteam, SDL_HINT_JOYSTICK_HIDAPI_STEAM, BoolHint)
+CENTURION_HINT(joystick_use_hidapi_steam,
+               SDL_HINT_JOYSTICK_HIDAPI_STEAM,
+               bool_hint)
 
-CENTURION_HINT(JoystickUseHIDAPISwitch,
+CENTURION_HINT(joystick_use_hidapi_switch,
                SDL_HINT_JOYSTICK_HIDAPI_SWITCH,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(JoystickUseHIDAPIXbox, SDL_HINT_JOYSTICK_HIDAPI_XBOX, BoolHint)
+CENTURION_HINT(joystick_use_hidapi_xbox,
+               SDL_HINT_JOYSTICK_HIDAPI_XBOX,
+               bool_hint)
 
-CENTURION_HINT(JoystickUseHIDAPIGameCube,
+CENTURION_HINT(joystick_use_hidapi_game_cube,
                SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(MacBackgroundApp, SDL_HINT_MAC_BACKGROUND_APP, BoolHint)
+CENTURION_HINT(mac_background_app, SDL_HINT_MAC_BACKGROUND_APP, bool_hint)
 
-CENTURION_HINT(MacCTRLClickEmulateRightClick,
+CENTURION_HINT(mac_ctrl_click_emulate_right_click,
                SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(MouseFocusClickthrough,
+CENTURION_HINT(mouse_focus_clickthrough,
                SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(MouseRelativeModeWarp,
+CENTURION_HINT(mouse_relative_mode_warp,
                SDL_HINT_MOUSE_RELATIVE_MODE_WARP,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(MouseDoubleClickTime, SDL_HINT_MOUSE_DOUBLE_CLICK_TIME, IntHint)
+CENTURION_HINT(mouse_double_click_time,
+               SDL_HINT_MOUSE_DOUBLE_CLICK_TIME,
+               int_hint)
 
-CENTURION_HINT(MouseDoubleClickRadius,
+CENTURION_HINT(mouse_double_click_radius,
                SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS,
-               IntHint)
+               int_hint)
 
-CENTURION_HINT(NoSignalHandlers, SDL_HINT_NO_SIGNAL_HANDLERS, BoolHint)
+CENTURION_HINT(no_signal_handlers, SDL_HINT_NO_SIGNAL_HANDLERS, bool_hint)
 
-CENTURION_HINT(Direct3D11Debug, SDL_HINT_RENDER_DIRECT3D11_DEBUG, BoolHint)
+CENTURION_HINT(direct_3d_11_debug, SDL_HINT_RENDER_DIRECT3D11_DEBUG, bool_hint)
 
-CENTURION_HINT(Direct3DThreadSafe,
+CENTURION_HINT(direct_3D_thread_safe,
                SDL_HINT_RENDER_DIRECT3D_THREADSAFE,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(OpenGLESDriver, SDL_HINT_OPENGL_ES_DRIVER, BoolHint)
+CENTURION_HINT(opengl_es_driver, SDL_HINT_OPENGL_ES_DRIVER, bool_hint)
 
-CENTURION_HINT(Orientations, SDL_HINT_ORIENTATIONS, StringHint)
+CENTURION_HINT(orientations, SDL_HINT_ORIENTATIONS, string_hint)
 
-CENTURION_HINT(EnableOpenGLShaders, SDL_HINT_RENDER_OPENGL_SHADERS, BoolHint)
+CENTURION_HINT(enable_opengl_shaders, SDL_HINT_RENDER_OPENGL_SHADERS, bool_hint)
 
-CENTURION_HINT(EnableVSync, SDL_HINT_RENDER_VSYNC, BoolHint)
+CENTURION_HINT(enable_vsync, SDL_HINT_RENDER_VSYNC, bool_hint)
 
-CENTURION_HINT(AllowScreensaver, SDL_HINT_VIDEO_ALLOW_SCREENSAVER, BoolHint)
+CENTURION_HINT(allow_screensaver, SDL_HINT_VIDEO_ALLOW_SCREENSAVER, bool_hint)
 
-CENTURION_HINT(VideoExternalContext, SDL_HINT_VIDEO_EXTERNAL_CONTEXT, BoolHint)
+CENTURION_HINT(video_external_context,
+               SDL_HINT_VIDEO_EXTERNAL_CONTEXT,
+               bool_hint)
 
-CENTURION_HINT(DisableHighDPI, SDL_HINT_VIDEO_HIGHDPI_DISABLED, BoolHint)
+CENTURION_HINT(disable_high_dpi, SDL_HINT_VIDEO_HIGHDPI_DISABLED, bool_hint)
 
-CENTURION_HINT(MacFullscreenSpaces,
+CENTURION_HINT(mac_fullscreen_spaces,
                SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(MinimizeOnFocusLoss,
+CENTURION_HINT(minimize_on_focus_loss,
                SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(MouseNormalSpeedScale,
+CENTURION_HINT(mouse_normal_speed_scale,
                SDL_HINT_MOUSE_NORMAL_SPEED_SCALE,
-               FloatHint)
+               float_hint)
 
-CENTURION_HINT(MouseRelativeSpeedScale,
+CENTURION_HINT(mouse_relative_speed_scale,
                SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE,
-               FloatHint)
+               float_hint)
 
-CENTURION_HINT(X11NetWMPing, SDL_HINT_VIDEO_X11_NET_WM_PING, BoolHint)
+CENTURION_HINT(x11_net_wm_ping, SDL_HINT_VIDEO_X11_NET_WM_PING, bool_hint)
 
-CENTURION_HINT(X11XNetWMBypassCompositor,
+CENTURION_HINT(x11_net_wm_bypass_compositor,
                SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(X11ForceEGL, SDL_HINT_VIDEO_X11_FORCE_EGL, BoolHint)
+CENTURION_HINT(x11_force_egl, SDL_HINT_VIDEO_X11_FORCE_EGL, bool_hint)
 
-CENTURION_HINT(X11Xinerama, SDL_HINT_VIDEO_X11_XINERAMA, BoolHint)
+CENTURION_HINT(x11_xinerama, SDL_HINT_VIDEO_X11_XINERAMA, bool_hint)
 
-CENTURION_HINT(X11XRandR, SDL_HINT_VIDEO_X11_XRANDR, BoolHint)
+CENTURION_HINT(x11_xrandr, SDL_HINT_VIDEO_X11_XRANDR, bool_hint)
 
-CENTURION_HINT(X11XVidMode, SDL_HINT_VIDEO_X11_XVIDMODE, BoolHint)
+CENTURION_HINT(x11_xvidmode, SDL_HINT_VIDEO_X11_XVIDMODE, bool_hint)
 
-CENTURION_HINT(X11WindowVisualID,
+CENTURION_HINT(x11_window_visual_id,
                SDL_HINT_VIDEO_X11_WINDOW_VISUALID,
-               StringHint)
+               string_hint)
 
-CENTURION_HINT(WindowsDisableThreadNaming,
+CENTURION_HINT(windows_disable_thread_naming,
                SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(WindowSharePixelFormat,
+CENTURION_HINT(window_share_pixel_format,
                SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT,
-               StringHint)
+               string_hint)
 
-CENTURION_HINT(WindowsEnableMessageLoop,
+CENTURION_HINT(windows_enable_message_loop,
                SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(WindowsNoCloseOnAltF4,
+CENTURION_HINT(windows_no_close_on_alt_f4,
                SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(WindowFrameUsableWhileCursorHidden,
+CENTURION_HINT(window_frame_usable_while_cursor_hidden,
                SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN,
-               BoolHint)
+               bool_hint)
 
-CENTURION_HINT(WindowsIntResourceIcon,
+CENTURION_HINT(windows_int_resource_icon,
                SDL_HINT_WINDOWS_INTRESOURCE_ICON,
-               StringHint)
+               string_hint)
 
-CENTURION_HINT(WindowsIntResourceIconSmall,
+CENTURION_HINT(windows_int_resource_icon_small,
                SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL,
-               StringHint)
+               string_hint)
 
-CENTURION_HINT(WinRTPrivacyPolicyLabel,
+CENTURION_HINT(win_rt_privacy_policy_label,
                SDL_HINT_WINRT_PRIVACY_POLICY_LABEL,
-               StringHint)
+               string_hint)
 
-CENTURION_HINT(WinRTPrivacyPolicyURL,
+CENTURION_HINT(win_rt_privacy_policy_url,
                SDL_HINT_WINRT_PRIVACY_POLICY_URL,
-               StringHint)
+               string_hint)
 
 CENTURION_HINT(WinRTHandleBackButton,
                SDL_HINT_WINRT_HANDLE_BACK_BUTTON,
-               IntHint)
+               int_hint)
 
-CENTURION_HINT(MouseTouchEvents, SDL_HINT_MOUSE_TOUCH_EVENTS, BoolHint)
+CENTURION_HINT(mouse_touch_events, SDL_HINT_MOUSE_TOUCH_EVENTS, bool_hint)
 
-CENTURION_HINT(RaspberryPIVideoLayer, SDL_HINT_RPI_VIDEO_LAYER, IntHint)
+CENTURION_HINT(raspberry_pi_video_layer, SDL_HINT_RPI_VIDEO_LAYER, int_hint)
 
-CENTURION_HINT(RenderBatching, SDL_HINT_RENDER_BATCHING, BoolHint)
+CENTURION_HINT(render_batching, SDL_HINT_RENDER_BATCHING, bool_hint)
 
-CENTURION_HINT(ReturnKeyHidesIME, SDL_HINT_RETURN_KEY_HIDES_IME, BoolHint)
+CENTURION_HINT(return_key_hides_ime, SDL_HINT_RETURN_KEY_HIDES_IME, bool_hint)
 
-CENTURION_HINT(TouchMouseEvents, SDL_HINT_TOUCH_MOUSE_EVENTS, BoolHint)
+CENTURION_HINT(touch_mouse_events, SDL_HINT_TOUCH_MOUSE_EVENTS, bool_hint)
 
-CENTURION_HINT(ThreadStackSize, SDL_HINT_THREAD_STACK_SIZE, UnsignedIntHint)
+CENTURION_HINT(thread_stack_size, SDL_HINT_THREAD_STACK_SIZE, unsigned_int_hint)
 
-CENTURION_HINT(TimerResolution, SDL_HINT_TIMER_RESOLUTION, UnsignedIntHint)
+CENTURION_HINT(timer_resolution, SDL_HINT_TIMER_RESOLUTION, unsigned_int_hint)
 
-CENTURION_HINT(TVRemoteAsJoystick, SDL_HINT_TV_REMOTE_AS_JOYSTICK, BoolHint)
+CENTURION_HINT(tv_remote_as_joystick, SDL_HINT_TV_REMOTE_AS_JOYSTICK, bool_hint)
 
-CENTURION_HINT(QtWaylandWindowFlags,
+CENTURION_HINT(qt_wayland_window_flags,
                SDL_HINT_QTWAYLAND_WINDOW_FLAGS,
-               StringHint)
+               string_hint)
 
-CENTURION_HINT(XinputEnabled, SDL_HINT_XINPUT_ENABLED, BoolHint)
+CENTURION_HINT(xinput_enabled, SDL_HINT_XINPUT_ENABLED, bool_hint)
 
-CENTURION_HINT(XinputUseOldJoystickMapping,
+CENTURION_HINT(xinput_use_old_joystick_mapping,
                SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING,
-               BoolHint)
+               bool_hint)
 
 /// @endcond
 
@@ -1091,7 +1108,7 @@ enum class hint_prio {
  * @endcode
  *
  * @tparam Hint the type of the hint that will be modified.
- * @tparam priority the priority that will be used, defaults to `Normal`.
+ * @tparam priority the priority that will be used, defaults to `normal`.
  * @tparam Value the type of the hint value.
  *
  * @param value the new value that will be set for the specified hint.
@@ -1104,7 +1121,7 @@ template <typename Hint,
           hint_prio priority = hint_prio::normal,
           typename Value,
           typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
-auto set_hint(const Value& value) noexcept -> bool
+auto set_hint(const Value& value) -> bool
 {
   return static_cast<bool>(
       SDL_SetHintWithPriority(Hint::name(),

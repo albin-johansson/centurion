@@ -258,7 +258,7 @@ TEST_CASE("Music::fade_status", "[music]")
 TEST_CASE("Music::music_type", "[music]")
 {
   ctn::music music{path};
-  CHECK(music.type() == ctn::music_type::MP3);
+  CHECK(music.type() == ctn::music_type::mp3);
 }
 
 TEST_CASE("Music::to_string", "[music]")
@@ -291,25 +291,25 @@ TEST_CASE("FadeStatus enum values", "[music]")
 
 TEST_CASE("MusicType enum values", "[music]")
 {
-  CHECK(ctn::music_type::Unknown == MUS_NONE);
-  CHECK(ctn::music_type::MP3 == MUS_MP3);
-  CHECK(ctn::music_type::WAV == MUS_WAV);
-  CHECK(ctn::music_type::CMD == MUS_CMD);
-  CHECK(ctn::music_type::MOD == MUS_MOD);
-  CHECK(ctn::music_type::OGG == MUS_OGG);
-  CHECK(ctn::music_type::FLAC == MUS_FLAC);
-  CHECK(ctn::music_type::MIDI == MUS_MID);
-  CHECK(ctn::music_type::OPUS == MUS_OPUS);
+  CHECK(ctn::music_type::unknown == MUS_NONE);
+  CHECK(ctn::music_type::mp3 == MUS_MP3);
+  CHECK(ctn::music_type::wav == MUS_WAV);
+  CHECK(ctn::music_type::cmd == MUS_CMD);
+  CHECK(ctn::music_type::mod == MUS_MOD);
+  CHECK(ctn::music_type::ogg == MUS_OGG);
+  CHECK(ctn::music_type::flac == MUS_FLAC);
+  CHECK(ctn::music_type::midi == MUS_MID);
+  CHECK(ctn::music_type::opus == MUS_OPUS);
 
-  CHECK(MUS_NONE == ctn::music_type::Unknown);
-  CHECK(MUS_MP3 == ctn::music_type::MP3);
-  CHECK(MUS_WAV == ctn::music_type::WAV);
-  CHECK(MUS_CMD == ctn::music_type::CMD);
-  CHECK(MUS_MOD == ctn::music_type::MOD);
-  CHECK(MUS_OGG == ctn::music_type::OGG);
-  CHECK(MUS_FLAC == ctn::music_type::FLAC);
-  CHECK(MUS_MID == ctn::music_type::MIDI);
-  CHECK(MUS_OPUS == ctn::music_type::OPUS);
+  CHECK(MUS_NONE == ctn::music_type::unknown);
+  CHECK(MUS_MP3 == ctn::music_type::mp3);
+  CHECK(MUS_WAV == ctn::music_type::wav);
+  CHECK(MUS_CMD == ctn::music_type::cmd);
+  CHECK(MUS_MOD == ctn::music_type::mod);
+  CHECK(MUS_OGG == ctn::music_type::ogg);
+  CHECK(MUS_FLAC == ctn::music_type::flac);
+  CHECK(MUS_MID == ctn::music_type::midi);
+  CHECK(MUS_OPUS == ctn::music_type::opus);
 }
 
 #include "event.hpp"

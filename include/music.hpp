@@ -46,7 +46,7 @@
 namespace centurion {
 
 /**
- * @enum FadeStatus
+ * @enum fade_status
  *
  * @brief Mirrors the values of the `Mix_Fading` enum.
  *
@@ -123,15 +123,15 @@ enum class fade_status {
  * @headerfile music.hpp
  */
 enum class music_type {
-  Unknown = MUS_NONE,
-  MP3 = MUS_MP3,
-  WAV = MUS_WAV,
-  OGG = MUS_OGG,
-  MOD = MUS_MOD,
-  MIDI = MUS_MID,
-  CMD = MUS_CMD,
-  FLAC = MUS_FLAC,
-  OPUS = MUS_OPUS
+  unknown = MUS_NONE,
+  mp3 = MUS_MP3,
+  wav = MUS_WAV,
+  ogg = MUS_OGG,
+  mod = MUS_MOD,
+  midi = MUS_MID,
+  cmd = MUS_CMD,
+  flac = MUS_FLAC,
+  opus = MUS_OPUS
 };
 
 /**

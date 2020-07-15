@@ -2205,6 +2205,8 @@ auto basic_renderer<FontKey>::text_solid(
   });
 }
 
+// TODO let font() throw if no font is found
+
 template <typename FontKey>
 auto basic_renderer<FontKey>::font(const FontKey& key) noexcept
     -> std::shared_ptr<class font>

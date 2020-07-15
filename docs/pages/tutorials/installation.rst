@@ -1,12 +1,13 @@
 Installation
 ============
 
-This tutorial demonstrates the installation process for Centurion.
+This tutorial demonstrates the installation process for Centurion. If you've ever used SDL2
+before, then this tutorial might be a little basic.
 
 .. note::
 
   This tutorial assumes that you are using CMake as your build system, and that you've got SDL2
-  installed and usable.
+  installed and ready.
 
 As Shared Library
 -----------------
@@ -63,8 +64,35 @@ like the following.
 
   The order of the arguments for ``target_link_libraries`` can be important for certain compilers.
 
-You should now be able to compile your program and use the Centurion library!
+You should now be able to compile your program without any linker errors. However, we're not
+quite done. Your executable needs to be able to find the shared library at runtime. Which means
+that we need to ensure that the shared library is located next to the executable. Now, you could
+do this manually, but this can get annoying. The following CMake function can be used to copy the
+binary directory to the output directory.
 
+.. code-block:: cmake
+
+  # Copies a directory.
+  #   target: the associated target.
+  #   from: the directory that will be copied.
+  #   to: the target destination of the copied directory.
+  function(copy_directory_post_build [target [from [to]]])
+      add_custom_command(
+              TARGET ${ARGV0} POST_BUILD
+              COMMAND ${CMAKE_COMMAND} -E copy_directory
+              ${ARGV1}
+              ${ARGV2})
+  endfunction()
+
+Add the following line, using the above function, to automatically copy the binaries after
+building the project. The ``BINARY_DIR`` variable is assumed to be set to the path to the binary
+directory, such as ``${PROJECT_SOURCE_DIR}/bin``.
+
+.. code-block:: cmake
+
+  copy_directory_post_build(your-target ${BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+
+By now, everything should be in order for you to start using Centurion!
 
 .. note::
 

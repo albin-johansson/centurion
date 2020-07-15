@@ -1,13 +1,16 @@
 Installation
 ============
 
-This tutorial demonstrates the installation process for Centurion. If you've ever used SDL2
-before, then this tutorial might be a little basic.
+**Synopsis:** Demonstrates the installation process for Centurion.
+
+If you've ever used SDL2
+before, then this tutorial might be a little basic. This tutorial assumes that you are using CMake
+as your build system, and that you've got SDL2 installed and ready.
 
 .. note::
 
-  This tutorial assumes that you are using CMake as your build system, and that you've got SDL2
-  installed and ready.
+  The recommended way to use Centurion is as a shared library. Linking against a shared library
+  should already be familiar to you if you've ever used SDL before.
 
 As Shared Library
 -----------------

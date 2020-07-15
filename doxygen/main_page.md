@@ -14,4 +14,7 @@
            width="100px"/>
     </a>
   </div>
+  
+  
+  Albin Johansson | MIT License | 2019-2020
 </center>

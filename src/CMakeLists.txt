@@ -5,7 +5,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/centurion_cfg.hpp
         ${CTN_INCLUDE_DIR}/centurion_fwd.hpp
         ${CTN_INCLUDE_DIR}/centurion_types.hpp
-        ${CTN_INCLUDE_DIR}/centurion_docs.hpp
         ${CTN_INCLUDE_DIR}/window.hpp
         ${CTN_INCLUDE_DIR}/font.hpp
         ${CTN_INCLUDE_DIR}/graphics.hpp

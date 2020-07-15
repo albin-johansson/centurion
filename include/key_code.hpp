@@ -87,7 +87,7 @@ namespace centurion {
  * @see `scan_code`
  * @see `centurion::keycodes`
  *
- * @headerfile key.hpp
+ * @headerfile key_code.hpp
  */
 class key_code final {
  public:

@@ -47,6 +47,7 @@ class fast_font final {
 
  private:
   std::array<char, 1024> m_buffer;
+  TTF_Font* m_font;
 };
 
 template <typename T>

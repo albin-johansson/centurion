@@ -61,7 +61,8 @@ set(TEST_FILES
         unittests/touch_test.cpp
         unittests/sleep_test.cpp
         unittests/scan_code_tests.cpp
-        unittests/key_code_tests.cpp)
+        unittests/key_code_tests.cpp
+        unittests/font_cache_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES
@@ -121,6 +122,7 @@ target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
+        PUBLIC libFC
         PUBLIC ${CENTURION_LIBRARIES}
         PUBLIC libGSL
         PUBLIC libNamedType

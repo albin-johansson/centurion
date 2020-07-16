@@ -27,41 +27,47 @@
 
 #include <SDL_ttf.h>
 
-#include <array>
-#include <memory>
 #include <algorithm>
+#include <array>
+#include <map>
+#include <memory>
+#include <vector>
 
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
+#include "font.hpp"
 #include "graphics.hpp"
 
 namespace centurion::experimental {
 
-class fast_font final {
+class font_cache final {
  public:
   template <typename T>
-  fast_font(const basic_renderer<T>& renderer, owner<TTF_Font*> font);
+  font_cache(const basic_renderer<T>& renderer, font&& font);
 
   template <typename T>
   static auto unique(const basic_renderer<T>& renderer, owner<TTF_Font*> font)
-      -> std::unique_ptr<fast_font>;
+      -> std::unique_ptr<font_cache>;
 
  private:
+  font m_font;
   std::array<char, 1024> m_buffer;
-  TTF_Font* m_font;
+  std::map<int, char> m_glyphs;
+  std::map<char, texture> m_glyphCache;
 };
 
 template <typename T>
-fast_font::fast_font(const basic_renderer<T>& renderer, owner<TTF_Font*> font)
+font_cache::font_cache(const basic_renderer<T>& renderer, font&& font)
+    : m_font{std::move(font)}
 {
   std::fill(m_buffer.begin(), m_buffer.end(), '\n');
 }
 
 template <typename T>
-auto fast_font::unique(const basic_renderer<T>& renderer, owner<TTF_Font*> font)
-    -> std::unique_ptr<fast_font>
+auto font_cache::unique(const basic_renderer<T>& renderer,
+                        owner<TTF_Font*> font) -> std::unique_ptr<font_cache>
 {
-  return std::make_unique<fast_font>(renderer, font);
+  return std::make_unique<font_cache>(renderer, font);
 }
 
 }  // namespace centurion::experimental

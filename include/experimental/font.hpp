@@ -60,13 +60,6 @@ auto fast_font::unique(const basic_renderer<T>& renderer, owner<TTF_Font*> font)
   return std::make_unique<fast_font>(renderer, font);
 }
 
-void foo()
-{
-  fast_font* font;
-
-
-}
-
 }  // namespace centurion::experimental
 
 #ifdef CENTURION_HEADER_ONLY

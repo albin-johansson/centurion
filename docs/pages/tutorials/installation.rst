@@ -23,10 +23,11 @@ archives. If you're on Linux (Ubuntu), you'll want the GCC version.
 
 Extract the archives wherever you'd like on your system. Proceed to copying the header files in
 the ``include`` folder to the library directory of your project. A suggestion for the path of the
-headers is ``your-project/lib/centurion``.
+headers is ``your-project/lib/centurion``. Furthermore, you also need to include the header files
+in the ``lib`` directory in the Centurion repository.
 
 In your ``CMakeLists.txt`` file, add the following line, where ``your-target`` is the executable
-target in your project.
+target in your project. This needs to be done for the path of the libraries as well.
 
 .. code-block:: cmake
 
@@ -125,9 +126,11 @@ Download the latest release of Centurion from
 `here <https://github.com/albin-johansson/Centurion/releases>`_. You don't need to download
 anything else that the source code archive. Extract the contents of the archive and put the
 headers and the source files (located in the ``include`` and ``src`` directories, respectively) in
-the library directory of your project.
+the library directory of your project. Furthermore, also include the headers in the ``lib``
+directory, since Centurion has external dependencies.
 
-Just like with the shared library approach, include the Centurion sources with the following line.
+Just like with the shared library approach, include the Centurion sources with the following line
+. This needs to be done for the external libraries as well.
 
 .. code-block:: cmake
 

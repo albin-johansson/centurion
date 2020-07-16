@@ -61,11 +61,11 @@ namespace centurion {
  * @headerfile font.hpp
  */
 struct glyph_metrics final {
-  int minX;
-  int minY;
-  int maxX;
-  int maxY;
-  int advance;
+  int minX;    /**< The minimum X-offset. */
+  int minY;    /**< The minimum Y-offset. */
+  int maxX;    /**< The maximum X-offset. */
+  int maxY;    /**< The maximum Y-offset. */
+  int advance; /**< The advance offset. */
 };
 
 /**
@@ -82,7 +82,7 @@ struct glyph_metrics final {
 class font final {
  public:
   /**
-   * @enum Hint
+   * @enum hint
    *
    * @brief Provides different possible TrueType font hint values.
    *
@@ -90,11 +90,11 @@ class font final {
    *
    * @headerfile font.hpp
    */
-  enum class Hint {
-    Normal = TTF_HINTING_NORMAL,
-    Light = TTF_HINTING_LIGHT,
-    Mono = TTF_HINTING_MONO,
-    None = TTF_HINTING_NONE
+  enum class hint {
+    normal = TTF_HINTING_NORMAL,
+    light = TTF_HINTING_LIGHT,
+    mono = TTF_HINTING_MONO,
+    none = TTF_HINTING_NONE
   };
 
   /**
@@ -203,14 +203,15 @@ class font final {
   void set_strikethrough(bool strikethrough) noexcept;
 
   /**
-   * @brief Sets the outlined property of the font.
+   * @brief Sets the outline size of the font.
    *
-   * @param outlined `true` if the font should be outlined; `false` otherwise.
+   * @param outlined the outline size, in pixels; `0` is used to disable
+   * outlining.
    *
-   * @since 3.0.0
+   * @since 5.0.0
    */
   CENTURION_API
-  void set_outlined(bool outlined) noexcept;
+  void set_outline(int outline) noexcept;
 
   /**
    * @brief Sets the TrueType font hint of the font.
@@ -220,7 +221,7 @@ class font final {
    * @since 3.1.0
    */
   CENTURION_API
-  void set_font_hinting(Hint hint) noexcept;
+  void set_font_hinting(hint hint) noexcept;
 
   /**
    * @brief Sets whether or not font kerning is allowed.
@@ -305,7 +306,7 @@ class font final {
    * @since 3.1.0
    */
   CENTURION_QUERY
-  auto font_hinting() const noexcept -> Hint;
+  auto font_hinting() const noexcept -> hint;
 
   /**
    * @brief Indicates whether or not kerning is being used.
@@ -376,6 +377,16 @@ class font final {
    */
   CENTURION_QUERY
   auto is_fixed_width() const noexcept -> bool;
+
+  /**
+   * @brief Returns the size of the outline of the font.
+   *
+   * @return the current outline size, in pixels.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto outline() const noexcept -> int;
 
   /**
    * @brief Returns the kerning amount between two glyphs in the font, if

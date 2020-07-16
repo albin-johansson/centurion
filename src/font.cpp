@@ -142,13 +142,13 @@ void font::set_strikethrough(bool strikethrough) noexcept
 }
 
 CENTURION_DEF
-void font::set_outlined(bool outlined) noexcept
+void font::set_outline(int outline) noexcept
 {
-  TTF_SetFontOutline(m_font, outlined ? 1 : 0);
+  TTF_SetFontOutline(m_font, outline);
 }
 
 CENTURION_DEF
-void font::set_font_hinting(font::Hint hint) noexcept
+void font::set_font_hinting(font::hint hint) noexcept
 {
   TTF_SetFontHinting(m_font, static_cast<int>(hint));
 }
@@ -193,6 +193,12 @@ CENTURION_DEF
 auto font::is_fixed_width() const noexcept -> bool
 {
   return TTF_FontFaceIsFixedWidth(m_font);
+}
+
+CENTURION_DEF
+auto font::outline() const noexcept -> int
+{
+  return TTF_GetFontOutline(m_font);
 }
 
 CENTURION_DEF
@@ -284,9 +290,9 @@ auto font::font_faces() const noexcept -> int
 }
 
 CENTURION_DEF
-auto font::font_hinting() const noexcept -> font::Hint
+auto font::font_hinting() const noexcept -> font::hint
 {
-  return static_cast<font::Hint>(TTF_GetFontHinting(m_font));
+  return static_cast<font::hint>(TTF_GetFontHinting(m_font));
 }
 
 CENTURION_DEF

@@ -128,16 +128,16 @@ TEST_CASE("font::set_strikethrough", "[font]")
   CHECK(!font.strikethrough());
 }
 
-TEST_CASE("font::set_outlined", "[font]")
+TEST_CASE("font::set_outline", "[font]")
 {
   ctn::font font{type_writer_path, 12};
 
   CHECK(!font.outlined());
 
-  font.set_outlined(true);
+  font.set_outline(1);
   CHECK(font.outlined());
 
-  font.set_outlined(false);
+  font.set_outline(0);
   CHECK(!font.outlined());
 }
 
@@ -147,26 +147,26 @@ TEST_CASE("font::set_font_hinting", "[font]")
 
   SECTION("Mono")
   {
-    font.set_font_hinting(ctn::font::Hint::Mono);
-    CHECK(font.font_hinting() == ctn::font::Hint::Mono);
+    font.set_font_hinting(ctn::font::hint::mono);
+    CHECK(font.font_hinting() == ctn::font::hint::mono);
   }
 
   SECTION("None")
   {
-    font.set_font_hinting(ctn::font::Hint::None);
-    CHECK(font.font_hinting() == ctn::font::Hint::None);
+    font.set_font_hinting(ctn::font::hint::none);
+    CHECK(font.font_hinting() == ctn::font::hint::none);
   }
 
   SECTION("Light")
   {
-    font.set_font_hinting(ctn::font::Hint::Light);
-    CHECK(font.font_hinting() == ctn::font::Hint::Light);
+    font.set_font_hinting(ctn::font::hint::light);
+    CHECK(font.font_hinting() == ctn::font::hint::light);
   }
 
   SECTION("Normal")
   {
-    font.set_font_hinting(ctn::font::Hint::Normal);
-    CHECK(font.font_hinting() == ctn::font::Hint::Normal);
+    font.set_font_hinting(ctn::font::hint::normal);
+    CHECK(font.font_hinting() == ctn::font::hint::normal);
   }
 }
 
@@ -286,7 +286,7 @@ TEST_CASE("font::font_faces", "[font]")
 TEST_CASE("font::font_hinting", "[font]")
 {
   const ctn::font font{type_writer_path, 12};
-  CHECK(font.font_hinting() == ctn::font::Hint::Normal);
+  CHECK(font.font_hinting() == ctn::font::hint::normal);
 }
 
 TEST_CASE("font::kerning", "[font]")

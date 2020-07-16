@@ -12,7 +12,7 @@
 #include "log.hpp"
 #include "window.hpp"
 
-TEST_CASE("...", "[font_cache]")
+TEST_CASE("...", "[.font_cache]")
 {
   using unicode = ctn::u16;
 

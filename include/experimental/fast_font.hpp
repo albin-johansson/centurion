@@ -29,6 +29,7 @@
 
 #include <array>
 #include <memory>
+#include <algorithm>
 
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
@@ -51,7 +52,9 @@ class fast_font final {
 
 template <typename T>
 fast_font::fast_font(const basic_renderer<T>& renderer, owner<TTF_Font*> font)
-{}
+{
+  std::fill(m_buffer.begin(), m_buffer.end(), '\n');
+}
 
 template <typename T>
 auto fast_font::unique(const basic_renderer<T>& renderer, owner<TTF_Font*> font)

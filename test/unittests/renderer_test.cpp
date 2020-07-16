@@ -61,7 +61,6 @@ TEST_CASE("Renderer move constructor", "[renderer]")
   ctn::renderer renderer{window};
   ctn::renderer other{std::move(renderer)};
 
-  CHECK(!renderer.get());
   CHECK(other.get());
 }
 
@@ -73,7 +72,7 @@ TEST_CASE("operator=(Renderer&&)", "[renderer]")
     ctn::renderer renderer{window};
 
     renderer = std::move(renderer);
-    CHECK(renderer.get());
+    CHECK(renderer.get()); // NOLINT
   }
 
   SECTION("Normal usage")
@@ -85,7 +84,6 @@ TEST_CASE("operator=(Renderer&&)", "[renderer]")
 
     other = std::move(renderer);
 
-    CHECK(!renderer.get());
     CHECK(other.get());
   }
 }

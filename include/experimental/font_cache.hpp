@@ -94,6 +94,9 @@ class font_cache final {
                     entt::id_type id,
                     std::string_view str);
 
+  template <typename T>
+  void add_glyph(const basic_renderer<T>& renderer, unicode glyph);
+
   [[nodiscard]] auto has(unicode glyph) const noexcept -> bool;
 
   [[nodiscard]] auto at(unicode glyph) const -> const texture&;
@@ -120,17 +123,6 @@ class font_cache final {
     const surface surf{TTF_RenderGlyph_Blended(
         m_font.get(), glyph, static_cast<SDL_Color>(renderer.get_color()))};
     return texture{renderer, surf};
-  }
-
-  template <typename T>
-  void add_glyph(const basic_renderer<T>& renderer, unicode glyph)
-  {
-    if (!has(glyph)) {
-      if (m_font.is_glyph_provided(glyph)) {
-        m_glyphs.emplace(glyph, create_glyph_texture(renderer, glyph));
-        m_metrics.emplace(glyph, m_font.glyph_metrics(glyph).value());
-      }
-    }
   }
 };
 
@@ -278,6 +270,15 @@ void font_cache::cache_string(basic_renderer<T>& renderer,
   if (!m_strings.count(id)) {
     auto unique = renderer.text_blended(str.data(), m_font);
     m_strings.emplace(id, std::move(*unique));  // TODO investigate if valid
+  }
+}
+
+template <typename T>
+void font_cache::add_glyph(const basic_renderer<T>& renderer, unicode glyph)
+{
+  if (!has(glyph) && m_font.is_glyph_provided(glyph)) {
+    m_glyphs.emplace(glyph, create_glyph_texture(renderer, glyph));
+    m_metrics.emplace(glyph, m_font.glyph_metrics(glyph).value());
   }
 }
 

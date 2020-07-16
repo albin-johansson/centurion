@@ -123,6 +123,7 @@ target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
         PUBLIC ${CENTURION_LIBRARIES}
+        PUBLIC libEnTT
         PUBLIC libGSL
         PUBLIC libNamedType
         PUBLIC Catch2)

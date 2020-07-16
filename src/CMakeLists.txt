@@ -141,6 +141,12 @@ set(NAMED_TYPE_SOURCES
         ${CTN_LIBRARY_DIR}/namedtype/underlying_functionalities.hpp)
 centurion_add_header_only_lib(libNamedType ${CTN_LIBRARY_DIR}/namedtype ${NAMED_TYPE_SOURCES})
 
+set(ENTT_SOURCES
+        ${CTN_LIBRARY_DIR}/entt/config.h
+        ${CTN_LIBRARY_DIR}/entt/fwd.hpp
+        ${CTN_LIBRARY_DIR}/entt/hashed_string.hpp)
+centurion_add_header_only_lib(libEnTT ${CTN_LIBRARY_DIR}/entt ${ENTT_SOURCES})
+
 target_include_directories(${CENTURION_LIB_TARGET}
         PRIVATE ${CTN_INCLUDE_DIR}
         PRIVATE ${CTN_SOURCE_DIR}
@@ -151,6 +157,7 @@ target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
+        PUBLIC libEnTT
         PUBLIC libGSL
         PUBLIC libNamedType)
 

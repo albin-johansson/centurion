@@ -122,7 +122,6 @@ target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
-        PUBLIC libFC
         PUBLIC ${CENTURION_LIBRARIES}
         PUBLIC libGSL
         PUBLIC libNamedType

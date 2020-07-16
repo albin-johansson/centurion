@@ -1,7 +1,7 @@
 #include "experimental/font_cache.hpp"
 
-#include <NFont.h>
-#include <SDL_FontCache.h>
+//#include <NFont.h>
+//#include <SDL_FontCache.h>
 
 #include <catch.hpp>
 

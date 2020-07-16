@@ -22,6 +22,7 @@ addons:
       - cmake
       - lcov
       - doxygen
+      - valgrind
 
 before_install:
   - sudo apt-get update
@@ -115,6 +116,11 @@ script:
 
   - cd test
   - ctest
+
+  - valgrind --leak-check=full \
+             --show-leak-kinds=all \
+             --track-origins=yes \
+             ./Centurion_test
 
 deploy:
   provider: pages

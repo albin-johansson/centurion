@@ -204,7 +204,7 @@ class key_state final {
    *
    * @details This method returns false if the supplied key isn't recognized.
    *
-   * @param key the scan code that will be checked.
+   * @param code the scan code that will be checked.
    *
    * @return `true` if the key was released; `false` otherwise.
    *
@@ -221,7 +221,7 @@ class key_state final {
    *
    * @note This method is slightly slower that the `scan_code` version.
    *
-   * @param key the key code that will be checked.
+   * @param code the key code that will be checked.
    *
    * @return `true` if the key was released; `false` otherwise.
    *

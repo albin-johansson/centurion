@@ -205,7 +205,7 @@ class font final {
   /**
    * @brief Sets the outline size of the font.
    *
-   * @param outlined the outline size, in pixels; `0` is used to disable
+   * @param outline the outline size, in pixels; `0` is used to disable
    * outlining.
    *
    * @since 5.0.0

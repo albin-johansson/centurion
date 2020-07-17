@@ -287,7 +287,7 @@ class pref_path final {
   void destroy() noexcept;
 
   /**
-   * @briefMoves the contents of the supplied `pref_path` instance into this
+   * @brief Moves the contents of the supplied `pref_path` instance into this
    * instance.
    *
    * @param other the instance that will be moved.

@@ -62,7 +62,7 @@ namespace centurion {
  * @see `renderer`
  * @see `renderer_view`
  *
- * @headerfile graphics.hpp
+ * @headerfile renderer_base.hpp
  */
 class renderer_base {
  public:

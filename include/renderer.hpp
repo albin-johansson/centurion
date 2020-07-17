@@ -91,7 +91,7 @@ namespace centurion {
  * Below is an example of a typical rendering method.
  * @code{.cpp}
  * #include <centurion_as_ctn.hpp>
- * #include <graphics.hpp>
+ * #include <renderer.hpp>
  *
  * void draw(ctn::renderer& renderer)
  * {
@@ -110,14 +110,14 @@ namespace centurion {
  * @see `SDL_Renderer`
  * @see `renderer_view`
  *
- * @headerfile graphics.hpp
+ * @headerfile renderer.hpp
  */
 class renderer final : public renderer_base {
  public:
   /**
    * @brief Creates a renderer based on the supplied `SDL_Renderer`.
    *
-   * @param renderer a pointer to the `SDL_Renderer` that will be used by the
+   * @param sdlRenderer a pointer to the `SDL_Renderer` that will be used by the
    * renderer.
    *
    * @throws centurion_exception if the supplied pointer is null.
@@ -795,7 +795,7 @@ class renderer final : public renderer_base {
  * `renderer`.
  * @code{.cpp}
  *   #include <centurion_as_ctn.hpp>
- *   #include <graphics.hpp>
+ *   #include <renderer.hpp>
  *
  *   // Assume that we can't change the parameter of this method
  *   void draw(SDL_Renderer* renderer)
@@ -815,7 +815,7 @@ class renderer final : public renderer_base {
  *
  * @see `renderer`
  *
- * @headerfile graphics.hpp
+ * @headerfile renderer.hpp
  */
 class renderer_view final : public renderer_base {
  public:

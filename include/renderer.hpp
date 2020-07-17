@@ -761,6 +761,7 @@ class renderer_view final : public renderer_base {
 inline renderer::renderer(gsl::owner<SDL_Renderer*> sdlRenderer)
     : renderer_base{sdlRenderer}
 {
+  // FIXME
   //  if (!renderer) {
   //    throw centurion_exception{"Can't create renderer from null
   //    SDL_Renderer!"};
@@ -774,6 +775,7 @@ inline renderer::renderer(gsl::owner<SDL_Renderer*> sdlRenderer)
 inline renderer::renderer(const window& window, const SDL_RendererFlags flags)
     : renderer_base{SDL_CreateRenderer(window.get(), -1, flags)}
 {
+  // FIXME
   //  renderer_base::m_renderer =
   //      SDL_CreateRenderer(window.get(), -1, flags);
   //  if (!renderer_base::m_renderer) {

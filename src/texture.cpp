@@ -1,6 +1,8 @@
 #ifndef CENTURION_IMAGE_SOURCE
 #define CENTURION_IMAGE_SOURCE
 
+#include "texture.hpp"
+
 #include <SDL_image.h>
 
 #include "centurion_exception.hpp"

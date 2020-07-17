@@ -105,9 +105,6 @@ namespace centurion {
  * }
  * @endcode
  *
- * @todo With `entt::hashed_string`, there is really no rationale for the
- * `FontKey` type parameter!
- *
  * @tparam FontKey the key type used when storing associated fonts in a map.
  *
  * @since 3.0.0

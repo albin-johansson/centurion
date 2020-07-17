@@ -1100,4 +1100,4 @@ inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 
 }  // namespace centurion::colors
 
-endif  // CENTURION_COLORS_HEADER
+#endif  // CENTURION_COLORS_HEADER

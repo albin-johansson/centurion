@@ -25,8 +25,7 @@ struct basic_rect;
 template <typename T>
 class basic_point;
 
-template <typename FontKey>
-class basic_renderer;
+class renderer;
 
 class renderer_view;
 

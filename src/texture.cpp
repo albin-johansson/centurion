@@ -21,6 +21,44 @@ texture::texture(gsl::owner<SDL_Texture*> sdlTexture)
 }
 
 CENTURION_DEF
+texture::texture(const renderer& renderer, const surface& surface)
+{
+  this->m_texture = SDL_CreateTextureFromSurface(renderer.get(), surface.get());
+  if (!m_texture) {
+    throw detail::core_error("Failed to create texture from surface!");
+  }
+}
+
+CENTURION_DEF
+texture::texture(const renderer& renderer,
+                 pixel_format format,
+                 texture::access access,
+                 const area_i& size)
+{
+  m_texture = SDL_CreateTexture(renderer.get(),
+                                static_cast<u32>(format),
+                                static_cast<int>(access),
+                                size.width,
+                                size.height);
+  if (!m_texture) {
+    throw detail::core_error("Failed to create texture!");
+  }
+}
+
+CENTURION_DEF
+texture::texture(const renderer& renderer, czstring path)
+{
+  if (!path) {
+    throw centurion_exception{"Can't load texture from null path!"};
+  }
+
+  m_texture = IMG_LoadTexture(renderer.get(), path);
+  if (!m_texture) {
+    throw detail::img_error("Failed to create texture!");
+  }
+}
+
+CENTURION_DEF
 texture::texture(texture&& other) noexcept
 {
   move(std::move(other));
@@ -30,6 +68,83 @@ CENTURION_DEF
 texture::~texture() noexcept
 {
   destroy();
+}
+
+CENTURION_DEF
+auto texture::unique(const renderer& renderer, czstring path)
+    -> std::unique_ptr<texture>
+{
+  return std::make_unique<texture>(renderer, path);
+}
+
+CENTURION_DEF
+auto texture::unique(const renderer& renderer, const surface& surface)
+    -> std::unique_ptr<texture>
+{
+  return std::make_unique<texture>(renderer, surface);
+}
+
+CENTURION_DEF
+auto texture::unique(const renderer& renderer,
+                     pixel_format format,
+                     texture::access access,
+                     const area_i& size) -> std::unique_ptr<texture>
+{
+  return std::make_unique<texture>(renderer, format, access, size);
+}
+
+CENTURION_DEF
+auto texture::shared(const renderer& renderer, czstring path)
+    -> std::shared_ptr<texture>
+{
+  return std::make_shared<texture>(renderer, path);
+}
+
+CENTURION_DEF
+auto texture::shared(const renderer& renderer, const surface& surface)
+    -> std::shared_ptr<texture>
+{
+  return std::make_shared<texture>(renderer, surface);
+}
+
+CENTURION_DEF
+auto texture::shared(const renderer& renderer,
+                     pixel_format format,
+                     texture::access access,
+                     const area_i& size) -> std::shared_ptr<texture>
+{
+  return std::make_shared<texture>(renderer, format, access, size);
+}
+
+CENTURION_DEF
+auto texture::streaming(const renderer& renderer,
+                        czstring path,
+                        pixel_format format) -> std::unique_ptr<texture>
+{
+  const auto blendMode = blend_mode::blend;
+  const auto createSurface = [=](czstring path, pixel_format format) {
+    surface source{path};
+    source.set_blend_mode(blendMode);
+    return source.convert(format);
+  };
+  const auto surface = createSurface(path, format);
+  auto texture = texture::unique(
+      renderer, format, access::streaming, {surface.width(), surface.height()});
+  texture->set_blend_mode(blendMode);
+
+  u32* pixels = nullptr;
+  const auto success = texture->lock(&pixels);
+  if (!success) {
+    throw centurion_exception{"Failed to lock texture!"};
+  }
+
+  const auto maxCount = static_cast<size_t>(surface.pitch()) *
+                        static_cast<size_t>(surface.height());
+  memcpy(pixels, surface.pixels(), maxCount);
+
+  texture->unlock();
+
+  return texture;
 }
 
 CENTURION_DEF

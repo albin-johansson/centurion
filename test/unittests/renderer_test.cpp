@@ -72,7 +72,7 @@ TEST_CASE("operator=(Renderer&&)", "[renderer]")
     ctn::renderer renderer{window};
 
     renderer = std::move(renderer);
-    CHECK(renderer.get()); // NOLINT
+    CHECK(renderer.get());  // NOLINT
   }
 
   SECTION("Normal usage")
@@ -141,12 +141,15 @@ TEST_CASE("present", "[renderer]")
 TEST_CASE("add_font", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    SECTION("Bad arguments") { CHECK_NOTHROW(renderer.add_font("", nullptr)); }
+    SECTION("Bad arguments")
+    {
+      CHECK_NOTHROW(renderer.add_font(""_hs, nullptr));
+    }
 
     SECTION("Normal arguments")
     {
       auto font = ctn::font::shared("resources/daniel.ttf", 12);
-      const auto fontName = font->family_name();
+      const entt::hashed_string fontName{font->family_name()};
 
       renderer.add_font(fontName, font);
       CHECK(renderer.has_font(fontName));
@@ -159,10 +162,10 @@ TEST_CASE("add_font", "[renderer]")
 TEST_CASE("remove_font", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const std::string name = "foo";
+    const auto name = "daniel"_hs;
     const auto font = ctn::font::shared("resources/daniel.ttf", 12);
 
-    CHECK_NOTHROW(renderer.remove_font(""));
+    CHECK_NOTHROW(renderer.remove_font(""_hs));
 
     renderer.add_font(name, font);
     CHECK(renderer.has_font(name));
@@ -655,7 +658,7 @@ TEST_CASE("font", "[renderer]")
 
   });
 
-  const std::string name = "bar";
+  const auto name = "daniel"_hs;
 
   ctn::window window;
   ctn::renderer renderer{window};

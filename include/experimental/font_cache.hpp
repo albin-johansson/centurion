@@ -47,12 +47,10 @@ using unicode = u16;
 
 class font_cache final {
  public:
-  template <typename T>
-  font_cache(const basic_renderer<T>& renderer, font&& font);
+  font_cache(renderer& renderer, font&& font);
 
-  template <typename T>
-  [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
-                                   font&& font) -> std::unique_ptr<font_cache>;
+  [[nodiscard]] static auto unique(renderer& renderer, font&& font)
+      -> std::unique_ptr<font_cache>;
 
   /**
    * @brief Renders a glyph at the specified position.
@@ -68,34 +66,22 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  template <typename T>
-  auto render(basic_renderer<T>& renderer,
-              unicode glyph,
-              const point_i& position) -> int;
+  auto render(renderer& renderer, unicode glyph, const point_i& position)
+      -> int;
 
-  template <typename T>
-  void render(basic_renderer<T>& renderer,
-              std::string_view str,
-              point_i position);
+  void render(renderer& renderer, std::string_view str, point_i position);
 
-  template <typename T>
-  void render_cached(basic_renderer<T>& renderer,
+  void render_cached(renderer& renderer,
                      entt::id_type id,
                      const point_i& position);
 
-  template <typename T>
-  void cache_alphabetical(basic_renderer<T>& renderer);
+  void cache_alphabetical(renderer& renderer);
 
-  template <typename T>
-  void cache_numerical(basic_renderer<T>& renderer);
+  void cache_numerical(renderer& renderer);
 
-  template <typename T>
-  void cache_string(basic_renderer<T>& renderer,
-                    entt::id_type id,
-                    std::string_view str);
+  void cache_string(renderer& renderer, entt::id_type id, std::string_view str);
 
-  template <typename T>
-  void add_glyph(const basic_renderer<T>& renderer, unicode glyph);
+  void add_glyph(renderer& renderer, unicode glyph);
 
   [[nodiscard]] auto has(unicode glyph) const noexcept -> bool;
 
@@ -116,9 +102,8 @@ class font_cache final {
   std::unordered_map<unicode, glyph_metrics> m_metrics;
   std::unordered_map<entt::id_type, texture> m_strings;
 
-  template <typename T>
-  [[nodiscard]] auto create_glyph_texture(const basic_renderer<T>& renderer,
-                                          unicode glyph) -> texture
+  [[nodiscard]] auto create_glyph_texture(renderer& renderer, unicode glyph)
+      -> texture
   {
     const surface surf{TTF_RenderGlyph_Blended(
         m_font.get(), glyph, static_cast<SDL_Color>(renderer.get_color()))};
@@ -126,8 +111,7 @@ class font_cache final {
   }
 };
 
-template <typename T>
-font_cache::font_cache(const basic_renderer<T>& renderer, font&& font)
+inline font_cache::font_cache(renderer& renderer, font&& font)
     : m_font{std::move(font)}
 {
   // Caches all printable ASCII characters
@@ -136,17 +120,15 @@ font_cache::font_cache(const basic_renderer<T>& renderer, font&& font)
   }
 }
 
-template <typename T>
-auto font_cache::unique(const basic_renderer<T>& renderer, font&& font)
+inline auto font_cache::unique(renderer& renderer, font&& font)
     -> std::unique_ptr<font_cache>
 {
   return std::make_unique<font_cache>(renderer, std::move(font));
 }
 
-template <typename T>
-auto font_cache::render(basic_renderer<T>& renderer,
-                        unicode glyph,
-                        const point_i& position) -> int
+inline auto font_cache::render(renderer& renderer,
+                               unicode glyph,
+                               const point_i& position) -> int
 {
   const auto& glyphMetrics = metrics(glyph);
 
@@ -161,10 +143,9 @@ auto font_cache::render(basic_renderer<T>& renderer,
   return position.x() + glyphMetrics.advance;
 }
 
-template <typename T>
-void font_cache::render(basic_renderer<T>& renderer,
-                        std::string_view str,
-                        point_i position)
+inline void font_cache::render(renderer& renderer,
+                               std::string_view str,
+                               point_i position)
 {
   const auto originalX = position.x();
 
@@ -179,18 +160,16 @@ void font_cache::render(basic_renderer<T>& renderer,
   }
 }
 
-template <typename T>
-void font_cache::render_cached(basic_renderer<T>& renderer,
-                               entt::id_type id,
-                               const point_i& position)
+inline void font_cache::render_cached(renderer& renderer,
+                                      entt::id_type id,
+                                      const point_i& position)
 {
   if (m_strings.count(id)) {
     renderer.render(m_strings.at(id), position);
   }
 }
 
-template <typename T>
-void font_cache::cache_alphabetical(basic_renderer<T>& renderer)
+inline void font_cache::cache_alphabetical(renderer& renderer)
 {
   add_glyph(renderer, 'A');
   add_glyph(renderer, 'B');
@@ -247,8 +226,7 @@ void font_cache::cache_alphabetical(basic_renderer<T>& renderer)
   add_glyph(renderer, 'z');
 }
 
-template <typename T>
-void font_cache::cache_numerical(basic_renderer<T>& renderer)
+inline void font_cache::cache_numerical(renderer& renderer)
 {
   add_glyph(renderer, '0');
   add_glyph(renderer, '1');
@@ -262,10 +240,9 @@ void font_cache::cache_numerical(basic_renderer<T>& renderer)
   add_glyph(renderer, '9');
 }
 
-template <typename T>
-void font_cache::cache_string(basic_renderer<T>& renderer,
-                              entt::id_type id,
-                              std::string_view str)
+inline void font_cache::cache_string(renderer& renderer,
+                                     entt::id_type id,
+                                     std::string_view str)
 {
   if (!m_strings.count(id)) {
     auto unique = renderer.text_blended(str.data(), m_font);
@@ -273,8 +250,7 @@ void font_cache::cache_string(basic_renderer<T>& renderer,
   }
 }
 
-template <typename T>
-void font_cache::add_glyph(const basic_renderer<T>& renderer, unicode glyph)
+inline void font_cache::add_glyph(renderer& renderer, unicode glyph)
 {
   if (!has(glyph) && m_font.is_glyph_provided(glyph)) {
     m_glyphs.emplace(glyph, create_glyph_texture(renderer, glyph));

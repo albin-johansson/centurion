@@ -38,6 +38,7 @@
 #include <SDL_render.h>
 #include <SDL_video.h>
 
+#include <hashed_string.hpp>
 #include <optional>
 #include <type_traits>
 
@@ -720,8 +721,7 @@ class renderer_base {
  *
  * @headerfile graphics.hpp
  */
-template <typename FontKey>
-class basic_renderer final : public renderer_base {
+class renderer final : public renderer_base {
  public:
   /**
    * @brief Creates a renderer based on the supplied `SDL_Renderer`.
@@ -733,7 +733,7 @@ class basic_renderer final : public renderer_base {
    *
    * @since 3.0.0
    */
-  explicit basic_renderer(gsl::owner<SDL_Renderer*> renderer);
+  explicit renderer(gsl::owner<SDL_Renderer*> sdlRenderer);
 
   /**
    * @brief Creates a renderer based on the supplied window.
@@ -749,17 +749,17 @@ class basic_renderer final : public renderer_base {
    *
    * @since 4.0.0
    */
-  explicit basic_renderer(const window& window,
-                          SDL_RendererFlags flags = defaultFlags);
+  explicit renderer(const window& window,
+                    SDL_RendererFlags flags = defaultFlags);
 
   /**
    * @brief Creates a renderer by moving the supplied renderer into the new one.
    *
    * @param other the renderer that will be moved.
    */
-  basic_renderer(basic_renderer&& other) noexcept;
+  renderer(renderer&& other) noexcept;
 
-  basic_renderer(const basic_renderer&) = delete;
+  renderer(const renderer&) = delete;
 
   /**
    * @brief Moves the supplied renderer into this renderer.
@@ -768,37 +768,37 @@ class basic_renderer final : public renderer_base {
    *
    * @return the renderer that claimed the supplied renderer.
    */
-  auto operator=(basic_renderer&& other) noexcept -> basic_renderer&;
+  auto operator=(renderer&& other) noexcept -> renderer&;
 
-  auto operator=(const basic_renderer&) -> basic_renderer& = delete;
+  auto operator=(const renderer&) -> renderer& = delete;
 
-  ~basic_renderer() noexcept;
+  ~renderer() noexcept;
 
   /**
    * @copydoc basic_renderer(gsl::owner<SDL_Renderer*>)
    */
-  [[nodiscard]] static auto unique(gsl::owner<SDL_Renderer*> renderer)
-      -> std::unique_ptr<basic_renderer>;
+  [[nodiscard]] static auto unique(gsl::owner<SDL_Renderer*> sdlRenderer)
+      -> std::unique_ptr<renderer>;
 
   /**
    * @copydoc basic_renderer(const window&, SDL_RendererFlags)
    */
   [[nodiscard]] static auto unique(const window& window,
                                    SDL_RendererFlags flags = defaultFlags)
-      -> std::unique_ptr<basic_renderer>;
+      -> std::unique_ptr<renderer>;
 
   /**
    * @copydoc basic_renderer(gsl::owner<SDL_Renderer*>)
    */
-  [[nodiscard]] static auto shared(gsl::owner<SDL_Renderer*> renderer)
-      -> std::shared_ptr<basic_renderer>;
+  [[nodiscard]] static auto shared(gsl::owner<SDL_Renderer*> sdlRenderer)
+      -> std::shared_ptr<renderer>;
 
   /**
    * @copydoc basic_renderer(const window&, SDL_RendererFlags)
    */
   [[nodiscard]] static auto shared(const window& window,
                                    SDL_RendererFlags flags = defaultFlags)
-      -> std::shared_ptr<basic_renderer>;
+      -> std::shared_ptr<renderer>;
 
   /**
    * @brief Adds a font to the renderer.
@@ -806,12 +806,12 @@ class basic_renderer final : public renderer_base {
    * @details This method has no effect if the renderer already has a font
    * associated with the specified key or if the supplied font is null.
    *
-   * @param key the key that will be associated with the font.
+   * @param id the key that will be associated with the font.
    * @param font the font that will be added, can safely be null.
    *
    * @since 5.0.0
    */
-  void add_font(const FontKey& key, const std::shared_ptr<font>& font);
+  void add_font(entt::id_type id, const std::shared_ptr<font>& font);
 
   /**
    * @brief Removes the font associated with the specified key.
@@ -819,11 +819,11 @@ class basic_renderer final : public renderer_base {
    * @details This method has no effect if there is no font associated with the
    * specified key.
    *
-   * @param key the key associated with the font that will be removed.
+   * @param id the key associated with the font that will be removed.
    *
    * @since 5.0.0
    */
-  void remove_font(const FontKey& key);
+  void remove_font(entt::id_type id);
 
   /**
    * @brief Sets the translation viewport that will be used by the renderer.
@@ -1014,27 +1014,27 @@ class basic_renderer final : public renderer_base {
    * @details This method returns null if there is no font associated with
    * the specified name.
    *
-   * @param key the key associated with the desired font.
+   * @param id the key associated with the desired font.
    *
    * @return the font associated with the specified name; `nullptr` if there
    * is no such font.
    *
    * @since 4.1.0
    */
-  [[nodiscard]] auto font(const FontKey& key) noexcept -> std::shared_ptr<font>;
+  [[nodiscard]] auto font(entt::id_type id) noexcept -> std::shared_ptr<font>;
 
   /**
    * @brief Indicates whether or not the renderer has a font associated with the
    * specified key.
    *
-   * @param key the key that will be checked.
+   * @param id the key that will be checked.
    *
    * @return `true` if the renderer has a font associated with the key; `false`
    * otherwise.
    *
    * @since 4.1.0
    */
-  [[nodiscard]] auto has_font(const FontKey& key) const noexcept -> bool;
+  [[nodiscard]] auto has_font(entt::id_type id) const noexcept -> bool;
 
   /**
    * @brief Returns the translation viewport that is currently being used.
@@ -1158,7 +1158,7 @@ class basic_renderer final : public renderer_base {
 
  private:
   rect_f m_translationViewport;
-  std::unordered_map<FontKey, std::shared_ptr<class font>> m_fonts;
+  std::unordered_map<entt::id_type, std::shared_ptr<class font>> m_fonts;
 
   static constexpr SDL_RendererFlags defaultFlags =
       static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |
@@ -1185,7 +1185,7 @@ class basic_renderer final : public renderer_base {
    *
    * @since 4.0.0
    */
-  void move(basic_renderer&& other) noexcept
+  void move(renderer&& other) noexcept
   {
     destroy();
 
@@ -1363,31 +1363,10 @@ class renderer_view final : public renderer_base {
    *
    * @since 5.0.0
    */
-  template <typename FontKey>
-  explicit renderer_view(const basic_renderer<FontKey>& renderer) noexcept
+  explicit renderer_view(const renderer& renderer) noexcept
       : renderer_base{renderer.get()}
   {}
 };
-
-/**
- * @typedef renderer
- * @brief Alias for a renderer that uses `std::string` as keys for fonts.
- *
- * @since 5.0.0
- *
- * @headerfile graphics.hpp
- */
-using renderer = basic_renderer<std::string>;
-
-/**
- * @typedef renderer_i
- * @brief Alias for a renderer that uses `int` as keys for fonts.
- *
- * @since 5.0.0
- *
- * @headerfile graphics.hpp
- */
-using renderer_i = basic_renderer<int>;
 
 /**
  * @class texture
@@ -1469,18 +1448,8 @@ class texture final {
    *
    * @since 4.0.0
    */
-  template <typename T>
-  texture(const basic_renderer<T>& renderer, czstring path)
-  {
-    if (!path) {
-      throw centurion_exception{"Can't load texture from null path!"};
-    }
-
-    m_texture = IMG_LoadTexture(renderer.get(), path);
-    if (!m_texture) {
-      throw detail::img_error("Failed to create texture!");
-    }
-  }
+  CENTURION_API
+  texture(const renderer& renderer, czstring path);
 
   /**
    * @brief Creates an texture that is a copy of the supplied surface.
@@ -1492,15 +1461,8 @@ class texture final {
    *
    * @since 4.0.0
    */
-  template <typename T>
-  texture(const basic_renderer<T>& renderer, const surface& surface)
-  {
-    this->m_texture =
-        SDL_CreateTextureFromSurface(renderer.get(), surface.get());
-    if (!m_texture) {
-      throw detail::core_error("Failed to create texture from surface!");
-    }
-  }
+  CENTURION_API
+  texture(const renderer& renderer, const surface& surface);
 
   /**
    * @brief Creates an texture with the specified characteristics.
@@ -1514,21 +1476,11 @@ class texture final {
    *
    * @since 4.0.0
    */
-  template <typename T>
-  texture(const basic_renderer<T>& renderer,
+  CENTURION_API
+  texture(const renderer& renderer,
           pixel_format format,
           access access,
-          area_i size)
-  {
-    m_texture = SDL_CreateTexture(renderer.get(),
-                                  static_cast<u32>(format),
-                                  static_cast<int>(access),
-                                  size.width,
-                                  size.height);
-    if (!m_texture) {
-      throw detail::core_error("Failed to create texture!");
-    }
-  }
+          const area_i& size);
 
   /**
    * @brief Creates an texture by moving the supplied texture.
@@ -1569,35 +1521,25 @@ class texture final {
   /**
    * @copydoc texture(const basic_renderer<T>&, czstring)
    */
-  template <typename T>
-  [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
-                                   czstring path) -> std::unique_ptr<texture>
-  {
-    return std::make_unique<texture>(renderer, path);
-  }
+  CENTURION_QUERY
+  static auto unique(const renderer& renderer, czstring path)
+      -> std::unique_ptr<texture>;
 
   /**
    * @copydoc texture(const basic_renderer<T>&, const surface&)
    */
-  template <typename T>
-  [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
-                                   const surface& surface)
-      -> std::unique_ptr<texture>
-  {
-    return std::make_unique<texture>(renderer, surface);
-  }
+  CENTURION_QUERY
+  static auto unique(const renderer& renderer, const surface& surface)
+      -> std::unique_ptr<texture>;
 
   /**
    * @copydoc texture(const basic_renderer<T>&, pixel_format, access, area_i)
    */
-  template <typename T>
-  [[nodiscard]] static auto unique(const basic_renderer<T>& renderer,
-                                   pixel_format format,
-                                   access access,
-                                   area_i size) -> std::unique_ptr<texture>
-  {
-    return std::make_unique<texture>(renderer, format, access, size);
-  }
+  CENTURION_QUERY
+  static auto unique(const renderer& renderer,
+                     pixel_format format,
+                     access access,
+                     const area_i& size) -> std::unique_ptr<texture>;
 
   /**
    * @copydoc texture(gsl::owner<SDL_Texture*>)
@@ -1609,35 +1551,25 @@ class texture final {
   /**
    * @copydoc texture(const basic_renderer<T>&, czstring)
    */
-  template <typename T>
-  [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
-                                   czstring path) -> std::shared_ptr<texture>
-  {
-    return std::make_shared<texture>(renderer, path);
-  }
+  CENTURION_QUERY
+  static auto shared(const renderer& renderer, czstring path)
+      -> std::shared_ptr<texture>;
 
   /**
    * @copydoc texture(const basic_renderer<T>&, const surface&)
    */
-  template <typename T>
-  [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
-                                   const surface& surface)
-      -> std::shared_ptr<texture>
-  {
-    return std::make_shared<texture>(renderer, surface);
-  }
+  CENTURION_QUERY
+  static auto shared(const renderer& renderer, const surface& surface)
+      -> std::shared_ptr<texture>;
 
   /**
    * @copydoc texture(const basic_renderer<T>&, pixel_format, access, area_i)
    */
-  template <typename T>
-  [[nodiscard]] static auto shared(const basic_renderer<T>& renderer,
-                                   pixel_format format,
-                                   access access,
-                                   area_i size) -> std::shared_ptr<texture>
-  {
-    return std::make_shared<texture>(renderer, format, access, size);
-  }
+  CENTURION_QUERY
+  static auto shared(const renderer& renderer,
+                     pixel_format format,
+                     access access,
+                     const area_i& size) -> std::shared_ptr<texture>;
 
   /**
    * @brief Creates and returns a unique pointer to a texture.
@@ -1655,39 +1587,10 @@ class texture final {
    *
    * @since 4.0.0
    */
-  template <typename T>
-  [[nodiscard]] static auto streaming(const basic_renderer<T>& renderer,
-                                      czstring path,
-                                      pixel_format format)
-      -> std::unique_ptr<texture>
-  {
-    const auto blendMode = blend_mode::blend;
-    const auto createSurface = [blendMode](czstring path, pixel_format format) {
-      surface source{path};
-      source.set_blend_mode(blendMode);
-      return source.convert(format);
-    };
-    const auto surface = createSurface(path, format);
-    auto texture = texture::unique(renderer,
-                                   format,
-                                   access::streaming,
-                                   {surface.width(), surface.height()});
-    texture->set_blend_mode(blendMode);
-
-    u32* pixels = nullptr;
-    const auto success = texture->lock(&pixels);
-    if (!success) {
-      throw centurion_exception{"Failed to lock texture!"};
-    }
-
-    const auto maxCount =
-        static_cast<std::size_t>(surface.pitch() * surface.height());
-    memcpy(pixels, surface.pixels(), maxCount);
-
-    texture->unlock();
-
-    return texture;
-  }
+  CENTURION_QUERY
+  static auto streaming(const renderer& renderer,
+                        czstring path,
+                        pixel_format format) -> std::unique_ptr<texture>;
 
   /**
    * @brief Sets the color of the pixel at the specified coordinate.
@@ -2077,9 +1980,8 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
   return !(lhs == rhs);
 }
 
-template <typename FontKey>
-basic_renderer<FontKey>::basic_renderer(gsl::owner<SDL_Renderer*> renderer)
-    : renderer_base{renderer}
+inline renderer::renderer(gsl::owner<SDL_Renderer*> sdlRenderer)
+    : renderer_base{sdlRenderer}
 {
   //  if (!renderer) {
   //    throw centurion_exception{"Can't create renderer from null
@@ -2091,9 +1993,7 @@ basic_renderer<FontKey>::basic_renderer(gsl::owner<SDL_Renderer*> renderer)
   this->set_logical_integer_scale(false);
 }
 
-template <typename FontKey>
-basic_renderer<FontKey>::basic_renderer(const window& window,
-                                        const SDL_RendererFlags flags)
+inline renderer::renderer(const window& window, const SDL_RendererFlags flags)
     : renderer_base{SDL_CreateRenderer(window.get(), -1, flags)}
 {
   //  renderer_base::m_renderer =
@@ -2107,16 +2007,13 @@ basic_renderer<FontKey>::basic_renderer(const window& window,
   this->set_logical_integer_scale(false);
 }
 
-template <typename FontKey>
-basic_renderer<FontKey>::basic_renderer(basic_renderer&& other) noexcept
+inline renderer::renderer(renderer&& other) noexcept
     : renderer_base{other.get()}
 {
   move(std::move(other));
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::operator=(basic_renderer&& other) noexcept
-    -> basic_renderer&
+inline auto renderer::operator=(renderer&& other) noexcept -> renderer&
 {
   if (this != &other) {
     move(std::move(other));
@@ -2124,46 +2021,40 @@ auto basic_renderer<FontKey>::operator=(basic_renderer&& other) noexcept
   return *this;
 }
 
-template <typename FontKey>
-basic_renderer<FontKey>::~basic_renderer() noexcept
+inline renderer::~renderer() noexcept
 {
   destroy();
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::unique(gsl::owner<SDL_Renderer*> renderer)
-    -> std::unique_ptr<basic_renderer>
+inline auto renderer::unique(gsl::owner<SDL_Renderer*> sdlRenderer)
+    -> std::unique_ptr<renderer>
 {
-  return std::make_unique<basic_renderer<FontKey>>(renderer);
+  return std::make_unique<renderer>(sdlRenderer);
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::unique(const window& window,
-                                     const SDL_RendererFlags flags)
-    -> std::unique_ptr<basic_renderer>
+inline auto renderer::unique(const window& window,
+                             const SDL_RendererFlags flags)
+    -> std::unique_ptr<renderer>
 {
-  return std::make_unique<basic_renderer<FontKey>>(window, flags);
+  return std::make_unique<renderer>(window, flags);
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::shared(gsl::owner<SDL_Renderer*> renderer)
-    -> std::shared_ptr<basic_renderer>
+inline auto renderer::shared(gsl::owner<SDL_Renderer*> sdlRenderer)
+    -> std::shared_ptr<renderer>
 {
-  return std::make_shared<basic_renderer<FontKey>>(renderer);
+  return std::make_shared<renderer>(sdlRenderer);
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::shared(const window& window,
-                                     const SDL_RendererFlags flags)
-    -> std::shared_ptr<basic_renderer>
+inline auto renderer::shared(const window& window,
+                             const SDL_RendererFlags flags)
+    -> std::shared_ptr<renderer>
 {
-  return std::make_shared<basic_renderer<FontKey>>(window, flags);
+  return std::make_shared<renderer>(window, flags);
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::text_blended(
-    czstring text,
-    const centurion::font& font) const noexcept -> std::unique_ptr<texture>
+inline auto renderer::text_blended(czstring text,
+                                   const centurion::font& font) const noexcept
+    -> std::unique_ptr<texture>
 {
   return render_text(text, [this, &font](czstring text) noexcept {
     return TTF_RenderText_Blended(
@@ -2171,8 +2062,7 @@ auto basic_renderer<FontKey>::text_blended(
   });
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::text_blended_wrapped(
+inline auto renderer::text_blended_wrapped(
     czstring text,
     const u32 wrap,
     const centurion::font& font) const noexcept -> std::unique_ptr<texture>
@@ -2183,11 +2073,10 @@ auto basic_renderer<FontKey>::text_blended_wrapped(
   });
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::text_shaded(
-    czstring text,
-    const color& bg,
-    const centurion::font& font) const noexcept -> std::unique_ptr<texture>
+inline auto renderer::text_shaded(czstring text,
+                                  const color& bg,
+                                  const centurion::font& font) const noexcept
+    -> std::unique_ptr<texture>
 {
   return render_text(text, [this, &font, &bg](czstring text) noexcept {
     return TTF_RenderText_Shaded(font.get(),
@@ -2197,10 +2086,9 @@ auto basic_renderer<FontKey>::text_shaded(
   });
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::text_solid(
-    czstring text,
-    const centurion::font& font) const noexcept -> std::unique_ptr<texture>
+inline auto renderer::text_solid(czstring text,
+                                 const centurion::font& font) const noexcept
+    -> std::unique_ptr<texture>
 {
   return render_text(text, [this, &font](czstring text) noexcept {
     return TTF_RenderText_Solid(
@@ -2210,123 +2098,104 @@ auto basic_renderer<FontKey>::text_solid(
 
 // TODO let font() throw if no font is found
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::font(const FontKey& key) noexcept
+inline auto renderer::font(entt::id_type id) noexcept
     -> std::shared_ptr<class font>
 {
-  if (m_fonts.count(key)) {
-    return m_fonts.at(key);
+  if (m_fonts.count(id)) {
+    return m_fonts.at(id);
   } else {
     return nullptr;
   }
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::has_font(const FontKey& key) const noexcept
-    -> bool
+inline auto renderer::has_font(entt::id_type id) const noexcept -> bool
 {
-  return static_cast<bool>(m_fonts.count(key));
+  return static_cast<bool>(m_fonts.count(id));
 }
 
-template <typename FontKey>
-auto basic_renderer<FontKey>::translation_viewport() const noexcept
-    -> const rect_f&
+inline auto renderer::translation_viewport() const noexcept -> const rect_f&
 {
   return m_translationViewport;
 }
 
-template <typename FontKey>
-void basic_renderer<FontKey>::set_translation_viewport(
-    const rect_f& viewport) noexcept
+inline void renderer::set_translation_viewport(const rect_f& viewport) noexcept
 {
   m_translationViewport = viewport;
 }
 
-template <typename FontKey>
-void basic_renderer<FontKey>::add_font(const FontKey& key,
-                                       const std::shared_ptr<class font>& font)
+inline void renderer::add_font(entt::id_type id,
+                               const std::shared_ptr<class font>& font)
 {
-  if (!m_fonts.count(key)) {
-    m_fonts.emplace(key, font);
+  if (!m_fonts.count(id)) {
+    m_fonts.emplace(id, font);
   }
 }
 
-template <typename FontKey>
-void basic_renderer<FontKey>::remove_font(const FontKey& key)
+inline void renderer::remove_font(entt::id_type id)
 {
-  m_fonts.erase(key);
+  m_fonts.erase(id);
 }
 
-template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::draw_rect_t(const basic_rect<T>& rect) noexcept
+void renderer::draw_rect_t(const basic_rect<T>& rect) noexcept
 {
   draw_rect(translate(rect));
 }
 
-template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::fill_rect_t(const basic_rect<T>& rect) noexcept
+void renderer::fill_rect_t(const basic_rect<T>& rect) noexcept
 {
   fill_rect(translate(rect));
 }
 
-template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(const texture& texture,
-                                       const basic_point<T>& position) noexcept
+void renderer::render_t(const texture& texture,
+                        const basic_point<T>& position) noexcept
 {
   render(texture, translate(position));
 }
 
-template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(
-    const texture& texture,
-    const basic_rect<T>& destination) noexcept
+void renderer::render_t(const texture& texture,
+                        const basic_rect<T>& destination) noexcept
 {
   render(texture, translate(destination));
 }
 
-template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(
-    const texture& texture,
-    const rect_i& source,
-    const basic_rect<T>& destination) noexcept
+void renderer::render_t(const texture& texture,
+                        const rect_i& source,
+                        const basic_rect<T>& destination) noexcept
 {
   render(texture, source, translate(destination));
 }
 
-template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(const texture& texture,
-                                       const rect_i& source,
-                                       const basic_rect<T>& destination,
-                                       const double angle) noexcept
+void renderer::render_t(const texture& texture,
+                        const rect_i& source,
+                        const basic_rect<T>& destination,
+                        const double angle) noexcept
 {
   render(texture, source, translate(destination), angle);
 }
 
-template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(const texture& texture,
-                                       const rect_i& source,
-                                       const basic_rect<T>& destination,
-                                       const double angle,
-                                       const basic_point<T>& center) noexcept
+void renderer::render_t(const texture& texture,
+                        const rect_i& source,
+                        const basic_rect<T>& destination,
+                        const double angle,
+                        const basic_point<T>& center) noexcept
 {
   render(texture, source, translate(destination), angle, center);
 }
 
-template <typename FontKey>
 template <typename T>
-void basic_renderer<FontKey>::render_t(const texture& texture,
-                                       const rect_i& source,
-                                       const basic_rect<T>& destination,
-                                       const double angle,
-                                       const basic_point<T>& center,
-                                       const SDL_RendererFlip flip) noexcept
+void renderer::render_t(const texture& texture,
+                        const rect_i& source,
+                        const basic_rect<T>& destination,
+                        const double angle,
+                        const basic_point<T>& center,
+                        const SDL_RendererFlip flip) noexcept
 {
   render(texture, source, translate(destination), angle, center, flip);
 }

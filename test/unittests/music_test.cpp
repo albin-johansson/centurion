@@ -313,7 +313,7 @@ TEST_CASE("MusicType enum values", "[music]")
 }
 
 #include "event.hpp"
-#include "graphics.hpp"
+#include "renderer.hpp"
 #include "window.hpp"
 
 TEST_CASE("Manual testing of music playback", "[.music]")

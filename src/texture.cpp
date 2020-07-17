@@ -5,7 +5,8 @@
 
 #include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
-#include "graphics.hpp"
+#include "error.hpp"
+#include "renderer.hpp"
 #include "surface.hpp"
 
 namespace centurion {

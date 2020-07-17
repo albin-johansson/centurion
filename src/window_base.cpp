@@ -1,6 +1,7 @@
 #ifndef CENTURION_WINDOW_BASE_SOURCE
 #define CENTURION_WINDOW_BASE_SOURCE
 
+#include "surface.hpp"
 #include "window.hpp"
 
 namespace centurion {

@@ -38,8 +38,9 @@
 #include "centurion_types.hpp"
 #include "colors.hpp"
 #include "font.hpp"
-#include "graphics.hpp"
 #include "log.hpp"
+#include "renderer.hpp"
+#include "surface.hpp"
 
 namespace centurion::experimental {
 

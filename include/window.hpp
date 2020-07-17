@@ -953,7 +953,7 @@ static_assert(std::is_nothrow_destructible_v<window>);
 
 }  // namespace centurion
 
-#include "graphics.hpp"  // for renderer_view definition
+#include "renderer.hpp"  // for renderer_view definition
 
 #ifdef CENTURION_HEADER_ONLY
 #include "window.cpp"

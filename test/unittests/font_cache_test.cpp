@@ -8,8 +8,8 @@
 #include "centurion_as_ctn.hpp"
 #include "event.hpp"
 #include "font.hpp"
-#include "graphics.hpp"
 #include "log.hpp"
+#include "renderer.hpp"
 #include "window.hpp"
 
 TEST_CASE("...", "[.font_cache]")

@@ -1,10 +1,11 @@
+#include "renderer.hpp"
+
 #include <catch.hpp>
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "colors.hpp"
 #include "font.hpp"
-#include "graphics.hpp"
 #include "log.hpp"
 #include "rect.hpp"
 #include "window.hpp"

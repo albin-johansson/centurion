@@ -8,7 +8,7 @@
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "colors.hpp"
-#include "graphics.hpp"
+#include "renderer.hpp"
 #include "window.hpp"
 
 static constexpr ctn::czstring path = "resources/panda.png";

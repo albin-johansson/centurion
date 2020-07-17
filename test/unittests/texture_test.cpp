@@ -5,7 +5,6 @@
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "colors.hpp"
-#include "graphics.hpp"
 #include "log.hpp"
 #include "surface.hpp"
 #include "window.hpp"

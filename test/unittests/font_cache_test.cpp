@@ -30,8 +30,8 @@ TEST_CASE("...", "[.font_cache]")
   renderer.set_color(ctn::lime);
   ctn::experimental::font_cache cache{renderer, std::move(font)};
 
-//  cache.cache_alphabetical(renderer);
-//  cache.cache_numerical(renderer);
+  //  cache.cache_alphabetical(renderer);
+  //  cache.cache_numerical(renderer);
 
   renderer.set_color(ctn::magenta);
   cache.cache_string(renderer, "foo"_hs, "this is a cached string!");

@@ -22,109 +22,142 @@
  * SOFTWARE.
  */
 
-// TODO reimplement with new renderer
+/**
+ * @file texture_loader.hpp
+ *
+ * @brief Provides the `texture_loader` class.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
 
-//#ifndef CENTURION_IMAGE_GENERATOR_HEADER
-//#define CENTURION_IMAGE_GENERATOR_HEADER
-//
-//#include <memory>
-//#include <type_traits>
-//
-//#include "area.hpp"
-//#include "centurion_api.hpp"
-//#include "texture.hpp"
-//
-// namespace centurion {
-//
-///**
-// * The TextureLoader class is a utility class designed to make it easier to
-// * create instances of the Texture class without passing a renderer instance
-// * around. This can make it easier to keep renderer instances out of
-// * logic-related code.
-// *
-// * @see Renderer
-// * @see Texture
-// * @since 3.0.0
-// */
-// class TextureLoader final {
-// public:
-//  /**
-//   * @param renderer a shared pointer to the associated renderer instance, may
-//   * not be null.
-//   * @throws centurion_exception if the supplied renderer is null.
-//   * @since 3.0.0
-//   */
-//  CENTURION_API explicit TextureLoader(const std::shared_ptr<Renderer>&
-//  renderer);
-//
-//  CENTURION_API ~TextureLoader() noexcept;
-//
-//  /**
-//   * Creates and returns a unique pointer to a texture.
-//   *
-//   * @param file the file path of the texture that will be loaded, may not be
-//   * null.
-//   * @return a unique pointer to a texture.
-//   * @throws centurion_exception if the texture cannot be loaded.
-//   * @since 3.0.0
-//   */
-//  [[nodiscard]] CENTURION_API std::unique_ptr<Texture> unique_img(
-//      CZString file) const;
-//
-//  /**
-//   * Creates and returns a unique pointer to a texture with the specified
-//   * characteristics.
-//   *
-//   * @param format the pixel format of the texture.
-//   * @param access the texture access of the texture.
-//   * @param size the size of the texture.
-//   * @return a unique pointer to a texture.
-//   * @throws centurion_exception if the texture cannot be created.
-//   * @since 3.0.0
-//   */
-//  [[nodiscard]] CENTURION_API std::unique_ptr<Texture>
-//  unique_img(PixelFormat format, Texture::Access access, area_i size) const;
-//
-//  /**
-//   * Creates and returns a shared pointer to a texture.
-//   *
-//   * @param file the file path of the texture that will be loaded, may not be
-//   * null.
-//   * @return a shared pointer to a texture.
-//   * @throws centurion_exception if the texture cannot be loaded.
-//   * @since 3.0.0
-//   */
-//  [[nodiscard]] CENTURION_API std::shared_ptr<Texture> shared_img(
-//      CZString file) const;
-//
-//  /**
-//   * Creates and returns a shared pointer to a texture with the specified
-//   * characteristics.
-//   *
-//   * @param format the pixel format of the texture.
-//   * @param access the texture access of the texture.
-//   * @param size the size of the texture..
-//   * @return a shared pointer to a texture.
-//   * @throws centurion_exception if the texture cannot be created.
-//   * @since 3.0.0
-//   */
-//  [[nodiscard]] CENTURION_API std::shared_ptr<Texture>
-//  shared_img(PixelFormat format, Texture::Access access, area_i size) const;
-//
-// private:
-//  std::shared_ptr<Renderer> m_renderer;
-//};
-//
-// static_assert(std::is_final_v<TextureLoader>);
-// static_assert(std::is_nothrow_copy_assignable_v<TextureLoader>);
-// static_assert(std::is_nothrow_copy_constructible_v<TextureLoader>);
-// static_assert(std::is_nothrow_move_assignable_v<TextureLoader>);
-// static_assert(std::is_nothrow_move_constructible_v<TextureLoader>);
-//
-//}  // namespace centurion
-//
-//#ifdef CENTURION_HEADER_ONLY
-//#include "texture_loader.cpp"
-//#endif
-//
-//#endif  // CENTURION_IMAGE_GENERATOR_HEADER
+#ifndef CENTURION_TEXTURE_LOADER_HEADER
+#define CENTURION_TEXTURE_LOADER_HEADER
+
+#include <memory>
+
+#include "centurion_api.hpp"
+#include "renderer.hpp"
+#include "texture.hpp"
+
+namespace centurion {
+
+/**
+ * @class texture_loader
+ *
+ * @brief A small helper class useful for keeping renderers out of
+ * logic-related code.
+ *
+ * @details
+ *
+ * This class is really just a wrapper around a reference to a
+ * renderer. Which means that you shouldn't really store away
+ * `texture_loader`, unless you can guarantee that the internal reference is
+ * always valid.
+ *
+ * **It is undefined behaviour to let a `texture_loader` instance
+ * outlive the associated renderer.**
+ *
+ * The following snippet demonstrates how this class can be used.
+ * @code{.cpp}
+ *   #include <centurion_as_ctn.hpp>
+ *   #include <window.hpp>
+ *   #include <renderer.hpp>
+ *   #include <texture_loader.hpp>
+ *
+ *   void demo()
+ *   {
+ *     ctn::window window;
+ *     ctn::renderer renderer{window};
+ *     ctn::texture_loader loader{renderer};
+ *
+ *     // creates a unique pointer to a texture
+ *     auto unique = loader.unique("resources/some_image.png");
+ *
+ *     // creates a shared pointer to a texture
+ *     auto shared = loader.shared("resources/other_image.png");
+ *
+ *     // creates a local texture instance
+ *     auto local = loader.create("resources/last_image.png");
+ *   }
+ * @endcode
+ *
+ * @since 3.0.0
+ *
+ * @headerfile texture_loader.hpp
+ */
+class texture_loader final {
+ public:
+  /**
+   * @brief Creates a texture loader.
+   *
+   * @param renderer the renderer that will be stored and used.
+   *
+   * @since 5.0.0
+   */
+  explicit texture_loader(renderer& renderer) noexcept : m_renderer{renderer} {}
+
+  /**
+   * @brief Creates and returns a unique pointer to a texture.
+   *
+   * @tparam Args the types of the arguments that will be forwarded.
+   *
+   * @param args the arguments that will be forwarded to an appropriate
+   * constructor.
+   *
+   * @return a unique pointer to a texture.
+   *
+   * @since 5.0.0
+   */
+  template <typename... Args>
+  [[nodiscard]] auto unique(Args&&... args) -> std::unique_ptr<texture>
+  {
+    return texture::unique(m_renderer, std::forward<Args>(args)...);
+  }
+
+  /**
+   * @brief Creates and returns a shared pointer to a texture.
+   *
+   * @tparam Args the types of the arguments that will be forwarded.
+   *
+   * @param args the arguments that will be forwarded to an appropriate
+   * constructor.
+   *
+   * @return a shared pointer to a texture.
+   *
+   * @since 5.0.0
+   */
+  template <typename... Args>
+  [[nodiscard]] auto shared(Args&&... args) -> std::shared_ptr<texture>
+  {
+    return texture::shared(m_renderer, std::forward<Args>(args)...);
+  }
+
+  /**
+   * @brief Creates and returns a texture.
+   *
+   * @tparam Args the types of the arguments that will be forwarded.
+   *
+   * @param args the arguments that will be forwarded to an appropriate
+   * constructor.
+   *
+   * @return a valid texture.
+   *
+   * @since 5.0.0
+   */
+  template <typename... Args>
+  [[nodiscard]] auto create(Args&&... args) -> texture
+  {
+    return texture{m_renderer, std::forward<Args>(args)...};
+  }
+
+ private:
+  renderer& m_renderer;
+};
+
+}  // namespace centurion
+
+#endif  // CENTURION_TEXTURE_LOADER_HEADER

@@ -53,7 +53,6 @@ set(SOURCE_FILES
         font.cpp
         texture.cpp
         centurion.cpp
-        texture_loader.cpp
         paths.cpp
         platform.cpp
         log.cpp

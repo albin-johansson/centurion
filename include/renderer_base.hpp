@@ -978,6 +978,8 @@ class renderer_base {
       -> std::optional<SDL_RendererInfo>;
 
  protected:
+  renderer_base() noexcept = default;
+
   /**
    * @brief Creates a renderer base instance.
    *
@@ -985,11 +987,10 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  explicit renderer_base(gsl::not_null<SDL_Renderer*> renderer)
-      : m_renderer{renderer}
+  explicit renderer_base(SDL_Renderer* renderer) noexcept : m_renderer{renderer}
   {}
 
-  SDL_Renderer* m_renderer;
+  SDL_Renderer* m_renderer{};
 };
 
 inline auto renderer_base::render_drivers() noexcept -> int

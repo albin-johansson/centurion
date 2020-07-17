@@ -96,12 +96,12 @@ TEST_CASE("Surface::set_pixel", "[surface]")
 {
   ctn::surface surface{path};
 
-  CHECK_NOTHROW(surface.set_pixel({-1, 0}, ctn::red));
-  CHECK_NOTHROW(surface.set_pixel({0, -1}, ctn::red));
-  CHECK_NOTHROW(surface.set_pixel({surface.width(), 0}, ctn::red));
-  CHECK_NOTHROW(surface.set_pixel({0, surface.height()}, ctn::red));
+  CHECK_NOTHROW(surface.set_pixel({-1, 0}, ctn::colors::red));
+  CHECK_NOTHROW(surface.set_pixel({0, -1}, ctn::colors::red));
+  CHECK_NOTHROW(surface.set_pixel({surface.width(), 0}, ctn::colors::red));
+  CHECK_NOTHROW(surface.set_pixel({0, surface.height()}, ctn::colors::red));
 
-  CHECK_NOTHROW(surface.set_pixel({43, 12}, ctn::orange));
+  CHECK_NOTHROW(surface.set_pixel({43, 12}, ctn::colors::orange));
 }
 
 TEST_CASE("Surface::set_alpha", "[surface]")
@@ -118,7 +118,7 @@ TEST_CASE("Surface::set_color_mod", "[surface]")
 {
   ctn::surface surface{path};
 
-  const auto& color = ctn::hot_pink;
+  const auto& color = ctn::colors::hot_pink;
   surface.set_color_mod(color);
 
   CHECK(color == surface.color_mod());
@@ -199,7 +199,7 @@ TEST_CASE("Surface::convert", "[surface]")
   ctn::surface original{path};
   original.set_blend_mode(ctn::blend_mode::blend);
   original.set_alpha(0xAE);
-  original.set_color_mod(ctn::red);
+  original.set_color_mod(ctn::colors::red);
 
   const auto pixelFormat = ctn::pixel_format::rgba8888;
   ctn::surface converted = original.convert(pixelFormat);

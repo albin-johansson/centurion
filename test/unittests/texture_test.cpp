@@ -202,14 +202,14 @@ TEST_CASE("texture::set_pixel", "[texture]")
 
     const auto [width, height] = texture->size();
 
-    CHECK_NOTHROW(texture->set_pixel({-1, -1}, ctn::black));
-    CHECK_NOTHROW(texture->set_pixel({-1, 0}, ctn::black));
-    CHECK_NOTHROW(texture->set_pixel({0, -1}, ctn::black));
-    CHECK_NOTHROW(texture->set_pixel({width, 0}, ctn::black));
-    CHECK_NOTHROW(texture->set_pixel({0, height}, ctn::black));
-    CHECK_NOTHROW(texture->set_pixel({width, height}, ctn::black));
+    CHECK_NOTHROW(texture->set_pixel({-1, -1}, ctn::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({-1, 0}, ctn::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({0, -1}, ctn::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({width, 0}, ctn::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({0, height}, ctn::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({width, height}, ctn::colors::black));
 
-    CHECK_NOTHROW(texture->set_pixel({45, 23}, ctn::orange));
+    CHECK_NOTHROW(texture->set_pixel({45, 23}, ctn::colors::orange));
   });
 }
 
@@ -242,7 +242,7 @@ TEST_CASE("texture::set_color_mod", "[texture]")
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
 
-    const auto color = ctn::misty_rose;
+    const auto color = ctn::colors::misty_rose;
     texture.set_color_mod(color);
 
     const auto actual = texture.color_mod();
@@ -349,7 +349,7 @@ TEST_CASE("texture::color_mod", "[texture]")
   test([](ctn::renderer& renderer) {
     ctn::texture texture{renderer, pandaPath};
 
-    CHECK(texture.color_mod() == ctn::white);
+    CHECK(texture.color_mod() == ctn::colors::white);
   });
 }
 

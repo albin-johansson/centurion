@@ -329,7 +329,7 @@ TEST_CASE("Manual testing of music playback", "[.music]")
 
   const ctn::font font{"resources/fira_code.ttf", 14};
 
-  renderer.set_color(ctn::white);
+  renderer.set_color(ctn::colors::white);
 
   ctn::czstring zero = "\"0\" to play the click one time.";
   ctn::czstring one = "\"1\" to play the click one time.";
@@ -345,13 +345,13 @@ TEST_CASE("Manual testing of music playback", "[.music]")
   const auto infoFadeIn = renderer.text_blended(fadeIn, font);
   const auto infoEsc = renderer.text_blended(esc, font);
 
-  renderer.set_color(ctn::green);
+  renderer.set_color(ctn::colors::green);
   const auto playing = renderer.text_blended("Music is playing!", font);
 
-  renderer.set_color(ctn::magenta);
+  renderer.set_color(ctn::colors::magenta);
   const auto fading = renderer.text_blended("Music is fading!", font);
 
-  renderer.set_color(ctn::red);
+  renderer.set_color(ctn::colors::red);
   const auto paused = renderer.text_blended("No music is playing", font);
 
   bool running = true;
@@ -384,7 +384,7 @@ TEST_CASE("Manual testing of music playback", "[.music]")
       }
     }
 
-    renderer.clear_with(ctn::black);
+    renderer.clear_with(ctn::colors::black);
 
     renderer.render(*infoZero, ctn::point_i{50, 50});
     renderer.render(*infoOne, ctn::point_i{50, 75});

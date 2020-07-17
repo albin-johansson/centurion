@@ -47,10 +47,10 @@ TEST_CASE("color_scheme::set_color", "[message_box]")
 {
   color_scheme scheme;
 
-  scheme.set_color(color_type::background, aquamarine);
-  scheme.set_color(color_type::button_background, azure);
-  scheme.set_color(color_type::button_border, tomato);
-  scheme.set_color(color_type::button_selected, cornsilk);
+  scheme.set_color(color_type::background, colors::aquamarine);
+  scheme.set_color(color_type::button_background, colors::azure);
+  scheme.set_color(color_type::button_border, colors::tomato);
+  scheme.set_color(color_type::button_selected, colors::cornsilk);
 
   const auto sdlScheme = scheme.convert();
 
@@ -58,10 +58,12 @@ TEST_CASE("color_scheme::set_color", "[message_box]")
     return static_cast<int>(type);
   };
 
-  CHECK(sdlScheme.colors[index(color_type::background)] == aquamarine);
-  CHECK(sdlScheme.colors[index(color_type::button_background)] == azure);
-  CHECK(sdlScheme.colors[index(color_type::button_border)] == tomato);
-  CHECK(sdlScheme.colors[index(color_type::button_selected)] == cornsilk);
+  CHECK(sdlScheme.colors[index(color_type::background)] == colors::aquamarine);
+  CHECK(sdlScheme.colors[index(color_type::button_background)] ==
+        colors::azure);
+  CHECK(sdlScheme.colors[index(color_type::button_border)] == colors::tomato);
+  CHECK(sdlScheme.colors[index(color_type::button_selected)] ==
+        colors::cornsilk);
 }
 
 TEST_CASE("message_box()", "[message_box]")
@@ -190,14 +192,14 @@ TEST_CASE("message_box::set_color_scheme", "[message_box]")
   message_box mb;
 
   color_scheme scheme;
-  scheme.set_color(colorType, red);
+  scheme.set_color(colorType, colors::red);
 
   mb.set_color_scheme(scheme);
 
   CHECK(mb.get_color_scheme());
 
   const auto sdlScheme = scheme.convert();
-  CHECK(sdlScheme.colors[static_cast<int>(colorType)] == red);
+  CHECK(sdlScheme.colors[static_cast<int>(colorType)] == colors::red);
 
   mb.set_color_scheme(nothing);
   CHECK(!mb.get_color_scheme());

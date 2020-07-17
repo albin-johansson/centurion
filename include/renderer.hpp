@@ -768,7 +768,7 @@ inline renderer::renderer(gsl::owner<SDL_Renderer*> sdlRenderer)
   //  }
   //  this->m_renderer = renderer;
 
-  this->set_color(black);
+  this->set_color(colors::black);
   this->set_logical_integer_scale(false);
 }
 
@@ -783,7 +783,7 @@ inline renderer::renderer(const window& window, const SDL_RendererFlags flags)
   //  }
 
   this->set_blend_mode(blend_mode::blend);
-  this->set_color(black);
+  this->set_color(colors::black);
   this->set_logical_integer_scale(false);
 }
 

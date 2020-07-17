@@ -24,16 +24,16 @@ TEST_CASE("...", "[.font_cache]")
 
   ctn::czstring alphabet = "abcdefghijklmnopqrstuvwxyz";
 
-  renderer.set_color(ctn::cyan);
+  renderer.set_color(ctn::colors::cyan);
   const auto everyLetter = renderer.text_blended(alphabet, font);
 
-  renderer.set_color(ctn::lime);
+  renderer.set_color(ctn::colors::lime);
   ctn::experimental::font_cache cache{renderer, std::move(font)};
 
   //  cache.cache_alphabetical(renderer);
   //  cache.cache_numerical(renderer);
 
-  renderer.set_color(ctn::magenta);
+  renderer.set_color(ctn::colors::magenta);
   cache.cache_string(renderer, "foo"_hs, "this is a cached string!");
 
   ctn::event event;
@@ -68,7 +68,7 @@ TEST_CASE("...", "[.font_cache]")
       }
     }
 
-    renderer.clear_with(ctn::black);
+    renderer.clear_with(ctn::colors::black);
 
     renderer.render(*everyLetter, ctn::point_i{50, 50});
     cache.render(renderer, alphabet, {50, 150});

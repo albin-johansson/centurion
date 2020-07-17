@@ -34,10 +34,10 @@ inline auto create_button_data(button_data_hint hint,
 CENTURION_DEF
 color_scheme::color_scheme() noexcept
 {
-  set_color(color_type::background, black);
-  set_color(color_type::button_border, black);
-  set_color(color_type::button_background, black);
-  set_color(color_type::button_selected, black);
+  set_color(color_type::background, colors::black);
+  set_color(color_type::button_border, colors::black);
+  set_color(color_type::button_background, colors::black);
+  set_color(color_type::button_selected, colors::black);
 }
 
 CENTURION_DEF

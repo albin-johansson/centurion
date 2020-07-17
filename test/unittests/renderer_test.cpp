@@ -124,10 +124,10 @@ TEST_CASE("clear", "[renderer]")
 TEST_CASE("clear_with", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const auto selectedColor = ctn::pink;
+    const auto selectedColor = ctn::colors::pink;
     renderer.set_color(selectedColor);
 
-    CHECK_NOTHROW(renderer.clear_with(ctn::medium_aqua_marine));
+    CHECK_NOTHROW(renderer.clear_with(ctn::colors::medium_aqua_marine));
     CHECK(renderer.get_color() == selectedColor);
   });
 }
@@ -436,7 +436,7 @@ TEST_CASE(
 TEST_CASE("set_color", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const auto& color = ctn::pale_violet_red;
+    const auto& color = ctn::colors::pale_violet_red;
 
     renderer.set_color(color);
     CHECK(color == renderer.get_color());
@@ -638,9 +638,9 @@ TEST_CASE("text_blended_wrapped", "[renderer]")
 TEST_CASE("text_shaded", "[renderer]")
 {
   font_test([](const ctn::renderer& renderer, const ctn::font& font) {
-    CHECK(!renderer.text_shaded(nullptr, ctn::black, font));
-    CHECK(!renderer.text_shaded("", ctn::black, font));
-    CHECK(renderer.text_shaded("Hello", ctn::black, font));
+    CHECK(!renderer.text_shaded(nullptr, ctn::colors::black, font));
+    CHECK(!renderer.text_shaded("", ctn::colors::black, font));
+    CHECK(renderer.text_shaded("Hello", ctn::colors::black, font));
   });
 }
 

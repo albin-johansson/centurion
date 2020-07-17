@@ -71,7 +71,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void clear() noexcept;
+  void clear() noexcept { SDL_RenderClear(m_renderer); }
 
   /**
    * @brief Clears the rendering target with the specified color.
@@ -82,14 +82,22 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  void clear_with(const color& color) noexcept;
+  void clear_with(const color& color) noexcept
+  {
+    const auto oldColor = get_color();
+
+    set_color(color);
+    clear();
+
+    set_color(oldColor);
+  }
 
   /**
    * @brief Applies the previous rendering calls to the rendering target.
    *
    * @since 3.0.0
    */
-  void present() noexcept;
+  void present() noexcept { SDL_RenderPresent(m_renderer); }
 
   /**
    * @brief Renders the outline of a rectangle in the currently selected color.
@@ -102,7 +110,16 @@ class renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void draw_rect(const basic_rect<T>& rect) noexcept;
+  void draw_rect(const basic_rect<T>& rect) noexcept
+  {
+    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+    if constexpr (std::is_same_v<T, int>) {
+      SDL_RenderDrawRect(m_renderer, static_cast<const SDL_Rect*>(rect));
+    } else {
+      SDL_RenderDrawRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
+    }
+  }
 
   /**
    * @brief Renders a filled rectangle in the currently selected color.
@@ -115,7 +132,16 @@ class renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void fill_rect(const basic_rect<T>& rect) noexcept;
+  void fill_rect(const basic_rect<T>& rect) noexcept
+  {
+    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+    if constexpr (std::is_same_v<T, int>) {
+      SDL_RenderFillRect(m_renderer, static_cast<const SDL_Rect*>(rect));
+    } else {
+      SDL_RenderFillRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
+    }
+  }
 
   /**
    * @brief Renders a line between the supplied points, in the currently
@@ -131,10 +157,25 @@ class renderer_base {
    */
   template <typename T>
   void draw_line(const basic_point<T>& start,
-                 const basic_point<T>& end) noexcept;
+                 const basic_point<T>& end) noexcept
+  {
+    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+    if constexpr (std::is_same_v<T, int>) {
+      SDL_RenderDrawLine(m_renderer, start.x(), start.y(), end.x(), end.y());
+    } else {
+      SDL_RenderDrawLineF(m_renderer, start.x(), start.y(), end.x(), end.y());
+    }
+  }
 
   /**
    * @brief Renders a collection of lines.
+   *
+   * @details This method requires the the `Container` type provides the
+   * public member `value_type` and subsequently, that the `value_type`
+   * in turn provides a `value_type` member. The former would correspond to
+   * the actual point type, and the latter corresponds to either `int` or
+   * `float`.
    *
    * @warning `Container` *must* be a collection that stores its data
    * contiguously! The behaviour of this method is undefined if this condition
@@ -149,7 +190,29 @@ class renderer_base {
    * @since 5.0.0
    */
   template <typename Container>
-  void draw_lines(const Container& container) noexcept;
+  void draw_lines(const Container& container) noexcept
+  {
+    // This must be a point of int or float
+    using point_t = typename Container::value_type;
+
+    static_assert(std::is_same_v<point_t, basic_point<float>> ||
+                  std::is_same_v<point_t, basic_point<int>>);
+
+    // This is either int or float
+    using value_t = typename point_t::value_type;
+
+    if (!container.empty()) {
+      const basic_point<value_t>& front = container.front();
+
+      if constexpr (std::is_same_v<value_t, int>) {
+        const auto* first = static_cast<const SDL_Point*>(front);
+        SDL_RenderDrawLines(m_renderer, first, container.size());
+      } else {
+        const auto* first = static_cast<const SDL_FPoint*>(front);
+        SDL_RenderDrawLinesF(m_renderer, first, container.size());
+      }
+    }
+  }
 
   /**
    * @brief Renders a texture at the specified position.
@@ -163,7 +226,22 @@ class renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const texture& texture, const basic_point<T>& position) noexcept;
+  void render(const texture& texture, const basic_point<T>& position) noexcept
+  {
+    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+    if constexpr (std::is_same_v<T, int>) {
+      const SDL_Rect dst{
+          position.x(), position.y(), texture.width(), texture.height()};
+      SDL_RenderCopy(m_renderer, texture.get(), nullptr, &dst);
+    } else {
+      const SDL_FRect dst{position.x(),
+                          position.y(),
+                          static_cast<float>(texture.width()),
+                          static_cast<float>(texture.height())};
+      SDL_RenderCopyF(m_renderer, texture.get(), nullptr, &dst);
+    }
+  }
 
   /**
    * @brief Renders a texture according to the specified rectangle.
@@ -177,8 +255,22 @@ class renderer_base {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const texture& texture,
-              const basic_rect<T>& destination) noexcept;
+  void render(const texture& texture, const basic_rect<T>& destination) noexcept
+  {
+    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+    if constexpr (std::is_same_v<T, int>) {
+      SDL_RenderCopy(m_renderer,
+                     texture.get(),
+                     nullptr,
+                     static_cast<const SDL_Rect*>(destination));
+    } else {
+      SDL_RenderCopyF(m_renderer,
+                      texture.get(),
+                      nullptr,
+                      static_cast<const SDL_FRect*>(destination));
+    }
+  }
 
   /**
    * @brief Renders a texture.
@@ -198,7 +290,22 @@ class renderer_base {
   template <typename T>
   void render(const texture& texture,
               const rect_i& source,
-              const basic_rect<T>& destination) noexcept;
+              const basic_rect<T>& destination) noexcept
+  {
+    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+    if constexpr (std::is_same_v<T, int>) {
+      SDL_RenderCopy(m_renderer,
+                     texture.get(),
+                     static_cast<const SDL_Rect*>(source),
+                     static_cast<const SDL_Rect*>(destination));
+    } else {
+      SDL_RenderCopyF(m_renderer,
+                      texture.get(),
+                      static_cast<const SDL_Rect*>(source),
+                      static_cast<const SDL_FRect*>(destination));
+    }
+  }
 
   /**
    * @brief Renders a texture.
@@ -218,7 +325,28 @@ class renderer_base {
   void render(const texture& texture,
               const rect_i& source,
               const basic_rect<T>& destination,
-              double angle) noexcept;
+              double angle) noexcept
+  {
+    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+    if constexpr (std::is_same_v<T, int>) {
+      SDL_RenderCopyEx(m_renderer,
+                       texture.get(),
+                       static_cast<const SDL_Rect*>(source),
+                       static_cast<const SDL_Rect*>(destination),
+                       angle,
+                       nullptr,
+                       SDL_FLIP_NONE);
+    } else {
+      SDL_RenderCopyExF(m_renderer,
+                        texture.get(),
+                        static_cast<const SDL_Rect*>(source),
+                        static_cast<const SDL_FRect*>(destination),
+                        angle,
+                        nullptr,
+                        SDL_FLIP_NONE);
+    }
+  }
 
   /**
    * @brief Renders a texture.
@@ -241,7 +369,28 @@ class renderer_base {
               const rect_i& source,
               const basic_rect<T>& destination,
               double angle,
-              const basic_point<T>& center) noexcept;
+              const basic_point<T>& center) noexcept
+  {
+    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+    if constexpr (std::is_same_v<T, int>) {
+      SDL_RenderCopyEx(m_renderer,
+                       texture.get(),
+                       static_cast<const SDL_Rect*>(source),
+                       static_cast<const SDL_Rect*>(destination),
+                       angle,
+                       static_cast<const SDL_Point*>(center),
+                       SDL_FLIP_NONE);
+    } else {
+      SDL_RenderCopyExF(m_renderer,
+                        texture.get(),
+                        static_cast<const SDL_Rect*>(source),
+                        static_cast<const SDL_FRect*>(destination),
+                        angle,
+                        static_cast<const SDL_FPoint*>(center),
+                        SDL_FLIP_NONE);
+    }
+  }
 
   /**
    * @brief Renders a texture.
@@ -266,7 +415,28 @@ class renderer_base {
               const basic_rect<T>& destination,
               double angle,
               const basic_point<T>& center,
-              SDL_RendererFlip flip) noexcept;
+              SDL_RendererFlip flip) noexcept
+  {
+    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+
+    if constexpr (std::is_same_v<T, int>) {
+      SDL_RenderCopyEx(m_renderer,
+                       texture.get(),
+                       static_cast<const SDL_Rect*>(source),
+                       static_cast<const SDL_Rect*>(destination),
+                       angle,
+                       static_cast<const SDL_Point*>(center),
+                       flip);
+    } else {
+      SDL_RenderCopyExF(m_renderer,
+                        texture.get(),
+                        static_cast<const SDL_Rect*>(source),
+                        static_cast<const SDL_FRect*>(destination),
+                        angle,
+                        static_cast<const SDL_FPoint*>(center),
+                        flip);
+    }
+  }
 
   /**
    * @brief Sets the color that will be used by the renderer.
@@ -275,7 +445,11 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_color(const color& color) noexcept;
+  void set_color(const color& color) noexcept
+  {
+    SDL_SetRenderDrawColor(
+        m_renderer, color.red(), color.green(), color.blue(), color.alpha());
+  }
 
   /**
    * @brief Sets the clipping area rectangle.
@@ -286,7 +460,14 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_clip(std::optional<rect_i> area) noexcept;
+  void set_clip(std::optional<rect_i> area) noexcept
+  {
+    if (area) {
+      SDL_RenderSetClipRect(m_renderer, static_cast<const SDL_Rect*>(*area));
+    } else {
+      SDL_RenderSetClipRect(m_renderer, nullptr);
+    }
+  }
 
   /**
    * @brief Sets the viewport that will be used by the renderer.
@@ -295,7 +476,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_viewport(const rect_i& viewport) noexcept;
+  void set_viewport(const rect_i& viewport) noexcept
+  {
+    SDL_RenderSetViewport(m_renderer, static_cast<const SDL_Rect*>(viewport));
+  }
 
   /**
    * @brief Sets the blend mode that will be used by the renderer.
@@ -304,7 +488,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_blend_mode(blend_mode mode) noexcept;
+  void set_blend_mode(blend_mode mode) noexcept
+  {
+    SDL_SetRenderDrawBlendMode(m_renderer, static_cast<SDL_BlendMode>(mode));
+  }
 
   /**
    * @brief Sets the rendering target of the renderer.
@@ -317,7 +504,14 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_target(const texture* texture) noexcept;
+  void set_target(const texture* texture) noexcept
+  {
+    if (texture && texture->is_target()) {
+      SDL_SetRenderTarget(m_renderer, texture->get());
+    } else {
+      SDL_SetRenderTarget(m_renderer, nullptr);
+    }
+  }
 
   /**
    * @brief Sets the rendering scale.
@@ -330,7 +524,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_scale(float xScale, float yScale) noexcept;
+  void set_scale(float xScale, float yScale) noexcept
+  {
+    if (xScale > 0 && yScale > 0) {
+      SDL_RenderSetScale(m_renderer, xScale, yScale);
+    }
+  }
 
   /**
    * @brief Sets the logical size used by the renderer.
@@ -346,7 +545,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_logical_size(const area_i& size) noexcept;
+  void set_logical_size(const area_i& size) noexcept
+  {
+    if (size.width > 0 && size.height > 0) {
+      SDL_RenderSetLogicalSize(m_renderer, size.width, size.height);
+    }
+  }
 
   /**
    * @brief Sets whether or not to force integer scaling for the logical
@@ -360,7 +564,11 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_logical_integer_scale(bool useLogicalIntegerScale) noexcept;
+  void set_logical_integer_scale(bool useLogicalIntegerScale) noexcept
+  {
+    SDL_RenderSetIntegerScale(m_renderer,
+                              detail::convert_bool(useLogicalIntegerScale));
+  }
 
   /**
    * @brief Returns the logical width that the renderer uses.
@@ -369,9 +577,16 @@ class renderer_base {
    *
    * @return the logical width that the renderer uses.
    *
+   * @see renderer::logical_size
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] auto logical_width() const noexcept -> int;
+  [[nodiscard]] auto logical_width() const noexcept -> int
+  {
+    int width = 0;
+    SDL_RenderGetLogicalSize(m_renderer, &width, nullptr);
+    return width;
+  }
 
   /**
    * @brief Returns the logical height that the renderer uses.
@@ -380,9 +595,34 @@ class renderer_base {
    *
    * @return the logical height that the renderer uses.
    *
+   * @see renderer::logical_size
+   *
    * @since 3.0.0
    */
-  [[nodiscard]] auto logical_height() const noexcept -> int;
+  [[nodiscard]] auto logical_height() const noexcept -> int
+  {
+    int height = 0;
+    SDL_RenderGetLogicalSize(m_renderer, nullptr, &height);
+    return height;
+  }
+
+  /**
+   * @brief Returns the size of the logical (virtual) viewport.
+   *
+   * @note calling this method once is faster than calling `logical_width`
+   * and `logical_height` for obtaining the size.
+   *
+   * @return the size of the logical (virtual) viewport.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto logical_size() const noexcept -> area_i
+  {
+    int width{};
+    int height{};
+    SDL_RenderGetLogicalSize(m_renderer, &width, &height);
+    return {width, height};
+  }
 
   /**
    * @brief Returns the x-axis scale that the renderer uses.
@@ -391,7 +631,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto x_scale() const noexcept -> float;
+  [[nodiscard]] auto x_scale() const noexcept -> float
+  {
+    float xScale = 0;
+    SDL_RenderGetScale(m_renderer, &xScale, nullptr);
+    return xScale;
+  }
 
   /**
    * @brief Returns the y-axis scale that the renderer uses.
@@ -400,7 +645,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto y_scale() const noexcept -> float;
+  [[nodiscard]] auto y_scale() const noexcept -> float
+  {
+    float yScale = 0;
+    SDL_RenderGetScale(m_renderer, nullptr, &yScale);
+    return yScale;
+  }
 
   /**
    * @brief Returns the current clipping rectangle, if there is one active.
@@ -409,7 +659,16 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto clip() const noexcept -> std::optional<rect_i>;
+  [[nodiscard]] auto clip() const noexcept -> std::optional<rect_i>
+  {
+    rect_i rect;
+    SDL_RenderGetClipRect(m_renderer, static_cast<SDL_Rect*>(rect));
+    if (!rect.has_area()) {
+      return nothing;
+    } else {
+      return rect;
+    }
+  }
 
   /**
    * @brief Returns information about the renderer.
@@ -418,7 +677,16 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto info() const noexcept -> std::optional<SDL_RendererInfo>;
+  [[nodiscard]] auto info() const noexcept -> std::optional<SDL_RendererInfo>
+  {
+    SDL_RendererInfo info;
+    const auto result = SDL_GetRendererInfo(m_renderer, &info);
+    if (result == 0) {
+      return info;
+    } else {
+      return nothing;
+    }
+  }
 
   /**
    * @brief Returns the output width of the renderer.
@@ -427,7 +695,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto output_width() const noexcept -> int;
+  [[nodiscard]] auto output_width() const noexcept -> int
+  {
+    int width = 0;
+    SDL_GetRendererOutputSize(m_renderer, &width, nullptr);
+    return width;
+  }
 
   /**
    * @brief Returns the output height of the renderer.
@@ -436,16 +709,30 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto output_height() const noexcept -> int;
+  [[nodiscard]] auto output_height() const noexcept -> int
+  {
+    int height = 0;
+    SDL_GetRendererOutputSize(m_renderer, nullptr, &height);
+    return height;
+  }
 
   /**
    * @brief Returns the output size of the renderer.
+   *
+   * @note calling this method once is faster than calling `output_width`
+   * and `output_height` for obtaining the output size.
    *
    * @return the current output size of the renderer.
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto output_size() const noexcept -> area_i;
+  [[nodiscard]] auto output_size() const noexcept -> area_i
+  {
+    int width = 0;
+    int height = 0;
+    SDL_GetRendererOutputSize(m_renderer, &width, &height);
+    return {width, height};
+  }
 
   /**
    * @brief Returns the blend mode that is being used by the renderer.
@@ -454,7 +741,12 @@ class renderer_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto blend_mode() const noexcept -> blend_mode;
+  [[nodiscard]] auto blend_mode() const noexcept -> blend_mode
+  {
+    SDL_BlendMode mode;
+    SDL_GetRenderDrawBlendMode(m_renderer, &mode);
+    return static_cast<enum blend_mode>(mode);
+  }
 
   /**
    * @brief Returns a bit mask of the current renderer flags.
@@ -469,7 +761,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto flags() const noexcept -> u32;
+  [[nodiscard]] auto flags() const noexcept -> u32
+  {
+    SDL_RendererInfo info;
+    SDL_GetRendererInfo(m_renderer, &info);
+    return info.flags;
+  }
 
   /**
    * @brief Indicates whether or not the `present` method is synced with
@@ -479,7 +776,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto vsync_enabled() const noexcept -> bool;
+  [[nodiscard]] auto vsync_enabled() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_RENDERER_PRESENTVSYNC);
+  }
 
   /**
    * @brief Indicates whether or not the renderer is hardware accelerated.
@@ -488,7 +788,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto accelerated() const noexcept -> bool;
+  [[nodiscard]] auto accelerated() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_RENDERER_ACCELERATED);
+  }
 
   /**
    * @brief Indicates whether or not the renderer is using software rendering.
@@ -497,7 +800,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto software_based() const noexcept -> bool;
+  [[nodiscard]] auto software_based() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_RENDERER_SOFTWARE);
+  }
 
   /**
    * @brief Indicates whether or not the renderer supports rendering to a target
@@ -508,7 +814,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto supports_target_textures() const noexcept -> bool;
+  [[nodiscard]] auto supports_target_textures() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
+  }
 
   /**
    * @brief Indicates whether or not the renderer uses integer scaling values
@@ -521,7 +830,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto using_integer_logical_scaling() const noexcept -> bool;
+  [[nodiscard]] auto using_integer_logical_scaling() const noexcept -> bool
+  {
+    return SDL_RenderGetIntegerScale(m_renderer);
+  }
 
   /**
    * @brief Indicates whether or not clipping is enabled.
@@ -532,7 +844,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto clipping_enabled() const noexcept -> bool;
+  [[nodiscard]] auto clipping_enabled() const noexcept -> bool
+  {
+    return SDL_RenderIsClipEnabled(m_renderer);
+  }
 
   /**
    * @brief Returns the currently selected rendering color.
@@ -543,7 +858,15 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto get_color() const noexcept -> color;
+  [[nodiscard]] auto get_color() const noexcept -> color
+  {
+    u8 red{};
+    u8 green{};
+    u8 blue{};
+    u8 alpha{};
+    SDL_GetRenderDrawColor(m_renderer, &red, &green, &blue, &alpha);
+    return {red, green, blue, alpha};
+  }
 
   /**
    * @brief Returns the viewport that the renderer uses.
@@ -552,7 +875,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto viewport() const noexcept -> rect_i;
+  [[nodiscard]] auto viewport() const noexcept -> rect_i
+  {
+    rect_i viewport;
+    SDL_RenderGetViewport(m_renderer, static_cast<SDL_Rect*>(viewport));
+    return viewport;
+  }
 
   /**
    * @brief Returns a textual representation of the renderer.
@@ -561,7 +889,14 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto to_string() const -> std::string;
+  [[nodiscard]] auto to_string() const -> std::string
+  {
+    const auto address = detail::address_of(this);
+    const auto owidth = std::to_string(output_width());
+    const auto oheight = std::to_string(output_height());
+    return "[Renderer@" + address + " | Output width: " + owidth +
+           ", Output height: " + oheight + "]";
+  }
 
   /**
    * @brief Returns a pointer to the associated SDL_Renderer.
@@ -574,7 +909,10 @@ class renderer_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Renderer*;
+  [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
+  {
+    return m_renderer;
+  }
 
   /**
    * @brief Converts to `SDL_Renderer*`.
@@ -583,7 +921,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] explicit operator SDL_Renderer*() noexcept;
+  [[nodiscard]] explicit operator SDL_Renderer*() noexcept
+  {
+    return m_renderer;
+  }
 
   /**
    * @brief Converts to `const SDL_Renderer*`.
@@ -592,12 +933,17 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] explicit operator const SDL_Renderer*() const noexcept;
+  [[nodiscard]] explicit operator const SDL_Renderer*() const noexcept
+  {
+    return m_renderer;
+  }
 
   /**
    * @brief Returns the number of available rendering drivers.
    *
    * @note Usually there is only one available rendering driver.
+   *
+   * @todo Move somewhere else.
    *
    * @return the number of available rendering drivers.
    *
@@ -607,6 +953,8 @@ class renderer_base {
 
   /**
    * @brief Returns the number of available video drivers compiled into SDL.
+   *
+   * @todo Move somewhere else.
    *
    * @return the number of available video drivers compiled into SDL.
    *
@@ -618,6 +966,8 @@ class renderer_base {
    * @brief Returns the information associated with a rendering driver.
    *
    * @param index the index of the rendering driver to query.
+   *
+   * @todo Move somewhere else.
    *
    * @return information about the specified rendering driver; `nothing` if
    * something went wrong.
@@ -641,441 +991,6 @@ class renderer_base {
 
   SDL_Renderer* m_renderer;
 };
-
-inline void renderer_base::clear() noexcept
-{
-  SDL_RenderClear(m_renderer);
-}
-
-inline void renderer_base::clear_with(const color& c) noexcept
-{
-  const auto oldColor = get_color();
-
-  set_color(c);
-  clear();
-
-  set_color(oldColor);
-}
-
-inline void renderer_base::present() noexcept
-{
-  SDL_RenderPresent(m_renderer);
-}
-
-template <typename T>
-void renderer_base::draw_rect(const basic_rect<T>& rect) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderDrawRect(m_renderer, static_cast<const SDL_Rect*>(rect));
-  } else {
-    SDL_RenderDrawRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
-  }
-}
-
-template <typename T>
-void renderer_base::fill_rect(const basic_rect<T>& rect) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderFillRect(m_renderer, static_cast<const SDL_Rect*>(rect));
-  } else {
-    SDL_RenderFillRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
-  }
-}
-
-template <typename T>
-void renderer_base::draw_line(const basic_point<T>& start,
-                              const basic_point<T>& end) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderDrawLine(m_renderer, start.x(), start.y(), end.x(), end.y());
-  } else {
-    SDL_RenderDrawLineF(m_renderer, start.x(), start.y(), end.x(), end.y());
-  }
-}
-
-template <typename Container>
-void renderer_base::draw_lines(const Container& container) noexcept
-{
-  // This must be a point of int or float
-  using point_t = typename Container::value_type;  // TODO doc
-
-  static_assert(std::is_same_v<point_t, basic_point<float>> ||
-                std::is_same_v<point_t, basic_point<int>>);
-
-  // This is either int or float
-  using value_t = typename point_t::value_type;
-
-  if (!container.empty()) {
-    const basic_point<value_t>& front = container.front();
-
-    if constexpr (std::is_same_v<value_t, int>) {
-      const auto* first = static_cast<const SDL_Point*>(front);
-      SDL_RenderDrawLines(m_renderer, first, container.size());
-    } else {
-      const auto* first = static_cast<const SDL_FPoint*>(front);
-      SDL_RenderDrawLinesF(m_renderer, first, container.size());
-    }
-  }
-}
-
-template <typename T>
-void renderer_base::render(const texture& texture,
-                           const basic_point<T>& position) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    const SDL_Rect dst{
-        position.x(), position.y(), texture.width(), texture.height()};
-    SDL_RenderCopy(m_renderer, texture.get(), nullptr, &dst);
-  } else {
-    const SDL_FRect dst{position.x(),
-                        position.y(),
-                        static_cast<float>(texture.width()),
-                        static_cast<float>(texture.height())};
-    SDL_RenderCopyF(m_renderer, texture.get(), nullptr, &dst);
-  }
-}
-
-template <typename T>
-void renderer_base::render(const texture& texture,
-                           const basic_rect<T>& destination) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderCopy(m_renderer,
-                   texture.get(),
-                   nullptr,
-                   static_cast<const SDL_Rect*>(destination));
-  } else {
-    SDL_RenderCopyF(m_renderer,
-                    texture.get(),
-                    nullptr,
-                    static_cast<const SDL_FRect*>(destination));
-  }
-}
-
-template <typename T>
-void renderer_base::render(const texture& texture,
-                           const rect_i& source,
-                           const basic_rect<T>& destination) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderCopy(m_renderer,
-                   texture.get(),
-                   static_cast<const SDL_Rect*>(source),
-                   static_cast<const SDL_Rect*>(destination));
-  } else {
-    SDL_RenderCopyF(m_renderer,
-                    texture.get(),
-                    static_cast<const SDL_Rect*>(source),
-                    static_cast<const SDL_FRect*>(destination));
-  }
-}
-
-template <typename T>
-void renderer_base::render(const texture& texture,
-                           const rect_i& source,
-                           const basic_rect<T>& destination,
-                           const double angle) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderCopyEx(m_renderer,
-                     texture.get(),
-                     static_cast<const SDL_Rect*>(source),
-                     static_cast<const SDL_Rect*>(destination),
-                     angle,
-                     nullptr,
-                     SDL_FLIP_NONE);
-  } else {
-    SDL_RenderCopyExF(m_renderer,
-                      texture.get(),
-                      static_cast<const SDL_Rect*>(source),
-                      static_cast<const SDL_FRect*>(destination),
-                      angle,
-                      nullptr,
-                      SDL_FLIP_NONE);
-  }
-}
-
-template <typename T>
-void renderer_base::render(const texture& texture,
-                           const rect_i& source,
-                           const basic_rect<T>& destination,
-                           const double angle,
-                           const basic_point<T>& center) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderCopyEx(m_renderer,
-                     texture.get(),
-                     static_cast<const SDL_Rect*>(source),
-                     static_cast<const SDL_Rect*>(destination),
-                     angle,
-                     static_cast<const SDL_Point*>(center),
-                     SDL_FLIP_NONE);
-  } else {
-    SDL_RenderCopyExF(m_renderer,
-                      texture.get(),
-                      static_cast<const SDL_Rect*>(source),
-                      static_cast<const SDL_FRect*>(destination),
-                      angle,
-                      static_cast<const SDL_FPoint*>(center),
-                      SDL_FLIP_NONE);
-  }
-}
-
-template <typename T>
-void renderer_base::render(const texture& texture,
-                           const rect_i& source,
-                           const basic_rect<T>& destination,
-                           const double angle,
-                           const basic_point<T>& center,
-                           const SDL_RendererFlip flip) noexcept
-{
-  static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-  if constexpr (std::is_same_v<T, int>) {
-    SDL_RenderCopyEx(m_renderer,
-                     texture.get(),
-                     static_cast<const SDL_Rect*>(source),
-                     static_cast<const SDL_Rect*>(destination),
-                     angle,
-                     static_cast<const SDL_Point*>(center),
-                     flip);
-  } else {
-    SDL_RenderCopyExF(m_renderer,
-                      texture.get(),
-                      static_cast<const SDL_Rect*>(source),
-                      static_cast<const SDL_FRect*>(destination),
-                      angle,
-                      static_cast<const SDL_FPoint*>(center),
-                      flip);
-  }
-}
-
-inline void renderer_base::set_color(const color& color) noexcept
-{
-  SDL_SetRenderDrawColor(
-      m_renderer, color.red(), color.green(), color.blue(), color.alpha());
-}
-
-inline void renderer_base::set_clip(const std::optional<rect_i> area) noexcept
-{
-  if (area) {
-    SDL_RenderSetClipRect(m_renderer, static_cast<const SDL_Rect*>(*area));
-  } else {
-    SDL_RenderSetClipRect(m_renderer, nullptr);
-  }
-}
-
-inline void renderer_base::set_viewport(const rect_i& viewport) noexcept
-{
-  SDL_RenderSetViewport(m_renderer, static_cast<const SDL_Rect*>(viewport));
-}
-
-inline void renderer_base::set_blend_mode(const enum blend_mode mode) noexcept
-{
-  SDL_SetRenderDrawBlendMode(m_renderer, static_cast<SDL_BlendMode>(mode));
-}
-
-inline void renderer_base::set_target(const texture* texture) noexcept
-{
-  if (texture && texture->is_target()) {
-    SDL_SetRenderTarget(m_renderer, texture->get());
-  } else {
-    SDL_SetRenderTarget(m_renderer, nullptr);
-  }
-}
-
-inline void renderer_base::set_scale(const float xScale,
-                                     const float yScale) noexcept
-{
-  if (xScale > 0 && yScale > 0) {
-    SDL_RenderSetScale(m_renderer, xScale, yScale);
-  }
-}
-
-inline void renderer_base::set_logical_size(const area_i& size) noexcept
-{
-  if (size.width > 0 && size.height > 0) {
-    SDL_RenderSetLogicalSize(m_renderer, size.width, size.height);
-  }
-}
-
-inline void renderer_base::set_logical_integer_scale(
-    const bool useLogicalIntegerScale) noexcept
-{
-  SDL_RenderSetIntegerScale(m_renderer,
-                            detail::convert_bool(useLogicalIntegerScale));
-}
-
-inline auto renderer_base::logical_width() const noexcept -> int
-{
-  int width = 0;
-  SDL_RenderGetLogicalSize(m_renderer, &width, nullptr);
-  return width;
-}
-
-inline auto renderer_base::logical_height() const noexcept -> int
-{
-  int height = 0;
-  SDL_RenderGetLogicalSize(m_renderer, nullptr, &height);
-  return height;
-}
-
-inline auto renderer_base::x_scale() const noexcept -> float
-{
-  float xScale = 0;
-  SDL_RenderGetScale(m_renderer, &xScale, nullptr);
-  return xScale;
-}
-
-inline auto renderer_base::y_scale() const noexcept -> float
-{
-  float yScale = 0;
-  SDL_RenderGetScale(m_renderer, nullptr, &yScale);
-  return yScale;
-}
-
-inline auto renderer_base::clip() const noexcept -> std::optional<rect_i>
-{
-  rect_i rect;
-  SDL_RenderGetClipRect(m_renderer, static_cast<SDL_Rect*>(rect));
-  if (!rect.has_area()) {
-    return nothing;
-  } else {
-    return rect;
-  }
-}
-
-inline auto renderer_base::info() const noexcept
-    -> std::optional<SDL_RendererInfo>
-{
-  SDL_RendererInfo info;
-  const auto result = SDL_GetRendererInfo(m_renderer, &info);
-  if (result == 0) {
-    return info;
-  } else {
-    return nothing;
-  }
-}
-
-inline auto renderer_base::output_width() const noexcept -> int
-{
-  int width = 0;
-  SDL_GetRendererOutputSize(m_renderer, &width, nullptr);
-  return width;
-}
-
-inline auto renderer_base::output_height() const noexcept -> int
-{
-  int height = 0;
-  SDL_GetRendererOutputSize(m_renderer, nullptr, &height);
-  return height;
-}
-
-inline auto renderer_base::output_size() const noexcept -> area_i
-{
-  int width = 0;
-  int height = 0;
-  SDL_GetRendererOutputSize(m_renderer, &width, &height);
-  return {width, height};
-}
-
-inline auto renderer_base::blend_mode() const noexcept -> enum blend_mode {
-  SDL_BlendMode mode;  //
-  SDL_GetRenderDrawBlendMode(m_renderer, &mode);
-  return static_cast<enum blend_mode>(mode);
-}
-
-inline auto renderer_base::flags() const noexcept -> u32
-{
-  SDL_RendererInfo info;
-  SDL_GetRendererInfo(m_renderer, &info);
-  return info.flags;
-}
-
-inline auto renderer_base::vsync_enabled() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_RENDERER_PRESENTVSYNC);
-}
-
-inline auto renderer_base::accelerated() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_RENDERER_ACCELERATED);
-}
-
-inline auto renderer_base::software_based() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_RENDERER_SOFTWARE);
-}
-
-inline auto renderer_base::supports_target_textures() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
-}
-
-inline auto renderer_base::using_integer_logical_scaling() const noexcept
-    -> bool
-{
-  return SDL_RenderGetIntegerScale(m_renderer);
-}
-
-inline auto renderer_base::clipping_enabled() const noexcept -> bool
-{
-  return SDL_RenderIsClipEnabled(m_renderer);
-}
-
-inline auto renderer_base::get_color() const noexcept -> color
-{
-  u8 red = 0, green = 0, blue = 0, alpha = 0;
-  SDL_GetRenderDrawColor(m_renderer, &red, &green, &blue, &alpha);
-  return {red, green, blue, alpha};
-}
-
-inline auto renderer_base::viewport() const noexcept -> rect_i
-{
-  rect_i viewport;
-  SDL_RenderGetViewport(m_renderer, static_cast<SDL_Rect*>(viewport));
-  return viewport;
-}
-
-inline auto renderer_base::to_string() const -> std::string
-{
-  const auto address = detail::address_of(this);
-  const auto owidth = std::to_string(output_width());
-  const auto oheight = std::to_string(output_height());
-  return "[Renderer@" + address + " | Output width: " + owidth +
-         ", Output height: " + oheight + "]";
-}
-
-inline auto renderer_base::get() const noexcept -> SDL_Renderer*
-{
-  return m_renderer;
-}
-
-inline renderer_base::operator SDL_Renderer*() noexcept
-{
-  return m_renderer;
-}
-
-inline renderer_base::operator const SDL_Renderer*() const noexcept
-{
-  return m_renderer;
-}
 
 inline auto renderer_base::render_drivers() noexcept -> int
 {

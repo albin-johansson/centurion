@@ -211,7 +211,7 @@ TEST_CASE("color conversions", "[color]")
 {
   SECTION("Convert to SDL_Color")
   {
-    const auto& color = ctn::dark_orchid;
+    const auto& color = ctn::colors::dark_orchid;
     const auto sdlColor = static_cast<SDL_Color>(color);
 
     CHECK(color == sdlColor);
@@ -225,7 +225,7 @@ TEST_CASE("color conversions", "[color]")
 
   SECTION("Convert to SDL_MessageBoxColor")
   {
-    const auto& color = ctn::dark_orchid;
+    const auto& color = ctn::colors::dark_orchid;
     const auto msgColor = static_cast<SDL_MessageBoxColor>(color);
 
     CHECK(color == msgColor);
@@ -238,7 +238,7 @@ TEST_CASE("color conversions", "[color]")
 
   SECTION("Reinterpret to SDL_Color*")
   {
-    const ctn::color color = ctn::bisque;
+    const ctn::color color = ctn::colors::bisque;
     const auto* sdlColor = static_cast<const SDL_Color*>(color);
 
     const void* adr = &color;

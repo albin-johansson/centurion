@@ -46,7 +46,14 @@
 #include "centurion_api.hpp"
 #include "color.hpp"
 
-namespace centurion {
+/**
+ * @namespace centurion::colors
+ *
+ * @brief Contains pre-defined `color` constants.
+ *
+ * @see centurion::color
+ */
+namespace centurion::colors {
 
 /**
  * @brief An invisible color. Hex: #000000.
@@ -1091,6 +1098,6 @@ inline constexpr color yellow{0xFF, 0xFF, 0};
  */
 inline constexpr color yellow_green{0x9A, 0xCD, 0x32};
 
-}  // namespace centurion
+}  // namespace centurion::colors
 
 #endif  // CENTURION_COLORS_HEADER

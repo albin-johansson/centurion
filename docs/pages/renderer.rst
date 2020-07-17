@@ -1,16 +1,7 @@
 Renderer
 ========
 
-The primary class for rendering is ``basic_renderer<T>``. Which represents an owning renderer.
-The template parameter is the type of the keys used to lookup fonts stored in an internal map. 
-Don't worry, you don't have to (and shouldn't) type ``basic_renderer<T>`` all the time. The 
-library provides the ``renderer`` and ``renderer_i`` aliases, that correspond to 
-``basic_renderer<std::string>`` and ``basic_renderer<int>`` respectively. 
-
-.. tip::
-
-  Use either one of the ``renderer`` or ``renderer_i`` aliases, or define your own alias instead
-  of using ``basic_renderer<T>`` everywhere.
+The primary class for rendering is ``renderer``. Which represents an owning renderer.
 
 Rendering textures
 ------------------
@@ -30,9 +21,7 @@ to automatically render at translated positions.
 Font support
 ------------
 When rendering text, it's often needed to pass around fonts. As a result, this class provides 
-an API for storing shared pointers to ``font`` instances. The fonts are stored in an internal map, and
-it's possible to specify what you want to use as keys for the fonts. The ``renderer`` alias uses 
-``std::string`` as the key type.
+an API for storing shared pointers to ``font`` instances. The fonts are stored in an internal map.
 
 Rendering text
 --------------
@@ -52,7 +41,7 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``SDL_Renderer*``, ``const SDL_Renderer*``
 Namespace                ``::centurion``
-Header                   ``graphics.hpp``
+Header                   ``renderer.hpp``
 ======================  =========================================
 
 Examples
@@ -66,7 +55,7 @@ is to create a window and an associated renderer with Centurion.
 .. code-block:: c++
 
   #include <centurion_as_ctn.hpp>
-  #include <graphics.hpp>
+  #include <renderer.hpp>
   #include <window.hpp>
 
   void setup()
@@ -85,7 +74,7 @@ the renderer.
 .. code-block:: c++
 
   #include <centurion_as_ctn.hpp>
-  #include <graphics.hpp>
+  #include <renderer.hpp>
 
   void draw(ctn::renderer& renderer)
   {
@@ -98,21 +87,22 @@ the renderer.
 
 Font handling
 ~~~~~~~~~~~~~
-As previously mentioned, the ``basic_renderer`` class provides storage of ``font`` instances.
-The following example demonstrates all of the various methods available for font handling.
+As previously mentioned, the ``renderer`` class provides storage of ``font`` instances. The
+following example demonstrates all of the various methods available for font handling.
 
 .. code-block:: c++
 
   #include <centurion_as_ctn.hpp>
-  #include <graphics.hpp>
+  #include <renderer.hpp>
 
   void font_demo(ctn::renderer& renderer)
   {
-    if (renderer.has_font("Comic Sans")) {
-      renderer.remove_font("Comic Sans");
+    constexpr auto id = "Comic Sans"_hs; // compile time hashed string!
+    if (renderer.has_font(id)) {
+      renderer.remove_font(id);
     } else {
-      renderer.add_font("Comic Sans", ctn::font::shared("comic_sans.ttf", 12));
-      auto font = renderer.font("Comic Sans");
+      renderer.add_font(id, ctn::font::shared("comic_sans.ttf", 12));
+      auto font = renderer.font(id);
     }
   }
 
@@ -132,13 +122,13 @@ rendered with the various options.
 .. code-block:: c++
  
   #include <centurion_as_ctn.hpp>
-  #include <graphics.hpp>
+  #include <renderer.hpp>
    
   void text_rendering_demo(ctn::renderer& renderer)
   {
     renderer.set_color(ctn::white);
 
-    auto font = renderer.font("Arial");
+    auto font = renderer.font("Arial"_hs);
 
     auto blended = renderer.text_blended("Never", *font);
     auto wrapped = renderer.text_blended_wrapped("Gonna", 100, *font);

@@ -59,7 +59,7 @@ namespace centurion {
  *
  * @since 5.0.0
  *
- * @see `basic_renderer`
+ * @see `renderer`
  * @see `renderer_view`
  *
  * @headerfile graphics.hpp

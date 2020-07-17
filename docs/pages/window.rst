@@ -29,7 +29,7 @@ assumes that the library has been initialized.
 
   #include <centurion_as_ctn.hpp>
   #include <window.hpp>
-  #include <graphics.hpp>
+  #include <renderer.hpp>
   #include <event.hpp>
   #include <rect.hpp>
 

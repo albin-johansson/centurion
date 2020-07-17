@@ -202,21 +202,21 @@ class texture final {
       -> std::unique_ptr<texture>;
 
   /**
-   * @copydoc texture(const basic_renderer<T>&, czstring)
+   * @copydoc texture(const renderer<T>&, czstring)
    */
   CENTURION_QUERY
   static auto unique(const renderer& renderer, czstring path)
       -> std::unique_ptr<texture>;
 
   /**
-   * @copydoc texture(const basic_renderer<T>&, const surface&)
+   * @copydoc texture(const renderer<T>&, const surface&)
    */
   CENTURION_QUERY
   static auto unique(const renderer& renderer, const surface& surface)
       -> std::unique_ptr<texture>;
 
   /**
-   * @copydoc texture(const basic_renderer<T>&, pixel_format, access, area_i)
+   * @copydoc texture(const renderer<T>&, pixel_format, access, area_i)
    */
   CENTURION_QUERY
   static auto unique(const renderer& renderer,
@@ -232,21 +232,21 @@ class texture final {
       -> std::shared_ptr<texture>;
 
   /**
-   * @copydoc texture(const basic_renderer<T>&, czstring)
+   * @copydoc texture(const renderer<T>&, czstring)
    */
   CENTURION_QUERY
   static auto shared(const renderer& renderer, czstring path)
       -> std::shared_ptr<texture>;
 
   /**
-   * @copydoc texture(const basic_renderer<T>&, const surface&)
+   * @copydoc texture(const renderer<T>&, const surface&)
    */
   CENTURION_QUERY
   static auto shared(const renderer& renderer, const surface& surface)
       -> std::shared_ptr<texture>;
 
   /**
-   * @copydoc texture(const basic_renderer<T>&, pixel_format, access, area_i)
+   * @copydoc texture(const renderer<T>&, pixel_format, access, area_i)
    */
   CENTURION_QUERY
   static auto shared(const renderer& renderer,

@@ -1,15 +1,15 @@
 Renderer view
 =============
 
-Unlike ``basic_renderer<T>``, the ``renderer_view`` class represents a non-owning renderer.
+Unlike ``renderer<T>``, the ``renderer_view`` class represents a non-owning renderer.
 Which means that it does *not* claim ownership of the associated ``SDL_Renderer*``. This 
 makes this class useful for migrating projects that make heavy use of raw pointers to SDL 
 components. However, misuse of this class may cause memory leaks if you're not careful.
 
 .. warning::
 
-  In the vast majority of cases, you want to use the ``basic_renderer<T>`` class instead 
-  of ``renderer_view``.
+  In the vast majority of cases, you want to use the ``renderer<T>`` class instead of
+  ``renderer_view``.
 
 
 General information
@@ -23,14 +23,14 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     None
 Namespace                ``::centurion``
-Header                   ``graphics.hpp``
+Header                   ``renderer.hpp``
 ======================  =========================================
 
-Differences with ``basic_renderer<T>``
+Differences with ``renderer<T>``
 --------------------------------------
 Since ``renderer_view`` is merely a wrapper around an ``SDL_Renderer*``, it only supports a
-subset of the API provided by ``basic_renderer<T>``. The missing features are automatic 
-viewport translation and font handling.
+subset of the API provided by ``renderer<T>``. The missing features are automatic viewport
+translation and font handling.
 
 Example
 -------
@@ -46,7 +46,7 @@ parameter. Which is the main use case of the ``renderer_view`` class.
 .. code-block:: c++
 
   #include <centurion_as_ctn.hpp>
-  #include <graphics.hpp>
+  #include <renderer.hpp>
 
   void draw(SDL_Renderer* renderer)
   {

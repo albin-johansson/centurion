@@ -56,9 +56,6 @@ namespace centurion {
  * `renderer_view` that can be used if you don't want the renderer to claim
  * ownership of the `SDL_Renderer` pointer.
  *
- * @note It's recommended to not use the `basic_renderer` name directly, use
- * a custom typedef or the provided `renderer` or `renderer_i` aliases..
- *
  * @par Rendering textures
  * There are quite a number of methods provided for rendering `texture`
  * instances. There are two overload sets, `render` and `render_t`. These
@@ -168,26 +165,26 @@ class renderer final : public renderer_base {
   ~renderer() noexcept;
 
   /**
-   * @copydoc basic_renderer(gsl::owner<SDL_Renderer*>)
+   * @copydoc renderer(gsl::owner<SDL_Renderer*>)
    */
   [[nodiscard]] static auto unique(gsl::owner<SDL_Renderer*> sdlRenderer)
       -> std::unique_ptr<renderer>;
 
   /**
-   * @copydoc basic_renderer(const window&, SDL_RendererFlags)
+   * @copydoc renderer(const window&, SDL_RendererFlags)
    */
   [[nodiscard]] static auto unique(const window& window,
                                    SDL_RendererFlags flags = defaultFlags)
       -> std::unique_ptr<renderer>;
 
   /**
-   * @copydoc basic_renderer(gsl::owner<SDL_Renderer*>)
+   * @copydoc renderer(gsl::owner<SDL_Renderer*>)
    */
   [[nodiscard]] static auto shared(gsl::owner<SDL_Renderer*> sdlRenderer)
       -> std::shared_ptr<renderer>;
 
   /**
-   * @copydoc basic_renderer(const window&, SDL_RendererFlags)
+   * @copydoc renderer(const window&, SDL_RendererFlags)
    */
   [[nodiscard]] static auto shared(const window& window,
                                    SDL_RendererFlags flags = defaultFlags)
@@ -692,23 +689,23 @@ class renderer final : public renderer_base {
  * @brief Represents a non-owning renderer.
  *
  * @details This class is meant to be used when you want to utilize the same
- * rendering API as with the the `basic_renderer` class, but you don't want the
+ * rendering API as with the the `renderer` class, but you don't want the
  * renderer to claim ownership of the SDL renderer. In a nutshell, this class
  * is merely a wrapper around an `SDL_Renderer*`.
  *
  * However, there are some differences in functionality compared to the
- * `basic_renderer` class. Firstly, renderer views don't support storing
+ * `renderer` class. Firstly, renderer views don't support storing
  * fonts. Secondly, the translation viewport API isn't available with views.
  *
  * @note Naturally, since instances of this class don't own the associated
  * SDL renderer, you'll have to manually manage the lifetime of the
- * SDL renderer. In general, prefer `basic_renderer` unless you absolutely
- * cannot claim ownership of the SDL renderer.
+ * SDL renderer. In general, prefer `renderer` unless you absolutely cannot
+ * claim ownership of the SDL renderer.
  *
  * @par Examples
  * The following example displays how one could utilize this class to take
- * advantage of the Centurion rendering API, that would't be possible with
- * `basic_renderer`.
+ * advantage of the Centurion rendering API, that wouldn't be possible with
+ * `renderer`.
  * @code{.cpp}
  *   #include <centurion_as_ctn.hpp>
  *   #include <graphics.hpp>
@@ -729,7 +726,7 @@ class renderer final : public renderer_base {
  *
  * @since 5.0.0
  *
- * @see `basic_renderer`
+ * @see `renderer`
  *
  * @headerfile graphics.hpp
  */
@@ -748,7 +745,7 @@ class renderer_view final : public renderer_base {
   {}
 
   /**
-   * @brief Creates a view based on an existing `basic_renderer`.
+   * @brief Creates a view based on an existing `renderer`.
    *
    * @tparam FontKey the type of the font keys used by the renderer.
    *

@@ -14,14 +14,13 @@ window to claim ownership of the associated ``SDL_Window*``, you can use the ``w
 
 Graphics
 --------
-Graphics are of course also very important in every game! The most important classes related to graphics
-are located in the appropriately called header, ``graphics.hpp``. The primary representation for images
-is the ``texture`` class, which is hardware-accelerated! The rendering API is simple and easy to use, yet
-powerful.
+Graphics are of course also very important in every game! The primary representation for images
+is the ``texture`` class, which is hardware-accelerated! The rendering API is simple and easy to
+use, yet powerful.
 
 * :doc:`Renderer </pages/renderer>` | Provides the rendering API, along with several extra conveniences.
 * :doc:`Renderer view </pages/renderer_view>` | A non-owning wrapper around an ``SDL_Renderer*``.
-* ``graphics.hpp`` | ``basic_renderer``, ``renderer_view``, ``texture``.
+* ``texture.hpp`` | ``texture``.
 * ``surface.hpp`` | ``surface``
 * ``color.hpp`` | ``color``
 * ``colors.hpp``

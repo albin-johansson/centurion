@@ -46,12 +46,157 @@ namespace centurion::experimental {
 
 using unicode = u16;
 
+class unicode_string final {
+ public:
+  using value_type = std::vector<unicode>::value_type;
+
+  using pointer = std::vector<unicode>::pointer;
+  using const_pointer = std::vector<unicode>::const_pointer;
+
+  using reference = std::vector<unicode>::reference;
+  using const_reference = std::vector<unicode>::const_reference;
+
+  using iterator = std::vector<unicode>::iterator;
+  using const_iterator = std::vector<unicode>::const_iterator;
+
+  using reverse_iterator = std::vector<unicode>::reverse_iterator;
+  using const_reverse_iterator = std::vector<unicode>::const_reverse_iterator;
+
+  using size_type = std::vector<unicode>::size_type;
+  using difference_type = std::vector<unicode>::difference_type;
+
+  unicode_string() = default;
+
+  void reserve(size_type n) { m_data.reserve(n); }
+
+  void append(unicode ch) { m_data.emplace_back(ch); }
+
+  template <typename First, typename... Args>
+  void append(First first, Args... codes)
+  {
+    static_assert(std::is_same_v<unicode, First>);
+    append(first);
+    append(codes...);
+  }
+
+  void operator+=(unicode ch) { append(ch); }
+
+  [[nodiscard]] auto size() const noexcept -> size_type
+  {
+    return m_data.size();
+  }
+  [[nodiscard]] auto capacity() const noexcept -> size_type
+  {
+    return m_data.capacity();
+  }
+
+  auto begin() noexcept -> iterator { return m_data.begin(); }
+  auto begin() const noexcept -> const_iterator { return m_data.begin(); }
+
+  auto cbegin() noexcept -> const_iterator { return m_data.cbegin(); }
+  auto cbegin() const noexcept -> const_iterator { return m_data.cbegin(); }
+
+  auto rbegin() noexcept -> reverse_iterator { return m_data.rbegin(); }
+  auto rbegin() const noexcept -> const_reverse_iterator
+  {
+    return m_data.rbegin();
+  }
+
+  auto end() noexcept -> iterator { return m_data.end(); }
+  auto end() const noexcept -> const_iterator { return m_data.end(); }
+
+  auto rend() noexcept -> reverse_iterator { return m_data.rend(); }
+  auto rend() const noexcept -> const_reverse_iterator { return m_data.rend(); }
+
+  auto crbegin() noexcept -> const_reverse_iterator { return m_data.crbegin(); }
+  auto crbegin() const noexcept -> const_reverse_iterator
+  {
+    return m_data.crbegin();
+  }
+
+  auto crend() noexcept -> const_reverse_iterator { return m_data.crend(); }
+  auto crend() const noexcept -> const_reverse_iterator
+  {
+    return m_data.crend();
+  }
+
+  [[nodiscard]] auto at(size_type index) -> reference
+  {
+    return m_data.at(index);
+  }
+  [[nodiscard]] auto at(size_type index) const -> const_reference
+  {
+    return m_data.at(index);
+  }
+
+  [[nodiscard]] auto operator[](size_type index) -> reference
+  {
+    return m_data[index];
+  }
+  [[nodiscard]] auto operator[](size_type index) const -> const_reference
+  {
+    return m_data[index];
+  }
+
+ private:
+  std::vector<unicode> m_data;
+};
+
+[[nodiscard]] inline auto operator==(const unicode_string& lhs,
+                                     const unicode_string& rhs)
+{
+  if (lhs.size() != rhs.size()) {
+    return false;
+  }
+
+  for (unicode_string::size_type index = 0; index < lhs.size(); ++index) {
+    const auto a = lhs.at(index);
+    const auto b = rhs.at(index);
+    if (a != b) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+[[nodiscard]] inline auto operator!=(const unicode_string& lhs,
+                                     const unicode_string& rhs)
+{
+  return !(lhs == rhs);
+}
+
 class font_cache final {
  public:
-  font_cache(renderer& renderer, font&& font);
+  /**
+   * @brief Creates an empty font cache instance.
+   *
+   * @note You have to explicitly state what glyphs that you want to be cached.
+   *
+   * @param font the font that will be used.
+   *
+   * @since 5.0.0
+   */
+  explicit font_cache(font&& font) noexcept : m_font{std::move(font)} {}
 
-  [[nodiscard]] static auto unique(renderer& renderer, font&& font)
-      -> std::unique_ptr<font_cache>;
+  /**
+   * @brief Creates an empty font cache, and creates the associated font
+   * in-place.
+   *
+   * @tparam Args the types of the arguments forwarded to the font constructor.
+   *
+   * @param args the arguments that will be forwarded to the font constructor.
+   *
+   * @since 5.0.0
+   */
+  template <typename... Args>
+  explicit font_cache(Args&&... args) : m_font{std::forward<Args>(args)...}
+  {}
+
+  [[nodiscard]] static auto unique(font&& font) -> std::unique_ptr<font_cache>
+  {
+    return std::make_unique<font_cache>(std::move(font));
+  }
 
   /**
    * @brief Renders a glyph at the specified position.
@@ -67,30 +212,167 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  auto render(renderer& renderer, unicode glyph, const point_i& position)
-      -> int;
+  auto render(renderer& renderer, unicode glyph, const point_i& position) -> int
+  {
+    const auto& glyphMetrics = metrics(glyph);
 
-  void render(renderer& renderer, std::string_view str, point_i position);
+    const auto x = position.x() + glyphMetrics.minX;
+    const auto y = position.y();
+
+    //  const auto y = (position.y() + glyphMetrics.maxY) -
+    //      ((m_font.ascent() + glyphMetrics.maxY));
+
+    renderer.render(at(glyph), point_i{x, y});
+
+    return position.x() + glyphMetrics.advance;
+  }
+
+  void render(renderer& renderer, std::string_view str, point_i position)
+  {
+    const auto originalX = position.x();
+
+    for (const auto glyph : str) {
+      if (glyph == '\n') {
+        position.set_x(originalX);
+        position.set_y(position.y() + m_font.line_skip());
+      } else {
+        const auto x = render(renderer, glyph, position);
+        position.set_x(x);
+      }
+    }
+  }
+
+  void render(renderer& renderer, unicode_string str, point_i position)
+  {
+    const auto originalX = position.x();
+
+    for (const auto glyph : str) {
+      if (glyph == '\n') {
+        position.set_x(originalX);
+        position.set_y(position.y() + m_font.line_skip());
+      } else {
+        const auto x = render(renderer, glyph, position);
+        position.set_x(x);
+      }
+    }
+  }
 
   void render_cached(renderer& renderer,
                      entt::id_type id,
-                     const point_i& position);
+                     const point_i& position)
+  {
+    if (const auto iterator = m_strings.find(id); iterator != m_strings.end()) {
+      renderer.render(m_strings.at(id), position);
+    }
+  }
 
-  void cache_alphabetical(renderer& renderer);
+  void cache_string(renderer& renderer, entt::id_type id, std::string_view str)
+  {
+    if (!m_strings.count(id)) {
+      auto unique = renderer.text_blended(str.data(), m_font);
+      m_strings.emplace(id, std::move(*unique));  // TODO investigate if valid
+    }
+  }
 
-  void cache_numerical(renderer& renderer);
+  void cache_utf8(renderer& renderer, entt::id_type id, std::string_view str)
+  {
+    auto* r = renderer.get();
 
-  void cache_string(renderer& renderer, entt::id_type id, std::string_view str);
+    auto* surface = TTF_RenderUTF8_Blended(
+        m_font.get(), str.data(), static_cast<SDL_Color>(renderer.get_color()));
 
-  void add_glyph(renderer& renderer, unicode glyph);
 
-  [[nodiscard]] auto has(unicode glyph) const noexcept -> bool;
+  }
 
-  [[nodiscard]] auto at(unicode glyph) const -> const texture&;
+  void add_glyph(renderer& renderer, unicode glyph)
+  {
+    if (!has(glyph)) {
+      if (m_font.is_glyph_provided(glyph)) {
+        m_glyphs.emplace(glyph, create_glyph_texture(renderer, glyph));
+        m_metrics.emplace(glyph, m_font.glyph_metrics(glyph).value());
+      } else {
+        log::warn(
+            "%s doesn't feature the glyph: %X", m_font.family_name(), glyph);
+      }
+    }
+  }
 
-  [[nodiscard]] auto metrics(unicode glyph) -> glyph_metrics&;
+  /**
+   * @brief Caches the glyphs in the specified range.
+   *
+   * @details The range is interpreted as [min, max), meaning the the `min`
+   * value is included, and `max` is excluded.
+   *
+   * @param renderer the renderer that will be used to create the glyph
+   * textures.
+   * @param begin the first glyph that will be included.
+   * @param end the "end" glyph in the range, will not be included.
+   *
+   * @since 5.0.0
+   */
+  void cache_range(renderer& renderer, unicode begin, unicode end)
+  {
+    for (unicode ch = begin; ch < end; ++ch) {
+      add_glyph(renderer, ch);
+    }
+  }
 
-  [[nodiscard]] auto metrics(unicode glyph) const -> const glyph_metrics&;
+  /**
+   * @brief Attempts to cache all printable basic latin characters.
+   *
+   * @details The basic latin set provides the most common characters, such as
+   * upper- and lower-case latin letters, numbers and symbols. This method
+   * might throw if something goes wrong when creating the textures.
+   *
+   * @param renderer the renderer that will be used to create the glyph
+   * textures.
+   *
+   * @since 5.0.0
+   */
+  void cache_basic_latin(renderer& renderer)
+  {
+    // https://unicode-table.com/en/blocks/basic-latin/
+
+    //    Range: 0000-007F
+    // Controls: 0000-0020 and 007F
+    cache_range(renderer, 0x20, 0x7F);
+  }
+
+  void cache_latin1_supplement(renderer& renderer)
+  {
+    // https://unicode-table.com/en/blocks/latin-1-supplement/
+
+    //    Range: 0080-00FF
+    // Controls: 0080-009F
+
+    cache_range(renderer, 0xA0, 0x100);
+  }
+
+  void cache_latin1(renderer& renderer)
+  {
+    cache_basic_latin(renderer);
+    cache_latin1_supplement(renderer);
+  }
+
+  [[nodiscard]] auto has(unicode glyph) const noexcept -> bool
+  {
+    return m_glyphs.count(glyph);
+  }
+
+  [[nodiscard]] auto at(unicode glyph) const -> const texture&
+  {
+    return m_glyphs.at(glyph);
+  }
+
+  [[nodiscard]] auto metrics(unicode glyph) -> glyph_metrics&
+  {
+    return m_metrics.at(glyph);
+  }
+
+  [[nodiscard]] auto metrics(unicode glyph) const -> const glyph_metrics&
+  {
+    return m_metrics.at(glyph);
+  }
 
   [[nodiscard]] auto get() noexcept -> font& { return m_font; }
 
@@ -99,8 +381,14 @@ class font_cache final {
  private:
   font m_font;
 
+  struct glyph_info {
+    texture image;
+    glyph_metrics metrics;
+  };
+
   std::unordered_map<unicode, texture> m_glyphs;
   std::unordered_map<unicode, glyph_metrics> m_metrics;
+
   std::unordered_map<entt::id_type, texture> m_strings;
 
   [[nodiscard]] auto create_glyph_texture(renderer& renderer, unicode glyph)
@@ -111,176 +399,6 @@ class font_cache final {
     return texture{renderer, surf};
   }
 };
-
-inline font_cache::font_cache(renderer& renderer, font&& font)
-    : m_font{std::move(font)}
-{
-  // Caches all printable ASCII characters
-  for (unicode ch = 20; ch < 128; ++ch) {
-    add_glyph(renderer, ch);
-  }
-}
-
-inline auto font_cache::unique(renderer& renderer, font&& font)
-    -> std::unique_ptr<font_cache>
-{
-  return std::make_unique<font_cache>(renderer, std::move(font));
-}
-
-inline auto font_cache::render(renderer& renderer,
-                               unicode glyph,
-                               const point_i& position) -> int
-{
-  const auto& glyphMetrics = metrics(glyph);
-
-  const auto x = position.x() + glyphMetrics.minX;
-  const auto y = position.y();
-
-  //  const auto y = (position.y() + glyphMetrics.maxY) -
-  //      ((m_font.ascent() + glyphMetrics.maxY));
-
-  renderer.render(at(glyph), point_i{x, y});
-
-  return position.x() + glyphMetrics.advance;
-}
-
-inline void font_cache::render(renderer& renderer,
-                               std::string_view str,
-                               point_i position)
-{
-  const auto originalX = position.x();
-
-  for (const auto glyph : str) {
-    if (glyph == '\n') {
-      position.set_x(originalX);
-      position.set_y(position.y() + m_font.line_skip());
-    } else {
-      const auto x = render(renderer, glyph, position);
-      position.set_x(x);
-    }
-  }
-}
-
-inline void font_cache::render_cached(renderer& renderer,
-                                      entt::id_type id,
-                                      const point_i& position)
-{
-  if (m_strings.count(id)) {
-    renderer.render(m_strings.at(id), position);
-  }
-}
-
-inline void font_cache::cache_alphabetical(renderer& renderer)
-{
-  add_glyph(renderer, 'A');
-  add_glyph(renderer, 'B');
-  add_glyph(renderer, 'C');
-  add_glyph(renderer, 'D');
-  add_glyph(renderer, 'E');
-  add_glyph(renderer, 'F');
-  add_glyph(renderer, 'G');
-  add_glyph(renderer, 'H');
-  add_glyph(renderer, 'I');
-  add_glyph(renderer, 'J');
-  add_glyph(renderer, 'K');
-  add_glyph(renderer, 'L');
-  add_glyph(renderer, 'M');
-  add_glyph(renderer, 'N');
-  add_glyph(renderer, 'O');
-  add_glyph(renderer, 'P');
-  add_glyph(renderer, 'Q');
-  add_glyph(renderer, 'R');
-  add_glyph(renderer, 'S');
-  add_glyph(renderer, 'T');
-  add_glyph(renderer, 'U');
-  add_glyph(renderer, 'V');
-  add_glyph(renderer, 'W');
-  add_glyph(renderer, 'X');
-  add_glyph(renderer, 'Y');
-  add_glyph(renderer, 'Z');
-
-  add_glyph(renderer, 'a');
-  add_glyph(renderer, 'b');
-  add_glyph(renderer, 'c');
-  add_glyph(renderer, 'd');
-  add_glyph(renderer, 'e');
-  add_glyph(renderer, 'f');
-  add_glyph(renderer, 'g');
-  add_glyph(renderer, 'h');
-  add_glyph(renderer, 'i');
-  add_glyph(renderer, 'j');
-  add_glyph(renderer, 'k');
-  add_glyph(renderer, 'l');
-  add_glyph(renderer, 'm');
-  add_glyph(renderer, 'n');
-  add_glyph(renderer, 'o');
-  add_glyph(renderer, 'p');
-  add_glyph(renderer, 'q');
-  add_glyph(renderer, 'r');
-  add_glyph(renderer, 's');
-  add_glyph(renderer, 't');
-  add_glyph(renderer, 'u');
-  add_glyph(renderer, 'v');
-  add_glyph(renderer, 'w');
-  add_glyph(renderer, 'x');
-  add_glyph(renderer, 'y');
-  add_glyph(renderer, 'z');
-}
-
-inline void font_cache::cache_numerical(renderer& renderer)
-{
-  add_glyph(renderer, '0');
-  add_glyph(renderer, '1');
-  add_glyph(renderer, '2');
-  add_glyph(renderer, '3');
-  add_glyph(renderer, '4');
-  add_glyph(renderer, '5');
-  add_glyph(renderer, '6');
-  add_glyph(renderer, '7');
-  add_glyph(renderer, '8');
-  add_glyph(renderer, '9');
-}
-
-inline void font_cache::cache_string(renderer& renderer,
-                                     entt::id_type id,
-                                     std::string_view str)
-{
-  if (!m_strings.count(id)) {
-    auto unique = renderer.text_blended(str.data(), m_font);
-    m_strings.emplace(id, std::move(*unique));  // TODO investigate if valid
-  }
-}
-
-inline void font_cache::add_glyph(renderer& renderer, unicode glyph)
-{
-  if (!has(glyph) && m_font.is_glyph_provided(glyph)) {
-    m_glyphs.emplace(glyph, create_glyph_texture(renderer, glyph));
-    m_metrics.emplace(glyph, m_font.glyph_metrics(glyph).value());
-  }
-}
-
-inline auto font_cache::has(unicode glyph) const noexcept -> bool
-{
-  constexpr entt::hashed_string id{"asdasd"};
-  u32 u = id;
-
-  return m_glyphs.count(glyph);
-}
-
-inline auto font_cache::at(unicode glyph) const -> const texture&
-{
-  return m_glyphs.at(glyph);
-}
-
-inline auto font_cache::metrics(unicode glyph) -> glyph_metrics&
-{
-  return m_metrics.at(glyph);
-}
-
-inline auto font_cache::metrics(unicode glyph) const -> const glyph_metrics&
-{
-  return m_metrics.at(glyph);
-}
 
 }  // namespace centurion::experimental
 

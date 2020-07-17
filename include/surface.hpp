@@ -212,21 +212,18 @@ class surface final {
   CENTURION_QUERY
   auto blend_mode() const noexcept -> enum blend_mode;
 
-  // TODO add
-  //  /**
-  //   * Converts the surface into its texture equivalent.
-  //   *
-  //   * @param renderer the renderer that will be used to create the
-  //   * texture.
-  //   * @return a texture that is equivalent to the surface.
-  //   * @since 4.0.0
-  //   */
-  //  template <typename Renderer>
-  //  [[nodiscard]] auto to_texture(Renderer&& renderer) const noexcept ->
-  //  Texture
-  //  {
-  //    return {SDL_CreateTextureFromSurface(renderer.get(), m_surface)};
-  //  }
+  /**
+   * @brief Converts the surface into its texture equivalent.
+   *
+   * @param renderer the renderer that will be used to create the
+   * texture.
+   *
+   * @return a texture that is equivalent to the surface.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_QUERY
+  auto to_texture(const renderer& renderer) const -> texture;
 
   /**
    * @brief Creates and returns a surface based on this surface with the

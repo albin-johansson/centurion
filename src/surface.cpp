@@ -6,6 +6,7 @@
 #include <SDL_image.h>
 
 #include "error.hpp"
+#include "renderer.hpp"
 
 namespace centurion {
 
@@ -203,11 +204,11 @@ auto surface::blend_mode() const noexcept -> enum blend_mode  //
   return static_cast<enum blend_mode>(mode);
 }
 
-// CENTURION_DEF
-// Texture Surface::to_texture(const Renderer& renderer) const noexcept
-//{
-//  return Texture{SDL_CreateTextureFromSurface(renderer.get(), m_surface)};
-//}
+CENTURION_DEF
+auto surface::to_texture(const renderer& renderer) const -> texture
+{
+  return texture{SDL_CreateTextureFromSurface(renderer.get(), m_surface)};
+}
 
 CENTURION_DEF
 auto surface::convert(pixel_format format) const -> surface

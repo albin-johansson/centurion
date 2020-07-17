@@ -187,12 +187,11 @@ TEST_CASE("Surface::pixels", "[surface]")
 
 TEST_CASE("Surface::to_texture", "[surface]")
 {
-  // TODO replace with other API
-  //  const Surface surface{path};
-  //  const Window window;
-  //  const Renderer renderer{window};
-  //
-  //  CHECK(surface.to_texture(renderer));
+  const ctn::surface surface{path};
+  const ctn::window window;
+  const ctn::renderer renderer{window};
+
+  CHECK(surface.to_texture(renderer).get());
 }
 
 TEST_CASE("Surface::convert", "[surface]")

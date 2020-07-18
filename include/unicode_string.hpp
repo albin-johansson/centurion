@@ -161,7 +161,8 @@ class unicode_string final {
    *
    * @since 5.0.0
    */
-  void pop_back()  {
+  void pop_back()
+  {
     if (!empty()) {
       m_data.erase(m_data.end() - 2);
     }
@@ -206,7 +207,8 @@ class unicode_string final {
    */
   [[nodiscard]] auto empty() const noexcept -> bool
   {
-    return m_data.size() == 1 && (*this)[0] == 0; // the null-terminated check might be redundant
+    return m_data.size() == 1 &&
+           (*this)[0] == 0;  // the null-terminated check might be redundant
   }
 
   /**

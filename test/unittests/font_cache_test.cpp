@@ -1,4 +1,4 @@
-#include "experimental/font_cache.hpp"
+#include "font_cache.hpp"
 
 //#include <NFont.h>
 //#include <SDL_FontCache.h>
@@ -18,20 +18,16 @@ TEST_CASE("...", "[.font_cache]")
 
   ctn::window window;
   ctn::renderer renderer{window};
-  ctn::experimental::font_cache cache{"resources/fira_code.ttf", 32};
+  ctn::experimental::font_cache cache{"resources/jetbrains_mono.ttf", 32};
 
   renderer.set_color(ctn::colors::white);
   cache.cache_latin1(renderer);
 
   renderer.set_color(ctn::colors::magenta);
-  cache.cache_blended_latin1(
-      renderer.get(), "foo"_hs, "this is a cached string!");
+  cache.cache_blended_latin1(renderer, "foo"_hs, "cached string! <|>");
 
-  //  ctn::experimental::unicode_string cool = {0x2665};
   ctn::experimental::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
-  cache.cache_blended_unicode(renderer.get(), "cool"_hs, cool);
-
-  //  cache.cache_utf8(renderer, ""_hs, "");
+  cache.cache_blended_unicode(renderer, "cool"_hs, cool);
 
   ctn::experimental::unicode_string str = {'a', 'b', 'c', 0xE4};
 
@@ -70,11 +66,11 @@ TEST_CASE("...", "[.font_cache]")
 
     renderer.clear_with(ctn::colors::black);
 
-    cache.render(renderer, alphabet, {50, 10});
-    cache.render(renderer, changingStr.data(), {50, 60});
+    renderer.render_text(cache, alphabet, {50, 10});
+    renderer.render_text(cache, changingStr.data(), {50, 60});
 
-    cache.render(renderer, "Foo\nBar", {50, 110});
-    cache.render_unicode(renderer, str, {300, 110});
+    renderer.render_text(cache, "Foo\nBar", {50, 110});
+    renderer.render_unicode(cache, str, {300, 110});
 
     renderer.render(cache.cached("foo"_hs), ctn::point_i{50, 200});
     renderer.render(cache.cached("cool"_hs), ctn::point_i{300, 400});

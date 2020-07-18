@@ -1,4 +1,4 @@
-#include "experimental/unicode_string.hpp"
+#include "unicode_string.hpp"
 
 #include <catch.hpp>
 
@@ -143,8 +143,11 @@ TEST_CASE("unicode_string::data", "[unicode_string]")
   using namespace ctn::literals;
 
   ctn::unicode_string str;
+  const auto& cstr = str;
 
   REQUIRE(str.data());
+  REQUIRE(cstr.data());
+
   CHECK(*str.data() == 0);
 
   str += 'b'_uni;

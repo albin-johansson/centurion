@@ -40,19 +40,16 @@
 #include <SDL_ttf.h>
 
 #include <algorithm>
-#include <array>
 #include <hashed_string.hpp>
 #include <memory>
 #include <unordered_map>
-#include <vector>
+#include <utility>
 
 #include "centurion_api.hpp"
+#include "centurion_fwd.hpp"
 #include "centurion_types.hpp"
-#include "colors.hpp"
 #include "font.hpp"
-#include "log.hpp"
-#include "renderer.hpp"
-#include "surface.hpp"
+#include "texture.hpp"
 #include "unicode_string.hpp"
 
 namespace centurion::experimental {
@@ -62,7 +59,7 @@ namespace centurion::experimental {
  *
  * @ingroup graphics
  *
- * @brief Provides an efficient font rendering API.
+ * @brief Provides an API that enables efficient font rendering.
  *
  * @details This class provides two different optimizations.
  *
@@ -82,12 +79,28 @@ namespace centurion::experimental {
  * strings you will render at compile-time. Use this option if you know that
  * you're going to render some specific string a lot.
  *
+ * @todo Look into adding option for accurate kerning.
+ *
  * @since 5.0.0
  *
  * @headerfile font_cache.hpp
  */
 class font_cache final {
  public:
+  /**
+   * @struct glyph_data
+   *
+   * @brief Simple aggregate that contains a texture and metrics for a glyph.
+   *
+   * @since 5.0.0
+   *
+   * @headerfile font_cache.hpp
+   */
+  struct glyph_data {
+    texture cached;        /**< The cached texture. */
+    glyph_metrics metrics; /**< The metrics of the glyph. */
+  };
+
   /**
    * @brief Creates an empty font cache instance.
    *
@@ -118,79 +131,6 @@ class font_cache final {
   static auto unique(font&& font) -> std::unique_ptr<font_cache>;
 
   /**
-   * @name Text rendering
-   * Methods for rendering glyphs and strings using cached textures.
-   */
-  /**@{*/
-
-  /**
-   * @brief Renders a glyph at the specified position.
-   *
-   * @details Invoking this function with a glyph that hasn't been cached
-   * will cause an exception to be thrown.
-   *
-   * @pre the specified glyph **must** have been cached.
-   *
-   * @tparam T the font key type that the renderer uses.
-   *
-   * @param renderer the renderer that will be used.
-   * @param glyph the glyph, in unicode, that will be rendered.
-   * @param position the position of the rendered glyph.
-   *
-   * @return the x-coordinate of the next glyph to be rendered after the
-   * current glyph.
-   *
-   * @since 5.0.0
-   */
-  CENTURION_API
-  auto render_glyph(renderer_ptr renderer,
-                    unicode glyph,
-                    const point_i& position) -> int;
-
-  /**
-   * @brief Renders a string.
-   *
-   * @details This method will not apply any clever conversions on the
-   * supplied string. The string is literally iterated,
-   * character-by-character, and each character is rendered using
-   * the `render_glyph`. In other words, be sure that each `char` in your
-   * strings represent a single glyph.
-   *
-   * @pre Every character in the string must correspond to a valid Unicode
-   * glyph **and** must have been previously cached.
-   *
-   * @note This method is sensitive to newline-characters, and will render
-   * strings that contain such characters appropriately.
-   *
-   * @param renderer the renderer that will be used.
-   * @param str the string that will be rendered.
-   * @param position the position of the rendered text.
-   *
-   * @since 5.0.0
-   */
-  CENTURION_API
-  void render(renderer_ptr renderer, std::string_view str, point_i position);
-
-  /**
-   * @brief Renders a Unicode string.
-   *
-   * @details This method will try to use previously cached glyphs to render
-   * the supplied string.
-   *
-   * @param renderer the renderer that will be used.
-   * @param str the Unicode string that will be rendered.
-   * @param position the position of the rendered text.
-   *
-   * @since 5.0.0
-   */
-  CENTURION_API
-  void render_unicode(renderer_ptr renderer,
-                      const unicode_string& str,
-                      point_i position);
-
-  /**@}*/  // end of text rendering
-
-  /**
    * @name String caching
    * Methods for caching strings encoded in UTF-8, Latin-1 or Unicode.
    */
@@ -211,7 +151,7 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_API
-  void cache_blended_unicode(renderer_ptr renderer,
+  void cache_blended_unicode(renderer& renderer,
                              entt::id_type id,
                              const unicode_string& str);
 
@@ -230,7 +170,7 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_API
-  void cache_blended_latin1(renderer_ptr renderer,
+  void cache_blended_latin1(renderer& renderer,
                             entt::id_type id,
                             std::string_view str);
 
@@ -248,7 +188,7 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_API
-  void cache_blended_utf8(renderer_ptr renderer,
+  void cache_blended_utf8(renderer& renderer,
                           entt::id_type id,
                           std::string_view str);
 
@@ -297,9 +237,28 @@ class font_cache final {
   CENTURION_API
   void cache_basic_latin(renderer& renderer);
 
+  /**
+   * @brief Attempts to cache all printable Latin-1 supplement characters.
+   *
+   * @param renderer the renderer that will be used to create the glyph
+   * textures.
+   *
+   * @since 5.0.0
+   */
   CENTURION_API
   void cache_latin1_supplement(renderer& renderer);
 
+  /**
+   * @brief Attempts to cache all printable Latin-1 characters.
+   *
+   * @note This method is effectively equivalent to calling both
+   * `cache_basic_latin` and `cache_latin1_supplement`.
+   *
+   * @param renderer the renderer that will be used to create the glyph
+   * textures.
+   *
+   * @since 5.0.0
+   */
   CENTURION_API
   void cache_latin1(renderer& renderer);
 
@@ -320,17 +279,24 @@ class font_cache final {
   }
 
   /**
-   * @brief Returns the cached texture associated with the specified glyph.
+   * @brief Returns the data associated with the specified glyph.
    *
    * @pre `glyph` **must** have been previously cached.
    *
-   * @param glyph the desired glyph to lookup the texture for.
+   * @details The recommended way to use this method is with structured
+   * bindings, as in the following example.
+   * @code{.cpp}
+   *   ctn::font_cache cache = ...;
+   *   const auto& [cachedTexture, glyphMetrics] = cache.at('A'_uni);
+   * @endcode
    *
-   * @return the cached texture associated with the glyph.
+   * @param glyph the desired glyph to lookup the data for.
+   *
+   * @return the cached texture and metrics associated with the glyph.
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto at(unicode glyph) const -> const texture&
+  [[nodiscard]] auto at(unicode glyph) const -> const glyph_data&
   {
     return m_glyphs.at(glyph);
   }
@@ -370,12 +336,12 @@ class font_cache final {
 
   [[nodiscard]] auto metrics(unicode glyph) -> glyph_metrics&
   {
-    return m_metrics.at(glyph);
+    return m_glyphs.at(glyph).metrics;
   }
 
   [[nodiscard]] auto metrics(unicode glyph) const -> const glyph_metrics&
   {
-    return m_metrics.at(glyph);
+    return m_glyphs.at(glyph).metrics;
   }
 
   [[nodiscard]] auto get() noexcept -> font& { return m_font; }
@@ -385,14 +351,7 @@ class font_cache final {
  private:
   font m_font;
 
-  struct glyph_data {
-    texture cached;
-    glyph_metrics metrics;
-  };
-
-  std::unordered_map<unicode, texture> m_glyphs;
-  std::unordered_map<unicode, glyph_metrics> m_metrics;
-
+  std::unordered_map<unicode, glyph_data> m_glyphs;
   std::unordered_map<entt::id_type, texture> m_strings;
 
   [[nodiscard]] auto create_glyph_texture(renderer& renderer, unicode glyph)

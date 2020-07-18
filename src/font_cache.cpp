@@ -1,7 +1,9 @@
 #ifndef CENTURION_FONT_CACHE_SOURCE
 #define CENTURION_FONT_CACHE_SOURCE
 
-#include "experimental/font_cache.hpp"
+#include "font_cache.hpp"
+
+#include "renderer.hpp"
 
 namespace centurion::experimental {
 
@@ -24,59 +26,59 @@ auto font_cache::create_glyph_texture(renderer& renderer, unicode glyph)
   return texture{renderer, surf};
 }
 
+// CENTURION_DEF
+// auto font_cache::render_glyph(renderer& renderer,
+//                              unicode glyph,
+//                              const point_i& position) -> int
+//{
+//  const auto& [texture, glyphMetrics] = m_glyphs.at(glyph);
+//
+//  const auto x = position.x() + glyphMetrics.minX;
+//  const auto y = position.y();  // SDL_ttf handles the y-coordinate alignment
+//
+//  renderer.render(texture, point_i{x, y});
+//
+//  return position.x() + glyphMetrics.advance;
+//}
+
+// CENTURION_DEF
+// void font_cache::render(renderer& renderer,
+//                        std::string_view str,
+//                        point_i position)
+//{
+//  const auto originalX = position.x();
+//
+//  for (const auto glyph : str) {
+//    if (glyph == '\n') {
+//      position.set_x(originalX);
+//      position.set_y(position.y() + m_font.line_skip());
+//    } else {
+//      const auto x = renderer.render_glyph(*this, glyph, position);
+//      position.set_x(x);
+//    }
+//  }
+//}
+
+// CENTURION_DEF
+// void font_cache::render_unicode(renderer& renderer,
+//                                const unicode_string& str,
+//                                point_i position)
+//{
+//  const auto originalX = position.x();
+//
+//  for (const auto glyph : str) {
+//    if (glyph == '\n') {
+//      position.set_x(originalX);
+//      position.set_y(position.y() + m_font.line_skip());
+//    } else {
+//      const auto x = renderer.render_glyph(*this, glyph, position);
+//      position.set_x(x);
+//    }
+//  }
+//}
+
 CENTURION_DEF
-auto font_cache::render_glyph(renderer_ptr renderer,
-                              unicode glyph,
-                              const point_i& position) -> int
-{
-  const auto& glyphMetrics = metrics(glyph);
-
-  const auto x = position.x() + glyphMetrics.minX;
-  const auto y = position.y();  // SDL_ttf handles the y-coordinate alignment
-
-  renderer.render(at(glyph), point_i{x, y});
-
-  return position.x() + glyphMetrics.advance;
-}
-
-CENTURION_DEF
-void font_cache::render(renderer_ptr renderer,
-                        std::string_view str,
-                        point_i position)
-{
-  const auto originalX = position.x();
-
-  for (const auto glyph : str) {
-    if (glyph == '\n') {
-      position.set_x(originalX);
-      position.set_y(position.y() + m_font.line_skip());
-    } else {
-      const auto x = render_glyph(renderer, glyph, position);
-      position.set_x(x);
-    }
-  }
-}
-
-CENTURION_DEF
-void font_cache::render_unicode(renderer_ptr renderer,
-                                const unicode_string& str,
-                                point_i position)
-{
-  const auto originalX = position.x();
-
-  for (const auto glyph : str) {
-    if (glyph == '\n') {
-      position.set_x(originalX);
-      position.set_y(position.y() + m_font.line_skip());
-    } else {
-      const auto x = render_glyph(renderer, glyph, position);
-      position.set_x(x);
-    }
-  }
-}
-
-CENTURION_DEF
-void font_cache::cache_blended_unicode(renderer_ptr renderer,
+void font_cache::cache_blended_unicode(renderer& renderer,
                                        entt::id_type id,
                                        const unicode_string& str)
 {
@@ -87,7 +89,7 @@ void font_cache::cache_blended_unicode(renderer_ptr renderer,
 }
 
 CENTURION_DEF
-void font_cache::cache_blended_latin1(renderer_ptr renderer,
+void font_cache::cache_blended_latin1(renderer& renderer,
                                       entt::id_type id,
                                       std::string_view str)
 {
@@ -98,7 +100,7 @@ void font_cache::cache_blended_latin1(renderer_ptr renderer,
 }
 
 CENTURION_DEF
-void font_cache::cache_blended_utf8(renderer_ptr renderer,
+void font_cache::cache_blended_utf8(renderer& renderer,
                                     entt::id_type id,
                                     std::string_view str)
 {
@@ -113,11 +115,9 @@ void font_cache::add_glyph(renderer& renderer, unicode glyph)
 {
   if (!has(glyph)) {
     if (m_font.is_glyph_provided(glyph)) {
-      m_glyphs.emplace(glyph, create_glyph_texture(renderer, glyph));
-      m_metrics.emplace(glyph, m_font.glyph_metrics(glyph).value());
-    } else {
-      log::warn(
-          "%s doesn't feature the glyph: %X", m_font.family_name(), glyph);
+      m_glyphs.emplace(glyph,
+                       glyph_data{create_glyph_texture(renderer, glyph),
+                                  m_font.glyph_metrics(glyph).value()});
     }
   }
 }
@@ -163,7 +163,7 @@ auto font_cache::try_cached(entt::id_type id) const noexcept -> const texture*
 {
   const auto iterator = m_strings.find(id);
   if (iterator != m_strings.end()) {
-    return &iterator->second; // TODO test
+    return &iterator->second;  // TODO test
   } else {
     return nullptr;
   }

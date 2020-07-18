@@ -1325,6 +1325,9 @@ static_assert(validate_event<joy_hat_event, SDL_JoyHatEvent>());
  *
  * @see `SDL_KeyboardEvent`
  *
+ * @todo Add convenience methods for checking whether or not the keyboard
+ * event was triggered by a release or press of a key.
+ *
  * @since 4.0.0
  *
  * @headerfile event.hpp

@@ -117,7 +117,7 @@ script:
   - cd test
   - ctest
 
-  - valgrind --leak-check=yes ./Centurion_test
+  - valgrind --gen-suppressions=yes --leak-check=yes ./Centurion_test
 
 deploy:
   provider: pages

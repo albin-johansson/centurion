@@ -34,8 +34,8 @@
  * @copyright MIT License
  */
 
-#ifndef CENTURION_EXPERIMENTAL_FONT_HEADER
-#define CENTURION_EXPERIMENTAL_FONT_HEADER
+#ifndef CENTURION_FONT_CACHE_HEADER
+#define CENTURION_FONT_CACHE_HEADER
 
 #include <SDL_ttf.h>
 
@@ -457,4 +457,4 @@ class font_cache final {
 // TODO include source file
 #endif  // CENTURION_HEADER_ONLY
 
-#endif  // CENTURION_EXPERIMENTAL_FONT_HEADER
+#endif  // CENTURION_FONT_CACHE_HEADER

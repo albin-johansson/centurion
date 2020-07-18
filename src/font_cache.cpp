@@ -26,57 +26,6 @@ auto font_cache::create_glyph_texture(renderer& renderer, unicode glyph)
   return texture{renderer, surf};
 }
 
-// CENTURION_DEF
-// auto font_cache::render_glyph(renderer& renderer,
-//                              unicode glyph,
-//                              const point_i& position) -> int
-//{
-//  const auto& [texture, glyphMetrics] = m_glyphs.at(glyph);
-//
-//  const auto x = position.x() + glyphMetrics.minX;
-//  const auto y = position.y();  // SDL_ttf handles the y-coordinate alignment
-//
-//  renderer.render(texture, point_i{x, y});
-//
-//  return position.x() + glyphMetrics.advance;
-//}
-
-// CENTURION_DEF
-// void font_cache::render(renderer& renderer,
-//                        std::string_view str,
-//                        point_i position)
-//{
-//  const auto originalX = position.x();
-//
-//  for (const auto glyph : str) {
-//    if (glyph == '\n') {
-//      position.set_x(originalX);
-//      position.set_y(position.y() + m_font.line_skip());
-//    } else {
-//      const auto x = renderer.render_glyph(*this, glyph, position);
-//      position.set_x(x);
-//    }
-//  }
-//}
-
-// CENTURION_DEF
-// void font_cache::render_unicode(renderer& renderer,
-//                                const unicode_string& str,
-//                                point_i position)
-//{
-//  const auto originalX = position.x();
-//
-//  for (const auto glyph : str) {
-//    if (glyph == '\n') {
-//      position.set_x(originalX);
-//      position.set_y(position.y() + m_font.line_skip());
-//    } else {
-//      const auto x = renderer.render_glyph(*this, glyph, position);
-//      position.set_x(x);
-//    }
-//  }
-//}
-
 CENTURION_DEF
 void font_cache::cache_blended_unicode(renderer& renderer,
                                        entt::id_type id,
@@ -134,9 +83,6 @@ CENTURION_DEF
 void font_cache::cache_basic_latin(renderer& renderer)
 {
   // https://unicode-table.com/en/blocks/basic-latin/
-
-  //    Range: 0000-007F
-  // Controls: 0000-0020 and 007F
   cache_range(renderer, 0x20, 0x7F);
 }
 
@@ -144,10 +90,6 @@ CENTURION_DEF
 void font_cache::cache_latin1_supplement(renderer& renderer)
 {
   // https://unicode-table.com/en/blocks/latin-1-supplement/
-
-  //    Range: 0080-00FF
-  // Controls: 0080-009F
-
   cache_range(renderer, 0xA0, 0x100);
 }
 

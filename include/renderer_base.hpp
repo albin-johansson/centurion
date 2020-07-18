@@ -231,7 +231,30 @@ class renderer_base {
    */
   /**@{*/
 
-  [[nodiscard]] auto render_blended_utf8(czstring str, const font& font)
+  /**
+   * @brief Creates and returns a texture of blended UTF-8 text.
+   *
+   * @pre `str` can't be null.
+   *
+   * @details Attempts to render the UTF-8 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative.
+   *
+   * @param str the UTF-8 text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderUTF8_Blended`
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto render_blended_utf8(nn_czstring str, const font& font)
       -> texture
   {
     surface surface{TTF_RenderUTF8_Blended(
@@ -242,7 +265,35 @@ class renderer_base {
     return texture;
   }
 
-  [[nodiscard]] auto render_blended_wrapped_utf8(czstring str,
+  /**
+   * @brief Creates and returns a texture of blended and wrapped UTF-8 text.
+   *
+   * @pre `str` can't be null.
+   *
+   * @details Attempts to render the UTF-8 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative. This method will wrap the supplied text
+   * to fit the specified width. Furthermore, you can also manually control
+   * the line breaks by inserting newline characters at the desired
+   * breakpoints.
+   *
+   * @param str the UTF-8 text that will be rendered. You can insert newline
+   * characters in the string to indicate breakpoints.
+   * @param font the font that the text will be rendered in.
+   * @param wrap the width in pixels after which the text will be wrapped.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderUTF8_Blended_Wrapped`
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_utf8(nn_czstring str,
                                                  const font& font,
                                                  u32 wrap) -> texture
   {
@@ -254,7 +305,32 @@ class renderer_base {
     return texture;
   }
 
-  [[nodiscard]] auto render_shaded_utf8(czstring str,
+  /**
+   * @brief Creates and returns a texture of shaded UTF-8 text.
+   *
+   * @pre `str` can't be null.
+   *
+   * @details Attempts to render the UTF-8 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method renders the text using anti-aliasing and with a box
+   * behind the text. This alternative is probably a bit slower than
+   * rendering solid text but about as fast as blended text. Use this
+   * method when you want nice text, and can live with a box around it.
+   *
+   * @param str the UTF-8 text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   * @param background the background color used for the box.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderUTF8_Shaded`
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto render_shaded_utf8(nn_czstring str,
                                         const font& font,
                                         const color& background) -> texture
   {
@@ -268,7 +344,30 @@ class renderer_base {
     return texture;
   }
 
-  [[nodiscard]] auto render_solid_utf8(czstring str, const font& font)
+  /**
+   * @brief Creates and returns a texture of solid UTF-8 text.
+   *
+   * @pre `str` can't be null.
+   *
+   * @details Attempts to render the UTF-8 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
+   * when quality isn't as big of a concern and speed is important.
+   *
+   * @param str the UTF-8 text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderText_Solid`
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto render_solid_utf8(nn_czstring str, const font& font)
       -> texture
   {
     surface surface{TTF_RenderUTF8_Solid(
@@ -279,7 +378,30 @@ class renderer_base {
     return texture;
   }
 
-  [[nodiscard]] auto render_blended_latin1(czstring str, const font& font)
+  /**
+   * @brief Creates and returns a texture of blended Latin-1 text.
+   *
+   * @pre `str` can't be null.
+   *
+   * @details Attempts to render the Latin-1 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative.
+   *
+   * @param str the Latin-1 text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderText_Blended`
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto render_blended_latin1(nn_czstring str, const font& font)
       -> texture
   {
     surface surface{TTF_RenderText_Blended(
@@ -290,7 +412,35 @@ class renderer_base {
     return texture;
   }
 
-  [[nodiscard]] auto render_blended_wrapped_latin1(czstring str,
+  /**
+   * @brief Creates and returns a texture of blended and wrapped Latin-1 text.
+   *
+   * @pre `str` can't be null.
+   *
+   * @details Attempts to render the Latin-1 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative. This method will wrap the supplied text
+   * to fit the specified width. Furthermore, you can also manually control
+   * the line breaks by inserting newline characters at the desired
+   * breakpoints.
+   *
+   * @param str the Latin-1 text that will be rendered. You can insert newline
+   * characters in the string to indicate breakpoints.
+   * @param font the font that the text will be rendered in.
+   * @param wrap the width in pixels after which the text will be wrapped.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderText_Blended_Wrapped`
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto render_blended_wrapped_latin1(nn_czstring str,
                                                    const font& font,
                                                    u32 wrap) -> texture
   {
@@ -302,7 +452,32 @@ class renderer_base {
     return texture;
   }
 
-  [[nodiscard]] auto render_shaded_latin1(czstring str,
+  /**
+   * @brief Creates and returns a texture of shaded Latin-1 text.
+   *
+   * @pre `str` can't be null.
+   *
+   * @details Attempts to render the Latin-1 text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method renders the text using anti-aliasing and with a box
+   * behind the text. This alternative is probably a bit slower than
+   * rendering solid text but about as fast as blended text. Use this
+   * method when you want nice text, and can live with a box around it.
+   *
+   * @param str the Latin-1 text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   * @param background the background color used for the box.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderText_Shaded`
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto render_shaded_latin1(nn_czstring str,
                                           const font& font,
                                           const color& background) -> texture
   {
@@ -316,7 +491,30 @@ class renderer_base {
     return texture;
   }
 
-  [[nodiscard]] auto render_solid_latin1(czstring str, const font& font)
+  /**
+   * @brief Creates and returns a texture of solid Latin-1 text.
+   *
+   * @pre `str` can't be null.
+   *
+   * @details Attempts to render the specified text in the supplied font using
+   * the currently selected color and return the texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
+   * when quality isn't as big of a concern and speed is important.
+   *
+   * @param str the Latin-1 text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderText_Solid`
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto render_solid_latin1(nn_czstring str, const font& font)
       -> texture
   {
     surface surface{TTF_RenderText_Solid(
@@ -327,6 +525,27 @@ class renderer_base {
     return texture;
   }
 
+  /**
+   * @brief Creates and returns a texture of blended Unicode text.
+   *
+   * @details Attempts to render the Unicode text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative.
+   *
+   * @param str the Unicode text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderUNICODE_Blended`
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto render_blended_unicode(
       const experimental::unicode_string& str,
       const font& font) -> texture
@@ -339,6 +558,32 @@ class renderer_base {
     return texture;
   }
 
+  /**
+   * @brief Creates and returns a texture of blended and wrapped Unicode text.
+   *
+   * @details Attempts to render the Unicode text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method renders the text at the highest quality and uses
+   * anti-aliasing. Use this when you want high quality text, but beware that
+   * this is the slowest alternative. This method will wrap the supplied text
+   * to fit the specified width. Furthermore, you can also manually control
+   * the line breaks by inserting newline characters at the desired
+   * breakpoints.
+   *
+   * @param str the Unicode text that will be rendered. You can insert newline
+   * characters in the string to indicate breakpoints.
+   * @param font the font that the text will be rendered in.
+   * @param wrap the width in pixels after which the text will be wrapped.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderUNICODE_Blended_Wrapped`
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto render_blended_wrapped_unicode(
       const experimental::unicode_string& str,
       const font& font,
@@ -352,6 +597,29 @@ class renderer_base {
     return texture;
   }
 
+  /**
+   * @brief Creates and returns a texture of shaded Unicode text.
+   *
+   * @details Attempts to render the Unicode text in the supplied font using
+   * the currently selected color and returns a texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method renders the text using anti-aliasing and with a box
+   * behind the text. This alternative is probably a bit slower than
+   * rendering solid text but about as fast as blended text. Use this
+   * method when you want nice text, and can live with a box around it.
+   *
+   * @param str the Unicode text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   * @param background the background color used for the box.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderUNICODE_Shaded`
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto render_shaded_unicode(
       const experimental::unicode_string& str,
       const font& font,
@@ -368,6 +636,27 @@ class renderer_base {
     return texture;
   }
 
+  /**
+   * @brief Creates and returns a texture of solid Unicode text.
+   *
+   * @details Attempts to render the specified text in the supplied font using
+   * the currently selected color and return the texture that contains the
+   * result. Use the returned texture to actually render the text to the
+   * screen.
+   *
+   * This method is the fastest at rendering text to a texture. It
+   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
+   * when quality isn't as big of a concern and speed is important.
+   *
+   * @param str the Unicode text that will be rendered.
+   * @param font the font that the text will be rendered in.
+   *
+   * @return a texture that contains the rendered text.
+   *
+   * @see `TTF_RenderUNICODE_Solid`
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto render_solid_unicode(
       const experimental::unicode_string& str,
       const font& font) -> texture
@@ -1022,6 +1311,13 @@ class renderer_base {
   }
 
   /**
+   * @name Flag-related queries.
+   *
+   * @brief Methods for obtaining information about the window flags.
+   */
+  ///@{
+
+  /**
    * @brief Returns a bit mask of the current renderer flags.
    *
    * @note There are multiple other methods for checking if a flag is set,
@@ -1091,6 +1387,8 @@ class renderer_base {
   {
     return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
   }
+
+  ///@} // end of flag queries
 
   /**
    * @brief Indicates whether or not the renderer uses integer scaling values

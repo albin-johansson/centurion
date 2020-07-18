@@ -538,118 +538,6 @@ class renderer final : public renderer_base {
     return texture{*this, surface};
   }
 
-  /**
-   * @brief Creates and returns a texture of blended text.
-   *
-   * @details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen. This method doesn't throw but might return null if something
-   * goes wrong.
-   *
-   * This method renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative.
-   *
-   * @param text the text that will be rendered, can safely be null.
-   * @param font the font that the text will be rendered in.
-   *
-   * @return a unique pointer to a texture that contains the rendered text;
-   * `nullptr` if something went wrong.
-   *
-   * @since 4.0.0
-   */
-  //  [[nodiscard]] auto text_blended(czstring text,
-  //                                  const centurion::font& font) const
-  //                                  noexcept
-  //      -> std::unique_ptr<texture>;
-
-  /**
-   * @brief Creates and returns a texture of blended and wrapped text.
-   *
-   * @details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen. This method doesn't throw but might return null if something
-   * goes wrong.
-   *
-   * This method renders the text at the highest quality and uses
-   * anti-aliasing. Use this when you want high quality text, but beware that
-   * this is the slowest alternative. This method will wrap the supplied text
-   * to fit the specified width. Furthermore, you can also manually control
-   * the line breaks by inserting newline characters at the desired
-   * breakpoints.
-   *
-   * @param text the text that will be rendered. You can insert newline
-   * characters in the string to indicate breakpoints, can safely be null.
-   * @param wrap the width in pixels which marks the point that the text will
-   * be wrapped after.
-   * @param font the font that the text will be rendered in.
-   *
-   * @return a unique pointer to a texture that contains the rendered text;
-   * `nullptr` if something went wrong.
-   *
-   * @since 4.0.0
-   */
-  //  [[nodiscard]] auto text_blended_wrapped(
-  //      czstring text,
-  //      u32 wrap,
-  //      const centurion::font& font) const noexcept ->
-  //      std::unique_ptr<texture>;
-
-  /**
-   * @brief Creates and returns a texture of shaded text.
-   *
-   * @details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen. This method doesn't throw but might return null if something
-   * goes wrong.
-   *
-   * This method renders the text using anti-aliasing and with a box
-   * behind the text. This alternative is probably a bit slower than
-   * rendering solid text but about as fast as blended text. Use this
-   * method when you want nice text, and can live with a box around it.
-   *
-   * @param text the text that will be rendered, can safely be null.
-   * @param bg the background color used for the box.
-   * @param font the font that the text will be rendered in.
-   *
-   * @return a unique pointer to a texture that contains the rendered text;
-   * `nullptr` if something went wrong.
-   *
-   * @since 4.0.0
-   */
-  //  [[nodiscard]] auto text_shaded(czstring text,
-  //                                 const color& bg,
-  //                                 const centurion::font& font) const noexcept
-  //      -> std::unique_ptr<texture>;
-
-  /**
-   * @brief Creates and returns a texture of solid text.
-   *
-   * @details Attempts to render the specified text in the supplied font using
-   * the currently selected color and return the texture that contains the
-   * result. Use the returned texture to actually render the text to the
-   * screen. This method doesn't throw but might return null if something goes
-   * wrong.
-   *
-   * This method is the fastest at rendering text to a texture. It
-   * doesn't use anti-aliasing so the text isn't very smooth. Use this method
-   * when quality isn't as big of a concern and speed is important.
-   *
-   * @param text the text that will be rendered, can safely be null.
-   * @param font the font that the text will be rendered in.
-   *
-   * @return a unique pointer to a texture that contains the rendered text;
-   * `nullptr` if something went wrong.
-   *
-   * @since 4.0.0
-   */
-  ////  [[nodiscard]] auto text_solid(czstring text,
-  ////                                const centurion::font& font) const
-  /// noexcept /      -> std::unique_ptr<texture>;
-
  private:
   rect_f m_translationViewport;
   std::unordered_map<entt::id_type, std::shared_ptr<class font>> m_fonts;
@@ -687,44 +575,6 @@ class renderer final : public renderer_base {
 
     other.m_renderer = nullptr;
   }
-
-  //  /**
-  //   * @brief A helper method used by text rendering methods to create
-  //   surfaces
-  //   * based on the text and then convert it to fast textures.
-  //   *
-  //   * @param text the text that will be rendered.
-  //   * @param render a lambda with `void(SDL_Surface*, czstring)` as its
-  //   * signature.
-  //   *
-  //   * @return a unique pointer to a texture; `nullptr` if something went
-  //   wrong.
-  //   *
-  //   * @since 4.0.0
-  //   */
-  //  template <typename Lambda>
-  //  [[nodiscard]] auto render_text(czstring text, Lambda&& render) const
-  //  noexcept
-  //      -> std::unique_ptr<texture>
-  //  {
-  //    if (!text) {
-  //      return nullptr;
-  //    }
-  //
-  //    SDL_Surface* surface = render(text);
-  //    if (!surface) {
-  //      return nullptr;
-  //    }
-  //
-  //    auto* sdlTexture = SDL_CreateTextureFromSurface(this->get(), surface);
-  //    SDL_FreeSurface(surface);
-  //
-  //    if (sdlTexture) {
-  //      return std::make_unique<texture>(sdlTexture);
-  //    } else {
-  //      return nullptr;
-  //    }
-  //  }
 
   /**
    * @brief Returns the translated x-coordinate that corresponds to the
@@ -837,11 +687,13 @@ class renderer final : public renderer_base {
  *
  * @since 5.0.0
  *
+ * @todo Rename to `renderer_ptr`?
+ *
  * @see `renderer`
  *
  * @headerfile renderer.hpp
  */
-class renderer_view final : public renderer_base {  // TODO rename: renderer_ptr
+class renderer_view final : public renderer_base {
  public:
   renderer_view() noexcept = default;
 
@@ -866,50 +718,6 @@ class renderer_view final : public renderer_base {  // TODO rename: renderer_ptr
    */
   renderer_view(renderer& renderer) noexcept : renderer_base{renderer.get()} {}
 };
-
-// inline auto renderer::text_blended(czstring text,
-//                                   const centurion::font& font) const noexcept
-//    -> std::unique_ptr<texture>
-//{
-//  return render_text(text, [this, &font](czstring text) noexcept {
-//    return TTF_RenderText_Blended(
-//        font.get(), text, static_cast<SDL_Color>(get_color()));
-//  });
-//}
-//
-// inline auto renderer::text_blended_wrapped(
-//    czstring text,
-//    const u32 wrap,
-//    const centurion::font& font) const noexcept -> std::unique_ptr<texture>
-//{
-//  return render_text(text, [this, &font, wrap](czstring text) noexcept {
-//    return TTF_RenderText_Blended_Wrapped(
-//        font.get(), text, static_cast<SDL_Color>(get_color()), wrap);
-//  });
-//}
-//
-// inline auto renderer::text_shaded(czstring text,
-//                                  const color& bg,
-//                                  const centurion::font& font) const noexcept
-//    -> std::unique_ptr<texture>
-//{
-//  return render_text(text, [this, &font, &bg](czstring text) noexcept {
-//    return TTF_RenderText_Shaded(font.get(),
-//                                 text,
-//                                 static_cast<SDL_Color>(get_color()),
-//                                 static_cast<SDL_Color>(bg));
-//  });
-//}
-//
-// inline auto renderer::text_solid(czstring text,
-//                                 const centurion::font& font) const noexcept
-//    -> std::unique_ptr<texture>
-//{
-//  return render_text(text, [this, &font](czstring text) noexcept {
-//    return TTF_RenderText_Solid(
-//        font.get(), text, static_cast<SDL_Color>(get_color()));
-//  });
-//}
 
 }  // namespace centurion
 

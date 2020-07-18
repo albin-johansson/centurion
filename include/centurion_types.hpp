@@ -74,67 +74,16 @@ using owner = T;
 using czstring = const char*;
 using zstring = char*;
 
-// namespace nt = fluent;
+/**
+ * @typedef nn_czstring
+ *
+ * @brief Alias for a C-style null-terminated string that cannot be null.
+ *
+ * @since 5.0.0
+ */
+using nn_czstring = gsl::not_null<czstring>;
 
 inline constexpr std::nullopt_t nothing = std::nullopt;
-
-// template <typename T>
-// using if_numeric_t = typename std::enable_if_t<std::is_integral_v<T> ||
-//                                               std::is_floating_point_v<T>>;
-
-// namespace skills {
-//
-// template <typename T>
-// struct Dividable : nt::crtp<T, Dividable> {
-//  constexpr auto operator/(const T& other) const -> T
-//  {
-//    return T(this->underlying().get() / other.get());
-//  }
-//};
-//
-//}  // namespace skills
-
-// template <typename T, typename = if_numeric_t<T>>
-// using x = nt::NamedType<T,
-//                        struct x_t,
-//                        nt::Addable,
-//                        nt::Subtractable,
-//                        nt::Comparable,
-//                        nt::FunctionCallable>;
-//
-// template <typename T, typename = if_numeric_t<T>>
-// using y = nt::NamedType<T,
-//                        struct y_t,
-//                        nt::Addable,
-//                        nt::Subtractable,
-//                        nt::Comparable,
-//                        nt::FunctionCallable>;
-//
-// template <typename T, typename = if_numeric_t<T>>
-// using width = nt::NamedType<T,
-//                            struct width_t,
-//                            nt::Addable,
-//                            nt::Subtractable,
-//                            nt::Comparable,
-//                            nt::FunctionCallable>;
-//
-// template <typename T, typename = if_numeric_t<T>>
-// using height = nt::NamedType<T,
-//                             struct height_t,
-//                             nt::Addable,
-//                             nt::Subtractable,
-//                             nt::Comparable,
-//                             nt::FunctionCallable>;
-
-// template <typename T, typename Tag, template <typename> class... Skills>
-// using numeric_type = nt::NamedType<T,
-//                                   Tag,
-//                                   nt::Addable,
-//                                   nt::Subtractable,
-//                                   nt::Multiplicable,
-//                                   skills::Dividable,
-//                                   nt::Comparable,
-//                                   Skills...>;
 
 using u64 = Uint64;
 using u32 = Uint32;

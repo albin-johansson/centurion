@@ -10,19 +10,17 @@ namespace centurion {
 
 CENTURION_DEF
 cursor::cursor(system_cursor id)
+    : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(id))}
 {
-  m_cursor = SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(id));
   if (!m_cursor) {
     throw detail::core_error("Failed to create system cursor!");
   }
 }
 
 CENTURION_DEF
-cursor::cursor(gsl::owner<SDL_Cursor*> sdlCursor)
+cursor::cursor(gsl::owner<SDL_Cursor*> sdlCursor) : m_cursor{sdlCursor}
 {
-  if (sdlCursor) {
-    m_cursor = sdlCursor;
-  } else {
+  if (!sdlCursor) {
     throw centurion_exception{"Can't create Cursor from null SDL_Cursor!"};
   }
 }

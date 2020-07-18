@@ -657,9 +657,8 @@ class renderer final : public renderer_base {
    */
   void destroy() noexcept
   {
-    auto* renderer = this->get();
-    if (renderer) {
-      SDL_DestroyRenderer(renderer);
+    if (m_renderer) {
+      SDL_DestroyRenderer(m_renderer);
     }
   }
 
@@ -675,7 +674,8 @@ class renderer final : public renderer_base {
   {
     destroy();
 
-    renderer_base::m_renderer = other.m_renderer;
+    m_renderer = other.m_renderer;
+    m_fonts = std::move(other.m_fonts);
     m_translationViewport = other.m_translationViewport;
 
     other.m_renderer = nullptr;

@@ -76,7 +76,7 @@ namespace experimental {
 class font_cache;
 class unicode_string;
 
-}
+}  // namespace experimental
 
 }  // namespace centurion
 

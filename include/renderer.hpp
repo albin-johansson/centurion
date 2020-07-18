@@ -34,6 +34,12 @@
  * @copyright MIT License
  */
 
+/**
+ * @defgroup graphics Graphics
+ *
+ * @brief Contains components related to rendering and visuals.
+ */
+
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
@@ -50,6 +56,9 @@ namespace centurion {
 
 /**
  * @class renderer
+ *
+ * @ingroup graphics
+ *
  * @brief Represents an owning renderer.
  *
  * @details This class is designed to the main class used for
@@ -545,9 +554,9 @@ class renderer final : public renderer_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_blended(czstring text,
-                                  const centurion::font& font) const noexcept
-      -> std::unique_ptr<texture>;
+//  [[nodiscard]] auto text_blended(czstring text,
+//                                  const centurion::font& font) const noexcept
+//      -> std::unique_ptr<texture>;
 
   /**
    * @brief Creates and returns a texture of blended and wrapped text.
@@ -576,10 +585,10 @@ class renderer final : public renderer_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_blended_wrapped(
-      czstring text,
-      u32 wrap,
-      const centurion::font& font) const noexcept -> std::unique_ptr<texture>;
+//  [[nodiscard]] auto text_blended_wrapped(
+//      czstring text,
+//      u32 wrap,
+//      const centurion::font& font) const noexcept -> std::unique_ptr<texture>;
 
   /**
    * @brief Creates and returns a texture of shaded text.
@@ -604,10 +613,10 @@ class renderer final : public renderer_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_shaded(czstring text,
-                                 const color& bg,
-                                 const centurion::font& font) const noexcept
-      -> std::unique_ptr<texture>;
+//  [[nodiscard]] auto text_shaded(czstring text,
+//                                 const color& bg,
+//                                 const centurion::font& font) const noexcept
+//      -> std::unique_ptr<texture>;
 
   /**
    * @brief Creates and returns a texture of solid text.
@@ -630,9 +639,9 @@ class renderer final : public renderer_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto text_solid(czstring text,
-                                const centurion::font& font) const noexcept
-      -> std::unique_ptr<texture>;
+////  [[nodiscard]] auto text_solid(czstring text,
+////                                const centurion::font& font) const noexcept
+////      -> std::unique_ptr<texture>;
 
  private:
   rect_f m_translationViewport;
@@ -672,40 +681,40 @@ class renderer final : public renderer_base {
     other.m_renderer = nullptr;
   }
 
-  /**
-   * @brief A helper method used by text rendering methods to create surfaces
-   * based on the text and then convert it to fast textures.
-   *
-   * @param text the text that will be rendered.
-   * @param render a lambda with `void(SDL_Surface*, czstring)` as its
-   * signature.
-   *
-   * @return a unique pointer to a texture; `nullptr` if something went wrong.
-   *
-   * @since 4.0.0
-   */
-  template <typename Lambda>
-  [[nodiscard]] auto render_text(czstring text, Lambda&& render) const noexcept
-      -> std::unique_ptr<texture>
-  {
-    if (!text) {
-      return nullptr;
-    }
-
-    SDL_Surface* surface = render(text);
-    if (!surface) {
-      return nullptr;
-    }
-
-    auto* sdlTexture = SDL_CreateTextureFromSurface(this->get(), surface);
-    SDL_FreeSurface(surface);
-
-    if (sdlTexture) {
-      return std::make_unique<texture>(sdlTexture);
-    } else {
-      return nullptr;
-    }
-  }
+//  /**
+//   * @brief A helper method used by text rendering methods to create surfaces
+//   * based on the text and then convert it to fast textures.
+//   *
+//   * @param text the text that will be rendered.
+//   * @param render a lambda with `void(SDL_Surface*, czstring)` as its
+//   * signature.
+//   *
+//   * @return a unique pointer to a texture; `nullptr` if something went wrong.
+//   *
+//   * @since 4.0.0
+//   */
+//  template <typename Lambda>
+//  [[nodiscard]] auto render_text(czstring text, Lambda&& render) const noexcept
+//      -> std::unique_ptr<texture>
+//  {
+//    if (!text) {
+//      return nullptr;
+//    }
+//
+//    SDL_Surface* surface = render(text);
+//    if (!surface) {
+//      return nullptr;
+//    }
+//
+//    auto* sdlTexture = SDL_CreateTextureFromSurface(this->get(), surface);
+//    SDL_FreeSurface(surface);
+//
+//    if (sdlTexture) {
+//      return std::make_unique<texture>(sdlTexture);
+//    } else {
+//      return nullptr;
+//    }
+//  }
 
   /**
    * @brief Returns the translated x-coordinate that corresponds to the
@@ -773,7 +782,12 @@ class renderer final : public renderer_base {
 /**
  * @class renderer_view
  *
+ * @ingroup graphics
+ *
  * @brief Represents a non-owning renderer.
+ *
+ * @warning It is undefined behaviour to invoke any member methods if the
+ * internal renderer is null.
  *
  * @details This class is meant to be used when you want to utilize the same
  * rendering API as with the the `renderer` class, but you don't want the
@@ -817,17 +831,19 @@ class renderer final : public renderer_base {
  *
  * @headerfile renderer.hpp
  */
-class renderer_view final : public renderer_base {
+class renderer_view final : public renderer_base {  // TODO rename: renderer_ptr
  public:
+  renderer_view() noexcept = default;
+
   /**
    * @brief Creates a renderer view instance.
    *
-   * @param renderer a pointer to the SDL renderer that will be used, mustn't
-   * be null.
+   * @param renderer a pointer to the SDL renderer that will be used, can be
+   * null.
    *
    * @since 5.0.0
    */
-  explicit renderer_view(gsl::not_null<SDL_Renderer*> renderer) noexcept
+  explicit renderer_view(SDL_Renderer* renderer) noexcept
       : renderer_base{renderer}
   {}
 
@@ -840,54 +856,54 @@ class renderer_view final : public renderer_base {
    *
    * @since 5.0.0
    */
-  explicit renderer_view(const renderer& renderer) noexcept
-      : renderer_base{renderer.get()}
-  {}
+  renderer_view(renderer& renderer) noexcept : renderer_base{renderer.get()} {}
 };
 
-inline auto renderer::text_blended(czstring text,
-                                   const centurion::font& font) const noexcept
-    -> std::unique_ptr<texture>
-{
-  return render_text(text, [this, &font](czstring text) noexcept {
-    return TTF_RenderText_Blended(
-        font.get(), text, static_cast<SDL_Color>(get_color()));
-  });
-}
+using renderer_ptr = renderer_view;
 
-inline auto renderer::text_blended_wrapped(
-    czstring text,
-    const u32 wrap,
-    const centurion::font& font) const noexcept -> std::unique_ptr<texture>
-{
-  return render_text(text, [this, &font, wrap](czstring text) noexcept {
-    return TTF_RenderText_Blended_Wrapped(
-        font.get(), text, static_cast<SDL_Color>(get_color()), wrap);
-  });
-}
-
-inline auto renderer::text_shaded(czstring text,
-                                  const color& bg,
-                                  const centurion::font& font) const noexcept
-    -> std::unique_ptr<texture>
-{
-  return render_text(text, [this, &font, &bg](czstring text) noexcept {
-    return TTF_RenderText_Shaded(font.get(),
-                                 text,
-                                 static_cast<SDL_Color>(get_color()),
-                                 static_cast<SDL_Color>(bg));
-  });
-}
-
-inline auto renderer::text_solid(czstring text,
-                                 const centurion::font& font) const noexcept
-    -> std::unique_ptr<texture>
-{
-  return render_text(text, [this, &font](czstring text) noexcept {
-    return TTF_RenderText_Solid(
-        font.get(), text, static_cast<SDL_Color>(get_color()));
-  });
-}
+//inline auto renderer::text_blended(czstring text,
+//                                   const centurion::font& font) const noexcept
+//    -> std::unique_ptr<texture>
+//{
+//  return render_text(text, [this, &font](czstring text) noexcept {
+//    return TTF_RenderText_Blended(
+//        font.get(), text, static_cast<SDL_Color>(get_color()));
+//  });
+//}
+//
+//inline auto renderer::text_blended_wrapped(
+//    czstring text,
+//    const u32 wrap,
+//    const centurion::font& font) const noexcept -> std::unique_ptr<texture>
+//{
+//  return render_text(text, [this, &font, wrap](czstring text) noexcept {
+//    return TTF_RenderText_Blended_Wrapped(
+//        font.get(), text, static_cast<SDL_Color>(get_color()), wrap);
+//  });
+//}
+//
+//inline auto renderer::text_shaded(czstring text,
+//                                  const color& bg,
+//                                  const centurion::font& font) const noexcept
+//    -> std::unique_ptr<texture>
+//{
+//  return render_text(text, [this, &font, &bg](czstring text) noexcept {
+//    return TTF_RenderText_Shaded(font.get(),
+//                                 text,
+//                                 static_cast<SDL_Color>(get_color()),
+//                                 static_cast<SDL_Color>(bg));
+//  });
+//}
+//
+//inline auto renderer::text_solid(czstring text,
+//                                 const centurion::font& font) const noexcept
+//    -> std::unique_ptr<texture>
+//{
+//  return render_text(text, [this, &font](czstring text) noexcept {
+//    return TTF_RenderText_Solid(
+//        font.get(), text, static_cast<SDL_Color>(get_color()));
+//  });
+//}
 
 }  // namespace centurion
 

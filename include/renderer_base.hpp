@@ -43,8 +43,10 @@
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 #include "color.hpp"
+#include "experimental/unicode_string.hpp"
 #include "point.hpp"
 #include "rect.hpp"
+#include "surface.hpp"
 #include "texture.hpp"
 
 namespace centurion {
@@ -98,6 +100,12 @@ class renderer_base {
    * @since 3.0.0
    */
   void present() noexcept { SDL_RenderPresent(m_renderer); }
+
+  /**
+   * @name Primitive rendering
+   * Methods for rendering rectangles and lines.
+   */
+  /**@{*/
 
   /**
    * @brief Renders the outline of a rectangle in the currently selected color.
@@ -213,6 +221,171 @@ class renderer_base {
       }
     }
   }
+
+  /**@}*/  // end of primitive rendering
+
+  /**
+   * @name Text rendering
+   * Methods for rendering text encoded in UTF-8, LATIN-1 or UNICODE.
+   */
+  /**@{*/
+
+  [[nodiscard]] auto render_blended_utf8(czstring str, const font& font)
+      -> texture
+  {
+    surface surface{TTF_RenderUTF8_Blended(
+        font.get(), str, static_cast<SDL_Color>(get_color()))};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_blended_wrapped_utf8(czstring str,
+                                                 const font& font,
+                                                 u32 wrap) -> texture
+  {
+    surface surface{TTF_RenderUTF8_Blended_Wrapped(
+        font.get(), str, static_cast<SDL_Color>(get_color()), wrap)};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_shaded_utf8(czstring str,
+                                        const font& font,
+                                        const color& background) -> texture
+  {
+    surface surface{TTF_RenderUTF8_Shaded(font.get(),
+                                          str,
+                                          static_cast<SDL_Color>(get_color()),
+                                          static_cast<SDL_Color>(background))};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_solid_utf8(czstring str, const font& font)
+      -> texture
+  {
+    surface surface{TTF_RenderUTF8_Solid(
+        font.get(), str, static_cast<SDL_Color>(get_color()))};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_blended_latin1(czstring str, const font& font)
+      -> texture
+  {
+    surface surface{TTF_RenderText_Blended(
+        font.get(), str, static_cast<SDL_Color>(get_color()))};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_blended_wrapped_latin1(czstring str,
+                                                   const font& font,
+                                                   u32 wrap) -> texture
+  {
+    surface surface{TTF_RenderText_Blended_Wrapped(
+        font.get(), str, static_cast<SDL_Color>(get_color()), wrap)};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_shaded_latin1(czstring str,
+                                          const font& font,
+                                          const color& background) -> texture
+  {
+    surface surface{TTF_RenderText_Shaded(font.get(),
+                                          str,
+                                          static_cast<SDL_Color>(get_color()),
+                                          static_cast<SDL_Color>(background))};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_solid_latin1(czstring str, const font& font)
+      -> texture
+  {
+    surface surface{TTF_RenderText_Solid(
+        font.get(), str, static_cast<SDL_Color>(get_color()))};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_blended_unicode(
+      const experimental::unicode_string& str,
+      const font& font) -> texture
+  {
+    surface surface{TTF_RenderUNICODE_Blended(
+        font.get(), str.data(), static_cast<SDL_Color>(get_color()))};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_blended_wrapped_unicode(
+      const experimental::unicode_string& str,
+      const font& font,
+      u32 wrap) -> texture
+  {
+    surface surface{TTF_RenderUNICODE_Blended_Wrapped(
+        font.get(), str.data(), static_cast<SDL_Color>(get_color()), wrap)};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_shaded_unicode(
+      const experimental::unicode_string& str,
+      const font& font,
+      const color& background) -> texture
+  {
+    surface surface{
+        TTF_RenderUNICODE_Shaded(font.get(),
+                                 str.data(),
+                                 static_cast<SDL_Color>(get_color()),
+                                 static_cast<SDL_Color>(background))};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  [[nodiscard]] auto render_solid_unicode(
+      const experimental::unicode_string& str,
+      const font& font) -> texture
+  {
+    surface surface{TTF_RenderUNICODE_Solid(
+        font.get(), str.data(), static_cast<SDL_Color>(get_color()))};
+
+    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+
+    return texture;
+  }
+
+  /**@}*/  // end of text rendering
+
+  /**
+   * @name Texture rendering
+   * Methods for rendering hardware-accelerated textures.
+   */
+  /**@{*/
 
   /**
    * @brief Renders a texture at the specified position.
@@ -437,6 +610,8 @@ class renderer_base {
                         flip);
     }
   }
+
+  /**@}*/  // end of texture rendering
 
   /**
    * @brief Sets the color that will be used by the renderer.

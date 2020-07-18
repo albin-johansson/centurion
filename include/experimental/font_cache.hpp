@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file font_cache.hpp
+ *
+ * @brief Provides the `font_cache` class.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_EXPERIMENTAL_FONT_HEADER
 #define CENTURION_EXPERIMENTAL_FONT_HEADER
 
@@ -41,131 +53,39 @@
 #include "log.hpp"
 #include "renderer.hpp"
 #include "surface.hpp"
+#include "unicode_string.hpp"
 
 namespace centurion::experimental {
 
-using unicode = u16;
-
-class unicode_string final {
- public:
-  using value_type = std::vector<unicode>::value_type;
-
-  using pointer = std::vector<unicode>::pointer;
-  using const_pointer = std::vector<unicode>::const_pointer;
-
-  using reference = std::vector<unicode>::reference;
-  using const_reference = std::vector<unicode>::const_reference;
-
-  using iterator = std::vector<unicode>::iterator;
-  using const_iterator = std::vector<unicode>::const_iterator;
-
-  using reverse_iterator = std::vector<unicode>::reverse_iterator;
-  using const_reverse_iterator = std::vector<unicode>::const_reverse_iterator;
-
-  using size_type = std::vector<unicode>::size_type;
-  using difference_type = std::vector<unicode>::difference_type;
-
-  unicode_string() = default;
-
-  void reserve(size_type n) { m_data.reserve(n); }
-
-  void append(unicode ch) { m_data.emplace_back(ch); }
-
-  template <typename First, typename... Args>
-  void append(First first, Args... codes)
-  {
-    static_assert(std::is_same_v<unicode, First>);
-    append(first);
-    append(codes...);
-  }
-
-  void operator+=(unicode ch) { append(ch); }
-
-  [[nodiscard]] auto size() const noexcept -> size_type
-  {
-    return m_data.size();
-  }
-  [[nodiscard]] auto capacity() const noexcept -> size_type
-  {
-    return m_data.capacity();
-  }
-
-  auto begin() noexcept -> iterator { return m_data.begin(); }
-  auto begin() const noexcept -> const_iterator { return m_data.begin(); }
-
-  auto cbegin() noexcept -> const_iterator { return m_data.cbegin(); }
-  auto cbegin() const noexcept -> const_iterator { return m_data.cbegin(); }
-
-  auto rbegin() noexcept -> reverse_iterator { return m_data.rbegin(); }
-  auto rbegin() const noexcept -> const_reverse_iterator
-  {
-    return m_data.rbegin();
-  }
-
-  auto end() noexcept -> iterator { return m_data.end(); }
-  auto end() const noexcept -> const_iterator { return m_data.end(); }
-
-  auto rend() noexcept -> reverse_iterator { return m_data.rend(); }
-  auto rend() const noexcept -> const_reverse_iterator { return m_data.rend(); }
-
-  auto crbegin() noexcept -> const_reverse_iterator { return m_data.crbegin(); }
-  auto crbegin() const noexcept -> const_reverse_iterator
-  {
-    return m_data.crbegin();
-  }
-
-  auto crend() noexcept -> const_reverse_iterator { return m_data.crend(); }
-  auto crend() const noexcept -> const_reverse_iterator
-  {
-    return m_data.crend();
-  }
-
-  [[nodiscard]] auto at(size_type index) -> reference
-  {
-    return m_data.at(index);
-  }
-  [[nodiscard]] auto at(size_type index) const -> const_reference
-  {
-    return m_data.at(index);
-  }
-
-  [[nodiscard]] auto operator[](size_type index) -> reference
-  {
-    return m_data[index];
-  }
-  [[nodiscard]] auto operator[](size_type index) const -> const_reference
-  {
-    return m_data[index];
-  }
-
- private:
-  std::vector<unicode> m_data;
-};
-
-[[nodiscard]] inline auto operator==(const unicode_string& lhs,
-                                     const unicode_string& rhs)
-{
-  if (lhs.size() != rhs.size()) {
-    return false;
-  }
-
-  for (unicode_string::size_type index = 0; index < lhs.size(); ++index) {
-    const auto a = lhs.at(index);
-    const auto b = rhs.at(index);
-    if (a != b) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-[[nodiscard]] inline auto operator!=(const unicode_string& lhs,
-                                     const unicode_string& rhs)
-{
-  return !(lhs == rhs);
-}
-
+/**
+ * @class font_cache
+ *
+ * @ingroup graphics
+ *
+ * @brief Provides an efficient font rendering API.
+ *
+ * @details This class provides two different optimizations.
+ *
+ * First of, this class will, if told, cache glyph textures that can be used
+ * to render strings by simply looking up the individual glyphs and rendering
+ * existing textures. It should be noted that the glyph-based rendering will
+ * not feature accurate kerning. However, this might not be noticeable and/or
+ * worth the performance boost. This type of rendering is *very* efficient for
+ * rendering pieces of text that frequently changes, since other approaches
+ * would require dynamic allocation and de-allocation for every new rendered
+ * string.
+ *
+ * Secondly, it's also possible to tell instances of this class to cache full
+ * strings and associate them with a user-provided identifier. Using this
+ * approach, the strings will be rendered using accurate kerning. The problem
+ * is, as you probably know, is that it's often hard to know what exact
+ * strings you will render at compile-time. Use this option if you know that
+ * you're going to render some specific string a lot.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile font_cache.hpp
+ */
 class font_cache final {
  public:
   /**
@@ -199,7 +119,18 @@ class font_cache final {
   }
 
   /**
+   * @name Glyph-based rendering
+   * Methods for rendering glyphs and strings using cached textures.
+   */
+  /**@{*/
+
+  /**
    * @brief Renders a glyph at the specified position.
+   *
+   * @details Invoking this function with a glyph that hasn't been cached
+   * will cause an exception to be thrown.
+   *
+   * @pre the specified glyph **must** have been cached.
    *
    * @tparam T the font key type that the renderer uses.
    *
@@ -212,22 +143,42 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  auto render(renderer& renderer, unicode glyph, const point_i& position) -> int
+  auto render_glyph(renderer_ptr renderer,
+                    unicode glyph,
+                    const point_i& position) -> int
   {
     const auto& glyphMetrics = metrics(glyph);
 
     const auto x = position.x() + glyphMetrics.minX;
-    const auto y = position.y();
-
-    //  const auto y = (position.y() + glyphMetrics.maxY) -
-    //      ((m_font.ascent() + glyphMetrics.maxY));
+    const auto y = position.y();  // SDL_ttf handles the y-coordinate alignment
 
     renderer.render(at(glyph), point_i{x, y});
 
     return position.x() + glyphMetrics.advance;
   }
 
-  void render(renderer& renderer, std::string_view str, point_i position)
+  /**
+   * @brief Renders a string.
+   *
+   * @details This method will not apply any clever conversions on the
+   * supplied string. The string is literally iterated,
+   * character-by-character, and each character is rendered using
+   * the `render_glyph`. In other words, be sure that each `char` in your
+   * strings represent a single glyph.
+   *
+   * @pre Every character in the string must correspond to a valid Unicode
+   * glyph **and** must have been previously cached.
+   *
+   * @note This method is sensitive to newline-characters, and will render
+   * strings that contain such characters appropriately.
+   *
+   * @param renderer the renderer that will be used.
+   * @param str the string that will be rendered.
+   * @param position the position of the rendered text.
+   *
+   * @since 5.0.0
+   */
+  void render(renderer_ptr renderer, std::string_view str, point_i position)
   {
     const auto originalX = position.x();
 
@@ -236,13 +187,27 @@ class font_cache final {
         position.set_x(originalX);
         position.set_y(position.y() + m_font.line_skip());
       } else {
-        const auto x = render(renderer, glyph, position);
+        const auto x = render_glyph(renderer, glyph, position);
         position.set_x(x);
       }
     }
   }
 
-  void render(renderer& renderer, unicode_string str, point_i position)
+  /**
+   * @brief Renders a Unicode string.
+   *
+   * @details This method will try to use previously cached glyphs to render
+   * the supplied string.
+   *
+   * @param renderer the renderer that will be used.
+   * @param str the Unicode string that will be rendered.
+   * @param position the position of the rendered text.
+   *
+   * @since 5.0.0
+   */
+  void render_unicode(renderer& renderer,
+                      const unicode_string& str,
+                      point_i position)
   {
     const auto originalX = position.x();
 
@@ -251,13 +216,25 @@ class font_cache final {
         position.set_x(originalX);
         position.set_y(position.y() + m_font.line_skip());
       } else {
-        const auto x = render(renderer, glyph, position);
+        const auto x = render_glyph(renderer, glyph, position);
         position.set_x(x);
       }
     }
   }
 
-  void render_cached(renderer& renderer,
+  /**
+   * @brief Renders a cached string.
+   *
+   * @details This method has no effect if there is no cached string
+   * associated with the supplied identifier.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key associated with the desired string.
+   * @param position the position of the rendered texture.
+   *
+   * @since 5.0.0
+   */
+  void render_cached(renderer_ptr renderer,
                      entt::id_type id,
                      const point_i& position)
   {
@@ -266,23 +243,92 @@ class font_cache final {
     }
   }
 
-  void cache_string(renderer& renderer, entt::id_type id, std::string_view str)
+  /**@}*/  // end of glyph-based rendering
+
+  /**
+   * @name String caching
+   * Methods for caching strings encoded in UTF-8, Latin-1 or Unicode.
+   */
+  /**@{*/
+
+  /**
+   * @brief Caches the supplied Unicode string as a texture.
+   *
+   * @details The texture is created using
+   * `renderer_base::render_blended_unicode`.
+   *
+   * @note This method respects the kerning of the font.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the Unicode string that will be cached.
+   *
+   * @since 5.0.0
+   */
+  void cache_blended_unicode(renderer_ptr renderer,
+                             entt::id_type id,
+                             const unicode_string& str)
   {
-    if (!m_strings.count(id)) {
-      auto unique = renderer.text_blended(str.data(), m_font);
-      m_strings.emplace(id, std::move(*unique));  // TODO investigate if valid
+    const auto iterator = m_strings.find(id);
+    if (iterator == m_strings.end()) {
+      m_strings.emplace(id, renderer.render_blended_unicode(str, m_font));
     }
   }
 
-  void cache_utf8(renderer& renderer, entt::id_type id, std::string_view str)
+  /**
+   * @brief Caches the supplied Latin-1 string as a texture.
+   *
+   * @details The texture is created using
+   * `renderer_base::render_blended_latin1`.
+   *
+   * @note This method respects the kerning of the font.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the Latin-1 string that will be cached.
+   *
+   * @since 5.0.0
+   */
+  void cache_blended_latin1(renderer_ptr renderer,
+                            entt::id_type id,
+                            std::string_view str)
   {
-    auto* r = renderer.get();
-
-    auto* surface = TTF_RenderUTF8_Blended(
-        m_font.get(), str.data(), static_cast<SDL_Color>(renderer.get_color()));
-
-
+    const auto iterator = m_strings.find(id);
+    if (iterator == m_strings.end()) {
+      m_strings.emplace(id, renderer.render_blended_latin1(str.data(), m_font));
+    }
   }
+
+  /**
+   * @brief Caches the supplied UTF-8 string as a texture.
+   *
+   * @details The texture is created using `renderer_base::render_blended_utf8`.
+   *
+   * @note This method respects the kerning of the font.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the UTF-8 string that will be cached.
+   *
+   * @since 5.0.0
+   */
+  void cache_blended_utf8(renderer_ptr renderer,
+                          entt::id_type id,
+                          std::string_view str)
+  {
+    const auto iterator = m_strings.find(id);
+    if (iterator == m_strings.end()) {
+      m_strings.emplace(id, renderer.render_blended_utf8(str.data(), m_font));
+    }
+  }
+
+  /**@}*/  // end of string caching
+
+  /**
+   * @name Glyph caching
+   * Methods for caching Unicode glyph textures.
+   */
+  /**@{*/
 
   void add_glyph(renderer& renderer, unicode glyph)
   {
@@ -300,8 +346,11 @@ class font_cache final {
   /**
    * @brief Caches the glyphs in the specified range.
    *
-   * @details The range is interpreted as [min, max), meaning the the `min`
+   * @details The range is interpreted as [min, max), i.e. the the `min`
    * value is included, and `max` is excluded.
+   *
+   * @remark For an overview of the various Unicode blocks, see <a
+   * href="https://unicode-table.com/en/blocks/">this</a>.
    *
    * @param renderer the renderer that will be used to create the glyph
    * textures.
@@ -353,6 +402,8 @@ class font_cache final {
     cache_basic_latin(renderer);
     cache_latin1_supplement(renderer);
   }
+
+  /**@}*/  // end of glyph caching
 
   [[nodiscard]] auto has(unicode glyph) const noexcept -> bool
   {

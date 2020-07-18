@@ -14,38 +14,31 @@
 
 TEST_CASE("...", "[.font_cache]")
 {
-  using unicode = ctn::u16;
+  using ctn::experimental::unicode;
 
   ctn::window window;
   ctn::renderer renderer{window};
+  ctn::experimental::font_cache cache{"resources/fira_code.ttf", 32};
 
-  ctn::font font{"resources/fira_code.ttf", 32};
-  ctn::log::info("%s kerning enabled: %i", font.family_name(), font.kerning());
-
-  ctn::czstring alphabet = "abcdefghijklmnopqrstuvwxyz";
-
-  renderer.set_color(ctn::colors::cyan);
-  const auto everyLetter = renderer.text_blended(alphabet, font);
-
-  renderer.set_color(ctn::colors::lime);
-
-  ctn::experimental::font_cache cache{std::move(font)};
+  renderer.set_color(ctn::colors::white);
   cache.cache_latin1(renderer);
 
   renderer.set_color(ctn::colors::magenta);
-  cache.cache_string(renderer, "foo"_hs, "this is a cached string!");
+  cache.cache_blended_latin1(renderer, "foo"_hs, "this is a cached string!");
+
+  //  ctn::experimental::unicode_string cool = {0x2665};
+  ctn::experimental::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
+  cache.cache_blended_unicode(renderer, "cool"_hs, cool);
+
+  //  cache.cache_utf8(renderer, ""_hs, "");
+
+  ctn::experimental::unicode_string str = {'a', 'b', 'c', 0xE4};
+
+  ctn::czstring alphabet = "abcdefghijklmnopqrstuvwxyz";
+  std::string changingStr;
 
   ctn::event event;
   bool running = true;
-
-  std::string changingStr;
-
-  using ctn::experimental::unicode;
-  using ctn::experimental::unicode_string;
-
-  unicode_string str;
-
-  str.append(unicode{'a'}, unicode{'b'}, unicode{'c'}, unicode{0xE4});
 
   window.show();
   while (running) {
@@ -70,20 +63,20 @@ TEST_CASE("...", "[.font_cache]")
 
       } else if (const auto* text = event.try_get<ctn::text_input_event>();
                  text) {
-
         changingStr += text->text();  // TODO rename text to text_utf8
       }
     }
 
     renderer.clear_with(ctn::colors::black);
 
-    renderer.render(*everyLetter, ctn::point_i{50, 50});
-    cache.render(renderer, alphabet, {50, 150});
-    cache.render(renderer, changingStr.data(), {50, 250});
-    cache.render(renderer, "Foo\nBar", {50, 350});
-    cache.render(renderer, str, {300, 350});
+    cache.render(renderer, alphabet, {50, 10});
+    cache.render(renderer, changingStr.data(), {50, 60});
 
-    cache.render_cached(renderer, "foo"_hs, {50, 300});
+    cache.render(renderer, "Foo\nBar", {50, 110});
+    cache.render_unicode(renderer, str, {300, 110});
+
+    cache.render_cached(renderer, "foo"_hs, {50, 200});
+    cache.render_cached(renderer, "cool"_hs, {300, 400});
 
     renderer.present();
   }

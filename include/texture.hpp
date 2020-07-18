@@ -54,6 +54,8 @@ namespace centurion {
 /**
  * @class texture
  *
+ * @ingroup graphics
+ *
  * @brief Represents an hardware-accelerated image.
  *
  * @since 3.0.0
@@ -274,6 +276,10 @@ class texture final {
   static auto streaming(const renderer& renderer,
                         czstring path,
                         pixel_format format) -> std::unique_ptr<texture>;
+
+  CENTURION_QUERY
+  static auto from_surface(const renderer& renderer, const surface& surface)
+      -> texture;
 
   /**
    * @brief Sets the color of the pixel at the specified coordinate.

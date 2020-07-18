@@ -151,6 +151,13 @@ auto texture::streaming(const renderer& renderer,
 }
 
 CENTURION_DEF
+auto texture::from_surface(const renderer& renderer, const surface& surface)
+    -> texture
+{
+  return texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())};
+}
+
+CENTURION_DEF
 auto texture::operator=(texture&& other) noexcept -> texture&
 {
   if (this != &other) {

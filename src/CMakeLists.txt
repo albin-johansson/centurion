@@ -48,6 +48,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/joystick.hpp
         ${CTN_INCLUDE_DIR}/touch.hpp
         ${CTN_INCLUDE_DIR}/experimental/font_cache.hpp
+        ${CTN_INCLUDE_DIR}/experimental/unicode_string.hpp
         window.cpp
         window_base.cpp
         font.cpp

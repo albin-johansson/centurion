@@ -338,21 +338,23 @@ TEST_CASE("Manual testing of music playback", "[.music]")
   ctn::czstring fadeIn = "\"F\" to fade in the music over 5 seconds.";
   ctn::czstring esc = "\"ESC\" to halt the music.";
 
-  const auto infoZero = renderer.text_blended(zero, font);
-  const auto infoOne = renderer.text_blended(one, font);
-  const auto infoTwo = renderer.text_blended(two, font);
-  const auto infoNine = renderer.text_blended(nine, font);
-  const auto infoFadeIn = renderer.text_blended(fadeIn, font);
-  const auto infoEsc = renderer.text_blended(esc, font);
+  const auto infoZero = renderer.render_blended_latin1(zero, font);
+  const auto infoOne = renderer.render_blended_latin1(one, font);
+  const auto infoTwo = renderer.render_blended_latin1(two, font);
+  const auto infoNine = renderer.render_blended_latin1(nine, font);
+  const auto infoFadeIn = renderer.render_blended_latin1(fadeIn, font);
+  const auto infoEsc = renderer.render_blended_latin1(esc, font);
 
   renderer.set_color(ctn::colors::green);
-  const auto playing = renderer.text_blended("Music is playing!", font);
+  const auto playing =
+      renderer.render_blended_latin1("Music is playing!", font);
 
   renderer.set_color(ctn::colors::magenta);
-  const auto fading = renderer.text_blended("Music is fading!", font);
+  const auto fading = renderer.render_blended_latin1("Music is fading!", font);
 
   renderer.set_color(ctn::colors::red);
-  const auto paused = renderer.text_blended("No music is playing", font);
+  const auto paused =
+      renderer.render_blended_latin1("No music is playing", font);
 
   bool running = true;
   window.show();
@@ -386,19 +388,19 @@ TEST_CASE("Manual testing of music playback", "[.music]")
 
     renderer.clear_with(ctn::colors::black);
 
-    renderer.render(*infoZero, ctn::point_i{50, 50});
-    renderer.render(*infoOne, ctn::point_i{50, 75});
-    renderer.render(*infoTwo, ctn::point_i{50, 100});
-    renderer.render(*infoNine, ctn::point_i{50, 125});
-    renderer.render(*infoFadeIn, ctn::point_i{50, 150});
-    renderer.render(*infoEsc, ctn::point_i{50, 175});
+    renderer.render(infoZero, ctn::point_i{50, 50});
+    renderer.render(infoOne, ctn::point_i{50, 75});
+    renderer.render(infoTwo, ctn::point_i{50, 100});
+    renderer.render(infoNine, ctn::point_i{50, 125});
+    renderer.render(infoFadeIn, ctn::point_i{50, 150});
+    renderer.render(infoEsc, ctn::point_i{50, 175});
 
     if (ctn::music::is_playing() && !ctn::music::is_fading()) {
-      renderer.render(*playing, ctn::point_i{300, 300});
+      renderer.render(playing, ctn::point_i{300, 300});
     } else if (ctn::music::is_fading()) {
-      renderer.render(*fading, ctn::point_i{300, 300});
+      renderer.render(fading, ctn::point_i{300, 300});
     } else {
-      renderer.render(*paused, ctn::point_i{300, 300});
+      renderer.render(paused, ctn::point_i{300, 300});
     }
 
     renderer.present();

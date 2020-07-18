@@ -119,7 +119,7 @@ class font_cache final {
   }
 
   /**
-   * @name Glyph-based rendering
+   * @name Text rendering
    * Methods for rendering glyphs and strings using cached textures.
    */
   /**@{*/
@@ -243,7 +243,7 @@ class font_cache final {
     }
   }
 
-  /**@}*/  // end of glyph-based rendering
+  /**@}*/  // end of text rendering
 
   /**
    * @name String caching

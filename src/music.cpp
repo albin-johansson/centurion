@@ -3,6 +3,8 @@
 
 #include "music.hpp"
 
+#include <algorithm>
+
 #include "centurion_exception.hpp"
 #include "error.hpp"
 
@@ -122,7 +124,7 @@ void music::fade_out(milliseconds<int> ms) noexcept
 CENTURION_DEF
 void music::set_volume(int volume) noexcept
 {
-  Mix_VolumeMusic(detail::clamp_inclusive({0, MIX_MAX_VOLUME}, volume));
+  Mix_VolumeMusic(std::clamp(volume, 0, MIX_MAX_VOLUME));
 }
 
 CENTURION_DEF

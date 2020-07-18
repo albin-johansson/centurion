@@ -3,6 +3,8 @@
 
 #include "sound_effect.hpp"
 
+#include <algorithm>
+
 #include "error.hpp"
 
 namespace centurion {
@@ -124,7 +126,7 @@ void sound_effect::fade_out(milliseconds<int> ms) noexcept  // NOLINT
 CENTURION_DEF
 void sound_effect::set_volume(int volume) noexcept
 {
-  Mix_VolumeChunk(m_chunk, detail::clamp_inclusive({0, max_volume()}, volume));
+  Mix_VolumeChunk(m_chunk, std::clamp(volume, 0, max_volume()));
 }
 
 CENTURION_DEF

@@ -1,6 +1,8 @@
 #ifndef CENTURION_TEXT_EDITING_EVENT_SOURCE
 #define CENTURION_TEXT_EDITING_EVENT_SOURCE
 
+#include <algorithm>
+
 #include "centurion_utils.hpp"
 #include "event.hpp"
 
@@ -23,7 +25,7 @@ text_editing_event::text_editing_event(
 CENTURION_DEF
 void text_editing_event::check_length() noexcept
 {
-  m_event.length = detail::clamp_inclusive({0, 32}, m_event.length);
+  m_event.length = std::clamp(m_event.length, 0, 32);
 }
 
 CENTURION_DEF
@@ -41,7 +43,7 @@ void text_editing_event::set_start(i32 start) noexcept
 CENTURION_DEF
 void text_editing_event::set_length(i32 length) noexcept
 {
-  m_event.length = detail::clamp_inclusive({0, 32}, length);
+  m_event.length = std::clamp(length, 0, 32);
 }
 
 CENTURION_DEF

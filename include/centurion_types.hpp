@@ -69,9 +69,30 @@ using if_same_t = typename std::enable_if_t<std::is_same_v<T, U>>;
 
 }  // namespace detail
 
+/**
+ * @typedef owner
+ *
+ * @brief Tag used to denote ownership of raw pointers directly in code.
+ *
+ * @details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
+ */
 template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
 using owner = T;
+
+/**
+ * @typedef czstring
+ *
+ * @brief Alias for a const C-style null-terminated string.
+ */
 using czstring = const char*;
+
+/**
+ * @typedef zstring
+ *
+ * @brief Alias for a C-style null-terminated string.
+ */
 using zstring = char*;
 
 /**
@@ -83,30 +104,106 @@ using zstring = char*;
  */
 using nn_czstring = gsl::not_null<czstring>;
 
+/**
+ * @var nothing
+ *
+ * @brief A constant that is equal to `std::nullopt`.
+ */
 inline constexpr std::nullopt_t nothing = std::nullopt;
 
+/**
+ * @typedef u64
+ *
+ * @brief Alias for a 64-bit unsigned integer.
+ */
 using u64 = Uint64;
+
+/**
+ * @typedef u32
+ *
+ * @brief Alias for a 32-bit unsigned integer.
+ */
 using u32 = Uint32;
+
+/**
+ * @typedef u16
+ *
+ * @brief Alias for a 16-bit unsigned integer.
+ */
 using u16 = Uint16;
+
+/**
+ * @typedef u8
+ *
+ * @brief Alias for an 8-bit unsigned integer.
+ */
 using u8 = Uint8;
 
+/**
+ * @typedef i64
+ *
+ * @brief Alias for a 64-bit signed integer.
+ */
 using i64 = Sint64;
+
+/**
+ * @typedef i32
+ *
+ * @brief Alias for a 32-bit signed integer.
+ */
 using i32 = Sint32;
+
+/**
+ * @typedef i16
+ *
+ * @brief Alias for a 16-bit signed integer.
+ */
 using i16 = Sint16;
+
+/**
+ * @typedef i8
+ *
+ * @brief Alias for an 8-bit signed integer.
+ */
 using i8 = Sint8;
 
+/**
+ * @typedef seconds
+ *
+ * @brief Templated alias for durations in seconds.
+ */
 template <typename T>
 using seconds = std::chrono::duration<T>;
 
+/**
+ * @typedef milliseconds
+ *
+ * @brief Templated alias for durations in milliseconds.
+ */
 template <typename T>
 using milliseconds = std::chrono::duration<T, std::milli>;
 
+/**
+ * @typedef microseconds
+ *
+ * @brief Templated alias for durations in microseconds.
+ */
 template <typename T>
 using microseconds = std::chrono::duration<T, std::micro>;
 
+/**
+ * @typedef nanoseconds
+ *
+ * @brief Templated alias for durations in nanoseconds.
+ */
 template <typename T>
 using nanoseconds = std::chrono::duration<T, std::nano>;
 
+/**
+ * @typedef minutes
+ *
+ * @brief Templated alias for durations in minutes.
+ */
 template <typename T>
 using minutes = std::chrono::duration<T, std::ratio<60>>;
 

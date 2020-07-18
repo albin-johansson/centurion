@@ -1,6 +1,8 @@
 #ifndef CENTURION_TOUCH_FINGER_EVENT_SOURCE
 #define CENTURION_TOUCH_FINGER_EVENT_SOURCE
 
+#include <algorithm>
+
 #include "centurion_utils.hpp"
 #include "event.hpp"
 
@@ -37,31 +39,31 @@ void touch_finger_event::set_window_id(u32 id) noexcept
 CENTURION_DEF
 void touch_finger_event::set_x(float x) noexcept
 {
-  m_event.x = detail::clamp_inclusive({0, 1}, x);
+  m_event.x = std::clamp(x, 0.0f, 1.0f);
 }
 
 CENTURION_DEF
 void touch_finger_event::set_y(float y) noexcept
 {
-  m_event.y = detail::clamp_inclusive({0, 1}, y);
+  m_event.y = std::clamp(y, 0.0f, 1.0f);
 }
 
 CENTURION_DEF
 void touch_finger_event::set_dx(float dx) noexcept
 {
-  m_event.dx = detail::clamp_inclusive({-1, 1}, dx);
+  m_event.dx = std::clamp(dx, -1.0f, 1.0f);
 }
 
 CENTURION_DEF
 void touch_finger_event::set_dy(float dy) noexcept
 {
-  m_event.dy = detail::clamp_inclusive({-1, 1}, dy);
+  m_event.dy = std::clamp(dy, -1.0f, 1.0f);
 }
 
 CENTURION_DEF
 void touch_finger_event::set_pressure(float pressure) noexcept
 {
-  m_event.pressure = detail::clamp_inclusive({0, 1}, pressure);
+  m_event.pressure = std::clamp(pressure, 0.0f, 1.0f);
 }
 
 CENTURION_DEF

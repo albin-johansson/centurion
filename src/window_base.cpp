@@ -1,6 +1,8 @@
 #ifndef CENTURION_WINDOW_BASE_SOURCE
 #define CENTURION_WINDOW_BASE_SOURCE
 
+#include <algorithm>
+
 #include "surface.hpp"
 #include "window.hpp"
 
@@ -137,8 +139,7 @@ CENTURION_DEF
 void window_base::set_brightness(float brightness) noexcept
 {
   if (fullscreen()) {
-    SDL_SetWindowBrightness(m_window,
-                            detail::clamp_inclusive({0, 1}, brightness));
+    SDL_SetWindowBrightness(m_window, std::clamp(brightness, 0.0f, 1.0f));
   }
 }
 

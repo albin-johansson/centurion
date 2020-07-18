@@ -24,11 +24,12 @@ TEST_CASE("...", "[.font_cache]")
   cache.cache_latin1(renderer);
 
   renderer.set_color(ctn::colors::magenta);
-  cache.cache_blended_latin1(renderer, "foo"_hs, "this is a cached string!");
+  cache.cache_blended_latin1(
+      renderer.get(), "foo"_hs, "this is a cached string!");
 
   //  ctn::experimental::unicode_string cool = {0x2665};
   ctn::experimental::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
-  cache.cache_blended_unicode(renderer, "cool"_hs, cool);
+  cache.cache_blended_unicode(renderer.get(), "cool"_hs, cool);
 
   //  cache.cache_utf8(renderer, ""_hs, "");
 
@@ -75,8 +76,8 @@ TEST_CASE("...", "[.font_cache]")
     cache.render(renderer, "Foo\nBar", {50, 110});
     cache.render_unicode(renderer, str, {300, 110});
 
-    cache.render_cached(renderer, "foo"_hs, {50, 200});
-    cache.render_cached(renderer, "cool"_hs, {300, 400});
+    renderer.render(cache.cached("foo"_hs), ctn::point_i{50, 200});
+    renderer.render(cache.cached("cool"_hs), ctn::point_i{300, 400});
 
     renderer.present();
   }

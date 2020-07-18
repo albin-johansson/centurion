@@ -97,7 +97,8 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  explicit font_cache(font&& font) noexcept : m_font{std::move(font)} {}
+  CENTURION_API
+  explicit font_cache(font&& font) noexcept;
 
   /**
    * @brief Creates an empty font cache, and creates the associated font
@@ -113,10 +114,8 @@ class font_cache final {
   explicit font_cache(Args&&... args) : m_font{std::forward<Args>(args)...}
   {}
 
-  [[nodiscard]] static auto unique(font&& font) -> std::unique_ptr<font_cache>
-  {
-    return std::make_unique<font_cache>(std::move(font));
-  }
+  CENTURION_QUERY
+  static auto unique(font&& font) -> std::unique_ptr<font_cache>;
 
   /**
    * @name Text rendering
@@ -143,19 +142,10 @@ class font_cache final {
    *
    * @since 5.0.0
    */
+  CENTURION_API
   auto render_glyph(renderer_ptr renderer,
                     unicode glyph,
-                    const point_i& position) -> int
-  {
-    const auto& glyphMetrics = metrics(glyph);
-
-    const auto x = position.x() + glyphMetrics.minX;
-    const auto y = position.y();  // SDL_ttf handles the y-coordinate alignment
-
-    renderer.render(at(glyph), point_i{x, y});
-
-    return position.x() + glyphMetrics.advance;
-  }
+                    const point_i& position) -> int;
 
   /**
    * @brief Renders a string.
@@ -178,20 +168,8 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  void render(renderer_ptr renderer, std::string_view str, point_i position)
-  {
-    const auto originalX = position.x();
-
-    for (const auto glyph : str) {
-      if (glyph == '\n') {
-        position.set_x(originalX);
-        position.set_y(position.y() + m_font.line_skip());
-      } else {
-        const auto x = render_glyph(renderer, glyph, position);
-        position.set_x(x);
-      }
-    }
-  }
+  CENTURION_API
+  void render(renderer_ptr renderer, std::string_view str, point_i position);
 
   /**
    * @brief Renders a Unicode string.
@@ -205,43 +183,10 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  void render_unicode(renderer& renderer,
+  CENTURION_API
+  void render_unicode(renderer_ptr renderer,
                       const unicode_string& str,
-                      point_i position)
-  {
-    const auto originalX = position.x();
-
-    for (const auto glyph : str) {
-      if (glyph == '\n') {
-        position.set_x(originalX);
-        position.set_y(position.y() + m_font.line_skip());
-      } else {
-        const auto x = render_glyph(renderer, glyph, position);
-        position.set_x(x);
-      }
-    }
-  }
-
-  /**
-   * @brief Renders a cached string.
-   *
-   * @details This method has no effect if there is no cached string
-   * associated with the supplied identifier.
-   *
-   * @param renderer the renderer that will be used.
-   * @param id the key associated with the desired string.
-   * @param position the position of the rendered texture.
-   *
-   * @since 5.0.0
-   */
-  void render_cached(renderer_ptr renderer,
-                     entt::id_type id,
-                     const point_i& position)
-  {
-    if (const auto iterator = m_strings.find(id); iterator != m_strings.end()) {
-      renderer.render(m_strings.at(id), position);
-    }
-  }
+                      point_i position);
 
   /**@}*/  // end of text rendering
 
@@ -265,15 +210,10 @@ class font_cache final {
    *
    * @since 5.0.0
    */
+  CENTURION_API
   void cache_blended_unicode(renderer_ptr renderer,
                              entt::id_type id,
-                             const unicode_string& str)
-  {
-    const auto iterator = m_strings.find(id);
-    if (iterator == m_strings.end()) {
-      m_strings.emplace(id, renderer.render_blended_unicode(str, m_font));
-    }
-  }
+                             const unicode_string& str);
 
   /**
    * @brief Caches the supplied Latin-1 string as a texture.
@@ -289,15 +229,10 @@ class font_cache final {
    *
    * @since 5.0.0
    */
+  CENTURION_API
   void cache_blended_latin1(renderer_ptr renderer,
                             entt::id_type id,
-                            std::string_view str)
-  {
-    const auto iterator = m_strings.find(id);
-    if (iterator == m_strings.end()) {
-      m_strings.emplace(id, renderer.render_blended_latin1(str.data(), m_font));
-    }
-  }
+                            std::string_view str);
 
   /**
    * @brief Caches the supplied UTF-8 string as a texture.
@@ -312,15 +247,10 @@ class font_cache final {
    *
    * @since 5.0.0
    */
+  CENTURION_API
   void cache_blended_utf8(renderer_ptr renderer,
                           entt::id_type id,
-                          std::string_view str)
-  {
-    const auto iterator = m_strings.find(id);
-    if (iterator == m_strings.end()) {
-      m_strings.emplace(id, renderer.render_blended_utf8(str.data(), m_font));
-    }
-  }
+                          std::string_view str);
 
   /**@}*/  // end of string caching
 
@@ -330,18 +260,8 @@ class font_cache final {
    */
   /**@{*/
 
-  void add_glyph(renderer& renderer, unicode glyph)
-  {
-    if (!has(glyph)) {
-      if (m_font.is_glyph_provided(glyph)) {
-        m_glyphs.emplace(glyph, create_glyph_texture(renderer, glyph));
-        m_metrics.emplace(glyph, m_font.glyph_metrics(glyph).value());
-      } else {
-        log::warn(
-            "%s doesn't feature the glyph: %X", m_font.family_name(), glyph);
-      }
-    }
-  }
+  CENTURION_API
+  void add_glyph(renderer& renderer, unicode glyph);
 
   /**
    * @brief Caches the glyphs in the specified range.
@@ -359,12 +279,8 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  void cache_range(renderer& renderer, unicode begin, unicode end)
-  {
-    for (unicode ch = begin; ch < end; ++ch) {
-      add_glyph(renderer, ch);
-    }
-  }
+  CENTURION_API
+  void cache_range(renderer& renderer, unicode begin, unicode end);
 
   /**
    * @brief Attempts to cache all printable basic latin characters.
@@ -378,41 +294,78 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  void cache_basic_latin(renderer& renderer)
-  {
-    // https://unicode-table.com/en/blocks/basic-latin/
+  CENTURION_API
+  void cache_basic_latin(renderer& renderer);
 
-    //    Range: 0000-007F
-    // Controls: 0000-0020 and 007F
-    cache_range(renderer, 0x20, 0x7F);
-  }
+  CENTURION_API
+  void cache_latin1_supplement(renderer& renderer);
 
-  void cache_latin1_supplement(renderer& renderer)
-  {
-    // https://unicode-table.com/en/blocks/latin-1-supplement/
-
-    //    Range: 0080-00FF
-    // Controls: 0080-009F
-
-    cache_range(renderer, 0xA0, 0x100);
-  }
-
-  void cache_latin1(renderer& renderer)
-  {
-    cache_basic_latin(renderer);
-    cache_latin1_supplement(renderer);
-  }
+  CENTURION_API
+  void cache_latin1(renderer& renderer);
 
   /**@}*/  // end of glyph caching
 
+  /**
+   * @brief Indicates whether or not the specified glyph has been cached.
+   *
+   * @param glyph the glyph to check.
+   *
+   * @return `true` if the specified glyph has been cached; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto has(unicode glyph) const noexcept -> bool
   {
     return m_glyphs.count(glyph);
   }
 
+  /**
+   * @brief Returns the cached texture associated with the specified glyph.
+   *
+   * @pre `glyph` **must** have been previously cached.
+   *
+   * @param glyph the desired glyph to lookup the texture for.
+   *
+   * @return the cached texture associated with the glyph.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto at(unicode glyph) const -> const texture&
   {
     return m_glyphs.at(glyph);
+  }
+
+  /**
+   * @brief Returns a pointer to the texture associated with the specified key.
+   *
+   * @note The returned pointer is not suitable for storing for longer than
+   * absolutely necessary, as it might get invalidated by modifications of
+   * the font cache.
+   *
+   * @param id the key of the desired texture.
+   *
+   * @return a pointer to the texture associated with the specified key;
+   * `nullptr` if no texture is found.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto try_cached(entt::id_type id) const noexcept -> const texture*;
+
+  /**
+   * @brief Returns the cached texture associated with the specified ID.
+   *
+   * @pre `id` **must** be associated with a cached string texture.
+   *
+   * @param id the key of the cached texture to obtain.
+   *
+   * @return the cached texture associated with the key.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto cached(entt::id_type id) const -> const texture&
+  {
+    return m_strings.at(id);
   }
 
   [[nodiscard]] auto metrics(unicode glyph) -> glyph_metrics&
@@ -432,8 +385,8 @@ class font_cache final {
  private:
   font m_font;
 
-  struct glyph_info {
-    texture image;
+  struct glyph_data {
+    texture cached;
     glyph_metrics metrics;
   };
 
@@ -443,18 +396,13 @@ class font_cache final {
   std::unordered_map<entt::id_type, texture> m_strings;
 
   [[nodiscard]] auto create_glyph_texture(renderer& renderer, unicode glyph)
-      -> texture
-  {
-    const surface surf{TTF_RenderGlyph_Blended(
-        m_font.get(), glyph, static_cast<SDL_Color>(renderer.get_color()))};
-    return texture{renderer, surf};
-  }
+      -> texture;
 };
 
 }  // namespace centurion::experimental
 
 #ifdef CENTURION_HEADER_ONLY
-// TODO include source file
+#include "font_cache.cpp"
 #endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_FONT_CACHE_HEADER

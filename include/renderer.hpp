@@ -843,9 +843,7 @@ class renderer_view final : public renderer_base {  // TODO rename: renderer_ptr
    *
    * @since 5.0.0
    */
-  explicit renderer_view(SDL_Renderer* renderer) noexcept
-      : renderer_base{renderer}
-  {}
+  renderer_view(SDL_Renderer* renderer) noexcept : renderer_base{renderer} {}
 
   /**
    * @brief Creates a view based on an existing `renderer`.

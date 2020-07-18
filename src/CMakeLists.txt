@@ -52,6 +52,7 @@ set(SOURCE_FILES
         window.cpp
         window_base.cpp
         font.cpp
+        font_cache.cpp
         texture.cpp
         centurion.cpp
         paths.cpp

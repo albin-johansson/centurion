@@ -71,6 +71,13 @@ class message_box;
 
 }
 
+namespace experimental {
+
+class font_cache;
+class unicode_string;
+
+}
+
 }  // namespace centurion
 
 #endif  // CENTURION_FWD_HEADER

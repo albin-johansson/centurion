@@ -38,6 +38,7 @@
 #define CENTURION_UNICODE_STRING_HEADER
 
 #include <cassert>
+#include <initializer_list>
 #include <vector>
 
 #include "centurion_api.hpp"
@@ -45,6 +46,15 @@
 
 namespace centurion::experimental {
 
+/**
+ * @typedef unicode
+ *
+ * @brief The representation of Unicode glyphs.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile unicode_string.hpp
+ */
 using unicode = u16;
 
 /**
@@ -145,6 +155,19 @@ class unicode_string final {
   void operator+=(unicode ch) { append(ch); }
 
   /**
+   * @brief Removes the last element from the string.
+   *
+   * @details This method has no effect if the string is empty.
+   *
+   * @since 5.0.0
+   */
+  void pop_back()  {
+    if (!empty()) {
+      m_data.erase(m_data.end() - 2);
+    }
+  }
+
+  /**
    * @brief Returns the number of elements stored in the string.
    *
    * @note This method does *not* include the null-terminator.
@@ -183,7 +206,7 @@ class unicode_string final {
    */
   [[nodiscard]] auto empty() const noexcept -> bool
   {
-    return m_data.empty() || (m_data.size() == 1 && (*this)[0] == 0);
+    return m_data.size() == 1 && (*this)[0] == 0; // the null-terminated check might be redundant
   }
 
   /**
@@ -223,26 +246,6 @@ class unicode_string final {
     return m_data.begin();
   }
 
-  //  [[nodiscard]] auto cbegin() noexcept -> const_iterator
-  //  {
-  //    return m_data.cbegin();
-  //  }
-  //
-  //  [[nodiscard]] auto cbegin() const noexcept -> const_iterator
-  //  {
-  //    return m_data.cbegin();
-  //  }
-
-  //  [[nodiscard]] auto rbegin() noexcept -> reverse_iterator
-  //  {
-  //    return m_data.rbegin();
-  //  }
-  //
-  //  [[nodiscard]] auto rbegin() const noexcept -> const_reverse_iterator
-  //  {
-  //    return m_data.rbegin();
-  //  }
-
   /**
    * @brief Returns an iterator that points one-past the last element in the
    * string.
@@ -264,53 +267,57 @@ class unicode_string final {
     return m_data.end() - 1;
   }
 
-  //  [[nodiscard]] auto rend() noexcept -> reverse_iterator
-  //  {
-  //    return m_data.rend();
-  //  }
-  //
-  //  [[nodiscard]] auto rend() const noexcept -> const_reverse_iterator
-  //  {
-  //    return m_data.rend();
-  //  }
-
-  //  [[nodiscard]] auto crbegin() noexcept -> const_reverse_iterator
-  //  {
-  //    return m_data.crbegin();
-  //  }
-  //
-  //  [[nodiscard]] auto crbegin() const noexcept -> const_reverse_iterator
-  //  {
-  //    return m_data.crbegin();
-  //  }
-
-  //  [[nodiscard]] auto crend() noexcept -> const_reverse_iterator
-  //  {
-  //    return m_data.crend() - 1;
-  //  }
-  //
-  //  [[nodiscard]] auto crend() const noexcept -> const_reverse_iterator
-  //  {
-  //    return m_data.crend() - 1;
-  //  }
-
+  /**
+   * @brief Returns the element at the specified index.
+   *
+   * @details This method will throw an exception if the supplied index is
+   * out-of-bounds.
+   *
+   * @param index the index of the desired element.
+   *
+   * @return the element at the specified index.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto at(size_type index) -> reference
   {
     return m_data.at(index);
   }
 
+  /**
+   * @copydoc at
+   */
   [[nodiscard]] auto at(size_type index) const -> const_reference
   {
     return m_data.at(index);
   }
 
-  [[nodiscard]] auto operator[](size_type index) -> reference
+  /**
+   * @brief Returns the element at the specified index.
+   *
+   * @pre `index` **must** be in the range [0, `size()`);
+   *
+   * @details This method will does *not* perform bounds-checking. However, in
+   * debug-mode, an assertion will abort the program if the supplied index is
+   * out-of-bounds.
+   *
+   * @param index the index of the desired element.
+   *
+   * @return the element at the specified index.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto operator[](size_type index) noexcept -> reference
   {
     assert(index >= 0 && index < size());
     return m_data[index];
   }
 
-  [[nodiscard]] auto operator[](size_type index) const -> const_reference
+  /**
+   * @copydoc operator[]
+   */
+  [[nodiscard]] auto operator[](size_type index) const noexcept
+      -> const_reference
   {
     assert(index >= 0 && index < size());
     return m_data[index];
@@ -320,6 +327,16 @@ class unicode_string final {
   std::vector<unicode> m_data;
 };
 
+/**
+ * @brief Indicates whether or not two Unicode strings are the same.
+ *
+ * @param lhs the left-hand side string.
+ * @param rhs the right-hand side string.
+ *
+ * @return `true` if the strings are the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline auto operator==(const unicode_string& lhs,
                                      const unicode_string& rhs)
 {
@@ -338,11 +355,54 @@ class unicode_string final {
   return true;
 }
 
+/**
+ * @brief Indicates whether or not two Unicode strings aren't the same.
+ *
+ * @param lhs the left-hand side string.
+ * @param rhs the right-hand side string.
+ *
+ * @return `true` if the strings are the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline auto operator!=(const unicode_string& lhs,
                                      const unicode_string& rhs)
 {
   return !(lhs == rhs);
 }
+
+namespace literals {
+
+/**
+ * @brief Creates a `unicode` value from a `char`.
+ *
+ * @param c the character used to create the unicode value.
+ *
+ * @return a `unicode` value.
+ *
+ * @since 5.0.0
+ */
+inline constexpr auto operator""_uni(char c) noexcept -> unicode
+{
+  return static_cast<unicode>(c);
+}
+
+/**
+ * @brief Creates a `unicode` value from a integral value.
+ *
+ * @param i the integer used to create the unicode value.
+ *
+ * @return a `unicode` value.
+ *
+ * @since 5.0.0
+ */
+inline constexpr auto operator""_uni(unsigned long long int i) noexcept
+    -> unicode
+{
+  return static_cast<unicode>(i);
+}
+
+}  // namespace literals
 
 }  // namespace centurion::experimental
 

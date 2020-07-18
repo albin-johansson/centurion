@@ -37,6 +37,7 @@ cursor::cursor(const surface& surface, const point_i& hotspot)
 
   m_cursor = SDL_CreateColorCursor(m_surface, hotspot.x(), hotspot.y());
   if (!m_cursor) {
+    SDL_FreeSurface(m_surface);
     throw detail::core_error("Failed to create color cursor!");
   }
 }

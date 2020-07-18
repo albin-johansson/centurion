@@ -1,8 +1,5 @@
 #include "font_cache.hpp"
 
-//#include <NFont.h>
-//#include <SDL_FontCache.h>
-
 #include <catch.hpp>
 
 #include "centurion_as_ctn.hpp"
@@ -12,7 +9,7 @@
 #include "renderer.hpp"
 #include "window.hpp"
 
-TEST_CASE("...", "[.font_cache]")
+TEST_CASE("Interactive font cache", "[.font_cache]")
 {
   using ctn::experimental::unicode;
 
@@ -44,8 +41,7 @@ TEST_CASE("...", "[.font_cache]")
         running = false;
         break;
       } else if (const auto* key = event.try_get<ctn::keyboard_event>(); key) {
-        if (key->state() == ctn::button_state::released) {  // TODO nicer
-                                                            // released() method
+        if (key->state() == ctn::button_state::released) {
           if (key->is_active(SDL_SCANCODE_ESCAPE)) {
             running = false;
             break;

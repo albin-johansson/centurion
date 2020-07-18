@@ -6,7 +6,7 @@ using namespace centurion;
 
 TEST_CASE("TextEditingEvent::set_window_id", "[TextEditingEvent]")
 {
-  text_editing_event event;
+  text_editing_event event{};
 
   const auto id = 8;
   event.set_window_id(id);
@@ -16,7 +16,7 @@ TEST_CASE("TextEditingEvent::set_window_id", "[TextEditingEvent]")
 
 TEST_CASE("TextEditingEvent::set_start", "[TextEditingEvent]")
 {
-  text_editing_event event;
+  text_editing_event event{};
 
   const auto start = 4;
   event.set_start(start);
@@ -26,7 +26,7 @@ TEST_CASE("TextEditingEvent::set_start", "[TextEditingEvent]")
 
 TEST_CASE("TextEditingEvent::set_length", "[TextEditingEvent]")
 {
-  text_editing_event event;
+  text_editing_event event{};
 
   const auto length = 9;
   event.set_length(length);
@@ -48,7 +48,7 @@ TEST_CASE("TextEditingEvent::set_length", "[TextEditingEvent]")
 
 TEST_CASE("TextEditingEvent::window_id", "[TextEditingEvent]")
 {
-  SDL_TextEditingEvent sdlEvent;
+  SDL_TextEditingEvent sdlEvent{};
   sdlEvent.windowID = 7;
   text_editing_event event{sdlEvent};
 
@@ -57,7 +57,7 @@ TEST_CASE("TextEditingEvent::window_id", "[TextEditingEvent]")
 
 TEST_CASE("TextEditingEvent::start", "[TextEditingEvent]")
 {
-  SDL_TextEditingEvent sdlEvent;
+  SDL_TextEditingEvent sdlEvent{};
   sdlEvent.start = 4;
   text_editing_event event{sdlEvent};
 
@@ -68,7 +68,7 @@ TEST_CASE("TextEditingEvent::length", "[TextEditingEvent]")
 {
   SECTION("Good length")
   {
-    SDL_TextEditingEvent sdlEvent;
+    SDL_TextEditingEvent sdlEvent{};
     sdlEvent.length = 4;
     text_editing_event event{sdlEvent};
 
@@ -77,7 +77,7 @@ TEST_CASE("TextEditingEvent::length", "[TextEditingEvent]")
 
   SECTION("Underflow length")
   {
-    SDL_TextEditingEvent sdlEvent;
+    SDL_TextEditingEvent sdlEvent{};
     sdlEvent.length = -1;
     text_editing_event event{sdlEvent};
 
@@ -86,7 +86,7 @@ TEST_CASE("TextEditingEvent::length", "[TextEditingEvent]")
 
   SECTION("Overflow length")
   {
-    SDL_TextEditingEvent sdlEvent;
+    SDL_TextEditingEvent sdlEvent{};
     sdlEvent.length = 33;
     text_editing_event event{sdlEvent};
 

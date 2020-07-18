@@ -309,7 +309,7 @@ class unicode_string final {
    */
   [[nodiscard]] auto operator[](size_type index) noexcept -> reference
   {
-    assert(index >= 0 && index < size());
+    assert(index >= 0 && index < m_data.size());
     return m_data[index];
   }
 
@@ -319,7 +319,7 @@ class unicode_string final {
   [[nodiscard]] auto operator[](size_type index) const noexcept
       -> const_reference
   {
-    assert(index >= 0 && index < size());
+    assert(index >= 0 && index < m_data.size());
     return m_data[index];
   }
 

@@ -70,6 +70,8 @@ constexpr basic_point<U> operator+(const basic_point<U>& lhs,
 /**
  * @class basic_point
  *
+ * @ingroup geometry
+ *
  * @brief Represents an integer or floating-point based 2D point.
  *
  * @details There are two pre-defined type aliases pre-defined for this

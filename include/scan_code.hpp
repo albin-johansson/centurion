@@ -49,6 +49,8 @@ namespace centurion {
 /**
  * @class scan_code
  *
+ * @ingroup input
+ *
  * @brief Represents a scan code.
  *
  * @details Scan codes represent the physical location of a key on the
@@ -116,7 +118,7 @@ class scan_code final {
    *
    * @since 5.0.0
    */
-  explicit scan_code(gsl::not_null<czstring> name) noexcept
+  explicit scan_code(nn_czstring name) noexcept
       : m_code{SDL_GetScancodeFromName(name)}
   {}
 
@@ -168,7 +170,7 @@ class scan_code final {
    *
    * @since 5.0.0
    */
-  auto operator=(gsl::not_null<czstring> name) noexcept -> scan_code&
+  auto operator=(nn_czstring name) noexcept -> scan_code&
   {
     m_code = SDL_GetScancodeFromName(name);
     return *this;
@@ -242,6 +244,8 @@ class scan_code final {
 /**
  * @brief Indicates whether or not two scan codes are the same.
  *
+ * @ingroup input
+ *
  * @param lhs the left-hand side scan code.
  * @param rhs the right-hand side scan code.
  *
@@ -258,6 +262,8 @@ class scan_code final {
 /**
  * @brief Indicates whether or not two scan codes aren't the same.
  *
+ * @ingroup input
+ *
  * @param lhs the left-hand side scan code.
  * @param rhs the right-hand side scan code.
  *
@@ -273,6 +279,8 @@ class scan_code final {
 
 /**
  * @namespace centurion::scancodes
+ *
+ * @ingroup input
  *
  * @brief Provides a collection of `scan_code` constants.
  *

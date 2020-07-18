@@ -49,6 +49,8 @@ namespace centurion {
 /**
  * @class joystick
  *
+ * @ingroup input
+ *
  * @brief Represents various types of joysticks.
  *
  * @todo Cover `SDL_JoystickGetGUIDString`.
@@ -726,8 +728,7 @@ class joystick final {
    * @since 4.2.0
    */
   CENTURION_QUERY
-  static auto guid_from_string(gsl::not_null<czstring> str) noexcept
-      -> SDL_JoystickGUID;
+  static auto guid_from_string(nn_czstring str) noexcept -> SDL_JoystickGUID;
 
   /**
    * @brief Returns the maximum possible value of an axis control on a joystick.
@@ -764,6 +765,8 @@ class joystick final {
 /**
  * @brief Indicates whether or not two joystick power values are the same.
  *
+ * @ingroup input
+ *
  * @param lhs the left-hand side power type.
  * @param rhs the right-hand side power type.
  *
@@ -780,6 +783,8 @@ class joystick final {
 
 /**
  * @brief Indicates whether or not two joystick power values are the same.
+ *
+ * @ingroup input
  *
  * @param lhs the left-hand side power type.
  * @param rhs the right-hand side power type.
@@ -798,6 +803,8 @@ class joystick final {
 /**
  * @brief Indicates whether or not two joystick power values aren't the same.
  *
+ * @ingroup input
+ *
  * @param lhs the left-hand side power type.
  * @param rhs the right-hand side power type.
  *
@@ -814,6 +821,8 @@ class joystick final {
 
 /**
  * @brief Indicates whether or not two joystick power values aren't the same.
+ *
+ * @ingroup input
  *
  * @param lhs the left-hand side power type.
  * @param rhs the right-hand side power type.
@@ -832,6 +841,8 @@ class joystick final {
 /**
  * @brief Indicates whether or not two joystick type values are the same.
  *
+ * @ingroup input
+ *
  * @param lhs the left-hand side joystick type value.
  * @param rhs the right-hand side joystick type value.
  *
@@ -848,6 +859,8 @@ class joystick final {
 
 /**
  * @brief Indicates whether or not two joystick type values are the same.
+ *
+ * @ingroup input
  *
  * @param lhs the left-hand side joystick type value.
  * @param rhs the right-hand side joystick type value.
@@ -866,6 +879,8 @@ class joystick final {
 /**
  * @brief Indicates whether or not two joystick type values aren't the same.
  *
+ * @ingroup input
+ *
  * @param lhs the left-hand side joystick type value.
  * @param rhs the right-hand side joystick type value.
  *
@@ -882,6 +897,8 @@ class joystick final {
 
 /**
  * @brief Indicates whether or not two joystick type values aren't the same.
+ *
+ * @ingroup input
  *
  * @param lhs the left-hand side joystick type value.
  * @param rhs the right-hand side joystick type value.

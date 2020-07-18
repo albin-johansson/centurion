@@ -54,6 +54,8 @@ namespace centurion {
 /**
  * @struct glyph_metrics
  *
+ * @ingroup Graphics
+ *
  * @brief Provides metrics about a glyph in a font.
  *
  * @since 4.0.0
@@ -70,6 +72,8 @@ struct glyph_metrics final {
 
 /**
  * @class font
+ *
+ * @ingroup graphics
  *
  * @brief Represents a True Type font.
  *

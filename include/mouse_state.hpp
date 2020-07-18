@@ -45,6 +45,8 @@ namespace centurion::input {
 /**
  * @class mouse_state
  *
+ * @ingroup input
+ *
  * @brief Provides information about the mouse state, which is an
  * alternative to dealing with mouse events.
  *

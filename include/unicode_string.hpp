@@ -25,6 +25,8 @@
 /**
  * @file unicode_string.hpp
  *
+ * @ingroup input
+ *
  * @brief Provides the `unicode_string` class.
  *
  * @author Albin Johansson

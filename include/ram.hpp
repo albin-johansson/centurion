@@ -44,6 +44,8 @@
 /**
  * @namespace centurion::ram
  *
+ * @ingroup system
+ *
  * @brief Contains functions related to the system memory.
  *
  * @since 5.0.0

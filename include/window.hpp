@@ -53,6 +53,8 @@ namespace centurion {
 /**
  * @class window_base
  *
+ * @ingroup graphics
+ *
  * @brief Provides the base implementation for windows.
  *
  * @since 5.0.0
@@ -681,6 +683,8 @@ class window_base {
 /**
  * @class window
  *
+ * @ingroup graphics
+ *
  * @brief Represents an owning window.
  *
  * @details This is the main representation of a window in the library. This
@@ -889,6 +893,8 @@ class window final : public window_base {
 
 /**
  * @class window_view
+ *
+ * @ingroup graphics
  *
  * @brief Represents a non-owning window.
  *

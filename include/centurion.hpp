@@ -37,6 +37,12 @@
  * @copyright MIT License
  */
 
+/**
+ * @defgroup core Core
+ *
+ * @brief Contains entities considered to be fundamental for the library.
+ */
+
 #ifndef CENTURION_HEADER
 #define CENTURION_HEADER
 
@@ -51,12 +57,16 @@
 /**
  * @namespace centurion
  *
+ * @ingroup core
+ *
  * @brief The top-level namespace that all components of the library reside in.
  */
 namespace centurion {
 
 /**
  * @struct centurion_config
+ *
+ * @ingroup core
  *
  * @brief Used to specify how the library is initialized.
  *
@@ -126,6 +136,8 @@ struct centurion_config final {
 
 /**
  * @class centurion_lib
+ *
+ * @ingroup core
  *
  * @brief Used to initialize and de-initialize the library.
  *

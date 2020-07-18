@@ -46,6 +46,8 @@ namespace centurion {
 /**
  * @enum event_type
  *
+ * @ingroup event
+ *
  * @brief Mirrors the `SDL_EventType` enum.
  *
  * @see `SDL_EventType`
@@ -123,6 +125,8 @@ enum class event_type {
 /**
  * @brief Indicates whether or not two event type values are the same.
  *
+ * @ingroup event
+ *
  * @param lhs the left-hand side event type value
  * @param rhs the right-hand side event type value
  *
@@ -139,6 +143,8 @@ enum class event_type {
 
 /**
  * @copydoc operator==(event_type, SDL_EventType)
+ *
+ * @ingroup event
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_EventType lhs,
                                                event_type rhs) noexcept -> bool
@@ -148,6 +154,8 @@ enum class event_type {
 
 /**
  * @brief Indicates whether or not two event type values aren't the same.
+ *
+ * @ingroup event
  *
  * @param lhs the left-hand side event type value
  * @param rhs the right-hand side event type value
@@ -165,6 +173,8 @@ enum class event_type {
 
 /**
  * @copydoc operator!=(event_type, SDL_EventType)
+ *
+ * @ingroup event
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_EventType lhs,
                                                event_type rhs) noexcept -> bool

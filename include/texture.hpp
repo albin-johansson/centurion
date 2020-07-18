@@ -562,6 +562,8 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 /**
  * @brief Indicates whether or not the two texture access values are the same.
  *
+ * @ingroup graphics
+ *
  * @param lhs the lhs texture access value.
  * @param rhs the rhs texture access value.
  *
@@ -578,6 +580,8 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 
 /**
  * @copydoc operator==(texture::access, SDL_TextureAccess)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(
     SDL_TextureAccess lhs,
@@ -589,6 +593,8 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 /**
  * @brief Indicates whether or not the two texture access values aren't the
  * same.
+ *
+ * @ingroup graphics
  *
  * @param lhs the lhs texture access value.
  * @param rhs the rhs texture access value.
@@ -607,6 +613,8 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 
 /**
  * @copydoc operator!=(texture::access, SDL_TextureAccess)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(
     SDL_TextureAccess lhs,
@@ -617,6 +625,8 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 
 /**
  * @brief Indicates whether or not the two scale mode values are the same.
+ *
+ * @ingroup graphics
  *
  * @param lhs the lhs scale mode value.
  * @param rhs the rhs scale mode value.
@@ -634,6 +644,8 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 
 /**
  * @copydoc operator==(texture::scale_mode, SDL_ScaleMode)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(
     SDL_ScaleMode lhs,
@@ -644,6 +656,8 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 
 /**
  * @brief Indicates whether or not the two scale mode values aren't the same.
+ *
+ * @ingroup graphics
  *
  * @param lhs the lhs scale mode value.
  * @param rhs the rhs scale mode value.
@@ -661,6 +675,8 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 
 /**
  * @copydoc operator!=(texture::scale_mode, SDL_ScaleMode)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(
     SDL_ScaleMode lhs,

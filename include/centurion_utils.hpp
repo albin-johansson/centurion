@@ -34,6 +34,12 @@
  * @copyright MIT License
  */
 
+/**
+ * @defgroup misc Miscellaneous
+ *
+ * @brief Provides miscellaneous components used throughout the library.
+ */
+
 #ifndef CENTURION_CENTURION_UTILS_HEADER
 #define CENTURION_CENTURION_UTILS_HEADER
 
@@ -98,37 +104,6 @@ template <typename T>
     return "";
   }
 }
-
-///**
-// * @brief Returns the closest legal value that is inside the specified
-// inclusive
-// * range based on the supplied value.
-// *
-// * @tparam T the type of the range.
-// *
-// * @param range the inclusive range, the format is (min, max).
-// * @param value the value that will be checked.
-// *
-// * @return the closest legal value that is inside the specified inclusive
-// * range.
-// *
-// * @since 4.0.0
-// */
-// template <typename T>
-//[[nodiscard]] auto clamp_inclusive(std::pair<T, T> range, T value) noexcept ->
-//T
-//{
-//  const auto min = range.first;
-//  const auto max = range.second;
-//
-//  if (value < min) {
-//    return min;
-//  } else if (value > max) {
-//    return max;
-//  } else {
-//    return value;
-//  }
-//}
 
 /**
  * @brief Indicates whether or not two C-style strings are equal.

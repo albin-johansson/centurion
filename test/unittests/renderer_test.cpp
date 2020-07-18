@@ -618,7 +618,7 @@ TEST_CASE("color", "[renderer]")
 }
 
 // FIXME
-//TEST_CASE("text_blended", "[renderer]")
+// TEST_CASE("text_blended", "[renderer]")
 //{
 //  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
 //    CHECK(!renderer.text_blended(nullptr, font));
@@ -627,7 +627,7 @@ TEST_CASE("color", "[renderer]")
 //  });
 //}
 //
-//TEST_CASE("text_blended_wrapped", "[renderer]")
+// TEST_CASE("text_blended_wrapped", "[renderer]")
 //{
 //  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
 //    CHECK(!renderer.text_blended_wrapped(nullptr, 500, font));
@@ -636,7 +636,7 @@ TEST_CASE("color", "[renderer]")
 //  });
 //}
 //
-//TEST_CASE("text_shaded", "[renderer]")
+// TEST_CASE("text_shaded", "[renderer]")
 //{
 //  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
 //    CHECK(!renderer.text_shaded(nullptr, ctn::colors::black, font));
@@ -645,7 +645,7 @@ TEST_CASE("color", "[renderer]")
 //  });
 //}
 //
-//TEST_CASE("text_solid", "[renderer]")
+// TEST_CASE("text_solid", "[renderer]")
 //{
 //  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
 //    CHECK(!renderer.text_solid(nullptr, font));

@@ -48,6 +48,8 @@
 /**
  * @namespace centurion::cpu
  *
+ * @ingroup system
+ *
  * @brief Provides methods for obtaining information about the processor.
  *
  * @since 5.0.0

@@ -46,6 +46,8 @@ namespace centurion {
 /**
  * @enum key_modifier
  *
+ * @ingroup input
+ *
  * @brief Mirrors the values of the `SDL_Keymod` enum.
  *
  * @see `SDL_Keymod`

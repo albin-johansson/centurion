@@ -46,6 +46,8 @@ namespace centurion {
 /**
  * @class base_path
  *
+ * @ingroup system
+ *
  * @brief A wrapper for the application path obtained through `SDL_GetBasePath`.
  *
  * @details There is no guarantee that the application path is obtainable, so
@@ -169,6 +171,8 @@ class base_path final {
 
 /**
  * @class pref_path
+ *
+ * @ingroup system
  *
  * @brief A wrapper for the preferred path for storing application related
  * files.

@@ -44,6 +44,8 @@
 /**
  * @namespace centurion::screen
  *
+ * @ingroup system
+ *
  * @brief Contains functions that provide information about the screen.
  *
  * @since 5.0.0

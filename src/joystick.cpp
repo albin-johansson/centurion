@@ -220,7 +220,7 @@ auto joystick::name(int deviceIndex) noexcept -> czstring
 }
 
 CENTURION_DEF
-auto joystick::guid_from_string(gsl::not_null<czstring> str) noexcept
+auto joystick::guid_from_string(nn_czstring str) noexcept
     -> SDL_JoystickGUID
 {
   return SDL_JoystickGetGUIDFromString(str);

@@ -47,6 +47,8 @@ namespace centurion {
 /**
  * @class centurion_exception
  *
+ * @ingroup misc
+ *
  * @brief The only exception explicitly thrown by the library.
  *
  * @headerfile centurion_exception.hpp

@@ -38,11 +38,19 @@
  * of the associated hint, so that the values supplied to the callback aren't
  * always strings.
  *
+ * @todo Document all of the hint classes.
+ *
  * @file hints.hpp
  * @since 4.1.0
  * @author Albin Johansson
  * @date 2019-2020
  * @copyright MIT License
+ */
+
+/**
+ * @defgroup configuration Configuration
+ *
+ * @brief Contains the API related to hints/configuration variables.
  */
 
 #ifndef CENTURION_HINTS_HEADER
@@ -206,14 +214,23 @@ class float_hint : public crtp_hint<float_hint<Hint>, float> {
 /**
  * @namespace centurion::hint
  *
+ * @ingroup configuration
+ *
  * @brief Contains components related to hints (configuration variables).
  *
  * @since 4.1.0
  */
 namespace hint {
 
-/// @cond FALSE
-
+/**
+ * @class render_driver
+ *
+ * @ingroup configuration
+ *
+ * @brief Used to specify the render driver that will be used.
+ *
+ * @headerfile hints.hpp
+ */
 class render_driver final {
  public:
   enum Value { direct_3d, open_gl, open_gles, open_gles2, metal, software };
@@ -792,6 +809,8 @@ class qt_wayland_content_orientation final {
   }
 };
 
+/// @cond FALSE
+
 #define CENTURION_HINT(Name, SDLName, Type)                         \
   class Name final : public detail::Type<Name> {                    \
    public:                                                          \
@@ -1058,6 +1077,8 @@ CENTURION_HINT(xinput_use_old_joystick_mapping,
 /**
  * @enum hint_prio
  *
+ * @ingroup configuration
+ *
  * @brief Provides three different priorities that can be specified when
  * setting the value of a hint.
  *
@@ -1076,6 +1097,8 @@ enum class hint_prio {
 
 /**
  * @brief Sets the value of the specified hint.
+ *
+ * @ingroup configuration
  *
  * @details This method will only accept values that are related to the
  * specified hint, supplying the wrong kind of value causes a compile-time
@@ -1132,6 +1155,8 @@ auto set_hint(const Value& value) -> bool
 /**
  * @brief Returns the current value of the specified hint.
  *
+ * @ingroup configuration
+ *
  * @note The returned value is a `std::optional` of the hint value type.
  *
  * @par Examples
@@ -1160,6 +1185,8 @@ template <typename Hint>
 
 /**
  * @class callback
+ *
+ * @ingroup configuration
  *
  * @brief Represents a handle for dealing with hint callbacks.
  *
@@ -1260,6 +1287,8 @@ class callback final {
  * @brief Adds a callback to observe changes of the value of the specified
  * hint is updated.
  *
+ * @ingroup configuration
+ *
  * @details A callback handle object is returned, which can be used to easily
  * disconnect the callback later.
  *
@@ -1321,6 +1350,8 @@ auto add_callback(SDL_HintCallback fun, UserData* userData = nullptr) noexcept
 
 /**
  * @brief Clears all stored hints.
+ *
+ * @ingroup configuration
  *
  * @see `SDL_ClearHints`
  *

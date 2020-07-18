@@ -48,6 +48,8 @@ namespace centurion {
 /**
  * @enum game_controller_axis
  *
+ * @ingroup input
+ *
  * @brief Mirrors the values of the `SDL_GameControllerAxis` enum.
  *
  * @see `SDL_GameControllerAxis`
@@ -70,6 +72,8 @@ enum class game_controller_axis {
 /**
  * @brief Indicates whether or not two game controller axis values are the same.
  *
+ * @ingroup input
+ *
  * @param lhs the left-hand-side game controller axis value.
  * @param rhs the right-hand-side game controller axis value.
  *
@@ -86,6 +90,8 @@ enum class game_controller_axis {
 
 /**
  * @copydoc operator==(game_controller_axis, SDL_GameControllerAxis)
+ *
+ * @ingroup input
  */
 [[nodiscard]] inline constexpr auto operator==(
     SDL_GameControllerAxis lhs,
@@ -97,6 +103,8 @@ enum class game_controller_axis {
 /**
  * @brief Indicates whether or not two game controller axis values aren't the
  * same.
+ *
+ * @ingroup input
  *
  * @param lhs the left-hand-side game controller axis value.
  * @param rhs the right-hand-side game controller axis value.
@@ -114,6 +122,8 @@ enum class game_controller_axis {
 
 /**
  * @copydoc operator!=(game_controller_axis, SDL_GameControllerAxis)
+ *
+ * @ingroup input
  */
 [[nodiscard]] inline constexpr auto operator!=(
     SDL_GameControllerAxis lhs,
@@ -124,6 +134,8 @@ enum class game_controller_axis {
 
 /**
  * @enum game_controller_button
+ *
+ * @ingroup input
  *
  * @brief Mirrors the values of the `SDL_GameControllerButton` enum.
  *
@@ -155,6 +167,8 @@ enum class game_controller_button {
  * @brief Indicates whether or not two game controller button values are the
  * same.
  *
+ * @ingroup input
+ *
  * @param lhs the left-hand side game controller button value.
  * @param rhs the right-hand side game controller button value.
  *
@@ -172,6 +186,8 @@ enum class game_controller_button {
 
 /**
  * @copydoc operator==(game_controller_button, SDL_GameControllerButton)
+ *
+ * @ingroup input
  */
 [[nodiscard]] inline constexpr auto operator==(
     SDL_GameControllerButton lhs,
@@ -183,6 +199,8 @@ enum class game_controller_button {
 /**
  * @brief Indicates whether or not two game controller button values aren't the
  * same.
+ *
+ * @ingroup input
  *
  * @param lhs the left-hand side game controller button value.
  * @param rhs the right-hand side game controller button value.
@@ -201,6 +219,8 @@ enum class game_controller_button {
 
 /**
  * @copydoc operator!=(game_controller_button, SDL_GameControllerButton)
+ *
+ * @ingroup input
  */
 [[nodiscard]] inline constexpr auto operator!=(
     SDL_GameControllerButton lhs,

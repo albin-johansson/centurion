@@ -34,6 +34,12 @@
  * @copyright MIT License
  */
 
+/**
+ * @defgroup event Events
+ *
+ * @brief Contains entities related to events.
+ */
+
 #ifndef CENTURION_EVENT_HEADER
 #define CENTURION_EVENT_HEADER
 
@@ -59,6 +65,8 @@ namespace centurion {
 
 /**
  * @class common_event
+ *
+ * @ingroup event
  *
  * @brief The templated base class of all Centurion events.
  *
@@ -169,6 +177,8 @@ class common_event {
  * @brief Indicates whether or not a Centurion event type fulfills the event
  * type specification.
  *
+ * @ingroup event
+ *
  * @tparam T the Centurion event type that will be checked.
  * @tparam E the SDL event type that the Centurion event is mirroring.
  *
@@ -190,6 +200,8 @@ template <typename T, typename E>
 
 /**
  * @class audio_device_event
+ *
+ * @ingroup event
  *
  * @brief Represents an event that is associated with some sort of audio
  * device, either capture of output.
@@ -281,6 +293,8 @@ static_assert(validate_event<audio_device_event, SDL_AudioDeviceEvent>());
 
 /**
  * @class controller_axis_event
+ *
+ * @ingroup event
  *
  * @brief Represents an event triggered by game controller axis motion.
  *
@@ -378,6 +392,8 @@ static_assert(validate_event<controller_axis_event, SDL_ControllerAxisEvent>());
 
 /**
  * @class controller_button_event
+ *
+ * @ingroup event
  *
  * @brief Represents events associated with the state of buttons of a game
  * controller.
@@ -478,6 +494,8 @@ static_assert(
 /**
  * @class controller_device_event
  *
+ * @ingroup event
+ *
  * @brief Represents events related to game controller devices such as adding
  * or removing game controller devices.
  *
@@ -543,6 +561,8 @@ static_assert(
 
 /**
  * @class dollar_gesture_event
+ *
+ * @ingroup event
  *
  * @brief Provides information about dollar gestures from touch events.
  *
@@ -705,6 +725,8 @@ static_assert(validate_event<dollar_gesture_event, SDL_DollarGestureEvent>());
 /**
  * @class drop_event
  *
+ * @ingroup event
+ *
  * @brief Represents the event of requesting a file to be opened.
  *
  * @see `SDL_DropEvent`
@@ -854,6 +876,8 @@ static_assert(validate_event<drop_event, SDL_DropEvent>());
 /**
  * @class joy_axis_event
  *
+ * @ingroup event
+ *
  * @brief Represents an event that occurs whenever a user moves an axis on a
  * joystick.
  *
@@ -948,6 +972,8 @@ static_assert(validate_event<joy_axis_event, SDL_JoyAxisEvent>());
 
 /**
  * @class joy_ball_event
+ *
+ * @ingroup event
  *
  * @brief Represents the event that is triggered when a user moves a
  * trackball on a joystick.
@@ -1070,6 +1096,8 @@ static_assert(validate_event<joy_ball_event, SDL_JoyBallEvent>());
 /**
  * @class joy_button_event
  *
+ * @ingroup event
+ *
  * @brief Represents an event associated with the press or release of a
  * joystick button.
  *
@@ -1167,6 +1195,8 @@ static_assert(validate_event<joy_button_event, SDL_JoyButtonEvent>());
 /**
  * @class joy_device_event
  *
+ * @ingroup event
+ *
  * @brief Represents an event triggered by adding or removing a joystick device.
  *
  * @see `SDL_JoyDeviceEvent`
@@ -1226,6 +1256,8 @@ static_assert(validate_event<joy_device_event, SDL_JoyDeviceEvent>());
 /**
  * @enum joy_hat_position
  *
+ * @ingroup event
+ *
  * @brief Serves as a wrapper for the `SDL_HAT_x` macro values.
  *
  * @since 4.0.0
@@ -1244,6 +1276,8 @@ enum class joy_hat_position {
 
 /**
  * @class joy_hat_event
+ *
+ * @ingroup event
  *
  * @brief Represents an event that is triggered whenever a user moves a hat
  * on a joystick.
@@ -1319,6 +1353,8 @@ static_assert(validate_event<joy_hat_event, SDL_JoyHatEvent>());
 
 /**
  * @class keyboard_event
+ *
+ * @ingroup event
  *
  * @brief Represents an event associated with some sort of key action, such
  * as the release or pressing of a key.
@@ -1575,6 +1611,8 @@ static_assert(validate_event<keyboard_event, SDL_KeyboardEvent>());
 /**
  * @class mouse_button_event
  *
+ * @ingroup event
+ *
  * @brief Represents an event triggered by mouse button presses or releases.
  *
  * @see `SDL_MouseButtonEvent`
@@ -1749,6 +1787,8 @@ static_assert(validate_event<mouse_button_event, SDL_MouseButtonEvent>());
 
 /**
  * @class mouse_motion_event
+ *
+ * @ingroup event
  *
  * @brief Represents events that are triggered by the movement of the mouse.
  *
@@ -1950,6 +1990,8 @@ static_assert(validate_event<mouse_motion_event, SDL_MouseMotionEvent>());
 /**
  * @enum mouse_wheel_direction
  *
+ * @ingroup event
+ *
  * @brief Mirrors the the `SDL_MouseWheelDirection` enum.
  *
  * @see `SDL_MouseWheelDirection`
@@ -1967,6 +2009,8 @@ enum class mouse_wheel_direction {
 /**
  * @brief Indicates whether or not two mouse wheel direction values are equal.
  *
+ * @ingroup event
+ *
  * @param lhs the left-hand side mouse wheel direction value.
  * @param rhs the right-hand side mouse wheel direction value.
  *
@@ -1980,6 +2024,8 @@ auto operator==(mouse_wheel_direction lhs, SDL_MouseWheelDirection rhs) noexcept
 
 /**
  * @copydoc operator==(mouse_wheel_direction, SDL_MouseWheelDirection)
+ *
+ * @ingroup event
  */
 CENTURION_QUERY
 auto operator==(SDL_MouseWheelDirection lhs, mouse_wheel_direction rhs) noexcept
@@ -1988,6 +2034,8 @@ auto operator==(SDL_MouseWheelDirection lhs, mouse_wheel_direction rhs) noexcept
 /**
  * @brief Indicates whether or not two mouse wheel direction values aren't
  * equal.
+ *
+ * @ingroup event
  *
  * @param lhs the left-hand side mouse wheel direction value.
  * @param rhs the right-hand side mouse wheel direction value.
@@ -2002,6 +2050,8 @@ auto operator!=(mouse_wheel_direction lhs, SDL_MouseWheelDirection rhs) noexcept
 
 /**
  * @copydoc operator!=(mouse_wheel_direction, SDL_MouseWheelDirection)
+ *
+ * @ingroup event
  */
 CENTURION_QUERY
 auto operator!=(SDL_MouseWheelDirection lhs, mouse_wheel_direction rhs) noexcept
@@ -2009,6 +2059,8 @@ auto operator!=(SDL_MouseWheelDirection lhs, mouse_wheel_direction rhs) noexcept
 
 /**
  * @class mouse_wheel_event
+ *
+ * @ingroup event
  *
  * @brief Represents events triggered when a user moves the mouse wheel.
  *
@@ -2157,6 +2209,8 @@ static_assert(validate_event<mouse_wheel_event, SDL_MouseWheelEvent>());
 
 /**
  * @class multi_gesture_event
+ *
+ * @ingroup event
  *
  * @brief Provides information about events related to touch events triggered
  * by multiple fingers.
@@ -2329,6 +2383,8 @@ static_assert(validate_event<multi_gesture_event, SDL_MultiGestureEvent>());
 /**
  * @class quit_event
  *
+ * @ingroup event
+ *
  * @brief Represents the event of the user wanting to close the application,
  * usually by pressing the "X"-button on the window frame.
  *
@@ -2363,6 +2419,8 @@ static_assert(validate_event<quit_event, SDL_QuitEvent>());
 
 /**
  * @class text_editing_event
+ *
+ * @ingroup event
  *
  * @brief Represents an event triggered by keyboard text editing.
  *
@@ -2480,6 +2538,8 @@ static_assert(validate_event<text_editing_event, SDL_TextEditingEvent>());
 /**
  * @class text_input_event
  *
+ * @ingroup event
+ *
  * @brief Provides information about keyboard text input events.
  *
  * @see `SDL_TextInputEvent`
@@ -2543,6 +2603,8 @@ static_assert(validate_event<text_input_event, SDL_TextInputEvent>());
 
 /**
  * @class touch_finger_event
+ *
+ * @ingroup event
  *
  * @brief Represents an event related to touch screen actions.
  *
@@ -2769,6 +2831,8 @@ static_assert(validate_event<touch_finger_event, SDL_TouchFingerEvent>());
 /**
  * @enum window_event_id
  *
+ * @ingroup event
+ *
  * @brief Mirrors the `SDL_WindowEventID` enum.
  *
  * @details Depending on the event ID of a `WindowEvent` instance, the
@@ -2895,6 +2959,8 @@ enum class window_event_id {
 /**
  * @brief Indicates whether or not two window event ID values are the same.
  *
+ * @ingroup event
+ *
  * @param lhs the left-hand side window event ID value.
  * @param rhs the right-hand side window event ID value.
  *
@@ -2911,6 +2977,8 @@ enum class window_event_id {
 
 /**
  * @copydoc operator==(window_event_id, SDL_WindowEventID)
+ *
+ * @ingroup event
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_WindowEventID lhs,
                                                window_event_id rhs) noexcept
@@ -2921,6 +2989,8 @@ enum class window_event_id {
 
 /**
  * @brief Indicates whether or not two window event ID values aren't the same.
+ *
+ * @ingroup event
  *
  * @param lhs the left-hand side window event ID value.
  * @param rhs the right-hand side window event ID value.
@@ -2939,6 +3009,8 @@ enum class window_event_id {
 
 /**
  * @copydoc operator!=(window_event_id, SDL_WindowEventID)
+ *
+ * @ingroup event
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_WindowEventID lhs,
                                                window_event_id rhs) noexcept
@@ -2949,6 +3021,8 @@ enum class window_event_id {
 
 /**
  * @class window_event
+ *
+ * @ingroup event
  *
  * @brief Represents an event that is associated with an action related to a
  * window.
@@ -3033,6 +3107,8 @@ static_assert(validate_event<window_event, SDL_WindowEvent>());
 
 /**
  * @class event
+ *
+ * @ingroup event
  *
  * @brief Serves as the main interface for dealing with events.
  *

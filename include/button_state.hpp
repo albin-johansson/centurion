@@ -44,6 +44,8 @@ namespace centurion {
 /**
  * @enum button_state
  *
+ * @ingroup input
+ *
  * @brief Represents the two possible states for a button.
  *
  * @details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.

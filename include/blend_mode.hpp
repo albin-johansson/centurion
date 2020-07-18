@@ -46,6 +46,8 @@ namespace centurion {
 /**
  * @enum blend_mode
  *
+ * @ingroup graphics
+ *
  * @brief Mirrors the `SDL_BlendMode` enum.
  *
  * @since 3.0.0
@@ -64,6 +66,8 @@ enum class blend_mode {
 /**
  * @brief Indicates whether or not two blend mode values are the same;
  *
+ * @ingroup graphics
+ *
  * @param lhs the left-hand side blend mode value.
  * @param rhs the right-hand side blend mode value.
  *
@@ -79,6 +83,8 @@ enum class blend_mode {
 
 /**
  * @copydoc operator==(blend_mode, SDL_BlendMode)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline auto operator==(SDL_BlendMode lhs, blend_mode rhs) noexcept
     -> bool
@@ -88,6 +94,8 @@ enum class blend_mode {
 
 /**
  * @brief Indicates whether or not two blend mode values aren't the same;
+ *
+ * @ingroup graphics
  *
  * @param lhs the left-hand side blend mode value.
  * @param rhs the right-hand side blend mode value.
@@ -104,6 +112,8 @@ enum class blend_mode {
 
 /**
  * @copydoc operator!=(blend_mode, SDL_BlendMode)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline auto operator!=(SDL_BlendMode lhs, blend_mode rhs) noexcept
     -> bool

@@ -55,6 +55,8 @@ namespace centurion {
 /**
  * @class renderer_base
  *
+ * @ingroup graphics
+ *
  * @brief Provides the base implementation of renderers.
  *
  * @details This class provides the general API for hardware-accelerated

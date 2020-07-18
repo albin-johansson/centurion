@@ -47,6 +47,8 @@
 /**
  * @namespace centurion::battery
  *
+ * @ingroup system
+ *
  * @brief Contains utilities related to the battery of the system.
  *
  * @since 5.0.0

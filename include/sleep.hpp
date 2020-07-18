@@ -48,6 +48,8 @@ namespace centurion {
  * @brief Forces the currently executing thread to halt for at least the
  * specified amount of milliseconds.
  *
+ * @ingroup system
+ *
  * @note The actual time spent sleeping may differ, depending on the
  * scheduling of the operating system. You shouldn't use this method for
  * precise timing.

@@ -46,6 +46,8 @@ namespace centurion {
 /**
  * @enum mouse_button
  *
+ * @ingroup input
+ *
  * @brief Provides values that represent various mouse buttons.
  *
  * @since 3.1.0

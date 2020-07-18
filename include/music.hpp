@@ -48,6 +48,8 @@ namespace centurion {
 /**
  * @enum fade_status
  *
+ * @ingroup audio
+ *
  * @brief Mirrors the values of the `Mix_Fading` enum.
  *
  * @since 3.0.0
@@ -64,6 +66,8 @@ enum class fade_status {
  * @brief Indicates whether or not the fading status values represent are the
  * same.
  *
+ * @ingroup audio
+ *
  * @param lhs the left-hand side fading status value.
  * @param rhs the right-hand side fading status value.
  *
@@ -79,6 +83,8 @@ enum class fade_status {
 
 /**
  * @copydoc operator==(fade_status, Mix_Fading)
+ *
+ * @ingroup audio
  */
 [[nodiscard]] inline constexpr auto operator==(Mix_Fading lhs,
                                                fade_status rhs) noexcept -> bool
@@ -89,6 +95,8 @@ enum class fade_status {
 /**
  * @brief Indicates whether or not the fading status values represent aren't the
  * same.
+ *
+ * @ingroup audio
  *
  * @param lhs the left-hand side fading status value.
  * @param rhs the right-hand side fading status value.
@@ -106,6 +114,8 @@ enum class fade_status {
 
 /**
  * @copydoc operator!=(fade_status, Mix_Fading)
+ *
+ * @ingroup audio
  */
 [[nodiscard]] inline constexpr auto operator!=(Mix_Fading lhs,
                                                Mix_Fading rhs) noexcept -> bool
@@ -115,6 +125,8 @@ enum class fade_status {
 
 /**
  * @enum music_type
+ *
+ * @ingroup audio
  *
  * @brief Mirrors the values of the `Mix_MusicType` enum.
  *
@@ -137,6 +149,8 @@ enum class music_type {
 /**
  * @brief Indicates whether or not the music type values are the same.
  *
+ * @ingroup audio
+ *
  * @param lhs the left-hand side music type value.
  * @param rhs the right-hand side music type value.
  *
@@ -153,6 +167,8 @@ enum class music_type {
 
 /**
  * @copydoc operator==(music_type, Mix_MusicType)
+ *
+ * @ingroup audio
  */
 [[nodiscard]] inline constexpr auto operator==(Mix_MusicType lhs,
                                                music_type rhs) noexcept -> bool
@@ -162,6 +178,8 @@ enum class music_type {
 
 /**
  * @brief Indicates whether or not the music type values aren't the same.
+ *
+ * @ingroup audio
  *
  * @param lhs the left-hand side music type value.
  * @param rhs the right-hand side music type value.
@@ -179,6 +197,8 @@ enum class music_type {
 
 /**
  * @copydoc operator!=(music_type, Mix_MusicType)
+ *
+ * @ingroup audio
  */
 [[nodiscard]] inline constexpr auto operator!=(Mix_MusicType lhs,
                                                music_type rhs) noexcept -> bool
@@ -188,6 +208,8 @@ enum class music_type {
 
 /**
  * @class music
+ *
+ * @ingroup audio
  *
  * @brief Represents a music file.
  *

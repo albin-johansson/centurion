@@ -34,6 +34,12 @@
  * @copyright MIT License
  */
 
+/**
+ * @defgroup audio Audio
+ *
+ * @brief Contains the audio API, for playing as sound effects and music.
+ */
+
 #ifndef CENTURION_SOUND_EFFECT_HEADER
 #define CENTURION_SOUND_EFFECT_HEADER
 
@@ -47,6 +53,8 @@ namespace centurion {
 
 /**
  * @class sound_effect
+ *
+ * @ingroup audio
  *
  * @brief Represents a sound effect.
  *

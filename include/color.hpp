@@ -47,6 +47,8 @@ namespace centurion {
 /**
  * @class color
  *
+ * @ingroup graphics
+ *
  * @brief An 8-bit accuracy RGBA color.
  *
  * @details This class is designed to interact with the SDL colors,
@@ -237,10 +239,12 @@ class color final {
   }
 
   /**
-   * Converts the color to a pointer to a SDL_Color instance.
+   * @brief Converts the color to `const SDL_Color*`.
    *
-   * @return a pointer to the color instance reinterpreted as a SDL_Color
-   * instance.
+   * @warning The returned pointer is not to be freed or stored away!
+   *
+   * @return a reinterpreted pointer to the color instance.
+   *
    * @since 4.0,0
    */
   [[nodiscard]] explicit operator const SDL_Color*() const noexcept
@@ -267,6 +271,8 @@ inline auto color::to_string() const -> std::string
 /**
  * @brief Indicates whether or not the two colors are equal.
  *
+ * @ingroup graphics
+ *
  * @param lhs the left-hand side color.
  * @param rhs the right-hand side color.
  *
@@ -284,6 +290,8 @@ inline auto color::to_string() const -> std::string
 
 /**
  * @copydoc operator==(const color&, const color&)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(const color& lhs,
                                                const SDL_Color& rhs) noexcept
@@ -295,6 +303,8 @@ inline auto color::to_string() const -> std::string
 
 /**
  * @copydoc operator==(const color&, const color&)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(const SDL_Color& lhs,
                                                const color& rhs) noexcept
@@ -305,6 +315,8 @@ inline auto color::to_string() const -> std::string
 
 /**
  * @copybrief operator==(const color&, const color&)
+ *
+ * @ingroup graphics
  *
  * @note The alpha components are not taken into account.
  *
@@ -325,6 +337,8 @@ inline auto color::to_string() const -> std::string
 
 /**
  * @copydoc operator==(const color&, const SDL_MessageBoxColor&)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(const SDL_MessageBoxColor& lhs,
                                                const color& rhs) noexcept
@@ -335,6 +349,8 @@ inline auto color::to_string() const -> std::string
 
 /**
  * @brief Indicates whether or not the two colors aren't equal.
+ *
+ * @ingroup graphics
  *
  * @param lhs the left-hand side color.
  * @param rhs the right-hand side color.
@@ -352,6 +368,8 @@ inline auto color::to_string() const -> std::string
 
 /**
  * @copydoc operator!=(const color&, const color&)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(const color& lhs,
                                                const SDL_Color& rhs) noexcept
@@ -362,6 +380,8 @@ inline auto color::to_string() const -> std::string
 
 /**
  * @copydoc operator!=(const color&, const color&)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(const SDL_Color& lhs,
                                                const color& rhs) noexcept
@@ -372,6 +392,8 @@ inline auto color::to_string() const -> std::string
 
 /**
  * @copybrief operator!=(const color&, const color&)
+ *
+ * @ingroup graphics
  *
  * @note The alpha components are not taken into account.
  *
@@ -391,6 +413,8 @@ inline auto color::to_string() const -> std::string
 
 /**
  * @copydoc operator!=(const color&, const SDL_MessageBoxColor&)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(const SDL_MessageBoxColor& lhs,
                                                const color& rhs) noexcept

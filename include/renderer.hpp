@@ -37,7 +37,7 @@
 /**
  * @defgroup graphics Graphics
  *
- * @brief Contains components related to rendering and visuals.
+ * @brief Contains components related to rendering, visuals and windows.
  */
 
 #ifndef CENTURION_RENDERER_HEADER

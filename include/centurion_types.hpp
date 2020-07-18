@@ -72,6 +72,8 @@ using if_same_t = typename std::enable_if_t<std::is_same_v<T, U>>;
 /**
  * @typedef owner
  *
+ * @ingroup misc
+ *
  * @brief Tag used to denote ownership of raw pointers directly in code.
  *
  * @details If a function takes an `owner<T*>` as a parameter, then the
@@ -84,6 +86,8 @@ using owner = T;
 /**
  * @typedef czstring
  *
+ * @ingroup misc
+ *
  * @brief Alias for a const C-style null-terminated string.
  */
 using czstring = const char*;
@@ -91,12 +95,16 @@ using czstring = const char*;
 /**
  * @typedef zstring
  *
+ * @ingroup misc
+ *
  * @brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
 
 /**
  * @typedef nn_czstring
+ *
+ * @ingroup misc
  *
  * @brief Alias for a C-style null-terminated string that cannot be null.
  *
@@ -107,12 +115,16 @@ using nn_czstring = gsl::not_null<czstring>;
 /**
  * @var nothing
  *
+ * @ingroup misc
+ *
  * @brief A constant that is equal to `std::nullopt`.
  */
 inline constexpr std::nullopt_t nothing = std::nullopt;
 
 /**
  * @typedef u64
+ *
+ * @ingroup misc
  *
  * @brief Alias for a 64-bit unsigned integer.
  */
@@ -121,12 +133,16 @@ using u64 = Uint64;
 /**
  * @typedef u32
  *
+ * @ingroup misc
+ *
  * @brief Alias for a 32-bit unsigned integer.
  */
 using u32 = Uint32;
 
 /**
  * @typedef u16
+ *
+ * @ingroup misc
  *
  * @brief Alias for a 16-bit unsigned integer.
  */
@@ -135,12 +151,16 @@ using u16 = Uint16;
 /**
  * @typedef u8
  *
+ * @ingroup misc
+ *
  * @brief Alias for an 8-bit unsigned integer.
  */
 using u8 = Uint8;
 
 /**
  * @typedef i64
+ *
+ * @ingroup misc
  *
  * @brief Alias for a 64-bit signed integer.
  */
@@ -149,12 +169,16 @@ using i64 = Sint64;
 /**
  * @typedef i32
  *
+ * @ingroup misc
+ *
  * @brief Alias for a 32-bit signed integer.
  */
 using i32 = Sint32;
 
 /**
  * @typedef i16
+ *
+ * @ingroup misc
  *
  * @brief Alias for a 16-bit signed integer.
  */
@@ -163,12 +187,16 @@ using i16 = Sint16;
 /**
  * @typedef i8
  *
+ * @ingroup misc
+ *
  * @brief Alias for an 8-bit signed integer.
  */
 using i8 = Sint8;
 
 /**
  * @typedef seconds
+ *
+ * @ingroup misc
  *
  * @brief Templated alias for durations in seconds.
  */
@@ -178,6 +206,8 @@ using seconds = std::chrono::duration<T>;
 /**
  * @typedef milliseconds
  *
+ * @ingroup misc
+ *
  * @brief Templated alias for durations in milliseconds.
  */
 template <typename T>
@@ -185,6 +215,8 @@ using milliseconds = std::chrono::duration<T, std::milli>;
 
 /**
  * @typedef microseconds
+ *
+ * @ingroup misc
  *
  * @brief Templated alias for durations in microseconds.
  */
@@ -194,6 +226,8 @@ using microseconds = std::chrono::duration<T, std::micro>;
 /**
  * @typedef nanoseconds
  *
+ * @ingroup misc
+ *
  * @brief Templated alias for durations in nanoseconds.
  */
 template <typename T>
@@ -201,6 +235,8 @@ using nanoseconds = std::chrono::duration<T, std::nano>;
 
 /**
  * @typedef minutes
+ *
+ * @ingroup misc
  *
  * @brief Templated alias for durations in minutes.
  */

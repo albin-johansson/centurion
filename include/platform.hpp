@@ -35,6 +35,12 @@
  * @copyright MIT License
  */
 
+/**
+ * @defgroup system System
+ *
+ * @brief Contains various utilities related to system resources.
+ */
+
 #ifndef CENTURION_PLATFORM_HEADER
 #define CENTURION_PLATFORM_HEADER
 
@@ -49,6 +55,8 @@
 /**
  * @namespace centurion::platform
  *
+ * @ingroup system
+ *
  * @brief Contains utilities related to platform information.
  *
  * @since 5.0.0
@@ -59,6 +67,8 @@ namespace centurion::platform {
 
 /**
  * @enum platform_id
+ *
+ * @ingroup system
  *
  * @brief Provides values that represent various different operating
  * systems.

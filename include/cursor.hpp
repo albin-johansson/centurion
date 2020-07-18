@@ -52,6 +52,8 @@ namespace centurion {
 /**
  * @enum system_cursor
  *
+ * @ingroup graphics
+ *
  * @brief Represents the various available system cursors.
  *
  * @details Mirrors the values of the `SDL_SystemCursor` enum.
@@ -80,6 +82,8 @@ enum class system_cursor {
 /**
  * @brief Indicates whether or not two system cursor values are the same.
  *
+ * @ingroup graphics
+ *
  * @param lhs the left-hand side system cursor value.
  * @param rhs the right-hand side system cursor value.
  *
@@ -96,6 +100,8 @@ enum class system_cursor {
 
 /**
  * @copydoc operator==(system_cursor, SDL_SystemCursor)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_SystemCursor lhs,
                                                system_cursor rhs) noexcept
@@ -106,6 +112,8 @@ enum class system_cursor {
 
 /**
  * @brief Indicates whether or not two system cursor values aren't the same.
+ *
+ * @ingroup graphics
  *
  * @param lhs the left-hand side system cursor value.
  * @param rhs the right-hand side system cursor value.
@@ -124,6 +132,8 @@ enum class system_cursor {
 
 /**
  * @copydoc operator!=(system_cursor, SDL_SystemCursor)
+ *
+ * @ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_SystemCursor lhs,
                                                system_cursor rhs) noexcept
@@ -134,6 +144,8 @@ enum class system_cursor {
 
 /**
  * @class cursor
+ *
+ * @ingroup graphics
  *
  * @brief Represents a mouse cursor.
  *

@@ -42,6 +42,8 @@
 /**
  * @namespace centurion::touch
  *
+ * @ingroup input
+ *
  * @brief Provides the touch API components and methods.
  *
  * @since 4.3.0

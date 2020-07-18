@@ -37,6 +37,8 @@ namespace centurion {
 /**
  * @class key_code
  *
+ * @ingroup input
+ *
  * @brief Represents a key code (virtual key).
  *
  * @details Key codes are mapped to the current layout of the keyboard and
@@ -139,7 +141,7 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  explicit key_code(gsl::not_null<czstring> name) noexcept
+  explicit key_code(nn_czstring name) noexcept
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
@@ -191,7 +193,7 @@ class key_code final {
    *
    * @since 5.0.0
    */
-  auto operator=(gsl::not_null<czstring> name) noexcept -> key_code&
+  auto operator=(nn_czstring name) noexcept -> key_code&
   {
     m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name));
     return *this;
@@ -275,6 +277,8 @@ class key_code final {
 /**
  * @brief Indicates whether or not two key codes are the same.
  *
+ * @ingroup input
+ *
  * @param lhs the left-hand side key code.
  * @param rhs the right-hand side key code.
  *
@@ -291,6 +295,8 @@ class key_code final {
 /**
  * @brief Indicates whether or not two key codes aren't the same.
  *
+ * @ingroup input
+ *
  * @param lhs the left-hand side key code.
  * @param rhs the right-hand side key code.
  *
@@ -306,6 +312,8 @@ class key_code final {
 
 /**
  * @namespace centurion::keycodes
+ *
+ * @ingroup input
  *
  * @brief Provides a collection of `key_code` constants.
  *

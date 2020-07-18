@@ -47,6 +47,8 @@
 /**
  * @namespace centurion::counter
  *
+ * @ingroup system
+ *
  * @brief Provides timing utilities.
  *
  * @since 5.0.0

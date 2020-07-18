@@ -49,6 +49,8 @@
 /**
  * @namespace centurion::colors
  *
+ * @ingroup graphics
+ *
  * @brief Contains pre-defined `color` constants.
  *
  * @see centurion::color

@@ -49,6 +49,8 @@ struct basic_area;
 /**
  * @struct basic_area
  *
+ * @ingroup geometry
+ *
  * @brief Simply represents an area with a width and height.
  *
  * @tparam T the type of the components of the area, defaults to float. Must

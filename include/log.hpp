@@ -43,6 +43,11 @@
 #include "centurion_utils.hpp"
 
 /**
+ * @addtogroup misc
+ * @{
+ */
+
+/**
  * @namespace centurion::log
  *
  * @brief Contains easy-to-use logging facilities.
@@ -552,6 +557,8 @@ auto get_priority(category category) noexcept -> log::priority;
 }
 
 }  // namespace centurion::log
+
+/// @}
 
 #ifdef CENTURION_HEADER_ONLY
 #include "log.cpp"

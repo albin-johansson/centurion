@@ -48,18 +48,17 @@ namespace centurion {
 /**
  * @class texture_loader
  *
+ * @ingroup graphics
+ *
  * @brief A small helper class useful for keeping renderers out of
  * logic-related code.
  *
  * @details
  *
- * This class is really just a wrapper around a reference to a
+ * This class is really just a wrapper around a pointer to a
  * renderer. Which means that you shouldn't really store away
- * `texture_loader`, unless you can guarantee that the internal reference is
- * always valid.
- *
- * **It is undefined behaviour to let a `texture_loader` instance
- * outlive the associated renderer.**
+ * `texture_loader`, unless you can guarantee that the internal pointer won't
+ * become a dangling pointer.
  *
  * The following snippet demonstrates how this class can be used.
  * @code{.cpp}
@@ -98,7 +97,8 @@ class texture_loader final {
    *
    * @since 5.0.0
    */
-  explicit texture_loader(renderer& renderer) noexcept : m_renderer{renderer} {}
+  explicit texture_loader(renderer& renderer) noexcept : m_renderer{&renderer}
+  {}
 
   /**
    * @brief Creates and returns a unique pointer to a texture.
@@ -115,7 +115,7 @@ class texture_loader final {
   template <typename... Args>
   [[nodiscard]] auto unique(Args&&... args) -> std::unique_ptr<texture>
   {
-    return texture::unique(m_renderer, std::forward<Args>(args)...);
+    return texture::unique(*m_renderer, std::forward<Args>(args)...);
   }
 
   /**
@@ -133,7 +133,7 @@ class texture_loader final {
   template <typename... Args>
   [[nodiscard]] auto shared(Args&&... args) -> std::shared_ptr<texture>
   {
-    return texture::shared(m_renderer, std::forward<Args>(args)...);
+    return texture::shared(*m_renderer, std::forward<Args>(args)...);
   }
 
   /**
@@ -151,11 +151,11 @@ class texture_loader final {
   template <typename... Args>
   [[nodiscard]] auto create(Args&&... args) -> texture
   {
-    return texture{m_renderer, std::forward<Args>(args)...};
+    return texture{*m_renderer, std::forward<Args>(args)...};
   }
 
  private:
-  renderer& m_renderer;
+  renderer* m_renderer;
 };
 
 }  // namespace centurion

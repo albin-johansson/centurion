@@ -122,7 +122,7 @@ script:
 deploy:
   provider: pages
   skip_cleanup: true
-  local_dir: doc/html
+  local_dir: doxygen-out/html
   github_token: $GH_REPO_TOKEN
   on:
     branch: master

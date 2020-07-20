@@ -9,23 +9,23 @@ TEST_CASE("DeviceType enum", "[Touch]")
 {
   SECTION("Operator ==")
   {
-    CHECK(DeviceType::Invalid == SDL_TOUCH_DEVICE_INVALID);
-    CHECK(DeviceType::Direct == SDL_TOUCH_DEVICE_DIRECT);
-    CHECK(DeviceType::IndirectAbsolute == SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE);
-    CHECK(DeviceType::IndirectRelative == SDL_TOUCH_DEVICE_INDIRECT_RELATIVE);
+    CHECK(device_type::invalid == SDL_TOUCH_DEVICE_INVALID);
+    CHECK(device_type::direct == SDL_TOUCH_DEVICE_DIRECT);
+    CHECK(device_type::indirect_absolute == SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE);
+    CHECK(device_type::indirect_relative == SDL_TOUCH_DEVICE_INDIRECT_RELATIVE);
 
-    CHECK(SDL_TOUCH_DEVICE_INVALID == DeviceType::Invalid);
-    CHECK(SDL_TOUCH_DEVICE_DIRECT == DeviceType::Direct);
-    CHECK(SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE == DeviceType::IndirectAbsolute);
-    CHECK(SDL_TOUCH_DEVICE_INDIRECT_RELATIVE == DeviceType::IndirectRelative);
+    CHECK(SDL_TOUCH_DEVICE_INVALID == device_type::invalid);
+    CHECK(SDL_TOUCH_DEVICE_DIRECT == device_type::direct);
+    CHECK(SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE == device_type::indirect_absolute);
+    CHECK(SDL_TOUCH_DEVICE_INDIRECT_RELATIVE == device_type::indirect_relative);
 
-    CHECK(!(DeviceType::IndirectAbsolute == SDL_TOUCH_DEVICE_DIRECT));
+    CHECK(!(device_type::indirect_absolute == SDL_TOUCH_DEVICE_DIRECT));
   }
 
   SECTION("Operator !=")
   {
-    CHECK(DeviceType::Invalid != SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE);
-    CHECK(SDL_TOUCH_DEVICE_DIRECT != DeviceType::Invalid);
+    CHECK(device_type::invalid != SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE);
+    CHECK(SDL_TOUCH_DEVICE_DIRECT != device_type::invalid);
   }
 }
 

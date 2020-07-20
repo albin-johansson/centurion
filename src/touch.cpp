@@ -2,28 +2,6 @@
 
 namespace centurion::touch {
 
-// TODO inline these operators
-
-auto operator==(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept -> bool
-{
-  return static_cast<SDL_TouchDeviceType>(lhs) == rhs;
-}
-
-auto operator==(SDL_TouchDeviceType lhs, DeviceType rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-auto operator!=(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-auto operator!=(SDL_TouchDeviceType lhs, DeviceType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
 auto num_devices() noexcept -> int
 {
   return SDL_GetNumTouchDevices();
@@ -39,9 +17,9 @@ auto get_device(int index) noexcept -> std::optional<SDL_TouchID>
   }
 }
 
-auto type_of(SDL_TouchID id) noexcept -> DeviceType
+auto type_of(SDL_TouchID id) noexcept -> device_type
 {
-  return static_cast<DeviceType>(SDL_GetTouchDeviceType(id));
+  return static_cast<device_type>(SDL_GetTouchDeviceType(id));
 }
 
 auto num_fingers(SDL_TouchID id) noexcept -> int

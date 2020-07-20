@@ -51,27 +51,28 @@
 namespace centurion::touch {
 
 /**
- * @enum DeviceType
+ * @enum device_type
+ *
  * @brief Mirrors the `SDL_TouchDeviceType` enum.
  *
  * @since 4.3.0
  *
- * @var DeviceType::Invalid
+ * @var device_type::invalid
  * Indicates an invalid touch device type.
- * @var DeviceType::Direct
+ * @var device_type::direct
  * Indicates a touch screen with window-relative coordinates.
- * @var DeviceType::IndirectAbsolute
+ * @var device_type::indirect_absolute
  * Indicates a trackpad with absolute device coordinates.
- * @var DeviceType::IndirectRelative
+ * @var device_type::indirect_relative
  * Indicates a trackpad with screen cursor-relative coordinates.
  *
  * @headerfile touch.hpp
  */
-enum class DeviceType {
-  Invalid = SDL_TOUCH_DEVICE_INVALID,
-  Direct = SDL_TOUCH_DEVICE_DIRECT,
-  IndirectAbsolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,
-  IndirectRelative = SDL_TOUCH_DEVICE_INDIRECT_RELATIVE
+enum class device_type {
+  invalid = SDL_TOUCH_DEVICE_INVALID,
+  direct = SDL_TOUCH_DEVICE_DIRECT,
+  indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,
+  indirect_relative = SDL_TOUCH_DEVICE_INDIRECT_RELATIVE
 };
 
 /**
@@ -84,34 +85,21 @@ enum class DeviceType {
  *
  * @since 4.3.0
  */
-CENTURION_QUERY
-auto operator==(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator==(device_type lhs,
+                                               SDL_TouchDeviceType rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_TouchDeviceType>(lhs) == rhs;
+}
 
 /**
- * @brief Indicates whether or not two touch device types are the same.
- *
- * @param lhs the left-hand side touch device type.
- * @param rhs the right-hand side touch device type.
- *
- * @return `true` if the values are the same; `false` otherwise.
- *
- * @since 4.3.0
+ * @copydoc operator==(device_type, SDL_TouchDeviceType)
  */
-CENTURION_QUERY
-auto operator==(SDL_TouchDeviceType lhs, DeviceType rhs) noexcept -> bool;
-
-/**
- * @brief Indicates whether or not two touch device types aren't the same.
- *
- * @param lhs the left-hand side touch device type.
- * @param rhs the right-hand side touch device type.
- *
- * @return `true` if the values aren't the same; `false` otherwise.
- *
- * @since 4.3.0
- */
-CENTURION_QUERY
-auto operator!=(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator==(SDL_TouchDeviceType lhs,
+                                               device_type rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
 
 /**
  * @brief Indicates whether or not two touch device types aren't the same.
@@ -123,8 +111,21 @@ auto operator!=(DeviceType lhs, SDL_TouchDeviceType rhs) noexcept -> bool;
  *
  * @since 4.3.0
  */
-CENTURION_QUERY
-auto operator!=(SDL_TouchDeviceType lhs, DeviceType rhs) noexcept -> bool;
+[[nodiscard]] inline constexpr auto operator!=(device_type lhs,
+                                               SDL_TouchDeviceType rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @copydoc operator!=(device_type, SDL_TouchDeviceType)
+ */
+[[nodiscard]] inline constexpr auto operator!=(SDL_TouchDeviceType lhs,
+                                               device_type rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 /**
  * @brief Returns the number of registered touch devices.
@@ -158,7 +159,7 @@ auto get_device(int index) noexcept -> std::optional<SDL_TouchID>;
  * @since 4.3.0
  */
 CENTURION_QUERY
-auto type_of(SDL_TouchID id) noexcept -> DeviceType;
+auto type_of(SDL_TouchID id) noexcept -> device_type;
 
 /**
  * @brief Returns the number of active fingers for a given touch device.

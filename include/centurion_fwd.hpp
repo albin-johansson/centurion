@@ -12,12 +12,13 @@
  *
  * @brief Provides forward declarations.
  *
- * @todo Provide more forward declarations.
+ * @since 5.0.0
  *
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
- * @since 5.0.0
  */
 
 namespace centurion {
@@ -44,6 +45,10 @@ class window;
 class window_view;
 
 class font;
+
+class font_cache;
+
+class unicode_string;
 
 class color;
 
@@ -76,14 +81,6 @@ namespace messagebox {
 class message_box;
 
 }
-
-namespace experimental {
-
-class font_cache;
-
-class unicode_string;
-
-}  // namespace experimental
 
 }  // namespace centurion
 

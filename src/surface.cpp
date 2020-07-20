@@ -172,11 +172,11 @@ auto surface::color_mod() const noexcept -> color
   return color{r, g, b};
 }
 
-auto surface::blend_mode() const noexcept -> enum blend_mode  //
-{                                                             //
-  SDL_BlendMode mode;                                         //
+auto surface::get_blend_mode() const noexcept -> blend_mode
+{
+  SDL_BlendMode mode;
   SDL_GetSurfaceBlendMode(m_surface, &mode);
-  return static_cast<enum blend_mode>(mode);
+  return static_cast<blend_mode>(mode);
 }
 
 auto surface::to_texture(const renderer& renderer) const -> texture
@@ -188,7 +188,8 @@ auto surface::convert(pixel_format format) const -> surface
 {
   const auto pixelFormat = static_cast<u32>(format);
   auto* converted = SDL_ConvertSurfaceFormat(m_surface, pixelFormat, 0);
-  SDL_SetSurfaceBlendMode(converted, static_cast<SDL_BlendMode>(blend_mode()));
+  SDL_SetSurfaceBlendMode(converted,
+                          static_cast<SDL_BlendMode>(get_blend_mode()));
   return surface{converted};
 }
 

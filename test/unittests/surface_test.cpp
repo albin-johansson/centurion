@@ -131,7 +131,7 @@ TEST_CASE("Surface::set_blend_mode", "[surface]")
   const auto mode = ctn::blend_mode::mod;
   surface.set_blend_mode(mode);
 
-  CHECK(mode == surface.blend_mode());
+  CHECK(mode == surface.get_blend_mode());
 }
 
 TEST_CASE("Surface::width", "[surface]")
@@ -204,7 +204,7 @@ TEST_CASE("Surface::convert", "[surface]")
   const auto pixelFormat = ctn::pixel_format::rgba8888;
   ctn::surface converted = original.convert(pixelFormat);
 
-  CHECK(converted.blend_mode() == original.blend_mode());
+  CHECK(converted.get_blend_mode() == original.get_blend_mode());
   CHECK(converted.alpha() == original.alpha());
   CHECK(converted.color_mod() == original.color_mod());
 }

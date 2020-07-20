@@ -108,6 +108,11 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
             /EHsc)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
+            /EHsc
+            /MP
+            /W3)
 endif ()
 
 message("------ LINKING TEST EXECUTABLE ------")

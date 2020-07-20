@@ -203,6 +203,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
             /EHsc
+            /MP
             /W3)
 endif ()
 

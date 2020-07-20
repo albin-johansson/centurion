@@ -216,7 +216,7 @@ class surface final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto blend_mode() const noexcept -> enum blend_mode;
+  auto get_blend_mode() const noexcept -> blend_mode;
 
   /**
    * @brief Converts the surface into its texture equivalent.

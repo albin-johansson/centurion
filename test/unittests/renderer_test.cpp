@@ -748,7 +748,6 @@ TEST_CASE("get_render_driver_info", "[renderer]")
 {
   CHECK(!ctn::get_render_driver_info(-1));
   CHECK(!ctn::get_render_driver_info(ctn::num_render_drivers()));
-  CHECK(!ctn::get_render_driver_info(0));
 }
 
 TEST_CASE("get", "[renderer]")

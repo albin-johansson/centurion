@@ -4,12 +4,6 @@
 
 #include "centurion_as_ctn.hpp"
 
-namespace centurion {
-
-using namespace centurion::experimental;
-
-}
-
 TEST_CASE("unicode_string default constructor", "[unicode_string]")
 {
   const ctn::unicode_string str;

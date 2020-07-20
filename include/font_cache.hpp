@@ -52,7 +52,7 @@
 #include "texture.hpp"
 #include "unicode_string.hpp"
 
-namespace centurion::experimental {
+namespace centurion {
 
 /**
  * @class font_cache
@@ -665,7 +665,7 @@ class font_cache final {
       -> texture;
 };
 
-}  // namespace centurion::experimental
+}  // namespace centurion
 
 #ifdef CENTURION_HEADER_ONLY
 #include "font_cache.cpp"

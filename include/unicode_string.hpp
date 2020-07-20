@@ -46,7 +46,7 @@
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 
-namespace centurion::experimental {
+namespace centurion {
 
 /**
  * @typedef unicode
@@ -407,6 +407,6 @@ inline constexpr auto operator""_uni(unsigned long long int i) noexcept
 
 }  // namespace literals
 
-}  // namespace centurion::experimental
+}  // namespace centurion
 
 #endif  // CENTURION_UNICODE_STRING_HEADER

@@ -5,7 +5,7 @@
 
 #include "renderer.hpp"
 
-namespace centurion::experimental {
+namespace centurion {
 
 CENTURION_DEF
 font_cache::font_cache(font&& font) noexcept : m_font{std::move(font)}
@@ -202,6 +202,6 @@ auto font_cache::try_get_cached(entt::id_type id) const noexcept
   }
 }
 
-}  // namespace centurion::experimental
+}  // namespace centurion
 
 #endif  // CENTURION_FONT_CACHE_SOURCE

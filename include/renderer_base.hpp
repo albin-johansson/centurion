@@ -548,9 +548,8 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto render_blended_unicode(
-      const experimental::unicode_string& str,
-      const font& font) -> texture
+  [[nodiscard]] auto render_blended_unicode(const unicode_string& str,
+                                            const font& font) -> texture
   {
     surface surface{TTF_RenderUNICODE_Blended(
         font.get(), str.data(), static_cast<SDL_Color>(get_color()))};
@@ -586,10 +585,9 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto render_blended_wrapped_unicode(
-      const experimental::unicode_string& str,
-      const font& font,
-      u32 wrap) -> texture
+  [[nodiscard]] auto render_blended_wrapped_unicode(const unicode_string& str,
+                                                    const font& font,
+                                                    u32 wrap) -> texture
   {
     surface surface{TTF_RenderUNICODE_Blended_Wrapped(
         font.get(), str.data(), static_cast<SDL_Color>(get_color()), wrap)};
@@ -622,10 +620,9 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto render_shaded_unicode(
-      const experimental::unicode_string& str,
-      const font& font,
-      const color& background) -> texture
+  [[nodiscard]] auto render_shaded_unicode(const unicode_string& str,
+                                           const font& font,
+                                           const color& background) -> texture
   {
     surface surface{
         TTF_RenderUNICODE_Shaded(font.get(),
@@ -659,9 +656,8 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto render_solid_unicode(
-      const experimental::unicode_string& str,
-      const font& font) -> texture
+  [[nodiscard]] auto render_solid_unicode(const unicode_string& str,
+                                          const font& font) -> texture
   {
     surface surface{TTF_RenderUNICODE_Solid(
         font.get(), str.data(), static_cast<SDL_Color>(get_color()))};
@@ -687,8 +683,8 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  auto render_glyph(const experimental::font_cache& cache,
-                    experimental::unicode glyph,
+  auto render_glyph(const font_cache& cache,
+                    unicode glyph,
                     const point_i& position) -> int
   {
     const auto& [texture, glyphMetrics] = cache.at(glyph);
@@ -713,8 +709,8 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  void render_unicode(const experimental::font_cache& cache,
-                      const experimental::unicode_string& str,
+  void render_unicode(const font_cache& cache,
+                      const unicode_string& str,
                       point_i position)
   {
     const auto originalX = position.x();
@@ -751,7 +747,7 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  void render_text(const experimental::font_cache& cache,
+  void render_text(const font_cache& cache,
                    std::string_view str,
                    point_i position)
   {

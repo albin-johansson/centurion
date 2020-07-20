@@ -18,6 +18,12 @@ auto font_cache::unique(font&& font) -> std::unique_ptr<font_cache>
 }
 
 CENTURION_DEF
+auto font_cache::shared(font&& font) -> std::shared_ptr<font_cache>
+{
+  return std::make_shared<font_cache>(std::move(font));
+}
+
+CENTURION_DEF
 auto font_cache::create_glyph_texture(renderer& renderer, unicode glyph)
     -> texture
 {

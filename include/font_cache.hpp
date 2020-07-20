@@ -127,14 +127,65 @@ class font_cache final {
   explicit font_cache(Args&&... args) : m_font{std::forward<Args>(args)...}
   {}
 
+  /**
+   * @copydoc font_cache(font&&)
+   */
   CENTURION_QUERY
   static auto unique(font&& font) -> std::unique_ptr<font_cache>;
+
+  /**
+   * @brief Creates and returns a unique pointer to a font cache instance.
+   *
+   * @details Creates an empty font cache, and creates the associated font
+   * in-place.
+   *
+   * @tparam Args the types of the arguments forwarded to the font constructor.
+   *
+   * @param args the arguments that will be forwarded to the font constructor.
+   *
+   * @return a unique pointer to a font cache.
+   *
+   * @since 5.0.0
+   */
+  template <typename... Args>
+  [[nodiscard]] static auto unique(Args&&... args)
+      -> std::unique_ptr<font_cache>
+  {
+    return std::make_unique<font_cache>(std::forward<Args>(args)...);
+  }
+
+  /**
+   * @copydoc font_cache(font&&)
+   */
+  CENTURION_QUERY
+  static auto shared(font&& font) -> std::shared_ptr<font_cache>;
+
+  /**
+   * @brief Creates and returns a shared pointer to a font cache instance.
+   *
+   * @details Creates an empty font cache, and creates the associated font
+   * in-place.
+   *
+   * @tparam Args the types of the arguments forwarded to the font constructor.
+   *
+   * @param args the arguments that will be forwarded to the font constructor.
+   *
+   * @return a shared pointer to a font cache.
+   *
+   * @since 5.0.0
+   */
+  template <typename... Args>
+  [[nodiscard]] static auto shared(Args&&... args)
+      -> std::shared_ptr<font_cache>
+  {
+    return std::make_shared<font_cache>(std::forward<Args>(args)...);
+  }
 
   /**
    * @name String caching
    * Methods for caching strings encoded in UTF-8, Latin-1 or Unicode.
    */
-  /**@{*/
+  ///@{
 
   /**
    * @brief Caches the supplied Unicode string as a texture.
@@ -192,13 +243,13 @@ class font_cache final {
                           entt::id_type id,
                           std::string_view str);
 
-  /**@}*/  // end of string caching
+  ///@}  // end of string caching
 
   /**
    * @name Glyph caching
-   * Methods for caching Unicode glyph textures.
+   * Methods related to cached Unicode glyph textures.
    */
-  /**@{*/
+  ///@{
 
   CENTURION_API
   void add_glyph(renderer& renderer, unicode glyph);
@@ -262,8 +313,6 @@ class font_cache final {
   CENTURION_API
   void cache_latin1(renderer& renderer);
 
-  /**@}*/  // end of glyph caching
-
   /**
    * @brief Indicates whether or not the specified glyph has been cached.
    *
@@ -300,6 +349,43 @@ class font_cache final {
   {
     return m_glyphs.at(glyph);
   }
+
+  /**
+   * @brief Returns the data associated with the specified glyph.
+   *
+   * @note This function is equivalent to calling `at`.
+   *
+   * @pre `glyph` **must** have been previously cached.
+   *
+   * @details The recommended way to use this method is with structured
+   * bindings, as in the following example.
+   * @code{.cpp}
+   *   ctn::font_cache cache = ...;
+   *   const auto& [cachedTexture, glyphMetrics] = cache['A'];
+   * @endcode
+   *
+   * @param glyph the desired glyph to lookup the data for.
+   *
+   * @return the cached texture and metrics associated with the glyph.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto operator[](unicode glyph) const -> const glyph_data&
+  {
+    return at(glyph);
+  }
+
+  [[nodiscard]] auto metrics(unicode glyph) -> glyph_metrics&
+  {
+    return m_glyphs.at(glyph).metrics;
+  }
+
+  [[nodiscard]] auto metrics(unicode glyph) const -> const glyph_metrics&
+  {
+    return m_glyphs.at(glyph).metrics;
+  }
+
+  ///@}  // end of glyph caching
 
   /**
    * @brief Returns a pointer to the texture associated with the specified key.

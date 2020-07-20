@@ -1,11 +1,7 @@
-#ifndef CENTURION_PLATFORM_SOURCE
-#define CENTURION_PLATFORM_SOURCE
-
 #include "platform.hpp"
 
 namespace centurion::platform {
 
-CENTURION_DEF
 auto id() noexcept -> platform_id
 {
   const auto platformName = name();
@@ -29,7 +25,6 @@ auto id() noexcept -> platform_id
   }
 }
 
-CENTURION_DEF
 auto name() noexcept -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
@@ -41,5 +36,3 @@ auto name() noexcept -> std::optional<std::string>
 }
 
 }  // namespace centurion::platform
-
-#endif  // CENTURION_PLATFORM_SOURCE

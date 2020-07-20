@@ -1,28 +1,21 @@
-#ifndef CENTURION_MOUSE_STATE_SOURCE
-#define CENTURION_MOUSE_STATE_SOURCE
-
 #include "mouse_state.hpp"
 
 #include "centurion_utils.hpp"
 
 namespace centurion::input {
 
-CENTURION_DEF
 mouse_state::mouse_state() noexcept = default;
 
-CENTURION_DEF
 auto mouse_state::unique() -> std::unique_ptr<mouse_state>
 {
   return std::make_unique<mouse_state>();
 }
 
-CENTURION_DEF
 auto mouse_state::shared() -> std::shared_ptr<mouse_state>
 {
   return std::make_shared<mouse_state>();
 }
 
-CENTURION_DEF
 void mouse_state::update(int windowWidth, int windowHeight) noexcept
 {
   windowWidth = (windowWidth < 1) ? 1 : windowWidth;
@@ -53,14 +46,12 @@ void mouse_state::update(int windowWidth, int windowHeight) noexcept
   }
 }
 
-CENTURION_DEF
 void mouse_state::reset() noexcept
 {
   m_logicalWidth = 1;
   m_logicalHeight = 1;
 }
 
-CENTURION_DEF
 void mouse_state::set_logical_width(int logicalWidth) noexcept
 {
   if (logicalWidth <= 0) {
@@ -69,7 +60,6 @@ void mouse_state::set_logical_width(int logicalWidth) noexcept
   this->m_logicalWidth = logicalWidth;
 }
 
-CENTURION_DEF
 void mouse_state::set_logical_height(int logicalHeight) noexcept
 {
   if (logicalHeight <= 0) {
@@ -78,24 +68,19 @@ void mouse_state::set_logical_height(int logicalHeight) noexcept
   this->m_logicalHeight = logicalHeight;
 }
 
-CENTURION_DEF
 auto mouse_state::was_left_button_released() const noexcept -> bool
 {
   return !m_leftPressed && m_prevLeftPressed;
 }
 
-CENTURION_DEF
 auto mouse_state::was_right_button_released() const noexcept -> bool
 {
   return !m_rightPressed && m_prevRightPressed;
 }
 
-CENTURION_DEF
 auto mouse_state::was_mouse_moved() const noexcept -> bool
 {
   return (m_mouseX != m_oldX) || (m_mouseY != m_oldY);
 }
 
 }  // namespace centurion::input
-
-#endif  // CENTURION_MOUSE_STATE_SOURCE

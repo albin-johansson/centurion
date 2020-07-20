@@ -1,6 +1,3 @@
-#ifndef CENTURION_MESSAGE_BOX_SOURCE
-#define CENTURION_MESSAGE_BOX_SOURCE
-
 #include "message_box.hpp"
 
 #include "centurion_utils.hpp"
@@ -31,7 +28,6 @@ inline auto create_button_data(button_data_hint hint,
 
 }  // namespace
 
-CENTURION_DEF
 color_scheme::color_scheme() noexcept
 {
   set_color(color_type::background, colors::black);
@@ -40,23 +36,19 @@ color_scheme::color_scheme() noexcept
   set_color(color_type::button_selected, colors::black);
 }
 
-CENTURION_DEF
 void color_scheme::set_color(color_type type, const color& color) noexcept
 {
   m_scheme.colors[index(type)] = static_cast<SDL_MessageBoxColor>(color);
 }
 
-CENTURION_DEF
 auto color_scheme::convert() const noexcept -> SDL_MessageBoxColorScheme
 {
   return m_scheme;
 }
 
-CENTURION_DEF
 message_box::message_box() : m_config{std::make_unique<message_box_config>()}
 {}
 
-CENTURION_DEF
 message_box::message_box(czstring title, czstring message) : message_box{}
 
 {
@@ -64,7 +56,6 @@ message_box::message_box(czstring title, czstring message) : message_box{}
   set_message(message);
 }
 
-CENTURION_DEF
 auto message_box::create_buttons() const noexcept
     -> std::vector<SDL_MessageBoxButtonData>
 {
@@ -78,7 +69,6 @@ auto message_box::create_buttons() const noexcept
   return result;
 }
 
-CENTURION_DEF
 auto message_box::create_data(SDL_Window* window,
                               const SDL_MessageBoxButtonData* data,
                               const SDL_MessageBoxColorScheme* scheme)
@@ -95,7 +85,6 @@ auto message_box::create_data(SDL_Window* window,
           scheme};
 }
 
-CENTURION_DEF
 auto message_box::show(SDL_Window* window) -> int
 {
   if (m_buttons.empty()) {
@@ -121,7 +110,6 @@ auto message_box::show(SDL_Window* window) -> int
   return button;
 }
 
-CENTURION_DEF
 void message_box::show(czstring title,
                        czstring message,
                        const message_box_config& config,
@@ -135,7 +123,6 @@ void message_box::show(czstring title,
                            window);
 }
 
-CENTURION_DEF
 void message_box::add_button(button_data_hint hint,
                              int id,
                              czstring text) noexcept
@@ -143,48 +130,39 @@ void message_box::add_button(button_data_hint hint,
   m_buttons.emplace_back(create_button_data(hint, id, text));
 }
 
-CENTURION_DEF
 void message_box::set_title(czstring title) noexcept
 {
   m_title = title ? title : m_title;
 }
 
-CENTURION_DEF
 void message_box::set_message(czstring message) noexcept
 {
   m_message = message ? message : m_message;
 }
 
-CENTURION_DEF
 void message_box::set_type(type type) noexcept
 {
   m_config->type = type;
 }
 
-CENTURION_DEF
 void message_box::set_button_order(button_order order) noexcept
 {
   m_config->buttonOrder = order;
 }
 
-CENTURION_DEF
 void message_box::set_color_scheme(std::optional<color_scheme> scheme) noexcept
 {
   this->m_colorScheme = scheme;
 }
 
-CENTURION_DEF
 auto message_box::get_type() const noexcept -> message_box::type
 {
   return m_config->type;
 }
 
-CENTURION_DEF
 auto message_box::get_button_order() const noexcept -> message_box::button_order
 {
   return m_config->buttonOrder;
 }
 
 }  // namespace centurion::messagebox
-
-#endif  // CENTURION_MESSAGE_BOX_SOURCE

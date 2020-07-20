@@ -1,26 +1,19 @@
-#ifndef CENTURION_EVENT_SOURCE
-#define CENTURION_EVENT_SOURCE
-
 #include "event.hpp"
 
 namespace centurion {
 
-CENTURION_DEF
 event::event() noexcept = default;
 
-CENTURION_DEF
 event::event(const SDL_Event& event) noexcept : m_event{event}
 {
   update_data();
 }
 
-CENTURION_DEF
 event::event(SDL_Event&& event) noexcept : m_event{event}
 {
   update_data();
 }
 
-CENTURION_DEF
 void event::update_data() noexcept
 {
   const auto t = type();
@@ -100,33 +93,28 @@ void event::update_data() noexcept
   }
 }
 
-CENTURION_DEF
 void event::refresh() noexcept
 {
   SDL_PumpEvents();
 }
 
-CENTURION_DEF
 void event::push(event& event) noexcept
 {
   SDL_Event& sdlEvent = event.m_event;
   SDL_PushEvent(&sdlEvent);
 }
 
-CENTURION_DEF
 void event::flush() noexcept
 {
   SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 }
 
-CENTURION_DEF
 void event::flush_all() noexcept
 {
   SDL_PumpEvents();
   SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 }
 
-CENTURION_DEF
 auto event::poll() noexcept -> bool
 {
   const bool result = SDL_PollEvent(&m_event);
@@ -136,12 +124,9 @@ auto event::poll() noexcept -> bool
   return result;
 }
 
-CENTURION_DEF
 auto event::type() const noexcept -> event_type
 {
   return static_cast<event_type>(m_event.type);
 }
 
 }  // namespace centurion
-
-#endif  // CENTURION_EVENT_SOURCE

@@ -1,13 +1,9 @@
-#ifndef CENTURION_CENTURION_SOURCE
-#define CENTURION_CENTURION_SOURCE
-
 #include "centurion.hpp"
 
 #include "error.hpp"
 
 namespace centurion {
 
-CENTURION_DEF
 void centurion_lib::init_sdl()
 {
   const auto result = SDL_Init(m_cfg.coreFlags);
@@ -16,7 +12,6 @@ void centurion_lib::init_sdl()
   }
 }
 
-CENTURION_DEF
 void centurion_lib::init_ttf()
 {
   const auto result = TTF_Init();
@@ -25,7 +20,6 @@ void centurion_lib::init_ttf()
   }
 }
 
-CENTURION_DEF
 void centurion_lib::init_img()
 {
   const auto flags = IMG_Init(m_cfg.imageFlags);
@@ -34,7 +28,6 @@ void centurion_lib::init_img()
   }
 }
 
-CENTURION_DEF
 void centurion_lib::init_mix()
 {
   const auto flags = Mix_Init(m_cfg.mixerFlags);
@@ -50,25 +43,21 @@ void centurion_lib::init_mix()
   }
 }
 
-CENTURION_DEF
 centurion_lib::centurion_lib()
 {
   init();
 }
 
-CENTURION_DEF
 centurion_lib::centurion_lib(const centurion_config& cfg) : m_cfg{cfg}
 {
   init();
 }
 
-CENTURION_DEF
 centurion_lib::~centurion_lib() noexcept
 {
   close();
 }
 
-CENTURION_DEF
 void centurion_lib::init()
 {
   if (m_cfg.initCore) {
@@ -103,7 +92,6 @@ void centurion_lib::init()
   }
 }
 
-CENTURION_DEF
 void centurion_lib::close() noexcept
 {
   if (m_cfg.initImage) {
@@ -125,5 +113,3 @@ void centurion_lib::close() noexcept
 }
 
 }  // namespace centurion
-
-#endif  // CENTURION_CENTURION_SOURCE

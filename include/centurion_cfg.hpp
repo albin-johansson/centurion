@@ -41,23 +41,6 @@
 #ifndef CENTURION_CFG_HEADER
 #define CENTURION_CFG_HEADER
 
-// TODO ditch header-only support
-//#define CENTURION_HEADER_ONLY
-
-#ifdef CENTURION___DOXYGEN
-/**
- * @def CENTURION_HEADER_ONLY
- * @brief Indicates whether or not the header-only mode should be used.
- *
- * @details If defined, the library will be usable without compiling it as a
- * shared library.
- *
- * @note You have to include the source files of the library when using the
- * library in the "header-only" mode.
- *
- * @headerfile centurion_cfg.hpp
- */
-#define CENTURION_HEADER_ONLY
-#endif  // CENTURION___DOXYGEN
+// As of v5.0.0, this file is empty :(
 
 #endif  // CENTURION_CFG_HEADER

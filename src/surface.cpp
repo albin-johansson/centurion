@@ -1,6 +1,3 @@
-#ifndef CENTURION_SURFACE_SOURCE
-#define CENTURION_SURFACE_SOURCE
-
 #include "surface.hpp"
 
 #include <SDL_image.h>
@@ -10,7 +7,6 @@
 
 namespace centurion {
 
-CENTURION_DEF
 surface::surface(czstring file)
 {
   if (!file) {
@@ -22,7 +18,6 @@ surface::surface(czstring file)
   }
 }
 
-CENTURION_DEF
 surface::surface(owner<SDL_Surface*> surface)
 {
   if (!surface) {
@@ -32,25 +27,21 @@ surface::surface(owner<SDL_Surface*> surface)
   }
 }
 
-CENTURION_DEF
 surface::surface(const surface& other)
 {
   copy(other);
 }
 
-CENTURION_DEF
 surface::surface(surface&& other) noexcept
 {
   move(std::move(other));
 }
 
-CENTURION_DEF
 surface::~surface() noexcept
 {
   destroy();
 }
 
-CENTURION_DEF
 auto surface::operator=(surface&& other) noexcept -> surface&
 {
   if (this != &other) {
@@ -59,7 +50,6 @@ auto surface::operator=(surface&& other) noexcept -> surface&
   return *this;
 }
 
-CENTURION_DEF
 auto surface::operator=(const surface& other) -> surface&
 {
   if (this != &other) {
@@ -68,7 +58,6 @@ auto surface::operator=(const surface& other) -> surface&
   return *this;
 }
 
-CENTURION_DEF
 void surface::destroy() noexcept
 {
   if (m_surface) {
@@ -76,7 +65,6 @@ void surface::destroy() noexcept
   }
 }
 
-CENTURION_DEF
 void surface::move(surface&& other) noexcept
 {
   destroy();
@@ -84,27 +72,23 @@ void surface::move(surface&& other) noexcept
   other.m_surface = nullptr;
 }
 
-CENTURION_DEF
 void surface::copy(const surface& other)
 {
   destroy();
   m_surface = other.copy_surface();
 }
 
-CENTURION_DEF
 auto surface::in_bounds(const point_i& point) const noexcept -> bool
 {
   return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
            point.y() >= height());
 }
 
-CENTURION_DEF
 auto surface::must_lock() const noexcept -> bool
 {
   return SDL_MUSTLOCK(m_surface);
 }
 
-CENTURION_DEF
 auto surface::lock() noexcept -> bool
 {
   if (must_lock()) {
@@ -115,7 +99,6 @@ auto surface::lock() noexcept -> bool
   }
 }
 
-CENTURION_DEF
 void surface::unlock() noexcept
 {
   if (must_lock()) {
@@ -123,7 +106,6 @@ void surface::unlock() noexcept
   }
 }
 
-CENTURION_DEF
 auto surface::copy_surface() const -> owner<SDL_Surface*>
 {
   auto* copy = SDL_DuplicateSurface(m_surface);
@@ -134,7 +116,6 @@ auto surface::copy_surface() const -> owner<SDL_Surface*>
   }
 }
 
-CENTURION_DEF
 void surface::set_pixel(const point_i& pixel, const color& color) noexcept
 {
   if (!in_bounds(pixel)) {
@@ -162,25 +143,21 @@ void surface::set_pixel(const point_i& pixel, const color& color) noexcept
   unlock();
 }
 
-CENTURION_DEF
 void surface::set_alpha(u8 alpha) noexcept
 {
   SDL_SetSurfaceAlphaMod(m_surface, alpha);
 }
 
-CENTURION_DEF
 void surface::set_color_mod(const color& color) noexcept
 {
   SDL_SetSurfaceColorMod(m_surface, color.red(), color.green(), color.blue());
 }
 
-CENTURION_DEF
 void surface::set_blend_mode(enum blend_mode mode) noexcept
 {
   SDL_SetSurfaceBlendMode(m_surface, static_cast<SDL_BlendMode>(mode));
 }
 
-CENTURION_DEF
 auto surface::alpha() const noexcept -> u8
 {
   u8 alpha = 0xFF;
@@ -188,7 +165,6 @@ auto surface::alpha() const noexcept -> u8
   return alpha;
 }
 
-CENTURION_DEF
 auto surface::color_mod() const noexcept -> color
 {
   u8 r = 0, g = 0, b = 0;
@@ -196,7 +172,6 @@ auto surface::color_mod() const noexcept -> color
   return color{r, g, b};
 }
 
-CENTURION_DEF
 auto surface::blend_mode() const noexcept -> enum blend_mode  //
 {                                                             //
   SDL_BlendMode mode;                                         //
@@ -204,13 +179,11 @@ auto surface::blend_mode() const noexcept -> enum blend_mode  //
   return static_cast<enum blend_mode>(mode);
 }
 
-CENTURION_DEF
 auto surface::to_texture(const renderer& renderer) const -> texture
 {
   return texture{SDL_CreateTextureFromSurface(renderer.get(), m_surface)};
 }
 
-CENTURION_DEF
 auto surface::convert(pixel_format format) const -> surface
 {
   const auto pixelFormat = static_cast<u32>(format);
@@ -220,5 +193,3 @@ auto surface::convert(pixel_format format) const -> surface
 }
 
 }  // namespace centurion
-
-#endif  // CENTURION_SURFACE_SOURCE

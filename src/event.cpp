@@ -3,15 +3,10 @@
 
 #include "event.hpp"
 
-#include <utility>
-
 namespace centurion {
 
 CENTURION_DEF
-event::event() noexcept
-{
-  m_data.emplace<std::monostate>();
-}
+event::event() noexcept = default;
 
 CENTURION_DEF
 event::event(const SDL_Event& event) noexcept : m_event{event}

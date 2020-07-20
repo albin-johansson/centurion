@@ -3405,7 +3405,7 @@ class event final {
                text_input_event,
                touch_finger_event,
                window_event>
-      m_data;
+      m_data{};
 
   void update_data() noexcept;
 };

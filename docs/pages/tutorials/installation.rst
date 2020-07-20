@@ -7,14 +7,6 @@ If you've ever used SDL2
 before, then this tutorial might be a little basic. This tutorial assumes that you are using CMake
 as your build system, and that you've got SDL2 installed and ready.
 
-.. note::
-
-  The recommended way to use Centurion is as a shared library. Linking against a shared library
-  should already be familiar to you if you've ever used SDL before.
-
-As Shared Library
------------------
-
 Download the latest release of Centurion `here <https://github.com/albin-johansson/Centurion/releases>`_.
 Select and download "Source code" as either a zip or tar archive depending on your platform. It
 doesn't really matter, the contents are the same. Now, we also need to download the appropriate
@@ -110,47 +102,5 @@ By now, everything should be in order for you to start using Centurion!
     ├───lib
     │   └───centurion
     │       └───centurion.hpp
-    │       └───...
-    └───CMakeLists.txt
-
-
-As "Header-only"
-----------------
-
-If you, for some reason, don't want to use Centurion as a shared library, you can actually use it
-as if it was a header-only library! There are some downsides, such as needing to include a lot
-more source files and longer compilation times. On the other hand, you *might* see slightly
-improved performance due to more inlining. However, no guarantees.
-
-Download the latest release of Centurion from
-`here <https://github.com/albin-johansson/Centurion/releases>`_. You don't need to download
-anything else that the source code archive. Extract the contents of the archive and put the
-headers and the source files (located in the ``include`` and ``src`` directories, respectively) in
-the library directory of your project. Furthermore, also include the headers in the ``lib``
-directory, since Centurion has external dependencies.
-
-Just like with the shared library approach, include the Centurion sources with the following line
-. This needs to be done for the external libraries as well.
-
-.. code-block:: cmake
-
-  target_include_directories(your-target SYSTEM PUBLIC ${CENTURION_PATH})
-
-Furthermore, you need to tell the Centurion library to go into header-only mode. This is
-accomplished by defining the ``CENTURION_HEADER_ONLY`` macro in the ``centurion_cfg.hpp`` header.
-
-This should be all you need to do to use the library!
-
-.. note::
-
-  The structure of your project assumed by this tutorial is illustrated in the following diagram.
-
-::
-
-    your-project
-    ├───lib
-    │   └───centurion
-    │       └───centurion.hpp
-    │       └───centurion.cpp
     │       └───...
     └───CMakeLists.txt

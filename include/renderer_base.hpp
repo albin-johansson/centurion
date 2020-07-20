@@ -1048,11 +1048,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_color(const color& color) noexcept
-  {
-    SDL_SetRenderDrawColor(
-        m_renderer, color.red(), color.green(), color.blue(), color.alpha());
-  }
+  CENTURION_API
+  void set_color(const color& color) noexcept;
 
   /**
    * @brief Sets the clipping area rectangle.
@@ -1063,14 +1060,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_clip(std::optional<rect_i> area) noexcept
-  {
-    if (area) {
-      SDL_RenderSetClipRect(m_renderer, static_cast<const SDL_Rect*>(*area));
-    } else {
-      SDL_RenderSetClipRect(m_renderer, nullptr);
-    }
-  }
+  CENTURION_API
+  void set_clip(std::optional<rect_i> area) noexcept;
 
   /**
    * @brief Sets the viewport that will be used by the renderer.
@@ -1079,10 +1070,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_viewport(const rect_i& viewport) noexcept
-  {
-    SDL_RenderSetViewport(m_renderer, static_cast<const SDL_Rect*>(viewport));
-  }
+  CENTURION_API
+  void set_viewport(const rect_i& viewport) noexcept;
 
   /**
    * @brief Sets the blend mode that will be used by the renderer.
@@ -1091,10 +1080,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_blend_mode(blend_mode mode) noexcept
-  {
-    SDL_SetRenderDrawBlendMode(m_renderer, static_cast<SDL_BlendMode>(mode));
-  }
+  CENTURION_API
+  void set_blend_mode(blend_mode mode) noexcept;
 
   /**
    * @brief Sets the rendering target of the renderer.
@@ -1102,19 +1089,13 @@ class renderer_base {
    * @details The supplied texture must support being a render target.
    * Otherwise, this method will reset the render target.
    *
-   * @param texture a pointer to the new target texture; `nullptr` indicates
+   * @param target a pointer to the new target texture; `nullptr` indicates
    * that the default rendering target should be used.
    *
    * @since 3.0.0
    */
-  void set_target(const texture* texture) noexcept
-  {
-    if (texture && texture->is_target()) {
-      SDL_SetRenderTarget(m_renderer, texture->get());
-    } else {
-      SDL_SetRenderTarget(m_renderer, nullptr);
-    }
-  }
+  CENTURION_API
+  void set_target(const texture* target) noexcept;
 
   /**
    * @brief Sets the rendering scale.
@@ -1127,12 +1108,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_scale(float xScale, float yScale) noexcept
-  {
-    if (xScale > 0 && yScale > 0) {
-      SDL_RenderSetScale(m_renderer, xScale, yScale);
-    }
-  }
+  CENTURION_API
+  void set_scale(float xScale, float yScale) noexcept;
 
   /**
    * @brief Sets the logical size used by the renderer.
@@ -1148,12 +1125,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_logical_size(const area_i& size) noexcept
-  {
-    if (size.width > 0 && size.height > 0) {
-      SDL_RenderSetLogicalSize(m_renderer, size.width, size.height);
-    }
-  }
+  CENTURION_API
+  void set_logical_size(const area_i& size) noexcept;
 
   /**
    * @brief Sets whether or not to force integer scaling for the logical
@@ -1167,11 +1140,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_logical_integer_scale(bool useLogicalIntegerScale) noexcept
-  {
-    SDL_RenderSetIntegerScale(m_renderer,
-                              detail::convert_bool(useLogicalIntegerScale));
-  }
+  CENTURION_API
+  void set_logical_integer_scale(bool useLogicalIntegerScale) noexcept;
 
   /**
    * @brief Returns the logical width that the renderer uses.
@@ -1184,12 +1154,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto logical_width() const noexcept -> int
-  {
-    int width = 0;
-    SDL_RenderGetLogicalSize(m_renderer, &width, nullptr);
-    return width;
-  }
+  CENTURION_QUERY
+  auto logical_width() const noexcept -> int;
 
   /**
    * @brief Returns the logical height that the renderer uses.
@@ -1202,30 +1168,21 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto logical_height() const noexcept -> int
-  {
-    int height = 0;
-    SDL_RenderGetLogicalSize(m_renderer, nullptr, &height);
-    return height;
-  }
+  CENTURION_QUERY
+  auto logical_height() const noexcept -> int;
 
   /**
    * @brief Returns the size of the logical (virtual) viewport.
    *
-   * @note calling this method once is faster than calling `logical_width`
+   * @note calling this method once is faster than calling both `logical_width`
    * and `logical_height` for obtaining the size.
    *
    * @return the size of the logical (virtual) viewport.
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto logical_size() const noexcept -> area_i
-  {
-    int width{};
-    int height{};
-    SDL_RenderGetLogicalSize(m_renderer, &width, &height);
-    return {width, height};
-  }
+  CENTURION_QUERY
+  auto logical_size() const noexcept -> area_i;
 
   /**
    * @brief Returns the x-axis scale that the renderer uses.
@@ -1234,12 +1191,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto x_scale() const noexcept -> float
-  {
-    float xScale = 0;
-    SDL_RenderGetScale(m_renderer, &xScale, nullptr);
-    return xScale;
-  }
+  CENTURION_QUERY
+  auto x_scale() const noexcept -> float;
 
   /**
    * @brief Returns the y-axis scale that the renderer uses.
@@ -1248,12 +1201,21 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto y_scale() const noexcept -> float
-  {
-    float yScale = 0;
-    SDL_RenderGetScale(m_renderer, nullptr, &yScale);
-    return yScale;
-  }
+  CENTURION_QUERY
+  auto y_scale() const noexcept -> float;
+
+  /**
+   * @brief Returns the x- and y-scale used by the renderer.
+   *
+   * @note calling this method once is faster than calling both `x_scale`
+   * and `y_scale` for obtaining the scale.
+   *
+   * @return the x- and y-scale used by the renderer.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto scale() const noexcept -> std::pair<float, float>;
 
   /**
    * @brief Returns the current clipping rectangle, if there is one active.
@@ -1262,16 +1224,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto clip() const noexcept -> std::optional<rect_i>
-  {
-    rect_i rect;
-    SDL_RenderGetClipRect(m_renderer, static_cast<SDL_Rect*>(rect));
-    if (!rect.has_area()) {
-      return nothing;
-    } else {
-      return rect;
-    }
-  }
+  CENTURION_QUERY
+  auto clip() const noexcept -> std::optional<rect_i>;
 
   /**
    * @brief Returns information about the renderer.
@@ -1280,16 +1234,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto info() const noexcept -> std::optional<SDL_RendererInfo>
-  {
-    SDL_RendererInfo info;
-    const auto result = SDL_GetRendererInfo(m_renderer, &info);
-    if (result == 0) {
-      return info;
-    } else {
-      return nothing;
-    }
-  }
+  CENTURION_QUERY
+  auto info() const noexcept -> std::optional<SDL_RendererInfo>;
 
   /**
    * @brief Returns the output width of the renderer.
@@ -1298,12 +1244,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto output_width() const noexcept -> int
-  {
-    int width = 0;
-    SDL_GetRendererOutputSize(m_renderer, &width, nullptr);
-    return width;
-  }
+  CENTURION_QUERY
+  auto output_width() const noexcept -> int;
 
   /**
    * @brief Returns the output height of the renderer.
@@ -1312,12 +1254,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto output_height() const noexcept -> int
-  {
-    int height = 0;
-    SDL_GetRendererOutputSize(m_renderer, nullptr, &height);
-    return height;
-  }
+  CENTURION_QUERY
+  auto output_height() const noexcept -> int;
 
   /**
    * @brief Returns the output size of the renderer.
@@ -1329,13 +1267,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto output_size() const noexcept -> area_i
-  {
-    int width = 0;
-    int height = 0;
-    SDL_GetRendererOutputSize(m_renderer, &width, &height);
-    return {width, height};
-  }
+  CENTURION_QUERY
+  auto output_size() const noexcept -> area_i;
 
   /**
    * @brief Returns the blend mode that is being used by the renderer.
@@ -1344,12 +1277,8 @@ class renderer_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto blend_mode() const noexcept -> blend_mode
-  {
-    SDL_BlendMode mode;
-    SDL_GetRenderDrawBlendMode(m_renderer, &mode);
-    return static_cast<enum blend_mode>(mode);
-  }
+  CENTURION_QUERY
+  auto blend_mode() const noexcept -> blend_mode;
 
   /**
    * @name Flag-related queries.
@@ -1371,12 +1300,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto flags() const noexcept -> u32
-  {
-    SDL_RendererInfo info;
-    SDL_GetRendererInfo(m_renderer, &info);
-    return info.flags;
-  }
+  CENTURION_QUERY
+  auto flags() const noexcept -> u32;
 
   /**
    * @brief Indicates whether or not the `present` method is synced with
@@ -1386,10 +1311,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto vsync_enabled() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_PRESENTVSYNC);
-  }
+  CENTURION_QUERY
+  auto vsync_enabled() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the renderer is hardware accelerated.
@@ -1398,10 +1321,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto accelerated() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_ACCELERATED);
-  }
+  CENTURION_QUERY
+  auto accelerated() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the renderer is using software rendering.
@@ -1410,10 +1331,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto software_based() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_SOFTWARE);
-  }
+  CENTURION_QUERY
+  auto software_based() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the renderer supports rendering to a target
@@ -1424,10 +1343,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto supports_target_textures() const noexcept -> bool
-  {
-    return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
-  }
+  CENTURION_QUERY
+  auto supports_target_textures() const noexcept -> bool;
 
   ///@} // end of flag queries
 
@@ -1442,10 +1359,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto using_integer_logical_scaling() const noexcept -> bool
-  {
-    return SDL_RenderGetIntegerScale(m_renderer);
-  }
+  CENTURION_QUERY
+  auto using_integer_logical_scaling() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not clipping is enabled.
@@ -1456,10 +1371,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto clipping_enabled() const noexcept -> bool
-  {
-    return SDL_RenderIsClipEnabled(m_renderer);
-  }
+  CENTURION_QUERY
+  auto clipping_enabled() const noexcept -> bool;
 
   /**
    * @brief Returns the currently selected rendering color.
@@ -1470,15 +1383,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto get_color() const noexcept -> color
-  {
-    u8 red{};
-    u8 green{};
-    u8 blue{};
-    u8 alpha{};
-    SDL_GetRenderDrawColor(m_renderer, &red, &green, &blue, &alpha);
-    return {red, green, blue, alpha};
-  }
+  CENTURION_QUERY
+  auto get_color() const noexcept -> color;
 
   /**
    * @brief Returns the viewport that the renderer uses.
@@ -1487,12 +1393,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto viewport() const noexcept -> rect_i
-  {
-    rect_i viewport;
-    SDL_RenderGetViewport(m_renderer, static_cast<SDL_Rect*>(viewport));
-    return viewport;
-  }
+  CENTURION_QUERY
+  auto viewport() const noexcept -> rect_i;
 
   /**
    * @brief Returns a textual representation of the renderer.
@@ -1501,14 +1403,8 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto to_string() const -> std::string
-  {
-    const auto address = detail::address_of(this);
-    const auto owidth = std::to_string(output_width());
-    const auto oheight = std::to_string(output_height());
-    return "[Renderer@" + address + " | Output width: " + owidth +
-           ", Output height: " + oheight + "]";
-  }
+  CENTURION_QUERY
+  auto to_string() const -> std::string;
 
   /**
    * @brief Returns a pointer to the associated SDL_Renderer.
@@ -1550,45 +1446,6 @@ class renderer_base {
     return m_renderer;
   }
 
-  /**
-   * @brief Returns the number of available rendering drivers.
-   *
-   * @note Usually there is only one available rendering driver.
-   *
-   * @todo Move somewhere else.
-   *
-   * @return the number of available rendering drivers.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] static auto render_drivers() noexcept -> int;
-
-  /**
-   * @brief Returns the number of available video drivers compiled into SDL.
-   *
-   * @todo Move somewhere else.
-   *
-   * @return the number of available video drivers compiled into SDL.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] static auto video_drivers() noexcept -> int;
-
-  /**
-   * @brief Returns the information associated with a rendering driver.
-   *
-   * @param index the index of the rendering driver to query.
-   *
-   * @todo Move somewhere else.
-   *
-   * @return information about the specified rendering driver; `nothing` if
-   * something went wrong.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] static auto driver_info(int index) noexcept
-      -> std::optional<SDL_RendererInfo>;
-
  protected:
   renderer_base() noexcept = default;
 
@@ -1599,33 +1456,50 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  explicit renderer_base(SDL_Renderer* renderer) noexcept : m_renderer{renderer}
-  {}
+  explicit renderer_base(SDL_Renderer* renderer) noexcept;
 
   SDL_Renderer* m_renderer{};
 };
 
-inline auto renderer_base::render_drivers() noexcept -> int
+/**
+ * @brief Returns the number of available rendering drivers.
+ *
+ * @note Usually there is only one available rendering driver.
+ *
+ * @return the number of available rendering drivers.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto num_render_drivers() noexcept -> int
 {
   return SDL_GetNumRenderDrivers();
 }
 
-inline auto renderer_base::video_drivers() noexcept -> int
+/**
+ * @brief Returns the number of available video drivers compiled into SDL.
+ *
+ * @return the number of available video drivers compiled into SDL.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto num_video_drivers() noexcept -> int
 {
   return SDL_GetNumVideoDrivers();
 }
 
-inline auto renderer_base::driver_info(int index) noexcept
-    -> std::optional<SDL_RendererInfo>
-{
-  SDL_RendererInfo info;
-  const auto result = SDL_GetRenderDriverInfo(index, &info);
-  if (result == 0) {
-    return info;
-  } else {
-    return nothing;
-  }
-}
+/**
+ * @brief Returns the information associated with a rendering driver.
+ *
+ * @param index the index of the rendering driver to query.
+ *
+ * @return information about the specified rendering driver; `nothing` if
+ * something went wrong.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto get_render_driver_info(int index) noexcept
+    -> std::optional<SDL_RendererInfo>;
 
 }  // namespace centurion
 

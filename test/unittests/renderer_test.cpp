@@ -505,6 +505,19 @@ TEST_CASE("logical_height", "[renderer]")
   });
 }
 
+TEST_CASE("logical_size", "[renderer]")
+{
+  test([](const ctn::window& window, ctn::renderer& renderer) {
+    const ctn::area_i size{732, 156};
+
+    renderer.set_logical_size(size);
+
+    const auto [width, height] = renderer.logical_size();
+    CHECK(width == size.width);
+    CHECK(height == size.height);
+  });
+}
+
 TEST_CASE("info", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
@@ -617,43 +630,6 @@ TEST_CASE("color", "[renderer]")
   });
 }
 
-// FIXME
-// TEST_CASE("text_blended", "[renderer]")
-//{
-//  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
-//    CHECK(!renderer.text_blended(nullptr, font));
-//    CHECK(!renderer.text_blended("", font));
-//    CHECK(renderer.text_blended("Hello", font));
-//  });
-//}
-//
-// TEST_CASE("text_blended_wrapped", "[renderer]")
-//{
-//  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
-//    CHECK(!renderer.text_blended_wrapped(nullptr, 500, font));
-//    CHECK(!renderer.text_blended_wrapped("", 500, font));
-//    CHECK(renderer.text_blended_wrapped("Hello", 500, font));
-//  });
-//}
-//
-// TEST_CASE("text_shaded", "[renderer]")
-//{
-//  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
-//    CHECK(!renderer.text_shaded(nullptr, ctn::colors::black, font));
-//    CHECK(!renderer.text_shaded("", ctn::colors::black, font));
-//    CHECK(renderer.text_shaded("Hello", ctn::colors::black, font));
-//  });
-//}
-//
-// TEST_CASE("text_solid", "[renderer]")
-//{
-//  font_test([](const ctn::renderer& renderer, const ctn::font& font) {
-//    CHECK(!renderer.text_solid(nullptr, font));
-//    CHECK(!renderer.text_solid("", font));
-//    CHECK(renderer.text_solid("Hello", font));
-//  });
-//}
-
 TEST_CASE("font", "[renderer]")
 {
   test([](const ctn::window& window, const ctn::renderer& renderer) {
@@ -758,21 +734,21 @@ TEST_CASE("to_string", "[renderer]")
   ctn::log::info(ctn::log::category::test, "%s", renderer.to_string().c_str());
 }
 
-TEST_CASE("render_drivers", "[renderer]")
+TEST_CASE("num_render_drivers", "[renderer]")
 {
-  CHECK(ctn::renderer::render_drivers() == SDL_GetNumRenderDrivers());
+  CHECK(ctn::num_render_drivers() == SDL_GetNumRenderDrivers());
 }
 
-TEST_CASE("video_drivers", "[renderer]")
+TEST_CASE("num_video_drivers", "[renderer]")
 {
-  CHECK(ctn::renderer::video_drivers() == SDL_GetNumVideoDrivers());
+  CHECK(ctn::num_video_drivers() == SDL_GetNumVideoDrivers());
 }
 
-TEST_CASE("driver_info", "[renderer]")
+TEST_CASE("get_render_driver_info", "[renderer]")
 {
-  CHECK(!ctn::renderer::driver_info(-1));
-  CHECK(!ctn::renderer::driver_info(ctn::renderer::render_drivers()));
-  CHECK(ctn::renderer::driver_info(0));
+  CHECK(!ctn::get_render_driver_info(-1));
+  CHECK(!ctn::get_render_driver_info(ctn::num_render_drivers()));
+  CHECK(!ctn::get_render_driver_info(0));
 }
 
 TEST_CASE("get", "[renderer]")

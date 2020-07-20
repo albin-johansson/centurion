@@ -67,6 +67,7 @@ set(SOURCE_FILES
         battery.cpp
         screen.cpp
         event.cpp
+        renderer_base.cpp
         quit_event.cpp
         window_event.cpp
         keyboard_event.cpp

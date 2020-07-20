@@ -112,7 +112,7 @@ class renderer_base {
    * @name Primitive rendering
    * Methods for rendering rectangles and lines.
    */
-  /**@{*/
+  ///@{
 
   /**
    * @brief Renders the outline of a rectangle in the currently selected color.
@@ -229,13 +229,13 @@ class renderer_base {
     }
   }
 
-  /**@}*/  // end of primitive rendering
+  ///@}  // end of primitive rendering
 
   /**
    * @name Text rendering
    * Methods for rendering text encoded in UTF-8, LATIN-1 or UNICODE.
    */
-  /**@{*/
+  ///@{
 
   /**
    * @brief Creates and returns a texture of blended UTF-8 text.
@@ -807,13 +807,13 @@ class renderer_base {
     }
   }
 
-  /**@}*/  // end of text rendering
+  ///@}  // end of text rendering
 
   /**
    * @name Texture rendering
    * Methods for rendering hardware-accelerated textures.
    */
-  /**@{*/
+  ///@{
 
   /**
    * @brief Renders a texture at the specified position.
@@ -1039,7 +1039,7 @@ class renderer_base {
     }
   }
 
-  /**@}*/  // end of texture rendering
+  ///@}  // end of texture rendering
 
   /**
    * @brief Sets the color that will be used by the renderer.

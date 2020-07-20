@@ -96,7 +96,7 @@ class font_cache final {
    *
    * @headerfile font_cache.hpp
    */
-  struct glyph_data {
+  struct glyph_data final {
     texture cached;         ///< The cached texture.
     glyph_metrics metrics;  ///< The metrics of the glyph.
   };

@@ -170,7 +170,7 @@ auto font_cache::try_get_cached(entt::id_type id) const noexcept
 {
   const auto iterator = m_strings.find(id);
   if (iterator != m_strings.end()) {
-    return &iterator->second;  // TODO test
+    return &iterator->second;
   } else {
     return nullptr;
   }

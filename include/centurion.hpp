@@ -228,7 +228,7 @@ class centurion_lib final {
   auto operator=(centurion_lib&&) -> centurion_lib& = delete;
 
  private:
-  centurion_config cfg;
+  centurion_config m_cfg;
 
   void init_sdl();
 

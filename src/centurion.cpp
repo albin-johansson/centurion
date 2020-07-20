@@ -10,7 +10,7 @@ namespace centurion {
 CENTURION_DEF
 void centurion_lib::init_sdl()
 {
-  const auto result = SDL_Init(cfg.coreFlags);
+  const auto result = SDL_Init(m_cfg.coreFlags);
   if (result < 0) {
     throw detail::core_error("Failed to load SDL2!");
   }
@@ -28,7 +28,7 @@ void centurion_lib::init_ttf()
 CENTURION_DEF
 void centurion_lib::init_img()
 {
-  const auto flags = IMG_Init(cfg.imageFlags);
+  const auto flags = IMG_Init(m_cfg.imageFlags);
   if (!flags) {
     throw detail::img_error("Failed to load SDL2_image!");
   }
@@ -37,15 +37,15 @@ void centurion_lib::init_img()
 CENTURION_DEF
 void centurion_lib::init_mix()
 {
-  const auto flags = Mix_Init(cfg.mixerFlags);
+  const auto flags = Mix_Init(m_cfg.mixerFlags);
   if (!flags) {
     throw detail::mix_error("Failed to load SDL2_mixer!");
   }
 
-  if (Mix_OpenAudio(cfg.mixerFreq,
-                    cfg.mixerFormat,
-                    cfg.mixerChannels,
-                    cfg.mixerChunkSize) == -1) {
+  if (Mix_OpenAudio(m_cfg.mixerFreq,
+                    m_cfg.mixerFormat,
+                    m_cfg.mixerChannels,
+                    m_cfg.mixerChunkSize) == -1) {
     throw detail::mix_error("Failed to open audio!");
   }
 }
@@ -57,7 +57,7 @@ centurion_lib::centurion_lib()
 }
 
 CENTURION_DEF
-centurion_lib::centurion_lib(const centurion_config& cfg_) : cfg{cfg_}
+centurion_lib::centurion_lib(const centurion_config& cfg) : m_cfg{cfg}
 {
   init();
 }
@@ -71,11 +71,11 @@ centurion_lib::~centurion_lib() noexcept
 CENTURION_DEF
 void centurion_lib::init()
 {
-  if (cfg.initCore) {
+  if (m_cfg.initCore) {
     init_sdl();
   }
 
-  if (cfg.initImage) {
+  if (m_cfg.initImage) {
     try {
       init_img();
     } catch (...) {
@@ -83,7 +83,7 @@ void centurion_lib::init()
     }
   }
 
-  if (cfg.initTTF) {
+  if (m_cfg.initTTF) {
     try {
       init_ttf();
     } catch (...) {
@@ -92,7 +92,7 @@ void centurion_lib::init()
     }
   }
 
-  if (cfg.initMixer) {
+  if (m_cfg.initMixer) {
     try {
       init_mix();
     } catch (...) {
@@ -106,20 +106,20 @@ void centurion_lib::init()
 CENTURION_DEF
 void centurion_lib::close() noexcept
 {
-  if (cfg.initImage) {
+  if (m_cfg.initImage) {
     IMG_Quit();
   }
 
-  if (cfg.initTTF) {
+  if (m_cfg.initTTF) {
     TTF_Quit();
   }
 
-  if (cfg.initMixer) {
+  if (m_cfg.initMixer) {
     Mix_CloseAudio();
     Mix_Quit();
   }
 
-  if (cfg.initCore) {
+  if (m_cfg.initCore) {
     SDL_Quit();
   }
 }

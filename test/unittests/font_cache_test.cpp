@@ -15,7 +15,7 @@ TEST_CASE("Interactive font cache", "[.font_cache]")
 
   ctn::window window;
   ctn::renderer renderer{window};
-  ctn::experimental::font_cache cache{"resources/jetbrains_mono.ttf", 32};
+  ctn::experimental::font_cache cache{"resources/fira_code.ttf", 32};
 
   renderer.set_color(ctn::colors::white);
   cache.cache_latin1(renderer);
@@ -194,4 +194,67 @@ TEST_CASE("font_cache::has", "[font_cache]")
   }
 
   //  CHECK(cache.has(0x20));
+}
+
+TEST_CASE("font_cache::try_cached", "[font_cache]")
+{
+  ctn::window window;
+  ctn::renderer renderer{window};
+
+  ctn::experimental::font_cache cache{"resources/fira_code.ttf", 12};
+  cache.cache_latin1(renderer);
+  cache.cache_blended_latin1(renderer, "foo"_hs, "bar!?<,.");
+
+  CHECK(cache.try_cached("foo"_hs));
+  CHECK_NOTHROW(cache.try_cached("bad"_hs));
+}
+
+TEST_CASE("font_cache::cached", "[font_cache]")
+{
+  ctn::window window;
+  ctn::renderer renderer{window};
+
+  ctn::experimental::font_cache cache{"resources/fira_code.ttf", 12};
+  cache.cache_latin1(renderer);
+  cache.cache_blended_latin1(renderer, "foo"_hs, "bar!?<,.");
+
+  CHECK(cache.cached("foo"_hs).get());
+}
+
+TEST_CASE("font_cache::metrics", "[font_cache]")
+{
+  ctn::window window;
+  ctn::renderer renderer{window};
+
+  ctn::experimental::font_cache cache{"resources/fira_code.ttf", 12};
+  cache.cache_latin1(renderer);
+
+  SECTION("Non-const") { CHECK_NOTHROW(cache.metrics('a')); }
+
+  SECTION("Const")
+  {
+    const auto& ccache = cache;
+    CHECK_NOTHROW(ccache.metrics('z'));
+  }
+}
+
+TEST_CASE("font_cache::get", "[font_cache]")
+{
+  SECTION("Non-const")
+  {
+    ctn::experimental::font_cache cache{"resources/daniel.ttf", 12};
+    auto& font = cache.get();
+
+    CHECK(font.get());
+    CHECK(font.family_name() == std::string{"Daniel"});
+  }
+
+  SECTION("Const")
+  {
+    const ctn::experimental::font_cache cache{"resources/daniel.ttf", 12};
+    const auto& font = cache.get();
+
+    CHECK(font.get());
+    CHECK(font.family_name() == std::string{"Daniel"});
+  }
 }

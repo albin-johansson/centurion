@@ -127,6 +127,9 @@ class font_cache final {
   explicit font_cache(Args&&... args) : m_font{std::forward<Args>(args)...}
   {}
 
+  /**
+   * @copydoc font_cache(font&&)
+   */
   CENTURION_QUERY
   static auto unique(font&& font) -> std::unique_ptr<font_cache>;
 
@@ -134,7 +137,7 @@ class font_cache final {
    * @name String caching
    * Methods for caching strings encoded in UTF-8, Latin-1 or Unicode.
    */
-  /**@{*/
+  ///@{
 
   /**
    * @brief Caches the supplied Unicode string as a texture.
@@ -192,13 +195,13 @@ class font_cache final {
                           entt::id_type id,
                           std::string_view str);
 
-  /**@}*/  // end of string caching
+  ///@}  // end of string caching
 
   /**
    * @name Glyph caching
    * Methods for caching Unicode glyph textures.
    */
-  /**@{*/
+  ///@{
 
   CENTURION_API
   void add_glyph(renderer& renderer, unicode glyph);
@@ -262,7 +265,7 @@ class font_cache final {
   CENTURION_API
   void cache_latin1(renderer& renderer);
 
-  /**@}*/  // end of glyph caching
+  ///@}  // end of glyph caching
 
   /**
    * @brief Indicates whether or not the specified glyph has been cached.

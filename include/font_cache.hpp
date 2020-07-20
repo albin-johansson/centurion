@@ -420,16 +420,6 @@ class font_cache final {
     return m_strings.at(id);
   }
 
-  [[nodiscard]] auto metrics(unicode glyph) -> glyph_metrics&
-  {
-    return m_glyphs.at(glyph).metrics;
-  }
-
-  [[nodiscard]] auto metrics(unicode glyph) const -> const glyph_metrics&
-  {
-    return m_glyphs.at(glyph).metrics;
-  }
-
   /**
    * @brief Returns the font used by the cache.
    *

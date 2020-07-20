@@ -97,8 +97,8 @@ class font_cache final {
    * @headerfile font_cache.hpp
    */
   struct glyph_data {
-    texture cached;        /**< The cached texture. */
-    glyph_metrics metrics; /**< The metrics of the glyph. */
+    texture cached;         ///< The cached texture.
+    glyph_metrics metrics;  ///< The metrics of the glyph.
   };
 
   /**
@@ -183,7 +183,7 @@ class font_cache final {
 
   /**
    * @name String caching
-   * Methods for caching strings encoded in UTF-8, Latin-1 or Unicode.
+   * Methods related to caching strings as textures.
    */
   ///@{
 
@@ -194,6 +194,7 @@ class font_cache final {
    * `renderer_base::render_blended_unicode`.
    *
    * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
    *
    * @param renderer the renderer that will be used.
    * @param id the key that will be associated with the texture.
@@ -207,12 +208,77 @@ class font_cache final {
                              const unicode_string& str);
 
   /**
+   * @brief Caches the supplied Unicode string as a texture.
+   *
+   * @details The texture is created using
+   * `renderer_base::render_blended_wrapped_unicode`.
+   *
+   * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the Unicode string that will be cached.
+   * @param wrap the width in pixels after which the text will be wrapped.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void cache_blended_wrapped_unicode(renderer& renderer,
+                                     entt::id_type id,
+                                     const unicode_string& str,
+                                     u32 wrap);
+
+  /**
+   * @brief Caches the supplied Unicode string as a texture.
+   *
+   * @details The texture is created using
+   * `renderer_base::render_shaded_unicode`.
+   *
+   * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the Unicode string that will be cached.
+   * @param background the background color used for the box.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void cache_shaded_unicode(renderer& renderer,
+                            entt::id_type id,
+                            const unicode_string& str,
+                            const color& background);
+
+  /**
+   * @brief Caches the supplied Unicode string as a texture.
+   *
+   * @details The texture is created using
+   * `renderer_base::render_solid_unicode`.
+   *
+   * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the Unicode string that will be cached.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void cache_solid_unicode(renderer& renderer,
+                           entt::id_type id,
+                           const unicode_string& str);
+
+  /**
    * @brief Caches the supplied Latin-1 string as a texture.
    *
    * @details The texture is created using
    * `renderer_base::render_blended_latin1`.
    *
    * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
    *
    * @param renderer the renderer that will be used.
    * @param id the key that will be associated with the texture.
@@ -223,7 +289,70 @@ class font_cache final {
   CENTURION_API
   void cache_blended_latin1(renderer& renderer,
                             entt::id_type id,
-                            std::string_view str);
+                            nn_czstring str);
+
+  /**
+   * @brief Caches the supplied Latin-1 string as a texture.
+   *
+   * @details The texture is created using
+   * `renderer_base::render_blended_wrapped_latin1`.
+   *
+   * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the Latin-1 string that will be cached.
+   * @param wrap the width in pixels after which the text will be wrapped.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void cache_blended_wrapped_latin1(renderer& renderer,
+                                    entt::id_type id,
+                                    nn_czstring str,
+                                    u32 wrap);
+
+  /**
+   * @brief Caches the supplied Latin-1 string as a texture.
+   *
+   * @details The texture is created using
+   * `renderer_base::render_shaded_latin1`.
+   *
+   * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the Latin-1 string that will be cached.
+   * @param background the background color used for the box.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void cache_shaded_latin1(renderer& renderer,
+                           entt::id_type id,
+                           nn_czstring str,
+                           const color& background);
+
+  /**
+   * @brief Caches the supplied Latin-1 string as a texture.
+   *
+   * @details The texture is created using `renderer_base::render_solid`.
+   *
+   * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the Latin-1 string that will be cached.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void cache_solid_latin1(renderer& renderer,
+                          entt::id_type id,
+                          nn_czstring str);
 
   /**
    * @brief Caches the supplied UTF-8 string as a texture.
@@ -231,6 +360,7 @@ class font_cache final {
    * @details The texture is created using `renderer_base::render_blended_utf8`.
    *
    * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
    *
    * @param renderer the renderer that will be used.
    * @param id the key that will be associated with the texture.
@@ -241,7 +371,118 @@ class font_cache final {
   CENTURION_API
   void cache_blended_utf8(renderer& renderer,
                           entt::id_type id,
-                          std::string_view str);
+                          nn_czstring str);
+
+  /**
+   * @brief Caches the supplied UTF-8 string as a texture.
+   *
+   * @details The texture is created using
+   * `renderer_base::render_blended_wrapped_utf8`.
+   *
+   * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the UTF-8 string that will be cached.
+   * @param wrap the width in pixels after which the text will be wrapped.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void cache_blended_wrapped_utf8(renderer& renderer,
+                                  entt::id_type id,
+                                  nn_czstring str,
+                                  u32 wrap);
+
+  /**
+   * @brief Caches the supplied UTF-8 string as a texture.
+   *
+   * @details The texture is created using
+   * `renderer_base::render_shaded_utf8`.
+   *
+   * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the UTF-8 string that will be cached.
+   * @param background the background color used for the box.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void cache_shaded_utf8(renderer& renderer,
+                         entt::id_type id,
+                         nn_czstring str,
+                         const color& background);
+
+  /**
+   * @brief Caches the supplied UTF-8 string as a texture.
+   *
+   * @details The texture is created using
+   * `renderer_base::render_solid_utf8`.
+   *
+   * @note This method respects the kerning of the font.
+   * @note This method has no effect if the supplied key is already taken.
+   *
+   * @param renderer the renderer that will be used.
+   * @param id the key that will be associated with the texture.
+   * @param str the UTF-8 string that will be cached.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  void cache_solid_utf8(renderer& renderer, entt::id_type id, nn_czstring str);
+
+  /**
+   * @brief Indicates whether or not there is a cached texture associated
+   * with the specified key.
+   *
+   * @param id the key that will be checked.
+   *
+   * @return `true` if there is a cached texture associated with the key;
+   * `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto has_cached(entt::id_type id) const noexcept -> bool
+  {
+    return m_strings.count(id);
+  }
+
+  /**
+   * @brief Returns a pointer to the texture associated with the specified key.
+   *
+   * @note The returned pointer is not suitable for storing for longer than
+   * absolutely necessary, as it might get invalidated by modifications of
+   * the font cache.
+   *
+   * @param id the key of the desired texture.
+   *
+   * @return a pointer to the texture associated with the specified key;
+   * `nullptr` if no texture is found.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto try_get_cached(entt::id_type id) const noexcept -> const texture*;
+
+  /**
+   * @brief Returns the cached texture associated with the specified ID.
+   *
+   * @pre `id` **must** be associated with a cached string texture.
+   *
+   * @param id the key of the cached texture to obtain.
+   *
+   * @return the cached texture associated with the key.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto get_cached(entt::id_type id) const -> const texture&
+  {
+    return m_strings.at(id);
+  }
 
   ///@}  // end of string caching
 
@@ -378,39 +619,6 @@ class font_cache final {
   ///@}  // end of glyph caching
 
   /**
-   * @brief Returns a pointer to the texture associated with the specified key.
-   *
-   * @note The returned pointer is not suitable for storing for longer than
-   * absolutely necessary, as it might get invalidated by modifications of
-   * the font cache.
-   *
-   * @param id the key of the desired texture.
-   *
-   * @return a pointer to the texture associated with the specified key;
-   * `nullptr` if no texture is found.
-   *
-   * @since 5.0.0
-   */
-  CENTURION_QUERY
-  auto try_get_cached(entt::id_type id) const noexcept -> const texture*;
-
-  /**
-   * @brief Returns the cached texture associated with the specified ID.
-   *
-   * @pre `id` **must** be associated with a cached string texture.
-   *
-   * @param id the key of the cached texture to obtain.
-   *
-   * @return the cached texture associated with the key.
-   *
-   * @since 5.0.0
-   */
-  [[nodiscard]] auto get_cached(entt::id_type id) const -> const texture&
-  {
-    return m_strings.at(id);
-  }
-
-  /**
    * @brief Returns the font used by the cache.
    *
    * @return a reference to the internal font.
@@ -426,10 +634,33 @@ class font_cache final {
 
  private:
   font m_font;
-
   std::unordered_map<unicode, glyph_data> m_glyphs;
   std::unordered_map<entt::id_type, texture> m_strings;
 
+  /**
+   * @brief Adds a string texture to the string cache.
+   *
+   * @details This method has no effect if the supplied key is already taken.
+   *
+   * @param id the key that will be used for the texture.
+   * @param texture the texture that will be cached.
+   *
+   * @since 5.0.0
+   */
+  void cache_string_texture(entt::id_type id, texture&& texture);
+
+  /**
+   * @brief Creates and returns a texture for the specified glyph.
+   *
+   * @details The glyph is rendered with `TTF_RenderGlyph_Blended`.
+   *
+   * @param renderer the renderer that will be used.
+   * @param glyph the Unicode glyph that will be rendered.
+   *
+   * @return a texture that represents the specified glyph.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto create_glyph_texture(renderer& renderer, unicode glyph)
       -> texture;
 };

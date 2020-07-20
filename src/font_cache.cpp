@@ -33,36 +33,120 @@ auto font_cache::create_glyph_texture(renderer& renderer, unicode glyph)
 }
 
 CENTURION_DEF
+void font_cache::cache_string_texture(entt::id_type id, texture&& texture)
+{
+  const auto iterator = m_strings.find(id);
+  if (iterator == m_strings.end()) {
+    m_strings.emplace(id, std::move(texture));
+  }
+}
+
+CENTURION_DEF
 void font_cache::cache_blended_unicode(renderer& renderer,
                                        entt::id_type id,
                                        const unicode_string& str)
 {
-  const auto iterator = m_strings.find(id);
-  if (iterator == m_strings.end()) {
-    m_strings.emplace(id, renderer.render_blended_unicode(str, m_font));
-  }
+  cache_string_texture(id, renderer.render_blended_unicode(str, m_font));
+}
+
+CENTURION_DEF
+void font_cache::cache_blended_wrapped_unicode(renderer& renderer,
+                                               entt::id_type id,
+                                               const unicode_string& str,
+                                               u32 wrap)
+{
+  cache_string_texture(
+      id, renderer.render_blended_wrapped_unicode(str, m_font, wrap));
+}
+
+CENTURION_DEF
+void font_cache::cache_shaded_unicode(renderer& renderer,
+                                      entt::id_type id,
+                                      const unicode_string& str,
+                                      const color& background)
+{
+  cache_string_texture(id,
+                       renderer.render_shaded_unicode(str, m_font, background));
+}
+
+CENTURION_DEF
+void font_cache::cache_solid_unicode(renderer& renderer,
+                                     entt::id_type id,
+                                     const unicode_string& str)
+{
+  cache_string_texture(id, renderer.render_solid_unicode(str, m_font));
 }
 
 CENTURION_DEF
 void font_cache::cache_blended_latin1(renderer& renderer,
                                       entt::id_type id,
-                                      std::string_view str)
+                                      nn_czstring str)
 {
-  const auto iterator = m_strings.find(id);
-  if (iterator == m_strings.end()) {
-    m_strings.emplace(id, renderer.render_blended_latin1(str.data(), m_font));
-  }
+  cache_string_texture(id, renderer.render_blended_latin1(str, m_font));
+}
+
+CENTURION_DEF
+void font_cache::cache_blended_wrapped_latin1(renderer& renderer,
+                                              entt::id_type id,
+                                              nn_czstring str,
+                                              u32 wrap)
+{
+  cache_string_texture(
+      id, renderer.render_blended_wrapped_latin1(str, m_font, wrap));
+}
+
+CENTURION_DEF
+void font_cache::cache_shaded_latin1(renderer& renderer,
+                                     entt::id_type id,
+                                     nn_czstring str,
+                                     const color& background)
+{
+  cache_string_texture(id,
+                       renderer.render_shaded_latin1(str, m_font, background));
+}
+
+CENTURION_DEF
+void font_cache::cache_solid_latin1(renderer& renderer,
+                                    entt::id_type id,
+                                    nn_czstring str)
+{
+  cache_string_texture(id, renderer.render_solid_latin1(str, m_font));
 }
 
 CENTURION_DEF
 void font_cache::cache_blended_utf8(renderer& renderer,
                                     entt::id_type id,
-                                    std::string_view str)
+                                    nn_czstring str)
 {
-  const auto iterator = m_strings.find(id);
-  if (iterator == m_strings.end()) {
-    m_strings.emplace(id, renderer.render_blended_utf8(str.data(), m_font));
-  }
+  cache_string_texture(id, renderer.render_blended_utf8(str, m_font));
+}
+
+CENTURION_DEF
+void font_cache::cache_blended_wrapped_utf8(renderer& renderer,
+                                            entt::id_type id,
+                                            nn_czstring str,
+                                            u32 wrap)
+{
+  cache_string_texture(id,
+                       renderer.render_blended_wrapped_utf8(str, m_font, wrap));
+}
+
+CENTURION_DEF
+void font_cache::cache_shaded_utf8(renderer& renderer,
+                                   entt::id_type id,
+                                   nn_czstring str,
+                                   const color& background)
+{
+  cache_string_texture(id,
+                       renderer.render_shaded_utf8(str, m_font, background));
+}
+
+CENTURION_DEF
+void font_cache::cache_solid_utf8(renderer& renderer,
+                                  entt::id_type id,
+                                  nn_czstring str)
+{
+  cache_string_texture(id, renderer.render_solid_utf8(str, m_font));
 }
 
 CENTURION_DEF
@@ -107,7 +191,8 @@ void font_cache::cache_latin1(renderer& renderer)
 }
 
 CENTURION_DEF
-auto font_cache::try_get_cached(entt::id_type id) const noexcept -> const texture*
+auto font_cache::try_get_cached(entt::id_type id) const noexcept
+    -> const texture*
 {
   const auto iterator = m_strings.find(id);
   if (iterator != m_strings.end()) {

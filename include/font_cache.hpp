@@ -375,16 +375,6 @@ class font_cache final {
     return at(glyph);
   }
 
-  [[nodiscard]] auto metrics(unicode glyph) -> glyph_metrics&
-  {
-    return m_glyphs.at(glyph).metrics;
-  }
-
-  [[nodiscard]] auto metrics(unicode glyph) const -> const glyph_metrics&
-  {
-    return m_glyphs.at(glyph).metrics;
-  }
-
   ///@}  // end of glyph caching
 
   /**
@@ -402,7 +392,7 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_QUERY
-  auto try_cached(entt::id_type id) const noexcept -> const texture*;
+  auto try_get_cached(entt::id_type id) const noexcept -> const texture*;
 
   /**
    * @brief Returns the cached texture associated with the specified ID.
@@ -415,7 +405,7 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto cached(entt::id_type id) const -> const texture&
+  [[nodiscard]] auto get_cached(entt::id_type id) const -> const texture&
   {
     return m_strings.at(id);
   }

@@ -107,7 +107,7 @@ void font_cache::cache_latin1(renderer& renderer)
 }
 
 CENTURION_DEF
-auto font_cache::try_cached(entt::id_type id) const noexcept -> const texture*
+auto font_cache::try_get_cached(entt::id_type id) const noexcept -> const texture*
 {
   const auto iterator = m_strings.find(id);
   if (iterator != m_strings.end()) {

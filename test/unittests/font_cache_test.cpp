@@ -176,7 +176,7 @@ TEST_CASE("font_cache::operator[]", "[font_cache]")
   CHECK(cachedTexture.get());
 }
 
-TEST_CASE("font_cache::try_cached", "[font_cache]")
+TEST_CASE("font_cache::try_get_cached", "[font_cache]")
 {
   ctn::window window;
   ctn::renderer renderer{window};
@@ -185,11 +185,11 @@ TEST_CASE("font_cache::try_cached", "[font_cache]")
   cache.cache_latin1(renderer);
   cache.cache_blended_latin1(renderer, "foo"_hs, "bar!?<,.");
 
-  CHECK(cache.try_cached("foo"_hs));
-  CHECK_NOTHROW(cache.try_cached("bad"_hs));
+  CHECK(cache.try_get_cached("foo"_hs));
+  CHECK_NOTHROW(cache.try_get_cached("bad"_hs));
 }
 
-TEST_CASE("font_cache::cached", "[font_cache]")
+TEST_CASE("font_cache::get_cached", "[font_cache]")
 {
   ctn::window window;
   ctn::renderer renderer{window};
@@ -198,24 +198,7 @@ TEST_CASE("font_cache::cached", "[font_cache]")
   cache.cache_latin1(renderer);
   cache.cache_blended_latin1(renderer, "foo"_hs, "bar!?<,.");
 
-  CHECK(cache.cached("foo"_hs).get());
-}
-
-TEST_CASE("font_cache::metrics", "[font_cache]")
-{
-  ctn::window window;
-  ctn::renderer renderer{window};
-
-  ctn::experimental::font_cache cache{"resources/fira_code.ttf", 12};
-  cache.cache_latin1(renderer);
-
-  SECTION("Non-const") { CHECK_NOTHROW(cache.metrics('a')); }
-
-  SECTION("Const")
-  {
-    const auto& ccache = cache;
-    CHECK_NOTHROW(ccache.metrics('z'));
-  }
+  CHECK(cache.get_cached("foo"_hs).get());
 }
 
 TEST_CASE("font_cache::get", "[font_cache]")
@@ -298,8 +281,8 @@ TEST_CASE("Interactive font cache", "[.font_cache]")
     renderer.render_text(cache, "Foo\nBar", {50, 110});
     renderer.render_unicode(cache, str, {300, 110});
 
-    renderer.render(cache.cached("foo"_hs), ctn::point_i{50, 200});
-    renderer.render(cache.cached("cool"_hs), ctn::point_i{300, 400});
+    renderer.render(cache.get_cached("foo"_hs), ctn::point_i{50, 200});
+    renderer.render(cache.get_cached("cool"_hs), ctn::point_i{300, 400});
 
     renderer.present();
   }

@@ -634,8 +634,8 @@ class font_cache final {
 
  private:
   font m_font;
-  std::unordered_map<unicode, glyph_data> m_glyphs;
-  std::unordered_map<entt::id_type, texture> m_strings;
+  std::unordered_map<unicode, glyph_data> m_glyphs{};
+  std::unordered_map<entt::id_type, texture> m_strings{};
 
   /**
    * @brief Adds a string texture to the string cache.

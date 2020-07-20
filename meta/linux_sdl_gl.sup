@@ -16,6 +16,16 @@
 #    misrepresented as being the original software.
 # 3. This notice may not be removed or altered from any source distribution.
 
+# This document is a modified version of the original, which can be found here: https://github.com/Rickodesea/valgrindSup
+
+{
+   libgl-malloc
+   Memcheck:Leak
+   match-leak-kinds: definite
+   obj:/usr/lib/x86_64-linux-gnu/mesa/libGL.so.1.2.0
+   fun:malloc
+}
+
 {
    opengl_memcpy_addr8
    Memcheck:Addr8

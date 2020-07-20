@@ -76,15 +76,30 @@ void centurion_lib::init()
   }
 
   if (cfg.initImage) {
-    init_img();
+    try {
+      init_img();
+    } catch (...) {
+      SDL_Quit();
+    }
   }
 
   if (cfg.initTTF) {
-    init_ttf();
+    try {
+      init_ttf();
+    } catch (...) {
+      IMG_Quit();
+      SDL_Quit();
+    }
   }
 
   if (cfg.initMixer) {
-    init_mix();
+    try {
+      init_mix();
+    } catch (...) {
+      TTF_Quit();
+      IMG_Quit();
+      SDL_Quit();
+    }
   }
 }
 

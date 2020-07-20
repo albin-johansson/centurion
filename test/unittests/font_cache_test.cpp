@@ -476,7 +476,7 @@ TEST_CASE("Interactive font cache", "[.font_cache]")
 
   ctn::unicode_string str = {'a', 'b', 'c', 0xE4};
 
-  ctn::czstring alphabet = "abcdefghijklmnopqrstuvwxyz";
+  std::string_view alphabet = "abcdefghijklmnopqrstuvwxyz";
   std::string changingStr;
 
   ctn::event event;
@@ -504,7 +504,7 @@ TEST_CASE("Interactive font cache", "[.font_cache]")
 
       } else if (const auto* text = event.try_get<ctn::text_input_event>();
                  text) {
-        changingStr += text->text();  // TODO rename text to text_utf8
+        changingStr += text->text_utf8();
       }
     }
 
@@ -513,7 +513,7 @@ TEST_CASE("Interactive font cache", "[.font_cache]")
     renderer.render_text(cache, alphabet, {50, 10});
     renderer.render_text(cache, changingStr.data(), {50, 60});
 
-    renderer.render_text(cache, "Foo\nBar", {50, 110});
+    renderer.render_text(cache, u"Foo\nBar", {50, 110});
     renderer.render_unicode(cache, str, {300, 110});
 
     renderer.render(cache.get_cached("foo"_hs), ctn::point_i{50, 200});

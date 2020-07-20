@@ -19,7 +19,7 @@ auto text_input_event::window_id() const noexcept -> u32
   return m_event.windowID;
 }
 
-auto text_input_event::text() const noexcept -> std::string_view
+auto text_input_event::text_utf8() const noexcept -> std::string_view
 {
   return std::string_view{static_cast<czstring>(m_event.text)};
 }

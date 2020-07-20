@@ -762,7 +762,46 @@ class renderer_base {
         position.set_x(originalX);
         position.set_y(position.y() + cache.get().line_skip());
       } else {
-        const auto x = render_glyph(cache, glyph, position);
+        const auto x =
+            render_glyph(cache, static_cast<unicode>(glyph), position);
+        position.set_x(x);
+      }
+    }
+  }
+
+  /**
+   * @brief Renders a string.
+   *
+   * @details This method will not apply any clever conversions on the
+   * supplied string. The string is literally iterated,
+   * character-by-character, and each character is rendered using
+   * the `render_glyph`.
+   *
+   * @pre Every character in the string must correspond to a valid Unicode
+   * glyph **and** must have been previously cached.
+   *
+   * @note This method is sensitive to newline-characters, and will render
+   * strings that contain such characters appropriately.
+   *
+   * @param cache the font cache that will be used.
+   * @param str the string that will be rendered.
+   * @param position the position of the rendered text.
+   *
+   * @since 5.0.0
+   */
+  void render_text(const font_cache& cache,
+                   std::u16string_view str,
+                   point_i position)
+  {
+    const auto originalX = position.x();
+
+    for (const auto glyph : str) {
+      if (glyph == '\n') {
+        position.set_x(originalX);
+        position.set_y(position.y() + cache.get().line_skip());
+      } else {
+        const auto x =
+            render_glyph(cache, static_cast<unicode>(glyph), position);
         position.set_x(x);
       }
     }

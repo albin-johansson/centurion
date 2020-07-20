@@ -2600,7 +2600,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent> {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto text() const noexcept -> std::string_view;
+  auto text_utf8() const noexcept -> std::string_view;
 };
 
 static_assert(validate_event<text_input_event, SDL_TextInputEvent>());

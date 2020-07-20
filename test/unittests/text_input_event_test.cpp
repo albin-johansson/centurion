@@ -4,7 +4,7 @@
 
 using namespace centurion;
 
-TEST_CASE("TextInputEvent::set_window_id", "[TextInputEvent]")
+TEST_CASE("text_input_event::set_window_id", "[text_input_event]")
 {
   text_input_event event;
 
@@ -14,7 +14,7 @@ TEST_CASE("TextInputEvent::set_window_id", "[TextInputEvent]")
   CHECK(event.window_id() == id);
 }
 
-TEST_CASE("TextInputEvent::window_id", "[TextInputEvent]")
+TEST_CASE("text_input_event::window_id", "[text_input_event]")
 {
   SDL_TextInputEvent sdlEvent{SDL_TEXTINPUT, 0, 8};
   text_input_event event{sdlEvent};
@@ -22,14 +22,14 @@ TEST_CASE("TextInputEvent::window_id", "[TextInputEvent]")
   CHECK(event.window_id() == sdlEvent.windowID);
 }
 
-TEST_CASE("TextInputEvent::text", "[TextInputEvent]")
+TEST_CASE("text_input_event::text_utf8", "[text_input_event]")
 {
   SDL_TextInputEvent sdlEvent{SDL_TEXTINPUT, 1, 1, "hello"};
   text_input_event event{sdlEvent};
-  CHECK_THAT(event.text().data(), Catch::Equals("hello"));
+  CHECK_THAT(event.text_utf8().data(), Catch::Equals("hello"));
 }
 
-TEST_CASE("TextInputEvent()", "[TextInputEvent]")
+TEST_CASE("text_input_event()", "[text_input_event]")
 {
   CHECK_NOTHROW(text_input_event{{}});
 }

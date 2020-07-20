@@ -344,8 +344,18 @@ class font_cache final {
     return m_glyphs.at(glyph).metrics;
   }
 
+  /**
+   * @brief Returns the font used by the cache.
+   *
+   * @return a reference to the internal font.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto get() noexcept -> font& { return m_font; }
 
+  /**
+   * @copydoc get
+   */
   [[nodiscard]] auto get() const noexcept -> const font& { return m_font; }
 
  private:

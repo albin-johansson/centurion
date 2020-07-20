@@ -569,7 +569,7 @@ static_assert(std::is_final_v<color_scheme>);
 static_assert(std::is_nothrow_default_constructible_v<color_scheme>);
 static_assert(std::is_nothrow_destructible_v<color_scheme>);
 
-/** @} */
+/// @}
 
 }  // namespace centurion::messagebox
 

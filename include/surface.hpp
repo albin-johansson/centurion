@@ -430,7 +430,7 @@ class surface final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>:
+  [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>;
 };
 
 static_assert(!std::is_nothrow_copy_constructible_v<surface>);

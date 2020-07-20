@@ -85,7 +85,7 @@ void surface::move(surface&& other) noexcept
 }
 
 CENTURION_DEF
-void surface::copy(const surface& other) noexcept
+void surface::copy(const surface& other)
 {
   destroy();
   m_surface = other.copy_surface();
@@ -124,7 +124,7 @@ void surface::unlock() noexcept
 }
 
 CENTURION_DEF
-auto surface::copy_surface() const -> SDL_Surface*
+auto surface::copy_surface() const -> owner<SDL_Surface*>
 {
   auto* copy = SDL_DuplicateSurface(m_surface);
   if (!copy) {

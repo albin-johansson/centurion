@@ -343,7 +343,7 @@ class surface final {
   }
 
  private:
-  SDL_Surface* m_surface = nullptr;
+  SDL_Surface* m_surface{};
 
   /**
    * @brief Destroys the associated SDL_Surface.
@@ -372,7 +372,7 @@ class surface final {
    *
    * @since 4.0.0
    */
-  void copy(const surface& other) noexcept;
+  void copy(const surface& other);
 
   /**
    * @brief Indicates whether or not the supplied point is within the bounds of
@@ -430,7 +430,7 @@ class surface final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto copy_surface() const -> SDL_Surface*;
+  [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>:
 };
 
 static_assert(!std::is_nothrow_copy_constructible_v<surface>);

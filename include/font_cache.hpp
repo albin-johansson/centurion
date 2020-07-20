@@ -247,7 +247,7 @@ class font_cache final {
 
   /**
    * @name Glyph caching
-   * Methods for caching Unicode glyph textures.
+   * Methods related to cached Unicode glyph textures.
    */
   ///@{
 
@@ -313,8 +313,6 @@ class font_cache final {
   CENTURION_API
   void cache_latin1(renderer& renderer);
 
-  ///@}  // end of glyph caching
-
   /**
    * @brief Indicates whether or not the specified glyph has been cached.
    *
@@ -377,6 +375,18 @@ class font_cache final {
     return at(glyph);
   }
 
+  [[nodiscard]] auto metrics(unicode glyph) -> glyph_metrics&
+  {
+    return m_glyphs.at(glyph).metrics;
+  }
+
+  [[nodiscard]] auto metrics(unicode glyph) const -> const glyph_metrics&
+  {
+    return m_glyphs.at(glyph).metrics;
+  }
+
+  ///@}  // end of glyph caching
+
   /**
    * @brief Returns a pointer to the texture associated with the specified key.
    *
@@ -408,16 +418,6 @@ class font_cache final {
   [[nodiscard]] auto cached(entt::id_type id) const -> const texture&
   {
     return m_strings.at(id);
-  }
-
-  [[nodiscard]] auto metrics(unicode glyph) -> glyph_metrics&
-  {
-    return m_glyphs.at(glyph).metrics;
-  }
-
-  [[nodiscard]] auto metrics(unicode glyph) const -> const glyph_metrics&
-  {
-    return m_glyphs.at(glyph).metrics;
   }
 
   [[nodiscard]] auto get() noexcept -> font& { return m_font; }

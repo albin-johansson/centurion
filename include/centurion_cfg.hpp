@@ -41,6 +41,7 @@
 #ifndef CENTURION_CFG_HEADER
 #define CENTURION_CFG_HEADER
 
+// TODO ditch header-only support
 //#define CENTURION_HEADER_ONLY
 
 #ifdef CENTURION___DOXYGEN

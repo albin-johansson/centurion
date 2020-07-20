@@ -209,8 +209,7 @@ class unicode_string final {
    */
   [[nodiscard]] auto empty() const noexcept -> bool
   {
-    return m_data.size() == 1 &&
-           (*this)[0] == 0;  // the null-terminated check might be redundant
+    return m_data.size() == 1;
   }
 
   /**

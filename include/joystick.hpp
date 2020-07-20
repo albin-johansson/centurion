@@ -44,6 +44,10 @@
 #include "centurion_types.hpp"
 #include "centurion_utils.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -915,9 +919,5 @@ class joystick final {
 }
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "joystick.cpp"
-#endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_JOYSTICK_HEADER

@@ -49,6 +49,10 @@
 #include "pixel_format.hpp"
 #include "point.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -686,9 +690,5 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 }
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "texture.cpp"
-#endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_TEXTURE_HEADER

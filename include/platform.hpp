@@ -52,6 +52,10 @@
 #include "centurion_utils.hpp"
 #include "pixel_format.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 /**
  * @namespace centurion::platform
  *
@@ -119,9 +123,5 @@ CENTURION_QUERY
 auto name() noexcept -> std::optional<std::string>;
 
 }  // namespace centurion::platform
-
-#ifdef CENTURION_HEADER_ONLY
-#include "platform.cpp"
-#endif
 
 #endif  // CENTURION_PLATFORM_HEADER

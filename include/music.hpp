@@ -43,6 +43,10 @@
 #include "centurion_types.hpp"
 #include "centurion_utils.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -577,9 +581,5 @@ static_assert(std::is_nothrow_move_constructible_v<music>);
 static_assert(std::is_nothrow_move_assignable_v<music>);
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "music.cpp"
-#endif
 
 #endif  // CENTURION_MUSIC_HEADER

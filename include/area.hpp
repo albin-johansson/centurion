@@ -41,6 +41,10 @@
 
 #include "centurion_api.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 template <typename T>

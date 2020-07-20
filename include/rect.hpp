@@ -50,6 +50,10 @@
 #include "centurion_utils.hpp"
 #include "point.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 template <typename T>

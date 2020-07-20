@@ -39,6 +39,10 @@
 #include "centurion_api.hpp"
 #include "centurion_utils.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 /**
  * @namespace centurion::touch
  *
@@ -215,9 +219,5 @@ auto get_finger(SDL_TouchID id, int index) noexcept
 }
 
 }  // namespace centurion::touch
-
-#ifdef CENTURION_HEADER_ONLY
-#include "touch.cpp"
-#endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_TOUCH_HEADER

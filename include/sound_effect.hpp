@@ -49,6 +49,10 @@
 #include "centurion_types.hpp"
 #include "centurion_utils.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -377,9 +381,5 @@ static_assert(!std::is_copy_constructible_v<sound_effect>);
 static_assert(!std::is_copy_assignable_v<sound_effect>);
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "sound_effect.cpp"
-#endif
 
 #endif  // CENTURION_SOUND_EFFECT_HEADER

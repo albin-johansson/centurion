@@ -40,6 +40,10 @@
 #include "centurion_api.hpp"
 #include "centurion_utils.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion::input {
 
 /**
@@ -244,9 +248,5 @@ static_assert(std::is_nothrow_copy_constructible_v<mouse_state>);
 static_assert(std::is_nothrow_copy_assignable_v<mouse_state>);
 
 }  // namespace centurion::input
-
-#ifdef CENTURION_HEADER_ONLY
-#include "mouse_state.cpp"
-#endif
 
 #endif  // CENTURION_MOUSE_STATE_HEADER

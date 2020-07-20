@@ -49,6 +49,10 @@
 #include "pixel_format.hpp"
 #include "rect.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -439,9 +443,5 @@ static_assert(std::is_nothrow_move_constructible_v<surface>);
 static_assert(std::is_nothrow_move_assignable_v<surface>);
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "surface.cpp"
-#endif
 
 #endif  // CENTURION_SURFACE_HEADER

@@ -1,6 +1,12 @@
 #ifndef CENTURION_FWD_HEADER
 #define CENTURION_FWD_HEADER
 
+#include "centurion_api.hpp"
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 /**
  * @file centurion_fwd.hpp
  *
@@ -20,7 +26,7 @@ template <typename T>
 struct basic_area;
 
 template <typename T>
-struct basic_rect;
+class basic_rect;
 
 template <typename T>
 class basic_point;

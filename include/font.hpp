@@ -49,6 +49,10 @@
 #include "centurion_exception.hpp"
 #include "centurion_types.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -618,9 +622,5 @@ static_assert(!std::is_copy_constructible_v<font>);
 static_assert(!std::is_copy_assignable_v<font>);
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "font.cpp"
-#endif
 
 #endif  // CENTURION_FONT_HEADER

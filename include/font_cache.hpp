@@ -52,6 +52,10 @@
 #include "texture.hpp"
 #include "unicode_string.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -666,9 +670,5 @@ class font_cache final {
 };
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "font_cache.cpp"
-#endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_FONT_CACHE_HEADER

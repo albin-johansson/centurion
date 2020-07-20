@@ -48,6 +48,10 @@
 #include "pixel_format.hpp"
 #include "point.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -960,10 +964,5 @@ static_assert(std::is_nothrow_destructible_v<window>);
 }  // namespace centurion
 
 #include "renderer.hpp"  // for renderer_view definition
-
-#ifdef CENTURION_HEADER_ONLY
-#include "window.cpp"
-#include "window_base.cpp"
-#endif
 
 #endif  // CENTURION_WINDOW_HEADER

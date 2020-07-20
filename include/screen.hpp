@@ -41,6 +41,10 @@
 #include "centurion_api.hpp"
 #include "pixel_format.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 /**
  * @namespace centurion::screen
  *
@@ -129,9 +133,5 @@ CENTURION_QUERY
 auto get_pixel_format() noexcept -> pixel_format;
 
 }  // namespace centurion::screen
-
-#ifdef CENTURION_HEADER_ONLY
-#include "screen.cpp"
-#endif
 
 #endif  // CENTURION_SCREEN_HEADER

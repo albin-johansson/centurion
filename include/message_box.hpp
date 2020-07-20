@@ -45,6 +45,10 @@
 #include "centurion_utils.hpp"
 #include "color.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 /**
  * @namespace centurion::messagebox
  *
@@ -568,9 +572,5 @@ static_assert(std::is_nothrow_destructible_v<color_scheme>);
 /** @} */
 
 }  // namespace centurion::messagebox
-
-#ifdef CENTURION_HEADER_ONLY
-#include "message_box.cpp"
-#endif
 
 #endif  // CENTURION_MESSAGE_BOX_HEADER

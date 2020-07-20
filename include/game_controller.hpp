@@ -43,6 +43,10 @@
 
 #include "centurion_api.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -230,9 +234,5 @@ enum class game_controller_button {
 }
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "game_controller.cpp"
-#endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_GAME_CONTROLLER_HEADER

@@ -42,6 +42,10 @@
 #include "centurion_api.hpp"
 #include "centurion_utils.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 /**
  * @addtogroup misc
  * @{
@@ -559,9 +563,5 @@ auto get_priority(category category) noexcept -> log::priority;
 }  // namespace centurion::log
 
 /// @}
-
-#ifdef CENTURION_HEADER_ONLY
-#include "log.cpp"
-#endif
 
 #endif  // CENTURION_LOG_HEADER

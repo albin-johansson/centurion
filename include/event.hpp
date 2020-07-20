@@ -61,6 +61,10 @@
 #include "scan_code.hpp"
 #include "touch.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -3411,30 +3415,5 @@ class event final {
 };
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "audio_device_event.cpp"
-#include "controller_axis_event.cpp"
-#include "controller_button_event.cpp"
-#include "controller_device_event.cpp"
-#include "dollar_gesture_event.cpp"
-#include "drop_event.cpp"
-#include "event.cpp"
-#include "joy_axis_event.cpp"
-#include "joy_ball_event.cpp"
-#include "joy_button_event.cpp"
-#include "joy_device_event.cpp"
-#include "joy_hat_event.cpp"
-#include "keyboard_event.cpp"
-#include "mouse_button_event.cpp"
-#include "mouse_motion_event.cpp"
-#include "mouse_wheel_event.cpp"
-#include "multi_gesture_event.cpp"
-#include "quit_event.cpp"
-#include "text_editing_event.cpp"
-#include "text_input_event.cpp"
-#include "touch_finger_event.cpp"
-#include "window_event.cpp"
-#endif  // CENTURION_HEADER_ONLY
 
 #endif  // CENTURION_EVENT_HEADER

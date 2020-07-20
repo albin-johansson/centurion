@@ -46,6 +46,10 @@
 #include "centurion_api.hpp"
 #include "color.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 /**
  * @namespace centurion::colors
  *

@@ -50,6 +50,10 @@
 #include "texture.hpp"
 #include "unicode_string.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**

@@ -54,6 +54,10 @@
 #include "centurion_utils.hpp"
 #include "key_modifier.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 /**
  * @namespace centurion::input
  *
@@ -277,9 +281,5 @@ static_assert(std::is_nothrow_copy_constructible_v<key_state>);
 static_assert(std::is_nothrow_copy_assignable_v<key_state>);
 
 }  // namespace centurion::input
-
-#ifdef CENTURION_HEADER_ONLY
-#include "key_state.cpp"
-#endif
 
 #endif  // CENTURION_KEY_STATE_HEADER

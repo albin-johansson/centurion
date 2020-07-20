@@ -41,6 +41,10 @@
 #include "centurion_types.hpp"
 #include "centurion_utils.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -302,9 +306,5 @@ class pref_path final {
 };
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "paths.cpp"
-#endif
 
 #endif  // CENTURION_PATHS_HEADER

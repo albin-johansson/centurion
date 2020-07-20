@@ -47,6 +47,10 @@
 #include "point.hpp"
 #include "surface.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion {
 
 /**
@@ -374,9 +378,5 @@ static_assert(!std::is_copy_constructible_v<cursor>);
 static_assert(!std::is_copy_assignable_v<cursor>);
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "cursor.cpp"
-#endif
 
 #endif  // CENTURION_CURSOR_HEADER

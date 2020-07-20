@@ -54,6 +54,10 @@
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 /**
  * @namespace centurion
  *
@@ -244,9 +248,5 @@ class centurion_lib final {
 };
 
 }  // namespace centurion
-
-#ifdef CENTURION_HEADER_ONLY
-#include "centurion.cpp"
-#endif
 
 #endif  // CENTURION_HEADER

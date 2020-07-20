@@ -44,6 +44,10 @@
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 /**
  * @namespace centurion::battery
  *
@@ -186,9 +190,5 @@ CENTURION_QUERY
 auto exists() noexcept -> bool;
 
 }  // namespace centurion::battery
-
-#ifdef CENTURION_HEADER_ONLY
-#include "battery.cpp"
-#endif
 
 #endif  // CENTURION_BATTERY_HEADER

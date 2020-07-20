@@ -33,6 +33,10 @@
 #include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
 
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
+
 namespace centurion::detail {
 
 /**
@@ -92,10 +96,6 @@ CENTURION_QUERY
 auto mix_error(std::string_view message) -> centurion_exception;
 
 }  // namespace centurion::detail
-
-#ifdef CENTURION_HEADER_ONLY
-#include "error.cpp"
-#endif
 
 #endif  // CENTURION_ERROR_HEADER
 

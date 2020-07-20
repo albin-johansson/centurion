@@ -41,6 +41,17 @@
 #ifndef CENTURION_CFG_HEADER
 #define CENTURION_CFG_HEADER
 
-// As of v5.0.0, this file is empty :(
+/**
+ * @def CENTURION_USE_PRAGMA_ONCE
+ *
+ * @ingroup core
+ *
+ * @brief This macro indicates whether or not Centurion headers will use
+ * `#pragma once` in addition with the traditional include guards. By
+ * default, this macro is defined.
+ *
+ * @since 5.0.0
+ */
+#define CENTURION_USE_PRAGMA_ONCE
 
 #endif  // CENTURION_CFG_HEADER

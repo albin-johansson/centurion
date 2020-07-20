@@ -19,11 +19,22 @@
 # This document is a modified version of the original, which can be found here: https://github.com/Rickodesea/valgrindSup
 
 {
-   libgl-malloc
-   Memcheck:Leak
-   match-leak-kinds: definite
-   obj:/usr/lib/x86_64-linux-gnu/mesa/libGL.so.1.2.0
-   fun:malloc
+  libgl_malloc
+  Memcheck:Leak
+  match-leak-kinds: definite
+  fun:malloc
+  obj:/usr/lib/x86_64-linux-gnu/mesa/libGL.so.1.2.0
+  obj:/usr/lib/x86_64-linux-gnu/mesa/libGL.so.1.2.0
+  obj:/usr/lib/x86_64-linux-gnu/mesa/libGL.so.1.2.0
+  fun:glXChooseVisual
+  fun:X11_GL_GetVisual
+  fun:X11_GL_InitExtensions
+  fun:X11_GL_LoadLibrary
+  fun:SDL_GL_LoadLibrary_REAL
+  fun:SDL_CreateWindow_REAL
+  fun:ShouldUseTextureFramebuffer
+  fun:SDL_VideoInit_REAL
+  fun:SDL_InitSubSystem_REAL
 }
 
 {

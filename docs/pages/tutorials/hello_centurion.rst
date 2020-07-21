@@ -7,18 +7,20 @@ Just like SDL, Centurion needs to be initialized before it can be used. This is 
 creating an instance of the ``centurion_lib`` class. Under the hood, ``centurion_lib`` will
 actually initialize SDL for us. So you should never initialize *both* Centurion and SDL explicitly.
 
-.. hint::
+The ``centurion_lib`` class can be included by including either ``centurion.hpp`` or ``centurion_as_ctn.hpp``. 
+The only difference between these headers is that ``centurion_as_ctn.hpp`` provides the ``ctn`` namespace alias.
+Since all Centurion entities are located in the ``centurion`` namespace, it can get tedious to qualify everything 
+with ``centurion::``. As a result, it's recommended to prefer the ``ctn`` namespace alias.
 
-   All Centurion classes, functions and aliases are located in the ``centurion``
-   namespace. However, since it's tedious to qualify everything with ``centurion::``,
-   it's recommended to use the ``<centurion_as_ctn.hpp>`` header to get access to
-   the ``ctn`` namespace alias.
+Now, it's important that the get the signature ``main`` correct in order for your program to work. The signature 
+of the main-method **must** be ``int main(int, char**)``! This is because SDL actually performs some setup before 
+the main method is entered through some macro magic.
 
 Standard Configuration
 ----------------------
-The following example is the typical entry point for a Centurion application. More than likely
-this will work just fine for your application. However, you can be more specific with what gets
-initialized, as demonstrated in the next example.
+By far the easiest way to initialize the Centurion library is demonstrated in the following example. The default configuration
+is likely appropriate for your program. However, as demonstrated in the later example, it's possible to be more specific with
+exactly what gets initialized (and how).
 
 .. code-block:: c++
 
@@ -28,7 +30,7 @@ initialized, as demonstrated in the next example.
   {
     ctn::centurion_lib c;
 
-    // the library (and SDL2, SDL2_image, SDL2_mixer and SDL2_ttf) is now initialized!
+    // Centurion and SDL are now initialized!
 
     return 0;
   }

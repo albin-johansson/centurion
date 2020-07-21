@@ -1,5 +1,5 @@
-#ifndef CENTURON_APP_HEADER
-#define CENTURON_APP_HEADER
+#ifndef CENTURON_GAME_LOOP_HEADER
+#define CENTURON_GAME_LOOP_HEADER
 
 #include "centurion_api.hpp"
 #include "counter.hpp"
@@ -8,49 +8,6 @@
 #include "window.hpp"
 
 namespace centurion::experimental {
-
-// class default_make_window {
-// public:
-//  auto operator()() const -> window { return window{}; }
-//};
-//
-// class default_make_renderer {
-// public:
-//  auto operator()(const window& window) const -> renderer
-//  {
-//    return renderer{window};
-//  }
-//};
-//
-// template <class derived,
-//          class delta,
-//          class make_window = default_make_window,
-//          class make_renderer = default_make_renderer>
-// class loop {
-// public:
-//  //  loop() : m_window{make_window{}()},
-//  m_renderer{make_renderer{}(m_window)}
-//  //  {}
-//
-//  //  void run(
-//
-//  //  [[nodiscard]] auto get_window() -> window& { return m_window; }
-//  //
-//  //  [[nodiscard]] auto get_window() const -> const window& { return
-//  m_window;
-//  //  }
-//  //
-//  //  [[nodiscard]] auto get_renderer() -> renderer& { return m_renderer; }
-//  //
-//  //  [[nodiscard]] auto get_renderer() const -> const renderer&
-//  //  {
-//  //    return m_renderer;
-//  //  }
-//  //
-//  // private:
-//  //  window m_window;
-//  //  renderer m_renderer;
-//};
 
 /**
  * @class basic_variable_timestep_loop
@@ -70,20 +27,18 @@ namespace centurion::experimental {
  *
  * @headerfile game_loop.hpp
  */
-template <typename delta>
 class basic_variable_timestep_loop final {
  public:
-//  using input_fun = bool();
-//  using logic_fun = void(milliseconds<float>);
-//  using render_fun = void();
+  using input_fun = bool();
+  using logic_fun = void(milliseconds<float>);
+  using render_fun = void();
 
   template <typename Input, typename Logic, typename Render>
-  void run(Input input, Logic logic, Render render)
+  static void run(Input input, Logic logic, Render render)
   {
     bool running = true;
-
-    m_prev = counter::now_ms();
-    m_curr = counter::now_ms();
+    milliseconds<float> m_prev = counter::now_ms();
+    milliseconds<float> m_curr = counter::now_ms();
     while (running) {
       m_prev = m_curr;
       m_curr = counter::now_ms();
@@ -97,9 +52,18 @@ class basic_variable_timestep_loop final {
     }
   }
 
+  void run() { run(m_input, m_logic, m_render); }
+
+  void set_logic(logic_fun logic) { m_logic = logic; }
+
+  void set_render(render_fun render) { m_render = render; }
+
+  void set_input(input_fun input) { m_input = input; }
+
  private:
-  milliseconds<float> m_curr{};
-  milliseconds<float> m_prev{};
+  logic_fun* m_logic{};
+  render_fun* m_render{};
+  input_fun* m_input{};
 };
 
 template <typename delta>
@@ -205,43 +169,8 @@ class basic_fixed_timestep_loop final {
 
 using fixed_timestep_loop = basic_fixed_timestep_loop<float, float>;
 using semi_fixed_timestep_loop = basic_semi_fixed_timestep_loop<float>;
-using variable_timestep_loop = basic_variable_timestep_loop<float>;
-
-inline void foo()
-{
-  {
-    // fixed timestep
-    //    auto input = [] { return false; };
-    //
-    //    auto logic = [](float delta) {};
-    //
-    //    auto render = [](renderer& renderer, float alpha) {};
-    //
-    fixed_timestep_loop loop;
-  }
-
-  {
-      // variable timestep
-      //    auto input = [] { return false; };
-      //
-      ////    auto logic = [](milliseconds<float> delta) {
-      //////      auto delta_sec =
-      ///std::chrono::duration_cast<seconds<float>>(delta);
-      ////
-      ////    };
-      //
-      //    auto render = []() {};
-      //
-      //    variable_timestep_loop loop;
-      //
-      //    loop.update(input, logic, render);
-  }
-
-  {
-    semi_fixed_timestep_loop loop;
-  }
-}
+using variable_timestep_loop = basic_variable_timestep_loop;
 
 }  // namespace centurion::experimental
 
-#endif  // CENTURON_APP_HEADER
+#endif  // CENTURON_GAME_LOOP_HEADER

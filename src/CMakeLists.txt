@@ -49,6 +49,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/touch.hpp
         ${CTN_INCLUDE_DIR}/font_cache.hpp
         ${CTN_INCLUDE_DIR}/unicode_string.hpp
+        ${CTN_INCLUDE_DIR}/game_loop.hpp
         window.cpp
         window_base.cpp
         font.cpp

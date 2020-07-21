@@ -7,17 +7,13 @@
 #include "renderer.hpp"
 #include "window.hpp"
 
-TEST_CASE("Variable timestep", "[.game_loop]")
-{
-  ctn::window window;
-  ctn::renderer renderer{window};
+// variable timestep loop game
+class vtl_game {
+ public:
+  vtl_game() : m_window{}, m_renderer{m_window} {}
 
-  ctn::experimental::variable_timestep_loop loop;
-
-  const auto speed = 100.0f;
-  auto x = 10.0f;
-
-  auto input = [] {
+  auto input() -> bool
+  {
     ctn::event event;
     while (event.poll()) {
       if (event.is<ctn::quit_event>()) {
@@ -29,22 +25,56 @@ TEST_CASE("Variable timestep", "[.game_loop]")
       }
     }
     return true;
-  };
+  }
 
-  auto logic = [&](ctn::milliseconds<float> delta) {
+  void logic(ctn::milliseconds<float> delta)
+  {
     const auto secs = std::chrono::duration_cast<ctn::seconds<float>>(delta);
     x += (speed * secs.count());
-  };
+  }
 
-  auto render = [&]() {
-    renderer.clear_with(ctn::colors::pink);
+  void render()
+  {
+    m_renderer.clear_with(ctn::colors::pink);
 
-    renderer.fill_rect(ctn::rect_f{{x, 50.0f}, {100.0f, 150.0f}});
+    m_renderer.fill_rect(ctn::rect_f{{x, 50.0f}, {100.0f, 150.0f}});
 
-    renderer.present();
-  };
+    m_renderer.present();
+  }
 
-  window.show();
-  loop.run(input, logic, render);
-  window.hide();
+  [[nodiscard]] auto get_window() -> ctn::window& { return m_window; }
+
+  [[nodiscard]] auto get_window() const -> const ctn::window&
+  {
+    return m_window;
+  }
+
+  [[nodiscard]] auto get_renderer() -> ctn::renderer& { return m_renderer; }
+
+  [[nodiscard]] auto get_renderer() const -> const ctn::renderer&
+  {
+    return m_renderer;
+  }
+
+ private:
+  ctn::window m_window;
+  ctn::renderer m_renderer;
+  float x{10.0f};
+  const float speed{100.0f};
+};
+
+TEST_CASE("Variable timestep", "[.game_loop]")
+{
+  using ctn::experimental::variable_timestep_loop;
+  vtl_game game;
+
+  variable_timestep_loop loop;
+
+  loop.connect_input<&vtl_game::input>(game);
+  loop.connect_logic<&vtl_game::logic>(game);
+  loop.connect_render<&vtl_game::render>(game);
+
+  game.get_window().show();
+  loop.run();
+  game.get_window().hide();
 }

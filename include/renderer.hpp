@@ -43,7 +43,7 @@
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
-#include <hashed_string.hpp>
+#include <entt.hpp>
 
 #include "centurion_api.hpp"
 #include "colors.hpp"

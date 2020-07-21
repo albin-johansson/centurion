@@ -40,7 +40,7 @@
 #include <SDL_ttf.h>
 
 #include <algorithm>
-#include <hashed_string.hpp>
+#include <entt.hpp>
 #include <memory>
 #include <unordered_map>
 #include <utility>

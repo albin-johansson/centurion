@@ -1,5 +1,8 @@
-#ifndef CENTURON_GAME_LOOP_HEADER
-#define CENTURON_GAME_LOOP_HEADER
+#ifndef CENTURION_GAME_LOOP_HEADER
+#define CENTURION_GAME_LOOP_HEADER
+
+#include <cassert>
+#include <entt.hpp>
 
 #include "centurion_api.hpp"
 #include "counter.hpp"
@@ -29,13 +32,16 @@ namespace centurion::experimental {
  */
 class basic_variable_timestep_loop final {
  public:
-  using input_fun = bool();
-  using logic_fun = void(milliseconds<float>);
-  using render_fun = void();
+  using input_handler = bool();
+  using logic_handler = void(milliseconds<float>);
+  using render_handler = void();
 
-  template <typename Input, typename Logic, typename Render>
-  static void run(Input input, Logic logic, Render render)
+  void run()
   {
+    assert(m_input);
+    assert(m_logic);
+    assert(m_render);
+
     bool running = true;
     milliseconds<float> m_prev = counter::now_ms();
     milliseconds<float> m_curr = counter::now_ms();
@@ -43,27 +49,73 @@ class basic_variable_timestep_loop final {
       m_prev = m_curr;
       m_curr = counter::now_ms();
 
-      running = input();
+      running = m_input();
 
       const auto diff = m_curr - m_prev;
-      logic(diff);
+      m_logic(diff);
 
-      render();
+      m_render();
     }
   }
 
-  void run() { run(m_input, m_logic, m_render); }
+  template <auto Candidate>
+  void connect_input() noexcept
+  {
+    m_input.connect<Candidate>();
+  }
 
-  void set_logic(logic_fun logic) { m_logic = logic; }
+  template <auto Candidate, class T>
+  void connect_input(T& valueOrInstance) noexcept
+  {
+    m_input.connect<Candidate>(valueOrInstance);
+  }
 
-  void set_render(render_fun render) { m_render = render; }
+  template <auto Candidate, class T>
+  void connect_input(T* valueOrInstance) noexcept
+  {
+    m_input.connect<Candidate>(valueOrInstance);
+  }
 
-  void set_input(input_fun input) { m_input = input; }
+  template <auto Candidate>
+  void connect_logic() noexcept
+  {
+    m_logic.connect<Candidate>();
+  }
+
+  template <auto Candidate, class T>
+  void connect_logic(T& valueOrInstance) noexcept
+  {
+    m_logic.connect<Candidate>(valueOrInstance);
+  }
+
+  template <auto Candidate, class T>
+  void connect_logic(T* valueOrInstance) noexcept
+  {
+    m_logic.connect<Candidate>(valueOrInstance);
+  }
+
+  template <auto Candidate>
+  void connect_render() noexcept
+  {
+    m_render.connect<Candidate>();
+  }
+
+  template <auto Candidate, class T>
+  void connect_render(T& valueOrInstance) noexcept
+  {
+    m_render.connect<Candidate>(valueOrInstance);
+  }
+
+  template <auto Candidate, class T>
+  void connect_render(T* valueOrInstance) noexcept
+  {
+    m_render.connect<Candidate>(valueOrInstance);
+  }
 
  private:
-  logic_fun* m_logic{};
-  render_fun* m_render{};
-  input_fun* m_input{};
+  entt::delegate<logic_handler> m_logic{};
+  entt::delegate<render_handler> m_render{};
+  entt::delegate<input_handler> m_input{};
 };
 
 template <typename delta>
@@ -173,4 +225,4 @@ using variable_timestep_loop = basic_variable_timestep_loop;
 
 }  // namespace centurion::experimental
 
-#endif  // CENTURON_GAME_LOOP_HEADER
+#endif  // CENTURION_GAME_LOOP_HEADER

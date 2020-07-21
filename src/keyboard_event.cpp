@@ -103,6 +103,16 @@ auto keyboard_event::state() const noexcept -> button_state
   return static_cast<button_state>(m_event.state);
 }
 
+auto keyboard_event::released() const noexcept -> bool
+{
+  return state() == button_state::released;
+}
+
+auto keyboard_event::pressed() const noexcept -> bool
+{
+  return state() == button_state::pressed;
+}
+
 auto keyboard_event::get_scan_code() const noexcept -> scan_code
 {
   return m_event.keysym.scancode;

@@ -339,6 +339,76 @@ TEST_CASE("keyboard_event::state", "[keyboard_event]")
   }
 }
 
+TEST_CASE("keyboard_event::released", "[keyboard_event]")
+{
+  SECTION("Check released")
+  {
+    const auto createEvent = []() noexcept {
+      SDL_KeyboardEvent event{};
+
+      event.keysym.sym = SDLK_g;
+      event.keysym.scancode = SDL_SCANCODE_G;
+      event.state = SDL_RELEASED;
+
+      return ctn::keyboard_event{event};
+    };
+
+    const auto event = createEvent();
+    CHECK(event.released());
+    CHECK(event.state() == ctn::button_state::released);
+  }
+
+  SECTION("Not released")
+  {
+    const auto createEvent = []() noexcept {
+      SDL_KeyboardEvent event{};
+
+      event.state = SDL_PRESSED;
+
+      return ctn::keyboard_event{event};
+    };
+
+    const auto event = createEvent();
+    CHECK(!event.released());
+    CHECK(event.pressed());
+  }
+}
+
+TEST_CASE("keyboard_event::pressed", "[keyboard_event]")
+{
+  SECTION("Check pressed")
+  {
+    const auto createEvent = []() noexcept {
+      SDL_KeyboardEvent event{};
+
+      event.keysym.sym = SDLK_o;
+      event.keysym.scancode = SDL_SCANCODE_O;
+      event.state = SDL_PRESSED;
+
+      return ctn::keyboard_event{event};
+    };
+
+    const auto event = createEvent();
+    CHECK(event.pressed());
+    CHECK(event.state() == ctn::button_state::pressed);
+  }
+
+  SECTION("Not pressed")
+  {
+    const auto createEvent = []() noexcept {
+      SDL_KeyboardEvent event{};
+
+      event.state = SDL_RELEASED;
+
+      return ctn::keyboard_event{event};
+    };
+
+    const auto event = createEvent();
+    CHECK(!event.pressed());
+    CHECK(event.released());
+  }
+}
+
 TEST_CASE("keyboard_event::get_scan_code", "[keyboard_event]")
 {
   ctn::keyboard_event event;

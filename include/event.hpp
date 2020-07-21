@@ -1580,6 +1580,32 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent> {
   auto state() const noexcept -> button_state;
 
   /**
+   * @brief Indicates whether or not the event is associated with the release
+   * of a key.
+   *
+   * @note This function is equivalent to `state() ==  button_state::released`.
+   *
+   * @return `true` if the event is a key released event; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto released() const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the event is associated with the press
+   * of a key.
+   *
+   * @note This function is equivalent to `state() ==  button_state::pressed`.
+   *
+   * @return `true` if the event is a key pressed event; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto pressed() const noexcept -> bool;
+
+  /**
    * @brief Returns the scan code that is associated with the event.
    *
    * @return the scan code that is associated with the event.

@@ -73,11 +73,12 @@ namespace centurion::experimental {
 template <typename delta>
 class basic_variable_timestep_loop final {
  public:
-  using input_fun = bool();
-  using logic_fun = void(milliseconds<float>);
-  using render_fun = void();
+//  using input_fun = bool();
+//  using logic_fun = void(milliseconds<float>);
+//  using render_fun = void();
 
-  void update(input_fun input, logic_fun logic, render_fun render)
+  template <typename Input, typename Logic, typename Render>
+  void run(Input input, Logic logic, Render render)
   {
     bool running = true;
 
@@ -220,19 +221,20 @@ inline void foo()
   }
 
   {
-    // variable timestep
-//    auto input = [] { return false; };
-//
-////    auto logic = [](milliseconds<float> delta) {
-//////      auto delta_sec = std::chrono::duration_cast<seconds<float>>(delta);
-////
-////    };
-//
-//    auto render = []() {};
-//
-//    variable_timestep_loop loop;
-//
-//    loop.update(input, logic, render);
+      // variable timestep
+      //    auto input = [] { return false; };
+      //
+      ////    auto logic = [](milliseconds<float> delta) {
+      //////      auto delta_sec =
+      ///std::chrono::duration_cast<seconds<float>>(delta);
+      ////
+      ////    };
+      //
+      //    auto render = []() {};
+      //
+      //    variable_timestep_loop loop;
+      //
+      //    loop.update(input, logic, render);
   }
 
   {

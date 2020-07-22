@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <entt.hpp>
+#include <type_traits>
 
 #include "centurion_api.hpp"
 #include "counter.hpp"
@@ -11,6 +12,84 @@
 #include "window.hpp"
 
 namespace centurion::experimental {
+
+template <class Input, class Logic, class Render>
+class basic_loop {
+ public:
+  ~basic_loop() noexcept
+  {
+    if (m_input) {
+      m_input.reset();
+    }
+
+    if (m_logic) {
+      m_logic.reset();
+    }
+
+    if (m_render) {
+      m_render.reset();
+    }
+  }
+
+  template <auto Candidate>
+  void connect_input() noexcept
+  {
+    m_input.template connect<Candidate>();
+  }
+
+  template <auto Candidate, class T>
+  void connect_input(T& valueOrInstance) noexcept
+  {
+    m_input.template connect<Candidate>(valueOrInstance);
+  }
+
+  template <auto Candidate, class T>
+  void connect_input(T* valueOrInstance) noexcept
+  {
+    m_input.template connect<Candidate>(valueOrInstance);
+  }
+
+  template <auto Candidate>
+  void connect_logic() noexcept
+  {
+    m_logic.template connect<Candidate>();
+  }
+
+  template <auto Candidate, class T>
+  void connect_logic(T& valueOrInstance) noexcept
+  {
+    m_logic.template connect<Candidate>(valueOrInstance);
+  }
+
+  template <auto Candidate, class T>
+  void connect_logic(T* valueOrInstance) noexcept
+  {
+    m_logic.template connect<Candidate>(valueOrInstance);
+  }
+
+  template <auto Candidate>
+  void connect_render() noexcept
+  {
+    m_render.template connect<Candidate>();
+  }
+
+  template <auto Candidate, class T>
+  void connect_render(T& valueOrInstance) noexcept
+  {
+    m_render.template connect<Candidate>(valueOrInstance);
+  }
+
+  template <auto Candidate, class T>
+  void connect_render(T* valueOrInstance) noexcept
+  {
+    m_render.template connect<Candidate>(valueOrInstance);
+  }
+
+ protected:
+  entt::delegate<Logic> m_logic{};
+  entt::delegate<Render> m_render{};
+  entt::delegate<Input> m_input{};
+};
 
 /**
  * @class basic_variable_timestep_loop
@@ -30,12 +109,9 @@ namespace centurion::experimental {
  *
  * @headerfile game_loop.hpp
  */
-class basic_variable_timestep_loop final {
+class basic_variable_timestep_loop final
+    : public basic_loop<bool(), void(seconds<double>), void()> {
  public:
-  using input_handler = bool();
-  using logic_handler = void(milliseconds<float>);
-  using render_handler = void();
-
   void run()
   {
     assert(m_input);
@@ -43,184 +119,112 @@ class basic_variable_timestep_loop final {
     assert(m_render);
 
     bool running = true;
-    milliseconds<float> m_prev = counter::now_ms();
-    milliseconds<float> m_curr = counter::now_ms();
+
+    auto then = counter::now_sec<double>();
+    auto now = counter::now_sec<double>();
     while (running) {
-      m_prev = m_curr;
-      m_curr = counter::now_ms();
+      then = now;
+      now = counter::now_sec<double>();
 
       running = m_input();
-
-      const auto diff = m_curr - m_prev;
-      m_logic(diff);
-
+      m_logic(now - then);
       m_render();
     }
   }
-
-  template <auto Candidate>
-  void connect_input() noexcept
-  {
-    m_input.connect<Candidate>();
-  }
-
-  template <auto Candidate, class T>
-  void connect_input(T& valueOrInstance) noexcept
-  {
-    m_input.connect<Candidate>(valueOrInstance);
-  }
-
-  template <auto Candidate, class T>
-  void connect_input(T* valueOrInstance) noexcept
-  {
-    m_input.connect<Candidate>(valueOrInstance);
-  }
-
-  template <auto Candidate>
-  void connect_logic() noexcept
-  {
-    m_logic.connect<Candidate>();
-  }
-
-  template <auto Candidate, class T>
-  void connect_logic(T& valueOrInstance) noexcept
-  {
-    m_logic.connect<Candidate>(valueOrInstance);
-  }
-
-  template <auto Candidate, class T>
-  void connect_logic(T* valueOrInstance) noexcept
-  {
-    m_logic.connect<Candidate>(valueOrInstance);
-  }
-
-  template <auto Candidate>
-  void connect_render() noexcept
-  {
-    m_render.connect<Candidate>();
-  }
-
-  template <auto Candidate, class T>
-  void connect_render(T& valueOrInstance) noexcept
-  {
-    m_render.connect<Candidate>(valueOrInstance);
-  }
-
-  template <auto Candidate, class T>
-  void connect_render(T* valueOrInstance) noexcept
-  {
-    m_render.connect<Candidate>(valueOrInstance);
-  }
-
- private:
-  entt::delegate<logic_handler> m_logic{};
-  entt::delegate<render_handler> m_render{};
-  entt::delegate<input_handler> m_input{};
 };
 
-template <typename delta>
-class basic_semi_fixed_timestep_loop final {
+class basic_semi_fixed_timestep_loop final
+    : public basic_loop<bool(), void(seconds<double>), void()> {
  public:
-  using input_fun = bool();
-  using logic_fun = void(milliseconds<float>);
-  using render_fun = void();
-
-  void update(input_fun input, logic_fun logic, render_fun render)
+  void run()
   {
-    //    float time = 0;
-    const auto fixedDelta = 1.0f / 60.0f;
+    assert(m_input);
+    assert(m_logic);
+    assert(m_render);
 
-    auto currentTime = time_now();
+    constexpr seconds<double> fixedDelta{1.0 / 60.0};
+
+    auto currentTime = counter::now_sec<double>();
 
     bool running = true;
     while (running) {
-      const auto newTime = time_now();
+      const auto newTime = counter::now_sec<double>();
       auto frameTime = newTime - currentTime;
 
       currentTime = newTime;
 
       auto nSteps = 0;
-      while (frameTime > 0.0f) {
+      while (frameTime.count() > 0.0) {
         if (nSteps > m_maxSteps) {
           break;  // avoids spiral-of-death by limiting maximum amount of steps
         }
 
         const auto deltaTime = std::min(frameTime, fixedDelta);
 
-        running = input();
-        logic(deltaTime);
+        running = m_input();
+        m_logic(deltaTime);
 
         frameTime -= deltaTime;
-        //        time += deltaTime;
 
         ++nSteps;
       }
 
-      render();
+      m_render();
     }
   }
 
-  [[nodiscard]] auto time_now() const -> milliseconds<float>
-  {
-    return std::chrono::duration_cast<milliseconds<float>>(counter::now_ms());
-  }
-
  private:
-  //  u64 m_curr{};
-  //  u64 m_prev{};
-
   inline constexpr static int m_maxSteps = 5;
-
-  //  input_fun* m_input{};
 };
 
-template <typename delta, typename alpha>
-class basic_fixed_timestep_loop final {
+class basic_fixed_timestep_loop final
+    : public basic_loop<bool(), void(seconds<double>), void(double)> {
  public:
-  using logic = void(delta);
-  using render = void(renderer&, alpha);
-
-  basic_fixed_timestep_loop()
-      : m_vsyncRate{static_cast<float>(screen::refresh_rate())},
-        m_timeStep{1 / m_vsyncRate},
-        m_counterFreq{static_cast<float>(counter::high_res_freq())}
-  {}
-
-  void tick()
+  void run()
   {
-    //    bool running = true;
-    //    while (running) {
-    //      while (counter::now() >
-    //
-    //
-    //    }
+    assert(m_input);
+    assert(m_logic);
+    assert(m_render);
 
-    //    while( game_is_running ) {
-    //      while( GetTickCount() > next_game_tick ) {
-    //        update();
-    //        next_game_tick += SKIP_TICKS;
-    //      }
-    //      interpolation = float( GetTickCount() + SKIP_TICKS - next_game_tick
-    //      )
-    //          / float( SKIP_TICKS );
-    //      render( interpolation );
-    //    }
+    const seconds<double> delta{1.0 / 60.0};
+    const seconds<double> spiralOfDeathCap{0.25};
+
+    auto currentTime = counter::now_sec<double>();
+    seconds<double> accumulator{0};
+
+    bool running = true;
+    while (running) {
+      const auto newTime = counter::now_sec<double>();
+
+      counter::now_sec<double>();
+
+      auto frameTime = newTime - currentTime;
+      if (frameTime > spiralOfDeathCap) {
+        frameTime = spiralOfDeathCap;
+      }
+
+      currentTime = newTime;
+
+      accumulator += frameTime;
+
+      while (accumulator >= delta) {
+        //        previousState = currentState;
+        //        integrate( currentState, t, dt );
+        running = m_input();
+        m_logic(delta);
+
+        //        time += dt;
+        accumulator -= delta;
+      }
+
+      // State state = currentState * alpha + previousState * (1.0 - alpha);
+      m_render(accumulator / delta);
+    }
   }
-
- private:
-  u64 m_now{};
-  u64 m_then{};
-  delta m_delta{};
-  delta m_accumulator{};
-  delta m_deltaBuffer{};
-
-  const float m_vsyncRate;
-  const delta m_timeStep;
-  const float m_counterFreq;
 };
 
-using fixed_timestep_loop = basic_fixed_timestep_loop<float, float>;
-using semi_fixed_timestep_loop = basic_semi_fixed_timestep_loop<float>;
+using fixed_timestep_loop = basic_fixed_timestep_loop;
+using semi_fixed_timestep_loop = basic_semi_fixed_timestep_loop;
 using variable_timestep_loop = basic_variable_timestep_loop;
 
 }  // namespace centurion::experimental

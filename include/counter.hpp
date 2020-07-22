@@ -74,7 +74,7 @@ namespace centurion::counter {
 }
 
 /**
- * @brief Returns the current value of the system high-performance counter.
+ * @brief Returns the current raw value of the system high-performance counter.
  *
  * @note The unit of the returned value is platform dependent.
  *
@@ -88,6 +88,22 @@ namespace centurion::counter {
 }
 
 /**
+ * @brief Returns the value of the system high-performance counter in seconds.
+ *
+ * @tparam T the representation type.
+ *
+ * @return the value of the system high-performance counter, in seconds.
+ *
+ * @since 5.0.0
+ */
+template <typename T>
+[[nodiscard]] auto now_sec() noexcept -> seconds<T>
+{
+  const auto freq = static_cast<T>(high_res_freq());
+  return seconds<T>{static_cast<T>(SDL_GetPerformanceCounter()) / freq};
+}
+
+/**
  * @brief Returns the amount of milliseconds since the library was
  * initialized.
  *
@@ -95,7 +111,7 @@ namespace centurion::counter {
  *
  * @since 3.0.0
  */
-[[nodiscard]] inline auto now_ms() noexcept -> milliseconds<u32>
+[[nodiscard]] inline auto ticks() noexcept -> milliseconds<u32>
 {
   return milliseconds<u32>{SDL_GetTicks()};
 }

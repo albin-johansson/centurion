@@ -96,20 +96,11 @@ class basic_loop {
  *
  * @brief Represents a variable-timestep loop.
  *
- * @details Physics updates are passed a "time elapsed since last update"
- * argument and are hence framerate-dependent. This may mean doing calculations
- * as position += (distancePerSecond * timeElapsed).
- *
- * Pros: smooth, easier to to code
- * Cons: non-deterministic, unpredictable at very small or large steps
- *
- * @tparam delta the delta time type.
- *
  * @since 5.0.0
  *
  * @headerfile game_loop.hpp
  */
-class basic_variable_timestep_loop final
+class variable_timestep_loop final
     : public basic_loop<bool(), void(seconds<double>), void()> {
  public:
   void run()
@@ -133,7 +124,7 @@ class basic_variable_timestep_loop final
   }
 };
 
-class basic_semi_fixed_timestep_loop final
+class semi_fixed_timestep_loop final
     : public basic_loop<bool(), void(seconds<double>), void()> {
  public:
   void run()
@@ -177,7 +168,7 @@ class basic_semi_fixed_timestep_loop final
   inline constexpr static int m_maxSteps = 5;
 };
 
-class basic_fixed_timestep_loop final
+class fixed_timestep_loop final
     : public basic_loop<bool(), void(seconds<double>), void(double)> {
  public:
   void run()
@@ -222,10 +213,6 @@ class basic_fixed_timestep_loop final
     }
   }
 };
-
-using fixed_timestep_loop = basic_fixed_timestep_loop;
-using semi_fixed_timestep_loop = basic_semi_fixed_timestep_loop;
-using variable_timestep_loop = basic_variable_timestep_loop;
 
 }  // namespace centurion::experimental
 

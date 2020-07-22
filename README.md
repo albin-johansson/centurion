@@ -18,6 +18,16 @@ Centurion is written in modern C++17 and as such is much more intuitive and easy
 
 Happy coding! :heart:
 
+## Relevant resources
+
+* [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
+* [SDL2 Wiki](https://wiki.libsdl.org/FrontPage)
+* [SDL2](https://www.libsdl.org/index.php)
+* [SDL2_image](https://www.libsdl.org/projects/SDL_image/)
+* [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/)
+* [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/)
+* [EnTT](https://github.com/skypjack/entt)
+
 ## Author
 
 - __Albin Johansson__ - _Software engineering student_ - [GitHub](https://github.com/albin-johansson)

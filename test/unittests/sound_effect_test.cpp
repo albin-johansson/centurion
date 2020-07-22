@@ -154,18 +154,18 @@ TEST_CASE("sound_effect:set_volume", "[sound_effect]")
 
   SECTION("Volume overflow")
   {
-    const auto volume = ctn::sound_effect::maxVolume + 1;
+    const auto volume = ctn::sound_effect::max_volume() + 1;
     sound.set_volume(volume);
-    CHECK(sound.volume() == ctn::sound_effect::maxVolume);
+    CHECK(sound.volume() == ctn::sound_effect::max_volume());
   }
 }
 
 TEST_CASE("sound_effect::volume", "[sound_effect]")
 {
   ctn::sound_effect sound{path};
-  CHECK(sound.volume() == ctn::sound_effect::maxVolume);
+  CHECK(sound.volume() == ctn::sound_effect::max_volume());
   CHECK(sound.volume() == 128);  // because of the documentation guarantee
-  CHECK(ctn::sound_effect::maxVolume == MIX_MAX_VOLUME);
+  CHECK(ctn::sound_effect::max_volume() == MIX_MAX_VOLUME);
 }
 
 TEST_CASE("sound_effect::is_playing", "[sound_effect]")

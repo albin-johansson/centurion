@@ -275,13 +275,6 @@ enum class music_type {
 class music final {
  public:
   /**
-   * @brief The maximum possible volume value.
-   *
-   * @since 4.0.0
-   */
-  inline static constexpr int maxVolume = MIX_MAX_VOLUME;
-
-  /**
    * @brief A constant that indicates that an audio snippet should be looped
    * indefinitely.
    *
@@ -437,7 +430,7 @@ class music final {
    * @brief Sets the volume of all music.
    *
    * @param volume the volume that will be used, in the range [0,
-   * `music::maxVolume`]. An out-of-bounds value will be clamped to the
+   * `music::max_volume()`]. An out-of-bounds value will be clamped to the
    * closest valid value.
    *
    * @since 3.0.0
@@ -480,9 +473,9 @@ class music final {
   /**
    * @brief Returns the volume of the music.
    *
-   * @details The default value is set to `music::maxVolume`.
+   * @details The default value is set to `music::max_volume()`.
    *
-   * @return the volume of the music, in the range [0, `music::maxVolume`].
+   * @return the volume of the music, in the range [0, `music::max_volume()`].
    *
    * @since 3.0.0
    */
@@ -551,6 +544,18 @@ class music final {
   [[nodiscard]] explicit operator const Mix_Music*() const noexcept
   {
     return m_music;
+  }
+
+  /**
+   * @brief Returns the maximum possible volume.
+   *
+   * @return the maximum possible volume value, equal to `MIX_MAX_VOLUME`.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static constexpr auto max_volume() noexcept -> int
+  {
+    return MIX_MAX_VOLUME;
   }
 
  private:

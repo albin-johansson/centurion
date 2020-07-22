@@ -169,9 +169,9 @@ TEST_CASE("Music::set_volume", "[music]")
 
   SECTION("Volume overflow")
   {
-    const auto volume = ctn::music::maxVolume + 1;
+    const auto volume = ctn::music::max_volume() + 1;
     ctn::music::set_volume(volume);
-    CHECK(ctn::music::maxVolume == ctn::music::volume());
+    CHECK(ctn::music::max_volume() == ctn::music::volume());
   }
 
   ctn::music::set_volume(originalVolume);
@@ -221,7 +221,7 @@ TEST_CASE("Music::fading", "[music]")
 
 TEST_CASE("Music::volume", "[music]")
 {
-  CHECK(ctn::music::volume() == ctn::music::maxVolume);
+  CHECK(ctn::music::volume() == ctn::music::max_volume());
 
   const auto volume = 47;
   ctn::music::set_volume(volume);

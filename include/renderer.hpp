@@ -164,7 +164,7 @@ class renderer final : public renderer_base {
    * @since 4.0.0
    */
   explicit renderer(const window& window,
-                    SDL_RendererFlags flags = defaultFlags)
+                    SDL_RendererFlags flags = default_flags())
 
   {
     m_renderer = SDL_CreateRenderer(window.get(), -1, flags);
@@ -219,7 +219,7 @@ class renderer final : public renderer_base {
    * @copydoc renderer(const window&, SDL_RendererFlags)
    */
   [[nodiscard]] static auto unique(const window& window,
-                                   SDL_RendererFlags flags = defaultFlags)
+                                   SDL_RendererFlags flags = default_flags())
       -> std::unique_ptr<renderer>
   {
     return std::make_unique<renderer>(window, flags);
@@ -238,7 +238,7 @@ class renderer final : public renderer_base {
    * @copydoc renderer(const window&, SDL_RendererFlags)
    */
   [[nodiscard]] static auto shared(const window& window,
-                                   SDL_RendererFlags flags = defaultFlags)
+                                   SDL_RendererFlags flags = default_flags())
       -> std::shared_ptr<renderer>
   {
     return std::make_shared<renderer>(window, flags);
@@ -546,8 +546,12 @@ class renderer final : public renderer_base {
   rect_f m_translationViewport;
   std::unordered_map<entt::id_type, std::shared_ptr<class font>> m_fonts;
 
-  static inline constexpr auto defaultFlags = static_cast<SDL_RendererFlags>(
-      SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  [[nodiscard]] static constexpr auto default_flags() noexcept
+      -> SDL_RendererFlags
+  {
+    return static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |
+                                          SDL_RENDERER_PRESENTVSYNC);
+  }
 
   /**
    * @brief Destroys the resources associated with the renderer.

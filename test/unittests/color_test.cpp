@@ -54,7 +54,7 @@ TEST_CASE("color(u8, u8, u8, u8)", "[color]")
     CHECK(r == c.red());
     CHECK(g == c.green());
     CHECK(b == c.blue());
-    CHECK(c.alpha() == ctn::color::max);
+    CHECK(c.alpha() == ctn::color::max());
   }
 }
 

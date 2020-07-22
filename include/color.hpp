@@ -67,14 +67,6 @@ namespace centurion {
 class color final {
  public:
   /**
-   * @var color::max
-   * @brief The maximum possible value of a color component.
-   *
-   * @since 3.0.0
-   */
-  static inline constexpr u8 max = 0xFF;
-
-  /**
    * @brief Creates a color. The created color will be equal to #000000FF.
    *
    * @since 3.0.0
@@ -92,7 +84,7 @@ class color final {
    *
    * @since 3.0.0
    */
-  constexpr color(u8 red, u8 green, u8 blue, u8 alpha = 0xFF) noexcept
+  constexpr color(u8 red, u8 green, u8 blue, u8 alpha = max()) noexcept
       : m_red{red}, m_green{green}, m_blue{blue}, m_alpha{alpha}
   {}
 
@@ -118,7 +110,7 @@ class color final {
    * @since 3.0.0
    */
   constexpr explicit color(const SDL_MessageBoxColor& color) noexcept
-      : m_red{color.r}, m_green{color.g}, m_blue{color.b}, m_alpha{max}
+      : m_red{color.r}, m_green{color.g}, m_blue{color.b}, m_alpha{max()}
   {}
 
   /**
@@ -256,11 +248,20 @@ class color final {
     return reinterpret_cast<const SDL_Color*>(this);
   }
 
+  /**
+   * @brief Returns the maximum possible value of a color component.
+   *
+   * @return the maximum possible value of a color component.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static constexpr auto max() noexcept -> u8 { return 0xFF; }
+
  private:
   u8 m_red{0};
   u8 m_green{0};
   u8 m_blue{0};
-  u8 m_alpha{max};
+  u8 m_alpha{max()};
 };
 
 inline auto color::to_string() const -> std::string

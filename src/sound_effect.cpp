@@ -65,10 +65,10 @@ auto sound_effect::shared(czstring file) -> std::shared_ptr<sound_effect>
 
 void sound_effect::activate(int nLoops) noexcept
 {
-  if (m_channel != undefinedChannel) {
+  if (m_channel != undefined_channel()) {
     Mix_PlayChannel(m_channel, m_chunk, nLoops);
   } else {
-    m_channel = Mix_PlayChannel(undefinedChannel, m_chunk, nLoops);
+    m_channel = Mix_PlayChannel(undefined_channel(), m_chunk, nLoops);
   }
 }
 
@@ -84,18 +84,18 @@ void sound_effect::stop() noexcept
 {
   if (is_playing()) {
     Mix_Pause(m_channel);
-    m_channel = undefinedChannel;
+    m_channel = undefined_channel();
   }
 }
 
 void sound_effect::fade_in(milliseconds<int> ms) noexcept
 {
   if (ms.count() > 0 && !is_playing()) {
-    if (m_channel != undefinedChannel) {
+    if (m_channel != undefined_channel()) {
       Mix_FadeInChannelTimed(m_channel, m_chunk, 0, ms.count(), -1);
     } else {
-      m_channel =
-          Mix_FadeInChannelTimed(undefinedChannel, m_chunk, 0, ms.count(), -1);
+      m_channel = Mix_FadeInChannelTimed(
+          undefined_channel(), m_chunk, 0, ms.count(), -1);
     }
   }
 }
@@ -114,7 +114,7 @@ void sound_effect::set_volume(int volume) noexcept
 
 auto sound_effect::is_playing() const noexcept -> bool
 {
-  return (m_channel != undefinedChannel) && Mix_Playing(m_channel);
+  return (m_channel != undefined_channel()) && Mix_Playing(m_channel);
 }
 
 auto sound_effect::is_fading() const noexcept -> bool

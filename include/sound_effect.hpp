@@ -118,13 +118,6 @@ namespace centurion {
 class sound_effect final {
  public:
   /**
-   * @brief The maximum possible volume value.
-   *
-   * @since 4.0.0
-   */
-  inline static constexpr int maxVolume = MIX_MAX_VOLUME;
-
-  /**
    * @brief Indicates that an audio snippet should be looped indefinitely.
    *
    * @since 4.0.0
@@ -242,7 +235,7 @@ class sound_effect final {
    * the closest legal value.
    *
    * @param volume the volume of the sound effect, in the range [0,
-   * `sound_effect::maxVolume`].
+   * `sound_effect::max_volume()`].
    *
    * @since 3.0.0
    */
@@ -341,10 +334,13 @@ class sound_effect final {
   }
 
  private:
-  static constexpr int undefinedChannel = -1;
+  Mix_Chunk* m_chunk{};
+  int m_channel = undefined_channel();
 
-  Mix_Chunk* m_chunk = nullptr;
-  int m_channel = undefinedChannel;
+  [[nodiscard]] static constexpr auto undefined_channel() noexcept -> int
+  {
+    return -1;
+  }
 
   /**
    * @brief Destroys the resources associated with the sound effect.

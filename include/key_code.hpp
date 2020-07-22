@@ -22,6 +22,18 @@
  * SOFTWARE.
  */
 
+/**
+ * @file key_code.hpp
+ *
+ * @brief Provides the `key_code` class and constants.
+ *
+ * @author Albin Johansson
+ *
+ * @date 2019-2020
+ *
+ * @copyright MIT License
+ */
+
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 

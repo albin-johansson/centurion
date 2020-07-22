@@ -345,7 +345,7 @@ class unicode_string final {
  * @since 5.0.0
  */
 [[nodiscard]] inline auto operator==(const unicode_string& lhs,
-                                     const unicode_string& rhs)
+                                     const unicode_string& rhs) -> bool
 {
   if (lhs.size() != rhs.size()) {
     return false;
@@ -373,7 +373,7 @@ class unicode_string final {
  * @since 5.0.0
  */
 [[nodiscard]] inline auto operator!=(const unicode_string& lhs,
-                                     const unicode_string& rhs)
+                                     const unicode_string& rhs) -> bool
 {
   return !(lhs == rhs);
 }

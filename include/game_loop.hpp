@@ -349,6 +349,17 @@ template <int tickRate>
 class basic_semi_fixed_timestep_loop final
     : public basic_loop<bool(), void(seconds<double>), void()> {
  public:
+  /**
+   * @brief Runs the game loop.
+   *
+   * @pre The input delegate **must** have been set.
+   * @pre The logic delegate **must** have been set.
+   * @pre The render delegate **must** have been set.
+   *
+   * @note This method doesn't return until the input delegate returns `false`.
+   *
+   * @since 5.0.0
+   */
   void run()
   {
     assert(m_input);
@@ -463,6 +474,17 @@ template <int tickRate>
 class basic_fixed_timestep_loop final
     : public basic_loop<bool(), void(seconds<double>), void(double)> {
  public:
+  /**
+   * @brief Runs the game loop.
+   *
+   * @pre The input delegate **must** have been set.
+   * @pre The logic delegate **must** have been set.
+   * @pre The render delegate **must** have been set.
+   *
+   * @note This method doesn't return until the input delegate returns `false`.
+   *
+   * @since 5.0.0
+   */
   void run()
   {
     assert(m_input);

@@ -124,7 +124,8 @@ class variable_timestep_loop final
   }
 };
 
-class semi_fixed_timestep_loop final
+template <int tickRate>
+class basic_semi_fixed_timestep_loop final
     : public basic_loop<bool(), void(seconds<double>), void()> {
  public:
   void run()
@@ -133,7 +134,7 @@ class semi_fixed_timestep_loop final
     assert(m_logic);
     assert(m_render);
 
-    constexpr seconds<double> fixedDelta{1.0 / 60.0};
+    constexpr seconds<double> fixedDelta{1.0 / static_cast<double>(tickRate)};
 
     auto currentTime = counter::now_sec<double>();
 
@@ -145,7 +146,7 @@ class semi_fixed_timestep_loop final
       currentTime = newTime;
 
       auto nSteps = 0;
-      while (frameTime.count() > 0.0) {
+      while (frameTime > seconds<double>::zero()) {
         if (nSteps > m_maxSteps) {
           break;  // avoids spiral-of-death by limiting maximum amount of steps
         }
@@ -153,6 +154,10 @@ class semi_fixed_timestep_loop final
         const auto deltaTime = std::min(frameTime, fixedDelta);
 
         running = m_input();
+        if (!running) {
+          break;
+        }
+
         m_logic(deltaTime);
 
         frameTime -= deltaTime;
@@ -168,7 +173,8 @@ class semi_fixed_timestep_loop final
   inline constexpr static int m_maxSteps = 5;
 };
 
-class fixed_timestep_loop final
+template <int tickRate>
+class basic_fixed_timestep_loop final
     : public basic_loop<bool(), void(seconds<double>), void(double)> {
  public:
   void run()
@@ -177,8 +183,8 @@ class fixed_timestep_loop final
     assert(m_logic);
     assert(m_render);
 
-    const seconds<double> delta{1.0 / 60.0};
-    const seconds<double> spiralOfDeathCap{0.25};
+    constexpr seconds<double> delta{1.0 / static_cast<double>(tickRate)};
+    constexpr seconds<double> spiralOfDeathCap{0.25};
 
     auto currentTime = counter::now_sec<double>();
     seconds<double> accumulator{0};
@@ -202,6 +208,10 @@ class fixed_timestep_loop final
         //        previousState = currentState;
         //        integrate( currentState, t, dt );
         running = m_input();
+        if (!running) {
+          break;
+        }
+
         m_logic(delta);
 
         //        time += dt;
@@ -213,6 +223,9 @@ class fixed_timestep_loop final
     }
   }
 };
+
+using semi_fixed_timestep_loop = basic_semi_fixed_timestep_loop<60>;
+using fixed_timestep_loop = basic_fixed_timestep_loop<60>;
 
 }  // namespace centurion::experimental
 

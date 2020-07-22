@@ -40,6 +40,15 @@
  * @copyright MIT License
  */
 
+/**
+ * @defgroup game Game utilities
+ *
+ * @brief Contains utilities useful when creating games, that aren't
+ * necessarily related to SDL2.
+ *
+ * @since 5.0.0
+ */
+
 #ifndef CENTURION_GAME_LOOP_HEADER
 #define CENTURION_GAME_LOOP_HEADER
 
@@ -56,7 +65,11 @@
 namespace centurion::experimental {
 
 /**
+ * @class basic_loop
+ *
  * @brief Provides the basic interface for game loops.
+ *
+ * @ingroup game
  *
  * @tparam Input the signature of the input handler function.
  * @tparam Logic the signature of the logic handler function.
@@ -242,6 +255,8 @@ class basic_loop {
  *
  * @brief Represents a variable timestep loop.
  *
+ * @ingroup game
+ *
  * @details This is by far the simplest game loop. The delta time is
  * dynamically adjusted based on the duration of the previous frame. However,
  * the problem with this loop is that, since the delta time isn't fixed, the
@@ -333,6 +348,8 @@ class variable_timestep_loop final
  * @class basic_semi_fixed_timestep_loop
  *
  * @brief Represents a semi-fixed timestep loop.
+ *
+ * @ingroup game
  *
  * @details This loop is similar to the variable timestep loop, but utilizes
  * a few tricks to minimize the unpredictability of a completely variable
@@ -450,6 +467,8 @@ class basic_semi_fixed_timestep_loop final
  * @class basic_fixed_timestep_loop
  *
  * @brief Represents a fixed timestep loop.
+ *
+ * @ingroup game
  *
  * @details Unlike the semi-fixed timestep loop, this loop only does updates
  * with a fixed delta value. Usually, there are some "unsimulated" time left
@@ -573,6 +592,8 @@ class basic_fixed_timestep_loop final
  *
  * @brief Alias for a semi-fixed timestep loop that uses a 60 Hz tick-rate.
  *
+ * @ingroup game
+ *
  * @since 5.0.0
  */
 using semi_fixed_timestep_loop = basic_semi_fixed_timestep_loop<60>;
@@ -581,6 +602,8 @@ using semi_fixed_timestep_loop = basic_semi_fixed_timestep_loop<60>;
  * @typedef fixed_timestep_loop
  *
  * @brief Alias for a fixed timestep loop that uses a 60 Hz tick-rate.
+ *
+ * @ingroup game
  *
  * @since 5.0.0
  */

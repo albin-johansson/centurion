@@ -11,7 +11,7 @@ static constexpr auto type_writer_path = "resources/type_writer.ttf";
 static constexpr auto fira_code_path = "resources/fira_code.ttf";
 static constexpr auto daniel_path = "resources/daniel.ttf";
 
-TEST_CASE("font(CZString, int)", "[font]")
+TEST_CASE("font(czstring, int)", "[font]")
 {
   CHECK_THROWS_AS(ctn::font(nullptr, 1), ctn::centurion_exception);
   CHECK_THROWS_AS(ctn::font("", 1), ctn::centurion_exception);

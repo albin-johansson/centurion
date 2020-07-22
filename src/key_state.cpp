@@ -7,7 +7,7 @@
 #include "key_code.hpp"
 #include "scan_code.hpp"
 
-namespace centurion::input {
+namespace centurion {
 
 key_state::key_state() noexcept
 {
@@ -95,4 +95,4 @@ auto key_state::modifier_active(key_modifier modifier) noexcept -> bool
   return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
 }
 
-}  // namespace centurion::input
+}  // namespace centurion

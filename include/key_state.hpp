@@ -58,23 +58,12 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-/**
- * @namespace centurion::input
- *
- * @ingroup input
- *
- * @brief Contains components related to input state.
- *
- * @details This namespace provides components that are an alternative to the
- * traditional events.
- *
- * @see `key_state`
- * @see `mouse_state`
- */
-namespace centurion::input {
+namespace centurion {
 
 /**
  * @class key_state
+ *
+ * @ingroup input
  *
  * @brief Provides information about the keyboard state.
  *
@@ -280,6 +269,6 @@ static_assert(std::is_nothrow_move_assignable_v<key_state>);
 static_assert(std::is_nothrow_copy_constructible_v<key_state>);
 static_assert(std::is_nothrow_copy_assignable_v<key_state>);
 
-}  // namespace centurion::input
+}  // namespace centurion
 
 #endif  // CENTURION_KEY_STATE_HEADER

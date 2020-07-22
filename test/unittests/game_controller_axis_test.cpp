@@ -1,12 +1,11 @@
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "game_controller.hpp"
-
-using namespace centurion;
 
 TEST_CASE("game_controller_axis operator==", "[game_controller_axis]")
 {
-  using gca = game_controller_axis;
+  using gca = ctn::game_controller_axis;
 
   CHECK(SDL_CONTROLLER_AXIS_INVALID == gca::invalid);
   CHECK(SDL_CONTROLLER_AXIS_LEFTX == gca::left_x);
@@ -29,7 +28,7 @@ TEST_CASE("game_controller_axis operator==", "[game_controller_axis]")
 
 TEST_CASE("game_controller_axis operator!=", "[game_controller_axis]")
 {
-  using gca = game_controller_axis;
+  using gca = ctn::game_controller_axis;
 
   CHECK(SDL_CONTROLLER_AXIS_INVALID != gca::right_x);
   CHECK(gca::max != SDL_CONTROLLER_AXIS_LEFTX);

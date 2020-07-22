@@ -44,7 +44,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion::input {
+namespace centurion {
 
 /**
  * @class mouse_state
@@ -247,6 +247,6 @@ static_assert(std::is_nothrow_move_assignable_v<mouse_state>);
 static_assert(std::is_nothrow_copy_constructible_v<mouse_state>);
 static_assert(std::is_nothrow_copy_assignable_v<mouse_state>);
 
-}  // namespace centurion::input
+}  // namespace centurion
 
 #endif  // CENTURION_MOUSE_STATE_HEADER

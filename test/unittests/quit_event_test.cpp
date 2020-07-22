@@ -1,16 +1,15 @@
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "event.hpp"
 
-using namespace centurion;
-
-TEST_CASE("QuitEvent()", "[QuitEvent]")
+TEST_CASE("quit_event()", "[quit_event]")
 {
-  CHECK_NOTHROW(quit_event{});
+  CHECK_NOTHROW(ctn::quit_event{});
 }
 
-TEST_CASE("QuitEvent(const SDL_QuitEvent&)", "[QuitEvent]")
+TEST_CASE("quit_event(const SDL_QuitEvent&)", "[quit_event]")
 {
   SDL_QuitEvent qEvent;
-  CHECK_NOTHROW(quit_event{qEvent});
+  CHECK_NOTHROW(ctn::quit_event{qEvent});
 }

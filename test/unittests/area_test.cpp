@@ -21,7 +21,7 @@ TEST_CASE("Construction", "[area]")
   CHECK(area.height == h);
 }
 
-TEST_CASE("Area operator==", "[area]")
+TEST_CASE("area operator==", "[area]")
 {
   SECTION("Reflexivity")
   {
@@ -46,7 +46,7 @@ TEST_CASE("Area operator==", "[area]")
   }
 }
 
-TEST_CASE("Area operator!=", "[area]")
+TEST_CASE("area operator!=", "[area]")
 {
   SECTION("Self")
   {

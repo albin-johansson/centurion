@@ -366,7 +366,7 @@ TEST_CASE("event::is", "[event]")
     CHECK(!wrong.is<ctn::keyboard_event>());
   }
 
-  SECTION("MouseButtonEvent")
+  SECTION("mouse_button_event")
   {
     const auto up = create_event(SDL_MOUSEBUTTONUP);
     const auto down = create_event(SDL_MOUSEBUTTONDOWN);
@@ -386,7 +386,7 @@ TEST_CASE("event::is", "[event]")
     CHECK(!wrong.is<ctn::mouse_button_event>());
   }
 
-  SECTION("MouseWheelEvent")
+  SECTION("mouse_wheel_event")
   {
     const auto wheel = create_event(SDL_MOUSEWHEEL);
     const auto wrong = create_event(SDL_QUIT);

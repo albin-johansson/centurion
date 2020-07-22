@@ -7,7 +7,7 @@
 
 using namespace Catch;
 
-TEST_CASE("centurion_exception(CZString)", "[centurion_exception]")
+TEST_CASE("centurion_exception(czstring)", "[centurion_exception]")
 {
   SECTION("Null string")
   {

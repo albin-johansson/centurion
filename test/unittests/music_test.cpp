@@ -7,9 +7,9 @@
 #include "centurion_exception.hpp"
 #include "log.hpp"
 
-static constexpr auto path = "resources/hiddenPond.mp3";
+static inline constexpr auto* path = "resources/hiddenPond.mp3";
 
-TEST_CASE("Music::Music(CZString)", "[music]")
+TEST_CASE("Music::Music(czstring)", "[music]")
 {
   CHECK_THROWS_AS(ctn::music{""}, ctn::centurion_exception);
   CHECK_THROWS_AS(ctn::music{nullptr}, ctn::centurion_exception);

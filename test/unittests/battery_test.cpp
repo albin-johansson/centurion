@@ -4,7 +4,7 @@
 
 #include "centurion_as_ctn.hpp"
 
-TEST_CASE("power_state enum values", "[power_state]")
+TEST_CASE("power_state enum values", "[battery]")
 {
   using namespace ctn::battery;
   CHECK(power_state::unknown == SDL_POWERSTATE_UNKNOWN);

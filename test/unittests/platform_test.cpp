@@ -1,5 +1,7 @@
 //#include "platform.hpp"
 
+// FIXME investigate
+
 #include <catch.hpp>
 #include <string>
 

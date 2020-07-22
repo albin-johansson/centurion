@@ -14,7 +14,12 @@ TEST_CASE("counter::now", "[counter]")
   CHECK_NOTHROW(ctn::counter::now());
 }
 
-TEST_CASE("counter::now_ms", "[counter]")
+TEST_CASE("counter::now_sec", "[counter]")
+{
+  CHECK_NOTHROW(ctn::counter::now_sec<double>());
+}
+
+TEST_CASE("counter::ticks", "[counter]")
 {
   CHECK_NOTHROW(ctn::counter::ticks());
 }

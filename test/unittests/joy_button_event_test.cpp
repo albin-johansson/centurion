@@ -1,13 +1,11 @@
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "event.hpp"
 
-using namespace centurion;
-using namespace centurion;
-
-TEST_CASE("JoyButtonEvent::set_which", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::set_which", "[joy_button_event]")
 {
-  joy_button_event event;
+  ctn::joy_button_event event;
 
   const auto which = 92;
   event.set_which(which);
@@ -15,9 +13,9 @@ TEST_CASE("JoyButtonEvent::set_which", "[JoyButtonEvent]")
   CHECK(event.which() == which);
 }
 
-TEST_CASE("JoyButtonEvent::set_button", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::set_button", "[joy_button_event]")
 {
-  joy_button_event event;
+  ctn::joy_button_event event;
 
   const auto button = 44;
   event.set_button(button);
@@ -25,39 +23,42 @@ TEST_CASE("JoyButtonEvent::set_button", "[JoyButtonEvent]")
   CHECK(event.button() == button);
 }
 
-TEST_CASE("JoyButtonEvent::set_state", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::set_state", "[joy_button_event]")
 {
-  joy_button_event event;
+  ctn::joy_button_event event;
 
-  const auto state = button_state::pressed;
+  const auto state = ctn::button_state::pressed;
   event.set_state(state);
 
   CHECK(event.state() == state);
 }
 
-TEST_CASE("JoyButtonEvent::which", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::which", "[joy_button_event]")
 {
   SDL_JoyButtonEvent sdlEvent;
   sdlEvent.which = 27;
-  joy_button_event event{sdlEvent};
+
+  ctn::joy_button_event event{sdlEvent};
 
   CHECK(event.which() == sdlEvent.which);
 }
 
-TEST_CASE("JoyButtonEvent::button", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::button", "[joy_button_event]")
 {
   SDL_JoyButtonEvent sdlEvent;
   sdlEvent.button = 99;
-  joy_button_event event{sdlEvent};
+
+  ctn::joy_button_event event{sdlEvent};
 
   CHECK(event.button() == sdlEvent.button);
 }
 
-TEST_CASE("JoyButtonEvent::state", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::state", "[joy_button_event]")
 {
   SDL_JoyButtonEvent sdlEvent;
   sdlEvent.state = SDL_RELEASED;
-  joy_button_event event{sdlEvent};
 
-  CHECK(event.state() == button_state::released);
+  ctn::joy_button_event event{sdlEvent};
+
+  CHECK(event.state() == ctn::button_state::released);
 }

@@ -68,13 +68,9 @@ class pref_path;
 
 class base_path;
 
-namespace input {
-
 class key_state;
 
 class mouse_state;
-
-}  // namespace input
 
 namespace messagebox {
 

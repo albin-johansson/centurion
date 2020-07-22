@@ -11,7 +11,7 @@
 
 static constexpr auto path = "resources/click.wav";
 
-TEST_CASE("sound_effect(CZString)", "[sound_effect]")
+TEST_CASE("sound_effect(czstring)", "[sound_effect]")
 {
   CHECK_THROWS_AS(ctn::sound_effect("somebadpath"), ctn::centurion_exception);
   CHECK_THROWS_AS(ctn::sound_effect(nullptr), ctn::centurion_exception);

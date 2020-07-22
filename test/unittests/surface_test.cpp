@@ -13,7 +13,7 @@
 
 static constexpr ctn::czstring path = "resources/panda.png";
 
-TEST_CASE("Surface(CZString)", "[surface]")
+TEST_CASE("surface(czstring)", "[surface]")
 {
   SECTION("Null path")
   {
@@ -29,7 +29,7 @@ TEST_CASE("Surface(CZString)", "[surface]")
   CHECK_NOTHROW(ctn::surface{path});
 }
 
-TEST_CASE("Surface(SDL_Surface*)", "[surface]")
+TEST_CASE("surface(SDL_Surface*)", "[surface]")
 {
   SECTION("Null surface")
   {
@@ -41,7 +41,7 @@ TEST_CASE("Surface(SDL_Surface*)", "[surface]")
   CHECK_NOTHROW(ctn::surface{surface});
 }
 
-TEST_CASE("Surface(const Surface&)", "[surface]")
+TEST_CASE("surface(const Surface&)", "[surface]")
 {
   const ctn::surface surface{path};
   const ctn::surface copy{surface};
@@ -51,7 +51,7 @@ TEST_CASE("Surface(const Surface&)", "[surface]")
   CHECK(copy.get());
 }
 
-TEST_CASE("Surface(Surface&&)", "[surface]")
+TEST_CASE("surface(surface&&)", "[surface]")
 {
   ctn::surface surface{path};
   ctn::surface other{std::move(surface)};
@@ -60,7 +60,7 @@ TEST_CASE("Surface(Surface&&)", "[surface]")
   CHECK(other.get());
 }
 
-TEST_CASE("Surface::operator=(const Surface&)", "[surface]")
+TEST_CASE("surface::operator=(const surface&)", "[surface]")
 {
   ctn::surface fst{path};
   ctn::surface copy{path};
@@ -70,7 +70,7 @@ TEST_CASE("Surface::operator=(const Surface&)", "[surface]")
   CHECK(fst.get() != copy.get());
 }
 
-TEST_CASE("Surface::operator=(Surface&&)", "[surface]")
+TEST_CASE("surface::operator=(surface&&)", "[surface]")
 {
   SECTION("Self-assignment")
   {
@@ -92,7 +92,7 @@ TEST_CASE("Surface::operator=(Surface&&)", "[surface]")
   }
 }
 
-TEST_CASE("Surface::set_pixel", "[surface]")
+TEST_CASE("surface::set_pixel", "[surface]")
 {
   ctn::surface surface{path};
 
@@ -104,7 +104,7 @@ TEST_CASE("Surface::set_pixel", "[surface]")
   CHECK_NOTHROW(surface.set_pixel({43, 12}, ctn::colors::orange));
 }
 
-TEST_CASE("Surface::set_alpha", "[surface]")
+TEST_CASE("surface::set_alpha", "[surface]")
 {
   ctn::surface surface{path};
 
@@ -114,7 +114,7 @@ TEST_CASE("Surface::set_alpha", "[surface]")
   CHECK(alpha == surface.alpha());
 }
 
-TEST_CASE("Surface::set_color_mod", "[surface]")
+TEST_CASE("surface::set_color_mod", "[surface]")
 {
   ctn::surface surface{path};
 
@@ -124,7 +124,7 @@ TEST_CASE("Surface::set_color_mod", "[surface]")
   CHECK(color == surface.color_mod());
 }
 
-TEST_CASE("Surface::set_blend_mode", "[surface]")
+TEST_CASE("surface::set_blend_mode", "[surface]")
 {
   ctn::surface surface{path};
 
@@ -134,25 +134,25 @@ TEST_CASE("Surface::set_blend_mode", "[surface]")
   CHECK(mode == surface.get_blend_mode());
 }
 
-TEST_CASE("Surface::width", "[surface]")
+TEST_CASE("surface::width", "[surface]")
 {
   const ctn::surface surface{path};
   CHECK(surface.width() == 200);
 }
 
-TEST_CASE("Surface::height", "[surface]")
+TEST_CASE("surface::height", "[surface]")
 {
   const ctn::surface surface{path};
   CHECK(surface.height() == 150);
 }
 
-TEST_CASE("Surface::pitch", "[surface]")
+TEST_CASE("surface::pitch", "[surface]")
 {
   const ctn::surface surface{path};
   CHECK(surface.pitch() == (4 * surface.width()));
 }
 
-TEST_CASE("Surface::clip", "[surface]")
+TEST_CASE("surface::clip", "[surface]")
 {
   const ctn::rect_i rect{{48, 29}, {34, 89}};
 
@@ -171,7 +171,7 @@ TEST_CASE("Surface::clip", "[surface]")
   }
 }
 
-TEST_CASE("Surface::pixels", "[surface]")
+TEST_CASE("surface::pixels", "[surface]")
 {
   SECTION("Const")
   {
@@ -185,7 +185,7 @@ TEST_CASE("Surface::pixels", "[surface]")
   }
 }
 
-TEST_CASE("Surface::to_texture", "[surface]")
+TEST_CASE("surface::to_texture", "[surface]")
 {
   const ctn::surface surface{path};
   const ctn::window window;
@@ -194,7 +194,7 @@ TEST_CASE("Surface::to_texture", "[surface]")
   CHECK(surface.to_texture(renderer).get());
 }
 
-TEST_CASE("Surface::convert", "[surface]")
+TEST_CASE("surface::convert", "[surface]")
 {
   ctn::surface original{path};
   original.set_blend_mode(ctn::blend_mode::blend);
@@ -209,13 +209,13 @@ TEST_CASE("Surface::convert", "[surface]")
   CHECK(converted.color_mod() == original.color_mod());
 }
 
-TEST_CASE("Surface::get", "[surface]")
+TEST_CASE("surface::get", "[surface]")
 {
   ctn::surface surface{path};
   CHECK(surface.get());
 }
 
-TEST_CASE("Surface to SDL_Surface*", "[surface]")
+TEST_CASE("surface to SDL_Surface*", "[surface]")
 {
   SECTION("Const")
   {

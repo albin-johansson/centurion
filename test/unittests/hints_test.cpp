@@ -2,11 +2,11 @@
 
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "centurion_utils.hpp"
 #include "window.hpp"
 
-using namespace centurion;
-using namespace hint;
+using namespace ctn::hint;
 
 namespace {
 
@@ -131,7 +131,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("display_usable_bounds")
   {
     test_hint<display_usable_bounds>([] {
-      const czstring str = "10, 20, 30, 40";
+      const ctn::czstring str = "10, 20, 30, 40";
       CHECK(set_hint<display_usable_bounds>(str));
       CHECK_THAT(get_hint<display_usable_bounds>().value(), Catch::Equals(str));
     });
@@ -217,7 +217,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("game_controller_type")
   {
     test_hint<game_controller_type>([] {
-      const czstring str = "0x00FD/0xAAC3=PS4";
+      const ctn::czstring str = "0x00FD/0xAAC3=PS4";
       set_hint<game_controller_type>(str);
       CHECK_THAT(get_hint<game_controller_type>().value(), Catch::Equals(str));
     });
@@ -226,7 +226,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("game_controller_config")
   {
     test_hint<game_controller_config>([] {
-      const czstring str = "asd\nasd";
+      const ctn::czstring str = "asd\nasd";
       set_hint<game_controller_config>(str);
       CHECK_THAT(get_hint<game_controller_config>().value(),
                  Catch::Equals(str));
@@ -236,7 +236,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("game_controller_config_file")
   {
     test_hint<game_controller_config_file>([] {
-      const czstring str = "foo";
+      const ctn::czstring str = "foo";
       set_hint<game_controller_config_file>(str);
       CHECK_THAT(get_hint<game_controller_config_file>().value(),
                  Catch::Equals(str));
@@ -246,7 +246,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("game_controller_ignore_devices")
   {
     test_hint<game_controller_ignore_devices>([] {
-      const czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+      const ctn::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
       set_hint<game_controller_ignore_devices>(str);
       CHECK_THAT(get_hint<game_controller_ignore_devices>().value(),
                  Catch::Equals(str));
@@ -256,7 +256,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("game_controller_ignore_devices_except")
   {
     test_hint<game_controller_ignore_devices_except>([] {
-      const czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+      const ctn::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
       set_hint<game_controller_ignore_devices_except>(str);
       CHECK_THAT(get_hint<game_controller_ignore_devices_except>().value(),
                  Catch::Equals(str));
@@ -555,7 +555,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("window_share_pixel_format")
   {
     test_hint<window_share_pixel_format>([] {
-      window window;
+      ctn::window window;
       const auto str = centurion::detail::address_of(window.get());
 
       CHECK(set_hint<window_share_pixel_format>(str.c_str()));
@@ -572,7 +572,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("win_rt_privacy_policy_label")
   {
     test_hint<win_rt_privacy_policy_label>([] {
-      const czstring str = "Hello this is GDPR speaking";
+      const ctn::czstring str = "Hello this is GDPR speaking";
       set_hint<win_rt_privacy_policy_label>(str);
       CHECK_THAT(get_hint<win_rt_privacy_policy_label>().value(),
                  Catch::Equals(str));
@@ -582,7 +582,7 @@ TEST_CASE("set_hint", "[Hints]")
   SECTION("win_rt_privacy_policy_url")
   {
     test_hint<win_rt_privacy_policy_url>([] {
-      const czstring str = "Hello this is GDPR URL speaking";
+      const ctn::czstring str = "Hello this is GDPR URL speaking";
       set_hint<win_rt_privacy_policy_url>(str);
       CHECK_THAT(get_hint<win_rt_privacy_policy_url>().value(),
                  Catch::Equals(str));
@@ -719,7 +719,10 @@ TEST_CASE("add_callback", "[Hints]")
 
   int data = 7;
   auto handle = add_callback<render_driver>(
-      [](void* data, czstring hint, czstring oldVal, czstring newVal) {
+      [](void* data,
+         ctn::czstring hint,
+         ctn::czstring oldVal,
+         ctn::czstring newVal) {
         static bool first = true;
         if (first) {
           first = false;
@@ -748,7 +751,7 @@ TEST_CASE("clear_all", "[Hints]")
 TEST_CASE("user_data", "[Hints]")
 {
   int i = 123;
-  callback<render_driver> callback{[](void*, czstring, czstring, czstring) {},
-                                   &i};
+  callback<render_driver> callback{
+      [](void*, ctn::czstring, ctn::czstring, ctn::czstring) {}, &i};
   CHECK(callback.user_data() == &i);
 }

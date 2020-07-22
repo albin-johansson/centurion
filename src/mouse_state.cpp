@@ -2,7 +2,7 @@
 
 #include "centurion_utils.hpp"
 
-namespace centurion::input {
+namespace centurion {
 
 mouse_state::mouse_state() noexcept = default;
 
@@ -83,4 +83,4 @@ auto mouse_state::was_mouse_moved() const noexcept -> bool
   return (m_mouseX != m_oldX) || (m_mouseY != m_oldY);
 }
 
-}  // namespace centurion::input
+}  // namespace centurion

@@ -18,7 +18,7 @@ TEST_CASE("cursor(owner<SDL_Cursor*>)", "[cursor]")
   CHECK_THROWS_AS(ctn::cursor{nullptr}, ctn::centurion_exception);
 }
 
-TEST_CASE("cursor(Surface, IPoint)", "[cursor]")
+TEST_CASE("cursor(surface, point_i)", "[cursor]")
 {
   const ctn::surface surface{"resources/panda.png"};
   const ctn::point_i hotspot{12, 14};

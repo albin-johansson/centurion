@@ -49,7 +49,7 @@ TEST_CASE("Constructor: (gsl::owner<SDL_Renderer*>)", "[renderer]")
   CHECK_NOTHROW(ctn::renderer{ren});
 }
 
-TEST_CASE("Constructor: (const Window&, SDL_RendererFlags)", "[renderer]")
+TEST_CASE("Constructor: (const window&, SDL_RendererFlags)", "[renderer]")
 {
   ctn::window window;
   CHECK_NOTHROW(ctn::renderer{window});
@@ -65,7 +65,7 @@ TEST_CASE("Renderer move constructor", "[renderer]")
   CHECK(other.get());
 }
 
-TEST_CASE("operator=(Renderer&&)", "[renderer]")
+TEST_CASE("operator=(renderer&&)", "[renderer]")
 {
   SECTION("Self-assignment")
   {
@@ -78,10 +78,10 @@ TEST_CASE("operator=(Renderer&&)", "[renderer]")
 
   SECTION("Normal usage")
   {
-    const ctn::window firstWindow;
-    const ctn::window secondWindow;
-    ctn::renderer renderer{firstWindow};
-    ctn::renderer other{secondWindow};
+    const ctn::window firstwindow;
+    const ctn::window secondwindow;
+    ctn::renderer renderer{firstwindow};
+    ctn::renderer other{secondwindow};
 
     other = std::move(renderer);
 
@@ -263,7 +263,7 @@ TEST_CASE("render(Texture, Rect<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, IRect, Rect<T>)", "[renderer]")
+TEST_CASE("render(Texture, rect_i, Rect<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
@@ -276,7 +276,7 @@ TEST_CASE("render(Texture, IRect, Rect<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, IRect, Rect<T>, double)", "[renderer]")
+TEST_CASE("render(Texture, rect_i, Rect<T>, double)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
@@ -290,7 +290,7 @@ TEST_CASE("render(Texture, IRect, Rect<T>, double)", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, IRect, Rect<T>, double, Point<T>)", "[renderer]")
+TEST_CASE("render(Texture, rect_i, Rect<T>, double, Point<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{16, 11}, {37, 77}};
@@ -307,7 +307,7 @@ TEST_CASE("render(Texture, IRect, Rect<T>, double, Point<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, IRect, Rect<T>, SDL_RendererFlip)", "[renderer]")
+TEST_CASE("render(Texture, rect_i, Rect<T>, SDL_RendererFlip)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     CHECK_NOTHROW(renderer.render(texture,
@@ -317,8 +317,9 @@ TEST_CASE("render(Texture, IRect, Rect<T>, SDL_RendererFlip)", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, IRect, Rect<T>, double, Point<T>, SDL_RendererFlip)",
-          "[renderer]")
+TEST_CASE(
+    "render(Texture, rect_i, Rect<T>, double, Point<T>, SDL_RendererFlip)",
+    "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     CHECK_NOTHROW(renderer.render(texture,
@@ -352,7 +353,7 @@ TEST_CASE("render_t(Texture, Rect<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render_t(Texture, IRect, Rect<T>)", "[renderer]")
+TEST_CASE("render_t(Texture, rect_i, Rect<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{123, 444}, {467, 221}};
@@ -365,7 +366,7 @@ TEST_CASE("render_t(Texture, IRect, Rect<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render_t(Texture, IRect, Rect<T>, double)", "[renderer]")
+TEST_CASE("render_t(Texture, rect_i, Rect<T>, double)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
@@ -379,7 +380,7 @@ TEST_CASE("render_t(Texture, IRect, Rect<T>, double)", "[renderer]")
   });
 }
 
-TEST_CASE("render_t(Texture, IRect, Rect<T>, double, Point<T>)", "[renderer]")
+TEST_CASE("render_t(Texture, rect_i, Rect<T>, double, Point<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
@@ -396,7 +397,7 @@ TEST_CASE("render_t(Texture, IRect, Rect<T>, double, Point<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render_t(Texture, IRect, Rect<T>, SDL_RendererFlip)", "[renderer]")
+TEST_CASE("render_t(Texture, rect_i, Rect<T>, SDL_RendererFlip)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::rect_i src{{10, 15}, {20, 20}};
@@ -411,7 +412,7 @@ TEST_CASE("render_t(Texture, IRect, Rect<T>, SDL_RendererFlip)", "[renderer]")
 }
 
 TEST_CASE(
-    "render_t(Texture, IRect, Rect<T>, double, Point<T>, SDL_RendererFlip)",
+    "render_t(Texture, rect_i, Rect<T>, double, Point<T>, SDL_RendererFlip)",
     "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {

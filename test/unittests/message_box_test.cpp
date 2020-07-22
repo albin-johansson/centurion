@@ -3,10 +3,10 @@
 #include <catch.hpp>
 #include <string>
 
+#include "centurion_as_ctn.hpp"
 #include "colors.hpp"
 
-using namespace centurion;
-using namespace centurion::messagebox;
+using namespace ctn::messagebox;
 
 TEST_CASE("button_data_hint enum values", "[message_box]")
 {
@@ -47,10 +47,10 @@ TEST_CASE("color_scheme::set_color", "[message_box]")
 {
   color_scheme scheme;
 
-  scheme.set_color(color_type::background, colors::aquamarine);
-  scheme.set_color(color_type::button_background, colors::azure);
-  scheme.set_color(color_type::button_border, colors::tomato);
-  scheme.set_color(color_type::button_selected, colors::cornsilk);
+  scheme.set_color(color_type::background, ctn::colors::aquamarine);
+  scheme.set_color(color_type::button_background, ctn::colors::azure);
+  scheme.set_color(color_type::button_border, ctn::colors::tomato);
+  scheme.set_color(color_type::button_selected, ctn::colors::cornsilk);
 
   const auto sdlScheme = scheme.convert();
 
@@ -58,12 +58,17 @@ TEST_CASE("color_scheme::set_color", "[message_box]")
     return static_cast<int>(type);
   };
 
-  CHECK(sdlScheme.colors[index(color_type::background)] == colors::aquamarine);
+  CHECK(sdlScheme.colors[index(color_type::background)] ==
+        ctn::colors::aquamarine);
+
   CHECK(sdlScheme.colors[index(color_type::button_background)] ==
-        colors::azure);
-  CHECK(sdlScheme.colors[index(color_type::button_border)] == colors::tomato);
+        ctn::colors::azure);
+
+  CHECK(sdlScheme.colors[index(color_type::button_border)] ==
+        ctn::colors::tomato);
+
   CHECK(sdlScheme.colors[index(color_type::button_selected)] ==
-        colors::cornsilk);
+        ctn::colors::cornsilk);
 }
 
 TEST_CASE("message_box()", "[message_box]")
@@ -76,7 +81,7 @@ TEST_CASE("message_box()", "[message_box]")
   CHECK_THAT(mb.message(), Catch::Equals("N/A"));
 }
 
-TEST_CASE("message_box(CZString, CZString)", "[message_box]")
+TEST_CASE("message_box(czstring, czstring)", "[message_box]")
 {
   SECTION("Null arguments")
   {
@@ -86,8 +91,8 @@ TEST_CASE("message_box(CZString, CZString)", "[message_box]")
   }
   SECTION("Normal arguments")
   {
-    czstring title = "This is a title";
-    czstring message = "This is a message";
+    ctn::czstring title = "This is a title";
+    ctn::czstring message = "This is a message";
     message_box mb{title, message};
     CHECK_THAT(mb.title(), Catch::Equals(title));
     CHECK_THAT(mb.message(), Catch::Equals(message));
@@ -98,15 +103,16 @@ TEST_CASE("message_box::show [static]", "[.message_box]")
 {
   SECTION("Checking defaults")
   {
-    czstring title = nullptr;
-    czstring message = nullptr;
+    ctn::czstring title = nullptr;
+    ctn::czstring message = nullptr;
     message_box_config config;
     message_box::show(title, message, config, nullptr);
   }
   SECTION("Actual parameters")
   {
-    czstring title = "This is a title";
-    czstring message = "This message box was created with the static show!";
+    ctn::czstring title = "This is a title";
+    ctn::czstring message =
+        "This message box was created with the static show!";
     message_box_config config;
     config.type = message_box::type::warning;
     config.buttonOrder = message_box::button_order::right_to_left;
@@ -130,7 +136,7 @@ TEST_CASE("message_box::add_button", "[message_box]")
 TEST_CASE("message_box::set_title", "[message_box]")
 {
   message_box mb;
-  czstring title = "This is a title";
+  ctn::czstring title = "This is a title";
 
   mb.set_title(title);
   CHECK_THAT(mb.title(), Catch::Equals(title));
@@ -142,7 +148,7 @@ TEST_CASE("message_box::set_title", "[message_box]")
 TEST_CASE("message_box::set_message", "[message_box]")
 {
   message_box mb;
-  czstring msg = "Foobar";
+  ctn::czstring msg = "Foobar";
 
   mb.set_message(msg);
   CHECK_THAT(mb.message(), Catch::Equals(msg));
@@ -192,16 +198,16 @@ TEST_CASE("message_box::set_color_scheme", "[message_box]")
   message_box mb;
 
   color_scheme scheme;
-  scheme.set_color(colorType, colors::red);
+  scheme.set_color(colorType, ctn::colors::red);
 
   mb.set_color_scheme(scheme);
 
   CHECK(mb.get_color_scheme());
 
   const auto sdlScheme = scheme.convert();
-  CHECK(sdlScheme.colors[static_cast<int>(colorType)] == colors::red);
+  CHECK(sdlScheme.colors[static_cast<int>(colorType)] == ctn::colors::red);
 
-  mb.set_color_scheme(nothing);
+  mb.set_color_scheme(ctn::nothing);
   CHECK(!mb.get_color_scheme());
 }
 

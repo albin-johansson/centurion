@@ -1,13 +1,11 @@
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "event.hpp"
 
-using namespace centurion;
-using namespace centurion;
-
-TEST_CASE("MouseMotionEvent::set_window_id", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::set_window_id", "[mouse_motion_event]")
 {
-  mouse_motion_event event;
+  ctn::mouse_motion_event event;
 
   const auto id = 8;
   event.set_window_id(id);
@@ -15,9 +13,9 @@ TEST_CASE("MouseMotionEvent::set_window_id", "[MouseMotionEvent]")
   CHECK(event.window_id() == id);
 }
 
-TEST_CASE("MouseMotionEvent::set_which", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::set_which", "[mouse_motion_event]")
 {
-  mouse_motion_event event;
+  ctn::mouse_motion_event event;
 
   const auto which = 65;
   event.set_which(which);
@@ -25,9 +23,9 @@ TEST_CASE("MouseMotionEvent::set_which", "[MouseMotionEvent]")
   CHECK(event.which() == which);
 }
 
-TEST_CASE("MouseMotionEvent::set_state", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::set_state", "[mouse_motion_event]")
 {
-  mouse_motion_event event;
+  ctn::mouse_motion_event event;
 
   const auto state = SDL_BUTTON_LMASK | SDL_BUTTON_RMASK;
   event.set_state(state);
@@ -35,9 +33,9 @@ TEST_CASE("MouseMotionEvent::set_state", "[MouseMotionEvent]")
   CHECK(event.state() == state);
 }
 
-TEST_CASE("MouseMotionEvent::set_x", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::set_x", "[mouse_motion_event]")
 {
-  mouse_motion_event event;
+  ctn::mouse_motion_event event;
 
   const auto x = 745;
   event.set_x(x);
@@ -45,9 +43,9 @@ TEST_CASE("MouseMotionEvent::set_x", "[MouseMotionEvent]")
   CHECK(event.x() == x);
 }
 
-TEST_CASE("MouseMotionEvent::set_y", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::set_y", "[mouse_motion_event]")
 {
-  mouse_motion_event event;
+  ctn::mouse_motion_event event;
 
   const auto y = 123;
   event.set_y(y);
@@ -55,9 +53,9 @@ TEST_CASE("MouseMotionEvent::set_y", "[MouseMotionEvent]")
   CHECK(event.y() == y);
 }
 
-TEST_CASE("MouseMotionEvent::set_dx", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::set_dx", "[mouse_motion_event]")
 {
-  mouse_motion_event event;
+  ctn::mouse_motion_event event;
 
   const auto dx = -456;
   event.set_dx(dx);
@@ -65,9 +63,9 @@ TEST_CASE("MouseMotionEvent::set_dx", "[MouseMotionEvent]")
   CHECK(event.dx() == dx);
 }
 
-TEST_CASE("MouseMotionEvent::set_dy", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::set_dy", "[mouse_motion_event]")
 {
-  mouse_motion_event event;
+  ctn::mouse_motion_event event;
 
   const auto dy = 835;
   event.set_dy(dy);
@@ -75,78 +73,78 @@ TEST_CASE("MouseMotionEvent::set_dy", "[MouseMotionEvent]")
   CHECK(event.dy() == dy);
 }
 
-TEST_CASE("MouseMotionEvent::pressed", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::pressed", "[mouse_motion_event]")
 {
-  mouse_motion_event event;
+  ctn::mouse_motion_event event;
   event.set_state(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
 
-  CHECK(event.pressed(mouse_button::left));
-  CHECK(event.pressed(mouse_button::middle));
+  CHECK(event.pressed(ctn::mouse_button::left));
+  CHECK(event.pressed(ctn::mouse_button::middle));
 
-  CHECK(!event.pressed(mouse_button::right));
-  CHECK(!event.pressed(mouse_button::x1));
-  CHECK(!event.pressed(mouse_button::x2));
+  CHECK(!event.pressed(ctn::mouse_button::right));
+  CHECK(!event.pressed(ctn::mouse_button::x1));
+  CHECK(!event.pressed(ctn::mouse_button::x2));
 }
 
-TEST_CASE("MouseMotionEvent::window_id", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::window_id", "[mouse_motion_event]")
 {
   SDL_MouseMotionEvent sdlEvent;
   sdlEvent.windowID = 45;
-  mouse_motion_event event{sdlEvent};
+  ctn::mouse_motion_event event{sdlEvent};
 
   CHECK(event.window_id() == sdlEvent.windowID);
 }
 
-TEST_CASE("MouseMotionEvent::which", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::which", "[mouse_motion_event]")
 {
   SDL_MouseMotionEvent sdlEvent;
   sdlEvent.which = 77;
-  mouse_motion_event event{sdlEvent};
+  ctn::mouse_motion_event event{sdlEvent};
 
   CHECK(event.which() == sdlEvent.which);
 }
 
-TEST_CASE("MouseMotionEvent::state", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::state", "[mouse_motion_event]")
 {
   SDL_MouseMotionEvent sdlEvent;
   sdlEvent.state = SDL_BUTTON_LMASK;
-  mouse_motion_event event{sdlEvent};
+  ctn::mouse_motion_event event{sdlEvent};
 
   CHECK(event.state() == sdlEvent.state);
 }
 
-TEST_CASE("MouseMotionEvent::x", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::x", "[mouse_motion_event]")
 {
   SDL_MouseMotionEvent sdlEvent;
   sdlEvent.x = 1867;
-  mouse_motion_event event{sdlEvent};
+  ctn::mouse_motion_event event{sdlEvent};
 
   CHECK(event.x() == sdlEvent.x);
 }
 
-TEST_CASE("MouseMotionEvent::y", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::y", "[mouse_motion_event]")
 {
   SDL_MouseMotionEvent sdlEvent;
   sdlEvent.y = 454;
-  mouse_motion_event event{sdlEvent};
+  ctn::mouse_motion_event event{sdlEvent};
 
   CHECK(event.y() == sdlEvent.y);
 }
 
-TEST_CASE("MouseMotionEvent::dx", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::dx", "[mouse_motion_event]")
 {
   SDL_MouseMotionEvent sdlEvent;
   sdlEvent.xrel = 78;
-  mouse_motion_event event{sdlEvent};
+  ctn::mouse_motion_event event{sdlEvent};
 
   CHECK(event.dx() == sdlEvent.xrel);
 }
 
-TEST_CASE("MouseMotionEvent::dy", "[MouseMotionEvent]")
+TEST_CASE("mouse_motion_event::dy", "[mouse_motion_event]")
 {
   SDL_MouseMotionEvent sdlEvent;
   sdlEvent.yrel = -564;
-  mouse_motion_event event{sdlEvent};
+  ctn::mouse_motion_event event{sdlEvent};
 
   CHECK(event.dy() == sdlEvent.yrel);
 }

@@ -1,25 +1,28 @@
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "event.hpp"
 
-using namespace centurion;
-
-TEST_CASE("JoyHatValue enum values", "[JoyHatEvent]")
+TEST_CASE("JoyHatValue enum values", "[joy_hat_event]")
 {
-  CHECK(static_cast<u8>(joy_hat_position::left_up) == SDL_HAT_LEFTUP);
-  CHECK(static_cast<u8>(joy_hat_position::left) == SDL_HAT_LEFT);
-  CHECK(static_cast<u8>(joy_hat_position::left_down) == SDL_HAT_LEFTDOWN);
-  CHECK(static_cast<u8>(joy_hat_position::up) == SDL_HAT_UP);
-  CHECK(static_cast<u8>(joy_hat_position::centered) == SDL_HAT_CENTERED);
-  CHECK(static_cast<u8>(joy_hat_position::down) == SDL_HAT_DOWN);
-  CHECK(static_cast<u8>(joy_hat_position::right_up) == SDL_HAT_RIGHTUP);
-  CHECK(static_cast<u8>(joy_hat_position::right) == SDL_HAT_RIGHT);
-  CHECK(static_cast<u8>(joy_hat_position::right_down) == SDL_HAT_RIGHTDOWN);
+  CHECK(static_cast<ctn::u8>(ctn::joy_hat_position::left_up) == SDL_HAT_LEFTUP);
+  CHECK(static_cast<ctn::u8>(ctn::joy_hat_position::left) == SDL_HAT_LEFT);
+  CHECK(static_cast<ctn::u8>(ctn::joy_hat_position::left_down) ==
+        SDL_HAT_LEFTDOWN);
+  CHECK(static_cast<ctn::u8>(ctn::joy_hat_position::up) == SDL_HAT_UP);
+  CHECK(static_cast<ctn::u8>(ctn::joy_hat_position::centered) ==
+        SDL_HAT_CENTERED);
+  CHECK(static_cast<ctn::u8>(ctn::joy_hat_position::down) == SDL_HAT_DOWN);
+  CHECK(static_cast<ctn::u8>(ctn::joy_hat_position::right_up) ==
+        SDL_HAT_RIGHTUP);
+  CHECK(static_cast<ctn::u8>(ctn::joy_hat_position::right) == SDL_HAT_RIGHT);
+  CHECK(static_cast<ctn::u8>(ctn::joy_hat_position::right_down) ==
+        SDL_HAT_RIGHTDOWN);
 }
 
-TEST_CASE("JoyHatEvent::set_hat", "[JoyHatEvent]")
+TEST_CASE("joy_hat_event::set_hat", "[joy_hat_event]")
 {
-  joy_hat_event event;
+  ctn::joy_hat_event event;
 
   const auto hat = 7;
   event.set_hat(hat);
@@ -27,30 +30,32 @@ TEST_CASE("JoyHatEvent::set_hat", "[JoyHatEvent]")
   CHECK(event.hat() == hat);
 }
 
-TEST_CASE("JoyHatEvent::set_position", "[JoyHatEvent]")
+TEST_CASE("joy_hat_event::set_position", "[joy_hat_event]")
 {
-  joy_hat_event event;
+  ctn::joy_hat_event event;
 
-  const auto position = joy_hat_position::right;
+  const auto position = ctn::joy_hat_position::right;
   event.set_position(position);
 
   CHECK(event.position() == position);
 }
 
-TEST_CASE("JoyHatEvent::hat", "[JoyHatEvent]")
+TEST_CASE("joy_hat_event::hat", "[joy_hat_event]")
 {
   SDL_JoyHatEvent sdlEvent;
   sdlEvent.hat = 2;
-  joy_hat_event event{sdlEvent};
+
+  ctn::joy_hat_event event{sdlEvent};
 
   CHECK(event.hat() == sdlEvent.hat);
 }
 
-TEST_CASE("JoyHatEvent::position", "[JoyHatEvent]")
+TEST_CASE("joy_hat_event::position", "[joy_hat_event]")
 {
   SDL_JoyHatEvent sdlEvent;
   sdlEvent.value = SDL_HAT_LEFT;
-  joy_hat_event event{sdlEvent};
 
-  CHECK(event.position() == joy_hat_position::left);
+  ctn::joy_hat_event event{sdlEvent};
+
+  CHECK(event.position() == ctn::joy_hat_position::left);
 }

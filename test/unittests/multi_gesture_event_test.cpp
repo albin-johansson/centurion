@@ -1,12 +1,11 @@
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "event.hpp"
 
-using namespace centurion;
-
-TEST_CASE("MultiGestureEvent::set_touch_id", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::set_touch_id", "[multi_gesture_event]")
 {
-  multi_gesture_event event;
+  ctn::multi_gesture_event event;
 
   const auto id = 3;
   event.set_touch_id(id);
@@ -14,9 +13,9 @@ TEST_CASE("MultiGestureEvent::set_touch_id", "[MultiGestureEvent]")
   CHECK(event.touch_id() == id);
 }
 
-TEST_CASE("MultiGestureEvent::set_delta_theta", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::set_delta_theta", "[multi_gesture_event]")
 {
-  multi_gesture_event event;
+  ctn::multi_gesture_event event;
 
   const auto dTheta = 65;
   event.set_delta_theta(dTheta);
@@ -24,9 +23,9 @@ TEST_CASE("MultiGestureEvent::set_delta_theta", "[MultiGestureEvent]")
   CHECK(event.delta_theta() == dTheta);
 }
 
-TEST_CASE("MultiGestureEvent::set_delta_distance", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::set_delta_distance", "[multi_gesture_event]")
 {
-  multi_gesture_event event;
+  ctn::multi_gesture_event event;
 
   const auto dDistance = -79;
   event.set_delta_distance(dDistance);
@@ -34,9 +33,9 @@ TEST_CASE("MultiGestureEvent::set_delta_distance", "[MultiGestureEvent]")
   CHECK(event.delta_distance() == dDistance);
 }
 
-TEST_CASE("MultiGestureEvent::set_center_x", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::set_center_x", "[multi_gesture_event]")
 {
-  multi_gesture_event event;
+  ctn::multi_gesture_event event;
 
   const auto centerX = 154;
   event.set_center_x(centerX);
@@ -44,9 +43,9 @@ TEST_CASE("MultiGestureEvent::set_center_x", "[MultiGestureEvent]")
   CHECK(event.center_x() == centerX);
 }
 
-TEST_CASE("MultiGestureEvent::set_center_y", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::set_center_y", "[multi_gesture_event]")
 {
-  multi_gesture_event event;
+  ctn::multi_gesture_event event;
 
   const auto centerY = 867;
   event.set_center_y(centerY);
@@ -54,9 +53,9 @@ TEST_CASE("MultiGestureEvent::set_center_y", "[MultiGestureEvent]")
   CHECK(event.center_y() == centerY);
 }
 
-TEST_CASE("MultiGestureEvent::set_fingers", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::set_fingers", "[multi_gesture_event]")
 {
-  multi_gesture_event event;
+  ctn::multi_gesture_event event;
 
   const auto fingers = 3;
   event.set_fingers(fingers);
@@ -64,56 +63,56 @@ TEST_CASE("MultiGestureEvent::set_fingers", "[MultiGestureEvent]")
   CHECK(event.fingers() == fingers);
 }
 
-TEST_CASE("MultiGestureEvent::touch_id", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::touch_id", "[multi_gesture_event]")
 {
   SDL_MultiGestureEvent sdlEvent;
   sdlEvent.touchId = 54;
-  multi_gesture_event event{sdlEvent};
+  ctn::multi_gesture_event event{sdlEvent};
 
   CHECK(event.touch_id() == sdlEvent.touchId);
 }
 
-TEST_CASE("MultiGestureEvent::delta_theta", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::delta_theta", "[multi_gesture_event]")
 {
   SDL_MultiGestureEvent sdlEvent;
   sdlEvent.dTheta = 98;
-  multi_gesture_event event{sdlEvent};
+  ctn::multi_gesture_event event{sdlEvent};
 
   CHECK(event.delta_theta() == sdlEvent.dTheta);
 }
 
-TEST_CASE("MultiGestureEvent::delta_distance", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::delta_distance", "[multi_gesture_event]")
 {
   SDL_MultiGestureEvent sdlEvent;
   sdlEvent.dDist = -87;
-  multi_gesture_event event{sdlEvent};
+  ctn::multi_gesture_event event{sdlEvent};
 
   CHECK(event.delta_distance() == sdlEvent.dDist);
 }
 
-TEST_CASE("MultiGestureEvent::center_x", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::center_x", "[multi_gesture_event]")
 {
   SDL_MultiGestureEvent sdlEvent;
   sdlEvent.x = 564;
-  multi_gesture_event event{sdlEvent};
+  ctn::multi_gesture_event event{sdlEvent};
 
   CHECK(event.center_x() == sdlEvent.x);
 }
 
-TEST_CASE("MultiGestureEvent::center_y", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::center_y", "[multi_gesture_event]")
 {
   SDL_MultiGestureEvent sdlEvent;
   sdlEvent.y = 913;
-  multi_gesture_event event{sdlEvent};
+  ctn::multi_gesture_event event{sdlEvent};
 
   CHECK(event.center_y() == sdlEvent.y);
 }
 
-TEST_CASE("MultiGestureEvent::fingers", "[MultiGestureEvent]")
+TEST_CASE("multi_gesture_event::fingers", "[multi_gesture_event]")
 {
   SDL_MultiGestureEvent sdlEvent;
   sdlEvent.numFingers = 2;
-  multi_gesture_event event{sdlEvent};
+  ctn::multi_gesture_event event{sdlEvent};
 
   CHECK(event.fingers() == sdlEvent.numFingers);
 }

@@ -1,12 +1,11 @@
 #include <catch.hpp>
 
+#include "centurion_as_ctn.hpp"
 #include "game_controller.hpp"
-
-using namespace centurion;
 
 TEST_CASE("game_controller_button operator==", "[game_controller_button]")
 {
-  using button = game_controller_button;
+  using button = ctn::game_controller_button;
 
   CHECK(button::invalid == SDL_CONTROLLER_BUTTON_INVALID);
   CHECK(button::a == SDL_CONTROLLER_BUTTON_A);
@@ -47,7 +46,7 @@ TEST_CASE("game_controller_button operator==", "[game_controller_button]")
 
 TEST_CASE("game_controller_button operator!=", "[game_controller_button]")
 {
-  using button = game_controller_button;
+  using button = ctn::game_controller_button;
 
   CHECK(button::dpad_right != SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
   CHECK(SDL_CONTROLLER_BUTTON_X != button::a);

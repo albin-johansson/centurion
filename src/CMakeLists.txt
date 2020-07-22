@@ -139,13 +139,6 @@ set(GSL_SOURCES
         ${CTN_LIBRARY_DIR}/microsoft/gsl/string_span)
 centurion_add_header_only_lib(libGSL "${CTN_LIBRARY_DIR}/microsoft" ${GSL_SOURCES})
 
-set(NAMED_TYPE_SOURCES
-        ${CTN_LIBRARY_DIR}/namedtype/named_type.hpp
-        ${CTN_LIBRARY_DIR}/namedtype/named_type_impl.hpp
-        ${CTN_LIBRARY_DIR}/namedtype/crtp.hpp
-        ${CTN_LIBRARY_DIR}/namedtype/underlying_functionalities.hpp)
-centurion_add_header_only_lib(libNamedType ${CTN_LIBRARY_DIR}/namedtype ${NAMED_TYPE_SOURCES})
-
 centurion_add_header_only_lib(libEnTT ${CTN_LIBRARY_DIR}/entt ${CTN_LIBRARY_DIR}/entt/entt.hpp)
 
 target_include_directories(${CENTURION_LIB_TARGET}
@@ -159,8 +152,7 @@ target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
         PUBLIC libEnTT
-        PUBLIC libGSL
-        PUBLIC libNamedType)
+        PUBLIC libGSL)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE

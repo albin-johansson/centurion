@@ -131,7 +131,6 @@ target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${CENTURION_LIBRARIES}
         PUBLIC libEnTT
         PUBLIC libGSL
-        PUBLIC libNamedType
         PUBLIC Catch2)
 
 catch_discover_tests(${CENTURION_TEST_TARGET})

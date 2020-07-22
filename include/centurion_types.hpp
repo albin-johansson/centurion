@@ -41,7 +41,6 @@
 
 #include <chrono>
 #include <gsl/gsl>
-#include <named_type.hpp>
 #include <optional>
 #include <type_traits>
 

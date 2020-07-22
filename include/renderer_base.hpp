@@ -221,10 +221,12 @@ class renderer_base {
 
       if constexpr (std::is_same_v<value_t, int>) {
         const auto* first = static_cast<const SDL_Point*>(front);
-        SDL_RenderDrawLines(m_renderer, first, container.size());
+        SDL_RenderDrawLines(
+            m_renderer, first, static_cast<int>(container.size()));
       } else {
         const auto* first = static_cast<const SDL_FPoint*>(front);
-        SDL_RenderDrawLinesF(m_renderer, first, container.size());
+        SDL_RenderDrawLinesF(
+            m_renderer, first, static_cast<int>(container.size()));
       }
     }
   }

@@ -56,20 +56,20 @@ template <typename T>
 class basic_point;
 
 template <typename U>
-constexpr bool operator==(const basic_point<U>& lhs,
-                          const basic_point<U>& rhs) noexcept;
+constexpr auto operator==(const basic_point<U>& lhs,
+                          const basic_point<U>& rhs) noexcept -> bool;
 
 template <typename U>
-constexpr bool operator!=(const basic_point<U>& lhs,
-                          const basic_point<U>& rhs) noexcept;
+constexpr auto operator!=(const basic_point<U>& lhs,
+                          const basic_point<U>& rhs) noexcept -> bool;
 
 template <typename U>
-constexpr basic_point<U> operator-(const basic_point<U>& lhs,
-                                   const basic_point<U>& rhs) noexcept;
+constexpr auto operator-(const basic_point<U>& lhs,
+                         const basic_point<U>& rhs) noexcept -> basic_point<U>;
 
 template <typename U>
-constexpr basic_point<U> operator+(const basic_point<U>& lhs,
-                                   const basic_point<U>& rhs) noexcept;
+constexpr auto operator+(const basic_point<U>& lhs,
+                         const basic_point<U>& rhs) noexcept -> basic_point<U>;
 
 /**
  * @class basic_point

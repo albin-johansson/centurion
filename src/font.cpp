@@ -1,5 +1,7 @@
 #include "font.hpp"
 
+#include <utility>
+
 #include "centurion_utils.hpp"
 #include "error.hpp"
 
@@ -273,7 +275,7 @@ auto font::style_name() const noexcept -> czstring
 auto font::ttf_version() noexcept -> SDL_version
 {
   SDL_version version;
-  SDL_TTF_VERSION(&version);
+  SDL_TTF_VERSION(&version)
   return version;
 }
 

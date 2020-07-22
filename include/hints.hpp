@@ -59,11 +59,12 @@
 #include <SDL_hints.h>
 
 #include <cstring>
-#include <log.hpp>
+#include <type_traits>
 
 #include "centurion_api.hpp"
 #include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
+#include "log.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

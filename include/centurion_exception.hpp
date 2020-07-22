@@ -38,6 +38,8 @@
 #define CENTURION_EXCEPTION_HEADER
 
 #include <exception>
+#include <type_traits>
+#include <utility>
 
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
@@ -81,9 +83,6 @@ class centurion_exception final : public std::exception {
   explicit centurion_exception(std::string what) noexcept
       : m_what{what.empty() ? "N/A" : std::move(what)} {};
 
-  centurion_exception(const centurion_exception& other) noexcept
-      : m_what{other.m_what} {};
-
   ~centurion_exception() noexcept override = default;
 
   [[nodiscard]] auto what() const noexcept -> czstring override
@@ -97,7 +96,6 @@ class centurion_exception final : public std::exception {
 
 static_assert(std::is_final_v<centurion_exception>);
 static_assert(std::is_default_constructible_v<centurion_exception>);
-static_assert(std::is_nothrow_copy_constructible_v<centurion_exception>);
 static_assert(std::is_nothrow_destructible_v<centurion_exception>);
 
 }  // namespace centurion

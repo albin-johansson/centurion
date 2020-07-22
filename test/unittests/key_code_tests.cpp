@@ -200,7 +200,7 @@ TEST_CASE("key_code constants", "[key_code]")
     const ctn::key_code code{keycode};
     CHECK(constant == code);
   };
-  SDL_KeyCode c;
+
   SECTION("Unknown") { test_key(ctn::keycodes::unknown, SDLK_UNKNOWN); }
 
   SECTION("Alphabetical keys")

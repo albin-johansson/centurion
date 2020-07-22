@@ -1,5 +1,7 @@
 #include "battery.hpp"
 
+#include <chrono>
+
 #include "centurion_types.hpp"
 
 namespace centurion::battery {

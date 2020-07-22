@@ -914,7 +914,7 @@ class window final : public window_base {
  *
  * @par Examples
  * The following example displays how one could utilize this class to take
- * advantage of the Centurion window API, that would't be possible with
+ * advantage of the Centurion window API, that wouldn't be possible with
  * `window`.
  * @code{.cpp}
  *   #include <centurion_as_ctn.hpp>

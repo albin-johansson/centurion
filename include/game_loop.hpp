@@ -62,7 +62,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion::experimental {
+namespace centurion {
 
 /**
  * @class basic_loop
@@ -609,6 +609,6 @@ using semi_fixed_timestep_loop = basic_semi_fixed_timestep_loop<60>;
  */
 using fixed_timestep_loop = basic_fixed_timestep_loop<60>;
 
-}  // namespace centurion::experimental
+}  // namespace centurion
 
 #endif  // CENTURION_GAME_LOOP_HEADER

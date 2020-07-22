@@ -61,10 +61,8 @@ class vtl_game {
 
 TEST_CASE("Variable timestep", "[.variable_timestep_loop]")
 {
-  using ctn::experimental::variable_timestep_loop;
   vtl_game game;
-
-  variable_timestep_loop loop;
+  ctn::variable_timestep_loop loop;
 
   loop.connect_input<&vtl_game::input>(game);
   loop.connect_logic<&vtl_game::logic>(game);
@@ -126,10 +124,8 @@ class sftl_game {
 
 TEST_CASE("Semi-fixed timestep", "[.semi_fixed_timestep_loop]")
 {
-  using ctn::experimental::semi_fixed_timestep_loop;
-
   sftl_game game;
-  semi_fixed_timestep_loop loop;
+  ctn::semi_fixed_timestep_loop loop;
 
   loop.connect_input<&sftl_game::input>(game);
   loop.connect_logic<&sftl_game::logic>(game);
@@ -195,10 +191,8 @@ class ftl_game {
 
 TEST_CASE("Fixed timestep", "[.fixed_timestep_loop]")
 {
-  using ctn::experimental::fixed_timestep_loop;
-
   ftl_game game;
-  fixed_timestep_loop loop;
+  ctn::fixed_timestep_loop loop;
 
   loop.connect_input<&ftl_game::input>(game);
   loop.connect_logic<&ftl_game::logic>(game);

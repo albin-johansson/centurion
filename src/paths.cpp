@@ -54,11 +54,7 @@ auto base_path::shared() -> std::shared_ptr<base_path>
 
 pref_path::pref_path(czstring org, czstring app) noexcept
     : m_path{SDL_GetPrefPath(org, app)}
-{
-  if (base_path path; path) {
-    std::cout << path.get() << '\n';
-  }
-}
+{}
 
 pref_path::pref_path(pref_path&& other) noexcept
 {

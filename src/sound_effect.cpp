@@ -6,59 +6,19 @@
 
 namespace centurion {
 
-sound_effect::sound_effect(czstring file)
+sound_effect::sound_effect(nn_czstring file) : m_chunk{Mix_LoadWAV(file)}
 {
-  if (!file) {
-    throw centurion_exception{"Cannot create sound effect from null file!"};
-  }
-  m_chunk = Mix_LoadWAV(file);
   if (!m_chunk) {
-    throw detail::mix_error("Failed to create SoundEffect instance!");
+    throw detail::mix_error("Failed to create sound effect!");
   }
 }
 
-sound_effect::sound_effect(sound_effect&& other) noexcept
-{
-  move(std::move(other));
-}
-
-sound_effect::~sound_effect()
-{
-  destroy();
-}
-
-auto sound_effect::operator=(sound_effect&& other) noexcept -> sound_effect&
-{
-  if (this != &other) {
-    move(std::move(other));
-  }
-  return *this;
-}
-
-void sound_effect::destroy() noexcept
-{
-  if (m_chunk) {
-    stop();
-    Mix_FreeChunk(m_chunk);
-  }
-}
-
-void sound_effect::move(sound_effect&& other) noexcept
-{
-  destroy();
-
-  m_chunk = other.m_chunk;
-  m_channel = other.m_channel;
-
-  other.m_chunk = nullptr;
-}
-
-auto sound_effect::unique(czstring file) -> std::unique_ptr<sound_effect>
+auto sound_effect::unique(nn_czstring file) -> uptr
 {
   return std::make_unique<sound_effect>(file);
 }
 
-auto sound_effect::shared(czstring file) -> std::shared_ptr<sound_effect>
+auto sound_effect::shared(nn_czstring file) -> sptr
 {
   return std::make_shared<sound_effect>(file);
 }
@@ -66,9 +26,9 @@ auto sound_effect::shared(czstring file) -> std::shared_ptr<sound_effect>
 void sound_effect::activate(int nLoops) noexcept
 {
   if (m_channel != undefined_channel()) {
-    Mix_PlayChannel(m_channel, m_chunk, nLoops);
+    Mix_PlayChannel(m_channel, m_chunk.get(), nLoops);
   } else {
-    m_channel = Mix_PlayChannel(undefined_channel(), m_chunk, nLoops);
+    m_channel = Mix_PlayChannel(undefined_channel(), m_chunk.get(), nLoops);
   }
 }
 
@@ -92,10 +52,10 @@ void sound_effect::fade_in(milliseconds<int> ms) noexcept
 {
   if (ms.count() > 0 && !is_playing()) {
     if (m_channel != undefined_channel()) {
-      Mix_FadeInChannelTimed(m_channel, m_chunk, 0, ms.count(), -1);
+      Mix_FadeInChannelTimed(m_channel, m_chunk.get(), 0, ms.count(), -1);
     } else {
       m_channel = Mix_FadeInChannelTimed(
-          undefined_channel(), m_chunk, 0, ms.count(), -1);
+          undefined_channel(), m_chunk.get(), 0, ms.count(), -1);
     }
   }
 }
@@ -109,7 +69,7 @@ void sound_effect::fade_out(milliseconds<int> ms) noexcept  // NOLINT
 
 void sound_effect::set_volume(int volume) noexcept
 {
-  Mix_VolumeChunk(m_chunk, std::clamp(volume, 0, max_volume()));
+  Mix_VolumeChunk(m_chunk.get(), std::clamp(volume, 0, max_volume()));
 }
 
 auto sound_effect::is_playing() const noexcept -> bool
@@ -124,9 +84,9 @@ auto sound_effect::is_fading() const noexcept -> bool
 
 auto sound_effect::to_string() const -> std::string
 {
-  const auto address = detail::address_of(this);
+  const auto address = detail::address_of(m_chunk.get());
   const auto vol = std::to_string(volume());
-  return "[SoundEffect@" + address + " | Volume: " + vol + "]";
+  return "[sound_effect | Chunk: " + address + ", Volume: " + vol + "]";
 }
 
 }  // namespace centurion

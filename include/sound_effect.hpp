@@ -45,6 +45,8 @@
 
 #include <SDL_mixer.h>
 
+#include <memory>
+
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 #include "centurion_utils.hpp"
@@ -54,6 +56,24 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
+
+/// @cond FALSE
+
+namespace detail {
+
+class sound_effect_deleter final {
+ public:
+  void operator()(Mix_Chunk* chunk) noexcept
+  {
+    if (chunk) {
+      Mix_FreeChunk(chunk);
+    }
+  }
+};
+
+}  // namespace detail
+
+/// @endcond
 
 /**
  * @class sound_effect
@@ -117,6 +137,10 @@ namespace centurion {
  */
 class sound_effect final {
  public:
+  using uptr = std::unique_ptr<sound_effect>;
+  using sptr = std::shared_ptr<sound_effect>;
+  using wptr = std::weak_ptr<sound_effect>;
+
   /**
    * @brief Indicates that an audio snippet should be looped indefinitely.
    *
@@ -128,56 +152,26 @@ class sound_effect final {
    * @brief Creates a sound effect based on the audio file at the specified
    * location.
    *
-   * @param file the file path of the audio file.
+   * @param file the file path of the audio file, cannot be null.
    *
    * @throws centurion_exception if the audio file cannot be loaded.
    *
    * @since 3.0.0
    */
   CENTURION_API
-  explicit sound_effect(czstring file);
-
-  /**
-   * @brief Creates a sound effect by moving the contents of the supplied sound
-   * effect.
-   *
-   * @param other the sound effect that will be moved.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  sound_effect(sound_effect&& other) noexcept;
-
-  sound_effect(const sound_effect&) = delete;
-
-  /**
-   * @brief Moves the contents of the supplied sound effect into this one.
-   *
-   * @param other the sound effect that will be moved.
-   *
-   * @return the sound effect that absorbed the supplied sound effect.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  auto operator=(sound_effect&& other) noexcept -> sound_effect&;
-
-  auto operator=(const sound_effect&) -> sound_effect& = delete;
-
-  CENTURION_API
-  ~sound_effect();
+  explicit sound_effect(nn_czstring file);
 
   /**
    * @copydoc sound_effect(czstring)
    */
   CENTURION_QUERY
-  static auto unique(czstring file) -> std::unique_ptr<sound_effect>;
+  static auto unique(nn_czstring file) -> uptr;
 
   /**
    * @copydoc sound_effect(czstring)
    */
   CENTURION_QUERY
-  static auto shared(czstring file) -> std::shared_ptr<sound_effect>;
+  static auto shared(nn_czstring file) -> sptr;
 
   /**
    * @brief Plays the sound effect.
@@ -298,7 +292,10 @@ class sound_effect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> Mix_Chunk* { return m_chunk; }
+  [[nodiscard]] auto get() const noexcept -> Mix_Chunk*
+  {
+    return m_chunk.get();
+  }
 
   /**
    * @brief Converts to `Mix_Chunk*`.
@@ -307,7 +304,10 @@ class sound_effect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] explicit operator Mix_Chunk*() noexcept { return m_chunk; }
+  [[nodiscard]] explicit operator Mix_Chunk*() noexcept
+  {
+    return m_chunk.get();
+  }
 
   /**
    * @brief Converts to `const Mix_Chunk*`.
@@ -318,7 +318,7 @@ class sound_effect final {
    */
   [[nodiscard]] explicit operator const Mix_Chunk*() const noexcept
   {
-    return m_chunk;
+    return m_chunk.get();
   }
 
   /**
@@ -334,30 +334,13 @@ class sound_effect final {
   }
 
  private:
-  Mix_Chunk* m_chunk{};
-  int m_channel = undefined_channel();
+  std::unique_ptr<Mix_Chunk, detail::sound_effect_deleter> m_chunk;
+  int m_channel{undefined_channel()};
 
   [[nodiscard]] static constexpr auto undefined_channel() noexcept -> int
   {
     return -1;
   }
-
-  /**
-   * @brief Destroys the resources associated with the sound effect.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied sound effect instance into this
-   * instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  void move(sound_effect&& other) noexcept;
 
   /**
    * @brief Activates the sound effect by playing it the specified amount of

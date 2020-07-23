@@ -11,10 +11,9 @@
 
 static constexpr auto path = "resources/click.wav";
 
-TEST_CASE("sound_effect(czstring)", "[sound_effect]")
+TEST_CASE("sound_effect(nn_czstring)", "[sound_effect]")
 {
   CHECK_THROWS_AS(ctn::sound_effect("somebadpath"), ctn::centurion_exception);
-  CHECK_THROWS_AS(ctn::sound_effect(nullptr), ctn::centurion_exception);
 }
 
 TEST_CASE("sound_effect(sound_effect&&)", "[sound_effect]")
@@ -53,9 +52,7 @@ TEST_CASE("sound_effect smart pointer factory methods", "[sound_effect]")
   CHECK(ctn::sound_effect::unique(path));
   CHECK(ctn::sound_effect::shared(path));
   CHECK_THROWS_AS(ctn::sound_effect::unique(""), ctn::centurion_exception);
-  CHECK_THROWS_AS(ctn::sound_effect::unique(nullptr), ctn::centurion_exception);
   CHECK_THROWS_AS(ctn::sound_effect::shared(""), ctn::centurion_exception);
-  CHECK_THROWS_AS(ctn::sound_effect::shared(nullptr), ctn::centurion_exception);
 }
 
 TEST_CASE("sound_effect::play", "[sound_effect]")

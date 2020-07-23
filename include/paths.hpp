@@ -37,6 +37,8 @@
 #ifndef CENTURION_PATHS_HEADER
 #define CENTURION_PATHS_HEADER
 
+#include <SDL.h>
+
 #include <type_traits>
 
 #include "centurion_api.hpp"

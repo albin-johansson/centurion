@@ -10,18 +10,17 @@
 
 namespace centurion {
 
-texture::texture(gsl::owner<SDL_Texture*> sdlTexture)
+texture::texture(gsl::owner<SDL_Texture*> sdlTexture) : m_texture{sdlTexture}
 {
   if (!sdlTexture) {
-    throw centurion_exception{
-        "Texture can't be created from null SDL texture!"};
+    czstring msg = "Texture can't be created from null SDL texture!";
+    throw centurion_exception{msg};
   }
-  this->m_texture = sdlTexture;
 }
 
 texture::texture(const renderer& renderer, const surface& surface)
+    : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
 {
-  this->m_texture = SDL_CreateTextureFromSurface(renderer.get(), surface.get());
   if (!m_texture) {
     throw detail::core_error("Failed to create texture from surface!");
   }
@@ -31,47 +30,36 @@ texture::texture(const renderer& renderer,
                  pixel_format format,
                  texture::access access,
                  const area_i& size)
+    : m_texture{SDL_CreateTexture(renderer.get(),
+                                  static_cast<u32>(format),
+                                  static_cast<int>(access),
+                                  size.width,
+                                  size.height)}
 {
-  m_texture = SDL_CreateTexture(renderer.get(),
-                                static_cast<u32>(format),
-                                static_cast<int>(access),
-                                size.width,
-                                size.height);
   if (!m_texture) {
     throw detail::core_error("Failed to create texture!");
   }
 }
 
-texture::texture(const renderer& renderer, czstring path)
+texture::texture(const renderer& renderer, nn_czstring path)
+    : m_texture{IMG_LoadTexture(renderer.get(), path)}
 {
-  if (!path) {
-    throw centurion_exception{"Can't load texture from null path!"};
-  }
-
-  m_texture = IMG_LoadTexture(renderer.get(), path);
   if (!m_texture) {
     throw detail::img_error("Failed to create texture!");
   }
 }
 
-texture::texture(texture&& other) noexcept
+auto texture::unique(gsl::owner<SDL_Texture*> sdlTexture) -> uptr
 {
-  move(std::move(other));
+  return std::make_unique<texture>(sdlTexture);
 }
 
-texture::~texture() noexcept
-{
-  destroy();
-}
-
-auto texture::unique(const renderer& renderer, czstring path)
-    -> std::unique_ptr<texture>
+auto texture::unique(const renderer& renderer, nn_czstring path) -> uptr
 {
   return std::make_unique<texture>(renderer, path);
 }
 
-auto texture::unique(const renderer& renderer, const surface& surface)
-    -> std::unique_ptr<texture>
+auto texture::unique(const renderer& renderer, const surface& surface) -> uptr
 {
   return std::make_unique<texture>(renderer, surface);
 }
@@ -79,19 +67,22 @@ auto texture::unique(const renderer& renderer, const surface& surface)
 auto texture::unique(const renderer& renderer,
                      pixel_format format,
                      texture::access access,
-                     const area_i& size) -> std::unique_ptr<texture>
+                     const area_i& size) -> uptr
 {
   return std::make_unique<texture>(renderer, format, access, size);
 }
 
-auto texture::shared(const renderer& renderer, czstring path)
-    -> std::shared_ptr<texture>
+auto texture::shared(gsl::owner<SDL_Texture*> sdlTexture) -> sptr
+{
+  return std::make_shared<texture>(sdlTexture);
+}
+
+auto texture::shared(const renderer& renderer, nn_czstring path) -> sptr
 {
   return std::make_shared<texture>(renderer, path);
 }
 
-auto texture::shared(const renderer& renderer, const surface& surface)
-    -> std::shared_ptr<texture>
+auto texture::shared(const renderer& renderer, const surface& surface) -> sptr
 {
   return std::make_shared<texture>(renderer, surface);
 }
@@ -99,14 +90,14 @@ auto texture::shared(const renderer& renderer, const surface& surface)
 auto texture::shared(const renderer& renderer,
                      pixel_format format,
                      texture::access access,
-                     const area_i& size) -> std::shared_ptr<texture>
+                     const area_i& size) -> sptr
 {
   return std::make_shared<texture>(renderer, format, access, size);
 }
 
 auto texture::streaming(const renderer& renderer,
-                        czstring path,
-                        pixel_format format) -> std::unique_ptr<texture>
+                        nn_czstring path,
+                        pixel_format format) -> uptr
 {
   const auto blendMode = blend_mode::blend;
   const auto createSurface = [=](czstring path, pixel_format format) {
@@ -134,63 +125,25 @@ auto texture::streaming(const renderer& renderer,
   return texture;
 }
 
-auto texture::from_surface(const renderer& renderer, const surface& surface)
-    -> texture
-{
-  return texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())};
-}
-
-auto texture::operator=(texture&& other) noexcept -> texture&
-{
-  if (this != &other) {
-    move(std::move(other));
-  }
-  return *this;
-}
-
-void texture::destroy() noexcept
-{
-  if (m_texture) {
-    SDL_DestroyTexture(m_texture);
-  }
-}
-
-void texture::move(texture&& other) noexcept
-{
-  destroy();
-  m_texture = other.m_texture;
-  other.m_texture = nullptr;
-}
-
 auto texture::lock(u32** pixels, int* pitch) noexcept -> bool
 {
   if (pitch) {
     const auto result = SDL_LockTexture(
-        m_texture, nullptr, reinterpret_cast<void**>(pixels), pitch);
+        m_texture.get(), nullptr, reinterpret_cast<void**>(pixels), pitch);
     return result == 0;
   } else {
     int dummyPitch;
-    const auto result = SDL_LockTexture(
-        m_texture, nullptr, reinterpret_cast<void**>(pixels), &dummyPitch);
+    const auto result = SDL_LockTexture(m_texture.get(),
+                                        nullptr,
+                                        reinterpret_cast<void**>(pixels),
+                                        &dummyPitch);
     return result == 0;
   }
 }
 
 void texture::unlock() noexcept
 {
-  SDL_UnlockTexture(m_texture);
-}
-
-auto texture::unique(gsl::owner<SDL_Texture*> sdlTexture)
-    -> std::unique_ptr<texture>
-{
-  return std::make_unique<texture>(sdlTexture);
-}
-
-auto texture::shared(gsl::owner<SDL_Texture*> sdlTexture)
-    -> std::shared_ptr<texture>
-{
-  return std::make_shared<texture>(sdlTexture);
+  SDL_UnlockTexture(m_texture.get());
 }
 
 void texture::set_pixel(point_i pixel, const color& color) noexcept
@@ -225,57 +178,58 @@ void texture::set_pixel(point_i pixel, const color& color) noexcept
 
 void texture::set_alpha(u8 alpha) noexcept
 {
-  SDL_SetTextureAlphaMod(m_texture, alpha);
+  SDL_SetTextureAlphaMod(m_texture.get(), alpha);
 }
 
 void texture::set_blend_mode(enum blend_mode mode) noexcept
 {
-  SDL_SetTextureBlendMode(m_texture, static_cast<SDL_BlendMode>(mode));
+  SDL_SetTextureBlendMode(m_texture.get(), static_cast<SDL_BlendMode>(mode));
 }
 
 void texture::set_color_mod(color color) noexcept
 {
-  SDL_SetTextureColorMod(m_texture, color.red(), color.green(), color.blue());
+  SDL_SetTextureColorMod(
+      m_texture.get(), color.red(), color.green(), color.blue());
 }
 
 void texture::set_scale_mode(enum scale_mode mode) noexcept
 {
-  SDL_SetTextureScaleMode(m_texture, static_cast<SDL_ScaleMode>(mode));
+  SDL_SetTextureScaleMode(m_texture.get(), static_cast<SDL_ScaleMode>(mode));
 }
 
 auto texture::format() const noexcept -> pixel_format
 {
-  u32 format = 0;
-  SDL_QueryTexture(m_texture, &format, nullptr, nullptr, nullptr);
+  u32 format{};
+  SDL_QueryTexture(m_texture.get(), &format, nullptr, nullptr, nullptr);
   return static_cast<pixel_format>(format);
 }
 
 auto texture::get_access() const noexcept -> texture::access
 {
-  int access = 0;
-  SDL_QueryTexture(m_texture, nullptr, &access, nullptr, nullptr);
+  int access{};
+  SDL_QueryTexture(m_texture.get(), nullptr, &access, nullptr, nullptr);
   return static_cast<enum access>(access);
 }
 
 auto texture::width() const noexcept -> int
 {
-  int width = 0;
-  SDL_QueryTexture(m_texture, nullptr, nullptr, &width, nullptr);
+  int width{};
+  SDL_QueryTexture(m_texture.get(), nullptr, nullptr, &width, nullptr);
   return width;
 }
 
 auto texture::height() const noexcept -> int
 {
-  int height = 0;
-  SDL_QueryTexture(m_texture, nullptr, nullptr, nullptr, &height);
+  int height{};
+  SDL_QueryTexture(m_texture.get(), nullptr, nullptr, nullptr, &height);
   return height;
 }
 
 auto texture::size() const noexcept -> area_i
 {
-  int width = 0;
-  int height = 0;
-  SDL_QueryTexture(m_texture, nullptr, nullptr, &width, &height);
+  int width{};
+  int height{};
+  SDL_QueryTexture(m_texture.get(), nullptr, nullptr, &width, &height);
   return {width, height};
 }
 
@@ -296,30 +250,32 @@ auto texture::is_streaming() const noexcept -> bool
 
 auto texture::alpha() const noexcept -> u8
 {
-  u8 alpha;
-  SDL_GetTextureAlphaMod(m_texture, &alpha);
+  u8 alpha{};
+  SDL_GetTextureAlphaMod(m_texture.get(), &alpha);
   return alpha;
 }
 
 auto texture::get_blend_mode() const noexcept -> blend_mode
 {
-  SDL_BlendMode mode;
-  SDL_GetTextureBlendMode(m_texture, &mode);
-  return static_cast<enum blend_mode>(mode);
+  SDL_BlendMode mode{};
+  SDL_GetTextureBlendMode(m_texture.get(), &mode);
+  return static_cast<blend_mode>(mode);
 }
 
 auto texture::color_mod() const noexcept -> color
 {
-  u8 r = 0, g = 0, b = 0;
-  SDL_GetTextureColorMod(m_texture, &r, &g, &b);
-  return {r, g, b, 0xFF};
+  u8 red{};
+  u8 green{};
+  u8 blue{};
+  SDL_GetTextureColorMod(m_texture.get(), &red, &green, &blue);
+  return {red, green, blue, 0xFF};
 }
 
 auto texture::get_scale_mode() const noexcept -> texture::scale_mode
 {
-  SDL_ScaleMode mode;
-  SDL_GetTextureScaleMode(m_texture, &mode);
-  return static_cast<enum scale_mode>(mode);
+  SDL_ScaleMode mode{};
+  SDL_GetTextureScaleMode(m_texture.get(), &mode);
+  return static_cast<scale_mode>(mode);
 }
 
 auto texture::to_string() const -> std::string
@@ -327,7 +283,8 @@ auto texture::to_string() const -> std::string
   const auto address = detail::address_of(this);
   const auto w = std::to_string(width());
   const auto h = std::to_string(height());
-  return "[Texture@" + address + " | Width: " + w + ", Height: " + h + "]";
+  return "[texture | Data: " + address + ", Width: " + w + ", Height: " + h +
+         "]";
 }
 
 }  // namespace centurion

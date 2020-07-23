@@ -41,6 +41,8 @@
 #include <SDL_render.h>
 #include <SDL_video.h>
 
+#include <memory>
+
 #include "area.hpp"
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
@@ -54,6 +56,24 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
+
+/// @cond FALSE
+
+namespace detail {
+
+class texture_deleter final {
+ public:
+  void operator()(SDL_Texture* texture) noexcept
+  {
+    if (texture) {
+      SDL_DestroyTexture(texture);
+    }
+  }
+};
+
+}  // namespace detail
+
+/// @endcond
 
 /**
  * @class texture
@@ -70,6 +90,33 @@ namespace centurion {
  */
 class texture final {
  public:
+  /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a texture.
+   *
+   * @since 5.0.0
+   */
+  using uptr = std::unique_ptr<texture>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a texture.
+   *
+   * @since 5.0.0
+   */
+  using sptr = std::shared_ptr<texture>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a texture.
+   *
+   * @since 5.0.0
+   */
+  using wptr = std::weak_ptr<texture>;
+
   /**
    * @enum access
    *
@@ -107,9 +154,9 @@ class texture final {
    * @headerfile graphics.hpp
    */
   enum class scale_mode {
-    nearest = SDL_ScaleModeNearest, /**< Represents nearest pixel sampling. */
-    linear = SDL_ScaleModeLinear,   /**< Represents linear filtering. */
-    best = SDL_ScaleModeBest        /**< Represents anisotropic filtering. */
+    nearest = SDL_ScaleModeNearest,  ///< Represents nearest pixel sampling.
+    linear = SDL_ScaleModeLinear,    ///< Represents linear filtering.
+    best = SDL_ScaleModeBest         ///< Represents anisotropic filtering.
   };
 
   /**
@@ -131,14 +178,14 @@ class texture final {
    * @brief Creates a texture based the image at the specified path.
    *
    * @param renderer the renderer that will be used to create the texture.
-   * @param path the file path of the texture, may not be null.
+   * @param path the file path of the texture, can't be null.
    *
    * @throws centurion_exception if the texture cannot be loaded.
    *
    * @since 4.0.0
    */
   CENTURION_API
-  texture(const renderer& renderer, czstring path);
+  texture(const renderer& renderer, nn_czstring path);
 
   /**
    * @brief Creates an texture that is a copy of the supplied surface.
@@ -172,54 +219,22 @@ class texture final {
           const area_i& size);
 
   /**
-   * @brief Creates an texture by moving the supplied texture.
-   *
-   * @param other the texture that will be moved.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  texture(texture&& other) noexcept;
-
-  texture(const texture&) = delete;
-
-  auto operator=(const texture&) -> texture& = delete;
-
-  /**
-   * @brief Moves the supplied texture into this texture.
-   *
-   * @param other the texture that will be moved.
-   *
-   * @return the changed texture.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  auto operator=(texture&& other) noexcept -> texture&;
-
-  CENTURION_API
-  ~texture() noexcept;
-
-  /**
    * @copydoc texture(gsl::owner<SDL_Texture*>)
    */
   CENTURION_QUERY
-  static auto unique(gsl::owner<SDL_Texture*> sdlTexture)
-      -> std::unique_ptr<texture>;
+  static auto unique(gsl::owner<SDL_Texture*> sdlTexture) -> uptr;
 
   /**
-   * @copydoc texture(const renderer&, czstring)
+   * @copydoc texture(const renderer&, nn_czstring)
    */
   CENTURION_QUERY
-  static auto unique(const renderer& renderer, czstring path)
-      -> std::unique_ptr<texture>;
+  static auto unique(const renderer& renderer, nn_czstring path) -> uptr;
 
   /**
    * @copydoc texture(const renderer&, const surface&)
    */
   CENTURION_QUERY
-  static auto unique(const renderer& renderer, const surface& surface)
-      -> std::unique_ptr<texture>;
+  static auto unique(const renderer& renderer, const surface& surface) -> uptr;
 
   /**
    * @copydoc texture(const renderer&, pixel_format, access, const area_i&)
@@ -228,28 +243,25 @@ class texture final {
   static auto unique(const renderer& renderer,
                      pixel_format format,
                      access access,
-                     const area_i& size) -> std::unique_ptr<texture>;
+                     const area_i& size) -> uptr;
 
   /**
    * @copydoc texture(gsl::owner<SDL_Texture*>)
    */
   CENTURION_QUERY
-  static auto shared(gsl::owner<SDL_Texture*> sdlTexture)
-      -> std::shared_ptr<texture>;
+  static auto shared(gsl::owner<SDL_Texture*> sdlTexture) -> sptr;
 
   /**
-   * @copydoc texture(const renderer&, czstring)
+   * @copydoc texture(const renderer&, nn_czstring)
    */
   CENTURION_QUERY
-  static auto shared(const renderer& renderer, czstring path)
-      -> std::shared_ptr<texture>;
+  static auto shared(const renderer& renderer, nn_czstring path) -> sptr;
 
   /**
    * @copydoc texture(const renderer&, const surface&)
    */
   CENTURION_QUERY
-  static auto shared(const renderer& renderer, const surface& surface)
-      -> std::shared_ptr<texture>;
+  static auto shared(const renderer& renderer, const surface& surface) -> sptr;
 
   /**
    * @copydoc texture(const renderer&, pixel_format, access, const area_i&)
@@ -258,7 +270,7 @@ class texture final {
   static auto shared(const renderer& renderer,
                      pixel_format format,
                      access access,
-                     const area_i& size) -> std::shared_ptr<texture>;
+                     const area_i& size) -> sptr;
 
   /**
    * @brief Creates and returns a unique pointer to a texture.
@@ -267,7 +279,8 @@ class texture final {
    * with the `streaming` texture access.
    *
    * @param renderer the renderer that will be used to create the texture.
-   * @param path the path of the image file to base the texture on.
+   * @param path the path of the image file to base the texture on, can't be
+   * null.
    * @param format the pixel format that will be used by the texture.
    *
    * @throws centurion_exception if something goes wrong.
@@ -278,12 +291,8 @@ class texture final {
    */
   CENTURION_QUERY
   static auto streaming(const renderer& renderer,
-                        czstring path,
-                        pixel_format format) -> std::unique_ptr<texture>;
-
-  CENTURION_QUERY
-  static auto from_surface(const renderer& renderer, const surface& surface)
-      -> texture;
+                        nn_czstring path,
+                        pixel_format format) -> uptr;
 
   /**
    * @brief Sets the color of the pixel at the specified coordinate.
@@ -485,7 +494,10 @@ class texture final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Texture* { return m_texture; }
+  [[nodiscard]] auto get() const noexcept -> SDL_Texture*
+  {
+    return m_texture.get();
+  }
 
   /**
    * @brief Converts to `SDL_Texture*`.
@@ -494,7 +506,10 @@ class texture final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] explicit operator SDL_Texture*() noexcept { return m_texture; }
+  [[nodiscard]] explicit operator SDL_Texture*() noexcept
+  {
+    return m_texture.get();
+  }
 
   /**
    * @brief Converts to `const SDL_Texture*`.
@@ -505,31 +520,11 @@ class texture final {
    */
   [[nodiscard]] explicit operator const SDL_Texture*() const noexcept
   {
-    return m_texture;
+    return m_texture.get();
   }
 
  private:
-  SDL_Texture* m_texture = nullptr;
-
-  /**
-   * @brief Destroys the internal texture instance.
-   *
-   * @details This method has no effect if the associated texture is already
-   * null.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied texture instance into this
-   * instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  void move(texture&& other) noexcept;
+  std::unique_ptr<SDL_Texture, detail::texture_deleter> m_texture;
 
   /**
    * @brief Locks the texture for write-only pixel access.

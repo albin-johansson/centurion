@@ -76,7 +76,6 @@ TEST_CASE("texture(SDL_Texture*)", "[texture]")
 TEST_CASE("texture(Renderer&, char*)", "[texture]")
 {
   test([](ctn::renderer& renderer) {
-    CHECK_THROWS_AS(ctn::texture(renderer, nullptr), ctn::centurion_exception);
     CHECK_THROWS_AS(ctn::texture(renderer, "badpath"),
                     ctn::centurion_exception);
 

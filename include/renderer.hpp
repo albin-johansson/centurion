@@ -44,6 +44,8 @@
 #define CENTURION_RENDERER_HEADER
 
 #include <entt.hpp>
+#include <memory>
+#include <type_traits>
 
 #include "centurion_api.hpp"
 #include "colors.hpp"
@@ -57,6 +59,22 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
+
+/// @cond FALSE
+
+namespace detail {
+
+class renderer_deleter final {
+ public:
+  void operator()(SDL_Renderer* renderer) noexcept
+  {
+    SDL_DestroyRenderer(renderer);
+  }
+};
+
+}  // namespace detail
+
+/// @endcond
 
 /**
  * @class renderer
@@ -125,7 +143,7 @@ namespace centurion {
  *
  * @headerfile renderer.hpp
  */
-class renderer final : public renderer_base {
+class renderer final : public renderer_base<renderer> {
  public:
   /**
    * @typedef uptr
@@ -165,7 +183,7 @@ class renderer final : public renderer_base {
    * @since 3.0.0
    */
   explicit renderer(nn_owner<SDL_Renderer*> sdlRenderer)
-      : renderer_base{sdlRenderer}
+      : m_renderer{sdlRenderer}
   {
     set_color(colors::black);
     set_logical_integer_scale(false);
@@ -187,9 +205,9 @@ class renderer final : public renderer_base {
    */
   explicit renderer(const window& window,
                     SDL_RendererFlags flags = default_flags())
-
+      : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
-    m_renderer = SDL_CreateRenderer(window.get(), -1, flags);
+    //    m_renderer = SDL_CreateRenderer(window.get(), -1, flags);
     if (!m_renderer) {
       throw detail::core_error("Failed to create Renderer!");
     }
@@ -199,15 +217,16 @@ class renderer final : public renderer_base {
     set_logical_integer_scale(false);
   }
 
+  renderer(const renderer&) = delete;
+
   /**
-   * @brief Creates a renderer by moving the supplied renderer into the new
-   * one.
+   * @brief Creates a renderer by moving the supplied renderer.
    *
    * @param other the renderer that will be moved.
    */
-  renderer(renderer&& other) noexcept { move(std::move(other)); }
+  renderer(renderer&& other) noexcept = default;
 
-  renderer(const renderer&) = delete;
+  auto operator=(const renderer&) = delete;
 
   /**
    * @brief Moves the supplied renderer into this renderer.
@@ -216,17 +235,7 @@ class renderer final : public renderer_base {
    *
    * @return the renderer that claimed the supplied renderer.
    */
-  auto operator=(renderer&& other) noexcept -> renderer&
-  {
-    if (this != &other) {
-      move(std::move(other));
-    }
-    return *this;
-  }
-
-  auto operator=(const renderer&) -> renderer& = delete;
-
-  ~renderer() noexcept { destroy(); }
+  auto operator=(renderer&& other) -> renderer& = default;
 
   /**
    * @copydoc renderer(nn_owner<SDL_Renderer*>)
@@ -562,7 +571,48 @@ class renderer final : public renderer_base {
     return texture{*this, surface};
   }
 
+  /**
+   * @brief Returns a pointer to the associated SDL_Renderer.
+   *
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However, it's useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated SDL_Renderer.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
+  {
+    return m_renderer.get();
+  }
+
+  /**
+   * @brief Converts to `SDL_Renderer*`.
+   *
+   * @return a pointer to the associated `SDL_Renderer` instance.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] explicit operator SDL_Renderer*() noexcept
+  {
+    return m_renderer.get();
+  }
+
+  /**
+   * @brief Converts to `const SDL_Renderer*`.
+   *
+   * @return a pointer to the associated `SDL_Renderer` instance.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] explicit operator const SDL_Renderer*() const noexcept
+  {
+    return m_renderer.get();
+  }
+
  private:
+  std::unique_ptr<SDL_Renderer, detail::renderer_deleter> m_renderer;
   rect_f m_translationViewport;
 
   // todo change to simply hold font, not shared pointers
@@ -573,37 +623,6 @@ class renderer final : public renderer_base {
   {
     return static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |
                                           SDL_RENDERER_PRESENTVSYNC);
-  }
-
-  /**
-   * @brief Destroys the resources associated with the renderer.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept
-  {
-    if (m_renderer) {
-      SDL_DestroyRenderer(m_renderer);
-    }
-  }
-
-  /**
-   * @brief Moves the contents of the supplied renderer instance into this
-   * instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  void move(renderer&& other) noexcept
-  {
-    destroy();
-
-    m_renderer = other.m_renderer;
-    m_fonts = std::move(other.m_fonts);
-    m_translationViewport = other.m_translationViewport;
-
-    other.m_renderer = nullptr;
   }
 
   /**
@@ -621,7 +640,7 @@ class renderer final : public renderer_base {
   [[nodiscard]] auto tx(T x) const noexcept -> T
   {
     SDL_Rect vp{};
-    SDL_RenderGetViewport(m_renderer, &vp);
+    SDL_RenderGetViewport(m_renderer.get(), &vp);
 
     if constexpr (std::is_same_v<T, int>) {
       return x - static_cast<T>(vp.x);
@@ -645,7 +664,7 @@ class renderer final : public renderer_base {
   [[nodiscard]] auto ty(T y) const noexcept -> T
   {
     SDL_Rect vp{};
-    SDL_RenderGetViewport(m_renderer, &vp);
+    SDL_RenderGetViewport(m_renderer.get(), &vp);
 
     if constexpr (std::is_same_v<T, int>) {
       return y - static_cast<T>(vp.y);
@@ -668,6 +687,11 @@ class renderer final : public renderer_base {
     return {translate(rect.position()), rect.size()};
   }
 };
+
+static_assert(std::is_final_v<renderer>);
+static_assert(std::is_nothrow_destructible_v<renderer>);
+static_assert(std::is_nothrow_move_constructible_v<renderer>);
+static_assert(std::is_nothrow_move_assignable_v<renderer>);
 
 /**
  * @class renderer_view
@@ -723,7 +747,7 @@ class renderer final : public renderer_base {
  *
  * @headerfile renderer.hpp
  */
-class renderer_view final : public renderer_base {
+class renderer_view final : public renderer_base<renderer_view> {
  public:
   renderer_view() noexcept = default;
 
@@ -735,7 +759,7 @@ class renderer_view final : public renderer_base {
    *
    * @since 5.0.0
    */
-  renderer_view(SDL_Renderer* renderer) noexcept : renderer_base{renderer} {}
+  renderer_view(SDL_Renderer* renderer) noexcept : m_renderer{renderer} {}
 
   /**
    * @brief Creates a view based on an existing `renderer`.
@@ -746,8 +770,82 @@ class renderer_view final : public renderer_base {
    *
    * @since 5.0.0
    */
-  renderer_view(renderer& renderer) noexcept : renderer_base{renderer.get()} {}
+  renderer_view(renderer& renderer) noexcept : m_renderer{renderer.get()} {}
+
+  /**
+   * @brief Returns a pointer to the associated SDL_Renderer.
+   *
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However, it's useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated SDL_Renderer.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
+  {
+    return m_renderer;
+  }
+
+ private:
+  SDL_Renderer* m_renderer{};
 };
+
+static_assert(std::is_final_v<renderer_view>);
+static_assert(std::is_nothrow_destructible_v<renderer_view>);
+static_assert(std::is_nothrow_move_constructible_v<renderer_view>);
+static_assert(std::is_nothrow_move_assignable_v<renderer_view>);
+
+/*
+namespace experimental {
+
+template <class Derived>
+class base_window {
+ public:
+  void show() { SDL_ShowWindow(get_ptr()); }
+  void hide() { SDL_ShowWindow(get_ptr()); }
+
+ private:
+  [[nodiscard]] auto get_ptr() -> SDL_Window*
+  {
+    return static_cast<Derived*>(this)->get();
+  }
+};
+
+class window_deleter final {
+ public:
+  void operator()(SDL_Window* window) noexcept { SDL_DestroyWindow(window); }
+};
+
+class owning_window : public base_window<owning_window> {
+ public:
+  owning_window()
+      : m_window{SDL_CreateWindow("", 0, 0, 100, 100, SDL_WINDOW_HIDDEN)}
+  {}
+
+  auto get() -> SDL_Window* { return m_window.get(); }
+
+ private:
+  std::unique_ptr<SDL_Window, window_deleter> m_window;
+};
+
+class view_window : public base_window<view_window> {
+ public:
+  auto get() -> SDL_Window* { return m_window; }
+
+ private:
+  SDL_Window* m_window{};
+};
+
+inline void foo()
+{
+  owning_window owning;
+  view_window view;
+}
+
+}  // namespace experimental
+*/
 
 }  // namespace centurion
 

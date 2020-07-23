@@ -66,6 +66,8 @@ namespace centurion {
  * @details This class provides the general API for hardware-accelerated
  * rendering.
  *
+ * @tparam Derived the type of the derived renderer.
+ *
  * @since 5.0.0
  *
  * @see `renderer`
@@ -73,6 +75,7 @@ namespace centurion {
  *
  * @headerfile renderer_base.hpp
  */
+template <class Derived>
 class renderer_base {
  public:
   /**
@@ -80,7 +83,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void clear() noexcept { SDL_RenderClear(m_renderer); }
+  void clear() noexcept { SDL_RenderClear(ptr()); }
 
   /**
    * @brief Clears the rendering target with the specified color.
@@ -106,7 +109,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void present() noexcept { SDL_RenderPresent(m_renderer); }
+  void present() noexcept { SDL_RenderPresent(ptr()); }
 
   /**
    * @name Primitive rendering
@@ -130,9 +133,9 @@ class renderer_base {
     static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
     if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderDrawRect(m_renderer, static_cast<const SDL_Rect*>(rect));
+      SDL_RenderDrawRect(ptr(), static_cast<const SDL_Rect*>(rect));
     } else {
-      SDL_RenderDrawRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
+      SDL_RenderDrawRectF(ptr(), static_cast<const SDL_FRect*>(rect));
     }
   }
 
@@ -152,9 +155,9 @@ class renderer_base {
     static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
     if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderFillRect(m_renderer, static_cast<const SDL_Rect*>(rect));
+      SDL_RenderFillRect(ptr(), static_cast<const SDL_Rect*>(rect));
     } else {
-      SDL_RenderFillRectF(m_renderer, static_cast<const SDL_FRect*>(rect));
+      SDL_RenderFillRectF(ptr(), static_cast<const SDL_FRect*>(rect));
     }
   }
 
@@ -177,9 +180,9 @@ class renderer_base {
     static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
     if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderDrawLine(m_renderer, start.x(), start.y(), end.x(), end.y());
+      SDL_RenderDrawLine(ptr(), start.x(), start.y(), end.x(), end.y());
     } else {
-      SDL_RenderDrawLineF(m_renderer, start.x(), start.y(), end.x(), end.y());
+      SDL_RenderDrawLineF(ptr(), start.x(), start.y(), end.x(), end.y());
     }
   }
 
@@ -221,12 +224,10 @@ class renderer_base {
 
       if constexpr (std::is_same_v<value_t, int>) {
         const auto* first = static_cast<const SDL_Point*>(front);
-        SDL_RenderDrawLines(
-            m_renderer, first, static_cast<int>(container.size()));
+        SDL_RenderDrawLines(ptr(), first, static_cast<int>(container.size()));
       } else {
         const auto* first = static_cast<const SDL_FPoint*>(front);
-        SDL_RenderDrawLinesF(
-            m_renderer, first, static_cast<int>(container.size()));
+        SDL_RenderDrawLinesF(ptr(), first, static_cast<int>(container.size()));
       }
     }
   }
@@ -268,7 +269,7 @@ class renderer_base {
     surface surface{TTF_RenderUTF8_Blended(
         font.get(), str, static_cast<SDL_Color>(get_color()))};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -308,7 +309,7 @@ class renderer_base {
     surface surface{TTF_RenderUTF8_Blended_Wrapped(
         font.get(), str, static_cast<SDL_Color>(get_color()), wrap)};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -347,7 +348,7 @@ class renderer_base {
                                           static_cast<SDL_Color>(get_color()),
                                           static_cast<SDL_Color>(background))};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -381,7 +382,7 @@ class renderer_base {
     surface surface{TTF_RenderUTF8_Solid(
         font.get(), str, static_cast<SDL_Color>(get_color()))};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -415,7 +416,7 @@ class renderer_base {
     surface surface{TTF_RenderText_Blended(
         font.get(), str, static_cast<SDL_Color>(get_color()))};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -455,7 +456,7 @@ class renderer_base {
     surface surface{TTF_RenderText_Blended_Wrapped(
         font.get(), str, static_cast<SDL_Color>(get_color()), wrap)};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -494,7 +495,7 @@ class renderer_base {
                                           static_cast<SDL_Color>(get_color()),
                                           static_cast<SDL_Color>(background))};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -528,7 +529,7 @@ class renderer_base {
     surface surface{TTF_RenderText_Solid(
         font.get(), str, static_cast<SDL_Color>(get_color()))};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -560,7 +561,7 @@ class renderer_base {
     surface surface{TTF_RenderUNICODE_Blended(
         font.get(), str.data(), static_cast<SDL_Color>(get_color()))};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -598,7 +599,7 @@ class renderer_base {
     surface surface{TTF_RenderUNICODE_Blended_Wrapped(
         font.get(), str.data(), static_cast<SDL_Color>(get_color()), wrap)};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -636,7 +637,7 @@ class renderer_base {
                                  static_cast<SDL_Color>(get_color()),
                                  static_cast<SDL_Color>(background))};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -668,7 +669,7 @@ class renderer_base {
     surface surface{TTF_RenderUNICODE_Solid(
         font.get(), str.data(), static_cast<SDL_Color>(get_color()))};
 
-    texture texture{SDL_CreateTextureFromSurface(m_renderer, surface.get())};
+    texture texture{SDL_CreateTextureFromSurface(ptr(), surface.get())};
 
     return texture;
   }
@@ -836,13 +837,13 @@ class renderer_base {
     if constexpr (std::is_same_v<T, int>) {
       const SDL_Rect dst{
           position.x(), position.y(), texture.width(), texture.height()};
-      SDL_RenderCopy(m_renderer, texture.get(), nullptr, &dst);
+      SDL_RenderCopy(ptr(), texture.get(), nullptr, &dst);
     } else {
       const SDL_FRect dst{position.x(),
                           position.y(),
                           static_cast<float>(texture.width()),
                           static_cast<float>(texture.height())};
-      SDL_RenderCopyF(m_renderer, texture.get(), nullptr, &dst);
+      SDL_RenderCopyF(ptr(), texture.get(), nullptr, &dst);
     }
   }
 
@@ -863,12 +864,12 @@ class renderer_base {
     static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
     if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderCopy(m_renderer,
+      SDL_RenderCopy(ptr(),
                      texture.get(),
                      nullptr,
                      static_cast<const SDL_Rect*>(destination));
     } else {
-      SDL_RenderCopyF(m_renderer,
+      SDL_RenderCopyF(ptr(),
                       texture.get(),
                       nullptr,
                       static_cast<const SDL_FRect*>(destination));
@@ -898,12 +899,12 @@ class renderer_base {
     static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
     if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderCopy(m_renderer,
+      SDL_RenderCopy(ptr(),
                      texture.get(),
                      static_cast<const SDL_Rect*>(source),
                      static_cast<const SDL_Rect*>(destination));
     } else {
-      SDL_RenderCopyF(m_renderer,
+      SDL_RenderCopyF(ptr(),
                       texture.get(),
                       static_cast<const SDL_Rect*>(source),
                       static_cast<const SDL_FRect*>(destination));
@@ -933,7 +934,7 @@ class renderer_base {
     static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
     if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderCopyEx(m_renderer,
+      SDL_RenderCopyEx(ptr(),
                        texture.get(),
                        static_cast<const SDL_Rect*>(source),
                        static_cast<const SDL_Rect*>(destination),
@@ -941,7 +942,7 @@ class renderer_base {
                        nullptr,
                        SDL_FLIP_NONE);
     } else {
-      SDL_RenderCopyExF(m_renderer,
+      SDL_RenderCopyExF(ptr(),
                         texture.get(),
                         static_cast<const SDL_Rect*>(source),
                         static_cast<const SDL_FRect*>(destination),
@@ -977,7 +978,7 @@ class renderer_base {
     static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
     if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderCopyEx(m_renderer,
+      SDL_RenderCopyEx(ptr(),
                        texture.get(),
                        static_cast<const SDL_Rect*>(source),
                        static_cast<const SDL_Rect*>(destination),
@@ -985,7 +986,7 @@ class renderer_base {
                        static_cast<const SDL_Point*>(center),
                        SDL_FLIP_NONE);
     } else {
-      SDL_RenderCopyExF(m_renderer,
+      SDL_RenderCopyExF(ptr(),
                         texture.get(),
                         static_cast<const SDL_Rect*>(source),
                         static_cast<const SDL_FRect*>(destination),
@@ -1023,7 +1024,7 @@ class renderer_base {
     static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
 
     if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderCopyEx(m_renderer,
+      SDL_RenderCopyEx(ptr(),
                        texture.get(),
                        static_cast<const SDL_Rect*>(source),
                        static_cast<const SDL_Rect*>(destination),
@@ -1031,7 +1032,7 @@ class renderer_base {
                        static_cast<const SDL_Point*>(center),
                        flip);
     } else {
-      SDL_RenderCopyExF(m_renderer,
+      SDL_RenderCopyExF(ptr(),
                         texture.get(),
                         static_cast<const SDL_Rect*>(source),
                         static_cast<const SDL_FRect*>(destination),
@@ -1050,8 +1051,11 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void set_color(const color& color) noexcept;
+  void set_color(const color& color) noexcept
+  {
+    SDL_SetRenderDrawColor(
+        ptr(), color.red(), color.green(), color.blue(), color.alpha());
+  }
 
   /**
    * @brief Sets the clipping area rectangle.
@@ -1062,8 +1066,14 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void set_clip(std::optional<rect_i> area) noexcept;
+  void set_clip(std::optional<rect_i> area) noexcept
+  {
+    if (area) {
+      SDL_RenderSetClipRect(ptr(), static_cast<const SDL_Rect*>(*area));
+    } else {
+      SDL_RenderSetClipRect(ptr(), nullptr);
+    }
+  }
 
   /**
    * @brief Sets the viewport that will be used by the renderer.
@@ -1072,8 +1082,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void set_viewport(const rect_i& viewport) noexcept;
+  void set_viewport(const rect_i& viewport) noexcept
+  {
+    SDL_RenderSetViewport(ptr(), static_cast<const SDL_Rect*>(viewport));
+  }
 
   /**
    * @brief Sets the blend mode that will be used by the renderer.
@@ -1082,8 +1094,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void set_blend_mode(blend_mode mode) noexcept;
+  void set_blend_mode(blend_mode mode) noexcept
+  {
+    SDL_SetRenderDrawBlendMode(ptr(), static_cast<SDL_BlendMode>(mode));
+  }
 
   /**
    * @brief Sets the rendering target of the renderer.
@@ -1096,8 +1110,14 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void set_target(const texture* target) noexcept;
+  void set_target(const texture* target) noexcept
+  {
+    if (target && target->is_target()) {
+      SDL_SetRenderTarget(ptr(), target->get());
+    } else {
+      SDL_SetRenderTarget(ptr(), nullptr);
+    }
+  }
 
   /**
    * @brief Sets the rendering scale.
@@ -1110,8 +1130,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void set_scale(float xScale, float yScale) noexcept;
+  void set_scale(float xScale, float yScale) noexcept
+  {
+    if ((xScale > 0) && (yScale > 0)) {
+      SDL_RenderSetScale(ptr(), xScale, yScale);
+    }
+  }
 
   /**
    * @brief Sets the logical size used by the renderer.
@@ -1127,8 +1151,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void set_logical_size(const area_i& size) noexcept;
+  void set_logical_size(const area_i& size) noexcept
+  {
+    if ((size.width > 0) && (size.height > 0)) {
+      SDL_RenderSetLogicalSize(ptr(), size.width, size.height);
+    }
+  }
 
   /**
    * @brief Sets whether or not to force integer scaling for the logical
@@ -1142,8 +1170,11 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void set_logical_integer_scale(bool useLogicalIntegerScale) noexcept;
+  void set_logical_integer_scale(bool useLogicalIntegerScale) noexcept
+  {
+    SDL_RenderSetIntegerScale(ptr(),
+                              detail::convert_bool(useLogicalIntegerScale));
+  }
 
   /**
    * @brief Returns the logical width that the renderer uses.
@@ -1156,8 +1187,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto logical_width() const noexcept -> int;
+  [[nodiscard]] auto logical_width() const noexcept -> int
+  {
+    int width{};
+    SDL_RenderGetLogicalSize(ptr(), &width, nullptr);
+    return width;
+  }
 
   /**
    * @brief Returns the logical height that the renderer uses.
@@ -1170,8 +1205,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto logical_height() const noexcept -> int;
+  [[nodiscard]] auto logical_height() const noexcept -> int
+  {
+    int height{};
+    SDL_RenderGetLogicalSize(ptr(), nullptr, &height);
+    return height;
+  }
 
   /**
    * @brief Returns the size of the logical (virtual) viewport.
@@ -1183,8 +1222,13 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  CENTURION_QUERY
-  auto logical_size() const noexcept -> area_i;
+  [[nodiscard]] auto logical_size() const noexcept -> area_i
+  {
+    int width{};
+    int height{};
+    SDL_RenderGetLogicalSize(ptr(), &width, &height);
+    return {width, height};
+  }
 
   /**
    * @brief Returns the x-axis scale that the renderer uses.
@@ -1193,8 +1237,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto x_scale() const noexcept -> float;
+  [[nodiscard]] auto x_scale() const noexcept -> float
+  {
+    float xScale{};
+    SDL_RenderGetScale(ptr(), &xScale, nullptr);
+    return xScale;
+  }
 
   /**
    * @brief Returns the y-axis scale that the renderer uses.
@@ -1203,8 +1251,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto y_scale() const noexcept -> float;
+  [[nodiscard]] auto y_scale() const noexcept -> float
+  {
+    float yScale{};
+    SDL_RenderGetScale(ptr(), nullptr, &yScale);
+    return yScale;
+  }
 
   /**
    * @brief Returns the x- and y-scale used by the renderer.
@@ -1216,8 +1268,13 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  CENTURION_QUERY
-  auto scale() const noexcept -> std::pair<float, float>;
+  [[nodiscard]] auto scale() const noexcept -> std::pair<float, float>
+  {
+    float xScale{};
+    float yScale{};
+    SDL_RenderGetScale(ptr(), &xScale, &yScale);
+    return {xScale, yScale};
+  }
 
   /**
    * @brief Returns the current clipping rectangle, if there is one active.
@@ -1226,8 +1283,16 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto clip() const noexcept -> std::optional<rect_i>;
+  [[nodiscard]] auto clip() const noexcept -> std::optional<rect_i>
+  {
+    rect_i rect{};
+    SDL_RenderGetClipRect(ptr(), static_cast<SDL_Rect*>(rect));
+    if (!rect.has_area()) {
+      return nothing;
+    } else {
+      return rect;
+    }
+  }
 
   /**
    * @brief Returns information about the renderer.
@@ -1236,8 +1301,16 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto info() const noexcept -> std::optional<SDL_RendererInfo>;
+  [[nodiscard]] auto info() const noexcept -> std::optional<SDL_RendererInfo>
+  {
+    SDL_RendererInfo info{};
+    const auto result = SDL_GetRendererInfo(ptr(), &info);
+    if (result == 0) {
+      return info;
+    } else {
+      return nothing;
+    }
+  }
 
   /**
    * @brief Returns the output width of the renderer.
@@ -1246,8 +1319,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto output_width() const noexcept -> int;
+  [[nodiscard]] auto output_width() const noexcept -> int
+  {
+    int width{};
+    SDL_GetRendererOutputSize(ptr(), &width, nullptr);
+    return width;
+  }
 
   /**
    * @brief Returns the output height of the renderer.
@@ -1256,8 +1333,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto output_height() const noexcept -> int;
+  [[nodiscard]] auto output_height() const noexcept -> int
+  {
+    int height{};
+    SDL_GetRendererOutputSize(ptr(), nullptr, &height);
+    return height;
+  }
 
   /**
    * @brief Returns the output size of the renderer.
@@ -1269,8 +1350,13 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto output_size() const noexcept -> area_i;
+  [[nodiscard]] auto output_size() const noexcept -> area_i
+  {
+    int width{};
+    int height{};
+    SDL_GetRendererOutputSize(ptr(), &width, &height);
+    return {width, height};
+  }
 
   /**
    * @brief Returns the blend mode that is being used by the renderer.
@@ -1279,8 +1365,12 @@ class renderer_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto blend_mode() const noexcept -> blend_mode;
+  [[nodiscard]] auto blend_mode() const noexcept -> blend_mode
+  {
+    SDL_BlendMode mode{};
+    SDL_GetRenderDrawBlendMode(ptr(), &mode);
+    return static_cast<enum blend_mode>(mode);
+  }
 
   /**
    * @name Flag-related queries.
@@ -1302,8 +1392,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto flags() const noexcept -> u32;
+  [[nodiscard]] auto flags() const noexcept -> u32
+  {
+    SDL_RendererInfo info{};
+    SDL_GetRendererInfo(ptr(), &info);
+    return info.flags;
+  }
 
   /**
    * @brief Indicates whether or not the `present` method is synced with
@@ -1313,8 +1407,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto vsync_enabled() const noexcept -> bool;
+  [[nodiscard]] auto vsync_enabled() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_RENDERER_PRESENTVSYNC);
+  }
 
   /**
    * @brief Indicates whether or not the renderer is hardware accelerated.
@@ -1323,8 +1419,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto accelerated() const noexcept -> bool;
+  [[nodiscard]] auto accelerated() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_RENDERER_ACCELERATED);
+  }
 
   /**
    * @brief Indicates whether or not the renderer is using software rendering.
@@ -1333,8 +1431,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto software_based() const noexcept -> bool;
+  [[nodiscard]] auto software_based() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_RENDERER_SOFTWARE);
+  }
 
   /**
    * @brief Indicates whether or not the renderer supports rendering to a target
@@ -1345,8 +1445,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto supports_target_textures() const noexcept -> bool;
+  [[nodiscard]] auto supports_target_textures() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
+  }
 
   ///@} // end of flag queries
 
@@ -1361,8 +1463,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto using_integer_logical_scaling() const noexcept -> bool;
+  [[nodiscard]] auto using_integer_logical_scaling() const noexcept -> bool
+  {
+    return SDL_RenderGetIntegerScale(ptr());
+  }
 
   /**
    * @brief Indicates whether or not clipping is enabled.
@@ -1373,8 +1477,10 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto clipping_enabled() const noexcept -> bool;
+  [[nodiscard]] auto clipping_enabled() const noexcept -> bool
+  {
+    return SDL_RenderIsClipEnabled(ptr());
+  }
 
   /**
    * @brief Returns the currently selected rendering color.
@@ -1385,8 +1491,15 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto get_color() const noexcept -> color;
+  [[nodiscard]] auto get_color() const noexcept -> color
+  {
+    u8 red{};
+    u8 green{};
+    u8 blue{};
+    u8 alpha{};
+    SDL_GetRenderDrawColor(ptr(), &red, &green, &blue, &alpha);
+    return {red, green, blue, alpha};
+  }
 
   /**
    * @brief Returns the viewport that the renderer uses.
@@ -1395,8 +1508,12 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto viewport() const noexcept -> rect_i;
+  [[nodiscard]] auto viewport() const noexcept -> rect_i
+  {
+    rect_i viewport{};
+    SDL_RenderGetViewport(ptr(), static_cast<SDL_Rect*>(viewport));
+    return viewport;
+  }
 
   /**
    * @brief Returns a textual representation of the renderer.
@@ -1405,63 +1522,28 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto to_string() const -> std::string;
-
-  /**
-   * @brief Returns a pointer to the associated SDL_Renderer.
-   *
-   * @warning Use of this method is not recommended, since it purposefully
-   * breaks const-correctness. However, it's useful since many SDL calls use
-   * non-const pointers even when no change will be applied.
-   *
-   * @return a pointer to the associated SDL_Renderer.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
+  [[nodiscard]] auto to_string() const -> std::string
   {
-    return m_renderer;
-  }
-
-  /**
-   * @brief Converts to `SDL_Renderer*`.
-   *
-   * @return a pointer to the associated `SDL_Renderer` instance.
-   *
-   * @since 3.0.0
-   */
-  [[nodiscard]] explicit operator SDL_Renderer*() noexcept
-  {
-    return m_renderer;
-  }
-
-  /**
-   * @brief Converts to `const SDL_Renderer*`.
-   *
-   * @return a pointer to the associated `SDL_Renderer` instance.
-   *
-   * @since 3.0.0
-   */
-  [[nodiscard]] explicit operator const SDL_Renderer*() const noexcept
-  {
-    return m_renderer;
+    const auto address = detail::address_of(this);
+    const auto owidth = std::to_string(output_width());
+    const auto oheight = std::to_string(output_height());
+    return "[renderer | Data: " + address + ", Output width: " + owidth +
+           ", Output height: " + oheight + "]";
   }
 
  protected:
   renderer_base() noexcept = default;
 
-  /**
-   * @brief Creates a renderer base instance.
-   *
-   * @param renderer the renderer that will be used.
-   *
-   * @since 5.0.0
-   */
-  CENTURION_API
-  explicit renderer_base(SDL_Renderer* renderer) noexcept;
+ private:
+  [[nodiscard]] auto ptr() -> SDL_Renderer*
+  {
+    return static_cast<Derived*>(this)->get();
+  }
 
-  SDL_Renderer* m_renderer{};
+  [[nodiscard]] auto ptr() const -> SDL_Renderer*
+  {
+    return static_cast<const Derived*>(this)->get();
+  }
 };
 
 /**

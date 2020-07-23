@@ -94,6 +94,10 @@ class path_deleter final {
  */
 class base_path final {
  public:
+  using uptr = std::unique_ptr<base_path>;
+  using sptr = std::shared_ptr<base_path>;
+  using wptr = std::weak_ptr<base_path>;
+
   /**
    * @brief Obtains the path of the application executable.
    *
@@ -109,13 +113,13 @@ class base_path final {
    * @copydoc base_path()
    */
   CENTURION_QUERY
-  static auto unique() -> std::unique_ptr<base_path>;
+  static auto unique() -> uptr;
 
   /**
    * @copydoc base_path()
    */
   CENTURION_QUERY
-  static auto shared() -> std::shared_ptr<base_path>;
+  static auto shared() -> sptr;
 
   /**
    * @brief Indicates whether or not there is a non-null string in the base path
@@ -185,6 +189,10 @@ static_assert(!std::is_copy_assignable_v<base_path>);
  */
 class pref_path final {
  public:
+  using uptr = std::unique_ptr<pref_path>;
+  using sptr = std::shared_ptr<pref_path>;
+  using wptr = std::weak_ptr<pref_path>;
+
   /**
    * @brief Constructs a `pref_path` instance.
    *
@@ -202,15 +210,13 @@ class pref_path final {
    * @copydoc pref_path(nn_czstring, nn_czstring)
    */
   CENTURION_QUERY
-  static auto unique(nn_czstring org, nn_czstring app)
-      -> std::unique_ptr<pref_path>;
+  static auto unique(nn_czstring org, nn_czstring app) -> uptr;
 
   /**
    * @copydoc pref_path(nn_czstring, nn_czstring)
    */
   CENTURION_QUERY
-  static auto shared(nn_czstring org, nn_czstring app)
-      -> std::shared_ptr<pref_path>;
+  static auto shared(nn_czstring org, nn_czstring app) -> sptr;
 
   /**
    * @brief Indicates whether or not the instance holds a non-null path.

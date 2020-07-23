@@ -117,7 +117,7 @@ class texture_loader final {
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] auto unique(Args&&... args) -> std::unique_ptr<texture>
+  [[nodiscard]] auto unique(Args&&... args) -> texture::uptr
   {
     return texture::unique(*m_renderer, std::forward<Args>(args)...);
   }
@@ -135,7 +135,7 @@ class texture_loader final {
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] auto shared(Args&&... args) -> std::shared_ptr<texture>
+  [[nodiscard]] auto shared(Args&&... args) -> texture::sptr
   {
     return texture::shared(*m_renderer, std::forward<Args>(args)...);
   }

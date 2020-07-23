@@ -9,12 +9,12 @@ namespace centurion {
 font_cache::font_cache(font&& font) noexcept : m_font{std::move(font)}
 {}
 
-auto font_cache::unique(font&& font) -> std::unique_ptr<font_cache>
+auto font_cache::unique(font&& font) -> uptr
 {
   return std::make_unique<font_cache>(std::move(font));
 }
 
-auto font_cache::shared(font&& font) -> std::shared_ptr<font_cache>
+auto font_cache::shared(font&& font) -> sptr
 {
   return std::make_shared<font_cache>(std::move(font));
 }

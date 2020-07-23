@@ -6,12 +6,12 @@ namespace centurion {
 
 mouse_state::mouse_state() noexcept = default;
 
-auto mouse_state::unique() -> std::unique_ptr<mouse_state>
+auto mouse_state::unique() -> uptr
 {
   return std::make_unique<mouse_state>();
 }
 
-auto mouse_state::shared() -> std::shared_ptr<mouse_state>
+auto mouse_state::shared() -> sptr
 {
   return std::make_shared<mouse_state>();
 }

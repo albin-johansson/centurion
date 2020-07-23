@@ -747,6 +747,10 @@ class window_base {
  */
 class window final : public window_base {
  public:
+  using uptr = std::unique_ptr<window>;
+  using sptr = std::shared_ptr<window>;
+  using wptr = std::weak_ptr<window>;
+
   /**
    * @brief Creates a 800x600 window. The window will be hidden by default.
    *
@@ -821,39 +825,37 @@ class window final : public window_base {
    * @copydoc window()
    */
   CENTURION_QUERY
-  static auto unique() -> std::unique_ptr<window>;
+  static auto unique() -> uptr;
 
   /**
    * @copydoc window(owner<SDL_Window*>)
    */
   CENTURION_QUERY
-  static auto unique(owner<SDL_Window*> sdlWindow) -> std::unique_ptr<window>;
+  static auto unique(owner<SDL_Window*> sdlWindow) -> uptr;
 
   /**
    * @copydoc window(czstring, area_i)
    */
   CENTURION_QUERY
-  static auto unique(czstring title, area_i size = {800, 600})
-      -> std::unique_ptr<window>;
+  static auto unique(czstring title, area_i size = {800, 600}) -> uptr;
 
   /**
    * @copydoc window()
    */
   CENTURION_QUERY
-  static auto shared() -> std::shared_ptr<window>;
+  static auto shared() -> sptr;
 
   /**
    * @copydoc window(owner<SDL_Window*>)
    */
   CENTURION_QUERY
-  static auto shared(owner<SDL_Window*> sdlWindow) -> std::shared_ptr<window>;
+  static auto shared(owner<SDL_Window*> sdlWindow) -> sptr;
 
   /**
    * @copydoc window(czstring, area_i)
    */
   CENTURION_QUERY
-  static auto shared(czstring title, area_i size = {800, 600})
-      -> std::shared_ptr<window>;
+  static auto shared(czstring title, area_i size = {800, 600}) -> sptr;
 
   /**
    * @brief Converts to `SDL_Window*`.

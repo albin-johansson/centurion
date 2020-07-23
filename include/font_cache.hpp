@@ -91,6 +91,10 @@ namespace centurion {
  */
 class font_cache final {
  public:
+  using uptr = std::unique_ptr<font_cache>;
+  using sptr = std::shared_ptr<font_cache>;
+  using wptr = std::weak_ptr<font_cache>;
+
   /**
    * @struct glyph_data
    *
@@ -135,7 +139,7 @@ class font_cache final {
    * @copydoc font_cache(font&&)
    */
   CENTURION_QUERY
-  static auto unique(font&& font) -> std::unique_ptr<font_cache>;
+  static auto unique(font&& font) -> uptr;
 
   /**
    * @brief Creates and returns a unique pointer to a font cache instance.
@@ -152,8 +156,7 @@ class font_cache final {
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] static auto unique(Args&&... args)
-      -> std::unique_ptr<font_cache>
+  [[nodiscard]] static auto unique(Args&&... args) -> uptr
   {
     return std::make_unique<font_cache>(std::forward<Args>(args)...);
   }
@@ -162,7 +165,7 @@ class font_cache final {
    * @copydoc font_cache(font&&)
    */
   CENTURION_QUERY
-  static auto shared(font&& font) -> std::shared_ptr<font_cache>;
+  static auto shared(font&& font) -> sptr;
 
   /**
    * @brief Creates and returns a shared pointer to a font cache instance.
@@ -179,8 +182,7 @@ class font_cache final {
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] static auto shared(Args&&... args)
-      -> std::shared_ptr<font_cache>
+  [[nodiscard]] static auto shared(Args&&... args) -> sptr
   {
     return std::make_shared<font_cache>(std::forward<Args>(args)...);
   }

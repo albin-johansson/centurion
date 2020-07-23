@@ -127,6 +127,10 @@ namespace centurion {
  */
 class renderer final : public renderer_base {
  public:
+  using uptr = std::unique_ptr<renderer>;
+  using sptr = std::shared_ptr<renderer>;
+  using wptr = std::weak_ptr<renderer>;
+
   /**
    * @brief Creates a renderer based on the supplied `SDL_Renderer`.
    *
@@ -204,8 +208,7 @@ class renderer final : public renderer_base {
   /**
    * @copydoc renderer(nn_owner<SDL_Renderer*>)
    */
-  [[nodiscard]] static auto unique(nn_owner<SDL_Renderer*> sdlRenderer)
-      -> std::unique_ptr<renderer>
+  [[nodiscard]] static auto unique(nn_owner<SDL_Renderer*> sdlRenderer) -> uptr
   {
     return std::make_unique<renderer>(sdlRenderer);
   }
@@ -215,7 +218,7 @@ class renderer final : public renderer_base {
    */
   [[nodiscard]] static auto unique(const window& window,
                                    SDL_RendererFlags flags = default_flags())
-      -> std::unique_ptr<renderer>
+      -> uptr
   {
     return std::make_unique<renderer>(window, flags);
   }
@@ -223,8 +226,7 @@ class renderer final : public renderer_base {
   /**
    * @copydoc renderer(nn_owner<SDL_Renderer*>)
    */
-  [[nodiscard]] static auto shared(nn_owner<SDL_Renderer*> sdlRenderer)
-      -> std::shared_ptr<renderer>
+  [[nodiscard]] static auto shared(nn_owner<SDL_Renderer*> sdlRenderer) -> sptr
   {
     return std::make_shared<renderer>(sdlRenderer);
   }
@@ -234,7 +236,7 @@ class renderer final : public renderer_base {
    */
   [[nodiscard]] static auto shared(const window& window,
                                    SDL_RendererFlags flags = default_flags())
-      -> std::shared_ptr<renderer>
+      -> sptr
   {
     return std::make_shared<renderer>(window, flags);
   }

@@ -15,12 +15,12 @@ key_state::key_state() noexcept
   std::fill(m_previousStates.begin(), m_previousStates.end(), 0);
 }
 
-auto key_state::unique() -> std::unique_ptr<key_state>
+auto key_state::unique() -> uptr
 {
   return std::make_unique<key_state>();
 }
 
-auto key_state::shared() -> std::shared_ptr<key_state>
+auto key_state::shared() -> sptr
 {
   return std::make_shared<key_state>();
 }

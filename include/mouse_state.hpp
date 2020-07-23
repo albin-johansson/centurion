@@ -60,6 +60,10 @@ namespace centurion {
  */
 class mouse_state final {
  public:
+  using uptr = std::unique_ptr<mouse_state>;
+  using sptr = std::shared_ptr<mouse_state>;
+  using wptr = std::weak_ptr<mouse_state>;
+
   /**
    * @brief Creates a `mouse_state` instance.
    *
@@ -72,13 +76,13 @@ class mouse_state final {
    * @copyright mouse_state()
    */
   CENTURION_QUERY
-  static auto unique() -> std::unique_ptr<mouse_state>;
+  static auto unique() -> uptr;
 
   /**
    * @copyright mouse_state()
    */
   CENTURION_QUERY
-  static auto shared() -> std::shared_ptr<mouse_state>;
+  static auto shared() -> sptr;
 
   /**
    * @brief Updates the mouse state. The window width and height will be

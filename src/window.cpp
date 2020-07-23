@@ -7,6 +7,7 @@ namespace centurion {
 window::window() : window{"Centurion window"}
 {}
 
+// TODO make nn_owner
 window::window(owner<SDL_Window*> window) : window_base{window}
 {
   if (!window) {
@@ -62,32 +63,32 @@ void window::move(window&& other) noexcept
   other.m_window = nullptr;
 }
 
-auto window::unique() -> std::unique_ptr<window>
+auto window::unique() -> uptr
 {
   return std::make_unique<window>();
 }
 
-auto window::unique(owner<SDL_Window*> sdlWindow) -> std::unique_ptr<window>
+auto window::unique(owner<SDL_Window*> sdlWindow) -> uptr
 {
   return std::make_unique<window>(sdlWindow);
 }
 
-auto window::unique(czstring title, area_i size) -> std::unique_ptr<window>
+auto window::unique(czstring title, area_i size) -> uptr
 {
   return std::make_unique<window>(title, size);
 }
 
-auto window::shared() -> std::shared_ptr<window>
+auto window::shared() -> sptr
 {
   return std::make_shared<window>();
 }
 
-auto window::shared(owner<SDL_Window*> sdlWindow) -> std::shared_ptr<window>
+auto window::shared(owner<SDL_Window*> sdlWindow) -> sptr
 {
   return std::make_shared<window>(sdlWindow);
 }
 
-auto window::shared(czstring title, area_i size) -> std::shared_ptr<window>
+auto window::shared(czstring title, area_i size) -> sptr
 {
   return std::make_shared<window>(title, size);
 }

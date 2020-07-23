@@ -77,6 +77,33 @@ namespace centurion {
 class key_state final {
  public:
   /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a key state instance.
+   *
+   * @since 5.0.0
+   */
+  using uptr = std::unique_ptr<key_state>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a key state instance.
+   *
+   * @since 5.0.0
+   */
+  using sptr = std::shared_ptr<key_state>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a key state instance.
+   *
+   * @since 5.0.0
+   */
+  using wptr = std::weak_ptr<key_state>;
+
+  /**
    * @brief Creates a `key_state` instance.
    *
    * @since 3.0.0
@@ -88,13 +115,13 @@ class key_state final {
    * @copydoc key_state()
    */
   CENTURION_QUERY
-  static auto unique() -> std::unique_ptr<key_state>;
+  static auto unique() -> uptr;
 
   /**
    * @copydoc key_state()
    */
   CENTURION_QUERY
-  static auto shared() -> std::shared_ptr<key_state>;
+  static auto shared() -> sptr;
 
   /**
    * @brief Updates the state of the key state object.

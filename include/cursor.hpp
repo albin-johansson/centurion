@@ -256,7 +256,7 @@ class cursor final {
    * @copydoc cursor(system_cursor)
    */
   CENTURION_QUERY
-  static auto unique(system_cursor id) -> std::unique_ptr<cursor>;
+  static auto unique(system_cursor id) -> uptr;
 
   /**
    * @copydoc cursor(nn_owner<SDL_Cursor*>)

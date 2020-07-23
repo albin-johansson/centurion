@@ -11,9 +11,8 @@ static constexpr auto type_writer_path = "resources/type_writer.ttf";
 static constexpr auto fira_code_path = "resources/fira_code.ttf";
 static constexpr auto daniel_path = "resources/daniel.ttf";
 
-TEST_CASE("font(czstring, int)", "[font]")
+TEST_CASE("font(nn_czstring, int)", "[font]")
 {
-  CHECK_THROWS_AS(ctn::font(nullptr, 1), ctn::centurion_exception);
   CHECK_THROWS_AS(ctn::font("", 1), ctn::centurion_exception);
   CHECK_THROWS_AS(ctn::font("", 0), ctn::centurion_exception);
 }
@@ -134,10 +133,12 @@ TEST_CASE("font::set_outline", "[font]")
 
   CHECK(!font.outlined());
 
-  font.set_outline(1);
+  font.set_outline(2);
+  CHECK(font.outline() == 2);
   CHECK(font.outlined());
 
   font.set_outline(0);
+  CHECK(font.outline() == 0);
   CHECK(!font.outlined());
 }
 
@@ -220,7 +221,7 @@ TEST_CASE("font::kerning_amount", "[font]")
 TEST_CASE("font::glyph_metrics", "[font]")
 {
   ctn::font font{daniel_path, 12};
-  const auto metrics = font.glyph_metrics('A');
+  const auto metrics = font.get_metrics('A');
   CHECK(metrics);
 }
 

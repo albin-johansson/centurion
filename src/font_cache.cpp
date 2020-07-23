@@ -137,7 +137,7 @@ void font_cache::add_glyph(renderer& renderer, unicode glyph)
     if (m_font.is_glyph_provided(glyph)) {
       m_glyphs.emplace(glyph,
                        glyph_data{create_glyph_texture(renderer, glyph),
-                                  m_font.glyph_metrics(glyph).value()});
+                                  m_font.get_metrics(glyph).value()});
     }
   }
 }

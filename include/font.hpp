@@ -40,7 +40,6 @@
 #include <SDL_ttf.h>
 
 #include <memory>
-#include <stdexcept>
 #include <string>
 #include <type_traits>
 
@@ -48,12 +47,31 @@
 #include "centurion_api.hpp"
 #include "centurion_exception.hpp"
 #include "centurion_types.hpp"
+#include "unicode_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
+
+/// @cond FALSE
+
+namespace detail {
+
+class font_deleter final {
+ public:
+  void operator()(TTF_Font* font) noexcept
+  {
+    if (font) {
+      TTF_CloseFont(font);
+    }
+  }
+};
+
+}  // namespace detail
+
+/// @endcond
 
 /**
  * @struct glyph_metrics
@@ -67,11 +85,11 @@ namespace centurion {
  * @headerfile font.hpp
  */
 struct glyph_metrics final {
-  int minX;    /**< The minimum X-offset. */
-  int minY;    /**< The minimum Y-offset. */
-  int maxX;    /**< The maximum X-offset. */
-  int maxY;    /**< The maximum Y-offset. */
-  int advance; /**< The advance offset. */
+  int minX;     ///< The minimum X-offset.
+  int minY;     ///< The minimum Y-offset.
+  int maxX;     ///< The maximum X-offset.
+  int maxY;     ///< The maximum Y-offset.
+  int advance;  ///< The advance offset.
 };
 
 /**
@@ -89,6 +107,10 @@ struct glyph_metrics final {
  */
 class font final {
  public:
+  using uptr = std::unique_ptr<font>;
+  using sptr = std::shared_ptr<font>;
+  using wptr = std::weak_ptr<font>;
+
   /**
    * @enum hint
    *
@@ -108,7 +130,7 @@ class font final {
   /**
    * @brief Creates a font based on the `.ttf`-file at the specified path.
    *
-   * @param file the file path of the TrueType font file.
+   * @param file the file path of the TrueType font file, mustn't be null.
    * @param size the font size, must be greater than zero.
    *
    * @throws centurion_exception if the font cannot be loaded or if the supplied
@@ -117,48 +139,19 @@ class font final {
    * @since 3.0.0
    */
   CENTURION_API
-  font(czstring file, int size);
-
-  font(const font&) = delete;
+  font(nn_czstring file, int size);
 
   /**
-   * @brief Creates a font by moving the supplied font.
-   *
-   * @param other the font that will be moved.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  font(font&& other) noexcept;
-
-  auto operator=(const font&) -> font& = delete;
-
-  /**
-   * @brief Moves the supplied font into this font.
-   *
-   * @param other the font that will be moved.
-   *
-   * @return the font that absorbed the moved font.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  auto operator=(font&& other) noexcept -> font&;
-
-  CENTURION_API
-  ~font() noexcept;
-
-  /**
-   * @copydoc font(czstring, int)
+   * @copydoc font(nn_czstring, int)
    */
   CENTURION_QUERY
-  static auto unique(czstring file, int size) -> std::unique_ptr<font>;
+  static auto unique(nn_czstring file, int size) -> std::unique_ptr<font>;
 
   /**
-   * @copydoc font(czstring, int)
+   * @copydoc font(nn_czstring, int)
    */
   CENTURION_QUERY
-  static auto shared(czstring file, int size) -> std::shared_ptr<font>;
+  static auto shared(nn_czstring file, int size) -> std::shared_ptr<font>;
 
   /**
    * @brief Resets the style of the font.
@@ -412,7 +405,8 @@ class font final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto kerning_amount(u16 firstGlyph, u16 secondGlyph) const noexcept -> int;
+  auto kerning_amount(unicode firstGlyph, unicode secondGlyph) const noexcept
+      -> int;
 
   /**
    * @brief Indicates whether or not the specified glyph is available in the
@@ -425,7 +419,7 @@ class font final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto is_glyph_provided(u16 glyph) const noexcept -> bool;
+  auto is_glyph_provided(unicode glyph) const noexcept -> bool;
 
   /**
    * @brief Returns the metrics of the specified glyph in this font.
@@ -438,8 +432,8 @@ class font final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto glyph_metrics(u16 glyph) const noexcept
-      -> std::optional<struct glyph_metrics>;
+  auto get_metrics(unicode glyph) const noexcept
+      -> std::optional<glyph_metrics>;
 
   /**
    * @brief Returns the family name of the font.
@@ -546,7 +540,7 @@ class font final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> TTF_Font* { return m_font; }
+  [[nodiscard]] auto get() const noexcept -> TTF_Font* { return m_font.get(); }
 
   /**
    * @brief Converts to `TTF_Font*`.
@@ -555,7 +549,7 @@ class font final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] explicit operator TTF_Font*() noexcept { return m_font; }
+  [[nodiscard]] explicit operator TTF_Font*() noexcept { return m_font.get(); }
 
   /**
    * @brief Converts to `const TTF_Font*`.
@@ -566,29 +560,13 @@ class font final {
    */
   [[nodiscard]] explicit operator const TTF_Font*() const noexcept
   {
-    return m_font;
+    return m_font.get();
   }
 
  private:
-  TTF_Font* m_font = nullptr;
-  int m_style = 0;
-  int m_size = 0;
-
-  /**
-   * @brief Destroys the resources associated with the font.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied font instance into this instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  void move(font&& other) noexcept;
+  std::unique_ptr<TTF_Font, detail::font_deleter> m_font;
+  int m_style{};
+  int m_size{};
 
   /**
    * @brief Enables the font style associated with the supplied bit mask.

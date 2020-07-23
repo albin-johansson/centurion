@@ -544,6 +544,8 @@ class renderer final : public renderer_base {
 
  private:
   rect_f m_translationViewport;
+
+  // todo change to simply hold font, not shared pointers
   std::unordered_map<entt::id_type, std::shared_ptr<class font>> m_fonts;
 
   [[nodiscard]] static constexpr auto default_flags() noexcept

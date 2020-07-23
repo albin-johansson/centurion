@@ -48,6 +48,9 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
+
+/// @cond FALSE
+
 namespace detail {
 
 class path_deleter final {
@@ -61,6 +64,8 @@ class path_deleter final {
 };
 
 }  // namespace detail
+
+/// @endcond
 
 /**
  * @class base_path

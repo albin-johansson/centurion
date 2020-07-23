@@ -1458,6 +1458,7 @@ class renderer_base {
    *
    * @since 5.0.0
    */
+  CENTURION_API
   explicit renderer_base(SDL_Renderer* renderer) noexcept;
 
   SDL_Renderer* m_renderer{};

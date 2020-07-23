@@ -12,10 +12,8 @@ TEST_CASE("cursor(system_cursor)", "[cursor]")
 
 TEST_CASE("cursor(owner<SDL_Cursor*>)", "[cursor]")
 {
-  SDL_Cursor* sdlCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
-  ctn::cursor cursor{sdlCursor};
-
-  CHECK_THROWS_AS(ctn::cursor{nullptr}, ctn::centurion_exception);
+  auto* sdlCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+  CHECK_NOTHROW(ctn::cursor{sdlCursor});
 }
 
 TEST_CASE("cursor(surface, point_i)", "[cursor]")
@@ -67,10 +65,7 @@ TEST_CASE("cursor::operator=(cursor&&)", "[cursor]")
 TEST_CASE("cursor::unique", "[cursor]")
 {
   CHECK(ctn::cursor::unique(ctn::system_cursor::arrow_all));
-
   CHECK(ctn::cursor::unique(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW)));
-  CHECK_THROWS_AS(ctn::cursor::unique(nullptr), ctn::centurion_exception);
-
   CHECK(ctn::cursor::unique(ctn::surface{"resources/panda.png"}, {10, 10}));
 
   SECTION("Out-of-bounds hotspot")
@@ -87,7 +82,6 @@ TEST_CASE("cursor::shared", "[cursor]")
   CHECK(ctn::cursor::shared(ctn::system_cursor::hand));
 
   CHECK(ctn::cursor::shared(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE)));
-  CHECK_THROWS_AS(ctn::cursor::shared(nullptr), ctn::centurion_exception);
 
   CHECK(ctn::cursor::shared(ctn::surface{"resources/panda.png"}, {8, 28}));
 

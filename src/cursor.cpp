@@ -13,12 +13,8 @@ cursor::cursor(system_cursor id)
   }
 }
 
-cursor::cursor(gsl::owner<SDL_Cursor*> sdlCursor) : m_cursor{sdlCursor}
-{
-  if (!sdlCursor) {
-    throw centurion_exception{"Can't create Cursor from null SDL_Cursor!"};
-  }
-}
+cursor::cursor(nn_owner<SDL_Cursor*> sdlCursor) : m_cursor{sdlCursor}
+{}
 
 cursor::cursor(const surface& surface, const point_i& hotspot)
     : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
@@ -33,8 +29,7 @@ auto cursor::unique(system_cursor id) -> std::unique_ptr<cursor>
   return std::make_unique<cursor>(id);
 }
 
-auto cursor::unique(gsl::owner<SDL_Cursor*> sdlCursor)
-    -> std::unique_ptr<cursor>
+auto cursor::unique(nn_owner<SDL_Cursor*> sdlCursor) -> std::unique_ptr<cursor>
 {
   return std::make_unique<cursor>(sdlCursor);
 }
@@ -50,8 +45,7 @@ auto cursor::shared(system_cursor id) -> std::shared_ptr<cursor>
   return std::make_shared<cursor>(id);
 }
 
-auto cursor::shared(gsl::owner<SDL_Cursor*> sdlCursor)
-    -> std::shared_ptr<cursor>
+auto cursor::shared(nn_owner<SDL_Cursor*> sdlCursor) -> std::shared_ptr<cursor>
 {
   return std::make_shared<cursor>(sdlCursor);
 }

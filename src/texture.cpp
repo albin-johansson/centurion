@@ -10,13 +10,8 @@
 
 namespace centurion {
 
-texture::texture(gsl::owner<SDL_Texture*> sdlTexture) : m_texture{sdlTexture}
-{
-  if (!sdlTexture) {
-    czstring msg = "Texture can't be created from null SDL texture!";
-    throw centurion_exception{msg};
-  }
-}
+texture::texture(nn_owner<SDL_Texture*> sdlTexture) : m_texture{sdlTexture}
+{}
 
 texture::texture(const renderer& renderer, const surface& surface)
     : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
@@ -49,7 +44,7 @@ texture::texture(const renderer& renderer, nn_czstring path)
   }
 }
 
-auto texture::unique(gsl::owner<SDL_Texture*> sdlTexture) -> uptr
+auto texture::unique(nn_owner<SDL_Texture*> sdlTexture) -> uptr
 {
   return std::make_unique<texture>(sdlTexture);
 }
@@ -72,7 +67,7 @@ auto texture::unique(const renderer& renderer,
   return std::make_unique<texture>(renderer, format, access, size);
 }
 
-auto texture::shared(gsl::owner<SDL_Texture*> sdlTexture) -> sptr
+auto texture::shared(nn_owner<SDL_Texture*> sdlTexture) -> sptr
 {
   return std::make_shared<texture>(sdlTexture);
 }

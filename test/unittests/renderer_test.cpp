@@ -40,10 +40,8 @@ inline void font_test(Lambda&& lambda)
 
 }  // namespace
 
-TEST_CASE("Constructor: (gsl::owner<SDL_Renderer*>)", "[renderer]")
+TEST_CASE("Constructor: (nn_owner<SDL_Renderer*>)", "[renderer]")
 {
-  //  CHECK_THROWS_AS(ctn::renderer{nullptr}, ctn::centurion_exception);
-
   ctn::window window;
   auto* ren = SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE);
   CHECK_NOTHROW(ctn::renderer{ren});
@@ -93,23 +91,15 @@ TEST_CASE("Renderer smart pointer factory methods", "[renderer]")
 {
   SECTION("Unique")
   {
-    //    CHECK_THROWS_AS(ctn::renderer::unique(nullptr),
-    //    ctn::centurion_exception);
-
     ctn::window window;
-    SDL_Renderer* ren =
-        SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE);
+    auto* ren = SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE);
     CHECK_NOTHROW(ctn::renderer::unique(ren));
   }
 
   SECTION("Shared")
   {
-    //    CHECK_THROWS_AS(ctn::renderer::shared(nullptr),
-    //    ctn::centurion_exception);
-
     ctn::window window;
-    SDL_Renderer* ren =
-        SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE);
+    auto* ren = SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE);
     CHECK_NOTHROW(ctn::renderer::shared(ren));
   }
 }

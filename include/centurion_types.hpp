@@ -83,8 +83,18 @@ using if_same_t = typename std::enable_if_t<std::is_same_v<T, U>>;
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
-using owner = T;
+template <typename T>
+using owner = gsl::owner<T>;
+
+/**
+ * @typedef nn_owner
+ *
+ * @ingroup misc
+ *
+ * @brief Tag used to represent a non-null owner.
+ */
+template <typename T>
+using nn_owner = gsl::not_null<owner<T>>;
 
 /**
  * @typedef czstring

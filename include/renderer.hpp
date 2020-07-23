@@ -130,21 +130,16 @@ class renderer final : public renderer_base {
   /**
    * @brief Creates a renderer based on the supplied `SDL_Renderer`.
    *
-   * @param sdlRenderer a pointer to the `SDL_Renderer` that will be used by the
-   * renderer.
+   * @pre `sdlRenderer` mustn't be null.
    *
-   * @throws centurion_exception if the supplied pointer is null.
+   * @param sdlRenderer a pointer to the `SDL_Renderer` that will be used by the
+   * renderer, can't be null.
    *
    * @since 3.0.0
    */
-  explicit renderer(gsl::owner<SDL_Renderer*> sdlRenderer)
+  explicit renderer(nn_owner<SDL_Renderer*> sdlRenderer)
+      : renderer_base{sdlRenderer}
   {
-    if (!sdlRenderer) {
-      czstring msg = "Can't create renderer from null SDL_Renderer!";
-      throw centurion_exception{msg};
-    }
-    m_renderer = sdlRenderer;
-
     set_color(colors::black);
     set_logical_integer_scale(false);
   }
@@ -207,9 +202,9 @@ class renderer final : public renderer_base {
   ~renderer() noexcept { destroy(); }
 
   /**
-   * @copydoc renderer(gsl::owner<SDL_Renderer*>)
+   * @copydoc renderer(nn_owner<SDL_Renderer*>)
    */
-  [[nodiscard]] static auto unique(gsl::owner<SDL_Renderer*> sdlRenderer)
+  [[nodiscard]] static auto unique(nn_owner<SDL_Renderer*> sdlRenderer)
       -> std::unique_ptr<renderer>
   {
     return std::make_unique<renderer>(sdlRenderer);
@@ -226,9 +221,9 @@ class renderer final : public renderer_base {
   }
 
   /**
-   * @copydoc renderer(gsl::owner<SDL_Renderer*>)
+   * @copydoc renderer(nn_owner<SDL_Renderer*>)
    */
-  [[nodiscard]] static auto shared(gsl::owner<SDL_Renderer*> sdlRenderer)
+  [[nodiscard]] static auto shared(nn_owner<SDL_Renderer*> sdlRenderer)
       -> std::shared_ptr<renderer>
   {
     return std::make_shared<renderer>(sdlRenderer);

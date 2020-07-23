@@ -63,17 +63,15 @@ TEST_CASE("texture::scale_mode enum values", "[texture]")
   CHECK(SDL_ScaleModeBest != tex_scale::nearest);
 }
 
-TEST_CASE("texture(SDL_Texture*)", "[texture]")
+TEST_CASE("texture(nn_owner<SDL_Texture*>)", "[texture]")
 {
-  CHECK_THROWS_AS(ctn::texture(nullptr), ctn::centurion_exception);
-
   test([](ctn::renderer& renderer) {
-    SDL_Texture* sdlTexture = IMG_LoadTexture(renderer.get(), pandaPath);
+    auto* sdlTexture = IMG_LoadTexture(renderer.get(), pandaPath);
     CHECK_NOTHROW(ctn::texture(sdlTexture));
   });
 }
 
-TEST_CASE("texture(Renderer&, char*)", "[texture]")
+TEST_CASE("texture(renderer&, char*)", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     CHECK_THROWS_AS(ctn::texture(renderer, "badpath"),
@@ -85,7 +83,7 @@ TEST_CASE("texture(Renderer&, char*)", "[texture]")
   });
 }
 
-TEST_CASE("texture(Renderer&, Surface&", "[texture]")
+TEST_CASE("texture(renderer&, surface&", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     ctn::surface surface{pandaPath};
@@ -93,7 +91,7 @@ TEST_CASE("texture(Renderer&, Surface&", "[texture]")
   });
 }
 
-TEST_CASE("texture(Renderer&, PixelFormat, Access, int, int)", "[texture]")
+TEST_CASE("texture(renderer&, pixel_format, access, int, int)", "[texture]")
 {
   test([](ctn::renderer& renderer) {
     const auto pixelFormat = ctn::pixel_format::rgba32;
@@ -152,8 +150,6 @@ TEST_CASE("texture::unique", "[texture]")
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     const ctn::surface surface{pandaPath};
 
-    CHECK_THROWS_AS(ctn::texture::unique(nullptr), ctn::centurion_exception);
-
     CHECK(ctn::texture::unique(renderer, pandaPath));
     CHECK(ctn::texture::unique(renderer, surface));
     CHECK(ctn::texture::unique(renderer,
@@ -167,8 +163,6 @@ TEST_CASE("texture:::shared", "[texture]")
 {
   test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
     const ctn::surface surface{pandaPath};
-
-    CHECK_THROWS_AS(ctn::texture::shared(nullptr), ctn::centurion_exception);
 
     CHECK(ctn::texture::shared(renderer, pandaPath));
     CHECK(ctn::texture::shared(renderer, surface));

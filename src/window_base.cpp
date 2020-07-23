@@ -164,52 +164,52 @@ auto window_base::display_index() const noexcept -> std::optional<int>
 
 auto window_base::x() const noexcept -> int
 {
-  int x = 0;
+  int x{};
   SDL_GetWindowPosition(m_window, &x, nullptr);
   return x;
 }
 
 auto window_base::y() const noexcept -> int
 {
-  int y = 0;
+  int y{};
   SDL_GetWindowPosition(m_window, nullptr, &y);
   return y;
 }
 
 auto window_base::position() const noexcept -> point_i
 {
-  int x = 0;
-  int y = 0;
+  int x{};
+  int y{};
   SDL_GetWindowPosition(m_window, &x, &y);
   return {x, y};
 }
 
 auto window_base::min_size() const noexcept -> area_i
 {
-  int w = 0;
-  int h = 0;
-  SDL_GetWindowMinimumSize(m_window, &w, &h);
-  return {w, h};
+  int width{};
+  int height{};
+  SDL_GetWindowMinimumSize(m_window, &width, &height);
+  return {width, height};
 }
 
 auto window_base::max_size() const noexcept -> area_i
 {
-  int w = 0;
-  int h = 0;
-  SDL_GetWindowMaximumSize(m_window, &w, &h);
-  return {w, h};
+  int width{};
+  int height{};
+  SDL_GetWindowMaximumSize(m_window, &width, &height);
+  return {width, height};
 }
 
 auto window_base::width() const noexcept -> int
 {
-  int width = 0;
+  int width{};
   SDL_GetWindowSize(m_window, &width, nullptr);
   return width;
 }
 
 auto window_base::height() const noexcept -> int
 {
-  int height = 0;
+  int height{};
   SDL_GetWindowSize(m_window, nullptr, &height);
   return height;
 }

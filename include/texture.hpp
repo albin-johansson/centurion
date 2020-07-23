@@ -162,17 +162,17 @@ class texture final {
   /**
    * @brief Creates an texture from a pre-existing SDL texture.
    *
+   * @pre `sdlTexture` mustn't be null.
+   *
    * @note The created texture will claim ownership of the supplied pointer.
    *
-   * @param sdlTexture a pointer to the SDL_Texture that will be claimed, may
-   * not be null.
-   *
-   * @throws centurion_exception if the supplied pointer is null.
+   * @param sdlTexture a pointer to the SDL_Texture that will be claimed, can't
+   * be null.
    *
    * @since 3.0.0
    */
   CENTURION_API
-  explicit texture(gsl::owner<SDL_Texture*> sdlTexture);
+  explicit texture(nn_owner<SDL_Texture*> sdlTexture);
 
   /**
    * @brief Creates a texture based the image at the specified path.
@@ -219,10 +219,10 @@ class texture final {
           const area_i& size);
 
   /**
-   * @copydoc texture(gsl::owner<SDL_Texture*>)
+   * @copydoc texture(nn_owner<SDL_Texture*>)
    */
   CENTURION_QUERY
-  static auto unique(gsl::owner<SDL_Texture*> sdlTexture) -> uptr;
+  static auto unique(nn_owner<SDL_Texture*> sdlTexture) -> uptr;
 
   /**
    * @copydoc texture(const renderer&, nn_czstring)
@@ -246,10 +246,10 @@ class texture final {
                      const area_i& size) -> uptr;
 
   /**
-   * @copydoc texture(gsl::owner<SDL_Texture*>)
+   * @copydoc texture(nn_owner<SDL_Texture*>)
    */
   CENTURION_QUERY
-  static auto shared(gsl::owner<SDL_Texture*> sdlTexture) -> sptr;
+  static auto shared(nn_owner<SDL_Texture*> sdlTexture) -> sptr;
 
   /**
    * @copydoc texture(const renderer&, nn_czstring)

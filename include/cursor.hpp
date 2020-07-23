@@ -195,17 +195,18 @@ class cursor final {
   /**
    * @brief Creates a cursor based on the supplied `SDL_Cursor`.
    *
+   * @pre `sdlCursor` mustn't be null.
+   *
    * @details The ownership of the supplied pointer will be claimed by the
    * created cursor instance.
    *
-   * @param sdlCursor a pointer to an `SDL_Cursor` that will be adopted.
-   *
-   * @throws centurion_exception if the supplied pointer is null.
+   * @param sdlCursor a pointer to an `SDL_Cursor` that will be adopted,
+   * can't be null.
    *
    * @since 4.0.0
    */
   CENTURION_API
-  explicit cursor(gsl::owner<SDL_Cursor*> sdlCursor);
+  explicit cursor(nn_owner<SDL_Cursor*> sdlCursor);
 
   /**
    * @brief Creates a cursor based on the supplied surface.
@@ -231,10 +232,10 @@ class cursor final {
   static auto unique(system_cursor id) -> std::unique_ptr<cursor>;
 
   /**
-   * @copydoc cursor(gsl::owner<SDL_Cursor*>)
+   * @copydoc cursor(nn_owner<SDL_Cursor*>)
    */
   CENTURION_QUERY
-  static auto unique(gsl::owner<SDL_Cursor*> sdlCursor)
+  static auto unique(nn_owner<SDL_Cursor*> sdlCursor)
       -> std::unique_ptr<cursor>;
 
   /**
@@ -251,10 +252,10 @@ class cursor final {
   static auto shared(system_cursor id) -> std::shared_ptr<cursor>;
 
   /**
-   * @copydoc cursor(gsl::owner<SDL_Cursor*>)
+   * @copydoc cursor(nn_owner<SDL_Cursor*>)
    */
   CENTURION_QUERY
-  static auto shared(gsl::owner<SDL_Cursor*> sdlCursor)
+  static auto shared(nn_owner<SDL_Cursor*> sdlCursor)
       -> std::shared_ptr<cursor>;
 
   /**

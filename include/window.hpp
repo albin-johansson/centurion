@@ -781,21 +781,21 @@ class window final : public window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API window();
+  CENTURION_API
+  window();
 
   /**
    * @brief Creates a window based on the supplied SDL_Window instance.
    *
    * @details The created window will claim ownership of the supplied pointer.
    *
-   * @param sdlWindow a pointer to the window that will be claimed.
-   *
-   * @throws centurion_exception if the supplied pointer is null.
+   * @param sdlWindow a pointer to the window that will be claimed, can't be
+   * null.
    *
    * @since 4.0.0
    */
   CENTURION_API
-  explicit window(owner<SDL_Window*> sdlWindow);
+  explicit window(nn_owner<SDL_Window*> sdlWindow);
 
   /**
    * @brief Creates a window instance.
@@ -851,10 +851,10 @@ class window final : public window_base {
   static auto unique() -> uptr;
 
   /**
-   * @copydoc window(owner<SDL_Window*>)
+   * @copydoc window(nn_owner<SDL_Window*>)
    */
   CENTURION_QUERY
-  static auto unique(owner<SDL_Window*> sdlWindow) -> uptr;
+  static auto unique(nn_owner<SDL_Window*> sdlWindow) -> uptr;
 
   /**
    * @copydoc window(czstring, area_i)
@@ -869,10 +869,10 @@ class window final : public window_base {
   static auto shared() -> sptr;
 
   /**
-   * @copydoc window(owner<SDL_Window*>)
+   * @copydoc window(nn_owner<SDL_Window*>)
    */
   CENTURION_QUERY
-  static auto shared(owner<SDL_Window*> sdlWindow) -> sptr;
+  static auto shared(nn_owner<SDL_Window*> sdlWindow) -> sptr;
 
   /**
    * @copydoc window(czstring, area_i)
@@ -979,12 +979,12 @@ class window_view final : public window_base {
 };
 
 static_assert(std::is_final_v<window>);
+static_assert(std::is_default_constructible_v<window>);
+static_assert(std::is_nothrow_destructible_v<window>);
 static_assert(std::is_nothrow_move_assignable_v<window>);
 static_assert(std::is_nothrow_move_constructible_v<window>);
 static_assert(!std::is_copy_assignable_v<window>);
 static_assert(!std::is_copy_constructible_v<window>);
-static_assert(std::is_default_constructible_v<window>);
-static_assert(std::is_nothrow_destructible_v<window>);
 
 }  // namespace centurion
 

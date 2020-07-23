@@ -7,13 +7,8 @@ namespace centurion {
 window::window() : window{"Centurion window"}
 {}
 
-// TODO make nn_owner
-window::window(owner<SDL_Window*> window) : window_base{window}
-{
-  if (!window) {
-    throw centurion_exception{"Cannot create Window from null SDL_Window!"};
-  }
-}
+window::window(nn_owner<SDL_Window*> window) : window_base{window}
+{}
 
 window::window(czstring title, area_i size)
 {
@@ -68,7 +63,7 @@ auto window::unique() -> uptr
   return std::make_unique<window>();
 }
 
-auto window::unique(owner<SDL_Window*> sdlWindow) -> uptr
+auto window::unique(nn_owner<SDL_Window*> sdlWindow) -> uptr
 {
   return std::make_unique<window>(sdlWindow);
 }
@@ -83,7 +78,7 @@ auto window::shared() -> sptr
   return std::make_shared<window>();
 }
 
-auto window::shared(owner<SDL_Window*> sdlWindow) -> sptr
+auto window::shared(nn_owner<SDL_Window*> sdlWindow) -> sptr
 {
   return std::make_shared<window>(sdlWindow);
 }

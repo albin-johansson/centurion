@@ -28,19 +28,10 @@ TEST_CASE("window()", "[window]")
   CHECK(!window.visible());
 }
 
-TEST_CASE("window(owner<SDL_Window*>)", "[window]")
+TEST_CASE("window(nn_owner<SDL_Window*>)", "[window]")
 {
-  SECTION("Null pointer")
-  {
-    SDL_Window* w = nullptr;
-    CHECK_THROWS_AS(ctn::window{w}, ctn::centurion_exception);
-  }
-
-  SECTION("Good window")
-  {
-    SDL_Window* w = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
-    CHECK_NOTHROW(ctn::window{w});
-  }
+  auto* w = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
+  CHECK_NOTHROW(ctn::window{w});
 }
 
 TEST_CASE("window(czstring, area_i)", "[window]")
@@ -102,11 +93,8 @@ TEST_CASE("window::unique", "[window]")
 {
   SECTION("window::unique()") { CHECK(ctn::window::unique()); }
 
-  SECTION("window::unique(owner<SDL_Window*>)")
+  SECTION("window::unique(nn_owner<SDL_Window*>)")
   {
-    gsl::owner<SDL_Window*> bad = nullptr;
-    CHECK_THROWS_AS(ctn::window::unique(bad), ctn::centurion_exception);
-
     auto* good = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
     CHECK(ctn::window::unique(good));
   }
@@ -124,11 +112,8 @@ TEST_CASE("window::shared", "[window]")
 {
   SECTION("window::shared()") { CHECK(ctn::window::shared()); }
 
-  SECTION("window::shared(owner<SDL_Window*>)")
+  SECTION("window::shared(nn_owner<SDL_Window*>)")
   {
-    auto* bad = static_cast<ctn::owner<SDL_Window*>>(nullptr);
-    CHECK_THROWS_AS(ctn::window::shared(bad), ctn::centurion_exception);
-
     auto* good = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
     CHECK(ctn::window::shared(good));
   }

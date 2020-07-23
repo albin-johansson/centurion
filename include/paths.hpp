@@ -37,6 +37,8 @@
 #ifndef CENTURION_PATHS_HEADER
 #define CENTURION_PATHS_HEADER
 
+#include <type_traits>
+
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 #include "centurion_utils.hpp"
@@ -46,6 +48,19 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
+namespace detail {
+
+class path_deleter final {
+ public:
+  void operator()(zstring path) noexcept
+  {
+    if (path) {
+      SDL_free(path);
+    }
+  }
+};
+
+}  // namespace detail
 
 /**
  * @class base_path
@@ -81,39 +96,7 @@ class base_path final {
    * @since 3.0.0
    */
   CENTURION_API
-  base_path() noexcept;
-
-  /**
-   * @brief Moves the supplied base path into a new base path instance.
-   *
-   * @param other the base path instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  base_path(base_path&& other) noexcept;
-
-  base_path(const base_path&) = delete;
-
-  /**
-   * @brief Moves the contents of the supplied base path into this instance.
-   *
-   * @param other the base path instance that will be moved.
-   *
-   * @return the base path that absorbed the supplied base path.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  auto operator=(base_path&& other) noexcept -> base_path&;
-
-  auto operator=(const base_path&) -> base_path& = delete;
-
-  /**
-   * @brief Frees the base path string.
-   */
-  CENTURION_API
-  ~base_path() noexcept;
+  base_path();
 
   /**
    * @copydoc base_path()
@@ -150,28 +133,17 @@ class base_path final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> czstring { return m_path; }
+  [[nodiscard]] auto get() const noexcept -> czstring { return m_path.get(); }
 
  private:
-  owner<zstring> m_path{nullptr};
-
-  /**
-   * @brief Destroys the resources associated with the base path instance.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied base path instance into this
-   * instance.
-   *
-   * @param other the base path that will be moved.
-   *
-   * @since 4.0.0
-   */
-  void move(base_path&& other) noexcept;
+  std::unique_ptr<char, detail::path_deleter> m_path;
 };
+
+static_assert(std::is_default_constructible_v<base_path>);
+static_assert(std::is_nothrow_move_constructible_v<base_path>);
+static_assert(std::is_nothrow_move_assignable_v<base_path>);
+static_assert(!std::is_copy_constructible_v<base_path>);
+static_assert(!std::is_copy_assignable_v<base_path>);
 
 /**
  * @class pref_path
@@ -211,56 +183,26 @@ class pref_path final {
    *
    * @note Only use letters, numbers, and spaces in the supplied strings!
    *
-   * @param org the name of your organization.
-   * @param app the name of your application.
+   * @param org the name of your organization, cannot be null.
+   * @param app the name of your application, cannot be null.
    *
    * @since 3.0.0
    */
   CENTURION_API
-  pref_path(czstring org, czstring app) noexcept;
+  pref_path(nn_czstring org, nn_czstring app);
 
   /**
-   * @brief Creates a `pref_path` instance by moving the supplied instance.
-   *
-   * @param other the `pref_path` instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  pref_path(pref_path&& other) noexcept;
-
-  pref_path(const pref_path&) = delete;
-
-  /**
-   * @brief Frees the associated string.
-   */
-  CENTURION_API
-  ~pref_path() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied `pref_path` into this instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  auto operator=(pref_path&& other) noexcept -> pref_path&;
-
-  auto operator=(const pref_path&) -> pref_path& = delete;
-
-  /**
-   * @copydoc pref_path(czstring, czstring)
+   * @copydoc pref_path(nn_czstring, nn_czstring)
    */
   CENTURION_QUERY
-  static auto unique(czstring org, czstring app) noexcept
+  static auto unique(nn_czstring org, nn_czstring app)
       -> std::unique_ptr<pref_path>;
 
   /**
-   * @copydoc pref_path(czstring, czstring)
+   * @copydoc pref_path(nn_czstring, nn_czstring)
    */
   CENTURION_QUERY
-  static auto shared(czstring org, czstring app) noexcept
+  static auto shared(nn_czstring org, nn_czstring app)
       -> std::shared_ptr<pref_path>;
 
   /**
@@ -282,28 +224,16 @@ class pref_path final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> czstring { return m_path; }
+  [[nodiscard]] auto get() const noexcept -> czstring { return m_path.get(); }
 
  private:
-  owner<zstring> m_path{nullptr};
-
-  /**
-   * @brief Destroys the resources associated with the instance.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied `pref_path` instance into this
-   * instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  void move(pref_path&& other) noexcept;
+  std::unique_ptr<char, detail::path_deleter> m_path;
 };
+
+static_assert(std::is_nothrow_move_constructible_v<pref_path>);
+static_assert(std::is_nothrow_move_assignable_v<pref_path>);
+static_assert(!std::is_copy_constructible_v<pref_path>);
+static_assert(!std::is_copy_assignable_v<pref_path>);
 
 }  // namespace centurion
 

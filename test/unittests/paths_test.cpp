@@ -4,12 +4,12 @@
 
 #include "centurion_as_ctn.hpp"
 
-TEST_CASE("base_path()", "[base_path]")
+TEST_CASE("base_path()", "[path]")
 {
   CHECK_NOTHROW(ctn::base_path{});
 }
 
-TEST_CASE("base_path(base_path&&)", "[base_path]")
+TEST_CASE("base_path(base_path&&)", "[path]")
 {
   ctn::base_path path;
   ctn::base_path other{std::move(path)};
@@ -18,7 +18,7 @@ TEST_CASE("base_path(base_path&&)", "[base_path]")
   CHECK(other.get());
 }
 
-TEST_CASE("base_path::operator=(base_path&&)", "[base_path]")
+TEST_CASE("base_path::operator=(base_path&&)", "[path]")
 {
   SECTION("Self-assignment")
   {
@@ -39,36 +39,36 @@ TEST_CASE("base_path::operator=(base_path&&)", "[base_path]")
   }
 }
 
-TEST_CASE("base_path::unique", "[base_path]")
+TEST_CASE("base_path::unique", "[path]")
 {
   const auto path = ctn::base_path::unique();
   CHECK(path);
 }
 
-TEST_CASE("base_path::shared", "[base_path]")
+TEST_CASE("base_path::shared", "[path]")
 {
   const auto path = ctn::base_path::shared();
   CHECK(path);
 }
 
-TEST_CASE("base_path::operator bool", "[base_path]")
+TEST_CASE("base_path::operator bool", "[path]")
 {
   const ctn::base_path path;
   CHECK(path);
 }
 
-TEST_CASE("base_path::get", "[base_path]")
+TEST_CASE("base_path::get", "[path]")
 {
   const ctn::base_path path;
   CHECK(path.get());
 }
 
-TEST_CASE("pref_path(string&, string&)", "[pref_path]")
+TEST_CASE("pref_path(string&, string&)", "[path]")
 {
   CHECK_NOTHROW(ctn::pref_path{"centurion", "tests"});
 }
 
-TEST_CASE("pref_path(pref_path&&)", "[pref_path]")
+TEST_CASE("pref_path(pref_path&&)", "[path]")
 {
   ctn::pref_path path{"centurion", "tests"};
   ctn::pref_path other{std::move(path)};
@@ -77,7 +77,7 @@ TEST_CASE("pref_path(pref_path&&)", "[pref_path]")
   CHECK(other.get());
 }
 
-TEST_CASE("pref_path::operator=(pref_path&&)", "[pref_path]")
+TEST_CASE("pref_path::operator=(pref_path&&)", "[path]")
 {
   SECTION("Self-assignment")
   {
@@ -98,23 +98,23 @@ TEST_CASE("pref_path::operator=(pref_path&&)", "[pref_path]")
   }
 }
 
-TEST_CASE("pref_path::unique", "[pref_path]")
+TEST_CASE("pref_path::unique", "[path]")
 {
   CHECK(ctn::pref_path::unique("centurion", "tests"));
 }
 
-TEST_CASE("pref_path::shared", "[pref_path]")
+TEST_CASE("pref_path::shared", "[path]")
 {
   CHECK(ctn::pref_path::shared("centurion", "tests"));
 }
 
-TEST_CASE("pref_path::operator bool", "[pref_path]")
+TEST_CASE("pref_path::operator bool", "[path]")
 {
   const ctn::pref_path pref_path{"centurion", "tests"};
   CHECK(pref_path);
 }
 
-TEST_CASE("pref_path::get", "[pref_path]")
+TEST_CASE("pref_path::get", "[path]")
 {
   const ctn::pref_path pref_path{"centurion", "tests"};
   CHECK(pref_path.get());

@@ -90,10 +90,8 @@ class renderer_deleter final {
  *
  * @par Rendering textures
  * There are quite a number of methods provided for rendering `texture`
- * instances. There are two overload sets, `render` and `render_t`. These
- * methods can be used with either integer or floating-point accuracy. The
- * recommended general-purpose method for rendering textures is
- * `render(const texture&, const rect_i&, const basic_rect<T>&)`.
+ * instances. There are two "overload" sets, `render` and `render_t`. These
+ * methods can be used with either integer or floating-point accuracy.
  *
  * @par Translation
  * Most games utilize some sort of viewport of what the player can see of the
@@ -107,10 +105,9 @@ class renderer_deleter final {
  *
  * @par Font support
  * When rendering text, it's often needed to pass around various font
- * instances. Subsequently, this class provides an API for storing shared
- * pointers to `Font` instances. The fonts are stored in an internal map, and
- * it's possible to specify what you want to use as keys for the fonts. The
- * `renderer` alias uses `std::string` for keys.
+ * instances. Subsequently, this class provides an API for managing `font`
+ * instances. The fonts are stored in an internal map, using integers as keys,
+ * which can be produced using strings that are hashed at compile-time!
  *
  * @par Rendering text
  * There is no method for directly rendering text. Instead, use one of the

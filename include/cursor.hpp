@@ -181,6 +181,33 @@ class cursor_deleter final {
 class cursor final {
  public:
   /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a cursor.
+   *
+   * @since 5.0.0
+   */
+  using uptr = std::unique_ptr<cursor>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a cursor.
+   *
+   * @since 5.0.0
+   */
+  using sptr = std::shared_ptr<cursor>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a cursor.
+   *
+   * @since 5.0.0
+   */
+  using wptr = std::weak_ptr<cursor>;
+
+  /**
    * @brief Creates a cursor based on the specified cursor type.
    *
    * @param id the cursor type that will be used.
@@ -235,35 +262,31 @@ class cursor final {
    * @copydoc cursor(nn_owner<SDL_Cursor*>)
    */
   CENTURION_QUERY
-  static auto unique(nn_owner<SDL_Cursor*> sdlCursor)
-      -> std::unique_ptr<cursor>;
+  static auto unique(nn_owner<SDL_Cursor*> sdlCursor) -> uptr;
 
   /**
    * @copydoc cursor(const surface&, const point_i&)
    */
   CENTURION_QUERY
-  static auto unique(const surface& surface, const point_i& hotspot)
-      -> std::unique_ptr<cursor>;
+  static auto unique(const surface& surface, const point_i& hotspot) -> uptr;
 
   /**
    * @copydoc cursor(system_cursor)
    */
   CENTURION_QUERY
-  static auto shared(system_cursor id) -> std::shared_ptr<cursor>;
+  static auto shared(system_cursor id) -> sptr;
 
   /**
    * @copydoc cursor(nn_owner<SDL_Cursor*>)
    */
   CENTURION_QUERY
-  static auto shared(nn_owner<SDL_Cursor*> sdlCursor)
-      -> std::shared_ptr<cursor>;
+  static auto shared(nn_owner<SDL_Cursor*> sdlCursor) -> sptr;
 
   /**
    * @copydoc cursor(const surface&, const point_i&)
    */
   CENTURION_QUERY
-  static auto shared(const surface& surface, const point_i& hotspot)
-      -> std::shared_ptr<cursor>;
+  static auto shared(const surface& surface, const point_i& hotspot) -> sptr;
 
   /**
    * @brief Forces a cursor redraw.

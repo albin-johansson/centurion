@@ -22,7 +22,7 @@ TEST_CASE("cursor(surface, point_i)", "[cursor]")
 {
   const ctn::surface surface{"resources/panda.png"};
   const ctn::point_i hotspot{12, 14};
-  ctn::cursor cursor{surface, hotspot};
+  CHECK_NOTHROW(ctn::cursor{surface, hotspot});
 }
 
 TEST_CASE("cursor(cursor&&)", "[cursor]")

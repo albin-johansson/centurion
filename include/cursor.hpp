@@ -146,6 +146,24 @@ enum class system_cursor {
   return !(lhs == rhs);
 }
 
+/// @cond FALSE
+
+namespace detail {
+
+class cursor_deleter final {
+ public:
+  void operator()(SDL_Cursor* cursor) noexcept
+  {
+    if (cursor) {
+      SDL_FreeCursor(cursor);
+    }
+  }
+};
+
+}  // namespace detail
+
+/// @endcond
+
 /**
  * @class cursor
  *
@@ -205,35 +223,6 @@ class cursor final {
    */
   CENTURION_API
   explicit cursor(const surface& surface, const point_i& hotspot);
-
-  /**
-   * @brief Creates a cursor by moving the supplied cursor.
-   *
-   * @param other the cursor that will be moved.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  cursor(cursor&& other) noexcept;
-
-  cursor(const cursor&) = delete;
-
-  CENTURION_API
-  ~cursor() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied cursor into this cursor.
-   *
-   * @param other the cursor that will be moved.
-   *
-   * @return the updated cursor.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  auto operator=(cursor&& other) noexcept -> cursor&;
-
-  auto operator=(const cursor&) -> cursor& = delete;
 
   /**
    * @copydoc cursor(system_cursor)
@@ -347,28 +336,13 @@ class cursor final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Cursor* { return m_cursor; }
+  [[nodiscard]] auto get() const noexcept -> SDL_Cursor*
+  {
+    return m_cursor.get();
+  }
 
  private:
-  SDL_Cursor* m_cursor = nullptr;
-  SDL_Surface* m_surface = nullptr;
-
-  /**
-   * @brief Destroys the components in the cursor instance.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied cursor instance into this
-   * instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  void move(cursor&& other) noexcept;
+  std::unique_ptr<SDL_Cursor, detail::cursor_deleter> m_cursor;
 };
 
 static_assert(std::is_final_v<cursor>);

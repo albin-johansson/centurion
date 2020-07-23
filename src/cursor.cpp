@@ -1,7 +1,5 @@
 #include "cursor.hpp"
 
-#include <utility>
-
 #include "centurion_utils.hpp"
 #include "error.hpp"
 
@@ -23,57 +21,11 @@ cursor::cursor(gsl::owner<SDL_Cursor*> sdlCursor) : m_cursor{sdlCursor}
 }
 
 cursor::cursor(const surface& surface, const point_i& hotspot)
+    : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
 {
-  m_surface = SDL_DuplicateSurface(surface.get());
-  if (!m_surface) {
-    throw detail::core_error("Failed to create color cursor!");
-  }
-
-  m_cursor = SDL_CreateColorCursor(m_surface, hotspot.x(), hotspot.y());
   if (!m_cursor) {
-    SDL_FreeSurface(m_surface);
     throw detail::core_error("Failed to create color cursor!");
   }
-}
-
-cursor::cursor(cursor&& other) noexcept
-{
-  move(std::move(other));
-}
-
-cursor::~cursor() noexcept
-{
-  destroy();
-}
-
-void cursor::destroy() noexcept
-{
-  if (m_cursor) {
-    SDL_FreeCursor(m_cursor);
-  }
-
-  if (m_surface) {
-    SDL_FreeSurface(m_surface);
-  }
-}
-
-void cursor::move(cursor&& other) noexcept
-{
-  destroy();
-
-  m_cursor = other.m_cursor;
-  m_surface = other.m_surface;
-
-  other.m_cursor = nullptr;
-  other.m_surface = nullptr;
-}
-
-auto cursor::operator=(cursor&& other) noexcept -> cursor&
-{
-  if (this != &other) {
-    move(std::move(other));
-  }
-  return *this;
 }
 
 auto cursor::unique(system_cursor id) -> std::unique_ptr<cursor>
@@ -112,12 +64,12 @@ auto cursor::shared(const surface& surface, const point_i& hotspot)
 
 void cursor::enable() noexcept
 {
-  SDL_SetCursor(m_cursor);
+  SDL_SetCursor(m_cursor.get());
 }
 
 auto cursor::is_enabled() const noexcept -> bool
 {
-  return SDL_GetCursor() == m_cursor;
+  return SDL_GetCursor() == m_cursor.get();
 }
 
 void cursor::force_redraw() noexcept

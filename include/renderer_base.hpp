@@ -1535,12 +1535,12 @@ class renderer_base {
   renderer_base() noexcept = default;
 
  private:
-  [[nodiscard]] auto ptr() -> SDL_Renderer*
+  [[nodiscard]] auto ptr() noexcept -> SDL_Renderer*
   {
     return static_cast<Derived*>(this)->get();
   }
 
-  [[nodiscard]] auto ptr() const -> SDL_Renderer*
+  [[nodiscard]] auto ptr() const noexcept -> SDL_Renderer*
   {
     return static_cast<const Derived*>(this)->get();
   }

@@ -94,8 +94,31 @@ class path_deleter final {
  */
 class base_path final {
  public:
+  /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a base path instance.
+   *
+   * @since 5.0.0
+   */
   using uptr = std::unique_ptr<base_path>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a base path instance.
+   *
+   * @since 5.0.0
+   */
   using sptr = std::shared_ptr<base_path>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a base path instance.
+   *
+   * @since 5.0.0
+   */
   using wptr = std::weak_ptr<base_path>;
 
   /**
@@ -189,8 +212,31 @@ static_assert(!std::is_copy_assignable_v<base_path>);
  */
 class pref_path final {
  public:
+  /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a pref path instance.
+   *
+   * @since 5.0.0
+   */
   using uptr = std::unique_ptr<pref_path>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a pref path instance.
+   *
+   * @since 5.0.0
+   */
   using sptr = std::shared_ptr<pref_path>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a pref path instance.
+   *
+   * @since 5.0.0
+   */
   using wptr = std::weak_ptr<pref_path>;
 
   /**

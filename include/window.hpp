@@ -747,8 +747,31 @@ class window_base {
  */
 class window final : public window_base {
  public:
+  /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a window.
+   *
+   * @since 5.0.0
+   */
   using uptr = std::unique_ptr<window>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a window.
+   *
+   * @since 5.0.0
+   */
   using sptr = std::shared_ptr<window>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a window.
+   *
+   * @since 5.0.0
+   */
   using wptr = std::weak_ptr<window>;
 
   /**

@@ -127,8 +127,31 @@ namespace centurion {
  */
 class renderer final : public renderer_base {
  public:
+  /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a renderer.
+   *
+   * @since 5.0.0
+   */
   using uptr = std::unique_ptr<renderer>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a renderer.
+   *
+   * @since 5.0.0
+   */
   using sptr = std::shared_ptr<renderer>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a renderer.
+   *
+   * @since 5.0.0
+   */
   using wptr = std::weak_ptr<renderer>;
 
   /**

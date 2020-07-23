@@ -60,8 +60,31 @@ namespace centurion {
  */
 class mouse_state final {
  public:
+  /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a mouse state instance.
+   *
+   * @since 5.0.0
+   */
   using uptr = std::unique_ptr<mouse_state>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a mouse state instance.
+   *
+   * @since 5.0.0
+   */
   using sptr = std::shared_ptr<mouse_state>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a mouse state instance.
+   *
+   * @since 5.0.0
+   */
   using wptr = std::weak_ptr<mouse_state>;
 
   /**

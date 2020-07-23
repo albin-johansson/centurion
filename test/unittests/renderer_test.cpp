@@ -132,33 +132,31 @@ TEST_CASE("present", "[renderer]")
 TEST_CASE("add_font", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    SECTION("Bad arguments")
-    {
-      CHECK_NOTHROW(renderer.add_font(""_hs, nullptr));
-    }
+    using namespace std::string_literals;
 
-    SECTION("Normal arguments")
-    {
-      auto font = ctn::font::shared("resources/daniel.ttf", 12);
-      const entt::hashed_string fontName{font->family_name()};
+    constexpr auto id = "foo"_hs;
 
-      renderer.add_font(fontName, font);
-      CHECK(renderer.has_font(fontName));
-      CHECK_NOTHROW(renderer.add_font(fontName, font));
-      CHECK(renderer.has_font(fontName));
-    }
+    renderer.add_font(id, ctn::font{"resources/daniel.ttf", 12});
+
+    CHECK(renderer.has_font(id));
+    CHECK(renderer.get_font(id).family_name() == "Daniel"s);
+
+    CHECK_NOTHROW(
+        renderer.add_font(id, ctn::font{"resources/type_writer.ttf", 12}));
+
+    CHECK(renderer.has_font(id));
+    CHECK(renderer.get_font(id).family_name() == "Type Writer"s);
   });
 }
 
 TEST_CASE("remove_font", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const auto name = "daniel"_hs;
-    const auto font = ctn::font::shared("resources/daniel.ttf", 12);
+    constexpr auto name = "daniel"_hs;
 
     CHECK_NOTHROW(renderer.remove_font(""_hs));
 
-    renderer.add_font(name, font);
+    renderer.add_font(name, ctn::font{"resources/daniel.ttf", 12});
     CHECK(renderer.has_font(name));
 
     renderer.remove_font(name);
@@ -621,27 +619,22 @@ TEST_CASE("color", "[renderer]")
   });
 }
 
-TEST_CASE("font", "[renderer]")
+TEST_CASE("get_font", "[renderer]")
 {
-  test([](const ctn::window& window, const ctn::renderer& renderer) {
+  test([](const ctn::window& window, ctn::renderer& renderer) {
+    constexpr auto name = "daniel"_hs;
 
+    CHECK_THROWS(renderer.get_font(name));
+
+    renderer.add_font(name, ctn::font{"resources/daniel.ttf", 12});
+
+    CHECK_NOTHROW(renderer.get_font(name));
+
+    auto& font = renderer.get_font(name);
+
+    using namespace std::string_literals;
+    CHECK(font.family_name() == "Daniel"s);
   });
-
-  const auto name = "daniel"_hs;
-
-  ctn::window window;
-  ctn::renderer renderer{window};
-
-  CHECK(!renderer.font(name));
-
-  auto font = ctn::font::shared("resources/daniel.ttf", 12);
-  renderer.add_font(name, font);
-
-  CHECK(renderer.font(name));
-
-  auto storedFont = renderer.font(name);
-  CHECK(storedFont);
-  CHECK(font == storedFont);
 }
 
 TEST_CASE("viewport", "[renderer]")

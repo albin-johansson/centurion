@@ -274,36 +274,6 @@ class renderer final : public renderer_base<renderer> {
   }
 
   /**
-   * @brief Adds a font to the renderer.
-   *
-   * @details This method has no effect if the renderer already has a font
-   * associated with the specified key or if the supplied font is null.
-   *
-   * @param id the key that will be associated with the font.
-   * @param font the font that will be added, can safely be null.
-   *
-   * @since 5.0.0
-   */
-  void add_font(entt::id_type id, const std::shared_ptr<font>& font)
-  {
-    if (!m_fonts.count(id)) {
-      m_fonts.emplace(id, font);
-    }
-  }
-
-  /**
-   * @brief Removes the font associated with the specified key.
-   *
-   * @details This method has no effect if there is no font associated with
-   * the specified key.
-   *
-   * @param id the key associated with the font that will be removed.
-   *
-   * @since 5.0.0
-   */
-  void remove_font(entt::id_type id) { m_fonts.erase(id); }
-
-  /**
    * @brief Sets the translation viewport that will be used by the renderer.
    *
    * @details This method should be called before calling any of the `_t`
@@ -513,27 +483,73 @@ class renderer final : public renderer_base<renderer> {
   }
 
   /**
+   * @name Font handling
+   * @brief Methods related to managing `font` instances.
+   */
+  ///@{
+
+  /**
+   * @brief Adds a font to the renderer.
+   *
+   * @note This function overwrites any previously stored font associated
+   * with the specified ID.
+   *
+   * @param id the key that will be associated with the font.
+   * @param font the font that will be added.
+   *
+   * @since 5.0.0
+   */
+  void add_font(entt::id_type id, font&& font)
+  {
+    if (m_fonts.find(id) != m_fonts.end()) {
+      remove_font(id);
+    }
+    m_fonts.emplace(id, std::move(font));
+  }
+
+  // TODO worth it?
+  //  template <typename... Args>
+  //  void emplace_font(entt::id_type id, Args&&... args)
+  //  {
+  //    if (!m_fonts.count(id)) {
+  //      m_fonts.emplace(id, font{args...});
+  //    }
+  //  }
+
+  /**
+   * @brief Removes the font associated with the specified key.
+   *
+   * @details This method has no effect if there is no font associated with
+   * the specified key.
+   *
+   * @param id the key associated with the font that will be removed.
+   *
+   * @since 5.0.0
+   */
+  void remove_font(entt::id_type id) { m_fonts.erase(id); }
+
+  /**
    * @brief Returns the font associated with the specified name.
    *
-   * @details This method returns null if there is no font associated with
-   * the specified name.
+   * @pre There must be a font associated with the specified ID.
    *
    * @param id the key associated with the desired font.
    *
-   * @return the font associated with the specified name; `nullptr` if there
-   * is no such font.
+   * @return the font associated with the specified name.
    *
-   * @since 4.1.0
+   * @since 5.0.0
    */
-  [[nodiscard]] auto font(entt::id_type id) noexcept -> std::shared_ptr<font>
+  [[nodiscard]] auto get_font(entt::id_type id) -> font&
   {
-    // TODO throw if no font is found
+    return m_fonts.at(id);
+  }
 
-    if (m_fonts.count(id)) {
-      return m_fonts.at(id);
-    } else {
-      return nullptr;
-    }
+  /**
+   * @copydoc get_font
+   */
+  [[nodiscard]] auto get_font(entt::id_type id) const -> const font&
+  {
+    return m_fonts.at(id);
   }
 
   /**
@@ -551,6 +567,8 @@ class renderer final : public renderer_base<renderer> {
   {
     return static_cast<bool>(m_fonts.count(id));
   }
+
+  ///@} // end of font handling
 
   /**
    * @brief Returns the translation viewport that is currently being used.
@@ -614,9 +632,7 @@ class renderer final : public renderer_base<renderer> {
  private:
   std::unique_ptr<SDL_Renderer, detail::renderer_deleter> m_renderer;
   rect_f m_translationViewport;
-
-  // todo change to simply hold font, not shared pointers
-  std::unordered_map<entt::id_type, std::shared_ptr<class font>> m_fonts;
+  std::unordered_map<entt::id_type, font> m_fonts;
 
   [[nodiscard]] static constexpr auto default_flags() noexcept
       -> SDL_RendererFlags

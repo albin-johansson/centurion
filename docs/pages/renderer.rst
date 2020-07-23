@@ -21,14 +21,12 @@ to automatically render at translated positions.
 Font support
 ------------
 When rendering text, it's often needed to pass around fonts. As a result, this class provides 
-an API for storing shared pointers to ``font`` instances. The fonts are stored in an internal map.
+an API for storing and managing ``font`` instances. The fonts are stored in an internal map, and
+is capable of using string identifiers that are hashed at compile-time as keys!
 
 Rendering text
 --------------
-There is no method for directly rendering text. Instead, use one of the ``text_`` methods for creating 
-textures that contain a rendered piece of text, and subsequently render the textures when needed. 
-Naturally, you should cache these textures instead of repeatedly creating and destroying them in 
-your game loop.
+TODO...
 
 General information
 -------------------
@@ -101,13 +99,15 @@ following example demonstrates all of the various methods available for font han
     if (renderer.has_font(id)) {
       renderer.remove_font(id);
     } else {
-      renderer.add_font(id, ctn::font::shared("comic_sans.ttf", 12));
-      auto font = renderer.font(id);
+      renderer.add_font(id, ctn::font{"comic_sans.ttf", 12});
+      auto& font = renderer.get_font(id);
     }
   }
 
 Text rendering
 ~~~~~~~~~~~~~~
+**THE FOLLOWING INFORMATION IS NOT UP TO DATE**
+
 There are four options when rendering text. You can render text that is "blended",
 "shaded", "solid" or "blended and wrapped". The following image displays a piece of text
 rendered with the various options.

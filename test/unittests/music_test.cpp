@@ -9,14 +9,13 @@
 
 static inline constexpr auto* path = "resources/hiddenPond.mp3";
 
-TEST_CASE("Music::Music(czstring)", "[music]")
+TEST_CASE("music::music(czstring)", "[music]")
 {
   CHECK_THROWS_AS(ctn::music{""}, ctn::centurion_exception);
-  CHECK_THROWS_AS(ctn::music{nullptr}, ctn::centurion_exception);
   CHECK_NOTHROW(ctn::music{path});
 }
 
-TEST_CASE("Music(Music&&)", "[music]")
+TEST_CASE("music(music&&)", "[music]")
 {
   ctn::music music{path};
   ctn::music other{std::move(music)};
@@ -25,7 +24,7 @@ TEST_CASE("Music(Music&&)", "[music]")
   CHECK(other.get());
 }
 
-TEST_CASE("Music::operator=(Music&&)", "[music]")
+TEST_CASE("music::operator=(music&&)", "[music]")
 {
   SECTION("Self-assignment")
   {
@@ -46,7 +45,7 @@ TEST_CASE("Music::operator=(Music&&)", "[music]")
   }
 }
 
-TEST_CASE("Music smart pointer factory methods", "[music]")
+TEST_CASE("music smart pointer factory methods", "[music]")
 {
   CHECK_THROWS_AS(ctn::music::unique(""), ctn::centurion_exception);
   CHECK_THROWS_AS(ctn::music::unique(""), ctn::centurion_exception);
@@ -54,7 +53,7 @@ TEST_CASE("Music smart pointer factory methods", "[music]")
   CHECK_NOTHROW(ctn::music::shared(path));
 }
 
-TEST_CASE("Music::play", "[music]")
+TEST_CASE("music::play", "[music]")
 {
   ctn::music music{path};
   music.play();
@@ -71,7 +70,7 @@ TEST_CASE("Music::play", "[music]")
   ctn::music::halt();
 }
 
-TEST_CASE("Music::resume", "[music]")
+TEST_CASE("music::resume", "[music]")
 {
   CHECK_NOTHROW(ctn::music::resume());
 
@@ -90,7 +89,7 @@ TEST_CASE("Music::resume", "[music]")
   CHECK_NOTHROW(ctn::music::resume());
 }
 
-TEST_CASE("Music::pause", "[music]")
+TEST_CASE("music::pause", "[music]")
 {
   CHECK_NOTHROW(ctn::music::pause());
 
@@ -105,7 +104,7 @@ TEST_CASE("Music::pause", "[music]")
   CHECK(ctn::music::is_paused());
 }
 
-TEST_CASE("Music::halt", "[music]")
+TEST_CASE("music::halt", "[music]")
 {
   CHECK_NOTHROW(ctn::music::halt());
 
@@ -124,7 +123,7 @@ TEST_CASE("Music::halt", "[music]")
   CHECK(!ctn::music::is_fading());
 }
 
-TEST_CASE("Music::fade_in", "[music]")
+TEST_CASE("music::fade_in", "[music]")
 {
   CHECK(!ctn::music::is_fading());
 
@@ -137,7 +136,7 @@ TEST_CASE("Music::fade_in", "[music]")
   CHECK(ctn::music::is_fading());
 }
 
-TEST_CASE("Music::fade_out", "[music]")
+TEST_CASE("music::fade_out", "[music]")
 {
   CHECK(!ctn::music::is_fading());
   CHECK_NOTHROW(ctn::music::fade_out(ctn::milliseconds<int>{100}));
@@ -149,7 +148,7 @@ TEST_CASE("Music::fade_out", "[music]")
   CHECK(ctn::music::is_fading());
 }
 
-TEST_CASE("Music::set_volume", "[music]")
+TEST_CASE("music::set_volume", "[music]")
 {
   const auto originalVolume = ctn::music::volume();
 
@@ -177,7 +176,7 @@ TEST_CASE("Music::set_volume", "[music]")
   ctn::music::set_volume(originalVolume);
 }
 
-TEST_CASE("Music::playing", "[music]")
+TEST_CASE("music::playing", "[music]")
 {
   CHECK(!ctn::music::is_playing());
 
@@ -192,7 +191,7 @@ TEST_CASE("Music::playing", "[music]")
   CHECK(ctn::music::is_playing());
 }
 
-TEST_CASE("Music::paused", "[music]")
+TEST_CASE("music::paused", "[music]")
 {
   ctn::music music{path};
   music.play();
@@ -201,7 +200,7 @@ TEST_CASE("Music::paused", "[music]")
   CHECK(ctn::music::is_paused());
 }
 
-TEST_CASE("Music::fading", "[music]")
+TEST_CASE("music::fading", "[music]")
 {
   CHECK(!ctn::music::is_fading());
 
@@ -219,7 +218,7 @@ TEST_CASE("Music::fading", "[music]")
   CHECK(ctn::music::get_fade_status() == ctn::fade_status::in);
 }
 
-TEST_CASE("Music::volume", "[music]")
+TEST_CASE("music::volume", "[music]")
 {
   CHECK(ctn::music::volume() == ctn::music::max_volume());
 
@@ -229,7 +228,7 @@ TEST_CASE("Music::volume", "[music]")
   CHECK(ctn::music::volume() == volume);
 }
 
-TEST_CASE("Music::fade_status", "[music]")
+TEST_CASE("music::fade_status", "[music]")
 {
   CHECK(ctn::music::get_fade_status() == ctn::fade_status::none);
   CHECK(!ctn::music::is_fading());
@@ -255,19 +254,19 @@ TEST_CASE("Music::fade_status", "[music]")
   CHECK(ctn::music::get_fade_status() == ctn::fade_status::none);
 }
 
-TEST_CASE("Music::music_type", "[music]")
+TEST_CASE("music::music_type", "[music]")
 {
   ctn::music music{path};
   CHECK(music.type() == ctn::music_type::mp3);
 }
 
-TEST_CASE("Music::to_string", "[music]")
+TEST_CASE("music::to_string", "[music]")
 {
   ctn::music music{path};
   ctn::log::info(ctn::log::category::test, "%s", music.to_string().c_str());
 }
 
-TEST_CASE("Music to Mix_Music*", "[music]")
+TEST_CASE("music to Mix_Music*", "[music]")
 {
   ctn::music music{path};
   auto* sdlMusic = static_cast<Mix_Music*>(music);
@@ -347,10 +346,10 @@ TEST_CASE("Manual testing of music playback", "[.music]")
 
   renderer.set_color(ctn::colors::green);
   const auto playing =
-      renderer.render_blended_latin1("Music is playing!", font);
+      renderer.render_blended_latin1("music is playing!", font);
 
   renderer.set_color(ctn::colors::magenta);
-  const auto fading = renderer.render_blended_latin1("Music is fading!", font);
+  const auto fading = renderer.render_blended_latin1("music is fading!", font);
 
   renderer.set_color(ctn::colors::red);
   const auto paused =

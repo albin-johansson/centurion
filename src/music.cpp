@@ -7,52 +7,19 @@
 
 namespace centurion {
 
-music::music(czstring file)
+music::music(nn_czstring file) : m_music{Mix_LoadMUS(file)}
 {
-  m_music = Mix_LoadMUS(file);
   if (!m_music) {
-    throw detail::mix_error("Failed to create Music instance!");
+    throw detail::mix_error("Failed to create music instance!");
   }
 }
 
-music::music(music&& other) noexcept
-{
-  move(std::move(other));
-}
-
-music::~music() noexcept
-{
-  destroy();
-}
-
-auto music::operator=(music&& other) noexcept -> music&
-{
-  if (this != &other) {
-    move(std::move(other));
-  }
-  return *this;
-}
-
-void music::destroy() noexcept
-{
-  if (m_music) {
-    Mix_FreeMusic(m_music);
-  }
-}
-
-void music::move(music&& other) noexcept
-{
-  destroy();
-  m_music = other.m_music;
-  other.m_music = nullptr;
-}
-
-auto music::unique(czstring file) -> std::unique_ptr<music>
+auto music::unique(nn_czstring file) -> std::unique_ptr<music>
 {
   return std::make_unique<music>(file);
 }
 
-auto music::shared(czstring file) -> std::shared_ptr<music>
+auto music::shared(nn_czstring file) -> std::shared_ptr<music>
 {
   return std::make_shared<music>(file);
 }
@@ -62,7 +29,7 @@ void music::play(int nLoops) noexcept
   if (nLoops < -1) {
     nLoops = -1;
   }
-  Mix_PlayMusic(m_music, nLoops);
+  Mix_PlayMusic(m_music.get(), nLoops);
 }
 
 void music::resume() noexcept
@@ -90,7 +57,7 @@ void music::fade_in(milliseconds<int> ms, int nLoops) noexcept
     nLoops = -1;
   }
 
-  Mix_FadeInMusic(m_music, nLoops, ms.count());
+  Mix_FadeInMusic(m_music.get(), nLoops, ms.count());
 }
 
 void music::fade_out(milliseconds<int> ms) noexcept
@@ -137,7 +104,7 @@ auto music::get_fade_status() noexcept -> fade_status
 
 auto music::type() const noexcept -> music_type
 {
-  return static_cast<music_type>(Mix_GetMusicType(m_music));
+  return static_cast<music_type>(Mix_GetMusicType(m_music.get()));
 }
 
 auto music::to_string() const -> std::string

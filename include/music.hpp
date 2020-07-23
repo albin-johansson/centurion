@@ -39,6 +39,8 @@
 
 #include <SDL_mixer.h>
 
+#include <memory>
+
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 #include "centurion_utils.hpp"
@@ -210,6 +212,24 @@ enum class music_type {
   return !(lhs == rhs);
 }
 
+/// @cond FALSE
+
+namespace detail {
+
+class music_deleter final {
+ public:
+  void operator()(Mix_Music* music) noexcept
+  {
+    if (music) {
+      Mix_FreeMusic(music);
+    }
+  }
+};
+
+}  // namespace detail
+
+/// @endcond
+
 /**
  * @class music
  *
@@ -275,6 +295,33 @@ enum class music_type {
 class music final {
  public:
   /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a music instance.
+   *
+   * @since 5.0.0
+   */
+  using uptr = std::unique_ptr<music>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a music instance.
+   *
+   * @since 5.0.0
+   */
+  using sptr = std::shared_ptr<music>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a music instance.
+   *
+   * @since 5.0.0
+   */
+  using wptr = std::weak_ptr<music>;
+
+  /**
    * @brief A constant that indicates that an audio snippet should be looped
    * indefinitely.
    *
@@ -285,53 +332,27 @@ class music final {
   /**
    * @brief Creates a `music` instance based on the file at the specified path.
    *
-   * @param file the file path of the music file that will be loaded.
+   * @param file the file path of the music file that will be loaded, cannot
+   * be null.
    *
    * @throws centurion_exception if the music file cannot be loaded.
    *
    * @since 3.0.0
    */
   CENTURION_API
-  explicit music(czstring file);
+  explicit music(nn_czstring file);
 
   /**
-   * @brief Creates a `music` instance by moving the supplied instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  music(music&& other) noexcept;
-
-  music(const music&) = delete;
-
-  CENTURION_API
-  ~music() noexcept;
-
-  /**
-   * Moves the contents of the supplied Music into this Music instance.
-   *
-   * @param other the Music instance that will be moved.
-   * @return the assigned Music instance.
-   * @since 3.0.0
-   */
-  CENTURION_API
-  auto operator=(music&& other) noexcept -> music&;
-
-  auto operator=(const music&) -> music& = delete;
-
-  /**
-   * @copydoc music(czstring)
+   * @copydoc music(nn_czstring)
    */
   CENTURION_QUERY
-  static auto unique(czstring file) -> std::unique_ptr<music>;
+  static auto unique(nn_czstring file) -> uptr;
 
   /**
-   * @copydoc music(czstring)
+   * @copydoc music(nn_czstring)
    */
   CENTURION_QUERY
-  static auto shared(czstring file) -> std::shared_ptr<music>;
+  static auto shared(nn_czstring file) -> sptr;
 
   /**
    * @brief Plays the music associated with this instance.
@@ -523,7 +544,10 @@ class music final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> Mix_Music* { return m_music; }
+  [[nodiscard]] auto get() const noexcept -> Mix_Music*
+  {
+    return m_music.get();
+  }
 
   /**
    * @brief Converts to `Mix_Music*`.
@@ -532,7 +556,10 @@ class music final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] explicit operator Mix_Music*() noexcept { return m_music; }
+  [[nodiscard]] explicit operator Mix_Music*() noexcept
+  {
+    return m_music.get();
+  }
 
   /**
    * @brief Converts to `const Mix_Music*`.
@@ -543,7 +570,7 @@ class music final {
    */
   [[nodiscard]] explicit operator const Mix_Music*() const noexcept
   {
-    return m_music;
+    return m_music.get();
   }
 
   /**
@@ -559,24 +586,7 @@ class music final {
   }
 
  private:
-  Mix_Music* m_music = nullptr;
-
-  /**
-   * @brief Destroys the resources associated with the `music` instance.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied music instance into this
-   * instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  void move(music&& other) noexcept;
+  std::unique_ptr<Mix_Music, detail::music_deleter> m_music;
 };
 
 static_assert(std::is_final_v<music>);

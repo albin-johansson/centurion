@@ -8,19 +8,11 @@
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "colors.hpp"
-#include "renderer.hpp"
-#include "window.hpp"
 
 static constexpr ctn::czstring path = "resources/panda.png";
 
-TEST_CASE("surface(czstring)", "[surface]")
+TEST_CASE("surface(nn_czstring)", "[surface]")
 {
-  SECTION("Null path")
-  {
-    ctn::czstring c = nullptr;
-    CHECK_THROWS_AS(ctn::surface{c}, ctn::centurion_exception);
-  }
-
   SECTION("Bad path")
   {
     CHECK_THROWS_AS(ctn::surface{""}, ctn::centurion_exception);
@@ -29,19 +21,13 @@ TEST_CASE("surface(czstring)", "[surface]")
   CHECK_NOTHROW(ctn::surface{path});
 }
 
-TEST_CASE("surface(SDL_Surface*)", "[surface]")
+TEST_CASE("surface(nn_owner<SDL_Surface*>)", "[surface]")
 {
-  SECTION("Null surface")
-  {
-    SDL_Surface* s = nullptr;
-    CHECK_THROWS_AS(ctn::surface{s}, ctn::centurion_exception);
-  }
-
-  SDL_Surface* surface = IMG_Load(path);
+  auto* surface = IMG_Load(path);
   CHECK_NOTHROW(ctn::surface{surface});
 }
 
-TEST_CASE("surface(const Surface&)", "[surface]")
+TEST_CASE("surface(const surface&)", "[surface]")
 {
   const ctn::surface surface{path};
   const ctn::surface copy{surface};
@@ -89,6 +75,21 @@ TEST_CASE("surface::operator=(surface&&)", "[surface]")
 
     CHECK(!surface.get());
     CHECK(other.get());
+  }
+}
+
+TEST_CASE("surface::smart pointer factories", "[surface]")
+{
+  SECTION("Unique")
+  {
+    CHECK(ctn::surface::unique(IMG_Load(path)));
+    CHECK(ctn::surface::unique(path));
+  }
+
+  SECTION("Shared")
+  {
+    CHECK(ctn::surface::shared(IMG_Load(path)));
+    CHECK(ctn::surface::shared(path));
   }
 }
 
@@ -183,15 +184,6 @@ TEST_CASE("surface::pixels", "[surface]")
     ctn::surface surface{path};
     CHECK(surface.pixels());
   }
-}
-
-TEST_CASE("surface::to_texture", "[surface]")
-{
-  const ctn::surface surface{path};
-  const ctn::window window;
-  const ctn::renderer renderer{window};
-
-  CHECK(surface.to_texture(renderer).get());
 }
 
 TEST_CASE("surface::convert", "[surface]")

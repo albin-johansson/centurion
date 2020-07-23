@@ -39,6 +39,7 @@
 
 #include <SDL.h>
 
+#include <memory>
 #include <type_traits>
 
 #include "blend_mode.hpp"
@@ -54,6 +55,24 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
+
+/// @cond FALSE
+
+namespace detail {
+
+class surface_deleter final {
+ public:
+  void operator()(SDL_Surface* surface) noexcept
+  {
+    if (surface) {
+      SDL_FreeSurface(surface);
+    }
+  }
+};
+
+}  // namespace detail
+
+/// @endcond
 
 /**
  * @class surface
@@ -71,29 +90,55 @@ namespace centurion {
 class surface final {
  public:
   /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a surface.
+   *
+   * @since 5.0.0
+   */
+  using uptr = std::unique_ptr<surface>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a surface.
+   *
+   * @since 5.0.0
+   */
+  using sptr = std::shared_ptr<surface>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a surface.
+   *
+   * @since 5.0.0
+   */
+  using wptr = std::weak_ptr<surface>;
+
+  /**
    * @brief Creates a surface based on the image at the specified path.
    *
-   * @param file the file path of the image file that will be loaded.
+   * @param file the file path of the image file that will be loaded, can't
+   * be null.
    *
    * @throws centurion_exception if the surface cannot be created.
    *
    * @since 4.0.0
    */
   CENTURION_API
-  explicit surface(czstring file);
+  explicit surface(nn_czstring file);
 
   /**
    * @brief Creates a surface by claiming the supplied SDL surface.
    *
-   * @param surface a pointer to the surface that will be claimed, mustn't be
+   * @param surface a pointer to the surface that will be claimed, can't be
    * null.
-   *
-   * @throws centurion_exception if the supplied pointer is null.
    *
    * @since 4.0.0
    */
   CENTURION_API
-  explicit surface(owner<SDL_Surface*> surface);
+  explicit surface(nn_owner<SDL_Surface*> surface);
 
   /**
    * @brief Creates a copy of the supplied surface.
@@ -113,8 +158,7 @@ class surface final {
    * @param other the surface that will be moved.
    * @since 4.0.0
    */
-  CENTURION_API
-  surface(surface&& other) noexcept;
+  surface(surface&& other) noexcept = default;
 
   /**
    * @brief Copies the supplied surface.
@@ -137,11 +181,31 @@ class surface final {
    *
    * @since 4.0.0
    */
-  CENTURION_API
-  auto operator=(surface&& other) noexcept -> surface&;
+  auto operator=(surface&& other) noexcept -> surface& = default;
 
-  CENTURION_API
-  ~surface() noexcept;
+  /**
+   * @copydoc surface(nn_czstring)
+   */
+  CENTURION_QUERY
+  static auto unique(nn_czstring file) -> uptr;
+
+  /**
+   * @copydoc surface(nn_owner<SDL_Surface*>)
+   */
+  CENTURION_QUERY
+  static auto unique(nn_owner<SDL_Surface*> surface) -> uptr;
+
+  /**
+   * @copydoc surface(nn_czstring)
+   */
+  CENTURION_QUERY
+  static auto shared(nn_czstring file) -> sptr;
+
+  /**
+   * @copydoc surface(nn_owner<SDL_Surface*>)
+   */
+  CENTURION_QUERY
+  static auto shared(nn_owner<SDL_Surface*> surface) -> sptr;
 
   /**
    * @brief Sets the color of the pixel at the specified coordinate.
@@ -217,19 +281,6 @@ class surface final {
    */
   CENTURION_QUERY
   auto get_blend_mode() const noexcept -> blend_mode;
-
-  /**
-   * @brief Converts the surface into its texture equivalent.
-   *
-   * @param renderer the renderer that will be used to create the
-   * texture.
-   *
-   * @return a texture that is equivalent to the surface.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto to_texture(const renderer& renderer) const -> texture;
 
   /**
    * @brief Creates and returns a surface based on this surface with the
@@ -323,7 +374,10 @@ class surface final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Surface* { return m_surface; }
+  [[nodiscard]] auto get() const noexcept -> SDL_Surface*
+  {
+    return m_surface.get();
+  }
 
   /**
    * @brief Converts to `SDL_Surface*`.
@@ -332,7 +386,10 @@ class surface final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] explicit operator SDL_Surface*() noexcept { return m_surface; }
+  [[nodiscard]] explicit operator SDL_Surface*() noexcept
+  {
+    return m_surface.get();
+  }
 
   /**
    * @brief Converts to `const SDL_Surface*`.
@@ -343,30 +400,11 @@ class surface final {
    */
   [[nodiscard]] explicit operator const SDL_Surface*() const noexcept
   {
-    return m_surface;
+    return m_surface.get();
   }
 
  private:
-  SDL_Surface* m_surface{};
-
-  /**
-   * @brief Destroys the associated SDL_Surface.
-   *
-   * @details This method has no effect if the associated surface is null.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied surface instance into this
-   * instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  void move(surface&& other) noexcept;
+  std::unique_ptr<SDL_Surface, detail::surface_deleter> m_surface;
 
   /**
    * @brief Copies the contents of the supplied surface instance into this
@@ -437,8 +475,9 @@ class surface final {
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>;
 };
 
-static_assert(!std::is_nothrow_copy_constructible_v<surface>);
-static_assert(!std::is_nothrow_copy_assignable_v<surface>);
+static_assert(std::is_final_v<surface>);
+static_assert(std::is_copy_constructible_v<surface>);
+static_assert(std::is_copy_assignable_v<surface>);
 static_assert(std::is_nothrow_move_constructible_v<surface>);
 static_assert(std::is_nothrow_move_assignable_v<surface>);
 

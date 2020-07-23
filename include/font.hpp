@@ -107,8 +107,31 @@ struct glyph_metrics final {
  */
 class font final {
  public:
+  /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a font.
+   *
+   * @since 5.0.0
+   */
   using uptr = std::unique_ptr<font>;
+
+  /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a shared pointer to a font.
+   *
+   * @since 5.0.0
+   */
   using sptr = std::shared_ptr<font>;
+
+  /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a weak pointer to a font.
+   *
+   * @since 5.0.0
+   */
   using wptr = std::weak_ptr<font>;
 
   /**
@@ -145,13 +168,13 @@ class font final {
    * @copydoc font(nn_czstring, int)
    */
   CENTURION_QUERY
-  static auto unique(nn_czstring file, int size) -> std::unique_ptr<font>;
+  static auto unique(nn_czstring file, int size) -> uptr;
 
   /**
    * @copydoc font(nn_czstring, int)
    */
   CENTURION_QUERY
-  static auto shared(nn_czstring file, int size) -> std::shared_ptr<font>;
+  static auto shared(nn_czstring file, int size) -> sptr;
 
   /**
    * @brief Resets the style of the font.

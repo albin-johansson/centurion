@@ -19,12 +19,12 @@ font::font(nn_czstring file, int size) : m_size{size}
   m_style = TTF_GetFontStyle(m_font.get());
 }
 
-auto font::unique(nn_czstring file, int size) -> std::unique_ptr<font>
+auto font::unique(nn_czstring file, int size) -> uptr
 {
   return std::make_unique<font>(file, size);
 }
 
-auto font::shared(nn_czstring file, int size) -> std::shared_ptr<font>
+auto font::shared(nn_czstring file, int size) -> sptr
 {
   return std::make_shared<font>(file, size);
 }

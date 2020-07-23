@@ -39,6 +39,9 @@
 
 #include <SDL_joystick.h>
 
+#include <memory>
+#include <type_traits>
+
 #include "button_state.hpp"
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
@@ -49,6 +52,24 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
+
+/// @cond FALSE
+
+namespace detail {
+
+class joystick_deleter final {
+ public:
+  void operator()(SDL_Joystick* joystick) noexcept
+  {
+    if (SDL_JoystickGetAttached(joystick)) {
+      SDL_JoystickClose(joystick);
+    }
+  }
+};
+
+}  // namespace detail
+
+/// @endcond
 
 /**
  * @class joystick
@@ -68,6 +89,33 @@ namespace centurion {
 class joystick final {
  public:
   /**
+   * @typedef uptr
+   *
+   * @brief Simple alias for a unique pointer to a joystick.
+   *
+   * @since 5.0.0
+   */
+  using uptr = std::unique_ptr<joystick>;
+
+  /**
+   * @typedef sptr
+   *
+   * @brief Simple alias for a shared pointer to a joystick.
+   *
+   * @since 5.0.0
+   */
+  using sptr = std::shared_ptr<joystick>;
+
+  /**
+   * @typedef wptr
+   *
+   * @brief Simple alias for a weak pointer to a joystick.
+   *
+   * @since 5.0.0
+   */
+  using wptr = std::weak_ptr<joystick>;
+
+  /**
    * @enum power
    *
    * @brief Mirrors the `SDL_JoystickPowerLevel` enum.
@@ -77,14 +125,14 @@ class joystick final {
    * @headerfile joystick.hpp
    */
   enum class power {
-    Unknown = SDL_JOYSTICK_POWER_UNKNOWN, /**< Unknown power level. */
-    Empty = SDL_JOYSTICK_POWER_EMPTY,     /**< Indicates <= 5% power. */
-    Low = SDL_JOYSTICK_POWER_LOW,         /**< Indicates <= 20% power. */
-    Medium = SDL_JOYSTICK_POWER_MEDIUM,   /**< Indicates <= 70% power. */
-    Full = SDL_JOYSTICK_POWER_FULL,       /**< Indicates <= 100% power. */
-    Wired = SDL_JOYSTICK_POWER_WIRED,     /**< Wired joystick, no need to
-                                           * worry about power. */
-    Max = SDL_JOYSTICK_POWER_MAX          /**< Maximum power level. */
+    unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
+    empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
+    low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
+    medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
+    full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
+    wired = SDL_JOYSTICK_POWER_WIRED,      /**< Wired joystick, no need to
+                                            * worry about power. */
+    max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
   };
 
   /**
@@ -97,15 +145,15 @@ class joystick final {
    * @headerfile joystick.hpp
    */
   enum class hat_state {
-    Centered = SDL_HAT_CENTERED,   /**< The hat is centered. */
-    Up = SDL_HAT_UP,               /**< The hat is directed "north". */
-    Right = SDL_HAT_RIGHT,         /**< The hat is directed "east". */
-    Down = SDL_HAT_DOWN,           /**< The hat is directed "south". */
-    Left = SDL_HAT_LEFT,           /**< The hat is directed "west". */
-    RightUp = SDL_HAT_RIGHTUP,     /**< The hat is directed "north-east". */
-    RightDown = SDL_HAT_RIGHTDOWN, /**< The hat is directed "south-east". */
-    LeftUp = SDL_HAT_LEFTUP,       /**< The hat is directed "north-west". */
-    LeftDown = SDL_HAT_LEFTDOWN,   /**< The hat is directed "south-west". */
+    centered = SDL_HAT_CENTERED,     ///< The hat is centered.
+    up = SDL_HAT_UP,                 ///< The hat is directed "north".
+    right = SDL_HAT_RIGHT,           ///< The hat is directed "east".
+    down = SDL_HAT_DOWN,             ///< The hat is directed "south".
+    left = SDL_HAT_LEFT,             ///< The hat is directed "west".
+    right_up = SDL_HAT_RIGHTUP,      ///< The hat is directed "north-east".
+    right_down = SDL_HAT_RIGHTDOWN,  ///< The hat is directed "south-east".
+    left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
+    left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
   };
 
   /**
@@ -118,16 +166,16 @@ class joystick final {
    * @headerfile joystick.hpp
    */
   enum class type {
-    Unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
-    GameController = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
-    Wheel = SDL_JOYSTICK_TYPE_WHEEL,
-    ArcadeStick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
-    FlightStick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
-    DancePad = SDL_JOYSTICK_TYPE_DANCE_PAD,
-    Guitar = SDL_JOYSTICK_TYPE_GUITAR,
-    DrumKit = SDL_JOYSTICK_TYPE_DRUM_KIT,
-    ArcadePad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
-    Throttle = SDL_JOYSTICK_TYPE_THROTTLE
+    unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
+    game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
+    wheel = SDL_JOYSTICK_TYPE_WHEEL,
+    arcade_stick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
+    flight_stick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
+    dance_pad = SDL_JOYSTICK_TYPE_DANCE_PAD,
+    guitar = SDL_JOYSTICK_TYPE_GUITAR,
+    drum_kit = SDL_JOYSTICK_TYPE_DRUM_KIT,
+    arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
+    throttle = SDL_JOYSTICK_TYPE_THROTTLE
   };
 
   /**
@@ -150,6 +198,20 @@ class joystick final {
   };
 
   /**
+   * @brief Creates a `joystick` instance based on an existing `SDL_Joystick*`.
+   *
+   * @pre `sdlJoystick` must not be null.
+   *
+   * @param sdlJoystick a pointer to the `SDL_Joystick` that will be claimed.
+   *
+   * @throws centurion_exception if the joystick cannot be created.
+   *
+   * @since 4.2.0
+   */
+  CENTURION_API
+  explicit joystick(nn_owner<SDL_Joystick*> sdlJoystick);
+
+  /**
    * @brief Creates a `joystick` instance based on a device index.
    *
    * @warning The device index is not the same as the instance ID used to
@@ -166,74 +228,28 @@ class joystick final {
   explicit joystick(int deviceIndex);
 
   /**
-   * @brief Creates a `joystick` instance based on an existing `SDL_Joystick*`.
-   *
-   * @pre `sdlJoystick` must not be null.
-   *
-   * @param sdlJoystick a pointer to the `SDL_Joystick` that will be claimed.
-   *
-   * @throws centurion_exception if the joystick cannot be created.
-   *
-   * @since 4.2.0
+   * @copydoc joystick(int)
    */
-  CENTURION_API
-  explicit joystick(owner<SDL_Joystick*> sdlJoystick);
+  CENTURION_QUERY
+  static auto unique(int deviceIndex) -> uptr;
 
   /**
-   * @brief Creates a `joystick` instance by moving the supplied joystick
-   * into this one.
-   *
-   * @param other the joystick that will be moved.
-   *
-   * @since 4.2.0
+   * @copydoc joystick(nn_owner<SDL_Joystick*>)
    */
-  CENTURION_API
-  joystick(joystick&& other) noexcept;
-
-  joystick(const joystick&) = delete;
-
-  /**
-   * @brief Moves the contents of the supplied joystick into this one.
-   *
-   * @param other the joystick that will be moved.
-   *
-   * @return a reference to the joystick that claimed the supplied joystick.
-   *
-   * @since 4.2.0
-   */
-  CENTURION_API
-  auto operator=(joystick&& other) noexcept -> joystick&;
-
-  auto operator=(const joystick&) -> joystick& = delete;
-
-  CENTURION_API
-  ~joystick() noexcept;
+  CENTURION_QUERY
+  static auto unique(nn_owner<SDL_Joystick*> sdlJoystick) -> uptr;
 
   /**
    * @copydoc joystick(int)
    */
   CENTURION_QUERY
-  static auto unique(int deviceIndex) -> std::unique_ptr<joystick>;
+  static auto shared(int deviceIndex) -> sptr;
 
   /**
-   * @copydoc joystick(owner<SDL_Joystick*>)
+   * @copydoc joystick(nn_owner<SDL_Joystick*>)
    */
   CENTURION_QUERY
-  static auto unique(owner<SDL_Joystick*> sdlJoystick)
-      -> std::unique_ptr<joystick>;
-
-  /**
-   * @copydoc joystick(int)
-   */
-  CENTURION_QUERY
-  static auto shared(int deviceIndex) -> std::shared_ptr<joystick>;
-
-  /**
-   * @copydoc joystick(owner<SDL_Joystick*>)
-   */
-  CENTURION_QUERY
-  static auto shared(owner<SDL_Joystick*> sdlJoystick)
-      -> std::shared_ptr<joystick>;
+  static auto shared(nn_owner<SDL_Joystick*> sdlJoystick) -> sptr;
 
   /**
    * @brief Makes the joystick rumble.
@@ -500,7 +516,7 @@ class joystick final {
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Joystick*
   {
-    return m_joystick;
+    return m_joystick.get();
   }
 
   /**
@@ -759,12 +775,14 @@ class joystick final {
   }
 
  private:
-  SDL_Joystick* m_joystick{};
-
-  void move(joystick&& other) noexcept;
-
-  void destroy() noexcept;
+  std::unique_ptr<SDL_Joystick, detail::joystick_deleter> m_joystick;
 };
+
+static_assert(std::is_final_v<joystick>);
+static_assert(std::is_nothrow_move_constructible_v<joystick>);
+static_assert(std::is_nothrow_move_assignable_v<joystick>);
+static_assert(!std::is_copy_constructible_v<joystick>);
+static_assert(!std::is_copy_assignable_v<joystick>);
 
 /**
  * @brief Indicates whether or not two joystick power values are the same.

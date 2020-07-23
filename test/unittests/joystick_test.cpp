@@ -14,12 +14,6 @@ TEST_CASE("Constructors", "[joystick]")
   {
     CHECK_THROWS_AS(ctn::joystick{0}, ctn::centurion_exception);
   }
-
-  SECTION("SDL_Joystick* ctor")
-  {
-    SDL_Joystick* ptr = nullptr;
-    CHECK_THROWS_AS(ctn::joystick{ptr}, ctn::centurion_exception);
-  }
 }
 
 TEST_CASE("Smart pointer factory methods", "[joystick]")
@@ -27,13 +21,11 @@ TEST_CASE("Smart pointer factory methods", "[joystick]")
   SECTION("Unique")
   {
     CHECK_THROWS_AS(ctn::joystick::unique(0), ctn::centurion_exception);
-    CHECK_THROWS_AS(ctn::joystick::unique(nullptr), ctn::centurion_exception);
   }
 
   SECTION("Shared")
   {
     CHECK_THROWS_AS(ctn::joystick::shared(0), ctn::centurion_exception);
-    CHECK_THROWS_AS(ctn::joystick::shared(nullptr), ctn::centurion_exception);
   }
 }
 
@@ -138,27 +130,27 @@ TEST_CASE("joystick::Power values", "[joystick]")
 
   SECTION("Operator ==")
   {
-    CHECK(j_power::Unknown == SDL_JOYSTICK_POWER_UNKNOWN);
-    CHECK(j_power::Empty == SDL_JOYSTICK_POWER_EMPTY);
-    CHECK(j_power::Low == SDL_JOYSTICK_POWER_LOW);
-    CHECK(j_power::Medium == SDL_JOYSTICK_POWER_MEDIUM);
-    CHECK(j_power::Full == SDL_JOYSTICK_POWER_FULL);
-    CHECK(j_power::Wired == SDL_JOYSTICK_POWER_WIRED);
-    CHECK(j_power::Max == SDL_JOYSTICK_POWER_MAX);
+    CHECK(j_power::unknown == SDL_JOYSTICK_POWER_UNKNOWN);
+    CHECK(j_power::empty == SDL_JOYSTICK_POWER_EMPTY);
+    CHECK(j_power::low == SDL_JOYSTICK_POWER_LOW);
+    CHECK(j_power::medium == SDL_JOYSTICK_POWER_MEDIUM);
+    CHECK(j_power::full == SDL_JOYSTICK_POWER_FULL);
+    CHECK(j_power::wired == SDL_JOYSTICK_POWER_WIRED);
+    CHECK(j_power::max == SDL_JOYSTICK_POWER_MAX);
 
-    CHECK(SDL_JOYSTICK_POWER_UNKNOWN == j_power::Unknown);
-    CHECK(SDL_JOYSTICK_POWER_EMPTY == j_power::Empty);
-    CHECK(SDL_JOYSTICK_POWER_LOW == j_power::Low);
-    CHECK(SDL_JOYSTICK_POWER_MEDIUM == j_power::Medium);
-    CHECK(SDL_JOYSTICK_POWER_FULL == j_power::Full);
-    CHECK(SDL_JOYSTICK_POWER_WIRED == j_power::Wired);
-    CHECK(SDL_JOYSTICK_POWER_MAX == j_power::Max);
+    CHECK(SDL_JOYSTICK_POWER_UNKNOWN == j_power::unknown);
+    CHECK(SDL_JOYSTICK_POWER_EMPTY == j_power::empty);
+    CHECK(SDL_JOYSTICK_POWER_LOW == j_power::low);
+    CHECK(SDL_JOYSTICK_POWER_MEDIUM == j_power::medium);
+    CHECK(SDL_JOYSTICK_POWER_FULL == j_power::full);
+    CHECK(SDL_JOYSTICK_POWER_WIRED == j_power::wired);
+    CHECK(SDL_JOYSTICK_POWER_MAX == j_power::max);
   }
 
   SECTION("Operator !=")
   {
-    CHECK(j_power::Max != SDL_JOYSTICK_POWER_WIRED);
-    CHECK(SDL_JOYSTICK_POWER_MEDIUM != j_power::Low);
+    CHECK(j_power::max != SDL_JOYSTICK_POWER_WIRED);
+    CHECK(SDL_JOYSTICK_POWER_MEDIUM != j_power::low);
   }
 }
 
@@ -166,15 +158,15 @@ TEST_CASE("joystick::HatState values", "[joystick]")
 {
   using hs = ctn::joystick::hat_state;
 
-  CHECK(hs::Centered == static_cast<hs>(SDL_HAT_CENTERED));
-  CHECK(hs::Up == static_cast<hs>(SDL_HAT_UP));
-  CHECK(hs::Right == static_cast<hs>(SDL_HAT_RIGHT));
-  CHECK(hs::Down == static_cast<hs>(SDL_HAT_DOWN));
-  CHECK(hs::Left == static_cast<hs>(SDL_HAT_LEFT));
-  CHECK(hs::RightUp == static_cast<hs>(SDL_HAT_RIGHTUP));
-  CHECK(hs::RightDown == static_cast<hs>(SDL_HAT_RIGHTDOWN));
-  CHECK(hs::LeftUp == static_cast<hs>(SDL_HAT_LEFTUP));
-  CHECK(hs::LeftDown == static_cast<hs>(SDL_HAT_LEFTDOWN));
+  CHECK(hs::centered == static_cast<hs>(SDL_HAT_CENTERED));
+  CHECK(hs::up == static_cast<hs>(SDL_HAT_UP));
+  CHECK(hs::right == static_cast<hs>(SDL_HAT_RIGHT));
+  CHECK(hs::down == static_cast<hs>(SDL_HAT_DOWN));
+  CHECK(hs::left == static_cast<hs>(SDL_HAT_LEFT));
+  CHECK(hs::right_up == static_cast<hs>(SDL_HAT_RIGHTUP));
+  CHECK(hs::right_down == static_cast<hs>(SDL_HAT_RIGHTDOWN));
+  CHECK(hs::left_up == static_cast<hs>(SDL_HAT_LEFTUP));
+  CHECK(hs::left_down == static_cast<hs>(SDL_HAT_LEFTDOWN));
 }
 
 TEST_CASE("joystick::Type values", "[joystick]")
@@ -183,32 +175,32 @@ TEST_CASE("joystick::Type values", "[joystick]")
 
   SECTION("Operator ==")
   {
-    CHECK(joystick_t::Unknown == SDL_JOYSTICK_TYPE_UNKNOWN);
-    CHECK(joystick_t::GameController == SDL_JOYSTICK_TYPE_GAMECONTROLLER);
-    CHECK(joystick_t::Wheel == SDL_JOYSTICK_TYPE_WHEEL);
-    CHECK(joystick_t::ArcadeStick == SDL_JOYSTICK_TYPE_ARCADE_STICK);
-    CHECK(joystick_t::FlightStick == SDL_JOYSTICK_TYPE_FLIGHT_STICK);
-    CHECK(joystick_t::DancePad == SDL_JOYSTICK_TYPE_DANCE_PAD);
-    CHECK(joystick_t::Guitar == SDL_JOYSTICK_TYPE_GUITAR);
-    CHECK(joystick_t::DrumKit == SDL_JOYSTICK_TYPE_DRUM_KIT);
-    CHECK(joystick_t::ArcadePad == SDL_JOYSTICK_TYPE_ARCADE_PAD);
-    CHECK(joystick_t::Throttle == SDL_JOYSTICK_TYPE_THROTTLE);
+    CHECK(joystick_t::unknown == SDL_JOYSTICK_TYPE_UNKNOWN);
+    CHECK(joystick_t::game_controller == SDL_JOYSTICK_TYPE_GAMECONTROLLER);
+    CHECK(joystick_t::wheel == SDL_JOYSTICK_TYPE_WHEEL);
+    CHECK(joystick_t::arcade_stick == SDL_JOYSTICK_TYPE_ARCADE_STICK);
+    CHECK(joystick_t::flight_stick == SDL_JOYSTICK_TYPE_FLIGHT_STICK);
+    CHECK(joystick_t::dance_pad == SDL_JOYSTICK_TYPE_DANCE_PAD);
+    CHECK(joystick_t::guitar == SDL_JOYSTICK_TYPE_GUITAR);
+    CHECK(joystick_t::drum_kit == SDL_JOYSTICK_TYPE_DRUM_KIT);
+    CHECK(joystick_t::arcade_pad == SDL_JOYSTICK_TYPE_ARCADE_PAD);
+    CHECK(joystick_t::throttle == SDL_JOYSTICK_TYPE_THROTTLE);
 
-    CHECK(SDL_JOYSTICK_TYPE_UNKNOWN == joystick_t::Unknown);
-    CHECK(SDL_JOYSTICK_TYPE_GAMECONTROLLER == joystick_t::GameController);
-    CHECK(SDL_JOYSTICK_TYPE_WHEEL == joystick_t::Wheel);
-    CHECK(SDL_JOYSTICK_TYPE_ARCADE_STICK == joystick_t::ArcadeStick);
-    CHECK(SDL_JOYSTICK_TYPE_FLIGHT_STICK == joystick_t::FlightStick);
-    CHECK(SDL_JOYSTICK_TYPE_DANCE_PAD == joystick_t::DancePad);
-    CHECK(SDL_JOYSTICK_TYPE_GUITAR == joystick_t::Guitar);
-    CHECK(SDL_JOYSTICK_TYPE_DRUM_KIT == joystick_t::DrumKit);
-    CHECK(SDL_JOYSTICK_TYPE_ARCADE_PAD == joystick_t::ArcadePad);
-    CHECK(SDL_JOYSTICK_TYPE_THROTTLE == joystick_t::Throttle);
+    CHECK(SDL_JOYSTICK_TYPE_UNKNOWN == joystick_t::unknown);
+    CHECK(SDL_JOYSTICK_TYPE_GAMECONTROLLER == joystick_t::game_controller);
+    CHECK(SDL_JOYSTICK_TYPE_WHEEL == joystick_t::wheel);
+    CHECK(SDL_JOYSTICK_TYPE_ARCADE_STICK == joystick_t::arcade_stick);
+    CHECK(SDL_JOYSTICK_TYPE_FLIGHT_STICK == joystick_t::flight_stick);
+    CHECK(SDL_JOYSTICK_TYPE_DANCE_PAD == joystick_t::dance_pad);
+    CHECK(SDL_JOYSTICK_TYPE_GUITAR == joystick_t::guitar);
+    CHECK(SDL_JOYSTICK_TYPE_DRUM_KIT == joystick_t::drum_kit);
+    CHECK(SDL_JOYSTICK_TYPE_ARCADE_PAD == joystick_t::arcade_pad);
+    CHECK(SDL_JOYSTICK_TYPE_THROTTLE == joystick_t::throttle);
   }
 
   SECTION("Operator !=")
   {
-    CHECK(joystick_t::Guitar != SDL_JOYSTICK_TYPE_DANCE_PAD);
-    CHECK(SDL_JOYSTICK_TYPE_ARCADE_PAD != joystick_t::FlightStick);
+    CHECK(joystick_t::guitar != SDL_JOYSTICK_TYPE_DANCE_PAD);
+    CHECK(SDL_JOYSTICK_TYPE_ARCADE_PAD != joystick_t::flight_stick);
   }
 }

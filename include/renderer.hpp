@@ -581,11 +581,6 @@ class renderer final : public renderer_base<renderer> {
     return m_translationViewport;
   }
 
-  [[nodiscard]] auto to_texture(const surface& surface) const -> texture
-  {
-    return texture{*this, surface}; // TODO remove this function
-  }
-
   /**
    * @brief Returns a pointer to the associated SDL_Renderer.
    *

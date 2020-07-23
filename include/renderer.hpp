@@ -583,7 +583,7 @@ class renderer final : public renderer_base<renderer> {
 
   [[nodiscard]] auto to_texture(const surface& surface) const -> texture
   {
-    return texture{*this, surface};
+    return texture{*this, surface}; // TODO remove this function
   }
 
   /**

@@ -415,19 +415,19 @@ TEST_CASE("window::set_brightness", "[window]")
   }
 }
 
-TEST_CASE("set_capturing_mouse", "[!mayfail][window]")
+TEST_CASE("window::set_capturing_mouse", "[!mayfail][window]")
 {
   ctn::window window;
 
-  ctn::set_capturing_mouse(true);
+  ctn::window::set_capturing_mouse(true);
   CHECK(!window.is_capturing_mouse());
 
   window.show();
 
-  ctn::set_capturing_mouse(false);
+  ctn::window::set_capturing_mouse(false);
   CHECK(!window.is_capturing_mouse());
 
-  ctn::set_capturing_mouse(true);
+  ctn::window::set_capturing_mouse(true);
   CHECK(window.is_capturing_mouse());
 }
 

@@ -595,8 +595,12 @@ TEST_CASE("window::vulkan", "[!mayfail][window]")
 
   SECTION("With Vulkan support")
   {
-    const ctn::window window = create(SDL_WINDOW_VULKAN);
-    CHECK(window.vulkan());
+    auto* ptr = SDL_CreateWindow(
+        "foo", 0, 0, 100, 100, SDL_WINDOW_HIDDEN | SDL_WINDOW_VULKAN);
+    if (ptr) {
+      ctn::window window{};
+      CHECK(window.vulkan());
+    }
   }
 }
 

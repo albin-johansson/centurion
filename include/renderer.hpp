@@ -204,7 +204,6 @@ class renderer final : public renderer_base<renderer> {
                     SDL_RendererFlags flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
-    //    m_renderer = SDL_CreateRenderer(window.get(), -1, flags);
     if (!m_renderer) {
       throw detail::core_error("Failed to create Renderer!");
     }
@@ -804,56 +803,6 @@ static_assert(std::is_final_v<renderer_view>);
 static_assert(std::is_nothrow_destructible_v<renderer_view>);
 static_assert(std::is_nothrow_move_constructible_v<renderer_view>);
 static_assert(std::is_nothrow_move_assignable_v<renderer_view>);
-
-/*
-namespace experimental {
-
-template <class Derived>
-class base_window {
- public:
-  void show() { SDL_ShowWindow(get_ptr()); }
-  void hide() { SDL_ShowWindow(get_ptr()); }
-
- private:
-  [[nodiscard]] auto get_ptr() -> SDL_Window*
-  {
-    return static_cast<Derived*>(this)->get();
-  }
-};
-
-class window_deleter final {
- public:
-  void operator()(SDL_Window* window) noexcept { SDL_DestroyWindow(window); }
-};
-
-class owning_window : public base_window<owning_window> {
- public:
-  owning_window()
-      : m_window{SDL_CreateWindow("", 0, 0, 100, 100, SDL_WINDOW_HIDDEN)}
-  {}
-
-  auto get() -> SDL_Window* { return m_window.get(); }
-
- private:
-  std::unique_ptr<SDL_Window, window_deleter> m_window;
-};
-
-class view_window : public base_window<view_window> {
- public:
-  auto get() -> SDL_Window* { return m_window; }
-
- private:
-  SDL_Window* m_window{};
-};
-
-inline void foo()
-{
-  owning_window owning;
-  view_window view;
-}
-
-}  // namespace experimental
-*/
 
 }  // namespace centurion
 

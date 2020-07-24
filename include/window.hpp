@@ -39,7 +39,9 @@
 
 #include <SDL.h>
 
+#include <memory>
 #include <optional>
+#include <type_traits>
 
 #include "area.hpp"
 #include "centurion_api.hpp"
@@ -200,6 +202,19 @@ class window_base {
   void set_height(int height) noexcept;
 
   /**
+   * @brief Sets the size of the window.
+   *
+   * @details This method has no effect if any of the area components aren't
+   * greater than zero.
+   *
+   * @param size the new size of the window, components must be greater than
+   * zero.
+   *
+   * @since 5.0.0
+   */
+  void set_size(const area_i& size) noexcept;
+
+  /**
    * @brief Sets the icon that will be used by the window.
    *
    * @param icon the surface that will serve as the icon of the window.
@@ -211,13 +226,11 @@ class window_base {
   /**
    * @brief Sets the title of the window.
    *
-   * @details This method has no effect if the supplied string is null.
-   *
-   * @param title the title of the window, can safely be null.
+   * @param title the title of the window, can't be null.
    *
    * @since 3.0.0
    */
-  void set_title(czstring title) noexcept;
+  void set_title(nn_czstring title) noexcept;
 
   /**
    * @brief Sets the opacity of the window.
@@ -261,14 +274,13 @@ class window_base {
    * @brief Sets the position of the window.
    *
    * @note It's possible to use `SDL_WINDOWPOS_CENTERED` or
-   * `SDL_WINDOWPOS_UNDEFINED` as any of the arguments.
+   * `SDL_WINDOWPOS_UNDEFINED` as any of the components of the point.
    *
-   * @param x the new screen x-coordinate of the window.
-   * @param y the new screen y-coordinate of the window.
+   * @param position the new position of the window.
    *
-   * @since 3.0.0
+   * @since 5.0.0
    */
-  void set_position(int x, int y) noexcept;
+  void set_position(const point_i& position) noexcept;
 
   /**
    * @brief Sets whether or not the mouse should be confined within the window.
@@ -300,13 +312,15 @@ class window_base {
   /**
    * @brief Sets whether or not the mouse should be captured.
    *
-   * @note The window might have to be visible in order for the mouse to be
+   * @note A window might have to be visible in order for the mouse to be
    * captured.
    *
    * @param capturingMouse `true` if the mouse should be captured; `false`
    * otherwise.
    *
-   * @since 4.0.0
+   * @see `SDL_CaptureMouse`
+   *
+   * @since 5.0.0
    */
   static void set_capturing_mouse(bool capturingMouse) noexcept;
 
@@ -319,7 +333,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto decorated() const noexcept -> bool;
+  [[nodiscard]] auto is_decorated() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is currently grabbing the mouse
@@ -340,7 +354,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto resizable() const noexcept -> bool;
+  [[nodiscard]] auto is_resizable() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is in fullscreen mode.
@@ -349,7 +363,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto fullscreen() const noexcept -> bool;
+  [[nodiscard]] auto is_fullscreen() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is in fullscreen desktop mode.
@@ -359,7 +373,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto fullscreen_desktop() const noexcept -> bool;
+  [[nodiscard]] auto is_fullscreen_desktop() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is visible.
@@ -368,7 +382,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto visible() const noexcept -> bool;
+  [[nodiscard]] auto is_visible() const noexcept -> bool;
 
   /**
    * @brief Returns the current brightness value of the window.
@@ -475,6 +489,18 @@ class window_base {
   [[nodiscard]] auto height() const noexcept -> int;
 
   /**
+   * @brief Returns the current size of the window.
+   *
+   * @note Calling this function is slightly faster than calling both `width`
+   * and `height` to obtain the window size.
+   *
+   * @return the size of the window.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto size() const noexcept -> area_i;
+
+  /**
    * @brief Indicates whether or not the window is usable with an
    * OpenGL-context.
    *
@@ -483,7 +509,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto opengl() const noexcept -> bool;
+  [[nodiscard]] auto is_opengl() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is usable as a Vulkan surface.
@@ -493,7 +519,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto vulkan() const noexcept -> bool;
+  [[nodiscard]] auto is_vulkan() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window has input focus.
@@ -531,7 +557,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto capturing_mouse() const noexcept -> bool;
+  [[nodiscard]] auto is_capturing_mouse() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is set to be always on top of
@@ -551,7 +577,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto minimized() const noexcept -> bool;
+  [[nodiscard]] auto is_minimized() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is maximized.
@@ -560,13 +586,13 @@ class window_base {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto maximized() const noexcept -> bool;
+  [[nodiscard]] auto is_maximized() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not a flag is set.
    *
    * @details Some of the use cases of this method can be replaced by more
-   * explicit methods, e.g. `fullscreen()` instead of
+   * explicit methods, e.g. `is_fullscreen()` instead of
    * `check_flag(SDL_WINDOW_FULLSCREEN)`.
    *
    * @param flag the flag that will be tested.
@@ -738,10 +764,9 @@ class window final : public window_base<window> {
    *
    * @details The window will be hidden by default.
    *
-   * @param title the title of the window, may be null. If null, the empty
-   * string is used.
+   * @param title the title of the window, can't be null.
    * @param size the size of the window, components must be greater than
-   * zero, defaults to 800x600.
+   * zero, defaults to `default_size()`.
    *
    * @throws centurion_exception if the supplied width or height isn't
    * greater than zero or if the window cannot be created.
@@ -749,7 +774,7 @@ class window final : public window_base<window> {
    * @since 3.0.0
    */
   CENTURION_API
-  explicit window(czstring title, area_i size = default_size());
+  explicit window(nn_czstring title, area_i size = default_size());
 
   /**
    * @brief Creates a window based on the supplied SDL_Window instance.
@@ -775,10 +800,10 @@ class window final : public window_base<window> {
   window();
 
   /**
-   * @copydoc window(czstring, area_i)
+   * @copydoc window(nn_czstring, area_i)
    */
   CENTURION_QUERY
-  static auto unique(czstring title, area_i size = default_size()) -> uptr;
+  static auto unique(nn_czstring title, area_i size = default_size()) -> uptr;
 
   /**
    * @copydoc window(nn_owner<SDL_Window*>)
@@ -793,10 +818,10 @@ class window final : public window_base<window> {
   static auto unique() -> uptr;
 
   /**
-   * @copydoc window(czstring, area_i)
+   * @copydoc window(nn_czstring, area_i)
    */
   CENTURION_QUERY
-  static auto shared(czstring title, area_i size = default_size()) -> sptr;
+  static auto shared(nn_czstring title, area_i size = default_size()) -> sptr;
 
   /**
    * @copydoc window(nn_owner<SDL_Window*>)
@@ -859,6 +884,14 @@ class window final : public window_base<window> {
   std::unique_ptr<SDL_Window, detail::window_deleter> m_window;
 };
 
+static_assert(std::is_final_v<window>);
+static_assert(std::is_default_constructible_v<window>);
+static_assert(std::is_nothrow_destructible_v<window>);
+static_assert(std::is_nothrow_move_assignable_v<window>);
+static_assert(std::is_nothrow_move_constructible_v<window>);
+static_assert(!std::is_copy_assignable_v<window>);
+static_assert(!std::is_copy_constructible_v<window>);
+
 /**
  * @class window_view
  *
@@ -876,6 +909,9 @@ class window final : public window_base<window> {
  * SDL window. In general, prefer `window` unless you absolutely
  * cannot claim ownership of the SDL window.
  *
+ * @warning It is undefined behaviour to invoke a member function if the
+ * internal pointer is null!
+ *
  * @par Examples
  * The following example displays how one could utilize this class to take
  * advantage of the Centurion window API, that wouldn't be possible with
@@ -889,9 +925,13 @@ class window final : public window_base<window> {
  *   {
  *     ctn::window_view view{window}; // very cheap to construct
  *
+ *     if (!view) { // checks if internal pointer is non-null
+ *       return;
+ *     }
+ *
  *     view.set_title("bar");
  *
- *     if (view.fullscreen()) {
+ *     if (view.is_fullscreen()) {
  *       // ...
  *     }
  *
@@ -914,6 +954,21 @@ class window_view final : public window_base<window_view> {
   {}
 
   /**
+   * @brief Indicates whether or not the instance holds a non-null pointer.
+   *
+   * @warning It's undefined behaviour to invoke other member functions that
+   * use the internal pointer if this function returns `false`.
+   *
+   * @return `true` if the instance holds a non-null pointer; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] explicit operator bool() const noexcept
+  {
+    return static_cast<bool>(m_window);
+  }
+
+  /**
    * @brief Returns a pointer to the associated SDL window.
    *
    * @warning Use of this method is not recommended, since it purposefully
@@ -930,9 +985,9 @@ class window_view final : public window_base<window_view> {
   SDL_Window* m_window{};
 };
 
-static_assert(std::is_final_v<window>);
-static_assert(std::is_default_constructible_v<window>);
-static_assert(std::is_nothrow_destructible_v<window>);
+static_assert(std::is_final_v<window_view>);
+static_assert(!std::is_default_constructible_v<window_view>);
+static_assert(std::is_nothrow_destructible_v<window_view>);
 static_assert(std::is_nothrow_move_assignable_v<window>);
 static_assert(std::is_nothrow_move_constructible_v<window>);
 static_assert(!std::is_copy_assignable_v<window>);
@@ -980,7 +1035,7 @@ void window_base<Derived>::set_fullscreen(bool fullscreen) noexcept
   const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
   SDL_SetWindowFullscreen(ptr(), fullscreen ? flag : 0);
 
-  if (!fullscreen) {  // TODO investigate
+  if (!fullscreen) {
     set_brightness(1);
   }
 }
@@ -1020,7 +1075,13 @@ void window_base<Derived>::set_height(int height) noexcept
   }
 }
 
-// TODO set_size
+template <class Derived>
+void window_base<Derived>::set_size(const area_i& size) noexcept
+{
+  if ((size.width > 0) && (size.height > 0)) {
+    SDL_SetWindowSize(ptr(), size.width, size.height);
+  }
+}
 
 template <class Derived>
 void window_base<Derived>::set_icon(const surface& icon) noexcept
@@ -1029,11 +1090,9 @@ void window_base<Derived>::set_icon(const surface& icon) noexcept
 }
 
 template <class Derived>
-void window_base<Derived>::set_title(czstring title) noexcept
-{  // TODO make parameter nn_czstring
-  if (title) {
-    SDL_SetWindowTitle(ptr(), title);
-  }
+void window_base<Derived>::set_title(nn_czstring title) noexcept
+{
+  SDL_SetWindowTitle(ptr(), title);
 }
 
 template <class Derived>
@@ -1055,9 +1114,9 @@ void window_base<Derived>::set_max_size(const area_i& size) noexcept
 }
 
 template <class Derived>
-void window_base<Derived>::set_position(int x, int y) noexcept
-{  // TODO set_position(const point_i&)
-  SDL_SetWindowPosition(ptr(), x, y);
+void window_base<Derived>::set_position(const point_i& position) noexcept
+{
+  SDL_SetWindowPosition(ptr(), position.x(), position.y());
 }
 
 template <class Derived>
@@ -1069,7 +1128,7 @@ void window_base<Derived>::set_grab_mouse(bool grabMouse) noexcept
 template <class Derived>
 void window_base<Derived>::set_brightness(float brightness) noexcept
 {
-  if (fullscreen()) {  // TODO weird limitation?
+  if (is_fullscreen()) {
     SDL_SetWindowBrightness(ptr(), std::clamp(brightness, 0.0f, 1.0f));
   }
 }
@@ -1077,12 +1136,11 @@ void window_base<Derived>::set_brightness(float brightness) noexcept
 template <class Derived>
 void window_base<Derived>::set_capturing_mouse(bool capturingMouse) noexcept
 {
-  // FIXME not really a window function
   SDL_CaptureMouse(detail::convert_bool(capturingMouse));
 }
 
 template <class Derived>
-auto window_base<Derived>::decorated() const noexcept -> bool
+auto window_base<Derived>::is_decorated() const noexcept -> bool
 {
   return !(flags() & SDL_WINDOW_BORDERLESS);
 }
@@ -1094,37 +1152,37 @@ auto window_base<Derived>::grabbing_mouse() const noexcept -> bool
 }
 
 template <class Derived>
-auto window_base<Derived>::resizable() const noexcept -> bool
+auto window_base<Derived>::is_resizable() const noexcept -> bool
 {
   return static_cast<bool>(flags() & SDL_WINDOW_RESIZABLE);
 }
 
 template <class Derived>
-auto window_base<Derived>::fullscreen() const noexcept -> bool
+auto window_base<Derived>::is_fullscreen() const noexcept -> bool
 {
   return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN);
 }
 
 template <class Derived>
-auto window_base<Derived>::fullscreen_desktop() const noexcept -> bool
+auto window_base<Derived>::is_fullscreen_desktop() const noexcept -> bool
 {
   return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN_DESKTOP);
 }
 
 template <class Derived>
-auto window_base<Derived>::visible() const noexcept -> bool
+auto window_base<Derived>::is_visible() const noexcept -> bool
 {
   return static_cast<bool>(flags() & SDL_WINDOW_SHOWN);
 }
 
 template <class Derived>
-auto window_base<Derived>::opengl() const noexcept -> bool
+auto window_base<Derived>::is_opengl() const noexcept -> bool
 {
   return static_cast<bool>(flags() & SDL_WINDOW_OPENGL);
 }
 
 template <class Derived>
-auto window_base<Derived>::vulkan() const noexcept -> bool
+auto window_base<Derived>::is_vulkan() const noexcept -> bool
 {
   return static_cast<bool>(flags() & SDL_WINDOW_VULKAN);
 }
@@ -1148,7 +1206,7 @@ auto window_base<Derived>::is_foreign() const noexcept -> bool
 }
 
 template <class Derived>
-auto window_base<Derived>::capturing_mouse() const noexcept -> bool
+auto window_base<Derived>::is_capturing_mouse() const noexcept -> bool
 {
   return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_CAPTURE);
 }
@@ -1160,13 +1218,13 @@ auto window_base<Derived>::always_on_top() const noexcept -> bool
 }
 
 template <class Derived>
-auto window_base<Derived>::minimized() const noexcept -> bool
+auto window_base<Derived>::is_minimized() const noexcept -> bool
 {
   return static_cast<bool>(flags() & SDL_WINDOW_MINIMIZED);
 }
 
 template <class Derived>
-auto window_base<Derived>::maximized() const noexcept -> bool
+auto window_base<Derived>::is_maximized() const noexcept -> bool
 {
   return static_cast<bool>(flags() & SDL_WINDOW_MAXIMIZED);
 }
@@ -1274,7 +1332,13 @@ auto window_base<Derived>::height() const noexcept -> int
   return height;
 }
 
-// TODO window::size
+template <class Derived>
+auto window_base<Derived>::size() const noexcept -> area_i
+{
+  area_i size{};
+  SDL_GetWindowSize(ptr(), &size.width, &size.height);
+  return size;
+}
 
 // template <class Derived>
 // auto window_base<Derived>::get_renderer() noexcept -> renderer_view

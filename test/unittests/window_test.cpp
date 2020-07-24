@@ -25,7 +25,7 @@ TEST_CASE("window()", "[window]")
   CHECK(window.width() == 800);
   CHECK(window.height() == 600);
   CHECK_THAT(window.title(), Catch::Equals("Centurion window"));
-  CHECK(!window.visible());
+  CHECK(!window.is_visible());
 }
 
 TEST_CASE("window(nn_owner<SDL_Window*>)", "[window]")
@@ -34,7 +34,7 @@ TEST_CASE("window(nn_owner<SDL_Window*>)", "[window]")
   CHECK_NOTHROW(ctn::window{w});
 }
 
-TEST_CASE("window(czstring, area_i)", "[window]")
+TEST_CASE("window(nn_czstring, area_i)", "[window]")
 {
   CHECK_THROWS_AS(ctn::window("", {0, 10}), ctn::centurion_exception);
   CHECK_THROWS_AS(ctn::window("", {10, 0}), ctn::centurion_exception);
@@ -49,13 +49,7 @@ TEST_CASE("window(czstring, area_i)", "[window]")
     CHECK(window.width() == width);
     CHECK(window.height() == height);
     CHECK_THAT(window.title(), Catch::Equals(title));
-    CHECK(!window.visible());
-  }
-
-  SECTION("Null title")
-  {
-    const ctn::window window{nullptr, {10, 10}};
-    CHECK_THAT(window.title(), Catch::Equals(""));
+    CHECK(!window.is_visible());
   }
 }
 
@@ -103,7 +97,6 @@ TEST_CASE("window::unique", "[window]")
   {
     CHECK_THROWS_AS(ctn::window::unique("", {0, 10}), ctn::centurion_exception);
     CHECK_THROWS_AS(ctn::window::unique("", {10, 0}), ctn::centurion_exception);
-    CHECK_NOTHROW(ctn::window::unique(nullptr, {10, 10}));
     CHECK(ctn::window::unique("Foo", {10, 10}));
   }
 }
@@ -122,7 +115,6 @@ TEST_CASE("window::shared", "[window]")
   {
     CHECK_THROWS_AS(ctn::window::shared("", {0, 10}), ctn::centurion_exception);
     CHECK_THROWS_AS(ctn::window::shared("", {10, 0}), ctn::centurion_exception);
-    CHECK_NOTHROW(ctn::window::shared(nullptr, {10, 10}));
     CHECK(ctn::window::shared("Foo", {10, 10}));
   }
 }
@@ -133,7 +125,7 @@ TEST_CASE("window::show", "[window]")
 
   window.show();
 
-  CHECK(window.visible());
+  CHECK(window.is_visible());
 }
 
 TEST_CASE("window::hide", "[window]")
@@ -142,7 +134,7 @@ TEST_CASE("window::hide", "[window]")
 
   window.hide();
 
-  CHECK(!window.visible());
+  CHECK(!window.is_visible());
 }
 
 TEST_CASE("window::center", "[window]")
@@ -175,7 +167,7 @@ TEST_CASE("window:maximize", "[window]")
   window.show();
   window.maximize();
 
-  CHECK(window.maximized());
+  CHECK(window.is_maximized());
 }
 
 TEST_CASE("window::minimize", "[!mayfail][window]")
@@ -185,55 +177,55 @@ TEST_CASE("window::minimize", "[!mayfail][window]")
   window.show();
   window.minimize();
 
-  CHECK(window.minimized());
+  CHECK(window.is_minimized());
 }
 
 TEST_CASE("window::set_fullscreen", "[window]")
 {
   ctn::window window;
-  CHECK(!window.fullscreen());
+  CHECK(!window.is_fullscreen());
 
   window.set_fullscreen(true);
-  CHECK(window.fullscreen());
+  CHECK(window.is_fullscreen());
 
   window.set_fullscreen(false);
-  CHECK(!window.fullscreen());
+  CHECK(!window.is_fullscreen());
 }
 
 TEST_CASE("window::set_fullscreen_desktop", "[window]")
 {
   ctn::window window;
-  CHECK(!window.fullscreen_desktop());
+  CHECK(!window.is_fullscreen_desktop());
 
   window.set_fullscreen_desktop(true);
-  CHECK(window.fullscreen_desktop());
+  CHECK(window.is_fullscreen_desktop());
 
   window.set_fullscreen_desktop(false);
-  CHECK(!window.fullscreen_desktop());
+  CHECK(!window.is_fullscreen_desktop());
 }
 
 TEST_CASE("window::set_decorated", "[window]")
 {
   ctn::window window;
-  CHECK(window.decorated());
+  CHECK(window.is_decorated());
 
   window.set_decorated(false);
-  CHECK(!window.decorated());
+  CHECK(!window.is_decorated());
 
   window.set_decorated(true);
-  CHECK(window.decorated());
+  CHECK(window.is_decorated());
 }
 
 TEST_CASE("window::set_resizable", "[window]")
 {
   ctn::window window;
-  CHECK(!window.resizable());
+  CHECK(!window.is_resizable());
 
   window.set_resizable(true);
-  CHECK(window.resizable());
+  CHECK(window.is_resizable());
 
   window.set_resizable(false);
-  CHECK(!window.resizable());
+  CHECK(!window.is_resizable());
 }
 
 TEST_CASE("window::set_width", "[window]")
@@ -278,6 +270,28 @@ TEST_CASE("window::set_height", "[window]")
   window.set_height(height);
 
   CHECK(window.height() == height);
+}
+
+TEST_CASE("window::set_size", "[window]")
+{
+  SECTION("Invalid size")
+  {
+    ctn::window window;
+
+    const auto before = window.size();
+
+    CHECK_NOTHROW(window.set_size({-1, -1}));
+    CHECK_NOTHROW(window.set_size({0, 0}));
+
+    CHECK(window.size() == before);
+  }
+
+  ctn::window window;
+
+  const ctn::area_i size{424, 182};
+  window.set_size(size);
+
+  CHECK(window.size() == size);
 }
 
 TEST_CASE("window::set_icon", "[window]")
@@ -351,15 +365,12 @@ TEST_CASE("window::set_max_size", "[window]")
 
 TEST_CASE("window::set_position", "[window]")
 {
-  const auto x = 467;
-  const auto y = 246;
+  const ctn::point_i pos{467, 246};
 
   ctn::window window;
-  window.set_position(x, y);
+  window.set_position(pos);
 
-  const auto pos = window.position();
-  CHECK(x == pos.x());
-  CHECK(y == pos.y());
+  CHECK(pos == window.position());
 }
 
 TEST_CASE("window::set_grab_mouse", "[!mayfail][window]")
@@ -404,33 +415,34 @@ TEST_CASE("window::set_brightness", "[window]")
   }
 }
 
-TEST_CASE("window::set_capturing_mouse", "[!mayfail][window]")
+TEST_CASE("set_capturing_mouse", "[!mayfail][window]")
 {
   ctn::window window;
 
-  window.set_capturing_mouse(true);
-  CHECK(!window.capturing_mouse());
+  ctn::set_capturing_mouse(true);
+  CHECK(!window.is_capturing_mouse());
 
   window.show();
 
-  window.set_capturing_mouse(false);
-  CHECK(!window.capturing_mouse());
+  ctn::set_capturing_mouse(false);
+  CHECK(!window.is_capturing_mouse());
 
-  window.set_capturing_mouse(true);
-  CHECK(window.capturing_mouse());
+  ctn::set_capturing_mouse(true);
+  CHECK(window.is_capturing_mouse());
 }
 
-TEST_CASE("window::decorated", "[window]")
+TEST_CASE("window::is_decorated", "[window]")
 {
   SECTION("Normal")
   {
     const ctn::window window;
-    CHECK(window.decorated());
+    CHECK(window.is_decorated());
   }
+
   SECTION("Not decorated")
   {
     const ctn::window window = create(SDL_WINDOW_BORDERLESS);
-    CHECK(!window.decorated());
+    CHECK(!window.is_decorated());
   }
 }
 
@@ -448,59 +460,63 @@ TEST_CASE("window::grabbing_mouse", "[!mayfail][window]")
   }
 }
 
-TEST_CASE("window::resizable", "[window]")
+TEST_CASE("window::is_resizable", "[window]")
 {
   SECTION("Normal")
   {
     const ctn::window window;
-    CHECK(!window.resizable());
+    CHECK(!window.is_resizable());
   }
+
   SECTION("Resizable")
   {
     const ctn::window window = create(SDL_WINDOW_RESIZABLE);
-    CHECK(window.resizable());
+    CHECK(window.is_resizable());
   }
 }
 
-TEST_CASE("window::fullscreen", "[window]")
+TEST_CASE("window::is_fullscreen", "[window]")
 {
   SECTION("Normal")
   {
     const ctn::window window;
-    CHECK(!window.fullscreen());
+    CHECK(!window.is_fullscreen());
   }
+
   SECTION("Fullscreen")
   {
     const ctn::window window = create(SDL_WINDOW_FULLSCREEN);
-    CHECK(window.fullscreen());
+    CHECK(window.is_fullscreen());
   }
 }
 
-TEST_CASE("window::fullscreen_desktop", "[window]")
+TEST_CASE("window::is_fullscreen_desktop", "[window]")
 {
   SECTION("Normal")
   {
     const ctn::window window;
-    CHECK(!window.fullscreen_desktop());
+    CHECK(!window.is_fullscreen_desktop());
   }
+
   SECTION("Fullscreen desktop")
   {
     const ctn::window window = create(SDL_WINDOW_FULLSCREEN_DESKTOP);
-    CHECK(window.fullscreen_desktop());
+    CHECK(window.is_fullscreen_desktop());
   }
 }
 
-TEST_CASE("window::visible", "[window]")
+TEST_CASE("window::is_visible", "[window]")
 {
   SECTION("Normal")
   {
     const ctn::window window;
-    CHECK(!window.visible());
+    CHECK(!window.is_visible());
   }
+
   SECTION("Visible")
   {
     const ctn::window window = create(SDL_WINDOW_SHOWN);
-    CHECK(window.visible());
+    CHECK(window.is_visible());
   }
 }
 
@@ -570,27 +586,37 @@ TEST_CASE("window::height", "[window]")
   CHECK(window.height() == height);
 }
 
-TEST_CASE("window::opengl", "[window]")
+TEST_CASE("window::size", "[window]")
+{
+  const ctn::area_i size{285, 435};
+  ctn::window window{"", size};
+
+  CHECK(window.width() == size.width);
+  CHECK(window.height() == size.height);
+  CHECK(window.size() == size);
+}
+
+TEST_CASE("window::is_opengl", "[window]")
 {
   SECTION("Normal")
   {
     const ctn::window window;
-    CHECK(!window.opengl());
+    CHECK(!window.is_opengl());
   }
 
   SECTION("With OpenGL support")
   {
     const ctn::window window = create(SDL_WINDOW_OPENGL);
-    CHECK(window.opengl());
+    CHECK(window.is_opengl());
   }
 }
 
-TEST_CASE("window::vulkan", "[!mayfail][window]")
+TEST_CASE("window::is_vulkan", "[!mayfail][window]")
 {
   SECTION("Normal")
   {
     const ctn::window window;
-    CHECK(!window.vulkan());
+    CHECK(!window.is_vulkan());
   }
 
   SECTION("With Vulkan support")
@@ -599,7 +625,7 @@ TEST_CASE("window::vulkan", "[!mayfail][window]")
         "foo", 0, 0, 100, 100, SDL_WINDOW_HIDDEN | SDL_WINDOW_VULKAN);
     if (ptr) {
       ctn::window window{};
-      CHECK(window.vulkan());
+      CHECK(window.is_vulkan());
     }
   }
 }
@@ -627,10 +653,10 @@ TEST_CASE("window::is_foreign", "[window]")
   CHECK(!window.is_foreign());
 }
 
-TEST_CASE("window::capturing_mouse", "[!mayfail][window]")
+TEST_CASE("window::is_capturing_mouse", "[!mayfail][window]")
 {
   const ctn::window window;
-  CHECK(!window.capturing_mouse());
+  CHECK(!window.is_capturing_mouse());
 }
 
 TEST_CASE("window::always_on_top", "[window]")
@@ -648,16 +674,16 @@ TEST_CASE("window::always_on_top", "[window]")
   }
 }
 
-TEST_CASE("window::minimized", "[window]")
+TEST_CASE("window::is_minimized", "[window]")
 {
   ctn::window window;
-  CHECK(!window.minimized());
+  CHECK(!window.is_minimized());
 }
 
-TEST_CASE("window::maximized", "[window]")
+TEST_CASE("window::is_maximized", "[window]")
 {
   ctn::window window;
-  CHECK(!window.maximized());
+  CHECK(!window.is_maximized());
 }
 
 TEST_CASE("window::check_flag", "[window]")
@@ -810,7 +836,7 @@ TEST_CASE("window::flags", "[window]")
 }
 
 // FIXME
-//TEST_CASE("window::renderer", "[window]")
+// TEST_CASE("window::renderer", "[window]")
 //{
 //  ctn::window window;
 //  CHECK(!window.renderer());

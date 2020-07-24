@@ -83,8 +83,6 @@ class centurion_exception final : public std::exception {
   explicit centurion_exception(std::string what) noexcept
       : m_what{what.empty() ? "N/A" : std::move(what)} {};
 
-  ~centurion_exception() noexcept override = default;
-
   [[nodiscard]] auto what() const noexcept -> czstring override
   {
     return m_what.c_str();
@@ -96,6 +94,7 @@ class centurion_exception final : public std::exception {
 
 static_assert(std::is_final_v<centurion_exception>);
 static_assert(std::is_default_constructible_v<centurion_exception>);
+static_assert(std::is_nothrow_move_constructible_v<centurion_exception>);
 static_assert(std::is_nothrow_destructible_v<centurion_exception>);
 
 }  // namespace centurion

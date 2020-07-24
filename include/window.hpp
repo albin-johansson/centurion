@@ -1014,7 +1014,7 @@ void window_base<Derived>::raise() noexcept
 template <class Derived>
 void window_base<Derived>::center() noexcept
 {
-  set_position(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+  set_position({SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED});
 }
 
 template <class Derived>

@@ -51,7 +51,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/unicode_string.hpp
         ${CTN_INCLUDE_DIR}/game_loop.hpp
         window.cpp
-        window_base.cpp
         font.cpp
         font_cache.cpp
         texture.cpp

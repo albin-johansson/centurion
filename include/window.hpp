@@ -47,12 +47,26 @@
 #include "centurion_utils.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
+#include "surface.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
+
+/// @cond FALSE
+
+namespace detail {
+
+class window_deleter final {
+ public:
+  void operator()(SDL_Window* window) noexcept { SDL_DestroyWindow(window); }
+};
+
+}  // namespace detail
+
+/// @endcond
 
 /**
  * @class window_base
@@ -61,6 +75,8 @@ namespace centurion {
  *
  * @brief Provides the base implementation for windows.
  *
+ * @tparam Derived the type of the derived renderer.
+ *
  * @since 5.0.0
  *
  * @see `window`
@@ -68,6 +84,7 @@ namespace centurion {
  *
  * @headerfile window.hpp
  */
+template <class Derived>
 class window_base {
  public:
   /**
@@ -75,7 +92,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void show() noexcept;
 
   /**
@@ -83,7 +99,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void hide() noexcept;
 
   /**
@@ -93,7 +108,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void center() noexcept;
 
   /**
@@ -101,7 +115,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void raise() noexcept;
 
   /**
@@ -109,7 +122,6 @@ class window_base {
    *
    * @since 3.1.0
    */
-  CENTURION_API
   void maximize() noexcept;
 
   /**
@@ -117,7 +129,6 @@ class window_base {
    *
    * @since 3.1.0
    */
-  CENTURION_API
   void minimize() noexcept;
 
   /**
@@ -128,7 +139,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_fullscreen(bool fullscreen) noexcept;
 
   /**
@@ -141,7 +151,6 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_API
   void set_fullscreen_desktop(bool fullscreen) noexcept;
 
   /**
@@ -154,7 +163,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_decorated(bool decorated) noexcept;
 
   /**
@@ -165,7 +173,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_resizable(bool resizable) noexcept;
 
   /**
@@ -178,7 +185,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_width(int width) noexcept;
 
   /**
@@ -191,7 +197,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_height(int height) noexcept;
 
   /**
@@ -201,7 +206,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_icon(const surface& icon) noexcept;
 
   /**
@@ -213,7 +217,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_title(czstring title) noexcept;
 
   /**
@@ -226,7 +229,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_opacity(float opacity) noexcept;
 
   /**
@@ -240,8 +242,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void set_min_size(area_i size) noexcept;
+  void set_min_size(const area_i& size) noexcept;
 
   /**
    * @brief Sets the maximum size of the window.
@@ -254,8 +255,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  void set_max_size(area_i size) noexcept;
+  void set_max_size(const area_i& size) noexcept;
 
   /**
    * @brief Sets the position of the window.
@@ -268,7 +268,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_position(int x, int y) noexcept;
 
   /**
@@ -281,7 +280,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_grab_mouse(bool grabMouse) noexcept;
 
   /**
@@ -297,7 +295,6 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_API
   void set_brightness(float brightness) noexcept;
 
   /**
@@ -311,7 +308,6 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_API
   static void set_capturing_mouse(bool capturingMouse) noexcept;
 
   /**
@@ -323,8 +319,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto decorated() const noexcept -> bool;
+  [[nodiscard]] auto decorated() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is currently grabbing the mouse
@@ -334,8 +329,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto grabbing_mouse() const noexcept -> bool;
+  [[nodiscard]] auto grabbing_mouse() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is resizable.
@@ -346,8 +340,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto resizable() const noexcept -> bool;
+  [[nodiscard]] auto resizable() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is in fullscreen mode.
@@ -356,8 +349,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto fullscreen() const noexcept -> bool;
+  [[nodiscard]] auto fullscreen() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is in fullscreen desktop mode.
@@ -367,8 +359,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto fullscreen_desktop() const noexcept -> bool;
+  [[nodiscard]] auto fullscreen_desktop() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is visible.
@@ -377,8 +368,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto visible() const noexcept -> bool;
+  [[nodiscard]] auto visible() const noexcept -> bool;
 
   /**
    * @brief Returns the current brightness value of the window.
@@ -389,8 +379,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto brightness() const noexcept -> float;
+  [[nodiscard]] auto brightness() const noexcept -> float;
 
   /**
    * @brief Returns the opacity of the window.
@@ -399,8 +388,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto opacity() const noexcept -> float;
+  [[nodiscard]] auto opacity() const noexcept -> float;
 
   /**
    * @brief Returns the x-coordinate of the window position.
@@ -409,8 +397,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto x() const noexcept -> int;
+  [[nodiscard]] auto x() const noexcept -> int;
 
   /**
    * @brief Returns the y-coordinate of the window position.
@@ -419,8 +406,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto y() const noexcept -> int;
+  [[nodiscard]] auto y() const noexcept -> int;
 
   /**
    * @brief Returns a numerical ID of the window.
@@ -429,8 +415,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto id() const noexcept -> u32;
+  [[nodiscard]] auto id() const noexcept -> u32;
 
   /**
    * @brief Returns the display index associated with the window.
@@ -440,8 +425,7 @@ class window_base {
    *
    * @since 3.1.0
    */
-  CENTURION_QUERY
-  auto display_index() const noexcept -> std::optional<int>;
+  [[nodiscard]] auto display_index() const noexcept -> std::optional<int>;
 
   /**
    * @brief Returns the current position of the window.
@@ -452,8 +436,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto position() const noexcept -> point_i;
+  [[nodiscard]] auto position() const noexcept -> point_i;
 
   /**
    * @brief Returns the minimum size of the window.
@@ -462,8 +445,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto min_size() const noexcept -> area_i;
+  [[nodiscard]] auto min_size() const noexcept -> area_i;
 
   /**
    * @brief Returns the maximum size of the window.
@@ -472,8 +454,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto max_size() const noexcept -> area_i;
+  [[nodiscard]] auto max_size() const noexcept -> area_i;
 
   /**
    * @brief Returns the current width of the window.
@@ -482,8 +463,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto width() const noexcept -> int;
+  [[nodiscard]] auto width() const noexcept -> int;
 
   /**
    * @brief Returns the current height of the window.
@@ -492,8 +472,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto height() const noexcept -> int;
+  [[nodiscard]] auto height() const noexcept -> int;
 
   /**
    * @brief Indicates whether or not the window is usable with an
@@ -504,8 +483,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto opengl() const noexcept -> bool;
+  [[nodiscard]] auto opengl() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is usable as a Vulkan surface.
@@ -515,8 +493,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto vulkan() const noexcept -> bool;
+  [[nodiscard]] auto vulkan() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window has input focus.
@@ -527,8 +504,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto has_input_focus() const noexcept -> bool;
+  [[nodiscard]] auto has_input_focus() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window has mouse focus.
@@ -537,8 +513,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto has_mouse_focus() const noexcept -> bool;
+  [[nodiscard]] auto has_mouse_focus() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window wasn't created by SDL.
@@ -547,8 +522,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto is_foreign() const noexcept -> bool;
+  [[nodiscard]] auto is_foreign() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is capturing the mouse.
@@ -557,8 +531,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto capturing_mouse() const noexcept -> bool;
+  [[nodiscard]] auto capturing_mouse() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is set to be always on top of
@@ -569,8 +542,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto always_on_top() const noexcept -> bool;
+  [[nodiscard]] auto always_on_top() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is minimized.
@@ -579,8 +551,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto minimized() const noexcept -> bool;
+  [[nodiscard]] auto minimized() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the window is maximized.
@@ -589,8 +560,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto maximized() const noexcept -> bool;
+  [[nodiscard]] auto maximized() const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not a flag is set.
@@ -605,8 +575,7 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto check_flag(SDL_WindowFlags flag) const noexcept -> bool;
+  [[nodiscard]] auto check_flag(SDL_WindowFlags flag) const noexcept -> bool;
 
   /**
    * @brief Returns a mask that represents the flags associated with the window.
@@ -619,19 +588,18 @@ class window_base {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  auto flags() const noexcept -> u32;
+  [[nodiscard]] auto flags() const noexcept -> u32;
 
-  /**
-   * @brief Returns a view to the renderer that is associated with this window.
-   *
-   * @return a view to the renderer that is associated with this window;
-   * `nothing` if no such renderer exists.
-   *
-   * @since 3.1.0
-   */
-  CENTURION_QUERY
-  auto renderer() noexcept -> std::optional<renderer_view>;
+  //  /**
+  //   * @brief Returns a view to the renderer that is associated with this
+  //   window.
+  //   *
+  //   * @return a view to the renderer that is associated with this window;
+  //   * `nothing` if no such renderer exists.
+  //   *
+  //   * @since 3.1.0
+  //   */
+  //  [[nodiscard]] auto get_renderer() noexcept -> renderer_view;
 
   /**
    * @brief Returns the pixel format of the window.
@@ -640,8 +608,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto get_pixel_format() const noexcept -> pixel_format;
+  [[nodiscard]] auto get_pixel_format() const noexcept -> pixel_format;
 
   /**
    * @brief Returns the title of the window.
@@ -650,8 +617,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto title() const noexcept -> czstring;
+  [[nodiscard]] auto title() const -> std::string;
 
   /**
    * @brief Returns a textual representation of the window.
@@ -660,28 +626,21 @@ class window_base {
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
-  auto to_string() const -> std::string;
-
-  /**
-   * @brief Returns a pointer to the associated SDL window.
-   *
-   * @warning Use of this method is not recommended, since it purposefully
-   * breaks const-correctness. However it is useful since many SDL calls use
-   * non-const pointers even when no change will be applied.
-   *
-   * @return a pointer to the associated SDL window.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_Window* { return m_window; }
+  [[nodiscard]] auto to_string() const -> std::string;
 
  protected:
-  window_base() = default;
+  window_base() noexcept = default;
 
-  explicit window_base(SDL_Window* window) noexcept : m_window{window} {}
+ private:
+  [[nodiscard]] auto ptr() noexcept -> SDL_Window*
+  {
+    return static_cast<Derived*>(this)->get();
+  }
 
-  SDL_Window* m_window{nullptr};
+  [[nodiscard]] auto ptr() const noexcept -> SDL_Window*
+  {
+    return static_cast<const Derived*>(this)->get();
+  }
 };
 
 /**
@@ -745,7 +704,7 @@ class window_base {
  *
  * @headerfile window.hpp
  */
-class window final : public window_base {
+class window final : public window_base<window> {
  public:
   /**
    * @typedef uptr
@@ -775,29 +734,6 @@ class window final : public window_base {
   using wptr = std::weak_ptr<window>;
 
   /**
-   * @brief Creates a 800x600 window. The window will be hidden by default.
-   *
-   * @throws centurion_exception if the window cannot be created.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  window();
-
-  /**
-   * @brief Creates a window based on the supplied SDL_Window instance.
-   *
-   * @details The created window will claim ownership of the supplied pointer.
-   *
-   * @param sdlWindow a pointer to the window that will be claimed, can't be
-   * null.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  explicit window(nn_owner<SDL_Window*> sdlWindow);
-
-  /**
    * @brief Creates a window instance.
    *
    * @details The window will be hidden by default.
@@ -813,42 +749,36 @@ class window final : public window_base {
    * @since 3.0.0
    */
   CENTURION_API
-  explicit window(czstring title, area_i size = {800, 600});
+  explicit window(czstring title, area_i size = default_size());
 
   /**
-   * @brief Creates a window by moving the supplied window.
+   * @brief Creates a window based on the supplied SDL_Window instance.
    *
-   * @param other the window that will be moved.
+   * @details The created window will claim ownership of the supplied pointer.
+   *
+   * @param sdlWindow a pointer to the window that will be claimed, can't be
+   * null.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API
+  explicit window(nn_owner<SDL_Window*> sdlWindow);
+
+  /**
+   * @brief Creates a 800x600 window. The window will be hidden by default.
+   *
+   * @throws centurion_exception if the window cannot be created.
    *
    * @since 3.0.0
    */
   CENTURION_API
-  window(window&& other) noexcept;
-
-  window(const window&) noexcept = delete;
-
-  CENTURION_API
-  ~window() noexcept;
-
-  auto operator=(const window&) noexcept -> window& = delete;
+  window();
 
   /**
-   * @brief Moves the contents of the supplied window into this window.
-   *
-   * @param other the window whose contents will be moved.
-   *
-   * @return the window that absorbed the supplied window.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  auto operator=(window&& other) noexcept -> window&;
-
-  /**
-   * @copydoc window()
+   * @copydoc window(czstring, area_i)
    */
   CENTURION_QUERY
-  static auto unique() -> uptr;
+  static auto unique(czstring title, area_i size = default_size()) -> uptr;
 
   /**
    * @copydoc window(nn_owner<SDL_Window*>)
@@ -857,16 +787,16 @@ class window final : public window_base {
   static auto unique(nn_owner<SDL_Window*> sdlWindow) -> uptr;
 
   /**
-   * @copydoc window(czstring, area_i)
-   */
-  CENTURION_QUERY
-  static auto unique(czstring title, area_i size = {800, 600}) -> uptr;
-
-  /**
    * @copydoc window()
    */
   CENTURION_QUERY
-  static auto shared() -> sptr;
+  static auto unique() -> uptr;
+
+  /**
+   * @copydoc window(czstring, area_i)
+   */
+  CENTURION_QUERY
+  static auto shared(czstring title, area_i size = default_size()) -> sptr;
 
   /**
    * @copydoc window(nn_owner<SDL_Window*>)
@@ -875,10 +805,10 @@ class window final : public window_base {
   static auto shared(nn_owner<SDL_Window*> sdlWindow) -> sptr;
 
   /**
-   * @copydoc window(czstring, area_i)
+   * @copydoc window()
    */
   CENTURION_QUERY
-  static auto shared(czstring title, area_i size = {800, 600}) -> sptr;
+  static auto shared() -> sptr;
 
   /**
    * @brief Converts to `SDL_Window*`.
@@ -887,7 +817,10 @@ class window final : public window_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] explicit operator SDL_Window*() noexcept { return m_window; }
+  [[nodiscard]] explicit operator SDL_Window*() noexcept
+  {
+    return m_window.get();
+  }
 
   /**
    * @brief Converts to `const SDL_Window*`.
@@ -898,26 +831,32 @@ class window final : public window_base {
    */
   [[nodiscard]] explicit operator const SDL_Window*() const noexcept
   {
-    return m_window;
+    return m_window.get();
+  }
+
+  /**
+   * @brief Returns a pointer to the associated SDL window.
+   *
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However it is useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated SDL window.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Window*
+  {
+    return m_window.get();
+  }
+
+  [[nodiscard]] static constexpr auto default_size() -> area_i
+  {
+    return {800, 600};
   }
 
  private:
-  /**
-   * @brief Destroys the resources associated with the window.
-   *
-   * @since 4.0.0
-   */
-  void destroy() noexcept;
-
-  /**
-   * @brief Moves the contents of the supplied window instance into this
-   * instance.
-   *
-   * @param other the instance that will be moved.
-   *
-   * @since 4.0.0
-   */
-  void move(window&& other) noexcept;
+  std::unique_ptr<SDL_Window, detail::window_deleter> m_window;
 };
 
 /**
@@ -967,15 +906,28 @@ class window final : public window_base {
  *
  * @headerfile window.hpp
  */
-class window_view final : public window_base {
+class window_view final : public window_base<window_view> {
  public:
-  explicit window_view(gsl::not_null<SDL_Window*> window) noexcept
-      : window_base{window}
+  explicit window_view(SDL_Window* window) noexcept : m_window{window} {}
+
+  explicit window_view(const window& window) noexcept : m_window{window.get()}
   {}
 
-  explicit window_view(const window& window) noexcept
-      : window_base{window.get()}
-  {}
+  /**
+   * @brief Returns a pointer to the associated SDL window.
+   *
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However it is useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated SDL window.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Window* { return m_window; }
+
+ private:
+  SDL_Window* m_window{};
 };
 
 static_assert(std::is_final_v<window>);
@@ -986,8 +938,377 @@ static_assert(std::is_nothrow_move_constructible_v<window>);
 static_assert(!std::is_copy_assignable_v<window>);
 static_assert(!std::is_copy_constructible_v<window>);
 
-}  // namespace centurion
+template <class Derived>
+void window_base<Derived>::show() noexcept
+{
+  SDL_ShowWindow(ptr());
+}
 
-#include "renderer.hpp"  // for renderer_view definition
+template <class Derived>
+void window_base<Derived>::hide() noexcept
+{
+  SDL_HideWindow(ptr());
+}
+
+template <class Derived>
+void window_base<Derived>::raise() noexcept
+{
+  SDL_RaiseWindow(ptr());
+}
+
+template <class Derived>
+void window_base<Derived>::center() noexcept
+{
+  set_position(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+}
+
+template <class Derived>
+void window_base<Derived>::maximize() noexcept
+{
+  SDL_MaximizeWindow(ptr());
+}
+
+template <class Derived>
+void window_base<Derived>::minimize() noexcept
+{
+  SDL_MinimizeWindow(ptr());
+}
+
+template <class Derived>
+void window_base<Derived>::set_fullscreen(bool fullscreen) noexcept
+{
+  const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
+  SDL_SetWindowFullscreen(ptr(), fullscreen ? flag : 0);
+
+  if (!fullscreen) {  // TODO investigate
+    set_brightness(1);
+  }
+}
+
+template <class Derived>
+void window_base<Derived>::set_fullscreen_desktop(bool fullscreen) noexcept
+{
+  const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
+  SDL_SetWindowFullscreen(ptr(), fullscreen ? flag : 0);
+}
+
+template <class Derived>
+void window_base<Derived>::set_decorated(bool decorated) noexcept
+{
+  SDL_SetWindowBordered(ptr(), detail::convert_bool(decorated));
+}
+
+template <class Derived>
+void window_base<Derived>::set_resizable(bool resizable) noexcept
+{
+  SDL_SetWindowResizable(ptr(), detail::convert_bool(resizable));
+}
+
+template <class Derived>
+void window_base<Derived>::set_width(int width) noexcept
+{
+  if (width > 0) {
+    SDL_SetWindowSize(ptr(), width, height());
+  }
+}
+
+template <class Derived>
+void window_base<Derived>::set_height(int height) noexcept
+{
+  if (height > 0) {
+    SDL_SetWindowSize(ptr(), width(), height);
+  }
+}
+
+// TODO set_size
+
+template <class Derived>
+void window_base<Derived>::set_icon(const surface& icon) noexcept
+{
+  SDL_SetWindowIcon(ptr(), icon.get());
+}
+
+template <class Derived>
+void window_base<Derived>::set_title(czstring title) noexcept
+{  // TODO make parameter nn_czstring
+  if (title) {
+    SDL_SetWindowTitle(ptr(), title);
+  }
+}
+
+template <class Derived>
+void window_base<Derived>::set_opacity(float opacity) noexcept
+{
+  SDL_SetWindowOpacity(ptr(), opacity);
+}
+
+template <class Derived>
+void window_base<Derived>::set_min_size(const area_i& size) noexcept
+{
+  SDL_SetWindowMinimumSize(ptr(), size.width, size.height);
+}
+
+template <class Derived>
+void window_base<Derived>::set_max_size(const area_i& size) noexcept
+{
+  SDL_SetWindowMaximumSize(ptr(), size.width, size.height);
+}
+
+template <class Derived>
+void window_base<Derived>::set_position(int x, int y) noexcept
+{  // TODO set_position(const point_i&)
+  SDL_SetWindowPosition(ptr(), x, y);
+}
+
+template <class Derived>
+void window_base<Derived>::set_grab_mouse(bool grabMouse) noexcept
+{
+  SDL_SetWindowGrab(ptr(), detail::convert_bool(grabMouse));
+}
+
+template <class Derived>
+void window_base<Derived>::set_brightness(float brightness) noexcept
+{
+  if (fullscreen()) {  // TODO weird limitation?
+    SDL_SetWindowBrightness(ptr(), std::clamp(brightness, 0.0f, 1.0f));
+  }
+}
+
+template <class Derived>
+void window_base<Derived>::set_capturing_mouse(bool capturingMouse) noexcept
+{
+  // FIXME not really a window function
+  SDL_CaptureMouse(detail::convert_bool(capturingMouse));
+}
+
+template <class Derived>
+auto window_base<Derived>::decorated() const noexcept -> bool
+{
+  return !(flags() & SDL_WINDOW_BORDERLESS);
+}
+
+template <class Derived>
+auto window_base<Derived>::grabbing_mouse() const noexcept -> bool
+{
+  return SDL_GetWindowGrab(ptr());
+}
+
+template <class Derived>
+auto window_base<Derived>::resizable() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_RESIZABLE);
+}
+
+template <class Derived>
+auto window_base<Derived>::fullscreen() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN);
+}
+
+template <class Derived>
+auto window_base<Derived>::fullscreen_desktop() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN_DESKTOP);
+}
+
+template <class Derived>
+auto window_base<Derived>::visible() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_SHOWN);
+}
+
+template <class Derived>
+auto window_base<Derived>::opengl() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_OPENGL);
+}
+
+template <class Derived>
+auto window_base<Derived>::vulkan() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_VULKAN);
+}
+
+template <class Derived>
+auto window_base<Derived>::has_input_focus() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_INPUT_FOCUS);
+}
+
+template <class Derived>
+auto window_base<Derived>::has_mouse_focus() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_FOCUS);
+}
+
+template <class Derived>
+auto window_base<Derived>::is_foreign() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_FOREIGN);
+}
+
+template <class Derived>
+auto window_base<Derived>::capturing_mouse() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_CAPTURE);
+}
+
+template <class Derived>
+auto window_base<Derived>::always_on_top() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_ALWAYS_ON_TOP);
+}
+
+template <class Derived>
+auto window_base<Derived>::minimized() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_MINIMIZED);
+}
+
+template <class Derived>
+auto window_base<Derived>::maximized() const noexcept -> bool
+{
+  return static_cast<bool>(flags() & SDL_WINDOW_MAXIMIZED);
+}
+
+template <class Derived>
+auto window_base<Derived>::check_flag(SDL_WindowFlags flag) const noexcept
+    -> bool
+{
+  return static_cast<bool>(flags() & flag);
+}
+
+template <class Derived>
+auto window_base<Derived>::flags() const noexcept -> u32
+{
+  return SDL_GetWindowFlags(ptr());
+}
+
+template <class Derived>
+auto window_base<Derived>::brightness() const noexcept -> float
+{
+  return SDL_GetWindowBrightness(ptr());
+}
+
+template <class Derived>
+auto window_base<Derived>::opacity() const noexcept -> float
+{
+  float opacity{1};
+  SDL_GetWindowOpacity(ptr(), &opacity);
+  return opacity;
+}
+
+template <class Derived>
+auto window_base<Derived>::x() const noexcept -> int
+{
+  int x{};
+  SDL_GetWindowPosition(ptr(), &x, nullptr);
+  return x;
+}
+
+template <class Derived>
+auto window_base<Derived>::y() const noexcept -> int
+{
+  int y{};
+  SDL_GetWindowPosition(ptr(), nullptr, &y);
+  return y;
+}
+
+template <class Derived>
+auto window_base<Derived>::position() const noexcept -> point_i
+{
+  int x{};
+  int y{};
+  SDL_GetWindowPosition(ptr(), &x, &y);
+  return {x, y};
+}
+
+template <class Derived>
+auto window_base<Derived>::id() const noexcept -> u32
+{
+  return SDL_GetWindowID(ptr());
+}
+
+template <class Derived>
+auto window_base<Derived>::display_index() const noexcept -> std::optional<int>
+{
+  const auto index = SDL_GetWindowDisplayIndex(ptr());
+  if (index != -1) {
+    return index;
+  } else {
+    return nothing;
+  }
+}
+
+template <class Derived>
+auto window_base<Derived>::min_size() const noexcept -> area_i
+{
+  int width{};
+  int height{};
+  SDL_GetWindowMinimumSize(ptr(), &width, &height);
+  return {width, height};
+}
+
+template <class Derived>
+auto window_base<Derived>::max_size() const noexcept -> area_i
+{
+  int width{};
+  int height{};
+  SDL_GetWindowMaximumSize(ptr(), &width, &height);
+  return {width, height};
+}
+
+template <class Derived>
+auto window_base<Derived>::width() const noexcept -> int
+{
+  int width{};
+  SDL_GetWindowSize(ptr(), &width, nullptr);
+  return width;
+}
+
+template <class Derived>
+auto window_base<Derived>::height() const noexcept -> int
+{
+  int height{};
+  SDL_GetWindowSize(ptr(), nullptr, &height);
+  return height;
+}
+
+// TODO window::size
+
+// template <class Derived>
+// auto window_base<Derived>::get_renderer() noexcept -> renderer_view
+//{
+//  auto* renderer = SDL_GetRenderer(ptr());
+//  if (renderer) {
+//    return renderer_view{renderer};
+//  } else {
+//    return nullptr;
+//  }
+//}
+
+template <class Derived>
+auto window_base<Derived>::get_pixel_format() const noexcept -> pixel_format
+{
+  return static_cast<pixel_format>(SDL_GetWindowPixelFormat(ptr()));
+}
+
+template <class Derived>
+auto window_base<Derived>::title() const -> std::string
+{
+  return SDL_GetWindowTitle(ptr());
+}
+
+template <class Derived>
+auto window_base<Derived>::to_string() const -> std::string
+{
+  const auto address = detail::address_of(this);
+  const auto w = std::to_string(width());
+  const auto h = std::to_string(height());
+  return "[Window | Data: " + address + ", Width: " + w + ", Height: " + h +
+         "]";
+}
+
+}  // namespace centurion
 
 #endif  // CENTURION_WINDOW_HEADER

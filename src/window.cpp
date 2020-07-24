@@ -4,59 +4,28 @@
 
 namespace centurion {
 
-window::window() : window{"Centurion window"}
-{}
-
-window::window(nn_owner<SDL_Window*> window) : window_base{window}
-{}
-
-window::window(czstring title, area_i size)
+window::window(czstring title, area_i size)  // TODO ban nullptr titles?
 {
   if ((size.width < 1) || (size.height < 1)) {
     throw centurion_exception{"Invalid width or height!"};
   }
 
-  const auto pos = SDL_WINDOWPOS_CENTERED;
-  m_window = SDL_CreateWindow(
-      title ? title : "", pos, pos, size.width, size.height, SDL_WINDOW_HIDDEN);
+  m_window.reset(SDL_CreateWindow(title ? title : "",
+                                  SDL_WINDOWPOS_CENTERED,
+                                  SDL_WINDOWPOS_CENTERED,
+                                  size.width,
+                                  size.height,
+                                  SDL_WINDOW_HIDDEN));
   if (!m_window) {
-    throw detail::core_error("Failed to create Window!");
+    throw detail::core_error("Failed to create window!");
   }
 }
 
-window::window(window&& other) noexcept
-{
-  move(std::move(other));
-}
+window::window(nn_owner<SDL_Window*> window) : m_window{window}
+{}
 
-window::~window() noexcept
-{
-  destroy();
-}
-
-auto window::operator=(window&& other) noexcept -> window&
-{
-  if (this != &other) {
-    move(std::move(other));
-  }
-  return *this;
-}
-
-void window::destroy() noexcept
-{
-  if (m_window) {
-    SDL_DestroyWindow(m_window);
-  }
-}
-
-void window::move(window&& other) noexcept
-{
-  destroy();
-
-  m_window = other.m_window;
-
-  other.m_window = nullptr;
-}
+window::window() : window{"Centurion window"}
+{}
 
 auto window::unique() -> uptr
 {

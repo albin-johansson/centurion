@@ -1,3 +1,5 @@
+#include "texture.hpp"
+
 #include <SDL_image.h>
 
 #include <catch.hpp>
@@ -8,6 +10,7 @@
 #include "log.hpp"
 #include "surface.hpp"
 #include "window.hpp"
+#include "renderer.hpp"
 
 static constexpr auto* pandaPath = "resources/panda.png";
 static constexpr int pandaWidth = 200;

@@ -516,8 +516,8 @@ TEST_CASE("Interactive font cache", "[.font_cache]")
     renderer.render_text(cache, u"Foo\nBar", {50, 110});
     renderer.render_unicode(cache, str, {300, 110});
 
-    renderer.render(cache.get_cached("foo"_hs), ctn::point_i{50, 200});
-    renderer.render(cache.get_cached("cool"_hs), ctn::point_i{300, 400});
+    renderer.render(cache.get_cached("foo"_hs), ctn::ipoint{50, 200});
+    renderer.render(cache.get_cached("cool"_hs), ctn::ipoint{300, 400});
 
     renderer.present();
   }

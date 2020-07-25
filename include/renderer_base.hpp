@@ -692,14 +692,14 @@ class renderer_base {
    */
   auto render_glyph(const font_cache& cache,
                     unicode glyph,
-                    const point_i& position) -> int
+                    const ipoint& position) -> int
   {
     const auto& [texture, glyphMetrics] = cache.at(glyph);
 
     const auto x = position.x() + glyphMetrics.minX;
     const auto y = position.y();  // SDL_ttf handles the y-coordinate alignment
 
-    render(texture, point_i{x, y});
+    render(texture, ipoint{x, y});
 
     return position.x() + glyphMetrics.advance;
   }
@@ -718,7 +718,7 @@ class renderer_base {
    */
   void render_unicode(const font_cache& cache,
                       const unicode_string& str,
-                      point_i position)
+                      ipoint position)
   {
     const auto originalX = position.x();
 
@@ -756,7 +756,7 @@ class renderer_base {
    */
   void render_text(const font_cache& cache,
                    std::string_view str,
-                   point_i position)
+                   ipoint position)
   {
     const auto originalX = position.x();
 
@@ -794,7 +794,7 @@ class renderer_base {
    */
   void render_text(const font_cache& cache,
                    std::u16string_view str,
-                   point_i position)
+                   ipoint position)
   {
     const auto originalX = position.x();
 
@@ -821,59 +821,50 @@ class renderer_base {
   /**
    * @brief Renders a texture at the specified position.
    *
-   * @tparam T The type of the point coordinates. Must be either `int` or
-   * `float`.
-   *
    * @param texture the texture that will be rendered.
    * @param position the position of the rendered texture.
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void render(const texture& texture, const basic_point<T>& position) noexcept
+  void render(const texture& texture, const fpoint& position) noexcept
   {
-    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+    const SDL_FRect dst{position.x(),
+                        position.y(),
+                        static_cast<float>(texture.width()),
+                        static_cast<float>(texture.height())};
+    SDL_RenderCopyF(ptr(), texture.get(), nullptr, &dst);
+  }
 
-    if constexpr (std::is_same_v<T, int>) {
-      const SDL_Rect dst{
-          position.x(), position.y(), texture.width(), texture.height()};
-      SDL_RenderCopy(ptr(), texture.get(), nullptr, &dst);
-    } else {
-      const SDL_FRect dst{position.x(),
-                          position.y(),
-                          static_cast<float>(texture.width()),
-                          static_cast<float>(texture.height())};
-      SDL_RenderCopyF(ptr(), texture.get(), nullptr, &dst);
-    }
+  void render(const texture& texture, const ipoint& position) noexcept
+  {
+    const SDL_Rect dst{
+        position.x(), position.y(), texture.width(), texture.height()};
+    SDL_RenderCopy(ptr(), texture.get(), nullptr, &dst);
   }
 
   /**
    * @brief Renders a texture according to the specified rectangle.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
    *
    * @param texture the texture that will be rendered.
    * @param destination the position and size of the rendered texture.
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void render(const texture& texture, const basic_rect<T>& destination) noexcept
+  void render(const texture& texture, const frect& destination) noexcept
   {
-    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+    SDL_RenderCopyF(ptr(),
+                    texture.get(),
+                    nullptr,
+                    static_cast<const SDL_FRect*>(destination));
+  }
 
-    if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderCopy(ptr(),
-                     texture.get(),
-                     nullptr,
-                     static_cast<const SDL_Rect*>(destination));
-    } else {
-      SDL_RenderCopyF(ptr(),
-                      texture.get(),
-                      nullptr,
-                      static_cast<const SDL_FRect*>(destination));
-    }
+  void render(const texture& texture, const irect& destination) noexcept
+  {
+    SDL_RenderCopy(ptr(),
+                   texture.get(),
+                   nullptr,
+                   static_cast<const SDL_Rect*>(destination));
   }
 
   /**
@@ -882,40 +873,35 @@ class renderer_base {
    * @remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
-   *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
    * @param destination the position and size of the rendered texture.
    *
    * @since 4.0.0
    */
-  template <typename T>
   void render(const texture& texture,
-              const rect_i& source,
-              const basic_rect<T>& destination) noexcept
+              const irect& source,
+              const frect& destination) noexcept
   {
-    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+    SDL_RenderCopyF(ptr(),
+                    texture.get(),
+                    static_cast<const SDL_Rect*>(source),
+                    static_cast<const SDL_FRect*>(destination));
+  }
 
-    if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderCopy(ptr(),
-                     texture.get(),
-                     static_cast<const SDL_Rect*>(source),
-                     static_cast<const SDL_Rect*>(destination));
-    } else {
-      SDL_RenderCopyF(ptr(),
-                      texture.get(),
-                      static_cast<const SDL_Rect*>(source),
-                      static_cast<const SDL_FRect*>(destination));
-    }
+  void render(const texture& texture,
+              const irect& source,
+              const irect& destination) noexcept
+  {
+    SDL_RenderCopy(ptr(),
+                   texture.get(),
+                   static_cast<const SDL_Rect*>(source),
+                   static_cast<const SDL_Rect*>(destination));
   }
 
   /**
    * @brief Renders a texture.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -925,38 +911,36 @@ class renderer_base {
    *
    * @since 4.0.0
    */
-  template <typename T>
   void render(const texture& texture,
-              const rect_i& source,
-              const basic_rect<T>& destination,
+              const irect& source,
+              const frect& destination,
               double angle) noexcept
   {
-    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+    SDL_RenderCopyExF(ptr(),
+                      texture.get(),
+                      static_cast<const SDL_Rect*>(source),
+                      static_cast<const SDL_FRect*>(destination),
+                      angle,
+                      nullptr,
+                      SDL_FLIP_NONE);
+  }
 
-    if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderCopyEx(ptr(),
-                       texture.get(),
-                       static_cast<const SDL_Rect*>(source),
-                       static_cast<const SDL_Rect*>(destination),
-                       angle,
-                       nullptr,
-                       SDL_FLIP_NONE);
-    } else {
-      SDL_RenderCopyExF(ptr(),
-                        texture.get(),
-                        static_cast<const SDL_Rect*>(source),
-                        static_cast<const SDL_FRect*>(destination),
-                        angle,
-                        nullptr,
-                        SDL_FLIP_NONE);
-    }
+  void render(const texture& texture,
+              const irect& source,
+              const irect& destination,
+              double angle) noexcept
+  {
+    SDL_RenderCopyEx(ptr(),
+                     texture.get(),
+                     static_cast<const SDL_Rect*>(source),
+                     static_cast<const SDL_Rect*>(destination),
+                     angle,
+                     nullptr,
+                     SDL_FLIP_NONE);
   }
 
   /**
    * @brief Renders a texture.
-   *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -968,39 +952,52 @@ class renderer_base {
    *
    * @since 4.0.0
    */
-  template <typename T>
   void render(const texture& texture,
-              const rect_i& source,
-              const basic_rect<T>& destination,
+              const irect& source,
+              const frect& destination,
               double angle,
-              const basic_point<T>& center) noexcept
+              const fpoint& center) noexcept
   {
-    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
-
-    if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderCopyEx(ptr(),
-                       texture.get(),
-                       static_cast<const SDL_Rect*>(source),
-                       static_cast<const SDL_Rect*>(destination),
-                       angle,
-                       static_cast<const SDL_Point*>(center),
-                       SDL_FLIP_NONE);
-    } else {
-      SDL_RenderCopyExF(ptr(),
-                        texture.get(),
-                        static_cast<const SDL_Rect*>(source),
-                        static_cast<const SDL_FRect*>(destination),
-                        angle,
-                        static_cast<const SDL_FPoint*>(center),
-                        SDL_FLIP_NONE);
-    }
+    SDL_RenderCopyExF(ptr(),
+                      texture.get(),
+                      static_cast<const SDL_Rect*>(source),
+                      static_cast<const SDL_FRect*>(destination),
+                      angle,
+                      static_cast<const SDL_FPoint*>(center),
+                      SDL_FLIP_NONE);
   }
 
   /**
    * @brief Renders a texture.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
+   * @param texture the texture that will be rendered.
+   * @param source the cutout out of the texture that will be rendered.
+   * @param destination the position and size of the rendered texture.
+   * @param angle the clockwise angle, in degrees, with which the rendered
+   * texture will be rotated.
+   * @param center specifies the point around which the rendered texture will be
+   * rotated.
+   *
+   * @since 4.0.0
+   */
+  void render(const texture& texture,
+              const irect& source,
+              const irect& destination,
+              double angle,
+              const ipoint& center) noexcept
+  {
+    SDL_RenderCopyEx(ptr(),
+                     texture.get(),
+                     static_cast<const SDL_Rect*>(source),
+                     static_cast<const SDL_Rect*>(destination),
+                     angle,
+                     static_cast<const SDL_Point*>(center),
+                     SDL_FLIP_NONE);
+  }
+
+  /**
+   * @brief Renders a texture.
+   *
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -1013,33 +1010,36 @@ class renderer_base {
    *
    * @since 4.0.0
    */
-  template <typename T>
   void render(const texture& texture,
-              const rect_i& source,
-              const basic_rect<T>& destination,
+              const irect& source,
+              const irect& destination,
               double angle,
-              const basic_point<T>& center,
+              const ipoint& center,
               SDL_RendererFlip flip) noexcept
   {
-    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+    SDL_RenderCopyEx(ptr(),
+                     texture.get(),
+                     static_cast<const SDL_Rect*>(source),
+                     static_cast<const SDL_Rect*>(destination),
+                     angle,
+                     static_cast<const SDL_Point*>(center),
+                     flip);
+  }
 
-    if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderCopyEx(ptr(),
-                       texture.get(),
-                       static_cast<const SDL_Rect*>(source),
-                       static_cast<const SDL_Rect*>(destination),
-                       angle,
-                       static_cast<const SDL_Point*>(center),
-                       flip);
-    } else {
-      SDL_RenderCopyExF(ptr(),
-                        texture.get(),
-                        static_cast<const SDL_Rect*>(source),
-                        static_cast<const SDL_FRect*>(destination),
-                        angle,
-                        static_cast<const SDL_FPoint*>(center),
-                        flip);
-    }
+  void render(const texture& texture,
+              const irect& source,
+              const frect& destination,
+              double angle,
+              const fpoint& center,
+              SDL_RendererFlip flip) noexcept
+  {
+    SDL_RenderCopyExF(ptr(),
+                      texture.get(),
+                      static_cast<const SDL_Rect*>(source),
+                      static_cast<const SDL_FRect*>(destination),
+                      angle,
+                      static_cast<const SDL_FPoint*>(center),
+                      flip);
   }
 
   ///@}  // end of texture rendering
@@ -1066,7 +1066,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_clip(std::optional<rect_i> area) noexcept
+  void set_clip(std::optional<irect> area) noexcept
   {
     if (area) {
       SDL_RenderSetClipRect(ptr(), static_cast<const SDL_Rect*>(*area));
@@ -1082,7 +1082,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_viewport(const rect_i& viewport) noexcept
+  void set_viewport(const irect& viewport) noexcept
   {
     SDL_RenderSetViewport(ptr(), static_cast<const SDL_Rect*>(viewport));
   }
@@ -1283,9 +1283,9 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto clip() const noexcept -> std::optional<rect_i>
+  [[nodiscard]] auto clip() const noexcept -> std::optional<irect>
   {
-    rect_i rect{};
+    irect rect{};
     SDL_RenderGetClipRect(ptr(), static_cast<SDL_Rect*>(rect));
     if (!rect.has_area()) {
       return nothing;
@@ -1508,9 +1508,9 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto viewport() const noexcept -> rect_i
+  [[nodiscard]] auto viewport() const noexcept -> irect
   {
-    rect_i viewport{};
+    irect viewport{};
     SDL_RenderGetViewport(ptr(), static_cast<SDL_Rect*>(viewport));
     return viewport;
   }

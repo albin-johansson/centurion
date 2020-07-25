@@ -365,7 +365,7 @@ TEST_CASE("window::set_max_size", "[window]")
 
 TEST_CASE("window::set_position", "[window]")
 {
-  const ctn::point_i pos{467, 246};
+  const ctn::ipoint pos{467, 246};
 
   ctn::window window;
   window.set_position(pos);

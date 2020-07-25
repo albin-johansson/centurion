@@ -306,7 +306,7 @@ class texture final {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_pixel(point_i pixel, const color& color) noexcept;
+  void set_pixel(ipoint pixel, const color& color) noexcept;
 
   /**
    * @brief Sets the alpha value of the texture.

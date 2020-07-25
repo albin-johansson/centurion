@@ -219,7 +219,7 @@ class surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_pixel(const point_i& pixel, const color& color) noexcept;
+  void set_pixel(const ipoint& pixel, const color& color) noexcept;
 
   /**
    * @brief Sets the alpha component modulation value.
@@ -356,7 +356,7 @@ class surface final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto clip() const noexcept -> rect_i
+  [[nodiscard]] auto clip() const noexcept -> irect
   {
     const auto rect = m_surface->clip_rect;
     return {{rect.x, rect.y}, {rect.w, rect.h}};
@@ -427,7 +427,7 @@ class surface final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto in_bounds(const point_i& point) const noexcept -> bool;
+  [[nodiscard]] auto in_bounds(const ipoint& point) const noexcept -> bool;
 
   /**
    * @brief Indicates whether or not the surface must be locked before modifying

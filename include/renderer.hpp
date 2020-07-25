@@ -99,7 +99,7 @@ class renderer_deleter final {
  * rendering, then you need to translate the positions of the various game
  * objects when rendering. This class provides a simple API for dealing with
  * this easily. Specify the translation viewport with
- * `set_translation_viewport(const rect_f&)`, and use the rendering methods
+ * `set_translation_viewport(const frect&)`, and use the rendering methods
  * that feature the `_t` suffix in their names, such as `render_t`, to
  * automatically render at translated positions.
  *
@@ -280,7 +280,7 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 3.0.0
    */
-  void set_translation_viewport(const rect_f& viewport) noexcept
+  void set_translation_viewport(const frect& viewport) noexcept
   {
     m_translationViewport = viewport;
   }
@@ -386,7 +386,7 @@ class renderer final : public renderer_base<renderer> {
    */
   template <typename T>
   void render_t(const texture& texture,
-                const rect_i& source,
+                const irect& source,
                 const basic_rect<T>& destination) noexcept
   {
     render(texture, source, translate(destination));
@@ -412,7 +412,7 @@ class renderer final : public renderer_base<renderer> {
    */
   template <typename T>
   void render_t(const texture& texture,
-                const rect_i& source,
+                const irect& source,
                 const basic_rect<T>& destination,
                 double angle) noexcept
   {
@@ -441,10 +441,10 @@ class renderer final : public renderer_base<renderer> {
    */
   template <typename T>
   void render_t(const texture& texture,
-                const rect_i& source,
+                const irect& source,
                 const basic_rect<T>& destination,
                 double angle,
-                const basic_point<T>& center) noexcept
+                const basic_point< T>& center) noexcept
   {
     render(texture, source, translate(destination), angle, center);
   }
@@ -469,7 +469,7 @@ class renderer final : public renderer_base<renderer> {
    */
   template <typename T>
   void render_t(const texture& texture,
-                const rect_i& source,
+                const irect& source,
                 const basic_rect<T>& destination,
                 double angle,
                 const basic_point<T>& center,
@@ -575,7 +575,7 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto translation_viewport() const noexcept -> const rect_f&
+  [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
   {
     return m_translationViewport;
   }
@@ -622,7 +622,7 @@ class renderer final : public renderer_base<renderer> {
 
  private:
   std::unique_ptr<SDL_Renderer, detail::renderer_deleter> m_renderer;
-  rect_f m_translationViewport;
+  frect m_translationViewport;
   std::unordered_map<entt::id_type, font> m_fonts;
 
   [[nodiscard]] static constexpr auto default_flags() noexcept
@@ -740,7 +740,7 @@ static_assert(std::is_nothrow_move_assignable_v<renderer>);
  *     view.clear_with(ctn::black);
  *
  *     view.set_color(ctn::pink);
- *     view.fill_rect(ctn::rect_i{{15, 20}, {100, 100}});
+ *     view.fill_rect(ctn::irect{{15, 20}, {100, 100}});
  *
  *     view.present();
  *   }

@@ -16,17 +16,17 @@ TEST_CASE("cursor(owner<SDL_Cursor*>)", "[cursor]")
   CHECK_NOTHROW(ctn::cursor{sdlCursor});
 }
 
-TEST_CASE("cursor(surface, point_i)", "[cursor]")
+TEST_CASE("cursor(surface, ipoint)", "[cursor]")
 {
   const ctn::surface surface{"resources/panda.png"};
-  const ctn::point_i hotspot{12, 14};
+  const ctn::ipoint hotspot{12, 14};
   CHECK_NOTHROW(ctn::cursor{surface, hotspot});
 }
 
 TEST_CASE("cursor(cursor&&)", "[cursor]")
 {
   const ctn::surface surface{"resources/panda.png"};
-  const ctn::point_i hotspot{12, 14};
+  const ctn::ipoint hotspot{12, 14};
   ctn::cursor cursor{surface, hotspot};
 
   ctn::cursor other{std::move(cursor)};
@@ -40,7 +40,7 @@ TEST_CASE("cursor::operator=(cursor&&)", "[cursor]")
   SECTION("Self-assignment")
   {
     const ctn::surface surface{"resources/panda.png"};
-    const ctn::point_i hotspot{12, 14};
+    const ctn::ipoint hotspot{12, 14};
     ctn::cursor cursor{surface, hotspot};
 
     cursor = std::move(cursor);
@@ -51,7 +51,7 @@ TEST_CASE("cursor::operator=(cursor&&)", "[cursor]")
   SECTION("Normal usage")
   {
     const ctn::surface surface{"resources/panda.png"};
-    const ctn::point_i hotspot{12, 14};
+    const ctn::ipoint hotspot{12, 14};
     ctn::cursor cursor{surface, hotspot};
     ctn::cursor other{surface, hotspot};
 
@@ -71,7 +71,7 @@ TEST_CASE("cursor::unique", "[cursor]")
   SECTION("Out-of-bounds hotspot")
   {
     ctn::surface surface{"resources/panda.png"};
-    ctn::point_i hotspot{1, surface.height() + 1};
+    ctn::ipoint hotspot{1, surface.height() + 1};
     CHECK_THROWS_AS(ctn::cursor::unique(surface, hotspot),
                     ctn::centurion_exception);
   }
@@ -88,7 +88,7 @@ TEST_CASE("cursor::shared", "[cursor]")
   SECTION("Out-of-bounds hotspot")
   {
     ctn::surface surface{"resources/panda.png"};
-    ctn::point_i hotspot{surface.width() + 1, 1};
+    ctn::ipoint hotspot{surface.width() + 1, 1};
     CHECK_THROWS_AS(ctn::cursor::shared(surface, hotspot),
                     ctn::centurion_exception);
   }

@@ -387,19 +387,19 @@ TEST_CASE("Manual testing of music playback", "[.music]")
 
     renderer.clear_with(ctn::colors::black);
 
-    renderer.render(infoZero, ctn::point_i{50, 50});
-    renderer.render(infoOne, ctn::point_i{50, 75});
-    renderer.render(infoTwo, ctn::point_i{50, 100});
-    renderer.render(infoNine, ctn::point_i{50, 125});
-    renderer.render(infoFadeIn, ctn::point_i{50, 150});
-    renderer.render(infoEsc, ctn::point_i{50, 175});
+    renderer.render(infoZero, ctn::ipoint{50, 50});
+    renderer.render(infoOne, ctn::ipoint{50, 75});
+    renderer.render(infoTwo, ctn::ipoint{50, 100});
+    renderer.render(infoNine, ctn::ipoint{50, 125});
+    renderer.render(infoFadeIn, ctn::ipoint{50, 150});
+    renderer.render(infoEsc, ctn::ipoint{50, 175});
 
     if (ctn::music::is_playing() && !ctn::music::is_fading()) {
-      renderer.render(playing, ctn::point_i{300, 300});
+      renderer.render(playing, ctn::ipoint{300, 300});
     } else if (ctn::music::is_fading()) {
-      renderer.render(fading, ctn::point_i{300, 300});
+      renderer.render(fading, ctn::ipoint{300, 300});
     } else {
-      renderer.render(paused, ctn::point_i{300, 300});
+      renderer.render(paused, ctn::ipoint{300, 300});
     }
 
     renderer.present();

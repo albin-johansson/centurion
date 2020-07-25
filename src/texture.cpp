@@ -141,7 +141,7 @@ void texture::unlock() noexcept
   SDL_UnlockTexture(m_texture.get());
 }
 
-void texture::set_pixel(point_i pixel, const color& color) noexcept
+void texture::set_pixel(ipoint pixel, const color& color) noexcept
 {
   if (get_access() != access::streaming || pixel.x() < 0 || pixel.y() < 0 ||
       pixel.x() >= width() || pixel.y() >= height()) {

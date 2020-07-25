@@ -83,6 +83,9 @@
  *   log::msg(log::priority::info, log::category::app, "Hello!");
  * @endcode
  *
+ * @todo Add support for logging using `const std::string&`, in order to
+ * reduce need to call `c_str()`.
+ *
  * @since 3.0.0
  *
  * @headerfile log.hpp
@@ -183,6 +186,12 @@ void info(category category, czstring fmt, Args&&... args) noexcept
   log::msg(log::priority::info, category, fmt, args...);
 }
 
+template <typename... Args>
+void info(category category, const std::string& fmt, Args&&... args) noexcept
+{
+  log::info(log::priority::info, category, fmt.c_str(), args...);
+}
+
 /**
  * @brief Logs a message with `priority::info` and `category::app`.
  *
@@ -200,6 +209,12 @@ template <typename... Args>
 void info(czstring fmt, Args&&... args) noexcept
 {
   log::info(log::category::app, fmt, args...);
+}
+
+template <typename... Args>
+void info(const std::string& fmt, Args&&... args) noexcept
+{
+  log::info(log::category::app, fmt.c_str(), args...);
 }
 
 /**

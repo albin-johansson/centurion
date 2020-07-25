@@ -280,7 +280,7 @@ class window_base {
    *
    * @since 5.0.0
    */
-  void set_position(const point_i& position) noexcept;
+  void set_position(const ipoint& position) noexcept;
 
   /**
    * @brief Sets whether or not the mouse should be confined within the window.
@@ -450,7 +450,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto position() const noexcept -> point_i;
+  [[nodiscard]] auto position() const noexcept -> ipoint;
 
   /**
    * @brief Returns the minimum size of the window.
@@ -712,7 +712,7 @@ class window_base {
  *
  *       renderer.clear_with(ctn::black);
  *
- *       const ctn::rect_i rect{{100, 100}, {150, 80}};
+ *       const ctn::irect rect{{100, 100}, {150, 80}};
  *
  *       renderer.set_color(ctn::pink);
  *       renderer.fill_rect(rect);
@@ -1114,7 +1114,7 @@ void window_base<Derived>::set_max_size(const area_i& size) noexcept
 }
 
 template <class Derived>
-void window_base<Derived>::set_position(const point_i& position) noexcept
+void window_base<Derived>::set_position(const ipoint& position) noexcept
 {
   SDL_SetWindowPosition(ptr(), position.x(), position.y());
 }
@@ -1273,7 +1273,7 @@ auto window_base<Derived>::y() const noexcept -> int
 }
 
 template <class Derived>
-auto window_base<Derived>::position() const noexcept -> point_i
+auto window_base<Derived>::position() const noexcept -> ipoint
 {
   int x{};
   int y{};

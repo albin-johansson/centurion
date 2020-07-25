@@ -167,61 +167,61 @@ TEST_CASE("remove_font", "[renderer]")
 TEST_CASE("draw_rect", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const ctn::rect_i rect_i{{1, 2}, {3, 4}};
-    const ctn::rect_f rect_f{{11.3f, 34.2f}, {54.2f, 91.3f}};
+    const ctn::irect irect{{1, 2}, {3, 4}};
+    const ctn::frect frect{{11.3f, 34.2f}, {54.2f, 91.3f}};
 
-    CHECK_NOTHROW(renderer.draw_rect(rect_i));
-    CHECK_NOTHROW(renderer.draw_rect(rect_f));
+    CHECK_NOTHROW(renderer.draw_rect(irect));
+    CHECK_NOTHROW(renderer.draw_rect(frect));
   });
 }
 
 TEST_CASE("fill_rect", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const ctn::rect_i rect_i{{14, 23}, {331, 487}};
-    const ctn::rect_f rect_f{{11.3f, 34.2f}, {54.2f, 91.3f}};
+    const ctn::irect irect{{14, 23}, {331, 487}};
+    const ctn::frect frect{{11.3f, 34.2f}, {54.2f, 91.3f}};
 
-    CHECK_NOTHROW(renderer.fill_rect(rect_i));
-    CHECK_NOTHROW(renderer.fill_rect(rect_f));
+    CHECK_NOTHROW(renderer.fill_rect(irect));
+    CHECK_NOTHROW(renderer.fill_rect(frect));
   });
 }
 
 TEST_CASE("draw_rect_t", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const ctn::rect_i rect_i{{14, 23}, {331, 487}};
-    const ctn::rect_f rect_f{{11.3f, 34.2f}, {54.2f, 91.3f}};
+    const ctn::irect irect{{14, 23}, {331, 487}};
+    const ctn::frect frect{{11.3f, 34.2f}, {54.2f, 91.3f}};
 
-    CHECK_NOTHROW(renderer.draw_rect_t(rect_i));
-    CHECK_NOTHROW(renderer.draw_rect_t(rect_f));
+    CHECK_NOTHROW(renderer.draw_rect_t(irect));
+    CHECK_NOTHROW(renderer.draw_rect_t(frect));
   });
 }
 
 TEST_CASE("fill_rect_t", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const ctn::rect_i rect_i{{14, 23}, {331, 487}};
-    const ctn::rect_f rect_f{{11.3f, 34.2f}, {54.2f, 91.3f}};
+    const ctn::irect irect{{14, 23}, {331, 487}};
+    const ctn::frect frect{{11.3f, 34.2f}, {54.2f, 91.3f}};
 
-    CHECK_NOTHROW(renderer.fill_rect_t(rect_i));
-    CHECK_NOTHROW(renderer.fill_rect_t(rect_f));
+    CHECK_NOTHROW(renderer.fill_rect_t(irect));
+    CHECK_NOTHROW(renderer.fill_rect_t(frect));
   });
 }
 
 TEST_CASE("draw_line", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    CHECK_NOTHROW(renderer.draw_line(ctn::point_i{4, 5}, ctn::point_i{12, 94}));
-    CHECK_NOTHROW(renderer.draw_line(ctn::point_f{6.2f, 8.3f},
-                                     ctn::point_f{21.6f, 17.8f}));
+    CHECK_NOTHROW(renderer.draw_line(ctn::ipoint{4, 5}, ctn::ipoint{12, 94}));
+    CHECK_NOTHROW(renderer.draw_line(ctn::fpoint{6.2f, 8.3f},
+                                     ctn::fpoint{21.6f, 17.8f}));
   });
 }
 
 TEST_CASE("renderer::draw_lines", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const std::vector<ctn::point_i> points_i{{4, 5}, {50, 2}, {-10, 7}};
-    const std::vector<ctn::point_f> points_f{
+    const std::vector<ctn::ipoint> points_i{{4, 5}, {50, 2}, {-10, 7}};
+    const std::vector<ctn::fpoint> points_f{
         {8.3f, 3.4f}, {54.4f, 86.3f}, {-10.9f, 67.2f}};
 
     CHECK_NOTHROW(renderer.draw_lines(points_i));
@@ -232,8 +232,8 @@ TEST_CASE("renderer::draw_lines", "[renderer]")
 TEST_CASE("render(Texture, Point<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::point_i position_i{3, 57};
-    const ctn::point_f position_f{26.4f, 68.2f};
+    const ctn::ipoint position_i{3, 57};
+    const ctn::fpoint position_f{26.4f, 68.2f};
 
     CHECK_NOTHROW(renderer.render(texture, position_i));
     CHECK_NOTHROW(renderer.render(texture, position_f));
@@ -243,70 +243,70 @@ TEST_CASE("render(Texture, Point<T>)", "[renderer]")
 TEST_CASE("render(Texture, Rect<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::rect_i rect_i{{12, 57}, {175, 218}};
-    const ctn::rect_f rect_f{{23.7f, 36.3f}, {317.3f, 348.3f}};
+    const ctn::irect irect{{12, 57}, {175, 218}};
+    const ctn::frect frect{{23.7f, 36.3f}, {317.3f, 348.3f}};
 
-    CHECK_NOTHROW(renderer.render(texture, rect_i));
-    CHECK_NOTHROW(renderer.render(texture, rect_f));
+    CHECK_NOTHROW(renderer.render(texture, irect));
+    CHECK_NOTHROW(renderer.render(texture, frect));
   });
 }
 
-TEST_CASE("render(Texture, rect_i, Rect<T>)", "[renderer]")
+TEST_CASE("render(Texture, irect, Rect<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::rect_i src{{10, 15}, {20, 20}};
+    const ctn::irect src{{10, 15}, {20, 20}};
 
-    const ctn::rect_i dst_i{{35, 92}, {15, 23}};
-    const ctn::rect_f dst_f{{77.9f, 45.6f}, {512.1f, 375.2f}};
+    const ctn::irect dst_i{{35, 92}, {15, 23}};
+    const ctn::frect dst_f{{77.9f, 45.6f}, {512.1f, 375.2f}};
 
     CHECK_NOTHROW(renderer.render(texture, src, dst_i));
     CHECK_NOTHROW(renderer.render(texture, src, dst_f));
   });
 }
 
-TEST_CASE("render(Texture, rect_i, Rect<T>, double)", "[renderer]")
+TEST_CASE("render(Texture, irect, Rect<T>, double)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::rect_i src{{10, 15}, {20, 20}};
+    const ctn::irect src{{10, 15}, {20, 20}};
     const auto angle = 182;
 
-    const ctn::rect_i dst_i{{35, 92}, {15, 23}};
-    const ctn::rect_f dst_f{{21.4f, 47.3f}, {338.3f, 177.3f}};
+    const ctn::irect dst_i{{35, 92}, {15, 23}};
+    const ctn::frect dst_f{{21.4f, 47.3f}, {338.3f, 177.3f}};
 
     CHECK_NOTHROW(renderer.render(texture, src, dst_i, angle));
     CHECK_NOTHROW(renderer.render(texture, src, dst_f, angle));
   });
 }
 
-TEST_CASE("render(Texture, rect_i, Rect<T>, double, Point<T>)", "[renderer]")
+TEST_CASE("render(Texture, irect, Rect<T>, double, Point<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::rect_i src{{16, 11}, {37, 77}};
+    const ctn::irect src{{16, 11}, {37, 77}};
     const auto angle = 359;
 
-    const ctn::rect_i dst_i{{22, 76}, {245, 112}};
-    const ctn::rect_f dst_f{{54.5f, 25.6f}, {136.5f, 387.8f}};
+    const ctn::irect dst_i{{22, 76}, {245, 112}};
+    const ctn::frect dst_f{{54.5f, 25.6f}, {136.5f, 387.8f}};
 
-    const ctn::point_i center_i{44, 12};
-    const ctn::point_f center_f{12.3f, 45.2f};
+    const ctn::ipoint center_i{44, 12};
+    const ctn::fpoint center_f{12.3f, 45.2f};
 
     CHECK_NOTHROW(renderer.render(texture, src, dst_i, angle, center_i));
     CHECK_NOTHROW(renderer.render(texture, src, dst_f, angle, center_f));
   });
 }
 
-TEST_CASE("render(Texture, rect_i, Rect<T>, SDL_RendererFlip)", "[renderer]")
+TEST_CASE("render(Texture, irect, Rect<T>, SDL_RendererFlip)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     CHECK_NOTHROW(renderer.render(texture,
-                                  ctn::rect_i{{10, 15}, {20, 20}},
-                                  ctn::rect_i{{35, 92}, {15, 23}},
+                                  ctn::irect{{10, 15}, {20, 20}},
+                                  ctn::irect{{35, 92}, {15, 23}},
                                   SDL_FLIP_HORIZONTAL));
   });
 }
 
 TEST_CASE(
-    "render(Texture, rect_i, Rect<T>, double, Point<T>, SDL_RendererFlip)",
+    "render(Texture, irect, Rect<T>, double, Point<T>, SDL_RendererFlip)",
     "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
@@ -314,7 +314,7 @@ TEST_CASE(
                                   {{10, 15}, {20, 20}},
                                   {{35, 92}, {15, 23}},
                                   -5,
-                                  ctn::point_i{5, 5},
+                                  ctn::ipoint{5, 5},
                                   SDL_FLIP_HORIZONTAL));
   });
 }
@@ -322,8 +322,8 @@ TEST_CASE(
 TEST_CASE("render_t(Texture, Point<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::point_i pos_i{-5, 66};
-    const ctn::point_f pos_f{3.8f, 43.3f};
+    const ctn::ipoint pos_i{-5, 66};
+    const ctn::fpoint pos_f{3.8f, 43.3f};
 
     CHECK_NOTHROW(renderer.render_t(texture, pos_i));
     CHECK_NOTHROW(renderer.render_t(texture, pos_f));
@@ -333,66 +333,66 @@ TEST_CASE("render_t(Texture, Point<T>)", "[renderer]")
 TEST_CASE("render_t(Texture, Rect<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::rect_i rect_i{{12, 7}, {115, 876}};
-    const ctn::rect_f rect_f{{7.4f, 2.3f}, {175.3f, 412.8f}};
+    const ctn::irect irect{{12, 7}, {115, 876}};
+    const ctn::frect frect{{7.4f, 2.3f}, {175.3f, 412.8f}};
 
-    CHECK_NOTHROW(renderer.render_t(texture, rect_i));
-    CHECK_NOTHROW(renderer.render_t(texture, rect_f));
+    CHECK_NOTHROW(renderer.render_t(texture, irect));
+    CHECK_NOTHROW(renderer.render_t(texture, frect));
   });
 }
 
-TEST_CASE("render_t(Texture, rect_i, Rect<T>)", "[renderer]")
+TEST_CASE("render_t(Texture, irect, Rect<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::rect_i src{{123, 444}, {467, 221}};
+    const ctn::irect src{{123, 444}, {467, 221}};
 
-    const ctn::rect_i dst_i{{5, 34}, {123, 321}};
-    const ctn::rect_f dst_f{{73.1f, 22.3f}, {116.4f, 443.4f}};
+    const ctn::irect dst_i{{5, 34}, {123, 321}};
+    const ctn::frect dst_f{{73.1f, 22.3f}, {116.4f, 443.4f}};
 
     CHECK_NOTHROW(renderer.render_t(texture, src, dst_i));
     CHECK_NOTHROW(renderer.render_t(texture, src, dst_f));
   });
 }
 
-TEST_CASE("render_t(Texture, rect_i, Rect<T>, double)", "[renderer]")
+TEST_CASE("render_t(Texture, irect, Rect<T>, double)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::rect_i src{{10, 15}, {20, 20}};
+    const ctn::irect src{{10, 15}, {20, 20}};
     const auto angle = 17;
 
-    const ctn::rect_i dst_i{{35, 92}, {15, 23}};
-    const ctn::rect_f dst_f{{67.1f, 43.3f}, {77.4f, 23.4f}};
+    const ctn::irect dst_i{{35, 92}, {15, 23}};
+    const ctn::frect dst_f{{67.1f, 43.3f}, {77.4f, 23.4f}};
 
     CHECK_NOTHROW(renderer.render_t(texture, src, dst_i, angle));
     CHECK_NOTHROW(renderer.render_t(texture, src, dst_f, angle));
   });
 }
 
-TEST_CASE("render_t(Texture, rect_i, Rect<T>, double, Point<T>)", "[renderer]")
+TEST_CASE("render_t(Texture, irect, Rect<T>, double, Point<T>)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::rect_i src{{10, 15}, {20, 20}};
+    const ctn::irect src{{10, 15}, {20, 20}};
     const auto angle = 23;
 
-    const ctn::rect_i dst_i{{35, 92}, {15, 23}};
-    const ctn::rect_f dst_f{{14.5f, 23.6f}, {126.5f, 327.8f}};
+    const ctn::irect dst_i{{35, 92}, {15, 23}};
+    const ctn::frect dst_f{{14.5f, 23.6f}, {126.5f, 327.8f}};
 
-    const ctn::point_i center_i{5, 9};
-    const ctn::point_f center_f{16.3f, 34.7f};
+    const ctn::ipoint center_i{5, 9};
+    const ctn::fpoint center_f{16.3f, 34.7f};
 
     CHECK_NOTHROW(renderer.render_t(texture, src, dst_i, angle, center_i));
     CHECK_NOTHROW(renderer.render_t(texture, src, dst_f, angle, center_f));
   });
 }
 
-TEST_CASE("render_t(Texture, rect_i, Rect<T>, SDL_RendererFlip)", "[renderer]")
+TEST_CASE("render_t(Texture, irect, Rect<T>, SDL_RendererFlip)", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::rect_i src{{10, 15}, {20, 20}};
+    const ctn::irect src{{10, 15}, {20, 20}};
     const SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
 
-    const ctn::rect_i dst_i{{35, 92}, {15, 23}};
-    const ctn::rect_f dst_f{{382.3f, 12.4f}, {35.6f, 238.9f}};
+    const ctn::irect dst_i{{35, 92}, {15, 23}};
+    const ctn::frect dst_f{{382.3f, 12.4f}, {35.6f, 238.9f}};
 
     CHECK_NOTHROW(renderer.render_t(texture, src, dst_i, flip));
     CHECK_NOTHROW(renderer.render_t(texture, src, dst_f, flip));
@@ -400,19 +400,19 @@ TEST_CASE("render_t(Texture, rect_i, Rect<T>, SDL_RendererFlip)", "[renderer]")
 }
 
 TEST_CASE(
-    "render_t(Texture, rect_i, Rect<T>, double, Point<T>, SDL_RendererFlip)",
+    "render_t(Texture, irect, Rect<T>, double, Point<T>, SDL_RendererFlip)",
     "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
-    const ctn::rect_i src{{10, 15}, {20, 20}};
+    const ctn::irect src{{10, 15}, {20, 20}};
     const SDL_RendererFlip flip = SDL_FLIP_VERTICAL;
     const auto angle = 126;
 
-    const ctn::rect_i dst_i{{35, 92}, {15, 23}};
-    const ctn::rect_f dst_f{{382.3f, 12.4f}, {35.6f, 238.9f}};
+    const ctn::irect dst_i{{35, 92}, {15, 23}};
+    const ctn::frect dst_f{{382.3f, 12.4f}, {35.6f, 238.9f}};
 
-    const ctn::point_i center_i{5, 5};
-    const ctn::point_f center_f{74.3f, 930.3f};
+    const ctn::ipoint center_i{5, 5};
+    const ctn::fpoint center_f{74.3f, 930.3f};
 
     CHECK_NOTHROW(
         renderer.render_t(texture, src, dst_i, angle, center_i, flip));
@@ -435,7 +435,7 @@ TEST_CASE("set_color", "[renderer]")
 TEST_CASE("set_viewport", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const ctn::rect_i viewport{{50, 33}, {768, 453}};
+    const ctn::irect viewport{{50, 33}, {768, 453}};
 
     renderer.set_viewport(viewport);
     CHECK(viewport == renderer.viewport());
@@ -652,7 +652,7 @@ TEST_CASE("set_translation_viewport", "[renderer]")
   ctn::window window;
   ctn::renderer renderer{window};
 
-  const ctn::rect_f viewport{{123, 523}, {845, 541}};
+  const ctn::frect viewport{{123, 523}, {845, 541}};
   renderer.set_translation_viewport(viewport);
 
   const auto rendererViewport = renderer.translation_viewport();
@@ -690,7 +690,7 @@ TEST_CASE("Renderer clipping", "[renderer]")
 
   CHECK_NOTHROW(renderer.set_clip(ctn::nothing));
 
-  const ctn::rect_i clip{{5, 2}, {75, 93}};
+  const ctn::irect clip{{5, 2}, {75, 93}};
 
   renderer.set_clip(clip);
   CHECK(renderer.clipping_enabled());

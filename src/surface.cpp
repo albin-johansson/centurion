@@ -54,7 +54,7 @@ void surface::copy(const surface& other)
   m_surface.reset(other.copy_surface());
 }
 
-auto surface::in_bounds(const point_i& point) const noexcept -> bool
+auto surface::in_bounds(const ipoint& point) const noexcept -> bool
 {
   return !(point.x() < 0 || point.y() < 0 || point.x() >= width() ||
            point.y() >= height());
@@ -92,7 +92,7 @@ auto surface::copy_surface() const -> owner<SDL_Surface*>
   }
 }
 
-void surface::set_pixel(const point_i& pixel, const color& color) noexcept
+void surface::set_pixel(const ipoint& pixel, const color& color) noexcept
 {
   if (!in_bounds(pixel)) {
     return;

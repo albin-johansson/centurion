@@ -45,6 +45,10 @@
 
 #include <SDL.h>
 
+#include <ostream>
+#include <string>
+#include <type_traits>
+
 #include "area.hpp"
 #include "centurion_api.hpp"
 #include "centurion_utils.hpp"
@@ -56,16 +60,29 @@
 
 namespace centurion {
 
-template <typename T>
-class basic_rect;
+/// @cond FALSE
 
-template <typename U>
-constexpr auto operator==(const basic_rect<U>& lhs,
-                          const basic_rect<U>& rhs) noexcept -> bool;
+namespace detail {
 
-template <typename U>
-constexpr auto operator!=(const basic_rect<U>& lhs,
-                          const basic_rect<U>& rhs) noexcept -> bool;
+class irect_traits final {
+ public:
+  using rect_type = SDL_Rect;
+  using point_type = ipoint;
+  using area_type = area_i;
+  using value_type = int;
+};
+
+class frect_traits final {
+ public:
+  using rect_type = SDL_FRect;
+  using point_type = fpoint;
+  using area_type = area_f;
+  using value_type = float;
+};
+
+}  // namespace detail
+
+/// @endcond
 
 /**
  * @class basic_rect
@@ -74,35 +91,39 @@ constexpr auto operator!=(const basic_rect<U>& lhs,
  *
  * @brief A rectangle that supports integral and floating-point components.
  *
- *
  * @par Examples
  * The following are some examples of interaction with the SDL rectangle
  * structs.
  * @code{.cpp}
- *   rect_f frect{};
- *   auto* a = static_cast<SDL_FRect*>(frect);
- *   const auto* b = static_cast<const SDL_FRect*>(frect);
- *   SDL_FRect c = static_cast<SDL_FRect>(frect);
+ *   ctn::frect f{};
+ *   auto* a = static_cast<SDL_FRect*>(f);
+ *   const auto* b = static_cast<const SDL_FRect*>(f);
+ *   SDL_FRect& c = f.get();
  *
- *   rect_i rect{};
- *   auto* d = static_cast<SDL_Rect*>(rect);
- *   const auto* e = static_cast<const SDL_Rect*>(rect);
- *   SDL_Rect f = static_cast<SDL_Rect>(rect);
+ *   ctn::irect r{};
+ *   auto* d = static_cast<SDL_Rect*>(r);
+ *   const auto* e = static_cast<const SDL_Rect*>(r);
+ *   SDL_Rect& f = r.get();
  * @endcode
  *
- * @tparam T the type of the components of the rectangle. Set to float by
- * default.
+ * @tparam Traits the traits used by the rectangle. Must provide
+ * `rect_type`, `area_type`, `point_type` and `value_type`.
  *
  * @since 4.0.0
  *
- * @see `rect_i`
- * @see `rect_f`
+ * @see `irect`
+ * @see `frect`
  *
  * @headerfile rect.hpp
  */
-template <typename T = float>
-class basic_rect final {
+template <typename Traits>
+class basic_rect {
  public:
+  using rect_type = typename Traits::rect_type;
+  using point_type = typename Traits::point_type;
+  using area_type = typename Traits::area_type;
+  using value_type = typename Traits::value_type;
+
   /**
    * @brief Creates a rectangle with the components (0, 0, 0, 0).
    *
@@ -118,8 +139,9 @@ class basic_rect final {
    *
    * @since 4.1.0
    */
-  constexpr basic_rect(basic_point<T> position, basic_area<T> size) noexcept
-      : m_position{position}, m_size{size}
+  constexpr basic_rect(const point_type& position,
+                       const area_type& size) noexcept
+      : m_rect{position.x(), position.y(), size.width, size.height}
   {}
 
   /**
@@ -129,7 +151,7 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  constexpr void set_x(T x) noexcept { m_position.set_x(x); }
+  constexpr void set_x(value_type x) noexcept { m_rect.x = x; }
 
   /**
    * @brief Sets the y-coordinate of the rectangle.
@@ -138,7 +160,7 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  constexpr void set_y(T y) noexcept { m_position.set_y(y); }
+  constexpr void set_y(value_type y) noexcept { m_rect.y = y; }
 
   /**
    * @brief Moves the rectangle to the specified position.
@@ -151,7 +173,11 @@ class basic_rect final {
    *
    * @since 4.2.0
    */
-  constexpr void move_to(basic_point<T> pos) noexcept { m_position.set(pos); }
+  constexpr void move_to(const point_type& pos) noexcept
+  {
+    m_rect.x = pos.x();
+    m_rect.y = pos.y();
+  }
 
   /**
    * @brief Sets the width of the rectangle.
@@ -160,7 +186,7 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  constexpr void set_width(T width) noexcept { m_size.width = width; }
+  constexpr void set_width(value_type width) noexcept { m_rect.w = width; }
 
   /**
    * @brief Sets the height of the rectangle.
@@ -169,7 +195,7 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  constexpr void set_height(T height) noexcept { m_size.height = height; }
+  constexpr void set_height(value_type height) noexcept { m_rect.h = height; }
 
   /**
    * @brief Changes the size of the rectangle.
@@ -178,29 +204,11 @@ class basic_rect final {
    *
    * @since 4.2.0
    */
-  constexpr void resize(basic_area<T> size) noexcept
+  constexpr void resize(const area_type& size) noexcept
   {
-    m_size.width = size.width;
-    m_size.height = size.height;
+    m_rect.w = size.width;
+    m_rect.h = size.height;
   };
-
-  /**
-   * @brief Sets all of the components of the rectangle.
-   *
-   * @param x the new x-coordinate of the rectangle.
-   * @param y the new y-coordinate of the rectangle.
-   * @param width the new width of the rectangle.
-   * @param height the new height of the rectangle.
-   *
-   * @deprecated this method is deprecated in favor of <code>set(Point,
-   * TArea)</code> since 4.1.0.
-   *
-   * @since 4.0.0
-   */
-  [[deprecated]] constexpr void set(T x, T y, T width, T height) noexcept
-  {
-    set({x, y}, {width, height});
-  }
 
   /**
    * @brief Sets the position and size of the rectangle.
@@ -210,27 +218,10 @@ class basic_rect final {
    *
    * @since 4.1.0
    */
-  constexpr void set(basic_point<T> position, basic_area<T> size) noexcept
+  constexpr void set(const point_type& position, const area_type& size) noexcept
   {
-    m_position = position;
-    m_size = size;
-  }
-
-  /**
-   * @brief Copies all of the components of the supplied rectangle.
-   *
-   * @details The two rectangles will be equal after this operation.
-   *
-   * @param other the rectangle that will be copied.
-   *
-   * @since 4.0.0
-   */
-  constexpr void set(const basic_rect<T>& other) noexcept
-  {
-    m_position.set_x(other.x());
-    m_position.set_y(other.y());
-    m_size.width = other.width();
-    m_size.height = other.height();
+    move_to(position);
+    set_size(size);
   }
 
   /**
@@ -240,10 +231,12 @@ class basic_rect final {
    *
    * @return `true` if the rectangles intersect; `false` otherwise.
    *
+   * @todo Differentiate between interpreting borders as intersections?
+   *
    * @since 4.0.0
    */
   [[nodiscard]] constexpr auto intersects(
-      const basic_rect<T>& other) const noexcept -> bool
+      const basic_rect<Traits>& other) const noexcept -> bool
   {
     return !(x() >= other.max_x() || max_x() <= other.x() ||
              y() >= other.max_y() || max_y() <= other.y());
@@ -258,7 +251,7 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr auto contains(basic_point<T> point) const noexcept
+  [[nodiscard]] constexpr auto contains(const point_type& point) const noexcept
       -> bool
   {
     const auto px = point.x();
@@ -273,9 +266,9 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr auto x() const noexcept -> T
+  [[nodiscard]] constexpr auto x() const noexcept -> value_type
   {
-    return m_position.x();
+    return m_rect.x;
   }
 
   /**
@@ -285,9 +278,9 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr auto y() const noexcept -> T
+  [[nodiscard]] constexpr auto y() const noexcept -> value_type
   {
-    return m_position.y();
+    return m_rect.y;
   }
 
   /**
@@ -297,9 +290,9 @@ class basic_rect final {
    *
    * @since 4.1.0
    */
-  [[nodiscard]] constexpr auto position() const noexcept -> basic_point<T>
+  [[nodiscard]] constexpr auto position() const noexcept -> point_type
   {
-    return m_position;
+    return point_type{m_rect.x, m_rect.y};
   }
 
   /**
@@ -309,9 +302,9 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr auto width() const noexcept -> T
+  [[nodiscard]] constexpr auto width() const noexcept -> value_type
   {
-    return m_size.width;
+    return m_rect.w;
   }
 
   /**
@@ -321,9 +314,9 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr auto height() const noexcept -> T
+  [[nodiscard]] constexpr auto height() const noexcept -> value_type
   {
-    return m_size.height;
+    return m_rect.h;
   }
 
   /**
@@ -333,9 +326,9 @@ class basic_rect final {
    *
    * @since 4.1.0
    */
-  [[nodiscard]] constexpr auto size() const noexcept -> basic_area<T>
+  [[nodiscard]] constexpr auto size() const noexcept -> area_type
   {
-    return m_size;
+    return area_type{m_rect.w, m_rect.h};
   }
 
   /**
@@ -345,9 +338,9 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr auto max_x() const noexcept -> T
+  [[nodiscard]] constexpr auto max_x() const noexcept -> value_type
   {
-    return x() + m_size.width;
+    return x() + width();
   }
 
   /**
@@ -357,9 +350,9 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr auto max_y() const noexcept -> T
+  [[nodiscard]] constexpr auto max_y() const noexcept -> value_type
   {
-    return y() + m_size.height;
+    return y() + height();
   }
 
   /**
@@ -369,9 +362,9 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr auto center_x() const noexcept -> T
+  [[nodiscard]] constexpr auto center_x() const noexcept -> value_type
   {
-    return x() + (m_size.width / 2);
+    return x() + (width() / static_cast<value_type>(2));
   }
 
   /**
@@ -381,9 +374,9 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr auto center_y() const noexcept -> T
+  [[nodiscard]] constexpr auto center_y() const noexcept -> value_type
   {
-    return y() + (m_size.height / 2);
+    return y() + (height() / static_cast<value_type>(2));
   }
 
   /**
@@ -393,7 +386,7 @@ class basic_rect final {
    *
    * @since 4.0.0
    */
-  [[nodiscard]] constexpr auto center() const noexcept -> basic_point<T>
+  [[nodiscard]] constexpr auto center() const noexcept -> point_type
   {
     return {center_x(), center_y()};
   }
@@ -405,9 +398,9 @@ class basic_rect final {
    *
    * @since 4.2.0
    */
-  [[nodiscard]] constexpr auto area() const noexcept -> T
+  [[nodiscard]] constexpr auto area() const noexcept -> value_type
   {
-    return m_size.width * m_size.height;
+    return width() * height();
   }
 
   /**
@@ -422,226 +415,214 @@ class basic_rect final {
    */
   [[nodiscard]] constexpr auto has_area() const noexcept -> bool
   {
-    return m_size.width > 0 && m_size.height > 0;
+    return (width() > 0) && (height() > 0);
   }
 
-  /**
-   * @brief Returns the union of two rectangles.
-   *
-   * @details Returns a rectangle that represents the union of two rectangles.
-   * This method is only available if the rectangle is based on `int`.
-   *
-   * @return a rectangle that represents the union of the rectangles.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, int>>
-  [[nodiscard]] auto get_union(const basic_rect<T>& other) const noexcept
-      -> basic_rect<T>
+  [[nodiscard]] constexpr auto get() const noexcept -> const rect_type&
   {
-    SDL_Rect result{0, 0, 0, 0};
-
-    const auto* a = static_cast<const SDL_Rect*>(*this);
-    const auto* b = static_cast<const SDL_Rect*>(other);
-
-    SDL_UnionRect(a, b, &result);
-    return {{result.x, result.y}, {result.w, result.h}};
+    return m_rect;
   }
 
-  /**
-   * @brief Returns a textual representation of the rectangle.
-   *
-   * @return a textual representation of the rectangle.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto to_string() const -> std::string
+  [[nodiscard]] explicit operator rect_type*() noexcept { return &m_rect; }
+
+  [[nodiscard]] explicit operator const rect_type*() const noexcept
   {
-    const auto sx = std::to_string(m_position.x());
-    const auto sy = std::to_string(m_position.y());
-    const auto sw = std::to_string(m_size.width);
-    const auto sh = std::to_string(m_size.height);
-    return "[Rect | X: " + sx + ", Y: " + sy + ", Width: " + sw +
-           ", Height: " + sh + "]";
+    return &m_rect;
   }
-
-  /**
-   * @brief Converts the rectangle to `SDL_Rect*`.
-   *
-   * @details This conversion is only available if the rectangle is based on
-   * `int`.
-   *
-   * @tparam U the type parameter, defaults to the type of the rectangle
-   * components.
-   *
-   * @return an `SDL_Rect*` that is produced by reinterpreting the invoked
-   * rectangle.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, int>>
-  [[nodiscard]] constexpr explicit operator SDL_Rect*() noexcept
-  {
-    return reinterpret_cast<SDL_Rect*>(this);
-  }
-
-  /**
-   * @brief Converts the rectangle to `const SDL_Rect*`.
-   *
-   * @details This conversion is only available if the rectangle is based on
-   * `int`.
-   *
-   * @tparam U the type parameter, defaults to the type of the rectangle
-   * components.
-   *
-   * @return a `const SDL_Rect*` that is produced by reinterpreting the invoked
-   * rectangle.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, int>>
-  [[nodiscard]] constexpr explicit operator const SDL_Rect*() const noexcept
-  {
-    return reinterpret_cast<const SDL_Rect*>(this);
-  }
-
-  /**
-   * @brief Converts the rectangle to `SDL_FRect*`.
-   *
-   * @details This conversion is only available if the rectangle is based on
-   * `float`.
-   *
-   * @tparam U the type parameter, defaults to the type of the rectangle
-   * components.
-   *
-   * @return an `SDL_FRect*` that is produced by reinterpreting the invoked
-   * rectangle.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, float>>
-  [[nodiscard]] constexpr explicit operator SDL_FRect*() noexcept
-  {
-    return reinterpret_cast<SDL_FRect*>(this);
-  }
-
-  /**
-   * @brief Converts the rectangle to `const SDL_FRect*`.
-   *
-   * @details This conversion is only available if the rectangle is based on
-   * `float`.
-   *
-   * @tparam U the type parameter, defaults to the type of the rectangle
-   * components.
-   *
-   * @return a `const SDL_FRect*` that is produced by reinterpreting the invoked
-   * rectangle.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, float>>
-  [[nodiscard]] constexpr explicit operator const SDL_FRect*() const noexcept
-  {
-    return reinterpret_cast<const SDL_FRect*>(this);
-  }
-
-  /**
-   * @brief Converts the rectangle to an `SDL_Rect`.
-   *
-   * @details This conversion is only available if the rectangle is based on
-   * `int`.
-   *
-   * @tparam U the type parameter, defaults to the type of the rectangle
-   * components.
-   *
-   * @return an `SDL_Rect` based on this rectangle.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, int>>
-  [[nodiscard]] constexpr explicit operator SDL_Rect() const noexcept
-  {
-    return {m_position.x(), m_position.y(), m_size.width, m_size.height};
-  }
-
-  /**
-   * @brief Converts the rectangle to an `SDL_FRect`.
-   *
-   * @details This conversion is only available if the rectangle is based on
-   * `float`.
-   *
-   * @tparam U the type parameter, defaults to the type of the rectangle
-   * components.
-   *
-   * @return an `SDL_FRect` based on this rectangle.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, float>>
-  [[nodiscard]] constexpr explicit operator SDL_FRect() const noexcept
-  {
-    return {m_position.x(), m_position.y(), m_size.width, m_size.height};
-  }
-
-  /**
-   * @brief Indicates whether or not two rectangles are equal.
-   *
-   * @param lhs the left-hand side rectangle.
-   * @param rhs the right-hand side rectangle.
-   *
-   * @return `true` if the rectangles are equal; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  friend constexpr auto operator==
-      <T>(const basic_rect<T>& lhs, const basic_rect<T>& rhs) noexcept -> bool;
-
-  /**
-   * @brief Indicates whether or not two rectangles aren't equal.
-   *
-   * @param lhs the left-hand side rectangle.
-   * @param rhs the right-hand side rectangle.
-   *
-   * @return `true` if the rectangles aren't equal; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  friend constexpr auto operator!=
-      <T>(const basic_rect<T>& lhs, const basic_rect<T>& rhs) noexcept -> bool;
 
  private:
-  basic_point<T> m_position;
-  basic_area<T> m_size;
-
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(std::is_trivial_v<T>);
+  rect_type m_rect{0, 0, 0, 0};
 };
 
-template <typename T>
-inline constexpr auto operator==(const basic_rect<T>& lhs,
-                                 const basic_rect<T>& rhs) noexcept -> bool
+class frect;
+
+class irect final : public basic_rect<detail::irect_traits> {
+ public:
+  constexpr irect() noexcept = default;
+
+  constexpr irect(const point_type& position, const area_type& size) noexcept
+      : basic_rect{position, size}
+  {}
+
+  [[nodiscard]] constexpr operator frect() const noexcept;
+};
+
+class frect final : public basic_rect<detail::frect_traits> {
+ public:
+  constexpr frect() noexcept = default;
+
+  constexpr frect(const point_type& position, const area_type& size) noexcept
+      : basic_rect{position, size}
+  {}
+
+  [[nodiscard]] constexpr operator irect() const noexcept
+  {
+    using value = irect::value_type;
+    const irect::point_type pos{static_cast<value>(x()),
+                                static_cast<value>(y())};
+    const irect::area_type size{static_cast<value>(width()),
+                                static_cast<value>(height())};
+    return irect{pos, size};
+  }
+};
+
+inline constexpr irect::operator frect() const noexcept
 {
-  return lhs.x() == rhs.x() && lhs.y() == rhs.y() &&
-         lhs.width() == rhs.width() && lhs.height() == rhs.height();
+  using value = frect::value_type;
+  const frect::point_type pos{static_cast<value>(x()), static_cast<value>(y())};
+  const frect::area_type size{static_cast<value>(width()),
+                              static_cast<value>(height())};
+  return frect{pos, size};
 }
 
-template <typename T>
-inline constexpr auto operator!=(const basic_rect<T>& lhs,
-                                 const basic_rect<T>& rhs) noexcept -> bool
+///**
+// * @typedef irect
+// *
+// * @ingroup geometry
+// *
+// * @brief Alias for an `int`-based rectangle.
+// *
+// * @since 5.0.0
+// */
+// using irect = basic_rect<detail::irect_traits>;
+//
+///**
+// * @typedef frect
+// *
+// * @ingroup geometry
+// *
+// * @brief Alias for a `float`-based rectangle.
+// *
+// * @since 5.0.0
+// */
+// using frect = basic_rect<detail::frect_traits>;
+
+static_assert(std::is_nothrow_default_constructible_v<frect>);
+static_assert(std::is_nothrow_default_constructible_v<irect>);
+
+static_assert(std::is_nothrow_copy_constructible_v<frect>);
+static_assert(std::is_nothrow_copy_constructible_v<irect>);
+
+static_assert(std::is_nothrow_copy_assignable_v<frect>);
+static_assert(std::is_nothrow_copy_assignable_v<irect>);
+
+static_assert(std::is_nothrow_move_constructible_v<frect>);
+static_assert(std::is_nothrow_move_constructible_v<irect>);
+
+static_assert(std::is_nothrow_move_assignable_v<frect>);
+static_assert(std::is_nothrow_move_assignable_v<irect>);
+
+static_assert(std::is_nothrow_destructible_v<frect>);
+static_assert(std::is_nothrow_destructible_v<irect>);
+
+/**
+ * @brief Indicates whether or not two rectangles are equal.
+ *
+ * @ingroup geometry
+ *
+ * @param lhs the left-hand side rectangle.
+ * @param rhs the right-hand side rectangle.
+ *
+ * @return `true` if the rectangles are equal; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+template <typename Traits>
+[[nodiscard]] inline constexpr auto operator==(
+    const basic_rect<Traits>& lhs,
+    const basic_rect<Traits>& rhs) noexcept -> bool
+{
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) &&
+         (lhs.width() == rhs.width()) && (lhs.height() == rhs.height());
+}
+
+/**
+ * @brief Indicates whether or not two rectangles aren't equal.
+ *
+ * @ingroup geometry
+ *
+ * @param lhs the left-hand side rectangle.
+ * @param rhs the right-hand side rectangle.
+ *
+ * @return `true` if the rectangles aren't equal; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+template <typename Traits>
+[[nodiscard]] inline constexpr auto operator!=(
+    const basic_rect<Traits>& lhs,
+    const basic_rect<Traits>& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-static_assert(std::is_nothrow_default_constructible_v<basic_rect<float>>);
-static_assert(std::is_nothrow_copy_constructible_v<basic_rect<float>>);
-static_assert(std::is_nothrow_move_constructible_v<basic_rect<float>>);
-static_assert(std::is_nothrow_copy_assignable_v<basic_rect<float>>);
-static_assert(std::is_nothrow_move_assignable_v<basic_rect<float>>);
-static_assert(sizeof(basic_rect<int>) == sizeof(SDL_Rect));
-static_assert(sizeof(basic_rect<float>) == sizeof(SDL_FRect));
+/**
+ * @brief Returns the union of two rectangles.
+ *
+ * @ingroup geometry
+ *
+ * @details Returns a rectangle that represents the union of two rectangles.
+ *
+ * @param fst the first rectangle.
+ * @param snd the second rectangle.
+ *
+ * @return a rectangle that represents the union of the rectangles.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto get_union(const irect& fst, const irect& snd) noexcept
+    -> irect
+{
+  SDL_Rect result{0, 0, 0, 0};
+  SDL_UnionRect(&fst.get(), &snd.get(), &result);
+  return {{result.x, result.y}, {result.w, result.h}};
+}
 
-using rect_i = basic_rect<int>;
-using rect_f = basic_rect<float>;
+/**
+ * @brief Returns a textual representation of a rectangle.
+ *
+ * @ingroup geometry
+ *
+ * @tparam Traits the traits used by the rectangle.
+ *
+ * @param rect the rectangle that will be converted to a string.
+ *
+ * @return a textual representation of the rectangle.
+ *
+ * @since 5.0.0
+ */
+template <typename Traits>
+[[nodiscard]] auto to_string(const basic_rect<Traits>& rect) -> std::string
+{
+  const auto x = std::to_string(rect.x());
+  const auto y = std::to_string(rect.y());
+  const auto w = std::to_string(rect.width());
+  const auto h = std::to_string(rect.height());
+  return "[Rect | X: " + x + ", Y: " + y + ", Width: " + w + ", Height: " + h +
+         "]";
+}
+
+/**
+ * @brief Prints a textual representation of a rectangle using a stream.
+ *
+ * @ingroup geometry
+ *
+ * @tparam Traits the traits used by the rectangle.
+ *
+ * @param stream the stream that will be used.
+ * @param rect the rectangle that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+template <typename Traits>
+inline auto operator<<(std::ostream& stream, const basic_rect<Traits>& rect)
+    -> std::ostream&
+{
+  return stream << to_string(rect);
+  return stream;
+}
 
 }  // namespace centurion
 

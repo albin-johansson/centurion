@@ -25,7 +25,7 @@
 /**
  * @file point.hpp
  *
- * @brief Provides a simple two-dimensional point class.
+ * @brief Provides simple 2D point representations.
  *
  * @author Albin Johansson
  *
@@ -40,8 +40,10 @@
 #include <SDL.h>
 
 #include <cmath>
+#include <ostream>
 #include <string>
 #include <type_traits>
+#include <utility>
 
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
@@ -52,408 +54,259 @@
 
 namespace centurion {
 
-template <typename T>
-class basic_point;
+/// @cond FALSE
 
-template <typename U>
-constexpr auto operator==(const basic_point<U>& lhs,
-                          const basic_point<U>& rhs) noexcept -> bool;
+namespace detail {
 
-template <typename U>
-constexpr auto operator!=(const basic_point<U>& lhs,
-                          const basic_point<U>& rhs) noexcept -> bool;
-
-template <typename U>
-constexpr auto operator-(const basic_point<U>& lhs,
-                         const basic_point<U>& rhs) noexcept -> basic_point<U>;
-
-template <typename U>
-constexpr auto operator+(const basic_point<U>& lhs,
-                         const basic_point<U>& rhs) noexcept -> basic_point<U>;
-
-/**
- * @class basic_point
- *
- * @ingroup geometry
- *
- * @brief Represents an integer or floating-point based 2D point.
- *
- * @details There are two pre-defined type aliases pre-defined for this
- * class, `point_i` and `point_f`.
- *
- * @tparam T the type of the components of the point. Must be either integral
- * or real. Defaults to `float`.
- *
- * @since 4.0.0
- *
- * @see `point_i`
- * @see `point_f`
- *
- * @headerfile point.hpp
- */
-template <typename T = float>
-class basic_point final {
+class ipoint_traits final {
  public:
-  using value_type = T;
-  using pointer = T*;
-  using reference = T&;
-
-  /**
-   * @brief Creates a point with coordinates (0, 0).
-   *
-   * @since 4.0.0
-   */
-  constexpr basic_point() noexcept = default;
-
-  /**
-   * @brief Creates a point with the specified coordinates.
-   *
-   * @param px the x-coordinate of the point.
-   * @param py the y-coordinate of the point.
-   *
-   * @since 4.0.0
-   */
-  constexpr basic_point(T px, T py) noexcept : m_x{px}, m_y{py} {}
-
-  /**
-   * @brief Sets the x-coordinate of the point.
-   *
-   * @param px the new x-coordinate of the point.
-   *
-   * @since 4.0.0
-   */
-  constexpr void set_x(T px) noexcept { m_x = px; }
-
-  /**
-   * @brief Sets the y-coordinate of the point.
-   *
-   * @param py the new y-coordinate of the point.
-   *
-   * @since 4.0.0
-   */
-  constexpr void set_y(T py) noexcept { m_y = py; }
-
-  /**
-   * @brief Sets the values of the x- and y-coordinates of the point.
-   *
-   * @param px the new x-coordinate of the point.
-   * @param py the new y-coordinate of the point.
-   *
-   * @since 4.0.0
-   */
-  constexpr void set(T px, T py) noexcept
-  {
-    m_x = px;
-    m_y = py;
-  }
-
-  /**
-   * @brief Copies the components of the supplied point into this point.
-   *
-   * @param other the point that will be copied.
-   *
-   * @since 4.0.0
-   */
-  constexpr void set(const basic_point<T>& other) noexcept
-  {
-    m_x = other.m_x;
-    m_y = other.m_y;
-  }
-
-  /**
-   * @brief Calculates and returns the distance from this point to the supplied
-   * point.
-   *
-   * @details It doesn't matter in which order the method call is performed
-   * (i.e. `a.distance_to(b) == b.distance_to(a)`)
-   *
-   * @param other the point to calculate the distance to.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto distance_to(const basic_point<T>& other) const noexcept
-      -> T
-  {
-    return std::sqrt(std::abs(m_x - other.m_x) + std::abs(m_y - other.m_y));
-  }
-
-  /**
-   * @brief Returns a textual representation of the point.
-   *
-   * @return a textual representation of the point.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto to_string() const -> std::string
-  {
-    return "[Point | X: " + std::to_string(m_x) +
-           ", Y: " + std::to_string(m_y) + "]";
-  }
-
-  /**
-   * @brief Returns the x-coordinate of the point.
-   *
-   * @return the x-coordinate of the point.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] constexpr auto x() const noexcept -> T { return m_x; }
-
-  /**
-   * @brief Returns the y-coordinate of the point.
-   *
-   * @return the y-coordinate of the point.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] constexpr auto y() const noexcept -> T { return m_y; }
-
-  /**
-   * @brief Indicates whether or not the point is considered to be equal to the
-   * supplied point.
-   *
-   * @details This method is only available if the points are floating-point
-   * based.
-   *
-   * @param other the other point to compare this point with.
-   * @param epsilon the exclusive limit on the maximum allowed absolute
-   * difference between the coordinates of the points.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename X = detail::if_floating_t<U>>
-  [[nodiscard]] auto equals(const basic_point<T>& other,
-                            T epsilon = 0.0001) const noexcept -> bool
-  {
-    return std::abs(m_x - other.m_x) < epsilon &&
-           std::abs(m_y - other.m_y) < epsilon;
-  }
-
-  /**
-   * @brief Converts to `SDL_Point`.
-   *
-   * @return an `SDL_Point` instance based on the point.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] constexpr explicit operator SDL_Point() const noexcept
-  {
-    return {static_cast<int>(m_x), static_cast<int>(m_y)};
-  }
-
-  /**
-   * @brief Converts to `SDL_Point`.
-   *
-   * @return an `SDL_FPoint` instance based on the point.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] constexpr explicit operator SDL_FPoint() const noexcept
-  {
-    return {static_cast<float>(m_x), static_cast<float>(m_y)};
-  }
-
-  /**
-   * @brief Creates and returns a point in which the coordinates are the sums
-   * obtained by adding the x- and y-coordinates of the supplied points.
-   *
-   * @param lhs the left-hand side point.
-   * @param rhs the right-hand side point.
-   *
-   * @return a point in which the coordinates are the sums obtained by adding
-   * the x- and y-coordinates of the supplied points.
-   *
-   * @since 4.0.0
-   */
-  friend constexpr auto operator+
-      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept
-      -> basic_point<T>;
-
-  /**
-   * @brief Converts to `SDL_Point*`.
-   *
-   * @note This conversion is only available if the point is based on `int`.
-   *
-   * @tparam U the type parameter, defaults to the type of the point
-   * components.
-   *
-   * @return an `SDL_Point` pointer that is produced by reinterpreting the
-   * invoked point.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, int>>
-  [[nodiscard]] explicit operator SDL_Point*() noexcept
-  {
-    return reinterpret_cast<SDL_Point*>(this);
-  }
-
-  /**
-   * @brief Converts to `const SDL_Point*`.
-   *
-   * @note This conversion is only available if the point is based on `int`.
-   *
-   * @tparam U the type parameter, defaults to the type of the point
-   * components.
-   *
-   * @return a `const SDL_Point` pointer that is produced by reinterpreting the
-   * invoked point.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, int>>
-  [[nodiscard]] explicit operator const SDL_Point*() const noexcept
-  {
-    return reinterpret_cast<const SDL_Point*>(this);
-  }
-
-  /**
-   * @brief Converts to `SDL_FPoint*`.
-   *
-   * @note This conversion is only available if the point is based on `int`.
-   *
-   * @tparam U the type parameter, defaults to the type of the point
-   * components.
-   *
-   * @return an `SDL_FPoint` pointer that is produced by reinterpreting the
-   * invoked point.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, float>>
-  [[nodiscard]] explicit operator SDL_FPoint*() noexcept
-  {
-    return reinterpret_cast<SDL_FPoint*>(this);
-  }
-
-  /**
-   * @brief Converts to `const SDL_FPoint*`.
-   *
-   * @note This conversion is only available if the point is based on `int`.
-   *
-   * @tparam U the type parameter, defaults to the type of the point
-   * components.
-   *
-   * @return a `const SDL_FPoint` pointer that is produced by reinterpreting the
-   * invoked point.
-   *
-   * @since 4.0.0
-   */
-  template <typename U = T, typename = detail::if_same_t<U, float>>
-  [[nodiscard]] explicit operator const SDL_FPoint*() const noexcept
-  {
-    return reinterpret_cast<const SDL_FPoint*>(this);
-  }
-
-  /**
-   * @brief Creates and returns a point in which the coordinates are the
-   * differences obtained by subtracting the x- and y-coordinates of the
-   * supplied points.
-   *
-   * @param lhs the left-hand side point.
-   * @param rhs the right-hand side point.
-   *
-   * @return a point in which the coordinates are the differences obtained by
-   * subtracting the x- and y-coordinates of the supplied points.
-   *
-   * @since 4.0.0
-   */
-  friend constexpr auto operator-
-      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept
-      -> basic_point<T>;
-
-  /**
-   * @brief Indicates whether or not two points are considered to be equal.
-   *
-   * @param lhs the left-hand side point.
-   * @param rhs the right-hand side point.
-   *
-   * @return `true` if the points are equal; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  friend constexpr auto operator==
-      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept
-      -> bool;
-
-  /**
-   * @brief Indicates whether or not two points aren't considered to be equal.
-   *
-   * @param lhs the left-hand side point.
-   * @param rhs the right-hand side point.
-   *
-   * @return `true` if the points aren't equal; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  friend constexpr auto operator!=
-      <T>(const basic_point<T>& lhs, const basic_point<T>& rhs) noexcept
-      -> bool;
-
- private:
-  T m_x = 0;
-  T m_y = 0;
-
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>,
-                "Point type must be either integral or floating-point!");
-  static_assert(std::is_trivial_v<T>, "Point type must be trivial!");
+  using point_type = SDL_Point;
+  using value_type = int;
 };
 
-template <typename T>
-inline constexpr auto operator+(const basic_point<T>& lhs,
-                                const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+class fpoint_traits final {
+ public:
+  using point_type = SDL_FPoint;
+  using value_type = float;
+};
+
+}  // namespace detail
+
+/// @endcond
+
+template <typename Traits>
+class basic_point {
+ public:
+  using point_type = typename Traits::point_type;
+  using value_type = typename Traits::value_type;
+
+  constexpr basic_point() noexcept = default;
+
+  constexpr basic_point(value_type x, value_type y) noexcept
+  {
+    m_point.x = x;
+    m_point.y = y;
+  };
+
+  void set_x(value_type x) noexcept { m_point.x = x; }
+
+  void set_y(value_type y) noexcept { m_point.y = y; }
+
+  [[nodiscard]] constexpr auto x() const noexcept -> value_type
+  {
+    return m_point.x;
+  }
+
+  [[nodiscard]] constexpr auto y() const noexcept -> value_type
+  {
+    return m_point.y;
+  }
+
+  [[nodiscard]] constexpr auto get() noexcept -> point_type& { return m_point; }
+
+  [[nodiscard]] constexpr auto get() const noexcept -> const point_type&
+  {
+    return m_point;
+  }
+
+  [[nodiscard]] explicit operator point_type() const noexcept
+  {
+    return m_point;
+  }
+
+  [[nodiscard]] explicit operator point_type*() noexcept { return &m_point; }
+
+  [[nodiscard]] explicit operator const point_type*() const noexcept
+  {
+    return &m_point;
+  }
+
+ private:
+  point_type m_point{0, 0};
+};
+
+class ipoint;
+class fpoint;
+
+class ipoint final : public basic_point<detail::ipoint_traits> {
+ public:
+  using point_type = detail::ipoint_traits::point_type;
+  using value_type = detail::ipoint_traits::value_type;
+
+  constexpr ipoint() noexcept = default;
+  constexpr ipoint(value_type x, value_type y) noexcept : basic_point{x, y} {}
+
+  [[nodiscard]] constexpr explicit operator fpoint() const noexcept;
+};
+
+static_assert(std::is_final_v<ipoint>);
+static_assert(std::is_nothrow_default_constructible_v<ipoint>);
+static_assert(std::is_nothrow_destructible_v<ipoint>);
+static_assert(std::is_nothrow_copy_constructible_v<ipoint>);
+static_assert(std::is_nothrow_copy_assignable_v<ipoint>);
+static_assert(std::is_nothrow_move_constructible_v<ipoint>);
+static_assert(std::is_nothrow_move_assignable_v<ipoint>);
+
+class fpoint final : public basic_point<detail::fpoint_traits> {
+ public:
+  using point_type = detail::fpoint_traits::point_type;
+  using value_type = detail::fpoint_traits::value_type;
+
+  constexpr fpoint() noexcept = default;
+  constexpr fpoint(value_type x, value_type y) noexcept : basic_point{x, y} {}
+
+  [[nodiscard]] constexpr explicit operator ipoint() const noexcept
+  {
+    return {static_cast<int>(x()), static_cast<int>(y())};
+  }
+};
+
+static_assert(std::is_final_v<fpoint>);
+static_assert(std::is_nothrow_default_constructible_v<fpoint>);
+static_assert(std::is_nothrow_destructible_v<fpoint>);
+static_assert(std::is_nothrow_copy_constructible_v<fpoint>);
+static_assert(std::is_nothrow_copy_assignable_v<fpoint>);
+static_assert(std::is_nothrow_move_constructible_v<fpoint>);
+static_assert(std::is_nothrow_move_assignable_v<fpoint>);
+
+inline constexpr ipoint::operator fpoint() const noexcept
 {
-  return basic_point<T>{lhs.m_x + rhs.m_x, lhs.m_y + rhs.m_y};
+  return {static_cast<float>(x()), static_cast<float>(y())};
 }
 
-template <typename T>
-inline constexpr auto operator-(const basic_point<T>& lhs,
-                                const basic_point<T>& rhs) noexcept
-    -> basic_point<T>
+// potentially useful in generic code
+template <typename T,
+          typename... Args,
+          typename = std::enable_if_t<std::is_same_v<T, int> ||
+                                      std::is_same_v<T, float>>>
+[[nodiscard]] constexpr auto make_point(Args&&... args) noexcept
 {
-  return basic_point<T>{lhs.m_x - rhs.m_x, lhs.m_y - rhs.m_y};
+  if constexpr (std::is_same_v<T, int>) {
+    return ipoint{std::forward<Args>(args)...};
+  } else {
+    return fpoint{std::forward<Args>(args)...};
+  }
 }
 
-template <typename T>
-inline constexpr auto operator==(const basic_point<T>& lhs,
-                                 const basic_point<T>& rhs) noexcept -> bool
+/// @cond FALSE
+
+namespace detail {
+
+template <typename From, typename To>
+[[nodiscard]] constexpr auto valid_point_cast() noexcept -> bool
 {
-  return (lhs.m_x == rhs.m_x) && (lhs.m_y == rhs.m_y);
+  return (std::is_same_v<From, ipoint> && std::is_same_v<To, fpoint>) ||
+         (std::is_same_v<From, fpoint> && std::is_same_v<To, ipoint>);
 }
 
-template <typename T>
-inline constexpr auto operator!=(const basic_point<T>& lhs,
-                                 const basic_point<T>& rhs) noexcept -> bool
+}  // namespace detail
+
+/// @endcond
+
+[[nodiscard]] inline auto distance(const ipoint& from,
+                                   const ipoint& to) noexcept -> int
+{
+  const auto xDiff = std::abs(from.x() - to.x());
+  const auto yDiff = std::abs(from.y() - to.y());
+  const auto dist = std::sqrt(xDiff + yDiff);
+  return static_cast<int>(std::round(dist));
+}
+
+[[nodiscard]] inline auto distance(const fpoint& from,
+                                   const fpoint& to) noexcept -> float
+{
+  return std::sqrt(std::abs(from.x() - to.x()) + std::abs(from.y() - to.y()));
+}
+
+[[nodiscard]] inline constexpr auto operator+(const fpoint& lhs,
+                                              const fpoint& rhs) noexcept
+    -> fpoint
+{
+  return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
+}
+
+[[nodiscard]] inline constexpr auto operator-(const fpoint& lhs,
+                                              const fpoint& rhs) noexcept
+    -> fpoint
+{
+  return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
+}
+
+[[nodiscard]] inline constexpr auto operator+(const ipoint& lhs,
+                                              const ipoint& rhs) noexcept
+    -> ipoint
+{
+  return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
+}
+
+[[nodiscard]] inline constexpr auto operator-(const ipoint& lhs,
+                                              const ipoint& rhs) noexcept
+    -> ipoint
+{
+  return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
+}
+
+[[nodiscard]] inline constexpr auto operator==(const ipoint& lhs,
+                                               const ipoint& rhs) noexcept
+    -> bool
+{
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
+}
+
+[[nodiscard]] inline constexpr auto operator==(const fpoint& lhs,
+                                               const fpoint& rhs) noexcept
+    -> bool
+{
+  return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
+}
+
+[[nodiscard]] inline constexpr auto operator!=(const ipoint& lhs,
+                                               const ipoint& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
-static_assert(std::is_nothrow_default_constructible_v<basic_point<float>>);
-static_assert(std::is_nothrow_copy_constructible_v<basic_point<float>>);
-static_assert(std::is_nothrow_move_constructible_v<basic_point<float>>);
-static_assert(std::is_nothrow_copy_assignable_v<basic_point<float>>);
-static_assert(std::is_nothrow_move_assignable_v<basic_point<float>>);
-static_assert(sizeof(basic_point<int>) == sizeof(SDL_Point));
-static_assert(sizeof(basic_point<float>) == sizeof(SDL_FPoint));
+[[nodiscard]] inline constexpr auto operator!=(const fpoint& lhs,
+                                               const fpoint& rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
-/**
- * @typedef point_i
- *
- * @brief Alias for `int` points.
- *
- * @since 4.0.0
- */
-using point_i = basic_point<int>;
+[[nodiscard]] inline auto to_string(const ipoint& point) -> std::string
+{
+  using namespace std::string_literals;
 
-/**
- * @typedef point_f
- *
- * @brief Alias for `float` points.
- *
- * @since 4.0.0
- */
-using point_f = basic_point<float>;
+  const auto xStr = std::to_string(point.x());
+  const auto yStr = std::to_string(point.y());
+
+  return "[i_point | X: "s + xStr + ", Y: "s + yStr + "]"s;
+}
+
+[[nodiscard]] inline auto to_string(const fpoint& point) -> std::string
+{
+  using namespace std::string_literals;
+
+  const auto xStr = std::to_string(point.x());
+  const auto yStr = std::to_string(point.y());
+
+  return "[f_point | X: "s + xStr + ", Y: "s + yStr + "]"s;
+}
+
+inline auto operator<<(std::ostream& stream, const ipoint& point)
+    -> std::ostream&
+{
+  stream << to_string(point);
+  return stream;
+}
+
+inline auto operator<<(std::ostream& stream, const fpoint& point)
+    -> std::ostream&
+{
+  stream << to_string(point);
+  return stream;
+}
 
 }  // namespace centurion
 

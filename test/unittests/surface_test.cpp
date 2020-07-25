@@ -155,7 +155,7 @@ TEST_CASE("surface::pitch", "[surface]")
 
 TEST_CASE("surface::clip", "[surface]")
 {
-  const ctn::rect_i rect{{48, 29}, {34, 89}};
+  const ctn::irect rect{{48, 29}, {34, 89}};
 
   SECTION("Non-const")
   {

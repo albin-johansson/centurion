@@ -26,10 +26,10 @@ namespace centurion {
 template <typename T>
 struct basic_area;
 
-template <typename T>
+template <typename Traits>
 class basic_rect;
 
-template <typename T>
+template <typename Traits>
 class basic_point;
 
 class renderer;

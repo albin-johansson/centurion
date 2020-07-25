@@ -33,7 +33,7 @@ class vtl_game {
   {
     m_renderer.clear_with(ctn::colors::pink);
 
-    m_renderer.fill_rect(ctn::rect_f{{x, 50.0f}, {100.0f, 150.0f}});
+    m_renderer.fill_rect(ctn::frect{{x, 50.0f}, {100.0f, 150.0f}});
 
     m_renderer.present();
   }
@@ -103,7 +103,7 @@ class sftl_game {
   {
     m_renderer.clear_with(ctn::colors::pink);
 
-    m_renderer.fill_rect(ctn::rect_f{{x, 50.0f}, {100.0f, 150.0f}});
+    m_renderer.fill_rect(ctn::frect{{x, 50.0f}, {100.0f, 150.0f}});
 
     m_renderer.present();
   }
@@ -167,7 +167,7 @@ class ftl_game {
     m_renderer.clear_with(ctn::colors::pink);
 
     const float renderX = (x * alpha) + (prevX * (1.0 - alpha));
-    const ctn::rect_f rect{{renderX, 50}, {100.0f, 150.0f}};
+    const ctn::frect rect{{renderX, 50}, {100.0f, 150.0f}};
 
     m_renderer.fill_rect(rect);
 

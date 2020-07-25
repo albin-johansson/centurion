@@ -127,16 +127,14 @@ class renderer_base {
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void draw_rect(const basic_rect<T>& rect) noexcept
+  void draw_rect(const irect& rect) noexcept
   {
-    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+    SDL_RenderDrawRect(ptr(), static_cast<const SDL_Rect*>(rect));
+  }
 
-    if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderDrawRect(ptr(), static_cast<const SDL_Rect*>(rect));
-    } else {
-      SDL_RenderDrawRectF(ptr(), static_cast<const SDL_FRect*>(rect));
-    }
+  void draw_rect(const frect& rect) noexcept
+  {
+    SDL_RenderDrawRectF(ptr(), static_cast<const SDL_FRect*>(rect));
   }
 
   /**
@@ -149,16 +147,14 @@ class renderer_base {
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void fill_rect(const basic_rect<T>& rect) noexcept
+  void fill_rect(const irect& rect) noexcept
   {
-    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+    SDL_RenderFillRect(ptr(), static_cast<const SDL_Rect*>(rect));
+  }
 
-    if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderFillRect(ptr(), static_cast<const SDL_Rect*>(rect));
-    } else {
-      SDL_RenderFillRectF(ptr(), static_cast<const SDL_FRect*>(rect));
-    }
+  void fill_rect(const frect& rect) noexcept
+  {
+    SDL_RenderFillRectF(ptr(), static_cast<const SDL_FRect*>(rect));
   }
 
   /**
@@ -173,17 +169,14 @@ class renderer_base {
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void draw_line(const basic_point<T>& start,
-                 const basic_point<T>& end) noexcept
+  void draw_line(const ipoint& start, const ipoint& end) noexcept
   {
-    static_assert(std::is_same_v<T, float> || std::is_same_v<T, int>);
+    SDL_RenderDrawLine(ptr(), start.x(), start.y(), end.x(), end.y());
+  }
 
-    if constexpr (std::is_same_v<T, int>) {
-      SDL_RenderDrawLine(ptr(), start.x(), start.y(), end.x(), end.y());
-    } else {
-      SDL_RenderDrawLineF(ptr(), start.x(), start.y(), end.x(), end.y());
-    }
+  void draw_line(const fpoint& start, const fpoint& end) noexcept
+  {
+    SDL_RenderDrawLineF(ptr(), start.x(), start.y(), end.x(), end.y());
   }
 
   /**
@@ -213,14 +206,14 @@ class renderer_base {
     // This must be a point of int or float
     using point_t = typename Container::value_type;
 
-    static_assert(std::is_same_v<point_t, basic_point<float>> ||
-                  std::is_same_v<point_t, basic_point<int>>);
+//    static_assert(std::is_same_v<point_t, basic_point<float>> ||
+//                  std::is_same_v<point_t, basic_point<int>>);
 
     // This is either int or float
     using value_t = typename point_t::value_type;
 
     if (!container.empty()) {
-      const basic_point<value_t>& front = container.front();
+      const auto& front = container.front();
 
       if constexpr (std::is_same_v<value_t, int>) {
         const auto* first = static_cast<const SDL_Point*>(front);

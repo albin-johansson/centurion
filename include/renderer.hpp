@@ -298,11 +298,9 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.1.0
    */
-  template <typename T>
-  void draw_rect_t(const basic_rect<T>& rect) noexcept
-  {
-    draw_rect(translate(rect));
-  }
+  void draw_rect_t(const irect& rect) noexcept { draw_rect(translate(rect)); }
+
+  void draw_rect_t(const frect& rect) noexcept { draw_rect(translate(rect)); }
 
   /**
    * @brief Renders a filled rectangle in the currently selected color.
@@ -317,11 +315,9 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.1.0
    */
-  template <typename T>
-  void fill_rect_t(const basic_rect<T>& rect) noexcept
-  {
-    fill_rect(translate(rect));
-  }
+  void fill_rect_t(const irect& rect) noexcept { fill_rect(translate(rect)); }
+
+  void fill_rect_t(const frect& rect) noexcept { fill_rect(translate(rect)); }
 
   /**
    * @brief Renders a texture at the specified position.
@@ -337,8 +333,12 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void render_t(const texture& texture, const basic_point<T>& position) noexcept
+  void render_t(const texture& texture, const ipoint& position) noexcept
+  {
+    render(texture, translate(position));
+  }
+
+  void render_t(const texture& texture, const fpoint& position) noexcept
   {
     render(texture, translate(position));
   }
@@ -358,9 +358,12 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void render_t(const texture& texture,
-                const basic_rect<T>& destination) noexcept
+  void render_t(const texture& texture, const irect& destination) noexcept
+  {
+    render(texture, translate(destination));
+  }
+
+  void render_t(const texture& texture, const frect& destination) noexcept
   {
     render(texture, translate(destination));
   }
@@ -384,10 +387,16 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename T>
   void render_t(const texture& texture,
                 const irect& source,
-                const basic_rect<T>& destination) noexcept
+                const irect& destination) noexcept
+  {
+    render(texture, source, translate(destination));
+  }
+
+  void render_t(const texture& texture,
+                const irect& source,
+                const frect& destination) noexcept
   {
     render(texture, source, translate(destination));
   }
@@ -410,10 +419,17 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename T>
   void render_t(const texture& texture,
                 const irect& source,
-                const basic_rect<T>& destination,
+                const irect& destination,
+                double angle) noexcept
+  {
+    render(texture, source, translate(destination), angle);
+  }
+
+  void render_t(const texture& texture,
+                const irect& source,
+                const frect& destination,
                 double angle) noexcept
   {
     render(texture, source, translate(destination), angle);
@@ -439,12 +455,20 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename T>
   void render_t(const texture& texture,
                 const irect& source,
-                const basic_rect<T>& destination,
+                const irect& destination,
                 double angle,
-                const basic_point< T>& center) noexcept
+                const ipoint& center) noexcept
+  {
+    render(texture, source, translate(destination), angle, center);
+  }
+
+  void render_t(const texture& texture,
+                const irect& source,
+                const frect& destination,
+                double angle,
+                const fpoint& center) noexcept
   {
     render(texture, source, translate(destination), angle, center);
   }
@@ -467,12 +491,21 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename T>
   void render_t(const texture& texture,
                 const irect& source,
-                const basic_rect<T>& destination,
+                const irect& destination,
                 double angle,
-                const basic_point<T>& center,
+                const ipoint& center,
+                SDL_RendererFlip flip) noexcept
+  {
+    render(texture, source, translate(destination), angle, center, flip);
+  }
+
+  void render_t(const texture& texture,
+                const irect& source,
+                const frect& destination,
+                double angle,
+                const fpoint& center,
                 SDL_RendererFlip flip) noexcept
   {
     render(texture, source, translate(destination), angle, center, flip);
@@ -649,11 +682,7 @@ class renderer final : public renderer_base<renderer> {
     SDL_Rect vp{};
     SDL_RenderGetViewport(m_renderer.get(), &vp);
 
-    if constexpr (std::is_same_v<T, int>) {
-      return x - static_cast<T>(vp.x);
-    } else {
-      return x - vp.x;
-    }
+    return x - static_cast<T>(vp.x);
   }
 
   /**
@@ -673,25 +702,27 @@ class renderer final : public renderer_base<renderer> {
     SDL_Rect vp{};
     SDL_RenderGetViewport(m_renderer.get(), &vp);
 
-    if constexpr (std::is_same_v<T, int>) {
-      return y - static_cast<T>(vp.y);
-    } else {
-      return y - vp.y;
-    }
+    return y - static_cast<T>(vp.y);
   }
 
-  template <typename T>
-  [[nodiscard]] auto translate(const basic_point<T>& point) const noexcept
-      -> basic_point<T>
+  [[nodiscard]] auto translate(const ipoint& point) const noexcept -> ipoint
   {
-    return basic_point<T>{tx(point.x()), ty(point.y())};
+    return ipoint{tx(point.x()), ty(point.y())};
   }
 
-  template <typename T>
-  [[nodiscard]] auto translate(const basic_rect<T>& rect) const noexcept
-      -> basic_rect<T>
+  [[nodiscard]] auto translate(const fpoint& point) const noexcept -> fpoint
   {
-    return {translate(rect.position()), rect.size()};
+    return fpoint{tx(point.x()), ty(point.y())};
+  }
+
+  [[nodiscard]] auto translate(const irect& rect) const noexcept -> irect
+  {
+    return irect{translate(rect.position()), rect.size()};
+  }
+
+  [[nodiscard]] auto translate(const frect& rect) const noexcept -> frect
+  {
+    return frect{translate(rect.position()), rect.size()};
   }
 };
 

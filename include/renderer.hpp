@@ -46,6 +46,7 @@
 #include <entt.hpp>
 #include <memory>
 #include <type_traits>
+#include <utility>
 
 #include "centurion_api.hpp"
 #include "colors.hpp"
@@ -308,16 +309,17 @@ class renderer final : public renderer_base<renderer> {
    * @details The rendered rectangle will be translated using the current
    * translation viewport.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
+   * @tparam Traits The traits used by the rectangle.
    *
    * @param rect the rectangle that will be rendered.
    *
    * @since 4.1.0
    */
-  void fill_rect_t(const irect& rect) noexcept { fill_rect(translate(rect)); }
-
-  void fill_rect_t(const frect& rect) noexcept { fill_rect(translate(rect)); }
+  template <typename Traits>
+  void fill_rect_t(const basic_rect<Traits>& rect) noexcept
+  {
+    fill_rect(translate(rect));
+  }
 
   /**
    * @brief Renders a texture at the specified position.
@@ -349,8 +351,7 @@ class renderer final : public renderer_base<renderer> {
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
+   * @tparam Traits the traits used by the rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param destination the position (pre-translation) and size of the
@@ -358,12 +359,9 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
-  void render_t(const texture& texture, const irect& destination) noexcept
-  {
-    render(texture, translate(destination));
-  }
-
-  void render_t(const texture& texture, const frect& destination) noexcept
+  template <typename Traits>
+  void render_t(const texture& texture,
+                const basic_rect<Traits>& destination) noexcept
   {
     render(texture, translate(destination));
   }
@@ -377,8 +375,7 @@ class renderer final : public renderer_base<renderer> {
    * @remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
+   * @tparam Traits the traits used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -387,16 +384,10 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
+  template <typename Traits>
   void render_t(const texture& texture,
                 const irect& source,
-                const irect& destination) noexcept
-  {
-    render(texture, source, translate(destination));
-  }
-
-  void render_t(const texture& texture,
-                const irect& source,
-                const frect& destination) noexcept
+                const basic_rect<Traits>& destination) noexcept
   {
     render(texture, source, translate(destination));
   }
@@ -407,8 +398,7 @@ class renderer final : public renderer_base<renderer> {
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
+   * @tparam Traits the traits used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -419,17 +409,10 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
+  template <typename Traits>
   void render_t(const texture& texture,
                 const irect& source,
-                const irect& destination,
-                double angle) noexcept
-  {
-    render(texture, source, translate(destination), angle);
-  }
-
-  void render_t(const texture& texture,
-                const irect& source,
-                const frect& destination,
+                const basic_rect<Traits>& destination,
                 double angle) noexcept
   {
     render(texture, source, translate(destination), angle);
@@ -441,8 +424,8 @@ class renderer final : public renderer_base<renderer> {
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
+   * @tparam RectTraits the traits used by the destination rectangle.
+   * @tparam PointTraits the traits used by the center-of-rotation point.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -455,20 +438,12 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
+  template <typename RectTraits, typename PointTraits>
   void render_t(const texture& texture,
                 const irect& source,
-                const irect& destination,
+                const basic_rect<RectTraits>& destination,
                 double angle,
-                const ipoint& center) noexcept
-  {
-    render(texture, source, translate(destination), angle, center);
-  }
-
-  void render_t(const texture& texture,
-                const irect& source,
-                const frect& destination,
-                double angle,
-                const fpoint& center) noexcept
+                const basic_point<PointTraits>& center) noexcept
   {
     render(texture, source, translate(destination), angle, center);
   }
@@ -476,8 +451,8 @@ class renderer final : public renderer_base<renderer> {
   /**
    * @brief Renders a texture.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
+   * @tparam RectTraits the traits used by the destination rectangle.
+   * @tparam PointTraits the traits used by the center-of-rotation point.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -491,21 +466,12 @@ class renderer final : public renderer_base<renderer> {
    *
    * @since 4.0.0
    */
+  template <typename RectTraits, typename PointTraits>
   void render_t(const texture& texture,
                 const irect& source,
-                const irect& destination,
+                const basic_rect<RectTraits>& destination,
                 double angle,
-                const ipoint& center,
-                SDL_RendererFlip flip) noexcept
-  {
-    render(texture, source, translate(destination), angle, center, flip);
-  }
-
-  void render_t(const texture& texture,
-                const irect& source,
-                const frect& destination,
-                double angle,
-                const fpoint& center,
+                const basic_point<PointTraits>& center,
                 SDL_RendererFlip flip) noexcept
   {
     render(texture, source, translate(destination), angle, center, flip);
@@ -536,14 +502,27 @@ class renderer final : public renderer_base<renderer> {
     m_fonts.emplace(id, std::move(font));
   }
 
-  // TODO worth it?
-  //  template <typename... Args>
-  //  void emplace_font(entt::id_type id, Args&&... args)
-  //  {
-  //    if (!m_fonts.count(id)) {
-  //      m_fonts.emplace(id, font{args...});
-  //    }
-  //  }
+  /**
+   * @brief Creates a font and adds it to the renderer.
+   *
+   * @note This function overwrites any previously stored font associated
+   * with the specified ID.
+   *
+   * @tparam Args the types of the arguments that will be forwarded.
+   *
+   * @param id the key that will be associated with the font.
+   * @param args the arguments that will be forwarded to the `font` constructor.
+   *
+   * @since 5.0.0
+   */
+  template <typename... Args>
+  void emplace_font(entt::id_type id, Args&&... args)
+  {
+    if (m_fonts.find(id) != m_fonts.end()) {
+      remove_font(id);
+    }
+    m_fonts.emplace(id, font{std::forward<Args>(args)...});
+  }
 
   /**
    * @brief Removes the font associated with the specified key.
@@ -665,64 +644,25 @@ class renderer final : public renderer_base<renderer> {
                                           SDL_RENDERER_PRESENTVSYNC);
   }
 
-  /**
-   * @brief Returns the translated x-coordinate that corresponds to the
-   * supplied x-coordinate.
-   *
-   * @param x the x-coordinate that will be translated.
-   *
-   * @return the translated x-coordinate that corresponds to the supplied
-   * x-coordinate.
-   *
-   * @since 4.1.0
-   */
-  template <typename T>
-  [[nodiscard]] auto tx(T x) const noexcept -> T
+  template <typename Traits>
+  [[nodiscard]] auto translate(const basic_point<Traits>& point) const noexcept
+      -> basic_point<Traits>
   {
-    SDL_Rect vp{};
-    SDL_RenderGetViewport(m_renderer.get(), &vp);
+    const auto rect = viewport();
 
-    return x - static_cast<T>(vp.x);
+    using value_type = typename Traits::value_type;
+
+    const auto x = point.x() - static_cast<value_type>(rect.x());
+    const auto y = point.y() - static_cast<value_type>(rect.y());
+
+    return basic_point<Traits>{x, y};
   }
 
-  /**
-   * @brief Returns the translated y-coordinate that corresponds to the
-   * supplied y-coordinate.
-   *
-   * @param y the y-coordinate that will be translated.
-   *
-   * @return the translated y-coordinate that corresponds to the supplied
-   * y-coordinate.
-   *
-   * @since 4.1.0
-   */
-  template <typename T>
-  [[nodiscard]] auto ty(T y) const noexcept -> T
+  template <typename Traits>
+  [[nodiscard]] auto translate(const basic_rect<Traits>& rect) const noexcept
+      -> basic_rect<Traits>
   {
-    SDL_Rect vp{};
-    SDL_RenderGetViewport(m_renderer.get(), &vp);
-
-    return y - static_cast<T>(vp.y);
-  }
-
-  [[nodiscard]] auto translate(const ipoint& point) const noexcept -> ipoint
-  {
-    return ipoint{tx(point.x()), ty(point.y())};
-  }
-
-  [[nodiscard]] auto translate(const fpoint& point) const noexcept -> fpoint
-  {
-    return fpoint{tx(point.x()), ty(point.y())};
-  }
-
-  [[nodiscard]] auto translate(const irect& rect) const noexcept -> irect
-  {
-    return irect{translate(rect.position()), rect.size()};
-  }
-
-  [[nodiscard]] auto translate(const frect& rect) const noexcept -> frect
-  {
-    return frect{translate(rect.position()), rect.size()};
+    return basic_rect<Traits>{translate(rect.position()), rect.size()};
   }
 };
 

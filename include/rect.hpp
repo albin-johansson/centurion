@@ -117,7 +117,7 @@ class frect_traits final {
  * @headerfile rect.hpp
  */
 template <typename Traits>
-class basic_rect {
+class basic_rect final {
  public:
   using rect_type = typename Traits::rect_type;
   using point_type = typename Traits::point_type;
@@ -227,11 +227,15 @@ class basic_rect {
   /**
    * @brief Indicates whether or not the two rectangles intersect.
    *
+   * @details This function does *not* consider rectangles with overlapping
+   * borders as intersecting. If you want such behaviour, see the
+   * `collides_with` function.
+   *
    * @param other the other rectangle to check.
    *
    * @return `true` if the rectangles intersect; `false` otherwise.
    *
-   * @todo Differentiate between interpreting borders as intersections?
+   * @see `collides_with`
    *
    * @since 4.0.0
    */
@@ -240,6 +244,27 @@ class basic_rect {
   {
     return !(x() >= other.max_x() || max_x() <= other.x() ||
              y() >= other.max_y() || max_y() <= other.y());
+  }
+
+  /**
+   * @brief Indicates whether or not two rectangles are colliding.
+   *
+   * @details This function considers rectangles with overlapping borders as
+   * colliding.
+   *
+   * @param other the other rectangle to check.
+   *
+   * @return `true` if the rectangles collide; `false` otherwise.
+   *
+   * @see `intersects`
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] constexpr auto collides_with(
+      const basic_rect<Traits>& other) const noexcept -> bool
+  {
+    return !(x() > other.max_x() || max_x() < other.x() ||
+             y() > other.max_y() || max_y() < other.y());
   }
 
   /**
@@ -434,68 +459,27 @@ class basic_rect {
   rect_type m_rect{0, 0, 0, 0};
 };
 
-class frect;
+/**
+ * @typedef irect
+ *
+ * @ingroup geometry
+ *
+ * @brief Alias for an `int`-based rectangle.
+ *
+ * @since 5.0.0
+ */
+using irect = basic_rect<detail::irect_traits>;
 
-class irect final : public basic_rect<detail::irect_traits> {
- public:
-  constexpr irect() noexcept = default;
-
-  constexpr irect(const point_type& position, const area_type& size) noexcept
-      : basic_rect{position, size}
-  {}
-
-  [[nodiscard]] constexpr operator frect() const noexcept;
-};
-
-class frect final : public basic_rect<detail::frect_traits> {
- public:
-  constexpr frect() noexcept = default;
-
-  constexpr frect(const point_type& position, const area_type& size) noexcept
-      : basic_rect{position, size}
-  {}
-
-  [[nodiscard]] constexpr operator irect() const noexcept
-  {
-    using value = irect::value_type;
-    const irect::point_type pos{static_cast<value>(x()),
-                                static_cast<value>(y())};
-    const irect::area_type size{static_cast<value>(width()),
-                                static_cast<value>(height())};
-    return irect{pos, size};
-  }
-};
-
-inline constexpr irect::operator frect() const noexcept
-{
-  using value = frect::value_type;
-  const frect::point_type pos{static_cast<value>(x()), static_cast<value>(y())};
-  const frect::area_type size{static_cast<value>(width()),
-                              static_cast<value>(height())};
-  return frect{pos, size};
-}
-
-///**
-// * @typedef irect
-// *
-// * @ingroup geometry
-// *
-// * @brief Alias for an `int`-based rectangle.
-// *
-// * @since 5.0.0
-// */
-// using irect = basic_rect<detail::irect_traits>;
-//
-///**
-// * @typedef frect
-// *
-// * @ingroup geometry
-// *
-// * @brief Alias for a `float`-based rectangle.
-// *
-// * @since 5.0.0
-// */
-// using frect = basic_rect<detail::frect_traits>;
+/**
+ * @typedef frect
+ *
+ * @ingroup geometry
+ *
+ * @brief Alias for a `float`-based rectangle.
+ *
+ * @since 5.0.0
+ */
+using frect = basic_rect<detail::frect_traits>;
 
 static_assert(std::is_nothrow_default_constructible_v<frect>);
 static_assert(std::is_nothrow_default_constructible_v<irect>);
@@ -554,6 +538,26 @@ template <typename Traits>
     const basic_rect<Traits>& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
+}
+
+template <>
+[[nodiscard]] constexpr auto cast(const irect& from) noexcept -> frect
+{
+  const frect::point_type pos{static_cast<float>(from.x()),
+                              static_cast<float>(from.y())};
+  const frect::area_type size{static_cast<float>(from.width()),
+                              static_cast<float>(from.height())};
+  return frect{pos, size};
+}
+
+template <>
+[[nodiscard]] constexpr auto cast(const frect& from) noexcept -> irect
+{
+  const irect::point_type pos{static_cast<int>(from.x()),
+                              static_cast<int>(from.y())};
+  const irect::area_type size{static_cast<int>(from.width()),
+                              static_cast<int>(from.height())};
+  return irect{pos, size};
 }
 
 /**

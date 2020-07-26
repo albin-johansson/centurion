@@ -149,6 +149,25 @@ TEST_CASE("add_font", "[renderer]")
   });
 }
 
+TEST_CASE("emplace_font", "[renderer]")
+{
+  test([](const ctn::window& window, ctn::renderer& renderer) {
+    using namespace std::string_literals;
+
+    constexpr auto id = "foo"_hs;
+
+    renderer.emplace_font(id, "resources/daniel.ttf", 12);
+
+    CHECK(renderer.has_font(id));
+    CHECK(renderer.get_font(id).family_name() == "Daniel"s);
+
+    CHECK_NOTHROW(renderer.emplace_font(id, "resources/type_writer.ttf", 12));
+
+    CHECK(renderer.has_font(id));
+    CHECK(renderer.get_font(id).family_name() == "Type Writer"s);
+  });
+}
+
 TEST_CASE("remove_font", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
@@ -212,8 +231,8 @@ TEST_CASE("draw_line", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK_NOTHROW(renderer.draw_line(ctn::ipoint{4, 5}, ctn::ipoint{12, 94}));
-    CHECK_NOTHROW(renderer.draw_line(ctn::fpoint{6.2f, 8.3f},
-                                     ctn::fpoint{21.6f, 17.8f}));
+    CHECK_NOTHROW(
+        renderer.draw_line(ctn::fpoint{6.2f, 8.3f}, ctn::fpoint{21.6f, 17.8f}));
   });
 }
 
@@ -229,7 +248,7 @@ TEST_CASE("renderer::draw_lines", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, Point<T>)", "[renderer]")
+TEST_CASE("render: texture at point", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::ipoint position_i{3, 57};
@@ -240,7 +259,7 @@ TEST_CASE("render(Texture, Point<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, Rect<T>)", "[renderer]")
+TEST_CASE("render: texture according to rectangle", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::irect irect{{12, 57}, {175, 218}};
@@ -251,7 +270,7 @@ TEST_CASE("render(Texture, Rect<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, irect, Rect<T>)", "[renderer]")
+TEST_CASE("render: src/dst rectangles", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::irect src{{10, 15}, {20, 20}};
@@ -264,7 +283,7 @@ TEST_CASE("render(Texture, irect, Rect<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, irect, Rect<T>, double)", "[renderer]")
+TEST_CASE("render: src/dst rectangles and rotation", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::irect src{{10, 15}, {20, 20}};
@@ -278,7 +297,8 @@ TEST_CASE("render(Texture, irect, Rect<T>, double)", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, irect, Rect<T>, double, Point<T>)", "[renderer]")
+TEST_CASE("render: src/dst rectangles, rotation and center-of-rotation",
+          "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::irect src{{16, 11}, {37, 77}};
@@ -295,7 +315,7 @@ TEST_CASE("render(Texture, irect, Rect<T>, double, Point<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render(Texture, irect, Rect<T>, SDL_RendererFlip)", "[renderer]")
+TEST_CASE("render: src/dst rectangles and flip", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     CHECK_NOTHROW(renderer.render(texture,
@@ -305,21 +325,20 @@ TEST_CASE("render(Texture, irect, Rect<T>, SDL_RendererFlip)", "[renderer]")
   });
 }
 
-TEST_CASE(
-    "render(Texture, irect, Rect<T>, double, Point<T>, SDL_RendererFlip)",
-    "[renderer]")
+TEST_CASE("render: src/dst rectangles, rotation, center-of-rotation and flip",
+          "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     CHECK_NOTHROW(renderer.render(texture,
                                   {{10, 15}, {20, 20}},
-                                  {{35, 92}, {15, 23}},
+                                  ctn::irect{{35, 92}, {15, 23}},
                                   -5,
                                   ctn::ipoint{5, 5},
                                   SDL_FLIP_HORIZONTAL));
   });
 }
 
-TEST_CASE("render_t(Texture, Point<T>)", "[renderer]")
+TEST_CASE("render_t: texture at point", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::ipoint pos_i{-5, 66};
@@ -330,7 +349,7 @@ TEST_CASE("render_t(Texture, Point<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render_t(Texture, Rect<T>)", "[renderer]")
+TEST_CASE("render_t: texture according to rectangle", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::irect irect{{12, 7}, {115, 876}};
@@ -341,7 +360,7 @@ TEST_CASE("render_t(Texture, Rect<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render_t(Texture, irect, Rect<T>)", "[renderer]")
+TEST_CASE("render_t: src/dst rectangles", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::irect src{{123, 444}, {467, 221}};
@@ -354,7 +373,7 @@ TEST_CASE("render_t(Texture, irect, Rect<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render_t(Texture, irect, Rect<T>, double)", "[renderer]")
+TEST_CASE("render_t: src/dst rectangles and rotation", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::irect src{{10, 15}, {20, 20}};
@@ -368,7 +387,8 @@ TEST_CASE("render_t(Texture, irect, Rect<T>, double)", "[renderer]")
   });
 }
 
-TEST_CASE("render_t(Texture, irect, Rect<T>, double, Point<T>)", "[renderer]")
+TEST_CASE("render_t: src/dst rectangles, rotation and center-of-rotation",
+          "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::irect src{{10, 15}, {20, 20}};
@@ -385,7 +405,7 @@ TEST_CASE("render_t(Texture, irect, Rect<T>, double, Point<T>)", "[renderer]")
   });
 }
 
-TEST_CASE("render_t(Texture, irect, Rect<T>, SDL_RendererFlip)", "[renderer]")
+TEST_CASE("render_t: src/dst rectangles and flip", "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::irect src{{10, 15}, {20, 20}};
@@ -399,9 +419,8 @@ TEST_CASE("render_t(Texture, irect, Rect<T>, SDL_RendererFlip)", "[renderer]")
   });
 }
 
-TEST_CASE(
-    "render_t(Texture, irect, Rect<T>, double, Point<T>, SDL_RendererFlip)",
-    "[renderer]")
+TEST_CASE("render_t: src/dst rectangles, rotation, center-of-rotation and flip",
+          "[renderer]")
 {
   texture_test([](ctn::renderer& renderer, const ctn::texture& texture) {
     const ctn::irect src{{10, 15}, {20, 20}};

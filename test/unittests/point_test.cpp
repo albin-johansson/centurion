@@ -219,7 +219,7 @@ TEST_CASE("Conversions")
   SECTION("ipoint -> fpoint")
   {
     const ctn::ipoint from{684, 912};
-    const auto to = static_cast<ctn::fpoint>(from);
+    const auto to = ctn::cast<ctn::fpoint>(from);
 
     CHECK(to.x() == static_cast<float>(from.x()));
     CHECK(to.y() == static_cast<float>(from.y()));
@@ -228,7 +228,7 @@ TEST_CASE("Conversions")
   SECTION("fpoint -> ipoint")
   {
     const ctn::fpoint from{58.8f, 123.4f};
-    const auto to = static_cast<ctn::ipoint>(from);
+    const auto to = ctn::cast<ctn::ipoint>(from);
 
     CHECK(to.x() == static_cast<int>(std::round(from.x())));
     CHECK(to.y() == static_cast<int>(std::round(from.y())));

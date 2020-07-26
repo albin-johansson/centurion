@@ -50,31 +50,40 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/font_cache.hpp
         ${CTN_INCLUDE_DIR}/unicode_string.hpp
         ${CTN_INCLUDE_DIR}/game_loop.hpp
+
+        centurion.cpp
+
+        misc/log.cpp
+        misc/error.cpp
+
         graphics/window.cpp
         graphics/font.cpp
         graphics/font_cache.cpp
         graphics/texture.cpp
-        centurion.cpp
-        system/paths.cpp
-        system/platform.cpp
-        misc/log.cpp
         graphics/message_box.cpp
-        input/key_state.cpp
-        input/mouse_state.cpp
-        misc/error.cpp
         graphics/surface.cpp
         graphics/cursor.cpp
+        graphics/renderer_base.cpp
+        graphics/color.cpp
+
+        system/paths.cpp
+        system/platform.cpp
         system/battery.cpp
         system/screen.cpp
+
+        input/key_state.cpp
+        input/mouse_state.cpp
+        input/game_controller.cpp
+        input/joystick.cpp
+        input/touch.cpp
+
         event/event.cpp
-        graphics/renderer_base.cpp
         event/quit_event.cpp
         event/window_event.cpp
         event/keyboard_event.cpp
         event/audio_device_event.cpp
         event/controller_axis_event.cpp
         event/controller_button_event.cpp
-        input/game_controller.cpp
         event/controller_device_event.cpp
         event/dollar_gesture_event.cpp
         event/drop_event.cpp
@@ -89,9 +98,7 @@ set(SOURCE_FILES
         event/mouse_wheel_event.cpp
         event/multi_gesture_event.cpp
         event/text_editing_event.cpp
-        event/text_input_event.cpp
-        input/joystick.cpp
-        input/touch.cpp)
+        event/text_input_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

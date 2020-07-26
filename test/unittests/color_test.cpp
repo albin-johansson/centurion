@@ -1,6 +1,7 @@
 #include "color.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 #include <utility>
 
 #include "centurion_as_ctn.hpp"
@@ -252,8 +253,14 @@ TEST_CASE("color conversions", "[color]")
   }
 }
 
-TEST_CASE("color::to_string", "[color]")
+TEST_CASE("color to_string", "[color]")
 {
   const ctn::color color{0x12, 0xFA, 0xCC, 0xAD};
-  ctn::log::info(ctn::log::category::test, "%s", color.to_string().c_str());
+  ctn::log::put(ctn::log::category::test, ctn::to_string(color));
+}
+
+TEST_CASE("color stream operator", "[color]")
+{
+  const ctn::color color{0xAA, 0xBB, 0xCC, 0xDD};
+  std::cout << "COUT: " << color << '\n';
 }

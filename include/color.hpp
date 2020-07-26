@@ -36,6 +36,7 @@
 
 #include <SDL.h>
 
+#include <ostream>
 #include <string>
 #include <type_traits>
 
@@ -85,7 +86,7 @@ class color final {
    * @since 3.0.0
    */
   constexpr color(u8 red, u8 green, u8 blue, u8 alpha = max()) noexcept
-      : m_red{red}, m_green{green}, m_blue{blue}, m_alpha{alpha}
+      : m_color{red, green, blue, alpha}
   {}
 
   /**
@@ -95,9 +96,7 @@ class color final {
    *
    * @since 3.0.0
    */
-  constexpr explicit color(const SDL_Color& color) noexcept
-      : m_red{color.r}, m_green{color.g}, m_blue{color.b}, m_alpha{color.a}
-  {}
+  constexpr explicit color(const SDL_Color& color) noexcept : m_color{color} {}
 
   /**
    * @brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
@@ -110,7 +109,7 @@ class color final {
    * @since 3.0.0
    */
   constexpr explicit color(const SDL_MessageBoxColor& color) noexcept
-      : m_red{color.r}, m_green{color.g}, m_blue{color.b}, m_alpha{max()}
+      : m_color{color.r, color.g, color.b, max()}
   {}
 
   /**
@@ -120,7 +119,7 @@ class color final {
    *
    * @since 3.0.0
    */
-  constexpr void set_red(u8 red) noexcept { m_red = red; }
+  constexpr void set_red(u8 red) noexcept { m_color.r = red; }
 
   /**
    * @brief Sets the value of the green component.
@@ -129,7 +128,7 @@ class color final {
    *
    * @since 3.0.0
    */
-  constexpr void set_green(u8 green) noexcept { m_green = green; }
+  constexpr void set_green(u8 green) noexcept { m_color.g = green; }
 
   /**
    * @brief Sets the value of the blue component.
@@ -138,7 +137,7 @@ class color final {
    *
    * @since 3.0.0
    */
-  constexpr void set_blue(u8 blue) noexcept { m_blue = blue; }
+  constexpr void set_blue(u8 blue) noexcept { m_color.b = blue; }
 
   /**
    * @brief Sets the value of the alpha component.
@@ -147,7 +146,7 @@ class color final {
    *
    * @since 3.0.0
    */
-  constexpr void set_alpha(u8 alpha) noexcept { m_alpha = alpha; }
+  constexpr void set_alpha(u8 alpha) noexcept { m_color.a = alpha; }
 
   /**
    * @brief Returns the value of the red component.
@@ -156,7 +155,7 @@ class color final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] constexpr auto red() const noexcept -> u8 { return m_red; }
+  [[nodiscard]] constexpr auto red() const noexcept -> u8 { return m_color.r; }
 
   /**
    * @brief Returns the value of the green component.
@@ -165,7 +164,10 @@ class color final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] constexpr auto green() const noexcept -> u8 { return m_green; }
+  [[nodiscard]] constexpr auto green() const noexcept -> u8
+  {
+    return m_color.g;
+  }
 
   /**
    * @brief Returns the value of the blue component.
@@ -174,7 +176,7 @@ class color final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] constexpr auto blue() const noexcept -> u8 { return m_blue; }
+  [[nodiscard]] constexpr auto blue() const noexcept -> u8 { return m_color.b; }
 
   /**
    * @brief Returns the value of the alpha component.
@@ -183,16 +185,22 @@ class color final {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] constexpr auto alpha() const noexcept -> u8 { return m_alpha; }
+  [[nodiscard]] constexpr auto alpha() const noexcept -> u8
+  {
+    return m_color.a;
+  }
 
   /**
-   * @brief Returns a textual representation of the color.
+   * @brief Returns the internal color instance.
    *
-   * @return a textual representation of the color.
+   * @return a reference to the internal color.
    *
-   * @since 3.0.0
+   * @since 5.0.0
    */
-  [[nodiscard]] auto to_string() const -> std::string;
+  [[nodiscard]] auto get() const noexcept -> const SDL_Color&
+  {
+    return m_color;
+  }
 
   /**
    * @brief Converts the the color into an `SDL_Color`.
@@ -203,7 +211,7 @@ class color final {
    */
   [[nodiscard]] explicit constexpr operator SDL_Color() const noexcept
   {
-    return {m_red, m_green, m_blue, m_alpha};
+    return {red(), green(), blue(), alpha()};
   }
 
   /**
@@ -217,7 +225,7 @@ class color final {
    */
   [[nodiscard]] explicit constexpr operator SDL_MessageBoxColor() const noexcept
   {
-    return {m_red, m_green, m_blue};
+    return {red(), green(), blue()};
   }
 
   /**
@@ -225,27 +233,24 @@ class color final {
    *
    * @warning The returned pointer is not to be freed or stored away!
    *
-   * @return a reinterpreted pointer to the color instance.
+   * @return a pointer to the internal color instance.
    *
    * @since 4.0,0
    */
-  [[nodiscard]] explicit operator SDL_Color*() noexcept
-  {
-    return reinterpret_cast<SDL_Color*>(this);
-  }
+  [[nodiscard]] explicit operator SDL_Color*() noexcept { return &m_color; }
 
   /**
    * @brief Converts the color to `const SDL_Color*`.
    *
    * @warning The returned pointer is not to be freed or stored away!
    *
-   * @return a reinterpreted pointer to the color instance.
+   * @return a pointer to the internal color instance.
    *
    * @since 4.0,0
    */
   [[nodiscard]] explicit operator const SDL_Color*() const noexcept
   {
-    return reinterpret_cast<const SDL_Color*>(this);
+    return &m_color;
   }
 
   /**
@@ -258,20 +263,37 @@ class color final {
   [[nodiscard]] static constexpr auto max() noexcept -> u8 { return 0xFF; }
 
  private:
-  u8 m_red{0};
-  u8 m_green{0};
-  u8 m_blue{0};
-  u8 m_alpha{max()};
+  SDL_Color m_color{0, 0, 0, max()};
 };
 
-inline auto color::to_string() const -> std::string
-{
-  const auto r = std::to_string(m_red);
-  const auto g = std::to_string(m_green);
-  const auto b = std::to_string(m_blue);
-  const auto a = std::to_string(m_alpha);
-  return "[Color | R: " + r + ", G: " + g + ", B: " + b + ", A: " + a + "]";
-}
+/**
+ * @brief Returns a textual representation of the color.
+ *
+ * @ingroup graphics
+ *
+ * @param color the color that will be converted.
+ *
+ * @return a textual representation of the color.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto to_string(const color& color) -> std::string;
+
+/**
+ * @brief Prints a textual representation of a color.
+ *
+ * @ingroup graphics
+ *
+ * @param stream the stream that will be used.
+ * @param color the color that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+CENTURION_API
+auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 
 /**
  * @brief Indicates whether or not the two colors are equal.

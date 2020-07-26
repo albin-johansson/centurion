@@ -230,8 +230,8 @@ TEST_CASE("Conversions")
     const ctn::fpoint from{58.8f, 123.4f};
     const auto to = ctn::cast<ctn::ipoint>(from);
 
-    CHECK(to.x() == static_cast<int>(std::round(from.x())));
-    CHECK(to.y() == static_cast<int>(std::round(from.y())));
+    CHECK(to.x() == static_cast<int>(from.x()));
+    CHECK(to.y() == static_cast<int>(from.y()));
   }
 
   SECTION("ipoint -> const SDL_Point*")

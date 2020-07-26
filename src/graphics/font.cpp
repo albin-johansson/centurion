@@ -164,25 +164,25 @@ auto font::get_metrics(unicode glyph) const noexcept
   }
 }
 
-auto font::string_width(czstring s) const noexcept -> int
+auto font::string_width(nn_czstring str) const noexcept -> int
 {
   int width{};
-  TTF_SizeText(m_font.get(), s, &width, nullptr);
+  TTF_SizeText(m_font.get(), str, &width, nullptr);
   return width;
 }
 
-auto font::string_height(czstring s) const noexcept -> int
+auto font::string_height(nn_czstring str) const noexcept -> int
 {
   int height{};
-  TTF_SizeText(m_font.get(), s, nullptr, &height);
+  TTF_SizeText(m_font.get(), str, nullptr, &height);
   return height;
 }
 
-auto font::string_size(czstring s) const noexcept -> iarea
+auto font::string_size(nn_czstring str) const noexcept -> iarea
 {
   int width{};
   int height{};
-  TTF_SizeText(m_font.get(), s, &width, &height);
+  TTF_SizeText(m_font.get(), str, &width, &height);
   return {width, height};
 }
 
@@ -231,19 +231,18 @@ auto font::style_name() const noexcept -> czstring
   return TTF_FontFaceStyleName(m_font.get());
 }
 
-auto font::ttf_version() noexcept -> SDL_version
+auto to_string(const font& font) -> std::string
 {
-  SDL_version version;
-  SDL_TTF_VERSION(&version)
-  return version;
+  const auto data = "Data: " + detail::address_of(font.get());
+  const auto name = ", Name: " + std::string{font.family_name()};
+  const auto size = ", Size: " + std::to_string(font.size());
+  return "[font | " + data + name + size + "]";
 }
 
-auto font::to_string() const -> std::string
+auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
 {
-  const auto idStr = "font@" + detail::address_of(this);
-  const auto nameStr = " | Name: " + std::string{family_name()};
-  const auto sizeStr = ", Size: " + std::to_string(size());
-  return "[" + idStr + nameStr + sizeStr + "]";
+  stream << to_string(font);
+  return stream;
 }
 
 }  // namespace centurion

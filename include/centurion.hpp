@@ -247,6 +247,16 @@ class centurion_lib final {
   void close() noexcept;
 };
 
+/**
+ * @brief Returns the compile-time version of SDL2_ttf that is being used.
+ *
+ * @return the compile-time version of SDL2_ttf that is being used.
+ *
+ * @since 4.0.0
+ */
+CENTURION_QUERY
+auto ttf_version() noexcept -> SDL_version;
+
 }  // namespace centurion
 
 #endif  // CENTURION_HEADER

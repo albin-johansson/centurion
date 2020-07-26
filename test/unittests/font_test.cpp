@@ -1,6 +1,7 @@
 #include "font.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 
 #include "centurion_as_ctn.hpp"
 #include "log.hpp"
@@ -249,33 +250,21 @@ TEST_CASE("font::string_width", "[font]")
 {
   const ctn::font font{type_writer_path, 12};
   CHECK(font.string_width("foo") > 0);
-  CHECK(font.string_width(nullptr) == 0);
 }
 
 TEST_CASE("font::string_height", "[font]")
 {
   const ctn::font font{type_writer_path, 12};
   CHECK(font.string_height("foo") > 0);
-  CHECK(font.string_height(nullptr) == 0);
 }
 
 TEST_CASE("font::string_size", "[font]")
 {
   const ctn::font font{type_writer_path, 12};
 
-  SECTION("Normal string")
-  {
-    const auto size = font.string_size("bar");
-    CHECK(size.width > 0);
-    CHECK(size.height > 0);
-  }
-
-  SECTION("Null string")
-  {
-    const auto size = font.string_size(nullptr);
-    CHECK(size.width == 0);
-    CHECK(size.height == 0);
-  }
+  const auto [width, height] = font.string_size("bar");
+  CHECK(width > 0);
+  CHECK(height > 0);
 }
 
 TEST_CASE("font::font_faces", "[font]")
@@ -314,24 +303,6 @@ TEST_CASE("font::descent", "[font]")
   CHECK(font.descent() < 0);
 }
 
-TEST_CASE("font::ttf_version", "[font]")
-{
-  SDL_version sdl;
-  SDL_TTF_VERSION(&sdl);
-
-  const SDL_version v = ctn::font::ttf_version();
-
-  CHECK(sdl.major == v.major);
-  CHECK(sdl.minor == v.minor);
-  CHECK(sdl.patch == v.patch);
-}
-
-TEST_CASE("font::to_string", "[font]")
-{
-  ctn::font font{type_writer_path, 12};
-  ctn::log::info(ctn::log::category::test, "%s", font.to_string().c_str());
-}
-
 TEST_CASE("font::get", "[font]")
 {
   ctn::font font{type_writer_path, 12};
@@ -353,4 +324,28 @@ TEST_CASE("font to TTF_Font*", "[font]")
     const auto* sdlFont = static_cast<const TTF_Font*>(font);
     CHECK(sdlFont);
   }
+}
+
+TEST_CASE("font to_string", "[font]")
+{
+  ctn::font font{type_writer_path, 12};
+  ctn::log::put(ctn::log::category::test, ctn::to_string(font));
+}
+
+TEST_CASE("font stream operator", "[font]")
+{
+  ctn::font font{type_writer_path, 12};
+  std::cout << "COUT: " << font << '\n';
+}
+
+TEST_CASE("ttf_version", "[font]")  // Not actually in the font header
+{
+  SDL_version ttf;
+  SDL_TTF_VERSION(&ttf);
+
+  const auto version = ctn::ttf_version();
+
+  CHECK(ttf.major == version.major);
+  CHECK(ttf.minor == version.minor);
+  CHECK(ttf.patch == version.patch);
 }

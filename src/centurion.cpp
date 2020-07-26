@@ -112,4 +112,11 @@ void centurion_lib::close() noexcept
   }
 }
 
+auto ttf_version() noexcept -> SDL_version
+{
+  SDL_version version;
+  SDL_TTF_VERSION(&version)
+  return version;
+}
+
 }  // namespace centurion

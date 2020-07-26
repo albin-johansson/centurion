@@ -40,6 +40,7 @@
 #include <SDL_ttf.h>
 
 #include <memory>
+#include <ostream>
 #include <string>
 #include <type_traits>
 
@@ -47,6 +48,7 @@
 #include "centurion_api.hpp"
 #include "centurion_exception.hpp"
 #include "centurion_types.hpp"
+#include "centurion_utils.hpp"
 #include "unicode_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -485,63 +487,42 @@ class font final {
    * @brief Returns the width of the supplied string, if it was rendered using
    * the font.
    *
-   * @param string the string to determine the width of.
+   * @param str the string to determine the width of, can't be null.
    *
    * @return the width of the supplied string, if it was rendered using the
-   * font. The returned value is 0 if the string is null.
+   * font.
    *
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto string_width(czstring string) const noexcept -> int;
+  auto string_width(nn_czstring str) const noexcept -> int;
 
   /**
    * @brief Returns the height of the supplied string, if it was rendered
    * using the font.
    *
-   * @param string the string to determine the height of.
+   * @param str the string to determine the height of, can't be null.
    *
    * @return the height of the supplied string, if it was rendered using the
-   * font. The returned value is 0 if the string is null.
+   * font.
    *
    * @since 3.0.0
    */
   CENTURION_QUERY
-  auto string_height(czstring string) const noexcept -> int;
+  auto string_height(nn_czstring str) const noexcept -> int;
 
   /**
    * @brief Returns the size of the supplied string, if it was rendered using
    * the font.
    *
-   * @param s the string to determine the size of.
+   * @param str the string to determine the size of, can't be null.
    *
-   * @return the size of the string, if it was rendered using the font. The
-   * returned size is 0x0 if the supplied string is null.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto string_size(czstring s) const noexcept -> iarea;
-
-  /**
-   * @brief Returns the compile-time version of SDL2_ttf that is being used.
-   *
-   * @return the compile-time version of SDL2_ttf that is being used.
+   * @return the size of the string, if it was rendered using the font.
    *
    * @since 4.0.0
    */
   CENTURION_QUERY
-  static auto ttf_version() noexcept -> SDL_version;
-
-  /**
-   * @brief Returns a textual representation of the font instance.
-   *
-   * @return a textual representation of the font instance.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_QUERY
-  auto to_string() const -> std::string;
+  auto string_size(nn_czstring str) const noexcept -> iarea;
 
   /**
    * @brief Returns the size of the font.
@@ -621,6 +602,33 @@ static_assert(std::is_nothrow_move_constructible_v<font>);
 static_assert(std::is_nothrow_move_assignable_v<font>);
 static_assert(!std::is_copy_constructible_v<font>);
 static_assert(!std::is_copy_assignable_v<font>);
+
+/**
+ * @brief Returns a textual representation of a font instance.
+ *
+ * @ingroup graphics
+ *
+ * @return a textual representation of the font instance.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto to_string(const font& font) -> std::string;
+
+/**
+ * @brief Prints a textual representation of a font.
+ *
+ * @ingroup graphics
+ *
+ * @param stream the stream that will be used.
+ * @param font the font instance that will be printed.
+ *
+ * @return the stream that was used.
+ *
+ * @since 5.0.0
+ */
+CENTURION_API
+auto operator<<(std::ostream& stream, const font& font) -> std::ostream&;
 
 }  // namespace centurion
 

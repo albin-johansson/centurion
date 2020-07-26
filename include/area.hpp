@@ -63,6 +63,7 @@ namespace centurion {
  *
  * @see `iarea`
  * @see `farea`
+ * @see `darea`
  *
  * @var basic_area::width
  * The width of the area. Defaults to 0.
@@ -101,6 +102,17 @@ using iarea = basic_area<int>;
  * @since 4.1.0
  */
 using farea = basic_area<float>;
+
+/**
+ * @typedef darea
+ *
+ * @ingroup geometry
+ *
+ * @brief An alias for `double` areas.
+ *
+ * @since 4.1.0
+ */
+using darea = basic_area<double>;
 
 /**
  * @brief Indicates whether or not two areas are considered to be equal.
@@ -178,8 +190,8 @@ template <typename T>
  * @since 5.0.0
  */
 template <typename T>
-[[nodiscard]] inline auto operator<<(std::ostream& stream,
-                                     const basic_area<T>& area) -> std::ostream&
+[[nodiscard]] auto operator<<(std::ostream& stream, const basic_area<T>& area)
+    -> std::ostream&
 {
   stream << to_string(area);
   return stream;

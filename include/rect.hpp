@@ -89,7 +89,7 @@ class frect_traits final {
  *
  * @ingroup geometry
  *
- * @brief A rectangle that supports integral and floating-point components.
+ * @brief A simple rectangle implementation.
  *
  * @par Examples
  * The following are some examples of interaction with the SDL rectangle
@@ -443,13 +443,43 @@ class basic_rect final {
     return (width() > 0) && (height() > 0);
   }
 
+  /**
+   * @brief Returns the internal rectangle.
+   *
+   * @return a reference to the internal rectangle.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] constexpr auto get() noexcept -> rect_type& { return m_rect; }
+
+  /**
+   * @brief Returns the internal rectangle.
+   *
+   * @return a reference to the internal rectangle.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] constexpr auto get() const noexcept -> const rect_type&
   {
     return m_rect;
   }
 
+  /**
+   * @brief Returns a pointer to the internal rectangle.
+   *
+   * @return a pointer to the internal rectangle.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] explicit operator rect_type*() noexcept { return &m_rect; }
 
+  /**
+   * @brief Returns a pointer to the internal rectangle.
+   *
+   * @return a pointer to the internal rectangle.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] explicit operator const rect_type*() const noexcept
   {
     return &m_rect;
@@ -512,9 +542,9 @@ static_assert(std::is_nothrow_destructible_v<irect>);
  * @since 4.0.0
  */
 template <typename Traits>
-[[nodiscard]] inline constexpr auto operator==(
-    const basic_rect<Traits>& lhs,
-    const basic_rect<Traits>& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const basic_rect<Traits>& lhs,
+                                        const basic_rect<Traits>& rhs) noexcept
+    -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) &&
          (lhs.width() == rhs.width()) && (lhs.height() == rhs.height());
@@ -533,9 +563,9 @@ template <typename Traits>
  * @since 4.0.0
  */
 template <typename Traits>
-[[nodiscard]] inline constexpr auto operator!=(
-    const basic_rect<Traits>& lhs,
-    const basic_rect<Traits>& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const basic_rect<Traits>& lhs,
+                                        const basic_rect<Traits>& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -621,10 +651,10 @@ template <typename Traits>
  * @since 5.0.0
  */
 template <typename Traits>
-inline auto operator<<(std::ostream& stream, const basic_rect<Traits>& rect)
+auto operator<<(std::ostream& stream, const basic_rect<Traits>& rect)
     -> std::ostream&
 {
-  return stream << to_string(rect);
+  stream << to_string(rect);
   return stream;
 }
 

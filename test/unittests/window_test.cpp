@@ -624,7 +624,7 @@ TEST_CASE("window::is_vulkan", "[!mayfail][window]")
     auto* ptr = SDL_CreateWindow(
         "foo", 0, 0, 100, 100, SDL_WINDOW_HIDDEN | SDL_WINDOW_VULKAN);
     if (ptr) {
-      ctn::window window{};
+      ctn::window window{ptr};
       CHECK(window.is_vulkan());
     }
   }

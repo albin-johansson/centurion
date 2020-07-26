@@ -37,18 +37,17 @@
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
+#include <ostream>
 #include <type_traits>
 
 #include "centurion_api.hpp"
+#include "centurion_utils.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
-
-template <typename T>
-struct basic_area;
 
 /**
  * @struct basic_area
@@ -57,13 +56,13 @@ struct basic_area;
  *
  * @brief Simply represents an area with a width and height.
  *
- * @tparam T the type of the components of the area, defaults to float. Must
+ * @tparam T the type of the components of the area. Must
  * be either an integral or floating-point type. Can't be `bool`.
  *
  * @since 4.0.0
  *
- * @see `area_i`
- * @see `area_f`
+ * @see `iarea`
+ * @see `farea`
  *
  * @var basic_area::width
  * The width of the area. Defaults to 0.
@@ -72,33 +71,41 @@ struct basic_area;
  *
  * @headerfile area.hpp
  */
-template <typename T = float>
+template <typename T>
 struct basic_area {
-  T width = 0;
-  T height = 0;
+  T width{0};
+  T height{0};
 
   static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
   static_assert(!std::is_same_v<T, bool>);
 };
 
 /**
- * @typedef area_i
+ * @typedef iarea
+ *
+ * @ingroup geometry
+ *
  * @brief An alias for `int` areas.
  *
  * @since 4.1.0
  */
-using area_i = basic_area<int>;
+using iarea = basic_area<int>;
 
 /**
- * @typedef area_f
+ * @typedef farea
+ *
+ * @ingroup geometry
+ *
  * @brief An alias for `float` areas.
  *
  * @since 4.1.0
  */
-using area_f = basic_area<float>;
+using farea = basic_area<float>;
 
 /**
  * @brief Indicates whether or not two areas are considered to be equal.
+ *
+ * @ingroup geometry
  *
  * @param lhs the left-hand side area.
  * @param rhs the right-hand side area.
@@ -118,6 +125,8 @@ template <typename T>
 /**
  * @brief Indicates whether or not two areas aren't considered to be equal.
  *
+ * @ingroup geometry
+ *
  * @param lhs the left-hand side area.
  * @param rhs the right-hand side area.
  *
@@ -131,6 +140,49 @@ template <typename T>
     const basic_area<T>& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
+}
+
+/**
+ * @brief Returns a textual representation of an area.
+ *
+ * @ingroup geometry
+ *
+ * @tparam T the type of the area components.
+ *
+ * @param area the area that will be converted.
+ *
+ * @return a string that represents the area.
+ *
+ * @since 5.0.0
+ */
+template <typename T>
+[[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
+{
+  const auto width = std::to_string(area.width);
+  const auto height = std::to_string(area.height);
+  return "[Area | Width: " + width + ", Height: " + height + "]";
+}
+
+/**
+ * @brief Prints a textual representation of an area using a stream.
+ *
+ * @ingroup geometry
+ *
+ * @tparam T the type of the area components.
+ *
+ * @param stream the stream that will be used.
+ * @param area the are that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+template <typename T>
+[[nodiscard]] inline auto operator<<(std::ostream& stream,
+                                     const basic_area<T>& area) -> std::ostream&
+{
+  stream << to_string(area);
+  return stream;
 }
 
 }  // namespace centurion

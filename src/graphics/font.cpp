@@ -178,7 +178,7 @@ auto font::string_height(czstring s) const noexcept -> int
   return height;
 }
 
-auto font::string_size(czstring s) const noexcept -> area_i
+auto font::string_size(czstring s) const noexcept -> iarea
 {
   int width{};
   int height{};

@@ -212,7 +212,7 @@ class window_base {
    *
    * @since 5.0.0
    */
-  void set_size(const area_i& size) noexcept;
+  void set_size(const iarea& size) noexcept;
 
   /**
    * @brief Sets the icon that will be used by the window.
@@ -255,7 +255,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  void set_min_size(const area_i& size) noexcept;
+  void set_min_size(const iarea& size) noexcept;
 
   /**
    * @brief Sets the maximum size of the window.
@@ -268,7 +268,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  void set_max_size(const area_i& size) noexcept;
+  void set_max_size(const iarea& size) noexcept;
 
   /**
    * @brief Sets the position of the window.
@@ -459,7 +459,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto min_size() const noexcept -> area_i;
+  [[nodiscard]] auto min_size() const noexcept -> iarea;
 
   /**
    * @brief Returns the maximum size of the window.
@@ -468,7 +468,7 @@ class window_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto max_size() const noexcept -> area_i;
+  [[nodiscard]] auto max_size() const noexcept -> iarea;
 
   /**
    * @brief Returns the current width of the window.
@@ -498,7 +498,7 @@ class window_base {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto size() const noexcept -> area_i;
+  [[nodiscard]] auto size() const noexcept -> iarea;
 
   /**
    * @brief Indicates whether or not the window is usable with an
@@ -774,7 +774,7 @@ class window final : public window_base<window> {
    * @since 3.0.0
    */
   CENTURION_API
-  explicit window(nn_czstring title, area_i size = default_size());
+  explicit window(nn_czstring title, iarea size = default_size());
 
   /**
    * @brief Creates a window based on the supplied SDL_Window instance.
@@ -800,10 +800,10 @@ class window final : public window_base<window> {
   window();
 
   /**
-   * @copydoc window(nn_czstring, area_i)
+   * @copydoc window(nn_czstring, iarea)
    */
   CENTURION_QUERY
-  static auto unique(nn_czstring title, area_i size = default_size()) -> uptr;
+  static auto unique(nn_czstring title, iarea size = default_size()) -> uptr;
 
   /**
    * @copydoc window(nn_owner<SDL_Window*>)
@@ -818,10 +818,10 @@ class window final : public window_base<window> {
   static auto unique() -> uptr;
 
   /**
-   * @copydoc window(nn_czstring, area_i)
+   * @copydoc window(nn_czstring, iarea)
    */
   CENTURION_QUERY
-  static auto shared(nn_czstring title, area_i size = default_size()) -> sptr;
+  static auto shared(nn_czstring title, iarea size = default_size()) -> sptr;
 
   /**
    * @copydoc window(nn_owner<SDL_Window*>)
@@ -875,7 +875,7 @@ class window final : public window_base<window> {
     return m_window.get();
   }
 
-  [[nodiscard]] static constexpr auto default_size() -> area_i
+  [[nodiscard]] static constexpr auto default_size() -> iarea
   {
     return {800, 600};
   }
@@ -1076,7 +1076,7 @@ void window_base<Derived>::set_height(int height) noexcept
 }
 
 template <class Derived>
-void window_base<Derived>::set_size(const area_i& size) noexcept
+void window_base<Derived>::set_size(const iarea& size) noexcept
 {
   if ((size.width > 0) && (size.height > 0)) {
     SDL_SetWindowSize(ptr(), size.width, size.height);
@@ -1102,13 +1102,13 @@ void window_base<Derived>::set_opacity(float opacity) noexcept
 }
 
 template <class Derived>
-void window_base<Derived>::set_min_size(const area_i& size) noexcept
+void window_base<Derived>::set_min_size(const iarea& size) noexcept
 {
   SDL_SetWindowMinimumSize(ptr(), size.width, size.height);
 }
 
 template <class Derived>
-void window_base<Derived>::set_max_size(const area_i& size) noexcept
+void window_base<Derived>::set_max_size(const iarea& size) noexcept
 {
   SDL_SetWindowMaximumSize(ptr(), size.width, size.height);
 }
@@ -1299,7 +1299,7 @@ auto window_base<Derived>::display_index() const noexcept -> std::optional<int>
 }
 
 template <class Derived>
-auto window_base<Derived>::min_size() const noexcept -> area_i
+auto window_base<Derived>::min_size() const noexcept -> iarea
 {
   int width{};
   int height{};
@@ -1308,7 +1308,7 @@ auto window_base<Derived>::min_size() const noexcept -> area_i
 }
 
 template <class Derived>
-auto window_base<Derived>::max_size() const noexcept -> area_i
+auto window_base<Derived>::max_size() const noexcept -> iarea
 {
   int width{};
   int height{};
@@ -1333,9 +1333,9 @@ auto window_base<Derived>::height() const noexcept -> int
 }
 
 template <class Derived>
-auto window_base<Derived>::size() const noexcept -> area_i
+auto window_base<Derived>::size() const noexcept -> iarea
 {
-  area_i size{};
+  iarea size{};
   SDL_GetWindowSize(ptr(), &size.width, &size.height);
   return size;
 }

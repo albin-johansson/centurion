@@ -521,7 +521,7 @@ class font final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto string_size(czstring s) const noexcept -> area_i;
+  auto string_size(czstring s) const noexcept -> iarea;
 
   /**
    * @brief Returns the compile-time version of SDL2_ttf that is being used.

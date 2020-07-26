@@ -464,7 +464,7 @@ TEST_CASE("set_viewport", "[renderer]")
 TEST_CASE("set_logical_size", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const ctn::area_i size{842, 253};
+    const ctn::iarea size{842, 253};
 
     renderer.set_logical_size(size);
 
@@ -516,7 +516,7 @@ TEST_CASE("logical_height", "[renderer]")
 TEST_CASE("logical_size", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const ctn::area_i size{732, 156};
+    const ctn::iarea size{732, 156};
 
     renderer.set_logical_size(size);
 

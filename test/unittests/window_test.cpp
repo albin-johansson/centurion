@@ -34,7 +34,7 @@ TEST_CASE("window(nn_owner<SDL_Window*>)", "[window]")
   CHECK_NOTHROW(ctn::window{w});
 }
 
-TEST_CASE("window(nn_czstring, area_i)", "[window]")
+TEST_CASE("window(nn_czstring, iarea)", "[window]")
 {
   CHECK_THROWS_AS(ctn::window("", {0, 10}), ctn::centurion_exception);
   CHECK_THROWS_AS(ctn::window("", {10, 0}), ctn::centurion_exception);
@@ -93,7 +93,7 @@ TEST_CASE("window::unique", "[window]")
     CHECK(ctn::window::unique(good));
   }
 
-  SECTION("window::unique(czstring, area_i)")
+  SECTION("window::unique(czstring, iarea)")
   {
     CHECK_THROWS_AS(ctn::window::unique("", {0, 10}), ctn::centurion_exception);
     CHECK_THROWS_AS(ctn::window::unique("", {10, 0}), ctn::centurion_exception);
@@ -111,7 +111,7 @@ TEST_CASE("window::shared", "[window]")
     CHECK(ctn::window::shared(good));
   }
 
-  SECTION("window::shared(czstring, area_i)")
+  SECTION("window::shared(czstring, iarea)")
   {
     CHECK_THROWS_AS(ctn::window::shared("", {0, 10}), ctn::centurion_exception);
     CHECK_THROWS_AS(ctn::window::shared("", {10, 0}), ctn::centurion_exception);
@@ -288,7 +288,7 @@ TEST_CASE("window::set_size", "[window]")
 
   ctn::window window;
 
-  const ctn::area_i size{424, 182};
+  const ctn::iarea size{424, 182};
   window.set_size(size);
 
   CHECK(window.size() == size);
@@ -588,7 +588,7 @@ TEST_CASE("window::height", "[window]")
 
 TEST_CASE("window::size", "[window]")
 {
-  const ctn::area_i size{285, 435};
+  const ctn::iarea size{285, 435};
   ctn::window window{"", size};
 
   CHECK(window.width() == size.width);

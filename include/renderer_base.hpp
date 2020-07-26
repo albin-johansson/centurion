@@ -1135,7 +1135,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  void set_logical_size(const area_i& size) noexcept
+  void set_logical_size(const iarea& size) noexcept
   {
     if ((size.width > 0) && (size.height > 0)) {
       SDL_RenderSetLogicalSize(ptr(), size.width, size.height);
@@ -1206,7 +1206,7 @@ class renderer_base {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto logical_size() const noexcept -> area_i
+  [[nodiscard]] auto logical_size() const noexcept -> iarea
   {
     int width{};
     int height{};
@@ -1335,7 +1335,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto output_size() const noexcept -> area_i
+  [[nodiscard]] auto output_size() const noexcept -> iarea
   {
     int width{};
     int height{};

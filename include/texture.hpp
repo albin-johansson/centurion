@@ -216,7 +216,7 @@ class texture final {
   texture(const renderer& renderer,
           pixel_format format,
           access access,
-          const area_i& size);
+          const iarea& size);
 
   /**
    * @copydoc texture(nn_owner<SDL_Texture*>)
@@ -237,13 +237,13 @@ class texture final {
   static auto unique(const renderer& renderer, const surface& surface) -> uptr;
 
   /**
-   * @copydoc texture(const renderer&, pixel_format, access, const area_i&)
+   * @copydoc texture(const renderer&, pixel_format, access, const iarea&)
    */
   CENTURION_QUERY
   static auto unique(const renderer& renderer,
                      pixel_format format,
                      access access,
-                     const area_i& size) -> uptr;
+                     const iarea& size) -> uptr;
 
   /**
    * @copydoc texture(nn_owner<SDL_Texture*>)
@@ -264,13 +264,13 @@ class texture final {
   static auto shared(const renderer& renderer, const surface& surface) -> sptr;
 
   /**
-   * @copydoc texture(const renderer&, pixel_format, access, const area_i&)
+   * @copydoc texture(const renderer&, pixel_format, access, const iarea&)
    */
   CENTURION_QUERY
   static auto shared(const renderer& renderer,
                      pixel_format format,
                      access access,
-                     const area_i& size) -> sptr;
+                     const iarea& size) -> sptr;
 
   /**
    * @brief Creates and returns a unique pointer to a texture.
@@ -399,7 +399,7 @@ class texture final {
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto size() const noexcept -> area_i;
+  auto size() const noexcept -> iarea;
 
   /**
    * @brief Indicates whether or not the texture is a possible render target.

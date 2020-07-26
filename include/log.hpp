@@ -186,12 +186,6 @@ void info(category category, czstring fmt, Args&&... args) noexcept
   log::msg(log::priority::info, category, fmt, args...);
 }
 
-template <typename... Args>
-void info(category category, const std::string& fmt, Args&&... args) noexcept
-{
-  log::info(log::priority::info, category, fmt.c_str(), args...);
-}
-
 /**
  * @brief Logs a message with `priority::info` and `category::app`.
  *
@@ -209,12 +203,6 @@ template <typename... Args>
 void info(czstring fmt, Args&&... args) noexcept
 {
   log::info(log::category::app, fmt, args...);
-}
-
-template <typename... Args>
-void info(const std::string& fmt, Args&&... args) noexcept
-{
-  log::info(log::category::app, fmt.c_str(), args...);
 }
 
 /**
@@ -410,6 +398,28 @@ template <typename... Args>
 void error(czstring fmt, Args&&... args) noexcept
 {
   log::error(category::app, fmt, args...);
+}
+
+// TODO doc and expand
+
+inline void put(const std::string& str) noexcept
+{
+  log::info("%s", str.c_str());
+}
+
+inline void put(category category, const std::string& str) noexcept
+{
+  log::info(category, "%s", str.c_str());
+}
+
+inline void put(std::string_view str) noexcept
+{
+  log::info("%s", str.data());
+}
+
+inline void put(category category, std::string_view str) noexcept
+{
+  log::info(category, "%s", str.data());
 }
 
 /**

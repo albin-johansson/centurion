@@ -50,56 +50,56 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/font_cache.hpp
         ${CTN_INCLUDE_DIR}/unicode_string.hpp
         ${CTN_INCLUDE_DIR}/game_loop.hpp
-        window.cpp
-        font.cpp
-        font_cache.cpp
-        texture.cpp
+        graphics/window.cpp
+        graphics/font.cpp
+        graphics/font_cache.cpp
+        graphics/texture.cpp
         centurion.cpp
-        paths.cpp
-        platform.cpp
-        log.cpp
-        message_box.cpp
-        key_state.cpp
-        mouse_state.cpp
-        error.cpp
-        surface.cpp
-        cursor.cpp
-        battery.cpp
-        screen.cpp
-        event.cpp
-        renderer_base.cpp
-        quit_event.cpp
-        window_event.cpp
-        keyboard_event.cpp
-        audio_device_event.cpp
-        controller_axis_event.cpp
-        controller_button_event.cpp
-        game_controller.cpp
-        controller_device_event.cpp
-        dollar_gesture_event.cpp
-        drop_event.cpp
-        touch_finger_event.cpp
-        joy_axis_event.cpp
-        joy_ball_event.cpp
-        joy_hat_event.cpp
-        joy_button_event.cpp
-        joy_device_event.cpp
-        mouse_motion_event.cpp
-        mouse_button_event.cpp
-        mouse_wheel_event.cpp
-        multi_gesture_event.cpp
-        text_editing_event.cpp
-        text_input_event.cpp
-        joystick.cpp
-        touch.cpp)
+        system/paths.cpp
+        system/platform.cpp
+        misc/log.cpp
+        graphics/message_box.cpp
+        input/key_state.cpp
+        input/mouse_state.cpp
+        misc/error.cpp
+        graphics/surface.cpp
+        graphics/cursor.cpp
+        system/battery.cpp
+        system/screen.cpp
+        event/event.cpp
+        graphics/renderer_base.cpp
+        event/quit_event.cpp
+        event/window_event.cpp
+        event/keyboard_event.cpp
+        event/audio_device_event.cpp
+        event/controller_axis_event.cpp
+        event/controller_button_event.cpp
+        input/game_controller.cpp
+        event/controller_device_event.cpp
+        event/dollar_gesture_event.cpp
+        event/drop_event.cpp
+        event/touch_finger_event.cpp
+        event/joy_axis_event.cpp
+        event/joy_ball_event.cpp
+        event/joy_hat_event.cpp
+        event/joy_button_event.cpp
+        event/joy_device_event.cpp
+        event/mouse_motion_event.cpp
+        event/mouse_button_event.cpp
+        event/mouse_wheel_event.cpp
+        event/multi_gesture_event.cpp
+        event/text_editing_event.cpp
+        event/text_input_event.cpp
+        input/joystick.cpp
+        input/touch.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES
             ${SOURCE_FILES}
             ${CTN_INCLUDE_DIR}/sound_effect.hpp
             ${CTN_INCLUDE_DIR}/music.hpp
-            sound_effect.cpp
-            music.cpp)
+            audio/sound_effect.cpp
+            audio/music.cpp)
 endif ()
 
 add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})

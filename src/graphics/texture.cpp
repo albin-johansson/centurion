@@ -24,7 +24,7 @@ texture::texture(const renderer& renderer, const surface& surface)
 texture::texture(const renderer& renderer,
                  pixel_format format,
                  texture::access access,
-                 const area_i& size)
+                 const iarea& size)
     : m_texture{SDL_CreateTexture(renderer.get(),
                                   static_cast<u32>(format),
                                   static_cast<int>(access),
@@ -62,7 +62,7 @@ auto texture::unique(const renderer& renderer, const surface& surface) -> uptr
 auto texture::unique(const renderer& renderer,
                      pixel_format format,
                      texture::access access,
-                     const area_i& size) -> uptr
+                     const iarea& size) -> uptr
 {
   return std::make_unique<texture>(renderer, format, access, size);
 }
@@ -85,7 +85,7 @@ auto texture::shared(const renderer& renderer, const surface& surface) -> sptr
 auto texture::shared(const renderer& renderer,
                      pixel_format format,
                      texture::access access,
-                     const area_i& size) -> sptr
+                     const iarea& size) -> sptr
 {
   return std::make_shared<texture>(renderer, format, access, size);
 }
@@ -220,7 +220,7 @@ auto texture::height() const noexcept -> int
   return height;
 }
 
-auto texture::size() const noexcept -> area_i
+auto texture::size() const noexcept -> iarea
 {
   int width{};
   int height{};

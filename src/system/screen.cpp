@@ -32,7 +32,7 @@ auto height() noexcept -> int
   return mode.h;
 }
 
-auto size() noexcept -> area_i
+auto size() noexcept -> iarea
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);

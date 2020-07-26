@@ -68,7 +68,7 @@ class irect_traits final {
  public:
   using rect_type = SDL_Rect;
   using point_type = ipoint;
-  using area_type = area_i;
+  using area_type = iarea;
   using value_type = int;
 };
 
@@ -76,7 +76,7 @@ class frect_traits final {
  public:
   using rect_type = SDL_FRect;
   using point_type = fpoint;
-  using area_type = area_f;
+  using area_type = farea;
   using value_type = float;
 };
 

@@ -110,7 +110,7 @@ auto height() noexcept -> int;
  * @since 4.1.0
  */
 CENTURION_QUERY
-auto size() noexcept -> area_i;
+auto size() noexcept -> iarea;
 
 /**
  * @brief Returns the refresh rate of the screen.

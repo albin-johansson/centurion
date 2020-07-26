@@ -34,7 +34,7 @@ TEST_CASE("Rect construction", "[rect]")
   SECTION("irect")
   {
     const ctn::ipoint pos{1124, 4125};
-    const ctn::area_i area{713, 372};
+    const ctn::iarea area{713, 372};
     const ctn::irect rect{pos, area};
 
     CHECK(rect.x() == pos.x());
@@ -49,7 +49,7 @@ TEST_CASE("Rect construction", "[rect]")
   SECTION("frect")
   {
     const ctn::fpoint pos{123.5f, 81.4f};
-    const ctn::area_f area{921.8f, 512.6f};
+    const ctn::farea area{921.8f, 512.6f};
     const ctn::frect rect{pos, area};
 
     CHECK(rect.x() == pos.x());
@@ -185,7 +185,7 @@ TEST_CASE("rect::resize", "[rect]")
   {
     ctn::irect rect;
 
-    const ctn::area_i size{8596, 9235};
+    const ctn::iarea size{8596, 9235};
     rect.resize(size);
 
     CHECK(rect.size() == size);
@@ -195,7 +195,7 @@ TEST_CASE("rect::resize", "[rect]")
   {
     ctn::frect rect;
 
-    const ctn::area_f size{345.8f, 289.7f};
+    const ctn::farea size{345.8f, 289.7f};
     rect.resize(size);
 
     CHECK(rect.size() == size);

@@ -76,6 +76,7 @@ set(SOURCE_FILES
         input/game_controller.cpp
         input/joystick.cpp
         input/touch.cpp
+        input/key_code.cpp
 
         event/event.cpp
         event/quit_event.cpp
@@ -98,7 +99,7 @@ set(SOURCE_FILES
         event/mouse_wheel_event.cpp
         event/multi_gesture_event.cpp
         event/text_editing_event.cpp
-        event/text_input_event.cpp)
+        event/text_input_event.cpp input/scan_code.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

@@ -1,6 +1,8 @@
 #include <catch.hpp>
+#include <iostream>
 
 #include "centurion_as_ctn.hpp"
+#include "log.hpp"
 #include "scan_code.hpp"
 
 TEST_CASE("scan_code default value", "[scan_code]")
@@ -371,4 +373,16 @@ TEST_CASE("scan_code constants", "[scan_code]")
 
     SECTION("RGUI") { test_key(ctn::scancodes::right_gui, SDL_SCANCODE_RGUI); }
   }
+}
+
+TEST_CASE("scan_code to_string", "[scan_code]")
+{
+  const ctn::scan_code sc{SDLK_r};
+  ctn::log::put(ctn::log::category::test, ctn::to_string(sc));
+}
+
+TEST_CASE("scan_code stream operator", "[scan_code]")
+{
+  const ctn::scan_code sc{SDL_SCANCODE_P};
+  std::cout << "COUT: " << sc << '\n';
 }

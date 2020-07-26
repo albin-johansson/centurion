@@ -41,6 +41,8 @@
 #include <SDL_keycode.h>
 #include <SDL_scancode.h>
 
+#include <ostream>
+
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 
@@ -291,6 +293,35 @@ class key_code final {
 };
 
 /**
+ * @brief Returns a textual representation of a key code.
+ *
+ * @ingroup input
+ *
+ * @param keyCode the key code that will be converted.
+ *
+ * @return a textual representation of the key code.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto to_string(const key_code& keyCode) -> std::string;
+
+/**
+ * @brief Prints a key code using a stream.
+ *
+ * @ingroup input
+ *
+ * @param stream the stream that will be used.
+ * @param keyCode the key code that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+CENTURION_API
+auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
+
+/**
  * @brief Indicates whether or not two key codes are the same.
  *
  * @ingroup input
@@ -302,8 +333,9 @@ class key_code final {
  *
  * @since 5.0.0
  */
-[[nodiscard]] inline auto operator==(const key_code& lhs,
-                                     const key_code& rhs) noexcept -> bool
+[[nodiscard]] inline constexpr auto operator==(const key_code& lhs,
+                                               const key_code& rhs) noexcept
+    -> bool
 {
   return lhs.get() == rhs.get();
 }
@@ -320,8 +352,9 @@ class key_code final {
  *
  * @since 5.0.0
  */
-[[nodiscard]] inline auto operator!=(const key_code& lhs,
-                                     const key_code& rhs) noexcept -> bool
+[[nodiscard]] inline constexpr auto operator!=(const key_code& lhs,
+                                               const key_code& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

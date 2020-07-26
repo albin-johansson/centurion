@@ -41,6 +41,9 @@
 #include <SDL_keycode.h>
 #include <SDL_scancode.h>
 
+#include <ostream>
+#include <string>
+
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 
@@ -246,6 +249,36 @@ class scan_code final {
 };
 
 /**
+ * @brief Returns a textual representation of a scan code.
+ *
+ * @ingroup input
+ *
+ * @param scanCode the scan code that will be converted.
+ *
+ * @return a textual representation of the scan code.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto to_string(const scan_code& scanCode) -> std::string;
+
+/**
+ * @brief Prints a scan code using a stream.
+ *
+ * @ingroup input
+ *
+ * @param stream the stream that will be used.
+ * @param scanCode the scan code that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+CENTURION_API
+auto operator<<(std::ostream& stream, const scan_code& scanCode)
+    -> std::ostream&;
+
+/**
  * @brief Indicates whether or not two scan codes are the same.
  *
  * @ingroup input
@@ -257,8 +290,9 @@ class scan_code final {
  *
  * @since 5.0.0
  */
-[[nodiscard]] inline auto operator==(const scan_code& lhs,
-                                     const scan_code& rhs) noexcept -> bool
+[[nodiscard]] inline constexpr auto operator==(const scan_code& lhs,
+                                               const scan_code& rhs) noexcept
+    -> bool
 {
   return lhs.get() == rhs.get();
 }
@@ -275,8 +309,9 @@ class scan_code final {
  *
  * @since 5.0.0
  */
-[[nodiscard]] inline auto operator!=(const scan_code& lhs,
-                                     const scan_code& rhs) noexcept -> bool
+[[nodiscard]] inline constexpr auto operator!=(const scan_code& lhs,
+                                               const scan_code& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

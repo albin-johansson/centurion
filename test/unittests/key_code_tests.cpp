@@ -1,7 +1,9 @@
 #include <catch.hpp>
+#include <iostream>
 
 #include "centurion_as_ctn.hpp"
 #include "key_code.hpp"
+#include "log.hpp"
 
 TEST_CASE("key_code default value", "[key_code]")
 {
@@ -352,4 +354,16 @@ TEST_CASE("key_code constants", "[key_code]")
 
     SECTION("RGUI") { test_key(ctn::keycodes::right_gui, SDLK_RGUI); }
   }
+}
+
+TEST_CASE("key_code to_string", "[key_code]")
+{
+  const ctn::key_code kc{SDLK_r};
+  ctn::log::put(ctn::log::category::test, ctn::to_string(kc));
+}
+
+TEST_CASE("key_code stream operator", "[key_code]")
+{
+  const ctn::key_code kc{SDLK_q};
+  std::cout << "COUT: " << kc << '\n';
 }

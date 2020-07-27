@@ -142,32 +142,32 @@ void font_cache::add_glyph(renderer& renderer, unicode glyph)
   }
 }
 
-void font_cache::cache_range(renderer& renderer, unicode begin, unicode end)
+void font_cache::add_range(renderer& renderer, unicode begin, unicode end)
 {
   for (unicode ch = begin; ch < end; ++ch) {
     add_glyph(renderer, ch);
   }
 }
 
-void font_cache::cache_basic_latin(renderer& renderer)
+void font_cache::add_basic_latin(renderer& renderer)
 {
   // https://unicode-table.com/en/blocks/basic-latin/
-  cache_range(renderer, 0x20, 0x7F);
+  add_range(renderer, 0x20, 0x7F);
 }
 
-void font_cache::cache_latin1_supplement(renderer& renderer)
+void font_cache::add_latin1_supplement(renderer& renderer)
 {
   // https://unicode-table.com/en/blocks/latin-1-supplement/
-  cache_range(renderer, 0xA0, 0x100);
+  add_range(renderer, 0xA0, 0x100);
 }
 
-void font_cache::cache_latin1(renderer& renderer)
+void font_cache::add_latin1(renderer& renderer)
 {
-  cache_basic_latin(renderer);
-  cache_latin1_supplement(renderer);
+  add_basic_latin(renderer);
+  add_latin1_supplement(renderer);
 }
 
-auto font_cache::try_get_cached(entt::id_type id) const noexcept
+auto font_cache::try_get_texture(entt::id_type id) const noexcept
     -> const texture*
 {
   const auto iterator = m_strings.find(id);

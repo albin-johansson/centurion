@@ -588,7 +588,7 @@ TEST_CASE("vsync_enabled", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const bool vsync = renderer.flags() & SDL_RENDERER_PRESENTVSYNC;
-    CHECK(vsync == renderer.vsync_enabled());
+    CHECK(vsync == renderer.is_vsync_enabled());
   });
 }
 
@@ -596,7 +596,7 @@ TEST_CASE("accelerated", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const bool accelerated = renderer.flags() & SDL_RENDERER_ACCELERATED;
-    CHECK(accelerated == renderer.accelerated());
+    CHECK(accelerated == renderer.is_accelerated());
   });
 }
 
@@ -604,7 +604,7 @@ TEST_CASE("software_based", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const bool software = renderer.flags() & SDL_RENDERER_SOFTWARE;
-    CHECK(software == renderer.software_based());
+    CHECK(software == renderer.is_software_based());
   });
 }
 
@@ -619,11 +619,11 @@ TEST_CASE("supports_target_textures", "[renderer]")
 TEST_CASE("using_integer_logical_scaling", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    CHECK(!renderer.using_integer_logical_scaling());
+    CHECK(!renderer.is_using_integer_logical_scaling());
 
     renderer.set_logical_integer_scale(true);
 
-    CHECK(renderer.using_integer_logical_scaling());
+    CHECK(renderer.is_using_integer_logical_scaling());
   });
 }
 
@@ -702,7 +702,7 @@ TEST_CASE("Renderer clipping", "[renderer]")
 
   SECTION("Default values")
   {
-    CHECK(!renderer.clipping_enabled());
+    CHECK(!renderer.is_clipping_enabled());
     const auto clip = renderer.clip();
     CHECK(!clip);
   }
@@ -712,7 +712,7 @@ TEST_CASE("Renderer clipping", "[renderer]")
   const ctn::irect clip{{5, 2}, {75, 93}};
 
   renderer.set_clip(clip);
-  CHECK(renderer.clipping_enabled());
+  CHECK(renderer.is_clipping_enabled());
   CHECK(renderer.clip());
 
   const auto rendererClip = *renderer.clip();

@@ -38,12 +38,16 @@
 #ifndef CENTURION_RENDERER_BASE_HEADER
 #define CENTURION_RENDERER_BASE_HEADER
 
+#include <algorithm>
+#include <memory>
+
 #include "area.hpp"
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 #include "color.hpp"
 #include "font_cache.hpp"
+#include "log.hpp"
 #include "point.hpp"
 #include "rect.hpp"
 #include "surface.hpp"
@@ -684,118 +688,54 @@ class renderer_base {
   {
     const auto& [texture, glyphMetrics] = cache.at(glyph);
 
-    const auto x = position.x() + glyphMetrics.minX;
-    const auto y = position.y();  // SDL_ttf handles the y-coordinate alignment
+    const auto outline = cache.get_font().outline();
+
+    // SDL_ttf handles the y-axis alignment
+    const auto x = position.x() + glyphMetrics.minX - outline;
+    const auto y = position.y() - outline;
 
     render(texture, ipoint{x, y});
 
-    return position.x() + glyphMetrics.advance;
+    return x + glyphMetrics.advance;
   }
 
   /**
-   * @brief Renders a Unicode string.
+   * @brief Renders a string.
    *
-   * @details This method will try to use previously cached glyphs to render
-   * the supplied string.
+   * @details This method will not apply any clever conversions on the
+   * supplied string. The string is literally iterated,
+   * character-by-character, and each character is rendered using
+   * the `render_glyph` function.
+   *
+   * @pre Every character in the string must correspond to a valid Unicode
+   * glyph.
+   * @pre Every character must have been previously cached.
+   *
+   * @note This method is sensitive to newline-characters, and will render
+   * strings that contain such characters appropriately.
+   *
+   * @tparam String the type of the string, must be iterable and provide
+   * `unicode` characters.
    *
    * @param cache the font cache that will be used.
-   * @param str the Unicode string that will be rendered.
+   * @param str the string that will be rendered.
    * @param position the position of the rendered text.
    *
    * @since 5.0.0
    */
-  void render_unicode(const font_cache& cache,
-                      const unicode_string& str,
-                      ipoint position)
+  template <typename String>
+  void render_text(const font_cache& cache, const String& str, ipoint position)
   {
     const auto originalX = position.x();
-
-    for (const auto glyph : str) {
+    std::for_each(str.begin(), str.end(), [&](const unicode glyph) {
       if (glyph == '\n') {
         position.set_x(originalX);
-        position.set_y(position.y() + cache.get().line_skip());
+        position.set_y(position.y() + cache.get_font().line_skip());
       } else {
         const auto x = render_glyph(cache, glyph, position);
         position.set_x(x);
       }
-    }
-  }
-
-  /**
-   * @brief Renders a string.
-   *
-   * @details This method will not apply any clever conversions on the
-   * supplied string. The string is literally iterated,
-   * character-by-character, and each character is rendered using
-   * the `render_glyph`. In other words, be sure that each `char` in your
-   * strings represent a single glyph.
-   *
-   * @pre Every character in the string must correspond to a valid Unicode
-   * glyph **and** must have been previously cached.
-   *
-   * @note This method is sensitive to newline-characters, and will render
-   * strings that contain such characters appropriately.
-   *
-   * @param cache the font cache that will be used.
-   * @param str the string that will be rendered.
-   * @param position the position of the rendered text.
-   *
-   * @since 5.0.0
-   */
-  void render_text(const font_cache& cache,
-                   std::string_view str,
-                   ipoint position)
-  {
-    const auto originalX = position.x();
-
-    for (const auto glyph : str) {
-      if (glyph == '\n') {
-        position.set_x(originalX);
-        position.set_y(position.y() + cache.get().line_skip());
-      } else {
-        const auto x =
-            render_glyph(cache, static_cast<unicode>(glyph), position);
-        position.set_x(x);
-      }
-    }
-  }
-
-  /**
-   * @brief Renders a string.
-   *
-   * @details This method will not apply any clever conversions on the
-   * supplied string. The string is literally iterated,
-   * character-by-character, and each character is rendered using
-   * the `render_glyph`.
-   *
-   * @pre Every character in the string must correspond to a valid Unicode
-   * glyph **and** must have been previously cached.
-   *
-   * @note This method is sensitive to newline-characters, and will render
-   * strings that contain such characters appropriately.
-   *
-   * @param cache the font cache that will be used.
-   * @param str the string that will be rendered.
-   * @param position the position of the rendered text.
-   *
-   * @since 5.0.0
-   */
-  void render_text(const font_cache& cache,
-                   std::u16string_view str,
-                   ipoint position)
-  {
-    const auto originalX = position.x();
-
-    for (const auto glyph : str) {
-      if (glyph == '\n') {
-        position.set_x(originalX);
-        position.set_y(position.y() + cache.get().line_skip());
-      } else {
-        const auto x =
-            render_glyph(cache, static_cast<unicode>(glyph), position);
-        position.set_x(x);
-      }
-    }
+    });
   }
 
   ///@}  // end of text rendering
@@ -1368,7 +1308,7 @@ class renderer_base {
    * @brief Returns a bit mask of the current renderer flags.
    *
    * @note There are multiple other methods for checking if a flag is set,
-   * such as `vsync_enabled` or `accelerated`, that are nicer to use than
+   * such as `is_vsync_enabled` or `is_accelerated`, that are nicer to use than
    * this method.
    *
    * @return a bit mask of the current renderer flags.
@@ -1392,7 +1332,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto vsync_enabled() const noexcept -> bool
+  [[nodiscard]] auto is_vsync_enabled() const noexcept -> bool
   {
     return static_cast<bool>(flags() & SDL_RENDERER_PRESENTVSYNC);
   }
@@ -1405,7 +1345,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto accelerated() const noexcept -> bool
+  [[nodiscard]] auto is_accelerated() const noexcept -> bool
   {
     return static_cast<bool>(flags() & SDL_RENDERER_ACCELERATED);
   }
@@ -1417,7 +1357,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto software_based() const noexcept -> bool
+  [[nodiscard]] auto is_software_based() const noexcept -> bool
   {
     return static_cast<bool>(flags() & SDL_RENDERER_SOFTWARE);
   }
@@ -1449,7 +1389,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto using_integer_logical_scaling() const noexcept -> bool
+  [[nodiscard]] auto is_using_integer_logical_scaling() const noexcept -> bool
   {
     return SDL_RenderGetIntegerScale(ptr());
   }
@@ -1463,7 +1403,7 @@ class renderer_base {
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto clipping_enabled() const noexcept -> bool
+  [[nodiscard]] auto is_clipping_enabled() const noexcept -> bool
   {
     return SDL_RenderIsClipEnabled(ptr());
   }

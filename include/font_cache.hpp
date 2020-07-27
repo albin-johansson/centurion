@@ -465,7 +465,7 @@ class font_cache final {
   void cache_solid_utf8(renderer& renderer, entt::id_type id, nn_czstring str);
 
   /**
-   * @brief Indicates whether or not there is a cached texture associated
+   * @brief Indicates whether or not there is a cached string texture associated
    * with the specified key.
    *
    * @param id the key that will be checked.
@@ -475,7 +475,7 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto has_cached(entt::id_type id) const noexcept -> bool
+  [[nodiscard]] auto has_string(entt::id_type id) const noexcept -> bool
   {
     return m_strings.count(id);
   }
@@ -495,7 +495,7 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_QUERY
-  auto try_get_cached(entt::id_type id) const noexcept -> const texture*;
+  auto try_get_texture(entt::id_type id) const noexcept -> const texture*;
 
   /**
    * @brief Returns the cached texture associated with the specified ID.
@@ -508,7 +508,7 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get_cached(entt::id_type id) const -> const texture&
+  [[nodiscard]] auto get_texture(entt::id_type id) const -> const texture&
   {
     return m_strings.at(id);
   }
@@ -541,7 +541,7 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_API
-  void cache_range(renderer& renderer, unicode begin, unicode end);
+  void add_range(renderer& renderer, unicode begin, unicode end);
 
   /**
    * @brief Attempts to cache all printable basic latin characters.
@@ -556,7 +556,7 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_API
-  void cache_basic_latin(renderer& renderer);
+  void add_basic_latin(renderer& renderer);
 
   /**
    * @brief Attempts to cache all printable Latin-1 supplement characters.
@@ -567,13 +567,13 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_API
-  void cache_latin1_supplement(renderer& renderer);
+  void add_latin1_supplement(renderer& renderer);
 
   /**
    * @brief Attempts to cache all printable Latin-1 characters.
    *
    * @note This method is effectively equivalent to calling both
-   * `cache_basic_latin` and `cache_latin1_supplement`.
+   * `add_basic_latin` and `add_latin1_supplement`.
    *
    * @param renderer the renderer that will be used to create the glyph
    * textures.
@@ -581,7 +581,7 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_API
-  void cache_latin1(renderer& renderer);
+  void add_latin1(renderer& renderer);
 
   /**
    * @brief Indicates whether or not the specified glyph has been cached.
@@ -654,12 +654,12 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get() noexcept -> font& { return m_font; }
+  [[nodiscard]] auto get_font() noexcept -> font& { return m_font; }
 
   /**
-   * @copydoc get
+   * @copydoc get_font
    */
-  [[nodiscard]] auto get() const noexcept -> const font& { return m_font; }
+  [[nodiscard]] auto get_font() const noexcept -> const font& { return m_font; }
 
  private:
   font m_font;

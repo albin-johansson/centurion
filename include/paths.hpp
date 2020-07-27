@@ -57,12 +57,7 @@ namespace detail {
 
 class path_deleter final {
  public:
-  void operator()(zstring path) noexcept
-  {
-    if (path) {
-      SDL_free(path);
-    }
-  }
+  void operator()(zstring path) noexcept { SDL_free(path); }
 };
 
 }  // namespace detail

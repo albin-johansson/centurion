@@ -56,4 +56,4 @@ parameter. Which is the main use case of the ``window_view`` class.
 
 See also
 --------
-* :doc:`Window </pages/window>`
+* :doc:`Window </pages/api/window>`

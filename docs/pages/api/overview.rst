@@ -9,8 +9,8 @@ two different window classes meant for different use cases. In most cases, you w
 ``window`` class, which represents an owning window. For the cases where you don't want the
 window to claim ownership of the associated ``SDL_Window*``, you can use the ``window_view`` class.
 
-* :doc:`Window </pages/window>` | Represents an owning window.
-* :doc:`Window view </pages/window_view>` | Represents a non-owning window.
+* :doc:`Window </pages/api/window>` | Represents an owning window.
+* :doc:`Window view </pages/api/window_view>` | Represents a non-owning window.
 
 Graphics
 --------
@@ -18,8 +18,8 @@ Graphics are of course also very important in every game! The primary representa
 is the ``texture`` class, which is hardware-accelerated! The rendering API is simple and easy to
 use, yet powerful.
 
-* :doc:`Renderer </pages/renderer>` | Provides the rendering API, along with several extra conveniences.
-* :doc:`Renderer view </pages/renderer_view>` | A non-owning wrapper around an ``SDL_Renderer*``.
+* :doc:`Renderer </pages/api/renderer>` | Provides the rendering API, along with several extra conveniences.
+* :doc:`Renderer view </pages/api/renderer_view>` | A non-owning wrapper around an ``SDL_Renderer*``.
 * ``texture.hpp`` | ``texture``.
 * ``surface.hpp`` | ``surface``
 * ``color.hpp`` | ``color``

@@ -13,11 +13,15 @@ Welcome to Centurion's documentation!
    :maxdepth: 2
    :caption: API
 
-   pages/overview
-   pages/window
-   pages/window_view
-   pages/renderer
-   pages/renderer_view
+   pages/api/overview
+   pages/api/point
+   pages/api/rect
+   pages/api/window
+   pages/api/window_view
+   pages/api/renderer
+   pages/api/renderer_view
+   pages/api/font
+   pages/api/font_cache
 
 .. toctree::
    :maxdepth: 2

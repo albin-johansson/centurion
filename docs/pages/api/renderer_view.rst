@@ -62,4 +62,4 @@ parameter. Which is the main use case of the ``renderer_view`` class.
 
 See also
 --------
-* :doc:`Renderer </pages/renderer>`
+* :doc:`Renderer </pages/api/renderer>`

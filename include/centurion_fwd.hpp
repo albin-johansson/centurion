@@ -34,7 +34,7 @@ class basic_point;
 
 class renderer;
 
-class renderer_view;
+class renderer_handle;
 
 class texture;
 
@@ -42,7 +42,7 @@ class surface;
 
 class window;
 
-class window_view;
+class window_handle;
 
 class font;
 

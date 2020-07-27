@@ -75,7 +75,7 @@ namespace centurion {
  * @since 5.0.0
  *
  * @see `renderer`
- * @see `renderer_view`
+ * @see `renderer_handle`
  *
  * @headerfile renderer_base.hpp
  */
@@ -1439,22 +1439,6 @@ class renderer_base {
     irect viewport{};
     SDL_RenderGetViewport(ptr(), static_cast<SDL_Rect*>(viewport));
     return viewport;
-  }
-
-  /**
-   * @brief Returns a textual representation of the renderer.
-   *
-   * @return a textual representation of the renderer.
-   *
-   * @since 3.0.0
-   */
-  [[nodiscard]] auto to_string() const -> std::string
-  {
-    const auto address = detail::address_of(this);
-    const auto owidth = std::to_string(output_width());
-    const auto oheight = std::to_string(output_height());
-    return "[renderer | Data: " + address + ", Output width: " + owidth +
-           ", Output height: " + oheight + "]";
   }
 
  protected:

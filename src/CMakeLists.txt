@@ -6,9 +6,13 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/centurion_fwd.hpp
         ${CTN_INCLUDE_DIR}/centurion_types.hpp
         ${CTN_INCLUDE_DIR}/window.hpp
+        ${CTN_INCLUDE_DIR}/window_handle.hpp
+        ${CTN_INCLUDE_DIR}/window_base.hpp
+        ${CTN_INCLUDE_DIR}/window_utils.hpp
         ${CTN_INCLUDE_DIR}/font.hpp
         ${CTN_INCLUDE_DIR}/renderer_base.hpp
         ${CTN_INCLUDE_DIR}/renderer.hpp
+        ${CTN_INCLUDE_DIR}/renderer_handle.hpp
         ${CTN_INCLUDE_DIR}/texture.hpp
         ${CTN_INCLUDE_DIR}/centurion_exception.hpp
         ${CTN_INCLUDE_DIR}/centurion_api.hpp
@@ -57,6 +61,7 @@ set(SOURCE_FILES
         misc/error.cpp
 
         graphics/window.cpp
+        graphics/window_handle.cpp
         graphics/font.cpp
         graphics/font_cache.cpp
         graphics/texture.cpp
@@ -64,7 +69,10 @@ set(SOURCE_FILES
         graphics/surface.cpp
         graphics/cursor.cpp
         graphics/renderer_base.cpp
+        graphics/renderer_handle.cpp
+        graphics/renderer.cpp
         graphics/color.cpp
+        graphics/window_utils.cpp
 
         system/base_path.cpp
         system/pref_path.cpp
@@ -101,7 +109,7 @@ set(SOURCE_FILES
         event/mouse_wheel_event.cpp
         event/multi_gesture_event.cpp
         event/text_editing_event.cpp
-        event/text_input_event.cpp)
+        event/text_input_event.cpp )
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

@@ -25,7 +25,7 @@
 /**
  * @file renderer.hpp
  *
- * @brief Provides the `renderer` and `renderer_view` classes.
+ * @brief Provides the `renderer` class.
  *
  * @author Albin Johansson
  *
@@ -45,6 +45,8 @@
 
 #include <entt.hpp>
 #include <memory>
+#include <ostream>
+#include <string>
 #include <type_traits>
 #include <utility>
 
@@ -86,7 +88,7 @@ class renderer_deleter final {
  *
  * @details This class is designed to the main class used for
  * hardware-accelerated rendering. However, there is also the
- * `renderer_view` that can be used if you don't want the renderer to claim
+ * `renderer_handle` that can be used if you don't want the renderer to claim
  * ownership of the `SDL_Renderer` pointer.
  *
  * @par Rendering textures
@@ -137,7 +139,7 @@ class renderer_deleter final {
  * @since 3.0.0
  *
  * @see `SDL_Renderer`
- * @see `renderer_view`
+ * @see `renderer_handle`
  *
  * @headerfile renderer.hpp
  */
@@ -292,16 +294,17 @@ class renderer final : public renderer_base<renderer> {
    * @details The rendered rectangle will be translated using the current
    * translation viewport.
    *
-   * @tparam T The type of the rectangle coordinates. Must be either `int` or
-   * `float`.
+   * @tparam Traits The traits used by the rectangle.
    *
    * @param rect the rectangle that will be rendered.
    *
    * @since 4.1.0
    */
-  void draw_rect_t(const irect& rect) noexcept { draw_rect(translate(rect)); }
-
-  void draw_rect_t(const frect& rect) noexcept { draw_rect(translate(rect)); }
+  template <typename Traits>
+  void draw_rect_t(const basic_rect<Traits>& rect) noexcept
+  {
+    draw_rect(translate(rect));
+  }
 
   /**
    * @brief Renders a filled rectangle in the currently selected color.
@@ -327,20 +330,16 @@ class renderer final : public renderer_base<renderer> {
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam T The type of the point coordinates. Must be either `int` or
-   * `float`.
+   * @tparam Traits The traits used by the point.
    *
    * @param texture the texture that will be rendered.
    * @param position the position (pre-translation) of the rendered texture.
    *
    * @since 4.0.0
    */
-  void render_t(const texture& texture, const ipoint& position) noexcept
-  {
-    render(texture, translate(position));
-  }
-
-  void render_t(const texture& texture, const fpoint& position) noexcept
+  template <typename Traits>
+  void render_t(const texture& texture,
+                const basic_point<Traits>& position) noexcept
   {
     render(texture, translate(position));
   }
@@ -668,112 +667,42 @@ class renderer final : public renderer_base<renderer> {
 
 static_assert(std::is_final_v<renderer>);
 static_assert(std::is_nothrow_destructible_v<renderer>);
+
+static_assert(!std::is_copy_constructible_v<renderer>);
+static_assert(!std::is_copy_assignable_v<renderer>);
+
 static_assert(std::is_nothrow_move_constructible_v<renderer>);
 static_assert(std::is_nothrow_move_assignable_v<renderer>);
 
 /**
- * @class renderer_view
+ * @brief Returns a textual representation of a renderer.
  *
  * @ingroup graphics
  *
- * @brief Represents a non-owning renderer.
+ * @param renderer the renderer that will be converted.
  *
- * @warning It is undefined behaviour to invoke any member methods if the
- * internal renderer is null.
- *
- * @details This class is meant to be used when you want to utilize the same
- * rendering API as with the the `renderer` class, but you don't want the
- * renderer to claim ownership of the SDL renderer. In a nutshell, this class
- * is merely a wrapper around an `SDL_Renderer*`.
- *
- * However, there are some differences in functionality compared to the
- * `renderer` class. Firstly, renderer views don't support storing
- * fonts. Secondly, the translation viewport API isn't available with views.
- *
- * @note Naturally, since instances of this class don't own the associated
- * SDL renderer, you'll have to manually manage the lifetime of the
- * SDL renderer. In general, prefer `renderer` unless you absolutely cannot
- * claim ownership of the SDL renderer.
- *
- * @par Examples
- * The following example displays how one could utilize this class to take
- * advantage of the Centurion rendering API, that wouldn't be possible with
- * `renderer`.
- * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
- *   #include <renderer.hpp>
- *
- *   // Assume that we can't change the parameter of this method
- *   void draw(SDL_Renderer* renderer)
- *   {
- *     ctn::renderer_view view{renderer};
- *
- *     view.clear_with(ctn::black);
- *
- *     view.set_color(ctn::pink);
- *     view.fill_rect(ctn::irect{{15, 20}, {100, 100}});
- *
- *     view.present();
- *   }
- * @endcode
+ * @return a textual representation of the renderer.
  *
  * @since 5.0.0
- *
- * @todo Rename to `renderer_ptr`?
- *
- * @see `renderer`
- *
- * @headerfile renderer.hpp
  */
-class renderer_view final : public renderer_base<renderer_view> {
- public:
-  renderer_view() noexcept = default;
+CENTURION_QUERY
+auto to_string(const renderer& renderer) -> std::string;
 
-  /**
-   * @brief Creates a renderer view instance.
-   *
-   * @param renderer a pointer to the SDL renderer that will be used, can be
-   * null.
-   *
-   * @since 5.0.0
-   */
-  renderer_view(SDL_Renderer* renderer) noexcept : m_renderer{renderer} {}
-
-  /**
-   * @brief Creates a view based on an existing `renderer`.
-   *
-   * @tparam FontKey the type of the font keys used by the renderer.
-   *
-   * @param renderer the renderer that will be viewed.
-   *
-   * @since 5.0.0
-   */
-  renderer_view(renderer& renderer) noexcept : m_renderer{renderer.get()} {}
-
-  /**
-   * @brief Returns a pointer to the associated SDL_Renderer.
-   *
-   * @warning Use of this method is not recommended, since it purposefully
-   * breaks const-correctness. However, it's useful since many SDL calls use
-   * non-const pointers even when no change will be applied.
-   *
-   * @return a pointer to the associated SDL_Renderer.
-   *
-   * @since 5.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
-  {
-    return m_renderer;
-  }
-
- private:
-  SDL_Renderer* m_renderer{};
-};
-
-static_assert(std::is_final_v<renderer_view>);
-static_assert(std::is_nothrow_destructible_v<renderer_view>);
-static_assert(std::is_nothrow_move_constructible_v<renderer_view>);
-static_assert(std::is_nothrow_move_assignable_v<renderer_view>);
+/**
+ * @brief Prints a textual representation of a renderer.
+ *
+ * @ingroup graphics
+ *
+ * @param stream the stream that will be used.
+ * @param renderer the renderer that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto operator<<(std::ostream& stream, const renderer& renderer)
+    -> std::ostream&;
 
 }  // namespace centurion
 

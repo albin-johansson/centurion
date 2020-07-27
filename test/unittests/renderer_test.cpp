@@ -1,6 +1,7 @@
 #include "renderer.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
@@ -40,14 +41,14 @@ inline void font_test(Lambda&& lambda)
 
 }  // namespace
 
-TEST_CASE("Constructor: (nn_owner<SDL_Renderer*>)", "[renderer]")
+TEST_CASE("renderer:: ctor(nn_owner<SDL_Renderer*>)", "[renderer]")
 {
   ctn::window window;
   auto* ren = SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE);
   CHECK_NOTHROW(ctn::renderer{ren});
 }
 
-TEST_CASE("Constructor: (const window&, SDL_RendererFlags)", "[renderer]")
+TEST_CASE("renderer:: ctor(const window&, SDL_RendererFlags)", "[renderer]")
 {
   ctn::window window;
   CHECK_NOTHROW(ctn::renderer{window});
@@ -63,7 +64,7 @@ TEST_CASE("Renderer move constructor", "[renderer]")
   CHECK(other.get());
 }
 
-TEST_CASE("operator=(renderer&&)", "[renderer]")
+TEST_CASE("renderer::operator=(renderer&&)", "[renderer]")
 {
   SECTION("Self-assignment")
   {
@@ -104,14 +105,14 @@ TEST_CASE("Renderer smart pointer factory methods", "[renderer]")
   }
 }
 
-TEST_CASE("clear", "[renderer]")
+TEST_CASE("renderer::clear", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK_NOTHROW(renderer.clear());
   });
 }
 
-TEST_CASE("clear_with", "[renderer]")
+TEST_CASE("renderer::clear_with", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const auto selectedColor = ctn::colors::pink;
@@ -122,14 +123,14 @@ TEST_CASE("clear_with", "[renderer]")
   });
 }
 
-TEST_CASE("present", "[renderer]")
+TEST_CASE("renderer::present", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK_NOTHROW(renderer.present());
   });
 }
 
-TEST_CASE("add_font", "[renderer]")
+TEST_CASE("renderer::add_font", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     using namespace std::string_literals;
@@ -149,7 +150,7 @@ TEST_CASE("add_font", "[renderer]")
   });
 }
 
-TEST_CASE("emplace_font", "[renderer]")
+TEST_CASE("renderer::emplace_font", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     using namespace std::string_literals;
@@ -168,7 +169,7 @@ TEST_CASE("emplace_font", "[renderer]")
   });
 }
 
-TEST_CASE("remove_font", "[renderer]")
+TEST_CASE("renderer::remove_font", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     constexpr auto name = "daniel"_hs;
@@ -183,7 +184,7 @@ TEST_CASE("remove_font", "[renderer]")
   });
 }
 
-TEST_CASE("draw_rect", "[renderer]")
+TEST_CASE("renderer::draw_rect", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const ctn::irect irect{{1, 2}, {3, 4}};
@@ -194,7 +195,7 @@ TEST_CASE("draw_rect", "[renderer]")
   });
 }
 
-TEST_CASE("fill_rect", "[renderer]")
+TEST_CASE("renderer::fill_rect", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const ctn::irect irect{{14, 23}, {331, 487}};
@@ -205,7 +206,7 @@ TEST_CASE("fill_rect", "[renderer]")
   });
 }
 
-TEST_CASE("draw_rect_t", "[renderer]")
+TEST_CASE("renderer::draw_rect_t", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const ctn::irect irect{{14, 23}, {331, 487}};
@@ -216,7 +217,7 @@ TEST_CASE("draw_rect_t", "[renderer]")
   });
 }
 
-TEST_CASE("fill_rect_t", "[renderer]")
+TEST_CASE("renderer::fill_rect_t", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const ctn::irect irect{{14, 23}, {331, 487}};
@@ -227,7 +228,7 @@ TEST_CASE("fill_rect_t", "[renderer]")
   });
 }
 
-TEST_CASE("draw_line", "[renderer]")
+TEST_CASE("renderer::draw_line", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK_NOTHROW(renderer.draw_line(ctn::ipoint{4, 5}, ctn::ipoint{12, 94}));
@@ -441,7 +442,7 @@ TEST_CASE("render_t: src/dst rectangles, rotation, center-of-rotation and flip",
   });
 }
 
-TEST_CASE("set_color", "[renderer]")
+TEST_CASE("renderer::set_color", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const auto& color = ctn::colors::pale_violet_red;
@@ -451,7 +452,7 @@ TEST_CASE("set_color", "[renderer]")
   });
 }
 
-TEST_CASE("set_viewport", "[renderer]")
+TEST_CASE("renderer::set_viewport", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const ctn::irect viewport{{50, 33}, {768, 453}};
@@ -461,7 +462,7 @@ TEST_CASE("set_viewport", "[renderer]")
   });
 }
 
-TEST_CASE("set_logical_size", "[renderer]")
+TEST_CASE("renderer::set_logical_size", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const ctn::iarea size{842, 253};
@@ -473,7 +474,7 @@ TEST_CASE("set_logical_size", "[renderer]")
   });
 }
 
-TEST_CASE("set_scale", "[renderer]")
+TEST_CASE("renderer::set_scale", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const auto xScale = 0.8f;
@@ -485,35 +486,35 @@ TEST_CASE("set_scale", "[renderer]")
   });
 }
 
-TEST_CASE("x_scale", "[renderer]")
+TEST_CASE("renderer::x_scale", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK(renderer.x_scale() == 1);
   });
 }
 
-TEST_CASE("y_scale", "[renderer]")
+TEST_CASE("renderer::y_scale", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK(renderer.y_scale() == 1);
   });
 }
 
-TEST_CASE("logical_width", "[renderer]")
+TEST_CASE("renderer::logical_width", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK(renderer.logical_width() == 0);
   });
 }
 
-TEST_CASE("logical_height", "[renderer]")
+TEST_CASE("renderer::logical_height", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK(renderer.logical_height() == 0);
   });
 }
 
-TEST_CASE("logical_size", "[renderer]")
+TEST_CASE("renderer::logical_size", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const ctn::iarea size{732, 156};
@@ -526,7 +527,7 @@ TEST_CASE("logical_size", "[renderer]")
   });
 }
 
-TEST_CASE("info", "[renderer]")
+TEST_CASE("renderer::info", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const auto optInfo = renderer.info();
@@ -549,21 +550,21 @@ TEST_CASE("info", "[renderer]")
   });
 }
 
-TEST_CASE("output_width", "[renderer]")
+TEST_CASE("renderer::output_width", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK(renderer.output_width() == window.width());
   });
 }
 
-TEST_CASE("output_height", "[renderer]")
+TEST_CASE("renderer::output_height", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK(renderer.output_height() == window.height());
   });
 }
 
-TEST_CASE("output_size", "[renderer]")
+TEST_CASE("renderer::output_size", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const auto [width, height] = renderer.output_size();
@@ -572,7 +573,7 @@ TEST_CASE("output_size", "[renderer]")
   });
 }
 
-TEST_CASE("blend_mode", "[renderer]")
+TEST_CASE("renderer::blend_mode", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const auto mode = renderer.blend_mode();
@@ -584,7 +585,7 @@ TEST_CASE("blend_mode", "[renderer]")
   });
 }
 
-TEST_CASE("vsync_enabled", "[renderer]")
+TEST_CASE("renderer::is_vsync_enabled", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const bool vsync = renderer.flags() & SDL_RENDERER_PRESENTVSYNC;
@@ -592,7 +593,7 @@ TEST_CASE("vsync_enabled", "[renderer]")
   });
 }
 
-TEST_CASE("accelerated", "[renderer]")
+TEST_CASE("renderer::is_accelerated", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const bool accelerated = renderer.flags() & SDL_RENDERER_ACCELERATED;
@@ -600,7 +601,7 @@ TEST_CASE("accelerated", "[renderer]")
   });
 }
 
-TEST_CASE("software_based", "[renderer]")
+TEST_CASE("renderer::is_software_based", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const bool software = renderer.flags() & SDL_RENDERER_SOFTWARE;
@@ -608,7 +609,7 @@ TEST_CASE("software_based", "[renderer]")
   });
 }
 
-TEST_CASE("supports_target_textures", "[renderer]")
+TEST_CASE("renderer::supports_target_textures", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const bool targetTexture = renderer.flags() & SDL_RENDERER_TARGETTEXTURE;
@@ -616,7 +617,7 @@ TEST_CASE("supports_target_textures", "[renderer]")
   });
 }
 
-TEST_CASE("using_integer_logical_scaling", "[renderer]")
+TEST_CASE("renderer::using_integer_logical_scaling", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     CHECK(!renderer.is_using_integer_logical_scaling());
@@ -627,7 +628,7 @@ TEST_CASE("using_integer_logical_scaling", "[renderer]")
   });
 }
 
-TEST_CASE("color", "[renderer]")
+TEST_CASE("renderer::color", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     const auto color = renderer.get_color();
@@ -638,7 +639,7 @@ TEST_CASE("color", "[renderer]")
   });
 }
 
-TEST_CASE("get_font", "[renderer]")
+TEST_CASE("renderer::get_font", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
     constexpr auto name = "daniel"_hs;
@@ -656,7 +657,7 @@ TEST_CASE("get_font", "[renderer]")
   });
 }
 
-TEST_CASE("viewport", "[renderer]")
+TEST_CASE("renderer::viewport", "[renderer]")
 {
   ctn::window window;
   ctn::renderer renderer{window};
@@ -666,7 +667,7 @@ TEST_CASE("viewport", "[renderer]")
   CHECK(viewport.height() == window.height());
 }
 
-TEST_CASE("set_translation_viewport", "[renderer]")
+TEST_CASE("renderer::set_translation_viewport", "[renderer]")
 {
   ctn::window window;
   ctn::renderer renderer{window};
@@ -682,7 +683,7 @@ TEST_CASE("set_translation_viewport", "[renderer]")
   CHECK(rendererViewport.height() == viewport.height());
 }
 
-TEST_CASE("translation_viewport", "[renderer]")
+TEST_CASE("renderer::translation_viewport", "[renderer]")
 {
   ctn::window window;
   ctn::renderer renderer{window};
@@ -723,18 +724,11 @@ TEST_CASE("Renderer clipping", "[renderer]")
   CHECK(clip.height() == rendererClip.height());
 }
 
-TEST_CASE("set_target", "[renderer]")
+TEST_CASE("renderer::set_target", "[renderer]")
 {
   ctn::window window;
   ctn::renderer renderer{window};
   CHECK_NOTHROW(renderer.set_target(nullptr));
-}
-
-TEST_CASE("to_string", "[renderer]")
-{
-  ctn::window window;
-  ctn::renderer renderer{window};
-  ctn::log::info(ctn::log::category::test, "%s", renderer.to_string().c_str());
 }
 
 TEST_CASE("num_render_drivers", "[renderer]")
@@ -747,13 +741,13 @@ TEST_CASE("num_video_drivers", "[renderer]")
   CHECK(ctn::num_video_drivers() == SDL_GetNumVideoDrivers());
 }
 
-TEST_CASE("get_render_driver_info", "[renderer]")
+TEST_CASE("renderer::get_render_driver_info", "[renderer]")
 {
   CHECK(!ctn::get_render_driver_info(-1));
   CHECK(!ctn::get_render_driver_info(ctn::num_render_drivers()));
 }
 
-TEST_CASE("get", "[renderer]")
+TEST_CASE("renderer::get", "[renderer]")
 {
   ctn::window window;
   ctn::renderer renderer{window};
@@ -777,4 +771,20 @@ TEST_CASE("Renderer to SDL_Renderer*", "[renderer]")
     auto* sdlRenderer = static_cast<SDL_Renderer*>(renderer);
     CHECK(sdlRenderer);
   }
+}
+
+TEST_CASE("renderer to_string", "[renderer]")
+{
+  ctn::window window;
+  ctn::renderer renderer{window};
+
+  ctn::log::put(ctn::log::category::test, ctn::to_string(renderer));
+}
+
+TEST_CASE("renderer stream operator", "[renderer]")
+{
+  ctn::window window;
+  ctn::renderer renderer{window};
+
+  std::cout << "COUT: " << renderer << '\n';
 }

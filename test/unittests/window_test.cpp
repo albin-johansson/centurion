@@ -1,13 +1,16 @@
 #include "window.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "centurion_types.hpp"
 #include "log.hpp"
+#include "renderer.hpp"
 #include "screen.hpp"
 #include "surface.hpp"
+#include "window_utils.hpp"
 
 namespace {
 
@@ -835,19 +838,6 @@ TEST_CASE("window::flags", "[window]")
   CHECK(window.flags() == SDL_GetWindowFlags(win));
 }
 
-// FIXME
-// TEST_CASE("window::renderer", "[window]")
-//{
-//  ctn::window window;
-//  CHECK(!window.renderer());
-//
-//  ctn::renderer renderer{window};
-//  auto view = window.renderer();
-//
-//  REQUIRE(view.has_value());
-//  CHECK(view->get() == renderer.get());
-//}
-
 TEST_CASE("window::pixel_format", "[window]")
 {
   ctn::window window;
@@ -860,12 +850,6 @@ TEST_CASE("window::title", "[window]")
   ctn::czstring title = "HelloWorld";
   const ctn::window window{title};
   CHECK_THAT(window.title(), Catch::Equals(title));
-}
-
-TEST_CASE("window::to_string", "[window]")
-{
-  const ctn::window window;
-  ctn::log::info(ctn::log::category::test, "%s", window.to_string().c_str());
 }
 
 TEST_CASE("window::get", "[window]")
@@ -887,4 +871,29 @@ TEST_CASE("window to SDL_Window*", "[window]")
     ctn::window window;
     CHECK(window.operator SDL_Window*());
   }
+}
+
+TEST_CASE("renderer_handle from window", "[window]")
+{
+  ctn::window window;
+
+  CHECK(!ctn::get_renderer(window));
+
+  ctn::renderer renderer{window};
+  auto handle = ctn::get_renderer(window);
+
+  REQUIRE(handle);
+  CHECK(handle.get() == renderer.get());
+}
+
+TEST_CASE("window to_string", "[window]")
+{
+  const ctn::window window;
+  ctn::log::put(ctn::log::category::test, ctn::to_string(window));
+}
+
+TEST_CASE("window stream operator", "[window]")
+{
+  const ctn::window window;
+  std::cout << "COUT: " << window << '\n';
 }

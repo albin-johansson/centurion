@@ -63,7 +63,10 @@ set(TEST_FILES
         unittests/scan_code_tests.cpp
         unittests/key_code_tests.cpp
         unittests/font_cache_test.cpp
-        unittests/unicode_string_test.cpp unittests/game_loop_test.cpp)
+        unittests/unicode_string_test.cpp
+        unittests/game_loop_test.cpp
+        unittests/window_handle_test.cpp
+        unittests/renderer_handle_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

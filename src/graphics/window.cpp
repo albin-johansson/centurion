@@ -1,5 +1,6 @@
 #include "window.hpp"
 
+#include "centurion_utils.hpp"
 #include "error.hpp"
 
 namespace centurion {
@@ -55,6 +56,20 @@ auto window::shared(nn_owner<SDL_Window*> sdlWindow) -> sptr
 auto window::shared(nn_czstring title, iarea size) -> sptr
 {
   return std::make_shared<window>(title, size);
+}
+
+auto to_string(const window& window) -> std::string
+{
+  const auto ptr = detail::address_of(window.get());
+  const auto w = std::to_string(window.width());
+  const auto h = std::to_string(window.height());
+  return "[window | ptr: " + ptr + ", width: " + w + ", height: " + h + "]";
+}
+
+auto operator<<(std::ostream& stream, const window& window) -> std::ostream&
+{
+  stream << to_string(window);
+  return stream;
 }
 
 }  // namespace centurion

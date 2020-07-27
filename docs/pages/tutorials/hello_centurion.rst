@@ -12,7 +12,7 @@ The only difference between these headers is that ``centurion_as_ctn.hpp`` provi
 Since all Centurion entities are located in the ``centurion`` namespace, it can get tedious to qualify everything 
 with ``centurion::``. As a result, it's recommended to prefer the ``ctn`` namespace alias.
 
-Now, it's important that the get the signature ``main`` correct in order for your program to work. The signature 
+Now, it's important to get the signature of ``main`` correct in order for your program to work. The signature 
 of the main-method **must** be ``int main(int, char**)``! This is because SDL actually performs some setup before 
 the main method is entered through some macro magic.
 
@@ -34,11 +34,6 @@ exactly what gets initialized (and how).
 
     return 0;
   }
-
-.. note::
-
-  The signature of the main-method **must** be ``int main(int, char**)``, this is because SDL
-  actually performs some setup before the main method is entered through some macro magic.
 
 Custom Configuration
 --------------------

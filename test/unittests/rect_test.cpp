@@ -530,6 +530,15 @@ TEST_CASE("rect intersects", "[rect]")
 
     CHECK(ctn::intersects(rect, rect));
 
+    SECTION("Empty rectangle")
+    {
+      const ctn::irect empty;
+      CHECK(!ctn::intersects(empty, empty));
+
+      CHECK(!ctn::intersects(rect, empty));
+      CHECK(!ctn::intersects(empty, rect));
+    }
+
     SECTION("Obviously no intersection")
     {
       const ctn::irect left{{rect.x() - rect.width(), rect.y()}, {10, 10}};
@@ -597,6 +606,15 @@ TEST_CASE("rect intersects", "[rect]")
   {
     const ctn::frect rect{{100.0f, 100.0f}, {100.0f, 100.0f}};
     CHECK(ctn::intersects(rect, rect));
+
+    SECTION("Empty rectangle")
+    {
+      const ctn::frect empty;
+      CHECK(!ctn::intersects(empty, empty));
+
+      CHECK(!ctn::intersects(rect, empty));
+      CHECK(!ctn::intersects(empty, rect));
+    }
 
     SECTION("Obviously no intersection")
     {
@@ -815,21 +833,61 @@ TEST_CASE("rect to_string", "[rect]")
 
 TEST_CASE("rect get_union", "[rect]")
 {
-  const ctn::irect fst{{10, 10}, {50, 50}};
-  const ctn::irect snd{{40, 40}, {50, 50}};
+  SECTION("irect")
+  {
+    const ctn::irect fst{{10, 10}, {50, 50}};
+    const ctn::irect snd{{40, 40}, {50, 50}};
 
-  const auto fstSnd = ctn::get_union(fst, snd);
-  const auto sndFst = ctn::get_union(snd, fst);
+    SECTION("With empty rect")
+    {
+      const ctn::irect empty;
 
-  CHECK(fstSnd.has_area());
+      CHECK(ctn::get_union(empty, empty) == empty);
+      CHECK(ctn::get_union(empty, fst) == fst);
+      CHECK(ctn::get_union(fst, empty) == fst);
+    }
 
-  CHECK(fstSnd.x() == 10);
-  CHECK(fstSnd.y() == 10);
-  CHECK(fstSnd.width() == 80);
-  CHECK(fstSnd.height() == 80);
+    const auto fstSnd = ctn::get_union(fst, snd);
+    const auto sndFst = ctn::get_union(snd, fst);
 
-  CHECK(fstSnd == sndFst);
-  CHECK(sndFst == fstSnd);
+    CHECK(fstSnd.has_area());
+
+    CHECK(fstSnd.x() == 10);
+    CHECK(fstSnd.y() == 10);
+    CHECK(fstSnd.width() == 80);
+    CHECK(fstSnd.height() == 80);
+
+    CHECK(fstSnd == sndFst);
+    CHECK(sndFst == fstSnd);
+  }
+
+  SECTION("frect")
+  {
+    const ctn::frect fst{{10.0f, 10.0f}, {50.0f, 50.0f}};
+    const ctn::frect snd{{40.0f, 40.0f}, {50.0f, 50.0f}};
+
+    SECTION("With empty rect")
+    {
+      const ctn::frect empty;
+
+      CHECK(ctn::get_union(empty, empty) == empty);
+      CHECK(ctn::get_union(empty, fst) == fst);
+      CHECK(ctn::get_union(fst, empty) == fst);
+    }
+
+    const auto fstSnd = ctn::get_union(fst, snd);
+    const auto sndFst = ctn::get_union(snd, fst);
+
+    CHECK(fstSnd.has_area());
+
+    CHECK(fstSnd.x() == 10.0f);
+    CHECK(fstSnd.y() == 10.0f);
+    CHECK(fstSnd.width() == 80.0f);
+    CHECK(fstSnd.height() == 80.0f);
+
+    CHECK(fstSnd == sndFst);
+    CHECK(sndFst == fstSnd);
+  }
 }
 
 TEST_CASE("Rect conversions", "[rect]")

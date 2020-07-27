@@ -45,6 +45,7 @@
 
 #include <SDL.h>
 
+#include <algorithm>
 #include <ostream>
 #include <string>
 #include <type_traits>
@@ -583,12 +584,28 @@ template <typename Traits>
  *
  * @since 5.0.0
  */
-[[nodiscard]] inline auto get_union(const irect& fst, const irect& snd) noexcept
-    -> irect
+template <typename Traits>
+[[nodiscard]] constexpr auto get_union(const basic_rect<Traits>& fst,
+                                       const basic_rect<Traits>& snd) noexcept
+    -> basic_rect<Traits>
 {
-  SDL_Rect result{0, 0, 0, 0};
-  SDL_UnionRect(&fst.get(), &snd.get(), &result);
-  return {{result.x, result.y}, {result.w, result.h}};
+  const auto fstHasArea = fst.has_area();
+  const auto sndHasArea = snd.has_area();
+
+  if (!fstHasArea && !sndHasArea) {
+    return {};
+  } else if (!fstHasArea) {
+    return snd;
+  } else if (!sndHasArea) {
+    return fst;
+  }
+
+  const auto x = std::min(fst.x(), snd.x());
+  const auto y = std::min(fst.y(), snd.y());
+  const auto maxX = std::max(fst.max_x(), snd.max_x());
+  const auto maxY = std::max(fst.max_y(), snd.max_y());
+
+  return {{x, y}, {maxX - x, maxY - y}};
 }
 
 /**

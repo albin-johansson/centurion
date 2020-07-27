@@ -207,7 +207,7 @@ class basic_point final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] explicit operator point_type() const noexcept
+  [[nodiscard]] constexpr explicit operator point_type() const noexcept
   {
     return m_point;
   }

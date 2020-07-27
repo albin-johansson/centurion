@@ -91,21 +91,6 @@ class frect_traits final {
  *
  * @brief A simple rectangle implementation.
  *
- * @par Examples
- * The following are some examples of interaction with the SDL rectangle
- * structs.
- * @code{.cpp}
- *   ctn::frect f{};
- *   auto* a = static_cast<SDL_FRect*>(f);
- *   const auto* b = static_cast<const SDL_FRect*>(f);
- *   SDL_FRect& c = f.get();
- *
- *   ctn::irect r{};
- *   auto* d = static_cast<SDL_Rect*>(r);
- *   const auto* e = static_cast<const SDL_Rect*>(r);
- *   SDL_Rect& f = r.get();
- * @endcode
- *
  * @tparam Traits the traits used by the rectangle. Must provide
  * `rect_type`, `area_type`, `point_type` and `value_type`.
  *
@@ -209,63 +194,6 @@ class basic_rect final {
     m_rect.w = size.width;
     m_rect.h = size.height;
   };
-
-  /**
-   * @brief Sets the position and size of the rectangle.
-   *
-   * @param position the new position of the rectangle.
-   * @param size the new size of the rectangle.
-   *
-   * @since 4.1.0
-   */
-  constexpr void set(const point_type& position, const area_type& size) noexcept
-  {
-    move_to(position);
-    set_size(size);
-  }
-
-  /**
-   * @brief Indicates whether or not the two rectangles intersect.
-   *
-   * @details This function does *not* consider rectangles with overlapping
-   * borders as intersecting. If you want such behaviour, see the
-   * `collides_with` function.
-   *
-   * @param other the other rectangle to check.
-   *
-   * @return `true` if the rectangles intersect; `false` otherwise.
-   *
-   * @see `collides_with`
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] constexpr auto intersects(
-      const basic_rect<Traits>& other) const noexcept -> bool
-  {
-    return !(x() >= other.max_x() || max_x() <= other.x() ||
-             y() >= other.max_y() || max_y() <= other.y());
-  }
-
-  /**
-   * @brief Indicates whether or not two rectangles are colliding.
-   *
-   * @details This function considers rectangles with overlapping borders as
-   * colliding.
-   *
-   * @param other the other rectangle to check.
-   *
-   * @return `true` if the rectangles collide; `false` otherwise.
-   *
-   * @see `intersects`
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] constexpr auto collides_with(
-      const basic_rect<Traits>& other) const noexcept -> bool
-  {
-    return !(x() > other.max_x() || max_x() < other.x() ||
-             y() > other.max_y() || max_y() < other.y());
-  }
 
   /**
    * @brief Indicates whether or not the rectangle contains the point.
@@ -588,6 +516,57 @@ template <>
   const irect::area_type size{static_cast<int>(from.width()),
                               static_cast<int>(from.height())};
   return irect{pos, size};
+}
+
+/**
+ * @brief Indicates whether or not the two rectangles intersect.
+ *
+ * @details This function does *not* consider rectangles with overlapping
+ * borders as intersecting. If you want such behaviour, see the
+ * `collides` function.
+ *
+ * @tparam Traits the traits used by the rectangles.
+ *
+ * @param other the other rectangle to check.
+ *
+ * @return `true` if the rectangles intersect; `false` otherwise.
+ *
+ * @see `collides`
+ *
+ * @since 4.0.0
+ */
+template <typename Traits>
+[[nodiscard]] constexpr auto intersects(const basic_rect<Traits>& fst,
+                                        const basic_rect<Traits>& snd) noexcept
+    -> bool
+{
+  return !(fst.x() >= snd.max_x() || fst.max_x() <= snd.x() ||
+           fst.y() >= snd.max_y() || fst.max_y() <= snd.y());
+}
+
+/**
+ * @brief Indicates whether or not two rectangles are colliding.
+ *
+ * @details This function considers rectangles with overlapping borders as
+ * colliding.
+ *
+ * @tparam Traits the traits used by the rectangles.
+ *
+ * @param other the other rectangle to check.
+ *
+ * @return `true` if the rectangles collide; `false` otherwise.
+ *
+ * @see `intersects`
+ *
+ * @since 4.0.0
+ */
+template <typename Traits>
+[[nodiscard]] constexpr auto collides(const basic_rect<Traits>& fst,
+                                      const basic_rect<Traits>& snd) noexcept
+    -> bool
+{
+  return !(fst.x() > snd.max_x() || fst.max_x() < snd.x() ||
+           fst.y() > snd.max_y() || fst.max_y() < snd.y());
 }
 
 /**

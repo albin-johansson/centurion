@@ -78,8 +78,8 @@ TEST_CASE("area to_string", "[area]")
   constexpr ctn::iarea ia{123, 456};
   constexpr ctn::farea fa{78.9f, 23.4f};
 
-  ctn::log::put(ctn::log::category::test, ctn::to_string(ia));
-  ctn::log::put(ctn::log::category::test, ctn::to_string(fa));
+  ctn::log::put(ctn::to_string(ia));
+  ctn::log::put(ctn::to_string(fa));
 }
 
 TEST_CASE("area stream operator", "[area]")

@@ -889,7 +889,7 @@ TEST_CASE("renderer_handle from window", "[window]")
 TEST_CASE("window to_string", "[window]")
 {
   const ctn::window window;
-  ctn::log::put(ctn::log::category::test, ctn::to_string(window));
+  ctn::log::put(ctn::to_string(window));
 }
 
 TEST_CASE("window stream operator", "[window]")

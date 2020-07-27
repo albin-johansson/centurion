@@ -45,7 +45,7 @@ TEST_CASE("renderer_handle to_string", "[renderer_handle]")
   ctn::renderer renderer{window};
   ctn::renderer_handle handle{renderer};
 
-  ctn::log::put(ctn::log::category::test, ctn::to_string(handle));
+  ctn::log::put(ctn::to_string(handle));
 }
 
 TEST_CASE("renderer_handle stream operator", "[renderer_handle]")

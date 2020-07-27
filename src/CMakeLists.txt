@@ -109,7 +109,7 @@ set(SOURCE_FILES
         event/mouse_wheel_event.cpp
         event/multi_gesture_event.cpp
         event/text_editing_event.cpp
-        event/text_input_event.cpp )
+        event/text_input_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

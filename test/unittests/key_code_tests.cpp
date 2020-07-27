@@ -359,7 +359,7 @@ TEST_CASE("key_code constants", "[key_code]")
 TEST_CASE("key_code to_string", "[key_code]")
 {
   const ctn::key_code kc{SDLK_r};
-  ctn::log::put(ctn::log::category::test, ctn::to_string(kc));
+  ctn::log::put(ctn::to_string(kc));
 }
 
 TEST_CASE("key_code stream operator", "[key_code]")

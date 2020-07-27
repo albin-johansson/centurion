@@ -326,9 +326,6 @@ auto operator<<(std::ostream& stream, const scan_code& scanCode)
  * @details Far from all scan codes are provided. Instead, the most
  * commonly used scan codes are available.
  *
- * @todo Update the documentation of the constants to clarify that they
- * represent the position and not the key with a specific label.
- *
  * @since 5.0.0
  */
 namespace scancodes {

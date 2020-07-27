@@ -50,7 +50,7 @@ TEST_CASE("window_handle to_string", "[window_handle]")
   ctn::window window;
   ctn::window_handle handle{window};
 
-  ctn::log::put(ctn::log::category::test, ctn::to_string(handle));
+  ctn::log::put(ctn::to_string(handle));
 }
 
 TEST_CASE("window_handle stream operator", "[window_handle]")

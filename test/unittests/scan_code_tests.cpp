@@ -378,7 +378,7 @@ TEST_CASE("scan_code constants", "[scan_code]")
 TEST_CASE("scan_code to_string", "[scan_code]")
 {
   const ctn::scan_code sc{SDLK_r};
-  ctn::log::put(ctn::log::category::test, ctn::to_string(sc));
+  ctn::log::put(ctn::to_string(sc));
 }
 
 TEST_CASE("scan_code stream operator", "[scan_code]")

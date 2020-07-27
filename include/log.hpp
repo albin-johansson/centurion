@@ -148,7 +148,7 @@ enum class category {
  *
  * @param priority the priority that will be used.
  * @param category the category that will be used.
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
@@ -156,14 +156,12 @@ enum class category {
 template <typename... Args>
 void msg(log::priority priority,
          log::category category,
-         czstring fmt,
+         nn_czstring fmt,
          Args&&... args) noexcept
 {
-  if (fmt) {
-    const auto sdlCategory = static_cast<SDL_LogCategory>(category);
-    const auto prio = static_cast<SDL_LogPriority>(priority);
-    SDL_LogMessage(sdlCategory, prio, fmt, args...);
-  }
+  const auto sdlCategory = static_cast<SDL_LogCategory>(category);
+  const auto prio = static_cast<SDL_LogPriority>(priority);
+  SDL_LogMessage(sdlCategory, prio, fmt, args...);
 }
 
 /**
@@ -175,13 +173,13 @@ void msg(log::priority priority,
  * formatted string.
  *
  * @param category the category that will be used.
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
  */
 template <typename... Args>
-void info(category category, czstring fmt, Args&&... args) noexcept
+void info(category category, nn_czstring fmt, Args&&... args) noexcept
 {
   log::msg(log::priority::info, category, fmt, args...);
 }
@@ -194,13 +192,13 @@ void info(category category, czstring fmt, Args&&... args) noexcept
  * @tparam Args the types of the arguments that will be used in the
  * formatted string.
  *
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
  */
 template <typename... Args>
-void info(czstring fmt, Args&&... args) noexcept
+void info(nn_czstring fmt, Args&&... args) noexcept
 {
   log::info(log::category::app, fmt, args...);
 }
@@ -214,13 +212,13 @@ void info(czstring fmt, Args&&... args) noexcept
  * formatted string.
  *
  * @param category the category that will be used.
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
  */
 template <typename... Args>
-void warn(category category, czstring fmt, Args&&... args) noexcept
+void warn(category category, nn_czstring fmt, Args&&... args) noexcept
 {
   log::msg(priority::warn, category, fmt, args...);
 }
@@ -233,13 +231,13 @@ void warn(category category, czstring fmt, Args&&... args) noexcept
  * @tparam Args the types of the arguments that will be used in the
  * formatted string.
  *
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
  */
 template <typename... Args>
-void warn(czstring fmt, Args&&... args) noexcept
+void warn(nn_czstring fmt, Args&&... args) noexcept
 {
   log::warn(category::app, fmt, args...);
 }
@@ -253,13 +251,13 @@ void warn(czstring fmt, Args&&... args) noexcept
  * formatted string.
  *
  * @param category the category that will be used.
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
  */
 template <typename... Args>
-void verbose(category category, czstring fmt, Args&&... args) noexcept
+void verbose(category category, nn_czstring fmt, Args&&... args) noexcept
 {
   log::msg(priority::verbose, category, fmt, args...);
 }
@@ -272,13 +270,13 @@ void verbose(category category, czstring fmt, Args&&... args) noexcept
  * @tparam Args the types of the arguments that will be used in the
  * formatted string.
  *
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
  */
 template <typename... Args>
-void verbose(czstring fmt, Args&&... args) noexcept
+void verbose(nn_czstring fmt, Args&&... args) noexcept
 {
   log::verbose(category::app, fmt, args...);
 }
@@ -292,13 +290,13 @@ void verbose(czstring fmt, Args&&... args) noexcept
  * formatted string.
  *
  * @param category the category that will be used.
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
  */
 template <typename... Args>
-void debug(category category, czstring fmt, Args&&... args) noexcept
+void debug(category category, nn_czstring fmt, Args&&... args) noexcept
 {
   log::msg(priority::debug, category, fmt, args...);
 }
@@ -311,13 +309,13 @@ void debug(category category, czstring fmt, Args&&... args) noexcept
  * @tparam Args the types of the arguments that will be used in the
  * formatted string.
  *
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
  */
 template <typename... Args>
-void debug(czstring fmt, Args&&... args) noexcept
+void debug(nn_czstring fmt, Args&&... args) noexcept
 {
   log::debug(category::app, fmt, args...);
 }
@@ -331,7 +329,7 @@ void debug(czstring fmt, Args&&... args) noexcept
  * formatted string.
  *
  * @param category the category that will be used.
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
@@ -350,13 +348,13 @@ void critical(category category, czstring fmt, Args&&... args) noexcept
  * @tparam Args the types of the arguments that will be used in the
  * formatted string.
  *
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
  */
 template <typename... Args>
-void critical(czstring fmt, Args&&... args) noexcept
+void critical(nn_czstring fmt, Args&&... args) noexcept
 {
   log::critical(category::app, fmt, args...);
 }
@@ -370,7 +368,7 @@ void critical(czstring fmt, Args&&... args) noexcept
  * formatted string.
  *
  * @param category the category that will be used.
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
@@ -384,42 +382,42 @@ void error(category category, czstring fmt, Args&&... args) noexcept
 /**
  * @brief Logs a message with the `priority::error` and `category::app`.
  *
- * @details This method has no effect if the supplied string is null.
- *
  * @tparam Args the types of the arguments that will be used in the
  * formatted string.
  *
- * @param fmt the formatted string that will be logged, can safely be null.
+ * @param fmt the formatted string that will be logged, cannot be null.
  * @param args the arguments that will be used by the formatted string.
  *
  * @since 4.0.0
  */
 template <typename... Args>
-void error(czstring fmt, Args&&... args) noexcept
+void error(nn_czstring fmt, Args&&... args) noexcept
 {
   log::error(category::app, fmt, args...);
 }
 
-// TODO doc and expand
-
+/**
+ * @brief Logs a string.
+ *
+ * @details This function is meant to be used for casual logging, where you
+ * just want to log a string. The message will be logged with
+ * `priority::info` and `category::app`.
+ *
+ * @param str the string that will be logged.
+ *
+ * @since 5.0.0
+ */
 inline void put(const std::string& str) noexcept
 {
   log::info("%s", str.c_str());
 }
 
-inline void put(category category, const std::string& str) noexcept
+/**
+ * @copydoc put(const std::string&)
+ */
+inline void put(nn_czstring str) noexcept
 {
-  log::info(category, "%s", str.c_str());
-}
-
-inline void put(std::string_view str) noexcept
-{
-  log::info("%s", str.data());
-}
-
-inline void put(category category, std::string_view str) noexcept
-{
-  log::info(category, "%s", str.data());
+  log::info("%s", str);
 }
 
 /**

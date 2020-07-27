@@ -778,7 +778,7 @@ TEST_CASE("renderer to_string", "[renderer]")
   ctn::window window;
   ctn::renderer renderer{window};
 
-  ctn::log::put(ctn::log::category::test, ctn::to_string(renderer));
+  ctn::log::put(ctn::to_string(renderer));
 }
 
 TEST_CASE("renderer stream operator", "[renderer]")

@@ -329,7 +329,7 @@ TEST_CASE("font to TTF_Font*", "[font]")
 TEST_CASE("font to_string", "[font]")
 {
   ctn::font font{type_writer_path, 12};
-  ctn::log::put(ctn::log::category::test, ctn::to_string(font));
+  ctn::log::put(ctn::to_string(font));
 }
 
 TEST_CASE("font stream operator", "[font]")

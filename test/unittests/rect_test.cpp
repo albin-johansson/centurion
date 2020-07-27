@@ -821,13 +821,13 @@ TEST_CASE("rect to_string", "[rect]")
   SECTION("irect")
   {
     const ctn::irect rect{{20, 45}, {100, 150}};
-    ctn::log::put(ctn::log::category::test, ctn::to_string(rect));
+    ctn::log::put(ctn::to_string(rect));
   }
 
   SECTION("frect")
   {
     const ctn::frect rect{{14.3f, 34.2f}, {182.8f, 120.9f}};
-    ctn::log::put(ctn::log::category::test, ctn::to_string(rect));
+    ctn::log::put(ctn::to_string(rect));
   }
 }
 

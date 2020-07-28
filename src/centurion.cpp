@@ -1,47 +1,6 @@
 #include "centurion.hpp"
 
-#include "error.hpp"
-
 namespace centurion {
-
-void centurion_lib::init_sdl()
-{
-  const auto result = SDL_Init(m_cfg.coreFlags);
-  if (result < 0) {
-    throw detail::core_error("Failed to load SDL2!");
-  }
-}
-
-void centurion_lib::init_ttf()
-{
-  const auto result = TTF_Init();
-  if (result == -1) {
-    throw detail::ttf_error("Failed to load SDL2_ttf!");
-  }
-}
-
-void centurion_lib::init_img()
-{
-  const auto flags = IMG_Init(m_cfg.imageFlags);
-  if (!flags) {
-    throw detail::img_error("Failed to load SDL2_image!");
-  }
-}
-
-void centurion_lib::init_mix()
-{
-  const auto flags = Mix_Init(m_cfg.mixerFlags);
-  if (!flags) {
-    throw detail::mix_error("Failed to load SDL2_mixer!");
-  }
-
-  if (Mix_OpenAudio(m_cfg.mixerFreq,
-                    m_cfg.mixerFormat,
-                    m_cfg.mixerChannels,
-                    m_cfg.mixerChunkSize) == -1) {
-    throw detail::mix_error("Failed to open audio!");
-  }
-}
 
 centurion_lib::centurion_lib()
 {
@@ -53,62 +12,26 @@ centurion_lib::centurion_lib(const centurion_config& cfg) : m_cfg{cfg}
   init();
 }
 
-centurion_lib::~centurion_lib() noexcept
-{
-  close();
-}
-
 void centurion_lib::init()
 {
   if (m_cfg.initCore) {
-    init_sdl();
+    m_sdl.emplace(m_cfg.coreFlags);
   }
 
   if (m_cfg.initImage) {
-    try {
-      init_img();
-    } catch (...) {
-      SDL_Quit();
-    }
+    m_img.emplace(m_cfg.imageFlags);
   }
 
   if (m_cfg.initTTF) {
-    try {
-      init_ttf();
-    } catch (...) {
-      IMG_Quit();
-      SDL_Quit();
-    }
+    m_ttf.emplace();
   }
 
   if (m_cfg.initMixer) {
-    try {
-      init_mix();
-    } catch (...) {
-      TTF_Quit();
-      IMG_Quit();
-      SDL_Quit();
-    }
-  }
-}
-
-void centurion_lib::close() noexcept
-{
-  if (m_cfg.initImage) {
-    IMG_Quit();
-  }
-
-  if (m_cfg.initTTF) {
-    TTF_Quit();
-  }
-
-  if (m_cfg.initMixer) {
-    Mix_CloseAudio();
-    Mix_Quit();
-  }
-
-  if (m_cfg.initCore) {
-    SDL_Quit();
+    m_mixer.emplace(m_cfg.mixerFlags,
+                    m_cfg.mixerFreq,
+                    m_cfg.mixerFormat,
+                    m_cfg.mixerChannels,
+                    m_cfg.mixerChunkSize);
   }
 }
 
@@ -117,6 +40,65 @@ auto ttf_version() noexcept -> SDL_version
   SDL_version version;
   SDL_TTF_VERSION(&version)
   return version;
+}
+
+centurion_lib::sdl::sdl(u32 flags)
+{
+  const auto result = SDL_Init(flags);
+  if (result < 0) {
+    throw detail::core_error("Failed to load SDL2!");
+  }
+}
+
+centurion_lib::sdl::~sdl() noexcept
+{
+  SDL_Quit();
+}
+
+centurion_lib::sdl_ttf::sdl_ttf()
+{
+  const auto result = TTF_Init();
+  if (result == -1) {
+    throw detail::ttf_error("Failed to load SDL2_ttf!");
+  }
+}
+
+centurion_lib::sdl_ttf::~sdl_ttf() noexcept
+{
+  TTF_Quit();
+}
+
+centurion_lib::sdl_mixer::sdl_mixer(int flags,
+                                    int freq,
+                                    u16 format,
+                                    int nChannels,
+                                    int chunkSize)
+{
+  if (!Mix_Init(flags)) {
+    throw detail::mix_error("Failed to load SDL2_mixer!");
+  }
+
+  if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1) {
+    throw detail::mix_error("Failed to open audio!");
+  }
+}
+
+centurion_lib::sdl_mixer::~sdl_mixer() noexcept
+{
+  Mix_CloseAudio();
+  Mix_Quit();
+}
+
+centurion_lib::sdl_image::sdl_image(int flags)
+{
+  if (!IMG_Init(flags)) {
+    throw detail::img_error("Failed to load SDL2_image!");
+  }
+}
+
+centurion_lib::sdl_image::~sdl_image() noexcept
+{
+  IMG_Quit();
 }
 
 }  // namespace centurion

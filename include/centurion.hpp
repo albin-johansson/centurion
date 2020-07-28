@@ -51,8 +51,11 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
+#include <optional>
+
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
+#include "error.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -215,14 +218,6 @@ class centurion_lib final {
   CENTURION_API
   explicit centurion_lib(const centurion_config& cfg);
 
-  /**
-   * @brief Closes the Centurion library.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  ~centurion_lib() noexcept;
-
   centurion_lib(const centurion_lib&) = delete;
 
   centurion_lib(centurion_lib&&) = delete;
@@ -232,19 +227,45 @@ class centurion_lib final {
   auto operator=(centurion_lib&&) -> centurion_lib& = delete;
 
  private:
-  centurion_config m_cfg;
+  class sdl final {
+   public:
+    explicit sdl(u32 flags);
 
-  void init_sdl();
+    CENTURION_API
+    ~sdl() noexcept;
+  };
 
-  void init_ttf();
+  class sdl_ttf final {
+   public:
+    explicit sdl_ttf();
 
-  void init_img();
+    CENTURION_API
+    ~sdl_ttf() noexcept;
+  };
 
-  void init_mix();
+  class sdl_mixer final {
+   public:
+    sdl_mixer(int flags, int freq, u16 format, int nChannels, int chunkSize);
+
+    CENTURION_API
+    ~sdl_mixer() noexcept;
+  };
+
+  class sdl_image final {
+   public:
+    explicit sdl_image(int flags);
+
+    CENTURION_API
+    ~sdl_image() noexcept;
+  };
+
+  centurion_config m_cfg{};
+  std::optional<sdl> m_sdl{};
+  std::optional<sdl_image> m_img{};
+  std::optional<sdl_ttf> m_ttf{};
+  std::optional<sdl_mixer> m_mixer{};
 
   void init();
-
-  void close() noexcept;
 };
 
 /**

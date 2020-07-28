@@ -63,12 +63,7 @@ namespace detail {
 
 class font_deleter final {
  public:
-  void operator()(TTF_Font* font) noexcept
-  {
-    if (font) {
-      TTF_CloseFont(font);
-    }
-  }
+  void operator()(TTF_Font* font) noexcept { TTF_CloseFont(font); }
 };
 
 }  // namespace detail

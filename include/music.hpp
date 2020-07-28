@@ -218,12 +218,7 @@ namespace detail {
 
 class music_deleter final {
  public:
-  void operator()(Mix_Music* music) noexcept
-  {
-    if (music) {
-      Mix_FreeMusic(music);
-    }
-  }
+  void operator()(Mix_Music* music) noexcept { Mix_FreeMusic(music); }
 };
 
 }  // namespace detail

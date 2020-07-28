@@ -65,9 +65,7 @@ class texture_deleter final {
  public:
   void operator()(SDL_Texture* texture) noexcept
   {
-    if (texture) {
-      SDL_DestroyTexture(texture);
-    }
+    SDL_DestroyTexture(texture);
   }
 };
 

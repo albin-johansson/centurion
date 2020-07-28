@@ -62,12 +62,7 @@ namespace detail {
 
 class surface_deleter final {
  public:
-  void operator()(SDL_Surface* surface) noexcept
-  {
-    if (surface) {
-      SDL_FreeSurface(surface);
-    }
-  }
+  void operator()(SDL_Surface* surface) noexcept { SDL_FreeSurface(surface); }
 };
 
 }  // namespace detail

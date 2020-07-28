@@ -63,12 +63,7 @@ namespace detail {
 
 class sound_effect_deleter final {
  public:
-  void operator()(Mix_Chunk* chunk) noexcept
-  {
-    if (chunk) {
-      Mix_FreeChunk(chunk);
-    }
-  }
+  void operator()(Mix_Chunk* chunk) noexcept { Mix_FreeChunk(chunk); }
 };
 
 }  // namespace detail

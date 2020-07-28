@@ -41,7 +41,15 @@
 
 #include <SDL_gamecontroller.h>
 
+#include <cstring>
+#include <memory>
+#include <ostream>
+#include <string>
+#include <type_traits>
+
+#include "button_state.hpp"
 #include "centurion_api.hpp"
+#include "centurion_types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -232,6 +240,110 @@ enum class game_controller_button {
 {
   return !(lhs == rhs);
 }
+
+class sdl_string final {
+ public:
+  sdl_string(const char*) = delete;
+
+  sdl_string(owner<zstring> str) noexcept
+      : m_str{str}, m_size{m_str ? std::strlen(m_str) : 0}
+  {}
+
+  ~sdl_string() noexcept
+  {
+    if (m_str) {
+      SDL_free(m_str);
+    }
+  }
+
+  [[nodiscard]] explicit operator bool() const noexcept { return m_str; }
+
+  [[nodiscard]] auto data() const noexcept -> czstring { return m_str; }
+
+  [[nodiscard]] auto size() const noexcept -> std::size_t { return m_size; }
+
+ private:
+  owner<zstring> m_str{};
+  std::size_t m_size{};
+};
+
+/**
+ * @class game_controller
+ *
+ * @brief Represents a game controller, e.g. an xbox-controller.
+ *
+ * @ingroup input
+ *
+ * @since 5.0.0
+ *
+ * @headerfile game_controller.hpp
+ */
+class game_controller final {
+ public:
+  /**
+   * @brief Attempts to create a `game_controller` instance.
+   *
+   * @details The joystick index is the same as the device index passed to the
+   * `joystick` constructor. The index passed as an argument refers to the
+   * n'th game controller on the system.
+   *
+   * @note The supplied index is not the value which will identify the
+   * controller in controller events. Instead, the joystick's instance id
+   * (SDL_JoystickID) will be used.
+   *
+   * @param joystickIndex the device index, can't be >= than the amount of
+   * number of joysticks.
+   *
+   * @throws centurion_exception if the game controller cannot be opened.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  explicit game_controller(int joystickIndex);
+
+  CENTURION_API
+  ~game_controller() noexcept;
+
+  CENTURION_QUERY
+  auto name() const noexcept -> czstring;
+
+  CENTURION_QUERY
+  static auto name(int joystickIndex) noexcept -> czstring;
+
+  CENTURION_QUERY
+  auto get_button_state(game_controller_button button) const noexcept
+      -> button_state;
+
+  CENTURION_QUERY
+  auto is_button_pressed(game_controller_button button) const noexcept -> bool;
+
+  CENTURION_QUERY
+  auto is_button_released(game_controller_button button) const noexcept -> bool;
+
+  CENTURION_QUERY
+  auto get_joystick() noexcept -> SDL_Joystick*;  // TODO joystick_handle
+
+  CENTURION_API
+  static void update() noexcept;
+
+  CENTURION_QUERY
+  static auto is_valid(int joystickIndex) noexcept -> bool;
+
+  CENTURION_API
+  static void set_polling(bool polling) noexcept;
+
+  CENTURION_QUERY
+  static auto is_polling() noexcept -> bool;
+
+ private:
+  SDL_GameController* m_controller;
+};
+
+static_assert(std::is_final_v<game_controller>);
+static_assert(std::is_nothrow_destructible_v<game_controller>);
+
+static_assert(std::is_nothrow_move_constructible_v<game_controller>);
+static_assert(std::is_nothrow_move_assignable_v<game_controller>);
 
 }  // namespace centurion
 

@@ -62,7 +62,7 @@ void joystick::set_polling(bool enabled) noexcept
   SDL_JoystickEventState(enabled ? SDL_ENABLE : SDL_DISABLE);
 }
 
-auto joystick::polling() noexcept -> bool
+auto joystick::is_polling() noexcept -> bool
 {
   return SDL_JoystickEventState(SDL_QUERY);
 }

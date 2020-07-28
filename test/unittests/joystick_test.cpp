@@ -43,10 +43,10 @@ TEST_CASE("joystick locking/unlocking", "[joystick]")
 TEST_CASE("joystick polling", "[joystick]")
 {
   ctn::joystick::set_polling(false);
-  CHECK(!ctn::joystick::polling());
+  CHECK(!ctn::joystick::is_polling());
 
   ctn::joystick::set_polling(true);
-  CHECK(ctn::joystick::polling());
+  CHECK(ctn::joystick::is_polling());
 }
 
 TEST_CASE("joystick::from_instance_id", "[joystick]")

@@ -580,7 +580,7 @@ class joystick final {
    * @since 4.2.0
    */
   CENTURION_API
-  static auto polling() noexcept -> bool;
+  static auto is_polling() noexcept -> bool;
 
   /**
    * @brief Returns a pointer to an `SDL_Joystick` associated with the ID.

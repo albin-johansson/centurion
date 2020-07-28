@@ -3,11 +3,13 @@
 #include <SDL_image.h>
 
 #include <catch.hpp>
+#include <iostream>
 #include <utility>
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "colors.hpp"
+#include "log.hpp"
 
 static constexpr ctn::czstring path = "resources/panda.png";
 
@@ -220,4 +222,16 @@ TEST_CASE("surface to SDL_Surface*", "[surface]")
     ctn::surface surface{path};
     CHECK(surface.operator SDL_Surface*());
   }
+}
+
+TEST_CASE("surface to_string", "[surface]")
+{
+  const ctn::surface surface{path};
+  ctn::log::put(ctn::to_string(surface));
+}
+
+TEST_CASE("surface stream operator", "[surface]")
+{
+  const ctn::surface surface{path};
+  std::cout << "COUT: " << surface << '\n';
 }

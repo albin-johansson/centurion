@@ -40,6 +40,8 @@
 #include <SDL.h>
 
 #include <memory>
+#include <ostream>
+#include <string>
 #include <type_traits>
 
 #include "blend_mode.hpp"
@@ -469,6 +471,35 @@ class surface final {
    */
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>;
 };
+
+/**
+ * @brief Returns a textual representation of a surface.
+ *
+ * @ingroup graphics
+ *
+ * @param surface the surface that will be converted.
+ *
+ * @return a textual representation of the surface.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto to_string(const surface& surface) -> std::string;
+
+/**
+ * @brief Prints a textual representation of a surface.
+ *
+ * @ingroup graphics
+ *
+ * @param stream the stream that will be used.
+ * @param surface the surface that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto operator<<(std::ostream& stream, const surface& surface) -> std::ostream&;
 
 static_assert(std::is_final_v<surface>);
 static_assert(std::is_copy_constructible_v<surface>);

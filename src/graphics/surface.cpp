@@ -2,6 +2,7 @@
 
 #include <SDL_image.h>
 
+#include "centurion_utils.hpp"
 #include "error.hpp"
 
 namespace centurion {
@@ -161,10 +162,26 @@ auto surface::get_blend_mode() const noexcept -> blend_mode
 auto surface::convert(pixel_format format) const -> surface
 {
   const auto pixelFormat = static_cast<u32>(format);
-  auto* converted = SDL_ConvertSurfaceFormat(m_surface.get(), pixelFormat, 0);
-  SDL_SetSurfaceBlendMode(converted,
-                          static_cast<SDL_BlendMode>(get_blend_mode()));
-  return surface{converted};
+  surface converted{SDL_ConvertSurfaceFormat(m_surface.get(), pixelFormat, 0)};
+  converted.set_blend_mode(get_blend_mode());
+  return converted;
+}
+
+auto to_string(const surface& surface) -> std::string
+{
+  using namespace std::string_literals;
+
+  const auto ptr = detail::address_of(surface.get());
+  const auto w = std::to_string(surface.width());
+  const auto h = std::to_string(surface.height());
+
+  return "[surface | ptr: "s + ptr + ", width: "s + w + ", height: "s + h + "]";
+}
+
+auto operator<<(std::ostream& stream, const surface& surface) -> std::ostream&
+{
+  stream << to_string(surface);
+  return stream;
 }
 
 }  // namespace centurion

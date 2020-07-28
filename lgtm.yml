@@ -16,7 +16,7 @@ extraction:
     after_prepare:
       - | # CMake
         CMAKE_URL="http://cmake.org/files/v3.16/cmake-3.16.0-Linux-x86_64.tar.gz"
-        mkdir -p ${DEPS_DIR}/cmake
+        mkdir -p ${LGTM_WORKSPACE}/cmake
         wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${LGTM_WORKSPACE}/cmake
         export PATH=${LGTM_WORKSPACE}/cmake/bin:${PATH}
       - | # SDL2 core

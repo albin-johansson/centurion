@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "centurion_as_ctn.hpp"
+#include "log.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 

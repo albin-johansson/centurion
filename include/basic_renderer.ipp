@@ -37,9 +37,14 @@
 #ifndef CENTURION_BASIC_RENDERER_IMPLEMENTATION
 #define CENTURION_BASIC_RENDERER_IMPLEMENTATION
 
-#include "basic_renderer.hpp"
+#include <algorithm>  // for_each
+
 #include "centurion_api.hpp"
+#include "font.hpp"
+#include "font_cache.hpp"
 #include "graphics.hpp"
+#include "surface.hpp"
+#include "texture.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

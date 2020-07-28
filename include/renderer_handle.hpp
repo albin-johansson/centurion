@@ -40,9 +40,9 @@
 #include <string>
 #include <type_traits>
 
-#include "basic_renderer.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
+#include "graphics.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

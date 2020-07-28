@@ -40,6 +40,9 @@
 #include <SDL_mixer.h>
 
 #include <memory>
+#include <ostream>
+#include <string>
+#include <type_traits>
 
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
@@ -519,16 +522,6 @@ class music final {
   auto type() const noexcept -> music_type;
 
   /**
-   * @brief Returns a textual representation of the instance.
-   *
-   * @return a textual representation of the `music` instance.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_QUERY
-  auto to_string() const -> std::string;
-
-  /**
    * @brief Returns a pointer to the associated `Mix_Music`.
    *
    * @warning Use of this method is not recommended, since it purposefully
@@ -583,6 +576,35 @@ class music final {
  private:
   std::unique_ptr<Mix_Music, detail::music_deleter> m_music;
 };
+
+/**
+ * @brief Returns a textual representation of a `music` instance.
+ *
+ * @ingroup audio
+ *
+ * @param music the instance that will be converted.
+ *
+ * @return a string that represents the `music` instance.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto to_string(const music& music) -> std::string;
+
+/**
+ * @brief Prints a textual representation of a `music` instance.
+ *
+ * @ingroup audio
+ *
+ * @param stream the stream that will be used.
+ * @param music the `music` instance that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto operator<<(std::ostream& stream, const music& music) -> std::ostream&;
 
 static_assert(std::is_final_v<music>);
 static_assert(!std::is_nothrow_copy_constructible_v<music>);

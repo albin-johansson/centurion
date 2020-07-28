@@ -107,9 +107,20 @@ auto music::type() const noexcept -> music_type
   return static_cast<music_type>(Mix_GetMusicType(m_music.get()));
 }
 
-auto music::to_string() const -> std::string
+auto to_string(const music& music) -> std::string
 {
-  return "[Music@" + detail::address_of(this) + "]";
+  using namespace std::string_literals;
+
+  const auto ptr = detail::address_of(music.get());
+  const auto vol = std::to_string(music.volume());
+
+  return "[music | ptr: "s + ptr + ", volume: "s + vol + "]"s;
+}
+
+auto operator<<(std::ostream& stream, const music& music) -> std::ostream&
+{
+  stream << to_string(music);
+  return stream;
 }
 
 }  // namespace centurion

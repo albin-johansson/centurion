@@ -2,6 +2,7 @@
 #include "music.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
@@ -260,10 +261,16 @@ TEST_CASE("music::music_type", "[music]")
   CHECK(music.type() == ctn::music_type::mp3);
 }
 
-TEST_CASE("music::to_string", "[music]")
+TEST_CASE("music to_string", "[music]")
 {
-  ctn::music music{path};
-  ctn::log::info(ctn::log::category::test, "%s", music.to_string().c_str());
+  const ctn::music music{path};
+  ctn::log::put(ctn::to_string(music));
+}
+
+TEST_CASE("music stream operator", "[music]")
+{
+  const ctn::music music{path};
+  std::cout << "COUT: " << music << '\n';
 }
 
 TEST_CASE("music to Mix_Music*", "[music]")
@@ -277,7 +284,7 @@ TEST_CASE("music to Mix_Music*", "[music]")
   CHECK(csdlMusic);
 }
 
-TEST_CASE("FadeStatus enum values", "[music]")
+TEST_CASE("fade_status enum values", "[music]")
 {
   CHECK(ctn::fade_status::none == MIX_NO_FADING);
   CHECK(ctn::fade_status::in == MIX_FADING_IN);
@@ -288,7 +295,7 @@ TEST_CASE("FadeStatus enum values", "[music]")
   CHECK(MIX_FADING_OUT == ctn::fade_status::out);
 }
 
-TEST_CASE("MusicType enum values", "[music]")
+TEST_CASE("music_type enum values", "[music]")
 {
   CHECK(ctn::music_type::unknown == MUS_NONE);
   CHECK(ctn::music_type::mp3 == MUS_MP3);

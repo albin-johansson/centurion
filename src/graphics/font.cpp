@@ -233,10 +233,10 @@ auto font::style_name() const noexcept -> czstring
 
 auto to_string(const font& font) -> std::string
 {
-  const auto data = "Data: " + detail::address_of(font.get());
-  const auto name = ", Name: " + std::string{font.family_name()};
-  const auto size = ", Size: " + std::to_string(font.size());
-  return "[font | " + data + name + size + "]";
+  const auto ptr = "ptr: " + detail::address_of(font.get());
+  const auto name = ", name: " + std::string{font.family_name()};
+  const auto size = ", size: " + std::to_string(font.size());
+  return "[font | " + ptr + name + size + "]";
 }
 
 auto operator<<(std::ostream& stream, const font& font) -> std::ostream&

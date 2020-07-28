@@ -5,13 +5,14 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/centurion_cfg.hpp
         ${CTN_INCLUDE_DIR}/centurion_fwd.hpp
         ${CTN_INCLUDE_DIR}/centurion_types.hpp
+        ${CTN_INCLUDE_DIR}/graphics.hpp
         ${CTN_INCLUDE_DIR}/window.hpp
         ${CTN_INCLUDE_DIR}/window_handle.hpp
-        ${CTN_INCLUDE_DIR}/window_base.hpp
         ${CTN_INCLUDE_DIR}/basic_window.ipp
         ${CTN_INCLUDE_DIR}/window_utils.hpp
         ${CTN_INCLUDE_DIR}/font.hpp
-        ${CTN_INCLUDE_DIR}/renderer_base.hpp
+        ${CTN_INCLUDE_DIR}/basic_renderer.hpp
+        ${CTN_INCLUDE_DIR}/basic_renderer.ipp
         ${CTN_INCLUDE_DIR}/renderer.hpp
         ${CTN_INCLUDE_DIR}/renderer_handle.hpp
         ${CTN_INCLUDE_DIR}/texture.hpp
@@ -69,7 +70,7 @@ set(SOURCE_FILES
         graphics/message_box.cpp
         graphics/surface.cpp
         graphics/cursor.cpp
-        graphics/renderer_base.cpp
+        graphics/basic_renderer.cpp
         graphics/renderer_handle.cpp
         graphics/renderer.cpp
         graphics/color.cpp

@@ -573,10 +573,10 @@ TEST_CASE("renderer::output_size", "[renderer]")
   });
 }
 
-TEST_CASE("renderer::blend_mode", "[renderer]")
+TEST_CASE("renderer::get_blend_mode", "[renderer]")
 {
   test([](const ctn::window& window, ctn::renderer& renderer) {
-    const auto mode = renderer.blend_mode();
+    const auto mode = renderer.get_blend_mode();
 
     SDL_BlendMode sdlMode;
     SDL_GetRenderDrawBlendMode(renderer.get(), &sdlMode);

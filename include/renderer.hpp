@@ -50,11 +50,11 @@
 #include <type_traits>
 #include <utility>
 
+#include "basic_renderer.hpp"
 #include "centurion_api.hpp"
 #include "colors.hpp"
 #include "error.hpp"
 #include "font.hpp"
-#include "renderer_base.hpp"
 #include "window.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -143,7 +143,7 @@ class renderer_deleter final {
  *
  * @headerfile renderer.hpp
  */
-class renderer final : public renderer_base<renderer> {
+class renderer final : public basic_renderer<renderer> {
  public:
   /**
    * @typedef uptr

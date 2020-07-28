@@ -224,7 +224,7 @@ class centurion_lib final {
 
   auto operator=(const centurion_lib&) -> centurion_lib& = delete;
 
-  auto operator=(centurion_lib&&) -> centurion_lib& = delete;
+  auto operator=(centurion_lib &&) -> centurion_lib& = delete;
 
  private:
   class sdl final {

@@ -22,33 +22,24 @@
  * SOFTWARE.
  */
 
-/**
- * @file window_base.hpp
- *
- * @brief Provides the `window_base` class.
- *
- * @author Albin Johansson
- *
- * @date 2019-2020
- *
- * @copyright MIT License
- */
+#ifndef CENTURION_GRAPHICS_HEADER
+#define CENTURION_GRAPHICS_HEADER
 
-#ifndef CENTURION_WINDOW_BASE_HEADER
-#define CENTURION_WINDOW_BASE_HEADER
-
+#include <SDL_render.h>
 #include <SDL_video.h>
 
+#include <memory>
 #include <optional>
 #include <string>
+#include <type_traits>
 
 #include "area.hpp"
 #include "centurion_api.hpp"
+#include "centurion_fwd.hpp"
+#include "centurion_types.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
-#include "rect.hpp"
 #include "surface.hpp"
-#include "texture.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -57,7 +48,7 @@
 namespace centurion {
 
 /**
- * @class window_base
+ * @class basic_window
  *
  * @ingroup graphics
  *
@@ -70,10 +61,10 @@ namespace centurion {
  * @see `window`
  * @see `window_handle`
  *
- * @headerfile window_base.hpp
+ * @headerfile graphics.hpp
  */
 template <class Derived>
-class window_base {
+class basic_window {
  public:
   /**
    * @brief Makes the window visible.
@@ -621,7 +612,7 @@ class window_base {
   [[nodiscard]] auto title() const -> std::string;
 
  protected:
-  window_base() noexcept = default;
+  basic_window() noexcept = default;
 
  private:
   [[nodiscard]] auto ptr() noexcept -> SDL_Window*
@@ -639,4 +630,4 @@ class window_base {
 
 #include "basic_window.ipp"
 
-#endif  // CENTURION_WINDOW_BASE_HEADER
+#endif  // CENTURION_GRAPHICS_HEADER

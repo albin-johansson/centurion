@@ -220,7 +220,7 @@ class font_cache final {
    * @brief Caches the supplied Unicode string as a texture.
    *
    * @details The texture is created using
-   * `renderer_base::render_blended_unicode`.
+   * `basic_renderer::render_blended_unicode`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -240,7 +240,7 @@ class font_cache final {
    * @brief Caches the supplied Unicode string as a texture.
    *
    * @details The texture is created using
-   * `renderer_base::render_blended_wrapped_unicode`.
+   * `basic_renderer::render_blended_wrapped_unicode`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -262,7 +262,7 @@ class font_cache final {
    * @brief Caches the supplied Unicode string as a texture.
    *
    * @details The texture is created using
-   * `renderer_base::render_shaded_unicode`.
+   * `basic_renderer::render_shaded_unicode`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -284,7 +284,7 @@ class font_cache final {
    * @brief Caches the supplied Unicode string as a texture.
    *
    * @details The texture is created using
-   * `renderer_base::render_solid_unicode`.
+   * `basic_renderer::render_solid_unicode`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -304,7 +304,7 @@ class font_cache final {
    * @brief Caches the supplied Latin-1 string as a texture.
    *
    * @details The texture is created using
-   * `renderer_base::render_blended_latin1`.
+   * `basic_renderer::render_blended_latin1`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -324,7 +324,7 @@ class font_cache final {
    * @brief Caches the supplied Latin-1 string as a texture.
    *
    * @details The texture is created using
-   * `renderer_base::render_blended_wrapped_latin1`.
+   * `basic_renderer::render_blended_wrapped_latin1`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -346,7 +346,7 @@ class font_cache final {
    * @brief Caches the supplied Latin-1 string as a texture.
    *
    * @details The texture is created using
-   * `renderer_base::render_shaded_latin1`.
+   * `basic_renderer::render_shaded_latin1`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -367,7 +367,7 @@ class font_cache final {
   /**
    * @brief Caches the supplied Latin-1 string as a texture.
    *
-   * @details The texture is created using `renderer_base::render_solid`.
+   * @details The texture is created using `basic_renderer::render_solid`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -386,7 +386,8 @@ class font_cache final {
   /**
    * @brief Caches the supplied UTF-8 string as a texture.
    *
-   * @details The texture is created using `renderer_base::render_blended_utf8`.
+   * @details The texture is created using
+   * `basic_renderer::render_blended_utf8`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -406,7 +407,7 @@ class font_cache final {
    * @brief Caches the supplied UTF-8 string as a texture.
    *
    * @details The texture is created using
-   * `renderer_base::render_blended_wrapped_utf8`.
+   * `basic_renderer::render_blended_wrapped_utf8`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -428,7 +429,7 @@ class font_cache final {
    * @brief Caches the supplied UTF-8 string as a texture.
    *
    * @details The texture is created using
-   * `renderer_base::render_shaded_utf8`.
+   * `basic_renderer::render_shaded_utf8`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.
@@ -450,7 +451,7 @@ class font_cache final {
    * @brief Caches the supplied UTF-8 string as a texture.
    *
    * @details The texture is created using
-   * `renderer_base::render_solid_utf8`.
+   * `basic_renderer::render_solid_utf8`.
    *
    * @note This method respects the kerning of the font.
    * @note This method has no effect if the supplied key is already taken.

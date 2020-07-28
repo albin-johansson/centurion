@@ -45,7 +45,7 @@
 #include <type_traits>
 
 #include "area.hpp"
-#include "window_base.hpp"
+#include "graphics.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -127,7 +127,7 @@ class window_deleter final {
  *
  * @headerfile window.hpp
  */
-class window final : public window_base<window> {
+class window final : public basic_window<window> {
  public:
   /**
    * @typedef uptr

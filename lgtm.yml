@@ -14,13 +14,20 @@ extraction:
         - g++-8
         - cmake
     after_prepare:
-      - wget -c https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
-      - mkdir ${LGTM_WORKSPACE}/SDL2-2.0.12
-      - tar -xf SDL2-2.0.12.tar.gz -C ${LGTM_WORKSPACE}
-      - cd ${LGTM_WORKSPACE}/SDL2-2.0.12
-      - mkdir ${LGTM_WORKSPACE}/packages/
-      - ./configure --prefix=${LGTM_WORKSPACE}/packages/
-      - export SDL2DIR="${LGTM_WORKSPACE}/packages/"
-      - export NO_TEST_SUBDIRECTORY=true
-      - make
-      - make install
+      - | # CMake
+        CMAKE_URL="http://cmake.org/files/v3.16/cmake-3.16.0-Linux-x86_64.tar.gz"
+        mkdir -p ${DEPS_DIR}/cmake
+        wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${LGTM_WORKSPACE}/cmake
+        export PATH=${LGTM_WORKSPACE}/cmake/bin:${PATH}
+      - | # SDL2 core
+        wget -c https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
+        mkdir ${LGTM_WORKSPACE}/SDL2-2.0.12
+        tar -xf SDL2-2.0.12.tar.gz -C ${LGTM_WORKSPACE}
+        cd ${LGTM_WORKSPACE}/SDL2-2.0.12
+        mkdir ${LGTM_WORKSPACE}/packages/
+        ./configure --prefix=${LGTM_WORKSPACE}/packages/
+        export SDL2DIR="${LGTM_WORKSPACE}/packages/"
+        export NO_TEST_SUBDIRECTORY=true
+        make
+        make install
+      

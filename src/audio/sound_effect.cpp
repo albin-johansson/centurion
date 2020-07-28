@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "centurion_utils.hpp"
 #include "error.hpp"
 
 namespace centurion {
@@ -82,11 +83,21 @@ auto sound_effect::is_fading() const noexcept -> bool
   return is_playing() && Mix_FadingChannel(m_channel);
 }
 
-auto sound_effect::to_string() const -> std::string
+auto to_string(const sound_effect& sound) -> std::string
 {
-  const auto address = detail::address_of(m_chunk.get());
-  const auto vol = std::to_string(volume());
-  return "[sound_effect | Chunk: " + address + ", Volume: " + vol + "]";
+  using namespace std::string_literals;
+
+  const auto ptr = detail::address_of(sound.get());
+  const auto vol = std::to_string(sound.volume());
+
+  return "[sound_effect | ptr: "s + ptr + ", volume: "s + vol + "]"s;
+}
+
+auto operator<<(std::ostream& stream, const sound_effect& sound)
+    -> std::ostream&
+{
+  stream << to_string(sound);
+  return stream;
 }
 
 }  // namespace centurion

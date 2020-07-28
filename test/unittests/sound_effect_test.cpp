@@ -3,6 +3,7 @@
 #include "sound_effect.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
@@ -189,10 +190,16 @@ TEST_CASE("sound_effect::is_fading", "[sound_effect]")
   CHECK(sound.is_playing());
 }
 
-TEST_CASE("sound_effect::to_string", "[sound_effect]")
+TEST_CASE("sound_effect to_string", "[sound_effect]")
 {
-  ctn::sound_effect sound{path};
-  ctn::log::info(ctn::log::category::test, "%s", sound.to_string().c_str());
+  const ctn::sound_effect sound{path};
+  ctn::log::put(ctn::to_string(sound));
+}
+
+TEST_CASE("sound_effect stream operator", "[sound_effect]")
+{
+  const ctn::sound_effect sound{path};
+  std::cout << "COUT: " << sound << '\n';
 }
 
 TEST_CASE("sound_effect::max_volume", "[sound_effect]")

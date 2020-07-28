@@ -46,6 +46,9 @@
 #include <SDL_mixer.h>
 
 #include <memory>
+#include <ostream>
+#include <string>
+#include <type_traits>
 
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
@@ -279,16 +282,6 @@ class sound_effect final {
   auto is_fading() const noexcept -> bool;
 
   /**
-   * @brief Returns a textual representation of the sound effect.
-   *
-   * @return a textual representation of the sound effect.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_QUERY
-  auto to_string() const -> std::string;
-
-  /**
    * @brief Returns the current volume of the sound effect.
    *
    * @details By default, this property is set to 128.
@@ -370,6 +363,34 @@ class sound_effect final {
    */
   void activate(int nLoops) noexcept;
 };
+
+/**
+ * @brief Returns a textual representation of a sound effect.
+ *
+ * @ingroup audio
+ *
+ * @param sound the sound effect that will be converted.
+ *
+ * @return a string that represents the sound effect.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto to_string(const sound_effect& sound) -> std::string;
+
+/**
+ * @brief Prints a textual representation of a sound effect.
+ *
+ * @param stream the stream that will be used.
+ * @param sound the sound effect that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto operator<<(std::ostream& stream, const sound_effect& sound)
+    -> std::ostream&;
 
 static_assert(std::is_final_v<sound_effect>);
 static_assert(std::is_nothrow_move_constructible_v<sound_effect>);

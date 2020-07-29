@@ -60,12 +60,6 @@
 #define CENTURION_API
 #endif  // defined(_WIN32)
 
-#ifdef CENTURION_USE_PRAGMA_ONCE
-#define CENTURION_PRAGMA_ONCE #pragma once
-#else
-#define CENTURION_PRAGMA_ONCE
-#endif  // CENTURION_USE_PRAGMA_ONCE
-
 /**
  * @brief Used for methods that return something and aren't inlined.
  *

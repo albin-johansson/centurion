@@ -53,17 +53,6 @@
 namespace centurion {
 
 /**
- * @typedef unicode
- *
- * @brief The representation of Unicode glyphs.
- *
- * @since 5.0.0
- *
- * @headerfile unicode_string.hpp
- */
-using unicode = u16;
-
-/**
  * @class unicode_string
  *
  * @brief Represents a null-terminated string encoded in unicode.

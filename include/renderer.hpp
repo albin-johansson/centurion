@@ -63,22 +63,6 @@
 
 namespace centurion {
 
-/// @cond FALSE
-
-namespace detail {
-
-class renderer_deleter final {
- public:
-  void operator()(SDL_Renderer* renderer) noexcept
-  {
-    SDL_DestroyRenderer(renderer);
-  }
-};
-
-}  // namespace detail
-
-/// @endcond
-
 /**
  * @class renderer
  *
@@ -182,12 +166,8 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 3.0.0
    */
-  explicit renderer(nn_owner<SDL_Renderer*> sdlRenderer)
-      : m_renderer{sdlRenderer}
-  {
-    set_color(colors::black);
-    set_logical_integer_scale(false);
-  }
+  CENTURION_API
+  explicit renderer(nn_owner<SDL_Renderer*> sdlRenderer);
 
   /**
    * @brief Creates a renderer based on the supplied window.
@@ -203,18 +183,9 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 4.0.0
    */
+  CENTURION_API
   explicit renderer(const window& window,
-                    SDL_RendererFlags flags = default_flags())
-      : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
-  {
-    if (!m_renderer) {
-      throw detail::core_error("Failed to create Renderer!");
-    }
-
-    set_blend_mode(blend_mode::blend);
-    set_color(colors::black);
-    set_logical_integer_scale(false);
-  }
+                    SDL_RendererFlags flags = default_flags());
 
   renderer(const renderer&) = delete;
 
@@ -239,38 +210,34 @@ class renderer final : public basic_renderer<renderer> {
   /**
    * @copydoc renderer(nn_owner<SDL_Renderer*>)
    */
-  [[nodiscard]] static auto unique(nn_owner<SDL_Renderer*> sdlRenderer) -> uptr
-  {
-    return std::make_unique<renderer>(sdlRenderer);
-  }
+  CENTURION_QUERY
+  static auto unique(nn_owner<SDL_Renderer*> sdlRenderer) -> uptr;
 
   /**
    * @copydoc renderer(const window&, SDL_RendererFlags)
    */
-  [[nodiscard]] static auto unique(const window& window,
-                                   SDL_RendererFlags flags = default_flags())
-      -> uptr
-  {
-    return std::make_unique<renderer>(window, flags);
-  }
+  CENTURION_QUERY
+  static auto unique(const window& window,
+                     SDL_RendererFlags flags = default_flags()) -> uptr;
 
   /**
    * @copydoc renderer(nn_owner<SDL_Renderer*>)
    */
-  [[nodiscard]] static auto shared(nn_owner<SDL_Renderer*> sdlRenderer) -> sptr
-  {
-    return std::make_shared<renderer>(sdlRenderer);
-  }
+  CENTURION_QUERY
+  static auto shared(nn_owner<SDL_Renderer*> sdlRenderer) -> sptr;
 
   /**
    * @copydoc renderer(const window&, SDL_RendererFlags)
    */
-  [[nodiscard]] static auto shared(const window& window,
-                                   SDL_RendererFlags flags = default_flags())
-      -> sptr
-  {
-    return std::make_shared<renderer>(window, flags);
-  }
+  CENTURION_QUERY
+  static auto shared(const window& window,
+                     SDL_RendererFlags flags = default_flags()) -> sptr;
+
+  /**
+   * @name Translated rendering
+   * @brief Functions related to translated rendering.
+   */
+  ///@{
 
   /**
    * @brief Sets the translation viewport that will be used by the renderer.
@@ -289,6 +256,20 @@ class renderer final : public basic_renderer<renderer> {
   }
 
   /**
+   * @brief Returns the translation viewport that is currently being used.
+   *
+   * @details Set to (0, 0, 0, 0) by default.
+   *
+   * @return the translation viewport that is currently being used.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
+  {
+    return m_translationViewport;
+  }
+
+  /**
    * @brief Renders an outlined rectangle in the currently selected color.
    *
    * @details The rendered rectangle will be translated using the current
@@ -301,10 +282,7 @@ class renderer final : public basic_renderer<renderer> {
    * @since 4.1.0
    */
   template <typename Traits>
-  void draw_rect_t(const basic_rect<Traits>& rect) noexcept
-  {
-    draw_rect(translate(rect));
-  }
+  void draw_rect_t(const basic_rect<Traits>& rect) noexcept;
 
   /**
    * @brief Renders a filled rectangle in the currently selected color.
@@ -319,10 +297,7 @@ class renderer final : public basic_renderer<renderer> {
    * @since 4.1.0
    */
   template <typename Traits>
-  void fill_rect_t(const basic_rect<Traits>& rect) noexcept
-  {
-    fill_rect(translate(rect));
-  }
+  void fill_rect_t(const basic_rect<Traits>& rect) noexcept;
 
   /**
    * @brief Renders a texture at the specified position.
@@ -339,10 +314,7 @@ class renderer final : public basic_renderer<renderer> {
    */
   template <typename Traits>
   void render_t(const texture& texture,
-                const basic_point<Traits>& position) noexcept
-  {
-    render(texture, translate(position));
-  }
+                const basic_point<Traits>& position) noexcept;
 
   /**
    * @brief Renders a texture according to the specified rectangle.
@@ -360,10 +332,7 @@ class renderer final : public basic_renderer<renderer> {
    */
   template <typename Traits>
   void render_t(const texture& texture,
-                const basic_rect<Traits>& destination) noexcept
-  {
-    render(texture, translate(destination));
-  }
+                const basic_rect<Traits>& destination) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -386,10 +355,7 @@ class renderer final : public basic_renderer<renderer> {
   template <typename Traits>
   void render_t(const texture& texture,
                 const irect& source,
-                const basic_rect<Traits>& destination) noexcept
-  {
-    render(texture, source, translate(destination));
-  }
+                const basic_rect<Traits>& destination) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -412,10 +378,7 @@ class renderer final : public basic_renderer<renderer> {
   void render_t(const texture& texture,
                 const irect& source,
                 const basic_rect<Traits>& destination,
-                double angle) noexcept
-  {
-    render(texture, source, translate(destination), angle);
-  }
+                double angle) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -442,10 +405,7 @@ class renderer final : public basic_renderer<renderer> {
                 const irect& source,
                 const basic_rect<RectTraits>& destination,
                 double angle,
-                const basic_point<PointTraits>& center) noexcept
-  {
-    render(texture, source, translate(destination), angle, center);
-  }
+                const basic_point<PointTraits>& center) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -471,10 +431,9 @@ class renderer final : public basic_renderer<renderer> {
                 const basic_rect<RectTraits>& destination,
                 double angle,
                 const basic_point<PointTraits>& center,
-                SDL_RendererFlip flip) noexcept
-  {
-    render(texture, source, translate(destination), angle, center, flip);
-  }
+                SDL_RendererFlip flip) noexcept;
+
+  ///@} // end of translated rendering
 
   /**
    * @name Font handling
@@ -493,13 +452,8 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 5.0.0
    */
-  void add_font(entt::id_type id, font&& font)
-  {
-    if (m_fonts.find(id) != m_fonts.end()) {
-      remove_font(id);
-    }
-    m_fonts.emplace(id, std::move(font));
-  }
+  CENTURION_API
+  void add_font(entt::id_type id, font&& font);
 
   /**
    * @brief Creates a font and adds it to the renderer.
@@ -515,13 +469,7 @@ class renderer final : public basic_renderer<renderer> {
    * @since 5.0.0
    */
   template <typename... Args>
-  void emplace_font(entt::id_type id, Args&&... args)
-  {
-    if (m_fonts.find(id) != m_fonts.end()) {
-      remove_font(id);
-    }
-    m_fonts.emplace(id, font{std::forward<Args>(args)...});
-  }
+  void emplace_font(entt::id_type id, Args&&... args);
 
   /**
    * @brief Removes the font associated with the specified key.
@@ -533,7 +481,8 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 5.0.0
    */
-  void remove_font(entt::id_type id) { m_fonts.erase(id); }
+  CENTURION_API
+  void remove_font(entt::id_type id);
 
   /**
    * @brief Returns the font associated with the specified name.
@@ -578,20 +527,6 @@ class renderer final : public basic_renderer<renderer> {
   ///@} // end of font handling
 
   /**
-   * @brief Returns the translation viewport that is currently being used.
-   *
-   * @details Set to (0, 0, 0, 0) by default.
-   *
-   * @return the translation viewport that is currently being used.
-   *
-   * @since 3.0.0
-   */
-  [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
-  {
-    return m_translationViewport;
-  }
-
-  /**
    * @brief Returns a pointer to the associated SDL_Renderer.
    *
    * @warning Use of this method is not recommended, since it purposefully
@@ -632,7 +567,15 @@ class renderer final : public basic_renderer<renderer> {
   }
 
  private:
-  std::unique_ptr<SDL_Renderer, detail::renderer_deleter> m_renderer;
+  class deleter final {
+   public:
+    void operator()(SDL_Renderer* renderer) noexcept
+    {
+      SDL_DestroyRenderer(renderer);
+    }
+  };
+
+  std::unique_ptr<SDL_Renderer, deleter> m_renderer;
   frect m_translationViewport;
   std::unordered_map<entt::id_type, font> m_fonts;
 
@@ -645,24 +588,11 @@ class renderer final : public basic_renderer<renderer> {
 
   template <typename Traits>
   [[nodiscard]] auto translate(const basic_point<Traits>& point) const noexcept
-      -> basic_point<Traits>
-  {
-    const auto rect = viewport();
-
-    using value_type = typename Traits::value_type;
-
-    const auto x = point.x() - static_cast<value_type>(rect.x());
-    const auto y = point.y() - static_cast<value_type>(rect.y());
-
-    return basic_point<Traits>{x, y};
-  }
+      -> basic_point<Traits>;
 
   template <typename Traits>
   [[nodiscard]] auto translate(const basic_rect<Traits>& rect) const noexcept
-      -> basic_rect<Traits>
-  {
-    return basic_rect<Traits>{translate(rect.position()), rect.size()};
-  }
+      -> basic_rect<Traits>;
 };
 
 static_assert(std::is_final_v<renderer>);
@@ -705,5 +635,7 @@ auto operator<<(std::ostream& stream, const renderer& renderer)
     -> std::ostream&;
 
 }  // namespace centurion
+
+#include "renderer.ipp"
 
 #endif  // CENTURION_RENDERER_HEADER

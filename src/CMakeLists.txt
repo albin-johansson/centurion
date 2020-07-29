@@ -15,6 +15,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/basic_renderer.hpp
         ${CTN_INCLUDE_DIR}/basic_renderer.ipp
         ${CTN_INCLUDE_DIR}/renderer.hpp
+        ${CTN_INCLUDE_DIR}/renderer.ipp
         ${CTN_INCLUDE_DIR}/renderer_handle.hpp
         ${CTN_INCLUDE_DIR}/texture.hpp
         ${CTN_INCLUDE_DIR}/texture.ipp

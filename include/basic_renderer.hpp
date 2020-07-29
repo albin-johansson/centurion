@@ -28,16 +28,16 @@
 #include <SDL_video.h>
 
 #include <memory>
+#include <optional>
 #include <ostream>
 #include <string>
-#include <type_traits>
+#include <utility>  // pair
 
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "color.hpp"
 #include "rect.hpp"
-#include "unicode_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

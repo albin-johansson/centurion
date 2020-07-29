@@ -22,29 +22,18 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_GRAPHICS_HEADER
-#define CENTURION_GRAPHICS_HEADER
+#ifndef CENTURION_BASIC_WINDOW_HEADER
+#define CENTURION_BASIC_WINDOW_HEADER
 
 #include <SDL_render.h>
 #include <SDL_video.h>
 
-#include <entt.hpp>
-#include <memory>
-#include <optional>
-#include <string>
-#include <type_traits>
-
 #include "area.hpp"
-#include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "centurion_types.hpp"
-#include "font.hpp"
 #include "pixel_format.hpp"
-#include "point.hpp"
 #include "rect.hpp"
-#include "texture.hpp"
-#include "unicode_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -66,7 +55,7 @@ namespace centurion {
  * @see `window`
  * @see `window_handle`
  *
- * @headerfile graphics.hpp
+ * @headerfile basic_window.hpp
  */
 template <class Derived>
 class basic_window {
@@ -620,59 +609,13 @@ class basic_window {
   basic_window() noexcept = default;
 
  private:
-  [[nodiscard]] auto ptr() noexcept -> SDL_Window*
-  {
-    return static_cast<Derived*>(this)->get();
-  }
+  [[nodiscard]] auto ptr() noexcept -> SDL_Window*;
 
-  [[nodiscard]] auto ptr() const noexcept -> SDL_Window*
-  {
-    return static_cast<const Derived*>(this)->get();
-  }
+  [[nodiscard]] auto ptr() const noexcept -> SDL_Window*;
 };
-
-/**
- * @brief Returns the number of available rendering drivers.
- *
- * @note Usually there is only one available rendering driver.
- *
- * @return the number of available rendering drivers.
- *
- * @since 5.0.0
- */
-[[nodiscard]] inline auto num_render_drivers() noexcept -> int
-{
-  return SDL_GetNumRenderDrivers();
-}
-
-/**
- * @brief Returns the number of available video drivers compiled into SDL.
- *
- * @return the number of available video drivers compiled into SDL.
- *
- * @since 5.0.0
- */
-[[nodiscard]] inline auto num_video_drivers() noexcept -> int
-{
-  return SDL_GetNumVideoDrivers();
-}
-
-/**
- * @brief Returns the information associated with a rendering driver.
- *
- * @param index the index of the rendering driver to query.
- *
- * @return information about the specified rendering driver; `nothing` if
- * something went wrong.
- *
- * @since 5.0.0
- */
-CENTURION_QUERY
-auto get_render_driver_info(int index) noexcept
-    -> std::optional<SDL_RendererInfo>;
 
 }  // namespace centurion
 
 #include "basic_window.ipp"
 
-#endif  // CENTURION_GRAPHICS_HEADER
+#endif  // CENTURION_BASIC_WINDOW_HEADER

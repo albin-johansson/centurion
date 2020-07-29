@@ -45,7 +45,7 @@
 #include <type_traits>
 
 #include "area.hpp"
-#include "graphics.hpp"
+#include "basic_window.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -71,7 +71,7 @@ namespace centurion {
  * @code{.cpp}
  *   #include <centurion_as_ctn.hpp>
  *   #include <window.hpp>
- *   #include <graphics.hpp>
+ *   #include <renderer.hpp>
  *   #include <event.hpp>
  *   #include <rect.hpp>
  *

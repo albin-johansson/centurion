@@ -38,14 +38,26 @@
 #define CENTURION_BASIC_WINDOW_IMPLEMENTATION
 
 #include "centurion_api.hpp"
-#include "graphics.hpp"
 #include "surface.hpp"
+#include "video.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
+
+template <class Derived>
+auto basic_window<Derived>::ptr() noexcept -> SDL_Window*
+{
+  return static_cast<Derived*>(this)->get();
+}
+
+template <class Derived>
+auto basic_window<Derived>::ptr() const noexcept -> SDL_Window*
+{
+  return static_cast<const Derived*>(this)->get();
+}
 
 template <class Derived>
 void basic_window<Derived>::show() noexcept

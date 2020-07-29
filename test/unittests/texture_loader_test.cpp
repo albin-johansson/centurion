@@ -3,8 +3,8 @@
 #include <catch.hpp>
 
 #include "centurion_as_ctn.hpp"
-#include "graphics.hpp"
 #include "renderer.hpp"
+#include "video.hpp"
 #include "window.hpp"
 
 TEST_CASE("texture_loader::unique", "[texture_loader]")

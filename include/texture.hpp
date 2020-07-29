@@ -122,7 +122,7 @@ class texture final {
    *
    * @see `SDL_TextureAccess`
    *
-   * @headerfile graphics.hpp
+   * @headerfile texture.hpp
    */
   enum class access {
     no_lock = SDL_TEXTUREACCESS_STATIC, /**< Indicates that the texture changes
@@ -144,7 +144,7 @@ class texture final {
    *
    * @see `SDL_ScaleMode`
    *
-   * @headerfile graphics.hpp
+   * @headerfile texture.hpp
    */
   enum class scale_mode {
     nearest = SDL_ScaleModeNearest,  ///< Represents nearest pixel sampling.

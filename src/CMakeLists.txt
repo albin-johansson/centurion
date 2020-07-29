@@ -5,10 +5,11 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/centurion_cfg.hpp
         ${CTN_INCLUDE_DIR}/centurion_fwd.hpp
         ${CTN_INCLUDE_DIR}/centurion_types.hpp
-        ${CTN_INCLUDE_DIR}/graphics.hpp
+        ${CTN_INCLUDE_DIR}/video.hpp
+        ${CTN_INCLUDE_DIR}/basic_window.hpp
+        ${CTN_INCLUDE_DIR}/basic_window.ipp
         ${CTN_INCLUDE_DIR}/window.hpp
         ${CTN_INCLUDE_DIR}/window_handle.hpp
-        ${CTN_INCLUDE_DIR}/basic_window.ipp
         ${CTN_INCLUDE_DIR}/window_utils.hpp
         ${CTN_INCLUDE_DIR}/font.hpp
         ${CTN_INCLUDE_DIR}/basic_renderer.hpp

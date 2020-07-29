@@ -37,7 +37,8 @@
 #ifndef CENTURION_BASIC_RENDERER_IMPLEMENTATION
 #define CENTURION_BASIC_RENDERER_IMPLEMENTATION
 
-#include <algorithm>  // for_each
+#include <algorithm>    // for_each
+#include <type_traits>  // is_same_v
 
 #include "centurion_api.hpp"
 
@@ -48,6 +49,7 @@
 #include "font.hpp"
 #include "font_cache.hpp"
 #include "surface.hpp"
+#include "unicode_string.hpp"
 #include "texture.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

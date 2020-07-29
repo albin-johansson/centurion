@@ -50,11 +50,11 @@
 #include <type_traits>
 #include <utility>
 
+#include "basic_renderer.hpp"
 #include "centurion_api.hpp"
 #include "colors.hpp"
 #include "error.hpp"
 #include "font.hpp"
-#include "graphics.hpp"
 #include "window.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

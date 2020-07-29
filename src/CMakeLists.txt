@@ -16,6 +16,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/renderer.hpp
         ${CTN_INCLUDE_DIR}/renderer_handle.hpp
         ${CTN_INCLUDE_DIR}/texture.hpp
+        ${CTN_INCLUDE_DIR}/texture.ipp
         ${CTN_INCLUDE_DIR}/centurion_exception.hpp
         ${CTN_INCLUDE_DIR}/centurion_api.hpp
         ${CTN_INCLUDE_DIR}/centurion.hpp
@@ -54,6 +55,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/joystick.hpp
         ${CTN_INCLUDE_DIR}/touch.hpp
         ${CTN_INCLUDE_DIR}/font_cache.hpp
+        ${CTN_INCLUDE_DIR}/font_cache.ipp
         ${CTN_INCLUDE_DIR}/unicode_string.hpp
         ${CTN_INCLUDE_DIR}/game_loop.hpp
 

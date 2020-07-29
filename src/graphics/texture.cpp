@@ -13,111 +13,14 @@ namespace centurion {
 texture::texture(nn_owner<SDL_Texture*> sdlTexture) : m_texture{sdlTexture}
 {}
 
-texture::texture(const renderer& renderer, const surface& surface)
-    : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
-{
-  if (!m_texture) {
-    throw detail::core_error("Failed to create texture from surface!");
-  }
-}
-
-texture::texture(const renderer& renderer,
-                 pixel_format format,
-                 texture::access access,
-                 const iarea& size)
-    : m_texture{SDL_CreateTexture(renderer.get(),
-                                  static_cast<u32>(format),
-                                  static_cast<int>(access),
-                                  size.width,
-                                  size.height)}
-{
-  if (!m_texture) {
-    throw detail::core_error("Failed to create texture!");
-  }
-}
-
-texture::texture(const renderer& renderer, nn_czstring path)
-    : m_texture{IMG_LoadTexture(renderer.get(), path)}
-{
-  if (!m_texture) {
-    throw detail::img_error("Failed to create texture!");
-  }
-}
-
 auto texture::unique(nn_owner<SDL_Texture*> sdlTexture) -> uptr
 {
   return std::make_unique<texture>(sdlTexture);
 }
 
-auto texture::unique(const renderer& renderer, nn_czstring path) -> uptr
-{
-  return std::make_unique<texture>(renderer, path);
-}
-
-auto texture::unique(const renderer& renderer, const surface& surface) -> uptr
-{
-  return std::make_unique<texture>(renderer, surface);
-}
-
-auto texture::unique(const renderer& renderer,
-                     pixel_format format,
-                     texture::access access,
-                     const iarea& size) -> uptr
-{
-  return std::make_unique<texture>(renderer, format, access, size);
-}
-
 auto texture::shared(nn_owner<SDL_Texture*> sdlTexture) -> sptr
 {
   return std::make_shared<texture>(sdlTexture);
-}
-
-auto texture::shared(const renderer& renderer, nn_czstring path) -> sptr
-{
-  return std::make_shared<texture>(renderer, path);
-}
-
-auto texture::shared(const renderer& renderer, const surface& surface) -> sptr
-{
-  return std::make_shared<texture>(renderer, surface);
-}
-
-auto texture::shared(const renderer& renderer,
-                     pixel_format format,
-                     texture::access access,
-                     const iarea& size) -> sptr
-{
-  return std::make_shared<texture>(renderer, format, access, size);
-}
-
-auto texture::streaming(const renderer& renderer,
-                        nn_czstring path,
-                        pixel_format format) -> uptr
-{
-  const auto blendMode = blend_mode::blend;
-  const auto createSurface = [=](czstring path, pixel_format format) {
-    surface source{path};
-    source.set_blend_mode(blendMode);
-    return source.convert(format);
-  };
-  const auto surface = createSurface(path, format);
-  auto texture = texture::unique(
-      renderer, format, access::streaming, {surface.width(), surface.height()});
-  texture->set_blend_mode(blendMode);
-
-  u32* pixels = nullptr;
-  const auto success = texture->lock(&pixels);
-  if (!success) {
-    throw centurion_exception{"Failed to lock texture!"};
-  }
-
-  const auto maxCount = static_cast<size_t>(surface.pitch()) *
-                        static_cast<size_t>(surface.height());
-  memcpy(pixels, surface.pixels(), maxCount);
-
-  texture->unlock();
-
-  return texture;
 }
 
 auto texture::lock(u32** pixels, int* pitch) noexcept -> bool
@@ -141,7 +44,7 @@ void texture::unlock() noexcept
   SDL_UnlockTexture(m_texture.get());
 }
 
-void texture::set_pixel(ipoint pixel, const color& color) noexcept
+void texture::set_pixel(const ipoint& pixel, const color& color) noexcept
 {
   if (get_access() != access::streaming || pixel.x() < 0 || pixel.y() < 0 ||
       pixel.x() >= width() || pixel.y() >= height()) {
@@ -181,7 +84,7 @@ void texture::set_blend_mode(enum blend_mode mode) noexcept
   SDL_SetTextureBlendMode(m_texture.get(), static_cast<SDL_BlendMode>(mode));
 }
 
-void texture::set_color_mod(color color) noexcept
+void texture::set_color_mod(const color& color) noexcept
 {
   SDL_SetTextureColorMod(
       m_texture.get(), color.red(), color.green(), color.blue());

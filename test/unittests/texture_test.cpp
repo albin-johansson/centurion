@@ -7,9 +7,10 @@
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "colors.hpp"
+//#include "graphics.hpp"
+#include "graphics.hpp"
 #include "log.hpp"
 #include "renderer.hpp"
-#include "surface.hpp"
 #include "window.hpp"
 
 static constexpr auto* pandaPath = "resources/panda.png";

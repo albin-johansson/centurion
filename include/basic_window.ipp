@@ -39,6 +39,7 @@
 
 #include "centurion_api.hpp"
 #include "graphics.hpp"
+#include "surface.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

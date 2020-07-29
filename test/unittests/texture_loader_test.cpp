@@ -3,6 +3,7 @@
 #include <catch.hpp>
 
 #include "centurion_as_ctn.hpp"
+#include "graphics.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 

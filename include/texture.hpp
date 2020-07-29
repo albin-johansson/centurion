@@ -42,12 +42,15 @@
 #include <SDL_video.h>
 
 #include <memory>
+#include <string>
+#include <type_traits>
 
 #include "area.hpp"
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "centurion_types.hpp"
+#include "color.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
 
@@ -57,10 +60,6 @@
 
 namespace centurion {
 
-/// @cond FALSE
-
-namespace detail {
-
 class texture_deleter final {
  public:
   void operator()(SDL_Texture* texture) noexcept
@@ -68,10 +67,6 @@ class texture_deleter final {
     SDL_DestroyTexture(texture);
   }
 };
-
-}  // namespace detail
-
-/// @endcond
 
 /**
  * @class texture
@@ -182,8 +177,8 @@ class texture final {
    *
    * @since 4.0.0
    */
-  CENTURION_API
-  texture(const renderer& renderer, nn_czstring path);
+  template <typename Renderer>
+  texture(const Renderer& renderer, nn_czstring path);
 
   /**
    * @brief Creates an texture that is a copy of the supplied surface.
@@ -195,8 +190,8 @@ class texture final {
    *
    * @since 4.0.0
    */
-  CENTURION_API
-  texture(const renderer& renderer, const surface& surface);
+  template <typename Renderer>
+  texture(const Renderer& renderer, const surface& surface);
 
   /**
    * @brief Creates an texture with the specified characteristics.
@@ -210,8 +205,8 @@ class texture final {
    *
    * @since 4.0.0
    */
-  CENTURION_API
-  texture(const renderer& renderer,
+  template <typename Renderer>
+  texture(const Renderer& renderer,
           pixel_format format,
           access access,
           const iarea& size);
@@ -225,23 +220,25 @@ class texture final {
   /**
    * @copydoc texture(const renderer&, nn_czstring)
    */
-  CENTURION_QUERY
-  static auto unique(const renderer& renderer, nn_czstring path) -> uptr;
+  template <typename Renderer>
+  [[nodiscard]] static auto unique(const Renderer& renderer, nn_czstring path)
+      -> uptr;
 
   /**
    * @copydoc texture(const renderer&, const surface&)
    */
-  CENTURION_QUERY
-  static auto unique(const renderer& renderer, const surface& surface) -> uptr;
+  template <typename Renderer>
+  [[nodiscard]] static auto unique(const Renderer& renderer,
+                                   const surface& surface) -> uptr;
 
   /**
    * @copydoc texture(const renderer&, pixel_format, access, const iarea&)
    */
-  CENTURION_QUERY
-  static auto unique(const renderer& renderer,
-                     pixel_format format,
-                     access access,
-                     const iarea& size) -> uptr;
+  template <typename Renderer>
+  [[nodiscard]] static auto unique(const Renderer& renderer,
+                                   pixel_format format,
+                                   access access,
+                                   const iarea& size) -> uptr;
 
   /**
    * @copydoc texture(nn_owner<SDL_Texture*>)
@@ -252,23 +249,25 @@ class texture final {
   /**
    * @copydoc texture(const renderer&, nn_czstring)
    */
-  CENTURION_QUERY
-  static auto shared(const renderer& renderer, nn_czstring path) -> sptr;
+  template <typename Renderer>
+  [[nodiscard]] static auto shared(const Renderer& renderer, nn_czstring path)
+      -> sptr;
 
   /**
    * @copydoc texture(const renderer&, const surface&)
    */
-  CENTURION_QUERY
-  static auto shared(const renderer& renderer, const surface& surface) -> sptr;
+  template <typename Renderer>
+  [[nodiscard]] static auto shared(const Renderer& renderer,
+                                   const surface& surface) -> sptr;
 
   /**
    * @copydoc texture(const renderer&, pixel_format, access, const iarea&)
    */
-  CENTURION_QUERY
-  static auto shared(const renderer& renderer,
-                     pixel_format format,
-                     access access,
-                     const iarea& size) -> sptr;
+  template <typename Renderer>
+  [[nodiscard]] static auto shared(const Renderer& renderer,
+                                   pixel_format format,
+                                   access access,
+                                   const iarea& size) -> sptr;
 
   /**
    * @brief Creates and returns a unique pointer to a texture.
@@ -287,10 +286,10 @@ class texture final {
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
-  static auto streaming(const renderer& renderer,
-                        nn_czstring path,
-                        pixel_format format) -> uptr;
+  template <typename Renderer>
+  [[nodiscard]] static auto streaming(const Renderer& renderer,
+                                      nn_czstring path,
+                                      pixel_format format) -> uptr;
 
   /**
    * @brief Sets the color of the pixel at the specified coordinate.
@@ -304,7 +303,7 @@ class texture final {
    * @since 4.0.0
    */
   CENTURION_API
-  void set_pixel(ipoint pixel, const color& color) noexcept;
+  void set_pixel(const ipoint& pixel, const color& color) noexcept;
 
   /**
    * @brief Sets the alpha value of the texture.
@@ -337,7 +336,7 @@ class texture final {
    * @since 3.0.0
    */
   CENTURION_API
-  void set_color_mod(color color) noexcept;
+  void set_color_mod(const color& color) noexcept;
 
   /**
    * @brief Sets the scale mode that will be used by the texture.
@@ -522,7 +521,7 @@ class texture final {
   }
 
  private:
-  std::unique_ptr<SDL_Texture, detail::texture_deleter> m_texture;
+  std::unique_ptr<SDL_Texture, texture_deleter> m_texture;
 
   /**
    * @brief Locks the texture for write-only pixel access.
@@ -683,5 +682,7 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 }
 
 }  // namespace centurion
+
+#include "texture.ipp"
 
 #endif  // CENTURION_TEXTURE_HEADER

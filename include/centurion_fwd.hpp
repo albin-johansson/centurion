@@ -32,6 +32,12 @@ class basic_rect;
 template <typename Traits>
 class basic_point;
 
+template <typename Derived>
+class basic_renderer;
+
+template <typename Traits>
+class basic_window;
+
 class renderer;
 
 class renderer_handle;

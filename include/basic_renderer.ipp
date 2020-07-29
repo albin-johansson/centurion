@@ -40,9 +40,13 @@
 #include <algorithm>  // for_each
 
 #include "centurion_api.hpp"
+
+// clang-format off
+#include "basic_renderer.hpp"
+// clang-format on
+
 #include "font.hpp"
 #include "font_cache.hpp"
-#include "graphics.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
 

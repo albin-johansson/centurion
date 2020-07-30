@@ -14,6 +14,9 @@ install:
   # Updates PATH to support command-line usage of compiler
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
 
+  # Move to C:\ since CMake scripts look here for SDL libraries
+  - cd\ 
+
   # Installs SDL2 core
   - appveyor DownloadFile https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip
   - unzip -o SDL2-devel-%SDL_VERSION%-VC.zip
@@ -39,6 +42,7 @@ install:
   - echo %SDL2TTFDIR%
 
 before_build:
+  - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir build
   - cd build 
   - cmake .. -DCMAKE_BUILD_TYPE=Debug -G Ninja

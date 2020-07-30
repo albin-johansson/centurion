@@ -15,26 +15,22 @@ install:
   # Installs SDL2 core
   - appveyor DownloadFile https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip
   - unzip -o SDL2-devel-%SDL_VERSION%-VC.zip
-  - ren SDL2-devel-%SDL_VERSION%-VC sdl2
-  - SET SDL2DIR=sdl2/SDL2-%SDL_VERSION%
+  - SET SDL2DIR=SDL2-devel-%SDL_VERSION%-VC/SDL2-%SDL_VERSION%
 
   # Installs SDL2 image
   - appveyor DownloadFile https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-%IMG_VERSION%-VC.zip
   - unzip -o SDL2_image-devel-%IMG_VERSION%-VC.zip
-  - ren SDL2_image-devel-%IMG_VERSION%-VC sdl2_image
-  - SET SDL2IMAGEDIR=sdl2_image/SDL2_image-%IMG_VERSION%
+  - SET SDL2IMAGEDIR=SDL2_image-devel-%IMG_VERSION%-VC/SDL2_image-%IMG_VERSION%
 
   # Installs SDL2 mixer
   - appveyor DownloadFile https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-%MIX_VERSION%-VC.zip
   - unzip -o SDL2_mixer-devel-%MIX_VERSION%-VC.zip
-  - ren SDL2_mixer-devel-%MIX_VERSION%-VC sdl2_mixer
-  - SET SDL2MIXERDIR=sdl2_mixer/SDL2_mixer-%MIX_VERSION%
+  - SET SDL2MIXERDIR=SDL2_mixer-devel-%MIX_VERSION%/SDL2_mixer-%MIX_VERSION%
 
   # Installs SDL2 ttf
   - appveyor DownloadFile https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-%TTF_VERSION%-VC.zip
   - unzip -o SDL2_ttf-devel-%TTF_VERSION%-VC.zip
-  - ren SDL2_ttf-devel-%TTF_VERSION%-VC sdl2_ttf
-  - SET SDL2TTFDIR=sdl2_ttf/SDL2_ttf-%TTF_VERSION%
+  - SET SDL2TTFDIR=SDL2_ttf-devel-%TTF_VERSION%-VC/SDL2_ttf-%TTF_VERSION%
 
 before_build:
   - mkdir build

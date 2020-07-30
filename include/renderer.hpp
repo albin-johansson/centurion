@@ -187,22 +187,6 @@ class renderer final : public basic_renderer<renderer> {
   explicit renderer(const window& window,
                     SDL_RendererFlags flags = default_flags());
 
-//  /**
-//   * @brief Creates a renderer by moving the supplied renderer.
-//   *
-//   * @param other the renderer that will be moved.
-//   */
-//  renderer(renderer&& other) noexcept = default;
-//
-//  /**
-//   * @brief Moves the supplied renderer into this renderer.
-//   *
-//   * @param other the renderer that will be moved.
-//   *
-//   * @return the renderer that claimed the supplied renderer.
-//   */
-//  auto operator=(renderer&& other) noexcept -> renderer& = default;
-
   /**
    * @copydoc renderer(nn_owner<SDL_Renderer*>)
    */

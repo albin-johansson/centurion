@@ -43,6 +43,8 @@ install:
   - set SDL2TTFDIR=%cd%\SDL2_ttf-%TTF_VERSION%
   - echo %SDL2TTFDIR%
 
+  - set # prints path
+
 before_build:
   - cd %APPVEYOR_BUILD_FOLDER%
 

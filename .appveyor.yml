@@ -23,6 +23,9 @@ install:
   - appveyor DownloadFile https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip
   - 7z x -y SDL2-devel-%SDL_VERSION%-VC.zip
   - dir
+  - cd SDL2-2.0.12
+  - dir
+  - cd ..
   - set SDL2DIR=%cd%\SDL2-%SDL_VERSION%
   - echo %SDL2DIR%
 

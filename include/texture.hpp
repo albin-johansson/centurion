@@ -60,14 +60,6 @@
 
 namespace centurion {
 
-class texture_deleter final {
- public:
-  void operator()(SDL_Texture* texture) noexcept
-  {
-    SDL_DestroyTexture(texture);
-  }
-};
-
 /**
  * @class texture
  *
@@ -521,7 +513,15 @@ class texture final {
   }
 
  private:
-  std::unique_ptr<SDL_Texture, texture_deleter> m_texture;
+  class deleter final {
+   public:
+    void operator()(SDL_Texture* texture) noexcept
+    {
+      SDL_DestroyTexture(texture);
+    }
+  };
+
+  std::unique_ptr<SDL_Texture, deleter> m_texture;
 
   /**
    * @brief Locks the texture for write-only pixel access.

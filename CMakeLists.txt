@@ -1,11 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(Centurion)
 
-add_definitions(-DCMAKE_EXPORT_COMPILE_COMMANDS=1)
-
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-
-#set(SDL2_LIBRARY_TEMP "$ENV{SDL2DIR}/lib")
 
 set(CTN_ROOT_DIR ${PROJECT_SOURCE_DIR})
 set(CTN_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/test/resources)

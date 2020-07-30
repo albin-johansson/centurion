@@ -32,7 +32,7 @@ endif ()
 #   name: the name of the library associated with the environment variable.
 function(find_env_var [envVar [name]])
     if (DEFINED ENV{${ARGV0}})
-        message("Found environment variable: ${ARGV1}=" $ENV{${ARGV0}})
+        message("${ARGV1} path: " $ENV{${ARGV0}})
     else ()
         message(WARNING "Couldn't find environment variable ${ARGV0}!")
     endif ()

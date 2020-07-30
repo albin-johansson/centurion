@@ -72,7 +72,7 @@ function(centurion_add_header_only_lib [name [includeDirectory [sources]]])
     target_include_directories(${ARGV0} SYSTEM INTERFACE ${ARGV1})
 endfunction()
 
-unset(SDL2_BUILDING_LIBRARY)
+unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
 
 message("------ LOOKING FOR ENVIRONMENT VARIABLES ------")
 find_env_var(SDL2DIR SDL2)

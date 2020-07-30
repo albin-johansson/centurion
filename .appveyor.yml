@@ -40,6 +40,24 @@ install:
 
   - cd ..
 
+  # Proceed to download runtime binaries
+  - mkdir bin-vs
+  - cd bin-vs
+
+  - appveyor DownloadFile https://www.libsdl.org/release/SDL2-%SDL_VERSION%-win32-x64.zip
+  - 7z e -y SDL2-%SDL_VERSION%-win32-x64.zip
+
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_image/release/SDL2_image-%IMG_VERSION%-win32-x64.zip
+  - 7z e -y SDL2_image-%IMG_VERSION%-win32-x64.zip
+
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-%MIX_VERSION%-win32-x64.zip
+  - 7z e -y SDL2_mixer-%MIX_VERSION%-win32-x64.zip
+
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-%TTF_VERSION%-win32-x64.zip
+  - 7z e -y SDL2_mixer-%TTF_VERSION%-win32-x64.zip
+  
+  - dir
+
 before_build:
   - cd %APPVEYOR_BUILD_FOLDER%
 

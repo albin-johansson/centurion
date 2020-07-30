@@ -24,6 +24,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/centurion.hpp
         ${CTN_INCLUDE_DIR}/colors.hpp
         ${CTN_INCLUDE_DIR}/texture_loader.hpp
+        ${CTN_INCLUDE_DIR}/texture_loader.ipp
         ${CTN_INCLUDE_DIR}/paths.hpp
         ${CTN_INCLUDE_DIR}/platform.hpp
         ${CTN_INCLUDE_DIR}/counter.hpp

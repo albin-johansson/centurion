@@ -14,12 +14,11 @@ install:
   # Updates PATH to support command-line usage of compiler
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
 
-  # Move to C:\ since CMake scripts look here for SDL libraries
   - cd\
 
   # Installs SDL2 core
   - appveyor DownloadFile https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip
-  - 7z x -y SDL2-devel-%SDL_VERSION%-VC.zip -o%cd%\sdl2
+  - 7z e -y SDL2-devel-%SDL_VERSION%-VC.zip -o%cd%\sdl2
   - set SDL2DIR=%cd%\sdl2\SDL2-%SDL_VERSION%
   - echo %SDL2DIR%
 

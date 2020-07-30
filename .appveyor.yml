@@ -43,17 +43,13 @@ install:
 before_build:
   - cd %APPVEYOR_BUILD_FOLDER%
 
-  - echo %SDL2DIR%
-  - echo %SDL2MIXERDIR%
-  - echo %SDL2IMAGEDIR%
-  - echo %SDL2TTFDIR%
-
   - mkdir build
   - cd build 
   - cmake .. -DCMAKE_BUILD_TYPE=Debug -G Ninja
 
 build_script:
-  - ninja
+  - ninja Centurion_lib
+  - ninja Centurion_test
 
 test_script:
   - cd test

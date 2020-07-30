@@ -60,19 +60,6 @@
 
 namespace centurion {
 
-/// @cond FALSE
-
-namespace detail {
-
-class sound_effect_deleter final {
- public:
-  void operator()(Mix_Chunk* chunk) noexcept { Mix_FreeChunk(chunk); }
-};
-
-}  // namespace detail
-
-/// @endcond
-
 /**
  * @class sound_effect
  *
@@ -345,7 +332,12 @@ class sound_effect final {
   }
 
  private:
-  std::unique_ptr<Mix_Chunk, detail::sound_effect_deleter> m_chunk;
+  class deleter final {
+   public:
+    void operator()(Mix_Chunk* chunk) noexcept { Mix_FreeChunk(chunk); }
+  };
+
+  std::unique_ptr<Mix_Chunk, deleter> m_chunk;
   int m_channel{undefined_channel()};
 
   [[nodiscard]] static constexpr auto undefined_channel() noexcept -> int

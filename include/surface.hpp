@@ -58,19 +58,6 @@
 
 namespace centurion {
 
-/// @cond FALSE
-
-namespace detail {
-
-class surface_deleter final {
- public:
-  void operator()(SDL_Surface* surface) noexcept { SDL_FreeSurface(surface); }
-};
-
-}  // namespace detail
-
-/// @endcond
-
 /**
  * @class surface
  *
@@ -401,7 +388,12 @@ class surface final {
   }
 
  private:
-  std::unique_ptr<SDL_Surface, detail::surface_deleter> m_surface;
+  class deleter final {
+   public:
+    void operator()(SDL_Surface* surface) noexcept { SDL_FreeSurface(surface); }
+  };
+
+  std::unique_ptr<SDL_Surface, deleter> m_surface;
 
   /**
    * @brief Copies the contents of the supplied surface instance into this

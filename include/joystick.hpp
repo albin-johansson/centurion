@@ -53,24 +53,6 @@
 
 namespace centurion {
 
-/// @cond FALSE
-
-namespace detail {
-
-class joystick_deleter final {
- public:
-  void operator()(SDL_Joystick* joystick) noexcept
-  {
-    if (SDL_JoystickGetAttached(joystick)) {
-      SDL_JoystickClose(joystick);
-    }
-  }
-};
-
-}  // namespace detail
-
-/// @endcond
-
 /**
  * @class joystick
  *
@@ -775,7 +757,17 @@ class joystick final {
   }
 
  private:
-  std::unique_ptr<SDL_Joystick, detail::joystick_deleter> m_joystick;
+  class deleter final {
+   public:
+    void operator()(SDL_Joystick* joystick) noexcept
+    {
+      if (SDL_JoystickGetAttached(joystick)) {
+        SDL_JoystickClose(joystick);
+      }
+    }
+  };
+
+  std::unique_ptr<SDL_Joystick, deleter> m_joystick;
 };
 
 static_assert(std::is_final_v<joystick>);

@@ -146,24 +146,6 @@ enum class system_cursor {
   return !(lhs == rhs);
 }
 
-/// @cond FALSE
-
-namespace detail {
-
-class cursor_deleter final {
- public:
-  void operator()(SDL_Cursor* cursor) noexcept
-  {
-    if (cursor) {
-      SDL_FreeCursor(cursor);
-    }
-  }
-};
-
-}  // namespace detail
-
-/// @endcond
-
 /**
  * @class cursor
  *
@@ -366,7 +348,12 @@ class cursor final {
   }
 
  private:
-  std::unique_ptr<SDL_Cursor, detail::cursor_deleter> m_cursor;
+  class deleter final {
+   public:
+    void operator()(SDL_Cursor* cursor) noexcept { SDL_FreeCursor(cursor); }
+  };
+
+  std::unique_ptr<SDL_Cursor, deleter> m_cursor;
 };
 
 static_assert(std::is_final_v<cursor>);

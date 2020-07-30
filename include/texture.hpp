@@ -162,6 +162,9 @@ class texture final {
   /**
    * @brief Creates a texture based the image at the specified path.
    *
+   * @tparam Renderer the type of the renderer, e.g. `renderer` or
+   * `renderer_handle`.
+   *
    * @param renderer the renderer that will be used to create the texture.
    * @param path the file path of the texture, can't be null.
    *
@@ -175,6 +178,9 @@ class texture final {
   /**
    * @brief Creates an texture that is a copy of the supplied surface.
    *
+   * @tparam Renderer the type of the renderer, e.g. `renderer` or
+   * `renderer_handle`.
+   *
    * @param renderer the renderer that will be used to create the texture.
    * @param surface the surface that the texture will be based on.
    *
@@ -187,6 +193,9 @@ class texture final {
 
   /**
    * @brief Creates an texture with the specified characteristics.
+   *
+   * @tparam Renderer the type of the renderer, e.g. `renderer` or
+   * `renderer_handle`.
    *
    * @param renderer the associated renderer instance.
    * @param format the pixel format of the created texture.
@@ -210,21 +219,21 @@ class texture final {
   static auto unique(nn_owner<SDL_Texture*> sdlTexture) -> uptr;
 
   /**
-   * @copydoc texture(const renderer&, nn_czstring)
+   * @copydoc texture(const Renderer&, nn_czstring)
    */
   template <typename Renderer>
   [[nodiscard]] static auto unique(const Renderer& renderer, nn_czstring path)
       -> uptr;
 
   /**
-   * @copydoc texture(const renderer&, const surface&)
+   * @copydoc texture(const Renderer&, const surface&)
    */
   template <typename Renderer>
   [[nodiscard]] static auto unique(const Renderer& renderer,
                                    const surface& surface) -> uptr;
 
   /**
-   * @copydoc texture(const renderer&, pixel_format, access, const iarea&)
+   * @copydoc texture(const Renderer&, pixel_format, access, const iarea&)
    */
   template <typename Renderer>
   [[nodiscard]] static auto unique(const Renderer& renderer,
@@ -239,21 +248,21 @@ class texture final {
   static auto shared(nn_owner<SDL_Texture*> sdlTexture) -> sptr;
 
   /**
-   * @copydoc texture(const renderer&, nn_czstring)
+   * @copydoc texture(const Renderer&, nn_czstring)
    */
   template <typename Renderer>
   [[nodiscard]] static auto shared(const Renderer& renderer, nn_czstring path)
       -> sptr;
 
   /**
-   * @copydoc texture(const renderer&, const surface&)
+   * @copydoc texture(const Renderer&, const surface&)
    */
   template <typename Renderer>
   [[nodiscard]] static auto shared(const Renderer& renderer,
                                    const surface& surface) -> sptr;
 
   /**
-   * @copydoc texture(const renderer&, pixel_format, access, const iarea&)
+   * @copydoc texture(const Renderer&, pixel_format, access, const iarea&)
    */
   template <typename Renderer>
   [[nodiscard]] static auto shared(const Renderer& renderer,
@@ -266,6 +275,9 @@ class texture final {
    *
    * @details The create texture is based on the image at the specified path
    * with the `streaming` texture access.
+   *
+   * @tparam Renderer the type of the renderer, e.g. `renderer` or
+   * `renderer_handle`.
    *
    * @param renderer the renderer that will be used to create the texture.
    * @param path the path of the image file to base the texture on, can't be

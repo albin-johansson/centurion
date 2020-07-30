@@ -6,10 +6,10 @@ install:
   - cmake --version # expect >= 3.16
   - ninja --version # expect >= 1.10
 
-  - setx SDL_VERSION 2.0.12
-  - setx IMG_VERSION 2.0.5
-  - setx MIX_VERSION 2.0.4
-  - setx TTF_VERSION 2.0.15
+  - set SDL_VERSION=2.0.12
+  - set IMG_VERSION=2.0.5
+  - set MIX_VERSION=2.0.4
+  - set TTF_VERSION=2.0.15
 
   # Updates PATH to support command-line usage of compiler
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"

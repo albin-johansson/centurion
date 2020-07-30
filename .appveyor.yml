@@ -55,8 +55,6 @@ install:
 
   - appveyor DownloadFile https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-%TTF_VERSION%-win32-x64.zip
   - 7z e -y SDL2_ttf-%TTF_VERSION%-win32-x64.zip
-  
-  - dir
 
 before_build:
   - cd %APPVEYOR_BUILD_FOLDER%
@@ -70,6 +68,6 @@ build_script:
   - ninja Centurion_test
 
 test_script:
-  # Doesn't seem to work, look into later
+  # FIXME Doesn't seem to work, look into later
   # - cd test
   # - ctest

@@ -31,7 +31,7 @@ install:
   # Installs SDL2 mixer
   - appveyor DownloadFile https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-%MIX_VERSION%-VC.zip
   - 7z x -y SDL2_mixer-devel-%MIX_VERSION%-VC.zip
-  - set SDL2IMAGEDIR=%cd%\SDL2_mixer-%MIX_VERSION%
+  - set SDL2MIXERDIR=%cd%\SDL2_mixer-%MIX_VERSION%
   - echo %SDL2MIXERDIR%
 
   # Installs SDL2 ttf

@@ -75,7 +75,12 @@ if (NOT DEFINED ENV{TRAVIS})
             unittests/music_test.cpp)
 endif ()
 
-add_executable(${CENTURION_TEST_TARGET} ${TEST_FILES})
+if (WIN32)
+    add_executable(${CENTURION_TEST_TARGET} WIN32 ${TEST_FILES})
+else ()
+    add_executable(${CENTURION_TEST_TARGET} ${TEST_FILES})
+endif ()
+
 add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
 
 if (DEFINED ENV{TRAVIS})

@@ -44,6 +44,6 @@ before_build:
 build_script:
   - ninja
 
-test:
+test_script:
   - cd test
   - Centurion_test.exe

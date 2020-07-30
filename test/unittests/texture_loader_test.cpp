@@ -39,3 +39,15 @@ TEST_CASE("texture_loader::create", "[texture_loader]")
   auto texture = loader.create("resources/panda.png");
   CHECK(texture.get());
 }
+
+TEST_CASE("texture_loader from renderer_handle", "[texture_loader]")
+{
+  ctn::window window;
+  ctn::renderer renderer{window};
+  ctn::renderer_handle handle{renderer};
+
+  ctn::texture_loader loader{handle};
+
+  auto texture = loader.create("resources/panda.png");
+  CHECK(texture.get());
+}

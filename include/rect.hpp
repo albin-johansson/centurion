@@ -528,7 +528,8 @@ template <>
  *
  * @tparam Traits the traits used by the rectangles.
  *
- * @param other the other rectangle to check.
+ * @param fst the first rectangle.
+ * @param snd the second rectangle.
  *
  * @return `true` if the rectangles intersect; `false` otherwise.
  *
@@ -553,7 +554,8 @@ template <typename Traits>
  *
  * @tparam Traits the traits used by the rectangles.
  *
- * @param other the other rectangle to check.
+ * @param fst the first rectangle.
+ * @param snd the second rectangle.
  *
  * @return `true` if the rectangles collide; `false` otherwise.
  *

@@ -3,7 +3,7 @@
 
 #include "centurion_as_ctn.hpp"
 
-auto main(int argc, char** argv) -> int
+int main(int argc, char* argv[])
 {
 #ifdef CENTURION_NOAUDIO
   ctn::centurion_config cfg;

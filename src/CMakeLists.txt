@@ -11,6 +11,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/window.hpp
         ${CTN_INCLUDE_DIR}/window_handle.hpp
         ${CTN_INCLUDE_DIR}/window_utils.hpp
+        ${CTN_INCLUDE_DIR}/window_utils.ipp
         ${CTN_INCLUDE_DIR}/font.hpp
         ${CTN_INCLUDE_DIR}/basic_renderer.hpp
         ${CTN_INCLUDE_DIR}/basic_renderer.ipp
@@ -79,7 +80,6 @@ set(SOURCE_FILES
         graphics/renderer_handle.cpp
         graphics/renderer.cpp
         graphics/color.cpp
-        graphics/window_utils.cpp
 
         system/base_path.cpp
         system/pref_path.cpp

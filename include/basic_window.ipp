@@ -48,12 +48,6 @@
 namespace centurion {
 
 template <class Derived>
-auto basic_window<Derived>::ptr() noexcept -> SDL_Window*
-{
-  return static_cast<Derived*>(this)->get();
-}
-
-template <class Derived>
 auto basic_window<Derived>::ptr() const noexcept -> SDL_Window*
 {
   return static_cast<const Derived*>(this)->get();

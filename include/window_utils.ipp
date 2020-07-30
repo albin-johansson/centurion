@@ -22,51 +22,27 @@
  * SOFTWARE.
  */
 
-/**
- * @file window_utils.hpp
- *
- * @brief Provides utilities related to windows.
- *
- * @author Albin Johansson
- *
- * @date 2019-2020
- *
- * @copyright MIT License
- */
+#ifndef CENTURION_WINDOW_UTILS_IMPLEMENTATION
+#define CENTURION_WINDOW_UTILS_IMPLEMENTATION
 
-#ifndef CENTURION_WINDOW_UTILS_HEADER
-#define CENTURION_WINDOW_UTILS_HEADER
+#include <SDL_video.h>
 
 #include "centurion_api.hpp"
-#include "centurion_fwd.hpp"
-#include "renderer_handle.hpp"
+#include "window_utils.hpp"
+
+#ifdef CENTURION_USE_PRAGMA_ONCE
+#pragma once
+#endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
 
-/**
- * @brief Returns a handle to the renderer associated with a window.
- *
- * @ingroup graphics
- *
- * @details The returned handle will be null if the supplied window doesn't
- * have an associated renderer.
- *
- * @note You should always check whether or not the returned handle contains
- * a valid renderer pointer before using it!
- *
- * @param window the window associated with the desired renderer.
- *
- * @return a handle to the associated renderer, might not contain a valid
- * renderer pointer.
- *
- * @since 5.0.0
- */
 template <typename Traits>
-[[nodiscard]] auto get_renderer(const basic_window<Traits>& window) noexcept
-    -> renderer_handle;
+auto get_renderer(const basic_window<Traits>& window) noexcept
+    -> renderer_handle
+{
+  return renderer_handle{SDL_GetRenderer(window.ptr())};
+}
 
 }  // namespace centurion
 
-#include "window_utils.ipp"
-
-#endif  // CENTURION_WINDOW_UTILS_HEADER
+#endif  // CENTURION_WINDOW_UTILS_IMPLEMENTATION

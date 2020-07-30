@@ -609,7 +609,9 @@ class basic_window {
   basic_window() noexcept = default;
 
  private:
-  [[nodiscard]] auto ptr() noexcept -> SDL_Window*;
+  template <typename Traits>
+  friend auto get_renderer(const basic_window<Traits>& window) noexcept
+      -> renderer_handle;
 
   [[nodiscard]] auto ptr() const noexcept -> SDL_Window*;
 };

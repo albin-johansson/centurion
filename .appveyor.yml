@@ -54,7 +54,7 @@ install:
   - 7z e -y SDL2_mixer-%MIX_VERSION%-win32-x64.zip
 
   - appveyor DownloadFile https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-%TTF_VERSION%-win32-x64.zip
-  - 7z e -y SDL2_mixer-%TTF_VERSION%-win32-x64.zip
+  - 7z e -y SDL2_ttf-%TTF_VERSION%-win32-x64.zip
   
   - dir
 

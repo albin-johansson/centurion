@@ -19,7 +19,7 @@ auto font_cache::shared(font&& font) -> sptr
   return std::make_shared<font_cache>(std::move(font));
 }
 
-void font_cache::cache_texture(entt::id_type id, texture&& texture)
+void font_cache::store(entt::id_type id, texture&& texture)
 {
   const auto iterator = m_strings.find(id);
   if (iterator == m_strings.end()) {
@@ -27,7 +27,7 @@ void font_cache::cache_texture(entt::id_type id, texture&& texture)
   }
 }
 
-auto font_cache::try_get_texture(entt::id_type id) const noexcept
+auto font_cache::try_get_stored(entt::id_type id) const noexcept
     -> const texture*
 {
   const auto iterator = m_strings.find(id);

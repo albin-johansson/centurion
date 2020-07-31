@@ -155,8 +155,7 @@ class font_cache final {
    * @since 5.0.0
    */
   template <typename... Args>
-  explicit font_cache(Args&&... args) : m_font{std::forward<Args>(args)...}
-  {}
+  explicit font_cache(Args&&... args);
 
   /**
    * @copydoc font_cache(font&&)
@@ -179,10 +178,7 @@ class font_cache final {
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] static auto unique(Args&&... args) -> uptr
-  {
-    return std::make_unique<font_cache>(std::forward<Args>(args)...);
-  }
+  [[nodiscard]] static auto unique(Args&&... args) -> uptr;
 
   /**
    * @copydoc font_cache(font&&)
@@ -205,14 +201,11 @@ class font_cache final {
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] static auto shared(Args&&... args) -> sptr
-  {
-    return std::make_shared<font_cache>(std::forward<Args>(args)...);
-  }
+  [[nodiscard]] static auto shared(Args&&... args) -> sptr;
 
   /**
    * @name String caching
-   * Methods related to caching strings as textures.
+   * @brief Methods related to caching strings as textures.
    */
   ///@{
 
@@ -227,7 +220,7 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_API
-  void cache_texture(entt::id_type id, texture&& texture);
+  void store(entt::id_type id, texture&& texture);
 
   /**
    * @brief Indicates whether or not there is a cached string texture associated
@@ -240,7 +233,7 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto has_string(entt::id_type id) const noexcept -> bool
+  [[nodiscard]] auto has_stored(entt::id_type id) const noexcept -> bool
   {
     return m_strings.count(id);
   }
@@ -260,7 +253,7 @@ class font_cache final {
    * @since 5.0.0
    */
   CENTURION_QUERY
-  auto try_get_texture(entt::id_type id) const noexcept -> const texture*;
+  auto try_get_stored(entt::id_type id) const noexcept -> const texture*;
 
   /**
    * @brief Returns the cached texture associated with the specified ID.
@@ -273,7 +266,7 @@ class font_cache final {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get_texture(entt::id_type id) const -> const texture&
+  [[nodiscard]] auto get_stored(entt::id_type id) const -> const texture&
   {
     return m_strings.at(id);
   }

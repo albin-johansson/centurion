@@ -49,6 +49,22 @@
 
 namespace centurion {
 
+template <typename... Args>
+font_cache::font_cache(Args&&... args) : m_font{std::forward<Args>(args)...}
+{}
+
+template <typename... Args>
+auto font_cache::unique(Args&&... args) -> uptr
+{
+  return std::make_unique<font_cache>(std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+auto font_cache::shared(Args&&... args) -> sptr
+{
+  return std::make_shared<font_cache>(std::forward<Args>(args)...);
+}
+
 template <typename Renderer>
 void font_cache::add_glyph(Renderer& renderer, unicode glyph)
 {

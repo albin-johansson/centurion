@@ -605,6 +605,8 @@ class basic_window {
    */
   [[nodiscard]] auto title() const -> std::string;
 
+  [[nodiscard]] auto ptr() const noexcept -> SDL_Window*;
+
  protected:
   basic_window() noexcept = default;
 
@@ -612,8 +614,6 @@ class basic_window {
   template <typename Traits>
   friend auto get_renderer(const basic_window<Traits>& window) noexcept
       -> renderer_handle;
-
-  [[nodiscard]] auto ptr() const noexcept -> SDL_Window*;
 };
 
 }  // namespace centurion

@@ -1,168 +1,134 @@
 #include "message_box.hpp"
 
-#include "centurion_utils.hpp"
-#include "colors.hpp"
+#include <utility>  // move
+
 #include "error.hpp"
 
-namespace centurion::messagebox {
-namespace {
+namespace centurion {
 
-/**
- * @brief Creates and returns an `SDL_MessageBoxButtonData` instance based on
- * the specified attributes.
- *
- * @param hint the button data hint that will be used.
- * @param id the ID of the button.
- * @param text the text that will be displayed on the button, the empty
- * string is used if null.
- *
- * @since 4.0.0
- */
-inline auto create_button_data(button_data_hint hint,
-                               int id,
-                               czstring text) noexcept
-    -> SDL_MessageBoxButtonData
-{
-  return {static_cast<u32>(hint), id, text};
-}
-
-}  // namespace
-
-color_scheme::color_scheme() noexcept
-{
-  set_color(color_type::background, colors::black);
-  set_color(color_type::button_border, colors::black);
-  set_color(color_type::button_background, colors::black);
-  set_color(color_type::button_selected, colors::black);
-}
-
-void color_scheme::set_color(color_type type, const color& color) noexcept
-{
-  m_scheme.colors[index(type)] = static_cast<SDL_MessageBoxColor>(color);
-}
-
-auto color_scheme::convert() const noexcept -> SDL_MessageBoxColorScheme
-{
-  return m_scheme;
-}
-
-message_box::message_box() : m_config{std::make_unique<message_box_config>()}
+message_box::message_box(std::string title, std::string message)
+    : m_title{std::move(title)}, m_message{std::move(message)}
 {}
 
-message_box::message_box(czstring title, czstring message) : message_box{}
-
+void message_box::show(SDL_Window* parent,
+                       const std::string& title,
+                       const std::string& message,
+                       type type,
+                       button_order buttonOrder)
 {
-  set_title(title);
-  set_message(message);
+  SDL_ShowSimpleMessageBox(
+      to_flags(type, buttonOrder), title.c_str(), message.c_str(), parent);
 }
 
-auto message_box::create_buttons() const noexcept
-    -> std::vector<SDL_MessageBoxButtonData>
+auto message_box::show(SDL_Window* parent) -> std::optional<button_id>
 {
-  std::vector<SDL_MessageBoxButtonData> result;
-  result.reserve(m_buttons.size());
+  SDL_MessageBoxData data{};
 
-  for (const auto& b : m_buttons) {
-    result.push_back(b);
-  }
+  data.window = parent;
+  data.title = m_title.c_str();
+  data.message = m_message.c_str();
+  data.flags = to_flags(m_type, m_buttonOrder);
+  data.colorScheme = m_colorScheme ? m_colorScheme->get() : nullptr;
 
-  return result;
-}
+  std::vector<SDL_MessageBoxButtonData> buttonData;
+  buttonData.reserve(m_buttons.size());
 
-auto message_box::create_data(SDL_Window* window,
-                              const SDL_MessageBoxButtonData* data,
-                              const SDL_MessageBoxColorScheme* scheme)
-    const noexcept -> SDL_MessageBoxData
-{
-  const auto flags = static_cast<u32>(m_config->type) |
-                     static_cast<u32>(m_config->buttonOrder);
-  return {flags,
-          window,
-          m_title,
-          m_message,
-          static_cast<int>(m_buttons.size()),
-          data,
-          scheme};
-}
-
-auto message_box::show(SDL_Window* window) -> int
-{
   if (m_buttons.empty()) {
-    m_buttons.emplace_back(
-        create_button_data(button_data_hint::return_key, 0, "OK"));
+    add_button(0, "OK", default_button::return_key);
   }
 
-  const auto buttons = create_buttons();
-
-  std::optional<SDL_MessageBoxColorScheme> optScheme;
-  if (m_colorScheme) {
-    optScheme.emplace(m_colorScheme->convert());
+  for (const auto& button : m_buttons) {
+    buttonData.emplace_back(button.convert());
   }
 
-  const auto scheme = optScheme ? &*optScheme : nullptr;
-  const auto data = create_data(window, &buttons.front(), scheme);
+  data.buttons = buttonData.data();
+  data.numbuttons = static_cast<int>(buttonData.size());
 
-  int button = -1;
+  button_id button{-1};
   if (SDL_ShowMessageBox(&data, &button) == -1) {
     throw detail::core_error("Failed to show message box!");
   }
 
-  return button;
+  if (button != -1) {
+    return button;
+  } else {
+    return nothing;
+  }
 }
 
-void message_box::show(czstring title,
-                       czstring message,
-                       const message_box_config& config,
-                       SDL_Window* window) noexcept
+void message_box::show(const std::string& title,
+                       const std::string& message,
+                       type type,
+                       button_order buttonOrder)
 {
-  const auto flags =
-      static_cast<u32>(config.type) | static_cast<u32>(config.buttonOrder);
-  SDL_ShowSimpleMessageBox(flags,
-                           title ? title : "Centurion message box",
-                           message ? message : "N/A",
-                           window);
+  show(nullptr, title, message, type, buttonOrder);
 }
 
-void message_box::add_button(button_data_hint hint,
-                             int id,
-                             czstring text) noexcept
+auto message_box::show() -> std::optional<button_id>
 {
-  m_buttons.emplace_back(create_button_data(hint, id, text));
+  return show(nullptr);
 }
 
-void message_box::set_title(czstring title) noexcept
+void message_box::add_button(button_id id,
+                             std::string text,
+                             default_button defaultButton)
 {
-  m_title = title ? title : m_title;
+  m_buttons.emplace_back(id, std::move(text), defaultButton);
 }
 
-void message_box::set_message(czstring message) noexcept
+void message_box::set_color_scheme(const color_scheme& colorScheme) noexcept
 {
-  m_message = message ? message : m_message;
+  m_colorScheme = colorScheme;
+}
+
+void message_box::set_title(std::string title)
+{
+  m_title = std::move(title);
+}
+
+void message_box::set_message(std::string message)
+{
+  m_message = std::move(message);
 }
 
 void message_box::set_type(type type) noexcept
 {
-  m_config->type = type;
+  m_type = type;
 }
 
 void message_box::set_button_order(button_order order) noexcept
 {
-  m_config->buttonOrder = order;
+  m_buttonOrder = order;
 }
 
-void message_box::set_color_scheme(std::optional<color_scheme> scheme) noexcept
+auto message_box::has_button(button_id id) const noexcept -> bool
 {
-  this->m_colorScheme = scheme;
+  for (const auto& button : m_buttons) {
+    if (button.id() == id) {
+      return true;
+    }
+  }
+  return false;
 }
 
-auto message_box::get_type() const noexcept -> message_box::type
+auto message_box::get_title() const -> std::string_view
 {
-  return m_config->type;
+  return m_title;
 }
 
-auto message_box::get_button_order() const noexcept -> message_box::button_order
+auto message_box::get_message() const -> std::string_view
 {
-  return m_config->buttonOrder;
+  return m_message;
 }
 
-}  // namespace centurion::messagebox
+auto message_box::get_type() const noexcept -> type
+{
+  return m_type;
+}
+
+auto message_box::get_button_order() const noexcept -> button_order
+{
+  return m_buttonOrder;
+}
+
+}  // namespace centurion

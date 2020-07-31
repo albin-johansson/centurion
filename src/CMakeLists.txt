@@ -32,6 +32,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/log.hpp
         ${CTN_INCLUDE_DIR}/blend_mode.hpp
         ${CTN_INCLUDE_DIR}/message_box.hpp
+        ${CTN_INCLUDE_DIR}/message_box.ipp
         ${CTN_INCLUDE_DIR}/color.hpp
         ${CTN_INCLUDE_DIR}/rect.hpp
         ${CTN_INCLUDE_DIR}/point.hpp
@@ -74,6 +75,8 @@ set(SOURCE_FILES
         graphics/font_cache.cpp
         graphics/texture.cpp
         graphics/message_box.cpp
+        graphics/message_box_button.cpp
+        graphics/message_box_color_scheme.cpp
         graphics/surface.cpp
         graphics/cursor.cpp
         graphics/basic_renderer.cpp

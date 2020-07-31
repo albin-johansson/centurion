@@ -6,237 +6,210 @@
 #include "centurion_as_ctn.hpp"
 #include "colors.hpp"
 
-using namespace ctn::messagebox;
-
-TEST_CASE("button_data_hint enum values", "[message_box]")
+TEST_CASE("message_box member show", "[.message_box]")
 {
-  CHECK(button_data_hint::return_key ==
-        SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
-  CHECK(button_data_hint::escape_key ==
-        SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
+  using namespace std::string_literals;
 
-  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT ==
-        button_data_hint::return_key);
-  CHECK(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT ==
-        button_data_hint::escape_key);
+  ctn::message_box mb;
 
-  CHECK(button_data_hint::none != SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
-  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT !=
-        button_data_hint::escape_key);
+  mb.set_title("Member show"s);
+  mb.set_message("Created with member show"s);
+
+  mb.add_button(0, "Foo", ctn::message_box::default_button::return_key);
+  mb.add_button(1, "Bar", ctn::message_box::default_button::escape_key);
+
+  CHECK(mb.has_button(0));
+  CHECK(mb.has_button(1));
+
+  mb.show();
 }
 
-TEST_CASE("color_type enum values", "[message_box]")
+TEST_CASE("message_box static show", "[.message_box]")
 {
-  CHECK(color_type::button_selected == SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
-  CHECK(color_type::button_background ==
-        SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
-  CHECK(color_type::button_border == SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);
-  CHECK(color_type::background == SDL_MESSAGEBOX_COLOR_BACKGROUND);
+  using namespace std::string_literals;
 
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED == color_type::button_selected);
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND ==
-        color_type::button_background);
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER == color_type::button_border);
-  CHECK(SDL_MESSAGEBOX_COLOR_BACKGROUND == color_type::background);
-
-  CHECK(color_type::background != SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER != color_type::button_selected);
+  ctn::message_box::show("Static show"s,
+                         "Created with static show"s,
+                         ctn::message_box::type::warning);
 }
 
-TEST_CASE("color_scheme::set_color", "[message_box]")
+TEST_CASE("message_box(string, string)", "[message_box]")
 {
-  color_scheme scheme;
+  using namespace std::string_literals;
 
-  scheme.set_color(color_type::background, ctn::colors::aquamarine);
-  scheme.set_color(color_type::button_background, ctn::colors::azure);
-  scheme.set_color(color_type::button_border, ctn::colors::tomato);
-  scheme.set_color(color_type::button_selected, ctn::colors::cornsilk);
+  const auto title = "foo"s;
+  const auto message = "bar"s;
 
-  const auto sdlScheme = scheme.convert();
+  const ctn::message_box mb{title, message};
 
-  const auto index = [](color_type type) noexcept {
-    return static_cast<int>(type);
-  };
-
-  CHECK(sdlScheme.colors[index(color_type::background)] ==
-        ctn::colors::aquamarine);
-
-  CHECK(sdlScheme.colors[index(color_type::button_background)] ==
-        ctn::colors::azure);
-
-  CHECK(sdlScheme.colors[index(color_type::button_border)] ==
-        ctn::colors::tomato);
-
-  CHECK(sdlScheme.colors[index(color_type::button_selected)] ==
-        ctn::colors::cornsilk);
-}
-
-TEST_CASE("message_box()", "[message_box]")
-{
-  message_box mb;
-  CHECK(!mb.get_color_scheme());
-  CHECK(mb.get_type() == message_box::type::information);
-  CHECK(mb.get_button_order() == message_box::button_order::left_to_right);
-  CHECK_THAT(mb.title(), Catch::Equals("Centurion message box"));
-  CHECK_THAT(mb.message(), Catch::Equals("N/A"));
-}
-
-TEST_CASE("message_box(czstring, czstring)", "[message_box]")
-{
-  SECTION("Null arguments")
-  {
-    message_box mb{nullptr, nullptr};
-    CHECK_THAT(mb.title(), Catch::Equals("Centurion message box"));
-    CHECK_THAT(mb.message(), Catch::Equals("N/A"));
-  }
-  SECTION("Normal arguments")
-  {
-    ctn::czstring title = "This is a title";
-    ctn::czstring message = "This is a message";
-    message_box mb{title, message};
-    CHECK_THAT(mb.title(), Catch::Equals(title));
-    CHECK_THAT(mb.message(), Catch::Equals(message));
-  }
-}
-
-TEST_CASE("message_box::show [static]", "[.message_box]")
-{
-  SECTION("Checking defaults")
-  {
-    ctn::czstring title = nullptr;
-    ctn::czstring message = nullptr;
-    message_box_config config;
-    message_box::show(title, message, config, nullptr);
-  }
-  SECTION("Actual parameters")
-  {
-    ctn::czstring title = "This is a title";
-    ctn::czstring message =
-        "This message box was created with the static show!";
-    message_box_config config;
-    config.type = message_box::type::warning;
-    config.buttonOrder = message_box::button_order::right_to_left;
-    message_box::show(title, message, config);
-  }
-}
-
-TEST_CASE("message_box::show [non-static]", "[.message_box]")
-{
-  message_box mb;
-  mb.show(nullptr);
+  CHECK(mb.get_title() == title);
+  CHECK(mb.get_message() == message);
 }
 
 TEST_CASE("message_box::add_button", "[message_box]")
 {
-  message_box mb;
-  CHECK_NOTHROW(mb.add_button(button_data_hint::return_key, 0, nullptr));
-  CHECK_NOTHROW(mb.add_button(button_data_hint::escape_key, 12, "Foo"));
+  ctn::message_box mb;
+
+  const ctn::message_box::button_id id{3};
+
+  mb.add_button(id, "Foo");
+
+  CHECK(mb.has_button(id));
 }
 
 TEST_CASE("message_box::set_title", "[message_box]")
 {
-  message_box mb;
-  ctn::czstring title = "This is a title";
+  using namespace std::string_literals;
+  const auto title = "This is a title"s;
 
+  ctn::message_box mb;
   mb.set_title(title);
-  CHECK_THAT(mb.title(), Catch::Equals(title));
 
-  mb.set_title(nullptr);
-  CHECK_THAT(mb.title(), Catch::Equals(title));
+  CHECK(title == mb.get_title());
 }
 
 TEST_CASE("message_box::set_message", "[message_box]")
 {
-  message_box mb;
-  ctn::czstring msg = "Foobar";
+  using namespace std::string_literals;
+  const auto message = "This is a message"s;
 
-  mb.set_message(msg);
-  CHECK_THAT(mb.message(), Catch::Equals(msg));
+  ctn::message_box mb;
+  mb.set_message(message);
 
-  mb.set_message(nullptr);
-  CHECK_THAT(mb.message(), Catch::Equals(msg));
+  CHECK(message == mb.get_message());
 }
 
 TEST_CASE("message_box::set_type", "[message_box]")
 {
-  message_box mb;
+  using type = ctn::message_box::type;
 
-  const auto error = message_box::type::error;
-  mb.set_type(error);
+  ctn::message_box mb;
 
-  CHECK(mb.get_type() == error);
+  mb.set_type(type::information);
+  CHECK(mb.get_type() == type::information);
 
-  const auto warn = message_box::type::warning;
-  mb.set_type(warn);
+  mb.set_type(type::warning);
+  CHECK(mb.get_type() == type::warning);
 
-  CHECK(mb.get_type() == warn);
-
-  const auto info = message_box::type::information;
-  mb.set_type(info);
-
-  CHECK(mb.get_type() == info);
+  mb.set_type(type::error);
+  CHECK(mb.get_type() == type::error);
 }
 
 TEST_CASE("message_box::set_button_order", "[message_box]")
 {
-  message_box mb;
+  using order = ctn::message_box::button_order;
 
-  const auto rightToLeft = message_box::button_order::right_to_left;
-  mb.set_button_order(rightToLeft);
+  ctn::message_box mb;
 
-  CHECK(mb.get_button_order() == rightToLeft);
+  mb.set_button_order(order::left_to_right);
+  CHECK(mb.get_button_order() == order::left_to_right);
 
-  const auto leftToRight = message_box::button_order::left_to_right;
-  mb.set_button_order(leftToRight);
-
-  CHECK(mb.get_button_order() == leftToRight);
+  mb.set_button_order(order::right_to_left);
+  CHECK(mb.get_button_order() == order::right_to_left);
 }
 
-TEST_CASE("message_box::set_color_scheme", "[message_box]")
+TEST_CASE("message_box::has_button", "[message_box]")
 {
-  const auto colorType = color_type::background;
-  message_box mb;
+  ctn::message_box mb;
 
-  color_scheme scheme;
-  scheme.set_color(colorType, ctn::colors::red);
+  const auto id = 4;
 
-  mb.set_color_scheme(scheme);
+  CHECK(!mb.has_button(id));
 
-  CHECK(mb.get_color_scheme());
+  mb.add_button(id, "foo");
 
-  const auto sdlScheme = scheme.convert();
-  CHECK(sdlScheme.colors[static_cast<int>(colorType)] == ctn::colors::red);
-
-  mb.set_color_scheme(ctn::nothing);
-  CHECK(!mb.get_color_scheme());
+  CHECK(mb.has_button(id));
 }
 
-TEST_CASE("message_box::title", "[message_box]")
+TEST_CASE("message_box::get_title", "[message_box]")
 {
-  message_box mb;
-  CHECK_THAT(mb.title(), Catch::Equals("Centurion message box"));
+  using namespace std::string_literals;
+
+  ctn::message_box mb;
+  CHECK(mb.get_title() == "Message box"s);
 }
 
-TEST_CASE("message_box::message", "[message_box]")
+TEST_CASE("message_box::get_message", "[message_box]")
 {
-  message_box mb;
-  CHECK_THAT(mb.message(), Catch::Equals("N/A"));
+  using namespace std::string_literals;
+
+  ctn::message_box mb;
+  CHECK(mb.get_message() == "N/A"s);
+}
+
+TEST_CASE("message_box::get_type", "[message_box]")
+{
+  ctn::message_box mb;
+  CHECK(mb.get_type() == ctn::message_box::type::information);
+}
+
+TEST_CASE("message_box::get_button_order", "[message_box]")
+{
+  ctn::message_box mb;
+  CHECK(mb.get_button_order() == ctn::message_box::button_order::left_to_right);
 }
 
 TEST_CASE("message_box::color_scheme", "[message_box]")
 {
-  message_box mb;
-  CHECK(!mb.get_color_scheme());
+  SECTION("Defaults")
+  {
+    using ctn::colors::white;
+
+    ctn::message_box::color_scheme scheme;
+    const auto sdlScheme = scheme.get();
+
+    CHECK(sdlScheme->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND] == white);
+    CHECK(sdlScheme->colors[SDL_MESSAGEBOX_COLOR_TEXT] == white);
+    CHECK(sdlScheme->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER] == white);
+    CHECK(sdlScheme->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND] == white);
+    CHECK(sdlScheme->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED] == white);
+  }
+
+  ctn::message_box::color_scheme scheme;
+
+  const auto testColor = [&](ctn::message_box::color_id id,
+                             const ctn::color& color) {
+    scheme.set_color(id, color);
+
+    const auto sdlScheme = scheme.get();
+
+    CHECK(sdlScheme->colors[static_cast<ctn::u32>(id)] == color);
+  };
+
+  testColor(ctn::message_box::color_id::background, ctn::colors::pink);
+  testColor(ctn::message_box::color_id::text, ctn::colors::salmon);
+  testColor(ctn::message_box::color_id::button_background, ctn::colors::violet);
+  testColor(ctn::message_box::color_id::button_border, ctn::colors::alice_blue);
+  testColor(ctn::message_box::color_id::button_selected, ctn::colors::wheat);
 }
 
-TEST_CASE("message_box::type", "[message_box]")
+TEST_CASE("message_box::button_flags enum values", "[message_box]")
 {
-  message_box mb;
-  CHECK(mb.get_type() == message_box::type::information);
+  using flags = ctn::message_box::default_button;
+
+  CHECK(flags::return_key == SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
+  CHECK(flags::escape_key == SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
+
+  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT == flags::return_key);
+  CHECK(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT == flags::escape_key);
+
+  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT != flags::escape_key);
 }
 
-TEST_CASE("message_box::button_order", "[message_box]")
+TEST_CASE("message_box::color_id enum values", "[message_box]")
 {
-  message_box mb;
-  CHECK(mb.get_button_order() == message_box::button_order::left_to_right);
+  using mb_cid = ctn::message_box::color_id;
+
+  CHECK(mb_cid::button_selected == SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
+  CHECK(mb_cid::button_background == SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
+  CHECK(mb_cid::button_border == SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);
+  CHECK(mb_cid::background == SDL_MESSAGEBOX_COLOR_BACKGROUND);
+
+  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED == mb_cid::button_selected);
+  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND == mb_cid::button_background);
+  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER == mb_cid::button_border);
+  CHECK(SDL_MESSAGEBOX_COLOR_BACKGROUND == mb_cid::background);
+
+  CHECK(mb_cid::background != SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
+  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER != mb_cid::button_selected);
 }

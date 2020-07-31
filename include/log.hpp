@@ -86,6 +86,8 @@
  * @todo Add support for logging using `const std::string&`, in order to
  * reduce need to call `c_str()`.
  *
+ * @todo Debug macros? Something like `CENTURION_LOG_INFO("Foo %i", 42);`
+ *
  * @since 3.0.0
  *
  * @headerfile log.hpp

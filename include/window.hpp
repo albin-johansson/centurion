@@ -116,11 +116,6 @@ namespace centurion {
  */
 class window final : public basic_window<window> {
  public:
-  class deleter final {
-   public:
-    void operator()(SDL_Window* window) noexcept { SDL_DestroyWindow(window); }
-  };
-
   /**
    * @typedef uptr
    *
@@ -270,6 +265,10 @@ class window final : public basic_window<window> {
   }
 
  private:
+  class deleter final {
+   public:
+    void operator()(SDL_Window* window) noexcept { SDL_DestroyWindow(window); }
+  };
   std::unique_ptr<SDL_Window, deleter> m_window;
 };
 

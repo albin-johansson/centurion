@@ -162,8 +162,15 @@ auto surface::get_blend_mode() const noexcept -> blend_mode
 auto surface::convert(pixel_format format) const -> surface
 {
   const auto pixelFormat = static_cast<u32>(format);
-  surface converted{SDL_ConvertSurfaceFormat(m_surface.get(), pixelFormat, 0)};
+
+  auto* s = SDL_ConvertSurfaceFormat(m_surface.get(), pixelFormat, 0);
+  if (!s) {
+    throw sdl_error{"Failed to convert surface!"};
+  }
+
+  surface converted{s};
   converted.set_blend_mode(get_blend_mode());
+
   return converted;
 }
 

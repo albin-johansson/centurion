@@ -12,7 +12,7 @@ TEST_CASE("Constructors", "[joystick]")
 {
   SECTION("Index ctor")
   {
-    CHECK_THROWS_AS(ctn::joystick{0}, ctn::centurion_exception);
+    CHECK_THROWS_AS(ctn::joystick{0}, ctn::sdl_error);
   }
 }
 
@@ -20,12 +20,12 @@ TEST_CASE("Smart pointer factory methods", "[joystick]")
 {
   SECTION("Unique")
   {
-    CHECK_THROWS_AS(ctn::joystick::unique(0), ctn::centurion_exception);
+    CHECK_THROWS_AS(ctn::joystick::unique(0), ctn::sdl_error);
   }
 
   SECTION("Shared")
   {
-    CHECK_THROWS_AS(ctn::joystick::shared(0), ctn::centurion_exception);
+    CHECK_THROWS_AS(ctn::joystick::shared(0), ctn::sdl_error);
   }
 }
 

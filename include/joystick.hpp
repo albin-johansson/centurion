@@ -186,12 +186,10 @@ class joystick final {
    *
    * @param sdlJoystick a pointer to the `SDL_Joystick` that will be claimed.
    *
-   * @throws centurion_exception if the joystick cannot be created.
-   *
    * @since 4.2.0
    */
   CENTURION_API
-  explicit joystick(nn_owner<SDL_Joystick*> sdlJoystick);
+  explicit joystick(nn_owner<SDL_Joystick*> sdlJoystick) noexcept;
 
   /**
    * @brief Creates a `joystick` instance based on a device index.
@@ -202,7 +200,7 @@ class joystick final {
    * @param deviceIndex refers to the N'th joystick that is currently
    * recognized by SDL.
    *
-   * @throws centurion_exception if the joystick cannot be created.
+   * @throws sdl_error if the joystick cannot be created.
    *
    * @since 4.2.0
    */

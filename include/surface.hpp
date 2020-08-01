@@ -129,7 +129,7 @@ class surface final {
    *
    * @param other the surface that will be copied.
    *
-   * @throws centurion_exception if the supplied surface couldn't be copied.
+   * @throws sdl_error if the supplied surface couldn't be copied.
    *
    * @since 4.0.0
    */
@@ -149,7 +149,7 @@ class surface final {
    *
    * @param other the surface that will be copied.
    *
-   * @throws centurion_exception if the supplied surface couldn't be copied.
+   * @throws sdl_error if the supplied surface couldn't be copied.
    *
    * @since 4.0.0
    */
@@ -275,7 +275,7 @@ class surface final {
    * @return a surface based on this surface with the specified
    * pixel format.
    *
-   * @throws centurion_exception if the surface cannot be created.
+   * @throws sdl_error if the surface cannot be created.
    *
    * @since 4.0.0
    */
@@ -401,6 +401,8 @@ class surface final {
    *
    * @param other the instance that will be copied.
    *
+   * @throws sdl_error if the surface cannot be copied.
+   *
    * @since 4.0.0
    */
   void copy(const surface& other);
@@ -457,7 +459,7 @@ class surface final {
    * @return a copy of the associated `SDL_Surface`, the returned pointer won't
    * be null.
    *
-   * @throws centurion_exception if the copy couldn't be created.
+   * @throws sdl_error if the copy couldn't be created.
    *
    * @since 4.0.0
    */

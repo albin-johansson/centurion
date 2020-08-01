@@ -6,7 +6,7 @@
 
 namespace centurion {
 
-joystick::joystick(nn_owner<SDL_Joystick*> sdlJoystick)
+joystick::joystick(nn_owner<SDL_Joystick*> sdlJoystick) noexcept
     : m_joystick{sdlJoystick}
 {}
 
@@ -18,7 +18,7 @@ joystick::joystick(int deviceIndex)
 
   m_joystick.reset(SDL_JoystickOpen(deviceIndex));
   if (!m_joystick) {
-    throw centurion_exception{"Failed to open joystick!"};
+    throw sdl_error{"Failed to open joystick!"};
   }
 }
 

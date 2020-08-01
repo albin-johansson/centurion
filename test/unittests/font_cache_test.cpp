@@ -79,7 +79,7 @@ TEST_CASE("font_cache::store", "[font_cache]")
     CHECK(!cache.has_stored(id));
 
     cache.store("foo"_hs,
-                        renderer.render_blended_unicode(str, cache.get_font()));
+                renderer.render_blended_unicode(str, cache.get_font()));
 
     CHECK(cache.has_stored(id));
 
@@ -243,8 +243,8 @@ TEST_CASE("font_cache::try_get_stored", "[font_cache]")
   ctn::font_cache cache{"resources/fira_code.ttf", 12};
   cache.add_latin1(renderer);
 
-  cache.store(
-      "foo"_hs, renderer.render_blended_latin1("bar!?<,.", cache.get_font()));
+  cache.store("foo"_hs,
+              renderer.render_blended_latin1("bar!?<,.", cache.get_font()));
 
   CHECK(cache.try_get_stored("foo"_hs));
   CHECK_NOTHROW(cache.try_get_stored("bad"_hs));
@@ -257,8 +257,8 @@ TEST_CASE("font_cache::get_stored", "[font_cache]")
 
   ctn::font_cache cache{"resources/fira_code.ttf", 12};
   cache.add_latin1(renderer);
-  cache.store(
-      "foo"_hs, renderer.render_blended_latin1("bar!?<,.", cache.get_font()));
+  cache.store("foo"_hs,
+              renderer.render_blended_latin1("bar!?<,.", cache.get_font()));
 
   CHECK(cache.get_stored("foo"_hs).get());
 }
@@ -303,8 +303,8 @@ TEST_CASE("Interactive font cache", "[.font_cache]")
 
     ctn::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
 
-    cache.store(
-        "cool"_hs, renderer.render_blended_unicode(cool, cache.get_font()));
+    cache.store("cool"_hs,
+                renderer.render_blended_unicode(cool, cache.get_font()));
   }
 
   ctn::unicode_string str = {'c',

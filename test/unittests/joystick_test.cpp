@@ -10,10 +10,7 @@
 
 TEST_CASE("Constructors", "[joystick]")
 {
-  SECTION("Index ctor")
-  {
-    CHECK_THROWS_AS(ctn::joystick{0}, ctn::sdl_error);
-  }
+  SECTION("Index ctor") { CHECK_THROWS_AS(ctn::joystick{0}, ctn::sdl_error); }
 }
 
 TEST_CASE("Smart pointer factory methods", "[joystick]")

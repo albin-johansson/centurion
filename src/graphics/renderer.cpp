@@ -5,13 +5,9 @@
 
 namespace centurion {
 
-renderer::renderer(nn_owner<SDL_Renderer*> sdlRenderer)
+renderer::renderer(nn_owner<SDL_Renderer*> sdlRenderer) noexcept
     : m_renderer{sdlRenderer}
-{
-  // FIXME don't change any previous state here, just accept SDL renderer
-  set_color(colors::black);
-  set_logical_integer_scale(false);
-}
+{}
 
 renderer::renderer(const window& window, SDL_RendererFlags flags)
     : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}

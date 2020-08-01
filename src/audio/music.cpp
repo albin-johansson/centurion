@@ -3,14 +3,13 @@
 #include <algorithm>
 
 #include "centurion_exception.hpp"
-#include "error.hpp"
 
 namespace centurion {
 
 music::music(nn_czstring file) : m_music{Mix_LoadMUS(file)}
 {
   if (!m_music) {
-    throw detail::mix_error("Failed to create music instance!");
+    throw mix_error{"Failed to load music from file!"};
   }
 }
 

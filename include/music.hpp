@@ -320,7 +320,7 @@ class music final {
    * @param file the file path of the music file that will be loaded, cannot
    * be null.
    *
-   * @throws centurion_exception if the music file cannot be loaded.
+   * @throws mix_error if the music file cannot be loaded.
    *
    * @since 3.0.0
    */

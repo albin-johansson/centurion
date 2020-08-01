@@ -157,7 +157,7 @@ class texture final {
    * @since 3.0.0
    */
   CENTURION_API
-  explicit texture(nn_owner<SDL_Texture*> sdlTexture);
+  explicit texture(nn_owner<SDL_Texture*> sdlTexture) noexcept;
 
   /**
    * @brief Creates a texture based the image at the specified path.
@@ -168,7 +168,7 @@ class texture final {
    * @param renderer the renderer that will be used to create the texture.
    * @param path the file path of the texture, can't be null.
    *
-   * @throws centurion_exception if the texture cannot be loaded.
+   * @throws img_error if the texture cannot be loaded.
    *
    * @since 4.0.0
    */
@@ -184,7 +184,7 @@ class texture final {
    * @param renderer the renderer that will be used to create the texture.
    * @param surface the surface that the texture will be based on.
    *
-   * @throws centurion_exception if the texture cannot be loaded.
+   * @throws sdl_error if the texture cannot be loaded.
    *
    * @since 4.0.0
    */
@@ -202,7 +202,7 @@ class texture final {
    * @param access the access of the created texture.
    * @param size the size of the texture.
    *
-   * @throws centurion_exception if the texture cannot be created.
+   * @throws sdl_error if the texture cannot be created.
    *
    * @since 4.0.0
    */

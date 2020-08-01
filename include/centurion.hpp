@@ -55,7 +55,6 @@
 
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
-#include "error.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -211,7 +210,10 @@ class centurion_lib final {
    *
    * @param cfg the configuration spec, determines what gets initialized.
    *
-   * @throws centurion_exception if any of the SDL libraries can't be loaded.
+   * @throws sdl_error if the core SDL2 library can't be initialized.
+   * @throws img_error if the SDL2_image library can't be initialized.
+   * @throws ttf_error if the SDL2_ttf library can't be initialized.
+   * @throws mix_error if the SDL2_mixer library can't be initialized.
    *
    * @since 4.0.0
    */

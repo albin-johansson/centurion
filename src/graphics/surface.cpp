@@ -2,20 +2,20 @@
 
 #include <SDL_image.h>
 
+#include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
-#include "error.hpp"
 
 namespace centurion {
+
+surface::surface(nn_owner<SDL_Surface*> surface) noexcept : m_surface{surface}
+{}
 
 surface::surface(nn_czstring file) : m_surface{IMG_Load(file)}
 {
   if (!m_surface) {
-    throw detail::img_error("Failed to create surface!");
+    throw img_error{"Failed to create surface from file!"};
   }
 }
-
-surface::surface(nn_owner<SDL_Surface*> surface) : m_surface{surface}
-{}
 
 surface::surface(const surface& other)
 {
@@ -87,7 +87,7 @@ auto surface::copy_surface() const -> owner<SDL_Surface*>
 {
   auto* copy = SDL_DuplicateSurface(m_surface.get());
   if (!copy) {
-    throw detail::core_error("Failed to duplicate Surface!");
+    throw sdl_error{"Failed to duplicate surface!"};
   } else {
     return copy;
   }

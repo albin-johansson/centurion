@@ -25,7 +25,13 @@
 /**
  * @file centurion_exception.hpp
  *
- * @brief Provides the general exception class used by the library.
+ * @brief Provides the exception types used by the Centurion library.
+ *
+ * @see `centurion_exception`
+ * @see `sdl_error`
+ * @see `ttf_error`
+ * @see `mix_error`
+ * @see `img_error`
  *
  * @author Albin Johansson
  *
@@ -38,8 +44,9 @@
 #define CENTURION_EXCEPTION_HEADER
 
 #include <exception>
+#include <string_view>
 #include <type_traits>
-#include <utility>
+#include <utility>  // move
 
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
@@ -61,7 +68,7 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class centurion_exception final : public std::exception {
+class centurion_exception : public std::exception {
  public:
   centurion_exception() = default;
 
@@ -71,8 +78,12 @@ class centurion_exception final : public std::exception {
    *
    * @since 3.0.0
    */
-  explicit centurion_exception(czstring what) noexcept
-      : m_what{what ? what : "N/A"} {};
+  explicit centurion_exception(czstring what)
+  {
+    if (what) {
+      set_what(what);
+    }
+  }
 
   /**
    * @param what the message of the exception. If the string is empty, "N/A"
@@ -80,22 +91,137 @@ class centurion_exception final : public std::exception {
    *
    * @since 3.0.0
    */
-  explicit centurion_exception(std::string what) noexcept
-      : m_what{what.empty() ? "N/A" : std::move(what)} {};
+  explicit centurion_exception(std::string what)
+  {
+    if (!what.empty()) {
+      set_what(std::move(what));
+    }
+  }
 
   [[nodiscard]] auto what() const noexcept -> czstring override
   {
     return m_what.c_str();
   }
 
+ protected:
+  void set_what(std::string what) { m_what = std::move(what); }
+
  private:
-  std::string m_what;
+  std::string m_what{"N/A"};
 };
 
-static_assert(std::is_final_v<centurion_exception>);
+static_assert(std::has_virtual_destructor_v<centurion_exception>);
 static_assert(std::is_default_constructible_v<centurion_exception>);
 static_assert(std::is_nothrow_move_constructible_v<centurion_exception>);
 static_assert(std::is_nothrow_destructible_v<centurion_exception>);
+
+/**
+ * @class sdl_error
+ *
+ * @brief Represents an error related to the core SDL2 library.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile centurion_exception.hpp
+ */
+class sdl_error final : public centurion_exception {
+ public:
+  sdl_error() = default;
+
+  /**
+   * @brief Creates an `sdl_error` with the specified error message.
+   *
+   * @details The message will be formatted according to `what + ", " +
+   * SDL_GetError()`.
+   *
+   * @param what the error message that will be used.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  explicit sdl_error(std::string_view what);
+};
+
+/**
+ * @class img_error
+ *
+ * @brief Represents an error related to the SDL2_image library.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile centurion_exception.hpp
+ */
+class img_error final : public centurion_exception {
+ public:
+  img_error() = default;
+
+  /**
+   * @brief Creates an `img_error` with the specified error message.
+   *
+   * @details The message will be formatted according to `what + ", " +
+   * IMG_GetError()`.
+   *
+   * @param what the error message that will be used.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  explicit img_error(std::string_view what);
+};
+
+/**
+ * @class ttf_error
+ *
+ * @brief Represents an error related to the SDL2_ttf library.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile centurion_exception.hpp
+ */
+class ttf_error final : public centurion_exception {
+ public:
+  ttf_error() = default;
+
+  /**
+   * @brief Creates a `ttf_error` with the specified error message.
+   *
+   * @details The message will be formatted according to `what + ", " +
+   * TTF_GetError()`.
+   *
+   * @param what the error message that will be used.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  explicit ttf_error(std::string_view what);
+};
+
+/**
+ * @class mix_error
+ *
+ * @brief Represents an error related to the SDL2_mixer library.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile centurion_exception.hpp
+ */
+class mix_error final : public centurion_exception {
+ public:
+  mix_error() = default;
+
+  /**
+   * @brief Creates a `mix_error` with the specified error message.
+   *
+   * @details The message will be formatted according to `what + ", " +
+   * Mix_GetError()`.
+   *
+   * @param what the error message that will be used.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  explicit mix_error(std::string_view what);
+};
 
 }  // namespace centurion
 

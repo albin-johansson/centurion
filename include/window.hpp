@@ -144,23 +144,6 @@ class window final : public basic_window<window> {
   using wptr = std::weak_ptr<window>;
 
   /**
-   * @brief Creates a window instance.
-   *
-   * @details The window will be hidden by default.
-   *
-   * @param title the title of the window, can't be null.
-   * @param size the size of the window, components must be greater than
-   * zero, defaults to `default_size()`.
-   *
-   * @throws centurion_exception if the supplied width or height isn't
-   * greater than zero or if the window cannot be created.
-   *
-   * @since 3.0.0
-   */
-  CENTURION_API
-  explicit window(nn_czstring title, iarea size = default_size());
-
-  /**
    * @brief Creates a window based on the supplied SDL_Window instance.
    *
    * @details The created window will claim ownership of the supplied pointer.
@@ -171,12 +154,30 @@ class window final : public basic_window<window> {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit window(nn_owner<SDL_Window*> sdlWindow);
+  explicit window(nn_owner<SDL_Window*> sdlWindow) noexcept;
+
+  /**
+   * @brief Creates a window instance.
+   *
+   * @details The window will be hidden by default.
+   *
+   * @param title the title of the window, can't be null.
+   * @param size the size of the window, components must be greater than
+   * zero, defaults to `default_size()`.
+   *
+   * @throws centurion_exception if the supplied width or height aren't
+   * greater than zero.
+   * @throws sdl_error if the window cannot be created.
+   *
+   * @since 3.0.0
+   */
+  CENTURION_API
+  explicit window(nn_czstring title, const iarea& size = default_size());
 
   /**
    * @brief Creates a 800x600 window. The window will be hidden by default.
    *
-   * @throws centurion_exception if the window cannot be created.
+   * @throws sdl_error if the window cannot be created.
    *
    * @since 3.0.0
    */
@@ -187,7 +188,8 @@ class window final : public basic_window<window> {
    * @copydoc window(nn_czstring, iarea)
    */
   CENTURION_QUERY
-  static auto unique(nn_czstring title, iarea size = default_size()) -> uptr;
+  static auto unique(nn_czstring title, const iarea& size = default_size())
+      -> uptr;
 
   /**
    * @copydoc window(nn_owner<SDL_Window*>)
@@ -205,7 +207,8 @@ class window final : public basic_window<window> {
    * @copydoc window(nn_czstring, iarea)
    */
   CENTURION_QUERY
-  static auto shared(nn_czstring title, iarea size = default_size()) -> sptr;
+  static auto shared(nn_czstring title, const iarea& size = default_size())
+      -> sptr;
 
   /**
    * @copydoc window(nn_owner<SDL_Window*>)

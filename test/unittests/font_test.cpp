@@ -14,8 +14,8 @@ static constexpr auto daniel_path = "resources/daniel.ttf";
 
 TEST_CASE("font(nn_czstring, int)", "[font]")
 {
-  CHECK_THROWS_AS(ctn::font("", 1), ctn::centurion_exception);
-  CHECK_THROWS_AS(ctn::font("", 0), ctn::centurion_exception);
+  CHECK_THROWS_AS(ctn::font("", 1), ctn::ttf_error);
+  CHECK_THROWS_AS(ctn::font(daniel_path, 0), ctn::centurion_exception);
 }
 
 TEST_CASE("font(font&&)", "[font]")
@@ -50,13 +50,15 @@ TEST_CASE("font::operator=(font&&)", "[font]")
 
 TEST_CASE("font::unique", "[font]")
 {
-  CHECK_THROWS_AS(ctn::font::unique("", 1), ctn::centurion_exception);
+  CHECK_THROWS_AS(ctn::font::unique("", 1), ctn::ttf_error);
+  CHECK_THROWS_AS(ctn::font::unique(daniel_path, 0), ctn::centurion_exception);
   CHECK(ctn::font::unique(type_writer_path, 12));
 }
 
 TEST_CASE("font::shared", "[font]")
 {
-  CHECK_THROWS_AS(ctn::font::shared("", 1), ctn::centurion_exception);
+  CHECK_THROWS_AS(ctn::font::shared("", 1), ctn::ttf_error);
+  CHECK_THROWS_AS(ctn::font::shared(daniel_path, 0), ctn::centurion_exception);
   CHECK(ctn::font::shared(type_writer_path, 12));
 }
 

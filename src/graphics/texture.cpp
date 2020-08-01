@@ -4,13 +4,13 @@
 
 #include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
-#include "error.hpp"
 #include "renderer.hpp"
 #include "surface.hpp"
 
 namespace centurion {
 
-texture::texture(nn_owner<SDL_Texture*> sdlTexture) : m_texture{sdlTexture}
+texture::texture(nn_owner<SDL_Texture*> sdlTexture) noexcept
+    : m_texture{sdlTexture}
 {}
 
 auto texture::unique(nn_owner<SDL_Texture*> sdlTexture) -> uptr

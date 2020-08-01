@@ -218,6 +218,8 @@ class message_box final {
    * @param buttonOrder the button order that will be used, defaults to
    * `left_to_right`.
    *
+   * @throws sdl_error if something goes wrong when showing the message box.
+   *
    * @since 5.0.0
    */
   template <typename Traits>
@@ -236,6 +238,8 @@ class message_box final {
    * @param buttonOrder the button order that will be used, defaults to
    * `left_to_right`.
    *
+   * @throws sdl_error if something goes wrong when showing the message box.
+   *
    * @since 5.0.0
    */
   CENTURION_API
@@ -253,6 +257,8 @@ class message_box final {
    *
    * @return the ID of the pressed button; `nothing` if no button was pressed.
    *
+   * @throws sdl_error if something goes wrong when showing the message box.
+   *
    * @since 5.0.0
    */
   template <typename Traits>
@@ -265,6 +271,8 @@ class message_box final {
    * called, then an "OK" button is automatically added.
    *
    * @return the ID of the pressed button; `nothing` if no button was pressed.
+   *
+   * @throws sdl_error if something goes wrong when showing the message box.
    *
    * @since 5.0.0
    */

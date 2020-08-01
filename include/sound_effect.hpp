@@ -162,7 +162,7 @@ class sound_effect final {
    *
    * @param file the file path of the audio file, cannot be null.
    *
-   * @throws centurion_exception if the audio file cannot be loaded.
+   * @throws mix_error if the audio file cannot be loaded.
    *
    * @since 3.0.0
    */

@@ -101,19 +101,6 @@ class surface final {
   using wptr = std::weak_ptr<surface>;
 
   /**
-   * @brief Creates a surface based on the image at the specified path.
-   *
-   * @param file the file path of the image file that will be loaded, can't
-   * be null.
-   *
-   * @throws centurion_exception if the surface cannot be created.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  explicit surface(nn_czstring file);
-
-  /**
    * @brief Creates a surface by claiming the supplied SDL surface.
    *
    * @param surface a pointer to the surface that will be claimed, can't be
@@ -122,7 +109,20 @@ class surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit surface(nn_owner<SDL_Surface*> surface);
+  explicit surface(nn_owner<SDL_Surface*> surface) noexcept;
+
+  /**
+   * @brief Creates a surface based on the image at the specified path.
+   *
+   * @param file the file path of the image file that will be loaded, can't
+   * be null.
+   *
+   * @throws img_error if the surface cannot be created.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API
+  explicit surface(nn_czstring file);
 
   /**
    * @brief Creates a copy of the supplied surface.

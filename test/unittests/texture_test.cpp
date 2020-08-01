@@ -7,7 +7,6 @@
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "colors.hpp"
-//#include "graphics.hpp"
 #include "log.hpp"
 #include "renderer.hpp"
 #include "video.hpp"
@@ -75,11 +74,10 @@ TEST_CASE("texture(nn_owner<SDL_Texture*>)", "[texture]")
   });
 }
 
-TEST_CASE("texture(renderer&, char*)", "[texture]")
+TEST_CASE("texture(renderer&, nn_czstring)", "[texture]")
 {
   test([](ctn::renderer& renderer) {
-    CHECK_THROWS_AS(ctn::texture(renderer, "badpath"),
-                    ctn::centurion_exception);
+    CHECK_THROWS_AS(ctn::texture(renderer, "badpath"), ctn::img_error);
 
     ctn::texture texture{renderer, pandaPath};
     CHECK(texture.width() == pandaWidth);

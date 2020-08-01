@@ -2,7 +2,7 @@
 
 #include <utility>  // move
 
-#include "error.hpp"
+#include "centurion_exception.hpp"
 
 namespace centurion {
 
@@ -16,8 +16,11 @@ void message_box::show(SDL_Window* parent,
                        type type,
                        button_order buttonOrder)
 {
-  SDL_ShowSimpleMessageBox(
-      to_flags(type, buttonOrder), title.c_str(), message.c_str(), parent);
+  if (const auto result = SDL_ShowSimpleMessageBox(
+          to_flags(type, buttonOrder), title.c_str(), message.c_str(), parent);
+      result == -1) {
+    throw sdl_error{"Failed to show message box!"};
+  }
 }
 
 auto message_box::show(SDL_Window* parent) -> std::optional<button_id>
@@ -46,7 +49,7 @@ auto message_box::show(SDL_Window* parent) -> std::optional<button_id>
 
   button_id button{-1};
   if (SDL_ShowMessageBox(&data, &button) == -1) {
-    throw detail::core_error("Failed to show message box!");
+    throw sdl_error{"Failed to show message box!"};
   }
 
   if (button != -1) {

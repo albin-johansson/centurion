@@ -39,7 +39,7 @@
 #define CENTURION_TEXTURE_IMPLEMENTATION
 
 #include "centurion_api.hpp"
-#include "error.hpp"
+#include "centurion_exception.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
 
@@ -54,7 +54,7 @@ texture::texture(const Renderer& renderer, const surface& surface)
     : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
 {
   if (!m_texture) {
-    throw detail::core_error("Failed to create texture from surface!");
+    throw sdl_error{"Failed to create texture from surface!"};
   }
 }
 
@@ -70,7 +70,7 @@ texture::texture(const Renderer& renderer,
                                   size.height)}
 {
   if (!m_texture) {
-    throw detail::core_error("Failed to create texture!");
+    throw sdl_error{"Failed to create texture!"};
   }
 }
 
@@ -79,9 +79,10 @@ texture::texture(const Renderer& renderer, nn_czstring path)
     : m_texture{IMG_LoadTexture(renderer.get(), path)}
 {
   if (!m_texture) {
-    throw detail::img_error("Failed to create texture!");
+    throw img_error{"Failed to load texture from file!"};
   }
 }
+
 template <typename Renderer>
 auto texture::unique(const Renderer& renderer, nn_czstring path) -> uptr
 {

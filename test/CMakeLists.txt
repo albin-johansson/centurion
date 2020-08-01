@@ -19,7 +19,6 @@ set(TEST_FILES
         unittests/mouse_state_test.cpp
         unittests/rect_test.cpp
         unittests/centurion_exception_test.cpp
-        unittests/error_test.cpp
         unittests/counter_test.cpp
         unittests/paths_test.cpp
         unittests/platform_test.cpp

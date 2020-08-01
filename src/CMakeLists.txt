@@ -39,7 +39,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/key_state.hpp
         ${CTN_INCLUDE_DIR}/mouse_state.hpp
         ${CTN_INCLUDE_DIR}/centurion_utils.hpp
-        ${CTN_INCLUDE_DIR}/error.hpp
         ${CTN_INCLUDE_DIR}/surface.hpp
         ${CTN_INCLUDE_DIR}/pixel_format.hpp
         ${CTN_INCLUDE_DIR}/cursor.hpp
@@ -66,8 +65,9 @@ set(SOURCE_FILES
 
         centurion.cpp
 
+        core/centurion_exception.cpp
+
         misc/log.cpp
-        misc/error.cpp
 
         graphics/window.cpp
         graphics/window_handle.cpp

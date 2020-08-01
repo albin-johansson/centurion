@@ -53,7 +53,6 @@
 #include "basic_renderer.hpp"
 #include "centurion_api.hpp"
 #include "colors.hpp"
-#include "error.hpp"
 #include "font.hpp"
 #include "window.hpp"
 
@@ -178,8 +177,7 @@ class renderer final : public basic_renderer<renderer> {
    * @param window the associated window instance.
    * @param flags the renderer flags that will be used.
    *
-   * @throws centurion_exception if something goes wrong when creating the
-   * Renderer.
+   * @throws sdl_error if something goes wrong when creating the renderer.
    *
    * @since 4.0.0
    */

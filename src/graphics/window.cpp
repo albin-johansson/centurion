@@ -1,11 +1,14 @@
 #include "window.hpp"
 
+#include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
-#include "error.hpp"
 
 namespace centurion {
 
-window::window(nn_czstring title, iarea size)
+window::window(nn_owner<SDL_Window*> window) noexcept : m_window{window}
+{}
+
+window::window(nn_czstring title, const iarea& size)
 {
   if ((size.width < 1) || (size.height < 1)) {
     throw centurion_exception{"Invalid width or height!"};
@@ -18,12 +21,9 @@ window::window(nn_czstring title, iarea size)
                                   size.height,
                                   SDL_WINDOW_HIDDEN));
   if (!m_window) {
-    throw detail::core_error("Failed to create window!");
+    throw sdl_error{"Failed to create window!"};
   }
 }
-
-window::window(nn_owner<SDL_Window*> window) : m_window{window}
-{}
 
 window::window() : window{"Centurion window"}
 {}
@@ -38,7 +38,7 @@ auto window::unique(nn_owner<SDL_Window*> sdlWindow) -> uptr
   return std::make_unique<window>(sdlWindow);
 }
 
-auto window::unique(nn_czstring title, iarea size) -> uptr
+auto window::unique(nn_czstring title, const iarea& size) -> uptr
 {
   return std::make_unique<window>(title, size);
 }
@@ -53,7 +53,7 @@ auto window::shared(nn_owner<SDL_Window*> sdlWindow) -> sptr
   return std::make_shared<window>(sdlWindow);
 }
 
-auto window::shared(nn_czstring title, iarea size) -> sptr
+auto window::shared(nn_czstring title, const iarea& size) -> sptr
 {
   return std::make_shared<window>(title, size);
 }

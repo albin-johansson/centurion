@@ -1,26 +1,26 @@
 #include "cursor.hpp"
 
+#include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
-#include "error.hpp"
 
 namespace centurion {
+
+cursor::cursor(nn_owner<SDL_Cursor*> sdlCursor) noexcept : m_cursor{sdlCursor}
+{}
 
 cursor::cursor(system_cursor id)
     : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(id))}
 {
   if (!m_cursor) {
-    throw detail::core_error("Failed to create system cursor!");
+    throw sdl_error{"Failed to create system cursor!"};
   }
 }
-
-cursor::cursor(nn_owner<SDL_Cursor*> sdlCursor) : m_cursor{sdlCursor}
-{}
 
 cursor::cursor(const surface& surface, const ipoint& hotspot)
     : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
 {
   if (!m_cursor) {
-    throw detail::core_error("Failed to create color cursor!");
+    throw sdl_error{"Failed to create color cursor!"};
   }
 }
 

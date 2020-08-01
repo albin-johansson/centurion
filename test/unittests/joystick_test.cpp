@@ -8,22 +8,19 @@
 // Note, it's hard to actually test the joystick API, so coverage is the best
 // we can do really.
 
-TEST_CASE("Constructors", "[joystick]")
+TEST_CASE("joystick constructors", "[joystick]")
 {
-  SECTION("Index ctor") { CHECK_THROWS_AS(ctn::joystick{0}, ctn::sdl_error); }
+  SECTION("Index ctor")
+  {
+    CHECK_THROWS_AS(ctn::joystick{0}, ctn::centurion_exception);
+  }
 }
 
-TEST_CASE("Smart pointer factory methods", "[joystick]")
+TEST_CASE("joystick smart pointer factory methods", "[joystick]")
 {
-  SECTION("Unique")
-  {
-    CHECK_THROWS_AS(ctn::joystick::unique(0), ctn::sdl_error);
-  }
+  SECTION("Unique") { CHECK_THROWS(ctn::joystick::unique(0)); }
 
-  SECTION("Shared")
-  {
-    CHECK_THROWS_AS(ctn::joystick::shared(0), ctn::sdl_error);
-  }
+  SECTION("Shared") { CHECK_THROWS(ctn::joystick::shared(0)); }
 }
 
 TEST_CASE("joystick::update", "[joystick]")

@@ -38,6 +38,13 @@ class basic_renderer;
 template <typename Traits>
 class basic_window;
 
+template <typename Derived>
+class basic_joystick;
+
+class joystick;
+
+class joystick_handle;
+
 class renderer;
 
 class renderer_handle;
@@ -78,11 +85,7 @@ class key_state;
 
 class mouse_state;
 
-namespace messagebox {
-
 class message_box;
-
-}
 
 }  // namespace centurion
 

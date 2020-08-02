@@ -4,6 +4,7 @@
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
+#include "joystick_handle.hpp"
 
 // Note, it's hard to actually test the joystick API, so coverage is the best
 // we can do really.
@@ -197,4 +198,11 @@ TEST_CASE("joystick::Type values", "[joystick]")
     CHECK(joystick_t::guitar != SDL_JOYSTICK_TYPE_DANCE_PAD);
     CHECK(SDL_JOYSTICK_TYPE_ARCADE_PAD != joystick_t::flight_stick);
   }
+}
+
+TEST_CASE("joystick_handle", "[joystick]")
+{
+  SDL_Joystick* ptr{};
+  ctn::joystick_handle handle{ptr};
+  CHECK(!handle);
 }

@@ -18,6 +18,9 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/renderer.hpp
         ${CTN_INCLUDE_DIR}/renderer.ipp
         ${CTN_INCLUDE_DIR}/renderer_handle.hpp
+        ${CTN_INCLUDE_DIR}/basic_joystick.hpp
+        ${CTN_INCLUDE_DIR}/basic_joystick.ipp
+        ${CTN_INCLUDE_DIR}/joystick.hpp
         ${CTN_INCLUDE_DIR}/texture.hpp
         ${CTN_INCLUDE_DIR}/texture.ipp
         ${CTN_INCLUDE_DIR}/centurion_exception.hpp
@@ -56,7 +59,6 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/area.hpp
         ${CTN_INCLUDE_DIR}/key_modifier.hpp
         ${CTN_INCLUDE_DIR}/hints.hpp
-        ${CTN_INCLUDE_DIR}/joystick.hpp
         ${CTN_INCLUDE_DIR}/touch.hpp
         ${CTN_INCLUDE_DIR}/font_cache.hpp
         ${CTN_INCLUDE_DIR}/font_cache.ipp
@@ -118,7 +120,7 @@ set(SOURCE_FILES
         event/mouse_wheel_event.cpp
         event/multi_gesture_event.cpp
         event/text_editing_event.cpp
-        event/text_input_event.cpp)
+        event/text_input_event.cpp ../include/joystick_handle.hpp input/joystick_handle.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

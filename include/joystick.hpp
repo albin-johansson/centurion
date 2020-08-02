@@ -25,7 +25,9 @@
 /**
  * @file joystick.hpp
  *
- * @brief Provides the joystick API.
+ * @ingroup input
+ *
+ * @brief Provides the `joystick` class.
  *
  * @author Albin Johansson
  *

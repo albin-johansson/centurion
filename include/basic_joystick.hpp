@@ -25,6 +25,8 @@
 /**
  * @file basic_joystick.hpp
  *
+ * @ingroup input
+ *
  * @brief Provides the `basic_joystick` class.
  *
  * @author Albin Johansson
@@ -591,32 +593,6 @@ class basic_joystick {
    * @since 4.2.0
    */
   [[nodiscard]] static auto amount() noexcept -> std::optional<int>;
-
-  /**
-   * @brief Returns a pointer to an `SDL_Joystick` associated with the ID.
-   *
-   * @param id the joystick ID associated with the desired joystick.
-   *
-   * @return a pointer to an `SDL_Joystick` instance if there is a joystick
-   * associated with the supplied ID; null otherwise.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] static auto from_instance_id(SDL_JoystickID id) noexcept
-      -> SDL_Joystick*;
-
-  /**
-   * @brief Returns a pointer to the joystick associated with the specified
-   * player index.
-   *
-   * @param playerIndex the player index of the desired joystick.
-   *
-   * @return a pointer to the associated joystick; `nullptr` if there is none.
-   *
-   * @since 4.2.0
-   */
-  [[nodiscard]] static auto from_player_index(int playerIndex) noexcept
-      -> SDL_Joystick*;
 
   /**
    * @brief Returns a joystick GUID based on the supplied string.

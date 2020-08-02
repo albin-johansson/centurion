@@ -44,16 +44,16 @@ TEST_CASE("joystick polling", "[joystick]")
   CHECK(ctn::joystick::polling());
 }
 
-TEST_CASE("joystick::from_instance_id", "[joystick]")
+TEST_CASE("joystick_from_instance_id", "[joystick]")
 {
-  const auto* ptr = ctn::joystick::from_instance_id(0);
-  CHECK(!ptr);
+  const auto handle = ctn::joystick_from_instance_id(0);
+  CHECK(!handle);
 }
 
-TEST_CASE("joystick::from_player_index", "[joystick]")
+TEST_CASE("joystick_from_player_index", "[joystick]")
 {
-  const auto* ptr = ctn::joystick::from_player_index(0);
-  CHECK(!ptr);
+  const auto handle = ctn::joystick_from_player_index(0);
+  CHECK(!handle);
 }
 
 TEST_CASE("joystick::amount", "[joystick]")

@@ -17,4 +17,14 @@ joystick_handle::operator bool() const noexcept
   return get_storage();
 }
 
+auto joystick_from_instance_id(SDL_JoystickID id) noexcept -> joystick_handle
+{
+  return joystick_handle{SDL_JoystickFromInstanceID(id)};
+}
+
+auto joystick_from_player_index(int playerIndex) noexcept -> joystick_handle
+{
+  return joystick_handle{SDL_JoystickFromPlayerIndex(playerIndex)};
+}
+
 }  // namespace centurion

@@ -25,6 +25,8 @@
 /**
  * @file joystick_handle.hpp
  *
+ * @ingroup input
+ *
  * @brief Provides the `joystick_handle` class.
  *
  * @author Albin Johansson
@@ -55,6 +57,8 @@ class joystick_handle;
 
 /**
  * @class joystick_traits<joystick_handle>
+ *
+ * @ingroup input
  *
  * @brief Provides traits for the `joystick_handle` class.
  *
@@ -121,6 +125,36 @@ class joystick_handle final : public basic_joystick<joystick_handle> {
   CENTURION_QUERY
   explicit operator bool() const noexcept;
 };
+
+/**
+ * @brief Returns a handle to the joystick associated with the specified ID.
+ *
+ * @ingroup input
+ *
+ * @param id the joystick ID associated with the desired joystick.
+ *
+ * @return a handle to the joystick associated with the supplied ID, might be
+ * empty.
+ *
+ * @since 4.2.0
+ */
+CENTURION_QUERY
+auto joystick_from_instance_id(SDL_JoystickID id) noexcept -> joystick_handle;
+
+/**
+ * @brief Returns a handle to the joystick associated with the specified
+ * player index.
+ *
+ * @ingroup input
+ *
+ * @param playerIndex the player index of the desired joystick.
+ *
+ * @return a handle to the associated joystick, which might be empty.
+ *
+ * @since 4.2.0
+ */
+CENTURION_QUERY
+auto joystick_from_player_index(int playerIndex) noexcept -> joystick_handle;
 
 static_assert(std::is_final_v<joystick_handle>);
 static_assert(std::is_nothrow_move_constructible_v<joystick_handle>);

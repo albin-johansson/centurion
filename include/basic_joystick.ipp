@@ -81,20 +81,6 @@ auto basic_joystick<T>::polling() noexcept -> bool
 }
 
 template <typename T>
-auto basic_joystick<T>::from_instance_id(SDL_JoystickID id) noexcept
-    -> SDL_Joystick*
-{
-  return SDL_JoystickFromInstanceID(id);
-}
-
-template <typename T>
-auto basic_joystick<T>::from_player_index(int playerIndex) noexcept
-    -> SDL_Joystick*
-{
-  return SDL_JoystickFromPlayerIndex(playerIndex);
-}
-
-template <typename T>
 auto basic_joystick<T>::amount() noexcept -> std::optional<int>
 {
   const auto result = SDL_NumJoysticks();

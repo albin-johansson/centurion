@@ -63,8 +63,7 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/unicode_string.hpp
         ${CTN_INCLUDE_DIR}/game_loop.hpp
 
-        centurion.cpp
-
+        core/centurion.cpp
         core/centurion_exception.cpp
 
         misc/log.cpp

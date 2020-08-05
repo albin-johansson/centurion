@@ -589,6 +589,8 @@ auto get_priority(category category) noexcept -> log::priority;
 
 #ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
 
+// TODO test!
+
 #ifdef NDEBUG
 #define CENTURION_LOG_INFO(fmt, ...)
 #else

@@ -126,16 +126,16 @@ class basic_renderer {
    * @brief Renders a line between the supplied points, in the currently
    * selected color.
    *
-   * @tparam Traits The traits used by the points.
+   * @tparam T The representation type used by the points.
    *
    * @param start the start point of the line.
    * @param end the end point of the line.
    *
    * @since 4.0.0
    */
-  template <typename Traits>
-  void draw_line(const basic_point<Traits>& start,
-                 const basic_point<Traits>& end) noexcept;
+  template <typename T>
+  void draw_line(const basic_point<T>& start,
+                 const basic_point<T>& end) noexcept;
 
   /**
    * @brief Renders a collection of lines.
@@ -558,16 +558,16 @@ class basic_renderer {
   /**
    * @brief Renders a texture at the specified position.
    *
-   * @tparam Traits the traits used by the point.
+   * @tparam T the representation type used by the point.
    *
    * @param texture the texture that will be rendered.
    * @param position the position of the rendered texture.
    *
    * @since 4.0.0
    */
-  template <typename Traits>
+  template <typename T>
   void render(const texture& texture,
-              const basic_point<Traits>& position) noexcept;
+              const basic_point<T>& position) noexcept;
 
   /**
    * @brief Renders a texture according to the specified rectangle.
@@ -625,7 +625,7 @@ class basic_renderer {
    * @brief Renders a texture.
    *
    * @tparam R the representation type used by the destination rectangle.
-   * @tparam PointTraits the traits used by the center point.
+   * @tparam P the representation type used by the center point.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -637,18 +637,18 @@ class basic_renderer {
    *
    * @since 4.0.0
    */
-  template <typename R, typename PointTraits>
+  template <typename R, typename P>
   void render(const texture& texture,
               const irect& source,
               const basic_rect<R>& destination,
               double angle,
-              const basic_point<PointTraits>& center) noexcept;
+              const basic_point<P>& center) noexcept;
 
   /**
    * @brief Renders a texture.
    *
    * @tparam R the representation type used by the destination rectangle.
-   * @tparam PointTraits the traits used by the center point.
+   * @tparam P the representation type used by the center point.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -661,12 +661,12 @@ class basic_renderer {
    *
    * @since 4.0.0
    */
-  template <typename R, typename PointTraits>
+  template <typename R, typename P>
   void render(const texture& texture,
               const irect& source,
               const basic_rect<R>& destination,
               double angle,
-              const basic_point<PointTraits>& center,
+              const basic_point<P>& center,
               SDL_RendererFlip flip) noexcept;
 
   ///@}  // end of texture rendering

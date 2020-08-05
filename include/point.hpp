@@ -55,25 +55,63 @@
 
 namespace centurion {
 
-/// @cond FALSE
-
-namespace detail {
-
-class ipoint_traits final {
+/**
+ * @brief Provides traits used by the `basic_point` class.
+ *
+ * @ingroup geometry
+ *
+ * @tparam T the representation type. Must be convertible to `int` or `float`.
+ *
+ * @since 5.0.0
+ *
+ * @see `basic_point`
+ * @see `ipoint`
+ * @see `fpoint`
+ *
+ * @headerfile point.hpp
+ */
+template <typename T,
+          typename = std::enable_if_t<std::is_convertible_v<T, int> ||
+                                      std::is_convertible_v<T, float>>>
+class point_traits final {
  public:
-  using point_type = SDL_Point;
-  using value_type = int;
+  /**
+   * @var isIntegral
+   *
+   * @brief Indicates whether or not the point is based on an integral type.
+   *
+   * @since 5.0.0
+   */
+  inline static constexpr bool isIntegral = std::is_integral_v<T>;
+
+  /**
+   * @var isFloating
+   *
+   * @brief Indicates whether or not the point is based on a floating-point
+   * type.
+   *
+   * @since 5.0.0
+   */
+  inline static constexpr bool isFloating = std::is_floating_point_v<T>;
+
+  /**
+   * @typedef value_type
+   *
+   * @brief The actual representation type, i.e. `int` or `float`.
+   *
+   * @since 5.0.0
+   */
+  using value_type = std::conditional_t<isIntegral, int, float>;
+
+  /**
+   * @typedef point_type
+   *
+   * @brief The SDL point type, i.e. `SDL_Point` or `SDL_FPoint`.
+   *
+   * @since 5.0.0
+   */
+  using point_type = std::conditional_t<isIntegral, SDL_Point, SDL_FPoint>;
 };
-
-class fpoint_traits final {
- public:
-  using point_type = SDL_FPoint;
-  using value_type = float;
-};
-
-}  // namespace detail
-
-/// @endcond
 
 /**
  * @class basic_point
@@ -83,12 +121,12 @@ class fpoint_traits final {
  * @brief Represents a two-dimensional point.
  *
  * @details This class is designed as a wrapper for `SDL_Point` and
- * `SDL_FPoint`. The representation is specified by the traits type parameter.
+ * `SDL_FPoint`. The representation is specified by the type parameter.
  *
- * @note The type parameter is not the type of the coordinates.
+ * @note This point class will only use `int` or `float` as the actual
+ * internal representation.
  *
- * @tparam Traits the type of the "traits" class, which should provide the
- * member types `point_type` and `value_type`.
+ * @tparam T the representation type. Must be convertible to `int` or `float`.
  *
  * @since 5.0.0
  *
@@ -97,26 +135,28 @@ class fpoint_traits final {
  *
  * @headerfile point.hpp
  */
-template <typename Traits>
+template <typename T>
 class basic_point final {
  public:
   /**
-   * @typedef point_type
-   *
-   * @brief The SDL point type, i.e. `SDL_Point` or `SDL_FPoint`.
-   *
-   * @since 5.0.0
+   * @copydoc point_traits::isIntegral
    */
-  using point_type = typename Traits::point_type;
+  inline static constexpr bool isIntegral = point_traits<T>::isIntegral;
 
   /**
-   * @typedef value_type
-   *
-   * @brief The type of the point coordinates, i.e. `int` or `float`.
-   *
-   * @since 5.0.0
+   * @copydoc point_traits::isFloating
    */
-  using value_type = typename Traits::value_type;
+  inline static constexpr bool isFloating = point_traits<T>::isFloating;
+
+  /**
+   * @copydoc point_traits::value_type
+   */
+  using value_type = typename point_traits<T>::value_type;
+
+  /**
+   * @copydoc point_traits::point_type
+   */
+  using point_type = typename point_traits<T>::point_type;
 
   /**
    * @brief Creates a zero-initialized point.
@@ -254,7 +294,7 @@ class basic_point final {
  *
  * @since 5.0.0
  */
-using ipoint = basic_point<detail::ipoint_traits>;
+using ipoint = basic_point<int>;
 
 /**
  * @typedef fpoint
@@ -267,7 +307,7 @@ using ipoint = basic_point<detail::ipoint_traits>;
  *
  * @since 5.0.0
  */
-using fpoint = basic_point<detail::fpoint_traits>;
+using fpoint = basic_point<float>;
 
 static_assert(std::is_nothrow_default_constructible_v<ipoint>);
 static_assert(std::is_nothrow_destructible_v<ipoint>);
@@ -282,37 +322,6 @@ static_assert(std::is_nothrow_copy_constructible_v<fpoint>);
 static_assert(std::is_nothrow_copy_assignable_v<fpoint>);
 static_assert(std::is_nothrow_move_constructible_v<fpoint>);
 static_assert(std::is_nothrow_move_assignable_v<fpoint>);
-
-/**
- * @brief Creates a point with the specified coordinates.
- *
- * @ingroup geometry
- *
- * @details This function could be useful in generic code if you want to create
- * points and you only know the type of the coordinates. This function can
- * only be used with `int` or `float` as the requested coordinate type.
- *
- * @tparam T the type of the coordinates of the point, i.e. `int` or `float`.
- * @tparam Args the type of the arguments that will be forwarded.
- *
- * @param args the arguments that will be forwarded to the point constructor.
- *
- * @return a point based on the specified type.
- *
- * @since 5.0.0
- */
-template <typename T,
-          typename... Args,
-          typename = std::enable_if_t<std::is_same_v<T, int> ||
-                                      std::is_same_v<T, float>>>
-[[nodiscard]] constexpr auto make_point(Args&&... args) noexcept
-{
-  if constexpr (std::is_same_v<T, int>) {
-    return ipoint{std::forward<Args>(args)...};
-  } else {
-    return fpoint{std::forward<Args>(args)...};
-  }
-}
 
 /**
  * @brief Converts an `fpoint` instance to the corresponding `ipoint`.
@@ -409,7 +418,7 @@ template <>
  *
  * @ingroup geometry
  *
- * @tparam Traits the traits used by the points.
+ * @tparam T the representation type used by the points.
  *
  * @param from the first point.
  * @param to the second point.
@@ -418,12 +427,12 @@ template <>
  *
  * @since 5.0.0
  */
-template <typename Traits>
-[[nodiscard]] inline auto distance(const basic_point<Traits>& from,
-                                   const basic_point<Traits>& to) noexcept ->
-    typename Traits::value_type
+template <typename T>
+[[nodiscard]] inline auto distance(const basic_point<T>& from,
+                                   const basic_point<T>& to) noexcept ->
+    typename point_traits<T>::value_type
 {
-  if constexpr (std::is_same_v<typename Traits::value_type, int>) {
+  if constexpr (basic_point<T>::isIntegral) {
     const auto xDiff = std::abs(from.x() - to.x());
     const auto yDiff = std::abs(from.y() - to.y());
     const auto dist = std::sqrt(xDiff + yDiff);

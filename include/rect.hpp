@@ -163,6 +163,16 @@ template <typename T>
 class basic_rect final {
  public:
   /**
+   * @copydoc rect_traits::isIntegral
+   */
+  inline static constexpr bool isIntegral = rect_traits<T>::isIntegral;
+
+  /**
+   * @copydoc rect_traits::isFloating
+   */
+  inline static constexpr bool isFloating = rect_traits<T>::isFloating;
+
+  /**
    * @copydoc rect_traits::value_type
    */
   using value_type = typename rect_traits<T>::value_type;

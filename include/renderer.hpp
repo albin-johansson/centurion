@@ -286,16 +286,16 @@ class renderer final : public basic_renderer<renderer> {
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam Traits The traits used by the point.
+   * @tparam T The representation type used by the point.
    *
    * @param texture the texture that will be rendered.
    * @param position the position (pre-translation) of the rendered texture.
    *
    * @since 4.0.0
    */
-  template <typename Traits>
+  template <typename T>
   void render_t(const texture& texture,
-                const basic_point<Traits>& position) noexcept;
+                const basic_point<T>& position) noexcept;
 
   /**
    * @brief Renders a texture according to the specified rectangle.
@@ -368,7 +368,7 @@ class renderer final : public basic_renderer<renderer> {
    * viewport.
    *
    * @tparam R the representation type used by the destination rectangle.
-   * @tparam PointTraits the traits used by the center-of-rotation point.
+   * @tparam P the representation type used by the center-of-rotation point.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -381,18 +381,18 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename R, typename PointTraits>
+  template <typename R, typename P>
   void render_t(const texture& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
                 double angle,
-                const basic_point<PointTraits>& center) noexcept;
+                const basic_point<P>& center) noexcept;
 
   /**
    * @brief Renders a texture.
    *
    * @tparam R the representation type used by the destination rectangle.
-   * @tparam PointTraits the traits used by the center-of-rotation point.
+   * @tparam P the representation type used by the center-of-rotation point.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -406,12 +406,12 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename R, typename PointTraits>
+  template <typename R, typename P>
   void render_t(const texture& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
                 double angle,
-                const basic_point<PointTraits>& center,
+                const basic_point<P>& center,
                 SDL_RendererFlip flip) noexcept;
 
   ///@} // end of translated rendering
@@ -567,9 +567,9 @@ class renderer final : public basic_renderer<renderer> {
                                           SDL_RENDERER_PRESENTVSYNC);
   }
 
-  template <typename Traits>
-  [[nodiscard]] auto translate(const basic_point<Traits>& point) const noexcept
-      -> basic_point<Traits>;
+  template <typename T>
+  [[nodiscard]] auto translate(const basic_point<T>& point) const noexcept
+      -> basic_point<T>;
 
   template <typename T>
   [[nodiscard]] auto translate(const basic_rect<T>& rect) const noexcept

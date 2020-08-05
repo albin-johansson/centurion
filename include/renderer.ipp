@@ -34,18 +34,18 @@
 
 namespace centurion {
 
-template <typename Traits>
-auto renderer::translate(const basic_point<Traits>& point) const noexcept
-    -> basic_point<Traits>
+template <typename T>
+auto renderer::translate(const basic_point<T>& point) const noexcept
+    -> basic_point<T>
 {
   const auto rect = viewport();
 
-  using value_type = typename Traits::value_type;
+  using value_type = typename basic_point<T>::value_type;
 
   const auto x = point.x() - static_cast<value_type>(rect.x());
   const auto y = point.y() - static_cast<value_type>(rect.y());
 
-  return basic_point<Traits>{x, y};
+  return basic_point<T>{x, y};
 }
 
 template <typename T>
@@ -67,9 +67,9 @@ void renderer::fill_rect_t(const basic_rect<T>& rect) noexcept
   fill_rect(translate(rect));
 }
 
-template <typename Traits>
+template <typename T>
 void renderer::render_t(const texture& texture,
-                        const basic_point<Traits>& position) noexcept
+                        const basic_point<T>& position) noexcept
 {
   render(texture, translate(position));
 }
@@ -98,22 +98,22 @@ void renderer::render_t(const texture& texture,
   render(texture, source, translate(destination), angle);
 }
 
-template <typename R, typename PointTraits>
+template <typename R, typename P>
 void renderer::render_t(const texture& texture,
                         const irect& source,
                         const basic_rect<R>& destination,
                         double angle,
-                        const basic_point<PointTraits>& center) noexcept
+                        const basic_point<P>& center) noexcept
 {
   render(texture, source, translate(destination), angle, center);
 }
 
-template <typename R, typename PointTraits>
+template <typename R, typename P>
 void renderer::render_t(const texture& texture,
                         const irect& source,
                         const basic_rect<R>& destination,
                         double angle,
-                        const basic_point<PointTraits>& center,
+                        const basic_point<P>& center,
                         SDL_RendererFlip flip) noexcept
 {
   render(texture, source, translate(destination), angle, center, flip);

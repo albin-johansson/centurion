@@ -185,7 +185,7 @@ class window final : public basic_window<window> {
   window();
 
   /**
-   * @copydoc window(nn_czstring, iarea)
+   * @copydoc window(nn_czstring, const iarea&)
    */
   CENTURION_QUERY
   static auto unique(nn_czstring title, const iarea& size = default_size())
@@ -204,7 +204,7 @@ class window final : public basic_window<window> {
   static auto unique() -> uptr;
 
   /**
-   * @copydoc window(nn_czstring, iarea)
+   * @copydoc window(nn_czstring, const iarea&)
    */
   CENTURION_QUERY
   static auto shared(nn_czstring title, const iarea& size = default_size())

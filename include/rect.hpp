@@ -61,29 +61,86 @@
 
 namespace centurion {
 
-/// @cond FALSE
-
-namespace detail {
-
-class irect_traits final {
+/**
+ * @class rect_traits
+ *
+ * @ingroup geometry
+ *
+ * @brief Provides rectangle traits used by `basic_rect`.
+ *
+ * @note Whilst it is possible to supply a type that isn't `int` or `float`,
+ * rectangles will always use one of them as the representation type.
+ *
+ * @tparam T the representation type, must be convertible to `int` or `float`.
+ *
+ * @see `basic_rect`
+ * @see `irect`
+ * @see `frect`
+ *
+ * @since 5.0.0
+ *
+ * @headerfile rect.hpp
+ */
+template <typename T,
+          typename = std::enable_if_t<std::is_convertible_v<T, int> ||
+                                      std::is_convertible_v<T, float>>>
+class rect_traits final {
  public:
-  using rect_type = SDL_Rect;
-  using point_type = ipoint;
-  using area_type = iarea;
-  using value_type = int;
+  /**
+   * @var isIntegral
+   *
+   * @brief Indicates whether or not the rectangle is based on an integral type.
+   *
+   * @since 5.0.0
+   */
+  inline static constexpr bool isIntegral = std::is_integral_v<T>;
+
+  /**
+   * @var isFloating
+   *
+   * @brief Indicates whether or not the rectangle is based on a floating-point
+   * type.
+   *
+   * @since 5.0.0
+   */
+  inline static constexpr bool isFloating = std::is_floating_point_v<T>;
+
+  /**
+   * @typedef value_type
+   *
+   * @brief The representation type, i.e. `int` or `float`.
+   *
+   * @since 5.0.0
+   */
+  using value_type = std::conditional_t<isIntegral, int, float>;
+
+  /**
+   * @typedef point_type
+   *
+   * @brief The point type used, i.e. `ipoint` or `fpoint`.
+   *
+   * @since 5.0.0
+   */
+  using point_type = std::conditional_t<isIntegral, ipoint, fpoint>;
+
+  /**
+   * @typedef area_type
+   *
+   * @brief The area type used, i.e. `iarea` or `farea`.
+   *
+   * @since 5.0.0
+   */
+  using area_type = std::conditional_t<isIntegral, iarea, farea>;
+
+  /**
+   * @typedef rect_type
+   *
+   * @brief The underlying SDL rectangle type, i.e. `SDL_Rect` or `SDL_FRect`.
+   *
+   * @since 5.0.0
+   */
+  using rect_type = std::conditional_t<isIntegral, SDL_Rect, SDL_FRect>;
 };
-
-class frect_traits final {
- public:
-  using rect_type = SDL_FRect;
-  using point_type = fpoint;
-  using area_type = farea;
-  using value_type = float;
-};
-
-}  // namespace detail
-
-/// @endcond
 
 /**
  * @class basic_rect
@@ -92,23 +149,38 @@ class frect_traits final {
  *
  * @brief A simple rectangle implementation.
  *
- * @tparam Traits the traits used by the rectangle. Must provide
- * `rect_type`, `area_type`, `point_type` and `value_type`.
- *
- * @since 4.0.0
+ * @tparam T the representation type. Must be convertible to either `int` or
+ * `float`.
  *
  * @see `irect`
  * @see `frect`
  *
+ * @since 4.0.0
+ *
  * @headerfile rect.hpp
  */
-template <typename Traits>
+template <typename T>
 class basic_rect final {
  public:
-  using rect_type = typename Traits::rect_type;
-  using point_type = typename Traits::point_type;
-  using area_type = typename Traits::area_type;
-  using value_type = typename Traits::value_type;
+  /**
+   * @copydoc rect_traits::value_type
+   */
+  using value_type = typename rect_traits<T>::value_type;
+
+  /**
+   * @copydoc rect_traits::point_type
+   */
+  using point_type = typename rect_traits<T>::point_type;
+
+  /**
+   * @copydoc rect_traits::area_type
+   */
+  using area_type = typename rect_traits<T>::area_type;
+
+  /**
+   * @copydoc rect_traits::rect_type
+   */
+  using rect_type = typename rect_traits<T>::rect_type;
 
   /**
    * @brief Creates a rectangle with the components (0, 0, 0, 0).
@@ -346,7 +418,7 @@ class basic_rect final {
   }
 
   /**
-   * @brief Returns the area of the rectangle.
+   * @brief Returns the total area of the rectangle.
    *
    * @return the area of the rectangle.
    *
@@ -427,7 +499,7 @@ class basic_rect final {
  *
  * @since 5.0.0
  */
-using irect = basic_rect<detail::irect_traits>;
+using irect = basic_rect<int>;
 
 /**
  * @typedef frect
@@ -438,7 +510,7 @@ using irect = basic_rect<detail::irect_traits>;
  *
  * @since 5.0.0
  */
-using frect = basic_rect<detail::frect_traits>;
+using frect = basic_rect<float>;
 
 static_assert(std::is_nothrow_default_constructible_v<frect>);
 static_assert(std::is_nothrow_default_constructible_v<irect>);
@@ -463,6 +535,8 @@ static_assert(std::is_nothrow_destructible_v<irect>);
  *
  * @ingroup geometry
  *
+ * @tparam T the representation type used by the rectangles.
+ *
  * @param lhs the left-hand side rectangle.
  * @param rhs the right-hand side rectangle.
  *
@@ -470,9 +544,9 @@ static_assert(std::is_nothrow_destructible_v<irect>);
  *
  * @since 4.0.0
  */
-template <typename Traits>
-[[nodiscard]] constexpr auto operator==(const basic_rect<Traits>& lhs,
-                                        const basic_rect<Traits>& rhs) noexcept
+template <typename T>
+[[nodiscard]] constexpr auto operator==(const basic_rect<T>& lhs,
+                                        const basic_rect<T>& rhs) noexcept
     -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y()) &&
@@ -484,6 +558,8 @@ template <typename Traits>
  *
  * @ingroup geometry
  *
+ * @tparam T the representation type used by the rectangles.
+ *
  * @param lhs the left-hand side rectangle.
  * @param rhs the right-hand side rectangle.
  *
@@ -491,9 +567,9 @@ template <typename Traits>
  *
  * @since 4.0.0
  */
-template <typename Traits>
-[[nodiscard]] constexpr auto operator!=(const basic_rect<Traits>& lhs,
-                                        const basic_rect<Traits>& rhs) noexcept
+template <typename T>
+[[nodiscard]] constexpr auto operator!=(const basic_rect<T>& lhs,
+                                        const basic_rect<T>& rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -526,7 +602,7 @@ template <>
  * borders as intersecting. If you want such behaviour, see the
  * `collides` function.
  *
- * @tparam Traits the traits used by the rectangles.
+ * @tparam T the representation type used by the rectangles.
  *
  * @param fst the first rectangle.
  * @param snd the second rectangle.
@@ -537,9 +613,9 @@ template <>
  *
  * @since 4.0.0
  */
-template <typename Traits>
-[[nodiscard]] constexpr auto intersects(const basic_rect<Traits>& fst,
-                                        const basic_rect<Traits>& snd) noexcept
+template <typename T>
+[[nodiscard]] constexpr auto intersects(const basic_rect<T>& fst,
+                                        const basic_rect<T>& snd) noexcept
     -> bool
 {
   return !(fst.x() >= snd.max_x() || fst.max_x() <= snd.x() ||
@@ -552,7 +628,7 @@ template <typename Traits>
  * @details This function considers rectangles with overlapping borders as
  * colliding.
  *
- * @tparam Traits the traits used by the rectangles.
+ * @tparam T the representation type used by the rectangles.
  *
  * @param fst the first rectangle.
  * @param snd the second rectangle.
@@ -563,10 +639,9 @@ template <typename Traits>
  *
  * @since 4.0.0
  */
-template <typename Traits>
-[[nodiscard]] constexpr auto collides(const basic_rect<Traits>& fst,
-                                      const basic_rect<Traits>& snd) noexcept
-    -> bool
+template <typename T>
+[[nodiscard]] constexpr auto collides(const basic_rect<T>& fst,
+                                      const basic_rect<T>& snd) noexcept -> bool
 {
   return !(fst.x() > snd.max_x() || fst.max_x() < snd.x() ||
            fst.y() > snd.max_y() || fst.max_y() < snd.y());
@@ -579,6 +654,8 @@ template <typename Traits>
  *
  * @details Returns a rectangle that represents the union of two rectangles.
  *
+ * @tparam T the representation type used by the rectangles.
+ *
  * @param fst the first rectangle.
  * @param snd the second rectangle.
  *
@@ -586,10 +663,10 @@ template <typename Traits>
  *
  * @since 5.0.0
  */
-template <typename Traits>
-[[nodiscard]] constexpr auto get_union(const basic_rect<Traits>& fst,
-                                       const basic_rect<Traits>& snd) noexcept
-    -> basic_rect<Traits>
+template <typename T>
+[[nodiscard]] constexpr auto get_union(const basic_rect<T>& fst,
+                                       const basic_rect<T>& snd) noexcept
+    -> basic_rect<T>
 {
   const auto fstHasArea = fst.has_area();
   const auto sndHasArea = snd.has_area();
@@ -615,7 +692,7 @@ template <typename Traits>
  *
  * @ingroup geometry
  *
- * @tparam Traits the traits used by the rectangle.
+ * @tparam T the representation type used by the rectangle.
  *
  * @param rect the rectangle that will be converted to a string.
  *
@@ -623,8 +700,8 @@ template <typename Traits>
  *
  * @since 5.0.0
  */
-template <typename Traits>
-[[nodiscard]] auto to_string(const basic_rect<Traits>& rect) -> std::string
+template <typename T>
+[[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
   const auto x = std::to_string(rect.x());
   const auto y = std::to_string(rect.y());
@@ -639,7 +716,7 @@ template <typename Traits>
  *
  * @ingroup geometry
  *
- * @tparam Traits the traits used by the rectangle.
+ * @tparam T the representation type used by the rectangle.
  *
  * @param stream the stream that will be used.
  * @param rect the rectangle that will be printed.
@@ -648,8 +725,8 @@ template <typename Traits>
  *
  * @since 5.0.0
  */
-template <typename Traits>
-auto operator<<(std::ostream& stream, const basic_rect<Traits>& rect)
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
     -> std::ostream&
 {
   stream << to_string(rect);

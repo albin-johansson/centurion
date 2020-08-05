@@ -256,14 +256,14 @@ class renderer final : public basic_renderer<renderer> {
    * @details The rendered rectangle will be translated using the current
    * translation viewport.
    *
-   * @tparam Traits The traits used by the rectangle.
+   * @tparam T the representation type used by the rectangle.
    *
    * @param rect the rectangle that will be rendered.
    *
    * @since 4.1.0
    */
-  template <typename Traits>
-  void draw_rect_t(const basic_rect<Traits>& rect) noexcept;
+  template <typename T>
+  void draw_rect_t(const basic_rect<T>& rect) noexcept;
 
   /**
    * @brief Renders a filled rectangle in the currently selected color.
@@ -271,14 +271,14 @@ class renderer final : public basic_renderer<renderer> {
    * @details The rendered rectangle will be translated using the current
    * translation viewport.
    *
-   * @tparam Traits The traits used by the rectangle.
+   * @tparam T the representation type used by the rectangle.
    *
    * @param rect the rectangle that will be rendered.
    *
    * @since 4.1.0
    */
-  template <typename Traits>
-  void fill_rect_t(const basic_rect<Traits>& rect) noexcept;
+  template <typename T>
+  void fill_rect_t(const basic_rect<T>& rect) noexcept;
 
   /**
    * @brief Renders a texture at the specified position.
@@ -303,7 +303,7 @@ class renderer final : public basic_renderer<renderer> {
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam Traits the traits used by the rectangle.
+   * @tparam T the representation type used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param destination the position (pre-translation) and size of the
@@ -311,9 +311,9 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename Traits>
+  template <typename T>
   void render_t(const texture& texture,
-                const basic_rect<Traits>& destination) noexcept;
+                const basic_rect<T>& destination) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -324,7 +324,7 @@ class renderer final : public basic_renderer<renderer> {
    * @remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * @tparam Traits the traits used by the destination rectangle.
+   * @tparam T the representation type used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -333,10 +333,10 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename Traits>
+  template <typename T>
   void render_t(const texture& texture,
                 const irect& source,
-                const basic_rect<Traits>& destination) noexcept;
+                const basic_rect<T>& destination) noexcept;
 
   /**
    * @brief Renders a texture.
@@ -344,7 +344,7 @@ class renderer final : public basic_renderer<renderer> {
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam Traits the traits used by the destination rectangle.
+   * @tparam T the representation type used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -355,10 +355,10 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename Traits>
+  template <typename T>
   void render_t(const texture& texture,
                 const irect& source,
-                const basic_rect<Traits>& destination,
+                const basic_rect<T>& destination,
                 double angle) noexcept;
 
   /**
@@ -367,7 +367,7 @@ class renderer final : public basic_renderer<renderer> {
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam RectTraits the traits used by the destination rectangle.
+   * @tparam R the representation type used by the destination rectangle.
    * @tparam PointTraits the traits used by the center-of-rotation point.
    *
    * @param texture the texture that will be rendered.
@@ -381,17 +381,17 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename RectTraits, typename PointTraits>
+  template <typename R, typename PointTraits>
   void render_t(const texture& texture,
                 const irect& source,
-                const basic_rect<RectTraits>& destination,
+                const basic_rect<R>& destination,
                 double angle,
                 const basic_point<PointTraits>& center) noexcept;
 
   /**
    * @brief Renders a texture.
    *
-   * @tparam RectTraits the traits used by the destination rectangle.
+   * @tparam R the representation type used by the destination rectangle.
    * @tparam PointTraits the traits used by the center-of-rotation point.
    *
    * @param texture the texture that will be rendered.
@@ -406,10 +406,10 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 4.0.0
    */
-  template <typename RectTraits, typename PointTraits>
+  template <typename R, typename PointTraits>
   void render_t(const texture& texture,
                 const irect& source,
-                const basic_rect<RectTraits>& destination,
+                const basic_rect<R>& destination,
                 double angle,
                 const basic_point<PointTraits>& center,
                 SDL_RendererFlip flip) noexcept;
@@ -571,9 +571,9 @@ class renderer final : public basic_renderer<renderer> {
   [[nodiscard]] auto translate(const basic_point<Traits>& point) const noexcept
       -> basic_point<Traits>;
 
-  template <typename Traits>
-  [[nodiscard]] auto translate(const basic_rect<Traits>& rect) const noexcept
-      -> basic_rect<Traits>;
+  template <typename T>
+  [[nodiscard]] auto translate(const basic_rect<T>& rect) const noexcept
+      -> basic_rect<T>;
 };
 
 static_assert(std::is_final_v<renderer>);

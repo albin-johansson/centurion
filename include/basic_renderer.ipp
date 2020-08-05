@@ -82,10 +82,10 @@ void basic_renderer<Derived>::present() noexcept
 }
 
 template <typename Derived>
-template <typename Traits>
-void basic_renderer<Derived>::draw_rect(const basic_rect<Traits>& rect) noexcept
+template <typename T>
+void basic_renderer<Derived>::draw_rect(const basic_rect<T>& rect) noexcept
 {
-  if constexpr (std::is_same_v<typename Traits::value_type, int>) {
+  if constexpr (std::is_same_v<typename basic_rect<T>::value_type, int>) {
     SDL_RenderDrawRect(ptr(), static_cast<const SDL_Rect*>(rect));
   } else {
     SDL_RenderDrawRectF(ptr(), static_cast<const SDL_FRect*>(rect));
@@ -93,10 +93,10 @@ void basic_renderer<Derived>::draw_rect(const basic_rect<Traits>& rect) noexcept
 }
 
 template <typename Derived>
-template <typename Traits>
-void basic_renderer<Derived>::fill_rect(const basic_rect<Traits>& rect) noexcept
+template <typename T>
+void basic_renderer<Derived>::fill_rect(const basic_rect<T>& rect) noexcept
 {
-  if constexpr (std::is_same_v<typename Traits::value_type, int>) {
+  if constexpr (std::is_same_v<typename basic_rect<T>::value_type, int>) {
     SDL_RenderFillRect(ptr(), static_cast<const SDL_Rect*>(rect));
   } else {
     SDL_RenderFillRectF(ptr(), static_cast<const SDL_FRect*>(rect));
@@ -316,12 +316,11 @@ void basic_renderer<Derived>::render(
 }
 
 template <typename Derived>
-template <typename Traits>
-void basic_renderer<Derived>::render(
-    const texture& texture,
-    const basic_rect<Traits>& destination) noexcept
+template <typename T>
+void basic_renderer<Derived>::render(const texture& texture,
+                                     const basic_rect<T>& destination) noexcept
 {
-  if constexpr (std::is_same_v<typename Traits::value_type, float>) {
+  if constexpr (std::is_same_v<typename basic_rect<T>::value_type, float>) {
     SDL_RenderCopyF(ptr(),
                     texture.get(),
                     nullptr,
@@ -335,13 +334,12 @@ void basic_renderer<Derived>::render(
 }
 
 template <typename Derived>
-template <typename Traits>
-void basic_renderer<Derived>::render(
-    const texture& texture,
-    const irect& source,
-    const basic_rect<Traits>& destination) noexcept
+template <typename T>
+void basic_renderer<Derived>::render(const texture& texture,
+                                     const irect& source,
+                                     const basic_rect<T>& destination) noexcept
 {
-  if constexpr (std::is_same_v<typename Traits::value_type, float>) {
+  if constexpr (std::is_same_v<typename basic_rect<T>::value_type, float>) {
     SDL_RenderCopyF(ptr(),
                     texture.get(),
                     static_cast<const SDL_Rect*>(source),
@@ -355,13 +353,13 @@ void basic_renderer<Derived>::render(
 }
 
 template <typename Derived>
-template <typename Traits>
+template <typename T>
 void basic_renderer<Derived>::render(const texture& texture,
                                      const irect& source,
-                                     const basic_rect<Traits>& destination,
+                                     const basic_rect<T>& destination,
                                      double angle) noexcept
 {
-  if constexpr (std::is_same_v<typename Traits::value_type, float>) {
+  if constexpr (std::is_same_v<typename basic_rect<T>::value_type, float>) {
     SDL_RenderCopyExF(ptr(),
                       texture.get(),
                       static_cast<const SDL_Rect*>(source),
@@ -381,20 +379,20 @@ void basic_renderer<Derived>::render(const texture& texture,
 }
 
 template <typename Derived>
-template <typename RectTraits, typename PointTraits>
+template <typename R, typename PointTraits>
 void basic_renderer<Derived>::render(
     const texture& texture,
     const irect& source,
-    const basic_rect<RectTraits>& destination,
+    const basic_rect<R>& destination,
     double angle,
     const basic_point<PointTraits>& center) noexcept
 {
-  static_assert(std::is_same_v<typename RectTraits::value_type,
+  static_assert(std::is_same_v<typename basic_rect<R>::value_type,
                                typename PointTraits::value_type>,
                 "Destination rectangle and center point must have the same "
                 "value types (int or float)!");
 
-  if constexpr (std::is_same_v<typename RectTraits::value_type, float>) {
+  if constexpr (std::is_same_v<typename basic_rect<R>::value_type, float>) {
     SDL_RenderCopyExF(ptr(),
                       texture.get(),
                       static_cast<const SDL_Rect*>(source),
@@ -414,20 +412,20 @@ void basic_renderer<Derived>::render(
 }
 
 template <typename Derived>
-template <typename RectTraits, typename PointTraits>
+template <typename R, typename PointTraits>
 void basic_renderer<Derived>::render(const texture& texture,
                                      const irect& source,
-                                     const basic_rect<RectTraits>& destination,
+                                     const basic_rect<R>& destination,
                                      double angle,
                                      const basic_point<PointTraits>& center,
                                      SDL_RendererFlip flip) noexcept
 {
-  static_assert(std::is_same_v<typename RectTraits::value_type,
+  static_assert(std::is_same_v<typename basic_rect<R>::value_type,
                                typename PointTraits::value_type>,
                 "Destination rectangle and center point must have the same "
                 "value types (int or float)!");
 
-  if constexpr (std::is_same_v<typename RectTraits::value_type, float>) {
+  if constexpr (std::is_same_v<typename basic_rect<R>::value_type, float>) {
     SDL_RenderCopyExF(ptr(),
                       texture.get(),
                       static_cast<const SDL_Rect*>(source),

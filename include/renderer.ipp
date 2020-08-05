@@ -48,21 +48,21 @@ auto renderer::translate(const basic_point<Traits>& point) const noexcept
   return basic_point<Traits>{x, y};
 }
 
-template <typename Traits>
-auto renderer::translate(const basic_rect<Traits>& rect) const noexcept
-    -> basic_rect<Traits>
+template <typename T>
+auto renderer::translate(const basic_rect<T>& rect) const noexcept
+    -> basic_rect<T>
 {
-  return basic_rect<Traits>{translate(rect.position()), rect.size()};
+  return basic_rect<T>{translate(rect.position()), rect.size()};
 }
 
-template <typename Traits>
-void renderer::draw_rect_t(const basic_rect<Traits>& rect) noexcept
+template <typename T>
+void renderer::draw_rect_t(const basic_rect<T>& rect) noexcept
 {
   draw_rect(translate(rect));
 }
 
-template <typename Traits>
-void renderer::fill_rect_t(const basic_rect<Traits>& rect) noexcept
+template <typename T>
+void renderer::fill_rect_t(const basic_rect<T>& rect) noexcept
 {
   fill_rect(translate(rect));
 }
@@ -74,58 +74,44 @@ void renderer::render_t(const texture& texture,
   render(texture, translate(position));
 }
 
-/**
- * @brief Renders a texture according to the specified rectangle.
- *
- * @details The rendered texture will be translated using the translation
- * viewport.
- *
- * @tparam Traits the traits used by the rectangle.
- *
- * @param texture the texture that will be rendered.
- * @param destination the position (pre-translation) and size of the
- * rendered texture.
- *
- * @since 4.0.0
- */
-template <typename Traits>
+template <typename T>
 void renderer::render_t(const texture& texture,
-                        const basic_rect<Traits>& destination) noexcept
+                        const basic_rect<T>& destination) noexcept
 {
   render(texture, translate(destination));
 }
 
-template <typename Traits>
+template <typename T>
 void renderer::render_t(const texture& texture,
                         const irect& source,
-                        const basic_rect<Traits>& destination) noexcept
+                        const basic_rect<T>& destination) noexcept
 {
   render(texture, source, translate(destination));
 }
 
-template <typename Traits>
+template <typename T>
 void renderer::render_t(const texture& texture,
                         const irect& source,
-                        const basic_rect<Traits>& destination,
+                        const basic_rect<T>& destination,
                         double angle) noexcept
 {
   render(texture, source, translate(destination), angle);
 }
 
-template <typename RectTraits, typename PointTraits>
+template <typename R, typename PointTraits>
 void renderer::render_t(const texture& texture,
                         const irect& source,
-                        const basic_rect<RectTraits>& destination,
+                        const basic_rect<R>& destination,
                         double angle,
                         const basic_point<PointTraits>& center) noexcept
 {
   render(texture, source, translate(destination), angle, center);
 }
 
-template <typename RectTraits, typename PointTraits>
+template <typename R, typename PointTraits>
 void renderer::render_t(const texture& texture,
                         const irect& source,
-                        const basic_rect<RectTraits>& destination,
+                        const basic_rect<R>& destination,
                         double angle,
                         const basic_point<PointTraits>& center,
                         SDL_RendererFlip flip) noexcept

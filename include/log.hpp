@@ -587,6 +587,16 @@ auto get_priority(category category) noexcept -> log::priority;
 
 }  // namespace centurion::log
 
+#ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
+
+#ifdef NDEBUG
+#define CENTURION_LOG_INFO(fmt, ...)
+#else
+#define CENTURION_LOG_INFO(fmt, ...) centurion::log::info(fmt, __VA_ARGS__)
+#endif  // NDEBUG
+
+#endif  // CENTURION_USE_DEBUG_LOGGING_MACROS
+
 /// @}
 
 #endif  // CENTURION_LOG_HEADER

@@ -1,12 +1,11 @@
 Rect
 ====
 
-A simple ``constexpr``-enabled rectangle. Supports ``int`` and ``float`` components
-out-of-the-box. However, could support any numerical type in theory. This class is 
-designed to mirror the use of the SDL rectangle representations, ``SDL_Rect`` and 
-``SDL_FRect``. The underlying representation is the ``basic_rect<Traits>`` class. 
-However, you should use the ``irect`` and ``frect`` aliases in your projects, 
-unless you have to write code that deals with generic rectangles.
+A simple ``constexpr``-enabled rectangle. Supports ``int`` and ``float`` variants. This class is
+designed to mirror the use of the SDL rectangle representations, i.e. ``SDL_Rect`` and
+``SDL_FRect``. The underlying representation is the ``basic_rect<T>`` class. However, you should
+use the ``irect`` and ``frect`` aliases in your projects, unless you have to write code that
+deals with generic rectangles.
 
 General information
 -------------------
@@ -23,10 +22,10 @@ Namespace                ``::centurion``
 Header                   ``rect.hpp``
 ======================  =======================================================
 
-Member types
-------------
-The ``basic_rect<Traits>`` class provides several public member
-types that are useful when working with generic code.
+Public member types/constants
+-----------------------------
+The ``basic_rect<T>`` class provides several public members that are useful when working
+with generic code.
 
 ``rect_type``
 ~~~~~~~~~~~~~
@@ -43,6 +42,15 @@ The associated area type, i.e. ``iarea`` or ``farea``.
 ``value_type``
 ~~~~~~~~~~~~~~
 The type of the components of the rectangle, i.e. ``int`` or ``float``.
+
+``isIntegral``
+~~~~~~~~~~~~~~
+Indicates whether or not the rectangle is based on an integral type, e.g. ``true`` for ``irect``.
+
+``isFloating``
+~~~~~~~~~~~~~~
+Indicates whether or not the rectangle is based on a floating-point type, e.g. ``true`` for
+``frect``.
 
 Examples
 --------
@@ -91,8 +99,7 @@ Two rectangles are considered to be intersecting if they overlap each other.
 
 Collision checking
 ~~~~~~~~~~~~~~~~~~
-Two rectangles are considered to be colliding if the overlap *or* if they share
-a common border.
+Two rectangles are considered to be colliding if the overlap *or* if they share a common border.
 
 .. code-block:: c++
 
@@ -114,8 +121,8 @@ a common border.
 
 Calculate union of two rectangles
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-You can easily obtain the union of two rectangles 
-using the ``get_union`` function.
+You can easily obtain the union of two rectangles using the ``get_union`` function. Note, unlike
+the function provided by SDL, this also works with floating-point rectangles.
 
 .. code-block:: c++
 

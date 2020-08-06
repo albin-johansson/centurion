@@ -64,6 +64,10 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/font_cache.ipp
         ${CTN_INCLUDE_DIR}/unicode_string.hpp
         ${CTN_INCLUDE_DIR}/game_loop.hpp
+        ${CTN_INCLUDE_DIR}/joystick_handle.hpp
+        ${CTN_INCLUDE_DIR}/basic_texture.hpp
+        ${CTN_INCLUDE_DIR}/basic_texture.ipp
+        ${CTN_INCLUDE_DIR}/scale_mode.hpp
 
         core/centurion.cpp
         core/centurion_exception.cpp
@@ -98,6 +102,7 @@ set(SOURCE_FILES
         input/touch.cpp
         input/key_code.cpp
         input/scan_code.cpp
+        input/joystick_handle.cpp
 
         event/event.cpp
         event/quit_event.cpp
@@ -120,7 +125,7 @@ set(SOURCE_FILES
         event/mouse_wheel_event.cpp
         event/multi_gesture_event.cpp
         event/text_editing_event.cpp
-        event/text_input_event.cpp ../include/joystick_handle.hpp input/joystick_handle.cpp)
+        event/text_input_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

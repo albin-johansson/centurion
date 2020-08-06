@@ -51,9 +51,9 @@ namespace centurion {
 
 template <typename Renderer>
 texture::texture(const Renderer& renderer, const surface& surface)
-    : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
+    : basic_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
 {
-  if (!m_texture) {
+  if (!get()) {
     throw sdl_error{"Failed to create texture from surface!"};
   }
 }
@@ -61,24 +61,24 @@ texture::texture(const Renderer& renderer, const surface& surface)
 template <typename Renderer>
 texture::texture(const Renderer& renderer,
                  pixel_format format,
-                 texture::access access,
+                 texture_access access,
                  const iarea& size)
-    : m_texture{SDL_CreateTexture(renderer.get(),
-                                  static_cast<u32>(format),
-                                  static_cast<int>(access),
-                                  size.width,
-                                  size.height)}
+    : basic_texture{SDL_CreateTexture(renderer.get(),
+                                      static_cast<u32>(format),
+                                      static_cast<int>(access),
+                                      size.width,
+                                      size.height)}
 {
-  if (!m_texture) {
+  if (!get()) {
     throw sdl_error{"Failed to create texture!"};
   }
 }
 
 template <typename Renderer>
 texture::texture(const Renderer& renderer, nn_czstring path)
-    : m_texture{IMG_LoadTexture(renderer.get(), path)}
+    : basic_texture{IMG_LoadTexture(renderer.get(), path)}
 {
-  if (!m_texture) {
+  if (!get()) {
     throw img_error{"Failed to load texture from file!"};
   }
 }
@@ -98,7 +98,7 @@ auto texture::unique(const Renderer& renderer, const surface& surface) -> uptr
 template <typename Renderer>
 auto texture::unique(const Renderer& renderer,
                      pixel_format format,
-                     texture::access access,
+                     texture_access access,
                      const iarea& size) -> uptr
 {
   return std::make_unique<texture>(renderer, format, access, size);
@@ -119,7 +119,7 @@ auto texture::shared(const Renderer& renderer, const surface& surface) -> sptr
 template <typename Renderer>
 auto texture::shared(const Renderer& renderer,
                      pixel_format format,
-                     texture::access access,
+                     texture_access access,
                      const iarea& size) -> sptr
 {
   return std::make_shared<texture>(renderer, format, access, size);
@@ -137,8 +137,10 @@ auto texture::streaming(const Renderer& renderer,
     return source.convert(format);
   };
   const auto surface = createSurface(path, format);
-  auto texture = texture::unique(
-      renderer, format, access::streaming, {surface.width(), surface.height()});
+  auto texture = texture::unique(renderer,
+                                 format,
+                                 texture_access::streaming,
+                                 {surface.width(), surface.height()});
   texture->set_blend_mode(blendMode);
 
   u32* pixels = nullptr;

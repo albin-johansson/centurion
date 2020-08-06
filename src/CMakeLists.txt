@@ -68,6 +68,8 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/basic_texture.hpp
         ${CTN_INCLUDE_DIR}/basic_texture.ipp
         ${CTN_INCLUDE_DIR}/scale_mode.hpp
+        ${CTN_INCLUDE_DIR}/sharing_texture.hpp
+        ${CTN_INCLUDE_DIR}/sharing_texture.ipp
 
         core/centurion.cpp
         core/centurion_exception.cpp
@@ -88,6 +90,7 @@ set(SOURCE_FILES
         graphics/renderer_handle.cpp
         graphics/renderer.cpp
         graphics/color.cpp
+        graphics/sharing_texture.cpp
 
         system/base_path.cpp
         system/pref_path.cpp
@@ -125,7 +128,7 @@ set(SOURCE_FILES
         event/mouse_wheel_event.cpp
         event/multi_gesture_event.cpp
         event/text_editing_event.cpp
-        event/text_input_event.cpp ../include/sharing_texture.hpp ../include/sharing_texture.ipp graphics/sharing_texture.cpp)
+        event/text_input_event.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

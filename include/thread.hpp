@@ -25,7 +25,7 @@
 /**
  * @file thread.hpp
  *
- * @brief Provides the `thread` class.
+ * @brief Provides the threading API.
  *
  * @author Albin Johansson
  *
@@ -299,6 +299,60 @@ auto to_string(const thread& thread) -> std::string;
  */
 CENTURION_QUERY
 auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&;
+
+/**
+ * @brief Indicates whether or not two thread priorities are the same.
+ *
+ * @param lhs the left-hand side thread priority.
+ * @param rhs the right-hand side thread priority.
+ *
+ * @return `true` if the priorities are the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline constexpr auto operator==(thread_priority lhs,
+                                               SDL_ThreadPriority rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_ThreadPriority>(lhs) == rhs;
+}
+
+/**
+ * @copydoc operator==(thread_priority, SDL_ThreadPriority)
+ */
+[[nodiscard]] inline constexpr auto operator==(SDL_ThreadPriority lhs,
+                                               thread_priority rhs) noexcept
+    -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * @brief Indicates whether or not two thread priorities aren't the same.
+ *
+ * @param lhs the left-hand side thread priority.
+ * @param rhs the right-hand side thread priority.
+ *
+ * @return `true` if the priorities aren't the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline constexpr auto operator!=(thread_priority lhs,
+                                               SDL_ThreadPriority rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @copydoc operator!=(thread_priority, SDL_ThreadPriority)
+ */
+[[nodiscard]] inline constexpr auto operator!=(SDL_ThreadPriority lhs,
+                                               thread_priority rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
 
 }  // namespace centurion
 

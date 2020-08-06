@@ -147,3 +147,25 @@ TEST_CASE("thread stream operator", "[thread]")
   ctn::thread thread{dummy, "myThread"};
   std::cout << "<< operator: " << thread << '\n';
 }
+
+TEST_CASE("thread_priority values", "[thread]")
+{
+  SECTION("==")
+  {
+    CHECK(ctn::thread_priority::low == SDL_THREAD_PRIORITY_LOW);
+    CHECK(ctn::thread_priority::normal == SDL_THREAD_PRIORITY_NORMAL);
+    CHECK(ctn::thread_priority::high == SDL_THREAD_PRIORITY_HIGH);
+    CHECK(ctn::thread_priority::critical == SDL_THREAD_PRIORITY_TIME_CRITICAL);
+
+    CHECK(SDL_THREAD_PRIORITY_LOW == ctn::thread_priority::low);
+    CHECK(SDL_THREAD_PRIORITY_NORMAL == ctn::thread_priority::normal);
+    CHECK(SDL_THREAD_PRIORITY_HIGH == ctn::thread_priority::high);
+    CHECK(SDL_THREAD_PRIORITY_TIME_CRITICAL == ctn::thread_priority::critical);
+  }
+
+  SECTION("!=")
+  {
+    CHECK(ctn::thread_priority::high != SDL_THREAD_PRIORITY_TIME_CRITICAL);
+    CHECK(SDL_THREAD_PRIORITY_LOW != ctn::thread_priority::normal);
+  }
+}

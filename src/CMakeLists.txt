@@ -70,11 +70,13 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/scale_mode.hpp
         ${CTN_INCLUDE_DIR}/sharing_texture.hpp
         ${CTN_INCLUDE_DIR}/sharing_texture.ipp
+        ${CTN_INCLUDE_DIR}/thread.hpp
 
         core/centurion.cpp
         core/centurion_exception.cpp
 
         misc/log.cpp
+        misc/thread.cpp
 
         graphics/window.cpp
         graphics/window_handle.cpp

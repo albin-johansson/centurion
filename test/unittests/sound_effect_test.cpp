@@ -8,7 +8,7 @@
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
 #include "log.hpp"
-#include "sleep.hpp"
+#include "thread.hpp"
 
 static constexpr auto path = "resources/click.wav";
 
@@ -128,7 +128,7 @@ TEST_CASE("sound_effect::fade_out", "[sound_effect]")
   sound.fade_out(ms{50});
   CHECK(sound.is_playing());
 
-  ctn::sleep(ctn::seconds<ctn::u32>(1));
+  ctn::thread::sleep(ctn::seconds<ctn::u32>(1));
   CHECK(!sound.is_playing());
 }
 

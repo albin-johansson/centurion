@@ -84,6 +84,11 @@ auto thread::get() const noexcept -> const SDL_Thread*
   return m_thread;
 }
 
+void thread::sleep(milliseconds<u32> ms) noexcept
+{
+  SDL_Delay(ms.count());
+}
+
 auto thread::set_priority(thread_priority priority) noexcept -> bool
 {
   return SDL_SetThreadPriority(static_cast<SDL_ThreadPriority>(priority)) == 0;

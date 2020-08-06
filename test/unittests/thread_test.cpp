@@ -126,6 +126,12 @@ TEST_CASE("thread::get", "[thread]")
   }
 }
 
+TEST_CASE("thread::sleep", "[sleep]")
+{
+  CHECK_NOTHROW(ctn::thread::sleep(ctn::milliseconds<ctn::u32>{10}));
+  CHECK_NOTHROW(ctn::thread::sleep(ctn::milliseconds<ctn::u32>{0}));
+}
+
 TEST_CASE("thread::set_priority", "[thread]")
 {
   CHECK(ctn::thread::set_priority(ctn::thread_priority::low));

@@ -242,6 +242,21 @@ class thread final {
   auto get() const noexcept -> const SDL_Thread*;
 
   /**
+   * @brief Forces the current thread to halt for at least the specified
+   * duration.
+   *
+   * @note The actual time spent sleeping may differ, depending on the
+   * scheduling of the operating system. You shouldn't use this function for
+   * precise timing.
+   *
+   * @param ms the minimum amount of time to sleep for, in milliseconds.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_API
+  static void sleep(milliseconds<u32> ms) noexcept;
+
+  /**
    * @brief Sets the priority of the current thread.
    *
    * @note You might need elevated privileges to use `high` or `critical`

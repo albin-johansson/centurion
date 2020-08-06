@@ -58,7 +58,6 @@ set(TEST_FILES
         unittests/hints_test.cpp
         unittests/joystick_test.cpp
         unittests/touch_test.cpp
-        unittests/sleep_test.cpp
         unittests/scan_code_tests.cpp
         unittests/key_code_tests.cpp
         unittests/font_cache_test.cpp

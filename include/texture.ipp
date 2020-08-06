@@ -158,6 +158,8 @@ auto texture::streaming(const Renderer& renderer,
   return texture;
 }
 
+
+
 }  // namespace centurion
 
 #endif  // CENTURION_TEXTURE_IMPLEMENTATION

@@ -36,4 +36,9 @@ auto operator<<(std::ostream& stream, const texture& texture) -> std::ostream&
   return stream;
 }
 
+auto texture::release() noexcept -> SDL_Texture*
+{
+  return get_storage().release();
+}
+
 }  // namespace centurion

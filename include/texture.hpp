@@ -210,7 +210,8 @@ class texture final : public basic_texture<texture> {
                                    const surface& surface) -> uptr;
 
   /**
-   * @copydoc texture(const Renderer&, pixel_format, texture_access, const iarea&)
+   * @copydoc texture(const Renderer&, pixel_format, texture_access, const
+   * iarea&)
    */
   template <typename Renderer>
   [[nodiscard]] static auto unique(const Renderer& renderer,
@@ -239,7 +240,8 @@ class texture final : public basic_texture<texture> {
                                    const surface& surface) -> sptr;
 
   /**
-   * @copydoc texture(const Renderer&, pixel_format, texture_access, const iarea&)
+   * @copydoc texture(const Renderer&, pixel_format, texture_access, const
+   * iarea&)
    */
   template <typename Renderer>
   [[nodiscard]] static auto shared(const Renderer& renderer,
@@ -271,6 +273,21 @@ class texture final : public basic_texture<texture> {
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       nn_czstring path,
                                       pixel_format format) -> uptr;
+
+  /**
+   * @brief Releases ownership of the associated SDL texture and returns a
+   * pointer to it.
+   *
+   * @warning Usage of this function should be considered dangerous, since
+   * you might run into memory leak issues. You **must** call
+   * `SDL_DestroyTexture` on the returned pointer to free the associated
+   * memory.
+   *
+   * @return a pointer to the associated SDL texture.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>;
 };
 
 static_assert(std::is_final_v<texture>);
@@ -290,7 +307,8 @@ static_assert(!std::is_nothrow_copy_assignable_v<texture>);
  *
  * @since 5.0.0
  */
-CENTURION_QUERY auto to_string(const texture& texture) -> std::string;
+CENTURION_QUERY
+auto to_string(const texture& texture) -> std::string;
 
 /**
  * @brief Prints a textual representation of a texture.

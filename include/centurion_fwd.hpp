@@ -41,6 +41,9 @@ class basic_window;
 template <typename Derived>
 class basic_joystick;
 
+template <typename Derived>
+class basic_texture;
+
 class joystick;
 
 class joystick_handle;
@@ -50,6 +53,10 @@ class renderer;
 class renderer_handle;
 
 class texture;
+
+class texture_handle;
+
+class sharing_texture;
 
 class surface;
 

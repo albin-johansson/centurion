@@ -53,6 +53,9 @@
 
 namespace centurion {
 
+/// @addtogroup misc
+/// @{
+
 /**
  * @enum thread_priority
  *
@@ -368,6 +371,8 @@ auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&;
 {
   return !(lhs == rhs);
 }
+
+/// @}
 
 }  // namespace centurion
 

@@ -159,6 +159,8 @@ Locks
 
 There are two different locks provided in the library, ``scoped_lock`` and ``try_lock``.
 
+-----------------------------------------------------------------
+
 scoped_lock (class)
 ~~~~~~~~~~~~~~~~~~~
 
@@ -227,6 +229,8 @@ With ``mutex`` and ``scoped_lock``, locking a mutex is truly trivial, as it shou
 
   } // lock is automatically unlocked
   
+-----------------------------------------------------------------
+
 try_lock (class)
 ~~~~~~~~~~~~~~~~
 

@@ -21,6 +21,15 @@ Namespace                ``::centurion``
 Header                   ``font.hpp``
 ======================  =========================================
 
+Interface 
+---------
+
+.. doxygenclass:: centurion::font
+  :members:
+  :undoc-members:
+  :outline:
+  :no-link:
+
 Examples
 --------
 

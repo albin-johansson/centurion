@@ -44,6 +44,12 @@ class basic_joystick;
 template <typename Derived>
 class basic_texture;
 
+class thread;
+
+class mutex;
+
+class scoped_lock;
+
 class joystick;
 
 class joystick_handle;

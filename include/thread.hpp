@@ -23,7 +23,16 @@
  */
 
 /**
+ * @defgroup thread Threads
+ *
+ * @brief Provides threading utilities for dealing with threads, mutexes, locks,
+ * etc.
+ */
+
+/**
  * @file thread.hpp
+ *
+ * @ingroup thread
  *
  * @brief Provides the threading API.
  *
@@ -53,7 +62,7 @@
 
 namespace centurion {
 
-/// @addtogroup misc
+/// @addtogroup thread
 /// @{
 
 /**

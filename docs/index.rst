@@ -22,6 +22,7 @@ Welcome to Centurion's documentation!
    pages/api/renderer_view
    pages/api/font
    pages/api/font_cache
+   pages/api/threads
 
 .. toctree::
    :maxdepth: 2

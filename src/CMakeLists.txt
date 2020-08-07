@@ -71,12 +71,15 @@ set(SOURCE_FILES
         ${CTN_INCLUDE_DIR}/sharing_texture.hpp
         ${CTN_INCLUDE_DIR}/sharing_texture.ipp
         ${CTN_INCLUDE_DIR}/thread.hpp
+        ${CTN_INCLUDE_DIR}/mutex.hpp
+        ${CTN_INCLUDE_DIR}/scoped_lock.hpp
+        ${CTN_INCLUDE_DIR}/try_lock.hpp
+        ${CTN_INCLUDE_DIR}/condition.hpp
 
         core/centurion.cpp
         core/centurion_exception.cpp
 
         misc/log.cpp
-        misc/thread.cpp
 
         graphics/window.cpp
         graphics/window_handle.cpp
@@ -130,7 +133,13 @@ set(SOURCE_FILES
         event/mouse_wheel_event.cpp
         event/multi_gesture_event.cpp
         event/text_editing_event.cpp
-        event/text_input_event.cpp)
+        event/text_input_event.cpp
+
+        thread/thread.cpp
+        thread/scoped_lock.cpp
+        thread/mutex.cpp
+        thread/condition.cpp
+        thread/try_lock.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

@@ -66,7 +66,10 @@ set(TEST_FILES
         unittests/window_handle_test.cpp
         unittests/renderer_handle_test.cpp
         unittests/sharing_texture_test.cpp
-        unittests/thread_test.cpp)
+        unittests/thread_test.cpp
+        unittests/mutex_test.cpp
+        unittests/scoped_lock_test.cpp
+        unittests/try_lock_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

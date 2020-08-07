@@ -27,30 +27,39 @@ Public member types/constants
 The ``basic_rect<T>`` class provides several public members that are useful when working
 with generic code.
 
-``rect_type``
-~~~~~~~~~~~~~
+rect_type
+~~~~~~~~~
 This is the actual rectangle representation, i.e. ``SDL_Rect`` or ``SDL_FRect``. 
 
-``point_type``
-~~~~~~~~~~~~~~
+point_type
+~~~~~~~~~~
 The associated point type, i.e. ``ipoint`` or ``fpoint``. 
 
-``area_type``
-~~~~~~~~~~~~~
+area_type
+~~~~~~~~~
 The associated area type, i.e. ``iarea`` or ``farea``. 
 
-``value_type``
-~~~~~~~~~~~~~~
+value_type
+~~~~~~~~~~
 The type of the components of the rectangle, i.e. ``int`` or ``float``.
 
-``isIntegral``
-~~~~~~~~~~~~~~
+isIntegral
+~~~~~~~~~~
 Indicates whether or not the rectangle is based on an integral type, e.g. ``true`` for ``irect``.
 
-``isFloating``
-~~~~~~~~~~~~~~
+isFloating
+~~~~~~~~~~
 Indicates whether or not the rectangle is based on a floating-point type, e.g. ``true`` for
 ``frect``.
+
+Interface 
+---------
+
+.. doxygenclass:: centurion::basic_rect
+  :members:
+  :undoc-members:
+  :outline:
+  :no-link:
 
 Examples
 --------

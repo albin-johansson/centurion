@@ -63,11 +63,14 @@ enum class lock_status {
 /**
  * @class mutex
  *
- * @brief Represents the core synchronization primitive.
+ * @brief Represents a recursive mutex.
+ *
+ * @details The fact that the mutex is recursive mutex means that it's possible
+ * to nest lock and unlock calls with the same mutex.
  *
  * @since 5.0.0
  *
- * @see `lock`
+ * @see `scoped_lock`
  * @see `try_lock`
  *
  * @headerfile mutex.hpp

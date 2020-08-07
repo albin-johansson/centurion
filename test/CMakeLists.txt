@@ -69,7 +69,7 @@ set(TEST_FILES
         unittests/thread_test.cpp
         unittests/mutex_test.cpp
         unittests/scoped_lock_test.cpp
-        unittests/try_lock_test.cpp)
+        unittests/try_lock_test.cpp unittests/semaphore_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

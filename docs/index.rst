@@ -14,23 +14,28 @@ Welcome to Centurion's documentation!
    :caption: API
 
    pages/api/overview
-   pages/api/point
-   pages/api/rect
+   
+.. toctre::
+   :maxdepth: 2
+   :caption: Geometry
+
+   pages/api/geometry/point
+   pages/api/geometry/rect
 
 .. toctree::
    :maxdepth: 2
-   :caption: Graphics API
+   :caption: Graphics
 
-   pages/api/window
-   pages/api/window_view
-   pages/api/renderer
-   pages/api/renderer_view
-   pages/api/font
-   pages/api/font_cache
+   pages/api/graphics/window
+   pages/api/graphics/window_view
+   pages/api/graphics/renderer
+   pages/api/graphics/renderer_view
+   pages/api/graphics/font
+   pages/api/graphics/font_cache
 
 .. toctree::
    :maxdepth: 2
-   :caption: Threads API
+   :caption: Threading
 
    pages/api/thread/overview
    pages/api/thread/thread

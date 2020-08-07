@@ -147,4 +147,4 @@ rendered with the various options.
 
 See also
 --------
-* :doc:`Renderer view </pages/api/renderer_view>`
+* :doc:`Renderer view </pages/api/graphics/renderer_view>`

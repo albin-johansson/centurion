@@ -75,4 +75,4 @@ assumes that the library has been initialized.
 
 See also
 --------
-* :doc:`Window view </pages/api/window_view>`
+* :doc:`Window view </pages/api/graphics/window_view>`

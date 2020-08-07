@@ -155,4 +155,4 @@ actually having to render the string.
 
 See also
 --------
-* :doc:`Font cache </pages/api/font_cache>`
+* :doc:`Font cache </pages/api/graphics/font_cache>`

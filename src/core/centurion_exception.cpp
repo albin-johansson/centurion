@@ -17,7 +17,7 @@ sdl_error::sdl_error(std::string_view what)
 img_error::img_error(std::string_view what)
 {
   set_what(what.data() + ", "s + IMG_GetError());
-};
+}
 
 ttf_error::ttf_error(std::string_view what)
 {

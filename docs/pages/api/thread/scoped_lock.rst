@@ -1,5 +1,5 @@
-scoped_lock (class)
-===================
+scoped_lock
+===========
 
 The ``scoped_lock`` class represents an RAII-style blocking lock that automatically unlocks the associated mutex
 upon destruction. It will blocking the invoking thread until the mutex becomes available.

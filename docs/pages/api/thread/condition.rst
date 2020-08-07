@@ -1,5 +1,5 @@
-condition (class)
-=================
+condition
+=========
 
 Condition variables are represented by the ``condition`` class. These can be used by threads to send signals to each other.
 

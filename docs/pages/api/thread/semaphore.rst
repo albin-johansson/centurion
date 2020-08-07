@@ -1,5 +1,5 @@
-semaphore (class)
-=================
+semaphore
+=========
 
 The ``semaphore`` class represents a semaphore with a set of tokens.
 

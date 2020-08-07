@@ -1,5 +1,5 @@
-try_lock (class)
-================
+try_lock
+========
 
 The ``try_lock`` class represents an RAII-style non-blocking lock that automatically unlocks the associated mutex
 upon destruction. It immediately returns after trying to lock a mutex.

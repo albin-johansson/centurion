@@ -1,5 +1,5 @@
-mutex (class)
-=============
+mutex
+=====
 
 The ``mutex`` class represents a recursive mutex.
 

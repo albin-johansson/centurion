@@ -1,5 +1,5 @@
-thread (class)
-==============
+thread
+======
 
 The ``thread`` class represents a single thread of execution. It has been purposefully designed to feature an API that is 
 simliar to that of ``std::thread``. However, unlike ``std::thread``, ``thread`` will automatically join itself upon destruction.

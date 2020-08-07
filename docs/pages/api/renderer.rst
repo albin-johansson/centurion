@@ -42,6 +42,15 @@ Namespace                ``::centurion``
 Header                   ``renderer.hpp``
 ======================  =========================================
 
+Interface 
+---------
+
+.. doxygenclass:: centurion::basic_renderer
+  :members:
+  :undoc-members:
+  :outline:
+  :no-link:
+
 Examples
 --------
 

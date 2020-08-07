@@ -20,6 +20,15 @@ Namespace                ``::centurion``
 Header                   ``window.hpp``
 ======================  =========================================
 
+Interface 
+---------
+
+.. doxygenclass:: centurion::window
+  :members:
+  :undoc-members:
+  :outline:
+  :no-link:
+
 Example
 -------
 The following example illustrates a typical setup for a responsive window. Of course, the example

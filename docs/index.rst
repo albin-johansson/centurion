@@ -16,13 +16,32 @@ Welcome to Centurion's documentation!
    pages/api/overview
    pages/api/point
    pages/api/rect
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Graphics API
+
    pages/api/window
    pages/api/window_view
    pages/api/renderer
    pages/api/renderer_view
    pages/api/font
    pages/api/font_cache
-   pages/api/threads
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Threads API
+
+   pages/api/thread/overview
+   pages/api/thread/thread
+   pages/api/thread/mutex
+   pages/api/thread/scoped_lock
+   pages/api/thread/try_lock
+   pages/api/thread/semaphore
+   pages/api/thread/condition
+
+
+   
 
 .. toctree::
    :maxdepth: 2

@@ -84,7 +84,7 @@ enum class scale_mode {
 }
 
 /**
- * @copydoc operator==(texture::scale_mode, SDL_ScaleMode)
+ * @copydoc operator==(scale_mode, SDL_ScaleMode)
  *
  * @ingroup graphics
  */
@@ -114,7 +114,7 @@ enum class scale_mode {
 }
 
 /**
- * @copydoc operator!=(texture::scale_mode, SDL_ScaleMode)
+ * @copydoc operator!=(scale_mode, SDL_ScaleMode)
  *
  * @ingroup graphics
  */

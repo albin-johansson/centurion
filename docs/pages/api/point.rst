@@ -28,21 +28,30 @@ Public member types/constants
 The ``basic_point<T>`` class provides a few useful public members that are useful when working
 with generic code.
 
-``point_type``
-~~~~~~~~~~~~~~
+point_type
+~~~~~~~~~~
 This is the actual point representation, i.e. ``SDL_Point`` or ``SDL_FPoint``. 
 
-``value_type``
-~~~~~~~~~~~~~~
+value_type
+~~~~~~~~~~
 This is the type of the coordinates of the point. In other words, ``int`` or ``float``.
 
-``isIntegral``
-~~~~~~~~~~~~~~
+isIntegral
+~~~~~~~~~~
 Indicates whether or not the point is based on an integral type, e.g. ``true`` for ``ipoint``.
 
-``isFloating``
-~~~~~~~~~~~~~~
+isFloating
+~~~~~~~~~~
 Indicates whether or not the point is based on a floating-point type, e.g. ``true`` for ``fpoint``.
+
+Interface 
+---------
+
+.. doxygenclass:: centurion::basic_point
+  :members:
+  :undoc-members:
+  :outline:
+  :no-link:
 
 Examples
 --------

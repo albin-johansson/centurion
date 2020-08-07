@@ -85,16 +85,43 @@ class condition final {
   /**
    * @brief Wakes up all threads that are waiting on the condition variable.
    *
-   * @return `true` if everything went OK; `false` upon failure.
+   * @return `true` if everything went OK; `false` on failure.
    *
    * @since 5.0.0
    */
   CENTURION_API
   auto broadcast() noexcept -> bool;
 
+  /**
+   * @brief Waits until the condition variable is signaled.
+   *
+   * @pre The mutex must be locked when the function is called!
+   *
+   * @param mutex the mutex used to coordinate thread access.
+   *
+   * @return `true` if everything went OK; `false` on failure.
+   *
+   * @since 5.0.0
+   */
   CENTURION_API
   auto wait(mutex& mutex) noexcept -> bool;
 
+  /**
+   * @brief Waits until the condition variable is signaled or if the specified
+   * amount of time has passed.
+   *
+   * @pre The mutex must be locked when the function is called!
+   *
+   * @note This function is implemented by looping with a delay of 1 ms on some
+   * platforms, and should be avoided if possible.
+   *
+   * @param mutex the mutex used to coordinate thread access.
+   * @param ms the maximum amount of time to wait.
+   *
+   * @return `true` if everything went OK; `false` on failure.
+   *
+   * @since 5.0.0
+   */
   CENTURION_QUERY
   auto wait(mutex& mutex, milliseconds<u32> ms) noexcept -> lock_status;
 

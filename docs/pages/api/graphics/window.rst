@@ -1,10 +1,9 @@
 Window
 ======
 
-The ``window`` class is the main representation of a window in the library. Every window instance
-can have at most one associated renderer. The class is a wrapper around a ``SDL_Window*``, which
-it will manage the lifetime of automatically. If you don't want the owning RAII semantics,
-there's the ``window_view`` class.
+The ``window`` class is the main representation of a window in the library. It's a subclass of 
+``basic_window`` that features owning semantics. Every window instance can have at most one associated 
+renderer. For a window with non-owning semantics, see ``window_handle``.
 
 General information
 -------------------
@@ -16,6 +15,8 @@ Copyable                 No
 Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``SDL_Window*``, ``const SDL_Window*``
+Namespace                ``::centurion``
+Printable                Yes
 Namespace                ``::centurion``
 Header                   ``window.hpp``
 ======================  =========================================
@@ -31,8 +32,7 @@ Interface
 
 Example
 -------
-The following example illustrates a typical setup for a responsive window. Of course, the example
-assumes that the library has been initialized.
+The following example illustrates a typical setup for a responsive window.
 
 .. code-block:: c++
 
@@ -61,10 +61,10 @@ assumes that the library has been initialized.
         }
       }
 
-      renderer.clear_with(ctn::black);
+      renderer.clear_with(ctn::colors::black);
 
       const ctn::rect_i rect{{100, 100}, {150, 80}};
-      renderer.set_color(ctn::pink);
+      renderer.set_color(ctn::colors::pink);
       renderer.fill_rect(rect);
 
       renderer.present();
@@ -75,4 +75,4 @@ assumes that the library has been initialized.
 
 See also
 --------
-* :doc:`Window view </pages/api/graphics/window_view>`
+* :doc:`Window view </pages/api/graphics/window_handle>`

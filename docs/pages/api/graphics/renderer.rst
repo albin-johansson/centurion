@@ -121,7 +121,7 @@ There are four options when rendering text. You can render text that is "blended
 "shaded", "solid" or "blended and wrapped". The following image displays a piece of text
 rendered with the various options.
 
-.. image:: ../../../meta/text_rendering.png
+.. image:: ../../../../meta/text_rendering.png
 
 * **Blended**: The best looking option but also the slowest. Uses anti-aliasing.
 * **Blended and wrapped**: Same as blended, but the text will be wrapped to fit a specified width.

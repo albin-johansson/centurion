@@ -15,7 +15,7 @@ Welcome to Centurion's documentation!
 
    pages/api/overview
    
-.. toctre::
+.. toctree::
    :maxdepth: 2
    :caption: Geometry
 
@@ -27,7 +27,7 @@ Welcome to Centurion's documentation!
    :caption: Graphics
 
    pages/api/graphics/window
-   pages/api/graphics/window_view
+   pages/api/graphics/window_handle
    pages/api/graphics/renderer
    pages/api/graphics/renderer_view
    pages/api/graphics/font

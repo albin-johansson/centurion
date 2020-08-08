@@ -3,7 +3,7 @@
 #include <catch.hpp>
 
 #include "centurion_as_ctn.hpp"
-#include "thread.hpp "
+#include "thread.hpp"
 
 TEST_CASE("condition::signal", "[condition]")
 {

@@ -458,8 +458,8 @@ class message_box final {
   std::string m_title{"Message box"};
   std::string m_message{"N/A"};
   std::optional<color_scheme> m_colorScheme;
-  type m_type{type::information};
-  button_order m_buttonOrder{button_order::left_to_right};
+  type m_type{default_type()};
+  button_order m_buttonOrder{default_order()};
 
   [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
   {

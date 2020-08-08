@@ -67,7 +67,7 @@ namespace centurion {
  *
  * @details This class provides two different optimizations.
  *
- * First of, this class will, if told, cache glyph textures that can be used
+ * This class can be used to cache glyph textures that can subsequently be used
  * to render strings by simply looking up the individual glyphs and rendering
  * existing textures. It should be noted that the glyph-based rendering will
  * not feature accurate kerning. However, this might not be noticeable and/or
@@ -76,12 +76,11 @@ namespace centurion {
  * would require dynamic allocation and de-allocation for every new rendered
  * string.
  *
- * Secondly, it's also possible to tell instances of this class to cache full
- * strings and associate them with a user-provided identifier. Using this
- * approach, the strings will be rendered using accurate kerning. The problem
- * is, as you probably know, is that it's often hard to know what exact
- * strings you will render at compile-time. Use this option if you know that
- * you're going to render some specific string a lot.
+ * Furthermore, it's possible to cache full strings and associate them with a 
+ * user-provided identifier. Using this approach, the strings will be rendered 
+ * using accurate kerning. The problem is, as you might guess, is that it's hard 
+ * to know the exact strings you will render at compile-time. Use this option 
+ * if you know that you're going to render some specific string a lot.
  *
  * @todo Look into adding option for accurate kerning.
  *

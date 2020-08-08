@@ -22,10 +22,6 @@ TEST_CASE("condition::wait(mutex&)", "[condition]")
   ctn::mutex mutex;
   ctn::condition cond;
 
-  using enum ctn::lock_status;
-
-  auto x = success;
-
   REQUIRE(mutex.lock());
 
   ctn::thread thread{[](void* data) {

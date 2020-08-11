@@ -1,6 +1,6 @@
 #include "game_controller.hpp"
 
-#include "error.hpp"
+#include "centurion_exception.hpp"
 
 namespace centurion {
 
@@ -8,7 +8,7 @@ game_controller::game_controller(int joystickIndex)
     : m_controller{SDL_GameControllerOpen(joystickIndex)}
 {
   if (!m_controller) {
-    throw detail::core_error("Failed to open game controller!");
+    throw sdl_error{"Failed to open game controller!"};
   }
 }
 

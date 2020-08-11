@@ -268,7 +268,7 @@ class game_controller final {
    * @param joystickIndex the device index, can't be >= than the amount of
    * number of joysticks.
    *
-   * @throws centurion_exception if the game controller cannot be opened.
+   * @throws sdl_error if the game controller cannot be opened.
    *
    * @since 5.0.0
    */

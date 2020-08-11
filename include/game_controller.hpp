@@ -241,32 +241,6 @@ enum class game_controller_button {
   return !(lhs == rhs);
 }
 
-class sdl_string final {
- public:
-  sdl_string(const char*) = delete;
-
-  sdl_string(owner<zstring> str) noexcept
-      : m_str{str}, m_size{m_str ? std::strlen(m_str) : 0}
-  {}
-
-  ~sdl_string() noexcept
-  {
-    if (m_str) {
-      SDL_free(m_str);
-    }
-  }
-
-  [[nodiscard]] explicit operator bool() const noexcept { return m_str; }
-
-  [[nodiscard]] auto data() const noexcept -> czstring { return m_str; }
-
-  [[nodiscard]] auto size() const noexcept -> std::size_t { return m_size; }
-
- private:
-  owner<zstring> m_str{};
-  std::size_t m_size{};
-};
-
 /**
  * @class game_controller
  *

@@ -76,6 +76,7 @@ set(SOURCE_FILES
         ../include/try_lock.hpp
         ../include/condition.hpp
         ../include/semaphore.hpp
+        ../include/clipboard.hpp
 
         core/centurion.cpp
         core/centurion_exception.cpp
@@ -103,6 +104,7 @@ set(SOURCE_FILES
         system/platform.cpp
         system/battery.cpp
         system/screen.cpp
+        system/clipboard.cpp
 
         input/key_state.cpp
         input/mouse_state.cpp

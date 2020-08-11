@@ -10,9 +10,9 @@
 
 static inline constexpr auto* path = "resources/hiddenPond.mp3";
 
-TEST_CASE("music::music(czstring)", "[music]")
+TEST_CASE("music::music(nn_czstring)", "[music]")
 {
-  CHECK_THROWS_AS(ctn::music{""}, ctn::centurion_exception);
+  CHECK_THROWS_AS(ctn::music{""}, ctn::mix_error);
   CHECK_NOTHROW(ctn::music{path});
 }
 
@@ -48,8 +48,8 @@ TEST_CASE("music::operator=(music&&)", "[music]")
 
 TEST_CASE("music smart pointer factory methods", "[music]")
 {
-  CHECK_THROWS_AS(ctn::music::unique(""), ctn::centurion_exception);
-  CHECK_THROWS_AS(ctn::music::unique(""), ctn::centurion_exception);
+  CHECK_THROWS_AS(ctn::music::unique(""), ctn::mix_error);
+  CHECK_THROWS_AS(ctn::music::unique(""), ctn::mix_error);
   CHECK_NOTHROW(ctn::music::unique(path));
   CHECK_NOTHROW(ctn::music::shared(path));
 }

@@ -4,13 +4,17 @@
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
+#include "log.hpp"
 
 TEST_CASE("cursor(system_cursor)", "[cursor]")
 {
   CHECK_NOTHROW(ctn::cursor{ctn::system_cursor::crosshair});
+
+  const auto invalid = static_cast<ctn::system_cursor>(83948);
+  CHECK_THROWS_AS(ctn::cursor{invalid}, ctn::sdl_error);
 }
 
-TEST_CASE("cursor(owner<SDL_Cursor*>)", "[cursor]")
+TEST_CASE("cursor(nn_owner<SDL_Cursor*>)", "[cursor]")
 {
   auto* sdlCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
   CHECK_NOTHROW(ctn::cursor{sdlCursor});
@@ -21,6 +25,9 @@ TEST_CASE("cursor(surface, ipoint)", "[cursor]")
   const ctn::surface surface{"resources/panda.png"};
   const ctn::ipoint hotspot{12, 14};
   CHECK_NOTHROW(ctn::cursor{surface, hotspot});
+
+  const ctn::ipoint outside{8341, 2342};
+  CHECK_THROWS_AS(ctn::cursor(surface, outside), ctn::sdl_error);
 }
 
 TEST_CASE("cursor(cursor&&)", "[cursor]")

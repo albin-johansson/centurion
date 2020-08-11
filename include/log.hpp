@@ -86,6 +86,8 @@
  * @todo Add support for logging using `const std::string&`, in order to
  * reduce need to call `c_str()`.
  *
+ * @todo Debug macros? Something like `CENTURION_LOG_INFO("Foo %i", 42);`
+ *
  * @since 3.0.0
  *
  * @headerfile log.hpp
@@ -584,6 +586,18 @@ auto get_priority(category category) noexcept -> log::priority;
 }
 
 }  // namespace centurion::log
+
+#ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
+
+// TODO test!
+
+#ifdef NDEBUG
+#define CENTURION_LOG_INFO(fmt, ...)
+#else
+#define CENTURION_LOG_INFO(fmt, ...) centurion::log::info(fmt, __VA_ARGS__)
+#endif  // NDEBUG
+
+#endif  // CENTURION_USE_DEBUG_LOGGING_MACROS
 
 /// @}
 

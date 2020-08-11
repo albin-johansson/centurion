@@ -26,17 +26,43 @@ namespace centurion {
 template <typename T>
 struct basic_area;
 
-template <typename Traits>
+template <typename T>
 class basic_rect;
 
-template <typename Traits>
+template <typename T>
 class basic_point;
+
+template <typename Derived>
+class basic_renderer;
+
+template <typename Traits>
+class basic_window;
+
+template <typename Derived>
+class basic_joystick;
+
+template <typename Derived>
+class basic_texture;
+
+class thread;
+
+class mutex;
+
+class scoped_lock;
+
+class joystick;
+
+class joystick_handle;
 
 class renderer;
 
 class renderer_handle;
 
 class texture;
+
+class texture_handle;
+
+class sharing_texture;
 
 class surface;
 
@@ -72,11 +98,7 @@ class key_state;
 
 class mouse_state;
 
-namespace messagebox {
-
 class message_box;
-
-}
 
 }  // namespace centurion
 

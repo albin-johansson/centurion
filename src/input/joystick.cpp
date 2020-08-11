@@ -1,13 +1,11 @@
 #include "joystick.hpp"
 
-#include <utility>
-
 #include "centurion_exception.hpp"
 
 namespace centurion {
 
-joystick::joystick(nn_owner<SDL_Joystick*> sdlJoystick)
-    : m_joystick{sdlJoystick}
+joystick::joystick(nn_owner<SDL_Joystick*> sdlJoystick) noexcept
+    : basic_joystick{sdlJoystick}
 {}
 
 joystick::joystick(int deviceIndex)
@@ -16,9 +14,10 @@ joystick::joystick(int deviceIndex)
     throw centurion_exception{"There are no available joysticks!"};
   }
 
-  m_joystick.reset(SDL_JoystickOpen(deviceIndex));
-  if (!m_joystick) {
-    throw centurion_exception{"Failed to open joystick!"};
+  auto& storage = get_storage();
+  storage.reset(SDL_JoystickOpen(deviceIndex));
+  if (!storage) {
+    throw sdl_error{"Failed to open joystick!"};
   }
 }
 

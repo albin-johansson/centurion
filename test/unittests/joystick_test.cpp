@@ -4,11 +4,12 @@
 
 #include "centurion_as_ctn.hpp"
 #include "centurion_exception.hpp"
+#include "joystick_handle.hpp"
 
 // Note, it's hard to actually test the joystick API, so coverage is the best
 // we can do really.
 
-TEST_CASE("Constructors", "[joystick]")
+TEST_CASE("joystick constructors", "[joystick]")
 {
   SECTION("Index ctor")
   {
@@ -16,17 +17,11 @@ TEST_CASE("Constructors", "[joystick]")
   }
 }
 
-TEST_CASE("Smart pointer factory methods", "[joystick]")
+TEST_CASE("joystick smart pointer factory methods", "[joystick]")
 {
-  SECTION("Unique")
-  {
-    CHECK_THROWS_AS(ctn::joystick::unique(0), ctn::centurion_exception);
-  }
+  SECTION("Unique") { CHECK_THROWS(ctn::joystick::unique(0)); }
 
-  SECTION("Shared")
-  {
-    CHECK_THROWS_AS(ctn::joystick::shared(0), ctn::centurion_exception);
-  }
+  SECTION("Shared") { CHECK_THROWS(ctn::joystick::shared(0)); }
 }
 
 TEST_CASE("joystick::update", "[joystick]")
@@ -49,16 +44,16 @@ TEST_CASE("joystick polling", "[joystick]")
   CHECK(ctn::joystick::is_polling());
 }
 
-TEST_CASE("joystick::from_instance_id", "[joystick]")
+TEST_CASE("joystick_from_instance_id", "[joystick]")
 {
-  const auto* ptr = ctn::joystick::from_instance_id(0);
-  CHECK(!ptr);
+  const auto handle = ctn::joystick_from_instance_id(0);
+  CHECK(!handle);
 }
 
-TEST_CASE("joystick::from_player_index", "[joystick]")
+TEST_CASE("joystick_from_player_index", "[joystick]")
 {
-  const auto* ptr = ctn::joystick::from_player_index(0);
-  CHECK(!ptr);
+  const auto handle = ctn::joystick_from_player_index(0);
+  CHECK(!handle);
 }
 
 TEST_CASE("joystick::amount", "[joystick]")
@@ -203,4 +198,11 @@ TEST_CASE("joystick::Type values", "[joystick]")
     CHECK(joystick_t::guitar != SDL_JOYSTICK_TYPE_DANCE_PAD);
     CHECK(SDL_JOYSTICK_TYPE_ARCADE_PAD != joystick_t::flight_stick);
   }
+}
+
+TEST_CASE("joystick_handle", "[joystick]")
+{
+  SDL_Joystick* ptr{};
+  ctn::joystick_handle handle{ptr};
+  CHECK(!handle);
 }

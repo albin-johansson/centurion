@@ -61,15 +61,12 @@ namespace centurion {
  *
  * @since 5.0.0
  */
-CENTURION_QUERY
-auto get_renderer(const window& window) noexcept -> renderer_handle;
-
-/**
- * @copydoc get_renderer
- */
-CENTURION_QUERY
-auto get_renderer(const window_handle& window) noexcept -> renderer_handle;
+template <typename Traits>
+[[nodiscard]] auto get_renderer(const basic_window<Traits>& window) noexcept
+    -> renderer_handle;
 
 }  // namespace centurion
+
+#include "window_utils.ipp"
 
 #endif  // CENTURION_WINDOW_UTILS_HEADER

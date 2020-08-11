@@ -146,24 +146,6 @@ enum class system_cursor {
   return !(lhs == rhs);
 }
 
-/// @cond FALSE
-
-namespace detail {
-
-class cursor_deleter final {
- public:
-  void operator()(SDL_Cursor* cursor) noexcept
-  {
-    if (cursor) {
-      SDL_FreeCursor(cursor);
-    }
-  }
-};
-
-}  // namespace detail
-
-/// @endcond
-
 /**
  * @class cursor
  *
@@ -208,18 +190,6 @@ class cursor final {
   using wptr = std::weak_ptr<cursor>;
 
   /**
-   * @brief Creates a cursor based on the specified cursor type.
-   *
-   * @param id the cursor type that will be used.
-   *
-   * @throws centurion_exception if the cursor cannot be created.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  explicit cursor(system_cursor id);
-
-  /**
    * @brief Creates a cursor based on the supplied `SDL_Cursor`.
    *
    * @pre `sdlCursor` mustn't be null.
@@ -233,7 +203,19 @@ class cursor final {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit cursor(nn_owner<SDL_Cursor*> sdlCursor);
+  explicit cursor(nn_owner<SDL_Cursor*> sdlCursor) noexcept;
+
+  /**
+   * @brief Creates a cursor based on the specified cursor type.
+   *
+   * @param id the cursor type that will be used.
+   *
+   * @throws sdl_error if the cursor cannot be created.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API
+  explicit cursor(system_cursor id);
 
   /**
    * @brief Creates a cursor based on the supplied surface.
@@ -245,7 +227,7 @@ class cursor final {
    * @param hotspot the point used to determine where the mouse
    * actually is.
    *
-   * @throws centurion_exception if the cursor cannot be created.
+   * @throws sdl_error if the cursor cannot be created.
    *
    * @since 4.0.0
    */
@@ -366,7 +348,12 @@ class cursor final {
   }
 
  private:
-  std::unique_ptr<SDL_Cursor, detail::cursor_deleter> m_cursor;
+  class deleter final {
+   public:
+    void operator()(SDL_Cursor* cursor) noexcept { SDL_FreeCursor(cursor); }
+  };
+
+  std::unique_ptr<SDL_Cursor, deleter> m_cursor;
 };
 
 static_assert(std::is_final_v<cursor>);

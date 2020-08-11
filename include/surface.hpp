@@ -58,19 +58,6 @@
 
 namespace centurion {
 
-/// @cond FALSE
-
-namespace detail {
-
-class surface_deleter final {
- public:
-  void operator()(SDL_Surface* surface) noexcept { SDL_FreeSurface(surface); }
-};
-
-}  // namespace detail
-
-/// @endcond
-
 /**
  * @class surface
  *
@@ -114,19 +101,6 @@ class surface final {
   using wptr = std::weak_ptr<surface>;
 
   /**
-   * @brief Creates a surface based on the image at the specified path.
-   *
-   * @param file the file path of the image file that will be loaded, can't
-   * be null.
-   *
-   * @throws centurion_exception if the surface cannot be created.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  explicit surface(nn_czstring file);
-
-  /**
    * @brief Creates a surface by claiming the supplied SDL surface.
    *
    * @param surface a pointer to the surface that will be claimed, can't be
@@ -135,14 +109,27 @@ class surface final {
    * @since 4.0.0
    */
   CENTURION_API
-  explicit surface(nn_owner<SDL_Surface*> surface);
+  explicit surface(nn_owner<SDL_Surface*> surface) noexcept;
+
+  /**
+   * @brief Creates a surface based on the image at the specified path.
+   *
+   * @param file the file path of the image file that will be loaded, can't
+   * be null.
+   *
+   * @throws img_error if the surface cannot be created.
+   *
+   * @since 4.0.0
+   */
+  CENTURION_API
+  explicit surface(nn_czstring file);
 
   /**
    * @brief Creates a copy of the supplied surface.
    *
    * @param other the surface that will be copied.
    *
-   * @throws centurion_exception if the supplied surface couldn't be copied.
+   * @throws sdl_error if the supplied surface couldn't be copied.
    *
    * @since 4.0.0
    */
@@ -162,7 +149,7 @@ class surface final {
    *
    * @param other the surface that will be copied.
    *
-   * @throws centurion_exception if the supplied surface couldn't be copied.
+   * @throws sdl_error if the supplied surface couldn't be copied.
    *
    * @since 4.0.0
    */
@@ -288,7 +275,7 @@ class surface final {
    * @return a surface based on this surface with the specified
    * pixel format.
    *
-   * @throws centurion_exception if the surface cannot be created.
+   * @throws sdl_error if the surface cannot be created.
    *
    * @since 4.0.0
    */
@@ -401,13 +388,20 @@ class surface final {
   }
 
  private:
-  std::unique_ptr<SDL_Surface, detail::surface_deleter> m_surface;
+  class deleter final {
+   public:
+    void operator()(SDL_Surface* surface) noexcept { SDL_FreeSurface(surface); }
+  };
+
+  std::unique_ptr<SDL_Surface, deleter> m_surface;
 
   /**
    * @brief Copies the contents of the supplied surface instance into this
    * instance.
    *
    * @param other the instance that will be copied.
+   *
+   * @throws sdl_error if the surface cannot be copied.
    *
    * @since 4.0.0
    */
@@ -465,7 +459,7 @@ class surface final {
    * @return a copy of the associated `SDL_Surface`, the returned pointer won't
    * be null.
    *
-   * @throws centurion_exception if the copy couldn't be created.
+   * @throws sdl_error if the copy couldn't be created.
    *
    * @since 4.0.0
    */

@@ -25,7 +25,9 @@
 /**
  * @file joystick.hpp
  *
- * @brief Provides the joystick API.
+ * @ingroup input
+ *
+ * @brief Provides the `joystick` class.
  *
  * @author Albin Johansson
  *
@@ -42,6 +44,7 @@
 #include <memory>
 #include <type_traits>
 
+#include "basic_joystick.hpp"
 #include "button_state.hpp"
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
@@ -53,23 +56,33 @@
 
 namespace centurion {
 
-/// @cond FALSE
+class joystick;
 
-namespace detail {
-
-class joystick_deleter final {
- public:
-  void operator()(SDL_Joystick* joystick) noexcept
-  {
-    if (SDL_JoystickGetAttached(joystick)) {
-      SDL_JoystickClose(joystick);
+/**
+ * @class joystick_traits<joystick>
+ *
+ * @brief Provides traits for the `joystick` class.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile joystick.hpp
+ */
+template <>
+class joystick_traits<joystick> {
+ private:
+  class deleter final {
+   public:
+    void operator()(SDL_Joystick* joystick) noexcept
+    {
+      if (SDL_JoystickGetAttached(joystick)) {
+        SDL_JoystickClose(joystick);
+      }
     }
-  }
+  };
+
+ public:
+  using storage_type = std::unique_ptr<SDL_Joystick, deleter>;
 };
-
-}  // namespace detail
-
-/// @endcond
 
 /**
  * @class joystick
@@ -83,10 +96,11 @@ class joystick_deleter final {
  * @since 4.2.0
  *
  * @see `SDL_Joystick`
+ * @see `joystick_handle`
  *
  * @headerfile joystick.hpp
  */
-class joystick final {
+class joystick final : public basic_joystick<joystick> {
  public:
   /**
    * @typedef uptr
@@ -116,100 +130,16 @@ class joystick final {
   using wptr = std::weak_ptr<joystick>;
 
   /**
-   * @enum power
-   *
-   * @brief Mirrors the `SDL_JoystickPowerLevel` enum.
-   *
-   * @since 4.2.0
-   *
-   * @headerfile joystick.hpp
-   */
-  enum class power {
-    unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
-    empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
-    low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
-    medium = SDL_JOYSTICK_POWER_MEDIUM,    ///< Indicates <= 70% power.
-    full = SDL_JOYSTICK_POWER_FULL,        ///< Indicates <= 100% power.
-    wired = SDL_JOYSTICK_POWER_WIRED,      /**< Wired joystick, no need to
-                                            * worry about power. */
-    max = SDL_JOYSTICK_POWER_MAX           ///< Maximum power level.
-  };
-
-  /**
-   * @enum hat_state
-   *
-   * @brief Represents the various states of a joystick hat.
-   *
-   * @since 4.2.0
-   *
-   * @headerfile joystick.hpp
-   */
-  enum class hat_state {
-    centered = SDL_HAT_CENTERED,     ///< The hat is centered.
-    up = SDL_HAT_UP,                 ///< The hat is directed "north".
-    right = SDL_HAT_RIGHT,           ///< The hat is directed "east".
-    down = SDL_HAT_DOWN,             ///< The hat is directed "south".
-    left = SDL_HAT_LEFT,             ///< The hat is directed "west".
-    right_up = SDL_HAT_RIGHTUP,      ///< The hat is directed "north-east".
-    right_down = SDL_HAT_RIGHTDOWN,  ///< The hat is directed "south-east".
-    left_up = SDL_HAT_LEFTUP,        ///< The hat is directed "north-west".
-    left_down = SDL_HAT_LEFTDOWN,    ///< The hat is directed "south-west".
-  };
-
-  /**
-   * @enum type
-   *
-   * @brief Mirrors the `SDL_JoystickType` enum.
-   *
-   * @since 4.2.0
-   *
-   * @headerfile joystick.hpp
-   */
-  enum class type {
-    unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
-    game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
-    wheel = SDL_JOYSTICK_TYPE_WHEEL,
-    arcade_stick = SDL_JOYSTICK_TYPE_ARCADE_STICK,
-    flight_stick = SDL_JOYSTICK_TYPE_FLIGHT_STICK,
-    dance_pad = SDL_JOYSTICK_TYPE_DANCE_PAD,
-    guitar = SDL_JOYSTICK_TYPE_GUITAR,
-    drum_kit = SDL_JOYSTICK_TYPE_DRUM_KIT,
-    arcade_pad = SDL_JOYSTICK_TYPE_ARCADE_PAD,
-    throttle = SDL_JOYSTICK_TYPE_THROTTLE
-  };
-
-  /**
-   * @struct ball_axis_change
-   *
-   * @brief Represents the difference in a joystick ball axis position.
-   *
-   * @since 4.2.0
-   * @headerfile joystick.hpp
-   *
-   * @var ball_axis_change::dx
-   * Difference in x-axis position since last poll.
-   *
-   * @var ball_axis_change::dy
-   * Difference in y-axis position since last poll.
-   */
-  struct ball_axis_change {
-    int dx;
-    int dy;
-  };
-
-  /**
    * @brief Creates a `joystick` instance based on an existing `SDL_Joystick*`.
    *
    * @pre `sdlJoystick` must not be null.
    *
    * @param sdlJoystick a pointer to the `SDL_Joystick` that will be claimed.
    *
-   * @throws centurion_exception if the joystick cannot be created.
-   *
    * @since 4.2.0
    */
   CENTURION_API
-  explicit joystick(nn_owner<SDL_Joystick*> sdlJoystick);
+  explicit joystick(nn_owner<SDL_Joystick*> sdlJoystick) noexcept;
 
   /**
    * @brief Creates a `joystick` instance based on a device index.
@@ -220,7 +150,8 @@ class joystick final {
    * @param deviceIndex refers to the N'th joystick that is currently
    * recognized by SDL.
    *
-   * @throws centurion_exception if the joystick cannot be created.
+   * @throws centurion_exceptions if there are no joysticks.
+   * @throws sdl_error if the joystick cannot be created.
    *
    * @since 4.2.0
    */
@@ -776,6 +707,7 @@ class joystick final {
 
  private:
   std::unique_ptr<SDL_Joystick, detail::joystick_deleter> m_joystick;
+};
 };
 
 static_assert(std::is_final_v<joystick>);

@@ -57,19 +57,6 @@
 
 namespace centurion {
 
-/// @cond FALSE
-
-namespace detail {
-
-class font_deleter final {
- public:
-  void operator()(TTF_Font* font) noexcept { TTF_CloseFont(font); }
-};
-
-}  // namespace detail
-
-/// @endcond
-
 /**
  * @struct glyph_metrics
  *
@@ -153,8 +140,8 @@ class font final {
    * @param file the file path of the TrueType font file, mustn't be null.
    * @param size the font size, must be greater than zero.
    *
-   * @throws centurion_exception if the font cannot be loaded or if the supplied
-   * size isn't greater than zero.
+   * @throws centurion_exception if the supplied size is <= 0.
+   * @throws ttf_error if the font cannot be loaded.
    *
    * @since 3.0.0
    */
@@ -563,7 +550,12 @@ class font final {
   }
 
  private:
-  std::unique_ptr<TTF_Font, detail::font_deleter> m_font;
+  class deleter final {
+   public:
+    void operator()(TTF_Font* font) noexcept { TTF_CloseFont(font); }
+  };
+
+  std::unique_ptr<TTF_Font, deleter> m_font;
   int m_style{};
   int m_size{};
 

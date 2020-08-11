@@ -19,7 +19,6 @@ set(TEST_FILES
         unittests/mouse_state_test.cpp
         unittests/rect_test.cpp
         unittests/centurion_exception_test.cpp
-        unittests/error_test.cpp
         unittests/counter_test.cpp
         unittests/paths_test.cpp
         unittests/platform_test.cpp
@@ -59,14 +58,20 @@ set(TEST_FILES
         unittests/hints_test.cpp
         unittests/joystick_test.cpp
         unittests/touch_test.cpp
-        unittests/sleep_test.cpp
         unittests/scan_code_tests.cpp
         unittests/key_code_tests.cpp
         unittests/font_cache_test.cpp
         unittests/unicode_string_test.cpp
         unittests/game_loop_test.cpp
         unittests/window_handle_test.cpp
-        unittests/renderer_handle_test.cpp)
+        unittests/renderer_handle_test.cpp
+        unittests/sharing_texture_test.cpp
+        unittests/thread_test.cpp
+        unittests/mutex_test.cpp
+        unittests/scoped_lock_test.cpp
+        unittests/try_lock_test.cpp
+        unittests/semaphore_test.cpp
+        unittests/condition_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES
@@ -75,7 +80,12 @@ if (NOT DEFINED ENV{TRAVIS})
             unittests/music_test.cpp)
 endif ()
 
-add_executable(${CENTURION_TEST_TARGET} ${TEST_FILES})
+if (WIN32)
+    add_executable(${CENTURION_TEST_TARGET} WIN32 ${TEST_FILES})
+else ()
+    add_executable(${CENTURION_TEST_TARGET} ${TEST_FILES})
+endif ()
+
 add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
 
 if (DEFINED ENV{TRAVIS})
@@ -119,10 +129,11 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif ()
 
 message("------ LINKING TEST EXECUTABLE ------")
-message("Linking against SDL2: ${SDL2_LIBRARY}")
-message("Linking against SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
-message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
-message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
+message("Linking against...")
+message("  * SDL2       @ ${SDL2_LIBRARY}")
+message("  * SDL2_image @ ${SDL2_IMAGE_LIBRARIES}")
+message("  * SDL2_mixer @ ${SDL2_MIXER_LIBRARIES}")
+message("  * SDL2_ttf   @ ${SDL2_TTF_LIBRARIES}")
 message("Centurion link target: ${CENTURION_LIBRARIES}")
 message("-------------------------------------")
 

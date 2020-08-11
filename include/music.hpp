@@ -215,19 +215,6 @@ enum class music_type {
   return !(lhs == rhs);
 }
 
-/// @cond FALSE
-
-namespace detail {
-
-class music_deleter final {
- public:
-  void operator()(Mix_Music* music) noexcept { Mix_FreeMusic(music); }
-};
-
-}  // namespace detail
-
-/// @endcond
-
 /**
  * @class music
  *
@@ -333,7 +320,7 @@ class music final {
    * @param file the file path of the music file that will be loaded, cannot
    * be null.
    *
-   * @throws centurion_exception if the music file cannot be loaded.
+   * @throws mix_error if the music file cannot be loaded.
    *
    * @since 3.0.0
    */
@@ -574,7 +561,12 @@ class music final {
   }
 
  private:
-  std::unique_ptr<Mix_Music, detail::music_deleter> m_music;
+  class deleter final {
+   public:
+    void operator()(Mix_Music* music) noexcept { Mix_FreeMusic(music); }
+  };
+
+  std::unique_ptr<Mix_Music, deleter> m_music;
 };
 
 /**

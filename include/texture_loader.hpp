@@ -41,6 +41,7 @@
 
 #include "centurion_api.hpp"
 #include "renderer.hpp"
+#include "renderer_handle.hpp"
 #include "texture.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -59,10 +60,9 @@ namespace centurion {
  *
  * @details
  *
- * This class is really just a wrapper around a pointer to a
- * renderer. Which means that you shouldn't really store away
- * `texture_loader`, unless you can guarantee that the internal pointer won't
- * become a dangling pointer.
+ * This class is really just a wrapper around a `renderer_handle`. Which means
+ * that you shouldn't really store away `texture_loader` instances, unless you
+ * can guarantee that the internal pointer won't become a dangling pointer.
  *
  * The following snippet demonstrates how this class can be used.
  * @code{.cpp}
@@ -101,7 +101,13 @@ class texture_loader final {
    *
    * @since 5.0.0
    */
-  explicit texture_loader(renderer& renderer) noexcept : m_renderer{&renderer}
+  explicit texture_loader(renderer& renderer) noexcept : m_renderer{renderer} {}
+
+  /**
+   * @copydoc texture_loader(renderer&)
+   */
+  explicit texture_loader(renderer_handle renderer) noexcept
+      : m_renderer{renderer}
   {}
 
   /**
@@ -117,10 +123,7 @@ class texture_loader final {
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] auto unique(Args&&... args) -> texture::uptr
-  {
-    return texture::unique(*m_renderer, std::forward<Args>(args)...);
-  }
+  [[nodiscard]] auto unique(Args&&... args) -> texture::uptr;
 
   /**
    * @brief Creates and returns a shared pointer to a texture.
@@ -135,10 +138,7 @@ class texture_loader final {
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] auto shared(Args&&... args) -> texture::sptr
-  {
-    return texture::shared(*m_renderer, std::forward<Args>(args)...);
-  }
+  [[nodiscard]] auto shared(Args&&... args) -> texture::sptr;
 
   /**
    * @brief Creates and returns a texture.
@@ -153,15 +153,14 @@ class texture_loader final {
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] auto create(Args&&... args) -> texture
-  {
-    return texture{*m_renderer, std::forward<Args>(args)...};
-  }
+  [[nodiscard]] auto create(Args&&... args) -> texture;
 
  private:
-  renderer* m_renderer;
+  renderer_handle m_renderer;
 };
 
 }  // namespace centurion
+
+#include "texture_loader.ipp"
 
 #endif  // CENTURION_TEXTURE_LOADER_HEADER

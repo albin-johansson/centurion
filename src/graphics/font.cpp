@@ -1,7 +1,7 @@
 #include "font.hpp"
 
+#include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
-#include "error.hpp"
 
 namespace centurion {
 
@@ -13,7 +13,7 @@ font::font(nn_czstring file, int size) : m_size{size}
 
   m_font.reset(TTF_OpenFont(file, size));
   if (!m_font) {
-    throw detail::ttf_error("Failed to open font!");
+    throw ttf_error{"Failed to open font!"};
   }
 
   m_style = TTF_GetFontStyle(m_font.get());

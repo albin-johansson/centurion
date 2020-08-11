@@ -207,6 +207,17 @@ using i16 = Sint16;
 using i8 = Sint8;
 
 /**
+ * @typedef unicode
+ *
+ * @ingroup misc
+ *
+ * @brief The representation of Unicode glyphs.
+ *
+ * @since 5.0.0
+ */
+using unicode = u16;
+
+/**
  * @typedef seconds
  *
  * @ingroup misc

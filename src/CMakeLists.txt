@@ -2,63 +2,85 @@ cmake_minimum_required(VERSION 3.15)
 project(CenturionSrcProj)
 
 set(SOURCE_FILES
-        ${CTN_INCLUDE_DIR}/centurion_cfg.hpp
-        ${CTN_INCLUDE_DIR}/centurion_fwd.hpp
-        ${CTN_INCLUDE_DIR}/centurion_types.hpp
-        ${CTN_INCLUDE_DIR}/window.hpp
-        ${CTN_INCLUDE_DIR}/window_handle.hpp
-        ${CTN_INCLUDE_DIR}/window_base.hpp
-        ${CTN_INCLUDE_DIR}/window_utils.hpp
-        ${CTN_INCLUDE_DIR}/font.hpp
-        ${CTN_INCLUDE_DIR}/renderer_base.hpp
-        ${CTN_INCLUDE_DIR}/renderer.hpp
-        ${CTN_INCLUDE_DIR}/renderer_handle.hpp
-        ${CTN_INCLUDE_DIR}/texture.hpp
-        ${CTN_INCLUDE_DIR}/centurion_exception.hpp
-        ${CTN_INCLUDE_DIR}/centurion_api.hpp
-        ${CTN_INCLUDE_DIR}/centurion.hpp
-        ${CTN_INCLUDE_DIR}/colors.hpp
-        ${CTN_INCLUDE_DIR}/texture_loader.hpp
-        ${CTN_INCLUDE_DIR}/paths.hpp
-        ${CTN_INCLUDE_DIR}/platform.hpp
-        ${CTN_INCLUDE_DIR}/counter.hpp
-        ${CTN_INCLUDE_DIR}/log.hpp
-        ${CTN_INCLUDE_DIR}/blend_mode.hpp
-        ${CTN_INCLUDE_DIR}/message_box.hpp
-        ${CTN_INCLUDE_DIR}/color.hpp
-        ${CTN_INCLUDE_DIR}/rect.hpp
-        ${CTN_INCLUDE_DIR}/point.hpp
-        ${CTN_INCLUDE_DIR}/key_state.hpp
-        ${CTN_INCLUDE_DIR}/mouse_state.hpp
-        ${CTN_INCLUDE_DIR}/centurion_utils.hpp
-        ${CTN_INCLUDE_DIR}/error.hpp
-        ${CTN_INCLUDE_DIR}/surface.hpp
-        ${CTN_INCLUDE_DIR}/pixel_format.hpp
-        ${CTN_INCLUDE_DIR}/cursor.hpp
-        ${CTN_INCLUDE_DIR}/cpu.hpp
-        ${CTN_INCLUDE_DIR}/ram.hpp
-        ${CTN_INCLUDE_DIR}/battery.hpp
-        ${CTN_INCLUDE_DIR}/screen.hpp
-        ${CTN_INCLUDE_DIR}/scan_code.hpp
-        ${CTN_INCLUDE_DIR}/touch.hpp
-        ${CTN_INCLUDE_DIR}/mouse_button.hpp
-        ${CTN_INCLUDE_DIR}/event_type.hpp
-        ${CTN_INCLUDE_DIR}/event.hpp
-        ${CTN_INCLUDE_DIR}/button_state.hpp
-        ${CTN_INCLUDE_DIR}/game_controller.hpp
-        ${CTN_INCLUDE_DIR}/area.hpp
-        ${CTN_INCLUDE_DIR}/key_modifier.hpp
-        ${CTN_INCLUDE_DIR}/hints.hpp
-        ${CTN_INCLUDE_DIR}/joystick.hpp
-        ${CTN_INCLUDE_DIR}/touch.hpp
-        ${CTN_INCLUDE_DIR}/font_cache.hpp
-        ${CTN_INCLUDE_DIR}/unicode_string.hpp
-        ${CTN_INCLUDE_DIR}/game_loop.hpp
+        ../include/centurion_cfg.hpp
+        ../include/centurion_fwd.hpp
+        ../include/centurion_types.hpp
+        ../include/video.hpp
+        ../include/basic_window.hpp
+        ../include/basic_window.ipp
+        ../include/window.hpp
+        ../include/window_handle.hpp
+        ../include/window_utils.hpp
+        ../include/window_utils.ipp
+        ../include/font.hpp
+        ../include/basic_renderer.hpp
+        ../include/basic_renderer.ipp
+        ../include/renderer.hpp
+        ../include/renderer.ipp
+        ../include/renderer_handle.hpp
+        ../include/basic_joystick.hpp
+        ../include/basic_joystick.ipp
+        ../include/joystick.hpp
+        ../include/texture.hpp
+        ../include/texture.ipp
+        ../include/centurion_exception.hpp
+        ../include/centurion_api.hpp
+        ../include/centurion.hpp
+        ../include/colors.hpp
+        ../include/texture_loader.hpp
+        ../include/texture_loader.ipp
+        ../include/paths.hpp
+        ../include/platform.hpp
+        ../include/counter.hpp
+        ../include/log.hpp
+        ../include/blend_mode.hpp
+        ../include/message_box.hpp
+        ../include/message_box.ipp
+        ../include/color.hpp
+        ../include/rect.hpp
+        ../include/point.hpp
+        ../include/key_state.hpp
+        ../include/mouse_state.hpp
+        ../include/centurion_utils.hpp
+        ../include/surface.hpp
+        ../include/pixel_format.hpp
+        ../include/cursor.hpp
+        ../include/cpu.hpp
+        ../include/ram.hpp
+        ../include/battery.hpp
+        ../include/screen.hpp
+        ../include/scan_code.hpp
+        ../include/touch.hpp
+        ../include/mouse_button.hpp
+        ../include/event_type.hpp
+        ../include/event.hpp
+        ../include/button_state.hpp
+        ../include/game_controller.hpp
+        ../include/area.hpp
+        ../include/key_modifier.hpp
+        ../include/hints.hpp
+        ../include/touch.hpp
+        ../include/font_cache.hpp
+        ../include/font_cache.ipp
+        ../include/unicode_string.hpp
+        ../include/game_loop.hpp
+        ../include/joystick_handle.hpp
+        ../include/basic_texture.hpp
+        ../include/basic_texture.ipp
+        ../include/scale_mode.hpp
+        ../include/sharing_texture.hpp
+        ../include/sharing_texture.ipp
+        ../include/thread.hpp
+        ../include/mutex.hpp
+        ../include/scoped_lock.hpp
+        ../include/try_lock.hpp
+        ../include/condition.hpp
+        ../include/semaphore.hpp
 
-        centurion.cpp
+        core/centurion.cpp
+        core/centurion_exception.cpp
 
         misc/log.cpp
-        misc/error.cpp
 
         graphics/window.cpp
         graphics/window_handle.cpp
@@ -66,13 +88,15 @@ set(SOURCE_FILES
         graphics/font_cache.cpp
         graphics/texture.cpp
         graphics/message_box.cpp
+        graphics/message_box_button.cpp
+        graphics/message_box_color_scheme.cpp
         graphics/surface.cpp
         graphics/cursor.cpp
-        graphics/renderer_base.cpp
+        graphics/basic_renderer.cpp
         graphics/renderer_handle.cpp
         graphics/renderer.cpp
         graphics/color.cpp
-        graphics/window_utils.cpp
+        graphics/sharing_texture.cpp
 
         system/base_path.cpp
         system/pref_path.cpp
@@ -87,6 +111,7 @@ set(SOURCE_FILES
         input/touch.cpp
         input/key_code.cpp
         input/scan_code.cpp
+        input/joystick_handle.cpp
 
         event/event.cpp
         event/quit_event.cpp
@@ -109,7 +134,14 @@ set(SOURCE_FILES
         event/mouse_wheel_event.cpp
         event/multi_gesture_event.cpp
         event/text_editing_event.cpp
-        event/text_input_event.cpp)
+        event/text_input_event.cpp
+
+        thread/thread.cpp
+        thread/scoped_lock.cpp
+        thread/mutex.cpp
+        thread/condition.cpp
+        thread/try_lock.cpp
+        thread/semaphore.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(SOURCE_FILES

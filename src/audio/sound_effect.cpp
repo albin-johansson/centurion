@@ -2,15 +2,15 @@
 
 #include <algorithm>
 
+#include "centurion_exception.hpp"
 #include "centurion_utils.hpp"
-#include "error.hpp"
 
 namespace centurion {
 
 sound_effect::sound_effect(nn_czstring file) : m_chunk{Mix_LoadWAV(file)}
 {
   if (!m_chunk) {
-    throw detail::mix_error("Failed to create sound effect!");
+    throw mix_error{"Failed to load sound effect from file!"};
   }
 }
 

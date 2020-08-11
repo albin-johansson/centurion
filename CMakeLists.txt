@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(Centurion)
 
-add_definitions(-DCMAKE_EXPORT_COMPILE_COMMANDS=1)
-
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 set(CTN_ROOT_DIR ${PROJECT_SOURCE_DIR})
@@ -34,9 +32,9 @@ endif ()
 #   name: the name of the library associated with the environment variable.
 function(find_env_var [envVar [name]])
     if (DEFINED ENV{${ARGV0}})
-        message("Found ${ARGV1} environment variable! Path: " $ENV{${ARGV0}})
+        message("${ARGV1} path: " $ENV{${ARGV0}})
     else ()
-        message("Couldn't find environment variable ${ARGV0}!")
+        message(WARNING "Couldn't find environment variable ${ARGV0}!")
     endif ()
 endfunction()
 
@@ -73,6 +71,8 @@ function(centurion_add_header_only_lib [name [includeDirectory [sources]]])
     target_sources(${ARGV0} INTERFACE ${ARGV2})
     target_include_directories(${ARGV0} SYSTEM INTERFACE ${ARGV1})
 endfunction()
+
+unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
 
 message("------ LOOKING FOR ENVIRONMENT VARIABLES ------")
 find_env_var(SDL2DIR SDL2)

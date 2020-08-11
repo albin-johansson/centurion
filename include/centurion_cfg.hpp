@@ -54,4 +54,17 @@
  */
 #define CENTURION_USE_PRAGMA_ONCE
 
+/**
+ * @def CENTURION_USE_DEBUG_LOGGING_MACROS
+ *
+ * @ingroup core
+ *
+ * @brief This macro indicates whether or not debug-only logging macros will
+ * be defined. These can be found in the `log.hpp` header. By default, this
+ * macro is defined.
+ *
+ * @since 5.0.0
+ */
+#define CENTURION_USE_DEBUG_LOGGING_MACROS
+
 #endif  // CENTURION_CFG_HEADER

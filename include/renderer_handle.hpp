@@ -40,9 +40,9 @@
 #include <string>
 #include <type_traits>
 
+#include "basic_renderer.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
-#include "renderer_base.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -80,7 +80,7 @@ namespace centurion {
  *
  * @headerfile renderer.hpp
  */
-class renderer_handle final : public renderer_base<renderer_handle> {
+class renderer_handle final : public basic_renderer<renderer_handle> {
  public:
   /**
    * @brief Creates a renderer handle instance.

@@ -1226,8 +1226,7 @@ class callback final {
       : m_callback{callback}, m_userData{userData}
   {
     if (!callback) {
-      const auto* msg = "Can't create HintCallback from null function pointer!";
-      throw centurion_exception{msg};
+      throw centurion_exception{"Failed to create hint callback"};
     }
   }
 

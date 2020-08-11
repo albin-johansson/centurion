@@ -50,6 +50,7 @@
 #include "button_state.hpp"
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
+#include "joystick_handle.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -146,9 +147,6 @@ class game_controller final {
   CENTURION_API
   explicit game_controller(int joystickIndex);
 
-  CENTURION_API
-  ~game_controller() noexcept;
-
   CENTURION_QUERY
   auto name() const noexcept -> czstring;
 
@@ -166,7 +164,7 @@ class game_controller final {
   auto is_button_released(game_controller_button button) const noexcept -> bool;
 
   CENTURION_QUERY
-  auto get_joystick() noexcept -> SDL_Joystick*;  // TODO joystick_handle
+  auto get_joystick() noexcept -> joystick_handle;
 
   CENTURION_API
   static void update() noexcept;
@@ -181,8 +179,22 @@ class game_controller final {
   static auto is_polling() noexcept -> bool;
 
  private:
-  SDL_GameController* m_controller;
+  class deleter final {
+   public:
+    void operator()(SDL_GameController* controller) noexcept
+    {
+      SDL_GameControllerClose(controller);
+    }
+  };
+  std::unique_ptr<SDL_GameController, deleter> m_controller;
 };
+
+CENTURION_QUERY
+auto to_string(const game_controller& controller) -> std::string;
+
+CENTURION_API
+auto operator<<(std::ostream& stream, const game_controller& controller)
+    -> std::ostream&;
 
 static_assert(std::is_final_v<game_controller>);
 static_assert(std::is_nothrow_destructible_v<game_controller>);

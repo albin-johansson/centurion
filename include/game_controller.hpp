@@ -82,69 +82,6 @@ enum class game_controller_axis {
 };
 
 /**
- * @brief Indicates whether or not two game controller axis values are the same.
- *
- * @ingroup input
- *
- * @param lhs the left-hand-side game controller axis value.
- * @param rhs the right-hand-side game controller axis value.
- *
- * @return `true` if the values are the same; `false` otherwise.
- *
- * @since 4.0.0
- */
-[[nodiscard]] inline constexpr auto operator==(
-    game_controller_axis lhs,
-    SDL_GameControllerAxis rhs) noexcept -> bool
-{
-  return static_cast<SDL_GameControllerAxis>(lhs) == rhs;
-}
-
-/**
- * @copydoc operator==(game_controller_axis, SDL_GameControllerAxis)
- *
- * @ingroup input
- */
-[[nodiscard]] inline constexpr auto operator==(
-    SDL_GameControllerAxis lhs,
-    game_controller_axis rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * @brief Indicates whether or not two game controller axis values aren't the
- * same.
- *
- * @ingroup input
- *
- * @param lhs the left-hand-side game controller axis value.
- * @param rhs the right-hand-side game controller axis value.
- *
- * @return `true` if the values aren't the same; `false` otherwise.
- *
- * @since 4.0.0
- */
-[[nodiscard]] inline constexpr auto operator!=(
-    game_controller_axis lhs,
-    SDL_GameControllerAxis rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * @copydoc operator!=(game_controller_axis, SDL_GameControllerAxis)
- *
- * @ingroup input
- */
-[[nodiscard]] inline constexpr auto operator!=(
-    SDL_GameControllerAxis lhs,
-    game_controller_axis rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
  * @enum game_controller_button
  *
  * @ingroup input
@@ -174,72 +111,6 @@ enum class game_controller_button {
   dpad_right = SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
   max = SDL_CONTROLLER_BUTTON_MAX
 };
-
-/**
- * @brief Indicates whether or not two game controller button values are the
- * same.
- *
- * @ingroup input
- *
- * @param lhs the left-hand side game controller button value.
- * @param rhs the right-hand side game controller button value.
- *
- * @return `true` if the game controller button values are the same; `false`
- * otherwise.
- *
- * @since 4.0.0
- */
-[[nodiscard]] inline constexpr auto operator==(
-    game_controller_button lhs,
-    SDL_GameControllerButton rhs) noexcept -> bool
-{
-  return static_cast<SDL_GameControllerButton>(lhs) == rhs;
-}
-
-/**
- * @copydoc operator==(game_controller_button, SDL_GameControllerButton)
- *
- * @ingroup input
- */
-[[nodiscard]] inline constexpr auto operator==(
-    SDL_GameControllerButton lhs,
-    game_controller_button rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * @brief Indicates whether or not two game controller button values aren't the
- * same.
- *
- * @ingroup input
- *
- * @param lhs the left-hand side game controller button value.
- * @param rhs the right-hand side game controller button value.
- *
- * @return `true` if the game controller button values aren't the same; `false`
- * otherwise.
- *
- * @since 4.0.0
- */
-[[nodiscard]] inline constexpr auto operator!=(
-    game_controller_button lhs,
-    SDL_GameControllerButton rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * @copydoc operator!=(game_controller_button, SDL_GameControllerButton)
- *
- * @ingroup input
- */
-[[nodiscard]] inline constexpr auto operator!=(
-    SDL_GameControllerButton lhs,
-    game_controller_button rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
 
 /**
  * @class game_controller
@@ -318,6 +189,135 @@ static_assert(std::is_nothrow_destructible_v<game_controller>);
 
 static_assert(std::is_nothrow_move_constructible_v<game_controller>);
 static_assert(std::is_nothrow_move_assignable_v<game_controller>);
+
+/**
+ * @brief Indicates whether or not two game controller axis values are the same.
+ *
+ * @ingroup input
+ *
+ * @param lhs the left-hand-side game controller axis value.
+ * @param rhs the right-hand-side game controller axis value.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline constexpr auto operator==(
+    game_controller_axis lhs,
+    SDL_GameControllerAxis rhs) noexcept -> bool
+{
+  return static_cast<SDL_GameControllerAxis>(lhs) == rhs;
+}
+
+/**
+ * @copydoc operator==(game_controller_axis, SDL_GameControllerAxis)
+ *
+ * @ingroup input
+ */
+[[nodiscard]] inline constexpr auto operator==(
+    SDL_GameControllerAxis lhs,
+    game_controller_axis rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * @brief Indicates whether or not two game controller axis values aren't the
+ * same.
+ *
+ * @ingroup input
+ *
+ * @param lhs the left-hand-side game controller axis value.
+ * @param rhs the right-hand-side game controller axis value.
+ *
+ * @return `true` if the values aren't the same; `false` otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline constexpr auto operator!=(
+    game_controller_axis lhs,
+    SDL_GameControllerAxis rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @copydoc operator!=(game_controller_axis, SDL_GameControllerAxis)
+ *
+ * @ingroup input
+ */
+[[nodiscard]] inline constexpr auto operator!=(
+    SDL_GameControllerAxis lhs,
+    game_controller_axis rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @brief Indicates whether or not two game controller button values are the
+ * same.
+ *
+ * @ingroup input
+ *
+ * @param lhs the left-hand side game controller button value.
+ * @param rhs the right-hand side game controller button value.
+ *
+ * @return `true` if the game controller button values are the same; `false`
+ * otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline constexpr auto operator==(
+    game_controller_button lhs,
+    SDL_GameControllerButton rhs) noexcept -> bool
+{
+  return static_cast<SDL_GameControllerButton>(lhs) == rhs;
+}
+
+/**
+ * @copydoc operator==(game_controller_button, SDL_GameControllerButton)
+ *
+ * @ingroup input
+ */
+[[nodiscard]] inline constexpr auto operator==(
+    SDL_GameControllerButton lhs,
+    game_controller_button rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * @brief Indicates whether or not two game controller button values aren't the
+ * same.
+ *
+ * @ingroup input
+ *
+ * @param lhs the left-hand side game controller button value.
+ * @param rhs the right-hand side game controller button value.
+ *
+ * @return `true` if the game controller button values aren't the same; `false`
+ * otherwise.
+ *
+ * @since 4.0.0
+ */
+[[nodiscard]] inline constexpr auto operator!=(
+    game_controller_button lhs,
+    SDL_GameControllerButton rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @copydoc operator!=(game_controller_button, SDL_GameControllerButton)
+ *
+ * @ingroup input
+ */
+[[nodiscard]] inline constexpr auto operator!=(
+    SDL_GameControllerButton lhs,
+    game_controller_button rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 }  // namespace centurion
 

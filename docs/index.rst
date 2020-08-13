@@ -51,6 +51,7 @@ Welcome to Centurion's documentation!
 
    pages/api/system/battery
    pages/api/system/counter
+   pages/api/system/cpu
    pages/api/system/clipboard
 
 .. toctree::

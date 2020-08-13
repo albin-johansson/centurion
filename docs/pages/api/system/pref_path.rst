@@ -19,6 +19,7 @@ Overloaded operators     ``<<``
 Printable                Yes
 Namespace                ``::centurion``
 Header                   ``paths.hpp``
+Since                    3.0.0
 ======================  =========================================
 
 Interface 

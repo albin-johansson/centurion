@@ -11,7 +11,7 @@ auto get_device(int index) noexcept -> std::optional<SDL_TouchID>
 {
   const auto device = SDL_GetTouchDevice(index);
   if (device == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return device;
   }
@@ -33,7 +33,7 @@ auto get_finger(SDL_TouchID id, int index) noexcept -> std::optional<SDL_Finger>
   if (finger) {
     return *finger;
   } else {
-    return nothing;
+    return std::nullopt;
   }
 }
 

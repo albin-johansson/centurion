@@ -85,7 +85,7 @@ auto basic_joystick<T>::amount() noexcept -> std::optional<int>
 {
   const auto result = SDL_NumJoysticks();
   if (result < 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return result;
   }
@@ -103,7 +103,7 @@ auto basic_joystick<T>::player_index(int deviceIndex) noexcept
 {
   const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
   if (index == -1) {
-    return nothing;
+    return std::nullopt;
   } else {
     return index;
   }
@@ -114,7 +114,7 @@ auto basic_joystick<T>::vendor(int deviceIndex) noexcept -> std::optional<u16>
 {
   const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
   if (vendor == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return vendor;
   }
@@ -125,7 +125,7 @@ auto basic_joystick<T>::product(int deviceIndex) noexcept -> std::optional<u16>
 {
   const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
   if (product == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return product;
   }
@@ -137,7 +137,7 @@ auto basic_joystick<T>::product_version(int deviceIndex) noexcept
 {
   const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
   if (version == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return version;
   }
@@ -155,7 +155,7 @@ auto basic_joystick<T>::instance_id(int deviceIndex) noexcept
 {
   const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
   if (id == -1) {
-    return nothing;
+    return std::nullopt;
   } else {
     return id;
   }
@@ -193,7 +193,7 @@ auto basic_joystick<T>::player_index() const noexcept -> std::optional<int>
 {
   const auto index = SDL_JoystickGetPlayerIndex(ptr());
   if (index == -1) {
-    return nothing;
+    return std::nullopt;
   } else {
     return index;
   }
@@ -210,7 +210,7 @@ auto basic_joystick<T>::vendor() const noexcept -> std::optional<u16>
 {
   const auto vendor = SDL_JoystickGetVendor(ptr());
   if (vendor == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return vendor;
   }
@@ -221,7 +221,7 @@ auto basic_joystick<T>::product() const noexcept -> std::optional<u16>
 {
   const auto product = SDL_JoystickGetProduct(ptr());
   if (product == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return product;
   }
@@ -232,7 +232,7 @@ auto basic_joystick<T>::product_version() const noexcept -> std::optional<u16>
 {
   const auto version = SDL_JoystickGetProductVersion(ptr());
   if (version == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return version;
   }
@@ -247,7 +247,7 @@ auto basic_joystick<T>::get_ball_axis_change(int ball) const noexcept
   if (result == 0) {
     return change;
   } else {
-    return nothing;
+    return std::nullopt;
   }
 }
 
@@ -257,7 +257,7 @@ auto basic_joystick<T>::axis_pos(unsigned int axis) const noexcept
 {
   const auto result = SDL_JoystickGetAxis(ptr(), static_cast<int>(axis));
   if (result == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return result;
   }
@@ -273,7 +273,7 @@ auto basic_joystick<T>::axis_initial_state(unsigned int axis) const noexcept
   if (hadInitialState) {
     return state;
   } else {
-    return nothing;
+    return std::nullopt;
   }
 }
 

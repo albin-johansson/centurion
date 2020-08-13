@@ -405,7 +405,7 @@ class basic_window {
   /**
    * @brief Returns the display index associated with the window.
    *
-   * @return the display index associated with the window; `nothing` if the
+   * @return the display index associated with the window; `std::nullopt` if the
    * display index cannot be obtained.
    *
    * @since 3.1.0

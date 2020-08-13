@@ -354,7 +354,7 @@ auto basic_window<Derived>::display_index() const noexcept -> std::optional<int>
   if (index != -1) {
     return index;
   } else {
-    return nothing;
+    return std::nullopt;
   }
 }
 

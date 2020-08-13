@@ -11,7 +11,7 @@ auto seconds_left() noexcept -> std::optional<seconds<int>>
   int secondsLeft = -1;
   SDL_GetPowerInfo(&secondsLeft, nullptr);
   if (secondsLeft == -1) {
-    return nothing;
+    return std::nullopt;
   } else {
     return seconds<int>{secondsLeft};
   }
@@ -23,7 +23,7 @@ auto minutes_left() noexcept -> std::optional<minutes<int>>
   if (secondsLeft) {
     return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
   } else {
-    return nothing;
+    return std::nullopt;
   }
 }
 
@@ -32,7 +32,7 @@ auto percentage() noexcept -> std::optional<int>
   int percentageLeft = -1;
   SDL_GetPowerInfo(nullptr, &percentageLeft);
   if (percentageLeft == -1) {
-    return nothing;
+    return std::nullopt;
   } else {
     return percentageLeft;
   }

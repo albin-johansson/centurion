@@ -566,8 +566,7 @@ class basic_renderer {
    * @since 4.0.0
    */
   template <typename T>
-  void render(const texture& texture,
-              const basic_point<T>& position) noexcept;
+  void render(const texture& texture, const basic_point<T>& position) noexcept;
 
   /**
    * @brief Renders a texture according to the specified rectangle.
@@ -685,7 +684,7 @@ class basic_renderer {
    *
    * @details Clipping is disabled by default.
    *
-   * @param area the clip area rectangle; or `nothing` to disable clipping.
+   * @param area the clip area rectangle; or `std::nullopt` to disable clipping.
    *
    * @since 3.0.0
    */
@@ -835,7 +834,7 @@ class basic_renderer {
   /**
    * @brief Returns the current clipping rectangle, if there is one active.
    *
-   * @return the current clipping rectangle; or `nothing` if there is none.
+   * @return the current clipping rectangle; or `std::nullopt` if there is none.
    *
    * @since 3.0.0
    */
@@ -844,7 +843,7 @@ class basic_renderer {
   /**
    * @brief Returns information about the renderer.
    *
-   * @return information about the renderer; `nothing` if something went
+   * @return information about the renderer; `std::nullopt` if something went
    * wrong.
    *
    * @since 3.0.0

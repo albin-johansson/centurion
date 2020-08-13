@@ -29,7 +29,7 @@ auto name() noexcept -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
   if (name == "Unknown") {
-    return nothing;
+    return std::nullopt;
   } else {
     return name;
   }

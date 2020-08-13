@@ -146,7 +146,7 @@ auto num_devices() noexcept -> int;
  *
  * @param index the index of the desired touch device.
  *
- * @return a `SDL_TouchID` value; or `nothing` if there is no such value.
+ * @return a `SDL_TouchID` value; or `std::nullopt` if there is no such value.
  *
  * @since 4.3.0
  */
@@ -183,7 +183,7 @@ auto num_fingers(SDL_TouchID id) noexcept -> int;
  * @param id the touch ID of the finger.
  * @param index the index of the finger object.
  *
- * @return an `SDL_Finger` instance; or `nothing` if no such instance could
+ * @return an `SDL_Finger` instance; or `std::nullopt` if no such instance could
  * be obtained.
  *
  * @since 4.3.0

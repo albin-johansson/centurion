@@ -433,7 +433,7 @@ class font final {
    *
    * @param glyph the glyph to obtain the metrics of.
    *
-   * @return the metrics of the specified glyph; nothing if the metrics
+   * @return the metrics of the specified glyph; std::nullopt if the metrics
    * couldn't be obtained.
    *
    * @since 4.0.0

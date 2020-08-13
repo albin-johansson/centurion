@@ -136,7 +136,7 @@ class string_hint : public crtp_hint<string_hint<Hint>, czstring> {
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
-      return nothing;
+      return std::nullopt;
     } else {
       return value;
     }
@@ -162,7 +162,7 @@ class int_hint : public crtp_hint<int_hint<Hint>, int> {
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
-      return nothing;
+      return std::nullopt;
     } else {
       return std::stoi(value);
     }
@@ -184,7 +184,7 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int> {
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
-      return nothing;
+      return std::nullopt;
     } else {
       return static_cast<unsigned int>(std::stoul(value));
     }
@@ -205,7 +205,7 @@ class float_hint : public crtp_hint<float_hint<Hint>, float> {
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
-      return nothing;
+      return std::nullopt;
     } else {
       return std::stof(value);
     }
@@ -255,7 +255,7 @@ class render_driver final {
   {
     czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -314,7 +314,7 @@ class audio_resampling_mode final {
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -364,7 +364,7 @@ class scale_quality final {
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -419,7 +419,7 @@ class framebuffer_acceleration final {
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -486,7 +486,7 @@ class audio_category final {
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -529,7 +529,7 @@ class win_d3d_compiler final {
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -576,7 +576,7 @@ class wave_riff_chunk_size final {
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -627,7 +627,7 @@ class wave_truncation final {
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -678,7 +678,7 @@ class wave_fact_chunk final {
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -729,7 +729,7 @@ class logical_size_mode final {
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -778,7 +778,7 @@ class qt_wayland_content_orientation final {
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
-      return nothing;
+      return std::nullopt;
     }
 
     using detail::equal;
@@ -1177,8 +1177,8 @@ auto set_hint(const Value& value) -> bool
  *
  * @tparam Hint the type of the Hint to obtain the value of.
  *
- * @return the current value of the specified hint; `nothing` if there is no
- * value set for the hint.
+ * @return the current value of the specified hint; `std::nullopt` if there is
+ * no value set for the hint.
  *
  * @since 4.1.0
  */

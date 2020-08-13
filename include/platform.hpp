@@ -114,7 +114,7 @@ auto id() noexcept -> platform_id;
 /**
  * @brief Returns the name of the current platform.
  *
- * @return the name of the current platform; `nothing` if the name cannot
+ * @return the name of the current platform; `std::nullopt` if the name cannot
  * be deduced.
  *
  * @since 3.0.0

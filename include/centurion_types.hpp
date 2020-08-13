@@ -139,15 +139,6 @@ template <std::size_t size>
 using buffer = std::array<std::byte, size>;
 
 /**
- * @var nothing
- *
- * @ingroup misc
- *
- * @brief A constant that is equal to `std::nullopt`.
- */
-inline constexpr std::nullopt_t nothing = std::nullopt;
-
-/**
  * @typedef u64
  *
  * @ingroup misc

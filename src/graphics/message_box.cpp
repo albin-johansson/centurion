@@ -59,7 +59,7 @@ auto message_box::show(SDL_Window* parent) -> std::optional<button_id>
   if (button != -1) {
     return button;
   } else {
-    return nothing;
+    return std::nullopt;
   }
 }
 

@@ -76,10 +76,10 @@ namespace centurion {
  * would require dynamic allocation and de-allocation for every new rendered
  * string.
  *
- * Furthermore, it's possible to cache full strings and associate them with a 
- * user-provided identifier. Using this approach, the strings will be rendered 
- * using accurate kerning. The problem is, as you might guess, is that it's hard 
- * to know the exact strings you will render at compile-time. Use this option 
+ * Furthermore, it's possible to cache full strings and associate them with a
+ * user-provided identifier. Using this approach, the strings will be rendered
+ * using accurate kerning. The problem is, as you might guess, is that it's hard
+ * to know the exact strings you will render at compile-time. Use this option
  * if you know that you're going to render some specific string a lot.
  *
  * @todo Look into adding option for accurate kerning.

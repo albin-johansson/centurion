@@ -125,6 +125,10 @@ auto refresh_rate() noexcept -> int;
 /**
  * @brief Returns the pixel format of the desktop display mode.
  *
+ * @note This function returns the pixel format used by the desktop display
+ * mode, i.e. the fullscreen display mode, so it might not be accurate for
+ * non-fullscreen windows.
+ *
  * @return the pixel format of the desktop display mode.
  *
  * @since 3.0.0

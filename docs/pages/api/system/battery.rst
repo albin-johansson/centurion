@@ -1,5 +1,5 @@
-Battery API
-===========
+Battery
+=======
 
 The battery API can be used to obtain information about the system battery, if there 
 is one available. The battery API heavily utilizes ``std::optional`` as the return 

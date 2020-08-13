@@ -1,5 +1,5 @@
-Counter API
-===========
+Counter
+=======
 
 The counter API provides utilities related to the system high-performance counter and the time 
 that has passed since the library was initialized. This is useful for profiling and implementing

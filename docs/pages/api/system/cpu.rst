@@ -1,5 +1,5 @@
-CPU API
-=======
+CPU
+===
 
 The CPU API just wraps the SDL functions behind a nicer interface. It provides information
 about the system processor such as L1-cache size, the amount of cores, endianess and whether 

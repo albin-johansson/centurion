@@ -1,5 +1,5 @@
-Clipboard API
-=============
+Clipboard
+=========
 
 Centurion provides an easy-to-use clipboard API. The clipboard 
 API makes it possible to both query and set the system clipboard. 

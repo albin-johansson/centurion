@@ -121,7 +121,7 @@ auto id() noexcept -> platform_id;
  * @since 3.0.0
  */
 CENTURION_QUERY
-auto name() noexcept -> std::optional<std::string>;
+auto name() -> std::optional<std::string>;
 
 }  // namespace centurion::platform
 

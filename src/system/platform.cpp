@@ -25,7 +25,7 @@ auto id() noexcept -> platform_id
   }
 }
 
-auto name() noexcept -> std::optional<std::string>
+auto name() -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
   if (name == "Unknown") {

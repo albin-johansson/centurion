@@ -35,6 +35,38 @@ Interface
 Examples
 --------
 
+Basic playback
+~~~~~~~~~~~~~~
+
+.. code-block:: C++
+
+  #include <centurion_as_ctn.hpp>
+  #include <sound_effect.hpp>
+  #include <thread.hpp>
+
+  void foo()
+  {
+    ctn::sound_effect sound{"click.wav"};
+    using ms = ctn::milliseconds<ctn::u32>;
+
+    // play once
+    sound.play(); 
+
+    // stop playback
+    sound.stop(); 
+
+    // play twice
+    sound.play(2);
+    ctn::thread::sleep(ms{50});
+
+    // loops forever
+    sound.play(ctn::sound_effect::loopForever);
+    sound.stop();
+  }
+
+Fading a sound effect in and out
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. code-block:: C++
 
   #include <centurion_as_ctn.hpp>
@@ -44,25 +76,36 @@ Examples
   {
     ctn::sound_effect sound{"click.wav"};
 
-    // play once
-    sound.play(); 
-
-    // stop playback
-    sound.stop(); 
-
-    // sets the volume in the range [0, sound_effect::max_volume()]
-    sound.set_volume(64);
-
-    // play twice
-    sound.play(2);
-    
-    // loops forever
-    sound.play(ctn::sound_effect::loopForever);
-
     // fades in over 500 milliseconds
     sound.fade_in(ctn::milliseconds<int>{500});
 
-    if (sfx.is_fading()) {
+    // checks whether or not the sound effect is currently being faded
+    if (sound.is_fading()) {
       // ...
     }
+
+    // fades out over 1 second
+    sound.fade_out(ctn::seconds<int>{1});
+  }
+
+Handling sound effect volume
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: C++
+
+  #include <centurion_as_ctn.hpp>
+  #include <sound_effect.hpp>
+
+  void foo()
+  {
+    ctn::sound_effect sound{"click.wav"};
+
+    // gets the current volume
+    const auto vol = sound.volume();
+
+    // obtains the sound effect max volume, equal to MIX_MAX_VOLUME
+    constexpr auto max = ctn::sound_effect::max_volume();
+
+    // adjusts the volume
+    sound.set_volume(108);
   }

@@ -54,6 +54,7 @@ Welcome to Centurion's documentation!
    pages/api/system/cpu
    pages/api/system/clipboard
    pages/api/system/platform
+   pages/api/system/ram
 
 .. toctree::
    :maxdepth: 2

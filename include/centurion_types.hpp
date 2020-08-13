@@ -39,10 +39,12 @@
 
 #include <SDL_stdinc.h>
 
-#include <chrono>
-#include <gsl/gsl>
-#include <optional>
-#include <type_traits>
+#include <array>        // array
+#include <chrono>       // duration
+#include <cstddef>      // byte
+#include <gsl/gsl>      // not_null, owner, czstring, zstring
+#include <optional>     // optional
+#include <type_traits>  // TODO remove
 
 #include "centurion_api.hpp"
 
@@ -103,7 +105,7 @@ using nn_owner = gsl::not_null<owner<T>>;
  *
  * @brief Alias for a const C-style null-terminated string.
  */
-using czstring = const char*;
+using czstring = gsl::czstring<>;
 
 /**
  * @typedef zstring
@@ -112,7 +114,7 @@ using czstring = const char*;
  *
  * @brief Alias for a C-style null-terminated string.
  */
-using zstring = char*;
+using zstring = gsl::zstring<>;
 
 /**
  * @typedef nn_czstring
@@ -124,6 +126,17 @@ using zstring = char*;
  * @since 5.0.0
  */
 using nn_czstring = gsl::not_null<czstring>;
+
+/**
+ * @typedef buffer
+ *
+ * @brief Alias for an array of `std::byte` instances, meant to be used with
+ * `pmr` containers.
+ *
+ * @since 5.0.0
+ */
+template <std::size_t size>
+using buffer = std::array<std::byte, size>;
 
 /**
  * @var nothing

@@ -50,6 +50,7 @@ Welcome to Centurion's documentation!
    :caption: System
 
    pages/api/system/battery
+   pages/api/system/counter
    pages/api/system/clipboard
 
 .. toctree::

@@ -61,6 +61,12 @@ Basic playback
 
     // loops forever
     sound.play(ctn::sound_effect::loopForever);
+
+    // checks whether or not the sound effect is currently being played
+    if (sound.is_playing()) {
+      // ...
+    }
+
     sound.stop();
   }
 

@@ -49,9 +49,8 @@ Welcome to Centurion's documentation!
    :maxdepth: 2
    :caption: System
 
+   pages/api/system/battery
    pages/api/system/clipboard
-
-   
 
 .. toctree::
    :maxdepth: 2

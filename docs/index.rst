@@ -45,6 +45,11 @@ Welcome to Centurion's documentation!
    pages/api/thread/semaphore
    pages/api/thread/condition
 
+.. toctree::
+   :maxdepth: 2
+   :caption: System
+
+   pages/api/system/clipboard
 
    
 

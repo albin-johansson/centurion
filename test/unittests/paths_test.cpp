@@ -1,6 +1,7 @@
 #include "paths.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 
 #include "centurion_as_ctn.hpp"
 
@@ -63,6 +64,18 @@ TEST_CASE("base_path::get", "[path]")
   CHECK(path.get());
 }
 
+TEST_CASE("base_path to_string", "[path]")
+{
+  const ctn::base_path path;
+  std::cout << "COUT: " << ctn::to_string(path) << '\n';
+}
+
+TEST_CASE("base_path stream operator", "[path]")
+{
+  const ctn::base_path path;
+  std::cout << "<<: " << path << '\n';
+}
+
 TEST_CASE("pref_path(string&, string&)", "[path]")
 {
   CHECK_NOTHROW(ctn::pref_path{"centurion", "tests"});
@@ -118,4 +131,16 @@ TEST_CASE("pref_path::get", "[path]")
 {
   const ctn::pref_path pref_path{"centurion", "tests"};
   CHECK(pref_path.get());
+}
+
+TEST_CASE("pref_path to_string", "[path]")
+{
+  const ctn::pref_path path{"centurion", "tests"};
+  std::cout << "COUT: " << ctn::to_string(path) << '\n';
+}
+
+TEST_CASE("pref_path stream operator", "[path]")
+{
+  const ctn::pref_path path{"centurion", "tests"};
+  std::cout << "<<: " << path << '\n';
 }

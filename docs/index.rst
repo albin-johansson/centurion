@@ -38,6 +38,9 @@ Welcome to Centurion's documentation!
    :caption: Audio
 
    pages/api/audio/sound_effect
+   pages/api/audio/music
+   pages/api/audio/music_type
+   pages/api/audio/fade_status
 
 .. toctree::
    :maxdepth: 2

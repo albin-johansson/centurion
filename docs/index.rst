@@ -35,6 +35,12 @@ Welcome to Centurion's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :caption: Audio
+
+   pages/api/audio/sound_effect
+
+.. toctree::
+   :maxdepth: 2
    :caption: Threading
 
    pages/api/thread/overview

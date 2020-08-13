@@ -80,38 +80,6 @@ namespace centurion {
  * Usage of this class is pretty straightforward and self-explanatory. The
  * fundamental methods are `play()` and `stop()`, with additional support for
  * effects such as fading and looping.
- * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
- *   #include <sound_effect.hpp>
- *
- *   void demo()
- *   {
- *     // supports .wav, .aiff, .voc, .ogg and .voc files
- *     ctn::sound_effect sfx{"foo.wav"};
- *
- *     // sets the volume (range: [0, sound_effect::max_volume()])
- *     sfx.set_volume(98);
- *
- *     // play sound effect once
- *     sfx.play();
- *
- *     // play sound effect twice
- *     sfx.play(2);
- *
- *     // loop sound effect forever
- *     sfx.play(ctn::sound_effect::loopForever);
- *
- *     // stops playing the sound effect
- *     sfx.stop();
- *
- *     // fades in the sound effect over 500 milliseconds
- *     sfx.fade_in(ctn::milliseconds<int>{500});
- *
- *     if (sfx.is_fading()) {
- *       // ...
- *     }
- *   }
- * @endcode
  *
  * @since 3.0.0
  *

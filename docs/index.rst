@@ -70,6 +70,12 @@ Welcome to Centurion's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :caption: Configuration
+
+   pages/api/config/hint
+
+.. toctree::
+   :maxdepth: 2
    :caption: Tutorials
 
    pages/tutorials/installation

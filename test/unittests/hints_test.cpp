@@ -357,7 +357,7 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("direct_3d_11_debug") { test_bool_hint<direct_3d_11_debug>(); }
 
-  SECTION("direct_3D_thread_safe") { test_bool_hint<direct_3D_thread_safe>(); }
+  SECTION("direct_3d_thread_safe") { test_bool_hint<direct_3d_thread_safe>(); }
 
   SECTION("enable_opengl_shaders") { test_bool_hint<enable_opengl_shaders>(); }
 

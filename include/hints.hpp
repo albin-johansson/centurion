@@ -40,6 +40,8 @@
  *
  * @todo Document all of the hint classes.
  *
+ * @todo Remove hint namespace.
+ *
  * @file hints.hpp
  * @since 4.1.0
  * @author Albin Johansson
@@ -911,7 +913,7 @@ CENTURION_HINT(joystick_use_hidapi, SDL_HINT_JOYSTICK_HIDAPI, bool_hint)
 
 CENTURION_HINT(joystick_use_hidapi_ps4, SDL_HINT_JOYSTICK_HIDAPI_PS4, bool_hint)
 
-CENTURION_HINT(JoystickUseHIDAPIRumble,
+CENTURION_HINT(joystick_use_hidapi_ps4_rumble,
                SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE,
                bool_hint)
 
@@ -957,7 +959,7 @@ CENTURION_HINT(no_signal_handlers, SDL_HINT_NO_SIGNAL_HANDLERS, bool_hint)
 
 CENTURION_HINT(direct_3d_11_debug, SDL_HINT_RENDER_DIRECT3D11_DEBUG, bool_hint)
 
-CENTURION_HINT(direct_3D_thread_safe,
+CENTURION_HINT(direct_3d_thread_safe,
                SDL_HINT_RENDER_DIRECT3D_THREADSAFE,
                bool_hint)
 
@@ -1047,7 +1049,7 @@ CENTURION_HINT(win_rt_privacy_policy_url,
                SDL_HINT_WINRT_PRIVACY_POLICY_URL,
                string_hint)
 
-CENTURION_HINT(WinRTHandleBackButton,
+CENTURION_HINT(win_rt_handle_back_button,
                SDL_HINT_WINRT_HANDLE_BACK_BUTTON,
                int_hint)
 
@@ -1114,20 +1116,20 @@ enum class hint_prio {
  * @par Examples
  * The following is an example of how you could use this method to
  * specify the render driver that SDL should use, and the value is specified
- * with an enum value associated with the <code>RenderDriver</code> class.
+ * with an enum value associated with the `render_driver` class.
  * @code{.cpp}
- *   set_hint<RenderDriver>(RenderDriver::OpenGL);
+ *   set_hint<render_driver>(render_driver::open_gl);
  * @endcode
  * Most hints only accept boolean or integer values. As in the following
  * example.
  * @code{.cpp}
- *   set_hint<EnableVSync>(true);
- *   set_hint<EventLogging>(2);
+ *   set_hint<enable_vsync>(true);
+ *   set_hint<event_logging>(2);
  * @endcode
  * Sometimes, it's useful to know whether or not the hint was actually set
  * to the desired value. This can be done according to the following example.
  * @code{.cpp}
- *   const bool success = set_hint<DoubleBuffer>(true);
+ *   const bool success = set_hint<double_buffer>(true);
  *   if (success) {
  *     // the hint was actually set!
  *   } else {
@@ -1168,7 +1170,7 @@ auto set_hint(const Value& value) -> bool
  * Many hints aren't actually set by default, so if the specified hint
  * doesn't have a set value, then this method will return a null optional.
  * @code{.cpp}
- *  if (const auto value = get_hint<RenderDriver>(); value) {
+ *  if (const auto value = get_hint<render_driver>(); value) {
  *    // the hint was set!
  *  } else {
  *    // the hint had no set value!
@@ -1183,7 +1185,7 @@ auto set_hint(const Value& value) -> bool
  * @since 4.1.0
  */
 template <typename Hint>
-[[nodiscard]] decltype(auto) get_hint() noexcept
+[[nodiscard]] auto get_hint() noexcept
 {
   return Hint::current_value();
 }

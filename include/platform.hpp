@@ -46,6 +46,7 @@
 
 #include <SDL.h>
 
+#include <optional>
 #include <string>
 
 #include "centurion_api.hpp"

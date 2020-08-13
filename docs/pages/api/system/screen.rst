@@ -69,12 +69,14 @@ Texture using screen pixel format
 
   #include <centurion_as_ctn.hpp>
   #include <screen.hpp>
+  #include <renderer.hpp>
   #include <texture.hpp>
 
-  void foo()
+  void foo(ctn::renderer& renderer)
   {
     // creates a blank texture that uses the screen pixel format
-    const ctn::texture texture{ctn::screen::pixel_format(), 
+    const ctn::texture texture{renderer,
+                               ctn::screen::pixel_format(), 
                                ctn::texture_access::no_lock, 
                                {100, 100}};
   }

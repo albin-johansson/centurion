@@ -631,8 +631,6 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent> {
    * @brief Sets the error value for the performed stroke compared with the
    * gesture template associated with the event.
    *
-   * @return the error value for the performed stroke.
-   *
    * @since 4.0.0
    */
   CENTURION_API

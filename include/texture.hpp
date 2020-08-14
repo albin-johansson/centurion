@@ -209,15 +209,17 @@ class texture final : public basic_texture<texture> {
   [[nodiscard]] static auto unique(const Renderer& renderer,
                                    const surface& surface) -> uptr;
 
+  // clang-format off
   /**
-   * @copydoc texture(const Renderer&, pixel_format, texture_access, const
-   * iarea&)
+   * @copydoc texture(const Renderer&, pixel_format, texture_access, const iarea&)
    */
   template <typename Renderer>
   [[nodiscard]] static auto unique(const Renderer& renderer,
                                    pixel_format format,
                                    texture_access access,
                                    const iarea& size) -> uptr;
+
+  // clang-format on
 
   /**
    * @copydoc texture(nn_owner<SDL_Texture*>)
@@ -239,15 +241,16 @@ class texture final : public basic_texture<texture> {
   [[nodiscard]] static auto shared(const Renderer& renderer,
                                    const surface& surface) -> sptr;
 
+  // clang-format off
   /**
-   * @copydoc texture(const Renderer&, pixel_format, texture_access, const
-   * iarea&)
+   * @copydoc texture(const Renderer&, pixel_format, texture_access, const iarea&)
    */
   template <typename Renderer>
   [[nodiscard]] static auto shared(const Renderer& renderer,
                                    pixel_format format,
                                    texture_access access,
                                    const iarea& size) -> sptr;
+  // clang-format on
 
   /**
    * @brief Creates and returns a unique pointer to a texture.

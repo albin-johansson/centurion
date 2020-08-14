@@ -64,7 +64,7 @@ namespace centurion {
  *
  * @since 5.0.0
  *
- * @headerfile lock.hpp
+ * @headerfile try_lock.hpp
  */
 class try_lock final {
  public:

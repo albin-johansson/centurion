@@ -124,7 +124,7 @@ class sharing_texture final : public basic_texture<sharing_texture> {
   /**
    * @brief Creates a sharing texture from an ordinary texture.
    *
-   * @detail The created sharing texture will steal the SDL texture from the
+   * @details The created sharing texture will steal the SDL texture from the
    * supplied `texture` instance.
    *
    * @param texture the `texture` instance that provides the SDL texture that

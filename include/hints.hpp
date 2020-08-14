@@ -223,7 +223,7 @@ class float_hint : public crtp_hint<float_hint<Hint>, float> {
  *
  * @ingroup configuration
  *
- * @brief Contains components related to hints (configuration variables).
+ * @brief Contains the hint types.
  *
  * @since 4.1.0
  */

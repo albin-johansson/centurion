@@ -16,7 +16,7 @@ void test_hint(Lambda&& lambda)
   lambda();
 
   if (optPrev) {
-    ctn::set_hint<Hint, ctn::hint_prio::low>(*optPrev);
+    ctn::set_hint<Hint, ctn::hint_priority::low>(*optPrev);
   }
 }
 
@@ -36,7 +36,7 @@ void test_bool_hint()
 
 TEST_CASE("hint_prio", "[Hints]")
 {
-  using prio = ctn::hint_prio;
+  using prio = ctn::hint_priority;
   CHECK(prio::low == static_cast<prio>(SDL_HINT_DEFAULT));
   CHECK(prio::normal == static_cast<prio>(SDL_HINT_NORMAL));
   CHECK(prio::override == static_cast<prio>(SDL_HINT_OVERRIDE));
@@ -908,12 +908,12 @@ TEST_CASE("add_hint_callback", "[Hints]")
       },
       &data);
 
-  ctn::set_hint<render_driver, ctn::hint_prio::override>(
+  ctn::set_hint<render_driver, ctn::hint_priority::override>(
       render_driver::software);
 
   handle.disconnect();
 
-  ctn::set_hint<render_driver, ctn::hint_prio::override>(
+  ctn::set_hint<render_driver, ctn::hint_priority::override>(
       render_driver::open_gl);
 }
 

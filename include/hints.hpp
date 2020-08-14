@@ -1084,7 +1084,7 @@ CENTURION_HINT(xinput_use_old_joystick_mapping,
 }  // namespace hint
 
 /**
- * @enum hint_prio
+ * @enum hint_priority
  *
  * @ingroup configuration
  *
@@ -1097,7 +1097,7 @@ CENTURION_HINT(xinput_use_old_joystick_mapping,
  *
  * @headerfile hints.hpp
  */
-enum class hint_prio {
+enum class hint_priority {
   low = SDL_HINT_DEFAULT,   /**< The lowest priority, used for default values.*/
   normal = SDL_HINT_NORMAL, /**< The priority used by default by
                              * <code>set_hint</code>.*/
@@ -1150,7 +1150,7 @@ enum class hint_prio {
  * @since 4.1.0
  */
 template <typename Hint,
-          hint_prio priority = hint_prio::normal,
+          hint_priority priority = hint_priority::normal,
           typename Value,
           typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
 auto set_hint(const Value& value) -> bool

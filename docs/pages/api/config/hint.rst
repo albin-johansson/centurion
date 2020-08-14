@@ -13,13 +13,13 @@ really of interest.
 Interface
 ---------
 
-.. doxygenfunction:: centurion::hint::set_hint
+.. doxygenfunction:: centurion::set_hint
   :outline:
 
-.. doxygenfunction:: centurion::hint::get_hint
+.. doxygenfunction:: centurion::get_hint
   :outline:
 
-.. doxygenfunction:: centurion::hint::add_callback
+.. doxygenfunction:: centurion::add_hint_callback
   :outline:
 
 Enum hints

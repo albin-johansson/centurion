@@ -1081,6 +1081,8 @@ CENTURION_HINT(xinput_use_old_joystick_mapping,
 
 /// @endcond
 
+}  // namespace hint
+
 /**
  * @enum hint_prio
  *
@@ -1191,7 +1193,7 @@ template <typename Hint>
 }
 
 /**
- * @class callback
+ * @class hint_callback
  *
  * @ingroup configuration
  *
@@ -1210,7 +1212,7 @@ template <typename Hint>
  * @headerfile hints.hpp
  */
 template <typename Hint, typename UserData = void>
-class callback final {
+class hint_callback final {
  public:
   /**
    * @brief Creates a `HintCallback`.
@@ -1224,7 +1226,7 @@ class callback final {
    *
    * @since 4.1.0
    */
-  callback(SDL_HintCallback callback, UserData* userData = nullptr)
+  hint_callback(SDL_HintCallback callback, UserData* userData = nullptr)
       : m_callback{callback}, m_userData{userData}
   {
     if (!callback) {
@@ -1311,21 +1313,21 @@ class callback final {
  * as traditional function pointers and lambdas. The simplest way to add a
  * callback is with a lambda and no explicit user data.
  * @code{.cpp}
- *   auto handle = add_callback([](void* userData,
- *                                 czstring hint,
- *                                 czstring oldValue,
- *                                 czstring newValue) {
- *     // code that handles the update
+ *   auto handle = add_hint_callback([](void* userData,
+ *                                      czstring hint,
+ *                                      czstring oldValue,
+ *                                      czstring newValue) {
+ *    // code that handles the update
  *   });
  * @endcode
  * It's also possible to supply a pointer to some data that you want to
  * associate with the callback. As always, beware of the lifetime of the data!
  * @code{.cpp}
  *   int data = 8; // shouldn't be local in real code
- *   auto handle = add_callback([](void* userData,
- *                                 czstring hint,
- *                                 czstring oldValue,
- *                                 czstring newValue) {
+ *   auto handle = add_hint_callback([](void* userData,
+ *                                      czstring hint,
+ *                                      czstring oldValue,
+ *                                      czstring newValue) {
  *     // code that handles the update
  *   },
  *   &data);
@@ -1346,10 +1348,11 @@ class callback final {
  * @since 4.1.0
  */
 template <typename Hint, typename UserData = void>
-auto add_callback(SDL_HintCallback fun, UserData* userData = nullptr) noexcept
-    -> callback<Hint, UserData>
+auto add_hint_callback(SDL_HintCallback fun,
+                       UserData* userData = nullptr) noexcept
+    -> hint_callback<Hint, UserData>
 {
-  callback<Hint, UserData> hintCallback{fun, userData};
+  hint_callback<Hint, UserData> hintCallback{fun, userData};
   hintCallback.connect();
   return hintCallback;
 }
@@ -1363,12 +1366,11 @@ auto add_callback(SDL_HintCallback fun, UserData* userData = nullptr) noexcept
  *
  * @since 4.1.0
  */
-inline void clear_all() noexcept
+inline void clear_hints() noexcept
 {
   SDL_ClearHints();
 }
 
-}  // namespace hint
 }  // namespace centurion
 
 #undef CENTURION_BOOL_HINT

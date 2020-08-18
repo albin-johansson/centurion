@@ -1208,24 +1208,6 @@ class orientations final : public detail::string_hint<orientations> {
   }
 };
 
-class win_rt_privacy_policy_label final
-    : public detail::string_hint<win_rt_privacy_policy_label> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINRT_PRIVACY_POLICY_LABEL;
-  }
-};
-
-class win_rt_privacy_policy_url final
-    : public detail::string_hint<win_rt_privacy_policy_url> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINRT_PRIVACY_POLICY_URL;
-  }
-};
-
 class window_share_pixel_format final
     : public detail::string_hint<window_share_pixel_format> {
  public:
@@ -1288,15 +1270,6 @@ class mouse_double_click_radius final
   }
 };
 
-class win_rt_handle_back_button final  // TODO test
-    : public detail::int_hint<win_rt_handle_back_button> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINRT_HANDLE_BACK_BUTTON;
-  }
-};
-
 class raspberry_pi_video_layer final
     : public detail::int_hint<raspberry_pi_video_layer> {
  public:
@@ -1342,6 +1315,35 @@ class mouse_relative_speed_scale final
   }
 };
 
+inline namespace winrt {
+
+class privacy_policy_label final
+    : public detail::string_hint<privacy_policy_label> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_PRIVACY_POLICY_LABEL;
+  }
+};
+
+class privacy_policy_url final
+    : public detail::string_hint<privacy_policy_url> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_PRIVACY_POLICY_URL;
+  }
+};
+
+class handle_back_button final : public detail::bool_hint<handle_back_button> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_HANDLE_BACK_BUTTON;
+  }
+};
+
+}  // namespace winrt
 
 namespace windows {
 

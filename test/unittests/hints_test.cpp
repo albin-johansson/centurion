@@ -574,28 +574,6 @@ TEST_CASE("set_hint", "[hint]")
     test_bool_hint<window_frame_usable_while_cursor_hidden>();
   }
 
-  SECTION("win_rt_privacy_policy_label")
-  {
-    using ctn::hint::win_rt_privacy_policy_label;
-    test_hint<win_rt_privacy_policy_label>([] {
-      ctn::czstring str = "Hello this is GDPR speaking";
-      ctn::set_hint<win_rt_privacy_policy_label>(str);
-      CHECK_THAT(ctn::get_hint<win_rt_privacy_policy_label>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("win_rt_privacy_policy_url")
-  {
-    using ctn::hint::win_rt_privacy_policy_url;
-    test_hint<win_rt_privacy_policy_url>([] {
-      ctn::czstring str = "Hello this is GDPR URL speaking";
-      ctn::set_hint<win_rt_privacy_policy_url>(str);
-      CHECK_THAT(ctn::get_hint<win_rt_privacy_policy_url>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
   SECTION("mouse_touch_events")
   {
     using ctn::hint::mouse_touch_events;
@@ -749,6 +727,37 @@ TEST_CASE("set_hint", "[hint]")
     });
 
     ctn::set_hint<render_driver>(render_driver::open_gl);
+  }
+
+  SECTION("winrt::")
+  {
+    SECTION("privacy_policy_label")
+    {
+      using ctn::hint::winrt::privacy_policy_label;
+      test_hint<privacy_policy_label>([] {
+        ctn::czstring str = "Hello this is GDPR speaking";
+        ctn::set_hint<privacy_policy_label>(str);
+        CHECK_THAT(ctn::get_hint<privacy_policy_label>().value(),
+                   Catch::Equals(str));
+      });
+    }
+
+    SECTION("privacy_policy_url")
+    {
+      using ctn::hint::winrt::privacy_policy_url;
+      test_hint<privacy_policy_url>([] {
+        ctn::czstring str = "Hello this is GDPR URL speaking";
+        ctn::set_hint<privacy_policy_url>(str);
+        CHECK_THAT(ctn::get_hint<privacy_policy_url>().value(),
+                   Catch::Equals(str));
+      });
+    }
+
+    SECTION("handle_back_button")
+    {
+      using ctn::hint::winrt::handle_back_button;
+      test_bool_hint<handle_back_button>();
+    }
   }
 
   SECTION("windows::")

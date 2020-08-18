@@ -108,7 +108,8 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``touch_mouse_events``                         ``SDL_HINT_TOUCH_MOUSE_EVENTS``                       
  ``tv_remote_as_joystick``                      ``SDL_HINT_TV_REMOTE_AS_JOYSTICK``                    
  ``xinput_enabled``                             ``SDL_HINT_XINPUT_ENABLED``                           
- ``xinput_use_old_joystick_mapping``            ``SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING``          
+ ``xinput_use_old_joystick_mapping``            ``SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING``
+ ``winrt::handle_back_button``                  ``SDL_HINT_WINRT_HANDLE_BACK_BUTTON``
 ============================================== =======================================================
 
 String hints
@@ -131,10 +132,10 @@ format of the string arguments.
  ``orientations``                               ``SDL_HINT_ORIENTATIONS``                             
  ``x11::window_visual_id``                      ``SDL_HINT_VIDEO_X11_WINDOW_VISUALID``
  ``window_share_pixel_format``                  ``SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT``
- ``win_rt_privacy_policy_label``                ``SDL_HINT_WINRT_PRIVACY_POLICY_LABEL``               
- ``win_rt_privacy_policy_url``                  ``SDL_HINT_WINRT_PRIVACY_POLICY_URL``                 
  ``windows::int_resource_icon``                 ``SDL_HINT_WINDOWS_INTRESOURCE_ICON``
  ``windows::int_resource_icon_small``           ``SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL``
+ ``winrt::privacy_policy_label``                ``SDL_HINT_WINRT_PRIVACY_POLICY_LABEL``
+ ``winrt::privacy_policy_url``                  ``SDL_HINT_WINRT_PRIVACY_POLICY_URL``
  ``qt_wayland_window_flags``                    ``SDL_HINT_QTWAYLAND_WINDOW_FLAGS``                   
 ============================================== =======================================================
 
@@ -156,8 +157,7 @@ Integer hints accept ``int`` (or ``unsigned int``) as values.
  ``android_apk_expansion_main_file_version``    ``SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION``  
  ``android_apk_expansion_patch_file_version``   ``SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION`` 
  ``raspberry_pi_video_layer``                   ``SDL_HINT_RPI_VIDEO_LAYER``                          
- ``win_rt_handle_back_button``                  ``SDL_HINT_WINRT_HANDLE_BACK_BUTTON``                 
- ``thread_stack_size``                          ``SDL_HINT_THREAD_STACK_SIZE``                        
+ ``thread_stack_size``                          ``SDL_HINT_THREAD_STACK_SIZE``
  ``timer_resolution``                           ``SDL_HINT_TIMER_RESOLUTION``                         
 ============================================== =======================================================
 

@@ -1315,7 +1315,7 @@ class mouse_relative_speed_scale final
   }
 };
 
-inline namespace winrt {
+namespace winrt {
 
 class privacy_policy_label final
     : public detail::string_hint<privacy_policy_label> {

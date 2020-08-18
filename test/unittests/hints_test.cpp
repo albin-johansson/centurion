@@ -316,18 +316,6 @@ TEST_CASE("set_hint", "[hint]")
     test_bool_hint<no_signal_handlers>();
   }
 
-  SECTION("direct_3d_11_debug")
-  {
-    using ctn::hint::direct_3d_11_debug;
-    test_bool_hint<direct_3d_11_debug>();
-  }
-
-  SECTION("direct_3d_thread_safe")
-  {
-    using ctn::hint::direct_3d_thread_safe;
-    test_bool_hint<direct_3d_thread_safe>();
-  }
-
   SECTION("enable_opengl_shaders")
   {
     using ctn::hint::enable_opengl_shaders;
@@ -666,6 +654,21 @@ TEST_CASE("set_hint", "[hint]")
     });
 
     ctn::set_hint<render_driver>(render_driver::open_gl);
+  }
+
+  SECTION("d3d::")
+  {
+    SECTION("v11_debug")
+    {
+      using ctn::hint::d3d::v11_debug;
+      test_bool_hint<v11_debug>();
+    }
+
+    SECTION("thread_safe")
+    {
+      using ctn::hint::d3d::thread_safe;
+      test_bool_hint<thread_safe>();
+    }
   }
 
   SECTION("gamecontroller::")

@@ -82,9 +82,9 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``mouse_focus_clickthrough``                   ``SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH``                 
  ``mouse_relative_mode_warp``                   ``SDL_HINT_MOUSE_RELATIVE_MODE_WARP``                 
  ``no_signal_handlers``                         ``SDL_HINT_NO_SIGNAL_HANDLERS``                       
- ``direct_3d_11_debug``                         ``SDL_HINT_RENDER_DIRECT3D11_DEBUG``                  
- ``direct_3d_thread_safe``                      ``SDL_HINT_RENDER_DIRECT3D_THREADSAFE``               
- ``opengl_es_driver``                           ``SDL_HINT_OPENGL_ES_DRIVER``                         
+ ``d3d::v11_debug``                             ``SDL_HINT_RENDER_DIRECT3D11_DEBUG``
+ ``d3d::thread_safe``                           ``SDL_HINT_RENDER_DIRECT3D_THREADSAFE``
+ ``opengl_es_driver``                           ``SDL_HINT_OPENGL_ES_DRIVER``
  ``enable_opengl_shaders``                      ``SDL_HINT_RENDER_OPENGL_SHADERS``                    
  ``vsync``                                      ``SDL_HINT_RENDER_VSYNC``
  ``allow_screensaver``                          ``SDL_HINT_VIDEO_ALLOW_SCREENSAVER``                  

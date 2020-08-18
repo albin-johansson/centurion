@@ -975,23 +975,6 @@ class no_signal_handlers final : public detail::bool_hint<no_signal_handlers> {
   }
 };
 
-class direct_3d_11_debug final : public detail::bool_hint<direct_3d_11_debug> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RENDER_DIRECT3D11_DEBUG;
-  }
-};
-
-class direct_3d_thread_safe final
-    : public detail::bool_hint<direct_3d_thread_safe> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RENDER_DIRECT3D_THREADSAFE;
-  }
-};
-
 class opengl_es_driver final : public detail::bool_hint<opengl_es_driver> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1260,6 +1243,25 @@ class mouse_relative_speed_scale final
     return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
   }
 };
+
+
+namespace d3d {
+
+struct v11_debug final : detail::bool_hint<v11_debug> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_DIRECT3D11_DEBUG;
+  }
+};
+
+struct thread_safe final : detail::bool_hint<thread_safe> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_DIRECT3D_THREADSAFE;
+  }
+};
+
+}  // namespace d3d
 
 namespace gamecontroller {
 

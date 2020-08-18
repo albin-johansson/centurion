@@ -1141,7 +1141,7 @@ class minimize_on_focus_loss final
   }
 };
 
-inline namespace x11 {
+namespace x11 {
 
 class net_wm_ping final : public detail::bool_hint<net_wm_ping> {
  public:

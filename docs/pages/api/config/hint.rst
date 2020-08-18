@@ -79,8 +79,8 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``joystick::use_hidapi_game_cube``             ``SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE``
  ``mac_background_app``                         ``SDL_HINT_MAC_BACKGROUND_APP``                       
  ``mac_ctrl_click_emulate_right_click``         ``SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK``       
- ``mouse_focus_clickthrough``                   ``SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH``                 
- ``mouse_relative_mode_warp``                   ``SDL_HINT_MOUSE_RELATIVE_MODE_WARP``                 
+ ``mouse::focus_clickthrough``                  ``SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH``
+ ``mouse::relative_mode_warp``                  ``SDL_HINT_MOUSE_RELATIVE_MODE_WARP``
  ``no_signal_handlers``                         ``SDL_HINT_NO_SIGNAL_HANDLERS``                       
  ``d3d::v11_debug``                             ``SDL_HINT_RENDER_DIRECT3D11_DEBUG``
  ``d3d::thread_safe``                           ``SDL_HINT_RENDER_DIRECT3D_THREADSAFE``
@@ -151,8 +151,8 @@ Integer hints accept ``int`` (or ``unsigned int``) as values.
 ============================================== =======================================================
  Hint class                                     SDL Counterpart                                       
 ---------------------------------------------- -------------------------------------------------------
- ``mouse_double_click_time``                    ``SDL_HINT_MOUSE_DOUBLE_CLICK_TIME``                  
- ``mouse_double_click_radius``                  ``SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS``                
+ ``mouse::double_click_time``                   ``SDL_HINT_MOUSE_DOUBLE_CLICK_TIME``
+ ``mouse::double_click_radius``                 ``SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS``
  ``event_logging``                              ``SDL_HINT_EVENT_LOGGING``                            
  ``android_apk_expansion_main_file_version``    ``SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION``  
  ``android_apk_expansion_patch_file_version``   ``SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION`` 
@@ -169,8 +169,8 @@ Float hints only accept ``float`` as values.
 ============================================== =======================================================
  Hint class                                     SDL Counterpart                                       
 ---------------------------------------------- -------------------------------------------------------
- ``mouse_normal_speed_scale``                   ``SDL_HINT_MOUSE_NORMAL_SPEED_SCALE``                 
- ``mouse_relative_speed_scale``                 ``SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE``               
+ ``mouse::normal_speed_scale``                  ``SDL_HINT_MOUSE_NORMAL_SPEED_SCALE``
+ ``mouse::relative_speed_scale``                ``SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE``
 ============================================== =======================================================
 
 Examples

@@ -274,42 +274,6 @@ TEST_CASE("set_hint", "[hint]")
     test_bool_hint<mac_ctrl_click_emulate_right_click>();
   }
 
-  SECTION("mouse_focus_clickthrough")
-  {
-    using ctn::hint::mouse_focus_clickthrough;
-    test_bool_hint<mouse_focus_clickthrough>();
-  }
-
-  SECTION("mouse_relative_mode_warp")
-  {
-    using ctn::hint::mouse_relative_mode_warp;
-    test_bool_hint<mouse_relative_mode_warp>();
-  }
-
-  SECTION("mouse_double_click_radius")
-  {
-    using ctn::hint::mouse_double_click_radius;
-    test_hint<mouse_double_click_radius>([] {
-      ctn::set_hint<mouse_double_click_radius>(5);
-      CHECK(ctn::get_hint<mouse_double_click_radius>().value() == 5);
-
-      ctn::set_hint<mouse_double_click_radius>(20);
-      CHECK(ctn::get_hint<mouse_double_click_radius>().value() == 20);
-    });
-  }
-
-  SECTION("mouse_double_click_time")
-  {
-    using ctn::hint::mouse_double_click_time;
-    test_hint<mouse_double_click_time>([] {
-      ctn::set_hint<mouse_double_click_time>(25);
-      CHECK(ctn::get_hint<mouse_double_click_time>().value() == 25);
-
-      ctn::set_hint<mouse_double_click_time>(178);
-      CHECK(ctn::get_hint<mouse_double_click_time>().value() == 178);
-    });
-  }
-
   SECTION("no_signal_handlers")
   {
     using ctn::hint::no_signal_handlers;
@@ -507,24 +471,6 @@ TEST_CASE("set_hint", "[hint]")
     test_bool_hint<mouse_touch_events>();
   }
 
-  SECTION("mouse_normal_speed_scale")
-  {
-    using ctn::hint::mouse_normal_speed_scale;
-    test_hint<mouse_normal_speed_scale>([] {
-      CHECK(ctn::set_hint<mouse_normal_speed_scale>(2.3f));
-      CHECK(ctn::get_hint<mouse_normal_speed_scale>().value() == 2.3f);
-    });
-  }
-
-  SECTION("mouse_relative_speed_scale")
-  {
-    using ctn::hint::mouse_relative_speed_scale;
-    test_hint<mouse_relative_speed_scale>([] {
-      CHECK(ctn::set_hint<mouse_relative_speed_scale>(6.7f));
-      CHECK(ctn::get_hint<mouse_relative_speed_scale>().value() == 6.7f);
-    });
-  }
-
   SECTION("raspberry_pi_video_layer")
   {
     using ctn::hint::raspberry_pi_video_layer;
@@ -654,6 +600,63 @@ TEST_CASE("set_hint", "[hint]")
     });
 
     ctn::set_hint<render_driver>(render_driver::open_gl);
+  }
+
+  SECTION("mouse::")
+  {
+    SECTION("normal_speed_scale")
+    {
+      using ctn::hint::mouse::normal_speed_scale;
+      test_hint<normal_speed_scale>([] {
+        CHECK(ctn::set_hint<normal_speed_scale>(2.3f));
+        CHECK(ctn::get_hint<normal_speed_scale>().value() == 2.3f);
+      });
+    }
+
+    SECTION("relative_speed_scale")
+    {
+      using ctn::hint::mouse::relative_speed_scale;
+      test_hint<relative_speed_scale>([] {
+        CHECK(ctn::set_hint<relative_speed_scale>(6.7f));
+        CHECK(ctn::get_hint<relative_speed_scale>().value() == 6.7f);
+      });
+    }
+
+    SECTION("focus_clickthrough")
+    {
+      using ctn::hint::mouse::focus_clickthrough;
+      test_bool_hint<focus_clickthrough>();
+    }
+
+    SECTION("relative_mode_warp")
+    {
+      using ctn::hint::mouse::relative_mode_warp;
+      test_bool_hint<relative_mode_warp>();
+    }
+
+    SECTION("double_click_radius")
+    {
+      using ctn::hint::mouse::double_click_radius;
+      test_hint<double_click_radius>([] {
+        ctn::set_hint<double_click_radius>(5);
+        CHECK(ctn::get_hint<double_click_radius>().value() == 5);
+
+        ctn::set_hint<double_click_radius>(20);
+        CHECK(ctn::get_hint<double_click_radius>().value() == 20);
+      });
+    }
+
+    SECTION("double_click_time")
+    {
+      using ctn::hint::mouse::double_click_time;
+      test_hint<double_click_time>([] {
+        ctn::set_hint<double_click_time>(25);
+        CHECK(ctn::get_hint<double_click_time>().value() == 25);
+
+        ctn::set_hint<double_click_time>(178);
+        CHECK(ctn::get_hint<double_click_time>().value() == 178);
+      });
+    }
   }
 
   SECTION("d3d::")

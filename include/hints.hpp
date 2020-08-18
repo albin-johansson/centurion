@@ -949,24 +949,6 @@ class mac_ctrl_click_emulate_right_click final
   }
 };
 
-class mouse_focus_clickthrough final
-    : public detail::bool_hint<mouse_focus_clickthrough> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH;
-  }
-};
-
-class mouse_relative_mode_warp final
-    : public detail::bool_hint<mouse_relative_mode_warp> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_RELATIVE_MODE_WARP;
-  }
-};
-
 class no_signal_handlers final : public detail::bool_hint<no_signal_handlers> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1069,14 +1051,6 @@ class xinput_use_old_joystick_mapping final
   }
 };
 
-class mouse_touch_events final : public detail::bool_hint<mouse_touch_events> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_TOUCH_EVENTS;
-  }
-};
-
 class render_batching final : public detail::bool_hint<render_batching> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1099,6 +1073,14 @@ class touch_mouse_events final : public detail::bool_hint<touch_mouse_events> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_TOUCH_MOUSE_EVENTS;
+  }
+};
+
+class mouse_touch_events final : public detail::bool_hint<mouse_touch_events> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_TOUCH_EVENTS;
   }
 };
 
@@ -1181,24 +1163,6 @@ class event_logging final : public detail::int_hint<event_logging> {
   }
 };
 
-class mouse_double_click_time final
-    : public detail::int_hint<mouse_double_click_time> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_DOUBLE_CLICK_TIME;
-  }
-};
-
-class mouse_double_click_radius final
-    : public detail::int_hint<mouse_double_click_radius> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS;
-  }
-};
-
 class raspberry_pi_video_layer final
     : public detail::int_hint<raspberry_pi_video_layer> {
  public:
@@ -1226,24 +1190,51 @@ class timer_resolution final
   }
 };
 
-class mouse_normal_speed_scale final
-    : public detail::float_hint<mouse_normal_speed_scale> {
- public:
+namespace mouse {
+
+struct focus_clickthrough final : detail::bool_hint<focus_clickthrough> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH;
+  }
+};
+
+struct relative_mode_warp final : detail::bool_hint<relative_mode_warp> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_RELATIVE_MODE_WARP;
+  }
+};
+
+struct double_click_time final : detail::int_hint<double_click_time> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_DOUBLE_CLICK_TIME;
+  }
+};
+
+struct double_click_radius final : detail::int_hint<double_click_radius> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS;
+  }
+};
+
+struct normal_speed_scale final : detail::float_hint<normal_speed_scale> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_MOUSE_NORMAL_SPEED_SCALE;
   }
 };
 
-class mouse_relative_speed_scale final
-    : public detail::float_hint<mouse_relative_speed_scale> {
- public:
+struct relative_speed_scale final : detail::float_hint<relative_speed_scale> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
   }
 };
 
+}  // namespace mouse
 
 namespace d3d {
 

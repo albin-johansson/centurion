@@ -1069,33 +1069,6 @@ class minimize_on_focus_loss final
   }
 };
 
-class windows_disable_thread_naming final
-    : public detail::bool_hint<windows_disable_thread_naming> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING;
-  }
-};
-
-class windows_enable_message_loop final
-    : public detail::bool_hint<windows_enable_message_loop> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP;
-  }
-};
-
-class windows_no_close_on_alt_f4 final
-    : public detail::bool_hint<windows_no_close_on_alt_f4> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4;
-  }
-};
-
 class window_frame_usable_while_cursor_hidden final
     : public detail::bool_hint<window_frame_usable_while_cursor_hidden> {
  public:
@@ -1235,24 +1208,6 @@ class orientations final : public detail::string_hint<orientations> {
   }
 };
 
-class windows_int_resource_icon final
-    : public detail::string_hint<windows_int_resource_icon> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOWS_INTRESOURCE_ICON;
-  }
-};
-
-class windows_int_resource_icon_small final
-    : public detail::string_hint<windows_int_resource_icon_small> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL;
-  }
-};
-
 class win_rt_privacy_policy_label final
     : public detail::string_hint<win_rt_privacy_policy_label> {
  public:
@@ -1386,6 +1341,53 @@ class mouse_relative_speed_scale final
     return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
   }
 };
+
+
+namespace windows {
+
+class no_thread_naming final : public detail::bool_hint<no_thread_naming> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING;
+  }
+};
+
+class enable_message_loop final
+    : public detail::bool_hint<enable_message_loop> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP;
+  }
+};
+
+class no_close_on_alt_f4 final : public detail::bool_hint<no_close_on_alt_f4> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4;
+  }
+};
+
+class int_resource_icon final : public detail::string_hint<int_resource_icon> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_INTRESOURCE_ICON;
+  }
+};
+
+class int_resource_icon_small final
+    : public detail::string_hint<int_resource_icon_small> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL;
+  }
+};
+
+}  // namespace windows
 
 namespace joystick {
 

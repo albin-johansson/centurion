@@ -538,36 +538,6 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("windows_disable_thread_naming")
-  {
-    using ctn::hint::windows_disable_thread_naming;
-    test_bool_hint<windows_disable_thread_naming>();
-  }
-
-  SECTION("windows_int_resource_icon")
-  {
-    using ctn::hint::windows_int_resource_icon;
-    test_hint<windows_int_resource_icon>([] {
-      CHECK(ctn::set_hint<windows_int_resource_icon>("foo"));
-      CHECK_THAT(ctn::get_hint<windows_int_resource_icon>().value(),
-                 Catch::Equals("foo"));
-
-      ctn::set_hint<windows_int_resource_icon>("");
-    });
-  }
-
-  SECTION("windows_int_resource_icon_small")
-  {
-    using ctn::hint::windows_int_resource_icon_small;
-    test_hint<windows_int_resource_icon_small>([] {
-      CHECK(ctn::set_hint<windows_int_resource_icon_small>("bar"));
-      CHECK_THAT(ctn::get_hint<windows_int_resource_icon_small>().value(),
-                 Catch::Equals("bar"));
-
-      ctn::set_hint<windows_int_resource_icon_small>("");
-    });
-  }
-
   SECTION("win_d3d_compiler")
   {
     using ctn::hint::win_d3d_compiler;
@@ -583,18 +553,6 @@ TEST_CASE("set_hint", "[hint]")
       CHECK(ctn::get_hint<win_d3d_compiler>() ==
             win_d3d_compiler::d3d_compiler_43);
     });
-  }
-
-  SECTION("windows_enable_message_loop")
-  {
-    using ctn::hint::windows_enable_message_loop;
-    test_bool_hint<windows_enable_message_loop>();
-  }
-
-  SECTION("windows_no_close_on_alt_f4")
-  {
-    using ctn::hint::windows_no_close_on_alt_f4;
-    test_bool_hint<windows_no_close_on_alt_f4>();
   }
 
   SECTION("window_share_pixel_format")
@@ -791,6 +749,51 @@ TEST_CASE("set_hint", "[hint]")
     });
 
     ctn::set_hint<render_driver>(render_driver::open_gl);
+  }
+
+  SECTION("windows::")
+  {
+    SECTION("no_thread_naming")
+    {
+      using ctn::hint::windows::no_thread_naming;
+      test_bool_hint<no_thread_naming>();
+    }
+
+    SECTION("int_resource_icon")
+    {
+      using ctn::hint::windows::int_resource_icon;
+      test_hint<int_resource_icon>([] {
+        CHECK(ctn::set_hint<int_resource_icon>("foo"));
+        CHECK_THAT(ctn::get_hint<int_resource_icon>().value(),
+                   Catch::Equals("foo"));
+
+        ctn::set_hint<int_resource_icon>("");
+      });
+    }
+
+    SECTION("int_resource_icon_small")
+    {
+      using ctn::hint::windows::int_resource_icon_small;
+      test_hint<int_resource_icon_small>([] {
+        CHECK(ctn::set_hint<int_resource_icon_small>("bar"));
+        CHECK_THAT(ctn::get_hint<int_resource_icon_small>().value(),
+                   Catch::Equals("bar"));
+
+        ctn::set_hint<int_resource_icon_small>("");
+      });
+    }
+
+    SECTION("enable_message_loop")
+    {
+      using ctn::hint::windows::enable_message_loop;
+      test_bool_hint<enable_message_loop>();
+    }
+
+    SECTION("no_close_on_alt_f4")
+    {
+      using ctn::hint::windows::no_close_on_alt_f4;
+      test_bool_hint<no_close_on_alt_f4>();
+    }
   }
 
   SECTION("joystick::")

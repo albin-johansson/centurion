@@ -98,9 +98,9 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``x11::xinerama``                              ``SDL_HINT_VIDEO_X11_XINERAMA``
  ``x11::xrandr``                                ``SDL_HINT_VIDEO_X11_XRANDR``
  ``x11::xvidmode``                              ``SDL_HINT_VIDEO_X11_XVIDMODE``
- ``windows_disable_thread_naming``              ``SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING``            
- ``windows_enable_message_loop``                ``SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP``               
- ``windows_no_close_on_alt_f4``                 ``SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4``               
+ ``windows::no_thread_naming``                  ``SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING``
+ ``windows::enable_message_loop``               ``SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP``
+ ``windows::no_close_on_alt_f4``                ``SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4``
  ``window_frame_usable_while_cursor_hidden``    ``SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN``  
  ``mouse_touch_events``                         ``SDL_HINT_MOUSE_TOUCH_EVENTS``                       
  ``render_batching``                            ``SDL_HINT_RENDER_BATCHING``                          
@@ -131,10 +131,10 @@ format of the string arguments.
  ``orientations``                               ``SDL_HINT_ORIENTATIONS``                             
  ``x11::window_visual_id``                      ``SDL_HINT_VIDEO_X11_WINDOW_VISUALID``
  ``window_share_pixel_format``                  ``SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT``
- ``windows_int_resource_icon``                  ``SDL_HINT_WINDOWS_INTRESOURCE_ICON``                 
- ``windows_int_resource_icon_small``            ``SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL``           
  ``win_rt_privacy_policy_label``                ``SDL_HINT_WINRT_PRIVACY_POLICY_LABEL``               
  ``win_rt_privacy_policy_url``                  ``SDL_HINT_WINRT_PRIVACY_POLICY_URL``                 
+ ``windows::int_resource_icon``                 ``SDL_HINT_WINDOWS_INTRESOURCE_ICON``
+ ``windows::int_resource_icon_small``           ``SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL``
  ``qt_wayland_window_flags``                    ``SDL_HINT_QTWAYLAND_WINDOW_FLAGS``                   
 ============================================== =======================================================
 

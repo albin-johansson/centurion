@@ -77,8 +77,8 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``joystick::use_hidapi_switch``                ``SDL_HINT_JOYSTICK_HIDAPI_SWITCH``
  ``joystick::use_hidapi_xbox``                  ``SDL_HINT_JOYSTICK_HIDAPI_XBOX``
  ``joystick::use_hidapi_game_cube``             ``SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE``
- ``mac_background_app``                         ``SDL_HINT_MAC_BACKGROUND_APP``                       
- ``mac_ctrl_click_emulate_right_click``         ``SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK``       
+ ``mac::background_app``                        ``SDL_HINT_MAC_BACKGROUND_APP``
+ ``mac::ctrl_click_emulate_right_click``        ``SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK``
  ``mouse::focus_clickthrough``                  ``SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH``
  ``mouse::relative_mode_warp``                  ``SDL_HINT_MOUSE_RELATIVE_MODE_WARP``
  ``no_signal_handlers``                         ``SDL_HINT_NO_SIGNAL_HANDLERS``                       
@@ -90,7 +90,7 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``allow_screensaver``                          ``SDL_HINT_VIDEO_ALLOW_SCREENSAVER``                  
  ``video_external_context``                     ``SDL_HINT_VIDEO_EXTERNAL_CONTEXT``                   
  ``disable_high_dpi``                           ``SDL_HINT_VIDEO_HIGHDPI_DISABLED``                   
- ``mac_fullscreen_spaces``                      ``SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES``              
+ ``mac::fullscreen_spaces``                     ``SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES``
  ``minimize_on_focus_loss``                     ``SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS``             
  ``x11::net_wm_ping``                           ``SDL_HINT_VIDEO_X11_NET_WM_PING``
  ``x11::net_wm_bypass_compositor``              ``SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR``

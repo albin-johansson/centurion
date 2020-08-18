@@ -262,18 +262,6 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("mac_background_app")
-  {
-    using ctn::hint::mac_background_app;
-    test_bool_hint<mac_background_app>();
-  }
-
-  SECTION("mac_ctrl_click_emulate_right_click")
-  {
-    using ctn::hint::mac_ctrl_click_emulate_right_click;
-    test_bool_hint<mac_ctrl_click_emulate_right_click>();
-  }
-
   SECTION("no_signal_handlers")
   {
     using ctn::hint::no_signal_handlers;
@@ -356,12 +344,6 @@ TEST_CASE("set_hint", "[hint]")
   {
     using ctn::hint::disable_high_dpi;
     test_bool_hint<disable_high_dpi>();
-  }
-
-  SECTION("mac_fullscreen_spaces")
-  {
-    using ctn::hint::mac_fullscreen_spaces;
-    test_bool_hint<mac_fullscreen_spaces>();
   }
 
   SECTION("minimize_on_focus_loss")
@@ -807,6 +789,27 @@ TEST_CASE("set_hint", "[hint]")
     {
       using ctn::hint::windows::no_close_on_alt_f4;
       test_bool_hint<no_close_on_alt_f4>();
+    }
+  }
+
+  SECTION("mac::")
+  {
+    SECTION("background_app")
+    {
+      using ctn::hint::mac::background_app;
+      test_bool_hint<background_app>();
+    }
+
+    SECTION("ctrl_click_emulate_right_click")
+    {
+      using ctn::hint::mac::ctrl_click_emulate_right_click;
+      test_bool_hint<ctrl_click_emulate_right_click>();
+    }
+
+    SECTION("fullscreen_spaces")
+    {
+      using ctn::hint::mac::fullscreen_spaces;
+      test_bool_hint<fullscreen_spaces>();
     }
   }
 

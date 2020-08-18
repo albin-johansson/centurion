@@ -932,23 +932,6 @@ class ime_internal_editing final
   }
 };
 
-class mac_background_app final : public detail::bool_hint<mac_background_app> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MAC_BACKGROUND_APP;
-  }
-};
-
-class mac_ctrl_click_emulate_right_click final
-    : public detail::bool_hint<mac_ctrl_click_emulate_right_click> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK;
-  }
-};
-
 class no_signal_handlers final : public detail::bool_hint<no_signal_handlers> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1004,15 +987,6 @@ class disable_high_dpi final : public detail::bool_hint<disable_high_dpi> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_HIGHDPI_DISABLED;
-  }
-};
-
-class mac_fullscreen_spaces final
-    : public detail::bool_hint<mac_fullscreen_spaces> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES;
   }
 };
 
@@ -1365,6 +1339,32 @@ struct int_resource_icon_small final
 };
 
 }  // namespace windows
+
+namespace mac {
+
+struct fullscreen_spaces final : detail::bool_hint<fullscreen_spaces> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES;
+  }
+};
+
+struct background_app final : detail::bool_hint<background_app> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MAC_BACKGROUND_APP;
+  }
+};
+
+struct ctrl_click_emulate_right_click final
+    : detail::bool_hint<ctrl_click_emulate_right_click> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK;
+  }
+};
+
+}  // namespace mac
 
 namespace joystick {
 

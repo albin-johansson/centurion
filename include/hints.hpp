@@ -218,16 +218,22 @@ class float_hint : public crtp_hint<float_hint<Hint>, float> {
 
 /// @endcond
 
+/// @addtogroup configuration
+/// @{
+
 /**
  * @namespace centurion::hint
  *
- * @ingroup configuration
  *
- * @brief Contains the hint types.
+ *
+ * @brief Contains all hint types.
  *
  * @since 4.1.0
  */
 namespace hint {
+
+/// @name Enum-hints
+/// @{
 
 /**
  * @class render_driver
@@ -816,277 +822,723 @@ class qt_wayland_content_orientation final {
   }
 };
 
-/// @cond FALSE
-
-#define CENTURION_HINT(Name, SDLName, Type)                         \
-  class Name final : public detail::Type<Name> {                    \
-   public:                                                          \
-    [[nodiscard]] static constexpr auto name() noexcept -> czstring \
-    {                                                               \
-      return SDLName;                                               \
-    }                                                               \
-  };
-
-CENTURION_HINT(accelerometer_as_joystick,
-               SDL_HINT_ACCELEROMETER_AS_JOYSTICK,
-               bool_hint)
-
-CENTURION_HINT(allow_top_most, SDL_HINT_ALLOW_TOPMOST, bool_hint)
-
-CENTURION_HINT(android_block_on_pause,
-               SDL_HINT_ANDROID_BLOCK_ON_PAUSE,
-               bool_hint)
-
-CENTURION_HINT(android_trap_back_button,
-               SDL_HINT_ANDROID_TRAP_BACK_BUTTON,
-               bool_hint)
-
-CENTURION_HINT(android_apk_expansion_main_file_version,
-               SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION,
-               int_hint)
-
-CENTURION_HINT(android_apk_expansion_patch_file_version,
-               SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION,
-               int_hint)
-
-CENTURION_HINT(apple_tv_controller_ui_events,
-               SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS,
-               bool_hint)
-
-CENTURION_HINT(apple_tv_remote_allow_rotation,
-               SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION,
-               bool_hint)
-
-CENTURION_HINT(bmp_save_legacy_format,
-               SDL_HINT_BMP_SAVE_LEGACY_FORMAT,
-               bool_hint)
-
-CENTURION_HINT(double_buffer, SDL_HINT_VIDEO_DOUBLE_BUFFER, bool_hint)
-
-CENTURION_HINT(display_usable_bounds,
-               SDL_HINT_DISPLAY_USABLE_BOUNDS,
-               string_hint)
-
-CENTURION_HINT(emscripten_keyboard_element,
-               SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT,
-               string_hint)
-
-CENTURION_HINT(event_logging, SDL_HINT_EVENT_LOGGING, int_hint)
-
-CENTURION_HINT(enable_steam_controllers,
-               SDL_HINT_ENABLE_STEAM_CONTROLLERS,
-               bool_hint)
-
-CENTURION_HINT(game_controller_use_button_labels,
-               SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS,
-               bool_hint)
-
-CENTURION_HINT(game_controller_type, SDL_HINT_GAMECONTROLLERTYPE, string_hint)
-
-CENTURION_HINT(game_controller_config,
-               SDL_HINT_GAMECONTROLLERCONFIG,
-               string_hint)
-
-CENTURION_HINT(game_controller_config_file,
-               SDL_HINT_GAMECONTROLLERCONFIG_FILE,
-               string_hint)
-
-CENTURION_HINT(game_controller_ignore_devices,
-               SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES,
-               string_hint)
-
-CENTURION_HINT(game_controller_ignore_devices_except,
-               SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT,
-               string_hint)
-
-CENTURION_HINT(grab_keyboard, SDL_HINT_GRAB_KEYBOARD, bool_hint)
-
-CENTURION_HINT(idle_timer_disabled, SDL_HINT_IDLE_TIMER_DISABLED, bool_hint)
-
-CENTURION_HINT(ime_internal_editing, SDL_HINT_IME_INTERNAL_EDITING, bool_hint)
-
-CENTURION_HINT(joystick_allow_background_events,
-               SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,
-               bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi, SDL_HINT_JOYSTICK_HIDAPI, bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_ps4, SDL_HINT_JOYSTICK_HIDAPI_PS4, bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_ps4_rumble,
-               SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE,
-               bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_steam,
-               SDL_HINT_JOYSTICK_HIDAPI_STEAM,
-               bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_switch,
-               SDL_HINT_JOYSTICK_HIDAPI_SWITCH,
-               bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_xbox,
-               SDL_HINT_JOYSTICK_HIDAPI_XBOX,
-               bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_game_cube,
-               SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE,
-               bool_hint)
-
-CENTURION_HINT(mac_background_app, SDL_HINT_MAC_BACKGROUND_APP, bool_hint)
-
-CENTURION_HINT(mac_ctrl_click_emulate_right_click,
-               SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK,
-               bool_hint)
-
-CENTURION_HINT(mouse_focus_clickthrough,
-               SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH,
-               bool_hint)
-
-CENTURION_HINT(mouse_relative_mode_warp,
-               SDL_HINT_MOUSE_RELATIVE_MODE_WARP,
-               bool_hint)
-
-CENTURION_HINT(mouse_double_click_time,
-               SDL_HINT_MOUSE_DOUBLE_CLICK_TIME,
-               int_hint)
-
-CENTURION_HINT(mouse_double_click_radius,
-               SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS,
-               int_hint)
-
-CENTURION_HINT(no_signal_handlers, SDL_HINT_NO_SIGNAL_HANDLERS, bool_hint)
-
-CENTURION_HINT(direct_3d_11_debug, SDL_HINT_RENDER_DIRECT3D11_DEBUG, bool_hint)
-
-CENTURION_HINT(direct_3d_thread_safe,
-               SDL_HINT_RENDER_DIRECT3D_THREADSAFE,
-               bool_hint)
-
-CENTURION_HINT(opengl_es_driver, SDL_HINT_OPENGL_ES_DRIVER, bool_hint)
-
-CENTURION_HINT(orientations, SDL_HINT_ORIENTATIONS, string_hint)
-
-CENTURION_HINT(enable_opengl_shaders, SDL_HINT_RENDER_OPENGL_SHADERS, bool_hint)
-
-CENTURION_HINT(enable_vsync, SDL_HINT_RENDER_VSYNC, bool_hint)
-
-CENTURION_HINT(allow_screensaver, SDL_HINT_VIDEO_ALLOW_SCREENSAVER, bool_hint)
-
-CENTURION_HINT(video_external_context,
-               SDL_HINT_VIDEO_EXTERNAL_CONTEXT,
-               bool_hint)
-
-CENTURION_HINT(disable_high_dpi, SDL_HINT_VIDEO_HIGHDPI_DISABLED, bool_hint)
-
-CENTURION_HINT(mac_fullscreen_spaces,
-               SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES,
-               bool_hint)
-
-CENTURION_HINT(minimize_on_focus_loss,
-               SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS,
-               bool_hint)
-
-CENTURION_HINT(mouse_normal_speed_scale,
-               SDL_HINT_MOUSE_NORMAL_SPEED_SCALE,
-               float_hint)
-
-CENTURION_HINT(mouse_relative_speed_scale,
-               SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE,
-               float_hint)
-
-CENTURION_HINT(x11_net_wm_ping, SDL_HINT_VIDEO_X11_NET_WM_PING, bool_hint)
-
-CENTURION_HINT(x11_net_wm_bypass_compositor,
-               SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR,
-               bool_hint)
-
-CENTURION_HINT(x11_force_egl, SDL_HINT_VIDEO_X11_FORCE_EGL, bool_hint)
-
-CENTURION_HINT(x11_xinerama, SDL_HINT_VIDEO_X11_XINERAMA, bool_hint)
-
-CENTURION_HINT(x11_xrandr, SDL_HINT_VIDEO_X11_XRANDR, bool_hint)
-
-CENTURION_HINT(x11_xvidmode, SDL_HINT_VIDEO_X11_XVIDMODE, bool_hint)
-
-CENTURION_HINT(x11_window_visual_id,
-               SDL_HINT_VIDEO_X11_WINDOW_VISUALID,
-               string_hint)
-
-CENTURION_HINT(windows_disable_thread_naming,
-               SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING,
-               bool_hint)
-
-CENTURION_HINT(window_share_pixel_format,
-               SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT,
-               string_hint)
-
-CENTURION_HINT(windows_enable_message_loop,
-               SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP,
-               bool_hint)
-
-CENTURION_HINT(windows_no_close_on_alt_f4,
-               SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4,
-               bool_hint)
-
-CENTURION_HINT(window_frame_usable_while_cursor_hidden,
-               SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN,
-               bool_hint)
-
-CENTURION_HINT(windows_int_resource_icon,
-               SDL_HINT_WINDOWS_INTRESOURCE_ICON,
-               string_hint)
-
-CENTURION_HINT(windows_int_resource_icon_small,
-               SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL,
-               string_hint)
-
-CENTURION_HINT(win_rt_privacy_policy_label,
-               SDL_HINT_WINRT_PRIVACY_POLICY_LABEL,
-               string_hint)
-
-CENTURION_HINT(win_rt_privacy_policy_url,
-               SDL_HINT_WINRT_PRIVACY_POLICY_URL,
-               string_hint)
-
-CENTURION_HINT(win_rt_handle_back_button,
-               SDL_HINT_WINRT_HANDLE_BACK_BUTTON,
-               int_hint)
-
-CENTURION_HINT(mouse_touch_events, SDL_HINT_MOUSE_TOUCH_EVENTS, bool_hint)
-
-CENTURION_HINT(raspberry_pi_video_layer, SDL_HINT_RPI_VIDEO_LAYER, int_hint)
-
-CENTURION_HINT(render_batching, SDL_HINT_RENDER_BATCHING, bool_hint)
-
-CENTURION_HINT(return_key_hides_ime, SDL_HINT_RETURN_KEY_HIDES_IME, bool_hint)
-
-CENTURION_HINT(touch_mouse_events, SDL_HINT_TOUCH_MOUSE_EVENTS, bool_hint)
-
-CENTURION_HINT(thread_stack_size, SDL_HINT_THREAD_STACK_SIZE, unsigned_int_hint)
-
-CENTURION_HINT(timer_resolution, SDL_HINT_TIMER_RESOLUTION, unsigned_int_hint)
-
-CENTURION_HINT(tv_remote_as_joystick, SDL_HINT_TV_REMOTE_AS_JOYSTICK, bool_hint)
-
-CENTURION_HINT(qt_wayland_window_flags,
-               SDL_HINT_QTWAYLAND_WINDOW_FLAGS,
-               string_hint)
-
-CENTURION_HINT(xinput_enabled, SDL_HINT_XINPUT_ENABLED, bool_hint)
-
-CENTURION_HINT(xinput_use_old_joystick_mapping,
-               SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING,
-               bool_hint)
-
-/// @endcond
+/// @} // end of enum hints
+
+/// @name Boolean-hints
+/// @{
+
+class accelerometer_as_joystick final
+    : public detail::bool_hint<accelerometer_as_joystick> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ACCELEROMETER_AS_JOYSTICK;
+  }
+};
+
+class allow_top_most final : public detail::bool_hint<allow_top_most> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ALLOW_TOPMOST;
+  }
+};
+
+class android_block_on_pause final
+    : public detail::bool_hint<android_block_on_pause> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_BLOCK_ON_PAUSE;
+  }
+};
+
+class android_trap_back_button final
+    : public detail::bool_hint<android_trap_back_button> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_TRAP_BACK_BUTTON;
+  }
+};
+
+class apple_tv_controller_ui_events final
+    : public detail::bool_hint<apple_tv_controller_ui_events> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS;
+  }
+};
+
+class apple_tv_remote_allow_rotation final
+    : public detail::bool_hint<apple_tv_remote_allow_rotation> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION;
+  }
+};
+
+class bmp_save_legacy_format final
+    : public detail::bool_hint<bmp_save_legacy_format> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_BMP_SAVE_LEGACY_FORMAT;
+  }
+};
+
+class double_buffer final : public detail::bool_hint<double_buffer> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_DOUBLE_BUFFER;
+  }
+};
+
+class enable_steam_controllers final
+    : public detail::bool_hint<enable_steam_controllers> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ENABLE_STEAM_CONTROLLERS;
+  }
+};
+
+class game_controller_use_button_labels final
+    : public detail::bool_hint<game_controller_use_button_labels> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS;
+  }
+};
+
+class grab_keyboard final : public detail::bool_hint<grab_keyboard> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GRAB_KEYBOARD;
+  }
+};
+
+class idle_timer_disabled final
+    : public detail::bool_hint<idle_timer_disabled> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_IDLE_TIMER_DISABLED;
+  }
+};
+
+class ime_internal_editing final
+    : public detail::bool_hint<ime_internal_editing> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_IME_INTERNAL_EDITING;
+  }
+};
+
+class joystick_allow_background_events final
+    : public detail::bool_hint<joystick_allow_background_events> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS;
+  }
+};
+
+class joystick_use_hidapi final
+    : public detail::bool_hint<joystick_use_hidapi> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI;
+  }
+};
+
+class joystick_use_hidapi_ps4 final
+    : public detail::bool_hint<joystick_use_hidapi_ps4> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS4;
+  }
+};
+
+class joystick_use_hidapi_ps4_rumble final
+    : public detail::bool_hint<joystick_use_hidapi_ps4_rumble> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE;
+  }
+};
+
+class joystick_use_hidapi_steam final
+    : public detail::bool_hint<joystick_use_hidapi_steam> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_STEAM;
+  }
+};
+
+class joystick_use_hidapi_switch final
+    : public detail::bool_hint<joystick_use_hidapi_switch> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_SWITCH;
+  }
+};
+
+class joystick_use_hidapi_xbox final
+    : public detail::bool_hint<joystick_use_hidapi_xbox> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_XBOX;
+  }
+};
+
+class joystick_use_hidapi_game_cube final
+    : public detail::bool_hint<joystick_use_hidapi_game_cube> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE;
+  }
+};
+
+class mac_background_app final : public detail::bool_hint<mac_background_app> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MAC_BACKGROUND_APP;
+  }
+};
+
+class mac_ctrl_click_emulate_right_click final
+    : public detail::bool_hint<mac_ctrl_click_emulate_right_click> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK;
+  }
+};
+
+class mouse_focus_clickthrough final
+    : public detail::bool_hint<mouse_focus_clickthrough> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH;
+  }
+};
+
+class mouse_relative_mode_warp final
+    : public detail::bool_hint<mouse_relative_mode_warp> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_RELATIVE_MODE_WARP;
+  }
+};
+
+class no_signal_handlers final : public detail::bool_hint<no_signal_handlers> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_NO_SIGNAL_HANDLERS;
+  }
+};
+
+class direct_3d_11_debug final : public detail::bool_hint<direct_3d_11_debug> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_DIRECT3D11_DEBUG;
+  }
+};
+
+class direct_3d_thread_safe final
+    : public detail::bool_hint<direct_3d_thread_safe> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_DIRECT3D_THREADSAFE;
+  }
+};
+
+class opengl_es_driver final : public detail::bool_hint<opengl_es_driver> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_OPENGL_ES_DRIVER;
+  }
+};
+
+class enable_opengl_shaders final
+    : public detail::bool_hint<enable_opengl_shaders> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_OPENGL_SHADERS;
+  }
+};
+
+// TODO rename to vsync
+class enable_vsync final : public detail::bool_hint<enable_vsync> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_VSYNC;
+  }
+};
+
+class allow_screensaver final : public detail::bool_hint<allow_screensaver> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_ALLOW_SCREENSAVER;
+  }
+};
+
+class video_external_context final
+    : public detail::bool_hint<video_external_context> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_EXTERNAL_CONTEXT;
+  }
+};
+
+class disable_high_dpi final : public detail::bool_hint<disable_high_dpi> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_HIGHDPI_DISABLED;
+  }
+};
+
+class mac_fullscreen_spaces final
+    : public detail::bool_hint<mac_fullscreen_spaces> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES;
+  }
+};
+
+class minimize_on_focus_loss final
+    : public detail::bool_hint<minimize_on_focus_loss> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS;
+  }
+};
+
+class x11_net_wm_ping final : public detail::bool_hint<x11_net_wm_ping> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_NET_WM_PING;
+  }
+};
+
+class x11_net_wm_bypass_compositor final
+    : public detail::bool_hint<x11_net_wm_bypass_compositor> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR;
+  }
+};
+
+class x11_force_egl final : public detail::bool_hint<x11_force_egl> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_FORCE_EGL;
+  }
+};
+
+class x11_xinerama final : public detail::bool_hint<x11_xinerama> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XINERAMA;
+  }
+};
+
+class x11_xrandr final : public detail::bool_hint<x11_xrandr> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XRANDR;
+  }
+};
+
+class x11_xvidmode final : public detail::bool_hint<x11_xvidmode> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XVIDMODE;
+  }
+};
+
+class windows_disable_thread_naming final
+    : public detail::bool_hint<windows_disable_thread_naming> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING;
+  }
+};
+
+class windows_enable_message_loop final
+    : public detail::bool_hint<windows_enable_message_loop> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP;
+  }
+};
+
+class windows_no_close_on_alt_f4 final
+    : public detail::bool_hint<windows_no_close_on_alt_f4> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4;
+  }
+};
+
+class window_frame_usable_while_cursor_hidden final
+    : public detail::bool_hint<window_frame_usable_while_cursor_hidden> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN;
+  }
+};
+
+class xinput_enabled final : public detail::bool_hint<xinput_enabled> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_XINPUT_ENABLED;
+  }
+};
+
+class xinput_use_old_joystick_mapping final
+    : public detail::bool_hint<xinput_use_old_joystick_mapping> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING;
+  }
+};
+
+class mouse_touch_events final : public detail::bool_hint<mouse_touch_events> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_TOUCH_EVENTS;
+  }
+};
+
+class render_batching final : public detail::bool_hint<render_batching> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_BATCHING;
+  }
+};
+
+class return_key_hides_ime final
+    : public detail::bool_hint<return_key_hides_ime> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RETURN_KEY_HIDES_IME;
+  }
+};
+
+class touch_mouse_events final : public detail::bool_hint<touch_mouse_events> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_TOUCH_MOUSE_EVENTS;
+  }
+};
+
+class tv_remote_as_joystick final
+    : public detail::bool_hint<tv_remote_as_joystick> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_TV_REMOTE_AS_JOYSTICK;
+  }
+};
+
+/// @} // end of boolean hints
+
+/// @name String hints
+/// @{
+
+class display_usable_bounds final
+    : public detail::string_hint<display_usable_bounds> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_DISPLAY_USABLE_BOUNDS;
+  }
+};
+
+class emscripten_keyboard_element final
+    : public detail::string_hint<emscripten_keyboard_element> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT;
+  }
+};
+
+class game_controller_type final
+    : public detail::string_hint<game_controller_type> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERTYPE;
+  }
+};
+
+class game_controller_config final
+    : public detail::string_hint<game_controller_config> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERCONFIG;
+  }
+};
+
+class game_controller_config_file final
+    : public detail::string_hint<game_controller_config_file> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERCONFIG_FILE;
+  }
+};
+
+class game_controller_ignore_devices final
+    : public detail::string_hint<game_controller_ignore_devices> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES;
+  }
+};
+
+class game_controller_ignore_devices_except final
+    : public detail::string_hint<game_controller_ignore_devices_except> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT;
+  }
+};
+
+class orientations final : public detail::string_hint<orientations> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ORIENTATIONS;
+  }
+};
+
+class windows_int_resource_icon final
+    : public detail::string_hint<windows_int_resource_icon> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_INTRESOURCE_ICON;
+  }
+};
+
+class windows_int_resource_icon_small final
+    : public detail::string_hint<windows_int_resource_icon_small> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL;
+  }
+};
+
+class win_rt_privacy_policy_label final
+    : public detail::string_hint<win_rt_privacy_policy_label> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_PRIVACY_POLICY_LABEL;
+  }
+};
+
+class win_rt_privacy_policy_url final
+    : public detail::string_hint<win_rt_privacy_policy_url> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_PRIVACY_POLICY_URL;
+  }
+};
+
+class x11_window_visual_id final
+    : public detail::string_hint<x11_window_visual_id> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
+  }
+};
+
+class window_share_pixel_format final
+    : public detail::string_hint<window_share_pixel_format> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT;
+  }
+};
+
+class qt_wayland_window_flags final
+    : public detail::string_hint<qt_wayland_window_flags> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_QTWAYLAND_WINDOW_FLAGS;
+  }
+};
+
+/// @} // end of string hints
+
+/// @name Integer-hints
+/// @{
+
+class android_apk_expansion_main_file_version final
+    : public detail::int_hint<android_apk_expansion_main_file_version> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
+  }
+};
+
+class android_apk_expansion_patch_file_version final
+    : public detail::int_hint<android_apk_expansion_patch_file_version> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION;
+  }
+};
+
+class event_logging final : public detail::int_hint<event_logging> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_EVENT_LOGGING;
+  }
+};
+
+class mouse_double_click_time final
+    : public detail::int_hint<mouse_double_click_time> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_DOUBLE_CLICK_TIME;
+  }
+};
+
+class mouse_double_click_radius final
+    : public detail::int_hint<mouse_double_click_radius> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS;
+  }
+};
+
+class win_rt_handle_back_button final
+    : public detail::int_hint<win_rt_handle_back_button> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_HANDLE_BACK_BUTTON;
+  }
+};
+
+class raspberry_pi_video_layer final
+    : public detail::int_hint<raspberry_pi_video_layer> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RPI_VIDEO_LAYER;
+  }
+};
+
+class thread_stack_size final
+    : public detail::unsigned_int_hint<thread_stack_size> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_THREAD_STACK_SIZE;
+  }
+};
+
+class timer_resolution final
+    : public detail::unsigned_int_hint<timer_resolution> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_TIMER_RESOLUTION;
+  }
+};
+
+/// @} // end of integer hints
+
+/// @name Float hints
+/// @{
+
+class mouse_normal_speed_scale final
+    : public detail::float_hint<mouse_normal_speed_scale> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_NORMAL_SPEED_SCALE;
+  }
+};
+
+class mouse_relative_speed_scale final
+    : public detail::float_hint<mouse_relative_speed_scale> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
+  }
+};
+
+/// @} // end of float hints
 
 }  // namespace hint
 
 /**
  * @enum hint_priority
- *
- * @ingroup configuration
  *
  * @brief Provides three different priorities that can be specified when
  * setting the value of a hint.
@@ -1106,8 +1558,6 @@ enum class hint_priority {
 
 /**
  * @brief Sets the value of the specified hint.
- *
- * @ingroup configuration
  *
  * @details This method will only accept values that are related to the
  * specified hint, supplying the wrong kind of value causes a compile-time
@@ -1164,8 +1614,6 @@ auto set_hint(const Value& value) -> bool
 /**
  * @brief Returns the current value of the specified hint.
  *
- * @ingroup configuration
- *
  * @note The returned value is a `std::optional` of the hint value type.
  *
  * @par Examples
@@ -1194,8 +1642,6 @@ template <typename Hint>
 
 /**
  * @class hint_callback
- *
- * @ingroup configuration
  *
  * @brief Represents a handle for dealing with hint callbacks.
  *
@@ -1295,8 +1741,6 @@ class hint_callback final {
  * @brief Adds a callback to observe changes of the value of the specified
  * hint is updated.
  *
- * @ingroup configuration
- *
  * @details A callback handle object is returned, which can be used to easily
  * disconnect the callback later.
  *
@@ -1360,8 +1804,6 @@ auto add_hint_callback(SDL_HintCallback fun,
 /**
  * @brief Clears all stored hints.
  *
- * @ingroup configuration
- *
  * @see `SDL_ClearHints`
  *
  * @since 4.1.0
@@ -1370,6 +1812,8 @@ inline void clear_hints() noexcept
 {
   SDL_ClearHints();
 }
+
+/// @}
 
 }  // namespace centurion
 

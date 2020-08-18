@@ -34,7 +34,7 @@ void test_bool_hint()
 
 }  // namespace
 
-TEST_CASE("hint_prio", "[Hints]")
+TEST_CASE("hint_prio", "[hint]")
 {
   using prio = ctn::hint_priority;
   CHECK(prio::low == static_cast<prio>(SDL_HINT_DEFAULT));
@@ -46,7 +46,7 @@ TEST_CASE("hint_prio", "[Hints]")
   CHECK(static_cast<prio>(SDL_HINT_OVERRIDE) == prio::override);
 }
 
-TEST_CASE("set_hint", "[Hints]")
+TEST_CASE("set_hint", "[hint]")
 {
   SECTION("accelerometer_as_joystick")
   {
@@ -325,6 +325,12 @@ TEST_CASE("set_hint", "[Hints]")
   {
     using ctn::hint::joystick_use_hidapi_ps4;
     test_bool_hint<joystick_use_hidapi_ps4>();
+  }
+
+  SECTION("joystick_use_hidapi_ps4_rumble")
+  {
+    using ctn::hint::joystick_use_hidapi_ps4_rumble;
+    test_bool_hint<joystick_use_hidapi_ps4_rumble>();
   }
 
   SECTION("joystick_use_hidapi_steam")
@@ -884,7 +890,7 @@ TEST_CASE("set_hint", "[Hints]")
   }
 }
 
-TEST_CASE("add_hint_callback", "[Hints]")
+TEST_CASE("add_hint_callback", "[hint]")
 {
   using ctn::hint::render_driver;
   ctn::set_hint<render_driver>(render_driver::software);
@@ -917,12 +923,12 @@ TEST_CASE("add_hint_callback", "[Hints]")
       render_driver::open_gl);
 }
 
-TEST_CASE("clear_hints", "[Hints]")
+TEST_CASE("clear_hints", "[hint]")
 {
   CHECK_NOTHROW(ctn::clear_hints());
 }
 
-TEST_CASE("hint user data", "[Hints]")
+TEST_CASE("hint user data", "[hint]")
 {
   using ctn::hint::render_driver;
 

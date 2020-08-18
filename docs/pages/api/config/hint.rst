@@ -86,7 +86,7 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``direct_3d_thread_safe``                      ``SDL_HINT_RENDER_DIRECT3D_THREADSAFE``               
  ``opengl_es_driver``                           ``SDL_HINT_OPENGL_ES_DRIVER``                         
  ``enable_opengl_shaders``                      ``SDL_HINT_RENDER_OPENGL_SHADERS``                    
- ``enable_vsync``                               ``SDL_HINT_RENDER_VSYNC``                             
+ ``vsync``                                      ``SDL_HINT_RENDER_VSYNC``
  ``allow_screensaver``                          ``SDL_HINT_VIDEO_ALLOW_SCREENSAVER``                  
  ``video_external_context``                     ``SDL_HINT_VIDEO_EXTERNAL_CONTEXT``                   
  ``disable_high_dpi``                           ``SDL_HINT_VIDEO_HIGHDPI_DISABLED``                   

@@ -1090,8 +1090,7 @@ class enable_opengl_shaders final
   }
 };
 
-// TODO rename to vsync
-class enable_vsync final : public detail::bool_hint<enable_vsync> {
+class vsync final : public detail::bool_hint<vsync> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
@@ -1474,7 +1473,7 @@ class mouse_double_click_radius final
   }
 };
 
-class win_rt_handle_back_button final
+class win_rt_handle_back_button final // TODO test
     : public detail::int_hint<win_rt_handle_back_button> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring

@@ -475,11 +475,11 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("enable_vsync")
+  SECTION("vsync")
   {
-    using ctn::hint::enable_vsync;
-    test_bool_hint<enable_vsync>();
-    ctn::set_hint<enable_vsync>(true);
+    using ctn::hint::vsync;
+    test_bool_hint<vsync>();
+    ctn::set_hint<vsync>(true);
   }
 
   SECTION("scale_quality")

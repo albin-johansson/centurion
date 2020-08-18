@@ -62,7 +62,7 @@ namespace centurion {
  *
  * @ingroup misc
  *
- * @brief The only exception explicitly thrown by the library.
+ * @brief The base of all exceptions explicitly thrown by the library.
  *
  * @headerfile centurion_exception.hpp
  *

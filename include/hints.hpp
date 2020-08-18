@@ -844,24 +844,6 @@ class allow_top_most final : public detail::bool_hint<allow_top_most> {
   }
 };
 
-class android_block_on_pause final
-    : public detail::bool_hint<android_block_on_pause> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ANDROID_BLOCK_ON_PAUSE;
-  }
-};
-
-class android_trap_back_button final
-    : public detail::bool_hint<android_trap_back_button> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ANDROID_TRAP_BACK_BUTTON;
-  }
-};
-
 class apple_tv_controller_ui_events final
     : public detail::bool_hint<apple_tv_controller_ui_events> {
  public:
@@ -1111,24 +1093,6 @@ class qt_wayland_window_flags final
   }
 };
 
-class android_apk_expansion_main_file_version final
-    : public detail::int_hint<android_apk_expansion_main_file_version> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
-  }
-};
-
-class android_apk_expansion_patch_file_version final
-    : public detail::int_hint<android_apk_expansion_patch_file_version> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION;
-  }
-};
-
 class event_logging final : public detail::int_hint<event_logging> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1365,6 +1329,40 @@ struct ctrl_click_emulate_right_click final
 };
 
 }  // namespace mac
+
+namespace android {
+
+struct block_on_pause final : detail::bool_hint<block_on_pause> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_BLOCK_ON_PAUSE;
+  }
+};
+
+struct trap_back_button final : detail::bool_hint<trap_back_button> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_TRAP_BACK_BUTTON;
+  }
+};
+
+struct apk_expansion_main_file_version final
+    : detail::int_hint<apk_expansion_main_file_version> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
+  }
+};
+
+struct apk_expansion_patch_file_version final
+    : detail::int_hint<apk_expansion_patch_file_version> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION;
+  }
+};
+
+}  // namespace android
 
 namespace joystick {
 

@@ -78,36 +78,6 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("android_block_on_pause")
-  {
-    using ctn::hint::android_block_on_pause;
-    test_bool_hint<android_block_on_pause>();
-  }
-
-  SECTION("android_trap_back_button")
-  {
-    using ctn::hint::android_trap_back_button;
-    test_bool_hint<android_trap_back_button>();
-  }
-
-  SECTION("android_apk_expansion_main_file_version")
-  {
-    using ctn::hint::android_apk_expansion_main_file_version;
-    test_hint<android_apk_expansion_main_file_version>([] {
-      CHECK(ctn::set_hint<android_apk_expansion_main_file_version>(1));
-      CHECK(ctn::get_hint<android_apk_expansion_main_file_version>() == 1);
-    });
-  }
-
-  SECTION("android_apk_expansion_patch_file_version")
-  {
-    using ctn::hint::android_apk_expansion_patch_file_version;
-    test_hint<android_apk_expansion_patch_file_version>([] {
-      CHECK(ctn::set_hint<android_apk_expansion_patch_file_version>(1));
-      CHECK(ctn::get_hint<android_apk_expansion_patch_file_version>() == 1);
-    });
-  }
-
   SECTION("audio_category")
   {
     using ctn::hint::audio_category;
@@ -810,6 +780,39 @@ TEST_CASE("set_hint", "[hint]")
     {
       using ctn::hint::mac::fullscreen_spaces;
       test_bool_hint<fullscreen_spaces>();
+    }
+  }
+
+  SECTION("android::")
+  {
+    SECTION("block_on_pause")
+    {
+      using ctn::hint::android::block_on_pause;
+      test_bool_hint<block_on_pause>();
+    }
+
+    SECTION("trap_back_button")
+    {
+      using ctn::hint::android::trap_back_button;
+      test_bool_hint<trap_back_button>();
+    }
+
+    SECTION("apk_expansion_main_file_version")
+    {
+      using ctn::hint::android::apk_expansion_main_file_version;
+      test_hint<apk_expansion_main_file_version>([] {
+        CHECK(ctn::set_hint<apk_expansion_main_file_version>(1));
+        CHECK(ctn::get_hint<apk_expansion_main_file_version>() == 1);
+      });
+    }
+
+    SECTION("apk_expansion_patch_file_version")
+    {
+      using ctn::hint::android::apk_expansion_patch_file_version;
+      test_hint<apk_expansion_patch_file_version>([] {
+        CHECK(ctn::set_hint<apk_expansion_patch_file_version>(1));
+        CHECK(ctn::get_hint<apk_expansion_patch_file_version>() == 1);
+      });
     }
   }
 

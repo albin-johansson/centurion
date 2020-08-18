@@ -230,67 +230,6 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("game_controller_use_button_labels")
-  {
-    using ctn::hint::game_controller_use_button_labels;
-    test_bool_hint<game_controller_use_button_labels>();
-  }
-
-  SECTION("game_controller_type")
-  {
-    using ctn::hint::game_controller_type;
-    test_hint<game_controller_type>([] {
-      ctn::czstring str = "0x00FD/0xAAC3=PS4";
-      ctn::set_hint<game_controller_type>(str);
-      CHECK_THAT(ctn::get_hint<game_controller_type>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("game_controller_config")
-  {
-    using ctn::hint::game_controller_config;
-    test_hint<game_controller_config>([] {
-      ctn::czstring str = "asd\nasd";
-      ctn::set_hint<game_controller_config>(str);
-      CHECK_THAT(ctn::get_hint<game_controller_config>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("game_controller_config_file")
-  {
-    using ctn::hint::game_controller_config_file;
-    test_hint<game_controller_config_file>([] {
-      ctn::czstring str = "foo";
-      ctn::set_hint<game_controller_config_file>(str);
-      CHECK_THAT(ctn::get_hint<game_controller_config_file>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("game_controller_ignore_devices")
-  {
-    using ctn::hint::game_controller_ignore_devices;
-    test_hint<game_controller_ignore_devices>([] {
-      ctn::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
-      ctn::set_hint<game_controller_ignore_devices>(str);
-      CHECK_THAT(ctn::get_hint<game_controller_ignore_devices>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("game_controller_ignore_devices_except")
-  {
-    using ctn::hint::game_controller_ignore_devices_except;
-    test_hint<game_controller_ignore_devices_except>([] {
-      ctn::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
-      ctn::set_hint<game_controller_ignore_devices_except>(str);
-      CHECK_THAT(ctn::get_hint<game_controller_ignore_devices_except>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
   SECTION("grab_keyboard")
   {
     using ctn::hint::grab_keyboard;
@@ -727,6 +666,66 @@ TEST_CASE("set_hint", "[hint]")
     });
 
     ctn::set_hint<render_driver>(render_driver::open_gl);
+  }
+
+  SECTION("gamecontroller::")
+  {
+    SECTION("use_button_labels")
+    {
+      using ctn::hint::gamecontroller::use_button_labels;
+      test_bool_hint<use_button_labels>();
+    }
+
+    SECTION("type")
+    {
+      using ctn::hint::gamecontroller::type;
+      test_hint<type>([] {
+        ctn::czstring str = "0x00FD/0xAAC3=PS4";
+        ctn::set_hint<type>(str);
+        CHECK_THAT(ctn::get_hint<type>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("config")
+    {
+      using ctn::hint::gamecontroller::config;
+      test_hint<config>([] {
+        ctn::czstring str = "asd\nasd";
+        ctn::set_hint<config>(str);
+        CHECK_THAT(ctn::get_hint<config>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("config_file")
+    {
+      using ctn::hint::gamecontroller::config_file;
+      test_hint<config_file>([] {
+        ctn::czstring str = "foo";
+        ctn::set_hint<config_file>(str);
+        CHECK_THAT(ctn::get_hint<config_file>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("ignore_devices")
+    {
+      using ctn::hint::gamecontroller::ignore_devices;
+      test_hint<ignore_devices>([] {
+        ctn::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+        ctn::set_hint<ignore_devices>(str);
+        CHECK_THAT(ctn::get_hint<ignore_devices>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("ignore_devices_except")
+    {
+      using ctn::hint::gamecontroller::ignore_devices_except;
+      test_hint<ignore_devices_except>([] {
+        ctn::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+        ctn::set_hint<ignore_devices_except>(str);
+        CHECK_THAT(ctn::get_hint<ignore_devices_except>().value(),
+                   Catch::Equals(str));
+      });
+    }
   }
 
   SECTION("winrt::")

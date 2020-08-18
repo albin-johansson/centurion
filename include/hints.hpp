@@ -906,15 +906,6 @@ class enable_steam_controllers final
   }
 };
 
-class game_controller_use_button_labels final
-    : public detail::bool_hint<game_controller_use_button_labels> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS;
-  }
-};
-
 class grab_keyboard final : public detail::bool_hint<grab_keyboard> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1155,51 +1146,6 @@ class emscripten_keyboard_element final
   }
 };
 
-class game_controller_type final
-    : public detail::string_hint<game_controller_type> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLERTYPE;
-  }
-};
-
-class game_controller_config final
-    : public detail::string_hint<game_controller_config> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLERCONFIG;
-  }
-};
-
-class game_controller_config_file final
-    : public detail::string_hint<game_controller_config_file> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLERCONFIG_FILE;
-  }
-};
-
-class game_controller_ignore_devices final
-    : public detail::string_hint<game_controller_ignore_devices> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES;
-  }
-};
-
-class game_controller_ignore_devices_except final
-    : public detail::string_hint<game_controller_ignore_devices_except> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT;
-  }
-};
-
 class orientations final : public detail::string_hint<orientations> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1314,6 +1260,53 @@ class mouse_relative_speed_scale final
     return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
   }
 };
+
+namespace gamecontroller {
+
+struct use_button_labels final : detail::bool_hint<use_button_labels> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS;
+  }
+};
+
+struct type final : detail::string_hint<type> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERTYPE;
+  }
+};
+
+struct config final : detail::string_hint<config> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERCONFIG;
+  }
+};
+
+struct config_file final : detail::string_hint<config_file> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERCONFIG_FILE;
+  }
+};
+
+struct ignore_devices final : detail::string_hint<ignore_devices> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES;
+  }
+};
+
+struct ignore_devices_except final
+    : detail::string_hint<ignore_devices_except> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT;
+  }
+};
+
+}  // namespace gamecontroller
 
 namespace winrt {
 

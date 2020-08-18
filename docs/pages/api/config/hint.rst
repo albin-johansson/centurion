@@ -65,8 +65,8 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``bmp_save_legacy_format``                     ``SDL_HINT_BMP_SAVE_LEGACY_FORMAT``                   
  ``double_buffer``                              ``SDL_HINT_VIDEO_DOUBLE_BUFFER``                      
  ``enable_steam_controllers``                   ``SDL_HINT_ENABLE_STEAM_CONTROLLERS``                 
- ``game_controller_use_button_labels``          ``SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS``         
- ``grab_keyboard``                              ``SDL_HINT_GRAB_KEYBOARD``                            
+ ``gamecontroller::use_button_labels``          ``SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS``
+ ``grab_keyboard``                              ``SDL_HINT_GRAB_KEYBOARD``
  ``idle_timer_disabled``                        ``SDL_HINT_IDLE_TIMER_DISABLED``                      
  ``ime_internal_editing``                       ``SDL_HINT_IME_INTERNAL_EDITING``                     
  ``joystick::allow_background_events``          ``SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS``
@@ -124,11 +124,11 @@ format of the string arguments.
 ---------------------------------------------- -------------------------------------------------------
  ``display_usable_bounds``                      ``SDL_HINT_DISPLAY_USABLE_BOUNDS``                    
  ``emscripten_keyboard_element``                ``SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT``              
- ``game_controller_type``                       ``SDL_HINT_GAMECONTROLLERTYPE``                       
- ``game_controller_config``                     ``SDL_HINT_GAMECONTROLLERCONFIG``                     
- ``game_controller_config_file``                ``SDL_HINT_GAMECONTROLLERCONFIG_FILE``                
- ``game_controller_ignore_devices``             ``SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES``            
- ``game_controller_ignore_devices_except``      ``SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT``     
+ ``gamecontroller::type``                       ``SDL_HINT_GAMECONTROLLERTYPE``
+ ``gamecontroller::config``                     ``SDL_HINT_GAMECONTROLLERCONFIG``
+ ``gamecontroller::config_file``                ``SDL_HINT_GAMECONTROLLERCONFIG_FILE``
+ ``gamecontroller::ignore_devices``             ``SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES``
+ ``gamecontroller::ignore_devices_except``      ``SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT``
  ``orientations``                               ``SDL_HINT_ORIENTATIONS``                             
  ``x11::window_visual_id``                      ``SDL_HINT_VIDEO_X11_WINDOW_VISUALID``
  ``window_share_pixel_format``                  ``SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT``

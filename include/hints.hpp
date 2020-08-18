@@ -1310,26 +1310,21 @@ struct ignore_devices_except final
 
 namespace winrt {
 
-class privacy_policy_label final
-    : public detail::string_hint<privacy_policy_label> {
- public:
+struct privacy_policy_label final : detail::string_hint<privacy_policy_label> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WINRT_PRIVACY_POLICY_LABEL;
   }
 };
 
-class privacy_policy_url final
-    : public detail::string_hint<privacy_policy_url> {
- public:
+struct privacy_policy_url final : detail::string_hint<privacy_policy_url> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WINRT_PRIVACY_POLICY_URL;
   }
 };
 
-class handle_back_button final : public detail::bool_hint<handle_back_button> {
- public:
+struct handle_back_button final : detail::bool_hint<handle_back_button> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WINRT_HANDLE_BACK_BUTTON;
@@ -1340,42 +1335,36 @@ class handle_back_button final : public detail::bool_hint<handle_back_button> {
 
 namespace windows {
 
-class no_thread_naming final : public detail::bool_hint<no_thread_naming> {
- public:
+struct no_thread_naming final : detail::bool_hint<no_thread_naming> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING;
   }
 };
 
-class enable_message_loop final
-    : public detail::bool_hint<enable_message_loop> {
- public:
+struct enable_message_loop final : detail::bool_hint<enable_message_loop> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP;
   }
 };
 
-class no_close_on_alt_f4 final : public detail::bool_hint<no_close_on_alt_f4> {
- public:
+struct no_close_on_alt_f4 final : detail::bool_hint<no_close_on_alt_f4> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4;
   }
 };
 
-class int_resource_icon final : public detail::string_hint<int_resource_icon> {
- public:
+struct int_resource_icon final : detail::string_hint<int_resource_icon> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOWS_INTRESOURCE_ICON;
   }
 };
 
-class int_resource_icon_small final
-    : public detail::string_hint<int_resource_icon_small> {
- public:
+struct int_resource_icon_small final
+    : detail::string_hint<int_resource_icon_small> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL;
@@ -1386,67 +1375,57 @@ class int_resource_icon_small final
 
 namespace joystick {
 
-class allow_background_events final
-    : public detail::bool_hint<allow_background_events> {
- public:
+struct allow_background_events final
+    : detail::bool_hint<allow_background_events> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS;
   }
 };
 
-class use_hidapi final : public detail::bool_hint<use_hidapi> {
- public:
+struct use_hidapi final : detail::bool_hint<use_hidapi> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI;
   }
 };
 
-class use_hidapi_ps4 final : public detail::bool_hint<use_hidapi_ps4> {
- public:
+struct use_hidapi_ps4 final : detail::bool_hint<use_hidapi_ps4> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_PS4;
   }
 };
 
-class use_hidapi_ps4_rumble final
-    : public detail::bool_hint<use_hidapi_ps4_rumble> {
- public:
+struct use_hidapi_ps4_rumble final : detail::bool_hint<use_hidapi_ps4_rumble> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE;
   }
 };
 
-class use_hidapi_steam final : public detail::bool_hint<use_hidapi_steam> {
- public:
+struct use_hidapi_steam final : detail::bool_hint<use_hidapi_steam> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_STEAM;
   }
 };
 
-class use_hidapi_switch final : public detail::bool_hint<use_hidapi_switch> {
- public:
+struct use_hidapi_switch final : detail::bool_hint<use_hidapi_switch> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_SWITCH;
   }
 };
 
-class use_hidapi_xbox final : public detail::bool_hint<use_hidapi_xbox> {
- public:
+struct use_hidapi_xbox final : detail::bool_hint<use_hidapi_xbox> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_XBOX;
   }
 };
 
-class use_hidapi_game_cube final
-    : public detail::bool_hint<use_hidapi_game_cube> {
- public:
+struct use_hidapi_game_cube final : detail::bool_hint<use_hidapi_game_cube> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE;
@@ -1457,57 +1436,50 @@ class use_hidapi_game_cube final
 
 namespace x11 {
 
-class net_wm_ping final : public detail::bool_hint<net_wm_ping> {
- public:
+struct net_wm_ping final : detail::bool_hint<net_wm_ping> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_NET_WM_PING;
   }
 };
 
-class net_wm_bypass_compositor final
-    : public detail::bool_hint<net_wm_bypass_compositor> {
- public:
+struct net_wm_bypass_compositor final
+    : detail::bool_hint<net_wm_bypass_compositor> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR;
   }
 };
 
-class force_egl final : public detail::bool_hint<force_egl> {
- public:
+struct force_egl final : detail::bool_hint<force_egl> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_FORCE_EGL;
   }
 };
 
-class xinerama final : public detail::bool_hint<xinerama> {
- public:
+struct xinerama final : detail::bool_hint<xinerama> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_XINERAMA;
   }
 };
 
-class xrandr final : public detail::bool_hint<xrandr> {
- public:
+struct xrandr final : detail::bool_hint<xrandr> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_XRANDR;
   }
 };
 
-class xvidmode final : public detail::bool_hint<xvidmode> {
- public:
+struct xvidmode final : detail::bool_hint<xvidmode> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_XVIDMODE;
   }
 };
 
-class window_visual_id final : public detail::string_hint<window_visual_id> {
- public:
+struct window_visual_id final : detail::string_hint<window_visual_id> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;

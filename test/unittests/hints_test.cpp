@@ -309,54 +309,6 @@ TEST_CASE("set_hint", "[hint]")
     test_bool_hint<ime_internal_editing>();
   }
 
-  SECTION("joystick_allow_background_events")
-  {
-    using ctn::hint::joystick_allow_background_events;
-    test_bool_hint<joystick_allow_background_events>();
-  }
-
-  SECTION("joystick_use_hidapi")
-  {
-    using ctn::hint::joystick_use_hidapi;
-    test_bool_hint<joystick_use_hidapi>();
-  }
-
-  SECTION("joystick_use_hidapi_ps4")
-  {
-    using ctn::hint::joystick_use_hidapi_ps4;
-    test_bool_hint<joystick_use_hidapi_ps4>();
-  }
-
-  SECTION("joystick_use_hidapi_ps4_rumble")
-  {
-    using ctn::hint::joystick_use_hidapi_ps4_rumble;
-    test_bool_hint<joystick_use_hidapi_ps4_rumble>();
-  }
-
-  SECTION("joystick_use_hidapi_steam")
-  {
-    using ctn::hint::joystick_use_hidapi_steam;
-    test_bool_hint<joystick_use_hidapi_steam>();
-  }
-
-  SECTION("joystick_use_hidapi_switch")
-  {
-    using ctn::hint::joystick_use_hidapi_switch;
-    test_bool_hint<joystick_use_hidapi_switch>();
-  }
-
-  SECTION("joystick_use_hidapi_xbox")
-  {
-    using ctn::hint::joystick_use_hidapi_xbox;
-    test_bool_hint<joystick_use_hidapi_xbox>();
-  }
-
-  SECTION("joystick_use_hidapi_game_cube")
-  {
-    using ctn::hint::joystick_use_hidapi_game_cube;
-    test_bool_hint<joystick_use_hidapi_game_cube>();
-  }
-
   SECTION("logical_size_mode")
   {
     using ctn::hint::logical_size_mode;
@@ -525,57 +477,6 @@ TEST_CASE("set_hint", "[hint]")
   {
     using ctn::hint::minimize_on_focus_loss;
     test_bool_hint<minimize_on_focus_loss>();
-  }
-
-  SECTION("x11")
-  {
-    SECTION("net_wm_ping")
-    {
-      using ctn::hint::x11::net_wm_ping;
-      test_bool_hint<net_wm_ping>();
-    }
-
-    SECTION("net_wm_bypass_compositor")
-    {
-      using ctn::hint::x11::net_wm_bypass_compositor;
-      test_bool_hint<net_wm_bypass_compositor>();
-    }
-
-    SECTION("force_egl")
-    {
-      using ctn::hint::x11::force_egl;
-      test_bool_hint<force_egl>();
-    }
-
-    SECTION("xinerama")
-    {
-      using ctn::hint::x11::xinerama;
-      test_bool_hint<xinerama>();
-    }
-
-    SECTION("xrandr")
-    {
-      using ctn::hint::x11::xrandr;
-      test_bool_hint<xrandr>();
-    }
-
-    SECTION("xvidmode")
-    {
-      using ctn::hint::x11::xvidmode;
-      test_bool_hint<xvidmode>();
-    }
-
-    SECTION("window_visual_id")
-    {
-      using ctn::hint::x11::window_visual_id;
-      test_hint<window_visual_id>([] {
-        CHECK(ctn::set_hint<window_visual_id>("foo"));
-        CHECK_THAT(ctn::get_hint<window_visual_id>().value(),
-                   Catch::Equals("foo"));
-
-        ctn::set_hint<window_visual_id>("");
-      });
-    }
   }
 
   SECTION("wave_riff_chunk_size")
@@ -890,6 +791,108 @@ TEST_CASE("set_hint", "[hint]")
     });
 
     ctn::set_hint<render_driver>(render_driver::open_gl);
+  }
+
+  SECTION("joystick::")
+  {
+    SECTION("allow_background_events")
+    {
+      using ctn::hint::joystick::allow_background_events;
+      test_bool_hint<allow_background_events>();
+    }
+
+    SECTION("use_hidapi")
+    {
+      using ctn::hint::joystick::use_hidapi;
+      test_bool_hint<use_hidapi>();
+    }
+
+    SECTION("use_hidapi_ps4")
+    {
+      using ctn::hint::joystick::use_hidapi_ps4;
+      test_bool_hint<use_hidapi_ps4>();
+    }
+
+    SECTION("use_hidapi_ps4_rumble")
+    {
+      using ctn::hint::joystick::use_hidapi_ps4_rumble;
+      test_bool_hint<use_hidapi_ps4_rumble>();
+    }
+
+    SECTION("use_hidapi_steam")
+    {
+      using ctn::hint::joystick::use_hidapi_steam;
+      test_bool_hint<use_hidapi_steam>();
+    }
+
+    SECTION("use_hidapi_switch")
+    {
+      using ctn::hint::joystick::use_hidapi_switch;
+      test_bool_hint<use_hidapi_switch>();
+    }
+
+    SECTION("use_hidapi_xbox")
+    {
+      using ctn::hint::joystick::use_hidapi_xbox;
+      test_bool_hint<use_hidapi_xbox>();
+    }
+
+    SECTION("use_hidapi_game_cube")
+    {
+      using ctn::hint::joystick::use_hidapi_game_cube;
+      test_bool_hint<use_hidapi_game_cube>();
+    }
+  }
+
+  SECTION("x11::")
+  {
+    SECTION("net_wm_ping")
+    {
+      using ctn::hint::x11::net_wm_ping;
+      test_bool_hint<net_wm_ping>();
+    }
+
+    SECTION("net_wm_bypass_compositor")
+    {
+      using ctn::hint::x11::net_wm_bypass_compositor;
+      test_bool_hint<net_wm_bypass_compositor>();
+    }
+
+    SECTION("force_egl")
+    {
+      using ctn::hint::x11::force_egl;
+      test_bool_hint<force_egl>();
+    }
+
+    SECTION("xinerama")
+    {
+      using ctn::hint::x11::xinerama;
+      test_bool_hint<xinerama>();
+    }
+
+    SECTION("xrandr")
+    {
+      using ctn::hint::x11::xrandr;
+      test_bool_hint<xrandr>();
+    }
+
+    SECTION("xvidmode")
+    {
+      using ctn::hint::x11::xvidmode;
+      test_bool_hint<xvidmode>();
+    }
+
+    SECTION("window_visual_id")
+    {
+      using ctn::hint::x11::window_visual_id;
+      test_hint<window_visual_id>([] {
+        CHECK(ctn::set_hint<window_visual_id>("foo"));
+        CHECK_THAT(ctn::get_hint<window_visual_id>().value(),
+                   Catch::Equals("foo"));
+
+        ctn::set_hint<window_visual_id>("");
+      });
+    }
   }
 }
 

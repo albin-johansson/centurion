@@ -941,78 +941,6 @@ class ime_internal_editing final
   }
 };
 
-class joystick_allow_background_events final
-    : public detail::bool_hint<joystick_allow_background_events> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS;
-  }
-};
-
-class joystick_use_hidapi final
-    : public detail::bool_hint<joystick_use_hidapi> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI;
-  }
-};
-
-class joystick_use_hidapi_ps4 final
-    : public detail::bool_hint<joystick_use_hidapi_ps4> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_PS4;
-  }
-};
-
-class joystick_use_hidapi_ps4_rumble final
-    : public detail::bool_hint<joystick_use_hidapi_ps4_rumble> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE;
-  }
-};
-
-class joystick_use_hidapi_steam final
-    : public detail::bool_hint<joystick_use_hidapi_steam> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_STEAM;
-  }
-};
-
-class joystick_use_hidapi_switch final
-    : public detail::bool_hint<joystick_use_hidapi_switch> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_SWITCH;
-  }
-};
-
-class joystick_use_hidapi_xbox final
-    : public detail::bool_hint<joystick_use_hidapi_xbox> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_XBOX;
-  }
-};
-
-class joystick_use_hidapi_game_cube final
-    : public detail::bool_hint<joystick_use_hidapi_game_cube> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE;
-  }
-};
-
 class mac_background_app final : public detail::bool_hint<mac_background_app> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1141,67 +1069,6 @@ class minimize_on_focus_loss final
   }
 };
 
-namespace x11 {
-
-class net_wm_ping final : public detail::bool_hint<net_wm_ping> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_NET_WM_PING;
-  }
-};
-
-class net_wm_bypass_compositor final
-    : public detail::bool_hint<net_wm_bypass_compositor> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR;
-  }
-};
-
-class force_egl final : public detail::bool_hint<force_egl> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_FORCE_EGL;
-  }
-};
-
-class xinerama final : public detail::bool_hint<xinerama> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_XINERAMA;
-  }
-};
-
-class xrandr final : public detail::bool_hint<xrandr> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_XRANDR;
-  }
-};
-
-class xvidmode final : public detail::bool_hint<xvidmode> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_XVIDMODE;
-  }
-};
-
-class window_visual_id final : public detail::string_hint<window_visual_id> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
-  }
-};
-
-}  // namespace x11
-
 class windows_disable_thread_naming final
     : public detail::bool_hint<windows_disable_thread_naming> {
  public:
@@ -1296,11 +1163,6 @@ class tv_remote_as_joystick final
     return SDL_HINT_TV_REMOTE_AS_JOYSTICK;
   }
 };
-
-/// @} // end of boolean hints
-
-/// @name String hints
-/// @{
 
 class display_usable_bounds final
     : public detail::string_hint<display_usable_bounds> {
@@ -1427,11 +1289,6 @@ class qt_wayland_window_flags final
   }
 };
 
-/// @} // end of string hints
-
-/// @name Integer-hints
-/// @{
-
 class android_apk_expansion_main_file_version final
     : public detail::int_hint<android_apk_expansion_main_file_version> {
  public:
@@ -1512,11 +1369,6 @@ class timer_resolution final
   }
 };
 
-/// @} // end of integer hints
-
-/// @name Float hints
-/// @{
-
 class mouse_normal_speed_scale final
     : public detail::float_hint<mouse_normal_speed_scale> {
  public:
@@ -1535,7 +1387,137 @@ class mouse_relative_speed_scale final
   }
 };
 
-/// @} // end of float hints
+namespace joystick {
+
+class allow_background_events final
+    : public detail::bool_hint<allow_background_events> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS;
+  }
+};
+
+class use_hidapi final : public detail::bool_hint<use_hidapi> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI;
+  }
+};
+
+class use_hidapi_ps4 final : public detail::bool_hint<use_hidapi_ps4> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS4;
+  }
+};
+
+class use_hidapi_ps4_rumble final
+    : public detail::bool_hint<use_hidapi_ps4_rumble> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE;
+  }
+};
+
+class use_hidapi_steam final : public detail::bool_hint<use_hidapi_steam> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_STEAM;
+  }
+};
+
+class use_hidapi_switch final : public detail::bool_hint<use_hidapi_switch> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_SWITCH;
+  }
+};
+
+class use_hidapi_xbox final : public detail::bool_hint<use_hidapi_xbox> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_XBOX;
+  }
+};
+
+class use_hidapi_game_cube final
+    : public detail::bool_hint<use_hidapi_game_cube> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE;
+  }
+};
+
+}  // namespace joystick
+
+namespace x11 {
+
+class net_wm_ping final : public detail::bool_hint<net_wm_ping> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_NET_WM_PING;
+  }
+};
+
+class net_wm_bypass_compositor final
+    : public detail::bool_hint<net_wm_bypass_compositor> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR;
+  }
+};
+
+class force_egl final : public detail::bool_hint<force_egl> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_FORCE_EGL;
+  }
+};
+
+class xinerama final : public detail::bool_hint<xinerama> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XINERAMA;
+  }
+};
+
+class xrandr final : public detail::bool_hint<xrandr> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XRANDR;
+  }
+};
+
+class xvidmode final : public detail::bool_hint<xvidmode> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XVIDMODE;
+  }
+};
+
+class window_visual_id final : public detail::string_hint<window_visual_id> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
+  }
+};
+
+}  // namespace x11
 
 }  // namespace hint
 

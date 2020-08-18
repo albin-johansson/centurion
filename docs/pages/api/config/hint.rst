@@ -69,14 +69,14 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``grab_keyboard``                              ``SDL_HINT_GRAB_KEYBOARD``                            
  ``idle_timer_disabled``                        ``SDL_HINT_IDLE_TIMER_DISABLED``                      
  ``ime_internal_editing``                       ``SDL_HINT_IME_INTERNAL_EDITING``                     
- ``joystick_allow_background_events``           ``SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS``         
- ``joystick_use_hidapi``                        ``SDL_HINT_JOYSTICK_HIDAPI``                          
- ``joystick_use_hidapi_ps4``                    ``SDL_HINT_JOYSTICK_HIDAPI_PS4``                      
- ``joystick_use_hidapi_ps4_rumble``             ``SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE``               
- ``joystick_use_hidapi_steam``                  ``SDL_HINT_JOYSTICK_HIDAPI_STEAM``                    
- ``joystick_use_hidapi_switch``                 ``SDL_HINT_JOYSTICK_HIDAPI_SWITCH``                   
- ``joystick_use_hidapi_xbox``                   ``SDL_HINT_JOYSTICK_HIDAPI_XBOX``                     
- ``joystick_use_hidapi_game_cube``              ``SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE``                 
+ ``joystick::allow_background_events``          ``SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS``
+ ``joystick::use_hidapi``                       ``SDL_HINT_JOYSTICK_HIDAPI``
+ ``joystick::use_hidapi_ps4``                   ``SDL_HINT_JOYSTICK_HIDAPI_PS4``
+ ``joystick::use_hidapi_ps4_rumble``            ``SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE``
+ ``joystick::use_hidapi_steam``                 ``SDL_HINT_JOYSTICK_HIDAPI_STEAM``
+ ``joystick::use_hidapi_switch``                ``SDL_HINT_JOYSTICK_HIDAPI_SWITCH``
+ ``joystick::use_hidapi_xbox``                  ``SDL_HINT_JOYSTICK_HIDAPI_XBOX``
+ ``joystick::use_hidapi_game_cube``             ``SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE``
  ``mac_background_app``                         ``SDL_HINT_MAC_BACKGROUND_APP``                       
  ``mac_ctrl_click_emulate_right_click``         ``SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK``       
  ``mouse_focus_clickthrough``                   ``SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH``                 

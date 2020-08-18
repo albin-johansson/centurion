@@ -527,52 +527,55 @@ TEST_CASE("set_hint", "[hint]")
     test_bool_hint<minimize_on_focus_loss>();
   }
 
-  SECTION("x11_net_wm_ping")
+  SECTION("x11")
   {
-    using ctn::hint::x11_net_wm_ping;
-    test_bool_hint<x11_net_wm_ping>();
-  }
+    SECTION("net_wm_ping")
+    {
+      using ctn::hint::x11::net_wm_ping;
+      test_bool_hint<net_wm_ping>();
+    }
 
-  SECTION("x11_net_wm_bypass_compositor")
-  {
-    using ctn::hint::x11_net_wm_bypass_compositor;
-    test_bool_hint<x11_net_wm_bypass_compositor>();
-  }
+    SECTION("net_wm_bypass_compositor")
+    {
+      using ctn::hint::x11::net_wm_bypass_compositor;
+      test_bool_hint<net_wm_bypass_compositor>();
+    }
 
-  SECTION("x11_force_egl")
-  {
-    using ctn::hint::x11_force_egl;
-    test_bool_hint<x11_force_egl>();
-  }
+    SECTION("force_egl")
+    {
+      using ctn::hint::x11::force_egl;
+      test_bool_hint<force_egl>();
+    }
 
-  SECTION("x11_xinerama")
-  {
-    using ctn::hint::x11_xinerama;
-    test_bool_hint<x11_xinerama>();
-  }
+    SECTION("xinerama")
+    {
+      using ctn::hint::x11::xinerama;
+      test_bool_hint<xinerama>();
+    }
 
-  SECTION("x11_xrandr")
-  {
-    using ctn::hint::x11_xrandr;
-    test_bool_hint<x11_xrandr>();
-  }
+    SECTION("xrandr")
+    {
+      using ctn::hint::x11::xrandr;
+      test_bool_hint<xrandr>();
+    }
 
-  SECTION("x11_xvidmode")
-  {
-    using ctn::hint::x11_xvidmode;
-    test_bool_hint<x11_xvidmode>();
-  }
+    SECTION("xvidmode")
+    {
+      using ctn::hint::x11::xvidmode;
+      test_bool_hint<xvidmode>();
+    }
 
-  SECTION("x11_window_visual_id")
-  {
-    using ctn::hint::x11_window_visual_id;
-    test_hint<x11_window_visual_id>([] {
-      CHECK(ctn::set_hint<x11_window_visual_id>("foo"));
-      CHECK_THAT(ctn::get_hint<x11_window_visual_id>().value(),
-                 Catch::Equals("foo"));
+    SECTION("window_visual_id")
+    {
+      using ctn::hint::x11::window_visual_id;
+      test_hint<window_visual_id>([] {
+        CHECK(ctn::set_hint<window_visual_id>("foo"));
+        CHECK_THAT(ctn::get_hint<window_visual_id>().value(),
+                   Catch::Equals("foo"));
 
-      ctn::set_hint<x11_window_visual_id>("");
-    });
+        ctn::set_hint<window_visual_id>("");
+      });
+    }
   }
 
   SECTION("wave_riff_chunk_size")

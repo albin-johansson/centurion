@@ -92,12 +92,12 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``disable_high_dpi``                           ``SDL_HINT_VIDEO_HIGHDPI_DISABLED``                   
  ``mac_fullscreen_spaces``                      ``SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES``              
  ``minimize_on_focus_loss``                     ``SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS``             
- ``x11_net_wm_ping``                            ``SDL_HINT_VIDEO_X11_NET_WM_PING``                    
- ``x11_net_wm_bypass_compositor``               ``SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR``       
- ``x11_force_egl``                              ``SDL_HINT_VIDEO_X11_FORCE_EGL``                      
- ``x11_xinerama``                               ``SDL_HINT_VIDEO_X11_XINERAMA``                       
- ``x11_xrandr``                                 ``SDL_HINT_VIDEO_X11_XRANDR``                         
- ``x11_xvidmode``                               ``SDL_HINT_VIDEO_X11_XVIDMODE``                       
+ ``x11::net_wm_ping``                           ``SDL_HINT_VIDEO_X11_NET_WM_PING``
+ ``x11::net_wm_bypass_compositor``              ``SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR``
+ ``x11::force_egl``                             ``SDL_HINT_VIDEO_X11_FORCE_EGL``
+ ``x11::xinerama``                              ``SDL_HINT_VIDEO_X11_XINERAMA``
+ ``x11::xrandr``                                ``SDL_HINT_VIDEO_X11_XRANDR``
+ ``x11::xvidmode``                              ``SDL_HINT_VIDEO_X11_XVIDMODE``
  ``windows_disable_thread_naming``              ``SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING``            
  ``windows_enable_message_loop``                ``SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP``               
  ``windows_no_close_on_alt_f4``                 ``SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4``               
@@ -129,8 +129,8 @@ format of the string arguments.
  ``game_controller_ignore_devices``             ``SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES``            
  ``game_controller_ignore_devices_except``      ``SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT``     
  ``orientations``                               ``SDL_HINT_ORIENTATIONS``                             
- ``x11_window_visual_id``                       ``SDL_HINT_VIDEO_X11_WINDOW_VISUALID``                
- ``window_share_pixel_format``                  ``SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT``          
+ ``x11::window_visual_id``                      ``SDL_HINT_VIDEO_X11_WINDOW_VISUALID``
+ ``window_share_pixel_format``                  ``SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT``
  ``windows_int_resource_icon``                  ``SDL_HINT_WINDOWS_INTRESOURCE_ICON``                 
  ``windows_int_resource_icon_small``            ``SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL``           
  ``win_rt_privacy_policy_label``                ``SDL_HINT_WINRT_PRIVACY_POLICY_LABEL``               

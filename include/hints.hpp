@@ -1141,7 +1141,9 @@ class minimize_on_focus_loss final
   }
 };
 
-class x11_net_wm_ping final : public detail::bool_hint<x11_net_wm_ping> {
+inline namespace x11 {
+
+class net_wm_ping final : public detail::bool_hint<net_wm_ping> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
@@ -1149,8 +1151,8 @@ class x11_net_wm_ping final : public detail::bool_hint<x11_net_wm_ping> {
   }
 };
 
-class x11_net_wm_bypass_compositor final
-    : public detail::bool_hint<x11_net_wm_bypass_compositor> {
+class net_wm_bypass_compositor final
+    : public detail::bool_hint<net_wm_bypass_compositor> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
@@ -1158,7 +1160,7 @@ class x11_net_wm_bypass_compositor final
   }
 };
 
-class x11_force_egl final : public detail::bool_hint<x11_force_egl> {
+class force_egl final : public detail::bool_hint<force_egl> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
@@ -1166,7 +1168,7 @@ class x11_force_egl final : public detail::bool_hint<x11_force_egl> {
   }
 };
 
-class x11_xinerama final : public detail::bool_hint<x11_xinerama> {
+class xinerama final : public detail::bool_hint<xinerama> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
@@ -1174,7 +1176,7 @@ class x11_xinerama final : public detail::bool_hint<x11_xinerama> {
   }
 };
 
-class x11_xrandr final : public detail::bool_hint<x11_xrandr> {
+class xrandr final : public detail::bool_hint<xrandr> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
@@ -1182,13 +1184,23 @@ class x11_xrandr final : public detail::bool_hint<x11_xrandr> {
   }
 };
 
-class x11_xvidmode final : public detail::bool_hint<x11_xvidmode> {
+class xvidmode final : public detail::bool_hint<xvidmode> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_XVIDMODE;
   }
 };
+
+class window_visual_id final : public detail::string_hint<window_visual_id> {
+ public:
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
+  }
+};
+
+}  // namespace x11
 
 class windows_disable_thread_naming final
     : public detail::bool_hint<windows_disable_thread_naming> {
@@ -1397,15 +1409,6 @@ class win_rt_privacy_policy_url final
   }
 };
 
-class x11_window_visual_id final
-    : public detail::string_hint<x11_window_visual_id> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
-  }
-};
-
 class window_share_pixel_format final
     : public detail::string_hint<window_share_pixel_format> {
  public:
@@ -1473,7 +1476,7 @@ class mouse_double_click_radius final
   }
 };
 
-class win_rt_handle_back_button final // TODO test
+class win_rt_handle_back_button final  // TODO test
     : public detail::int_hint<win_rt_handle_back_button> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring

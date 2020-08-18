@@ -518,53 +518,6 @@ class audio_category final {
   }
 };
 
-class win_d3d_compiler final {
- public:
-  enum Value { d3d_compiler_46, d3d_compiler_43, none };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
-
-  static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
-  }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return std::nullopt;
-    }
-
-    using detail::equal;
-    if (equal(hint, "d3dcompiler_46.dll")) {
-      return d3d_compiler_46;
-    } else if (equal(hint, "d3dcompiler_43.dll")) {
-      return d3d_compiler_43;
-    } else {
-      return none;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case none:
-        return "none";
-      case d3d_compiler_43:
-        return "d3dcompiler_43.dll";
-      case d3d_compiler_46:
-        return "d3dcompiler_46.dll";
-    }
-  }
-};
-
 class wave_riff_chunk_size final {
  public:
   enum Value { force, ignore_zero, ignore, maximum };
@@ -1265,6 +1218,52 @@ struct handle_back_button final : detail::bool_hint<handle_back_button> {
 }  // namespace winrt
 
 namespace windows {
+
+struct d3d_compiler final {
+  enum Value { d3d_compiler_46, d3d_compiler_43, none };
+
+  template <typename T>
+  static constexpr auto valid_arg() noexcept -> bool
+  {
+    return std::is_same_v<T, Value>;
+  }
+
+  static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
+  }
+
+  static auto current_value() noexcept -> std::optional<Value>
+  {
+    const czstring hint = SDL_GetHint(name());
+    if (!hint) {
+      return std::nullopt;
+    }
+
+    using detail::equal;
+    if (equal(hint, "d3dcompiler_46.dll")) {
+      return d3d_compiler_46;
+    } else if (equal(hint, "d3dcompiler_43.dll")) {
+      return d3d_compiler_43;
+    } else {
+      return none;
+    }
+  }
+
+  static auto to_string(Value value) -> std::string
+  {
+    switch (value) {
+      default:
+        [[fallthrough]];
+      case none:
+        return "none";
+      case d3d_compiler_43:
+        return "d3dcompiler_43.dll";
+      case d3d_compiler_46:
+        return "d3dcompiler_46.dll";
+    }
+  }
+};
 
 struct no_thread_naming final : detail::bool_hint<no_thread_naming> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring

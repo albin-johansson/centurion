@@ -381,23 +381,6 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("win_d3d_compiler")
-  {
-    using ctn::hint::win_d3d_compiler;
-    test_hint<win_d3d_compiler>([] {
-      CHECK(ctn::set_hint<win_d3d_compiler>(win_d3d_compiler::none));
-      CHECK(ctn::get_hint<win_d3d_compiler>() == win_d3d_compiler::none);
-
-      CHECK(ctn::set_hint<win_d3d_compiler>(win_d3d_compiler::d3d_compiler_46));
-      CHECK(ctn::get_hint<win_d3d_compiler>() ==
-            win_d3d_compiler::d3d_compiler_46);
-
-      CHECK(ctn::set_hint<win_d3d_compiler>(win_d3d_compiler::d3d_compiler_43));
-      CHECK(ctn::get_hint<win_d3d_compiler>() ==
-            win_d3d_compiler::d3d_compiler_43);
-    });
-  }
-
   SECTION("window_share_pixel_format")
   {
     using ctn::hint::window_share_pixel_format;
@@ -719,6 +702,21 @@ TEST_CASE("set_hint", "[hint]")
 
   SECTION("windows::")
   {
+    SECTION("d3d_compiler")
+    {
+      using ctn::hint::windows::d3d_compiler;
+      test_hint<d3d_compiler>([] {
+        CHECK(ctn::set_hint<d3d_compiler>(d3d_compiler::none));
+        CHECK(ctn::get_hint<d3d_compiler>() == d3d_compiler::none);
+
+        CHECK(ctn::set_hint<d3d_compiler>(d3d_compiler::d3d_compiler_46));
+        CHECK(ctn::get_hint<d3d_compiler>() == d3d_compiler::d3d_compiler_46);
+
+        CHECK(ctn::set_hint<d3d_compiler>(d3d_compiler::d3d_compiler_43));
+        CHECK(ctn::get_hint<d3d_compiler>() == d3d_compiler::d3d_compiler_43);
+      });
+    }
+
     SECTION("no_thread_naming")
     {
       using ctn::hint::windows::no_thread_naming;

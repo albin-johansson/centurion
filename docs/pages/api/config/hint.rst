@@ -40,7 +40,7 @@ Enum hints only accept their associated enum's enumerators as values.
  ``scale_quality``                              ``SDL_HINT_RENDER_SCALE_QUALITY``                     
  ``framebuffer_acceleration``                   ``SDL_HINT_FRAMEBUFFER_ACCELERATION``                 
  ``audio_category``                             ``SDL_HINT_AUDIO_CATEGORY``                           
- ``win_d3d_compiler``                           ``SDL_HINT_VIDEO_WIN_D3DCOMPILER``                    
+ ``windows::d3d_compiler``                      ``SDL_HINT_VIDEO_WIN_D3DCOMPILER``
  ``wave_riff_chunk_size``                       ``SDL_HINT_WAVE_RIFF_CHUNK_SIZE``                     
  ``wave_truncation``                            ``SDL_HINT_WAVE_TRUNCATION``                          
  ``wave_fact_chunk``                            ``SDL_HINT_WAVE_FACT_CHUNK``                          

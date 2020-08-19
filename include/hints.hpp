@@ -257,6 +257,14 @@ struct wave_truncation;
 struct wave_fact_chunk;
 struct logical_size_mode;
 
+namespace qtwayland {
+struct content_orientation;
+}
+
+namespace windows {
+struct d3d_compiler;
+}
+
 template <>
 struct enum_hint_traits<render_driver> final
 {
@@ -320,21 +328,39 @@ struct enum_hint_traits<logical_size_mode> final
   enum value { letterbox, overscan };
 };
 
+template <>
+struct enum_hint_traits<qtwayland::content_orientation> final
+{
+  enum value {
+    primary,
+    portrait,
+    landscape,
+    inverted_portrait,
+    inverted_landscape
+  };
+};
+
+template <>
+struct enum_hint_traits<windows::d3d_compiler> final
+{
+  enum value { v46, v43, none };
+};
+
 /// @endcond
 
 template <class Derived>
 class enum_hint
 {
  public:
-  using Enum = typename enum_hint_traits<Derived>::value;
+  using value = typename enum_hint_traits<Derived>::value;
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Enum>;
+    return std::is_same_v<T, value>;
   }
 
-  static auto current_value() noexcept -> std::optional<Enum>
+  static auto current_value() noexcept -> std::optional<value>
   {
     czstring hint = SDL_GetHint(Derived::name());
     if (!hint) {
@@ -343,7 +369,7 @@ class enum_hint
     return Derived::map.key(hint);
   }
 
-  static auto to_string(Enum value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     return Derived::map.find(value);
   }
@@ -360,8 +386,6 @@ class enum_hint
  */
 struct render_driver final : enum_hint<render_driver>
 {
-  using value = enum_hint_traits<render_driver>::value;
-
   static inline constexpr detail::static_map<value, 6> map{
       std::make_pair(value::direct3d, "direct3d"),
       std::make_pair(value::opengl, "opengl"),
@@ -378,8 +402,6 @@ struct render_driver final : enum_hint<render_driver>
 
 struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
 {
-  using value = enum_hint_traits<audio_resampling_mode>::value;
-
   static inline constexpr detail::static_map<value, 4> map{
       std::make_pair(value::normal, "default"),
       std::make_pair(value::fast, "fast"),
@@ -394,8 +416,6 @@ struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
 
 struct scale_quality final : enum_hint<scale_quality>
 {
-  using value = enum_hint_traits<scale_quality>::value;
-
   static inline constexpr detail::static_map<value, 3> map{
       std::make_pair(value::nearest, "nearest"),
       std::make_pair(value::linear, "linear"),
@@ -409,8 +429,6 @@ struct scale_quality final : enum_hint<scale_quality>
 
 struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
 {
-  using value = enum_hint_traits<framebuffer_acceleration>::value;
-
   static inline constexpr detail::static_map<value, 8> map{
       std::make_pair(value::off, "0"),
       std::make_pair(value::on, "1"),
@@ -429,8 +447,6 @@ struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
 
 struct audio_category final : enum_hint<audio_category>
 {
-  using value = enum_hint_traits<audio_category>::value;
-
   static inline constexpr detail::static_map<value, 2> map{
       std::make_pair(value::ambient, "ambient"),
       std::make_pair(value::playback, "playback")};
@@ -443,8 +459,6 @@ struct audio_category final : enum_hint<audio_category>
 
 struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
 {
-  using value = enum_hint_traits<wave_riff_chunk_size>::value;
-
   static inline constexpr detail::static_map<value, 4> map{
       std::make_pair(value::force, "force"),
       std::make_pair(value::ignore, "ignore"),
@@ -459,8 +473,6 @@ struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
 
 struct wave_truncation final : enum_hint<wave_truncation>
 {
-  using value = enum_hint_traits<wave_truncation>::value;
-
   static inline constexpr detail::static_map<value, 4> map{
       std::make_pair(value::drop_block, "dropblock"),
       std::make_pair(value::drop_frame, "dropframe"),
@@ -475,8 +487,6 @@ struct wave_truncation final : enum_hint<wave_truncation>
 
 struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
 {
-  using value = enum_hint_traits<wave_fact_chunk>::value;
-
   static inline constexpr detail::static_map<value, 4> map{
       std::make_pair(value::strict, "strict"),
       std::make_pair(value::ignore_zero, "ignorezero"),
@@ -491,8 +501,6 @@ struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
 
 struct logical_size_mode final : enum_hint<logical_size_mode>
 {
-  using value = enum_hint_traits<logical_size_mode>::value;
-
   static inline constexpr detail::static_map<value, 2> map{
       std::make_pair(value::letterbox, "letterbox"),
       std::make_pair(value::overscan, "overscan")};
@@ -798,64 +806,18 @@ struct keyboard_element final : detail::string_hint<keyboard_element>
 
 namespace qtwayland {
 
-struct content_orientation final
+struct content_orientation final : enum_hint<content_orientation>
 {
-  enum value {
-    primary,
-    portrait,
-    landscape,
-    inverted_portrait,
-    inverted_landscape
-  };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, value>;
-  }
+  static inline constexpr detail::static_map<value, 5> map{
+      std::make_pair(value::primary, "primary"),
+      std::make_pair(value::portrait, "portrait"),
+      std::make_pair(value::landscape, "landscape"),
+      std::make_pair(value::inverted_portrait, "inverted-portrait"),
+      std::make_pair(value::inverted_landscape, "inverted-landscape")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
-  }
-
-  static auto current_value() noexcept -> std::optional<value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return std::nullopt;
-    }
-
-    using detail::equal;
-    if (equal(hint, "primary")) {
-      return primary;
-    } else if (equal(hint, "portrait")) {
-      return portrait;
-    } else if (equal(hint, "landscape")) {
-      return landscape;
-    } else if (equal(hint, "inverted-portrait")) {
-      return inverted_portrait;
-    } else /*if (equal(hint, "inverted-landscape"))*/ {
-      return inverted_landscape;
-    }
-  }
-
-  static auto to_string(value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case primary:
-        return "primary";
-      case portrait:
-        return "portrait";
-      case landscape:
-        return "landscape";
-      case inverted_portrait:
-        return "inverted-portrait";
-      case inverted_landscape:
-        return "inverted-landscape";
-    }
   }
 };
 
@@ -1023,50 +985,16 @@ struct handle_back_button final : detail::bool_hint<handle_back_button>
 
 namespace windows {
 
-struct d3d_compiler final
+struct d3d_compiler final : enum_hint<d3d_compiler>
 {
-  enum value { d3d_compiler_46, d3d_compiler_43, none };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, value>;
-  }
+  static inline constexpr detail::static_map<value, 3> map{
+      std::make_pair(value::v46, "d3dcompiler_46.dll"),
+      std::make_pair(value::v43, "d3dcompiler_43.dll"),
+      std::make_pair(value::none, "none")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
-  }
-
-  static auto current_value() noexcept -> std::optional<value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return std::nullopt;
-    }
-
-    using detail::equal;
-    if (equal(hint, "d3dcompiler_46.dll")) {
-      return d3d_compiler_46;
-    } else if (equal(hint, "d3dcompiler_43.dll")) {
-      return d3d_compiler_43;
-    } else {
-      return none;
-    }
-  }
-
-  static auto to_string(value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case none:
-        return "none";
-      case d3d_compiler_43:
-        return "d3dcompiler_43.dll";
-      case d3d_compiler_46:
-        return "d3dcompiler_46.dll";
-    }
   }
 };
 

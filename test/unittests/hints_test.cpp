@@ -523,21 +523,22 @@ TEST_CASE("set_hint", "[hint]")
     SECTION("content_orientation")
     {
       using hint = ctn::hint::qtwayland::content_orientation;
+      using value = hint::value;
       test_hint<hint>([] {
-        CHECK(ctn::set_hint<hint>(hint::primary));
-        CHECK(ctn::get_hint<hint>() == hint::primary);
+        CHECK(ctn::set_hint<hint>(value::primary));
+        CHECK(ctn::get_hint<hint>() == value::primary);
 
-        CHECK(ctn::set_hint<hint>(hint::portrait));
-        CHECK(ctn::get_hint<hint>() == hint::portrait);
+        CHECK(ctn::set_hint<hint>(value::portrait));
+        CHECK(ctn::get_hint<hint>() == value::portrait);
 
-        CHECK(ctn::set_hint<hint>(hint::landscape));
-        CHECK(ctn::get_hint<hint>() == hint::landscape);
+        CHECK(ctn::set_hint<hint>(value::landscape));
+        CHECK(ctn::get_hint<hint>() == value::landscape);
 
-        CHECK(ctn::set_hint<hint>(hint::inverted_portrait));
-        CHECK(ctn::get_hint<hint>() == hint::inverted_portrait);
+        CHECK(ctn::set_hint<hint>(value::inverted_portrait));
+        CHECK(ctn::get_hint<hint>() == value::inverted_portrait);
 
-        CHECK(ctn::set_hint<hint>(hint::inverted_landscape));
-        CHECK(ctn::get_hint<hint>() == hint::inverted_landscape);
+        CHECK(ctn::set_hint<hint>(value::inverted_landscape));
+        CHECK(ctn::get_hint<hint>() == value::inverted_landscape);
       });
     }
 
@@ -726,15 +727,16 @@ TEST_CASE("set_hint", "[hint]")
     SECTION("d3d_compiler")
     {
       using ctn::hint::windows::d3d_compiler;
+      using value = d3d_compiler::value;
       test_hint<d3d_compiler>([] {
-        CHECK(ctn::set_hint<d3d_compiler>(d3d_compiler::none));
-        CHECK(ctn::get_hint<d3d_compiler>() == d3d_compiler::none);
+        CHECK(ctn::set_hint<d3d_compiler>(value::none));
+        CHECK(ctn::get_hint<d3d_compiler>() == value::none);
 
-        CHECK(ctn::set_hint<d3d_compiler>(d3d_compiler::d3d_compiler_46));
-        CHECK(ctn::get_hint<d3d_compiler>() == d3d_compiler::d3d_compiler_46);
+        CHECK(ctn::set_hint<d3d_compiler>(value::v46));
+        CHECK(ctn::get_hint<d3d_compiler>() == value::v46);
 
-        CHECK(ctn::set_hint<d3d_compiler>(d3d_compiler::d3d_compiler_43));
-        CHECK(ctn::get_hint<d3d_compiler>() == d3d_compiler::d3d_compiler_43);
+        CHECK(ctn::set_hint<d3d_compiler>(value::v43));
+        CHECK(ctn::get_hint<d3d_compiler>() == value::v43);
       });
     }
 

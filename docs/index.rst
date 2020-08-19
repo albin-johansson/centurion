@@ -68,6 +68,12 @@ Welcome to Centurion's documentation!
    pages/api/system/base_path
    pages/api/system/pref_path
 
+.. toctree:: 
+   :maxdepth: 1
+   :caption: Miscellaneous
+
+   pages/api/misc/log
+
 .. toctree::
    :maxdepth: 1
    :caption: Configuration

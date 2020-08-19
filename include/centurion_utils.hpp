@@ -174,6 +174,7 @@ template <class It, class Predicate>
   return first;
 }
 
+// This class was inspired by Jason Turners C++ Weekly video on constexpr maps!
 template <class Key, std::size_t size>
 class static_map final
 {

@@ -3,7 +3,11 @@ Hints
 
 The hints API provides type-safe configuration of the behaviour of SDL. Every hint is 
 represented by its own class. However, the implementation of the hint classes is not 
-really of interest. 
+really of interest, and should be considered an implementation detail. 
+
+All hint types are located in the ``ctn::hint`` namespace. Furthermore, there are 
+subnamespaces in said namespace that represent different groups, e.g. ``ctn::hint::x11`` and
+``ctn::hint::joystick``.
 
 .. note::
 

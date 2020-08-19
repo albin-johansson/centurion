@@ -232,9 +232,6 @@ class float_hint : public crtp_hint<float_hint<Hint>, float> {
  */
 namespace hint {
 
-/// @name Enum-hints
-/// @{
-
 /**
  * @class render_driver
  *
@@ -714,253 +711,212 @@ class logical_size_mode final {
   }
 };
 
-/// @} // end of enum hints
-
-/// @name Boolean-hints
-/// @{
-
-class accelerometer_as_joystick final
-    : public detail::bool_hint<accelerometer_as_joystick> {
- public:
+struct accelerometer_as_joystick final
+    : detail::bool_hint<accelerometer_as_joystick> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_ACCELEROMETER_AS_JOYSTICK;
   }
 };
 
-class allow_top_most final : public detail::bool_hint<allow_top_most> {
- public:
+struct allow_top_most final : detail::bool_hint<allow_top_most> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_ALLOW_TOPMOST;
   }
 };
 
-class bmp_save_legacy_format final
-    : public detail::bool_hint<bmp_save_legacy_format> {
- public:
+struct bmp_save_legacy_format final
+    : detail::bool_hint<bmp_save_legacy_format> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_BMP_SAVE_LEGACY_FORMAT;
   }
 };
 
-class double_buffer final : public detail::bool_hint<double_buffer> {
- public:
+struct double_buffer final : detail::bool_hint<double_buffer> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_DOUBLE_BUFFER;
   }
 };
 
-class enable_steam_controllers final
-    : public detail::bool_hint<enable_steam_controllers> {
- public:
+struct enable_steam_controllers final
+    : detail::bool_hint<enable_steam_controllers> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_ENABLE_STEAM_CONTROLLERS;
   }
 };
 
-class grab_keyboard final : public detail::bool_hint<grab_keyboard> {
- public:
+struct grab_keyboard final : detail::bool_hint<grab_keyboard> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_GRAB_KEYBOARD;
   }
 };
 
-class idle_timer_disabled final
-    : public detail::bool_hint<idle_timer_disabled> {
- public:
+struct idle_timer_disabled final : detail::bool_hint<idle_timer_disabled> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_IDLE_TIMER_DISABLED;
   }
 };
 
-class ime_internal_editing final
-    : public detail::bool_hint<ime_internal_editing> {
- public:
+struct ime_internal_editing final : detail::bool_hint<ime_internal_editing> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_IME_INTERNAL_EDITING;
   }
 };
 
-class no_signal_handlers final : public detail::bool_hint<no_signal_handlers> {
- public:
+struct no_signal_handlers final : detail::bool_hint<no_signal_handlers> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_NO_SIGNAL_HANDLERS;
   }
 };
 
-class opengl_es_driver final : public detail::bool_hint<opengl_es_driver> {
- public:
+struct opengl_es_driver final : detail::bool_hint<opengl_es_driver> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_OPENGL_ES_DRIVER;
   }
 };
 
-class enable_opengl_shaders final
-    : public detail::bool_hint<enable_opengl_shaders> {
- public:
+struct enable_opengl_shaders final : detail::bool_hint<enable_opengl_shaders> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_OPENGL_SHADERS;
   }
 };
 
-class vsync final : public detail::bool_hint<vsync> {
- public:
+struct vsync final : detail::bool_hint<vsync> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_VSYNC;
   }
 };
 
-class allow_screensaver final : public detail::bool_hint<allow_screensaver> {
- public:
+struct allow_screensaver final : detail::bool_hint<allow_screensaver> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_ALLOW_SCREENSAVER;
   }
 };
 
-class video_external_context final
-    : public detail::bool_hint<video_external_context> {
- public:
+struct video_external_context final
+    : detail::bool_hint<video_external_context> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_EXTERNAL_CONTEXT;
   }
 };
 
-class disable_high_dpi final : public detail::bool_hint<disable_high_dpi> {
- public:
+struct disable_high_dpi final : detail::bool_hint<disable_high_dpi> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_HIGHDPI_DISABLED;
   }
 };
 
-class minimize_on_focus_loss final
-    : public detail::bool_hint<minimize_on_focus_loss> {
- public:
+struct minimize_on_focus_loss final
+    : detail::bool_hint<minimize_on_focus_loss> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS;
   }
 };
 
-class window_frame_usable_while_cursor_hidden final
-    : public detail::bool_hint<window_frame_usable_while_cursor_hidden> {
- public:
+struct window_frame_usable_while_cursor_hidden final
+    : detail::bool_hint<window_frame_usable_while_cursor_hidden> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN;
   }
 };
 
-class render_batching final : public detail::bool_hint<render_batching> {
- public:
+struct render_batching final : detail::bool_hint<render_batching> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_BATCHING;
   }
 };
 
-class return_key_hides_ime final
-    : public detail::bool_hint<return_key_hides_ime> {
- public:
+struct return_key_hides_ime final : detail::bool_hint<return_key_hides_ime> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_RETURN_KEY_HIDES_IME;
   }
 };
 
-class touch_mouse_events final : public detail::bool_hint<touch_mouse_events> {
- public:
+struct touch_mouse_events final : detail::bool_hint<touch_mouse_events> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_TOUCH_MOUSE_EVENTS;
   }
 };
 
-class mouse_touch_events final : public detail::bool_hint<mouse_touch_events> {
- public:
+struct mouse_touch_events final : detail::bool_hint<mouse_touch_events> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_MOUSE_TOUCH_EVENTS;
   }
 };
 
-class tv_remote_as_joystick final
-    : public detail::bool_hint<tv_remote_as_joystick> {
- public:
+struct tv_remote_as_joystick final : detail::bool_hint<tv_remote_as_joystick> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_TV_REMOTE_AS_JOYSTICK;
   }
 };
 
-class display_usable_bounds final
-    : public detail::string_hint<display_usable_bounds> {
- public:
+struct display_usable_bounds final
+    : detail::string_hint<display_usable_bounds> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_DISPLAY_USABLE_BOUNDS;
   }
 };
 
-class orientations final : public detail::string_hint<orientations> {
- public:
+struct orientations final : detail::string_hint<orientations> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_ORIENTATIONS;
   }
 };
 
-class window_share_pixel_format final
-    : public detail::string_hint<window_share_pixel_format> {
- public:
+struct window_share_pixel_format final
+    : detail::string_hint<window_share_pixel_format> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT;
   }
 };
 
-class event_logging final : public detail::int_hint<event_logging> {
- public:
+struct event_logging final : detail::int_hint<event_logging> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_EVENT_LOGGING;
   }
 };
 
-class raspberry_pi_video_layer final
-    : public detail::int_hint<raspberry_pi_video_layer> {
- public:
+struct raspberry_pi_video_layer final
+    : detail::int_hint<raspberry_pi_video_layer> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_RPI_VIDEO_LAYER;
   }
 };
 
-class thread_stack_size final
-    : public detail::unsigned_int_hint<thread_stack_size> {
- public:
+struct thread_stack_size final : detail::unsigned_int_hint<thread_stack_size> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_THREAD_STACK_SIZE;
   }
 };
 
-class timer_resolution final
-    : public detail::unsigned_int_hint<timer_resolution> {
- public:
+struct timer_resolution final : detail::unsigned_int_hint<timer_resolution> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_TIMER_RESOLUTION;

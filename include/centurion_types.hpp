@@ -42,6 +42,7 @@
 #include <array>     // array
 #include <chrono>    // duration
 #include <cstddef>   // byte
+#include <entt.hpp>  // id_type
 #include <gsl/gsl>   // not_null, owner, czstring, zstring
 #include <optional>  // optional
 
@@ -128,6 +129,16 @@ using zstring = gsl::zstring<>;
  * @since 5.0.0
  */
 using nn_czstring = gsl::not_null<czstring>;
+
+/**
+ * @typedef hash_id
+ *
+ * @brief Alias for `entt::id_type`, used for compile-time hashed string
+ * identifiers.
+ *
+ * @since 5.0.0
+ */
+using hash_id = entt::id_type;
 
 /**
  * @typedef buffer

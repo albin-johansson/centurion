@@ -40,7 +40,6 @@
 #include <SDL_ttf.h>
 
 #include <algorithm>
-#include <entt.hpp>
 #include <memory>
 #include <unordered_map>
 #include <utility>
@@ -81,8 +80,6 @@ namespace centurion {
  * using accurate kerning. The problem is, as you might guess, is that it's hard
  * to know the exact strings you will render at compile-time. Use this option
  * if you know that you're going to render some specific string a lot.
- *
- * @todo Look into adding option for accurate kerning.
  *
  * @since 5.0.0
  *
@@ -204,24 +201,277 @@ class font_cache final
   template <typename... Args>
   [[nodiscard]] static auto shared(Args&&... args) -> sptr;
 
-  /**
-   * @name String caching
-   * @brief Methods related to caching strings as textures.
-   */
-  ///@{
+  /// @name String caching
+  /// @brief Methods related to caching strings as textures.
+  /// @{
 
   /**
-   * @brief Adds a string texture to the string cache.
+   * @brief Caches the supplied string by rendering it to a texture.
    *
-   * @details This method has no effect if the supplied key is already taken.
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
    *
-   * @param id the key that will be used for the texture.
-   * @param texture the texture that will be cached.
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   *
+   * @see `basic_renderer<T>::render_blended_utf8`
    *
    * @since 5.0.0
    */
-  CENTURION_API
-  void store(entt::id_type id, texture&& texture);
+  template <typename Renderer>
+  void store_blended_utf8(hash_id id, nn_czstring string, Renderer& renderer);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   * @param wrap the width in pixels after which the text will be wrapped.
+   *
+   * @see `basic_renderer<T>::render_blended_wrapped_utf8`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_blended_wrapped_utf8(hash_id id,
+                                  nn_czstring string,
+                                  Renderer& renderer,
+                                  u32 wrap);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   * @param background the color used for the background box.
+   *
+   * @see `basic_renderer<T>::render_shaded_utf8`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_shaded_utf8(hash_id id,
+                         nn_czstring string,
+                         Renderer& renderer,
+                         const color& background);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   *
+   * @see `basic_renderer<T>::render_solid_utf8`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_solid_utf8(hash_id id, nn_czstring string, Renderer& renderer);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   *
+   * @see `basic_renderer<T>::render_blended_latin1`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_blended_latin1(hash_id id, nn_czstring string, Renderer& renderer);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   * @param wrap the width in pixels after which the text will be wrapped.
+   *
+   * @see `basic_renderer<T>::render_blended_wrapped_latin1`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_blended_wrapped_latin1(hash_id id,
+                                    nn_czstring string,
+                                    Renderer& renderer,
+                                    u32 wrap);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   * @param background the color used for the background box.
+   *
+   * @see `basic_renderer<T>::render_shaded_latin1`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_shaded_latin1(hash_id id,
+                           nn_czstring string,
+                           Renderer& renderer,
+                           const color& background);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   *
+   * @see `basic_renderer<T>::render_solid_latin1`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_solid_latin1(hash_id id, nn_czstring string, Renderer& renderer);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   *
+   * @see `basic_renderer<T>::render_blended_unicode`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_blended_unicode(hash_id id,
+                             const unicode_string& string,
+                             Renderer& renderer);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   * @param wrap the width in pixels after which the text will be wrapped.
+   *
+   * @see `basic_renderer<T>::render_blended_wrapped_unicode`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_blended_wrapped_unicode(hash_id id,
+                                     const unicode_string& string,
+                                     Renderer& renderer,
+                                     u32 wrap);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   * @param background the color used for the background box.
+   *
+   * @see `basic_renderer<T>::render_shaded_unicode`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_shaded_unicode(hash_id id,
+                            const unicode_string& string,
+                            Renderer& renderer,
+                            const color& background);
+
+  /**
+   * @brief Caches the supplied string by rendering it to a texture.
+   *
+   * @details This function respects the kerning of the font. Any previous
+   * cached string associated with the supplied ID will be overwritten.
+   *
+   * @tparam Renderer the type of the renderer that will be used.
+   *
+   * @param id the identifier that will be associated with the texture.
+   * @param string the string that will be cached.
+   * @param renderer the renderer that will be used to create the string
+   * texture.
+   *
+   * @see `basic_renderer<T>::render_solid_unicode`
+   *
+   * @since 5.0.0
+   */
+  template <typename Renderer>
+  void store_solid_unicode(hash_id id,
+                           const unicode_string& string,
+                           Renderer& renderer);
 
   /**
    * @brief Indicates whether or not there is a cached string texture associated
@@ -234,9 +484,25 @@ class font_cache final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto has_stored(entt::id_type id) const noexcept -> bool
+  [[nodiscard]] auto has_stored(hash_id id) const noexcept -> bool
   {
-    return m_strings.count(id);
+    return m_strings.find(id) != m_strings.end();
+  }
+
+  /**
+   * @brief Returns the cached texture associated with the specified ID.
+   *
+   * @pre `id` **must** be associated with a cached string texture.
+   *
+   * @param id the key of the cached texture to obtain.
+   *
+   * @return the cached texture associated with the key.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto get_stored(hash_id id) const -> const texture&
+  {
+    return m_strings.at(id);
   }
 
   /**
@@ -254,32 +520,27 @@ class font_cache final
    * @since 5.0.0
    */
   CENTURION_QUERY
-  auto try_get_stored(entt::id_type id) const noexcept -> const texture*;
+  auto try_get_stored(hash_id id) const noexcept -> const texture*;
+
+  /// @}  // end of string caching
+
+  /// @name Glyph caching
+  /// @brief Methods related to cached Unicode glyph textures.
+  /// @{
 
   /**
-   * @brief Returns the cached texture associated with the specified ID.
+   * @brief Adds a glyph to the font cache.
    *
-   * @pre `id` **must** be associated with a cached string texture.
+   * @details This method has no effect if the supplied glyph isn't provided
+   * by the associated font, or if the supplied glyph has already been cached.
    *
-   * @param id the key of the cached texture to obtain.
+   * @tparam Renderer the type of the renderer.
    *
-   * @return the cached texture associated with the key.
+   * @param renderer the renderer that will be used to create the glyph texture.
+   * @param glyph the glyph that will be cached.
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get_stored(entt::id_type id) const -> const texture&
-  {
-    return m_strings.at(id);
-  }
-
-  ///@}  // end of string caching
-
-  /**
-   * @name Glyph caching
-   * Methods related to cached Unicode glyph textures.
-   */
-  ///@{
-
   template <typename Renderer>
   void add_glyph(Renderer& renderer, unicode glyph);
 
@@ -291,6 +552,8 @@ class font_cache final
    *
    * @remark For an overview of the various Unicode blocks, see <a
    * href="https://unicode-table.com/en/blocks/">this</a>.
+   *
+   * @tparam Renderer the type of the renderer.
    *
    * @param renderer the renderer that will be used to create the glyph
    * textures.
@@ -309,6 +572,8 @@ class font_cache final
    * upper- and lower-case latin letters, numbers and symbols. This method
    * might throw if something goes wrong when creating the textures.
    *
+   * @tparam Renderer the type of the renderer.
+   *
    * @param renderer the renderer that will be used to create the glyph
    * textures.
    *
@@ -319,6 +584,8 @@ class font_cache final
 
   /**
    * @brief Attempts to cache all printable Latin-1 supplement characters.
+   *
+   * @tparam Renderer the type of the renderer.
    *
    * @param renderer the renderer that will be used to create the glyph
    * textures.
@@ -333,6 +600,8 @@ class font_cache final
    *
    * @note This method is effectively equivalent to calling both
    * `add_basic_latin` and `add_latin1_supplement`.
+   *
+   * @tparam Renderer the type of the renderer.
    *
    * @param renderer the renderer that will be used to create the glyph
    * textures.
@@ -423,7 +692,7 @@ class font_cache final
  private:
   font m_font;
   std::unordered_map<unicode, glyph_data> m_glyphs{};
-  std::unordered_map<entt::id_type, texture> m_strings{};
+  std::unordered_map<hash_id, texture> m_strings{};
 
   /**
    * @brief Creates and returns a texture for the specified glyph.
@@ -440,6 +709,9 @@ class font_cache final
   template <typename Renderer>
   [[nodiscard]] auto create_glyph_texture(Renderer& renderer, unicode glyph)
       -> texture;
+
+  CENTURION_API
+  void store(hash_id id, texture&& texture);
 };
 
 }  // namespace centurion

@@ -75,6 +75,16 @@ Caching full strings
     ctn::renderer renderer{window};
     ctn::font_cache cache{"arial.ttf", 12};
 
+    renderer.set_color(ctn::colors::magenta);
+
     // Maps hash of "foo" with rendered string "bar"
-    cache.store("foo"_hs, renderer.render_blended_latin1("bar", cache.get_font());
+    cache.store_blended_latin1("foo"_hs, "bar", renderer);
+
+    // Obtains reference to cached string texture
+    auto& texture = cache.get_stored("foo"_hs");
+
+    // Obtains pointer to cached string texture, doesn't throw
+    if (auto* ptr = cache.try_get_stored("foo"_hs); ptr) {
+      // found cached texture!
+    }
   }

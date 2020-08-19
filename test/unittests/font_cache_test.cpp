@@ -14,18 +14,19 @@ TEST_CASE("font_cache(font_cache&&)", "[font_cache]")
   CHECK_NOTHROW(ctn::font_cache{std::move(f)});
 }
 
-TEST_CASE("font_cache(Args&&...)", "[font_cache]")
+TEST_CASE("font_cache in-place font ctor", "[font_cache]")
 {
   CHECK_NOTHROW(ctn::font_cache{"resources/daniel.ttf", 12});
 }
 
 TEST_CASE("font_cache smart pointer factory methods", "[font_cache]")
 {
-  CHECK(ctn::font_cache::unique("resources/daniel.ttf", 12));
-  CHECK(ctn::font_cache::unique(ctn::font{"resources/daniel.ttf", 12}));
+  ctn::czstring path = "resources/daniel.ttf";
+  CHECK(ctn::font_cache::unique(path, 12));
+  CHECK(ctn::font_cache::unique(ctn::font{path, 12}));
 
-  CHECK(ctn::font_cache::shared("resources/daniel.ttf", 12));
-  CHECK(ctn::font_cache::shared(ctn::font{"resources/daniel.ttf", 12}));
+  CHECK(ctn::font_cache::shared(path, 12));
+  CHECK(ctn::font_cache::shared(ctn::font{path, 12}));
 }
 
 template <class Callable>
@@ -70,7 +71,137 @@ void test_utf8_cache(Callable&& callable)
   callable(renderer, cache, id, str);
 }
 
-TEST_CASE("font_cache::store", "[font_cache]")
+TEST_CASE("font_cache::store_blended_utf8", "[font_cache]")
+{
+  test_utf8_cache([](ctn::renderer& renderer,
+                     ctn::font_cache& cache,
+                     entt::id_type id,
+                     ctn::nn_czstring str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_blended_utf8(id, str, renderer);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(cache.store_blended_utf8(id, str, renderer));
+  });
+}
+
+TEST_CASE("font_cache::store_blended_wrapped_utf8", "[font_cache]")
+{
+  test_utf8_cache([](ctn::renderer& renderer,
+                     ctn::font_cache& cache,
+                     entt::id_type id,
+                     ctn::nn_czstring str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_blended_wrapped_utf8(id, str, renderer, 100);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(cache.store_blended_wrapped_utf8(id, str, renderer, 100));
+  });
+}
+
+TEST_CASE("font_cache::store_solid_utf8", "[font_cache]")
+{
+  test_utf8_cache([](ctn::renderer& renderer,
+                     ctn::font_cache& cache,
+                     entt::id_type id,
+                     ctn::nn_czstring str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_solid_utf8(id, str, renderer);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(cache.store_solid_utf8(id, str, renderer));
+  });
+}
+
+TEST_CASE("font_cache::store_shaded_utf8", "[font_cache]")
+{
+  test_utf8_cache([](ctn::renderer& renderer,
+                     ctn::font_cache& cache,
+                     entt::id_type id,
+                     ctn::nn_czstring str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_shaded_utf8(id, str, renderer, ctn::colors::pink);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(
+        cache.store_shaded_utf8(id, str, renderer, ctn::colors::wheat));
+  });
+}
+
+TEST_CASE("font_cache::store_blended_latin1", "[font_cache]")
+{
+  test_latin1_cache([](ctn::renderer& renderer,
+                       ctn::font_cache& cache,
+                       entt::id_type id,
+                       ctn::nn_czstring str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_blended_latin1(id, str, renderer);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(cache.store_blended_latin1(id, str, renderer));
+  });
+}
+
+TEST_CASE("font_cache::store_blended_wrapped_latin1", "[font_cache]")
+{
+  test_latin1_cache([](ctn::renderer& renderer,
+                       ctn::font_cache& cache,
+                       entt::id_type id,
+                       ctn::nn_czstring str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_blended_wrapped_latin1(id, str, renderer, 100);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(cache.store_blended_wrapped_latin1(id, str, renderer, 100));
+  });
+}
+
+TEST_CASE("font_cache::store_solid_latin1", "[font_cache]")
+{
+  test_latin1_cache([](ctn::renderer& renderer,
+                       ctn::font_cache& cache,
+                       entt::id_type id,
+                       ctn::nn_czstring str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_solid_latin1(id, str, renderer);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(cache.store_solid_latin1(id, str, renderer));
+  });
+}
+
+TEST_CASE("font_cache::store_shaded_latin1", "[font_cache]")
+{
+  test_latin1_cache([](ctn::renderer& renderer,
+                       ctn::font_cache& cache,
+                       entt::id_type id,
+                       ctn::nn_czstring str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_shaded_latin1(id, str, renderer, ctn::colors::pink);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(
+        cache.store_shaded_latin1(id, str, renderer, ctn::colors::wheat));
+  });
+}
+
+TEST_CASE("font_cache::store_blended_unicode", "[font_cache]")
 {
   test_unicode_cache([](ctn::renderer& renderer,
                         ctn::font_cache& cache,
@@ -78,14 +209,60 @@ TEST_CASE("font_cache::store", "[font_cache]")
                         const ctn::unicode_string& str) {
     CHECK(!cache.has_stored(id));
 
-    cache.store("foo"_hs,
-                renderer.render_blended_unicode(str, cache.get_font()));
+    cache.store_blended_unicode(id, str, renderer);
 
     CHECK(cache.has_stored(id));
 
-    CHECK_NOTHROW(cache.store(
-        "foo"_hs, renderer.render_blended_unicode(str, cache.get_font())));
-    CHECK_NOTHROW(cache.get_stored(id));
+    CHECK_NOTHROW(cache.store_blended_unicode(id, str, renderer));
+  });
+}
+
+TEST_CASE("font_cache::store_blended_wrapped_unicode", "[font_cache]")
+{
+  test_unicode_cache([](ctn::renderer& renderer,
+                        ctn::font_cache& cache,
+                        entt::id_type id,
+                        const ctn::unicode_string& str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_blended_wrapped_unicode(id, str, renderer, 100);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(cache.store_blended_wrapped_unicode(id, str, renderer, 100));
+  });
+}
+
+TEST_CASE("font_cache::store_solid_unicode", "[font_cache]")
+{
+  test_unicode_cache([](ctn::renderer& renderer,
+                        ctn::font_cache& cache,
+                        entt::id_type id,
+                        const ctn::unicode_string& str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_solid_unicode(id, str, renderer);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(cache.store_solid_unicode(id, str, renderer));
+  });
+}
+
+TEST_CASE("font_cache::store_shaded_unicode", "[font_cache]")
+{
+  test_unicode_cache([](ctn::renderer& renderer,
+                        ctn::font_cache& cache,
+                        entt::id_type id,
+                        const ctn::unicode_string& str) {
+    CHECK(!cache.has_stored(id));
+
+    cache.store_shaded_unicode(id, str, renderer, ctn::colors::pink);
+
+    CHECK(cache.has_stored(id));
+
+    CHECK_NOTHROW(
+        cache.store_shaded_unicode(id, str, renderer, ctn::colors::wheat));
   });
 }
 
@@ -205,8 +382,6 @@ TEST_CASE("font_cache::has", "[font_cache]")
     CHECK(cache.has('}'));
     CHECK(cache.has('~'));
   }
-
-  //  CHECK(cache.has(0x20));
 }
 
 TEST_CASE("font_cache::at", "[font_cache]")
@@ -243,8 +418,7 @@ TEST_CASE("font_cache::try_get_stored", "[font_cache]")
   ctn::font_cache cache{"resources/fira_code.ttf", 12};
   cache.add_latin1(renderer);
 
-  cache.store("foo"_hs,
-              renderer.render_blended_latin1("bar!?<,.", cache.get_font()));
+  cache.store_blended_latin1("foo"_hs, "bar!?<,.", renderer);
 
   CHECK(cache.try_get_stored("foo"_hs));
   CHECK_NOTHROW(cache.try_get_stored("bad"_hs));
@@ -257,8 +431,7 @@ TEST_CASE("font_cache::get_stored", "[font_cache]")
 
   ctn::font_cache cache{"resources/fira_code.ttf", 12};
   cache.add_latin1(renderer);
-  cache.store("foo"_hs,
-              renderer.render_blended_latin1("bar!?<,.", cache.get_font()));
+  cache.store_blended_latin1("foo"_hs, "bar!?<,.", renderer);
 
   CHECK(cache.get_stored("foo"_hs).get());
 }
@@ -297,14 +470,11 @@ TEST_CASE("Interactive font cache", "[.font_cache]")
     cache.add_latin1(renderer);
 
     renderer.set_color(ctn::colors::magenta);
-    cache.store(
-        "foo"_hs,
-        renderer.render_blended_latin1("cool string! <|>", cache.get_font()));
+
+    cache.store_blended_latin1("foo"_hs, "cool string! <|>", renderer);
 
     ctn::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
-
-    cache.store("cool"_hs,
-                renderer.render_blended_unicode(cool, cache.get_font()));
+    cache.store_blended_unicode("cool"_hs, cool, renderer);
   }
 
   ctn::unicode_string str = {'c',

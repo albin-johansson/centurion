@@ -66,15 +66,117 @@ auto font_cache::shared(Args&&... args) -> sptr
 }
 
 template <typename Renderer>
+void font_cache::store_blended_utf8(entt::id_type id,
+                                    nn_czstring string,
+                                    Renderer& renderer)
+{
+  store(id, renderer.render_blended_utf8(string, get_font()));
+}
+
+template <typename Renderer>
+void font_cache::store_blended_wrapped_utf8(entt::id_type id,
+                                            nn_czstring string,
+                                            Renderer& renderer,
+                                            u32 wrap)
+{
+  store(id, renderer.render_blended_wrapped_utf8(string, get_font(), wrap));
+}
+
+template <typename Renderer>
+void font_cache::store_shaded_utf8(entt::id_type id,
+                                   nn_czstring string,
+                                   Renderer& renderer,
+                                   const color& background)
+{
+  store(id, renderer.render_shaded_utf8(string, get_font(), background));
+}
+
+template <typename Renderer>
+void font_cache::store_solid_utf8(entt::id_type id,
+                                  nn_czstring string,
+                                  Renderer& renderer)
+{
+  store(id, renderer.render_solid_utf8(string, get_font()));
+}
+
+template <typename Renderer>
+void font_cache::store_blended_latin1(entt::id_type id,
+                                      nn_czstring string,
+                                      Renderer& renderer)
+{
+  store(id, renderer.render_blended_latin1(string, get_font()));
+}
+
+template <typename Renderer>
+void font_cache::store_blended_wrapped_latin1(entt::id_type id,
+                                              nn_czstring string,
+                                              Renderer& renderer,
+                                              u32 wrap)
+{
+  store(id, renderer.render_blended_wrapped_latin1(string, get_font(), wrap));
+}
+
+template <typename Renderer>
+void font_cache::store_shaded_latin1(entt::id_type id,
+                                     nn_czstring string,
+                                     Renderer& renderer,
+                                     const color& background)
+{
+  store(id, renderer.render_shaded_latin1(string, get_font(), background));
+}
+
+template <typename Renderer>
+void font_cache::store_solid_latin1(entt::id_type id,
+                                    nn_czstring string,
+                                    Renderer& renderer)
+{
+  store(id, renderer.render_solid_latin1(string, get_font()));
+}
+
+template <typename Renderer>
+void font_cache::store_blended_unicode(entt::id_type id,
+                                       const unicode_string& string,
+                                       Renderer& renderer)
+{
+  store(id, renderer.render_blended_unicode(string, get_font()));
+}
+
+template <typename Renderer>
+void font_cache::store_blended_wrapped_unicode(entt::id_type id,
+                                               const unicode_string& string,
+                                               Renderer& renderer,
+                                               u32 wrap)
+{
+  store(id, renderer.render_blended_wrapped_unicode(string, get_font(), wrap));
+}
+
+template <typename Renderer>
+void font_cache::store_shaded_unicode(entt::id_type id,
+                                      const unicode_string& string,
+                                      Renderer& renderer,
+                                      const color& background)
+{
+  store(id, renderer.render_shaded_unicode(string, get_font(), background));
+}
+
+template <typename Renderer>
+void font_cache::store_solid_unicode(entt::id_type id,
+                                     const unicode_string& string,
+                                     Renderer& renderer)
+{
+  store(id, renderer.render_solid_unicode(string, get_font()));
+}
+
+template <typename Renderer>
 void font_cache::add_glyph(Renderer& renderer, unicode glyph)
 {
-  if (!has(glyph)) {
-    if (m_font.is_glyph_provided(glyph)) {
-      m_glyphs.emplace(glyph,
-                       glyph_data{create_glyph_texture(renderer, glyph),
-                                  m_font.get_metrics(glyph).value()});
-    }
+  if (has(glyph) || !m_font.is_glyph_provided(glyph)) {
+    return;
   }
+
+  m_glyphs.emplace(glyph,
+                   glyph_data{create_glyph_texture(renderer, glyph),
+                              m_font.get_metrics(glyph).value()});
 }
 
 template <typename Renderer>

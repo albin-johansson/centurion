@@ -1267,30 +1267,6 @@ enum class hint_priority {
  * value type. However, whilst this method is type-safe, it doesn't ensure
  * that *correct* values are specified for the hints.
  *
- * @par Examples
- * The following is an example of how you could use this method to
- * specify the render driver that SDL should use, and the value is specified
- * with an enum value associated with the `render_driver` class.
- * @code{.cpp}
- *   set_hint<render_driver>(render_driver::opengl);
- * @endcode
- * Most hints only accept boolean or integer values. As in the following
- * example.
- * @code{.cpp}
- *   set_hint<enable_vsync>(true);
- *   set_hint<event_logging>(2);
- * @endcode
- * Sometimes, it's useful to know whether or not the hint was actually set
- * to the desired value. This can be done according to the following example.
- * @code{.cpp}
- *   const bool success = set_hint<double_buffer>(true);
- *   if (success) {
- *     // the hint was actually set!
- *   } else {
- *     // something went wrong!
- *   }
- * @endcode
- *
  * @tparam Hint the type of the hint that will be modified.
  * @tparam priority the priority that will be used, defaults to `normal`.
  * @tparam Value the type of the hint value.
@@ -1316,18 +1292,8 @@ auto set_hint(const Value& value) -> bool
 /**
  * @brief Returns the current value of the specified hint.
  *
- * @note The returned value is a `std::optional` of the hint value type.
- *
- * @par Examples
- * Many hints aren't actually set by default, so if the specified hint
- * doesn't have a set value, then this method will return a null optional.
- * @code{.cpp}
- *  if (const auto value = get_hint<render_driver>(); value) {
- *    // the hint was set!
- *  } else {
- *    // the hint had no set value!
- *  }
- * @endcode
+ * @note The returned value is a `std::optional` of the hint value type. Many
+ * hints aren't actually set by default.
  *
  * @tparam Hint the type of the Hint to obtain the value of.
  *
@@ -1364,7 +1330,7 @@ class hint_callback final
 {
  public:
   /**
-   * @brief Creates a `HintCallback`.
+   * @brief Creates a `hint_callback`.
    *
    * @param callback the function object that will be called whenever the
    * associated hint is updated. The signature should be `void(void*,
@@ -1445,7 +1411,10 @@ class hint_callback final
  * hint is updated.
  *
  * @details A callback handle object is returned, which can be used to easily
- * disconnect the callback later.
+ * disconnect the callback later. This function can be used with any function
+ * object that is stateless, such as traditional function pointers and lambdas.
+ * The simplest way to add a callback is with a lambda and no explicit user
+ * data.
  *
  * @note The callback will be immediately invoked with the current value of
  * the hint.
@@ -1454,31 +1423,6 @@ class hint_callback final
  * signature of the function object will be dependent on the `UserData` type.
  * Unfortunately, this isn't really doable with C++17. Since it requires
  * default-constructible stateless lambdas.
- *
- * @par Examples
- * This method can be used with any function object that is stateless, such
- * as traditional function pointers and lambdas. The simplest way to add a
- * callback is with a lambda and no explicit user data.
- * @code{.cpp}
- *   auto handle = add_hint_callback([](void* userData,
- *                                      czstring hint,
- *                                      czstring oldValue,
- *                                      czstring newValue) {
- *    // code that handles the update
- *   });
- * @endcode
- * It's also possible to supply a pointer to some data that you want to
- * associate with the callback. As always, beware of the lifetime of the data!
- * @code{.cpp}
- *   int data = 8; // shouldn't be local in real code
- *   auto handle = add_hint_callback([](void* userData,
- *                                      czstring hint,
- *                                      czstring oldValue,
- *                                      czstring newValue) {
- *     // code that handles the update
- *   },
- *   &data);
- * @endcode
  *
  * @tparam Hint should one of the many hint types defined in this header.
  * However, all it requires is that the type provides a static method that

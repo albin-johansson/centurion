@@ -194,7 +194,7 @@ demonstrates this in action.
     using ctn::hint::render_driver;
 
     // attempts to specify OpenGL as desired render driver
-    const auto success = ctn::set_hint<render_driver>(render_driver::open_gl);
+    const auto success = ctn::set_hint<render_driver>(render_driver::value::opengl);
 
     if (success) {
       // successfully set the render driver hint
@@ -222,11 +222,11 @@ always returns a ``std::optional`` that wraps a value of the value type used by 
     using ctn::hint::render_batching;
     using ctn::hint::event_logging;
 
-    if (const std::optional<bool> batching = ctn::get_hint<render_batching>(); batching) {
+    if (const auto batching = ctn::get_hint<render_batching>(); batching) {
       // successfully obtained render batching value
     }
     
-    if (const std::optional<int> level = ctn::get_hint<event_logging>(); level) {
+    if (const auto level = ctn::get_hint<event_logging>(); level) {
       // successfully obtained event logging value
     }
   }

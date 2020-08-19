@@ -372,15 +372,6 @@ TEST_CASE("set_hint", "[hint]")
     test_bool_hint<mouse_touch_events>();
   }
 
-  SECTION("raspberry_pi_video_layer")
-  {
-    using ctn::hint::raspberry_pi_video_layer;
-    test_hint<raspberry_pi_video_layer>([] {
-      CHECK(ctn::set_hint<raspberry_pi_video_layer>(8'000));
-      CHECK(ctn::get_hint<raspberry_pi_video_layer>().value() == 8'000);
-    });
-  }
-
   SECTION("render_batching")
   {
     using ctn::hint::render_batching;
@@ -452,6 +443,18 @@ TEST_CASE("set_hint", "[hint]")
     });
 
     ctn::set_hint<render_driver>(render_driver::open_gl);
+  }
+
+  SECTION("raspberrypi::")
+  {
+    SECTION("video_layer")
+    {
+      using ctn::hint::raspberrypi::video_layer;
+      test_hint<video_layer>([] {
+        CHECK(ctn::set_hint<video_layer>(8'000));
+        CHECK(ctn::get_hint<video_layer>().value() == 8'000);
+      });
+    }
   }
 
   SECTION("appletv::")

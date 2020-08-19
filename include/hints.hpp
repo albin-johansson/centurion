@@ -901,14 +901,6 @@ struct event_logging final : detail::int_hint<event_logging> {
   }
 };
 
-struct raspberry_pi_video_layer final
-    : detail::int_hint<raspberry_pi_video_layer> {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_RPI_VIDEO_LAYER;
-  }
-};
-
 struct thread_stack_size final : detail::unsigned_int_hint<thread_stack_size> {
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
@@ -922,6 +914,17 @@ struct timer_resolution final : detail::unsigned_int_hint<timer_resolution> {
     return SDL_HINT_TIMER_RESOLUTION;
   }
 };
+
+namespace raspberrypi {
+
+struct video_layer final : detail::int_hint<video_layer> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RPI_VIDEO_LAYER;
+  }
+};
+
+}  // namespace raspberrypi
 
 namespace appletv {
 

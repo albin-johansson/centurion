@@ -156,7 +156,7 @@ Integer hints accept ``int`` (or ``unsigned int``) as values.
  ``event_logging``                              ``SDL_HINT_EVENT_LOGGING``                            
  ``android::apk_expansion_main_file_version``   ``SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION``
  ``android::apk_expansion_patch_file_version``  ``SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION``
- ``raspberry_pi_video_layer``                   ``SDL_HINT_RPI_VIDEO_LAYER``                          
+ ``raspberrypi::video_layer``                   ``SDL_HINT_RPI_VIDEO_LAYER``
  ``thread_stack_size``                          ``SDL_HINT_THREAD_STACK_SIZE``
  ``timer_resolution``                           ``SDL_HINT_TIMER_RESOLUTION``                         
 ============================================== =======================================================

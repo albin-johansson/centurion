@@ -88,7 +88,8 @@ namespace centurion {
  *
  * @headerfile sound_effect.hpp
  */
-class sound_effect final {
+class sound_effect final
+{
  public:
   /**
    * @typedef uptr
@@ -300,7 +301,8 @@ class sound_effect final {
   }
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(Mix_Chunk* chunk) noexcept { Mix_FreeChunk(chunk); }
   };

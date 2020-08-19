@@ -83,7 +83,8 @@ template <typename T>
 class texture_traits;
 
 template <typename Derived>
-class basic_texture {
+class basic_texture
+{
  public:
   using storage_type = typename texture_traits<Derived>::storage_type;
 

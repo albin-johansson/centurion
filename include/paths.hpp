@@ -57,7 +57,8 @@ namespace centurion {
 
 namespace detail {
 
-class path_deleter final {
+class path_deleter final
+{
  public:
   void operator()(zstring path) noexcept { SDL_free(path); }
 };
@@ -89,7 +90,8 @@ class path_deleter final {
  *
  * @since 3.0.0
  */
-class base_path final {
+class base_path final
+{
  public:
   /**
    * @typedef uptr
@@ -236,7 +238,8 @@ static_assert(!std::is_copy_assignable_v<base_path>);
  *
  * @headerfile paths.hpp
  */
-class pref_path final {
+class pref_path final
+{
  public:
   /**
    * @typedef uptr

@@ -80,7 +80,8 @@ class joystick_traits;
  * @headerfile basic_joystick.hpp
  */
 template <typename Derived>
-class basic_joystick {
+class basic_joystick
+{
  public:
   using storage_type = typename joystick_traits<Derived>::storage_type;
 
@@ -161,7 +162,8 @@ class basic_joystick {
    * @var ball_axis_change::dy
    * Difference in y-axis position since last poll.
    */
-  struct ball_axis_change final {
+  struct ball_axis_change final
+  {
     int dx;
     int dy;
   };

@@ -68,7 +68,8 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class centurion_exception : public std::exception {
+class centurion_exception : public std::exception
+{
  public:
   centurion_exception() = default;
 
@@ -124,7 +125,8 @@ static_assert(std::is_nothrow_destructible_v<centurion_exception>);
  *
  * @headerfile centurion_exception.hpp
  */
-class sdl_error final : public centurion_exception {
+class sdl_error final : public centurion_exception
+{
  public:
   sdl_error() = default;
 
@@ -151,7 +153,8 @@ class sdl_error final : public centurion_exception {
  *
  * @headerfile centurion_exception.hpp
  */
-class img_error final : public centurion_exception {
+class img_error final : public centurion_exception
+{
  public:
   img_error() = default;
 
@@ -178,7 +181,8 @@ class img_error final : public centurion_exception {
  *
  * @headerfile centurion_exception.hpp
  */
-class ttf_error final : public centurion_exception {
+class ttf_error final : public centurion_exception
+{
  public:
   ttf_error() = default;
 
@@ -205,7 +209,8 @@ class ttf_error final : public centurion_exception {
  *
  * @headerfile centurion_exception.hpp
  */
-class mix_error final : public centurion_exception {
+class mix_error final : public centurion_exception
+{
  public:
   mix_error() = default;
 

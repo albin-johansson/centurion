@@ -73,7 +73,8 @@ namespace centurion {
  * @headerfile area.hpp
  */
 template <typename T>
-struct basic_area {
+struct basic_area
+{
   T width{0};
   T height{0};
 

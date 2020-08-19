@@ -58,7 +58,8 @@ namespace centurion {
  * @headerfile basic_window.hpp
  */
 template <class Derived>
-class basic_window {
+class basic_window
+{
  public:
   /**
    * @brief Makes the window visible.

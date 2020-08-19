@@ -6,7 +6,8 @@ namespace centurion::clipboard {
 namespace {
 
 // TODO recurring deleter, add sdl_string class == zstring?
-class deleter final {
+class deleter final
+{
  public:
   void operator()(zstring text) noexcept { SDL_free(text); }
 };

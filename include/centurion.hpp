@@ -121,7 +121,8 @@ namespace centurion {
  *
  * @headerfile centurion.hpp
  */
-struct centurion_config final {
+struct centurion_config final
+{
   bool initCore = true;
   bool initImage = true;
   bool initMixer = true;
@@ -187,7 +188,8 @@ struct centurion_config final {
  *
  * @headerfile centurion.hpp
  */
-class centurion_lib final {
+class centurion_lib final
+{
  public:
   /**
    * @brief Initializes the library.
@@ -232,7 +234,8 @@ class centurion_lib final {
   auto operator=(centurion_lib&&) -> centurion_lib& = delete;
 
  private:
-  class sdl final {
+  class sdl final
+  {
    public:
     explicit sdl(u32 flags);
 
@@ -240,7 +243,8 @@ class centurion_lib final {
     ~sdl() noexcept;
   };
 
-  class sdl_ttf final {
+  class sdl_ttf final
+  {
    public:
     explicit sdl_ttf();
 
@@ -248,7 +252,8 @@ class centurion_lib final {
     ~sdl_ttf() noexcept;
   };
 
-  class sdl_mixer final {
+  class sdl_mixer final
+  {
    public:
     sdl_mixer(int flags, int freq, u16 format, int nChannels, int chunkSize);
 
@@ -256,7 +261,8 @@ class centurion_lib final {
     ~sdl_mixer() noexcept;
   };
 
-  class sdl_image final {
+  class sdl_image final
+  {
    public:
     explicit sdl_image(int flags);
 

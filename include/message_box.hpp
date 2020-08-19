@@ -74,7 +74,8 @@ namespace centurion {
  *
  * @headerfile message_box.hpp
  */
-class message_box final {
+class message_box final
+{
  public:
   /**
    * @typedef button_id
@@ -153,7 +154,8 @@ class message_box final {
    *
    * @headerfile message_box.hpp
    */
-  class color_scheme final {
+  class color_scheme final
+  {
    public:
     /**
      * @brief Creates a color scheme that uses `white` for all colors.
@@ -420,7 +422,8 @@ class message_box final {
   /**
    *
    */
-  class button final {
+  class button final
+  {
    public:
     CENTURION_API
     button(button_id id, std::string text, default_button defaultButton);

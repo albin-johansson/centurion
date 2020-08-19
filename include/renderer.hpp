@@ -126,7 +126,8 @@ namespace centurion {
  *
  * @headerfile renderer.hpp
  */
-class renderer final : public basic_renderer<renderer> {
+class renderer final : public basic_renderer<renderer>
+{
  public:
   /**
    * @typedef uptr
@@ -548,7 +549,8 @@ class renderer final : public basic_renderer<renderer> {
   }
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(SDL_Renderer* renderer) noexcept
     {

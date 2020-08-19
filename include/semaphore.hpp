@@ -65,7 +65,8 @@ namespace centurion {
  *
  * @headerfile semaphore.hpp
  */
-class semaphore final {
+class semaphore final
+{
  public:
   /**
    * @brief Creates a semaphore with the specified amount of tokens.
@@ -136,7 +137,8 @@ class semaphore final {
   auto tokens() const noexcept -> u32;
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(SDL_sem* semaphore) noexcept
     {

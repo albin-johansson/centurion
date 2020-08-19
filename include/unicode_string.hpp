@@ -62,7 +62,8 @@ namespace centurion {
  *
  * @headerfile unicode_string.hpp
  */
-class unicode_string final {
+class unicode_string final
+{
  public:
   using value_type = std::vector<unicode>::value_type;
 

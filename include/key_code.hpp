@@ -109,7 +109,8 @@ namespace centurion {
  *
  * @headerfile key_code.hpp
  */
-class key_code final {
+class key_code final
+{
  public:
   /**
    * @brief Creates a `key_code` instance with the `SDLK_UNKNOWN` key code.

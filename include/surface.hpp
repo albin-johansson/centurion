@@ -71,7 +71,8 @@ namespace centurion {
  *
  * @headerfile surface.hpp
  */
-class surface final {
+class surface final
+{
  public:
   /**
    * @typedef uptr
@@ -388,7 +389,8 @@ class surface final {
   }
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(SDL_Surface* surface) noexcept { SDL_FreeSurface(surface); }
   };

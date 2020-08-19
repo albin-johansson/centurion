@@ -245,7 +245,7 @@ namespace hint {
  */
 class render_driver final {
  public:
-  enum value { direct_3d, open_gl, open_gles, open_gles2, metal, software };
+  enum value { direct3d, opengl, opengles, opengles2, metal, software };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
@@ -267,13 +267,13 @@ class render_driver final {
 
     using detail::equal;
     if (equal(hint, "direct3d")) {
-      return direct_3d;
+      return direct3d;
     } else if (equal(hint, "opengl")) {
-      return open_gl;
+      return opengl;
     } else if (equal(hint, "opengles")) {
-      return open_gles;
+      return opengles;
     } else if (equal(hint, "opengles2")) {
-      return open_gles2;
+      return opengles2;
     } else if (equal(hint, "metal")) {
       return metal;
     } else {
@@ -284,13 +284,13 @@ class render_driver final {
   static auto to_string(value value) -> std::string
   {
     switch (value) {
-      case direct_3d:
+      case direct3d:
         return "direct3d";
-      case open_gl:
+      case opengl:
         return "opengl";
-      case open_gles:
+      case opengles:
         return "opengles";
-      case open_gles2:
+      case opengles2:
         return "opengles2";
       case metal:
         return "metal";
@@ -403,10 +403,10 @@ class framebuffer_acceleration final {
   enum value {
     off,
     on,
-    direct_3d,
-    open_gl,
-    open_gles,
-    open_gles2,
+    direct3d,
+    opengl,
+    opengles,
+    opengles2,
     metal,
     software
   };
@@ -435,13 +435,13 @@ class framebuffer_acceleration final {
     } else if (equal(hint, "1")) {
       return on;
     } else if (equal(hint, "direct3d")) {
-      return direct_3d;
+      return direct3d;
     } else if (equal(hint, "opengl")) {
-      return open_gl;
+      return opengl;
     } else if (equal(hint, "opengles")) {
-      return open_gles;
+      return opengles;
     } else if (equal(hint, "opengles2")) {
-      return open_gles2;
+      return opengles2;
     } else if (equal(hint, "metal")) {
       return metal;
     } else {
@@ -458,13 +458,13 @@ class framebuffer_acceleration final {
         return "0";
       case on:
         return "1";
-      case direct_3d:
+      case direct3d:
         return "direct3d";
-      case open_gl:
+      case opengl:
         return "opengl";
-      case open_gles:
+      case opengles:
         return "opengles";
-      case open_gles2:
+      case opengles2:
         return "opengles2";
       case metal:
         return "metal";
@@ -1478,7 +1478,7 @@ enum class hint_priority {
  * specify the render driver that SDL should use, and the value is specified
  * with an enum value associated with the `render_driver` class.
  * @code{.cpp}
- *   set_hint<render_driver>(render_driver::open_gl);
+ *   set_hint<render_driver>(render_driver::opengl);
  * @endcode
  * Most hints only accept boolean or integer values. As in the following
  * example.

@@ -146,17 +146,17 @@ TEST_CASE("set_hint", "[hint]")
       ctn::set_hint<fa>(fa::on);
       CHECK(ctn::get_hint<fa>().value() == fa::on);
 
-      ctn::set_hint<fa>(fa::open_gl);
-      CHECK(ctn::get_hint<fa>().value() == fa::open_gl);
+      ctn::set_hint<fa>(fa::opengl);
+      CHECK(ctn::get_hint<fa>().value() == fa::opengl);
 
-      ctn::set_hint<fa>(fa::open_gles);
-      CHECK(ctn::get_hint<fa>().value() == fa::open_gles);
+      ctn::set_hint<fa>(fa::opengles);
+      CHECK(ctn::get_hint<fa>().value() == fa::opengles);
 
-      ctn::set_hint<fa>(fa::open_gles2);
-      CHECK(ctn::get_hint<fa>().value() == fa::open_gles2);
+      ctn::set_hint<fa>(fa::opengles2);
+      CHECK(ctn::get_hint<fa>().value() == fa::opengles2);
 
-      ctn::set_hint<fa>(fa::direct_3d);
-      CHECK(ctn::get_hint<fa>().value() == fa::direct_3d);
+      ctn::set_hint<fa>(fa::direct3d);
+      CHECK(ctn::get_hint<fa>().value() == fa::direct3d);
 
       ctn::set_hint<fa>(fa::metal);
       CHECK(ctn::get_hint<fa>().value() == fa::metal);
@@ -422,27 +422,26 @@ TEST_CASE("set_hint", "[hint]")
   {
     using ctn::hint::render_driver;
     test_hint<render_driver>([] {
-      CHECK(ctn::set_hint<render_driver>(render_driver::open_gl));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::open_gl);
+      CHECK(ctn::set_hint<render_driver>(render_driver::opengl));
+      CHECK(ctn::get_hint<render_driver>().value() == render_driver::opengl);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::open_gles));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::open_gles);
+      CHECK(ctn::set_hint<render_driver>(render_driver::opengles));
+      CHECK(ctn::get_hint<render_driver>().value() == render_driver::opengles);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::open_gles2));
-      CHECK(ctn::get_hint<render_driver>().value() ==
-            render_driver::open_gles2);
+      CHECK(ctn::set_hint<render_driver>(render_driver::opengles2));
+      CHECK(ctn::get_hint<render_driver>().value() == render_driver::opengles2);
 
       CHECK(ctn::set_hint<render_driver>(render_driver::metal));
       CHECK(ctn::get_hint<render_driver>().value() == render_driver::metal);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::direct_3d));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::direct_3d);
+      CHECK(ctn::set_hint<render_driver>(render_driver::direct3d));
+      CHECK(ctn::get_hint<render_driver>().value() == render_driver::direct3d);
 
       CHECK(ctn::set_hint<render_driver>(render_driver::software));
       CHECK(ctn::get_hint<render_driver>().value() == render_driver::software);
     });
 
-    ctn::set_hint<render_driver>(render_driver::open_gl);
+    ctn::set_hint<render_driver>(render_driver::opengl);
   }
 
   SECTION("raspberrypi::")
@@ -962,7 +961,7 @@ TEST_CASE("add_hint_callback", "[hint]")
   handle.disconnect();
 
   ctn::set_hint<render_driver, ctn::hint_priority::override>(
-      render_driver::open_gl);
+      render_driver::opengl);
 }
 
 TEST_CASE("clear_hints", "[hint]")

@@ -3,8 +3,8 @@ Logging
 
 The logging API is based on a set of functions contained in the 
 ``ctn::log`` namespace. Additionally, function macros are provided 
-(although they can be disabled), which can be used for logging only
-in debug mode, as they expand to nothing in release mode.
+(although they can be disabled), which can be used for logging in 
+debug mode, that expand to nothing in release mode.
 
 The logging API is based on a set of different priorities and categories. 
 Usually, the priority is specified by selecting one of the ``info``, ``warn``,

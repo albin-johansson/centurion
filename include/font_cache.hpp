@@ -88,7 +88,8 @@ namespace centurion {
  *
  * @headerfile font_cache.hpp
  */
-class font_cache final {
+class font_cache final
+{
  public:
   /**
    * @typedef uptr
@@ -126,7 +127,8 @@ class font_cache final {
    *
    * @headerfile font_cache.hpp
    */
-  struct glyph_data final {
+  struct glyph_data final
+  {
     texture cached;         ///< The cached texture.
     glyph_metrics metrics;  ///< The metrics of the glyph.
   };

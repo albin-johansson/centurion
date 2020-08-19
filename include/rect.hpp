@@ -84,7 +84,8 @@ namespace centurion {
 template <typename T,
           typename = std::enable_if_t<std::is_convertible_v<T, int> ||
                                       std::is_convertible_v<T, float>>>
-class rect_traits final {
+class rect_traits final
+{
  public:
   /**
    * @var isIntegral
@@ -160,7 +161,8 @@ class rect_traits final {
  * @headerfile rect.hpp
  */
 template <typename T>
-class basic_rect final {
+class basic_rect final
+{
  public:
   /**
    * @copydoc rect_traits<T>::isIntegral

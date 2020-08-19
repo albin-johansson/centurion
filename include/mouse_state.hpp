@@ -58,7 +58,8 @@ namespace centurion {
  *
  * @headerfile mouse_state.hpp
  */
-class mouse_state final {
+class mouse_state final
+{
  public:
   /**
    * @typedef uptr

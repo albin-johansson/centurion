@@ -160,7 +160,8 @@ enum class system_cursor {
  *
  * @headerfile cursor.hpp
  */
-class cursor final {
+class cursor final
+{
  public:
   /**
    * @typedef uptr
@@ -348,7 +349,8 @@ class cursor final {
   }
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(SDL_Cursor* cursor) noexcept { SDL_FreeCursor(cursor); }
   };

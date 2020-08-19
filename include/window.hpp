@@ -114,7 +114,8 @@ namespace centurion {
  *
  * @headerfile window.hpp
  */
-class window final : public basic_window<window> {
+class window final : public basic_window<window>
+{
  public:
   /**
    * @typedef uptr
@@ -268,7 +269,8 @@ class window final : public basic_window<window> {
   }
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(SDL_Window* window) noexcept { SDL_DestroyWindow(window); }
   };

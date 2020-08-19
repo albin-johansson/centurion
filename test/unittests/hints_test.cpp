@@ -32,9 +32,68 @@ void test_bool_hint()
   });
 }
 
+TEMPLATE_TEST_CASE("set_hint boolean hints",
+                   "[hint]",
+                   ctn::hint::double_buffer,
+                   ctn::hint::accelerometer_as_joystick,
+                   ctn::hint::allow_top_most,
+                   ctn::hint::bmp_save_legacy_format,
+                   ctn::hint::enable_steam_controllers,
+                   ctn::hint::grab_keyboard,
+                   ctn::hint::idle_timer_disabled,
+                   ctn::hint::ime_internal_editing,
+                   ctn::hint::no_signal_handlers,
+                   ctn::hint::enable_opengl_shaders,
+                   ctn::hint::opengl_es_driver,
+                   ctn::hint::allow_screensaver,
+                   ctn::hint::video_external_context,
+                   ctn::hint::disable_high_dpi,
+                   ctn::hint::minimize_on_focus_loss,
+                   ctn::hint::window_frame_usable_while_cursor_hidden,
+                   ctn::hint::mouse_touch_events,
+                   ctn::hint::render_batching,
+                   ctn::hint::return_key_hides_ime,
+                   ctn::hint::touch_mouse_events,
+                   ctn::hint::tv_remote_as_joystick,
+                   ctn::hint::appletv::controller_ui_events,
+                   ctn::hint::appletv::remote_allow_rotation,
+                   ctn::hint::xinput::is_enabled,
+                   ctn::hint::xinput::use_old_joystick_mapping,
+                   ctn::hint::mouse::focus_clickthrough,
+                   ctn::hint::mouse::relative_mode_warp,
+                   ctn::hint::d3d::v11_debug,
+                   ctn::hint::d3d::thread_safe,
+                   ctn::hint::gamecontroller::use_button_labels,
+                   ctn::hint::winrt::handle_back_button,
+                   ctn::hint::windows::no_thread_naming,
+                   ctn::hint::windows::enable_message_loop,
+                   ctn::hint::windows::no_close_on_alt_f4,
+                   ctn::hint::mac::background_app,
+                   ctn::hint::mac::ctrl_click_emulate_right_click,
+                   ctn::hint::mac::fullscreen_spaces,
+                   ctn::hint::android::block_on_pause,
+                   ctn::hint::android::trap_back_button,
+                   ctn::hint::joystick::allow_background_events,
+                   ctn::hint::joystick::use_hidapi,
+                   ctn::hint::joystick::use_hidapi_ps4,
+                   ctn::hint::joystick::use_hidapi_ps4_rumble,
+                   ctn::hint::joystick::use_hidapi_steam,
+                   ctn::hint::joystick::use_hidapi_switch,
+                   ctn::hint::joystick::use_hidapi_xbox,
+                   ctn::hint::joystick::use_hidapi_game_cube,
+                   ctn::hint::x11::net_wm_ping,
+                   ctn::hint::x11::net_wm_bypass_compositor,
+                   ctn::hint::x11::force_egl,
+                   ctn::hint::x11::xinerama,
+                   ctn::hint::x11::xrandr,
+                   ctn::hint::x11::xvidmode)
+{
+  test_bool_hint<TestType>();
+}
+
 }  // namespace
 
-TEST_CASE("hint_prio", "[Hints]")
+TEST_CASE("hint_prio", "[hint]")
 {
   using prio = ctn::hint_priority;
   CHECK(prio::low == static_cast<prio>(SDL_HINT_DEFAULT));
@@ -46,102 +105,38 @@ TEST_CASE("hint_prio", "[Hints]")
   CHECK(static_cast<prio>(SDL_HINT_OVERRIDE) == prio::override);
 }
 
-TEST_CASE("set_hint", "[Hints]")
+TEST_CASE("set_hint", "[hint]")
 {
-  SECTION("accelerometer_as_joystick")
-  {
-    using ctn::hint::accelerometer_as_joystick;
-    test_bool_hint<accelerometer_as_joystick>();
-  }
-
-  SECTION("allow_top_most")
-  {
-    using ctn::hint::allow_top_most;
-    test_bool_hint<allow_top_most>();
-  }
-
   SECTION("audio_resampling_mode")
   {
     using hint = ctn::hint::audio_resampling_mode;
+    using value = hint::value;
     test_hint<hint>([] {
-      ctn::set_hint<hint>(hint::normal);
-      CHECK(ctn::get_hint<hint>().value() == hint::normal);
+      ctn::set_hint<hint>(value::normal);
+      CHECK(ctn::get_hint<hint>().value() == value::normal);
 
-      ctn::set_hint<hint>(hint::fast);
-      CHECK(ctn::get_hint<hint>().value() == hint::fast);
+      ctn::set_hint<hint>(value::fast);
+      CHECK(ctn::get_hint<hint>().value() == value::fast);
 
-      ctn::set_hint<hint>(hint::medium);
-      CHECK(ctn::get_hint<hint>().value() == hint::medium);
+      ctn::set_hint<hint>(value::medium);
+      CHECK(ctn::get_hint<hint>().value() == value::medium);
 
-      ctn::set_hint<hint>(hint::best);
-      CHECK(ctn::get_hint<hint>().value() == hint::best);
-    });
-  }
-
-  SECTION("android_block_on_pause")
-  {
-    using ctn::hint::android_block_on_pause;
-    test_bool_hint<android_block_on_pause>();
-  }
-
-  SECTION("android_trap_back_button")
-  {
-    using ctn::hint::android_trap_back_button;
-    test_bool_hint<android_trap_back_button>();
-  }
-
-  SECTION("android_apk_expansion_main_file_version")
-  {
-    using ctn::hint::android_apk_expansion_main_file_version;
-    test_hint<android_apk_expansion_main_file_version>([] {
-      CHECK(ctn::set_hint<android_apk_expansion_main_file_version>(1));
-      CHECK(ctn::get_hint<android_apk_expansion_main_file_version>() == 1);
-    });
-  }
-
-  SECTION("android_apk_expansion_patch_file_version")
-  {
-    using ctn::hint::android_apk_expansion_patch_file_version;
-    test_hint<android_apk_expansion_patch_file_version>([] {
-      CHECK(ctn::set_hint<android_apk_expansion_patch_file_version>(1));
-      CHECK(ctn::get_hint<android_apk_expansion_patch_file_version>() == 1);
+      ctn::set_hint<hint>(value::best);
+      CHECK(ctn::get_hint<hint>().value() == value::best);
     });
   }
 
   SECTION("audio_category")
   {
     using ctn::hint::audio_category;
+    using value = audio_category::value;
     test_hint<audio_category>([] {
-      CHECK(ctn::set_hint<audio_category>(audio_category::ambient));
-      CHECK(ctn::get_hint<audio_category>() == audio_category::ambient);
+      CHECK(ctn::set_hint<audio_category>(value::ambient));
+      CHECK(ctn::get_hint<audio_category>() == value::ambient);
 
-      CHECK(ctn::set_hint<audio_category>(audio_category::playback));
-      CHECK(ctn::get_hint<audio_category>() == audio_category::playback);
+      CHECK(ctn::set_hint<audio_category>(value::playback));
+      CHECK(ctn::get_hint<audio_category>() == value::playback);
     });
-  }
-
-  SECTION("apple_tv_controller_ui_events")
-  {
-    using ctn::hint::apple_tv_controller_ui_events;
-    test_bool_hint<apple_tv_controller_ui_events>();
-  }
-
-  SECTION("apple_tv_remote_allow_rotation")
-  {
-    using ctn::hint::apple_tv_remote_allow_rotation;
-    test_bool_hint<apple_tv_remote_allow_rotation>();
-  }
-
-  SECTION("bmp_save_legacy_format")
-  {
-    using ctn::hint::bmp_save_legacy_format;
-    test_bool_hint<bmp_save_legacy_format>();
-  }
-
-  SECTION("double_buffer")
-  {
-    using ctn::hint::double_buffer;
-    test_bool_hint<double_buffer>();
   }
 
   SECTION("display_usable_bounds")
@@ -153,34 +148,6 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK_THAT(ctn::get_hint<display_usable_bounds>().value(),
                  Catch::Equals(str));
     });
-  }
-
-  SECTION("emscripten_keyboard_element")
-  {
-    using ctn::hint::emscripten_keyboard_element;
-    test_hint<emscripten_keyboard_element>([] {
-      CHECK(ctn::set_hint<emscripten_keyboard_element>("#window"));
-      CHECK_THAT(ctn::get_hint<emscripten_keyboard_element>().value(),
-                 Catch::Equals("#window"));
-
-      CHECK(ctn::set_hint<emscripten_keyboard_element>("#document"));
-      CHECK_THAT(ctn::get_hint<emscripten_keyboard_element>().value(),
-                 Catch::Equals("#document"));
-
-      CHECK(ctn::set_hint<emscripten_keyboard_element>("#screen"));
-      CHECK_THAT(ctn::get_hint<emscripten_keyboard_element>().value(),
-                 Catch::Equals("#screen"));
-
-      CHECK(ctn::set_hint<emscripten_keyboard_element>("#canvas"));
-      CHECK_THAT(ctn::get_hint<emscripten_keyboard_element>().value(),
-                 Catch::Equals("#canvas"));
-    });
-  }
-
-  SECTION("enable_steam_controllers")
-  {
-    using ctn::hint::enable_steam_controllers;
-    test_bool_hint<enable_steam_controllers>();
   }
 
   SECTION("event_logging")
@@ -202,245 +169,46 @@ TEST_CASE("set_hint", "[Hints]")
 
   SECTION("framebuffer_acceleration")
   {
-    using fa = ctn::hint::framebuffer_acceleration;
-    test_hint<fa>([] {
-      ctn::set_hint<fa>(fa::off);
-      CHECK(ctn::get_hint<fa>().value() == fa::off);
+    using hint = ctn::hint::framebuffer_acceleration;
+    using value = hint::value;
+    test_hint<hint>([] {
+      ctn::set_hint<hint>(value::off);
+      CHECK(ctn::get_hint<hint>().value() == value::off);
 
-      ctn::set_hint<fa>(fa::on);
-      CHECK(ctn::get_hint<fa>().value() == fa::on);
+      ctn::set_hint<hint>(value::on);
+      CHECK(ctn::get_hint<hint>().value() == value::on);
 
-      ctn::set_hint<fa>(fa::open_gl);
-      CHECK(ctn::get_hint<fa>().value() == fa::open_gl);
+      ctn::set_hint<hint>(value::opengl);
+      CHECK(ctn::get_hint<hint>().value() == value::opengl);
 
-      ctn::set_hint<fa>(fa::open_gles);
-      CHECK(ctn::get_hint<fa>().value() == fa::open_gles);
+      ctn::set_hint<hint>(value::opengles);
+      CHECK(ctn::get_hint<hint>().value() == value::opengles);
 
-      ctn::set_hint<fa>(fa::open_gles2);
-      CHECK(ctn::get_hint<fa>().value() == fa::open_gles2);
+      ctn::set_hint<hint>(value::opengles2);
+      CHECK(ctn::get_hint<hint>().value() == value::opengles2);
 
-      ctn::set_hint<fa>(fa::direct_3d);
-      CHECK(ctn::get_hint<fa>().value() == fa::direct_3d);
+      ctn::set_hint<hint>(value::direct3d);
+      CHECK(ctn::get_hint<hint>().value() == value::direct3d);
 
-      ctn::set_hint<fa>(fa::metal);
-      CHECK(ctn::get_hint<fa>().value() == fa::metal);
+      ctn::set_hint<hint>(value::metal);
+      CHECK(ctn::get_hint<hint>().value() == value::metal);
 
-      ctn::set_hint<fa>(fa::software);
-      CHECK(ctn::get_hint<fa>().value() == fa::software);
+      ctn::set_hint<hint>(value::software);
+      CHECK(ctn::get_hint<hint>().value() == value::software);
     });
-  }
-
-  SECTION("game_controller_use_button_labels")
-  {
-    using ctn::hint::game_controller_use_button_labels;
-    test_bool_hint<game_controller_use_button_labels>();
-  }
-
-  SECTION("game_controller_type")
-  {
-    using ctn::hint::game_controller_type;
-    test_hint<game_controller_type>([] {
-      ctn::czstring str = "0x00FD/0xAAC3=PS4";
-      ctn::set_hint<game_controller_type>(str);
-      CHECK_THAT(ctn::get_hint<game_controller_type>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("game_controller_config")
-  {
-    using ctn::hint::game_controller_config;
-    test_hint<game_controller_config>([] {
-      ctn::czstring str = "asd\nasd";
-      ctn::set_hint<game_controller_config>(str);
-      CHECK_THAT(ctn::get_hint<game_controller_config>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("game_controller_config_file")
-  {
-    using ctn::hint::game_controller_config_file;
-    test_hint<game_controller_config_file>([] {
-      ctn::czstring str = "foo";
-      ctn::set_hint<game_controller_config_file>(str);
-      CHECK_THAT(ctn::get_hint<game_controller_config_file>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("game_controller_ignore_devices")
-  {
-    using ctn::hint::game_controller_ignore_devices;
-    test_hint<game_controller_ignore_devices>([] {
-      ctn::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
-      ctn::set_hint<game_controller_ignore_devices>(str);
-      CHECK_THAT(ctn::get_hint<game_controller_ignore_devices>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("game_controller_ignore_devices_except")
-  {
-    using ctn::hint::game_controller_ignore_devices_except;
-    test_hint<game_controller_ignore_devices_except>([] {
-      ctn::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
-      ctn::set_hint<game_controller_ignore_devices_except>(str);
-      CHECK_THAT(ctn::get_hint<game_controller_ignore_devices_except>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("grab_keyboard")
-  {
-    using ctn::hint::grab_keyboard;
-    test_bool_hint<grab_keyboard>();
-  }
-
-  SECTION("idle_timer_disabled")
-  {
-    using ctn::hint::idle_timer_disabled;
-    test_bool_hint<idle_timer_disabled>();
-  }
-
-  SECTION("ime_internal_editing")
-  {
-    using ctn::hint::ime_internal_editing;
-    test_bool_hint<ime_internal_editing>();
-  }
-
-  SECTION("joystick_allow_background_events")
-  {
-    using ctn::hint::joystick_allow_background_events;
-    test_bool_hint<joystick_allow_background_events>();
-  }
-
-  SECTION("joystick_use_hidapi")
-  {
-    using ctn::hint::joystick_use_hidapi;
-    test_bool_hint<joystick_use_hidapi>();
-  }
-
-  SECTION("joystick_use_hidapi_ps4")
-  {
-    using ctn::hint::joystick_use_hidapi_ps4;
-    test_bool_hint<joystick_use_hidapi_ps4>();
-  }
-
-  SECTION("joystick_use_hidapi_steam")
-  {
-    using ctn::hint::joystick_use_hidapi_steam;
-    test_bool_hint<joystick_use_hidapi_steam>();
-  }
-
-  SECTION("joystick_use_hidapi_switch")
-  {
-    using ctn::hint::joystick_use_hidapi_switch;
-    test_bool_hint<joystick_use_hidapi_switch>();
-  }
-
-  SECTION("joystick_use_hidapi_xbox")
-  {
-    using ctn::hint::joystick_use_hidapi_xbox;
-    test_bool_hint<joystick_use_hidapi_xbox>();
-  }
-
-  SECTION("joystick_use_hidapi_game_cube")
-  {
-    using ctn::hint::joystick_use_hidapi_game_cube;
-    test_bool_hint<joystick_use_hidapi_game_cube>();
   }
 
   SECTION("logical_size_mode")
   {
     using ctn::hint::logical_size_mode;
+    using value = logical_size_mode::value;
     test_hint<logical_size_mode>([] {
-      CHECK(ctn::set_hint<logical_size_mode>(logical_size_mode::letterbox));
-      CHECK(ctn::get_hint<logical_size_mode>().value() ==
-            logical_size_mode::letterbox);
+      CHECK(ctn::set_hint<logical_size_mode>(value::letterbox));
+      CHECK(ctn::get_hint<logical_size_mode>().value() == value::letterbox);
 
-      CHECK(ctn::set_hint<logical_size_mode>(logical_size_mode::overscan));
-      CHECK(ctn::get_hint<logical_size_mode>().value() ==
-            logical_size_mode::overscan);
+      CHECK(ctn::set_hint<logical_size_mode>(value::overscan));
+      CHECK(ctn::get_hint<logical_size_mode>().value() == value::overscan);
     });
-  }
-
-  SECTION("mac_background_app")
-  {
-    using ctn::hint::mac_background_app;
-    test_bool_hint<mac_background_app>();
-  }
-
-  SECTION("mac_ctrl_click_emulate_right_click")
-  {
-    using ctn::hint::mac_ctrl_click_emulate_right_click;
-    test_bool_hint<mac_ctrl_click_emulate_right_click>();
-  }
-
-  SECTION("mouse_focus_clickthrough")
-  {
-    using ctn::hint::mouse_focus_clickthrough;
-    test_bool_hint<mouse_focus_clickthrough>();
-  }
-
-  SECTION("mouse_relative_mode_warp")
-  {
-    using ctn::hint::mouse_relative_mode_warp;
-    test_bool_hint<mouse_relative_mode_warp>();
-  }
-
-  SECTION("mouse_double_click_radius")
-  {
-    using ctn::hint::mouse_double_click_radius;
-    test_hint<mouse_double_click_radius>([] {
-      ctn::set_hint<mouse_double_click_radius>(5);
-      CHECK(ctn::get_hint<mouse_double_click_radius>().value() == 5);
-
-      ctn::set_hint<mouse_double_click_radius>(20);
-      CHECK(ctn::get_hint<mouse_double_click_radius>().value() == 20);
-    });
-  }
-
-  SECTION("mouse_double_click_time")
-  {
-    using ctn::hint::mouse_double_click_time;
-    test_hint<mouse_double_click_time>([] {
-      ctn::set_hint<mouse_double_click_time>(25);
-      CHECK(ctn::get_hint<mouse_double_click_time>().value() == 25);
-
-      ctn::set_hint<mouse_double_click_time>(178);
-      CHECK(ctn::get_hint<mouse_double_click_time>().value() == 178);
-    });
-  }
-
-  SECTION("no_signal_handlers")
-  {
-    using ctn::hint::no_signal_handlers;
-    test_bool_hint<no_signal_handlers>();
-  }
-
-  SECTION("direct_3d_11_debug")
-  {
-    using ctn::hint::direct_3d_11_debug;
-    test_bool_hint<direct_3d_11_debug>();
-  }
-
-  SECTION("direct_3d_thread_safe")
-  {
-    using ctn::hint::direct_3d_thread_safe;
-    test_bool_hint<direct_3d_thread_safe>();
-  }
-
-  SECTION("enable_opengl_shaders")
-  {
-    using ctn::hint::enable_opengl_shaders;
-    test_bool_hint<enable_opengl_shaders>();
-  }
-
-  SECTION("opengl_es_driver")
-  {
-    using ctn::hint::opengl_es_driver;
-    test_bool_hint<opengl_es_driver>();
   }
 
   SECTION("orientations")
@@ -469,222 +237,84 @@ TEST_CASE("set_hint", "[Hints]")
     });
   }
 
-  SECTION("enable_vsync")
+  SECTION("vsync")
   {
-    using ctn::hint::enable_vsync;
-    test_bool_hint<enable_vsync>();
-    ctn::set_hint<enable_vsync>(true);
+    using ctn::hint::vsync;
+    test_bool_hint<vsync>();
+    ctn::set_hint<vsync>(true);
   }
 
   SECTION("scale_quality")
   {
     using ctn::hint::scale_quality;
+    using value = scale_quality::value;
     test_hint<scale_quality>([] {
-      ctn::set_hint<scale_quality>(scale_quality::nearest);
-      CHECK(ctn::get_hint<scale_quality>() == scale_quality::nearest);
+      ctn::set_hint<scale_quality>(value::nearest);
+      CHECK(ctn::get_hint<scale_quality>() == value::nearest);
 
-      ctn::set_hint<scale_quality>(scale_quality::linear);
-      CHECK(ctn::get_hint<scale_quality>() == scale_quality::linear);
+      ctn::set_hint<scale_quality>(value::linear);
+      CHECK(ctn::get_hint<scale_quality>() == value::linear);
 
-      ctn::set_hint<scale_quality>(scale_quality::best);
-      CHECK(ctn::get_hint<scale_quality>() == scale_quality::best);
-    });
-  }
-
-  SECTION("allow_screensaver")
-  {
-    using ctn::hint::allow_screensaver;
-    test_bool_hint<allow_screensaver>();
-  }
-
-  SECTION("video_external_context")
-  {
-    using ctn::hint::video_external_context;
-    test_bool_hint<video_external_context>();
-  }
-
-  SECTION("disable_high_dpi")
-  {
-    using ctn::hint::disable_high_dpi;
-    test_bool_hint<disable_high_dpi>();
-  }
-
-  SECTION("mac_fullscreen_spaces")
-  {
-    using ctn::hint::mac_fullscreen_spaces;
-    test_bool_hint<mac_fullscreen_spaces>();
-  }
-
-  SECTION("minimize_on_focus_loss")
-  {
-    using ctn::hint::minimize_on_focus_loss;
-    test_bool_hint<minimize_on_focus_loss>();
-  }
-
-  SECTION("x11_net_wm_ping")
-  {
-    using ctn::hint::x11_net_wm_ping;
-    test_bool_hint<x11_net_wm_ping>();
-  }
-
-  SECTION("x11_net_wm_bypass_compositor")
-  {
-    using ctn::hint::x11_net_wm_bypass_compositor;
-    test_bool_hint<x11_net_wm_bypass_compositor>();
-  }
-
-  SECTION("x11_force_egl")
-  {
-    using ctn::hint::x11_force_egl;
-    test_bool_hint<x11_force_egl>();
-  }
-
-  SECTION("x11_xinerama")
-  {
-    using ctn::hint::x11_xinerama;
-    test_bool_hint<x11_xinerama>();
-  }
-
-  SECTION("x11_xrandr")
-  {
-    using ctn::hint::x11_xrandr;
-    test_bool_hint<x11_xrandr>();
-  }
-
-  SECTION("x11_xvidmode")
-  {
-    using ctn::hint::x11_xvidmode;
-    test_bool_hint<x11_xvidmode>();
-  }
-
-  SECTION("x11_window_visual_id")
-  {
-    using ctn::hint::x11_window_visual_id;
-    test_hint<x11_window_visual_id>([] {
-      CHECK(ctn::set_hint<x11_window_visual_id>("foo"));
-      CHECK_THAT(ctn::get_hint<x11_window_visual_id>().value(),
-                 Catch::Equals("foo"));
-
-      ctn::set_hint<x11_window_visual_id>("");
+      ctn::set_hint<scale_quality>(value::best);
+      CHECK(ctn::get_hint<scale_quality>() == value::best);
     });
   }
 
   SECTION("wave_riff_chunk_size")
   {
     using ctn::hint::wave_riff_chunk_size;
+    using value = wave_riff_chunk_size::value;
     test_hint<wave_riff_chunk_size>([] {
-      CHECK(ctn::set_hint<wave_riff_chunk_size>(wave_riff_chunk_size::force));
-      CHECK(ctn::get_hint<wave_riff_chunk_size>() ==
-            wave_riff_chunk_size::force);
+      CHECK(ctn::set_hint<wave_riff_chunk_size>(value::force));
+      CHECK(ctn::get_hint<wave_riff_chunk_size>() == value::force);
 
-      CHECK(ctn::set_hint<wave_riff_chunk_size>(
-          wave_riff_chunk_size::ignore_zero));
-      CHECK(ctn::get_hint<wave_riff_chunk_size>() ==
-            wave_riff_chunk_size::ignore_zero);
+      CHECK(ctn::set_hint<wave_riff_chunk_size>(value::ignore_zero));
+      CHECK(ctn::get_hint<wave_riff_chunk_size>() == value::ignore_zero);
 
-      CHECK(ctn::set_hint<wave_riff_chunk_size>(wave_riff_chunk_size::ignore));
-      CHECK(ctn::get_hint<wave_riff_chunk_size>() ==
-            wave_riff_chunk_size::ignore);
+      CHECK(ctn::set_hint<wave_riff_chunk_size>(value::ignore));
+      CHECK(ctn::get_hint<wave_riff_chunk_size>() == value::ignore);
 
-      CHECK(ctn::set_hint<wave_riff_chunk_size>(wave_riff_chunk_size::maximum));
-      CHECK(ctn::get_hint<wave_riff_chunk_size>() ==
-            wave_riff_chunk_size::maximum);
+      CHECK(ctn::set_hint<wave_riff_chunk_size>(value::maximum));
+      CHECK(ctn::get_hint<wave_riff_chunk_size>() == value::maximum);
     });
   }
 
   SECTION("wave_truncation")
   {
     using ctn::hint::wave_truncation;
+    using value = wave_truncation::value;
     test_hint<wave_truncation>([] {
-      CHECK(ctn::set_hint<wave_truncation>(wave_truncation::very_strict));
-      CHECK(ctn::get_hint<wave_truncation>() == wave_truncation::very_strict);
+      CHECK(ctn::set_hint<wave_truncation>(value::very_strict));
+      CHECK(ctn::get_hint<wave_truncation>() == value::very_strict);
 
-      CHECK(ctn::set_hint<wave_truncation>(wave_truncation::strict));
-      CHECK(ctn::get_hint<wave_truncation>() == wave_truncation::strict);
+      CHECK(ctn::set_hint<wave_truncation>(value::strict));
+      CHECK(ctn::get_hint<wave_truncation>() == value::strict);
 
-      CHECK(ctn::set_hint<wave_truncation>(wave_truncation::drop_frame));
-      CHECK(ctn::get_hint<wave_truncation>() == wave_truncation::drop_frame);
+      CHECK(ctn::set_hint<wave_truncation>(value::drop_frame));
+      CHECK(ctn::get_hint<wave_truncation>() == value::drop_frame);
 
-      CHECK(ctn::set_hint<wave_truncation>(wave_truncation::drop_block));
-      CHECK(ctn::get_hint<wave_truncation>() == wave_truncation::drop_block);
+      CHECK(ctn::set_hint<wave_truncation>(value::drop_block));
+      CHECK(ctn::get_hint<wave_truncation>() == value::drop_block);
     });
   }
 
   SECTION("wave_fact_chunk")
   {
     using ctn::hint::wave_fact_chunk;
+    using value = wave_fact_chunk::value;
     test_hint<wave_fact_chunk>([] {
-      CHECK(ctn::set_hint<wave_fact_chunk>(wave_fact_chunk::truncate));
-      CHECK(ctn::get_hint<wave_fact_chunk>() == wave_fact_chunk::truncate);
+      CHECK(ctn::set_hint<wave_fact_chunk>(value::truncate));
+      CHECK(ctn::get_hint<wave_fact_chunk>() == value::truncate);
 
-      CHECK(ctn::set_hint<wave_fact_chunk>(wave_fact_chunk::ignore));
-      CHECK(ctn::get_hint<wave_fact_chunk>() == wave_fact_chunk::ignore);
+      CHECK(ctn::set_hint<wave_fact_chunk>(value::ignore));
+      CHECK(ctn::get_hint<wave_fact_chunk>() == value::ignore);
 
-      CHECK(ctn::set_hint<wave_fact_chunk>(wave_fact_chunk::ignore_zero));
-      CHECK(ctn::get_hint<wave_fact_chunk>() == wave_fact_chunk::ignore_zero);
+      CHECK(ctn::set_hint<wave_fact_chunk>(value::ignore_zero));
+      CHECK(ctn::get_hint<wave_fact_chunk>() == value::ignore_zero);
 
-      CHECK(ctn::set_hint<wave_fact_chunk>(wave_fact_chunk::strict));
-      CHECK(ctn::get_hint<wave_fact_chunk>() == wave_fact_chunk::strict);
+      CHECK(ctn::set_hint<wave_fact_chunk>(value::strict));
+      CHECK(ctn::get_hint<wave_fact_chunk>() == value::strict);
     });
-  }
-
-  SECTION("windows_disable_thread_naming")
-  {
-    using ctn::hint::windows_disable_thread_naming;
-    test_bool_hint<windows_disable_thread_naming>();
-  }
-
-  SECTION("windows_int_resource_icon")
-  {
-    using ctn::hint::windows_int_resource_icon;
-    test_hint<windows_int_resource_icon>([] {
-      CHECK(ctn::set_hint<windows_int_resource_icon>("foo"));
-      CHECK_THAT(ctn::get_hint<windows_int_resource_icon>().value(),
-                 Catch::Equals("foo"));
-
-      ctn::set_hint<windows_int_resource_icon>("");
-    });
-  }
-
-  SECTION("windows_int_resource_icon_small")
-  {
-    using ctn::hint::windows_int_resource_icon_small;
-    test_hint<windows_int_resource_icon_small>([] {
-      CHECK(ctn::set_hint<windows_int_resource_icon_small>("bar"));
-      CHECK_THAT(ctn::get_hint<windows_int_resource_icon_small>().value(),
-                 Catch::Equals("bar"));
-
-      ctn::set_hint<windows_int_resource_icon_small>("");
-    });
-  }
-
-  SECTION("win_d3d_compiler")
-  {
-    using ctn::hint::win_d3d_compiler;
-    test_hint<win_d3d_compiler>([] {
-      CHECK(ctn::set_hint<win_d3d_compiler>(win_d3d_compiler::none));
-      CHECK(ctn::get_hint<win_d3d_compiler>() == win_d3d_compiler::none);
-
-      CHECK(ctn::set_hint<win_d3d_compiler>(win_d3d_compiler::d3d_compiler_46));
-      CHECK(ctn::get_hint<win_d3d_compiler>() ==
-            win_d3d_compiler::d3d_compiler_46);
-
-      CHECK(ctn::set_hint<win_d3d_compiler>(win_d3d_compiler::d3d_compiler_43));
-      CHECK(ctn::get_hint<win_d3d_compiler>() ==
-            win_d3d_compiler::d3d_compiler_43);
-    });
-  }
-
-  SECTION("windows_enable_message_loop")
-  {
-    using ctn::hint::windows_enable_message_loop;
-    test_bool_hint<windows_enable_message_loop>();
-  }
-
-  SECTION("windows_no_close_on_alt_f4")
-  {
-    using ctn::hint::windows_no_close_on_alt_f4;
-    test_bool_hint<windows_no_close_on_alt_f4>();
   }
 
   SECTION("window_share_pixel_format")
@@ -698,85 +328,6 @@ TEST_CASE("set_hint", "[Hints]")
       CHECK_THAT(ctn::get_hint<window_share_pixel_format>().value(),
                  Catch::Equals(str));
     });
-  }
-
-  SECTION("window_frame_usable_while_cursor_hidden")
-  {
-    using ctn::hint::window_frame_usable_while_cursor_hidden;
-    test_bool_hint<window_frame_usable_while_cursor_hidden>();
-  }
-
-  SECTION("win_rt_privacy_policy_label")
-  {
-    using ctn::hint::win_rt_privacy_policy_label;
-    test_hint<win_rt_privacy_policy_label>([] {
-      ctn::czstring str = "Hello this is GDPR speaking";
-      ctn::set_hint<win_rt_privacy_policy_label>(str);
-      CHECK_THAT(ctn::get_hint<win_rt_privacy_policy_label>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("win_rt_privacy_policy_url")
-  {
-    using ctn::hint::win_rt_privacy_policy_url;
-    test_hint<win_rt_privacy_policy_url>([] {
-      ctn::czstring str = "Hello this is GDPR URL speaking";
-      ctn::set_hint<win_rt_privacy_policy_url>(str);
-      CHECK_THAT(ctn::get_hint<win_rt_privacy_policy_url>().value(),
-                 Catch::Equals(str));
-    });
-  }
-
-  SECTION("mouse_touch_events")
-  {
-    using ctn::hint::mouse_touch_events;
-    test_bool_hint<mouse_touch_events>();
-  }
-
-  SECTION("mouse_normal_speed_scale")
-  {
-    using ctn::hint::mouse_normal_speed_scale;
-    test_hint<mouse_normal_speed_scale>([] {
-      CHECK(ctn::set_hint<mouse_normal_speed_scale>(2.3f));
-      CHECK(ctn::get_hint<mouse_normal_speed_scale>().value() == 2.3f);
-    });
-  }
-
-  SECTION("mouse_relative_speed_scale")
-  {
-    using ctn::hint::mouse_relative_speed_scale;
-    test_hint<mouse_relative_speed_scale>([] {
-      CHECK(ctn::set_hint<mouse_relative_speed_scale>(6.7f));
-      CHECK(ctn::get_hint<mouse_relative_speed_scale>().value() == 6.7f);
-    });
-  }
-
-  SECTION("raspberry_pi_video_layer")
-  {
-    using ctn::hint::raspberry_pi_video_layer;
-    test_hint<raspberry_pi_video_layer>([] {
-      CHECK(ctn::set_hint<raspberry_pi_video_layer>(8'000));
-      CHECK(ctn::get_hint<raspberry_pi_video_layer>().value() == 8'000);
-    });
-  }
-
-  SECTION("render_batching")
-  {
-    using ctn::hint::render_batching;
-    test_bool_hint<render_batching>();
-  }
-
-  SECTION("return_key_hides_ime")
-  {
-    using ctn::hint::return_key_hides_ime;
-    test_bool_hint<return_key_hides_ime>();
-  }
-
-  SECTION("touch_mouse_events")
-  {
-    using ctn::hint::touch_mouse_events;
-    test_bool_hint<touch_mouse_events>();
   }
 
   SECTION("thread_stack_size")
@@ -801,93 +352,324 @@ TEST_CASE("set_hint", "[Hints]")
     });
   }
 
-  SECTION("tv_remote_as_joystick")
-  {
-    using ctn::hint::tv_remote_as_joystick;
-    test_bool_hint<tv_remote_as_joystick>();
-  }
-
-  SECTION("qt_wayland_content_orientation")
-  {
-    using hint = ctn::hint::qt_wayland_content_orientation;
-    test_hint<hint>([] {
-      CHECK(ctn::set_hint<hint>(hint::primary));
-      CHECK(ctn::get_hint<hint>() == hint::primary);
-
-      CHECK(ctn::set_hint<hint>(hint::portrait));
-      CHECK(ctn::get_hint<hint>() == hint::portrait);
-
-      CHECK(ctn::set_hint<hint>(hint::landscape));
-      CHECK(ctn::get_hint<hint>() == hint::landscape);
-
-      CHECK(ctn::set_hint<hint>(hint::inverted_portrait));
-      CHECK(ctn::get_hint<hint>() == hint::inverted_portrait);
-
-      CHECK(ctn::set_hint<hint>(hint::inverted_landscape));
-      CHECK(ctn::get_hint<hint>() == hint::inverted_landscape);
-    });
-  }
-
-  SECTION("qt_wayland_window_flags")
-  {
-    using hint = ctn::hint::qt_wayland_window_flags;
-    test_hint<hint>([] {
-      CHECK(ctn::set_hint<hint>("OverridesSystemGestures StaysOnTop"));
-      CHECK_THAT(ctn::get_hint<hint>().value(),
-                 Catch::Equals("OverridesSystemGestures StaysOnTop"));
-
-      CHECK(ctn::set_hint<hint>("BypassWindowManager"));
-      CHECK_THAT(ctn::get_hint<hint>().value(),
-                 Catch::Equals("BypassWindowManager"));
-
-      CHECK(ctn::set_hint<hint>(""));
-    });
-  }
-
-  SECTION("xinput_enabled")
-  {
-    using ctn::hint::xinput_enabled;
-    test_bool_hint<xinput_enabled>();
-  }
-
-  SECTION("xinput_use_old_joystick_mapping")
-  {
-    using ctn::hint::xinput_use_old_joystick_mapping;
-    test_bool_hint<xinput_use_old_joystick_mapping>();
-  }
-
   SECTION("render_driver")
   {
     using ctn::hint::render_driver;
     test_hint<render_driver>([] {
-      CHECK(ctn::set_hint<render_driver>(render_driver::open_gl));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::open_gl);
-
-      CHECK(ctn::set_hint<render_driver>(render_driver::open_gles));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::open_gles);
-
-      CHECK(ctn::set_hint<render_driver>(render_driver::open_gles2));
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::opengl));
       CHECK(ctn::get_hint<render_driver>().value() ==
-            render_driver::open_gles2);
+            render_driver::value::opengl);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::metal));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::metal);
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::opengles));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::opengles);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::direct_3d));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::direct_3d);
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::opengles2));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::opengles2);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::software));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::software);
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::metal));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::metal);
+
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::direct3d));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::direct3d);
+
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::software));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::software);
     });
 
-    ctn::set_hint<render_driver>(render_driver::open_gl);
+    ctn::set_hint<render_driver>(render_driver::value::opengl);
+  }
+
+  SECTION("raspberrypi::")
+  {
+    SECTION("video_layer")
+    {
+      using ctn::hint::raspberrypi::video_layer;
+      test_hint<video_layer>([] {
+        CHECK(ctn::set_hint<video_layer>(8'000));
+        CHECK(ctn::get_hint<video_layer>().value() == 8'000);
+      });
+    }
+  }
+
+  SECTION("emscripten::")
+  {
+    SECTION("keyboard_element")
+    {
+      using ctn::hint::emscripten::keyboard_element;
+      test_hint<keyboard_element>([] {
+        CHECK(ctn::set_hint<keyboard_element>("#window"));
+        CHECK_THAT(ctn::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#window"));
+
+        CHECK(ctn::set_hint<keyboard_element>("#document"));
+        CHECK_THAT(ctn::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#document"));
+
+        CHECK(ctn::set_hint<keyboard_element>("#screen"));
+        CHECK_THAT(ctn::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#screen"));
+
+        CHECK(ctn::set_hint<keyboard_element>("#canvas"));
+        CHECK_THAT(ctn::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#canvas"));
+      });
+    }
+  }
+
+  SECTION("qtwayland::")
+  {
+    SECTION("content_orientation")
+    {
+      using hint = ctn::hint::qtwayland::content_orientation;
+      using value = hint::value;
+      test_hint<hint>([] {
+        CHECK(ctn::set_hint<hint>(value::primary));
+        CHECK(ctn::get_hint<hint>() == value::primary);
+
+        CHECK(ctn::set_hint<hint>(value::portrait));
+        CHECK(ctn::get_hint<hint>() == value::portrait);
+
+        CHECK(ctn::set_hint<hint>(value::landscape));
+        CHECK(ctn::get_hint<hint>() == value::landscape);
+
+        CHECK(ctn::set_hint<hint>(value::inverted_portrait));
+        CHECK(ctn::get_hint<hint>() == value::inverted_portrait);
+
+        CHECK(ctn::set_hint<hint>(value::inverted_landscape));
+        CHECK(ctn::get_hint<hint>() == value::inverted_landscape);
+      });
+    }
+
+    SECTION("window_flags")
+    {
+      using hint = ctn::hint::qtwayland::window_flags;
+      test_hint<hint>([] {
+        CHECK(ctn::set_hint<hint>("OverridesSystemGestures StaysOnTop"));
+        CHECK_THAT(ctn::get_hint<hint>().value(),
+                   Catch::Equals("OverridesSystemGestures StaysOnTop"));
+
+        CHECK(ctn::set_hint<hint>("BypassWindowManager"));
+        CHECK_THAT(ctn::get_hint<hint>().value(),
+                   Catch::Equals("BypassWindowManager"));
+
+        CHECK(ctn::set_hint<hint>(""));
+      });
+    }
+  }
+
+  SECTION("mouse::")
+  {
+    SECTION("normal_speed_scale")
+    {
+      using ctn::hint::mouse::normal_speed_scale;
+      test_hint<normal_speed_scale>([] {
+        CHECK(ctn::set_hint<normal_speed_scale>(2.3f));
+        CHECK(ctn::get_hint<normal_speed_scale>().value() == 2.3f);
+      });
+    }
+
+    SECTION("relative_speed_scale")
+    {
+      using ctn::hint::mouse::relative_speed_scale;
+      test_hint<relative_speed_scale>([] {
+        CHECK(ctn::set_hint<relative_speed_scale>(6.7f));
+        CHECK(ctn::get_hint<relative_speed_scale>().value() == 6.7f);
+      });
+    }
+
+    SECTION("double_click_radius")
+    {
+      using ctn::hint::mouse::double_click_radius;
+      test_hint<double_click_radius>([] {
+        ctn::set_hint<double_click_radius>(5);
+        CHECK(ctn::get_hint<double_click_radius>().value() == 5);
+
+        ctn::set_hint<double_click_radius>(20);
+        CHECK(ctn::get_hint<double_click_radius>().value() == 20);
+      });
+    }
+
+    SECTION("double_click_time")
+    {
+      using ctn::hint::mouse::double_click_time;
+      test_hint<double_click_time>([] {
+        ctn::set_hint<double_click_time>(25);
+        CHECK(ctn::get_hint<double_click_time>().value() == 25);
+
+        ctn::set_hint<double_click_time>(178);
+        CHECK(ctn::get_hint<double_click_time>().value() == 178);
+      });
+    }
+  }
+
+  SECTION("gamecontroller::")
+  {
+    SECTION("type")
+    {
+      using ctn::hint::gamecontroller::type;
+      test_hint<type>([] {
+        ctn::czstring str = "0x00FD/0xAAC3=PS4";
+        ctn::set_hint<type>(str);
+        CHECK_THAT(ctn::get_hint<type>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("config")
+    {
+      using ctn::hint::gamecontroller::config;
+      test_hint<config>([] {
+        ctn::czstring str = "asd\nasd";
+        ctn::set_hint<config>(str);
+        CHECK_THAT(ctn::get_hint<config>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("config_file")
+    {
+      using ctn::hint::gamecontroller::config_file;
+      test_hint<config_file>([] {
+        ctn::czstring str = "foo";
+        ctn::set_hint<config_file>(str);
+        CHECK_THAT(ctn::get_hint<config_file>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("ignore_devices")
+    {
+      using ctn::hint::gamecontroller::ignore_devices;
+      test_hint<ignore_devices>([] {
+        ctn::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+        ctn::set_hint<ignore_devices>(str);
+        CHECK_THAT(ctn::get_hint<ignore_devices>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("ignore_devices_except")
+    {
+      using ctn::hint::gamecontroller::ignore_devices_except;
+      test_hint<ignore_devices_except>([] {
+        ctn::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+        ctn::set_hint<ignore_devices_except>(str);
+        CHECK_THAT(ctn::get_hint<ignore_devices_except>().value(),
+                   Catch::Equals(str));
+      });
+    }
+  }
+
+  SECTION("winrt::")
+  {
+    SECTION("privacy_policy_label")
+    {
+      using ctn::hint::winrt::privacy_policy_label;
+      test_hint<privacy_policy_label>([] {
+        ctn::czstring str = "Hello this is GDPR speaking";
+        ctn::set_hint<privacy_policy_label>(str);
+        CHECK_THAT(ctn::get_hint<privacy_policy_label>().value(),
+                   Catch::Equals(str));
+      });
+    }
+
+    SECTION("privacy_policy_url")
+    {
+      using ctn::hint::winrt::privacy_policy_url;
+      test_hint<privacy_policy_url>([] {
+        ctn::czstring str = "Hello this is GDPR URL speaking";
+        ctn::set_hint<privacy_policy_url>(str);
+        CHECK_THAT(ctn::get_hint<privacy_policy_url>().value(),
+                   Catch::Equals(str));
+      });
+    }
+  }
+
+  SECTION("windows::")
+  {
+    SECTION("d3d_compiler")
+    {
+      using ctn::hint::windows::d3d_compiler;
+      using value = d3d_compiler::value;
+      test_hint<d3d_compiler>([] {
+        CHECK(ctn::set_hint<d3d_compiler>(value::none));
+        CHECK(ctn::get_hint<d3d_compiler>() == value::none);
+
+        CHECK(ctn::set_hint<d3d_compiler>(value::v46));
+        CHECK(ctn::get_hint<d3d_compiler>() == value::v46);
+
+        CHECK(ctn::set_hint<d3d_compiler>(value::v43));
+        CHECK(ctn::get_hint<d3d_compiler>() == value::v43);
+      });
+    }
+
+    SECTION("int_resource_icon")
+    {
+      using ctn::hint::windows::int_resource_icon;
+      test_hint<int_resource_icon>([] {
+        CHECK(ctn::set_hint<int_resource_icon>("foo"));
+        CHECK_THAT(ctn::get_hint<int_resource_icon>().value(),
+                   Catch::Equals("foo"));
+
+        ctn::set_hint<int_resource_icon>("");
+      });
+    }
+
+    SECTION("int_resource_icon_small")
+    {
+      using ctn::hint::windows::int_resource_icon_small;
+      test_hint<int_resource_icon_small>([] {
+        CHECK(ctn::set_hint<int_resource_icon_small>("bar"));
+        CHECK_THAT(ctn::get_hint<int_resource_icon_small>().value(),
+                   Catch::Equals("bar"));
+
+        ctn::set_hint<int_resource_icon_small>("");
+      });
+    }
+  }
+
+  SECTION("android::")
+  {
+    SECTION("apk_expansion_main_file_version")
+    {
+      using ctn::hint::android::apk_expansion_main_file_version;
+      test_hint<apk_expansion_main_file_version>([] {
+        CHECK(ctn::set_hint<apk_expansion_main_file_version>(1));
+        CHECK(ctn::get_hint<apk_expansion_main_file_version>() == 1);
+      });
+    }
+
+    SECTION("apk_expansion_patch_file_version")
+    {
+      using ctn::hint::android::apk_expansion_patch_file_version;
+      test_hint<apk_expansion_patch_file_version>([] {
+        CHECK(ctn::set_hint<apk_expansion_patch_file_version>(1));
+        CHECK(ctn::get_hint<apk_expansion_patch_file_version>() == 1);
+      });
+    }
+  }
+
+  SECTION("x11::")
+  {
+    SECTION("window_visual_id")
+    {
+      using ctn::hint::x11::window_visual_id;
+      test_hint<window_visual_id>([] {
+        CHECK(ctn::set_hint<window_visual_id>("foo"));
+        CHECK_THAT(ctn::get_hint<window_visual_id>().value(),
+                   Catch::Equals("foo"));
+
+        ctn::set_hint<window_visual_id>("");
+      });
+    }
   }
 }
 
-TEST_CASE("add_hint_callback", "[Hints]")
+TEST_CASE("add_hint_callback", "[hint]")
 {
   using ctn::hint::render_driver;
-  ctn::set_hint<render_driver>(render_driver::software);
+  ctn::set_hint<render_driver>(render_driver::value::software);
 
   int data = 7;
   auto handle = ctn::add_hint_callback<render_driver>(
@@ -909,20 +691,20 @@ TEST_CASE("add_hint_callback", "[Hints]")
       &data);
 
   ctn::set_hint<render_driver, ctn::hint_priority::override>(
-      render_driver::software);
+      render_driver::value::software);
 
   handle.disconnect();
 
   ctn::set_hint<render_driver, ctn::hint_priority::override>(
-      render_driver::open_gl);
+      render_driver::value::opengl);
 }
 
-TEST_CASE("clear_hints", "[Hints]")
+TEST_CASE("clear_hints", "[hint]")
 {
   CHECK_NOTHROW(ctn::clear_hints());
 }
 
-TEST_CASE("hint user data", "[Hints]")
+TEST_CASE("hint user data", "[hint]")
 {
   using ctn::hint::render_driver;
 

@@ -73,7 +73,8 @@ namespace centurion {
 template <typename T,
           typename = std::enable_if_t<std::is_convertible_v<T, int> ||
                                       std::is_convertible_v<T, float>>>
-class point_traits final {
+class point_traits final
+{
  public:
   /**
    * @var isIntegral
@@ -136,7 +137,8 @@ class point_traits final {
  * @headerfile point.hpp
  */
 template <typename T>
-class basic_point final {
+class basic_point final
+{
  public:
   /**
    * @copydoc point_traits::isIntegral

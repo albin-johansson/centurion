@@ -78,7 +78,8 @@ namespace centurion {
  *
  * @headerfile window_handle.hpp
  */
-class window_handle final : public basic_window<window_handle> {
+class window_handle final : public basic_window<window_handle>
+{
  public:
   /**
    * @brief Creates a `window_handle` based on the supplied SDL window pointer.

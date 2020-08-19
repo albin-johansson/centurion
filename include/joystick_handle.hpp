@@ -67,7 +67,8 @@ class joystick_handle;
  * @headerfile joystick.hpp
  */
 template <>
-class joystick_traits<joystick_handle> {
+class joystick_traits<joystick_handle>
+{
  public:
   using storage_type = SDL_Joystick*;
 };
@@ -93,7 +94,8 @@ class joystick_traits<joystick_handle> {
  *
  * @headerfile joystick.hpp
  */
-class joystick_handle final : public basic_joystick<joystick_handle> {
+class joystick_handle final : public basic_joystick<joystick_handle>
+{
  public:
   /**
    * @brief Creates a handle to a joystick.

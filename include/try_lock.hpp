@@ -66,7 +66,8 @@ namespace centurion {
  *
  * @headerfile try_lock.hpp
  */
-class try_lock final {
+class try_lock final
+{
  public:
   /**
    * @brief Attempts to lock the supplied mutex.

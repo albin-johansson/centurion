@@ -65,9 +65,11 @@ namespace centurion {
 class texture;
 
 template <>
-class texture_traits<texture> final {
+class texture_traits<texture> final
+{
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(SDL_Texture* texture) noexcept
     {
@@ -92,7 +94,8 @@ class texture_traits<texture> final {
  *
  * @headerfile texture.hpp
  */
-class texture final : public basic_texture<texture> {
+class texture final : public basic_texture<texture>
+{
  public:
   /**
    * @typedef uptr

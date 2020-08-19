@@ -65,7 +65,8 @@ namespace centurion {
  * @headerfile basic_renderer.hpp
  */
 template <class Derived>
-class basic_renderer {
+class basic_renderer
+{
  public:
   /**
    * @brief Clears the rendering target with the currently selected color.

@@ -68,7 +68,8 @@ namespace centurion {
  *
  * @headerfile font.hpp
  */
-struct glyph_metrics final {
+struct glyph_metrics final
+{
   int minX;     ///< The minimum X-offset.
   int minY;     ///< The minimum Y-offset.
   int maxX;     ///< The maximum X-offset.
@@ -89,7 +90,8 @@ struct glyph_metrics final {
  *
  * @headerfile font.hpp
  */
-class font final {
+class font final
+{
  public:
   /**
    * @typedef uptr
@@ -550,7 +552,8 @@ class font final {
   }
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(TTF_Font* font) noexcept { TTF_CloseFont(font); }
   };

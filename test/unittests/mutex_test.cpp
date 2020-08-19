@@ -17,7 +17,6 @@ TEST_CASE("mutex::try_lock", "[mutex]")
 {
   ctn::mutex m;
 
-
   CHECK(m.try_lock() == ctn::lock_status::success);
   CHECK(m.unlock());
 }

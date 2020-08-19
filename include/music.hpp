@@ -277,7 +277,8 @@ enum class music_type {
  *
  * @headerfile music.hpp
  */
-class music final {
+class music final
+{
  public:
   /**
    * @typedef uptr
@@ -561,7 +562,8 @@ class music final {
   }
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(Mix_Music* music) noexcept { Mix_FreeMusic(music); }
   };

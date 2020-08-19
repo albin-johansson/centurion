@@ -110,7 +110,8 @@ enum class thread_priority {
  *
  * @headerfile thread.hpp
  */
-class thread final {
+class thread final
+{
  public:
   /**
    * @typedef task_type

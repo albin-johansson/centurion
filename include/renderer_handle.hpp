@@ -80,7 +80,8 @@ namespace centurion {
  *
  * @headerfile renderer.hpp
  */
-class renderer_handle final : public basic_renderer<renderer_handle> {
+class renderer_handle final : public basic_renderer<renderer_handle>
+{
  public:
   /**
    * @brief Creates a renderer handle instance.

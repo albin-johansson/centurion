@@ -74,7 +74,8 @@ namespace centurion {
  *
  * @headerfile key_state.hpp
  */
-class key_state final {
+class key_state final
+{
  public:
   /**
    * @typedef uptr

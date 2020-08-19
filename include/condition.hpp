@@ -66,7 +66,8 @@ namespace centurion {
  *
  * @headerfile condition.hpp
  */
-class condition final {
+class condition final
+{
  public:
   CENTURION_API
   condition();
@@ -126,7 +127,8 @@ class condition final {
   auto wait(mutex& mutex, milliseconds<u32> ms) noexcept -> lock_status;
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(SDL_cond* cond) noexcept { SDL_DestroyCond(cond); };
   };

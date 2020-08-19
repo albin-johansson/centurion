@@ -65,7 +65,8 @@ namespace centurion {
  *
  * @since 3.0.0
  */
-class color final {
+class color final
+{
  public:
   /**
    * @brief Creates a color. The created color will be equal to #000000FF.

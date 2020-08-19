@@ -68,7 +68,8 @@ namespace centurion {
  *
  * @headerfile scoped_lock.hpp
  */
-class scoped_lock final {
+class scoped_lock final
+{
  public:
   /**
    * @brief Attempts to lock the supplied mutex.

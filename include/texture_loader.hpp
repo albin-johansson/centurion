@@ -92,7 +92,8 @@ namespace centurion {
  *
  * @headerfile texture_loader.hpp
  */
-class texture_loader final {
+class texture_loader final
+{
  public:
   /**
    * @brief Creates a texture loader.

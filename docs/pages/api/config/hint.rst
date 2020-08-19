@@ -17,14 +17,52 @@ subnamespaces in said namespace that represent different groups, e.g. ``ctn::hin
 Interface
 ---------
 
-.. doxygenfunction:: centurion::set_hint
-  :outline:
+set_hint
+~~~~~~~~
 
-.. doxygenfunction:: centurion::get_hint
-  :outline:
+Sets the value of a hint. This function will raise a compile-time error if the supplied 
+value isn't of the correct type for the specified hint. However, it should be said that 
+this function does **not** ensure that the supplied value is *correct*. This function 
+returns ``true`` if the value of the hint was successfully set, ``false`` otherwise.
 
-.. doxygenfunction:: centurion::add_hint_callback
-  :outline:
+.. code-block:: C++
+
+  template <typename Hint, 
+            hint_priority = hint_priority::normal, 
+            typename Value, 
+            typename = /* SFINAE checks */>
+  auto set_hint(const Value& value) -> bool;
+
+get_hint
+~~~~~~~~
+
+Returns the current value of the specified hint, wrapped in a 
+``std::optional``.
+
+.. code-block:: C++
+
+  template <typename Hint>
+  auto get_hint() noexcept;
+
+clear_hints
+~~~~~~~~~~~
+
+Clears all stored hints.
+
+.. code-block:: C++
+
+  void clear_hints() noexcept;
+
+add_hint_callback
+~~~~~~~~~~~~~~~~~
+
+Adds a callback to observe changes of the value of the specified hint.
+
+.. code-block:: C++
+
+  template <typename Hint, typename UserData = void>
+  auto add_hint_callback(SDL_HintCallback func, UserData* data = nullptr) noexcept  
+      -> hint_callback<Hint, UserData>;
 
 Enum hints
 ----------
@@ -33,7 +71,7 @@ Enum hints only accept their associated enum's enumerators as values.
 
 .. note:: 
 
-  Enum hints have public member enums that provides the acceptable values. For example, ``render_driver::open_gl``
+  Enum hints have public member enums that provides the acceptable values. For example, ``render_driver::value::opengl``
   is a possible value for the ``render_driver`` hint.
 
 ============================================== =======================================================

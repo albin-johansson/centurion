@@ -245,12 +245,12 @@ namespace hint {
  */
 class render_driver final {
  public:
-  enum Value { direct_3d, open_gl, open_gles, open_gles2, metal, software };
+  enum value { direct_3d, open_gl, open_gles, open_gles2, metal, software };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Value>;
+    return std::is_same_v<T, value>;
   }
 
   static constexpr auto name() noexcept -> czstring
@@ -258,7 +258,7 @@ class render_driver final {
     return SDL_HINT_RENDER_DRIVER;
   }
 
-  static auto current_value() noexcept -> std::optional<Value>
+  static auto current_value() noexcept -> std::optional<value>
   {
     czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -281,7 +281,7 @@ class render_driver final {
     }
   }
 
-  static auto to_string(Value value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     switch (value) {
       case direct_3d:
@@ -304,12 +304,12 @@ class render_driver final {
 
 class audio_resampling_mode final {
  public:
-  enum Value { normal = 0, fast = 1, medium = 2, best = 3 };
+  enum value { normal = 0, fast = 1, medium = 2, best = 3 };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Value>;
+    return std::is_same_v<T, value>;
   }
 
   static constexpr auto name() noexcept -> czstring
@@ -317,7 +317,7 @@ class audio_resampling_mode final {
     return SDL_HINT_AUDIO_RESAMPLING_MODE;
   }
 
-  static auto current_value() noexcept -> std::optional<Value>
+  static auto current_value() noexcept -> std::optional<value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -336,7 +336,7 @@ class audio_resampling_mode final {
     }
   }
 
-  static auto to_string(Value value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     switch (value) {
       case normal:
@@ -354,12 +354,12 @@ class audio_resampling_mode final {
 
 class scale_quality final {
  public:
-  enum Value { nearest = 0, linear = 1, best = 2 };
+  enum value { nearest = 0, linear = 1, best = 2 };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Value>;
+    return std::is_same_v<T, value>;
   }
 
   static constexpr auto name() noexcept -> czstring
@@ -367,7 +367,7 @@ class scale_quality final {
     return SDL_HINT_RENDER_SCALE_QUALITY;
   }
 
-  static auto current_value() noexcept -> std::optional<Value>
+  static auto current_value() noexcept -> std::optional<value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -384,7 +384,7 @@ class scale_quality final {
     }
   }
 
-  static auto to_string(Value value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     switch (value) {
       default:
@@ -400,7 +400,7 @@ class scale_quality final {
 
 class framebuffer_acceleration final {
  public:
-  enum Value {
+  enum value {
     off,
     on,
     direct_3d,
@@ -414,7 +414,7 @@ class framebuffer_acceleration final {
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Value>;
+    return std::is_same_v<T, value>;
   }
 
   static constexpr auto name() noexcept -> czstring
@@ -422,7 +422,7 @@ class framebuffer_acceleration final {
     return SDL_HINT_FRAMEBUFFER_ACCELERATION;
   }
 
-  static auto current_value() noexcept -> std::optional<Value>
+  static auto current_value() noexcept -> std::optional<value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -449,7 +449,7 @@ class framebuffer_acceleration final {
     }
   }
 
-  static auto to_string(Value value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     switch (value) {
       default:
@@ -476,12 +476,12 @@ class framebuffer_acceleration final {
 
 class audio_category final {
  public:
-  enum Value { ambient, playback };
+  enum value { ambient, playback };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Value>;
+    return std::is_same_v<T, value>;
   }
 
   static constexpr auto name() noexcept -> czstring
@@ -489,7 +489,7 @@ class audio_category final {
     return SDL_HINT_AUDIO_CATEGORY;
   }
 
-  static auto current_value() noexcept -> std::optional<Value>
+  static auto current_value() noexcept -> std::optional<value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -504,7 +504,7 @@ class audio_category final {
     }
   }
 
-  static auto to_string(Value value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     switch (value) {
       default:
@@ -519,12 +519,12 @@ class audio_category final {
 
 class wave_riff_chunk_size final {
  public:
-  enum Value { force, ignore_zero, ignore, maximum };
+  enum value { force, ignore_zero, ignore, maximum };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Value>;
+    return std::is_same_v<T, value>;
   }
 
   static constexpr auto name() noexcept -> czstring
@@ -532,7 +532,7 @@ class wave_riff_chunk_size final {
     return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
   }
 
-  static auto current_value() noexcept -> std::optional<Value>
+  static auto current_value() noexcept -> std::optional<value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -551,7 +551,7 @@ class wave_riff_chunk_size final {
     }
   }
 
-  static auto to_string(Value value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     switch (value) {
       default:
@@ -570,12 +570,12 @@ class wave_riff_chunk_size final {
 
 class wave_truncation final {
  public:
-  enum Value { very_strict, strict, drop_frame, drop_block };
+  enum value { very_strict, strict, drop_frame, drop_block };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Value>;
+    return std::is_same_v<T, value>;
   }
 
   static constexpr auto name() noexcept -> czstring
@@ -583,7 +583,7 @@ class wave_truncation final {
     return SDL_HINT_WAVE_TRUNCATION;
   }
 
-  static auto current_value() noexcept -> std::optional<Value>
+  static auto current_value() noexcept -> std::optional<value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -602,7 +602,7 @@ class wave_truncation final {
     }
   }
 
-  static auto to_string(Value value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     switch (value) {
       default:
@@ -621,12 +621,12 @@ class wave_truncation final {
 
 class wave_fact_chunk final {
  public:
-  enum Value { truncate, strict, ignore_zero, ignore };
+  enum value { truncate, strict, ignore_zero, ignore };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Value>;
+    return std::is_same_v<T, value>;
   }
 
   static constexpr auto name() noexcept -> czstring
@@ -634,7 +634,7 @@ class wave_fact_chunk final {
     return SDL_HINT_WAVE_FACT_CHUNK;
   }
 
-  static auto current_value() noexcept -> std::optional<Value>
+  static auto current_value() noexcept -> std::optional<value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -653,7 +653,7 @@ class wave_fact_chunk final {
     }
   }
 
-  static auto to_string(Value value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     switch (value) {
       default:
@@ -672,12 +672,12 @@ class wave_fact_chunk final {
 
 class logical_size_mode final {
  public:
-  enum Value { letterbox, overscan };
+  enum value { letterbox, overscan };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Value>;
+    return std::is_same_v<T, value>;
   }
 
   static constexpr auto name() noexcept -> czstring
@@ -685,7 +685,7 @@ class logical_size_mode final {
     return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
   }
 
-  static auto current_value() noexcept -> std::optional<Value>
+  static auto current_value() noexcept -> std::optional<value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -700,7 +700,7 @@ class logical_size_mode final {
     }
   }
 
-  static auto to_string(Value value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     switch (value) {
       default:
@@ -1186,12 +1186,12 @@ struct handle_back_button final : detail::bool_hint<handle_back_button> {
 namespace windows {
 
 struct d3d_compiler final {
-  enum Value { d3d_compiler_46, d3d_compiler_43, none };
+  enum value { d3d_compiler_46, d3d_compiler_43, none };
 
   template <typename T>
   static constexpr auto valid_arg() noexcept -> bool
   {
-    return std::is_same_v<T, Value>;
+    return std::is_same_v<T, value>;
   }
 
   static constexpr auto name() noexcept -> czstring
@@ -1199,7 +1199,7 @@ struct d3d_compiler final {
     return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
   }
 
-  static auto current_value() noexcept -> std::optional<Value>
+  static auto current_value() noexcept -> std::optional<value>
   {
     const czstring hint = SDL_GetHint(name());
     if (!hint) {
@@ -1216,7 +1216,7 @@ struct d3d_compiler final {
     }
   }
 
-  static auto to_string(Value value) -> std::string
+  static auto to_string(value value) -> std::string
   {
     switch (value) {
       default:
@@ -1459,8 +1459,8 @@ struct window_visual_id final : detail::string_hint<window_visual_id> {
  * @headerfile hints.hpp
  */
 enum class hint_priority {
-  low = SDL_HINT_DEFAULT,    ///< The lowest possible priority.
-  normal = SDL_HINT_NORMAL,  ///< The priority used by default by `set_hint`.
+  low = SDL_HINT_DEFAULT,       ///< The lowest possible priority.
+  normal = SDL_HINT_NORMAL,     ///< The priority used by default by `set_hint`.
   override = SDL_HINT_OVERRIDE  ///< The highest priority.
 };
 

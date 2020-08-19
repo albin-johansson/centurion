@@ -73,6 +73,7 @@ Welcome to Centurion's documentation!
    :caption: Miscellaneous
 
    pages/api/misc/log
+   pages/api/misc/aliases
 
 .. toctree::
    :maxdepth: 1

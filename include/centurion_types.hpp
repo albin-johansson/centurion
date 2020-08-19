@@ -92,14 +92,6 @@ template <typename T>
 using owner = gsl::owner<T>;
 
 /**
- * @typedef not_null
- *
- * @brief Wrapper type that disallows null pointers.
- */
-template <typename T>
-using not_null = gsl::not_null<T>;
-
-/**
  * @typedef nn_owner
  *
  * @brief Tag used to represent a non-null owner.

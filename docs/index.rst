@@ -16,14 +16,14 @@ Welcome to Centurion's documentation!
    pages/api/overview
    
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Geometry
 
    pages/api/geometry/point
    pages/api/geometry/rect
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Graphics
 
    pages/api/graphics/window
@@ -34,7 +34,7 @@ Welcome to Centurion's documentation!
    pages/api/graphics/font_cache
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Audio
 
    pages/api/audio/sound_effect
@@ -43,7 +43,7 @@ Welcome to Centurion's documentation!
    pages/api/audio/fade_status
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Threading
 
    pages/api/thread/overview
@@ -55,7 +55,7 @@ Welcome to Centurion's documentation!
    pages/api/thread/condition
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: System
 
    pages/api/system/battery
@@ -69,13 +69,13 @@ Welcome to Centurion's documentation!
    pages/api/system/pref_path
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Configuration
 
    pages/api/config/hint
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Tutorials
 
    pages/tutorials/installation

@@ -439,18 +439,6 @@ TEST_CASE("set_hint", "[hint]")
     test_bool_hint<tv_remote_as_joystick>();
   }
 
-  SECTION("xinput_enabled")
-  {
-    using ctn::hint::xinput_enabled;
-    test_bool_hint<xinput_enabled>();
-  }
-
-  SECTION("xinput_use_old_joystick_mapping")
-  {
-    using ctn::hint::xinput_use_old_joystick_mapping;
-    test_bool_hint<xinput_use_old_joystick_mapping>();
-  }
-
   SECTION("render_driver")
   {
     using ctn::hint::render_driver;
@@ -476,6 +464,21 @@ TEST_CASE("set_hint", "[hint]")
     });
 
     ctn::set_hint<render_driver>(render_driver::open_gl);
+  }
+
+  SECTION("xinput::")
+  {
+    SECTION("is_enabled")
+    {
+      using ctn::hint::xinput::is_enabled;
+      test_bool_hint<is_enabled>();
+    }
+
+    SECTION("use_old_joystick_mapping")
+    {
+      using ctn::hint::xinput::use_old_joystick_mapping;
+      test_bool_hint<use_old_joystick_mapping>();
+    }
   }
 
   SECTION("emscripten::")

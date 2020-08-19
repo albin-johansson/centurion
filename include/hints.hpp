@@ -882,23 +882,6 @@ class window_frame_usable_while_cursor_hidden final
   }
 };
 
-class xinput_enabled final : public detail::bool_hint<xinput_enabled> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_XINPUT_ENABLED;
-  }
-};
-
-class xinput_use_old_joystick_mapping final
-    : public detail::bool_hint<xinput_use_old_joystick_mapping> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING;
-  }
-};
-
 class render_batching final : public detail::bool_hint<render_batching> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1002,6 +985,25 @@ class timer_resolution final
   }
 };
 
+
+namespace xinput {
+
+struct is_enabled final : detail::bool_hint<is_enabled> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_XINPUT_ENABLED;
+  }
+};
+
+struct use_old_joystick_mapping final
+    : detail::bool_hint<use_old_joystick_mapping> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING;
+  }
+};
+
+}  // namespace xinput
 
 namespace emscripten {
 

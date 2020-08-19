@@ -107,8 +107,8 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``return_key_hides_ime``                       ``SDL_HINT_RETURN_KEY_HIDES_IME``                     
  ``touch_mouse_events``                         ``SDL_HINT_TOUCH_MOUSE_EVENTS``                       
  ``tv_remote_as_joystick``                      ``SDL_HINT_TV_REMOTE_AS_JOYSTICK``                    
- ``xinput_enabled``                             ``SDL_HINT_XINPUT_ENABLED``                           
- ``xinput_use_old_joystick_mapping``            ``SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING``
+ ``xinput::is_enabled``                         ``SDL_HINT_XINPUT_ENABLED``
+ ``xinput::use_old_joystick_mapping``           ``SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING``
  ``winrt::handle_back_button``                  ``SDL_HINT_WINRT_HANDLE_BACK_BUTTON``
 ============================================== =======================================================
 

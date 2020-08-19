@@ -32,6 +32,65 @@ void test_bool_hint()
   });
 }
 
+TEMPLATE_TEST_CASE("set_hint boolean hints",
+                   "[hint]",
+                   ctn::hint::double_buffer,
+                   ctn::hint::accelerometer_as_joystick,
+                   ctn::hint::allow_top_most,
+                   ctn::hint::bmp_save_legacy_format,
+                   ctn::hint::enable_steam_controllers,
+                   ctn::hint::grab_keyboard,
+                   ctn::hint::idle_timer_disabled,
+                   ctn::hint::ime_internal_editing,
+                   ctn::hint::no_signal_handlers,
+                   ctn::hint::enable_opengl_shaders,
+                   ctn::hint::opengl_es_driver,
+                   ctn::hint::allow_screensaver,
+                   ctn::hint::video_external_context,
+                   ctn::hint::disable_high_dpi,
+                   ctn::hint::minimize_on_focus_loss,
+                   ctn::hint::window_frame_usable_while_cursor_hidden,
+                   ctn::hint::mouse_touch_events,
+                   ctn::hint::render_batching,
+                   ctn::hint::return_key_hides_ime,
+                   ctn::hint::touch_mouse_events,
+                   ctn::hint::tv_remote_as_joystick,
+                   ctn::hint::appletv::controller_ui_events,
+                   ctn::hint::appletv::remote_allow_rotation,
+                   ctn::hint::xinput::is_enabled,
+                   ctn::hint::xinput::use_old_joystick_mapping,
+                   ctn::hint::mouse::focus_clickthrough,
+                   ctn::hint::mouse::relative_mode_warp,
+                   ctn::hint::d3d::v11_debug,
+                   ctn::hint::d3d::thread_safe,
+                   ctn::hint::gamecontroller::use_button_labels,
+                   ctn::hint::winrt::handle_back_button,
+                   ctn::hint::windows::no_thread_naming,
+                   ctn::hint::windows::enable_message_loop,
+                   ctn::hint::windows::no_close_on_alt_f4,
+                   ctn::hint::mac::background_app,
+                   ctn::hint::mac::ctrl_click_emulate_right_click,
+                   ctn::hint::mac::fullscreen_spaces,
+                   ctn::hint::android::block_on_pause,
+                   ctn::hint::android::trap_back_button,
+                   ctn::hint::joystick::allow_background_events,
+                   ctn::hint::joystick::use_hidapi,
+                   ctn::hint::joystick::use_hidapi_ps4,
+                   ctn::hint::joystick::use_hidapi_ps4_rumble,
+                   ctn::hint::joystick::use_hidapi_steam,
+                   ctn::hint::joystick::use_hidapi_switch,
+                   ctn::hint::joystick::use_hidapi_xbox,
+                   ctn::hint::joystick::use_hidapi_game_cube,
+                   ctn::hint::x11::net_wm_ping,
+                   ctn::hint::x11::net_wm_bypass_compositor,
+                   ctn::hint::x11::force_egl,
+                   ctn::hint::x11::xinerama,
+                   ctn::hint::x11::xrandr,
+                   ctn::hint::x11::xvidmode)
+{
+  test_bool_hint<TestType>();
+}
+
 }  // namespace
 
 TEST_CASE("hint_prio", "[hint]")
@@ -48,18 +107,6 @@ TEST_CASE("hint_prio", "[hint]")
 
 TEST_CASE("set_hint", "[hint]")
 {
-  SECTION("accelerometer_as_joystick")
-  {
-    using ctn::hint::accelerometer_as_joystick;
-    test_bool_hint<accelerometer_as_joystick>();
-  }
-
-  SECTION("allow_top_most")
-  {
-    using ctn::hint::allow_top_most;
-    test_bool_hint<allow_top_most>();
-  }
-
   SECTION("audio_resampling_mode")
   {
     using hint = ctn::hint::audio_resampling_mode;
@@ -92,18 +139,6 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("bmp_save_legacy_format")
-  {
-    using ctn::hint::bmp_save_legacy_format;
-    test_bool_hint<bmp_save_legacy_format>();
-  }
-
-  SECTION("double_buffer")
-  {
-    using ctn::hint::double_buffer;
-    test_bool_hint<double_buffer>();
-  }
-
   SECTION("display_usable_bounds")
   {
     using ctn::hint::display_usable_bounds;
@@ -113,12 +148,6 @@ TEST_CASE("set_hint", "[hint]")
       CHECK_THAT(ctn::get_hint<display_usable_bounds>().value(),
                  Catch::Equals(str));
     });
-  }
-
-  SECTION("enable_steam_controllers")
-  {
-    using ctn::hint::enable_steam_controllers;
-    test_bool_hint<enable_steam_controllers>();
   }
 
   SECTION("event_logging")
@@ -169,24 +198,6 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("grab_keyboard")
-  {
-    using ctn::hint::grab_keyboard;
-    test_bool_hint<grab_keyboard>();
-  }
-
-  SECTION("idle_timer_disabled")
-  {
-    using ctn::hint::idle_timer_disabled;
-    test_bool_hint<idle_timer_disabled>();
-  }
-
-  SECTION("ime_internal_editing")
-  {
-    using ctn::hint::ime_internal_editing;
-    test_bool_hint<ime_internal_editing>();
-  }
-
   SECTION("logical_size_mode")
   {
     using ctn::hint::logical_size_mode;
@@ -198,24 +209,6 @@ TEST_CASE("set_hint", "[hint]")
       CHECK(ctn::set_hint<logical_size_mode>(value::overscan));
       CHECK(ctn::get_hint<logical_size_mode>().value() == value::overscan);
     });
-  }
-
-  SECTION("no_signal_handlers")
-  {
-    using ctn::hint::no_signal_handlers;
-    test_bool_hint<no_signal_handlers>();
-  }
-
-  SECTION("enable_opengl_shaders")
-  {
-    using ctn::hint::enable_opengl_shaders;
-    test_bool_hint<enable_opengl_shaders>();
-  }
-
-  SECTION("opengl_es_driver")
-  {
-    using ctn::hint::opengl_es_driver;
-    test_bool_hint<opengl_es_driver>();
   }
 
   SECTION("orientations")
@@ -265,30 +258,6 @@ TEST_CASE("set_hint", "[hint]")
       ctn::set_hint<scale_quality>(value::best);
       CHECK(ctn::get_hint<scale_quality>() == value::best);
     });
-  }
-
-  SECTION("allow_screensaver")
-  {
-    using ctn::hint::allow_screensaver;
-    test_bool_hint<allow_screensaver>();
-  }
-
-  SECTION("video_external_context")
-  {
-    using ctn::hint::video_external_context;
-    test_bool_hint<video_external_context>();
-  }
-
-  SECTION("disable_high_dpi")
-  {
-    using ctn::hint::disable_high_dpi;
-    test_bool_hint<disable_high_dpi>();
-  }
-
-  SECTION("minimize_on_focus_loss")
-  {
-    using ctn::hint::minimize_on_focus_loss;
-    test_bool_hint<minimize_on_focus_loss>();
   }
 
   SECTION("wave_riff_chunk_size")
@@ -361,36 +330,6 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("window_frame_usable_while_cursor_hidden")
-  {
-    using ctn::hint::window_frame_usable_while_cursor_hidden;
-    test_bool_hint<window_frame_usable_while_cursor_hidden>();
-  }
-
-  SECTION("mouse_touch_events")
-  {
-    using ctn::hint::mouse_touch_events;
-    test_bool_hint<mouse_touch_events>();
-  }
-
-  SECTION("render_batching")
-  {
-    using ctn::hint::render_batching;
-    test_bool_hint<render_batching>();
-  }
-
-  SECTION("return_key_hides_ime")
-  {
-    using ctn::hint::return_key_hides_ime;
-    test_bool_hint<return_key_hides_ime>();
-  }
-
-  SECTION("touch_mouse_events")
-  {
-    using ctn::hint::touch_mouse_events;
-    test_bool_hint<touch_mouse_events>();
-  }
-
   SECTION("thread_stack_size")
   {
     using ctn::hint::thread_stack_size;
@@ -411,12 +350,6 @@ TEST_CASE("set_hint", "[hint]")
 
       ctn::set_hint<timer_resolution>(1U);
     });
-  }
-
-  SECTION("tv_remote_as_joystick")
-  {
-    using ctn::hint::tv_remote_as_joystick;
-    test_bool_hint<tv_remote_as_joystick>();
   }
 
   SECTION("render_driver")
@@ -460,36 +393,6 @@ TEST_CASE("set_hint", "[hint]")
         CHECK(ctn::set_hint<video_layer>(8'000));
         CHECK(ctn::get_hint<video_layer>().value() == 8'000);
       });
-    }
-  }
-
-  SECTION("appletv::")
-  {
-    SECTION("controller_ui_events")
-    {
-      using ctn::hint::appletv::controller_ui_events;
-      test_bool_hint<controller_ui_events>();
-    }
-
-    SECTION("remote_allow_rotation")
-    {
-      using ctn::hint::appletv::remote_allow_rotation;
-      test_bool_hint<remote_allow_rotation>();
-    }
-  }
-
-  SECTION("xinput::")
-  {
-    SECTION("is_enabled")
-    {
-      using ctn::hint::xinput::is_enabled;
-      test_bool_hint<is_enabled>();
-    }
-
-    SECTION("use_old_joystick_mapping")
-    {
-      using ctn::hint::xinput::use_old_joystick_mapping;
-      test_bool_hint<use_old_joystick_mapping>();
     }
   }
 
@@ -579,18 +482,6 @@ TEST_CASE("set_hint", "[hint]")
       });
     }
 
-    SECTION("focus_clickthrough")
-    {
-      using ctn::hint::mouse::focus_clickthrough;
-      test_bool_hint<focus_clickthrough>();
-    }
-
-    SECTION("relative_mode_warp")
-    {
-      using ctn::hint::mouse::relative_mode_warp;
-      test_bool_hint<relative_mode_warp>();
-    }
-
     SECTION("double_click_radius")
     {
       using ctn::hint::mouse::double_click_radius;
@@ -616,29 +507,8 @@ TEST_CASE("set_hint", "[hint]")
     }
   }
 
-  SECTION("d3d::")
-  {
-    SECTION("v11_debug")
-    {
-      using ctn::hint::d3d::v11_debug;
-      test_bool_hint<v11_debug>();
-    }
-
-    SECTION("thread_safe")
-    {
-      using ctn::hint::d3d::thread_safe;
-      test_bool_hint<thread_safe>();
-    }
-  }
-
   SECTION("gamecontroller::")
   {
-    SECTION("use_button_labels")
-    {
-      using ctn::hint::gamecontroller::use_button_labels;
-      test_bool_hint<use_button_labels>();
-    }
-
     SECTION("type")
     {
       using ctn::hint::gamecontroller::type;
@@ -714,12 +584,6 @@ TEST_CASE("set_hint", "[hint]")
                    Catch::Equals(str));
       });
     }
-
-    SECTION("handle_back_button")
-    {
-      using ctn::hint::winrt::handle_back_button;
-      test_bool_hint<handle_back_button>();
-    }
   }
 
   SECTION("windows::")
@@ -738,12 +602,6 @@ TEST_CASE("set_hint", "[hint]")
         CHECK(ctn::set_hint<d3d_compiler>(value::v43));
         CHECK(ctn::get_hint<d3d_compiler>() == value::v43);
       });
-    }
-
-    SECTION("no_thread_naming")
-    {
-      using ctn::hint::windows::no_thread_naming;
-      test_bool_hint<no_thread_naming>();
     }
 
     SECTION("int_resource_icon")
@@ -769,55 +627,10 @@ TEST_CASE("set_hint", "[hint]")
         ctn::set_hint<int_resource_icon_small>("");
       });
     }
-
-    SECTION("enable_message_loop")
-    {
-      using ctn::hint::windows::enable_message_loop;
-      test_bool_hint<enable_message_loop>();
-    }
-
-    SECTION("no_close_on_alt_f4")
-    {
-      using ctn::hint::windows::no_close_on_alt_f4;
-      test_bool_hint<no_close_on_alt_f4>();
-    }
-  }
-
-  SECTION("mac::")
-  {
-    SECTION("background_app")
-    {
-      using ctn::hint::mac::background_app;
-      test_bool_hint<background_app>();
-    }
-
-    SECTION("ctrl_click_emulate_right_click")
-    {
-      using ctn::hint::mac::ctrl_click_emulate_right_click;
-      test_bool_hint<ctrl_click_emulate_right_click>();
-    }
-
-    SECTION("fullscreen_spaces")
-    {
-      using ctn::hint::mac::fullscreen_spaces;
-      test_bool_hint<fullscreen_spaces>();
-    }
   }
 
   SECTION("android::")
   {
-    SECTION("block_on_pause")
-    {
-      using ctn::hint::android::block_on_pause;
-      test_bool_hint<block_on_pause>();
-    }
-
-    SECTION("trap_back_button")
-    {
-      using ctn::hint::android::trap_back_button;
-      test_bool_hint<trap_back_button>();
-    }
-
     SECTION("apk_expansion_main_file_version")
     {
       using ctn::hint::android::apk_expansion_main_file_version;
@@ -837,95 +650,8 @@ TEST_CASE("set_hint", "[hint]")
     }
   }
 
-  SECTION("joystick::")
-  {
-    SECTION("allow_background_events")
-    {
-      using ctn::hint::joystick::allow_background_events;
-      test_bool_hint<allow_background_events>();
-    }
-
-    SECTION("use_hidapi")
-    {
-      using ctn::hint::joystick::use_hidapi;
-      test_bool_hint<use_hidapi>();
-    }
-
-    SECTION("use_hidapi_ps4")
-    {
-      using ctn::hint::joystick::use_hidapi_ps4;
-      test_bool_hint<use_hidapi_ps4>();
-    }
-
-    SECTION("use_hidapi_ps4_rumble")
-    {
-      using ctn::hint::joystick::use_hidapi_ps4_rumble;
-      test_bool_hint<use_hidapi_ps4_rumble>();
-    }
-
-    SECTION("use_hidapi_steam")
-    {
-      using ctn::hint::joystick::use_hidapi_steam;
-      test_bool_hint<use_hidapi_steam>();
-    }
-
-    SECTION("use_hidapi_switch")
-    {
-      using ctn::hint::joystick::use_hidapi_switch;
-      test_bool_hint<use_hidapi_switch>();
-    }
-
-    SECTION("use_hidapi_xbox")
-    {
-      using ctn::hint::joystick::use_hidapi_xbox;
-      test_bool_hint<use_hidapi_xbox>();
-    }
-
-    SECTION("use_hidapi_game_cube")
-    {
-      using ctn::hint::joystick::use_hidapi_game_cube;
-      test_bool_hint<use_hidapi_game_cube>();
-    }
-  }
-
   SECTION("x11::")
   {
-    SECTION("net_wm_ping")
-    {
-      using ctn::hint::x11::net_wm_ping;
-      test_bool_hint<net_wm_ping>();
-    }
-
-    SECTION("net_wm_bypass_compositor")
-    {
-      using ctn::hint::x11::net_wm_bypass_compositor;
-      test_bool_hint<net_wm_bypass_compositor>();
-    }
-
-    SECTION("force_egl")
-    {
-      using ctn::hint::x11::force_egl;
-      test_bool_hint<force_egl>();
-    }
-
-    SECTION("xinerama")
-    {
-      using ctn::hint::x11::xinerama;
-      test_bool_hint<xinerama>();
-    }
-
-    SECTION("xrandr")
-    {
-      using ctn::hint::x11::xrandr;
-      test_bool_hint<xrandr>();
-    }
-
-    SECTION("xvidmode")
-    {
-      using ctn::hint::x11::xvidmode;
-      test_bool_hint<xvidmode>();
-    }
-
     SECTION("window_visual_id")
     {
       using ctn::hint::x11::window_visual_id;

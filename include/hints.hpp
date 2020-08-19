@@ -268,25 +268,25 @@ struct d3d_compiler;
 template <>
 struct enum_hint_traits<render_driver> final
 {
-  enum value { direct3d, opengl, opengles, opengles2, metal, software };
+  enum class value { direct3d, opengl, opengles, opengles2, metal, software };
 };
 
 template <>
 struct enum_hint_traits<audio_resampling_mode> final
 {
-  enum value { normal = 0, fast = 1, medium = 2, best = 3 };
+  enum class value { normal = 0, fast = 1, medium = 2, best = 3 };
 };
 
 template <>
 struct enum_hint_traits<scale_quality> final
 {
-  enum value { nearest = 0, linear = 1, best = 2 };
+  enum class value { nearest = 0, linear = 1, best = 2 };
 };
 
 template <>
 struct enum_hint_traits<framebuffer_acceleration> final
 {
-  enum value {
+  enum class value {
     off,
     on,
     direct3d,
@@ -301,37 +301,37 @@ struct enum_hint_traits<framebuffer_acceleration> final
 template <>
 struct enum_hint_traits<audio_category> final
 {
-  enum value { ambient, playback };
+  enum class value { ambient, playback };
 };
 
 template <>
 struct enum_hint_traits<wave_riff_chunk_size> final
 {
-  enum value { force, ignore_zero, ignore, maximum };
+  enum class value { force, ignore_zero, ignore, maximum };
 };
 
 template <>
 struct enum_hint_traits<wave_truncation> final
 {
-  enum value { very_strict, strict, drop_frame, drop_block };
+  enum class value { very_strict, strict, drop_frame, drop_block };
 };
 
 template <>
 struct enum_hint_traits<wave_fact_chunk> final
 {
-  enum value { truncate, strict, ignore_zero, ignore };
+  enum class value { truncate, strict, ignore_zero, ignore };
 };
 
 template <>
 struct enum_hint_traits<logical_size_mode> final
 {
-  enum value { letterbox, overscan };
+  enum class value { letterbox, overscan };
 };
 
 template <>
 struct enum_hint_traits<qtwayland::content_orientation> final
 {
-  enum value {
+  enum class value {
     primary,
     portrait,
     landscape,
@@ -343,7 +343,7 @@ struct enum_hint_traits<qtwayland::content_orientation> final
 template <>
 struct enum_hint_traits<windows::d3d_compiler> final
 {
-  enum value { v46, v43, none };
+  enum class value { v46, v43, none };
 };
 
 /// @endcond

@@ -1407,8 +1407,7 @@ class hint_callback final
 };
 
 /**
- * @brief Adds a callback to observe changes of the value of the specified
- * hint is updated.
+ * @brief Adds a callback to observe changes of the value of the specified hint.
  *
  * @details A callback handle object is returned, which can be used to easily
  * disconnect the callback later. This function can be used with any function

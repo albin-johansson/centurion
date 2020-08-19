@@ -218,7 +218,7 @@ class font_cache final
    * @param renderer the renderer that will be used to create the string
    * texture.
    *
-   * @see `basic_renderer<T>::render_blended_utf8`
+   * @see `basic_renderer::render_blended_utf8`
    *
    * @since 5.0.0
    */
@@ -239,7 +239,7 @@ class font_cache final
    * texture.
    * @param wrap the width in pixels after which the text will be wrapped.
    *
-   * @see `basic_renderer<T>::render_blended_wrapped_utf8`
+   * @see `basic_renderer::render_blended_wrapped_utf8`
    *
    * @since 5.0.0
    */
@@ -263,7 +263,7 @@ class font_cache final
    * texture.
    * @param background the color used for the background box.
    *
-   * @see `basic_renderer<T>::render_shaded_utf8`
+   * @see `basic_renderer::render_shaded_utf8`
    *
    * @since 5.0.0
    */
@@ -286,7 +286,7 @@ class font_cache final
    * @param renderer the renderer that will be used to create the string
    * texture.
    *
-   * @see `basic_renderer<T>::render_solid_utf8`
+   * @see `basic_renderer::render_solid_utf8`
    *
    * @since 5.0.0
    */
@@ -306,7 +306,7 @@ class font_cache final
    * @param renderer the renderer that will be used to create the string
    * texture.
    *
-   * @see `basic_renderer<T>::render_blended_latin1`
+   * @see `basic_renderer::render_blended_latin1`
    *
    * @since 5.0.0
    */
@@ -327,7 +327,7 @@ class font_cache final
    * texture.
    * @param wrap the width in pixels after which the text will be wrapped.
    *
-   * @see `basic_renderer<T>::render_blended_wrapped_latin1`
+   * @see `basic_renderer::render_blended_wrapped_latin1`
    *
    * @since 5.0.0
    */
@@ -351,7 +351,7 @@ class font_cache final
    * texture.
    * @param background the color used for the background box.
    *
-   * @see `basic_renderer<T>::render_shaded_latin1`
+   * @see `basic_renderer::render_shaded_latin1`
    *
    * @since 5.0.0
    */
@@ -374,7 +374,7 @@ class font_cache final
    * @param renderer the renderer that will be used to create the string
    * texture.
    *
-   * @see `basic_renderer<T>::render_solid_latin1`
+   * @see `basic_renderer::render_solid_latin1`
    *
    * @since 5.0.0
    */
@@ -394,7 +394,7 @@ class font_cache final
    * @param renderer the renderer that will be used to create the string
    * texture.
    *
-   * @see `basic_renderer<T>::render_blended_unicode`
+   * @see `basic_renderer::render_blended_unicode`
    *
    * @since 5.0.0
    */
@@ -417,7 +417,7 @@ class font_cache final
    * texture.
    * @param wrap the width in pixels after which the text will be wrapped.
    *
-   * @see `basic_renderer<T>::render_blended_wrapped_unicode`
+   * @see `basic_renderer::render_blended_wrapped_unicode`
    *
    * @since 5.0.0
    */
@@ -441,7 +441,7 @@ class font_cache final
    * texture.
    * @param background the color used for the background box.
    *
-   * @see `basic_renderer<T>::render_shaded_unicode`
+   * @see `basic_renderer::render_shaded_unicode`
    *
    * @since 5.0.0
    */
@@ -464,7 +464,7 @@ class font_cache final
    * @param renderer the renderer that will be used to create the string
    * texture.
    *
-   * @see `basic_renderer<T>::render_solid_unicode`
+   * @see `basic_renderer::render_solid_unicode`
    *
    * @since 5.0.0
    */

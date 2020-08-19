@@ -118,3 +118,13 @@ TEST_CASE("log::category values", "[log]")
     CHECK(SDL_LOG_CATEGORY_SYSTEM != ctn::log::category::render);
   }
 }
+
+TEST_CASE("logging macros", "[log]")
+{
+  CENTURION_LOG_INFO("This is for debug only...");
+  CENTURION_LOG_WARN("This is for debug only...");
+  CENTURION_LOG_VERBOSE("This is for debug only...");
+  CENTURION_LOG_DEBUG("This is for debug only...");
+  CENTURION_LOG_CRITICAL("This is for debug only...");
+  CENTURION_LOG_ERROR("This is for debug only...");
+}

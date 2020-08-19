@@ -60,8 +60,8 @@ Boolean hints only accept either ``true`` or ``false`` as values.
  ``allow_top_most``                             ``SDL_HINT_ALLOW_TOPMOST``                            
  ``android::block_on_pause``                    ``SDL_HINT_ANDROID_BLOCK_ON_PAUSE``
  ``android::trap_back_button``                  ``SDL_HINT_ANDROID_TRAP_BACK_BUTTON``
- ``apple_tv_controller_ui_events``              ``SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS``            
- ``apple_tv_remote_allow_rotation``             ``SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION``           
+ ``appletv::controller_ui_events``              ``SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS``            
+ ``appletv::remote_allow_rotation``             ``SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION``           
  ``bmp_save_legacy_format``                     ``SDL_HINT_BMP_SAVE_LEGACY_FORMAT``                   
  ``double_buffer``                              ``SDL_HINT_VIDEO_DOUBLE_BUFFER``                      
  ``enable_steam_controllers``                   ``SDL_HINT_ENABLE_STEAM_CONTROLLERS``                 

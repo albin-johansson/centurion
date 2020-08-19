@@ -90,18 +90,6 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("apple_tv_controller_ui_events")
-  {
-    using ctn::hint::apple_tv_controller_ui_events;
-    test_bool_hint<apple_tv_controller_ui_events>();
-  }
-
-  SECTION("apple_tv_remote_allow_rotation")
-  {
-    using ctn::hint::apple_tv_remote_allow_rotation;
-    test_bool_hint<apple_tv_remote_allow_rotation>();
-  }
-
   SECTION("bmp_save_legacy_format")
   {
     using ctn::hint::bmp_save_legacy_format;
@@ -464,6 +452,21 @@ TEST_CASE("set_hint", "[hint]")
     });
 
     ctn::set_hint<render_driver>(render_driver::open_gl);
+  }
+
+  SECTION("appletv::")
+  {
+    SECTION("controller_ui_events")
+    {
+      using ctn::hint::appletv::controller_ui_events;
+      test_bool_hint<controller_ui_events>();
+    }
+
+    SECTION("remote_allow_rotation")
+    {
+      using ctn::hint::appletv::remote_allow_rotation;
+      test_bool_hint<remote_allow_rotation>();
+    }
   }
 
   SECTION("xinput::")

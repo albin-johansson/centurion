@@ -736,24 +736,6 @@ class allow_top_most final : public detail::bool_hint<allow_top_most> {
   }
 };
 
-class apple_tv_controller_ui_events final
-    : public detail::bool_hint<apple_tv_controller_ui_events> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS;
-  }
-};
-
-class apple_tv_remote_allow_rotation final
-    : public detail::bool_hint<apple_tv_remote_allow_rotation> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION;
-  }
-};
-
 class bmp_save_legacy_format final
     : public detail::bool_hint<bmp_save_legacy_format> {
  public:
@@ -985,6 +967,23 @@ class timer_resolution final
   }
 };
 
+namespace appletv {
+
+struct controller_ui_events final : detail::bool_hint<controller_ui_events> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS;
+  }
+};
+
+struct remote_allow_rotation final : detail::bool_hint<remote_allow_rotation> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION;
+  }
+};
+
+}  // namespace appletv
 
 namespace xinput {
 

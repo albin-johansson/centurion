@@ -40,12 +40,14 @@
  *
  * @todo Document all of the hint classes.
  *
- * @todo Remove hint namespace.
- *
  * @file hints.hpp
+ *
  * @since 4.1.0
+ *
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 

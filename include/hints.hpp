@@ -1459,10 +1459,9 @@ struct window_visual_id final : detail::string_hint<window_visual_id> {
  * @headerfile hints.hpp
  */
 enum class hint_priority {
-  low = SDL_HINT_DEFAULT,   /**< The lowest priority, used for default values.*/
-  normal = SDL_HINT_NORMAL, /**< The priority used by default by
-                             * <code>set_hint</code>.*/
-  override = SDL_HINT_OVERRIDE /**< The highest priority.*/
+  low = SDL_HINT_DEFAULT,    ///< The lowest possible priority.
+  normal = SDL_HINT_NORMAL,  ///< The priority used by default by `set_hint`.
+  override = SDL_HINT_OVERRIDE  ///< The highest priority.
 };
 
 /**

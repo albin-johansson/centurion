@@ -45,13 +45,16 @@
 
 #include <SDL.h>
 
-#include <cstring>
-#include <sstream>
-#include <string>
-#include <type_traits>
-#include <utility>
+#include <array>        // array
+#include <cstring>      // strcmp
+#include <sstream>      // ostringstream
+#include <string>       // string
+#include <string_view>  // string_view
+#include <type_traits>  // is_enum_v
+#include <utility>      // pair
 
 #include "centurion_api.hpp"
+#include "centurion_exception.hpp"
 #include "centurion_types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -156,6 +159,59 @@ template <typename T>
     return false;
   }
 }
+
+// std::find_if isn't constexpr until C++20
+template <class It, class Predicate>
+[[nodiscard]] constexpr auto find_if(It first, const It last, Predicate pred)
+    -> It
+{
+  for (; first != last; ++first) {
+    if (pred(*first)) {
+      break;
+    }
+  }
+
+  return first;
+}
+
+template <class Key, std::size_t size>
+class static_map final
+{
+ public:
+  static_assert(std::is_enum_v<Key>, "Key type must be an enum!");
+
+  using key_t = Key;
+  using pair_t = std::pair<key_t, czstring>;
+  using storage_t = std::array<pair_t, size>;
+
+  std::array<std::pair<Key, czstring>, size> m_data;
+
+  [[nodiscard]] constexpr auto find(const Key& key) const -> czstring
+  {
+    const auto it = detail::find_if(
+        m_data.begin(), m_data.end(), [&](const pair_t& pair) noexcept {
+          return key == pair.first;
+        });
+    if (it != m_data.end()) {
+      return it->second;
+    } else {
+      throw centurion_exception{"Failed to find element in map!"};
+    }
+  }
+
+  [[nodiscard]] constexpr auto key(czstring value) const -> const Key&
+  {
+    const auto it = detail::find_if(
+        m_data.begin(), m_data.end(), [&](const pair_t& pair) noexcept {
+          return std::string_view{pair.second} == std::string_view{value};
+        });
+    if (it != m_data.end()) {
+      return it->first;
+    } else {
+      throw centurion_exception{"Failed to find element in map!"};
+    }
+  }
+};
 
 }  // namespace detail
 

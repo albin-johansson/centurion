@@ -18,8 +18,10 @@ BinPackArguments: false
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterEnum: false
-  AfterStruct: false
+  AfterStruct: true
+  AfterClass: true
   AfterFunction: true
+  SplitEmptyRecord: false
   SplitEmptyFunction: false
 
 AllowShortFunctionsOnASingleLine: InlineOnly

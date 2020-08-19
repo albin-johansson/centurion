@@ -63,30 +63,32 @@ TEST_CASE("set_hint", "[hint]")
   SECTION("audio_resampling_mode")
   {
     using hint = ctn::hint::audio_resampling_mode;
+    using value = hint::value;
     test_hint<hint>([] {
-      ctn::set_hint<hint>(hint::normal);
-      CHECK(ctn::get_hint<hint>().value() == hint::normal);
+      ctn::set_hint<hint>(value::normal);
+      CHECK(ctn::get_hint<hint>().value() == value::normal);
 
-      ctn::set_hint<hint>(hint::fast);
-      CHECK(ctn::get_hint<hint>().value() == hint::fast);
+      ctn::set_hint<hint>(value::fast);
+      CHECK(ctn::get_hint<hint>().value() == value::fast);
 
-      ctn::set_hint<hint>(hint::medium);
-      CHECK(ctn::get_hint<hint>().value() == hint::medium);
+      ctn::set_hint<hint>(value::medium);
+      CHECK(ctn::get_hint<hint>().value() == value::medium);
 
-      ctn::set_hint<hint>(hint::best);
-      CHECK(ctn::get_hint<hint>().value() == hint::best);
+      ctn::set_hint<hint>(value::best);
+      CHECK(ctn::get_hint<hint>().value() == value::best);
     });
   }
 
   SECTION("audio_category")
   {
     using ctn::hint::audio_category;
+    using value = audio_category::value;
     test_hint<audio_category>([] {
-      CHECK(ctn::set_hint<audio_category>(audio_category::ambient));
-      CHECK(ctn::get_hint<audio_category>() == audio_category::ambient);
+      CHECK(ctn::set_hint<audio_category>(value::ambient));
+      CHECK(ctn::get_hint<audio_category>() == value::ambient);
 
-      CHECK(ctn::set_hint<audio_category>(audio_category::playback));
-      CHECK(ctn::get_hint<audio_category>() == audio_category::playback);
+      CHECK(ctn::set_hint<audio_category>(value::playback));
+      CHECK(ctn::get_hint<audio_category>() == value::playback);
     });
   }
 
@@ -138,31 +140,32 @@ TEST_CASE("set_hint", "[hint]")
 
   SECTION("framebuffer_acceleration")
   {
-    using fa = ctn::hint::framebuffer_acceleration;
-    test_hint<fa>([] {
-      ctn::set_hint<fa>(fa::off);
-      CHECK(ctn::get_hint<fa>().value() == fa::off);
+    using hint = ctn::hint::framebuffer_acceleration;
+    using value = hint::value;
+    test_hint<hint>([] {
+      ctn::set_hint<hint>(value::off);
+      CHECK(ctn::get_hint<hint>().value() == value::off);
 
-      ctn::set_hint<fa>(fa::on);
-      CHECK(ctn::get_hint<fa>().value() == fa::on);
+      ctn::set_hint<hint>(value::on);
+      CHECK(ctn::get_hint<hint>().value() == value::on);
 
-      ctn::set_hint<fa>(fa::opengl);
-      CHECK(ctn::get_hint<fa>().value() == fa::opengl);
+      ctn::set_hint<hint>(value::opengl);
+      CHECK(ctn::get_hint<hint>().value() == value::opengl);
 
-      ctn::set_hint<fa>(fa::opengles);
-      CHECK(ctn::get_hint<fa>().value() == fa::opengles);
+      ctn::set_hint<hint>(value::opengles);
+      CHECK(ctn::get_hint<hint>().value() == value::opengles);
 
-      ctn::set_hint<fa>(fa::opengles2);
-      CHECK(ctn::get_hint<fa>().value() == fa::opengles2);
+      ctn::set_hint<hint>(value::opengles2);
+      CHECK(ctn::get_hint<hint>().value() == value::opengles2);
 
-      ctn::set_hint<fa>(fa::direct3d);
-      CHECK(ctn::get_hint<fa>().value() == fa::direct3d);
+      ctn::set_hint<hint>(value::direct3d);
+      CHECK(ctn::get_hint<hint>().value() == value::direct3d);
 
-      ctn::set_hint<fa>(fa::metal);
-      CHECK(ctn::get_hint<fa>().value() == fa::metal);
+      ctn::set_hint<hint>(value::metal);
+      CHECK(ctn::get_hint<hint>().value() == value::metal);
 
-      ctn::set_hint<fa>(fa::software);
-      CHECK(ctn::get_hint<fa>().value() == fa::software);
+      ctn::set_hint<hint>(value::software);
+      CHECK(ctn::get_hint<hint>().value() == value::software);
     });
   }
 
@@ -187,14 +190,13 @@ TEST_CASE("set_hint", "[hint]")
   SECTION("logical_size_mode")
   {
     using ctn::hint::logical_size_mode;
+    using value = logical_size_mode::value;
     test_hint<logical_size_mode>([] {
-      CHECK(ctn::set_hint<logical_size_mode>(logical_size_mode::letterbox));
-      CHECK(ctn::get_hint<logical_size_mode>().value() ==
-            logical_size_mode::letterbox);
+      CHECK(ctn::set_hint<logical_size_mode>(value::letterbox));
+      CHECK(ctn::get_hint<logical_size_mode>().value() == value::letterbox);
 
-      CHECK(ctn::set_hint<logical_size_mode>(logical_size_mode::overscan));
-      CHECK(ctn::get_hint<logical_size_mode>().value() ==
-            logical_size_mode::overscan);
+      CHECK(ctn::set_hint<logical_size_mode>(value::overscan));
+      CHECK(ctn::get_hint<logical_size_mode>().value() == value::overscan);
     });
   }
 
@@ -252,15 +254,16 @@ TEST_CASE("set_hint", "[hint]")
   SECTION("scale_quality")
   {
     using ctn::hint::scale_quality;
+    using value = scale_quality::value;
     test_hint<scale_quality>([] {
-      ctn::set_hint<scale_quality>(scale_quality::nearest);
-      CHECK(ctn::get_hint<scale_quality>() == scale_quality::nearest);
+      ctn::set_hint<scale_quality>(value::nearest);
+      CHECK(ctn::get_hint<scale_quality>() == value::nearest);
 
-      ctn::set_hint<scale_quality>(scale_quality::linear);
-      CHECK(ctn::get_hint<scale_quality>() == scale_quality::linear);
+      ctn::set_hint<scale_quality>(value::linear);
+      CHECK(ctn::get_hint<scale_quality>() == value::linear);
 
-      ctn::set_hint<scale_quality>(scale_quality::best);
-      CHECK(ctn::get_hint<scale_quality>() == scale_quality::best);
+      ctn::set_hint<scale_quality>(value::best);
+      CHECK(ctn::get_hint<scale_quality>() == value::best);
     });
   }
 
@@ -291,59 +294,57 @@ TEST_CASE("set_hint", "[hint]")
   SECTION("wave_riff_chunk_size")
   {
     using ctn::hint::wave_riff_chunk_size;
+    using value = wave_riff_chunk_size::value;
     test_hint<wave_riff_chunk_size>([] {
-      CHECK(ctn::set_hint<wave_riff_chunk_size>(wave_riff_chunk_size::force));
-      CHECK(ctn::get_hint<wave_riff_chunk_size>() ==
-            wave_riff_chunk_size::force);
+      CHECK(ctn::set_hint<wave_riff_chunk_size>(value::force));
+      CHECK(ctn::get_hint<wave_riff_chunk_size>() == value::force);
 
-      CHECK(ctn::set_hint<wave_riff_chunk_size>(
-          wave_riff_chunk_size::ignore_zero));
-      CHECK(ctn::get_hint<wave_riff_chunk_size>() ==
-            wave_riff_chunk_size::ignore_zero);
+      CHECK(ctn::set_hint<wave_riff_chunk_size>(value::ignore_zero));
+      CHECK(ctn::get_hint<wave_riff_chunk_size>() == value::ignore_zero);
 
-      CHECK(ctn::set_hint<wave_riff_chunk_size>(wave_riff_chunk_size::ignore));
-      CHECK(ctn::get_hint<wave_riff_chunk_size>() ==
-            wave_riff_chunk_size::ignore);
+      CHECK(ctn::set_hint<wave_riff_chunk_size>(value::ignore));
+      CHECK(ctn::get_hint<wave_riff_chunk_size>() == value::ignore);
 
-      CHECK(ctn::set_hint<wave_riff_chunk_size>(wave_riff_chunk_size::maximum));
-      CHECK(ctn::get_hint<wave_riff_chunk_size>() ==
-            wave_riff_chunk_size::maximum);
+      CHECK(ctn::set_hint<wave_riff_chunk_size>(value::maximum));
+      CHECK(ctn::get_hint<wave_riff_chunk_size>() == value::maximum);
     });
   }
 
   SECTION("wave_truncation")
   {
     using ctn::hint::wave_truncation;
+    using value = wave_truncation::value;
     test_hint<wave_truncation>([] {
-      CHECK(ctn::set_hint<wave_truncation>(wave_truncation::very_strict));
-      CHECK(ctn::get_hint<wave_truncation>() == wave_truncation::very_strict);
+      CHECK(ctn::set_hint<wave_truncation>(value::very_strict));
+      CHECK(ctn::get_hint<wave_truncation>() == value::very_strict);
 
-      CHECK(ctn::set_hint<wave_truncation>(wave_truncation::strict));
-      CHECK(ctn::get_hint<wave_truncation>() == wave_truncation::strict);
+      CHECK(ctn::set_hint<wave_truncation>(value::strict));
+      CHECK(ctn::get_hint<wave_truncation>() == value::strict);
 
-      CHECK(ctn::set_hint<wave_truncation>(wave_truncation::drop_frame));
-      CHECK(ctn::get_hint<wave_truncation>() == wave_truncation::drop_frame);
+      CHECK(ctn::set_hint<wave_truncation>(value::drop_frame));
+      CHECK(ctn::get_hint<wave_truncation>() == value::drop_frame);
 
-      CHECK(ctn::set_hint<wave_truncation>(wave_truncation::drop_block));
-      CHECK(ctn::get_hint<wave_truncation>() == wave_truncation::drop_block);
+      CHECK(ctn::set_hint<wave_truncation>(value::drop_block));
+      CHECK(ctn::get_hint<wave_truncation>() == value::drop_block);
     });
   }
 
   SECTION("wave_fact_chunk")
   {
     using ctn::hint::wave_fact_chunk;
+    using value = wave_fact_chunk::value;
     test_hint<wave_fact_chunk>([] {
-      CHECK(ctn::set_hint<wave_fact_chunk>(wave_fact_chunk::truncate));
-      CHECK(ctn::get_hint<wave_fact_chunk>() == wave_fact_chunk::truncate);
+      CHECK(ctn::set_hint<wave_fact_chunk>(value::truncate));
+      CHECK(ctn::get_hint<wave_fact_chunk>() == value::truncate);
 
-      CHECK(ctn::set_hint<wave_fact_chunk>(wave_fact_chunk::ignore));
-      CHECK(ctn::get_hint<wave_fact_chunk>() == wave_fact_chunk::ignore);
+      CHECK(ctn::set_hint<wave_fact_chunk>(value::ignore));
+      CHECK(ctn::get_hint<wave_fact_chunk>() == value::ignore);
 
-      CHECK(ctn::set_hint<wave_fact_chunk>(wave_fact_chunk::ignore_zero));
-      CHECK(ctn::get_hint<wave_fact_chunk>() == wave_fact_chunk::ignore_zero);
+      CHECK(ctn::set_hint<wave_fact_chunk>(value::ignore_zero));
+      CHECK(ctn::get_hint<wave_fact_chunk>() == value::ignore_zero);
 
-      CHECK(ctn::set_hint<wave_fact_chunk>(wave_fact_chunk::strict));
-      CHECK(ctn::get_hint<wave_fact_chunk>() == wave_fact_chunk::strict);
+      CHECK(ctn::set_hint<wave_fact_chunk>(value::strict));
+      CHECK(ctn::get_hint<wave_fact_chunk>() == value::strict);
     });
   }
 
@@ -422,26 +423,32 @@ TEST_CASE("set_hint", "[hint]")
   {
     using ctn::hint::render_driver;
     test_hint<render_driver>([] {
-      CHECK(ctn::set_hint<render_driver>(render_driver::opengl));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::opengl);
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::opengl));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::opengl);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::opengles));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::opengles);
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::opengles));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::opengles);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::opengles2));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::opengles2);
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::opengles2));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::opengles2);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::metal));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::metal);
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::metal));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::metal);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::direct3d));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::direct3d);
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::direct3d));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::direct3d);
 
-      CHECK(ctn::set_hint<render_driver>(render_driver::software));
-      CHECK(ctn::get_hint<render_driver>().value() == render_driver::software);
+      CHECK(ctn::set_hint<render_driver>(render_driver::value::software));
+      CHECK(ctn::get_hint<render_driver>().value() ==
+            render_driver::value::software);
     });
 
-    ctn::set_hint<render_driver>(render_driver::opengl);
+    ctn::set_hint<render_driver>(render_driver::value::opengl);
   }
 
   SECTION("raspberrypi::")
@@ -934,7 +941,7 @@ TEST_CASE("set_hint", "[hint]")
 TEST_CASE("add_hint_callback", "[hint]")
 {
   using ctn::hint::render_driver;
-  ctn::set_hint<render_driver>(render_driver::software);
+  ctn::set_hint<render_driver>(render_driver::value::software);
 
   int data = 7;
   auto handle = ctn::add_hint_callback<render_driver>(
@@ -956,12 +963,12 @@ TEST_CASE("add_hint_callback", "[hint]")
       &data);
 
   ctn::set_hint<render_driver, ctn::hint_priority::override>(
-      render_driver::software);
+      render_driver::value::software);
 
   handle.disconnect();
 
   ctn::set_hint<render_driver, ctn::hint_priority::override>(
-      render_driver::opengl);
+      render_driver::value::opengl);
 }
 
 TEST_CASE("clear_hints", "[hint]")

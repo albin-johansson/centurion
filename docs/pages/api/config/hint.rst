@@ -45,7 +45,7 @@ Enum hints only accept their associated enum's enumerators as values.
  ``wave_truncation``                            ``SDL_HINT_WAVE_TRUNCATION``                          
  ``wave_fact_chunk``                            ``SDL_HINT_WAVE_FACT_CHUNK``                          
  ``logical_size_mode``                          ``SDL_HINT_RENDER_LOGICAL_SIZE_MODE``                          
- ``qt_wayland_content_orientation``             ``SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION``                 
+ ``qtwayland::content_orientation``             ``SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION``
 ============================================== =======================================================
 
 Boolean hints
@@ -136,7 +136,7 @@ format of the string arguments.
  ``windows::int_resource_icon_small``           ``SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL``
  ``winrt::privacy_policy_label``                ``SDL_HINT_WINRT_PRIVACY_POLICY_LABEL``
  ``winrt::privacy_policy_url``                  ``SDL_HINT_WINRT_PRIVACY_POLICY_URL``
- ``qt_wayland_window_flags``                    ``SDL_HINT_QTWAYLAND_WINDOW_FLAGS``                   
+ ``qtwayland::window_flags``                    ``SDL_HINT_QTWAYLAND_WINDOW_FLAGS``
 ============================================== =======================================================
 
 Integer hints

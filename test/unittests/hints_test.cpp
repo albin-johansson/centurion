@@ -461,43 +461,6 @@ TEST_CASE("set_hint", "[hint]")
     test_bool_hint<tv_remote_as_joystick>();
   }
 
-  SECTION("qt_wayland_content_orientation")
-  {
-    using hint = ctn::hint::qt_wayland_content_orientation;
-    test_hint<hint>([] {
-      CHECK(ctn::set_hint<hint>(hint::primary));
-      CHECK(ctn::get_hint<hint>() == hint::primary);
-
-      CHECK(ctn::set_hint<hint>(hint::portrait));
-      CHECK(ctn::get_hint<hint>() == hint::portrait);
-
-      CHECK(ctn::set_hint<hint>(hint::landscape));
-      CHECK(ctn::get_hint<hint>() == hint::landscape);
-
-      CHECK(ctn::set_hint<hint>(hint::inverted_portrait));
-      CHECK(ctn::get_hint<hint>() == hint::inverted_portrait);
-
-      CHECK(ctn::set_hint<hint>(hint::inverted_landscape));
-      CHECK(ctn::get_hint<hint>() == hint::inverted_landscape);
-    });
-  }
-
-  SECTION("qt_wayland_window_flags")
-  {
-    using hint = ctn::hint::qt_wayland_window_flags;
-    test_hint<hint>([] {
-      CHECK(ctn::set_hint<hint>("OverridesSystemGestures StaysOnTop"));
-      CHECK_THAT(ctn::get_hint<hint>().value(),
-                 Catch::Equals("OverridesSystemGestures StaysOnTop"));
-
-      CHECK(ctn::set_hint<hint>("BypassWindowManager"));
-      CHECK_THAT(ctn::get_hint<hint>().value(),
-                 Catch::Equals("BypassWindowManager"));
-
-      CHECK(ctn::set_hint<hint>(""));
-    });
-  }
-
   SECTION("xinput_enabled")
   {
     using ctn::hint::xinput_enabled;
@@ -535,6 +498,46 @@ TEST_CASE("set_hint", "[hint]")
     });
 
     ctn::set_hint<render_driver>(render_driver::open_gl);
+  }
+
+  SECTION("qtwayland")
+  {
+    SECTION("content_orientation")
+    {
+      using hint = ctn::hint::qtwayland::content_orientation;
+      test_hint<hint>([] {
+        CHECK(ctn::set_hint<hint>(hint::primary));
+        CHECK(ctn::get_hint<hint>() == hint::primary);
+
+        CHECK(ctn::set_hint<hint>(hint::portrait));
+        CHECK(ctn::get_hint<hint>() == hint::portrait);
+
+        CHECK(ctn::set_hint<hint>(hint::landscape));
+        CHECK(ctn::get_hint<hint>() == hint::landscape);
+
+        CHECK(ctn::set_hint<hint>(hint::inverted_portrait));
+        CHECK(ctn::get_hint<hint>() == hint::inverted_portrait);
+
+        CHECK(ctn::set_hint<hint>(hint::inverted_landscape));
+        CHECK(ctn::get_hint<hint>() == hint::inverted_landscape);
+      });
+    }
+
+    SECTION("window_flags")
+    {
+      using hint = ctn::hint::qtwayland::window_flags;
+      test_hint<hint>([] {
+        CHECK(ctn::set_hint<hint>("OverridesSystemGestures StaysOnTop"));
+        CHECK_THAT(ctn::get_hint<hint>().value(),
+                   Catch::Equals("OverridesSystemGestures StaysOnTop"));
+
+        CHECK(ctn::set_hint<hint>("BypassWindowManager"));
+        CHECK_THAT(ctn::get_hint<hint>().value(),
+                   Catch::Equals("BypassWindowManager"));
+
+        CHECK(ctn::set_hint<hint>(""));
+      });
+    }
   }
 
   SECTION("mouse::")

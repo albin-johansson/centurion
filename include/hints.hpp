@@ -714,67 +714,6 @@ class logical_size_mode final {
   }
 };
 
-class qt_wayland_content_orientation final {
- public:
-  enum Value {
-    primary,
-    portrait,
-    landscape,
-    inverted_portrait,
-    inverted_landscape
-  };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
-
-  static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
-  }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return std::nullopt;
-    }
-
-    using detail::equal;
-    if (equal(hint, "primary")) {
-      return primary;
-    } else if (equal(hint, "portrait")) {
-      return portrait;
-    } else if (equal(hint, "landscape")) {
-      return landscape;
-    } else if (equal(hint, "inverted-portrait")) {
-      return inverted_portrait;
-    } else /*if (equal(hint, "inverted-landscape"))*/ {
-      return inverted_landscape;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case primary:
-        return "primary";
-      case portrait:
-        return "portrait";
-      case landscape:
-        return "landscape";
-      case inverted_portrait:
-        return "inverted-portrait";
-      case inverted_landscape:
-        return "inverted-landscape";
-    }
-  }
-};
-
 /// @} // end of enum hints
 
 /// @name Boolean-hints
@@ -1037,15 +976,6 @@ class window_share_pixel_format final
   }
 };
 
-class qt_wayland_window_flags final
-    : public detail::string_hint<qt_wayland_window_flags> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_QTWAYLAND_WINDOW_FLAGS;
-  }
-};
-
 class event_logging final : public detail::int_hint<event_logging> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1080,6 +1010,78 @@ class timer_resolution final
     return SDL_HINT_TIMER_RESOLUTION;
   }
 };
+
+
+namespace qtwayland {
+
+struct content_orientation final {
+  enum value {
+    primary,
+    portrait,
+    landscape,
+    inverted_portrait,
+    inverted_landscape
+  };
+
+  template <typename T>
+  static constexpr auto valid_arg() noexcept -> bool
+  {
+    return std::is_same_v<T, value>;
+  }
+
+  static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
+  }
+
+  static auto current_value() noexcept -> std::optional<value>
+  {
+    const czstring hint = SDL_GetHint(name());
+    if (!hint) {
+      return std::nullopt;
+    }
+
+    using detail::equal;
+    if (equal(hint, "primary")) {
+      return primary;
+    } else if (equal(hint, "portrait")) {
+      return portrait;
+    } else if (equal(hint, "landscape")) {
+      return landscape;
+    } else if (equal(hint, "inverted-portrait")) {
+      return inverted_portrait;
+    } else /*if (equal(hint, "inverted-landscape"))*/ {
+      return inverted_landscape;
+    }
+  }
+
+  static auto to_string(value value) -> std::string
+  {
+    switch (value) {
+      default:
+        [[fallthrough]];
+      case primary:
+        return "primary";
+      case portrait:
+        return "portrait";
+      case landscape:
+        return "landscape";
+      case inverted_portrait:
+        return "inverted-portrait";
+      case inverted_landscape:
+        return "inverted-landscape";
+    }
+  }
+};
+
+struct window_flags final : detail::string_hint<window_flags> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_QTWAYLAND_WINDOW_FLAGS;
+  }
+};
+
+}  // namespace qtwayland
 
 namespace mouse {
 

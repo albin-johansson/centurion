@@ -123,7 +123,7 @@ format of the string arguments.
  Hint class                                     SDL Counterpart                                       
 ---------------------------------------------- -------------------------------------------------------
  ``display_usable_bounds``                      ``SDL_HINT_DISPLAY_USABLE_BOUNDS``                    
- ``emscripten_keyboard_element``                ``SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT``              
+ ``emscripten::keyboard_element``               ``SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT``
  ``gamecontroller::type``                       ``SDL_HINT_GAMECONTROLLERTYPE``
  ``gamecontroller::config``                     ``SDL_HINT_GAMECONTROLLERCONFIG``
  ``gamecontroller::config_file``                ``SDL_HINT_GAMECONTROLLERCONFIG_FILE``

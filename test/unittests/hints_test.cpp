@@ -125,28 +125,6 @@ TEST_CASE("set_hint", "[hint]")
     });
   }
 
-  SECTION("emscripten_keyboard_element")
-  {
-    using ctn::hint::emscripten_keyboard_element;
-    test_hint<emscripten_keyboard_element>([] {
-      CHECK(ctn::set_hint<emscripten_keyboard_element>("#window"));
-      CHECK_THAT(ctn::get_hint<emscripten_keyboard_element>().value(),
-                 Catch::Equals("#window"));
-
-      CHECK(ctn::set_hint<emscripten_keyboard_element>("#document"));
-      CHECK_THAT(ctn::get_hint<emscripten_keyboard_element>().value(),
-                 Catch::Equals("#document"));
-
-      CHECK(ctn::set_hint<emscripten_keyboard_element>("#screen"));
-      CHECK_THAT(ctn::get_hint<emscripten_keyboard_element>().value(),
-                 Catch::Equals("#screen"));
-
-      CHECK(ctn::set_hint<emscripten_keyboard_element>("#canvas"));
-      CHECK_THAT(ctn::get_hint<emscripten_keyboard_element>().value(),
-                 Catch::Equals("#canvas"));
-    });
-  }
-
   SECTION("enable_steam_controllers")
   {
     using ctn::hint::enable_steam_controllers;
@@ -500,7 +478,32 @@ TEST_CASE("set_hint", "[hint]")
     ctn::set_hint<render_driver>(render_driver::open_gl);
   }
 
-  SECTION("qtwayland")
+  SECTION("emscripten::")
+  {
+    SECTION("keyboard_element")
+    {
+      using ctn::hint::emscripten::keyboard_element;
+      test_hint<keyboard_element>([] {
+        CHECK(ctn::set_hint<keyboard_element>("#window"));
+        CHECK_THAT(ctn::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#window"));
+
+        CHECK(ctn::set_hint<keyboard_element>("#document"));
+        CHECK_THAT(ctn::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#document"));
+
+        CHECK(ctn::set_hint<keyboard_element>("#screen"));
+        CHECK_THAT(ctn::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#screen"));
+
+        CHECK(ctn::set_hint<keyboard_element>("#canvas"));
+        CHECK_THAT(ctn::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#canvas"));
+      });
+    }
+  }
+
+  SECTION("qtwayland::")
   {
     SECTION("content_orientation")
     {

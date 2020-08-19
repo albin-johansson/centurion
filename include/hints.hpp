@@ -950,15 +950,6 @@ class display_usable_bounds final
   }
 };
 
-class emscripten_keyboard_element final
-    : public detail::string_hint<emscripten_keyboard_element> {
- public:
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT;
-  }
-};
-
 class orientations final : public detail::string_hint<orientations> {
  public:
   [[nodiscard]] static constexpr auto name() noexcept -> czstring
@@ -1011,6 +1002,17 @@ class timer_resolution final
   }
 };
 
+
+namespace emscripten {
+
+struct keyboard_element final : detail::string_hint<keyboard_element> {
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT;
+  }
+};
+
+}  // namespace emscripten
 
 namespace qtwayland {
 

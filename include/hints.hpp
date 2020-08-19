@@ -386,7 +386,7 @@ class enum_hint
  */
 struct render_driver final : enum_hint<render_driver>
 {
-  static inline constexpr detail::static_map<value, 6> map{
+  static inline constexpr detail::static_string_map<value, 6> map{
       std::make_pair(value::direct3d, "direct3d"),
       std::make_pair(value::opengl, "opengl"),
       std::make_pair(value::opengles, "opengles"),
@@ -402,7 +402,7 @@ struct render_driver final : enum_hint<render_driver>
 
 struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
 {
-  static inline constexpr detail::static_map<value, 4> map{
+  static inline constexpr detail::static_string_map<value, 4> map{
       std::make_pair(value::normal, "default"),
       std::make_pair(value::fast, "fast"),
       std::make_pair(value::medium, "medium"),
@@ -416,7 +416,7 @@ struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
 
 struct scale_quality final : enum_hint<scale_quality>
 {
-  static inline constexpr detail::static_map<value, 3> map{
+  static inline constexpr detail::static_string_map<value, 3> map{
       std::make_pair(value::nearest, "nearest"),
       std::make_pair(value::linear, "linear"),
       std::make_pair(value::best, "best")};
@@ -429,7 +429,7 @@ struct scale_quality final : enum_hint<scale_quality>
 
 struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
 {
-  static inline constexpr detail::static_map<value, 8> map{
+  static inline constexpr detail::static_string_map<value, 8> map{
       std::make_pair(value::off, "0"),
       std::make_pair(value::on, "1"),
       std::make_pair(value::direct3d, "direct3d"),
@@ -447,7 +447,7 @@ struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
 
 struct audio_category final : enum_hint<audio_category>
 {
-  static inline constexpr detail::static_map<value, 2> map{
+  static inline constexpr detail::static_string_map<value, 2> map{
       std::make_pair(value::ambient, "ambient"),
       std::make_pair(value::playback, "playback")};
 
@@ -459,7 +459,7 @@ struct audio_category final : enum_hint<audio_category>
 
 struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
 {
-  static inline constexpr detail::static_map<value, 4> map{
+  static inline constexpr detail::static_string_map<value, 4> map{
       std::make_pair(value::force, "force"),
       std::make_pair(value::ignore, "ignore"),
       std::make_pair(value::ignore_zero, "ignorezero"),
@@ -473,7 +473,7 @@ struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
 
 struct wave_truncation final : enum_hint<wave_truncation>
 {
-  static inline constexpr detail::static_map<value, 4> map{
+  static inline constexpr detail::static_string_map<value, 4> map{
       std::make_pair(value::drop_block, "dropblock"),
       std::make_pair(value::drop_frame, "dropframe"),
       std::make_pair(value::strict, "strict"),
@@ -487,7 +487,7 @@ struct wave_truncation final : enum_hint<wave_truncation>
 
 struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
 {
-  static inline constexpr detail::static_map<value, 4> map{
+  static inline constexpr detail::static_string_map<value, 4> map{
       std::make_pair(value::strict, "strict"),
       std::make_pair(value::ignore_zero, "ignorezero"),
       std::make_pair(value::ignore, "ignore"),
@@ -501,7 +501,7 @@ struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
 
 struct logical_size_mode final : enum_hint<logical_size_mode>
 {
-  static inline constexpr detail::static_map<value, 2> map{
+  static inline constexpr detail::static_string_map<value, 2> map{
       std::make_pair(value::letterbox, "letterbox"),
       std::make_pair(value::overscan, "overscan")};
 
@@ -808,7 +808,7 @@ namespace qtwayland {
 
 struct content_orientation final : enum_hint<content_orientation>
 {
-  static inline constexpr detail::static_map<value, 5> map{
+  static inline constexpr detail::static_string_map<value, 5> map{
       std::make_pair(value::primary, "primary"),
       std::make_pair(value::portrait, "portrait"),
       std::make_pair(value::landscape, "landscape"),
@@ -987,7 +987,7 @@ namespace windows {
 
 struct d3d_compiler final : enum_hint<d3d_compiler>
 {
-  static inline constexpr detail::static_map<value, 3> map{
+  static inline constexpr detail::static_string_map<value, 3> map{
       std::make_pair(value::v46, "d3dcompiler_46.dll"),
       std::make_pair(value::v43, "d3dcompiler_43.dll"),
       std::make_pair(value::none, "none")};

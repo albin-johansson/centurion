@@ -176,11 +176,9 @@ template <class It, class Predicate>
 
 // This class was inspired by Jason Turners C++ Weekly video on constexpr maps!
 template <class Key, std::size_t size>
-class static_map final
+class static_string_map final
 {
  public:
-  static_assert(std::is_enum_v<Key>, "Key type must be an enum!");
-
   using key_t = Key;
   using pair_t = std::pair<key_t, czstring>;
   using storage_t = std::array<pair_t, size>;

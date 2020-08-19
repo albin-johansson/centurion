@@ -120,7 +120,7 @@ void renderer::render_t(const texture& texture,
 }
 
 template <typename... Args>
-void renderer::emplace_font(entt::id_type id, Args&&... args)
+void renderer::emplace_font(hash_id id, Args&&... args)
 {
   if (m_fonts.find(id) != m_fonts.end()) {
     remove_font(id);

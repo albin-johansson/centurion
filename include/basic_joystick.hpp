@@ -80,7 +80,8 @@ class joystick_traits;
  * @headerfile basic_joystick.hpp
  */
 template <typename Derived>
-class basic_joystick {
+class basic_joystick
+{
  public:
   using storage_type = typename joystick_traits<Derived>::storage_type;
 
@@ -161,7 +162,8 @@ class basic_joystick {
    * @var ball_axis_change::dy
    * Difference in y-axis position since last poll.
    */
-  struct ball_axis_change final {
+  struct ball_axis_change final
+  {
     int dx;
     int dy;
   };
@@ -194,7 +196,7 @@ class basic_joystick {
    *
    * @details For XInput controllers this returns the XInput user index.
    *
-   * @return the player index associated with the joystick; `nothing` if it
+   * @return the player index associated with the joystick; `std::nullopt` if it
    * can't be obtained
    *
    * @since 4.2.0
@@ -209,8 +211,8 @@ class basic_joystick {
    *
    * @param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the player index of the desired joystick; `nothing` if it can't
-   * be obtained.
+   * @return the player index of the desired joystick; `std::nullopt` if it
+   * can't be obtained.
    *
    * @since 4.2.0
    */
@@ -241,8 +243,8 @@ class basic_joystick {
   /**
    * @brief Returns the USB vendor ID of the joystick.
    *
-   * @return the USB vendor ID associated with the joystick; `nothing` if it
-   * isn't available.
+   * @return the USB vendor ID associated with the joystick; `std::nullopt` if
+   * it isn't available.
    *
    * @since 4.2.0
    */
@@ -254,8 +256,8 @@ class basic_joystick {
    *
    * @param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the USB vendor ID of the desired joystick; `nothing` if it can't
-   * be obtained.
+   * @return the USB vendor ID of the desired joystick; `std::nullopt` if it
+   * can't be obtained.
    *
    * @since 4.2.0
    */
@@ -265,8 +267,8 @@ class basic_joystick {
   /**
    * @brief Returns the USB product ID of the joystick.
    *
-   * @return the USB product ID associated with the joystick; `nothing` if it
-   * isn't available.
+   * @return the USB product ID associated with the joystick; `std::nullopt` if
+   * it isn't available.
    *
    * @since 4.2.0
    */
@@ -278,8 +280,8 @@ class basic_joystick {
    *
    * @param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the USB product ID of the desired joystick; `nothing` if it can't
-   * be obtained.
+   * @return the USB product ID of the desired joystick; `std::nullopt` if it
+   * can't be obtained.
    *
    * @since 4.2.0
    */
@@ -289,7 +291,7 @@ class basic_joystick {
   /**
    * @brief Returns the product version of the joystick, if available.
    *
-   * @return the product version of the joystick; `nothing` if it isn't
+   * @return the product version of the joystick; `std::nullopt` if it isn't
    * available.
    *
    * @since 4.2.0
@@ -302,7 +304,7 @@ class basic_joystick {
    *
    * @param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the product version of the desired joystick; `nothing` if it
+   * @return the product version of the desired joystick; `std::nullopt` if it
    * can't be obtained.
    *
    * @since 4.2.0
@@ -318,8 +320,8 @@ class basic_joystick {
    *
    * @param ball the ball index to check, start at 0.
    *
-   * @return a `JoystickBallAxisChange` instance or `nothing` if something goes
-   * wrong.
+   * @return a `JoystickBallAxisChange` instance or `std::nullopt` if something
+   * goes wrong.
    *
    * @since 4.2.0
    */
@@ -338,7 +340,7 @@ class basic_joystick {
    * @param axis the ID of the axis to query.
    *
    * @return a 16-bit signed integer that represents the position of the
-   * specified axis; `nothing` if something goes wrong.
+   * specified axis; `std::nullopt` if something goes wrong.
    *
    * @since 4.2.0
    */
@@ -350,7 +352,7 @@ class basic_joystick {
    *
    * @param axis the axis that will be queried. Starts at 0.
    *
-   * @return the initial state of the axis; `nothing` if the axis doesn't
+   * @return the initial state of the axis; `std::nullopt` if the axis doesn't
    * have an initial state.
    *
    * @since 4.2.0
@@ -418,7 +420,7 @@ class basic_joystick {
    *
    * @param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the instance ID of the desired joystick; `nothing` if it can't
+   * @return the instance ID of the desired joystick; `std::nullopt` if it can't
    * be obtained.
    *
    * @since 4.2.0
@@ -587,7 +589,7 @@ class basic_joystick {
   /**
    * @brief Returns the amount of currently available joysticks.
    *
-   * @return the current amount of available joysticks; `nothing` if
+   * @return the current amount of available joysticks; `std::nullopt` if
    * something goes wrong.
    *
    * @since 4.2.0

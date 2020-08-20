@@ -80,7 +80,8 @@ namespace centurion {
  * @headerfile game_loop.hpp
  */
 template <class Input, class Logic, class Render>
-class basic_loop {
+class basic_loop
+{
  public:
   /**
    * @brief Disconnects the associated delegates.
@@ -310,7 +311,8 @@ class basic_loop {
  * @headerfile game_loop.hpp
  */
 class variable_timestep_loop final
-    : public basic_loop<bool(), void(seconds<double>), void()> {
+    : public basic_loop<bool(), void(seconds<double>), void()>
+{
  public:
   /**
    * @brief Runs the game loop.
@@ -406,7 +408,8 @@ class variable_timestep_loop final
  */
 template <int tickRate>
 class basic_semi_fixed_timestep_loop final
-    : public basic_loop<bool(), void(seconds<double>), void()> {
+    : public basic_loop<bool(), void(seconds<double>), void()>
+{
  public:
   /**
    * @brief Runs the game loop.
@@ -533,7 +536,8 @@ class basic_semi_fixed_timestep_loop final
  */
 template <int tickRate>
 class basic_fixed_timestep_loop final
-    : public basic_loop<bool(), void(seconds<double>), void(double)> {
+    : public basic_loop<bool(), void(seconds<double>), void(double)>
+{
  public:
   /**
    * @brief Runs the game loop.

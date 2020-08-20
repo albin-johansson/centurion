@@ -53,7 +53,8 @@ namespace centurion {
 class sharing_texture;
 
 template <>
-class texture_traits<sharing_texture> final {
+class texture_traits<sharing_texture> final
+{
  public:
   using storage_type = std::shared_ptr<SDL_Texture>;
 };
@@ -77,7 +78,8 @@ class texture_traits<sharing_texture> final {
  *
  * @headerfile sharing_texture.hpp
  */
-class sharing_texture final : public basic_texture<sharing_texture> {
+class sharing_texture final : public basic_texture<sharing_texture>
+{
  public:
   /**
    * @typedef uptr
@@ -124,7 +126,7 @@ class sharing_texture final : public basic_texture<sharing_texture> {
   /**
    * @brief Creates a sharing texture from an ordinary texture.
    *
-   * @detail The created sharing texture will steal the SDL texture from the
+   * @details The created sharing texture will steal the SDL texture from the
    * supplied `texture` instance.
    *
    * @param texture the `texture` instance that provides the SDL texture that

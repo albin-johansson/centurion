@@ -64,5 +64,5 @@ With ``mutex`` and ``scoped_lock``, locking a mutex is truly trivial, as it shou
 
     /* Do stuff while mutex is locked */
 
-  } // lock is automatically unlocked
+  } // mutex is automatically unlocked
   

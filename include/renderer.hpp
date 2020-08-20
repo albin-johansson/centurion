@@ -126,7 +126,8 @@ namespace centurion {
  *
  * @headerfile renderer.hpp
  */
-class renderer final : public basic_renderer<renderer> {
+class renderer final : public basic_renderer<renderer>
+{
  public:
   /**
    * @typedef uptr
@@ -434,7 +435,7 @@ class renderer final : public basic_renderer<renderer> {
    * @since 5.0.0
    */
   CENTURION_API
-  void add_font(entt::id_type id, font&& font);
+  void add_font(hash_id id, font&& font);
 
   /**
    * @brief Creates a font and adds it to the renderer.
@@ -450,7 +451,7 @@ class renderer final : public basic_renderer<renderer> {
    * @since 5.0.0
    */
   template <typename... Args>
-  void emplace_font(entt::id_type id, Args&&... args);
+  void emplace_font(hash_id id, Args&&... args);
 
   /**
    * @brief Removes the font associated with the specified key.
@@ -463,7 +464,7 @@ class renderer final : public basic_renderer<renderer> {
    * @since 5.0.0
    */
   CENTURION_API
-  void remove_font(entt::id_type id);
+  void remove_font(hash_id id);
 
   /**
    * @brief Returns the font associated with the specified name.
@@ -476,15 +477,12 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get_font(entt::id_type id) -> font&
-  {
-    return m_fonts.at(id);
-  }
+  [[nodiscard]] auto get_font(hash_id id) -> font& { return m_fonts.at(id); }
 
   /**
    * @copydoc get_font
    */
-  [[nodiscard]] auto get_font(entt::id_type id) const -> const font&
+  [[nodiscard]] auto get_font(hash_id id) const -> const font&
   {
     return m_fonts.at(id);
   }
@@ -500,7 +498,7 @@ class renderer final : public basic_renderer<renderer> {
    *
    * @since 4.1.0
    */
-  [[nodiscard]] auto has_font(entt::id_type id) const noexcept -> bool
+  [[nodiscard]] auto has_font(hash_id id) const noexcept -> bool
   {
     return static_cast<bool>(m_fonts.count(id));
   }
@@ -548,7 +546,8 @@ class renderer final : public basic_renderer<renderer> {
   }
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(SDL_Renderer* renderer) noexcept
     {
@@ -558,7 +557,7 @@ class renderer final : public basic_renderer<renderer> {
 
   std::unique_ptr<SDL_Renderer, deleter> m_renderer;
   frect m_translationViewport;
-  std::unordered_map<entt::id_type, font> m_fonts;
+  std::unordered_map<hash_id, font> m_fonts;
 
   [[nodiscard]] static constexpr auto default_flags() noexcept
       -> SDL_RendererFlags

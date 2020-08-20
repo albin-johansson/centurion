@@ -74,7 +74,8 @@ namespace centurion {
  *
  * @headerfile message_box.hpp
  */
-class message_box final {
+class message_box final
+{
  public:
   /**
    * @typedef button_id
@@ -153,7 +154,8 @@ class message_box final {
    *
    * @headerfile message_box.hpp
    */
-  class color_scheme final {
+  class color_scheme final
+  {
    public:
     /**
      * @brief Creates a color scheme that uses `white` for all colors.
@@ -255,7 +257,8 @@ class message_box final {
    *
    * @param parent the parent window.
    *
-   * @return the ID of the pressed button; `nothing` if no button was pressed.
+   * @return the ID of the pressed button; `std::nullopt` if no button was
+   * pressed.
    *
    * @throws sdl_error if something goes wrong when showing the message box.
    *
@@ -270,7 +273,8 @@ class message_box final {
    * @details If no buttons have been added by the time this function is
    * called, then an "OK" button is automatically added.
    *
-   * @return the ID of the pressed button; `nothing` if no button was pressed.
+   * @return the ID of the pressed button; `std::nullopt` if no button was
+   * pressed.
    *
    * @throws sdl_error if something goes wrong when showing the message box.
    *
@@ -418,7 +422,8 @@ class message_box final {
   /**
    *
    */
-  class button final {
+  class button final
+  {
    public:
     CENTURION_API
     button(button_id id, std::string text, default_button defaultButton);

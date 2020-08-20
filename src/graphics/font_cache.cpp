@@ -21,10 +21,10 @@ auto font_cache::shared(font&& font) -> sptr
 
 void font_cache::store(entt::id_type id, texture&& texture)
 {
-  const auto iterator = m_strings.find(id);
-  if (iterator == m_strings.end()) {
-    m_strings.emplace(id, std::move(texture));
+  if (const auto it = m_strings.find(id); it != m_strings.end()) {
+    m_strings.erase(it);
   }
+  m_strings.emplace(id, std::move(texture));
 }
 
 auto font_cache::try_get_stored(entt::id_type id) const noexcept

@@ -41,9 +41,13 @@
  * @todo Document all of the hint classes.
  *
  * @file hints.hpp
+ *
  * @since 4.1.0
+ *
  * @author Albin Johansson
+ *
  * @date 2019-2020
+ *
  * @copyright MIT License
  */
 
@@ -58,8 +62,10 @@
 
 #include <SDL_hints.h>
 
-#include <cstring>
-#include <type_traits>
+#include <algorithm>    // find_if
+#include <cstring>      // strcmp
+#include <type_traits>  // is_same_v, ...
+#include <utility>      // pair
 
 #include "centurion_api.hpp"
 #include "centurion_exception.hpp"
@@ -77,7 +83,8 @@ namespace centurion {
 namespace detail {
 
 template <typename Derived, typename Arg>
-class crtp_hint {
+class crtp_hint
+{
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -103,7 +110,8 @@ class crtp_hint {
 
 // A hint class that only accepts booleans
 template <typename Hint>
-class bool_hint : public crtp_hint<bool_hint<Hint>, bool> {
+class bool_hint : public crtp_hint<bool_hint<Hint>, bool>
+{
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -124,7 +132,8 @@ class bool_hint : public crtp_hint<bool_hint<Hint>, bool> {
 
 // A hint class that only accepts strings
 template <typename Hint>
-class string_hint : public crtp_hint<string_hint<Hint>, czstring> {
+class string_hint : public crtp_hint<string_hint<Hint>, czstring>
+{
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -136,7 +145,7 @@ class string_hint : public crtp_hint<string_hint<Hint>, czstring> {
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
-      return nothing;
+      return std::nullopt;
     } else {
       return value;
     }
@@ -150,7 +159,8 @@ class string_hint : public crtp_hint<string_hint<Hint>, czstring> {
 
 // A hint class that only accepts integers
 template <typename Hint>
-class int_hint : public crtp_hint<int_hint<Hint>, int> {
+class int_hint : public crtp_hint<int_hint<Hint>, int>
+{
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -162,7 +172,7 @@ class int_hint : public crtp_hint<int_hint<Hint>, int> {
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
-      return nothing;
+      return std::nullopt;
     } else {
       return std::stoi(value);
     }
@@ -171,7 +181,8 @@ class int_hint : public crtp_hint<int_hint<Hint>, int> {
 
 // A hint class that only accepts unsigned integers
 template <typename Hint>
-class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int> {
+class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
+{
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -184,7 +195,7 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int> {
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
-      return nothing;
+      return std::nullopt;
     } else {
       return static_cast<unsigned int>(std::stoul(value));
     }
@@ -193,7 +204,8 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int> {
 
 // A hint class that only accepts floats
 template <typename Hint>
-class float_hint : public crtp_hint<float_hint<Hint>, float> {
+class float_hint : public crtp_hint<float_hint<Hint>, float>
+{
  public:
   template <typename T>
   [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
@@ -205,7 +217,7 @@ class float_hint : public crtp_hint<float_hint<Hint>, float> {
   {
     const czstring value = SDL_GetHint(Hint::name());
     if (!value) {
-      return nothing;
+      return std::nullopt;
     } else {
       return std::stof(value);
     }
@@ -216,16 +228,152 @@ class float_hint : public crtp_hint<float_hint<Hint>, float> {
 
 /// @endcond
 
+/// @addtogroup configuration
+/// @{
+
 /**
  * @namespace centurion::hint
  *
- * @ingroup configuration
  *
- * @brief Contains components related to hints (configuration variables).
+ *
+ * @brief Contains all hint types.
  *
  * @since 4.1.0
  */
 namespace hint {
+
+/// @cond FALSE
+
+template <class Hint>
+struct enum_hint_traits;
+
+struct render_driver;
+struct audio_resampling_mode;
+struct scale_quality;
+struct framebuffer_acceleration;
+struct audio_category;
+struct wave_riff_chunk_size;
+struct wave_truncation;
+struct wave_fact_chunk;
+struct logical_size_mode;
+
+namespace qtwayland {
+struct content_orientation;
+}
+
+namespace windows {
+struct d3d_compiler;
+}
+
+template <>
+struct enum_hint_traits<render_driver> final
+{
+  enum class value { direct3d, opengl, opengles, opengles2, metal, software };
+};
+
+template <>
+struct enum_hint_traits<audio_resampling_mode> final
+{
+  enum class value { normal = 0, fast = 1, medium = 2, best = 3 };
+};
+
+template <>
+struct enum_hint_traits<scale_quality> final
+{
+  enum class value { nearest = 0, linear = 1, best = 2 };
+};
+
+template <>
+struct enum_hint_traits<framebuffer_acceleration> final
+{
+  enum class value {
+    off,
+    on,
+    direct3d,
+    opengl,
+    opengles,
+    opengles2,
+    metal,
+    software
+  };
+};
+
+template <>
+struct enum_hint_traits<audio_category> final
+{
+  enum class value { ambient, playback };
+};
+
+template <>
+struct enum_hint_traits<wave_riff_chunk_size> final
+{
+  enum class value { force, ignore_zero, ignore, maximum };
+};
+
+template <>
+struct enum_hint_traits<wave_truncation> final
+{
+  enum class value { very_strict, strict, drop_frame, drop_block };
+};
+
+template <>
+struct enum_hint_traits<wave_fact_chunk> final
+{
+  enum class value { truncate, strict, ignore_zero, ignore };
+};
+
+template <>
+struct enum_hint_traits<logical_size_mode> final
+{
+  enum class value { letterbox, overscan };
+};
+
+template <>
+struct enum_hint_traits<qtwayland::content_orientation> final
+{
+  enum class value {
+    primary,
+    portrait,
+    landscape,
+    inverted_portrait,
+    inverted_landscape
+  };
+};
+
+template <>
+struct enum_hint_traits<windows::d3d_compiler> final
+{
+  enum class value { v46, v43, none };
+};
+
+/// @endcond
+
+template <class Derived>
+class enum_hint
+{
+ public:
+  using value = typename enum_hint_traits<Derived>::value;
+
+  template <typename T>
+  static constexpr auto valid_arg() noexcept -> bool
+  {
+    return std::is_same_v<T, value>;
+  }
+
+  static auto current_value() noexcept -> std::optional<value>
+  {
+    czstring hint = SDL_GetHint(Derived::name());
+    if (!hint) {
+      return std::nullopt;
+    }
+    return Derived::map.key(hint);
+  }
+
+  static auto to_string(value value) -> std::string
+  {
+    return Derived::map.find(value);
+  }
+};
 
 /**
  * @class render_driver
@@ -236,853 +384,864 @@ namespace hint {
  *
  * @headerfile hints.hpp
  */
-class render_driver final {
- public:
-  enum Value { direct_3d, open_gl, open_gles, open_gles2, metal, software };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
+struct render_driver final : enum_hint<render_driver>
+{
+  static inline constexpr detail::static_string_map<value, 6> map{
+      std::make_pair(value::direct3d, "direct3d"),
+      std::make_pair(value::opengl, "opengl"),
+      std::make_pair(value::opengles, "opengles"),
+      std::make_pair(value::opengles2, "opengles2"),
+      std::make_pair(value::metal, "metal"),
+      std::make_pair(value::software, "software")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_DRIVER;
   }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "direct3d")) {
-      return direct_3d;
-    } else if (equal(hint, "opengl")) {
-      return open_gl;
-    } else if (equal(hint, "opengles")) {
-      return open_gles;
-    } else if (equal(hint, "opengles2")) {
-      return open_gles2;
-    } else if (equal(hint, "metal")) {
-      return metal;
-    } else {
-      return software;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      case direct_3d:
-        return "direct3d";
-      case open_gl:
-        return "opengl";
-      case open_gles:
-        return "opengles";
-      case open_gles2:
-        return "opengles2";
-      case metal:
-        return "metal";
-      default:
-        /* FALLTHROUGH */
-      case software:
-        return "software";
-    }
-  }
 };
 
-class audio_resampling_mode final {
- public:
-  enum Value { normal = 0, fast = 1, medium = 2, best = 3 };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
+struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
+{
+  static inline constexpr detail::static_string_map<value, 4> map{
+      std::make_pair(value::normal, "default"),
+      std::make_pair(value::fast, "fast"),
+      std::make_pair(value::medium, "medium"),
+      std::make_pair(value::best, "best")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_AUDIO_RESAMPLING_MODE;
   }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "default")) {
-      return normal;
-    } else if (equal(hint, "fast")) {
-      return fast;
-    } else if (equal(hint, "medium")) {
-      return medium;
-    } else /*if (equal(hint, "best"))*/ {
-      return best;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      case normal:
-      default:
-        return "default";
-      case fast:
-        return "fast";
-      case medium:
-        return "medium";
-      case best:
-        return "best";
-    }
-  }
 };
 
-class scale_quality final {
- public:
-  enum Value { nearest = 0, linear = 1, best = 2 };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
+struct scale_quality final : enum_hint<scale_quality>
+{
+  static inline constexpr detail::static_string_map<value, 3> map{
+      std::make_pair(value::nearest, "nearest"),
+      std::make_pair(value::linear, "linear"),
+      std::make_pair(value::best, "best")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_SCALE_QUALITY;
   }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "nearest")) {
-      return nearest;
-    } else if (equal(hint, "linear")) {
-      return linear;
-    } else /*if (equal(hint, "best"))*/ {
-      return best;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-      case nearest:
-        return "nearest";
-      case linear:
-        return "linear";
-      case best:
-        return "best";
-    }
-  }
 };
 
-class framebuffer_acceleration final {
- public:
-  enum Value {
-    off,
-    on,
-    direct_3d,
-    open_gl,
-    open_gles,
-    open_gles2,
-    metal,
-    software
-  };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
+struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
+{
+  static inline constexpr detail::static_string_map<value, 8> map{
+      std::make_pair(value::off, "0"),
+      std::make_pair(value::on, "1"),
+      std::make_pair(value::direct3d, "direct3d"),
+      std::make_pair(value::opengl, "opengl"),
+      std::make_pair(value::opengles, "opengles"),
+      std::make_pair(value::opengles2, "opengles2"),
+      std::make_pair(value::metal, "metal"),
+      std::make_pair(value::software, "software")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_FRAMEBUFFER_ACCELERATION;
   }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "0")) {
-      return off;
-    } else if (equal(hint, "1")) {
-      return on;
-    } else if (equal(hint, "direct3d")) {
-      return direct_3d;
-    } else if (equal(hint, "opengl")) {
-      return open_gl;
-    } else if (equal(hint, "opengles")) {
-      return open_gles;
-    } else if (equal(hint, "opengles2")) {
-      return open_gles2;
-    } else if (equal(hint, "metal")) {
-      return metal;
-    } else {
-      return software;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case off:
-        return "0";
-      case on:
-        return "1";
-      case direct_3d:
-        return "direct3d";
-      case open_gl:
-        return "opengl";
-      case open_gles:
-        return "opengles";
-      case open_gles2:
-        return "opengles2";
-      case metal:
-        return "metal";
-      case software:
-        return "software";
-    }
-  }
 };
 
-class audio_category final {
- public:
-  enum Value { ambient, playback };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
+struct audio_category final : enum_hint<audio_category>
+{
+  static inline constexpr detail::static_string_map<value, 2> map{
+      std::make_pair(value::ambient, "ambient"),
+      std::make_pair(value::playback, "playback")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_AUDIO_CATEGORY;
   }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "ambient")) {
-      return ambient;
-    } else /*if (equal(hint, "playback"))*/ {
-      return playback;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case ambient:
-        return "ambient";
-      case playback:
-        return "playback";
-    }
-  }
 };
 
-class win_d3d_compiler final {
- public:
-  enum Value { d3d_compiler_46, d3d_compiler_43, none };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
-
-  static constexpr auto name() noexcept -> czstring
-  {
-    return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
-  }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "d3dcompiler_46.dll")) {
-      return d3d_compiler_46;
-    } else if (equal(hint, "d3dcompiler_43.dll")) {
-      return d3d_compiler_43;
-    } else {
-      return none;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case none:
-        return "none";
-      case d3d_compiler_43:
-        return "d3dcompiler_43.dll";
-      case d3d_compiler_46:
-        return "d3dcompiler_46.dll";
-    }
-  }
-};
-
-class wave_riff_chunk_size final {
- public:
-  enum Value { force, ignore_zero, ignore, maximum };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
+struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
+{
+  static inline constexpr detail::static_string_map<value, 4> map{
+      std::make_pair(value::force, "force"),
+      std::make_pair(value::ignore, "ignore"),
+      std::make_pair(value::ignore_zero, "ignorezero"),
+      std::make_pair(value::maximum, "maximum")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
   }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "force")) {
-      return force;
-    } else if (equal(hint, "ignorezero")) {
-      return ignore_zero;
-    } else if (equal(hint, "ignore")) {
-      return ignore;
-    } else /* if (equal(hint, "maximum")) */ {
-      return maximum;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case ignore_zero:
-        return "ignorezero";
-      case ignore:
-        return "ignore";
-      case force:
-        return "force";
-      case maximum:
-        return "maximum";
-    }
-  }
 };
 
-class wave_truncation final {
- public:
-  enum Value { very_strict, strict, drop_frame, drop_block };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
+struct wave_truncation final : enum_hint<wave_truncation>
+{
+  static inline constexpr detail::static_string_map<value, 4> map{
+      std::make_pair(value::drop_block, "dropblock"),
+      std::make_pair(value::drop_frame, "dropframe"),
+      std::make_pair(value::strict, "strict"),
+      std::make_pair(value::very_strict, "verystrict")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WAVE_TRUNCATION;
   }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "verystrict")) {
-      return very_strict;
-    } else if (equal(hint, "strict")) {
-      return strict;
-    } else if (equal(hint, "dropframe")) {
-      return drop_frame;
-    } else /* if (equal(hint, "dropblock")) */ {
-      return drop_block;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case drop_block:
-        return "dropblock";
-      case drop_frame:
-        return "dropframe";
-      case very_strict:
-        return "verystrict";
-      case strict:
-        return "strict";
-    }
-  }
 };
 
-class wave_fact_chunk final {
- public:
-  enum Value { truncate, strict, ignore_zero, ignore };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
+struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
+{
+  static inline constexpr detail::static_string_map<value, 4> map{
+      std::make_pair(value::strict, "strict"),
+      std::make_pair(value::ignore_zero, "ignorezero"),
+      std::make_pair(value::ignore, "ignore"),
+      std::make_pair(value::truncate, "truncate")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_WAVE_FACT_CHUNK;
   }
-
-  static auto current_value() noexcept -> std::optional<Value>
-  {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "truncate")) {
-      return truncate;
-    } else if (equal(hint, "strict")) {
-      return strict;
-    } else if (equal(hint, "ignorezero")) {
-      return ignore_zero;
-    } else /* if (equal(hint, "ignore")) */ {
-      return ignore;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case ignore:
-        return "ignore";
-      case ignore_zero:
-        return "ignorezero";
-      case truncate:
-        return "truncate";
-      case strict:
-        return "strict";
-    }
-  }
 };
 
-class logical_size_mode final {
- public:
-  enum Value { letterbox, overscan };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
-  {
-    return std::is_same_v<T, Value>;
-  }
+struct logical_size_mode final : enum_hint<logical_size_mode>
+{
+  static inline constexpr detail::static_string_map<value, 2> map{
+      std::make_pair(value::letterbox, "letterbox"),
+      std::make_pair(value::overscan, "overscan")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
   }
+};
 
-  static auto current_value() noexcept -> std::optional<Value>
+struct accelerometer_as_joystick final
+    : detail::bool_hint<accelerometer_as_joystick>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "0") || equal(hint, "letterbox")) {
-      return letterbox;
-    } else /*if (equal(hint, "1") || equal(hint, "overscan"))*/ {
-      return overscan;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case letterbox:
-        return "letterbox";
-      case overscan:
-        return "overscan";
-    }
+    return SDL_HINT_ACCELEROMETER_AS_JOYSTICK;
   }
 };
 
-class qt_wayland_content_orientation final {
- public:
-  enum Value {
-    primary,
-    portrait,
-    landscape,
-    inverted_portrait,
-    inverted_landscape
-  };
-
-  template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
+struct allow_top_most final : detail::bool_hint<allow_top_most>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
-    return std::is_same_v<T, Value>;
+    return SDL_HINT_ALLOW_TOPMOST;
   }
+};
+
+struct bmp_save_legacy_format final : detail::bool_hint<bmp_save_legacy_format>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_BMP_SAVE_LEGACY_FORMAT;
+  }
+};
+
+struct double_buffer final : detail::bool_hint<double_buffer>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_DOUBLE_BUFFER;
+  }
+};
+
+struct enable_steam_controllers final
+    : detail::bool_hint<enable_steam_controllers>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ENABLE_STEAM_CONTROLLERS;
+  }
+};
+
+struct grab_keyboard final : detail::bool_hint<grab_keyboard>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GRAB_KEYBOARD;
+  }
+};
+
+struct idle_timer_disabled final : detail::bool_hint<idle_timer_disabled>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_IDLE_TIMER_DISABLED;
+  }
+};
+
+struct ime_internal_editing final : detail::bool_hint<ime_internal_editing>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_IME_INTERNAL_EDITING;
+  }
+};
+
+struct no_signal_handlers final : detail::bool_hint<no_signal_handlers>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_NO_SIGNAL_HANDLERS;
+  }
+};
+
+struct opengl_es_driver final : detail::bool_hint<opengl_es_driver>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_OPENGL_ES_DRIVER;
+  }
+};
+
+struct enable_opengl_shaders final : detail::bool_hint<enable_opengl_shaders>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_OPENGL_SHADERS;
+  }
+};
+
+struct vsync final : detail::bool_hint<vsync>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_VSYNC;
+  }
+};
+
+struct allow_screensaver final : detail::bool_hint<allow_screensaver>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_ALLOW_SCREENSAVER;
+  }
+};
+
+struct video_external_context final : detail::bool_hint<video_external_context>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_EXTERNAL_CONTEXT;
+  }
+};
+
+struct disable_high_dpi final : detail::bool_hint<disable_high_dpi>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_HIGHDPI_DISABLED;
+  }
+};
+
+struct minimize_on_focus_loss final : detail::bool_hint<minimize_on_focus_loss>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS;
+  }
+};
+
+struct window_frame_usable_while_cursor_hidden final
+    : detail::bool_hint<window_frame_usable_while_cursor_hidden>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN;
+  }
+};
+
+struct render_batching final : detail::bool_hint<render_batching>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_BATCHING;
+  }
+};
+
+struct return_key_hides_ime final : detail::bool_hint<return_key_hides_ime>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RETURN_KEY_HIDES_IME;
+  }
+};
+
+struct touch_mouse_events final : detail::bool_hint<touch_mouse_events>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_TOUCH_MOUSE_EVENTS;
+  }
+};
+
+struct mouse_touch_events final : detail::bool_hint<mouse_touch_events>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_TOUCH_EVENTS;
+  }
+};
+
+struct tv_remote_as_joystick final : detail::bool_hint<tv_remote_as_joystick>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_TV_REMOTE_AS_JOYSTICK;
+  }
+};
+
+struct display_usable_bounds final : detail::string_hint<display_usable_bounds>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_DISPLAY_USABLE_BOUNDS;
+  }
+};
+
+struct orientations final : detail::string_hint<orientations>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ORIENTATIONS;
+  }
+};
+
+struct window_share_pixel_format final
+    : detail::string_hint<window_share_pixel_format>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT;
+  }
+};
+
+struct event_logging final : detail::int_hint<event_logging>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_EVENT_LOGGING;
+  }
+};
+
+struct thread_stack_size final : detail::unsigned_int_hint<thread_stack_size>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_THREAD_STACK_SIZE;
+  }
+};
+
+struct timer_resolution final : detail::unsigned_int_hint<timer_resolution>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_TIMER_RESOLUTION;
+  }
+};
+
+namespace raspberrypi {
+
+struct video_layer final : detail::int_hint<video_layer>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RPI_VIDEO_LAYER;
+  }
+};
+
+}  // namespace raspberrypi
+
+namespace appletv {
+
+struct controller_ui_events final : detail::bool_hint<controller_ui_events>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS;
+  }
+};
+
+struct remote_allow_rotation final : detail::bool_hint<remote_allow_rotation>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION;
+  }
+};
+
+}  // namespace appletv
+
+namespace xinput {
+
+struct is_enabled final : detail::bool_hint<is_enabled>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_XINPUT_ENABLED;
+  }
+};
+
+struct use_old_joystick_mapping final
+    : detail::bool_hint<use_old_joystick_mapping>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING;
+  }
+};
+
+}  // namespace xinput
+
+namespace emscripten {
+
+struct keyboard_element final : detail::string_hint<keyboard_element>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT;
+  }
+};
+
+}  // namespace emscripten
+
+namespace qtwayland {
+
+struct content_orientation final : enum_hint<content_orientation>
+{
+  static inline constexpr detail::static_string_map<value, 5> map{
+      std::make_pair(value::primary, "primary"),
+      std::make_pair(value::portrait, "portrait"),
+      std::make_pair(value::landscape, "landscape"),
+      std::make_pair(value::inverted_portrait, "inverted-portrait"),
+      std::make_pair(value::inverted_landscape, "inverted-landscape")};
 
   static constexpr auto name() noexcept -> czstring
   {
     return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
   }
+};
 
-  static auto current_value() noexcept -> std::optional<Value>
+struct window_flags final : detail::string_hint<window_flags>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
   {
-    const czstring hint = SDL_GetHint(name());
-    if (!hint) {
-      return nothing;
-    }
-
-    using detail::equal;
-    if (equal(hint, "primary")) {
-      return primary;
-    } else if (equal(hint, "portrait")) {
-      return portrait;
-    } else if (equal(hint, "landscape")) {
-      return landscape;
-    } else if (equal(hint, "inverted-portrait")) {
-      return inverted_portrait;
-    } else /*if (equal(hint, "inverted-landscape"))*/ {
-      return inverted_landscape;
-    }
-  }
-
-  static auto to_string(Value value) -> std::string
-  {
-    switch (value) {
-      default:
-        [[fallthrough]];
-      case primary:
-        return "primary";
-      case portrait:
-        return "portrait";
-      case landscape:
-        return "landscape";
-      case inverted_portrait:
-        return "inverted-portrait";
-      case inverted_landscape:
-        return "inverted-landscape";
-    }
+    return SDL_HINT_QTWAYLAND_WINDOW_FLAGS;
   }
 };
 
-/// @cond FALSE
-
-#define CENTURION_HINT(Name, SDLName, Type)                         \
-  class Name final : public detail::Type<Name> {                    \
-   public:                                                          \
-    [[nodiscard]] static constexpr auto name() noexcept -> czstring \
-    {                                                               \
-      return SDLName;                                               \
-    }                                                               \
-  };
-
-CENTURION_HINT(accelerometer_as_joystick,
-               SDL_HINT_ACCELEROMETER_AS_JOYSTICK,
-               bool_hint)
-
-CENTURION_HINT(allow_top_most, SDL_HINT_ALLOW_TOPMOST, bool_hint)
-
-CENTURION_HINT(android_block_on_pause,
-               SDL_HINT_ANDROID_BLOCK_ON_PAUSE,
-               bool_hint)
-
-CENTURION_HINT(android_trap_back_button,
-               SDL_HINT_ANDROID_TRAP_BACK_BUTTON,
-               bool_hint)
-
-CENTURION_HINT(android_apk_expansion_main_file_version,
-               SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION,
-               int_hint)
-
-CENTURION_HINT(android_apk_expansion_patch_file_version,
-               SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION,
-               int_hint)
-
-CENTURION_HINT(apple_tv_controller_ui_events,
-               SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS,
-               bool_hint)
-
-CENTURION_HINT(apple_tv_remote_allow_rotation,
-               SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION,
-               bool_hint)
-
-CENTURION_HINT(bmp_save_legacy_format,
-               SDL_HINT_BMP_SAVE_LEGACY_FORMAT,
-               bool_hint)
-
-CENTURION_HINT(double_buffer, SDL_HINT_VIDEO_DOUBLE_BUFFER, bool_hint)
-
-CENTURION_HINT(display_usable_bounds,
-               SDL_HINT_DISPLAY_USABLE_BOUNDS,
-               string_hint)
-
-CENTURION_HINT(emscripten_keyboard_element,
-               SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT,
-               string_hint)
-
-CENTURION_HINT(event_logging, SDL_HINT_EVENT_LOGGING, int_hint)
-
-CENTURION_HINT(enable_steam_controllers,
-               SDL_HINT_ENABLE_STEAM_CONTROLLERS,
-               bool_hint)
-
-CENTURION_HINT(game_controller_use_button_labels,
-               SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS,
-               bool_hint)
-
-CENTURION_HINT(game_controller_type, SDL_HINT_GAMECONTROLLERTYPE, string_hint)
-
-CENTURION_HINT(game_controller_config,
-               SDL_HINT_GAMECONTROLLERCONFIG,
-               string_hint)
-
-CENTURION_HINT(game_controller_config_file,
-               SDL_HINT_GAMECONTROLLERCONFIG_FILE,
-               string_hint)
-
-CENTURION_HINT(game_controller_ignore_devices,
-               SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES,
-               string_hint)
-
-CENTURION_HINT(game_controller_ignore_devices_except,
-               SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT,
-               string_hint)
-
-CENTURION_HINT(grab_keyboard, SDL_HINT_GRAB_KEYBOARD, bool_hint)
-
-CENTURION_HINT(idle_timer_disabled, SDL_HINT_IDLE_TIMER_DISABLED, bool_hint)
-
-CENTURION_HINT(ime_internal_editing, SDL_HINT_IME_INTERNAL_EDITING, bool_hint)
-
-CENTURION_HINT(joystick_allow_background_events,
-               SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,
-               bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi, SDL_HINT_JOYSTICK_HIDAPI, bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_ps4, SDL_HINT_JOYSTICK_HIDAPI_PS4, bool_hint)
-
-CENTURION_HINT(JoystickUseHIDAPIRumble,
-               SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE,
-               bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_steam,
-               SDL_HINT_JOYSTICK_HIDAPI_STEAM,
-               bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_switch,
-               SDL_HINT_JOYSTICK_HIDAPI_SWITCH,
-               bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_xbox,
-               SDL_HINT_JOYSTICK_HIDAPI_XBOX,
-               bool_hint)
-
-CENTURION_HINT(joystick_use_hidapi_game_cube,
-               SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE,
-               bool_hint)
-
-CENTURION_HINT(mac_background_app, SDL_HINT_MAC_BACKGROUND_APP, bool_hint)
-
-CENTURION_HINT(mac_ctrl_click_emulate_right_click,
-               SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK,
-               bool_hint)
-
-CENTURION_HINT(mouse_focus_clickthrough,
-               SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH,
-               bool_hint)
-
-CENTURION_HINT(mouse_relative_mode_warp,
-               SDL_HINT_MOUSE_RELATIVE_MODE_WARP,
-               bool_hint)
-
-CENTURION_HINT(mouse_double_click_time,
-               SDL_HINT_MOUSE_DOUBLE_CLICK_TIME,
-               int_hint)
-
-CENTURION_HINT(mouse_double_click_radius,
-               SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS,
-               int_hint)
-
-CENTURION_HINT(no_signal_handlers, SDL_HINT_NO_SIGNAL_HANDLERS, bool_hint)
-
-CENTURION_HINT(direct_3d_11_debug, SDL_HINT_RENDER_DIRECT3D11_DEBUG, bool_hint)
-
-CENTURION_HINT(direct_3D_thread_safe,
-               SDL_HINT_RENDER_DIRECT3D_THREADSAFE,
-               bool_hint)
-
-CENTURION_HINT(opengl_es_driver, SDL_HINT_OPENGL_ES_DRIVER, bool_hint)
-
-CENTURION_HINT(orientations, SDL_HINT_ORIENTATIONS, string_hint)
-
-CENTURION_HINT(enable_opengl_shaders, SDL_HINT_RENDER_OPENGL_SHADERS, bool_hint)
-
-CENTURION_HINT(enable_vsync, SDL_HINT_RENDER_VSYNC, bool_hint)
-
-CENTURION_HINT(allow_screensaver, SDL_HINT_VIDEO_ALLOW_SCREENSAVER, bool_hint)
-
-CENTURION_HINT(video_external_context,
-               SDL_HINT_VIDEO_EXTERNAL_CONTEXT,
-               bool_hint)
-
-CENTURION_HINT(disable_high_dpi, SDL_HINT_VIDEO_HIGHDPI_DISABLED, bool_hint)
-
-CENTURION_HINT(mac_fullscreen_spaces,
-               SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES,
-               bool_hint)
-
-CENTURION_HINT(minimize_on_focus_loss,
-               SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS,
-               bool_hint)
-
-CENTURION_HINT(mouse_normal_speed_scale,
-               SDL_HINT_MOUSE_NORMAL_SPEED_SCALE,
-               float_hint)
-
-CENTURION_HINT(mouse_relative_speed_scale,
-               SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE,
-               float_hint)
-
-CENTURION_HINT(x11_net_wm_ping, SDL_HINT_VIDEO_X11_NET_WM_PING, bool_hint)
-
-CENTURION_HINT(x11_net_wm_bypass_compositor,
-               SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR,
-               bool_hint)
-
-CENTURION_HINT(x11_force_egl, SDL_HINT_VIDEO_X11_FORCE_EGL, bool_hint)
-
-CENTURION_HINT(x11_xinerama, SDL_HINT_VIDEO_X11_XINERAMA, bool_hint)
-
-CENTURION_HINT(x11_xrandr, SDL_HINT_VIDEO_X11_XRANDR, bool_hint)
-
-CENTURION_HINT(x11_xvidmode, SDL_HINT_VIDEO_X11_XVIDMODE, bool_hint)
-
-CENTURION_HINT(x11_window_visual_id,
-               SDL_HINT_VIDEO_X11_WINDOW_VISUALID,
-               string_hint)
-
-CENTURION_HINT(windows_disable_thread_naming,
-               SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING,
-               bool_hint)
-
-CENTURION_HINT(window_share_pixel_format,
-               SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT,
-               string_hint)
-
-CENTURION_HINT(windows_enable_message_loop,
-               SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP,
-               bool_hint)
-
-CENTURION_HINT(windows_no_close_on_alt_f4,
-               SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4,
-               bool_hint)
-
-CENTURION_HINT(window_frame_usable_while_cursor_hidden,
-               SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN,
-               bool_hint)
-
-CENTURION_HINT(windows_int_resource_icon,
-               SDL_HINT_WINDOWS_INTRESOURCE_ICON,
-               string_hint)
-
-CENTURION_HINT(windows_int_resource_icon_small,
-               SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL,
-               string_hint)
-
-CENTURION_HINT(win_rt_privacy_policy_label,
-               SDL_HINT_WINRT_PRIVACY_POLICY_LABEL,
-               string_hint)
-
-CENTURION_HINT(win_rt_privacy_policy_url,
-               SDL_HINT_WINRT_PRIVACY_POLICY_URL,
-               string_hint)
-
-CENTURION_HINT(WinRTHandleBackButton,
-               SDL_HINT_WINRT_HANDLE_BACK_BUTTON,
-               int_hint)
-
-CENTURION_HINT(mouse_touch_events, SDL_HINT_MOUSE_TOUCH_EVENTS, bool_hint)
-
-CENTURION_HINT(raspberry_pi_video_layer, SDL_HINT_RPI_VIDEO_LAYER, int_hint)
-
-CENTURION_HINT(render_batching, SDL_HINT_RENDER_BATCHING, bool_hint)
-
-CENTURION_HINT(return_key_hides_ime, SDL_HINT_RETURN_KEY_HIDES_IME, bool_hint)
-
-CENTURION_HINT(touch_mouse_events, SDL_HINT_TOUCH_MOUSE_EVENTS, bool_hint)
-
-CENTURION_HINT(thread_stack_size, SDL_HINT_THREAD_STACK_SIZE, unsigned_int_hint)
-
-CENTURION_HINT(timer_resolution, SDL_HINT_TIMER_RESOLUTION, unsigned_int_hint)
-
-CENTURION_HINT(tv_remote_as_joystick, SDL_HINT_TV_REMOTE_AS_JOYSTICK, bool_hint)
-
-CENTURION_HINT(qt_wayland_window_flags,
-               SDL_HINT_QTWAYLAND_WINDOW_FLAGS,
-               string_hint)
-
-CENTURION_HINT(xinput_enabled, SDL_HINT_XINPUT_ENABLED, bool_hint)
-
-CENTURION_HINT(xinput_use_old_joystick_mapping,
-               SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING,
-               bool_hint)
-
-/// @endcond
+}  // namespace qtwayland
+
+namespace mouse {
+
+struct focus_clickthrough final : detail::bool_hint<focus_clickthrough>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH;
+  }
+};
+
+struct relative_mode_warp final : detail::bool_hint<relative_mode_warp>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_RELATIVE_MODE_WARP;
+  }
+};
+
+struct double_click_time final : detail::int_hint<double_click_time>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_DOUBLE_CLICK_TIME;
+  }
+};
+
+struct double_click_radius final : detail::int_hint<double_click_radius>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS;
+  }
+};
+
+struct normal_speed_scale final : detail::float_hint<normal_speed_scale>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_NORMAL_SPEED_SCALE;
+  }
+};
+
+struct relative_speed_scale final : detail::float_hint<relative_speed_scale>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
+  }
+};
+
+}  // namespace mouse
+
+namespace d3d {
+
+struct v11_debug final : detail::bool_hint<v11_debug>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_DIRECT3D11_DEBUG;
+  }
+};
+
+struct thread_safe final : detail::bool_hint<thread_safe>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_RENDER_DIRECT3D_THREADSAFE;
+  }
+};
+
+}  // namespace d3d
+
+namespace gamecontroller {
+
+struct use_button_labels final : detail::bool_hint<use_button_labels>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS;
+  }
+};
+
+struct type final : detail::string_hint<type>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERTYPE;
+  }
+};
+
+struct config final : detail::string_hint<config>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERCONFIG;
+  }
+};
+
+struct config_file final : detail::string_hint<config_file>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLERCONFIG_FILE;
+  }
+};
+
+struct ignore_devices final : detail::string_hint<ignore_devices>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES;
+  }
+};
+
+struct ignore_devices_except final : detail::string_hint<ignore_devices_except>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT;
+  }
+};
+
+}  // namespace gamecontroller
+
+namespace winrt {
+
+struct privacy_policy_label final : detail::string_hint<privacy_policy_label>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_PRIVACY_POLICY_LABEL;
+  }
+};
+
+struct privacy_policy_url final : detail::string_hint<privacy_policy_url>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_PRIVACY_POLICY_URL;
+  }
+};
+
+struct handle_back_button final : detail::bool_hint<handle_back_button>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINRT_HANDLE_BACK_BUTTON;
+  }
+};
+
+}  // namespace winrt
+
+namespace windows {
+
+struct d3d_compiler final : enum_hint<d3d_compiler>
+{
+  static inline constexpr detail::static_string_map<value, 3> map{
+      std::make_pair(value::v46, "d3dcompiler_46.dll"),
+      std::make_pair(value::v43, "d3dcompiler_43.dll"),
+      std::make_pair(value::none, "none")};
+
+  static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
+  }
+};
+
+struct no_thread_naming final : detail::bool_hint<no_thread_naming>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING;
+  }
+};
+
+struct enable_message_loop final : detail::bool_hint<enable_message_loop>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP;
+  }
+};
+
+struct no_close_on_alt_f4 final : detail::bool_hint<no_close_on_alt_f4>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4;
+  }
+};
+
+struct int_resource_icon final : detail::string_hint<int_resource_icon>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_INTRESOURCE_ICON;
+  }
+};
+
+struct int_resource_icon_small final
+    : detail::string_hint<int_resource_icon_small>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL;
+  }
+};
+
+}  // namespace windows
+
+namespace mac {
+
+struct fullscreen_spaces final : detail::bool_hint<fullscreen_spaces>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES;
+  }
+};
+
+struct background_app final : detail::bool_hint<background_app>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MAC_BACKGROUND_APP;
+  }
+};
+
+struct ctrl_click_emulate_right_click final
+    : detail::bool_hint<ctrl_click_emulate_right_click>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK;
+  }
+};
+
+}  // namespace mac
+
+namespace android {
+
+struct block_on_pause final : detail::bool_hint<block_on_pause>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_BLOCK_ON_PAUSE;
+  }
+};
+
+struct trap_back_button final : detail::bool_hint<trap_back_button>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_TRAP_BACK_BUTTON;
+  }
+};
+
+struct apk_expansion_main_file_version final
+    : detail::int_hint<apk_expansion_main_file_version>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
+  }
+};
+
+struct apk_expansion_patch_file_version final
+    : detail::int_hint<apk_expansion_patch_file_version>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION;
+  }
+};
+
+}  // namespace android
+
+namespace joystick {
+
+struct allow_background_events final
+    : detail::bool_hint<allow_background_events>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS;
+  }
+};
+
+struct use_hidapi final : detail::bool_hint<use_hidapi>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI;
+  }
+};
+
+struct use_hidapi_ps4 final : detail::bool_hint<use_hidapi_ps4>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS4;
+  }
+};
+
+struct use_hidapi_ps4_rumble final : detail::bool_hint<use_hidapi_ps4_rumble>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE;
+  }
+};
+
+struct use_hidapi_steam final : detail::bool_hint<use_hidapi_steam>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_STEAM;
+  }
+};
+
+struct use_hidapi_switch final : detail::bool_hint<use_hidapi_switch>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_SWITCH;
+  }
+};
+
+struct use_hidapi_xbox final : detail::bool_hint<use_hidapi_xbox>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_XBOX;
+  }
+};
+
+struct use_hidapi_game_cube final : detail::bool_hint<use_hidapi_game_cube>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE;
+  }
+};
+
+}  // namespace joystick
+
+namespace x11 {
+
+struct net_wm_ping final : detail::bool_hint<net_wm_ping>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_NET_WM_PING;
+  }
+};
+
+struct net_wm_bypass_compositor final
+    : detail::bool_hint<net_wm_bypass_compositor>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR;
+  }
+};
+
+struct force_egl final : detail::bool_hint<force_egl>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_FORCE_EGL;
+  }
+};
+
+struct xinerama final : detail::bool_hint<xinerama>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XINERAMA;
+  }
+};
+
+struct xrandr final : detail::bool_hint<xrandr>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XRANDR;
+  }
+};
+
+struct xvidmode final : detail::bool_hint<xvidmode>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_XVIDMODE;
+  }
+};
+
+struct window_visual_id final : detail::string_hint<window_visual_id>
+{
+  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  {
+    return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
+  }
+};
+
+}  // namespace x11
+
+}  // namespace hint
 
 /**
- * @enum hint_prio
- *
- * @ingroup configuration
+ * @enum hint_priority
  *
  * @brief Provides three different priorities that can be specified when
  * setting the value of a hint.
@@ -1093,47 +1252,20 @@ CENTURION_HINT(xinput_use_old_joystick_mapping,
  *
  * @headerfile hints.hpp
  */
-enum class hint_prio {
-  low = SDL_HINT_DEFAULT,   /**< The lowest priority, used for default values.*/
-  normal = SDL_HINT_NORMAL, /**< The priority used by default by
-                             * <code>set_hint</code>.*/
-  override = SDL_HINT_OVERRIDE /**< The highest priority.*/
+enum class hint_priority {
+  low = SDL_HINT_DEFAULT,       ///< The lowest possible priority.
+  normal = SDL_HINT_NORMAL,     ///< The priority used by default by `set_hint`.
+  override = SDL_HINT_OVERRIDE  ///< The highest priority.
 };
 
 /**
  * @brief Sets the value of the specified hint.
- *
- * @ingroup configuration
  *
  * @details This method will only accept values that are related to the
  * specified hint, supplying the wrong kind of value causes a compile-time
  * error. See the related hint class for more details about the associated
  * value type. However, whilst this method is type-safe, it doesn't ensure
  * that *correct* values are specified for the hints.
- *
- * @par Examples
- * The following is an example of how you could use this method to
- * specify the render driver that SDL should use, and the value is specified
- * with an enum value associated with the <code>RenderDriver</code> class.
- * @code{.cpp}
- *   set_hint<RenderDriver>(RenderDriver::OpenGL);
- * @endcode
- * Most hints only accept boolean or integer values. As in the following
- * example.
- * @code{.cpp}
- *   set_hint<EnableVSync>(true);
- *   set_hint<EventLogging>(2);
- * @endcode
- * Sometimes, it's useful to know whether or not the hint was actually set
- * to the desired value. This can be done according to the following example.
- * @code{.cpp}
- *   const bool success = set_hint<DoubleBuffer>(true);
- *   if (success) {
- *     // the hint was actually set!
- *   } else {
- *     // something went wrong!
- *   }
- * @endcode
  *
  * @tparam Hint the type of the hint that will be modified.
  * @tparam priority the priority that will be used, defaults to `normal`.
@@ -1146,7 +1278,7 @@ enum class hint_prio {
  * @since 4.1.0
  */
 template <typename Hint,
-          hint_prio priority = hint_prio::normal,
+          hint_priority priority = hint_priority::normal,
           typename Value,
           typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
 auto set_hint(const Value& value) -> bool
@@ -1160,38 +1292,24 @@ auto set_hint(const Value& value) -> bool
 /**
  * @brief Returns the current value of the specified hint.
  *
- * @ingroup configuration
- *
- * @note The returned value is a `std::optional` of the hint value type.
- *
- * @par Examples
- * Many hints aren't actually set by default, so if the specified hint
- * doesn't have a set value, then this method will return a null optional.
- * @code{.cpp}
- *  if (const auto value = get_hint<RenderDriver>(); value) {
- *    // the hint was set!
- *  } else {
- *    // the hint had no set value!
- *  }
- * @endcode
+ * @note The returned value is a `std::optional` of the hint value type. Many
+ * hints aren't actually set by default.
  *
  * @tparam Hint the type of the Hint to obtain the value of.
  *
- * @return the current value of the specified hint; `nothing` if there is no
- * value set for the hint.
+ * @return the current value of the specified hint; `std::nullopt` if there is
+ * no value set for the hint.
  *
  * @since 4.1.0
  */
 template <typename Hint>
-[[nodiscard]] decltype(auto) get_hint() noexcept
+[[nodiscard]] auto get_hint() noexcept
 {
   return Hint::current_value();
 }
 
 /**
- * @class callback
- *
- * @ingroup configuration
+ * @class hint_callback
  *
  * @brief Represents a handle for dealing with hint callbacks.
  *
@@ -1208,10 +1326,11 @@ template <typename Hint>
  * @headerfile hints.hpp
  */
 template <typename Hint, typename UserData = void>
-class callback final {
+class hint_callback final
+{
  public:
   /**
-   * @brief Creates a `HintCallback`.
+   * @brief Creates a `hint_callback`.
    *
    * @param callback the function object that will be called whenever the
    * associated hint is updated. The signature should be `void(void*,
@@ -1222,7 +1341,7 @@ class callback final {
    *
    * @since 4.1.0
    */
-  callback(SDL_HintCallback callback, UserData* userData = nullptr)
+  hint_callback(SDL_HintCallback callback, UserData* userData = nullptr)
       : m_callback{callback}, m_userData{userData}
   {
     if (!callback) {
@@ -1288,13 +1407,13 @@ class callback final {
 };
 
 /**
- * @brief Adds a callback to observe changes of the value of the specified
- * hint is updated.
- *
- * @ingroup configuration
+ * @brief Adds a callback to observe changes of the value of the specified hint.
  *
  * @details A callback handle object is returned, which can be used to easily
- * disconnect the callback later.
+ * disconnect the callback later. This function can be used with any function
+ * object that is stateless, such as traditional function pointers and lambdas.
+ * The simplest way to add a callback is with a lambda and no explicit user
+ * data.
  *
  * @note The callback will be immediately invoked with the current value of
  * the hint.
@@ -1303,31 +1422,6 @@ class callback final {
  * signature of the function object will be dependent on the `UserData` type.
  * Unfortunately, this isn't really doable with C++17. Since it requires
  * default-constructible stateless lambdas.
- *
- * @par Examples
- * This method can be used with any function object that is stateless, such
- * as traditional function pointers and lambdas. The simplest way to add a
- * callback is with a lambda and no explicit user data.
- * @code{.cpp}
- *   auto handle = add_callback([](void* userData,
- *                                 czstring hint,
- *                                 czstring oldValue,
- *                                 czstring newValue) {
- *     // code that handles the update
- *   });
- * @endcode
- * It's also possible to supply a pointer to some data that you want to
- * associate with the callback. As always, beware of the lifetime of the data!
- * @code{.cpp}
- *   int data = 8; // shouldn't be local in real code
- *   auto handle = add_callback([](void* userData,
- *                                 czstring hint,
- *                                 czstring oldValue,
- *                                 czstring newValue) {
- *     // code that handles the update
- *   },
- *   &data);
- * @endcode
  *
  * @tparam Hint should one of the many hint types defined in this header.
  * However, all it requires is that the type provides a static method that
@@ -1344,10 +1438,11 @@ class callback final {
  * @since 4.1.0
  */
 template <typename Hint, typename UserData = void>
-auto add_callback(SDL_HintCallback fun, UserData* userData = nullptr) noexcept
-    -> callback<Hint, UserData>
+auto add_hint_callback(SDL_HintCallback fun,
+                       UserData* userData = nullptr) noexcept
+    -> hint_callback<Hint, UserData>
 {
-  callback<Hint, UserData> hintCallback{fun, userData};
+  hint_callback<Hint, UserData> hintCallback{fun, userData};
   hintCallback.connect();
   return hintCallback;
 }
@@ -1355,18 +1450,17 @@ auto add_callback(SDL_HintCallback fun, UserData* userData = nullptr) noexcept
 /**
  * @brief Clears all stored hints.
  *
- * @ingroup configuration
- *
  * @see `SDL_ClearHints`
  *
  * @since 4.1.0
  */
-inline void clear_all() noexcept
+inline void clear_hints() noexcept
 {
   SDL_ClearHints();
 }
 
-}  // namespace hint
+/// @}
+
 }  // namespace centurion
 
 #undef CENTURION_BOOL_HINT

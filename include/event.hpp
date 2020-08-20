@@ -84,7 +84,8 @@ namespace centurion {
  * @headerfile event.hpp
  */
 template <typename T>
-class common_event {
+class common_event
+{
  public:
   /**
    * @brief Creates a `CommonEvent` and default-initializes the internal event.
@@ -216,7 +217,8 @@ template <typename T, typename E>
  *
  * @headerfile event.hpp
  */
-class audio_device_event final : public common_event<SDL_AudioDeviceEvent> {
+class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized audio device event.
@@ -306,8 +308,8 @@ static_assert(validate_event<audio_device_event, SDL_AudioDeviceEvent>());
  *
  * @headerfile event.hpp
  */
-class controller_axis_event final
-    : public common_event<SDL_ControllerAxisEvent> {
+class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized controller axis event.
@@ -409,7 +411,8 @@ static_assert(validate_event<controller_axis_event, SDL_ControllerAxisEvent>());
  * @headerfile event.hpp
  */
 class controller_button_event final
-    : public common_event<SDL_ControllerButtonEvent> {
+    : public common_event<SDL_ControllerButtonEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized controller button event.
@@ -510,7 +513,8 @@ static_assert(
  * @headerfile event.hpp
  */
 class controller_device_event final
-    : public common_event<SDL_ControllerDeviceEvent> {
+    : public common_event<SDL_ControllerDeviceEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized controller device event.
@@ -576,7 +580,8 @@ static_assert(
  *
  * @headerfile event.hpp
  */
-class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent> {
+class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized dollar gesture event.
@@ -630,8 +635,6 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent> {
   /**
    * @brief Sets the error value for the performed stroke compared with the
    * gesture template associated with the event.
-   *
-   * @return the error value for the performed stroke.
    *
    * @since 4.0.0
    */
@@ -739,7 +742,8 @@ static_assert(validate_event<dollar_gesture_event, SDL_DollarGestureEvent>());
  *
  * @headerfile event.hpp
  */
-class drop_event final : public common_event<SDL_DropEvent> {
+class drop_event final : public common_event<SDL_DropEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized drop event.
@@ -891,7 +895,8 @@ static_assert(validate_event<drop_event, SDL_DropEvent>());
  *
  * @headerfile event.hpp
  */
-class joy_axis_event final : public common_event<SDL_JoyAxisEvent> {
+class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized joy axis event.
@@ -988,7 +993,8 @@ static_assert(validate_event<joy_axis_event, SDL_JoyAxisEvent>());
  *
  * @headerfile event.hpp
  */
-class joy_ball_event final : public common_event<SDL_JoyBallEvent> {
+class joy_ball_event final : public common_event<SDL_JoyBallEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized joy ball event.
@@ -1111,7 +1117,8 @@ static_assert(validate_event<joy_ball_event, SDL_JoyBallEvent>());
  *
  * @headerfile event.hpp
  */
-class joy_button_event final : public common_event<SDL_JoyButtonEvent> {
+class joy_button_event final : public common_event<SDL_JoyButtonEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized JoyButtonEvent.
@@ -1209,7 +1216,8 @@ static_assert(validate_event<joy_button_event, SDL_JoyButtonEvent>());
  *
  * @headerfile event.hpp
  */
-class joy_device_event final : public common_event<SDL_JoyDeviceEvent> {
+class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized JoyDeviceEvent.
@@ -1292,7 +1300,8 @@ enum class joy_hat_position {
  *
  * @headerfile event.hpp
  */
-class joy_hat_event final : public common_event<SDL_JoyHatEvent> {
+class joy_hat_event final : public common_event<SDL_JoyHatEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized joy hat event.
@@ -1369,7 +1378,8 @@ static_assert(validate_event<joy_hat_event, SDL_JoyHatEvent>());
  *
  * @headerfile event.hpp
  */
-class keyboard_event final : public common_event<SDL_KeyboardEvent> {
+class keyboard_event final : public common_event<SDL_KeyboardEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized keyboard event.
@@ -1648,7 +1658,8 @@ static_assert(validate_event<keyboard_event, SDL_KeyboardEvent>());
  *
  * @headerfile event.hpp
  */
-class mouse_button_event final : public common_event<SDL_MouseButtonEvent> {
+class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized `MouseButtonEvent`.
@@ -1825,7 +1836,8 @@ static_assert(validate_event<mouse_button_event, SDL_MouseButtonEvent>());
  *
  * @headerfile event.hpp
  */
-class mouse_motion_event final : public common_event<SDL_MouseMotionEvent> {
+class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized MouseMotionEvent.
@@ -2097,7 +2109,8 @@ auto operator!=(SDL_MouseWheelDirection lhs, mouse_wheel_direction rhs) noexcept
  *
  * @headerfile event.hpp
  */
-class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent> {
+class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized MouseWheelEvent.
@@ -2248,7 +2261,8 @@ static_assert(validate_event<mouse_wheel_event, SDL_MouseWheelEvent>());
  *
  * @headerfile event.hpp
  */
-class multi_gesture_event final : public common_event<SDL_MultiGestureEvent> {
+class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized `MultiGestureEvent`.
@@ -2421,7 +2435,8 @@ static_assert(validate_event<multi_gesture_event, SDL_MultiGestureEvent>());
  *
  * @headerfile event.hpp
  */
-class quit_event final : public common_event<SDL_QuitEvent> {
+class quit_event final : public common_event<SDL_QuitEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized quit event.
@@ -2460,7 +2475,8 @@ static_assert(validate_event<quit_event, SDL_QuitEvent>());
  *
  * @headerfile event.hpp
  */
-class text_editing_event final : public common_event<SDL_TextEditingEvent> {
+class text_editing_event final : public common_event<SDL_TextEditingEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized `TextEditingEvent`.
@@ -2575,7 +2591,8 @@ static_assert(validate_event<text_editing_event, SDL_TextEditingEvent>());
  *
  * @headerfile event.hpp
  */
-class text_input_event final : public common_event<SDL_TextInputEvent> {
+class text_input_event final : public common_event<SDL_TextInputEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized TextInputEvent.
@@ -2641,7 +2658,8 @@ static_assert(validate_event<text_input_event, SDL_TextInputEvent>());
  *
  * @headerfile event.hpp
  */
-class touch_finger_event final : public common_event<SDL_TouchFingerEvent> {
+class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized touch finger event.
@@ -3060,7 +3078,8 @@ enum class window_event_id {
  *
  * @headerfile event.hpp
  */
-class window_event final : public common_event<SDL_WindowEvent> {
+class window_event final : public common_event<SDL_WindowEvent>
+{
  public:
   /**
    * @brief Creates a default-initialized window event.
@@ -3170,7 +3189,8 @@ static_assert(validate_event<window_event, SDL_WindowEvent>());
  *
  * @headerfile event.hpp
  */
-class event final {
+class event final
+{
  public:
   /**
    * @brief Creates an empty event.

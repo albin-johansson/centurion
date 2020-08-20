@@ -160,7 +160,7 @@ auto font::get_metrics(unicode glyph) const noexcept
   if (result != -1) {
     return metrics;
   } else {
-    return nothing;
+    return std::nullopt;
   }
 }
 

@@ -75,7 +75,8 @@ enum class lock_status {
  *
  * @headerfile mutex.hpp
  */
-class mutex final {
+class mutex final
+{
  public:
   /**
    * @brief Creates an unlocked mutex.
@@ -128,7 +129,8 @@ class mutex final {
   auto get() noexcept -> SDL_mutex*;
 
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(SDL_mutex* mutex) noexcept { SDL_DestroyMutex(mutex); }
   };

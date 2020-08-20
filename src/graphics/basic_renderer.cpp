@@ -10,7 +10,7 @@ auto get_render_driver_info(int index) noexcept
   if (result == 0) {
     return info;
   } else {
-    return nothing;
+    return std::nullopt;
   }
 }
 

@@ -39,10 +39,12 @@
 
 #include <SDL_stdinc.h>
 
-#include <chrono>
-#include <gsl/gsl>
-#include <optional>
-#include <type_traits>
+#include <array>     // array
+#include <chrono>    // duration
+#include <cstddef>   // byte
+#include <entt.hpp>  // id_type
+#include <gsl/gsl>   // not_null, owner, czstring, zstring
+#include <optional>  // optional
 
 #include "centurion_api.hpp"
 
@@ -72,10 +74,13 @@ using if_same_t = typename std::enable_if_t<std::is_same_v<T, U>>;
 
 }  // namespace detail
 
+/// @addtogroup misc
+/// @{
+
 /**
  * @typedef owner
  *
- * @ingroup misc
+ *
  *
  * @brief Tag used to denote ownership of raw pointers directly in code.
  *
@@ -89,8 +94,6 @@ using owner = gsl::owner<T>;
 /**
  * @typedef nn_owner
  *
- * @ingroup misc
- *
  * @brief Tag used to represent a non-null owner.
  */
 template <typename T>
@@ -99,25 +102,19 @@ using nn_owner = gsl::not_null<owner<T>>;
 /**
  * @typedef czstring
  *
- * @ingroup misc
- *
  * @brief Alias for a const C-style null-terminated string.
  */
-using czstring = const char*;
+using czstring = gsl::czstring<>;
 
 /**
  * @typedef zstring
  *
- * @ingroup misc
- *
  * @brief Alias for a C-style null-terminated string.
  */
-using zstring = char*;
+using zstring = gsl::zstring<>;
 
 /**
  * @typedef nn_czstring
- *
- * @ingroup misc
  *
  * @brief Alias for a C-style null-terminated string that cannot be null.
  *
@@ -126,18 +123,28 @@ using zstring = char*;
 using nn_czstring = gsl::not_null<czstring>;
 
 /**
- * @var nothing
+ * @typedef hash_id
  *
- * @ingroup misc
+ * @brief Alias for `entt::id_type`, used for compile-time hashed string
+ * identifiers.
  *
- * @brief A constant that is equal to `std::nullopt`.
+ * @since 5.0.0
  */
-inline constexpr std::nullopt_t nothing = std::nullopt;
+using hash_id = entt::id_type;
+
+/**
+ * @typedef buffer
+ *
+ * @brief Alias for an array of `std::byte` instances, meant to be used with
+ * `pmr` containers.
+ *
+ * @since 5.0.0
+ */
+template <std::size_t size>
+using buffer = std::array<std::byte, size>;
 
 /**
  * @typedef u64
- *
- * @ingroup misc
  *
  * @brief Alias for a 64-bit unsigned integer.
  */
@@ -146,16 +153,12 @@ using u64 = Uint64;
 /**
  * @typedef u32
  *
- * @ingroup misc
- *
  * @brief Alias for a 32-bit unsigned integer.
  */
 using u32 = Uint32;
 
 /**
  * @typedef u16
- *
- * @ingroup misc
  *
  * @brief Alias for a 16-bit unsigned integer.
  */
@@ -164,16 +167,12 @@ using u16 = Uint16;
 /**
  * @typedef u8
  *
- * @ingroup misc
- *
  * @brief Alias for an 8-bit unsigned integer.
  */
 using u8 = Uint8;
 
 /**
  * @typedef i64
- *
- * @ingroup misc
  *
  * @brief Alias for a 64-bit signed integer.
  */
@@ -182,16 +181,12 @@ using i64 = Sint64;
 /**
  * @typedef i32
  *
- * @ingroup misc
- *
  * @brief Alias for a 32-bit signed integer.
  */
 using i32 = Sint32;
 
 /**
  * @typedef i16
- *
- * @ingroup misc
  *
  * @brief Alias for a 16-bit signed integer.
  */
@@ -200,16 +195,12 @@ using i16 = Sint16;
 /**
  * @typedef i8
  *
- * @ingroup misc
- *
  * @brief Alias for an 8-bit signed integer.
  */
 using i8 = Sint8;
 
 /**
  * @typedef unicode
- *
- * @ingroup misc
  *
  * @brief The representation of Unicode glyphs.
  *
@@ -220,8 +211,6 @@ using unicode = u16;
 /**
  * @typedef seconds
  *
- * @ingroup misc
- *
  * @brief Templated alias for durations in seconds.
  */
 template <typename T>
@@ -229,8 +218,6 @@ using seconds = std::chrono::duration<T>;
 
 /**
  * @typedef milliseconds
- *
- * @ingroup misc
  *
  * @brief Templated alias for durations in milliseconds.
  */
@@ -240,8 +227,6 @@ using milliseconds = std::chrono::duration<T, std::milli>;
 /**
  * @typedef microseconds
  *
- * @ingroup misc
- *
  * @brief Templated alias for durations in microseconds.
  */
 template <typename T>
@@ -249,8 +234,6 @@ using microseconds = std::chrono::duration<T, std::micro>;
 
 /**
  * @typedef nanoseconds
- *
- * @ingroup misc
  *
  * @brief Templated alias for durations in nanoseconds.
  */
@@ -260,12 +243,12 @@ using nanoseconds = std::chrono::duration<T, std::nano>;
 /**
  * @typedef minutes
  *
- * @ingroup misc
- *
  * @brief Templated alias for durations in minutes.
  */
 template <typename T>
 using minutes = std::chrono::duration<T, std::ratio<60>>;
+
+/// @}
 
 }  // namespace centurion
 

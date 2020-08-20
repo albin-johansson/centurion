@@ -76,7 +76,8 @@ namespace centurion {
  *
  * @headerfile scan_code.hpp
  */
-class scan_code final {
+class scan_code final
+{
  public:
   /**
    * @brief Creates a `scan_code` instance with the `SDL_SCANCODE_UNKNOWN` scan

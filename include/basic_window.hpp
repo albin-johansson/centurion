@@ -58,7 +58,8 @@ namespace centurion {
  * @headerfile basic_window.hpp
  */
 template <class Derived>
-class basic_window {
+class basic_window
+{
  public:
   /**
    * @brief Makes the window visible.
@@ -405,7 +406,7 @@ class basic_window {
   /**
    * @brief Returns the display index associated with the window.
    *
-   * @return the display index associated with the window; `nothing` if the
+   * @return the display index associated with the window; `std::nullopt` if the
    * display index cannot be obtained.
    *
    * @since 3.1.0

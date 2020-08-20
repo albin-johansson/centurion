@@ -1,7 +1,7 @@
-Renderer
+renderer
 ========
 
-The primary class for rendering is ``renderer``. Which represents an owning renderer.
+The ``renderer`` class represents an owning renderer.
 
 Rendering textures
 ------------------

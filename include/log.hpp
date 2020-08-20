@@ -46,10 +46,8 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-/**
- * @addtogroup misc
- * @{
- */
+/// @addtogroup misc
+/// @{
 
 /**
  * @namespace centurion::log
@@ -589,15 +587,123 @@ auto get_priority(category category) noexcept -> log::priority;
 
 #ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
 
-// TODO test!
-
 #ifdef NDEBUG
+
+/**
+ * @def CENTURION_LOG_INFO
+ */
 #define CENTURION_LOG_INFO(fmt, ...)
+
+/**
+ * @def CENTURION_LOG_WARN
+ */
+#define CENTURION_LOG_WARN(fmt, ...)
+
+/**
+ * @def CENTURION_LOG_VERBOSE
+ */
+#define CENTURION_LOG_VERBOSE(fmt, ...)
+
+/**
+ * @def CENTURION_LOG_DEBUG
+ */
+#define CENTURION_LOG_DEBUG(fmt, ...)
+
+/**
+ * @def CENTURION_LOG_CRITICAL
+ */
+#define CENTURION_LOG_CRITICAL(fmt, ...)
+
+/**
+ * @def CENTURION_LOG_ERROR
+ */
+#define CENTURION_LOG_ERROR(fmt, ...)
+
 #else
+
+/**
+ * @def CENTURION_LOG_INFO
+ */
 #define CENTURION_LOG_INFO(fmt, ...) centurion::log::info(fmt, __VA_ARGS__)
+
+/**
+ * @def CENTURION_LOG_WARN
+ */
+#define CENTURION_LOG_WARN(fmt, ...) centurion::log::warn(fmt, __VA_ARGS__)
+
+/**
+ * @def CENTURION_LOG_VERBOSE
+ */
+#define CENTURION_LOG_VERBOSE(fmt, ...) \
+  centurion::log::verbose(fmt, __VA_ARGS__)
+
+/**
+ * @def CENTURION_LOG_DEBUG
+ */
+#define CENTURION_LOG_DEBUG(fmt, ...) centurion::log::debug(fmt, __VA_ARGS__)
+
+/**
+ * @def CENTURION_LOG_CRITICAL
+ */
+#define CENTURION_LOG_CRITICAL(fmt, ...) \
+  centurion::log::critical(fmt, __VA_ARGS__)
+
+/**
+ * @def CENTURION_LOG_ERROR
+ */
+#define CENTURION_LOG_ERROR(fmt, ...) centurion::log::error(fmt, __VA_ARGS__)
+
 #endif  // NDEBUG
 
 #endif  // CENTURION_USE_DEBUG_LOGGING_MACROS
+
+/**
+ * @def CENTURION_LOG_INFO
+ *
+ * @brief A debug-only macro that expands to `centurion::log::info`.
+ *
+ * @since 5.0.0
+ */
+
+/**
+ * @def CENTURION_LOG_WARN
+ *
+ * @brief A debug-only macro that expands to `centurion::log::warn`.
+ *
+ * @since 5.0.0
+ */
+
+/**
+ * @def CENTURION_LOG_VERBOSE
+ *
+ * @brief A debug-only macro that expands to `centurion::log::verbose`.
+ *
+ * @since 5.0.0
+ */
+
+/**
+ * @def CENTURION_LOG_DEBUG
+ *
+ * @brief A debug-only macro that expands to `centurion::log::debug`.
+ *
+ * @since 5.0.0
+ */
+
+/**
+ * @def CENTURION_LOG_CRITICAL
+ *
+ * @brief A debug-only macro that expands to `centurion::log::critical`.
+ *
+ * @since 5.0.0
+ */
+
+/**
+ * @def CENTURION_LOG_ERROR
+ *
+ * @brief A debug-only macro that expands to `centurion::log::error`.
+ *
+ * @since 5.0.0
+ */
 
 /// @}
 

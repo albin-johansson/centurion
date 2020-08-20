@@ -136,7 +136,7 @@ enum class power_state {
 /**
  * @brief Returns the seconds of battery life that is remaining.
  *
- * @return seconds of remaining battery life; `nothing` if the value cannot
+ * @return seconds of remaining battery life; `std::nullopt` if the value cannot
  * be computed.
  *
  * @since 3.0.0
@@ -147,7 +147,7 @@ auto seconds_left() noexcept -> std::optional<seconds<int>>;
 /**
  * @brief Returns the amount of minutes of battery life that is remaining.
  *
- * @return minutes of remaining battery life; `nothing` if the value cannot
+ * @return minutes of remaining battery life; `std::nullopt` if the value cannot
  * be computed.
  *
  * @since 3.0.0
@@ -159,7 +159,7 @@ auto minutes_left() noexcept -> std::optional<minutes<int>>;
  * @brief Returns the percentage of battery life that is currently left.
  *
  * @return percentage of remaining battery life, in the range [0, 100];
- * `nothing` if the battery percentage isn't available.
+ * `std::nullopt` if the battery percentage isn't available.
  *
  * @since 3.0.0
  */

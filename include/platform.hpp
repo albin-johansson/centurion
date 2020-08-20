@@ -46,6 +46,7 @@
 
 #include <SDL.h>
 
+#include <optional>
 #include <string>
 
 #include "centurion_api.hpp"
@@ -114,13 +115,13 @@ auto id() noexcept -> platform_id;
 /**
  * @brief Returns the name of the current platform.
  *
- * @return the name of the current platform; `nothing` if the name cannot
+ * @return the name of the current platform; `std::nullopt` if the name cannot
  * be deduced.
  *
  * @since 3.0.0
  */
 CENTURION_QUERY
-auto name() noexcept -> std::optional<std::string>;
+auto name() -> std::optional<std::string>;
 
 }  // namespace centurion::platform
 

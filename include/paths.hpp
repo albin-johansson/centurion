@@ -39,6 +39,8 @@
 
 #include <SDL.h>
 
+#include <ostream>
+#include <string>
 #include <type_traits>
 
 #include "centurion_api.hpp"
@@ -55,7 +57,8 @@ namespace centurion {
 
 namespace detail {
 
-class path_deleter final {
+class path_deleter final
+{
  public:
   void operator()(zstring path) noexcept { SDL_free(path); }
 };
@@ -87,7 +90,8 @@ class path_deleter final {
  *
  * @since 3.0.0
  */
-class base_path final {
+class base_path final
+{
  public:
   /**
    * @typedef uptr
@@ -168,6 +172,35 @@ class base_path final {
   std::unique_ptr<char, detail::path_deleter> m_path;
 };
 
+/**
+ * @brief Returns a textual representation of a base path.
+ *
+ * @ingroup system
+ *
+ * @param path the base path that will be converted.
+ *
+ * @return a string that represents a base path.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto to_string(const base_path& path) -> std::string;
+
+/**
+ * @brief Prints a textual representation of a base path.
+ *
+ * @ingroup system
+ *
+ * @param stream the stream that will be used.
+ * @param path the base path that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+CENTURION_API
+auto operator<<(std::ostream& stream, const base_path& path) -> std::ostream&;
+
 static_assert(std::is_default_constructible_v<base_path>);
 static_assert(std::is_nothrow_move_constructible_v<base_path>);
 static_assert(std::is_nothrow_move_assignable_v<base_path>);
@@ -205,7 +238,8 @@ static_assert(!std::is_copy_assignable_v<base_path>);
  *
  * @headerfile paths.hpp
  */
-class pref_path final {
+class pref_path final
+{
  public:
   /**
    * @typedef uptr
@@ -283,6 +317,35 @@ class pref_path final {
  private:
   std::unique_ptr<char, detail::path_deleter> m_path;
 };
+
+/**
+ * @brief Returns a textual representation of a pref path.
+ *
+ * @ingroup system
+ *
+ * @param path the pref path that will be converted.
+ *
+ * @return a string that represents a pref path.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto to_string(const pref_path& path) -> std::string;
+
+/**
+ * @brief Prints a textual representation of a pref path.
+ *
+ * @ingroup system
+ *
+ * @param stream the stream that will be used.
+ * @param path the pref path that will be printed.
+ *
+ * @return the used stream.
+ *
+ * @since 5.0.0
+ */
+CENTURION_API
+auto operator<<(std::ostream& stream, const pref_path& path) -> std::ostream&;
 
 static_assert(std::is_nothrow_move_constructible_v<pref_path>);
 static_assert(std::is_nothrow_move_assignable_v<pref_path>);

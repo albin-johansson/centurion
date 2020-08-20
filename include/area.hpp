@@ -73,7 +73,8 @@ namespace centurion {
  * @headerfile area.hpp
  */
 template <typename T>
-struct basic_area {
+struct basic_area
+{
   T width{0};
   T height{0};
 
@@ -127,9 +128,9 @@ using darea = basic_area<double>;
  * @since 4.1.0
  */
 template <typename T>
-[[nodiscard]] inline constexpr auto operator==(
-    const basic_area<T>& lhs,
-    const basic_area<T>& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const basic_area<T>& lhs,
+                                        const basic_area<T>& rhs) noexcept
+    -> bool
 {
   return (lhs.width == rhs.width) && (lhs.height == rhs.height);
 }
@@ -147,9 +148,9 @@ template <typename T>
  * @since 4.1.0
  */
 template <typename T>
-[[nodiscard]] inline constexpr auto operator!=(
-    const basic_area<T>& lhs,
-    const basic_area<T>& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const basic_area<T>& lhs,
+                                        const basic_area<T>& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -172,7 +173,7 @@ template <typename T>
 {
   const auto width = std::to_string(area.width);
   const auto height = std::to_string(area.height);
-  return "[Area | Width: " + width + ", Height: " + height + "]";
+  return "[area | width: " + width + ", height: " + height + "]";
 }
 
 /**
@@ -190,7 +191,7 @@ template <typename T>
  * @since 5.0.0
  */
 template <typename T>
-[[nodiscard]] auto operator<<(std::ostream& stream, const basic_area<T>& area)
+auto operator<<(std::ostream& stream, const basic_area<T>& area)
     -> std::ostream&
 {
   stream << to_string(area);

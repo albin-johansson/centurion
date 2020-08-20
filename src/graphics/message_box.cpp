@@ -1,6 +1,8 @@
 #include "message_box.hpp"
 
-#include <utility>  // move
+#include <algorithm>        // max, any_of
+#include <memory_resource>  // monotonic_memory_resource
+#include <utility>          // move
 
 #include "centurion_exception.hpp"
 
@@ -33,8 +35,10 @@ auto message_box::show(SDL_Window* parent) -> std::optional<button_id>
   data.flags = to_flags(m_type, m_buttonOrder);
   data.colorScheme = m_colorScheme ? m_colorScheme->get() : nullptr;
 
-  std::vector<SDL_MessageBoxButtonData> buttonData;
-  buttonData.reserve(m_buttons.size());
+  // Realistically 1-3 buttons, stack buffer for 8 buttons, just in case.
+  buffer<8 * sizeof(SDL_MessageBoxButtonData)> buffer;
+  std::pmr::monotonic_buffer_resource resource{buffer.data(), sizeof buffer};
+  std::pmr::vector<SDL_MessageBoxButtonData> buttonData{&resource};
 
   if (m_buttons.empty()) {
     add_button(0, "OK", default_button::return_key);
@@ -55,7 +59,7 @@ auto message_box::show(SDL_Window* parent) -> std::optional<button_id>
   if (button != -1) {
     return button;
   } else {
-    return nothing;
+    return std::nullopt;
   }
 }
 
@@ -106,12 +110,10 @@ void message_box::set_button_order(button_order order) noexcept
 
 auto message_box::has_button(button_id id) const noexcept -> bool
 {
-  for (const auto& button : m_buttons) {
-    if (button.id() == id) {
-      return true;
-    }
-  }
-  return false;
+  return std::any_of(
+      m_buttons.begin(), m_buttons.end(), [id](const button& button) noexcept {
+        return button.id() == id;
+      });
 }
 
 auto message_box::get_title() const -> std::string_view

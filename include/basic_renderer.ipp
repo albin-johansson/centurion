@@ -376,12 +376,11 @@ void basic_renderer<Derived>::render(const texture& texture,
 
 template <typename Derived>
 template <typename R, typename P>
-void basic_renderer<Derived>::render(
-    const texture& texture,
-    const irect& source,
-    const basic_rect<R>& destination,
-    double angle,
-    const basic_point<P>& center) noexcept
+void basic_renderer<Derived>::render(const texture& texture,
+                                     const irect& source,
+                                     const basic_rect<R>& destination,
+                                     double angle,
+                                     const basic_point<P>& center) noexcept
 {
   static_assert(std::is_same_v<typename basic_rect<R>::value_type,
                                typename basic_point<P>::value_type>,
@@ -556,7 +555,7 @@ auto basic_renderer<Derived>::clip() const noexcept -> std::optional<irect>
   irect rect{};
   SDL_RenderGetClipRect(ptr(), static_cast<SDL_Rect*>(rect));
   if (!rect.has_area()) {
-    return nothing;
+    return std::nullopt;
   } else {
     return rect;
   }
@@ -571,7 +570,7 @@ auto basic_renderer<Derived>::info() const noexcept
   if (result == 0) {
     return info;
   } else {
-    return nothing;
+    return std::nullopt;
   }
 }
 

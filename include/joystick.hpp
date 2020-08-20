@@ -68,9 +68,11 @@ class joystick;
  * @headerfile joystick.hpp
  */
 template <>
-class joystick_traits<joystick> {
+class joystick_traits<joystick>
+{
  private:
-  class deleter final {
+  class deleter final
+  {
    public:
     void operator()(SDL_Joystick* joystick) noexcept
     {
@@ -100,7 +102,8 @@ class joystick_traits<joystick> {
  *
  * @headerfile joystick.hpp
  */
-class joystick final : public basic_joystick<joystick> {
+class joystick final : public basic_joystick<joystick>
+{
  public:
   /**
    * @typedef uptr

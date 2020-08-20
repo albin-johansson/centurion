@@ -708,7 +708,7 @@ TEST_CASE("Renderer clipping", "[renderer]")
     CHECK(!clip);
   }
 
-  CHECK_NOTHROW(renderer.set_clip(ctn::nothing));
+  CHECK_NOTHROW(renderer.set_clip(std::nullopt));
 
   const ctn::irect clip{{5, 2}, {75, 93}};
 

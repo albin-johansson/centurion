@@ -110,9 +110,11 @@ void message_box::set_button_order(button_order order) noexcept
 
 auto message_box::has_button(button_id id) const noexcept -> bool
 {
-  auto cmp = [id](const button& button) noexcept { return button.id() == id; };
-  return std::find_if(m_buttons.begin(), m_buttons.end(), cmp) !=
-         m_buttons.end();
+  return std::find_if(m_buttons.begin(),
+                      m_buttons.end(),
+                      [id](const button& button) noexcept {
+                        return button.id() == id;
+                      }) != m_buttons.end();
 }
 
 auto message_box::get_title() const -> std::string_view

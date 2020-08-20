@@ -87,16 +87,18 @@ function pointer is also valid.
   {
     std::cout << "Simple thread test: \n";
 
-    ctn::thread thread{[](void* data) -> int {
+    auto task = [](void* data) -> int {
       int count{};
-  
+
       for (; count < 10; ++count) {
         std::cout << "Thread counter: " << count << '\n';
-        ctn::thread::sleep(ctn::milliseconds<u32>{50});
+        ctn::thread::sleep(ctn::milliseconds<ctn::u32>{50});
       }
-  
+
       return count;
-    }, "TestThread"};
+    };
+
+    ctn::thread thread{task, "TestThread"};
 
     const auto ret = thread.join();
     std::cout << "Thread returned value: " << ret << '\n';

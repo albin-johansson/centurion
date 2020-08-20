@@ -204,7 +204,7 @@ class centurion_lib final
    *
    * @since 3.0.0
    */
-  CENTURION_API
+  CENTURION_QUERY
   centurion_lib();
 
   /**
@@ -222,7 +222,7 @@ class centurion_lib final
    *
    * @since 4.0.0
    */
-  CENTURION_API
+  CENTURION_QUERY
   explicit centurion_lib(const centurion_config& cfg);
 
   centurion_lib(const centurion_lib&) = delete;

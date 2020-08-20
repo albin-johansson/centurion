@@ -80,7 +80,7 @@ auto joystick::amount() noexcept -> std::optional<int>
 {
   const auto result = SDL_NumJoysticks();
   if (result < 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return result;
   }
@@ -95,7 +95,7 @@ auto joystick::player_index(int deviceIndex) noexcept -> std::optional<int>
 {
   const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
   if (index == -1) {
-    return nothing;
+    return std::nullopt;
   } else {
     return index;
   }
@@ -105,7 +105,7 @@ auto joystick::vendor(int deviceIndex) noexcept -> std::optional<u16>
 {
   const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
   if (vendor == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return vendor;
   }
@@ -115,7 +115,7 @@ auto joystick::product(int deviceIndex) noexcept -> std::optional<u16>
 {
   const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
   if (product == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return product;
   }
@@ -125,7 +125,7 @@ auto joystick::product_version(int deviceIndex) noexcept -> std::optional<u16>
 {
   const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
   if (version == 0) {
-    return nothing;
+    return std::nullopt;
   } else {
     return version;
   }
@@ -141,7 +141,7 @@ auto joystick::instance_id(int deviceIndex) noexcept
 {
   const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
   if (id == -1) {
-    return nothing;
+    return std::nullopt;
   } else {
     return id;
   }

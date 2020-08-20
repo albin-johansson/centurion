@@ -191,7 +191,7 @@ auto font_cache::create_glyph_texture(Renderer& renderer, unicode glyph)
 template <typename Renderer>
 void font_cache::add_range(Renderer& renderer, unicode begin, unicode end)
 {
-  for (unicode ch = begin; ch < end; ++ch) {
+  for (auto ch = begin; ch < end; ++ch) {
     add_glyph(renderer, ch);
   }
 }

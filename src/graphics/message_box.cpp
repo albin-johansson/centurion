@@ -1,6 +1,6 @@
 #include "message_box.hpp"
 
-#include <algorithm>        // max
+#include <algorithm>        // max, find_if
 #include <memory_resource>  // monotonic_memory_resource
 #include <utility>          // move
 
@@ -110,12 +110,9 @@ void message_box::set_button_order(button_order order) noexcept
 
 auto message_box::has_button(button_id id) const noexcept -> bool
 {
-  for (const auto& button : m_buttons) {
-    if (button.id() == id) {
-      return true;
-    }
-  }
-  return false;
+  auto cmp = [id](const button& button) noexcept { return button.id() == id; };
+  return std::find_if(m_buttons.begin(), m_buttons.end(), cmp) !=
+         m_buttons.end();
 }
 
 auto message_box::get_title() const -> std::string_view

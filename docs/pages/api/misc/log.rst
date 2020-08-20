@@ -77,12 +77,13 @@ Debug-only logging macros
 Sometimes, it's desirable to remove logging from release builds, in order to
 reduce code size, improve performance or simply because it isn't needed. This can 
 be accomplished with the ``CENTURION_LOG_`` macros. There's a macro that corresponds 
-to each of the standard logging functions.
+to each of the standard logging functions. The logging macros can be disabled by not defining
+``CENTURION_USE_DEBUG_LOGGING_MACROS`` in ``centurion_cfg.hpp``.
 
 .. note::
 
-  The logging macros can be disabled by not defining ``CENTURION_USE_DEBUG_LOGGING_MACROS``
-  in ``centurion_cfg.hpp``.
+  Until Centurion provides C++20 support (v6.0.0), it isn't possible to use the logging macros
+  with no variadic arguments.
 
 .. code-block:: C++
 
@@ -92,5 +93,8 @@ to each of the standard logging functions.
   void foo()
   {
     // This expands to nothing in release mode
-    CENTURION_LOG_INFO("Gandalf > Saruman");
+    CENTURION_LOG_INFO("%s", "Gandalf > Saruman");
+
+    // This might compile depending on platform, but doesn't work reliably
+    // CENTURION_LOG_INFO("Gandalf > Saruman");
   }

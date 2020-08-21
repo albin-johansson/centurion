@@ -49,7 +49,6 @@
 #include <cstring>      // strcmp
 #include <sstream>      // ostringstream
 #include <string>       // string
-#include <string_view>  // string_view
 #include <type_traits>  // is_enum_v
 #include <utility>      // pair
 
@@ -134,7 +133,7 @@ template <typename T>
 {
   if (ptr) {
     std::ostringstream address;
-    address << static_cast<void const*>(ptr);
+    address << static_cast<const void*>(ptr);
     return address.str();
   } else {
     return "";
@@ -202,7 +201,7 @@ class static_string_map final
   {
     const auto it = detail::find_if(
         m_data.begin(), m_data.end(), [&](const pair_t& pair) noexcept {
-          return std::string_view{pair.second} == std::string_view{value};
+          return equal(pair.second, value);
         });
     if (it != m_data.end()) {
       return it->first;

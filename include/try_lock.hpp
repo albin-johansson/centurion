@@ -76,7 +76,7 @@ class try_lock final
    *
    * @since 5.0.0
    */
-  CENTURION_API
+  CENTURION_QUERY
   try_lock(mutex& mutex) noexcept;
 
   try_lock(const try_lock&) = delete;

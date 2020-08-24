@@ -32,6 +32,7 @@ Welcome to Centurion's documentation!
    pages/api/graphics/renderer_view
    pages/api/graphics/font
    pages/api/graphics/font_cache
+   pages/api/graphics/texture_loader
 
 .. toctree::
    :maxdepth: 1

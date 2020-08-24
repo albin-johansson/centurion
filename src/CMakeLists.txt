@@ -79,6 +79,8 @@ set(SOURCE_FILES
 
         ../include/detail/centurion_utils.hpp
         ../include/detail/sdl_string.hpp
+        ../include/detail/algorithm.hpp
+        detail/static_bimap.hpp
 
         core/centurion.cpp
         core/centurion_exception.cpp

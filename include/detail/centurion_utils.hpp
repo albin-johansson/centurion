@@ -159,58 +159,6 @@ template <typename T>
   }
 }
 
-// std::find_if isn't constexpr until C++20
-template <class It, class Predicate>
-[[nodiscard]] constexpr auto find_if(It first, const It last, Predicate pred)
-    -> It
-{
-  for (; first != last; ++first) {
-    if (pred(*first)) {
-      break;
-    }
-  }
-
-  return first;
-}
-
-// This class was inspired by Jason Turners C++ Weekly video on constexpr maps!
-template <class Key, std::size_t size>
-class static_string_map final
-{
- public:
-  using key_t = Key;
-  using pair_t = std::pair<key_t, czstring>;
-  using storage_t = std::array<pair_t, size>;
-
-  std::array<std::pair<Key, czstring>, size> m_data;
-
-  [[nodiscard]] constexpr auto find(const Key& key) const -> czstring
-  {
-    const auto it = detail::find_if(
-        m_data.begin(), m_data.end(), [&](const pair_t& pair) noexcept {
-          return key == pair.first;
-        });
-    if (it != m_data.end()) {
-      return it->second;
-    } else {
-      throw centurion_exception{"Failed to find element in map!"};
-    }
-  }
-
-  [[nodiscard]] constexpr auto key(czstring value) const -> const Key&
-  {
-    const auto it = detail::find_if(
-        m_data.begin(), m_data.end(), [&](const pair_t& pair) noexcept {
-          return equal(pair.second, value);
-        });
-    if (it != m_data.end()) {
-      return it->first;
-    } else {
-      throw centurion_exception{"Failed to find element in map!"};
-    }
-  }
-};
-
 }  // namespace detail
 
 /// @endcond

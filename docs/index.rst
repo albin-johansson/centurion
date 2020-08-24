@@ -75,6 +75,7 @@ Welcome to Centurion's documentation!
 
    pages/api/misc/log
    pages/api/misc/aliases
+   pages/api/misc/naming_conventions
 
 .. toctree::
    :maxdepth: 1

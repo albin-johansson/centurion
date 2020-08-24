@@ -72,7 +72,8 @@ set(TEST_FILES
         unittests/try_lock_test.cpp
         unittests/semaphore_test.cpp
         unittests/condition_test.cpp
-        unittests/clipboard_test.cpp)
+        unittests/clipboard_test.cpp
+        unittests/sdl_string_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

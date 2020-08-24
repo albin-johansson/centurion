@@ -51,7 +51,7 @@
 #include <variant>
 
 #include "centurion_api.hpp"
-#include "centurion_utils.hpp"
+#include "detail/centurion_utils.hpp"
 #include "event_type.hpp"
 #include "game_controller.hpp"
 #include "joystick.hpp"

@@ -47,8 +47,8 @@
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
-#include "centurion_utils.hpp"
 #include "color.hpp"
+#include "detail/centurion_utils.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 

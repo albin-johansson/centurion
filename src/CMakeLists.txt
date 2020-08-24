@@ -41,7 +41,6 @@ set(SOURCE_FILES
         ../include/point.hpp
         ../include/key_state.hpp
         ../include/mouse_state.hpp
-        ../include/centurion_utils.hpp
         ../include/surface.hpp
         ../include/pixel_format.hpp
         ../include/cursor.hpp
@@ -77,6 +76,8 @@ set(SOURCE_FILES
         ../include/condition.hpp
         ../include/semaphore.hpp
         ../include/clipboard.hpp
+
+        ../include/detail/centurion_utils.hpp
         ../include/detail/sdl_string.hpp
 
         core/centurion.cpp

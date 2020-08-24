@@ -37,7 +37,7 @@
 #include <SDL_touch.h>
 
 #include "centurion_api.hpp"
-#include "centurion_utils.hpp"
+#include "detail/centurion_utils.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

@@ -51,7 +51,7 @@
 
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
-#include "centurion_utils.hpp"
+#include "detail/centurion_utils.hpp"
 #include "key_modifier.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

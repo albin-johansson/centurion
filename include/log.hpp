@@ -81,9 +81,6 @@
  *   log::msg(log::priority::info, log::category::app, "Hello!");
  * @endcode
  *
- * @todo Add support for logging using `const std::string&`, in order to
- * reduce need to call `c_str()`.
- *
  * @since 3.0.0
  *
  * @headerfile log.hpp

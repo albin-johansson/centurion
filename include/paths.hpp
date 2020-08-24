@@ -46,26 +46,13 @@
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 #include "centurion_utils.hpp"
+#include "detail/sdl_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
-
-/// @cond FALSE
-
-namespace detail {
-
-class path_deleter final
-{
- public:
-  void operator()(zstring path) noexcept { SDL_free(path); }
-};
-
-}  // namespace detail
-
-/// @endcond
 
 /**
  * @class base_path
@@ -153,7 +140,7 @@ class base_path final
    */
   [[nodiscard]] explicit operator bool() const noexcept
   {
-    return static_cast<bool>(m_path);
+    return m_path.operator bool();
   }
 
   /**
@@ -169,7 +156,7 @@ class base_path final
   [[nodiscard]] auto get() const noexcept -> czstring { return m_path.get(); }
 
  private:
-  std::unique_ptr<char, detail::path_deleter> m_path;
+  detail::sdl_string m_path;
 };
 
 /**
@@ -302,7 +289,7 @@ class pref_path final
    */
   [[nodiscard]] explicit operator bool() const noexcept
   {
-    return static_cast<bool>(m_path);
+    return m_path.operator bool();
   }
 
   /**
@@ -315,7 +302,7 @@ class pref_path final
   [[nodiscard]] auto get() const noexcept -> czstring { return m_path.get(); }
 
  private:
-  std::unique_ptr<char, detail::path_deleter> m_path;
+  detail::sdl_string m_path;
 };
 
 /**

@@ -77,6 +77,7 @@ set(SOURCE_FILES
         ../include/condition.hpp
         ../include/semaphore.hpp
         ../include/clipboard.hpp
+        ../include/detail/sdl_string.hpp
 
         core/centurion.cpp
         core/centurion_exception.cpp

@@ -92,9 +92,6 @@ class static_bimap final
   constexpr auto key_from(const Value& value) const -> const Key&
   {
     ValueCmp compare{};
-
-    auto it = std::adjacent_find(begin(data), end(data));
-
     for (const pair_type& pair : data) {
       if (compare(pair.second, value)) {
         return pair.first;

@@ -1,7 +1,8 @@
+#include "controller.hpp"
+
 #include <catch.hpp>
 
 #include "centurion_as_ctn.hpp"
-#include "controller.hpp"
 
 TEST_CASE("load_game_controller_mappings", "[controller]")
 {

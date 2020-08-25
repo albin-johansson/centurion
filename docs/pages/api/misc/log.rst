@@ -38,7 +38,8 @@ Basic logging
 ~~~~~~~~~~~~~
 
 .. code-block:: C++
-
+  :linenos:
+  
   #include <centurion_as_ctn.hpp>
   #include <log.hpp>
 
@@ -58,7 +59,8 @@ All of the logging functions will, if no category is explicitly specified, use t
 ``app`` category. To use another category, simply provide it as the first parameter.
 
 .. code-block:: C++
-
+  :linenos:
+  
   #include <centurion_as_ctn.hpp>
   #include <log.hpp>
 
@@ -86,7 +88,8 @@ to each of the standard logging functions. The logging macros can be disabled by
   with no variadic arguments.
 
 .. code-block:: C++
-
+  :linenos:
+  
   #include <centurion_as_ctn.hpp>
   #include <log.hpp>
 

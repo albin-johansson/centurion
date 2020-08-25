@@ -147,10 +147,8 @@ template <typename T>
 class basic_game_controller final
 {
   using owning = typename T::owning;
-  inline static constexpr bool isOwning = owning::value;
-
   using storage_type = typename T::storage_type;
-  using pointer_argument = std::conditional_t<isOwning,
+  using pointer_argument = std::conditional_t<owning::value,
                                               nn_owner<SDL_GameController*>,
                                               not_null<SDL_GameController*>>;
 

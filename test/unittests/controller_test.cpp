@@ -3,7 +3,7 @@
 #include "centurion_as_ctn.hpp"
 #include "controller.hpp"
 
-TEST_CASE("load_game_controller_mappings", "[game_controller]")
+TEST_CASE("load_game_controller_mappings", "[controller]")
 {
   const auto nAdded =
       ctn::controller::load_mappings("resources/gamecontrollerdb.txt");
@@ -16,7 +16,7 @@ TEST_CASE("load_game_controller_mappings", "[game_controller]")
 #include "renderer.hpp"
 #include "window.hpp"
 
-TEST_CASE("Interactive game controller test", "[.game_controller]")
+TEST_CASE("Interactive game controller test", "[.controller]")
 {
   ctn::window window{"Game controller demo"};
   ctn::renderer renderer{window};

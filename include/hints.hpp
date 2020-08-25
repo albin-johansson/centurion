@@ -85,14 +85,14 @@ namespace detail {
 
 struct string_compare final
 {
-  auto operator()(nn_czstring lhs, nn_czstring rhs) const noexcept
+  auto operator()(czstring lhs, czstring rhs) const noexcept
   {
     return detail::equal(lhs, rhs);
   }
 };
 
 template <typename Key, std::size_t size>
-using string_map = static_bimap<Key, nn_czstring, string_compare, size>;
+using string_map = static_bimap<Key, czstring, string_compare, size>;
 
 template <typename Derived, typename Arg>
 class crtp_hint

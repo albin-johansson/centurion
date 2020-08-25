@@ -112,7 +112,7 @@ Two rectangles are considered to be intersecting if they overlap each other.
     const ctn::irect c{{100, 100}, {10, 10}};
 
     // returns true
-    if (ctn::intersects(a, b))) { ... }
+    if (ctn::intersects(a, b)) { ... }
 
     // returns false
     if (ctn::intersects(a, c)) { ... }

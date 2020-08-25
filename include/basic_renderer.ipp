@@ -37,7 +37,6 @@
 #ifndef CENTURION_BASIC_RENDERER_IMPLEMENTATION
 #define CENTURION_BASIC_RENDERER_IMPLEMENTATION
 
-#include <algorithm>    // for_each
 #include <type_traits>  // is_same_v
 
 #include "centurion_api.hpp"
@@ -282,7 +281,7 @@ void basic_renderer<Derived>::render_text(const font_cache& cache,
                                           ipoint position)
 {
   const auto originalX = position.x();
-  std::for_each(begin(str), end(str), [&](const unicode glyph) {
+  for (const unicode glyph : str) {
     if (glyph == '\n') {
       position.set_x(originalX);
       position.set_y(position.y() + cache.get_font().line_skip());
@@ -290,7 +289,7 @@ void basic_renderer<Derived>::render_text(const font_cache& cache,
       const auto x = render_glyph(cache, glyph, position);
       position.set_x(x);
     }
-  });
+  }
 }
 
 template <typename Derived>

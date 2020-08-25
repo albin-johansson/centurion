@@ -10,6 +10,7 @@ deals with generic points.
 
 General information
 -------------------
+
 ======================  =======================================================
   Property               Value
 ----------------------  -------------------------------------------------------
@@ -25,23 +26,28 @@ Header                   ``point.hpp``
 
 Public member types/constants
 -----------------------------
+
 The ``basic_point<T>`` class provides a few useful public members that are useful when working
 with generic code.
 
 point_type
 ~~~~~~~~~~
+
 This is the actual point representation, i.e. ``SDL_Point`` or ``SDL_FPoint``. 
 
 value_type
 ~~~~~~~~~~
+
 This is the type of the coordinates of the point. In other words, ``int`` or ``float``.
 
 isIntegral
 ~~~~~~~~~~
+
 Indicates whether or not the point is based on an integral type, e.g. ``true`` for ``ipoint``.
 
 isFloating
 ~~~~~~~~~~
+
 Indicates whether or not the point is based on a floating-point type, e.g. ``true`` for ``fpoint``.
 
 Interface 
@@ -63,6 +69,8 @@ You can easily obtain the distance between two points using the
 ``distance`` function, it's templated so it works on both point types.
 
 .. code-block:: c++
+  :name: point-example-distance
+  :linenos:
 
   #include <centurion_as_ctn.hpp>
   #include <point.hpp>

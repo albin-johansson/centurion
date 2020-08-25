@@ -88,4 +88,6 @@ Welcome to Centurion's documentation!
    :caption: Tutorials
 
    pages/tutorials/installation
+   pages/tutorials/building_on_windows
+   pages/tutorials/building_on_ubuntu
    pages/tutorials/hello_centurion

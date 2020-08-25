@@ -124,7 +124,7 @@ struct game_controller_traits final
   };
 
  public:
-  using storage_type = std::unique_ptr<SDL_GameController*, deleter>;
+  using storage_type = std::unique_ptr<SDL_GameController, deleter>;
   using owning = std::true_type;
 };
 
@@ -135,7 +135,7 @@ struct game_controller_handle_traits final
 };
 
 /**
- * @class basic_game_controller
+ * @class basic_controller
  *
  * @brief Represents a game controller, e.g. an xbox-controller.
  *
@@ -144,7 +144,7 @@ struct game_controller_handle_traits final
  * @headerfile game_controller.hpp
  */
 template <typename T>
-class basic_game_controller final
+class basic_controller final
 {
   using owning = typename T::owning;
   using storage_type = typename T::storage_type;
@@ -164,6 +164,8 @@ class basic_game_controller final
    * controller in controller events. Instead, the joystick's instance id
    * (`SDL_JoystickID`) will be used.
    *
+   * @remark This constructor is only available for owning game controllers.
+   *
    * @param index the device index, can't be >= than the amount of number of
    * joysticks.
    *
@@ -172,7 +174,7 @@ class basic_game_controller final
    * @since 5.0.0
    */
   template <typename = std::enable_if_t<owning::value>>
-  explicit basic_game_controller(int index)
+  explicit basic_controller(int index)
       : m_controller{SDL_GameControllerOpen(index)}
   {
     if (!m_controller) {
@@ -180,30 +182,80 @@ class basic_game_controller final
     }
   }
 
-  explicit basic_game_controller(pointer_argument controller) noexcept
+  /**
+   * @brief Creates a game controller from an existing SDL game controller.
+   *
+   * @pre `controller` can't be null.
+   *
+   * @param controller a pointer to the associated game controller.
+   *
+   * @since 5.0.0
+   */
+  explicit basic_controller(pointer_argument controller) noexcept
       : m_controller{controller}
   {}
 
+  /**
+   * @brief Creates a game controller from an existing joystick ID.
+   *
+   * @remark This function is only available for owning game controllers.
+   *
+   * @param id the identifier associated with the joystick to base the game
+   * controller on.
+   *
+   * @return a game controller instance.
+   *
+   * @throws sdl_error if the game controller cannot be created.
+   *
+   * @since 5.0.0
+   */
   template <typename = std::enable_if_t<owning::value>>
-  static auto from_joystick(SDL_JoystickID id) -> basic_game_controller<T>
+  [[nodiscard]] static auto from_joystick(SDL_JoystickID id)
+      -> basic_controller<T>
   {
     if (auto* controller = SDL_GameControllerFromInstanceID(id)) {
-      return basic_game_controller<T>{controller};
+      return basic_controller<T>{controller};
     } else {
       throw sdl_error{"Failed to create game_controller from joystick ID!"};
     }
   }
 
+  /**
+   * @brief Indicates whether or not the game controller is currently connected.
+   *
+   * @return `true` if the game controller is connected; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto is_connected() const noexcept -> bool
   {
     return static_cast<bool>(SDL_GameControllerGetAttached(ptr()));
   }
 
+  /**
+   * @brief Returns the name associated with the game controller.
+   *
+   * @note This function might return a null pointer if there is no name
+   * associated with the game controller.
+   *
+   * @return the name of the game controller, might be null.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto name() const noexcept -> czstring
   {
     return SDL_GameControllerName(ptr());
   }
 
+  /**
+   * @brief Returns the state of the specified game controller button.
+   *
+   * @param button the button that will be checked.
+   *
+   * @return the current button state of the specified button.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto get_state(gamepad_button button) const noexcept
       -> button_state
   {
@@ -212,49 +264,133 @@ class basic_game_controller final
     return static_cast<button_state>(state);
   }
 
+  /**
+   * @brief Indicates if the specified button is pressed.
+   *
+   * @param button the button that will be checked.
+   *
+   * @return `true` if the specified button is pressed; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto is_pressed(gamepad_button button) const noexcept -> bool
   {
     return get_state(button) == button_state::pressed;
   }
 
+  /**
+   * @brief Indicates if the specified button is released.
+   *
+   * @param button the button that will be checked.
+   *
+   * @return `true` if the specified button is released; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto is_released(gamepad_button button) const noexcept -> bool
   {
     return get_state(button) == button_state::released;
   }
 
+  /**
+   * @brief Returns the value of the specified axis.
+   *
+   * @param axis the controller axis that will be checked.
+   *
+   * @return the current value of the specified axis.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto get_axis(gamepad_axis axis) const noexcept -> i32
   {
     return SDL_GameControllerGetAxis(ptr(),
                                      static_cast<SDL_GameControllerAxis>(axis));
   }
 
-  //  [[nodiscard]] auto get_bind(axis axis) const
-  //  {
-  //    const auto result = SDL_GameControllerGetBindForAxis(
-  //        ptr(), static_cast<SDL_GameControllerAxis>(axis));
-  //
-  //    result.value
-  //
-  //  }
+  /**
+   * @brief Returns the bindings
+   *
+   * @param axis
+   *
+   * @return
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto get_bind(gamepad_axis axis) const
+      -> std::optional<SDL_GameControllerButtonBind>
+  {
+    const auto result = SDL_GameControllerGetBindForAxis(
+        ptr(), static_cast<SDL_GameControllerAxis>(axis));
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+      return result;
+    } else {
+      return std::nullopt;
+    }
+  }
 
+  /**
+   * @brief Returns a handle to the associated joystick.
+   *
+   * @return a handle to the associated joystick.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto get_joystick() noexcept -> joystick_handle
   {
     return joystick_handle{SDL_GameControllerGetJoystick(ptr())};
   }
 
+  /**
+   * @brief Updates the state of all open game controllers.
+   *
+   * @note This is done automatically if game controller events are enabled.
+   *
+   * @since 5.0.0
+   */
   static void update() { SDL_GameControllerUpdate(); }
 
+  /**
+   * @brief Sets whether or not game controller event polling is enabled.
+   *
+   * @details If this property is set to `false`, then you have to call
+   * `update` by yourself.
+   *
+   * @param polling `true` to enable automatic game controller event polling;
+   * `false` otherwise.
+   *
+   * @since 5.0.0
+   */
   static void set_polling(bool polling) noexcept
   {
     SDL_GameControllerEventState(polling ? SDL_ENABLE : SDL_DISABLE);
   }
 
+  /**
+   * @brief Indicates whether or not game controller event polling is enabled.
+   *
+   * @return `true` if game controller event polling is enabled; `false`
+   * otherwise.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] static auto is_polling() noexcept -> bool
   {
     return SDL_GameControllerEventState(SDL_QUERY);
   }
 
-  [[nodiscard]] static auto get_axis(nn_czstring str) -> gamepad_axis
+  /**
+   * @brief Returns the axis associated with the specified string.
+   *
+   * @note You don't need this function unless you are parsing game controller
+   * mappings by yourself.
+   *
+   * @param str the string that represents a game controller axis.
+   *
+   * @return a game controller axis.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static auto get_axis(nn_czstring str) noexcept -> gamepad_axis
   {
     return static_cast<gamepad_axis>(SDL_GameControllerGetAxisFromString(str));
   }
@@ -272,8 +408,8 @@ class basic_game_controller final
   }
 };
 
-using gamepad = basic_game_controller<game_controller_traits>;
-using gamepad_handle = basic_game_controller<game_controller_handle_traits>;
+using controller = basic_controller<game_controller_traits>;
+using controller_handle = basic_controller<game_controller_handle_traits>;
 
 namespace gamecontroller {
 
@@ -329,22 +465,22 @@ inline auto load_mappings(nn_czstring file) -> int
 }  // namespace gamecontroller
 
 template <typename T>
-[[nodiscard]] auto to_string(const basic_game_controller<T>& controller)
+[[nodiscard]] auto to_string(const basic_controller<T>& controller)
     -> std::string
 {
   using namespace std::string_literals;
   czstring name = controller.name();
 
-  if constexpr (std::is_same_v<T, gamepad>) {
-    return "[gamepad | name: "s + (name ? name : "N/A") + "]"s;
+  if constexpr (std::is_same_v<T, controller>) {
+    return "[controller | name: "s + (name ? name : "N/A") + "]"s;
   } else {
-    return "[gamepad_handle | name: "s + (name ? name : "N/A") + "]"s;
+    return "[controller_handle | name: "s + (name ? name : "N/A") + "]"s;
   }
 }
 
 template <typename T>
-auto operator<<(std::ostream& stream,
-                const basic_game_controller<T>& controller) -> std::ostream&
+auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
+    -> std::ostream&
 {
   stream << to_string(controller);
   return stream;

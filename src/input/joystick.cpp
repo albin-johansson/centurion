@@ -17,7 +17,7 @@ joystick::joystick(int deviceIndex)
   auto& storage = get_storage();
   storage.reset(SDL_JoystickOpen(deviceIndex));
   if (!storage) {
-    throw sdl_error{"Failed to open joystick!"};
+    throw sdl_error{"Failed to open joystick"};
   }
 }
 

@@ -9,7 +9,7 @@ namespace centurion {
 music::music(nn_czstring file) : m_music{Mix_LoadMUS(file)}
 {
   if (!m_music) {
-    throw mix_error{"Failed to load music from file!"};
+    throw mix_error{"Failed to load music from file"};
   }
 }
 

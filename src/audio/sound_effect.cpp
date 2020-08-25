@@ -10,7 +10,7 @@ namespace centurion {
 sound_effect::sound_effect(nn_czstring file) : m_chunk{Mix_LoadWAV(file)}
 {
   if (!m_chunk) {
-    throw mix_error{"Failed to load sound effect from file!"};
+    throw mix_error{"Failed to load sound effect from file"};
   }
 }
 

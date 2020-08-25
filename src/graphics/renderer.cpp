@@ -13,7 +13,7 @@ renderer::renderer(const window& window, SDL_RendererFlags flags)
     : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
 {
   if (!m_renderer) {
-    throw sdl_error{"Failed to create renderer!"};
+    throw sdl_error{"Failed to create renderer"};
   }
 
   set_blend_mode(blend_mode::blend);

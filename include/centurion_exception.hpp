@@ -133,7 +133,7 @@ class sdl_error final : public centurion_exception
   /**
    * @brief Creates an `sdl_error` with the specified error message.
    *
-   * @details The message will be formatted according to `what + ", " +
+   * @details The message will be formatted according to `what + ": " +
    * SDL_GetError()`.
    *
    * @param what the error message that will be used.
@@ -161,7 +161,7 @@ class img_error final : public centurion_exception
   /**
    * @brief Creates an `img_error` with the specified error message.
    *
-   * @details The message will be formatted according to `what + ", " +
+   * @details The message will be formatted according to `what + ": " +
    * IMG_GetError()`.
    *
    * @param what the error message that will be used.
@@ -189,7 +189,7 @@ class ttf_error final : public centurion_exception
   /**
    * @brief Creates a `ttf_error` with the specified error message.
    *
-   * @details The message will be formatted according to `what + ", " +
+   * @details The message will be formatted according to `what + ": " +
    * TTF_GetError()`.
    *
    * @param what the error message that will be used.
@@ -217,7 +217,7 @@ class mix_error final : public centurion_exception
   /**
    * @brief Creates a `mix_error` with the specified error message.
    *
-   * @details The message will be formatted according to `what + ", " +
+   * @details The message will be formatted according to `what + ": " +
    * Mix_GetError()`.
    *
    * @param what the error message that will be used.

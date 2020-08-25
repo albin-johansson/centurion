@@ -21,7 +21,7 @@ window::window(nn_czstring title, const iarea& size)
                                   size.height,
                                   SDL_WINDOW_HIDDEN));
   if (!m_window) {
-    throw sdl_error{"Failed to create window!"};
+    throw sdl_error{"Failed to create window"};
   }
 }
 

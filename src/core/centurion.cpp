@@ -48,7 +48,7 @@ centurion_lib::sdl::sdl(u32 flags)
 {
   const auto result = SDL_Init(flags);
   if (result < 0) {
-    throw sdl_error{"Failed to initialize SDL2!"};
+    throw sdl_error{"Failed to initialize SDL2"};
   }
 }
 
@@ -61,7 +61,7 @@ centurion_lib::sdl_ttf::sdl_ttf()
 {
   const auto result = TTF_Init();
   if (result == -1) {
-    throw ttf_error{"Failed to initialize SDL2_ttf!"};
+    throw ttf_error{"Failed to initialize SDL2_ttf"};
   }
 }
 
@@ -77,11 +77,11 @@ centurion_lib::sdl_mixer::sdl_mixer(int flags,
                                     int chunkSize)
 {
   if (!Mix_Init(flags)) {
-    throw mix_error{"Failed to initialize SDL2_mixer!"};
+    throw mix_error{"Failed to initialize SDL2_mixer"};
   }
 
   if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1) {
-    throw mix_error{"Failed to open audio!"};
+    throw mix_error{"Failed to open audio"};
   }
 }
 
@@ -94,7 +94,7 @@ centurion_lib::sdl_mixer::~sdl_mixer() noexcept
 centurion_lib::sdl_image::sdl_image(int flags)
 {
   if (!IMG_Init(flags)) {
-    throw img_error{"Failed to initialize SDL2_image!"};
+    throw img_error{"Failed to initialize SDL2_image"};
   }
 }
 

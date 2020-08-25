@@ -54,7 +54,7 @@ texture::texture(const Renderer& renderer, const surface& surface)
     : basic_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
 {
   if (!get()) {
-    throw sdl_error{"Failed to create texture from surface!"};
+    throw sdl_error{"Failed to create texture from surface"};
   }
 }
 
@@ -70,7 +70,7 @@ texture::texture(const Renderer& renderer,
                                       size.height)}
 {
   if (!get()) {
-    throw sdl_error{"Failed to create texture!"};
+    throw sdl_error{"Failed to create texture"};
   }
 }
 
@@ -79,7 +79,7 @@ texture::texture(const Renderer& renderer, nn_czstring path)
     : basic_texture{IMG_LoadTexture(renderer.get(), path)}
 {
   if (!get()) {
-    throw img_error{"Failed to load texture from file!"};
+    throw img_error{"Failed to load texture from file"};
   }
 }
 

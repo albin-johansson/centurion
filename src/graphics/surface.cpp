@@ -13,7 +13,7 @@ surface::surface(nn_owner<SDL_Surface*> surface) noexcept : m_surface{surface}
 surface::surface(nn_czstring file) : m_surface{IMG_Load(file)}
 {
   if (!m_surface) {
-    throw img_error{"Failed to create surface from file!"};
+    throw img_error{"Failed to create surface from file"};
   }
 }
 
@@ -87,7 +87,7 @@ auto surface::copy_surface() const -> owner<SDL_Surface*>
 {
   auto* copy = SDL_DuplicateSurface(m_surface.get());
   if (!copy) {
-    throw sdl_error{"Failed to duplicate surface!"};
+    throw sdl_error{"Failed to duplicate surface"};
   } else {
     return copy;
   }
@@ -165,7 +165,7 @@ auto surface::convert(pixel_format format) const -> surface
 
   auto* s = SDL_ConvertSurfaceFormat(m_surface.get(), pixelFormat, 0);
   if (!s) {
-    throw sdl_error{"Failed to convert surface!"};
+    throw sdl_error{"Failed to convert surface"};
   }
 
   surface converted{s};

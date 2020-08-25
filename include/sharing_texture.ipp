@@ -53,7 +53,7 @@ sharing_texture::sharing_texture(const Renderer& renderer, nn_czstring path)
     : basic_texture{IMG_LoadTexture(renderer.get(), path), get_deleter()}
 {
   if (!get()) {
-    throw img_error{"Failed to load sharing_texture from file!"};
+    throw img_error{"Failed to load sharing_texture from file"};
   }
 }
 
@@ -64,7 +64,7 @@ sharing_texture::sharing_texture(const Renderer& renderer,
                     get_deleter()}
 {
   if (!get()) {
-    throw sdl_error{"Failed to create sharing_texture from surface!"};
+    throw sdl_error{"Failed to create sharing_texture from surface"};
   }
 }
 
@@ -81,7 +81,7 @@ sharing_texture::sharing_texture(const Renderer& renderer,
                     get_deleter()}
 {
   if (!get()) {
-    throw sdl_error{"Failed to create sharing_texture!"};
+    throw sdl_error{"Failed to create sharing_texture"};
   }
 }
 

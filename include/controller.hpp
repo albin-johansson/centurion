@@ -178,7 +178,7 @@ class basic_controller final
       : m_controller{SDL_GameControllerOpen(index)}
   {
     if (!m_controller) {
-      throw sdl_error{"Failed to open game controller!"};
+      throw sdl_error{"Failed to open game controller"};
     }
   }
 
@@ -216,7 +216,7 @@ class basic_controller final
     if (auto* controller = SDL_GameControllerFromInstanceID(id)) {
       return basic_controller<T>{controller};
     } else {
-      throw sdl_error{"Failed to create game_controller from joystick ID!"};
+      throw sdl_error{"Failed to create game_controller from joystick ID"};
     }
   }
 
@@ -370,7 +370,7 @@ class basic_controller final
     } else if (result == 0) {
       return false;
     } else {
-      throw sdl_error{"Failed to add game controller mapping!"};
+      throw sdl_error{"Failed to add game controller mapping"};
     }
   }
 
@@ -402,7 +402,7 @@ class basic_controller final
     if (result != -1) {
       return result;
     } else {
-      throw sdl_error{"Failed to add game controller mappings from file!"};
+      throw sdl_error{"Failed to add game controller mappings from file"};
     }
   }
 

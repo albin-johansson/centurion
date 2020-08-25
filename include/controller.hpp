@@ -110,7 +110,7 @@ enum class controller_button {
   max = SDL_CONTROLLER_BUTTON_MAX
 };
 
-struct game_controller_traits final
+struct controller_traits final
 {
  private:
   struct deleter final
@@ -126,7 +126,7 @@ struct game_controller_traits final
   using owning = std::true_type;
 };
 
-struct game_controller_handle_traits final
+struct controller_handle_traits final
 {
   using storage_type = SDL_GameController*;
   using owning = std::false_type;
@@ -141,7 +141,7 @@ struct game_controller_handle_traits final
  *
  * @todo Complete before 5.0.0
  *
- * @headerfile game_controller.hpp
+ * @headerfile controller.hpp
  */
 template <typename T>
 class basic_controller final
@@ -482,8 +482,8 @@ class basic_controller final
   }
 };
 
-using controller = basic_controller<game_controller_traits>;
-using controller_handle = basic_controller<game_controller_handle_traits>;
+using controller = basic_controller<controller_traits>;
+using controller_handle = basic_controller<controller_handle_traits>;
 
 template <typename T>
 [[nodiscard]] auto to_string(const basic_controller<T>& controller)

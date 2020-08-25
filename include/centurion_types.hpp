@@ -80,8 +80,6 @@ using if_same_t = typename std::enable_if_t<std::is_same_v<T, U>>;
 /**
  * @typedef owner
  *
- *
- *
  * @brief Tag used to denote ownership of raw pointers directly in code.
  *
  * @details If a function takes an `owner<T*>` as a parameter, then the
@@ -90,6 +88,16 @@ using if_same_t = typename std::enable_if_t<std::is_same_v<T, U>>;
  */
 template <typename T>
 using owner = gsl::owner<T>;
+
+/**
+ * @typedef not_null
+ *
+ * @brief Ensures that a pointer cannot be null.
+ *
+ * @since 5.0.0
+ */
+template <typename T>
+using not_null = gsl::not_null<T>;
 
 /**
  * @typedef nn_owner

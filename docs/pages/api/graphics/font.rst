@@ -37,6 +37,7 @@ Styling
 ~~~~~~~
 
 .. code-block:: c++
+  :linenos:
   
   #include <centurion_as_ctn.hpp>
   #include <font.hpp>
@@ -70,6 +71,7 @@ Unsurprisingly, the ``font`` class provides many functions that can
 be used to obtain various information about the font face.
 
 .. code-block:: c++
+  :linenos:
   
   #include <centurion_as_ctn.hpp>
   #include <font.hpp>
@@ -107,7 +109,8 @@ about glyphs in the font. This is utilized extensively by the ``font_cache``
 class, in order to enable fast text rendering.
 
 .. code-block:: c++
-  
+  :linenos:
+   
   #include <centurion_as_ctn.hpp>
   #include <font.hpp>
 
@@ -134,6 +137,7 @@ It's possible to determine the size of a rendered string, without
 actually having to render the string. 
 
 .. code-block:: c++
+  :linenos:
   
   #include <centurion_as_ctn.hpp>
   #include <font.hpp>

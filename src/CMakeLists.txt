@@ -41,7 +41,6 @@ set(SOURCE_FILES
         ../include/point.hpp
         ../include/key_state.hpp
         ../include/mouse_state.hpp
-        ../include/centurion_utils.hpp
         ../include/surface.hpp
         ../include/pixel_format.hpp
         ../include/cursor.hpp
@@ -77,6 +76,11 @@ set(SOURCE_FILES
         ../include/condition.hpp
         ../include/semaphore.hpp
         ../include/clipboard.hpp
+
+        ../include/detail/centurion_utils.hpp
+        ../include/detail/sdl_string.hpp
+        ../include/detail/algorithm.hpp
+        ../include/detail/static_bimap.hpp
 
         core/centurion.cpp
         core/centurion_exception.cpp
@@ -220,7 +224,8 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
             -Wsuggest-override
             -Wduplicated-cond
             -Wconversion
-            -Wc++17-compat)
+            -Wc++17-compat
+            -Wno-attributes)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
             /EHsc

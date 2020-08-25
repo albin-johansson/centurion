@@ -64,30 +64,6 @@ namespace centurion {
  * that you shouldn't really store away `texture_loader` instances, unless you
  * can guarantee that the internal pointer won't become a dangling pointer.
  *
- * The following snippet demonstrates how this class can be used.
- * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
- *   #include <window.hpp>
- *   #include <renderer.hpp>
- *   #include <texture_loader.hpp>
- *
- *   void demo()
- *   {
- *     ctn::window window;
- *     ctn::renderer renderer{window};
- *     ctn::texture_loader loader{renderer};
- *
- *     // creates a unique pointer to a texture
- *     auto unique = loader.unique("resources/some_image.png");
- *
- *     // creates a shared pointer to a texture
- *     auto shared = loader.shared("resources/other_image.png");
- *
- *     // creates a local texture instance
- *     auto local = loader.create("resources/last_image.png");
- *   }
- * @endcode
- *
  * @since 3.0.0
  *
  * @headerfile texture_loader.hpp

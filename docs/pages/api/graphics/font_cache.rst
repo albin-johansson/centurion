@@ -40,7 +40,8 @@ Caching glyphs
 ~~~~~~~~~~~~~~
 
 .. code-block:: c++
-
+  :linenos:
+  
   #include <window.hpp>
   #include <renderer.hpp>
   #include <font_cache.hpp>
@@ -63,7 +64,8 @@ Caching full strings
 ~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: c++
-
+  :linenos:
+  
   #include <window.hpp>
   #include <renderer.hpp>
   #include <font_cache.hpp>

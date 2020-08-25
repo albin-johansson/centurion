@@ -44,6 +44,9 @@ Basic playback
 ~~~~~~~~~~~~~~
 
 .. code-block:: C++
+  :name: basic-playback
+  :caption: Demonstrates basic music playback.
+  :linenos:
 
   #include <centurion_as_ctn.hpp>
   #include <music.hpp>
@@ -87,6 +90,9 @@ Fading music in and out
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: C++
+  :name: fading-music
+  :caption: Demonstrates how to fade music in and out.
+  :linenos:
 
   #include <centurion_as_ctn.hpp>
   #include <music.hpp>

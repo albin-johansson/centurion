@@ -36,7 +36,8 @@ Examples
 The following example is provided on the SDL2 wiki for how you could use the thread API.
 
 .. code-block:: c
-
+  :linenos:
+  
   #include <stdio.h>
   #include "SDL.h"
   
@@ -77,7 +78,8 @@ The equivalent Centurion program looks something like the following. Note, the u
 function pointer is also valid.
 
 .. code-block:: c++
-
+  :linenos:
+  
   #include <iostream>
 
   #include <thread.cpp>
@@ -87,16 +89,18 @@ function pointer is also valid.
   {
     std::cout << "Simple thread test: \n";
 
-    ctn::thread thread{[](void* data) -> int {
+    auto task = [](void* data) -> int {
       int count{};
-  
+
       for (; count < 10; ++count) {
         std::cout << "Thread counter: " << count << '\n';
-        ctn::thread::sleep(ctn::milliseconds<u32>{50});
+        ctn::thread::sleep(ctn::milliseconds<ctn::u32>{50});
       }
-  
+
       return count;
-    }, "TestThread"};
+    };
+
+    ctn::thread thread{task, "TestThread"};
 
     const auto ret = thread.join();
     std::cout << "Thread returned value: " << ret << '\n';

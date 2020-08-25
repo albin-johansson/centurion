@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include "centurion_exception.hpp"
-#include "centurion_utils.hpp"
+#include "detail/centurion_utils.hpp"
 
 namespace centurion {
 

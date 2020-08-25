@@ -36,7 +36,8 @@ Examples
 The trivial operation of locking a mutex is actually quite tricky in raw SDL2, see the following example.
 
 .. code-block:: c
-
+  :linenos:
+  
   SDL_mutex *mutex;
       
   mutex = SDL_CreateMutex();
@@ -57,6 +58,7 @@ The trivial operation of locking a mutex is actually quite tricky in raw SDL2, s
 With ``mutex`` and ``scoped_lock``, locking a mutex is truly trivial, as it should be.
 
 .. code-block:: c++
+  :linenos:
 
   ctn::mutex mutex;
   {

@@ -40,7 +40,7 @@
 #include <SDL_log.h>
 
 #include "centurion_api.hpp"
-#include "centurion_utils.hpp"
+#include "detail/centurion_utils.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -80,11 +80,6 @@
  * @code{.cpp}
  *   log::msg(log::priority::info, log::category::app, "Hello!");
  * @endcode
- *
- * @todo Add support for logging using `const std::string&`, in order to
- * reduce need to call `c_str()`.
- *
- * @todo Debug macros? Something like `CENTURION_LOG_INFO("Foo %i", 42);`
  *
  * @since 3.0.0
  *

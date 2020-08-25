@@ -282,7 +282,7 @@ void basic_renderer<Derived>::render_text(const font_cache& cache,
                                           ipoint position)
 {
   const auto originalX = position.x();
-  std::for_each(str.begin(), str.end(), [&](const unicode glyph) {
+  std::for_each(begin(str), end(str), [&](const unicode glyph) {
     if (glyph == '\n') {
       position.set_x(originalX);
       position.set_y(position.y() + cache.get_font().line_skip());

@@ -28,10 +28,12 @@ Welcome to Centurion's documentation!
 
    pages/api/graphics/window
    pages/api/graphics/window_handle
+   pages/api/graphics/basic_renderer
    pages/api/graphics/renderer
-   pages/api/graphics/renderer_view
+   pages/api/graphics/renderer_handle
    pages/api/graphics/font
    pages/api/graphics/font_cache
+   pages/api/graphics/texture_loader
 
 .. toctree::
    :maxdepth: 1
@@ -46,7 +48,6 @@ Welcome to Centurion's documentation!
    :maxdepth: 1
    :caption: Threading
 
-   pages/api/thread/overview
    pages/api/thread/thread
    pages/api/thread/mutex
    pages/api/thread/scoped_lock
@@ -68,22 +69,25 @@ Welcome to Centurion's documentation!
    pages/api/system/base_path
    pages/api/system/pref_path
 
-.. toctree:: 
-   :maxdepth: 1
-   :caption: Miscellaneous
-
-   pages/api/misc/log
-   pages/api/misc/aliases
-
 .. toctree::
    :maxdepth: 1
    :caption: Configuration
 
    pages/api/config/hint
 
+.. toctree:: 
+   :maxdepth: 1
+   :caption: Miscellaneous
+
+   pages/api/misc/log
+   pages/api/misc/aliases
+   pages/api/misc/naming_conventions
+
 .. toctree::
    :maxdepth: 1
    :caption: Tutorials
 
    pages/tutorials/installation
+   pages/tutorials/building_on_windows
+   pages/tutorials/building_on_ubuntu
    pages/tutorials/hello_centurion

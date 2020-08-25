@@ -23,11 +23,9 @@
  */
 
 /**
- * @file scoped_lock.hpp
+ * @file algorithm.hpp
  *
- * @ingroup thread
- *
- * @brief Provides the `scoped_lock` class.
+ * @brief Provides algorithm utilities for the library.
  *
  * @author Albin Johansson
  *
@@ -36,74 +34,32 @@
  * @copyright MIT License
  */
 
-#ifndef CENTURION_SCOPED_LOCK_HEADER
-#define CENTURION_SCOPED_LOCK_HEADER
-
-#include <SDL_mutex.h>
-
-#include <type_traits>
+#ifndef CENTURION_ALGORITHM_HEADER
+#define CENTURION_ALGORITHM_HEADER
 
 #include "centurion_api.hpp"
-#include "centurion_fwd.hpp"
-#include "mutex.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace centurion::detail {
 
-/// @addtogroup thread
-/// @{
-
-/**
- * @class scoped_lock
- *
- * @brief Represents an RAII-style blocking lock that automatically unlocks the
- * associated mutex upon destruction.
- *
- * @remarks This class is purposefully similar to `std::scoped_lock`.
- *
- * @since 5.0.0
- *
- * @headerfile scoped_lock.hpp
- */
-class scoped_lock final
+// std::find_if isn't constexpr until C++20
+template <class It, class Predicate>
+[[nodiscard]] constexpr auto find_if(It first,
+                                     const It last,
+                                     Predicate predicate) -> It
 {
- public:
-  /**
-   * @brief Attempts to lock the supplied mutex.
-   *
-   * @param mutex the mutex that will be locked.
-   *
-   * @throws sdl_error if the mutex can't be locked.
-   *
-   * @since 5.0.0
-   */
-  CENTURION_QUERY
-  scoped_lock(mutex& mutex);
+  for (; first != last; ++first) {
+    if (predicate(*first)) {
+      break;
+    }
+  }
 
-  scoped_lock(const scoped_lock&) = delete;
+  return first;
+}
 
-  auto operator=(const scoped_lock&) -> scoped_lock& = delete;
+}  // namespace centurion::detail
 
-  /**
-   * @brief Unlocks the associated mutex.
-   *
-   * @since 5.0.0
-   */
-  CENTURION_API
-  ~scoped_lock() noexcept;
-
- private:
-  mutex* m_mutex{};
-};
-
-static_assert(!std::is_copy_constructible_v<scoped_lock>);
-static_assert(!std::is_copy_assignable_v<scoped_lock>);
-
-/// @}
-
-}  // namespace centurion
-
-#endif  // CENTURION_SCOPED_LOCK_HEADER
+#endif  // CENTURION_ALGORITHM_HEADER

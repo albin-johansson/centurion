@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <string>
 
-#include "centurion_utils.hpp"
+#include "detail/centurion_utils.hpp"
 #include "key_code.hpp"
 #include "scan_code.hpp"
 

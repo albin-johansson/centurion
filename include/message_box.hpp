@@ -50,8 +50,8 @@
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "centurion_types.hpp"
-#include "centurion_utils.hpp"
 #include "color.hpp"
+#include "detail/centurion_utils.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

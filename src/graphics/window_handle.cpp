@@ -1,6 +1,6 @@
 #include "window_handle.hpp"
 
-#include "centurion_utils.hpp"
+#include "detail/centurion_utils.hpp"
 
 namespace centurion {
 

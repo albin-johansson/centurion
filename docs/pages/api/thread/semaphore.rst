@@ -37,7 +37,8 @@ can be found `here <https://wiki.libsdl.org/SDL_SemWait>`_. Note that the exampl
 instead of the SDL atomic facilities, since the standard library provides a much richer interface.
 
 .. code-block:: c++
-
+  :linenos:
+  
   std::atomic<bool> done{false},
   ctn::semaphore sem{0};  // no initial tokens
   

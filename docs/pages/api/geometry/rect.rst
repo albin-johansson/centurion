@@ -9,6 +9,7 @@ deals with generic rectangles.
 
 General information
 -------------------
+
 ======================  =======================================================
   Property               Value
 ----------------------  -------------------------------------------------------
@@ -24,31 +25,38 @@ Header                   ``rect.hpp``
 
 Public member types/constants
 -----------------------------
+
 The ``basic_rect<T>`` class provides several public members that are useful when working
 with generic code.
 
 rect_type
 ~~~~~~~~~
+
 This is the actual rectangle representation, i.e. ``SDL_Rect`` or ``SDL_FRect``. 
 
 point_type
 ~~~~~~~~~~
+
 The associated point type, i.e. ``ipoint`` or ``fpoint``. 
 
 area_type
 ~~~~~~~~~
+
 The associated area type, i.e. ``iarea`` or ``farea``. 
 
 value_type
 ~~~~~~~~~~
+
 The type of the components of the rectangle, i.e. ``int`` or ``float``.
 
 isIntegral
 ~~~~~~~~~~
+
 Indicates whether or not the rectangle is based on an integral type, e.g. ``true`` for ``irect``.
 
 isFloating
 ~~~~~~~~~~
+
 Indicates whether or not the rectangle is based on a floating-point type, e.g. ``true`` for
 ``frect``.
 
@@ -68,6 +76,8 @@ Casting between rectangle types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: c++
+  :name: rect-example-casting
+  :linenos:
 
   #include <centurion_as_ctn.hpp>
   #include <rect.hpp>
@@ -88,6 +98,8 @@ Intersection checking
 Two rectangles are considered to be intersecting if they overlap each other.
 
 .. code-block:: c++
+  :name: rect-example-intersection
+  :linenos:
 
   #include <centurion_as_ctn.hpp>
   #include <rect.hpp>
@@ -100,7 +112,7 @@ Two rectangles are considered to be intersecting if they overlap each other.
     const ctn::irect c{{100, 100}, {10, 10}};
 
     // returns true
-    if (ctn::intersects(a, b))) { ... }
+    if (ctn::intersects(a, b)) { ... }
 
     // returns false
     if (ctn::intersects(a, c)) { ... }
@@ -111,6 +123,8 @@ Collision checking
 Two rectangles are considered to be colliding if the overlap *or* if they share a common border.
 
 .. code-block:: c++
+  :name: rect-example-collision
+  :linenos:
 
   #include <centurion_as_ctn.hpp>
   #include <rect.hpp>
@@ -133,7 +147,9 @@ Calculate union of two rectangles
 You can easily obtain the union of two rectangles using the ``get_union`` function. Note, unlike
 the function provided by SDL, this also works with floating-point rectangles.
 
-.. code-block:: c++
+.. code-block:: c++  
+  :name: rect-example-union
+  :linenos:
 
   #include <centurion_as_ctn.hpp>
   #include <rect.hpp>

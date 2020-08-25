@@ -34,8 +34,8 @@ set(TEST_FILES
         unittests/audio_device_event_test.cpp
         unittests/controller_axis_event_test.cpp
         unittests/controller_button_event_test.cpp
-        unittests/game_controller_button_test.cpp
-        unittests/game_controller_axis_test.cpp
+        unittests/controller_button_test.cpp
+        unittests/controller_axis_test.cpp
         unittests/controller_device_event_test.cpp
         unittests/dollar_gesture_event_test.cpp
         unittests/drop_event_test.cpp
@@ -74,7 +74,7 @@ set(TEST_FILES
         unittests/condition_test.cpp
         unittests/clipboard_test.cpp
         unittests/sdl_string_test.cpp
-        unittests/game_controller_test.cpp)
+        unittests/controller_test.cpp)
 
 if (NOT DEFINED ENV{TRAVIS})
     set(TEST_FILES

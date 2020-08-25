@@ -7,7 +7,7 @@ TEST_CASE("controller_button_event::set_button", "[controller_button_event]")
 {
   ctn::controller_button_event event;
 
-  const auto button = ctn::gamepad_button::a;
+  const auto button = ctn::controller_button::a;
   event.set_button(button);
 
   CHECK(event.button() == button);
@@ -39,7 +39,7 @@ TEST_CASE("controller_button_event::button", "[controller_button_event]")
   sdlEvent.button = SDL_CONTROLLER_BUTTON_A;
 
   ctn::controller_button_event event{sdlEvent};
-  CHECK(event.button() == ctn::gamepad_button::a);
+  CHECK(event.button() == ctn::controller_button::a);
 }
 
 TEST_CASE("controller_button_event::state", "[controller_button_event]")

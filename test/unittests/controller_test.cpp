@@ -1,13 +1,12 @@
-#include "game_controller.hpp"
-
 #include <catch.hpp>
 
 #include "centurion_as_ctn.hpp"
+#include "controller.hpp"
 
 TEST_CASE("load_game_controller_mappings", "[game_controller]")
 {
   const auto nAdded =
-      ctn::gamecontroller::load_mappings("resources/gamecontrollerdb.txt");
+      ctn::controller::load_mappings("resources/gamecontrollerdb.txt");
   CHECK(nAdded > 0);
 }
 
@@ -23,7 +22,7 @@ TEST_CASE("Interactive game controller test", "[.game_controller]")
   ctn::renderer renderer{window};
   ctn::event event;
 
-  ctn::gamecontroller::load_mappings("resources/gamecontrollerdb.txt");
+  ctn::controller::load_mappings("resources/gamecontrollerdb.txt");
 
   ctn::controller controller{0};
 
@@ -60,13 +59,13 @@ TEST_CASE("Interactive game controller test", "[.game_controller]")
 
         const auto step = 0.0005f;
 
-        if (axis == ctn::gamepad_axis::left_x) {
+        if (axis == ctn::controller_axis::left_x) {
           if ((value < -deadZone) || (value > deadZone)) {
             dx = fvalue * step;
           } else {
             dx = 0;
           }
-        } else if (axis == ctn::gamepad_axis::left_y) {
+        } else if (axis == ctn::controller_axis::left_y) {
           if ((value < -deadZone) || (value > deadZone)) {
             dy = fvalue * step;
           } else {

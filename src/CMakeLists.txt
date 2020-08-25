@@ -54,7 +54,7 @@ set(SOURCE_FILES
         ../include/event_type.hpp
         ../include/event.hpp
         ../include/button_state.hpp
-        ../include/game_controller.hpp
+        ../include/controller.hpp
         ../include/area.hpp
         ../include/key_modifier.hpp
         ../include/hints.hpp

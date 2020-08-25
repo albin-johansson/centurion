@@ -51,9 +51,9 @@
 #include <variant>
 
 #include "centurion_api.hpp"
+#include "controller.hpp"
 #include "detail/centurion_utils.hpp"
 #include "event_type.hpp"
-#include "game_controller.hpp"
 #include "joystick.hpp"
 #include "key_code.hpp"
 #include "key_modifier.hpp"
@@ -349,7 +349,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  void set_axis(gamepad_axis axis) noexcept;
+  void set_axis(controller_axis axis) noexcept;
 
   /**
    * @brief Sets the axis value associated with the event.
@@ -381,7 +381,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto axis() const noexcept -> gamepad_axis;
+  auto axis() const noexcept -> controller_axis;
 
   /**
    * @brief Returns the axis value associated with the event.
@@ -441,7 +441,7 @@ class controller_button_event final
    * @since 4.0.0
    */
   CENTURION_API
-  void set_button(gamepad_button button) noexcept;
+  void set_button(controller_button button) noexcept;
 
   /**
    * @brief Sets the button state associated with the event.
@@ -472,7 +472,7 @@ class controller_button_event final
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto button() const noexcept -> gamepad_button;
+  auto button() const noexcept -> controller_button;
 
   /**
    * @brief Returns the button state associated with the event.

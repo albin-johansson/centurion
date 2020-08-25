@@ -15,7 +15,7 @@ void controller_axis_event::set_which(SDL_JoystickID which) noexcept
   m_event.which = which;
 }
 
-void controller_axis_event::set_axis(gamepad_axis axis) noexcept
+void controller_axis_event::set_axis(controller_axis axis) noexcept
 {
   m_event.axis = static_cast<u8>(axis);
 }
@@ -30,9 +30,9 @@ auto controller_axis_event::which() const noexcept -> SDL_JoystickID
   return m_event.which;
 }
 
-auto controller_axis_event::axis() const noexcept -> gamepad_axis
+auto controller_axis_event::axis() const noexcept -> controller_axis
 {
-  return static_cast<gamepad_axis>(m_event.axis);
+  return static_cast<controller_axis>(m_event.axis);
 }
 
 auto controller_axis_event::value() const noexcept -> i16

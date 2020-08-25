@@ -10,7 +10,7 @@ controller_button_event::controller_button_event(
     : common_event{event}
 {}
 
-void controller_button_event::set_button(gamepad_button button) noexcept
+void controller_button_event::set_button(controller_button button) noexcept
 {
   m_event.button = static_cast<u8>(button);
 }
@@ -25,9 +25,9 @@ void controller_button_event::set_which(SDL_JoystickID id) noexcept
   m_event.which = id;
 }
 
-auto controller_button_event::button() const noexcept -> gamepad_button
+auto controller_button_event::button() const noexcept -> controller_button
 {
-  return static_cast<gamepad_button>(m_event.button);
+  return static_cast<controller_button>(m_event.button);
 }
 
 auto controller_button_event::state() const noexcept -> button_state

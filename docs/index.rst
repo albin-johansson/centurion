@@ -69,6 +69,12 @@ Welcome to Centurion's documentation!
    pages/api/system/base_path
    pages/api/system/pref_path
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Configuration
+
+   pages/api/config/hint
+
 .. toctree:: 
    :maxdepth: 1
    :caption: Miscellaneous
@@ -76,12 +82,6 @@ Welcome to Centurion's documentation!
    pages/api/misc/log
    pages/api/misc/aliases
    pages/api/misc/naming_conventions
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Configuration
-
-   pages/api/config/hint
 
 .. toctree::
    :maxdepth: 1

@@ -34,7 +34,8 @@ Examples
 --------
 
 .. code-block:: C++
-
+  :linenos:
+  
   #include <centurion_as_ctn.hpp>
   #include <paths.hpp>
 

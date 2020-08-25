@@ -29,7 +29,8 @@ Example
 Usage of the clipboard API is very simple, it's pretty much self-explanatory!
 
 .. code-block:: c++
-
+  :linenos:
+  
   #include <centurion_as_ctn.hpp>
   #include <clipboard.hpp>
 

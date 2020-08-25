@@ -8,7 +8,8 @@
 #include "window.hpp"
 
 // variable timestep loop game
-class vtl_game {
+class vtl_game
+{
  public:
   vtl_game() : m_window{}, m_renderer{m_window} {}
 
@@ -73,7 +74,8 @@ TEST_CASE("Variable timestep", "[.variable_timestep_loop]")
   game.get_window().hide();
 }
 
-class sftl_game {
+class sftl_game
+{
  public:
   sftl_game() : m_window{}, m_renderer{m_window} {}
 
@@ -137,7 +139,8 @@ TEST_CASE("Semi-fixed timestep", "[.semi_fixed_timestep_loop]")
   window.hide();
 }
 
-class ftl_game {
+class ftl_game
+{
  public:
   ftl_game() : m_window{}, m_renderer{m_window} {}
 

@@ -3,9 +3,9 @@
 #include "centurion_as_ctn.hpp"
 #include "game_controller.hpp"
 
-TEST_CASE("game_controller_button operator==", "[game_controller_button]")
+TEST_CASE("gamecontroller::button operator==", "[gamecontroller::button]")
 {
-  using button = ctn::game_controller_button;
+  using button = ctn::gamepad_button;
 
   CHECK(button::invalid == SDL_CONTROLLER_BUTTON_INVALID);
   CHECK(button::a == SDL_CONTROLLER_BUTTON_A);
@@ -44,9 +44,9 @@ TEST_CASE("game_controller_button operator==", "[game_controller_button]")
   CHECK(SDL_CONTROLLER_BUTTON_MAX == button::max);
 }
 
-TEST_CASE("game_controller_button operator!=", "[game_controller_button]")
+TEST_CASE("gamecontroller::button operator!=", "[gamecontroller::button]")
 {
-  using button = ctn::game_controller_button;
+  using button = ctn::gamepad_button;
 
   CHECK(button::dpad_right != SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
   CHECK(SDL_CONTROLLER_BUTTON_X != button::a);

@@ -3,35 +3,32 @@
 #include "centurion_as_ctn.hpp"
 #include "game_controller.hpp"
 
-TEST_CASE("game_controller_axis operator==", "[game_controller_axis]")
+TEST_CASE("gamecontroller::axis operator==", "[gamecontroller::axis]")
 {
-  using gca = ctn::game_controller_axis;
+  CHECK(SDL_CONTROLLER_AXIS_INVALID == ctn::gamepad_axis::invalid);
+  CHECK(SDL_CONTROLLER_AXIS_LEFTX == ctn::gamepad_axis::left_x);
+  CHECK(SDL_CONTROLLER_AXIS_LEFTY == ctn::gamepad_axis::left_y);
+  CHECK(SDL_CONTROLLER_AXIS_RIGHTX == ctn::gamepad_axis::right_x);
+  CHECK(SDL_CONTROLLER_AXIS_RIGHTY == ctn::gamepad_axis::right_y);
+  CHECK(SDL_CONTROLLER_AXIS_TRIGGERLEFT == ctn::gamepad_axis::trigger_left);
+  CHECK(SDL_CONTROLLER_AXIS_TRIGGERRIGHT == ctn::gamepad_axis::trigger_right);
+  CHECK(SDL_CONTROLLER_AXIS_MAX == ctn::gamepad_axis::max);
 
-  CHECK(SDL_CONTROLLER_AXIS_INVALID == gca::invalid);
-  CHECK(SDL_CONTROLLER_AXIS_LEFTX == gca::left_x);
-  CHECK(SDL_CONTROLLER_AXIS_LEFTY == gca::left_y);
-  CHECK(SDL_CONTROLLER_AXIS_RIGHTX == gca::right_x);
-  CHECK(SDL_CONTROLLER_AXIS_RIGHTY == gca::right_y);
-  CHECK(SDL_CONTROLLER_AXIS_TRIGGERLEFT == gca::trigger_left);
-  CHECK(SDL_CONTROLLER_AXIS_TRIGGERRIGHT == gca::trigger_right);
-  CHECK(SDL_CONTROLLER_AXIS_MAX == gca::max);
-
-  CHECK(gca::invalid == SDL_CONTROLLER_AXIS_INVALID);
-  CHECK(gca::left_x == SDL_CONTROLLER_AXIS_LEFTX);
-  CHECK(gca::left_y == SDL_CONTROLLER_AXIS_LEFTY);
-  CHECK(gca::right_x == SDL_CONTROLLER_AXIS_RIGHTX);
-  CHECK(gca::right_y == SDL_CONTROLLER_AXIS_RIGHTY);
-  CHECK(gca::trigger_left == SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-  CHECK(gca::trigger_right == SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-  CHECK(gca::max == SDL_CONTROLLER_AXIS_MAX);
+  CHECK(ctn::gamepad_axis::invalid == SDL_CONTROLLER_AXIS_INVALID);
+  CHECK(ctn::gamepad_axis::left_x == SDL_CONTROLLER_AXIS_LEFTX);
+  CHECK(ctn::gamepad_axis::left_y == SDL_CONTROLLER_AXIS_LEFTY);
+  CHECK(ctn::gamepad_axis::right_x == SDL_CONTROLLER_AXIS_RIGHTX);
+  CHECK(ctn::gamepad_axis::right_y == SDL_CONTROLLER_AXIS_RIGHTY);
+  CHECK(ctn::gamepad_axis::trigger_left == SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+  CHECK(ctn::gamepad_axis::trigger_right == SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+  CHECK(ctn::gamepad_axis::max == SDL_CONTROLLER_AXIS_MAX);
 }
 
-TEST_CASE("game_controller_axis operator!=", "[game_controller_axis]")
+TEST_CASE("gamecontroller::axis operator!=", "[gamecontroller::axis]")
 {
-  using gca = ctn::game_controller_axis;
+  CHECK(SDL_CONTROLLER_AXIS_INVALID != ctn::gamepad_axis::right_x);
+  CHECK(ctn::gamepad_axis::max != SDL_CONTROLLER_AXIS_LEFTX);
 
-  CHECK(SDL_CONTROLLER_AXIS_INVALID != gca::right_x);
-  CHECK(gca::max != SDL_CONTROLLER_AXIS_LEFTX);
-
-  CHECK(!(SDL_CONTROLLER_AXIS_TRIGGERRIGHT != gca::trigger_right));
+  CHECK(
+      !(SDL_CONTROLLER_AXIS_TRIGGERRIGHT != ctn::gamepad_axis::trigger_right));
 }

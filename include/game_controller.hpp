@@ -39,7 +39,7 @@
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 
-#include <SDL_gamecontroller.h>
+#include <SDL.h>
 
 #include <cstring>
 #include <memory>
@@ -58,10 +58,11 @@
 
 namespace centurion {
 
+/// @addtogroup input
+/// @{
+
 /**
- * @enum game_controller_axis
- *
- * @ingroup input
+ * @enum gamepad_axis
  *
  * @brief Mirrors the values of the `SDL_GameControllerAxis` enum.
  *
@@ -71,7 +72,7 @@ namespace centurion {
  *
  * @headerfile game_controller.hpp
  */
-enum class game_controller_axis {
+enum class gamepad_axis {
   invalid = SDL_CONTROLLER_AXIS_INVALID,
   left_x = SDL_CONTROLLER_AXIS_LEFTX,
   left_y = SDL_CONTROLLER_AXIS_LEFTY,
@@ -83,9 +84,7 @@ enum class game_controller_axis {
 };
 
 /**
- * @enum game_controller_button
- *
- * @ingroup input
+ * @enum gamepad_button
  *
  * @brief Mirrors the values of the `SDL_GameControllerButton` enum.
  *
@@ -93,7 +92,7 @@ enum class game_controller_axis {
  *
  * @headerfile game_controller.hpp
  */
-enum class game_controller_button {
+enum class gamepad_button {
   invalid = SDL_CONTROLLER_BUTTON_INVALID,
   a = SDL_CONTROLLER_BUTTON_A,
   b = SDL_CONTROLLER_BUTTON_B,
@@ -113,21 +112,51 @@ enum class game_controller_button {
   max = SDL_CONTROLLER_BUTTON_MAX
 };
 
+struct game_controller_traits final
+{
+ private:
+  struct deleter final
+  {
+    void operator()(SDL_GameController* controller) noexcept
+    {
+      SDL_GameControllerClose(controller);
+    }
+  };
+
+ public:
+  using storage_type = std::unique_ptr<SDL_GameController*, deleter>;
+  using owning = std::true_type;
+};
+
+struct game_controller_handle_traits final
+{
+  using storage_type = SDL_GameController*;
+  using owning = std::false_type;
+};
+
 /**
- * @class game_controller
+ * @class basic_game_controller
  *
  * @brief Represents a game controller, e.g. an xbox-controller.
- *
- * @ingroup input
  *
  * @since 5.0.0
  *
  * @headerfile game_controller.hpp
  */
-class game_controller final {
+template <typename T>
+class basic_game_controller final
+{
+  using owning = typename T::owning;
+  inline static constexpr bool isOwning = owning::value;
+
+  using storage_type = typename T::storage_type;
+  using pointer_argument = std::conditional_t<isOwning,
+                                              nn_owner<SDL_GameController*>,
+                                              not_null<SDL_GameController*>>;
+
  public:
   /**
-   * @brief Attempts to create a `game_controller` instance.
+   * @brief Attempts to create a game controller.
    *
    * @details The joystick index is the same as the device index passed to the
    * `joystick` constructor. The index passed as an argument refers to the
@@ -135,77 +164,196 @@ class game_controller final {
    *
    * @note The supplied index is not the value which will identify the
    * controller in controller events. Instead, the joystick's instance id
-   * (SDL_JoystickID) will be used.
+   * (`SDL_JoystickID`) will be used.
    *
-   * @param joystickIndex the device index, can't be >= than the amount of
-   * number of joysticks.
+   * @param index the device index, can't be >= than the amount of number of
+   * joysticks.
    *
    * @throws sdl_error if the game controller cannot be opened.
    *
    * @since 5.0.0
    */
-  CENTURION_API
-  explicit game_controller(int joystickIndex);
+  template <typename = std::enable_if_t<owning::value>>
+  explicit basic_game_controller(int index)
+      : m_controller{SDL_GameControllerOpen(index)}
+  {
+    if (!m_controller) {
+      throw sdl_error{"Failed to open game controller!"};
+    }
+  }
 
-  CENTURION_QUERY
-  auto name() const noexcept -> czstring;
+  explicit basic_game_controller(pointer_argument controller) noexcept
+      : m_controller{controller}
+  {}
 
-  CENTURION_QUERY
-  static auto name(int joystickIndex) noexcept -> czstring;
+  template <typename = std::enable_if_t<owning::value>>
+  static auto from_joystick(SDL_JoystickID id) -> basic_game_controller<T>
+  {
+    if (auto* controller = SDL_GameControllerFromInstanceID(id)) {
+      return basic_game_controller<T>{controller};
+    } else {
+      throw sdl_error{"Failed to create game_controller from joystick ID!"};
+    }
+  }
 
-  CENTURION_QUERY
-  auto get_button_state(game_controller_button button) const noexcept
-      -> button_state;
+  [[nodiscard]] auto is_connected() const noexcept -> bool
+  {
+    return static_cast<bool>(SDL_GameControllerGetAttached(ptr()));
+  }
 
-  CENTURION_QUERY
-  auto is_button_pressed(game_controller_button button) const noexcept -> bool;
+  [[nodiscard]] auto name() const noexcept -> czstring
+  {
+    return SDL_GameControllerName(ptr());
+  }
 
-  CENTURION_QUERY
-  auto is_button_released(game_controller_button button) const noexcept -> bool;
+  [[nodiscard]] auto get_state(gamepad_button button) const noexcept
+      -> button_state
+  {
+    const auto state = SDL_GameControllerGetButton(
+        ptr(), static_cast<SDL_GameControllerButton>(button));
+    return static_cast<button_state>(state);
+  }
 
-  CENTURION_QUERY
-  auto get_joystick() noexcept -> joystick_handle;
+  [[nodiscard]] auto is_pressed(gamepad_button button) const noexcept -> bool
+  {
+    return get_state(button) == button_state::pressed;
+  }
 
-  CENTURION_API
-  static void update() noexcept;
+  [[nodiscard]] auto is_released(gamepad_button button) const noexcept -> bool
+  {
+    return get_state(button) == button_state::released;
+  }
 
-  CENTURION_QUERY
-  static auto is_valid(int joystickIndex) noexcept -> bool;
+  [[nodiscard]] auto get_axis(gamepad_axis axis) const noexcept -> i32
+  {
+    return SDL_GameControllerGetAxis(ptr(),
+                                     static_cast<SDL_GameControllerAxis>(axis));
+  }
 
-  CENTURION_API
-  static void set_polling(bool polling) noexcept;
+  //  [[nodiscard]] auto get_bind(axis axis) const
+  //  {
+  //    const auto result = SDL_GameControllerGetBindForAxis(
+  //        ptr(), static_cast<SDL_GameControllerAxis>(axis));
+  //
+  //    result.value
+  //
+  //  }
 
-  CENTURION_QUERY
-  static auto is_polling() noexcept -> bool;
+  [[nodiscard]] auto get_joystick() noexcept -> joystick_handle
+  {
+    return joystick_handle{SDL_GameControllerGetJoystick(ptr())};
+  }
+
+  static void update() { SDL_GameControllerUpdate(); }
+
+  static void set_polling(bool polling) noexcept
+  {
+    SDL_GameControllerEventState(polling ? SDL_ENABLE : SDL_DISABLE);
+  }
+
+  [[nodiscard]] static auto is_polling() noexcept -> bool
+  {
+    return SDL_GameControllerEventState(SDL_QUERY);
+  }
+
+  [[nodiscard]] static auto get_axis(nn_czstring str) -> gamepad_axis
+  {
+    return static_cast<gamepad_axis>(SDL_GameControllerGetAxisFromString(str));
+  }
 
  private:
-  class deleter final {
-   public:
-    void operator()(SDL_GameController* controller) noexcept
-    {
-      SDL_GameControllerClose(controller);
+  storage_type m_controller;
+
+  [[nodiscard]] auto ptr() noexcept -> SDL_GameController*
+  {
+    if constexpr (std::is_pointer_v<storage_type>) {
+      return m_controller;
+    } else {
+      return m_controller.get();
     }
-  };
-  std::unique_ptr<SDL_GameController, deleter> m_controller;
+  }
 };
 
-CENTURION_QUERY
-auto to_string(const game_controller& controller) -> std::string;
+using gamepad = basic_game_controller<game_controller_traits>;
+using gamepad_handle = basic_game_controller<game_controller_handle_traits>;
 
-CENTURION_API
-auto operator<<(std::ostream& stream, const game_controller& controller)
-    -> std::ostream&;
+namespace gamecontroller {
 
-static_assert(std::is_final_v<game_controller>);
-static_assert(std::is_nothrow_destructible_v<game_controller>);
+inline auto add_mapping(nn_czstring mapping) -> bool
+{
+  const auto result = SDL_GameControllerAddMapping(mapping);
+  if (result == 1) {
+    return true;
+  } else if (result == 0) {
+    return false;
+  } else {
+    throw sdl_error{"Failed to add game controller mapping!"};
+  }
+}
 
-static_assert(std::is_nothrow_move_constructible_v<game_controller>);
-static_assert(std::is_nothrow_move_assignable_v<game_controller>);
+/**
+ * @brief Loads a set of game controller mappings from a file.
+ *
+ * @details A collection of game controller mappings can be found at <a
+ * href="https://github.com/gabomdq/SDL_GameControllerDB">here</a>. New
+ * mappings for previously known GUIDs will overwrite the previous mappings.
+ * Furthermore, mappings for different platforms than the current platform
+ * will be ignored.
+ *
+ * @remarks It's possible to call this function several times to use multiple
+ * mapping files.
+ *
+ * @note The text database is stored entirely in memory during processing.
+ *
+ * @param file the path of the mapping file.
+ *
+ * @return the amount of mappings added.
+ *
+ * @throws sdl_error if the mapping couldn't be added.
+ *
+ * @since 5.0.0
+ */
+inline auto load_mappings(nn_czstring file) -> int
+{
+  const auto result = SDL_GameControllerAddMappingsFromFile(file);
+  if (result != -1) {
+    return result;
+  } else {
+    throw sdl_error{"Failed to add game controller mappings from file!"};
+  }
+}
+
+[[nodiscard]] inline auto is_supported(int index) noexcept -> bool
+{
+  return static_cast<bool>(SDL_IsGameController(index));
+}
+
+}  // namespace gamecontroller
+
+template <typename T>
+[[nodiscard]] auto to_string(const basic_game_controller<T>& controller)
+    -> std::string
+{
+  using namespace std::string_literals;
+  czstring name = controller.name();
+
+  if constexpr (std::is_same_v<T, gamepad>) {
+    return "[gamepad | name: "s + (name ? name : "N/A") + "]"s;
+  } else {
+    return "[gamepad_handle | name: "s + (name ? name : "N/A") + "]"s;
+  }
+}
+
+template <typename T>
+auto operator<<(std::ostream& stream,
+                const basic_game_controller<T>& controller) -> std::ostream&
+{
+  stream << to_string(controller);
+  return stream;
+}
 
 /**
  * @brief Indicates whether or not two game controller axis values are the same.
- *
- * @ingroup input
  *
  * @param lhs the left-hand-side game controller axis value.
  * @param rhs the right-hand-side game controller axis value.
@@ -215,20 +363,18 @@ static_assert(std::is_nothrow_move_assignable_v<game_controller>);
  * @since 4.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(
-    game_controller_axis lhs,
+    gamepad_axis lhs,
     SDL_GameControllerAxis rhs) noexcept -> bool
 {
   return static_cast<SDL_GameControllerAxis>(lhs) == rhs;
 }
 
 /**
- * @copydoc operator==(game_controller_axis, SDL_GameControllerAxis)
- *
- * @ingroup input
+ * @copydoc operator==(gamepad_axis, SDL_GameControllerAxis)
  */
-[[nodiscard]] inline constexpr auto operator==(
-    SDL_GameControllerAxis lhs,
-    game_controller_axis rhs) noexcept -> bool
+[[nodiscard]] inline constexpr auto operator==(SDL_GameControllerAxis lhs,
+                                               gamepad_axis rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -236,8 +382,6 @@ static_assert(std::is_nothrow_move_assignable_v<game_controller>);
 /**
  * @brief Indicates whether or not two game controller axis values aren't the
  * same.
- *
- * @ingroup input
  *
  * @param lhs the left-hand-side game controller axis value.
  * @param rhs the right-hand-side game controller axis value.
@@ -247,20 +391,18 @@ static_assert(std::is_nothrow_move_assignable_v<game_controller>);
  * @since 4.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(
-    game_controller_axis lhs,
+    gamepad_axis lhs,
     SDL_GameControllerAxis rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
- * @copydoc operator!=(game_controller_axis, SDL_GameControllerAxis)
- *
- * @ingroup input
+ * @copydoc operator!=(gamepad_axis, SDL_GameControllerAxis)
  */
-[[nodiscard]] inline constexpr auto operator!=(
-    SDL_GameControllerAxis lhs,
-    game_controller_axis rhs) noexcept -> bool
+[[nodiscard]] inline constexpr auto operator!=(SDL_GameControllerAxis lhs,
+                                               gamepad_axis rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -268,8 +410,6 @@ static_assert(std::is_nothrow_move_assignable_v<game_controller>);
 /**
  * @brief Indicates whether or not two game controller button values are the
  * same.
- *
- * @ingroup input
  *
  * @param lhs the left-hand side game controller button value.
  * @param rhs the right-hand side game controller button value.
@@ -280,20 +420,18 @@ static_assert(std::is_nothrow_move_assignable_v<game_controller>);
  * @since 4.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(
-    game_controller_button lhs,
+    gamepad_button lhs,
     SDL_GameControllerButton rhs) noexcept -> bool
 {
   return static_cast<SDL_GameControllerButton>(lhs) == rhs;
 }
 
 /**
- * @copydoc operator==(game_controller_button, SDL_GameControllerButton)
- *
- * @ingroup input
+ * @copydoc operator==(gamepad_button, SDL_GameControllerButton)
  */
-[[nodiscard]] inline constexpr auto operator==(
-    SDL_GameControllerButton lhs,
-    game_controller_button rhs) noexcept -> bool
+[[nodiscard]] inline constexpr auto operator==(SDL_GameControllerButton lhs,
+                                               gamepad_button rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -301,8 +439,6 @@ static_assert(std::is_nothrow_move_assignable_v<game_controller>);
 /**
  * @brief Indicates whether or not two game controller button values aren't the
  * same.
- *
- * @ingroup input
  *
  * @param lhs the left-hand side game controller button value.
  * @param rhs the right-hand side game controller button value.
@@ -313,23 +449,23 @@ static_assert(std::is_nothrow_move_assignable_v<game_controller>);
  * @since 4.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(
-    game_controller_button lhs,
+    gamepad_button lhs,
     SDL_GameControllerButton rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
- * @copydoc operator!=(game_controller_button, SDL_GameControllerButton)
- *
- * @ingroup input
+ * @copydoc operator!=(gamepad_button, SDL_GameControllerButton)
  */
-[[nodiscard]] inline constexpr auto operator!=(
-    SDL_GameControllerButton lhs,
-    game_controller_button rhs) noexcept -> bool
+[[nodiscard]] inline constexpr auto operator!=(SDL_GameControllerButton lhs,
+                                               gamepad_button rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
+
+/// @}
 
 }  // namespace centurion
 

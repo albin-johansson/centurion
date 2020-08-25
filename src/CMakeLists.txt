@@ -112,7 +112,6 @@ set(SOURCE_FILES
 
         input/key_state.cpp
         input/mouse_state.cpp
-        input/game_controller.cpp
         input/joystick.cpp
         input/touch.cpp
         input/key_code.cpp

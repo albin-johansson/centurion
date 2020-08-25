@@ -349,7 +349,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  void set_axis(game_controller_axis axis) noexcept;
+  void set_axis(gamepad_axis axis) noexcept;
 
   /**
    * @brief Sets the axis value associated with the event.
@@ -381,7 +381,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto axis() const noexcept -> game_controller_axis;
+  auto axis() const noexcept -> gamepad_axis;
 
   /**
    * @brief Returns the axis value associated with the event.
@@ -441,7 +441,7 @@ class controller_button_event final
    * @since 4.0.0
    */
   CENTURION_API
-  void set_button(game_controller_button button) noexcept;
+  void set_button(gamepad_button button) noexcept;
 
   /**
    * @brief Sets the button state associated with the event.
@@ -472,7 +472,7 @@ class controller_button_event final
    * @since 4.0.0
    */
   CENTURION_QUERY
-  auto button() const noexcept -> game_controller_button;
+  auto button() const noexcept -> gamepad_button;
 
   /**
    * @brief Returns the button state associated with the event.

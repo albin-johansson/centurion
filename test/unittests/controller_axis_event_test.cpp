@@ -23,7 +23,7 @@ TEST_CASE("controller_axis_event::set_axis", "[controller_axis_event]")
 {
   ctn::controller_axis_event event;
 
-  const auto axis = ctn::game_controller_axis::trigger_right;
+  const auto axis = ctn::gamepad_axis::trigger_right;
   event.set_axis(axis);
 
   CHECK(event.axis() == axis);

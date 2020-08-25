@@ -47,7 +47,6 @@ Welcome to Centurion's documentation!
    :maxdepth: 1
    :caption: Threading
 
-   pages/api/thread/overview
    pages/api/thread/thread
    pages/api/thread/mutex
    pages/api/thread/scoped_lock

@@ -406,6 +406,8 @@ static_assert(validate_event<controller_axis_event, SDL_ControllerAxisEvent>());
  *
  * @see `SDL_ControllerButtonEvent`
  *
+ * @todo Convenience pressed/released functions.
+ *
  * @since 4.0.0
  *
  * @headerfile event.hpp
@@ -1113,6 +1115,8 @@ static_assert(validate_event<joy_ball_event, SDL_JoyBallEvent>());
  *
  * @see `SDL_JoyButtonEvent`
  *
+ * @todo Convenience pressed/released functions.
+ *
  * @since 4.0.0
  *
  * @headerfile event.hpp
@@ -1655,6 +1659,8 @@ static_assert(validate_event<keyboard_event, SDL_KeyboardEvent>());
  * @see `SDL_MouseButtonEvent`
  *
  * @since 4.0.0
+ *
+ * @todo Convenience pressed/released functions.
  *
  * @headerfile event.hpp
  */

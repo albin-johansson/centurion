@@ -80,7 +80,6 @@ namespace centurion {
  * SDL_GameControllerGetButtonFromString
  * SDL_GameControllerGetStringForButton
  * SDL_GameControllerGetBindForButton
- * SDL_GameControllerGetButton
  *
  * SDL_GameControllerMappingForIndex
  * SDL_GameControllerGetTypeForIndex

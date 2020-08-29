@@ -1,8 +1,13 @@
 #include "controller.hpp"
 
 #include <catch.hpp>
+#include <utility>
+#include <vector>
 
 #include "centurion_as_ctn.hpp"
+#include "event.hpp"
+#include "renderer.hpp"
+#include "window.hpp"
 
 TEST_CASE("controller_type enum values", "[controller]")
 {
@@ -123,6 +128,102 @@ TEST_CASE("controller_bind_type enum values", "[controller]")
   }
 }
 
+namespace centurion {
+
+class controller_handler  // TODO worth adding?
+{
+ public:
+  void add_all()
+  {
+    const auto amount = ctn::joystick::amount().value_or(0);
+    for (int i = 0; i < amount; ++i) {
+      if (ctn::controller::is_supported(i)) {
+        emplace(i);
+      }
+    }
+  }
+
+  template <typename... Args>
+  void emplace(Args&&... args)
+  {
+    m_controllers.emplace_back(std::forward<Args>(args)...);
+  }
+
+  void remove(int index)
+  {
+    auto erase = [](auto& container, auto&& predicate) {
+      container.erase(
+          std::remove_if(begin(container), end(container), predicate),
+          end(container));
+    };
+
+    erase(m_controllers, [=](const ctn::controller& c) {
+      const auto i = c.index();
+      return i && index == *i;
+    });
+  }
+
+ private:
+  std::vector<controller> m_controllers;
+};
+
+}  // namespace centurion
+
+TEST_CASE("interactive controller", "[.controller]")
+{
+  ctn::window window;
+  ctn::renderer renderer{window};
+  ctn::event event;
+  ctn::controller_handler controllers;
+  controllers.add_all();
+
+  bool running{true};
+
+  int colorIndex{};
+  constexpr std::array<ctn::color, 5> colors{ctn::colors::red,
+                                             ctn::colors::salmon,
+                                             ctn::colors::cyan,
+                                             ctn::colors::dark_sea_green,
+                                             ctn::colors::orchid};
+
+  auto handleDeviceEvent = [&](const ctn::controller_device_event& event) {
+    if (event.type() == ctn::event_type::controller_device_removed) {
+      const auto id = event.which();
+      controllers.remove(id);
+    } else if (event.type() == ctn::event_type::controller_device_added) {
+      controllers.emplace(event.which());
+    }
+  };
+
+  auto handleButtonEvent = [&](const ctn::controller_button_event& event) {
+    if (event.state() == ctn::button_state::released) {
+      ++colorIndex;
+    }
+  };
+
+  window.show();
+  while (running) {
+    while (event.poll()) {
+      if (event.is<ctn::quit_event>()) {
+        running = false;
+        break;
+      } else if (auto* de = event.try_get<ctn::controller_device_event>()) {
+        handleDeviceEvent(*de);
+      } else if (auto* be = event.try_get<ctn::controller_button_event>()) {
+        handleButtonEvent(*be);
+      }
+    }
+
+    renderer.clear_with(colors.at(colorIndex % colors.size()));
+
+    renderer.set_color(ctn::colors::wheat);
+    renderer.fill_rect<int>({{10, 10}, {100, 100}});
+
+    renderer.present();
+  }
+  window.hide();
+}
+
 // TEST_CASE("load_game_controller_mappings", "[controller]")
 //{
 //  const auto nAdded =
@@ -132,9 +233,7 @@ TEST_CASE("controller_bind_type enum values", "[controller]")
 //
 //#include <array>
 //
-//#include "event.hpp"
-//#include "renderer.hpp"
-//#include "window.hpp"
+
 //
 // TEST_CASE("Interactive game controller test", "[..controller]")
 //{

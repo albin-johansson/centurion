@@ -50,7 +50,7 @@ Basic playback
   void foo()
   {
     ctn::sound_effect sound{"click.wav"};
-    using ms = ctn::milliseconds<ctn::u32>;
+    using ms = ctn::milliseconds<int>;
 
     // play once
     sound.play(); 

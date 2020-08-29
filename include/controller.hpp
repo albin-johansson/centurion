@@ -71,7 +71,6 @@ namespace centurion {
  * SDL_GameControllerMappingForDeviceIndex
  * SDL_GameControllerFromInstanceID
  * SDL_GameControllerFromPlayerIndex
- * SDL_GameControllerGetPlayerIndex
  * SDL_GameControllerSetPlayerIndex
  * SDL_GameControllerGetVendor
  * SDL_GameControllerGetProduct
@@ -222,6 +221,27 @@ class basic_controller
    * @since 5.0.0
    */
   void stop_rumble() noexcept { rumble(0, 0, milliseconds<u32>::zero()); }
+
+  /**
+   * @brief Returns the player index associated with the controller.
+   *
+   * @note If this is an XInput controller, the returned value is the user
+   * index.
+   *
+   * @return the player index associated with the controller; `std::nullopt`
+   * if the index isn't available.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto index() const noexcept -> std::optional<int>
+  {
+    const auto result = SDL_GameControllerGetPlayerIndex(ptr());
+    if (result != -1) {
+      return result;
+    } else {
+      return std::nullopt;
+    }
+  }
 
   /**
    * @brief Indicates whether or not the game controller is currently connected.

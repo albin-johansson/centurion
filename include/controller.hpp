@@ -49,6 +49,7 @@
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 #include "detail/centurion_utils.hpp"
+#include "detail/sdl_string.hpp"
 #include "joystick_handle.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -59,31 +60,6 @@ namespace centurion {
 
 /// @addtogroup input
 /// @{
-
-/**
- * todo
- *
- * SDL_GameControllerNumMappings
- * SDL_GameControllerMappingForGUID
- * SDL_GameControllerMapping
- * SDL_GameControllerMappingForDeviceIndex
- * SDL_GameControllerFromInstanceID
- * SDL_GameControllerFromPlayerIndex
- * SDL_GameControllerSetPlayerIndex
- * SDL_GameControllerGetVendor
- * SDL_GameControllerGetProduct
- * SDL_GameControllerGetProductVersion
- * SDL_GameControllerGetAxisFromString
- * SDL_GameControllerGetStringForAxis
- * SDL_GameControllerGetBindForAxis
- * SDL_GameControllerGetButtonFromString
- * SDL_GameControllerGetStringForButton
- * SDL_GameControllerGetBindForButton
- *
- * SDL_GameControllerMappingForIndex
- * SDL_GameControllerGetTypeForIndex
- *
- */
 
 /**
  * @enum controller_type
@@ -190,6 +166,10 @@ template <typename T>
 class basic_controller
 {
  public:
+  using mapping_index = int;
+  using joystick_index = int;
+  using player_index = int;
+
   /**
    * @brief Triggers a rumble effect.
    *
@@ -218,6 +198,118 @@ class basic_controller
    */
   void stop_rumble() noexcept { rumble(0, 0, milliseconds<u32>::zero()); }
 
+  void set_player_index(player_index index) noexcept
+  {
+    SDL_GameControllerSetPlayerIndex(ptr(), index);
+  }
+
+  /**
+   * @brief Returns the axis associated with the specified string.
+   *
+   * @note You don't need this function unless you are parsing game controller
+   * mappings by yourself.
+   *
+   * @param str the string that represents a game controller axis.
+   *
+   * @return a game controller axis.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static auto get_axis(nn_czstring str) noexcept
+      -> controller_axis
+  {
+    return static_cast<controller_axis>(
+        SDL_GameControllerGetAxisFromString(str));
+  }
+
+  [[nodiscard]] static auto get_button(czstring str) noexcept
+      -> controller_button
+  {
+    return static_cast<controller_button>(
+        SDL_GameControllerGetButtonFromString(str));
+  }
+
+  [[nodiscard]] static auto stringify(controller_axis axis) noexcept -> czstring
+  {
+    return SDL_GameControllerGetStringForAxis(
+        static_cast<SDL_GameControllerAxis>(axis));
+  }
+
+  [[nodiscard]] static auto stringify(controller_button button) noexcept
+      -> czstring
+  {
+    return SDL_GameControllerGetStringForButton(
+        static_cast<SDL_GameControllerButton>(button));
+  }
+
+  /**
+   * @brief Returns the bindings
+   *
+   * @param axis
+   *
+   * @return
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto get_binding(controller_axis axis) const
+      -> std::optional<SDL_GameControllerButtonBind>
+  {
+    const auto result = SDL_GameControllerGetBindForAxis(
+        ptr(), static_cast<SDL_GameControllerAxis>(axis));
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+      return result;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  [[nodiscard]] auto get_binding(controller_button button) noexcept
+      -> std::optional<SDL_GameControllerButtonBind>
+  {
+    const auto result = SDL_GameControllerGetBindForButton(
+        ptr(), static_cast<SDL_GameControllerButton>(button));
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+      return result;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  /// @name USB functions
+  /// @{
+
+  auto product() -> std::optional<u16>
+  {
+    const auto id = SDL_GameControllerGetProduct(ptr());
+    if (id != 0) {
+      return id;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  auto product_version() -> std::optional<u16>
+  {
+    const auto id = SDL_GameControllerGetProductVersion(ptr());
+    if (id != 0) {
+      return id;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  auto vendor() -> std::optional<u16>
+  {
+    const auto id = SDL_GameControllerGetVendor(ptr());
+    if (id != 0) {
+      return id;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  /// @}
+
   /**
    * @brief Returns the player index associated with the controller.
    *
@@ -229,7 +321,7 @@ class basic_controller
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto index() const noexcept -> std::optional<int>
+  [[nodiscard]] auto index() const noexcept -> std::optional<player_index>
   {
     const auto result = SDL_GameControllerGetPlayerIndex(ptr());
     if (result != -1) {
@@ -269,6 +361,12 @@ class basic_controller
   [[nodiscard]] auto type() const noexcept -> controller_type
   {
     return static_cast<controller_type>(SDL_GameControllerGetType(ptr()));
+  }
+
+  [[nodiscard]] static auto type(joystick_index index) noexcept
+      -> controller_type
+  {
+    return static_cast<controller_type>(SDL_GameControllerTypeForIndex(index));
   }
 
   /**
@@ -333,27 +431,6 @@ class basic_controller
   }
 
   /**
-   * @brief Returns the bindings
-   *
-   * @param axis
-   *
-   * @return
-   *
-   * @since 5.0.0
-   */
-  [[nodiscard]] auto get_bind(controller_axis axis) const
-      -> std::optional<SDL_GameControllerButtonBind>
-  {
-    const auto result = SDL_GameControllerGetBindForAxis(
-        ptr(), static_cast<SDL_GameControllerAxis>(axis));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
-      return result;
-    } else {
-      return std::nullopt;
-    }
-  }
-
-  /**
    * @brief Returns a handle to the associated joystick.
    *
    * @return a handle to the associated joystick.
@@ -365,14 +442,8 @@ class basic_controller
     return joystick_handle{SDL_GameControllerGetJoystick(ptr())};
   }
 
-  /**
-   * @brief Updates the state of all open game controllers.
-   *
-   * @note This is done automatically if game controller events are enabled.
-   *
-   * @since 5.0.0
-   */
-  static void update() { SDL_GameControllerUpdate(); }
+  /// @name Mapping functions
+  /// @{
 
   /**
    * @brief Adds a game controller mapping.
@@ -430,6 +501,45 @@ class basic_controller
     }
   }
 
+  [[nodiscard]] auto mapping() const noexcept -> detail::sdl_string
+  {
+    return detail::sdl_string{SDL_GameControllerMapping(ptr())};
+  }
+
+  [[nodiscard]] static auto mapping(joystick_index index) noexcept
+      -> detail::sdl_string
+  {
+    return detail::sdl_string{SDL_GameControllerMappingForDeviceIndex(index)};
+  }
+
+  [[nodiscard]] static auto mapping(SDL_JoystickGUID guid) noexcept
+      -> detail::sdl_string
+  {
+    return detail::sdl_string{SDL_GameControllerMappingForGUID(guid)};
+  }
+
+  [[nodiscard]] static auto mapping_by_index(mapping_index index) noexcept
+      -> detail::sdl_string
+  {
+    return detail::sdl_string{SDL_GameControllerMappingForIndex(index)};
+  }
+
+  [[nodiscard]] static auto num_mappings() noexcept -> int
+  {
+    return SDL_GameControllerNumMappings();
+  }
+
+  /// @}
+
+  /**
+   * @brief Updates the state of all open game controllers.
+   *
+   * @note This is done automatically if game controller events are enabled.
+   *
+   * @since 5.0.0
+   */
+  static void update() { SDL_GameControllerUpdate(); }
+
   /**
    * @brief Indicates whether or not the specified value is usable as a
    * controller index.
@@ -440,7 +550,7 @@ class basic_controller
    *
    * @since 5.0.0
    */
-  [[nodiscard]] static auto is_supported(int index) noexcept -> bool
+  [[nodiscard]] static auto is_supported(joystick_index index) noexcept -> bool
   {
     return static_cast<bool>(SDL_IsGameController(index));
   }
@@ -472,25 +582,6 @@ class basic_controller
   [[nodiscard]] static auto is_polling() noexcept -> bool
   {
     return SDL_GameControllerEventState(SDL_QUERY);
-  }
-
-  /**
-   * @brief Returns the axis associated with the specified string.
-   *
-   * @note You don't need this function unless you are parsing game controller
-   * mappings by yourself.
-   *
-   * @param str the string that represents a game controller axis.
-   *
-   * @return a game controller axis.
-   *
-   * @since 5.0.0
-   */
-  [[nodiscard]] static auto get_axis(nn_czstring str) noexcept
-      -> controller_axis
-  {
-    return static_cast<controller_axis>(
-        SDL_GameControllerGetAxisFromString(str));
   }
 
  private:
@@ -575,7 +666,16 @@ class controller final : public basic_controller<controller>
     if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
       return controller{ptr};
     } else {
-      throw sdl_error{"Failed to create game_controller from joystick ID"};
+      throw sdl_error{"Failed to create controller from joystick ID"};
+    }
+  }
+
+  [[nodiscard]] static auto from_index(player_index index) -> controller
+  {
+    if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
+      return controller{ptr};
+    } else {
+      throw sdl_error{"Failed to create controller from player index"};
     }
   }
 

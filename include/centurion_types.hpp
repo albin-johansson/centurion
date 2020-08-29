@@ -256,6 +256,41 @@ using nanoseconds = std::chrono::duration<T, std::nano>;
 template <typename T>
 using minutes = std::chrono::duration<T, std::ratio<60>>;
 
+/**
+ * @namespace literals
+ *
+ * @brief Contains suffix operators.
+ *
+ * @since 5.0.0
+ */
+namespace literals {
+
+constexpr auto operator"" _ns(unsigned long long int value) noexcept
+    -> nanoseconds<u32>
+{
+  return nanoseconds<u32>{value};
+}
+
+constexpr auto operator"" _us(unsigned long long int value) noexcept
+    -> microseconds<u32>
+{
+  return microseconds<u32>{value};
+}
+
+constexpr auto operator"" _ms(unsigned long long int value) noexcept
+    -> milliseconds<u32>
+{
+  return milliseconds<u32>{value};
+}
+
+constexpr auto operator"" _s(unsigned long long int value) noexcept
+    -> seconds<u32>
+{
+  return seconds<u32>{value};
+}
+
+}  // namespace literals
+
 /// @}
 
 }  // namespace centurion

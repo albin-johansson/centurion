@@ -198,87 +198,27 @@ class basic_controller
    */
   void stop_rumble() noexcept { rumble(0, 0, milliseconds<u32>::zero()); }
 
+  /**
+   * @brief Sets the player index associated with the controller.
+   *
+   * @param index the player index that will be used.
+   *
+   * @since 5.0.0
+   */
   void set_player_index(player_index index) noexcept
   {
     SDL_GameControllerSetPlayerIndex(ptr(), index);
   }
 
   /**
-   * @brief Returns the axis associated with the specified string.
+   * @brief Returns the USB product ID of the controller.
    *
-   * @note You don't need this function unless you are parsing game controller
-   * mappings by yourself.
-   *
-   * @param str the string that represents a game controller axis.
-   *
-   * @return a game controller axis.
+   * @return the USB product ID; `std::nullopt` if the product ID isn't
+   * available.
    *
    * @since 5.0.0
    */
-  [[nodiscard]] static auto get_axis(nn_czstring str) noexcept
-      -> controller_axis
-  {
-    return static_cast<controller_axis>(
-        SDL_GameControllerGetAxisFromString(str));
-  }
-
-  [[nodiscard]] static auto get_button(czstring str) noexcept
-      -> controller_button
-  {
-    return static_cast<controller_button>(
-        SDL_GameControllerGetButtonFromString(str));
-  }
-
-  [[nodiscard]] static auto stringify(controller_axis axis) noexcept -> czstring
-  {
-    return SDL_GameControllerGetStringForAxis(
-        static_cast<SDL_GameControllerAxis>(axis));
-  }
-
-  [[nodiscard]] static auto stringify(controller_button button) noexcept
-      -> czstring
-  {
-    return SDL_GameControllerGetStringForButton(
-        static_cast<SDL_GameControllerButton>(button));
-  }
-
-  /**
-   * @brief Returns the bindings
-   *
-   * @param axis
-   *
-   * @return
-   *
-   * @since 5.0.0
-   */
-  [[nodiscard]] auto get_binding(controller_axis axis) const
-      -> std::optional<SDL_GameControllerButtonBind>
-  {
-    const auto result = SDL_GameControllerGetBindForAxis(
-        ptr(), static_cast<SDL_GameControllerAxis>(axis));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
-      return result;
-    } else {
-      return std::nullopt;
-    }
-  }
-
-  [[nodiscard]] auto get_binding(controller_button button) noexcept
-      -> std::optional<SDL_GameControllerButtonBind>
-  {
-    const auto result = SDL_GameControllerGetBindForButton(
-        ptr(), static_cast<SDL_GameControllerButton>(button));
-    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
-      return result;
-    } else {
-      return std::nullopt;
-    }
-  }
-
-  /// @name USB functions
-  /// @{
-
-  auto product() -> std::optional<u16>
+  [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetProduct(ptr());
     if (id != 0) {
@@ -288,17 +228,14 @@ class basic_controller
     }
   }
 
-  auto product_version() -> std::optional<u16>
-  {
-    const auto id = SDL_GameControllerGetProductVersion(ptr());
-    if (id != 0) {
-      return id;
-    } else {
-      return std::nullopt;
-    }
-  }
-
-  auto vendor() -> std::optional<u16>
+  /**
+   * @brief Returns the USB vendor ID of the controller.
+   *
+   * @return the USB vendor ID; `std::nullopt` if the vendor ID isn't available.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
     const auto id = SDL_GameControllerGetVendor(ptr());
     if (id != 0) {
@@ -308,7 +245,23 @@ class basic_controller
     }
   }
 
-  /// @}
+  /**
+   * @brief Returns the product version of the controller.
+   *
+   * @return the product version; `std::nullopt` if the product version isn't
+   * available.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
+  {
+    const auto id = SDL_GameControllerGetProductVersion(ptr());
+    if (id != 0) {
+      return id;
+    } else {
+      return std::nullopt;
+    }
+  }
 
   /**
    * @brief Returns the player index associated with the controller.
@@ -361,6 +314,114 @@ class basic_controller
   [[nodiscard]] auto type() const noexcept -> controller_type
   {
     return static_cast<controller_type>(SDL_GameControllerGetType(ptr()));
+  }
+
+  /**
+   * @brief Returns the axis associated with the specified string.
+   *
+   * @note You don't need this function unless you are parsing game controller
+   * mappings by yourself.
+   *
+   * @param str the string that represents a game controller axis, e.g "rightx".
+   *
+   * @return a game controller axis value.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static auto get_axis(nn_czstring str) noexcept
+      -> controller_axis
+  {
+    return static_cast<controller_axis>(
+        SDL_GameControllerGetAxisFromString(str));
+  }
+
+  /**
+   * @brief Returns the button associated with the specified string.
+   *
+   * @param str the string that represents a controller button, e.g "a".
+   *
+   * @return a game controller button value.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static auto get_button(czstring str) noexcept
+      -> controller_button
+  {
+    return static_cast<controller_button>(
+        SDL_GameControllerGetButtonFromString(str));
+  }
+
+  /**
+   * @brief Returns a string representation of a controller axis.
+   *
+   * @param axis the controller axis that will be converted.
+   *
+   * @return a string that represents the axis, might be null.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static auto stringify(controller_axis axis) noexcept -> czstring
+  {
+    return SDL_GameControllerGetStringForAxis(
+        static_cast<SDL_GameControllerAxis>(axis));
+  }
+
+  /**
+   * @brief Returns a string representation of a controller button.
+   *
+   * @param button the controller button that will be converted.
+   *
+   * @return a string that represents the button, might be null.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static auto stringify(controller_button button) noexcept
+      -> czstring
+  {
+    return SDL_GameControllerGetStringForButton(
+        static_cast<SDL_GameControllerButton>(button));
+  }
+
+  /**
+   * @brief Returns the bindings for a controller axis.
+   *
+   * @param axis the axis of the bindings.
+   *
+   * @return the bindings for a controller axis; `std::nullopt` on failure.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto get_binding(controller_axis axis) const
+      -> std::optional<SDL_GameControllerButtonBind>
+  {
+    const auto result = SDL_GameControllerGetBindForAxis(
+        ptr(), static_cast<SDL_GameControllerAxis>(axis));
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+      return result;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * @brief Returns the bindings for a controller button.
+   *
+   * @param button the button of the bindings.
+   *
+   * @return the bindings for a controller button; `std::nullopt` on failure.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto get_binding(controller_button button) noexcept
+      -> std::optional<SDL_GameControllerButtonBind>
+  {
+    const auto result = SDL_GameControllerGetBindForButton(
+        ptr(), static_cast<SDL_GameControllerButton>(button));
+    if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
+      return result;
+    } else {
+      return std::nullopt;
+    }
   }
 
   [[nodiscard]] static auto type(joystick_index index) noexcept

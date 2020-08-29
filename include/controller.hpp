@@ -63,8 +63,6 @@ namespace centurion {
 /**
  * todo
  *
- * controller_type
- * controller_bind_type
  * SDL_GameControllerNumMappings
  * SDL_GameControllerMappingForGUID
  * SDL_GameControllerMapping

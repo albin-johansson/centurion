@@ -87,6 +87,8 @@ function pointer is also valid.
 
   int main(int, char**)
   {
+    using namespace ctn::literals;
+
     std::cout << "Simple thread test: \n";
 
     auto task = [](void* data) -> int {
@@ -94,7 +96,7 @@ function pointer is also valid.
 
       for (; count < 10; ++count) {
         std::cout << "Thread counter: " << count << '\n';
-        ctn::thread::sleep(ctn::milliseconds<ctn::u32>{50});
+        ctn::thread::sleep(50_ms);
       }
 
       return count;

@@ -84,7 +84,6 @@ namespace centurion {
  * SDL_GameControllerGetStringForButton
  * SDL_GameControllerGetBindForButton
  * SDL_GameControllerGetButton
- * SDL_GameControllerRumble
  *
  * SDL_GameControllerMappingForIndex
  * SDL_GameControllerGetTypeForIndex
@@ -196,6 +195,34 @@ template <typename T>
 class basic_controller
 {
  public:
+  /**
+   * @brief Triggers a rumble effect.
+   *
+   * @details Calls to this function cancels any previously active rumble
+   * effect. Furthermore, supplying 0 as intensities will stop the rumble
+   * effect.
+   *
+   * @note This function has no effect if rumbling isn't supported by the
+   * controller.
+   *
+   * @param lo the intensity of the low frequency rumble.
+   * @param hi the intensity of the high frequency rumble.
+   * @param duration the duration of the rumble effect.
+   *
+   * @since 5.0.0
+   */
+  void rumble(u16 lo, u16 hi, milliseconds<u32> duration) noexcept
+  {
+    SDL_GameControllerRumble(ptr(), lo, hi, duration.count());
+  }
+
+  /**
+   * @brief Stops any currently active rumble effect.
+   *
+   * @since 5.0.0
+   */
+  void stop_rumble() noexcept { rumble(0, 0, milliseconds<u32>::zero()); }
+
   /**
    * @brief Indicates whether or not the game controller is currently connected.
    *

@@ -48,6 +48,7 @@
 #include "button_state.hpp"
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
+#include "detail/centurion_utils.hpp"
 #include "joystick_handle.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -58,6 +59,59 @@ namespace centurion {
 
 /// @addtogroup input
 /// @{
+
+/**
+ * todo
+ *
+ * controller_type
+ * controller_bind_type
+ * SDL_GameControllerNumMappings
+ * SDL_GameControllerMappingForGUID
+ * SDL_GameControllerMapping
+ * SDL_GameControllerMappingForDeviceIndex
+ * SDL_GameControllerFromInstanceID
+ * SDL_GameControllerFromPlayerIndex
+ * SDL_GameControllerGetPlayerIndex
+ * SDL_GameControllerSetPlayerIndex
+ * SDL_GameControllerGetVendor
+ * SDL_GameControllerGetProduct
+ * SDL_GameControllerGetProductVersion
+ * SDL_GameControllerGetAxisFromString
+ * SDL_GameControllerGetStringForAxis
+ * SDL_GameControllerGetBindForAxis
+ * SDL_GameControllerGetAxis
+ * SDL_GameControllerGetButtonFromString
+ * SDL_GameControllerGetStringForButton
+ * SDL_GameControllerGetBindForButton
+ * SDL_GameControllerGetButton
+ * SDL_GameControllerRumble
+ *
+ * SDL_GameControllerMappingForIndex
+ * SDL_GameControllerGetTypeForIndex
+ *
+ */
+
+/**
+ * @enum controller_type
+ *
+ * @brief Mirrors the `SDL_GameControllerType` enum.
+ *
+ * @see `SDL_GameControllerType`
+ *
+ * @since 5.0.0
+ *
+ * @headerfile controller.hpp
+ */
+enum class controller_type {
+  unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
+  xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
+  xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
+  ps3 = SDL_CONTROLLER_TYPE_PS3,           ///< A PS3 controller.
+  ps4 = SDL_CONTROLLER_TYPE_PS4,           ///< A PS4 controller.
+  nintendo_switch_pro =
+      SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO  ///< A Nintendo Switch Pro
+                                               ///< controller.
+};
 
 /**
  * @enum controller_axis
@@ -110,26 +164,20 @@ enum class controller_button {
   max = SDL_CONTROLLER_BUTTON_MAX
 };
 
-struct controller_traits final
-{
- private:
-  struct deleter final
-  {
-    void operator()(SDL_GameController* controller) noexcept
-    {
-      SDL_GameControllerClose(controller);
-    }
-  };
-
- public:
-  using storage_type = std::unique_ptr<SDL_GameController, deleter>;
-  using owning = std::true_type;
-};
-
-struct controller_handle_traits final
-{
-  using storage_type = SDL_GameController*;
-  using owning = std::false_type;
+/**
+ * @enum controller_bind_type
+ *
+ * @brief Mirrors the values of the `SDL_GameControllerBindType` enum.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile controller.hpp
+ */
+enum class controller_bind_type {
+  none = SDL_CONTROLLER_BINDTYPE_NONE,
+  button = SDL_CONTROLLER_BINDTYPE_BUTTON,
+  axis = SDL_CONTROLLER_BINDTYPE_AXIS,
+  hat = SDL_CONTROLLER_BINDTYPE_HAT
 };
 
 /**
@@ -137,89 +185,17 @@ struct controller_handle_traits final
  *
  * @brief Represents a game controller, e.g. an xbox-controller.
  *
- * @since 5.0.0
+ * @tparam T the derived controller class, must provide a getter to obtain a
+ * pointer to the associated `SDL_GameController`.
  *
- * @todo Complete before 5.0.0
+ * @since 5.0.0
  *
  * @headerfile controller.hpp
  */
 template <typename T>
-class basic_controller final
+class basic_controller
 {
-  using owning = typename T::owning;
-  using storage_type = typename T::storage_type;
-  using pointer_argument = std::conditional_t<owning::value,
-                                              nn_owner<SDL_GameController*>,
-                                              not_null<SDL_GameController*>>;
-
  public:
-  /**
-   * @brief Attempts to create a game controller.
-   *
-   * @details The joystick index is the same as the device index passed to the
-   * `joystick` constructor. The index passed as an argument refers to the
-   * n'th game controller on the system.
-   *
-   * @note The supplied index is not the value which will identify the
-   * controller in controller events. Instead, the joystick's instance id
-   * (`SDL_JoystickID`) will be used.
-   *
-   * @remark This constructor is only available for owning game controllers.
-   *
-   * @param index the device index, can't be >= than the amount of number of
-   * joysticks.
-   *
-   * @throws sdl_error if the game controller cannot be opened.
-   *
-   * @since 5.0.0
-   */
-  template <typename = std::enable_if_t<owning::value>>
-  explicit basic_controller(int index)
-      : m_controller{SDL_GameControllerOpen(index)}
-  {
-    if (!m_controller) {
-      throw sdl_error{"Failed to open game controller"};
-    }
-  }
-
-  /**
-   * @brief Creates a game controller from an existing SDL game controller.
-   *
-   * @pre `controller` can't be null.
-   *
-   * @param controller a pointer to the associated game controller.
-   *
-   * @since 5.0.0
-   */
-  explicit basic_controller(pointer_argument controller) noexcept
-      : m_controller{controller}
-  {}
-
-  /**
-   * @brief Creates a game controller from an existing joystick ID.
-   *
-   * @remark This function is only available for owning game controllers.
-   *
-   * @param id the identifier associated with the joystick to base the game
-   * controller on.
-   *
-   * @return a game controller instance.
-   *
-   * @throws sdl_error if the game controller cannot be created.
-   *
-   * @since 5.0.0
-   */
-  template <typename = std::enable_if_t<owning::value>>
-  [[nodiscard]] static auto from_joystick(SDL_JoystickID id)
-      -> basic_controller<T>
-  {
-    if (auto* controller = SDL_GameControllerFromInstanceID(id)) {
-      return basic_controller<T>{controller};
-    } else {
-      throw sdl_error{"Failed to create game_controller from joystick ID"};
-    }
-  }
-
   /**
    * @brief Indicates whether or not the game controller is currently connected.
    *
@@ -245,6 +221,11 @@ class basic_controller final
   [[nodiscard]] auto name() const noexcept -> czstring
   {
     return SDL_GameControllerName(ptr());
+  }
+
+  [[nodiscard]] auto type() const noexcept -> controller_type
+  {
+    return static_cast<controller_type>(SDL_GameControllerGetType(ptr()));
   }
 
   /**
@@ -470,41 +451,222 @@ class basic_controller final
   }
 
  private:
-  storage_type m_controller;
-
-  [[nodiscard]] auto ptr() noexcept -> SDL_GameController*
+  [[nodiscard]] auto ptr() const noexcept -> SDL_GameController*
   {
-    if constexpr (std::is_pointer_v<storage_type>) {
-      return m_controller;
-    } else {
-      return m_controller.get();
-    }
+    return static_cast<const T*>(this)->get();
   }
 };
 
-using controller = basic_controller<controller_traits>;
-using controller_handle = basic_controller<controller_handle_traits>;
-
-template <typename T>
-[[nodiscard]] auto to_string(const basic_controller<T>& controller)
-    -> std::string
+/**
+ * @class controller
+ *
+ * @brief Represents an owning game controller.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile controller.hpp
+ */
+class controller final : public basic_controller<controller>
 {
-  using namespace std::string_literals;
-  czstring name = controller.name();
-
-  if constexpr (std::is_same_v<T, controller>) {
-    return "[controller | name: "s + (name ? name : "N/A") + "]"s;
-  } else {
-    return "[controller_handle | name: "s + (name ? name : "N/A") + "]"s;
+ public:
+  /**
+   * @brief Creates a game controller from an existing SDL game controller.
+   *
+   * @param controller a pointer to the associated game controller.
+   *
+   * @throws centurion_exception if the supplied pointer is null.
+   *
+   * @since 5.0.0
+   */
+  explicit controller(owner<SDL_GameController*> controller)
+      : m_controller{controller}
+  {
+    if (!m_controller) {
+      throw centurion_exception{"Cannot create controller from null pointer!"};
+    }
   }
+
+  /**
+   * @brief Attempts to create a game controller.
+   *
+   * @details The joystick index is the same as the device index passed to the
+   * `joystick` constructor. The index passed as an argument refers to the
+   * n'th game controller on the system.
+   *
+   * @note The supplied index is not the value which will identify the
+   * controller in controller events. Instead, the joystick's instance id
+   * (`SDL_JoystickID`) will be used.
+   *
+   * @remark This constructor is only available for owning game controllers.
+   *
+   * @param index the device index, can't be >= than the amount of number of
+   * joysticks.
+   *
+   * @throws sdl_error if the game controller cannot be opened.
+   *
+   * @since 5.0.0
+   */
+  explicit controller(int index) : m_controller{SDL_GameControllerOpen(index)}
+  {
+    if (!m_controller) {
+      throw sdl_error{"Failed to open game controller"};
+    }
+  }
+
+  /**
+   * @brief Creates a game controller from an existing joystick ID.
+   *
+   * @remark This function is only available for owning game controllers.
+   *
+   * @param id the identifier associated with the joystick to base the game
+   * controller on.
+   *
+   * @return a game controller instance.
+   *
+   * @throws sdl_error if the game controller cannot be created.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static auto from_joystick(SDL_JoystickID id) -> controller
+  {
+    if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
+      return controller{ptr};
+    } else {
+      throw sdl_error{"Failed to create game_controller from joystick ID"};
+    }
+  }
+
+  [[nodiscard]] auto get() const noexcept -> SDL_GameController*
+  {
+    return m_controller.get();
+  }
+
+ private:
+  struct deleter final
+  {
+    void operator()(SDL_GameController* controller) noexcept
+    {
+      SDL_GameControllerClose(controller);
+    }
+  };
+  std::unique_ptr<SDL_GameController, deleter> m_controller;
+};
+
+/**
+ * @class controller_handle
+ *
+ * @brief Represents a non-owning handle to a game controller.
+ *
+ * @see controller
+ *
+ * @since 5.0.0
+ *
+ * @headerfile controller.hpp
+ */
+class controller_handle final : public basic_controller<controller_handle>
+{
+ public:
+  /**
+   * @brief Creates a game controller handle.
+   *
+   * @warning Calling any member functions other than `operator bool()` is
+   * undefined behavior if the supplied pointer is null!
+   *
+   * @param controller a pointer to the associated game controller, can
+   * safely be null.
+   *
+   * @since 5.0.0
+   */
+  explicit controller_handle(SDL_GameController* controller) noexcept
+      : m_controller{controller}
+  {}
+
+  /**
+   * @brief Creates a handle to an existing controller instance.
+   *
+   * @param controller the controller that owns the `SDL_GameController`
+   * pointer.
+   *
+   * @since 5.0.0
+   */
+  explicit controller_handle(controller& controller) noexcept
+      : m_controller{controller.get()}
+  {}
+
+  /**
+   * @brief Indicates whether or not the internal pointer is non-null.
+   *
+   * @return `true` if the internal pointer is non-null; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  explicit operator bool() const noexcept { return m_controller; }
+
+  [[nodiscard]] auto get() const noexcept -> SDL_GameController*
+  {
+    return m_controller;
+  }
+
+ private:
+  SDL_GameController* m_controller;
+};
+
+//[[nodiscard]] auto to_string(const controller& controller) -> std::string
+//{
+//  using namespace std::string_literals;
+//  const auto ptr = detail::address_of(controller.get());
+//  const auto name = controller.name() ? controller.name() : "N/A";
+//  return "[controller | ptr: "s + ptr + ", name: "s + name + "]"s;
+//}
+//
+//[[nodiscard]] auto to_string(controller_handle handle) -> std::string
+//{
+//  using namespace std::string_literals;
+//  const auto ptr = detail::address_of(handle.get());
+//  const auto name = handle.name() ? handle.name() : "N/A";
+//  return "[controller_handle | ptr: "s + ptr + ", name: "s + name + "]"s;
+//}
+//
+// auto operator<<(std::ostream& stream, const controller& controller)
+//    -> std::ostream&
+//{
+//  stream << to_string(controller);
+//  return stream;
+//}
+//
+// auto operator<<(std::ostream& stream, controller_handle handle) ->
+// std::ostream&
+//{
+//  stream << to_string(handle);
+//  return stream;
+//}
+
+[[nodiscard]] inline constexpr auto operator==(
+    controller_type lhs,
+    SDL_GameControllerType rhs) noexcept -> bool
+{
+  return static_cast<SDL_GameControllerType>(lhs) == rhs;
 }
 
-template <typename T>
-auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
-    -> std::ostream&
+[[nodiscard]] inline constexpr auto operator==(SDL_GameControllerType lhs,
+                                               controller_type rhs) noexcept
+    -> bool
 {
-  stream << to_string(controller);
-  return stream;
+  return rhs == lhs;
+}
+
+[[nodiscard]] inline constexpr auto operator!=(
+    controller_type lhs,
+    SDL_GameControllerType rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+[[nodiscard]] inline constexpr auto operator!=(SDL_GameControllerType lhs,
+                                               controller_type rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
 }
 
 /**
@@ -616,6 +778,34 @@ auto operator<<(std::ostream& stream, const basic_controller<T>& controller)
 [[nodiscard]] inline constexpr auto operator!=(SDL_GameControllerButton lhs,
                                                controller_button rhs) noexcept
     -> bool
+{
+  return !(lhs == rhs);
+}
+
+[[nodiscard]] inline constexpr auto operator==(
+    controller_bind_type lhs,
+    SDL_GameControllerBindType rhs) noexcept -> bool
+{
+  return static_cast<SDL_GameControllerBindType>(lhs) == rhs;
+}
+
+[[nodiscard]] inline constexpr auto operator==(
+    SDL_GameControllerBindType lhs,
+    controller_bind_type rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+[[nodiscard]] inline constexpr auto operator!=(
+    controller_bind_type lhs,
+    SDL_GameControllerBindType rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+[[nodiscard]] inline constexpr auto operator!=(
+    SDL_GameControllerBindType lhs,
+    controller_bind_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

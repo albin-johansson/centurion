@@ -38,7 +38,7 @@ be executed where you'd like to install your libraries, e.g. ``~/sdl2/``.
   tar -xf SDL2_image-2.0.5.tar.gz
   cd SDL2_image-2.0.5
   ./configure
-  make all
+  make
   sudo make install
   cd ..
 

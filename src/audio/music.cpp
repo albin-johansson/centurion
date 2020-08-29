@@ -49,7 +49,7 @@ void music::halt() noexcept
 void music::fade_in(milliseconds<int> ms, int nLoops) noexcept
 {
   if (ms.count() < 0) {
-    ms = milliseconds<int>{0};
+    ms = milliseconds<int>::zero();
   }
 
   if (nLoops < -1) {
@@ -65,7 +65,7 @@ void music::fade_out(milliseconds<int> ms) noexcept
     return;
   }
   if (ms.count() < 0) {
-    ms = milliseconds<int>{0};
+    ms = milliseconds<int>::zero();
   }
   Mix_FadeOutMusic(ms.count());
 }

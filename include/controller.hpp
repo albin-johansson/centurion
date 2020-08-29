@@ -76,7 +76,6 @@ namespace centurion {
  * SDL_GameControllerGetAxisFromString
  * SDL_GameControllerGetStringForAxis
  * SDL_GameControllerGetBindForAxis
- * SDL_GameControllerGetAxis
  * SDL_GameControllerGetButtonFromString
  * SDL_GameControllerGetStringForButton
  * SDL_GameControllerGetBindForButton

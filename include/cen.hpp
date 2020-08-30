@@ -23,12 +23,12 @@
  */
 
 /**
- * @file centurion_as_ctn.hpp
+ * @file cen.hpp
  *
- * @brief Convenience header that defines the `::ctn` namespace alias.
+ * @brief Convenience header that defines the `::cen` namespace alias.
  *
  * @details Includes the `centurion.hpp` header whilst also defining a
- * namespace alias for the `::centurion` namespace, `::ctn`.
+ * namespace alias for the `::centurion` namespace, `::cen`.
  *
  * @author Albin Johansson
  *
@@ -57,7 +57,7 @@
  *
  * @since 5.0.0
  *
- * @headerfile centurion_as_ctn.hpp
+ * @headerfile cen.hpp
  */
 namespace cen = centurion;
 

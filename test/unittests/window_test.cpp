@@ -4,12 +4,12 @@
 #include <iostream>
 
 #include "cen.hpp"
-#include "centurion_types.hpp"
 #include "exception.hpp"
 #include "log.hpp"
 #include "renderer.hpp"
 #include "screen.hpp"
 #include "surface.hpp"
+#include "types.hpp"
 #include "window_utils.hpp"
 
 namespace {

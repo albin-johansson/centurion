@@ -3,7 +3,7 @@
 #include <catch.hpp>
 
 #include "cen.hpp"
-#include "centurion_types.hpp"
+#include "types.hpp"
 
 TEST_CASE("mouse_button enum values", "[mouse_button]")
 {

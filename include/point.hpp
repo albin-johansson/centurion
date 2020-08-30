@@ -46,8 +46,8 @@
 #include <utility>
 
 #include "centurion_api.hpp"
-#include "centurion_types.hpp"
 #include "detail/utils.hpp"
+#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

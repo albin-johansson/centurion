@@ -31,9 +31,9 @@
 #include "area.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
-#include "centurion_types.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
+#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

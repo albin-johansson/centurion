@@ -23,7 +23,7 @@
  */
 
 /**
- * @file centurion_types.hpp
+ * @file types.hpp
  *
  * @brief Provides various type aliases.
  *

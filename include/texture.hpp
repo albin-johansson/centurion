@@ -51,10 +51,10 @@
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
-#include "centurion_types.hpp"
 #include "color.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
+#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

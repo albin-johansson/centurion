@@ -47,10 +47,10 @@
 
 #include "button_state.hpp"
 #include "centurion_api.hpp"
-#include "centurion_types.hpp"
 #include "detail/utils.hpp"
 #include "joystick_handle.hpp"
 #include "sdl_string.hpp"
+#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -726,7 +726,7 @@ class controller final : public basic_controller<controller>
    *
    * @param controller a pointer to the associated game controller.
    *
-   * @throws centurion_exception if the supplied pointer is null.
+   * @throws exception if the supplied pointer is null.
    *
    * @since 5.0.0
    */
@@ -1179,3 +1179,4 @@ auto operator<<(std::ostream& stream, controller_handle handle)
 }  // namespace centurion
 
 #endif  // CENTURION_GAME_CONTROLLER_HEADER
+          

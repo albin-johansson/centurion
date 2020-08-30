@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include "centurion_types.hpp"
+#include "types.hpp"
 
 namespace centurion::battery {
 

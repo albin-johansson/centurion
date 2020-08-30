@@ -36,7 +36,7 @@
 
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
-#include "centurion_types.hpp"
+#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

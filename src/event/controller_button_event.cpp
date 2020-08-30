@@ -35,6 +35,16 @@ auto controller_button_event::state() const noexcept -> button_state
   return static_cast<button_state>(m_event.state);
 }
 
+auto controller_button_event::pressed() const noexcept -> bool
+{
+  return state() == button_state::pressed;
+}
+
+auto controller_button_event::released() const noexcept -> bool
+{
+  return state() == button_state::released;
+}
+
 auto controller_button_event::which() const noexcept -> SDL_JoystickID
 {
   return m_event.which;

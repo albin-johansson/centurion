@@ -51,6 +51,24 @@ TEST_CASE("controller_button_event::state", "[controller_button_event]")
   CHECK(event.state() == cen::button_state::released);
 }
 
+TEST_CASE("controller_button_event::released", "[controller_button_event]")
+{
+  SDL_ControllerButtonEvent sdlEvent;
+  sdlEvent.state = SDL_RELEASED;
+
+  cen::controller_button_event event{sdlEvent};
+  CHECK(event.released());
+}
+
+TEST_CASE("controller_button_event::pressed", "[controller_button_event]")
+{
+  SDL_ControllerButtonEvent sdlEvent;
+  sdlEvent.state = SDL_PRESSED;
+
+  cen::controller_button_event event{sdlEvent};
+  CHECK(event.pressed());
+}
+
 TEST_CASE("controller_button_event::which", "[controller_button_event]")
 {
   SDL_ControllerButtonEvent sdlEvent;

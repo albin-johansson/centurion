@@ -487,6 +487,26 @@ class controller_button_event final
   auto state() const noexcept -> button_state;
 
   /**
+   * @brief Indicates whether or not the associated button is pressed.
+   *
+   * @return `true` if the associated button is pressed; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto pressed() const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the associated button is released.
+   *
+   * @return `true` if the associated button is released; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto released() const noexcept -> bool;
+
+  /**
    * @brief Returns the joystick instance ID associated with the event.
    *
    * @return the joystick instance ID associated with the event.

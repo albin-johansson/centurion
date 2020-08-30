@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
-project(CenturionTestProj)
+
+project(CenturionTest)
 
 set(TEST_FILES
         unittests/test_main.cpp
@@ -89,17 +90,11 @@ else ()
     add_executable(${CENTURION_TEST_TARGET} ${TEST_FILES})
 endif ()
 
-add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
-
 if (DEFINED ENV{TRAVIS})
     target_compile_definitions(${CENTURION_TEST_TARGET}
             PUBLIC CENTURION_NOAUDIO
             PUBLIC TRAVIS_TEST)
 endif ()
-
-set_target_properties(${CENTURION_TEST_TARGET} PROPERTIES
-        CXX_STANDARD 17
-        CXX_STANDARD_REQUIRED ON)
 
 set(CATCH_INCLUDE_DIR catch2)
 add_library(Catch2 INTERFACE)
@@ -108,19 +103,16 @@ target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
 include(CTest)
 include(Catch)
 
-enable_testing()
-add_test(NAME ${CENTURION_TEST_TARGET}
-        COMMAND ${CENTURION_TEST_TARGET})
+add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET}
         PUBLIC unittests
         SYSTEM PUBLIC ${CTN_INCLUDE_DIR}
-        SYSTEM PUBLIC ${CTN_SOURCE_DIR}) # Source dir for header only test
+        SYSTEM PUBLIC ${CTN_SOURCE_DIR})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
-            -Wno-unused-result
-            )
+            -Wno-unused-result)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
             /EHsc)
@@ -131,13 +123,12 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
             /W3)
 endif ()
 
-message("------ LINKING TEST EXECUTABLE ------")
 message("Linking against...")
 message("  * SDL2       @ ${SDL2_LIBRARY}")
 message("  * SDL2_image @ ${SDL2_IMAGE_LIBRARIES}")
 message("  * SDL2_mixer @ ${SDL2_MIXER_LIBRARIES}")
 message("  * SDL2_ttf   @ ${SDL2_TTF_LIBRARIES}")
-message("Centurion link target: ${CENTURION_LIBRARIES}")
+message("Centurion link target: ${CENTURION_IMPORT_LIB}")
 message("-------------------------------------")
 
 target_link_libraries(${CENTURION_TEST_TARGET}
@@ -145,7 +136,7 @@ target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
-        PUBLIC ${CENTURION_LIBRARIES}
+        PUBLIC ${CENTURION_IMPORT_LIB}
         PUBLIC libEnTT
         PUBLIC libGSL
         PUBLIC Catch2)

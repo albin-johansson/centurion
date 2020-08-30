@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
-project(CenturionSrcProj)
+
+project(CenturionSrc)
 
 set(SOURCE_FILES
         ../include/centurion_cfg.hpp
@@ -164,22 +165,12 @@ if (WIN32)
     add_definitions(-DWIN_EXPORT)
 endif ()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CENTURION_OUTPUT_NAME Centurion)
-else ()
-    set(CENTURION_OUTPUT_NAME libCenturion)
-endif ()
-
 if (DEFINED ENV{TRAVIS})
     target_compile_definitions(${CENTURION_LIB_TARGET} PUBLIC CENTURION_NOAUDIO)
 endif ()
 
 set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
-        VERSION 5.0.0
-        CXX_STANDARD 17
-        CXX_STANDARD_REQUIRED ON
-        CXX_EXTENSIONS OFF
-        OUTPUT_NAME ${CENTURION_OUTPUT_NAME})
+        OUTPUT_NAME ${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion)
 
 set(GSL_SOURCES
         ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl
@@ -192,9 +183,8 @@ set(GSL_SOURCES
         ${CTN_LIBRARY_DIR}/microsoft/gsl/span
         ${CTN_LIBRARY_DIR}/microsoft/gsl/span_ext
         ${CTN_LIBRARY_DIR}/microsoft/gsl/string_span)
-centurion_add_header_only_lib(libGSL "${CTN_LIBRARY_DIR}/microsoft" ${GSL_SOURCES})
-
-centurion_add_header_only_lib(libEnTT ${CTN_LIBRARY_DIR}/entt ${CTN_LIBRARY_DIR}/entt/entt.hpp)
+add_header_only_lib(libGSL "${CTN_LIBRARY_DIR}/microsoft" ${GSL_SOURCES})
+add_header_only_lib(libEnTT ${CTN_LIBRARY_DIR}/entt ${CTN_LIBRARY_DIR}/entt/entt.hpp)
 
 target_include_directories(${CENTURION_LIB_TARGET}
         PRIVATE ${CTN_INCLUDE_DIR}

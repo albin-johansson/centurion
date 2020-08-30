@@ -111,7 +111,7 @@ script:
   - cd test
   - ctest
 
-  - valgrind --gen-suppressions=all --suppressions=../../meta/linux_sdl_gl.sup --leak-check=yes ./Centurion_test
+  - valgrind --gen-suppressions=all --suppressions=../../meta/linux_sdl_gl.sup --leak-check=yes ./CenturionTests
 
 deploy:
   provider: pages

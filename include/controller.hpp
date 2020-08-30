@@ -431,6 +431,16 @@ class basic_controller
     }
   }
 
+  /**
+   * @brief Returns the type of the controller associated with the specified
+   * joystick index.
+   *
+   * @param index the joystick index of the desired game controller.
+   *
+   * @return the type of the game controller associated with the index.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] static auto type(joystick_index index) noexcept
       -> controller_type
   {

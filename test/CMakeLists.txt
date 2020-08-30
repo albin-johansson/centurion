@@ -108,8 +108,8 @@ target_include_directories(${CENTURION_TEST_TARGET}
         SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
         SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
         SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-        SYSTEM PUBLIC ${CTN_INCLUDE_DIR}
-        SYSTEM PUBLIC ${CTN_SOURCE_DIR})
+        SYSTEM PUBLIC ${CEN_INCLUDE_DIR}
+        SYSTEM PUBLIC ${CEN_SOURCE_DIR})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
@@ -144,7 +144,7 @@ catch_discover_tests(${CENTURION_TEST_TARGET})
 
 copy_directory_post_build(
         ${CENTURION_TEST_TARGET}
-        ${CTN_RESOURCES_DIR}
+        ${CEN_RESOURCES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
 if (WIN32)
@@ -155,6 +155,6 @@ if (WIN32)
 
     copy_directory_post_build(
             ${CENTURION_TEST_TARGET}
-            ${CTN_BINARIES_DIR}
+            ${CEN_BINARIES_DIR}
             ${CMAKE_CURRENT_BINARY_DIR})
 endif ()

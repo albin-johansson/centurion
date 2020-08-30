@@ -6,7 +6,7 @@
 
 TEST_CASE("pixel_format enum values", "[pixel_format]")
 {
-  SECTION("CTN left and SDL right")
+  SECTION("CEN_ left and SDL right")
   {
     CHECK(cen::pixel_format::unknown == SDL_PIXELFORMAT_UNKNOWN);
     CHECK(cen::pixel_format::index1lsb == SDL_PIXELFORMAT_INDEX1LSB);
@@ -70,7 +70,7 @@ TEST_CASE("pixel_format enum values", "[pixel_format]")
     CHECK(cen::pixel_format::external_oes == SDL_PIXELFORMAT_EXTERNAL_OES);
   }
 
-  SECTION("CTN right and SDL left")
+  SECTION("CEN_ right and SDL left")
   {
     CHECK(SDL_PIXELFORMAT_UNKNOWN == cen::pixel_format::unknown);
     CHECK(SDL_PIXELFORMAT_INDEX1LSB == cen::pixel_format::index1lsb);

@@ -6,6 +6,7 @@ set(SOURCE_FILES
         ../include/centurion_cfg.hpp
         ../include/centurion_fwd.hpp
         ../include/centurion_types.hpp
+        ../include/cen.hpp
         ../include/video.hpp
         ../include/basic_window.hpp
         ../include/basic_window.ipp
@@ -153,8 +154,8 @@ set(SOURCE_FILES
 if (CEN_AUDIO)
     set(SOURCE_FILES
             ${SOURCE_FILES}
-            ${CTN_INCLUDE_DIR}/sound_effect.hpp
-            ${CTN_INCLUDE_DIR}/music.hpp
+            ${CEN_INCLUDE_DIR}/sound_effect.hpp
+            ${CEN_INCLUDE_DIR}/music.hpp
             audio/sound_effect.cpp
             audio/music.cpp)
 endif ()
@@ -169,27 +170,27 @@ set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
         OUTPUT_NAME ${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion)
 
 set(GSL_SOURCES
-        ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl
-        ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl_algorithm
-        ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl_assert
-        ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl_byte
-        ${CTN_LIBRARY_DIR}/microsoft/gsl/gsl_util
-        ${CTN_LIBRARY_DIR}/microsoft/gsl/multi_span
-        ${CTN_LIBRARY_DIR}/microsoft/gsl/pointers
-        ${CTN_LIBRARY_DIR}/microsoft/gsl/span
-        ${CTN_LIBRARY_DIR}/microsoft/gsl/span_ext
-        ${CTN_LIBRARY_DIR}/microsoft/gsl/string_span)
-add_header_only_lib(libGSL "${CTN_LIBRARY_DIR}/microsoft" ${GSL_SOURCES})
-add_header_only_lib(libEnTT ${CTN_LIBRARY_DIR}/entt ${CTN_LIBRARY_DIR}/entt/entt.hpp)
+        ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl
+        ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl_algorithm
+        ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl_assert
+        ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl_byte
+        ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl_util
+        ${CEN_LIBRARY_DIR}/microsoft/gsl/multi_span
+        ${CEN_LIBRARY_DIR}/microsoft/gsl/pointers
+        ${CEN_LIBRARY_DIR}/microsoft/gsl/span
+        ${CEN_LIBRARY_DIR}/microsoft/gsl/span_ext
+        ${CEN_LIBRARY_DIR}/microsoft/gsl/string_span)
+add_header_only_lib(libGSL "${CEN_LIBRARY_DIR}/microsoft" ${GSL_SOURCES})
+add_header_only_lib(libEnTT ${CEN_LIBRARY_DIR}/entt ${CEN_LIBRARY_DIR}/entt/entt.hpp)
 
 target_include_directories(${CENTURION_LIB_TARGET}
         SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
         SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
         SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
         SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-        PRIVATE ${CTN_INCLUDE_DIR}
-        PRIVATE ${CTN_SOURCE_DIR}
-        SYSTEM INTERFACE ${CTN_INCLUDE_DIR})
+        PRIVATE ${CEN_INCLUDE_DIR}
+        PRIVATE ${CEN_SOURCE_DIR}
+        SYSTEM INTERFACE ${CEN_INCLUDE_DIR})
 
 target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_LIBRARY}

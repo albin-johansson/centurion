@@ -694,7 +694,7 @@ TEST_CASE("window::check_flag", "[window]")
   const cen::window window;
   auto* sdlWindow = window.get();
 
-  // returns true if the CTN and SDL queries match
+  // returns true if the CEN and SDL queries match
   const auto validate = [&window, sdlWindow](SDL_WindowFlags flag) noexcept {
     const bool ctnValue = window.check_flag(flag);
     const bool sdlValue =

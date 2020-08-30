@@ -37,8 +37,8 @@
  * @copyright MIT License
  */
 
-#ifndef CENTURION_AS_CTN_HEADER
-#define CENTURION_AS_CTN_HEADER
+#ifndef CENTURION_CEN_HEADER
+#define CENTURION_CEN_HEADER
 
 #include "centurion.hpp"
 #include "centurion_api.hpp"
@@ -61,4 +61,4 @@
  */
 namespace cen = centurion;
 
-#endif  // CENTURION_AS_CTN_HEADER
+#endif  // CENTURION_CEN_HEADER

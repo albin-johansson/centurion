@@ -54,7 +54,7 @@ i.e. ``_utf8``, ``_latin1`` or ``_unicode``.
 .. code-block:: c++
   :linenos:
   
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <renderer.hpp>
    
   void demo(cen::renderer& renderer, cen::font& font)

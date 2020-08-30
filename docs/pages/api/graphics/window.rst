@@ -36,7 +36,7 @@ The following example illustrates a typical setup for a responsive window.
 
 .. code-block:: c++
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <window.hpp>
   #include <renderer.hpp>
   #include <event.hpp>

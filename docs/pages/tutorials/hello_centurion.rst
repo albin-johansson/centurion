@@ -7,8 +7,8 @@ Just like SDL, Centurion needs to be initialized before it can be used. This is 
 creating an instance of the ``centurion_lib`` class. Under the hood, ``centurion_lib`` will
 actually initialize SDL for us. So you should never initialize *both* Centurion and SDL explicitly.
 
-The ``centurion_lib`` class can be included by including either ``centurion.hpp`` or ``centurion_as_ctn.hpp``. 
-The only difference between these headers is that ``centurion_as_ctn.hpp`` provides the ``ctn`` namespace alias.
+The ``centurion_lib`` class can be included by including either ``centurion.hpp`` or ``cen.hpp``.
+The only difference between these headers is that ``cen.hpp`` provides the ``ctn`` namespace alias.
 Since all Centurion entities are located in the ``centurion`` namespace, it can get tedious to qualify everything 
 with ``centurion::``. As a result, it's recommended to prefer the ``ctn`` namespace alias.
 
@@ -24,7 +24,7 @@ exactly what gets initialized (and how).
 
 .. code-block:: c++
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
 
   int main(int, char**)
   {
@@ -44,7 +44,7 @@ initialized.
 
 .. code-block:: c++
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
 
   int main(int, char**)
   {

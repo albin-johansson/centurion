@@ -156,7 +156,7 @@ struct centurion_config final
  * @par Examples
  * This is how you should initialize the library.
  * @code{.cpp}
- * #include <centurion_as_ctn.hpp>
+ * #include <cen.hpp>
  *
  * int main(int, char**)
  * {
@@ -170,7 +170,7 @@ struct centurion_config final
  * You can also manually configure exactly how the library is initialized, using
  * the @link centurion::centurion_config @endlink struct.
  * @code{.cpp}
- * #include <centurion_as_ctn.hpp>
+ * #include <cen.hpp>
  *
  * int main(int, char**)
  * {

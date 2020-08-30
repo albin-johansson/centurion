@@ -45,7 +45,7 @@ Caching glyphs
   #include <window.hpp>
   #include <renderer.hpp>
   #include <font_cache.hpp>
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
 
   void foo() 
   {
@@ -69,7 +69,7 @@ Caching full strings
   #include <window.hpp>
   #include <renderer.hpp>
   #include <font_cache.hpp>
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
 
   void foo() 
   {

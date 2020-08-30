@@ -72,7 +72,7 @@ You can easily obtain the distance between two points using the
   :name: point-example-distance
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <point.hpp>
 
   void demo() 

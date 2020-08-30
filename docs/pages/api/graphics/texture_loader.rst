@@ -35,7 +35,7 @@ Examples
 .. code-block:: C++
 
   #include <texture_loader.hpp>
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
 
   void demo()
   {

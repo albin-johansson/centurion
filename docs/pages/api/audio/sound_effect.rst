@@ -43,7 +43,7 @@ Basic playback
   :caption: Demonstrates basic sound effect playback.
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <sound_effect.hpp>
   #include <thread.hpp>
 
@@ -81,7 +81,7 @@ Fading a sound effect in and out
   :caption: Demonstrates how to fade sound effects in and out.
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <sound_effect.hpp>
 
   void foo()
@@ -108,7 +108,7 @@ Handling sound effect volume
   :caption: Demonstrates how to deal with sound effect volume.
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <sound_effect.hpp>
 
   void foo()

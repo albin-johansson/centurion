@@ -275,7 +275,7 @@ class basic_loop
  * could use this class as the game loop in your game. Note, it also works
  * with free functions!
  * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
+ *   #include <cen.hpp>
  *   #include <game_loop.hpp>
  *
  *   class Game {
@@ -369,7 +369,7 @@ class variable_timestep_loop final
  * could use this class as the game loop in your game. Note, it also works
  * with free functions!
  * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
+ *   #include <cen.hpp>
  *   #include <game_loop.hpp>
  *
  *   class Game {
@@ -497,7 +497,7 @@ class basic_semi_fixed_timestep_loop final
  * could use this class as the game loop in your game. Note, it also works
  * with free functions!
  * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
+ *   #include <cen.hpp>
  *   #include <game_loop.hpp>
  *
  *   class Game {

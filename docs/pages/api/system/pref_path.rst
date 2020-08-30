@@ -37,7 +37,7 @@ Examples
 .. code-block:: C++
   :linenos:
   
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <paths.hpp>
 
   void foo()

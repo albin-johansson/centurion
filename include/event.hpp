@@ -3167,7 +3167,7 @@ static_assert(validate_event<window_event, SDL_WindowEvent>());
  * @par Usage
  * The idiomatic usage of the event API is provided in the following example.
  * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
+ *   #include <cen.hpp>
  *   #include <event.hpp>
  *
  *   void event_demo()

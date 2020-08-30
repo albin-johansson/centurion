@@ -83,7 +83,7 @@ function pointer is also valid.
   #include <iostream>
 
   #include <thread.cpp>
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
 
   int main(int, char**)
   {

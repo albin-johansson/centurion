@@ -230,7 +230,7 @@ demonstrates this in action.
   :name: hint-example-set-hint
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <hints.hpp>
 
   void foo()
@@ -260,7 +260,7 @@ always returns a ``std::optional`` that wraps a value of the value type used by 
   :name: hint-example-get-hint
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <hints.hpp>
 
   void foo()
@@ -286,7 +286,7 @@ It's possible to observe changes to hints with callbacks.
   :name: hint-example-observe-changes
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <hints.hpp>
 
   void foo()

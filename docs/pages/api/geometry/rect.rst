@@ -79,7 +79,7 @@ Casting between rectangle types
   :name: rect-example-casting
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <rect.hpp>
 
   void demo()
@@ -101,7 +101,7 @@ Two rectangles are considered to be intersecting if they overlap each other.
   :name: rect-example-intersection
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <rect.hpp>
 
   void demo()
@@ -126,7 +126,7 @@ Two rectangles are considered to be colliding if the overlap *or* if they share 
   :name: rect-example-collision
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <rect.hpp>
 
   void demo()
@@ -151,7 +151,7 @@ the function provided by SDL, this also works with floating-point rectangles.
   :name: rect-example-union
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <rect.hpp>
 
   void demo()

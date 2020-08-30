@@ -74,7 +74,7 @@ namespace centurion {
  *
  * @par Usage
  * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
+ *   #include <cen.hpp>
  *   #include <key.hpp>
  *
  *   void key_code_demo()

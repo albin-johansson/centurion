@@ -69,7 +69,7 @@ namespace centurion {
  * The following example illustrates a typical setup for a responsive window.
  * Of course, the example assumes that the library has been initialized.
  * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
+ *   #include <cen.hpp>
  *   #include <window.hpp>
  *   #include <renderer.hpp>
  *   #include <event.hpp>

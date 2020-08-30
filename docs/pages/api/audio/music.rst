@@ -48,7 +48,7 @@ Basic playback
   :caption: Demonstrates basic music playback.
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <music.hpp>
 
   void demo()
@@ -94,7 +94,7 @@ Fading music in and out
   :caption: Demonstrates how to fade music in and out.
   :linenos:
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <music.hpp>
 
   void demo()

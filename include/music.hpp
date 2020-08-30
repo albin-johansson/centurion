@@ -238,7 +238,7 @@ enum class music_type {
  * The following demonstrates some of the options available for playing
  * music with this class.
  * @code{.cpp}
- *   #include <centurion_as_ctn.hpp>
+ *   #include <cen.hpp>
  *   #include <music.hpp>
  *
  *   void demo()

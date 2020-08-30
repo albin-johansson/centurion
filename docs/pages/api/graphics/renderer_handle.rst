@@ -47,7 +47,7 @@ parameter.
 
 .. code-block:: c++
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <renderer_handle.hpp>
 
   void draw(SDL_Renderer* renderer)

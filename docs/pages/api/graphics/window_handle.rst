@@ -50,7 +50,7 @@ features a ``SDL_Window*`` parameter.
 
 .. code-block:: c++
 
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <window_handle.hpp>
 
   void foo(SDL_Window* window)

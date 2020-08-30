@@ -29,7 +29,7 @@ Examples
 .. code-block:: c++
   :linenos:
   
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <cpu.hpp>
 
   void foo()

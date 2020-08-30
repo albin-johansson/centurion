@@ -104,7 +104,7 @@ namespace centurion {
  * @par Examples
  * Below is an example of a typical rendering method.
  * @code{.cpp}
- * #include <centurion_as_ctn.hpp>
+ * #include <cen.hpp>
  * #include <renderer.hpp>
  *
  * void draw(cen::renderer& renderer)

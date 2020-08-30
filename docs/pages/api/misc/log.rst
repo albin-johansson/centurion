@@ -40,7 +40,7 @@ Basic logging
 .. code-block:: C++
   :linenos:
   
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <log.hpp>
 
   void foo()
@@ -61,7 +61,7 @@ All of the logging functions will, if no category is explicitly specified, use t
 .. code-block:: C++
   :linenos:
   
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <log.hpp>
 
   void foo()
@@ -90,7 +90,7 @@ to each of the standard logging functions. The logging macros can be disabled by
 .. code-block:: C++
   :linenos:
   
-  #include <centurion_as_ctn.hpp>
+  #include <cen.hpp>
   #include <log.hpp>
 
   void foo()

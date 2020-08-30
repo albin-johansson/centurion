@@ -6,12 +6,12 @@
 int main(int argc, char* argv[])
 {
 #ifndef CEN_AUDIO
-  ctn::centurion_config cfg;
+  cen::centurion_config cfg;
 
   cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
   cfg.initMixer = false;
 
-  const ctn::centurion_lib c{cfg};
+  const cen::centurion_lib c{cfg};
 #else
   const cen::centurion_lib c;
 #endif

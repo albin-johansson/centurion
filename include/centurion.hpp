@@ -160,7 +160,7 @@ struct centurion_config final
  *
  * int main(int, char**)
  * {
- *   ctn::centurion_lib c;
+ *   cen::centurion_lib c;
  *
  *   // The library is now initialized, proceed to using it!
  *
@@ -174,11 +174,11 @@ struct centurion_config final
  *
  * int main(int, char**)
  * {
- *   ctn::centurion_config cfg;
+ *   cen::centurion_config cfg;
  *   cfg.initMixer = false;
  *   // ...
  *
- *   ctn::centurion_lib c{cfg};
+ *   cen::centurion_lib c{cfg};
  *
  *   // The library is now initialized, proceed to using it!
  *

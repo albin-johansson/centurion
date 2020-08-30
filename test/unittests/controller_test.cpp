@@ -208,23 +208,23 @@ TEST_CASE("interactive controller", "[.controller]")
   //  bool running{true};
   //
   //  int colorIndex{};
-  //  constexpr std::array<ctn::color, 5> colors{ctn::colors::red,
-  //                                             ctn::colors::salmon,
-  //                                             ctn::colors::cyan,
-  //                                             ctn::colors::dark_sea_green,
-  //                                             ctn::colors::orchid};
+  //  constexpr std::array<cen::color, 5> colors{cen::colors::red,
+  //                                             cen::colors::salmon,
+  //                                             cen::colors::cyan,
+  //                                             cen::colors::dark_sea_green,
+  //                                             cen::colors::orchid};
   //
-  //  auto handleDeviceEvent = [&](const ctn::controller_device_event& event) {
-  //    if (event.type() == ctn::event_type::controller_device_removed) {
+  //  auto handleDeviceEvent = [&](const cen::controller_device_event& event) {
+  //    if (event.type() == cen::event_type::controller_device_removed) {
   //      const auto id = event.which();
   //      controllers.remove(id);
-  //    } else if (event.type() == ctn::event_type::controller_device_added) {
+  //    } else if (event.type() == cen::event_type::controller_device_added) {
   //      controllers.emplace(event.which());
   //    }
   //  };
   //
-  //  auto handleButtonEvent = [&](const ctn::controller_button_event& event) {
-  //    if (event.state() == ctn::button_state::released) {
+  //  auto handleButtonEvent = [&](const cen::controller_button_event& event) {
+  //    if (event.state() == cen::button_state::released) {
   //      ++colorIndex;
   //    }
   //  };
@@ -232,19 +232,19 @@ TEST_CASE("interactive controller", "[.controller]")
   //  window.show();
   //  while (running) {
   //    while (event.poll()) {
-  //      if (event.is<ctn::quit_event>()) {
+  //      if (event.is<cen::quit_event>()) {
   //        running = false;
   //        break;
-  //      } else if (auto* de = event.try_get<ctn::controller_device_event>()) {
+  //      } else if (auto* de = event.try_get<cen::controller_device_event>()) {
   //        handleDeviceEvent(*de);
-  //      } else if (auto* be = event.try_get<ctn::controller_button_event>()) {
+  //      } else if (auto* be = event.try_get<cen::controller_button_event>()) {
   //        handleButtonEvent(*be);
   //      }
   //    }
   //
   //    renderer.clear_with(colors.at(colorIndex % colors.size()));
   //
-  //    renderer.set_color(ctn::colors::wheat);
+  //    renderer.set_color(cen::colors::wheat);
   //    renderer.fill_rect<int>({{10, 10}, {100, 100}});
   //
   //    renderer.present();
@@ -255,7 +255,7 @@ TEST_CASE("interactive controller", "[.controller]")
 // TEST_CASE("load_game_controller_mappings", "[controller]")
 //{
 //  const auto nAdded =
-//      ctn::controller::load_mappings("resources/gamecontrollerdb.txt");
+//      cen::controller::load_mappings("resources/gamecontrollerdb.txt");
 //  CHECK(nAdded > 0);
 //}
 //
@@ -265,54 +265,54 @@ TEST_CASE("interactive controller", "[.controller]")
 //
 // TEST_CASE("Interactive game controller test", "[..controller]")
 //{
-//  ctn::window window{"Game controller demo"};
-//  ctn::renderer renderer{window};
-//  ctn::event event;
+//  cen::window window{"Game controller demo"};
+//  cen::renderer renderer{window};
+//  cen::event event;
 //
-//  ctn::controller::load_mappings("resources/gamecontrollerdb.txt");
+//  cen::controller::load_mappings("resources/gamecontrollerdb.txt");
 //
-//  ctn::controller controller{0};
+//  cen::controller controller{0};
 //
-//  ctn::frect rect{{0, 0}, {100, 100}};
+//  cen::frect rect{{0, 0}, {100, 100}};
 //
 //  float dx{};
 //  float dy{};
 //
 //  constexpr auto deadZone = 8000;
 //
-//  constexpr std::array<ctn::color, 3> colors{
-//      ctn::colors::pink, ctn::colors::steel_blue, ctn::colors::red};
+//  constexpr std::array<cen::color, 3> colors{
+//      cen::colors::pink, cen::colors::steel_blue, cen::colors::red};
 //  int colorIndex{};
-//  ctn::color color = colors.at(colorIndex);
+//  cen::color color = colors.at(colorIndex);
 //
 //  bool running = true;
 //  window.show();
 //  while (running) {
 //    while (event.poll()) {
-//      if (event.is<ctn::quit_event>()) {
+//      if (event.is<cen::quit_event>()) {
 //        running = false;
 //        break;
 //      } else if (const auto* cbe =
-//                     event.try_get<ctn::controller_button_event>()) {
-//        if (cbe->state() == ctn::button_state::released) {
+//                     event.try_get<cen::controller_button_event>()) {
+//        if (cbe->state() == cen::button_state::released) {
 //          ++colorIndex;
 //          color = colors.at(colorIndex % int{colors.size()});
 //        }
 //      } else if (const auto* cae =
-//                     event.try_get<ctn::controller_axis_event>()) {
+//                     event.try_get<cen::controller_axis_event>()) {
 //        const auto axis = cae->axis();
 //        const auto value = cae->value();  // -32768 to 32767)
 //        const auto fvalue = static_cast<float>(value);
 //
 //        const auto step = 0.0005f;
 //
-//        if (axis == ctn::controller_axis::left_x) {
+//        if (axis == cen::controller_axis::left_x) {
 //          if ((value < -deadZone) || (value > deadZone)) {
 //            dx = fvalue * step;
 //          } else {
 //            dx = 0;
 //          }
-//        } else if (axis == ctn::controller_axis::left_y) {
+//        } else if (axis == cen::controller_axis::left_y) {
 //          if ((value < -deadZone) || (value > deadZone)) {
 //            dy = fvalue * step;
 //          } else {
@@ -327,7 +327,7 @@ TEST_CASE("interactive controller", "[.controller]")
 //
 //    renderer.clear_with(color);
 //
-//    renderer.set_color(ctn::colors::dark_red);
+//    renderer.set_color(cen::colors::dark_red);
 //    renderer.fill_rect(rect);
 //
 //    renderer.present();

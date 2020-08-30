@@ -243,7 +243,7 @@ enum class music_type {
  *
  *   void demo()
  *   {
- *     ctn::music music{"never_gonna_give_you_up.mp3"};
+ *     cen::music music{"never_gonna_give_you_up.mp3"};
  *
  *     // sets the volume of the music (range: [0, 128])
  *     music.set_volume(64);
@@ -252,17 +252,17 @@ enum class music_type {
  *     music.play();
  *
  *     // halts currently playing music
- *     ctn::music::halt();
+ *     cen::music::halt();
  *
  *     // plays the music two times
  *     music.play(2);
- *     ctn::music::halt();
+ *     cen::music::halt();
  *
  *     // fade in the music over 576 milliseconds
- *     music.fade_in(ctn::milliseconds<int>{576});
+ *     music.fade_in(cen::milliseconds<int>{576});
  *
  *     // fade out the music over 5 seconds
- *     music.fade_out(ctn::seconds<int>{5});
+ *     music.fade_out(cen::seconds<int>{5});
  *   }
  * @endcode
  *

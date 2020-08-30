@@ -633,7 +633,7 @@ class font_cache final
    * @details The recommended way to use this method is with structured
    * bindings, as in the following example.
    * @code{.cpp}
-   *   ctn::font_cache cache = ...;
+   *   cen::font_cache cache = ...;
    *   const auto& [cachedTexture, glyphMetrics] = cache.at('A'_uni);
    * @endcode
    *
@@ -658,7 +658,7 @@ class font_cache final
    * @details The recommended way to use this method is with structured
    * bindings, as in the following example.
    * @code{.cpp}
-   *   ctn::font_cache cache = ...;
+   *   cen::font_cache cache = ...;
    *   const auto& [cachedTexture, glyphMetrics] = cache['A'];
    * @endcode
    *

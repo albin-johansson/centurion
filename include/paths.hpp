@@ -65,7 +65,7 @@ namespace centurion {
  * you should always check for null when dealing with a base path instance.
  * See the following example.
  * @code{.cpp}
- *   ctn::base_path basePath;
+ *   cen::base_path basePath;
  *   if (basePath) {
  *     // the application path was successfully obtained
  *   } else {
@@ -211,7 +211,7 @@ static_assert(!std::is_copy_assignable_v<base_path>);
  * You should always check that a `pref_path` instance holds a valid string
  * before using the associated string. See the following example.
  * @code{.cpp}
- *   ctn::pref_path prefPath{"my organization", "my awesome app"};
+ *   cen::pref_path prefPath{"my organization", "my awesome app"};
  *   if (prefPath) {
  *     // the preferred path was successfully obtained
  *   } else {

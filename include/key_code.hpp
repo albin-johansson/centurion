@@ -79,12 +79,12 @@ namespace centurion {
  *
  *   void key_code_demo()
  *   {
- *     ctn::key_code none;
- *     ctn::key_code a {SDLK_a};
- *     ctn::key_code b {SDL_SCANCODE_B}; // converts to SDL_Keycode
- *     ctn::key_code c {"C"};
+ *     cen::key_code none;
+ *     cen::key_code a {SDLK_a};
+ *     cen::key_code b {SDL_SCANCODE_B}; // converts to SDL_Keycode
+ *     cen::key_code c {"C"};
  *
- *     ctn::key foo;
+ *     cen::key foo;
  *     foo = SDLK_k;
  *     foo = SDL_SCANCODE_D;
  *

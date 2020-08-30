@@ -281,7 +281,7 @@ class basic_loop
  *   class Game {
  *    public:
  *     bool handle_input() { ... }
- *     void handle_logic(ctn::seconds<double> delta) { ... }
+ *     void handle_logic(cen::seconds<double> delta) { ... }
  *     void handle_render(double alpha) { ... }
  *   };
  *
@@ -291,7 +291,7 @@ class basic_loop
  *
  *     Game game;
  *
- *     ctn::variable_timestep_loop loop;
+ *     cen::variable_timestep_loop loop;
  *     loop.connect_input<&Game::handle_input>(game);
  *     loop.connect_logic<&Game::handle_logic>(game);
  *     loop.connect_render<&Game::handle_render>(game);
@@ -375,7 +375,7 @@ class variable_timestep_loop final
  *   class Game {
  *    public:
  *     bool handle_input() { ... }
- *     void handle_logic(ctn::seconds<double> delta) { ... }
+ *     void handle_logic(cen::seconds<double> delta) { ... }
  *     void handle_render(double alpha) { ... }
  *   };
  *
@@ -385,7 +385,7 @@ class variable_timestep_loop final
  *
  *     Game game;
  *
- *     ctn::semi_fixed_timestep_loop loop;
+ *     cen::semi_fixed_timestep_loop loop;
  *     loop.connect_input<&Game::handle_input>(game);
  *     loop.connect_logic<&Game::handle_logic>(game);
  *     loop.connect_render<&Game::handle_render>(game);
@@ -503,7 +503,7 @@ class basic_semi_fixed_timestep_loop final
  *   class Game {
  *    public:
  *     bool handle_input() { ... }
- *     void handle_logic(ctn::seconds<double> delta) { ... }
+ *     void handle_logic(cen::seconds<double> delta) { ... }
  *     void handle_render(double alpha) { ... }
  *   };
  *
@@ -513,7 +513,7 @@ class basic_semi_fixed_timestep_loop final
  *
  *     Game game;
  *
- *     ctn::fixed_timestep_loop loop;
+ *     cen::fixed_timestep_loop loop;
  *     loop.connect_input<&Game::handle_input>(game);
  *     loop.connect_logic<&Game::handle_logic>(game);
  *     loop.connect_render<&Game::handle_render>(game);

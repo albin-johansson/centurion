@@ -107,9 +107,9 @@ namespace centurion {
  * #include <centurion_as_ctn.hpp>
  * #include <renderer.hpp>
  *
- * void draw(ctn::renderer& renderer)
+ * void draw(cen::renderer& renderer)
  * {
- *   renderer.clear_with(ctn::black); // clear rendering target
+ *   renderer.clear_with(cen::black); // clear rendering target
  *
  *   // Miscellaneous rendering calls...
  *

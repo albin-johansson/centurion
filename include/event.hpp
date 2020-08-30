@@ -3172,12 +3172,12 @@ static_assert(validate_event<window_event, SDL_WindowEvent>());
  *
  *   void event_demo()
  *   {
- *     ctn::event event;
+ *     cen::event event;
  *     bool running = true;
  *
  *     while (running) {
  *       while (event.poll()) {
- *         if (event.is<ctn::quit_event>()) {
+ *         if (event.is<cen::quit_event>()) {
  *           running = false;
  *           break;
  *         }
@@ -3365,7 +3365,7 @@ class event final
    *   Event event;
    *   while (event.poll()) {
    *     if (auto* keyEvent = event.try_get<KeyboardEvent>();
-   *         keyEvent && keyEvent->state() == ctn::button_state::released) {
+   *         keyEvent && keyEvent->state() == cen::button_state::released) {
    *       // handle key released event
    *     }
    *   }

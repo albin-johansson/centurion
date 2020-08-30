@@ -10,13 +10,13 @@ TEST_CASE("platform::id", "[platform]")
   CHECK_NOTHROW(cen::platform::id());
 
 #ifdef __WIN32
-  CHECK(ctn::platform::id() == ctn::platform::platform_id::windows);
+  CHECK(cen::platform::id() == cen::platform::platform_id::windows);
 #elif __APPLE__
-  CHECK(ctn::platform::id() == ctn::platform::platform_id::mac_osx);
+  CHECK(cen::platform::id() == cen::platform::platform_id::mac_osx);
 #elif __linux__
-  CHECK(ctn::platform::id() == ctn::platform::platform_id::linux);
+  CHECK(cen::platform::id() == cen::platform::platform_id::linux);
 #elif __ANDROID__
-  CHECK(ctn::platform::id() == ctn::platform::platform_id::android);
+  CHECK(cen::platform::id() == cen::platform::platform_id::android);
 #endif
 }
 

@@ -49,10 +49,10 @@ TEST_CASE("pixel_format enum values", "[pixel_format]")
     CHECK(cen::pixel_format::argb2101010 == SDL_PIXELFORMAT_ARGB2101010);
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    CHECK(ctn::pixel_format::RGBA32 == SDL_PIXELFORMAT_RGBA8888);
-    CHECK(ctn::pixel_format::ARGB32 == SDL_PIXELFORMAT_ARGB8888);
-    CHECK(ctn::pixel_format::BGRA32 == SDL_PIXELFORMAT_BGRA8888);
-    CHECK(ctn::pixel_format::ABGR32 == SDL_PIXELFORMAT_ABGR8888);
+    CHECK(cen::pixel_format::RGBA32 == SDL_PIXELFORMAT_RGBA8888);
+    CHECK(cen::pixel_format::ARGB32 == SDL_PIXELFORMAT_ARGB8888);
+    CHECK(cen::pixel_format::BGRA32 == SDL_PIXELFORMAT_BGRA8888);
+    CHECK(cen::pixel_format::ABGR32 == SDL_PIXELFORMAT_ABGR8888);
 #else
     CHECK(cen::pixel_format::rgba32 == SDL_PIXELFORMAT_ABGR8888);
     CHECK(cen::pixel_format::argb32 == SDL_PIXELFORMAT_BGRA8888);
@@ -113,10 +113,10 @@ TEST_CASE("pixel_format enum values", "[pixel_format]")
     CHECK(SDL_PIXELFORMAT_ARGB2101010 == cen::pixel_format::argb2101010);
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    CHECK(SDL_PIXELFORMAT_RGBA8888 == ctn::pixel_format::RGBA32);
-    CHECK(SDL_PIXELFORMAT_ARGB8888 == ctn::pixel_format::ARGB32);
-    CHECK(SDL_PIXELFORMAT_BGRA8888 == ctn::pixel_format::BGRA32);
-    CHECK(SDL_PIXELFORMAT_ABGR8888 == ctn::pixel_format::ABGR32);
+    CHECK(SDL_PIXELFORMAT_RGBA8888 == cen::pixel_format::RGBA32);
+    CHECK(SDL_PIXELFORMAT_ARGB8888 == cen::pixel_format::ARGB32);
+    CHECK(SDL_PIXELFORMAT_BGRA8888 == cen::pixel_format::BGRA32);
+    CHECK(SDL_PIXELFORMAT_ABGR8888 == cen::pixel_format::ABGR32);
 #else
     CHECK(SDL_PIXELFORMAT_ABGR8888 == cen::pixel_format::rgba32);
     CHECK(SDL_PIXELFORMAT_BGRA8888 == cen::pixel_format::argb32);

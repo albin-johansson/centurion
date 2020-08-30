@@ -97,7 +97,7 @@ class sftl_game
   void logic(cen::seconds<double> delta)
   {
     //    const auto secs =
-    //    std::chrono::duration_cast<ctn::seconds<float>>(delta);
+    //    std::chrono::duration_cast<cen::seconds<float>>(delta);
     x += (speed * delta.count());
   }
 

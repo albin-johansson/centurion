@@ -77,28 +77,28 @@ namespace centurion {
  *
  *   void demo()
  *   {
- *     ctn::window window;
- *     ctn::renderer renderer{window};
+ *     cen::window window;
+ *     cen::renderer renderer{window};
  *
  *     window.set_title("Window demo");
  *
- *     ctn::Event event;
+ *     cen::Event event;
  *     bool running = true;
  *
  *     window.show();
  *     while (running) {
  *       while (event.poll()) {
- *         if (event.is<ctn::QuitEvent>()) {
+ *         if (event.is<cen::QuitEvent>()) {
  *           running = false;
  *           break;
  *         }
  *       }
  *
- *       renderer.clear_with(ctn::black);
+ *       renderer.clear_with(cen::black);
  *
- *       const ctn::irect rect{{100, 100}, {150, 80}};
+ *       const cen::irect rect{{100, 100}, {150, 80}};
  *
- *       renderer.set_color(ctn::pink);
+ *       renderer.set_color(cen::pink);
  *       renderer.fill_rect(rect);
  *
  *       renderer.present();

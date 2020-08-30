@@ -27,8 +27,8 @@
  *
  * @brief The main header file for the library.
  *
- * @details Provides the `centurion_lib` and `centurion_config` classes, which
- * are related to the initialization of the library.
+ * @details Provides the `library` and `config` classes, which are related to
+ * the initialization of the library.
  *
  * @author Albin Johansson
  *
@@ -70,7 +70,7 @@
 namespace centurion {
 
 /**
- * @struct centurion_config
+ * @struct config
  *
  * @ingroup core
  *
@@ -81,47 +81,47 @@ namespace centurion {
  *
  * @since 4.0.0
  *
- * @var centurion_config::initCore
+ * @var config::initCore
  * Indicates whether or not the SDL2 core is initialized.
  *
- * @var centurion_config::initImage
+ * @var config::initImage
  * Indicates whether or not SDL2_image is initialized.
  *
- * @var centurion_config::initMixer
+ * @var config::initMixer
  * Indicates whether or not SDL2_mixer is initialized.
  *
- * @var centurion_config::initTTF
+ * @var config::initTTF
  * Indicates whether or not SDL2_ttf is initialized.
  *
- * @var centurion_config::coreFlags
- * Flags passed on to `SDL_Init()`, if @ref centurion_config.initCore is `true`.
+ * @var config::coreFlags
+ * Flags passed on to `SDL_Init()`, if @ref config.initCore is `true`.
  *
- * @var centurion_config::imageFlags
- * Flags passed on to `IMG_Init()`, if @ref centurion_config.initImage is
+ * @var config::imageFlags
+ * Flags passed on to `IMG_Init()`, if @ref config.initImage is
  * `true`.
  *
- * @var centurion_config::mixerFlags
- * Flags passed on to `Mix_Init()`, if @ref centurion_config.initMixer is
+ * @var config::mixerFlags
+ * Flags passed on to `Mix_Init()`, if @ref config.initMixer is
  * `true`.
  *
- * @var centurion_config::mixerFreq
- * The frequency used by SDL2_mixer, if @ref centurion_config.initMixer is
+ * @var config::mixerFreq
+ * The frequency used by SDL2_mixer, if @ref config.initMixer is
  * `true`.
  *
- * @var centurion_config::mixerFormat
- * The format used by SDL2_mixer, if @ref centurion_config.initMixer is `true`.
+ * @var config::mixerFormat
+ * The format used by SDL2_mixer, if @ref config.initMixer is `true`.
  *
- * @var centurion_config::mixerChannels
- * The amount of channels used by SDL2_mixer, if @ref centurion_config.initMixer
+ * @var config::mixerChannels
+ * The amount of channels used by SDL2_mixer, if @ref config.initMixer
  * is `true`.
  *
- * @var centurion_config::mixerChunkSize
- * The chunk size used by SDL2_mixer, if @ref centurion_config.initMixer is
+ * @var config::mixerChunkSize
+ * The chunk size used by SDL2_mixer, if @ref config.initMixer is
  * `true`.
  *
  * @headerfile centurion.hpp
  */
-struct centurion_config final
+struct config final
 {
   bool initCore = true;
   bool initImage = true;
@@ -142,7 +142,7 @@ struct centurion_config final
 };
 
 /**
- * @class centurion_lib
+ * @class library
  *
  * @ingroup core
  *
@@ -160,7 +160,7 @@ struct centurion_config final
  *
  * int main(int, char**)
  * {
- *   cen::centurion_lib c;
+ *   cen::library lib;
  *
  *   // The library is now initialized, proceed to using it!
  *
@@ -168,17 +168,17 @@ struct centurion_config final
  * }
  * @endcode
  * You can also manually configure exactly how the library is initialized, using
- * the @link centurion::centurion_config @endlink struct.
+ * the @link centurion::config @endlink struct.
  * @code{.cpp}
  * #include <cen.hpp>
  *
  * int main(int, char**)
  * {
- *   cen::centurion_config cfg;
+ *   cen::config cfg;
  *   cfg.initMixer = false;
  *   // ...
  *
- *   cen::centurion_lib c{cfg};
+ *   cen::library lib{cfg};
  *
  *   // The library is now initialized, proceed to using it!
  *
@@ -188,7 +188,7 @@ struct centurion_config final
  *
  * @headerfile centurion.hpp
  */
-class centurion_lib final
+class library final
 {
  public:
   /**
@@ -205,7 +205,7 @@ class centurion_lib final
    * @since 3.0.0
    */
   CENTURION_QUERY
-  centurion_lib();
+  library();
 
   /**
    * @brief Initializes the library according to the supplied configuration.
@@ -223,15 +223,15 @@ class centurion_lib final
    * @since 4.0.0
    */
   CENTURION_QUERY
-  explicit centurion_lib(const centurion_config& cfg);
+  explicit library(const config& cfg);
 
-  centurion_lib(const centurion_lib&) = delete;
+  library(const library&) = delete;
 
-  centurion_lib(centurion_lib&&) = delete;
+  library(library&&) = delete;
 
-  auto operator=(const centurion_lib&) -> centurion_lib& = delete;
+  auto operator=(const library&) -> library& = delete;
 
-  auto operator=(centurion_lib&&) -> centurion_lib& = delete;
+  auto operator=(library&&) -> library& = delete;
 
  private:
   class sdl final
@@ -270,7 +270,7 @@ class centurion_lib final
     ~sdl_image() noexcept;
   };
 
-  centurion_config m_cfg{};
+  config m_cfg{};
   std::optional<sdl> m_sdl{};
   std::optional<sdl_image> m_img{};
   std::optional<sdl_ttf> m_ttf{};

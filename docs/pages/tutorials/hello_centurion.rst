@@ -4,10 +4,10 @@ Hello Centurion
 **Synopsis:** Demonstrates how to setup a Centurion program.
 
 Just like SDL, Centurion needs to be initialized before it can be used. This is simply done by
-creating an instance of the ``centurion_lib`` class. Under the hood, ``centurion_lib`` will
+creating an instance of the ``library`` class. Under the hood, ``library`` will
 actually initialize SDL for us. So you should never initialize *both* Centurion and SDL explicitly.
 
-The ``centurion_lib`` class can be included by including either ``centurion.hpp`` or ``cen.hpp``.
+The ``library`` class can be included by including either ``centurion.hpp`` or ``cen.hpp``.
 The only difference between these headers is that ``cen.hpp`` provides the ``ctn`` namespace alias.
 Since all Centurion entities are located in the ``centurion`` namespace, it can get tedious to qualify everything 
 with ``centurion::``. As a result, it's recommended to prefer the ``ctn`` namespace alias.
@@ -28,7 +28,7 @@ exactly what gets initialized (and how).
 
   int main(int, char**)
   {
-    cen::centurion_lib c;
+    cen::library lib;
 
     // Centurion and SDL are now initialized!
 
@@ -38,7 +38,7 @@ exactly what gets initialized (and how).
 Custom Configuration
 --------------------
 It's possible to tell Centurion how the SDL libraries should be initialized. This is done by
-supplying an instance of ``centurion_config`` to the constructor of ``centurion_lib``. The
+supplying an instance of ``config`` to the constructor of ``library``. The
 following example demonstrates how you could specify that no audio components should be
 initialized.
 
@@ -48,12 +48,12 @@ initialized.
 
   int main(int, char**)
   {
-    cen::centurion_config cfg;
+    cen::config cfg;
 
     cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
     cfg.initMixer = false;
 
-    cen::centurion_lib c{cfg};
+    cen::library lib{cfg};
 
     // the library is now initialized, but no audio components are initialized!
   }

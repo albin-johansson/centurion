@@ -4,17 +4,17 @@
 
 namespace centurion {
 
-centurion_lib::centurion_lib()
+library::library()
 {
   init();
 }
 
-centurion_lib::centurion_lib(const centurion_config& cfg) : m_cfg{cfg}
+library::library(const config& cfg) : m_cfg{cfg}
 {
   init();
 }
 
-void centurion_lib::init()
+void library::init()
 {
   if (m_cfg.initCore) {
     m_sdl.emplace(m_cfg.coreFlags);
@@ -44,7 +44,7 @@ auto ttf_version() noexcept -> SDL_version
   return version;
 }
 
-centurion_lib::sdl::sdl(u32 flags)
+library::sdl::sdl(u32 flags)
 {
   const auto result = SDL_Init(flags);
   if (result < 0) {
@@ -52,12 +52,12 @@ centurion_lib::sdl::sdl(u32 flags)
   }
 }
 
-centurion_lib::sdl::~sdl() noexcept
+library::sdl::~sdl() noexcept
 {
   SDL_Quit();
 }
 
-centurion_lib::sdl_ttf::sdl_ttf()
+library::sdl_ttf::sdl_ttf()
 {
   const auto result = TTF_Init();
   if (result == -1) {
@@ -65,12 +65,12 @@ centurion_lib::sdl_ttf::sdl_ttf()
   }
 }
 
-centurion_lib::sdl_ttf::~sdl_ttf() noexcept
+library::sdl_ttf::~sdl_ttf() noexcept
 {
   TTF_Quit();
 }
 
-centurion_lib::sdl_mixer::sdl_mixer(int flags,
+library::sdl_mixer::sdl_mixer(int flags,
                                     int freq,
                                     u16 format,
                                     int nChannels,
@@ -85,20 +85,20 @@ centurion_lib::sdl_mixer::sdl_mixer(int flags,
   }
 }
 
-centurion_lib::sdl_mixer::~sdl_mixer() noexcept
+library::sdl_mixer::~sdl_mixer() noexcept
 {
   Mix_CloseAudio();
   Mix_Quit();
 }
 
-centurion_lib::sdl_image::sdl_image(int flags)
+library::sdl_image::sdl_image(int flags)
 {
   if (!IMG_Init(flags)) {
     throw img_error{"Failed to initialize SDL2_image"};
   }
 }
 
-centurion_lib::sdl_image::~sdl_image() noexcept
+library::sdl_image::~sdl_image() noexcept
 {
   IMG_Quit();
 }

@@ -6,14 +6,14 @@
 int main(int argc, char* argv[])
 {
 #ifndef CEN_AUDIO
-  cen::centurion_config cfg;
+  cen::config cfg;
 
   cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
   cfg.initMixer = false;
 
-  const cen::centurion_lib c{cfg};
+  const cen::library lib{cfg};
 #else
-  const cen::centurion_lib c;
+  const cen::library lib;
 #endif
   return Catch::Session().run(argc, argv);
 }

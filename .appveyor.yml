@@ -70,5 +70,4 @@ build_script:
 test_script:
   # FIXME Doesn't seem to work, look into later
   - cd test
-  - dir
-  # - ctest
+  - ctest

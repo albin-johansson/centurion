@@ -1133,8 +1133,6 @@ static_assert(validate_event<joy_ball_event, SDL_JoyBallEvent>());
  *
  * @see `SDL_JoyButtonEvent`
  *
- * @todo Convenience pressed/released functions.
- *
  * @since 4.0.0
  *
  * @headerfile event.hpp
@@ -1221,6 +1219,26 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    */
   CENTURION_QUERY
   auto state() const noexcept -> button_state;
+
+  /**
+   * @brief Indicates whether or not the associated button is pressed.
+   *
+   * @return `true` if the associated button is pressed; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto pressed() const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the associated button is released.
+   *
+   * @return `true` if the associated button is released; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto released() const noexcept -> bool;
 };
 
 static_assert(validate_event<joy_button_event, SDL_JoyButtonEvent>());
@@ -1678,8 +1696,6 @@ static_assert(validate_event<keyboard_event, SDL_KeyboardEvent>());
  *
  * @since 4.0.0
  *
- * @todo Convenience pressed/released functions.
- *
  * @headerfile event.hpp
  */
 class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
@@ -1813,6 +1829,26 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    */
   CENTURION_QUERY
   auto state() const noexcept -> button_state;
+
+  /**
+   * @brief Indicates whether or not the associated button is pressed.
+   *
+   * @return `true` if the associated button is pressed; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto pressed() const noexcept -> bool;
+
+  /**
+   * @brief Indicates whether or not the associated button is released.
+   *
+   * @return `true` if the associated button is released; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
+  CENTURION_QUERY
+  auto released() const noexcept -> bool;
 
   /**
    * @brief Returns the number of mouse clicks associated with the event.
@@ -3383,7 +3419,7 @@ class event final
    *   Event event;
    *   while (event.poll()) {
    *     if (auto* keyEvent = event.try_get<KeyboardEvent>();
-   *         keyEvent && keyEvent->state() == cen::button_state::released) {
+   *         keyEvent->released()) {
    *       // handle key released event
    *     }
    *   }

@@ -62,3 +62,23 @@ TEST_CASE("joy_button_event::state", "[joy_button_event]")
 
   CHECK(event.state() == cen::button_state::released);
 }
+
+TEST_CASE("joy_button_event::pressed", "[joy_button_event]")
+{
+  SDL_JoyButtonEvent sdlEvent;
+  sdlEvent.state = SDL_PRESSED;
+
+  cen::joy_button_event event{sdlEvent};
+
+  CHECK(event.pressed());
+}
+
+TEST_CASE("joy_button_event::released", "[joy_button_event]")
+{
+  SDL_JoyButtonEvent sdlEvent;
+  sdlEvent.state = SDL_RELEASED;
+
+  cen::joy_button_event event{sdlEvent};
+
+  CHECK(event.released());
+}

@@ -109,6 +109,24 @@ TEST_CASE("mouse_button_event::state", "[mouse_button_event]")
   CHECK(event.state() == static_cast<cen::button_state>(sdlEvent.state));
 }
 
+TEST_CASE("mouse_button_event::pressed", "[mouse_button_event]")
+{
+  SDL_MouseButtonEvent sdlEvent;
+  sdlEvent.state = SDL_PRESSED;
+  cen::mouse_button_event event{sdlEvent};
+
+  CHECK(event.pressed());
+}
+
+TEST_CASE("mouse_button_event::released", "[mouse_button_event]")
+{
+  SDL_MouseButtonEvent sdlEvent;
+  sdlEvent.state = SDL_RELEASED;
+  cen::mouse_button_event event{sdlEvent};
+
+  CHECK(event.released());
+}
+
 TEST_CASE("mouse_button_event::clicks", "[mouse_button_event]")
 {
   SDL_MouseButtonEvent sdlEvent;

@@ -65,6 +65,16 @@ auto mouse_button_event::state() const noexcept -> button_state
   return static_cast<button_state>(m_event.state);
 }
 
+auto mouse_button_event::pressed() const noexcept -> bool
+{
+  return state() == button_state::pressed;
+}
+
+auto mouse_button_event::released() const noexcept -> bool
+{
+  return state() == button_state::released;
+}
+
 auto mouse_button_event::clicks() const noexcept -> u8
 {
   return m_event.clicks;

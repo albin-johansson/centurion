@@ -187,6 +187,10 @@ add_header_only_lib(libGSL "${CTN_LIBRARY_DIR}/microsoft" ${GSL_SOURCES})
 add_header_only_lib(libEnTT ${CTN_LIBRARY_DIR}/entt ${CTN_LIBRARY_DIR}/entt/entt.hpp)
 
 target_include_directories(${CENTURION_LIB_TARGET}
+        SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
+        SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
+        SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
+        SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
         PRIVATE ${CTN_INCLUDE_DIR}
         PRIVATE ${CTN_SOURCE_DIR}
         SYSTEM INTERFACE ${CTN_INCLUDE_DIR})

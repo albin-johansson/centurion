@@ -40,12 +40,6 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-include_directories(
-        SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
-        SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
-        SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
-        SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
-
 if (DEFINED ENV{ENABLE_COVERAGE})
     include(CodeCoverage)
     append_coverage_compiler_flags()

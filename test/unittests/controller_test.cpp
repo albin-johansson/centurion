@@ -128,6 +128,11 @@ TEST_CASE("controller_bind_type enum values", "[controller]")
   }
 }
 
+TEST_CASE("controller load_mappings", "[controller]")
+{
+  CHECK(ctn::controller::load_mappings("resources/gamecontrollerdb.txt") > 0);
+}
+
 namespace centurion {
 
 class controller_handler  // TODO worth adding?
@@ -163,11 +168,34 @@ class controller_handler  // TODO worth adding?
     });
   }
 
+  auto at(int index) -> controller&
+  {
+    const auto it = find(index);
+    if (it != end(m_controllers)) {
+      return *it;
+    } else {
+      throw centurion_exception{"Failed to find controller!"};
+    }
+  }
+
  private:
   std::vector<controller> m_controllers;
+
+  [[nodiscard]] auto find(int index) -> std::vector<controller>::iterator
+  {
+    const auto it = std::find_if(begin(m_controllers),
+                                 end(m_controllers),
+                                 [=](const ctn::controller& c) noexcept {
+                                   const auto i = c.index();
+                                   return i && index == *i;
+                                 });
+    return it;
+  }
 };
 
 }  // namespace centurion
+
+// TODO game controller visualization program
 
 TEST_CASE("interactive controller", "[.controller]")
 {
@@ -177,51 +205,51 @@ TEST_CASE("interactive controller", "[.controller]")
   ctn::controller_handler controllers;
   controllers.add_all();
 
-  bool running{true};
-
-  int colorIndex{};
-  constexpr std::array<ctn::color, 5> colors{ctn::colors::red,
-                                             ctn::colors::salmon,
-                                             ctn::colors::cyan,
-                                             ctn::colors::dark_sea_green,
-                                             ctn::colors::orchid};
-
-  auto handleDeviceEvent = [&](const ctn::controller_device_event& event) {
-    if (event.type() == ctn::event_type::controller_device_removed) {
-      const auto id = event.which();
-      controllers.remove(id);
-    } else if (event.type() == ctn::event_type::controller_device_added) {
-      controllers.emplace(event.which());
-    }
-  };
-
-  auto handleButtonEvent = [&](const ctn::controller_button_event& event) {
-    if (event.state() == ctn::button_state::released) {
-      ++colorIndex;
-    }
-  };
-
-  window.show();
-  while (running) {
-    while (event.poll()) {
-      if (event.is<ctn::quit_event>()) {
-        running = false;
-        break;
-      } else if (auto* de = event.try_get<ctn::controller_device_event>()) {
-        handleDeviceEvent(*de);
-      } else if (auto* be = event.try_get<ctn::controller_button_event>()) {
-        handleButtonEvent(*be);
-      }
-    }
-
-    renderer.clear_with(colors.at(colorIndex % colors.size()));
-
-    renderer.set_color(ctn::colors::wheat);
-    renderer.fill_rect<int>({{10, 10}, {100, 100}});
-
-    renderer.present();
-  }
-  window.hide();
+  //  bool running{true};
+  //
+  //  int colorIndex{};
+  //  constexpr std::array<ctn::color, 5> colors{ctn::colors::red,
+  //                                             ctn::colors::salmon,
+  //                                             ctn::colors::cyan,
+  //                                             ctn::colors::dark_sea_green,
+  //                                             ctn::colors::orchid};
+  //
+  //  auto handleDeviceEvent = [&](const ctn::controller_device_event& event) {
+  //    if (event.type() == ctn::event_type::controller_device_removed) {
+  //      const auto id = event.which();
+  //      controllers.remove(id);
+  //    } else if (event.type() == ctn::event_type::controller_device_added) {
+  //      controllers.emplace(event.which());
+  //    }
+  //  };
+  //
+  //  auto handleButtonEvent = [&](const ctn::controller_button_event& event) {
+  //    if (event.state() == ctn::button_state::released) {
+  //      ++colorIndex;
+  //    }
+  //  };
+  //
+  //  window.show();
+  //  while (running) {
+  //    while (event.poll()) {
+  //      if (event.is<ctn::quit_event>()) {
+  //        running = false;
+  //        break;
+  //      } else if (auto* de = event.try_get<ctn::controller_device_event>()) {
+  //        handleDeviceEvent(*de);
+  //      } else if (auto* be = event.try_get<ctn::controller_button_event>()) {
+  //        handleButtonEvent(*be);
+  //      }
+  //    }
+  //
+  //    renderer.clear_with(colors.at(colorIndex % colors.size()));
+  //
+  //    renderer.set_color(ctn::colors::wheat);
+  //    renderer.fill_rect<int>({{10, 10}, {100, 100}});
+  //
+  //    renderer.present();
+  //  }
+  //  window.hide();
 }
 
 // TEST_CASE("load_game_controller_mappings", "[controller]")

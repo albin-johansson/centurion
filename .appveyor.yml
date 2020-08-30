@@ -64,5 +64,5 @@ before_build:
   - cmake .. -DCMAKE_BUILD_TYPE=Debug -G Ninja
 
 build_script:
-  - ninja Centurion_lib
-  - ninja Centurion_test
+  - ninja CenturionLibrary
+  - ninja CenturionTests

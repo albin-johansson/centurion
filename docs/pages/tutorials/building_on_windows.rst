@@ -24,9 +24,9 @@ latest stable version of the repository using the following command.
 
   git clone https://github.com/albin-johansson/Centurion.git centurion
 
-The CMake scripts expect to find the SDL runtime binaries in a directory called either 
-``bin-mingw`` or ``bin-vs`` in the root directory, depending on the compiler that you are using. 
-Copy all ``.dll`` files from the ``bin`` directories in the previously installed SDL libraries.
+The CMake scripts expect to find the SDL runtime binaries in a directory called ``bin`` in the root 
+directory. Copy all ``.dll`` files from the ``bin`` directories in the previously installed SDL libraries to 
+the ``bin`` directory in the Centurion root directory.
 
 Lastly, all that remains is to compile the project. 
 

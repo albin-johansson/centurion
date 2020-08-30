@@ -52,7 +52,6 @@ All of the text rendering functions feature the same names except for a distingu
 i.e. ``_utf8``, ``_latin1`` or ``_unicode``.
 
 .. code-block:: c++
-  :linenos:
   
   #include <cen.hpp>
   #include <renderer.hpp>

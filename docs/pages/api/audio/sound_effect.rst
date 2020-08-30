@@ -39,9 +39,6 @@ Basic playback
 ~~~~~~~~~~~~~~
 
 .. code-block:: C++
-  :name: sound-effect-basic-playback
-  :caption: Demonstrates basic sound effect playback.
-  :linenos:
 
   #include <cen.hpp>
   #include <sound_effect.hpp>
@@ -77,9 +74,6 @@ Fading a sound effect in and out
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: C++
-  :name: sound-effect-fading
-  :caption: Demonstrates how to fade sound effects in and out.
-  :linenos:
 
   #include <cen.hpp>
   #include <sound_effect.hpp>
@@ -104,9 +98,6 @@ Handling sound effect volume
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: C++
-  :name: sound-effect-volume
-  :caption: Demonstrates how to deal with sound effect volume.
-  :linenos:
 
   #include <cen.hpp>
   #include <sound_effect.hpp>

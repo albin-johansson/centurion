@@ -36,7 +36,6 @@ Examples
 The following example is provided on the SDL2 wiki for how you could use the thread API.
 
 .. code-block:: c
-  :linenos:
   
   #include <stdio.h>
   #include "SDL.h"
@@ -78,7 +77,6 @@ The equivalent Centurion program looks something like the following. Note, the u
 function pointer is also valid.
 
 .. code-block:: c++
-  :linenos:
   
   #include <iostream>
 

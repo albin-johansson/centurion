@@ -20,7 +20,7 @@ After installing the runtime binaries, you're almost ready to compile the librar
 latest stable version of the repository using the following command.
 
 .. code-block::
-  :linenos:
+  
 
   git clone https://github.com/albin-johansson/Centurion.git centurion
 
@@ -32,7 +32,6 @@ Lastly, all that remains is to compile the project.
 
 .. code-block::
   :name: compile-the-library
-  :linenos:
 
   mkdir build
   cd build

@@ -76,8 +76,6 @@ Casting between rectangle types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: c++
-  :name: rect-example-casting
-  :linenos:
 
   #include <cen.hpp>
   #include <rect.hpp>
@@ -98,8 +96,6 @@ Intersection checking
 Two rectangles are considered to be intersecting if they overlap each other.
 
 .. code-block:: c++
-  :name: rect-example-intersection
-  :linenos:
 
   #include <cen.hpp>
   #include <rect.hpp>
@@ -123,8 +119,6 @@ Collision checking
 Two rectangles are considered to be colliding if the overlap *or* if they share a common border.
 
 .. code-block:: c++
-  :name: rect-example-collision
-  :linenos:
 
   #include <cen.hpp>
   #include <rect.hpp>
@@ -148,8 +142,6 @@ You can easily obtain the union of two rectangles using the ``get_union`` functi
 the function provided by SDL, this also works with floating-point rectangles.
 
 .. code-block:: c++  
-  :name: rect-example-union
-  :linenos:
 
   #include <cen.hpp>
   #include <rect.hpp>

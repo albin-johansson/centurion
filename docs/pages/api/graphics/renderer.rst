@@ -61,7 +61,6 @@ The following example illustrates how a typical rendering method looks like usin
 the renderer.
 
 .. code-block:: c++
-  :linenos:
   
   #include <cen.hpp>
   #include <renderer.hpp>
@@ -81,7 +80,6 @@ As previously mentioned, the ``renderer`` class provides storage of ``font`` ins
 following example demonstrates all of the various methods available for font handling.
 
 .. code-block:: c++
-  :linenos:
   
   #include <cen.hpp>
   #include <renderer.hpp>

@@ -227,8 +227,6 @@ functions, such as ``SDL_SetHint``, that simply accept raw strings. The followin
 demonstrates this in action.
 
 .. code-block:: C++
-  :name: hint-example-set-hint
-  :linenos:
 
   #include <cen.hpp>
   #include <hints.hpp>
@@ -257,8 +255,6 @@ The following example shows how the value of hints are obtained. The ``get_hint`
 always returns a ``std::optional`` that wraps a value of the value type used by the hint.
 
 .. code-block:: C++
-  :name: hint-example-get-hint
-  :linenos:
 
   #include <cen.hpp>
   #include <hints.hpp>
@@ -283,8 +279,6 @@ Observing hint value changes
 It's possible to observe changes to hints with callbacks. 
 
 .. code-block:: C++
-  :name: hint-example-observe-changes
-  :linenos:
 
   #include <cen.hpp>
   #include <hints.hpp>

@@ -37,7 +37,6 @@ The ``try_lock`` class can be used in two different ways. The terse syntax is us
 lock timed out.
 
 .. code-block:: c++
-  :linenos:
   
   cen::mutex mutex;
   if (cen::try_lock lock{mutex}; lock.success()) {

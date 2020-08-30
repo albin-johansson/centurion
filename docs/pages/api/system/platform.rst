@@ -29,7 +29,6 @@ The following example demonstrates how the platform API is used. Note, that the 
 which is a C++20 feature, of course you could fully qualify the enumerators as well.
 
 .. code-block:: c++
-  :linenos:
   
   #include <cen.hpp>
   #include <platform.hpp>

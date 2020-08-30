@@ -28,7 +28,6 @@ Examples
 --------
 
 .. code-block:: c++
-  :linenos:
   
   #include <cen.hpp>
   #include <battery.hpp>

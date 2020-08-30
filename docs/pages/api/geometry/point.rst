@@ -69,8 +69,6 @@ You can easily obtain the distance between two points using the
 ``distance`` function, it's templated so it works on both point types.
 
 .. code-block:: c++
-  :name: point-example-distance
-  :linenos:
 
   #include <cen.hpp>
   #include <point.hpp>

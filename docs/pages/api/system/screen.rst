@@ -29,7 +29,7 @@ Querying the screen size
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: C++
-  :linenos:
+  
   
   #include <cen.hpp>
   #include <screen.hpp>
@@ -50,7 +50,7 @@ Controlling the screen saver
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: C++
-  :linenos:
+  
   
   #include <cen.hpp>
   #include <screen.hpp>
@@ -68,7 +68,6 @@ Texture using screen pixel format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: C++
-  :linenos:
   
   #include <cen.hpp>
   #include <screen.hpp>

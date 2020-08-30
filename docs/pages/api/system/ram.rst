@@ -25,7 +25,6 @@ Examples
 --------
 
 .. code-block:: C++
-  :linenos:
   
   #include <cen.hpp>
   #include <ram.hpp>

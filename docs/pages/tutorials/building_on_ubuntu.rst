@@ -7,9 +7,6 @@ Firstly, Centurion requires SDL2 to be installed. SDL2 and the required related
 packages can be installed with the following commands.
 
 .. code-block:: bash
-  :name: download-sdl-development-libraries
-  :caption: Installs SDL2 development libraries.
-  :linenos:
 
   sudo apt-get install libsdl2-dev
   sudo apt-get install libsdl2-ttf-dev
@@ -22,9 +19,6 @@ basically the same for all of the SDL2 libraries. The following commands should
 be executed where you'd like to install your libraries, e.g. ``~/sdl2/``.
 
 .. code-block::
-  :name: manual-download-sdl-libraries
-  :caption: Downloads and installs the SDL2 libraries.
-  :linenos:
 
   wget -c https://www.libsdl.org/release/SDL2-2.0.12.tar.gz
   tar -xf SDL2-2.0.12.tar.gz
@@ -64,9 +58,6 @@ download and compile the latest stable version (the main branch) of the Centurio
 library.
 
 .. code-block::
-  :name: download-compile-centurion
-  :caption: Downloads and compiles the library.
-  :linenos:
 
   git clone https://github.com/albin-johansson/Centurion.git centurion
   cd centurion

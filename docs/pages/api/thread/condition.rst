@@ -36,7 +36,6 @@ The following is a typical use case of condition variables. This is adapted from
 that can be found `here <https://wiki.libsdl.org/SDL_CreateCond>`_.
 
 .. code-block:: c++ 
-  :linenos:
 
   bool condition{};
 

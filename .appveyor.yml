@@ -41,8 +41,8 @@ install:
   - cd ..
 
   # Proceed to download runtime binaries
-  - mkdir bin-vs
-  - cd bin-vs
+  - mkdir bin
+  - cd bin
 
   - appveyor DownloadFile https://www.libsdl.org/release/SDL2-%SDL_VERSION%-win32-x64.zip
   - 7z e -y SDL2-%SDL_VERSION%-win32-x64.zip

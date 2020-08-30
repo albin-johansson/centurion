@@ -311,6 +311,13 @@ class basic_controller
     return SDL_GameControllerName(ptr());
   }
 
+  /**
+   * @brief Returns the type of the controller.
+   *
+   * @return the type of the controller.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto type() const noexcept -> controller_type
   {
     return static_cast<controller_type>(SDL_GameControllerGetType(ptr()));

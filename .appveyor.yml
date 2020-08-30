@@ -66,8 +66,3 @@ before_build:
 build_script:
   - ninja Centurion_lib
   - ninja Centurion_test
-
-test_script:
-  # FIXME Doesn't seem to work, look into later
-  - cd test
-  - ctest

@@ -2,8 +2,7 @@ Aliases
 =======
 
 The library utilizes a wide array of type aliases, this document serves as 
-a reference for these aliases. Most aliases are provided in the 
-``centurion_types.hpp`` header.
+a reference for these aliases. Most aliases are provided in the ``types.hpp`` header.
 
 owner<T>
 --------

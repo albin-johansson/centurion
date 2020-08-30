@@ -87,7 +87,7 @@ function pointer is also valid.
 
   int main(int, char**)
   {
-    using namespace ctn::literals;
+    using namespace cen::literals;
 
     std::cout << "Simple thread test: \n";
 
@@ -96,13 +96,13 @@ function pointer is also valid.
 
       for (; count < 10; ++count) {
         std::cout << "Thread counter: " << count << '\n';
-        ctn::thread::sleep(50_ms);
+        cen::thread::sleep(50_ms);
       }
 
       return count;
     };
 
-    ctn::thread thread{task, "TestThread"};
+    cen::thread thread{task, "TestThread"};
 
     const auto ret = thread.join();
     std::cout << "Thread returned value: " << ret << '\n';

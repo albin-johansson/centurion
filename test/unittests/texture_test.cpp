@@ -5,7 +5,7 @@
 #include <catch.hpp>
 #include <iostream>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 #include "centurion_exception.hpp"
 #include "colors.hpp"
 #include "log.hpp"
@@ -22,16 +22,16 @@ namespace {
 template <typename Lambda>
 inline void test(Lambda&& lambda)
 {
-  ctn::window window;
-  ctn::renderer renderer{window};
+  cen::window window;
+  cen::renderer renderer{window};
   lambda(renderer);
 }
 
 template <typename Lambda>
 inline void test_with_window(Lambda&& lambda)
 {
-  ctn::window window;
-  ctn::renderer renderer{window};
+  cen::window window;
+  cen::renderer renderer{window};
   lambda(renderer, window);
 }
 
@@ -39,46 +39,46 @@ inline void test_with_window(Lambda&& lambda)
 
 TEST_CASE("texture_access enum values", "[texture]")
 {
-  CHECK(ctn::texture_access::no_lock == SDL_TEXTUREACCESS_STATIC);
-  CHECK(ctn::texture_access::streaming == SDL_TEXTUREACCESS_STREAMING);
-  CHECK(ctn::texture_access::target == SDL_TEXTUREACCESS_TARGET);
+  CHECK(cen::texture_access::no_lock == SDL_TEXTUREACCESS_STATIC);
+  CHECK(cen::texture_access::streaming == SDL_TEXTUREACCESS_STREAMING);
+  CHECK(cen::texture_access::target == SDL_TEXTUREACCESS_TARGET);
 
-  CHECK(SDL_TEXTUREACCESS_STATIC == ctn::texture_access::no_lock);
-  CHECK(SDL_TEXTUREACCESS_STREAMING == ctn::texture_access::streaming);
-  CHECK(SDL_TEXTUREACCESS_TARGET == ctn::texture_access::target);
+  CHECK(SDL_TEXTUREACCESS_STATIC == cen::texture_access::no_lock);
+  CHECK(SDL_TEXTUREACCESS_STREAMING == cen::texture_access::streaming);
+  CHECK(SDL_TEXTUREACCESS_TARGET == cen::texture_access::target);
 
-  CHECK(ctn::texture_access::no_lock != SDL_TEXTUREACCESS_STREAMING);
-  CHECK(SDL_TEXTUREACCESS_STREAMING != ctn::texture_access::no_lock);
+  CHECK(cen::texture_access::no_lock != SDL_TEXTUREACCESS_STREAMING);
+  CHECK(SDL_TEXTUREACCESS_STREAMING != cen::texture_access::no_lock);
 }
 
 TEST_CASE("texture::scale_mode enum values", "[texture]")
 {
-  CHECK(ctn::scale_mode::linear == SDL_ScaleModeLinear);
-  CHECK(ctn::scale_mode::nearest == SDL_ScaleModeNearest);
-  CHECK(ctn::scale_mode::best == SDL_ScaleModeBest);
+  CHECK(cen::scale_mode::linear == SDL_ScaleModeLinear);
+  CHECK(cen::scale_mode::nearest == SDL_ScaleModeNearest);
+  CHECK(cen::scale_mode::best == SDL_ScaleModeBest);
 
-  CHECK(SDL_ScaleModeLinear == ctn::scale_mode::linear);
-  CHECK(SDL_ScaleModeNearest == ctn::scale_mode::nearest);
-  CHECK(SDL_ScaleModeBest == ctn::scale_mode::best);
+  CHECK(SDL_ScaleModeLinear == cen::scale_mode::linear);
+  CHECK(SDL_ScaleModeNearest == cen::scale_mode::nearest);
+  CHECK(SDL_ScaleModeBest == cen::scale_mode::best);
 
-  CHECK(ctn::scale_mode::linear != SDL_ScaleModeNearest);
-  CHECK(SDL_ScaleModeBest != ctn::scale_mode::nearest);
+  CHECK(cen::scale_mode::linear != SDL_ScaleModeNearest);
+  CHECK(SDL_ScaleModeBest != cen::scale_mode::nearest);
 }
 
 TEST_CASE("texture(nn_owner<SDL_Texture*>)", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
+  test([](cen::renderer& renderer) {
     auto* sdlTexture = IMG_LoadTexture(renderer.get(), pandaPath);
-    CHECK_NOTHROW(ctn::texture(sdlTexture));
+    CHECK_NOTHROW(cen::texture(sdlTexture));
   });
 }
 
 TEST_CASE("texture(renderer&, nn_czstring)", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    CHECK_THROWS_AS(ctn::texture(renderer, "badpath"), ctn::img_error);
+  test([](cen::renderer& renderer) {
+    CHECK_THROWS_AS(cen::texture(renderer, "badpath"), cen::img_error);
 
-    ctn::texture texture{renderer, pandaPath};
+    cen::texture texture{renderer, pandaPath};
     CHECK(texture.width() == pandaWidth);
     CHECK(texture.height() == pandaHeight);
   });
@@ -86,21 +86,21 @@ TEST_CASE("texture(renderer&, nn_czstring)", "[texture]")
 
 TEST_CASE("texture(renderer&, surface&", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::surface surface{pandaPath};
-    CHECK_NOTHROW(ctn::texture{renderer, surface});
+  test([](cen::renderer& renderer) {
+    cen::surface surface{pandaPath};
+    CHECK_NOTHROW(cen::texture{renderer, surface});
   });
 }
 
 TEST_CASE("texture(renderer&, pixel_format, access, int, int)", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    const auto pixelFormat = ctn::pixel_format::rgba32;
-    const auto access = ctn::texture_access::no_lock;
+  test([](cen::renderer& renderer) {
+    const auto pixelFormat = cen::pixel_format::rgba32;
+    const auto access = cen::texture_access::no_lock;
     const auto width = 145;
     const auto height = 85;
 
-    ctn::texture texture{renderer, pixelFormat, access, {width, height}};
+    cen::texture texture{renderer, pixelFormat, access, {width, height}};
 
     CHECK(pixelFormat == texture.format());
     CHECK(access == texture.access());
@@ -111,9 +111,9 @@ TEST_CASE("texture(renderer&, pixel_format, access, int, int)", "[texture]")
 
 TEST_CASE("texture(texture&&)", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
-    ctn::texture other = std::move(texture);
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
+    cen::texture other = std::move(texture);
 
     CHECK(!texture.get());
     CHECK(other.get());
@@ -124,8 +124,8 @@ TEST_CASE("texture::operator=(texture&&)", "[texture]")
 {
   SECTION("Self-assignment")
   {
-    test([](ctn::renderer& renderer) {
-      ctn::texture texture{renderer, pandaPath};
+    test([](cen::renderer& renderer) {
+      cen::texture texture{renderer, pandaPath};
 
       texture = std::move(texture);
       CHECK(texture.get());
@@ -134,9 +134,9 @@ TEST_CASE("texture::operator=(texture&&)", "[texture]")
 
   SECTION("Normal usage")
   {
-    test([](ctn::renderer& renderer) {
-      ctn::texture texture{renderer, pandaPath};
-      ctn::texture other{renderer, pandaPath};
+    test([](cen::renderer& renderer) {
+      cen::texture texture{renderer, pandaPath};
+      cen::texture other{renderer, pandaPath};
 
       other = std::move(texture);
 
@@ -148,71 +148,71 @@ TEST_CASE("texture::operator=(texture&&)", "[texture]")
 
 TEST_CASE("texture::unique", "[texture]")
 {
-  test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
-    const ctn::surface surface{pandaPath};
+  test_with_window([](cen::renderer& renderer, const cen::window& window) {
+    const cen::surface surface{pandaPath};
 
-    CHECK(ctn::texture::unique(renderer, pandaPath));
-    CHECK(ctn::texture::unique(renderer, surface));
-    CHECK(ctn::texture::unique(renderer,
+    CHECK(cen::texture::unique(renderer, pandaPath));
+    CHECK(cen::texture::unique(renderer, surface));
+    CHECK(cen::texture::unique(renderer,
                                window.get_pixel_format(),
-                               ctn::texture_access::no_lock,
+                               cen::texture_access::no_lock,
                                {100, 100}));
   });
 }
 
 TEST_CASE("texture:::shared", "[texture]")
 {
-  test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
-    const ctn::surface surface{pandaPath};
+  test_with_window([](cen::renderer& renderer, const cen::window& window) {
+    const cen::surface surface{pandaPath};
 
-    CHECK(ctn::texture::shared(renderer, pandaPath));
-    CHECK(ctn::texture::shared(renderer, surface));
-    CHECK(ctn::texture::shared(renderer,
+    CHECK(cen::texture::shared(renderer, pandaPath));
+    CHECK(cen::texture::shared(renderer, surface));
+    CHECK(cen::texture::shared(renderer,
                                window.get_pixel_format(),
-                               ctn::texture_access::no_lock,
+                               cen::texture_access::no_lock,
                                {100, 100}));
   });
 }
 
 TEST_CASE("texture::streaming", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    const auto pixelFormat = ctn::pixel_format::rgba8888;
-    auto texture = ctn::texture::streaming(renderer, pandaPath, pixelFormat);
+  test([](cen::renderer& renderer) {
+    const auto pixelFormat = cen::pixel_format::rgba8888;
+    auto texture = cen::texture::streaming(renderer, pandaPath, pixelFormat);
 
     CHECK(texture->format() == pixelFormat);
 
     CHECK_THROWS_AS(
-        ctn::texture::streaming(renderer, "", ctn::pixel_format::yuy2),
-        ctn::centurion_exception);
+        cen::texture::streaming(renderer, "", cen::pixel_format::yuy2),
+        cen::centurion_exception);
   });
 }
 
 TEST_CASE("texture::set_pixel", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    const auto texture = ctn::texture::streaming(
-        renderer, pandaPath, ctn::pixel_format::rgba8888);
+  test([](cen::renderer& renderer) {
+    const auto texture = cen::texture::streaming(
+        renderer, pandaPath, cen::pixel_format::rgba8888);
 
     const auto [width, height] = texture->size();
 
-    CHECK_NOTHROW(texture->set_pixel({-1, -1}, ctn::colors::black));
-    CHECK_NOTHROW(texture->set_pixel({-1, 0}, ctn::colors::black));
-    CHECK_NOTHROW(texture->set_pixel({0, -1}, ctn::colors::black));
-    CHECK_NOTHROW(texture->set_pixel({width, 0}, ctn::colors::black));
-    CHECK_NOTHROW(texture->set_pixel({0, height}, ctn::colors::black));
-    CHECK_NOTHROW(texture->set_pixel({width, height}, ctn::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({-1, -1}, cen::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({-1, 0}, cen::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({0, -1}, cen::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({width, 0}, cen::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({0, height}, cen::colors::black));
+    CHECK_NOTHROW(texture->set_pixel({width, height}, cen::colors::black));
 
-    CHECK_NOTHROW(texture->set_pixel({45, 23}, ctn::colors::orange));
+    CHECK_NOTHROW(texture->set_pixel({45, 23}, cen::colors::orange));
   });
 }
 
 TEST_CASE("texture::set_blend_mode", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
 
-    const auto mode = ctn::blend_mode::blend;
+    const auto mode = cen::blend_mode::blend;
     texture.set_blend_mode(mode);
 
     CHECK(mode == texture.get_blend_mode());
@@ -221,8 +221,8 @@ TEST_CASE("texture::set_blend_mode", "[texture]")
 
 TEST_CASE("texture::set_alpha", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
 
     const auto alpha = 0x3A;
     texture.set_alpha(alpha);
@@ -233,10 +233,10 @@ TEST_CASE("texture::set_alpha", "[texture]")
 
 TEST_CASE("texture::set_color_mod", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
 
-    const auto color = ctn::colors::misty_rose;
+    const auto color = cen::colors::misty_rose;
     texture.set_color_mod(color);
 
     const auto actual = texture.color_mod();
@@ -249,26 +249,26 @@ TEST_CASE("texture::set_color_mod", "[texture]")
 
 TEST_CASE("texture::set_scale_mode", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
 
-    texture.set_scale_mode(ctn::scale_mode::nearest);
-    CHECK(texture.get_scale_mode() == ctn::scale_mode::nearest);
+    texture.set_scale_mode(cen::scale_mode::nearest);
+    CHECK(texture.get_scale_mode() == cen::scale_mode::nearest);
 
-    texture.set_scale_mode(ctn::scale_mode::linear);
-    CHECK(texture.get_scale_mode() == ctn::scale_mode::linear);
+    texture.set_scale_mode(cen::scale_mode::linear);
+    CHECK(texture.get_scale_mode() == cen::scale_mode::linear);
 
-    texture.set_scale_mode(ctn::scale_mode::best);
-    CHECK(texture.get_scale_mode() == ctn::scale_mode::best);
+    texture.set_scale_mode(cen::scale_mode::best);
+    CHECK(texture.get_scale_mode() == cen::scale_mode::best);
   });
 }
 
 TEST_CASE("texture::is_static", "[texture]")
 {
-  test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
-    ctn::texture texture{renderer,
+  test_with_window([](cen::renderer& renderer, const cen::window& window) {
+    cen::texture texture{renderer,
                          window.get_pixel_format(),
-                         ctn::texture_access::no_lock,
+                         cen::texture_access::no_lock,
                          {10, 10}};
     CHECK(texture.is_static());
   });
@@ -276,10 +276,10 @@ TEST_CASE("texture::is_static", "[texture]")
 
 TEST_CASE("texture::is_streaming", "[texture]")
 {
-  test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
-    ctn::texture texture{renderer,
+  test_with_window([](cen::renderer& renderer, const cen::window& window) {
+    cen::texture texture{renderer,
                          window.get_pixel_format(),
-                         ctn::texture_access::streaming,
+                         cen::texture_access::streaming,
                          {10, 10}};
     CHECK(texture.is_streaming());
   });
@@ -287,10 +287,10 @@ TEST_CASE("texture::is_streaming", "[texture]")
 
 TEST_CASE("texture::is_target", "[texture]")
 {
-  test_with_window([](ctn::renderer& renderer, const ctn::window& window) {
-    ctn::texture texture{renderer,
+  test_with_window([](cen::renderer& renderer, const cen::window& window) {
+    cen::texture texture{renderer,
                          window.get_pixel_format(),
-                         ctn::texture_access::target,
+                         cen::texture_access::target,
                          {10, 10}};
     CHECK(texture.is_target());
   });
@@ -298,67 +298,67 @@ TEST_CASE("texture::is_target", "[texture]")
 
 TEST_CASE("texture to_string", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
-    ctn::log::put(ctn::to_string(texture));
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
+    cen::log::put(cen::to_string(texture));
   });
 }
 
 TEST_CASE("texture stream operator", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
     std::cout << "COUT: " << texture << '\n';
   });
 }
 
 TEST_CASE("texture::get", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
     CHECK(texture.get());
   });
 }
 
 TEST_CASE("texture::format", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
     SDL_Texture* sdlTexture = texture.get();
 
-    ctn::u32 format = 0;
+    cen::u32 format = 0;
     SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
 
-    CHECK(texture.format() == static_cast<ctn::pixel_format>(format));
+    CHECK(texture.format() == static_cast<cen::pixel_format>(format));
   });
 }
 
 TEST_CASE("texture::access", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
     SDL_Texture* sdlTexture = texture.get();
 
     int access = 0;
     SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
 
-    CHECK(texture.access() == static_cast<ctn::texture_access>(access));
+    CHECK(texture.access() == static_cast<cen::texture_access>(access));
   });
 }
 
 TEST_CASE("texture::color_mod", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
 
-    CHECK(texture.color_mod() == ctn::colors::white);
+    CHECK(texture.color_mod() == cen::colors::white);
   });
 }
 
 TEST_CASE("texture::get_scale_mode", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
 
     SDL_ScaleMode mode;
     SDL_GetTextureScaleMode(texture.get(), &mode);
@@ -368,8 +368,8 @@ TEST_CASE("texture::get_scale_mode", "[texture]")
 
 TEST_CASE("texture::width", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture(renderer, pandaPath);
+  test([](cen::renderer& renderer) {
+    cen::texture texture(renderer, pandaPath);
     SDL_Texture* sdlTexture = texture.get();
 
     CHECK(texture.width() == pandaWidth);
@@ -382,8 +382,8 @@ TEST_CASE("texture::width", "[texture]")
 
 TEST_CASE("texture::height", "[texture]")
 {
-  test([](ctn::renderer& renderer) {
-    ctn::texture texture{renderer, pandaPath};
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
     SDL_Texture* sdlTexture = texture.get();
 
     CHECK(texture.height() == pandaHeight);
@@ -398,16 +398,16 @@ TEST_CASE("texture to SDL_Texture*", "[texture]")
 {
   SECTION("Const")
   {
-    test([](ctn::renderer& renderer) {
-      const ctn::texture texture{renderer, pandaPath};
+    test([](cen::renderer& renderer) {
+      const cen::texture texture{renderer, pandaPath};
       CHECK(texture.operator const SDL_Texture*());
     });
   }
 
   SECTION("Non-const")
   {
-    test([](ctn::renderer& renderer) {
-      ctn::texture texture{renderer, pandaPath};
+    test([](cen::renderer& renderer) {
+      cen::texture texture{renderer, pandaPath};
       CHECK(texture.operator SDL_Texture*());
     });
   }

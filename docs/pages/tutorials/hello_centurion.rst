@@ -28,7 +28,7 @@ exactly what gets initialized (and how).
 
   int main(int, char**)
   {
-    ctn::centurion_lib c;
+    cen::centurion_lib c;
 
     // Centurion and SDL are now initialized!
 
@@ -48,12 +48,12 @@ initialized.
 
   int main(int, char**)
   {
-    ctn::centurion_config cfg;
+    cen::centurion_config cfg;
 
     cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
     cfg.initMixer = false;
 
-    ctn::centurion_lib c{cfg};
+    cen::centurion_lib c{cfg};
 
     // the library is now initialized, but no audio components are initialized!
   }

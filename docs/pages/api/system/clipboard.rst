@@ -37,13 +37,13 @@ Usage of the clipboard API is very simple, it's pretty much self-explanatory!
   void foo() 
   {
     // Checks if there's non-empty text in the clipboard
-    if (ctn::clipboard::has_text()) {
+    if (cen::clipboard::has_text()) {
       // ...
     }
     
     // Obtains the current clipboard text
-    const auto text = ctn::clipboard::get_text();
+    const auto text = cen::clipboard::get_text();
 
     // Sets the current clipboard text
-    ctn::clipboard::set_text("bar");
+    cen::clipboard::set_text("bar");
   }

@@ -37,13 +37,13 @@ Querying the screen size
   void foo()
   {
     // obtains screen width
-    const auto w = ctn::screen::width();
+    const auto w = cen::screen::width();
 
     // obtains screen height
-    const auto h = ctn::screen::height();
+    const auto h = cen::screen::height();
 
     // obtains screen size
-    const auto [width, height] = ctn::screen::size();
+    const auto [width, height] = cen::screen::size();
   }
 
 Controlling the screen saver
@@ -58,10 +58,10 @@ Controlling the screen saver
   void foo()
   {
     // checks whether screen savers are enabled
-    const auto enabled = ctn::screen::screen_saver_enabled();
+    const auto enabled = cen::screen::screen_saver_enabled();
 
     // specifies whether or not screen savers should be enabled
-    ctn::screen::set_screen_saver_enabled(false);
+    cen::screen::set_screen_saver_enabled(false);
   }
 
 Texture using screen pixel format
@@ -75,11 +75,11 @@ Texture using screen pixel format
   #include <renderer.hpp>
   #include <texture.hpp>
 
-  void foo(ctn::renderer& renderer)
+  void foo(cen::renderer& renderer)
   {
     // creates a blank texture that uses the screen pixel format
-    const ctn::texture texture{renderer,
-                               ctn::screen::pixel_format(), 
-                               ctn::texture_access::no_lock, 
+    const cen::texture texture{renderer,
+                               cen::screen::pixel_format(), 
+                               cen::texture_access::no_lock, 
                                {100, 100}};
   }

@@ -49,8 +49,8 @@ Basic playback
 
   void foo()
   {
-    ctn::sound_effect sound{"click.wav"};
-    using ms = ctn::milliseconds<int>;
+    cen::sound_effect sound{"click.wav"};
+    using ms = cen::milliseconds<int>;
 
     // play once
     sound.play(); 
@@ -60,10 +60,10 @@ Basic playback
 
     // play twice
     sound.play(2);
-    ctn::thread::sleep(ms{50});
+    cen::thread::sleep(ms{50});
 
     // loops forever
-    sound.play(ctn::sound_effect::loopForever);
+    sound.play(cen::sound_effect::loopForever);
 
     // checks whether or not the sound effect is currently being played
     if (sound.is_playing()) {
@@ -86,10 +86,10 @@ Fading a sound effect in and out
 
   void foo()
   {
-    ctn::sound_effect sound{"click.wav"};
+    cen::sound_effect sound{"click.wav"};
 
     // fades in over 500 milliseconds
-    sound.fade_in(ctn::milliseconds<int>{500});
+    sound.fade_in(cen::milliseconds<int>{500});
 
     // checks whether or not the sound effect is currently being faded
     if (sound.is_fading()) {
@@ -97,7 +97,7 @@ Fading a sound effect in and out
     }
 
     // fades out over 1 second
-    sound.fade_out(ctn::seconds<int>{1});
+    sound.fade_out(cen::seconds<int>{1});
   }
 
 Handling sound effect volume
@@ -113,13 +113,13 @@ Handling sound effect volume
 
   void foo()
   {
-    ctn::sound_effect sound{"click.wav"};
+    cen::sound_effect sound{"click.wav"};
 
     // gets the current volume
     const auto vol = sound.volume();
 
     // obtains the sound effect max volume, equal to MIX_MAX_VOLUME
-    constexpr auto max = ctn::sound_effect::max_volume();
+    constexpr auto max = cen::sound_effect::max_volume();
 
     // adjusts the volume
     sound.set_volume(108);

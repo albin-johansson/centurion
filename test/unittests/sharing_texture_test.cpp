@@ -2,17 +2,17 @@
 
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 
 TEST_CASE("sharing_texture implicit sharing semantics", "[sharing_texture]")
 {
-  ctn::window window;
-  ctn::renderer renderer{window};
+  cen::window window;
+  cen::renderer renderer{window};
 
-  ctn::sharing_texture fst{renderer, "resources/panda.png"};
-  ctn::sharing_texture snd{fst};
+  cen::sharing_texture fst{renderer, "resources/panda.png"};
+  cen::sharing_texture snd{fst};
 
   CHECK(fst.get() == snd.get());
 
@@ -25,11 +25,11 @@ TEST_CASE("sharing_texture implicit sharing semantics", "[sharing_texture]")
 
 TEST_CASE("sharing_texture from texture", "[sharing_texture]")
 {
-  ctn::window window;
-  ctn::renderer renderer{window};
+  cen::window window;
+  cen::renderer renderer{window};
 
-  ctn::texture fst{renderer, "resources/panda.png"};
-  ctn::sharing_texture snd{std::move(fst)};
+  cen::texture fst{renderer, "resources/panda.png"};
+  cen::sharing_texture snd{std::move(fst)};
 
   CHECK(!fst.get());
 }

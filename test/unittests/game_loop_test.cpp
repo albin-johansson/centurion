@@ -2,7 +2,7 @@
 
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 #include "event.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
@@ -15,12 +15,12 @@ class vtl_game
 
   auto input() -> bool
   {
-    ctn::event event;
+    cen::event event;
     while (event.poll()) {
-      if (event.is<ctn::quit_event>()) {
+      if (event.is<cen::quit_event>()) {
         return false;
-      } else if (const auto* key = event.try_get<ctn::keyboard_event>(); key) {
-        if (key->released() && key->is_active(ctn::keycodes::escape)) {
+      } else if (const auto* key = event.try_get<cen::keyboard_event>(); key) {
+        if (key->released() && key->is_active(cen::keycodes::escape)) {
           return false;
         }
       }
@@ -28,34 +28,34 @@ class vtl_game
     return true;
   }
 
-  void logic(ctn::seconds<double> delta) { x += (speed * delta.count()); }
+  void logic(cen::seconds<double> delta) { x += (speed * delta.count()); }
 
   void render()
   {
-    m_renderer.clear_with(ctn::colors::pink);
+    m_renderer.clear_with(cen::colors::pink);
 
-    m_renderer.fill_rect(ctn::frect{{x, 50.0f}, {100.0f, 150.0f}});
+    m_renderer.fill_rect(cen::frect{{x, 50.0f}, {100.0f, 150.0f}});
 
     m_renderer.present();
   }
 
-  [[nodiscard]] auto get_window() -> ctn::window& { return m_window; }
+  [[nodiscard]] auto get_window() -> cen::window& { return m_window; }
 
-  [[nodiscard]] auto get_window() const -> const ctn::window&
+  [[nodiscard]] auto get_window() const -> const cen::window&
   {
     return m_window;
   }
 
-  [[nodiscard]] auto get_renderer() -> ctn::renderer& { return m_renderer; }
+  [[nodiscard]] auto get_renderer() -> cen::renderer& { return m_renderer; }
 
-  [[nodiscard]] auto get_renderer() const -> const ctn::renderer&
+  [[nodiscard]] auto get_renderer() const -> const cen::renderer&
   {
     return m_renderer;
   }
 
  private:
-  ctn::window m_window;
-  ctn::renderer m_renderer;
+  cen::window m_window;
+  cen::renderer m_renderer;
   float x{10.0f};
   const float speed{100.0f};
 };
@@ -63,7 +63,7 @@ class vtl_game
 TEST_CASE("Variable timestep", "[.variable_timestep_loop]")
 {
   vtl_game game;
-  ctn::variable_timestep_loop loop;
+  cen::variable_timestep_loop loop;
 
   loop.connect_input<&vtl_game::input>(game);
   loop.connect_logic<&vtl_game::logic>(game);
@@ -81,12 +81,12 @@ class sftl_game
 
   auto input() -> bool
   {
-    ctn::event event;
+    cen::event event;
     while (event.poll()) {
-      if (event.is<ctn::quit_event>()) {
+      if (event.is<cen::quit_event>()) {
         return false;
-      } else if (const auto* key = event.try_get<ctn::keyboard_event>(); key) {
-        if (key->released() && key->is_active(ctn::keycodes::escape)) {
+      } else if (const auto* key = event.try_get<cen::keyboard_event>(); key) {
+        if (key->released() && key->is_active(cen::keycodes::escape)) {
           return false;
         }
       }
@@ -94,7 +94,7 @@ class sftl_game
     return true;
   }
 
-  void logic(ctn::seconds<double> delta)
+  void logic(cen::seconds<double> delta)
   {
     //    const auto secs =
     //    std::chrono::duration_cast<ctn::seconds<float>>(delta);
@@ -103,23 +103,23 @@ class sftl_game
 
   void render()
   {
-    m_renderer.clear_with(ctn::colors::pink);
+    m_renderer.clear_with(cen::colors::pink);
 
-    m_renderer.fill_rect(ctn::frect{{x, 50.0f}, {100.0f, 150.0f}});
+    m_renderer.fill_rect(cen::frect{{x, 50.0f}, {100.0f, 150.0f}});
 
     m_renderer.present();
   }
 
-  [[nodiscard]] auto get_window() -> ctn::window& { return m_window; }
+  [[nodiscard]] auto get_window() -> cen::window& { return m_window; }
 
-  [[nodiscard]] auto get_window() const -> const ctn::window&
+  [[nodiscard]] auto get_window() const -> const cen::window&
   {
     return m_window;
   }
 
  private:
-  ctn::window m_window;
-  ctn::renderer m_renderer;
+  cen::window m_window;
+  cen::renderer m_renderer;
   float x{10.0f};
   const float speed{100.0f};
 };
@@ -127,7 +127,7 @@ class sftl_game
 TEST_CASE("Semi-fixed timestep", "[.semi_fixed_timestep_loop]")
 {
   sftl_game game;
-  ctn::semi_fixed_timestep_loop loop;
+  cen::semi_fixed_timestep_loop loop;
 
   loop.connect_input<&sftl_game::input>(game);
   loop.connect_logic<&sftl_game::logic>(game);
@@ -146,12 +146,12 @@ class ftl_game
 
   auto input() -> bool
   {
-    ctn::event event;
+    cen::event event;
     while (event.poll()) {
-      if (event.is<ctn::quit_event>()) {
+      if (event.is<cen::quit_event>()) {
         return false;
-      } else if (const auto* key = event.try_get<ctn::keyboard_event>(); key) {
-        if (key->released() && key->is_active(ctn::keycodes::escape)) {
+      } else if (const auto* key = event.try_get<cen::keyboard_event>(); key) {
+        if (key->released() && key->is_active(cen::keycodes::escape)) {
           return false;
         }
       }
@@ -159,7 +159,7 @@ class ftl_game
     return true;
   }
 
-  void logic(ctn::seconds<double> delta)
+  void logic(cen::seconds<double> delta)
   {
     prevX = x;
     x += (speed * delta.count());
@@ -167,26 +167,26 @@ class ftl_game
 
   void render(double alpha)
   {
-    m_renderer.clear_with(ctn::colors::pink);
+    m_renderer.clear_with(cen::colors::pink);
 
     const float renderX = (x * alpha) + (prevX * (1.0 - alpha));
-    const ctn::frect rect{{renderX, 50}, {100.0f, 150.0f}};
+    const cen::frect rect{{renderX, 50}, {100.0f, 150.0f}};
 
     m_renderer.fill_rect(rect);
 
     m_renderer.present();
   }
 
-  [[nodiscard]] auto get_window() -> ctn::window& { return m_window; }
+  [[nodiscard]] auto get_window() -> cen::window& { return m_window; }
 
-  [[nodiscard]] auto get_window() const -> const ctn::window&
+  [[nodiscard]] auto get_window() const -> const cen::window&
   {
     return m_window;
   }
 
  private:
-  ctn::window m_window;
-  ctn::renderer m_renderer;
+  cen::window m_window;
+  cen::renderer m_renderer;
   float x{10.0f};
   float prevX{x};
   const float speed{100.0f};
@@ -195,7 +195,7 @@ class ftl_game
 TEST_CASE("Fixed timestep", "[.fixed_timestep_loop]")
 {
   ftl_game game;
-  ctn::fixed_timestep_loop loop;
+  cen::fixed_timestep_loop loop;
 
   loop.connect_input<&ftl_game::input>(game);
   loop.connect_logic<&ftl_game::logic>(game);

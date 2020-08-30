@@ -55,7 +55,7 @@ features a ``SDL_Window*`` parameter.
 
   void foo(SDL_Window* window)
   {
-    ctn::window_handle handle{window};
+    cen::window_handle handle{window};
 
     handle.set_title("bar");
 

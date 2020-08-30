@@ -34,20 +34,20 @@ Examples
 
   void foo()
   {
-    if constexpr (ctn::cpu::is_little_endian()) {
+    if constexpr (cen::cpu::is_little_endian()) {
       // the CPU is little endian
-    } else if constexpr (ctn::cpu::is_big_endian()) {
+    } else if constexpr (cen::cpu::is_big_endian()) {
       // the CPU is big endian
     }
 
     // obtains the amount of cores in the CPU
-    const auto nCores = ctn::cpu::cores();
+    const auto nCores = cen::cpu::cores();
 
     // obtains the L1-cache line size
-    const auto cache = ctn::cpu::cache_line_size();
+    const auto cache = cen::cpu::cache_line_size();
 
     // indicates whether or not the CPU has the RDTSC instruction
-    if (ctn::cpu::has_rdtsc()) {
+    if (cen::cpu::has_rdtsc()) {
       // ...
     }
   }

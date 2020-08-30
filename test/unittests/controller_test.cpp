@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 #include "event.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
@@ -13,27 +13,27 @@ TEST_CASE("controller_type enum values", "[controller]")
 {
   SECTION("operator==")
   {
-    CHECK(ctn::controller_type::unknown == SDL_CONTROLLER_TYPE_UNKNOWN);
-    CHECK(ctn::controller_type::xbox_360 == SDL_CONTROLLER_TYPE_XBOX360);
-    CHECK(ctn::controller_type::xbox_one == SDL_CONTROLLER_TYPE_XBOXONE);
-    CHECK(ctn::controller_type::ps3 == SDL_CONTROLLER_TYPE_PS3);
-    CHECK(ctn::controller_type::ps4 == SDL_CONTROLLER_TYPE_PS4);
-    CHECK(ctn::controller_type::nintendo_switch_pro ==
+    CHECK(cen::controller_type::unknown == SDL_CONTROLLER_TYPE_UNKNOWN);
+    CHECK(cen::controller_type::xbox_360 == SDL_CONTROLLER_TYPE_XBOX360);
+    CHECK(cen::controller_type::xbox_one == SDL_CONTROLLER_TYPE_XBOXONE);
+    CHECK(cen::controller_type::ps3 == SDL_CONTROLLER_TYPE_PS3);
+    CHECK(cen::controller_type::ps4 == SDL_CONTROLLER_TYPE_PS4);
+    CHECK(cen::controller_type::nintendo_switch_pro ==
           SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
 
-    CHECK(SDL_CONTROLLER_TYPE_UNKNOWN == ctn::controller_type::unknown);
-    CHECK(SDL_CONTROLLER_TYPE_XBOX360 == ctn::controller_type::xbox_360);
-    CHECK(SDL_CONTROLLER_TYPE_XBOXONE == ctn::controller_type::xbox_one);
-    CHECK(SDL_CONTROLLER_TYPE_PS3 == ctn::controller_type::ps3);
-    CHECK(SDL_CONTROLLER_TYPE_PS4 == ctn::controller_type::ps4);
+    CHECK(SDL_CONTROLLER_TYPE_UNKNOWN == cen::controller_type::unknown);
+    CHECK(SDL_CONTROLLER_TYPE_XBOX360 == cen::controller_type::xbox_360);
+    CHECK(SDL_CONTROLLER_TYPE_XBOXONE == cen::controller_type::xbox_one);
+    CHECK(SDL_CONTROLLER_TYPE_PS3 == cen::controller_type::ps3);
+    CHECK(SDL_CONTROLLER_TYPE_PS4 == cen::controller_type::ps4);
     CHECK(SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO ==
-          ctn::controller_type::nintendo_switch_pro);
+          cen::controller_type::nintendo_switch_pro);
   }
 
   SECTION("operator!=")
   {
-    CHECK(ctn::controller_type::ps4 != SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
-    CHECK(SDL_CONTROLLER_TYPE_XBOX360 != ctn::controller_type::unknown);
+    CHECK(cen::controller_type::ps4 != SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
+    CHECK(SDL_CONTROLLER_TYPE_XBOX360 != cen::controller_type::unknown);
   }
 }
 
@@ -41,33 +41,33 @@ TEST_CASE("controller_axis enum values", "[controller]")
 {
   SECTION("operator==")
   {
-    CHECK(ctn::controller_axis::invalid == SDL_CONTROLLER_AXIS_INVALID);
-    CHECK(ctn::controller_axis::left_x == SDL_CONTROLLER_AXIS_LEFTX);
-    CHECK(ctn::controller_axis::left_y == SDL_CONTROLLER_AXIS_LEFTY);
-    CHECK(ctn::controller_axis::right_x == SDL_CONTROLLER_AXIS_RIGHTX);
-    CHECK(ctn::controller_axis::right_y == SDL_CONTROLLER_AXIS_RIGHTY);
-    CHECK(ctn::controller_axis::trigger_left ==
+    CHECK(cen::controller_axis::invalid == SDL_CONTROLLER_AXIS_INVALID);
+    CHECK(cen::controller_axis::left_x == SDL_CONTROLLER_AXIS_LEFTX);
+    CHECK(cen::controller_axis::left_y == SDL_CONTROLLER_AXIS_LEFTY);
+    CHECK(cen::controller_axis::right_x == SDL_CONTROLLER_AXIS_RIGHTX);
+    CHECK(cen::controller_axis::right_y == SDL_CONTROLLER_AXIS_RIGHTY);
+    CHECK(cen::controller_axis::trigger_left ==
           SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-    CHECK(ctn::controller_axis::trigger_right ==
+    CHECK(cen::controller_axis::trigger_right ==
           SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-    CHECK(ctn::controller_axis::max == SDL_CONTROLLER_AXIS_MAX);
+    CHECK(cen::controller_axis::max == SDL_CONTROLLER_AXIS_MAX);
 
-    CHECK(SDL_CONTROLLER_AXIS_INVALID == ctn::controller_axis::invalid);
-    CHECK(SDL_CONTROLLER_AXIS_LEFTX == ctn::controller_axis::left_x);
-    CHECK(SDL_CONTROLLER_AXIS_LEFTY == ctn::controller_axis::left_y);
-    CHECK(SDL_CONTROLLER_AXIS_RIGHTX == ctn::controller_axis::right_x);
-    CHECK(SDL_CONTROLLER_AXIS_RIGHTY == ctn::controller_axis::right_y);
+    CHECK(SDL_CONTROLLER_AXIS_INVALID == cen::controller_axis::invalid);
+    CHECK(SDL_CONTROLLER_AXIS_LEFTX == cen::controller_axis::left_x);
+    CHECK(SDL_CONTROLLER_AXIS_LEFTY == cen::controller_axis::left_y);
+    CHECK(SDL_CONTROLLER_AXIS_RIGHTX == cen::controller_axis::right_x);
+    CHECK(SDL_CONTROLLER_AXIS_RIGHTY == cen::controller_axis::right_y);
     CHECK(SDL_CONTROLLER_AXIS_TRIGGERLEFT ==
-          ctn::controller_axis::trigger_left);
+          cen::controller_axis::trigger_left);
     CHECK(SDL_CONTROLLER_AXIS_TRIGGERRIGHT ==
-          ctn::controller_axis::trigger_right);
-    CHECK(SDL_CONTROLLER_AXIS_MAX == ctn::controller_axis::max);
+          cen::controller_axis::trigger_right);
+    CHECK(SDL_CONTROLLER_AXIS_MAX == cen::controller_axis::max);
   }
 
   SECTION("operator!=")
   {
-    CHECK(ctn::controller_axis::left_x != SDL_CONTROLLER_AXIS_MAX);
-    CHECK(SDL_CONTROLLER_AXIS_TRIGGERLEFT != ctn::controller_axis::right_x);
+    CHECK(cen::controller_axis::left_x != SDL_CONTROLLER_AXIS_MAX);
+    CHECK(SDL_CONTROLLER_AXIS_TRIGGERLEFT != cen::controller_axis::right_x);
   }
 }
 
@@ -75,34 +75,34 @@ TEST_CASE("controller_button enum values", "[controller]")
 {
   SECTION("operator==")
   {
-    CHECK(ctn::controller_button::invalid == SDL_CONTROLLER_BUTTON_INVALID);
-    CHECK(ctn::controller_button::a == SDL_CONTROLLER_BUTTON_A);
-    CHECK(ctn::controller_button::b == SDL_CONTROLLER_BUTTON_B);
-    CHECK(ctn::controller_button::x == SDL_CONTROLLER_BUTTON_X);
-    CHECK(ctn::controller_button::y == SDL_CONTROLLER_BUTTON_Y);
-    CHECK(ctn::controller_button::back == SDL_CONTROLLER_BUTTON_BACK);
-    CHECK(ctn::controller_button::guide == SDL_CONTROLLER_BUTTON_GUIDE);
-    CHECK(ctn::controller_button::start == SDL_CONTROLLER_BUTTON_START);
-    CHECK(ctn::controller_button::left_stick ==
+    CHECK(cen::controller_button::invalid == SDL_CONTROLLER_BUTTON_INVALID);
+    CHECK(cen::controller_button::a == SDL_CONTROLLER_BUTTON_A);
+    CHECK(cen::controller_button::b == SDL_CONTROLLER_BUTTON_B);
+    CHECK(cen::controller_button::x == SDL_CONTROLLER_BUTTON_X);
+    CHECK(cen::controller_button::y == SDL_CONTROLLER_BUTTON_Y);
+    CHECK(cen::controller_button::back == SDL_CONTROLLER_BUTTON_BACK);
+    CHECK(cen::controller_button::guide == SDL_CONTROLLER_BUTTON_GUIDE);
+    CHECK(cen::controller_button::start == SDL_CONTROLLER_BUTTON_START);
+    CHECK(cen::controller_button::left_stick ==
           SDL_CONTROLLER_BUTTON_LEFTSTICK);
-    CHECK(ctn::controller_button::right_stick ==
+    CHECK(cen::controller_button::right_stick ==
           SDL_CONTROLLER_BUTTON_RIGHTSTICK);
-    CHECK(ctn::controller_button::left_shoulder ==
+    CHECK(cen::controller_button::left_shoulder ==
           SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-    CHECK(ctn::controller_button::right_shoulder ==
+    CHECK(cen::controller_button::right_shoulder ==
           SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
-    CHECK(ctn::controller_button::dpad_up == SDL_CONTROLLER_BUTTON_DPAD_UP);
-    CHECK(ctn::controller_button::dpad_down == SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-    CHECK(ctn::controller_button::dpad_right ==
+    CHECK(cen::controller_button::dpad_up == SDL_CONTROLLER_BUTTON_DPAD_UP);
+    CHECK(cen::controller_button::dpad_down == SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+    CHECK(cen::controller_button::dpad_right ==
           SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-    CHECK(ctn::controller_button::dpad_left == SDL_CONTROLLER_BUTTON_DPAD_LEFT);
-    CHECK(ctn::controller_button::max == SDL_CONTROLLER_BUTTON_MAX);
+    CHECK(cen::controller_button::dpad_left == SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+    CHECK(cen::controller_button::max == SDL_CONTROLLER_BUTTON_MAX);
   }
 
   SECTION("operator!=")
   {
-    CHECK(ctn::controller_button::right_stick != SDL_CONTROLLER_BUTTON_DPAD_UP);
-    CHECK(SDL_CONTROLLER_BUTTON_B != ctn::controller_button::guide);
+    CHECK(cen::controller_button::right_stick != SDL_CONTROLLER_BUTTON_DPAD_UP);
+    CHECK(SDL_CONTROLLER_BUTTON_B != cen::controller_button::guide);
   }
 }
 
@@ -110,27 +110,27 @@ TEST_CASE("controller_bind_type enum values", "[controller]")
 {
   SECTION("operator==")
   {
-    CHECK(ctn::controller_bind_type::axis == SDL_CONTROLLER_BINDTYPE_AXIS);
-    CHECK(ctn::controller_bind_type::button == SDL_CONTROLLER_BINDTYPE_BUTTON);
-    CHECK(ctn::controller_bind_type::none == SDL_CONTROLLER_BINDTYPE_NONE);
-    CHECK(ctn::controller_bind_type::hat == SDL_CONTROLLER_BINDTYPE_HAT);
+    CHECK(cen::controller_bind_type::axis == SDL_CONTROLLER_BINDTYPE_AXIS);
+    CHECK(cen::controller_bind_type::button == SDL_CONTROLLER_BINDTYPE_BUTTON);
+    CHECK(cen::controller_bind_type::none == SDL_CONTROLLER_BINDTYPE_NONE);
+    CHECK(cen::controller_bind_type::hat == SDL_CONTROLLER_BINDTYPE_HAT);
 
-    CHECK(SDL_CONTROLLER_BINDTYPE_AXIS == ctn::controller_bind_type::axis);
-    CHECK(SDL_CONTROLLER_BINDTYPE_BUTTON == ctn::controller_bind_type::button);
-    CHECK(SDL_CONTROLLER_BINDTYPE_NONE == ctn::controller_bind_type::none);
-    CHECK(SDL_CONTROLLER_BINDTYPE_HAT == ctn::controller_bind_type::hat);
+    CHECK(SDL_CONTROLLER_BINDTYPE_AXIS == cen::controller_bind_type::axis);
+    CHECK(SDL_CONTROLLER_BINDTYPE_BUTTON == cen::controller_bind_type::button);
+    CHECK(SDL_CONTROLLER_BINDTYPE_NONE == cen::controller_bind_type::none);
+    CHECK(SDL_CONTROLLER_BINDTYPE_HAT == cen::controller_bind_type::hat);
   }
 
   SECTION("operator!=")
   {
-    CHECK(ctn::controller_bind_type::axis != SDL_CONTROLLER_BINDTYPE_HAT);
-    CHECK(SDL_CONTROLLER_BINDTYPE_BUTTON != ctn::controller_bind_type::none);
+    CHECK(cen::controller_bind_type::axis != SDL_CONTROLLER_BINDTYPE_HAT);
+    CHECK(SDL_CONTROLLER_BINDTYPE_BUTTON != cen::controller_bind_type::none);
   }
 }
 
 TEST_CASE("controller load_mappings", "[controller]")
 {
-  CHECK(ctn::controller::load_mappings("resources/gamecontrollerdb.txt") > 0);
+  CHECK(cen::controller::load_mappings("resources/gamecontrollerdb.txt") > 0);
 }
 
 namespace centurion {
@@ -140,9 +140,9 @@ class controller_handler  // TODO worth adding?
  public:
   void add_all()
   {
-    const auto amount = ctn::joystick::amount().value_or(0);
+    const auto amount = cen::joystick::amount().value_or(0);
     for (int i = 0; i < amount; ++i) {
-      if (ctn::controller::is_supported(i)) {
+      if (cen::controller::is_supported(i)) {
         emplace(i);
       }
     }
@@ -162,7 +162,7 @@ class controller_handler  // TODO worth adding?
           end(container));
     };
 
-    erase(m_controllers, [=](const ctn::controller& c) {
+    erase(m_controllers, [=](const cen::controller& c) {
       const auto i = c.index();
       return i && index == *i;
     });
@@ -185,7 +185,7 @@ class controller_handler  // TODO worth adding?
   {
     const auto it = std::find_if(begin(m_controllers),
                                  end(m_controllers),
-                                 [=](const ctn::controller& c) noexcept {
+                                 [=](const cen::controller& c) noexcept {
                                    const auto i = c.index();
                                    return i && index == *i;
                                  });
@@ -199,10 +199,10 @@ class controller_handler  // TODO worth adding?
 
 TEST_CASE("interactive controller", "[.controller]")
 {
-  ctn::window window;
-  ctn::renderer renderer{window};
-  ctn::event event;
-  ctn::controller_handler controllers;
+  cen::window window;
+  cen::renderer renderer{window};
+  cen::event event;
+  cen::controller_handler controllers;
   controllers.add_all();
 
   //  bool running{true};

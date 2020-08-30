@@ -1,11 +1,11 @@
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 #include "controller.hpp"
 
 TEST_CASE("controller_button operator==", "[controller_button]")
 {
-  using button = ctn::controller_button;
+  using button = cen::controller_button;
 
   CHECK(button::invalid == SDL_CONTROLLER_BUTTON_INVALID);
   CHECK(button::a == SDL_CONTROLLER_BUTTON_A);
@@ -46,7 +46,7 @@ TEST_CASE("controller_button operator==", "[controller_button]")
 
 TEST_CASE("controller_button operator!=", "[controller_button]")
 {
-  using button = ctn::controller_button;
+  using button = cen::controller_button;
 
   CHECK(button::dpad_right != SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
   CHECK(SDL_CONTROLLER_BUTTON_X != button::a);

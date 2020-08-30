@@ -44,7 +44,7 @@ Styling
 
   void styling_demo() 
   {
-    ctn::font font{"arial.ttf", 12}; 
+    cen::font font{"arial.ttf", 12}; 
 
     // set style
     font.set_bold(true);
@@ -78,7 +78,7 @@ be used to obtain various information about the font face.
 
   void font_info_demo() 
   {
-    ctn::font font{"arial.ttf", 12}; 
+    cen::font font{"arial.ttf", 12}; 
 
     // The size of the font (12 in this example)
     int size = font.size();
@@ -116,7 +116,7 @@ class, in order to enable fast text rendering.
 
   void glyph_info_demo() 
   {
-    ctn::font font{"arial.ttf", 12}; 
+    cen::font font{"arial.ttf", 12}; 
 
     // Obtain the kerning amount between to glyphs
     int kerning = font.kerning_amount('a', 'V');
@@ -144,7 +144,7 @@ actually having to render the string.
 
   void string_info_demo() 
   {
-    ctn::font font{"arial.ttf", 12}; 
+    cen::font font{"arial.ttf", 12}; 
 
     /* Obtains the dimensions of a string, if it were to be rendered
        using the font. */

@@ -41,7 +41,7 @@ Examples
 
   void foo()
   {
-    if (ctn::base_path path; path) {
+    if (cen::base_path path; path) {
       // successfully obtained the path of the application executable
       auto str = path.get();
     }

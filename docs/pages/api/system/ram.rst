@@ -33,8 +33,8 @@ Examples
   void foo()
   {
     // the amount of system memory, in megabytes
-    const auto mb = ctn::ram::amount_mb();
+    const auto mb = cen::ram::amount_mb();
 
     // the amount of system memory, in gigabytes
-    const auto gb = ctn::ram::amount_gb();  
+    const auto gb = cen::ram::amount_gb();  
   }

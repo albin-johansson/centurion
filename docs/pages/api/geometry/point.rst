@@ -77,8 +77,8 @@ You can easily obtain the distance between two points using the
 
   void demo() 
   {
-    const ctn::fpoint a{1.2f, 3.4f};
-    const ctn::fpoint b{5.6f, 7.8f};
+    const cen::fpoint a{1.2f, 3.4f};
+    const cen::fpoint b{5.6f, 7.8f};
 
-    const auto dist = ctn::distance(a, b);
+    const auto dist = cen::distance(a, b);
   }

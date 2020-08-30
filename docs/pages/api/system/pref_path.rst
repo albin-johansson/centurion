@@ -42,7 +42,7 @@ Examples
 
   void foo()
   {
-    if (ctn::pref_path path{"my organization", "my awesome app"}; path) {
+    if (cen::pref_path path{"my organization", "my awesome app"}; path) {
       // successfully obtained the preferred path for application files
       auto str = path.get();
     }

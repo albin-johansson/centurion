@@ -53,37 +53,37 @@ Basic playback
 
   void demo()
   {
-    ctn::music music{"never_gonna_give_you_up.mp3"};
-    using ms = ctn::milliseconds<int>;
+    cen::music music{"never_gonna_give_you_up.mp3"};
+    using ms = cen::milliseconds<int>;
 
     // play music one time
     music.play();
 
     // pause the playing music
-    ctn::music::pause();
+    cen::music::pause();
 
     // indicates whether or not the music is paused
-    if (ctn::music::is_paused()) {
+    if (cen::music::is_paused()) {
       // ...
     }
 
     // resume playback of music
-    ctn::music::resume();
-    ctn::music::pause();
+    cen::music::resume();
+    cen::music::pause();
 
     // play music two times
     music.play(2);
-    ctn::music::pause();
+    cen::music::pause();
 
     // loop music forever
-    music.play(ctn::music::loopForever);
+    music.play(cen::music::loopForever);
 
     // indicates whether or not any music is playing
-    if (ctn::music::is_playing()) {
+    if (cen::music::is_playing()) {
       // ...
     }
 
-    ctn::music::pause();
+    cen::music::pause();
   }
 
 Fading music in and out
@@ -99,26 +99,26 @@ Fading music in and out
 
   void demo()
   {
-    ctn::music music{"never_gonna_give_you_up.mp3"};
+    cen::music music{"never_gonna_give_you_up.mp3"};
 
-    using ms = ctn::milliseconds<int>;
-    using secs = ctn::seconds<int>;
+    using ms = cen::milliseconds<int>;
+    using secs = cen::seconds<int>;
 
     // fade in music
     music.fade_in(ms{576});
 
     // unlike pause, this halts any playing OR fading music
-    ctn::music::halt();
+    cen::music::halt();
 
     // fade in music during first playback, then loop normally
     music.fade_in(ms{576}, 2);
 
     // checks whether or not any music is currently fading
-    if (ctn::music::is_fading()) {
+    if (cen::music::is_fading()) {
       // ...
     }
 
-    ctn::music::halt();
+    cen::music::halt();
 
     // fade out music
     music.fade_out(secs{5});

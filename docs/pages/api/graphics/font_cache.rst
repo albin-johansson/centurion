@@ -49,9 +49,9 @@ Caching glyphs
 
   void foo() 
   {
-    ctn::window window;
-    ctn::renderer renderer{window};
-    ctn::font_cache cache{"arial.ttf", 12};
+    cen::window window;
+    cen::renderer renderer{window};
+    cen::font_cache cache{"arial.ttf", 12};
 
     // Manually adds the glyph "R"
     cache.add_glyph(renderer, 'R'); 
@@ -73,11 +73,11 @@ Caching full strings
 
   void foo() 
   {
-    ctn::window window;
-    ctn::renderer renderer{window};
-    ctn::font_cache cache{"arial.ttf", 12};
+    cen::window window;
+    cen::renderer renderer{window};
+    cen::font_cache cache{"arial.ttf", 12};
 
-    renderer.set_color(ctn::colors::magenta);
+    renderer.set_color(cen::colors::magenta);
 
     // Maps hash of "foo" with rendered string "bar"
     cache.store_blended_latin1("foo"_hs, "bar", renderer);

@@ -26,7 +26,7 @@ Smart pointers
 
 For convenience, most Centurion classes feature factory methods for smart pointers. There's
 always a factory method for each constructor. For instance, you can create a unique pointer to a
-``ctn::window`` instance with ``ctn::window::unique()``. The factory methods are always called
+``cen::window`` instance with ``cen::window::unique()``. The factory methods are always called
 ``unique`` or ``shared``, for ``std::unique_ptr`` and ``std::shared_ptr`` respectively. 
 
 .. warning:: 
@@ -41,6 +41,6 @@ Textual representation
 ----------------------
 
 Obtaining textual representations of Centurion components is primarily done using overloads of 
-the ``ctn::to_string`` function. This is very useful for debugging and logging purposes. 
+the ``cen::to_string`` function. This is very useful for debugging and logging purposes. 
 Additionally, all types that provide an overload of ``to_string`` are also printable using C++
 streams, using ``operator<<``.

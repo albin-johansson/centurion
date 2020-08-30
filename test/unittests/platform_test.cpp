@@ -3,11 +3,11 @@
 #include <catch.hpp>
 #include <string>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 
 TEST_CASE("platform::id", "[platform]")
 {
-  CHECK_NOTHROW(ctn::platform::id());
+  CHECK_NOTHROW(cen::platform::id());
 
 #ifdef __WIN32
   CHECK(ctn::platform::id() == ctn::platform::platform_id::windows);
@@ -22,5 +22,5 @@ TEST_CASE("platform::id", "[platform]")
 
 TEST_CASE("platform::name", "[platform]")
 {
-  CHECK(*ctn::platform::name() == std::string{SDL_GetPlatform()});
+  CHECK(*cen::platform::name() == std::string{SDL_GetPlatform()});
 }

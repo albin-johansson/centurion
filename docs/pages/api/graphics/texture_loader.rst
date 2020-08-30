@@ -39,9 +39,9 @@ Examples
 
   void demo()
   {
-    ctn::window window;
-    ctn::renderer renderer{window};
-    ctn::texture_loader loader{renderer};
+    cen::window window;
+    cen::renderer renderer{window};
+    cen::texture_loader loader{renderer};
 
     // creates a unique pointer to a texture
     auto unique = loader.unique("resources/some_image.png");

@@ -1,11 +1,11 @@
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 #include "event.hpp"
 
 TEST_CASE("WindowEventID operator==", "[window_event]")
 {
-  using wid = ctn::window_event_id;
+  using wid = cen::window_event_id;
 
   CHECK(wid::none == SDL_WINDOWEVENT_NONE);
   CHECK(wid::shown == SDL_WINDOWEVENT_SHOWN);
@@ -46,7 +46,7 @@ TEST_CASE("WindowEventID operator==", "[window_event]")
 
 TEST_CASE("WindowEventID operator!=", "[window_event]")
 {
-  using wid = ctn::window_event_id;
+  using wid = cen::window_event_id;
 
   CHECK(wid::resized != SDL_WINDOWEVENT_FOCUS_GAINED);
   CHECK(!(wid::leave != SDL_WINDOWEVENT_LEAVE));
@@ -59,15 +59,15 @@ TEST_CASE("window_event::event_id", "[window_event]")
 {
   SDL_WindowEvent sdl{};
   sdl.event = SDL_WINDOWEVENT_FOCUS_GAINED;
-  ctn::window_event we{sdl};
+  cen::window_event we{sdl};
 
-  CHECK(we.event_id() == ctn::window_event_id::focus_gained);
+  CHECK(we.event_id() == cen::window_event_id::focus_gained);
 }
 
 TEST_CASE("window_event constructors", "[window_event]")
 {
-  CHECK_NOTHROW(ctn::window_event{});
-  CHECK_NOTHROW(ctn::window_event{SDL_WindowEvent{}});
+  CHECK_NOTHROW(cen::window_event{});
+  CHECK_NOTHROW(cen::window_event{SDL_WindowEvent{}});
 }
 
 TEST_CASE("window_event::data_1", "[window_event]")
@@ -77,7 +77,7 @@ TEST_CASE("window_event::data_1", "[window_event]")
   SDL_WindowEvent sdl{};
   sdl.event = SDL_WINDOWEVENT_RESIZED;
   sdl.data1 = width;
-  ctn::window_event we{sdl};
+  cen::window_event we{sdl};
 
   CHECK(we.data_1() == width);
 }
@@ -89,7 +89,7 @@ TEST_CASE("window_event::data_2", "[window_event]")
   SDL_WindowEvent sdl{};
   sdl.event = SDL_WINDOWEVENT_RESIZED;
   sdl.data2 = height;
-  ctn::window_event we{sdl};
+  cen::window_event we{sdl};
 
   CHECK(we.data_2() == height);
 }

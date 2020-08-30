@@ -84,13 +84,13 @@ Casting between rectangle types
 
   void demo()
   {
-    const ctn::irect rect{{10, 15}, {100, 150}};
+    const cen::irect rect{{10, 15}, {100, 150}};
 
     // from irect to frect
-    auto fr = ctn::cast<ctn::frect>(rect);
+    auto fr = cen::cast<cen::frect>(rect);
 
     // from frect to irect
-    auto ir = ctn::cast<ctn::irect>(fr);
+    auto ir = cen::cast<cen::irect>(fr);
   }
 
 Intersection checking
@@ -106,16 +106,16 @@ Two rectangles are considered to be intersecting if they overlap each other.
 
   void demo()
   {
-    const ctn::irect a{{0, 0}, {10, 10}};
-    const ctn::irect b{{5, 0}, {10, 10}};
+    const cen::irect a{{0, 0}, {10, 10}};
+    const cen::irect b{{5, 0}, {10, 10}};
 
-    const ctn::irect c{{100, 100}, {10, 10}};
+    const cen::irect c{{100, 100}, {10, 10}};
 
     // returns true
-    if (ctn::intersects(a, b)) { ... }
+    if (cen::intersects(a, b)) { ... }
 
     // returns false
-    if (ctn::intersects(a, c)) { ... }
+    if (cen::intersects(a, c)) { ... }
   }
 
 Collision checking
@@ -131,15 +131,15 @@ Two rectangles are considered to be colliding if the overlap *or* if they share 
 
   void demo()
   {
-    const ctn::irect a{{0, 0}, {10, 10}};
-    const ctn::irect b{{10, 0}, {10, 10}};
-    const ctn::irect c{{100, 100}, {10, 10}};
+    const cen::irect a{{0, 0}, {10, 10}};
+    const cen::irect b{{10, 0}, {10, 10}};
+    const cen::irect c{{100, 100}, {10, 10}};
   
     // returns true
-    if (ctn::collides(a, b)) { ... }
+    if (cen::collides(a, b)) { ... }
 
     // returns false
-    if (ctn::collides(a, c)) { ... }
+    if (cen::collides(a, c)) { ... }
   }
 
 Calculate union of two rectangles
@@ -156,8 +156,8 @@ the function provided by SDL, this also works with floating-point rectangles.
 
   void demo()
   {
-    constexpr ctn::irect fst{{0, 0}, {10, 10}};
-    constexpr ctn::irect snd{{10, 0}, {10, 10}};
+    constexpr cen::irect fst{{0, 0}, {10, 10}};
+    constexpr cen::irect snd{{10, 0}, {10, 10}};
   
-    constexpr auto result = ctn::get_union(fst, snd);
+    constexpr auto result = cen::get_union(fst, snd);
   }

@@ -2,11 +2,11 @@
 
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 
 TEST_CASE("mouse_state()", "[mouse_state]")
 {
-  const ctn::mouse_state state;
+  const cen::mouse_state state;
   CHECK(state.logical_width() == 1);
   CHECK(state.logical_height() == 1);
   CHECK(state.mouse_x() == 0);
@@ -15,13 +15,13 @@ TEST_CASE("mouse_state()", "[mouse_state]")
 
 TEST_CASE("mouse_state smart pointer factory methods", "[mouse_state]")
 {
-  CHECK(ctn::mouse_state::unique());
-  CHECK(ctn::mouse_state::shared());
+  CHECK(cen::mouse_state::unique());
+  CHECK(cen::mouse_state::shared());
 }
 
 TEST_CASE("mouse_state::update", "[mouse_state]")
 {
-  ctn::mouse_state state;
+  cen::mouse_state state;
 
   CHECK_NOTHROW(state.update(12, 632));
 
@@ -33,7 +33,7 @@ TEST_CASE("mouse_state::update", "[mouse_state]")
 
 TEST_CASE("mouse_state::reset", "[mouse_state]")
 {
-  ctn::mouse_state state;
+  cen::mouse_state state;
 
   state.set_logical_width(455);
   state.set_logical_height(183);
@@ -46,7 +46,7 @@ TEST_CASE("mouse_state::reset", "[mouse_state]")
 
 TEST_CASE("mouse_state::set_logical_width", "[mouse_state]")
 {
-  ctn::mouse_state state;
+  cen::mouse_state state;
 
   const auto width = 821;
   state.set_logical_width(width);
@@ -56,7 +56,7 @@ TEST_CASE("mouse_state::set_logical_width", "[mouse_state]")
 
 TEST_CASE("mouse_state::set_logical_height", "[mouse_state]")
 {
-  ctn::mouse_state state;
+  cen::mouse_state state;
 
   const auto height = 219;
   state.set_logical_height(height);
@@ -66,30 +66,30 @@ TEST_CASE("mouse_state::set_logical_height", "[mouse_state]")
 
 TEST_CASE("mouse_state::is_left_button_pressed", "[mouse_state]")
 {
-  ctn::mouse_state state;
+  cen::mouse_state state;
   CHECK(!state.is_left_button_pressed());
 }
 
 TEST_CASE("mouse_state::is_right_button_pressed", "[mouse_state]")
 {
-  ctn::mouse_state state;
+  cen::mouse_state state;
   CHECK(!state.is_right_button_pressed());
 }
 
 TEST_CASE("mouse_state::was_left_button_released", "[mouse_state]")
 {
-  ctn::mouse_state state;
+  cen::mouse_state state;
   CHECK(!state.was_left_button_released());
 }
 
 TEST_CASE("mouse_state::was_right_button_released", "[mouse_state]")
 {
-  ctn::mouse_state state;
+  cen::mouse_state state;
   CHECK(!state.was_right_button_released());
 }
 
 TEST_CASE("mouse_state::was_mouse_moved", "[mouse_state]")
 {
-  ctn::mouse_state state;
+  cen::mouse_state state;
   CHECK(!state.was_mouse_moved());
 }

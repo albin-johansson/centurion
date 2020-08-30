@@ -2,22 +2,22 @@
 
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 
 TEST_CASE("try_lock", "[try_lock]")
 {
-  ctn::mutex mutex;
-  ctn::try_lock lock{mutex};
+  cen::mutex mutex;
+  cen::try_lock lock{mutex};
 
   CHECK(lock.success());
 }
 
 TEST_CASE("try_lock::get_status", "[try_lock]")
 {
-  ctn::mutex mutex;
-  ctn::try_lock lock{mutex};
+  cen::mutex mutex;
+  cen::try_lock lock{mutex};
 
-  CHECK(lock.get_status() == ctn::lock_status::success);
+  CHECK(lock.get_status() == cen::lock_status::success);
 
   CHECK(lock.success());
   CHECK(!lock.timed_out());
@@ -26,8 +26,8 @@ TEST_CASE("try_lock::get_status", "[try_lock]")
 
 TEST_CASE("try_lock operator bool", "[try_lock]")
 {
-  ctn::mutex mutex;
-  ctn::try_lock lock{mutex};
+  cen::mutex mutex;
+  cen::try_lock lock{mutex};
 
   CHECK(lock);
 }

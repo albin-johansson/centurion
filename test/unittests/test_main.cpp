@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 
   const ctn::centurion_lib c{cfg};
 #else
-  const ctn::centurion_lib c;
+  const cen::centurion_lib c;
 #endif
   return Catch::Session().run(argc, argv);
 }

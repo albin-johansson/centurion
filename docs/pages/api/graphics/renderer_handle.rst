@@ -52,12 +52,12 @@ parameter.
 
   void draw(SDL_Renderer* renderer)
   {
-    ctn::renderer_handle handle{renderer};
+    cen::renderer_handle handle{renderer};
 
-    handle.clear_with(ctn::colors::black);
+    handle.clear_with(cen::colors::black);
 
-    handle.set_color(ctn::colors::pink);
-    handle.fill_rect(ctn::irect{{15, 20}, {100, 100}});
+    handle.set_color(cen::colors::pink);
+    handle.fill_rect(cen::irect{{15, 20}, {100, 100}});
  
     handle.present();
   }

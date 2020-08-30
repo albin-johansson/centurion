@@ -5,9 +5,9 @@ The hints API provides type-safe configuration of the behaviour of SDL. Every hi
 represented by its own class. However, the implementation of the hint classes is not 
 really of interest, and should be considered an implementation detail. 
 
-All hint types are located in the ``ctn::hint`` namespace. Furthermore, there are 
-subnamespaces in said namespace that represent different groups, e.g. ``ctn::hint::x11`` and
-``ctn::hint::joystick``.
+All hint types are located in the ``cen::hint`` namespace. Furthermore, there are 
+subnamespaces in said namespace that represent different groups, e.g. ``cen::hint::x11`` and
+``cen::hint::joystick``.
 
 .. note::
 
@@ -235,19 +235,19 @@ demonstrates this in action.
 
   void foo()
   {
-    using ctn::hint::render_driver;
+    using cen::hint::render_driver;
 
     // attempts to specify OpenGL as desired render driver
-    const auto success = ctn::set_hint<render_driver>(render_driver::value::opengl);
+    const auto success = cen::set_hint<render_driver>(render_driver::value::opengl);
 
     if (success) {
       // successfully set the render driver hint
     }
 
     // the following results in compile-time errors...
-    // ctn::set_hint<render_driver>(42);
-    // ctn::set_hint<render_driver>(true);
-    // ctn::set_hint<render_driver>("bar");
+    // cen::set_hint<render_driver>(42);
+    // cen::set_hint<render_driver>(true);
+    // cen::set_hint<render_driver>("bar");
   }
 
 Getting the value of a hint
@@ -265,14 +265,14 @@ always returns a ``std::optional`` that wraps a value of the value type used by 
 
   void foo()
   {
-    using ctn::hint::render_batching;
-    using ctn::hint::event_logging;
+    using cen::hint::render_batching;
+    using cen::hint::event_logging;
 
-    if (const auto batching = ctn::get_hint<render_batching>(); batching) {
+    if (const auto batching = cen::get_hint<render_batching>(); batching) {
       // successfully obtained render batching value
     }
     
-    if (const auto level = ctn::get_hint<event_logging>(); level) {
+    if (const auto level = cen::get_hint<event_logging>(); level) {
       // successfully obtained event logging value
     }
   }
@@ -296,7 +296,7 @@ It's possible to observe changes to hints with callbacks.
     }
 
     // adds the callback, it's also possible to supply a pointer to user data
-    auto handle = ctn::add_hint_callback(callback);
+    auto handle = cen::add_hint_callback(callback);
 
     // the handle makes it possible to disconnect/connect the callback
     handle.disconnect();

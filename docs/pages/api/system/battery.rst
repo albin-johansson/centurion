@@ -36,35 +36,35 @@ Examples
   void foo()
   {
     // Check if the system is running on a battery
-    const auto exists = ctn::battery::exists();
+    const auto exists = cen::battery::exists();
 
-    if (const auto percentage = ctn::battery::percentage(); percentage) {
+    if (const auto percentage = cen::battery::percentage(); percentage) {
       // obtained the battery percentage
     }
 
-    if (const auto minutes = ctn::battery::minutes_left(); minutes) {
+    if (const auto minutes = cen::battery::minutes_left(); minutes) {
       // obtained the minutes of battery life left
     }
 
-    if (const auto seconds = ctn::battery::seconds_left(); seconds) {
+    if (const auto seconds = cen::battery::seconds_left(); seconds) {
       // obtained the seconds of battery life left
     }
 
     // query detailed status of battery
-    switch (ctn::battery::state()) {
-      case ctn::battery::power_state::unknown:
+    switch (cen::battery::state()) {
+      case cen::battery::power_state::unknown:
         // unknown power state
         break;
-      case ctn::battery::power_state::on_battery:
+      case cen::battery::power_state::on_battery:
         // running on battery
         break;
-      case ctn::battery::power_state::no_battery:
+      case cen::battery::power_state::no_battery:
         // no available battery
         break;
-      case ctn::battery::power_state::charging:
+      case cen::battery::power_state::charging:
         // currently charging
         break;
-      case ctn::battery::power_state::charged: 
+      case cen::battery::power_state::charged: 
         // battery is charged
         break;
     }

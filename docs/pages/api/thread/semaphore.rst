@@ -40,7 +40,7 @@ instead of the SDL atomic facilities, since the standard library provides a much
   :linenos:
   
   std::atomic<bool> done{false},
-  ctn::semaphore sem{0};  // no initial tokens
+  cen::semaphore sem{0};  // no initial tokens
   
   Thread A:
     while (!done.load()) {

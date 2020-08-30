@@ -36,14 +36,14 @@ Examples
   void foo()
   {
     // query the high-performance counter
-    const auto now = ctn::counter::now();
+    const auto now = cen::counter::now();
 
     // query the high-performance counter in seconds
-    const auto secs = ctn::counter::now_sec<double>();
+    const auto secs = cen::counter::now_sec<double>();
 
     // obtains the amount of milliseconds that have passed since SDL was initialized
-    const auto ticks = ctn::counter::ticks();
+    const auto ticks = cen::counter::ticks();
 
     // obtains the frequency of the high-performance counter
-    const auto freq = ctn::counter::high_res_freq();
+    const auto freq = cen::counter::high_res_freq();
   }

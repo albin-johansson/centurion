@@ -2,11 +2,11 @@
 
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 
 TEST_CASE("device_type enum", "[touch]")
 {
-  using device_t = ctn::touch::device_type;
+  using device_t = cen::touch::device_type;
   SECTION("Operator ==")
   {
     CHECK(device_t::invalid == SDL_TOUCH_DEVICE_INVALID);
@@ -31,39 +31,39 @@ TEST_CASE("device_type enum", "[touch]")
 
 TEST_CASE("touch::num_devices", "[touch]")
 {
-  CHECK(ctn::touch::num_devices() == SDL_GetNumTouchDevices());
+  CHECK(cen::touch::num_devices() == SDL_GetNumTouchDevices());
 }
 
 TEST_CASE("touch::get_device", "[!mayfail][touch]")
 {
-  const auto device = ctn::touch::get_device(0);
+  const auto device = cen::touch::get_device(0);
   CHECK(!device.has_value());
 }
 
 TEST_CASE("touch::type_of", "[touch]")
 {
-  CHECK(ctn::touch::type_of(0) == SDL_GetTouchDeviceType(0));
+  CHECK(cen::touch::type_of(0) == SDL_GetTouchDeviceType(0));
 }
 
 TEST_CASE("touch::num_fingers", "[touch]")
 {
-  CHECK(ctn::touch::num_fingers(0) == SDL_GetNumTouchFingers(0));
+  CHECK(cen::touch::num_fingers(0) == SDL_GetNumTouchFingers(0));
 }
 
 TEST_CASE("touch::get_finger", "[touch]")
 {
-  const auto finger = ctn::touch::get_finger(0, 0);
+  const auto finger = cen::touch::get_finger(0, 0);
   CHECK(!finger.has_value());
 }
 
 TEST_CASE("touch::touch_mouse_id", "[touch]")
 {
-  CHECK(ctn::touch::touch_mouse_id() == SDL_TOUCH_MOUSEID);
-  CHECK(ctn::touch::touch_mouse_id() != SDL_MOUSE_TOUCHID);
+  CHECK(cen::touch::touch_mouse_id() == SDL_TOUCH_MOUSEID);
+  CHECK(cen::touch::touch_mouse_id() != SDL_MOUSE_TOUCHID);
 }
 
 TEST_CASE("touch::mouse_touch_id", "[touch]")
 {
-  CHECK(ctn::touch::mouse_touch_id() == SDL_MOUSE_TOUCHID);
-  CHECK(ctn::touch::mouse_touch_id() != SDL_TOUCH_MOUSEID);
+  CHECK(cen::touch::mouse_touch_id() == SDL_MOUSE_TOUCHID);
+  CHECK(cen::touch::mouse_touch_id() != SDL_TOUCH_MOUSEID);
 }

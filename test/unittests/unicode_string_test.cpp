@@ -2,11 +2,11 @@
 
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 
 TEST_CASE("unicode_string default constructor", "[unicode_string]")
 {
-  const ctn::unicode_string str;
+  const cen::unicode_string str;
   CHECK(str.size() == 0);  // NOLINT
   CHECK(str.empty());
 
@@ -15,7 +15,7 @@ TEST_CASE("unicode_string default constructor", "[unicode_string]")
 
 TEST_CASE("unicode_string from std::initializer_list", "[unicode_string]")
 {
-  const ctn::unicode_string str = {'a', 'b', 'c'};
+  const cen::unicode_string str = {'a', 'b', 'c'};
   CHECK(str.size() == 3);
   CHECK_FALSE(str.empty());
 
@@ -31,7 +31,7 @@ TEST_CASE("unicode_string from std::initializer_list", "[unicode_string]")
 
 TEST_CASE("unicode_string iteration", "[unicode_string]")
 {
-  const ctn::unicode_string str = {'a', 'b', 'c'};
+  const cen::unicode_string str = {'a', 'b', 'c'};
 
   REQUIRE(str.end() - str.begin() == 3);
 
@@ -47,9 +47,9 @@ TEST_CASE("unicode_string iteration", "[unicode_string]")
 
 TEST_CASE("unicode_string::append", "[unicode_string]")
 {
-  using namespace ctn::literals;
+  using namespace cen::literals;
 
-  ctn::unicode_string str;
+  cen::unicode_string str;
 
   str.append('A'_uni);
 
@@ -63,9 +63,9 @@ TEST_CASE("unicode_string::append", "[unicode_string]")
 
 TEST_CASE("unicode_string::variadic append", "[unicode_string]")
 {
-  using namespace ctn::literals;
+  using namespace cen::literals;
 
-  ctn::unicode_string str;
+  cen::unicode_string str;
 
   str.append('B'_uni, 'A'_uni, 'R'_uni);
 
@@ -77,9 +77,9 @@ TEST_CASE("unicode_string::variadic append", "[unicode_string]")
 
 TEST_CASE("unicode_string::operator +=", "[unicode_string]")
 {
-  using namespace ctn::literals;
+  using namespace cen::literals;
 
-  ctn::unicode_string str;
+  cen::unicode_string str;
 
   str += 'Z'_uni;
 
@@ -94,9 +94,9 @@ TEST_CASE("unicode_string::operator +=", "[unicode_string]")
 
 TEST_CASE("unicode_string::pop_back", "[unicode_string]")
 {
-  using namespace ctn::literals;
+  using namespace cen::literals;
 
-  ctn::unicode_string str;
+  cen::unicode_string str;
 
   str += 'A'_uni;
 
@@ -120,9 +120,9 @@ TEST_CASE("unicode_string::pop_back", "[unicode_string]")
 
 TEST_CASE("unicode_string::at", "[unicode_string]")
 {
-  using namespace ctn::literals;
+  using namespace cen::literals;
 
-  ctn::unicode_string str;
+  cen::unicode_string str;
 
   CHECK_NOTHROW(str.at(0));  // null-terminator
   CHECK_THROWS(str.at(-1));
@@ -134,9 +134,9 @@ TEST_CASE("unicode_string::at", "[unicode_string]")
 
 TEST_CASE("unicode_string::data", "[unicode_string]")
 {
-  using namespace ctn::literals;
+  using namespace cen::literals;
 
-  ctn::unicode_string str;
+  cen::unicode_string str;
   const auto& cstr = str;
 
   REQUIRE(str.data());
@@ -153,9 +153,9 @@ TEST_CASE("unicode_string::data", "[unicode_string]")
 
 TEST_CASE("unicode_string::empty", "[unicode_string]")
 {
-  using namespace ctn::literals;
+  using namespace cen::literals;
 
-  ctn::unicode_string str;
+  cen::unicode_string str;
 
   CHECK(str.empty());
 
@@ -166,7 +166,7 @@ TEST_CASE("unicode_string::empty", "[unicode_string]")
 
 TEST_CASE("unicode_string::reserve", "[unicode_string]")
 {
-  ctn::unicode_string str;
+  cen::unicode_string str;
 
   str.reserve(10);
   CHECK(str.capacity() == 10);
@@ -176,23 +176,23 @@ TEST_CASE("unicode_string::operator==", "[unicode_string]")
 {
   SECTION("Self")
   {
-    const ctn::unicode_string str;
+    const cen::unicode_string str;
     CHECK(str == str);
   }
 
   SECTION("Two default constructed strings")
   {
-    const ctn::unicode_string fst;
-    const ctn::unicode_string snd;
+    const cen::unicode_string fst;
+    const cen::unicode_string snd;
     CHECK(fst == snd);
     CHECK(snd == fst);
   }
 
   SECTION("Two equal strings")
   {
-    using namespace ctn::literals;
-    const ctn::unicode_string fst{'A'_uni, 'B'_uni, 'C'_uni};
-    const ctn::unicode_string snd{fst};  // NOLINT
+    using namespace cen::literals;
+    const cen::unicode_string fst{'A'_uni, 'B'_uni, 'C'_uni};
+    const cen::unicode_string snd{fst};  // NOLINT
 
     CHECK(fst == snd);
     CHECK(snd == fst);
@@ -200,9 +200,9 @@ TEST_CASE("unicode_string::operator==", "[unicode_string]")
 
   SECTION("Two different strings")
   {
-    using namespace ctn::literals;
-    const ctn::unicode_string fst{'F'_uni, 'O'_uni, 'O'_uni};
-    const ctn::unicode_string snd{'B'_uni, 'A'_uni, 'R'_uni};
+    using namespace cen::literals;
+    const cen::unicode_string fst{'F'_uni, 'O'_uni, 'O'_uni};
+    const cen::unicode_string snd{'B'_uni, 'A'_uni, 'R'_uni};
 
     CHECK_FALSE(fst == snd);
     CHECK_FALSE(snd == fst);
@@ -210,9 +210,9 @@ TEST_CASE("unicode_string::operator==", "[unicode_string]")
 
   SECTION("Different size strings")
   {
-    using namespace ctn::literals;
-    const ctn::unicode_string fst{'A'_uni, 'B'_uni};
-    const ctn::unicode_string snd{'C'_uni, 'D'_uni, 'E'_uni};
+    using namespace cen::literals;
+    const cen::unicode_string fst{'A'_uni, 'B'_uni};
+    const cen::unicode_string snd{'C'_uni, 'D'_uni, 'E'_uni};
 
     CHECK_FALSE(fst == snd);
     CHECK_FALSE(snd == fst);
@@ -223,23 +223,23 @@ TEST_CASE("unicode_string::operator!=", "[unicode_string]")
 {
   SECTION("Self")
   {
-    const ctn::unicode_string str;
+    const cen::unicode_string str;
     CHECK_FALSE(str != str);
   }
 
   SECTION("Two default constructed strings")
   {
-    const ctn::unicode_string fst;
-    const ctn::unicode_string snd;
+    const cen::unicode_string fst;
+    const cen::unicode_string snd;
     CHECK_FALSE(fst != snd);
     CHECK_FALSE(snd != fst);
   }
 
   SECTION("Two equal strings")
   {
-    using namespace ctn::literals;
-    const ctn::unicode_string fst{'S'_uni, 'A'_uni, 'M'_uni};
-    const ctn::unicode_string snd{fst};  // NOLINT
+    using namespace cen::literals;
+    const cen::unicode_string fst{'S'_uni, 'A'_uni, 'M'_uni};
+    const cen::unicode_string snd{fst};  // NOLINT
 
     CHECK_FALSE(fst != snd);
     CHECK_FALSE(snd != fst);
@@ -247,9 +247,9 @@ TEST_CASE("unicode_string::operator!=", "[unicode_string]")
 
   SECTION("Two different strings")
   {
-    using namespace ctn::literals;
-    const ctn::unicode_string fst{'F'_uni, 'O'_uni, 'O'_uni};
-    const ctn::unicode_string snd{'B'_uni, 'A'_uni, 'R'_uni};
+    using namespace cen::literals;
+    const cen::unicode_string fst{'F'_uni, 'O'_uni, 'O'_uni};
+    const cen::unicode_string snd{'B'_uni, 'A'_uni, 'R'_uni};
 
     CHECK(fst != snd);
     CHECK(snd != fst);
@@ -257,9 +257,9 @@ TEST_CASE("unicode_string::operator!=", "[unicode_string]")
 
   SECTION("Different size strings")
   {
-    using namespace ctn::literals;
-    const ctn::unicode_string fst{'B'_uni, 'B'_uni};
-    const ctn::unicode_string snd{'B'_uni, 'B'_uni, 'B'_uni};
+    using namespace cen::literals;
+    const cen::unicode_string fst{'B'_uni, 'B'_uni};
+    const cen::unicode_string snd{'B'_uni, 'B'_uni, 'B'_uni};
 
     CHECK(fst != snd);
     CHECK(snd != fst);

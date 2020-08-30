@@ -39,8 +39,8 @@ lock timed out.
 .. code-block:: c++
   :linenos:
   
-  ctn::mutex mutex;
-  if (ctn::try_lock lock{mutex}; lock.success()) {
+  cen::mutex mutex;
+  if (cen::try_lock lock{mutex}; lock.success()) {
     // succeeded to lock mutex
   } else if (lock.timed_out()) {
     // timed out whilst trying to lock
@@ -49,7 +49,7 @@ lock timed out.
   }
 
   // terse syntax
-  ctn::try_lock lock{mutex};
+  cen::try_lock lock{mutex};
   if (lock) {
     // succeeded to lock mutex
   }

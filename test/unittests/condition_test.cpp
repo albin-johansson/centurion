@@ -2,33 +2,33 @@
 
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 #include "thread.hpp"
 
 TEST_CASE("condition::signal", "[condition]")
 {
-  ctn::condition cond;
+  cen::condition cond;
   CHECK(cond.signal());
 }
 
 TEST_CASE("condition::broadcast", "[condition]")
 {
-  ctn::condition cond;
+  cen::condition cond;
   CHECK(cond.broadcast());
 }
 
 TEST_CASE("condition::wait(mutex&)", "[condition]")
 {
-  ctn::mutex mutex;
-  ctn::condition cond;
+  cen::mutex mutex;
+  cen::condition cond;
 
   REQUIRE(mutex.lock());
 
-  ctn::thread thread{[](void* data) {
-                       auto* cond = reinterpret_cast<ctn::condition*>(data);
+  cen::thread thread{[](void* data) {
+                       auto* cond = reinterpret_cast<cen::condition*>(data);
 
-                       using ms = ctn::milliseconds<ctn::u32>;
-                       ctn::thread::sleep(ms{100});
+                       using ms = cen::milliseconds<cen::u32>;
+                       cen::thread::sleep(ms{100});
 
                        cond->signal();
 

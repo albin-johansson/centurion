@@ -66,9 +66,9 @@ the renderer.
   #include <centurion_as_ctn.hpp>
   #include <renderer.hpp>
 
-  void draw(ctn::renderer& renderer)
+  void draw(cen::renderer& renderer)
   {
-    renderer.clear_with(ctn::colors::black); // clear rendering target
+    renderer.clear_with(cen::colors::black); // clear rendering target
 
     // Miscellaneous rendering calls...
 
@@ -86,13 +86,13 @@ following example demonstrates all of the various methods available for font han
   #include <centurion_as_ctn.hpp>
   #include <renderer.hpp>
 
-  void font_demo(ctn::renderer& renderer)
+  void font_demo(cen::renderer& renderer)
   {
     constexpr auto id = "Comic Sans"_hs; // compile time hashed string!
     if (renderer.has_font(id)) {
       renderer.remove_font(id);
     } else {
-      renderer.add_font(id, ctn::font{"comic_sans.ttf", 12});
+      renderer.add_font(id, cen::font{"comic_sans.ttf", 12});
       auto& font = renderer.get_font(id);
     }
   }

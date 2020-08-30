@@ -123,8 +123,8 @@ the ``window`` class provides these.
 
 .. code-block:: C++
 
-  ctn::window::uptr unique; // std::unique_ptr<ctn::window> unique;
-  ctn::window::sptr shared; // std::shared_ptr<ctn::window> shared;
-  ctn::window::wptr weak;   // std::weak_ptr<ctn::window> weak;
+  cen::window::uptr unique; // std::unique_ptr<cen::window> unique;
+  cen::window::sptr shared; // std::shared_ptr<cen::window> shared;
+  cen::window::wptr weak;   // std::weak_ptr<cen::window> weak;
 
 

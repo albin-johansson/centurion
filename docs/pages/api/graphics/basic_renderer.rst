@@ -57,13 +57,13 @@ i.e. ``_utf8``, ``_latin1`` or ``_unicode``.
   #include <centurion_as_ctn.hpp>
   #include <renderer.hpp>
    
-  void demo(ctn::renderer& renderer, ctn::font& font)
+  void demo(cen::renderer& renderer, cen::font& font)
   {
-    renderer.set_color(ctn::colors::white);
+    renderer.set_color(cen::colors::white);
 
     auto blended = renderer.render_blended_utf8("Never", font);
     auto wrapped = renderer.render_blended_wrapped_utf8("Gonna", 100, font);
-    auto shaded = renderer.render_shaded_utf8("Give", ctn::colors::pink, font);
+    auto shaded = renderer.render_shaded_utf8("Give", cen::colors::pink, font);
     auto solid = renderer.render_solid_utf8("You", font);
   }
 

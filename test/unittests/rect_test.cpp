@@ -2,14 +2,14 @@
 
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 #include "log.hpp"
 
 TEST_CASE("Rect default values", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::irect rect;
+    const cen::irect rect;
 
     CHECK(rect.x() == 0);
     CHECK(rect.y() == 0);
@@ -19,7 +19,7 @@ TEST_CASE("Rect default values", "[rect]")
   }
   SECTION("frect")
   {
-    const ctn::frect rect;
+    const cen::frect rect;
 
     CHECK(rect.x() == 0);
     CHECK(rect.y() == 0);
@@ -33,32 +33,32 @@ TEST_CASE("Rect construction", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::ipoint pos{1124, 4125};
-    const ctn::iarea area{713, 372};
-    const ctn::irect rect{pos, area};
+    const cen::ipoint pos{1124, 4125};
+    const cen::iarea area{713, 372};
+    const cen::irect rect{pos, area};
 
     CHECK(rect.x() == pos.x());
     CHECK(rect.y() == pos.y());
     CHECK(rect.width() == area.width);
     CHECK(rect.height() == area.height);
 
-    CHECK_NOTHROW(ctn::irect{{0, 0}, {0, 0}});
-    CHECK_NOTHROW(ctn::irect{{0, 0}, {-1, -1}});
+    CHECK_NOTHROW(cen::irect{{0, 0}, {0, 0}});
+    CHECK_NOTHROW(cen::irect{{0, 0}, {-1, -1}});
   }
 
   SECTION("frect")
   {
-    const ctn::fpoint pos{123.5f, 81.4f};
-    const ctn::farea area{921.8f, 512.6f};
-    const ctn::frect rect{pos, area};
+    const cen::fpoint pos{123.5f, 81.4f};
+    const cen::farea area{921.8f, 512.6f};
+    const cen::frect rect{pos, area};
 
     CHECK(rect.x() == pos.x());
     CHECK(rect.y() == pos.y());
     CHECK(rect.width() == area.width);
     CHECK(rect.height() == area.height);
 
-    CHECK_NOTHROW(ctn::frect{{0, 0}, {0, 0}});
-    CHECK_NOTHROW(ctn::frect{{0, 0}, {-1, -1}});
+    CHECK_NOTHROW(cen::frect{{0, 0}, {0, 0}});
+    CHECK_NOTHROW(cen::frect{{0, 0}, {-1, -1}});
   }
 }
 
@@ -66,7 +66,7 @@ TEST_CASE("rect::set_x", "[rect]")
 {
   SECTION("irect")
   {
-    ctn::irect rect;
+    cen::irect rect;
 
     const auto x = 482;
     rect.set_x(x);
@@ -76,7 +76,7 @@ TEST_CASE("rect::set_x", "[rect]")
 
   SECTION("frect")
   {
-    ctn::frect rect;
+    cen::frect rect;
 
     const auto x = 74.3f;
     rect.set_x(x);
@@ -89,7 +89,7 @@ TEST_CASE("rect::set_y", "[rect]")
 {
   SECTION("irect")
   {
-    ctn::irect rect;
+    cen::irect rect;
 
     const auto y = 1248;
     rect.set_y(y);
@@ -99,7 +99,7 @@ TEST_CASE("rect::set_y", "[rect]")
 
   SECTION("frect")
   {
-    ctn::frect rect;
+    cen::frect rect;
 
     const auto y = 839.4f;
     rect.set_y(y);
@@ -112,9 +112,9 @@ TEST_CASE("rect::move_to", "[rect]")
 {
   SECTION("irect")
   {
-    ctn::irect rect;
+    cen::irect rect;
 
-    const ctn::ipoint pos{867, 654};
+    const cen::ipoint pos{867, 654};
 
     rect.move_to(pos);
 
@@ -123,9 +123,9 @@ TEST_CASE("rect::move_to", "[rect]")
 
   SECTION("frect")
   {
-    ctn::frect rect;
+    cen::frect rect;
 
-    const ctn::fpoint pos{742.3f, 377.2f};
+    const cen::fpoint pos{742.3f, 377.2f};
 
     rect.move_to(pos);
 
@@ -137,7 +137,7 @@ TEST_CASE("rect::set_width", "[rect]")
 {
   SECTION("irect")
   {
-    ctn::irect rect;
+    cen::irect rect;
 
     const auto width = 10'594;
     rect.set_width(width);
@@ -147,7 +147,7 @@ TEST_CASE("rect::set_width", "[rect]")
 
   SECTION("frect")
   {
-    ctn::frect rect;
+    cen::frect rect;
 
     const auto width = 943.3f;
     rect.set_width(width);
@@ -160,7 +160,7 @@ TEST_CASE("rect::set_height", "[rect]")
 {
   SECTION("irect")
   {
-    ctn::irect rect;
+    cen::irect rect;
 
     const auto height = 839'239;
     rect.set_height(height);
@@ -170,7 +170,7 @@ TEST_CASE("rect::set_height", "[rect]")
 
   SECTION("frect")
   {
-    ctn::frect rect;
+    cen::frect rect;
 
     const auto height = 62.35f;
     rect.set_height(height);
@@ -183,9 +183,9 @@ TEST_CASE("rect::resize", "[rect]")
 {
   SECTION("irect")
   {
-    ctn::irect rect;
+    cen::irect rect;
 
-    const ctn::iarea size{8596, 9235};
+    const cen::iarea size{8596, 9235};
     rect.resize(size);
 
     CHECK(rect.size() == size);
@@ -193,9 +193,9 @@ TEST_CASE("rect::resize", "[rect]")
 
   SECTION("frect")
   {
-    ctn::frect rect;
+    cen::frect rect;
 
-    const ctn::farea size{345.8f, 289.7f};
+    const cen::farea size{345.8f, 289.7f};
     rect.resize(size);
 
     CHECK(rect.size() == size);
@@ -206,7 +206,7 @@ TEST_CASE("rect::contains", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::irect rect{{931, 241}, {193, 93}};
+    const cen::irect rect{{931, 241}, {193, 93}};
 
     CHECK(rect.contains({rect.center_x(), rect.center_y()}));
 
@@ -241,7 +241,7 @@ TEST_CASE("rect::contains", "[rect]")
 
   SECTION("frect")
   {
-    const ctn::frect rect{{277.5f, 189.2f}, {79.2f, 58.2f}};
+    const cen::frect rect{{277.5f, 189.2f}, {79.2f, 58.2f}};
 
     CHECK(rect.contains({rect.center_x(), rect.center_y()}));
 
@@ -281,31 +281,31 @@ TEST_CASE("rect::has_area", "[rect]")
   {
     SECTION("Default values")
     {
-      const ctn::irect rect;
+      const cen::irect rect;
       CHECK(!rect.has_area());
     }
 
     SECTION("No width")
     {
-      const ctn::irect rect{{0, 0}, {0, 1}};
+      const cen::irect rect{{0, 0}, {0, 1}};
       CHECK(!rect.has_area());
     }
 
     SECTION("No height")
     {
-      const ctn::irect rect{{0, 0}, {1, 0}};
+      const cen::irect rect{{0, 0}, {1, 0}};
       CHECK(!rect.has_area());
     }
 
     SECTION("Negative dimensions")
     {
-      const ctn::irect rect{{0, 0}, {-1, -1}};
+      const cen::irect rect{{0, 0}, {-1, -1}};
       CHECK(!rect.has_area());
     }
 
     SECTION("Valid dimensions")
     {
-      const ctn::irect rect{{0, 0}, {1, 1}};
+      const cen::irect rect{{0, 0}, {1, 1}};
       CHECK(rect.has_area());
     }
   }
@@ -314,31 +314,31 @@ TEST_CASE("rect::has_area", "[rect]")
   {
     SECTION("Default values")
     {
-      const ctn::frect rect;
+      const cen::frect rect;
       CHECK(!rect.has_area());
     }
 
     SECTION("No width")
     {
-      const ctn::frect rect{{0, 0}, {0, 1}};
+      const cen::frect rect{{0, 0}, {0, 1}};
       CHECK(!rect.has_area());
     }
 
     SECTION("No height")
     {
-      const ctn::frect rect{{0, 0}, {1, 0}};
+      const cen::frect rect{{0, 0}, {1, 0}};
       CHECK(!rect.has_area());
     }
 
     SECTION("Negative dimensions")
     {
-      const ctn::frect rect{{0, 0}, {-1, -1}};
+      const cen::frect rect{{0, 0}, {-1, -1}};
       CHECK(!rect.has_area());
     }
 
     SECTION("Valid dimensions")
     {
-      const ctn::frect rect{{0, 0}, {1, 1}};
+      const cen::frect rect{{0, 0}, {1, 1}};
       CHECK(rect.has_area());
     }
   }
@@ -348,13 +348,13 @@ TEST_CASE("rect::x", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::irect rect;
+    const cen::irect rect;
     CHECK(rect.x() == 0);
   }
 
   SECTION("frect")
   {
-    const ctn::frect rect;
+    const cen::frect rect;
     CHECK(rect.x() == 0);
   }
 }
@@ -363,13 +363,13 @@ TEST_CASE("rect::y", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::irect rect;
+    const cen::irect rect;
     CHECK(rect.y() == 0);
   }
 
   SECTION("frect")
   {
-    const ctn::frect rect;
+    const cen::frect rect;
     CHECK(rect.y() == 0);
   }
 }
@@ -378,13 +378,13 @@ TEST_CASE("rect::width", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::irect rect;
+    const cen::irect rect;
     CHECK(rect.width() == 0);
   }
 
   SECTION("frect")
   {
-    const ctn::frect rect;
+    const cen::frect rect;
     CHECK(rect.width() == 0);
   }
 }
@@ -393,13 +393,13 @@ TEST_CASE("rect::height", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::irect rect;
+    const cen::irect rect;
     CHECK(rect.height() == 0);
   }
 
   SECTION("frect")
   {
-    const ctn::frect rect;
+    const cen::frect rect;
     CHECK(rect.height() == 0);
   }
 }
@@ -410,7 +410,7 @@ TEST_CASE("rect::max_x", "[rect]")
   {
     const auto x = 9123;
     const auto width = 1294;
-    const ctn::irect rect{{x, 0}, {width, 0}};
+    const cen::irect rect{{x, 0}, {width, 0}};
 
     CHECK(rect.max_x() == (x + width));
   }
@@ -419,7 +419,7 @@ TEST_CASE("rect::max_x", "[rect]")
   {
     const auto x = 289.2f;
     const auto width = 591.0f;
-    const ctn::frect rect{{x, 0}, {width, 0}};
+    const cen::frect rect{{x, 0}, {width, 0}};
 
     CHECK(rect.max_x() == (x + width));
   }
@@ -431,7 +431,7 @@ TEST_CASE("rect::max_y", "[rect]")
   {
     const auto y = 1245;
     const auto height = 7277;
-    const ctn::irect rect{{0, y}, {0, height}};
+    const cen::irect rect{{0, y}, {0, height}};
 
     CHECK(rect.max_y() == (y + height));
   }
@@ -440,7 +440,7 @@ TEST_CASE("rect::max_y", "[rect]")
   {
     const auto y = 1029.3f;
     const auto height = 6961.9f;
-    const ctn::frect rect{{0, y}, {0, height}};
+    const cen::frect rect{{0, y}, {0, height}};
 
     CHECK(rect.max_y() == (y + height));
   }
@@ -452,7 +452,7 @@ TEST_CASE("rect::center_x", "[rect]")
   {
     const auto x = 728;
     const auto width = 8819;
-    const ctn::irect rect{{x, 0}, {width, 0}};
+    const cen::irect rect{{x, 0}, {width, 0}};
 
     CHECK(rect.center_x() == x + (width / 2));
   }
@@ -461,7 +461,7 @@ TEST_CASE("rect::center_x", "[rect]")
   {
     const auto x = 125.3f;
     const auto width = 3912.8f;
-    const ctn::frect rect{{x, 0}, {width, 0}};
+    const cen::frect rect{{x, 0}, {width, 0}};
 
     CHECK(rect.center_x() == x + (width / 2.0f));
   }
@@ -473,7 +473,7 @@ TEST_CASE("rect::center_y", "[rect]")
   {
     const auto y = 8192;
     const auto height = 6637;
-    const ctn::irect rect{{0, y}, {0, height}};
+    const cen::irect rect{{0, y}, {0, height}};
 
     CHECK(rect.center_y() == y + (height / 2));
   }
@@ -482,7 +482,7 @@ TEST_CASE("rect::center_y", "[rect]")
   {
     const auto y = 7128.2f;
     const auto height = 1240.2f;
-    const ctn::frect rect{{0, y}, {0, height}};
+    const cen::frect rect{{0, y}, {0, height}};
 
     CHECK(rect.center_y() == y + (height / 2.0f));
   }
@@ -494,7 +494,7 @@ TEST_CASE("rect::area", "[rect]")
   {
     const auto width = 563;
     const auto height = 194;
-    const ctn::irect rect{{}, {width, height}};
+    const cen::irect rect{{}, {width, height}};
 
     CHECK(rect.area() == (width * height));
   }
@@ -503,7 +503,7 @@ TEST_CASE("rect::area", "[rect]")
   {
     const auto width = 184.3f;
     const auto height = 728.9f;
-    const ctn::frect rect{{}, {width, height}};
+    const cen::frect rect{{}, {width, height}};
 
     CHECK(rect.area() == (width * height));
   }
@@ -515,7 +515,7 @@ TEST_CASE("rect::center", "[rect]")
   const auto y = 81;
   const auto w = 128;
   const auto h = 256;
-  const ctn::irect rect{{x, y}, {w, h}};
+  const cen::irect rect{{x, y}, {w, h}};
 
   const auto center = rect.center();
   CHECK(center.x() == x + (w / 2));
@@ -526,153 +526,153 @@ TEST_CASE("rect intersects", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::irect rect{{100, 100}, {100, 100}};
+    const cen::irect rect{{100, 100}, {100, 100}};
 
-    CHECK(ctn::intersects(rect, rect));
+    CHECK(cen::intersects(rect, rect));
 
     SECTION("Empty rectangle")
     {
-      const ctn::irect empty;
-      CHECK(!ctn::intersects(empty, empty));
+      const cen::irect empty;
+      CHECK(!cen::intersects(empty, empty));
 
-      CHECK(!ctn::intersects(rect, empty));
-      CHECK(!ctn::intersects(empty, rect));
+      CHECK(!cen::intersects(rect, empty));
+      CHECK(!cen::intersects(empty, rect));
     }
 
     SECTION("Obviously no intersection")
     {
-      const ctn::irect left{{rect.x() - rect.width(), rect.y()}, {10, 10}};
+      const cen::irect left{{rect.x() - rect.width(), rect.y()}, {10, 10}};
 
-      const ctn::irect top{{rect.x(), rect.y() - rect.height()}, {10, 10}};
+      const cen::irect top{{rect.x(), rect.y() - rect.height()}, {10, 10}};
 
-      const ctn::irect right{{rect.x() + rect.width(), rect.y()},
+      const cen::irect right{{rect.x() + rect.width(), rect.y()},
                              {rect.width(), rect.height()}};
 
-      const ctn::irect bottom{{rect.x(), rect.y() + rect.height()}, {10, 10}};
+      const cen::irect bottom{{rect.x(), rect.y() + rect.height()}, {10, 10}};
 
-      CHECK(!ctn::intersects(left, rect));
-      CHECK(!ctn::intersects(rect, left));
+      CHECK(!cen::intersects(left, rect));
+      CHECK(!cen::intersects(rect, left));
 
-      CHECK(!ctn::intersects(top, rect));
-      CHECK(!ctn::intersects(rect, top));
+      CHECK(!cen::intersects(top, rect));
+      CHECK(!cen::intersects(rect, top));
 
-      CHECK(!ctn::intersects(right, rect));
-      CHECK(!ctn::intersects(rect, right));
+      CHECK(!cen::intersects(right, rect));
+      CHECK(!cen::intersects(rect, right));
 
-      CHECK(!ctn::intersects(bottom, rect));
-      CHECK(!ctn::intersects(rect, bottom));
+      CHECK(!cen::intersects(bottom, rect));
+      CHECK(!cen::intersects(rect, bottom));
     }
 
     SECTION("Edge cases")
     {
-      const ctn::irect left{{90, 100}, {10, 10}};
-      CHECK(!ctn::intersects(left, rect));
-      CHECK(!ctn::intersects(rect, left));
+      const cen::irect left{{90, 100}, {10, 10}};
+      CHECK(!cen::intersects(left, rect));
+      CHECK(!cen::intersects(rect, left));
 
-      const ctn::irect top{{100, 90}, {10, 10}};
-      CHECK(!ctn::intersects(top, rect));
-      CHECK(!ctn::intersects(rect, top));
+      const cen::irect top{{100, 90}, {10, 10}};
+      CHECK(!cen::intersects(top, rect));
+      CHECK(!cen::intersects(rect, top));
 
-      const ctn::irect right{{200, 100}, {10, 10}};
-      CHECK(!ctn::intersects(right, rect));
-      CHECK(!ctn::intersects(rect, right));
+      const cen::irect right{{200, 100}, {10, 10}};
+      CHECK(!cen::intersects(right, rect));
+      CHECK(!cen::intersects(rect, right));
 
-      const ctn::irect bottom{{100, 200}, {10, 10}};
-      CHECK(!ctn::intersects(bottom, rect));
-      CHECK(!ctn::intersects(rect, bottom));
+      const cen::irect bottom{{100, 200}, {10, 10}};
+      CHECK(!cen::intersects(bottom, rect));
+      CHECK(!cen::intersects(rect, bottom));
     }
 
     SECTION("Obvious intersections")
     {
-      const ctn::irect left{{90, 150}, {50, 1}};
-      CHECK(ctn::intersects(left, rect));
-      CHECK(ctn::intersects(rect, left));
+      const cen::irect left{{90, 150}, {50, 1}};
+      CHECK(cen::intersects(left, rect));
+      CHECK(cen::intersects(rect, left));
 
-      const ctn::irect top{{150, 90}, {1, 50}};
-      CHECK(ctn::intersects(top, rect));
-      CHECK(ctn::intersects(rect, top));
+      const cen::irect top{{150, 90}, {1, 50}};
+      CHECK(cen::intersects(top, rect));
+      CHECK(cen::intersects(rect, top));
 
-      const ctn::irect bottom{{150, 150}, {10, 50}};
-      CHECK(ctn::intersects(bottom, rect));
-      CHECK(ctn::intersects(rect, bottom));
+      const cen::irect bottom{{150, 150}, {10, 50}};
+      CHECK(cen::intersects(bottom, rect));
+      CHECK(cen::intersects(rect, bottom));
 
-      const ctn::irect right{{150, 150}, {50, 10}};
-      CHECK(ctn::intersects(right, rect));
-      CHECK(ctn::intersects(rect, right));
+      const cen::irect right{{150, 150}, {50, 10}};
+      CHECK(cen::intersects(right, rect));
+      CHECK(cen::intersects(rect, right));
     }
   }
 
   SECTION("frect")
   {
-    const ctn::frect rect{{100.0f, 100.0f}, {100.0f, 100.0f}};
-    CHECK(ctn::intersects(rect, rect));
+    const cen::frect rect{{100.0f, 100.0f}, {100.0f, 100.0f}};
+    CHECK(cen::intersects(rect, rect));
 
     SECTION("Empty rectangle")
     {
-      const ctn::frect empty;
-      CHECK(!ctn::intersects(empty, empty));
+      const cen::frect empty;
+      CHECK(!cen::intersects(empty, empty));
 
-      CHECK(!ctn::intersects(rect, empty));
-      CHECK(!ctn::intersects(empty, rect));
+      CHECK(!cen::intersects(rect, empty));
+      CHECK(!cen::intersects(empty, rect));
     }
 
     SECTION("Obviously no intersection")
     {
-      const ctn::frect left{{rect.x() - rect.width(), rect.y()}, {10, 10}};
-      const ctn::frect top{{rect.x(), rect.y() - rect.height()}, {10, 10}};
-      const ctn::frect right{{rect.x() + rect.width(), rect.y()},
+      const cen::frect left{{rect.x() - rect.width(), rect.y()}, {10, 10}};
+      const cen::frect top{{rect.x(), rect.y() - rect.height()}, {10, 10}};
+      const cen::frect right{{rect.x() + rect.width(), rect.y()},
                              {rect.width(), rect.height()}};
-      const ctn::frect bottom{{rect.x(), rect.y() + rect.height()}, {10, 10}};
+      const cen::frect bottom{{rect.x(), rect.y() + rect.height()}, {10, 10}};
 
-      CHECK(!ctn::intersects(left, rect));
-      CHECK(!ctn::intersects(rect, left));
+      CHECK(!cen::intersects(left, rect));
+      CHECK(!cen::intersects(rect, left));
 
-      CHECK(!ctn::intersects(top, rect));
-      CHECK(!ctn::intersects(rect, top));
+      CHECK(!cen::intersects(top, rect));
+      CHECK(!cen::intersects(rect, top));
 
-      CHECK(!ctn::intersects(right, rect));
-      CHECK(!ctn::intersects(rect, right));
+      CHECK(!cen::intersects(right, rect));
+      CHECK(!cen::intersects(rect, right));
 
-      CHECK(!ctn::intersects(bottom, rect));
-      CHECK(!ctn::intersects(rect, bottom));
+      CHECK(!cen::intersects(bottom, rect));
+      CHECK(!cen::intersects(rect, bottom));
     }
 
     SECTION("Edge cases")
     {
-      const ctn::frect left{{90, 100}, {10, 10}};
-      CHECK(!ctn::intersects(left, rect));
-      CHECK(!ctn::intersects(rect, left));
+      const cen::frect left{{90, 100}, {10, 10}};
+      CHECK(!cen::intersects(left, rect));
+      CHECK(!cen::intersects(rect, left));
 
-      const ctn::frect top{{100, 90}, {10, 10}};
-      CHECK(!ctn::intersects(top, rect));
-      CHECK(!ctn::intersects(rect, top));
+      const cen::frect top{{100, 90}, {10, 10}};
+      CHECK(!cen::intersects(top, rect));
+      CHECK(!cen::intersects(rect, top));
 
-      const ctn::frect right{{200, 100}, {10, 10}};
-      CHECK(!ctn::intersects(right, rect));
-      CHECK(!ctn::intersects(rect, right));
+      const cen::frect right{{200, 100}, {10, 10}};
+      CHECK(!cen::intersects(right, rect));
+      CHECK(!cen::intersects(rect, right));
 
-      const ctn::frect bottom{{100, 200}, {10, 10}};
-      CHECK(!ctn::intersects(bottom, rect));
-      CHECK(!ctn::intersects(rect, bottom));
+      const cen::frect bottom{{100, 200}, {10, 10}};
+      CHECK(!cen::intersects(bottom, rect));
+      CHECK(!cen::intersects(rect, bottom));
     }
 
     SECTION("Obvious intersections")
     {
-      const ctn::frect left{{90, 150}, {50, 1}};
-      CHECK(ctn::intersects(left, rect));
-      CHECK(ctn::intersects(rect, left));
+      const cen::frect left{{90, 150}, {50, 1}};
+      CHECK(cen::intersects(left, rect));
+      CHECK(cen::intersects(rect, left));
 
-      const ctn::frect top{{150, 90}, {1, 50}};
-      CHECK(ctn::intersects(top, rect));
-      CHECK(ctn::intersects(rect, top));
+      const cen::frect top{{150, 90}, {1, 50}};
+      CHECK(cen::intersects(top, rect));
+      CHECK(cen::intersects(rect, top));
 
-      const ctn::frect bottom{{150, 150}, {10, 50}};
-      CHECK(ctn::intersects(bottom, rect));
-      CHECK(ctn::intersects(rect, bottom));
+      const cen::frect bottom{{150, 150}, {10, 50}};
+      CHECK(cen::intersects(bottom, rect));
+      CHECK(cen::intersects(rect, bottom));
 
-      const ctn::frect right{{150, 150}, {50, 10}};
-      CHECK(ctn::intersects(right, rect));
-      CHECK(ctn::intersects(rect, right));
+      const cen::frect right{{150, 150}, {50, 10}};
+      CHECK(cen::intersects(right, rect));
+      CHECK(cen::intersects(rect, right));
     }
   }
 }
@@ -681,137 +681,137 @@ TEST_CASE("rect collides", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::irect rect{{100, 100}, {100, 100}};
+    const cen::irect rect{{100, 100}, {100, 100}};
 
-    CHECK(ctn::collides(rect, rect));
+    CHECK(cen::collides(rect, rect));
 
     SECTION("Obviously no collision")
     {
-      const ctn::irect left{{rect.x() - rect.width() - 1, rect.y()}, {10, 10}};
+      const cen::irect left{{rect.x() - rect.width() - 1, rect.y()}, {10, 10}};
 
-      const ctn::irect top{{rect.x(), rect.y() - rect.height() - 1}, {10, 10}};
+      const cen::irect top{{rect.x(), rect.y() - rect.height() - 1}, {10, 10}};
 
-      const ctn::irect right{{rect.x() + rect.width() + 1, rect.y()},
+      const cen::irect right{{rect.x() + rect.width() + 1, rect.y()},
                              {rect.width(), rect.height()}};
 
-      const ctn::irect bottom{{rect.x(), rect.y() + rect.height() + 1},
+      const cen::irect bottom{{rect.x(), rect.y() + rect.height() + 1},
                               {10, 10}};
 
-      CHECK(!ctn::collides(left, rect));
-      CHECK(!ctn::collides(rect, left));
+      CHECK(!cen::collides(left, rect));
+      CHECK(!cen::collides(rect, left));
 
-      CHECK(!ctn::collides(top, rect));
-      CHECK(!ctn::collides(rect, top));
+      CHECK(!cen::collides(top, rect));
+      CHECK(!cen::collides(rect, top));
 
-      CHECK(!ctn::collides(right, rect));
-      CHECK(!ctn::collides(rect, right));
+      CHECK(!cen::collides(right, rect));
+      CHECK(!cen::collides(rect, right));
 
-      CHECK(!ctn::collides(bottom, rect));
-      CHECK(!ctn::collides(rect, bottom));
+      CHECK(!cen::collides(bottom, rect));
+      CHECK(!cen::collides(rect, bottom));
     }
 
     SECTION("Edge cases")
     {
-      const ctn::irect left{{89, 100}, {10, 10}};
-      CHECK(!ctn::collides(left, rect));
-      CHECK(!ctn::collides(rect, left));
+      const cen::irect left{{89, 100}, {10, 10}};
+      CHECK(!cen::collides(left, rect));
+      CHECK(!cen::collides(rect, left));
 
-      const ctn::irect top{{100, 89}, {10, 10}};
-      CHECK(!ctn::collides(top, rect));
-      CHECK(!ctn::collides(rect, top));
+      const cen::irect top{{100, 89}, {10, 10}};
+      CHECK(!cen::collides(top, rect));
+      CHECK(!cen::collides(rect, top));
 
-      const ctn::irect right{{201, 100}, {10, 10}};
-      CHECK(!ctn::collides(right, rect));
-      CHECK(!ctn::collides(rect, right));
+      const cen::irect right{{201, 100}, {10, 10}};
+      CHECK(!cen::collides(right, rect));
+      CHECK(!cen::collides(rect, right));
 
-      const ctn::irect bottom{{100, 201}, {10, 10}};
-      CHECK(!ctn::collides(bottom, rect));
-      CHECK(!ctn::collides(rect, bottom));
+      const cen::irect bottom{{100, 201}, {10, 10}};
+      CHECK(!cen::collides(bottom, rect));
+      CHECK(!cen::collides(rect, bottom));
     }
 
     SECTION("Obvious collisions")
     {
-      const ctn::irect left{{90, 150}, {50, 1}};
-      CHECK(ctn::collides(left, rect));
-      CHECK(ctn::collides(rect, left));
+      const cen::irect left{{90, 150}, {50, 1}};
+      CHECK(cen::collides(left, rect));
+      CHECK(cen::collides(rect, left));
 
-      const ctn::irect top{{150, 90}, {1, 50}};
-      CHECK(ctn::collides(top, rect));
-      CHECK(ctn::collides(rect, top));
+      const cen::irect top{{150, 90}, {1, 50}};
+      CHECK(cen::collides(top, rect));
+      CHECK(cen::collides(rect, top));
 
-      const ctn::irect bottom{{150, 150}, {10, 50}};
-      CHECK(ctn::collides(bottom, rect));
-      CHECK(ctn::collides(rect, bottom));
+      const cen::irect bottom{{150, 150}, {10, 50}};
+      CHECK(cen::collides(bottom, rect));
+      CHECK(cen::collides(rect, bottom));
 
-      const ctn::irect right{{150, 150}, {50, 10}};
-      CHECK(ctn::collides(right, rect));
-      CHECK(ctn::collides(rect, right));
+      const cen::irect right{{150, 150}, {50, 10}};
+      CHECK(cen::collides(right, rect));
+      CHECK(cen::collides(rect, right));
     }
   }
 
   SECTION("frect")
   {
-    const ctn::frect rect{{100.0f, 100.0f}, {100.0f, 100.0f}};
-    CHECK(ctn::collides(rect, rect));
+    const cen::frect rect{{100.0f, 100.0f}, {100.0f, 100.0f}};
+    CHECK(cen::collides(rect, rect));
 
     SECTION("Obviously no collisions")
     {
-      const ctn::frect left{{rect.x() - rect.width() - 1, rect.y()}, {10, 10}};
-      const ctn::frect top{{rect.x(), rect.y() - rect.height() - 1}, {10, 10}};
-      const ctn::frect right{{rect.x() + rect.width() + 1, rect.y()},
+      const cen::frect left{{rect.x() - rect.width() - 1, rect.y()}, {10, 10}};
+      const cen::frect top{{rect.x(), rect.y() - rect.height() - 1}, {10, 10}};
+      const cen::frect right{{rect.x() + rect.width() + 1, rect.y()},
                              {rect.width(), rect.height()}};
-      const ctn::frect bottom{{rect.x(), rect.y() + rect.height() + 1},
+      const cen::frect bottom{{rect.x(), rect.y() + rect.height() + 1},
                               {10, 10}};
 
-      CHECK(!ctn::collides(left, rect));
-      CHECK(!ctn::collides(rect, left));
+      CHECK(!cen::collides(left, rect));
+      CHECK(!cen::collides(rect, left));
 
-      CHECK(!ctn::collides(top, rect));
-      CHECK(!ctn::collides(rect, top));
+      CHECK(!cen::collides(top, rect));
+      CHECK(!cen::collides(rect, top));
 
-      CHECK(!ctn::collides(right, rect));
-      CHECK(!ctn::collides(rect, right));
+      CHECK(!cen::collides(right, rect));
+      CHECK(!cen::collides(rect, right));
 
-      CHECK(!ctn::collides(bottom, rect));
-      CHECK(!ctn::collides(rect, bottom));
+      CHECK(!cen::collides(bottom, rect));
+      CHECK(!cen::collides(rect, bottom));
     }
 
     SECTION("Edge cases")
     {
-      const ctn::frect left{{89, 100}, {10, 10}};
-      CHECK(!ctn::collides(left, rect));
-      CHECK(!ctn::collides(rect, left));
+      const cen::frect left{{89, 100}, {10, 10}};
+      CHECK(!cen::collides(left, rect));
+      CHECK(!cen::collides(rect, left));
 
-      const ctn::frect top{{100, 89}, {10, 10}};
-      CHECK(!ctn::collides(top, rect));
-      CHECK(!ctn::collides(rect, top));
+      const cen::frect top{{100, 89}, {10, 10}};
+      CHECK(!cen::collides(top, rect));
+      CHECK(!cen::collides(rect, top));
 
-      const ctn::frect right{{201, 100}, {10, 10}};
-      CHECK(!ctn::collides(right, rect));
-      CHECK(!ctn::collides(rect, right));
+      const cen::frect right{{201, 100}, {10, 10}};
+      CHECK(!cen::collides(right, rect));
+      CHECK(!cen::collides(rect, right));
 
-      const ctn::frect bottom{{100, 201}, {10, 10}};
-      CHECK(!ctn::collides(bottom, rect));
-      CHECK(!ctn::collides(rect, bottom));
+      const cen::frect bottom{{100, 201}, {10, 10}};
+      CHECK(!cen::collides(bottom, rect));
+      CHECK(!cen::collides(rect, bottom));
     }
 
     SECTION("Obvious collisions")
     {
-      const ctn::frect left{{90, 150}, {50, 1}};
-      CHECK(ctn::collides(left, rect));
-      CHECK(ctn::collides(rect, left));
+      const cen::frect left{{90, 150}, {50, 1}};
+      CHECK(cen::collides(left, rect));
+      CHECK(cen::collides(rect, left));
 
-      const ctn::frect top{{150, 90}, {1, 50}};
-      CHECK(ctn::collides(top, rect));
-      CHECK(ctn::collides(rect, top));
+      const cen::frect top{{150, 90}, {1, 50}};
+      CHECK(cen::collides(top, rect));
+      CHECK(cen::collides(rect, top));
 
-      const ctn::frect bottom{{150, 150}, {10, 50}};
-      CHECK(ctn::collides(bottom, rect));
-      CHECK(ctn::collides(rect, bottom));
+      const cen::frect bottom{{150, 150}, {10, 50}};
+      CHECK(cen::collides(bottom, rect));
+      CHECK(cen::collides(rect, bottom));
 
-      const ctn::frect right{{150, 150}, {50, 10}};
-      CHECK(ctn::collides(right, rect));
-      CHECK(ctn::collides(rect, right));
+      const cen::frect right{{150, 150}, {50, 10}};
+      CHECK(cen::collides(right, rect));
+      CHECK(cen::collides(rect, right));
     }
   }
 }
@@ -820,14 +820,14 @@ TEST_CASE("rect to_string", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::irect rect{{20, 45}, {100, 150}};
-    ctn::log::put(ctn::to_string(rect));
+    const cen::irect rect{{20, 45}, {100, 150}};
+    cen::log::put(cen::to_string(rect));
   }
 
   SECTION("frect")
   {
-    const ctn::frect rect{{14.3f, 34.2f}, {182.8f, 120.9f}};
-    ctn::log::put(ctn::to_string(rect));
+    const cen::frect rect{{14.3f, 34.2f}, {182.8f, 120.9f}};
+    cen::log::put(cen::to_string(rect));
   }
 }
 
@@ -835,20 +835,20 @@ TEST_CASE("rect get_union", "[rect]")
 {
   SECTION("irect")
   {
-    const ctn::irect fst{{10, 10}, {50, 50}};
-    const ctn::irect snd{{40, 40}, {50, 50}};
+    const cen::irect fst{{10, 10}, {50, 50}};
+    const cen::irect snd{{40, 40}, {50, 50}};
 
     SECTION("With empty rect")
     {
-      const ctn::irect empty;
+      const cen::irect empty;
 
-      CHECK(ctn::get_union(empty, empty) == empty);
-      CHECK(ctn::get_union(empty, fst) == fst);
-      CHECK(ctn::get_union(fst, empty) == fst);
+      CHECK(cen::get_union(empty, empty) == empty);
+      CHECK(cen::get_union(empty, fst) == fst);
+      CHECK(cen::get_union(fst, empty) == fst);
     }
 
-    const auto fstSnd = ctn::get_union(fst, snd);
-    const auto sndFst = ctn::get_union(snd, fst);
+    const auto fstSnd = cen::get_union(fst, snd);
+    const auto sndFst = cen::get_union(snd, fst);
 
     CHECK(fstSnd.has_area());
 
@@ -863,20 +863,20 @@ TEST_CASE("rect get_union", "[rect]")
 
   SECTION("frect")
   {
-    const ctn::frect fst{{10.0f, 10.0f}, {50.0f, 50.0f}};
-    const ctn::frect snd{{40.0f, 40.0f}, {50.0f, 50.0f}};
+    const cen::frect fst{{10.0f, 10.0f}, {50.0f, 50.0f}};
+    const cen::frect snd{{40.0f, 40.0f}, {50.0f, 50.0f}};
 
     SECTION("With empty rect")
     {
-      const ctn::frect empty;
+      const cen::frect empty;
 
-      CHECK(ctn::get_union(empty, empty) == empty);
-      CHECK(ctn::get_union(empty, fst) == fst);
-      CHECK(ctn::get_union(fst, empty) == fst);
+      CHECK(cen::get_union(empty, empty) == empty);
+      CHECK(cen::get_union(empty, fst) == fst);
+      CHECK(cen::get_union(fst, empty) == fst);
     }
 
-    const auto fstSnd = ctn::get_union(fst, snd);
-    const auto sndFst = ctn::get_union(snd, fst);
+    const auto fstSnd = cen::get_union(fst, snd);
+    const auto sndFst = cen::get_union(snd, fst);
 
     CHECK(fstSnd.has_area());
 
@@ -894,8 +894,8 @@ TEST_CASE("Rect conversions", "[rect]")
 {
   SECTION("irect -> frect")
   {
-    const ctn::irect from{{78, 12}, {283, 313}};
-    const auto to = ctn::cast<ctn::frect>(from);
+    const cen::irect from{{78, 12}, {283, 313}};
+    const auto to = cen::cast<cen::frect>(from);
 
     CHECK(to.x() == static_cast<float>(from.x()));
     CHECK(to.y() == static_cast<float>(from.y()));
@@ -905,8 +905,8 @@ TEST_CASE("Rect conversions", "[rect]")
 
   SECTION("frect -> irect")
   {
-    const ctn::frect from{{831.3f, 899.1f}, {67.2f, 91.7f}};
-    const auto to = ctn::cast<ctn::irect>(from);
+    const cen::frect from{{831.3f, 899.1f}, {67.2f, 91.7f}};
+    const auto to = cen::cast<cen::irect>(from);
 
     CHECK(to.x() == static_cast<int>(from.x()));
     CHECK(to.y() == static_cast<int>(from.y()));
@@ -916,7 +916,7 @@ TEST_CASE("Rect conversions", "[rect]")
 
   SECTION("frect -> SDL_FRect*")
   {
-    const ctn::frect rect{{78.3f, 623.2f}, {99.13f, 64.3f}};
+    const cen::frect rect{{78.3f, 623.2f}, {99.13f, 64.3f}};
     const auto* ptr = static_cast<const SDL_FRect*>(rect);
 
     CHECK(rect.x() == ptr->x);
@@ -927,7 +927,7 @@ TEST_CASE("Rect conversions", "[rect]")
 
   SECTION("irect -> SDL_Rect*")
   {
-    const ctn::irect rect{{123, 321}, {782, 991}};
+    const cen::irect rect{{123, 321}, {782, 991}};
     const auto* ptr = static_cast<const SDL_Rect*>(rect);
 
     CHECK(rect.x() == ptr->x);
@@ -943,22 +943,22 @@ TEST_CASE("Rect operator==", "[rect]")
   {
     SECTION("Self")
     {
-      const ctn::irect rect{{22, 34}, {85, 91}};
+      const cen::irect rect{{22, 34}, {85, 91}};
       CHECK(rect == rect);
     }
 
     SECTION("Equal rectangles")
     {
-      const ctn::irect first{{123, 623}, {82, 9912}};
-      const ctn::irect other{first};
+      const cen::irect first{{123, 623}, {82, 9912}};
+      const cen::irect other{first};
       CHECK(first == other);
       CHECK(other == first);
     }
 
     SECTION("Non-equal rectangles")
     {
-      const ctn::irect first{{123, 623}, {82, 9912}};
-      const ctn::irect other{{77, 23}, {2712, 933}};
+      const cen::irect first{{123, 623}, {82, 9912}};
+      const cen::irect other{{77, 23}, {2712, 933}};
       CHECK(!(first == other));
       CHECK(!(other == first));
     }
@@ -968,22 +968,22 @@ TEST_CASE("Rect operator==", "[rect]")
   {
     SECTION("Self")
     {
-      const ctn::frect rect{{93.3f, 67.2f}, {54.2f, 777.8f}};
+      const cen::frect rect{{93.3f, 67.2f}, {54.2f, 777.8f}};
       CHECK(rect == rect);
     }
 
     SECTION("Equal rectangles")
     {
-      const ctn::frect fst{{78.2f, 21.2f}, {9.2f, 162.3f}};
-      const ctn::frect snd{fst};
+      const cen::frect fst{{78.2f, 21.2f}, {9.2f, 162.3f}};
+      const cen::frect snd{fst};
       CHECK(fst == snd);
       CHECK(snd == fst);
     }
 
     SECTION("Non-equal rectangles")
     {
-      const ctn::frect fst{{8.2f, 123.3f}, {63.1f, 672.3f}};
-      const ctn::frect snd{{89.13f, 781.3f}, {781.2f, 331.3f}};
+      const cen::frect fst{{8.2f, 123.3f}, {63.1f, 672.3f}};
+      const cen::frect snd{{89.13f, 781.3f}, {781.2f, 331.3f}};
       CHECK_FALSE(fst == snd);
       CHECK_FALSE(snd == fst);
     }
@@ -996,22 +996,22 @@ TEST_CASE("Rect operator!=", "[rect]")
   {
     SECTION("Self")
     {
-      const ctn::irect rect;
+      const cen::irect rect;
       CHECK_FALSE(rect != rect);
     }
 
     SECTION("Equal rectangles")
     {
-      const ctn::irect first{{99, 23}, {74, 10}};
-      const ctn::irect other{first};
+      const cen::irect first{{99, 23}, {74, 10}};
+      const cen::irect other{first};
       CHECK_FALSE(first != other);
       CHECK_FALSE(other != first);
     }
 
     SECTION("Different rectangles")
     {
-      const ctn::irect first{{-45, 92}, {24, 882}};
-      const ctn::irect other{{821, 223}, {112, 72}};
+      const cen::irect first{{-45, 92}, {24, 882}};
+      const cen::irect other{{821, 223}, {112, 72}};
       CHECK(first != other);
       CHECK(other != first);
     }
@@ -1021,22 +1021,22 @@ TEST_CASE("Rect operator!=", "[rect]")
   {
     SECTION("Self")
     {
-      const ctn::frect rect;
+      const cen::frect rect;
       CHECK_FALSE(rect != rect);
     }
 
     SECTION("Equal rectangles")
     {
-      const ctn::frect fst{{712.3f, 34.3f}, {65.8f, 348.2f}};
-      const ctn::frect snd{fst};
+      const cen::frect fst{{712.3f, 34.3f}, {65.8f, 348.2f}};
+      const cen::frect snd{fst};
       CHECK_FALSE(fst != snd);
       CHECK_FALSE(snd != fst);
     }
 
     SECTION("Different rectangles")
     {
-      const ctn::frect fst{{-45.37f, 12.3f}, {89.13f, 371.3f}};
-      const ctn::frect snd{{738.3f, 8.24f}, {67.3f, 89.23f}};
+      const cen::frect fst{{-45.37f, 12.3f}, {89.13f, 371.3f}};
+      const cen::frect snd{{738.3f, 8.24f}, {67.3f, 89.23f}};
       CHECK(fst != snd);
       CHECK(snd != fst);
     }

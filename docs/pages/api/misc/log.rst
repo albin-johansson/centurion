@@ -2,7 +2,7 @@ Logging
 =======
 
 The logging API is based on a set of functions contained in the 
-``ctn::log`` namespace. Additionally, function macros are provided 
+``cen::log`` namespace. Additionally, function macros are provided 
 (although they can be disabled), which can be used for logging in 
 debug mode, that expand to nothing in release mode.
 
@@ -46,10 +46,10 @@ Basic logging
   void foo()
   {
     // The simplest logging function 
-    ctn::log::put("abc");
+    cen::log::put("abc");
 
     // Traditional formatting is supported
-    ctn::log::warn("bar: %i", 42);
+    cen::log::warn("bar: %i", 42);
   }
 
 Explicit category
@@ -67,10 +67,10 @@ All of the logging functions will, if no category is explicitly specified, use t
   void foo()
   {
     // Prints "Hello" using implicit "app" category
-    ctn::log::info("Hello");
+    cen::log::info("Hello");
 
     // Prints "World" using the explicitly specified "video" category
-    ctn::log::info(ctn::log::category::video, "World");
+    cen::log::info(cen::log::category::video, "World");
   }
 
 Debug-only logging macros

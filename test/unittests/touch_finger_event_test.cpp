@@ -1,11 +1,11 @@
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 #include "event.hpp"
 
 TEST_CASE("touch_finger_event::set_touch_id", "[touch_finger_event]")
 {
-  ctn::touch_finger_event event;
+  cen::touch_finger_event event;
 
   const auto id = 8;
   event.set_touch_id(id);
@@ -15,7 +15,7 @@ TEST_CASE("touch_finger_event::set_touch_id", "[touch_finger_event]")
 
 TEST_CASE("touch_finger_event::set_finger_id", "[touch_finger_event]")
 {
-  ctn::touch_finger_event event;
+  cen::touch_finger_event event;
 
   const auto id = 14;
   event.set_finger_id(id);
@@ -25,7 +25,7 @@ TEST_CASE("touch_finger_event::set_finger_id", "[touch_finger_event]")
 
 TEST_CASE("touch_finger_event::set_window_id", "[touch_finger_event]")
 {
-  ctn::touch_finger_event event;
+  cen::touch_finger_event event;
 
   const auto id = 32;
   event.set_window_id(id);
@@ -35,7 +35,7 @@ TEST_CASE("touch_finger_event::set_window_id", "[touch_finger_event]")
 
 TEST_CASE("touch_finger_event::set_x", "[touch_finger_event]")
 {
-  ctn::touch_finger_event event;
+  cen::touch_finger_event event;
 
   SECTION("Overflow")
   {
@@ -59,7 +59,7 @@ TEST_CASE("touch_finger_event::set_x", "[touch_finger_event]")
 
 TEST_CASE("touch_finger_event::set_y", "[touch_finger_event]")
 {
-  ctn::touch_finger_event event;
+  cen::touch_finger_event event;
 
   SECTION("Overflow")
   {
@@ -83,7 +83,7 @@ TEST_CASE("touch_finger_event::set_y", "[touch_finger_event]")
 
 TEST_CASE("touch_finger_event::set_dx", "[touch_finger_event]")
 {
-  ctn::touch_finger_event event;
+  cen::touch_finger_event event;
 
   SECTION("Overflow")
   {
@@ -107,7 +107,7 @@ TEST_CASE("touch_finger_event::set_dx", "[touch_finger_event]")
 
 TEST_CASE("touch_finger_event::set_dy", "[touch_finger_event]")
 {
-  ctn::touch_finger_event event;
+  cen::touch_finger_event event;
 
   SECTION("Overflow")
   {
@@ -131,7 +131,7 @@ TEST_CASE("touch_finger_event::set_dy", "[touch_finger_event]")
 
 TEST_CASE("touch_finger_event::set_pressure", "[touch_finger_event]")
 {
-  ctn::touch_finger_event event;
+  cen::touch_finger_event event;
 
   SECTION("Overflow")
   {
@@ -157,7 +157,7 @@ TEST_CASE("touch_finger_event::touch_id", "[touch_finger_event]")
 {
   SDL_TouchFingerEvent sdlEvent{};
   sdlEvent.touchId = 4;
-  ctn::touch_finger_event event{sdlEvent};
+  cen::touch_finger_event event{sdlEvent};
 
   CHECK(event.touch_id() == sdlEvent.touchId);
 }
@@ -166,7 +166,7 @@ TEST_CASE("touch_finger_event::finger_id", "[touch_finger_event]")
 {
   SDL_TouchFingerEvent sdlEvent{};
   sdlEvent.fingerId = 18;
-  ctn::touch_finger_event event{sdlEvent};
+  cen::touch_finger_event event{sdlEvent};
 
   CHECK(event.finger_id() == sdlEvent.fingerId);
 }
@@ -175,7 +175,7 @@ TEST_CASE("touch_finger_event::window_id", "[touch_finger_event]")
 {
   SDL_TouchFingerEvent sdlEvent{};
   sdlEvent.windowID = 7;
-  ctn::touch_finger_event event{sdlEvent};
+  cen::touch_finger_event event{sdlEvent};
 
   CHECK(event.window_id() == sdlEvent.windowID);
 }
@@ -184,7 +184,7 @@ TEST_CASE("touch_finger_event::x", "[touch_finger_event]")
 {
   SDL_TouchFingerEvent sdlEvent{};
   sdlEvent.x = 0.4f;
-  ctn::touch_finger_event event{sdlEvent};
+  cen::touch_finger_event event{sdlEvent};
 
   CHECK(event.x() == sdlEvent.x);
 }
@@ -193,7 +193,7 @@ TEST_CASE("touch_finger_event::y", "[touch_finger_event]")
 {
   SDL_TouchFingerEvent sdlEvent{};
   sdlEvent.y = 0.8f;
-  ctn::touch_finger_event event{sdlEvent};
+  cen::touch_finger_event event{sdlEvent};
 
   CHECK(event.y() == sdlEvent.y);
 }
@@ -202,7 +202,7 @@ TEST_CASE("touch_finger_event::dx", "[touch_finger_event]")
 {
   SDL_TouchFingerEvent sdlEvent{};
   sdlEvent.dx = -0.9f;
-  ctn::touch_finger_event event{sdlEvent};
+  cen::touch_finger_event event{sdlEvent};
 
   CHECK(event.dx() == sdlEvent.dx);
 }
@@ -211,7 +211,7 @@ TEST_CASE("touch_finger_event::dy", "[touch_finger_event]")
 {
   SDL_TouchFingerEvent sdlEvent{};
   sdlEvent.dy = 0.2f;
-  ctn::touch_finger_event event{sdlEvent};
+  cen::touch_finger_event event{sdlEvent};
 
   CHECK(event.dy() == sdlEvent.dy);
 }
@@ -220,12 +220,12 @@ TEST_CASE("touch_finger_event::pressure", "[touch_finger_event]")
 {
   SDL_TouchFingerEvent sdlEvent{};
   sdlEvent.pressure = 0.6f;
-  ctn::touch_finger_event event{sdlEvent};
+  cen::touch_finger_event event{sdlEvent};
 
   CHECK(event.pressure() == sdlEvent.pressure);
 }
 
 TEST_CASE("touch_finger_event()", "[touch_finger_event]")
 {
-  CHECK_NOTHROW(ctn::touch_finger_event{{}});
+  CHECK_NOTHROW(cen::touch_finger_event{{}});
 }

@@ -60,9 +60,9 @@ With ``mutex`` and ``scoped_lock``, locking a mutex is truly trivial, as it shou
 .. code-block:: c++
   :linenos:
 
-  ctn::mutex mutex;
+  cen::mutex mutex;
   {
-    ctn::scoped_lock lock{mutex};
+    cen::scoped_lock lock{mutex};
 
     /* Do stuff while mutex is locked */
 

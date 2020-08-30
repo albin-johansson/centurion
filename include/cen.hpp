@@ -48,17 +48,17 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace ctn
+ * @namespace cen
  *
  * @brief Alias for `::centurion`.
  *
  * @details This alias can make header files look a bit nicer when dealing with
  * centurion components.
  *
- * @since 4.1.0
+ * @since 5.0.0
  *
  * @headerfile centurion_as_ctn.hpp
  */
-namespace ctn = centurion;
+namespace cen = centurion;
 
 #endif  // CENTURION_AS_CTN_HEADER

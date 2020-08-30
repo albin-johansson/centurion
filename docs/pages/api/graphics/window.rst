@@ -44,27 +44,27 @@ The following example illustrates a typical setup for a responsive window.
 
   void demo()
   {
-    ctn::window window;
-    ctn::renderer renderer{window};
+    cen::window window;
+    cen::renderer renderer{window};
 
     window.set_title("Window demo");
 
-    ctn::event event;
+    cen::event event;
     bool running = true;
 
     window.show();
     while (running) {
       while (event.poll()) {
-        if (event.is<ctn::quit_event>()) {
+        if (event.is<cen::quit_event>()) {
           running = false;
           break;
         }
       }
 
-      renderer.clear_with(ctn::colors::black);
+      renderer.clear_with(cen::colors::black);
 
-      const ctn::rect_i rect{{100, 100}, {150, 80}};
-      renderer.set_color(ctn::colors::pink);
+      const cen::rect_i rect{{100, 100}, {150, 80}};
+      renderer.set_color(cen::colors::pink);
       renderer.fill_rect(rect);
 
       renderer.present();

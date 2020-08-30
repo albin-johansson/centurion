@@ -2,7 +2,7 @@
 
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 #include "centurion_exception.hpp"
 #include "joystick_handle.hpp"
 
@@ -13,115 +13,115 @@ TEST_CASE("joystick constructors", "[joystick]")
 {
   SECTION("Index ctor")
   {
-    CHECK_THROWS_AS(ctn::joystick{0}, ctn::centurion_exception);
+    CHECK_THROWS_AS(cen::joystick{0}, cen::centurion_exception);
   }
 }
 
 TEST_CASE("joystick smart pointer factory methods", "[joystick]")
 {
-  SECTION("Unique") { CHECK_THROWS(ctn::joystick::unique(0)); }
+  SECTION("Unique") { CHECK_THROWS(cen::joystick::unique(0)); }
 
-  SECTION("Shared") { CHECK_THROWS(ctn::joystick::shared(0)); }
+  SECTION("Shared") { CHECK_THROWS(cen::joystick::shared(0)); }
 }
 
 TEST_CASE("joystick::update", "[joystick]")
 {
-  CHECK_NOTHROW(ctn::joystick::update());
+  CHECK_NOTHROW(cen::joystick::update());
 }
 
 TEST_CASE("joystick locking/unlocking", "[joystick]")
 {
-  CHECK_NOTHROW(ctn::joystick::lock());
-  CHECK_NOTHROW(ctn::joystick::unlock());
+  CHECK_NOTHROW(cen::joystick::lock());
+  CHECK_NOTHROW(cen::joystick::unlock());
 }
 
 TEST_CASE("joystick polling", "[joystick]")
 {
-  ctn::joystick::set_polling(false);
-  CHECK(!ctn::joystick::is_polling());
+  cen::joystick::set_polling(false);
+  CHECK(!cen::joystick::is_polling());
 
-  ctn::joystick::set_polling(true);
-  CHECK(ctn::joystick::is_polling());
+  cen::joystick::set_polling(true);
+  CHECK(cen::joystick::is_polling());
 }
 
 TEST_CASE("joystick_from_instance_id", "[joystick]")
 {
-  const auto handle = ctn::joystick_from_instance_id(0);
+  const auto handle = cen::joystick_from_instance_id(0);
   CHECK(!handle);
 }
 
 TEST_CASE("joystick_from_player_index", "[joystick]")
 {
-  const auto handle = ctn::joystick_from_player_index(0);
+  const auto handle = cen::joystick_from_player_index(0);
   CHECK(!handle);
 }
 
 TEST_CASE("joystick::amount", "[joystick]")
 {
-  const auto amount = ctn::joystick::amount();
+  const auto amount = cen::joystick::amount();
   REQUIRE(amount.has_value());
   CHECK(*amount == 0);
 }
 
 TEST_CASE("joystick::guid(int)", "[joystick]")
 {
-  CHECK_NOTHROW(ctn::joystick::guid(0));
+  CHECK_NOTHROW(cen::joystick::guid(0));
 }
 
 TEST_CASE("joystick::player_index(int)", "[joystick]")
 {
-  CHECK_NOTHROW(ctn::joystick::player_index(0));
+  CHECK_NOTHROW(cen::joystick::player_index(0));
 }
 
 TEST_CASE("joystick::vendor(int)", "[joystick]")
 {
-  CHECK_NOTHROW(ctn::joystick::vendor(0));
+  CHECK_NOTHROW(cen::joystick::vendor(0));
 }
 
 TEST_CASE("joystick::product(int)", "[joystick]")
 {
-  CHECK_NOTHROW(ctn::joystick::product(0));
+  CHECK_NOTHROW(cen::joystick::product(0));
 }
 
 TEST_CASE("joystick::product_version(int)", "[joystick]")
 {
-  CHECK_NOTHROW(ctn::joystick::product_version(0));
+  CHECK_NOTHROW(cen::joystick::product_version(0));
 }
 
 TEST_CASE("joystick::get_type(int)", "[joystick]")
 {
-  CHECK_NOTHROW(ctn::joystick::get_type(0));
+  CHECK_NOTHROW(cen::joystick::get_type(0));
 }
 
 TEST_CASE("joystick::instance_id(int)", "[joystick]")
 {
-  CHECK_NOTHROW(ctn::joystick::instance_id(0));
+  CHECK_NOTHROW(cen::joystick::instance_id(0));
 }
 
 TEST_CASE("joystick::name(int)", "[joystick]")
 {
-  CHECK_NOTHROW(ctn::joystick::name(0));
+  CHECK_NOTHROW(cen::joystick::name(0));
 }
 
 TEST_CASE("joystick::guid_from_string(int)", "[joystick]")
 {
-  const ctn::czstring str = "";
-  CHECK_NOTHROW(ctn::joystick::guid_from_string(str));
+  const cen::czstring str = "";
+  CHECK_NOTHROW(cen::joystick::guid_from_string(str));
 }
 
 TEST_CASE("joystick::axis_max", "[joystick]")
 {
-  CHECK(ctn::joystick::axis_max() == SDL_JOYSTICK_AXIS_MAX);
+  CHECK(cen::joystick::axis_max() == SDL_JOYSTICK_AXIS_MAX);
 }
 
 TEST_CASE("joystick::axis_min", "[joystick]")
 {
-  CHECK(ctn::joystick::axis_min() == SDL_JOYSTICK_AXIS_MIN);
+  CHECK(cen::joystick::axis_min() == SDL_JOYSTICK_AXIS_MIN);
 }
 
 TEST_CASE("joystick::Power values", "[joystick]")
 {
-  using j_power = ctn::joystick::power;
+  using j_power = cen::joystick::power;
 
   SECTION("Operator ==")
   {
@@ -151,7 +151,7 @@ TEST_CASE("joystick::Power values", "[joystick]")
 
 TEST_CASE("joystick::HatState values", "[joystick]")
 {
-  using hs = ctn::joystick::hat_state;
+  using hs = cen::joystick::hat_state;
 
   CHECK(hs::centered == static_cast<hs>(SDL_HAT_CENTERED));
   CHECK(hs::up == static_cast<hs>(SDL_HAT_UP));
@@ -166,7 +166,7 @@ TEST_CASE("joystick::HatState values", "[joystick]")
 
 TEST_CASE("joystick::Type values", "[joystick]")
 {
-  using joystick_t = ctn::joystick::type;
+  using joystick_t = cen::joystick::type;
 
   SECTION("Operator ==")
   {
@@ -203,6 +203,6 @@ TEST_CASE("joystick::Type values", "[joystick]")
 TEST_CASE("joystick_handle", "[joystick]")
 {
   SDL_Joystick* ptr{};
-  ctn::joystick_handle handle{ptr};
+  cen::joystick_handle handle{ptr};
   CHECK(!handle);
 }

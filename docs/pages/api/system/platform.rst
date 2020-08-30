@@ -36,12 +36,12 @@ which is a C++20 feature, of course you could fully qualify the enumerators as w
 
   void foo()
   {
-    if (const auto name = ctn::platform::name(); name) {
+    if (const auto name = cen::platform::name(); name) {
       // successfully obtained platform name, e.g. "Windows" or "Linux"
     }
 
-    switch (ctn::platform::id()) {
-      using enum ctn::plaform::platform_id;
+    switch (cen::platform::id()) {
+      using enum cen::plaform::platform_id;
       case windows: 
         // running on Windows
         break;

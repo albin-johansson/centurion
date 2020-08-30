@@ -40,17 +40,17 @@ that can be found `here <https://wiki.libsdl.org/SDL_CreateCond>`_.
 
   bool condition{};
 
-  ctn::mutex m;
-  ctn::condition cond;
+  cen::mutex m;
+  cen::condition cond;
 
   Thread A:
-    ctn::scoped_lock lock{m};
+    cen::scoped_lock lock{m};
     while (!condition) {
       cond.wait(m);
     }
 
   Thread B:
-    ctn::scoped_lock lock{m};
+    cen::scoped_lock lock{m};
     // ...
     condition = true;
     // ...

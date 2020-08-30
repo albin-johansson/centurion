@@ -2,10 +2,10 @@
 
 #include <catch.hpp>
 
-#include "centurion_as_ctn.hpp"
+#include "cen.hpp"
 
 TEST_CASE("scoped_lock", "[scoped_lock]")
 {
-  ctn::mutex mutex;
-  CHECK_NOTHROW(ctn::scoped_lock{mutex});
+  cen::mutex mutex;
+  CHECK_NOTHROW(cen::scoped_lock{mutex});
 }

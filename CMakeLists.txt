@@ -5,9 +5,9 @@ project(Centurion
         HOMEPAGE_URL "https://github.com/albin-johansson/Centurion"
         LANGUAGES CXX)
 
-message("Centurion version: ${CMAKE_PROJECT_VERSION}")
-
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
+include(Utilities)
 
 set(CTN_ROOT_DIR ${PROJECT_SOURCE_DIR})
 set(CTN_RESOURCES_DIR ${PROJECT_SOURCE_DIR}/test/resources)
@@ -20,8 +20,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
 
-include(Utilities)
-
 set(CENTURION_LIB_TARGET CenturionLibrary)
 set(CENTURION_TEST_TARGET CenturionTests)
 
@@ -29,6 +27,8 @@ set(CENTURION_DYNAMIC_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_SHARED_LIBRARY_PREFIX}
 set(CENTURION_IMPORT_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion${CMAKE_IMPORT_LIBRARY_SUFFIX})
 
 unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
+
+option(BUILD_TESTS "Build the Centurion test project" ON)
 
 find_env_var(SDL2DIR SDL2)
 find_env_var(SDL2IMAGEDIR SDL2_image)
@@ -47,7 +47,7 @@ if (DEFINED ENV{ENABLE_COVERAGE})
 endif ()
 
 add_subdirectory(src)
-if (NOT DEFINED ENV{NO_TEST_SUBDIRECTORY})
+if (BUILD_TESTS)
     enable_testing()
     add_subdirectory(test)
 endif ()

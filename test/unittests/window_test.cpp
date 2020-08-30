@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include "cen.hpp"
-#include "centurion_exception.hpp"
 #include "centurion_types.hpp"
+#include "exception.hpp"
 #include "log.hpp"
 #include "renderer.hpp"
 #include "screen.hpp"
@@ -39,8 +39,8 @@ TEST_CASE("window(nn_owner<SDL_Window*>)", "[window]")
 
 TEST_CASE("window(nn_czstring, iarea)", "[window]")
 {
-  CHECK_THROWS_AS(cen::window("", {0, 10}), cen::centurion_exception);
-  CHECK_THROWS_AS(cen::window("", {10, 0}), cen::centurion_exception);
+  CHECK_THROWS_AS(cen::window("", {0, 10}), cen::exception);
+  CHECK_THROWS_AS(cen::window("", {10, 0}), cen::exception);
 
   SECTION("Normal")
   {
@@ -98,8 +98,8 @@ TEST_CASE("window::unique", "[window]")
 
   SECTION("window::unique(czstring, iarea)")
   {
-    CHECK_THROWS_AS(cen::window::unique("", {0, 10}), cen::centurion_exception);
-    CHECK_THROWS_AS(cen::window::unique("", {10, 0}), cen::centurion_exception);
+    CHECK_THROWS_AS(cen::window::unique("", {0, 10}), cen::exception);
+    CHECK_THROWS_AS(cen::window::unique("", {10, 0}), cen::exception);
     CHECK(cen::window::unique("Foo", {10, 10}));
   }
 }
@@ -116,8 +116,8 @@ TEST_CASE("window::shared", "[window]")
 
   SECTION("window::shared(czstring, iarea)")
   {
-    CHECK_THROWS_AS(cen::window::shared("", {0, 10}), cen::centurion_exception);
-    CHECK_THROWS_AS(cen::window::shared("", {10, 0}), cen::centurion_exception);
+    CHECK_THROWS_AS(cen::window::shared("", {0, 10}), cen::exception);
+    CHECK_THROWS_AS(cen::window::shared("", {10, 0}), cen::exception);
     CHECK(cen::window::shared("Foo", {10, 10}));
   }
 }

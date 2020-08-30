@@ -25,7 +25,7 @@ set(SOURCE_FILES
         ../include/joystick.hpp
         ../include/texture.hpp
         ../include/texture.ipp
-        ../include/centurion_exception.hpp
+        ../include/exception.hpp
         ../include/centurion_api.hpp
         ../include/centurion.hpp
         ../include/colors.hpp
@@ -85,7 +85,7 @@ set(SOURCE_FILES
         ../include/detail/static_bimap.hpp
 
         core/centurion.cpp
-        core/centurion_exception.cpp
+        core/exception.cpp
 
         misc/log.cpp
 

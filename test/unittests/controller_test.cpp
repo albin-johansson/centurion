@@ -174,7 +174,7 @@ class controller_handler  // TODO worth adding?
     if (it != end(m_controllers)) {
       return *it;
     } else {
-      throw centurion_exception{"Failed to find controller!"};
+      throw exception{"Failed to find controller!"};
     }
   }
 

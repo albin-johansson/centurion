@@ -23,11 +23,11 @@
  */
 
 /**
- * @file centurion_exception.hpp
+ * @file exception.hpp
  *
  * @brief Provides the exception types used by the Centurion library.
  *
- * @see `centurion_exception`
+ * @see `exception`
  * @see `sdl_error`
  * @see `ttf_error`
  * @see `mix_error`
@@ -58,20 +58,20 @@
 namespace centurion {
 
 /**
- * @class centurion_exception
+ * @class exception
  *
  * @ingroup misc
  *
  * @brief The base of all exceptions explicitly thrown by the library.
  *
- * @headerfile centurion_exception.hpp
+ * @headerfile exception.hpp
  *
  * @since 3.0.0
  */
-class centurion_exception : public std::exception
+class exception : public std::exception
 {
  public:
-  centurion_exception() = default;
+  exception() = default;
 
   /**
    * @param what the message of the exception. If the string is null, "N/A" is
@@ -79,7 +79,7 @@ class centurion_exception : public std::exception
    *
    * @since 3.0.0
    */
-  explicit centurion_exception(czstring what)
+  explicit exception(czstring what)
   {
     if (what) {
       set_what(what);
@@ -92,7 +92,7 @@ class centurion_exception : public std::exception
    *
    * @since 3.0.0
    */
-  explicit centurion_exception(std::string what)
+  explicit exception(std::string what)
   {
     if (!what.empty()) {
       set_what(std::move(what));
@@ -111,10 +111,10 @@ class centurion_exception : public std::exception
   std::string m_what{"N/A"};
 };
 
-static_assert(std::has_virtual_destructor_v<centurion_exception>);
-static_assert(std::is_default_constructible_v<centurion_exception>);
-static_assert(std::is_nothrow_move_constructible_v<centurion_exception>);
-static_assert(std::is_nothrow_destructible_v<centurion_exception>);
+static_assert(std::has_virtual_destructor_v<exception>);
+static_assert(std::is_default_constructible_v<exception>);
+static_assert(std::is_nothrow_move_constructible_v<exception>);
+static_assert(std::is_nothrow_destructible_v<exception>);
 
 /**
  * @class sdl_error
@@ -123,9 +123,9 @@ static_assert(std::is_nothrow_destructible_v<centurion_exception>);
  *
  * @since 5.0.0
  *
- * @headerfile centurion_exception.hpp
+ * @headerfile exception.hpp
  */
-class sdl_error final : public centurion_exception
+class sdl_error final : public exception
 {
  public:
   sdl_error() = default;
@@ -151,9 +151,9 @@ class sdl_error final : public centurion_exception
  *
  * @since 5.0.0
  *
- * @headerfile centurion_exception.hpp
+ * @headerfile exception.hpp
  */
-class img_error final : public centurion_exception
+class img_error final : public exception
 {
  public:
   img_error() = default;
@@ -179,9 +179,9 @@ class img_error final : public centurion_exception
  *
  * @since 5.0.0
  *
- * @headerfile centurion_exception.hpp
+ * @headerfile exception.hpp
  */
-class ttf_error final : public centurion_exception
+class ttf_error final : public exception
 {
  public:
   ttf_error() = default;
@@ -207,9 +207,9 @@ class ttf_error final : public centurion_exception
  *
  * @since 5.0.0
  *
- * @headerfile centurion_exception.hpp
+ * @headerfile exception.hpp
  */
-class mix_error final : public centurion_exception
+class mix_error final : public exception
 {
  public:
   mix_error() = default;

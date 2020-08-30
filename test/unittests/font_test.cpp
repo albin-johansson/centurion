@@ -15,7 +15,7 @@ static constexpr auto daniel_path = "resources/daniel.ttf";
 TEST_CASE("font(nn_czstring, int)", "[font]")
 {
   CHECK_THROWS_AS(cen::font("", 1), cen::ttf_error);
-  CHECK_THROWS_AS(cen::font(daniel_path, 0), cen::centurion_exception);
+  CHECK_THROWS_AS(cen::font(daniel_path, 0), cen::exception);
 }
 
 TEST_CASE("font(font&&)", "[font]")
@@ -51,14 +51,14 @@ TEST_CASE("font::operator=(font&&)", "[font]")
 TEST_CASE("font::unique", "[font]")
 {
   CHECK_THROWS_AS(cen::font::unique("", 1), cen::ttf_error);
-  CHECK_THROWS_AS(cen::font::unique(daniel_path, 0), cen::centurion_exception);
+  CHECK_THROWS_AS(cen::font::unique(daniel_path, 0), cen::exception);
   CHECK(cen::font::unique(type_writer_path, 12));
 }
 
 TEST_CASE("font::shared", "[font]")
 {
   CHECK_THROWS_AS(cen::font::shared("", 1), cen::ttf_error);
-  CHECK_THROWS_AS(cen::font::shared(daniel_path, 0), cen::centurion_exception);
+  CHECK_THROWS_AS(cen::font::shared(daniel_path, 0), cen::exception);
   CHECK(cen::font::shared(type_writer_path, 12));
 }
 

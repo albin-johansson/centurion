@@ -1,4 +1,4 @@
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 
 #include <SDL.h>
 #include <SDL_image.h>

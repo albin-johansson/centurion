@@ -38,7 +38,7 @@
 #define CENTURION_SHARING_TEXTURE_IMPLEMENTATION
 
 #include "centurion_api.hpp"
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 #include "sharing_texture.hpp"
 #include "surface.hpp"
 

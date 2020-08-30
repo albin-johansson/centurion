@@ -269,7 +269,7 @@ class texture final : public basic_texture<texture>
    * null.
    * @param format the pixel format that will be used by the texture.
    *
-   * @throws centurion_exception if something goes wrong.
+   * @throws exception if something goes wrong.
    *
    * @return a unique pointer to a texture with `streaming` texture access.
    *

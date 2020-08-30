@@ -153,7 +153,7 @@ class joystick final : public basic_joystick<joystick>
    * @param deviceIndex refers to the N'th joystick that is currently
    * recognized by SDL.
    *
-   * @throws centurion_exceptions if there are no joysticks.
+   * @throws exceptions if there are no joysticks.
    * @throws sdl_error if the joystick cannot be created.
    *
    * @since 4.2.0

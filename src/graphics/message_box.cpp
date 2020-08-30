@@ -4,7 +4,7 @@
 #include <memory_resource>  // monotonic_memory_resource
 #include <utility>          // move
 
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 
 namespace centurion {
 

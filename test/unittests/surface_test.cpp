@@ -7,18 +7,15 @@
 #include <utility>
 
 #include "cen.hpp"
-#include "centurion_exception.hpp"
 #include "colors.hpp"
+#include "exception.hpp"
 #include "log.hpp"
 
 static constexpr cen::czstring path = "resources/panda.png";
 
 TEST_CASE("surface(nn_czstring)", "[surface]")
 {
-  SECTION("Bad path")
-  {
-    CHECK_THROWS_AS(cen::surface{""}, cen::centurion_exception);
-  }
+  SECTION("Bad path") { CHECK_THROWS_AS(cen::surface{""}, cen::exception); }
 
   CHECK_NOTHROW(cen::surface{path});
 }

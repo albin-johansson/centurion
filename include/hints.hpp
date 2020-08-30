@@ -68,9 +68,9 @@
 #include <utility>      // pair
 
 #include "centurion_api.hpp"
-#include "centurion_exception.hpp"
 #include "detail/static_bimap.hpp"
 #include "detail/utils.hpp"
+#include "exception.hpp"
 #include "log.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -1349,7 +1349,7 @@ class hint_callback final
    * czstring, czstring, czstring)`.
    * @param userData a pointer to some user data. Defaults to `nullptr`.
    *
-   * @throws centurion_exception if the supplied function pointer is null.
+   * @throws exception if the supplied function pointer is null.
    *
    * @since 4.1.0
    */
@@ -1357,7 +1357,7 @@ class hint_callback final
       : m_callback{callback}, m_userData{userData}
   {
     if (!callback) {
-      throw centurion_exception{"Failed to create hint callback"};
+      throw exception{"Failed to create hint callback"};
     }
   }
 

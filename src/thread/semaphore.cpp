@@ -1,6 +1,6 @@
 #include "semaphore.hpp"
 
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 
 namespace centurion {
 

@@ -53,8 +53,8 @@
 #include <utility>      // pair
 
 #include "centurion_api.hpp"
-#include "centurion_exception.hpp"
 #include "centurion_types.hpp"
+#include "exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

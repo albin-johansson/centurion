@@ -2,8 +2,8 @@
 
 #include <algorithm>
 
-#include "centurion_exception.hpp"
 #include "detail/utils.hpp"
+#include "exception.hpp"
 
 namespace centurion {
 

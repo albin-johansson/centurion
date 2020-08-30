@@ -166,7 +166,7 @@ class window final : public basic_window<window>
    * @param size the size of the window, components must be greater than
    * zero, defaults to `default_size()`.
    *
-   * @throws centurion_exception if the supplied width or height aren't
+   * @throws exception if the supplied width or height aren't
    * greater than zero.
    * @throws sdl_error if the window cannot be created.
    *

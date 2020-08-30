@@ -1,14 +1,14 @@
 #include "font.hpp"
 
-#include "centurion_exception.hpp"
 #include "detail/utils.hpp"
+#include "exception.hpp"
 
 namespace centurion {
 
 font::font(nn_czstring file, int size) : m_size{size}
 {
   if (size <= 0) {
-    throw centurion_exception{"Bad font size!"};
+    throw exception{"Bad font size!"};
   }
 
   m_font.reset(TTF_OpenFont(file, size));

@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 
 namespace centurion {
 

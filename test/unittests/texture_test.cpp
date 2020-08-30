@@ -6,8 +6,8 @@
 #include <iostream>
 
 #include "cen.hpp"
-#include "centurion_exception.hpp"
 #include "colors.hpp"
+#include "exception.hpp"
 #include "log.hpp"
 #include "renderer.hpp"
 #include "video.hpp"
@@ -184,7 +184,7 @@ TEST_CASE("texture::streaming", "[texture]")
 
     CHECK_THROWS_AS(
         cen::texture::streaming(renderer, "", cen::pixel_format::yuy2),
-        cen::centurion_exception);
+        cen::exception);
   });
 }
 

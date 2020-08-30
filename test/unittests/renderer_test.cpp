@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include "cen.hpp"
-#include "centurion_exception.hpp"
 #include "colors.hpp"
+#include "exception.hpp"
 #include "font.hpp"
 #include "log.hpp"
 #include "rect.hpp"

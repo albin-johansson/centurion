@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "cen.hpp"
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 #include "log.hpp"
 
 static inline constexpr auto* path = "resources/hiddenPond.mp3";

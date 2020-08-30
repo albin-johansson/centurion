@@ -1,6 +1,6 @@
 #include "centurion.hpp"
 
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 
 namespace centurion {
 
@@ -71,10 +71,10 @@ library::sdl_ttf::~sdl_ttf() noexcept
 }
 
 library::sdl_mixer::sdl_mixer(int flags,
-                                    int freq,
-                                    u16 format,
-                                    int nChannels,
-                                    int chunkSize)
+                              int freq,
+                              u16 format,
+                              int nChannels,
+                              int chunkSize)
 {
   if (!Mix_Init(flags)) {
     throw mix_error{"Failed to initialize SDL2_mixer"};

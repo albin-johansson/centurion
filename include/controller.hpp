@@ -734,7 +734,7 @@ class controller final : public basic_controller<controller>
       : m_controller{controller}
   {
     if (!m_controller) {
-      throw centurion_exception{"Cannot create controller from null pointer!"};
+      throw exception{"Cannot create controller from null pointer!"};
     }
   }
 

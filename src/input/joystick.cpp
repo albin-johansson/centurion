@@ -1,6 +1,6 @@
 #include "joystick.hpp"
 
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 
 namespace centurion {
 
@@ -11,7 +11,7 @@ joystick::joystick(nn_owner<SDL_Joystick*> sdlJoystick) noexcept
 joystick::joystick(int deviceIndex)
 {
   if (SDL_NumJoysticks() == 0) {
-    throw centurion_exception{"There are no available joysticks!"};
+    throw exception{"There are no available joysticks!"};
   }
 
   auto& storage = get_storage();

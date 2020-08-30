@@ -41,8 +41,8 @@
 #include <utility>  // pair
 
 #include "centurion_api.hpp"
-#include "centurion_exception.hpp"
 #include "detail/algorithm.hpp"
+#include "exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -86,7 +86,7 @@ class static_bimap final
         return pair.second;
       }
     }
-    throw centurion_exception{"Failed to find element in static map!"};
+    throw exception{"Failed to find element in static map!"};
   }
 
   constexpr auto key_from(const Value& value) const -> const Key&
@@ -97,7 +97,7 @@ class static_bimap final
         return pair.first;
       }
     }
-    throw centurion_exception{"Failed to find key in static map!"};
+    throw exception{"Failed to find key in static map!"};
   }
 };
 

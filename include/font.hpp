@@ -46,9 +46,9 @@
 
 #include "area.hpp"
 #include "centurion_api.hpp"
-#include "centurion_exception.hpp"
 #include "centurion_types.hpp"
 #include "detail/utils.hpp"
+#include "exception.hpp"
 #include "unicode_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -142,7 +142,7 @@ class font final
    * @param file the file path of the TrueType font file, mustn't be null.
    * @param size the font size, must be greater than zero.
    *
-   * @throws centurion_exception if the supplied size is <= 0.
+   * @throws exception if the supplied size is <= 0.
    * @throws ttf_error if the font cannot be loaded.
    *
    * @since 3.0.0

@@ -39,7 +39,7 @@
 #define CENTURION_TEXTURE_IMPLEMENTATION
 
 #include "centurion_api.hpp"
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
 
@@ -146,7 +146,7 @@ auto texture::streaming(const Renderer& renderer,
   u32* pixels = nullptr;
   const auto success = texture->lock(&pixels);
   if (!success) {
-    throw centurion_exception{"Failed to lock texture!"};
+    throw exception{"Failed to lock texture!"};
   }
 
   const auto maxCount = static_cast<size_t>(surface.pitch()) *

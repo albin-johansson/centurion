@@ -1,7 +1,7 @@
 #include "window.hpp"
 
-#include "centurion_exception.hpp"
 #include "detail/utils.hpp"
+#include "exception.hpp"
 
 namespace centurion {
 
@@ -11,7 +11,7 @@ window::window(nn_owner<SDL_Window*> window) noexcept : m_window{window}
 window::window(nn_czstring title, const iarea& size)
 {
   if ((size.width < 1) || (size.height < 1)) {
-    throw centurion_exception{"Invalid width or height!"};
+    throw exception{"Invalid width or height!"};
   }
 
   m_window.reset(SDL_CreateWindow(title,

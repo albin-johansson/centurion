@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "cen.hpp"
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 #include "log.hpp"
 #include "thread.hpp"
 

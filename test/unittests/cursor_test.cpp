@@ -3,7 +3,7 @@
 #include <catch.hpp>
 
 #include "cen.hpp"
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 #include "log.hpp"
 
 TEST_CASE("cursor(system_cursor)", "[cursor]")
@@ -79,8 +79,7 @@ TEST_CASE("cursor::unique", "[cursor]")
   {
     cen::surface surface{"resources/panda.png"};
     cen::ipoint hotspot{1, surface.height() + 1};
-    CHECK_THROWS_AS(cen::cursor::unique(surface, hotspot),
-                    cen::centurion_exception);
+    CHECK_THROWS_AS(cen::cursor::unique(surface, hotspot), cen::exception);
   }
 }
 
@@ -96,8 +95,7 @@ TEST_CASE("cursor::shared", "[cursor]")
   {
     cen::surface surface{"resources/panda.png"};
     cen::ipoint hotspot{surface.width() + 1, 1};
-    CHECK_THROWS_AS(cen::cursor::shared(surface, hotspot),
-                    cen::centurion_exception);
+    CHECK_THROWS_AS(cen::cursor::shared(surface, hotspot), cen::exception);
   }
 }
 

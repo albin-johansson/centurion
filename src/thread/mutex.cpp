@@ -1,6 +1,6 @@
 #include "mutex.hpp"
 
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 
 namespace centurion {
 

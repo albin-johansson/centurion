@@ -3,7 +3,7 @@
 #include <catch.hpp>
 
 #include "cen.hpp"
-#include "centurion_exception.hpp"
+#include "exception.hpp"
 #include "joystick_handle.hpp"
 
 // Note, it's hard to actually test the joystick API, so coverage is the best
@@ -11,10 +11,7 @@
 
 TEST_CASE("joystick constructors", "[joystick]")
 {
-  SECTION("Index ctor")
-  {
-    CHECK_THROWS_AS(cen::joystick{0}, cen::centurion_exception);
-  }
+  SECTION("Index ctor") { CHECK_THROWS_AS(cen::joystick{0}, cen::exception); }
 }
 
 TEST_CASE("joystick smart pointer factory methods", "[joystick]")

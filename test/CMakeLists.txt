@@ -19,7 +19,7 @@ set(TEST_FILES
         unittests/key_state_test.cpp
         unittests/mouse_state_test.cpp
         unittests/rect_test.cpp
-        unittests/centurion_exception_test.cpp
+        unittests/exception_test.cpp
         unittests/counter_test.cpp
         unittests/paths_test.cpp
         unittests/platform_test.cpp

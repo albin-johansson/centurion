@@ -1,6 +1,6 @@
 #include "mouse_state.hpp"
 
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 
 namespace centurion {
 

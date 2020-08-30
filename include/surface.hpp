@@ -48,7 +48,7 @@
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "color.hpp"
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 

@@ -41,7 +41,7 @@
 #include <type_traits>
 
 #include "centurion_api.hpp"
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

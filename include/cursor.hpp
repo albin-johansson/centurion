@@ -43,7 +43,7 @@
 #include <type_traits>
 
 #include "centurion_api.hpp"
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 #include "point.hpp"
 #include "surface.hpp"
 

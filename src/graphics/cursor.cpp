@@ -1,7 +1,7 @@
 #include "cursor.hpp"
 
 #include "centurion_exception.hpp"
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 
 namespace centurion {
 

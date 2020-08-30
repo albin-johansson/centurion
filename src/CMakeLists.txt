@@ -78,7 +78,7 @@ set(SOURCE_FILES
         ../include/clipboard.hpp
         ../include/sdl_string.hpp
 
-        ../include/detail/centurion_utils.hpp
+        ../include/detail/utils.hpp
         ../include/detail/algorithm.hpp
         ../include/detail/static_bimap.hpp
 

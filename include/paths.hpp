@@ -45,7 +45,7 @@
 
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 #include "sdl_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

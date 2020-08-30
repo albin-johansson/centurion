@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 #include "event.hpp"
 
 namespace centurion {

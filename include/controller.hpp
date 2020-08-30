@@ -48,7 +48,7 @@
 #include "button_state.hpp"
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 #include "joystick_handle.hpp"
 #include "sdl_string.hpp"
 

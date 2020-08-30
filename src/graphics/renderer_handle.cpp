@@ -1,6 +1,6 @@
 #include "renderer_handle.hpp"
 
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 #include "renderer.hpp"
 
 namespace centurion {

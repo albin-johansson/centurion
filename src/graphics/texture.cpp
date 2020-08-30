@@ -3,7 +3,7 @@
 #include <SDL_image.h>
 
 #include "centurion_exception.hpp"
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 #include "surface.hpp"
 
 namespace centurion {

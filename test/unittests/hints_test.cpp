@@ -3,7 +3,7 @@
 #include <catch.hpp>
 
 #include "centurion_as_ctn.hpp"
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 #include "window.hpp"
 
 namespace {

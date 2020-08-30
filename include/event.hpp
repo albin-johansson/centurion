@@ -52,7 +52,7 @@
 
 #include "centurion_api.hpp"
 #include "controller.hpp"
-#include "detail/centurion_utils.hpp"
+#include "detail/utils.hpp"
 #include "event_type.hpp"
 #include "joystick.hpp"
 #include "key_code.hpp"

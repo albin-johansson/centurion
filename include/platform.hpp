@@ -113,6 +113,56 @@ CENTURION_QUERY
 auto id() noexcept -> platform_id;
 
 /**
+ * @brief Indicates whether or not the current platform is Windows.
+ *
+ * @return `true` if the current platform is Windows; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto is_windows() noexcept -> bool;
+
+/**
+ * @brief Indicates whether or not the current platform is Mac OSX.
+ *
+ * @return `true` if the current platform is Mac OSX; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto is_mac_osx() noexcept -> bool;
+
+/**
+ * @brief Indicates whether or not the current platform is Linux.
+ *
+ * @return `true` if the current platform is Linux; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto is_linux() noexcept -> bool;
+
+/**
+ * @brief Indicates whether or not the current platform is iOS.
+ *
+ * @return `true` if the current platform is iOS; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto is_ios() noexcept -> bool;
+
+/**
+ * @brief Indicates whether or not the current platform is Android.
+ *
+ * @return `true` if the current platform is Android; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
+CENTURION_QUERY
+auto is_android() noexcept -> bool;
+
+/**
  * @brief Returns the name of the current platform.
  *
  * @return the name of the current platform; `std::nullopt` if the name cannot

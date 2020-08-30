@@ -25,6 +25,31 @@ auto id() noexcept -> platform_id
   }
 }
 
+auto is_windows() noexcept -> bool
+{
+  return id() == platform_id::windows;
+}
+
+auto is_mac_osx() noexcept -> bool
+{
+  return id() == platform_id::mac_osx;
+}
+
+auto is_linux() noexcept -> bool
+{
+  return id() == platform_id::linux;
+}
+
+auto is_ios() noexcept -> bool
+{
+  return id() == platform_id::ios;
+}
+
+auto is_android() noexcept -> bool
+{
+  return id() == platform_id::android;
+}
+
 auto name() -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};

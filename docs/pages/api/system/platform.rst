@@ -39,6 +39,10 @@ which is a C++20 feature, of course you could fully qualify the enumerators as w
       // successfully obtained platform name, e.g. "Windows" or "Linux"
     }
 
+    if (cen::platform::is_windows()) {
+      // running on Windows
+    }
+
     switch (cen::platform::id()) {
       using enum cen::plaform::platform_id;
       case windows: 

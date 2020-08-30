@@ -150,7 +150,7 @@ set(SOURCE_FILES
         thread/try_lock.cpp
         thread/semaphore.cpp)
 
-if (NOT DEFINED ENV{TRAVIS})
+if (CEN_AUDIO)
     set(SOURCE_FILES
             ${SOURCE_FILES}
             ${CTN_INCLUDE_DIR}/sound_effect.hpp
@@ -163,10 +163,6 @@ add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})
 
 if (WIN32)
     add_definitions(-DWIN_EXPORT)
-endif ()
-
-if (DEFINED ENV{TRAVIS})
-    target_compile_definitions(${CENTURION_LIB_TARGET} PUBLIC CENTURION_NOAUDIO)
 endif ()
 
 set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES

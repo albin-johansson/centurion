@@ -1,5 +1,3 @@
-#ifndef CENTURION_NOAUDIO
-
 #include "sound_effect.hpp"
 
 #include <catch.hpp>
@@ -206,5 +204,3 @@ TEST_CASE("sound_effect::max_volume", "[sound_effect]")
 {
   CHECK(ctn::sound_effect::max_volume() == MIX_MAX_VOLUME);
 }
-
-#endif

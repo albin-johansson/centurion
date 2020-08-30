@@ -1,4 +1,3 @@
-#ifndef CENTURION_NOAUDIO
 #include "music.hpp"
 
 #include <catch.hpp>
@@ -413,5 +412,3 @@ TEST_CASE("Manual testing of music playback", "[.music]")
   }
   window.hide();
 }
-
-#endif

@@ -28,7 +28,8 @@ set(CENTURION_IMPORT_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_IMPORT_LIBRARY_PREFIX}C
 
 unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
 
-option(BUILD_TESTS "Build the Centurion test project" ON)
+option(CEN_TESTS "Build the Centurion test project" ON)
+option(CEN_AUDIO "Build audio components" ON)
 
 find_env_var(SDL2DIR SDL2)
 find_env_var(SDL2IMAGEDIR SDL2_image)
@@ -47,7 +48,7 @@ if (DEFINED ENV{ENABLE_COVERAGE})
 endif ()
 
 add_subdirectory(src)
-if (BUILD_TESTS)
+if (CEN_TESTS)
     enable_testing()
     add_subdirectory(test)
 endif ()

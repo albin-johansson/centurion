@@ -5,7 +5,7 @@
 
 int main(int argc, char* argv[])
 {
-#ifdef CENTURION_NOAUDIO
+#ifndef CEN_AUDIO
   ctn::centurion_config cfg;
 
   cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;

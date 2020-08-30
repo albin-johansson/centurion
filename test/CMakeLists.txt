@@ -77,7 +77,7 @@ set(TEST_FILES
         unittests/sdl_string_test.cpp
         unittests/controller_test.cpp)
 
-if (NOT DEFINED ENV{TRAVIS})
+if (CEN_AUDIO)
     set(TEST_FILES
             ${TEST_FILES}
             unittests/sound_effect_test.cpp
@@ -90,15 +90,12 @@ else ()
     add_executable(${CENTURION_TEST_TARGET} ${TEST_FILES})
 endif ()
 
-if (DEFINED ENV{TRAVIS})
+if (CEN_AUDIO)
     target_compile_definitions(${CENTURION_TEST_TARGET}
-            PUBLIC CENTURION_NOAUDIO
-            PUBLIC TRAVIS_TEST)
+            PUBLIC CEN_AUDIO)
 endif ()
 
-set(CATCH_INCLUDE_DIR catch2)
-add_library(Catch2 INTERFACE)
-target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
+add_header_only_lib(Catch2 catch2 catch2/catch.hpp)
 
 include(CTest)
 include(Catch)
@@ -132,8 +129,6 @@ message("  * SDL2       @ ${SDL2_LIBRARY}")
 message("  * SDL2_image @ ${SDL2_IMAGE_LIBRARIES}")
 message("  * SDL2_mixer @ ${SDL2_MIXER_LIBRARIES}")
 message("  * SDL2_ttf   @ ${SDL2_TTF_LIBRARIES}")
-message("Centurion link target: ${CENTURION_IMPORT_LIB}")
-message("-------------------------------------")
 
 target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_LIBRARY}

@@ -117,6 +117,7 @@ set(SOURCE_FILES
         input/key_code.cpp
         input/scan_code.cpp
         input/joystick_handle.cpp
+        input/controller.cpp
 
         event/event.cpp
         event/quit_event.cpp

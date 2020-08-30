@@ -76,9 +76,9 @@ set(SOURCE_FILES
         ../include/condition.hpp
         ../include/semaphore.hpp
         ../include/clipboard.hpp
+        ../include/sdl_string.hpp
 
         ../include/detail/centurion_utils.hpp
-        ../include/detail/sdl_string.hpp
         ../include/detail/algorithm.hpp
         ../include/detail/static_bimap.hpp
 

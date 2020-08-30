@@ -1,6 +1,6 @@
 #include "clipboard.hpp"
 
-#include "detail/sdl_string.hpp"
+#include "sdl_string.hpp"
 
 namespace centurion::clipboard {
 
@@ -11,7 +11,7 @@ auto has_text() noexcept -> bool
 
 auto get_text() -> std::string
 {
-  const detail::sdl_string text{SDL_GetClipboardText()};
+  const sdl_string text{SDL_GetClipboardText()};
   return text.copy();
 }
 

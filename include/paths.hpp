@@ -46,7 +46,7 @@
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 #include "detail/centurion_utils.hpp"
-#include "detail/sdl_string.hpp"
+#include "sdl_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -156,7 +156,7 @@ class base_path final
   [[nodiscard]] auto get() const noexcept -> czstring { return m_path.get(); }
 
  private:
-  detail::sdl_string m_path;
+  sdl_string m_path;
 };
 
 /**
@@ -302,7 +302,7 @@ class pref_path final
   [[nodiscard]] auto get() const noexcept -> czstring { return m_path.get(); }
 
  private:
-  detail::sdl_string m_path;
+  sdl_string m_path;
 };
 
 /**

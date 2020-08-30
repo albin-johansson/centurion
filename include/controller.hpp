@@ -49,8 +49,8 @@
 #include "centurion_api.hpp"
 #include "centurion_types.hpp"
 #include "detail/centurion_utils.hpp"
-#include "detail/sdl_string.hpp"
 #include "joystick_handle.hpp"
+#include "sdl_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -579,29 +579,69 @@ class basic_controller
     }
   }
 
-  [[nodiscard]] auto mapping() const noexcept -> detail::sdl_string
+  /**
+   * @brief Returns the mapping associated with the controller.
+   *
+   * @return the mapping string associated with the controller.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto mapping() const noexcept -> sdl_string
   {
-    return detail::sdl_string{SDL_GameControllerMapping(ptr())};
+    return sdl_string{SDL_GameControllerMapping(ptr())};
   }
 
-  [[nodiscard]] static auto mapping(joystick_index index) noexcept
-      -> detail::sdl_string
+  /**
+   * @brief Returns the mapping associated with a game controller.
+   *
+   * @param index the joystick index of the desired game controller.
+   *
+   * @return the mapping string associated with a controller.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static auto mapping(joystick_index index) noexcept -> sdl_string
   {
-    return detail::sdl_string{SDL_GameControllerMappingForDeviceIndex(index)};
+    return sdl_string{SDL_GameControllerMappingForDeviceIndex(index)};
   }
 
+  /**
+   * @brief Returns the mapping string associated with a joystick GUID.
+   *
+   * @param guid the GUID to obtain the mapping for.
+   *
+   * @return the mapping string for a GUID:
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] static auto mapping(SDL_JoystickGUID guid) noexcept
-      -> detail::sdl_string
+      -> sdl_string
   {
-    return detail::sdl_string{SDL_GameControllerMappingForGUID(guid)};
+    return sdl_string{SDL_GameControllerMappingForGUID(guid)};
   }
 
+  /**
+   * @brief Returns the mapping at a specific index.
+   *
+   * @param index the index of the desired mapping.
+   *
+   * @return the mapping at the specified index.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] static auto mapping_by_index(mapping_index index) noexcept
-      -> detail::sdl_string
+      -> sdl_string
   {
-    return detail::sdl_string{SDL_GameControllerMappingForIndex(index)};
+    return sdl_string{SDL_GameControllerMappingForIndex(index)};
   }
 
+  /**
+   * @brief Returns the number of installed mappings.
+   *
+   * @return the amount of installed mappings.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] static auto num_mappings() noexcept -> int
   {
     return SDL_GameControllerNumMappings();
@@ -748,6 +788,17 @@ class controller final : public basic_controller<controller>
     }
   }
 
+  /**
+   * @brief Creates and returns a controller based on a player index.
+   *
+   * @param index the player index of the game controller.
+   *
+   * @return a game controller associated with the specified player index.
+   *
+   * @throws sdl_error if the game controller cannot be created.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] static auto from_index(player_index index) -> controller
   {
     if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
@@ -757,6 +808,15 @@ class controller final : public basic_controller<controller>
     }
   }
 
+  /**
+   * @brief Returns a pointer to the associated SDL game controller.
+   *
+   * @warning Do *not* claim ownership of the returned pointer.
+   *
+   * @return a pointer to the associated SDL game controller.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto get() const noexcept -> SDL_GameController*
   {
     return m_controller.get();
@@ -823,6 +883,13 @@ class controller_handle final : public basic_controller<controller_handle>
    */
   explicit operator bool() const noexcept { return m_controller; }
 
+  /**
+   * @brief Returns a pointer to the associated SDL game controller.
+   *
+   * @return a pointer to the associated SDL game controller.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] auto get() const noexcept -> SDL_GameController*
   {
     return m_controller;

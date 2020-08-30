@@ -951,6 +951,16 @@ CENTURION_API
 auto operator<<(std::ostream& stream, controller_handle handle)
     -> std::ostream&;
 
+/**
+ * @brief Indicates whether or not to controller type values are the same.
+ *
+ * @param lhs the left-hand side controller type value.
+ * @param rhs the right-hand side controller type value.
+ *
+ * @return `true` if the controller type values are the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline constexpr auto operator==(
     controller_type lhs,
     SDL_GameControllerType rhs) noexcept -> bool
@@ -958,6 +968,9 @@ auto operator<<(std::ostream& stream, controller_handle handle)
   return static_cast<SDL_GameControllerType>(lhs) == rhs;
 }
 
+/**
+ * @copydoc operator==(controller_type, SDL_GameControllerType)
+ */
 [[nodiscard]] inline constexpr auto operator==(SDL_GameControllerType lhs,
                                                controller_type rhs) noexcept
     -> bool
@@ -965,6 +978,17 @@ auto operator<<(std::ostream& stream, controller_handle handle)
   return rhs == lhs;
 }
 
+/**
+ * @brief Indicates whether or not to controller type values aren't the same.
+ *
+ * @param lhs the left-hand side controller type value.
+ * @param rhs the right-hand side controller type value.
+ *
+ * @return `true` if the controller type values aren't the same; `false`
+ * otherwise.
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline constexpr auto operator!=(
     controller_type lhs,
     SDL_GameControllerType rhs) noexcept -> bool
@@ -972,6 +996,9 @@ auto operator<<(std::ostream& stream, controller_handle handle)
   return !(lhs == rhs);
 }
 
+/**
+ * @copydoc operator!=(controller_type, SDL_GameControllerType)
+ */
 [[nodiscard]] inline constexpr auto operator!=(SDL_GameControllerType lhs,
                                                controller_type rhs) noexcept
     -> bool
@@ -1092,6 +1119,16 @@ auto operator<<(std::ostream& stream, controller_handle handle)
   return !(lhs == rhs);
 }
 
+/**
+ * @brief Indicates whether or not two controller bind type values are the same.
+ *
+ * @param lhs the left-hand-side controller bind type value.
+ * @param rhs the right-hand-side controller bind type value.
+ *
+ * @return `true` if the values are the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline constexpr auto operator==(
     controller_bind_type lhs,
     SDL_GameControllerBindType rhs) noexcept -> bool
@@ -1099,6 +1136,9 @@ auto operator<<(std::ostream& stream, controller_handle handle)
   return static_cast<SDL_GameControllerBindType>(lhs) == rhs;
 }
 
+/**
+ * @copydoc operator==(controller_bind_type, SDL_GameControllerBindType)
+ */
 [[nodiscard]] inline constexpr auto operator==(
     SDL_GameControllerBindType lhs,
     controller_bind_type rhs) noexcept -> bool
@@ -1106,6 +1146,17 @@ auto operator<<(std::ostream& stream, controller_handle handle)
   return rhs == lhs;
 }
 
+/**
+ * @brief Indicates whether or not two controller bind type values aren't the
+ * same.
+ *
+ * @param lhs the left-hand-side controller bind type value.
+ * @param rhs the right-hand-side controller bind type value.
+ *
+ * @return `true` if the values aren't the same; `false` otherwise.
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline constexpr auto operator!=(
     controller_bind_type lhs,
     SDL_GameControllerBindType rhs) noexcept -> bool
@@ -1113,6 +1164,9 @@ auto operator<<(std::ostream& stream, controller_handle handle)
   return !(lhs == rhs);
 }
 
+/**
+ * @copydoc operator!=(controller_bind_type, SDL_GameControllerBindType)
+ */
 [[nodiscard]] inline constexpr auto operator!=(
     SDL_GameControllerBindType lhs,
     controller_bind_type rhs) noexcept -> bool

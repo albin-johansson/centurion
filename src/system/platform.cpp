@@ -12,7 +12,7 @@ auto id() noexcept -> platform_id
     return platform_id::mac_osx;
 
   } else if (platformName == "Linux") {
-    return platform_id::linux;
+    return platform_id::linuxx;
 
   } else if (platformName == "iOS") {
     return platform_id::ios;
@@ -37,7 +37,7 @@ auto is_mac_osx() noexcept -> bool
 
 auto is_linux() noexcept -> bool
 {
-  return id() == platform_id::linux;
+  return id() == platform_id::linuxx;
 }
 
 auto is_ios() noexcept -> bool

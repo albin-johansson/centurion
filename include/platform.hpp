@@ -97,7 +97,7 @@ enum class platform_id {
   unknown, /**< Indicates that the platform is unknown. */
   windows,
   mac_osx,
-  linux,
+  linuxx, // FIXME temporary solution to weird GCC compilation error
   ios,
   android
 };

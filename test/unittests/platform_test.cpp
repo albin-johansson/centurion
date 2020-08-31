@@ -35,7 +35,7 @@ TEST_CASE("platform::is_mac_osx", "[platform]")
 TEST_CASE("platform::is_linux", "[platform]")
 {
   CHECK(cen::platform::is_linux() ==
-        (cen::platform::id() == cen::platform::platform_id::linux));
+        (cen::platform::id() == cen::platform::platform_id::linuxx));
 }
 
 TEST_CASE("platform::is_ios", "[platform]")

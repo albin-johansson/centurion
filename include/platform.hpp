@@ -44,8 +44,6 @@
 #ifndef CENTURION_PLATFORM_HEADER
 #define CENTURION_PLATFORM_HEADER
 
-#include <SDL.h>
-
 #include <optional>
 #include <string>
 

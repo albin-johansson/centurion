@@ -1,5 +1,7 @@
 #include "platform.hpp"
 
+#include <SDL.h>
+
 namespace centurion::platform {
 
 auto id() noexcept -> platform_id

@@ -34,7 +34,7 @@ addons:
       - xserver-xorg-video-all
       - xserver-xorg-input-all
       - libwayland-egl1-mesa
-
+      - ninja
 
 before_install:
   - sudo apt-get update
@@ -60,8 +60,9 @@ before_script:
   - export DISPLAY=:99.0;
   - sleep 3 # give xvfb some time to start
 
-  - g++ -v
+  - g++ --version
   - cmake --version
+  - ninja --version
   - doxygen --version
   - lcov --version
 
@@ -106,9 +107,9 @@ script:
   - mkdir -p build
   - cd build
 
-  - cmake -DCMAKE_BUILD_TYPE=Debug ..
-  - make CenturionLibrary
-  - make CenturionTests
+  - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -GNinja
+  - ninja CenturionLibrary
+  - ninja CenturionTests
 
   - cd test
   - ctest

@@ -102,6 +102,11 @@ before_script:
 script:
   - cd ${TRAVIS_BUILD_DIR}
 
+  - |
+    if [[ "${TRAVIS_BRANCH}" != "master" ]]; then
+      echo "Not master branch!"
+    fi
+
   - doxygen
 
   - mkdir -p build

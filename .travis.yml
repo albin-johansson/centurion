@@ -26,6 +26,7 @@ addons:
       # - lcov
       - doxygen
       - valgrind
+      - xvfb
 
 before_install:
   - sudo apt-get update

@@ -1,6 +1,9 @@
-dist: trusty
+dist: focal
+
 os: linux
+
 language: cpp
+
 compiler: gcc
 
 notifications:
@@ -9,37 +12,37 @@ notifications:
 env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    - CXX_FLAGS=""
+    # - CXX_FLAGS=""
     - ENABLE_COVERAGE=true
 
 addons:
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
+    # sources:
+    #   - ubuntu-toolchain-r-test
     packages:
-      - gcc-9
-      - g++-9
-      - cmake
-      - lcov
+      # - gcc-9
+      # - g++-9
+      # - cmake
+      # - lcov
       - doxygen
       - valgrind
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev doxygen
-  - sudo apt-get update
-  - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
-  - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+  - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev #doxygen
+  # - sudo apt-get update
+  # - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
+  # - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 
 install:
   # Download and install recent cmake
-  - |
-    if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-      CMAKE_URL="http://cmake.org/files/v3.16/cmake-3.16.0-Linux-x86_64.tar.gz"
-      mkdir -p ${DEPS_DIR}/cmake
-      travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
-      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-    fi
+  # - |
+  #   if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
+  #     CMAKE_URL="http://cmake.org/files/v3.16/cmake-3.16.0-Linux-x86_64.tar.gz"
+  #     mkdir -p ${DEPS_DIR}/cmake
+  #     travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
+  #     export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+  #   fi
   - sudo apt-get update
 
   - sudo apt-get install -y libjson-perl
@@ -56,8 +59,8 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 
-  - export CC=/usr/bin/gcc-9
-  - export CXX=/usr/bin/g++-9
+  # - export CC=/usr/bin/gcc-9
+  # - export CXX=/usr/bin/g++-9
 
   - g++ -v
   - cmake --version
@@ -105,7 +108,7 @@ script:
   - mkdir -p build
   - cd build
 
-  - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Debug ..
+  - cmake -DCMAKE_BUILD_TYPE=Debug ..
   - make
 
   - cd test

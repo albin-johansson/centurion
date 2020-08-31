@@ -26,6 +26,9 @@ set(CENTURION_TEST_TARGET CenturionTests)
 set(CENTURION_DYNAMIC_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_SHARED_LIBRARY_PREFIX}Centurion${CMAKE_SHARED_LIBRARY_SUFFIX})
 set(CENTURION_IMPORT_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion${CMAKE_IMPORT_LIBRARY_SUFFIX})
 
+message("Centurion dynamic library: ${CENTURION_DYNAMIC_LIB}")
+message("Centurion import library: ${CENTURION_IMPORT_LIB}")
+
 unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
 
 option(CEN_TESTS "Build the Centurion test project" ON)

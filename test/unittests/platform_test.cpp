@@ -14,7 +14,7 @@ TEST_CASE("platform::id", "[platform]")
 #elif __APPLE__
   CHECK(cen::platform::id() == cen::platform::platform_id::mac_osx);
 #elif __linux__
-  CHECK(cen::platform::id() == cen::platform::platform_id::linux);
+  CHECK(cen::platform::id() == cen::platform::platform_id::linuxx);
 #elif __ANDROID__
   CHECK(cen::platform::id() == cen::platform::platform_id::android);
 #endif

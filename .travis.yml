@@ -44,16 +44,7 @@ before_install:
   # - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 
 install:
-  # Download and install recent cmake
-  # - |
-  #   if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-  #     CMAKE_URL="http://cmake.org/files/v3.16/cmake-3.16.0-Linux-x86_64.tar.gz"
-  #     mkdir -p ${DEPS_DIR}/cmake
-  #     travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
-  #     export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-  #   fi
   - sudo apt-get update
-
   - sudo apt-get install -y libjson-perl
 
   # Manually builds latest LCOV
@@ -64,15 +55,10 @@ install:
 
 before_script:
   # Emulates a video device
-  # - "export DISPLAY=:99.0"
-  # - "sh -e /etc/init.d/xvfb start"
   - /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 800x600x24 -ac +extension GLX;
   - export SDL_VIDEODRIVER=x11;
   - export DISPLAY=:99.0;
   - sleep 3 # give xvfb some time to start
-
-  # - export CC=/usr/bin/gcc-9
-  # - export CXX=/usr/bin/g++-9
 
   - g++ -v
   - cmake --version
@@ -121,7 +107,8 @@ script:
   - cd build
 
   - cmake -DCMAKE_BUILD_TYPE=Debug ..
-  - make
+  - make CenturionLibrary
+  - make CenturionTests
 
   - cd test
   - ctest

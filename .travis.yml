@@ -34,7 +34,7 @@ addons:
       - xserver-xorg-video-all
       - xserver-xorg-input-all
       - libwayland-egl1-mesa
-      - ninja
+      - ninja-build
 
 before_install:
   - sudo apt-get update

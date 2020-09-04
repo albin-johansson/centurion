@@ -12,18 +12,11 @@ notifications:
 env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    # - CXX_FLAGS=""
     - ENABLE_COVERAGE=true
 
 addons:
   apt:
-    # sources:
-    #   - ubuntu-toolchain-r-test
     packages:
-      # - gcc-9
-      # - g++-9
-      # - cmake
-      # - lcov
       - doxygen
       - valgrind
       - xvfb
@@ -39,9 +32,6 @@ addons:
 before_install:
   - sudo apt-get update
   - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev #doxygen
-  # - sudo apt-get update
-  # - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
-  # - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
 
 install:
   - sudo apt-get update

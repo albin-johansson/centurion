@@ -13,7 +13,6 @@ set(SOURCE_FILES
         ../include/window.hpp
         ../include/window_handle.hpp
         ../include/window_utils.hpp
-        ../include/window_utils.ipp
         ../include/font.hpp
         ../include/basic_renderer.hpp
         ../include/basic_renderer.ipp

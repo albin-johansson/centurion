@@ -37,6 +37,8 @@
 #ifndef CENTURION_WINDOW_UTILS_HEADER
 #define CENTURION_WINDOW_UTILS_HEADER
 
+#include <SDL_video.h>
+
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "renderer_handle.hpp"
@@ -54,6 +56,8 @@ namespace centurion {
  * @note You should always check whether or not the returned handle contains
  * a valid renderer pointer before using it!
  *
+ * @tparam T the type of the derived window.
+ *
  * @param window the window associated with the desired renderer.
  *
  * @return a handle to the associated renderer, might not contain a valid
@@ -61,12 +65,13 @@ namespace centurion {
  *
  * @since 5.0.0
  */
-template <typename Traits>
-[[nodiscard]] auto get_renderer(const basic_window<Traits>& window) noexcept
-    -> renderer_handle;
+template <typename T>
+[[nodiscard]] auto get_renderer(const basic_window<T>& window) noexcept
+    -> renderer_handle
+{
+  return renderer_handle{SDL_GetRenderer(window.ptr())};
+}
 
 }  // namespace centurion
-
-#include "window_utils.ipp"
 
 #endif  // CENTURION_WINDOW_UTILS_HEADER

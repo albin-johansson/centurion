@@ -48,7 +48,7 @@ namespace centurion {
  *
  * @brief Provides the base implementation for windows.
  *
- * @tparam Derived the type of the derived renderer.
+ * @tparam Derived the type of the derived window.
  *
  * @since 5.0.0
  *

@@ -30,7 +30,6 @@ set(SOURCE_FILES
         ../include/centurion.hpp
         ../include/colors.hpp
         ../include/texture_loader.hpp
-        ../include/texture_loader.ipp
         ../include/paths.hpp
         ../include/platform.hpp
         ../include/counter.hpp

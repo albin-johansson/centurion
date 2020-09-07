@@ -37,7 +37,8 @@
 #ifndef CENTURION_TEXTURE_LOADER_HEADER
 #define CENTURION_TEXTURE_LOADER_HEADER
 
-#include <memory>
+#include <memory>   // unique_ptr, shared_ptr
+#include <utility>  // forward
 
 #include "centurion_api.hpp"
 #include "renderer.hpp"
@@ -100,7 +101,10 @@ class texture_loader final
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] auto unique(Args&&... args) -> texture::uptr;
+  [[nodiscard]] auto unique(Args&&... args) -> texture::uptr
+  {
+    return texture::unique(m_renderer, std::forward<Args>(args)...);
+  }
 
   /**
    * @brief Creates and returns a shared pointer to a texture.
@@ -115,7 +119,10 @@ class texture_loader final
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] auto shared(Args&&... args) -> texture::sptr;
+  [[nodiscard]] auto shared(Args&&... args) -> texture::sptr
+  {
+    return texture::shared(m_renderer, std::forward<Args>(args)...);
+  }
 
   /**
    * @brief Creates and returns a texture.
@@ -130,14 +137,15 @@ class texture_loader final
    * @since 5.0.0
    */
   template <typename... Args>
-  [[nodiscard]] auto create(Args&&... args) -> texture;
+  [[nodiscard]] auto create(Args&&... args) -> texture
+  {
+    return texture{m_renderer, std::forward<Args>(args)...};
+  }
 
  private:
   renderer_handle m_renderer;
 };
 
 }  // namespace centurion
-
-#include "texture_loader.ipp"
 
 #endif  // CENTURION_TEXTURE_LOADER_HEADER

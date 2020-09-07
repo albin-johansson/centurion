@@ -68,36 +68,29 @@
  */
 namespace centurion::platform {
 
+/// @addtogroup system
+/// @{
+
 /**
  * @enum platform_id
- *
- * @ingroup system
  *
  * @brief Provides values that represent various different operating
  * systems.
  *
+ * @details The `linuxx` enumerator has its ugly name because of a weird
+ * compilation error on GCC.
+ *
  * @since 3.0.0
  *
  * @headerfile platform.hpp
- *
- * @var platform_id::windows
- * Represents the Windows platform.
- * @var platform_id::mac_osx
- * Represents the Apple OSX platform.
- * @var platform_id::linux
- * Represents the Linux platform.
- * @var platform_id::ios
- * Represents the Apple iOS platform.
- * @var platform_id::android
- * Represents the Android platform.
  */
 enum class platform_id {
-  unknown, /**< Indicates that the platform is unknown. */
-  windows,
-  mac_osx,
-  linuxx, // FIXME temporary solution to weird GCC compilation error
-  ios,
-  android
+  unknown,  ///< Indicates that the platform is unknown.
+  windows,  ///< Represents the Windows platform.
+  mac_osx,  ///< Represents the Apple OSX platform.
+  linuxx,   ///< Represents the Linux platform.
+  ios,      ///< Represents the Apple iOS platform.
+  android   ///< Represents the Android platform.
 };
 
 /**
@@ -170,6 +163,8 @@ auto is_android() noexcept -> bool;
  */
 CENTURION_QUERY
 auto name() -> std::optional<std::string>;
+
+/// @}
 
 }  // namespace centurion::platform
 

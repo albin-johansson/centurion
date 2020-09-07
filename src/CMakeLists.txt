@@ -165,7 +165,8 @@ if (WIN32)
 endif ()
 
 set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
-        OUTPUT_NAME ${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion)
+        OUTPUT_NAME ${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion
+        VERSION ${CENTURION_VERSION})
 
 set(GSL_SOURCES
         ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl

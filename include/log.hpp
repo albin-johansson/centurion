@@ -582,7 +582,7 @@ auto get_priority(category category) noexcept -> log::priority;
 
 #ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
 
-#ifdef NDEBUG || !defined(_DEBUG)
+#ifdef NDEBUG
 
 /**
  * @def CENTURION_LOG_INFO
@@ -648,7 +648,8 @@ auto get_priority(category category) noexcept -> log::priority;
  */
 #define CENTURION_LOG_ERROR(fmt, ...) centurion::log::error(fmt, __VA_ARGS__)
 
-#endif  // NDEBUG || !defined(_DEBUG)
+#endif  // NDEBUG
+
 #endif  // CENTURION_USE_DEBUG_LOGGING_MACROS
 
 /**

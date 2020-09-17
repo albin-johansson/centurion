@@ -6,12 +6,6 @@
 #include "key_code.hpp"
 #include "scan_code.hpp"
 
-TEST_CASE("key_state smart pointer factory methods", "[key_state]")
-{
-  CHECK(cen::key_state::unique());
-  CHECK(cen::key_state::shared());
-}
-
 TEST_CASE("key_state::update", "[key_state]")
 {
   cen::key_state state;

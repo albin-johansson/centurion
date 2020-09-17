@@ -113,18 +113,6 @@ class key_state final
   key_state() noexcept;
 
   /**
-   * @copydoc key_state()
-   */
-  CENTURION_QUERY
-  static auto unique() -> uptr;
-
-  /**
-   * @copydoc key_state()
-   */
-  CENTURION_QUERY
-  static auto shared() -> sptr;
-
-  /**
    * @brief Updates the state of the key state object.
    *
    * @note `SDL_PumpEvents` isn't invoked by this method.

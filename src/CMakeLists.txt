@@ -9,7 +9,6 @@ set(SOURCE_FILES
         ../include/cen.hpp
         ../include/video.hpp
         ../include/basic_window.hpp
-        ../include/basic_window.ipp
         ../include/window.hpp
         ../include/window_handle.hpp
         ../include/window_utils.hpp

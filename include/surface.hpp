@@ -169,30 +169,6 @@ class surface final
   auto operator=(surface&& other) noexcept -> surface& = default;
 
   /**
-   * @copydoc surface(nn_czstring)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_czstring file) -> uptr;
-
-  /**
-   * @copydoc surface(nn_owner<SDL_Surface*>)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_owner<SDL_Surface*> surface) -> uptr;
-
-  /**
-   * @copydoc surface(nn_czstring)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_czstring file) -> sptr;
-
-  /**
-   * @copydoc surface(nn_owner<SDL_Surface*>)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_owner<SDL_Surface*> surface) -> sptr;
-
-  /**
    * @brief Sets the color of the pixel at the specified coordinate.
    *
    * @details This method has no effect if the coordinate is out-of-bounds or if

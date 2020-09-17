@@ -77,21 +77,6 @@ TEST_CASE("surface::operator=(surface&&)", "[surface]")
   }
 }
 
-TEST_CASE("surface::smart pointer factories", "[surface]")
-{
-  SECTION("Unique")
-  {
-    CHECK(cen::surface::unique(IMG_Load(path)));
-    CHECK(cen::surface::unique(path));
-  }
-
-  SECTION("Shared")
-  {
-    CHECK(cen::surface::shared(IMG_Load(path)));
-    CHECK(cen::surface::shared(path));
-  }
-}
-
 TEST_CASE("surface::set_pixel", "[surface]")
 {
   cen::surface surface{path};

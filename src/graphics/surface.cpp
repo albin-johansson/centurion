@@ -31,26 +31,6 @@ auto surface::operator=(const surface& other) -> surface&
   return *this;
 }
 
-auto surface::unique(nn_czstring file) -> surface::uptr
-{
-  return std::make_unique<surface>(file);
-}
-
-auto surface::unique(nn_owner<SDL_Surface*> sdlSurface) -> surface::uptr
-{
-  return std::make_unique<surface>(sdlSurface);
-}
-
-auto surface::shared(nn_czstring file) -> surface::sptr
-{
-  return std::make_shared<surface>(file);
-}
-
-auto surface::shared(nn_owner<SDL_Surface*> sdlSurface) -> surface::sptr
-{
-  return std::make_shared<surface>(sdlSurface);
-}
-
 void surface::copy(const surface& other)
 {
   m_surface.reset(other.copy_surface());

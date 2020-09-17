@@ -1,14 +1,16 @@
 #include "color.hpp"
 
+#include "detail/to_string.hpp"
+
 namespace centurion {
 
 auto to_string(const color& color) -> std::string
 {
-  const auto r = std::to_string(color.red());
-  const auto g = std::to_string(color.green());
-  const auto b = std::to_string(color.blue());
-  const auto a = std::to_string(color.alpha());
-  return "[Color | R: " + r + ", G: " + g + ", B: " + b + ", A: " + a + "]";
+  const auto r = detail::to_string(color.red()).value();
+  const auto g = detail::to_string(color.green()).value();
+  const auto b = detail::to_string(color.blue()).value();
+  const auto a = detail::to_string(color.alpha()).value();
+  return "[color | r: " + r + ", g: " + g + ", b: " + b + ", a: " + a + "]";
 }
 
 auto operator<<(std::ostream& stream, const color& color) -> std::ostream&

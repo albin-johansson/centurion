@@ -1,5 +1,6 @@
 #include "font.hpp"
 
+#include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
@@ -235,7 +236,7 @@ auto to_string(const font& font) -> std::string
 {
   const auto ptr = "ptr: " + detail::address_of(font.get());
   const auto name = ", name: " + std::string{font.family_name()};
-  const auto size = ", size: " + std::to_string(font.size());
+  const auto size = ", size: " + detail::to_string(font.size()).value();
   return "[font | " + ptr + name + size + "]";
 }
 

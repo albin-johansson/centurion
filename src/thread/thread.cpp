@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+#include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
@@ -103,7 +104,7 @@ auto to_string(const thread& thread) -> std::string
 {
   const auto ptr = detail::address_of(thread.get());
   const auto name = thread.name();
-  const auto id = std::to_string(thread.get_id());
+  const auto id = detail::to_string(thread.get_id()).value();
   return "[thread | ptr: " + ptr + ", name: " + name + ", id: " + id + "]";
 }
 

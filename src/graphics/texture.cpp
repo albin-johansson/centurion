@@ -2,6 +2,7 @@
 
 #include <SDL_image.h>
 
+#include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
 #include "surface.hpp"
@@ -25,8 +26,8 @@ auto texture::shared(nn_owner<SDL_Texture*> sdlTexture) -> sptr
 auto to_string(const texture& texture) -> std::string
 {
   const auto ptr = detail::address_of(texture.get());
-  const auto w = std::to_string(texture.width());
-  const auto h = std::to_string(texture.height());
+  const auto w = detail::to_string(texture.width()).value();
+  const auto h = detail::to_string(texture.height()).value();
   return "[texture | ptr: " + ptr + ", width: " + w + ", height: " + h + "]";
 }
 

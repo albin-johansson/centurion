@@ -2,6 +2,7 @@
 
 #include <SDL_image.h>
 
+#include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
@@ -179,8 +180,8 @@ auto to_string(const surface& surface) -> std::string
   using namespace std::string_literals;
 
   const auto ptr = detail::address_of(surface.get());
-  const auto w = std::to_string(surface.width());
-  const auto h = std::to_string(surface.height());
+  const auto w = detail::to_string(surface.width()).value();
+  const auto h = detail::to_string(surface.height()).value();
 
   return "[surface | ptr: "s + ptr + ", width: "s + w + ", height: "s + h + "]";
 }

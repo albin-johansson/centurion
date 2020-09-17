@@ -1,5 +1,6 @@
 #include "window.hpp"
 
+#include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
@@ -61,8 +62,8 @@ auto window::shared(nn_czstring title, const iarea& size) -> sptr
 auto to_string(const window& window) -> std::string
 {
   const auto ptr = detail::address_of(window.get());
-  const auto w = std::to_string(window.width());
-  const auto h = std::to_string(window.height());
+  const auto w = detail::to_string(window.width()).value();
+  const auto h = detail::to_string(window.height()).value();
   return "[window | ptr: " + ptr + ", width: " + w + ", height: " + h + "]";
 }
 

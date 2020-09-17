@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "detail/utils.hpp"
+#include "detail/to_string.hpp"
 #include "exception.hpp"
 
 namespace centurion {
@@ -88,7 +89,7 @@ auto to_string(const sound_effect& sound) -> std::string
   using namespace std::string_literals;
 
   const auto ptr = detail::address_of(sound.get());
-  const auto vol = std::to_string(sound.volume());
+  const auto vol = detail::to_string(sound.volume()).value();
 
   return "[sound_effect | ptr: "s + ptr + ", volume: "s + vol + "]"s;
 }

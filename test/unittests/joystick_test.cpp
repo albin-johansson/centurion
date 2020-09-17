@@ -14,13 +14,6 @@ TEST_CASE("joystick constructors", "[joystick]")
   SECTION("Index ctor") { CHECK_THROWS_AS(cen::joystick{0}, cen::exception); }
 }
 
-TEST_CASE("joystick smart pointer factory methods", "[joystick]")
-{
-  SECTION("Unique") { CHECK_THROWS(cen::joystick::unique(0)); }
-
-  SECTION("Shared") { CHECK_THROWS(cen::joystick::shared(0)); }
-}
-
 TEST_CASE("joystick::update", "[joystick]")
 {
   CHECK_NOTHROW(cen::joystick::update());

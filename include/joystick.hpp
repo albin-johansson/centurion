@@ -162,30 +162,6 @@ class joystick final : public basic_joystick<joystick>
   explicit joystick(int deviceIndex);
 
   /**
-   * @copydoc joystick(int)
-   */
-  CENTURION_QUERY
-  static auto unique(int deviceIndex) -> uptr;
-
-  /**
-   * @copydoc joystick(nn_owner<SDL_Joystick*>)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_owner<SDL_Joystick*> sdlJoystick) -> uptr;
-
-  /**
-   * @copydoc joystick(int)
-   */
-  CENTURION_QUERY
-  static auto shared(int deviceIndex) -> sptr;
-
-  /**
-   * @copydoc joystick(nn_owner<SDL_Joystick*>)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_owner<SDL_Joystick*> sdlJoystick) -> sptr;
-
-  /**
    * @brief Updates the state of all open joysticks.
    *
    * @note This is done automatically by the event loop if any joystick

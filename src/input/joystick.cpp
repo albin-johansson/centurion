@@ -21,26 +21,6 @@ joystick::joystick(int deviceIndex)
   }
 }
 
-auto joystick::unique(int deviceIndex) -> uptr
-{
-  return std::make_unique<joystick>(deviceIndex);
-}
-
-auto joystick::unique(nn_owner<SDL_Joystick*> sdlJoystick) -> uptr
-{
-  return std::make_unique<joystick>(sdlJoystick);
-}
-
-auto joystick::shared(int deviceIndex) -> sptr
-{
-  return std::make_shared<joystick>(deviceIndex);
-}
-
-auto joystick::shared(nn_owner<SDL_Joystick*> sdlJoystick) -> sptr
-{
-  return std::make_shared<joystick>(sdlJoystick);
-}
-
 void joystick::update() noexcept
 {
   SDL_JoystickUpdate();

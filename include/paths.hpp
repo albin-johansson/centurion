@@ -41,7 +41,6 @@
 
 #include <ostream>
 #include <string>
-#include <type_traits>
 
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"
@@ -63,15 +62,6 @@ namespace centurion {
  *
  * @details There is no guarantee that the application path is obtainable, so
  * you should always check for null when dealing with a base path instance.
- * See the following example.
- * @code{.cpp}
- *   cen::base_path basePath;
- *   if (basePath) {
- *     // the application path was successfully obtained
- *   } else {
- *     // failed to obtain the application path
- *   }
- * @endcode
  *
  * @see `SDL_GetBasePath`
  *
@@ -80,33 +70,6 @@ namespace centurion {
 class base_path final
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a base path instance.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<base_path>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a base path instance.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<base_path>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a base path instance.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<base_path>;
-
   /**
    * @brief Obtains the path of the application executable.
    *
@@ -176,12 +139,6 @@ auto to_string(const base_path& path) -> std::string;
 CENTURION_API
 auto operator<<(std::ostream& stream, const base_path& path) -> std::ostream&;
 
-static_assert(std::is_default_constructible_v<base_path>);
-static_assert(std::is_nothrow_move_constructible_v<base_path>);
-static_assert(std::is_nothrow_move_assignable_v<base_path>);
-static_assert(!std::is_copy_constructible_v<base_path>);
-static_assert(!std::is_copy_assignable_v<base_path>);
-
 /**
  * @class pref_path
  *
@@ -195,18 +152,6 @@ static_assert(!std::is_copy_assignable_v<base_path>);
  * are specific to your application. This directory is unique per user, per
  * application.
  *
- * @par Usage
- * You should always check that a `pref_path` instance holds a valid string
- * before using the associated string. See the following example.
- * @code{.cpp}
- *   cen::pref_path prefPath{"my organization", "my awesome app"};
- *   if (prefPath) {
- *     // the preferred path was successfully obtained
- *   } else {
- *     // failed to obtain the preferred path
- *   }
- * @endcode
- *
  * @since 3.0.0
  *
  * @see `SDL_GetPrefPath`
@@ -216,33 +161,6 @@ static_assert(!std::is_copy_assignable_v<base_path>);
 class pref_path final
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a pref path instance.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<pref_path>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a pref path instance.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<pref_path>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a pref path instance.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<pref_path>;
-
   /**
    * @brief Constructs a `pref_path` instance.
    *
@@ -309,11 +227,6 @@ auto to_string(const pref_path& path) -> std::string;
  */
 CENTURION_API
 auto operator<<(std::ostream& stream, const pref_path& path) -> std::ostream&;
-
-static_assert(std::is_nothrow_move_constructible_v<pref_path>);
-static_assert(std::is_nothrow_move_assignable_v<pref_path>);
-static_assert(!std::is_copy_constructible_v<pref_path>);
-static_assert(!std::is_copy_assignable_v<pref_path>);
 
 }  // namespace centurion
 

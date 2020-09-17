@@ -1,8 +1,16 @@
 #include <SDL.h>
 
+#include <type_traits>
+
 #include "paths.hpp"
 
 namespace centurion {
+
+static_assert(std::is_default_constructible_v<base_path>);
+static_assert(std::is_nothrow_move_constructible_v<base_path>);
+static_assert(std::is_nothrow_move_assignable_v<base_path>);
+static_assert(!std::is_copy_constructible_v<base_path>);
+static_assert(!std::is_copy_assignable_v<base_path>);
 
 base_path::base_path() : m_path{SDL_GetBasePath()}
 {}

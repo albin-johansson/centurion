@@ -69,36 +69,6 @@ TEST_CASE("cursor::operator=(cursor&&)", "[cursor]")
   }
 }
 
-TEST_CASE("cursor::unique", "[cursor]")
-{
-  CHECK(cen::cursor::unique(cen::system_cursor::arrow_all));
-  CHECK(cen::cursor::unique(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW)));
-  CHECK(cen::cursor::unique(cen::surface{"resources/panda.png"}, {10, 10}));
-
-  SECTION("Out-of-bounds hotspot")
-  {
-    cen::surface surface{"resources/panda.png"};
-    cen::ipoint hotspot{1, surface.height() + 1};
-    CHECK_THROWS_AS(cen::cursor::unique(surface, hotspot), cen::exception);
-  }
-}
-
-TEST_CASE("cursor::shared", "[cursor]")
-{
-  CHECK(cen::cursor::shared(cen::system_cursor::hand));
-
-  CHECK(cen::cursor::shared(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE)));
-
-  CHECK(cen::cursor::shared(cen::surface{"resources/panda.png"}, {8, 28}));
-
-  SECTION("Out-of-bounds hotspot")
-  {
-    cen::surface surface{"resources/panda.png"};
-    cen::ipoint hotspot{surface.width() + 1, 1};
-    CHECK_THROWS_AS(cen::cursor::shared(surface, hotspot), cen::exception);
-  }
-}
-
 TEST_CASE("cursor::enable", "[cursor]")
 {
   cen::cursor cursor{cen::system_cursor::wait};

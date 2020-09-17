@@ -24,36 +24,6 @@ cursor::cursor(const surface& surface, const ipoint& hotspot)
   }
 }
 
-auto cursor::unique(system_cursor id) -> uptr
-{
-  return std::make_unique<cursor>(id);
-}
-
-auto cursor::unique(nn_owner<SDL_Cursor*> sdlCursor) -> uptr
-{
-  return std::make_unique<cursor>(sdlCursor);
-}
-
-auto cursor::unique(const surface& surface, const ipoint& hotspot) -> uptr
-{
-  return std::make_unique<cursor>(surface, hotspot);
-}
-
-auto cursor::shared(system_cursor id) -> sptr
-{
-  return std::make_shared<cursor>(id);
-}
-
-auto cursor::shared(nn_owner<SDL_Cursor*> sdlCursor) -> sptr
-{
-  return std::make_shared<cursor>(sdlCursor);
-}
-
-auto cursor::shared(const surface& surface, const ipoint& hotspot) -> sptr
-{
-  return std::make_shared<cursor>(surface, hotspot);
-}
-
 void cursor::enable() noexcept
 {
   SDL_SetCursor(m_cursor.get());

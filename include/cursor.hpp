@@ -236,42 +236,6 @@ class cursor final
   explicit cursor(const surface& surface, const ipoint& hotspot);
 
   /**
-   * @copydoc cursor(system_cursor)
-   */
-  CENTURION_QUERY
-  static auto unique(system_cursor id) -> uptr;
-
-  /**
-   * @copydoc cursor(nn_owner<SDL_Cursor*>)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_owner<SDL_Cursor*> sdlCursor) -> uptr;
-
-  /**
-   * @copydoc cursor(const surface&, const ipoint&)
-   */
-  CENTURION_QUERY
-  static auto unique(const surface& surface, const ipoint& hotspot) -> uptr;
-
-  /**
-   * @copydoc cursor(system_cursor)
-   */
-  CENTURION_QUERY
-  static auto shared(system_cursor id) -> sptr;
-
-  /**
-   * @copydoc cursor(nn_owner<SDL_Cursor*>)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_owner<SDL_Cursor*> sdlCursor) -> sptr;
-
-  /**
-   * @copydoc cursor(const surface&, const ipoint&)
-   */
-  CENTURION_QUERY
-  static auto shared(const surface& surface, const ipoint& hotspot) -> sptr;
-
-  /**
    * @brief Forces a cursor redraw.
    *
    * @since 4.0.0

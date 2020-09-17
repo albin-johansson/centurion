@@ -50,36 +50,13 @@
 #include "pixel_format.hpp"
 #include "point.hpp"
 #include "scale_mode.hpp"
+#include "texture_access.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace centurion {
-
-/**
- * @enum texture_access
- *
- * @brief Mirrors the `SDL_TextureAccess` enum.
- *
- * @note The `no_lock` enumerator is also referred to as "static" texture
- * access.
- *
- * @since 3.0.0
- *
- * @see `SDL_TextureAccess`
- *
- * @headerfile basic_texture.hpp
- */
-enum class texture_access {
-  no_lock = SDL_TEXTUREACCESS_STATIC, /**< Indicates that the texture changes
-                                       * rarely, and isn't lockable. */
-  streaming =
-      SDL_TEXTUREACCESS_STREAMING,  /**< Indicates that the texture changes
-                                     * frequently, and is lockable. */
-  target = SDL_TEXTUREACCESS_TARGET /**< Indicates that the texture can be used
-                                     * as a render target. */
-};
 
 template <typename T>
 class texture_traits;

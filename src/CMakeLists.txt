@@ -75,6 +75,7 @@ set(SOURCE_FILES
         ../include/semaphore.hpp
         ../include/clipboard.hpp
         ../include/sdl_string.hpp
+        ../include/texture_access.hpp
 
         ../include/detail/utils.hpp
         ../include/detail/algorithm.hpp

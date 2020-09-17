@@ -190,32 +190,6 @@ class renderer final : public basic_renderer<renderer>
                     SDL_RendererFlags flags = default_flags());
 
   /**
-   * @copydoc renderer(nn_owner<SDL_Renderer*>)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_owner<SDL_Renderer*> sdlRenderer) -> uptr;
-
-  /**
-   * @copydoc renderer(const window&, SDL_RendererFlags)
-   */
-  CENTURION_QUERY
-  static auto unique(const window& window,
-                     SDL_RendererFlags flags = default_flags()) -> uptr;
-
-  /**
-   * @copydoc renderer(nn_owner<SDL_Renderer*>)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_owner<SDL_Renderer*> sdlRenderer) -> sptr;
-
-  /**
-   * @copydoc renderer(const window&, SDL_RendererFlags)
-   */
-  CENTURION_QUERY
-  static auto shared(const window& window,
-                     SDL_RendererFlags flags = default_flags()) -> sptr;
-
-  /**
    * @name Translated rendering
    * @brief Functions related to translated rendering.
    */

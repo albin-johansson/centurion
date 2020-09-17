@@ -88,23 +88,6 @@ TEST_CASE("renderer::operator=(renderer&&)", "[renderer]")
   }
 }
 
-TEST_CASE("Renderer smart pointer factory methods", "[renderer]")
-{
-  SECTION("Unique")
-  {
-    cen::window window;
-    auto* ren = SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE);
-    CHECK_NOTHROW(cen::renderer::unique(ren));
-  }
-
-  SECTION("Shared")
-  {
-    cen::window window;
-    auto* ren = SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE);
-    CHECK_NOTHROW(cen::renderer::shared(ren));
-  }
-}
-
 TEST_CASE("renderer::clear", "[renderer]")
 {
   test([](const cen::window& window, cen::renderer& renderer) {

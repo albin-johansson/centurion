@@ -21,22 +21,6 @@ raw pointer, then you should **never** claim ownership of it. The same principle
 functions that take raw pointers in the library. Ownership of raw pointers is explicitly
 marked through use of the ``owner`` template.
 
-Smart pointers
---------------
-
-For convenience, most Centurion classes feature factory methods for smart pointers. There's
-always a factory method for each constructor. For instance, you can create a unique pointer to a
-``cen::window`` instance with ``cen::window::unique()``. The factory methods are always called
-``unique`` or ``shared``, for ``std::unique_ptr`` and ``std::shared_ptr`` respectively. 
-
-.. warning:: 
-
-  Many Centurion classes are already *move-only* types, since their internal representation is a
-  ``std::unique_ptr`` to their respective SDL struct. As a result, you should think twice before 
-  using unique pointers to this family of classes, so that you avoid introducing unnecessary 
-  indirections in your code. A few examples of common move-only types in the library are 
-  ``window``, ``renderer``, ``texture`` with many more being move-only.
-
 Textual representation
 ----------------------
 

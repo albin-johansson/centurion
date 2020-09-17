@@ -19,16 +19,6 @@ TEST_CASE("font_cache in-place font ctor", "[font_cache]")
   CHECK_NOTHROW(cen::font_cache{"resources/daniel.ttf", 12});
 }
 
-TEST_CASE("font_cache smart pointer factory methods", "[font_cache]")
-{
-  cen::czstring path = "resources/daniel.ttf";
-  CHECK(cen::font_cache::unique(path, 12));
-  CHECK(cen::font_cache::unique(cen::font{path, 12}));
-
-  CHECK(cen::font_cache::shared(path, 12));
-  CHECK(cen::font_cache::shared(cen::font{path, 12}));
-}
-
 template <class Callable>
 void test_unicode_cache(Callable&& callable)
 {

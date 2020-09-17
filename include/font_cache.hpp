@@ -156,52 +156,6 @@ class font_cache final
   template <typename... Args>
   explicit font_cache(Args&&... args);
 
-  /**
-   * @copydoc font_cache(font&&)
-   */
-  CENTURION_QUERY
-  static auto unique(font&& font) -> uptr;
-
-  /**
-   * @brief Creates and returns a unique pointer to a font cache instance.
-   *
-   * @details Creates an empty font cache, and creates the associated font
-   * in-place.
-   *
-   * @tparam Args the types of the arguments forwarded to the font constructor.
-   *
-   * @param args the arguments that will be forwarded to the font constructor.
-   *
-   * @return a unique pointer to a font cache.
-   *
-   * @since 5.0.0
-   */
-  template <typename... Args>
-  [[nodiscard]] static auto unique(Args&&... args) -> uptr;
-
-  /**
-   * @copydoc font_cache(font&&)
-   */
-  CENTURION_QUERY
-  static auto shared(font&& font) -> sptr;
-
-  /**
-   * @brief Creates and returns a shared pointer to a font cache instance.
-   *
-   * @details Creates an empty font cache, and creates the associated font
-   * in-place.
-   *
-   * @tparam Args the types of the arguments forwarded to the font constructor.
-   *
-   * @param args the arguments that will be forwarded to the font constructor.
-   *
-   * @return a shared pointer to a font cache.
-   *
-   * @since 5.0.0
-   */
-  template <typename... Args>
-  [[nodiscard]] static auto shared(Args&&... args) -> sptr;
-
   /// @name String caching
   /// @brief Methods related to caching strings as textures.
   /// @{
@@ -718,18 +672,6 @@ class font_cache final
 template <typename... Args>
 font_cache::font_cache(Args&&... args) : m_font{std::forward<Args>(args)...}
 {}
-
-template <typename... Args>
-auto font_cache::unique(Args&&... args) -> uptr
-{
-  return std::make_unique<font_cache>(std::forward<Args>(args)...);
-}
-
-template <typename... Args>
-auto font_cache::shared(Args&&... args) -> sptr
-{
-  return std::make_shared<font_cache>(std::forward<Args>(args)...);
-}
 
 template <typename Renderer>
 void font_cache::store_blended_utf8(hash_id id,

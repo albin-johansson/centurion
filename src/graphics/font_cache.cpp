@@ -9,16 +9,6 @@ namespace centurion {
 font_cache::font_cache(font&& font) noexcept : m_font{std::move(font)}
 {}
 
-auto font_cache::unique(font&& font) -> uptr
-{
-  return std::make_unique<font_cache>(std::move(font));
-}
-
-auto font_cache::shared(font&& font) -> sptr
-{
-  return std::make_shared<font_cache>(std::move(font));
-}
-
 void font_cache::store(entt::id_type id, texture&& texture)
 {
   if (const auto it = m_strings.find(id); it != m_strings.end()) {

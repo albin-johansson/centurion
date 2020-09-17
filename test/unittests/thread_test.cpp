@@ -146,13 +146,13 @@ TEST_CASE("thread::current_id", "[thread]")
   CHECK_NOTHROW(cen::thread::current_id() == SDL_ThreadID());
 }
 
-TEST_CASE("thread to_string", "[thread]")
+TEST_CASE("thread to_string", "[!mayfail][thread]")
 {
   cen::thread thread{dummy, "myThread"};
   std::cout << "to_string: " << cen::to_string(thread) << '\n';
 }
 
-TEST_CASE("thread stream operator", "[thread]")
+TEST_CASE("thread stream operator", "[!mayfail][thread]")
 {
   cen::thread thread{dummy, "myThread"};
   std::cout << "<< operator: " << thread << '\n';

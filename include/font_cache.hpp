@@ -90,33 +90,6 @@ class font_cache final
 {
  public:
   /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a font cache instance.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<font_cache>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a font cache instance.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<font_cache>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a font cache instance.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<font_cache>;
-
-  /**
    * @struct glyph_data
    *
    * @brief Simple aggregate that contains a texture and metrics for a glyph.

@@ -97,18 +97,6 @@ class mouse_state final
   mouse_state() noexcept;
 
   /**
-   * @copyright mouse_state()
-   */
-  CENTURION_QUERY
-  static auto unique() -> uptr;
-
-  /**
-   * @copyright mouse_state()
-   */
-  CENTURION_QUERY
-  static auto shared() -> sptr;
-
-  /**
    * @brief Updates the mouse state. The window width and height will be
    * adjusted to be at least 1.
    *

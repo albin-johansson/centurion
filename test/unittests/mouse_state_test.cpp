@@ -13,12 +13,6 @@ TEST_CASE("mouse_state()", "[mouse_state]")
   CHECK(state.mouse_y() == 0);
 }
 
-TEST_CASE("mouse_state smart pointer factory methods", "[mouse_state]")
-{
-  CHECK(cen::mouse_state::unique());
-  CHECK(cen::mouse_state::shared());
-}
-
 TEST_CASE("mouse_state::update", "[mouse_state]")
 {
   cen::mouse_state state;

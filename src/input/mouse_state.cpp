@@ -1,20 +1,8 @@
 #include "mouse_state.hpp"
 
-#include "detail/utils.hpp"
-
 namespace centurion {
 
 mouse_state::mouse_state() noexcept = default;
-
-auto mouse_state::unique() -> uptr
-{
-  return std::make_unique<mouse_state>();
-}
-
-auto mouse_state::shared() -> sptr
-{
-  return std::make_shared<mouse_state>();
-}
 
 void mouse_state::update(int windowWidth, int windowHeight) noexcept
 {

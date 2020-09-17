@@ -64,7 +64,6 @@ set(SOURCE_FILES
         ../include/game_loop.hpp
         ../include/joystick_handle.hpp
         ../include/basic_texture.hpp
-        ../include/basic_texture.ipp
         ../include/scale_mode.hpp
         ../include/sharing_texture.hpp
         ../include/sharing_texture.ipp

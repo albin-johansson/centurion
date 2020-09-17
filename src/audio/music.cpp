@@ -14,16 +14,6 @@ music::music(nn_czstring file) : m_music{Mix_LoadMUS(file)}
   }
 }
 
-auto music::unique(nn_czstring file) -> std::unique_ptr<music>
-{
-  return std::make_unique<music>(file);
-}
-
-auto music::shared(nn_czstring file) -> std::shared_ptr<music>
-{
-  return std::make_shared<music>(file);
-}
-
 void music::play(int nLoops) noexcept
 {
   if (nLoops < -1) {

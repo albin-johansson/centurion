@@ -329,18 +329,6 @@ class music final
   explicit music(nn_czstring file);
 
   /**
-   * @copydoc music(nn_czstring)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_czstring file) -> uptr;
-
-  /**
-   * @copydoc music(nn_czstring)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_czstring file) -> sptr;
-
-  /**
    * @brief Plays the music associated with this instance.
    *
    * @details Any previously playing music will be halted. However, this

@@ -45,14 +45,6 @@ TEST_CASE("music::operator=(music&&)", "[music]")
   }
 }
 
-TEST_CASE("music smart pointer factory methods", "[music]")
-{
-  CHECK_THROWS_AS(cen::music::unique(""), cen::mix_error);
-  CHECK_THROWS_AS(cen::music::unique(""), cen::mix_error);
-  CHECK_NOTHROW(cen::music::unique(path));
-  CHECK_NOTHROW(cen::music::shared(path));
-}
-
 TEST_CASE("music::play", "[music]")
 {
   cen::music music{path};

@@ -48,20 +48,6 @@ TEST_CASE("font::operator=(font&&)", "[font]")
   }
 }
 
-TEST_CASE("font::unique", "[font]")
-{
-  CHECK_THROWS_AS(cen::font::unique("", 1), cen::ttf_error);
-  CHECK_THROWS_AS(cen::font::unique(daniel_path, 0), cen::exception);
-  CHECK(cen::font::unique(type_writer_path, 12));
-}
-
-TEST_CASE("font::shared", "[font]")
-{
-  CHECK_THROWS_AS(cen::font::shared("", 1), cen::ttf_error);
-  CHECK_THROWS_AS(cen::font::shared(daniel_path, 0), cen::exception);
-  CHECK(cen::font::shared(type_writer_path, 12));
-}
-
 TEST_CASE("font::reset", "[font]")
 {
   cen::font font{type_writer_path, 12};

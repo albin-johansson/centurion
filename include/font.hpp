@@ -151,18 +151,6 @@ class font final
   font(nn_czstring file, int size);
 
   /**
-   * @copydoc font(nn_czstring, int)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_czstring file, int size) -> uptr;
-
-  /**
-   * @copydoc font(nn_czstring, int)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_czstring file, int size) -> sptr;
-
-  /**
    * @brief Resets the style of the font.
    *
    * @since 3.0.0

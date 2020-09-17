@@ -17,7 +17,6 @@ set(SOURCE_FILES
         ../include/basic_renderer.hpp
         ../include/basic_renderer.ipp
         ../include/renderer.hpp
-        ../include/renderer.ipp
         ../include/renderer_handle.hpp
         ../include/basic_joystick.hpp
         ../include/joystick.hpp

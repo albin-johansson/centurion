@@ -52,8 +52,10 @@
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "color.hpp"
+#include "exception.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
+#include "surface.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -296,6 +298,115 @@ class texture final : public basic_texture<texture>
   [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>;
 };
 
+template <typename Renderer>
+texture::texture(const Renderer& renderer, const surface& surface)
+    : basic_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
+{
+  if (!get()) {
+    throw sdl_error{"Failed to create texture from surface"};
+  }
+}
+
+template <typename Renderer>
+texture::texture(const Renderer& renderer,
+                 pixel_format format,
+                 texture_access access,
+                 const iarea& size)
+    : basic_texture{SDL_CreateTexture(renderer.get(),
+                                      static_cast<u32>(format),
+                                      static_cast<int>(access),
+                                      size.width,
+                                      size.height)}
+{
+  if (!get()) {
+    throw sdl_error{"Failed to create texture"};
+  }
+}
+
+template <typename Renderer>
+texture::texture(const Renderer& renderer, nn_czstring path)
+    : basic_texture{IMG_LoadTexture(renderer.get(), path)}
+{
+  if (!get()) {
+    throw img_error{"Failed to load texture from file"};
+  }
+}
+
+template <typename Renderer>
+auto texture::unique(const Renderer& renderer, nn_czstring path) -> uptr
+{
+  return std::make_unique<texture>(renderer, path);
+}
+
+template <typename Renderer>
+auto texture::unique(const Renderer& renderer, const surface& surface) -> uptr
+{
+  return std::make_unique<texture>(renderer, surface);
+}
+
+template <typename Renderer>
+auto texture::unique(const Renderer& renderer,
+                     pixel_format format,
+                     texture_access access,
+                     const iarea& size) -> uptr
+{
+  return std::make_unique<texture>(renderer, format, access, size);
+}
+
+template <typename Renderer>
+auto texture::shared(const Renderer& renderer, nn_czstring path) -> sptr
+{
+  return std::make_shared<texture>(renderer, path);
+}
+
+template <typename Renderer>
+auto texture::shared(const Renderer& renderer, const surface& surface) -> sptr
+{
+  return std::make_shared<texture>(renderer, surface);
+}
+
+template <typename Renderer>
+auto texture::shared(const Renderer& renderer,
+                     pixel_format format,
+                     texture_access access,
+                     const iarea& size) -> sptr
+{
+  return std::make_shared<texture>(renderer, format, access, size);
+}
+
+template <typename Renderer>
+auto texture::streaming(const Renderer& renderer,
+                        nn_czstring path,
+                        pixel_format format) -> uptr
+{
+  const auto blendMode = blend_mode::blend;
+  const auto createSurface = [=](czstring path, pixel_format format) {
+    surface source{path};
+    source.set_blend_mode(blendMode);
+    return source.convert(format);
+  };
+  const auto surface = createSurface(path, format);
+  auto texture = texture::unique(renderer,
+                                 format,
+                                 texture_access::streaming,
+                                 {surface.width(), surface.height()});
+  texture->set_blend_mode(blendMode);
+
+  u32* pixels = nullptr;
+  const auto success = texture->lock(&pixels);
+  if (!success) {
+    throw exception{"Failed to lock texture!"};
+  }
+
+  const auto maxCount = static_cast<size_t>(surface.pitch()) *
+                        static_cast<size_t>(surface.height());
+  memcpy(pixels, surface.pixels(), maxCount);
+
+  texture->unlock();
+
+  return texture;
+}
+
 static_assert(std::is_final_v<texture>);
 static_assert(std::is_nothrow_move_constructible_v<texture>);
 static_assert(std::is_nothrow_move_assignable_v<texture>);
@@ -332,7 +443,5 @@ CENTURION_QUERY
 auto operator<<(std::ostream& stream, const texture& texture) -> std::ostream&;
 
 }  // namespace centurion
-
-#include "texture.ipp"
 
 #endif  // CENTURION_TEXTURE_HEADER

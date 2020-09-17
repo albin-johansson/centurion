@@ -22,7 +22,6 @@ set(SOURCE_FILES
         ../include/basic_joystick.hpp
         ../include/joystick.hpp
         ../include/texture.hpp
-        ../include/texture.ipp
         ../include/exception.hpp
         ../include/centurion_api.hpp
         ../include/centurion.hpp

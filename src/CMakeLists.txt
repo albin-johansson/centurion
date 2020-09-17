@@ -20,7 +20,6 @@ set(SOURCE_FILES
         ../include/renderer.ipp
         ../include/renderer_handle.hpp
         ../include/basic_joystick.hpp
-        ../include/basic_joystick.ipp
         ../include/joystick.hpp
         ../include/texture.hpp
         ../include/texture.ipp

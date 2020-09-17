@@ -42,7 +42,6 @@
 #include <memory>
 #include <ostream>
 #include <string>
-#include <type_traits>
 
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"
@@ -234,38 +233,6 @@ enum class music_type {
  *   <li>FLAC (.flac)</li>
  * </ul>
  *
- * @par Examples
- * The following demonstrates some of the options available for playing
- * music with this class.
- * @code{.cpp}
- *   #include <cen.hpp>
- *   #include <music.hpp>
- *
- *   void demo()
- *   {
- *     cen::music music{"never_gonna_give_you_up.mp3"};
- *
- *     // sets the volume of the music (range: [0, 128])
- *     music.set_volume(64);
- *
- *     // plays the music one time
- *     music.play();
- *
- *     // halts currently playing music
- *     cen::music::halt();
- *
- *     // plays the music two times
- *     music.play(2);
- *     cen::music::halt();
- *
- *     // fade in the music over 576 milliseconds
- *     music.fade_in(cen::milliseconds<int>{576});
- *
- *     // fade out the music over 5 seconds
- *     music.fade_out(cen::seconds<int>{5});
- *   }
- * @endcode
- *
  * @note Only one music instance can ever be playing at any time.
  *
  * @todo Look into special effects API (also applies for sound effects).
@@ -280,32 +247,6 @@ enum class music_type {
 class music final
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a music instance.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<music>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a music instance.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<music>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a music instance.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<music>;
 
   /**
    * @brief A constant that indicates that an audio snippet should be looped
@@ -587,12 +528,6 @@ auto to_string(const music& music) -> std::string;
  */
 CENTURION_QUERY
 auto operator<<(std::ostream& stream, const music& music) -> std::ostream&;
-
-static_assert(std::is_final_v<music>);
-static_assert(!std::is_nothrow_copy_constructible_v<music>);
-static_assert(!std::is_nothrow_copy_assignable_v<music>);
-static_assert(std::is_nothrow_move_constructible_v<music>);
-static_assert(std::is_nothrow_move_assignable_v<music>);
 
 }  // namespace centurion
 

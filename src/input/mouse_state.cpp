@@ -1,6 +1,14 @@
 #include "mouse_state.hpp"
 
+#include <type_traits>
+
 namespace centurion {
+
+static_assert(std::is_final_v<mouse_state>);
+static_assert(std::is_nothrow_move_constructible_v<mouse_state>);
+static_assert(std::is_nothrow_move_assignable_v<mouse_state>);
+static_assert(std::is_nothrow_copy_constructible_v<mouse_state>);
+static_assert(std::is_nothrow_copy_assignable_v<mouse_state>);
 
 mouse_state::mouse_state() noexcept = default;
 

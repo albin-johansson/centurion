@@ -62,33 +62,6 @@ class mouse_state final
 {
  public:
   /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a mouse state instance.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<mouse_state>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a mouse state instance.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<mouse_state>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a mouse state instance.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<mouse_state>;
-
-  /**
    * @brief Creates a `mouse_state` instance.
    *
    * @since 3.0.0
@@ -256,12 +229,6 @@ class mouse_state final
   bool m_prevLeftPressed{false};
   bool m_prevRightPressed{false};
 };
-
-static_assert(std::is_final_v<mouse_state>);
-static_assert(std::is_nothrow_move_constructible_v<mouse_state>);
-static_assert(std::is_nothrow_move_assignable_v<mouse_state>);
-static_assert(std::is_nothrow_copy_constructible_v<mouse_state>);
-static_assert(std::is_nothrow_copy_assignable_v<mouse_state>);
 
 }  // namespace centurion
 

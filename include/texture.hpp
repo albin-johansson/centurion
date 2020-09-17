@@ -44,7 +44,6 @@
 #include <memory>
 #include <ostream>
 #include <string>
-#include <type_traits>
 
 #include "area.hpp"
 #include "basic_texture.hpp"
@@ -99,33 +98,6 @@ class texture_traits<texture> final
 class texture final : public basic_texture<texture>
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a texture.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<texture>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a texture.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<texture>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a texture.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<texture>;
-
   /**
    * @brief Creates an texture from a pre-existing SDL texture.
    *
@@ -301,12 +273,6 @@ auto texture::streaming(const Renderer& renderer,
 
   return tex;
 }
-
-static_assert(std::is_final_v<texture>);
-static_assert(std::is_nothrow_move_constructible_v<texture>);
-static_assert(std::is_nothrow_move_assignable_v<texture>);
-static_assert(!std::is_nothrow_copy_constructible_v<texture>);
-static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 
 /**
  * @brief Returns a textual representation of a texture.

@@ -2,10 +2,18 @@
 
 #include <SDL_image.h>
 
+#include <type_traits>
+
 #include "detail/to_string.hpp"
 #include "exception.hpp"
 
 namespace centurion {
+
+static_assert(std::is_final_v<texture>);
+static_assert(std::is_nothrow_move_constructible_v<texture>);
+static_assert(std::is_nothrow_move_assignable_v<texture>);
+static_assert(!std::is_nothrow_copy_constructible_v<texture>);
+static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 
 texture::texture(nn_owner<SDL_Texture*> sdlTexture) noexcept
     : basic_texture{sdlTexture}

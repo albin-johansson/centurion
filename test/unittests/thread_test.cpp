@@ -8,7 +8,11 @@
 
 namespace {
 
-auto dummy = [](void*) noexcept -> int { return 0; };
+auto dummy = [](void*) noexcept -> int {
+  using namespace cen::literals;
+  cen::thread::sleep(10_ms);
+  return 0;
+};
 
 }
 

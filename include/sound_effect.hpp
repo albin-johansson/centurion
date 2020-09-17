@@ -48,7 +48,6 @@
 #include <memory>
 #include <ostream>
 #include <string>
-#include <type_traits>
 
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"
@@ -91,33 +90,6 @@ namespace centurion {
 class sound_effect final
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a sound effect.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<sound_effect>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a sound effect.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<sound_effect>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a sound effect.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<sound_effect>;
-
   /**
    * @brief Indicates that an audio snippet should be looped indefinitely.
    *
@@ -341,12 +313,6 @@ auto to_string(const sound_effect& sound) -> std::string;
 CENTURION_QUERY
 auto operator<<(std::ostream& stream, const sound_effect& sound)
     -> std::ostream&;
-
-static_assert(std::is_final_v<sound_effect>);
-static_assert(std::is_nothrow_move_constructible_v<sound_effect>);
-static_assert(std::is_nothrow_move_assignable_v<sound_effect>);
-static_assert(!std::is_copy_constructible_v<sound_effect>);
-static_assert(!std::is_copy_assignable_v<sound_effect>);
 
 }  // namespace centurion
 

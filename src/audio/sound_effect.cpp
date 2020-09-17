@@ -1,12 +1,19 @@
 #include "sound_effect.hpp"
 
 #include <algorithm>
+#include <type_traits>
 
 #include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
 namespace centurion {
+
+static_assert(std::is_final_v<sound_effect>);
+static_assert(std::is_nothrow_move_constructible_v<sound_effect>);
+static_assert(std::is_nothrow_move_assignable_v<sound_effect>);
+static_assert(!std::is_copy_constructible_v<sound_effect>);
+static_assert(!std::is_copy_assignable_v<sound_effect>);
 
 sound_effect::sound_effect(nn_czstring file) : m_chunk{Mix_LoadWAV(file)}
 {

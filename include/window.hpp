@@ -42,7 +42,6 @@
 #include <memory>
 #include <ostream>
 #include <string>
-#include <type_traits>
 
 #include "area.hpp"
 #include "basic_window.hpp"
@@ -117,33 +116,6 @@ namespace centurion {
 class window final : public basic_window<window>
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a window.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<window>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a window.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<window>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a window.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<window>;
-
   /**
    * @brief Creates a window based on the supplied SDL_Window instance.
    *
@@ -238,17 +210,6 @@ class window final : public basic_window<window>
   };
   std::unique_ptr<SDL_Window, deleter> m_window;
 };
-
-static_assert(std::is_final_v<window>);
-
-static_assert(std::is_default_constructible_v<window>);
-static_assert(std::is_nothrow_destructible_v<window>);
-
-static_assert(std::is_nothrow_move_assignable_v<window>);
-static_assert(std::is_nothrow_move_constructible_v<window>);
-
-static_assert(!std::is_copy_assignable_v<window>);
-static_assert(!std::is_copy_constructible_v<window>);
 
 /**
  * @brief Returns a textual representation of a window.

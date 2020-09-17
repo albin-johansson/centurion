@@ -1,10 +1,23 @@
 #include "window.hpp"
 
+#include <type_traits>
+
 #include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
 namespace centurion {
+
+static_assert(std::is_final_v<window>);
+
+static_assert(std::is_default_constructible_v<window>);
+static_assert(std::is_nothrow_destructible_v<window>);
+
+static_assert(std::is_nothrow_move_assignable_v<window>);
+static_assert(std::is_nothrow_move_constructible_v<window>);
+
+static_assert(!std::is_copy_assignable_v<window>);
+static_assert(!std::is_copy_constructible_v<window>);
 
 window::window(nn_owner<SDL_Window*> window) noexcept : m_window{window}
 {}

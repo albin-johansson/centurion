@@ -64,7 +64,6 @@ set(SOURCE_FILES
         ../include/basic_texture.hpp
         ../include/scale_mode.hpp
         ../include/sharing_texture.hpp
-        ../include/sharing_texture.ipp
         ../include/thread.hpp
         ../include/mutex.hpp
         ../include/scoped_lock.hpp

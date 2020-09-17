@@ -43,6 +43,8 @@
 #include "basic_texture.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
+#include "exception.hpp"
+#include "surface.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -197,8 +199,43 @@ class sharing_texture final : public basic_texture<sharing_texture>
   }
 };
 
-}  // namespace centurion
+template <typename Renderer>
+sharing_texture::sharing_texture(const Renderer& renderer, nn_czstring path)
+    : basic_texture{IMG_LoadTexture(renderer.get(), path), get_deleter()}
+{
+  if (!get()) {
+    throw img_error{"Failed to load sharing_texture from file"};
+  }
+}
 
-#include "sharing_texture.ipp"
+template <typename Renderer>
+sharing_texture::sharing_texture(const Renderer& renderer,
+                                 const surface& surface)
+    : basic_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get()),
+                    get_deleter()}
+{
+  if (!get()) {
+    throw sdl_error{"Failed to create sharing_texture from surface"};
+  }
+}
+
+template <typename Renderer>
+sharing_texture::sharing_texture(const Renderer& renderer,
+                                 pixel_format format,
+                                 texture_access access,
+                                 const iarea& size)
+    : basic_texture{SDL_CreateTexture(renderer.get(),
+                                      static_cast<u32>(format),
+                                      static_cast<int>(access),
+                                      size.width,
+                                      size.height),
+                    get_deleter()}
+{
+  if (!get()) {
+    throw sdl_error{"Failed to create sharing_texture"};
+  }
+}
+
+}  // namespace centurion
 
 #endif  // CENTURION_SHARING_TEXTURE_HEADER

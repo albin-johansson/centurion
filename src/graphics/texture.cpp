@@ -3,25 +3,13 @@
 #include <SDL_image.h>
 
 #include "detail/to_string.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
-#include "surface.hpp"
 
 namespace centurion {
 
 texture::texture(nn_owner<SDL_Texture*> sdlTexture) noexcept
     : basic_texture{sdlTexture}
 {}
-
-auto texture::unique(nn_owner<SDL_Texture*> sdlTexture) -> uptr
-{
-  return std::make_unique<texture>(sdlTexture);
-}
-
-auto texture::shared(nn_owner<SDL_Texture*> sdlTexture) -> sptr
-{
-  return std::make_shared<texture>(sdlTexture);
-}
 
 auto to_string(const texture& texture) -> std::string
 {

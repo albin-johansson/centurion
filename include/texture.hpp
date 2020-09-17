@@ -195,72 +195,9 @@ class texture final : public basic_texture<texture>
           const iarea& size);
 
   /**
-   * @copydoc texture(nn_owner<SDL_Texture*>)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_owner<SDL_Texture*> sdlTexture) -> uptr;
-
-  /**
-   * @copydoc texture(const Renderer&, nn_czstring)
-   */
-  template <typename Renderer>
-  [[nodiscard]] static auto unique(const Renderer& renderer, nn_czstring path)
-      -> uptr;
-
-  /**
-   * @copydoc texture(const Renderer&, const surface&)
-   */
-  template <typename Renderer>
-  [[nodiscard]] static auto unique(const Renderer& renderer,
-                                   const surface& surface) -> uptr;
-
-  // clang-format off
-  /**
-   * @copydoc texture(const Renderer&, pixel_format, texture_access, const iarea&)
-   */
-  template <typename Renderer>
-  [[nodiscard]] static auto unique(const Renderer& renderer,
-                                   pixel_format format,
-                                   texture_access access,
-                                   const iarea& size) -> uptr;
-
-  // clang-format on
-
-  /**
-   * @copydoc texture(nn_owner<SDL_Texture*>)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_owner<SDL_Texture*> sdlTexture) -> sptr;
-
-  /**
-   * @copydoc texture(const Renderer&, nn_czstring)
-   */
-  template <typename Renderer>
-  [[nodiscard]] static auto shared(const Renderer& renderer, nn_czstring path)
-      -> sptr;
-
-  /**
-   * @copydoc texture(const Renderer&, const surface&)
-   */
-  template <typename Renderer>
-  [[nodiscard]] static auto shared(const Renderer& renderer,
-                                   const surface& surface) -> sptr;
-
-  // clang-format off
-  /**
-   * @copydoc texture(const Renderer&, pixel_format, texture_access, const iarea&)
-   */
-  template <typename Renderer>
-  [[nodiscard]] static auto shared(const Renderer& renderer,
-                                   pixel_format format,
-                                   texture_access access,
-                                   const iarea& size) -> sptr;
-  // clang-format on
-
-  /**
-   * @brief Creates and returns a unique pointer to a texture.
+   * @brief Creates and returns a texture with streaming access.
    *
-   * @details The create texture is based on the image at the specified path
+   * @details The created texture is based on the image at the specified path
    * with the `streaming` texture access.
    *
    * @tparam Renderer the type of the renderer, e.g. `renderer` or
@@ -273,14 +210,14 @@ class texture final : public basic_texture<texture>
    *
    * @throws exception if something goes wrong.
    *
-   * @return a unique pointer to a texture with `streaming` texture access.
+   * @return a texture with `streaming` texture access.
    *
    * @since 4.0.0
    */
   template <typename Renderer>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       nn_czstring path,
-                                      pixel_format format) -> uptr;
+                                      pixel_format format) -> texture;
 
   /**
    * @brief Releases ownership of the associated SDL texture and returns a
@@ -333,51 +270,9 @@ texture::texture(const Renderer& renderer, nn_czstring path)
 }
 
 template <typename Renderer>
-auto texture::unique(const Renderer& renderer, nn_czstring path) -> uptr
-{
-  return std::make_unique<texture>(renderer, path);
-}
-
-template <typename Renderer>
-auto texture::unique(const Renderer& renderer, const surface& surface) -> uptr
-{
-  return std::make_unique<texture>(renderer, surface);
-}
-
-template <typename Renderer>
-auto texture::unique(const Renderer& renderer,
-                     pixel_format format,
-                     texture_access access,
-                     const iarea& size) -> uptr
-{
-  return std::make_unique<texture>(renderer, format, access, size);
-}
-
-template <typename Renderer>
-auto texture::shared(const Renderer& renderer, nn_czstring path) -> sptr
-{
-  return std::make_shared<texture>(renderer, path);
-}
-
-template <typename Renderer>
-auto texture::shared(const Renderer& renderer, const surface& surface) -> sptr
-{
-  return std::make_shared<texture>(renderer, surface);
-}
-
-template <typename Renderer>
-auto texture::shared(const Renderer& renderer,
-                     pixel_format format,
-                     texture_access access,
-                     const iarea& size) -> sptr
-{
-  return std::make_shared<texture>(renderer, format, access, size);
-}
-
-template <typename Renderer>
 auto texture::streaming(const Renderer& renderer,
                         nn_czstring path,
-                        pixel_format format) -> uptr
+                        pixel_format format) -> texture
 {
   const auto blendMode = blend_mode::blend;
   const auto createSurface = [=](czstring path, pixel_format format) {
@@ -386,25 +281,25 @@ auto texture::streaming(const Renderer& renderer,
     return source.convert(format);
   };
   const auto surface = createSurface(path, format);
-  auto texture = texture::unique(renderer,
-                                 format,
-                                 texture_access::streaming,
-                                 {surface.width(), surface.height()});
-  texture->set_blend_mode(blendMode);
+  auto tex = texture{renderer,
+                     format,
+                     texture_access::streaming,
+                     {surface.width(), surface.height()}};
+  tex.set_blend_mode(blendMode);
 
   u32* pixels = nullptr;
-  const auto success = texture->lock(&pixels);
+  const auto success = tex.lock(&pixels);
   if (!success) {
     throw exception{"Failed to lock texture!"};
   }
 
   const auto maxCount = static_cast<size_t>(surface.pitch()) *
                         static_cast<size_t>(surface.height());
-  memcpy(pixels, surface.pixels(), maxCount);
+  std::memcpy(pixels, surface.pixels(), maxCount);
 
-  texture->unlock();
+  tex.unlock();
 
-  return texture;
+  return tex;
 }
 
 static_assert(std::is_final_v<texture>);

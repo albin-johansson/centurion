@@ -7,28 +7,6 @@
 #include "video.hpp"
 #include "window.hpp"
 
-TEST_CASE("texture_loader::unique", "[texture_loader]")
-{
-  cen::window window;
-  cen::renderer renderer{window};
-
-  cen::texture_loader loader{renderer};
-
-  auto texture = loader.unique("resources/panda.png");
-  CHECK(texture.get());
-}
-
-TEST_CASE("texture_loader::shared", "[texture_loader]")
-{
-  cen::window window;
-  cen::renderer renderer{window};
-
-  cen::texture_loader loader{renderer};
-
-  auto texture = loader.shared("resources/panda.png");
-  CHECK(texture.get());
-}
-
 TEST_CASE("texture_loader::create", "[texture_loader]")
 {
   cen::window window;

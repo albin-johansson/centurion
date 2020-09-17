@@ -89,42 +89,6 @@ class texture_loader final
   {}
 
   /**
-   * @brief Creates and returns a unique pointer to a texture.
-   *
-   * @tparam Args the types of the arguments that will be forwarded.
-   *
-   * @param args the arguments that will be forwarded to an appropriate
-   * constructor.
-   *
-   * @return a unique pointer to a texture.
-   *
-   * @since 5.0.0
-   */
-  template <typename... Args>
-  [[nodiscard]] auto unique(Args&&... args) -> texture::uptr
-  {
-    return texture::unique(m_renderer, std::forward<Args>(args)...);
-  }
-
-  /**
-   * @brief Creates and returns a shared pointer to a texture.
-   *
-   * @tparam Args the types of the arguments that will be forwarded.
-   *
-   * @param args the arguments that will be forwarded to an appropriate
-   * constructor.
-   *
-   * @return a shared pointer to a texture.
-   *
-   * @since 5.0.0
-   */
-  template <typename... Args>
-  [[nodiscard]] auto shared(Args&&... args) -> texture::sptr
-  {
-    return texture::shared(m_renderer, std::forward<Args>(args)...);
-  }
-
-  /**
    * @brief Creates and returns a texture.
    *
    * @tparam Args the types of the arguments that will be forwarded.

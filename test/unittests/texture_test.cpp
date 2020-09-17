@@ -146,41 +146,13 @@ TEST_CASE("texture::operator=(texture&&)", "[texture]")
   }
 }
 
-TEST_CASE("texture::unique", "[texture]")
-{
-  test_with_window([](cen::renderer& renderer, const cen::window& window) {
-    const cen::surface surface{pandaPath};
-
-    CHECK(cen::texture::unique(renderer, pandaPath));
-    CHECK(cen::texture::unique(renderer, surface));
-    CHECK(cen::texture::unique(renderer,
-                               window.get_pixel_format(),
-                               cen::texture_access::no_lock,
-                               {100, 100}));
-  });
-}
-
-TEST_CASE("texture:::shared", "[texture]")
-{
-  test_with_window([](cen::renderer& renderer, const cen::window& window) {
-    const cen::surface surface{pandaPath};
-
-    CHECK(cen::texture::shared(renderer, pandaPath));
-    CHECK(cen::texture::shared(renderer, surface));
-    CHECK(cen::texture::shared(renderer,
-                               window.get_pixel_format(),
-                               cen::texture_access::no_lock,
-                               {100, 100}));
-  });
-}
-
 TEST_CASE("texture::streaming", "[texture]")
 {
   test([](cen::renderer& renderer) {
     const auto pixelFormat = cen::pixel_format::rgba8888;
     auto texture = cen::texture::streaming(renderer, pandaPath, pixelFormat);
 
-    CHECK(texture->format() == pixelFormat);
+    CHECK(texture.format() == pixelFormat);
 
     CHECK_THROWS_AS(
         cen::texture::streaming(renderer, "", cen::pixel_format::yuy2),
@@ -191,19 +163,19 @@ TEST_CASE("texture::streaming", "[texture]")
 TEST_CASE("texture::set_pixel", "[texture]")
 {
   test([](cen::renderer& renderer) {
-    const auto texture = cen::texture::streaming(
+    auto texture = cen::texture::streaming(
         renderer, pandaPath, cen::pixel_format::rgba8888);
 
-    const auto [width, height] = texture->size();
+    const auto [width, height] = texture.size();
 
-    CHECK_NOTHROW(texture->set_pixel({-1, -1}, cen::colors::black));
-    CHECK_NOTHROW(texture->set_pixel({-1, 0}, cen::colors::black));
-    CHECK_NOTHROW(texture->set_pixel({0, -1}, cen::colors::black));
-    CHECK_NOTHROW(texture->set_pixel({width, 0}, cen::colors::black));
-    CHECK_NOTHROW(texture->set_pixel({0, height}, cen::colors::black));
-    CHECK_NOTHROW(texture->set_pixel({width, height}, cen::colors::black));
+    CHECK_NOTHROW(texture.set_pixel({-1, -1}, cen::colors::black));
+    CHECK_NOTHROW(texture.set_pixel({-1, 0}, cen::colors::black));
+    CHECK_NOTHROW(texture.set_pixel({0, -1}, cen::colors::black));
+    CHECK_NOTHROW(texture.set_pixel({width, 0}, cen::colors::black));
+    CHECK_NOTHROW(texture.set_pixel({0, height}, cen::colors::black));
+    CHECK_NOTHROW(texture.set_pixel({width, height}, cen::colors::black));
 
-    CHECK_NOTHROW(texture->set_pixel({45, 23}, cen::colors::orange));
+    CHECK_NOTHROW(texture.set_pixel({45, 23}, cen::colors::orange));
   });
 }
 

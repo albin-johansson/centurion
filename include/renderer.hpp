@@ -47,7 +47,6 @@
 #include <memory>
 #include <ostream>
 #include <string>
-#include <type_traits>
 #include <utility>
 
 #include "basic_renderer.hpp"
@@ -101,22 +100,6 @@ namespace centurion {
  * of text, and render that texture when needed. Naturally, you should cache
  * these textures instead of creating and destroying them in your game loop.
  *
- * @par Examples
- * Below is an example of a typical rendering method.
- * @code{.cpp}
- * #include <cen.hpp>
- * #include <renderer.hpp>
- *
- * void draw(cen::renderer& renderer)
- * {
- *   renderer.clear_with(cen::black); // clear rendering target
- *
- *   // Miscellaneous rendering calls...
- *
- *   renderer.present(); // apply the rendering operations to the target
- * }
- * @endcode
- *
  * @tparam FontKey the key type used when storing associated fonts in a map.
  *
  * @since 3.0.0
@@ -129,33 +112,6 @@ namespace centurion {
 class renderer final : public basic_renderer<renderer>
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a renderer.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<renderer>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a renderer.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<renderer>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a renderer.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<renderer>;
-
   /**
    * @brief Creates a renderer based on the supplied `SDL_Renderer`.
    *
@@ -642,15 +598,6 @@ void renderer::emplace_font(hash_id id, Args&&... args)
   }
   m_fonts.emplace(id, font{std::forward<Args>(args)...});
 }
-
-static_assert(std::is_final_v<renderer>);
-static_assert(std::is_nothrow_destructible_v<renderer>);
-
-static_assert(!std::is_copy_constructible_v<renderer>);
-static_assert(!std::is_copy_assignable_v<renderer>);
-
-static_assert(std::is_move_constructible_v<renderer>);
-static_assert(std::is_nothrow_move_assignable_v<renderer>);
 
 /**
  * @brief Returns a textual representation of a renderer.

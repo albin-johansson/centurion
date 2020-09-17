@@ -1,9 +1,20 @@
 #include "renderer.hpp"
 
+#include <type_traits>
+
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
 namespace centurion {
+
+static_assert(std::is_final_v<renderer>);
+static_assert(std::is_nothrow_destructible_v<renderer>);
+
+static_assert(!std::is_copy_constructible_v<renderer>);
+static_assert(!std::is_copy_assignable_v<renderer>);
+
+static_assert(std::is_move_constructible_v<renderer>);
+static_assert(std::is_nothrow_move_assignable_v<renderer>);
 
 renderer::renderer(nn_owner<SDL_Renderer*> sdlRenderer) noexcept
     : m_renderer{sdlRenderer}

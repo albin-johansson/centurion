@@ -119,18 +119,6 @@ class base_path final
   base_path();
 
   /**
-   * @copydoc base_path()
-   */
-  CENTURION_QUERY
-  static auto unique() -> uptr;
-
-  /**
-   * @copydoc base_path()
-   */
-  CENTURION_QUERY
-  static auto shared() -> sptr;
-
-  /**
    * @brief Indicates whether or not there is a non-null string in the base path
    * instance.
    *
@@ -267,18 +255,6 @@ class pref_path final
    */
   CENTURION_API
   pref_path(nn_czstring org, nn_czstring app);
-
-  /**
-   * @copydoc pref_path(nn_czstring, nn_czstring)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_czstring org, nn_czstring app) -> uptr;
-
-  /**
-   * @copydoc pref_path(nn_czstring, nn_czstring)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_czstring org, nn_czstring app) -> sptr;
 
   /**
    * @brief Indicates whether or not the instance holds a non-null path.

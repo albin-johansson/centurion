@@ -40,18 +40,6 @@ TEST_CASE("base_path::operator=(base_path&&)", "[path]")
   }
 }
 
-TEST_CASE("base_path::unique", "[path]")
-{
-  const auto path = cen::base_path::unique();
-  CHECK(path);
-}
-
-TEST_CASE("base_path::shared", "[path]")
-{
-  const auto path = cen::base_path::shared();
-  CHECK(path);
-}
-
 TEST_CASE("base_path::operator bool", "[path]")
 {
   const cen::base_path path;
@@ -109,16 +97,6 @@ TEST_CASE("pref_path::operator=(pref_path&&)", "[path]")
     CHECK(!path.get());
     CHECK(other.get());
   }
-}
-
-TEST_CASE("pref_path::unique", "[path]")
-{
-  CHECK(cen::pref_path::unique("centurion", "tests"));
-}
-
-TEST_CASE("pref_path::shared", "[path]")
-{
-  CHECK(cen::pref_path::shared("centurion", "tests"));
 }
 
 TEST_CASE("pref_path::operator bool", "[path]")

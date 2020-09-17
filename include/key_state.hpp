@@ -47,7 +47,6 @@
 #include <SDL.h>
 
 #include <array>
-#include <type_traits>
 
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
@@ -77,33 +76,6 @@ namespace centurion {
 class key_state final
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a key state instance.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<key_state>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a key state instance.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<key_state>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a key state instance.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<key_state>;
-
   /**
    * @brief Creates a `key_state` instance.
    *
@@ -276,14 +248,6 @@ class key_state final
   std::array<u8, static_cast<int>(SDL_NUM_SCANCODES)> m_previousStates;
   int m_nKeys{};
 };
-
-static_assert(std::is_final_v<key_state>);
-static_assert(std::is_default_constructible_v<key_state>);
-static_assert(std::is_nothrow_destructible_v<key_state>);
-static_assert(std::is_nothrow_move_constructible_v<key_state>);
-static_assert(std::is_nothrow_move_assignable_v<key_state>);
-static_assert(std::is_nothrow_copy_constructible_v<key_state>);
-static_assert(std::is_nothrow_copy_assignable_v<key_state>);
 
 }  // namespace centurion
 

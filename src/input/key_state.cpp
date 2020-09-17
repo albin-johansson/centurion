@@ -2,12 +2,21 @@
 
 #include <algorithm>
 #include <string>
+#include <type_traits>
 
 #include "detail/utils.hpp"
 #include "key_code.hpp"
 #include "scan_code.hpp"
 
 namespace centurion {
+
+static_assert(std::is_final_v<key_state>);
+static_assert(std::is_default_constructible_v<key_state>);
+static_assert(std::is_nothrow_destructible_v<key_state>);
+static_assert(std::is_nothrow_move_constructible_v<key_state>);
+static_assert(std::is_nothrow_move_assignable_v<key_state>);
+static_assert(std::is_nothrow_copy_constructible_v<key_state>);
+static_assert(std::is_nothrow_copy_assignable_v<key_state>);
 
 key_state::key_state() noexcept
 {

@@ -56,7 +56,6 @@ set(SOURCE_FILES
         ../include/hints.hpp
         ../include/touch.hpp
         ../include/font_cache.hpp
-        ../include/font_cache.ipp
         ../include/unicode_string.hpp
         ../include/game_loop.hpp
         ../include/joystick_handle.hpp

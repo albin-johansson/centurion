@@ -40,9 +40,9 @@
 #include <SDL_ttf.h>
 
 #include <memory>
+#include <optional>
 #include <ostream>
 #include <string>
-#include <type_traits>
 
 #include "area.hpp"
 #include "centurion_api.hpp"
@@ -93,33 +93,6 @@ struct glyph_metrics final
 class font final
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a font.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<font>;
-
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a shared pointer to a font.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<font>;
-
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a weak pointer to a font.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<font>;
-
   /**
    * @enum hint
    *
@@ -574,12 +547,6 @@ class font final
    */
   void remove_style(int mask) noexcept;
 };
-
-static_assert(std::is_final_v<font>);
-static_assert(std::is_nothrow_move_constructible_v<font>);
-static_assert(std::is_nothrow_move_assignable_v<font>);
-static_assert(!std::is_copy_constructible_v<font>);
-static_assert(!std::is_copy_assignable_v<font>);
 
 /**
  * @brief Returns a textual representation of a font instance.

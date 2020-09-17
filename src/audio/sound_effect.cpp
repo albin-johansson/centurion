@@ -2,8 +2,8 @@
 
 #include <algorithm>
 
-#include "detail/utils.hpp"
 #include "detail/to_string.hpp"
+#include "detail/utils.hpp"
 #include "exception.hpp"
 
 namespace centurion {
@@ -13,16 +13,6 @@ sound_effect::sound_effect(nn_czstring file) : m_chunk{Mix_LoadWAV(file)}
   if (!m_chunk) {
     throw mix_error{"Failed to load sound effect from file"};
   }
-}
-
-auto sound_effect::unique(nn_czstring file) -> uptr
-{
-  return std::make_unique<sound_effect>(file);
-}
-
-auto sound_effect::shared(nn_czstring file) -> sptr
-{
-  return std::make_shared<sound_effect>(file);
 }
 
 void sound_effect::activate(int nLoops) noexcept

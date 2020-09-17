@@ -46,14 +46,6 @@ TEST_CASE("sound_effect::operator=(sound_effect&&)", "[sound_effect]")
   }
 }
 
-TEST_CASE("sound_effect smart pointer factory methods", "[sound_effect]")
-{
-  CHECK(cen::sound_effect::unique(path));
-  CHECK(cen::sound_effect::shared(path));
-  CHECK_THROWS_AS(cen::sound_effect::unique(""), cen::mix_error);
-  CHECK_THROWS_AS(cen::sound_effect::shared(""), cen::mix_error);
-}
-
 TEST_CASE("sound_effect::play", "[sound_effect]")
 {
   cen::sound_effect sound{path};

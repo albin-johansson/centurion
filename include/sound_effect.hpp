@@ -139,18 +139,6 @@ class sound_effect final
   explicit sound_effect(nn_czstring file);
 
   /**
-   * @copydoc sound_effect(nn_czstring)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_czstring file) -> uptr;
-
-  /**
-   * @copydoc sound_effect(nn_czstring)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_czstring file) -> sptr;
-
-  /**
    * @brief Plays the sound effect.
    *
    * @note A negative value indicates that the sound effect should be looped

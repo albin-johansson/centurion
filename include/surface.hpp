@@ -42,7 +42,6 @@
 #include <memory>
 #include <ostream>
 #include <string>
-#include <type_traits>
 
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
@@ -74,33 +73,6 @@ namespace centurion {
 class surface final
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a surface.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<surface>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a surface.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<surface>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a surface.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<surface>;
-
   /**
    * @brief Creates a surface by claiming the supplied SDL surface.
    *
@@ -472,12 +444,6 @@ auto to_string(const surface& surface) -> std::string;
  */
 CENTURION_QUERY
 auto operator<<(std::ostream& stream, const surface& surface) -> std::ostream&;
-
-static_assert(std::is_final_v<surface>);
-static_assert(std::is_copy_constructible_v<surface>);
-static_assert(std::is_copy_assignable_v<surface>);
-static_assert(std::is_nothrow_move_constructible_v<surface>);
-static_assert(std::is_nothrow_move_assignable_v<surface>);
 
 }  // namespace centurion
 

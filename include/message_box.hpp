@@ -500,6 +500,23 @@ class message_box final
   auto show(SDL_Window* parent) -> std::optional<button_id>;
 };
 
+template <typename Traits>
+void message_box::show(const basic_window<Traits>& parent,
+                       const std::string& title,
+                       const std::string& message,
+                       type type,
+                       button_order buttonOrder)
+{
+  show(parent.ptr(), title, message, type, buttonOrder);
+}
+
+template <typename Traits>
+auto message_box::show(const basic_window<Traits>& parent)
+    -> std::optional<button_id>
+{
+  return show(parent.ptr());
+}
+
 static_assert(std::is_default_constructible_v<message_box>);
 static_assert(std::is_final_v<message_box>);
 
@@ -614,7 +631,5 @@ static_assert(std::is_final_v<message_box>);
 /// @}
 
 }  // namespace centurion
-
-#include "message_box.ipp"
 
 #endif  // CENTURION_MESSAGE_BOX_HEADER

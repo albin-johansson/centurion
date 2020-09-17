@@ -32,7 +32,6 @@ set(SOURCE_FILES
         ../include/log.hpp
         ../include/blend_mode.hpp
         ../include/message_box.hpp
-        ../include/message_box.ipp
         ../include/color.hpp
         ../include/rect.hpp
         ../include/point.hpp

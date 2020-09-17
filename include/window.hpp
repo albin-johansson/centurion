@@ -186,44 +186,6 @@ class window final : public basic_window<window>
   window();
 
   /**
-   * @copydoc window(nn_czstring, const iarea&)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_czstring title, const iarea& size = default_size())
-      -> uptr;
-
-  /**
-   * @copydoc window(nn_owner<SDL_Window*>)
-   */
-  CENTURION_QUERY
-  static auto unique(nn_owner<SDL_Window*> sdlWindow) -> uptr;
-
-  /**
-   * @copydoc window()
-   */
-  CENTURION_QUERY
-  static auto unique() -> uptr;
-
-  /**
-   * @copydoc window(nn_czstring, const iarea&)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_czstring title, const iarea& size = default_size())
-      -> sptr;
-
-  /**
-   * @copydoc window(nn_owner<SDL_Window*>)
-   */
-  CENTURION_QUERY
-  static auto shared(nn_owner<SDL_Window*> sdlWindow) -> sptr;
-
-  /**
-   * @copydoc window()
-   */
-  CENTURION_QUERY
-  static auto shared() -> sptr;
-
-  /**
    * @brief Converts to `SDL_Window*`.
    *
    * @return a pointer to the associated SDL window.

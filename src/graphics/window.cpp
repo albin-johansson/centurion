@@ -29,36 +29,6 @@ window::window(nn_czstring title, const iarea& size)
 window::window() : window{"Centurion window"}
 {}
 
-auto window::unique() -> uptr
-{
-  return std::make_unique<window>();
-}
-
-auto window::unique(nn_owner<SDL_Window*> sdlWindow) -> uptr
-{
-  return std::make_unique<window>(sdlWindow);
-}
-
-auto window::unique(nn_czstring title, const iarea& size) -> uptr
-{
-  return std::make_unique<window>(title, size);
-}
-
-auto window::shared() -> sptr
-{
-  return std::make_shared<window>();
-}
-
-auto window::shared(nn_owner<SDL_Window*> sdlWindow) -> sptr
-{
-  return std::make_shared<window>(sdlWindow);
-}
-
-auto window::shared(nn_czstring title, const iarea& size) -> sptr
-{
-  return std::make_shared<window>(title, size);
-}
-
 auto to_string(const window& window) -> std::string
 {
   const auto ptr = detail::address_of(window.get());

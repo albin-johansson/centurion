@@ -86,42 +86,6 @@ TEST_CASE("window::operator=(window&&)", "[window]")
   }
 }
 
-TEST_CASE("window::unique", "[window]")
-{
-  SECTION("window::unique()") { CHECK(cen::window::unique()); }
-
-  SECTION("window::unique(nn_owner<SDL_Window*>)")
-  {
-    auto* good = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
-    CHECK(cen::window::unique(good));
-  }
-
-  SECTION("window::unique(czstring, iarea)")
-  {
-    CHECK_THROWS_AS(cen::window::unique("", {0, 10}), cen::exception);
-    CHECK_THROWS_AS(cen::window::unique("", {10, 0}), cen::exception);
-    CHECK(cen::window::unique("Foo", {10, 10}));
-  }
-}
-
-TEST_CASE("window::shared", "[window]")
-{
-  SECTION("window::shared()") { CHECK(cen::window::shared()); }
-
-  SECTION("window::shared(nn_owner<SDL_Window*>)")
-  {
-    auto* good = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
-    CHECK(cen::window::shared(good));
-  }
-
-  SECTION("window::shared(czstring, iarea)")
-  {
-    CHECK_THROWS_AS(cen::window::shared("", {0, 10}), cen::exception);
-    CHECK_THROWS_AS(cen::window::shared("", {10, 0}), cen::exception);
-    CHECK(cen::window::shared("Foo", {10, 10}));
-  }
-}
-
 TEST_CASE("window::show", "[window]")
 {
   cen::window window;

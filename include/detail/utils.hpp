@@ -23,7 +23,7 @@
  */
 
 /**
- * @file centurion_utils.hpp
+ * @file utils.hpp
  *
  * @brief Provides utilities used in the implementation of the library.
  *

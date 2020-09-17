@@ -14,7 +14,6 @@ set(SOURCE_FILES
         ../include/window_utils.hpp
         ../include/font.hpp
         ../include/basic_renderer.hpp
-        ../include/basic_renderer.ipp
         ../include/renderer.hpp
         ../include/renderer_handle.hpp
         ../include/basic_joystick.hpp

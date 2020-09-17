@@ -1,8 +1,16 @@
 #include "joystick.hpp"
 
+#include <type_traits>
+
 #include "exception.hpp"
 
 namespace centurion {
+
+static_assert(std::is_final_v<joystick>);
+static_assert(std::is_nothrow_move_constructible_v<joystick>);
+static_assert(std::is_nothrow_move_assignable_v<joystick>);
+static_assert(!std::is_copy_constructible_v<joystick>);
+static_assert(!std::is_copy_assignable_v<joystick>);
 
 joystick::joystick(nn_owner<SDL_Joystick*> sdlJoystick) noexcept
     : basic_joystick{sdlJoystick}

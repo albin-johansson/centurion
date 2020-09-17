@@ -42,7 +42,6 @@
 #include <SDL_joystick.h>
 
 #include <memory>
-#include <type_traits>
 
 #include "basic_joystick.hpp"
 #include "button_state.hpp"
@@ -68,7 +67,7 @@ class joystick;
  * @headerfile joystick.hpp
  */
 template <>
-class joystick_traits<joystick>
+class joystick_traits<joystick> final
 {
  private:
   class deleter final
@@ -105,33 +104,6 @@ class joystick_traits<joystick>
 class joystick final : public basic_joystick<joystick>
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a joystick.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<joystick>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a joystick.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<joystick>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a joystick.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<joystick>;
-
   /**
    * @brief Creates a `joystick` instance based on an existing `SDL_Joystick*`.
    *
@@ -416,12 +388,6 @@ class joystick final : public basic_joystick<joystick>
     return SDL_JOYSTICK_AXIS_MIN;
   }
 };
-
-static_assert(std::is_final_v<joystick>);
-static_assert(std::is_nothrow_move_constructible_v<joystick>);
-static_assert(std::is_nothrow_move_assignable_v<joystick>);
-static_assert(!std::is_copy_constructible_v<joystick>);
-static_assert(!std::is_copy_assignable_v<joystick>);
 
 /**
  * @brief Indicates whether or not two joystick power values are the same.

@@ -247,7 +247,6 @@ enum class music_type {
 class music final
 {
  public:
-
   /**
    * @brief A constant that indicates that an audio snippet should be looped
    * indefinitely.

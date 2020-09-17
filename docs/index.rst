@@ -13,8 +13,6 @@ Welcome to Centurion's documentation!
    :maxdepth: 2
    :caption: API
 
-   pages/api/overview
-   
 .. toctree::
    :maxdepth: 1
    :caption: Geometry
@@ -33,7 +31,6 @@ Welcome to Centurion's documentation!
    pages/api/graphics/renderer_handle
    pages/api/graphics/font
    pages/api/graphics/font_cache
-   pages/api/graphics/texture_loader
 
 .. toctree::
    :maxdepth: 1

@@ -8,7 +8,6 @@ set(TEST_FILES
         unittests/bool_converter_test.cpp
         unittests/font_test.cpp
         unittests/texture_test.cpp
-        unittests/texture_loader_test.cpp
         unittests/renderer_test.cpp
         unittests/log_test.cpp
         unittests/battery_test.cpp

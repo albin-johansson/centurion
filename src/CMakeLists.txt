@@ -23,7 +23,6 @@ set(SOURCE_FILES
         ../include/centurion_api.hpp
         ../include/centurion.hpp
         ../include/colors.hpp
-        ../include/texture_loader.hpp
         ../include/paths.hpp
         ../include/platform.hpp
         ../include/counter.hpp

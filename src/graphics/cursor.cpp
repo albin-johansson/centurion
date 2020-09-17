@@ -1,9 +1,16 @@
 #include "cursor.hpp"
 
-#include "detail/utils.hpp"
+#include <type_traits>
+
 #include "exception.hpp"
 
 namespace centurion {
+
+static_assert(std::is_final_v<cursor>);
+static_assert(std::is_nothrow_move_constructible_v<cursor>);
+static_assert(std::is_nothrow_move_assignable_v<cursor>);
+static_assert(!std::is_copy_constructible_v<cursor>);
+static_assert(!std::is_copy_assignable_v<cursor>);
 
 cursor::cursor(nn_owner<SDL_Cursor*> sdlCursor) noexcept : m_cursor{sdlCursor}
 {}

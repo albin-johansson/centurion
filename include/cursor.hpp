@@ -39,8 +39,7 @@
 
 #include <SDL.h>
 
-#include <memory>
-#include <type_traits>
+#include <memory>  // unique_ptr
 
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"
@@ -163,33 +162,6 @@ enum class system_cursor {
 class cursor final
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a cursor.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<cursor>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a cursor.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<cursor>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a cursor.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<cursor>;
-
   /**
    * @brief Creates a cursor based on the supplied `SDL_Cursor`.
    *
@@ -321,12 +293,6 @@ class cursor final
 
   std::unique_ptr<SDL_Cursor, deleter> m_cursor;
 };
-
-static_assert(std::is_final_v<cursor>);
-static_assert(std::is_nothrow_move_constructible_v<cursor>);
-static_assert(std::is_nothrow_move_assignable_v<cursor>);
-static_assert(!std::is_copy_constructible_v<cursor>);
-static_assert(!std::is_copy_assignable_v<cursor>);
 
 }  // namespace centurion
 

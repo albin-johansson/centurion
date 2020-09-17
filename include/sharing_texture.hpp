@@ -38,7 +38,6 @@
 #define CENTURION_SHARING_TEXTURE_HEADER
 
 #include <memory>
-#include <type_traits>
 
 #include "basic_texture.hpp"
 #include "centurion_api.hpp"
@@ -83,33 +82,6 @@ class texture_traits<sharing_texture> final
 class sharing_texture final : public basic_texture<sharing_texture>
 {
  public:
-  /**
-   * @typedef uptr
-   *
-   * @brief Simple alias for a unique pointer to a sharing texture.
-   *
-   * @since 5.0.0
-   */
-  using uptr = std::unique_ptr<sharing_texture>;
-
-  /**
-   * @typedef sptr
-   *
-   * @brief Simple alias for a shared pointer to a sharing texture.
-   *
-   * @since 5.0.0
-   */
-  using sptr = std::shared_ptr<sharing_texture>;
-
-  /**
-   * @typedef wptr
-   *
-   * @brief Simple alias for a weak pointer to a sharing texture.
-   *
-   * @since 5.0.0
-   */
-  using wptr = std::weak_ptr<sharing_texture>;
-
   /**
    * @brief Creates a sharing texture from a pre-existing SDL texture.
    *

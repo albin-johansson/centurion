@@ -44,6 +44,20 @@ Related functions
   :outline:
   :no-link:
 
+Examples
+--------
+
+.. code-block:: C++
+
+  #include <scan_code.hpp>
+
+  void foo()
+  {
+    constexpr cen::scan_code a{SDL_SCANCODE_A}; // compile-time scan code
+    cen::scan_code b{"b"};                      // scan code from name
+    cen::scan_code c{SDLK_c};                   // scan code from SDL key code
+  }
+
 See also
 --------
 

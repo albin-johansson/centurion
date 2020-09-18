@@ -148,43 +148,10 @@ struct config final
  *
  * @brief Used to initialize and de-initialize the library.
  *
- * @since 3.0.0
- *
  * @note The signature of the main-method must be `ìnt(int, char**)` when
  * using the Centurion library!
- *
- * @par Examples
- * This is how you should initialize the library.
- * @code{.cpp}
  * 
- *
- * int main(int, char**)
- * {
- *   cen::library lib;
- *
- *   // The library is now initialized, proceed to using it!
- *
- *   return 0;
- * }
- * @endcode
- * You can also manually configure exactly how the library is initialized, using
- * the @link cen::config @endlink struct.
- * @code{.cpp}
- * 
- *
- * int main(int, char**)
- * {
- *   cen::config cfg;
- *   cfg.initMixer = false;
- *   // ...
- *
- *   cen::library lib{cfg};
- *
- *   // The library is now initialized, proceed to using it!
- *
- *   return 0;
- * }
- * @endcode
+ * @since 3.0.0
  *
  * @headerfile centurion.hpp
  */

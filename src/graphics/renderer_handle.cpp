@@ -3,7 +3,7 @@
 #include "detail/utils.hpp"
 #include "renderer.hpp"
 
-namespace centurion {
+namespace cen {
 
 renderer_handle::renderer_handle(SDL_Renderer* renderer) noexcept
     : m_renderer{renderer}
@@ -25,4 +25,4 @@ auto operator<<(std::ostream& stream, const renderer_handle& handle)
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("power_state enum values", "[battery]")
 {
   using namespace cen::battery;

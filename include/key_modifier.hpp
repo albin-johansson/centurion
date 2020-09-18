@@ -45,7 +45,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @enum key_modifier
@@ -75,6 +75,6 @@ enum class key_modifier {
   mode = KMOD_MODE
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_KEY_MODIFIER_HEADER

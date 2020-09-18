@@ -1,6 +1,6 @@
 #include "video.hpp"
 
-namespace centurion {
+namespace cen {
 
 auto get_render_driver_info(int index) noexcept
     -> std::optional<SDL_RendererInfo>
@@ -14,4 +14,4 @@ auto get_render_driver_info(int index) noexcept
   }
 }
 
-}  // namespace centurion
+}  // namespace cen

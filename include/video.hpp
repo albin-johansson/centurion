@@ -42,7 +42,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @brief Returns the number of available rendering drivers.
@@ -90,6 +90,6 @@ CENTURION_QUERY
 auto get_render_driver_info(int index) noexcept
     -> std::optional<SDL_RendererInfo>;
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_VIDEO_HEADER

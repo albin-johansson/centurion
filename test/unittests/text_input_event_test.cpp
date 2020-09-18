@@ -1,6 +1,5 @@
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "event.hpp"
 
 TEST_CASE("text_input_event::set_window_id", "[text_input_event]")

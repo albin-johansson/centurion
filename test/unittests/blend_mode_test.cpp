@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("blend_mode enum values", "[blend_mode]")
 {
   CHECK(cen::blend_mode::none == SDL_BLENDMODE_NONE);

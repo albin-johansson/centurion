@@ -45,7 +45,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @enum event_type
@@ -186,6 +186,6 @@ enum class event_type {
   return !(lhs == rhs);
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_EVENT_TYPE_HEADER

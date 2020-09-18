@@ -49,7 +49,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class sdl_string
@@ -119,6 +119,6 @@ class sdl_string final
   std::unique_ptr<char, deleter> m_str;
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_SDL_STRING_HEADER

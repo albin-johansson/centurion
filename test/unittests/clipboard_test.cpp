@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("clipboard::has_text", "[clipboard]")
 {
   cen::clipboard::set_text("");

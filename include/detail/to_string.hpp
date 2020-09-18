@@ -45,7 +45,7 @@
 
 #include "centurion_api.hpp"
 
-namespace centurion::detail {
+namespace cen::detail {
 
 /**
  * @brief Returns a string representation of an arithmetic value.
@@ -75,6 +75,6 @@ template <typename T, std::size_t bufferSize = 10>
   }
 }
 
-}  // namespace centurion::detail
+}  // namespace cen::detail
 
 #endif  // CENTURION_DETAIL_TO_STRING_HEADER

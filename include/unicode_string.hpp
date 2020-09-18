@@ -50,7 +50,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class unicode_string
@@ -401,6 +401,6 @@ inline constexpr auto operator""_uni(unsigned long long int i) noexcept
 
 }  // namespace literals
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_UNICODE_STRING_HEADER

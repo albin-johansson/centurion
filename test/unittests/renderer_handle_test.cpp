@@ -3,7 +3,6 @@
 #include <catch.hpp>
 #include <iostream>
 
-#include "cen.hpp"
 #include "log.hpp"
 #include "renderer.hpp"
 #include "window.hpp"

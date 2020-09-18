@@ -1,6 +1,5 @@
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "event.hpp"
 
 TEST_CASE("JoyHatValue enum values", "[joy_hat_event]")

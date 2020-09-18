@@ -1,6 +1,5 @@
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "event.hpp"
 
 using dummy_t = SDL_QuitEvent;

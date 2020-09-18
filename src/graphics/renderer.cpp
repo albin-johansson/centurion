@@ -5,7 +5,7 @@
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<renderer>);
 static_assert(std::is_nothrow_destructible_v<renderer>);
@@ -59,4 +59,4 @@ auto operator<<(std::ostream& stream, const renderer& renderer) -> std::ostream&
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

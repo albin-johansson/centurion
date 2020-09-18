@@ -56,7 +56,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class font_cache
@@ -798,6 +798,6 @@ void font_cache::add_latin1(Renderer& renderer)
   add_latin1_supplement(renderer);
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_FONT_CACHE_HEADER

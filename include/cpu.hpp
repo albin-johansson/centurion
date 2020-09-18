@@ -50,7 +50,7 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace centurion::cpu
+ * @namespace cen::cpu
  *
  * @ingroup system
  *
@@ -60,7 +60,7 @@
  *
  * @headerfile cpu.hpp
  */
-namespace centurion::cpu {
+namespace cen::cpu {
 
 /**
  * @brief Returns the CPU L1 cache line size.
@@ -293,6 +293,6 @@ namespace centurion::cpu {
   return SDL_BYTEORDER == SDL_LIL_ENDIAN;
 }
 
-}  // namespace centurion::cpu
+}  // namespace cen::cpu
 
 #endif  // CENTURION_CPU_HEADER

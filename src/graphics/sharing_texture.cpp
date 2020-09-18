@@ -3,7 +3,7 @@
 #include "exception.hpp"
 #include "texture.hpp"
 
-namespace centurion {
+namespace cen {
 
 sharing_texture::sharing_texture(owner<SDL_Texture*> sdlTexture)
     : basic_texture{sdlTexture, get_deleter()}
@@ -17,4 +17,4 @@ sharing_texture::sharing_texture(texture&& texture) noexcept
     : sharing_texture{texture.release()}
 {}
 
-}  // namespace centurion
+}  // namespace cen

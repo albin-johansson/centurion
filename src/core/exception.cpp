@@ -5,7 +5,7 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-namespace centurion {
+namespace cen {
 
 using namespace std::string_literals;
 
@@ -29,4 +29,4 @@ mix_error::mix_error(std::string_view what)
   set_what(what.data() + ": "s + Mix_GetError());
 }
 
-}  // namespace centurion
+}  // namespace cen

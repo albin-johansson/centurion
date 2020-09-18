@@ -4,7 +4,7 @@
 
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<joystick>);
 static_assert(std::is_nothrow_move_constructible_v<joystick>);
@@ -149,4 +149,4 @@ auto joystick::guid_from_string(nn_czstring str) noexcept -> SDL_JoystickGUID
   return SDL_JoystickGetGUIDFromString(str);
 }
 
-}  // namespace centurion
+}  // namespace cen

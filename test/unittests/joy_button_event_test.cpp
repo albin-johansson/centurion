@@ -1,6 +1,5 @@
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "event.hpp"
 
 TEST_CASE("joy_button_event::set_which", "[joy_button_event]")

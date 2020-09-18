@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 multi_gesture_event::multi_gesture_event() noexcept : common_event{}
 {}
@@ -70,4 +70,4 @@ auto multi_gesture_event::fingers() const noexcept -> float
   return m_event.numFingers;
 }
 
-}  // namespace centurion
+}  // namespace cen

@@ -2,7 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "types.hpp"
 
 TEST_CASE("sdl_string ctor", "[sdl_string]")

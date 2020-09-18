@@ -6,7 +6,7 @@
 #include "detail/to_string.hpp"
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<music>);
 static_assert(!std::is_nothrow_copy_constructible_v<music>);
@@ -120,4 +120,4 @@ auto operator<<(std::ostream& stream, const music& music) -> std::ostream&
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

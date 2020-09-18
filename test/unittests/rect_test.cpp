@@ -2,7 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "log.hpp"
 
 TEST_CASE("Rect default values", "[rect]")

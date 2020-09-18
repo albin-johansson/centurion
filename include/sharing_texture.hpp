@@ -49,7 +49,7 @@
 #pragma once
 #endif  // CENTURUION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 class sharing_texture;
 
@@ -208,6 +208,6 @@ sharing_texture::sharing_texture(const Renderer& renderer,
   }
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_SHARING_TEXTURE_HEADER

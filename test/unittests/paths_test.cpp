@@ -3,8 +3,6 @@
 #include <catch.hpp>
 #include <iostream>
 
-#include "cen.hpp"
-
 TEST_CASE("base_path()", "[path]")
 {
   CHECK_NOTHROW(cen::base_path{});

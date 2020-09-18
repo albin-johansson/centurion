@@ -2,7 +2,7 @@
 
 #include "joystick.hpp"
 
-namespace centurion {
+namespace cen {
 
 joystick_handle::joystick_handle(SDL_Joystick* sdlJoystick) noexcept
     : basic_joystick{sdlJoystick}
@@ -27,4 +27,4 @@ auto joystick_from_player_index(int playerIndex) noexcept -> joystick_handle
   return joystick_handle{SDL_JoystickFromPlayerIndex(playerIndex)};
 }
 
-}  // namespace centurion
+}  // namespace cen

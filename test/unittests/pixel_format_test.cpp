@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("pixel_format enum values", "[pixel_format]")
 {
   SECTION("CEN_ left and SDL right")

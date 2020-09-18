@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("device_type enum", "[touch]")
 {
   using device_t = cen::touch::device_type;

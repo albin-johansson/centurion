@@ -1,7 +1,7 @@
 #include "colors.hpp"
 #include "message_box.hpp"
 
-namespace centurion {
+namespace cen {
 
 message_box::color_scheme::color_scheme() noexcept
 {
@@ -24,4 +24,4 @@ auto message_box::color_scheme::get() noexcept -> SDL_MessageBoxColorScheme*
   return &m_scheme;
 }
 
-}  // namespace centurion
+}  // namespace cen

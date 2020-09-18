@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
 
-#include "cen.hpp"
+#include "centurion.hpp"
 
 int main(int argc, char* argv[])
 {

@@ -44,7 +44,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class mouse_state
@@ -230,6 +230,6 @@ class mouse_state final
   bool m_prevRightPressed{false};
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_MOUSE_STATE_HEADER

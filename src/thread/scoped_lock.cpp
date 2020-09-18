@@ -3,7 +3,7 @@
 #include "exception.hpp"
 #include "mutex.hpp"
 
-namespace centurion {
+namespace cen {
 
 scoped_lock::scoped_lock(mutex& mutex) : m_mutex{&mutex}
 {
@@ -17,4 +17,4 @@ scoped_lock::~scoped_lock() noexcept
   m_mutex->unlock();
 }
 
-}  // namespace centurion
+}  // namespace cen

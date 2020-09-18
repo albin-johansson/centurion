@@ -1,6 +1,5 @@
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "event.hpp"
 
 TEST_CASE("touch_finger_event::set_touch_id", "[touch_finger_event]")

@@ -51,7 +51,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class scan_code
@@ -318,7 +318,7 @@ auto operator<<(std::ostream& stream, const scan_code& scanCode)
 }
 
 /**
- * @namespace centurion::scancodes
+ * @namespace cen::scancodes
  *
  * @ingroup input
  *
@@ -963,6 +963,6 @@ inline constexpr scan_code left_gui{SDL_SCANCODE_LGUI};
 inline constexpr scan_code right_gui{SDL_SCANCODE_RGUI};
 
 }  // namespace scancodes
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_SCAN_CODE_HEADER

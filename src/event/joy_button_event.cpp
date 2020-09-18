@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 joy_button_event::joy_button_event() noexcept : common_event{}
 {}
@@ -49,4 +49,4 @@ auto joy_button_event::released() const noexcept -> bool
   return state() == button_state::released;
 }
 
-}  // namespace centurion
+}  // namespace cen

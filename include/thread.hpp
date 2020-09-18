@@ -63,7 +63,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /// @addtogroup thread
 /// @{
@@ -387,6 +387,6 @@ auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&;
 
 /// @}
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_THREAD_HEADER

@@ -51,7 +51,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class base_path
@@ -228,6 +228,6 @@ auto to_string(const pref_path& path) -> std::string;
 CENTURION_API
 auto operator<<(std::ostream& stream, const pref_path& path) -> std::ostream&;
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_PATHS_HEADER

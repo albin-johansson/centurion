@@ -51,7 +51,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @enum fade_status
@@ -528,6 +528,6 @@ auto to_string(const music& music) -> std::string;
 CENTURION_QUERY
 auto operator<<(std::ostream& stream, const music& music) -> std::ostream&;
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_MUSIC_HEADER

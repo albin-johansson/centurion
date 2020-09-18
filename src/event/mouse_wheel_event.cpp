@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 auto operator==(mouse_wheel_direction lhs, SDL_MouseWheelDirection rhs) noexcept
     -> bool
@@ -83,4 +83,4 @@ auto mouse_wheel_event::direction() const noexcept -> mouse_wheel_direction
   return static_cast<mouse_wheel_direction>(m_event.direction);
 }
 
-}  // namespace centurion
+}  // namespace cen

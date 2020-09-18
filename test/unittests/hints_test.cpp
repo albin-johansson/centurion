@@ -2,7 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "detail/utils.hpp"
 #include "window.hpp"
 
@@ -322,7 +321,7 @@ TEST_CASE("set_hint", "[hint]")
     using cen::hint::window_share_pixel_format;
     test_hint<window_share_pixel_format>([] {
       cen::window window;
-      const auto str = centurion::detail::address_of(window.get());
+      const auto str = cen::detail::address_of(window.get());
 
       CHECK(cen::set_hint<window_share_pixel_format>(str.c_str()));
       CHECK_THAT(cen::get_hint<window_share_pixel_format>().value(),

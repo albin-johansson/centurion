@@ -3,7 +3,6 @@
 #include <catch.hpp>
 #include <string>
 
-#include "cen.hpp"
 #include "colors.hpp"
 
 TEST_CASE("message_box member show", "[.message_box]")

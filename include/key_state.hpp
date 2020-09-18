@@ -57,7 +57,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class key_state
@@ -249,6 +249,6 @@ class key_state final
   int m_nKeys{};
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_KEY_STATE_HEADER

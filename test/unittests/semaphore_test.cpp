@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("semaphore::acquire()", "[semaphore]")
 {
   cen::semaphore semaphore{1};

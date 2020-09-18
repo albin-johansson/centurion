@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 controller_axis_event::controller_axis_event() noexcept : common_event{}
 {}
@@ -40,4 +40,4 @@ auto controller_axis_event::value() const noexcept -> i16
   return m_event.value;
 }
 
-}  // namespace centurion
+}  // namespace cen

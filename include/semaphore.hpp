@@ -51,7 +51,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /// @addtogroup thread
 /// @{
@@ -150,6 +150,6 @@ class semaphore final
 
 /// @}
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_SEMAPHORE_HEADER

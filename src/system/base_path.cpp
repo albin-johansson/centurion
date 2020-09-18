@@ -4,7 +4,7 @@
 
 #include "paths.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_default_constructible_v<base_path>);
 static_assert(std::is_nothrow_move_constructible_v<base_path>);
@@ -27,4 +27,4 @@ auto operator<<(std::ostream& stream, const base_path& path) -> std::ostream&
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

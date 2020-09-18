@@ -61,7 +61,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 class texture;
 
@@ -303,6 +303,6 @@ auto to_string(const texture& texture) -> std::string;
 CENTURION_QUERY
 auto operator<<(std::ostream& stream, const texture& texture) -> std::ostream&;
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_TEXTURE_HEADER

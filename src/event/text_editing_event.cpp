@@ -3,7 +3,7 @@
 #include "detail/utils.hpp"
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 text_editing_event::text_editing_event() noexcept : common_event{}
 {
@@ -57,4 +57,4 @@ auto text_editing_event::length() const noexcept -> i32
   return m_event.length;
 }
 
-}  // namespace centurion
+}  // namespace cen

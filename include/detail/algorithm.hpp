@@ -43,7 +43,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion::detail {
+namespace cen::detail {
 
 // std::find_if isn't constexpr until C++20
 template <class It, class Predicate>
@@ -60,6 +60,6 @@ template <class It, class Predicate>
   return first;
 }
 
-}  // namespace centurion::detail
+}  // namespace cen::detail
 
 #endif  // CENTURION_ALGORITHM_HEADER

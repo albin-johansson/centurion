@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 
-namespace centurion::platform {
+namespace cen::platform {
 
 auto id() noexcept -> platform_id
 {
@@ -62,4 +62,4 @@ auto name() -> std::optional<std::string>
   }
 }
 
-}  // namespace centurion::platform
+}  // namespace cen::platform

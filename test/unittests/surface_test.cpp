@@ -6,7 +6,6 @@
 #include <iostream>
 #include <utility>
 
-#include "cen.hpp"
 #include "colors.hpp"
 #include "exception.hpp"
 #include "log.hpp"
@@ -23,7 +22,7 @@ TEST_CASE("surface(nn_czstring)", "[surface]")
 TEST_CASE("surface(owner<SDL_Surface*>)", "[surface]")
 {
   CHECK_NOTHROW(cen::surface{IMG_Load(path)});
-  
+
   SDL_Surface* bad{};
   CHECK_THROWS_AS(cen::surface{bad}, cen::exception);
 }

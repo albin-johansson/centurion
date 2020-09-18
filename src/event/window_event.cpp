@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 window_event::window_event() noexcept : common_event{}
 {}
@@ -24,4 +24,4 @@ auto window_event::data_2() const noexcept -> i32
   return m_event.data2;
 }
 
-}  // namespace centurion
+}  // namespace cen

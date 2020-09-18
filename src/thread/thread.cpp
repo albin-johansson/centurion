@@ -6,7 +6,7 @@
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 thread::thread(task_type task, nn_czstring name, void* data)
     : m_thread{SDL_CreateThread(task, name, data)}
@@ -114,4 +114,4 @@ auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

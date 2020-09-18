@@ -54,13 +54,13 @@
 /// @{
 
 /**
- * @namespace centurion::clipboard
+ * @namespace cen::clipboard
  *
  * @brief Provides functions related to managing the clipboard.
  *
  * @since 5.0.0
  */
-namespace centurion::clipboard {
+namespace cen::clipboard {
 
 /**
  * @brief Indicates whether or not there is a clipboard exists and that it
@@ -99,7 +99,7 @@ auto get_text() -> std::string;
 CENTURION_API
 auto set_text(nn_czstring text) noexcept -> bool;
 
-}  // namespace centurion::clipboard
+}  // namespace cen::clipboard
 
 /// @}
 

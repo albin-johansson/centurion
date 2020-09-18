@@ -59,7 +59,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class rect_traits
@@ -745,6 +745,6 @@ auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_RECTANGLE_HEADER

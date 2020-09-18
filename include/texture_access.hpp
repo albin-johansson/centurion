@@ -43,7 +43,7 @@
 
 #include "centurion_api.hpp"
 
-namespace centurion {
+namespace cen {
 
 /**
  * @enum texture_access
@@ -69,6 +69,6 @@ enum class texture_access {
                                      * as a render target. */
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_TEXTURE_ACCESS_HEADER

@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 joy_ball_event::joy_ball_event() noexcept : common_event{}
 {}
@@ -49,4 +49,4 @@ auto joy_ball_event::dy() const noexcept -> i16
   return m_event.yrel;
 }
 
-}  // namespace centurion
+}  // namespace cen

@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("mouse_state()", "[mouse_state]")
 {
   const cen::mouse_state state;

@@ -4,7 +4,7 @@
 
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<cursor>);
 static_assert(std::is_nothrow_move_constructible_v<cursor>);
@@ -65,4 +65,4 @@ auto cursor::visible() noexcept -> bool
   return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
 }
 
-}  // namespace centurion
+}  // namespace cen

@@ -53,7 +53,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 class joystick;
 
@@ -541,6 +541,6 @@ class joystick final : public basic_joystick<joystick>
   return !(lhs == rhs);
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_JOYSTICK_HEADER

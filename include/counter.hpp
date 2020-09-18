@@ -49,7 +49,7 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace centurion::counter
+ * @namespace cen::counter
  *
  * @ingroup system
  *
@@ -59,7 +59,7 @@
  *
  * @headerfile counter.hpp
  */
-namespace centurion::counter {
+namespace cen::counter {
 
 /**
  * @brief Returns the frequency of the system high-performance counter.
@@ -116,6 +116,6 @@ template <typename T>
   return milliseconds<u32>{SDL_GetTicks()};
 }
 
-}  // namespace centurion::counter
+}  // namespace cen::counter
 
 #endif  // CENTURION_TIMER_HEADER

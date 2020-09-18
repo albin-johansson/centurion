@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 namespace {
 
 [[nodiscard]] auto create_event(cen::u32 type) -> cen::event

@@ -2,7 +2,7 @@
 
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 mutex::mutex() : m_mutex{SDL_CreateMutex()}
 {
@@ -31,4 +31,4 @@ auto mutex::get() noexcept -> SDL_mutex*
   return m_mutex.get();
 }
 
-}  // namespace centurion
+}  // namespace cen

@@ -2,7 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "key_code.hpp"
 #include "scan_code.hpp"
 

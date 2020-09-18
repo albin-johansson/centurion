@@ -5,7 +5,7 @@
 #include "detail/to_string.hpp"
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<font>);
 static_assert(std::is_nothrow_move_constructible_v<font>);
@@ -243,4 +243,4 @@ auto operator<<(std::ostream& stream, const font& font) -> std::ostream&
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

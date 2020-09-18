@@ -2,7 +2,7 @@
 
 #include "detail/utils.hpp"
 
-namespace centurion {
+namespace cen {
 
 window_handle::window_handle(SDL_Window* window) noexcept : m_window{window}
 {}
@@ -29,4 +29,4 @@ auto operator<<(std::ostream& stream, const window_handle& handle)
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

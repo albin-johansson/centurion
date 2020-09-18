@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("screen::set_screen_saver_enabled", "[screen]")
 {
   CHECK(!cen::screen::screen_saver_enabled());

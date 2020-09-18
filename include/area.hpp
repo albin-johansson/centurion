@@ -47,7 +47,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @struct basic_area
@@ -198,6 +198,6 @@ auto operator<<(std::ostream& stream, const basic_area<T>& area)
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_AREA_HEADER

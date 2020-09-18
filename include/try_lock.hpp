@@ -51,7 +51,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /// @addtogroup thread
 /// @{
@@ -150,6 +150,6 @@ static_assert(!std::is_copy_assignable_v<try_lock>);
 
 /// @}
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_TRY_LOCK_HEADER

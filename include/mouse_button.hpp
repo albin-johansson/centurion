@@ -45,7 +45,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @enum mouse_button
@@ -66,6 +66,6 @@ enum class mouse_button {
   x2 = SDL_BUTTON_X2
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_MOUSE_BUTTON_HEADER

@@ -53,7 +53,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @brief Provides traits used by the `basic_point` class.
@@ -534,6 +534,6 @@ inline auto operator<<(std::ostream& stream, const fpoint& point)
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_POINT_HEADER

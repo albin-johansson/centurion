@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 audio_device_event::audio_device_event() noexcept : common_event{}
 {}
@@ -35,4 +35,4 @@ auto audio_device_event::capture() const noexcept -> bool
   return m_event.iscapture;
 }
 
-}  // namespace centurion
+}  // namespace cen

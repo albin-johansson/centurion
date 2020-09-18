@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("unicode_string default constructor", "[unicode_string]")
 {
   const cen::unicode_string str;

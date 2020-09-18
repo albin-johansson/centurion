@@ -57,7 +57,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class sound_effect
@@ -314,6 +314,6 @@ CENTURION_QUERY
 auto operator<<(std::ostream& stream, const sound_effect& sound)
     -> std::ostream&;
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_SOUND_EFFECT_HEADER

@@ -56,7 +56,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 template <typename T>
 class texture_traits;
@@ -567,6 +567,6 @@ basic_texture<T>::operator const SDL_Texture*() const noexcept
   return ptr();
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_BASIC_TEXTURE_HEADER

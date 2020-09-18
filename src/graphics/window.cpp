@@ -6,7 +6,7 @@
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<window>);
 
@@ -60,4 +60,4 @@ auto operator<<(std::ostream& stream, const window& window) -> std::ostream&
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

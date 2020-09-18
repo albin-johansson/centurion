@@ -7,7 +7,7 @@
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<sound_effect>);
 static_assert(std::is_nothrow_move_constructible_v<sound_effect>);
@@ -98,4 +98,4 @@ auto operator<<(std::ostream& stream, const sound_effect& sound)
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

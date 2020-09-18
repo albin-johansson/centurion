@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 mouse_motion_event::mouse_motion_event() noexcept : common_event{}
 {}
@@ -85,4 +85,4 @@ auto mouse_motion_event::dy() const noexcept -> i32
   return m_event.yrel;
 }
 
-}  // namespace centurion
+}  // namespace cen

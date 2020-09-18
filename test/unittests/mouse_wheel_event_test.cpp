@@ -1,6 +1,5 @@
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "event.hpp"
 
 TEST_CASE("mouse_wheel_direction operator==", "[mouse_wheel_direction]")

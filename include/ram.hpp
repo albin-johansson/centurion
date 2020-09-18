@@ -46,7 +46,7 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace centurion::ram
+ * @namespace cen::ram
  *
  * @ingroup system
  *
@@ -56,7 +56,7 @@
  *
  * @headerfile ram.hpp
  */
-namespace centurion::ram {
+namespace cen::ram {
 
 /**
  * @brief Returns the total amount of system RAM in megabytes.
@@ -82,6 +82,6 @@ namespace centurion::ram {
   return amount_mb() / 1'000;
 }
 
-}  // namespace centurion::ram
+}  // namespace cen::ram
 
 #endif  // CENTURION_RAM_HEADER

@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 text_input_event::text_input_event() noexcept : common_event{}
 {}
@@ -24,4 +24,4 @@ auto text_input_event::text_utf8() const noexcept -> std::string_view
   return std::string_view{static_cast<czstring>(m_event.text)};
 }
 
-}  // namespace centurion
+}  // namespace cen

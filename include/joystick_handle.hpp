@@ -51,7 +51,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 class joystick_handle;
 
@@ -164,6 +164,6 @@ static_assert(std::is_nothrow_move_assignable_v<joystick_handle>);
 static_assert(std::is_nothrow_copy_constructible_v<joystick_handle>);
 static_assert(std::is_nothrow_copy_assignable_v<joystick_handle>);
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_JOYSTICK_HANDLE_HEADER

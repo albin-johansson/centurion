@@ -55,7 +55,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class exception
@@ -228,6 +228,6 @@ class mix_error final : public exception
   explicit mix_error(std::string_view what);
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_EXCEPTION_HEADER

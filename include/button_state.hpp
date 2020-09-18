@@ -45,7 +45,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @enum button_state
@@ -67,6 +67,6 @@ enum class button_state {
   pressed = SDL_PRESSED /**< Button is pressed. Corresponds to `SDL_PRESSED`.*/
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_BUTTON_STATE_HEADER

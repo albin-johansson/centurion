@@ -55,7 +55,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @struct glyph_metrics
@@ -575,6 +575,6 @@ auto to_string(const font& font) -> std::string;
 CENTURION_API
 auto operator<<(std::ostream& stream, const font& font) -> std::ostream&;
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_FONT_HEADER

@@ -45,7 +45,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @enum blend_mode
@@ -125,6 +125,6 @@ enum class blend_mode {
   return !(lhs == rhs);
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_BLEND_MODE_HEADER

@@ -50,7 +50,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class key_code
@@ -361,7 +361,7 @@ auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
 }
 
 /**
- * @namespace centurion::keycodes
+ * @namespace cen::keycodes
  *
  * @ingroup input
  *
@@ -1006,6 +1006,6 @@ inline constexpr key_code left_gui{SDLK_LGUI};
 inline constexpr key_code right_gui{SDLK_RGUI};
 
 }  // namespace keycodes
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_KEY_CODE_HEADER

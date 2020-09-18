@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 
-namespace centurion::screen {
+namespace cen::screen {
 
 void set_screen_saver_enabled(bool enabled) noexcept
 {
@@ -53,4 +53,4 @@ auto get_pixel_format() noexcept -> pixel_format
   return static_cast<pixel_format>(mode.format);
 }
 
-}  // namespace centurion::screen
+}  // namespace cen::screen

@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 joy_device_event::joy_device_event() noexcept : common_event{}
 {}
@@ -19,4 +19,4 @@ auto joy_device_event::which() const noexcept -> i32
   return m_event.which;
 }
 
-}  // namespace centurion
+}  // namespace cen

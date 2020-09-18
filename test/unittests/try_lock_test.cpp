@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("try_lock", "[try_lock]")
 {
   cen::mutex mutex;

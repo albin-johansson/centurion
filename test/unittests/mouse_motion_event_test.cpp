@@ -1,6 +1,5 @@
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "event.hpp"
 
 TEST_CASE("mouse_motion_event::set_window_id", "[mouse_motion_event]")

@@ -48,7 +48,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class basic_renderer
@@ -1401,6 +1401,6 @@ class basic_renderer
   }
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_BASIC_RENDERER_HEADER

@@ -1,6 +1,6 @@
 #include "scan_code.hpp"
 
-namespace centurion {
+namespace cen {
 
 auto to_string(const scan_code& scanCode) -> std::string
 {
@@ -15,4 +15,4 @@ auto operator<<(std::ostream& stream, const scan_code& scanCode)
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

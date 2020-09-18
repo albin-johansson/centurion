@@ -50,7 +50,7 @@
 /// @{
 
 /**
- * @namespace centurion::log
+ * @namespace cen::log
  *
  * @brief Contains easy-to-use logging facilities.
  *
@@ -85,7 +85,7 @@
  *
  * @headerfile log.hpp
  */
-namespace centurion::log {
+namespace cen::log {
 
 /**
  * @enum priority
@@ -578,7 +578,7 @@ auto get_priority(category category) noexcept -> log::priority;
   return !(lhs == rhs);
 }
 
-}  // namespace centurion::log
+}  // namespace cen::log
 
 #ifdef CENTURION_USE_DEBUG_LOGGING_MACROS
 
@@ -619,34 +619,32 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * @def CENTURION_LOG_INFO
  */
-#define CENTURION_LOG_INFO(fmt, ...) centurion::log::info(fmt, __VA_ARGS__)
+#define CENTURION_LOG_INFO(fmt, ...) cen::log::info(fmt, __VA_ARGS__)
 
 /**
  * @def CENTURION_LOG_WARN
  */
-#define CENTURION_LOG_WARN(fmt, ...) centurion::log::warn(fmt, __VA_ARGS__)
+#define CENTURION_LOG_WARN(fmt, ...) cen::log::warn(fmt, __VA_ARGS__)
 
 /**
  * @def CENTURION_LOG_VERBOSE
  */
-#define CENTURION_LOG_VERBOSE(fmt, ...) \
-  centurion::log::verbose(fmt, __VA_ARGS__)
+#define CENTURION_LOG_VERBOSE(fmt, ...) cen::log::verbose(fmt, __VA_ARGS__)
 
 /**
  * @def CENTURION_LOG_DEBUG
  */
-#define CENTURION_LOG_DEBUG(fmt, ...) centurion::log::debug(fmt, __VA_ARGS__)
+#define CENTURION_LOG_DEBUG(fmt, ...) cen::log::debug(fmt, __VA_ARGS__)
 
 /**
  * @def CENTURION_LOG_CRITICAL
  */
-#define CENTURION_LOG_CRITICAL(fmt, ...) \
-  centurion::log::critical(fmt, __VA_ARGS__)
+#define CENTURION_LOG_CRITICAL(fmt, ...) cen::log::critical(fmt, __VA_ARGS__)
 
 /**
  * @def CENTURION_LOG_ERROR
  */
-#define CENTURION_LOG_ERROR(fmt, ...) centurion::log::error(fmt, __VA_ARGS__)
+#define CENTURION_LOG_ERROR(fmt, ...) cen::log::error(fmt, __VA_ARGS__)
 
 #endif  // NDEBUG
 
@@ -655,7 +653,7 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * @def CENTURION_LOG_INFO
  *
- * @brief A debug-only macro that expands to `centurion::log::info`.
+ * @brief A debug-only macro that expands to `cen::log::info`.
  *
  * @since 5.0.0
  */
@@ -663,7 +661,7 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * @def CENTURION_LOG_WARN
  *
- * @brief A debug-only macro that expands to `centurion::log::warn`.
+ * @brief A debug-only macro that expands to `cen::log::warn`.
  *
  * @since 5.0.0
  */
@@ -671,7 +669,7 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * @def CENTURION_LOG_VERBOSE
  *
- * @brief A debug-only macro that expands to `centurion::log::verbose`.
+ * @brief A debug-only macro that expands to `cen::log::verbose`.
  *
  * @since 5.0.0
  */
@@ -679,7 +677,7 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * @def CENTURION_LOG_DEBUG
  *
- * @brief A debug-only macro that expands to `centurion::log::debug`.
+ * @brief A debug-only macro that expands to `cen::log::debug`.
  *
  * @since 5.0.0
  */
@@ -687,7 +685,7 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * @def CENTURION_LOG_CRITICAL
  *
- * @brief A debug-only macro that expands to `centurion::log::critical`.
+ * @brief A debug-only macro that expands to `cen::log::critical`.
  *
  * @since 5.0.0
  */
@@ -695,7 +693,7 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * @def CENTURION_LOG_ERROR
  *
- * @brief A debug-only macro that expands to `centurion::log::error`.
+ * @brief A debug-only macro that expands to `cen::log::error`.
  *
  * @since 5.0.0
  */

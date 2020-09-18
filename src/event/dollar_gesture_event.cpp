@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 dollar_gesture_event::dollar_gesture_event() noexcept : common_event{}
 {}
@@ -70,4 +70,4 @@ auto dollar_gesture_event::y() const noexcept -> float
   return m_event.y;
 }
 
-}  // namespace centurion
+}  // namespace cen

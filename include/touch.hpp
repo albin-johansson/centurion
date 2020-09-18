@@ -44,7 +44,7 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace centurion::touch
+ * @namespace cen::touch
  *
  * @ingroup input
  *
@@ -52,7 +52,7 @@
  *
  * @since 4.3.0
  */
-namespace centurion::touch {
+namespace cen::touch {
 
 /**
  * @enum device_type
@@ -218,6 +218,6 @@ auto get_finger(SDL_TouchID id, int index) noexcept
   return SDL_MOUSE_TOUCHID;
 }
 
-}  // namespace centurion::touch
+}  // namespace cen::touch
 
 #endif  // CENTURION_TOUCH_HEADER

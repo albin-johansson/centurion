@@ -46,7 +46,7 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace centurion::screen
+ * @namespace cen::screen
  *
  * @ingroup system
  *
@@ -56,7 +56,7 @@
  *
  * @headerfile screen.hpp
  */
-namespace centurion::screen {
+namespace cen::screen {
 
 /**
  * @brief Sets whether or not screen savers are enabled.
@@ -136,6 +136,6 @@ auto refresh_rate() noexcept -> int;
 CENTURION_QUERY
 auto get_pixel_format() noexcept -> pixel_format;
 
-}  // namespace centurion::screen
+}  // namespace cen::screen
 
 #endif  // CENTURION_SCREEN_HEADER

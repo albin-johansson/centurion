@@ -4,7 +4,7 @@
 
 #include "types.hpp"
 
-namespace centurion::battery {
+namespace cen::battery {
 
 auto seconds_left() noexcept -> std::optional<seconds<int>>
 {
@@ -48,4 +48,4 @@ auto exists() noexcept -> bool
   return state() == power_state::on_battery;
 }
 
-}  // namespace centurion::battery
+}  // namespace cen::battery

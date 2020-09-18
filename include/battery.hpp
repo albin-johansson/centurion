@@ -49,7 +49,7 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace centurion::battery
+ * @namespace cen::battery
  *
  * @ingroup system
  *
@@ -57,7 +57,7 @@
  *
  * @since 5.0.0
  */
-namespace centurion::battery {
+namespace cen::battery {
 
 /**
  * @enum power_state
@@ -189,6 +189,6 @@ auto state() noexcept -> power_state;
 CENTURION_QUERY
 auto exists() noexcept -> bool;
 
-}  // namespace centurion::battery
+}  // namespace cen::battery
 
 #endif  // CENTURION_BATTERY_HEADER

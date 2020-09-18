@@ -1,6 +1,5 @@
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "controller.hpp"
 
 TEST_CASE("controller_button operator==", "[controller_button]")

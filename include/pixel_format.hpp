@@ -45,7 +45,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @enum pixel_format
@@ -186,6 +186,6 @@ enum class pixel_format {
   return !(lhs == rhs);
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_PIXEL_FORMAT_HEADER

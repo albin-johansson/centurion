@@ -65,7 +65,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class common_event
@@ -3517,6 +3517,6 @@ class event final
   void update_data() noexcept;
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_EVENT_HEADER

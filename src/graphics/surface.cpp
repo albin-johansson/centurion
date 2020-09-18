@@ -8,7 +8,7 @@
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<surface>);
 static_assert(std::is_copy_constructible_v<surface>);
@@ -184,4 +184,4 @@ auto operator<<(std::ostream& stream, const surface& surface) -> std::ostream&
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

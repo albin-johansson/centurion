@@ -3,7 +3,7 @@
 #include "exception.hpp"
 #include "mutex.hpp"
 
-namespace centurion {
+namespace cen {
 
 condition::condition() : m_cond{SDL_CreateCond()}
 {
@@ -33,4 +33,4 @@ auto condition::wait(mutex& mutex, milliseconds<u32> ms) noexcept -> lock_status
       SDL_CondWaitTimeout(m_cond.get(), mutex.get(), ms.count()));
 }
 
-}  // namespace centurion
+}  // namespace cen

@@ -1,6 +1,6 @@
 #include "key_code.hpp"
 
-namespace centurion {
+namespace cen {
 
 auto to_string(const key_code& keyCode) -> std::string
 {
@@ -14,4 +14,4 @@ auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

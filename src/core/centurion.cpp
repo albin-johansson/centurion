@@ -2,7 +2,7 @@
 
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 library::library()
 {
@@ -103,4 +103,4 @@ library::sdl_image::~sdl_image() noexcept
   IMG_Quit();
 }
 
-}  // namespace centurion
+}  // namespace cen

@@ -2,7 +2,7 @@
 
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 semaphore::semaphore(u32 tokens) : m_semaphore{SDL_CreateSemaphore(tokens)}
 {
@@ -37,4 +37,4 @@ auto semaphore::tokens() const noexcept -> u32
   return SDL_SemValue(m_semaphore.get());
 }
 
-}  // namespace centurion
+}  // namespace cen

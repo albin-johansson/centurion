@@ -4,7 +4,7 @@
 
 #include "renderer.hpp"
 
-namespace centurion {
+namespace cen {
 
 font_cache::font_cache(font&& font) noexcept : m_font{std::move(font)}
 {}
@@ -28,4 +28,4 @@ auto font_cache::try_get_stored(entt::id_type id) const noexcept
   }
 }
 
-}  // namespace centurion
+}  // namespace cen

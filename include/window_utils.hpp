@@ -43,7 +43,7 @@
 #include "centurion_fwd.hpp"
 #include "renderer_handle.hpp"
 
-namespace centurion {
+namespace cen {
 
 /**
  * @brief Returns a handle to the renderer associated with a window.
@@ -72,6 +72,6 @@ template <typename T>
   return renderer_handle{SDL_GetRenderer(window.ptr())};
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_WINDOW_UTILS_HEADER

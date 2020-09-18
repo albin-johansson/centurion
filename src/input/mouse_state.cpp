@@ -2,7 +2,7 @@
 
 #include <type_traits>
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<mouse_state>);
 static_assert(std::is_nothrow_move_constructible_v<mouse_state>);
@@ -79,4 +79,4 @@ auto mouse_state::was_mouse_moved() const noexcept -> bool
   return (m_mouseX != m_oldX) || (m_mouseY != m_oldY);
 }
 
-}  // namespace centurion
+}  // namespace cen

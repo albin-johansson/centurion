@@ -50,7 +50,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @enum system_cursor
@@ -294,6 +294,6 @@ class cursor final
   std::unique_ptr<SDL_Cursor, deleter> m_cursor;
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_CURSOR_HEADER

@@ -52,7 +52,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class joystick_traits
@@ -963,6 +963,6 @@ auto basic_joystick<T>::get_hat_state(int hat) const noexcept -> hat_state
   return static_cast<hat_state>(SDL_JoystickGetHat(ptr(), hat));
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_BASIC_JOYSTICK_HEADER

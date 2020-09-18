@@ -45,7 +45,7 @@
 #pragma once
 #endif
 
-namespace centurion {
+namespace cen {
 
 /**
  * @enum scale_mode
@@ -124,6 +124,6 @@ enum class scale_mode {
   return !(lhs == rhs);
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_SCALE_MODE_HEADER

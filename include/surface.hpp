@@ -55,7 +55,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class surface
@@ -447,6 +447,6 @@ auto to_string(const surface& surface) -> std::string;
 CENTURION_QUERY
 auto operator<<(std::ostream& stream, const surface& surface) -> std::ostream&;
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_SURFACE_HEADER

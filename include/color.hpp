@@ -47,7 +47,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class color
@@ -458,6 +458,6 @@ static_assert(std::is_nothrow_copy_assignable_v<color>);
 static_assert(std::is_nothrow_move_constructible_v<color>);
 static_assert(std::is_nothrow_move_assignable_v<color>);
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_COLOR_HEADER

@@ -56,7 +56,7 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace centurion::platform
+ * @namespace cen::platform
  *
  * @ingroup system
  *
@@ -66,7 +66,7 @@
  *
  * @headerfile platform.hpp
  */
-namespace centurion::platform {
+namespace cen::platform {
 
 /// @addtogroup system
 /// @{
@@ -166,6 +166,6 @@ auto name() -> std::optional<std::string>;
 
 /// @}
 
-}  // namespace centurion::platform
+}  // namespace cen::platform
 
 #endif  // CENTURION_PLATFORM_HEADER

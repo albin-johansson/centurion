@@ -2,7 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "thread.hpp"
 
 TEST_CASE("condition::signal", "[condition]")

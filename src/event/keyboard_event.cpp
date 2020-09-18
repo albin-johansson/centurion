@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 keyboard_event::keyboard_event() noexcept : common_event{}
 {}
@@ -128,4 +128,4 @@ auto keyboard_event::window_id() const noexcept -> u32
   return m_event.windowID;
 }
 
-}  // namespace centurion
+}  // namespace cen

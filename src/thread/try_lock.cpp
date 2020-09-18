@@ -1,6 +1,6 @@
 #include "try_lock.hpp"
 
-namespace centurion {
+namespace cen {
 
 try_lock::try_lock(mutex& mutex) noexcept
     : m_mutex{&mutex}, m_status{mutex.try_lock()}
@@ -38,4 +38,4 @@ try_lock::operator bool() const noexcept
   return success();
 }
 
-}  // namespace centurion
+}  // namespace cen

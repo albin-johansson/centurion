@@ -1,6 +1,5 @@
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "event.hpp"
 
 TEST_CASE("JoyDeviceEvent::set_which", "[JoyDeviceEvent]")

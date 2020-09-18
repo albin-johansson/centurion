@@ -1,6 +1,6 @@
 #include "log.hpp"
 
-namespace centurion::log {
+namespace cen::log {
 
 void reset_priorities() noexcept
 {
@@ -27,4 +27,4 @@ auto get_priority(category category) noexcept -> priority
   return static_cast<priority>(SDL_LogGetPriority(static_cast<int>(category)));
 }
 
-}  // namespace centurion::log
+}  // namespace cen::log

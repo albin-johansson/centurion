@@ -50,7 +50,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class window
@@ -242,6 +242,6 @@ auto to_string(const window& window) -> std::string;
 CENTURION_QUERY
 auto operator<<(std::ostream& stream, const window& window) -> std::ostream&;
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_WINDOW_HEADER

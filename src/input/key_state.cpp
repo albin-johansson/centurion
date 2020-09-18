@@ -8,7 +8,7 @@
 #include "key_code.hpp"
 #include "scan_code.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<key_state>);
 static_assert(std::is_default_constructible_v<key_state>);
@@ -94,4 +94,4 @@ auto key_state::modifier_active(key_modifier modifier) noexcept -> bool
   return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
 }
 
-}  // namespace centurion
+}  // namespace cen

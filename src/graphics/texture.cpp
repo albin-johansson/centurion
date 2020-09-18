@@ -7,7 +7,7 @@
 #include "detail/to_string.hpp"
 #include "exception.hpp"
 
-namespace centurion {
+namespace cen {
 
 static_assert(std::is_final_v<texture>);
 static_assert(std::is_nothrow_move_constructible_v<texture>);
@@ -41,4 +41,4 @@ auto texture::release() noexcept -> SDL_Texture*
   return get_storage().release();
 }
 
-}  // namespace centurion
+}  // namespace cen

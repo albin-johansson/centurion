@@ -2,7 +2,7 @@
 
 #include "sdl_string.hpp"
 
-namespace centurion::clipboard {
+namespace cen::clipboard {
 
 auto has_text() noexcept -> bool
 {
@@ -20,4 +20,4 @@ auto set_text(nn_czstring text) noexcept -> bool
   return SDL_SetClipboardText(text) == 0;
 }
 
-}  // namespace centurion::clipboard
+}  // namespace cen::clipboard

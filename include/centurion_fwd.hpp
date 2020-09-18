@@ -21,7 +21,7 @@
  * @copyright MIT License
  */
 
-namespace centurion {
+namespace cen {
 
 template <typename T>
 struct basic_area;
@@ -100,6 +100,6 @@ class mouse_state;
 
 class message_box;
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_FWD_HEADER

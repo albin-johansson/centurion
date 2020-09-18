@@ -2,7 +2,7 @@
 
 #include "detail/utils.hpp"
 
-using namespace centurion;
+using namespace cen;
 
 TEST_CASE("Convert C++ bool to SDL bool", "[utilities]")
 {

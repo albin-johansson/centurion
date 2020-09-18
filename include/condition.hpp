@@ -52,7 +52,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /// @addtogroup thread
 /// @{
@@ -138,6 +138,6 @@ class condition final
 
 /// @}
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_CONDITION_HEADER

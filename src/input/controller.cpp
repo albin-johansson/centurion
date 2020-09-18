@@ -2,7 +2,7 @@
 
 #include "detail/utils.hpp"
 
-namespace centurion {
+namespace cen {
 
 auto to_string(const controller& controller) -> std::string
 {
@@ -33,4 +33,4 @@ auto operator<<(std::ostream& stream, controller_handle handle) -> std::ostream&
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

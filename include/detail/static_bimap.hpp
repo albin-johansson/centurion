@@ -48,7 +48,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion::detail {
+namespace cen::detail {
 
 /**
  * @class static_bimap
@@ -101,6 +101,6 @@ class static_bimap final
   }
 };
 
-}  // namespace centurion::detail
+}  // namespace cen::detail
 
 #endif  // CENTURION_STRING_MAP_HEADER

@@ -41,7 +41,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class basic_window
@@ -983,6 +983,6 @@ auto basic_window<T>::title() const -> std::string
   return SDL_GetWindowTitle(ptr());
 }
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_BASIC_WINDOW_HEADER

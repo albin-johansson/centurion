@@ -3,7 +3,7 @@
 #include <catch.hpp>
 #include <iostream>
 
-#include "cen.hpp"
+#include "centurion.hpp"
 #include "log.hpp"
 
 using namespace Catch;

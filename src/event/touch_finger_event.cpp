@@ -3,7 +3,7 @@
 #include "detail/utils.hpp"
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 touch_finger_event::touch_finger_event() noexcept : common_event{}
 {}
@@ -93,4 +93,4 @@ auto touch_finger_event::pressure() const noexcept -> float
   return m_event.pressure;
 }
 
-}  // namespace centurion
+}  // namespace cen

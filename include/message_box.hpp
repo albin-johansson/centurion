@@ -57,7 +57,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @addtogroup graphics
@@ -630,6 +630,6 @@ static_assert(std::is_final_v<message_box>);
 
 /// @}
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_MESSAGE_BOX_HEADER

@@ -2,7 +2,7 @@
 
 #include "detail/to_string.hpp"
 
-namespace centurion {
+namespace cen {
 
 auto to_string(const color& color) -> std::string
 {
@@ -19,4 +19,4 @@ auto operator<<(std::ostream& stream, const color& color) -> std::ostream&
   return stream;
 }
 
-}  // namespace centurion
+}  // namespace cen

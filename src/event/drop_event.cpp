@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 drop_event::drop_event() noexcept : common_event{}
 {}
@@ -52,4 +52,4 @@ auto drop_event::window_id() const noexcept -> u32
   return m_event.windowID;
 }
 
-}  // namespace centurion
+}  // namespace cen

@@ -3,7 +3,6 @@
 #include <catch.hpp>
 #include <iostream>
 
-#include "cen.hpp"
 #include "colors.hpp"
 #include "exception.hpp"
 #include "font.hpp"

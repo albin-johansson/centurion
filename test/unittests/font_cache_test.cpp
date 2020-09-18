@@ -2,7 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "event.hpp"
 #include "font.hpp"
 #include "renderer.hpp"

@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 joy_axis_event::joy_axis_event() noexcept : common_event{}
 {}
@@ -39,4 +39,4 @@ auto joy_axis_event::value() const noexcept -> i16
   return m_event.value;
 }
 
-}  // namespace centurion
+}  // namespace cen

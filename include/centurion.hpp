@@ -67,7 +67,7 @@
  *
  * @brief The top-level namespace that all components of the library reside in.
  */
-namespace centurion {
+namespace cen {
 
 /**
  * @struct config
@@ -289,6 +289,6 @@ class library final
 CENTURION_QUERY
 auto ttf_version() noexcept -> SDL_version;
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_HEADER

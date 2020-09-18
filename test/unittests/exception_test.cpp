@@ -3,8 +3,6 @@
 #include <catch.hpp>
 #include <string>
 
-#include "cen.hpp"
-
 using namespace Catch;
 
 TEST_CASE("exception(czstring)", "[exception]")

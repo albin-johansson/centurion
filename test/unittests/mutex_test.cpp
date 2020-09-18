@@ -2,7 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "scoped_lock.hpp"
 
 TEST_CASE("mutex lock/unlock", "[mutex]")

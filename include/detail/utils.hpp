@@ -60,7 +60,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @brief Casts a value to a value of another type.
@@ -90,7 +90,7 @@ template <typename To, typename From>
 /// @cond FALSE
 
 /**
- * @namespace centurion::detail
+ * @namespace cen::detail
  *
  * @brief The main namespace used for implementation details of the library.
  *
@@ -163,6 +163,6 @@ template <typename T>
 
 /// @endcond
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_CENTURION_UTILS_HEADER

@@ -4,7 +4,6 @@
 #include <utility>
 #include <vector>
 
-#include "cen.hpp"
 #include "event.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
@@ -133,7 +132,7 @@ TEST_CASE("controller load_mappings", "[controller]")
   CHECK(cen::controller::load_mappings("resources/gamecontrollerdb.txt") > 0);
 }
 
-namespace centurion {
+namespace cen {
 
 class controller_handler  // TODO worth adding?
 {
@@ -193,7 +192,7 @@ class controller_handler  // TODO worth adding?
   }
 };
 
-}  // namespace centurion
+}  // namespace cen
 
 // TODO game controller visualization program
 

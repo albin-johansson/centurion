@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("Priority test", "[log]")
 {
   cen::log::set_priority(cen::log::priority::verbose);

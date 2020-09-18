@@ -6,7 +6,6 @@ set(SOURCE_FILES
         ../include/centurion_cfg.hpp
         ../include/centurion_fwd.hpp
         ../include/types.hpp
-        ../include/cen.hpp
         ../include/video.hpp
         ../include/basic_window.hpp
         ../include/window.hpp

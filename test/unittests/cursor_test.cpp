@@ -2,7 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
 #include "exception.hpp"
 #include "log.hpp"
 

@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 joy_hat_event::joy_hat_event() noexcept : common_event{}
 {}
@@ -29,4 +29,4 @@ auto joy_hat_event::position() const noexcept -> joy_hat_position
   return static_cast<joy_hat_position>(m_event.value);
 }
 
-}  // namespace centurion
+}  // namespace cen

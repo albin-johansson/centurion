@@ -4,8 +4,6 @@
 #include <iostream>
 #include <type_traits>
 
-#include "cen.hpp"
-
 namespace {
 
 auto dummy = [](void*) noexcept -> int {

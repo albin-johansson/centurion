@@ -77,7 +77,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /// @cond FALSE
 
@@ -244,7 +244,7 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
 /// @{
 
 /**
- * @namespace centurion::hint
+ * @namespace cen::hint
  *
  *
  *
@@ -1473,7 +1473,7 @@ inline void clear_hints() noexcept
 
 /// @}
 
-}  // namespace centurion
+}  // namespace cen
 
 #undef CENTURION_BOOL_HINT
 #endif  // CENTURION_HINTS_HEADER

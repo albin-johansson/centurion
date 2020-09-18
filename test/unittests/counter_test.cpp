@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("counter::high_res_freq", "[counter]")
 {
   CHECK(cen::counter::high_res_freq() == SDL_GetPerformanceFrequency());

@@ -1,6 +1,6 @@
 #include "event.hpp"
 
-namespace centurion {
+namespace cen {
 
 event::event() noexcept = default;
 
@@ -129,4 +129,4 @@ auto event::type() const noexcept -> event_type
   return static_cast<event_type>(m_event.type);
 }
 
-}  // namespace centurion
+}  // namespace cen

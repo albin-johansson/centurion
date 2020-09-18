@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("cpu::cache_line_size", "[cpu]")
 {
   CHECK(cen::cpu::cache_line_size() == SDL_GetCPUCacheLineSize());

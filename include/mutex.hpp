@@ -49,7 +49,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /// @addtogroup thread
 /// @{
@@ -139,6 +139,6 @@ class mutex final
 
 /// @}
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_MUTEX_HEADER

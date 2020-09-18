@@ -56,7 +56,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /// @addtogroup input
 /// @{
@@ -1176,6 +1176,6 @@ auto operator<<(std::ostream& stream, controller_handle handle)
 
 /// @}
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_GAME_CONTROLLER_HEADER

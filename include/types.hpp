@@ -52,7 +52,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 namespace detail {
 
 /**
@@ -287,6 +287,6 @@ constexpr auto operator"" _s(unsigned long long int value) noexcept
 
 /// @}
 
-}  // namespace centurion
+}  // namespace cen
 
 #endif  // CENTURION_TYPES_HEADER

@@ -1,7 +1,6 @@
 #include <catch.hpp>
 #include <iostream>
 
-#include "cen.hpp"
 #include "key_code.hpp"
 #include "log.hpp"
 

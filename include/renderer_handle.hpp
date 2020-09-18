@@ -48,7 +48,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace centurion {
+namespace cen {
 
 /**
  * @class renderer_handle
@@ -176,4 +176,4 @@ CENTURION_QUERY
 auto operator<<(std::ostream& stream, const renderer_handle& handle)
     -> std::ostream&;
 
-}  // namespace centurion
+}  // namespace cen

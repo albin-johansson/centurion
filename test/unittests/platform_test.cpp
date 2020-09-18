@@ -3,8 +3,6 @@
 #include <catch.hpp>
 #include <string>
 
-#include "cen.hpp"
-
 TEST_CASE("platform::id", "[platform]")
 {
   CHECK_NOTHROW(cen::platform::id());

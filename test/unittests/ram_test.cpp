@@ -2,8 +2,6 @@
 
 #include <catch.hpp>
 
-#include "cen.hpp"
-
 TEST_CASE("amount_mb", "[ram]")
 {
   CHECK(cen::ram::amount_mb() == SDL_GetSystemRAM());

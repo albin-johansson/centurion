@@ -2,7 +2,7 @@
 
 #include "message_box.hpp"
 
-namespace centurion {
+namespace cen {
 
 message_box::button::button(button_id id,
                             std::string text,
@@ -26,4 +26,4 @@ auto message_box::button::convert() const noexcept -> SDL_MessageBoxButtonData
   return result;
 }
 
-}  // namespace centurion
+}  // namespace cen

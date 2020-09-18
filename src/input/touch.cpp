@@ -1,6 +1,6 @@
 #include "touch.hpp"
 
-namespace centurion::touch {
+namespace cen::touch {
 
 auto num_devices() noexcept -> int
 {
@@ -37,4 +37,4 @@ auto get_finger(SDL_TouchID id, int index) noexcept -> std::optional<SDL_Finger>
   }
 }
 
-}  // namespace centurion::touch
+}  // namespace cen::touch

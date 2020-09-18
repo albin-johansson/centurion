@@ -124,10 +124,12 @@ class window final : public basic_window<window>
    * @param sdlWindow a pointer to the window that will be claimed, can't be
    * null.
    *
+   * @throws exception if the supplied pointer is null.
+   *
    * @since 4.0.0
    */
   CENTURION_API
-  explicit window(nn_owner<SDL_Window*> sdlWindow) noexcept;
+  explicit window(owner<SDL_Window*> sdlWindow);
 
   /**
    * @brief Creates a window instance.

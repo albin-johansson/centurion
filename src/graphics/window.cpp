@@ -19,8 +19,12 @@ static_assert(std::is_nothrow_move_constructible_v<window>);
 static_assert(!std::is_copy_assignable_v<window>);
 static_assert(!std::is_copy_constructible_v<window>);
 
-window::window(nn_owner<SDL_Window*> window) noexcept : m_window{window}
-{}
+window::window(owner<SDL_Window*> window) : m_window{window}
+{
+  if (!m_window) {
+    throw exception{"Cannot create window from null pointer!"};
+  }
+}
 
 window::window(nn_czstring title, const iarea& size)
 {

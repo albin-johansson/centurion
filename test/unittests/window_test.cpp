@@ -31,10 +31,12 @@ TEST_CASE("window()", "[window]")
   CHECK(!window.is_visible());
 }
 
-TEST_CASE("window(nn_owner<SDL_Window*>)", "[window]")
+TEST_CASE("window(owner<SDL_Window*>)", "[window]")
 {
-  auto* w = SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN);
-  CHECK_NOTHROW(cen::window{w});
+  CHECK_NOTHROW(
+      cen::window{SDL_CreateWindow("", 0, 0, 10, 10, SDL_WINDOW_HIDDEN)});
+  SDL_Window* bad{};
+  CHECK_THROWS_AS(cen::window{bad}, cen::exception);
 }
 
 TEST_CASE("window(nn_czstring, iarea)", "[window]")

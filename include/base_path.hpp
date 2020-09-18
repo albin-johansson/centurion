@@ -60,7 +60,7 @@ namespace cen {
  *
  * @since 3.0.0
  *
- * @headerfile base_path
+ * @headerfile base_path.hpp
  */
 class base_path final
 {

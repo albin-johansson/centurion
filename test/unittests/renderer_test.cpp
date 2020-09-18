@@ -41,11 +41,12 @@ inline void font_test(Lambda&& lambda)
 
 }  // namespace
 
-TEST_CASE("renderer:: ctor(nn_owner<SDL_Renderer*>)", "[renderer]")
+TEST_CASE("renderer:: ctor(owner<SDL_Renderer*>)", "[renderer]")
 {
   cen::window window;
-  auto* ren = SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE);
-  CHECK_NOTHROW(cen::renderer{ren});
+  CHECK_NOTHROW(cen::renderer{
+      SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE)});
+  CHECK_THROWS_AS(cen::renderer{nullptr}, cen::exception);
 }
 
 TEST_CASE("renderer:: ctor(const window&, SDL_RendererFlags)", "[renderer]")

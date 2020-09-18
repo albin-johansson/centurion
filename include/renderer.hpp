@@ -118,15 +118,15 @@ class renderer final : public basic_renderer<renderer>
    * @note This constructor doesn't change any of the state associated
    * with the supplied SDL renderer.
    *
-   * @pre `sdlRenderer` mustn't be null.
-   *
    * @param sdlRenderer a pointer to the `SDL_Renderer` that will be used by the
    * renderer, can't be null.
+   *
+   * @throws exception if the supplied pointer is null.
    *
    * @since 3.0.0
    */
   CENTURION_API
-  explicit renderer(nn_owner<SDL_Renderer*> sdlRenderer) noexcept;
+  explicit renderer(owner<SDL_Renderer*> sdlRenderer);
 
   /**
    * @brief Creates a renderer based on the supplied window.

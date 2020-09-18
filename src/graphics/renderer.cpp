@@ -16,9 +16,12 @@ static_assert(!std::is_copy_assignable_v<renderer>);
 static_assert(std::is_move_constructible_v<renderer>);
 static_assert(std::is_nothrow_move_assignable_v<renderer>);
 
-renderer::renderer(nn_owner<SDL_Renderer*> sdlRenderer) noexcept
-    : m_renderer{sdlRenderer}
-{}
+renderer::renderer(owner<SDL_Renderer*> sdlRenderer) : m_renderer{sdlRenderer}
+{
+  if (!m_renderer) {
+    throw exception{"Cannot create renderer from null pointer!"};
+  }
+}
 
 renderer::renderer(const window& window, SDL_RendererFlags flags)
     : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}

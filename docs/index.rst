@@ -33,6 +33,7 @@ Welcome to Centurion's documentation!
    pages/api/graphics/font
    pages/api/graphics/font_cache
    pages/api/graphics/surface
+   pages/api/graphics/message_box
    pages/api/graphics/blend_mode
    pages/api/graphics/scale_mode
    pages/api/graphics/pixel_format

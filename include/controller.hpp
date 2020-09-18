@@ -1179,4 +1179,3 @@ auto operator<<(std::ostream& stream, controller_handle handle)
 }  // namespace centurion
 
 #endif  // CENTURION_GAME_CONTROLLER_HEADER
-          

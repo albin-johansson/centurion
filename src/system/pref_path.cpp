@@ -1,8 +1,8 @@
+#include "pref_path.hpp"
+
 #include <SDL.h>
 
 #include <type_traits>
-
-#include "paths.hpp"
 
 namespace cen {
 

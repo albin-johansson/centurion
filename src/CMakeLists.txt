@@ -22,7 +22,8 @@ set(SOURCE_FILES
         ../include/centurion_api.hpp
         ../include/centurion.hpp
         ../include/colors.hpp
-        ../include/paths.hpp
+        ../include/pref_path.hpp
+        ../include/base_path.hpp
         ../include/platform.hpp
         ../include/counter.hpp
         ../include/log.hpp

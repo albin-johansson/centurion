@@ -1,7 +1,8 @@
-#include "paths.hpp"
-
 #include <catch.hpp>
 #include <iostream>
+
+#include "base_path.hpp"
+#include "pref_path.hpp"
 
 TEST_CASE("base_path()", "[path]")
 {

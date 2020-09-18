@@ -18,7 +18,7 @@ Explicit conversions     ``bool``
 Overloaded operators     ``<<``
 Printable                Yes
 Namespace                ``::cen``
-Header                   ``paths.hpp``
+Header                   ``pref_path.hpp``
 Since                    3.0.0
 ======================  =========================================
 

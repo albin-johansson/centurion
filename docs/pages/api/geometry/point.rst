@@ -20,7 +20,7 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``point_type``, ``point_type*``, ``const point_type*``
 Overloaded operators     ``<<``, ``+``, ``-``, ``==``, ``!=``
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``point.hpp``
 ======================  =======================================================
 
@@ -53,7 +53,7 @@ Indicates whether or not the point is based on a floating-point type, e.g. ``tru
 Interface 
 ---------
 
-.. doxygenclass:: centurion::basic_point
+.. doxygenclass:: cen::basic_point
   :members:
   :undoc-members:
   :outline:

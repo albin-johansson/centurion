@@ -19,7 +19,7 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
 Printable                No
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``font_cache.hpp``
 Since                    5.0.0
 ======================  =========================================
@@ -27,7 +27,7 @@ Since                    5.0.0
 Interface
 ---------
 
-.. doxygenclass:: centurion::font_cache
+.. doxygenclass:: cen::font_cache
   :members:
   :undoc-members:
   :outline:

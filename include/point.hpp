@@ -245,7 +245,7 @@ class basic_point final
    *
    * @return a copy of the internal point.
    *
-   * @see `centurion::cast`
+   * @see `cen::cast`
    *
    * @since 5.0.0
    */

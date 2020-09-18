@@ -18,7 +18,7 @@ Implicit conversions     None
 Explicit conversions     ``Mix_Chunk*``, ``const Mix_Chunk*``
 Overloaded operators     ``<<``
 Printable                Yes
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``sound_effect.hpp``
 Since                    3.0.0
 ======================  =========================================
@@ -26,7 +26,7 @@ Since                    3.0.0
 Interface
 ---------
 
-.. doxygenclass:: centurion::sound_effect
+.. doxygenclass:: cen::sound_effect
   :members:
   :undoc-members:
   :outline:

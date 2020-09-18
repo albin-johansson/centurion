@@ -22,7 +22,7 @@ Copyable                 Yes
 Movable                  Yes
 Implicit conversions     None
 Explicit conversions     None
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``renderer_handle.hpp``
 ======================  =========================================
 

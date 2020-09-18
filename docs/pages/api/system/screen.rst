@@ -10,7 +10,7 @@ General information
 ======================  =========================================
   Property               Value
 ----------------------  -----------------------------------------
-Namespace                ``::centurion::screen``
+Namespace                ``::cen::screen``
 Header                   ``screen.hpp``
 Since                    3.0.0
 ======================  =========================================
@@ -18,7 +18,7 @@ Since                    3.0.0
 Interface
 ---------
 
-.. doxygennamespace:: centurion::screen
+.. doxygennamespace:: cen::screen
   :outline:
   :members:
 

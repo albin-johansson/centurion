@@ -17,14 +17,14 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
 Printable                No
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``try_lock.hpp``
 ======================  =========================================
 
 Interface 
 ---------
 
-.. doxygenclass:: centurion::try_lock
+.. doxygenclass:: cen::try_lock
   :members:
   :undoc-members:
   :outline:

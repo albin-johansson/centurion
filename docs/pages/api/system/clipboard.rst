@@ -11,7 +11,7 @@ General information
 ======================  =========================================
   Property               Value
 ----------------------  -----------------------------------------
-Namespace                ``::centurion::clipboard``
+Namespace                ``::cen::clipboard``
 Header                   ``clipboard.hpp``
 Since                    5.0.0
 ======================  =========================================
@@ -19,7 +19,7 @@ Since                    5.0.0
 Interface
 ---------
 
-.. doxygennamespace:: centurion::clipboard
+.. doxygennamespace:: cen::clipboard
   :outline:
   :members:
 

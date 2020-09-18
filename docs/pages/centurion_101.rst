@@ -6,7 +6,7 @@ documentation.
 Implementation details
 ----------------------
 All aspects of the Centurion library that are considered to be implementation details, are
-located in the ``centurion::detail`` namespace. You should never use anything that resides in this
+located in the ``cen::detail`` namespace. You should never use anything that resides in this
 namespace directly. The members of the detail namespace are subject to change at any time, and
 may not even be documented.
 

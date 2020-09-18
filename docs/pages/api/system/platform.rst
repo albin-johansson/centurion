@@ -10,7 +10,7 @@ General information
 ======================  =========================================
   Property               Value
 ----------------------  -----------------------------------------
-Namespace                ``::centurion::platform``
+Namespace                ``::cen::platform``
 Header                   ``platform.hpp``
 Since                    3.0.0
 ======================  =========================================
@@ -18,7 +18,7 @@ Since                    3.0.0
 Interface
 ---------
 
-.. doxygennamespace:: centurion::platform
+.. doxygennamespace:: cen::platform
   :outline:
   :members:
 

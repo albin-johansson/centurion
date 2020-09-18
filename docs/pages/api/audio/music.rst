@@ -23,7 +23,7 @@ Implicit conversions     None
 Explicit conversions     ``Mix_Music*``, ``const Mix_Music*``
 Overloaded operators     ``<<``
 Printable                Yes
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``music.hpp``
 Since                    3.0.0
 ======================  =========================================
@@ -31,7 +31,7 @@ Since                    3.0.0
 Interface
 ---------
 
-.. doxygenclass:: centurion::music
+.. doxygenclass:: cen::music
   :members:
   :undoc-members:
   :outline:

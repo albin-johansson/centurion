@@ -39,14 +39,14 @@ Copyable                 No
 Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``SDL_Renderer*``, ``const SDL_Renderer*``
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``renderer.hpp``
 ======================  =========================================
 
 Interface 
 ---------
 
-.. doxygenclass:: centurion::renderer
+.. doxygenclass:: cen::renderer
   :members: 
   :undoc-members:
   :outline:

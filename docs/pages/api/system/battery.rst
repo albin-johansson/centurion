@@ -12,7 +12,7 @@ General information
 ======================  =========================================
   Property               Value
 ----------------------  -----------------------------------------
-Namespace                ``::centurion::battery``
+Namespace                ``::cen::battery``
 Header                   ``battery.hpp``
 Since                    3.0.0
 ======================  =========================================
@@ -20,7 +20,7 @@ Since                    3.0.0
 Interface
 ---------
 
-.. doxygennamespace:: centurion::battery
+.. doxygennamespace:: cen::battery
   :outline:
   :members:
 

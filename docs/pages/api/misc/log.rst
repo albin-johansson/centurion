@@ -19,7 +19,7 @@ General information
 ======================  =========================================
   Property               Value
 ----------------------  -----------------------------------------
-Namespace                ``::centurion::log``
+Namespace                ``::cen::log``
 Header                   ``log.hpp``
 Since                    3.0.0
 ======================  =========================================
@@ -27,7 +27,7 @@ Since                    3.0.0
 Interface
 ---------
 
-.. doxygennamespace:: centurion::log
+.. doxygennamespace:: cen::log
   :outline:
   :members:
 

@@ -16,7 +16,7 @@ Implicit conversions     None
 Explicit conversions     ``bool``
 Overloaded operators     ``<<``
 Printable                Yes
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``paths.hpp``
 Since                    3.0.0
 ======================  =========================================
@@ -24,7 +24,7 @@ Since                    3.0.0
 Interface 
 ---------
 
-.. doxygenclass:: centurion::base_path
+.. doxygenclass:: cen::base_path
   :members:
   :undoc-members:
   :outline:

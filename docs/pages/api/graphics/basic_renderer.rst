@@ -16,14 +16,14 @@ Copyable                 Yes
 Movable                  Yes
 Implicit conversions     None
 Explicit conversions     None
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``basic_renderer.hpp``
 ======================  =========================================
 
 Interface 
 ---------
 
-.. doxygenclass:: centurion::basic_renderer
+.. doxygenclass:: cen::basic_renderer
   :members: 
   :undoc-members:
   :outline:

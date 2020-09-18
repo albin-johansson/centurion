@@ -23,7 +23,7 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     ``<<``, ``bool``
 Printable                Yes
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``window_handle.hpp``
 Since                    5.0.0
 ======================  =========================================
@@ -31,7 +31,7 @@ Since                    5.0.0
 Interface
 ---------
 
-.. doxygenclass:: centurion::window_handle
+.. doxygenclass:: cen::window_handle
   :members:
   :undoc-members:
   :outline:

@@ -9,7 +9,7 @@ General information
 ======================  =========================================
   Property               Value
 ----------------------  -----------------------------------------
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``music.hpp``
 Since                    3.0.0
 ======================  =========================================
@@ -17,6 +17,6 @@ Since                    3.0.0
 Interface
 ---------
 
-.. doxygenenum:: centurion::music_type
+.. doxygenenum:: cen::music_type
   :outline:
   :no-link:

@@ -9,7 +9,7 @@ General information
 ======================  =========================================
   Property               Value
 ----------------------  -----------------------------------------
-Namespace                ``::centurion::ram``
+Namespace                ``::cen::ram``
 Header                   ``ram.hpp``
 Since                    3.0.0
 ======================  =========================================
@@ -17,7 +17,7 @@ Since                    3.0.0
 Interface
 ---------
 
-.. doxygennamespace:: centurion::ram
+.. doxygennamespace:: cen::ram
   :outline:
   :members:
 

@@ -16,14 +16,14 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
 Printable                No
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``condition.hpp``
 ======================  =========================================
 
 Interface 
 ---------
 
-.. doxygenclass:: centurion::condition
+.. doxygenclass:: cen::condition
   :members:
   :undoc-members:
   :outline:

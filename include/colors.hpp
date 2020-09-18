@@ -57,7 +57,7 @@
  *
  * @brief Contains pre-defined `color` constants.
  *
- * @see centurion::color
+ * @see cen::color
  */
 namespace cen::colors {
 

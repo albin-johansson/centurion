@@ -12,7 +12,7 @@ General information
 ======================  =========================================
   Property               Value
 ----------------------  -----------------------------------------
-Namespace                ``::centurion::counter``
+Namespace                ``::cen::counter``
 Header                   ``counter.hpp``
 Since                    5.0.0
 ======================  =========================================
@@ -20,7 +20,7 @@ Since                    5.0.0
 Interface
 ---------
 
-.. doxygennamespace:: centurion::counter
+.. doxygennamespace:: cen::counter
   :outline:
   :members:
 

@@ -7,13 +7,9 @@ Just like SDL, Centurion needs to be initialized before it can be used. This is 
 creating an instance of the ``library`` class. Under the hood, ``library`` will
 actually initialize SDL for us. So you should never initialize *both* Centurion and SDL explicitly.
 
-The ``library`` class can be included by including either ``centurion.hpp`` or ``cen.hpp``.
-The only difference between these headers is that ``cen.hpp`` provides the ``ctn`` namespace alias.
-Since all Centurion entities are located in the ``centurion`` namespace, it can get tedious to qualify everything 
-with ``centurion::``. As a result, it's recommended to prefer the ``ctn`` namespace alias.
-
-Now, it's important to get the signature of ``main`` correct in order for your program to work. The signature 
-of the main-method **must** be ``int main(int, char**)``! This is because SDL actually performs some setup before 
+The ``library`` class is located in the ``centurion.hpp`` header. Now, it's important to get the
+signature of ``main`` correct in order for your program to work. The signature of ``main``
+**must** be ``int main(int, char**)``! This is because SDL actually performs some setup before
 the main method is entered through some macro magic.
 
 Standard Configuration

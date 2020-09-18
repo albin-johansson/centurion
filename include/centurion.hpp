@@ -168,7 +168,7 @@ struct config final
  * }
  * @endcode
  * You can also manually configure exactly how the library is initialized, using
- * the @link centurion::config @endlink struct.
+ * the @link cen::config @endlink struct.
  * @code{.cpp}
  * #include <cen.hpp>
  *

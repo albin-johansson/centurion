@@ -17,14 +17,14 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
 Printable                No
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``scoped_lock.hpp``
 ======================  =========================================
 
 Interface 
 ---------
 
-.. doxygenclass:: centurion::scoped_lock
+.. doxygenclass:: cen::scoped_lock
   :members:
   :undoc-members:
   :outline:

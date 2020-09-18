@@ -19,7 +19,7 @@ Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``rect_type*``, ``const rect_type*``
 Overloaded operators     ``<<``, ``==``, ``!=``
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``rect.hpp``
 ======================  =======================================================
 
@@ -63,7 +63,7 @@ Indicates whether or not the rectangle is based on a floating-point type, e.g. `
 Interface 
 ---------
 
-.. doxygenclass:: centurion::basic_rect
+.. doxygenclass:: cen::basic_rect
   :members:
   :undoc-members:
   :outline:

@@ -105,7 +105,7 @@ namespace cen {
  * @since 5.0.0
  *
  * @see `scan_code`
- * @see `centurion::keycodes`
+ * @see `cen::keycodes`
  *
  * @headerfile key_code.hpp
  */

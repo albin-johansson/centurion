@@ -17,14 +17,14 @@ Implicit conversions     None
 Explicit conversions     ``TTF_Font*``, ``const TTF_Font*``
 Overloaded operators     ``<<``
 Printable                Yes
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``font.hpp``
 ======================  =========================================
 
 Interface 
 ---------
 
-.. doxygenclass:: centurion::font
+.. doxygenclass:: cen::font
   :members:
   :undoc-members:
   :outline:

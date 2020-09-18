@@ -17,14 +17,14 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     ``<<``
 Printable                Yes
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``thread.hpp``
 ======================  =========================================
 
 Interface 
 ---------
 
-.. doxygenclass:: centurion::thread
+.. doxygenclass:: cen::thread
   :members:
   :undoc-members:
   :outline:

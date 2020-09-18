@@ -15,16 +15,16 @@ Copyable                 No
 Movable                  Yes
 Implicit conversions     None
 Explicit conversions     ``SDL_Window*``, ``const SDL_Window*``
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Printable                Yes
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``window.hpp``
 ======================  =========================================
 
 Interface 
 ---------
 
-.. doxygenclass:: centurion::window
+.. doxygenclass:: cen::window
   :members:
   :undoc-members:
   :outline:

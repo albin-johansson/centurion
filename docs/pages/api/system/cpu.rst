@@ -11,7 +11,7 @@ General information
 ======================  =========================================
   Property               Value
 ----------------------  -----------------------------------------
-Namespace                ``::centurion::cpu``
+Namespace                ``::cen::cpu``
 Header                   ``cpu.hpp``
 Since                    3.0.0
 ======================  =========================================
@@ -19,7 +19,7 @@ Since                    3.0.0
 Interface
 ---------
 
-.. doxygennamespace:: centurion::cpu
+.. doxygennamespace:: cen::cpu
   :outline:
   :members:
 

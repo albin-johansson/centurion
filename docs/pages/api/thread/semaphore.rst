@@ -16,14 +16,14 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
 Printable                No
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``semaphore.hpp``
 ======================  =========================================
 
 Interface 
 ---------
 
-.. doxygenclass:: centurion::semaphore
+.. doxygenclass:: cen::semaphore
   :members:
   :undoc-members:
   :outline:

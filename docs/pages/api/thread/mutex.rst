@@ -21,14 +21,14 @@ Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
 Printable                No
-Namespace                ``::centurion``
+Namespace                ``::cen``
 Header                   ``mutex.hpp``
 ======================  =========================================
 
 Interface 
 ---------
 
-.. doxygenclass:: centurion::mutex
+.. doxygenclass:: cen::mutex
   :members:
   :undoc-members:
   :outline:

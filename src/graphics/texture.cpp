@@ -15,9 +15,12 @@ static_assert(std::is_nothrow_move_assignable_v<texture>);
 static_assert(!std::is_nothrow_copy_constructible_v<texture>);
 static_assert(!std::is_nothrow_copy_assignable_v<texture>);
 
-texture::texture(nn_owner<SDL_Texture*> sdlTexture) noexcept
-    : basic_texture{sdlTexture}
-{}
+texture::texture(owner<SDL_Texture*> sdlTexture) : basic_texture{sdlTexture}
+{
+  if (!get()) {
+    throw exception{"Cannot create texture from null pointer!"};
+  }
+}
 
 auto to_string(const texture& texture) -> std::string
 {

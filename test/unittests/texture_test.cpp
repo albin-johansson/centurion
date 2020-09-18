@@ -65,11 +65,11 @@ TEST_CASE("texture::scale_mode enum values", "[texture]")
   CHECK(SDL_ScaleModeBest != cen::scale_mode::nearest);
 }
 
-TEST_CASE("texture(nn_owner<SDL_Texture*>)", "[texture]")
+TEST_CASE("texture(owner<SDL_Texture*>)", "[texture]")
 {
   test([](cen::renderer& renderer) {
-    auto* sdlTexture = IMG_LoadTexture(renderer.get(), pandaPath);
-    CHECK_NOTHROW(cen::texture(sdlTexture));
+    CHECK_NOTHROW(cen::texture(IMG_LoadTexture(renderer.get(), pandaPath)));
+    CHECK_THROWS_AS(cen::texture(nullptr), cen::exception);
   });
 }
 

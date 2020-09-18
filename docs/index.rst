@@ -35,6 +35,7 @@ Welcome to Centurion's documentation!
    pages/api/graphics/surface
    pages/api/graphics/blend_mode
    pages/api/graphics/scale_mode
+   pages/api/graphics/pixel_format
 
 .. toctree::
    :maxdepth: 1

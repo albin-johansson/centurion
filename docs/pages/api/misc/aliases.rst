@@ -7,29 +7,22 @@ a reference for these aliases. Most aliases are provided in the ``types.hpp`` he
 owner<T>
 --------
 
-Equivalent to ``gsl::owner<T>``. Used to denote ownership of raw pointers.
-
-nn_owner<T>
------------
-
-Equivalent to ``gsl::not_null<owner<T>>``. Represents a non-null raw pointer
-to a resource that must be deleted using the pointer. This is commonly featured in 
-constructors for owning types, such as ``window``, ``renderer``, ``texture``, etc.
+A tag type used to denote ownership of raw pointers.
 
 czstring
 --------
 
-Equivalent to ``gsl::czstring<>`` (or simply ``const char*``).
+Equivalent to ``const char*``.
 
 nn_czstring
 -----------
 
-Equivalent to ``gsl::not_null<czstring>``. 
+Equivalent to ``not_null<czstring>``.
 
 zstring
 -------
 
-Equivalent to ``gsl::zstring<>`` (or simply ``char*``). Occasionally used behind-the-scenes.
+Equivalent to ``char*``. Occasionally used behind-the-scenes.
 
 hash_id
 -------

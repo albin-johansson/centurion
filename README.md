@@ -24,7 +24,6 @@ Furthermore, the library features a Read-the-Docs site that features tutorials, 
 
 ## Dependencies
 
-* [GSL](https://github.com/Microsoft/GSL) Microsoft's implementation of the guidelines-support library.
 * [EnTT](https://github.com/skypjack/entt) Amazing header-only ECS-library, used for compile time hashing of strings.
 
 Happy coding! :heart:

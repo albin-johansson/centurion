@@ -1,4 +1,4 @@
-Font
+font
 ====
 
 The ``font`` class represents a TrueType font. You can use instances

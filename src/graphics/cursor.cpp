@@ -12,8 +12,12 @@ static_assert(std::is_nothrow_move_assignable_v<cursor>);
 static_assert(!std::is_copy_constructible_v<cursor>);
 static_assert(!std::is_copy_assignable_v<cursor>);
 
-cursor::cursor(nn_owner<SDL_Cursor*> sdlCursor) noexcept : m_cursor{sdlCursor}
-{}
+cursor::cursor(owner<SDL_Cursor*> sdlCursor) : m_cursor{sdlCursor}
+{
+  if (!m_cursor) {
+    throw exception{"Cannot create cursor from null pointer!"};
+  }
+}
 
 cursor::cursor(system_cursor id)
     : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(id))}

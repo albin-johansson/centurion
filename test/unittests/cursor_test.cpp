@@ -14,10 +14,11 @@ TEST_CASE("cursor(system_cursor)", "[cursor]")
   CHECK_THROWS_AS(cen::cursor{invalid}, cen::sdl_error);
 }
 
-TEST_CASE("cursor(nn_owner<SDL_Cursor*>)", "[cursor]")
+TEST_CASE("cursor(owner<SDL_Cursor*>)", "[cursor]")
 {
   auto* sdlCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
   CHECK_NOTHROW(cen::cursor{sdlCursor});
+  CHECK_THROWS_AS(cen::cursor{nullptr}, cen::exception);
 }
 
 TEST_CASE("cursor(surface, ipoint)", "[cursor]")

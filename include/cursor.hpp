@@ -165,18 +165,18 @@ class cursor final
   /**
    * @brief Creates a cursor based on the supplied `SDL_Cursor`.
    *
-   * @pre `sdlCursor` mustn't be null.
-   *
    * @details The ownership of the supplied pointer will be claimed by the
    * created cursor instance.
    *
    * @param sdlCursor a pointer to an `SDL_Cursor` that will be adopted,
    * can't be null.
    *
+   * @throws exception if the supplied pointer is null.
+   *
    * @since 4.0.0
    */
   CENTURION_API
-  explicit cursor(nn_owner<SDL_Cursor*> sdlCursor) noexcept;
+  explicit cursor(owner<SDL_Cursor*> sdlCursor);
 
   /**
    * @brief Creates a cursor based on the specified cursor type.

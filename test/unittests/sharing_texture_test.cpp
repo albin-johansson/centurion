@@ -6,6 +6,11 @@
 #include "renderer.hpp"
 #include "window.hpp"
 
+TEST_CASE("sharing_texture pointer ctor", "[sharing_texture]")
+{
+  CHECK_THROWS_AS(cen::sharing_texture{nullptr}, cen::exception);
+}
+
 TEST_CASE("sharing_texture implicit sharing semantics", "[sharing_texture]")
 {
   cen::window window;

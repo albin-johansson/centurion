@@ -85,17 +85,17 @@ class sharing_texture final : public basic_texture<sharing_texture>
   /**
    * @brief Creates a sharing texture from a pre-existing SDL texture.
    *
-   * @pre `sdlTexture` mustn't be null.
-   *
    * @note The created texture will claim ownership of the supplied pointer.
    *
    * @param sdlTexture a pointer to the SDL_Texture that will be claimed, can't
    * be null.
    *
+   * @throws exception if the supplied pointer is null.
+   *
    * @since 5.0.0
    */
   CENTURION_API
-  explicit sharing_texture(nn_owner<SDL_Texture*> sdlTexture) noexcept;
+  explicit sharing_texture(owner<SDL_Texture*> sdlTexture);
 
   /**
    * @brief Creates a sharing texture from an ordinary texture.

@@ -24,6 +24,7 @@ Welcome to Centurion's documentation!
    :maxdepth: 1
    :caption: Graphics
 
+   pages/api/graphics/basic_window
    pages/api/graphics/window
    pages/api/graphics/window_handle
    pages/api/graphics/basic_renderer

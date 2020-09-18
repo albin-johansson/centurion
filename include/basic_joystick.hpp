@@ -183,7 +183,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  void rumble(u16 lowFreq, u16 highFreq, milliseconds<u32> duration) noexcept;
+  void rumble(u16 lowFreq, u16 highFreq, milliseconds<u32> duration) noexcept
+  {
+    SDL_JoystickRumble(ptr(), lowFreq, highFreq, duration.count());
+  }
 
   /**
    * @brief Sets the player index to be associated with the joystick.
@@ -192,7 +195,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  void set_player_index(int index) noexcept;
+  void set_player_index(int index) noexcept
+  {
+    SDL_JoystickSetPlayerIndex(ptr(), index);
+  }
 
   /**
    * @brief Returns the player index of the joystick, if available.
@@ -204,7 +210,15 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto player_index() const noexcept -> std::optional<int>;
+  [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
+  {
+    const auto index = SDL_JoystickGetPlayerIndex(ptr());
+    if (index == -1) {
+      return std::nullopt;
+    } else {
+      return index;
+    }
+  }
 
   /**
    * @brief Returns the player index of the joystick associated with the
@@ -220,7 +234,15 @@ class basic_joystick
    * @since 4.2.0
    */
   [[nodiscard]] static auto player_index(int deviceIndex) noexcept
-      -> std::optional<int>;
+      -> std::optional<int>
+  {
+    const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
+    if (index == -1) {
+      return std::nullopt;
+    } else {
+      return index;
+    }
+  }
 
   /**
    * @brief Returns the type associated with the joystick.
@@ -229,7 +251,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto get_type() const noexcept -> type;
+  [[nodiscard]] auto get_type() const noexcept -> type
+  {
+    return static_cast<type>(SDL_JoystickGetType(ptr()));
+  }
 
   /**
    * @brief Returns the type of the joystick associated with the specified
@@ -241,7 +266,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] static auto get_type(int deviceIndex) noexcept -> type;
+  [[nodiscard]] static auto get_type(int deviceIndex) noexcept -> type
+  {
+    return static_cast<type>(SDL_JoystickGetDeviceType(deviceIndex));
+  }
 
   /**
    * @brief Returns the USB vendor ID of the joystick.
@@ -251,7 +279,15 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>;
+  [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
+  {
+    const auto vendor = SDL_JoystickGetVendor(ptr());
+    if (vendor == 0) {
+      return std::nullopt;
+    } else {
+      return vendor;
+    }
+  }
 
   /**
    * @brief Returns the USB vendor ID for the joystick associated with the
@@ -265,7 +301,15 @@ class basic_joystick
    * @since 4.2.0
    */
   [[nodiscard]] static auto vendor(int deviceIndex) noexcept
-      -> std::optional<u16>;
+      -> std::optional<u16>
+  {
+    const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
+    if (vendor == 0) {
+      return std::nullopt;
+    } else {
+      return vendor;
+    }
+  }
 
   /**
    * @brief Returns the USB product ID of the joystick.
@@ -275,7 +319,15 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto product() const noexcept -> std::optional<u16>;
+  [[nodiscard]] auto product() const noexcept -> std::optional<u16>
+  {
+    const auto product = SDL_JoystickGetProduct(ptr());
+    if (product == 0) {
+      return std::nullopt;
+    } else {
+      return product;
+    }
+  }
 
   /**
    * @brief Returns the USB product ID for the joystick associated with the
@@ -289,7 +341,15 @@ class basic_joystick
    * @since 4.2.0
    */
   [[nodiscard]] static auto product(int deviceIndex) noexcept
-      -> std::optional<u16>;
+      -> std::optional<u16>
+  {
+    const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
+    if (product == 0) {
+      return std::nullopt;
+    } else {
+      return product;
+    }
+  }
 
   /**
    * @brief Returns the product version of the joystick, if available.
@@ -299,7 +359,15 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>;
+  [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
+  {
+    const auto version = SDL_JoystickGetProductVersion(ptr());
+    if (version == 0) {
+      return std::nullopt;
+    } else {
+      return version;
+    }
+  }
 
   /**
    * @brief Returns the product version for the joystick associated with the
@@ -313,7 +381,15 @@ class basic_joystick
    * @since 4.2.0
    */
   [[nodiscard]] static auto product_version(int deviceIndex) noexcept
-      -> std::optional<u16>;
+      -> std::optional<u16>
+  {
+    const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
+    if (version == 0) {
+      return std::nullopt;
+    } else {
+      return version;
+    }
+  }
 
   /**
    * @brief Returns the ball axis change since the last poll.
@@ -329,7 +405,17 @@ class basic_joystick
    * @since 4.2.0
    */
   [[nodiscard]] auto get_ball_axis_change(int ball) const noexcept
-      -> std::optional<ball_axis_change>;
+      -> std::optional<ball_axis_change>
+  {
+    ball_axis_change change{};
+    const auto result =
+        SDL_JoystickGetBall(ptr(), ball, &change.dx, &change.dy);
+    if (result == 0) {
+      return change;
+    } else {
+      return std::nullopt;
+    }
+  }
 
   /**
    * @brief Returns the current position of the specified axis.
@@ -347,8 +433,16 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto axis_pos(unsigned int axis) const noexcept
-      -> std::optional<i16>;
+  [[nodiscard]] auto axis_pos(unsigned axis) const noexcept
+      -> std::optional<i16>
+  {
+    const auto result = SDL_JoystickGetAxis(ptr(), static_cast<int>(axis));
+    if (result == 0) {
+      return std::nullopt;
+    } else {
+      return result;
+    }
+  }
 
   /**
    * @brief Returns the initial state of the specified axis on the joystick.
@@ -361,7 +455,17 @@ class basic_joystick
    * @since 4.2.0
    */
   [[nodiscard]] auto axis_initial_state(unsigned int axis) const noexcept
-      -> std::optional<i16>;
+      -> std::optional<i16>
+  {
+    i16 state{};
+    const auto hadInitialState =
+        SDL_JoystickGetAxisInitialState(ptr(), static_cast<int>(axis), &state);
+    if (hadInitialState) {
+      return state;
+    } else {
+      return std::nullopt;
+    }
+  }
 
   /**
    * @brief Indicates whether or not the joystick is attached to the system.
@@ -370,7 +474,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto attached() const noexcept -> bool;
+  [[nodiscard]] auto is_attached() const noexcept -> bool
+  {
+    return SDL_JoystickGetAttached(ptr());
+  }
 
   /**
    * @brief Returns the amount of hats on the joystick.
@@ -379,7 +486,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto num_hats() const noexcept -> int;
+  [[nodiscard]] auto num_hats() const noexcept -> int
+  {
+    return SDL_JoystickNumHats(ptr());
+  }
 
   /**
    * @brief Returns the amount of general axis controls on the joystick.
@@ -388,7 +498,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto num_axes() const noexcept -> int;
+  [[nodiscard]] auto num_axes() const noexcept -> int
+  {
+    return SDL_JoystickNumAxes(ptr());
+  }
 
   /**
    * @brief Returns the amount of trackballs on the joystick.
@@ -397,7 +510,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto num_trackballs() const noexcept -> int;
+  [[nodiscard]] auto num_trackballs() const noexcept -> int
+  {
+    return SDL_JoystickNumBalls(ptr());
+  }
 
   /**
    * @brief Returns the amount of buttons on the joystick.
@@ -406,7 +522,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto num_buttons() const noexcept -> int;
+  [[nodiscard]] auto num_buttons() const noexcept -> int
+  {
+    return SDL_JoystickNumButtons(ptr());
+  }
 
   /**
    * @brief Returns the instance ID associated with the joystick.
@@ -415,7 +534,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto instance_id() const noexcept -> SDL_JoystickID;
+  [[nodiscard]] auto instance_id() const noexcept -> SDL_JoystickID
+  {
+    return SDL_JoystickInstanceID(ptr());
+  }
 
   /**
    * @brief Returns the instance ID for the joystick associated with the
@@ -429,7 +551,15 @@ class basic_joystick
    * @since 4.2.0
    */
   [[nodiscard]] static auto instance_id(int deviceIndex) noexcept
-      -> std::optional<SDL_JoystickID>;
+      -> std::optional<SDL_JoystickID>
+  {
+    const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
+    if (id == -1) {
+      return std::nullopt;
+    } else {
+      return id;
+    }
+  }
 
   /**
    * @brief Returns the GUID associated with the joystick.
@@ -440,7 +570,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto guid() noexcept -> SDL_JoystickGUID;
+  [[nodiscard]] auto guid() noexcept -> SDL_JoystickGUID
+  {
+    return SDL_JoystickGetGUID(ptr());
+  }
 
   /**
    * @brief Returns the GUID for the joystick associated with the specified
@@ -456,7 +589,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] static auto guid(int deviceIndex) noexcept -> SDL_JoystickGUID;
+  [[nodiscard]] static auto guid(int deviceIndex) noexcept -> SDL_JoystickGUID
+  {
+    return SDL_JoystickGetDeviceGUID(deviceIndex);
+  }
 
   /**
    * @brief Returns the name associated with the joystick.
@@ -467,7 +603,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto name() const noexcept -> czstring;
+  [[nodiscard]] auto name() const noexcept -> czstring
+  {
+    return SDL_JoystickName(ptr());
+  }
 
   /**
    * @brief Returns the associated with the joystick with the specified
@@ -481,7 +620,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] static auto name(int deviceIndex) noexcept -> czstring;
+  [[nodiscard]] static auto name(int deviceIndex) noexcept -> czstring
+  {
+    return SDL_JoystickNameForIndex(deviceIndex);
+  }
 
   /**
    * @brief Returns the current power level of the joystick.
@@ -490,7 +632,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto get_power() const noexcept -> power;
+  [[nodiscard]] auto get_power() const noexcept -> power
+  {
+    return static_cast<power>(SDL_JoystickCurrentPowerLevel(ptr()));
+  }
 
   /**
    * @brief Returns the button state of the button associated with the index.
@@ -501,8 +646,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto get_button_state(int button) const noexcept
-      -> button_state;
+  [[nodiscard]] auto get_button_state(int button) const noexcept -> button_state
+  {
+    return static_cast<button_state>(SDL_JoystickGetButton(ptr(), button));
+  }
 
   /**
    * @brief Returns the state of a specific joystick hat.
@@ -515,7 +662,10 @@ class basic_joystick
    *
    * @see `joystick::HatState`
    */
-  [[nodiscard]] auto get_hat_state(int hat) const noexcept -> hat_state;
+  [[nodiscard]] auto get_hat_state(int hat) const noexcept -> hat_state
+  {
+    return static_cast<hat_state>(SDL_JoystickGetHat(ptr(), hat));
+  }
 
   /**
    * @brief Returns a pointer to the associated `SDL_Joystick`.
@@ -539,7 +689,7 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  static void update() noexcept;
+  static void update() noexcept { SDL_JoystickUpdate(); }
 
   /**
    * @brief Locks the access to all joysticks.
@@ -550,7 +700,7 @@ class basic_joystick
    * @see SDL_LockJoysticks
    * @since 4.2.0
    */
-  static void lock() noexcept;
+  static void lock() noexcept { SDL_LockJoysticks(); }
 
   /**
    * @brief Unlocks the access to all joysticks.
@@ -558,7 +708,7 @@ class basic_joystick
    * @see SDL_UnlockJoysticks
    * @since 4.2.0
    */
-  static void unlock() noexcept;
+  static void unlock() noexcept { SDL_UnlockJoysticks(); }
 
   /**
    * @brief Specifies whether or not joystick event polling is enabled.
@@ -578,7 +728,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  static void set_polling(bool enabled) noexcept;
+  static void set_polling(bool enabled) noexcept
+  {
+    SDL_JoystickEventState(enabled ? SDL_ENABLE : SDL_DISABLE);
+  }
 
   /**
    * @brief Indicates whether or not joystick event polling is enabled.
@@ -587,7 +740,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  static auto polling() noexcept -> bool;
+  static auto polling() noexcept -> bool
+  {
+    return SDL_JoystickEventState(SDL_QUERY);
+  }
 
   /**
    * @brief Returns the amount of currently available joysticks.
@@ -597,7 +753,15 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] static auto amount() noexcept -> std::optional<int>;
+  [[nodiscard]] static auto amount() noexcept -> std::optional<int>
+  {
+    const auto result = SDL_NumJoysticks();
+    if (result < 0) {
+      return std::nullopt;
+    } else {
+      return result;
+    }
+  }
 
   /**
    * @brief Returns a joystick GUID based on the supplied string.
@@ -610,7 +774,10 @@ class basic_joystick
    * @since 4.2.0
    */
   [[nodiscard]] static auto guid_from_string(nn_czstring str) noexcept
-      -> SDL_JoystickGUID;
+      -> SDL_JoystickGUID
+  {
+    return SDL_JoystickGetGUIDFromString(str);
+  }
 
   /**
    * @brief Returns the maximum possible value of an axis control on a joystick.
@@ -638,7 +805,9 @@ class basic_joystick
 
  protected:
   template <typename... Args>
-  explicit basic_joystick(Args&&... args);
+  explicit basic_joystick(Args&&... args)
+      : m_storage{std::forward<Args>(args)...}
+  {}
 
   [[nodiscard]] auto get_storage() noexcept -> storage_type&
   {
@@ -662,306 +831,6 @@ class basic_joystick
     }
   };
 };
-
-template <typename T>
-template <typename... Args>
-basic_joystick<T>::basic_joystick(Args&&... args)
-    : m_storage{std::forward<Args>(args)...}
-{}
-
-template <typename T>
-void basic_joystick<T>::update() noexcept
-{
-  SDL_JoystickUpdate();
-}
-
-template <typename T>
-void basic_joystick<T>::lock() noexcept
-{
-  SDL_LockJoysticks();
-}
-
-template <typename T>
-void basic_joystick<T>::unlock() noexcept
-{
-  SDL_UnlockJoysticks();
-}
-
-template <typename T>
-void basic_joystick<T>::set_polling(bool enabled) noexcept
-{
-  SDL_JoystickEventState(enabled ? SDL_ENABLE : SDL_DISABLE);
-}
-
-template <typename T>
-auto basic_joystick<T>::polling() noexcept -> bool
-{
-  return SDL_JoystickEventState(SDL_QUERY);
-}
-
-template <typename T>
-auto basic_joystick<T>::amount() noexcept -> std::optional<int>
-{
-  const auto result = SDL_NumJoysticks();
-  if (result < 0) {
-    return std::nullopt;
-  } else {
-    return result;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::guid(int deviceIndex) noexcept -> SDL_JoystickGUID
-{
-  return SDL_JoystickGetDeviceGUID(deviceIndex);
-}
-
-template <typename T>
-auto basic_joystick<T>::player_index(int deviceIndex) noexcept
-    -> std::optional<int>
-{
-  const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
-  if (index == -1) {
-    return std::nullopt;
-  } else {
-    return index;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::vendor(int deviceIndex) noexcept -> std::optional<u16>
-{
-  const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
-  if (vendor == 0) {
-    return std::nullopt;
-  } else {
-    return vendor;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::product(int deviceIndex) noexcept -> std::optional<u16>
-{
-  const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
-  if (product == 0) {
-    return std::nullopt;
-  } else {
-    return product;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::product_version(int deviceIndex) noexcept
-    -> std::optional<u16>
-{
-  const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
-  if (version == 0) {
-    return std::nullopt;
-  } else {
-    return version;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::get_type(int deviceIndex) noexcept -> type
-{
-  return static_cast<type>(SDL_JoystickGetDeviceType(deviceIndex));
-}
-
-template <typename T>
-auto basic_joystick<T>::instance_id(int deviceIndex) noexcept
-    -> std::optional<SDL_JoystickID>
-{
-  const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
-  if (id == -1) {
-    return std::nullopt;
-  } else {
-    return id;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::name(int deviceIndex) noexcept -> czstring
-{
-  return SDL_JoystickNameForIndex(deviceIndex);
-}
-
-template <typename T>
-auto basic_joystick<T>::guid_from_string(nn_czstring str) noexcept
-    -> SDL_JoystickGUID
-{
-  return SDL_JoystickGetGUIDFromString(str);
-}
-
-template <typename T>
-void basic_joystick<T>::rumble(u16 lowFreq,
-                               u16 highFreq,
-                               milliseconds<u32> duration) noexcept
-{
-  SDL_JoystickRumble(ptr(), lowFreq, highFreq, duration.count());
-}
-
-template <typename T>
-void basic_joystick<T>::set_player_index(int index) noexcept
-{
-  SDL_JoystickSetPlayerIndex(ptr(), index);
-}
-
-template <typename T>
-auto basic_joystick<T>::player_index() const noexcept -> std::optional<int>
-{
-  const auto index = SDL_JoystickGetPlayerIndex(ptr());
-  if (index == -1) {
-    return std::nullopt;
-  } else {
-    return index;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::get_type() const noexcept -> type
-{
-  return static_cast<type>(SDL_JoystickGetType(ptr()));
-}
-
-template <typename T>
-auto basic_joystick<T>::vendor() const noexcept -> std::optional<u16>
-{
-  const auto vendor = SDL_JoystickGetVendor(ptr());
-  if (vendor == 0) {
-    return std::nullopt;
-  } else {
-    return vendor;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::product() const noexcept -> std::optional<u16>
-{
-  const auto product = SDL_JoystickGetProduct(ptr());
-  if (product == 0) {
-    return std::nullopt;
-  } else {
-    return product;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::product_version() const noexcept -> std::optional<u16>
-{
-  const auto version = SDL_JoystickGetProductVersion(ptr());
-  if (version == 0) {
-    return std::nullopt;
-  } else {
-    return version;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::get_ball_axis_change(int ball) const noexcept
-    -> std::optional<ball_axis_change>
-{
-  ball_axis_change change{};
-  const auto result = SDL_JoystickGetBall(ptr(), ball, &change.dx, &change.dy);
-  if (result == 0) {
-    return change;
-  } else {
-    return std::nullopt;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::axis_pos(unsigned int axis) const noexcept
-    -> std::optional<i16>
-{
-  const auto result = SDL_JoystickGetAxis(ptr(), static_cast<int>(axis));
-  if (result == 0) {
-    return std::nullopt;
-  } else {
-    return result;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::axis_initial_state(unsigned int axis) const noexcept
-    -> std::optional<i16>
-{
-  i16 state{};
-  const auto hadInitialState =
-      SDL_JoystickGetAxisInitialState(ptr(), static_cast<int>(axis), &state);
-  if (hadInitialState) {
-    return state;
-  } else {
-    return std::nullopt;
-  }
-}
-
-template <typename T>
-auto basic_joystick<T>::attached() const noexcept -> bool
-{
-  return SDL_JoystickGetAttached(ptr());
-}
-
-template <typename T>
-auto basic_joystick<T>::num_hats() const noexcept -> int
-{
-  return SDL_JoystickNumHats(ptr());
-}
-
-template <typename T>
-auto basic_joystick<T>::num_axes() const noexcept -> int
-{
-  return SDL_JoystickNumAxes(ptr());
-}
-
-template <typename T>
-auto basic_joystick<T>::num_trackballs() const noexcept -> int
-{
-  return SDL_JoystickNumBalls(ptr());
-}
-
-template <typename T>
-auto basic_joystick<T>::num_buttons() const noexcept -> int
-{
-  return SDL_JoystickNumButtons(ptr());
-}
-
-template <typename T>
-auto basic_joystick<T>::instance_id() const noexcept -> SDL_JoystickID
-{
-  return SDL_JoystickInstanceID(ptr());
-}
-
-template <typename T>
-auto basic_joystick<T>::guid() noexcept -> SDL_JoystickGUID
-{
-  return SDL_JoystickGetGUID(ptr());
-}
-
-template <typename T>
-auto basic_joystick<T>::name() const noexcept -> czstring
-{
-  return SDL_JoystickName(ptr());
-}
-
-template <typename T>
-auto basic_joystick<T>::get_power() const noexcept -> power
-{
-  return static_cast<power>(SDL_JoystickCurrentPowerLevel(ptr()));
-}
-
-template <typename T>
-auto basic_joystick<T>::get_button_state(int button) const noexcept
-    -> button_state
-{
-  return static_cast<button_state>(SDL_JoystickGetButton(ptr(), button));
-}
-
-template <typename T>
-auto basic_joystick<T>::get_hat_state(int hat) const noexcept -> hat_state
-{
-  return static_cast<hat_state>(SDL_JoystickGetHat(ptr(), hat));
-}
 
 }  // namespace cen
 

@@ -85,7 +85,7 @@ type. This can be accomplished with the ``is`` function.
 
   void foo(cen::event& event)
   {
-    // no need to handle quit event instance, just need to know if it is a quite event
+    // no need to handle quit event instance, just need to know that it is a quit event
     if (event.is<cen::quit_event>()) {
       // quit application...
     }

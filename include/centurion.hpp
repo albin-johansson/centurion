@@ -156,7 +156,7 @@ struct config final
  * @par Examples
  * This is how you should initialize the library.
  * @code{.cpp}
- * #include <cen.hpp>
+ * 
  *
  * int main(int, char**)
  * {
@@ -170,7 +170,7 @@ struct config final
  * You can also manually configure exactly how the library is initialized, using
  * the @link cen::config @endlink struct.
  * @code{.cpp}
- * #include <cen.hpp>
+ * 
  *
  * int main(int, char**)
  * {

@@ -228,7 +228,6 @@ demonstrates this in action.
 
 .. code-block:: C++
 
-  #include <cen.hpp>
   #include <hints.hpp>
 
   void foo()
@@ -256,7 +255,6 @@ always returns a ``std::optional`` that wraps a value of the value type used by 
 
 .. code-block:: C++
 
-  #include <cen.hpp>
   #include <hints.hpp>
 
   void foo()
@@ -280,7 +278,6 @@ It's possible to observe changes to hints with callbacks.
 
 .. code-block:: C++
 
-  #include <cen.hpp>
   #include <hints.hpp>
 
   void foo()

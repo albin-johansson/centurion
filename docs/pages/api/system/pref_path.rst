@@ -36,7 +36,6 @@ Examples
 
 .. code-block:: C++
   
-  #include <cen.hpp>
   #include <paths.hpp>
 
   void foo()

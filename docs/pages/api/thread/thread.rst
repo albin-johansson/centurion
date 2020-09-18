@@ -81,8 +81,7 @@ function pointer is also valid.
   #include <iostream>
 
   #include <thread.cpp>
-  #include <cen.hpp>
-
+  
   int main(int, char**)
   {
     using namespace cen::literals;

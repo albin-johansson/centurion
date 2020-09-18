@@ -62,7 +62,6 @@ the renderer.
 
 .. code-block:: c++
   
-  #include <cen.hpp>
   #include <renderer.hpp>
 
   void draw(cen::renderer& renderer)
@@ -81,7 +80,6 @@ following example demonstrates all of the various methods available for font han
 
 .. code-block:: c++
   
-  #include <cen.hpp>
   #include <renderer.hpp>
 
   void font_demo(cen::renderer& renderer)

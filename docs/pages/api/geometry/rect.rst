@@ -77,7 +77,6 @@ Casting between rectangle types
 
 .. code-block:: c++
 
-  #include <cen.hpp>
   #include <rect.hpp>
 
   void demo()
@@ -97,7 +96,6 @@ Two rectangles are considered to be intersecting if they overlap each other.
 
 .. code-block:: c++
 
-  #include <cen.hpp>
   #include <rect.hpp>
 
   void demo()
@@ -120,7 +118,6 @@ Two rectangles are considered to be colliding if the overlap *or* if they share 
 
 .. code-block:: c++
 
-  #include <cen.hpp>
   #include <rect.hpp>
 
   void demo()
@@ -143,7 +140,6 @@ the function provided by SDL, this also works with floating-point rectangles.
 
 .. code-block:: c++  
 
-  #include <cen.hpp>
   #include <rect.hpp>
 
   void demo()

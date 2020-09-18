@@ -74,7 +74,7 @@ namespace cen {
  *
  * @par Usage
  * @code{.cpp}
- *   #include <cen.hpp>
+ *   
  *   #include <key.hpp>
  *
  *   void key_code_demo()

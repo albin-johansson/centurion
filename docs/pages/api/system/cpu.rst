@@ -28,7 +28,6 @@ Examples
 
 .. code-block:: c++
   
-  #include <cen.hpp>
   #include <cpu.hpp>
 
   void foo()

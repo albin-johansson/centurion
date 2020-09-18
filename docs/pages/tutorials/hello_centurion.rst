@@ -20,7 +20,7 @@ exactly what gets initialized (and how).
 
 .. code-block:: c++
 
-  #include <cen.hpp>
+  #include <centurion.hpp>
 
   int main(int, char**)
   {
@@ -40,7 +40,7 @@ initialized.
 
 .. code-block:: c++
 
-  #include <cen.hpp>
+  #include <centurion.hpp>
 
   int main(int, char**)
   {

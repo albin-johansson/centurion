@@ -53,7 +53,6 @@ i.e. ``_utf8``, ``_latin1`` or ``_unicode``.
 
 .. code-block:: c++
   
-  #include <cen.hpp>
   #include <renderer.hpp>
    
   void demo(cen::renderer& renderer, cen::font& font)

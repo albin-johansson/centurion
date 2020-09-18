@@ -1,4 +1,4 @@
-Window
+window
 ======
 
 The ``window`` class is the main representation of a window in the library. It's a subclass of 
@@ -36,7 +36,6 @@ The following example illustrates a typical setup for a responsive window.
 
 .. code-block:: c++
 
-  #include <cen.hpp>
   #include <window.hpp>
   #include <renderer.hpp>
   #include <event.hpp>
@@ -75,4 +74,4 @@ The following example illustrates a typical setup for a responsive window.
 
 See also
 --------
-* :doc:`Window view </pages/api/graphics/window_handle>`
+* :doc:`Window handle </pages/api/graphics/window_handle>`

@@ -45,7 +45,7 @@ Basic playback
 
 .. code-block:: C++
 
-  #include <cen.hpp>
+  
   #include <music.hpp>
 
   void demo()
@@ -88,7 +88,6 @@ Fading music in and out
 
 .. code-block:: C++
 
-  #include <cen.hpp>
   #include <music.hpp>
 
   void demo()

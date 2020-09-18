@@ -29,7 +29,6 @@ Examples
 
 .. code-block:: c++
   
-  #include <cen.hpp>
   #include <battery.hpp>
 
   void foo()

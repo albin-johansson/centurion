@@ -30,7 +30,6 @@ Usage of the clipboard API is very simple, it's pretty much self-explanatory!
 
 .. code-block:: c++
   
-  #include <cen.hpp>
   #include <clipboard.hpp>
 
   void foo() 

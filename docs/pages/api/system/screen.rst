@@ -30,8 +30,6 @@ Querying the screen size
 
 .. code-block:: C++
   
-  
-  #include <cen.hpp>
   #include <screen.hpp>
 
   void foo()
@@ -51,8 +49,6 @@ Controlling the screen saver
 
 .. code-block:: C++
   
-  
-  #include <cen.hpp>
   #include <screen.hpp>
 
   void foo()
@@ -69,7 +65,6 @@ Texture using screen pixel format
 
 .. code-block:: C++
   
-  #include <cen.hpp>
   #include <screen.hpp>
   #include <renderer.hpp>
   #include <texture.hpp>

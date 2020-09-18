@@ -68,7 +68,7 @@ namespace cen {
  * The following example illustrates a typical setup for a responsive window.
  * Of course, the example assumes that the library has been initialized.
  * @code{.cpp}
- *   #include <cen.hpp>
+ *   
  *   #include <window.hpp>
  *   #include <renderer.hpp>
  *   #include <event.hpp>

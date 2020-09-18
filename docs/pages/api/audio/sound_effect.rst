@@ -40,7 +40,6 @@ Basic playback
 
 .. code-block:: C++
 
-  #include <cen.hpp>
   #include <sound_effect.hpp>
   #include <thread.hpp>
 
@@ -75,7 +74,6 @@ Fading a sound effect in and out
 
 .. code-block:: C++
 
-  #include <cen.hpp>
   #include <sound_effect.hpp>
 
   void foo()
@@ -99,7 +97,6 @@ Handling sound effect volume
 
 .. code-block:: C++
 
-  #include <cen.hpp>
   #include <sound_effect.hpp>
 
   void foo()

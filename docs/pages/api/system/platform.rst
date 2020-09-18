@@ -30,7 +30,6 @@ which is a C++20 feature, of course you could fully qualify the enumerators as w
 
 .. code-block:: c++
   
-  #include <cen.hpp>
   #include <platform.hpp>
 
   void foo()

@@ -38,7 +38,6 @@ Styling
 
 .. code-block:: c++
   
-  #include <cen.hpp>
   #include <font.hpp>
 
   void styling_demo() 
@@ -71,7 +70,6 @@ be used to obtain various information about the font face.
 
 .. code-block:: c++
   
-  #include <cen.hpp>
   #include <font.hpp>
 
   void font_info_demo() 
@@ -108,7 +106,6 @@ class, in order to enable fast text rendering.
 
 .. code-block:: c++
    
-  #include <cen.hpp>
   #include <font.hpp>
 
   void glyph_info_demo() 
@@ -135,7 +132,6 @@ actually having to render the string.
 
 .. code-block:: c++
   
-  #include <cen.hpp>
   #include <font.hpp>
 
   void string_info_demo() 

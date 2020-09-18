@@ -70,7 +70,6 @@ You can easily obtain the distance between two points using the
 
 .. code-block:: c++
 
-  #include <cen.hpp>
   #include <point.hpp>
 
   void demo() 

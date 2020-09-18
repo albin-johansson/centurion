@@ -44,8 +44,7 @@ Caching glyphs
   #include <window.hpp>
   #include <renderer.hpp>
   #include <font_cache.hpp>
-  #include <cen.hpp>
-
+  
   void foo() 
   {
     cen::window window;
@@ -67,7 +66,6 @@ Caching full strings
   #include <window.hpp>
   #include <renderer.hpp>
   #include <font_cache.hpp>
-  #include <cen.hpp>
 
   void foo() 
   {
@@ -84,7 +82,7 @@ Caching full strings
     auto& texture = cache.get_stored("foo"_hs");
 
     // Obtains pointer to cached string texture, doesn't throw
-    if (auto* ptr = cache.try_get_stored("foo"_hs); ptr) {
+    if (auto* ptr = cache.try_get_stored("foo"_hs)) {
       // found cached texture!
     }
   }

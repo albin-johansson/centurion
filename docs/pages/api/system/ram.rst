@@ -26,7 +26,6 @@ Examples
 
 .. code-block:: C++
   
-  #include <cen.hpp>
   #include <ram.hpp>
 
   void foo()

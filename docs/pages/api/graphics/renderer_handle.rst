@@ -47,7 +47,6 @@ parameter.
 
 .. code-block:: c++
 
-  #include <cen.hpp>
   #include <renderer_handle.hpp>
 
   void draw(SDL_Renderer* renderer)

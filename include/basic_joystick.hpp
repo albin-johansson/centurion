@@ -73,7 +73,7 @@ class joystick_traits;
  *
  * @brief Provides the base implementation of joysticks.
  *
- * @tparam Derived the type of the derived joystick.
+ * @tparam T the type of the derived joystick.
  *
  * @see `joystick`
  * @see `joystick_handle`
@@ -82,11 +82,11 @@ class joystick_traits;
  *
  * @headerfile basic_joystick.hpp
  */
-template <typename Derived>
+template <typename T>
 class basic_joystick
 {
  public:
-  using storage_type = typename joystick_traits<Derived>::storage_type;
+  using storage_type = typename joystick_traits<T>::storage_type;
 
   /**
    * @enum power

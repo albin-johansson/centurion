@@ -61,11 +61,11 @@ namespace centurion {
 template <typename T>
 class texture_traits;
 
-template <typename Derived>
+template <typename T>
 class basic_texture
 {
  public:
-  using storage_type = typename texture_traits<Derived>::storage_type;
+  using storage_type = typename texture_traits<T>::storage_type;
 
   /**
    * @brief Sets the color of the pixel at the specified coordinate.
@@ -380,8 +380,8 @@ basic_texture<T>::basic_texture(Args&&... args)
     : m_storage{std::forward<Args>(args)...}
 {}
 
-template <typename Derived>
-auto basic_texture<Derived>::lock(u32** pixels, int* pitch) noexcept -> bool
+template <typename T>
+auto basic_texture<T>::lock(u32** pixels, int* pitch) noexcept -> bool
 {
   if (pitch) {
     const auto result = SDL_LockTexture(
@@ -395,15 +395,15 @@ auto basic_texture<Derived>::lock(u32** pixels, int* pitch) noexcept -> bool
   }
 }
 
-template <typename Derived>
-void basic_texture<Derived>::unlock() noexcept
+template <typename T>
+void basic_texture<T>::unlock() noexcept
 {
   SDL_UnlockTexture(ptr());
 }
 
-template <typename Derived>
-void basic_texture<Derived>::set_pixel(const ipoint& pixel,
-                                       const color& color) noexcept
+template <typename T>
+void basic_texture<T>::set_pixel(const ipoint& pixel,
+                                 const color& color) noexcept
 {
   if (access() != texture_access::streaming || pixel.x() < 0 || pixel.y() < 0 ||
       pixel.x() >= width() || pixel.y() >= height()) {
@@ -433,62 +433,62 @@ void basic_texture<Derived>::set_pixel(const ipoint& pixel,
   unlock();
 }
 
-template <typename Derived>
-void basic_texture<Derived>::set_alpha(u8 alpha) noexcept
+template <typename T>
+void basic_texture<T>::set_alpha(u8 alpha) noexcept
 {
   SDL_SetTextureAlphaMod(ptr(), alpha);
 }
 
-template <typename Derived>
-void basic_texture<Derived>::set_blend_mode(blend_mode mode) noexcept
+template <typename T>
+void basic_texture<T>::set_blend_mode(blend_mode mode) noexcept
 {
   SDL_SetTextureBlendMode(ptr(), static_cast<SDL_BlendMode>(mode));
 }
 
-template <typename Derived>
-void basic_texture<Derived>::set_color_mod(const color& color) noexcept
+template <typename T>
+void basic_texture<T>::set_color_mod(const color& color) noexcept
 {
   SDL_SetTextureColorMod(ptr(), color.red(), color.green(), color.blue());
 }
 
-template <typename Derived>
-void basic_texture<Derived>::set_scale_mode(scale_mode mode) noexcept
+template <typename T>
+void basic_texture<T>::set_scale_mode(scale_mode mode) noexcept
 {
   SDL_SetTextureScaleMode(ptr(), static_cast<SDL_ScaleMode>(mode));
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::format() const noexcept -> pixel_format
+template <typename T>
+auto basic_texture<T>::format() const noexcept -> pixel_format
 {
   u32 format{};
   SDL_QueryTexture(ptr(), &format, nullptr, nullptr, nullptr);
   return static_cast<pixel_format>(format);
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::access() const noexcept -> texture_access
+template <typename T>
+auto basic_texture<T>::access() const noexcept -> texture_access
 {
   int access{};
   SDL_QueryTexture(ptr(), nullptr, &access, nullptr, nullptr);
   return static_cast<texture_access>(access);
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::width() const noexcept -> int
+template <typename T>
+auto basic_texture<T>::width() const noexcept -> int
 {
   const auto [width, height] = size();
   return width;
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::height() const noexcept -> int
+template <typename T>
+auto basic_texture<T>::height() const noexcept -> int
 {
   const auto [width, height] = size();
   return height;
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::size() const noexcept -> iarea
+template <typename T>
+auto basic_texture<T>::size() const noexcept -> iarea
 {
   int width{};
   int height{};
@@ -496,43 +496,43 @@ auto basic_texture<Derived>::size() const noexcept -> iarea
   return {width, height};
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::is_target() const noexcept -> bool
+template <typename T>
+auto basic_texture<T>::is_target() const noexcept -> bool
 {
   return access() == texture_access::target;
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::is_static() const noexcept -> bool
+template <typename T>
+auto basic_texture<T>::is_static() const noexcept -> bool
 {
   return access() == texture_access::no_lock;
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::is_streaming() const noexcept -> bool
+template <typename T>
+auto basic_texture<T>::is_streaming() const noexcept -> bool
 {
   return access() == texture_access::streaming;
   ;
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::alpha() const noexcept -> u8
+template <typename T>
+auto basic_texture<T>::alpha() const noexcept -> u8
 {
   u8 alpha{};
   SDL_GetTextureAlphaMod(ptr(), &alpha);
   return alpha;
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::get_blend_mode() const noexcept -> blend_mode
+template <typename T>
+auto basic_texture<T>::get_blend_mode() const noexcept -> blend_mode
 {
   SDL_BlendMode mode{};
   SDL_GetTextureBlendMode(ptr(), &mode);
   return static_cast<blend_mode>(mode);
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::color_mod() const noexcept -> color
+template <typename T>
+auto basic_texture<T>::color_mod() const noexcept -> color
 {
   u8 red{};
   u8 green{};
@@ -541,28 +541,28 @@ auto basic_texture<Derived>::color_mod() const noexcept -> color
   return {red, green, blue, 0xFF};
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::get_scale_mode() const noexcept -> scale_mode
+template <typename T>
+auto basic_texture<T>::get_scale_mode() const noexcept -> scale_mode
 {
   SDL_ScaleMode mode{};
   SDL_GetTextureScaleMode(ptr(), &mode);
   return static_cast<scale_mode>(mode);
 }
 
-template <typename Derived>
-auto basic_texture<Derived>::get() const noexcept -> SDL_Texture*
+template <typename T>
+auto basic_texture<T>::get() const noexcept -> SDL_Texture*
 {
   return ptr();
 }
 
-template <typename Derived>
-basic_texture<Derived>::operator SDL_Texture*() noexcept
+template <typename T>
+basic_texture<T>::operator SDL_Texture*() noexcept
 {
   return ptr();
 }
 
-template <typename Derived>
-basic_texture<Derived>::operator const SDL_Texture*() const noexcept
+template <typename T>
+basic_texture<T>::operator const SDL_Texture*() const noexcept
 {
   return ptr();
 }

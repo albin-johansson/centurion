@@ -6,7 +6,7 @@ set(SOURCE_FILES
         ../include/centurion_cfg.hpp
         ../include/centurion_fwd.hpp
         ../include/types.hpp
-        ../include/video.hpp
+        ../include/graphics_drivers.hpp
         ../include/basic_window.hpp
         ../include/window.hpp
         ../include/window_handle.hpp
@@ -89,7 +89,7 @@ set(SOURCE_FILES
         graphics/message_box_color_scheme.cpp
         graphics/surface.cpp
         graphics/cursor.cpp
-        graphics/basic_renderer.cpp
+        graphics/graphics_drivers.cpp
         graphics/renderer_handle.cpp
         graphics/renderer.cpp
         graphics/color.cpp

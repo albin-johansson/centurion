@@ -60,6 +60,12 @@ Welcome to Centurion's documentation!
 
 .. toctree::
    :maxdepth: 1
+   :caption: Events
+
+   pages/api/event/event_type
+
+.. toctree::
+   :maxdepth: 1
    :caption: System
 
    pages/api/system/battery

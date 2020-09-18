@@ -62,20 +62,24 @@ namespace cen {
 template <class T>
 class basic_window
 {
+  template <typename U>
+  friend auto get_renderer(const basic_window<U>& window) noexcept
+      -> renderer_handle;
+
  public:
   /**
    * @brief Makes the window visible.
    *
    * @since 3.0.0
    */
-  void show() noexcept;
+  void show() noexcept { SDL_ShowWindow(ptr()); }
 
   /**
    * @brief Makes the window invisible.
    *
    * @since 3.0.0
    */
-  void hide() noexcept;
+  void hide() noexcept { SDL_HideWindow(ptr()); }
 
   /**
    * @brief Centers the window position relative to the screen.
@@ -84,28 +88,31 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void center() noexcept;
+  void center() noexcept
+  {
+    set_position({SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED});
+  }
 
   /**
    * @brief Raises this window above other windows and requests focus.
    *
    * @since 3.0.0
    */
-  void raise() noexcept;
+  void raise() noexcept { SDL_RaiseWindow(ptr()); }
 
   /**
    * @brief Maximizes the window.
    *
    * @since 3.1.0
    */
-  void maximize() noexcept;
+  void maximize() noexcept { SDL_MaximizeWindow(ptr()); }
 
   /**
    * @brief Minimizes the window.
    *
    * @since 3.1.0
    */
-  void minimize() noexcept;
+  void minimize() noexcept { SDL_MinimizeWindow(ptr()); }
 
   /**
    * @brief Sets whether or not the window is in fullscreen mode.
@@ -115,7 +122,15 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_fullscreen(bool fullscreen) noexcept;
+  void set_fullscreen(bool fullscreen) noexcept
+  {
+    const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
+    SDL_SetWindowFullscreen(ptr(), fullscreen ? flag : 0);
+
+    if (!fullscreen) {
+      set_brightness(1);
+    }
+  }
 
   /**
    * @brief Sets whether or not the window is in fullscreen desktop mode.
@@ -127,7 +142,11 @@ class basic_window
    *
    * @since 4.0.0
    */
-  void set_fullscreen_desktop(bool fullscreen) noexcept;
+  void set_fullscreen_desktop(bool fullscreen) noexcept
+  {
+    const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
+    SDL_SetWindowFullscreen(ptr(), fullscreen ? flag : 0);
+  }
 
   /**
    * @brief Sets whether or not the window is decorated.
@@ -139,7 +158,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_decorated(bool decorated) noexcept;
+  void set_decorated(bool decorated) noexcept
+  {
+    SDL_SetWindowBordered(ptr(), detail::convert_bool(decorated));
+  }
 
   /**
    * @brief Sets whether or not the window should be resizable.
@@ -149,7 +171,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_resizable(bool resizable) noexcept;
+  void set_resizable(bool resizable) noexcept
+  {
+    SDL_SetWindowResizable(ptr(), detail::convert_bool(resizable));
+  }
 
   /**
    * @brief Sets the width of the window.
@@ -161,7 +186,12 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_width(int width) noexcept;
+  void set_width(int width) noexcept
+  {
+    if (width > 0) {  // FIXME cap to at least 1
+      SDL_SetWindowSize(ptr(), width, height());
+    }
+  }
 
   /**
    * @brief Sets the height of the window.
@@ -173,7 +203,12 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_height(int height) noexcept;
+  void set_height(int height) noexcept
+  {
+    if (height > 0) {  // FIXME cap to at least 1
+      SDL_SetWindowSize(ptr(), width(), height);
+    }
+  }
 
   /**
    * @brief Sets the size of the window.
@@ -186,7 +221,12 @@ class basic_window
    *
    * @since 5.0.0
    */
-  void set_size(const iarea& size) noexcept;
+  void set_size(const iarea& size) noexcept
+  {
+    if ((size.width > 0) && (size.height > 0)) {
+      SDL_SetWindowSize(ptr(), size.width, size.height);
+    }
+  }
 
   /**
    * @brief Sets the icon that will be used by the window.
@@ -195,7 +235,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_icon(const surface& icon) noexcept;
+  void set_icon(const surface& icon) noexcept
+  {
+    SDL_SetWindowIcon(ptr(), icon.get());
+  }
 
   /**
    * @brief Sets the title of the window.
@@ -204,7 +247,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_title(nn_czstring title) noexcept;
+  void set_title(nn_czstring title) noexcept
+  {
+    SDL_SetWindowTitle(ptr(), title);
+  }
 
   /**
    * @brief Sets the opacity of the window.
@@ -216,7 +262,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_opacity(float opacity) noexcept;
+  void set_opacity(float opacity) noexcept
+  {
+    SDL_SetWindowOpacity(ptr(), opacity);
+  }
 
   /**
    * @brief Sets the minimum size of the window.
@@ -229,7 +278,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_min_size(const iarea& size) noexcept;
+  void set_min_size(const iarea& size) noexcept
+  {
+    SDL_SetWindowMinimumSize(ptr(), size.width, size.height);
+  }
 
   /**
    * @brief Sets the maximum size of the window.
@@ -242,7 +294,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_max_size(const iarea& size) noexcept;
+  void set_max_size(const iarea& size) noexcept
+  {
+    SDL_SetWindowMaximumSize(ptr(), size.width, size.height);
+  }
 
   /**
    * @brief Sets the position of the window.
@@ -254,7 +309,10 @@ class basic_window
    *
    * @since 5.0.0
    */
-  void set_position(const ipoint& position) noexcept;
+  void set_position(const ipoint& position) noexcept
+  {
+    SDL_SetWindowPosition(ptr(), position.x(), position.y());
+  }
 
   /**
    * @brief Sets whether or not the mouse should be confined within the window.
@@ -266,7 +324,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_grab_mouse(bool grabMouse) noexcept;
+  void set_grab_mouse(bool grabMouse) noexcept
+  {
+    SDL_SetWindowGrab(ptr(), detail::convert_bool(grabMouse));
+  }
 
   /**
    * @brief Sets the overall brightness of the window.
@@ -281,7 +342,12 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void set_brightness(float brightness) noexcept;
+  void set_brightness(float brightness) noexcept
+  {
+    if (is_fullscreen()) {
+      SDL_SetWindowBrightness(ptr(), std::clamp(brightness, 0.0f, 1.0f));
+    }
+  }
 
   /**
    * @brief Sets whether or not the mouse should be captured.
@@ -296,7 +362,49 @@ class basic_window
    *
    * @since 5.0.0
    */
-  static void set_capturing_mouse(bool capturingMouse) noexcept;
+  static void set_capturing_mouse(bool capturingMouse) noexcept
+  {
+    SDL_CaptureMouse(detail::convert_bool(capturingMouse));
+  }
+
+  /**
+   * @brief Indicates whether or not the window is currently grabbing the mouse
+   * input.
+   *
+   * @return `true` if the window is grabbing the mouse; `false` otherwise.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto grabbing_mouse() const noexcept -> bool
+  {
+    return SDL_GetWindowGrab(ptr());
+  }
+
+  /**
+   * @brief Indicates whether or not the window has input focus.
+   *
+   * @note The window might have to be visible for this to be true.
+   *
+   * @return `true` if the window has input focus; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto has_input_focus() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_INPUT_FOCUS);
+  }
+
+  /**
+   * @brief Indicates whether or not the window has mouse focus.
+   *
+   * @return `true` if the window has mouse focus; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto has_mouse_focus() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_FOCUS);
+  }
 
   /**
    * @brief Indicates whether or not the window is decorated.
@@ -307,17 +415,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto is_decorated() const noexcept -> bool;
-
-  /**
-   * @brief Indicates whether or not the window is currently grabbing the mouse
-   * input.
-   *
-   * @return `true` if the window is grabbing the mouse; `false` otherwise.
-   *
-   * @since 3.0.0
-   */
-  [[nodiscard]] auto grabbing_mouse() const noexcept -> bool;
+  [[nodiscard]] auto is_decorated() const noexcept -> bool
+  {
+    return !(flags() & SDL_WINDOW_BORDERLESS);
+  }
 
   /**
    * @brief Indicates whether or not the window is resizable.
@@ -328,7 +429,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto is_resizable() const noexcept -> bool;
+  [[nodiscard]] auto is_resizable() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_RESIZABLE);
+  }
 
   /**
    * @brief Indicates whether or not the window is in fullscreen mode.
@@ -337,7 +441,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto is_fullscreen() const noexcept -> bool;
+  [[nodiscard]] auto is_fullscreen() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN);
+  }
 
   /**
    * @brief Indicates whether or not the window is in fullscreen desktop mode.
@@ -347,7 +454,10 @@ class basic_window
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto is_fullscreen_desktop() const noexcept -> bool;
+  [[nodiscard]] auto is_fullscreen_desktop() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN_DESKTOP);
+  }
 
   /**
    * @brief Indicates whether or not the window is visible.
@@ -356,7 +466,99 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto is_visible() const noexcept -> bool;
+  [[nodiscard]] auto is_visible() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_SHOWN);
+  }
+
+  /**
+   * @brief Indicates whether or not the window is usable with an
+   * OpenGL-context.
+   *
+   * @return `true` if the window is compatible with an OpenGL-context; false
+   * otherwise.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto is_opengl() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_OPENGL);
+  }
+
+  /**
+   * @brief Indicates whether or not the window is usable as a Vulkan surface.
+   *
+   * @return `true` if the window is is usable as a Vulkan surface; false
+   * otherwise.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto is_vulkan() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_VULKAN);
+  }
+
+  /**
+   * @brief Indicates whether or not the window wasn't created by SDL.
+   *
+   * @return `true` if the window wasn't created by SDL; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto is_foreign() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_FOREIGN);
+  }
+
+  /**
+   * @brief Indicates whether or not the window is capturing the mouse.
+   *
+   * @return `true` if the window is capturing the mouse; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto is_capturing_mouse() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_CAPTURE);
+  }
+
+  /**
+   * @brief Indicates whether or not the window is minimized.
+   *
+   * @return `true` if the window is minimized; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto is_minimized() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_MINIMIZED);
+  }
+
+  /**
+   * @brief Indicates whether or not the window is maximized.
+   *
+   * @return `true` if the window is maximized; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto is_maximized() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_MAXIMIZED);
+  }
+
+  /**
+   * @brief Indicates whether or not the window is set to be always on top of
+   * other windows.
+   *
+   * @return `true` if the window is always on top of other windows; false
+   * otherwise.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto always_on_top() const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & SDL_WINDOW_ALWAYS_ON_TOP);
+  }
 
   /**
    * @brief Returns the current brightness value of the window.
@@ -367,7 +569,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto brightness() const noexcept -> float;
+  [[nodiscard]] auto brightness() const noexcept -> float
+  {
+    return SDL_GetWindowBrightness(ptr());
+  }
 
   /**
    * @brief Returns the opacity of the window.
@@ -376,7 +581,12 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto opacity() const noexcept -> float;
+  [[nodiscard]] auto opacity() const noexcept -> float
+  {
+    float opacity{1};
+    SDL_GetWindowOpacity(ptr(), &opacity);
+    return opacity;
+  }
 
   /**
    * @brief Returns the x-coordinate of the window position.
@@ -385,7 +595,12 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto x() const noexcept -> int;
+  [[nodiscard]] auto x() const noexcept -> int
+  {
+    int x{};
+    SDL_GetWindowPosition(ptr(), &x, nullptr);
+    return x;
+  }
 
   /**
    * @brief Returns the y-coordinate of the window position.
@@ -394,7 +609,12 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto y() const noexcept -> int;
+  [[nodiscard]] auto y() const noexcept -> int
+  {
+    int y{};
+    SDL_GetWindowPosition(ptr(), nullptr, &y);
+    return y;
+  }
 
   /**
    * @brief Returns a numerical ID of the window.
@@ -403,7 +623,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto id() const noexcept -> u32;
+  [[nodiscard]] auto id() const noexcept -> u32
+  {
+    return SDL_GetWindowID(ptr());
+  }
 
   /**
    * @brief Returns the display index associated with the window.
@@ -413,7 +636,15 @@ class basic_window
    *
    * @since 3.1.0
    */
-  [[nodiscard]] auto display_index() const noexcept -> std::optional<int>;
+  [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
+  {
+    const auto index = SDL_GetWindowDisplayIndex(ptr());
+    if (index != -1) {
+      return index;
+    } else {
+      return std::nullopt;
+    }
+  }
 
   /**
    * @brief Returns the current position of the window.
@@ -424,7 +655,13 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto position() const noexcept -> ipoint;
+  [[nodiscard]] auto position() const noexcept -> ipoint
+  {
+    int x{};
+    int y{};
+    SDL_GetWindowPosition(ptr(), &x, &y);
+    return {x, y};
+  }
 
   /**
    * @brief Returns the minimum size of the window.
@@ -433,7 +670,13 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto min_size() const noexcept -> iarea;
+  [[nodiscard]] auto min_size() const noexcept -> iarea
+  {
+    int width{};
+    int height{};
+    SDL_GetWindowMinimumSize(ptr(), &width, &height);
+    return {width, height};
+  }
 
   /**
    * @brief Returns the maximum size of the window.
@@ -442,7 +685,13 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto max_size() const noexcept -> iarea;
+  [[nodiscard]] auto max_size() const noexcept -> iarea
+  {
+    int width{};
+    int height{};
+    SDL_GetWindowMaximumSize(ptr(), &width, &height);
+    return {width, height};
+  }
 
   /**
    * @brief Returns the current width of the window.
@@ -451,7 +700,12 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto width() const noexcept -> int;
+  [[nodiscard]] auto width() const noexcept -> int
+  {
+    int width{};
+    SDL_GetWindowSize(ptr(), &width, nullptr);
+    return width;
+  }
 
   /**
    * @brief Returns the current height of the window.
@@ -460,7 +714,12 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto height() const noexcept -> int;
+  [[nodiscard]] auto height() const noexcept -> int
+  {
+    int height{};
+    SDL_GetWindowSize(ptr(), nullptr, &height);
+    return height;
+  }
 
   /**
    * @brief Returns the current size of the window.
@@ -472,95 +731,12 @@ class basic_window
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto size() const noexcept -> iarea;
-
-  /**
-   * @brief Indicates whether or not the window is usable with an
-   * OpenGL-context.
-   *
-   * @return `true` if the window is compatible with an OpenGL-context; false
-   * otherwise.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto is_opengl() const noexcept -> bool;
-
-  /**
-   * @brief Indicates whether or not the window is usable as a Vulkan surface.
-   *
-   * @return `true` if the window is is usable as a Vulkan surface; false
-   * otherwise.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto is_vulkan() const noexcept -> bool;
-
-  /**
-   * @brief Indicates whether or not the window has input focus.
-   *
-   * @note The window might have to be visible for this to be true.
-   *
-   * @return `true` if the window has input focus; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto has_input_focus() const noexcept -> bool;
-
-  /**
-   * @brief Indicates whether or not the window has mouse focus.
-   *
-   * @return `true` if the window has mouse focus; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto has_mouse_focus() const noexcept -> bool;
-
-  /**
-   * @brief Indicates whether or not the window wasn't created by SDL.
-   *
-   * @return `true` if the window wasn't created by SDL; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto is_foreign() const noexcept -> bool;
-
-  /**
-   * @brief Indicates whether or not the window is capturing the mouse.
-   *
-   * @return `true` if the window is capturing the mouse; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto is_capturing_mouse() const noexcept -> bool;
-
-  /**
-   * @brief Indicates whether or not the window is set to be always on top of
-   * other windows.
-   *
-   * @return `true` if the window is always on top of other windows; false
-   * otherwise.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto always_on_top() const noexcept -> bool;
-
-  /**
-   * @brief Indicates whether or not the window is minimized.
-   *
-   * @return `true` if the window is minimized; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto is_minimized() const noexcept -> bool;
-
-  /**
-   * @brief Indicates whether or not the window is maximized.
-   *
-   * @return `true` if the window is maximized; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto is_maximized() const noexcept -> bool;
+  [[nodiscard]] auto size() const noexcept -> iarea
+  {
+    iarea size{};
+    SDL_GetWindowSize(ptr(), &size.width, &size.height);
+    return size;
+  }
 
   /**
    * @brief Indicates whether or not a flag is set.
@@ -575,7 +751,10 @@ class basic_window
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto check_flag(SDL_WindowFlags flag) const noexcept -> bool;
+  [[nodiscard]] auto check_flag(SDL_WindowFlags flag) const noexcept -> bool
+  {
+    return static_cast<bool>(flags() & flag);
+  }
 
   /**
    * @brief Returns a mask that represents the flags associated with the window.
@@ -588,7 +767,10 @@ class basic_window
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto flags() const noexcept -> u32;
+  [[nodiscard]] auto flags() const noexcept -> u32
+  {
+    return SDL_GetWindowFlags(ptr());
+  }
 
   /**
    * @brief Returns the pixel format of the window.
@@ -597,7 +779,10 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto get_pixel_format() const noexcept -> pixel_format;
+  [[nodiscard]] auto get_pixel_format() const noexcept -> pixel_format
+  {
+    return static_cast<pixel_format>(SDL_GetWindowPixelFormat(ptr()));
+  }
 
   /**
    * @brief Returns the title of the window.
@@ -606,382 +791,19 @@ class basic_window
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto title() const -> std::string;
+  [[nodiscard]] auto title() const -> std::string
+  {
+    return SDL_GetWindowTitle(ptr());
+  }
 
-  [[nodiscard]] auto ptr() const noexcept -> SDL_Window*;
+  [[nodiscard]] auto ptr() const noexcept -> SDL_Window*
+  {
+    return static_cast<const T*>(this)->get();
+  }
 
  protected:
   basic_window() noexcept = default;
-
- private:
-  template <typename U>
-  friend auto get_renderer(const basic_window<U>& window) noexcept
-      -> renderer_handle;
 };
-
-template <class T>
-auto basic_window<T>::ptr() const noexcept -> SDL_Window*
-{
-  return static_cast<const T*>(this)->get();
-}
-
-template <class T>
-void basic_window<T>::show() noexcept
-{
-  SDL_ShowWindow(ptr());
-}
-
-template <class T>
-void basic_window<T>::hide() noexcept
-{
-  SDL_HideWindow(ptr());
-}
-
-template <class T>
-void basic_window<T>::raise() noexcept
-{
-  SDL_RaiseWindow(ptr());
-}
-
-template <class T>
-void basic_window<T>::center() noexcept
-{
-  set_position({SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED});
-}
-
-template <class T>
-void basic_window<T>::maximize() noexcept
-{
-  SDL_MaximizeWindow(ptr());
-}
-
-template <class T>
-void basic_window<T>::minimize() noexcept
-{
-  SDL_MinimizeWindow(ptr());
-}
-
-template <class T>
-void basic_window<T>::set_fullscreen(bool fullscreen) noexcept
-{
-  const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
-  SDL_SetWindowFullscreen(ptr(), fullscreen ? flag : 0);
-
-  if (!fullscreen) {
-    set_brightness(1);
-  }
-}
-
-template <class T>
-void basic_window<T>::set_fullscreen_desktop(bool fullscreen) noexcept
-{
-  const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
-  SDL_SetWindowFullscreen(ptr(), fullscreen ? flag : 0);
-}
-
-template <class T>
-void basic_window<T>::set_decorated(bool decorated) noexcept
-{
-  SDL_SetWindowBordered(ptr(), detail::convert_bool(decorated));
-}
-
-template <class T>
-void basic_window<T>::set_resizable(bool resizable) noexcept
-{
-  SDL_SetWindowResizable(ptr(), detail::convert_bool(resizable));
-}
-
-template <class T>
-void basic_window<T>::set_width(int width) noexcept
-{
-  if (width > 0) {
-    SDL_SetWindowSize(ptr(), width, height());
-  }
-}
-
-template <class T>
-void basic_window<T>::set_height(int height) noexcept
-{
-  if (height > 0) {
-    SDL_SetWindowSize(ptr(), width(), height);
-  }
-}
-
-template <class T>
-void basic_window<T>::set_size(const iarea& size) noexcept
-{
-  if ((size.width > 0) && (size.height > 0)) {
-    SDL_SetWindowSize(ptr(), size.width, size.height);
-  }
-}
-
-template <class T>
-void basic_window<T>::set_icon(const surface& icon) noexcept
-{
-  SDL_SetWindowIcon(ptr(), icon.get());
-}
-
-template <class T>
-void basic_window<T>::set_title(nn_czstring title) noexcept
-{
-  SDL_SetWindowTitle(ptr(), title);
-}
-
-template <class T>
-void basic_window<T>::set_opacity(float opacity) noexcept
-{
-  SDL_SetWindowOpacity(ptr(), opacity);
-}
-
-template <class T>
-void basic_window<T>::set_min_size(const iarea& size) noexcept
-{
-  SDL_SetWindowMinimumSize(ptr(), size.width, size.height);
-}
-
-template <class T>
-void basic_window<T>::set_max_size(const iarea& size) noexcept
-{
-  SDL_SetWindowMaximumSize(ptr(), size.width, size.height);
-}
-
-template <class T>
-void basic_window<T>::set_position(const ipoint& position) noexcept
-{
-  SDL_SetWindowPosition(ptr(), position.x(), position.y());
-}
-
-template <class T>
-void basic_window<T>::set_grab_mouse(bool grabMouse) noexcept
-{
-  SDL_SetWindowGrab(ptr(), detail::convert_bool(grabMouse));
-}
-
-template <class T>
-void basic_window<T>::set_brightness(float brightness) noexcept
-{
-  if (is_fullscreen()) {
-    SDL_SetWindowBrightness(ptr(), std::clamp(brightness, 0.0f, 1.0f));
-  }
-}
-
-template <class T>
-void basic_window<T>::set_capturing_mouse(bool capturingMouse) noexcept
-{
-  SDL_CaptureMouse(detail::convert_bool(capturingMouse));
-}
-
-template <class T>
-auto basic_window<T>::is_decorated() const noexcept -> bool
-{
-  return !(flags() & SDL_WINDOW_BORDERLESS);
-}
-
-template <class T>
-auto basic_window<T>::grabbing_mouse() const noexcept -> bool
-{
-  return SDL_GetWindowGrab(ptr());
-}
-
-template <class T>
-auto basic_window<T>::is_resizable() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_RESIZABLE);
-}
-
-template <class T>
-auto basic_window<T>::is_fullscreen() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN);
-}
-
-template <class T>
-auto basic_window<T>::is_fullscreen_desktop() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_FULLSCREEN_DESKTOP);
-}
-
-template <class T>
-auto basic_window<T>::is_visible() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_SHOWN);
-}
-
-template <class T>
-auto basic_window<T>::is_opengl() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_OPENGL);
-}
-
-template <class T>
-auto basic_window<T>::is_vulkan() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_VULKAN);
-}
-
-template <class T>
-auto basic_window<T>::has_input_focus() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_INPUT_FOCUS);
-}
-
-template <class T>
-auto basic_window<T>::has_mouse_focus() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_FOCUS);
-}
-
-template <class T>
-auto basic_window<T>::is_foreign() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_FOREIGN);
-}
-
-template <class T>
-auto basic_window<T>::is_capturing_mouse() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_MOUSE_CAPTURE);
-}
-
-template <class T>
-auto basic_window<T>::always_on_top() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_ALWAYS_ON_TOP);
-}
-
-template <class T>
-auto basic_window<T>::is_minimized() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_MINIMIZED);
-}
-
-template <class T>
-auto basic_window<T>::is_maximized() const noexcept -> bool
-{
-  return static_cast<bool>(flags() & SDL_WINDOW_MAXIMIZED);
-}
-
-template <class T>
-auto basic_window<T>::check_flag(SDL_WindowFlags flag) const noexcept -> bool
-{
-  return static_cast<bool>(flags() & flag);
-}
-
-template <class T>
-auto basic_window<T>::flags() const noexcept -> u32
-{
-  return SDL_GetWindowFlags(ptr());
-}
-
-template <class T>
-auto basic_window<T>::brightness() const noexcept -> float
-{
-  return SDL_GetWindowBrightness(ptr());
-}
-
-template <class T>
-auto basic_window<T>::opacity() const noexcept -> float
-{
-  float opacity{1};
-  SDL_GetWindowOpacity(ptr(), &opacity);
-  return opacity;
-}
-
-template <class T>
-auto basic_window<T>::x() const noexcept -> int
-{
-  int x{};
-  SDL_GetWindowPosition(ptr(), &x, nullptr);
-  return x;
-}
-
-template <class T>
-auto basic_window<T>::y() const noexcept -> int
-{
-  int y{};
-  SDL_GetWindowPosition(ptr(), nullptr, &y);
-  return y;
-}
-
-template <class T>
-auto basic_window<T>::position() const noexcept -> ipoint
-{
-  int x{};
-  int y{};
-  SDL_GetWindowPosition(ptr(), &x, &y);
-  return {x, y};
-}
-
-template <class T>
-auto basic_window<T>::id() const noexcept -> u32
-{
-  return SDL_GetWindowID(ptr());
-}
-
-template <class T>
-auto basic_window<T>::display_index() const noexcept -> std::optional<int>
-{
-  const auto index = SDL_GetWindowDisplayIndex(ptr());
-  if (index != -1) {
-    return index;
-  } else {
-    return std::nullopt;
-  }
-}
-
-template <class T>
-auto basic_window<T>::min_size() const noexcept -> iarea
-{
-  int width{};
-  int height{};
-  SDL_GetWindowMinimumSize(ptr(), &width, &height);
-  return {width, height};
-}
-
-template <class T>
-auto basic_window<T>::max_size() const noexcept -> iarea
-{
-  int width{};
-  int height{};
-  SDL_GetWindowMaximumSize(ptr(), &width, &height);
-  return {width, height};
-}
-
-template <class T>
-auto basic_window<T>::width() const noexcept -> int
-{
-  int width{};
-  SDL_GetWindowSize(ptr(), &width, nullptr);
-  return width;
-}
-
-template <class T>
-auto basic_window<T>::height() const noexcept -> int
-{
-  int height{};
-  SDL_GetWindowSize(ptr(), nullptr, &height);
-  return height;
-}
-
-template <class T>
-auto basic_window<T>::size() const noexcept -> iarea
-{
-  iarea size{};
-  SDL_GetWindowSize(ptr(), &size.width, &size.height);
-  return size;
-}
-
-template <class T>
-auto basic_window<T>::get_pixel_format() const noexcept -> pixel_format
-{
-  return static_cast<pixel_format>(SDL_GetWindowPixelFormat(ptr()));
-}
-
-template <class T>
-auto basic_window<T>::title() const -> std::string
-{
-  return SDL_GetWindowTitle(ptr());
-}
 
 }  // namespace cen
 

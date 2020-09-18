@@ -46,14 +46,9 @@ Welcome to Centurion's documentation!
 
 .. toctree::
    :maxdepth: 1
-   :caption: Threading
+   :caption: Input
 
-   pages/api/thread/thread
-   pages/api/thread/mutex
-   pages/api/thread/scoped_lock
-   pages/api/thread/try_lock
-   pages/api/thread/semaphore
-   pages/api/thread/condition
+   pages/api/input/button_state
 
 .. toctree::
    :maxdepth: 1
@@ -68,6 +63,17 @@ Welcome to Centurion's documentation!
    pages/api/system/screen
    pages/api/system/base_path
    pages/api/system/pref_path
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Threading
+
+   pages/api/thread/thread
+   pages/api/thread/mutex
+   pages/api/thread/scoped_lock
+   pages/api/thread/try_lock
+   pages/api/thread/semaphore
+   pages/api/thread/condition
 
 .. toctree::
    :maxdepth: 1

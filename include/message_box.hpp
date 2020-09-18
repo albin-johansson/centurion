@@ -211,7 +211,7 @@ class message_box final
   /**
    * @brief Displays a message box.
    *
-   * @tparam Traits the traits used by the window.
+   * @tparam T the traits used by the window.
    *
    * @param parent the parent window.
    * @param title the title of the message box.
@@ -224,8 +224,8 @@ class message_box final
    *
    * @since 5.0.0
    */
-  template <typename Traits>
-  static void show(const basic_window<Traits>& parent,
+  template <typename T>
+  static void show(const basic_window<T>& parent,
                    const std::string& title,
                    const std::string& message,
                    type type = default_type(),
@@ -253,7 +253,7 @@ class message_box final
   /**
    * @brief Displays a message box.
    *
-   * @tparam Traits the traits used by the window.
+   * @tparam T the traits used by the window.
    *
    * @param parent the parent window.
    *
@@ -264,8 +264,8 @@ class message_box final
    *
    * @since 5.0.0
    */
-  template <typename Traits>
-  auto show(const basic_window<Traits>& parent) -> std::optional<button_id>;
+  template <typename T>
+  auto show(const basic_window<T>& parent) -> std::optional<button_id>;
 
   /**
    * @brief Displays a message box.
@@ -500,8 +500,8 @@ class message_box final
   auto show(SDL_Window* parent) -> std::optional<button_id>;
 };
 
-template <typename Traits>
-void message_box::show(const basic_window<Traits>& parent,
+template <typename T>
+void message_box::show(const basic_window<T>& parent,
                        const std::string& title,
                        const std::string& message,
                        type type,
@@ -510,8 +510,8 @@ void message_box::show(const basic_window<Traits>& parent,
   show(parent.ptr(), title, message, type, buttonOrder);
 }
 
-template <typename Traits>
-auto message_box::show(const basic_window<Traits>& parent)
+template <typename T>
+auto message_box::show(const basic_window<T>& parent)
     -> std::optional<button_id>
 {
   return show(parent.ptr());

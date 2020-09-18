@@ -614,8 +614,8 @@ class basic_window
   basic_window() noexcept = default;
 
  private:
-  template <typename Traits>
-  friend auto get_renderer(const basic_window<Traits>& window) noexcept
+  template <typename T>
+  friend auto get_renderer(const basic_window<T>& window) noexcept
       -> renderer_handle;
 };
 

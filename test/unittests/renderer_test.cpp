@@ -6,6 +6,7 @@
 #include "colors.hpp"
 #include "exception.hpp"
 #include "font.hpp"
+#include "graphics_drivers.hpp"
 #include "log.hpp"
 #include "rect.hpp"
 #include "window.hpp"

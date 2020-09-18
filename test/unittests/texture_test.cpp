@@ -9,7 +9,6 @@
 #include "exception.hpp"
 #include "log.hpp"
 #include "renderer.hpp"
-#include "video.hpp"
 #include "window.hpp"
 
 static constexpr auto* pandaPath = "resources/panda.png";

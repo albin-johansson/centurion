@@ -35,7 +35,6 @@
 #include "rect.hpp"
 #include "surface.hpp"
 #include "types.hpp"
-#include "video.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

@@ -60,7 +60,7 @@ namespace centurion {
  * @details This class provides the general API for hardware-accelerated
  * rendering.
  *
- * @tparam Derived the type of the derived renderer.
+ * @tparam T the type of the derived renderer.
  *
  * @since 5.0.0
  *
@@ -69,7 +69,7 @@ namespace centurion {
  *
  * @headerfile basic_renderer.hpp
  */
-template <class Derived>
+template <class T>
 class basic_renderer
 {
  public:
@@ -1392,12 +1392,12 @@ class basic_renderer
 
   [[nodiscard]] auto ptr() noexcept -> SDL_Renderer*
   {
-    return static_cast<Derived*>(this)->get();
+    return static_cast<T*>(this)->get();
   }
 
   [[nodiscard]] auto ptr() const noexcept -> SDL_Renderer*
   {
-    return static_cast<const Derived*>(this)->get();
+    return static_cast<const T*>(this)->get();
   }
 };
 

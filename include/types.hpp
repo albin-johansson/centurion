@@ -102,14 +102,6 @@ template <typename T>
 using not_null = T;
 
 /**
- * @typedef nn_owner
- *
- * @brief Tag used to represent a non-null owner.
- */
-template <typename T>
-using nn_owner = not_null<owner<T>>;
-
-/**
  * @typedef czstring
  *
  * @brief Alias for a const C-style null-terminated string.

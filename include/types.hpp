@@ -39,12 +39,12 @@
 
 #include <SDL_stdinc.h>
 
-#include <array>     // array
-#include <chrono>    // duration
-#include <cstddef>   // byte
-#include <entt.hpp>  // id_type
-#include <gsl/gsl>   // not_null, owner, czstring, zstring
-#include <optional>  // optional
+#include <array>        // array
+#include <chrono>       // duration
+#include <cstddef>      // byte
+#include <entt.hpp>     // id_type
+#include <optional>     // optional
+#include <type_traits>  // enable_if, is_pointer
 
 #include "centurion_api.hpp"
 
@@ -86,18 +86,20 @@ using if_same_t = typename std::enable_if_t<std::is_same_v<T, U>>;
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <typename T>
-using owner = gsl::owner<T>;
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using owner = T;
 
 /**
  * @typedef not_null
  *
- * @brief Ensures that a pointer cannot be null.
+ * @brief Tag used to indicate that a pointer cannot be null.
+ *
+ * @note This alias is equivalent to `T`, it is a no-op.
  *
  * @since 5.0.0
  */
 template <typename T>
-using not_null = gsl::not_null<T>;
+using not_null = T;
 
 /**
  * @typedef nn_owner
@@ -105,21 +107,21 @@ using not_null = gsl::not_null<T>;
  * @brief Tag used to represent a non-null owner.
  */
 template <typename T>
-using nn_owner = gsl::not_null<owner<T>>;
+using nn_owner = not_null<owner<T>>;
 
 /**
  * @typedef czstring
  *
  * @brief Alias for a const C-style null-terminated string.
  */
-using czstring = gsl::czstring<>;
+using czstring = const char*;
 
 /**
  * @typedef zstring
  *
  * @brief Alias for a C-style null-terminated string.
  */
-using zstring = gsl::zstring<>;
+using zstring = char*;
 
 /**
  * @typedef nn_czstring
@@ -128,7 +130,7 @@ using zstring = gsl::zstring<>;
  *
  * @since 5.0.0
  */
-using nn_czstring = gsl::not_null<czstring>;
+using nn_czstring = not_null<czstring>;
 
 /**
  * @typedef hash_id

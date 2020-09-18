@@ -136,7 +136,6 @@ target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_TTF_LIBRARIES}
         PUBLIC ${CENTURION_IMPORT_LIB}
         PUBLIC libEnTT
-        PUBLIC libGSL
         PUBLIC Catch2)
 
 catch_discover_tests(${CENTURION_TEST_TARGET})

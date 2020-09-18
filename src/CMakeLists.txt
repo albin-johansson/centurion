@@ -160,18 +160,6 @@ set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
         OUTPUT_NAME ${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion
         VERSION ${CENTURION_VERSION})
 
-set(GSL_SOURCES
-        ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl
-        ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl_algorithm
-        ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl_assert
-        ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl_byte
-        ${CEN_LIBRARY_DIR}/microsoft/gsl/gsl_util
-        ${CEN_LIBRARY_DIR}/microsoft/gsl/multi_span
-        ${CEN_LIBRARY_DIR}/microsoft/gsl/pointers
-        ${CEN_LIBRARY_DIR}/microsoft/gsl/span
-        ${CEN_LIBRARY_DIR}/microsoft/gsl/span_ext
-        ${CEN_LIBRARY_DIR}/microsoft/gsl/string_span)
-add_header_only_lib(libGSL "${CEN_LIBRARY_DIR}/microsoft" ${GSL_SOURCES})
 add_header_only_lib(libEnTT ${CEN_LIBRARY_DIR}/entt ${CEN_LIBRARY_DIR}/entt/entt.hpp)
 
 target_include_directories(${CENTURION_LIB_TARGET}
@@ -188,8 +176,7 @@ target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
-        PUBLIC libEnTT
-        PUBLIC libGSL)
+        PUBLIC libEnTT)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE

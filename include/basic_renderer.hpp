@@ -115,16 +115,16 @@ class basic_renderer
   /**
    * @brief Renders the outline of a rectangle in the currently selected color.
    *
-   * @tparam T the representation type used by the rectangle.
+   * @tparam U the representation type used by the rectangle.
    *
    * @param rect the rectangle that will be rendered.
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void draw_rect(const basic_rect<T>& rect) noexcept
+  template <typename U>
+  void draw_rect(const basic_rect<U>& rect) noexcept
   {
-    if constexpr (basic_rect<T>::isIntegral) {
+    if constexpr (basic_rect<U>::isIntegral) {
       SDL_RenderDrawRect(ptr(), static_cast<const SDL_Rect*>(rect));
     } else {
       SDL_RenderDrawRectF(ptr(), static_cast<const SDL_FRect*>(rect));
@@ -134,16 +134,16 @@ class basic_renderer
   /**
    * @brief Renders a filled rectangle in the currently selected color.
    *
-   * @tparam T the representation type used by the rectangle.
+   * @tparam U the representation type used by the rectangle.
    *
    * @param rect the rectangle that will be rendered.
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void fill_rect(const basic_rect<T>& rect) noexcept
+  template <typename U>
+  void fill_rect(const basic_rect<U>& rect) noexcept
   {
-    if constexpr (basic_rect<T>::isIntegral) {
+    if constexpr (basic_rect<U>::isIntegral) {
       SDL_RenderFillRect(ptr(), static_cast<const SDL_Rect*>(rect));
     } else {
       SDL_RenderFillRectF(ptr(), static_cast<const SDL_FRect*>(rect));
@@ -154,18 +154,18 @@ class basic_renderer
    * @brief Renders a line between the supplied points, in the currently
    * selected color.
    *
-   * @tparam T The representation type used by the points.
+   * @tparam U The representation type used by the points.
    *
    * @param start the start point of the line.
    * @param end the end point of the line.
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void draw_line(const basic_point<T>& start,
-                 const basic_point<T>& end) noexcept
+  template <typename U>
+  void draw_line(const basic_point<U>& start,
+                 const basic_point<U>& end) noexcept
   {
-    if constexpr (basic_point<T>::isIntegral) {
+    if constexpr (basic_point<U>::isIntegral) {
       SDL_RenderDrawLine(ptr(), start.x(), start.y(), end.x(), end.y());
     } else {
       SDL_RenderDrawLineF(ptr(), start.x(), start.y(), end.x(), end.y());
@@ -613,7 +613,7 @@ class basic_renderer
    *
    * @pre the specified glyph **must** have been cached.
    *
-   * @tparam T the font key type that the renderer uses.
+   * @tparam U the font key type that the renderer uses.
    *
    * @param cache the font cache that will be used.
    * @param glyph the glyph, in unicode, that will be rendered.
@@ -691,17 +691,17 @@ class basic_renderer
   /**
    * @brief Renders a texture at the specified position.
    *
-   * @tparam T the representation type used by the point.
+   * @tparam U the representation type used by the point.
    *
    * @param texture the texture that will be rendered.
    * @param position the position of the rendered texture.
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void render(const texture& texture, const basic_point<T>& position) noexcept
+  template <typename U>
+  void render(const texture& texture, const basic_point<U>& position) noexcept
   {
-    if constexpr (basic_point<T>::isFloating) {
+    if constexpr (basic_point<U>::isFloating) {
       const SDL_FRect dst{position.x(),
                           position.y(),
                           static_cast<float>(texture.width()),
@@ -717,17 +717,17 @@ class basic_renderer
   /**
    * @brief Renders a texture according to the specified rectangle.
    *
-   * @tparam T the representation type used by the rectangle.
+   * @tparam U the representation type used by the rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param destination the position and size of the rendered texture.
    *
    * @since 4.0.0
    */
-  template <typename T>
-  void render(const texture& texture, const basic_rect<T>& destination) noexcept
+  template <typename U>
+  void render(const texture& texture, const basic_rect<U>& destination) noexcept
   {
-    if constexpr (basic_rect<T>::isFloating) {
+    if constexpr (basic_rect<U>::isFloating) {
       SDL_RenderCopyF(ptr(),
                       texture.get(),
                       nullptr,
@@ -746,7 +746,7 @@ class basic_renderer
    * @remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * @tparam T the representation type used by the rectangle.
+   * @tparam U the representation type used by the rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -754,12 +754,12 @@ class basic_renderer
    *
    * @since 4.0.0
    */
-  template <typename T>
+  template <typename U>
   void render(const texture& texture,
               const irect& source,
-              const basic_rect<T>& destination) noexcept
+              const basic_rect<U>& destination) noexcept
   {
-    if constexpr (basic_rect<T>::isFloating) {
+    if constexpr (basic_rect<U>::isFloating) {
       SDL_RenderCopyF(ptr(),
                       texture.get(),
                       static_cast<const SDL_Rect*>(source),
@@ -775,7 +775,7 @@ class basic_renderer
   /**
    * @brief Renders a texture.
    *
-   * @tparam T the representation type used by the rectangle.
+   * @tparam U the representation type used by the rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -785,13 +785,13 @@ class basic_renderer
    *
    * @since 4.0.0
    */
-  template <typename T>
+  template <typename U>
   void render(const texture& texture,
               const irect& source,
-              const basic_rect<T>& destination,
+              const basic_rect<U>& destination,
               double angle) noexcept
   {
-    if constexpr (basic_rect<T>::isFloating) {
+    if constexpr (basic_rect<U>::isFloating) {
       SDL_RenderCopyExF(ptr(),
                         texture.get(),
                         static_cast<const SDL_Rect*>(source),

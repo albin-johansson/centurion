@@ -5,7 +5,7 @@
 
 namespace centurion {
 
-sharing_texture::sharing_texture(nn_owner<SDL_Texture*> sdlTexture)
+sharing_texture::sharing_texture(owner<SDL_Texture*> sdlTexture)
     : basic_texture{sdlTexture, get_deleter()}
 {
   if (!get()) {

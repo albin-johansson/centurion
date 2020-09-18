@@ -6,8 +6,6 @@
 #include "centurion.hpp"
 #include "log.hpp"
 
-using namespace Catch;
-
 static constexpr auto type_writer_path = "resources/type_writer.ttf";
 static constexpr auto fira_code_path = "resources/fira_code.ttf";
 static constexpr auto daniel_path = "resources/daniel.ttf";
@@ -231,7 +229,7 @@ TEST_CASE("font::family_name", "[font]")
 TEST_CASE("font::style_name", "[font]")
 {
   const cen::font font{type_writer_path, 12};
-  CHECK_THAT(font.style_name(), Equals("Regular"));
+  CHECK_THAT(font.style_name(), Catch::Equals("Regular"));
 }
 
 TEST_CASE("font::string_width", "[font]")

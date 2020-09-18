@@ -11,6 +11,10 @@
 
 TEST_CASE("joystick constructors", "[joystick]")
 {
+  SECTION("Pointer ctor")
+  {
+    CHECK_THROWS_AS(cen::joystick{nullptr}, cen::exception);
+  }
   SECTION("Index ctor") { CHECK_THROWS_AS(cen::joystick{0}, cen::exception); }
 }
 

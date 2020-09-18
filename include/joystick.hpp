@@ -107,14 +107,14 @@ class joystick final : public basic_joystick<joystick>
   /**
    * @brief Creates a `joystick` instance based on an existing `SDL_Joystick*`.
    *
-   * @pre `sdlJoystick` must not be null.
-   *
    * @param sdlJoystick a pointer to the `SDL_Joystick` that will be claimed.
+   *
+   * @throws exception if the supplied pointer is null.
    *
    * @since 4.2.0
    */
   CENTURION_API
-  explicit joystick(nn_owner<SDL_Joystick*> sdlJoystick) noexcept;
+  explicit joystick(owner<SDL_Joystick*> sdlJoystick);
 
   /**
    * @brief Creates a `joystick` instance based on a device index.

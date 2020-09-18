@@ -12,9 +12,13 @@ static_assert(std::is_nothrow_move_assignable_v<joystick>);
 static_assert(!std::is_copy_constructible_v<joystick>);
 static_assert(!std::is_copy_assignable_v<joystick>);
 
-joystick::joystick(nn_owner<SDL_Joystick*> sdlJoystick) noexcept
+joystick::joystick(owner<SDL_Joystick*> sdlJoystick)
     : basic_joystick{sdlJoystick}
-{}
+{
+  if (!get()) {
+    throw exception{"Cannot create joystick from null pointer!"};
+  }
+}
 
 joystick::joystick(int deviceIndex)
 {

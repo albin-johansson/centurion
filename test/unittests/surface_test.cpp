@@ -20,10 +20,12 @@ TEST_CASE("surface(nn_czstring)", "[surface]")
   CHECK_NOTHROW(cen::surface{path});
 }
 
-TEST_CASE("surface(nn_owner<SDL_Surface*>)", "[surface]")
+TEST_CASE("surface(owner<SDL_Surface*>)", "[surface]")
 {
-  auto* surface = IMG_Load(path);
-  CHECK_NOTHROW(cen::surface{surface});
+  CHECK_NOTHROW(cen::surface{IMG_Load(path)});
+  
+  SDL_Surface* bad{};
+  CHECK_THROWS_AS(cen::surface{bad}, cen::exception);
 }
 
 TEST_CASE("surface(const surface&)", "[surface]")

@@ -16,8 +16,12 @@ static_assert(std::is_copy_assignable_v<surface>);
 static_assert(std::is_nothrow_move_constructible_v<surface>);
 static_assert(std::is_nothrow_move_assignable_v<surface>);
 
-surface::surface(nn_owner<SDL_Surface*> surface) noexcept : m_surface{surface}
-{}
+surface::surface(owner<SDL_Surface*> surface) : m_surface{surface}
+{
+  if (!m_surface) {
+    throw exception{"Cannot create surface from null pointer!"};
+  }
+}
 
 surface::surface(nn_czstring file) : m_surface{IMG_Load(file)}
 {

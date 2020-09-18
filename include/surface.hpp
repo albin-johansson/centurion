@@ -79,10 +79,12 @@ class surface final
    * @param surface a pointer to the surface that will be claimed, can't be
    * null.
    *
+   * @throws exception if the supplied pointer is null.
+   *
    * @since 4.0.0
    */
   CENTURION_API
-  explicit surface(nn_owner<SDL_Surface*> surface) noexcept;
+  explicit surface(owner<SDL_Surface*> surface);
 
   /**
    * @brief Creates a surface based on the image at the specified path.

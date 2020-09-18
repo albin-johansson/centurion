@@ -32,16 +32,16 @@ class basic_rect;
 template <typename T>
 class basic_point;
 
-template <typename Derived>
+template <typename T>
 class basic_renderer;
 
-template <typename Traits>
+template <typename T>
 class basic_window;
 
-template <typename Derived>
+template <typename T>
 class basic_joystick;
 
-template <typename Derived>
+template <typename T>
 class basic_texture;
 
 class thread;

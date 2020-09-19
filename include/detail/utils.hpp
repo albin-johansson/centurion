@@ -159,6 +159,14 @@ template <typename T>
   }
 }
 
+template <typename T>
+[[nodiscard]] constexpr auto at_least(T value,
+                                      T least) noexcept(noexcept(value < least))
+    -> T
+{
+  return (value < least) ? least : value;
+}
+
 }  // namespace detail
 
 /// @endcond

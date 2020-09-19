@@ -178,8 +178,7 @@ class basic_window
   /**
    * @brief Sets the width of the window.
    *
-   * @details This method has no effect if the supplied width isn't greater than
-   * zero.
+   * @details The supplied width is capped to always be at least 1.
    *
    * @param width the new width of the window, must be greater than zero.
    *
@@ -187,16 +186,13 @@ class basic_window
    */
   void set_width(int width) noexcept
   {
-    if (width > 0) {  // FIXME cap to at least 1
-      SDL_SetWindowSize(ptr(), width, height());
-    }
+    SDL_SetWindowSize(ptr(), detail::at_least(width, 1), height());
   }
 
   /**
    * @brief Sets the height of the window.
    *
-   * @details This method has no effect if the supplied height isn't greater
-   * than zero.
+   * @details The supplied height is capped to always be at least 1.
    *
    * @param height the new height of the window, must be greater than zero.
    *
@@ -204,16 +200,13 @@ class basic_window
    */
   void set_height(int height) noexcept
   {
-    if (height > 0) {  // FIXME cap to at least 1
-      SDL_SetWindowSize(ptr(), width(), height);
-    }
+    SDL_SetWindowSize(ptr(), width(), detail::at_least(height, 1));
   }
 
   /**
    * @brief Sets the size of the window.
    *
-   * @details This method has no effect if any of the area components aren't
-   * greater than zero.
+   * @details The supplied dimensions are capped to be at least 1.
    *
    * @param size the new size of the window, components must be greater than
    * zero.
@@ -222,9 +215,9 @@ class basic_window
    */
   void set_size(const iarea& size) noexcept
   {
-    if ((size.width > 0) && (size.height > 0)) {
-      SDL_SetWindowSize(ptr(), size.width, size.height);
-    }
+    const auto width = detail::at_least(size.width, 1);
+    const auto height = detail::at_least(size.height, 1);
+    SDL_SetWindowSize(ptr(), width, height);
   }
 
   /**

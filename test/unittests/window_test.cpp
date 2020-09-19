@@ -202,20 +202,22 @@ TEST_CASE("window::set_width", "[window]")
   {
     cen::window window;
 
-    const auto widthBefore = window.width();
-
     CHECK_NOTHROW(window.set_width(-1));
-    CHECK_NOTHROW(window.set_width(0));
+    CHECK(window.width() == 1);
 
-    CHECK(window.width() == widthBefore);
+    CHECK_NOTHROW(window.set_width(0));
+    CHECK(window.width() == 1);
   }
 
-  cen::window window;
+  SECTION("Valid width")
+  {
+    cen::window window;
 
-  const auto width = 812;
-  window.set_width(width);
+    const auto width = 812;
+    window.set_width(width);
 
-  CHECK(window.width() == width);
+    CHECK(window.width() == width);
+  }
 }
 
 TEST_CASE("window::set_height", "[window]")
@@ -224,20 +226,22 @@ TEST_CASE("window::set_height", "[window]")
   {
     cen::window window;
 
-    const auto heightBefore = window.height();
-
     CHECK_NOTHROW(window.set_height(-1));
-    CHECK_NOTHROW(window.set_height(0));
+    CHECK(window.height() == 1);
 
-    CHECK(window.height() == heightBefore);
+    CHECK_NOTHROW(window.set_height(0));
+    CHECK(window.height() == 1);
   }
 
-  cen::window window;
+  SECTION("Valid height")
+  {
+    cen::window window;
 
-  const auto height = 327;
-  window.set_height(height);
+    const auto height = 327;
+    window.set_height(height);
 
-  CHECK(window.height() == height);
+    CHECK(window.height() == height);
+  }
 }
 
 TEST_CASE("window::set_size", "[window]")
@@ -246,20 +250,32 @@ TEST_CASE("window::set_size", "[window]")
   {
     cen::window window;
 
-    const auto before = window.size();
-
     CHECK_NOTHROW(window.set_size({-1, -1}));
-    CHECK_NOTHROW(window.set_size({0, 0}));
+    CHECK(window.width() == 1);
+    CHECK(window.height() == 1);
 
-    CHECK(window.size() == before);
+    CHECK_NOTHROW(window.set_size({0, 0}));
+    CHECK(window.width() == 1);
+    CHECK(window.height() == 1);
+
+    CHECK_NOTHROW(window.set_size({10, 0}));
+    CHECK(window.width() == 10);
+    CHECK(window.height() == 1);
+
+    CHECK_NOTHROW(window.set_size({0, 10}));
+    CHECK(window.width() == 1);
+    CHECK(window.height() == 10);
   }
 
-  cen::window window;
+  SECTION("Valid size")
+  {
+    cen::window window;
 
-  const cen::iarea size{424, 182};
-  window.set_size(size);
+    const cen::iarea size{424, 182};
+    window.set_size(size);
 
-  CHECK(window.size() == size);
+    CHECK(window.size() == size);
+  }
 }
 
 TEST_CASE("window::set_icon", "[window]")

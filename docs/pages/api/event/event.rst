@@ -31,6 +31,30 @@ Interface
 Examples
 --------
 
+Typical usage
+~~~~~~~~~~~~~
+
+.. code-block:: C++
+
+  #include <event.hpp>
+
+  void foo()
+  {
+    cen::event event;
+    bool running{true};
+
+    while (running) {
+      while (event.poll()) {
+        if (event.is<cen::quit_event>()) {
+          running = false;
+          break;
+        }
+        // handle more events...
+      }
+      // handle miscellaneous logic and rendering here
+    }
+  }
+
 Querying the event representation by pointer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

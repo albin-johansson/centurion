@@ -3218,31 +3218,6 @@ static_assert(validate_event<window_event, SDL_WindowEvent>());
  *
  * @brief Serves as the main interface for dealing with events.
  *
- * @par Usage
- * The idiomatic usage of the event API is provided in the following example.
- * @code{.cpp}
- *   
- *   #include <event.hpp>
- *
- *   void event_demo()
- *   {
- *     cen::event event;
- *     bool running = true;
- *
- *     while (running) {
- *       while (event.poll()) {
- *         if (event.is<cen::quit_event>()) {
- *           running = false;
- *           break;
- *         }
- *         // handle more events...
- *       }
- *
- *       // handle miscellaneous logic and rendering here
- *     }
- *   }
- * @endcode
- *
  * @see `SDL_Event`
  *
  * @since 4.0.0

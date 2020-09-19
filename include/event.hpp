@@ -3344,15 +3344,10 @@ class event final
   /**
    * @brief Attempts to return the internal event instance.
    *
-   * @par Examples
-   * If you're certain about the internal type, then you could use this
+   * @details If you're certain about the internal type, then you could use this
    * method to simply extract the internal event.
-   * @code{.cpp}
-   *   Event event; // assume that we know that this is a window event
-   *   auto& windowEvent = event.get<WindowEvent>();
-   * @endcode
    *
-   * @note This method throws if the internal event isn't of the specified
+   * @note This functions throws if the internal event isn't of the specified
    * type! You might want to make sure that the internal type is `T` with the
    * `is()` method before calling this method, or use `try_get()`.
    *
@@ -3360,7 +3355,7 @@ class event final
    *
    * @return a reference to the internal event type.
    *
-   * @throws std::bad_variant_access if the internal event type isn't `T`.
+   * @throws bad_variant_access if the internal event type isn't `T`.
    *
    * @see `is`
    * @see `try_get`
@@ -3385,24 +3380,12 @@ class event final
   /**
    * @brief Attempts to return the internal event instance.
    *
-   * @details This method simply returns `nullptr` if the internal event
+   * @details This method returns a null pointer if the internal event
    * doesn't match the specified type.
-   *
-   * @par Examples
-   * This method is useful when used with if-with-initializer statements.
-   * @code{.cpp}
-   *   Event event;
-   *   while (event.poll()) {
-   *     if (auto* keyEvent = event.try_get<KeyboardEvent>();
-   *         keyEvent->released()) {
-   *       // handle key released event
-   *     }
-   *   }
-   * @endcode
    *
    * @tparam T the event type to obtain.
    *
-   * @return a pointer to the internal event type, might be `nullptr`.
+   * @return a pointer to the internal event type, might be null.
    *
    * @see `is`
    * @see `get`
@@ -3418,24 +3401,12 @@ class event final
   /**
    * @copybrief try_get
    *
-   * @details This method simply returns `nullptr` if the internal event
+   * @details This function returns a null pointer if the internal event
    * doesn't match the specified type.
-   *
-   * @par Examples
-   * This method is useful when used with if-with-initializer statements.
-   * @code{.cpp}
-   *   const Event event;
-   *   while (event.poll()) {
-   *     if (const auto* windowEvent = event.try_get<WindowEvent>();
-   *         windowEvent) {
-   *       // safe to use windowEvent
-   *     }
-   *   }
-   * @endcode
    *
    * @tparam T the event type to obtain.
    *
-   * @return a pointer to the internal event type, might be `nullptr`.
+   * @return a pointer to the internal event type, might be null.
    *
    * @see `is`
    * @see `get`

@@ -78,11 +78,10 @@ void surface::unlock() noexcept
 
 auto surface::copy_surface() const -> owner<SDL_Surface*>
 {
-  auto* copy = SDL_DuplicateSurface(m_surface.get());
-  if (!copy) {
-    throw sdl_error{"Failed to duplicate surface"};
-  } else {
+  if (auto* copy = SDL_DuplicateSurface(m_surface.get())) {
     return copy;
+  } else {
+    throw sdl_error{"Failed to duplicate surface"};
   }
 }
 
@@ -155,16 +154,13 @@ auto surface::get_blend_mode() const noexcept -> blend_mode
 auto surface::convert(pixel_format format) const -> surface
 {
   const auto pixelFormat = static_cast<u32>(format);
-
-  auto* s = SDL_ConvertSurfaceFormat(m_surface.get(), pixelFormat, 0);
-  if (!s) {
+  if (auto* surf = SDL_ConvertSurfaceFormat(m_surface.get(), pixelFormat, 0)) {
+    surface converted{surf};
+    converted.set_blend_mode(get_blend_mode());
+    return converted;
+  } else {
     throw sdl_error{"Failed to convert surface"};
   }
-
-  surface converted{s};
-  converted.set_blend_mode(get_blend_mode());
-
-  return converted;
 }
 
 auto to_string(const surface& surface) -> std::string

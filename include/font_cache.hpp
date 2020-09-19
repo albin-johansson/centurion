@@ -558,13 +558,6 @@ class font_cache final
    *
    * @pre `glyph` **must** have been previously cached.
    *
-   * @details The recommended way to use this method is with structured
-   * bindings, as in the following example.
-   * @code{.cpp}
-   *   cen::font_cache cache = ...;
-   *   const auto& [cachedTexture, glyphMetrics] = cache.at('A'_uni);
-   * @endcode
-   *
    * @param glyph the desired glyph to lookup the data for.
    *
    * @return the cached texture and metrics associated with the glyph.
@@ -582,13 +575,6 @@ class font_cache final
    * @note This function is equivalent to calling `at`.
    *
    * @pre `glyph` **must** have been previously cached.
-   *
-   * @details The recommended way to use this method is with structured
-   * bindings, as in the following example.
-   * @code{.cpp}
-   *   cen::font_cache cache = ...;
-   *   const auto& [cachedTexture, glyphMetrics] = cache['A'];
-   * @endcode
    *
    * @param glyph the desired glyph to lookup the data for.
    *

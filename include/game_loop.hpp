@@ -281,7 +281,7 @@ class basic_loop
  *    public:
  *     bool handle_input() { ... }
  *     void handle_logic(cen::seconds<double> delta) { ... }
- *     void handle_render(double alpha) { ... }
+ *     void handle_render() { ... }
  *   };
  *
  *   void setup()

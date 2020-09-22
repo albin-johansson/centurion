@@ -42,7 +42,6 @@
 #include <array>        // array
 #include <chrono>       // duration
 #include <cstddef>      // byte
-#include <entt.hpp>     // id_type
 #include <optional>     // optional
 #include <type_traits>  // enable_if, is_pointer
 
@@ -124,15 +123,7 @@ using zstring = char*;
  */
 using nn_czstring = not_null<czstring>;
 
-/**
- * @typedef hash_id
- *
- * @brief Alias for `entt::id_type`, used for compile-time hashed string
- * identifiers.
- *
- * @since 5.0.0
- */
-using hash_id = entt::id_type;
+using font_id = std::size_t;
 
 /**
  * @typedef buffer

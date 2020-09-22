@@ -150,7 +150,7 @@ struct config final
  *
  * @note The signature of the main-method must be `ìnt(int, char**)` when
  * using the Centurion library!
- * 
+ *
  * @since 3.0.0
  *
  * @headerfile centurion.hpp

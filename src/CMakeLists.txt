@@ -54,7 +54,6 @@ set(SOURCE_FILES
         ../include/touch.hpp
         ../include/font_cache.hpp
         ../include/unicode_string.hpp
-        ../include/game_loop.hpp
         ../include/joystick_handle.hpp
         ../include/basic_texture.hpp
         ../include/scale_mode.hpp
@@ -160,8 +159,6 @@ set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
         OUTPUT_NAME ${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion
         VERSION ${CENTURION_VERSION})
 
-add_header_only_lib(libEnTT ${CEN_LIBRARY_DIR}/entt ${CEN_LIBRARY_DIR}/entt/entt.hpp)
-
 target_include_directories(${CENTURION_LIB_TARGET}
         SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
         SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
@@ -175,8 +172,7 @@ target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_LIBRARY}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
-        PUBLIC ${SDL2_TTF_LIBRARIES}
-        PUBLIC libEnTT)
+        PUBLIC ${SDL2_TTF_LIBRARIES})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE

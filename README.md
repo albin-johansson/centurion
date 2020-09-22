@@ -22,10 +22,6 @@ No matter how well-written a library is, there's always a need for great documen
 
 Furthermore, the library features a Read-the-Docs site that features tutorials, examples and various tips-and-tricks for an overview of the library. It can be found [here](https://centurion.readthedocs.io/en/latest/)!
 
-## Dependencies
-
-* [EnTT](https://github.com/skypjack/entt) Amazing header-only ECS-library, used for compile time hashing of strings.
-
 Happy coding! :heart:
 
 ## Relevant resources

@@ -151,7 +151,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_utf8(hash_id id, nn_czstring string, Renderer& renderer);
+  void store_blended_utf8(font_id id, nn_czstring string, Renderer& renderer);
 
   /**
    * @brief Caches the supplied string by rendering it to a texture.
@@ -172,7 +172,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_wrapped_utf8(hash_id id,
+  void store_blended_wrapped_utf8(font_id id,
                                   nn_czstring string,
                                   Renderer& renderer,
                                   u32 wrap);
@@ -196,7 +196,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_shaded_utf8(hash_id id,
+  void store_shaded_utf8(font_id id,
                          nn_czstring string,
                          Renderer& renderer,
                          const color& background);
@@ -219,7 +219,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_utf8(hash_id id, nn_czstring string, Renderer& renderer);
+  void store_solid_utf8(font_id id, nn_czstring string, Renderer& renderer);
 
   /**
    * @brief Caches the supplied string by rendering it to a texture.
@@ -239,7 +239,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_latin1(hash_id id, nn_czstring string, Renderer& renderer);
+  void store_blended_latin1(font_id id, nn_czstring string, Renderer& renderer);
 
   /**
    * @brief Caches the supplied string by rendering it to a texture.
@@ -260,7 +260,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_wrapped_latin1(hash_id id,
+  void store_blended_wrapped_latin1(font_id id,
                                     nn_czstring string,
                                     Renderer& renderer,
                                     u32 wrap);
@@ -284,7 +284,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_shaded_latin1(hash_id id,
+  void store_shaded_latin1(font_id id,
                            nn_czstring string,
                            Renderer& renderer,
                            const color& background);
@@ -307,7 +307,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_latin1(hash_id id, nn_czstring string, Renderer& renderer);
+  void store_solid_latin1(font_id id, nn_czstring string, Renderer& renderer);
 
   /**
    * @brief Caches the supplied string by rendering it to a texture.
@@ -327,7 +327,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_unicode(hash_id id,
+  void store_blended_unicode(font_id id,
                              const unicode_string& string,
                              Renderer& renderer);
 
@@ -350,7 +350,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_blended_wrapped_unicode(hash_id id,
+  void store_blended_wrapped_unicode(font_id id,
                                      const unicode_string& string,
                                      Renderer& renderer,
                                      u32 wrap);
@@ -374,7 +374,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_shaded_unicode(hash_id id,
+  void store_shaded_unicode(font_id id,
                             const unicode_string& string,
                             Renderer& renderer,
                             const color& background);
@@ -397,7 +397,7 @@ class font_cache final
    * @since 5.0.0
    */
   template <typename Renderer>
-  void store_solid_unicode(hash_id id,
+  void store_solid_unicode(font_id id,
                            const unicode_string& string,
                            Renderer& renderer);
 
@@ -412,7 +412,7 @@ class font_cache final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto has_stored(hash_id id) const noexcept -> bool
+  [[nodiscard]] auto has_stored(font_id id) const noexcept -> bool
   {
     return m_strings.find(id) != m_strings.end();
   }
@@ -428,7 +428,7 @@ class font_cache final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get_stored(hash_id id) const -> const texture&
+  [[nodiscard]] auto get_stored(font_id id) const -> const texture&
   {
     return m_strings.at(id);
   }
@@ -448,7 +448,7 @@ class font_cache final
    * @since 5.0.0
    */
   CENTURION_QUERY
-  auto try_get_stored(hash_id id) const noexcept -> const texture*;
+  auto try_get_stored(font_id id) const noexcept -> const texture*;
 
   /// @}  // end of string caching
 
@@ -606,7 +606,7 @@ class font_cache final
  private:
   font m_font;
   std::unordered_map<unicode, glyph_data> m_glyphs{};
-  std::unordered_map<hash_id, texture> m_strings{};
+  std::unordered_map<font_id, texture> m_strings{};
 
   /**
    * @brief Creates and returns a texture for the specified glyph.
@@ -625,7 +625,7 @@ class font_cache final
       -> texture;
 
   CENTURION_API
-  void store(hash_id id, texture&& texture);
+  void store(font_id id, texture&& texture);
 };
 
 template <typename... Args>
@@ -633,7 +633,7 @@ font_cache::font_cache(Args&&... args) : m_font{std::forward<Args>(args)...}
 {}
 
 template <typename Renderer>
-void font_cache::store_blended_utf8(hash_id id,
+void font_cache::store_blended_utf8(font_id id,
                                     nn_czstring string,
                                     Renderer& renderer)
 {
@@ -641,7 +641,7 @@ void font_cache::store_blended_utf8(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_blended_wrapped_utf8(hash_id id,
+void font_cache::store_blended_wrapped_utf8(font_id id,
                                             nn_czstring string,
                                             Renderer& renderer,
                                             u32 wrap)
@@ -650,7 +650,7 @@ void font_cache::store_blended_wrapped_utf8(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_shaded_utf8(hash_id id,
+void font_cache::store_shaded_utf8(font_id id,
                                    nn_czstring string,
                                    Renderer& renderer,
                                    const color& background)
@@ -659,7 +659,7 @@ void font_cache::store_shaded_utf8(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_solid_utf8(hash_id id,
+void font_cache::store_solid_utf8(font_id id,
                                   nn_czstring string,
                                   Renderer& renderer)
 {
@@ -667,7 +667,7 @@ void font_cache::store_solid_utf8(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_blended_latin1(hash_id id,
+void font_cache::store_blended_latin1(font_id id,
                                       nn_czstring string,
                                       Renderer& renderer)
 {
@@ -675,7 +675,7 @@ void font_cache::store_blended_latin1(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_blended_wrapped_latin1(hash_id id,
+void font_cache::store_blended_wrapped_latin1(font_id id,
                                               nn_czstring string,
                                               Renderer& renderer,
                                               u32 wrap)
@@ -684,7 +684,7 @@ void font_cache::store_blended_wrapped_latin1(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_shaded_latin1(hash_id id,
+void font_cache::store_shaded_latin1(font_id id,
                                      nn_czstring string,
                                      Renderer& renderer,
                                      const color& background)
@@ -693,7 +693,7 @@ void font_cache::store_shaded_latin1(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_solid_latin1(hash_id id,
+void font_cache::store_solid_latin1(font_id id,
                                     nn_czstring string,
                                     Renderer& renderer)
 {
@@ -701,7 +701,7 @@ void font_cache::store_solid_latin1(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_blended_unicode(hash_id id,
+void font_cache::store_blended_unicode(font_id id,
                                        const unicode_string& string,
                                        Renderer& renderer)
 {
@@ -709,7 +709,7 @@ void font_cache::store_blended_unicode(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_blended_wrapped_unicode(hash_id id,
+void font_cache::store_blended_wrapped_unicode(font_id id,
                                                const unicode_string& string,
                                                Renderer& renderer,
                                                u32 wrap)
@@ -718,7 +718,7 @@ void font_cache::store_blended_wrapped_unicode(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_shaded_unicode(hash_id id,
+void font_cache::store_shaded_unicode(font_id id,
                                       const unicode_string& string,
                                       Renderer& renderer,
                                       const color& background)
@@ -727,7 +727,7 @@ void font_cache::store_shaded_unicode(hash_id id,
 }
 
 template <typename Renderer>
-void font_cache::store_solid_unicode(hash_id id,
+void font_cache::store_solid_unicode(font_id id,
                                      const unicode_string& string,
                                      Renderer& renderer)
 {

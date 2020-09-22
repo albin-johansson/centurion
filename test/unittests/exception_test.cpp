@@ -3,7 +3,6 @@
 #include <catch.hpp>
 #include <string>
 
-
 TEST_CASE("exception(czstring)", "[exception]")
 {
   SECTION("Null string")

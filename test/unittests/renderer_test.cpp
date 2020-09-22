@@ -119,7 +119,7 @@ TEST_CASE("renderer::add_font", "[renderer]")
   test([](const cen::window& window, cen::renderer& renderer) {
     using namespace std::string_literals;
 
-    constexpr auto id = "foo"_hs;
+    constexpr auto id = 7;
 
     renderer.add_font(id, cen::font{"resources/daniel.ttf", 12});
 
@@ -139,7 +139,7 @@ TEST_CASE("renderer::emplace_font", "[renderer]")
   test([](const cen::window& window, cen::renderer& renderer) {
     using namespace std::string_literals;
 
-    constexpr auto id = "foo"_hs;
+    constexpr auto id = 42;
 
     renderer.emplace_font(id, "resources/daniel.ttf", 12);
 
@@ -156,9 +156,9 @@ TEST_CASE("renderer::emplace_font", "[renderer]")
 TEST_CASE("renderer::remove_font", "[renderer]")
 {
   test([](const cen::window& window, cen::renderer& renderer) {
-    constexpr auto name = "daniel"_hs;
+    constexpr auto name = 54;
 
-    CHECK_NOTHROW(renderer.remove_font(""_hs));
+    CHECK_NOTHROW(renderer.remove_font(0));
 
     renderer.add_font(name, cen::font{"resources/daniel.ttf", 12});
     CHECK(renderer.has_font(name));
@@ -626,15 +626,15 @@ TEST_CASE("renderer::color", "[renderer]")
 TEST_CASE("renderer::get_font", "[renderer]")
 {
   test([](const cen::window& window, cen::renderer& renderer) {
-    constexpr auto name = "daniel"_hs;
+    constexpr auto id = 34;
 
-    CHECK_THROWS(renderer.get_font(name));
+    CHECK_THROWS(renderer.get_font(id));
 
-    renderer.add_font(name, cen::font{"resources/daniel.ttf", 12});
+    renderer.add_font(id, cen::font{"resources/daniel.ttf", 12});
 
-    CHECK_NOTHROW(renderer.get_font(name));
+    CHECK_NOTHROW(renderer.get_font(id));
 
-    auto& font = renderer.get_font(name);
+    auto& font = renderer.get_font(id);
 
     using namespace std::string_literals;
     CHECK(font.family_name() == "Daniel"s);

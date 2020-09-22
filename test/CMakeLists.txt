@@ -62,7 +62,6 @@ set(TEST_FILES
         unittests/key_code_tests.cpp
         unittests/font_cache_test.cpp
         unittests/unicode_string_test.cpp
-        unittests/game_loop_test.cpp
         unittests/window_handle_test.cpp
         unittests/renderer_handle_test.cpp
         unittests/sharing_texture_test.cpp
@@ -107,8 +106,7 @@ target_include_directories(${CENTURION_TEST_TARGET}
         SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
         SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
         SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-        SYSTEM PUBLIC ${CEN_INCLUDE_DIR}
-        SYSTEM PUBLIC ${CEN_SOURCE_DIR})
+        SYSTEM PUBLIC ${CEN_INCLUDE_DIR})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
@@ -135,7 +133,6 @@ target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
         PUBLIC ${CENTURION_IMPORT_LIB}
-        PUBLIC libEnTT
         PUBLIC Catch2)
 
 catch_discover_tests(${CENTURION_TEST_TARGET})

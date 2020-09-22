@@ -43,7 +43,6 @@
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
-#include <entt.hpp>
 #include <memory>
 #include <ostream>
 #include <string>
@@ -91,8 +90,7 @@ namespace cen {
  * @par Font support
  * When rendering text, it's often needed to pass around various font
  * instances. Subsequently, this class provides an API for managing `font`
- * instances. The fonts are stored in an internal map, using integers as keys,
- * which can be produced using strings that are hashed at compile-time!
+ * instances. The fonts are stored in an internal map, using integers as keys.
  *
  * @par Rendering text
  * There is no method for directly rendering text. Instead, use one of the
@@ -365,7 +363,7 @@ class renderer final : public basic_renderer<renderer>
    * @since 5.0.0
    */
   CENTURION_API
-  void add_font(hash_id id, font&& font);
+  void add_font(font_id id, font&& font);
 
   /**
    * @brief Creates a font and adds it to the renderer.
@@ -381,7 +379,7 @@ class renderer final : public basic_renderer<renderer>
    * @since 5.0.0
    */
   template <typename... Args>
-  void emplace_font(hash_id id, Args&&... args);
+  void emplace_font(font_id id, Args&&... args);
 
   /**
    * @brief Removes the font associated with the specified key.
@@ -394,7 +392,7 @@ class renderer final : public basic_renderer<renderer>
    * @since 5.0.0
    */
   CENTURION_API
-  void remove_font(hash_id id);
+  void remove_font(font_id id);
 
   /**
    * @brief Returns the font associated with the specified name.
@@ -407,12 +405,12 @@ class renderer final : public basic_renderer<renderer>
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get_font(hash_id id) -> font& { return m_fonts.at(id); }
+  [[nodiscard]] auto get_font(font_id id) -> font& { return m_fonts.at(id); }
 
   /**
    * @copydoc get_font
    */
-  [[nodiscard]] auto get_font(hash_id id) const -> const font&
+  [[nodiscard]] auto get_font(font_id id) const -> const font&
   {
     return m_fonts.at(id);
   }
@@ -428,7 +426,7 @@ class renderer final : public basic_renderer<renderer>
    *
    * @since 4.1.0
    */
-  [[nodiscard]] auto has_font(hash_id id) const noexcept -> bool
+  [[nodiscard]] auto has_font(font_id id) const noexcept -> bool
   {
     return static_cast<bool>(m_fonts.count(id));
   }
@@ -487,7 +485,7 @@ class renderer final : public basic_renderer<renderer>
 
   std::unique_ptr<SDL_Renderer, deleter> m_renderer;
   frect m_translationViewport;
-  std::unordered_map<hash_id, font> m_fonts;
+  std::unordered_map<std::size_t, font> m_fonts{};
 
   [[nodiscard]] static constexpr auto default_flags() noexcept
       -> SDL_RendererFlags
@@ -591,7 +589,7 @@ void renderer::render_t(const texture& texture,
 }
 
 template <typename... Args>
-void renderer::emplace_font(hash_id id, Args&&... args)
+void renderer::emplace_font(font_id id, Args&&... args)
 {
   if (m_fonts.find(id) != m_fonts.end()) {
     remove_font(id);

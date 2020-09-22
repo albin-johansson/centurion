@@ -16,7 +16,8 @@ static_assert(!std::is_copy_assignable_v<renderer>);
 static_assert(std::is_move_constructible_v<renderer>);
 static_assert(std::is_nothrow_move_assignable_v<renderer>);
 
-renderer::renderer(owner<SDL_Renderer*> sdlRenderer) : m_renderer{sdlRenderer}
+renderer::renderer(owner<SDL_Renderer*> sdlRenderer)
+    : m_renderer{sdlRenderer}, m_fonts{5}
 {
   if (!m_renderer) {
     throw exception{"Cannot create renderer from null pointer!"};
@@ -24,7 +25,7 @@ renderer::renderer(owner<SDL_Renderer*> sdlRenderer) : m_renderer{sdlRenderer}
 }
 
 renderer::renderer(const window& window, SDL_RendererFlags flags)
-    : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
+    : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}, m_fonts{5}
 {
   if (!m_renderer) {
     throw sdl_error{"Failed to create renderer"};
@@ -35,7 +36,7 @@ renderer::renderer(const window& window, SDL_RendererFlags flags)
   set_logical_integer_scale(false);
 }
 
-void renderer::add_font(entt::id_type id, font&& font)
+void renderer::add_font(font_id id, font&& font)
 {
   if (m_fonts.find(id) != m_fonts.end()) {
     remove_font(id);
@@ -43,7 +44,7 @@ void renderer::add_font(entt::id_type id, font&& font)
   m_fonts.emplace(id, std::move(font));
 }
 
-void renderer::remove_font(entt::id_type id)
+void renderer::remove_font(font_id id)
 {
   m_fonts.erase(id);
 }

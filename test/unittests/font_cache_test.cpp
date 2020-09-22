@@ -24,7 +24,7 @@ void test_unicode_cache(Callable&& callable)
   cen::window window;
   cen::renderer renderer{window};
 
-  constexpr auto id = "foo"_hs;
+  constexpr auto id = 77;
 
   cen::font_cache cache{"resources/fira_code.ttf", 12};
   cen::unicode_string str = {'b', 'a', 'r'};
@@ -38,7 +38,7 @@ void test_latin1_cache(Callable&& callable)
   cen::window window;
   cen::renderer renderer{window};
 
-  constexpr auto id = "foo"_hs;
+  constexpr auto id = 81;
 
   cen::font_cache cache{"resources/fira_code.ttf", 12};
   cen::nn_czstring str = "latin1_<!?+=";
@@ -52,7 +52,7 @@ void test_utf8_cache(Callable&& callable)
   cen::window window;
   cen::renderer renderer{window};
 
-  constexpr auto id = "foo"_hs;
+  constexpr auto id = 41;
 
   cen::font_cache cache{"resources/fira_code.ttf", 12};
   cen::nn_czstring str = "UTF-8_<!?+=";
@@ -64,7 +64,7 @@ TEST_CASE("font_cache::store_blended_utf8", "[font_cache]")
 {
   test_utf8_cache([](cen::renderer& renderer,
                      cen::font_cache& cache,
-                     entt::id_type id,
+                     cen::font_id id,
                      cen::nn_czstring str) {
     CHECK(!cache.has_stored(id));
 
@@ -80,7 +80,7 @@ TEST_CASE("font_cache::store_blended_wrapped_utf8", "[font_cache]")
 {
   test_utf8_cache([](cen::renderer& renderer,
                      cen::font_cache& cache,
-                     entt::id_type id,
+                     cen::font_id id,
                      cen::nn_czstring str) {
     CHECK(!cache.has_stored(id));
 
@@ -96,7 +96,7 @@ TEST_CASE("font_cache::store_solid_utf8", "[font_cache]")
 {
   test_utf8_cache([](cen::renderer& renderer,
                      cen::font_cache& cache,
-                     entt::id_type id,
+                     cen::font_id id,
                      cen::nn_czstring str) {
     CHECK(!cache.has_stored(id));
 
@@ -112,7 +112,7 @@ TEST_CASE("font_cache::store_shaded_utf8", "[font_cache]")
 {
   test_utf8_cache([](cen::renderer& renderer,
                      cen::font_cache& cache,
-                     entt::id_type id,
+                     cen::font_id id,
                      cen::nn_czstring str) {
     CHECK(!cache.has_stored(id));
 
@@ -129,7 +129,7 @@ TEST_CASE("font_cache::store_blended_latin1", "[font_cache]")
 {
   test_latin1_cache([](cen::renderer& renderer,
                        cen::font_cache& cache,
-                       entt::id_type id,
+                       cen::font_id id,
                        cen::nn_czstring str) {
     CHECK(!cache.has_stored(id));
 
@@ -145,7 +145,7 @@ TEST_CASE("font_cache::store_blended_wrapped_latin1", "[font_cache]")
 {
   test_latin1_cache([](cen::renderer& renderer,
                        cen::font_cache& cache,
-                       entt::id_type id,
+                       cen::font_id id,
                        cen::nn_czstring str) {
     CHECK(!cache.has_stored(id));
 
@@ -161,7 +161,7 @@ TEST_CASE("font_cache::store_solid_latin1", "[font_cache]")
 {
   test_latin1_cache([](cen::renderer& renderer,
                        cen::font_cache& cache,
-                       entt::id_type id,
+                       cen::font_id id,
                        cen::nn_czstring str) {
     CHECK(!cache.has_stored(id));
 
@@ -177,7 +177,7 @@ TEST_CASE("font_cache::store_shaded_latin1", "[font_cache]")
 {
   test_latin1_cache([](cen::renderer& renderer,
                        cen::font_cache& cache,
-                       entt::id_type id,
+                       cen::font_id id,
                        cen::nn_czstring str) {
     CHECK(!cache.has_stored(id));
 
@@ -194,7 +194,7 @@ TEST_CASE("font_cache::store_blended_unicode", "[font_cache]")
 {
   test_unicode_cache([](cen::renderer& renderer,
                         cen::font_cache& cache,
-                        entt::id_type id,
+                        cen::font_id id,
                         const cen::unicode_string& str) {
     CHECK(!cache.has_stored(id));
 
@@ -210,7 +210,7 @@ TEST_CASE("font_cache::store_blended_wrapped_unicode", "[font_cache]")
 {
   test_unicode_cache([](cen::renderer& renderer,
                         cen::font_cache& cache,
-                        entt::id_type id,
+                        cen::font_id id,
                         const cen::unicode_string& str) {
     CHECK(!cache.has_stored(id));
 
@@ -226,7 +226,7 @@ TEST_CASE("font_cache::store_solid_unicode", "[font_cache]")
 {
   test_unicode_cache([](cen::renderer& renderer,
                         cen::font_cache& cache,
-                        entt::id_type id,
+                        cen::font_id id,
                         const cen::unicode_string& str) {
     CHECK(!cache.has_stored(id));
 
@@ -242,7 +242,7 @@ TEST_CASE("font_cache::store_shaded_unicode", "[font_cache]")
 {
   test_unicode_cache([](cen::renderer& renderer,
                         cen::font_cache& cache,
-                        entt::id_type id,
+                        cen::font_id id,
                         const cen::unicode_string& str) {
     CHECK(!cache.has_stored(id));
 
@@ -407,10 +407,12 @@ TEST_CASE("font_cache::try_get_stored", "[font_cache]")
   cen::font_cache cache{"resources/fira_code.ttf", 12};
   cache.add_latin1(renderer);
 
-  cache.store_blended_latin1("foo"_hs, "bar!?<,.", renderer);
+  constexpr auto id = 12;
 
-  CHECK(cache.try_get_stored("foo"_hs));
-  CHECK_NOTHROW(cache.try_get_stored("bad"_hs));
+  cache.store_blended_latin1(id, "bar!?<,.", renderer);
+
+  CHECK(cache.try_get_stored(id));
+  CHECK(cache.try_get_stored(id + 1) == nullptr);
 }
 
 TEST_CASE("font_cache::get_stored", "[font_cache]")
@@ -418,11 +420,13 @@ TEST_CASE("font_cache::get_stored", "[font_cache]")
   cen::window window;
   cen::renderer renderer{window};
 
+  constexpr auto id = 42;
+
   cen::font_cache cache{"resources/fira_code.ttf", 12};
   cache.add_latin1(renderer);
-  cache.store_blended_latin1("foo"_hs, "bar!?<,.", renderer);
+  cache.store_blended_latin1(id, "bar!?<,.", renderer);
 
-  CHECK(cache.get_stored("foo"_hs).get());
+  CHECK(cache.get_stored(id).get());
 }
 
 TEST_CASE("font_cache::get_font", "[font_cache]")
@@ -454,16 +458,19 @@ TEST_CASE("Interactive font cache", "[.font_cache]")
   cen::renderer renderer{window};
   cen::font_cache cache{"resources/daniel.ttf", 32};
 
+  constexpr auto id1 = 72;
+  constexpr auto id2 = 23;
+
   {
     renderer.set_color(cen::colors::white);
     cache.add_latin1(renderer);
 
     renderer.set_color(cen::colors::magenta);
 
-    cache.store_blended_latin1("foo"_hs, "cool string! <|>", renderer);
+    cache.store_blended_latin1(id1, "cool string! <|>", renderer);
 
     cen::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
-    cache.store_blended_unicode("cool"_hs, cool, renderer);
+    cache.store_blended_unicode(id2, cool, renderer);
   }
 
   cen::unicode_string str = {'c',
@@ -522,8 +529,8 @@ TEST_CASE("Interactive font cache", "[.font_cache]")
     renderer.render_text(cache, changingStr, {50, 150});
     renderer.render_text(cache, str, {50, 100});
 
-    renderer.render(cache.get_stored("foo"_hs), cen::ipoint{50, 200});
-    renderer.render(cache.get_stored("cool"_hs), cen::ipoint{300, 400});
+    renderer.render(cache.get_stored(id1), cen::ipoint{50, 200});
+    renderer.render(cache.get_stored(id2), cen::ipoint{300, 400});
 
     renderer.present();
   }

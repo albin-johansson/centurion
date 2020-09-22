@@ -28,7 +28,6 @@
 #include <SDL_render.h>
 #include <SDL_video.h>
 
-#include <entt.hpp>
 #include <memory>
 #include <optional>
 #include <string>

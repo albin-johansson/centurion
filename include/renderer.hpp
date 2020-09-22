@@ -486,7 +486,7 @@ class renderer final : public basic_renderer<renderer>
 
   std::unique_ptr<SDL_Renderer, deleter> m_renderer;
   frect m_translationViewport;
-  std::unordered_map<std::size_t, font> m_fonts{};
+  std::unordered_map<std::size_t, font> m_fonts{5};
 
   [[nodiscard]] static constexpr auto default_flags() noexcept
       -> SDL_RendererFlags

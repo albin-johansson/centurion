@@ -101,7 +101,7 @@ class common_event
    *
    * @since 4.0.0
    */
-  common_event(const T& event) : m_event{event} {}
+  explicit common_event(const T& event) : m_event{event} {}
 
   /**
    * @brief Creates a CommonEvent and moves the contents of the supplied event.
@@ -110,14 +110,14 @@ class common_event
    *
    * @since 4.0.0
    */
-  common_event(T&& event) : m_event{std::move(event)} {}
+  explicit common_event(T&& event) : m_event{std::move(event)} {}
 
   /**
    * @brief Default virtual destructor.
    *
    * @since 4.0.0
    */
-  virtual ~common_event() noexcept = default;
+  ~common_event() noexcept = default;
 
   /**
    * @brief Sets the timestamp that is associated with the creation of the
@@ -195,7 +195,7 @@ class common_event
 template <typename T, typename E>
 [[nodiscard]] inline constexpr auto validate_event() noexcept -> bool
 {
-  return std::has_virtual_destructor_v<T> &&
+  return !std::has_virtual_destructor_v<T> &&
          std::is_nothrow_copy_constructible_v<T> &&
          std::is_nothrow_copy_assignable_v<T> &&
          std::is_nothrow_move_constructible_v<T> &&
@@ -802,7 +802,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  ~drop_event() noexcept override;
+  ~drop_event() noexcept;
 
   /**
    * @brief Sets whether or not the associated file will be freed by this event.

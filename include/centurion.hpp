@@ -171,7 +171,7 @@ class library final
    *
    * @since 3.0.0
    */
-  CENTURION_QUERY
+  CENTURION_API
   library();
 
   /**
@@ -189,7 +189,7 @@ class library final
    *
    * @since 4.0.0
    */
-  CENTURION_QUERY
+  CENTURION_API
   explicit library(const config& cfg);
 
   library(const library&) = delete;

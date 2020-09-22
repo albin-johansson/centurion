@@ -43,10 +43,10 @@
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
+#include <map>
 #include <memory>
 #include <ostream>
 #include <string>
-#include <unordered_map>
 #include <utility>
 
 #include "basic_renderer.hpp"
@@ -486,7 +486,7 @@ class renderer final : public basic_renderer<renderer>
 
   std::unique_ptr<SDL_Renderer, deleter> m_renderer;
   frect m_translationViewport;
-  std::unordered_map<std::size_t, font> m_fonts{5};
+  std::map<std::size_t, font> m_fonts;
 
   [[nodiscard]] static constexpr auto default_flags() noexcept
       -> SDL_RendererFlags

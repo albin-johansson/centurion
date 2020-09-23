@@ -523,12 +523,10 @@ template <typename T>
 auto renderer::translate(const basic_point<T>& point) const noexcept
     -> basic_point<T>
 {
-  const auto rect = viewport();
-
   using value_type = typename basic_point<T>::value_type;
 
-  const auto x = point.x() - static_cast<value_type>(rect.x());
-  const auto y = point.y() - static_cast<value_type>(rect.y());
+  const auto x = point.x() - static_cast<value_type>(m_translationViewport.x());
+  const auto y = point.y() - static_cast<value_type>(m_translationViewport.y());
 
   return basic_point<T>{x, y};
 }

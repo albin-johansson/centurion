@@ -43,15 +43,17 @@
 #ifndef CENTURION_RENDERER_HEADER
 #define CENTURION_RENDERER_HEADER
 
-#include <map>
 #include <memory>
 #include <ostream>
 #include <string>
+#include <unordered_map>
 #include <utility>
 
 #include "basic_renderer.hpp"
 #include "centurion_api.hpp"
 #include "colors.hpp"
+#include "detail/utils.hpp"
+#include "exception.hpp"
 #include "font.hpp"
 #include "window.hpp"
 
@@ -124,8 +126,12 @@ class renderer final : public basic_renderer<renderer>
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  explicit renderer(owner<SDL_Renderer*> sdlRenderer);
+  explicit renderer(owner<SDL_Renderer*> sdlRenderer) : m_renderer{sdlRenderer}
+  {
+    if (!m_renderer) {
+      throw exception{"Cannot create renderer from null pointer!"};
+    }
+  }
 
   /**
    * @brief Creates a renderer based on the supplied window.
@@ -140,9 +146,18 @@ class renderer final : public basic_renderer<renderer>
    *
    * @since 4.0.0
    */
-  CENTURION_API
   explicit renderer(const window& window,
-                    SDL_RendererFlags flags = default_flags());
+                    SDL_RendererFlags flags = default_flags())
+      : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
+  {
+    if (!m_renderer) {
+      throw sdl_error{"Failed to create renderer"};
+    }
+
+    set_blend_mode(blend_mode::blend);
+    set_color(colors::black);
+    set_logical_integer_scale(false);
+  }
 
   /**
    * @name Translated rendering
@@ -486,7 +501,7 @@ class renderer final : public basic_renderer<renderer>
 
   std::unique_ptr<SDL_Renderer, deleter> m_renderer;
   frect m_translationViewport;
-  std::map<std::size_t, font> m_fonts;
+  std::unordered_map<std::size_t, font> m_fonts;
 
   [[nodiscard]] static constexpr auto default_flags() noexcept
       -> SDL_RendererFlags

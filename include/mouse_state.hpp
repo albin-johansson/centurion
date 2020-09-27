@@ -207,6 +207,18 @@ class mouse_state final
   }
 
   /**
+   * @brief Returns the logical size used by the mouse state instance.
+   *
+   * @return the logical size used.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto logical_size() const noexcept -> iarea
+  {
+    return {m_logicalWidth, m_logicalHeight};
+  }
+
+  /**
    * @brief Indicates whether or not the left mouse button is currently pressed.
    *
    * @return `true` if the left mouse button is pressed; `false` otherwise.

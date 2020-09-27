@@ -57,6 +57,21 @@ TEST_CASE("mouse_state::set_logical_height", "[mouse_state]")
   CHECK(height == state.logical_height());
 }
 
+TEST_CASE("mouse_state::logical_size", "[mouse_state]")
+{
+  cen::mouse_state state;
+
+  const auto width = 342;
+  const auto height = 219;
+
+  state.set_logical_width(width);
+  state.set_logical_height(height);
+
+  const auto [actualWidth, actualHeight] = state.logical_size();
+  CHECK(actualWidth == width);
+  CHECK(actualHeight == height);
+}
+
 TEST_CASE("mouse_state::is_left_button_pressed", "[mouse_state]")
 {
   cen::mouse_state state;

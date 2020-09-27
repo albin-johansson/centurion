@@ -37,8 +37,10 @@
 #ifndef CENTURION_MOUSE_STATE_HEADER
 #define CENTURION_MOUSE_STATE_HEADER
 
+#include "area.hpp"
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"
+#include "point.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -165,6 +167,18 @@ class mouse_state final
    * @since 3.0.0
    */
   [[nodiscard]] auto mouse_y() const noexcept -> int { return m_mouseY; }
+
+  /**
+   * @brief Returns the position of the mouse.
+   *
+   * @return the current position of the mouse cursor.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto mouse_pos() const noexcept -> ipoint
+  {
+    return {m_mouseX, m_mouseY};
+  }
 
   /**
    * @brief Returns the logical width used by the mouse state instance.

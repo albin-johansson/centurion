@@ -9,6 +9,7 @@ TEST_CASE("mouse_state()", "[mouse_state]")
   CHECK(state.logical_height() == 1);
   CHECK(state.mouse_x() == 0);
   CHECK(state.mouse_y() == 0);
+  CHECK(state.mouse_pos() == cen::ipoint{0, 0});
 }
 
 TEST_CASE("mouse_state::update", "[mouse_state]")

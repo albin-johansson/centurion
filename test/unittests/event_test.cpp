@@ -196,6 +196,21 @@ TEST_CASE("event::poll", "[event]")
   cen::event::flush_all();
 }
 
+TEST_CASE("event::num_queued", "[event]")
+{
+  cen::event::flush_all();
+  CHECK(cen::event::num_queued() == 0);
+
+  CHECK(cen::event::num_queued(cen::event_type::quit) == 0);
+
+  auto event = create_event(SDL_QUIT);
+  cen::event::push(event);
+
+  CHECK(cen::event::num_queued() == 1);
+  CHECK(cen::event::num_queued(cen::event_type::quit) == 1);
+  CHECK(cen::event::num_queued(cen::event_type::window) == 0);
+}
+
 TEST_CASE("event::type", "[event]")
 {
   const auto create_sdl_event = [](cen::event_type type) noexcept {

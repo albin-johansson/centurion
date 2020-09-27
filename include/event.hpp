@@ -431,7 +431,8 @@ class controller_button_event final
    * @since 4.0.0
    */
   CENTURION_API
-  explicit controller_button_event(const SDL_ControllerButtonEvent& event) noexcept;
+  explicit controller_button_event(
+      const SDL_ControllerButtonEvent& event) noexcept;
 
   /**
    * @brief Sets the game controller button associated with the event.
@@ -553,7 +554,8 @@ class controller_device_event final
    * @since 4.0.0
    */
   CENTURION_API
-  explicit controller_device_event(const SDL_ControllerDeviceEvent& event) noexcept;
+  explicit controller_device_event(
+      const SDL_ControllerDeviceEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick device index or instance ID.
@@ -3319,6 +3321,48 @@ class event final
    */
   CENTURION_QUERY
   auto type() const noexcept -> event_type;
+
+  /**
+   * @brief Returns the number of events in the event queue.
+   *
+   * @return the current number of events in the event queue; `std::nullopt`
+   * if something goes wrong.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static auto num_queued() noexcept -> std::optional<int>
+  {
+    const auto num = SDL_PeepEvents(
+        nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
+    if (num != -1) {
+      return num;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  /**
+   * @brief Returns the number of events of a particular type that are in the
+   * event queue.
+   *
+   * @param type the type of event to count.
+   *
+   * @return the current number of events of the specified type that are in
+   * the event queue; `std::nullopt` if something goes wrong.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] static auto num_queued(event_type type) noexcept
+      -> std::optional<int>
+  {
+    const auto id = static_cast<u32>(type);
+    const auto num = SDL_PeepEvents(nullptr, 0, SDL_PEEKEVENT, id, id);
+    if (num != -1) {
+      return num;
+    } else {
+      return std::nullopt;
+    }
+  }
 
   /**
    * @brief Indicates whether or not the event is of a particular type.

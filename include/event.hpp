@@ -236,7 +236,7 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  audio_device_event(const SDL_AudioDeviceEvent& event) noexcept;
+  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept;
 
   /**
    * @brief Sets the audio device ID that is associated with the event.
@@ -328,7 +328,7 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  controller_axis_event(const SDL_ControllerAxisEvent& event) noexcept;
+  explicit controller_axis_event(const SDL_ControllerAxisEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick instance ID associated with the event.
@@ -431,7 +431,7 @@ class controller_button_event final
    * @since 4.0.0
    */
   CENTURION_API
-  controller_button_event(const SDL_ControllerButtonEvent& event) noexcept;
+  explicit controller_button_event(const SDL_ControllerButtonEvent& event) noexcept;
 
   /**
    * @brief Sets the game controller button associated with the event.
@@ -553,7 +553,7 @@ class controller_device_event final
    * @since 4.0.0
    */
   CENTURION_API
-  controller_device_event(const SDL_ControllerDeviceEvent& event) noexcept;
+  explicit controller_device_event(const SDL_ControllerDeviceEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick device index or instance ID.
@@ -620,7 +620,7 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  dollar_gesture_event(const SDL_DollarGestureEvent& event) noexcept;
+  explicit dollar_gesture_event(const SDL_DollarGestureEvent& event) noexcept;
 
   /**
    * @brief Sets the touch device ID associated with the event.
@@ -781,7 +781,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  drop_event(const SDL_DropEvent& event) noexcept;
+  explicit drop_event(const SDL_DropEvent& event) noexcept;
 
   /**
    * @brief Creates a drop event based on the supplied event.
@@ -791,7 +791,7 @@ class drop_event final : public common_event<SDL_DropEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  drop_event(SDL_DropEvent&& event) noexcept;
+  explicit drop_event(SDL_DropEvent&& event) noexcept;
 
   /**
    * @brief Destroys the drop event.
@@ -934,7 +934,7 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  joy_axis_event(const SDL_JoyAxisEvent& event) noexcept;
+  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick instance ID associated with the event.
@@ -1032,7 +1032,7 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  joy_ball_event(const SDL_JoyBallEvent& event) noexcept;
+  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick instance ID associated with the event.
@@ -1156,7 +1156,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  joy_button_event(const SDL_JoyButtonEvent& event) noexcept;
+  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick instance ID associated with the event.
@@ -1275,7 +1275,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  joy_device_event(const SDL_JoyDeviceEvent& event) noexcept;
+  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept;
 
   /**
    * @brief Sets the joystick device index or instance ID, depending on the type
@@ -1359,7 +1359,7 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  joy_hat_event(const SDL_JoyHatEvent& event) noexcept;
+  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept;
 
   /**
    * @brief Sets the hat index associated with the event.
@@ -1437,7 +1437,7 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  keyboard_event(const SDL_KeyboardEvent& event) noexcept;
+  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept;
 
   /**
    * @brief Sets the scan code that is associated with the event.
@@ -1717,7 +1717,7 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  mouse_button_event(const SDL_MouseButtonEvent& event) noexcept;
+  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept;
 
   /**
    * @brief Sets the window ID associated with the event.
@@ -1916,7 +1916,7 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept;
+  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept;
 
   /**
    * @brief Sets the window ID associated with the event.
@@ -2189,7 +2189,7 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept;
+  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept;
 
   /**
    * @brief Sets the window ID associated with the event.
@@ -2341,7 +2341,7 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  multi_gesture_event(const SDL_MultiGestureEvent& event) noexcept;
+  explicit multi_gesture_event(const SDL_MultiGestureEvent& event) noexcept;
 
   /**
    * @brief Sets the touch device ID associated with the event.
@@ -2514,7 +2514,7 @@ class quit_event final : public common_event<SDL_QuitEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  quit_event(const SDL_QuitEvent& event) noexcept;
+  explicit quit_event(const SDL_QuitEvent& event) noexcept;
 };
 
 static_assert(validate_event<quit_event, SDL_QuitEvent>());
@@ -2555,7 +2555,7 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  text_editing_event(const SDL_TextEditingEvent& event) noexcept;
+  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept;
 
   /**
    * @brief Sets the window ID associated with the event.
@@ -2670,7 +2670,7 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  text_input_event(const SDL_TextInputEvent& event) noexcept;
+  explicit text_input_event(const SDL_TextInputEvent& event) noexcept;
 
   /**
    * @brief Sets the window ID associated with the event.
@@ -2738,7 +2738,7 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  touch_finger_event(const SDL_TouchFingerEvent& event) noexcept;
+  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept;
 
   /**
    * @brief Sets the ID of the associated touch device.
@@ -3157,7 +3157,7 @@ class window_event final : public common_event<SDL_WindowEvent>
    * @since 4.0.0
    */
   CENTURION_API
-  window_event(const SDL_WindowEvent& event) noexcept;
+  explicit window_event(const SDL_WindowEvent& event) noexcept;
 
   /**
    * @brief Returns the event ID of this window event.
@@ -3243,7 +3243,7 @@ class event final
    * @since 4.0.0
    */
   CENTURION_API
-  event(const SDL_Event& event) noexcept;
+  explicit event(const SDL_Event& event) noexcept;
 
   /**
    * @brief Creates an event based on the supplied event.
@@ -3253,7 +3253,7 @@ class event final
    * @since 4.0.0
    */
   CENTURION_API
-  event(SDL_Event&& event) noexcept;
+  explicit event(SDL_Event&& event) noexcept;
 
   /**
    * @brief Refresh the event loop, gathering events from the input devices.

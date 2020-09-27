@@ -8,7 +8,7 @@ namespace {
 {
   SDL_Event sdlEvent;
   sdlEvent.type = type;
-  return {sdlEvent};
+  return cen::event{sdlEvent};
 }
 
 }  // namespace

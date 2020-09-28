@@ -37,8 +37,9 @@
 #ifndef CENTURION_DETAIL_TO_STRING_HEADER
 #define CENTURION_DETAIL_TO_STRING_HEADER
 
-#include <array>         // array
-#include <charconv>      // to_chars
+#include <array>     // array
+#include <charconv>  // to_chars
+#include <memory_resource>
 #include <optional>      // optional, nullopt
 #include <string>        // string
 #include <system_error>  // errc
@@ -50,9 +51,12 @@ namespace cen::detail {
 /**
  * @brief Returns a string representation of an arithmetic value.
  *
- * @tparam T the type of the value that will be converted, must be arithmetic.
+ * @note This function is guaranteed to work for 32-bit integers and floats.
+ * You might have to increase the buffer size for larger types.
+ *
  * @tparam bufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
+ * @tparam T the type of the value that will be converted, must be arithmetic.
  *
  * @param value the value that will be converted.
  *
@@ -61,19 +65,45 @@ namespace cen::detail {
  *
  * @since 5.0.0
  */
-template <typename T, std::size_t bufferSize = 10>
+template <std::size_t bufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
-  std::array<char, bufferSize> buffer{};
-  auto first = buffer.data();
-  if (const auto [ptr, err] =
-          std::to_chars(first, first + buffer.size(), value);
-      err == std::errc{}) {
+  std::array<char, bufferSize> buffer;  // NOLINT uninitialized buffer is OK
+  const auto [ptr, err] =
+      std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+  if (err == std::errc{}) {
     return std::string{buffer.data(), ptr};
   } else {
     return std::nullopt;
   }
 }
+
+// class pmr_string final
+//{
+// public:
+//  template <std::size_t size, typename T>
+//  explicit pmr_string(std::array<char, size>& buffer, T value) noexcept
+//  {
+//    const auto [ptr, err] =
+//        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+//    if (err == std::errc{}) {
+//      m_string.emplace(buffer.data(), ptr);
+//    }
+//  }
+//
+//  [[nodiscard]] auto ok() const noexcept -> bool
+//  {
+//    return m_string.has_value();
+//  }
+//
+//  [[nodiscard]] auto value() const -> const std::pmr::string&
+//  {
+//    return m_string.value();
+//  }
+//
+// private:
+//  std::optional<std::pmr::string> m_string;
+//};
 
 }  // namespace cen::detail
 

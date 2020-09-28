@@ -4,6 +4,7 @@
 
 #include <type_traits>
 
+#include "detail/to_string.hpp"
 #include "exception.hpp"
 
 namespace cen {
@@ -23,9 +24,10 @@ texture::texture(owner<SDL_Texture*> sdlTexture) : basic_texture{sdlTexture}
 
 auto to_string(const texture& texture) -> std::string
 {
+  using detail::to_string;
   return "[texture | ptr: " + detail::address_of(texture.get()) +
-         ", width: " + std::to_string(texture.width()) +
-         ", height: " + std::to_string(texture.height()) + "]";
+         ", width: " + to_string(texture.width()).value() +
+         ", height: " + to_string(texture.height()).value() + "]";
 }
 
 auto operator<<(std::ostream& stream, const texture& texture) -> std::ostream&

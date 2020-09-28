@@ -1,13 +1,16 @@
 #include "color.hpp"
 
+#include "detail/to_string.hpp"
+
 namespace cen {
 
 auto to_string(const color& color) -> std::string
 {
-  return "[color | r: " + std::to_string(color.red()) +
-         ", g: " + std::to_string(color.green()) +
-         ", b: " + std::to_string(color.blue()) +
-         ", a: " + std::to_string(color.alpha()) + "]";
+  using detail::to_string;
+  return "[color | r: " + to_string(color.red()).value() +
+         ", g: " + to_string(color.green()).value() +
+         ", b: " + to_string(color.blue()).value() +
+         ", a: " + to_string(color.alpha()).value() + "]";
 }
 
 auto operator<<(std::ostream& stream, const color& color) -> std::ostream&

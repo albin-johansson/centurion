@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <type_traits>
 
+#include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
@@ -83,8 +84,9 @@ auto sound_effect::is_fading() const noexcept -> bool
 auto to_string(const sound_effect& sound) -> std::string
 {
   using namespace std::string_literals;
+  using detail::to_string;
   return "[sound_effect | data: "s + detail::address_of(sound.get()) +
-         ", volume: "s + std::to_string(sound.volume()) + "]"s;
+         ", volume: "s + to_string(sound.volume()).value() + "]"s;
 }
 
 auto operator<<(std::ostream& stream, const sound_effect& sound)

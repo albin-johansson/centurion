@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+#include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
@@ -101,9 +102,10 @@ auto thread::current_id() noexcept -> id
 
 auto to_string(const thread& thread) -> std::string
 {
+  using detail::to_string;
   return "[thread | ptr: " + detail::address_of(thread.get()) +
          ", name: " + thread.name() +
-         ", id: " + std::to_string(thread.get_id()) + "]";
+         ", id: " + to_string(thread.get_id()).value() + "]";
 }
 
 auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&

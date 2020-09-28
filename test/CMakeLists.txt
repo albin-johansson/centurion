@@ -73,7 +73,8 @@ set(TEST_FILES
         unittests/condition_test.cpp
         unittests/clipboard_test.cpp
         unittests/sdl_string_test.cpp
-        unittests/controller_test.cpp)
+        unittests/controller_test.cpp
+        unittests/to_string_test.cpp)
 
 if (CEN_AUDIO)
     set(TEST_FILES

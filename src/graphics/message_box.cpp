@@ -1,9 +1,9 @@
 #include "message_box.hpp"
 
-#include <algorithm>        // max, any_of
-#include <memory_resource>  // monotonic_memory_resource
-#include <utility>          // move
+#include <algorithm>  // max, any_of
+#include <utility>    // move
 
+#include "detail/stack_resource.hpp"
 #include "exception.hpp"
 
 namespace cen {
@@ -36,9 +36,8 @@ auto message_box::show(SDL_Window* parent) -> std::optional<button_id>
   data.colorScheme = m_colorScheme ? m_colorScheme->get() : nullptr;
 
   // Realistically 1-3 buttons, stack buffer for 8 buttons, just in case.
-  buffer<8 * sizeof(SDL_MessageBoxButtonData)> buffer;
-  std::pmr::monotonic_buffer_resource resource{buffer.data(), sizeof buffer};
-  std::pmr::vector<SDL_MessageBoxButtonData> buttonData{&resource};
+  detail::stack_resource<8 * sizeof(SDL_MessageBoxButtonData)> resource;
+  std::pmr::vector<SDL_MessageBoxButtonData> buttonData{resource.get()};
 
   if (m_buttons.empty()) {
     add_button(0, "OK", default_button::return_key);

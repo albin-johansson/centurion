@@ -10,7 +10,7 @@ auto id() noexcept -> platform_id
 {
   using detail::equal;
 
-  const auto platform = SDL_GetPlatform();
+  czstring platform = SDL_GetPlatform();
   if (equal(platform, "Windows")) {
     return platform_id::windows;
 

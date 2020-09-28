@@ -8,7 +8,7 @@ namespace cen::battery {
 
 auto seconds_left() noexcept -> std::optional<seconds<int>>
 {
-  int secondsLeft = -1;
+  int secondsLeft{-1};
   SDL_GetPowerInfo(&secondsLeft, nullptr);
   if (secondsLeft == -1) {
     return std::nullopt;
@@ -19,8 +19,7 @@ auto seconds_left() noexcept -> std::optional<seconds<int>>
 
 auto minutes_left() noexcept -> std::optional<minutes<int>>
 {
-  const auto secondsLeft = seconds_left();
-  if (secondsLeft) {
+  if (const auto secondsLeft = seconds_left(); secondsLeft) {
     return std::chrono::duration_cast<minutes<int>>(*secondsLeft);
   } else {
     return std::nullopt;
@@ -29,7 +28,7 @@ auto minutes_left() noexcept -> std::optional<minutes<int>>
 
 auto percentage() noexcept -> std::optional<int>
 {
-  int percentageLeft = -1;
+  int percentageLeft{-1};
   SDL_GetPowerInfo(nullptr, &percentageLeft);
   if (percentageLeft == -1) {
     return std::nullopt;

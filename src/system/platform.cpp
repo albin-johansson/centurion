@@ -2,24 +2,28 @@
 
 #include <SDL.h>
 
+#include "detail/utils.hpp"
+
 namespace cen::platform {
 
 auto id() noexcept -> platform_id
 {
-  const auto platformName = name();
-  if (platformName == "Windows") {
+  using detail::equal;
+
+  const auto platform = SDL_GetPlatform();
+  if (equal(platform, "Windows")) {
     return platform_id::windows;
 
-  } else if (platformName == "Mac OS X") {
+  } else if (equal(platform, "Mac OS X")) {
     return platform_id::mac_osx;
 
-  } else if (platformName == "Linux") {
+  } else if (equal(platform, "Linux")) {
     return platform_id::linuxx;
 
-  } else if (platformName == "iOS") {
+  } else if (equal(platform, "iOS")) {
     return platform_id::ios;
 
-  } else if (platformName == "Android") {
+  } else if (equal(platform, "Android")) {
     return platform_id::android;
 
   } else {

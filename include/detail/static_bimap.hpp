@@ -34,8 +34,8 @@
  * @copyright MIT License
  */
 
-#ifndef CENTURION_STRING_MAP_HEADER
-#define CENTURION_STRING_MAP_HEADER
+#ifndef CENTURION_DETAIL_STATIC_BIMAP_HEADER
+#define CENTURION_DETAIL_STATIC_BIMAP_HEADER
 
 #include <array>    // array
 #include <utility>  // pair
@@ -103,4 +103,4 @@ class static_bimap final
 
 }  // namespace cen::detail
 
-#endif  // CENTURION_STRING_MAP_HEADER
+#endif  // CENTURION_DETAIL_STATIC_BIMAP_HEADER

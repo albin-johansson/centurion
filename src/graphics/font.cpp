@@ -2,7 +2,6 @@
 
 #include <type_traits>
 
-#include "detail/to_string.hpp"
 #include "exception.hpp"
 
 namespace cen {
@@ -231,10 +230,9 @@ auto font::style_name() const noexcept -> czstring
 
 auto to_string(const font& font) -> std::string
 {
-  const auto ptr = "ptr: " + detail::address_of(font.get());
-  const auto name = ", name: " + std::string{font.family_name()};
-  const auto size = ", size: " + detail::to_string(font.size()).value();
-  return "[font | " + ptr + name + size + "]";
+  return "[font | data: " + detail::address_of(font.get()) +
+         ", name: " + std::string{font.family_name()} +
+         ", size: " + std::to_string(font.size()) + "]";
 }
 
 auto operator<<(std::ostream& stream, const font& font) -> std::ostream&

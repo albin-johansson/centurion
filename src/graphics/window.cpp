@@ -2,7 +2,6 @@
 
 #include <type_traits>
 
-#include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
 
@@ -48,10 +47,9 @@ window::window() : window{"Centurion window"}
 
 auto to_string(const window& window) -> std::string
 {
-  const auto ptr = detail::address_of(window.get());
-  const auto w = detail::to_string(window.width()).value();
-  const auto h = detail::to_string(window.height()).value();
-  return "[window | ptr: " + ptr + ", width: " + w + ", height: " + h + "]";
+  return "[window | ptr: " + detail::address_of(window.get()) +
+         ", width: " + std::to_string(window.width()) +
+         ", height: " + std::to_string(window.height()) + "]";
 }
 
 auto operator<<(std::ostream& stream, const window& window) -> std::ostream&

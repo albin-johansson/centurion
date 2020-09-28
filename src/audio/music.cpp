@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <type_traits>
 
-#include "detail/to_string.hpp"
 #include "exception.hpp"
 
 namespace cen {
@@ -107,11 +106,8 @@ auto music::type() const noexcept -> music_type
 auto to_string(const music& music) -> std::string
 {
   using namespace std::string_literals;
-
-  const auto ptr = detail::address_of(music.get());
-  const auto vol = detail::to_string(music.volume()).value();
-
-  return "[music | ptr: "s + ptr + ", volume: "s + vol + "]"s;
+  return "[music | data: "s + detail::address_of(music.get()) + ", volume: "s +
+         std::to_string(music.volume()) + "]"s;
 }
 
 auto operator<<(std::ostream& stream, const music& music) -> std::ostream&

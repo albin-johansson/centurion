@@ -27,6 +27,9 @@
  *
  * @brief Provides utilities related to windows.
  *
+ * @todo SDL_GetGrabbedWindow()
+ * @todo SDL_GetWindowFromID()
+ *
  * @author Albin Johansson
  *
  * @date 2019-2020

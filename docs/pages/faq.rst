@@ -21,10 +21,8 @@ Centurion uses the MIT license.
 
 Why is X from SDL2 not covered in Centurion?
 --------------------------------------------
-The most likely reason is that it would be *redundant*. The C++ standard
-library is huge and provides nicer abstractions than what SDL2 can provide in
-C. However, if you feel like this isn't the case, feel free to request a
-feature!
+The most likely reason is that it would be redundant. However, if you feel like 
+this isn't the case, feel free to request a feature!
 
 Can Centurion be used for GUI programming?
 ------------------------------------------

@@ -207,6 +207,17 @@ TEST_CASE("color setters", "[color]")
   }
 }
 
+TEST_CASE("color::with_alpha", "[color]")
+{
+  const auto& other = cen::colors::maroon;
+  const auto color = other.with_alpha(0x12);
+
+  CHECK(color.red() == other.red());
+  CHECK(color.green() == other.green());
+  CHECK(color.blue() == other.blue());
+  CHECK(color.alpha() == 0x12);
+}
+
 TEST_CASE("color conversions", "[color]")
 {
   SECTION("Convert to SDL_Color")

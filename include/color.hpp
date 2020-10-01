@@ -150,6 +150,21 @@ class color final
   constexpr void set_alpha(u8 alpha) noexcept { m_color.a = alpha; }
 
   /**
+   * @brief Returns a copy of the color with the specified alpha value.
+   *
+   * @param alpha the alpha component value that will be used by the new color.
+   *
+   * @return a color that is identical to the color except for the alpha
+   * component.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] constexpr auto with_alpha(u8 alpha) const noexcept -> color
+  {
+    return {red(), green(), blue(), alpha};
+  }
+
+  /**
    * @brief Returns the value of the red component.
    *
    * @return the value of the red component, in the range [0, 255].

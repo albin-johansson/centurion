@@ -39,7 +39,8 @@
 
 #include <SDL.h>
 
-#include <memory>  // unique_ptr
+#include <memory>       // unique_ptr
+#include <type_traits>  // underlying_type_t
 
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"
@@ -67,7 +68,7 @@ namespace cen {
  *
  * @headerfile cursor.hpp
  */
-enum class system_cursor {
+enum class system_cursor : std::underlying_type_t<SDL_SystemCursor> {
   arrow = SDL_SYSTEM_CURSOR_ARROW,
   ibeam = SDL_SYSTEM_CURSOR_IBEAM,
   wait = SDL_SYSTEM_CURSOR_WAIT,

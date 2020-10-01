@@ -41,12 +41,12 @@
 
 #include <SDL.h>
 
-#include <utility>  // forward
+#include <type_traits>  // underlying_type_t
+#include <utility>      // forward
 
 #include "button_state.hpp"
 #include "centurion_api.hpp"
 #include "types.hpp"
-//#include "joystick.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -97,7 +97,7 @@ class basic_joystick
    *
    * @headerfile basic_joystick.hpp
    */
-  enum class power {
+  enum class power : std::underlying_type_t<SDL_JoystickPowerLevel> {
     unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
     empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
     low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
@@ -138,7 +138,7 @@ class basic_joystick
    *
    * @headerfile basic_joystick.hpp
    */
-  enum class type {
+  enum class type : std::underlying_type_t<SDL_JoystickType> {
     unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
     game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
     wheel = SDL_JOYSTICK_TYPE_WHEEL,

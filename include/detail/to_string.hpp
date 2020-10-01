@@ -42,6 +42,7 @@
 #include <optional>      // optional, nullopt
 #include <string>        // string
 #include <system_error>  // errc
+#include <type_traits>   // is_floating_point_v
 
 #include "centurion_api.hpp"
 
@@ -67,13 +68,26 @@ namespace cen::detail {
 template <std::size_t bufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
-  std::array<char, bufferSize> buffer;  // NOLINT uninitialized buffer is OK
-  const auto [ptr, err] =
-      std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-  if (err == std::errc{}) {
-    return std::string{buffer.data(), ptr};
+  const auto normalImpl = [&]() -> std::optional<std::string> {
+    std::array<char, bufferSize> buffer;  // NOLINT uninitialized buffer is OK
+    const auto [ptr, err] =
+        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+    if (err == std::errc{}) {
+      return std::string{buffer.data(), ptr};
+    } else {
+      return std::nullopt;
+    }
+  };
+
+  // GCC 9 does not implement std::to_chars for floating-point
+  if constexpr (std::is_floating_point_v<T>) {
+#if (defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER))
+    return std::to_string(value);
+#else
+    return normalImpl();
+#endif
   } else {
-    return std::nullopt;
+    return normalImpl();
   }
 }
 

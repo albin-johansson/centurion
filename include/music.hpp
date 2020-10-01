@@ -42,6 +42,7 @@
 #include <memory>
 #include <ostream>
 #include <string>
+#include <type_traits>
 
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"
@@ -64,10 +65,10 @@ namespace cen {
  *
  * @headerfile music.hpp
  */
-enum class fade_status {
-  none = MIX_NO_FADING, /**< No currently fading music. */
-  in = MIX_FADING_IN,   /**< Currently fading in music. */
-  out = MIX_FADING_OUT  /**< Currently fading out music. */
+enum class fade_status : std::underlying_type_t<Mix_Fading> {
+  none = MIX_NO_FADING,  ///< No currently fading music.
+  in = MIX_FADING_IN,    ///< Currently fading in music.
+  out = MIX_FADING_OUT   ///< Currently fading out music.
 };
 
 /**
@@ -142,7 +143,7 @@ enum class fade_status {
  *
  * @headerfile music.hpp
  */
-enum class music_type {
+enum class music_type : std::underlying_type_t<Mix_MusicType> {
   unknown = MUS_NONE,
   mp3 = MUS_MP3,
   wav = MUS_WAV,

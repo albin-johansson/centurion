@@ -359,6 +359,36 @@ class basic_cursor final
     return handle_t{SDL_GetCursor()};
   }
 
+  void enable() noexcept
+  {
+    SDL_SetCursor(get());
+  }
+
+  [[nodiscard]] auto is_enabled() const noexcept
+  {
+    return SDL_GetCursor() == get();
+  }
+
+  static void reset() noexcept
+  {
+    SDL_SetCursor(SDL_GetDefaultCursor());
+  }
+
+  static void force_redraw() noexcept
+  {
+    SDL_SetCursor(nullptr);
+  }
+
+  static void set_visible(bool visible) noexcept
+  {
+    SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
+  }
+
+  [[nodiscard]] static auto visible() noexcept -> bool
+  {
+    return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
+  }
+
   template <typename U = T, typename = is_handle<U>>
   explicit operator bool() const noexcept
   {

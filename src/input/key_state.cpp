@@ -91,7 +91,7 @@ auto key_state::was_just_released(const key_code& code) const noexcept -> bool
 
 auto key_state::modifier_active(key_modifier modifier) noexcept -> bool
 {
-  return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();
+  return static_cast<SDL_Keymod>(modifier) & SDL_GetModState();  // NOLINT
 }
 
 }  // namespace cen

@@ -39,6 +39,8 @@
 
 #include <SDL_render.h>
 
+#include <type_traits>  // underlying_type_t
+
 #include "centurion_api.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -58,7 +60,7 @@ namespace cen {
  *
  * @headerfile scale_mode.hpp
  */
-enum class scale_mode {
+enum class scale_mode : std::underlying_type_t<SDL_ScaleMode> {
   nearest = SDL_ScaleModeNearest,  ///< Represents nearest pixel sampling.
   linear = SDL_ScaleModeLinear,    ///< Represents linear filtering.
   best = SDL_ScaleModeBest         ///< Represents anisotropic filtering.

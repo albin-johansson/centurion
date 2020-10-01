@@ -64,7 +64,6 @@ set(TEST_FILES
         unittests/unicode_string_test.cpp
         unittests/window_handle_test.cpp
         unittests/renderer_handle_test.cpp
-        unittests/sharing_texture_test.cpp
         unittests/thread_test.cpp
         unittests/mutex_test.cpp
         unittests/scoped_lock_test.cpp

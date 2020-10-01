@@ -41,12 +41,11 @@
 #include <SDL_render.h>
 #include <SDL_video.h>
 
-#include <memory>
-#include <ostream>
-#include <string>
+#include <memory>   // unique_ptr
+#include <ostream>  // ostream
+#include <string>   // string
 
 #include "area.hpp"
-#include "basic_texture.hpp"
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
@@ -54,7 +53,9 @@
 #include "exception.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
+#include "scale_mode.hpp"
 #include "surface.hpp"
+#include "texture_access.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -62,25 +63,6 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
-
-class texture;
-
-template <>
-class texture_traits<texture> final
-{
- private:
-  class deleter final
-  {
-   public:
-    void operator()(SDL_Texture* texture) noexcept
-    {
-      SDL_DestroyTexture(texture);
-    }
-  };
-
- public:
-  using storage_type = std::unique_ptr<SDL_Texture, deleter>;
-};
 
 /**
  * @class texture
@@ -91,11 +73,13 @@ class texture_traits<texture> final
  *
  * @since 3.0.0
  *
+ * @todo Does texture really need to support handle?
+ *
  * @see `SDL_Texture`
  *
  * @headerfile texture.hpp
  */
-class texture final : public basic_texture<texture>
+class texture final
 {
  public:
   /**
@@ -110,8 +94,12 @@ class texture final : public basic_texture<texture>
    *
    * @since 3.0.0
    */
-  CENTURION_API
-  explicit texture(owner<SDL_Texture*> sdlTexture);
+  explicit texture(owner<SDL_Texture*> sdlTexture) : m_texture{sdlTexture}
+  {
+    if (!m_texture) {
+      throw exception{"Cannot create texture from null pointer!"};
+    }
+  }
 
   /**
    * @brief Creates a texture based the image at the specified path.
@@ -128,9 +116,9 @@ class texture final : public basic_texture<texture>
    */
   template <typename Renderer>
   texture(const Renderer& renderer, nn_czstring path)
-      : basic_texture{IMG_LoadTexture(renderer.get(), path)}
+      : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
-    if (!get()) {
+    if (!m_texture) {
       throw img_error{"Failed to load texture from file"};
     }
   }
@@ -150,10 +138,9 @@ class texture final : public basic_texture<texture>
    */
   template <typename Renderer>
   texture(const Renderer& renderer, const surface& surface)
-      : basic_texture{
-            SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
+      : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
-    if (!get()) {
+    if (!m_texture) {
       throw sdl_error{"Failed to create texture from surface"};
     }
   }
@@ -178,13 +165,13 @@ class texture final : public basic_texture<texture>
           pixel_format format,
           texture_access access,
           const iarea& size)
-      : basic_texture{SDL_CreateTexture(renderer.get(),
-                                        static_cast<u32>(format),
-                                        static_cast<int>(access),
-                                        size.width,
-                                        size.height)}
+      : m_texture{SDL_CreateTexture(renderer.get(),
+                                    static_cast<u32>(format),
+                                    static_cast<int>(access),
+                                    size.width,
+                                    size.height)}
   {
-    if (!get()) {
+    if (!m_texture) {
       throw sdl_error{"Failed to create texture"};
     }
   }
@@ -243,6 +230,99 @@ class texture final : public basic_texture<texture>
   }
 
   /**
+   * @brief Sets the color of the pixel at the specified coordinate.
+   *
+   * @details This method has no effect if the texture access isn't
+   * `Streaming` or if the coordinate is out-of-bounds.
+   *
+   * @param pixel the pixel that will be changed.
+   * @param color the new color of the pixel.
+   *
+   * @since 4.0.0
+   */
+  void set_pixel(const ipoint& pixel, const color& color) noexcept
+  {
+    if (access() != texture_access::streaming || pixel.x() < 0 ||
+        pixel.y() < 0 || pixel.x() >= width() || pixel.y() >= height()) {
+      return;
+    }
+
+    u32* pixels = nullptr;
+    int pitch;
+    const auto success = lock(&pixels, &pitch);
+    if (!success) {
+      return;
+    }
+
+    const int nPixels = (pitch / 4) * height();
+    const int index = (pixel.y() * width()) + pixel.x();
+
+    if ((index >= 0) && (index < nPixels)) {
+      auto* pixelFormat = SDL_AllocFormat(static_cast<u32>(format()));
+      const auto value = SDL_MapRGBA(
+          pixelFormat, color.red(), color.green(), color.blue(), color.alpha());
+
+      SDL_FreeFormat(pixelFormat);
+
+      pixels[index] = value;
+    }
+
+    unlock();
+  }
+
+  /**
+   * @brief Sets the alpha value of the texture.
+   *
+   * @param alpha the alpha value, in the range [0, 255].
+   *
+   * @since 3.0.0
+   */
+  void set_alpha(u8 alpha) noexcept
+  {
+    SDL_SetTextureAlphaMod(m_texture.get(), alpha);
+  }
+
+  /**
+   * @brief Sets the blend mode that will be used by the texture.
+   *
+   * @param mode the blend mode that will be used.
+   *
+   * @since 3.0.0
+   */
+  void set_blend_mode(blend_mode mode) noexcept
+  {
+    SDL_SetTextureBlendMode(m_texture.get(), static_cast<SDL_BlendMode>(mode));
+  }
+
+  /**
+   * @brief Sets the color modulation of the texture.
+   *
+   * @note The alpha component in the color struct is ignored by this method.
+   *
+   * @param color the color that will be used to modulate the color of the
+   * texture.
+   *
+   * @since 3.0.0
+   */
+  void set_color_mod(const color& color) noexcept
+  {
+    SDL_SetTextureColorMod(
+        m_texture.get(), color.red(), color.green(), color.blue());
+  }
+
+  /**
+   * @brief Sets the scale mode that will be used by the texture.
+   *
+   * @param mode the scale mode that will be used.
+   *
+   * @since 4.0.0
+   */
+  void set_scale_mode(scale_mode mode) noexcept
+  {
+    SDL_SetTextureScaleMode(m_texture.get(), static_cast<SDL_ScaleMode>(mode));
+  }
+
+  /**
    * @brief Releases ownership of the associated SDL texture and returns a
    * pointer to it.
    *
@@ -255,7 +335,263 @@ class texture final : public basic_texture<texture>
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>;
+  [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
+  {
+    return m_texture.release();
+  }
+
+  /**
+   * @brief Returns the pixel format that is used by the texture.
+   *
+   * @return the pixel format that is used by the texture.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto format() const noexcept -> pixel_format
+  {
+    u32 format{};
+    SDL_QueryTexture(m_texture.get(), &format, nullptr, nullptr, nullptr);
+    return static_cast<pixel_format>(format);
+  }
+
+  /**
+   * @brief Returns the texture access of the texture.
+   *
+   * @return the texture access of the texture.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto access() const noexcept -> texture_access
+  {
+    int access{};
+    SDL_QueryTexture(m_texture.get(), nullptr, &access, nullptr, nullptr);
+    return static_cast<texture_access>(access);
+  }
+
+  /**
+   * @brief Returns the width of the texture.
+   *
+   * @return the width of the texture.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto width() const noexcept -> int
+  {
+    const auto [width, height] = size();
+    return width;
+  }
+
+  /**
+   * @brief Returns the height of the texture.
+   *
+   * @return the height of the texture.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto height() const noexcept -> int
+  {
+    const auto [width, height] = size();
+    return height;
+  }
+
+  /**
+   * @brief Returns the size of the texture.
+   *
+   * @return the size of the texture.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto size() const noexcept -> iarea
+  {
+    int width{};
+    int height{};
+    SDL_QueryTexture(m_texture.get(), nullptr, nullptr, &width, &height);
+    return {width, height};
+  }
+
+  /**
+   * @brief Indicates whether or not the texture is a possible render target.
+   *
+   * @return `true` if the texture is a possible render target; `false`
+   * otherwise.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto is_target() const noexcept -> bool
+  {
+    return access() == texture_access::target;
+  }
+
+  /**
+   * @brief Indicates whether or not the texture has static texture access.
+   *
+   * @return `true` if the texture has static texture access.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto is_static() const noexcept -> bool
+  {
+    return access() == texture_access::no_lock;
+  }
+
+  /**
+   * @brief Indicates whether or not the texture has streaming texture access.
+   *
+   * @return `true` if the texture has streaming texture access; `false`
+   * otherwise.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto is_streaming() const noexcept -> bool
+  {
+    return access() == texture_access::streaming;
+  }
+
+  /**
+   * @brief Returns the alpha value of the texture.
+   *
+   * @return the alpha value of the texture.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto alpha() const noexcept -> u8
+  {
+    u8 alpha{};
+    SDL_GetTextureAlphaMod(m_texture.get(), &alpha);
+    return alpha;
+  }
+
+  /**
+   * @brief Returns the blend mode of the texture.
+   *
+   * @return the blend mode of the texture.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
+  {
+    SDL_BlendMode mode{};
+    SDL_GetTextureBlendMode(m_texture.get(), &mode);
+    return static_cast<blend_mode>(mode);
+  }
+
+  /**
+   * @brief Returns the color modulation of the texture.
+   *
+   * @return the modulation of the texture.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] auto color_mod() const noexcept -> color
+  {
+    u8 red{};
+    u8 green{};
+    u8 blue{};
+    SDL_GetTextureColorMod(m_texture.get(), &red, &green, &blue);
+    return {red, green, blue, 0xFF};
+  }
+
+  /**
+   * @brief Returns the scale mode that is used by the texture.
+   *
+   * @return the scale mode that is used by the texture.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode
+  {
+    SDL_ScaleMode mode{};
+    SDL_GetTextureScaleMode(m_texture.get(), &mode);
+    return static_cast<scale_mode>(mode);
+  }
+
+  /**
+   * @brief Returns a pointer to the associated `SDL_Texture`.
+   *
+   * @warning Use of this method is not recommended, since it purposefully
+   * breaks const-correctness. However it's useful since many SDL calls use
+   * non-const pointers even when no change will be applied.
+   *
+   * @return a pointer to the associated `SDL_Texture`.
+   *
+   * @since 4.0.0
+   */
+  [[nodiscard]] auto get() const noexcept -> SDL_Texture*
+  {
+    return m_texture.get();
+  }
+
+  /**
+   * @brief Converts to `SDL_Texture*`.
+   *
+   * @return a pointer to the associated `SDL_Texture`.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] explicit operator SDL_Texture*() noexcept
+  {
+    return m_texture.get();
+  }
+
+  /**
+   * @brief Converts to `const SDL_Texture*`.
+   *
+   * @return a pointer to the associated `SDL_Texture`.
+   *
+   * @since 3.0.0
+   */
+  [[nodiscard]] explicit operator const SDL_Texture*() const noexcept
+  {
+    return m_texture.get();
+  }
+
+ private:
+  class deleter final
+  {
+   public:
+    void operator()(SDL_Texture* texture) noexcept
+    {
+      SDL_DestroyTexture(texture);
+    }
+  };
+  std::unique_ptr<SDL_Texture, deleter> m_texture;
+
+  /**
+   * @brief Locks the texture for write-only pixel access.
+   *
+   * @remarks This method is only applicable if the texture access of the
+   * texture is `Streaming`.
+   *
+   * @param pixels this will be filled with a pointer to the locked pixels.
+   * @param pitch This is filled in with the pitch of the locked pixels, can
+   * safely be null if it isn't needed.
+   *
+   * @return `true` if all went well; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
+  auto lock(u32** pixels, int* pitch = nullptr) noexcept -> bool
+  {
+    if (pitch) {
+      const auto result = SDL_LockTexture(
+          m_texture.get(), nullptr, reinterpret_cast<void**>(pixels), pitch);
+      return result == 0;
+    } else {
+      int dummyPitch;
+      const auto result = SDL_LockTexture(m_texture.get(),
+                                          nullptr,
+                                          reinterpret_cast<void**>(pixels),
+                                          &dummyPitch);
+      return result == 0;
+    }
+  }
+
+  /**
+   * @brief Unlocks the texture.
+   *
+   * @since 4.0.0
+   */
+  void unlock() noexcept { SDL_UnlockTexture(m_texture.get()); }
 };
 
 /**

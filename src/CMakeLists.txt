@@ -55,9 +55,7 @@ set(SOURCE_FILES
         ../include/font_cache.hpp
         ../include/unicode_string.hpp
         ../include/joystick_handle.hpp
-        ../include/basic_texture.hpp
         ../include/scale_mode.hpp
-        ../include/sharing_texture.hpp
         ../include/thread.hpp
         ../include/mutex.hpp
         ../include/scoped_lock.hpp
@@ -93,7 +91,6 @@ set(SOURCE_FILES
         graphics/renderer_handle.cpp
         graphics/renderer.cpp
         graphics/color.cpp
-        graphics/sharing_texture.cpp
 
         system/base_path.cpp
         system/pref_path.cpp

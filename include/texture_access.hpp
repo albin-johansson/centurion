@@ -45,6 +45,9 @@
 
 namespace cen {
 
+/// @addtogroup graphics
+/// @{
+
 /**
  * @enum texture_access
  *
@@ -68,6 +71,64 @@ enum class texture_access {
   target = SDL_TEXTUREACCESS_TARGET /**< Indicates that the texture can be used
                                      * as a render target. */
 };
+
+/**
+ * @brief Indicates whether or not the two texture access values are the same.
+ *
+ * @param lhs the lhs texture access value.
+ * @param rhs the rhs texture access value.
+ *
+ * @return `true` if the texture access values are the same; `false` otherwise.
+ *
+ * @since 3.0.0
+ */
+[[nodiscard]] inline constexpr auto operator==(enum texture_access lhs,
+                                               SDL_TextureAccess rhs) noexcept
+    -> bool
+{
+  return static_cast<SDL_TextureAccess>(lhs) == rhs;
+}
+
+/**
+ * @copydoc operator==(texture_access, SDL_TextureAccess)
+ */
+[[nodiscard]] inline constexpr auto operator==(SDL_TextureAccess lhs,
+                                               enum texture_access rhs) noexcept
+    -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * @brief Indicates whether or not the two texture access values aren't the
+ * same.
+ *
+ * @param lhs the lhs texture access value.
+ * @param rhs the rhs texture access value.
+ *
+ * @return `true` if the texture access values aren't the same; `false`
+ * otherwise.
+ *
+ * @since 3.0.0
+ */
+[[nodiscard]] inline constexpr auto operator!=(texture_access lhs,
+                                               SDL_TextureAccess rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * @copydoc operator!=(texture_access, SDL_TextureAccess)
+ */
+[[nodiscard]] inline constexpr auto operator!=(SDL_TextureAccess lhs,
+                                               texture_access rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/// @}
 
 }  // namespace cen
 

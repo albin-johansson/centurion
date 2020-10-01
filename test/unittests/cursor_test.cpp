@@ -5,6 +5,22 @@
 #include "exception.hpp"
 #include "log.hpp"
 
+TEST_CASE("Experimental cursors", "[cursor]")
+{
+  CHECK_NOTHROW(cen::exp::cursor_handle{nullptr});
+
+  // Owning cursor
+  cen::exp::cursor cursor{cen::system_cursor::hand};
+  CHECK(cursor.get());
+
+  // Non-owning cursor
+  cen::exp::cursor_handle handle{SDL_GetCursor()};
+  CHECK(handle.get());
+
+  CHECK(cen::exp::cursor::get_default());
+  CHECK(cen::exp::cursor::get_current());
+}
+
 TEST_CASE("cursor(system_cursor)", "[cursor]")
 {
   CHECK_NOTHROW(cen::cursor{cen::system_cursor::crosshair});

@@ -39,7 +39,8 @@
 
 #include <SDL.h>
 
-#include <memory>  // unique_ptr
+#include <memory>       // unique_ptr
+#include <type_traits>  // enable_if_t, conditional_t, true_type, false_type
 
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"
@@ -294,6 +295,98 @@ class cursor final
   std::unique_ptr<SDL_Cursor, deleter> m_cursor;
 };
 
+namespace exp {
+
+template <typename T>
+using is_owning = std::enable_if_t<std::is_same_v<T, std::true_type>>;
+
+template <typename T>
+using is_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
+
+template <typename T>
+class basic_cursor final
+{
+  class deleter final
+  {
+   public:
+    void operator()(SDL_Cursor* cursor) noexcept { SDL_FreeCursor(cursor); }
+  };
+
+  using rep_t = std::conditional_t<T::value,
+                                   std::unique_ptr<SDL_Cursor, deleter>,
+                                   SDL_Cursor*>;
+
+  using owner_t = basic_cursor<std::true_type>;
+  using handle_t = basic_cursor<std::false_type>;
+
+ public:
+  // TODO SDL_CreateCursor wrapper?
+
+  template <typename U = T, typename = is_owning<U>>
+  explicit basic_cursor(system_cursor cursor)
+      : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
+  {
+    if (!m_cursor) {
+      throw sdl_error{"Failed to create system cursor"};
+    }
+  }
+
+  template <typename U = T, typename = is_owning<U>>
+  basic_cursor(const surface& surface, const ipoint& hotspot)
+      : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
+  {
+    if (!m_cursor) {
+      throw sdl_error{"Failed to create color cursor"};
+    }
+  }
+
+  template <typename U = T, typename = is_handle<U>>
+  explicit basic_cursor(SDL_Cursor* cursor) : m_cursor{cursor}
+  {}
+
+  template <typename U = T, typename = is_handle<U>>
+  explicit basic_cursor(basic_cursor<std::true_type>& cursor)
+      : m_cursor{cursor.get()}
+  {}
+
+  [[nodiscard]] static auto get_default() noexcept
+  {
+    return handle_t{SDL_GetDefaultCursor()};
+  }
+
+  [[nodiscard]] static auto get_current() noexcept
+  {
+    return handle_t{SDL_GetCursor()};
+  }
+
+  template <typename U = T, typename = is_handle<U>>
+  explicit operator bool() const noexcept
+  {
+    return m_cursor != nullptr;
+  }
+
+  [[nodiscard]] auto get() const noexcept -> SDL_Cursor*
+  {
+    if constexpr (is_owner()) {
+      return m_cursor.get();
+    } else {
+      return m_cursor;
+    }
+  }
+
+ private:
+  rep_t m_cursor;
+
+  [[nodiscard]] constexpr static auto is_owner() noexcept -> bool
+  {
+    return std::is_same_v<T, std::true_type>;
+  }
+};
+
+using cursor = basic_cursor<std::true_type>;
+using cursor_handle = basic_cursor<std::false_type>;
+
+}  // namespace exp
 }  // namespace cen
 
 #endif  // CENTURION_CURSOR_HEADER

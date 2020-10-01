@@ -127,7 +127,13 @@ class texture final : public basic_texture<texture>
    * @since 4.0.0
    */
   template <typename Renderer>
-  texture(const Renderer& renderer, nn_czstring path);
+  texture(const Renderer& renderer, nn_czstring path)
+      : basic_texture{IMG_LoadTexture(renderer.get(), path)}
+  {
+    if (!get()) {
+      throw img_error{"Failed to load texture from file"};
+    }
+  }
 
   /**
    * @brief Creates an texture that is a copy of the supplied surface.
@@ -143,7 +149,14 @@ class texture final : public basic_texture<texture>
    * @since 4.0.0
    */
   template <typename Renderer>
-  texture(const Renderer& renderer, const surface& surface);
+  texture(const Renderer& renderer, const surface& surface)
+      : basic_texture{
+            SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
+  {
+    if (!get()) {
+      throw sdl_error{"Failed to create texture from surface"};
+    }
+  }
 
   /**
    * @brief Creates an texture with the specified characteristics.
@@ -164,7 +177,17 @@ class texture final : public basic_texture<texture>
   texture(const Renderer& renderer,
           pixel_format format,
           texture_access access,
-          const iarea& size);
+          const iarea& size)
+      : basic_texture{SDL_CreateTexture(renderer.get(),
+                                        static_cast<u32>(format),
+                                        static_cast<int>(access),
+                                        size.width,
+                                        size.height)}
+  {
+    if (!get()) {
+      throw sdl_error{"Failed to create texture"};
+    }
+  }
 
   /**
    * @brief Creates and returns a texture with streaming access.
@@ -189,7 +212,35 @@ class texture final : public basic_texture<texture>
   template <typename Renderer>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       nn_czstring path,
-                                      pixel_format format) -> texture;
+                                      pixel_format format) -> texture
+  {
+    const auto blendMode = blend_mode::blend;
+    const auto createSurface = [=](czstring path, pixel_format format) {
+      surface source{path};
+      source.set_blend_mode(blendMode);
+      return source.convert(format);
+    };
+    const auto surface = createSurface(path, format);
+    auto tex = texture{renderer,
+                       format,
+                       texture_access::streaming,
+                       {surface.width(), surface.height()}};
+    tex.set_blend_mode(blendMode);
+
+    u32* pixels = nullptr;
+    const auto success = tex.lock(&pixels);
+    if (!success) {
+      throw exception{"Failed to lock texture!"};
+    }
+
+    const auto maxCount = static_cast<size_t>(surface.pitch()) *
+                          static_cast<size_t>(surface.height());
+    std::memcpy(pixels, surface.pixels(), maxCount);
+
+    tex.unlock();
+
+    return tex;
+  }
 
   /**
    * @brief Releases ownership of the associated SDL texture and returns a
@@ -206,73 +257,6 @@ class texture final : public basic_texture<texture>
    */
   [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>;
 };
-
-template <typename Renderer>
-texture::texture(const Renderer& renderer, const surface& surface)
-    : basic_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
-{
-  if (!get()) {
-    throw sdl_error{"Failed to create texture from surface"};
-  }
-}
-
-template <typename Renderer>
-texture::texture(const Renderer& renderer,
-                 pixel_format format,
-                 texture_access access,
-                 const iarea& size)
-    : basic_texture{SDL_CreateTexture(renderer.get(),
-                                      static_cast<u32>(format),
-                                      static_cast<int>(access),
-                                      size.width,
-                                      size.height)}
-{
-  if (!get()) {
-    throw sdl_error{"Failed to create texture"};
-  }
-}
-
-template <typename Renderer>
-texture::texture(const Renderer& renderer, nn_czstring path)
-    : basic_texture{IMG_LoadTexture(renderer.get(), path)}
-{
-  if (!get()) {
-    throw img_error{"Failed to load texture from file"};
-  }
-}
-
-template <typename Renderer>
-auto texture::streaming(const Renderer& renderer,
-                        nn_czstring path,
-                        pixel_format format) -> texture
-{
-  const auto blendMode = blend_mode::blend;
-  const auto createSurface = [=](czstring path, pixel_format format) {
-    surface source{path};
-    source.set_blend_mode(blendMode);
-    return source.convert(format);
-  };
-  const auto surface = createSurface(path, format);
-  auto tex = texture{renderer,
-                     format,
-                     texture_access::streaming,
-                     {surface.width(), surface.height()}};
-  tex.set_blend_mode(blendMode);
-
-  u32* pixels = nullptr;
-  const auto success = tex.lock(&pixels);
-  if (!success) {
-    throw exception{"Failed to lock texture!"};
-  }
-
-  const auto maxCount = static_cast<size_t>(surface.pitch()) *
-                        static_cast<size_t>(surface.height());
-  std::memcpy(pixels, surface.pixels(), maxCount);
-
-  tex.unlock();
-
-  return tex;
-}
 
 /**
  * @brief Returns a textual representation of a texture.

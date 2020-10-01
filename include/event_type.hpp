@@ -39,6 +39,8 @@
 
 #include <SDL_events.h>
 
+#include <type_traits>  // underlying_type_t
+
 #include "centurion_api.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -60,7 +62,7 @@ namespace cen {
  *
  * @headerfile event_type.hpp
  */
-enum class event_type {
+enum class event_type : std::underlying_type_t<SDL_EventType> {
   quit = SDL_QUIT,
 
   app_terminating = SDL_APP_TERMINATING,

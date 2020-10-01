@@ -29,8 +29,7 @@ auto num_fingers(SDL_TouchID id) noexcept -> int
 
 auto get_finger(SDL_TouchID id, int index) noexcept -> std::optional<SDL_Finger>
 {
-  const auto* finger = SDL_GetTouchFinger(id, index);
-  if (finger) {
+  if (const auto* finger = SDL_GetTouchFinger(id, index)) {
     return *finger;
   } else {
     return std::nullopt;

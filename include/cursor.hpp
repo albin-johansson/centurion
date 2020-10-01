@@ -289,7 +289,10 @@ class cursor final
   class deleter final
   {
    public:
-    void operator()(SDL_Cursor* cursor) noexcept { SDL_FreeCursor(cursor); }
+    void operator()(SDL_Cursor* cursor) noexcept
+    {
+      SDL_FreeCursor(cursor);
+    }
   };
 
   std::unique_ptr<SDL_Cursor, deleter> m_cursor;
@@ -309,7 +312,10 @@ class basic_cursor final
   class deleter final
   {
    public:
-    void operator()(SDL_Cursor* cursor) noexcept { SDL_FreeCursor(cursor); }
+    void operator()(SDL_Cursor* cursor) noexcept
+    {
+      SDL_FreeCursor(cursor);
+    }
   };
 
   using rep_t = std::conditional_t<T::value,

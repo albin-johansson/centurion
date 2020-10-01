@@ -71,7 +71,8 @@ class sdl_string final
    *
    * @since 5.0.0
    */
-  explicit sdl_string(owner<zstring> str) noexcept : m_str{str} {}
+  explicit sdl_string(owner<zstring> str) noexcept : m_str{str}
+  {}
 
   /**
    * @brief Returns the internal string, which might be null.
@@ -80,7 +81,10 @@ class sdl_string final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> czstring { return m_str.get(); }
+  [[nodiscard]] auto get() const noexcept -> czstring
+  {
+    return m_str.get();
+  }
 
   /**
    * @brief Returns a copy of the internal string.
@@ -108,13 +112,19 @@ class sdl_string final
    *
    * @since 5.0.0
    */
-  explicit operator bool() const noexcept { return m_str.operator bool(); }
+  explicit operator bool() const noexcept
+  {
+    return m_str.operator bool();
+  }
 
  private:
   class deleter final
   {
    public:
-    void operator()(zstring text) noexcept { SDL_free(text); }
+    void operator()(zstring text) noexcept
+    {
+      SDL_free(text);
+    }
   };
   std::unique_ptr<char, deleter> m_str;
 };

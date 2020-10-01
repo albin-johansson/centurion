@@ -132,7 +132,10 @@ class mutex final
   class deleter final
   {
    public:
-    void operator()(SDL_mutex* mutex) noexcept { SDL_DestroyMutex(mutex); }
+    void operator()(SDL_mutex* mutex) noexcept
+    {
+      SDL_DestroyMutex(mutex);
+    }
   };
   std::unique_ptr<SDL_mutex, deleter> m_mutex;
 };

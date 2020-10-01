@@ -1398,7 +1398,10 @@ class hint_callback final
    *
    * @since 4.1.0
    */
-  [[nodiscard]] auto get() noexcept -> SDL_HintCallback { return m_callback; }
+  [[nodiscard]] auto get() noexcept -> SDL_HintCallback
+  {
+    return m_callback;
+  }
 
   /**
    * @brief Returns a pointer to the user data associated with the callback.

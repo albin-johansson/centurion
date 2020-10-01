@@ -240,7 +240,10 @@ class surface final
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto width() const noexcept -> int { return m_surface->w; }
+  [[nodiscard]] auto width() const noexcept -> int
+  {
+    return m_surface->w;
+  }
 
   /**
    * @brief Returns the height of the surface.
@@ -249,7 +252,10 @@ class surface final
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto height() const noexcept -> int { return m_surface->h; }
+  [[nodiscard]] auto height() const noexcept -> int
+  {
+    return m_surface->h;
+  }
 
   /**
    * @brief Returns the pitch (the length of a row of pixels in bytes) of the
@@ -259,7 +265,10 @@ class surface final
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto pitch() const noexcept -> int { return m_surface->pitch; }
+  [[nodiscard]] auto pitch() const noexcept -> int
+  {
+    return m_surface->pitch;
+  }
 
   /**
    * @brief Returns a pointer to the pixel data of the surface.
@@ -270,7 +279,10 @@ class surface final
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto pixels() noexcept -> void* { return m_surface->pixels; }
+  [[nodiscard]] auto pixels() noexcept -> void*
+  {
+    return m_surface->pixels;
+  }
 
   /**
    * @brief Returns a const pointer to the pixel data of the surface.
@@ -342,7 +354,10 @@ class surface final
   class deleter final
   {
    public:
-    void operator()(SDL_Surface* surface) noexcept { SDL_FreeSurface(surface); }
+    void operator()(SDL_Surface* surface) noexcept
+    {
+      SDL_FreeSurface(surface);
+    }
   };
 
   std::unique_ptr<SDL_Surface, deleter> m_surface;

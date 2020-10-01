@@ -130,7 +130,10 @@ class condition final
   class deleter final
   {
    public:
-    void operator()(SDL_cond* cond) noexcept { SDL_DestroyCond(cond); };
+    void operator()(SDL_cond* cond) noexcept
+    {
+      SDL_DestroyCond(cond);
+    };
   };
 
   std::unique_ptr<SDL_cond, deleter> m_cond{};

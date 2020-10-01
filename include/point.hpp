@@ -188,7 +188,10 @@ class basic_point final
    *
    * @since 5.0.0
    */
-  constexpr void set_x(value_type x) noexcept { m_point.x = x; }
+  constexpr void set_x(value_type x) noexcept
+  {
+    m_point.x = x;
+  }
 
   /**
    * @brief Sets the y-coordinate of the point.
@@ -197,7 +200,10 @@ class basic_point final
    *
    * @since 5.0.0
    */
-  constexpr void set_y(value_type y) noexcept { m_point.y = y; }
+  constexpr void set_y(value_type y) noexcept
+  {
+    m_point.y = y;
+  }
 
   /**
    * @brief Returns the x-coordinate of the point.
@@ -230,7 +236,10 @@ class basic_point final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] constexpr auto get() noexcept -> point_type& { return m_point; }
+  [[nodiscard]] constexpr auto get() noexcept -> point_type&
+  {
+    return m_point;
+  }
 
   /**
    * @copydoc get
@@ -264,7 +273,10 @@ class basic_point final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] explicit operator point_type*() noexcept { return &m_point; }
+  [[nodiscard]] explicit operator point_type*() noexcept
+  {
+    return &m_point;
+  }
 
   /**
    * @brief Returns a pointer to the internal point.

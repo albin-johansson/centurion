@@ -421,7 +421,10 @@ class renderer final : public basic_renderer<renderer>
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get_font(font_id id) -> font& { return m_fonts.at(id); }
+  [[nodiscard]] auto get_font(font_id id) -> font&
+  {
+    return m_fonts.at(id);
+  }
 
   /**
    * @copydoc get_font

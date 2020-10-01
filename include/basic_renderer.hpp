@@ -78,7 +78,10 @@ class basic_renderer
    *
    * @since 3.0.0
    */
-  void clear() noexcept { SDL_RenderClear(ptr()); }
+  void clear() noexcept
+  {
+    SDL_RenderClear(ptr());
+  }
 
   /**
    * @brief Clears the rendering target with the specified color.
@@ -104,7 +107,10 @@ class basic_renderer
    *
    * @since 3.0.0
    */
-  void present() noexcept { SDL_RenderPresent(ptr()); }
+  void present() noexcept
+  {
+    SDL_RenderPresent(ptr());
+  }
 
   /**
    * @name Primitive rendering

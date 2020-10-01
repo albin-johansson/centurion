@@ -241,7 +241,10 @@ class key_state final
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto amount_of_keys() const noexcept -> int { return m_nKeys; }
+  [[nodiscard]] auto amount_of_keys() const noexcept -> int
+  {
+    return m_nKeys;
+  }
 
  private:
   const u8* m_states{};

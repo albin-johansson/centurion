@@ -97,7 +97,8 @@ class color final
    *
    * @since 3.0.0
    */
-  constexpr explicit color(const SDL_Color& color) noexcept : m_color{color} {}
+  constexpr explicit color(const SDL_Color& color) noexcept : m_color{color}
+  {}
 
   /**
    * @brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
@@ -120,7 +121,10 @@ class color final
    *
    * @since 3.0.0
    */
-  constexpr void set_red(u8 red) noexcept { m_color.r = red; }
+  constexpr void set_red(u8 red) noexcept
+  {
+    m_color.r = red;
+  }
 
   /**
    * @brief Sets the value of the green component.
@@ -129,7 +133,10 @@ class color final
    *
    * @since 3.0.0
    */
-  constexpr void set_green(u8 green) noexcept { m_color.g = green; }
+  constexpr void set_green(u8 green) noexcept
+  {
+    m_color.g = green;
+  }
 
   /**
    * @brief Sets the value of the blue component.
@@ -138,7 +145,10 @@ class color final
    *
    * @since 3.0.0
    */
-  constexpr void set_blue(u8 blue) noexcept { m_color.b = blue; }
+  constexpr void set_blue(u8 blue) noexcept
+  {
+    m_color.b = blue;
+  }
 
   /**
    * @brief Sets the value of the alpha component.
@@ -147,7 +157,10 @@ class color final
    *
    * @since 3.0.0
    */
-  constexpr void set_alpha(u8 alpha) noexcept { m_color.a = alpha; }
+  constexpr void set_alpha(u8 alpha) noexcept
+  {
+    m_color.a = alpha;
+  }
 
   /**
    * @brief Returns a copy of the color with the specified alpha value.
@@ -171,7 +184,10 @@ class color final
    *
    * @since 3.0.0
    */
-  [[nodiscard]] constexpr auto red() const noexcept -> u8 { return m_color.r; }
+  [[nodiscard]] constexpr auto red() const noexcept -> u8
+  {
+    return m_color.r;
+  }
 
   /**
    * @brief Returns the value of the green component.
@@ -192,7 +208,10 @@ class color final
    *
    * @since 3.0.0
    */
-  [[nodiscard]] constexpr auto blue() const noexcept -> u8 { return m_color.b; }
+  [[nodiscard]] constexpr auto blue() const noexcept -> u8
+  {
+    return m_color.b;
+  }
 
   /**
    * @brief Returns the value of the alpha component.
@@ -253,7 +272,10 @@ class color final
    *
    * @since 4.0,0
    */
-  [[nodiscard]] explicit operator SDL_Color*() noexcept { return &m_color; }
+  [[nodiscard]] explicit operator SDL_Color*() noexcept
+  {
+    return &m_color;
+  }
 
   /**
    * @brief Converts the color to `const SDL_Color*`.
@@ -276,7 +298,10 @@ class color final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] static constexpr auto max() noexcept -> u8 { return 0xFF; }
+  [[nodiscard]] static constexpr auto max() noexcept -> u8
+  {
+    return 0xFF;
+  }
 
  private:
   SDL_Color m_color{0, 0, 0, max()};

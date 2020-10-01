@@ -678,7 +678,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Joystick* { return ptr(); }
+  [[nodiscard]] auto get() const noexcept -> SDL_Joystick*
+  {
+    return ptr();
+  }
 
   /**
    * @brief Updates the state of all open joysticks.
@@ -688,7 +691,10 @@ class basic_joystick
    *
    * @since 4.2.0
    */
-  static void update() noexcept { SDL_JoystickUpdate(); }
+  static void update() noexcept
+  {
+    SDL_JoystickUpdate();
+  }
 
   /**
    * @brief Locks the access to all joysticks.
@@ -699,7 +705,10 @@ class basic_joystick
    * @see SDL_LockJoysticks
    * @since 4.2.0
    */
-  static void lock() noexcept { SDL_LockJoysticks(); }
+  static void lock() noexcept
+  {
+    SDL_LockJoysticks();
+  }
 
   /**
    * @brief Unlocks the access to all joysticks.
@@ -707,7 +716,10 @@ class basic_joystick
    * @see SDL_UnlockJoysticks
    * @since 4.2.0
    */
-  static void unlock() noexcept { SDL_UnlockJoysticks(); }
+  static void unlock() noexcept
+  {
+    SDL_UnlockJoysticks();
+  }
 
   /**
    * @brief Specifies whether or not joystick event polling is enabled.

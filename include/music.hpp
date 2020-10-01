@@ -494,7 +494,10 @@ class music final
   class deleter final
   {
    public:
-    void operator()(Mix_Music* music) noexcept { Mix_FreeMusic(music); }
+    void operator()(Mix_Music* music) noexcept
+    {
+      Mix_FreeMusic(music);
+    }
   };
 
   std::unique_ptr<Mix_Music, deleter> m_music;

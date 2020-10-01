@@ -87,7 +87,10 @@ class unicode_string final
    *
    * @since 5.0.0
    */
-  unicode_string() { m_data.push_back(0); }
+  unicode_string()
+  {
+    m_data.push_back(0);
+  }
 
   /**
    * @brief Creates a Unicode string based on the supplied values.
@@ -115,7 +118,10 @@ class unicode_string final
    *
    * @since 5.0.0
    */
-  void reserve(size_type n) { m_data.reserve(n); }
+  void reserve(size_type n)
+  {
+    m_data.reserve(n);
+  }
 
   /**
    * @brief Appends a Unicode glyph to the end of the string.
@@ -124,7 +130,10 @@ class unicode_string final
    *
    * @since 5.0.0
    */
-  void append(unicode ch) { m_data.insert(m_data.end() - 1, ch); }
+  void append(unicode ch)
+  {
+    m_data.insert(m_data.end() - 1, ch);
+  }
 
   /**
    * @brief Appends a series of glyphs to the string.
@@ -148,7 +157,10 @@ class unicode_string final
   /**
    * @copydoc append(unicode)
    */
-  void operator+=(unicode ch) { append(ch); }
+  void operator+=(unicode ch)
+  {
+    append(ch);
+  }
 
   /**
    * @brief Removes the last element from the string.
@@ -213,7 +225,10 @@ class unicode_string final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto data() noexcept -> pointer { return m_data.data(); }
+  [[nodiscard]] auto data() noexcept -> pointer
+  {
+    return m_data.data();
+  }
 
   /**
    * @copydoc data
@@ -233,7 +248,10 @@ class unicode_string final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto begin() noexcept -> iterator { return m_data.begin(); }
+  [[nodiscard]] auto begin() noexcept -> iterator
+  {
+    return m_data.begin();
+  }
 
   /**
    * @copydoc begin
@@ -254,7 +272,10 @@ class unicode_string final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto end() noexcept -> iterator { return m_data.end() - 1; }
+  [[nodiscard]] auto end() noexcept -> iterator
+  {
+    return m_data.end() - 1;
+  }
 
   /**
    * @copydoc end

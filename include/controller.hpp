@@ -196,7 +196,10 @@ class basic_controller
    *
    * @since 5.0.0
    */
-  void stop_rumble() noexcept { rumble(0, 0, milliseconds<u32>::zero()); }
+  void stop_rumble() noexcept
+  {
+    rumble(0, 0, milliseconds<u32>::zero());
+  }
 
   /**
    * @brief Sets the player index associated with the controller.
@@ -656,7 +659,10 @@ class basic_controller
    *
    * @since 5.0.0
    */
-  static void update() { SDL_GameControllerUpdate(); }
+  static void update()
+  {
+    SDL_GameControllerUpdate();
+  }
 
   /**
    * @brief Indicates whether or not the specified value is usable as a
@@ -881,7 +887,10 @@ class controller_handle final : public basic_controller<controller_handle>
    *
    * @since 5.0.0
    */
-  explicit operator bool() const noexcept { return m_controller; }
+  explicit operator bool() const noexcept
+  {
+    return m_controller;
+  }
 
   /**
    * @brief Returns a pointer to the associated SDL game controller.

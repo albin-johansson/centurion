@@ -17,7 +17,8 @@ template <std::size_t bufferSize>
 class stack_resource final
 {
  public:
-  stack_resource() : m_buffer{}, m_pool{m_buffer.data(), sizeof m_buffer} {}
+  stack_resource() : m_buffer{}, m_pool{m_buffer.data(), sizeof m_buffer}
+  {}
 
   [[nodiscard]] auto get() noexcept -> std::pmr::memory_resource*
   {

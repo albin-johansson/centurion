@@ -71,14 +71,20 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void show() noexcept { SDL_ShowWindow(ptr()); }
+  void show() noexcept
+  {
+    SDL_ShowWindow(ptr());
+  }
 
   /**
    * @brief Makes the window invisible.
    *
    * @since 3.0.0
    */
-  void hide() noexcept { SDL_HideWindow(ptr()); }
+  void hide() noexcept
+  {
+    SDL_HideWindow(ptr());
+  }
 
   /**
    * @brief Centers the window position relative to the screen.
@@ -97,21 +103,30 @@ class basic_window
    *
    * @since 3.0.0
    */
-  void raise() noexcept { SDL_RaiseWindow(ptr()); }
+  void raise() noexcept
+  {
+    SDL_RaiseWindow(ptr());
+  }
 
   /**
    * @brief Maximizes the window.
    *
    * @since 3.1.0
    */
-  void maximize() noexcept { SDL_MaximizeWindow(ptr()); }
+  void maximize() noexcept
+  {
+    SDL_MaximizeWindow(ptr());
+  }
 
   /**
    * @brief Minimizes the window.
    *
    * @since 3.1.0
    */
-  void minimize() noexcept { SDL_MinimizeWindow(ptr()); }
+  void minimize() noexcept
+  {
+    SDL_MinimizeWindow(ptr());
+  }
 
   /**
    * @brief Sets whether or not the window is in fullscreen mode.

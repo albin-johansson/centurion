@@ -157,7 +157,10 @@ class mouse_state final
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto mouse_x() const noexcept -> int { return m_mouseX; }
+  [[nodiscard]] auto mouse_x() const noexcept -> int
+  {
+    return m_mouseX;
+  }
 
   /**
    * @brief Returns the y-coordinate of the mouse.
@@ -166,7 +169,10 @@ class mouse_state final
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto mouse_y() const noexcept -> int { return m_mouseY; }
+  [[nodiscard]] auto mouse_y() const noexcept -> int
+  {
+    return m_mouseY;
+  }
 
   /**
    * @brief Returns the position of the mouse.

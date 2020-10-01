@@ -476,7 +476,10 @@ class font final
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto size() const noexcept -> int { return m_size; }
+  [[nodiscard]] auto size() const noexcept -> int
+  {
+    return m_size;
+  }
 
   /**
    * @brief Returns a pointer to the associated `TTF_Font`.
@@ -489,7 +492,10 @@ class font final
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> TTF_Font* { return m_font.get(); }
+  [[nodiscard]] auto get() const noexcept -> TTF_Font*
+  {
+    return m_font.get();
+  }
 
   /**
    * @brief Converts to `TTF_Font*`.
@@ -498,7 +504,10 @@ class font final
    *
    * @since 3.0.0
    */
-  [[nodiscard]] explicit operator TTF_Font*() noexcept { return m_font.get(); }
+  [[nodiscard]] explicit operator TTF_Font*() noexcept
+  {
+    return m_font.get();
+  }
 
   /**
    * @brief Converts to `const TTF_Font*`.
@@ -516,7 +525,10 @@ class font final
   class deleter final
   {
    public:
-    void operator()(TTF_Font* font) noexcept { TTF_CloseFont(font); }
+    void operator()(TTF_Font* font) noexcept
+    {
+      TTF_CloseFont(font);
+    }
   };
 
   std::unique_ptr<TTF_Font, deleter> m_font;

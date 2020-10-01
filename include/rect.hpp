@@ -221,7 +221,10 @@ class basic_rect final
    *
    * @since 4.0.0
    */
-  constexpr void set_x(value_type x) noexcept { m_rect.x = x; }
+  constexpr void set_x(value_type x) noexcept
+  {
+    m_rect.x = x;
+  }
 
   /**
    * @brief Sets the y-coordinate of the rectangle.
@@ -230,7 +233,10 @@ class basic_rect final
    *
    * @since 4.0.0
    */
-  constexpr void set_y(value_type y) noexcept { m_rect.y = y; }
+  constexpr void set_y(value_type y) noexcept
+  {
+    m_rect.y = y;
+  }
 
   /**
    * @brief Moves the rectangle to the specified position.
@@ -256,7 +262,10 @@ class basic_rect final
    *
    * @since 4.0.0
    */
-  constexpr void set_width(value_type width) noexcept { m_rect.w = width; }
+  constexpr void set_width(value_type width) noexcept
+  {
+    m_rect.w = width;
+  }
 
   /**
    * @brief Sets the height of the rectangle.
@@ -265,7 +274,10 @@ class basic_rect final
    *
    * @since 4.0.0
    */
-  constexpr void set_height(value_type height) noexcept { m_rect.h = height; }
+  constexpr void set_height(value_type height) noexcept
+  {
+    m_rect.h = height;
+  }
 
   /**
    * @brief Changes the size of the rectangle.
@@ -463,7 +475,10 @@ class basic_rect final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] constexpr auto get() noexcept -> rect_type& { return m_rect; }
+  [[nodiscard]] constexpr auto get() noexcept -> rect_type&
+  {
+    return m_rect;
+  }
 
   /**
    * @brief Returns the internal rectangle.
@@ -484,7 +499,10 @@ class basic_rect final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] explicit operator rect_type*() noexcept { return &m_rect; }
+  [[nodiscard]] explicit operator rect_type*() noexcept
+  {
+    return &m_rect;
+  }
 
   /**
    * @brief Returns a pointer to the internal rectangle.

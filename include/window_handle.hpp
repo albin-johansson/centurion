@@ -125,7 +125,10 @@ class window_handle final : public basic_window<window_handle>
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Window* { return m_window; }
+  [[nodiscard]] auto get() const noexcept -> SDL_Window*
+  {
+    return m_window;
+  }
 
  private:
   SDL_Window* m_window{};

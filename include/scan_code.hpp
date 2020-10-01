@@ -98,7 +98,8 @@ class scan_code final
    *
    * @since 5.0.0
    */
-  constexpr scan_code(SDL_Scancode scancode) noexcept : m_code{scancode} {}
+  constexpr scan_code(SDL_Scancode scancode) noexcept : m_code{scancode}
+  {}
 
   /**
    * @brief Creates a `scan_code` instance based on a key code.
@@ -229,7 +230,10 @@ class scan_code final
    *
    * @since 5.0.0
    */
-  constexpr explicit operator SDL_Scancode() const noexcept { return m_code; }
+  constexpr explicit operator SDL_Scancode() const noexcept
+  {
+    return m_code;
+  }
 
   /**
    * @brief Converts to `SDL_KeyCode`.

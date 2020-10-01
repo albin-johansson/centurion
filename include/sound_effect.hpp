@@ -206,7 +206,10 @@ class sound_effect final
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto volume() const noexcept -> int { return m_chunk->volume; }
+  [[nodiscard]] auto volume() const noexcept -> int
+  {
+    return m_chunk->volume;
+  }
 
   /**
    * @brief Returns a pointer to the associated `Mix_Chunk`.
@@ -264,7 +267,10 @@ class sound_effect final
   class deleter final
   {
    public:
-    void operator()(Mix_Chunk* chunk) noexcept { Mix_FreeChunk(chunk); }
+    void operator()(Mix_Chunk* chunk) noexcept
+    {
+      Mix_FreeChunk(chunk);
+    }
   };
 
   std::unique_ptr<Mix_Chunk, deleter> m_chunk;

@@ -208,7 +208,10 @@ class window final : public basic_window<window>
   class deleter final
   {
    public:
-    void operator()(SDL_Window* window) noexcept { SDL_DestroyWindow(window); }
+    void operator()(SDL_Window* window) noexcept
+    {
+      SDL_DestroyWindow(window);
+    }
   };
   std::unique_ptr<SDL_Window, deleter> m_window;
 };

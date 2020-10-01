@@ -130,7 +130,8 @@ class key_code final
    *
    * @since 5.0.0
    */
-  constexpr key_code(SDL_KeyCode key) noexcept : m_key{key} {}
+  constexpr key_code(SDL_KeyCode key) noexcept : m_key{key}
+  {}
 
   /**
    * @brief Creates a `key_code` instance based on a scan code.
@@ -262,7 +263,10 @@ class key_code final
    *
    * @since 5.0.0
    */
-  constexpr explicit operator SDL_KeyCode() const noexcept { return m_key; }
+  constexpr explicit operator SDL_KeyCode() const noexcept
+  {
+    return m_key;
+  }
 
   /**
    * @brief Converts to `SDL_Keycode`.
@@ -273,7 +277,10 @@ class key_code final
    *
    * @since 5.0.0
    */
-  constexpr explicit operator SDL_Keycode() const noexcept { return m_key; }
+  constexpr explicit operator SDL_Keycode() const noexcept
+  {
+    return m_key;
+  }
 
   /**
    * @brief Converts to `SDL_Scancode`.

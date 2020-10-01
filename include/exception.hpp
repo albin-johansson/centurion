@@ -105,7 +105,10 @@ class exception : public std::exception
   }
 
  protected:
-  void set_what(std::string what) { m_what = std::move(what); }
+  void set_what(std::string what)
+  {
+    m_what = std::move(what);
+  }
 
  private:
   std::string m_what{"N/A"};

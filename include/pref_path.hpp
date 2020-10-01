@@ -107,7 +107,10 @@ class pref_path final
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> czstring { return m_path.get(); }
+  [[nodiscard]] auto get() const noexcept -> czstring
+  {
+    return m_path.get();
+  }
 
  private:
   sdl_string m_path;

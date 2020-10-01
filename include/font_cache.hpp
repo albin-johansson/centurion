@@ -596,12 +596,18 @@ class font_cache final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get_font() noexcept -> font& { return m_font; }
+  [[nodiscard]] auto get_font() noexcept -> font&
+  {
+    return m_font;
+  }
 
   /**
    * @copydoc get_font
    */
-  [[nodiscard]] auto get_font() const noexcept -> const font& { return m_font; }
+  [[nodiscard]] auto get_font() const noexcept -> const font&
+  {
+    return m_font;
+  }
 
  private:
   font m_font;

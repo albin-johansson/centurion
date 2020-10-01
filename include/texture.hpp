@@ -589,7 +589,10 @@ class texture final
    *
    * @since 4.0.0
    */
-  void unlock() noexcept { SDL_UnlockTexture(m_texture.get()); }
+  void unlock() noexcept
+  {
+    SDL_UnlockTexture(m_texture.get());
+  }
 };
 
 /**

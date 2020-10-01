@@ -78,7 +78,35 @@ class basic_texture
    *
    * @since 4.0.0
    */
-  void set_pixel(const ipoint& pixel, const color& color) noexcept;
+  void set_pixel(const ipoint& pixel, const color& color) noexcept
+  {
+    if (access() != texture_access::streaming || pixel.x() < 0 ||
+        pixel.y() < 0 || pixel.x() >= width() || pixel.y() >= height()) {
+      return;
+    }
+
+    u32* pixels = nullptr;
+    int pitch;
+    const auto success = lock(&pixels, &pitch);
+    if (!success) {
+      return;
+    }
+
+    const int nPixels = (pitch / 4) * height();
+    const int index = (pixel.y() * width()) + pixel.x();
+
+    if ((index >= 0) && (index < nPixels)) {
+      auto* pixelFormat = SDL_AllocFormat(static_cast<u32>(format()));
+      const auto value = SDL_MapRGBA(
+          pixelFormat, color.red(), color.green(), color.blue(), color.alpha());
+
+      SDL_FreeFormat(pixelFormat);
+
+      pixels[index] = value;
+    }
+
+    unlock();
+  }
 
   /**
    * @brief Sets the alpha value of the texture.
@@ -87,7 +115,7 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  void set_alpha(u8 alpha) noexcept;
+  void set_alpha(u8 alpha) noexcept { SDL_SetTextureAlphaMod(ptr(), alpha); }
 
   /**
    * @brief Sets the blend mode that will be used by the texture.
@@ -96,7 +124,10 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  void set_blend_mode(blend_mode mode) noexcept;
+  void set_blend_mode(blend_mode mode) noexcept
+  {
+    SDL_SetTextureBlendMode(ptr(), static_cast<SDL_BlendMode>(mode));
+  }
 
   /**
    * @brief Sets the color modulation of the texture.
@@ -108,7 +139,10 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  void set_color_mod(const color& color) noexcept;
+  void set_color_mod(const color& color) noexcept
+  {
+    SDL_SetTextureColorMod(ptr(), color.red(), color.green(), color.blue());
+  }
 
   /**
    * @brief Sets the scale mode that will be used by the texture.
@@ -117,7 +151,10 @@ class basic_texture
    *
    * @since 4.0.0
    */
-  void set_scale_mode(scale_mode mode) noexcept;
+  void set_scale_mode(scale_mode mode) noexcept
+  {
+    SDL_SetTextureScaleMode(ptr(), static_cast<SDL_ScaleMode>(mode));
+  }
 
   /**
    * @brief Returns the pixel format that is used by the texture.
@@ -126,7 +163,12 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto format() const noexcept -> pixel_format;
+  [[nodiscard]] auto format() const noexcept -> pixel_format
+  {
+    u32 format{};
+    SDL_QueryTexture(ptr(), &format, nullptr, nullptr, nullptr);
+    return static_cast<pixel_format>(format);
+  }
 
   /**
    * @brief Returns the texture access of the texture.
@@ -135,7 +177,12 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto access() const noexcept -> texture_access;
+  [[nodiscard]] auto access() const noexcept -> texture_access
+  {
+    int access{};
+    SDL_QueryTexture(ptr(), nullptr, &access, nullptr, nullptr);
+    return static_cast<texture_access>(access);
+  }
 
   /**
    * @brief Returns the width of the texture.
@@ -144,7 +191,11 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto width() const noexcept -> int;
+  [[nodiscard]] auto width() const noexcept -> int
+  {
+    const auto [width, height] = size();
+    return width;
+  }
 
   /**
    * @brief Returns the height of the texture.
@@ -153,7 +204,11 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto height() const noexcept -> int;
+  [[nodiscard]] auto height() const noexcept -> int
+  {
+    const auto [width, height] = size();
+    return height;
+  }
 
   /**
    * @brief Returns the size of the texture.
@@ -162,7 +217,13 @@ class basic_texture
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto size() const noexcept -> iarea;
+  [[nodiscard]] auto size() const noexcept -> iarea
+  {
+    int width{};
+    int height{};
+    SDL_QueryTexture(ptr(), nullptr, nullptr, &width, &height);
+    return {width, height};
+  }
 
   /**
    * @brief Indicates whether or not the texture is a possible render target.
@@ -172,7 +233,10 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto is_target() const noexcept -> bool;
+  [[nodiscard]] auto is_target() const noexcept -> bool
+  {
+    return access() == texture_access::target;
+  }
 
   /**
    * @brief Indicates whether or not the texture has static texture access.
@@ -181,7 +245,10 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto is_static() const noexcept -> bool;
+  [[nodiscard]] auto is_static() const noexcept -> bool
+  {
+    return access() == texture_access::no_lock;
+  }
 
   /**
    * @brief Indicates whether or not the texture has streaming texture access.
@@ -191,7 +258,10 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto is_streaming() const noexcept -> bool;
+  [[nodiscard]] auto is_streaming() const noexcept -> bool
+  {
+    return access() == texture_access::streaming;
+  }
 
   /**
    * @brief Returns the alpha value of the texture.
@@ -200,7 +270,12 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto alpha() const noexcept -> u8;
+  [[nodiscard]] auto alpha() const noexcept -> u8
+  {
+    u8 alpha{};
+    SDL_GetTextureAlphaMod(ptr(), &alpha);
+    return alpha;
+  }
 
   /**
    * @brief Returns the blend mode of the texture.
@@ -209,7 +284,12 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode;
+  [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
+  {
+    SDL_BlendMode mode{};
+    SDL_GetTextureBlendMode(ptr(), &mode);
+    return static_cast<blend_mode>(mode);
+  }
 
   /**
    * @brief Returns the color modulation of the texture.
@@ -218,7 +298,14 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] auto color_mod() const noexcept -> color;
+  [[nodiscard]] auto color_mod() const noexcept -> color
+  {
+    u8 red{};
+    u8 green{};
+    u8 blue{};
+    SDL_GetTextureColorMod(ptr(), &red, &green, &blue);
+    return {red, green, blue, 0xFF};
+  }
 
   /**
    * @brief Returns the scale mode that is used by the texture.
@@ -227,7 +314,12 @@ class basic_texture
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode;
+  [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode
+  {
+    SDL_ScaleMode mode{};
+    SDL_GetTextureScaleMode(ptr(), &mode);
+    return static_cast<scale_mode>(mode);
+  }
 
   /**
    * @brief Returns a pointer to the associated `SDL_Texture`.
@@ -240,7 +332,7 @@ class basic_texture
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Texture*;
+  [[nodiscard]] auto get() const noexcept -> SDL_Texture* { return ptr(); }
 
   /**
    * @brief Converts to `SDL_Texture*`.
@@ -249,7 +341,7 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] explicit operator SDL_Texture*() noexcept;
+  [[nodiscard]] explicit operator SDL_Texture*() noexcept { return ptr(); }
 
   /**
    * @brief Converts to `const SDL_Texture*`.
@@ -258,11 +350,16 @@ class basic_texture
    *
    * @since 3.0.0
    */
-  [[nodiscard]] explicit operator const SDL_Texture*() const noexcept;
+  [[nodiscard]] explicit operator const SDL_Texture*() const noexcept
+  {
+    return ptr();
+  }
 
  protected:
   template <typename... Args>
-  explicit basic_texture(Args&&... args);
+  explicit basic_texture(Args&&... args)
+      : m_storage{std::forward<Args>(args)...}
+  {}
 
   [[nodiscard]] auto get_storage() noexcept -> storage_type&
   {
@@ -288,14 +385,26 @@ class basic_texture
    *
    * @since 4.0.0
    */
-  auto lock(u32** pixels, int* pitch = nullptr) noexcept -> bool;
+  auto lock(u32** pixels, int* pitch = nullptr) noexcept -> bool
+  {
+    if (pitch) {
+      const auto result = SDL_LockTexture(
+          ptr(), nullptr, reinterpret_cast<void**>(pixels), pitch);
+      return result == 0;
+    } else {
+      int dummyPitch;
+      const auto result = SDL_LockTexture(
+          ptr(), nullptr, reinterpret_cast<void**>(pixels), &dummyPitch);
+      return result == 0;
+    }
+  }
 
   /**
    * @brief Unlocks the texture.
    *
    * @since 4.0.0
    */
-  void unlock() noexcept;
+  void unlock() noexcept { SDL_UnlockTexture(ptr()); }
 
  private:
   storage_type m_storage;
@@ -372,199 +481,6 @@ class basic_texture
     -> bool
 {
   return !(lhs == rhs);
-}
-
-template <typename T>
-template <typename... Args>
-basic_texture<T>::basic_texture(Args&&... args)
-    : m_storage{std::forward<Args>(args)...}
-{}
-
-template <typename T>
-auto basic_texture<T>::lock(u32** pixels, int* pitch) noexcept -> bool
-{
-  if (pitch) {
-    const auto result = SDL_LockTexture(
-        ptr(), nullptr, reinterpret_cast<void**>(pixels), pitch);
-    return result == 0;
-  } else {
-    int dummyPitch;
-    const auto result = SDL_LockTexture(
-        ptr(), nullptr, reinterpret_cast<void**>(pixels), &dummyPitch);
-    return result == 0;
-  }
-}
-
-template <typename T>
-void basic_texture<T>::unlock() noexcept
-{
-  SDL_UnlockTexture(ptr());
-}
-
-template <typename T>
-void basic_texture<T>::set_pixel(const ipoint& pixel,
-                                 const color& color) noexcept
-{
-  if (access() != texture_access::streaming || pixel.x() < 0 || pixel.y() < 0 ||
-      pixel.x() >= width() || pixel.y() >= height()) {
-    return;
-  }
-
-  u32* pixels = nullptr;
-  int pitch;
-  const auto success = lock(&pixels, &pitch);
-  if (!success) {
-    return;
-  }
-
-  const int nPixels = (pitch / 4) * height();
-  const int index = (pixel.y() * width()) + pixel.x();
-
-  if ((index >= 0) && (index < nPixels)) {
-    auto* pixelFormat = SDL_AllocFormat(static_cast<u32>(format()));
-    const auto value = SDL_MapRGBA(
-        pixelFormat, color.red(), color.green(), color.blue(), color.alpha());
-
-    SDL_FreeFormat(pixelFormat);
-
-    pixels[index] = value;
-  }
-
-  unlock();
-}
-
-template <typename T>
-void basic_texture<T>::set_alpha(u8 alpha) noexcept
-{
-  SDL_SetTextureAlphaMod(ptr(), alpha);
-}
-
-template <typename T>
-void basic_texture<T>::set_blend_mode(blend_mode mode) noexcept
-{
-  SDL_SetTextureBlendMode(ptr(), static_cast<SDL_BlendMode>(mode));
-}
-
-template <typename T>
-void basic_texture<T>::set_color_mod(const color& color) noexcept
-{
-  SDL_SetTextureColorMod(ptr(), color.red(), color.green(), color.blue());
-}
-
-template <typename T>
-void basic_texture<T>::set_scale_mode(scale_mode mode) noexcept
-{
-  SDL_SetTextureScaleMode(ptr(), static_cast<SDL_ScaleMode>(mode));
-}
-
-template <typename T>
-auto basic_texture<T>::format() const noexcept -> pixel_format
-{
-  u32 format{};
-  SDL_QueryTexture(ptr(), &format, nullptr, nullptr, nullptr);
-  return static_cast<pixel_format>(format);
-}
-
-template <typename T>
-auto basic_texture<T>::access() const noexcept -> texture_access
-{
-  int access{};
-  SDL_QueryTexture(ptr(), nullptr, &access, nullptr, nullptr);
-  return static_cast<texture_access>(access);
-}
-
-template <typename T>
-auto basic_texture<T>::width() const noexcept -> int
-{
-  const auto [width, height] = size();
-  return width;
-}
-
-template <typename T>
-auto basic_texture<T>::height() const noexcept -> int
-{
-  const auto [width, height] = size();
-  return height;
-}
-
-template <typename T>
-auto basic_texture<T>::size() const noexcept -> iarea
-{
-  int width{};
-  int height{};
-  SDL_QueryTexture(ptr(), nullptr, nullptr, &width, &height);
-  return {width, height};
-}
-
-template <typename T>
-auto basic_texture<T>::is_target() const noexcept -> bool
-{
-  return access() == texture_access::target;
-}
-
-template <typename T>
-auto basic_texture<T>::is_static() const noexcept -> bool
-{
-  return access() == texture_access::no_lock;
-}
-
-template <typename T>
-auto basic_texture<T>::is_streaming() const noexcept -> bool
-{
-  return access() == texture_access::streaming;
-  ;
-}
-
-template <typename T>
-auto basic_texture<T>::alpha() const noexcept -> u8
-{
-  u8 alpha{};
-  SDL_GetTextureAlphaMod(ptr(), &alpha);
-  return alpha;
-}
-
-template <typename T>
-auto basic_texture<T>::get_blend_mode() const noexcept -> blend_mode
-{
-  SDL_BlendMode mode{};
-  SDL_GetTextureBlendMode(ptr(), &mode);
-  return static_cast<blend_mode>(mode);
-}
-
-template <typename T>
-auto basic_texture<T>::color_mod() const noexcept -> color
-{
-  u8 red{};
-  u8 green{};
-  u8 blue{};
-  SDL_GetTextureColorMod(ptr(), &red, &green, &blue);
-  return {red, green, blue, 0xFF};
-}
-
-template <typename T>
-auto basic_texture<T>::get_scale_mode() const noexcept -> scale_mode
-{
-  SDL_ScaleMode mode{};
-  SDL_GetTextureScaleMode(ptr(), &mode);
-  return static_cast<scale_mode>(mode);
-}
-
-template <typename T>
-auto basic_texture<T>::get() const noexcept -> SDL_Texture*
-{
-  return ptr();
-}
-
-template <typename T>
-basic_texture<T>::operator SDL_Texture*() noexcept
-{
-  return ptr();
-}
-
-template <typename T>
-basic_texture<T>::operator const SDL_Texture*() const noexcept
-{
-  return ptr();
 }
 
 }  // namespace cen

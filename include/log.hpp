@@ -39,6 +39,8 @@
 
 #include <SDL_log.h>
 
+#include <type_traits>  // underlying_type_t
+
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"
 
@@ -98,7 +100,7 @@ namespace cen::log {
  *
  * @headerfile log.hpp
  */
-enum class priority {
+enum class priority : std::underlying_type_t<SDL_LogPriority> {
   info = SDL_LOG_PRIORITY_INFO,
   warn = SDL_LOG_PRIORITY_WARN,
   verbose = SDL_LOG_PRIORITY_VERBOSE,
@@ -118,7 +120,7 @@ enum class priority {
  *
  * @headerfile log.hpp
  */
-enum class category {
+enum class category : std::underlying_type_t<SDL_LogCategory> {
   app = SDL_LOG_CATEGORY_APPLICATION,
   error = SDL_LOG_CATEGORY_ERROR,
   assert = SDL_LOG_CATEGORY_ASSERT,

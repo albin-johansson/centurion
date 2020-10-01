@@ -54,6 +54,9 @@ namespace cen::detail {
  * @note This function is guaranteed to work for 32-bit integers and floats.
  * You might have to increase the buffer size for larger types.
  *
+ * @remark On GCC, this function simply calls `std::to_string`, since the
+ * `std::to_chars` implementation seems to be lacking at the time of writing.
+ *
  * @tparam bufferSize the size of the stack buffer used, must be big enough
  * to store the characters of the string representation of the value.
  * @tparam T the type of the value that will be converted, must be arithmetic.
@@ -68,28 +71,20 @@ namespace cen::detail {
 template <std::size_t bufferSize = 16, typename T>
 [[nodiscard]] auto to_string(T value) -> std::optional<std::string>
 {
-  const auto normalImpl = [&]() -> std::optional<std::string> {
-    std::array<char, bufferSize> buffer{};
-    const auto [ptr, err] =
-        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-    if (err == std::errc{}) {
-      const auto len = static_cast<std::size_t>(ptr - buffer.data());
-      return std::string{buffer.data(), len};
-    } else {
-      return std::nullopt;
-    }
-  };
-
-  // GCC 9 does not implement std::to_chars for floating-point
-  if constexpr (std::is_floating_point_v<T>) {
 #if (defined(__GNUC__) && !defined(__clang__) && !defined(__INTEL_COMPILER))
-    return std::to_string(value);
+  // GCC are a bit behind on implementing the charconv header
+  return std::to_string(value);
 #else
-    return normalImpl();
-#endif
+  std::array<char, bufferSize> buffer{};
+  const auto [ptr, err] =
+      std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
+  if (err == std::errc{}) {
+    const auto len = static_cast<std::size_t>(ptr - buffer.data());
+    return std::string{buffer.data(), len};
   } else {
-    return normalImpl();
+    return std::nullopt;
   }
+#endif
 }
 
 }  // namespace cen::detail

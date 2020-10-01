@@ -182,13 +182,12 @@ class controller_handler  // TODO worth adding?
 
   [[nodiscard]] auto find(int index) -> std::vector<controller>::iterator
   {
-    const auto it = std::find_if(begin(m_controllers),
-                                 end(m_controllers),
-                                 [=](const cen::controller& c) noexcept {
-                                   const auto i = c.index();
-                                   return i && index == *i;
-                                 });
-    return it;
+    return std::find_if(begin(m_controllers),
+                        end(m_controllers),
+                        [=](const cen::controller& c) noexcept {
+                          const auto i = c.index();
+                          return i && index == *i;
+                        });
   }
 };
 

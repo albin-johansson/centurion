@@ -5,21 +5,15 @@
 #include "exception.hpp"
 #include "log.hpp"
 
-TEST_CASE("Experimental cursors", "[cursor]")
-{
-  CHECK_NOTHROW(cen::exp::cursor_handle{nullptr});
+static_assert(std::is_move_constructible_v<cen::cursor>);
+static_assert(std::is_move_assignable_v<cen::cursor>);
+static_assert(!std::is_copy_constructible_v<cen::cursor>);
+static_assert(!std::is_copy_assignable_v<cen::cursor>);
 
-  // Owning cursor
-  cen::exp::cursor cursor{cen::system_cursor::hand};
-  CHECK(cursor.get());
-
-  // Non-owning cursor
-  cen::exp::cursor_handle handle{SDL_GetCursor()};
-  CHECK(handle.get());
-
-  CHECK(cen::exp::cursor::get_default());
-  CHECK(cen::exp::cursor::get_current());
-}
+static_assert(std::is_move_constructible_v<cen::cursor_handle>);
+static_assert(std::is_move_assignable_v<cen::cursor_handle>);
+static_assert(std::is_copy_constructible_v<cen::cursor_handle>);
+static_assert(std::is_copy_assignable_v<cen::cursor_handle>);
 
 TEST_CASE("cursor(system_cursor)", "[cursor]")
 {
@@ -29,14 +23,7 @@ TEST_CASE("cursor(system_cursor)", "[cursor]")
   CHECK_THROWS_AS(cen::cursor{invalid}, cen::sdl_error);
 }
 
-TEST_CASE("cursor(owner<SDL_Cursor*>)", "[cursor]")
-{
-  auto* sdlCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
-  CHECK_NOTHROW(cen::cursor{sdlCursor});
-  CHECK_THROWS_AS(cen::cursor{nullptr}, cen::exception);
-}
-
-TEST_CASE("cursor(surface, ipoint)", "[cursor]")
+TEST_CASE("cursor from surface", "[cursor]")
 {
   const cen::surface surface{"resources/panda.png"};
   const cen::ipoint hotspot{12, 14};
@@ -46,51 +33,20 @@ TEST_CASE("cursor(surface, ipoint)", "[cursor]")
   CHECK_THROWS_AS(cen::cursor(surface, outside), cen::sdl_error);
 }
 
-TEST_CASE("cursor(cursor&&)", "[cursor]")
+TEST_CASE("cursor_handle(SDL_Cursor*)", "[cursor]")
 {
-  const cen::surface surface{"resources/panda.png"};
-  const cen::ipoint hotspot{12, 14};
-  cen::cursor cursor{surface, hotspot};
-
-  cen::cursor other{std::move(cursor)};
-
-  CHECK(!cursor.get());
-  CHECK(other.get());
-}
-
-TEST_CASE("cursor::operator=(cursor&&)", "[cursor]")
-{
-  SECTION("Self-assignment")
-  {
-    const cen::surface surface{"resources/panda.png"};
-    const cen::ipoint hotspot{12, 14};
-    cen::cursor cursor{surface, hotspot};
-
-    cursor = std::move(cursor);
-
-    CHECK(cursor.get());
-  }
-
-  SECTION("Normal usage")
-  {
-    const cen::surface surface{"resources/panda.png"};
-    const cen::ipoint hotspot{12, 14};
-    cen::cursor cursor{surface, hotspot};
-    cen::cursor other{surface, hotspot};
-
-    other = std::move(cursor);
-
-    CHECK(!cursor.get());
-    CHECK(other.get());
-  }
+  CHECK_NOTHROW(cen::cursor_handle{nullptr});
 }
 
 TEST_CASE("cursor::enable", "[cursor]")
 {
-  cen::cursor cursor{cen::system_cursor::wait};
+  SECTION("Normal usage")
+  {
+    cen::cursor cursor{cen::system_cursor::wait};
 
-  cursor.enable();
-  CHECK(cursor.is_enabled());
+    cursor.enable();
+    CHECK(cursor.is_enabled());
+  }
 
   SECTION("Special case where two instances have the same type")
   {
@@ -145,7 +101,7 @@ TEST_CASE("cursor::set_visible", "[cursor]")
   CHECK(cen::cursor::visible());
 }
 
-TEST_CASE("SystemCursor enum values", "[cursor]")
+TEST_CASE("system_cursor enum values", "[cursor]")
 {
   CHECK(cen::system_cursor::arrow == SDL_SYSTEM_CURSOR_ARROW);
   CHECK(cen::system_cursor::ibeam == SDL_SYSTEM_CURSOR_IBEAM);

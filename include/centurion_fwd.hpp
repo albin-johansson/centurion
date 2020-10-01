@@ -78,8 +78,6 @@ class unicode_string;
 
 class color;
 
-class cursor;
-
 class event;
 
 class scan_code;

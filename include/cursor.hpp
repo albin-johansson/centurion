@@ -146,160 +146,6 @@ enum class system_cursor {
   return !(lhs == rhs);
 }
 
-/**
- * @class cursor
- *
- * @ingroup graphics
- *
- * @brief Represents a mouse cursor.
- *
- * @details Cursors can be created from various preset shapes or from images
- * (surfaces).
- *
- * @since 4.0.0
- *
- * @headerfile cursor.hpp
- */
-class cursor final
-{
- public:
-  /**
-   * @brief Creates a cursor based on the supplied `SDL_Cursor`.
-   *
-   * @details The ownership of the supplied pointer will be claimed by the
-   * created cursor instance.
-   *
-   * @param sdlCursor a pointer to an `SDL_Cursor` that will be adopted,
-   * can't be null.
-   *
-   * @throws exception if the supplied pointer is null.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  explicit cursor(owner<SDL_Cursor*> sdlCursor);
-
-  /**
-   * @brief Creates a cursor based on the specified cursor type.
-   *
-   * @param id the cursor type that will be used.
-   *
-   * @throws sdl_error if the cursor cannot be created.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  explicit cursor(system_cursor id);
-
-  /**
-   * @brief Creates a cursor based on the supplied surface.
-   *
-   * @details The supplied hotspot must be within the area of the supplied
-   * surface.
-   *
-   * @param surface the surface that will represent the cursor.
-   * @param hotspot the point used to determine where the mouse
-   * actually is.
-   *
-   * @throws sdl_error if the cursor cannot be created.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  explicit cursor(const surface& surface, const ipoint& hotspot);
-
-  /**
-   * @brief Forces a cursor redraw.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  static void force_redraw() noexcept;
-
-  /**
-   * @brief Resets the cursor to the system default.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  static void reset() noexcept;
-
-  /**
-   * @brief Sets whether or not the cursor is visible.
-   *
-   * @param visible `true` if the cursor should be made visible; `false`
-   * otherwise.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  static void set_visible(bool visible) noexcept;
-
-  /**
-   * @brief Indicates whether or not the cursor is visible.
-   *
-   * @return `true` if the cursor is visible; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  static auto visible() noexcept -> bool;
-
-  /**
-   * @brief Makes the cursor the used cursor.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_API
-  void enable() noexcept;
-
-  /**
-   * @brief Indicates whether or not the cursor is currently being used.
-   *
-   * @note This method only checks if the currently used SDL cursor is the
-   * same instance referenced in the invoked Centurion cursor. In other
-   * words, if two cursors of the same type has been created, and one of them
-   * is enabled, then this method could still return `false` even if the
-   * cursors have the same type.
-   *
-   * @return `true` if the cursor is being used; `false` otherwise.
-   *
-   * @since 4.0.0
-   */
-  CENTURION_QUERY
-  auto is_enabled() const noexcept -> bool;
-
-  /**
-   * @brief Returns a pointer to the associated `SDL_Cursor`.
-   *
-   * @warning Use of this method is not recommended, since it purposefully
-   * breaks const-correctness. However, it's' useful since many SDL calls use
-   * non-const pointers even when no change will be applied.
-   *
-   * @return a pointer to the associated `SDL_Cursor`.
-   *
-   * @since 4.0.0
-   */
-  [[nodiscard]] auto get() const noexcept -> SDL_Cursor*
-  {
-    return m_cursor.get();
-  }
-
- private:
-  class deleter final
-  {
-   public:
-    void operator()(SDL_Cursor* cursor) noexcept
-    {
-      SDL_FreeCursor(cursor);
-    }
-  };
-
-  std::unique_ptr<SDL_Cursor, deleter> m_cursor;
-};
-
-namespace exp {
-
 template <typename T>
 using is_owning = std::enable_if_t<std::is_same_v<T, std::true_type>>;
 
@@ -318,6 +164,9 @@ using is_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
  * non-owning cursors.
  *
  * @since 5.0.0
+ *
+ * @see cursor
+ * @see cursor_handle
  *
  * @headerfile cursor.hpp
  */
@@ -554,10 +403,24 @@ class basic_cursor final
   }
 };
 
+/**
+ * @typedef cursor
+ *
+ * @brief Represents an owning cursor.
+ *
+ * @since 5.0.0
+ */
 using cursor = basic_cursor<std::true_type>;
+
+/**
+ * @typedef cursor_handle
+ *
+ * @brief Represents a non-owning cursor.
+ *
+ * @since 5.0.0
+ */
 using cursor_handle = basic_cursor<std::false_type>;
 
-}  // namespace exp
 }  // namespace cen
 
 #endif  // CENTURION_CURSOR_HEADER

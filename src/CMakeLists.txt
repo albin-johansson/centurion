@@ -86,7 +86,6 @@ set(SOURCE_FILES
         graphics/message_box_button.cpp
         graphics/message_box_color_scheme.cpp
         graphics/surface.cpp
-        graphics/cursor.cpp
         graphics/graphics_drivers.cpp
         graphics/renderer_handle.cpp
         graphics/renderer.cpp

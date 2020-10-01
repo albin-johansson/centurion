@@ -27,8 +27,6 @@
  *
  * @brief Provides utilities related to windows.
  *
- * @todo SDL_GetWindowFromID()
- *
  * @author Albin Johansson
  *
  * @date 2019-2020
@@ -62,6 +60,21 @@ namespace cen {
 [[nodiscard]] inline auto get_grabbed_window() noexcept -> window_handle
 {
   return window_handle{SDL_GetGrabbedWindow()};
+}
+
+/**
+ * @brief Returns a handle to the window associated with the specified ID.
+ *
+ * @param id the ID associated with the desired window.
+ *
+ * @return a handle to the window associated with the ID, might not refer to a
+ * valid window if there no matching window.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto get_window_from_id(u32 id) noexcept -> window_handle
+{
+  return window_handle{SDL_GetWindowFromID(id)};
 }
 
 /**

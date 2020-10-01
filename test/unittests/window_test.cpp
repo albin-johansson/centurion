@@ -882,6 +882,16 @@ TEST_CASE("get_grabbed_window", "[!mayfail][window]")
   }
 }
 
+TEST_CASE("get_window_from_id", "[window]")
+{
+  CHECK_FALSE(cen::get_window_from_id(0));
+
+  cen::window window;
+  const auto id = window.id();
+
+  CHECK(window.get() == cen::get_window_from_id(id).get());
+}
+
 TEST_CASE("window to_string", "[window]")
 {
   const cen::window window;

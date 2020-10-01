@@ -39,6 +39,8 @@
 
 #include <SDL_blendmode.h>
 
+#include <type_traits>  // underlying_type_t
+
 #include "centurion_api.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -47,10 +49,11 @@
 
 namespace cen {
 
+/// @addtogroup graphics
+/// @{
+
 /**
  * @enum blend_mode
- *
- * @ingroup graphics
  *
  * @brief Mirrors the `SDL_BlendMode` enum.
  *
@@ -58,19 +61,17 @@ namespace cen {
  *
  * @headerfile blend_mode.hpp
  */
-enum class blend_mode {
-  none = SDL_BLENDMODE_NONE,      /**< Represents no blending. */
-  blend = SDL_BLENDMODE_BLEND,    /**< Represents alpha blending. */
-  add = SDL_BLENDMODE_ADD,        /**< Represents additive blending. */
-  mod = SDL_BLENDMODE_MOD,        /**< Represents color modulation. */
-  mul = SDL_BLENDMODE_MUL,        /**< Represents color multiplication. */
-  invalid = SDL_BLENDMODE_INVALID /**< Represents an invalid blend mode. */
+enum class blend_mode : std::underlying_type_t<SDL_BlendMode> {
+  none = SDL_BLENDMODE_NONE,       ///< Represents no blending.
+  blend = SDL_BLENDMODE_BLEND,     ///< Represents alpha blending.
+  add = SDL_BLENDMODE_ADD,         ///< Represents additive blending.
+  mod = SDL_BLENDMODE_MOD,         ///< Represents color modulation.
+  mul = SDL_BLENDMODE_MUL,         ///< Represents color multiplication.
+  invalid = SDL_BLENDMODE_INVALID  ///< Represents an invalid blend mode.
 };
 
 /**
  * @brief Indicates whether or not two blend mode values are the same;
- *
- * @ingroup graphics
  *
  * @param lhs the left-hand side blend mode value.
  * @param rhs the right-hand side blend mode value.
@@ -87,8 +88,6 @@ enum class blend_mode {
 
 /**
  * @copydoc operator==(blend_mode, SDL_BlendMode)
- *
- * @ingroup graphics
  */
 [[nodiscard]] inline auto operator==(SDL_BlendMode lhs, blend_mode rhs) noexcept
     -> bool
@@ -98,8 +97,6 @@ enum class blend_mode {
 
 /**
  * @brief Indicates whether or not two blend mode values aren't the same;
- *
- * @ingroup graphics
  *
  * @param lhs the left-hand side blend mode value.
  * @param rhs the right-hand side blend mode value.
@@ -116,14 +113,14 @@ enum class blend_mode {
 
 /**
  * @copydoc operator!=(blend_mode, SDL_BlendMode)
- *
- * @ingroup graphics
  */
 [[nodiscard]] inline auto operator!=(SDL_BlendMode lhs, blend_mode rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
 }
+
+/// @}
 
 }  // namespace cen
 

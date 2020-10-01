@@ -37,9 +37,8 @@
 #ifndef CENTURION_DETAIL_TO_STRING_HEADER
 #define CENTURION_DETAIL_TO_STRING_HEADER
 
-#include <array>     // array
-#include <charconv>  // to_chars
-#include <memory_resource>
+#include <array>         // array
+#include <charconv>      // to_chars
 #include <optional>      // optional, nullopt
 #include <string>        // string
 #include <system_error>  // errc
@@ -77,33 +76,6 @@ template <std::size_t bufferSize = 16, typename T>
     return std::nullopt;
   }
 }
-
-// class pmr_string final
-//{
-// public:
-//  template <std::size_t size, typename T>
-//  explicit pmr_string(std::array<char, size>& buffer, T value) noexcept
-//  {
-//    const auto [ptr, err] =
-//        std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
-//    if (err == std::errc{}) {
-//      m_string.emplace(buffer.data(), ptr);
-//    }
-//  }
-//
-//  [[nodiscard]] auto ok() const noexcept -> bool
-//  {
-//    return m_string.has_value();
-//  }
-//
-//  [[nodiscard]] auto value() const -> const std::pmr::string&
-//  {
-//    return m_string.value();
-//  }
-//
-// private:
-//  std::optional<std::pmr::string> m_string;
-//};
 
 }  // namespace cen::detail
 

@@ -80,8 +80,8 @@ class scoped_lock final
    *
    * @since 5.0.0
    */
-  CENTURION_QUERY
-  scoped_lock(mutex& mutex);
+  CENTURION_API
+  explicit scoped_lock(mutex& mutex);
 
   scoped_lock(const scoped_lock&) = delete;
 

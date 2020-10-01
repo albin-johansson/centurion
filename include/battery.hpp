@@ -69,7 +69,7 @@ namespace cen::battery {
  *
  * @headerfile battery.hpp
  */
-enum class power_state : std::underlying_type_t<SDL_PowerState> {
+enum class power_state {
   unknown = SDL_POWERSTATE_UNKNOWN,  ///< The status is unknown.
   on_battery =
       SDL_POWERSTATE_ON_BATTERY,  ///< Not plugged in and running on battery.

@@ -97,7 +97,7 @@ class basic_joystick
    *
    * @headerfile basic_joystick.hpp
    */
-  enum class power : std::underlying_type_t<SDL_JoystickPowerLevel> {
+  enum class power {
     unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
     empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
     low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
@@ -138,7 +138,7 @@ class basic_joystick
    *
    * @headerfile basic_joystick.hpp
    */
-  enum class type : std::underlying_type_t<SDL_JoystickType> {
+  enum class type {
     unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
     game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
     wheel = SDL_JOYSTICK_TYPE_WHEEL,

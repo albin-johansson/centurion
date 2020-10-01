@@ -62,7 +62,7 @@ namespace cen {
  *
  * @headerfile pixel_format.hpp
  */
-enum class pixel_format : std::underlying_type_t<SDL_PixelFormatEnum> {
+enum class pixel_format {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 
   index1lsb = SDL_PIXELFORMAT_INDEX1LSB,

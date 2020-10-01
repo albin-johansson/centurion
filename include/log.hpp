@@ -100,7 +100,7 @@ namespace cen::log {
  *
  * @headerfile log.hpp
  */
-enum class priority : std::underlying_type_t<SDL_LogPriority> {
+enum class priority {
   info = SDL_LOG_PRIORITY_INFO,
   warn = SDL_LOG_PRIORITY_WARN,
   verbose = SDL_LOG_PRIORITY_VERBOSE,
@@ -120,7 +120,7 @@ enum class priority : std::underlying_type_t<SDL_LogPriority> {
  *
  * @headerfile log.hpp
  */
-enum class category : std::underlying_type_t<SDL_LogCategory> {
+enum class category {
   app = SDL_LOG_CATEGORY_APPLICATION,
   error = SDL_LOG_CATEGORY_ERROR,
   assert = SDL_LOG_CATEGORY_ASSERT,

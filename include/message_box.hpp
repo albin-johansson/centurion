@@ -108,7 +108,7 @@ class message_box final
    *
    * @headerfile message_box.hpp
    */
-  enum class type : std::underlying_type_t<SDL_MessageBoxFlags> {
+  enum class type {
     error = SDL_MESSAGEBOX_ERROR,
     warning = SDL_MESSAGEBOX_WARNING,
     information = SDL_MESSAGEBOX_INFORMATION
@@ -123,8 +123,7 @@ class message_box final
    *
    * @headerfile message_box.hpp
    */
-  enum class default_button : std::underlying_type_t<
-      SDL_MessageBoxButtonFlags> {
+  enum class default_button {
     return_key = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
     escape_key = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
   };
@@ -138,7 +137,7 @@ class message_box final
    *
    * @headerfile message_box.hpp
    */
-  enum class color_id : std::underlying_type_t<SDL_MessageBoxColorType> {
+  enum class color_id {
     background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
     text = SDL_MESSAGEBOX_COLOR_TEXT,
     button_border = SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,

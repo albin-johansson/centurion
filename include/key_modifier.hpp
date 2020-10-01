@@ -62,7 +62,7 @@ namespace cen {
  *
  * @headerfile key_modifier.hpp
  */
-enum class key_modifier : std::underlying_type_t<SDL_Keymod> {
+enum class key_modifier {
   none = KMOD_NONE,
   left_shift = KMOD_LSHIFT,
   right_shift = KMOD_RSHIFT,

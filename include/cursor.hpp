@@ -68,7 +68,7 @@ namespace cen {
  *
  * @headerfile cursor.hpp
  */
-enum class system_cursor : std::underlying_type_t<SDL_SystemCursor> {
+enum class system_cursor {
   arrow = SDL_SYSTEM_CURSOR_ARROW,
   ibeam = SDL_SYSTEM_CURSOR_IBEAM,
   wait = SDL_SYSTEM_CURSOR_WAIT,

@@ -61,7 +61,7 @@ namespace cen {
  *
  * @headerfile blend_mode.hpp
  */
-enum class blend_mode : std::underlying_type_t<SDL_BlendMode> {
+enum class blend_mode {
   none = SDL_BLENDMODE_NONE,       ///< Represents no blending.
   blend = SDL_BLENDMODE_BLEND,     ///< Represents alpha blending.
   add = SDL_BLENDMODE_ADD,         ///< Represents additive blending.

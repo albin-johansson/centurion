@@ -2102,8 +2102,7 @@ static_assert(validate_event<mouse_motion_event, SDL_MouseMotionEvent>());
  *
  * @headerfile event.hpp
  */
-enum class mouse_wheel_direction : std::underlying_type_t<
-    SDL_MouseWheelDirection> {
+enum class mouse_wheel_direction {
   normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
 };
@@ -3044,7 +3043,7 @@ static_assert(validate_event<touch_finger_event, SDL_TouchFingerEvent>());
  *
  * @headerfile event.hpp
  */
-enum class window_event_id : std::underlying_type_t<SDL_WindowEventID> {
+enum class window_event_id {
   none = SDL_WINDOWEVENT_NONE,
   shown = SDL_WINDOWEVENT_SHOWN,
   hidden = SDL_WINDOWEVENT_HIDDEN,

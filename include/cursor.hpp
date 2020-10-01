@@ -306,6 +306,21 @@ using is_owning = std::enable_if_t<std::is_same_v<T, std::true_type>>;
 template <typename T>
 using is_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
 
+/**
+ * @class basic_cursor
+ *
+ * @brief Represents a mouse cursor.
+ *
+ * @details Depending on the template type parameter, this class can
+ * represent either an owning or non-owning cursor.
+ *
+ * @tparam T `std::true_type` for owning cursors, `std::false_type` for
+ * non-owning cursors.
+ *
+ * @since 5.0.0
+ *
+ * @headerfile cursor.hpp
+ */
 template <typename T>
 class basic_cursor final
 {
@@ -328,6 +343,17 @@ class basic_cursor final
  public:
   // TODO SDL_CreateCursor wrapper?
 
+  /**
+   * @brief Creates a cursor based on a cursor type.
+   *
+   * @tparam U dummy template parameter used for SFINAE.
+   *
+   * @param cursor the type of the cursor that will be created.
+   *
+   * @throws sdl_error if the cursor cannot be created.
+   *
+   * @since 4.0.0
+   */
   template <typename U = T, typename = is_owning<U>>
   explicit basic_cursor(system_cursor cursor)
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
@@ -337,6 +363,19 @@ class basic_cursor final
     }
   }
 
+  /**
+   * @brief Creates a cursor based on a surface and an associated hotspot.
+   *
+   * @tparam U dummy template parameter used for SFINAE.
+   *
+   * @param surface the icon associated with the cursor.
+   * @param hotspot the hotspot that will be used to determine the location
+   * of mouse clicks.
+   *
+   * @throws sdl_error if the cursor cannot be created.
+   *
+   * @since 4.0.0
+   */
   template <typename U = T, typename = is_owning<U>>
   basic_cursor(const surface& surface, const ipoint& hotspot)
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
@@ -346,61 +385,157 @@ class basic_cursor final
     }
   }
 
+  /**
+   * @brief Creates a handle to a cursor based on a raw pointer.
+   *
+   * @note This constructor is only available for handles since it would be
+   * very easy to introduce subtle bugs by creating owning cursors from
+   * `SDL_GetCursor` or `SDL_GetDefaultCursor`, which should not be freed.
+   *
+   * @tparam U dummy template parameter used for SFINAE.
+   *
+   * @param cursor a pointer to the associated cursor.
+   *
+   * @since 5.0.0
+   */
   template <typename U = T, typename = is_handle<U>>
-  explicit basic_cursor(SDL_Cursor* cursor) : m_cursor{cursor}
+  explicit basic_cursor(SDL_Cursor* cursor) noexcept : m_cursor{cursor}
   {}
 
+  /**
+   * @brief Creates a handle to an owning cursor.
+   *
+   * @tparam U dummy template parameter used for SFINAE.
+   *
+   * @param cursor the associated owning cursor.
+   *
+   * @since 5.0.0
+   */
   template <typename U = T, typename = is_handle<U>>
-  explicit basic_cursor(basic_cursor<std::true_type>& cursor)
+  explicit basic_cursor(const basic_cursor<std::true_type>& cursor) noexcept
       : m_cursor{cursor.get()}
   {}
 
+  /**
+   * @brief Returns a handle to the default cursor for the system.
+   *
+   * @return a handle to the default cursor for the system.; might not be
+   * present.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] static auto get_default() noexcept
   {
     return handle_t{SDL_GetDefaultCursor()};
   }
 
+  /**
+   * @brief Returns a handle to the currently active cursor.
+   *
+   * @return a handle to the currently active cursor; might not be present.
+   *
+   * @since 5.0.0
+   */
   [[nodiscard]] static auto get_current() noexcept
   {
     return handle_t{SDL_GetCursor()};
   }
 
+  /**
+   * @brief Enables the cursor by making it the currently active cursor.
+   *
+   * @since 4.0.0
+   */
   void enable() noexcept
   {
     SDL_SetCursor(get());
   }
 
+  /**
+   * @brief Indicates whether or not this cursor is currently active.
+   *
+   * @note This function checks whether or not the associated cursor is
+   * active by comparing the pointer obtained from `SDL_GetCursor` with the
+   * internal pointer.
+   *
+   * @return `true` if the cursor is currently enabled; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
   [[nodiscard]] auto is_enabled() const noexcept
   {
     return SDL_GetCursor() == get();
   }
 
+  /**
+   * @brief Resets the active cursor to the system default.
+   *
+   * @since 4.0.0
+   */
   static void reset() noexcept
   {
     SDL_SetCursor(SDL_GetDefaultCursor());
   }
 
+  /**
+   * @brief Forces a cursor redraw.
+   *
+   * @since 4.0.0
+   */
   static void force_redraw() noexcept
   {
     SDL_SetCursor(nullptr);
   }
 
+  /**
+   * @brief Sets whether or not any mouse cursor is visible.
+   *
+   * @param visible `true` if cursors should be visible; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
   static void set_visible(bool visible) noexcept
   {
     SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
   }
 
+  /**
+   * @brief Indicates whether or not cursors are visible.
+   *
+   * @return `true` if cursors are visible; `false` otherwise.
+   *
+   * @since 4.0.0
+   */
   [[nodiscard]] static auto visible() noexcept -> bool
   {
     return SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE;
   }
 
+  /**
+   * @brief Indicates whether or not the cursor handle holds a non-null pointer.
+   *
+   * @tparam U dummy template parameter used for SFINAE.
+   *
+   * @return `true` if the internal pointer is not null; `false` otherwise.
+   *
+   * @since 5.0.0
+   */
   template <typename U = T, typename = is_handle<U>>
   explicit operator bool() const noexcept
   {
     return m_cursor != nullptr;
   }
 
+  /**
+   * @brief Returns a pointer to the associated cursor.
+   *
+   * @warning Don't claim ownership of the returned pointer unless you enjoy
+   * playing with fire...
+   *
+   * @return a pointer to the associated cursor.
+   *
+   * @since 4.0.0
+   */
   [[nodiscard]] auto get() const noexcept -> SDL_Cursor*
   {
     if constexpr (is_owner()) {

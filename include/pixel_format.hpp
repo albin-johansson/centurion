@@ -39,6 +39,8 @@
 
 #include <SDL.h>
 
+#include <type_traits>  // underlying_type_t
+
 #include "centurion_api.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -60,7 +62,7 @@ namespace cen {
  *
  * @headerfile pixel_format.hpp
  */
-enum class pixel_format {
+enum class pixel_format : std::underlying_type_t<SDL_PixelFormatEnum> {
   unknown = SDL_PIXELFORMAT_UNKNOWN,
 
   index1lsb = SDL_PIXELFORMAT_INDEX1LSB,

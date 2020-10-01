@@ -867,6 +867,21 @@ TEST_CASE("renderer_handle from window", "[window]")
   CHECK(handle.get() == renderer.get());
 }
 
+TEST_CASE("get_grabbed_window", "[!mayfail][window]")
+{
+  SECTION("No grabbed window") { CHECK_FALSE(cen::get_grabbed_window()); }
+
+  SECTION("With grabbed window")
+  {
+    cen::window window;
+    window.set_grab_mouse(true);
+    window.show();
+
+    auto grabbed = cen::get_grabbed_window();
+    CHECK(window.get() == grabbed.get());
+  }
+}
+
 TEST_CASE("window to_string", "[window]")
 {
   const cen::window window;

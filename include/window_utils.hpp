@@ -27,7 +27,6 @@
  *
  * @brief Provides utilities related to windows.
  *
- * @todo SDL_GetGrabbedWindow()
  * @todo SDL_GetWindowFromID()
  *
  * @author Albin Johansson
@@ -45,13 +44,28 @@
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "renderer_handle.hpp"
+#include "window_handle.hpp"
 
 namespace cen {
 
+/// @addtogroup graphics
+/// @{
+
+/**
+ * @brief Returns a handle to the currently grabbed window.
+ *
+ * @return a handle to the currently grabbed window, might not refer to a
+ * valid window if there is no grabbed window.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto get_grabbed_window() noexcept -> window_handle
+{
+  return window_handle{SDL_GetGrabbedWindow()};
+}
+
 /**
  * @brief Returns a handle to the renderer associated with a window.
- *
- * @ingroup graphics
  *
  * @details The returned handle will be null if the supplied window doesn't
  * have an associated renderer.
@@ -74,6 +88,8 @@ template <typename T>
 {
   return renderer_handle{SDL_GetRenderer(window.ptr())};
 }
+
+/// @}
 
 }  // namespace cen
 

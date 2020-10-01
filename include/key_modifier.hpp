@@ -39,6 +39,8 @@
 
 #include <SDL.h>
 
+#include <type_traits>  // underlying_type_t
+
 #include "centurion_api.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -60,7 +62,7 @@ namespace cen {
  *
  * @headerfile key_modifier.hpp
  */
-enum class key_modifier {
+enum class key_modifier : std::underlying_type_t<SDL_Keymod> {
   none = KMOD_NONE,
   left_shift = KMOD_LSHIFT,
   right_shift = KMOD_RSHIFT,

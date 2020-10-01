@@ -39,8 +39,7 @@
 
 #include <SDL_power.h>
 
-#include <optional>     // optional
-#include <type_traits>  // underlying_type_t
+#include <optional>  // optional
 
 #include "centurion_api.hpp"
 #include "types.hpp"

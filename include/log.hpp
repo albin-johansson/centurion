@@ -39,8 +39,6 @@
 
 #include <SDL_log.h>
 
-#include <type_traits>  // underlying_type_t
-
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"
 

@@ -39,8 +39,6 @@
 
 #include <SDL_render.h>
 
-#include <type_traits>  // underlying_type_t
-
 #include "centurion_api.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

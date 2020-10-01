@@ -41,8 +41,7 @@
 
 #include <SDL.h>
 
-#include <type_traits>  // underlying_type_t
-#include <utility>      // forward
+#include <utility>  // forward
 
 #include "button_state.hpp"
 #include "centurion_api.hpp"

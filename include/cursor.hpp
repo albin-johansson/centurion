@@ -39,8 +39,7 @@
 
 #include <SDL.h>
 
-#include <memory>       // unique_ptr
-#include <type_traits>  // underlying_type_t
+#include <memory>  // unique_ptr
 
 #include "centurion_api.hpp"
 #include "detail/utils.hpp"

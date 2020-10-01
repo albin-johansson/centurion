@@ -73,8 +73,6 @@ namespace cen {
  *
  * @since 3.0.0
  *
- * @todo Does texture really need to support handle?
- *
  * @see `SDL_Texture`
  *
  * @headerfile texture.hpp

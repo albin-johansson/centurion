@@ -869,7 +869,10 @@ TEST_CASE("renderer_handle from window", "[window]")
 
 TEST_CASE("get_grabbed_window", "[!mayfail][window]")
 {
-  SECTION("No grabbed window") { CHECK_FALSE(cen::get_grabbed_window()); }
+  SECTION("No grabbed window")
+  {
+    CHECK_FALSE(cen::get_grabbed_window());
+  }
 
   SECTION("With grabbed window")
   {

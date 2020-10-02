@@ -207,134 +207,302 @@ TEST_CASE("scan_code constants", "[scan_code]")
 
   SECTION("Alphabetical keys")
   {
-    SECTION("a") { test_key(cen::scancodes::a, SDL_SCANCODE_A); }
+    SECTION("a")
+    {
+      test_key(cen::scancodes::a, SDL_SCANCODE_A);
+    }
 
-    SECTION("b") { test_key(cen::scancodes::b, SDL_SCANCODE_B); }
+    SECTION("b")
+    {
+      test_key(cen::scancodes::b, SDL_SCANCODE_B);
+    }
 
-    SECTION("c") { test_key(cen::scancodes::c, SDL_SCANCODE_C); }
+    SECTION("c")
+    {
+      test_key(cen::scancodes::c, SDL_SCANCODE_C);
+    }
 
-    SECTION("d") { test_key(cen::scancodes::d, SDL_SCANCODE_D); }
+    SECTION("d")
+    {
+      test_key(cen::scancodes::d, SDL_SCANCODE_D);
+    }
 
-    SECTION("e") { test_key(cen::scancodes::e, SDL_SCANCODE_E); }
+    SECTION("e")
+    {
+      test_key(cen::scancodes::e, SDL_SCANCODE_E);
+    }
 
-    SECTION("f") { test_key(cen::scancodes::f, SDL_SCANCODE_F); }
+    SECTION("f")
+    {
+      test_key(cen::scancodes::f, SDL_SCANCODE_F);
+    }
 
-    SECTION("g") { test_key(cen::scancodes::g, SDL_SCANCODE_G); }
+    SECTION("g")
+    {
+      test_key(cen::scancodes::g, SDL_SCANCODE_G);
+    }
 
-    SECTION("h") { test_key(cen::scancodes::h, SDL_SCANCODE_H); }
+    SECTION("h")
+    {
+      test_key(cen::scancodes::h, SDL_SCANCODE_H);
+    }
 
-    SECTION("i") { test_key(cen::scancodes::i, SDL_SCANCODE_I); }
+    SECTION("i")
+    {
+      test_key(cen::scancodes::i, SDL_SCANCODE_I);
+    }
 
-    SECTION("j") { test_key(cen::scancodes::j, SDL_SCANCODE_J); }
+    SECTION("j")
+    {
+      test_key(cen::scancodes::j, SDL_SCANCODE_J);
+    }
 
-    SECTION("k") { test_key(cen::scancodes::k, SDL_SCANCODE_K); }
+    SECTION("k")
+    {
+      test_key(cen::scancodes::k, SDL_SCANCODE_K);
+    }
 
-    SECTION("l") { test_key(cen::scancodes::l, SDL_SCANCODE_L); }
+    SECTION("l")
+    {
+      test_key(cen::scancodes::l, SDL_SCANCODE_L);
+    }
 
-    SECTION("m") { test_key(cen::scancodes::m, SDL_SCANCODE_M); }
+    SECTION("m")
+    {
+      test_key(cen::scancodes::m, SDL_SCANCODE_M);
+    }
 
-    SECTION("n") { test_key(cen::scancodes::n, SDL_SCANCODE_N); }
+    SECTION("n")
+    {
+      test_key(cen::scancodes::n, SDL_SCANCODE_N);
+    }
 
-    SECTION("o") { test_key(cen::scancodes::o, SDL_SCANCODE_O); }
+    SECTION("o")
+    {
+      test_key(cen::scancodes::o, SDL_SCANCODE_O);
+    }
 
-    SECTION("p") { test_key(cen::scancodes::p, SDL_SCANCODE_P); }
+    SECTION("p")
+    {
+      test_key(cen::scancodes::p, SDL_SCANCODE_P);
+    }
 
-    SECTION("q") { test_key(cen::scancodes::q, SDL_SCANCODE_Q); }
+    SECTION("q")
+    {
+      test_key(cen::scancodes::q, SDL_SCANCODE_Q);
+    }
 
-    SECTION("r") { test_key(cen::scancodes::r, SDL_SCANCODE_R); }
+    SECTION("r")
+    {
+      test_key(cen::scancodes::r, SDL_SCANCODE_R);
+    }
 
-    SECTION("s") { test_key(cen::scancodes::s, SDL_SCANCODE_S); }
+    SECTION("s")
+    {
+      test_key(cen::scancodes::s, SDL_SCANCODE_S);
+    }
 
-    SECTION("t") { test_key(cen::scancodes::t, SDL_SCANCODE_T); }
+    SECTION("t")
+    {
+      test_key(cen::scancodes::t, SDL_SCANCODE_T);
+    }
 
-    SECTION("u") { test_key(cen::scancodes::u, SDL_SCANCODE_U); }
+    SECTION("u")
+    {
+      test_key(cen::scancodes::u, SDL_SCANCODE_U);
+    }
 
-    SECTION("v") { test_key(cen::scancodes::v, SDL_SCANCODE_V); }
+    SECTION("v")
+    {
+      test_key(cen::scancodes::v, SDL_SCANCODE_V);
+    }
 
-    SECTION("w") { test_key(cen::scancodes::w, SDL_SCANCODE_W); }
+    SECTION("w")
+    {
+      test_key(cen::scancodes::w, SDL_SCANCODE_W);
+    }
 
-    SECTION("x") { test_key(cen::scancodes::x, SDL_SCANCODE_X); }
+    SECTION("x")
+    {
+      test_key(cen::scancodes::x, SDL_SCANCODE_X);
+    }
 
-    SECTION("y") { test_key(cen::scancodes::y, SDL_SCANCODE_Y); }
+    SECTION("y")
+    {
+      test_key(cen::scancodes::y, SDL_SCANCODE_Y);
+    }
 
-    SECTION("z") { test_key(cen::scancodes::z, SDL_SCANCODE_Z); }
+    SECTION("z")
+    {
+      test_key(cen::scancodes::z, SDL_SCANCODE_Z);
+    }
   }
 
   SECTION("Numerical keys")
   {
-    SECTION("1") { test_key(cen::scancodes::one, SDL_SCANCODE_1); }
+    SECTION("1")
+    {
+      test_key(cen::scancodes::one, SDL_SCANCODE_1);
+    }
 
-    SECTION("2") { test_key(cen::scancodes::two, SDL_SCANCODE_2); }
+    SECTION("2")
+    {
+      test_key(cen::scancodes::two, SDL_SCANCODE_2);
+    }
 
-    SECTION("3") { test_key(cen::scancodes::three, SDL_SCANCODE_3); }
+    SECTION("3")
+    {
+      test_key(cen::scancodes::three, SDL_SCANCODE_3);
+    }
 
-    SECTION("4") { test_key(cen::scancodes::four, SDL_SCANCODE_4); }
+    SECTION("4")
+    {
+      test_key(cen::scancodes::four, SDL_SCANCODE_4);
+    }
 
-    SECTION("5") { test_key(cen::scancodes::five, SDL_SCANCODE_5); }
+    SECTION("5")
+    {
+      test_key(cen::scancodes::five, SDL_SCANCODE_5);
+    }
 
-    SECTION("6") { test_key(cen::scancodes::six, SDL_SCANCODE_6); }
+    SECTION("6")
+    {
+      test_key(cen::scancodes::six, SDL_SCANCODE_6);
+    }
 
-    SECTION("7") { test_key(cen::scancodes::seven, SDL_SCANCODE_7); }
+    SECTION("7")
+    {
+      test_key(cen::scancodes::seven, SDL_SCANCODE_7);
+    }
 
-    SECTION("8") { test_key(cen::scancodes::eight, SDL_SCANCODE_8); }
+    SECTION("8")
+    {
+      test_key(cen::scancodes::eight, SDL_SCANCODE_8);
+    }
 
-    SECTION("9") { test_key(cen::scancodes::nine, SDL_SCANCODE_9); }
+    SECTION("9")
+    {
+      test_key(cen::scancodes::nine, SDL_SCANCODE_9);
+    }
 
-    SECTION("0") { test_key(cen::scancodes::zero, SDL_SCANCODE_0); }
+    SECTION("0")
+    {
+      test_key(cen::scancodes::zero, SDL_SCANCODE_0);
+    }
   }
 
   SECTION("Function keys")
   {
-    SECTION("F1") { test_key(cen::scancodes::f1, SDL_SCANCODE_F1); }
+    SECTION("F1")
+    {
+      test_key(cen::scancodes::f1, SDL_SCANCODE_F1);
+    }
 
-    SECTION("F2") { test_key(cen::scancodes::f2, SDL_SCANCODE_F2); }
+    SECTION("F2")
+    {
+      test_key(cen::scancodes::f2, SDL_SCANCODE_F2);
+    }
 
-    SECTION("F3") { test_key(cen::scancodes::f3, SDL_SCANCODE_F3); }
+    SECTION("F3")
+    {
+      test_key(cen::scancodes::f3, SDL_SCANCODE_F3);
+    }
 
-    SECTION("F4") { test_key(cen::scancodes::f4, SDL_SCANCODE_F4); }
+    SECTION("F4")
+    {
+      test_key(cen::scancodes::f4, SDL_SCANCODE_F4);
+    }
 
-    SECTION("F5") { test_key(cen::scancodes::f5, SDL_SCANCODE_F5); }
+    SECTION("F5")
+    {
+      test_key(cen::scancodes::f5, SDL_SCANCODE_F5);
+    }
 
-    SECTION("F6") { test_key(cen::scancodes::f6, SDL_SCANCODE_F6); }
+    SECTION("F6")
+    {
+      test_key(cen::scancodes::f6, SDL_SCANCODE_F6);
+    }
 
-    SECTION("F7") { test_key(cen::scancodes::f7, SDL_SCANCODE_F7); }
+    SECTION("F7")
+    {
+      test_key(cen::scancodes::f7, SDL_SCANCODE_F7);
+    }
 
-    SECTION("F8") { test_key(cen::scancodes::f8, SDL_SCANCODE_F8); }
+    SECTION("F8")
+    {
+      test_key(cen::scancodes::f8, SDL_SCANCODE_F8);
+    }
 
-    SECTION("F9") { test_key(cen::scancodes::f9, SDL_SCANCODE_F9); }
+    SECTION("F9")
+    {
+      test_key(cen::scancodes::f9, SDL_SCANCODE_F9);
+    }
 
-    SECTION("F10") { test_key(cen::scancodes::f10, SDL_SCANCODE_F10); }
+    SECTION("F10")
+    {
+      test_key(cen::scancodes::f10, SDL_SCANCODE_F10);
+    }
 
-    SECTION("F11") { test_key(cen::scancodes::f11, SDL_SCANCODE_F11); }
+    SECTION("F11")
+    {
+      test_key(cen::scancodes::f11, SDL_SCANCODE_F11);
+    }
 
-    SECTION("F12") { test_key(cen::scancodes::f12, SDL_SCANCODE_F12); }
+    SECTION("F12")
+    {
+      test_key(cen::scancodes::f12, SDL_SCANCODE_F12);
+    }
   }
 
   SECTION("Arrow keys")
   {
-    SECTION("Left") { test_key(cen::scancodes::left, SDL_SCANCODE_LEFT); }
+    SECTION("Left")
+    {
+      test_key(cen::scancodes::left, SDL_SCANCODE_LEFT);
+    }
 
-    SECTION("Right") { test_key(cen::scancodes::right, SDL_SCANCODE_RIGHT); }
+    SECTION("Right")
+    {
+      test_key(cen::scancodes::right, SDL_SCANCODE_RIGHT);
+    }
 
-    SECTION("Up") { test_key(cen::scancodes::up, SDL_SCANCODE_UP); }
+    SECTION("Up")
+    {
+      test_key(cen::scancodes::up, SDL_SCANCODE_UP);
+    }
 
-    SECTION("Down") { test_key(cen::scancodes::down, SDL_SCANCODE_DOWN); }
+    SECTION("Down")
+    {
+      test_key(cen::scancodes::down, SDL_SCANCODE_DOWN);
+    }
   }
 
   SECTION("Special action keys")
   {
-    SECTION("Space") { test_key(cen::scancodes::space, SDL_SCANCODE_SPACE); }
+    SECTION("Space")
+    {
+      test_key(cen::scancodes::space, SDL_SCANCODE_SPACE);
+    }
 
-    SECTION("Enter") { test_key(cen::scancodes::enter, SDL_SCANCODE_RETURN); }
+    SECTION("Enter")
+    {
+      test_key(cen::scancodes::enter, SDL_SCANCODE_RETURN);
+    }
 
-    SECTION("Escape") { test_key(cen::scancodes::escape, SDL_SCANCODE_ESCAPE); }
+    SECTION("Escape")
+    {
+      test_key(cen::scancodes::escape, SDL_SCANCODE_ESCAPE);
+    }
 
     SECTION("Backspace")
     {
       test_key(cen::scancodes::backspace, SDL_SCANCODE_BACKSPACE);
     }
 
-    SECTION("Tab") { test_key(cen::scancodes::tab, SDL_SCANCODE_TAB); }
+    SECTION("Tab")
+    {
+      test_key(cen::scancodes::tab, SDL_SCANCODE_TAB);
+    }
 
     SECTION("Caps")
     {
@@ -364,13 +532,25 @@ TEST_CASE("scan_code constants", "[scan_code]")
       test_key(cen::scancodes::right_ctrl, SDL_SCANCODE_RCTRL);
     }
 
-    SECTION("LALT") { test_key(cen::scancodes::left_alt, SDL_SCANCODE_LALT); }
+    SECTION("LALT")
+    {
+      test_key(cen::scancodes::left_alt, SDL_SCANCODE_LALT);
+    }
 
-    SECTION("RALT") { test_key(cen::scancodes::right_alt, SDL_SCANCODE_RALT); }
+    SECTION("RALT")
+    {
+      test_key(cen::scancodes::right_alt, SDL_SCANCODE_RALT);
+    }
 
-    SECTION("LGUI") { test_key(cen::scancodes::left_gui, SDL_SCANCODE_LGUI); }
+    SECTION("LGUI")
+    {
+      test_key(cen::scancodes::left_gui, SDL_SCANCODE_LGUI);
+    }
 
-    SECTION("RGUI") { test_key(cen::scancodes::right_gui, SDL_SCANCODE_RGUI); }
+    SECTION("RGUI")
+    {
+      test_key(cen::scancodes::right_gui, SDL_SCANCODE_RGUI);
+    }
   }
 }
 

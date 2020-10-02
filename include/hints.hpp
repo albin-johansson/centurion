@@ -1407,7 +1407,8 @@ class hint_callback final
    * @since 4.1.0
    */
   hint_callback(SDL_HintCallback callback, UserData* userData = nullptr)
-      : m_callback{callback}, m_userData{userData}
+      : m_callback{callback},
+        m_userData{userData}
   {
     if (!callback) {
       throw exception{"Failed to create hint callback"};

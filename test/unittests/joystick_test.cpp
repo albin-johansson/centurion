@@ -193,7 +193,5 @@ TEST_CASE("joystick::type values", "[joystick]")
 
 TEST_CASE("joystick_handle", "[joystick]")
 {
-
-
   CHECK(!cen::joystick_handle::from_player_index(0));
 }

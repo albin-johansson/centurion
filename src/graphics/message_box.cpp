@@ -9,7 +9,8 @@
 namespace cen {
 
 message_box::message_box(std::string title, std::string message)
-    : m_title{std::move(title)}, m_message{std::move(message)}
+    : m_title{std::move(title)},
+      m_message{std::move(message)}
 {}
 
 void message_box::show(SDL_Window* parent,

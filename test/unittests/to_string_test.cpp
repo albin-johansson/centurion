@@ -1,10 +1,10 @@
 #include "detail/to_string.hpp"
 
+#include <array>
 #include <catch.hpp>
+#include <charconv>
 #include <cstdint>  // int32_t, int64_t, uint32_t, uint64_t
 #include <limits>   // numeric_limits
-#include <array>
-#include <charconv>
 #include <string>
 
 TEST_CASE("to_string", "[to_string]")

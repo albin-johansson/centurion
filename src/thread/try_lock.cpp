@@ -3,7 +3,8 @@
 namespace cen {
 
 try_lock::try_lock(mutex& mutex) noexcept
-    : m_mutex{&mutex}, m_status{mutex.try_lock()}
+    : m_mutex{&mutex},
+      m_status{mutex.try_lock()}
 {}
 
 try_lock::~try_lock() noexcept

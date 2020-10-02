@@ -208,7 +208,10 @@ class renderer final : public basic_renderer<renderer>
    * @since 4.1.0
    */
   template <typename T>
-  void draw_rect_t(const basic_rect<T>& rect) noexcept;
+  void draw_rect_t(const basic_rect<T>& rect) noexcept
+  {
+    draw_rect(translate(rect));
+  }
 
   /**
    * @brief Renders a filled rectangle in the currently selected color.
@@ -223,7 +226,10 @@ class renderer final : public basic_renderer<renderer>
    * @since 4.1.0
    */
   template <typename T>
-  void fill_rect_t(const basic_rect<T>& rect) noexcept;
+  void fill_rect_t(const basic_rect<T>& rect) noexcept
+  {
+    fill_rect(translate(rect));
+  }
 
   /**
    * @brief Renders a texture at the specified position.
@@ -239,8 +245,10 @@ class renderer final : public basic_renderer<renderer>
    * @since 4.0.0
    */
   template <typename T>
-  void render_t(const texture& texture,
-                const basic_point<T>& position) noexcept;
+  void render_t(const texture& texture, const basic_point<T>& position) noexcept
+  {
+    render(texture, translate(position));
+  }
 
   /**
    * @brief Renders a texture according to the specified rectangle.
@@ -258,7 +266,10 @@ class renderer final : public basic_renderer<renderer>
    */
   template <typename T>
   void render_t(const texture& texture,
-                const basic_rect<T>& destination) noexcept;
+                const basic_rect<T>& destination) noexcept
+  {
+    render(texture, translate(destination));
+  }
 
   /**
    * @brief Renders a texture.
@@ -281,7 +292,10 @@ class renderer final : public basic_renderer<renderer>
   template <typename T>
   void render_t(const texture& texture,
                 const irect& source,
-                const basic_rect<T>& destination) noexcept;
+                const basic_rect<T>& destination) noexcept
+  {
+    render(texture, source, translate(destination));
+  }
 
   /**
    * @brief Renders a texture.
@@ -304,7 +318,10 @@ class renderer final : public basic_renderer<renderer>
   void render_t(const texture& texture,
                 const irect& source,
                 const basic_rect<T>& destination,
-                double angle) noexcept;
+                double angle) noexcept
+  {
+    render(texture, source, translate(destination), angle);
+  }
 
   /**
    * @brief Renders a texture.
@@ -331,7 +348,10 @@ class renderer final : public basic_renderer<renderer>
                 const irect& source,
                 const basic_rect<R>& destination,
                 double angle,
-                const basic_point<P>& center) noexcept;
+                const basic_point<P>& center) noexcept
+  {
+    render(texture, source, translate(destination), angle, center);
+  }
 
   /**
    * @brief Renders a texture.
@@ -357,7 +377,10 @@ class renderer final : public basic_renderer<renderer>
                 const basic_rect<R>& destination,
                 double angle,
                 const basic_point<P>& center,
-                SDL_RendererFlip flip) noexcept;
+                SDL_RendererFlip flip) noexcept
+  {
+    render(texture, source, translate(destination), angle, center, flip);
+  }
 
   ///@} // end of translated rendering
 
@@ -395,7 +418,13 @@ class renderer final : public basic_renderer<renderer>
    * @since 5.0.0
    */
   template <typename... Args>
-  void emplace_font(font_id id, Args&&... args);
+  void emplace_font(font_id id, Args&&... args)
+  {
+    if (m_fonts.find(id) != m_fonts.end()) {
+      remove_font(id);
+    }
+    m_fonts.emplace(id, font{std::forward<Args>(args)...});
+  }
 
   /**
    * @brief Removes the font associated with the specified key.
@@ -515,104 +544,25 @@ class renderer final : public basic_renderer<renderer>
 
   template <typename T>
   [[nodiscard]] auto translate(const basic_point<T>& point) const noexcept
-      -> basic_point<T>;
+      -> basic_point<T>
+  {
+    using value_type = typename basic_point<T>::value_type;
+
+    const auto x =
+        point.x() - static_cast<value_type>(m_translationViewport.x());
+    const auto y =
+        point.y() - static_cast<value_type>(m_translationViewport.y());
+
+    return basic_point<T>{x, y};
+  }
 
   template <typename T>
   [[nodiscard]] auto translate(const basic_rect<T>& rect) const noexcept
-      -> basic_rect<T>;
-};
-
-template <typename T>
-auto renderer::translate(const basic_point<T>& point) const noexcept
-    -> basic_point<T>
-{
-  using value_type = typename basic_point<T>::value_type;
-
-  const auto x = point.x() - static_cast<value_type>(m_translationViewport.x());
-  const auto y = point.y() - static_cast<value_type>(m_translationViewport.y());
-
-  return basic_point<T>{x, y};
-}
-
-template <typename T>
-auto renderer::translate(const basic_rect<T>& rect) const noexcept
-    -> basic_rect<T>
-{
-  return basic_rect<T>{translate(rect.position()), rect.size()};
-}
-
-template <typename T>
-void renderer::draw_rect_t(const basic_rect<T>& rect) noexcept
-{
-  draw_rect(translate(rect));
-}
-
-template <typename T>
-void renderer::fill_rect_t(const basic_rect<T>& rect) noexcept
-{
-  fill_rect(translate(rect));
-}
-
-template <typename T>
-void renderer::render_t(const texture& texture,
-                        const basic_point<T>& position) noexcept
-{
-  render(texture, translate(position));
-}
-
-template <typename T>
-void renderer::render_t(const texture& texture,
-                        const basic_rect<T>& destination) noexcept
-{
-  render(texture, translate(destination));
-}
-
-template <typename T>
-void renderer::render_t(const texture& texture,
-                        const irect& source,
-                        const basic_rect<T>& destination) noexcept
-{
-  render(texture, source, translate(destination));
-}
-
-template <typename T>
-void renderer::render_t(const texture& texture,
-                        const irect& source,
-                        const basic_rect<T>& destination,
-                        double angle) noexcept
-{
-  render(texture, source, translate(destination), angle);
-}
-
-template <typename R, typename P>
-void renderer::render_t(const texture& texture,
-                        const irect& source,
-                        const basic_rect<R>& destination,
-                        double angle,
-                        const basic_point<P>& center) noexcept
-{
-  render(texture, source, translate(destination), angle, center);
-}
-
-template <typename R, typename P>
-void renderer::render_t(const texture& texture,
-                        const irect& source,
-                        const basic_rect<R>& destination,
-                        double angle,
-                        const basic_point<P>& center,
-                        SDL_RendererFlip flip) noexcept
-{
-  render(texture, source, translate(destination), angle, center, flip);
-}
-
-template <typename... Args>
-void renderer::emplace_font(font_id id, Args&&... args)
-{
-  if (m_fonts.find(id) != m_fonts.end()) {
-    remove_font(id);
+      -> basic_rect<T>
+  {
+    return basic_rect<T>{translate(rect.position()), rect.size()};
   }
-  m_fonts.emplace(id, font{std::forward<Args>(args)...});
-}
+};
 
 /**
  * @brief Returns a textual representation of a renderer.

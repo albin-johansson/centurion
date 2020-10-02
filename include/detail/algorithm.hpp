@@ -46,7 +46,7 @@
 namespace cen::detail {
 
 // std::find_if isn't constexpr until C++20
-template <class It, class Predicate>
+template <typename It, typename Predicate>
 [[nodiscard]] constexpr auto find_if(It first,
                                      const It last,
                                      Predicate predicate) -> It

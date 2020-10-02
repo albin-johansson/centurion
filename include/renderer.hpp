@@ -31,7 +31,7 @@
 #include <optional>     // optional
 #include <ostream>      // ostream
 #include <string>       // string
-#include <type_traits>  // enable_if_t, true_type, false_type, conditional
+#include <type_traits>  // enable_if_t, true_type, false_type, conditional_t
 #include <utility>      // pair
 
 #include "blend_mode.hpp"
@@ -56,10 +56,12 @@ namespace cen {
 /// @{
 
 template <typename T>
-using is_renderer_owning = std::enable_if_t<std::is_same_v<T, std::true_type>>;
+using is_renderer_owning =
+    std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
 
 template <typename T>
-using is_renderer_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
+using is_renderer_handle =
+    std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
  * @class basic_renderer
@@ -80,35 +82,13 @@ template <typename T>
 class basic_renderer final
 {
   using owner_t = basic_renderer<std::true_type>;
-  using handle_t = basic_renderer<std::false_type>;
-
-  class deleter final
-  {
-   public:
-    void operator()(SDL_Renderer* renderer) noexcept
-    {
-      SDL_DestroyRenderer(renderer);
-    }
-  };
-
-  struct owning_data final
-  {
-    explicit owning_data(SDL_Renderer* renderer) : ptr{renderer}
-    {}
-
-    std::unique_ptr<SDL_Renderer, deleter> ptr;
-    frect translation{};
-    std::unordered_map<std::size_t, font> fonts{};
-  };
-
-  using rep_t = std::conditional_t<T::value, owning_data, SDL_Renderer*>;
 
   [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
   {
     return std::is_same_v<T, std::true_type>;
   }
 
-  [[nodiscard]] static constexpr auto default_flags() noexcept
+  [[nodiscard]] constexpr static auto default_flags() noexcept
       -> SDL_RendererFlags
   {
     return static_cast<SDL_RendererFlags>(SDL_RENDERER_ACCELERATED |
@@ -149,7 +129,7 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename Window, typename U = T, typename = is_renderer_owning<U>>
+  template <typename Window, typename T_ = T, is_renderer_owning<T_> = true>
   explicit basic_renderer(const Window& window,
                           SDL_RendererFlags flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
@@ -163,7 +143,7 @@ class basic_renderer final
     set_logical_integer_scale(false);
   }
 
-  template <typename U = T, typename = is_renderer_handle<U>>
+  template <typename T_ = T, is_renderer_handle<T_> = true>
   explicit basic_renderer(const owner_t& renderer) noexcept
       : m_renderer{renderer.get()}
   {}
@@ -1026,7 +1006,7 @@ class basic_renderer final
    *
    * @since 3.0.0
    */
-  template <typename U = T, typename = is_renderer_owning<U>>
+  template <typename T_ = T, is_renderer_owning<T_> = true>
   void set_translation_viewport(const frect& viewport) noexcept
   {
     m_renderer.translation = viewport;
@@ -1041,7 +1021,7 @@ class basic_renderer final
    *
    * @since 3.0.0
    */
-  template <typename U = T, typename = is_renderer_owning<U>>
+  template <typename T_ = T, is_renderer_owning<T_> = true>
   [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
   {
     return m_renderer.translation;
@@ -1053,14 +1033,14 @@ class basic_renderer final
    * @details The rendered rectangle will be translated using the current
    * translation viewport.
    *
-   * @tparam U the representation type used by the rectangle.
+   * @tparam R the representation type used by the rectangle.
    *
    * @param rect the rectangle that will be rendered.
    *
    * @since 4.1.0
    */
-  template <typename U, typename = is_renderer_owning<T>>
-  void draw_rect_t(const basic_rect<U>& rect) noexcept
+  template <typename R, typename T_ = T, is_renderer_owning<T_> = true>
+  void draw_rect_t(const basic_rect<R>& rect) noexcept
   {
     draw_rect(translate(rect));
   }
@@ -1071,14 +1051,14 @@ class basic_renderer final
    * @details The rendered rectangle will be translated using the current
    * translation viewport.
    *
-   * @tparam U the representation type used by the rectangle.
+   * @tparam R the representation type used by the rectangle.
    *
    * @param rect the rectangle that will be rendered.
    *
    * @since 4.1.0
    */
-  template <typename U, typename = is_renderer_owning<T>>
-  void fill_rect_t(const basic_rect<U>& rect) noexcept
+  template <typename R, typename T_ = T, is_renderer_owning<T_> = true>
+  void fill_rect_t(const basic_rect<R>& rect) noexcept
   {
     fill_rect(translate(rect));
   }
@@ -1089,14 +1069,14 @@ class basic_renderer final
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam U The representation type used by the point.
+   * @tparam P The representation type used by the point.
    *
    * @param texture the texture that will be rendered.
    * @param position the position (pre-translation) of the rendered texture.
    *
    * @since 4.0.0
    */
-  template <typename U, typename = is_renderer_owning<T>>
+  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
   void render_t(const texture& texture, const basic_point<U>& position) noexcept
   {
     render(texture, translate(position));
@@ -1108,7 +1088,7 @@ class basic_renderer final
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam U the representation type used by the destination rectangle.
+   * @tparam R the representation type used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param destination the position (pre-translation) and size of the
@@ -1116,7 +1096,7 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename U, typename = is_renderer_owning<T>>
+  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
   void render_t(const texture& texture,
                 const basic_rect<U>& destination) noexcept
   {
@@ -1132,7 +1112,7 @@ class basic_renderer final
    * @remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * @tparam U the representation type used by the destination rectangle.
+   * @tparam R the representation type used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -1141,7 +1121,7 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename U, typename = is_renderer_owning<T>>
+  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
   void render_t(const texture& texture,
                 const irect& source,
                 const basic_rect<U>& destination) noexcept
@@ -1155,7 +1135,7 @@ class basic_renderer final
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam U the representation type used by the destination rectangle.
+   * @tparam R the representation type used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -1166,7 +1146,7 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename U, typename = is_renderer_owning<T>>
+  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
   void render_t(const texture& texture,
                 const irect& source,
                 const basic_rect<U>& destination,
@@ -1195,7 +1175,10 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename R, typename P, typename = is_renderer_owning<T>>
+  template <typename R,
+            typename P,
+            typename U = T,
+            is_renderer_owning<U> = true>
   void render_t(const texture& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -1223,7 +1206,10 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename R, typename P, typename = is_renderer_owning<T>>
+  template <typename R,
+            typename P,
+            typename U = T,
+            is_renderer_owning<U> = true>
   void render_t(const texture& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -1253,7 +1239,7 @@ class basic_renderer final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_renderer_owning<U>>
+  template <typename T_ = T, is_renderer_owning<T_> = true>
   void add_font(font_id id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
@@ -1276,7 +1262,7 @@ class basic_renderer final
    *
    * @since 5.0.0
    */
-  template <typename... Args, typename = is_renderer_owning<T>>
+  template <typename... Args, typename T_ = T, is_renderer_owning<T_> = true>
   void emplace_font(font_id id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
@@ -1296,7 +1282,7 @@ class basic_renderer final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_renderer_owning<U>>
+  template <typename T_ = T, is_renderer_owning<T_> = true>
   void remove_font(font_id id)
   {
     m_renderer.fonts.erase(id);
@@ -1313,7 +1299,7 @@ class basic_renderer final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_renderer_owning<U>>
+  template <typename T_ = T, is_renderer_owning<T_> = true>
   [[nodiscard]] auto get_font(font_id id) -> font&
   {
     return m_renderer.fonts.at(id);
@@ -1322,7 +1308,7 @@ class basic_renderer final
   /**
    * @copydoc get_font
    */
-  template <typename U = T, typename = is_renderer_owning<U>>
+  template <typename T_ = T, is_renderer_owning<T_> = true>
   [[nodiscard]] auto get_font(font_id id) const -> const font&
   {
     return m_renderer.fonts.at(id);
@@ -1339,7 +1325,7 @@ class basic_renderer final
    *
    * @since 4.1.0
    */
-  template <typename U = T, typename = is_renderer_owning<U>>
+  template <typename T_ = T, is_renderer_owning<T_> = true>
   [[nodiscard]] auto has_font(font_id id) const noexcept -> bool
   {
     return static_cast<bool>(m_renderer.fonts.count(id));
@@ -1854,6 +1840,27 @@ class basic_renderer final
   }
 
  private:
+  class deleter final
+  {
+   public:
+    void operator()(SDL_Renderer* renderer) noexcept
+    {
+      SDL_DestroyRenderer(renderer);
+    }
+  };
+
+  struct owning_data final
+  {
+    owning_data(SDL_Renderer* r) : ptr{r}
+    {}
+
+    std::unique_ptr<SDL_Renderer, deleter> ptr;
+    frect translation{};
+    std::unordered_map<std::size_t, font> fonts{};
+  };
+
+  using rep_t = std::conditional_t<T::value, owning_data, SDL_Renderer*>;
+
   rep_t m_renderer;
 
   [[nodiscard]] auto render_text(owner<SDL_Surface*> s) -> texture
@@ -1863,7 +1870,7 @@ class basic_renderer final
     return texture;
   }
 
-  template <typename U, typename = is_renderer_owning<T>>
+  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
   [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
       -> basic_point<U>
   {
@@ -1876,7 +1883,7 @@ class basic_renderer final
     return basic_point<U>{x, y};
   }
 
-  template <typename U, typename = is_renderer_owning<T>>
+  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
   [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept
       -> basic_rect<U>
   {

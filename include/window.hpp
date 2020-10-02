@@ -22,8 +22,8 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_BASIC_WINDOW_HEADER
-#define CENTURION_BASIC_WINDOW_HEADER
+#ifndef CENTURION_WINDOW_HEADER
+#define CENTURION_WINDOW_HEADER
 
 #include <SDL_render.h>
 #include <SDL_video.h>
@@ -1053,4 +1053,4 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window)
 
 }  // namespace cen
 
-#endif  // CENTURION_BASIC_WINDOW_HEADER
+#endif  // CENTURION_WINDOW_HEADER

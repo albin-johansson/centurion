@@ -98,7 +98,8 @@ namespace cen::log {
  *
  * @headerfile log.hpp
  */
-enum class priority {
+enum class priority
+{
   info = SDL_LOG_PRIORITY_INFO,
   warn = SDL_LOG_PRIORITY_WARN,
   verbose = SDL_LOG_PRIORITY_VERBOSE,
@@ -118,7 +119,8 @@ enum class priority {
  *
  * @headerfile log.hpp
  */
-enum class category {
+enum class category
+{
   app = SDL_LOG_CATEGORY_APPLICATION,
   error = SDL_LOG_CATEGORY_ERROR,
   assert = SDL_LOG_CATEGORY_ASSERT,

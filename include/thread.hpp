@@ -80,7 +80,8 @@ namespace cen {
  *
  * @headerfile thread.hpp
  */
-enum class thread_priority {
+enum class thread_priority
+{
   low = SDL_THREAD_PRIORITY_LOW,        ///< Non-urgent, background processing.
   normal = SDL_THREAD_PRIORITY_NORMAL,  ///< General purpose processing, this is
                                         ///< the default.

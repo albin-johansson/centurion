@@ -84,7 +84,8 @@ namespace cen::platform {
  *
  * @headerfile platform.hpp
  */
-enum class platform_id {
+enum class platform_id
+{
   unknown,  ///< Indicates that the platform is unknown.
   windows,  ///< Represents the Windows platform.
   mac_osx,  ///< Represents the Apple OSX platform.

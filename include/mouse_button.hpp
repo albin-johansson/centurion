@@ -58,7 +58,8 @@ namespace cen {
  *
  * @headerfile mouse_button.hpp
  */
-enum class mouse_button {
+enum class mouse_button
+{
   left = SDL_BUTTON_LEFT,
   middle = SDL_BUTTON_MIDDLE,
   right = SDL_BUTTON_RIGHT,

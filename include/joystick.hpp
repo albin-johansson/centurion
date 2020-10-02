@@ -77,7 +77,8 @@ class basic_joystick final
    *
    * @headerfile joystick.hpp
    */
-  enum class power {
+  enum class power
+  {
     unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
     empty = SDL_JOYSTICK_POWER_EMPTY,      ///< Indicates <= 5% power.
     low = SDL_JOYSTICK_POWER_LOW,          ///< Indicates <= 20% power.
@@ -97,7 +98,8 @@ class basic_joystick final
    *
    * @headerfile joystick.hpp
    */
-  enum class hat_state {
+  enum class hat_state
+  {
     centered = SDL_HAT_CENTERED,     ///< The hat is centered.
     up = SDL_HAT_UP,                 ///< The hat is directed "north".
     right = SDL_HAT_RIGHT,           ///< The hat is directed "east".
@@ -118,7 +120,8 @@ class basic_joystick final
    *
    * @headerfile joystick.hpp
    */
-  enum class type {
+  enum class type
+  {
     unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
     game_controller = SDL_JOYSTICK_TYPE_GAMECONTROLLER,
     wheel = SDL_JOYSTICK_TYPE_WHEEL,

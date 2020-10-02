@@ -102,7 +102,8 @@ class font final
    *
    * @headerfile font.hpp
    */
-  enum class hint {
+  enum class hint
+  {
     normal = TTF_HINTING_NORMAL,
     light = TTF_HINTING_LIGHT,
     mono = TTF_HINTING_MONO,

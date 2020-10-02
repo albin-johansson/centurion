@@ -60,7 +60,8 @@ namespace cen {
  *
  * @headerfile key_modifier.hpp
  */
-enum class key_modifier {
+enum class key_modifier
+{
   none = KMOD_NONE,
   left_shift = KMOD_LSHIFT,
   right_shift = KMOD_RSHIFT,

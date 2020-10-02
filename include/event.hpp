@@ -1328,7 +1328,8 @@ static_assert(validate_event<joy_device_event, SDL_JoyDeviceEvent>());
  *
  * @since 4.0.0
  */
-enum class joy_hat_position {
+enum class joy_hat_position
+{
   left_up = SDL_HAT_LEFTUP,
   left = SDL_HAT_LEFT,
   left_down = SDL_HAT_LEFTDOWN,
@@ -2113,7 +2114,8 @@ static_assert(validate_event<mouse_motion_event, SDL_MouseMotionEvent>());
  *
  * @headerfile event.hpp
  */
-enum class mouse_wheel_direction {
+enum class mouse_wheel_direction
+{
   normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
 };
@@ -3054,7 +3056,8 @@ static_assert(validate_event<touch_finger_event, SDL_TouchFingerEvent>());
  *
  * @headerfile event.hpp
  */
-enum class window_event_id {
+enum class window_event_id
+{
   none = SDL_WINDOWEVENT_NONE,
   shown = SDL_WINDOWEVENT_SHOWN,
   hidden = SDL_WINDOWEVENT_HIDDEN,

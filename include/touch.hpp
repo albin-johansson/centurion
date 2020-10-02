@@ -72,7 +72,8 @@ namespace cen::touch {
  *
  * @headerfile touch.hpp
  */
-enum class device_type {
+enum class device_type
+{
   invalid = SDL_TOUCH_DEVICE_INVALID,
   direct = SDL_TOUCH_DEVICE_DIRECT,
   indirect_absolute = SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,

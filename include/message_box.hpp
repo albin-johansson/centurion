@@ -96,7 +96,11 @@ class message_box final
    *
    * @headerfile message_box.hpp
    */
-  enum class button_order { left_to_right, right_to_left };
+  enum class button_order
+  {
+    left_to_right,
+    right_to_left
+  };
 
   /**
    * @enum type
@@ -108,7 +112,8 @@ class message_box final
    *
    * @headerfile message_box.hpp
    */
-  enum class type {
+  enum class type
+  {
     error = SDL_MESSAGEBOX_ERROR,
     warning = SDL_MESSAGEBOX_WARNING,
     information = SDL_MESSAGEBOX_INFORMATION
@@ -123,7 +128,8 @@ class message_box final
    *
    * @headerfile message_box.hpp
    */
-  enum class default_button {
+  enum class default_button
+  {
     return_key = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT,
     escape_key = SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
   };
@@ -137,7 +143,8 @@ class message_box final
    *
    * @headerfile message_box.hpp
    */
-  enum class color_id {
+  enum class color_id
+  {
     background = SDL_MESSAGEBOX_COLOR_BACKGROUND,
     text = SDL_MESSAGEBOX_COLOR_TEXT,
     button_border = SDL_MESSAGEBOX_COLOR_BUTTON_BORDER,

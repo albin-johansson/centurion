@@ -58,7 +58,8 @@ namespace cen {
  *
  * @headerfile scale_mode.hpp
  */
-enum class scale_mode {
+enum class scale_mode
+{
   nearest = SDL_ScaleModeNearest,  ///< Represents nearest pixel sampling.
   linear = SDL_ScaleModeLinear,    ///< Represents linear filtering.
   best = SDL_ScaleModeBest         ///< Represents anisotropic filtering.

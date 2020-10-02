@@ -17,7 +17,7 @@ BinPackArguments: false
 
 BreakBeforeBraces: Custom
 BraceWrapping:
-  AfterEnum: false
+  AfterEnum: true
   AfterStruct: true
   AfterClass: true
   AfterFunction: true

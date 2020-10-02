@@ -60,7 +60,8 @@ namespace cen {
  *
  * @headerfile event_type.hpp
  */
-enum class event_type {
+enum class event_type
+{
   quit = SDL_QUIT,
 
   app_terminating = SDL_APP_TERMINATING,

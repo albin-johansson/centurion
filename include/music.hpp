@@ -65,7 +65,8 @@ namespace cen {
  *
  * @headerfile music.hpp
  */
-enum class fade_status {
+enum class fade_status
+{
   none = MIX_NO_FADING,  ///< No currently fading music.
   in = MIX_FADING_IN,    ///< Currently fading in music.
   out = MIX_FADING_OUT   ///< Currently fading out music.
@@ -143,7 +144,8 @@ enum class fade_status {
  *
  * @headerfile music.hpp
  */
-enum class music_type {
+enum class music_type
+{
   unknown = MUS_NONE,
   mp3 = MUS_MP3,
   wav = MUS_WAV,

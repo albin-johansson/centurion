@@ -72,7 +72,8 @@ namespace cen {
  *
  * @headerfile controller.hpp
  */
-enum class controller_type {
+enum class controller_type
+{
   unknown = SDL_CONTROLLER_TYPE_UNKNOWN,   ///< An unknown controller.
   xbox_360 = SDL_CONTROLLER_TYPE_XBOX360,  ///< An Xbox 360 controller.
   xbox_one = SDL_CONTROLLER_TYPE_XBOXONE,  ///< An Xbox One controller.
@@ -94,7 +95,8 @@ enum class controller_type {
  *
  * @headerfile controller.hpp
  */
-enum class controller_axis {
+enum class controller_axis
+{
   invalid = SDL_CONTROLLER_AXIS_INVALID,
   left_x = SDL_CONTROLLER_AXIS_LEFTX,
   left_y = SDL_CONTROLLER_AXIS_LEFTY,
@@ -114,7 +116,8 @@ enum class controller_axis {
  *
  * @headerfile controller.hpp
  */
-enum class controller_button {
+enum class controller_button
+{
   invalid = SDL_CONTROLLER_BUTTON_INVALID,
   a = SDL_CONTROLLER_BUTTON_A,
   b = SDL_CONTROLLER_BUTTON_B,
@@ -143,7 +146,8 @@ enum class controller_button {
  *
  * @headerfile controller.hpp
  */
-enum class controller_bind_type {
+enum class controller_bind_type
+{
   none = SDL_CONTROLLER_BINDTYPE_NONE,
   button = SDL_CONTROLLER_BINDTYPE_BUTTON,
   axis = SDL_CONTROLLER_BINDTYPE_AXIS,

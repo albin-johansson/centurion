@@ -61,6 +61,24 @@ using is_joystick_owning = std::enable_if_t<std::is_same_v<T, std::true_type>>;
 template <typename T>
 using is_joystick_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
 
+/**
+ * @class basic_joystick
+ *
+ * @brief Represents a joystick device.
+ *
+ * @details The game controller API is built on top of the joystick API, which
+ * means that the game controller is higher-level and easier to use.
+ *
+ * @tparam T `std::true_type` for a owning joysticks; `std::false_type` for
+ * non-owning joysticks.
+ *
+ * @since 4.2.0
+ *
+ * @see joystick
+ * @see joystick_handle
+ *
+ * @headerfile joystick.hpp
+ */
 template <typename T>
 class basic_joystick final
 {
@@ -897,7 +915,22 @@ class basic_joystick final
   }
 };
 
+/**
+ * @typedef joystick
+ *
+ * @brief Represents an owning joystick.
+ *
+ * @since 5.0.0
+ */
 using joystick = basic_joystick<std::true_type>;
+
+/**
+ * @typedef joystick_handle
+ *
+ * @brief Represents a non-owning joystick.
+ *
+ * @since 5.0.0
+ */
 using joystick_handle = basic_joystick<std::false_type>;
 
 /**

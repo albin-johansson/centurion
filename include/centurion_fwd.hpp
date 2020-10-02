@@ -50,10 +50,6 @@ class mutex;
 
 class scoped_lock;
 
-class joystick;
-
-class joystick_handle;
-
 class renderer;
 
 class renderer_handle;

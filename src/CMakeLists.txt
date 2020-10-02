@@ -15,7 +15,6 @@ set(SOURCE_FILES
         ../include/basic_renderer.hpp
         ../include/renderer.hpp
         ../include/renderer_handle.hpp
-        ../include/basic_joystick.hpp
         ../include/joystick.hpp
         ../include/texture.hpp
         ../include/exception.hpp
@@ -54,7 +53,6 @@ set(SOURCE_FILES
         ../include/touch.hpp
         ../include/font_cache.hpp
         ../include/unicode_string.hpp
-        ../include/joystick_handle.hpp
         ../include/scale_mode.hpp
         ../include/thread.hpp
         ../include/mutex.hpp
@@ -100,11 +98,9 @@ set(SOURCE_FILES
 
         input/key_state.cpp
         input/mouse_state.cpp
-        input/joystick.cpp
         input/touch.cpp
         input/key_code.cpp
         input/scan_code.cpp
-        input/joystick_handle.cpp
         input/controller.cpp
 
         event/event.cpp

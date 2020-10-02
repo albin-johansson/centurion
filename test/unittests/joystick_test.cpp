@@ -3,18 +3,16 @@
 #include <catch.hpp>
 
 #include "exception.hpp"
-#include "joystick_handle.hpp"
 
 // Note, it's hard to actually test the joystick API, so coverage is the best
 // we can do really.
 
 TEST_CASE("joystick constructors", "[joystick]")
 {
-  SECTION("Pointer ctor")
+  SECTION("Index ctor")
   {
-    CHECK_THROWS_AS(cen::joystick{nullptr}, cen::exception);
+    CHECK_THROWS_AS(cen::joystick{0}, cen::exception);
   }
-  SECTION("Index ctor") { CHECK_THROWS_AS(cen::joystick{0}, cen::exception); }
 }
 
 TEST_CASE("joystick::update", "[joystick]")
@@ -39,13 +37,13 @@ TEST_CASE("joystick polling", "[joystick]")
 
 TEST_CASE("joystick_from_instance_id", "[joystick]")
 {
-  const auto handle = cen::joystick_from_instance_id(0);
+  const auto handle = cen::joystick_handle::from_instance_id(0);
   CHECK(!handle);
 }
 
 TEST_CASE("joystick_from_player_index", "[joystick]")
 {
-  const auto handle = cen::joystick_from_player_index(0);
+  const auto handle = cen::joystick_handle::from_player_index(0);
   CHECK(!handle);
 }
 
@@ -112,37 +110,37 @@ TEST_CASE("joystick::axis_min", "[joystick]")
   CHECK(cen::joystick::axis_min() == SDL_JOYSTICK_AXIS_MIN);
 }
 
-TEST_CASE("joystick::Power values", "[joystick]")
+TEST_CASE("joystick::power values", "[joystick]")
 {
-  using j_power = cen::joystick::power;
+  using jpower = cen::joystick::power;
 
   SECTION("Operator ==")
   {
-    CHECK(j_power::unknown == SDL_JOYSTICK_POWER_UNKNOWN);
-    CHECK(j_power::empty == SDL_JOYSTICK_POWER_EMPTY);
-    CHECK(j_power::low == SDL_JOYSTICK_POWER_LOW);
-    CHECK(j_power::medium == SDL_JOYSTICK_POWER_MEDIUM);
-    CHECK(j_power::full == SDL_JOYSTICK_POWER_FULL);
-    CHECK(j_power::wired == SDL_JOYSTICK_POWER_WIRED);
-    CHECK(j_power::max == SDL_JOYSTICK_POWER_MAX);
+    CHECK(jpower::unknown == SDL_JOYSTICK_POWER_UNKNOWN);
+    CHECK(jpower::empty == SDL_JOYSTICK_POWER_EMPTY);
+    CHECK(jpower::low == SDL_JOYSTICK_POWER_LOW);
+    CHECK(jpower::medium == SDL_JOYSTICK_POWER_MEDIUM);
+    CHECK(jpower::full == SDL_JOYSTICK_POWER_FULL);
+    CHECK(jpower::wired == SDL_JOYSTICK_POWER_WIRED);
+    CHECK(jpower::max == SDL_JOYSTICK_POWER_MAX);
 
-    CHECK(SDL_JOYSTICK_POWER_UNKNOWN == j_power::unknown);
-    CHECK(SDL_JOYSTICK_POWER_EMPTY == j_power::empty);
-    CHECK(SDL_JOYSTICK_POWER_LOW == j_power::low);
-    CHECK(SDL_JOYSTICK_POWER_MEDIUM == j_power::medium);
-    CHECK(SDL_JOYSTICK_POWER_FULL == j_power::full);
-    CHECK(SDL_JOYSTICK_POWER_WIRED == j_power::wired);
-    CHECK(SDL_JOYSTICK_POWER_MAX == j_power::max);
+    CHECK(SDL_JOYSTICK_POWER_UNKNOWN == jpower::unknown);
+    CHECK(SDL_JOYSTICK_POWER_EMPTY == jpower::empty);
+    CHECK(SDL_JOYSTICK_POWER_LOW == jpower::low);
+    CHECK(SDL_JOYSTICK_POWER_MEDIUM == jpower::medium);
+    CHECK(SDL_JOYSTICK_POWER_FULL == jpower::full);
+    CHECK(SDL_JOYSTICK_POWER_WIRED == jpower::wired);
+    CHECK(SDL_JOYSTICK_POWER_MAX == jpower::max);
   }
 
   SECTION("Operator !=")
   {
-    CHECK(j_power::max != SDL_JOYSTICK_POWER_WIRED);
-    CHECK(SDL_JOYSTICK_POWER_MEDIUM != j_power::low);
+    CHECK(jpower::max != SDL_JOYSTICK_POWER_WIRED);
+    CHECK(SDL_JOYSTICK_POWER_MEDIUM != jpower::low);
   }
 }
 
-TEST_CASE("joystick::HatState values", "[joystick]")
+TEST_CASE("joystick::hat_state values", "[joystick]")
 {
   using hs = cen::joystick::hat_state;
 
@@ -157,7 +155,7 @@ TEST_CASE("joystick::HatState values", "[joystick]")
   CHECK(hs::left_down == static_cast<hs>(SDL_HAT_LEFTDOWN));
 }
 
-TEST_CASE("joystick::Type values", "[joystick]")
+TEST_CASE("joystick::type values", "[joystick]")
 {
   using joystick_t = cen::joystick::type;
 
@@ -195,7 +193,7 @@ TEST_CASE("joystick::Type values", "[joystick]")
 
 TEST_CASE("joystick_handle", "[joystick]")
 {
-  SDL_Joystick* ptr{};
-  cen::joystick_handle handle{ptr};
-  CHECK(!handle);
+
+
+  CHECK(!cen::joystick_handle::from_player_index(0));
 }

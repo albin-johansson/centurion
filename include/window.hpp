@@ -81,6 +81,11 @@ class basic_window final
 
   using owner_t = basic_window<std::true_type>;
 
+  [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
+  {
+    return std::is_same_v<T, std::true_type>;
+  }
+
  public:
   /**
    * @brief Creates a window from a pointer to an SDL window.
@@ -988,11 +993,6 @@ class basic_window final
                                    SDL_Window*>;
 
   rep_t m_window;
-
-  [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
-  {
-    return std::is_same_v<T, std::true_type>;
-  }
 };
 
 /**

@@ -173,25 +173,7 @@ using is_cursor_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
 template <typename T>
 class basic_cursor final
 {
-  class deleter final
-  {
-   public:
-    void operator()(SDL_Cursor* cursor) noexcept
-    {
-      SDL_FreeCursor(cursor);
-    }
-  };
-
-  using rep_t = std::conditional_t<T::value,
-                                   std::unique_ptr<SDL_Cursor, deleter>,
-                                   SDL_Cursor*>;
-
-  using owner_t = basic_cursor<std::true_type>;
-  using handle_t = basic_cursor<std::false_type>;
-
  public:
-  // TODO SDL_CreateCursor wrapper?
-
   /**
    * @brief Creates a cursor based on a cursor type.
    *
@@ -361,6 +343,18 @@ class basic_cursor final
   }
 
   /**
+   * @brief Returns the number of system cursors.
+   *
+   * @return the amount of system cursors.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] constexpr static auto num_system_cursors() noexcept -> int
+  {
+    return static_cast<int>(SDL_NUM_SYSTEM_CURSORS);
+  }
+
+  /**
    * @brief Indicates whether or not the cursor handle holds a non-null pointer.
    *
    * @tparam U dummy template parameter used for SFINAE.
@@ -395,6 +389,21 @@ class basic_cursor final
   }
 
  private:
+  class deleter final
+  {
+   public:
+    void operator()(SDL_Cursor* cursor) noexcept
+    {
+      SDL_FreeCursor(cursor);
+    }
+  };
+
+  using rep_t = std::conditional_t<T::value,
+                                   std::unique_ptr<SDL_Cursor, deleter>,
+                                   SDL_Cursor*>;
+  using owner_t = basic_cursor<std::true_type>;
+  using handle_t = basic_cursor<std::false_type>;
+
   rep_t m_cursor;
 
   [[nodiscard]] constexpr static auto is_owner() noexcept -> bool

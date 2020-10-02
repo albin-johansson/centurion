@@ -293,7 +293,7 @@ class basic_cursor final
    *
    * @since 4.0.0
    */
-  [[nodiscard]] auto is_enabled() const noexcept
+  [[nodiscard]] auto is_enabled() const noexcept -> bool
   {
     return SDL_GetCursor() == get();
   }

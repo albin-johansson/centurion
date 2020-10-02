@@ -75,7 +75,7 @@ class basic_joystick final
    *
    * @since 4.2.0
    *
-   * @headerfile basic_joystick.hpp
+   * @headerfile joystick.hpp
    */
   enum class power {
     unknown = SDL_JOYSTICK_POWER_UNKNOWN,  ///< Unknown power level.
@@ -95,7 +95,7 @@ class basic_joystick final
    *
    * @since 4.2.0
    *
-   * @headerfile basic_joystick.hpp
+   * @headerfile joystick.hpp
    */
   enum class hat_state {
     centered = SDL_HAT_CENTERED,     ///< The hat is centered.
@@ -116,7 +116,7 @@ class basic_joystick final
    *
    * @since 4.2.0
    *
-   * @headerfile basic_joystick.hpp
+   * @headerfile joystick.hpp
    */
   enum class type {
     unknown = SDL_JOYSTICK_TYPE_UNKNOWN,
@@ -465,10 +465,9 @@ class basic_joystick final
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto axis_pos(unsigned axis) const noexcept
-      -> std::optional<i16>
+  [[nodiscard]] auto axis_pos(int axis) const noexcept -> std::optional<i16>
   {
-    const auto result = SDL_JoystickGetAxis(get(), static_cast<int>(axis));
+    const auto result = SDL_JoystickGetAxis(get(), axis);
     if (result == 0) {
       return std::nullopt;
     } else {
@@ -486,12 +485,12 @@ class basic_joystick final
    *
    * @since 4.2.0
    */
-  [[nodiscard]] auto axis_initial_state(unsigned int axis) const noexcept
+  [[nodiscard]] auto axis_initial_state(int axis) const noexcept
       -> std::optional<i16>
   {
     i16 state{};
     const auto hadInitialState =
-        SDL_JoystickGetAxisInitialState(get(), static_cast<int>(axis), &state);
+        SDL_JoystickGetAxisInitialState(get(), axis, &state);
     if (hadInitialState) {
       return state;
     } else {

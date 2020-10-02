@@ -83,7 +83,7 @@ class point_traits final
    *
    * @since 5.0.0
    */
-  inline static constexpr bool isIntegral = std::is_integral_v<T>;
+  inline constexpr static bool isIntegral = std::is_integral_v<T>;
 
   /**
    * @var isFloating
@@ -93,7 +93,7 @@ class point_traits final
    *
    * @since 5.0.0
    */
-  inline static constexpr bool isFloating = std::is_floating_point_v<T>;
+  inline constexpr static bool isFloating = std::is_floating_point_v<T>;
 
   /**
    * @typedef value_type
@@ -143,12 +143,12 @@ class basic_point final
   /**
    * @copydoc point_traits::isIntegral
    */
-  inline static constexpr bool isIntegral = point_traits<T>::isIntegral;
+  inline constexpr static bool isIntegral = point_traits<T>::isIntegral;
 
   /**
    * @copydoc point_traits::isFloating
    */
-  inline static constexpr bool isFloating = point_traits<T>::isFloating;
+  inline constexpr static bool isFloating = point_traits<T>::isFloating;
 
   /**
    * @copydoc point_traits::value_type

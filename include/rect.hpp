@@ -94,7 +94,7 @@ class rect_traits final
    *
    * @since 5.0.0
    */
-  inline static constexpr bool isIntegral = std::is_integral_v<T>;
+  inline constexpr static bool isIntegral = std::is_integral_v<T>;
 
   /**
    * @var isFloating
@@ -104,7 +104,7 @@ class rect_traits final
    *
    * @since 5.0.0
    */
-  inline static constexpr bool isFloating = std::is_floating_point_v<T>;
+  inline constexpr static bool isFloating = std::is_floating_point_v<T>;
 
   /**
    * @typedef value_type
@@ -167,12 +167,12 @@ class basic_rect final
   /**
    * @copydoc rect_traits<T>::isIntegral
    */
-  inline static constexpr bool isIntegral = rect_traits<T>::isIntegral;
+  inline constexpr static bool isIntegral = rect_traits<T>::isIntegral;
 
   /**
    * @copydoc rect_traits<T>::isFloating
    */
-  inline static constexpr bool isFloating = rect_traits<T>::isFloating;
+  inline constexpr static bool isFloating = rect_traits<T>::isFloating;
 
   /**
    * @copydoc rect_traits<T>::value_type

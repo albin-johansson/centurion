@@ -95,7 +95,7 @@ class sound_effect final
    *
    * @since 4.0.0
    */
-  inline static constexpr int loopForever = -1;
+  inline constexpr static int loopForever = -1;
 
   /**
    * @brief Creates a sound effect based on the audio file at the specified
@@ -258,7 +258,7 @@ class sound_effect final
    *
    * @since 3.1.0
    */
-  [[nodiscard]] static constexpr auto max_volume() noexcept -> int
+  [[nodiscard]] constexpr static auto max_volume() noexcept -> int
   {
     return MIX_MAX_VOLUME;
   }
@@ -276,7 +276,7 @@ class sound_effect final
   std::unique_ptr<Mix_Chunk, deleter> m_chunk;
   int m_channel{undefined_channel()};
 
-  [[nodiscard]] static constexpr auto undefined_channel() noexcept -> int
+  [[nodiscard]] constexpr static auto undefined_channel() noexcept -> int
   {
     return -1;
   }

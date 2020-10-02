@@ -298,7 +298,7 @@ class color final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] static constexpr auto max() noexcept -> u8
+  [[nodiscard]] constexpr static auto max() noexcept -> u8
   {
     return 0xFF;
   }

@@ -833,7 +833,7 @@ class basic_joystick final
    *
    * @since 4.2.0
    */
-  [[nodiscard]] static constexpr auto axis_max() noexcept -> i16
+  [[nodiscard]] constexpr static auto axis_max() noexcept -> i16
   {
     return SDL_JOYSTICK_AXIS_MAX;
   }
@@ -845,7 +845,7 @@ class basic_joystick final
    *
    * @since 4.2.0
    */
-  [[nodiscard]] static constexpr auto axis_min() noexcept -> i16
+  [[nodiscard]] constexpr static auto axis_min() noexcept -> i16
   {
     return SDL_JOYSTICK_AXIS_MIN;
   }

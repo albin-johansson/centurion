@@ -256,7 +256,7 @@ class music final
    *
    * @since 4.0.0
    */
-  inline static constexpr int loopForever = -1;
+  inline constexpr static int loopForever = -1;
 
   /**
    * @brief Creates a `music` instance based on the file at the specified path.
@@ -487,7 +487,7 @@ class music final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] static constexpr auto max_volume() noexcept -> int
+  [[nodiscard]] constexpr static auto max_volume() noexcept -> int
   {
     return MIX_MAX_VOLUME;
   }

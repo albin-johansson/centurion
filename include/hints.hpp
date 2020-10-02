@@ -99,12 +99,12 @@ class crtp_hint
 {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, Arg>;
   }
 
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return Derived::name();
   }
@@ -126,7 +126,7 @@ class bool_hint : public crtp_hint<bool_hint<Hint>, bool>
 {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, bool>;
   }
@@ -148,7 +148,7 @@ class string_hint : public crtp_hint<string_hint<Hint>, czstring>
 {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
     return std::is_convertible_v<T, czstring>;
   }
@@ -175,7 +175,7 @@ class int_hint : public crtp_hint<int_hint<Hint>, int>
 {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, int>;
   }
@@ -197,7 +197,7 @@ class unsigned_int_hint : public crtp_hint<int_hint<Hint>, unsigned int>
 {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, unsigned int>;
   }
@@ -220,7 +220,7 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
 {
  public:
   template <typename T>
-  [[nodiscard]] static constexpr auto valid_arg() noexcept -> bool
+  [[nodiscard]] constexpr static auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, float>;
   }
@@ -419,7 +419,7 @@ class enum_hint
   using value = typename enum_hint_traits<Derived>::value;
 
   template <typename T>
-  static constexpr auto valid_arg() noexcept -> bool
+  constexpr static auto valid_arg() noexcept -> bool
   {
     return std::is_same_v<T, value>;
   }
@@ -458,7 +458,7 @@ struct render_driver final : enum_hint<render_driver>
       std::make_pair(value::metal, "metal"),
       std::make_pair(value::software, "software")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_DRIVER;
   }
@@ -472,7 +472,7 @@ struct audio_resampling_mode final : enum_hint<audio_resampling_mode>
       std::make_pair(value::medium, "medium"),
       std::make_pair(value::best, "best")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_AUDIO_RESAMPLING_MODE;
   }
@@ -485,7 +485,7 @@ struct scale_quality final : enum_hint<scale_quality>
       std::make_pair(value::linear, "linear"),
       std::make_pair(value::best, "best")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_SCALE_QUALITY;
   }
@@ -503,7 +503,7 @@ struct framebuffer_acceleration final : enum_hint<framebuffer_acceleration>
       std::make_pair(value::metal, "metal"),
       std::make_pair(value::software, "software")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_FRAMEBUFFER_ACCELERATION;
   }
@@ -515,7 +515,7 @@ struct audio_category final : enum_hint<audio_category>
       std::make_pair(value::ambient, "ambient"),
       std::make_pair(value::playback, "playback")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_AUDIO_CATEGORY;
   }
@@ -529,7 +529,7 @@ struct wave_riff_chunk_size final : enum_hint<wave_riff_chunk_size>
       std::make_pair(value::ignore_zero, "ignorezero"),
       std::make_pair(value::maximum, "maximum")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WAVE_RIFF_CHUNK_SIZE;
   }
@@ -543,7 +543,7 @@ struct wave_truncation final : enum_hint<wave_truncation>
       std::make_pair(value::strict, "strict"),
       std::make_pair(value::very_strict, "verystrict")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WAVE_TRUNCATION;
   }
@@ -557,7 +557,7 @@ struct wave_fact_chunk final : enum_hint<wave_fact_chunk>
       std::make_pair(value::ignore, "ignore"),
       std::make_pair(value::truncate, "truncate")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WAVE_FACT_CHUNK;
   }
@@ -569,7 +569,7 @@ struct logical_size_mode final : enum_hint<logical_size_mode>
       std::make_pair(value::letterbox, "letterbox"),
       std::make_pair(value::overscan, "overscan")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_LOGICAL_SIZE_MODE;
   }
@@ -578,7 +578,7 @@ struct logical_size_mode final : enum_hint<logical_size_mode>
 struct accelerometer_as_joystick final
     : detail::bool_hint<accelerometer_as_joystick>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_ACCELEROMETER_AS_JOYSTICK;
   }
@@ -586,7 +586,7 @@ struct accelerometer_as_joystick final
 
 struct allow_top_most final : detail::bool_hint<allow_top_most>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_ALLOW_TOPMOST;
   }
@@ -594,7 +594,7 @@ struct allow_top_most final : detail::bool_hint<allow_top_most>
 
 struct bmp_save_legacy_format final : detail::bool_hint<bmp_save_legacy_format>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_BMP_SAVE_LEGACY_FORMAT;
   }
@@ -602,7 +602,7 @@ struct bmp_save_legacy_format final : detail::bool_hint<bmp_save_legacy_format>
 
 struct double_buffer final : detail::bool_hint<double_buffer>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_DOUBLE_BUFFER;
   }
@@ -611,7 +611,7 @@ struct double_buffer final : detail::bool_hint<double_buffer>
 struct enable_steam_controllers final
     : detail::bool_hint<enable_steam_controllers>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_ENABLE_STEAM_CONTROLLERS;
   }
@@ -619,7 +619,7 @@ struct enable_steam_controllers final
 
 struct grab_keyboard final : detail::bool_hint<grab_keyboard>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_GRAB_KEYBOARD;
   }
@@ -627,7 +627,7 @@ struct grab_keyboard final : detail::bool_hint<grab_keyboard>
 
 struct idle_timer_disabled final : detail::bool_hint<idle_timer_disabled>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_IDLE_TIMER_DISABLED;
   }
@@ -635,7 +635,7 @@ struct idle_timer_disabled final : detail::bool_hint<idle_timer_disabled>
 
 struct ime_internal_editing final : detail::bool_hint<ime_internal_editing>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_IME_INTERNAL_EDITING;
   }
@@ -643,7 +643,7 @@ struct ime_internal_editing final : detail::bool_hint<ime_internal_editing>
 
 struct no_signal_handlers final : detail::bool_hint<no_signal_handlers>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_NO_SIGNAL_HANDLERS;
   }
@@ -651,7 +651,7 @@ struct no_signal_handlers final : detail::bool_hint<no_signal_handlers>
 
 struct opengl_es_driver final : detail::bool_hint<opengl_es_driver>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_OPENGL_ES_DRIVER;
   }
@@ -659,7 +659,7 @@ struct opengl_es_driver final : detail::bool_hint<opengl_es_driver>
 
 struct enable_opengl_shaders final : detail::bool_hint<enable_opengl_shaders>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_OPENGL_SHADERS;
   }
@@ -667,7 +667,7 @@ struct enable_opengl_shaders final : detail::bool_hint<enable_opengl_shaders>
 
 struct vsync final : detail::bool_hint<vsync>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_VSYNC;
   }
@@ -675,7 +675,7 @@ struct vsync final : detail::bool_hint<vsync>
 
 struct allow_screensaver final : detail::bool_hint<allow_screensaver>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_ALLOW_SCREENSAVER;
   }
@@ -683,7 +683,7 @@ struct allow_screensaver final : detail::bool_hint<allow_screensaver>
 
 struct video_external_context final : detail::bool_hint<video_external_context>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_EXTERNAL_CONTEXT;
   }
@@ -691,7 +691,7 @@ struct video_external_context final : detail::bool_hint<video_external_context>
 
 struct disable_high_dpi final : detail::bool_hint<disable_high_dpi>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_HIGHDPI_DISABLED;
   }
@@ -699,7 +699,7 @@ struct disable_high_dpi final : detail::bool_hint<disable_high_dpi>
 
 struct minimize_on_focus_loss final : detail::bool_hint<minimize_on_focus_loss>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS;
   }
@@ -708,7 +708,7 @@ struct minimize_on_focus_loss final : detail::bool_hint<minimize_on_focus_loss>
 struct window_frame_usable_while_cursor_hidden final
     : detail::bool_hint<window_frame_usable_while_cursor_hidden>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN;
   }
@@ -716,7 +716,7 @@ struct window_frame_usable_while_cursor_hidden final
 
 struct render_batching final : detail::bool_hint<render_batching>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_BATCHING;
   }
@@ -724,7 +724,7 @@ struct render_batching final : detail::bool_hint<render_batching>
 
 struct return_key_hides_ime final : detail::bool_hint<return_key_hides_ime>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_RETURN_KEY_HIDES_IME;
   }
@@ -732,7 +732,7 @@ struct return_key_hides_ime final : detail::bool_hint<return_key_hides_ime>
 
 struct touch_mouse_events final : detail::bool_hint<touch_mouse_events>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_TOUCH_MOUSE_EVENTS;
   }
@@ -740,7 +740,7 @@ struct touch_mouse_events final : detail::bool_hint<touch_mouse_events>
 
 struct mouse_touch_events final : detail::bool_hint<mouse_touch_events>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_MOUSE_TOUCH_EVENTS;
   }
@@ -748,7 +748,7 @@ struct mouse_touch_events final : detail::bool_hint<mouse_touch_events>
 
 struct tv_remote_as_joystick final : detail::bool_hint<tv_remote_as_joystick>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_TV_REMOTE_AS_JOYSTICK;
   }
@@ -756,7 +756,7 @@ struct tv_remote_as_joystick final : detail::bool_hint<tv_remote_as_joystick>
 
 struct display_usable_bounds final : detail::string_hint<display_usable_bounds>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_DISPLAY_USABLE_BOUNDS;
   }
@@ -764,7 +764,7 @@ struct display_usable_bounds final : detail::string_hint<display_usable_bounds>
 
 struct orientations final : detail::string_hint<orientations>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_ORIENTATIONS;
   }
@@ -773,7 +773,7 @@ struct orientations final : detail::string_hint<orientations>
 struct window_share_pixel_format final
     : detail::string_hint<window_share_pixel_format>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT;
   }
@@ -781,7 +781,7 @@ struct window_share_pixel_format final
 
 struct event_logging final : detail::int_hint<event_logging>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_EVENT_LOGGING;
   }
@@ -789,7 +789,7 @@ struct event_logging final : detail::int_hint<event_logging>
 
 struct thread_stack_size final : detail::unsigned_int_hint<thread_stack_size>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_THREAD_STACK_SIZE;
   }
@@ -797,7 +797,7 @@ struct thread_stack_size final : detail::unsigned_int_hint<thread_stack_size>
 
 struct timer_resolution final : detail::unsigned_int_hint<timer_resolution>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_TIMER_RESOLUTION;
   }
@@ -807,7 +807,7 @@ namespace raspberrypi {
 
 struct video_layer final : detail::int_hint<video_layer>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_RPI_VIDEO_LAYER;
   }
@@ -819,7 +819,7 @@ namespace appletv {
 
 struct controller_ui_events final : detail::bool_hint<controller_ui_events>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS;
   }
@@ -827,7 +827,7 @@ struct controller_ui_events final : detail::bool_hint<controller_ui_events>
 
 struct remote_allow_rotation final : detail::bool_hint<remote_allow_rotation>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION;
   }
@@ -839,7 +839,7 @@ namespace xinput {
 
 struct is_enabled final : detail::bool_hint<is_enabled>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_XINPUT_ENABLED;
   }
@@ -848,7 +848,7 @@ struct is_enabled final : detail::bool_hint<is_enabled>
 struct use_old_joystick_mapping final
     : detail::bool_hint<use_old_joystick_mapping>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING;
   }
@@ -860,7 +860,7 @@ namespace emscripten {
 
 struct keyboard_element final : detail::string_hint<keyboard_element>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT;
   }
@@ -879,7 +879,7 @@ struct content_orientation final : enum_hint<content_orientation>
       std::make_pair(value::inverted_portrait, "inverted-portrait"),
       std::make_pair(value::inverted_landscape, "inverted-landscape")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION;
   }
@@ -887,7 +887,7 @@ struct content_orientation final : enum_hint<content_orientation>
 
 struct window_flags final : detail::string_hint<window_flags>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_QTWAYLAND_WINDOW_FLAGS;
   }
@@ -899,7 +899,7 @@ namespace mouse {
 
 struct focus_clickthrough final : detail::bool_hint<focus_clickthrough>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH;
   }
@@ -907,7 +907,7 @@ struct focus_clickthrough final : detail::bool_hint<focus_clickthrough>
 
 struct relative_mode_warp final : detail::bool_hint<relative_mode_warp>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_MOUSE_RELATIVE_MODE_WARP;
   }
@@ -915,7 +915,7 @@ struct relative_mode_warp final : detail::bool_hint<relative_mode_warp>
 
 struct double_click_time final : detail::int_hint<double_click_time>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_MOUSE_DOUBLE_CLICK_TIME;
   }
@@ -923,7 +923,7 @@ struct double_click_time final : detail::int_hint<double_click_time>
 
 struct double_click_radius final : detail::int_hint<double_click_radius>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS;
   }
@@ -931,7 +931,7 @@ struct double_click_radius final : detail::int_hint<double_click_radius>
 
 struct normal_speed_scale final : detail::float_hint<normal_speed_scale>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_MOUSE_NORMAL_SPEED_SCALE;
   }
@@ -939,7 +939,7 @@ struct normal_speed_scale final : detail::float_hint<normal_speed_scale>
 
 struct relative_speed_scale final : detail::float_hint<relative_speed_scale>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE;
   }
@@ -951,7 +951,7 @@ namespace d3d {
 
 struct v11_debug final : detail::bool_hint<v11_debug>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_DIRECT3D11_DEBUG;
   }
@@ -959,7 +959,7 @@ struct v11_debug final : detail::bool_hint<v11_debug>
 
 struct thread_safe final : detail::bool_hint<thread_safe>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_RENDER_DIRECT3D_THREADSAFE;
   }
@@ -971,7 +971,7 @@ namespace gamecontroller {
 
 struct use_button_labels final : detail::bool_hint<use_button_labels>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_GAMECONTROLLER_USE_BUTTON_LABELS;
   }
@@ -979,7 +979,7 @@ struct use_button_labels final : detail::bool_hint<use_button_labels>
 
 struct type final : detail::string_hint<type>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_GAMECONTROLLERTYPE;
   }
@@ -987,7 +987,7 @@ struct type final : detail::string_hint<type>
 
 struct config final : detail::string_hint<config>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_GAMECONTROLLERCONFIG;
   }
@@ -995,7 +995,7 @@ struct config final : detail::string_hint<config>
 
 struct config_file final : detail::string_hint<config_file>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_GAMECONTROLLERCONFIG_FILE;
   }
@@ -1003,7 +1003,7 @@ struct config_file final : detail::string_hint<config_file>
 
 struct ignore_devices final : detail::string_hint<ignore_devices>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES;
   }
@@ -1011,7 +1011,7 @@ struct ignore_devices final : detail::string_hint<ignore_devices>
 
 struct ignore_devices_except final : detail::string_hint<ignore_devices_except>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT;
   }
@@ -1023,7 +1023,7 @@ namespace winrt {
 
 struct privacy_policy_label final : detail::string_hint<privacy_policy_label>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WINRT_PRIVACY_POLICY_LABEL;
   }
@@ -1031,7 +1031,7 @@ struct privacy_policy_label final : detail::string_hint<privacy_policy_label>
 
 struct privacy_policy_url final : detail::string_hint<privacy_policy_url>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WINRT_PRIVACY_POLICY_URL;
   }
@@ -1039,7 +1039,7 @@ struct privacy_policy_url final : detail::string_hint<privacy_policy_url>
 
 struct handle_back_button final : detail::bool_hint<handle_back_button>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WINRT_HANDLE_BACK_BUTTON;
   }
@@ -1056,7 +1056,7 @@ struct d3d_compiler final : enum_hint<d3d_compiler>
       std::make_pair(value::v43, "d3dcompiler_43.dll"),
       std::make_pair(value::none, "none")};
 
-  static constexpr auto name() noexcept -> czstring
+  constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_WIN_D3DCOMPILER;
   }
@@ -1064,7 +1064,7 @@ struct d3d_compiler final : enum_hint<d3d_compiler>
 
 struct no_thread_naming final : detail::bool_hint<no_thread_naming>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING;
   }
@@ -1072,7 +1072,7 @@ struct no_thread_naming final : detail::bool_hint<no_thread_naming>
 
 struct enable_message_loop final : detail::bool_hint<enable_message_loop>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP;
   }
@@ -1080,7 +1080,7 @@ struct enable_message_loop final : detail::bool_hint<enable_message_loop>
 
 struct no_close_on_alt_f4 final : detail::bool_hint<no_close_on_alt_f4>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4;
   }
@@ -1088,7 +1088,7 @@ struct no_close_on_alt_f4 final : detail::bool_hint<no_close_on_alt_f4>
 
 struct int_resource_icon final : detail::string_hint<int_resource_icon>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOWS_INTRESOURCE_ICON;
   }
@@ -1097,7 +1097,7 @@ struct int_resource_icon final : detail::string_hint<int_resource_icon>
 struct int_resource_icon_small final
     : detail::string_hint<int_resource_icon_small>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL;
   }
@@ -1109,7 +1109,7 @@ namespace mac {
 
 struct fullscreen_spaces final : detail::bool_hint<fullscreen_spaces>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES;
   }
@@ -1117,7 +1117,7 @@ struct fullscreen_spaces final : detail::bool_hint<fullscreen_spaces>
 
 struct background_app final : detail::bool_hint<background_app>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_MAC_BACKGROUND_APP;
   }
@@ -1126,7 +1126,7 @@ struct background_app final : detail::bool_hint<background_app>
 struct ctrl_click_emulate_right_click final
     : detail::bool_hint<ctrl_click_emulate_right_click>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK;
   }
@@ -1138,7 +1138,7 @@ namespace android {
 
 struct block_on_pause final : detail::bool_hint<block_on_pause>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_ANDROID_BLOCK_ON_PAUSE;
   }
@@ -1146,7 +1146,7 @@ struct block_on_pause final : detail::bool_hint<block_on_pause>
 
 struct trap_back_button final : detail::bool_hint<trap_back_button>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_ANDROID_TRAP_BACK_BUTTON;
   }
@@ -1155,7 +1155,7 @@ struct trap_back_button final : detail::bool_hint<trap_back_button>
 struct apk_expansion_main_file_version final
     : detail::int_hint<apk_expansion_main_file_version>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION;
   }
@@ -1164,7 +1164,7 @@ struct apk_expansion_main_file_version final
 struct apk_expansion_patch_file_version final
     : detail::int_hint<apk_expansion_patch_file_version>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION;
   }
@@ -1177,7 +1177,7 @@ namespace joystick {
 struct allow_background_events final
     : detail::bool_hint<allow_background_events>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS;
   }
@@ -1185,7 +1185,7 @@ struct allow_background_events final
 
 struct use_hidapi final : detail::bool_hint<use_hidapi>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI;
   }
@@ -1193,7 +1193,7 @@ struct use_hidapi final : detail::bool_hint<use_hidapi>
 
 struct use_hidapi_ps4 final : detail::bool_hint<use_hidapi_ps4>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_PS4;
   }
@@ -1201,7 +1201,7 @@ struct use_hidapi_ps4 final : detail::bool_hint<use_hidapi_ps4>
 
 struct use_hidapi_ps4_rumble final : detail::bool_hint<use_hidapi_ps4_rumble>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_PS4_RUMBLE;
   }
@@ -1209,7 +1209,7 @@ struct use_hidapi_ps4_rumble final : detail::bool_hint<use_hidapi_ps4_rumble>
 
 struct use_hidapi_steam final : detail::bool_hint<use_hidapi_steam>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_STEAM;
   }
@@ -1217,7 +1217,7 @@ struct use_hidapi_steam final : detail::bool_hint<use_hidapi_steam>
 
 struct use_hidapi_switch final : detail::bool_hint<use_hidapi_switch>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_SWITCH;
   }
@@ -1225,7 +1225,7 @@ struct use_hidapi_switch final : detail::bool_hint<use_hidapi_switch>
 
 struct use_hidapi_xbox final : detail::bool_hint<use_hidapi_xbox>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_XBOX;
   }
@@ -1233,7 +1233,7 @@ struct use_hidapi_xbox final : detail::bool_hint<use_hidapi_xbox>
 
 struct use_hidapi_game_cube final : detail::bool_hint<use_hidapi_game_cube>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE;
   }
@@ -1245,7 +1245,7 @@ namespace x11 {
 
 struct net_wm_ping final : detail::bool_hint<net_wm_ping>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_NET_WM_PING;
   }
@@ -1254,7 +1254,7 @@ struct net_wm_ping final : detail::bool_hint<net_wm_ping>
 struct net_wm_bypass_compositor final
     : detail::bool_hint<net_wm_bypass_compositor>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR;
   }
@@ -1262,7 +1262,7 @@ struct net_wm_bypass_compositor final
 
 struct force_egl final : detail::bool_hint<force_egl>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_FORCE_EGL;
   }
@@ -1270,7 +1270,7 @@ struct force_egl final : detail::bool_hint<force_egl>
 
 struct xinerama final : detail::bool_hint<xinerama>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_XINERAMA;
   }
@@ -1278,7 +1278,7 @@ struct xinerama final : detail::bool_hint<xinerama>
 
 struct xrandr final : detail::bool_hint<xrandr>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_XRANDR;
   }
@@ -1286,7 +1286,7 @@ struct xrandr final : detail::bool_hint<xrandr>
 
 struct xvidmode final : detail::bool_hint<xvidmode>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_XVIDMODE;
   }
@@ -1294,7 +1294,7 @@ struct xvidmode final : detail::bool_hint<xvidmode>
 
 struct window_visual_id final : detail::string_hint<window_visual_id>
 {
-  [[nodiscard]] static constexpr auto name() noexcept -> czstring
+  [[nodiscard]] constexpr static auto name() noexcept -> czstring
   {
     return SDL_HINT_VIDEO_X11_WINDOW_VISUALID;
   }

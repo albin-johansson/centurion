@@ -969,7 +969,7 @@ class basic_window final
    * @since 5.0.0
    */
   template <typename U = T, typename = is_window_owning<U>>
-  [[nodiscard]] static constexpr auto default_size() -> iarea
+  [[nodiscard]] constexpr static auto default_size() -> iarea
   {
     return {800, 600};
   }

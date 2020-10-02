@@ -865,7 +865,9 @@ class basic_joystick final
    public:
     void operator()(SDL_Joystick* joystick) noexcept
     {
-      SDL_JoystickClose(joystick);
+      if (SDL_JoystickGetAttached(joystick)) {
+        SDL_JoystickClose(joystick);
+      }
     }
   };
 

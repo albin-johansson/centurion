@@ -70,7 +70,7 @@ using is_window_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
  * @see `window`
  * @see `window_handle`
  *
- * @headerfile basic_window.hpp
+ * @headerfile window.hpp
  */
 template <typename T>
 class basic_window final

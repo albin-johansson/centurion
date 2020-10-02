@@ -894,16 +894,6 @@ class basic_joystick final
                                    SDL_Joystick*>;
   rep_t m_joystick;
 
-  explicit basic_joystick(SDL_Joystick* joystick) noexcept(is_handle())
-      : m_joystick{joystick}
-  {
-    if constexpr (is_owning()) {
-      if (!m_joystick) {
-        throw exception{"Cannot create joystick from null pointer!"};
-      }
-    }
-  }
-
   [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
   {
     return std::is_same_v<T, std::true_type>;
@@ -912,6 +902,16 @@ class basic_joystick final
   [[nodiscard]] constexpr static auto is_handle() noexcept -> bool
   {
     return std::is_same_v<T, std::false_type>;
+  }
+
+  explicit basic_joystick(SDL_Joystick* joystick) noexcept(is_handle())
+      : m_joystick{joystick}
+  {
+    if constexpr (is_owning()) {
+      if (!m_joystick) {
+        throw exception{"Cannot create joystick from null pointer!"};
+      }
+    }
   }
 };
 

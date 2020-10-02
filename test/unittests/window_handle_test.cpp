@@ -1,10 +1,9 @@
-#include "window_handle.hpp"
-
 #include <catch.hpp>
 #include <iostream>
 
 #include "log.hpp"
 #include "renderer.hpp"
+#include "window.hpp"
 #include "window_utils.hpp"
 
 TEST_CASE("window_handle::window_handle(SDL_Window*)", "[window_handle]")

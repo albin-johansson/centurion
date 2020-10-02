@@ -62,10 +62,6 @@ class sharing_texture;
 
 class surface;
 
-class window;
-
-class window_handle;
-
 class font;
 
 class font_cache;

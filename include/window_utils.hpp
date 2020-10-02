@@ -42,7 +42,7 @@
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "renderer_handle.hpp"
-#include "window_handle.hpp"
+#include "window.hpp"
 
 namespace cen {
 
@@ -99,7 +99,7 @@ template <typename T>
 [[nodiscard]] auto get_renderer(const basic_window<T>& window) noexcept
     -> renderer_handle
 {
-  return renderer_handle{SDL_GetRenderer(window.ptr())};
+  return renderer_handle{SDL_GetRenderer(window.get())};
 }
 
 /// @}

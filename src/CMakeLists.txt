@@ -7,9 +7,7 @@ set(SOURCE_FILES
         ../include/centurion_fwd.hpp
         ../include/types.hpp
         ../include/graphics_drivers.hpp
-        ../include/basic_window.hpp
         ../include/window.hpp
-        ../include/window_handle.hpp
         ../include/window_utils.hpp
         ../include/font.hpp
         ../include/basic_renderer.hpp
@@ -75,8 +73,6 @@ set(SOURCE_FILES
 
         misc/log.cpp
 
-        graphics/window.cpp
-        graphics/window_handle.cpp
         graphics/font.cpp
         graphics/font_cache.cpp
         graphics/texture.cpp

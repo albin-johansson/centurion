@@ -46,12 +46,12 @@
 #include <type_traits>
 #include <vector>
 
-#include "basic_window.hpp"
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "color.hpp"
 #include "detail/utils.hpp"
 #include "types.hpp"
+#include "window.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

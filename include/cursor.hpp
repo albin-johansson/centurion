@@ -250,7 +250,7 @@ class basic_cursor final
   /**
    * @brief Returns a handle to the default cursor for the system.
    *
-   * @return a handle to the default cursor for the system.; might not be
+   * @return a handle to the default cursor for the system; might not be
    * present.
    *
    * @since 5.0.0

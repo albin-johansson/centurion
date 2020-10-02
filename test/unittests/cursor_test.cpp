@@ -101,6 +101,14 @@ TEST_CASE("cursor::set_visible", "[cursor]")
   CHECK(cen::cursor::visible());
 }
 
+TEST_CASE("cursor::num_system_cursors()", "[cursor]")
+{
+  CHECK(cen::cursor::num_system_cursors() ==
+        static_cast<int>(SDL_NUM_SYSTEM_CURSORS));
+  CHECK(cen::cursor_handle::num_system_cursors() ==
+        static_cast<int>(SDL_NUM_SYSTEM_CURSORS));
+}
+
 TEST_CASE("system_cursor enum values", "[cursor]")
 {
   CHECK(cen::system_cursor::arrow == SDL_SYSTEM_CURSOR_ARROW);

@@ -37,6 +37,7 @@
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "detail/to_string.hpp"
+#include "exception.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 #include "surface.hpp"

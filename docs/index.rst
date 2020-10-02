@@ -25,11 +25,7 @@ Welcome to Centurion's documentation!
    :caption: Graphics
 
    pages/api/graphics/basic_window
-   pages/api/graphics/window
-   pages/api/graphics/window_handle
    pages/api/graphics/basic_renderer
-   pages/api/graphics/renderer
-   pages/api/graphics/renderer_handle
    pages/api/graphics/font
    pages/api/graphics/font_cache
    pages/api/graphics/surface

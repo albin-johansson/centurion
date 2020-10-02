@@ -1,5 +1,3 @@
-#include "renderer_handle.hpp"
-
 #include <catch.hpp>
 #include <iostream>
 

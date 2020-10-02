@@ -41,7 +41,7 @@
 
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
-#include "renderer_handle.hpp"
+#include "renderer.hpp"
 #include "window.hpp"
 
 namespace cen {

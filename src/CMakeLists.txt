@@ -10,9 +10,7 @@ set(SOURCE_FILES
         ../include/window.hpp
         ../include/window_utils.hpp
         ../include/font.hpp
-        ../include/basic_renderer.hpp
         ../include/renderer.hpp
-        ../include/renderer_handle.hpp
         ../include/joystick.hpp
         ../include/texture.hpp
         ../include/exception.hpp
@@ -81,8 +79,6 @@ set(SOURCE_FILES
         graphics/message_box_color_scheme.cpp
         graphics/surface.cpp
         graphics/graphics_drivers.cpp
-        graphics/renderer_handle.cpp
-        graphics/renderer.cpp
         graphics/color.cpp
 
         system/base_path.cpp

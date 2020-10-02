@@ -75,10 +75,6 @@ using is_window_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
 template <typename T>
 class basic_window final
 {
-  template <typename U>
-  friend auto get_renderer(const basic_window<U>& window) noexcept
-      -> renderer_handle;
-
   using owner_t = basic_window<std::true_type>;
 
   [[nodiscard]] constexpr static auto is_owning() noexcept -> bool

@@ -41,14 +41,6 @@ inline void font_test(Lambda&& lambda)
 
 }  // namespace
 
-TEST_CASE("renderer:: ctor(owner<SDL_Renderer*>)", "[renderer]")
-{
-  cen::window window;
-  CHECK_NOTHROW(cen::renderer{
-      SDL_CreateRenderer(window.get(), -1, SDL_RENDERER_SOFTWARE)});
-  CHECK_THROWS_AS(cen::renderer{nullptr}, cen::exception);
-}
-
 TEST_CASE("renderer:: ctor(const window&, SDL_RendererFlags)", "[renderer]")
 {
   cen::window window;
@@ -736,25 +728,6 @@ TEST_CASE("renderer::get", "[renderer]")
   cen::window window;
   cen::renderer renderer{window};
   CHECK(renderer.get());
-}
-
-TEST_CASE("Renderer to SDL_Renderer*", "[renderer]")
-{
-  SECTION("Const")
-  {
-    cen::window window;
-    const cen::renderer renderer{window};
-    const auto* sdlRenderer = static_cast<const SDL_Renderer*>(renderer);
-    CHECK(sdlRenderer);
-  }
-
-  SECTION("Non-const")
-  {
-    cen::window window;
-    cen::renderer renderer{window};
-    auto* sdlRenderer = static_cast<SDL_Renderer*>(renderer);
-    CHECK(sdlRenderer);
-  }
 }
 
 TEST_CASE("renderer to_string", "[renderer]")

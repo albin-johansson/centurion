@@ -50,10 +50,6 @@ class mutex;
 
 class scoped_lock;
 
-class renderer;
-
-class renderer_handle;
-
 class texture;
 
 class texture_handle;

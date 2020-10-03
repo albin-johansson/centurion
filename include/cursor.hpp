@@ -148,10 +148,12 @@ enum class system_cursor
 }
 
 template <typename T>
-using is_cursor_owning = std::enable_if_t<std::is_same_v<T, std::true_type>>;
+using is_cursor_owning =
+    std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
 
 template <typename T>
-using is_cursor_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
+using is_cursor_handle =
+    std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
  * @class basic_cursor
@@ -186,7 +188,7 @@ class basic_cursor final
    *
    * @since 4.0.0
    */
-  template <typename U = T, typename = is_cursor_owning<U>>
+  template <typename U = T, is_cursor_owning<U> = true>
   explicit basic_cursor(system_cursor cursor)
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
@@ -208,7 +210,7 @@ class basic_cursor final
    *
    * @since 4.0.0
    */
-  template <typename U = T, typename = is_cursor_owning<U>>
+  template <typename U = T, is_cursor_owning<U> = true>
   basic_cursor(const surface& surface, const ipoint& hotspot)
       : m_cursor{SDL_CreateColorCursor(surface.get(), hotspot.x(), hotspot.y())}
   {
@@ -230,7 +232,7 @@ class basic_cursor final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_cursor_handle<U>>
+  template <typename U = T, is_cursor_handle<U> = true>
   explicit basic_cursor(SDL_Cursor* cursor) noexcept : m_cursor{cursor}
   {}
 
@@ -243,7 +245,7 @@ class basic_cursor final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_cursor_handle<U>>
+  template <typename U = T, is_cursor_handle<U> = true>
   explicit basic_cursor(const basic_cursor<std::true_type>& cursor) noexcept
       : m_cursor{cursor.get()}
   {}
@@ -364,7 +366,7 @@ class basic_cursor final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_cursor_handle<U>>
+  template <typename U = T, is_cursor_handle<U> = true>
   explicit operator bool() const noexcept
   {
     return m_cursor != nullptr;

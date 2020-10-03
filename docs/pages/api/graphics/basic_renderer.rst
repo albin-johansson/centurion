@@ -13,7 +13,7 @@ General information
   Property               Value
 ----------------------  -----------------------------------------
 Default constructible    No
-Copyable                 Yes
+Copyable                 Only ``renderer_handle``
 Movable                  Yes
 Implicit conversions     None
 Explicit conversions     None

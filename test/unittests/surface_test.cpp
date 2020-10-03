@@ -12,6 +12,15 @@
 
 static constexpr cen::czstring path = "resources/panda.png";
 
+TEST_CASE("surface_handle", "[surface]")
+{
+  CHECK_FALSE(cen::surface_handle{nullptr});
+
+  cen::surface surface{path};
+  cen::surface_handle handle{surface.get()};
+  CHECK(handle);
+}
+
 TEST_CASE("surface(nn_czstring)", "[surface]")
 {
   SECTION("Bad path")

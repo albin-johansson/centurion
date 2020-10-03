@@ -226,6 +226,19 @@ class basic_window final
   }
 
   /**
+   * @brief Updates the window surface.
+   *
+   * @return `true` if the window surface was successfully updated; `false`
+   * otherwise.
+   *
+   * @since 5.0.0
+   */
+  auto update_surface() noexcept -> bool
+  {
+    return SDL_UpdateWindowSurface(get()) == 0;
+  }
+
+  /**
    * @brief Sets whether or not the window is in fullscreen mode.
    *
    * @param fullscreen `true` if the window should enable fullscreen mode;

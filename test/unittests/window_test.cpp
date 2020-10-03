@@ -833,6 +833,17 @@ TEST_CASE("window::title", "[window]")
   CHECK_THAT(window.title(), Catch::Equals(title));
 }
 
+TEST_CASE("window::update_surface", "[window]")
+{
+  cen::window window;
+
+  auto handle = window.get_surface();
+  handle.set_alpha(0x12);
+
+  CHECK(window.update_surface());
+  CHECK(window.get_surface().alpha() == 0x12);
+}
+
 TEST_CASE("window::get_surface", "[window]")
 {
   cen::window window;

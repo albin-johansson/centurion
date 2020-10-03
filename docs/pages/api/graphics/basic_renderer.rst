@@ -120,7 +120,7 @@ parameter.
 
 .. code-block:: c++
 
-  #include <renderer_handle.hpp>
+  #include <renderer.hpp>
 
   void draw(SDL_Renderer* renderer)
   {

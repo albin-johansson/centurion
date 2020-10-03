@@ -29,6 +29,12 @@
  *
  * @author Albin Johansson
  *
+ * @todo SDL_GetDisplayBounds
+ * @todo SDL_GetDisplayDPI
+ * @todo SDL_GetDisplayName
+ * @todo SDL_GetDisplayOrientation
+ * @todo SDL_GetDisplayUsableBounds
+ *
  * @date 2019-2020
  *
  * @copyright MIT License

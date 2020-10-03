@@ -29,6 +29,10 @@
  *
  * @author Albin Johansson
  *
+ * @todo SDL_GetKeyboardFocus()
+ * @todo SDL_GetMouseFocus()
+ * @todo SDL_GetWindowSurface(window) -> surface_handle
+ *
  * @date 2019-2020
  *
  * @copyright MIT License

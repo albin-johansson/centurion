@@ -73,6 +73,8 @@ using is_renderer_handle =
  *
  * @since 5.0.0
  *
+ * @todo SDL_GetRenderTarget() -> SDL_Texture* (Requires texture_handle)
+ *
  * @see `renderer`
  * @see `renderer_handle`
  *

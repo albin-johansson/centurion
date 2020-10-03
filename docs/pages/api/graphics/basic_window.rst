@@ -9,7 +9,7 @@ General information
 ======================  =========================================
   Property               Value
 ----------------------  -----------------------------------------
-Default constructible    No
+Default constructible    Only ``window``
 Copyable                 Only ``window_handle``
 Movable                  Both ``window`` and ``window_handle``
 Implicit conversions     None

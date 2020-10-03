@@ -127,7 +127,7 @@ TEST_CASE("controller_bind_type enum values", "[controller]")
   }
 }
 
-TEST_CASE("controller load_mappings", "[controller]")
+TEST_CASE("controller load_mappings", "[!mayfail][controller]")
 {
   CHECK(cen::controller::load_mappings("resources/gamecontrollerdb.txt") > 0);
 }
@@ -193,142 +193,74 @@ class controller_handler  // TODO worth adding?
 
 }  // namespace cen
 
-// TODO game controller visualization program
-
-TEST_CASE("interactive controller", "[.controller]")
+TEST_CASE("Interactive game controller test", "[.controller]")
 {
-  cen::window window;
+  cen::window window{"Game controller demo"};
   cen::renderer renderer{window};
   cen::event event;
-  cen::controller_handler controllers;
-  controllers.add_all();
 
-  //  bool running{true};
-  //
-  //  int colorIndex{};
-  //  constexpr std::array<cen::color, 5> colors{cen::colors::red,
-  //                                             cen::colors::salmon,
-  //                                             cen::colors::cyan,
-  //                                             cen::colors::dark_sea_green,
-  //                                             cen::colors::orchid};
-  //
-  //  auto handleDeviceEvent = [&](const cen::controller_device_event& event) {
-  //    if (event.type() == cen::event_type::controller_device_removed) {
-  //      const auto id = event.which();
-  //      controllers.remove(id);
-  //    } else if (event.type() == cen::event_type::controller_device_added) {
-  //      controllers.emplace(event.which());
-  //    }
-  //  };
-  //
-  //  auto handleButtonEvent = [&](const cen::controller_button_event& event) {
-  //    if (event.state() == cen::button_state::released) {
-  //      ++colorIndex;
-  //    }
-  //  };
-  //
-  //  window.show();
-  //  while (running) {
-  //    while (event.poll()) {
-  //      if (event.is<cen::quit_event>()) {
-  //        running = false;
-  //        break;
-  //      } else if (auto* de = event.try_get<cen::controller_device_event>()) {
-  //        handleDeviceEvent(*de);
-  //      } else if (auto* be = event.try_get<cen::controller_button_event>()) {
-  //        handleButtonEvent(*be);
-  //      }
-  //    }
-  //
-  //    renderer.clear_with(colors.at(colorIndex % colors.size()));
-  //
-  //    renderer.set_color(cen::colors::wheat);
-  //    renderer.fill_rect<int>({{10, 10}, {100, 100}});
-  //
-  //    renderer.present();
-  //  }
-  //  window.hide();
+  cen::controller::load_mappings("resources/gamecontrollerdb.txt");
+
+  cen::controller controller{0};
+
+  cen::frect rect{{0, 0}, {100, 100}};
+
+  float dx{};
+  float dy{};
+
+  constexpr auto deadZone = 8000;
+
+  constexpr std::array<cen::color, 3> colors{
+      cen::colors::pink, cen::colors::steel_blue, cen::colors::red};
+  int colorIndex{};
+  cen::color color = colors.at(colorIndex);
+
+  bool running = true;
+  window.show();
+  while (running) {
+    while (event.poll()) {
+      if (event.is<cen::quit_event>()) {
+        running = false;
+        break;
+      } else if (const auto* cbe =
+                     event.try_get<cen::controller_button_event>()) {
+        if (cbe->state() == cen::button_state::released) {
+          ++colorIndex;
+          color = colors.at(colorIndex % int{colors.size()});
+        }
+      } else if (const auto* cae =
+                     event.try_get<cen::controller_axis_event>()) {
+        const auto axis = cae->axis();
+        const auto value = cae->value();  // -32768 to 32767)
+        const auto fvalue = static_cast<float>(value);
+
+        const auto step = 0.0005f;
+
+        if (axis == cen::controller_axis::left_x) {
+          if ((value < -deadZone) || (value > deadZone)) {
+            dx = fvalue * step;
+          } else {
+            dx = 0;
+          }
+        } else if (axis == cen::controller_axis::left_y) {
+          if ((value < -deadZone) || (value > deadZone)) {
+            dy = fvalue * step;
+          } else {
+            dy = 0;
+          }
+        }
+      }
+    }
+
+    rect.set_x(rect.x() + dx);
+    rect.set_y(rect.y() + dy);
+
+    renderer.clear_with(color);
+
+    renderer.set_color(cen::colors::dark_red);
+    renderer.fill_rect(rect);
+
+    renderer.present();
+  }
+  window.hide();
 }
-
-// TEST_CASE("load_game_controller_mappings", "[controller]")
-//{
-//  const auto nAdded =
-//      cen::controller::load_mappings("resources/gamecontrollerdb.txt");
-//  CHECK(nAdded > 0);
-//}
-//
-//#include <array>
-//
-
-//
-// TEST_CASE("Interactive game controller test", "[..controller]")
-//{
-//  cen::window window{"Game controller demo"};
-//  cen::renderer renderer{window};
-//  cen::event event;
-//
-//  cen::controller::load_mappings("resources/gamecontrollerdb.txt");
-//
-//  cen::controller controller{0};
-//
-//  cen::frect rect{{0, 0}, {100, 100}};
-//
-//  float dx{};
-//  float dy{};
-//
-//  constexpr auto deadZone = 8000;
-//
-//  constexpr std::array<cen::color, 3> colors{
-//      cen::colors::pink, cen::colors::steel_blue, cen::colors::red};
-//  int colorIndex{};
-//  cen::color color = colors.at(colorIndex);
-//
-//  bool running = true;
-//  window.show();
-//  while (running) {
-//    while (event.poll()) {
-//      if (event.is<cen::quit_event>()) {
-//        running = false;
-//        break;
-//      } else if (const auto* cbe =
-//                     event.try_get<cen::controller_button_event>()) {
-//        if (cbe->state() == cen::button_state::released) {
-//          ++colorIndex;
-//          color = colors.at(colorIndex % int{colors.size()});
-//        }
-//      } else if (const auto* cae =
-//                     event.try_get<cen::controller_axis_event>()) {
-//        const auto axis = cae->axis();
-//        const auto value = cae->value();  // -32768 to 32767)
-//        const auto fvalue = static_cast<float>(value);
-//
-//        const auto step = 0.0005f;
-//
-//        if (axis == cen::controller_axis::left_x) {
-//          if ((value < -deadZone) || (value > deadZone)) {
-//            dx = fvalue * step;
-//          } else {
-//            dx = 0;
-//          }
-//        } else if (axis == cen::controller_axis::left_y) {
-//          if ((value < -deadZone) || (value > deadZone)) {
-//            dy = fvalue * step;
-//          } else {
-//            dy = 0;
-//          }
-//        }
-//      }
-//    }
-//
-//    rect.set_x(rect.x() + dx);
-//    rect.set_y(rect.y() + dy);
-//
-//    renderer.clear_with(color);
-//
-//    renderer.set_color(cen::colors::dark_red);
-//    renderer.fill_rect(rect);
-//
-//    renderer.present();
-//  }
-//  window.hide();
-//}

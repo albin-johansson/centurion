@@ -93,7 +93,6 @@ set(SOURCE_FILES
         input/touch.cpp
         input/key_code.cpp
         input/scan_code.cpp
-        input/controller.cpp
 
         event/event.cpp
         event/quit_event.cpp

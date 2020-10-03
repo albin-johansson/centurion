@@ -904,8 +904,8 @@ class basic_window final
   /**
    * @brief Returns a handle to the window framebuffer surface.
    *
-   * @warning It is not possible use the framebuffer surface with 3D or the
-   * rendering API.
+   * @warning It is not possible use the framebuffer surface with the 3D or 2D
+   * rendering APIs.
    *
    * @return a handle to the window surface, might not contain a valid surface
    * pointer.

@@ -833,6 +833,12 @@ TEST_CASE("window::title", "[window]")
   CHECK_THAT(window.title(), Catch::Equals(title));
 }
 
+TEST_CASE("window::get_surface", "[window]")
+{
+  cen::window window;
+  CHECK(window.get_surface());
+}
+
 TEST_CASE("window::get", "[window]")
 {
   const cen::window window;

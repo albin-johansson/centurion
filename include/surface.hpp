@@ -235,7 +235,7 @@ class basic_surface final
    */
   void set_alpha(u8 alpha) noexcept
   {
-    SDL_SetSurfaceAlphaMod(m_surface.get(), alpha);
+    SDL_SetSurfaceAlphaMod(get(), alpha);
   }
 
   /**
@@ -248,8 +248,7 @@ class basic_surface final
    */
   void set_color_mod(const color& color) noexcept
   {
-    SDL_SetSurfaceColorMod(
-        m_surface.get(), color.red(), color.green(), color.blue());
+    SDL_SetSurfaceColorMod(get(), color.red(), color.green(), color.blue());
   }
 
   /**
@@ -261,7 +260,7 @@ class basic_surface final
    */
   void set_blend_mode(blend_mode mode) noexcept
   {
-    SDL_SetSurfaceBlendMode(m_surface.get(), static_cast<SDL_BlendMode>(mode));
+    SDL_SetSurfaceBlendMode(get(), static_cast<SDL_BlendMode>(mode));
   }
 
   /**
@@ -274,7 +273,7 @@ class basic_surface final
   [[nodiscard]] auto alpha() const noexcept -> u8
   {
     u8 alpha{0xFF};
-    SDL_GetSurfaceAlphaMod(m_surface.get(), &alpha);
+    SDL_GetSurfaceAlphaMod(get(), &alpha);
     return alpha;
   }
 
@@ -290,7 +289,7 @@ class basic_surface final
     u8 red{};
     u8 green{};
     u8 blue{};
-    SDL_GetSurfaceColorMod(m_surface.get(), &red, &green, &blue);
+    SDL_GetSurfaceColorMod(get(), &red, &green, &blue);
     return color{red, green, blue};
   }
 
@@ -304,7 +303,7 @@ class basic_surface final
   [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
     SDL_BlendMode mode{};
-    SDL_GetSurfaceBlendMode(m_surface.get(), &mode);
+    SDL_GetSurfaceBlendMode(get(), &mode);
     return static_cast<blend_mode>(mode);
   }
 
@@ -324,7 +323,7 @@ class basic_surface final
   [[nodiscard]] auto convert(pixel_format format) const -> basic_surface
   {
     const auto pixelFormat = static_cast<u32>(format);
-    if (auto* s = SDL_ConvertSurfaceFormat(m_surface.get(), pixelFormat, 0)) {
+    if (auto* s = SDL_ConvertSurfaceFormat(get(), pixelFormat, 0)) {
       basic_surface converted{s};
       converted.set_blend_mode(get_blend_mode());
       return converted;
@@ -455,7 +454,7 @@ class basic_surface final
    */
   [[nodiscard]] explicit operator SDL_Surface*() noexcept
   {
-    return m_surface.get();
+    return get();
   }
 
   /**
@@ -467,7 +466,7 @@ class basic_surface final
    */
   [[nodiscard]] explicit operator const SDL_Surface*() const noexcept
   {
-    return m_surface.get();
+    return get();
   }
 
  private:

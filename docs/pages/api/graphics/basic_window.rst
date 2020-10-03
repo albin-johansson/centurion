@@ -10,8 +10,8 @@ General information
   Property               Value
 ----------------------  -----------------------------------------
 Default constructible    No
-Copyable                 N/A
-Movable                  N/A
+Copyable                 Only ``window_handle``
+Movable                  Both ``window`` and ``window_handle``
 Implicit conversions     None
 Explicit conversions     None
 Overloaded operators     None
@@ -101,7 +101,7 @@ features a ``SDL_Window*`` parameter.
 
 .. code-block:: c++
 
-  #include <window_handle.hpp>
+  #include <window.hpp>
 
   void foo(SDL_Window* window)
   {

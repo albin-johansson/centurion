@@ -912,7 +912,7 @@ class basic_window final
    *
    * @since 5.0.0
    */
-  [[nodiscard]] auto get_surface() const noexcept -> surface_handle
+  [[nodiscard]] auto get_surface() noexcept -> surface_handle
   {
     return surface_handle{SDL_GetWindowSurface(get())};
   }

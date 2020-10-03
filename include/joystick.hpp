@@ -56,10 +56,12 @@
 namespace cen {
 
 template <typename T>
-using is_joystick_owning = std::enable_if_t<std::is_same_v<T, std::true_type>>;
+using is_joystick_owning =
+    std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
 
 template <typename T>
-using is_joystick_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
+using is_joystick_handle =
+    std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
  * @class basic_joystick
@@ -172,7 +174,7 @@ class basic_joystick final
     int dy;
   };
 
-  template <typename U = T, typename = is_joystick_owning<U>>
+  template <typename U = T, is_joystick_owning<U> = true>
   explicit basic_joystick(int deviceIndex)
       : m_joystick{SDL_JoystickOpen(deviceIndex)}
   {
@@ -181,7 +183,7 @@ class basic_joystick final
     }
   }
 
-  template <typename U = T, typename = is_joystick_handle<U>>
+  template <typename U = T, is_joystick_handle<U> = true>
   explicit basic_joystick(const owner_t& joystick) noexcept
       : m_joystick{joystick.get()}
   {}
@@ -198,7 +200,7 @@ class basic_joystick final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_joystick_handle<U>>
+  template <typename U = T, is_joystick_handle<U> = true>
   [[nodiscard]] static auto from_instance_id(SDL_JoystickID id) noexcept
       -> handle_t
   {
@@ -217,7 +219,7 @@ class basic_joystick final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_joystick_handle<U>>
+  template <typename U = T, is_joystick_handle<U> = true>
   [[nodiscard]] static auto from_player_index(int playerIndex) noexcept
       -> handle_t
   {
@@ -850,7 +852,7 @@ class basic_joystick final
     return SDL_JOYSTICK_AXIS_MIN;
   }
 
-  template <typename U = T, typename = is_joystick_handle<U>>
+  template <typename U = T, is_joystick_handle<U> = true>
   explicit operator bool() const noexcept
   {
     return m_joystick != nullptr;

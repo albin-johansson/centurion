@@ -29,8 +29,6 @@
  *
  * @author Albin Johansson
  *
- * @todo SDL_GetDisplayOrientation
- *
  * @date 2019-2020
  *
  * @copyright MIT License

@@ -108,6 +108,8 @@ enum class orientation
  * @return DPI information about the specified display; `std::nullopt` if
  * something went wrong.
  *
+ * @see SDL_GetDisplayDPI
+ *
  * @since 5.0.0
  */
 [[nodiscard]] inline auto dpi(int displayIndex = 0) -> std::optional<dpi_info>
@@ -190,6 +192,19 @@ enum class orientation
   }
 }
 
+/**
+ * @brief Returns the bounds of a display.
+ *
+ * @param displayIndex the index of the display to query, must be in the range
+ * [0, `cen::screen::amount()`].
+ *
+ * @return the bounds of the specified display; `std::nullopt` if something went
+ * wrong.
+ *
+ * @see SDL_GetDisplayBounds
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline auto bounds(int displayIndex = 0) -> std::optional<irect>
 {
   irect result{};
@@ -200,6 +215,19 @@ enum class orientation
   }
 }
 
+/**
+ * @brief Returns the usable bounds of a display.
+ *
+ * @param displayIndex the index of the display to query, must be in the range
+ * [0, `cen::screen::amount()`].
+ *
+ * @return the usable bounds of the specified display; `std::nullopt` if
+ * something went wrong.
+ *
+ * @see SDL_GetDisplayUsableBounds
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline auto usable_bounds(int displayIndex = 0)
     -> std::optional<irect>
 {

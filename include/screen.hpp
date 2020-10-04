@@ -51,10 +51,11 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
+/// @addtogroup system
+/// @{
+
 /**
  * @namespace cen::screen
- *
- * @ingroup system
  *
  * @brief Contains functions that provide information about the screen.
  *
@@ -143,5 +144,7 @@ CENTURION_QUERY
 auto get_pixel_format() noexcept -> pixel_format;
 
 }  // namespace cen::screen
+
+/// @}
 
 #endif  // CENTURION_SCREEN_HEADER

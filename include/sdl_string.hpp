@@ -118,9 +118,8 @@ class sdl_string final
   }
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(zstring text) noexcept
     {
       SDL_free(text);

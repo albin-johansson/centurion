@@ -1842,9 +1842,8 @@ class basic_renderer final
   }
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(SDL_Renderer* renderer) noexcept
     {
       SDL_DestroyRenderer(renderer);

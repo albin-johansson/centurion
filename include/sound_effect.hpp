@@ -264,9 +264,8 @@ class sound_effect final
   }
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(Mix_Chunk* chunk) noexcept
     {
       Mix_FreeChunk(chunk);

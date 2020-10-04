@@ -1005,9 +1005,8 @@ class basic_window final
   }
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(SDL_Window* window) noexcept
     {
       SDL_DestroyWindow(window);

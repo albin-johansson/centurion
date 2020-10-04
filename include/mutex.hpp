@@ -130,9 +130,8 @@ class mutex final
   auto get() noexcept -> SDL_mutex*;
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(SDL_mutex* mutex) noexcept
     {
       SDL_DestroyMutex(mutex);

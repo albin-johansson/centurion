@@ -137,9 +137,8 @@ class semaphore final
   auto tokens() const noexcept -> u32;
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(SDL_sem* semaphore) noexcept
     {
       SDL_DestroySemaphore(semaphore);

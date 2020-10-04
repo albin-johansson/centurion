@@ -470,9 +470,8 @@ class basic_surface final
   }
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(SDL_Surface* surface) noexcept
     {
       SDL_FreeSurface(surface);

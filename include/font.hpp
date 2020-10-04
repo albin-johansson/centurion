@@ -523,9 +523,8 @@ class font final
   }
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(TTF_Font* font) noexcept
     {
       TTF_CloseFont(font);

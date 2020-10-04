@@ -880,9 +880,8 @@ class basic_joystick final
   }
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(SDL_Joystick* joystick) noexcept
     {
       if (SDL_JoystickGetAttached(joystick)) {

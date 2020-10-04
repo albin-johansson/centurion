@@ -392,9 +392,8 @@ class basic_cursor final
   }
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(SDL_Cursor* cursor) noexcept
     {
       SDL_FreeCursor(cursor);

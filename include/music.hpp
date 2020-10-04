@@ -493,9 +493,8 @@ class music final
   }
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(Mix_Music* music) noexcept
     {
       Mix_FreeMusic(music);

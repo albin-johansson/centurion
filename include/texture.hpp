@@ -544,9 +544,8 @@ class texture final
   }
 
  private:
-  class deleter final
+  struct deleter final
   {
-   public:
     void operator()(SDL_Texture* texture) noexcept
     {
       SDL_DestroyTexture(texture);

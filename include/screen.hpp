@@ -99,6 +99,17 @@ enum class orientation
   portrait_flipped = SDL_ORIENTATION_PORTRAIT_FLIPPED
 };
 
+/**
+ * @brief Returns DPI information about a display.
+ *
+ * @param displayIndex the index of the display to query, must be in the range
+ * [0, `cen::screen::amount()`].
+ *
+ * @return DPI information about the specified display; `std::nullopt` if
+ * something went wrong.
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline auto dpi(int displayIndex = 0) -> std::optional<dpi_info>
 {
   dpi_info info{};
@@ -111,6 +122,17 @@ enum class orientation
   }
 }
 
+/**
+ * @brief Returns vertical DPI information about a display.
+ *
+ * @param displayIndex the index of the display to query, must be in the range
+ * [0, `cen::screen::amount()`].
+ *
+ * @return the vertical DPI information about the specified display;
+ * `std::nullopt` if something went wrong.
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline auto vertical_dpi(int displayIndex = 0)
     -> std::optional<float>
 {
@@ -123,6 +145,17 @@ enum class orientation
   }
 }
 
+/**
+ * @brief Returns diagonal DPI information about a display.
+ *
+ * @param displayIndex the index of the display to query, must be in the range
+ * [0, `cen::screen::amount()`].
+ *
+ * @return the diagonal DPI information about the specified display;
+ * `std::nullopt` if something went wrong.
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline auto diagonal_dpi(int displayIndex = 0)
     -> std::optional<float>
 {
@@ -135,6 +168,17 @@ enum class orientation
   }
 }
 
+/**
+ * @brief Returns horizontal DPI information about a display.
+ *
+ * @param displayIndex the index of the display to query, must be in the range
+ * [0, `cen::screen::amount()`].
+ *
+ * @return the horizontal DPI information about the specified display;
+ * `std::nullopt` if something went wrong.
+ *
+ * @since 5.0.0
+ */
 [[nodiscard]] inline auto horizontal_dpi(int displayIndex = 0)
     -> std::optional<float>
 {

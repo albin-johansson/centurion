@@ -53,10 +53,12 @@ namespace cen {
 /// @{
 
 template <typename T>
-using is_window_owning = std::enable_if_t<std::is_same_v<T, std::true_type>>;
+using is_window_owning =
+    std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
 
 template <typename T>
-using is_window_handle = std::enable_if_t<std::is_same_v<T, std::false_type>>;
+using is_window_handle =
+    std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
  * @class basic_window
@@ -120,7 +122,7 @@ class basic_window final
    *
    * @since 3.0.0
    */
-  template <typename U = T, typename = is_window_owning<U>>
+  template <typename U = T, is_window_owning<U> = true>
   explicit basic_window(nn_czstring title, const iarea& size = default_size())
   {
     if ((size.width < 1) || (size.height < 1)) {
@@ -148,7 +150,7 @@ class basic_window final
    *
    * @since 3.0.0
    */
-  template <typename U = T, typename = is_window_owning<U>>
+  template <typename U = T, is_window_owning<U> = true>
   basic_window() : basic_window{"Centurion window"}
   {}
 
@@ -159,7 +161,7 @@ class basic_window final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_window_handle<U>>
+  template <typename U = T, is_window_handle<U> = true>
   explicit basic_window(const owner_t& window) noexcept : m_window{window.get()}
   {}
 
@@ -965,7 +967,7 @@ class basic_window final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_window_handle<U>>
+  template <typename U = T, is_window_handle<U> = true>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;
@@ -998,7 +1000,7 @@ class basic_window final
    *
    * @since 5.0.0
    */
-  template <typename U = T, typename = is_window_owning<U>>
+  template <typename U = T, is_window_owning<U> = true>
   [[nodiscard]] constexpr static auto default_size() -> iarea
   {
     return {800, 600};

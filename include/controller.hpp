@@ -268,7 +268,7 @@ class basic_controller final
   [[nodiscard]] static auto from_joystick(SDL_JoystickID id) -> basic_controller
   {
     if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
-      return controller{ptr};
+      return basic_controller{ptr};
     } else {
       throw sdl_error{"Failed to create controller from joystick ID"};
     }
@@ -289,7 +289,7 @@ class basic_controller final
   [[nodiscard]] static auto from_index(player_index index) -> basic_controller
   {
     if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
-      return controller{ptr};
+      return basic_controller{ptr};
     } else {
       throw sdl_error{"Failed to create controller from player index"};
     }

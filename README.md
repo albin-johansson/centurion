@@ -6,7 +6,7 @@
 | Ubuntu 20.04 w/ GCC 9.3.0 | [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) |
 | Windows 10 w/ MSVC 19.27.29111.0 | [![Build status](https://ci.appveyor.com/api/projects/status/h0er6nobyf3c8jsu?svg=true)](https://ci.appveyor.com/project/AlbinJohansson/centurion) |
 | Read-the-Docs | [![Documentation Status](https://readthedocs.org/projects/centurion/badge/?version=latest)](https://centurion.readthedocs.io/en/latest/?badge=latest) |
-| Code coverage | [![codecov](https://codecov.io/gh/albin-johansson/Centurion/branch/master/graph/badge.svg)](https://codecov.io/gh/albin-johansson/Centurion) |
+| Code coverage | [![codecov](https://codecov.io/gh/albin-johansson/Centurion/branch/dev/graph/badge.svg)](https://codecov.io/gh/albin-johansson/Centurion) |
 
 ## What is Centurion?
 

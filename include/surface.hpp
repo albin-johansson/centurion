@@ -60,14 +60,6 @@
 
 namespace cen {
 
-template <typename T>
-using is_surface_owning =
-    std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
-
-template <typename T>
-using is_surface_handle =
-    std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
-
 /**
  * \class basic_surface
  *
@@ -85,11 +77,6 @@ using is_surface_handle =
 template <typename T>
 class basic_surface final
 {
-  [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
-  {
-    return std::is_same_v<T, std::true_type>;
-  }
-
  public:
   /**
    * \brief Creates a surface from a pointer to an SDL surface.
@@ -101,10 +88,10 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  explicit basic_surface(SDL_Surface* surface) noexcept(!is_owning())
+  explicit basic_surface(SDL_Surface* surface) noexcept(!detail::is_owning<T>())
       : m_surface{surface}
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       if (!m_surface) {
         throw exception{"Cannot create surface from null pointer!"};
       }
@@ -121,7 +108,7 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  template <typename T_ = T, is_surface_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   explicit basic_surface(nn_czstring file) : m_surface{IMG_Load(file)}
   {
     if (!m_surface) {
@@ -136,9 +123,9 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  basic_surface(const basic_surface& other) noexcept(!is_owning())
+  basic_surface(const basic_surface& other) noexcept(!detail::is_owning<T>())
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       copy(other);
     } else {
       m_surface = other.get();
@@ -163,11 +150,11 @@ class basic_surface final
    *
    * \since 4.0.0
    */
-  auto operator=(const basic_surface& other) noexcept(!is_owning())
+  auto operator=(const basic_surface& other) noexcept(!detail::is_owning<T>())
       -> basic_surface&
   {
     if (this != &other) {
-      if constexpr (is_owning()) {
+      if constexpr (detail::is_owning<T>()) {
         copy(other);
       } else {
         m_surface = other.get();
@@ -421,7 +408,7 @@ class basic_surface final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Surface*
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       return m_surface.get();
     } else {
       return m_surface;
@@ -438,7 +425,7 @@ class basic_surface final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_surface_handle<T_> = true>
+  template <typename T_ = T, detail::is_handle<T_> = true>
   explicit operator bool() const noexcept
   {
     return m_surface != nullptr;

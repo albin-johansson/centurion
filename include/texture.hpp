@@ -51,6 +51,7 @@
 #include "centurion_api.hpp"
 #include "color.hpp"
 #include "detail/to_string.hpp"
+#include "detail/utils.hpp"
 #include "exception.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
@@ -64,14 +65,6 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
-
-template <typename T>
-using is_texture_owning =
-    std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
-
-template <typename T>
-using is_texture_handle =
-    std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
  * \class basic_texture
@@ -93,11 +86,6 @@ class basic_texture final
 {
   using owner_t = basic_texture<std::true_type>;
 
-  [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
-  {
-    return std::is_same_v<T, std::true_type>;
-  }
-
  public:
   /**
    * \brief Creates an texture from a pre-existing SDL texture.
@@ -109,9 +97,10 @@ class basic_texture final
    *
    * \since 3.0.0
    */
-  explicit basic_texture(SDL_Texture* src) : m_texture{src}
+  explicit basic_texture(SDL_Texture* src) noexcept(!detail::is_owning<T>())
+      : m_texture{src}
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       if (!m_texture) {
         throw exception{"Cannot create texture from null pointer!"};
       }
@@ -125,7 +114,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_texture_handle<T_> = true>
+  template <typename T_ = T, detail::is_handle<T_> = true>
   explicit basic_texture(owner_t& owner) noexcept : m_texture{owner.get()}
   {}
 
@@ -142,7 +131,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename U = T, is_texture_owning<U> = true>
+  template <typename Renderer, typename U = T, detail::is_owner<U> = true>
   basic_texture(const Renderer& renderer, nn_czstring path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
@@ -164,7 +153,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename U = T, is_texture_owning<U> = true>
+  template <typename Renderer, typename U = T, detail::is_owner<U> = true>
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
@@ -188,7 +177,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename U = T, is_texture_owning<U> = true>
+  template <typename Renderer, typename U = T, detail::is_owner<U> = true>
   basic_texture(const Renderer& renderer,
                 pixel_format format,
                 texture_access access,
@@ -224,7 +213,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename U = T, is_texture_owning<U> = true>
+  template <typename Renderer, typename U = T, detail::is_owner<U> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       nn_czstring path,
                                       pixel_format format) -> basic_texture
@@ -544,7 +533,7 @@ class basic_texture final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_texture_handle<T_> = true>
+  template <typename T_ = T, detail::is_handle<T_> = true>
   explicit operator bool() const noexcept
   {
     return m_texture != nullptr;
@@ -559,7 +548,7 @@ class basic_texture final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Texture*
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       return m_texture.get();
     } else {
       return m_texture;

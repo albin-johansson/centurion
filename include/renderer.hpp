@@ -38,6 +38,7 @@
 #include "centurion_api.hpp"
 #include "color.hpp"
 #include "colors.hpp"
+#include "detail/utils.hpp"
 #include "font.hpp"
 #include "font_cache.hpp"
 #include "rect.hpp"
@@ -53,14 +54,6 @@ namespace cen {
 
 /// \addtogroup graphics
 /// \{
-
-template <typename T>
-using is_renderer_owning =
-    std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
-
-template <typename T>
-using is_renderer_handle =
-    std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
  * \class basic_renderer
@@ -84,11 +77,6 @@ class basic_renderer final
 {
   using owner_t = basic_renderer<std::true_type>;
 
-  [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
-  {
-    return std::is_same_v<T, std::true_type>;
-  }
-
   [[nodiscard]] constexpr static auto default_flags() noexcept
       -> SDL_RendererFlags
   {
@@ -97,6 +85,7 @@ class basic_renderer final
   }
 
  public:
+  // clang-format off
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
@@ -107,15 +96,16 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  explicit basic_renderer(SDL_Renderer* renderer) noexcept(!is_owning())
+  explicit basic_renderer(SDL_Renderer* renderer) noexcept(!detail::is_owning<T>())
       : m_renderer{renderer}
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       if (!get()) {
         throw exception{"Cannot create renderer from null pointer!"};
       }
     }
   }
+  // clang-format on
 
   /**
    * \brief Creates an owning renderer based on the supplied window.
@@ -130,7 +120,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename Window, typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename Window, typename T_ = T, detail::is_owner<T_> = true>
   explicit basic_renderer(const Window& window,
                           SDL_RendererFlags flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
@@ -144,7 +134,7 @@ class basic_renderer final
     set_logical_integer_scale(false);
   }
 
-  template <typename T_ = T, is_renderer_handle<T_> = true>
+  template <typename T_ = T, detail::is_handle<T_> = true>
   explicit basic_renderer(const owner_t& renderer) noexcept
       : m_renderer{renderer.get()}
   {}
@@ -1038,7 +1028,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  template <typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   void set_translation_viewport(const frect& viewport) noexcept
   {
     m_renderer.translation = viewport;
@@ -1053,7 +1043,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  template <typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
   {
     return m_renderer.translation;
@@ -1071,7 +1061,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename R, typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename R, typename T_ = T, detail::is_owner<T_> = true>
   void draw_rect_t(const basic_rect<R>& rect) noexcept
   {
     draw_rect(translate(rect));
@@ -1089,7 +1079,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename R, typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename R, typename T_ = T, detail::is_owner<T_> = true>
   void fill_rect_t(const basic_rect<R>& rect) noexcept
   {
     fill_rect(translate(rect));
@@ -1112,7 +1102,7 @@ class basic_renderer final
   template <typename U,
             typename P,
             typename T_ = T,
-            is_renderer_owning<T_> = true>
+            detail::is_owner<T_> = true>
   void render_t(const basic_texture<U>& texture,
                 const basic_point<P>& position) noexcept
   {
@@ -1137,7 +1127,7 @@ class basic_renderer final
   template <typename U,
             typename P,
             typename T_ = T,
-            is_renderer_owning<T_> = true>
+            detail::is_owner<T_> = true>
   void render_t(const basic_texture<U>& texture,
                 const basic_rect<P>& destination) noexcept
   {
@@ -1166,7 +1156,7 @@ class basic_renderer final
   template <typename U,
             typename P,
             typename T_ = T,
-            is_renderer_owning<T_> = true>
+            detail::is_owner<T_> = true>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination) noexcept
@@ -1195,7 +1185,7 @@ class basic_renderer final
   template <typename U,
             typename P,
             typename T_ = T,
-            is_renderer_owning<T_> = true>
+            detail::is_owner<T_> = true>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination,
@@ -1229,7 +1219,7 @@ class basic_renderer final
             typename R,
             typename P,
             typename T_ = T,
-            is_renderer_owning<T_> = true>
+            detail::is_owner<T_> = true>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -1262,7 +1252,7 @@ class basic_renderer final
             typename R,
             typename P,
             typename T_ = T,
-            is_renderer_owning<T_> = true>
+            detail::is_owner<T_> = true>
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
@@ -1292,7 +1282,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   void add_font(font_id id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
@@ -1315,7 +1305,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename... Args, typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename... Args, typename T_ = T, detail::is_owner<T_> = true>
   void emplace_font(font_id id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
@@ -1335,7 +1325,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   void remove_font(font_id id)
   {
     m_renderer.fonts.erase(id);
@@ -1352,7 +1342,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] auto get_font(font_id id) -> font&
   {
     return m_renderer.fonts.at(id);
@@ -1361,7 +1351,7 @@ class basic_renderer final
   /**
    * \copydoc get_font
    */
-  template <typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] auto get_font(font_id id) const -> const font&
   {
     return m_renderer.fonts.at(id);
@@ -1378,7 +1368,7 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  template <typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] auto has_font(font_id id) const noexcept -> bool
   {
     return static_cast<bool>(m_renderer.fonts.count(id));
@@ -1883,7 +1873,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename U = T, typename = is_renderer_handle<U>>
+  template <typename U = T, detail::is_handle<U> = true>
   explicit operator bool() const noexcept
   {
     return m_renderer != nullptr;
@@ -1901,7 +1891,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       return m_renderer.ptr.get();
     } else {
       return m_renderer;
@@ -1938,7 +1928,7 @@ class basic_renderer final
     return texture;
   }
 
-  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename U, typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
       -> basic_point<U>
   {
@@ -1951,7 +1941,7 @@ class basic_renderer final
     return basic_point<U>{x, y};
   }
 
-  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
+  template <typename U, typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept
       -> basic_rect<U>
   {

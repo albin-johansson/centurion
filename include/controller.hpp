@@ -172,11 +172,6 @@ enum class controller_bind_type
 template <typename T>
 class basic_controller final
 {
-  [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
-  {
-    return std::is_same_v<T, std::true_type>;
-  }
-
   using owner_t = basic_controller<std::true_type>;
 
  public:
@@ -196,10 +191,10 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  explicit basic_controller(SDL_GameController* controller) noexcept(!is_owning())
+  explicit basic_controller(SDL_GameController* controller) noexcept(!detail::is_owning<T>())
       : m_controller{controller}
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       if (!m_controller) {
         throw exception{"Cannot create controller from null pointer!"};
       }
@@ -216,7 +211,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_joystick_handle<T_> = true>
+  template <typename T_ = T, detail::is_handle<T_> = true>
   explicit basic_controller(const owner_t& controller) noexcept
       : m_controller{controller.get()}
   {}
@@ -241,7 +236,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_joystick_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   explicit basic_controller(int index)
       : m_controller{SDL_GameControllerOpen(index)}
   {
@@ -264,7 +259,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_joystick_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] static auto from_joystick(SDL_JoystickID id) -> basic_controller
   {
     if (auto* ptr = SDL_GameControllerFromInstanceID(id)) {
@@ -285,7 +280,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_joystick_owning<T_> = true>
+  template <typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] static auto from_index(player_index index) -> basic_controller
   {
     if (auto* ptr = SDL_GameControllerFromPlayerIndex(index)) {
@@ -843,7 +838,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  template <typename T_ = T, is_joystick_handle<T_> = true>
+  template <typename T_ = T, detail::is_handle<T_> = true>
   explicit operator bool() const noexcept
   {
     return m_controller != nullptr;
@@ -861,7 +856,7 @@ class basic_controller final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_GameController*
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       return m_controller.get();
     } else {
       return m_controller;

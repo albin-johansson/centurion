@@ -36,6 +36,7 @@
 #include "area.hpp"
 #include "centurion_api.hpp"
 #include "detail/to_string.hpp"
+#include "detail/utils.hpp"
 #include "exception.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
@@ -50,14 +51,6 @@ namespace cen {
 
 /// \addtogroup graphics
 /// \{
-
-template <typename T>
-using is_window_owning =
-    std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
-
-template <typename T>
-using is_window_handle =
-    std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
  * \class basic_window
@@ -79,11 +72,6 @@ class basic_window final
 {
   using owner_t = basic_window<std::true_type>;
 
-  [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
-  {
-    return std::is_same_v<T, std::true_type>;
-  }
-
  public:
   /**
    * \brief Creates a window from a pointer to an SDL window.
@@ -97,10 +85,10 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  explicit basic_window(SDL_Window* window) noexcept(!is_owning())
+  explicit basic_window(SDL_Window* window) noexcept(!detail::is_owning<T>())
       : m_window{window}
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       if (!m_window) {
         throw exception{"Cannot create window from null pointer!"};
       }
@@ -121,7 +109,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename U = T, is_window_owning<U> = true>
+  template <typename U = T, detail::is_owner<U> = true>
   explicit basic_window(nn_czstring title, const iarea& size = default_size())
   {
     if ((size.width < 1) || (size.height < 1)) {
@@ -149,7 +137,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  template <typename U = T, is_window_owning<U> = true>
+  template <typename U = T, detail::is_owner<U> = true>
   basic_window() : basic_window{"Centurion window"}
   {}
 
@@ -160,7 +148,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename U = T, is_window_handle<U> = true>
+  template <typename U = T, detail::is_handle<U> = true>
   explicit basic_window(const owner_t& window) noexcept : m_window{window.get()}
   {}
 
@@ -966,7 +954,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename U = T, is_window_handle<U> = true>
+  template <typename U = T, detail::is_handle<U> = true>
   explicit operator bool() const noexcept
   {
     return m_window != nullptr;
@@ -983,7 +971,7 @@ class basic_window final
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Window*
   {
-    if constexpr (is_owning()) {
+    if constexpr (detail::is_owning<T>()) {
       return m_window.get();
     } else {
       return m_window;
@@ -999,7 +987,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  template <typename U = T, is_window_owning<U> = true>
+  template <typename U = T, detail::is_owner<U> = true>
   [[nodiscard]] constexpr static auto default_size() -> iarea
   {
     return {800, 600};

@@ -49,7 +49,7 @@
 #include <cstring>      // strcmp
 #include <sstream>      // ostringstream
 #include <string>       // string
-#include <type_traits>  // is_enum_v
+#include <type_traits>  // is_enum_v, enable_if_t, true_type, false_type
 #include <utility>      // pair
 
 #include "centurion_api.hpp"
@@ -165,6 +165,18 @@ template <typename T>
     -> T
 {
   return (value < least) ? least : value;
+}
+
+template <typename T>
+using is_owner = std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
+
+template <typename T>
+using is_handle = std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
+
+template <typename T>
+[[nodiscard]] constexpr auto is_owning() noexcept -> bool
+{
+  return std::is_same_v<T, std::true_type>;
 }
 
 }  // namespace detail

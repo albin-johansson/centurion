@@ -605,8 +605,12 @@ TEST_CASE("window::is_vulkan", "[!mayfail][window]")
 
   SECTION("With Vulkan support")
   {
-    auto* ptr = SDL_CreateWindow(
-        "foo", 0, 0, 100, 100, SDL_WINDOW_HIDDEN | SDL_WINDOW_VULKAN);
+    auto* ptr = SDL_CreateWindow("foo",
+                                 0,
+                                 0,
+                                 100,
+                                 100,
+                                 SDL_WINDOW_HIDDEN | SDL_WINDOW_VULKAN);
     if (ptr) {
       cen::window window{ptr};
       CHECK(window.is_vulkan());
@@ -812,8 +816,12 @@ TEST_CASE("window::check_flag", "[window]")
 
 TEST_CASE("window::flags", "[window]")
 {
-  auto* win = SDL_CreateWindow(
-      "", 0, 0, 10, 10, SDL_WINDOW_HIDDEN | SDL_WINDOW_MAXIMIZED);
+  auto* win = SDL_CreateWindow("",
+                               0,
+                               0,
+                               10,
+                               10,
+                               SDL_WINDOW_HIDDEN | SDL_WINDOW_MAXIMIZED);
   const cen::window window{win};
 
   CHECK(window.flags() == SDL_GetWindowFlags(win));

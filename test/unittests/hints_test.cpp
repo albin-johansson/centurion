@@ -710,7 +710,9 @@ TEST_CASE("hint user data", "[hint]")
   int i = 123;
 
   cen::hint_callback<render_driver> callback{
-      [](void*, cen::czstring, cen::czstring, cen::czstring) {}, &i};
+      [](void*, cen::czstring, cen::czstring, cen::czstring) {
+      },
+      &i};
 
   CHECK(callback.user_data() == &i);
 }

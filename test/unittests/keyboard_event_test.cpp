@@ -137,8 +137,9 @@ TEST_CASE("keyboard_event::shift_active", "[keyboard_event]")
 
   SECTION("One active modifier")
   {
-    const auto [left, right] = get_events_one_mod_active(
-        cen::key_modifier::left_shift, cen::key_modifier::right_shift);
+    const auto [left, right] =
+        get_events_one_mod_active(cen::key_modifier::left_shift,
+                                  cen::key_modifier::right_shift);
     CHECK(left.shift_active());
     CHECK(right.shift_active());
   }
@@ -168,8 +169,9 @@ TEST_CASE("keyboard_event::ctrl_active", "[keyboard_event]")
 
   SECTION("One active modifier")
   {
-    const auto [left, right] = get_events_one_mod_active(
-        cen::key_modifier::left_ctrl, cen::key_modifier::right_ctrl);
+    const auto [left, right] =
+        get_events_one_mod_active(cen::key_modifier::left_ctrl,
+                                  cen::key_modifier::right_ctrl);
     CHECK(left.ctrl_active());
     CHECK(right.ctrl_active());
   }
@@ -199,8 +201,9 @@ TEST_CASE("keyboard_event::alt_active", "[keyboard_event]")
 
   SECTION("One active modifier")
   {
-    const auto [left, right] = get_events_one_mod_active(
-        cen::key_modifier::left_alt, cen::key_modifier::right_alt);
+    const auto [left, right] =
+        get_events_one_mod_active(cen::key_modifier::left_alt,
+                                  cen::key_modifier::right_alt);
     CHECK(left.alt_active());
     CHECK(right.alt_active());
   }
@@ -230,8 +233,9 @@ TEST_CASE("keyboard_event::gui_active", "[keyboard_event]")
 
   SECTION("One active modifier")
   {
-    const auto [left, right] = get_events_one_mod_active(
-        cen::key_modifier::left_gui, cen::key_modifier::right_gui);
+    const auto [left, right] =
+        get_events_one_mod_active(cen::key_modifier::left_gui,
+                                  cen::key_modifier::right_gui);
     CHECK(left.gui_active());
     CHECK(right.gui_active());
   }

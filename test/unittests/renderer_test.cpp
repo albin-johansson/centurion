@@ -217,8 +217,9 @@ TEST_CASE("renderer::draw_lines", "[renderer]")
 {
   test([](const cen::window& window, cen::renderer& renderer) {
     const std::vector<cen::ipoint> points_i{{4, 5}, {50, 2}, {-10, 7}};
-    const std::vector<cen::fpoint> points_f{
-        {8.3f, 3.4f}, {54.4f, 86.3f}, {-10.9f, 67.2f}};
+    const std::vector<cen::fpoint> points_f{{8.3f, 3.4f},
+                                            {54.4f, 86.3f},
+                                            {-10.9f, 67.2f}};
 
     CHECK_NOTHROW(renderer.draw_lines(points_i));
     CHECK_NOTHROW(renderer.draw_lines(points_f));

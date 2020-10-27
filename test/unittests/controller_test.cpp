@@ -210,8 +210,9 @@ TEST_CASE("Interactive game controller test", "[.controller]")
 
   constexpr auto deadZone = 8000;
 
-  constexpr std::array<cen::color, 3> colors{
-      cen::colors::pink, cen::colors::steel_blue, cen::colors::red};
+  constexpr std::array<cen::color, 3> colors{cen::colors::pink,
+                                             cen::colors::steel_blue,
+                                             cen::colors::red};
   int colorIndex{};
   cen::color color = colors.at(colorIndex);
 

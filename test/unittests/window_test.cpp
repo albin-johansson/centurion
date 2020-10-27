@@ -920,6 +920,28 @@ TEST_CASE("get_window_from_id", "[window]")
   CHECK(window.get() == cen::get_window_from_id(id).get());
 }
 
+TEST_CASE("mouse_focus_window", "[!mayfail][window]")
+{
+  CHECK(!cen::mouse_focus_window());
+
+  cen::window window;
+  window.show();
+  window.raise();
+
+  CHECK(cen::mouse_focus_window());
+}
+
+TEST_CASE("keyboard_focus_window", "[!mayfail][window]")
+{
+  CHECK(!cen::keyboard_focus_window());
+
+  cen::window window;
+  window.show();
+  window.raise();
+
+  CHECK(cen::keyboard_focus_window());
+}
+
 TEST_CASE("window to_string", "[window]")
 {
   const cen::window window;

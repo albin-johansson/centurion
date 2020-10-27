@@ -29,9 +29,6 @@
  *
  * @author Albin Johansson
  *
- * @todo SDL_GetKeyboardFocus()
- * @todo SDL_GetMouseFocus()
- *
  * @date 2019-2020
  *
  * @copyright MIT License
@@ -40,6 +37,8 @@
 #ifndef CENTURION_WINDOW_UTILS_HEADER
 #define CENTURION_WINDOW_UTILS_HEADER
 
+#include <SDL_keyboard.h>
+#include <SDL_mouse.h>
 #include <SDL_video.h>
 
 #include "centurion_api.hpp"
@@ -62,6 +61,30 @@ namespace cen {
 [[nodiscard]] inline auto get_grabbed_window() noexcept -> window_handle
 {
   return window_handle{SDL_GetGrabbedWindow()};
+}
+
+/**
+ * @brief Returns a handle to the window that has mouse focus.
+ *
+ * @return a window handle.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto mouse_focus_window() noexcept -> window_handle
+{
+  return window_handle{SDL_GetMouseFocus()};
+}
+
+/**
+ * @brief Returns a handle to the window that has keyboard focus.
+ *
+ * @return a window handle.
+ *
+ * @since 5.0.0
+ */
+[[nodiscard]] inline auto keyboard_focus_window() noexcept -> window_handle
+{
+  return window_handle{SDL_GetKeyboardFocus()};
 }
 
 /**

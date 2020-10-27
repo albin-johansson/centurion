@@ -19,8 +19,10 @@ void message_box::show(SDL_Window* parent,
                        type type,
                        button_order buttonOrder)
 {
-  if (const auto result = SDL_ShowSimpleMessageBox(
-          to_flags(type, buttonOrder), title.c_str(), message.c_str(), parent);
+  if (const auto result = SDL_ShowSimpleMessageBox(to_flags(type, buttonOrder),
+                                                   title.c_str(),
+                                                   message.c_str(),
+                                                   parent);
       result == -1) {
     throw sdl_error{"Failed to show message box"};
   }
@@ -110,10 +112,11 @@ void message_box::set_button_order(button_order order) noexcept
 
 auto message_box::has_button(button_id id) const noexcept -> bool
 {
-  return std::any_of(
-      m_buttons.begin(), m_buttons.end(), [id](const button& button) noexcept {
-        return button.id() == id;
-      });
+  return std::any_of(m_buttons.begin(),
+                     m_buttons.end(),
+                     [id](const button& button) noexcept {
+                       return button.id() == id;
+                     });
 }
 
 auto message_box::get_title() const -> std::string_view

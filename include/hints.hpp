@@ -1425,8 +1425,9 @@ class hint_callback final
    */
   void connect() noexcept
   {
-    SDL_AddHintCallback(
-        Hint::name(), m_callback, static_cast<void*>(m_userData));
+    SDL_AddHintCallback(Hint::name(),
+                        m_callback,
+                        static_cast<void*>(m_userData));
   }
 
   /**
@@ -1439,8 +1440,9 @@ class hint_callback final
    */
   void disconnect() noexcept
   {
-    SDL_DelHintCallback(
-        Hint::name(), m_callback, static_cast<void*>(m_userData));
+    SDL_DelHintCallback(Hint::name(),
+                        m_callback,
+                        static_cast<void*>(m_userData));
   }
 
   /**

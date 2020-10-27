@@ -756,8 +756,10 @@ template <typename Renderer>
 auto font_cache::create_glyph_texture(Renderer& renderer, unicode glyph)
     -> texture
 {
-  const surface surf{TTF_RenderGlyph_Blended(
-      m_font.get(), glyph, static_cast<SDL_Color>(renderer.get_color()))};
+  const surface surf{
+      TTF_RenderGlyph_Blended(m_font.get(),
+                              glyph,
+                              static_cast<SDL_Color>(renderer.get_color()))};
   return texture{renderer, surf};
 }
 

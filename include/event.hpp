@@ -3346,8 +3346,11 @@ class event final
    */
   [[nodiscard]] static auto num_queued() noexcept -> std::optional<int>
   {
-    const auto num = SDL_PeepEvents(
-        nullptr, 0, SDL_PEEKEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT);
+    const auto num = SDL_PeepEvents(nullptr,
+                                    0,
+                                    SDL_PEEKEVENT,
+                                    SDL_FIRSTEVENT,
+                                    SDL_LASTEVENT);
     if (num != -1) {
       return num;
     } else {

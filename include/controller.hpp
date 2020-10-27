@@ -530,7 +530,8 @@ class basic_controller final
       -> std::optional<SDL_GameControllerButtonBind>
   {
     const auto result = SDL_GameControllerGetBindForAxis(
-        get(), static_cast<SDL_GameControllerAxis>(axis));
+        get(),
+        static_cast<SDL_GameControllerAxis>(axis));
     if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
     } else {
@@ -551,7 +552,8 @@ class basic_controller final
       -> std::optional<SDL_GameControllerButtonBind>
   {
     const auto result = SDL_GameControllerGetBindForButton(
-        get(), static_cast<SDL_GameControllerButton>(button));
+        get(),
+        static_cast<SDL_GameControllerButton>(button));
     if (result.bindType != SDL_CONTROLLER_BINDTYPE_NONE) {
       return result;
     } else {
@@ -588,7 +590,8 @@ class basic_controller final
       -> button_state
   {
     const auto state = SDL_GameControllerGetButton(
-        get(), static_cast<SDL_GameControllerButton>(button));
+        get(),
+        static_cast<SDL_GameControllerButton>(button));
     return static_cast<button_state>(state);
   }
 

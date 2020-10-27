@@ -113,8 +113,10 @@ enum class orientation
 [[nodiscard]] inline auto dpi(int displayIndex = 0) -> std::optional<dpi_info>
 {
   dpi_info info{};
-  const auto res = SDL_GetDisplayDPI(
-      displayIndex, &info.diagonal, &info.horizontal, &info.vertical);
+  const auto res = SDL_GetDisplayDPI(displayIndex,
+                                     &info.diagonal,
+                                     &info.horizontal,
+                                     &info.vertical);
   if (res == 0) {
     return info;
   } else {

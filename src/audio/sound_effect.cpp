@@ -53,8 +53,11 @@ void sound_effect::fade_in(milliseconds<int> ms) noexcept
     if (m_channel != undefined_channel()) {
       Mix_FadeInChannelTimed(m_channel, m_chunk.get(), 0, ms.count(), -1);
     } else {
-      m_channel = Mix_FadeInChannelTimed(
-          undefined_channel(), m_chunk.get(), 0, ms.count(), -1);
+      m_channel = Mix_FadeInChannelTimed(undefined_channel(),
+                                         m_chunk.get(),
+                                         0,
+                                         ms.count(),
+                                         -1);
     }
   }
 }

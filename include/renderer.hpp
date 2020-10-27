@@ -329,8 +329,10 @@ class basic_renderer final
   [[nodiscard]] auto render_blended_utf8(nn_czstring str, const font& font)
       -> texture
   {
-    return render_text(TTF_RenderUTF8_Blended(
-        font.get(), str, static_cast<SDL_Color>(get_color())));
+    return render_text(
+        TTF_RenderUTF8_Blended(font.get(),
+                               str,
+                               static_cast<SDL_Color>(get_color())));
   }
 
   /**
@@ -365,8 +367,11 @@ class basic_renderer final
                                                  const font& font,
                                                  u32 wrap) -> texture
   {
-    return render_text(TTF_RenderUTF8_Blended_Wrapped(
-        font.get(), str, static_cast<SDL_Color>(get_color()), wrap));
+    return render_text(
+        TTF_RenderUTF8_Blended_Wrapped(font.get(),
+                                       str,
+                                       static_cast<SDL_Color>(get_color()),
+                                       wrap));
   }
 
   /**
@@ -431,8 +436,10 @@ class basic_renderer final
   [[nodiscard]] auto render_solid_utf8(nn_czstring str, const font& font)
       -> texture
   {
-    return render_text(TTF_RenderUTF8_Solid(
-        font.get(), str, static_cast<SDL_Color>(get_color())));
+    return render_text(
+        TTF_RenderUTF8_Solid(font.get(),
+                             str,
+                             static_cast<SDL_Color>(get_color())));
   }
 
   /**
@@ -461,8 +468,10 @@ class basic_renderer final
   [[nodiscard]] auto render_blended_latin1(nn_czstring str, const font& font)
       -> texture
   {
-    return render_text(TTF_RenderText_Blended(
-        font.get(), str, static_cast<SDL_Color>(get_color())));
+    return render_text(
+        TTF_RenderText_Blended(font.get(),
+                               str,
+                               static_cast<SDL_Color>(get_color())));
   }
 
   /**
@@ -497,8 +506,11 @@ class basic_renderer final
                                                    const font& font,
                                                    u32 wrap) -> texture
   {
-    return render_text(TTF_RenderText_Blended_Wrapped(
-        font.get(), str, static_cast<SDL_Color>(get_color()), wrap));
+    return render_text(
+        TTF_RenderText_Blended_Wrapped(font.get(),
+                                       str,
+                                       static_cast<SDL_Color>(get_color()),
+                                       wrap));
   }
 
   /**
@@ -563,8 +575,10 @@ class basic_renderer final
   [[nodiscard]] auto render_solid_latin1(nn_czstring str, const font& font)
       -> texture
   {
-    return render_text(TTF_RenderText_Solid(
-        font.get(), str, static_cast<SDL_Color>(get_color())));
+    return render_text(
+        TTF_RenderText_Solid(font.get(),
+                             str,
+                             static_cast<SDL_Color>(get_color())));
   }
 
   /**
@@ -591,8 +605,10 @@ class basic_renderer final
   [[nodiscard]] auto render_blended_unicode(const unicode_string& str,
                                             const font& font) -> texture
   {
-    return render_text(TTF_RenderUNICODE_Blended(
-        font.get(), str.data(), static_cast<SDL_Color>(get_color())));
+    return render_text(
+        TTF_RenderUNICODE_Blended(font.get(),
+                                  str.data(),
+                                  static_cast<SDL_Color>(get_color())));
   }
 
   /**
@@ -625,8 +641,11 @@ class basic_renderer final
                                                     const font& font,
                                                     u32 wrap) -> texture
   {
-    return render_text(TTF_RenderUNICODE_Blended_Wrapped(
-        font.get(), str.data(), static_cast<SDL_Color>(get_color()), wrap));
+    return render_text(
+        TTF_RenderUNICODE_Blended_Wrapped(font.get(),
+                                          str.data(),
+                                          static_cast<SDL_Color>(get_color()),
+                                          wrap));
   }
 
   /**
@@ -687,8 +706,10 @@ class basic_renderer final
   [[nodiscard]] auto render_solid_unicode(const unicode_string& str,
                                           const font& font) -> texture
   {
-    return render_text(TTF_RenderUNICODE_Solid(
-        font.get(), str.data(), static_cast<SDL_Color>(get_color())));
+    return render_text(
+        TTF_RenderUNICODE_Solid(font.get(),
+                                str.data(),
+                                static_cast<SDL_Color>(get_color())));
   }
 
   /**
@@ -774,25 +795,29 @@ class basic_renderer final
   /**
    * @brief Renders a texture at the specified position.
    *
-   * @tparam U the representation type used by the point.
+   * @tparam U the ownership tag of the texture.
+   * @tparam P the representation type used by the point.
    *
    * @param texture the texture that will be rendered.
    * @param position the position of the rendered texture.
    *
    * @since 4.0.0
    */
-  template <typename U>
-  void render(const texture& texture, const basic_point<U>& position) noexcept
+  template <typename U, typename P>
+  void render(const basic_texture<U>& texture,
+              const basic_point<P>& position) noexcept
   {
-    if constexpr (basic_point<U>::isFloating) {
+    if constexpr (basic_point<P>::isFloating) {
       const SDL_FRect dst{position.x(),
                           position.y(),
                           static_cast<float>(texture.width()),
                           static_cast<float>(texture.height())};
       SDL_RenderCopyF(get(), texture.get(), nullptr, &dst);
     } else {
-      const SDL_Rect dst{
-          position.x(), position.y(), texture.width(), texture.height()};
+      const SDL_Rect dst{position.x(),
+                         position.y(),
+                         texture.width(),
+                         texture.height()};
       SDL_RenderCopy(get(), texture.get(), nullptr, &dst);
     }
   }
@@ -800,17 +825,19 @@ class basic_renderer final
   /**
    * @brief Renders a texture according to the specified rectangle.
    *
-   * @tparam U the representation type used by the rectangle.
+   * @tparam U the ownership tag of the texture.
+   * @tparam P the representation type used by the rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param destination the position and size of the rendered texture.
    *
    * @since 4.0.0
    */
-  template <typename U>
-  void render(const texture& texture, const basic_rect<U>& destination) noexcept
+  template <typename U, typename P>
+  void render(const basic_texture<U>& texture,
+              const basic_rect<P>& destination) noexcept
   {
-    if constexpr (basic_rect<U>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating) {
       SDL_RenderCopyF(get(),
                       texture.get(),
                       nullptr,
@@ -829,7 +856,8 @@ class basic_renderer final
    * @remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * @tparam U the representation type used by the rectangle.
+   * @tparam U the ownership tag of the texture.
+   * @tparam P the representation type used by the rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -837,12 +865,12 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename U>
-  void render(const texture& texture,
+  template <typename U, typename P>
+  void render(const basic_texture<U>& texture,
               const irect& source,
-              const basic_rect<U>& destination) noexcept
+              const basic_rect<P>& destination) noexcept
   {
-    if constexpr (basic_rect<U>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating) {
       SDL_RenderCopyF(get(),
                       texture.get(),
                       static_cast<const SDL_Rect*>(source),
@@ -858,7 +886,8 @@ class basic_renderer final
   /**
    * @brief Renders a texture.
    *
-   * @tparam U the representation type used by the rectangle.
+   * @tparam U the ownership tag of the texture.
+   * @tparam P the representation type used by the rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -868,13 +897,13 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename U>
-  void render(const texture& texture,
+  template <typename U, typename P>
+  void render(const basic_texture<U>& texture,
               const irect& source,
-              const basic_rect<U>& destination,
+              const basic_rect<P>& destination,
               double angle) noexcept
   {
-    if constexpr (basic_rect<U>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating) {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         static_cast<const SDL_Rect*>(source),
@@ -896,6 +925,7 @@ class basic_renderer final
   /**
    * @brief Renders a texture.
    *
+   * @tparam U the ownership tag of the texture.
    * @tparam R the representation type used by the destination rectangle.
    * @tparam P the representation type used by the center point.
    *
@@ -909,8 +939,8 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename R, typename P>
-  void render(const texture& texture,
+  template <typename U, typename R, typename P>
+  void render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<R>& destination,
               double angle,
@@ -943,6 +973,7 @@ class basic_renderer final
   /**
    * @brief Renders a texture.
    *
+   * @tparam U the ownership tag of the texture.
    * @tparam R the representation type used by the destination rectangle.
    * @tparam P the representation type used by the center point.
    *
@@ -957,8 +988,8 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename R, typename P>
-  void render(const texture& texture,
+  template <typename U, typename R, typename P>
+  void render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<R>& destination,
               double angle,
@@ -1071,6 +1102,7 @@ class basic_renderer final
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
+   * @tparam U the ownership tag of the texture.
    * @tparam P The representation type used by the point.
    *
    * @param texture the texture that will be rendered.
@@ -1078,8 +1110,12 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
-  void render_t(const texture& texture, const basic_point<U>& position) noexcept
+  template <typename U,
+            typename P,
+            typename T_ = T,
+            is_renderer_owning<T_> = true>
+  void render_t(const basic_texture<U>& texture,
+                const basic_point<P>& position) noexcept
   {
     render(texture, translate(position));
   }
@@ -1090,7 +1126,8 @@ class basic_renderer final
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam R the representation type used by the destination rectangle.
+   * @tparam U the ownership tag of the texture.
+   * @tparam P the representation type used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param destination the position (pre-translation) and size of the
@@ -1098,9 +1135,12 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
-  void render_t(const texture& texture,
-                const basic_rect<U>& destination) noexcept
+  template <typename U,
+            typename P,
+            typename T_ = T,
+            is_renderer_owning<T_> = true>
+  void render_t(const basic_texture<U>& texture,
+                const basic_rect<P>& destination) noexcept
   {
     render(texture, translate(destination));
   }
@@ -1114,7 +1154,8 @@ class basic_renderer final
    * @remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * @tparam R the representation type used by the destination rectangle.
+   * @tparam U the ownership tag of the texture.
+   * @tparam P the representation type used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -1123,10 +1164,13 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
-  void render_t(const texture& texture,
+  template <typename U,
+            typename P,
+            typename T_ = T,
+            is_renderer_owning<T_> = true>
+  void render_t(const basic_texture<U>& texture,
                 const irect& source,
-                const basic_rect<U>& destination) noexcept
+                const basic_rect<P>& destination) noexcept
   {
     render(texture, source, translate(destination));
   }
@@ -1137,7 +1181,8 @@ class basic_renderer final
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam R the representation type used by the destination rectangle.
+   * @tparam U the ownership tag of the texture.
+   * @tparam P the representation type used by the destination rectangle.
    *
    * @param texture the texture that will be rendered.
    * @param source the cutout out of the texture that will be rendered.
@@ -1148,10 +1193,13 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename U, typename T_ = T, is_renderer_owning<T_> = true>
-  void render_t(const texture& texture,
+  template <typename U,
+            typename P,
+            typename T_ = T,
+            is_renderer_owning<T_> = true>
+  void render_t(const basic_texture<U>& texture,
                 const irect& source,
-                const basic_rect<U>& destination,
+                const basic_rect<P>& destination,
                 double angle) noexcept
   {
     render(texture, source, translate(destination), angle);
@@ -1163,6 +1211,7 @@ class basic_renderer final
    * @details The rendered texture will be translated using the translation
    * viewport.
    *
+   * @tparam U the ownership tag of the texture.
    * @tparam R the representation type used by the destination rectangle.
    * @tparam P the representation type used by the center-of-rotation point.
    *
@@ -1177,11 +1226,12 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename R,
+  template <typename U,
+            typename R,
             typename P,
-            typename U = T,
-            is_renderer_owning<U> = true>
-  void render_t(const texture& texture,
+            typename T_ = T,
+            is_renderer_owning<T_> = true>
+  void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
                 double angle,
@@ -1193,6 +1243,7 @@ class basic_renderer final
   /**
    * @brief Renders a texture.
    *
+   * @tparam U the ownership tag of the texture.
    * @tparam R the representation type used by the destination rectangle.
    * @tparam P the representation type used by the center-of-rotation point.
    *
@@ -1208,11 +1259,12 @@ class basic_renderer final
    *
    * @since 4.0.0
    */
-  template <typename R,
+  template <typename U,
+            typename R,
             typename P,
-            typename U = T,
-            is_renderer_owning<U> = true>
-  void render_t(const texture& texture,
+            typename T_ = T,
+            is_renderer_owning<T_> = true>
+  void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
                 double angle,
@@ -1344,8 +1396,11 @@ class basic_renderer final
    */
   void set_color(const color& color) noexcept
   {
-    SDL_SetRenderDrawColor(
-        get(), color.red(), color.green(), color.blue(), color.alpha());
+    SDL_SetRenderDrawColor(get(),
+                           color.red(),
+                           color.green(),
+                           color.blue(),
+                           color.alpha());
   }
 
   /**

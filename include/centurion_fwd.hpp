@@ -44,9 +44,6 @@ template <typename T>
 class basic_joystick;
 
 template <typename T>
-class basic_texture;
-
-template <typename T>
 class basic_surface;
 
 class thread;
@@ -54,10 +51,6 @@ class thread;
 class mutex;
 
 class scoped_lock;
-
-class texture;
-
-class texture_handle;
 
 class font;
 

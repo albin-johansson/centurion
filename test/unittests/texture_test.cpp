@@ -63,7 +63,32 @@ TEST_CASE("texture::scale_mode enum values", "[texture]")
   CHECK(SDL_ScaleModeBest != cen::scale_mode::nearest);
 }
 
-TEST_CASE("texture(owner<SDL_Texture*>)", "[texture]")
+TEST_CASE("texture_handle from texture", "[texture]")
+{
+  test([](cen::renderer& renderer) {
+    cen::texture texture{renderer, pandaPath};
+    cen::texture_handle handle{texture};
+    CHECK(handle);
+    CHECK(handle.get());
+  });
+}
+
+TEST_CASE("texture_handle from raw pointer", "[texture]")
+{
+  test([](cen::renderer& renderer) {
+    cen::texture_handle bad{nullptr};
+    CHECK(!bad);
+    CHECK(!bad.get());
+
+    auto* src = IMG_LoadTexture(renderer.get(), pandaPath);
+    cen::texture_handle good{src};
+    CHECK(good);
+    CHECK(good.get());
+    SDL_DestroyTexture(src);
+  });
+}
+
+TEST_CASE("texture(SDL_Texture*)", "[texture]")
 {
   test([](cen::renderer& renderer) {
     CHECK_NOTHROW(cen::texture(IMG_LoadTexture(renderer.get(), pandaPath)));
@@ -82,7 +107,7 @@ TEST_CASE("texture(renderer&, nn_czstring)", "[texture]")
   });
 }
 
-TEST_CASE("texture(renderer&, surface&", "[texture]")
+TEST_CASE("texture(renderer&, surface&)", "[texture]")
 {
   test([](cen::renderer& renderer) {
     cen::surface surface{pandaPath};
@@ -161,8 +186,9 @@ TEST_CASE("texture::streaming", "[texture]")
 TEST_CASE("texture::set_pixel", "[texture]")
 {
   test([](cen::renderer& renderer) {
-    auto texture = cen::texture::streaming(
-        renderer, pandaPath, cen::pixel_format::rgba8888);
+    auto texture = cen::texture::streaming(renderer,
+                                           pandaPath,
+                                           cen::pixel_format::rgba8888);
 
     const auto [width, height] = texture.size();
 

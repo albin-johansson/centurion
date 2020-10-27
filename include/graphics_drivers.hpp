@@ -43,15 +43,15 @@
 namespace cen {
 
 /**
- * @brief Returns the number of available rendering drivers.
+ * \brief Returns the number of available rendering drivers.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @note Usually there is only one available rendering driver.
+ * \note Usually there is only one available rendering driver.
  *
- * @return the number of available rendering drivers.
+ * \return the number of available rendering drivers.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto num_render_drivers() noexcept -> int
 {
@@ -59,13 +59,13 @@ namespace cen {
 }
 
 /**
- * @brief Returns the number of available video drivers compiled into SDL.
+ * \brief Returns the number of available video drivers compiled into SDL.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @return the number of available video drivers compiled into SDL.
+ * \return the number of available video drivers compiled into SDL.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto num_video_drivers() noexcept -> int
 {
@@ -73,16 +73,16 @@ namespace cen {
 }
 
 /**
- * @brief Returns the information associated with a rendering driver.
+ * \brief Returns the information associated with a rendering driver.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param index the index of the rendering driver to query.
+ * \param index the index of the rendering driver to query.
  *
- * @return information about the specified rendering driver; `std::nullopt` if
+ * \return information about the specified rendering driver; `std::nullopt` if
  * something went wrong.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto get_render_driver_info(int index) noexcept

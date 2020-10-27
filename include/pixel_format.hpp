@@ -23,15 +23,15 @@
  */
 
 /**
- * @file pixel_format.hpp
+ * \file pixel_format.hpp
  *
- * @brief Provides the `pixel_format` enum.
+ * \brief Provides the `pixel_format` enum.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_PIXEL_FORMAT_HEADER
@@ -48,17 +48,17 @@
 namespace cen {
 
 /**
- * @enum pixel_format
+ * \enum pixel_format
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @brief Mirrors the values of the `SDL_PixelFormatEnum`.
+ * \brief Mirrors the values of the `SDL_PixelFormatEnum`.
  *
- * @see `SDL_PixelFormatEnum`
+ * \see `SDL_PixelFormatEnum`
  *
- * @since 3.1.0
+ * \since 3.1.0
  *
- * @headerfile pixel_format.hpp
+ * \headerfile pixel_format.hpp
  */
 enum class pixel_format
 {
@@ -126,16 +126,16 @@ enum class pixel_format
 };
 
 /**
- * @brief Indicates whether or not the two pixel format values are the same.
+ * \brief Indicates whether or not the two pixel format values are the same.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param lhs the left-hand side pixel format value.
- * @param rhs the right-hand side pixel format value.
+ * \param lhs the left-hand side pixel format value.
+ * \param rhs the right-hand side pixel format value.
  *
- * @return `true` if the pixel format values are the same; `false` otherwise.
+ * \return `true` if the pixel format values are the same; `false` otherwise.
  *
- * @since 3.1.0
+ * \since 3.1.0
  */
 [[nodiscard]] inline constexpr auto operator==(pixel_format lhs,
                                                SDL_PixelFormatEnum rhs) noexcept
@@ -145,9 +145,9 @@ enum class pixel_format
 }
 
 /**
- * @copydoc operator==(pixel_format, SDL_PixelFormatEnum)
+ * \copydoc operator==(pixel_format, SDL_PixelFormatEnum)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_PixelFormatEnum lhs,
                                                pixel_format rhs) noexcept
@@ -157,16 +157,16 @@ enum class pixel_format
 }
 
 /**
- * @brief Indicates whether or not the two pixel format values aren't the same.
+ * \brief Indicates whether or not the two pixel format values aren't the same.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param lhs the left-hand side pixel format value.
- * @param rhs the right-hand side pixel format value.
+ * \param lhs the left-hand side pixel format value.
+ * \param rhs the right-hand side pixel format value.
  *
- * @return `true` if the pixel format values aren't the same; `false` otherwise.
+ * \return `true` if the pixel format values aren't the same; `false` otherwise.
  *
- * @since 3.1.0
+ * \since 3.1.0
  */
 [[nodiscard]] inline constexpr auto operator!=(pixel_format lhs,
                                                SDL_PixelFormatEnum rhs) noexcept
@@ -176,9 +176,9 @@ enum class pixel_format
 }
 
 /**
- * @copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
+ * \copydoc operator!=(pixel_format, SDL_PixelFormatEnum)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_PixelFormatEnum lhs,
                                                pixel_format rhs) noexcept

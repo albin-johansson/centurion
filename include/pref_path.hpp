@@ -23,15 +23,15 @@
  */
 
 /**
- * @file pref_path.hpp
+ * \file pref_path.hpp
  *
- * @brief Provides the `pref_path` class.
+ * \brief Provides the `pref_path` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_PREF_PATH_HEADER
@@ -54,46 +54,46 @@
 namespace cen {
 
 /**
- * @class pref_path
+ * \class pref_path
  *
- * @ingroup system
+ * \ingroup system
  *
- * @brief A wrapper for the preferred path for storing application related
+ * \brief A wrapper for the preferred path for storing application related
  * files.
  *
- * @details This class is used to obtain the "pref dir". Where users are
+ * \details This class is used to obtain the "pref dir". Where users are
  * meant to write personal files (such as preferences and save games, etc) that
  * are specific to your application. This directory is unique per user, per
  * application.
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @see `SDL_GetPrefPath`
+ * \see `SDL_GetPrefPath`
  *
- * @headerfile pref_path.hpp
+ * \headerfile pref_path.hpp
  */
 class pref_path final
 {
  public:
   /**
-   * @brief Constructs a `pref_path` instance.
+   * \brief Constructs a `pref_path` instance.
    *
-   * @note Only use letters, numbers, and spaces in the supplied strings!
+   * \note Only use letters, numbers, and spaces in the supplied strings!
    *
-   * @param org the name of your organization, cannot be null.
-   * @param app the name of your application, cannot be null.
+   * \param org the name of your organization, cannot be null.
+   * \param app the name of your application, cannot be null.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   pref_path(nn_czstring org, nn_czstring app);
 
   /**
-   * @brief Indicates whether or not the instance holds a non-null path.
+   * \brief Indicates whether or not the instance holds a non-null path.
    *
-   * @return `true` if the object holds a non-null path; `false` otherwise.
+   * \return `true` if the object holds a non-null path; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] explicit operator bool() const noexcept
   {
@@ -101,11 +101,11 @@ class pref_path final
   }
 
   /**
-   * @brief Returns a string that represents the preferred path.
+   * \brief Returns a string that represents the preferred path.
    *
-   * @return a string that represents the preferred path.
+   * \return a string that represents the preferred path.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto get() const noexcept -> czstring
   {
@@ -117,30 +117,30 @@ class pref_path final
 };
 
 /**
- * @brief Returns a textual representation of a pref path.
+ * \brief Returns a textual representation of a pref path.
  *
- * @ingroup system
+ * \ingroup system
  *
- * @param path the pref path that will be converted.
+ * \param path the pref path that will be converted.
  *
- * @return a string that represents a pref path.
+ * \return a string that represents a pref path.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto to_string(const pref_path& path) -> std::string;
 
 /**
- * @brief Prints a textual representation of a pref path.
+ * \brief Prints a textual representation of a pref path.
  *
- * @ingroup system
+ * \ingroup system
  *
- * @param stream the stream that will be used.
- * @param path the pref path that will be printed.
+ * \param stream the stream that will be used.
+ * \param path the pref path that will be printed.
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_API
 auto operator<<(std::ostream& stream, const pref_path& path) -> std::ostream&;

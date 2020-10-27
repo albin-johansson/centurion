@@ -23,17 +23,17 @@
  */
 
 /**
- * @file try_lock.hpp
+ * \file try_lock.hpp
  *
- * @ingroup thread
+ * \ingroup thread
  *
- * @brief Provides the `try_lock` class.
+ * \brief Provides the `try_lock` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_TRY_LOCK_HEADER
@@ -52,28 +52,28 @@
 
 namespace cen {
 
-/// @addtogroup thread
-/// @{
+/// \addtogroup thread
+/// \{
 
 /**
- * @class try_lock
+ * \class try_lock
  *
- * @brief Represents an RAII-style non-blocking lock that automatically unlocks
+ * \brief Represents an RAII-style non-blocking lock that automatically unlocks
  * the associated mutex upon destruction.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile try_lock.hpp
+ * \headerfile try_lock.hpp
  */
 class try_lock final
 {
  public:
   /**
-   * @brief Attempts to lock the supplied mutex.
+   * \brief Attempts to lock the supplied mutex.
    *
-   * @param mutex the mutex that will be locked.
+   * \param mutex the mutex that will be locked.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   explicit try_lock(mutex& mutex) noexcept;
@@ -83,58 +83,58 @@ class try_lock final
   auto operator=(const try_lock&) -> try_lock& = delete;
 
   /**
-   * @brief Unlocks the associated mutex if it was successfully locked.
+   * \brief Unlocks the associated mutex if it was successfully locked.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   ~try_lock() noexcept;
 
   /**
-   * @brief Returns the result of trying to lock the associated mutex.
+   * \brief Returns the result of trying to lock the associated mutex.
    *
-   * @return the lock status.
+   * \return the lock status.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_QUERY
   auto get_status() const noexcept -> lock_status;
 
   /**
-   * @brief Indicates whether or not the mutex was successfully locked.
+   * \brief Indicates whether or not the mutex was successfully locked.
    *
-   * @return `true` if the mutex was locked; `false` otherwise.
+   * \return `true` if the mutex was locked; `false` otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_QUERY
   auto success() const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not the lock timed out whilst trying to lock
+   * \brief Indicates whether or not the lock timed out whilst trying to lock
    * the mutex.
    *
-   * @return `true` if the locking timed out; `false` otherwise.
+   * \return `true` if the locking timed out; `false` otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_QUERY
   auto timed_out() const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not there was an error whilst locking the
+   * \brief Indicates whether or not there was an error whilst locking the
    * mutex.
    *
-   * @return `true` if something went wrong whilst locking the mutex; `false`
+   * \return `true` if something went wrong whilst locking the mutex; `false`
    * otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_QUERY
   auto error() const noexcept -> bool;
 
   /**
-   * @copydoc success()
+   * \copydoc success()
    */
   CENTURION_QUERY
   explicit operator bool() const noexcept;
@@ -147,7 +147,7 @@ class try_lock final
 static_assert(!std::is_copy_constructible_v<try_lock>);
 static_assert(!std::is_copy_assignable_v<try_lock>);
 
-/// @}
+/// \}
 
 }  // namespace cen
 

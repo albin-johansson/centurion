@@ -23,15 +23,15 @@
  */
 
 /**
- * @file event_type.hpp
+ * \file event_type.hpp
  *
- * @brief Provides the `event_type` enum.
+ * \brief Provides the `event_type` enum.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_EVENT_TYPE_HEADER
@@ -48,17 +48,17 @@
 namespace cen {
 
 /**
- * @enum event_type
+ * \enum event_type
  *
- * @ingroup event
+ * \ingroup event
  *
- * @brief Mirrors the `SDL_EventType` enum.
+ * \brief Mirrors the `SDL_EventType` enum.
  *
- * @see `SDL_EventType`
+ * \see `SDL_EventType`
  *
- * @since 3.1.0
+ * \since 3.1.0
  *
- * @headerfile event_type.hpp
+ * \headerfile event_type.hpp
  */
 enum class event_type
 {
@@ -128,16 +128,16 @@ enum class event_type
 };
 
 /**
- * @brief Indicates whether or not two event type values are the same.
+ * \brief Indicates whether or not two event type values are the same.
  *
- * @ingroup event
+ * \ingroup event
  *
- * @param lhs the left-hand side event type value
- * @param rhs the right-hand side event type value
+ * \param lhs the left-hand side event type value
+ * \param rhs the right-hand side event type value
  *
- * @return `true` if the values are the same; `false` otherwise.
+ * \return `true` if the values are the same; `false` otherwise.
  *
- * @since 3.1.0
+ * \since 3.1.0
  */
 [[nodiscard]] inline constexpr auto operator==(event_type lhs,
                                                SDL_EventType rhs) noexcept
@@ -147,9 +147,9 @@ enum class event_type
 }
 
 /**
- * @copydoc operator==(event_type, SDL_EventType)
+ * \copydoc operator==(event_type, SDL_EventType)
  *
- * @ingroup event
+ * \ingroup event
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_EventType lhs,
                                                event_type rhs) noexcept -> bool
@@ -158,16 +158,16 @@ enum class event_type
 }
 
 /**
- * @brief Indicates whether or not two event type values aren't the same.
+ * \brief Indicates whether or not two event type values aren't the same.
  *
- * @ingroup event
+ * \ingroup event
  *
- * @param lhs the left-hand side event type value
- * @param rhs the right-hand side event type value
+ * \param lhs the left-hand side event type value
+ * \param rhs the right-hand side event type value
  *
- * @return `true` if the values aren't the same; `false` otherwise.
+ * \return `true` if the values aren't the same; `false` otherwise.
  *
- * @since 3.1.0
+ * \since 3.1.0
  */
 [[nodiscard]] inline constexpr auto operator!=(event_type lhs,
                                                SDL_EventType rhs) noexcept
@@ -177,9 +177,9 @@ enum class event_type
 }
 
 /**
- * @copydoc operator!=(event_type, SDL_EventType)
+ * \copydoc operator!=(event_type, SDL_EventType)
  *
- * @ingroup event
+ * \ingroup event
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_EventType lhs,
                                                event_type rhs) noexcept -> bool

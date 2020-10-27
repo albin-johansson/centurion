@@ -23,47 +23,47 @@
  */
 
 /**
- * @file centurion_cfg.hpp
+ * \file centurion_cfg.hpp
  *
- * @brief Used for configuring the behaviour of the library.
+ * \brief Used for configuring the behaviour of the library.
  *
- * @note You don't need to explicitly include this file!
+ * \note You don't need to explicitly include this file!
  *
- * @since 4.0.0
+ * \since 4.0.0
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_CFG_HEADER
 #define CENTURION_CFG_HEADER
 
 /**
- * @def CENTURION_USE_PRAGMA_ONCE
+ * \def CENTURION_USE_PRAGMA_ONCE
  *
- * @ingroup core
+ * \ingroup core
  *
- * @brief This macro indicates whether or not Centurion headers will use
+ * \brief This macro indicates whether or not Centurion headers will use
  * `#pragma once` in addition with the traditional include guards. By
  * default, this macro is defined.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 #define CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @def CENTURION_USE_DEBUG_LOGGING_MACROS
+ * \def CENTURION_USE_DEBUG_LOGGING_MACROS
  *
- * @ingroup core
+ * \ingroup core
  *
- * @brief This macro indicates whether or not debug-only logging macros will
+ * \brief This macro indicates whether or not debug-only logging macros will
  * be defined. These can be found in the `log.hpp` header. By default, this
  * macro is defined.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 #define CENTURION_USE_DEBUG_LOGGING_MACROS
 

@@ -23,22 +23,22 @@
  */
 
 /**
- * @file platform.hpp
+ * \file platform.hpp
  *
- * @brief Provides utilities for obtaining information about the current
+ * \brief Provides utilities for obtaining information about the current
  * platform.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 /**
- * @defgroup system System
+ * \defgroup system System
  *
- * @brief Contains various utilities related to system resources.
+ * \brief Contains various utilities related to system resources.
  */
 
 #ifndef CENTURION_PLATFORM_HEADER
@@ -56,33 +56,33 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace cen::platform
+ * \namespace cen::platform
  *
- * @ingroup system
+ * \ingroup system
  *
- * @brief Contains utilities related to platform information.
+ * \brief Contains utilities related to platform information.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile platform.hpp
+ * \headerfile platform.hpp
  */
 namespace cen::platform {
 
-/// @addtogroup system
-/// @{
+/// \addtogroup system
+/// \{
 
 /**
- * @enum platform_id
+ * \enum platform_id
  *
- * @brief Provides values that represent various different operating
+ * \brief Provides values that represent various different operating
  * systems.
  *
- * @details The `linuxx` enumerator has its ugly name because of a weird
+ * \details The `linuxx` enumerator has its ugly name because of a weird
  * compilation error on GCC.
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @headerfile platform.hpp
+ * \headerfile platform.hpp
  */
 enum class platform_id
 {
@@ -95,77 +95,77 @@ enum class platform_id
 };
 
 /**
- * @brief Returns the value that represents the current platform.
+ * \brief Returns the value that represents the current platform.
  *
- * @return the value that represents the current platform.
+ * \return the value that represents the current platform.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 CENTURION_QUERY
 auto id() noexcept -> platform_id;
 
 /**
- * @brief Indicates whether or not the current platform is Windows.
+ * \brief Indicates whether or not the current platform is Windows.
  *
- * @return `true` if the current platform is Windows; `false` otherwise.
+ * \return `true` if the current platform is Windows; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto is_windows() noexcept -> bool;
 
 /**
- * @brief Indicates whether or not the current platform is Mac OSX.
+ * \brief Indicates whether or not the current platform is Mac OSX.
  *
- * @return `true` if the current platform is Mac OSX; `false` otherwise.
+ * \return `true` if the current platform is Mac OSX; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto is_mac_osx() noexcept -> bool;
 
 /**
- * @brief Indicates whether or not the current platform is Linux.
+ * \brief Indicates whether or not the current platform is Linux.
  *
- * @return `true` if the current platform is Linux; `false` otherwise.
+ * \return `true` if the current platform is Linux; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto is_linux() noexcept -> bool;
 
 /**
- * @brief Indicates whether or not the current platform is iOS.
+ * \brief Indicates whether or not the current platform is iOS.
  *
- * @return `true` if the current platform is iOS; `false` otherwise.
+ * \return `true` if the current platform is iOS; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto is_ios() noexcept -> bool;
 
 /**
- * @brief Indicates whether or not the current platform is Android.
+ * \brief Indicates whether or not the current platform is Android.
  *
- * @return `true` if the current platform is Android; `false` otherwise.
+ * \return `true` if the current platform is Android; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto is_android() noexcept -> bool;
 
 /**
- * @brief Returns the name of the current platform.
+ * \brief Returns the name of the current platform.
  *
- * @return the name of the current platform; `std::nullopt` if the name cannot
+ * \return the name of the current platform; `std::nullopt` if the name cannot
  * be deduced.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 CENTURION_QUERY
 auto name() -> std::optional<std::string>;
 
-/// @}
+/// \}
 
 }  // namespace cen::platform
 

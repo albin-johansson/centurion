@@ -23,15 +23,15 @@
  */
 
 /**
- * @file battery.hpp
+ * \file battery.hpp
  *
- * @brief Provides battery related utilities.
+ * \brief Provides battery related utilities.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_BATTERY_HEADER
@@ -49,24 +49,24 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace cen::battery
+ * \namespace cen::battery
  *
- * @ingroup system
+ * \ingroup system
  *
- * @brief Contains utilities related to the battery of the system.
+ * \brief Contains utilities related to the battery of the system.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 namespace cen::battery {
 
 /**
- * @enum power_state
+ * \enum power_state
  *
- * @brief Mirrors the values of the `SDL_PowerState` enum.
+ * \brief Mirrors the values of the `SDL_PowerState` enum.
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @headerfile battery.hpp
+ * \headerfile battery.hpp
  */
 enum class power_state
 {
@@ -79,14 +79,14 @@ enum class power_state
 };
 
 /**
- * @brief Indicates whether or not two power states values are the same.
+ * \brief Indicates whether or not two power states values are the same.
  *
- * @param lhs the left-hand side power state value.
- * @param rhs the right-hand side power state value.
+ * \param lhs the left-hand side power state value.
+ * \param rhs the right-hand side power state value.
  *
- * @return `true` if the power states are the same; `false` otherwise.
+ * \return `true` if the power states are the same; `false` otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(power_state lhs,
                                                SDL_PowerState rhs) noexcept
@@ -96,7 +96,7 @@ enum class power_state
 }
 
 /**
- * @copydoc operator==(power_state, SDL_PowerState)
+ * \copydoc operator==(power_state, SDL_PowerState)
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_PowerState lhs,
                                                power_state rhs) noexcept -> bool
@@ -105,14 +105,14 @@ enum class power_state
 }
 
 /**
- * @brief Indicates whether or not two power states values aren't the same.
+ * \brief Indicates whether or not two power states values aren't the same.
  *
- * @param lhs the left-hand side power state value.
- * @param rhs the right-hand side power state value.
+ * \param lhs the left-hand side power state value.
+ * \param rhs the right-hand side power state value.
  *
- * @return `true` if the power states aren't the same; `false` otherwise.
+ * \return `true` if the power states aren't the same; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(power_state lhs,
                                                SDL_PowerState rhs) noexcept
@@ -122,7 +122,7 @@ enum class power_state
 }
 
 /**
- * @copydoc operator!=(power_state, SDL_PowerState)
+ * \copydoc operator!=(power_state, SDL_PowerState)
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_PowerState lhs,
                                                power_state rhs) noexcept -> bool
@@ -131,57 +131,57 @@ enum class power_state
 }
 
 /**
- * @brief Returns the seconds of battery life that is remaining.
+ * \brief Returns the seconds of battery life that is remaining.
  *
- * @return seconds of remaining battery life; `std::nullopt` if the value cannot
+ * \return seconds of remaining battery life; `std::nullopt` if the value cannot
  * be computed.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 CENTURION_QUERY
 auto seconds_left() noexcept -> std::optional<seconds<int>>;
 
 /**
- * @brief Returns the amount of minutes of battery life that is remaining.
+ * \brief Returns the amount of minutes of battery life that is remaining.
  *
- * @return minutes of remaining battery life; `std::nullopt` if the value cannot
+ * \return minutes of remaining battery life; `std::nullopt` if the value cannot
  * be computed.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 CENTURION_QUERY
 auto minutes_left() noexcept -> std::optional<minutes<int>>;
 
 /**
- * @brief Returns the percentage of battery life that is currently left.
+ * \brief Returns the percentage of battery life that is currently left.
  *
- * @return percentage of remaining battery life, in the range [0, 100];
+ * \return percentage of remaining battery life, in the range [0, 100];
  * `std::nullopt` if the battery percentage isn't available.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 CENTURION_QUERY
 auto percentage() noexcept -> std::optional<int>;
 
 /**
- * @brief Returns the current power state.
+ * \brief Returns the current power state.
  *
- * @return the current power state.
+ * \return the current power state.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 CENTURION_QUERY
 auto state() noexcept -> power_state;
 
 /**
- * @brief Indicates whether or not the system is running on a battery.
+ * \brief Indicates whether or not the system is running on a battery.
  *
- * @details This method is simply a convenience method that is based on the
+ * \details This method is simply a convenience method that is based on the
  * `battery::state()` method.
  *
- * @return `true` if the system is running on a battery; `false` otherwise.
+ * \return `true` if the system is running on a battery; `false` otherwise.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 CENTURION_QUERY
 auto exists() noexcept -> bool;

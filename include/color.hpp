@@ -23,12 +23,12 @@
  */
 
 /**
- * @file color.hpp
- * @brief Provides the `color` class.
+ * \file color.hpp
+ * \brief Provides the `color` class.
  *
- * @author Albin Johansson
- * @date 2019-2020
- * @copyright MIT License
+ * \author Albin Johansson
+ * \date 2019-2020
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_COLOR_HEADER
@@ -50,76 +50,76 @@
 namespace cen {
 
 /**
- * @class color
+ * \class color
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @brief An 8-bit accuracy RGBA color.
+ * \brief An 8-bit accuracy RGBA color.
  *
- * @details This class is designed to interact with the SDL colors,
+ * \details This class is designed to interact with the SDL colors,
  * `SDL_Color` and `SDL_MessageBoxColor`.
  *
- * @headerfile color.hpp
+ * \headerfile color.hpp
  *
- * @see `colors.hpp`
+ * \see `colors.hpp`
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 class color final
 {
  public:
   /**
-   * @brief Creates a color. The created color will be equal to #000000FF.
+   * \brief Creates a color. The created color will be equal to #000000FF.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   constexpr color() noexcept = default;
 
   /**
-   * @brief Creates a color.
+   * \brief Creates a color.
    *
-   * @param red the red component value, in the range [0, 255].
-   * @param green the green component value, in the range [0, 255].
-   * @param blue the blue component value, in the range [0, 255].
-   * @param alpha the alpha component value, in the rage [0, 255]. Defaults to
+   * \param red the red component value, in the range [0, 255].
+   * \param green the green component value, in the range [0, 255].
+   * \param blue the blue component value, in the range [0, 255].
+   * \param alpha the alpha component value, in the rage [0, 255]. Defaults to
    * 255.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   constexpr color(u8 red, u8 green, u8 blue, u8 alpha = max()) noexcept
       : m_color{red, green, blue, alpha}
   {}
 
   /**
-   * @brief Creates a color that is a copy of the supplied `SDL_Color`.
+   * \brief Creates a color that is a copy of the supplied `SDL_Color`.
    *
-   * @param color the `SDL_Color` that will be copied.
+   * \param color the `SDL_Color` that will be copied.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   constexpr explicit color(const SDL_Color& color) noexcept : m_color{color}
   {}
 
   /**
-   * @brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
+   * \brief Creates a color that is a copy of the supplied SDL_MessageBoxColor.
    *
-   * @details Message box colors don't have an alpha component so the created
+   * \details Message box colors don't have an alpha component so the created
    * color will feature an alpha value of 255.
    *
-   * @param color the message box color that will be copied.
+   * \param color the message box color that will be copied.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   constexpr explicit color(const SDL_MessageBoxColor& color) noexcept
       : m_color{color.r, color.g, color.b, max()}
   {}
 
   /**
-   * @brief Sets the value of the red component.
+   * \brief Sets the value of the red component.
    *
-   * @param red the new value of the red component.
+   * \param red the new value of the red component.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   constexpr void set_red(u8 red) noexcept
   {
@@ -127,11 +127,11 @@ class color final
   }
 
   /**
-   * @brief Sets the value of the green component.
+   * \brief Sets the value of the green component.
    *
-   * @param green the new value of the green component.
+   * \param green the new value of the green component.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   constexpr void set_green(u8 green) noexcept
   {
@@ -139,11 +139,11 @@ class color final
   }
 
   /**
-   * @brief Sets the value of the blue component.
+   * \brief Sets the value of the blue component.
    *
-   * @param blue the new value of the blue component.
+   * \param blue the new value of the blue component.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   constexpr void set_blue(u8 blue) noexcept
   {
@@ -151,11 +151,11 @@ class color final
   }
 
   /**
-   * @brief Sets the value of the alpha component.
+   * \brief Sets the value of the alpha component.
    *
-   * @param alpha the new value of the alpha component.
+   * \param alpha the new value of the alpha component.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   constexpr void set_alpha(u8 alpha) noexcept
   {
@@ -163,14 +163,14 @@ class color final
   }
 
   /**
-   * @brief Returns a copy of the color with the specified alpha value.
+   * \brief Returns a copy of the color with the specified alpha value.
    *
-   * @param alpha the alpha component value that will be used by the new color.
+   * \param alpha the alpha component value that will be used by the new color.
    *
-   * @return a color that is identical to the color except for the alpha
+   * \return a color that is identical to the color except for the alpha
    * component.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr auto with_alpha(u8 alpha) const noexcept -> color
   {
@@ -178,11 +178,11 @@ class color final
   }
 
   /**
-   * @brief Returns the value of the red component.
+   * \brief Returns the value of the red component.
    *
-   * @return the value of the red component, in the range [0, 255].
+   * \return the value of the red component, in the range [0, 255].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] constexpr auto red() const noexcept -> u8
   {
@@ -190,11 +190,11 @@ class color final
   }
 
   /**
-   * @brief Returns the value of the green component.
+   * \brief Returns the value of the green component.
    *
-   * @return the value of the green component, in the range [0, 255].
+   * \return the value of the green component, in the range [0, 255].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] constexpr auto green() const noexcept -> u8
   {
@@ -202,11 +202,11 @@ class color final
   }
 
   /**
-   * @brief Returns the value of the blue component.
+   * \brief Returns the value of the blue component.
    *
-   * @return the value of the blue component, in the range [0, 255].
+   * \return the value of the blue component, in the range [0, 255].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] constexpr auto blue() const noexcept -> u8
   {
@@ -214,11 +214,11 @@ class color final
   }
 
   /**
-   * @brief Returns the value of the alpha component.
+   * \brief Returns the value of the alpha component.
    *
-   * @return the value of the alpha component, in the range [0, 255].
+   * \return the value of the alpha component, in the range [0, 255].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] constexpr auto alpha() const noexcept -> u8
   {
@@ -226,11 +226,11 @@ class color final
   }
 
   /**
-   * @brief Returns the internal color instance.
+   * \brief Returns the internal color instance.
    *
-   * @return a reference to the internal color.
+   * \return a reference to the internal color.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto get() const noexcept -> const SDL_Color&
   {
@@ -238,11 +238,11 @@ class color final
   }
 
   /**
-   * @brief Converts the the color into an `SDL_Color`.
+   * \brief Converts the the color into an `SDL_Color`.
    *
-   * @return an `SDL_Color` that is equivalent to this color.
+   * \return an `SDL_Color` that is equivalent to this color.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] explicit constexpr operator SDL_Color() const noexcept
   {
@@ -250,13 +250,13 @@ class color final
   }
 
   /**
-   * @brief Converts the the color into an `SDL_MessageBoxColor`.
+   * \brief Converts the the color into an `SDL_MessageBoxColor`.
    *
-   * @note Message box colors don't feature an alpha value!
+   * \note Message box colors don't feature an alpha value!
    *
-   * @return an `SDL_MessageBoxColor` that is equivalent to this color.
+   * \return an `SDL_MessageBoxColor` that is equivalent to this color.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] explicit constexpr operator SDL_MessageBoxColor() const noexcept
   {
@@ -264,13 +264,13 @@ class color final
   }
 
   /**
-   * @brief Converts the color to `SDL_Color*`.
+   * \brief Converts the color to `SDL_Color*`.
    *
-   * @warning The returned pointer is not to be freed or stored away!
+   * \warning The returned pointer is not to be freed or stored away!
    *
-   * @return a pointer to the internal color instance.
+   * \return a pointer to the internal color instance.
    *
-   * @since 4.0,0
+   * \since 4.0,0
    */
   [[nodiscard]] explicit operator SDL_Color*() noexcept
   {
@@ -278,13 +278,13 @@ class color final
   }
 
   /**
-   * @brief Converts the color to `const SDL_Color*`.
+   * \brief Converts the color to `const SDL_Color*`.
    *
-   * @warning The returned pointer is not to be freed or stored away!
+   * \warning The returned pointer is not to be freed or stored away!
    *
-   * @return a pointer to the internal color instance.
+   * \return a pointer to the internal color instance.
    *
-   * @since 4.0,0
+   * \since 4.0,0
    */
   [[nodiscard]] explicit operator const SDL_Color*() const noexcept
   {
@@ -292,11 +292,11 @@ class color final
   }
 
   /**
-   * @brief Returns the maximum possible value of a color component.
+   * \brief Returns the maximum possible value of a color component.
    *
-   * @return the maximum possible value of a color component.
+   * \return the maximum possible value of a color component.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr static auto max() noexcept -> u8
   {
@@ -308,45 +308,45 @@ class color final
 };
 
 /**
- * @brief Returns a textual representation of the color.
+ * \brief Returns a textual representation of the color.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param color the color that will be converted.
+ * \param color the color that will be converted.
  *
- * @return a textual representation of the color.
+ * \return a textual representation of the color.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto to_string(const color& color) -> std::string;
 
 /**
- * @brief Prints a textual representation of a color.
+ * \brief Prints a textual representation of a color.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param stream the stream that will be used.
- * @param color the color that will be printed.
+ * \param stream the stream that will be used.
+ * \param color the color that will be printed.
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_API
 auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 
 /**
- * @brief Indicates whether or not the two colors are equal.
+ * \brief Indicates whether or not the two colors are equal.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param lhs the left-hand side color.
- * @param rhs the right-hand side color.
+ * \param lhs the left-hand side color.
+ * \param rhs the right-hand side color.
  *
- * @return `true` if the colors are equal; `false` otherwise.
+ * \return `true` if the colors are equal; `false` otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(const color& lhs,
                                                const color& rhs) noexcept
@@ -357,9 +357,9 @@ auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 }
 
 /**
- * @copydoc operator==(const color&, const color&)
+ * \copydoc operator==(const color&, const color&)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(const color& lhs,
                                                const SDL_Color& rhs) noexcept
@@ -370,9 +370,9 @@ auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 }
 
 /**
- * @copydoc operator==(const color&, const color&)
+ * \copydoc operator==(const color&, const color&)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(const SDL_Color& lhs,
                                                const color& rhs) noexcept
@@ -382,18 +382,18 @@ auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 }
 
 /**
- * @copybrief operator==(const color&, const color&)
+ * \copybrief operator==(const color&, const color&)
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @note The alpha components are not taken into account.
+ * \note The alpha components are not taken into account.
  *
- * @param lhs the left-hand side color.
- * @param rhs the right-hand side color.
+ * \param lhs the left-hand side color.
+ * \param rhs the right-hand side color.
  *
- * @return `true` if the colors are equal; `false` otherwise.
+ * \return `true` if the colors are equal; `false` otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(
     const color& lhs,
@@ -404,9 +404,9 @@ auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 }
 
 /**
- * @copydoc operator==(const color&, const SDL_MessageBoxColor&)
+ * \copydoc operator==(const color&, const SDL_MessageBoxColor&)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(const SDL_MessageBoxColor& lhs,
                                                const color& rhs) noexcept
@@ -416,16 +416,16 @@ auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 }
 
 /**
- * @brief Indicates whether or not the two colors aren't equal.
+ * \brief Indicates whether or not the two colors aren't equal.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param lhs the left-hand side color.
- * @param rhs the right-hand side color.
+ * \param lhs the left-hand side color.
+ * \param rhs the right-hand side color.
  *
- * @return `true` if the colors aren't equal; `false` otherwise.
+ * \return `true` if the colors aren't equal; `false` otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(const color& lhs,
                                                const color& rhs) noexcept
@@ -435,9 +435,9 @@ auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 }
 
 /**
- * @copydoc operator!=(const color&, const color&)
+ * \copydoc operator!=(const color&, const color&)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(const color& lhs,
                                                const SDL_Color& rhs) noexcept
@@ -447,9 +447,9 @@ auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 }
 
 /**
- * @copydoc operator!=(const color&, const color&)
+ * \copydoc operator!=(const color&, const color&)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(const SDL_Color& lhs,
                                                const color& rhs) noexcept
@@ -459,18 +459,18 @@ auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 }
 
 /**
- * @copybrief operator!=(const color&, const color&)
+ * \copybrief operator!=(const color&, const color&)
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @note The alpha components are not taken into account.
+ * \note The alpha components are not taken into account.
  *
- * @param lhs the left-hand side color.
- * @param rhs the right-hand side color.
+ * \param lhs the left-hand side color.
+ * \param rhs the right-hand side color.
  *
- * @return `true` if the colors aren't equal; `false` otherwise.
+ * \return `true` if the colors aren't equal; `false` otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(
     const color& lhs,
@@ -480,9 +480,9 @@ auto operator<<(std::ostream& stream, const color& color) -> std::ostream&;
 }
 
 /**
- * @copydoc operator!=(const color&, const SDL_MessageBoxColor&)
+ * \copydoc operator!=(const color&, const SDL_MessageBoxColor&)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(const SDL_MessageBoxColor& lhs,
                                                const color& rhs) noexcept

@@ -23,21 +23,21 @@
  */
 
 /**
- * @file sound_effect.hpp
+ * \file sound_effect.hpp
  *
- * @brief Provides the `SoundEffect` class.
+ * \brief Provides the `SoundEffect` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 /**
- * @defgroup audio Audio
+ * \defgroup audio Audio
  *
- * @brief Contains the audio API, for playing as sound effects and music.
+ * \brief Contains the audio API, for playing as sound effects and music.
  */
 
 #ifndef CENTURION_SOUND_EFFECT_HEADER
@@ -60,13 +60,13 @@
 namespace cen {
 
 /**
- * @class sound_effect
+ * \class sound_effect
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @brief Represents a sound effect.
+ * \brief Represents a sound effect.
  *
- * @details The supported file formats are the following:
+ * \details The supported file formats are the following:
  * <ul>
  *   <li>WAVE/RIFF (.wav)</li>
  *   <li>AIFF (.aiff)</li>
@@ -75,136 +75,136 @@ namespace cen {
  *   <li>VOC (.voc)</li>
  * </ul>
  *
- * @par Usage
+ * \par Usage
  * Usage of this class is pretty straightforward and self-explanatory. The
  * fundamental methods are `play()` and `stop()`, with additional support for
  * effects such as fading and looping.
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @see `Mix_Chunk`
- * @see `music`
+ * \see `Mix_Chunk`
+ * \see `music`
  *
- * @headerfile sound_effect.hpp
+ * \headerfile sound_effect.hpp
  */
 class sound_effect final
 {
  public:
   /**
-   * @brief Indicates that an audio snippet should be looped indefinitely.
+   * \brief Indicates that an audio snippet should be looped indefinitely.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   inline constexpr static int loopForever = -1;
 
   /**
-   * @brief Creates a sound effect based on the audio file at the specified
+   * \brief Creates a sound effect based on the audio file at the specified
    * location.
    *
-   * @param file the file path of the audio file, cannot be null.
+   * \param file the file path of the audio file, cannot be null.
    *
-   * @throws mix_error if the audio file cannot be loaded.
+   * \throws mix_error if the audio file cannot be loaded.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   explicit sound_effect(nn_czstring file);
 
   /**
-   * @brief Plays the sound effect.
+   * \brief Plays the sound effect.
    *
-   * @note A negative value indicates that the sound effect should be looped
+   * \note A negative value indicates that the sound effect should be looped
    * forever.
    *
-   * @param nLoops the amount of loops, can be negative.
+   * \param nLoops the amount of loops, can be negative.
    *
-   * @see `sound_effect::loopForever`
+   * \see `sound_effect::loopForever`
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   void play(int nLoops = 0) noexcept;
 
   /**
-   * @brief Stops the sound effect from playing.
+   * \brief Stops the sound effect from playing.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   void stop() noexcept;
 
   /**
-   * @brief Fades in the sound effect.
+   * \brief Fades in the sound effect.
    *
-   * @details This method has no effect if the supplied duration isn't greater
+   * \details This method has no effect if the supplied duration isn't greater
    * than zero or if the sound effect is currently playing.
    *
-   * @param ms the duration to fade in, in milliseconds.
+   * \param ms the duration to fade in, in milliseconds.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   void fade_in(milliseconds<int> ms) noexcept;
 
   /**
-   * @brief Fades out the sound effect.
+   * \brief Fades out the sound effect.
    *
-   * @details This method has no effect if the supplied duration isn't greater
+   * \details This method has no effect if the supplied duration isn't greater
    * than zero or if the sound effect isn't currently playing.
    *
-   * @param ms the duration to fade in, in milliseconds.
+   * \param ms the duration to fade in, in milliseconds.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   void fade_out(milliseconds<int> ms) noexcept;
 
   /**
-   * @brief Sets the volume of the sound effect.
+   * \brief Sets the volume of the sound effect.
    *
-   * @details This method will adjust input values outside the legal range to
+   * \details This method will adjust input values outside the legal range to
    * the closest legal value.
    *
-   * @param volume the volume of the sound effect, in the range [0,
+   * \param volume the volume of the sound effect, in the range [0,
    * `sound_effect::max_volume()`].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   void set_volume(int volume) noexcept;
 
   /**
-   * @brief Indicates whether or not the sound effect is currently playing.
+   * \brief Indicates whether or not the sound effect is currently playing.
    *
-   * @return `true` if the sound effect is playing; `false` otherwise.
+   * \return `true` if the sound effect is playing; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   auto is_playing() const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not the sound effect is being faded.
+   * \brief Indicates whether or not the sound effect is being faded.
    *
-   * @note If the sound effect is being faded, it's also playing so
+   * \note If the sound effect is being faded, it's also playing so
    * `is_playing()` will also return `true`. Keep this in mind if you want to
    * differentiate between the two.
    *
-   * @return `true` if the sound effect is being faded; `false` otherwise.
+   * \return `true` if the sound effect is being faded; `false` otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_QUERY
   auto is_fading() const noexcept -> bool;
 
   /**
-   * @brief Returns the current volume of the sound effect.
+   * \brief Returns the current volume of the sound effect.
    *
-   * @details By default, this property is set to 128.
+   * \details By default, this property is set to 128.
    *
-   * @return the current volume of the sound effect.
+   * \return the current volume of the sound effect.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto volume() const noexcept -> int
   {
@@ -212,15 +212,15 @@ class sound_effect final
   }
 
   /**
-   * @brief Returns a pointer to the associated `Mix_Chunk`.
+   * \brief Returns a pointer to the associated `Mix_Chunk`.
    *
-   * @warning Use of this method is not recommended, since it purposefully
+   * \warning Use of this method is not recommended, since it purposefully
    * breaks const-correctness. However it is useful since many SDL calls use
    * non-const pointers even when no change will be applied.
    *
-   * @return a pointer to the associated `Mix_Chunk`.
+   * \return a pointer to the associated `Mix_Chunk`.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto get() const noexcept -> Mix_Chunk*
   {
@@ -228,11 +228,11 @@ class sound_effect final
   }
 
   /**
-   * @brief Converts to `Mix_Chunk*`.
+   * \brief Converts to `Mix_Chunk*`.
    *
-   * @return a pointer to the associated `Mix_Chunk` instance.
+   * \return a pointer to the associated `Mix_Chunk` instance.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] explicit operator Mix_Chunk*() noexcept
   {
@@ -240,11 +240,11 @@ class sound_effect final
   }
 
   /**
-   * @brief Converts to `const Mix_Chunk*`.
+   * \brief Converts to `const Mix_Chunk*`.
    *
-   * @return a pointer to the associated `Mix_Chunk` instance.
+   * \return a pointer to the associated `Mix_Chunk` instance.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] explicit operator const Mix_Chunk*() const noexcept
   {
@@ -252,11 +252,11 @@ class sound_effect final
   }
 
   /**
-   * @brief Returns the maximum possible volume value.
+   * \brief Returns the maximum possible volume value.
    *
-   * @return the maximum possible volume value.
+   * \return the maximum possible volume value.
    *
-   * @since 3.1.0
+   * \since 3.1.0
    */
   [[nodiscard]] constexpr static auto max_volume() noexcept -> int
   {
@@ -281,39 +281,39 @@ class sound_effect final
   }
 
   /**
-   * @brief Activates the sound effect by playing it the specified amount of
+   * \brief Activates the sound effect by playing it the specified amount of
    * times.
    *
-   * @param nLoops the amount of times to play the sound effect.
+   * \param nLoops the amount of times to play the sound effect.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void activate(int nLoops) noexcept;
 };
 
 /**
- * @brief Returns a textual representation of a sound effect.
+ * \brief Returns a textual representation of a sound effect.
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @param sound the sound effect that will be converted.
+ * \param sound the sound effect that will be converted.
  *
- * @return a string that represents the sound effect.
+ * \return a string that represents the sound effect.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto to_string(const sound_effect& sound) -> std::string;
 
 /**
- * @brief Prints a textual representation of a sound effect.
+ * \brief Prints a textual representation of a sound effect.
  *
- * @param stream the stream that will be used.
- * @param sound the sound effect that will be printed.
+ * \param stream the stream that will be used.
+ * \param sound the sound effect that will be printed.
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto operator<<(std::ostream& stream, const sound_effect& sound)

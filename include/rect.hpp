@@ -23,21 +23,21 @@
  */
 
 /**
- * @defgroup geometry Geometry
+ * \defgroup geometry Geometry
  *
- * @brief Contains basic geometric components, used throughout the library.
+ * \brief Contains basic geometric components, used throughout the library.
  */
 
 /**
- * @file rect.hpp
+ * \file rect.hpp
  *
- * @brief Provides a generic rectangle implementation.
+ * \brief Provides a generic rectangle implementation.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_RECTANGLE_HEADER
@@ -62,24 +62,24 @@
 namespace cen {
 
 /**
- * @class rect_traits
+ * \class rect_traits
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief Provides rectangle traits used by `basic_rect`.
+ * \brief Provides rectangle traits used by `basic_rect`.
  *
- * @note Whilst it is possible to supply a type that isn't `int` or `float`,
+ * \note Whilst it is possible to supply a type that isn't `int` or `float`,
  * rectangles will always use one of them as the representation type.
  *
- * @tparam T the representation type, must be convertible to `int` or `float`.
+ * \tparam T the representation type, must be convertible to `int` or `float`.
  *
- * @see `basic_rect`
- * @see `irect`
- * @see `frect`
+ * \see `basic_rect`
+ * \see `irect`
+ * \see `frect`
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile rect.hpp
+ * \headerfile rect.hpp
  */
 template <typename T,
           typename = std::enable_if_t<std::is_convertible_v<T, int> ||
@@ -88,126 +88,126 @@ class rect_traits final
 {
  public:
   /**
-   * @var isIntegral
+   * \var isIntegral
    *
-   * @brief Indicates whether or not the rectangle is based on an integral type.
+   * \brief Indicates whether or not the rectangle is based on an integral type.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   inline constexpr static bool isIntegral = std::is_integral_v<T>;
 
   /**
-   * @var isFloating
+   * \var isFloating
    *
-   * @brief Indicates whether or not the rectangle is based on a floating-point
+   * \brief Indicates whether or not the rectangle is based on a floating-point
    * type.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   inline constexpr static bool isFloating = std::is_floating_point_v<T>;
 
   /**
-   * @typedef value_type
+   * \typedef value_type
    *
-   * @brief The representation type, i.e. `int` or `float`.
+   * \brief The representation type, i.e. `int` or `float`.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   using value_type = std::conditional_t<isIntegral, int, float>;
 
   /**
-   * @typedef point_type
+   * \typedef point_type
    *
-   * @brief The point type used, i.e. `ipoint` or `fpoint`.
+   * \brief The point type used, i.e. `ipoint` or `fpoint`.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   using point_type = std::conditional_t<isIntegral, ipoint, fpoint>;
 
   /**
-   * @typedef area_type
+   * \typedef area_type
    *
-   * @brief The area type used, i.e. `iarea` or `farea`.
+   * \brief The area type used, i.e. `iarea` or `farea`.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   using area_type = std::conditional_t<isIntegral, iarea, farea>;
 
   /**
-   * @typedef rect_type
+   * \typedef rect_type
    *
-   * @brief The underlying SDL rectangle type, i.e. `SDL_Rect` or `SDL_FRect`.
+   * \brief The underlying SDL rectangle type, i.e. `SDL_Rect` or `SDL_FRect`.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   using rect_type = std::conditional_t<isIntegral, SDL_Rect, SDL_FRect>;
 };
 
 /**
- * @class basic_rect
+ * \class basic_rect
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief A simple rectangle implementation.
+ * \brief A simple rectangle implementation.
  *
- * @tparam T the representation type. Must be convertible to either `int` or
+ * \tparam T the representation type. Must be convertible to either `int` or
  * `float`.
  *
- * @see `irect`
- * @see `frect`
+ * \see `irect`
+ * \see `frect`
  *
- * @since 4.0.0
+ * \since 4.0.0
  *
- * @headerfile rect.hpp
+ * \headerfile rect.hpp
  */
 template <typename T>
 class basic_rect final
 {
  public:
   /**
-   * @copydoc rect_traits<T>::isIntegral
+   * \copydoc rect_traits<T>::isIntegral
    */
   inline constexpr static bool isIntegral = rect_traits<T>::isIntegral;
 
   /**
-   * @copydoc rect_traits<T>::isFloating
+   * \copydoc rect_traits<T>::isFloating
    */
   inline constexpr static bool isFloating = rect_traits<T>::isFloating;
 
   /**
-   * @copydoc rect_traits<T>::value_type
+   * \copydoc rect_traits<T>::value_type
    */
   using value_type = typename rect_traits<T>::value_type;
 
   /**
-   * @copydoc rect_traits<T>::point_type
+   * \copydoc rect_traits<T>::point_type
    */
   using point_type = typename rect_traits<T>::point_type;
 
   /**
-   * @copydoc rect_traits<T>::area_type
+   * \copydoc rect_traits<T>::area_type
    */
   using area_type = typename rect_traits<T>::area_type;
 
   /**
-   * @copydoc rect_traits<T>::rect_type
+   * \copydoc rect_traits<T>::rect_type
    */
   using rect_type = typename rect_traits<T>::rect_type;
 
   /**
-   * @brief Creates a rectangle with the components (0, 0, 0, 0).
+   * \brief Creates a rectangle with the components (0, 0, 0, 0).
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   constexpr basic_rect() noexcept = default;
 
   /**
-   * @brief Creates a rectangle with the supplied position and size.
+   * \brief Creates a rectangle with the supplied position and size.
    *
-   * @param position the position of the rectangle.
-   * @param size the size of the rectangle.
+   * \param position the position of the rectangle.
+   * \param size the size of the rectangle.
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   constexpr basic_rect(const point_type& position,
                        const area_type& size) noexcept
@@ -215,11 +215,11 @@ class basic_rect final
   {}
 
   /**
-   * @brief Sets the x-coordinate of the rectangle.
+   * \brief Sets the x-coordinate of the rectangle.
    *
-   * @param x the new x-coordinate of the rectangle.
+   * \param x the new x-coordinate of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   constexpr void set_x(value_type x) noexcept
   {
@@ -227,11 +227,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Sets the y-coordinate of the rectangle.
+   * \brief Sets the y-coordinate of the rectangle.
    *
-   * @param y the new y-coordinate of the rectangle.
+   * \param y the new y-coordinate of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   constexpr void set_y(value_type y) noexcept
   {
@@ -239,15 +239,15 @@ class basic_rect final
   }
 
   /**
-   * @brief Moves the rectangle to the specified position.
+   * \brief Moves the rectangle to the specified position.
    *
-   * @note Some frameworks have this kind of method change the size of the
+   * \note Some frameworks have this kind of method change the size of the
    * rectangle. However, this method does *not* change the size of the
    * rectangle.
    *
-   * @param pos the new position of the rectangle.
+   * \param pos the new position of the rectangle.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   constexpr void move_to(const point_type& pos) noexcept
   {
@@ -256,11 +256,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Sets the width of the rectangle.
+   * \brief Sets the width of the rectangle.
    *
-   * @param width the new width of the rectangle.
+   * \param width the new width of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   constexpr void set_width(value_type width) noexcept
   {
@@ -268,11 +268,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Sets the height of the rectangle.
+   * \brief Sets the height of the rectangle.
    *
-   * @param height the new height of the rectangle.
+   * \param height the new height of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   constexpr void set_height(value_type height) noexcept
   {
@@ -280,11 +280,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Changes the size of the rectangle.
+   * \brief Changes the size of the rectangle.
    *
-   * @param size the new size of the rectangle.
+   * \param size the new size of the rectangle.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   constexpr void resize(const area_type& size) noexcept
   {
@@ -293,13 +293,13 @@ class basic_rect final
   };
 
   /**
-   * @brief Indicates whether or not the rectangle contains the point.
+   * \brief Indicates whether or not the rectangle contains the point.
    *
-   * @param point the point that will be checked.
+   * \param point the point that will be checked.
    *
-   * @return `true` if the rectangle contains the point; `false` otherwise.
+   * \return `true` if the rectangle contains the point; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto contains(const point_type& point) const noexcept
       -> bool
@@ -310,11 +310,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the x-coordinate of the rectangle.
+   * \brief Returns the x-coordinate of the rectangle.
    *
-   * @return the x-coordinate of the rectangle.
+   * \return the x-coordinate of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto x() const noexcept -> value_type
   {
@@ -322,11 +322,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the y-coordinate of the rectangle.
+   * \brief Returns the y-coordinate of the rectangle.
    *
-   * @return the y-coordinate of the rectangle.
+   * \return the y-coordinate of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto y() const noexcept -> value_type
   {
@@ -334,11 +334,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the position of the rectangle.
+   * \brief Returns the position of the rectangle.
    *
-   * @return the position of the rectangle.
+   * \return the position of the rectangle.
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   [[nodiscard]] constexpr auto position() const noexcept -> point_type
   {
@@ -346,11 +346,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the width of the rectangle.
+   * \brief Returns the width of the rectangle.
    *
-   * @return the width of the rectangle.
+   * \return the width of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto width() const noexcept -> value_type
   {
@@ -358,11 +358,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the height of the rectangle.
+   * \brief Returns the height of the rectangle.
    *
-   * @return the height of the rectangle.
+   * \return the height of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto height() const noexcept -> value_type
   {
@@ -370,11 +370,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the size of the rectangle.
+   * \brief Returns the size of the rectangle.
    *
-   * @return the size of the rectangle.
+   * \return the size of the rectangle.
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   [[nodiscard]] constexpr auto size() const noexcept -> area_type
   {
@@ -382,11 +382,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the maximum x-coordinate of the rectangle.
+   * \brief Returns the maximum x-coordinate of the rectangle.
    *
-   * @return the maximum x-coordinate of the rectangle.
+   * \return the maximum x-coordinate of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto max_x() const noexcept -> value_type
   {
@@ -394,11 +394,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the maximum y-coordinate of the rectangle.
+   * \brief Returns the maximum y-coordinate of the rectangle.
    *
-   * @return the maximum y-coordinate of the rectangle.
+   * \return the maximum y-coordinate of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto max_y() const noexcept -> value_type
   {
@@ -406,11 +406,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the x-coordinate of the center point of the rectangle.
+   * \brief Returns the x-coordinate of the center point of the rectangle.
    *
-   * @return the x-coordinate of the center point of the rectangle.
+   * \return the x-coordinate of the center point of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto center_x() const noexcept -> value_type
   {
@@ -418,11 +418,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the y-coordinate of the center point of the rectangle.
+   * \brief Returns the y-coordinate of the center point of the rectangle.
    *
-   * @return the y-coordinate of the center point of the rectangle.
+   * \return the y-coordinate of the center point of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto center_y() const noexcept -> value_type
   {
@@ -430,11 +430,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the center point of the rectangle.
+   * \brief Returns the center point of the rectangle.
    *
-   * @return the center point of the rectangle.
+   * \return the center point of the rectangle.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto center() const noexcept -> point_type
   {
@@ -442,11 +442,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the total area of the rectangle.
+   * \brief Returns the total area of the rectangle.
    *
-   * @return the area of the rectangle.
+   * \return the area of the rectangle.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] constexpr auto area() const noexcept -> value_type
   {
@@ -454,14 +454,14 @@ class basic_rect final
   }
 
   /**
-   * @brief Indicates whether or not the rectangle has an area.
+   * \brief Indicates whether or not the rectangle has an area.
    *
-   * @details The rectangle has an area if both the width and height are
+   * \details The rectangle has an area if both the width and height are
    * greater than zero.
    *
-   * @return `true` if the rectangle has an area; `false` otherwise.
+   * \return `true` if the rectangle has an area; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] constexpr auto has_area() const noexcept -> bool
   {
@@ -469,11 +469,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the internal rectangle.
+   * \brief Returns the internal rectangle.
    *
-   * @return a reference to the internal rectangle.
+   * \return a reference to the internal rectangle.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr auto get() noexcept -> rect_type&
   {
@@ -481,11 +481,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns the internal rectangle.
+   * \brief Returns the internal rectangle.
    *
-   * @return a reference to the internal rectangle.
+   * \return a reference to the internal rectangle.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr auto get() const noexcept -> const rect_type&
   {
@@ -493,11 +493,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns a pointer to the internal rectangle.
+   * \brief Returns a pointer to the internal rectangle.
    *
-   * @return a pointer to the internal rectangle.
+   * \return a pointer to the internal rectangle.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] explicit operator rect_type*() noexcept
   {
@@ -505,11 +505,11 @@ class basic_rect final
   }
 
   /**
-   * @brief Returns a pointer to the internal rectangle.
+   * \brief Returns a pointer to the internal rectangle.
    *
-   * @return a pointer to the internal rectangle.
+   * \return a pointer to the internal rectangle.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] explicit operator const rect_type*() const noexcept
   {
@@ -521,24 +521,24 @@ class basic_rect final
 };
 
 /**
- * @typedef irect
+ * \typedef irect
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief Alias for an `int`-based rectangle.
+ * \brief Alias for an `int`-based rectangle.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using irect = basic_rect<int>;
 
 /**
- * @typedef frect
+ * \typedef frect
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief Alias for a `float`-based rectangle.
+ * \brief Alias for a `float`-based rectangle.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using frect = basic_rect<float>;
 
@@ -561,18 +561,18 @@ static_assert(std::is_nothrow_destructible_v<frect>);
 static_assert(std::is_nothrow_destructible_v<irect>);
 
 /**
- * @brief Indicates whether or not two rectangles are equal.
+ * \brief Indicates whether or not two rectangles are equal.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @tparam T the representation type used by the rectangles.
+ * \tparam T the representation type used by the rectangles.
  *
- * @param lhs the left-hand side rectangle.
- * @param rhs the right-hand side rectangle.
+ * \param lhs the left-hand side rectangle.
+ * \param rhs the right-hand side rectangle.
  *
- * @return `true` if the rectangles are equal; `false` otherwise.
+ * \return `true` if the rectangles are equal; `false` otherwise.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 template <typename T>
 [[nodiscard]] constexpr auto operator==(const basic_rect<T>& lhs,
@@ -584,18 +584,18 @@ template <typename T>
 }
 
 /**
- * @brief Indicates whether or not two rectangles aren't equal.
+ * \brief Indicates whether or not two rectangles aren't equal.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @tparam T the representation type used by the rectangles.
+ * \tparam T the representation type used by the rectangles.
  *
- * @param lhs the left-hand side rectangle.
- * @param rhs the right-hand side rectangle.
+ * \param lhs the left-hand side rectangle.
+ * \param rhs the right-hand side rectangle.
  *
- * @return `true` if the rectangles aren't equal; `false` otherwise.
+ * \return `true` if the rectangles aren't equal; `false` otherwise.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 template <typename T>
 [[nodiscard]] constexpr auto operator!=(const basic_rect<T>& lhs,
@@ -626,22 +626,22 @@ template <>
 }
 
 /**
- * @brief Indicates whether or not the two rectangles intersect.
+ * \brief Indicates whether or not the two rectangles intersect.
  *
- * @details This function does *not* consider rectangles with overlapping
+ * \details This function does *not* consider rectangles with overlapping
  * borders as intersecting. If you want such behaviour, see the
  * `collides` function.
  *
- * @tparam T the representation type used by the rectangles.
+ * \tparam T the representation type used by the rectangles.
  *
- * @param fst the first rectangle.
- * @param snd the second rectangle.
+ * \param fst the first rectangle.
+ * \param snd the second rectangle.
  *
- * @return `true` if the rectangles intersect; `false` otherwise.
+ * \return `true` if the rectangles intersect; `false` otherwise.
  *
- * @see `collides`
+ * \see `collides`
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 template <typename T>
 [[nodiscard]] constexpr auto intersects(const basic_rect<T>& fst,
@@ -653,21 +653,21 @@ template <typename T>
 }
 
 /**
- * @brief Indicates whether or not two rectangles are colliding.
+ * \brief Indicates whether or not two rectangles are colliding.
  *
- * @details This function considers rectangles with overlapping borders as
+ * \details This function considers rectangles with overlapping borders as
  * colliding.
  *
- * @tparam T the representation type used by the rectangles.
+ * \tparam T the representation type used by the rectangles.
  *
- * @param fst the first rectangle.
- * @param snd the second rectangle.
+ * \param fst the first rectangle.
+ * \param snd the second rectangle.
  *
- * @return `true` if the rectangles collide; `false` otherwise.
+ * \return `true` if the rectangles collide; `false` otherwise.
  *
- * @see `intersects`
+ * \see `intersects`
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 template <typename T>
 [[nodiscard]] constexpr auto collides(const basic_rect<T>& fst,
@@ -678,20 +678,20 @@ template <typename T>
 }
 
 /**
- * @brief Returns the union of two rectangles.
+ * \brief Returns the union of two rectangles.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @details Returns a rectangle that represents the union of two rectangles.
+ * \details Returns a rectangle that represents the union of two rectangles.
  *
- * @tparam T the representation type used by the rectangles.
+ * \tparam T the representation type used by the rectangles.
  *
- * @param fst the first rectangle.
- * @param snd the second rectangle.
+ * \param fst the first rectangle.
+ * \param snd the second rectangle.
  *
- * @return a rectangle that represents the union of the rectangles.
+ * \return a rectangle that represents the union of the rectangles.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 [[nodiscard]] constexpr auto get_union(const basic_rect<T>& fst,
@@ -718,17 +718,17 @@ template <typename T>
 }
 
 /**
- * @brief Returns a textual representation of a rectangle.
+ * \brief Returns a textual representation of a rectangle.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @tparam T the representation type used by the rectangle.
+ * \tparam T the representation type used by the rectangle.
  *
- * @param rect the rectangle that will be converted to a string.
+ * \param rect the rectangle that will be converted to a string.
  *
- * @return a textual representation of the rectangle.
+ * \return a textual representation of the rectangle.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
@@ -742,18 +742,18 @@ template <typename T>
 }
 
 /**
- * @brief Prints a textual representation of a rectangle using a stream.
+ * \brief Prints a textual representation of a rectangle using a stream.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @tparam T the representation type used by the rectangle.
+ * \tparam T the representation type used by the rectangle.
  *
- * @param stream the stream that will be used.
- * @param rect the rectangle that will be printed.
+ * \param stream the stream that will be used.
+ * \param rect the rectangle that will be printed.
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_rect<T>& rect)

@@ -23,15 +23,15 @@
  */
 
 /**
- * @file string_map.hpp
+ * \file string_map.hpp
  *
- * @brief Provides a compile-time bidirectional map implementation.
+ * \brief Provides a compile-time bidirectional map implementation.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_DETAIL_STATIC_BIMAP_HEADER
@@ -51,24 +51,24 @@
 namespace cen::detail {
 
 /**
- * @class static_bimap
+ * \class static_bimap
  *
- * @brief A bidirectional associative container for when keys and values are
+ * \brief A bidirectional associative container for when keys and values are
  * known at compile-time.
  *
- * @note This class is only meant to be used in constexpr contexts.
+ * \note This class is only meant to be used in constexpr contexts.
  *
- * @remarks This class was inspired by Jason Turners C++ Weekly video on
+ * \remarks This class was inspired by Jason Turners C++ Weekly video on
  * constexpr maps!
  *
- * @tparam Key the type of the keys, must provide an overloaded `operator==`.
- * @tparam Value the type of the values.
- * @tparam ValueCmp the predicate used to lookup values from keys.
- * @tparam size the amount of key-value pairs.
+ * \tparam Key the type of the keys, must provide an overloaded `operator==`.
+ * \tparam Value the type of the values.
+ * \tparam ValueCmp the predicate used to lookup values from keys.
+ * \tparam size the amount of key-value pairs.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile static_bimap.hpp
+ * \headerfile static_bimap.hpp
  */
 template <typename Key, typename Value, typename ValueCmp, std::size_t size>
 class static_bimap final

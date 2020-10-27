@@ -23,15 +23,15 @@
  */
 
 /**
- * @file texture.hpp
+ * \file texture.hpp
  *
- * @brief Provides the `texture` class.
+ * \brief Provides the `texture` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_TEXTURE_HEADER
@@ -74,19 +74,19 @@ using is_texture_handle =
     std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
- * @class basic_texture
+ * \class basic_texture
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @brief Represents an hardware-accelerated image.
+ * \brief Represents an hardware-accelerated image.
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @see `SDL_Texture`
- * @see `texture`
- * @see `texture_handle`
+ * \see `SDL_Texture`
+ * \see `texture`
+ * \see `texture_handle`
  *
- * @headerfile texture.hpp
+ * \headerfile texture.hpp
  */
 template <typename T>
 class basic_texture final
@@ -100,14 +100,14 @@ class basic_texture final
 
  public:
   /**
-   * @brief Creates an texture from a pre-existing SDL texture.
+   * \brief Creates an texture from a pre-existing SDL texture.
    *
-   * @param src a pointer to the associated SDL texture.
+   * \param src a pointer to the associated SDL texture.
    *
-   * @throws exception if the supplied pointer is null *and* the texture is
+   * \throws exception if the supplied pointer is null *and* the texture is
    * owning.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   explicit basic_texture(SDL_Texture* src) : m_texture{src}
   {
@@ -119,28 +119,28 @@ class basic_texture final
   }
 
   /**
-   * @brief Creates a handle to texture instance.
+   * \brief Creates a handle to texture instance.
    *
-   * @param owner the associated owning texture.
+   * \param owner the associated owning texture.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename T_ = T, is_texture_handle<T_> = true>
   explicit basic_texture(owner_t& owner) noexcept : m_texture{owner.get()}
   {}
 
   /**
-   * @brief Creates a texture based the image at the specified path.
+   * \brief Creates a texture based the image at the specified path.
    *
-   * @tparam Renderer the type of the renderer, e.g. `renderer` or
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or
    * `renderer_handle`.
    *
-   * @param renderer the renderer that will be used to create the texture.
-   * @param path the file path of the texture, can't be null.
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the file path of the texture, can't be null.
    *
-   * @throws img_error if the texture cannot be loaded.
+   * \throws img_error if the texture cannot be loaded.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename Renderer, typename U = T, is_texture_owning<U> = true>
   basic_texture(const Renderer& renderer, nn_czstring path)
@@ -152,17 +152,17 @@ class basic_texture final
   }
 
   /**
-   * @brief Creates an texture that is a copy of the supplied surface.
+   * \brief Creates an texture that is a copy of the supplied surface.
    *
-   * @tparam Renderer the type of the renderer, e.g. `renderer` or
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or
    * `renderer_handle`.
    *
-   * @param renderer the renderer that will be used to create the texture.
-   * @param surface the surface that the texture will be based on.
+   * \param renderer the renderer that will be used to create the texture.
+   * \param surface the surface that the texture will be based on.
    *
-   * @throws sdl_error if the texture cannot be loaded.
+   * \throws sdl_error if the texture cannot be loaded.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename Renderer, typename U = T, is_texture_owning<U> = true>
   basic_texture(const Renderer& renderer, const surface& surface)
@@ -174,19 +174,19 @@ class basic_texture final
   }
 
   /**
-   * @brief Creates an texture with the specified characteristics.
+   * \brief Creates an texture with the specified characteristics.
    *
-   * @tparam Renderer the type of the renderer, e.g. `renderer` or
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or
    * `renderer_handle`.
    *
-   * @param renderer the associated renderer instance.
-   * @param format the pixel format of the created texture.
-   * @param access the access of the created texture.
-   * @param size the size of the texture.
+   * \param renderer the associated renderer instance.
+   * \param format the pixel format of the created texture.
+   * \param access the access of the created texture.
+   * \param size the size of the texture.
    *
-   * @throws sdl_error if the texture cannot be created.
+   * \throws sdl_error if the texture cannot be created.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename Renderer, typename U = T, is_texture_owning<U> = true>
   basic_texture(const Renderer& renderer,
@@ -205,24 +205,24 @@ class basic_texture final
   }
 
   /**
-   * @brief Creates and returns a texture with streaming access.
+   * \brief Creates and returns a texture with streaming access.
    *
-   * @details The created texture is based on the image at the specified path
+   * \details The created texture is based on the image at the specified path
    * with the `streaming` texture access.
    *
-   * @tparam Renderer the type of the renderer, e.g. `renderer` or
+   * \tparam Renderer the type of the renderer, e.g. `renderer` or
    * `renderer_handle`.
    *
-   * @param renderer the renderer that will be used to create the texture.
-   * @param path the path of the image file to base the texture on, can't be
+   * \param renderer the renderer that will be used to create the texture.
+   * \param path the path of the image file to base the texture on, can't be
    * null.
-   * @param format the pixel format that will be used by the texture.
+   * \param format the pixel format that will be used by the texture.
    *
-   * @throws exception if something goes wrong.
+   * \throws exception if something goes wrong.
    *
-   * @return a texture with `streaming` texture access.
+   * \return a texture with `streaming` texture access.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename Renderer, typename U = T, is_texture_owning<U> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
@@ -258,15 +258,15 @@ class basic_texture final
   }
 
   /**
-   * @brief Sets the color of the pixel at the specified coordinate.
+   * \brief Sets the color of the pixel at the specified coordinate.
    *
-   * @details This method has no effect if the texture access isn't
+   * \details This method has no effect if the texture access isn't
    * `Streaming` or if the coordinate is out-of-bounds.
    *
-   * @param pixel the pixel that will be changed.
-   * @param color the new color of the pixel.
+   * \param pixel the pixel that will be changed.
+   * \param color the new color of the pixel.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void set_pixel(const ipoint& pixel, const color& color) noexcept
   {
@@ -302,11 +302,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Sets the alpha value of the texture.
+   * \brief Sets the alpha value of the texture.
    *
-   * @param alpha the alpha value, in the range [0, 255].
+   * \param alpha the alpha value, in the range [0, 255].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_alpha(u8 alpha) noexcept
   {
@@ -314,11 +314,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Sets the blend mode that will be used by the texture.
+   * \brief Sets the blend mode that will be used by the texture.
    *
-   * @param mode the blend mode that will be used.
+   * \param mode the blend mode that will be used.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_blend_mode(blend_mode mode) noexcept
   {
@@ -326,14 +326,14 @@ class basic_texture final
   }
 
   /**
-   * @brief Sets the color modulation of the texture.
+   * \brief Sets the color modulation of the texture.
    *
-   * @note The alpha component in the color struct is ignored by this method.
+   * \note The alpha component in the color struct is ignored by this method.
    *
-   * @param color the color that will be used to modulate the color of the
+   * \param color the color that will be used to modulate the color of the
    * texture.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_color_mod(const color& color) noexcept
   {
@@ -341,11 +341,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Sets the scale mode that will be used by the texture.
+   * \brief Sets the scale mode that will be used by the texture.
    *
-   * @param mode the scale mode that will be used.
+   * \param mode the scale mode that will be used.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void set_scale_mode(scale_mode mode) noexcept
   {
@@ -353,17 +353,17 @@ class basic_texture final
   }
 
   /**
-   * @brief Releases ownership of the associated SDL texture and returns a
+   * \brief Releases ownership of the associated SDL texture and returns a
    * pointer to it.
    *
-   * @warning Usage of this function should be considered dangerous, since
+   * \warning Usage of this function should be considered dangerous, since
    * you might run into memory leak issues. You **must** call
    * `SDL_DestroyTexture` on the returned pointer to free the associated
    * memory.
    *
-   * @return a pointer to the associated SDL texture.
+   * \return a pointer to the associated SDL texture.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto release() noexcept -> owner<SDL_Texture*>
   {
@@ -371,11 +371,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Returns the pixel format that is used by the texture.
+   * \brief Returns the pixel format that is used by the texture.
    *
-   * @return the pixel format that is used by the texture.
+   * \return the pixel format that is used by the texture.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto format() const noexcept -> pixel_format
   {
@@ -385,11 +385,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Returns the texture access of the texture.
+   * \brief Returns the texture access of the texture.
    *
-   * @return the texture access of the texture.
+   * \return the texture access of the texture.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto access() const noexcept -> texture_access
   {
@@ -399,11 +399,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Returns the width of the texture.
+   * \brief Returns the width of the texture.
    *
-   * @return the width of the texture.
+   * \return the width of the texture.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto width() const noexcept -> int
   {
@@ -412,11 +412,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Returns the height of the texture.
+   * \brief Returns the height of the texture.
    *
-   * @return the height of the texture.
+   * \return the height of the texture.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto height() const noexcept -> int
   {
@@ -425,11 +425,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Returns the size of the texture.
+   * \brief Returns the size of the texture.
    *
-   * @return the size of the texture.
+   * \return the size of the texture.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto size() const noexcept -> iarea
   {
@@ -440,12 +440,12 @@ class basic_texture final
   }
 
   /**
-   * @brief Indicates whether or not the texture is a possible render target.
+   * \brief Indicates whether or not the texture is a possible render target.
    *
-   * @return `true` if the texture is a possible render target; `false`
+   * \return `true` if the texture is a possible render target; `false`
    * otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_target() const noexcept -> bool
   {
@@ -453,11 +453,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Indicates whether or not the texture has static texture access.
+   * \brief Indicates whether or not the texture has static texture access.
    *
-   * @return `true` if the texture has static texture access.
+   * \return `true` if the texture has static texture access.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_static() const noexcept -> bool
   {
@@ -465,12 +465,12 @@ class basic_texture final
   }
 
   /**
-   * @brief Indicates whether or not the texture has streaming texture access.
+   * \brief Indicates whether or not the texture has streaming texture access.
    *
-   * @return `true` if the texture has streaming texture access; `false`
+   * \return `true` if the texture has streaming texture access; `false`
    * otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_streaming() const noexcept -> bool
   {
@@ -478,11 +478,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Returns the alpha value of the texture.
+   * \brief Returns the alpha value of the texture.
    *
-   * @return the alpha value of the texture.
+   * \return the alpha value of the texture.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto alpha() const noexcept -> u8
   {
@@ -492,11 +492,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Returns the blend mode of the texture.
+   * \brief Returns the blend mode of the texture.
    *
-   * @return the blend mode of the texture.
+   * \return the blend mode of the texture.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
@@ -506,11 +506,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Returns the color modulation of the texture.
+   * \brief Returns the color modulation of the texture.
    *
-   * @return the modulation of the texture.
+   * \return the modulation of the texture.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto color_mod() const noexcept -> color
   {
@@ -522,11 +522,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Returns the scale mode that is used by the texture.
+   * \brief Returns the scale mode that is used by the texture.
    *
-   * @return the scale mode that is used by the texture.
+   * \return the scale mode that is used by the texture.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto get_scale_mode() const noexcept -> scale_mode
   {
@@ -536,13 +536,13 @@ class basic_texture final
   }
 
   /**
-   * @brief Indicates whether or not a texture handle holds a non-null pointer.
+   * \brief Indicates whether or not a texture handle holds a non-null pointer.
    *
-   * @tparam T_ dummy parameter for SFINAE.
+   * \tparam T_ dummy parameter for SFINAE.
    *
-   * @return `true` if the handle holds a non-null pointer; `false` otherwise.
+   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename T_ = T, is_texture_handle<T_> = true>
   explicit operator bool() const noexcept
@@ -551,11 +551,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Returns a pointer to the associated `SDL_Texture`.
+   * \brief Returns a pointer to the associated `SDL_Texture`.
    *
-   * @return a pointer to the associated `SDL_Texture`.
+   * \return a pointer to the associated `SDL_Texture`.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Texture*
   {
@@ -567,11 +567,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Converts to `SDL_Texture*`.
+   * \brief Converts to `SDL_Texture*`.
    *
-   * @return a pointer to the associated `SDL_Texture`.
+   * \return a pointer to the associated `SDL_Texture`.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] explicit operator SDL_Texture*() noexcept
   {
@@ -579,11 +579,11 @@ class basic_texture final
   }
 
   /**
-   * @brief Converts to `const SDL_Texture*`.
+   * \brief Converts to `const SDL_Texture*`.
    *
-   * @return a pointer to the associated `SDL_Texture`.
+   * \return a pointer to the associated `SDL_Texture`.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] explicit operator const SDL_Texture*() const noexcept
   {
@@ -604,18 +604,18 @@ class basic_texture final
   rep_t m_texture;
 
   /**
-   * @brief Locks the texture for write-only pixel access.
+   * \brief Locks the texture for write-only pixel access.
    *
-   * @remarks This method is only applicable if the texture access of the
+   * \remarks This method is only applicable if the texture access of the
    * texture is `Streaming`.
    *
-   * @param pixels this will be filled with a pointer to the locked pixels.
-   * @param pitch This is filled in with the pitch of the locked pixels, can
+   * \param pixels this will be filled with a pointer to the locked pixels.
+   * \param pitch This is filled in with the pitch of the locked pixels, can
    * safely be null if it isn't needed.
    *
-   * @return `true` if all went well; `false` otherwise.
+   * \return `true` if all went well; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   auto lock(u32** pixels, int* pitch = nullptr) noexcept -> bool
   {
@@ -636,9 +636,9 @@ class basic_texture final
   }
 
   /**
-   * @brief Unlocks the texture.
+   * \brief Unlocks the texture.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void unlock() noexcept
   {
@@ -650,15 +650,15 @@ using texture = basic_texture<std::true_type>;
 using texture_handle = basic_texture<std::false_type>;
 
 /**
- * @brief Returns a textual representation of a texture.
+ * \brief Returns a textual representation of a texture.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param texture the texture that will be converted.
+ * \param texture the texture that will be converted.
  *
- * @return a string that represents the texture.
+ * \return a string that represents the texture.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
@@ -670,16 +670,16 @@ template <typename T>
 }
 
 /**
- * @brief Prints a textual representation of a texture.
+ * \brief Prints a textual representation of a texture.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param stream the stream that will be used.
- * @param texture
+ * \param stream the stream that will be used.
+ * \param texture
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_texture<T>& texture)

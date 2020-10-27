@@ -23,17 +23,17 @@
  */
 
 /**
- * @file counter.hpp
+ * \file counter.hpp
  *
- * @brief Provides utilities related to to the system clock.
+ * \brief Provides utilities related to to the system clock.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_TIMER_HEADER
@@ -49,24 +49,24 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace cen::counter
+ * \namespace cen::counter
  *
- * @ingroup system
+ * \ingroup system
  *
- * @brief Provides timing utilities.
+ * \brief Provides timing utilities.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile counter.hpp
+ * \headerfile counter.hpp
  */
 namespace cen::counter {
 
 /**
- * @brief Returns the frequency of the system high-performance counter.
+ * \brief Returns the frequency of the system high-performance counter.
  *
- * @return the frequency of the system high-performance counter.
+ * \return the frequency of the system high-performance counter.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline auto high_res_freq() noexcept -> u64
 {
@@ -74,13 +74,13 @@ namespace cen::counter {
 }
 
 /**
- * @brief Returns the current raw value of the system high-performance counter.
+ * \brief Returns the current raw value of the system high-performance counter.
  *
- * @note The unit of the returned value is platform dependent.
+ * \note The unit of the returned value is platform dependent.
  *
- * @return the current value of the system high-performance counter.
+ * \return the current value of the system high-performance counter.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline auto now() noexcept -> u64
 {
@@ -88,13 +88,13 @@ namespace cen::counter {
 }
 
 /**
- * @brief Returns the value of the system high-performance counter in seconds.
+ * \brief Returns the value of the system high-performance counter in seconds.
  *
- * @tparam T the representation type.
+ * \tparam T the representation type.
  *
- * @return the value of the system high-performance counter, in seconds.
+ * \return the value of the system high-performance counter, in seconds.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 [[nodiscard]] auto now_sec() noexcept -> seconds<T>
@@ -104,12 +104,12 @@ template <typename T>
 }
 
 /**
- * @brief Returns the amount of milliseconds since the library was
+ * \brief Returns the amount of milliseconds since the library was
  * initialized.
  *
- * @return the amount of milliseconds since the library was initialized.
+ * \return the amount of milliseconds since the library was initialized.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline auto ticks() noexcept -> milliseconds<u32>
 {

@@ -23,21 +23,21 @@
  */
 
 /**
- * @file key_state.hpp
+ * \file key_state.hpp
  *
- * @brief Provides the `key_state` class.
+ * \brief Provides the `key_state` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 /**
- * @defgroup input Input
+ * \defgroup input Input
  *
- * @brief Contains components related to input from mice, keyboards,
+ * \brief Contains components related to input from mice, keyboards,
  * controllers, etc.
  */
 
@@ -61,186 +61,186 @@
 namespace cen {
 
 /**
- * @class key_state
+ * \class key_state
  *
- * @ingroup input
+ * \ingroup input
  *
- * @brief Provides information about the keyboard state.
+ * \brief Provides information about the keyboard state.
  *
- * @details Using the keyboard state is an alternative to using events for
+ * \details Using the keyboard state is an alternative to using events for
  * keyboard input.
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @headerfile key_state.hpp
+ * \headerfile key_state.hpp
  */
 class key_state final
 {
  public:
   /**
-   * @brief Creates a `key_state` instance.
+   * \brief Creates a `key_state` instance.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   key_state() noexcept;
 
   /**
-   * @brief Updates the state of the key state object.
+   * \brief Updates the state of the key state object.
    *
-   * @note `SDL_PumpEvents` isn't invoked by this method.
+   * \note `SDL_PumpEvents` isn't invoked by this method.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   void update() noexcept;
 
   /**
-   * @brief Indicates whether or not the specified key is being pressed.
+   * \brief Indicates whether or not the specified key is being pressed.
    *
-   * @details This method returns false if the supplied key isn't recognized.
+   * \details This method returns false if the supplied key isn't recognized.
    *
-   * @param code the scan code that will be checked.
+   * \param code the scan code that will be checked.
    *
-   * @return `true` if the key is being pressed; `false` otherwise.
+   * \return `true` if the key is being pressed; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   auto is_pressed(const scan_code& code) const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not the specified key is being pressed.
+   * \brief Indicates whether or not the specified key is being pressed.
    *
-   * @details This method returns false if the supplied key isn't recognized.
+   * \details This method returns false if the supplied key isn't recognized.
    *
-   * @note This method is slightly slower that the `scan_code` version.
+   * \note This method is slightly slower that the `scan_code` version.
    *
-   * @param code the key code that will be checked.
+   * \param code the key code that will be checked.
    *
-   * @return `true` if the key is being pressed; `false` otherwise.
+   * \return `true` if the key is being pressed; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   auto is_pressed(const key_code& code) const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not the specified key has been pressed during
+   * \brief Indicates whether or not the specified key has been pressed during
    * more than one update of the key state.
    *
-   * @details This method returns false if the supplied key isn't recognized.
+   * \details This method returns false if the supplied key isn't recognized.
    *
-   * @param code the scan code that will be checked.
+   * \param code the scan code that will be checked.
    *
-   * @return `true` if the key has been held down; `false` otherwise.
+   * \return `true` if the key has been held down; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   auto is_held(const scan_code& code) const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not the specified key has been pressed during
+   * \brief Indicates whether or not the specified key has been pressed during
    * more than one update of the key state.
    *
-   * @details This method returns false if the supplied key isn't recognized.
+   * \details This method returns false if the supplied key isn't recognized.
    *
-   * @note This method is slightly slower that the `scan_code` version.
+   * \note This method is slightly slower that the `scan_code` version.
    *
-   * @param code the key code that will be checked.
+   * \param code the key code that will be checked.
    *
-   * @return `true` if the key has been held down; `false` otherwise.
+   * \return `true` if the key has been held down; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   auto is_held(const key_code& code) const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not a key just became pressed in the last
+   * \brief Indicates whether or not a key just became pressed in the last
    * update of the key state.
    *
-   * @details This method returns false if the supplied key isn't recognized.
+   * \details This method returns false if the supplied key isn't recognized.
    *
-   * @param code the scan code that will be checked.
+   * \param code the scan code that will be checked.
    *
-   * @return `true` if the key has just been pressed; `false` otherwise.
+   * \return `true` if the key has just been pressed; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   auto was_just_pressed(const scan_code& code) const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not a key just became pressed in the last
+   * \brief Indicates whether or not a key just became pressed in the last
    * update of the key state.
    *
-   * @details This method returns false if the supplied key isn't recognized.
+   * \details This method returns false if the supplied key isn't recognized.
    *
-   * @note This method is slightly slower that the `scan_code` version.
+   * \note This method is slightly slower that the `scan_code` version.
    *
-   * @param code the key code that will be checked.
+   * \param code the key code that will be checked.
    *
-   * @return `true` if the key has just been pressed; `false` otherwise.
+   * \return `true` if the key has just been pressed; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   auto was_just_pressed(const key_code& code) const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not the specified key was released in the last
+   * \brief Indicates whether or not the specified key was released in the last
    * update of the key state.
    *
-   * @details This method returns false if the supplied key isn't recognized.
+   * \details This method returns false if the supplied key isn't recognized.
    *
-   * @param code the scan code that will be checked.
+   * \param code the scan code that will be checked.
    *
-   * @return `true` if the key was released; `false` otherwise.
+   * \return `true` if the key was released; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   auto was_just_released(const scan_code& code) const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not the specified key was released in the last
+   * \brief Indicates whether or not the specified key was released in the last
    * update of the key state.
    *
-   * @details This method returns false if the supplied key isn't recognized.
+   * \details This method returns false if the supplied key isn't recognized.
    *
-   * @note This method is slightly slower that the `scan_code` version.
+   * \note This method is slightly slower that the `scan_code` version.
    *
-   * @param code the key code that will be checked.
+   * \param code the key code that will be checked.
    *
-   * @return `true` if the key was released; `false` otherwise.
+   * \return `true` if the key was released; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   auto was_just_released(const key_code& code) const noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not the specified key modifier is active.
+   * \brief Indicates whether or not the specified key modifier is active.
    *
-   * @note Multiple key modifiers can be active at the same time.
+   * \note Multiple key modifiers can be active at the same time.
    *
-   * @param modifier the key modifier that will be checked.
+   * \param modifier the key modifier that will be checked.
    *
-   * @return `true` if the specified key modifier is active; `false` otherwise.
+   * \return `true` if the specified key modifier is active; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   CENTURION_QUERY
   static auto modifier_active(key_modifier modifier) noexcept -> bool;
 
   /**
-   * @brief Returns the total amount of keys.
+   * \brief Returns the total amount of keys.
    *
-   * @return the total amount of keys.
+   * \return the total amount of keys.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto amount_of_keys() const noexcept -> int
   {

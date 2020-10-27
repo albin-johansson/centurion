@@ -23,15 +23,15 @@
  */
 
 /**
- * @file key_modifier.hpp
+ * \file key_modifier.hpp
  *
- * @brief Provides the `key_modifier` enum.
+ * \brief Provides the `key_modifier` enum.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_KEY_MODIFIER_HEADER
@@ -48,17 +48,17 @@
 namespace cen {
 
 /**
- * @enum key_modifier
+ * \enum key_modifier
  *
- * @ingroup input
+ * \ingroup input
  *
- * @brief Mirrors the values of the `SDL_Keymod` enum.
+ * \brief Mirrors the values of the `SDL_Keymod` enum.
  *
- * @see `SDL_Keymod`
+ * \see `SDL_Keymod`
  *
- * @since 3.1.0
+ * \since 3.1.0
  *
- * @headerfile key_modifier.hpp
+ * \headerfile key_modifier.hpp
  */
 enum class key_modifier
 {

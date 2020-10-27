@@ -23,15 +23,15 @@
  */
 
 /**
- * @file key_code.hpp
+ * \file key_code.hpp
  *
- * @brief Provides the `key_code` class and constants.
+ * \brief Provides the `key_code` class and constants.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_KEY_CODE_HEADER
@@ -53,13 +53,13 @@
 namespace cen {
 
 /**
- * @class key_code
+ * \class key_code
  *
- * @ingroup input
+ * \ingroup input
  *
- * @brief Represents a key code (virtual key).
+ * \brief Represents a key code (virtual key).
  *
- * @details Key codes are mapped to the current layout of the keyboard and
+ * \details Key codes are mapped to the current layout of the keyboard and
  * correlate to a `scan_code`. Whilst scan codes identify the *location* of
  * a key press, the corresponding key codes give the key press *meaning* in
  * the context of the current keyboard layout.
@@ -72,8 +72,8 @@ namespace cen {
  * keycode of SDLK_S. The same key on a Dvorak keyboard, will report a
  * scancode of SDL_SCANCODE_S and a keycode of SDLK_O.
  *
- * @par Usage
- * @code{.cpp}
+ * \par Usage
+ * \code{.cpp}
  *
  *   #include <key.hpp>
  *
@@ -97,25 +97,25 @@ namespace cen {
  *     auto scan = static_cast<SDL_Scancode>(a);
  *     auto key = static_cast<SDL_Keycode>(b);
  *   }
- * @endcode
+ * \endcode
  *
- * @note Key codes are sometimes referred to as "keysyms" in the SDL
+ * \note Key codes are sometimes referred to as "keysyms" in the SDL
  * documentation.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @see `scan_code`
- * @see `cen::keycodes`
+ * \see `scan_code`
+ * \see `cen::keycodes`
  *
- * @headerfile key_code.hpp
+ * \headerfile key_code.hpp
  */
 class key_code final
 {
  public:
   /**
-   * @brief Creates a `key_code` instance with the `SDLK_UNKNOWN` key code.
+   * \brief Creates a `key_code` instance with the `SDLK_UNKNOWN` key code.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   constexpr key_code() noexcept = default;
 
@@ -124,42 +124,42 @@ class key_code final
   constexpr key_code(key_code&&) noexcept = default;
 
   /**
-   * @brief Creates a `key_code` instance with the specified key code.
+   * \brief Creates a `key_code` instance with the specified key code.
    *
-   * @param key the key code that will be used.
+   * \param key the key code that will be used.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   constexpr key_code(SDL_KeyCode key) noexcept : m_key{key}
   {}
 
   /**
-   * @brief Creates a `key_code` instance based on a scan code.
+   * \brief Creates a `key_code` instance based on a scan code.
    *
-   * @details The created `key_code` will use the key code obtained
+   * \details The created `key_code` will use the key code obtained
    * by converting the specified scan code.
    *
-   * @param scancode the scan code that will be converted and used.
+   * \param scancode the scan code that will be converted and used.
    *
-   * @see `SDL_GetKeyFromScancode`
+   * \see `SDL_GetKeyFromScancode`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   explicit key_code(SDL_Scancode scancode) noexcept
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(scancode))}
   {}
 
   /**
-   * @brief Creates a `key_code` instance based on the specified name.
+   * \brief Creates a `key_code` instance based on the specified name.
    *
-   * @details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
    * the key code.
    *
-   * @param name the name of the key, mustn't be null.
+   * \param name the name of the key, mustn't be null.
    *
-   * @see `SDL_GetKeyFromName`
+   * \see `SDL_GetKeyFromName`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   explicit key_code(nn_czstring name) noexcept
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
@@ -170,13 +170,13 @@ class key_code final
   constexpr auto operator=(key_code&&) noexcept -> key_code& = default;
 
   /**
-   * @brief Sets the key code used to the specified key code.
+   * \brief Sets the key code used to the specified key code.
    *
-   * @param key the key code that will be used.
+   * \param key the key code that will be used.
    *
-   * @return the `key_code` instance.
+   * \return the `key_code` instance.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   constexpr auto operator=(SDL_KeyCode key) noexcept -> key_code&
   {
@@ -185,14 +185,14 @@ class key_code final
   }
 
   /**
-   * @brief Sets the key code used to be the converted version of the
+   * \brief Sets the key code used to be the converted version of the
    * supplied scan code.
    *
-   * @param scancode the scan code that will be converted and used.
+   * \param scancode the scan code that will be converted and used.
    *
-   * @return the `key_code` instance.
+   * \return the `key_code` instance.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   auto operator=(SDL_Scancode scancode) noexcept -> key_code&
   {
@@ -201,17 +201,17 @@ class key_code final
   }
 
   /**
-   * @brief Sets the key code used to be the one associated with the
+   * \brief Sets the key code used to be the one associated with the
    * specified name.
    *
-   * @details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
+   * \details If the specified name isn't recognized, `SDLK_UNKNOWN` is used as
    * the key code.
    *
-   * @param name the name of the key, mustn't be null.
+   * \param name the name of the key, mustn't be null.
    *
-   * @return the `key_code` instance.
+   * \return the `key_code` instance.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   auto operator=(nn_czstring name) noexcept -> key_code&
   {
@@ -220,12 +220,12 @@ class key_code final
   }
 
   /**
-   * @brief Indicates whether or not the stored key code is `SDLK_UNKNOWN`.
+   * \brief Indicates whether or not the stored key code is `SDLK_UNKNOWN`.
    *
-   * @return `true` if the internal key code is `SDLK_UNKNOWN`; `false`
+   * \return `true` if the internal key code is `SDLK_UNKNOWN`; `false`
    * otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr auto unknown() const noexcept -> bool
   {
@@ -233,11 +233,11 @@ class key_code final
   }
 
   /**
-   * @brief Returns the name associated with the key code.
+   * \brief Returns the name associated with the key code.
    *
-   * @return the name associated with the key code.
+   * \return the name associated with the key code.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto name() const -> std::string
   {
@@ -245,11 +245,11 @@ class key_code final
   }
 
   /**
-   * @brief Returns the internal key code.
+   * \brief Returns the internal key code.
    *
-   * @return the internal key code.
+   * \return the internal key code.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr auto get() const noexcept -> SDL_KeyCode
   {
@@ -257,11 +257,11 @@ class key_code final
   }
 
   /**
-   * @brief Converts to `SDL_KeyCode`.
+   * \brief Converts to `SDL_KeyCode`.
    *
-   * @return the internal key code.
+   * \return the internal key code.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   constexpr explicit operator SDL_KeyCode() const noexcept
   {
@@ -269,13 +269,13 @@ class key_code final
   }
 
   /**
-   * @brief Converts to `SDL_Keycode`.
+   * \brief Converts to `SDL_Keycode`.
    *
-   * @return the internal key code.
+   * \return the internal key code.
    *
-   * @note `SDL_Keycode` is just an alias for `i32`.
+   * \note `SDL_Keycode` is just an alias for `i32`.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   constexpr explicit operator SDL_Keycode() const noexcept
   {
@@ -283,13 +283,13 @@ class key_code final
   }
 
   /**
-   * @brief Converts to `SDL_Scancode`.
+   * \brief Converts to `SDL_Scancode`.
    *
-   * @return the scan code associated with the internal key code.
+   * \return the scan code associated with the internal key code.
    *
-   * @see `SDL_GetScancodeFromKey`
+   * \see `SDL_GetScancodeFromKey`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   explicit operator SDL_Scancode() const noexcept
   {
@@ -301,45 +301,45 @@ class key_code final
 };
 
 /**
- * @brief Returns a textual representation of a key code.
+ * \brief Returns a textual representation of a key code.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param keyCode the key code that will be converted.
+ * \param keyCode the key code that will be converted.
  *
- * @return a textual representation of the key code.
+ * \return a textual representation of the key code.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto to_string(const key_code& keyCode) -> std::string;
 
 /**
- * @brief Prints a key code using a stream.
+ * \brief Prints a key code using a stream.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param stream the stream that will be used.
- * @param keyCode the key code that will be printed.
+ * \param stream the stream that will be used.
+ * \param keyCode the key code that will be printed.
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_API
 auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
 
 /**
- * @brief Indicates whether or not two key codes are the same.
+ * \brief Indicates whether or not two key codes are the same.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param lhs the left-hand side key code.
- * @param rhs the right-hand side key code.
+ * \param lhs the left-hand side key code.
+ * \param rhs the right-hand side key code.
  *
- * @return `true` if the key codes are the same; `false` otherwise.
+ * \return `true` if the key codes are the same; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(const key_code& lhs,
                                                const key_code& rhs) noexcept
@@ -349,16 +349,16 @@ auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
 }
 
 /**
- * @brief Indicates whether or not two key codes aren't the same.
+ * \brief Indicates whether or not two key codes aren't the same.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param lhs the left-hand side key code.
- * @param rhs the right-hand side key code.
+ * \param lhs the left-hand side key code.
+ * \param rhs the right-hand side key code.
  *
- * @return `true` if the key codes aren't the same; `false` otherwise.
+ * \return `true` if the key codes aren't the same; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(const key_code& lhs,
                                                const key_code& rhs) noexcept
@@ -368,647 +368,647 @@ auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
 }
 
 /**
- * @namespace cen::keycodes
+ * \namespace cen::keycodes
  *
- * @ingroup input
+ * \ingroup input
  *
- * @brief Provides a collection of `key_code` constants.
+ * \brief Provides a collection of `key_code` constants.
  *
- * @details Far from all key codes are provided. Instead, some of the most
+ * \details Far from all key codes are provided. Instead, some of the most
  * commonly used key codes are available.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 namespace keycodes {
 
 /**
- * @brief Represents an unknown key.
+ * \brief Represents an unknown key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code unknown;
 
 /**
- * @brief Represents the key with the label "A".
+ * \brief Represents the key with the label "A".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code a{SDLK_a};
 
 /**
- * @brief Represents the key with the label "B".
+ * \brief Represents the key with the label "B".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code b{SDLK_b};
 
 /**
- * @brief Represents the key with the label "C".
+ * \brief Represents the key with the label "C".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code c{SDLK_c};
 
 /**
- * @brief Represents the key with the label "D".
+ * \brief Represents the key with the label "D".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code d{SDLK_d};
 
 /**
- * @brief Represents the key with the label "E".
+ * \brief Represents the key with the label "E".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code e{SDLK_e};
 
 /**
- * @brief Represents the key with the label "F".
+ * \brief Represents the key with the label "F".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f{SDLK_f};
 
 /**
- * @brief Represents the key with the label "G".
+ * \brief Represents the key with the label "G".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code g{SDLK_g};
 
 /**
- * @brief Represents the key with the label "H".
+ * \brief Represents the key with the label "H".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code h{SDLK_h};
 
 /**
- * @brief Represents the key with the label "I".
+ * \brief Represents the key with the label "I".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code i{SDLK_i};
 
 /**
- * @brief Represents the key with the label "J".
+ * \brief Represents the key with the label "J".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code j{SDLK_j};
 
 /**
- * @brief Represents the key with the label "K".
+ * \brief Represents the key with the label "K".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code k{SDLK_k};
 
 /**
- * @brief Represents the key with the label "L".
+ * \brief Represents the key with the label "L".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code l{SDLK_l};
 
 /**
- * @brief Represents the key with the label "M".
+ * \brief Represents the key with the label "M".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code m{SDLK_m};
 
 /**
- * @brief Represents the key with the label "N".
+ * \brief Represents the key with the label "N".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code n{SDLK_n};
 
 /**
- * @brief Represents the key with the label "O".
+ * \brief Represents the key with the label "O".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code o{SDLK_o};
 
 /**
- * @brief Represents the key with the label "P".
+ * \brief Represents the key with the label "P".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code p{SDLK_p};
 
 /**
- * @brief Represents the key with the label "Q".
+ * \brief Represents the key with the label "Q".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code q{SDLK_q};
 
 /**
- * @brief Represents the key with the label "R".
+ * \brief Represents the key with the label "R".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code r{SDLK_r};
 
 /**
- * @brief Represents the key with the label "S".
+ * \brief Represents the key with the label "S".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code s{SDLK_s};
 
 /**
- * @brief Represents the key with the label "T".
+ * \brief Represents the key with the label "T".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code t{SDLK_t};
 
 /**
- * @brief Represents the key with the label "U".
+ * \brief Represents the key with the label "U".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code u{SDLK_u};
 
 /**
- * @brief Represents the key with the label "V".
+ * \brief Represents the key with the label "V".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code v{SDLK_v};
 
 /**
- * @brief Represents the key with the label "W".
+ * \brief Represents the key with the label "W".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code w{SDLK_w};
 
 /**
- * @brief Represents the key with the label "X".
+ * \brief Represents the key with the label "X".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code x{SDLK_x};
 
 /**
- * @brief Represents the key with the label "Y".
+ * \brief Represents the key with the label "Y".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code y{SDLK_y};
 
 /**
- * @brief Represents the key with the label "Z".
+ * \brief Represents the key with the label "Z".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code z{SDLK_z};
 
 /**
- * @brief Represents the key with the label "1".
+ * \brief Represents the key with the label "1".
  *
- * @note This is not for a potential "1" key on the key pad.
+ * \note This is not for a potential "1" key on the key pad.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code one{SDLK_1};
 
 /**
- * @brief Represents the key with the label "2".
+ * \brief Represents the key with the label "2".
  *
- * @note This is not for a potential "2" key on the key pad.
+ * \note This is not for a potential "2" key on the key pad.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code two{SDLK_2};
 
 /**
- * @brief Represents the key with the label "3".
+ * \brief Represents the key with the label "3".
  *
- * @note This is not for a potential "3" key on the key pad.
+ * \note This is not for a potential "3" key on the key pad.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code three{SDLK_3};
 
 /**
- * @brief Represents the key with the label "4".
+ * \brief Represents the key with the label "4".
  *
- * @note This is not for a potential "4" key on the key pad.
+ * \note This is not for a potential "4" key on the key pad.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code four{SDLK_4};
 
 /**
- * @brief Represents the key with the label "5".
+ * \brief Represents the key with the label "5".
  *
- * @note This is not for a potential "5" key on the key pad.
+ * \note This is not for a potential "5" key on the key pad.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code five{SDLK_5};
 
 /**
- * @brief Represents the key with the label "6".
+ * \brief Represents the key with the label "6".
  *
- * @note This is not for a potential "6" key on the key pad.
+ * \note This is not for a potential "6" key on the key pad.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code six{SDLK_6};
 
 /**
- * @brief Represents the key with the label "7".
+ * \brief Represents the key with the label "7".
  *
- * @note This is not for a potential "7" key on the key pad.
+ * \note This is not for a potential "7" key on the key pad.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code seven{SDLK_7};
 
 /**
- * @brief Represents the key with the label "8".
+ * \brief Represents the key with the label "8".
  *
- * @note This is not for a potential "8" key on the key pad.
+ * \note This is not for a potential "8" key on the key pad.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code eight{SDLK_8};
 
 /**
- * @brief Represents the key with the label "9".
+ * \brief Represents the key with the label "9".
  *
- * @note This is not for a potential "9" key on the key pad.
+ * \note This is not for a potential "9" key on the key pad.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code nine{SDLK_9};
 
 /**
- * @brief Represents the key with the label "0".
+ * \brief Represents the key with the label "0".
  *
- * @note This is not for a potential "0" key on the key pad.
+ * \note This is not for a potential "0" key on the key pad.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code zero{SDLK_0};
 
 /**
- * @brief Represents the function key "F1".
+ * \brief Represents the function key "F1".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f1{SDLK_F1};
 
 /**
- * @brief Represents the function key "F2".
+ * \brief Represents the function key "F2".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f2{SDLK_F2};
 
 /**
- * @brief Represents the function key "F3".
+ * \brief Represents the function key "F3".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f3{SDLK_F3};
 
 /**
- * @brief Represents the function key "F4".
+ * \brief Represents the function key "F4".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f4{SDLK_F4};
 
 /**
- * @brief Represents the function key "F5".
+ * \brief Represents the function key "F5".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f5{SDLK_F5};
 
 /**
- * @brief Represents the function key "F6".
+ * \brief Represents the function key "F6".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f6{SDLK_F6};
 
 /**
- * @brief Represents the function key "F7".
+ * \brief Represents the function key "F7".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f7{SDLK_F7};
 
 /**
- * @brief Represents the function key "F8".
+ * \brief Represents the function key "F8".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f8{SDLK_F8};
 
 /**
- * @brief Represents the function key "F9".
+ * \brief Represents the function key "F9".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f9{SDLK_F9};
 
 /**
- * @brief Represents the function key "F10".
+ * \brief Represents the function key "F10".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f10{SDLK_F10};
 
 /**
- * @brief Represents the function key "F11".
+ * \brief Represents the function key "F11".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f11{SDLK_F11};
 
 /**
- * @brief Represents the function key "F12".
+ * \brief Represents the function key "F12".
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code f12{SDLK_F12};
 
 /**
- * @brief Represents the left arrow key.
+ * \brief Represents the left arrow key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code left{SDLK_LEFT};
 
 /**
- * @brief Represents the right arrow key.
+ * \brief Represents the right arrow key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code right{SDLK_RIGHT};
 
 /**
- * @brief Represents the up arrow key.
+ * \brief Represents the up arrow key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code up{SDLK_UP};
 
 /**
- * @brief Represents the down arrow key.
+ * \brief Represents the down arrow key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code down{SDLK_DOWN};
 
 /**
- * @brief Represents the "Space" key.
+ * \brief Represents the "Space" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code space{SDLK_SPACE};
 
 /**
- * @brief Represents the "Enter" key.
+ * \brief Represents the "Enter" key.
  *
- * @note This key is also referred to as the "Return" key.
+ * \note This key is also referred to as the "Return" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code enter{SDLK_RETURN};
 
 /**
- * @brief Represents the "Escape" key.
+ * \brief Represents the "Escape" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code escape{SDLK_ESCAPE};
 
 /**
- * @brief Represents the "Backspace" key.
+ * \brief Represents the "Backspace" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code backspace{SDLK_BACKSPACE};
 
 /**
- * @brief Represents the "Tab" key.
+ * \brief Represents the "Tab" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code tab{SDLK_TAB};
 
 /**
- * @brief Represents the "Caps Lock" key.
+ * \brief Represents the "Caps Lock" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code caps_lock{SDLK_CAPSLOCK};
 
 /**
- * @brief Represents the left "Shift" key.
+ * \brief Represents the left "Shift" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code left_shift{SDLK_LSHIFT};
 
 /**
- * @brief Represents the right "Shift" key.
+ * \brief Represents the right "Shift" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code right_shift{SDLK_RSHIFT};
 
 /**
- * @brief Represents the left "CTRL" key.
+ * \brief Represents the left "CTRL" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code left_ctrl{SDLK_LCTRL};
 
 /**
- * @brief Represents the right "CTRL" key.
+ * \brief Represents the right "CTRL" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code right_ctrl{SDLK_RCTRL};
 
 /**
- * @brief Represents the left "Alt" key.
+ * \brief Represents the left "Alt" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code left_alt{SDLK_LALT};
 
 /**
- * @brief Represents the right "Alt" key.
+ * \brief Represents the right "Alt" key.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code right_alt{SDLK_RALT};
 
 /**
- * @brief Represents the left "GUI" key.
+ * \brief Represents the left "GUI" key.
  *
- * @details On Windows, this is the "Windows key"; for macs it's the "CMD" key,
+ * \details On Windows, this is the "Windows key"; for macs it's the "CMD" key,
  * etc.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code left_gui{SDLK_LGUI};
 
 /**
- * @brief Represents the right "GUI" key.
+ * \brief Represents the right "GUI" key.
  *
- * @details On Windows, this is the "Windows" key; for macs it's the "CMD" key,
+ * \details On Windows, this is the "Windows" key; for macs it's the "CMD" key,
  * etc.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile key.hpp
+ * \headerfile key.hpp
  */
 inline constexpr key_code right_gui{SDLK_RGUI};
 

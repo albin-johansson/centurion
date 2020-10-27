@@ -23,38 +23,38 @@
  */
 
 /**
- * @brief Provides utilities related to managing hints.
+ * \brief Provides utilities related to managing hints.
  *
- * @details Provides utilities related to managing hints ("configuration
+ * \details Provides utilities related to managing hints ("configuration
  * variables" on the SDL2 wiki). Refer to the official SDL2 wiki or the
  * <code>SDL_hints.hpp</code> header for details regarding any specific hint
  * type.
  *
- * @todo `WindowsIntResourceIcon`, `WindowsIntResourceIconSmall`,
+ * \todo `WindowsIntResourceIcon`, `WindowsIntResourceIconSmall`,
  * `X11WindowVisualID` are string hints because the types of their values
  * isn't known. Should be fixed if the type isn't actually string.
  *
- * @todo C++20: Make callback signature depend on the `UserData` and the type
+ * \todo C++20: Make callback signature depend on the `UserData` and the type
  * of the associated hint, so that the values supplied to the callback aren't
  * always strings.
  *
- * @todo Document all of the hint classes.
+ * \todo Document all of the hint classes.
  *
- * @file hints.hpp
+ * \file hints.hpp
  *
- * @since 4.1.0
+ * \since 4.1.0
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 /**
- * @defgroup configuration Configuration
+ * \defgroup configuration Configuration
  *
- * @brief Contains the API related to hints/configuration variables.
+ * \brief Contains the API related to hints/configuration variables.
  */
 
 #ifndef CENTURION_HINTS_HEADER
@@ -79,7 +79,7 @@
 
 namespace cen {
 
-/// @cond FALSE
+/// \cond FALSE
 
 namespace detail {
 
@@ -238,23 +238,23 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
 
 }  // namespace detail
 
-/// @endcond
+/// \endcond
 
-/// @addtogroup configuration
-/// @{
+/// \addtogroup configuration
+/// \{
 
 /**
- * @namespace cen::hint
+ * \namespace cen::hint
  *
  *
  *
- * @brief Contains all hint types.
+ * \brief Contains all hint types.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 namespace hint {
 
-/// @cond FALSE
+/// \cond FALSE
 
 template <class Hint>
 struct enum_hint_traits;
@@ -410,7 +410,7 @@ struct enum_hint_traits<windows::d3d_compiler> final
   };
 };
 
-/// @endcond
+/// \endcond
 
 template <class Derived>
 class enum_hint
@@ -440,13 +440,13 @@ class enum_hint
 };
 
 /**
- * @class render_driver
+ * \class render_driver
  *
- * @ingroup configuration
+ * \ingroup configuration
  *
- * @brief Used to specify the render driver that will be used.
+ * \brief Used to specify the render driver that will be used.
  *
- * @headerfile hints.hpp
+ * \headerfile hints.hpp
  */
 struct render_driver final : enum_hint<render_driver>
 {
@@ -1305,16 +1305,16 @@ struct window_visual_id final : detail::string_hint<window_visual_id>
 }  // namespace hint
 
 /**
- * @enum hint_priority
+ * \enum hint_priority
  *
- * @brief Provides three different priorities that can be specified when
+ * \brief Provides three different priorities that can be specified when
  * setting the value of a hint.
  *
- * @since 4.1.0
+ * \since 4.1.0
  *
- * @see `SDL_HintPriority`
+ * \see `SDL_HintPriority`
  *
- * @headerfile hints.hpp
+ * \headerfile hints.hpp
  */
 enum class hint_priority
 {
@@ -1324,23 +1324,23 @@ enum class hint_priority
 };
 
 /**
- * @brief Sets the value of the specified hint.
+ * \brief Sets the value of the specified hint.
  *
- * @details This method will only accept values that are related to the
+ * \details This method will only accept values that are related to the
  * specified hint, supplying the wrong kind of value causes a compile-time
  * error. See the related hint class for more details about the associated
  * value type. However, whilst this method is type-safe, it doesn't ensure
  * that *correct* values are specified for the hints.
  *
- * @tparam Hint the type of the hint that will be modified.
- * @tparam priority the priority that will be used, defaults to `normal`.
- * @tparam Value the type of the hint value.
+ * \tparam Hint the type of the hint that will be modified.
+ * \tparam priority the priority that will be used, defaults to `normal`.
+ * \tparam Value the type of the hint value.
  *
- * @param value the new value that will be set for the specified hint.
+ * \param value the new value that will be set for the specified hint.
  *
- * @return `true` if the hint was successfully set; `false` otherwise.
+ * \return `true` if the hint was successfully set; `false` otherwise.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 template <typename Hint,
           hint_priority priority = hint_priority::normal,
@@ -1355,17 +1355,17 @@ auto set_hint(const Value& value) -> bool
 }
 
 /**
- * @brief Returns the current value of the specified hint.
+ * \brief Returns the current value of the specified hint.
  *
- * @note The returned value is a `std::optional` of the hint value type. Many
+ * \note The returned value is a `std::optional` of the hint value type. Many
  * hints aren't actually set by default.
  *
- * @tparam Hint the type of the Hint to obtain the value of.
+ * \tparam Hint the type of the Hint to obtain the value of.
  *
- * @return the current value of the specified hint; `std::nullopt` if there is
+ * \return the current value of the specified hint; `std::nullopt` if there is
  * no value set for the hint.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 template <typename Hint>
 [[nodiscard]] auto get_hint() noexcept
@@ -1374,37 +1374,37 @@ template <typename Hint>
 }
 
 /**
- * @class hint_callback
+ * \class hint_callback
  *
- * @brief Represents a handle for dealing with hint callbacks.
+ * \brief Represents a handle for dealing with hint callbacks.
  *
- * @details This class provides methods for easily connecting and disconnecting
+ * \details This class provides methods for easily connecting and disconnecting
  * a callback from receiving updates.
  *
- * @tparam Hint the type of the associated hint. Should be one of the hint
+ * \tparam Hint the type of the associated hint. Should be one of the hint
  * types defined in the `hints.hpp` header.
  *
- * @tparam UserData the type of the user data, defaults to `void`.
+ * \tparam UserData the type of the user data, defaults to `void`.
  *
- * @since 4.1.0
+ * \since 4.1.0
  *
- * @headerfile hints.hpp
+ * \headerfile hints.hpp
  */
 template <typename Hint, typename UserData = void>
 class hint_callback final
 {
  public:
   /**
-   * @brief Creates a `hint_callback`.
+   * \brief Creates a `hint_callback`.
    *
-   * @param callback the function object that will be called whenever the
+   * \param callback the function object that will be called whenever the
    * associated hint is updated. The signature should be `void(void*,
    * czstring, czstring, czstring)`.
-   * @param userData a pointer to some user data. Defaults to `nullptr`.
+   * \param userData a pointer to some user data. Defaults to `nullptr`.
    *
-   * @throws exception if the supplied function pointer is null.
+   * \throws exception if the supplied function pointer is null.
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   hint_callback(SDL_HintCallback callback, UserData* userData = nullptr)
       : m_callback{callback},
@@ -1416,12 +1416,12 @@ class hint_callback final
   }
 
   /**
-   * @brief Registers the callback to be invoked whenever the associated hint is
+   * \brief Registers the callback to be invoked whenever the associated hint is
    * updated.
    *
-   * @see `SDL_AddHintCallback`
+   * \see `SDL_AddHintCallback`
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   void connect() noexcept
   {
@@ -1431,12 +1431,12 @@ class hint_callback final
   }
 
   /**
-   * @brief Unregisters the callback from being updated whenever the associated
+   * \brief Unregisters the callback from being updated whenever the associated
    * hint is updated.
    *
-   * @see `SDL_DelHintCallback`
+   * \see `SDL_DelHintCallback`
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   void disconnect() noexcept
   {
@@ -1446,13 +1446,13 @@ class hint_callback final
   }
 
   /**
-   * @brief Returns a pointer to the function that is invoked when the
+   * \brief Returns a pointer to the function that is invoked when the
    * associated hint is updated.
    *
-   * @return a pointer to the function that is invoked when the associated
+   * \return a pointer to the function that is invoked when the associated
    * hint is updated.
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   [[nodiscard]] auto get() noexcept -> SDL_HintCallback
   {
@@ -1460,12 +1460,12 @@ class hint_callback final
   }
 
   /**
-   * @brief Returns a pointer to the user data associated with the callback.
+   * \brief Returns a pointer to the user data associated with the callback.
    *
-   * @return a pointer to the user data associated with the callback, can be
+   * \return a pointer to the user data associated with the callback, can be
    * null.
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   [[nodiscard]] auto user_data() const noexcept -> UserData*
   {
@@ -1478,35 +1478,35 @@ class hint_callback final
 };
 
 /**
- * @brief Adds a callback to observe changes of the value of the specified hint.
+ * \brief Adds a callback to observe changes of the value of the specified hint.
  *
- * @details A callback handle object is returned, which can be used to easily
+ * \details A callback handle object is returned, which can be used to easily
  * disconnect the callback later. This function can be used with any function
  * object that is stateless, such as traditional function pointers and lambdas.
  * The simplest way to add a callback is with a lambda and no explicit user
  * data.
  *
- * @note The callback will be immediately invoked with the current value of
+ * \note The callback will be immediately invoked with the current value of
  * the hint.
  *
- * @note In a future version of centurion (that supports C++20), the
+ * \note In a future version of centurion (that supports C++20), the
  * signature of the function object will be dependent on the `UserData` type.
  * Unfortunately, this isn't really doable with C++17. Since it requires
  * default-constructible stateless lambdas.
  *
- * @tparam Hint should one of the many hint types defined in this header.
+ * \tparam Hint should one of the many hint types defined in this header.
  * However, all it requires is that the type provides a static method that
  * returns a `czstring`.
- * @tparam UserData the type of the user data, defaults to void.
+ * \tparam UserData the type of the user data, defaults to void.
  *
- * @param fun the function object that will be invoked when the hint is
+ * \param fun the function object that will be invoked when the hint is
  * updated. The signature should be `void(void*, czstring, czstring, czstring)`.
- * @param userData the user data to associate with the callback, defaults to
+ * \param userData the user data to associate with the callback, defaults to
  * `nullptr`.
  *
- * @return a handle to the added callback.
+ * \return a handle to the added callback.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 template <typename Hint, typename UserData = void>
 auto add_hint_callback(SDL_HintCallback fun,
@@ -1519,18 +1519,18 @@ auto add_hint_callback(SDL_HintCallback fun,
 }
 
 /**
- * @brief Clears all stored hints.
+ * \brief Clears all stored hints.
  *
- * @see `SDL_ClearHints`
+ * \see `SDL_ClearHints`
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 inline void clear_hints() noexcept
 {
   SDL_ClearHints();
 }
 
-/// @}
+/// \}
 
 }  // namespace cen
 

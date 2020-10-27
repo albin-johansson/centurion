@@ -23,21 +23,21 @@
  */
 
 /**
- * @file utils.hpp
+ * \file utils.hpp
  *
- * @brief Provides utilities used in the implementation of the library.
+ * \brief Provides utilities used in the implementation of the library.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 /**
- * @defgroup misc Miscellaneous
+ * \defgroup misc Miscellaneous
  *
- * @brief Provides miscellaneous components used throughout the library.
+ * \brief Provides miscellaneous components used throughout the library.
  */
 
 #ifndef CENTURION_CENTURION_UTILS_HEADER
@@ -63,23 +63,23 @@
 namespace cen {
 
 /**
- * @brief Casts a value to a value of another type.
+ * \brief Casts a value to a value of another type.
  *
- * @ingroup misc
+ * \ingroup misc
  *
- * @details This is the default implementation, which simply attempts to use
+ * \details This is the default implementation, which simply attempts to use
  * `static_cast`. The idea is that this function will be specialized for
  * various Centurion and SDL types. This is useful because it isn't always
  * possible to implement conversion operators as members.
  *
- * @tparam To the type of the value that will be converted.
- * @tparam From the type that the value will be casted to.
+ * \tparam To the type of the value that will be converted.
+ * \tparam From the type that the value will be casted to.
  *
- * @param from the value that will be converted.
+ * \param from the value that will be converted.
  *
- * @return the result of casting the supplied value to the specified type.
+ * \return the result of casting the supplied value to the specified type.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename To, typename From>
 [[nodiscard]] constexpr auto cast(const From& from) noexcept -> To
@@ -87,27 +87,27 @@ template <typename To, typename From>
   return static_cast<To>(from);
 }
 
-/// @cond FALSE
+/// \cond FALSE
 
 /**
- * @namespace cen::detail
+ * \namespace cen::detail
  *
- * @brief The main namespace used for implementation details of the library.
+ * \brief The main namespace used for implementation details of the library.
  *
- * @warning Do not use anything that resides in this namespace, the contents
+ * \warning Do not use anything that resides in this namespace, the contents
  * may change at any time without warning.
  */
 namespace detail {
 
 /**
- * @brief Returns the corresponding `SDL_bool` value for the supplied boolean
+ * \brief Returns the corresponding `SDL_bool` value for the supplied boolean
  * value.
  *
- * @param b the boolean value that will be converted.
+ * \param b the boolean value that will be converted.
  *
- * @return `SDL_TRUE` for `true`; `SDL_FALSE` for `false`.
+ * \return `SDL_TRUE` for `true`; `SDL_FALSE` for `false`.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] constexpr auto convert_bool(bool b) noexcept -> SDL_bool
 {
@@ -115,18 +115,18 @@ namespace detail {
 }
 
 /**
- * @brief Returns a string that represents the memory address of the supplied
+ * \brief Returns a string that represents the memory address of the supplied
  * pointer.
  *
- * @details The empty string is returned if the supplied pointer is null.
+ * \details The empty string is returned if the supplied pointer is null.
  *
- * @tparam T the type of the pointer.
- * @param ptr the pointer that will be converted.
+ * \tparam T the type of the pointer.
+ * \param ptr the pointer that will be converted.
  *
- * @return a string that represents the memory address of the supplied
+ * \return a string that represents the memory address of the supplied
  * pointer.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 template <typename T>
 [[nodiscard]] auto address_of(T* ptr) -> std::string
@@ -141,14 +141,14 @@ template <typename T>
 }
 
 /**
- * @brief Indicates whether or not two C-style strings are equal.
+ * \brief Indicates whether or not two C-style strings are equal.
  *
- * @param lhs the left-hand side string, can safely be null.
- * @param rhs the right-hand side string, can safely be null.
+ * \param lhs the left-hand side string, can safely be null.
+ * \param rhs the right-hand side string, can safely be null.
  *
- * @return `true` if the strings are equal; `false` otherwise.
+ * \return `true` if the strings are equal; `false` otherwise.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 [[nodiscard]] inline auto equal(czstring lhs, czstring rhs) noexcept -> bool
 {
@@ -169,7 +169,7 @@ template <typename T>
 
 }  // namespace detail
 
-/// @endcond
+/// \endcond
 
 }  // namespace cen
 

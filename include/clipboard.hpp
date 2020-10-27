@@ -23,17 +23,17 @@
  */
 
 /**
- * @file clipboard.hpp
+ * \file clipboard.hpp
  *
- * @ingroup system
+ * \ingroup system
  *
- * @brief Provides clipboard-related functions.
+ * \brief Provides clipboard-related functions.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_CLIPBOARD_HEADER
@@ -50,57 +50,57 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-/// @addtogroup system
-/// @{
+/// \addtogroup system
+/// \{
 
 /**
- * @namespace cen::clipboard
+ * \namespace cen::clipboard
  *
- * @brief Provides functions related to managing the clipboard.
+ * \brief Provides functions related to managing the clipboard.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 namespace cen::clipboard {
 
 /**
- * @brief Indicates whether or not there is a clipboard exists and that it
+ * \brief Indicates whether or not there is a clipboard exists and that it
  * contains non-empty text.
  *
- * @return `true` if there is a clipboard that contains non-empty text; `false`
+ * \return `true` if there is a clipboard that contains non-empty text; `false`
  * otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto has_text() noexcept -> bool;
 
 /**
- * @brief Returns the current text in the clipboard.
+ * \brief Returns the current text in the clipboard.
  *
- * @note If the clipboard cannot be obtained, this function returns the empty
+ * \note If the clipboard cannot be obtained, this function returns the empty
  * string.
  *
- * @return the current clipboard text.
+ * \return the current clipboard text.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto get_text() -> std::string;
 
 /**
- * @brief Sets the current clipboard text.
+ * \brief Sets the current clipboard text.
  *
- * @param text the text that will be stored in the clipboard.
+ * \param text the text that will be stored in the clipboard.
  *
- * @return `true` if the clipboard text was successfully set; `false` otherwise.
+ * \return `true` if the clipboard text was successfully set; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_API
 auto set_text(nn_czstring text) noexcept -> bool;
 
 }  // namespace cen::clipboard
 
-/// @}
+/// \}
 
 #endif  // CENTURION_CLIPBOARD_HEADER

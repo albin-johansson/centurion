@@ -23,17 +23,17 @@
  */
 
 /**
- * @file texture_access.hpp
+ * \file texture_access.hpp
  *
- * @ingroup input
+ * \ingroup input
  *
- * @brief Provides the `texture_access` enum.
+ * \brief Provides the `texture_access` enum.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @copyright MIT License
+ * \copyright MIT License
  *
- * @date 2019-2020
+ * \date 2019-2020
  */
 
 #ifndef CENTURION_TEXTURE_ACCESS_HEADER
@@ -45,22 +45,22 @@
 
 namespace cen {
 
-/// @addtogroup graphics
-/// @{
+/// \addtogroup graphics
+/// \{
 
 /**
- * @enum texture_access
+ * \enum texture_access
  *
- * @brief Mirrors the `SDL_TextureAccess` enum.
+ * \brief Mirrors the `SDL_TextureAccess` enum.
  *
- * @note The `no_lock` enumerator is also referred to as "static" texture
+ * \note The `no_lock` enumerator is also referred to as "static" texture
  * access.
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @see `SDL_TextureAccess`
+ * \see `SDL_TextureAccess`
  *
- * @headerfile texture_access.hpp
+ * \headerfile texture_access.hpp
  */
 enum class texture_access
 {
@@ -74,14 +74,14 @@ enum class texture_access
 };
 
 /**
- * @brief Indicates whether or not the two texture access values are the same.
+ * \brief Indicates whether or not the two texture access values are the same.
  *
- * @param lhs the lhs texture access value.
- * @param rhs the rhs texture access value.
+ * \param lhs the lhs texture access value.
+ * \param rhs the rhs texture access value.
  *
- * @return `true` if the texture access values are the same; `false` otherwise.
+ * \return `true` if the texture access values are the same; `false` otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(enum texture_access lhs,
                                                SDL_TextureAccess rhs) noexcept
@@ -91,7 +91,7 @@ enum class texture_access
 }
 
 /**
- * @copydoc operator==(texture_access, SDL_TextureAccess)
+ * \copydoc operator==(texture_access, SDL_TextureAccess)
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_TextureAccess lhs,
                                                enum texture_access rhs) noexcept
@@ -101,16 +101,16 @@ enum class texture_access
 }
 
 /**
- * @brief Indicates whether or not the two texture access values aren't the
+ * \brief Indicates whether or not the two texture access values aren't the
  * same.
  *
- * @param lhs the lhs texture access value.
- * @param rhs the rhs texture access value.
+ * \param lhs the lhs texture access value.
+ * \param rhs the rhs texture access value.
  *
- * @return `true` if the texture access values aren't the same; `false`
+ * \return `true` if the texture access values aren't the same; `false`
  * otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(texture_access lhs,
                                                SDL_TextureAccess rhs) noexcept
@@ -120,7 +120,7 @@ enum class texture_access
 }
 
 /**
- * @copydoc operator!=(texture_access, SDL_TextureAccess)
+ * \copydoc operator!=(texture_access, SDL_TextureAccess)
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_TextureAccess lhs,
                                                texture_access rhs) noexcept
@@ -129,7 +129,7 @@ enum class texture_access
   return !(lhs == rhs);
 }
 
-/// @}
+/// \}
 
 }  // namespace cen
 

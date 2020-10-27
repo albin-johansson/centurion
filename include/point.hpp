@@ -23,15 +23,15 @@
  */
 
 /**
- * @file point.hpp
+ * \file point.hpp
  *
- * @brief Provides simple 2D point representations.
+ * \brief Provides simple 2D point representations.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_POINT_HEADER
@@ -56,19 +56,19 @@
 namespace cen {
 
 /**
- * @brief Provides traits used by the `basic_point` class.
+ * \brief Provides traits used by the `basic_point` class.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @tparam T the representation type. Must be convertible to `int` or `float`.
+ * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @see `basic_point`
- * @see `ipoint`
- * @see `fpoint`
+ * \see `basic_point`
+ * \see `ipoint`
+ * \see `fpoint`
  *
- * @headerfile point.hpp
+ * \headerfile point.hpp
  */
 template <typename T,
           typename = std::enable_if_t<std::is_convertible_v<T, int> ||
@@ -77,103 +77,103 @@ class point_traits final
 {
  public:
   /**
-   * @var isIntegral
+   * \var isIntegral
    *
-   * @brief Indicates whether or not the point is based on an integral type.
+   * \brief Indicates whether or not the point is based on an integral type.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   inline constexpr static bool isIntegral = std::is_integral_v<T>;
 
   /**
-   * @var isFloating
+   * \var isFloating
    *
-   * @brief Indicates whether or not the point is based on a floating-point
+   * \brief Indicates whether or not the point is based on a floating-point
    * type.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   inline constexpr static bool isFloating = std::is_floating_point_v<T>;
 
   /**
-   * @typedef value_type
+   * \typedef value_type
    *
-   * @brief The actual representation type, i.e. `int` or `float`.
+   * \brief The actual representation type, i.e. `int` or `float`.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   using value_type = std::conditional_t<isIntegral, int, float>;
 
   /**
-   * @typedef point_type
+   * \typedef point_type
    *
-   * @brief The SDL point type, i.e. `SDL_Point` or `SDL_FPoint`.
+   * \brief The SDL point type, i.e. `SDL_Point` or `SDL_FPoint`.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   using point_type = std::conditional_t<isIntegral, SDL_Point, SDL_FPoint>;
 };
 
 /**
- * @class basic_point
+ * \class basic_point
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief Represents a two-dimensional point.
+ * \brief Represents a two-dimensional point.
  *
- * @details This class is designed as a wrapper for `SDL_Point` and
+ * \details This class is designed as a wrapper for `SDL_Point` and
  * `SDL_FPoint`. The representation is specified by the type parameter.
  *
- * @note This point class will only use `int` or `float` as the actual
+ * \note This point class will only use `int` or `float` as the actual
  * internal representation.
  *
- * @tparam T the representation type. Must be convertible to `int` or `float`.
+ * \tparam T the representation type. Must be convertible to `int` or `float`.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @see `ipoint`
- * @see `fpoint`
+ * \see `ipoint`
+ * \see `fpoint`
  *
- * @headerfile point.hpp
+ * \headerfile point.hpp
  */
 template <typename T>
 class basic_point final
 {
  public:
   /**
-   * @copydoc point_traits::isIntegral
+   * \copydoc point_traits::isIntegral
    */
   inline constexpr static bool isIntegral = point_traits<T>::isIntegral;
 
   /**
-   * @copydoc point_traits::isFloating
+   * \copydoc point_traits::isFloating
    */
   inline constexpr static bool isFloating = point_traits<T>::isFloating;
 
   /**
-   * @copydoc point_traits::value_type
+   * \copydoc point_traits::value_type
    */
   using value_type = typename point_traits<T>::value_type;
 
   /**
-   * @copydoc point_traits::point_type
+   * \copydoc point_traits::point_type
    */
   using point_type = typename point_traits<T>::point_type;
 
   /**
-   * @brief Creates a zero-initialized point.
+   * \brief Creates a zero-initialized point.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   constexpr basic_point() noexcept = default;
 
   /**
-   * @brief Creates a point with the specified coordinates.
+   * \brief Creates a point with the specified coordinates.
    *
-   * @param x the x-coordinate that will be used.
-   * @param y the y-coordinate that will be used.
+   * \param x the x-coordinate that will be used.
+   * \param y the y-coordinate that will be used.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   constexpr basic_point(value_type x, value_type y) noexcept
   {
@@ -182,11 +182,11 @@ class basic_point final
   };
 
   /**
-   * @brief Sets the x-coordinate of the point.
+   * \brief Sets the x-coordinate of the point.
    *
-   * @param x the new x-coordinate.
+   * \param x the new x-coordinate.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   constexpr void set_x(value_type x) noexcept
   {
@@ -194,11 +194,11 @@ class basic_point final
   }
 
   /**
-   * @brief Sets the y-coordinate of the point.
+   * \brief Sets the y-coordinate of the point.
    *
-   * @param y the new y-coordinate.
+   * \param y the new y-coordinate.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   constexpr void set_y(value_type y) noexcept
   {
@@ -206,11 +206,11 @@ class basic_point final
   }
 
   /**
-   * @brief Returns the x-coordinate of the point.
+   * \brief Returns the x-coordinate of the point.
    *
-   * @return the x-coordinate.
+   * \return the x-coordinate.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr auto x() const noexcept -> value_type
   {
@@ -218,11 +218,11 @@ class basic_point final
   }
 
   /**
-   * @brief Returns the y-coordinate of the point.
+   * \brief Returns the y-coordinate of the point.
    *
-   * @return the y-coordinate.
+   * \return the y-coordinate.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr auto y() const noexcept -> value_type
   {
@@ -230,11 +230,11 @@ class basic_point final
   }
 
   /**
-   * @brief Returns the internal point representation.
+   * \brief Returns the internal point representation.
    *
-   * @return a reference to the internal representation.
+   * \return a reference to the internal representation.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr auto get() noexcept -> point_type&
   {
@@ -242,7 +242,7 @@ class basic_point final
   }
 
   /**
-   * @copydoc get
+   * \copydoc get
    */
   [[nodiscard]] constexpr auto get() const noexcept -> const point_type&
   {
@@ -250,13 +250,13 @@ class basic_point final
   }
 
   /**
-   * @brief Converts to the internal representation.
+   * \brief Converts to the internal representation.
    *
-   * @return a copy of the internal point.
+   * \return a copy of the internal point.
    *
-   * @see `cen::cast`
+   * \see `cen::cast`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr explicit operator point_type() const noexcept
   {
@@ -264,14 +264,14 @@ class basic_point final
   }
 
   /**
-   * @brief Returns a pointer to the internal point.
+   * \brief Returns a pointer to the internal point.
    *
-   * @note You shouldn't store the returned pointer. However, this conversion
+   * \note You shouldn't store the returned pointer. However, this conversion
    * is safe since `reinterpret_cast` isn't used.
    *
-   * @return a pointer to the internal point instance.
+   * \return a pointer to the internal point instance.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] explicit operator point_type*() noexcept
   {
@@ -279,14 +279,14 @@ class basic_point final
   }
 
   /**
-   * @brief Returns a pointer to the internal point.
+   * \brief Returns a pointer to the internal point.
    *
-   * @note You shouldn't store the returned pointer. However, this conversion
+   * \note You shouldn't store the returned pointer. However, this conversion
    * is safe since `reinterpret_cast` isn't used.
    *
-   * @return a pointer to the internal point instance.
+   * \return a pointer to the internal point instance.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] explicit operator const point_type*() const noexcept
   {
@@ -298,28 +298,28 @@ class basic_point final
 };
 
 /**
- * @typedef ipoint
+ * \typedef ipoint
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief Alias for an `int`-based point.
+ * \brief Alias for an `int`-based point.
  *
- * @details This type corresponds to `SDL_Point`.
+ * \details This type corresponds to `SDL_Point`.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using ipoint = basic_point<int>;
 
 /**
- * @typedef fpoint
+ * \typedef fpoint
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief Alias for a `float`-based point.
+ * \brief Alias for a `float`-based point.
  *
- * @details This type corresponds to `SDL_FPoint`.
+ * \details This type corresponds to `SDL_FPoint`.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using fpoint = basic_point<float>;
 
@@ -338,18 +338,18 @@ static_assert(std::is_nothrow_move_constructible_v<fpoint>);
 static_assert(std::is_nothrow_move_assignable_v<fpoint>);
 
 /**
- * @brief Converts an `fpoint` instance to the corresponding `ipoint`.
+ * \brief Converts an `fpoint` instance to the corresponding `ipoint`.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @details This function casts the coordinates of the supplied point to
+ * \details This function casts the coordinates of the supplied point to
  * `int`, and uses the obtained values to create an `ipoint` instance.
  *
- * @param from the point that will be converted.
+ * \param from the point that will be converted.
  *
- * @return an `ipoint` instance that corresponds to the supplied `fpoint`.
+ * \return an `ipoint` instance that corresponds to the supplied `fpoint`.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <>
 [[nodiscard]] constexpr auto cast(const fpoint& from) noexcept -> ipoint
@@ -360,18 +360,18 @@ template <>
 }
 
 /**
- * @brief Converts an `ipoint` instance to the corresponding `fpoint`.
+ * \brief Converts an `ipoint` instance to the corresponding `fpoint`.
  *
- * @details This function casts the coordinates of the supplied point to
+ * \details This function casts the coordinates of the supplied point to
  * `float`, and uses the obtained values to create an `fpoint` instance.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @param from the point that will be converted.
+ * \param from the point that will be converted.
  *
- * @return an `fpoint` instance that corresponds to the supplied `ipoint`.
+ * \return an `fpoint` instance that corresponds to the supplied `ipoint`.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <>
 [[nodiscard]] constexpr auto cast(const ipoint& from) noexcept -> fpoint
@@ -382,19 +382,19 @@ template <>
 }
 
 /**
- * @brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
+ * \brief Converts an `SDL_FPoint` instance to the corresponding `SDL_Point`.
  *
- * @details This function casts the coordinates of the supplied point to
+ * \details This function casts the coordinates of the supplied point to
  * `int`, and uses the obtained values to create an `SDL_Point` instance.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @param from the point that will be converted.
+ * \param from the point that will be converted.
  *
- * @return an `SDL_Point` instance that corresponds to the supplied
+ * \return an `SDL_Point` instance that corresponds to the supplied
  * `SDL_FPoint`.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <>
 [[nodiscard]] constexpr auto cast(const SDL_FPoint& from) noexcept -> SDL_Point
@@ -405,19 +405,19 @@ template <>
 }
 
 /**
- * @brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
+ * \brief Converts an `SDL_Point` instance to the corresponding `SDL_FPoint`.
  *
- * @details This function casts the coordinates of the supplied point to
+ * \details This function casts the coordinates of the supplied point to
  * `float`, and uses the obtained values to create an `SDL_FPoint` instance.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @param from the point that will be converted.
+ * \param from the point that will be converted.
  *
- * @return an `SDL_FPoint` instance that corresponds to the supplied
+ * \return an `SDL_FPoint` instance that corresponds to the supplied
  * `SDL_Point`.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <>
 [[nodiscard]] constexpr auto cast(const SDL_Point& from) noexcept -> SDL_FPoint
@@ -428,18 +428,18 @@ template <>
 }
 
 /**
- * @brief Returns the distance between two points.
+ * \brief Returns the distance between two points.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @tparam T the representation type used by the points.
+ * \tparam T the representation type used by the points.
  *
- * @param from the first point.
- * @param to the second point.
+ * \param from the first point.
+ * \param to the second point.
  *
- * @return the distance between the two points.
+ * \return the distance between the two points.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 [[nodiscard]] inline auto distance(const basic_point<T>& from,

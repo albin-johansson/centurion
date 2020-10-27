@@ -23,15 +23,15 @@
  */
 
 /**
- * @file screen.hpp
+ * \file screen.hpp
  *
- * @brief Provides information about the system screen.
+ * \brief Provides information about the system screen.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_SCREEN_HEADER
@@ -46,29 +46,29 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-/// @addtogroup system
-/// @{
+/// \addtogroup system
+/// \{
 
 /**
- * @namespace cen::screen
+ * \namespace cen::screen
  *
- * @brief Contains functions that provide information about the screen.
+ * \brief Contains functions that provide information about the screen.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile screen.hpp
+ * \headerfile screen.hpp
  */
 namespace cen::screen {
 
 /**
- * @struct dpi_info
+ * \struct dpi_info
  *
- * @brief Simple POD-type for storing diagonal, horizontal and vertical DPI
+ * \brief Simple POD-type for storing diagonal, horizontal and vertical DPI
  * values.
  *
- * @headerfile screen.hpp
+ * \headerfile screen.hpp
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 struct dpi_info final
 {
@@ -78,15 +78,15 @@ struct dpi_info final
 };
 
 /**
- * @enum orientation
+ * \enum orientation
  *
- * @brief Represents different screen orientations.
+ * \brief Represents different screen orientations.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @see SDL_DisplayOrientation
+ * \see SDL_DisplayOrientation
  *
- * @headerfile screen.hpp
+ * \headerfile screen.hpp
  */
 enum class orientation
 {
@@ -98,17 +98,17 @@ enum class orientation
 };
 
 /**
- * @brief Returns DPI information about a display.
+ * \brief Returns DPI information about a display.
  *
- * @param displayIndex the index of the display to query, must be in the range
+ * \param displayIndex the index of the display to query, must be in the range
  * [0, `cen::screen::amount()`].
  *
- * @return DPI information about the specified display; `std::nullopt` if
+ * \return DPI information about the specified display; `std::nullopt` if
  * something went wrong.
  *
- * @see SDL_GetDisplayDPI
+ * \see SDL_GetDisplayDPI
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto dpi(int displayIndex = 0) -> std::optional<dpi_info>
 {
@@ -125,15 +125,15 @@ enum class orientation
 }
 
 /**
- * @brief Returns vertical DPI information about a display.
+ * \brief Returns vertical DPI information about a display.
  *
- * @param displayIndex the index of the display to query, must be in the range
+ * \param displayIndex the index of the display to query, must be in the range
  * [0, `cen::screen::amount()`].
  *
- * @return the vertical DPI information about the specified display;
+ * \return the vertical DPI information about the specified display;
  * `std::nullopt` if something went wrong.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto vertical_dpi(int displayIndex = 0)
     -> std::optional<float>
@@ -148,15 +148,15 @@ enum class orientation
 }
 
 /**
- * @brief Returns diagonal DPI information about a display.
+ * \brief Returns diagonal DPI information about a display.
  *
- * @param displayIndex the index of the display to query, must be in the range
+ * \param displayIndex the index of the display to query, must be in the range
  * [0, `cen::screen::amount()`].
  *
- * @return the diagonal DPI information about the specified display;
+ * \return the diagonal DPI information about the specified display;
  * `std::nullopt` if something went wrong.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto diagonal_dpi(int displayIndex = 0)
     -> std::optional<float>
@@ -171,15 +171,15 @@ enum class orientation
 }
 
 /**
- * @brief Returns horizontal DPI information about a display.
+ * \brief Returns horizontal DPI information about a display.
  *
- * @param displayIndex the index of the display to query, must be in the range
+ * \param displayIndex the index of the display to query, must be in the range
  * [0, `cen::screen::amount()`].
  *
- * @return the horizontal DPI information about the specified display;
+ * \return the horizontal DPI information about the specified display;
  * `std::nullopt` if something went wrong.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto horizontal_dpi(int displayIndex = 0)
     -> std::optional<float>
@@ -193,17 +193,17 @@ enum class orientation
 }
 
 /**
- * @brief Returns the bounds of a display.
+ * \brief Returns the bounds of a display.
  *
- * @param displayIndex the index of the display to query, must be in the range
+ * \param displayIndex the index of the display to query, must be in the range
  * [0, `cen::screen::amount()`].
  *
- * @return the bounds of the specified display; `std::nullopt` if something went
+ * \return the bounds of the specified display; `std::nullopt` if something went
  * wrong.
  *
- * @see SDL_GetDisplayBounds
+ * \see SDL_GetDisplayBounds
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto bounds(int displayIndex = 0) -> std::optional<irect>
 {
@@ -216,17 +216,17 @@ enum class orientation
 }
 
 /**
- * @brief Returns the usable bounds of a display.
+ * \brief Returns the usable bounds of a display.
  *
- * @param displayIndex the index of the display to query, must be in the range
+ * \param displayIndex the index of the display to query, must be in the range
  * [0, `cen::screen::amount()`].
  *
- * @return the usable bounds of the specified display; `std::nullopt` if
+ * \return the usable bounds of the specified display; `std::nullopt` if
  * something went wrong.
  *
- * @see SDL_GetDisplayUsableBounds
+ * \see SDL_GetDisplayUsableBounds
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto usable_bounds(int displayIndex = 0)
     -> std::optional<irect>
@@ -240,14 +240,14 @@ enum class orientation
 }
 
 /**
- * @brief Returns the orientation of the specified display.
+ * \brief Returns the orientation of the specified display.
  *
- * @param displayIndex the index of the display to obtain the orientation of,
+ * \param displayIndex the index of the display to obtain the orientation of,
  * must be in the range [0, `cen::screen::amount()`].
  *
- * @return the orientation of the specified display.
+ * \return the orientation of the specified display.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto get_orientation(int displayIndex = 0) -> orientation
 {
@@ -256,11 +256,11 @@ enum class orientation
 }
 
 /**
- * @brief Returns the amount of available displays.
+ * \brief Returns the amount of available displays.
  *
- * @return the number of available displays.
+ * \return the number of available displays.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto amount() noexcept -> int
 {
@@ -268,14 +268,14 @@ enum class orientation
 }
 
 /**
- * @brief Returns the name of a display.
+ * \brief Returns the name of a display.
  *
- * @param displayIndex the index of the display to obtain the name of, must be
+ * \param displayIndex the index of the display to obtain the name of, must be
  * in the range [0, `cen::screen::amount()`].
  *
- * @return the name of the specified display, might be null.
+ * \return the name of the specified display, might be null.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto name(int displayIndex = 0) noexcept -> czstring
 {
@@ -283,85 +283,85 @@ enum class orientation
 }
 
 /**
- * @brief Sets whether or not screen savers are enabled.
+ * \brief Sets whether or not screen savers are enabled.
  *
- * @note By default, screen savers are disabled.
+ * \note By default, screen savers are disabled.
  *
- * @param enabled `true` if screen savers should be enabled; `false` otherwise.
+ * \param enabled `true` if screen savers should be enabled; `false` otherwise.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 CENTURION_API
 void set_screen_saver_enabled(bool enabled) noexcept;
 
 /**
- * @brief Indicates whether or not screen savers are enabled.
+ * \brief Indicates whether or not screen savers are enabled.
  *
- * @note By default, screen savers are disabled.
+ * \note By default, screen savers are disabled.
  *
- * @return `true` if screen savers are enabled; `false` otherwise.
+ * \return `true` if screen savers are enabled; `false` otherwise.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 CENTURION_QUERY
 auto screen_saver_enabled() noexcept -> bool;
 
 /**
- * @brief Returns the width of the screen.
+ * \brief Returns the width of the screen.
  *
- * @return the width of the screen.
+ * \return the width of the screen.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 CENTURION_QUERY
 auto width() noexcept -> int;
 
 /**
- * @brief Returns the height of the screen.
+ * \brief Returns the height of the screen.
  *
- * @return the height of the screen.
+ * \return the height of the screen.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 CENTURION_QUERY
 auto height() noexcept -> int;
 
 /**
- * @brief Returns the size of the screen.
+ * \brief Returns the size of the screen.
  *
- * @return the size of the screen.
+ * \return the size of the screen.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 CENTURION_QUERY
 auto size() noexcept -> iarea;
 
 /**
- * @brief Returns the refresh rate of the screen.
+ * \brief Returns the refresh rate of the screen.
  *
- * @return the refresh rate of the screen.
+ * \return the refresh rate of the screen.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 CENTURION_QUERY
 auto refresh_rate() noexcept -> int;
 
 /**
- * @brief Returns the pixel format of the desktop display mode.
+ * \brief Returns the pixel format of the desktop display mode.
  *
- * @note This function returns the pixel format used by the desktop display
+ * \note This function returns the pixel format used by the desktop display
  * mode, i.e. the fullscreen display mode, so it might not be accurate for
  * non-fullscreen windows.
  *
- * @return the pixel format of the desktop display mode.
+ * \return the pixel format of the desktop display mode.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 CENTURION_QUERY
 auto get_pixel_format() noexcept -> pixel_format;
 
 }  // namespace cen::screen
 
-/// @}
+/// \}
 
 #endif  // CENTURION_SCREEN_HEADER

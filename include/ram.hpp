@@ -23,15 +23,15 @@
  */
 
 /**
- * @file ram.hpp
+ * \file ram.hpp
  *
- * @brief Provides information related to the system memory.
+ * \brief Provides information related to the system memory.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_RAM_HEADER
@@ -46,24 +46,24 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace cen::ram
+ * \namespace cen::ram
  *
- * @ingroup system
+ * \ingroup system
  *
- * @brief Contains functions related to the system memory.
+ * \brief Contains functions related to the system memory.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile ram.hpp
+ * \headerfile ram.hpp
  */
 namespace cen::ram {
 
 /**
- * @brief Returns the total amount of system RAM in megabytes.
+ * \brief Returns the total amount of system RAM in megabytes.
  *
- * @return the total amount of system RAM in megabytes.
+ * \return the total amount of system RAM in megabytes.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline auto amount_mb() noexcept -> int
 {
@@ -71,11 +71,11 @@ namespace cen::ram {
 }
 
 /**
- * @brief Returns the total amount of system RAM in gigabytes.
+ * \brief Returns the total amount of system RAM in gigabytes.
  *
- * @return the total amount of system RAM in gigabytes.
+ * \return the total amount of system RAM in gigabytes.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline auto amount_gb() noexcept -> int
 {

@@ -23,24 +23,24 @@
  */
 
 /**
- * @file centurion.hpp
+ * \file centurion.hpp
  *
- * @brief The main header file for the library.
+ * \brief The main header file for the library.
  *
- * @details Provides the `library` and `config` classes, which are related to
+ * \details Provides the `library` and `config` classes, which are related to
  * the initialization of the library.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 /**
- * @defgroup core Core
+ * \defgroup core Core
  *
- * @brief Contains entities considered to be fundamental for the library.
+ * \brief Contains entities considered to be fundamental for the library.
  */
 
 #ifndef CENTURION_HEADER
@@ -61,65 +61,65 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 /**
- * @namespace centurion
+ * \namespace centurion
  *
- * @ingroup core
+ * \ingroup core
  *
- * @brief The top-level namespace that all components of the library reside in.
+ * \brief The top-level namespace that all components of the library reside in.
  */
 namespace cen {
 
 /**
- * @struct config
+ * \struct config
  *
- * @ingroup core
+ * \ingroup core
  *
- * @brief Used to specify how the library is initialized.
+ * \brief Used to specify how the library is initialized.
  *
- * @details All fields are initialized to the default values used by the
+ * \details All fields are initialized to the default values used by the
  * library.
  *
- * @since 4.0.0
+ * \since 4.0.0
  *
- * @var config::initCore
+ * \var config::initCore
  * Indicates whether or not the SDL2 core is initialized.
  *
- * @var config::initImage
+ * \var config::initImage
  * Indicates whether or not SDL2_image is initialized.
  *
- * @var config::initMixer
+ * \var config::initMixer
  * Indicates whether or not SDL2_mixer is initialized.
  *
- * @var config::initTTF
+ * \var config::initTTF
  * Indicates whether or not SDL2_ttf is initialized.
  *
- * @var config::coreFlags
- * Flags passed on to `SDL_Init()`, if @ref config.initCore is `true`.
+ * \var config::coreFlags
+ * Flags passed on to `SDL_Init()`, if \ref config.initCore is `true`.
  *
- * @var config::imageFlags
- * Flags passed on to `IMG_Init()`, if @ref config.initImage is
+ * \var config::imageFlags
+ * Flags passed on to `IMG_Init()`, if \ref config.initImage is
  * `true`.
  *
- * @var config::mixerFlags
- * Flags passed on to `Mix_Init()`, if @ref config.initMixer is
+ * \var config::mixerFlags
+ * Flags passed on to `Mix_Init()`, if \ref config.initMixer is
  * `true`.
  *
- * @var config::mixerFreq
- * The frequency used by SDL2_mixer, if @ref config.initMixer is
+ * \var config::mixerFreq
+ * The frequency used by SDL2_mixer, if \ref config.initMixer is
  * `true`.
  *
- * @var config::mixerFormat
- * The format used by SDL2_mixer, if @ref config.initMixer is `true`.
+ * \var config::mixerFormat
+ * The format used by SDL2_mixer, if \ref config.initMixer is `true`.
  *
- * @var config::mixerChannels
- * The amount of channels used by SDL2_mixer, if @ref config.initMixer
+ * \var config::mixerChannels
+ * The amount of channels used by SDL2_mixer, if \ref config.initMixer
  * is `true`.
  *
- * @var config::mixerChunkSize
- * The chunk size used by SDL2_mixer, if @ref config.initMixer is
+ * \var config::mixerChunkSize
+ * The chunk size used by SDL2_mixer, if \ref config.initMixer is
  * `true`.
  *
- * @headerfile centurion.hpp
+ * \headerfile centurion.hpp
  */
 struct config final
 {
@@ -142,52 +142,52 @@ struct config final
 };
 
 /**
- * @class library
+ * \class library
  *
- * @ingroup core
+ * \ingroup core
  *
- * @brief Used to initialize and de-initialize the library.
+ * \brief Used to initialize and de-initialize the library.
  *
- * @note The signature of the main-method must be `ìnt(int, char**)` when
+ * \note The signature of the main-method must be `ìnt(int, char**)` when
  * using the Centurion library!
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @headerfile centurion.hpp
+ * \headerfile centurion.hpp
  */
 class library final
 {
  public:
   /**
-   * @brief Initializes the library.
+   * \brief Initializes the library.
    *
-   * @pre there mustn't exist any other instances of this class at the time of
+   * \pre there mustn't exist any other instances of this class at the time of
    * invocation of this constructor.
    *
-   * @throws sdl_error if the core SDL2 library can't be initialized.
-   * @throws img_error if the SDL2_image library can't be initialized.
-   * @throws ttf_error if the SDL2_ttf library can't be initialized.
-   * @throws mix_error if the SDL2_mixer library can't be initialized.
+   * \throws sdl_error if the core SDL2 library can't be initialized.
+   * \throws img_error if the SDL2_image library can't be initialized.
+   * \throws ttf_error if the SDL2_ttf library can't be initialized.
+   * \throws mix_error if the SDL2_mixer library can't be initialized.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   library();
 
   /**
-   * @brief Initializes the library according to the supplied configuration.
+   * \brief Initializes the library according to the supplied configuration.
    *
-   * @pre there mustn't exist any other instances of this class at the time of
+   * \pre there mustn't exist any other instances of this class at the time of
    * invocation of this constructor.
    *
-   * @param cfg the configuration spec, determines what gets initialized.
+   * \param cfg the configuration spec, determines what gets initialized.
    *
-   * @throws sdl_error if the core SDL2 library can't be initialized.
-   * @throws img_error if the SDL2_image library can't be initialized.
-   * @throws ttf_error if the SDL2_ttf library can't be initialized.
-   * @throws mix_error if the SDL2_mixer library can't be initialized.
+   * \throws sdl_error if the core SDL2 library can't be initialized.
+   * \throws img_error if the SDL2_image library can't be initialized.
+   * \throws ttf_error if the SDL2_ttf library can't be initialized.
+   * \throws mix_error if the SDL2_mixer library can't be initialized.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   CENTURION_API
   explicit library(const config& cfg);
@@ -247,11 +247,11 @@ class library final
 };
 
 /**
- * @brief Returns the compile-time version of SDL2_ttf that is being used.
+ * \brief Returns the compile-time version of SDL2_ttf that is being used.
  *
- * @return the compile-time version of SDL2_ttf that is being used.
+ * \return the compile-time version of SDL2_ttf that is being used.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 CENTURION_QUERY
 auto ttf_version() noexcept -> SDL_version;

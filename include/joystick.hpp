@@ -23,17 +23,17 @@
  */
 
 /**
- * @file joystick.hpp
+ * \file joystick.hpp
  *
- * @ingroup input
+ * \ingroup input
  *
- * @brief Provides the `joystick` class.
+ * \brief Provides the `joystick` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @copyright MIT License
+ * \copyright MIT License
  *
- * @date 2019-2020
+ * \date 2019-2020
  */
 
 #ifndef CENTURION_JOYSTICK_HEADER
@@ -64,22 +64,22 @@ using is_joystick_handle =
     std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
- * @class basic_joystick
+ * \class basic_joystick
  *
- * @brief Represents a joystick device.
+ * \brief Represents a joystick device.
  *
- * @details The game controller API is built on top of the joystick API, which
+ * \details The game controller API is built on top of the joystick API, which
  * means that the game controller is higher-level and easier to use.
  *
- * @tparam T `std::true_type` for a owning joysticks; `std::false_type` for
+ * \tparam T `std::true_type` for a owning joysticks; `std::false_type` for
  * non-owning joysticks.
  *
- * @since 4.2.0
+ * \since 4.2.0
  *
- * @see joystick
- * @see joystick_handle
+ * \see joystick
+ * \see joystick_handle
  *
- * @headerfile joystick.hpp
+ * \headerfile joystick.hpp
  */
 template <typename T>
 class basic_joystick final
@@ -89,13 +89,13 @@ class basic_joystick final
 
  public:
   /**
-   * @enum power
+   * \enum power
    *
-   * @brief Mirrors the `SDL_JoystickPowerLevel` enum.
+   * \brief Mirrors the `SDL_JoystickPowerLevel` enum.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    *
-   * @headerfile joystick.hpp
+   * \headerfile joystick.hpp
    */
   enum class power
   {
@@ -110,13 +110,13 @@ class basic_joystick final
   };
 
   /**
-   * @enum hat_state
+   * \enum hat_state
    *
-   * @brief Represents the various states of a joystick hat.
+   * \brief Represents the various states of a joystick hat.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    *
-   * @headerfile joystick.hpp
+   * \headerfile joystick.hpp
    */
   enum class hat_state
   {
@@ -132,13 +132,13 @@ class basic_joystick final
   };
 
   /**
-   * @enum type
+   * \enum type
    *
-   * @brief Mirrors the `SDL_JoystickType` enum.
+   * \brief Mirrors the `SDL_JoystickType` enum.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    *
-   * @headerfile joystick.hpp
+   * \headerfile joystick.hpp
    */
   enum class type
   {
@@ -155,17 +155,17 @@ class basic_joystick final
   };
 
   /**
-   * @struct ball_axis_change
+   * \struct ball_axis_change
    *
-   * @brief Represents the difference in a joystick ball axis position.
+   * \brief Represents the difference in a joystick ball axis position.
    *
-   * @since 4.2.0
-   * @headerfile joystick.hpp
+   * \since 4.2.0
+   * \headerfile joystick.hpp
    *
-   * @var ball_axis_change::dx
+   * \var ball_axis_change::dx
    * Difference in x-axis position since last poll.
    *
-   * @var ball_axis_change::dy
+   * \var ball_axis_change::dy
    * Difference in y-axis position since last poll.
    */
   struct ball_axis_change final
@@ -189,16 +189,16 @@ class basic_joystick final
   {}
 
   /**
-   * @brief Returns a handle to the joystick associated with the specified ID.
+   * \brief Returns a handle to the joystick associated with the specified ID.
    *
-   * @ingroup input
+   * \ingroup input
    *
-   * @param id the joystick ID associated with the desired joystick.
+   * \param id the joystick ID associated with the desired joystick.
    *
-   * @return a handle to the joystick associated with the supplied ID, might be
+   * \return a handle to the joystick associated with the supplied ID, might be
    * empty.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename U = T, is_joystick_handle<U> = true>
   [[nodiscard]] static auto from_instance_id(SDL_JoystickID id) noexcept
@@ -208,16 +208,16 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns a handle to the joystick associated with the specified
+   * \brief Returns a handle to the joystick associated with the specified
    * player index.
    *
-   * @ingroup input
+   * \ingroup input
    *
-   * @param playerIndex the player index of the desired joystick.
+   * \param playerIndex the player index of the desired joystick.
    *
-   * @return a handle to the associated joystick, which might be empty.
+   * \return a handle to the associated joystick, which might be empty.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename U = T, is_joystick_handle<U> = true>
   [[nodiscard]] static auto from_player_index(int playerIndex) noexcept
@@ -227,16 +227,16 @@ class basic_joystick final
   }
 
   /**
-   * @brief Makes the joystick rumble.
+   * \brief Makes the joystick rumble.
    *
-   * @details Invoking this method cancels any previous rumble effects. This
+   * \details Invoking this method cancels any previous rumble effects. This
    * method has no effect if the joystick doesn't support rumble effects.
    *
-   * @param lowFreq the intensity of the low frequency (left) motor.
-   * @param highFreq the intensity of the high frequency (right) motor.
-   * @param duration the duration of the rumble effect, in milliseconds.
+   * \param lowFreq the intensity of the low frequency (left) motor.
+   * \param highFreq the intensity of the high frequency (right) motor.
+   * \param duration the duration of the rumble effect, in milliseconds.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   void rumble(u16 lowFreq, u16 highFreq, milliseconds<u32> duration) noexcept
   {
@@ -244,11 +244,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Sets the player index to be associated with the joystick.
+   * \brief Sets the player index to be associated with the joystick.
    *
-   * @param index the player index that will be used.
+   * \param index the player index that will be used.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   void set_player_index(int index) noexcept
   {
@@ -256,14 +256,14 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the player index of the joystick, if available.
+   * \brief Returns the player index of the joystick, if available.
    *
-   * @details For XInput controllers this returns the XInput user index.
+   * \details For XInput controllers this returns the XInput user index.
    *
-   * @return the player index associated with the joystick; `std::nullopt` if it
+   * \return the player index associated with the joystick; `std::nullopt` if it
    * can't be obtained
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto player_index() const noexcept -> std::optional<int>
   {
@@ -276,17 +276,17 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the player index of the joystick associated with the
+   * \brief Returns the player index of the joystick associated with the
    * specified device index.
    *
-   * @note This method can be called before any joysticks are opened.
+   * \note This method can be called before any joysticks are opened.
    *
-   * @param deviceIndex the device index of the joystick that will be queried.
+   * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the player index of the desired joystick; `std::nullopt` if it
+   * \return the player index of the desired joystick; `std::nullopt` if it
    * can't be obtained.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] static auto player_index(int deviceIndex) noexcept
       -> std::optional<int>
@@ -300,11 +300,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the type associated with the joystick.
+   * \brief Returns the type associated with the joystick.
    *
-   * @return a `joystick::Type` value that represents the type of the joystick.
+   * \return a `joystick::Type` value that represents the type of the joystick.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto get_type() const noexcept -> type
   {
@@ -312,14 +312,14 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the type of the joystick associated with the specified
+   * \brief Returns the type of the joystick associated with the specified
    * device index.
    *
-   * @param deviceIndex the device index of the joystick that will be queried.
+   * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the type of the specified joystick.
+   * \return the type of the specified joystick.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] static auto get_type(int deviceIndex) noexcept -> type
   {
@@ -327,12 +327,12 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the USB vendor ID of the joystick.
+   * \brief Returns the USB vendor ID of the joystick.
    *
-   * @return the USB vendor ID associated with the joystick; `std::nullopt` if
+   * \return the USB vendor ID associated with the joystick; `std::nullopt` if
    * it isn't available.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto vendor() const noexcept -> std::optional<u16>
   {
@@ -345,15 +345,15 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the USB vendor ID for the joystick associated with the
+   * \brief Returns the USB vendor ID for the joystick associated with the
    * specified device index.
    *
-   * @param deviceIndex the device index of the joystick that will be queried.
+   * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the USB vendor ID of the desired joystick; `std::nullopt` if it
+   * \return the USB vendor ID of the desired joystick; `std::nullopt` if it
    * can't be obtained.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] static auto vendor(int deviceIndex) noexcept
       -> std::optional<u16>
@@ -367,12 +367,12 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the USB product ID of the joystick.
+   * \brief Returns the USB product ID of the joystick.
    *
-   * @return the USB product ID associated with the joystick; `std::nullopt` if
+   * \return the USB product ID associated with the joystick; `std::nullopt` if
    * it isn't available.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto product() const noexcept -> std::optional<u16>
   {
@@ -385,15 +385,15 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the USB product ID for the joystick associated with the
+   * \brief Returns the USB product ID for the joystick associated with the
    * specified device index.
    *
-   * @param deviceIndex the device index of the joystick that will be queried.
+   * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the USB product ID of the desired joystick; `std::nullopt` if it
+   * \return the USB product ID of the desired joystick; `std::nullopt` if it
    * can't be obtained.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] static auto product(int deviceIndex) noexcept
       -> std::optional<u16>
@@ -407,12 +407,12 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the product version of the joystick, if available.
+   * \brief Returns the product version of the joystick, if available.
    *
-   * @return the product version of the joystick; `std::nullopt` if it isn't
+   * \return the product version of the joystick; `std::nullopt` if it isn't
    * available.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto product_version() const noexcept -> std::optional<u16>
   {
@@ -425,15 +425,15 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the product version for the joystick associated with the
+   * \brief Returns the product version for the joystick associated with the
    * specified device index.
    *
-   * @param deviceIndex the device index of the joystick that will be queried.
+   * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the product version of the desired joystick; `std::nullopt` if it
+   * \return the product version of the desired joystick; `std::nullopt` if it
    * can't be obtained.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] static auto product_version(int deviceIndex) noexcept
       -> std::optional<u16>
@@ -447,17 +447,17 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the ball axis change since the last poll.
+   * \brief Returns the ball axis change since the last poll.
    *
-   * @note Trackballs can only return relative motion since the last call, these
+   * \note Trackballs can only return relative motion since the last call, these
    * motion deltas are placed into the `BallAxisChange` struct.
    *
-   * @param ball the ball index to check, start at 0.
+   * \param ball the ball index to check, start at 0.
    *
-   * @return a `JoystickBallAxisChange` instance or `std::nullopt` if something
+   * \return a `JoystickBallAxisChange` instance or `std::nullopt` if something
    * goes wrong.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto get_ball_axis_change(int ball) const noexcept
       -> std::optional<ball_axis_change>
@@ -473,20 +473,20 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the current position of the specified axis.
+   * \brief Returns the current position of the specified axis.
    *
-   * @details Most modern joysticks let the X-axis be represented by 0
+   * \details Most modern joysticks let the X-axis be represented by 0
    * and the Y-axis by 1. To account for jitter, it may be necessary to impose
    * some kind of tolerance on the returned value.
    *
-   * @note Some joysticks use axes 2 and 3 for extra buttons.
+   * \note Some joysticks use axes 2 and 3 for extra buttons.
    *
-   * @param axis the ID of the axis to query.
+   * \param axis the ID of the axis to query.
    *
-   * @return a 16-bit signed integer that represents the position of the
+   * \return a 16-bit signed integer that represents the position of the
    * specified axis; `std::nullopt` if something goes wrong.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto axis_pos(int axis) const noexcept -> std::optional<i16>
   {
@@ -499,14 +499,14 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the initial state of the specified axis on the joystick.
+   * \brief Returns the initial state of the specified axis on the joystick.
    *
-   * @param axis the axis that will be queried. Starts at 0.
+   * \param axis the axis that will be queried. Starts at 0.
    *
-   * @return the initial state of the axis; `std::nullopt` if the axis doesn't
+   * \return the initial state of the axis; `std::nullopt` if the axis doesn't
    * have an initial state.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto axis_initial_state(int axis) const noexcept
       -> std::optional<i16>
@@ -522,11 +522,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Indicates whether or not the joystick is attached to the system.
+   * \brief Indicates whether or not the joystick is attached to the system.
    *
-   * @return `true` if the joystick is attached to the system; false otherwise.
+   * \return `true` if the joystick is attached to the system; false otherwise.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto is_attached() const noexcept -> bool
   {
@@ -534,11 +534,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the amount of hats on the joystick.
+   * \brief Returns the amount of hats on the joystick.
    *
-   * @return the amount of hats on the joystick.
+   * \return the amount of hats on the joystick.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto num_hats() const noexcept -> int
   {
@@ -546,11 +546,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the amount of general axis controls on the joystick.
+   * \brief Returns the amount of general axis controls on the joystick.
    *
-   * @return the amount of general axis controls on the joystick.
+   * \return the amount of general axis controls on the joystick.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto num_axes() const noexcept -> int
   {
@@ -558,11 +558,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the amount of trackballs on the joystick.
+   * \brief Returns the amount of trackballs on the joystick.
    *
-   * @return the amount of trackballs on the joystick.
+   * \return the amount of trackballs on the joystick.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto num_trackballs() const noexcept -> int
   {
@@ -570,11 +570,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the amount of buttons on the joystick.
+   * \brief Returns the amount of buttons on the joystick.
    *
-   * @return the amount of buttons on the joystick.
+   * \return the amount of buttons on the joystick.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto num_buttons() const noexcept -> int
   {
@@ -582,11 +582,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the instance ID associated with the joystick.
+   * \brief Returns the instance ID associated with the joystick.
    *
-   * @return the instance ID associated with the joystick.
+   * \return the instance ID associated with the joystick.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto instance_id() const noexcept -> SDL_JoystickID
   {
@@ -594,15 +594,15 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the instance ID for the joystick associated with the
+   * \brief Returns the instance ID for the joystick associated with the
    * specified device index.
    *
-   * @param deviceIndex the device index of the joystick that will be queried.
+   * \param deviceIndex the device index of the joystick that will be queried.
    *
-   * @return the instance ID of the desired joystick; `std::nullopt` if it can't
+   * \return the instance ID of the desired joystick; `std::nullopt` if it can't
    * be obtained.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] static auto instance_id(int deviceIndex) noexcept
       -> std::optional<SDL_JoystickID>
@@ -616,13 +616,13 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the GUID associated with the joystick.
+   * \brief Returns the GUID associated with the joystick.
    *
-   * @note The GUID is implementation-dependent.
+   * \note The GUID is implementation-dependent.
    *
-   * @return the GUID associated with the joystick.
+   * \return the GUID associated with the joystick.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto guid() noexcept -> SDL_JoystickGUID
   {
@@ -630,18 +630,18 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the GUID for the joystick associated with the specified
+   * \brief Returns the GUID for the joystick associated with the specified
    * device index.
    *
-   * @note The GUID is implementation-dependent.
-   * @note This function can be called before any joysticks are opened.
+   * \note The GUID is implementation-dependent.
+   * \note This function can be called before any joysticks are opened.
    *
-   * @param deviceIndex refers to the N'th joystick that is currently recognized
+   * \param deviceIndex refers to the N'th joystick that is currently recognized
    * by SDL.
    *
-   * @return the GUID of the joystick associated with the device index.
+   * \return the GUID of the joystick associated with the device index.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] static auto guid(int deviceIndex) noexcept -> SDL_JoystickGUID
   {
@@ -649,13 +649,13 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the name associated with the joystick.
+   * \brief Returns the name associated with the joystick.
    *
-   * @note If no name can be found, this method returns a null string.
+   * \note If no name can be found, this method returns a null string.
    *
-   * @return the name of the joystick; `nullptr` if no name is found.
+   * \return the name of the joystick; `nullptr` if no name is found.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto name() const noexcept -> czstring
   {
@@ -663,16 +663,16 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the associated with the joystick with the specified
+   * \brief Returns the associated with the joystick with the specified
    * device index.
    *
-   * @param deviceIndex refers to the N'th joystick that is currently recognized
+   * \param deviceIndex refers to the N'th joystick that is currently recognized
    * by SDL.
    *
-   * @return the name associated with the joystick; `nullptr` if no name is
+   * \return the name associated with the joystick; `nullptr` if no name is
    * found.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] static auto name(int deviceIndex) noexcept -> czstring
   {
@@ -680,11 +680,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the current power level of the joystick.
+   * \brief Returns the current power level of the joystick.
    *
-   * @return a `joystick::Power` value that represents the current power level.
+   * \return a `joystick::Power` value that represents the current power level.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto get_power() const noexcept -> power
   {
@@ -692,13 +692,13 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the button state of the button associated with the index.
+   * \brief Returns the button state of the button associated with the index.
    *
-   * @param button the button index to get the state from, starting at 0.
+   * \param button the button index to get the state from, starting at 0.
    *
-   * @return the state of the button.
+   * \return the state of the button.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto get_button_state(int button) const noexcept -> button_state
   {
@@ -706,15 +706,15 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the state of a specific joystick hat.
+   * \brief Returns the state of a specific joystick hat.
    *
-   * @param hat the index of the hat to query, indices start at 0.
+   * \param hat the index of the hat to query, indices start at 0.
    *
-   * @return a `HatState` value that represents the current state of the hat.
+   * \return a `HatState` value that represents the current state of the hat.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    *
-   * @see `joystick::HatState`
+   * \see `joystick::HatState`
    */
   [[nodiscard]] auto get_hat_state(int hat) const noexcept -> hat_state
   {
@@ -722,12 +722,12 @@ class basic_joystick final
   }
 
   /**
-   * @brief Updates the state of all open joysticks.
+   * \brief Updates the state of all open joysticks.
    *
-   * @note This is done automatically by the event loop if any joystick
+   * \note This is done automatically by the event loop if any joystick
    * events are enabled.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   static void update() noexcept
   {
@@ -735,13 +735,13 @@ class basic_joystick final
   }
 
   /**
-   * @brief Locks the access to all joysticks.
+   * \brief Locks the access to all joysticks.
    *
-   * @details If you are using the joystick API from multiple threads you
+   * \details If you are using the joystick API from multiple threads you
    * should use this method to restrict access to the joysticks.
    *
-   * @see SDL_LockJoysticks
-   * @since 4.2.0
+   * \see SDL_LockJoysticks
+   * \since 4.2.0
    */
   static void lock() noexcept
   {
@@ -749,10 +749,10 @@ class basic_joystick final
   }
 
   /**
-   * @brief Unlocks the access to all joysticks.
+   * \brief Unlocks the access to all joysticks.
    *
-   * @see SDL_UnlockJoysticks
-   * @since 4.2.0
+   * \see SDL_UnlockJoysticks
+   * \since 4.2.0
    */
   static void unlock() noexcept
   {
@@ -760,22 +760,22 @@ class basic_joystick final
   }
 
   /**
-   * @brief Specifies whether or not joystick event polling is enabled.
+   * \brief Specifies whether or not joystick event polling is enabled.
    *
-   * @details If joystick event polling is disabled, then you must manually call
+   * \details If joystick event polling is disabled, then you must manually call
    * `joystick::update()` in order to update the joystick state.
    *
-   * @note It's recommended to leave joystick event polling enabled.
+   * \note It's recommended to leave joystick event polling enabled.
    *
-   * @warning Calling this function might cause all events currently in
+   * \warning Calling this function might cause all events currently in
    * the event queue to be deleted.
    *
-   * @param enabled `true` if joystick event polling should be enabled;
+   * \param enabled `true` if joystick event polling should be enabled;
    * `false` otherwise.
    *
-   * @see SDL_JoystickEventState(int)
+   * \see SDL_JoystickEventState(int)
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   static void set_polling(bool enabled) noexcept
   {
@@ -783,11 +783,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Indicates whether or not joystick event polling is enabled.
+   * \brief Indicates whether or not joystick event polling is enabled.
    *
-   * @return `true` if joystick event polling is enabled; `false` otherwise.
+   * \return `true` if joystick event polling is enabled; `false` otherwise.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   static auto is_polling() noexcept -> bool
   {
@@ -795,12 +795,12 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the amount of currently available joysticks.
+   * \brief Returns the amount of currently available joysticks.
    *
-   * @return the current amount of available joysticks; `std::nullopt` if
+   * \return the current amount of available joysticks; `std::nullopt` if
    * something goes wrong.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] static auto amount() noexcept -> std::optional<int>
   {
@@ -813,14 +813,14 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns a joystick GUID based on the supplied string.
+   * \brief Returns a joystick GUID based on the supplied string.
    *
-   * @param str the string used to obtain the GUID, can't be null.
+   * \param str the string used to obtain the GUID, can't be null.
    *
-   * @return the obtained GUID.
+   * \return the obtained GUID.
    *
-   * @see `SDL_JoystickGetGUIDFromString`
-   * @since 4.2.0
+   * \see `SDL_JoystickGetGUIDFromString`
+   * \since 4.2.0
    */
   [[nodiscard]] static auto guid_from_string(nn_czstring str) noexcept
       -> SDL_JoystickGUID
@@ -829,11 +829,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the maximum possible value of an axis control on a joystick.
+   * \brief Returns the maximum possible value of an axis control on a joystick.
    *
-   * @return the maximum possible value of an axis control.
+   * \return the maximum possible value of an axis control.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] constexpr static auto axis_max() noexcept -> i16
   {
@@ -841,11 +841,11 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns the minimum possible value of an axis control on a joystick.
+   * \brief Returns the minimum possible value of an axis control on a joystick.
    *
-   * @return the minimum possible value of an axis control.
+   * \return the minimum possible value of an axis control.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] constexpr static auto axis_min() noexcept -> i16
   {
@@ -859,16 +859,16 @@ class basic_joystick final
   }
 
   /**
-   * @brief Returns a pointer to the associated `SDL_Joystick`.
+   * \brief Returns a pointer to the associated `SDL_Joystick`.
    *
-   * @warning Use of this method is not recommended, since it purposefully
+   * \warning Use of this method is not recommended, since it purposefully
    * breaks const-correctness. However, it can be useful since many SDL calls
    * use non-const pointers even when no change will be applied. Don't take
    * ownership of the returned pointer, or bad things will happen.
    *
-   * @return a pointer to the internal `SDL_Joystick`.
+   * \return a pointer to the internal `SDL_Joystick`.
    *
-   * @since 4.2.0
+   * \since 4.2.0
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Joystick*
   {
@@ -917,34 +917,34 @@ class basic_joystick final
 };
 
 /**
- * @typedef joystick
+ * \typedef joystick
  *
- * @brief Represents an owning joystick.
+ * \brief Represents an owning joystick.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using joystick = basic_joystick<std::true_type>;
 
 /**
- * @typedef joystick_handle
+ * \typedef joystick_handle
  *
- * @brief Represents a non-owning joystick.
+ * \brief Represents a non-owning joystick.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using joystick_handle = basic_joystick<std::false_type>;
 
 /**
- * @brief Indicates whether or not two joystick power values are the same.
+ * \brief Indicates whether or not two joystick power values are the same.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param lhs the left-hand side power type.
- * @param rhs the right-hand side power type.
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
  *
- * @return `true` if the values are the same; `false` otherwise.
+ * \return `true` if the values are the same; `false` otherwise.
  *
- * @since 4.3.0
+ * \since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator==(
     joystick::power lhs,
@@ -954,16 +954,16 @@ using joystick_handle = basic_joystick<std::false_type>;
 }
 
 /**
- * @brief Indicates whether or not two joystick power values are the same.
+ * \brief Indicates whether or not two joystick power values are the same.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param lhs the left-hand side power type.
- * @param rhs the right-hand side power type.
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
  *
- * @return `true` if the values are the same; `false` otherwise.
+ * \return `true` if the values are the same; `false` otherwise.
  *
- * @since 4.3.0
+ * \since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_JoystickPowerLevel lhs,
                                                joystick::power rhs) noexcept
@@ -973,16 +973,16 @@ using joystick_handle = basic_joystick<std::false_type>;
 }
 
 /**
- * @brief Indicates whether or not two joystick power values aren't the same.
+ * \brief Indicates whether or not two joystick power values aren't the same.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param lhs the left-hand side power type.
- * @param rhs the right-hand side power type.
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
  *
- * @return `true` if the values aren't the same; `false` otherwise.
+ * \return `true` if the values aren't the same; `false` otherwise.
  *
- * @since 4.3.0
+ * \since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator!=(
     joystick::power lhs,
@@ -992,16 +992,16 @@ using joystick_handle = basic_joystick<std::false_type>;
 }
 
 /**
- * @brief Indicates whether or not two joystick power values aren't the same.
+ * \brief Indicates whether or not two joystick power values aren't the same.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param lhs the left-hand side power type.
- * @param rhs the right-hand side power type.
+ * \param lhs the left-hand side power type.
+ * \param rhs the right-hand side power type.
  *
- * @return `true` if the values aren't the same; `false` otherwise.
+ * \return `true` if the values aren't the same; `false` otherwise.
  *
- * @since 4.3.0
+ * \since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_JoystickPowerLevel lhs,
                                                joystick::power rhs) noexcept
@@ -1011,16 +1011,16 @@ using joystick_handle = basic_joystick<std::false_type>;
 }
 
 /**
- * @brief Indicates whether or not two joystick type values are the same.
+ * \brief Indicates whether or not two joystick type values are the same.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param lhs the left-hand side joystick type value.
- * @param rhs the right-hand side joystick type value.
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
  *
- * @return `true` if the values are the same; `false` otherwise.
+ * \return `true` if the values are the same; `false` otherwise.
  *
- * @since 4.3.0
+ * \since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator==(joystick::type lhs,
                                                SDL_JoystickType rhs) noexcept
@@ -1030,16 +1030,16 @@ using joystick_handle = basic_joystick<std::false_type>;
 }
 
 /**
- * @brief Indicates whether or not two joystick type values are the same.
+ * \brief Indicates whether or not two joystick type values are the same.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param lhs the left-hand side joystick type value.
- * @param rhs the right-hand side joystick type value.
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
  *
- * @return `true` if the values are the same; `false` otherwise.
+ * \return `true` if the values are the same; `false` otherwise.
  *
- * @since 4.3.0
+ * \since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_JoystickType lhs,
                                                joystick::type rhs) noexcept
@@ -1049,16 +1049,16 @@ using joystick_handle = basic_joystick<std::false_type>;
 }
 
 /**
- * @brief Indicates whether or not two joystick type values aren't the same.
+ * \brief Indicates whether or not two joystick type values aren't the same.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param lhs the left-hand side joystick type value.
- * @param rhs the right-hand side joystick type value.
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
  *
- * @return `true` if the values aren't the same; `false` otherwise.
+ * \return `true` if the values aren't the same; `false` otherwise.
  *
- * @since 4.3.0
+ * \since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator!=(joystick::type lhs,
                                                SDL_JoystickType rhs) noexcept
@@ -1068,16 +1068,16 @@ using joystick_handle = basic_joystick<std::false_type>;
 }
 
 /**
- * @brief Indicates whether or not two joystick type values aren't the same.
+ * \brief Indicates whether or not two joystick type values aren't the same.
  *
- * @ingroup input
+ * \ingroup input
  *
- * @param lhs the left-hand side joystick type value.
- * @param rhs the right-hand side joystick type value.
+ * \param lhs the left-hand side joystick type value.
+ * \param rhs the right-hand side joystick type value.
  *
- * @return `true` if the values aren't the same; `false` otherwise.
+ * \return `true` if the values aren't the same; `false` otherwise.
  *
- * @since 4.3.0
+ * \since 4.3.0
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_JoystickType lhs,
                                                joystick::type rhs) noexcept

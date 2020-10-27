@@ -23,15 +23,15 @@
  */
 
 /**
- * @file blend_mode.hpp
+ * \file blend_mode.hpp
  *
- * @brief Provides the `BlendMode` enum.
+ * \brief Provides the `BlendMode` enum.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_BLEND_MODE_HEADER
@@ -47,17 +47,17 @@
 
 namespace cen {
 
-/// @addtogroup graphics
-/// @{
+/// \addtogroup graphics
+/// \{
 
 /**
- * @enum blend_mode
+ * \enum blend_mode
  *
- * @brief Mirrors the `SDL_BlendMode` enum.
+ * \brief Mirrors the `SDL_BlendMode` enum.
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @headerfile blend_mode.hpp
+ * \headerfile blend_mode.hpp
  */
 enum class blend_mode
 {
@@ -70,14 +70,14 @@ enum class blend_mode
 };
 
 /**
- * @brief Indicates whether or not two blend mode values are the same;
+ * \brief Indicates whether or not two blend mode values are the same;
  *
- * @param lhs the left-hand side blend mode value.
- * @param rhs the right-hand side blend mode value.
+ * \param lhs the left-hand side blend mode value.
+ * \param rhs the right-hand side blend mode value.
  *
- * @return `true` if the values are the same; `false` otherwise.
+ * \return `true` if the values are the same; `false` otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline auto operator==(blend_mode lhs, SDL_BlendMode rhs) noexcept
     -> bool
@@ -86,7 +86,7 @@ enum class blend_mode
 }
 
 /**
- * @copydoc operator==(blend_mode, SDL_BlendMode)
+ * \copydoc operator==(blend_mode, SDL_BlendMode)
  */
 [[nodiscard]] inline auto operator==(SDL_BlendMode lhs, blend_mode rhs) noexcept
     -> bool
@@ -95,14 +95,14 @@ enum class blend_mode
 }
 
 /**
- * @brief Indicates whether or not two blend mode values aren't the same;
+ * \brief Indicates whether or not two blend mode values aren't the same;
  *
- * @param lhs the left-hand side blend mode value.
- * @param rhs the right-hand side blend mode value.
+ * \param lhs the left-hand side blend mode value.
+ * \param rhs the right-hand side blend mode value.
  *
- * @return `true` if the values aren't the same; `false` otherwise.
+ * \return `true` if the values aren't the same; `false` otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline auto operator!=(blend_mode lhs, SDL_BlendMode rhs) noexcept
     -> bool
@@ -111,7 +111,7 @@ enum class blend_mode
 }
 
 /**
- * @copydoc operator!=(blend_mode, SDL_BlendMode)
+ * \copydoc operator!=(blend_mode, SDL_BlendMode)
  */
 [[nodiscard]] inline auto operator!=(SDL_BlendMode lhs, blend_mode rhs) noexcept
     -> bool
@@ -119,7 +119,7 @@ enum class blend_mode
   return !(lhs == rhs);
 }
 
-/// @}
+/// \}
 
 }  // namespace cen
 

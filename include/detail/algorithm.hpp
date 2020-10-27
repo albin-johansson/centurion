@@ -23,15 +23,15 @@
  */
 
 /**
- * @file algorithm.hpp
+ * \file algorithm.hpp
  *
- * @brief Provides algorithm utilities for the library.
+ * \brief Provides algorithm utilities for the library.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_ALGORITHM_HEADER

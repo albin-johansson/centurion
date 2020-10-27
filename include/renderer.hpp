@@ -51,8 +51,8 @@
 
 namespace cen {
 
-/// @addtogroup graphics
-/// @{
+/// \addtogroup graphics
+/// \{
 
 template <typename T>
 using is_renderer_owning =
@@ -63,21 +63,21 @@ using is_renderer_handle =
     std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
- * @class basic_renderer
+ * \class basic_renderer
  *
- * @brief Provides hardware-accelerated 2D-rendering.
+ * \brief Provides hardware-accelerated 2D-rendering.
  *
- * @tparam T `std::true_type` for owning renderers; `std::false_type` for
+ * \tparam T `std::true_type` for owning renderers; `std::false_type` for
  * non-owning renderers.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @todo SDL_GetRenderTarget() -> SDL_Texture* (Requires texture_handle)
+ * \todo SDL_GetRenderTarget() -> SDL_Texture* (Requires texture_handle)
  *
- * @see `renderer`
- * @see `renderer_handle`
+ * \see `renderer`
+ * \see `renderer_handle`
  *
- * @headerfile renderer.hpp
+ * \headerfile renderer.hpp
  */
 template <typename T>
 class basic_renderer final
@@ -98,14 +98,14 @@ class basic_renderer final
 
  public:
   /**
-   * @brief Creates a renderer based on a pointer to an SDL renderer.
+   * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
-   * @note The supplied pointer might be claimed by the renderer if the created
+   * \note The supplied pointer might be claimed by the renderer if the created
    * renderer is owning.
    *
-   * @param renderer a pointer to the associated SDL renderer.
+   * \param renderer a pointer to the associated SDL renderer.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   explicit basic_renderer(SDL_Renderer* renderer) noexcept(!is_owning())
       : m_renderer{renderer}
@@ -118,17 +118,17 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates an owning renderer based on the supplied window.
+   * \brief Creates an owning renderer based on the supplied window.
    *
-   * @details By default, the internal renderer will be created using the
+   * \details By default, the internal renderer will be created using the
    * `SDL_RENDERER_ACCELERATED` and `SDL_RENDERER_PRESENTVSYNC` flags.
    *
-   * @param window the associated window instance.
-   * @param flags the renderer flags that will be used.
+   * \param window the associated window instance.
+   * \param flags the renderer flags that will be used.
    *
-   * @throws sdl_error if something goes wrong when creating the renderer.
+   * \throws sdl_error if something goes wrong when creating the renderer.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename Window, typename T_ = T, is_renderer_owning<T_> = true>
   explicit basic_renderer(const Window& window,
@@ -150,9 +150,9 @@ class basic_renderer final
   {}
 
   /**
-   * @brief Clears the rendering target with the currently selected color.
+   * \brief Clears the rendering target with the currently selected color.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void clear() noexcept
   {
@@ -160,13 +160,13 @@ class basic_renderer final
   }
 
   /**
-   * @brief Clears the rendering target with the specified color.
+   * \brief Clears the rendering target with the specified color.
    *
-   * @note This method doesn't change the currently selected color.
+   * \note This method doesn't change the currently selected color.
    *
-   * @param color the color that will be used to clear the rendering target.
+   * \param color the color that will be used to clear the rendering target.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   void clear_with(const color& color) noexcept
   {
@@ -179,9 +179,9 @@ class basic_renderer final
   }
 
   /**
-   * @brief Applies the previous rendering calls to the rendering target.
+   * \brief Applies the previous rendering calls to the rendering target.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void present() noexcept
   {
@@ -189,19 +189,19 @@ class basic_renderer final
   }
 
   /**
-   * @name Primitive rendering
+   * \name Primitive rendering
    * Methods for rendering rectangles and lines.
    */
-  ///@{
+  ///\{
 
   /**
-   * @brief Renders the outline of a rectangle in the currently selected color.
+   * \brief Renders the outline of a rectangle in the currently selected color.
    *
-   * @tparam U the representation type used by the rectangle.
+   * \tparam U the representation type used by the rectangle.
    *
-   * @param rect the rectangle that will be rendered.
+   * \param rect the rectangle that will be rendered.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U>
   void draw_rect(const basic_rect<U>& rect) noexcept
@@ -214,13 +214,13 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a filled rectangle in the currently selected color.
+   * \brief Renders a filled rectangle in the currently selected color.
    *
-   * @tparam U the representation type used by the rectangle.
+   * \tparam U the representation type used by the rectangle.
    *
-   * @param rect the rectangle that will be rendered.
+   * \param rect the rectangle that will be rendered.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U>
   void fill_rect(const basic_rect<U>& rect) noexcept
@@ -233,15 +233,15 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a line between the supplied points, in the currently
+   * \brief Renders a line between the supplied points, in the currently
    * selected color.
    *
-   * @tparam U The representation type used by the points.
+   * \tparam U The representation type used by the points.
    *
-   * @param start the start point of the line.
-   * @param end the end point of the line.
+   * \param start the start point of the line.
+   * \param end the end point of the line.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U>
   void draw_line(const basic_point<U>& start,
@@ -255,25 +255,25 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a collection of lines.
+   * \brief Renders a collection of lines.
    *
-   * @details This method requires the the `Container` type provides the
+   * \details This method requires the the `Container` type provides the
    * public member `value_type` and subsequently, that the `value_type`
    * in turn provides a `value_type` member. The former would correspond to
    * the actual point type, and the latter corresponds to either `int` or
    * `float`.
    *
-   * @warning `Container` *must* be a collection that stores its data
+   * \warning `Container` *must* be a collection that stores its data
    * contiguously! The behaviour of this method is undefined if this condition
    * isn't met.
    *
-   * @tparam Container the container type. Must store its elements
+   * \tparam Container the container type. Must store its elements
    * contiguously, such as `std::vector` or `std::array`.
    *
-   * @param container the container that holds the points that will be used
+   * \param container the container that holds the points that will be used
    * to render the line.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename Container>
   void draw_lines(const Container& container) noexcept
@@ -294,20 +294,20 @@ class basic_renderer final
     }
   }
 
-  ///@}  // end of primitive rendering
+  ///\}  // end of primitive rendering
 
   /**
-   * @name Text rendering
+   * \name Text rendering
    * Methods for rendering text encoded in UTF-8, LATIN-1 or UNICODE.
    */
-  ///@{
+  ///\{
 
   /**
-   * @brief Creates and returns a texture of blended UTF-8 text.
+   * \brief Creates and returns a texture of blended UTF-8 text.
    *
-   * @pre `str` can't be null.
+   * \pre `str` can't be null.
    *
-   * @details Attempts to render the UTF-8 text in the supplied font using
+   * \details Attempts to render the UTF-8 text in the supplied font using
    * the currently selected color and returns a texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -316,14 +316,14 @@ class basic_renderer final
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
-   * @param str the UTF-8 text that will be rendered.
-   * @param font the font that the text will be rendered in.
+   * \param str the UTF-8 text that will be rendered.
+   * \param font the font that the text will be rendered in.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderUTF8_Blended`
+   * \see `TTF_RenderUTF8_Blended`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_blended_utf8(nn_czstring str, const font& font)
       -> texture
@@ -335,11 +335,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of blended and wrapped UTF-8 text.
+   * \brief Creates and returns a texture of blended and wrapped UTF-8 text.
    *
-   * @pre `str` can't be null.
+   * \pre `str` can't be null.
    *
-   * @details Attempts to render the UTF-8 text in the supplied font using
+   * \details Attempts to render the UTF-8 text in the supplied font using
    * the currently selected color and returns a texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -351,16 +351,16 @@ class basic_renderer final
    * the line breaks by inserting newline characters at the desired
    * breakpoints.
    *
-   * @param str the UTF-8 text that will be rendered. You can insert newline
+   * \param str the UTF-8 text that will be rendered. You can insert newline
    * characters in the string to indicate breakpoints.
-   * @param font the font that the text will be rendered in.
-   * @param wrap the width in pixels after which the text will be wrapped.
+   * \param font the font that the text will be rendered in.
+   * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderUTF8_Blended_Wrapped`
+   * \see `TTF_RenderUTF8_Blended_Wrapped`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_blended_wrapped_utf8(nn_czstring str,
                                                  const font& font,
@@ -374,11 +374,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of shaded UTF-8 text.
+   * \brief Creates and returns a texture of shaded UTF-8 text.
    *
-   * @pre `str` can't be null.
+   * \pre `str` can't be null.
    *
-   * @details Attempts to render the UTF-8 text in the supplied font using
+   * \details Attempts to render the UTF-8 text in the supplied font using
    * the currently selected color and returns a texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -388,15 +388,15 @@ class basic_renderer final
    * rendering solid text but about as fast as blended text. Use this
    * method when you want nice text, and can live with a box around it.
    *
-   * @param str the UTF-8 text that will be rendered.
-   * @param font the font that the text will be rendered in.
-   * @param background the background color used for the box.
+   * \param str the UTF-8 text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   * \param background the background color used for the box.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderUTF8_Shaded`
+   * \see `TTF_RenderUTF8_Shaded`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_shaded_utf8(nn_czstring str,
                                         const font& font,
@@ -410,11 +410,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of solid UTF-8 text.
+   * \brief Creates and returns a texture of solid UTF-8 text.
    *
-   * @pre `str` can't be null.
+   * \pre `str` can't be null.
    *
-   * @details Attempts to render the UTF-8 text in the supplied font using
+   * \details Attempts to render the UTF-8 text in the supplied font using
    * the currently selected color and returns a texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -423,14 +423,14 @@ class basic_renderer final
    * doesn't use anti-aliasing so the text isn't very smooth. Use this method
    * when quality isn't as big of a concern and speed is important.
    *
-   * @param str the UTF-8 text that will be rendered.
-   * @param font the font that the text will be rendered in.
+   * \param str the UTF-8 text that will be rendered.
+   * \param font the font that the text will be rendered in.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderText_Solid`
+   * \see `TTF_RenderText_Solid`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_solid_utf8(nn_czstring str, const font& font)
       -> texture
@@ -442,11 +442,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of blended Latin-1 text.
+   * \brief Creates and returns a texture of blended Latin-1 text.
    *
-   * @pre `str` can't be null.
+   * \pre `str` can't be null.
    *
-   * @details Attempts to render the Latin-1 text in the supplied font using
+   * \details Attempts to render the Latin-1 text in the supplied font using
    * the currently selected color and returns a texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -455,14 +455,14 @@ class basic_renderer final
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
-   * @param str the Latin-1 text that will be rendered.
-   * @param font the font that the text will be rendered in.
+   * \param str the Latin-1 text that will be rendered.
+   * \param font the font that the text will be rendered in.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderText_Blended`
+   * \see `TTF_RenderText_Blended`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_blended_latin1(nn_czstring str, const font& font)
       -> texture
@@ -474,11 +474,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of blended and wrapped Latin-1 text.
+   * \brief Creates and returns a texture of blended and wrapped Latin-1 text.
    *
-   * @pre `str` can't be null.
+   * \pre `str` can't be null.
    *
-   * @details Attempts to render the Latin-1 text in the supplied font using
+   * \details Attempts to render the Latin-1 text in the supplied font using
    * the currently selected color and returns a texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -490,16 +490,16 @@ class basic_renderer final
    * the line breaks by inserting newline characters at the desired
    * breakpoints.
    *
-   * @param str the Latin-1 text that will be rendered. You can insert newline
+   * \param str the Latin-1 text that will be rendered. You can insert newline
    * characters in the string to indicate breakpoints.
-   * @param font the font that the text will be rendered in.
-   * @param wrap the width in pixels after which the text will be wrapped.
+   * \param font the font that the text will be rendered in.
+   * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderText_Blended_Wrapped`
+   * \see `TTF_RenderText_Blended_Wrapped`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_blended_wrapped_latin1(nn_czstring str,
                                                    const font& font,
@@ -513,11 +513,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of shaded Latin-1 text.
+   * \brief Creates and returns a texture of shaded Latin-1 text.
    *
-   * @pre `str` can't be null.
+   * \pre `str` can't be null.
    *
-   * @details Attempts to render the Latin-1 text in the supplied font using
+   * \details Attempts to render the Latin-1 text in the supplied font using
    * the currently selected color and returns a texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -527,15 +527,15 @@ class basic_renderer final
    * rendering solid text but about as fast as blended text. Use this
    * method when you want nice text, and can live with a box around it.
    *
-   * @param str the Latin-1 text that will be rendered.
-   * @param font the font that the text will be rendered in.
-   * @param background the background color used for the box.
+   * \param str the Latin-1 text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   * \param background the background color used for the box.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderText_Shaded`
+   * \see `TTF_RenderText_Shaded`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_shaded_latin1(nn_czstring str,
                                           const font& font,
@@ -549,11 +549,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of solid Latin-1 text.
+   * \brief Creates and returns a texture of solid Latin-1 text.
    *
-   * @pre `str` can't be null.
+   * \pre `str` can't be null.
    *
-   * @details Attempts to render the specified text in the supplied font using
+   * \details Attempts to render the specified text in the supplied font using
    * the currently selected color and return the texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -562,14 +562,14 @@ class basic_renderer final
    * doesn't use anti-aliasing so the text isn't very smooth. Use this method
    * when quality isn't as big of a concern and speed is important.
    *
-   * @param str the Latin-1 text that will be rendered.
-   * @param font the font that the text will be rendered in.
+   * \param str the Latin-1 text that will be rendered.
+   * \param font the font that the text will be rendered in.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderText_Solid`
+   * \see `TTF_RenderText_Solid`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_solid_latin1(nn_czstring str, const font& font)
       -> texture
@@ -581,9 +581,9 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of blended Unicode text.
+   * \brief Creates and returns a texture of blended Unicode text.
    *
-   * @details Attempts to render the Unicode text in the supplied font using
+   * \details Attempts to render the Unicode text in the supplied font using
    * the currently selected color and returns a texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -592,14 +592,14 @@ class basic_renderer final
    * anti-aliasing. Use this when you want high quality text, but beware that
    * this is the slowest alternative.
    *
-   * @param str the Unicode text that will be rendered.
-   * @param font the font that the text will be rendered in.
+   * \param str the Unicode text that will be rendered.
+   * \param font the font that the text will be rendered in.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderUNICODE_Blended`
+   * \see `TTF_RenderUNICODE_Blended`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_blended_unicode(const unicode_string& str,
                                             const font& font) -> texture
@@ -611,9 +611,9 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of blended and wrapped Unicode text.
+   * \brief Creates and returns a texture of blended and wrapped Unicode text.
    *
-   * @details Attempts to render the Unicode text in the supplied font using
+   * \details Attempts to render the Unicode text in the supplied font using
    * the currently selected color and returns a texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -625,16 +625,16 @@ class basic_renderer final
    * the line breaks by inserting newline characters at the desired
    * breakpoints.
    *
-   * @param str the Unicode text that will be rendered. You can insert newline
+   * \param str the Unicode text that will be rendered. You can insert newline
    * characters in the string to indicate breakpoints.
-   * @param font the font that the text will be rendered in.
-   * @param wrap the width in pixels after which the text will be wrapped.
+   * \param font the font that the text will be rendered in.
+   * \param wrap the width in pixels after which the text will be wrapped.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderUNICODE_Blended_Wrapped`
+   * \see `TTF_RenderUNICODE_Blended_Wrapped`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_blended_wrapped_unicode(const unicode_string& str,
                                                     const font& font,
@@ -648,9 +648,9 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of shaded Unicode text.
+   * \brief Creates and returns a texture of shaded Unicode text.
    *
-   * @details Attempts to render the Unicode text in the supplied font using
+   * \details Attempts to render the Unicode text in the supplied font using
    * the currently selected color and returns a texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -660,15 +660,15 @@ class basic_renderer final
    * rendering solid text but about as fast as blended text. Use this
    * method when you want nice text, and can live with a box around it.
    *
-   * @param str the Unicode text that will be rendered.
-   * @param font the font that the text will be rendered in.
-   * @param background the background color used for the box.
+   * \param str the Unicode text that will be rendered.
+   * \param font the font that the text will be rendered in.
+   * \param background the background color used for the box.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderUNICODE_Shaded`
+   * \see `TTF_RenderUNICODE_Shaded`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_shaded_unicode(const unicode_string& str,
                                            const font& font,
@@ -682,9 +682,9 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates and returns a texture of solid Unicode text.
+   * \brief Creates and returns a texture of solid Unicode text.
    *
-   * @details Attempts to render the specified text in the supplied font using
+   * \details Attempts to render the specified text in the supplied font using
    * the currently selected color and return the texture that contains the
    * result. Use the returned texture to actually render the text to the
    * screen.
@@ -693,14 +693,14 @@ class basic_renderer final
    * doesn't use anti-aliasing so the text isn't very smooth. Use this method
    * when quality isn't as big of a concern and speed is important.
    *
-   * @param str the Unicode text that will be rendered.
-   * @param font the font that the text will be rendered in.
+   * \param str the Unicode text that will be rendered.
+   * \param font the font that the text will be rendered in.
    *
-   * @return a texture that contains the rendered text.
+   * \return a texture that contains the rendered text.
    *
-   * @see `TTF_RenderUNICODE_Solid`
+   * \see `TTF_RenderUNICODE_Solid`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto render_solid_unicode(const unicode_string& str,
                                           const font& font) -> texture
@@ -712,20 +712,20 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a glyph at the specified position.
+   * \brief Renders a glyph at the specified position.
    *
-   * @pre the specified glyph **must** have been cached.
+   * \pre the specified glyph **must** have been cached.
    *
-   * @tparam U the font key type that the renderer uses.
+   * \tparam U the font key type that the renderer uses.
    *
-   * @param cache the font cache that will be used.
-   * @param glyph the glyph, in unicode, that will be rendered.
-   * @param position the position of the rendered glyph.
+   * \param cache the font cache that will be used.
+   * \param glyph the glyph, in unicode, that will be rendered.
+   * \param position the position of the rendered glyph.
    *
-   * @return the x-coordinate of the next glyph to be rendered after the
+   * \return the x-coordinate of the next glyph to be rendered after the
    * current glyph.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   auto render_glyph(const font_cache& cache,
                     unicode glyph,
@@ -745,28 +745,28 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a string.
+   * \brief Renders a string.
    *
-   * @details This method will not apply any clever conversions on the
+   * \details This method will not apply any clever conversions on the
    * supplied string. The string is literally iterated,
    * character-by-character, and each character is rendered using
    * the `render_glyph` function.
    *
-   * @pre Every character in the string must correspond to a valid Unicode
+   * \pre Every character in the string must correspond to a valid Unicode
    * glyph.
-   * @pre Every character must have been previously cached.
+   * \pre Every character must have been previously cached.
    *
-   * @note This method is sensitive to newline-characters, and will render
+   * \note This method is sensitive to newline-characters, and will render
    * strings that contain such characters appropriately.
    *
-   * @tparam String the type of the string, must be iterable and provide
+   * \tparam String the type of the string, must be iterable and provide
    * `unicode` characters.
    *
-   * @param cache the font cache that will be used.
-   * @param str the string that will be rendered.
-   * @param position the position of the rendered text.
+   * \param cache the font cache that will be used.
+   * \param str the string that will be rendered.
+   * \param position the position of the rendered text.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename String>
   void render_text(const font_cache& cache, const String& str, ipoint position)
@@ -783,24 +783,24 @@ class basic_renderer final
     }
   }
 
-  ///@}  // end of text rendering
+  ///\}  // end of text rendering
 
   /**
-   * @name Texture rendering
+   * \name Texture rendering
    * Methods for rendering hardware-accelerated textures.
    */
-  ///@{
+  ///\{
 
   /**
-   * @brief Renders a texture at the specified position.
+   * \brief Renders a texture at the specified position.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam P the representation type used by the point.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the point.
    *
-   * @param texture the texture that will be rendered.
-   * @param position the position of the rendered texture.
+   * \param texture the texture that will be rendered.
+   * \param position the position of the rendered texture.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U, typename P>
   void render(const basic_texture<U>& texture,
@@ -822,15 +822,15 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture according to the specified rectangle.
+   * \brief Renders a texture according to the specified rectangle.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the rectangle.
    *
-   * @param texture the texture that will be rendered.
-   * @param destination the position and size of the rendered texture.
+   * \param texture the texture that will be rendered.
+   * \param destination the position and size of the rendered texture.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U, typename P>
   void render(const basic_texture<U>& texture,
@@ -850,19 +850,19 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture.
+   * \brief Renders a texture.
    *
-   * @remarks This should be your preferred method of rendering textures. This
+   * \remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the rectangle.
    *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position and size of the rendered texture.
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position and size of the rendered texture.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U, typename P>
   void render(const basic_texture<U>& texture,
@@ -883,18 +883,18 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture.
+   * \brief Renders a texture.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam P the representation type used by the rectangle.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the rectangle.
    *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position and size of the rendered texture.
-   * @param angle the clockwise angle, in degrees, with which the rendered
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered
    * texture will be rotated.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U, typename P>
   void render(const basic_texture<U>& texture,
@@ -922,21 +922,21 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture.
+   * \brief Renders a texture.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam R the representation type used by the destination rectangle.
-   * @tparam P the representation type used by the center point.
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center point.
    *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position and size of the rendered texture.
-   * @param angle the clockwise angle, in degrees, with which the rendered
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered
    * texture will be rotated.
-   * @param center specifies the point around which the rendered texture will
+   * \param center specifies the point around which the rendered texture will
    * be rotated.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U, typename R, typename P>
   void render(const basic_texture<U>& texture,
@@ -970,22 +970,22 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture.
+   * \brief Renders a texture.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam R the representation type used by the destination rectangle.
-   * @tparam P the representation type used by the center point.
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center point.
    *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position and size of the rendered texture.
-   * @param angle the clockwise angle, in degrees, with which the rendered
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position and size of the rendered texture.
+   * \param angle the clockwise angle, in degrees, with which the rendered
    * texture will be rotated.
-   * @param center specifies the point around which the rendered texture will be
+   * \param center specifies the point around which the rendered texture will be
    * rotated.
-   * @param flip specifies how the rendered texture will be flipped.
+   * \param flip specifies how the rendered texture will be flipped.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U, typename R, typename P>
   void render(const basic_texture<U>& texture,
@@ -1019,24 +1019,24 @@ class basic_renderer final
     }
   }
 
-  ///@}  // end of texture rendering
+  ///\}  // end of texture rendering
 
   /**
-   * @name Translated rendering
-   * @brief Translated rendering API, only available for owning renderers.
+   * \name Translated rendering
+   * \brief Translated rendering API, only available for owning renderers.
    */
-  ///@{
+  ///\{
 
   /**
-   * @brief Sets the translation viewport that will be used by the renderer.
+   * \brief Sets the translation viewport that will be used by the renderer.
    *
-   * @details This method should be called before calling any of the `_t`
+   * \details This method should be called before calling any of the `_t`
    * rendering methods, for automatic translation.
    *
-   * @param viewport the rectangle that will be used as the translation
+   * \param viewport the rectangle that will be used as the translation
    * viewport.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   template <typename T_ = T, is_renderer_owning<T_> = true>
   void set_translation_viewport(const frect& viewport) noexcept
@@ -1045,13 +1045,13 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the translation viewport that is currently being used.
+   * \brief Returns the translation viewport that is currently being used.
    *
-   * @details Set to (0, 0, 0, 0) by default.
+   * \details Set to (0, 0, 0, 0) by default.
    *
-   * @return the translation viewport that is currently being used.
+   * \return the translation viewport that is currently being used.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   template <typename T_ = T, is_renderer_owning<T_> = true>
   [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
@@ -1060,16 +1060,16 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders an outlined rectangle in the currently selected color.
+   * \brief Renders an outlined rectangle in the currently selected color.
    *
-   * @details The rendered rectangle will be translated using the current
+   * \details The rendered rectangle will be translated using the current
    * translation viewport.
    *
-   * @tparam R the representation type used by the rectangle.
+   * \tparam R the representation type used by the rectangle.
    *
-   * @param rect the rectangle that will be rendered.
+   * \param rect the rectangle that will be rendered.
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   template <typename R, typename T_ = T, is_renderer_owning<T_> = true>
   void draw_rect_t(const basic_rect<R>& rect) noexcept
@@ -1078,16 +1078,16 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a filled rectangle in the currently selected color.
+   * \brief Renders a filled rectangle in the currently selected color.
    *
-   * @details The rendered rectangle will be translated using the current
+   * \details The rendered rectangle will be translated using the current
    * translation viewport.
    *
-   * @tparam R the representation type used by the rectangle.
+   * \tparam R the representation type used by the rectangle.
    *
-   * @param rect the rectangle that will be rendered.
+   * \param rect the rectangle that will be rendered.
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   template <typename R, typename T_ = T, is_renderer_owning<T_> = true>
   void fill_rect_t(const basic_rect<R>& rect) noexcept
@@ -1096,18 +1096,18 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture at the specified position.
+   * \brief Renders a texture at the specified position.
    *
-   * @details The rendered texture will be translated using the translation
+   * \details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam P The representation type used by the point.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P The representation type used by the point.
    *
-   * @param texture the texture that will be rendered.
-   * @param position the position (pre-translation) of the rendered texture.
+   * \param texture the texture that will be rendered.
+   * \param position the position (pre-translation) of the rendered texture.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U,
             typename P,
@@ -1120,19 +1120,19 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture according to the specified rectangle.
+   * \brief Renders a texture according to the specified rectangle.
    *
-   * @details The rendered texture will be translated using the translation
+   * \details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam P the representation type used by the destination rectangle.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the destination rectangle.
    *
-   * @param texture the texture that will be rendered.
-   * @param destination the position (pre-translation) and size of the
+   * \param texture the texture that will be rendered.
+   * \param destination the position (pre-translation) and size of the
    * rendered texture.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U,
             typename P,
@@ -1145,23 +1145,23 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture.
+   * \brief Renders a texture.
    *
-   * @details The rendered texture will be translated using the translation
+   * \details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @remarks This should be your preferred method of rendering textures. This
+   * \remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam P the representation type used by the destination rectangle.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the destination rectangle.
    *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position (pre-translation) and size of the
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position (pre-translation) and size of the
    * rendered texture.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U,
             typename P,
@@ -1175,22 +1175,22 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture.
+   * \brief Renders a texture.
    *
-   * @details The rendered texture will be translated using the translation
+   * \details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam P the representation type used by the destination rectangle.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the destination rectangle.
    *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position (pre-translation) and size of the
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position (pre-translation) and size of the
    * rendered texture.
-   * @param angle the clockwise angle, in degrees, with which the rendered
+   * \param angle the clockwise angle, in degrees, with which the rendered
    * texture will be rotated.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U,
             typename P,
@@ -1205,25 +1205,25 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture.
+   * \brief Renders a texture.
    *
-   * @details The rendered texture will be translated using the translation
+   * \details The rendered texture will be translated using the translation
    * viewport.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam R the representation type used by the destination rectangle.
-   * @tparam P the representation type used by the center-of-rotation point.
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center-of-rotation point.
    *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position (pre-translation) and size of the
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position (pre-translation) and size of the
    * rendered texture.
-   * @param angle the clockwise angle, in degrees, with which the rendered
+   * \param angle the clockwise angle, in degrees, with which the rendered
    * texture will be rotated.
-   * @param center specifies the point around which the rendered texture will
+   * \param center specifies the point around which the rendered texture will
    * be rotated.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U,
             typename R,
@@ -1240,23 +1240,23 @@ class basic_renderer final
   }
 
   /**
-   * @brief Renders a texture.
+   * \brief Renders a texture.
    *
-   * @tparam U the ownership tag of the texture.
-   * @tparam R the representation type used by the destination rectangle.
-   * @tparam P the representation type used by the center-of-rotation point.
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center-of-rotation point.
    *
-   * @param texture the texture that will be rendered.
-   * @param source the cutout out of the texture that will be rendered.
-   * @param destination the position (pre-translation) and size of the
+   * \param texture the texture that will be rendered.
+   * \param source the cutout out of the texture that will be rendered.
+   * \param destination the position (pre-translation) and size of the
    * rendered texture.
-   * @param angle the clockwise angle, in degrees, with which the rendered
+   * \param angle the clockwise angle, in degrees, with which the rendered
    * texture will be rotated.
-   * @param center specifies the point around which the rendered texture will
+   * \param center specifies the point around which the rendered texture will
    * be rotated.
-   * @param flip specifies how the rendered texture will be flipped.
+   * \param flip specifies how the rendered texture will be flipped.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U,
             typename R,
@@ -1273,24 +1273,24 @@ class basic_renderer final
     render(texture, source, translate(destination), angle, center, flip);
   }
 
-  ///@} // end of translated rendering
+  ///\} // end of translated rendering
 
   /**
-   * @name Font handling
-   * @brief Font handling API, only available for owning renderers.
+   * \name Font handling
+   * \brief Font handling API, only available for owning renderers.
    */
-  ///@{
+  ///\{
 
   /**
-   * @brief Adds a font to the renderer.
+   * \brief Adds a font to the renderer.
    *
-   * @note This function overwrites any previously stored font associated
+   * \note This function overwrites any previously stored font associated
    * with the specified ID.
    *
-   * @param id the key that will be associated with the font.
-   * @param font the font that will be added.
+   * \param id the key that will be associated with the font.
+   * \param font the font that will be added.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename T_ = T, is_renderer_owning<T_> = true>
   void add_font(font_id id, font&& font)
@@ -1303,17 +1303,17 @@ class basic_renderer final
   }
 
   /**
-   * @brief Creates a font and adds it to the renderer.
+   * \brief Creates a font and adds it to the renderer.
    *
-   * @note This function overwrites any previously stored font associated
+   * \note This function overwrites any previously stored font associated
    * with the specified ID.
    *
-   * @tparam Args the types of the arguments that will be forwarded.
+   * \tparam Args the types of the arguments that will be forwarded.
    *
-   * @param id the key that will be associated with the font.
-   * @param args the arguments that will be forwarded to the `font` constructor.
+   * \param id the key that will be associated with the font.
+   * \param args the arguments that will be forwarded to the `font` constructor.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename... Args, typename T_ = T, is_renderer_owning<T_> = true>
   void emplace_font(font_id id, Args&&... args)
@@ -1326,14 +1326,14 @@ class basic_renderer final
   }
 
   /**
-   * @brief Removes the font associated with the specified key.
+   * \brief Removes the font associated with the specified key.
    *
-   * @details This method has no effect if there is no font associated with
+   * \details This method has no effect if there is no font associated with
    * the specified key.
    *
-   * @param id the key associated with the font that will be removed.
+   * \param id the key associated with the font that will be removed.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename T_ = T, is_renderer_owning<T_> = true>
   void remove_font(font_id id)
@@ -1342,15 +1342,15 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the font associated with the specified name.
+   * \brief Returns the font associated with the specified name.
    *
-   * @pre There must be a font associated with the specified ID.
+   * \pre There must be a font associated with the specified ID.
    *
-   * @param id the key associated with the desired font.
+   * \param id the key associated with the desired font.
    *
-   * @return the font associated with the specified name.
+   * \return the font associated with the specified name.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename T_ = T, is_renderer_owning<T_> = true>
   [[nodiscard]] auto get_font(font_id id) -> font&
@@ -1359,7 +1359,7 @@ class basic_renderer final
   }
 
   /**
-   * @copydoc get_font
+   * \copydoc get_font
    */
   template <typename T_ = T, is_renderer_owning<T_> = true>
   [[nodiscard]] auto get_font(font_id id) const -> const font&
@@ -1368,15 +1368,15 @@ class basic_renderer final
   }
 
   /**
-   * @brief Indicates whether or not the renderer has a font associated with
+   * \brief Indicates whether or not the renderer has a font associated with
    * the specified key.
    *
-   * @param id the key that will be checked.
+   * \param id the key that will be checked.
    *
-   * @return `true` if the renderer has a font associated with the key;
+   * \return `true` if the renderer has a font associated with the key;
    * `false` otherwise.
    *
-   * @since 4.1.0
+   * \since 4.1.0
    */
   template <typename T_ = T, is_renderer_owning<T_> = true>
   [[nodiscard]] auto has_font(font_id id) const noexcept -> bool
@@ -1384,14 +1384,14 @@ class basic_renderer final
     return static_cast<bool>(m_renderer.fonts.count(id));
   }
 
-  ///@} // end of font handling
+  ///\} // end of font handling
 
   /**
-   * @brief Sets the color that will be used by the renderer.
+   * \brief Sets the color that will be used by the renderer.
    *
-   * @param color the color that will be used by the renderer.
+   * \param color the color that will be used by the renderer.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_color(const color& color) noexcept
   {
@@ -1403,13 +1403,13 @@ class basic_renderer final
   }
 
   /**
-   * @brief Sets the clipping area rectangle.
+   * \brief Sets the clipping area rectangle.
    *
-   * @details Clipping is disabled by default.
+   * \details Clipping is disabled by default.
    *
-   * @param area the clip area rectangle; or `std::nullopt` to disable clipping.
+   * \param area the clip area rectangle; or `std::nullopt` to disable clipping.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_clip(std::optional<irect> area) noexcept
   {
@@ -1421,11 +1421,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Sets the viewport that will be used by the renderer.
+   * \brief Sets the viewport that will be used by the renderer.
    *
-   * @param viewport the viewport that will be used by the renderer.
+   * \param viewport the viewport that will be used by the renderer.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_viewport(const irect& viewport) noexcept
   {
@@ -1433,11 +1433,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Sets the blend mode that will be used by the renderer.
+   * \brief Sets the blend mode that will be used by the renderer.
    *
-   * @param mode the blend mode that will be used by the renderer.
+   * \param mode the blend mode that will be used by the renderer.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_blend_mode(blend_mode mode) noexcept
   {
@@ -1445,15 +1445,15 @@ class basic_renderer final
   }
 
   /**
-   * @brief Sets the rendering target of the renderer.
+   * \brief Sets the rendering target of the renderer.
    *
-   * @details The supplied texture must support being a render target.
+   * \details The supplied texture must support being a render target.
    * Otherwise, this method will reset the render target.
    *
-   * @param target a pointer to the new target texture; `nullptr` indicates
+   * \param target a pointer to the new target texture; `nullptr` indicates
    * that the default rendering target should be used.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_target(const texture* target) noexcept
   {
@@ -1465,15 +1465,15 @@ class basic_renderer final
   }
 
   /**
-   * @brief Sets the rendering scale.
+   * \brief Sets the rendering scale.
    *
-   * @note This method has no effect if any of the arguments aren't
+   * \note This method has no effect if any of the arguments aren't
    * greater than zero.
    *
-   * @param xScale the x-axis scale that will be used.
-   * @param yScale the y-axis scale that will be used.
+   * \param xScale the x-axis scale that will be used.
+   * \param yScale the y-axis scale that will be used.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_scale(float xScale, float yScale) noexcept
   {
@@ -1483,18 +1483,18 @@ class basic_renderer final
   }
 
   /**
-   * @brief Sets the logical size used by the renderer.
+   * \brief Sets the logical size used by the renderer.
    *
-   * @details This method is useful for resolution-independent rendering.
+   * \details This method is useful for resolution-independent rendering.
    *
-   * @remarks This is also known as *virtual size* in other frameworks.
+   * \remarks This is also known as *virtual size* in other frameworks.
    *
-   * @note This method has no effect if either of the supplied dimensions
+   * \note This method has no effect if either of the supplied dimensions
    * aren't greater than zero.
    *
-   * @param size the logical width and height that will be used.
+   * \param size the logical width and height that will be used.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_logical_size(const iarea& size) noexcept
   {
@@ -1504,15 +1504,15 @@ class basic_renderer final
   }
 
   /**
-   * @brief Sets whether or not to force integer scaling for the logical
+   * \brief Sets whether or not to force integer scaling for the logical
    * viewport.
    *
-   * @details By default, this property is set to false. This method can be
+   * \details By default, this property is set to false. This method can be
    * useful to combat visual artefacts when doing floating-point rendering.
    *
-   * @param enabled `true` if integer scaling should be used; `false` otherwise.
+   * \param enabled `true` if integer scaling should be used; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_logical_integer_scale(bool enabled) noexcept
   {
@@ -1520,12 +1520,12 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns a handle to the current render target.
+   * \brief Returns a handle to the current render target.
    *
-   * @return a handle to the current render target; empty if using the default
+   * \return a handle to the current render target; empty if using the default
    * target.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto get_render_target() noexcept -> texture_handle
   {
@@ -1533,15 +1533,15 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the logical width that the renderer uses.
+   * \brief Returns the logical width that the renderer uses.
    *
-   * @details By default, this property is set to 0.
+   * \details By default, this property is set to 0.
    *
-   * @return the logical width that the renderer uses.
+   * \return the logical width that the renderer uses.
    *
-   * @see renderer::logical_size
+   * \see renderer::logical_size
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto logical_width() const noexcept -> int
   {
@@ -1551,15 +1551,15 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the logical height that the renderer uses.
+   * \brief Returns the logical height that the renderer uses.
    *
-   * @details By default, this property is set to 0.
+   * \details By default, this property is set to 0.
    *
-   * @return the logical height that the renderer uses.
+   * \return the logical height that the renderer uses.
    *
-   * @see renderer::logical_size
+   * \see renderer::logical_size
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto logical_height() const noexcept -> int
   {
@@ -1569,14 +1569,14 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the size of the logical (virtual) viewport.
+   * \brief Returns the size of the logical (virtual) viewport.
    *
-   * @note calling this method once is faster than calling both
+   * \note calling this method once is faster than calling both
    * `logical_width` and `logical_height` for obtaining the size.
    *
-   * @return the size of the logical (virtual) viewport.
+   * \return the size of the logical (virtual) viewport.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto logical_size() const noexcept -> iarea
   {
@@ -1587,11 +1587,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the x-axis scale that the renderer uses.
+   * \brief Returns the x-axis scale that the renderer uses.
    *
-   * @return the x-axis scale that the renderer uses.
+   * \return the x-axis scale that the renderer uses.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto x_scale() const noexcept -> float
   {
@@ -1601,11 +1601,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the y-axis scale that the renderer uses.
+   * \brief Returns the y-axis scale that the renderer uses.
    *
-   * @return the y-axis scale that the renderer uses.
+   * \return the y-axis scale that the renderer uses.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto y_scale() const noexcept -> float
   {
@@ -1615,14 +1615,14 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the x- and y-scale used by the renderer.
+   * \brief Returns the x- and y-scale used by the renderer.
    *
-   * @note calling this method once is faster than calling both `x_scale`
+   * \note calling this method once is faster than calling both `x_scale`
    * and `y_scale` for obtaining the scale.
    *
-   * @return the x- and y-scale used by the renderer.
+   * \return the x- and y-scale used by the renderer.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto scale() const noexcept -> std::pair<float, float>
   {
@@ -1633,11 +1633,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the current clipping rectangle, if there is one active.
+   * \brief Returns the current clipping rectangle, if there is one active.
    *
-   * @return the current clipping rectangle; or `std::nullopt` if there is none.
+   * \return the current clipping rectangle; or `std::nullopt` if there is none.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto clip() const noexcept -> std::optional<irect>
   {
@@ -1651,12 +1651,12 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns information about the renderer.
+   * \brief Returns information about the renderer.
    *
-   * @return information about the renderer; `std::nullopt` if something went
+   * \return information about the renderer; `std::nullopt` if something went
    * wrong.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto info() const noexcept -> std::optional<SDL_RendererInfo>
   {
@@ -1670,11 +1670,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the output width of the renderer.
+   * \brief Returns the output width of the renderer.
    *
-   * @return the output width of the renderer.
+   * \return the output width of the renderer.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto output_width() const noexcept -> int
   {
@@ -1684,11 +1684,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the output height of the renderer.
+   * \brief Returns the output height of the renderer.
    *
-   * @return the output height of the renderer.
+   * \return the output height of the renderer.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto output_height() const noexcept -> int
   {
@@ -1698,14 +1698,14 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the output size of the renderer.
+   * \brief Returns the output size of the renderer.
    *
-   * @note calling this method once is faster than calling `output_width`
+   * \note calling this method once is faster than calling `output_width`
    * and `output_height` for obtaining the output size.
    *
-   * @return the current output size of the renderer.
+   * \return the current output size of the renderer.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto output_size() const noexcept -> iarea
   {
@@ -1716,11 +1716,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the blend mode that is being used by the renderer.
+   * \brief Returns the blend mode that is being used by the renderer.
    *
-   * @return the blend mode that is being used.
+   * \return the blend mode that is being used.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
@@ -1730,24 +1730,24 @@ class basic_renderer final
   }
 
   /**
-   * @name Flag-related queries.
+   * \name Flag-related queries.
    *
-   * @brief Methods for obtaining information about the window flags.
+   * \brief Methods for obtaining information about the window flags.
    */
-  ///@{
+  ///\{
 
   /**
-   * @brief Returns a bit mask of the current renderer flags.
+   * \brief Returns a bit mask of the current renderer flags.
    *
-   * @note There are multiple other methods for checking if a flag is set,
+   * \note There are multiple other methods for checking if a flag is set,
    * such as `is_vsync_enabled` or `is_accelerated`, that are nicer to use than
    * this method.
    *
-   * @return a bit mask of the current renderer flags.
+   * \return a bit mask of the current renderer flags.
    *
-   * @see `SDL_RendererFlags`
+   * \see `SDL_RendererFlags`
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto flags() const noexcept -> u32
   {
@@ -1757,12 +1757,12 @@ class basic_renderer final
   }
 
   /**
-   * @brief Indicates whether or not the `present` method is synced with
+   * \brief Indicates whether or not the `present` method is synced with
    * the refresh rate of the screen.
    *
-   * @return `true` if vsync is enabled; `false` otherwise.
+   * \return `true` if vsync is enabled; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_vsync_enabled() const noexcept -> bool
   {
@@ -1770,12 +1770,12 @@ class basic_renderer final
   }
 
   /**
-   * @brief Indicates whether or not the renderer is hardware accelerated.
+   * \brief Indicates whether or not the renderer is hardware accelerated.
    *
-   * @return `true` if the renderer is hardware accelerated; `false`
+   * \return `true` if the renderer is hardware accelerated; `false`
    * otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_accelerated() const noexcept -> bool
   {
@@ -1783,11 +1783,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Indicates whether or not the renderer is using software rendering.
+   * \brief Indicates whether or not the renderer is using software rendering.
    *
-   * @return `true` if the renderer is software-based; `false` otherwise.
+   * \return `true` if the renderer is software-based; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_software_based() const noexcept -> bool
   {
@@ -1795,31 +1795,31 @@ class basic_renderer final
   }
 
   /**
-   * @brief Indicates whether or not the renderer supports rendering to a
+   * \brief Indicates whether or not the renderer supports rendering to a
    * target texture.
    *
-   * @return `true` if the renderer supports target texture rendering; `false`
+   * \return `true` if the renderer supports target texture rendering; `false`
    * otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto supports_target_textures() const noexcept -> bool
   {
     return static_cast<bool>(flags() & SDL_RENDERER_TARGETTEXTURE);
   }
 
-  ///@} // end of flag queries
+  ///\} // end of flag queries
 
   /**
-   * @brief Indicates whether or not the renderer uses integer scaling values
+   * \brief Indicates whether or not the renderer uses integer scaling values
    * for logical viewports.
    *
-   * @details By default, this property is set to false.
+   * \details By default, this property is set to false.
    *
-   * @return `true` if the renderer uses integer scaling for logical
+   * \return `true` if the renderer uses integer scaling for logical
    * viewports; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_using_integer_logical_scaling() const noexcept -> bool
   {
@@ -1827,13 +1827,13 @@ class basic_renderer final
   }
 
   /**
-   * @brief Indicates whether or not clipping is enabled.
+   * \brief Indicates whether or not clipping is enabled.
    *
-   * @details This is disabled by default.
+   * \details This is disabled by default.
    *
-   * @return `true` if clipping is enabled; `false` otherwise.
+   * \return `true` if clipping is enabled; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_clipping_enabled() const noexcept -> bool
   {
@@ -1841,13 +1841,13 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the currently selected rendering color.
+   * \brief Returns the currently selected rendering color.
    *
-   * @details The default color is black.
+   * \details The default color is black.
    *
-   * @return the currently selected rendering color.
+   * \return the currently selected rendering color.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto get_color() const noexcept -> color
   {
@@ -1860,11 +1860,11 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns the viewport that the renderer uses.
+   * \brief Returns the viewport that the renderer uses.
    *
-   * @return the viewport that the renderer uses.
+   * \return the viewport that the renderer uses.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto viewport() const noexcept -> irect
   {
@@ -1874,14 +1874,14 @@ class basic_renderer final
   }
 
   /**
-   * @brief Indicates whether or not the handle holds a non-null pointer.
+   * \brief Indicates whether or not the handle holds a non-null pointer.
    *
-   * @warning It's undefined behaviour to invoke other member functions that
+   * \warning It's undefined behaviour to invoke other member functions that
    * use the internal pointer if this function returns `false`.
    *
-   * @return `true` if the handle holds a non-null pointer; `false` otherwise.
+   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename U = T, typename = is_renderer_handle<U>>
   explicit operator bool() const noexcept
@@ -1890,14 +1890,14 @@ class basic_renderer final
   }
 
   /**
-   * @brief Returns a pointer to the associated SDL renderer.
+   * \brief Returns a pointer to the associated SDL renderer.
    *
-   * @warning Don't claim ownership of the returned pointer unless you're
+   * \warning Don't claim ownership of the returned pointer unless you're
    * absolutely sure about what you're doing.
    *
-   * @return a pointer to the associated SDL_Renderer.
+   * \return a pointer to the associated SDL_Renderer.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Renderer*
   {
@@ -1960,20 +1960,20 @@ class basic_renderer final
 };
 
 /**
- * @typedef renderer
+ * \typedef renderer
  *
- * @brief Represents an owning renderer.
+ * \brief Represents an owning renderer.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using renderer = basic_renderer<std::true_type>;
 
 /**
- * @typedef renderer_handle
+ * \typedef renderer_handle
  *
- * @brief Represents a non-owning renderer.
+ * \brief Represents a non-owning renderer.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using renderer_handle = basic_renderer<std::false_type>;
 
@@ -1991,7 +1991,7 @@ auto operator<<(std::ostream& stream, const basic_renderer<T>& renderer)
   return stream;
 }
 
-/// @}
+/// \}
 
 }  // namespace cen
 

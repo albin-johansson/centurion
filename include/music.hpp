@@ -23,15 +23,15 @@
  */
 
 /**
- * @file music.hpp
+ * \file music.hpp
  *
- * @brief Provides the music API.
+ * \brief Provides the music API.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_MUSIC_HEADER
@@ -55,15 +55,15 @@
 namespace cen {
 
 /**
- * @enum fade_status
+ * \enum fade_status
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @brief Mirrors the values of the `Mix_Fading` enum.
+ * \brief Mirrors the values of the `Mix_Fading` enum.
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @headerfile music.hpp
+ * \headerfile music.hpp
  */
 enum class fade_status
 {
@@ -73,17 +73,17 @@ enum class fade_status
 };
 
 /**
- * @brief Indicates whether or not the fading status values represent are the
+ * \brief Indicates whether or not the fading status values represent are the
  * same.
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @param lhs the left-hand side fading status value.
- * @param rhs the right-hand side fading status value.
+ * \param lhs the left-hand side fading status value.
+ * \param rhs the right-hand side fading status value.
  *
- * @return `true` if the fading status values are the same; `false` otherwise.
+ * \return `true` if the fading status values are the same; `false` otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(fade_status lhs,
                                                Mix_Fading rhs) noexcept -> bool
@@ -92,9 +92,9 @@ enum class fade_status
 }
 
 /**
- * @copydoc operator==(fade_status, Mix_Fading)
+ * \copydoc operator==(fade_status, Mix_Fading)
  *
- * @ingroup audio
+ * \ingroup audio
  */
 [[nodiscard]] inline constexpr auto operator==(Mix_Fading lhs,
                                                fade_status rhs) noexcept -> bool
@@ -103,18 +103,18 @@ enum class fade_status
 }
 
 /**
- * @brief Indicates whether or not the fading status values represent aren't the
+ * \brief Indicates whether or not the fading status values represent aren't the
  * same.
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @param lhs the left-hand side fading status value.
- * @param rhs the right-hand side fading status value.
+ * \param lhs the left-hand side fading status value.
+ * \param rhs the right-hand side fading status value.
  *
- * @return `true` if the fading status values aren't the same; `false`
+ * \return `true` if the fading status values aren't the same; `false`
  * otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(fade_status lhs,
                                                Mix_Fading rhs) noexcept -> bool
@@ -123,9 +123,9 @@ enum class fade_status
 }
 
 /**
- * @copydoc operator!=(fade_status, Mix_Fading)
+ * \copydoc operator!=(fade_status, Mix_Fading)
  *
- * @ingroup audio
+ * \ingroup audio
  */
 [[nodiscard]] inline constexpr auto operator!=(Mix_Fading lhs,
                                                Mix_Fading rhs) noexcept -> bool
@@ -134,15 +134,15 @@ enum class fade_status
 }
 
 /**
- * @enum music_type
+ * \enum music_type
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @brief Mirrors the values of the `Mix_MusicType` enum.
+ * \brief Mirrors the values of the `Mix_MusicType` enum.
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @headerfile music.hpp
+ * \headerfile music.hpp
  */
 enum class music_type
 {
@@ -158,16 +158,16 @@ enum class music_type
 };
 
 /**
- * @brief Indicates whether or not the music type values are the same.
+ * \brief Indicates whether or not the music type values are the same.
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @param lhs the left-hand side music type value.
- * @param rhs the right-hand side music type value.
+ * \param lhs the left-hand side music type value.
+ * \param rhs the right-hand side music type value.
  *
- * @return `true` if the music type values are the same; `false` otherwise.
+ * \return `true` if the music type values are the same; `false` otherwise.
  *
- * @since 3.0.0
+ * \since 3.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(music_type lhs,
                                                Mix_MusicType rhs) noexcept
@@ -177,9 +177,9 @@ enum class music_type
 }
 
 /**
- * @copydoc operator==(music_type, Mix_MusicType)
+ * \copydoc operator==(music_type, Mix_MusicType)
  *
- * @ingroup audio
+ * \ingroup audio
  */
 [[nodiscard]] inline constexpr auto operator==(Mix_MusicType lhs,
                                                music_type rhs) noexcept -> bool
@@ -188,16 +188,16 @@ enum class music_type
 }
 
 /**
- * @brief Indicates whether or not the music type values aren't the same.
+ * \brief Indicates whether or not the music type values aren't the same.
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @param lhs the left-hand side music type value.
- * @param rhs the right-hand side music type value.
+ * \param lhs the left-hand side music type value.
+ * \param rhs the right-hand side music type value.
  *
- * @return `true` if the music type values aren't the same; `false` otherwise.
+ * \return `true` if the music type values aren't the same; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(music_type lhs,
                                                Mix_MusicType rhs) noexcept
@@ -207,9 +207,9 @@ enum class music_type
 }
 
 /**
- * @copydoc operator!=(music_type, Mix_MusicType)
+ * \copydoc operator!=(music_type, Mix_MusicType)
  *
- * @ingroup audio
+ * \ingroup audio
  */
 [[nodiscard]] inline constexpr auto operator!=(Mix_MusicType lhs,
                                                music_type rhs) noexcept -> bool
@@ -218,13 +218,13 @@ enum class music_type
 }
 
 /**
- * @class music
+ * \class music
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @brief Represents a music file.
+ * \brief Represents a music file.
  *
- * @details The supported audio formats are the following:
+ * \details The supported audio formats are the following:
  * <ul>
  *   <li>WAVE/RIFF (.wav)</li>
  *   <li>AIFF (.aiff)</li>
@@ -236,220 +236,220 @@ enum class music_type
  *   <li>FLAC (.flac)</li>
  * </ul>
  *
- * @note Only one music instance can ever be playing at any time.
+ * \note Only one music instance can ever be playing at any time.
  *
- * @todo Look into special effects API (also applies for sound effects).
+ * \todo Look into special effects API (also applies for sound effects).
  *
- * @see `Mix_Music`
- * @see `sound_effect`
+ * \see `Mix_Music`
+ * \see `sound_effect`
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @headerfile music.hpp
+ * \headerfile music.hpp
  */
 class music final
 {
  public:
   /**
-   * @brief A constant that indicates that an audio snippet should be looped
+   * \brief A constant that indicates that an audio snippet should be looped
    * indefinitely.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   inline constexpr static int loopForever = -1;
 
   /**
-   * @brief Creates a `music` instance based on the file at the specified path.
+   * \brief Creates a `music` instance based on the file at the specified path.
    *
-   * @param file the file path of the music file that will be loaded, cannot
+   * \param file the file path of the music file that will be loaded, cannot
    * be null.
    *
-   * @throws mix_error if the music file cannot be loaded.
+   * \throws mix_error if the music file cannot be loaded.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   explicit music(nn_czstring file);
 
   /**
-   * @brief Plays the music associated with this instance.
+   * \brief Plays the music associated with this instance.
    *
-   * @details Any previously playing music will be halted. However, this
+   * \details Any previously playing music will be halted. However, this
    * method will wait for music that was fading out to complete.
    *
-   * @note The term loops is a little bit confusing here, even in the SDL_mixer
+   * \note The term loops is a little bit confusing here, even in the SDL_mixer
    * documentation. A negative value indicates that the music should be played
    * forever. Furthermore, the values 0 and 1 both results in the music being
    * played *one time*. Except for these "special" values, the method behaves as
    * expected.
    *
-   * @param nLoops the number of times to loop the music, a negative value is
+   * \param nLoops the number of times to loop the music, a negative value is
    * indicates that the music should be looped forever. The default value is 1.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   void play(int nLoops = 1) noexcept;
 
   /**
-   * @brief Resumes playing the music.
+   * \brief Resumes playing the music.
    *
-   * @details This method can safely be invoked with halted, paused and even
+   * \details This method can safely be invoked with halted, paused and even
    * currently playing music.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   static void resume() noexcept;
 
   /**
-   * @brief Pauses any currently playing music.
+   * \brief Pauses any currently playing music.
    *
-   * @note This method only affects music that is currently playing, which
+   * \note This method only affects music that is currently playing, which
    * doesn't include music that is being faded in/out.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   static void pause() noexcept;
 
   /**
-   * @brief Stops ALL currently playing and fading music.
+   * \brief Stops ALL currently playing and fading music.
    *
-   * @details Unlike `pause()`, this method affects all kinds of music.
+   * \details Unlike `pause()`, this method affects all kinds of music.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   static void halt() noexcept;
 
   /**
-   * @brief Plays the music by fading it in by the specified amount of time.
+   * \brief Plays the music by fading it in by the specified amount of time.
    *
-   * @details The fade effect is only applied to the first iteration of
+   * \details The fade effect is only applied to the first iteration of
    * the playback of the music. Any previously playing music will be halted.
    * However, if other music is currently being faded out, this music will
    * wait for that to complete.
    *
-   * @note The term loops is a little bit confusing here, even in the SDL_mixer
+   * \note The term loops is a little bit confusing here, even in the SDL_mixer
    * documentation. A negative value indicates that the music should be played
    * forever. Furthermore, the values 0 and 1 both results in the music being
    * played *one time*. Except for these "special" values, the method behaves as
    * expected.
    *
-   * @param ms the amount of time for the fade to complete, in milliseconds. A
+   * \param ms the amount of time for the fade to complete, in milliseconds. A
    * negative value is clamped to 0.
    *
-   * @param nLoops the number of iterations to play the music, a negative value
+   * \param nLoops the number of iterations to play the music, a negative value
    * indicates that the music should be looped forever.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   void fade_in(milliseconds<int> ms, int nLoops = 1) noexcept;
 
   /**
-   * @brief Fades out any currently playing music over the specified amount of
+   * \brief Fades out any currently playing music over the specified amount of
    * time.
    *
-   * @details This method only affects music that is currently playing and
+   * \details This method only affects music that is currently playing and
    * not currently fading out. In other words, this method has no effect if
    * music is currently being faded by the time the method is invoked.
    *
-   * @param ms the amount of time for the fade to complete, in milliseconds. A
+   * \param ms the amount of time for the fade to complete, in milliseconds. A
    * negative value is clamped to zero.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   static void fade_out(milliseconds<int> ms) noexcept;
 
   /**
-   * @brief Sets the volume of all music.
+   * \brief Sets the volume of all music.
    *
-   * @param volume the volume that will be used, in the range [0,
+   * \param volume the volume that will be used, in the range [0,
    * `music::max_volume()`]. An out-of-bounds value will be clamped to the
    * closest valid value.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   static void set_volume(int volume) noexcept;
 
   /**
-   * @brief Indicates whether or not any music is currently playing.
+   * \brief Indicates whether or not any music is currently playing.
    *
-   * @return `true` if music is currently being played; `false` otherwise.
+   * \return `true` if music is currently being played; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   static auto is_playing() noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not any music is paused.
+   * \brief Indicates whether or not any music is paused.
    *
-   * @return `true` if the music is paused; `false` otherwise.
+   * \return `true` if the music is paused; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   static auto is_paused() noexcept -> bool;
 
   /**
-   * @brief Indicates whether or not any music is currently being faded in or
+   * \brief Indicates whether or not any music is currently being faded in or
    * out.
    *
-   * @return `true` if music is currently being faded in or out; `false`
+   * \return `true` if music is currently being faded in or out; `false`
    * otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   static auto is_fading() noexcept -> bool;
 
   /**
-   * @brief Returns the volume of the music.
+   * \brief Returns the volume of the music.
    *
-   * @details The default value is set to `music::max_volume()`.
+   * \details The default value is set to `music::max_volume()`.
    *
-   * @return the volume of the music, in the range [0, `music::max_volume()`].
+   * \return the volume of the music, in the range [0, `music::max_volume()`].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   static auto volume() noexcept -> int;
 
   /**
-   * @brief Returns the current fade status of the music playback.
+   * \brief Returns the current fade status of the music playback.
    *
-   * @return the current fade status.
+   * \return the current fade status.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   static auto get_fade_status() noexcept -> fade_status;
 
   /**
-   * @brief Returns the type of the music.
+   * \brief Returns the type of the music.
    *
-   * @return the type of the music.
+   * \return the type of the music.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_QUERY
   auto type() const noexcept -> music_type;
 
   /**
-   * @brief Returns a pointer to the associated `Mix_Music`.
+   * \brief Returns a pointer to the associated `Mix_Music`.
    *
-   * @warning Use of this method is not recommended, since it purposefully
+   * \warning Use of this method is not recommended, since it purposefully
    * breaks const-correctness. However, it's useful since many SDL calls use
    * non-const pointers even when no change will be applied.
    *
-   * @return a pointer to the associated `Mix_Music`.
+   * \return a pointer to the associated `Mix_Music`.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto get() const noexcept -> Mix_Music*
   {
@@ -457,11 +457,11 @@ class music final
   }
 
   /**
-   * @brief Converts to `Mix_Music*`.
+   * \brief Converts to `Mix_Music*`.
    *
-   * @return a pointer to the associated `Mix_Music` instance.
+   * \return a pointer to the associated `Mix_Music` instance.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] explicit operator Mix_Music*() noexcept
   {
@@ -469,11 +469,11 @@ class music final
   }
 
   /**
-   * @brief Converts to `const Mix_Music*`.
+   * \brief Converts to `const Mix_Music*`.
    *
-   * @return a pointer to the associated `Mix_Music` instance.
+   * \return a pointer to the associated `Mix_Music` instance.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] explicit operator const Mix_Music*() const noexcept
   {
@@ -481,11 +481,11 @@ class music final
   }
 
   /**
-   * @brief Returns the maximum possible volume.
+   * \brief Returns the maximum possible volume.
    *
-   * @return the maximum possible volume value, equal to `MIX_MAX_VOLUME`.
+   * \return the maximum possible volume value, equal to `MIX_MAX_VOLUME`.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr static auto max_volume() noexcept -> int
   {
@@ -505,30 +505,30 @@ class music final
 };
 
 /**
- * @brief Returns a textual representation of a `music` instance.
+ * \brief Returns a textual representation of a `music` instance.
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @param music the instance that will be converted.
+ * \param music the instance that will be converted.
  *
- * @return a string that represents the `music` instance.
+ * \return a string that represents the `music` instance.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto to_string(const music& music) -> std::string;
 
 /**
- * @brief Prints a textual representation of a `music` instance.
+ * \brief Prints a textual representation of a `music` instance.
  *
- * @ingroup audio
+ * \ingroup audio
  *
- * @param stream the stream that will be used.
- * @param music the `music` instance that will be printed.
+ * \param stream the stream that will be used.
+ * \param music the `music` instance that will be printed.
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto operator<<(std::ostream& stream, const music& music) -> std::ostream&;

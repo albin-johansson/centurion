@@ -23,17 +23,17 @@
  */
 
 /**
- * @file scoped_lock.hpp
+ * \file scoped_lock.hpp
  *
- * @ingroup thread
+ * \ingroup thread
  *
- * @brief Provides the `scoped_lock` class.
+ * \brief Provides the `scoped_lock` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_SCOPED_LOCK_HEADER
@@ -52,32 +52,32 @@
 
 namespace cen {
 
-/// @addtogroup thread
-/// @{
+/// \addtogroup thread
+/// \{
 
 /**
- * @class scoped_lock
+ * \class scoped_lock
  *
- * @brief Represents an RAII-style blocking lock that automatically unlocks the
+ * \brief Represents an RAII-style blocking lock that automatically unlocks the
  * associated mutex upon destruction.
  *
- * @remarks This class is purposefully similar to `std::scoped_lock`.
+ * \remarks This class is purposefully similar to `std::scoped_lock`.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile scoped_lock.hpp
+ * \headerfile scoped_lock.hpp
  */
 class scoped_lock final
 {
  public:
   /**
-   * @brief Attempts to lock the supplied mutex.
+   * \brief Attempts to lock the supplied mutex.
    *
-   * @param mutex the mutex that will be locked.
+   * \param mutex the mutex that will be locked.
    *
-   * @throws sdl_error if the mutex can't be locked.
+   * \throws sdl_error if the mutex can't be locked.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   explicit scoped_lock(mutex& mutex);
@@ -87,9 +87,9 @@ class scoped_lock final
   auto operator=(const scoped_lock&) -> scoped_lock& = delete;
 
   /**
-   * @brief Unlocks the associated mutex.
+   * \brief Unlocks the associated mutex.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   ~scoped_lock() noexcept;
@@ -101,7 +101,7 @@ class scoped_lock final
 static_assert(!std::is_copy_constructible_v<scoped_lock>);
 static_assert(!std::is_copy_assignable_v<scoped_lock>);
 
-/// @}
+/// \}
 
 }  // namespace cen
 

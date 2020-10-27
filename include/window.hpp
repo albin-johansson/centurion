@@ -48,8 +48,8 @@
 
 namespace cen {
 
-/// @addtogroup graphics
-/// @{
+/// \addtogroup graphics
+/// \{
 
 template <typename T>
 using is_window_owning =
@@ -60,19 +60,19 @@ using is_window_handle =
     std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
- * @class basic_window
+ * \class basic_window
  *
- * @brief Represents an operating system window.
+ * \brief Represents an operating system window.
  *
- * @tparam T `std::true_type` for owning windows; `std::false_type` for
+ * \tparam T `std::true_type` for owning windows; `std::false_type` for
  * non-owning windows.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @see `window`
- * @see `window_handle`
+ * \see `window`
+ * \see `window_handle`
  *
- * @headerfile window.hpp
+ * \headerfile window.hpp
  */
 template <typename T>
 class basic_window final
@@ -86,16 +86,16 @@ class basic_window final
 
  public:
   /**
-   * @brief Creates a window from a pointer to an SDL window.
+   * \brief Creates a window from a pointer to an SDL window.
    *
-   * @note If you're creating a `window` instance, then ownership of the pointer
+   * \note If you're creating a `window` instance, then ownership of the pointer
    * is claimed. Furthermore, if you're creating a `window_handle`, ownership is
    * *not* claimed.
    *
-   * @param window a pointer to the associated SDL window. Ownership of this
+   * \param window a pointer to the associated SDL window. Ownership of this
    * pointer is claimed if the window is owning.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   explicit basic_window(SDL_Window* window) noexcept(!is_owning())
       : m_window{window}
@@ -108,18 +108,18 @@ class basic_window final
   }
 
   /**
-   * @brief Creates an owning window with the specified title and size.
+   * \brief Creates an owning window with the specified title and size.
    *
-   * @details The window will be hidden by default.
+   * \details The window will be hidden by default.
    *
-   * @param title the title of the window, can't be null.
-   * @param size the size of the window, components must be greater than zero.
+   * \param title the title of the window, can't be null.
+   * \param size the size of the window, components must be greater than zero.
    *
-   * @throws exception if the supplied width or height aren't
+   * \throws exception if the supplied width or height aren't
    * greater than zero.
-   * @throws sdl_error if the window cannot be created.
+   * \throws sdl_error if the window cannot be created.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   template <typename U = T, is_window_owning<U> = true>
   explicit basic_window(nn_czstring title, const iarea& size = default_size())
@@ -140,34 +140,34 @@ class basic_window final
   }
 
   /**
-   * @brief Creates a window.
+   * \brief Creates a window.
    *
-   * @details The window will use the size obtained from `default_size()` as its
+   * \details The window will use the size obtained from `default_size()` as its
    * initial size.
    *
-   * @throws sdl_error if the window cannot be created.
+   * \throws sdl_error if the window cannot be created.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   template <typename U = T, is_window_owning<U> = true>
   basic_window() : basic_window{"Centurion window"}
   {}
 
   /**
-   * @brief Creates a window handle based on an owning window.
+   * \brief Creates a window handle based on an owning window.
    *
-   * @param window the owning window to base the handle on.
+   * \param window the owning window to base the handle on.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename U = T, is_window_handle<U> = true>
   explicit basic_window(const owner_t& window) noexcept : m_window{window.get()}
   {}
 
   /**
-   * @brief Makes the window visible.
+   * \brief Makes the window visible.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void show() noexcept
   {
@@ -175,9 +175,9 @@ class basic_window final
   }
 
   /**
-   * @brief Makes the window invisible.
+   * \brief Makes the window invisible.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void hide() noexcept
   {
@@ -185,11 +185,11 @@ class basic_window final
   }
 
   /**
-   * @brief Centers the window position relative to the screen.
+   * \brief Centers the window position relative to the screen.
    *
-   * @note Windows are centered by default.
+   * \note Windows are centered by default.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void center() noexcept
   {
@@ -197,9 +197,9 @@ class basic_window final
   }
 
   /**
-   * @brief Raises this window above other windows and requests focus.
+   * \brief Raises this window above other windows and requests focus.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void raise() noexcept
   {
@@ -207,9 +207,9 @@ class basic_window final
   }
 
   /**
-   * @brief Maximizes the window.
+   * \brief Maximizes the window.
    *
-   * @since 3.1.0
+   * \since 3.1.0
    */
   void maximize() noexcept
   {
@@ -217,9 +217,9 @@ class basic_window final
   }
 
   /**
-   * @brief Minimizes the window.
+   * \brief Minimizes the window.
    *
-   * @since 3.1.0
+   * \since 3.1.0
    */
   void minimize() noexcept
   {
@@ -227,12 +227,12 @@ class basic_window final
   }
 
   /**
-   * @brief Updates the window surface.
+   * \brief Updates the window surface.
    *
-   * @return `true` if the window surface was successfully updated; `false`
+   * \return `true` if the window surface was successfully updated; `false`
    * otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   auto update_surface() noexcept -> bool
   {
@@ -240,12 +240,12 @@ class basic_window final
   }
 
   /**
-   * @brief Sets whether or not the window is in fullscreen mode.
+   * \brief Sets whether or not the window is in fullscreen mode.
    *
-   * @param fullscreen `true` if the window should enable fullscreen mode;
+   * \param fullscreen `true` if the window should enable fullscreen mode;
    * `false` for windowed mode.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_fullscreen(bool fullscreen) noexcept
   {
@@ -258,14 +258,14 @@ class basic_window final
   }
 
   /**
-   * @brief Sets whether or not the window is in fullscreen desktop mode.
+   * \brief Sets whether or not the window is in fullscreen desktop mode.
    *
-   * @details This mode is useful when you want to "fake" fullscreen mode.
+   * \details This mode is useful when you want to "fake" fullscreen mode.
    *
-   * @param fullscreen `true` if the window should enable fullscreen desktop
+   * \param fullscreen `true` if the window should enable fullscreen desktop
    * mode; `false` for windowed mode.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void set_fullscreen_desktop(bool fullscreen) noexcept
   {
@@ -274,14 +274,14 @@ class basic_window final
   }
 
   /**
-   * @brief Sets whether or not the window is decorated.
+   * \brief Sets whether or not the window is decorated.
    *
-   * @details This is enabled by default.
+   * \details This is enabled by default.
    *
-   * @param decorated `true` if the window should be decorated; `false`
+   * \param decorated `true` if the window should be decorated; `false`
    * otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_decorated(bool decorated) noexcept
   {
@@ -289,12 +289,12 @@ class basic_window final
   }
 
   /**
-   * @brief Sets whether or not the window should be resizable.
+   * \brief Sets whether or not the window should be resizable.
    *
-   * @param resizable `true` if the window should be resizable; `false`
+   * \param resizable `true` if the window should be resizable; `false`
    * otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_resizable(bool resizable) noexcept
   {
@@ -302,13 +302,13 @@ class basic_window final
   }
 
   /**
-   * @brief Sets the width of the window.
+   * \brief Sets the width of the window.
    *
-   * @details The supplied width is capped to always be at least 1.
+   * \details The supplied width is capped to always be at least 1.
    *
-   * @param width the new width of the window, must be greater than zero.
+   * \param width the new width of the window, must be greater than zero.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_width(int width) noexcept
   {
@@ -316,13 +316,13 @@ class basic_window final
   }
 
   /**
-   * @brief Sets the height of the window.
+   * \brief Sets the height of the window.
    *
-   * @details The supplied height is capped to always be at least 1.
+   * \details The supplied height is capped to always be at least 1.
    *
-   * @param height the new height of the window, must be greater than zero.
+   * \param height the new height of the window, must be greater than zero.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_height(int height) noexcept
   {
@@ -330,14 +330,14 @@ class basic_window final
   }
 
   /**
-   * @brief Sets the size of the window.
+   * \brief Sets the size of the window.
    *
-   * @details The supplied dimensions are capped to be at least 1.
+   * \details The supplied dimensions are capped to be at least 1.
    *
-   * @param size the new size of the window, components must be greater than
+   * \param size the new size of the window, components must be greater than
    * zero.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   void set_size(const iarea& size) noexcept
   {
@@ -347,11 +347,11 @@ class basic_window final
   }
 
   /**
-   * @brief Sets the icon that will be used by the window.
+   * \brief Sets the icon that will be used by the window.
    *
-   * @param icon the surface that will serve as the icon of the window.
+   * \param icon the surface that will serve as the icon of the window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_icon(const surface& icon) noexcept
   {
@@ -359,11 +359,11 @@ class basic_window final
   }
 
   /**
-   * @brief Sets the title of the window.
+   * \brief Sets the title of the window.
    *
-   * @param title the title of the window, can't be null.
+   * \param title the title of the window, can't be null.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_title(nn_czstring title) noexcept
   {
@@ -371,14 +371,14 @@ class basic_window final
   }
 
   /**
-   * @brief Sets the opacity of the window.
+   * \brief Sets the opacity of the window.
    *
-   * @details The supplied opacity will be clamped to a value in the legal
+   * \details The supplied opacity will be clamped to a value in the legal
    * range.
    *
-   * @param opacity the opacity, in the range [0, 1].
+   * \param opacity the opacity, in the range [0, 1].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_opacity(float opacity) noexcept
   {
@@ -386,15 +386,15 @@ class basic_window final
   }
 
   /**
-   * @brief Sets the minimum size of the window.
+   * \brief Sets the minimum size of the window.
    *
-   * @details This method has no effect if any of the components aren't greater
+   * \details This method has no effect if any of the components aren't greater
    * than zero.
    *
-   * @param size the minimum size of the window, components must be greater
+   * \param size the minimum size of the window, components must be greater
    * than zero.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_min_size(const iarea& size) noexcept
   {
@@ -402,15 +402,15 @@ class basic_window final
   }
 
   /**
-   * @brief Sets the maximum size of the window.
+   * \brief Sets the maximum size of the window.
    *
-   * @details This method has no effect if any of the components aren't greater
+   * \details This method has no effect if any of the components aren't greater
    * than zero.
    *
-   * @param size the maximum size of the window, components must be greater
+   * \param size the maximum size of the window, components must be greater
    * than zero.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_max_size(const iarea& size) noexcept
   {
@@ -418,14 +418,14 @@ class basic_window final
   }
 
   /**
-   * @brief Sets the position of the window.
+   * \brief Sets the position of the window.
    *
-   * @note It's possible to use `SDL_WINDOWPOS_CENTERED` or
+   * \note It's possible to use `SDL_WINDOWPOS_CENTERED` or
    * `SDL_WINDOWPOS_UNDEFINED` as any of the components of the point.
    *
-   * @param position the new position of the window.
+   * \param position the new position of the window.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   void set_position(const ipoint& position) noexcept
   {
@@ -433,14 +433,14 @@ class basic_window final
   }
 
   /**
-   * @brief Sets whether or not the mouse should be confined within the window.
+   * \brief Sets whether or not the mouse should be confined within the window.
    *
-   * @brief This property is disabled by default.
+   * \brief This property is disabled by default.
    *
-   * @param grabMouse `true` if the mouse should be confined within the window;
+   * \param grabMouse `true` if the mouse should be confined within the window;
    * `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_grab_mouse(bool grabMouse) noexcept
   {
@@ -448,17 +448,17 @@ class basic_window final
   }
 
   /**
-   * @brief Sets the overall brightness of the window.
+   * \brief Sets the overall brightness of the window.
    *
-   * @details This operation is only supported if the window is in fullscreen
+   * \details This operation is only supported if the window is in fullscreen
    * mode. This property will be reset every time the fullscreen mode is exited.
    *
-   * @note A brightness value outside the legal range will be clamped to the
+   * \note A brightness value outside the legal range will be clamped to the
    * closest valid value.
    *
-   * @param brightness the brightness value, in the range [0, 1].
+   * \param brightness the brightness value, in the range [0, 1].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   void set_brightness(float brightness) noexcept
   {
@@ -468,17 +468,17 @@ class basic_window final
   }
 
   /**
-   * @brief Sets whether or not the mouse should be captured.
+   * \brief Sets whether or not the mouse should be captured.
    *
-   * @note A window might have to be visible in order for the mouse to be
+   * \note A window might have to be visible in order for the mouse to be
    * captured.
    *
-   * @param capturingMouse `true` if the mouse should be captured; `false`
+   * \param capturingMouse `true` if the mouse should be captured; `false`
    * otherwise.
    *
-   * @see `SDL_CaptureMouse`
+   * \see `SDL_CaptureMouse`
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   static void set_capturing_mouse(bool capturingMouse) noexcept
   {
@@ -486,12 +486,12 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is currently grabbing the mouse
+   * \brief Indicates whether or not the window is currently grabbing the mouse
    * input.
    *
-   * @return `true` if the window is grabbing the mouse; `false` otherwise.
+   * \return `true` if the window is grabbing the mouse; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto grabbing_mouse() const noexcept -> bool
   {
@@ -499,13 +499,13 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window has input focus.
+   * \brief Indicates whether or not the window has input focus.
    *
-   * @note The window might have to be visible for this to be true.
+   * \note The window might have to be visible for this to be true.
    *
-   * @return `true` if the window has input focus; `false` otherwise.
+   * \return `true` if the window has input focus; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto has_input_focus() const noexcept -> bool
   {
@@ -513,11 +513,11 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window has mouse focus.
+   * \brief Indicates whether or not the window has mouse focus.
    *
-   * @return `true` if the window has mouse focus; `false` otherwise.
+   * \return `true` if the window has mouse focus; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto has_mouse_focus() const noexcept -> bool
   {
@@ -525,13 +525,13 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is decorated.
+   * \brief Indicates whether or not the window is decorated.
    *
-   * @details Windows are decorated by default.
+   * \details Windows are decorated by default.
    *
-   * @return `true` if the window is decorated; `false` otherwise.
+   * \return `true` if the window is decorated; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_decorated() const noexcept -> bool
   {
@@ -539,13 +539,13 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is resizable.
+   * \brief Indicates whether or not the window is resizable.
    *
-   * @details By default, this property is set to false.
+   * \details By default, this property is set to false.
    *
-   * @return `true` if the window is resizable; `false` otherwise.
+   * \return `true` if the window is resizable; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_resizable() const noexcept -> bool
   {
@@ -553,11 +553,11 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is in fullscreen mode.
+   * \brief Indicates whether or not the window is in fullscreen mode.
    *
-   * @return `true` if the window is in fullscreen mode; `false` otherwise.
+   * \return `true` if the window is in fullscreen mode; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_fullscreen() const noexcept -> bool
   {
@@ -565,12 +565,12 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is in fullscreen desktop mode.
+   * \brief Indicates whether or not the window is in fullscreen desktop mode.
    *
-   * @return `true` if the window is in fullscreen desktop mode;
+   * \return `true` if the window is in fullscreen desktop mode;
    * `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto is_fullscreen_desktop() const noexcept -> bool
   {
@@ -578,11 +578,11 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is visible.
+   * \brief Indicates whether or not the window is visible.
    *
-   * @return `true` if the window is visible; `false` otherwise.
+   * \return `true` if the window is visible; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto is_visible() const noexcept -> bool
   {
@@ -590,13 +590,13 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is usable with an
+   * \brief Indicates whether or not the window is usable with an
    * OpenGL-context.
    *
-   * @return `true` if the window is compatible with an OpenGL-context; false
+   * \return `true` if the window is compatible with an OpenGL-context; false
    * otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto is_opengl() const noexcept -> bool
   {
@@ -604,12 +604,12 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is usable as a Vulkan surface.
+   * \brief Indicates whether or not the window is usable as a Vulkan surface.
    *
-   * @return `true` if the window is is usable as a Vulkan surface; false
+   * \return `true` if the window is is usable as a Vulkan surface; false
    * otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto is_vulkan() const noexcept -> bool
   {
@@ -617,11 +617,11 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window wasn't created by SDL.
+   * \brief Indicates whether or not the window wasn't created by SDL.
    *
-   * @return `true` if the window wasn't created by SDL; `false` otherwise.
+   * \return `true` if the window wasn't created by SDL; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto is_foreign() const noexcept -> bool
   {
@@ -629,11 +629,11 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is capturing the mouse.
+   * \brief Indicates whether or not the window is capturing the mouse.
    *
-   * @return `true` if the window is capturing the mouse; `false` otherwise.
+   * \return `true` if the window is capturing the mouse; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto is_capturing_mouse() const noexcept -> bool
   {
@@ -641,11 +641,11 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is minimized.
+   * \brief Indicates whether or not the window is minimized.
    *
-   * @return `true` if the window is minimized; `false` otherwise.
+   * \return `true` if the window is minimized; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto is_minimized() const noexcept -> bool
   {
@@ -653,11 +653,11 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is maximized.
+   * \brief Indicates whether or not the window is maximized.
    *
-   * @return `true` if the window is maximized; `false` otherwise.
+   * \return `true` if the window is maximized; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto is_maximized() const noexcept -> bool
   {
@@ -665,13 +665,13 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the window is set to be always on top of
+   * \brief Indicates whether or not the window is set to be always on top of
    * other windows.
    *
-   * @return `true` if the window is always on top of other windows; false
+   * \return `true` if the window is always on top of other windows; false
    * otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto always_on_top() const noexcept -> bool
   {
@@ -679,13 +679,13 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the current brightness value of the window.
+   * \brief Returns the current brightness value of the window.
    *
-   * @details The default value of this property is 1.
+   * \details The default value of this property is 1.
    *
-   * @return the current brightness of the window, in the range [0, 1].
+   * \return the current brightness of the window, in the range [0, 1].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto brightness() const noexcept -> float
   {
@@ -693,11 +693,11 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the opacity of the window.
+   * \brief Returns the opacity of the window.
    *
-   * @return the opacity of the window, in the range [0, 1].
+   * \return the opacity of the window, in the range [0, 1].
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto opacity() const noexcept -> float
   {
@@ -707,11 +707,11 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the x-coordinate of the window position.
+   * \brief Returns the x-coordinate of the window position.
    *
-   * @return the x-coordinate of the window position.
+   * \return the x-coordinate of the window position.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto x() const noexcept -> int
   {
@@ -721,11 +721,11 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the y-coordinate of the window position.
+   * \brief Returns the y-coordinate of the window position.
    *
-   * @return the y-coordinate of the window position.
+   * \return the y-coordinate of the window position.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto y() const noexcept -> int
   {
@@ -735,11 +735,11 @@ class basic_window final
   }
 
   /**
-   * @brief Returns a numerical ID of the window.
+   * \brief Returns a numerical ID of the window.
    *
-   * @return a numerical ID of the window.
+   * \return a numerical ID of the window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto id() const noexcept -> u32
   {
@@ -747,12 +747,12 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the display index associated with the window.
+   * \brief Returns the display index associated with the window.
    *
-   * @return the display index associated with the window; `std::nullopt` if the
+   * \return the display index associated with the window; `std::nullopt` if the
    * display index cannot be obtained.
    *
-   * @since 3.1.0
+   * \since 3.1.0
    */
   [[nodiscard]] auto display_index() const noexcept -> std::optional<int>
   {
@@ -765,13 +765,13 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the current position of the window.
+   * \brief Returns the current position of the window.
    *
-   * @note Windows are centered by default.
+   * \note Windows are centered by default.
    *
-   * @return the current position of the window.
+   * \return the current position of the window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto position() const noexcept -> ipoint
   {
@@ -782,11 +782,11 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the minimum size of the window.
+   * \brief Returns the minimum size of the window.
    *
-   * @return the minimum size of the window.
+   * \return the minimum size of the window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto min_size() const noexcept -> iarea
   {
@@ -797,11 +797,11 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the maximum size of the window.
+   * \brief Returns the maximum size of the window.
    *
-   * @return the maximum size of the window.
+   * \return the maximum size of the window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto max_size() const noexcept -> iarea
   {
@@ -812,11 +812,11 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the current width of the window.
+   * \brief Returns the current width of the window.
    *
-   * @return the current width of the window.
+   * \return the current width of the window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto width() const noexcept -> int
   {
@@ -826,11 +826,11 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the current height of the window.
+   * \brief Returns the current height of the window.
    *
-   * @return the current height of the window.
+   * \return the current height of the window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto height() const noexcept -> int
   {
@@ -840,14 +840,14 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the current size of the window.
+   * \brief Returns the current size of the window.
    *
-   * @note Calling this function is slightly faster than calling both `width`
+   * \note Calling this function is slightly faster than calling both `width`
    * and `height` to obtain the window size.
    *
-   * @return the size of the window.
+   * \return the size of the window.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto size() const noexcept -> iarea
   {
@@ -857,17 +857,17 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not a flag is set.
+   * \brief Indicates whether or not a flag is set.
    *
-   * @details Some of the use cases of this method can be replaced by more
+   * \details Some of the use cases of this method can be replaced by more
    * explicit methods, e.g. `is_fullscreen()` instead of
    * `check_flag(SDL_WINDOW_FULLSCREEN)`.
    *
-   * @param flag the flag that will be tested.
+   * \param flag the flag that will be tested.
    *
-   * @return `true` if the flag is set; `false` otherwise.
+   * \return `true` if the flag is set; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto check_flag(SDL_WindowFlags flag) const noexcept -> bool
   {
@@ -875,15 +875,15 @@ class basic_window final
   }
 
   /**
-   * @brief Returns a mask that represents the flags associated with the window.
+   * \brief Returns a mask that represents the flags associated with the window.
    *
-   * @details You can check the returned mask using the `SDL_WindowFlags` enum.
+   * \details You can check the returned mask using the `SDL_WindowFlags` enum.
    *
-   * @return a mask that represents the flags associated with the window.
+   * \return a mask that represents the flags associated with the window.
    *
-   * @see `SDL_WindowFlags`
+   * \see `SDL_WindowFlags`
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto flags() const noexcept -> u32
   {
@@ -891,11 +891,11 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the pixel format of the window.
+   * \brief Returns the pixel format of the window.
    *
-   * @return the pixel format used by the window.
+   * \return the pixel format used by the window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto get_pixel_format() const noexcept -> pixel_format
   {
@@ -903,15 +903,15 @@ class basic_window final
   }
 
   /**
-   * @brief Returns a handle to the window framebuffer surface.
+   * \brief Returns a handle to the window framebuffer surface.
    *
-   * @warning It is not possible use the framebuffer surface with the 3D or 2D
+   * \warning It is not possible use the framebuffer surface with the 3D or 2D
    * rendering APIs.
    *
-   * @return a handle to the window surface, might not contain a valid surface
+   * \return a handle to the window surface, might not contain a valid surface
    * pointer.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto get_surface() noexcept -> surface_handle
   {
@@ -919,11 +919,11 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the title of the window.
+   * \brief Returns the title of the window.
    *
-   * @return the title of the window.
+   * \return the title of the window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto title() const -> std::string
   {
@@ -931,11 +931,11 @@ class basic_window final
   }
 
   /**
-   * @brief Converts to `SDL_Window*`.
+   * \brief Converts to `SDL_Window*`.
    *
-   * @return a pointer to the associated SDL window.
+   * \return a pointer to the associated SDL window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] explicit operator SDL_Window*() noexcept
   {
@@ -943,11 +943,11 @@ class basic_window final
   }
 
   /**
-   * @brief Converts to `const SDL_Window*`.
+   * \brief Converts to `const SDL_Window*`.
    *
-   * @return a pointer to the associated SDL window.
+   * \return a pointer to the associated SDL window.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] explicit operator const SDL_Window*() const noexcept
   {
@@ -955,16 +955,16 @@ class basic_window final
   }
 
   /**
-   * @brief Indicates whether or not the handle holds a non-null pointer.
+   * \brief Indicates whether or not the handle holds a non-null pointer.
    *
-   * @note This function is only available for window handles.
+   * \note This function is only available for window handles.
    *
-   * @warning It's undefined behaviour to invoke other member functions that
+   * \warning It's undefined behaviour to invoke other member functions that
    * use the internal pointer if this function returns `false`.
    *
-   * @return `true` if the handle holds a non-null pointer; `false` otherwise.
+   * \return `true` if the handle holds a non-null pointer; `false` otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename U = T, is_window_handle<U> = true>
   explicit operator bool() const noexcept
@@ -973,13 +973,13 @@ class basic_window final
   }
 
   /**
-   * @brief Returns a pointer to the associated SDL window.
+   * \brief Returns a pointer to the associated SDL window.
    *
-   * @warning Don't claim ownership of the returned pointer.
+   * \warning Don't claim ownership of the returned pointer.
    *
-   * @return a pointer to the associated SDL window.
+   * \return a pointer to the associated SDL window.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Window*
   {
@@ -991,13 +991,13 @@ class basic_window final
   }
 
   /**
-   * @brief Returns the default size of a window.
+   * \brief Returns the default size of a window.
    *
-   * @note This function is only available for owning windows.
+   * \note This function is only available for owning windows.
    *
-   * @return the default size of a window.
+   * \return the default size of a window.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename U = T, is_window_owning<U> = true>
   [[nodiscard]] constexpr static auto default_size() -> iarea
@@ -1022,31 +1022,31 @@ class basic_window final
 };
 
 /**
- * @typedef window
+ * \typedef window
  *
- * @brief Represents an owning window.
+ * \brief Represents an owning window.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using window = basic_window<std::true_type>;
 
 /**
- * @typedef window_handle
+ * \typedef window_handle
  *
- * @brief Represents a non-owning window.
+ * \brief Represents a non-owning window.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using window_handle = basic_window<std::false_type>;
 
 /**
- * @brief Returns a textual representation of a window.
+ * \brief Returns a textual representation of a window.
  *
- * @param window the window that will be converted.
+ * \param window the window that will be converted.
  *
- * @return a textual representation of the window.
+ * \return a textual representation of the window.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 [[nodiscard]] auto to_string(const basic_window<T>& window) -> std::string
@@ -1058,14 +1058,14 @@ template <typename T>
 }
 
 /**
- * @brief Prints a textual representation of a window.
+ * \brief Prints a textual representation of a window.
  *
- * @param stream the stream that will be used.
- * @param window the window that will be printed.
+ * \param stream the stream that will be used.
+ * \param window the window that will be printed.
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_window<T>& window)
@@ -1075,7 +1075,7 @@ auto operator<<(std::ostream& stream, const basic_window<T>& window)
   return stream;
 }
 
-/// @}
+/// \}
 
 }  // namespace cen
 

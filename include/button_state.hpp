@@ -23,15 +23,15 @@
  */
 
 /**
- * @file button_state.hpp
+ * \file button_state.hpp
  *
- * @brief Provides the `button_state` enum.
+ * \brief Provides the `button_state` enum.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_BUTTON_STATE_HEADER
@@ -48,17 +48,17 @@
 namespace cen {
 
 /**
- * @enum button_state
+ * \enum button_state
  *
- * @ingroup input
+ * \ingroup input
  *
- * @brief Represents the two possible states for a button.
+ * \brief Represents the two possible states for a button.
  *
- * @details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
+ * \details Corresponds to the `SDL_RELEASED` and `SDL_PRESSED` macros.
  *
- * @since 3.1.0
+ * \since 3.1.0
  *
- * @headerfile button_state.hpp
+ * \headerfile button_state.hpp
  */
 enum class button_state
 {

@@ -23,17 +23,17 @@
  */
 
 /**
- * @file unicode_string.hpp
+ * \file unicode_string.hpp
  *
- * @ingroup input
+ * \ingroup input
  *
- * @brief Provides the `unicode_string` class.
+ * \brief Provides the `unicode_string` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_UNICODE_STRING_HEADER
@@ -53,14 +53,14 @@
 namespace cen {
 
 /**
- * @class unicode_string
+ * \class unicode_string
  *
- * @brief Represents a null-terminated string encoded in unicode.
+ * \brief Represents a null-terminated string encoded in unicode.
  *
- * @details This class is a wrapper around a `std::vector<unicode>`, that
+ * \details This class is a wrapper around a `std::vector<unicode>`, that
  * provides a similar interface to that of `std::string`.
  *
- * @headerfile unicode_string.hpp
+ * \headerfile unicode_string.hpp
  */
 class unicode_string final
 {
@@ -83,9 +83,9 @@ class unicode_string final
   using difference_type = std::vector<unicode>::difference_type;
 
   /**
-   * @brief Creates an empty Unicode string.
+   * \brief Creates an empty Unicode string.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   unicode_string()
   {
@@ -93,11 +93,11 @@ class unicode_string final
   }
 
   /**
-   * @brief Creates a Unicode string based on the supplied values.
+   * \brief Creates a Unicode string based on the supplied values.
    *
-   * @param codes the list of glyphs that will be used.
+   * \param codes the list of glyphs that will be used.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   unicode_string(std::initializer_list<unicode> codes)
   {
@@ -107,16 +107,16 @@ class unicode_string final
   }
 
   /**
-   * @brief Reserves enough memory to hold the specified amount of elements.
+   * \brief Reserves enough memory to hold the specified amount of elements.
    *
-   * @details Use this method to optimize additions to the string when you
+   * \details Use this method to optimize additions to the string when you
    * know or can approximate the amount of elements that will be added. This
    * can reduce the amount of unnecessary allocations and copies of the
    * underlying array.
    *
-   * @param n the amount of elements to allocate memory for.
+   * \param n the amount of elements to allocate memory for.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   void reserve(size_type n)
   {
@@ -124,11 +124,11 @@ class unicode_string final
   }
 
   /**
-   * @brief Appends a Unicode glyph to the end of the string.
+   * \brief Appends a Unicode glyph to the end of the string.
    *
-   * @param ch the glyph that will be appended.
+   * \param ch the glyph that will be appended.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   void append(unicode ch)
   {
@@ -136,15 +136,15 @@ class unicode_string final
   }
 
   /**
-   * @brief Appends a series of glyphs to the string.
+   * \brief Appends a series of glyphs to the string.
    *
-   * @tparam First the type of the first glyph, always `unicode`.
-   * @tparam Args the types of the other glyphs, always `unicode`.
+   * \tparam First the type of the first glyph, always `unicode`.
+   * \tparam Args the types of the other glyphs, always `unicode`.
    *
-   * @param first the first glyph that will be added.
-   * @param codes the other glyphs that will be added.
+   * \param first the first glyph that will be added.
+   * \param codes the other glyphs that will be added.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename First, typename... Args>
   void append(First first, Args... codes)
@@ -155,7 +155,7 @@ class unicode_string final
   }
 
   /**
-   * @copydoc append(unicode)
+   * \copydoc append(unicode)
    */
   void operator+=(unicode ch)
   {
@@ -163,11 +163,11 @@ class unicode_string final
   }
 
   /**
-   * @brief Removes the last element from the string.
+   * \brief Removes the last element from the string.
    *
-   * @details This method has no effect if the string is empty.
+   * \details This method has no effect if the string is empty.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   void pop_back()
   {
@@ -177,13 +177,13 @@ class unicode_string final
   }
 
   /**
-   * @brief Returns the number of elements stored in the string.
+   * \brief Returns the number of elements stored in the string.
    *
-   * @note This method does *not* include the null-terminator.
+   * \note This method does *not* include the null-terminator.
    *
-   * @return the number of elements in the string.
+   * \return the number of elements in the string.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto size() const noexcept -> size_type
   {
@@ -191,12 +191,12 @@ class unicode_string final
   }
 
   /**
-   * @brief Returns the capacity of the string.
+   * \brief Returns the capacity of the string.
    *
-   * @return the capacity of the string (the amount of elements that can be
+   * \return the capacity of the string (the amount of elements that can be
    * stored before needing to allocate more memory).
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto capacity() const noexcept -> size_type
   {
@@ -204,14 +204,14 @@ class unicode_string final
   }
 
   /**
-   * @brief Indicates whether or not the string is empty.
+   * \brief Indicates whether or not the string is empty.
    *
-   * @note The string is considered empty if the only element is the
+   * \note The string is considered empty if the only element is the
    * null-terminator.
    *
-   * @return `true` if the string is empty; `false` otherwise.
+   * \return `true` if the string is empty; `false` otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto empty() const noexcept -> bool
   {
@@ -219,11 +219,11 @@ class unicode_string final
   }
 
   /**
-   * @brief Returns a pointer to the first glyph.
+   * \brief Returns a pointer to the first glyph.
    *
-   * @return a pointer to the first glyph.
+   * \return a pointer to the first glyph.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto data() noexcept -> pointer
   {
@@ -231,7 +231,7 @@ class unicode_string final
   }
 
   /**
-   * @copydoc data
+   * \copydoc data
    */
   [[nodiscard]] auto data() const noexcept -> const_pointer
   {
@@ -239,14 +239,14 @@ class unicode_string final
   }
 
   /**
-   * @brief Returns an iterator that points to the first element in the string.
+   * \brief Returns an iterator that points to the first element in the string.
    *
-   * @details Iteration using the iterator is done consecutively, as you
+   * \details Iteration using the iterator is done consecutively, as you
    * would expect.
    *
-   * @return an iterator that points to the first element in the string.
+   * \return an iterator that points to the first element in the string.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto begin() noexcept -> iterator
   {
@@ -254,7 +254,7 @@ class unicode_string final
   }
 
   /**
-   * @copydoc begin
+   * \copydoc begin
    */
   [[nodiscard]] auto begin() const noexcept -> const_iterator
   {
@@ -262,15 +262,15 @@ class unicode_string final
   }
 
   /**
-   * @brief Returns an iterator that points one-past the last element in the
+   * \brief Returns an iterator that points one-past the last element in the
    * string.
    *
-   * @note The null-terminator is purposefully skipped.
+   * \note The null-terminator is purposefully skipped.
    *
-   * @return an iterator that points one-past the last element in the
+   * \return an iterator that points one-past the last element in the
    * string.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto end() noexcept -> iterator
   {
@@ -278,7 +278,7 @@ class unicode_string final
   }
 
   /**
-   * @copydoc end
+   * \copydoc end
    */
   [[nodiscard]] auto end() const noexcept -> const_iterator
   {
@@ -286,16 +286,16 @@ class unicode_string final
   }
 
   /**
-   * @brief Returns the element at the specified index.
+   * \brief Returns the element at the specified index.
    *
-   * @details This method will throw an exception if the supplied index is
+   * \details This method will throw an exception if the supplied index is
    * out-of-bounds.
    *
-   * @param index the index of the desired element.
+   * \param index the index of the desired element.
    *
-   * @return the element at the specified index.
+   * \return the element at the specified index.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto at(size_type index) -> reference
   {
@@ -303,7 +303,7 @@ class unicode_string final
   }
 
   /**
-   * @copydoc at
+   * \copydoc at
    */
   [[nodiscard]] auto at(size_type index) const -> const_reference
   {
@@ -311,19 +311,19 @@ class unicode_string final
   }
 
   /**
-   * @brief Returns the element at the specified index.
+   * \brief Returns the element at the specified index.
    *
-   * @pre `index` **must** be in the range [0, `size()`);
+   * \pre `index` **must** be in the range [0, `size()`);
    *
-   * @details This method will does *not* perform bounds-checking. However, in
+   * \details This method will does *not* perform bounds-checking. However, in
    * debug-mode, an assertion will abort the program if the supplied index is
    * out-of-bounds.
    *
-   * @param index the index of the desired element.
+   * \param index the index of the desired element.
    *
-   * @return the element at the specified index.
+   * \return the element at the specified index.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto operator[](size_type index) noexcept -> reference
   {
@@ -332,7 +332,7 @@ class unicode_string final
   }
 
   /**
-   * @copydoc operator[]
+   * \copydoc operator[]
    */
   [[nodiscard]] auto operator[](size_type index) const noexcept
       -> const_reference
@@ -346,14 +346,14 @@ class unicode_string final
 };
 
 /**
- * @brief Indicates whether or not two Unicode strings are the same.
+ * \brief Indicates whether or not two Unicode strings are the same.
  *
- * @param lhs the left-hand side string.
- * @param rhs the right-hand side string.
+ * \param lhs the left-hand side string.
+ * \param rhs the right-hand side string.
  *
- * @return `true` if the strings are the same; `false` otherwise.
+ * \return `true` if the strings are the same; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto operator==(const unicode_string& lhs,
                                      const unicode_string& rhs) -> bool
@@ -374,14 +374,14 @@ class unicode_string final
 }
 
 /**
- * @brief Indicates whether or not two Unicode strings aren't the same.
+ * \brief Indicates whether or not two Unicode strings aren't the same.
  *
- * @param lhs the left-hand side string.
- * @param rhs the right-hand side string.
+ * \param lhs the left-hand side string.
+ * \param rhs the right-hand side string.
  *
- * @return `true` if the strings are the same; `false` otherwise.
+ * \return `true` if the strings are the same; `false` otherwise.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 [[nodiscard]] inline auto operator!=(const unicode_string& lhs,
                                      const unicode_string& rhs) -> bool
@@ -392,13 +392,13 @@ class unicode_string final
 namespace literals {
 
 /**
- * @brief Creates a `unicode` value from a `char`.
+ * \brief Creates a `unicode` value from a `char`.
  *
- * @param c the character used to create the unicode value.
+ * \param c the character used to create the unicode value.
  *
- * @return a `unicode` value.
+ * \return a `unicode` value.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 inline constexpr auto operator""_uni(char c) noexcept -> unicode
 {
@@ -406,13 +406,13 @@ inline constexpr auto operator""_uni(char c) noexcept -> unicode
 }
 
 /**
- * @brief Creates a `unicode` value from a integral value.
+ * \brief Creates a `unicode` value from a integral value.
  *
- * @param i the integer used to create the unicode value.
+ * \param i the integer used to create the unicode value.
  *
- * @return a `unicode` value.
+ * \return a `unicode` value.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 inline constexpr auto operator""_uni(unsigned long long int i) noexcept
     -> unicode

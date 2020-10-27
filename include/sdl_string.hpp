@@ -23,15 +23,15 @@
  */
 
 /**
- * @file sdl_string.hpp
+ * \file sdl_string.hpp
  *
- * @brief Provides the `sdl_string` class.
+ * \brief Provides the `sdl_string` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_SDL_STRING_HEADER
@@ -52,34 +52,34 @@
 namespace cen {
 
 /**
- * @class sdl_string
+ * \class sdl_string
  *
- * @brief Represents a string obtained from SDL, usually a `char*` that has to
+ * \brief Represents a string obtained from SDL, usually a `char*` that has to
  * be freed using `SDL_free`.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile sdl_string.hpp
+ * \headerfile sdl_string.hpp
  */
 class sdl_string final
 {
  public:
   /**
-   * @brief
+   * \brief
    *
-   * @param str the string that will be claimed, can be null.
+   * \param str the string that will be claimed, can be null.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   explicit sdl_string(owner<zstring> str) noexcept : m_str{str}
   {}
 
   /**
-   * @brief Returns the internal string, which might be null.
+   * \brief Returns the internal string, which might be null.
    *
-   * @return the internal string; `nullptr` if there is none.
+   * \return the internal string; `nullptr` if there is none.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto get() const noexcept -> czstring
   {
@@ -87,14 +87,14 @@ class sdl_string final
   }
 
   /**
-   * @brief Returns a copy of the internal string.
+   * \brief Returns a copy of the internal string.
    *
-   * @details This function returns the empty string if the internal string
+   * \details This function returns the empty string if the internal string
    * is a null pointer.
    *
-   * @return a copy of the internal string.
+   * \return a copy of the internal string.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] auto copy() const -> std::string
   {
@@ -106,11 +106,11 @@ class sdl_string final
   }
 
   /**
-   * @brief Indicates whether or not the internal string is non-null.
+   * \brief Indicates whether or not the internal string is non-null.
    *
-   * @return `true` if the internal string is non-null; `false` otherwise.
+   * \return `true` if the internal string is non-null; `false` otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   explicit operator bool() const noexcept
   {

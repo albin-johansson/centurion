@@ -23,17 +23,17 @@
  */
 
 /**
- * @file condition.hpp
+ * \file condition.hpp
  *
- * @ingroup thread
+ * \ingroup thread
  *
- * @brief Provides the `condition` class.
+ * \brief Provides the `condition` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_CONDITION_HEADER
@@ -53,17 +53,17 @@
 
 namespace cen {
 
-/// @addtogroup thread
-/// @{
+/// \addtogroup thread
+/// \{
 
 /**
- * @class condition
+ * \class condition
  *
- * @brief Represents a condition variable.
+ * \brief Represents a condition variable.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile condition.hpp
+ * \headerfile condition.hpp
  */
 class condition final
 {
@@ -72,55 +72,55 @@ class condition final
   condition();
 
   /**
-   * @brief Wakes up one of the threads that are waiting on the condition
+   * \brief Wakes up one of the threads that are waiting on the condition
    * variable.
    *
-   * @return `true` if everything went OK; `false` upon failure.
+   * \return `true` if everything went OK; `false` upon failure.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   auto signal() noexcept -> bool;
 
   /**
-   * @brief Wakes up all threads that are waiting on the condition variable.
+   * \brief Wakes up all threads that are waiting on the condition variable.
    *
-   * @return `true` if everything went OK; `false` on failure.
+   * \return `true` if everything went OK; `false` on failure.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   auto broadcast() noexcept -> bool;
 
   /**
-   * @brief Waits until the condition variable is signaled.
+   * \brief Waits until the condition variable is signaled.
    *
-   * @pre The mutex must be locked when the function is called!
+   * \pre The mutex must be locked when the function is called!
    *
-   * @param mutex the mutex used to coordinate thread access.
+   * \param mutex the mutex used to coordinate thread access.
    *
-   * @return `true` if everything went OK; `false` on failure.
+   * \return `true` if everything went OK; `false` on failure.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   auto wait(mutex& mutex) noexcept -> bool;
 
   /**
-   * @brief Waits until the condition variable is signaled or if the specified
+   * \brief Waits until the condition variable is signaled or if the specified
    * amount of time has passed.
    *
-   * @pre The mutex must be locked when the function is called!
+   * \pre The mutex must be locked when the function is called!
    *
-   * @note This function is implemented by looping with a delay of 1 ms on some
+   * \note This function is implemented by looping with a delay of 1 ms on some
    * platforms, and should be avoided if possible.
    *
-   * @param mutex the mutex used to coordinate thread access.
-   * @param ms the maximum amount of time to wait.
+   * \param mutex the mutex used to coordinate thread access.
+   * \param ms the maximum amount of time to wait.
    *
-   * @return `true` if everything went OK; `false` on failure.
+   * \return `true` if everything went OK; `false` on failure.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_QUERY
   auto wait(mutex& mutex, milliseconds<u32> ms) noexcept -> lock_status;
@@ -137,7 +137,7 @@ class condition final
   std::unique_ptr<SDL_cond, deleter> m_cond{};
 };
 
-/// @}
+/// \}
 
 }  // namespace cen
 

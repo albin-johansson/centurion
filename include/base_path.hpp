@@ -23,15 +23,15 @@
  */
 
 /**
- * @file base_path.hpp
+ * \file base_path.hpp
  *
- * @brief Provides the `base_path` class.
+ * \brief Provides the `base_path` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_BASE_PATH_HEADER
@@ -47,42 +47,42 @@
 namespace cen {
 
 /**
- * @class base_path
+ * \class base_path
  *
- * @ingroup system
+ * \ingroup system
  *
- * @brief A wrapper for the application path obtained through `SDL_GetBasePath`.
+ * \brief A wrapper for the application path obtained through `SDL_GetBasePath`.
  *
- * @details There is no guarantee that the application path is obtainable, so
+ * \details There is no guarantee that the application path is obtainable, so
  * you should always check for null when dealing with a base path instance.
  *
- * @see `SDL_GetBasePath`
+ * \see `SDL_GetBasePath`
  *
- * @since 3.0.0
+ * \since 3.0.0
  *
- * @headerfile base_path.hpp
+ * \headerfile base_path.hpp
  */
 class base_path final
 {
  public:
   /**
-   * @brief Obtains the path of the application executable.
+   * \brief Obtains the path of the application executable.
    *
-   * @note This might be an expensive operation, so it's recommended to create
+   * \note This might be an expensive operation, so it's recommended to create
    * only one instance of this class and cache it.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   CENTURION_API
   base_path();
 
   /**
-   * @brief Indicates whether or not there is a non-null string in the base path
+   * \brief Indicates whether or not there is a non-null string in the base path
    * instance.
    *
-   * @return `true` if the internal string is non-null; `false` otherwise.
+   * \return `true` if the internal string is non-null; `false` otherwise.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] explicit operator bool() const noexcept
   {
@@ -90,14 +90,14 @@ class base_path final
   }
 
   /**
-   * @brief Returns the path of the application executable.
+   * \brief Returns the path of the application executable.
    *
-   * @note The returned pointer might be null! You should always check the
+   * \note The returned pointer might be null! You should always check the
    * returned pointer.
    *
-   * @return the path of the application executable, might be `nullptr`.
+   * \return the path of the application executable, might be `nullptr`.
    *
-   * @since 3.0.0
+   * \since 3.0.0
    */
   [[nodiscard]] auto get() const noexcept -> czstring
   {
@@ -109,30 +109,30 @@ class base_path final
 };
 
 /**
- * @brief Returns a textual representation of a base path.
+ * \brief Returns a textual representation of a base path.
  *
- * @ingroup system
+ * \ingroup system
  *
- * @param path the base path that will be converted.
+ * \param path the base path that will be converted.
  *
- * @return a string that represents a base path.
+ * \return a string that represents a base path.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_QUERY
 auto to_string(const base_path& path) -> std::string;
 
 /**
- * @brief Prints a textual representation of a base path.
+ * \brief Prints a textual representation of a base path.
  *
- * @ingroup system
+ * \ingroup system
  *
- * @param stream the stream that will be used.
- * @param path the base path that will be printed.
+ * \param stream the stream that will be used.
+ * \param path the base path that will be printed.
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 CENTURION_API
 auto operator<<(std::ostream& stream, const base_path& path) -> std::ostream&;

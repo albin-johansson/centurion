@@ -23,17 +23,17 @@
  */
 
 /**
- * @file mutex.hpp
+ * \file mutex.hpp
  *
- * @ingroup thread
+ * \ingroup thread
  *
- * @brief Provides the `mutex` class.
+ * \brief Provides the `mutex` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_MUTEX_HEADER
@@ -51,8 +51,8 @@
 
 namespace cen {
 
-/// @addtogroup thread
-/// @{
+/// \addtogroup thread
+/// \{
 
 enum class lock_status
 {
@@ -62,69 +62,69 @@ enum class lock_status
 };
 
 /**
- * @class mutex
+ * \class mutex
  *
- * @brief Represents a recursive mutex.
+ * \brief Represents a recursive mutex.
  *
- * @details The fact that the mutex is recursive mutex means that it's possible
+ * \details The fact that the mutex is recursive mutex means that it's possible
  * to nest lock and unlock calls with the same mutex.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @see `scoped_lock`
- * @see `try_lock`
+ * \see `scoped_lock`
+ * \see `try_lock`
  *
- * @headerfile mutex.hpp
+ * \headerfile mutex.hpp
  */
 class mutex final
 {
  public:
   /**
-   * @brief Creates an unlocked mutex.
+   * \brief Creates an unlocked mutex.
    *
-   * @throws sdl_error if the mutex cannot be created.
+   * \throws sdl_error if the mutex cannot be created.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   mutex();
 
   /**
-   * @brief Attempts to lock the mutex, blocks if the mutex isn't available.
+   * \brief Attempts to lock the mutex, blocks if the mutex isn't available.
    *
-   * @return `true` if the mutex was successfully locked; `false` on failure.
+   * \return `true` if the mutex was successfully locked; `false` on failure.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   auto lock() noexcept -> bool;
 
   /**
-   * @brief Attempts to lock the mutex, returns if the mutex isn't available.
+   * \brief Attempts to lock the mutex, returns if the mutex isn't available.
    *
-   * @return the result of the operation.
+   * \return the result of the operation.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   auto try_lock() noexcept -> lock_status;
 
   /**
-   * @brief Attempts to unlock the mutex.
+   * \brief Attempts to unlock the mutex.
    *
-   * @return `true` if the mutex was successfully unlocked; `false` otherwise.
+   * \return `true` if the mutex was successfully unlocked; `false` otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   auto unlock() noexcept -> bool;
 
   /**
-   * @brief Returns a pointer to the associated SDL mutex.
+   * \brief Returns a pointer to the associated SDL mutex.
    *
-   * @return a pointer to the internal mutex.
+   * \return a pointer to the internal mutex.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_QUERY
   auto get() noexcept -> SDL_mutex*;
@@ -140,7 +140,7 @@ class mutex final
   std::unique_ptr<SDL_mutex, deleter> m_mutex;
 };
 
-/// @}
+/// \}
 
 }  // namespace cen
 

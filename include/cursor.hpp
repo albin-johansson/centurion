@@ -23,15 +23,15 @@
  */
 
 /**
- * @file cursor.hpp
+ * \file cursor.hpp
  *
- * @brief Provides the cursor API.
+ * \brief Provides the cursor API.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_CURSOR_HEADER
@@ -54,19 +54,19 @@
 namespace cen {
 
 /**
- * @enum system_cursor
+ * \enum system_cursor
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @brief Represents the various available system cursors.
+ * \brief Represents the various available system cursors.
  *
- * @details Mirrors the values of the `SDL_SystemCursor` enum.
+ * \details Mirrors the values of the `SDL_SystemCursor` enum.
  *
- * @since 4.0.0
+ * \since 4.0.0
  *
- * @see `SDL_SystemCursor`
+ * \see `SDL_SystemCursor`
  *
- * @headerfile cursor.hpp
+ * \headerfile cursor.hpp
  */
 enum class system_cursor
 {
@@ -85,16 +85,16 @@ enum class system_cursor
 };
 
 /**
- * @brief Indicates whether or not two system cursor values are the same.
+ * \brief Indicates whether or not two system cursor values are the same.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param lhs the left-hand side system cursor value.
- * @param rhs the right-hand side system cursor value.
+ * \param lhs the left-hand side system cursor value.
+ * \param rhs the right-hand side system cursor value.
  *
- * @return `true` if the system cursor values are the same; `false` otherwise.
+ * \return `true` if the system cursor values are the same; `false` otherwise.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(system_cursor lhs,
                                                SDL_SystemCursor rhs) noexcept
@@ -104,9 +104,9 @@ enum class system_cursor
 }
 
 /**
- * @copydoc operator==(system_cursor, SDL_SystemCursor)
+ * \copydoc operator==(system_cursor, SDL_SystemCursor)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_SystemCursor lhs,
                                                system_cursor rhs) noexcept
@@ -116,17 +116,17 @@ enum class system_cursor
 }
 
 /**
- * @brief Indicates whether or not two system cursor values aren't the same.
+ * \brief Indicates whether or not two system cursor values aren't the same.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param lhs the left-hand side system cursor value.
- * @param rhs the right-hand side system cursor value.
+ * \param lhs the left-hand side system cursor value.
+ * \param rhs the right-hand side system cursor value.
  *
- * @return `true` if the system cursor values aren't the same; `false`
+ * \return `true` if the system cursor values aren't the same; `false`
  * otherwise.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(system_cursor lhs,
                                                SDL_SystemCursor rhs) noexcept
@@ -136,9 +136,9 @@ enum class system_cursor
 }
 
 /**
- * @copydoc operator!=(system_cursor, SDL_SystemCursor)
+ * \copydoc operator!=(system_cursor, SDL_SystemCursor)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_SystemCursor lhs,
                                                system_cursor rhs) noexcept
@@ -156,37 +156,37 @@ using is_cursor_handle =
     std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
- * @class basic_cursor
+ * \class basic_cursor
  *
- * @brief Represents a mouse cursor.
+ * \brief Represents a mouse cursor.
  *
- * @details Depending on the template type parameter, this class can
+ * \details Depending on the template type parameter, this class can
  * represent either an owning or non-owning cursor.
  *
- * @tparam T `std::true_type` for owning cursors, `std::false_type` for
+ * \tparam T `std::true_type` for owning cursors, `std::false_type` for
  * non-owning cursors.
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @see cursor
- * @see cursor_handle
+ * \see cursor
+ * \see cursor_handle
  *
- * @headerfile cursor.hpp
+ * \headerfile cursor.hpp
  */
 template <typename T>
 class basic_cursor final
 {
  public:
   /**
-   * @brief Creates a cursor based on a cursor type.
+   * \brief Creates a cursor based on a cursor type.
    *
-   * @tparam U dummy template parameter used for SFINAE.
+   * \tparam U dummy template parameter used for SFINAE.
    *
-   * @param cursor the type of the cursor that will be created.
+   * \param cursor the type of the cursor that will be created.
    *
-   * @throws sdl_error if the cursor cannot be created.
+   * \throws sdl_error if the cursor cannot be created.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U = T, is_cursor_owning<U> = true>
   explicit basic_cursor(system_cursor cursor)
@@ -198,17 +198,17 @@ class basic_cursor final
   }
 
   /**
-   * @brief Creates a cursor based on a surface and an associated hotspot.
+   * \brief Creates a cursor based on a surface and an associated hotspot.
    *
-   * @tparam U dummy template parameter used for SFINAE.
+   * \tparam U dummy template parameter used for SFINAE.
    *
-   * @param surface the icon associated with the cursor.
-   * @param hotspot the hotspot that will be used to determine the location
+   * \param surface the icon associated with the cursor.
+   * \param hotspot the hotspot that will be used to determine the location
    * of mouse clicks.
    *
-   * @throws sdl_error if the cursor cannot be created.
+   * \throws sdl_error if the cursor cannot be created.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename U = T, is_cursor_owning<U> = true>
   basic_cursor(const surface& surface, const ipoint& hotspot)
@@ -220,30 +220,30 @@ class basic_cursor final
   }
 
   /**
-   * @brief Creates a handle to a cursor based on a raw pointer.
+   * \brief Creates a handle to a cursor based on a raw pointer.
    *
-   * @note This constructor is only available for handles since it would be
+   * \note This constructor is only available for handles since it would be
    * very easy to introduce subtle bugs by creating owning cursors from
    * `SDL_GetCursor` or `SDL_GetDefaultCursor`, which should not be freed.
    *
-   * @tparam U dummy template parameter used for SFINAE.
+   * \tparam U dummy template parameter used for SFINAE.
    *
-   * @param cursor a pointer to the associated cursor.
+   * \param cursor a pointer to the associated cursor.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename U = T, is_cursor_handle<U> = true>
   explicit basic_cursor(SDL_Cursor* cursor) noexcept : m_cursor{cursor}
   {}
 
   /**
-   * @brief Creates a handle to an owning cursor.
+   * \brief Creates a handle to an owning cursor.
    *
-   * @tparam U dummy template parameter used for SFINAE.
+   * \tparam U dummy template parameter used for SFINAE.
    *
-   * @param cursor the associated owning cursor.
+   * \param cursor the associated owning cursor.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename U = T, is_cursor_handle<U> = true>
   explicit basic_cursor(const basic_cursor<std::true_type>& cursor) noexcept
@@ -251,12 +251,12 @@ class basic_cursor final
   {}
 
   /**
-   * @brief Returns a handle to the default cursor for the system.
+   * \brief Returns a handle to the default cursor for the system.
    *
-   * @return a handle to the default cursor for the system; might not be
+   * \return a handle to the default cursor for the system; might not be
    * present.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] static auto get_default() noexcept
   {
@@ -264,11 +264,11 @@ class basic_cursor final
   }
 
   /**
-   * @brief Returns a handle to the currently active cursor.
+   * \brief Returns a handle to the currently active cursor.
    *
-   * @return a handle to the currently active cursor; might not be present.
+   * \return a handle to the currently active cursor; might not be present.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] static auto get_current() noexcept
   {
@@ -276,9 +276,9 @@ class basic_cursor final
   }
 
   /**
-   * @brief Enables the cursor by making it the currently active cursor.
+   * \brief Enables the cursor by making it the currently active cursor.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void enable() noexcept
   {
@@ -286,15 +286,15 @@ class basic_cursor final
   }
 
   /**
-   * @brief Indicates whether or not this cursor is currently active.
+   * \brief Indicates whether or not this cursor is currently active.
    *
-   * @note This function checks whether or not the associated cursor is
+   * \note This function checks whether or not the associated cursor is
    * active by comparing the pointer obtained from `SDL_GetCursor` with the
    * internal pointer.
    *
-   * @return `true` if the cursor is currently enabled; `false` otherwise.
+   * \return `true` if the cursor is currently enabled; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto is_enabled() const noexcept -> bool
   {
@@ -302,9 +302,9 @@ class basic_cursor final
   }
 
   /**
-   * @brief Resets the active cursor to the system default.
+   * \brief Resets the active cursor to the system default.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   static void reset() noexcept
   {
@@ -312,9 +312,9 @@ class basic_cursor final
   }
 
   /**
-   * @brief Forces a cursor redraw.
+   * \brief Forces a cursor redraw.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   static void force_redraw() noexcept
   {
@@ -322,11 +322,11 @@ class basic_cursor final
   }
 
   /**
-   * @brief Sets whether or not any mouse cursor is visible.
+   * \brief Sets whether or not any mouse cursor is visible.
    *
-   * @param visible `true` if cursors should be visible; `false` otherwise.
+   * \param visible `true` if cursors should be visible; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   static void set_visible(bool visible) noexcept
   {
@@ -334,11 +334,11 @@ class basic_cursor final
   }
 
   /**
-   * @brief Indicates whether or not cursors are visible.
+   * \brief Indicates whether or not cursors are visible.
    *
-   * @return `true` if cursors are visible; `false` otherwise.
+   * \return `true` if cursors are visible; `false` otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] static auto visible() noexcept -> bool
   {
@@ -346,11 +346,11 @@ class basic_cursor final
   }
 
   /**
-   * @brief Returns the number of system cursors.
+   * \brief Returns the number of system cursors.
    *
-   * @return the amount of system cursors.
+   * \return the amount of system cursors.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   [[nodiscard]] constexpr static auto num_system_cursors() noexcept -> int
   {
@@ -358,13 +358,13 @@ class basic_cursor final
   }
 
   /**
-   * @brief Indicates whether or not the cursor handle holds a non-null pointer.
+   * \brief Indicates whether or not the cursor handle holds a non-null pointer.
    *
-   * @tparam U dummy template parameter used for SFINAE.
+   * \tparam U dummy template parameter used for SFINAE.
    *
-   * @return `true` if the internal pointer is not null; `false` otherwise.
+   * \return `true` if the internal pointer is not null; `false` otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename U = T, is_cursor_handle<U> = true>
   explicit operator bool() const noexcept
@@ -373,14 +373,14 @@ class basic_cursor final
   }
 
   /**
-   * @brief Returns a pointer to the associated cursor.
+   * \brief Returns a pointer to the associated cursor.
    *
-   * @warning Don't claim ownership of the returned pointer unless you enjoy
+   * \warning Don't claim ownership of the returned pointer unless you enjoy
    * playing with fire...
    *
-   * @return a pointer to the associated cursor.
+   * \return a pointer to the associated cursor.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Cursor*
   {
@@ -415,20 +415,20 @@ class basic_cursor final
 };
 
 /**
- * @typedef cursor
+ * \typedef cursor
  *
- * @brief Represents an owning cursor.
+ * \brief Represents an owning cursor.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using cursor = basic_cursor<std::true_type>;
 
 /**
- * @typedef cursor_handle
+ * \typedef cursor_handle
  *
- * @brief Represents a non-owning cursor.
+ * \brief Represents a non-owning cursor.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using cursor_handle = basic_cursor<std::false_type>;
 

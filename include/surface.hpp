@@ -23,15 +23,15 @@
  */
 
 /**
- * @file surface.hpp
+ * \file surface.hpp
  *
- * @brief Provides the `surface` class.
+ * \brief Provides the `surface` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_SURFACE_HEADER
@@ -69,18 +69,18 @@ using is_surface_handle =
     std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
 
 /**
- * @class basic_surface
+ * \class basic_surface
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @brief Represents a non-accelerated image.
+ * \brief Represents a non-accelerated image.
  *
- * @tparam T `std::true_type` for owning surfaces; `std::false_type` for
+ * \tparam T `std::true_type` for owning surfaces; `std::false_type` for
  * non-owning surfaces.
  *
- * @since 4.0.0
+ * \since 4.0.0
  *
- * @headerfile surface.hpp
+ * \headerfile surface.hpp
  */
 template <typename T>
 class basic_surface final
@@ -92,14 +92,14 @@ class basic_surface final
 
  public:
   /**
-   * @brief Creates a surface from a pointer to an SDL surface.
+   * \brief Creates a surface from a pointer to an SDL surface.
    *
-   * @note Depending on the type of the surface, ownership of the supplied SDL
+   * \note Depending on the type of the surface, ownership of the supplied SDL
    * surface might be claimed.
    *
-   * @param surface a pointer to the associated surface.
+   * \param surface a pointer to the associated surface.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   explicit basic_surface(SDL_Surface* surface) noexcept(!is_owning())
       : m_surface{surface}
@@ -112,14 +112,14 @@ class basic_surface final
   }
 
   /**
-   * @brief Creates a surface based on the image at the specified path.
+   * \brief Creates a surface based on the image at the specified path.
    *
-   * @param file the file path of the image file that will be loaded, can't
+   * \param file the file path of the image file that will be loaded, can't
    * be null.
    *
-   * @throws img_error if the surface cannot be created.
+   * \throws img_error if the surface cannot be created.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   template <typename T_ = T, is_surface_owning<T_> = true>
   explicit basic_surface(nn_czstring file) : m_surface{IMG_Load(file)}
@@ -130,11 +130,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Creates a copy of the supplied surface.
+   * \brief Creates a copy of the supplied surface.
    *
-   * @param other the surface that will be copied.
+   * \param other the surface that will be copied.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   basic_surface(const basic_surface& other) noexcept(!is_owning())
   {
@@ -146,22 +146,22 @@ class basic_surface final
   }
 
   /**
-   * @brief Creates a surface by moving the supplied surface.
+   * \brief Creates a surface by moving the supplied surface.
    *
-   * @param other the surface that will be moved.
+   * \param other the surface that will be moved.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   basic_surface(basic_surface&& other) noexcept = default;
 
   /**
-   * @brief Copies the supplied surface.
+   * \brief Copies the supplied surface.
    *
-   * @param other the surface that will be copied.
+   * \param other the surface that will be copied.
    *
-   * @throws sdl_error if the supplied surface couldn't be copied.
+   * \throws sdl_error if the supplied surface couldn't be copied.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   auto operator=(const basic_surface& other) noexcept(!is_owning())
       -> basic_surface&
@@ -177,26 +177,26 @@ class basic_surface final
   }
 
   /**
-   * @brief Moves the supplied surface into this surface.
+   * \brief Moves the supplied surface into this surface.
    *
-   * @param other the surface that will be moved.
+   * \param other the surface that will be moved.
    *
-   * @return the surface that claimed the supplied surface.
+   * \return the surface that claimed the supplied surface.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   auto operator=(basic_surface&& other) noexcept -> basic_surface& = default;
 
   /**
-   * @brief Sets the color of the pixel at the specified coordinate.
+   * \brief Sets the color of the pixel at the specified coordinate.
    *
-   * @details This method has no effect if the coordinate is out-of-bounds or if
+   * \details This method has no effect if the coordinate is out-of-bounds or if
    * something goes wrong when attempting to modify the pixel data.
    *
-   * @param pixel the pixel that will be changed.
-   * @param color the new color of the pixel.
+   * \param pixel the pixel that will be changed.
+   * \param color the new color of the pixel.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void set_pixel(const ipoint& pixel, const color& color) noexcept
   {
@@ -226,11 +226,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Sets the alpha component modulation value.
+   * \brief Sets the alpha component modulation value.
    *
-   * @param alpha the new alpha component value, in the range [0, 255].
+   * \param alpha the new alpha component value, in the range [0, 255].
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void set_alpha(u8 alpha) noexcept
   {
@@ -238,12 +238,12 @@ class basic_surface final
   }
 
   /**
-   * @brief Sets the color modulation that will be used by the surface.
+   * \brief Sets the color modulation that will be used by the surface.
    *
-   * @param color the color that represents the color modulation that will be
+   * \param color the color that represents the color modulation that will be
    * used.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void set_color_mod(const color& color) noexcept
   {
@@ -251,11 +251,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Sets the blend mode that will be used by the surface.
+   * \brief Sets the blend mode that will be used by the surface.
    *
-   * @param mode the blend mode that will be used.
+   * \param mode the blend mode that will be used.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void set_blend_mode(blend_mode mode) noexcept
   {
@@ -263,11 +263,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Returns the alpha component modulation of the surface.
+   * \brief Returns the alpha component modulation of the surface.
    *
-   * @return the alpha modulation value, in the range [0, 255].
+   * \return the alpha modulation value, in the range [0, 255].
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto alpha() const noexcept -> u8
   {
@@ -277,11 +277,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Returns the color modulation of the surface.
+   * \brief Returns the color modulation of the surface.
    *
-   * @return a color that represents the color modulation of the surface.
+   * \return a color that represents the color modulation of the surface.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto color_mod() const noexcept -> color
   {
@@ -293,11 +293,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Returns the blend mode that is being used by the surface.
+   * \brief Returns the blend mode that is being used by the surface.
    *
-   * @return the blend mode that the surface uses.
+   * \return the blend mode that the surface uses.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto get_blend_mode() const noexcept -> blend_mode
   {
@@ -307,17 +307,17 @@ class basic_surface final
   }
 
   /**
-   * @brief Creates and returns a surface based on this surface with the
+   * \brief Creates and returns a surface based on this surface with the
    * specified pixel format.
    *
-   * @param format the pixel format that will be used by the new surface.
+   * \param format the pixel format that will be used by the new surface.
    *
-   * @return a surface based on this surface with the specified
+   * \return a surface based on this surface with the specified
    * pixel format.
    *
-   * @throws sdl_error if the surface cannot be created.
+   * \throws sdl_error if the surface cannot be created.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto convert(pixel_format format) const -> basic_surface
   {
@@ -332,11 +332,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Returns the width of the surface.
+   * \brief Returns the width of the surface.
    *
-   * @return the width of the surface.
+   * \return the width of the surface.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto width() const noexcept -> int
   {
@@ -344,11 +344,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Returns the height of the surface.
+   * \brief Returns the height of the surface.
    *
-   * @return the height of the surface.
+   * \return the height of the surface.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto height() const noexcept -> int
   {
@@ -356,12 +356,12 @@ class basic_surface final
   }
 
   /**
-   * @brief Returns the pitch (the length of a row of pixels in bytes) of the
+   * \brief Returns the pitch (the length of a row of pixels in bytes) of the
    * surface.
    *
-   * @return the pitch of the surface.
+   * \return the pitch of the surface.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto pitch() const noexcept -> int
   {
@@ -369,13 +369,13 @@ class basic_surface final
   }
 
   /**
-   * @brief Returns a pointer to the pixel data of the surface.
+   * \brief Returns a pointer to the pixel data of the surface.
    *
-   * @details It's possible to modify the surface through the returned pointer.
+   * \details It's possible to modify the surface through the returned pointer.
    *
-   * @return a pointer to the pixel data of the surface.
+   * \return a pointer to the pixel data of the surface.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto pixels() noexcept -> void*
   {
@@ -383,11 +383,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Returns a const pointer to the pixel data of the surface.
+   * \brief Returns a const pointer to the pixel data of the surface.
    *
-   * @return a const pointer to the pixel data of the surface.
+   * \return a const pointer to the pixel data of the surface.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto pixels() const noexcept -> const void*
   {
@@ -395,11 +395,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Returns the clipping information associated with the surface.
+   * \brief Returns the clipping information associated with the surface.
    *
-   * @return the clipping information associated with the surface.
+   * \return the clipping information associated with the surface.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto clip() const noexcept -> irect
   {
@@ -408,16 +408,16 @@ class basic_surface final
   }
 
   /**
-   * @brief Returns a pointer to the associated `SDL_Surface`.
+   * \brief Returns a pointer to the associated `SDL_Surface`.
    *
-   * @warning Use of this method is not recommended, since it purposefully
+   * \warning Use of this method is not recommended, since it purposefully
    * breaks const-correctness. However it is useful since many SDL calls use
    * non-const pointers even when no change will be applied. Don't take
    * ownership of the returned pointer, or bad things will happen.
    *
-   * @return a pointer to the associated `SDL_Surface`.
+   * \return a pointer to the associated `SDL_Surface`.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto get() const noexcept -> SDL_Surface*
   {
@@ -429,14 +429,14 @@ class basic_surface final
   }
 
   /**
-   * @brief Indicates whether or not a surface handle holds a non-null pointer.
+   * \brief Indicates whether or not a surface handle holds a non-null pointer.
    *
-   * @tparam T_ dummy parameter for SFINAE.
+   * \tparam T_ dummy parameter for SFINAE.
    *
-   * @return `true` if the surface handle holds a non-null pointer; `false`
+   * \return `true` if the surface handle holds a non-null pointer; `false`
    * otherwise.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   template <typename T_ = T, is_surface_handle<T_> = true>
   explicit operator bool() const noexcept
@@ -445,11 +445,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Converts to `SDL_Surface*`.
+   * \brief Converts to `SDL_Surface*`.
    *
-   * @return a pointer to the associated `SDL_Surface`.
+   * \return a pointer to the associated `SDL_Surface`.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] explicit operator SDL_Surface*() noexcept
   {
@@ -457,11 +457,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Converts to `const SDL_Surface*`.
+   * \brief Converts to `const SDL_Surface*`.
    *
-   * @return a pointer to the associated `SDL_Surface`.
+   * \return a pointer to the associated `SDL_Surface`.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] explicit operator const SDL_Surface*() const noexcept
   {
@@ -483,14 +483,14 @@ class basic_surface final
   rep_t m_surface;
 
   /**
-   * @brief Copies the contents of the supplied surface instance into this
+   * \brief Copies the contents of the supplied surface instance into this
    * instance.
    *
-   * @param other the instance that will be copied.
+   * \param other the instance that will be copied.
    *
-   * @throws sdl_error if the surface cannot be copied.
+   * \throws sdl_error if the surface cannot be copied.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void copy(const basic_surface& other)
   {
@@ -498,15 +498,15 @@ class basic_surface final
   }
 
   /**
-   * @brief Indicates whether or not the supplied point is within the bounds of
+   * \brief Indicates whether or not the supplied point is within the bounds of
    * the surface.
    *
-   * @param point the point that will be checked.
+   * \param point the point that will be checked.
    *
-   * @return `true` if the point is within the bounds of the surface; `false`
+   * \return `true` if the point is within the bounds of the surface; `false`
    * otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto in_bounds(const ipoint& point) const noexcept -> bool
   {
@@ -515,13 +515,13 @@ class basic_surface final
   }
 
   /**
-   * @brief Indicates whether or not the surface must be locked before modifying
+   * \brief Indicates whether or not the surface must be locked before modifying
    * the pixel data associated with the surface.
    *
-   * @return `true` if the surface must be locked before modification; `false`
+   * \return `true` if the surface must be locked before modification; `false`
    * otherwise.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto must_lock() const noexcept -> bool
   {
@@ -529,15 +529,15 @@ class basic_surface final
   }
 
   /**
-   * @brief Attempts to lock the surface, so that the associated pixel data can
+   * \brief Attempts to lock the surface, so that the associated pixel data can
    * be modified.
    *
-   * @details This method has no effect if `must_lock()` returns `false`.
+   * \details This method has no effect if `must_lock()` returns `false`.
    *
-   * @return `true` if the locking of the surface was successful or if locking
+   * \return `true` if the locking of the surface was successful or if locking
    * isn't required for modifying the surface; `false` if something went wrong.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   auto lock() noexcept -> bool
   {
@@ -550,11 +550,11 @@ class basic_surface final
   }
 
   /**
-   * @brief Unlocks the surface.
+   * \brief Unlocks the surface.
    *
-   * @details This method has no effect if `must_lock()` returns `false`.
+   * \details This method has no effect if `must_lock()` returns `false`.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   void unlock() noexcept
   {
@@ -564,14 +564,14 @@ class basic_surface final
   }
 
   /**
-   * @brief Creates and returns copy of the associated `SDL_Surface`.
+   * \brief Creates and returns copy of the associated `SDL_Surface`.
    *
-   * @return a copy of the associated `SDL_Surface`, the returned pointer won't
+   * \return a copy of the associated `SDL_Surface`, the returned pointer won't
    * be null.
    *
-   * @throws sdl_error if the copy couldn't be created.
+   * \throws sdl_error if the copy couldn't be created.
    *
-   * @since 4.0.0
+   * \since 4.0.0
    */
   [[nodiscard]] auto copy_surface() const -> owner<SDL_Surface*>
   {
@@ -584,33 +584,33 @@ class basic_surface final
 };
 
 /**
- * @typedef surface
+ * \typedef surface
  *
- * @brief Represents an owning surface.
+ * \brief Represents an owning surface.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using surface = basic_surface<std::true_type>;
 
 /**
- * @typedef surface_handle
+ * \typedef surface_handle
  *
- * @brief Represents a non-owning surface.
+ * \brief Represents a non-owning surface.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using surface_handle = basic_surface<std::false_type>;
 
 /**
- * @brief Returns a textual representation of a surface.
+ * \brief Returns a textual representation of a surface.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param surface the surface that will be converted.
+ * \param surface the surface that will be converted.
  *
- * @return a textual representation of the surface.
+ * \return a textual representation of the surface.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 [[nodiscard]] auto to_string(const basic_surface<T>& surface) -> std::string
@@ -623,16 +623,16 @@ template <typename T>
 }
 
 /**
- * @brief Prints a textual representation of a surface.
+ * \brief Prints a textual representation of a surface.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param stream the stream that will be used.
- * @param surface the surface that will be printed.
+ * \param stream the stream that will be used.
+ * \param surface the surface that will be printed.
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_surface<T>& surface)

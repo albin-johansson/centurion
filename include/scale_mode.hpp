@@ -23,15 +23,15 @@
  */
 
 /**
- * @file scale_mode.hpp
+ * \file scale_mode.hpp
  *
- * @brief Provides the `scale_mode` enum.
+ * \brief Provides the `scale_mode` enum.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_SCALE_MODE_HEADER
@@ -48,15 +48,15 @@
 namespace cen {
 
 /**
- * @enum scale_mode
+ * \enum scale_mode
  *
- * @brief Mirrors the `SDL_ScaleMode` enum.
+ * \brief Mirrors the `SDL_ScaleMode` enum.
  *
- * @since 4.0.0
+ * \since 4.0.0
  *
- * @see `SDL_ScaleMode`
+ * \see `SDL_ScaleMode`
  *
- * @headerfile scale_mode.hpp
+ * \headerfile scale_mode.hpp
  */
 enum class scale_mode
 {
@@ -66,16 +66,16 @@ enum class scale_mode
 };
 
 /**
- * @brief Indicates whether or not the two scale mode values are the same.
+ * \brief Indicates whether or not the two scale mode values are the same.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param lhs the lhs scale mode value.
- * @param rhs the rhs scale mode value.
+ * \param lhs the lhs scale mode value.
+ * \param rhs the rhs scale mode value.
  *
- * @return `true` if the scale mode values are the same; `false` otherwise.
+ * \return `true` if the scale mode values are the same; `false` otherwise.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 [[nodiscard]] inline constexpr auto operator==(scale_mode lhs,
                                                SDL_ScaleMode rhs) noexcept
@@ -85,9 +85,9 @@ enum class scale_mode
 }
 
 /**
- * @copydoc operator==(scale_mode, SDL_ScaleMode)
+ * \copydoc operator==(scale_mode, SDL_ScaleMode)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator==(SDL_ScaleMode lhs,
                                                scale_mode rhs) noexcept -> bool
@@ -96,16 +96,16 @@ enum class scale_mode
 }
 
 /**
- * @brief Indicates whether or not the two scale mode values aren't the same.
+ * \brief Indicates whether or not the two scale mode values aren't the same.
  *
- * @ingroup graphics
+ * \ingroup graphics
  *
- * @param lhs the lhs scale mode value.
- * @param rhs the rhs scale mode value.
+ * \param lhs the lhs scale mode value.
+ * \param rhs the rhs scale mode value.
  *
- * @return `true` if the scale mode values aren't the same; `false` otherwise.
+ * \return `true` if the scale mode values aren't the same; `false` otherwise.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 [[nodiscard]] inline constexpr auto operator!=(scale_mode lhs,
                                                SDL_ScaleMode rhs) noexcept
@@ -115,9 +115,9 @@ enum class scale_mode
 }
 
 /**
- * @copydoc operator!=(scale_mode, SDL_ScaleMode)
+ * \copydoc operator!=(scale_mode, SDL_ScaleMode)
  *
- * @ingroup graphics
+ * \ingroup graphics
  */
 [[nodiscard]] inline constexpr auto operator!=(SDL_ScaleMode lhs,
                                                scale_mode rhs) noexcept -> bool

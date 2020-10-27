@@ -23,17 +23,17 @@
  */
 
 /**
- * @file semaphore.hpp
+ * \file semaphore.hpp
  *
- * @ingroup thread
+ * \ingroup thread
  *
- * @brief Provides the `semaphore` class.
+ * \brief Provides the `semaphore` class.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_SEMAPHORE_HEADER
@@ -53,85 +53,85 @@
 
 namespace cen {
 
-/// @addtogroup thread
-/// @{
+/// \addtogroup thread
+/// \{
 
 /**
- * @class semaphore
+ * \class semaphore
  *
- * @brief Represents a semaphore with a set of "tokens" (or permits).
+ * \brief Represents a semaphore with a set of "tokens" (or permits).
  *
- * @since 5.0.0
+ * \since 5.0.0
  *
- * @headerfile semaphore.hpp
+ * \headerfile semaphore.hpp
  */
 class semaphore final
 {
  public:
   /**
-   * @brief Creates a semaphore with the specified amount of tokens.
+   * \brief Creates a semaphore with the specified amount of tokens.
    *
-   * @param tokens the initial amount of tokens.
+   * \param tokens the initial amount of tokens.
    *
-   * @throws sdl_error if the semaphore cannot be created.
+   * \throws sdl_error if the semaphore cannot be created.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   explicit semaphore(u32 tokens);
 
   /**
-   * @brief Acquires a token from the semaphore.
+   * \brief Acquires a token from the semaphore.
    *
-   * @note This function blocks the calling thread until a token is available.
+   * \note This function blocks the calling thread until a token is available.
    *
-   * @return `true` if a token was acquired; `false` on failure.
+   * \return `true` if a token was acquired; `false` on failure.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   auto acquire() noexcept -> bool;
 
   /**
-   * @brief Attempts to acquire a token from the semaphore.
+   * \brief Attempts to acquire a token from the semaphore.
    *
-   * @param ms the maximum amount of time to wait.
+   * \param ms the maximum amount of time to wait.
    *
-   * @return `success` if a token was acquired; `timed_out` if no token was
+   * \return `success` if a token was acquired; `timed_out` if no token was
    * acquired in the specified duration; `error` if something goes wrong.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   auto acquire(milliseconds<u32> ms) noexcept -> lock_status;
 
   /**
-   * @brief Attempts to acquire a token from the semaphore.
+   * \brief Attempts to acquire a token from the semaphore.
    *
-   * @return `success` if a token was acquired; `timed_out` if the thread
+   * \return `success` if a token was acquired; `timed_out` if the thread
    * would've been blocked; `error` if something goes wrong.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   auto try_acquire() noexcept -> lock_status;
 
   /**
-   * @brief Returns a token to the semaphore and notifies waiting threads.
+   * \brief Returns a token to the semaphore and notifies waiting threads.
    *
-   * @return `true` on success; `false` on failure.
+   * \return `true` on success; `false` on failure.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_API
   auto release() noexcept -> bool;
 
   /**
-   * @brief Returns the amount of available tokens.
+   * \brief Returns the amount of available tokens.
    *
-   * @return the current amount of available tokens.
+   * \return the current amount of available tokens.
    *
-   * @since 5.0.0
+   * \since 5.0.0
    */
   CENTURION_QUERY
   auto tokens() const noexcept -> u32;
@@ -147,7 +147,7 @@ class semaphore final
   std::unique_ptr<SDL_sem, deleter> m_semaphore;
 };
 
-/// @}
+/// \}
 
 }  // namespace cen
 

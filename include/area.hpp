@@ -23,15 +23,15 @@
  */
 
 /**
- * @file area.hpp
+ * \file area.hpp
  *
- * @brief Provides a simple area struct.
+ * \brief Provides a simple area struct.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_AREA_HEADER
@@ -50,27 +50,27 @@
 namespace cen {
 
 /**
- * @struct basic_area
+ * \struct basic_area
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief Simply represents an area with a width and height.
+ * \brief Simply represents an area with a width and height.
  *
- * @tparam T the type of the components of the area. Must
+ * \tparam T the type of the components of the area. Must
  * be either an integral or floating-point type. Can't be `bool`.
  *
- * @since 4.0.0
+ * \since 4.0.0
  *
- * @see `iarea`
- * @see `farea`
- * @see `darea`
+ * \see `iarea`
+ * \see `farea`
+ * \see `darea`
  *
- * @var basic_area::width
+ * \var basic_area::width
  * The width of the area. Defaults to 0.
- * @var basic_area::height
+ * \var basic_area::height
  * The height of the area. Defaults to 0.
  *
- * @headerfile area.hpp
+ * \headerfile area.hpp
  */
 template <typename T>
 struct basic_area
@@ -83,49 +83,49 @@ struct basic_area
 };
 
 /**
- * @typedef iarea
+ * \typedef iarea
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief An alias for `int` areas.
+ * \brief An alias for `int` areas.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 using iarea = basic_area<int>;
 
 /**
- * @typedef farea
+ * \typedef farea
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief An alias for `float` areas.
+ * \brief An alias for `float` areas.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 using farea = basic_area<float>;
 
 /**
- * @typedef darea
+ * \typedef darea
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @brief An alias for `double` areas.
+ * \brief An alias for `double` areas.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 using darea = basic_area<double>;
 
 /**
- * @brief Indicates whether or not two areas are considered to be equal.
+ * \brief Indicates whether or not two areas are considered to be equal.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @param lhs the left-hand side area.
- * @param rhs the right-hand side area.
+ * \param lhs the left-hand side area.
+ * \param rhs the right-hand side area.
  *
- * @return `true` if the areas are equal; `false` otherwise.
+ * \return `true` if the areas are equal; `false` otherwise.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 template <typename T>
 [[nodiscard]] constexpr auto operator==(const basic_area<T>& lhs,
@@ -136,16 +136,16 @@ template <typename T>
 }
 
 /**
- * @brief Indicates whether or not two areas aren't considered to be equal.
+ * \brief Indicates whether or not two areas aren't considered to be equal.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @param lhs the left-hand side area.
- * @param rhs the right-hand side area.
+ * \param lhs the left-hand side area.
+ * \param rhs the right-hand side area.
  *
- * @return `true` if the areas aren't equal; `false` otherwise.
+ * \return `true` if the areas aren't equal; `false` otherwise.
  *
- * @since 4.1.0
+ * \since 4.1.0
  */
 template <typename T>
 [[nodiscard]] constexpr auto operator!=(const basic_area<T>& lhs,
@@ -156,17 +156,17 @@ template <typename T>
 }
 
 /**
- * @brief Returns a textual representation of an area.
+ * \brief Returns a textual representation of an area.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @tparam T the type of the area components.
+ * \tparam T the type of the area components.
  *
- * @param area the area that will be converted.
+ * \param area the area that will be converted.
  *
- * @return a string that represents the area.
+ * \return a string that represents the area.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
@@ -177,18 +177,18 @@ template <typename T>
 }
 
 /**
- * @brief Prints a textual representation of an area using a stream.
+ * \brief Prints a textual representation of an area using a stream.
  *
- * @ingroup geometry
+ * \ingroup geometry
  *
- * @tparam T the type of the area components.
+ * \tparam T the type of the area components.
  *
- * @param stream the stream that will be used.
- * @param area the are that will be printed.
+ * \param stream the stream that will be used.
+ * \param area the are that will be printed.
  *
- * @return the used stream.
+ * \return the used stream.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 auto operator<<(std::ostream& stream, const basic_area<T>& area)

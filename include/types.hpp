@@ -23,15 +23,15 @@
  */
 
 /**
- * @file types.hpp
+ * \file types.hpp
  *
- * @brief Provides various type aliases.
+ * \brief Provides various type aliases.
  *
- * @author Albin Johansson
+ * \author Albin Johansson
  *
- * @date 2019-2020
+ * \date 2019-2020
  *
- * @copyright MIT License
+ * \copyright MIT License
  */
 
 #ifndef CENTURION_TYPES_HEADER
@@ -55,33 +55,33 @@ namespace cen {
 namespace detail {
 
 /**
- * @brief Used to enable a template if a type is a floating-point type, such as
+ * \brief Used to enable a template if a type is a floating-point type, such as
  * float and double.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 template <typename T>
 using if_floating_t = std::enable_if_t<std::is_floating_point_v<T>>;
 
 /**
- * @brief Used to enable a template if two types are the same.
+ * \brief Used to enable a template if two types are the same.
  *
- * @since 4.0.0
+ * \since 4.0.0
  */
 template <typename T, typename U>
 using if_same_t = typename std::enable_if_t<std::is_same_v<T, U>>;
 
 }  // namespace detail
 
-/// @addtogroup misc
-/// @{
+/// \addtogroup misc
+/// \{
 
 /**
- * @typedef owner
+ * \typedef owner
  *
- * @brief Tag used to denote ownership of raw pointers directly in code.
+ * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * @details If a function takes an `owner<T*>` as a parameter, then the
+ * \details If a function takes an `owner<T*>` as a parameter, then the
  * function will claim ownership of that pointer. Subsequently, if a function
  * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
@@ -89,164 +89,164 @@ template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
 using owner = T;
 
 /**
- * @typedef not_null
+ * \typedef not_null
  *
- * @brief Tag used to indicate that a pointer cannot be null.
+ * \brief Tag used to indicate that a pointer cannot be null.
  *
- * @note This alias is equivalent to `T`, it is a no-op.
+ * \note This alias is equivalent to `T`, it is a no-op.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <typename T>
 using not_null = T;
 
 /**
- * @typedef czstring
+ * \typedef czstring
  *
- * @brief Alias for a const C-style null-terminated string.
+ * \brief Alias for a const C-style null-terminated string.
  */
 using czstring = const char*;
 
 /**
- * @typedef zstring
+ * \typedef zstring
  *
- * @brief Alias for a C-style null-terminated string.
+ * \brief Alias for a C-style null-terminated string.
  */
 using zstring = char*;
 
 /**
- * @typedef nn_czstring
+ * \typedef nn_czstring
  *
- * @brief Alias for a C-style null-terminated string that cannot be null.
+ * \brief Alias for a C-style null-terminated string that cannot be null.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using nn_czstring = not_null<czstring>;
 
 using font_id = std::size_t;
 
 /**
- * @typedef buffer
+ * \typedef buffer
  *
- * @brief Alias for an array of `std::byte` instances, meant to be used with
+ * \brief Alias for an array of `std::byte` instances, meant to be used with
  * `pmr` containers.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 template <std::size_t size>
 using buffer = std::array<std::byte, size>;
 
 /**
- * @typedef u64
+ * \typedef u64
  *
- * @brief Alias for a 64-bit unsigned integer.
+ * \brief Alias for a 64-bit unsigned integer.
  */
 using u64 = Uint64;
 
 /**
- * @typedef u32
+ * \typedef u32
  *
- * @brief Alias for a 32-bit unsigned integer.
+ * \brief Alias for a 32-bit unsigned integer.
  */
 using u32 = Uint32;
 
 /**
- * @typedef u16
+ * \typedef u16
  *
- * @brief Alias for a 16-bit unsigned integer.
+ * \brief Alias for a 16-bit unsigned integer.
  */
 using u16 = Uint16;
 
 /**
- * @typedef u8
+ * \typedef u8
  *
- * @brief Alias for an 8-bit unsigned integer.
+ * \brief Alias for an 8-bit unsigned integer.
  */
 using u8 = Uint8;
 
 /**
- * @typedef i64
+ * \typedef i64
  *
- * @brief Alias for a 64-bit signed integer.
+ * \brief Alias for a 64-bit signed integer.
  */
 using i64 = Sint64;
 
 /**
- * @typedef i32
+ * \typedef i32
  *
- * @brief Alias for a 32-bit signed integer.
+ * \brief Alias for a 32-bit signed integer.
  */
 using i32 = Sint32;
 
 /**
- * @typedef i16
+ * \typedef i16
  *
- * @brief Alias for a 16-bit signed integer.
+ * \brief Alias for a 16-bit signed integer.
  */
 using i16 = Sint16;
 
 /**
- * @typedef i8
+ * \typedef i8
  *
- * @brief Alias for an 8-bit signed integer.
+ * \brief Alias for an 8-bit signed integer.
  */
 using i8 = Sint8;
 
 /**
- * @typedef unicode
+ * \typedef unicode
  *
- * @brief The representation of Unicode glyphs.
+ * \brief The representation of Unicode glyphs.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 using unicode = u16;
 
 /**
- * @typedef seconds
+ * \typedef seconds
  *
- * @brief Templated alias for durations in seconds.
+ * \brief Templated alias for durations in seconds.
  */
 template <typename T>
 using seconds = std::chrono::duration<T>;
 
 /**
- * @typedef milliseconds
+ * \typedef milliseconds
  *
- * @brief Templated alias for durations in milliseconds.
+ * \brief Templated alias for durations in milliseconds.
  */
 template <typename T>
 using milliseconds = std::chrono::duration<T, std::milli>;
 
 /**
- * @typedef microseconds
+ * \typedef microseconds
  *
- * @brief Templated alias for durations in microseconds.
+ * \brief Templated alias for durations in microseconds.
  */
 template <typename T>
 using microseconds = std::chrono::duration<T, std::micro>;
 
 /**
- * @typedef nanoseconds
+ * \typedef nanoseconds
  *
- * @brief Templated alias for durations in nanoseconds.
+ * \brief Templated alias for durations in nanoseconds.
  */
 template <typename T>
 using nanoseconds = std::chrono::duration<T, std::nano>;
 
 /**
- * @typedef minutes
+ * \typedef minutes
  *
- * @brief Templated alias for durations in minutes.
+ * \brief Templated alias for durations in minutes.
  */
 template <typename T>
 using minutes = std::chrono::duration<T, std::ratio<60>>;
 
 /**
- * @namespace literals
+ * \namespace literals
  *
- * @brief Contains suffix operators.
+ * \brief Contains suffix operators.
  *
- * @since 5.0.0
+ * \since 5.0.0
  */
 namespace literals {
 
@@ -276,7 +276,7 @@ constexpr auto operator"" _s(unsigned long long int value) noexcept
 
 }  // namespace literals
 
-/// @}
+/// \}
 
 }  // namespace cen
 

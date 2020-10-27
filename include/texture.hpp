@@ -51,6 +51,7 @@
 #include "centurion_api.hpp"
 #include "centurion_fwd.hpp"
 #include "color.hpp"
+#include "detail/to_string.hpp"
 #include "exception.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
@@ -660,8 +661,14 @@ using texture_handle = basic_texture<std::false_type>;
  *
  * @since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const texture& texture) -> std::string;
+template <typename T>
+[[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
+{
+  using detail::to_string;
+  return "[texture | ptr: " + detail::address_of(texture.get()) +
+         ", width: " + to_string(texture.width()).value() +
+         ", height: " + to_string(texture.height()).value() + "]";
+}
 
 /**
  * @brief Prints a textual representation of a texture.
@@ -675,8 +682,13 @@ auto to_string(const texture& texture) -> std::string;
  *
  * @since 5.0.0
  */
-CENTURION_QUERY
-auto operator<<(std::ostream& stream, const texture& texture) -> std::ostream&;
+template <typename T>
+auto operator<<(std::ostream& stream, const basic_texture<T>& texture)
+    -> std::ostream&
+{
+  stream << to_string(texture);
+  return stream;
+}
 
 }  // namespace cen
 

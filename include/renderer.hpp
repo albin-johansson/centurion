@@ -36,7 +36,6 @@
 
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
-#include "centurion_fwd.hpp"
 #include "color.hpp"
 #include "colors.hpp"
 #include "font.hpp"

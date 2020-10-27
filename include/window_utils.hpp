@@ -44,7 +44,6 @@
 #include <SDL_video.h>
 
 #include "centurion_api.hpp"
-#include "centurion_fwd.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
 

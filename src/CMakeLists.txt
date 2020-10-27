@@ -4,7 +4,6 @@ project(CenturionSrc)
 
 set(SOURCE_FILES
         ../include/centurion_cfg.hpp
-        ../include/centurion_fwd.hpp
         ../include/types.hpp
         ../include/graphics_drivers.hpp
         ../include/window.hpp

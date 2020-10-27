@@ -49,7 +49,6 @@
 #include "area.hpp"
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
-#include "centurion_fwd.hpp"
 #include "color.hpp"
 #include "detail/to_string.hpp"
 #include "exception.hpp"

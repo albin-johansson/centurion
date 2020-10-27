@@ -45,7 +45,6 @@
 #include <utility>
 
 #include "centurion_api.hpp"
-#include "centurion_fwd.hpp"
 #include "font.hpp"
 #include "surface.hpp"
 #include "texture.hpp"

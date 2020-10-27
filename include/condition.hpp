@@ -44,7 +44,6 @@
 #include <memory>
 
 #include "centurion_api.hpp"
-#include "centurion_fwd.hpp"
 #include "scoped_lock.hpp"
 #include "types.hpp"
 

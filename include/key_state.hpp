@@ -49,9 +49,10 @@
 #include <array>
 
 #include "centurion_api.hpp"
-#include "centurion_fwd.hpp"
 #include "detail/utils.hpp"
+#include "key_code.hpp"
 #include "key_modifier.hpp"
+#include "scan_code.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

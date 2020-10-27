@@ -47,7 +47,6 @@
 #include <vector>
 
 #include "centurion_api.hpp"
-#include "centurion_fwd.hpp"
 #include "color.hpp"
 #include "detail/utils.hpp"
 #include "types.hpp"

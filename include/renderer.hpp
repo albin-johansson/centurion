@@ -1520,6 +1520,19 @@ class basic_renderer final
   }
 
   /**
+   * @brief Returns a handle to the current render target.
+   *
+   * @return a handle to the current render target; empty if using the default
+   * target.
+   *
+   * @since 5.0.0
+   */
+  [[nodiscard]] auto get_render_target() noexcept -> texture_handle
+  {
+    return texture_handle{SDL_GetRenderTarget(get())};
+  }
+
+  /**
    * @brief Returns the logical width that the renderer uses.
    *
    * @details By default, this property is set to 0.

@@ -476,6 +476,25 @@ TEST_CASE("renderer::y_scale", "[renderer]")
   });
 }
 
+TEST_CASE("renderer::get_render_target", "[renderer]")
+{
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK(!renderer.get_render_target());
+
+    cen::texture target{renderer,
+                        cen::pixel_format::rgba8888,
+                        cen::texture_access::target,
+                        {100, 100}};
+    REQUIRE(target.is_target());
+
+    renderer.set_target(&target);
+    REQUIRE(renderer.get_render_target());
+
+    renderer.set_target(nullptr);
+    CHECK(!renderer.get_render_target());
+  });
+}
+
 TEST_CASE("renderer::logical_width", "[renderer]")
 {
   test([](const cen::window& window, cen::renderer& renderer) {

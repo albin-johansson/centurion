@@ -22,20 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file condition.hpp
- *
- * \ingroup thread
- *
- * \brief Provides the `condition` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_CONDITION_HEADER
 #define CENTURION_CONDITION_HEADER
 

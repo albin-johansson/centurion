@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file music.hpp
- *
- * \brief Provides the music API.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_MUSIC_HEADER
 #define CENTURION_MUSIC_HEADER
 

@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file screen.hpp
- *
- * \brief Provides information about the system screen.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_SCREEN_HEADER
 #define CENTURION_SCREEN_HEADER
 

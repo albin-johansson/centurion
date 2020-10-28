@@ -23,18 +23,6 @@
  */
 
 /**
- * \file sound_effect.hpp
- *
- * \brief Provides the `SoundEffect` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
-/**
  * \defgroup audio Audio
  *
  * \brief Contains the audio API, for playing as sound effects and music.

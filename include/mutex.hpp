@@ -22,20 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file mutex.hpp
- *
- * \ingroup thread
- *
- * \brief Provides the `mutex` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_MUTEX_HEADER
 #define CENTURION_MUTEX_HEADER
 

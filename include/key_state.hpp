@@ -23,18 +23,6 @@
  */
 
 /**
- * \file key_state.hpp
- *
- * \brief Provides the `key_state` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
-/**
  * \defgroup input Input
  *
  * \brief Contains components related to input from mice, keyboards,

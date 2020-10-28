@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file base_path.hpp
- *
- * \brief Provides the `base_path` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_BASE_PATH_HEADER
 #define CENTURION_BASE_PATH_HEADER
 

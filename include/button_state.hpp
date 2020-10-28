@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file button_state.hpp
- *
- * \brief Provides the `button_state` enum.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_BUTTON_STATE_HEADER
 #define CENTURION_BUTTON_STATE_HEADER
 

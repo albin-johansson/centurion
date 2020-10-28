@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file algorithm.hpp
- *
- * \brief Provides algorithm utilities for the library.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_ALGORITHM_HEADER
 #define CENTURION_ALGORITHM_HEADER
 

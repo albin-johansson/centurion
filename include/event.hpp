@@ -23,18 +23,6 @@
  */
 
 /**
- * \file event.hpp
- *
- * \brief Provides the event API.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
-/**
  * \defgroup event Events
  *
  * \brief Contains entities related to events.

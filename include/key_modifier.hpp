@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file key_modifier.hpp
- *
- * \brief Provides the `key_modifier` enum.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_KEY_MODIFIER_HEADER
 #define CENTURION_KEY_MODIFIER_HEADER
 

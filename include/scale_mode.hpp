@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file scale_mode.hpp
- *
- * \brief Provides the `scale_mode` enum.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_SCALE_MODE_HEADER
 #define CENTURION_SCALE_MODE_HEADER
 

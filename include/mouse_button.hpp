@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file mouse_button.hpp
- *
- * \brief Provides the `mouse_button` enum
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_MOUSE_BUTTON_HEADER
 #define CENTURION_MOUSE_BUTTON_HEADER
 

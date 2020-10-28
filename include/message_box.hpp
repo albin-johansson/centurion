@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file message_box.hpp
- *
- * \brief Provides the message box API.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_MESSAGE_BOX_HEADER
 #define CENTURION_MESSAGE_BOX_HEADER
 

@@ -22,20 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file try_lock.hpp
- *
- * \ingroup thread
- *
- * \brief Provides the `try_lock` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_TRY_LOCK_HEADER
 #define CENTURION_TRY_LOCK_HEADER
 

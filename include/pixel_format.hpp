@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file pixel_format.hpp
- *
- * \brief Provides the `pixel_format` enum.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_PIXEL_FORMAT_HEADER
 #define CENTURION_PIXEL_FORMAT_HEADER
 

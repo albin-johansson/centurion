@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file controller.hpp
- *
- * \brief Provides the game controller API.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_GAME_CONTROLLER_HEADER
 #define CENTURION_GAME_CONTROLLER_HEADER
 

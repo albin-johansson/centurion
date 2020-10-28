@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file string_map.hpp
- *
- * \brief Provides a compile-time bidirectional map implementation.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_DETAIL_STATIC_BIMAP_HEADER
 #define CENTURION_DETAIL_STATIC_BIMAP_HEADER
 

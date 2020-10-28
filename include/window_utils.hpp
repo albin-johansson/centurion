@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file window_utils.hpp
- *
- * \brief Provides utilities related to windows.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_WINDOW_UTILS_HEADER
 #define CENTURION_WINDOW_UTILS_HEADER
 

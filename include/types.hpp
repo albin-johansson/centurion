@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file types.hpp
- *
- * \brief Provides various type aliases.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_TYPES_HEADER
 #define CENTURION_TYPES_HEADER
 

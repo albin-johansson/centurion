@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file area.hpp
- *
- * \brief Provides a simple area struct.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 

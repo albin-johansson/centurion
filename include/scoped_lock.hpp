@@ -22,20 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file scoped_lock.hpp
- *
- * \ingroup thread
- *
- * \brief Provides the `scoped_lock` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_SCOPED_LOCK_HEADER
 #define CENTURION_SCOPED_LOCK_HEADER
 

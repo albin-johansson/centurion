@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file to_string.hpp
- *
- * \brief Provides the `to_string` function.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_DETAIL_TO_STRING_HEADER
 #define CENTURION_DETAIL_TO_STRING_HEADER
 

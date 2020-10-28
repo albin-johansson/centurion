@@ -22,20 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file clipboard.hpp
- *
- * \ingroup system
- *
- * \brief Provides clipboard-related functions.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_CLIPBOARD_HEADER
 #define CENTURION_CLIPBOARD_HEADER
 

@@ -32,20 +32,6 @@
  * semaphore and condition variables.
  */
 
-/**
- * \file thread.hpp
- *
- * \ingroup thread
- *
- * \brief Provides the threading API.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_THREAD_HEADER
 #define CENTURION_THREAD_HEADER
 

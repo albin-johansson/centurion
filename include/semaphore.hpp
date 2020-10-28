@@ -22,20 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file semaphore.hpp
- *
- * \ingroup thread
- *
- * \brief Provides the `semaphore` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_SEMAPHORE_HEADER
 #define CENTURION_SEMAPHORE_HEADER
 

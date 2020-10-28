@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file scan_code.hpp
- *
- * \brief Provides the `scan_code` class and constants.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_SCAN_CODE_HEADER
 #define CENTURION_SCAN_CODE_HEADER
 

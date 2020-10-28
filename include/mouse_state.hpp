@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file mouse_state.hpp
- *
- * \brief Provides the `mouse_state` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_MOUSE_STATE_HEADER
 #define CENTURION_MOUSE_STATE_HEADER
 

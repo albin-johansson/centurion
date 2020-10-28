@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file event_type.hpp
- *
- * \brief Provides the `event_type` enum.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_EVENT_TYPE_HEADER
 #define CENTURION_EVENT_TYPE_HEADER
 

@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file pref_path.hpp
- *
- * \brief Provides the `pref_path` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_PREF_PATH_HEADER
 #define CENTURION_PREF_PATH_HEADER
 

@@ -23,21 +23,6 @@
  */
 
 /**
- * \file centurion.hpp
- *
- * \brief The main header file for the library.
- *
- * \details Provides the `library` and `config` classes, which are related to
- * the initialization of the library.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
-/**
  * \defgroup core Core
  *
  * \brief Contains entities considered to be fundamental for the library.

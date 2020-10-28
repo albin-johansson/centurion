@@ -22,24 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file exception.hpp
- *
- * \brief Provides the exception types used by the Centurion library.
- *
- * \see `exception`
- * \see `sdl_error`
- * \see `ttf_error`
- * \see `mix_error`
- * \see `img_error`
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_EXCEPTION_HEADER
 #define CENTURION_EXCEPTION_HEADER
 

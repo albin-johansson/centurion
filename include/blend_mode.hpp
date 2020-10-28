@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file blend_mode.hpp
- *
- * \brief Provides the `BlendMode` enum.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_BLEND_MODE_HEADER
 #define CENTURION_BLEND_MODE_HEADER
 

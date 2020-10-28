@@ -22,20 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file texture_access.hpp
- *
- * \ingroup input
- *
- * \brief Provides the `texture_access` enum.
- *
- * \author Albin Johansson
- *
- * \copyright MIT License
- *
- * \date 2019-2020
- */
-
 #ifndef CENTURION_TEXTURE_ACCESS_HEADER
 #define CENTURION_TEXTURE_ACCESS_HEADER
 

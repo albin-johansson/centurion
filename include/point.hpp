@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file point.hpp
- *
- * \brief Provides simple 2D point representations.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_POINT_HEADER
 #define CENTURION_POINT_HEADER
 

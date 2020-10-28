@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file texture.hpp
- *
- * \brief Provides the `texture` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 

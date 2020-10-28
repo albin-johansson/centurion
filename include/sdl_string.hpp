@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file sdl_string.hpp
- *
- * \brief Provides the `sdl_string` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_SDL_STRING_HEADER
 #define CENTURION_SDL_STRING_HEADER
 

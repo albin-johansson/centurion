@@ -28,18 +28,6 @@
  * \brief Contains basic geometric components, used throughout the library.
  */
 
-/**
- * \file rect.hpp
- *
- * \brief Provides a generic rectangle implementation.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_RECTANGLE_HEADER
 #define CENTURION_RECTANGLE_HEADER
 

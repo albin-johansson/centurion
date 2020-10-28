@@ -23,19 +23,6 @@
  */
 
 /**
- * \file platform.hpp
- *
- * \brief Provides utilities for obtaining information about the current
- * platform.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
-/**
  * \defgroup system System
  *
  * \brief Contains various utilities related to system resources.

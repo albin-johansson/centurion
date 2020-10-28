@@ -22,22 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file centurion_cfg.hpp
- *
- * \brief Used for configuring the behaviour of the library.
- *
- * \note You don't need to explicitly include this file!
- *
- * \since 4.0.0
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_CFG_HEADER
 #define CENTURION_CFG_HEADER
 

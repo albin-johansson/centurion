@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file font_cache.hpp
- *
- * \brief Provides the `font_cache` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_FONT_CACHE_HEADER
 #define CENTURION_FONT_CACHE_HEADER
 

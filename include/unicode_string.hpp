@@ -22,20 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file unicode_string.hpp
- *
- * \ingroup input
- *
- * \brief Provides the `unicode_string` class.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_UNICODE_STRING_HEADER
 #define CENTURION_UNICODE_STRING_HEADER
 

@@ -22,15 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file color.hpp
- * \brief Provides the `color` class.
- *
- * \author Albin Johansson
- * \date 2019-2020
- * \copyright MIT License
- */
-
 #ifndef CENTURION_COLOR_HEADER
 #define CENTURION_COLOR_HEADER
 

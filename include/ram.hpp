@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file ram.hpp
- *
- * \brief Provides information related to the system memory.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_RAM_HEADER
 #define CENTURION_RAM_HEADER
 

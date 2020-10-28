@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file font.hpp
- *
- * \brief Provides the font API.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_FONT_HEADER
 #define CENTURION_FONT_HEADER
 

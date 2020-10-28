@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file cursor.hpp
- *
- * \brief Provides the cursor API.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_CURSOR_HEADER
 #define CENTURION_CURSOR_HEADER
 

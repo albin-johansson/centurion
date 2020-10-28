@@ -22,15 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \brief Provides the touch API.
- * \file touch.hpp
- * \author Albin Johansson
- * \date 2019-2020
- * \copyright MIT License
- * \since 4.3.0
- */
-
 #ifndef CENTURION_TOUCH_HEADER
 #define CENTURION_TOUCH_HEADER
 

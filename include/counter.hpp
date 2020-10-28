@@ -22,20 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file counter.hpp
- *
- * \brief Provides utilities related to to the system clock.
- *
- * \since 5.0.0
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_TIMER_HEADER
 #define CENTURION_TIMER_HEADER
 

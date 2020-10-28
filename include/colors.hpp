@@ -22,24 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file colors.hpp
- *
- * \brief A large collection of `Color` constants.
- *
- * \details Provides about 140 color constants. The colors defined in this
- * header were based on <a href=
- * https://www.w3schools.com/colors/colors_names.asp>this</a> list.
- *
- * \since 3.0.0
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_COLORS_HEADER
 #define CENTURION_COLORS_HEADER
 

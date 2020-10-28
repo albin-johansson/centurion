@@ -22,20 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file joystick.hpp
- *
- * \ingroup input
- *
- * \brief Provides the `joystick` class.
- *
- * \author Albin Johansson
- *
- * \copyright MIT License
- *
- * \date 2019-2020
- */
-
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 

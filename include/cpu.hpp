@@ -22,22 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file cpu.hpp
- *
- * \brief Provides an API for querying information about the processor.
- *
- * \details Provides information about the system processor, such as whether it
- * supports different instruction sets, the cache line size, amount of cores,
- * etc.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_CPU_HEADER
 #define CENTURION_CPU_HEADER
 

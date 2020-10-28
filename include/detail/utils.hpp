@@ -23,18 +23,6 @@
  */
 
 /**
- * \file utils.hpp
- *
- * \brief Provides utilities used in the implementation of the library.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
-/**
  * \defgroup misc Miscellaneous
  *
  * \brief Provides miscellaneous components used throughout the library.

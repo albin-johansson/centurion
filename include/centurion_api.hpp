@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file centurion_api.hpp
- *
- * \brief Defines various macros.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_API_HEADER
 #define CENTURION_API_HEADER
 

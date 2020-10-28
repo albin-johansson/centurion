@@ -22,18 +22,6 @@
  * SOFTWARE.
  */
 
-/**
- * \file log.hpp
- *
- * \brief Provides the logging API.
- *
- * \author Albin Johansson
- *
- * \date 2019-2020
- *
- * \copyright MIT License
- */
-
 #ifndef CENTURION_LOG_HEADER
 #define CENTURION_LOG_HEADER
 

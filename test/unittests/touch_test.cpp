@@ -1,73 +1,67 @@
-#include "touch.h"
+#include "touch.hpp"
 
 #include <catch.hpp>
 
-using namespace centurion;
-using namespace touch;
-
-TEST_CASE("DeviceType enum", "[Touch]")
+TEST_CASE("device_type enum", "[touch]")
 {
+  using device_t = cen::touch::device_type;
   SECTION("Operator ==")
   {
-    CHECK(DeviceType::Invalid == SDL_TOUCH_DEVICE_INVALID);
-    CHECK(DeviceType::Direct == SDL_TOUCH_DEVICE_DIRECT);
-    CHECK(DeviceType::IndirectAbsolute == SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE);
-    CHECK(DeviceType::IndirectRelative == SDL_TOUCH_DEVICE_INDIRECT_RELATIVE);
+    CHECK(device_t::invalid == SDL_TOUCH_DEVICE_INVALID);
+    CHECK(device_t::direct == SDL_TOUCH_DEVICE_DIRECT);
+    CHECK(device_t::indirect_absolute == SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE);
+    CHECK(device_t::indirect_relative == SDL_TOUCH_DEVICE_INDIRECT_RELATIVE);
 
-    CHECK(SDL_TOUCH_DEVICE_INVALID == DeviceType::Invalid);
-    CHECK(SDL_TOUCH_DEVICE_DIRECT == DeviceType::Direct);
-    CHECK(SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE == DeviceType::IndirectAbsolute);
-    CHECK(SDL_TOUCH_DEVICE_INDIRECT_RELATIVE == DeviceType::IndirectRelative);
+    CHECK(SDL_TOUCH_DEVICE_INVALID == device_t::invalid);
+    CHECK(SDL_TOUCH_DEVICE_DIRECT == device_t::direct);
+    CHECK(SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE == device_t::indirect_absolute);
+    CHECK(SDL_TOUCH_DEVICE_INDIRECT_RELATIVE == device_t ::indirect_relative);
 
-    CHECK(!(DeviceType::IndirectAbsolute == SDL_TOUCH_DEVICE_DIRECT));
+    CHECK(!(device_t::indirect_absolute == SDL_TOUCH_DEVICE_DIRECT));
   }
 
   SECTION("Operator !=")
   {
-    CHECK(DeviceType::Invalid != SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE);
-    CHECK(SDL_TOUCH_DEVICE_DIRECT != DeviceType::Invalid);
+    CHECK(device_t::invalid != SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE);
+    CHECK(SDL_TOUCH_DEVICE_DIRECT != device_t::invalid);
   }
 }
 
-TEST_CASE("touch::num_devices", "[Touch]")
+TEST_CASE("touch::num_devices", "[touch]")
 {
-  CHECK(num_devices() == SDL_GetNumTouchDevices());
+  CHECK(cen::touch::num_devices() == SDL_GetNumTouchDevices());
 }
 
-#ifndef TRAVIS_TEST
-
-TEST_CASE("touch::get_device", "[Touch]")
+TEST_CASE("touch::get_device", "[!mayfail][touch]")
 {
-  const auto device = get_device(0);
+  const auto device = cen::touch::get_device(0);
   CHECK(!device.has_value());
 }
 
-#endif  // TRAVIS_TEST
-
-TEST_CASE("touch::type_of", "[Touch]")
+TEST_CASE("touch::type_of", "[touch]")
 {
-  CHECK(type_of(0) == SDL_GetTouchDeviceType(0));
+  CHECK(cen::touch::type_of(0) == SDL_GetTouchDeviceType(0));
 }
 
-TEST_CASE("touch::num_fingers", "[Touch]")
+TEST_CASE("touch::num_fingers", "[touch]")
 {
-  CHECK(num_fingers(0) == SDL_GetNumTouchFingers(0));
+  CHECK(cen::touch::num_fingers(0) == SDL_GetNumTouchFingers(0));
 }
 
-TEST_CASE("touch::get_finger", "[Touch]")
+TEST_CASE("touch::get_finger", "[touch]")
 {
-  const auto finger = get_finger(0, 0);
+  const auto finger = cen::touch::get_finger(0, 0);
   CHECK(!finger.has_value());
 }
 
-TEST_CASE("touch::touch_mouse_id", "[Touch]")
+TEST_CASE("touch::touch_mouse_id", "[touch]")
 {
-  CHECK(touch_mouse_id() == SDL_TOUCH_MOUSEID);
-  CHECK(touch_mouse_id() != SDL_MOUSE_TOUCHID);
+  CHECK(cen::touch::touch_mouse_id() == SDL_TOUCH_MOUSEID);
+  CHECK(cen::touch::touch_mouse_id() != SDL_MOUSE_TOUCHID);
 }
 
-TEST_CASE("touch::mouse_touch_id", "[Touch]")
+TEST_CASE("touch::mouse_touch_id", "[touch]")
 {
-  CHECK(mouse_touch_id() == SDL_MOUSE_TOUCHID);
-  CHECK(mouse_touch_id() != SDL_TOUCH_MOUSEID);
+  CHECK(cen::touch::mouse_touch_id() == SDL_MOUSE_TOUCHID);
+  CHECK(cen::touch::mouse_touch_id() != SDL_TOUCH_MOUSEID);
 }

@@ -1,20 +1,18 @@
-#include "audio_device_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
+#include "event.hpp"
 
-TEST_CASE("AudioDeviceEvent constructors", "[AudioDeviceEvent]")
+TEST_CASE("audio_device_event constructors", "[audio_device_event]")
 {
-  CHECK_NOTHROW(AudioDeviceEvent{{}});
+  CHECK_NOTHROW(cen::audio_device_event{{}});
 
   SDL_AudioDeviceEvent e;
-  CHECK_NOTHROW(AudioDeviceEvent{e});
+  CHECK_NOTHROW(cen::audio_device_event{e});
 }
 
-TEST_CASE("AudioDeviceEvent::set_which", "[AudioDeviceEvent]")
+TEST_CASE("audio_device_event::set_which", "[audio_device_event]")
 {
-  AudioDeviceEvent event;
+  cen::audio_device_event event;
 
   const auto which = 7;
   event.set_which(which);
@@ -22,9 +20,9 @@ TEST_CASE("AudioDeviceEvent::set_which", "[AudioDeviceEvent]")
   CHECK(event.which() == which);
 }
 
-TEST_CASE("AudioDeviceEvent::set_capture", "[AudioDeviceEvent]")
+TEST_CASE("audio_device_event::set_capture", "[audio_device_event]")
 {
-  AudioDeviceEvent event;
+  cen::audio_device_event event;
 
   event.set_capture(true);
   CHECK(event.capture());
@@ -35,29 +33,32 @@ TEST_CASE("AudioDeviceEvent::set_capture", "[AudioDeviceEvent]")
   CHECK(event.output());
 }
 
-TEST_CASE("AudioDeviceEvent::which", "[AudioDeviceEvent]")
+TEST_CASE("audio_device_event::which", "[audio_device_event]")
 {
   SDL_AudioDeviceEvent sdl;
   sdl.which = 23;
-  AudioDeviceEvent event{sdl};
+
+  cen::audio_device_event event{sdl};
 
   CHECK(event.which() == sdl.which);
 }
 
-TEST_CASE("AudioDeviceEvent::output", "[AudioDeviceEvent]")
+TEST_CASE("audio_device_event::output", "[audio_device_event]")
 {
   SDL_AudioDeviceEvent sdl;
   sdl.iscapture = 0;
-  AudioDeviceEvent event{sdl};
+
+  cen::audio_device_event event{sdl};
 
   CHECK(event.output());
 }
 
-TEST_CASE("AudioDeviceEvent::capture", "[AudioDeviceEvent]")
+TEST_CASE("audio_device_event::capture", "[audio_device_event]")
 {
   SDL_AudioDeviceEvent sdl;
   sdl.iscapture = 1;
-  AudioDeviceEvent event{sdl};
+
+  cen::audio_device_event event{sdl};
 
   CHECK(event.capture());
 }

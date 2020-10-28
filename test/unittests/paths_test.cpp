@@ -1,36 +1,36 @@
-#include "paths.h"
-
 #include <catch.hpp>
+#include <iostream>
 
-using namespace centurion;
+#include "base_path.hpp"
+#include "pref_path.hpp"
 
-TEST_CASE("BasePath()", "[BasePath]")
+TEST_CASE("base_path()", "[path]")
 {
-  CHECK_NOTHROW(BasePath{});
+  CHECK_NOTHROW(cen::base_path{});
 }
 
-TEST_CASE("BasePath(BasePath&&)", "[BasePath]")
+TEST_CASE("base_path(base_path&&)", "[path]")
 {
-  BasePath path;
-  BasePath other{std::move(path)};
+  cen::base_path path;
+  cen::base_path other{std::move(path)};
 
   CHECK(!path.get());
   CHECK(other.get());
 }
 
-TEST_CASE("BasePath::operator=(BasePath&&)", "[BasePath]")
+TEST_CASE("base_path::operator=(base_path&&)", "[path]")
 {
   SECTION("Self-assignment")
   {
-    BasePath path;
+    cen::base_path path;
     path = std::move(path);
     CHECK(path.get());
   }
 
   SECTION("Normal usage")
   {
-    BasePath path;
-    BasePath other;
+    cen::base_path path;
+    cen::base_path other;
 
     other = std::move(path);
 
@@ -39,57 +39,57 @@ TEST_CASE("BasePath::operator=(BasePath&&)", "[BasePath]")
   }
 }
 
-TEST_CASE("BasePath::unique", "[BasePath]")
+TEST_CASE("base_path::operator bool", "[path]")
 {
-  const auto path = BasePath::unique();
+  const cen::base_path path;
   CHECK(path);
 }
 
-TEST_CASE("BasePath::shared", "[BasePath]")
+TEST_CASE("base_path::get", "[path]")
 {
-  const auto path = BasePath::shared();
-  CHECK(path);
-}
-
-TEST_CASE("BasePath::operator bool", "[BasePath]")
-{
-  const BasePath path;
-  CHECK(path);
-}
-
-TEST_CASE("BasePath::get", "[BasePath]")
-{
-  const BasePath path;
+  const cen::base_path path;
   CHECK(path.get());
 }
 
-TEST_CASE("PrefPath(string&, string&)", "[PrefPath]")
+TEST_CASE("base_path to_string", "[path]")
 {
-  CHECK_NOTHROW(PrefPath{"centurion", "tests"});
+  const cen::base_path path;
+  std::cout << "COUT: " << cen::to_string(path) << '\n';
 }
 
-TEST_CASE("PrefPath(PrefPath&&)", "[PrefPath]")
+TEST_CASE("base_path stream operator", "[path]")
 {
-  PrefPath path{"centurion", "tests"};
-  PrefPath other{std::move(path)};
+  const cen::base_path path;
+  std::cout << "<<: " << path << '\n';
+}
+
+TEST_CASE("pref_path(string&, string&)", "[path]")
+{
+  CHECK_NOTHROW(cen::pref_path{"centurion", "tests"});
+}
+
+TEST_CASE("pref_path(pref_path&&)", "[path]")
+{
+  cen::pref_path path{"centurion", "tests"};
+  cen::pref_path other{std::move(path)};
 
   CHECK(!path.get());
   CHECK(other.get());
 }
 
-TEST_CASE("PrefPath::operator=(PrefPath&&)", "[PrefPath]")
+TEST_CASE("pref_path::operator=(pref_path&&)", "[path]")
 {
   SECTION("Self-assignment")
   {
-    PrefPath path{"centurion", "tests"};
+    cen::pref_path path{"centurion", "tests"};
     path = std::move(path);
     CHECK(path.get());
   }
 
   SECTION("Normal usage")
   {
-    PrefPath path{"centurion", "tests"};
-    PrefPath other{"centurion", "tests"};
+    cen::pref_path path{"centurion", "tests"};
+    cen::pref_path other{"centurion", "tests"};
 
     other = std::move(path);
 
@@ -98,24 +98,26 @@ TEST_CASE("PrefPath::operator=(PrefPath&&)", "[PrefPath]")
   }
 }
 
-TEST_CASE("PrefPath::unique", "[PrefPath]")
+TEST_CASE("pref_path::operator bool", "[path]")
 {
-  CHECK(PrefPath::unique("centurion", "tests"));
+  const cen::pref_path pref_path{"centurion", "tests"};
+  CHECK(pref_path);
 }
 
-TEST_CASE("PrefPath::shared", "[PrefPath]")
+TEST_CASE("pref_path::get", "[path]")
 {
-  CHECK(PrefPath::shared("centurion", "tests"));
+  const cen::pref_path pref_path{"centurion", "tests"};
+  CHECK(pref_path.get());
 }
 
-TEST_CASE("PrefPath::operator bool", "[PrefPath]")
+TEST_CASE("pref_path to_string", "[path]")
 {
-  const PrefPath prefPath{"centurion", "tests"};
-  CHECK(prefPath);
+  const cen::pref_path path{"centurion", "tests"};
+  std::cout << "COUT: " << cen::to_string(path) << '\n';
 }
 
-TEST_CASE("PrefPath::get", "[PrefPath]")
+TEST_CASE("pref_path stream operator", "[path]")
 {
-  const PrefPath prefPath{"centurion", "tests"};
-  CHECK(prefPath.get());
+  const cen::pref_path path{"centurion", "tests"};
+  std::cout << "<<: " << path << '\n';
 }

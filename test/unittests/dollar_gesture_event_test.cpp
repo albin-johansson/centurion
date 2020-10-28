@@ -1,12 +1,10 @@
-#include "dollar_gesture_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
+#include "event.hpp"
 
-TEST_CASE("DollarGestureEvent::set_touch_id", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::set_touch_id", "[dollar_gesture_event]")
 {
-  DollarGestureEvent event;
+  cen::dollar_gesture_event event;
 
   const auto id = 4;
   event.set_touch_id(id);
@@ -14,9 +12,9 @@ TEST_CASE("DollarGestureEvent::set_touch_id", "[DollarGestureEvent]")
   CHECK(event.touch_id() == id);
 }
 
-TEST_CASE("DollarGestureEvent::set_gesture_id", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::set_gesture_id", "[dollar_gesture_event]")
 {
-  DollarGestureEvent event;
+  cen::dollar_gesture_event event;
 
   const auto id = 81;
   event.set_gesture_id(id);
@@ -24,9 +22,9 @@ TEST_CASE("DollarGestureEvent::set_gesture_id", "[DollarGestureEvent]")
   CHECK(event.gesture_id() == id);
 }
 
-TEST_CASE("DollarGestureEvent::set_fingers", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::set_fingers", "[dollar_gesture_event]")
 {
-  DollarGestureEvent event;
+  cen::dollar_gesture_event event;
 
   const auto fingers = 2;
   event.set_fingers(fingers);
@@ -34,9 +32,9 @@ TEST_CASE("DollarGestureEvent::set_fingers", "[DollarGestureEvent]")
   CHECK(event.fingers() == fingers);
 }
 
-TEST_CASE("DollarGestureEvent::set_error", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::set_error", "[dollar_gesture_event]")
 {
-  DollarGestureEvent event;
+  cen::dollar_gesture_event event;
 
   const auto error = 5.1f;
   event.set_error(error);
@@ -44,9 +42,9 @@ TEST_CASE("DollarGestureEvent::set_error", "[DollarGestureEvent]")
   CHECK(event.error() == error);
 }
 
-TEST_CASE("DollarGestureEvent::set_x", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::set_x", "[dollar_gesture_event]")
 {
-  DollarGestureEvent event;
+  cen::dollar_gesture_event event;
 
   const auto x = 24.8f;
   event.set_x(x);
@@ -54,9 +52,9 @@ TEST_CASE("DollarGestureEvent::set_x", "[DollarGestureEvent]")
   CHECK(event.x() == x);
 }
 
-TEST_CASE("DollarGestureEvent::set_y", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::set_y", "[dollar_gesture_event]")
 {
-  DollarGestureEvent event;
+  cen::dollar_gesture_event event;
 
   const auto y = -12.9f;
   event.set_y(y);
@@ -64,56 +62,56 @@ TEST_CASE("DollarGestureEvent::set_y", "[DollarGestureEvent]")
   CHECK(event.y() == y);
 }
 
-TEST_CASE("DollarGestureEvent::touch_id", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::touch_id", "[dollar_gesture_event]")
 {
   SDL_DollarGestureEvent sdlEvent;
   sdlEvent.touchId = 9;
-  DollarGestureEvent event{sdlEvent};
+  cen::dollar_gesture_event event{sdlEvent};
 
   CHECK(event.touch_id() == sdlEvent.touchId);
 }
 
-TEST_CASE("DollarGestureEvent::gesture_id", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::gesture_id", "[dollar_gesture_event]")
 {
   SDL_DollarGestureEvent sdlEvent;
   sdlEvent.gestureId = 1;
-  DollarGestureEvent event{sdlEvent};
+  cen::dollar_gesture_event event{sdlEvent};
 
   CHECK(event.gesture_id() == sdlEvent.gestureId);
 }
 
-TEST_CASE("DollarGestureEvent::fingers", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::fingers", "[dollar_gesture_event]")
 {
   SDL_DollarGestureEvent sdlEvent;
   sdlEvent.numFingers = 3;
-  DollarGestureEvent event{sdlEvent};
+  cen::dollar_gesture_event event{sdlEvent};
 
   CHECK(event.fingers() == sdlEvent.numFingers);
 }
 
-TEST_CASE("DollarGestureEvent::error", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::error", "[dollar_gesture_event]")
 {
   SDL_DollarGestureEvent sdlEvent;
   sdlEvent.error = 7.4f;
-  DollarGestureEvent event{sdlEvent};
+  cen::dollar_gesture_event event{sdlEvent};
 
   CHECK(event.error() == sdlEvent.error);
 }
 
-TEST_CASE("DollarGestureEvent::x", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::x", "[dollar_gesture_event]")
 {
   SDL_DollarGestureEvent sdlEvent;
   sdlEvent.x = 56.8f;
-  DollarGestureEvent event{sdlEvent};
+  cen::dollar_gesture_event event{sdlEvent};
 
   CHECK(event.x() == sdlEvent.x);
 }
 
-TEST_CASE("DollarGestureEvent::y", "[DollarGestureEvent]")
+TEST_CASE("dollar_gesture_event::y", "[dollar_gesture_event]")
 {
   SDL_DollarGestureEvent sdlEvent;
   sdlEvent.y = 92.3f;
-  DollarGestureEvent event{sdlEvent};
+  cen::dollar_gesture_event event{sdlEvent};
 
   CHECK(event.y() == sdlEvent.y);
 }

@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
-project(CenturionTestProj)
+
+project(CenturionTest)
 
 set(TEST_FILES
         unittests/test_main.cpp
@@ -7,7 +8,6 @@ set(TEST_FILES
         unittests/bool_converter_test.cpp
         unittests/font_test.cpp
         unittests/texture_test.cpp
-        unittests/texture_loader_test.cpp
         unittests/renderer_test.cpp
         unittests/log_test.cpp
         unittests/battery_test.cpp
@@ -18,9 +18,8 @@ set(TEST_FILES
         unittests/key_state_test.cpp
         unittests/mouse_state_test.cpp
         unittests/rect_test.cpp
-        unittests/centurion_exception_test.cpp
-        unittests/error_test.cpp
-        unittests/timer_test.cpp
+        unittests/exception_test.cpp
+        unittests/counter_test.cpp
         unittests/paths_test.cpp
         unittests/platform_test.cpp
         unittests/cpu_test.cpp
@@ -29,15 +28,14 @@ set(TEST_FILES
         unittests/surface_test.cpp
         unittests/pixel_format_test.cpp
         unittests/cursor_test.cpp
-        unittests/key_test.cpp
         unittests/window_event_test.cpp
         unittests/keyboard_event_test.cpp
         unittests/common_event_test.cpp
         unittests/audio_device_event_test.cpp
         unittests/controller_axis_event_test.cpp
         unittests/controller_button_event_test.cpp
-        unittests/game_controller_button_test.cpp
-        unittests/game_controller_axis_test.cpp
+        unittests/controller_button_test.cpp
+        unittests/controller_axis_test.cpp
         unittests/controller_device_event_test.cpp
         unittests/dollar_gesture_event_test.cpp
         unittests/drop_event_test.cpp
@@ -59,75 +57,89 @@ set(TEST_FILES
         unittests/area_test.cpp
         unittests/hints_test.cpp
         unittests/joystick_test.cpp
-        unittests/touch_test.cpp)
+        unittests/touch_test.cpp
+        unittests/scan_code_tests.cpp
+        unittests/key_code_tests.cpp
+        unittests/font_cache_test.cpp
+        unittests/unicode_string_test.cpp
+        unittests/window_handle_test.cpp
+        unittests/renderer_handle_test.cpp
+        unittests/thread_test.cpp
+        unittests/mutex_test.cpp
+        unittests/scoped_lock_test.cpp
+        unittests/try_lock_test.cpp
+        unittests/semaphore_test.cpp
+        unittests/condition_test.cpp
+        unittests/clipboard_test.cpp
+        unittests/sdl_string_test.cpp
+        unittests/controller_test.cpp
+        unittests/to_string_test.cpp)
 
-if (NOT DEFINED ENV{TRAVIS})
+if (CEN_AUDIO)
     set(TEST_FILES
             ${TEST_FILES}
             unittests/sound_effect_test.cpp
             unittests/music_test.cpp)
 endif ()
 
-add_executable(${CENTURION_TEST_TARGET} ${TEST_FILES})
-add_dependencies(${CENTURION_TEST_TARGET} ${CENTURION_LIB_TARGET})
-
-if (DEFINED ENV{TRAVIS})
-    target_compile_definitions(${CENTURION_TEST_TARGET}
-            PUBLIC CENTURION_NOAUDIO
-            PUBLIC TRAVIS_TEST)
+if (WIN32)
+    add_executable(${CENTURION_TEST_TARGET} WIN32 ${TEST_FILES})
+else ()
+    add_executable(${CENTURION_TEST_TARGET} ${TEST_FILES})
 endif ()
 
-set_target_properties(${CENTURION_TEST_TARGET} PROPERTIES
-        CXX_STANDARD 17
-        CXX_STANDARD_REQUIRED ON)
+if (CEN_AUDIO)
+    target_compile_definitions(${CENTURION_TEST_TARGET}
+            PUBLIC CEN_AUDIO)
+endif ()
 
-set(CATCH_INCLUDE_DIR catch2)
-add_library(Catch2 INTERFACE)
-target_include_directories(Catch2 INTERFACE ${CATCH_INCLUDE_DIR})
+add_header_only_lib(Catch2 catch2 catch2/catch.hpp)
 
 include(CTest)
 include(Catch)
 
-enable_testing()
-add_test(NAME ${CENTURION_TEST_TARGET}
-        COMMAND ${CENTURION_TEST_TARGET})
+add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET}
         PUBLIC unittests
-        SYSTEM PUBLIC ${CTN_INCLUDE_DIR})
+        SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
+        SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
+        SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
+        SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
+        SYSTEM PUBLIC ${CEN_INCLUDE_DIR})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
-            -Wno-unused-result
-            )
+            -Wno-unused-result)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
             /EHsc)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
+            /EHsc
+            /MP
+            /W3)
 endif ()
 
-message("------ LINKING TEST EXECUTABLE ------")
-message("Linking against SDL2: ${SDL2_LIBRARY}")
-message("Linking against SDL2_image: ${SDL2_IMAGE_LIBRARIES}")
-message("Linking against SDL2_image: ${SDL2_MIXER_LIBRARIES}")
-message("Linking against SDL2_image: ${SDL2_TTF_LIBRARIES}")
-message("Centurion link target: ${CENTURION_LIBRARIES}")
-message("-------------------------------------")
+message("Linking against...")
+message("  * SDL2       @ ${SDL2_LIBRARY}")
+message("  * SDL2_image @ ${SDL2_IMAGE_LIBRARIES}")
+message("  * SDL2_mixer @ ${SDL2_MIXER_LIBRARIES}")
+message("  * SDL2_ttf   @ ${SDL2_TTF_LIBRARIES}")
 
 target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_LIBRARY}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
-        PUBLIC ${CENTURION_LIBRARIES}
-        PUBLIC libGSL
-        PUBLIC libOptional
+        PUBLIC ${CENTURION_IMPORT_LIB}
         PUBLIC Catch2)
 
 catch_discover_tests(${CENTURION_TEST_TARGET})
 
 copy_directory_post_build(
         ${CENTURION_TEST_TARGET}
-        ${CTN_RESOURCES_DIR}
+        ${CEN_RESOURCES_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
 if (WIN32)
@@ -138,6 +150,6 @@ if (WIN32)
 
     copy_directory_post_build(
             ${CENTURION_TEST_TARGET}
-            ${CTN_BINARIES_DIR}
+            ${CEN_BINARIES_DIR}
             ${CMAKE_CURRENT_BINARY_DIR})
 endif ()

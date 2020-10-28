@@ -1,26 +1,54 @@
-#include "platform.h"
+#include "platform.hpp"
 
 #include <catch.hpp>
 #include <string>
 
-using namespace centurion;
-
-TEST_CASE("Platform::id", "[Platform]")
+TEST_CASE("platform::id", "[platform]")
 {
-  CHECK_NOTHROW(Platform::id());
+  CHECK_NOTHROW(cen::platform::id());
 
 #ifdef __WIN32
-  CHECK(Platform::id() == PlatformID::Windows);
+  CHECK(cen::platform::id() == cen::platform::platform_id::windows);
 #elif __APPLE__
-  CHECK(Platform::id() == PlatformID::MacOSX);
+  CHECK(cen::platform::id() == cen::platform::platform_id::mac_osx);
 #elif __linux__
-  CHECK(Platform::id() == PlatformID::Linux);
+  CHECK(cen::platform::id() == cen::platform::platform_id::linuxx);
 #elif __ANDROID__
-  CHECK(Platform::id() == PlatformID::Android);
+  CHECK(cen::platform::id() == cen::platform::platform_id::android);
 #endif
 }
 
-TEST_CASE("Platform::name", "[Platform]")
+TEST_CASE("platform::is_windows", "[platform]")
 {
-  CHECK(*Platform::name() == std::string{SDL_GetPlatform()});
+  CHECK(cen::platform::is_windows() ==
+        (cen::platform::id() == cen::platform::platform_id::windows));
+}
+
+TEST_CASE("platform::is_mac_osx", "[platform]")
+{
+  CHECK(cen::platform::is_mac_osx() ==
+        (cen::platform::id() == cen::platform::platform_id::mac_osx));
+}
+
+TEST_CASE("platform::is_linux", "[platform]")
+{
+  CHECK(cen::platform::is_linux() ==
+        (cen::platform::id() == cen::platform::platform_id::linuxx));
+}
+
+TEST_CASE("platform::is_ios", "[platform]")
+{
+  CHECK(cen::platform::is_ios() ==
+        (cen::platform::id() == cen::platform::platform_id::ios));
+}
+
+TEST_CASE("platform::is_android", "[platform]")
+{
+  CHECK(cen::platform::is_android() ==
+        (cen::platform::id() == cen::platform::platform_id::android));
+}
+
+TEST_CASE("platform::name", "[platform]")
+{
+  CHECK(*cen::platform::name() == std::string{SDL_GetPlatform()});
 }

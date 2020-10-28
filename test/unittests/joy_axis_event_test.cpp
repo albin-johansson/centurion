@@ -1,17 +1,10 @@
-#include "joy_axis_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
+#include "event.hpp"
 
-TEST_CASE("JoyAxisEvent move constructor", "[JoyAxisEvent]")
+TEST_CASE("joy_axis_event::set_which", "[joy_axis_event]")
 {
-  CHECK_NOTHROW(JoyAxisEvent{{}});
-}
-
-TEST_CASE("JoyAxisEvent::set_which", "[JoyAxisEvent]")
-{
-  JoyAxisEvent event;
+  cen::joy_axis_event event;
 
   const auto which = 3;
   event.set_which(which);
@@ -19,9 +12,9 @@ TEST_CASE("JoyAxisEvent::set_which", "[JoyAxisEvent]")
   CHECK(event.which() == which);
 }
 
-TEST_CASE("JoyAxisEvent::set_axis", "[JoyAxisEvent]")
+TEST_CASE("joy_axis_event::set_axis", "[joy_axis_event]")
 {
-  JoyAxisEvent event;
+  cen::joy_axis_event event;
 
   const auto axis = 7;
   event.set_axis(axis);
@@ -29,9 +22,9 @@ TEST_CASE("JoyAxisEvent::set_axis", "[JoyAxisEvent]")
   CHECK(event.axis() == axis);
 }
 
-TEST_CASE("JoyAxisEvent::set_value", "[JoyAxisEvent]")
+TEST_CASE("joy_axis_event::set_value", "[joy_axis_event]")
 {
-  JoyAxisEvent event;
+  cen::joy_axis_event event;
 
   const auto value = 4'234;
   event.set_value(value);
@@ -39,32 +32,32 @@ TEST_CASE("JoyAxisEvent::set_value", "[JoyAxisEvent]")
   CHECK(event.value() == value);
 }
 
-TEST_CASE("JoyAxisEvent::which", "[JoyAxisEvent]")
+TEST_CASE("joy_axis_event::which", "[joy_axis_event]")
 {
   SDL_JoyAxisEvent sdlEvent;
   sdlEvent.which = 23;
 
-  JoyAxisEvent event{sdlEvent};
+  cen::joy_axis_event event{sdlEvent};
 
   CHECK(event.which() == sdlEvent.which);
 }
 
-TEST_CASE("JoyAxisEvent::axis", "[JoyAxisEvent]")
+TEST_CASE("joy_axis_event::axis", "[joy_axis_event]")
 {
   SDL_JoyAxisEvent sdlEvent;
   sdlEvent.axis = 5;
 
-  JoyAxisEvent event{sdlEvent};
+  cen::joy_axis_event event{sdlEvent};
 
   CHECK(event.axis() == sdlEvent.axis);
 }
 
-TEST_CASE("JoyAxisEvent::value", "[JoyAxisEvent]")
+TEST_CASE("joy_axis_event::value", "[joy_axis_event]")
 {
   SDL_JoyAxisEvent sdlEvent;
   sdlEvent.value = 1864;
 
-  JoyAxisEvent event{sdlEvent};
+  cen::joy_axis_event event{sdlEvent};
 
   CHECK(event.value() == sdlEvent.value);
 }

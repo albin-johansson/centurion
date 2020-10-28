@@ -1,44 +1,41 @@
-#ifndef CENTURION_NOAUDIO
-#include "music.h"
+#include "music.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 
-#include "centurion_exception.h"
-#include "log.h"
+#include "exception.hpp"
+#include "log.hpp"
 
-using namespace centurion;
+static inline constexpr auto* path = "resources/hiddenPond.mp3";
 
-static constexpr auto path = "resources/hiddenPond.mp3";
-
-TEST_CASE("Music::Music(CZString)", "[Music]")
+TEST_CASE("music::music(nn_czstring)", "[music]")
 {
-  CHECK_THROWS_AS(Music{""}, CenturionException);
-  CHECK_THROWS_AS(Music{nullptr}, CenturionException);
-  CHECK_NOTHROW(Music{path});
+  CHECK_THROWS_AS(cen::music{""}, cen::mix_error);
+  CHECK_NOTHROW(cen::music{path});
 }
 
-TEST_CASE("Music(Music&&)", "[Music]")
+TEST_CASE("music(music&&)", "[music]")
 {
-  Music music{path};
-  Music other{std::move(music)};
+  cen::music music{path};
+  cen::music other{std::move(music)};
 
   CHECK(!music.get());
   CHECK(other.get());
 }
 
-TEST_CASE("Music::operator=(Music&&)", "[Music]")
+TEST_CASE("music::operator=(music&&)", "[music]")
 {
   SECTION("Self-assignment")
   {
-    Music music{path};
+    cen::music music{path};
     music = std::move(music);
     CHECK(music.get());
   }
 
   SECTION("Normal usage")
   {
-    Music music{path};
-    Music other{path};
+    cen::music music{path};
+    cen::music other{path};
 
     other = std::move(music);
 
@@ -47,266 +44,362 @@ TEST_CASE("Music::operator=(Music&&)", "[Music]")
   }
 }
 
-TEST_CASE("Music smart pointer factory methods", "[Music]")
+TEST_CASE("music::play", "[music]")
 {
-  CHECK_THROWS_AS(Music::unique(""), CenturionException);
-  CHECK_THROWS_AS(Music::unique(""), CenturionException);
-  CHECK_NOTHROW(Music::unique(path));
-  CHECK_NOTHROW(Music::shared(path));
-}
-
-TEST_CASE("Music::play", "[Music]")
-{
-  Music music{path};
+  cen::music music{path};
   music.play();
-  CHECK(Music::playing());
-  CHECK(!Music::fading());
-  CHECK(!Music::paused());
-  CHECK(Music::fade_status() == FadeStatus::None);
+  CHECK(cen::music::is_playing());
+  CHECK(!cen::music::is_fading());
+  CHECK(!cen::music::is_paused());
+  CHECK(cen::music::get_fade_status() == cen::fade_status::none);
 
-  Music::halt();
+  cen::music::halt();
 
-  music.play(Music::loopForever);
-  CHECK(Music::playing());
+  music.play(cen::music::loopForever);
+  CHECK(cen::music::is_playing());
 
-  Music::halt();
+  cen::music::halt();
 }
 
-TEST_CASE("Music::resume", "[Music]")
+TEST_CASE("music::resume", "[music]")
 {
-  CHECK_NOTHROW(Music::resume());
+  CHECK_NOTHROW(cen::music::resume());
 
-  Music music{path};
+  cen::music music{path};
 
   music.play();
-  CHECK_NOTHROW(Music::resume());
+  CHECK_NOTHROW(cen::music::resume());
 
-  Music::pause();
-  CHECK(Music::paused());
+  cen::music::pause();
+  CHECK(cen::music::is_paused());
 
-  Music::resume();
-  CHECK(Music::playing());
+  cen::music::resume();
+  CHECK(cen::music::is_playing());
 
-  Music::halt();
-  CHECK_NOTHROW(Music::resume());
+  cen::music::halt();
+  CHECK_NOTHROW(cen::music::resume());
 }
 
-TEST_CASE("Music::pause", "[Music]")
+TEST_CASE("music::pause", "[music]")
 {
-  CHECK_NOTHROW(Music::pause());
+  CHECK_NOTHROW(cen::music::pause());
 
-  Music music{path};
+  cen::music music{path};
 
   music.play();
-  Music::pause();
-  CHECK(Music::paused());
+  cen::music::pause();
+  CHECK(cen::music::is_paused());
 
-  music.fade_in(100);
-  Music::pause();
-  CHECK(Music::paused());
+  music.fade_in(cen::milliseconds<int>{100});
+  cen::music::pause();
+  CHECK(cen::music::is_paused());
 }
 
-TEST_CASE("Music::halt", "[Music]")
+TEST_CASE("music::halt", "[music]")
 {
-  CHECK_NOTHROW(Music::halt());
+  CHECK_NOTHROW(cen::music::halt());
 
-  Music music{path};
+  cen::music music{path};
 
   music.play();
-  Music::halt();
+  cen::music::halt();
 
-  CHECK(!Music::playing());
-  CHECK(!Music::fading());
+  CHECK(!cen::music::is_playing());
+  CHECK(!cen::music::is_fading());
 
-  music.fade_in(100);
-  Music::halt();
+  music.fade_in(cen::milliseconds<int>{100});
+  cen::music::halt();
 
-  CHECK(!Music::playing());
-  CHECK(!Music::fading());
+  CHECK(!cen::music::is_playing());
+  CHECK(!cen::music::is_fading());
 }
 
-TEST_CASE("Music::fade_in", "[Music]")
+TEST_CASE("music::fade_in", "[music]")
 {
-  CHECK(!Music::fading());
+  CHECK(!cen::music::is_fading());
 
-  Music music{path};
-  CHECK_NOTHROW(music.fade_in(-1));
+  cen::music music{path};
+  CHECK_NOTHROW(music.fade_in(cen::milliseconds<int>{-1}));
 
-  Music::halt();
+  cen::music::halt();
 
-  music.fade_in(100);
-  CHECK(Music::fading());
+  music.fade_in(cen::milliseconds<int>{100});
+  CHECK(cen::music::is_fading());
 }
 
-TEST_CASE("Music::fade_out", "[Music]")
+TEST_CASE("music::fade_out", "[music]")
 {
-  CHECK(!Music::fading());
-  CHECK_NOTHROW(Music::fade_out(100));
-  CHECK_NOTHROW(Music::fade_out(-1));
+  CHECK(!cen::music::is_fading());
+  CHECK_NOTHROW(cen::music::fade_out(cen::milliseconds<int>{100}));
+  CHECK_NOTHROW(cen::music::fade_out(cen::milliseconds<int>{-1}));
 
-  Music music{path};
-  music.fade_in(100);
+  cen::music music{path};
+  music.fade_in(cen::milliseconds<int>{100});
 
-  CHECK(Music::fading());
+  CHECK(cen::music::is_fading());
 }
 
-TEST_CASE("Music::set_volume", "[Music]")
+TEST_CASE("music::set_volume", "[music]")
 {
-  const auto originalVolume = Music::volume();
+  const auto originalVolume = cen::music::volume();
 
   SECTION("Valid volume")
   {
     const auto volume = 102;
-    Music::set_volume(volume);
-    CHECK(volume == Music::volume());
+    cen::music::set_volume(volume);
+    CHECK(volume == cen::music::volume());
   }
 
   SECTION("Negative volume")
   {
     const auto volume = -1;
-    Music::set_volume(volume);
-    CHECK(Music::volume() == 0);
+    cen::music::set_volume(volume);
+    CHECK(cen::music::volume() == 0);
   }
 
   SECTION("Volume overflow")
   {
-    const auto volume = Music::maxVolume + 1;
-    Music::set_volume(volume);
-    CHECK(Music::maxVolume == Music::volume());
+    const auto volume = cen::music::max_volume() + 1;
+    cen::music::set_volume(volume);
+    CHECK(cen::music::max_volume() == cen::music::volume());
   }
 
-  Music::set_volume(originalVolume);
+  cen::music::set_volume(originalVolume);
 }
 
-TEST_CASE("Music::playing", "[Music]")
+TEST_CASE("music::playing", "[music]")
 {
-  CHECK(!Music::playing());
+  CHECK(!cen::music::is_playing());
 
-  Music music{path};
+  cen::music music{path};
 
   music.play();
-  CHECK(Music::playing());
+  CHECK(cen::music::is_playing());
 
-  Music::halt();
+  cen::music::halt();
 
-  music.fade_in(100);
-  CHECK(Music::playing());
+  music.fade_in(cen::milliseconds<int>{100});
+  CHECK(cen::music::is_playing());
 }
 
-TEST_CASE("Music::paused", "[Music]")
+TEST_CASE("music::paused", "[music]")
 {
-  Music music{path};
+  cen::music music{path};
   music.play();
 
-  Music::pause();
-  CHECK(Music::paused());
+  cen::music::pause();
+  CHECK(cen::music::is_paused());
 }
 
-TEST_CASE("Music::fading", "[Music]")
+TEST_CASE("music::fading", "[music]")
 {
-  CHECK(!Music::fading());
+  CHECK(!cen::music::is_fading());
 
-  Music music{path};
+  cen::music music{path};
 
   music.play();
-  CHECK(!Music::fading());
-  Music::halt();
+  CHECK(!cen::music::is_fading());
+  cen::music::halt();
 
-  music.fade_in(200);
-  CHECK(Music::fading());
+  music.fade_in(cen::milliseconds<int>{200});
+  CHECK(cen::music::is_fading());
 
-  Music::fade_out(
-      50);  // This should have no effect, since the music is fading in
-  CHECK(Music::fade_status() == FadeStatus::In);
+  // This should have no effect, since the music is fading in
+  cen::music::fade_out(cen::milliseconds<int>{50});
+  CHECK(cen::music::get_fade_status() == cen::fade_status::in);
 }
 
-TEST_CASE("Music::volume", "[Music]")
+TEST_CASE("music::volume", "[music]")
 {
-  CHECK(Music::volume() == Music::maxVolume);
+  CHECK(cen::music::volume() == cen::music::max_volume());
 
   const auto volume = 47;
-  Music::set_volume(volume);
+  cen::music::set_volume(volume);
 
-  CHECK(Music::volume() == volume);
+  CHECK(cen::music::volume() == volume);
 }
 
-TEST_CASE("Music::fade_status", "[Music]")
+TEST_CASE("music::fade_status", "[music]")
 {
-  CHECK(Music::fade_status() == FadeStatus::None);
-  CHECK(!Music::fading());
+  CHECK(cen::music::get_fade_status() == cen::fade_status::none);
+  CHECK(!cen::music::is_fading());
 
-  Music music{path};
+  cen::music music{path};
 
-  music.fade_in(100);
-  CHECK(Music::fade_status() == FadeStatus::In);
-  CHECK(Music::fading());
-  CHECK(Music::playing());
-  CHECK(!Music::paused());
+  music.fade_in(cen::milliseconds<int>{100});
+  CHECK(cen::music::get_fade_status() == cen::fade_status::in);
+  CHECK(cen::music::is_fading());
+  CHECK(cen::music::is_playing());
+  CHECK(!cen::music::is_paused());
 
-  Music::halt();
+  cen::music::halt();
 
   music.play();
-  Music::fade_out(100);
-  CHECK(Music::fade_status() == FadeStatus::Out);
-  CHECK(Music::fading());
-  CHECK(Music::playing());
-  CHECK(!Music::paused());
+  cen::music::fade_out(cen::milliseconds<int>{100});
+  CHECK(cen::music::get_fade_status() == cen::fade_status::out);
+  CHECK(cen::music::is_fading());
+  CHECK(cen::music::is_playing());
+  CHECK(!cen::music::is_paused());
 
-  Music::halt();
-  CHECK(Music::fade_status() == FadeStatus::None);
+  cen::music::halt();
+  CHECK(cen::music::get_fade_status() == cen::fade_status::none);
 }
 
-TEST_CASE("Music::music_type", "[Music]")
+TEST_CASE("music::music_type", "[music]")
 {
-  Music music{path};
-  CHECK(music.music_type() == MusicType::MP3);
+  cen::music music{path};
+  CHECK(music.type() == cen::music_type::mp3);
 }
 
-TEST_CASE("Music::to_string", "[Music]")
+TEST_CASE("music to_string", "[music]")
 {
-  Music music{path};
-  Log::info(Log::Category::Test, "%s", music.to_string().c_str());
+  const cen::music music{path};
+  cen::log::put(cen::to_string(music));
 }
 
-TEST_CASE("Music to Mix_Music*", "[Music]")
+TEST_CASE("music stream operator", "[music]")
 {
-  Music music{path};
-  Mix_Music* sdlMusic = music;
+  const cen::music music{path};
+  std::cout << "COUT: " << music << '\n';
+}
+
+TEST_CASE("music to Mix_Music*", "[music]")
+{
+  cen::music music{path};
+  auto* sdlMusic = static_cast<Mix_Music*>(music);
   CHECK(sdlMusic);
+
+  const cen::music& cmusic = music;
+  const auto* csdlMusic = static_cast<const Mix_Music*>(cmusic);
+  CHECK(csdlMusic);
 }
 
-TEST_CASE("FadeStatus enum values", "[Music]")
+TEST_CASE("fade_status enum values", "[music]")
 {
-  CHECK(FadeStatus::None == MIX_NO_FADING);
-  CHECK(FadeStatus::In == MIX_FADING_IN);
-  CHECK(FadeStatus::Out == MIX_FADING_OUT);
+  CHECK(cen::fade_status::none == MIX_NO_FADING);
+  CHECK(cen::fade_status::in == MIX_FADING_IN);
+  CHECK(cen::fade_status::out == MIX_FADING_OUT);
 
-  CHECK(MIX_NO_FADING == FadeStatus::None);
-  CHECK(MIX_FADING_IN == FadeStatus::In);
-  CHECK(MIX_FADING_OUT == FadeStatus::Out);
+  CHECK(MIX_NO_FADING == cen::fade_status::none);
+  CHECK(MIX_FADING_IN == cen::fade_status::in);
+  CHECK(MIX_FADING_OUT == cen::fade_status::out);
 }
 
-TEST_CASE("MusicType enum values", "[Music]")
+TEST_CASE("music_type enum values", "[music]")
 {
-  CHECK(MusicType::Unknown == MUS_NONE);
-  CHECK(MusicType::MP3 == MUS_MP3);
-  CHECK(MusicType::WAV == MUS_WAV);
-  CHECK(MusicType::CMD == MUS_CMD);
-  CHECK(MusicType::MOD == MUS_MOD);
-  CHECK(MusicType::OGG == MUS_OGG);
-  CHECK(MusicType::FLAC == MUS_FLAC);
-  CHECK(MusicType::MIDI == MUS_MID);
-  CHECK(MusicType::OPUS == MUS_OPUS);
+  CHECK(cen::music_type::unknown == MUS_NONE);
+  CHECK(cen::music_type::mp3 == MUS_MP3);
+  CHECK(cen::music_type::wav == MUS_WAV);
+  CHECK(cen::music_type::cmd == MUS_CMD);
+  CHECK(cen::music_type::mod == MUS_MOD);
+  CHECK(cen::music_type::ogg == MUS_OGG);
+  CHECK(cen::music_type::flac == MUS_FLAC);
+  CHECK(cen::music_type::midi == MUS_MID);
+  CHECK(cen::music_type::opus == MUS_OPUS);
 
-  CHECK(MUS_NONE == MusicType::Unknown);
-  CHECK(MUS_MP3 == MusicType::MP3);
-  CHECK(MUS_WAV == MusicType::WAV);
-  CHECK(MUS_CMD == MusicType::CMD);
-  CHECK(MUS_MOD == MusicType::MOD);
-  CHECK(MUS_OGG == MusicType::OGG);
-  CHECK(MUS_FLAC == MusicType::FLAC);
-  CHECK(MUS_MID == MusicType::MIDI);
-  CHECK(MUS_OPUS == MusicType::OPUS);
+  CHECK(MUS_NONE == cen::music_type::unknown);
+  CHECK(MUS_MP3 == cen::music_type::mp3);
+  CHECK(MUS_WAV == cen::music_type::wav);
+  CHECK(MUS_CMD == cen::music_type::cmd);
+  CHECK(MUS_MOD == cen::music_type::mod);
+  CHECK(MUS_OGG == cen::music_type::ogg);
+  CHECK(MUS_FLAC == cen::music_type::flac);
+  CHECK(MUS_MID == cen::music_type::midi);
+  CHECK(MUS_OPUS == cen::music_type::opus);
 }
 
-#endif
+#include "event.hpp"
+#include "renderer.hpp"
+#include "window.hpp"
+
+TEST_CASE("Manual testing of music playback", "[.music]")
+{
+  cen::window window;
+  window.set_title("Centurion music test");
+
+  cen::renderer renderer{window};
+  cen::event event;
+
+  cen::music music{"resources/hiddenPond.mp3"};
+  cen::music click{"resources/click.wav"};
+
+  const cen::font font{"resources/fira_code.ttf", 14};
+
+  renderer.set_color(cen::colors::white);
+
+  cen::czstring zero = "\"0\" to play the click one time.";
+  cen::czstring one = "\"1\" to play the click one time.";
+  cen::czstring two = "\"2\" to play the click two times.";
+  cen::czstring nine = "\"9\" to play the click forever.";
+  cen::czstring fadeIn = "\"F\" to fade in the music over 5 seconds.";
+  cen::czstring esc = "\"ESC\" to halt the music.";
+
+  const auto infoZero = renderer.render_blended_latin1(zero, font);
+  const auto infoOne = renderer.render_blended_latin1(one, font);
+  const auto infoTwo = renderer.render_blended_latin1(two, font);
+  const auto infoNine = renderer.render_blended_latin1(nine, font);
+  const auto infoFadeIn = renderer.render_blended_latin1(fadeIn, font);
+  const auto infoEsc = renderer.render_blended_latin1(esc, font);
+
+  renderer.set_color(cen::colors::green);
+  const auto playing =
+      renderer.render_blended_latin1("music is playing!", font);
+
+  renderer.set_color(cen::colors::magenta);
+  const auto fading = renderer.render_blended_latin1("music is fading!", font);
+
+  renderer.set_color(cen::colors::red);
+  const auto paused =
+      renderer.render_blended_latin1("No music is playing", font);
+
+  bool running = true;
+  window.show();
+  while (running) {
+    while (event.poll()) {
+      if (event.is<cen::quit_event>()) {
+        running = false;
+        break;
+      } else if (const auto* key = event.try_get<cen::keyboard_event>();
+                 key && key->state() == cen::button_state::released) {
+        if (key->is_active(SDLK_0)) {
+          click.play(0);
+
+        } else if (key->is_active(SDLK_1)) {
+          click.play(1);
+
+        } else if (key->is_active(SDLK_2)) {
+          click.play(2);
+
+        } else if (key->is_active(SDLK_9)) {
+          click.play(-1);
+
+        } else if (key->is_active(SDLK_f)) {
+          music.fade_in(cen::seconds<int>{5});
+
+        } else if (key->is_active(SDLK_ESCAPE)) {
+          cen::music::halt();
+        }
+      }
+    }
+
+    renderer.clear_with(cen::colors::black);
+
+    renderer.render(infoZero, cen::ipoint{50, 50});
+    renderer.render(infoOne, cen::ipoint{50, 75});
+    renderer.render(infoTwo, cen::ipoint{50, 100});
+    renderer.render(infoNine, cen::ipoint{50, 125});
+    renderer.render(infoFadeIn, cen::ipoint{50, 150});
+    renderer.render(infoEsc, cen::ipoint{50, 175});
+
+    if (cen::music::is_playing() && !cen::music::is_fading()) {
+      renderer.render(playing, cen::ipoint{300, 300});
+    } else if (cen::music::is_fading()) {
+      renderer.render(fading, cen::ipoint{300, 300});
+    } else {
+      renderer.render(paused, cen::ipoint{300, 300});
+    }
+
+    renderer.present();
+  }
+  window.hide();
+}

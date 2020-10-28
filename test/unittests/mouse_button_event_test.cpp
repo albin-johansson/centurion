@@ -1,13 +1,10 @@
-#include "mouse_button_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion;
-using namespace centurion::event;
+#include "event.hpp"
 
-TEST_CASE("MouseButtonEvent::set_window_id", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::set_window_id", "[mouse_button_event]")
 {
-  MouseButtonEvent event;
+  cen::mouse_button_event event;
 
   const auto id = 64;
   event.set_window_id(id);
@@ -15,9 +12,9 @@ TEST_CASE("MouseButtonEvent::set_window_id", "[MouseButtonEvent]")
   CHECK(event.window_id() == id);
 }
 
-TEST_CASE("MouseButtonEvent::set_which", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::set_which", "[mouse_button_event]")
 {
-  MouseButtonEvent event;
+  cen::mouse_button_event event;
 
   const auto which = 17;
   event.set_which(which);
@@ -25,29 +22,29 @@ TEST_CASE("MouseButtonEvent::set_which", "[MouseButtonEvent]")
   CHECK(event.which() == which);
 }
 
-TEST_CASE("MouseButtonEvent::set_button", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::set_button", "[mouse_button_event]")
 {
-  MouseButtonEvent event;
+  cen::mouse_button_event event;
 
-  const auto button = MouseButton::Right;
+  const auto button = cen::mouse_button::right;
   event.set_button(button);
 
   CHECK(event.button() == button);
 }
 
-TEST_CASE("MouseButtonEvent::set_state", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::set_state", "[mouse_button_event]")
 {
-  MouseButtonEvent event;
+  cen::mouse_button_event event;
 
-  const auto state = ButtonState::Released;
+  const auto state = cen::button_state::released;
   event.set_state(state);
 
   CHECK(event.state() == state);
 }
 
-TEST_CASE("MouseButtonEvent::set_clicks", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::set_clicks", "[mouse_button_event]")
 {
-  MouseButtonEvent event;
+  cen::mouse_button_event event;
 
   const auto clicks = 2;
   event.set_clicks(clicks);
@@ -55,9 +52,9 @@ TEST_CASE("MouseButtonEvent::set_clicks", "[MouseButtonEvent]")
   CHECK(event.clicks() == clicks);
 }
 
-TEST_CASE("MouseButtonEvent::set_x", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::set_x", "[mouse_button_event]")
 {
-  MouseButtonEvent event;
+  cen::mouse_button_event event;
 
   const auto x = 645;
   event.set_x(x);
@@ -65,9 +62,9 @@ TEST_CASE("MouseButtonEvent::set_x", "[MouseButtonEvent]")
   CHECK(event.x() == x);
 }
 
-TEST_CASE("MouseButtonEvent::set_y", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::set_y", "[mouse_button_event]")
 {
-  MouseButtonEvent event;
+  cen::mouse_button_event event;
 
   const auto y = 177;
   event.set_y(y);
@@ -75,70 +72,83 @@ TEST_CASE("MouseButtonEvent::set_y", "[MouseButtonEvent]")
   CHECK(event.y() == y);
 }
 
-TEST_CASE("MouseButtonEvent::window_id", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::window_id", "[mouse_button_event]")
 {
   SDL_MouseButtonEvent sdlEvent;
   sdlEvent.windowID = 75;
-  MouseButtonEvent event{sdlEvent};
+  cen::mouse_button_event event{sdlEvent};
 
   CHECK(event.window_id() == sdlEvent.windowID);
 }
 
-TEST_CASE("MouseButtonEvent::which", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::which", "[mouse_button_event]")
 {
   SDL_MouseButtonEvent sdlEvent;
   sdlEvent.which = 23;
-  MouseButtonEvent event{sdlEvent};
+  cen::mouse_button_event event{sdlEvent};
 
   CHECK(event.which() == sdlEvent.which);
 }
 
-TEST_CASE("MouseButtonEvent::button", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::button", "[mouse_button_event]")
 {
   SDL_MouseButtonEvent sdlEvent;
   sdlEvent.button = SDL_BUTTON_X1;
-  MouseButtonEvent event{sdlEvent};
+  cen::mouse_button_event event{sdlEvent};
 
-  CHECK(event.button() == static_cast<MouseButton>(sdlEvent.button));
+  CHECK(event.button() == static_cast<cen::mouse_button>(sdlEvent.button));
 }
 
-TEST_CASE("MouseButtonEvent::state", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::state", "[mouse_button_event]")
 {
   SDL_MouseButtonEvent sdlEvent;
   sdlEvent.state = SDL_PRESSED;
-  MouseButtonEvent event{sdlEvent};
+  cen::mouse_button_event event{sdlEvent};
 
-  CHECK(event.state() == static_cast<ButtonState>(sdlEvent.state));
+  CHECK(event.state() == static_cast<cen::button_state>(sdlEvent.state));
 }
 
-TEST_CASE("MouseButtonEvent::clicks", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::pressed", "[mouse_button_event]")
+{
+  SDL_MouseButtonEvent sdlEvent;
+  sdlEvent.state = SDL_PRESSED;
+  cen::mouse_button_event event{sdlEvent};
+
+  CHECK(event.pressed());
+}
+
+TEST_CASE("mouse_button_event::released", "[mouse_button_event]")
+{
+  SDL_MouseButtonEvent sdlEvent;
+  sdlEvent.state = SDL_RELEASED;
+  cen::mouse_button_event event{sdlEvent};
+
+  CHECK(event.released());
+}
+
+TEST_CASE("mouse_button_event::clicks", "[mouse_button_event]")
 {
   SDL_MouseButtonEvent sdlEvent;
   sdlEvent.clicks = 2;
-  MouseButtonEvent event{sdlEvent};
+  cen::mouse_button_event event{sdlEvent};
 
   CHECK(event.clicks() == sdlEvent.clicks);
 }
 
-TEST_CASE("MouseButtonEvent::x", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::x", "[mouse_button_event]")
 {
   SDL_MouseButtonEvent sdlEvent;
   sdlEvent.x = 467;
-  MouseButtonEvent event{sdlEvent};
+  cen::mouse_button_event event{sdlEvent};
 
   CHECK(event.x() == sdlEvent.x);
 }
 
-TEST_CASE("MouseButtonEvent::y", "[MouseButtonEvent]")
+TEST_CASE("mouse_button_event::y", "[mouse_button_event]")
 {
   SDL_MouseButtonEvent sdlEvent;
   sdlEvent.y = 887;
-  MouseButtonEvent event{sdlEvent};
+  cen::mouse_button_event event{sdlEvent};
 
   CHECK(event.y() == sdlEvent.y);
-}
-
-TEST_CASE("MouseButtonEvent()", "[MouseButtonEvent]")
-{
-  CHECK_NOTHROW(MouseButtonEvent{{}});
 }

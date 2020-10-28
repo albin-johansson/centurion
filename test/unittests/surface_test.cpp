@@ -1,79 +1,78 @@
-#include "surface.h"
+#include "surface.hpp"
 
 #include <SDL_image.h>
 
 #include <catch.hpp>
+#include <iostream>
 #include <utility>
 
-#include "centurion_exception.h"
-#include "colors.h"
-#include "renderer.h"
-#include "texture.h"
-#include "window.h"
+#include "colors.hpp"
+#include "exception.hpp"
+#include "log.hpp"
 
-using namespace centurion;
+static constexpr cen::czstring path = "resources/panda.png";
 
-static constexpr CZString path = "resources/panda.png";
-
-TEST_CASE("Surface(CZString)", "[Surface]")
+TEST_CASE("surface_handle", "[surface]")
 {
-  SECTION("Null path")
-  {
-    CZString c = nullptr;
-    CHECK_THROWS_AS(Surface{c}, CenturionException);
-  }
+  CHECK_FALSE(cen::surface_handle{nullptr});
 
-  SECTION("Bad path") { CHECK_THROWS_AS(Surface{""}, CenturionException); }
-
-  CHECK_NOTHROW(Surface{path});
+  cen::surface surface{path};
+  cen::surface_handle handle{surface.get()};
+  CHECK(handle);
 }
 
-TEST_CASE("Surface(SDL_Surface*)", "[Surface]")
+TEST_CASE("surface(nn_czstring)", "[surface]")
 {
-  SECTION("Null surface")
+  SECTION("Bad path")
   {
-    SDL_Surface* s = nullptr;
-    CHECK_THROWS_AS(Surface{s}, CenturionException);
+    CHECK_THROWS_AS(cen::surface{""}, cen::exception);
   }
 
-  SDL_Surface* surface = IMG_Load(path);
-  CHECK_NOTHROW(Surface{surface});
+  CHECK_NOTHROW(cen::surface{path});
 }
 
-TEST_CASE("Surface(const Surface&)", "[Surface]")
+TEST_CASE("surface(owner<SDL_Surface*>)", "[surface]")
 {
-  const Surface surface{path};
-  const Surface copy{surface};
+  CHECK_NOTHROW(cen::surface{IMG_Load(path)});
+
+  SDL_Surface* bad{};
+  CHECK_THROWS_AS(cen::surface{bad}, cen::exception);
+}
+
+TEST_CASE("surface(const surface&)", "[surface]")
+{
+  const cen::surface surface{path};
+  const cen::surface copy{surface};
 
   CHECK(surface.get() != copy.get());
   CHECK(surface.get());
   CHECK(copy.get());
 }
 
-TEST_CASE("Surface(Surface&&)", "[Surface]")
+TEST_CASE("surface(surface&&)", "[surface]")
 {
-  Surface surface{path};
-  Surface other{std::move(surface)};
+  cen::surface surface{path};
+  cen::surface other{std::move(surface)};
 
   CHECK(!surface.get());
   CHECK(other.get());
 }
 
-TEST_CASE("Surface::operator=(const Surface&)", "[Surface]")
+TEST_CASE("surface::operator=(const surface&)", "[surface]")
 {
-  Surface fst{path};
-  Surface copy{path};
+  cen::surface fst{path};
+  cen::surface copy{path};
 
   copy = fst;
 
   CHECK(fst.get() != copy.get());
 }
 
-TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
+TEST_CASE("surface::operator=(surface&&)", "[surface]")
 {
   SECTION("Self-assignment")
   {
-    Surface surface{path};
+    cen::surface surface{path};
 
     surface = std::move(surface);
     CHECK(surface.get());
@@ -81,8 +80,8 @@ TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
 
   SECTION("Normal usage")
   {
-    Surface surface{path};
-    Surface other{path};
+    cen::surface surface{path};
+    cen::surface other{path};
 
     other = std::move(surface);
 
@@ -91,21 +90,21 @@ TEST_CASE("Surface::operator=(Surface&&)", "[Surface]")
   }
 }
 
-TEST_CASE("Surface::set_pixel", "[Surface]")
+TEST_CASE("surface::set_pixel", "[surface]")
 {
-  Surface surface{path};
+  cen::surface surface{path};
 
-  CHECK_NOTHROW(surface.set_pixel({-1, 0}, color::red));
-  CHECK_NOTHROW(surface.set_pixel({0, -1}, color::red));
-  CHECK_NOTHROW(surface.set_pixel({surface.width(), 0}, color::red));
-  CHECK_NOTHROW(surface.set_pixel({0, surface.height()}, color::red));
+  CHECK_NOTHROW(surface.set_pixel({-1, 0}, cen::colors::red));
+  CHECK_NOTHROW(surface.set_pixel({0, -1}, cen::colors::red));
+  CHECK_NOTHROW(surface.set_pixel({surface.width(), 0}, cen::colors::red));
+  CHECK_NOTHROW(surface.set_pixel({0, surface.height()}, cen::colors::red));
 
-  CHECK_NOTHROW(surface.set_pixel({43, 12}, color::orange));
+  CHECK_NOTHROW(surface.set_pixel({43, 12}, cen::colors::orange));
 }
 
-TEST_CASE("Surface::set_alpha", "[Surface]")
+TEST_CASE("surface::set_alpha", "[surface]")
 {
-  Surface surface{path};
+  cen::surface surface{path};
 
   const auto alpha = 0xCF;
   surface.set_alpha(alpha);
@@ -113,118 +112,121 @@ TEST_CASE("Surface::set_alpha", "[Surface]")
   CHECK(alpha == surface.alpha());
 }
 
-TEST_CASE("Surface::set_color_mod", "[Surface]")
+TEST_CASE("surface::set_color_mod", "[surface]")
 {
-  Surface surface{path};
+  cen::surface surface{path};
 
-  const auto& color = color::hot_pink;
+  const auto& color = cen::colors::hot_pink;
   surface.set_color_mod(color);
 
   CHECK(color == surface.color_mod());
 }
 
-TEST_CASE("Surface::set_blend_mode", "[Surface]")
+TEST_CASE("surface::set_blend_mode", "[surface]")
 {
-  Surface surface{path};
+  cen::surface surface{path};
 
-  const auto mode = BlendMode::Mod;
+  const auto mode = cen::blend_mode::mod;
   surface.set_blend_mode(mode);
 
-  CHECK(mode == surface.blend_mode());
+  CHECK(mode == surface.get_blend_mode());
 }
 
-TEST_CASE("Surface::width", "[Surface]")
+TEST_CASE("surface::width", "[surface]")
 {
-  const Surface surface{path};
+  const cen::surface surface{path};
   CHECK(surface.width() == 200);
 }
 
-TEST_CASE("Surface::height", "[Surface]")
+TEST_CASE("surface::height", "[surface]")
 {
-  const Surface surface{path};
+  const cen::surface surface{path};
   CHECK(surface.height() == 150);
 }
 
-TEST_CASE("Surface::pitch", "[Surface]")
+TEST_CASE("surface::pitch", "[surface]")
 {
-  const Surface surface{path};
+  const cen::surface surface{path};
   CHECK(surface.pitch() == (4 * surface.width()));
 }
 
-TEST_CASE("Surface::clip", "[Surface]")
+TEST_CASE("surface::clip", "[surface]")
 {
-  const IRect rect{{48, 29}, {34, 89}};
+  const cen::irect rect{{48, 29}, {34, 89}};
 
   SECTION("Non-const")
   {
-    Surface surface{path};
-    surface.get()->clip_rect = rect;
+    cen::surface surface{path};
+    surface.get()->clip_rect = rect.get();
     CHECK(surface.clip() == rect);
   }
 
   SECTION("Const")
   {
-    const Surface surface{path};
-    surface.get()->clip_rect = rect;
+    const cen::surface surface{path};
+    surface.get()->clip_rect = rect.get();
     CHECK(surface.clip() == rect);
   }
 }
 
-TEST_CASE("Surface::pixels", "[Surface]")
+TEST_CASE("surface::pixels", "[surface]")
 {
   SECTION("Const")
   {
-    const Surface surface{path};
+    const cen::surface surface{path};
     CHECK(surface.pixels());
   }
   SECTION("Non-const")
   {
-    Surface surface{path};
+    cen::surface surface{path};
     CHECK(surface.pixels());
   }
 }
 
-TEST_CASE("Surface::to_texture", "[Surface]")
+TEST_CASE("surface::convert", "[surface]")
 {
-  const Surface surface{path};
-  const Window window;
-  const Renderer renderer{window};
-
-  CHECK(surface.to_texture(renderer));
-}
-
-TEST_CASE("Surface::convert", "[Surface]")
-{
-  Surface original{path};
-  original.set_blend_mode(BlendMode::Blend);
+  cen::surface original{path};
+  original.set_blend_mode(cen::blend_mode::blend);
   original.set_alpha(0xAE);
-  original.set_color_mod(color::red);
+  original.set_color_mod(cen::colors::red);
 
-  const auto pixelFormat = PixelFormat::RGBA8888;
-  Surface converted = original.convert(pixelFormat);
+  const auto pixelFormat = cen::pixel_format::rgba8888;
+  cen::surface converted = original.convert(pixelFormat);
 
-  CHECK(converted.blend_mode() == original.blend_mode());
+  CHECK(converted.get_blend_mode() == original.get_blend_mode());
   CHECK(converted.alpha() == original.alpha());
   CHECK(converted.color_mod() == original.color_mod());
 }
 
-TEST_CASE("Surface::get", "[Surface]")
+TEST_CASE("surface::get", "[surface]")
 {
-  Surface surface{path};
+  cen::surface surface{path};
   CHECK(surface.get());
 }
 
-TEST_CASE("Surface to SDL_Surface*", "[Surface]")
+TEST_CASE("surface to SDL_Surface*", "[surface]")
 {
   SECTION("Const")
   {
-    const Surface surface{path};
+    const cen::surface surface{path};
     CHECK(surface.operator const SDL_Surface*());
   }
 
   SECTION("Non-const")
   {
-    Surface surface{path};
+    cen::surface surface{path};
     CHECK(surface.operator SDL_Surface*());
   }
+}
+
+TEST_CASE("surface to_string", "[surface]")
+{
+  const cen::surface surface{path};
+  cen::log::put(cen::to_string(surface));
+}
+
+TEST_CASE("surface stream operator", "[surface]")
+{
+  const cen::surface surface{path};
+  std::cout << "COUT: " << surface << '\n';
 }

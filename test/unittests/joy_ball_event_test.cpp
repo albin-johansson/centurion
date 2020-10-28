@@ -1,17 +1,10 @@
-#include "joy_ball_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
+#include "event.hpp"
 
-TEST_CASE("JoyBallEvent move constructor", "[JoyBallEvent]")
+TEST_CASE("joy_ball_event::set_which", "[joy_ball_event]")
 {
-  CHECK_NOTHROW(JoyBallEvent{{}});
-}
-
-TEST_CASE("JoyBallEvent::set_which", "[JoyBallEvent]")
-{
-  JoyBallEvent event;
+  cen::joy_ball_event event;
 
   const auto which = 3;
   event.set_which(which);
@@ -19,9 +12,9 @@ TEST_CASE("JoyBallEvent::set_which", "[JoyBallEvent]")
   CHECK(event.which() == which);
 }
 
-TEST_CASE("JoyBallEvent::set_ball", "[JoyBallEvent]")
+TEST_CASE("joy_ball_event::set_ball", "[joy_ball_event]")
 {
-  JoyBallEvent event;
+  cen::joy_ball_event event;
 
   const auto ball = 7;
   event.set_ball(ball);
@@ -29,9 +22,9 @@ TEST_CASE("JoyBallEvent::set_ball", "[JoyBallEvent]")
   CHECK(event.ball() == ball);
 }
 
-TEST_CASE("JoyBallEvent::set_dx", "[JoyBallEvent]")
+TEST_CASE("joy_ball_event::set_dx", "[joy_ball_event]")
 {
-  JoyBallEvent event;
+  cen::joy_ball_event event;
 
   const auto dx = 173;
   event.set_dx(dx);
@@ -39,9 +32,9 @@ TEST_CASE("JoyBallEvent::set_dx", "[JoyBallEvent]")
   CHECK(event.dx() == dx);
 }
 
-TEST_CASE("JoyBallEvent::set_dy", "[JoyBallEvent]")
+TEST_CASE("joy_ball_event::set_dy", "[joy_ball_event]")
 {
-  JoyBallEvent event;
+  cen::joy_ball_event event;
 
   const auto dy = -57;
   event.set_dy(dy);
@@ -49,38 +42,42 @@ TEST_CASE("JoyBallEvent::set_dy", "[JoyBallEvent]")
   CHECK(event.dy() == dy);
 }
 
-TEST_CASE("JoyBallEvent::which", "[JoyBallEvent]")
+TEST_CASE("joy_ball_event::which", "[joy_ball_event]")
 {
   SDL_JoyBallEvent sdlEvent;
   sdlEvent.which = 5;
-  JoyBallEvent event{sdlEvent};
+
+  cen::joy_ball_event event{sdlEvent};
 
   CHECK(event.which() == sdlEvent.which);
 }
 
-TEST_CASE("JoyBallEvent::ball", "[JoyBallEvent]")
+TEST_CASE("joy_ball_event::ball", "[joy_ball_event]")
 {
   SDL_JoyBallEvent sdlEvent;
   sdlEvent.ball = 17;
-  JoyBallEvent event{sdlEvent};
+
+  cen::joy_ball_event event{sdlEvent};
 
   CHECK(event.ball() == sdlEvent.ball);
 }
 
-TEST_CASE("JoyBallEvent::dx", "[JoyBallEvent]")
+TEST_CASE("joy_ball_event::dx", "[joy_ball_event]")
 {
   SDL_JoyBallEvent sdlEvent;
   sdlEvent.xrel = 723;
-  JoyBallEvent event{sdlEvent};
+
+  cen::joy_ball_event event{sdlEvent};
 
   CHECK(event.dx() == sdlEvent.xrel);
 }
 
-TEST_CASE("JoyBallEvent::dy", "[JoyBallEvent]")
+TEST_CASE("joy_ball_event::dy", "[joy_ball_event]")
 {
   SDL_JoyBallEvent sdlEvent;
   sdlEvent.yrel = 5933;
-  JoyBallEvent event{sdlEvent};
+
+  cen::joy_ball_event event{sdlEvent};
 
   CHECK(event.dy() == sdlEvent.yrel);
 }

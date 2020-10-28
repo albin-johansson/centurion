@@ -1,11 +1,9 @@
 #include <catch.hpp>
 
-#include "centurion_utils.h"
-
-using namespace centurion;
+#include "detail/utils.hpp"
 
 TEST_CASE("Convert C++ bool to SDL bool", "[utilities]")
 {
-  CHECK(detail::convert_bool(true) == SDL_TRUE);
-  CHECK(detail::convert_bool(false) == SDL_FALSE);
+  CHECK(cen::detail::convert_bool(true) == SDL_TRUE);
+  CHECK(cen::detail::convert_bool(false) == SDL_FALSE);
 }

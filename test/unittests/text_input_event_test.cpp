@@ -1,12 +1,10 @@
-#include "text_input_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
+#include "event.hpp"
 
-TEST_CASE("TextInputEvent::set_window_id", "[TextInputEvent]")
+TEST_CASE("text_input_event::set_window_id", "[text_input_event]")
 {
-  TextInputEvent event;
+  cen::text_input_event event;
 
   const auto id = 23;
   event.set_window_id(id);
@@ -14,22 +12,22 @@ TEST_CASE("TextInputEvent::set_window_id", "[TextInputEvent]")
   CHECK(event.window_id() == id);
 }
 
-TEST_CASE("TextInputEvent::window_id", "[TextInputEvent]")
+TEST_CASE("text_input_event::window_id", "[text_input_event]")
 {
   SDL_TextInputEvent sdlEvent{SDL_TEXTINPUT, 0, 8};
-  TextInputEvent event{sdlEvent};
+  cen::text_input_event event{sdlEvent};
 
   CHECK(event.window_id() == sdlEvent.windowID);
 }
 
-TEST_CASE("TextInputEvent::text", "[TextInputEvent]")
+TEST_CASE("text_input_event::text_utf8", "[text_input_event]")
 {
   SDL_TextInputEvent sdlEvent{SDL_TEXTINPUT, 1, 1, "hello"};
-  TextInputEvent event{sdlEvent};
-  CHECK_THAT(event.text(), Catch::Equals("hello"));
+  cen::text_input_event event{sdlEvent};
+  CHECK_THAT(event.text_utf8().data(), Catch::Equals("hello"));
 }
 
-TEST_CASE("TextInputEvent()", "[TextInputEvent]")
+TEST_CASE("text_input_event()", "[text_input_event]")
 {
-  CHECK_NOTHROW(TextInputEvent{{}});
+  CHECK_NOTHROW(cen::text_input_event{{}});
 }

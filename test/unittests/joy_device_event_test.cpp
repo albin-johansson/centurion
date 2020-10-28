@@ -1,17 +1,10 @@
-#include "joy_device_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
-
-TEST_CASE("JoyDeviceEvent move constructor", "[JoyDeviceEvent]")
-{
-  CHECK_NOTHROW(JoyDeviceEvent{{}});
-}
+#include "event.hpp"
 
 TEST_CASE("JoyDeviceEvent::set_which", "[JoyDeviceEvent]")
 {
-  JoyDeviceEvent event;
+  cen::joy_device_event event;
 
   const auto which = 84;
   event.set_which(which);
@@ -23,7 +16,8 @@ TEST_CASE("JoyDeviceEvent::which", "[JoyDeviceEvent]")
 {
   SDL_JoyDeviceEvent sdlEvent;
   sdlEvent.which = 27;
-  JoyDeviceEvent event{sdlEvent};
+
+  cen::joy_device_event event{sdlEvent};
 
   CHECK(event.which() == sdlEvent.which);
 }

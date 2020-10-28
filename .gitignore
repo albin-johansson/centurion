@@ -42,8 +42,10 @@
 *.afdesign
 cmake-build-*
 build
-doc/html
-doc/latex
+bin
+bin-*
+doxygen-out
+docs/_build
 .idea
 .vs
 .vscode

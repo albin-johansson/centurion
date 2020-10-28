@@ -1,37 +1,36 @@
-#include "color.h"
+#include "color.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 #include <utility>
 
-#include "colors.h"
-#include "log.h"
+#include "colors.hpp"
+#include "log.hpp"
 
-using namespace centurion;
-
-TEST_CASE("Color()", "[Color]")
+TEST_CASE("color()", "[color]")
 {
-  Color c;
+  cen::color c;
   CHECK(0 == c.red());
   CHECK(0 == c.red());
   CHECK(0 == c.red());
   CHECK(0xFF == c.alpha());
 }
 
-TEST_CASE("Color(Color&&)", "[Color]")
+TEST_CASE("color(color&&)", "[color]")
 {
   const auto r = 0xAE;
   const auto g = 0xDD;
   const auto b = 0xC5;
   const auto a = 0x38;
-  Color color{r, g, b, a};
-  Color other{std::move(color)};
+  cen::color color{r, g, b, a};
+  cen::color other{std::move(color)};
   CHECK(r == other.red());
   CHECK(g == other.green());
   CHECK(b == other.blue());
   CHECK(a == other.alpha());
 }
 
-TEST_CASE("Color(Uint8, Uint8, Uint8, Uint8)", "[Color]")
+TEST_CASE("color(u8, u8, u8, u8)", "[color]")
 {
   const auto r = 0xA5;
   const auto g = 0xB3;
@@ -40,7 +39,7 @@ TEST_CASE("Color(Uint8, Uint8, Uint8, Uint8)", "[Color]")
 
   SECTION("Full ctor")
   {
-    const Color c{r, g, b, a};
+    const cen::color c{r, g, b, a};
 
     CHECK(r == c.red());
     CHECK(g == c.green());
@@ -50,19 +49,19 @@ TEST_CASE("Color(Uint8, Uint8, Uint8, Uint8)", "[Color]")
 
   SECTION("Defaulted alpha value")
   {
-    const Color c{r, g, b};
+    const cen::color c{r, g, b};
 
     CHECK(r == c.red());
     CHECK(g == c.green());
     CHECK(b == c.blue());
-    CHECK(c.alpha() == Color::max);
+    CHECK(c.alpha() == cen::color::max());
   }
 }
 
-TEST_CASE("Color::operator=(Color&)", "[Color]")
+TEST_CASE("color::operator=(color&)", "[color]")
 {
-  Color color{0xFE, 0x13, 0xA8, 0xCA};
-  const Color other{0xBE, 0x44, 0xAC, 0xFD};
+  cen::color color{0xFE, 0x13, 0xA8, 0xCA};
+  const cen::color other{0xBE, 0x44, 0xAC, 0xFD};
 
   REQUIRE(color != other);
 
@@ -71,15 +70,15 @@ TEST_CASE("Color::operator=(Color&)", "[Color]")
   CHECK(color == other);
 }
 
-TEST_CASE("Color::operator=(Color&&)", "[Color]")
+TEST_CASE("color::operator=(color&&)", "[color]")
 {
-  Color color{0xFE, 0x13, 0xA8, 0xCA};
+  cen::color color{0xFE, 0x13, 0xA8, 0xCA};
   const auto r = 0xCC;
   const auto g = 0xCE;
   const auto b = 0x71;
   const auto a = 0x99;
 
-  color = Color{r, g, b, a};
+  color = cen::color{r, g, b, a};
 
   CHECK(r == color.red());
   CHECK(g == color.green());
@@ -87,13 +86,13 @@ TEST_CASE("Color::operator=(Color&&)", "[Color]")
   CHECK(a == color.alpha());
 }
 
-TEST_CASE("Color from SDL_Color", "[Color]")
+TEST_CASE("color from SDL_Color", "[color]")
 {
   const auto sc = SDL_Color{0x3F, 0x9A, 0xCC, 0x17};
 
   SECTION("Copy constructor")
   {
-    const auto c = Color{sc};
+    const cen::color c{sc};
     CHECK(c == sc);
     CHECK(c.red() == sc.r);
     CHECK(c.green() == sc.g);
@@ -103,7 +102,7 @@ TEST_CASE("Color from SDL_Color", "[Color]")
 
   SECTION("Move constructor")
   {
-    const auto c = Color{SDL_Color{sc.r, sc.g, sc.b, sc.a}};
+    const cen::color c{SDL_Color{sc.r, sc.g, sc.b, sc.a}};
     CHECK(c == sc);
     CHECK(c.red() == sc.r);
     CHECK(c.green() == sc.g);
@@ -112,13 +111,13 @@ TEST_CASE("Color from SDL_Color", "[Color]")
   }
 }
 
-TEST_CASE("Color from SDL_MessageBoxColor", "[Color]")
+TEST_CASE("color from SDL_MessageBoxColor", "[color]")
 {
-  const auto sc = SDL_MessageBoxColor{0xDA, 0x5E, 0x81};
+  const SDL_MessageBoxColor sc{0xDA, 0x5E, 0x81};
 
   SECTION("Copy constructor")
   {
-    const auto c = Color{sc};
+    const auto c = cen::color{sc};
     CHECK(c == sc);
     CHECK(c.red() == sc.r);
     CHECK(c.green() == sc.g);
@@ -127,7 +126,7 @@ TEST_CASE("Color from SDL_MessageBoxColor", "[Color]")
 
   SECTION("Move constructor")
   {
-    const auto c = Color{SDL_MessageBoxColor{sc.r, sc.g, sc.b}};
+    const cen::color c{SDL_MessageBoxColor{sc.r, sc.g, sc.b}};
     CHECK(c == sc);
     CHECK(c.red() == sc.r);
     CHECK(c.green() == sc.g);
@@ -135,11 +134,11 @@ TEST_CASE("Color from SDL_MessageBoxColor", "[Color]")
   }
 }
 
-TEST_CASE("Equality operators", "[Color]")
+TEST_CASE("Equality operators", "[color]")
 {
   SECTION("Reflexivity")
   {
-    const auto color = Color{10, 20, 30, 40};
+    const cen::color color{10, 20, 30, 40};
     CHECK(color == color);
     CHECK(!(color != color));
   }
@@ -151,9 +150,9 @@ TEST_CASE("Equality operators", "[Color]")
     const auto b = 0x14;
     const auto a = 0x86;
 
-    const auto sdlColor = SDL_Color{r, g, b, a};
-    const auto msgColor = SDL_MessageBoxColor{r, g, b};
-    const auto color = Color{r, g, b, a};
+    const SDL_Color sdlColor{r, g, b, a};
+    const SDL_MessageBoxColor msgColor{r, g, b};
+    const cen::color color{r, g, b, a};
 
     CHECK(color == sdlColor);
     CHECK(sdlColor == color);
@@ -164,9 +163,9 @@ TEST_CASE("Equality operators", "[Color]")
 
   SECTION("Non-equal colors")
   {
-    const auto color = Color{0x34, 0xD2, 0xCA, 0xDE};
-    const auto sdlColor = SDL_Color{0x84, 0x45, 0x11, 0xFA};
-    const auto msgColor = SDL_MessageBoxColor{0xAA, 0x57, 0x99};
+    const cen::color color{0x34, 0xD2, 0xCA, 0xDE};
+    const SDL_Color sdlColor{0x84, 0x45, 0x11, 0xFA};
+    const SDL_MessageBoxColor msgColor{0xAA, 0x57, 0x99};
 
     CHECK(color != sdlColor);
     CHECK(sdlColor != color);
@@ -176,9 +175,9 @@ TEST_CASE("Equality operators", "[Color]")
   }
 }
 
-TEST_CASE("Color setters", "[Color]")
+TEST_CASE("color setters", "[color]")
 {
-  Color c;
+  cen::color c;
   SECTION("Red")
   {
     const auto r = 0x3C;
@@ -208,12 +207,23 @@ TEST_CASE("Color setters", "[Color]")
   }
 }
 
-TEST_CASE("Color conversions", "[Color]")
+TEST_CASE("color::with_alpha", "[color]")
+{
+  const auto& other = cen::colors::maroon;
+  const auto color = other.with_alpha(0x12);
+
+  CHECK(color.red() == other.red());
+  CHECK(color.green() == other.green());
+  CHECK(color.blue() == other.blue());
+  CHECK(color.alpha() == 0x12);
+}
+
+TEST_CASE("color conversions", "[color]")
 {
   SECTION("Convert to SDL_Color")
   {
-    const auto& color = color::dark_orchid;
-    SDL_Color sdlColor = color;
+    const auto& color = cen::colors::dark_orchid;
+    const auto sdlColor = static_cast<SDL_Color>(color);
 
     CHECK(color == sdlColor);
     CHECK(sdlColor == color);
@@ -226,8 +236,8 @@ TEST_CASE("Color conversions", "[Color]")
 
   SECTION("Convert to SDL_MessageBoxColor")
   {
-    const auto& color = color::dark_orchid;
-    SDL_MessageBoxColor msgColor = color;
+    const auto& color = cen::colors::dark_orchid;
+    const auto msgColor = static_cast<SDL_MessageBoxColor>(color);
 
     CHECK(color == msgColor);
     CHECK(msgColor == color);
@@ -239,7 +249,7 @@ TEST_CASE("Color conversions", "[Color]")
 
   SECTION("Reinterpret to SDL_Color*")
   {
-    const Color color = color::bisque;
+    const cen::color color = cen::colors::bisque;
     const auto* sdlColor = static_cast<const SDL_Color*>(color);
 
     const void* adr = &color;
@@ -253,8 +263,14 @@ TEST_CASE("Color conversions", "[Color]")
   }
 }
 
-TEST_CASE("Color::to_string", "[Color]")
+TEST_CASE("color to_string", "[color]")
 {
-  const auto color = Color{0x12, 0xFA, 0xCC, 0xAD};
-  Log::info(Log::Category::Test, "%s", color.to_string().c_str());
+  const cen::color color{0x12, 0xFA, 0xCC, 0xAD};
+  cen::log::put(cen::to_string(color));
+}
+
+TEST_CASE("color stream operator", "[color]")
+{
+  const cen::color color{0xAA, 0xBB, 0xCC, 0xDD};
+  std::cout << "COUT: " << color << '\n';
 }

@@ -1,133 +1,135 @@
 cmake_minimum_required(VERSION 3.15)
-project(CenturionSrcProj)
+
+project(CenturionSrc)
 
 set(SOURCE_FILES
-        ${CTN_INCLUDE_DIR}/centurion_docs.h
-        ${CTN_INCLUDE_DIR}/window.h
-        ${CTN_INCLUDE_DIR}/font.h
-        ${CTN_INCLUDE_DIR}/renderer.h
-        ${CTN_INCLUDE_DIR}/texture.h
-        ${CTN_INCLUDE_DIR}/centurion_exception.h
-        ${CTN_INCLUDE_DIR}/centurion_api.h
-        ${CTN_INCLUDE_DIR}/centurion.h
-        ${CTN_INCLUDE_DIR}/colors.h
-        ${CTN_INCLUDE_DIR}/texture_loader.h
-        ${CTN_INCLUDE_DIR}/paths.h
-        ${CTN_INCLUDE_DIR}/platform.h
-        ${CTN_INCLUDE_DIR}/timer.h
-        ${CTN_INCLUDE_DIR}/log.h
-        ${CTN_INCLUDE_DIR}/blend_mode.h
-        ${CTN_INCLUDE_DIR}/message_box.h
-        ${CTN_INCLUDE_DIR}/color.h
-        ${CTN_INCLUDE_DIR}/rect.h
-        ${CTN_INCLUDE_DIR}/point.h
-        ${CTN_INCLUDE_DIR}/key_state.h
-        ${CTN_INCLUDE_DIR}/mouse_state.h
-        ${CTN_INCLUDE_DIR}/centurion_utils.h
-        ${CTN_INCLUDE_DIR}/error.h
-        ${CTN_INCLUDE_DIR}/surface.h
-        ${CTN_INCLUDE_DIR}/pixel_format.h
-        ${CTN_INCLUDE_DIR}/cursor.h
-        ${CTN_INCLUDE_DIR}/cpu.h
-        ${CTN_INCLUDE_DIR}/ram.h
-        ${CTN_INCLUDE_DIR}/battery.h
-        ${CTN_INCLUDE_DIR}/screen.h
-        ${CTN_INCLUDE_DIR}/key.h
-        ${CTN_INCLUDE_DIR}/touch.h
-        ${CTN_INCLUDE_DIR}/event.h
-        ${CTN_INCLUDE_DIR}/event_type.h
-        ${CTN_INCLUDE_DIR}/mouse_button.h
-        ${CTN_INCLUDE_DIR}/event.h
-        ${CTN_INCLUDE_DIR}/keyboard_event.h
-        ${CTN_INCLUDE_DIR}/common_event.h
-        ${CTN_INCLUDE_DIR}/quit_event.h
-        ${CTN_INCLUDE_DIR}/button_state.h
-        ${CTN_INCLUDE_DIR}/window_event.h
-        ${CTN_INCLUDE_DIR}/audio_device_event.h
-        ${CTN_INCLUDE_DIR}/controller_axis_event.h
-        ${CTN_INCLUDE_DIR}/controller_button_event.h
-        ${CTN_INCLUDE_DIR}/game_controller.h
-        ${CTN_INCLUDE_DIR}/controller_device_event.h
-        ${CTN_INCLUDE_DIR}/dollar_gesture_event.h
-        ${CTN_INCLUDE_DIR}/drop_event.h
-        ${CTN_INCLUDE_DIR}/touch_finger_event.h
-        ${CTN_INCLUDE_DIR}/joy_axis_event.h
-        ${CTN_INCLUDE_DIR}/joy_ball_event.h
-        ${CTN_INCLUDE_DIR}/joy_hat_event.h
-        ${CTN_INCLUDE_DIR}/joy_button_event.h
-        ${CTN_INCLUDE_DIR}/joy_device_event.h
-        ${CTN_INCLUDE_DIR}/mouse_motion_event.h
-        ${CTN_INCLUDE_DIR}/mouse_button_event.h
-        ${CTN_INCLUDE_DIR}/mouse_wheel_event.h
-        ${CTN_INCLUDE_DIR}/multi_gesture_event.h
-        ${CTN_INCLUDE_DIR}/text_editing_event.h
-        ${CTN_INCLUDE_DIR}/text_input_event.h
-        ${CTN_INCLUDE_DIR}/area.h
-        ${CTN_INCLUDE_DIR}/key_modifier.h
-        ${CTN_INCLUDE_DIR}/syswm_event.h
-        ${CTN_INCLUDE_DIR}/hints.h
-        ${CTN_INCLUDE_DIR}/joystick.h
-        ${CTN_INCLUDE_DIR}/touch.h
-        window.cpp
-        font.cpp
-        renderer.cpp
-        texture.cpp
-        centurion_exception.cpp
-        centurion.cpp
-        texture_loader.cpp
-        paths.cpp
-        platform.cpp
-        log.cpp
-        timer.cpp
-        message_box.cpp
-        color.cpp
-        blend_mode.cpp
-        key_state.cpp
-        mouse_state.cpp
-        error.cpp
-        surface.cpp
-        cursor.cpp
-        pixel_format.cpp
-        cpu.cpp
-        ram.cpp
-        battery.cpp
-        screen.cpp
-        key.cpp
-        event.cpp
-        event_type.cpp
-        quit_event.cpp
-        window_event.cpp
-        keyboard_event.cpp
-        audio_device_event.cpp
-        controller_axis_event.cpp
-        controller_button_event.cpp
-        game_controller.cpp
-        controller_device_event.cpp
-        dollar_gesture_event.cpp
-        drop_event.cpp
-        touch_finger_event.cpp
-        joy_axis_event.cpp
-        joy_ball_event.cpp
-        joy_hat_event.cpp
-        joy_button_event.cpp
-        joy_device_event.cpp
-        mouse_motion_event.cpp
-        mouse_button_event.cpp
-        mouse_wheel_event.cpp
-        multi_gesture_event.cpp
-        text_editing_event.cpp
-        text_input_event.cpp
-        syswm_event.cpp
-        joystick.cpp
-        touch.cpp)
+        ../include/centurion_cfg.hpp
+        ../include/types.hpp
+        ../include/graphics_drivers.hpp
+        ../include/window.hpp
+        ../include/window_utils.hpp
+        ../include/font.hpp
+        ../include/renderer.hpp
+        ../include/joystick.hpp
+        ../include/texture.hpp
+        ../include/exception.hpp
+        ../include/centurion_api.hpp
+        ../include/centurion.hpp
+        ../include/colors.hpp
+        ../include/pref_path.hpp
+        ../include/base_path.hpp
+        ../include/platform.hpp
+        ../include/counter.hpp
+        ../include/log.hpp
+        ../include/blend_mode.hpp
+        ../include/message_box.hpp
+        ../include/color.hpp
+        ../include/rect.hpp
+        ../include/point.hpp
+        ../include/key_state.hpp
+        ../include/mouse_state.hpp
+        ../include/surface.hpp
+        ../include/pixel_format.hpp
+        ../include/cursor.hpp
+        ../include/cpu.hpp
+        ../include/ram.hpp
+        ../include/battery.hpp
+        ../include/screen.hpp
+        ../include/scan_code.hpp
+        ../include/touch.hpp
+        ../include/mouse_button.hpp
+        ../include/event_type.hpp
+        ../include/event.hpp
+        ../include/button_state.hpp
+        ../include/controller.hpp
+        ../include/area.hpp
+        ../include/key_modifier.hpp
+        ../include/hints.hpp
+        ../include/touch.hpp
+        ../include/font_cache.hpp
+        ../include/unicode_string.hpp
+        ../include/scale_mode.hpp
+        ../include/thread.hpp
+        ../include/mutex.hpp
+        ../include/scoped_lock.hpp
+        ../include/try_lock.hpp
+        ../include/condition.hpp
+        ../include/semaphore.hpp
+        ../include/clipboard.hpp
+        ../include/sdl_string.hpp
+        ../include/texture_access.hpp
 
-if (NOT DEFINED ENV{TRAVIS})
+        ../include/detail/utils.hpp
+        ../include/detail/algorithm.hpp
+        ../include/detail/static_bimap.hpp
+        ../include/detail/to_string.hpp
+        ../include/detail/stack_resource.hpp
+
+        core/centurion.cpp
+        core/exception.cpp
+
+        misc/log.cpp
+
+        graphics/font.cpp
+        graphics/font_cache.cpp
+        graphics/texture.cpp
+        graphics/message_box.cpp
+        graphics/message_box_button.cpp
+        graphics/message_box_color_scheme.cpp
+        graphics/surface.cpp
+        graphics/graphics_drivers.cpp
+        graphics/color.cpp
+
+        system/base_path.cpp
+        system/pref_path.cpp
+        system/platform.cpp
+        system/battery.cpp
+        system/screen.cpp
+        system/clipboard.cpp
+
+        input/key_state.cpp
+        input/mouse_state.cpp
+        input/touch.cpp
+        input/key_code.cpp
+        input/scan_code.cpp
+
+        event/event.cpp
+        event/quit_event.cpp
+        event/window_event.cpp
+        event/keyboard_event.cpp
+        event/audio_device_event.cpp
+        event/controller_axis_event.cpp
+        event/controller_button_event.cpp
+        event/controller_device_event.cpp
+        event/dollar_gesture_event.cpp
+        event/drop_event.cpp
+        event/touch_finger_event.cpp
+        event/joy_axis_event.cpp
+        event/joy_ball_event.cpp
+        event/joy_hat_event.cpp
+        event/joy_button_event.cpp
+        event/joy_device_event.cpp
+        event/mouse_motion_event.cpp
+        event/mouse_button_event.cpp
+        event/mouse_wheel_event.cpp
+        event/multi_gesture_event.cpp
+        event/text_editing_event.cpp
+        event/text_input_event.cpp
+
+        thread/thread.cpp
+        thread/scoped_lock.cpp
+        thread/mutex.cpp
+        thread/condition.cpp
+        thread/try_lock.cpp
+        thread/semaphore.cpp)
+
+if (CEN_AUDIO)
     set(SOURCE_FILES
             ${SOURCE_FILES}
-            ${CTN_INCLUDE_DIR}/sound_effect.h
-            ${CTN_INCLUDE_DIR}/music.h
-            sound_effect.cpp
-            music.cpp)
+            ${CEN_INCLUDE_DIR}/sound_effect.hpp
+            ${CEN_INCLUDE_DIR}/music.hpp
+            audio/sound_effect.cpp
+            audio/music.cpp)
 endif ()
 
 add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})
@@ -136,39 +138,24 @@ if (WIN32)
     add_definitions(-DWIN_EXPORT)
 endif ()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CENTURION_OUTPUT_NAME Centurion)
-else ()
-    set(CENTURION_OUTPUT_NAME libCenturion)
-endif ()
-
-if (DEFINED ENV{TRAVIS})
-    target_compile_definitions(${CENTURION_LIB_TARGET} PUBLIC CENTURION_NOAUDIO)
-endif ()
-
 set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
-        VERSION 4.3.0
-        CXX_STANDARD 17
-        CXX_STANDARD_REQUIRED ON
-        CXX_EXTENSIONS OFF
-        OUTPUT_NAME ${CENTURION_OUTPUT_NAME})
-
-centurion_add_header_only_lib(libGSL ${CTN_LIBRARY_DIR}/gsl ${CTN_LIBRARY_DIR}/gsl/gsl-lite.hpp)
-centurion_add_header_only_lib(libOptional ${CTN_LIBRARY_DIR}/optional
-        ${CTN_LIBRARY_DIR}/optional/optional.hpp)
+        OUTPUT_NAME ${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion
+        VERSION ${CENTURION_VERSION})
 
 target_include_directories(${CENTURION_LIB_TARGET}
-        PRIVATE ${CTN_INCLUDE_DIR}
-        PRIVATE ${CTN_SOURCE_DIR}
-        SYSTEM INTERFACE ${CTN_INCLUDE_DIR})
+        SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
+        SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
+        SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
+        SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
+        PRIVATE ${CEN_INCLUDE_DIR}
+        PRIVATE ${CEN_SOURCE_DIR}
+        SYSTEM INTERFACE ${CEN_INCLUDE_DIR})
 
 target_link_libraries(${CENTURION_LIB_TARGET}
         PUBLIC ${SDL2_LIBRARY}
         PUBLIC ${SDL2_IMAGE_LIBRARIES}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
-        PUBLIC ${SDL2_TTF_LIBRARIES}
-        PUBLIC libGSL
-        PUBLIC libOptional)
+        PUBLIC ${SDL2_TTF_LIBRARIES})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
@@ -185,9 +172,8 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
             -Wsuggest-override
             -Wduplicated-cond
             -Wconversion
-            -Wc++11-compat
-            -Wc++14-compat
-            -Wc++17-compat)
+            -Wc++17-compat
+            -Wno-attributes)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
             /EHsc
@@ -200,8 +186,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
             -Wunused
             -Wuninitialized
             -Wconversion
-            -Wc++11-compat
-            -Wc++14-compat
             -Wc++17-compat
             -Wno-c++98-compat
             -Wno-c++98-compat-pedantic
@@ -212,6 +196,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
             /EHsc
+            /MP
             /W3)
 endif ()
 

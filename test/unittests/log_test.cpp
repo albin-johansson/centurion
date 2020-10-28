@@ -1,120 +1,128 @@
-#include "log.h"
+#include "log.hpp"
 
 #include <catch.hpp>
 
-using namespace centurion;
-
-TEST_CASE("Log priority test", "[Log]")
+TEST_CASE("Priority test", "[log]")
 {
-  Log::set_priority(Log::Priority::Verbose);
+  cen::log::set_priority(cen::log::priority::verbose);
 
-  Log::info("Info message %i", 1);
-  Log::warn("Warning message %i", 2);
-  Log::verbose("Verbose message %i", 3);
-  Log::debug("Debug message %i", 4);
-  Log::critical("Critical message %i", 5);
-  Log::error("Error message %i", 6);
+  cen::log::info("Info message %i", 1);
+  cen::log::warn("Warning message %i", 2);
+  cen::log::verbose("Verbose message %i", 3);
+  cen::log::debug("Debug message %i", 4);
+  cen::log::critical("Critical message %i", 5);
+  cen::log::error("Error message %i", 6);
 
-  Log::reset_priorities();
+  cen::log::reset_priorities();
 }
 
-TEST_CASE("Log::set_priority(Priority)", "[Log]")
+TEST_CASE("log::set_priority(priority)", "[log]")
 {
-  const auto priority = Log::Priority::Critical;
-  Log::set_priority(priority);
+  const auto priority = cen::log::priority::critical;
+  cen::log::set_priority(priority);
 
-  CHECK(priority == Log::priority(Log::Category::App));
-  CHECK(priority == Log::priority(Log::Category::Error));
-  CHECK(priority == Log::priority(Log::Category::Assert));
-  CHECK(priority == Log::priority(Log::Category::System));
-  CHECK(priority == Log::priority(Log::Category::Audio));
-  CHECK(priority == Log::priority(Log::Category::Video));
-  CHECK(priority == Log::priority(Log::Category::Render));
-  CHECK(priority == Log::priority(Log::Category::Input));
-  CHECK(priority == Log::priority(Log::Category::Test));
-  CHECK(priority == Log::priority(Log::Category::Misc));
+  CHECK(priority == cen::log::get_priority(cen::log::category::app));
+  CHECK(priority == cen::log::get_priority(cen::log::category::error));
+  CHECK(priority == cen::log::get_priority(cen::log::category::assert));
+  CHECK(priority == cen::log::get_priority(cen::log::category::system));
+  CHECK(priority == cen::log::get_priority(cen::log::category::audio));
+  CHECK(priority == cen::log::get_priority(cen::log::category::video));
+  CHECK(priority == cen::log::get_priority(cen::log::category::render));
+  CHECK(priority == cen::log::get_priority(cen::log::category::input));
+  CHECK(priority == cen::log::get_priority(cen::log::category::test));
+  CHECK(priority == cen::log::get_priority(cen::log::category::misc));
 
-  Log::reset_priorities();
+  cen::log::reset_priorities();
 }
 
-TEST_CASE("Log::set_priority(Category, Priority)", "[Log]")
+TEST_CASE("log::set_priority(category, priority)", "[log]")
 {
-  const auto category = Log::Category::App;
-  const auto priority = Log::Priority::Debug;
+  const auto category = cen::log::category::app;
+  const auto priority = cen::log::priority::debug;
 
-  Log::set_priority(category, priority);
-  CHECK(priority == Log::priority(category));
+  cen::log::set_priority(category, priority);
+  CHECK(priority == cen::log::get_priority(category));
 
-  Log::reset_priorities();
+  cen::log::reset_priorities();
 }
 
-TEST_CASE("Log::priority", "[Log]")
+TEST_CASE("log::get_priority", "[log]")
 {
-  const auto prio = Log::priority(Log::Category::App);
+  const auto prio = cen::log::get_priority(cen::log::category::app);
   const auto sdlPrio = SDL_LogGetPriority(SDL_LOG_CATEGORY_APPLICATION);
   CHECK(prio == sdlPrio);
 }
 
-TEST_CASE("Log::max_message_size", "[Log]")
+TEST_CASE("log::max_message_size", "[log]")
 {
-  CHECK(Log::max_message_size() == SDL_MAX_LOG_MESSAGE);
+  CHECK(cen::log::max_message_size() == SDL_MAX_LOG_MESSAGE);
 }
 
-TEST_CASE("Log::Priority", "[Log]")
+TEST_CASE("pog::priority values", "[log]")
 {
   SECTION("operator==")
   {
-    CHECK(Log::Priority::Info == SDL_LOG_PRIORITY_INFO);
-    CHECK(Log::Priority::Warn == SDL_LOG_PRIORITY_WARN);
-    CHECK(Log::Priority::Debug == SDL_LOG_PRIORITY_DEBUG);
-    CHECK(Log::Priority::Verbose == SDL_LOG_PRIORITY_VERBOSE);
-    CHECK(Log::Priority::Critical == SDL_LOG_PRIORITY_CRITICAL);
-    CHECK(Log::Priority::Error == SDL_LOG_PRIORITY_ERROR);
+    CHECK(cen::log::priority::info == SDL_LOG_PRIORITY_INFO);
+    CHECK(cen::log::priority::warn == SDL_LOG_PRIORITY_WARN);
+    CHECK(cen::log::priority::debug == SDL_LOG_PRIORITY_DEBUG);
+    CHECK(cen::log::priority::verbose == SDL_LOG_PRIORITY_VERBOSE);
+    CHECK(cen::log::priority::critical == SDL_LOG_PRIORITY_CRITICAL);
+    CHECK(cen::log::priority::error == SDL_LOG_PRIORITY_ERROR);
 
-    CHECK(SDL_LOG_PRIORITY_INFO == Log::Priority::Info);
-    CHECK(SDL_LOG_PRIORITY_WARN == Log::Priority::Warn);
-    CHECK(SDL_LOG_PRIORITY_DEBUG == Log::Priority::Debug);
-    CHECK(SDL_LOG_PRIORITY_VERBOSE == Log::Priority::Verbose);
-    CHECK(SDL_LOG_PRIORITY_CRITICAL == Log::Priority::Critical);
-    CHECK(SDL_LOG_PRIORITY_ERROR == Log::Priority::Error);
+    CHECK(SDL_LOG_PRIORITY_INFO == cen::log::priority::info);
+    CHECK(SDL_LOG_PRIORITY_WARN == cen::log::priority::warn);
+    CHECK(SDL_LOG_PRIORITY_DEBUG == cen::log::priority::debug);
+    CHECK(SDL_LOG_PRIORITY_VERBOSE == cen::log::priority::verbose);
+    CHECK(SDL_LOG_PRIORITY_CRITICAL == cen::log::priority::critical);
+    CHECK(SDL_LOG_PRIORITY_ERROR == cen::log::priority::error);
   }
 
   SECTION("operator!=")
   {
-    CHECK(Log::Priority::Info != SDL_LOG_PRIORITY_DEBUG);
-    CHECK(SDL_LOG_PRIORITY_VERBOSE != Log::Priority::Critical);
+    CHECK(cen::log::priority::info != SDL_LOG_PRIORITY_DEBUG);
+    CHECK(SDL_LOG_PRIORITY_VERBOSE != cen::log::priority::critical);
   }
 }
 
-TEST_CASE("Log::Category", "[Log]")
+TEST_CASE("log::category values", "[log]")
 {
   SECTION("operator==")
   {
-    CHECK(Log::Category::App == SDL_LOG_CATEGORY_APPLICATION);
-    CHECK(Log::Category::Error == SDL_LOG_CATEGORY_ERROR);
-    CHECK(Log::Category::Assert == SDL_LOG_CATEGORY_ASSERT);
-    CHECK(Log::Category::System == SDL_LOG_CATEGORY_SYSTEM);
-    CHECK(Log::Category::Audio == SDL_LOG_CATEGORY_AUDIO);
-    CHECK(Log::Category::Video == SDL_LOG_CATEGORY_VIDEO);
-    CHECK(Log::Category::Render == SDL_LOG_CATEGORY_RENDER);
-    CHECK(Log::Category::Input == SDL_LOG_CATEGORY_INPUT);
-    CHECK(Log::Category::Test == SDL_LOG_CATEGORY_TEST);
-    CHECK(Log::Category::Misc == SDL_LOG_CATEGORY_CUSTOM);
+    CHECK(cen::log::category::app == SDL_LOG_CATEGORY_APPLICATION);
+    CHECK(cen::log::category::error == SDL_LOG_CATEGORY_ERROR);
+    CHECK(cen::log::category::assert == SDL_LOG_CATEGORY_ASSERT);
+    CHECK(cen::log::category::system == SDL_LOG_CATEGORY_SYSTEM);
+    CHECK(cen::log::category::audio == SDL_LOG_CATEGORY_AUDIO);
+    CHECK(cen::log::category::video == SDL_LOG_CATEGORY_VIDEO);
+    CHECK(cen::log::category::render == SDL_LOG_CATEGORY_RENDER);
+    CHECK(cen::log::category::input == SDL_LOG_CATEGORY_INPUT);
+    CHECK(cen::log::category::test == SDL_LOG_CATEGORY_TEST);
+    CHECK(cen::log::category::misc == SDL_LOG_CATEGORY_CUSTOM);
 
-    CHECK(SDL_LOG_CATEGORY_APPLICATION == Log::Category::App);
-    CHECK(SDL_LOG_CATEGORY_ERROR == Log::Category::Error);
-    CHECK(SDL_LOG_CATEGORY_ASSERT == Log::Category::Assert);
-    CHECK(SDL_LOG_CATEGORY_SYSTEM == Log::Category::System);
-    CHECK(SDL_LOG_CATEGORY_AUDIO == Log::Category::Audio);
-    CHECK(SDL_LOG_CATEGORY_VIDEO == Log::Category::Video);
-    CHECK(SDL_LOG_CATEGORY_RENDER == Log::Category::Render);
-    CHECK(SDL_LOG_CATEGORY_INPUT == Log::Category::Input);
-    CHECK(SDL_LOG_CATEGORY_TEST == Log::Category::Test);
-    CHECK(SDL_LOG_CATEGORY_CUSTOM == Log::Category::Misc);
+    CHECK(SDL_LOG_CATEGORY_APPLICATION == cen::log::category::app);
+    CHECK(SDL_LOG_CATEGORY_ERROR == cen::log::category::error);
+    CHECK(SDL_LOG_CATEGORY_ASSERT == cen::log::category::assert);
+    CHECK(SDL_LOG_CATEGORY_SYSTEM == cen::log::category::system);
+    CHECK(SDL_LOG_CATEGORY_AUDIO == cen::log::category::audio);
+    CHECK(SDL_LOG_CATEGORY_VIDEO == cen::log::category::video);
+    CHECK(SDL_LOG_CATEGORY_RENDER == cen::log::category::render);
+    CHECK(SDL_LOG_CATEGORY_INPUT == cen::log::category::input);
+    CHECK(SDL_LOG_CATEGORY_TEST == cen::log::category::test);
+    CHECK(SDL_LOG_CATEGORY_CUSTOM == cen::log::category::misc);
   }
   SECTION("operator!=")
   {
-    CHECK(Log::Category::Audio != SDL_LOG_CATEGORY_ERROR);
-    CHECK(SDL_LOG_CATEGORY_SYSTEM != Log::Category::Render);
+    CHECK(cen::log::category::audio != SDL_LOG_CATEGORY_ERROR);
+    CHECK(SDL_LOG_CATEGORY_SYSTEM != cen::log::category::render);
   }
+}
+
+TEST_CASE("logging macros", "[log]")
+{
+  CENTURION_LOG_INFO("%s", "This is for debug only...");
+  CENTURION_LOG_WARN("%s", "This is for debug only...");
+  CENTURION_LOG_VERBOSE("%s", "This is for debug only...");
+  CENTURION_LOG_DEBUG("%s", "This is for debug only...");
+  CENTURION_LOG_CRITICAL("%s", "This is for debug only...");
+  CENTURION_LOG_ERROR("%s", "This is for debug only...");
 }

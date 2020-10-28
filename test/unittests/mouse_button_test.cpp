@@ -1,14 +1,14 @@
-#include "mouse_button.h"
+#include "mouse_button.hpp"
 
 #include <catch.hpp>
 
-using namespace centurion;
+#include "types.hpp"
 
-TEST_CASE("MouseButton enum values", "[MouseButton]")
+TEST_CASE("mouse_button enum values", "[mouse_button]")
 {
-  CHECK(static_cast<Uint32>(MouseButton::Left) == SDL_BUTTON_LEFT);
-  CHECK(static_cast<Uint32>(MouseButton::Middle) == SDL_BUTTON_MIDDLE);
-  CHECK(static_cast<Uint32>(MouseButton::Right) == SDL_BUTTON_RIGHT);
-  CHECK(static_cast<Uint32>(MouseButton::X1) == SDL_BUTTON_X1);
-  CHECK(static_cast<Uint32>(MouseButton::X2) == SDL_BUTTON_X2);
+  CHECK(static_cast<cen::u32>(cen::mouse_button::left) == SDL_BUTTON_LEFT);
+  CHECK(static_cast<cen::u32>(cen::mouse_button::middle) == SDL_BUTTON_MIDDLE);
+  CHECK(static_cast<cen::u32>(cen::mouse_button::right) == SDL_BUTTON_RIGHT);
+  CHECK(static_cast<cen::u32>(cen::mouse_button::x1) == SDL_BUTTON_X1);
+  CHECK(static_cast<cen::u32>(cen::mouse_button::x2) == SDL_BUTTON_X2);
 }

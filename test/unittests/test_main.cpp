@@ -1,20 +1,19 @@
 #define CATCH_CONFIG_RUNNER
 #include <catch.hpp>
 
-#include "centurion.h"
+#include "centurion.hpp"
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
-  using namespace centurion;
-#ifndef CENTURION_NOAUDIO
-  const Centurion c;
-#else
-  CenturionConfig cfg;
+#ifndef CEN_AUDIO
+  cen::config cfg;
 
   cfg.coreFlags = SDL_INIT_EVERYTHING & ~SDL_INIT_AUDIO;
   cfg.initMixer = false;
 
-  const Centurion c{cfg};
+  const cen::library lib{cfg};
+#else
+  const cen::library lib;
 #endif
   return Catch::Session().run(argc, argv);
 }

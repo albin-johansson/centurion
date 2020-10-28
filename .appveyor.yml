@@ -1,0 +1,68 @@
+image: Visual Studio 2019
+
+version: '5.0.0-{build}'
+
+install:
+  - cmake --version # expect >= 3.16
+  - ninja --version # expect >= 1.10
+
+  - set SDL_VERSION=2.0.12
+  - set IMG_VERSION=2.0.5
+  - set MIX_VERSION=2.0.4
+  - set TTF_VERSION=2.0.15
+
+  # Updates PATH to support command-line usage of compiler
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - mkdir sdl
+  - cd sdl
+
+  # Installs SDL2 core
+  - appveyor DownloadFile https://libsdl.org/release/SDL2-devel-%SDL_VERSION%-VC.zip
+  - 7z x -y SDL2-devel-%SDL_VERSION%-VC.zip
+  - set SDL2DIR=%cd%\SDL2-%SDL_VERSION%
+
+  # Installs SDL2 image
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-%IMG_VERSION%-VC.zip
+  - 7z x -y SDL2_image-devel-%IMG_VERSION%-VC.zip
+  - set SDL2IMAGEDIR=%cd%\SDL2_image-%IMG_VERSION%
+
+  # Installs SDL2 mixer
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-%MIX_VERSION%-VC.zip
+  - 7z x -y SDL2_mixer-devel-%MIX_VERSION%-VC.zip
+  - set SDL2MIXERDIR=%cd%\SDL2_mixer-%MIX_VERSION%
+
+  # Installs SDL2 ttf
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-devel-%TTF_VERSION%-VC.zip
+  - 7z x -y SDL2_ttf-devel-%TTF_VERSION%-VC.zip
+  - set SDL2TTFDIR=%cd%\SDL2_ttf-%TTF_VERSION%
+
+  - cd ..
+
+  # Proceed to download runtime binaries
+  - mkdir bin
+  - cd bin
+
+  - appveyor DownloadFile https://www.libsdl.org/release/SDL2-%SDL_VERSION%-win32-x64.zip
+  - 7z e -y SDL2-%SDL_VERSION%-win32-x64.zip
+
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_image/release/SDL2_image-%IMG_VERSION%-win32-x64.zip
+  - 7z e -y SDL2_image-%IMG_VERSION%-win32-x64.zip
+
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-%MIX_VERSION%-win32-x64.zip
+  - 7z e -y SDL2_mixer-%MIX_VERSION%-win32-x64.zip
+
+  - appveyor DownloadFile https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-%TTF_VERSION%-win32-x64.zip
+  - 7z e -y SDL2_ttf-%TTF_VERSION%-win32-x64.zip
+
+before_build:
+  - cd %APPVEYOR_BUILD_FOLDER%
+
+  - mkdir build
+  - cd build
+  - cmake .. -DCMAKE_BUILD_TYPE=Debug -G Ninja
+
+build_script:
+  - ninja CenturionLibrary
+  - ninja CenturionTests

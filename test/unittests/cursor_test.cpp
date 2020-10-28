@@ -1,116 +1,58 @@
-#include "cursor.h"
+#include "cursor.hpp"
 
 #include <catch.hpp>
 
-#include "centurion_exception.h"
+#include "exception.hpp"
+#include "log.hpp"
 
-using namespace centurion;
+static_assert(std::is_move_constructible_v<cen::cursor>);
+static_assert(std::is_move_assignable_v<cen::cursor>);
+static_assert(!std::is_copy_constructible_v<cen::cursor>);
+static_assert(!std::is_copy_assignable_v<cen::cursor>);
 
-TEST_CASE("Cursor(SystemCursor)", "[Cursor]")
+static_assert(std::is_move_constructible_v<cen::cursor_handle>);
+static_assert(std::is_move_assignable_v<cen::cursor_handle>);
+static_assert(std::is_copy_constructible_v<cen::cursor_handle>);
+static_assert(std::is_copy_assignable_v<cen::cursor_handle>);
+
+TEST_CASE("cursor(system_cursor)", "[cursor]")
 {
-  CHECK_NOTHROW(Cursor{SystemCursor::Crosshair});
+  CHECK_NOTHROW(cen::cursor{cen::system_cursor::crosshair});
+
+  const auto invalid = static_cast<cen::system_cursor>(83948);
+  CHECK_THROWS_AS(cen::cursor{invalid}, cen::sdl_error);
 }
 
-TEST_CASE("Cursor(gsl::owner<SDL_Cursor*>)", "[Cursor]")
+TEST_CASE("cursor from surface", "[cursor]")
 {
-  SDL_Cursor* sdlCursor = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
-  Cursor cursor{sdlCursor};
+  const cen::surface surface{"resources/panda.png"};
+  const cen::ipoint hotspot{12, 14};
+  CHECK_NOTHROW(cen::cursor{surface, hotspot});
 
-  CHECK_THROWS_AS(Cursor{nullptr}, CenturionException);
+  const cen::ipoint outside{8341, 2342};
+  CHECK_THROWS_AS(cen::cursor(surface, outside), cen::sdl_error);
 }
 
-TEST_CASE("Cursor(Surface, IPoint)", "[Cursor]")
+TEST_CASE("cursor_handle(SDL_Cursor*)", "[cursor]")
 {
-  const Surface surface{"resources/panda.png"};
-  const IPoint hotspot{12, 14};
-  Cursor cursor{surface, hotspot};
+  CHECK_NOTHROW(cen::cursor_handle{nullptr});
 }
 
-TEST_CASE("Cursor(Cursor&&)", "[Cursor]")
+TEST_CASE("cursor::enable", "[cursor]")
 {
-  const Surface surface{"resources/panda.png"};
-  const IPoint hotspot{12, 14};
-  Cursor cursor{surface, hotspot};
-
-  Cursor other{std::move(cursor)};
-
-  CHECK(!cursor.get());
-  CHECK(other.get());
-}
-
-TEST_CASE("Cursor::operator=(Cursor&&)", "[Cursor]")
-{
-  SECTION("Self-assignment")
-  {
-    const Surface surface{"resources/panda.png"};
-    const IPoint hotspot{12, 14};
-    Cursor cursor{surface, hotspot};
-
-    cursor = std::move(cursor);
-
-    CHECK(cursor.get());
-  }
-
   SECTION("Normal usage")
   {
-    const Surface surface{"resources/panda.png"};
-    const IPoint hotspot{12, 14};
-    Cursor cursor{surface, hotspot};
-    Cursor other{surface, hotspot};
+    cen::cursor cursor{cen::system_cursor::wait};
 
-    other = std::move(cursor);
-
-    CHECK(!cursor.get());
-    CHECK(other.get());
+    cursor.enable();
+    CHECK(cursor.is_enabled());
   }
-}
-
-TEST_CASE("Cursor::unique", "[Cursor]")
-{
-  CHECK(Cursor::unique(SystemCursor::ArrowAll));
-
-  CHECK(Cursor::unique(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW)));
-  CHECK_THROWS_AS(Cursor::unique(nullptr), CenturionException);
-
-  CHECK(Cursor::unique(Surface{"resources/panda.png"}, {10, 10}));
-
-  SECTION("Out-of-bounds hotspot")
-  {
-    Surface surface{"resources/panda.png"};
-    IPoint hotspot{1, surface.height() + 1};
-    CHECK_THROWS_AS(Cursor::unique(surface, hotspot), CenturionException);
-  }
-}
-
-TEST_CASE("Cursor::shared", "[Cursor]")
-{
-  CHECK(Cursor::shared(SystemCursor::Hand));
-
-  CHECK(Cursor::shared(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_SIZEWE)));
-  CHECK_THROWS_AS(Cursor::shared(nullptr), CenturionException);
-
-  CHECK(Cursor::shared(Surface{"resources/panda.png"}, {8, 28}));
-
-  SECTION("Out-of-bounds hotspot")
-  {
-    Surface surface{"resources/panda.png"};
-    IPoint hotspot{surface.width() + 1, 1};
-    CHECK_THROWS_AS(Cursor::shared(surface, hotspot), CenturionException);
-  }
-}
-
-TEST_CASE("Cursor::enable", "[Cursor]")
-{
-  Cursor cursor{SystemCursor::Wait};
-
-  cursor.enable();
-  CHECK(cursor.is_enabled());
 
   SECTION("Special case where two instances have the same type")
   {
-    const auto id = SystemCursor::Arrow_NE_SW;
-    Cursor first{id};
-    Cursor second{id};
+    const auto id = cen::system_cursor::arrow_ne_sw;
+    cen::cursor first{id};
+    cen::cursor second{id};
 
     first.enable();
 
@@ -124,69 +66,77 @@ TEST_CASE("Cursor::enable", "[Cursor]")
   }
 }
 
-TEST_CASE("Cursor::force_redraw", "[Cursor]")
+TEST_CASE("cursor::force_redraw", "[cursor]")
 {
-  Cursor cursor{SystemCursor::IBeam};
+  cen::cursor cursor{cen::system_cursor::ibeam};
   cursor.enable();
 
-  CHECK_NOTHROW(Cursor::force_redraw());
+  CHECK_NOTHROW(cen::cursor::force_redraw());
 
   CHECK(cursor.is_enabled());  // ensure state of active cursor
 }
 
-TEST_CASE("Cursor::reset", "[Cursor]")
+TEST_CASE("cursor::reset", "[cursor]")
 {
-  Cursor::reset();
+  cen::cursor::reset();
   CHECK(SDL_GetDefaultCursor() == SDL_GetCursor());
 
-  Cursor cursor{SystemCursor::Crosshair};
+  cen::cursor cursor{cen::system_cursor::crosshair};
   cursor.enable();
 
   CHECK(SDL_GetDefaultCursor() != SDL_GetCursor());
 
-  Cursor::reset();
+  cen::cursor::reset();
   CHECK(SDL_GetDefaultCursor() == SDL_GetCursor());
 }
 
-TEST_CASE("Cursor::set_visible", "[Cursor]")
+TEST_CASE("cursor::set_visible", "[cursor]")
 {
-  CHECK(Cursor::visible());
+  CHECK(cen::cursor::visible());
 
-  Cursor::set_visible(false);
-  CHECK(!Cursor::visible());
+  cen::cursor::set_visible(false);
+  CHECK(!cen::cursor::visible());
 
-  Cursor::set_visible(true);
-  CHECK(Cursor::visible());
+  cen::cursor::set_visible(true);
+  CHECK(cen::cursor::visible());
 }
 
-TEST_CASE("SystemCursor enum values", "[Cursor]")
+TEST_CASE("cursor::num_system_cursors()", "[cursor]")
 {
-  CHECK(SystemCursor::Arrow == SDL_SYSTEM_CURSOR_ARROW);
-  CHECK(SystemCursor::IBeam == SDL_SYSTEM_CURSOR_IBEAM);
-  CHECK(SystemCursor::Wait == SDL_SYSTEM_CURSOR_WAIT);
-  CHECK(SystemCursor::Crosshair == SDL_SYSTEM_CURSOR_CROSSHAIR);
-  CHECK(SystemCursor::WaitArrow == SDL_SYSTEM_CURSOR_WAITARROW);
-  CHECK(SystemCursor::Arrow_NW_SE == SDL_SYSTEM_CURSOR_SIZENWSE);
-  CHECK(SystemCursor::Arrow_NE_SW == SDL_SYSTEM_CURSOR_SIZENESW);
-  CHECK(SystemCursor::Arrow_W_E == SDL_SYSTEM_CURSOR_SIZEWE);
-  CHECK(SystemCursor::Arrow_N_S == SDL_SYSTEM_CURSOR_SIZENS);
-  CHECK(SystemCursor::ArrowAll == SDL_SYSTEM_CURSOR_SIZEALL);
-  CHECK(SystemCursor::No == SDL_SYSTEM_CURSOR_NO);
-  CHECK(SystemCursor::Hand == SDL_SYSTEM_CURSOR_HAND);
+  CHECK(cen::cursor::num_system_cursors() ==
+        static_cast<int>(SDL_NUM_SYSTEM_CURSORS));
+  CHECK(cen::cursor_handle::num_system_cursors() ==
+        static_cast<int>(SDL_NUM_SYSTEM_CURSORS));
+}
 
-  CHECK(SDL_SYSTEM_CURSOR_ARROW == SystemCursor::Arrow);
-  CHECK(SDL_SYSTEM_CURSOR_IBEAM == SystemCursor::IBeam);
-  CHECK(SDL_SYSTEM_CURSOR_WAIT == SystemCursor::Wait);
-  CHECK(SDL_SYSTEM_CURSOR_CROSSHAIR == SystemCursor::Crosshair);
-  CHECK(SDL_SYSTEM_CURSOR_WAITARROW == SystemCursor::WaitArrow);
-  CHECK(SDL_SYSTEM_CURSOR_SIZENWSE == SystemCursor::Arrow_NW_SE);
-  CHECK(SDL_SYSTEM_CURSOR_SIZENESW == SystemCursor::Arrow_NE_SW);
-  CHECK(SDL_SYSTEM_CURSOR_SIZEWE == SystemCursor::Arrow_W_E);
-  CHECK(SDL_SYSTEM_CURSOR_SIZENS == SystemCursor::Arrow_N_S);
-  CHECK(SDL_SYSTEM_CURSOR_SIZEALL == SystemCursor::ArrowAll);
-  CHECK(SDL_SYSTEM_CURSOR_NO == SystemCursor::No);
-  CHECK(SDL_SYSTEM_CURSOR_HAND == SystemCursor::Hand);
+TEST_CASE("system_cursor enum values", "[cursor]")
+{
+  CHECK(cen::system_cursor::arrow == SDL_SYSTEM_CURSOR_ARROW);
+  CHECK(cen::system_cursor::ibeam == SDL_SYSTEM_CURSOR_IBEAM);
+  CHECK(cen::system_cursor::wait == SDL_SYSTEM_CURSOR_WAIT);
+  CHECK(cen::system_cursor::crosshair == SDL_SYSTEM_CURSOR_CROSSHAIR);
+  CHECK(cen::system_cursor::wait_arrow == SDL_SYSTEM_CURSOR_WAITARROW);
+  CHECK(cen::system_cursor::arrow_nw_se == SDL_SYSTEM_CURSOR_SIZENWSE);
+  CHECK(cen::system_cursor::arrow_ne_sw == SDL_SYSTEM_CURSOR_SIZENESW);
+  CHECK(cen::system_cursor::arrow_w_e == SDL_SYSTEM_CURSOR_SIZEWE);
+  CHECK(cen::system_cursor::arrow_n_s == SDL_SYSTEM_CURSOR_SIZENS);
+  CHECK(cen::system_cursor::arrow_all == SDL_SYSTEM_CURSOR_SIZEALL);
+  CHECK(cen::system_cursor::no == SDL_SYSTEM_CURSOR_NO);
+  CHECK(cen::system_cursor::hand == SDL_SYSTEM_CURSOR_HAND);
 
-  CHECK(SystemCursor::ArrowAll != SDL_SYSTEM_CURSOR_WAIT);
-  CHECK(SDL_SYSTEM_CURSOR_SIZEALL != SystemCursor::Hand);
+  CHECK(SDL_SYSTEM_CURSOR_ARROW == cen::system_cursor::arrow);
+  CHECK(SDL_SYSTEM_CURSOR_IBEAM == cen::system_cursor::ibeam);
+  CHECK(SDL_SYSTEM_CURSOR_WAIT == cen::system_cursor::wait);
+  CHECK(SDL_SYSTEM_CURSOR_CROSSHAIR == cen::system_cursor::crosshair);
+  CHECK(SDL_SYSTEM_CURSOR_WAITARROW == cen::system_cursor::wait_arrow);
+  CHECK(SDL_SYSTEM_CURSOR_SIZENWSE == cen::system_cursor::arrow_nw_se);
+  CHECK(SDL_SYSTEM_CURSOR_SIZENESW == cen::system_cursor::arrow_ne_sw);
+  CHECK(SDL_SYSTEM_CURSOR_SIZEWE == cen::system_cursor::arrow_w_e);
+  CHECK(SDL_SYSTEM_CURSOR_SIZENS == cen::system_cursor::arrow_n_s);
+  CHECK(SDL_SYSTEM_CURSOR_SIZEALL == cen::system_cursor::arrow_all);
+  CHECK(SDL_SYSTEM_CURSOR_NO == cen::system_cursor::no);
+  CHECK(SDL_SYSTEM_CURSOR_HAND == cen::system_cursor::hand);
+
+  CHECK(cen::system_cursor::arrow_all != SDL_SYSTEM_CURSOR_WAIT);
+  CHECK(SDL_SYSTEM_CURSOR_SIZEALL != cen::system_cursor::hand);
 }

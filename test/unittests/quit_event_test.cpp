@@ -1,21 +1,14 @@
-#include "quit_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
+#include "event.hpp"
 
-TEST_CASE("QuitEvent()", "[QuitEvent]")
+TEST_CASE("quit_event()", "[quit_event]")
 {
-  CHECK_NOTHROW(QuitEvent{});
+  CHECK_NOTHROW(cen::quit_event{});
 }
 
-TEST_CASE("QuitEvent(const SDL_QuitEvent&)", "[QuitEvent]")
+TEST_CASE("quit_event(const SDL_QuitEvent&)", "[quit_event]")
 {
   SDL_QuitEvent qEvent;
-  CHECK_NOTHROW(QuitEvent{qEvent});
-}
-
-TEST_CASE("QuitEvent(SDL_QuitEvent&&)", "[QuitEvent]")
-{
-  CHECK_NOTHROW(QuitEvent{{}});
+  CHECK_NOTHROW(cen::quit_event{qEvent});
 }

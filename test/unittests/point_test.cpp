@@ -1,382 +1,294 @@
-#include "point.h"
+#include "point.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 
-#include "log.h"
+#include "log.hpp"
 
-using namespace centurion;
-
-TEST_CASE("IPoint()", "[Point]")
+TEST_CASE("point::to_string", "[point]")
 {
-  IPoint p;
-  CHECK(p.x() == 0);
-  CHECK(p.y() == 0);
+  const cen::ipoint ip{123, 456};
+  cen::log::info(cen::log::category::test, "%s", cen::to_string(ip).c_str());
+
+  const cen::fpoint fp{12.3f, 45.6f};
+  cen::log::info(cen::log::category::test, "%s", cen::to_string(fp).c_str());
+
+  std::cout << "COUT: " << fp << '\n';
+  std::cout << "COUT: " << fp << '\n';
 }
 
-TEST_CASE("IPoint(int, int)", "[Point]")
+TEST_CASE("point::distance", "[point]")
 {
-  const auto x = 125;
-  const auto y = -853;
-  IPoint p{x, y};
-
-  CHECK(p.x() == x);
-  CHECK(p.y() == y);
-}
-
-TEST_CASE("IPoint::set_x", "[Point]")
-{
-  const auto x = 992;
-
-  IPoint point;
-  point.set_x(x);
-
-  CHECK(x == point.x());
-}
-
-TEST_CASE("IPoint::set_y", "[Point]")
-{
-  const auto y = 77;
-
-  IPoint point;
-  point.set_y(y);
-
-  CHECK(y == point.y());
-}
-
-TEST_CASE("IPoint::set(IPoint&)", "[Point]")
-{
-  IPoint point;
-
-  const auto x = 21006;
-  const auto y = 3456;
-  const IPoint other{x, y};
-
-  point.set(other);
-
-  CHECK(x == point.x());
-  CHECK(y == point.y());
-}
-
-TEST_CASE("IPoint::set(int, int)", "[Point]")
-{
-  IPoint point;
-
-  const auto x = -2421;
-  const auto y = 673;
-
-  point.set(x, y);
-
-  CHECK(x == point.x());
-  CHECK(y == point.y());
-}
-
-TEST_CASE("IPoint::to_string", "[Point]")
-{
-  const IPoint point{27, 82};
-  Log::info(Log::Category::Test, "%s", point.to_string().c_str());
-}
-
-TEST_CASE("Point to SDL_Point", "[Point]")
-{
-  const IPoint point{124, 82};
-  const SDL_Point sdlPoint = point.to_sdl_point();
-
-  CHECK(point.x() == sdlPoint.x);
-  CHECK(point.y() == sdlPoint.y);
-}
-
-TEST_CASE("IPoint::distance", "[Point]")
-{
-  SECTION("Basic x-step")
+  SECTION("Unit x-step")
   {
-    const IPoint a{0, 0};
-    const IPoint b{1, 0};
-    CHECK(1 == a.distance_to(b));
-    CHECK(1 == b.distance_to(a));
+    const cen::ipoint a{0, 123};
+    const cen::ipoint b{1, 123};
+
+    CHECK(cen::distance(a, b) == 1);
+    CHECK(cen::distance(b, a) == 1);
   }
 
-  SECTION("Basic y-step")
+  SECTION("Unit y-step")
   {
-    const IPoint a{0, 0};
-    const IPoint b{0, 1};
-    CHECK(1 == a.distance_to(b));
-    CHECK(1 == b.distance_to(a));
+    const cen::ipoint a{42, 0};
+    const cen::ipoint b{42, 1};
+
+    CHECK(cen::distance(a, b) == 1);
+    CHECK(cen::distance(b, a) == 1);
   }
 
-  const IPoint a{189, 86};
-  const IPoint b{66, 36};
-
-  const auto distance =
-      std::sqrt(std::abs(a.x() - b.x()) + std::abs(a.y() - b.y()));
-
-  CHECK(static_cast<int>(distance) == a.distance_to(b));
-  CHECK(static_cast<int>(distance) == b.distance_to(a));
-}
-
-TEST_CASE("IPoint::operator==", "[Point]")
-{
-  const IPoint point{812, 4829};
-  const IPoint other{point};
-  const IPoint different{point.x() + 10, point.y() + 10};
-
-  CHECK(point == point);
-  CHECK(point == other);
-  CHECK(other == point);
-  CHECK(!(point == different));
-}
-
-TEST_CASE("IPoint::operator!=", "[Point]")
-{
-  const IPoint point{5029, 831};
-  const IPoint other{1782, 923};
-
-  CHECK(!(point != point));
-  CHECK(point != other);
-  CHECK(other != point);
-}
-
-TEST_CASE("IPoint::operator+", "[Point]")
-{
-  const IPoint point{56, 87};
-  const IPoint other{69, 175};
-
-  const IPoint res1 = point + other;
-  const IPoint res2 = other + point;
-
-  CHECK(res1 == res2);
-
-  CHECK(res1.x() == point.x() + other.x());
-  CHECK(res1.y() == point.y() + other.y());
-  CHECK(res2.x() == point.x() + other.x());
-  CHECK(res2.y() == point.y() + other.y());
-}
-
-TEST_CASE("IPoint::operator-", "[Point]")
-{
-  const IPoint point{673, 123};
-  const IPoint other{-547, 451};
-
-  const IPoint res1 = point - other;
-  const IPoint res2 = other - point;
-
-  CHECK(res1 != res2);
-
-  CHECK(res1.x() == point.x() - other.x());
-  CHECK(res1.y() == point.y() - other.y());
-
-  CHECK(res2.x() == other.x() - point.x());
-  CHECK(res2.y() == other.y() - point.y());
-}
-
-TEST_CASE("FPoint()", "[Point]")
-{
-  FPoint point;
-
-  CHECK(point.x() == 0);
-  CHECK(point.y() == 0);
-}
-
-TEST_CASE("FPoint(float, float)", "[Point]")
-{
-  const auto x = 832.3f;
-  const auto y = 192.9f;
-
-  const FPoint point{x, y};
-
-  CHECK(point.x() == x);
-  CHECK(point.y() == y);
-}
-
-TEST_CASE("FPoint::set_x", "[Point]")
-{
-  FPoint point;
-
-  const auto x = 48.1f;
-  point.set_x(x);
-
-  CHECK(x == point.x());
-}
-
-TEST_CASE("FPoint::set_y", "[Point]")
-{
-  FPoint point;
-
-  const auto y = 88.8f;
-  point.set_y(y);
-
-  CHECK(y == point.y());
-}
-
-TEST_CASE("FPoint::set(FPoint&)", "[FPoint]")
-{
-  FPoint point;
-
-  const auto x = 825.3f;
-  const auto y = -425.5f;
-  const FPoint other{x, y};
-
-  point.set(other);
-
-  CHECK(x == point.x());
-  CHECK(y == point.y());
-}
-
-TEST_CASE("FPoint::set(float, float)", "[FPoint]")
-{
-  FPoint point;
-
-  const auto x = 2812.5f;
-  const auto y = 391.4f;
-
-  point.set(x, y);
-
-  CHECK(x == point.x());
-  CHECK(y == point.y());
-}
-
-TEST_CASE("FPoint::to_string", "[FPoint]")
-{
-  const FPoint point{45.5f, 77.2f};
-  Log::info(Log::Category::Test, "%s", point.to_string().c_str());
-}
-
-TEST_CASE("Point::to_sdl_fpoint", "[FPoint]")
-{
-  const FPoint point{76.2f, 91.2f};
-  const SDL_FPoint sdlPoint = point.to_sdl_fpoint();
-
-  CHECK(point.x() == sdlPoint.x);
-  CHECK(point.y() == sdlPoint.y);
-}
-
-TEST_CASE("FPoint to SDL_FPoint*", "[FPoint]")
-{
-  SECTION("Const version")
+  SECTION("Non-trivial distance")
   {
-    const FPoint point{44.9f, 22.5f};
-    const auto* sdlPoint = static_cast<const SDL_FPoint*>(point);
+    const cen::fpoint a{189.2f, 86.9f};
+    const cen::fpoint b{66.5f, 36.6f};
 
-    CHECK(point.x() == sdlPoint->x);
-    CHECK(point.y() == sdlPoint->y);
-  }
-  SECTION("Non-const version")
-  {
-    FPoint point{89.7f, -24.6f};
-    auto* sdlPoint = static_cast<SDL_FPoint*>(point);
+    const auto expected =
+        std::sqrt(std::abs(a.x() - b.x()) + std::abs(a.y() - b.y()));
 
-    CHECK(point.x() == sdlPoint->x);
-    CHECK(point.y() == sdlPoint->y);
+    CHECK(cen::distance(a, b) == expected);
+    CHECK(cen::distance(b, a) == expected);
   }
 }
 
-TEST_CASE("IPoint to SDL_Point*", "[FPoint]")
+TEST_CASE("point::operator==", "[point]")
 {
-  SECTION("Const version")
+  SECTION("Self")
   {
-    const IPoint point{-58, 99};
-    const auto* sdlPoint = static_cast<const SDL_Point*>(point);
-
-    CHECK(point.x() == sdlPoint->x);
-    CHECK(point.y() == sdlPoint->y);
-  }
-  SECTION("Non-const version")
-  {
-    IPoint point{10, 892};
-    auto* sdlPoint = static_cast<SDL_Point*>(point);
-
-    CHECK(point.x() == sdlPoint->x);
-    CHECK(point.y() == sdlPoint->y);
-  }
-}
-
-TEST_CASE("Point::distance_to", "[FPoint]")
-{
-  SECTION("Basic x-step")
-  {
-    const FPoint a{0, 0};
-    const FPoint b{1, 0};
-    CHECK(1 == a.distance_to(b));
-    CHECK(1 == b.distance_to(a));
+    const cen::ipoint ip{};
+    const cen::fpoint fp{};
+    CHECK(ip == ip);
+    CHECK(fp == fp);
   }
 
-  SECTION("Basic y-step")
+  SECTION("Not equal")
   {
-    const FPoint a{0, 0};
-    const FPoint b{0, 1};
-    CHECK(1 == a.distance_to(b));
-    CHECK(1 == b.distance_to(a));
+    SECTION("ipoint")
+    {
+      const cen::ipoint fst{839, 902};
+      const cen::ipoint snd{73483, 1289};
+      CHECK_FALSE(fst == snd);
+      CHECK_FALSE(snd == fst);
+    }
+
+    SECTION("fpoint")
+    {
+      const cen::fpoint fst{531.5f, 8313.4f};
+      const cen::fpoint snd{34.2f, 173.3f};
+      CHECK_FALSE(fst == snd);
+      CHECK_FALSE(snd == fst);
+    }
   }
 
-  const FPoint a{123.8f, 82.4f};
-  const FPoint b{45.9f, 12.4f};
-  const auto distance =
-      std::sqrt(std::abs(a.x() - b.x()) + std::abs(a.y() - b.y()));
+  SECTION("Equal")
+  {
+    SECTION("ipoint")
+    {
+      const cen::ipoint fst{883, 922};
+      const cen::ipoint snd{fst};
+      CHECK(fst == snd);
+      CHECK(snd == fst);
+      CHECK_FALSE(fst != snd);
+      CHECK_FALSE(snd != fst);
+    }
 
-  CHECK(distance == a.distance_to(b));
-  CHECK(distance == b.distance_to(a));
+    SECTION("fpoint")
+    {
+      const cen::fpoint fst{211.5f, 823.1f};
+      const cen::fpoint snd{fst};
+      CHECK(fst == snd);
+      CHECK(snd == fst);
+      CHECK_FALSE(fst != snd);
+      CHECK_FALSE(snd != fst);
+    }
+  }
 }
 
-TEST_CASE("FPoint::equals", "[FPoint]")
+TEST_CASE("point::operator!=", "[point]")
 {
-  const FPoint point{11.7f, 38.9f};
-  const FPoint other{point};
+  SECTION("Self")
+  {
+    const cen::ipoint ip{};
+    const cen::fpoint fp{};
+    CHECK_FALSE(ip != ip);
+    CHECK_FALSE(fp != fp);
+  }
 
-  CHECK(point.equals(point));
-  CHECK(point.equals(other));
-  CHECK(other.equals(point));
+  SECTION("Not equal")
+  {
+    SECTION("ipoint")
+    {
+      const cen::ipoint fst{1234, 12412421};
+      const cen::ipoint snd{4345, 7712};
+      CHECK(fst != snd);
+      CHECK(snd != fst);
+    }
+
+    SECTION("fpoint")
+    {
+      const cen::fpoint fst{8392.5f, 12452.4f};
+      const cen::fpoint snd{5236.2f, 321.3f};
+      CHECK(fst != snd);
+      CHECK(snd != fst);
+    }
+  }
+
+  SECTION("Equal")
+  {
+    SECTION("ipoint")
+    {
+      const cen::ipoint fst{883, 922};
+      const cen::ipoint snd{fst};
+      CHECK_FALSE(fst != snd);
+      CHECK_FALSE(snd != fst);
+    }
+
+    SECTION("fpoint")
+    {
+      const cen::fpoint fst{211.5f, 823.1f};
+      const cen::fpoint snd{fst};
+      CHECK_FALSE(fst != snd);
+      CHECK_FALSE(snd != fst);
+    }
+  }
 }
 
-TEST_CASE("FPoint::operator==", "[FPoint]")
+TEST_CASE("point::operator+", "[point]")
 {
-  const FPoint point{27.1f, 97.4f};
-  const FPoint other{point};
-  const FPoint different{point.x() + 10, point.y() + 10};
+  SECTION("ipoint")
+  {
+    const cen::ipoint fst{738, 912};
+    const cen::ipoint snd{123, 423};
 
-  CHECK(point == point);
-  CHECK(point == other);
-  CHECK(other == point);
-  CHECK(!(point == different));
+    const auto expectedX = fst.x() + snd.x();
+    const auto expectedY = fst.y() + snd.y();
+
+    const auto fstSnd = fst + snd;
+    CHECK(fstSnd.x() == expectedX);
+    CHECK(fstSnd.y() == expectedY);
+
+    const auto sndFst = snd + fst;
+    CHECK(sndFst.x() == expectedX);
+    CHECK(sndFst.y() == expectedY);
+  }
+
+  SECTION("fpoint")
+  {
+    const cen::fpoint fst{62.4f, 381.3f};
+    const cen::fpoint snd{779.3f, 819.3f};
+
+    const auto expectedX = fst.x() + snd.x();
+    const auto expectedY = fst.y() + snd.y();
+
+    const auto fstSnd = fst + snd;
+    CHECK(fstSnd.x() == expectedX);
+    CHECK(fstSnd.y() == expectedY);
+
+    const auto sndFst = snd + fst;
+    CHECK(sndFst.x() == expectedX);
+    CHECK(sndFst.y() == expectedY);
+  }
 }
 
-TEST_CASE("FPoint::operator!=", "[FPoint]")
+TEST_CASE("point::operator-", "[point]")
 {
-  const FPoint point{56.2f, 88.8f};
-  const FPoint other{66.3f, 15.7f};
+  const cen::ipoint fst{673, 123};
+  const cen::ipoint snd{-547, 451};
 
-  CHECK(!(point != point));
-  CHECK(point != other);
-  CHECK(other != point);
+  CHECK((fst - snd) != (snd - fst));
+
+  SECTION("fst - snd")
+  {
+    const cen::ipoint diff = fst - snd;
+
+    CHECK(diff.x() == fst.x() - snd.x());
+    CHECK(diff.y() == fst.y() - snd.y());
+  }
+
+  SECTION("snd - fst")
+  {
+    const cen::ipoint diff = snd - fst;
+
+    CHECK(diff.x() == snd.x() - fst.x());
+    CHECK(diff.y() == snd.y() - fst.y());
+  }
 }
 
-TEST_CASE("FPoint::operator+", "[FPoint]")
+TEST_CASE("Conversions")
 {
-  const FPoint point{25.8f, 17.8f};
-  const FPoint other{44.6f, 33.7f};
+  SECTION("ipoint -> fpoint")
+  {
+    const cen::ipoint from{684, 912};
+    const auto to = cen::cast<cen::fpoint>(from);
 
-  const FPoint res1 = point + other;
-  const FPoint res2 = other + point;
+    CHECK(to.x() == static_cast<float>(from.x()));
+    CHECK(to.y() == static_cast<float>(from.y()));
+  }
 
-  CHECK(res1 == res2);
+  SECTION("fpoint -> ipoint")
+  {
+    const cen::fpoint from{58.8f, 123.4f};
+    const auto to = cen::cast<cen::ipoint>(from);
 
-  CHECK(res1.x() == point.x() + other.x());
-  CHECK(res1.y() == point.y() + other.y());
-  CHECK(res2.x() == point.x() + other.x());
-  CHECK(res2.y() == point.y() + other.y());
+    CHECK(to.x() == static_cast<int>(from.x()));
+    CHECK(to.y() == static_cast<int>(from.y()));
+  }
+
+  SECTION("ipoint -> const SDL_Point*")
+  {
+    cen::ipoint point{843, 9123};
+
+    SECTION("Non-const")
+    {
+      auto* ptr = static_cast<SDL_Point*>(point);
+      CHECK(point.x() == ptr->x);
+      CHECK(point.y() == ptr->y);
+    }
+
+    SECTION("Const")
+    {
+      const auto* ptr = static_cast<const SDL_Point*>(point);
+      CHECK(point.x() == ptr->x);
+      CHECK(point.y() == ptr->y);
+    }
+  }
+
+  SECTION("fpoint -> const SDL_FPoint*")
+  {
+    cen::fpoint point{3813.3f, 892.5f};
+
+    SECTION("Non-const")
+    {
+      auto* ptr = static_cast<SDL_FPoint*>(point);
+      CHECK(point.x() == ptr->x);
+      CHECK(point.y() == ptr->y);
+    }
+
+    SECTION("Const")
+    {
+      const auto* ptr = static_cast<const SDL_FPoint*>(point);
+      CHECK(point.x() == ptr->x);
+      CHECK(point.y() == ptr->y);
+    }
+  }
 }
 
-TEST_CASE("FPoint::operator-", "[FPoint]")
+TEST_CASE("point::get", "[point]")
 {
-  const FPoint point{58.9f, 48.6f};
-  const FPoint other{12.7f, 69.3f};
+  SECTION("ipoint")
+  {
+    const cen::ipoint point{393, 934};
+    const auto sdl = point.get();
 
-  const FPoint res1 = point - other;
-  const FPoint res2 = other - point;
+    CHECK(point.x() == sdl.x);
+    CHECK(point.y() == sdl.y);
+  }
 
-  CHECK(res1 != res2);
+  SECTION("fpoint")
+  {
+    const cen::fpoint point{3923.3f, 7718.1f};
+    const auto sdl = point.get();
 
-  CHECK(res1.x() == point.x() - other.x());
-  CHECK(res1.y() == point.y() - other.y());
-
-  CHECK(res2.x() == other.x() - point.x());
-  CHECK(res2.y() == other.y() - point.y());
+    CHECK(point.x() == sdl.x);
+    CHECK(point.y() == sdl.y);
+  }
 }

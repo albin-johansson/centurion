@@ -1,18 +1,10 @@
-#include "joy_button_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion;
-using namespace centurion::event;
+#include "event.hpp"
 
-TEST_CASE("JoyButtonEvent move constructors", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::set_which", "[joy_button_event]")
 {
-  CHECK_NOTHROW(JoyButtonEvent{{}});
-}
-
-TEST_CASE("JoyButtonEvent::set_which", "[JoyButtonEvent]")
-{
-  JoyButtonEvent event;
+  cen::joy_button_event event;
 
   const auto which = 92;
   event.set_which(which);
@@ -20,9 +12,9 @@ TEST_CASE("JoyButtonEvent::set_which", "[JoyButtonEvent]")
   CHECK(event.which() == which);
 }
 
-TEST_CASE("JoyButtonEvent::set_button", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::set_button", "[joy_button_event]")
 {
-  JoyButtonEvent event;
+  cen::joy_button_event event;
 
   const auto button = 44;
   event.set_button(button);
@@ -30,39 +22,62 @@ TEST_CASE("JoyButtonEvent::set_button", "[JoyButtonEvent]")
   CHECK(event.button() == button);
 }
 
-TEST_CASE("JoyButtonEvent::set_state", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::set_state", "[joy_button_event]")
 {
-  JoyButtonEvent event;
+  cen::joy_button_event event;
 
-  const auto state = ButtonState::Pressed;
+  const auto state = cen::button_state::pressed;
   event.set_state(state);
 
   CHECK(event.state() == state);
 }
 
-TEST_CASE("JoyButtonEvent::which", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::which", "[joy_button_event]")
 {
   SDL_JoyButtonEvent sdlEvent;
   sdlEvent.which = 27;
-  JoyButtonEvent event{sdlEvent};
+
+  cen::joy_button_event event{sdlEvent};
 
   CHECK(event.which() == sdlEvent.which);
 }
 
-TEST_CASE("JoyButtonEvent::button", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::button", "[joy_button_event]")
 {
   SDL_JoyButtonEvent sdlEvent;
   sdlEvent.button = 99;
-  JoyButtonEvent event{sdlEvent};
+
+  cen::joy_button_event event{sdlEvent};
 
   CHECK(event.button() == sdlEvent.button);
 }
 
-TEST_CASE("JoyButtonEvent::state", "[JoyButtonEvent]")
+TEST_CASE("joy_button_event::state", "[joy_button_event]")
 {
   SDL_JoyButtonEvent sdlEvent;
   sdlEvent.state = SDL_RELEASED;
-  JoyButtonEvent event{sdlEvent};
 
-  CHECK(event.state() == ButtonState::Released);
+  cen::joy_button_event event{sdlEvent};
+
+  CHECK(event.state() == cen::button_state::released);
+}
+
+TEST_CASE("joy_button_event::pressed", "[joy_button_event]")
+{
+  SDL_JoyButtonEvent sdlEvent;
+  sdlEvent.state = SDL_PRESSED;
+
+  cen::joy_button_event event{sdlEvent};
+
+  CHECK(event.pressed());
+}
+
+TEST_CASE("joy_button_event::released", "[joy_button_event]")
+{
+  SDL_JoyButtonEvent sdlEvent;
+  sdlEvent.state = SDL_RELEASED;
+
+  cen::joy_button_event event{sdlEvent};
+
+  CHECK(event.released());
 }

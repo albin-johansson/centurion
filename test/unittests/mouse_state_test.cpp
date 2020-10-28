@@ -1,28 +1,20 @@
-#include "mouse_state.h"
+#include "mouse_state.hpp"
 
 #include <catch.hpp>
 
-using namespace centurion;
-using namespace centurion::input;
-
-TEST_CASE("MouseState()", "[MouseState]")
+TEST_CASE("mouse_state()", "[mouse_state]")
 {
-  const MouseState state;
+  const cen::mouse_state state;
   CHECK(state.logical_width() == 1);
   CHECK(state.logical_height() == 1);
   CHECK(state.mouse_x() == 0);
   CHECK(state.mouse_y() == 0);
+  CHECK(state.mouse_pos() == cen::ipoint{0, 0});
 }
 
-TEST_CASE("MouseState smart pointer factory methods", "[MouseState]")
+TEST_CASE("mouse_state::update", "[mouse_state]")
 {
-  CHECK(MouseState::unique());
-  CHECK(MouseState::shared());
-}
-
-TEST_CASE("MouseState::update", "[MouseState]")
-{
-  MouseState state;
+  cen::mouse_state state;
 
   CHECK_NOTHROW(state.update(12, 632));
 
@@ -32,9 +24,9 @@ TEST_CASE("MouseState::update", "[MouseState]")
   CHECK_NOTHROW(state.update());
 }
 
-TEST_CASE("MouseState::reset", "[MouseState]")
+TEST_CASE("mouse_state::reset", "[mouse_state]")
 {
-  MouseState state;
+  cen::mouse_state state;
 
   state.set_logical_width(455);
   state.set_logical_height(183);
@@ -45,9 +37,9 @@ TEST_CASE("MouseState::reset", "[MouseState]")
   CHECK(state.logical_height() == 1);
 }
 
-TEST_CASE("MouseState::set_logical_width", "[MouseState]")
+TEST_CASE("mouse_state::set_logical_width", "[mouse_state]")
 {
-  MouseState state;
+  cen::mouse_state state;
 
   const auto width = 821;
   state.set_logical_width(width);
@@ -55,9 +47,9 @@ TEST_CASE("MouseState::set_logical_width", "[MouseState]")
   CHECK(width == state.logical_width());
 }
 
-TEST_CASE("MouseState::set_logical_height", "[MouseState]")
+TEST_CASE("mouse_state::set_logical_height", "[mouse_state]")
 {
-  MouseState state;
+  cen::mouse_state state;
 
   const auto height = 219;
   state.set_logical_height(height);
@@ -65,32 +57,47 @@ TEST_CASE("MouseState::set_logical_height", "[MouseState]")
   CHECK(height == state.logical_height());
 }
 
-TEST_CASE("MouseState::is_left_button_pressed", "[MouseState]")
+TEST_CASE("mouse_state::logical_size", "[mouse_state]")
 {
-  MouseState state;
+  cen::mouse_state state;
+
+  const auto width = 342;
+  const auto height = 219;
+
+  state.set_logical_width(width);
+  state.set_logical_height(height);
+
+  const auto [actualWidth, actualHeight] = state.logical_size();
+  CHECK(actualWidth == width);
+  CHECK(actualHeight == height);
+}
+
+TEST_CASE("mouse_state::is_left_button_pressed", "[mouse_state]")
+{
+  cen::mouse_state state;
   CHECK(!state.is_left_button_pressed());
 }
 
-TEST_CASE("MouseState::is_right_button_pressed", "[MouseState]")
+TEST_CASE("mouse_state::is_right_button_pressed", "[mouse_state]")
 {
-  MouseState state;
+  cen::mouse_state state;
   CHECK(!state.is_right_button_pressed());
 }
 
-TEST_CASE("MouseState::was_left_button_released", "[MouseState]")
+TEST_CASE("mouse_state::was_left_button_released", "[mouse_state]")
 {
-  MouseState state;
+  cen::mouse_state state;
   CHECK(!state.was_left_button_released());
 }
 
-TEST_CASE("MouseState::was_right_button_released", "[MouseState]")
+TEST_CASE("mouse_state::was_right_button_released", "[mouse_state]")
 {
-  MouseState state;
+  cen::mouse_state state;
   CHECK(!state.was_right_button_released());
 }
 
-TEST_CASE("MouseState::was_mouse_moved", "[MouseState]")
+TEST_CASE("mouse_state::was_mouse_moved", "[mouse_state]")
 {
-  MouseState state;
+  cen::mouse_state state;
   CHECK(!state.was_mouse_moved());
 }

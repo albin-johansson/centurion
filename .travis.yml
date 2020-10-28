@@ -1,6 +1,9 @@
-dist: trusty
+dist: focal
+
 os: linux
+
 language: cpp
+
 compiler: gcc
 
 notifications:
@@ -9,65 +12,49 @@ notifications:
 env:
   global:
     - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
-    - CXX_FLAGS=""
     - ENABLE_COVERAGE=true
 
 addons:
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
-      - gcc-8
-      - g++-8
-      - cmake
-      - lcov
       - doxygen
+      - valgrind
+      - xvfb
+      - mesa-utils
+      - linux-generic
+      - xserver-xorg-core
+      - xserver-xorg
+      - xserver-xorg-video-all
+      - xserver-xorg-input-all
+      - libwayland-egl1-mesa
+      - ninja-build
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev doxygen
-  - sudo apt-get update
-  - export CMAKE_OPTIONS=${CMAKE_OPTIONS}" "${ENV_CMAKE_OPTIONS}
-  - export CXX_FLAGS=${CXX_FLAGS}" "${ENV_CXX_FLAGS}
+  - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev libasound2-dev libpulse-dev #doxygen
 
 install:
-  # Download and install recent cmake
-  - |
-    if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-      CMAKE_URL="http://cmake.org/files/v3.16/cmake-3.16.0-Linux-x86_64.tar.gz"
-      mkdir -p ${DEPS_DIR}/cmake
-      travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${DEPS_DIR}/cmake
-      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-    fi
   - sudo apt-get update
+  - sudo apt-get install -y libjson-perl
 
-  # Manually installs LCOV 1.14
-  - wget -c http://downloads.sourceforge.net/ltp/lcov-1.14.tar.gz
-  - tar -xf lcov-1.14.tar.gz
-  - cd lcov-1.14
+  # Manually builds latest LCOV
+  - git clone https://github.com/linux-test-project/lcov.git lcov
+  - cd lcov
   - sudo make install
-  - cd
-
-#  # Manually installs Doxygen 1.8.18
-#  - wget -c https://sourceforge.net/projects/doxygen/files/rel-1.8.18/doxygen-1.8.18.linux.bin.tar.gz
-#  - tar -xf doxygen-1.8.18.linux.bin.tar.gz
-#  - cd doxygen-1.8.18
-#  - sudo make install
-#  - cd
+  - cd ..
 
 before_script:
   # Emulates a video device
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
+  - /sbin/start-stop-daemon --start --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -screen 0 800x600x24 -ac +extension GLX;
+  - export SDL_VIDEODRIVER=x11;
+  - export DISPLAY=:99.0;
   - sleep 3 # give xvfb some time to start
 
-  - export CC=/usr/bin/gcc-8
-  - export CXX=/usr/bin/g++-8
-
-  - gcc -v
-  - g++ -v
+  - g++ --version
   - cmake --version
+  - ninja --version
   - doxygen --version
+  - lcov --version
 
   # Install core SDL2
   - travis_retry curl -L https://www.libsdl.org/release/SDL2-2.0.12.tar.gz | tar xz
@@ -105,28 +92,34 @@ before_script:
 script:
   - cd ${TRAVIS_BUILD_DIR}
 
-  - doxygen Doxyfile
+  - |
+    if [[ "${TRAVIS_BRANCH}" == "master" ]]; then
+      doxygen
+    fi
 
   - mkdir -p build
   - cd build
 
-  - cmake ${CMAKE_OPTIONS} --DCMAKE_CXX_FLAGS=${CXX_FLAGS} -DCMAKE_BUILD_TYPE=Debug ..
-  - make
+  - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -GNinja
+  - ninja CenturionLibrary
+  - ninja CenturionTests
 
   - cd test
   - ctest
 
+  - valgrind --gen-suppressions=all --suppressions=../../meta/linux_sdl_gl.sup --leak-check=yes ./CenturionTests
+
 deploy:
   provider: pages
   skip_cleanup: true
-  local_dir: doc/html
+  local_dir: doxygen-out/html
   github_token: $GH_REPO_TOKEN
   on:
     branch: master
 
 after_success:
   - cd ${TRAVIS_BUILD_DIR}
-  - lcov --directory . --capture --output-file coverage.info --gcov-tool gcov-8
+  - lcov --directory . --capture --output-file coverage.info --gcov-tool gcov-9
   - lcov --remove coverage.info '*/test/*' '*/lib/*' '/usr/*' --output-file coverage.info
   - lcov --list coverage.info
   - bash <(curl -s https://codecov.io/bash) -X gcov || echo "Codecov did not collect coverage reports"

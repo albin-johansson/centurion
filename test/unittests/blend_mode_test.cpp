@@ -1,31 +1,29 @@
-#include "blend_mode.h"
+#include "blend_mode.hpp"
 
 #include <catch.hpp>
 
-using namespace centurion;
-
-TEST_CASE("BlendMode enum values", "[BlendMode]")
+TEST_CASE("blend_mode enum values", "[blend_mode]")
 {
-  CHECK(BlendMode::None == SDL_BLENDMODE_NONE);
-  CHECK(BlendMode::Blend == SDL_BLENDMODE_BLEND);
-  CHECK(BlendMode::Add == SDL_BLENDMODE_ADD);
-  CHECK(BlendMode::Mod == SDL_BLENDMODE_MOD);
-  CHECK(BlendMode::Mul == SDL_BLENDMODE_MUL);
-  CHECK(BlendMode::Invalid == SDL_BLENDMODE_INVALID);
+  CHECK(cen::blend_mode::none == SDL_BLENDMODE_NONE);
+  CHECK(cen::blend_mode::blend == SDL_BLENDMODE_BLEND);
+  CHECK(cen::blend_mode::add == SDL_BLENDMODE_ADD);
+  CHECK(cen::blend_mode::mod == SDL_BLENDMODE_MOD);
+  CHECK(cen::blend_mode::mul == SDL_BLENDMODE_MUL);
+  CHECK(cen::blend_mode::invalid == SDL_BLENDMODE_INVALID);
 
-  CHECK(SDL_BLENDMODE_NONE == BlendMode::None);
-  CHECK(SDL_BLENDMODE_BLEND == BlendMode::Blend);
-  CHECK(SDL_BLENDMODE_ADD == BlendMode::Add);
-  CHECK(SDL_BLENDMODE_MOD == BlendMode::Mod);
-  CHECK(SDL_BLENDMODE_MUL == BlendMode::Mul);
-  CHECK(SDL_BLENDMODE_INVALID == BlendMode::Invalid);
+  CHECK(SDL_BLENDMODE_NONE == cen::blend_mode::none);
+  CHECK(SDL_BLENDMODE_BLEND == cen::blend_mode::blend);
+  CHECK(SDL_BLENDMODE_ADD == cen::blend_mode::add);
+  CHECK(SDL_BLENDMODE_MOD == cen::blend_mode::mod);
+  CHECK(SDL_BLENDMODE_MUL == cen::blend_mode::mul);
+  CHECK(SDL_BLENDMODE_INVALID == cen::blend_mode::invalid);
 }
 
-TEST_CASE("BlendMode operator!=", "[BlendMode]")
+TEST_CASE("blend_mode operator!=", "[blend_mode]")
 {
-  CHECK(BlendMode::None != SDL_BLENDMODE_MOD);
-  CHECK(BlendMode::Blend != SDL_BLENDMODE_INVALID);
+  CHECK(cen::blend_mode::none != SDL_BLENDMODE_MOD);
+  CHECK(cen::blend_mode::blend != SDL_BLENDMODE_INVALID);
 
-  CHECK(SDL_BLENDMODE_ADD != BlendMode::Blend);
-  CHECK(SDL_BLENDMODE_MOD != BlendMode::Add);
+  CHECK(SDL_BLENDMODE_ADD != cen::blend_mode::blend);
+  CHECK(SDL_BLENDMODE_MOD != cen::blend_mode::add);
 }

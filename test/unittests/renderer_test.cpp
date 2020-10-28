@@ -1,629 +1,538 @@
-#include "renderer.h"
+#include "renderer.hpp"
 
 #include <catch.hpp>
-#include <utility>
+#include <iostream>
 
-#include "centurion_exception.h"
-#include "colors.h"
-#include "font.h"
-#include "log.h"
-#include "rect.h"
-#include "texture.h"
-#include "window.h"
+#include "colors.hpp"
+#include "exception.hpp"
+#include "font.hpp"
+#include "graphics_drivers.hpp"
+#include "log.hpp"
+#include "rect.hpp"
+#include "window.hpp"
 
-using namespace centurion;
+namespace {
 
-static constexpr auto* texturePath = "resources/panda.png";
-
-TEST_CASE("Renderer(SDL_Renderer*)", "[Renderer]")
+template <typename Lambda>
+inline void test(Lambda&& lambda)
 {
-  CHECK_THROWS_AS(Renderer{nullptr}, CenturionException);
-
-  Window window;
-  SDL_Renderer* ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-  CHECK_NOTHROW(Renderer{ren});
+  cen::window window;
+  cen::renderer renderer{window};
+  lambda(window, renderer);
 }
 
-TEST_CASE("Renderer(const Window&, SDL_RendererFlags)", "[Renderer]")
+template <typename Lambda>
+inline void texture_test(Lambda&& lambda)
 {
-  Window window;
-  CHECK_NOTHROW(Renderer{window});
+  cen::window window;
+  cen::renderer renderer{window};
+  cen::texture texture{renderer, "resources/panda.png"};
+  lambda(renderer, texture);
 }
 
-TEST_CASE("Renderer(Renderer&&)", "[Renderer]")
+template <typename Lambda>
+inline void font_test(Lambda&& lambda)
 {
-  const Window window;
+  cen::window window;
+  cen::renderer renderer{window};
+  cen::font font{"resources/daniel.ttf", 12};
+  lambda(renderer, font);
+}
 
-  Renderer renderer{window};
-  Renderer other{std::move(renderer)};
+}  // namespace
 
-  CHECK(!renderer.get());
+TEST_CASE("renderer:: ctor(const window&, SDL_RendererFlags)", "[renderer]")
+{
+  cen::window window;
+  CHECK_NOTHROW(cen::renderer{window});
+}
+
+TEST_CASE("Renderer move constructor", "[renderer]")
+{
+  const cen::window window;
+
+  cen::renderer renderer{window};
+  cen::renderer other{std::move(renderer)};
+
   CHECK(other.get());
 }
 
-TEST_CASE("Renderer::operator=(Renderer&&)", "[Renderer]")
+TEST_CASE("renderer::operator=(renderer&&)", "[renderer]")
 {
   SECTION("Self-assignment")
   {
-    const Window window;
-    Renderer renderer{window};
+    const cen::window window;
+    cen::renderer renderer{window};
 
     renderer = std::move(renderer);
-    CHECK(renderer.get());
+    CHECK(renderer.get());  // NOLINT
   }
 
   SECTION("Normal usage")
   {
-    const Window firstWindow;
-    const Window secondWindow;
-    Renderer renderer{firstWindow};
-    Renderer other{secondWindow};
+    const cen::window firstwindow;
+    const cen::window secondwindow;
+    cen::renderer renderer{firstwindow};
+    cen::renderer other{secondwindow};
 
     other = std::move(renderer);
 
-    CHECK(!renderer.get());
     CHECK(other.get());
   }
 }
 
-TEST_CASE("Renderer::unique(SDL_Renderer*)", "[Renderer]")
+TEST_CASE("renderer::clear", "[renderer]")
 {
-  CHECK_THROWS_AS(Renderer::unique(nullptr), CenturionException);
-
-  Window window;
-  SDL_Renderer* ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-
-  CHECK_NOTHROW(Renderer::unique(ren));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK_NOTHROW(renderer.clear());
+  });
 }
 
-TEST_CASE("Renderer::shared(SDL_Renderer*)", "[Renderer]")
+TEST_CASE("renderer::clear_with", "[renderer]")
 {
-  CHECK_THROWS_AS(Renderer::shared(nullptr), CenturionException);
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const auto selectedColor = cen::colors::pink;
+    renderer.set_color(selectedColor);
 
-  Window window;
-  SDL_Renderer* ren = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-
-  CHECK_NOTHROW(Renderer::shared(ren));
+    CHECK_NOTHROW(renderer.clear_with(cen::colors::medium_aqua_marine));
+    CHECK(renderer.get_color() == selectedColor);
+  });
 }
 
-TEST_CASE("Renderer::clear", "[Renderer]")
+TEST_CASE("renderer::present", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.clear());
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK_NOTHROW(renderer.present());
+  });
 }
 
-TEST_CASE("Renderer::present", "[Renderer]")
+TEST_CASE("renderer::add_font", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.present());
+  test([](const cen::window& window, cen::renderer& renderer) {
+    using namespace std::string_literals;
+
+    constexpr auto id = 7;
+
+    renderer.add_font(id, cen::font{"resources/daniel.ttf", 12});
+
+    CHECK(renderer.has_font(id));
+    CHECK(renderer.get_font(id).family_name() == "Daniel"s);
+
+    CHECK_NOTHROW(
+        renderer.add_font(id, cen::font{"resources/type_writer.ttf", 12}));
+
+    CHECK(renderer.has_font(id));
+    CHECK(renderer.get_font(id).family_name() == "Type Writer"s);
+  });
 }
 
-TEST_CASE("Renderer::add_font(const std::string&, const SharedPtr<Font>&)",
-          "[Renderer]")
+TEST_CASE("renderer::emplace_font", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
+  test([](const cen::window& window, cen::renderer& renderer) {
+    using namespace std::string_literals;
 
-  SECTION("Bad arguments") { CHECK_NOTHROW(renderer.add_font("", nullptr)); }
+    constexpr auto id = 42;
 
-  SECTION("Normal arguments")
-  {
-    auto font = Font::shared("resources/daniel.ttf", 12);
-    const auto fontName = font->family_name();
+    renderer.emplace_font(id, "resources/daniel.ttf", 12);
 
-    renderer.add_font(fontName, font);
-    CHECK(renderer.has_font(fontName));
-    CHECK_NOTHROW(renderer.add_font(fontName, font));
-    CHECK(renderer.has_font(fontName));
-  }
+    CHECK(renderer.has_font(id));
+    CHECK(renderer.get_font(id).family_name() == "Daniel"s);
+
+    CHECK_NOTHROW(renderer.emplace_font(id, "resources/type_writer.ttf", 12));
+
+    CHECK(renderer.has_font(id));
+    CHECK(renderer.get_font(id).family_name() == "Type Writer"s);
+  });
 }
 
-TEST_CASE("Renderer::add_font(const SharedPtr<Font>&)", "[Renderer]")
+TEST_CASE("renderer::remove_font", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
+  test([](const cen::window& window, cen::renderer& renderer) {
+    constexpr auto name = 54;
 
-  SECTION("Bad arguments")
-  {
-    CHECK_NOTHROW(renderer.add_font(nullptr));
-    CHECK(!renderer.add_font(nullptr));
-  }
+    CHECK_NOTHROW(renderer.remove_font(0));
 
-  SECTION("Normal arguments")
-  {
-    auto font = Font::shared("resources/daniel.ttf", 12);
-    const auto fontName = font->family_name();
+    renderer.add_font(name, cen::font{"resources/daniel.ttf", 12});
+    CHECK(renderer.has_font(name));
 
-    const auto name = renderer.add_font(font);
-    CHECK(name);
-    CHECK(*name == fontName);
-
-    CHECK(!renderer.add_font(font));
-  }
+    renderer.remove_font(name);
+    CHECK(!renderer.has_font(name));
+  });
 }
 
-TEST_CASE("Renderer::remove_font", "[Renderer]")
+TEST_CASE("renderer::draw_rect", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  const std::string name = "foo";
-  const auto font = Font::shared("resources/daniel.ttf", 12);
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const cen::irect irect{{1, 2}, {3, 4}};
+    const cen::frect frect{{11.3f, 34.2f}, {54.2f, 91.3f}};
 
-  CHECK_NOTHROW(renderer.remove_font(""));
-
-  renderer.add_font(name, font);
-  CHECK(renderer.has_font(name));
-
-  renderer.remove_font(name);
-  CHECK(!renderer.has_font(name));
+    CHECK_NOTHROW(renderer.draw_rect(irect));
+    CHECK_NOTHROW(renderer.draw_rect(frect));
+  });
 }
 
-TEST_CASE("Renderer::draw_rect", "[Renderer]")
+TEST_CASE("renderer::fill_rect", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_rect({}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const cen::irect irect{{14, 23}, {331, 487}};
+    const cen::frect frect{{11.3f, 34.2f}, {54.2f, 91.3f}};
+
+    CHECK_NOTHROW(renderer.fill_rect(irect));
+    CHECK_NOTHROW(renderer.fill_rect(frect));
+  });
 }
 
-TEST_CASE("Renderer::fill_rect", "[Renderer]")
+TEST_CASE("renderer::draw_rect_t", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.fill_rect({}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const cen::irect irect{{14, 23}, {331, 487}};
+    const cen::frect frect{{11.3f, 34.2f}, {54.2f, 91.3f}};
+
+    CHECK_NOTHROW(renderer.draw_rect_t(irect));
+    CHECK_NOTHROW(renderer.draw_rect_t(frect));
+  });
 }
 
-TEST_CASE("Renderer::draw_rect_f", "[Renderer]")
+TEST_CASE("renderer::fill_rect_t", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_rect_f({}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const cen::irect irect{{14, 23}, {331, 487}};
+    const cen::frect frect{{11.3f, 34.2f}, {54.2f, 91.3f}};
+
+    CHECK_NOTHROW(renderer.fill_rect_t(irect));
+    CHECK_NOTHROW(renderer.fill_rect_t(frect));
+  });
 }
 
-TEST_CASE("Renderer::fill_rect_f", "[Renderer]")
+TEST_CASE("renderer::draw_line", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.fill_rect_f({}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK_NOTHROW(renderer.draw_line(cen::ipoint{4, 5}, cen::ipoint{12, 94}));
+    CHECK_NOTHROW(
+        renderer.draw_line(cen::fpoint{6.2f, 8.3f}, cen::fpoint{21.6f, 17.8f}));
+  });
 }
 
-TEST_CASE("Renderer::draw_rect_t", "[Renderer]")
+TEST_CASE("renderer::draw_lines", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_rect_t({}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const std::vector<cen::ipoint> points_i{{4, 5}, {50, 2}, {-10, 7}};
+    const std::vector<cen::fpoint> points_f{{8.3f, 3.4f},
+                                            {54.4f, 86.3f},
+                                            {-10.9f, 67.2f}};
+
+    CHECK_NOTHROW(renderer.draw_lines(points_i));
+    CHECK_NOTHROW(renderer.draw_lines(points_f));
+  });
 }
 
-TEST_CASE("Renderer::fill_rect_t", "[Renderer]")
+TEST_CASE("render: texture at point", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.fill_rect_t({}));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::ipoint position_i{3, 57};
+    const cen::fpoint position_f{26.4f, 68.2f};
+
+    CHECK_NOTHROW(renderer.render(texture, position_i));
+    CHECK_NOTHROW(renderer.render(texture, position_f));
+  });
 }
 
-TEST_CASE("Renderer::draw_rect_tf", "[Renderer]")
+TEST_CASE("render: texture according to rectangle", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_rect_tf({}));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::irect irect{{12, 57}, {175, 218}};
+    const cen::frect frect{{23.7f, 36.3f}, {317.3f, 348.3f}};
+
+    CHECK_NOTHROW(renderer.render(texture, irect));
+    CHECK_NOTHROW(renderer.render(texture, frect));
+  });
 }
 
-TEST_CASE("Renderer::fill_rect_tf", "[Renderer]")
+TEST_CASE("render: src/dst rectangles", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.fill_rect_tf({}));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::irect src{{10, 15}, {20, 20}};
+
+    const cen::irect dst_i{{35, 92}, {15, 23}};
+    const cen::frect dst_f{{77.9f, 45.6f}, {512.1f, 375.2f}};
+
+    CHECK_NOTHROW(renderer.render(texture, src, dst_i));
+    CHECK_NOTHROW(renderer.render(texture, src, dst_f));
+  });
 }
 
-TEST_CASE("Renderer::draw_line", "[Renderer]")
+TEST_CASE("render: src/dst rectangles and rotation", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_line({}, {}));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::irect src{{10, 15}, {20, 20}};
+    const auto angle = 182;
+
+    const cen::irect dst_i{{35, 92}, {15, 23}};
+    const cen::frect dst_f{{21.4f, 47.3f}, {338.3f, 177.3f}};
+
+    CHECK_NOTHROW(renderer.render(texture, src, dst_i, angle));
+    CHECK_NOTHROW(renderer.render(texture, src, dst_f, angle));
+  });
 }
 
-TEST_CASE("Renderer::draw_line_f", "[Renderer]")
+TEST_CASE("render: src/dst rectangles, rotation and center-of-rotation",
+          "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK_NOTHROW(renderer.draw_line_f({}, {}));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::irect src{{16, 11}, {37, 77}};
+    const auto angle = 359;
+
+    const cen::irect dst_i{{22, 76}, {245, 112}};
+    const cen::frect dst_f{{54.5f, 25.6f}, {136.5f, 387.8f}};
+
+    const cen::ipoint center_i{44, 12};
+    const cen::fpoint center_f{12.3f, 45.2f};
+
+    CHECK_NOTHROW(renderer.render(texture, src, dst_i, angle, center_i));
+    CHECK_NOTHROW(renderer.render(texture, src, dst_f, angle, center_f));
+  });
 }
 
-TEST_CASE("Renderer::draw_lines", "[Renderer]")
+TEST_CASE("render: src/dst rectangles and flip", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  const std::vector<IPoint> points{{4, 5}, {50, 2}, {-10, 7}};
-  CHECK_NOTHROW(renderer.draw_lines(points));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    CHECK_NOTHROW(renderer.render(texture,
+                                  cen::irect{{10, 15}, {20, 20}},
+                                  cen::irect{{35, 92}, {15, 23}},
+                                  SDL_FLIP_HORIZONTAL));
+  });
 }
 
-TEST_CASE("Renderer::render(Texture&, IPoint)", "[Renderer]")
+TEST_CASE("render: src/dst rectangles, rotation, center-of-rotation and flip",
+          "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(texture, IPoint{-5, 410}));
-}
-
-TEST_CASE("Renderer::render(Texture&, IRect&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(texture, {{65, -35}, {124, 99}}));
-}
-
-TEST_CASE("Renderer::render(Texture&, IRect&, IRect&)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(
-      texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}));
-}
-
-TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double)", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(
-      texture, IRect{{10, 15}, {20, 20}}, IRect{{35, 92}, {15, 23}}, 17));
-}
-
-TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, double, IPoint&)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(texture,
-                                IRect{{10, 15}, {20, 20}},
-                                IRect{{35, 92}, {15, 23}},
-                                17,
-                                IPoint{5, 9}));
-}
-
-TEST_CASE("Renderer::render(Texture&, IRect&, IRect&, SDL_RendererFlip)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render(texture,
-                                IRect{{10, 15}, {20, 20}},
-                                IRect{{35, 92}, {15, 23}},
-                                SDL_FLIP_HORIZONTAL));
-}
-
-TEST_CASE(
-    "Renderer::render(Texture&, IRect&, IRect&, double, "
-    "IPoint&,SDL_RendererFlip)",
-    "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture,
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    CHECK_NOTHROW(renderer.render(texture,
                                   {{10, 15}, {20, 20}},
-                                  {{35, 92}, {15, 23}},
+                                  cen::irect{{35, 92}, {15, 23}},
                                   -5,
-                                  IPoint{5, 5},
+                                  cen::ipoint{5, 5},
                                   SDL_FLIP_HORIZONTAL));
+  });
 }
 
-TEST_CASE("Renderer::render_f(Texture&, FPoint)", "[Renderer]")
+TEST_CASE("render_t: texture at point", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture, FPoint{83.6f, 523.3f}));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::ipoint pos_i{-5, 66};
+    const cen::fpoint pos_f{3.8f, 43.3f};
+
+    CHECK_NOTHROW(renderer.render_t(texture, pos_i));
+    CHECK_NOTHROW(renderer.render_t(texture, pos_f));
+  });
 }
 
-TEST_CASE("Renderer::render_f(Texture&, FRect&)", "[Renderer]")
+TEST_CASE("render_t: texture according to rectangle", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture, {{146, 34}, {99, 58}}));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::irect irect{{12, 7}, {115, 876}};
+    const cen::frect frect{{7.4f, 2.3f}, {175.3f, 412.8f}};
+
+    CHECK_NOTHROW(renderer.render_t(texture, irect));
+    CHECK_NOTHROW(renderer.render_t(texture, frect));
+  });
 }
 
-TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&)", "[Renderer]")
+TEST_CASE("render_t: src/dst rectangles", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(
-      renderer.render_f(texture, {{5, 8}, {15, 15}}, {{77, 23}, {100, 59}}));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::irect src{{123, 444}, {467, 221}};
+
+    const cen::irect dst_i{{5, 34}, {123, 321}};
+    const cen::frect dst_f{{73.1f, 22.3f}, {116.4f, 443.4f}};
+
+    CHECK_NOTHROW(renderer.render_t(texture, src, dst_i));
+    CHECK_NOTHROW(renderer.render_t(texture, src, dst_f));
+  });
 }
 
-TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, double)", "[Renderer]")
+TEST_CASE("render_t: src/dst rectangles and rotation", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(
-      texture, {{1, 2}, {5, 8}}, {{774, 413}, {99, 224}}, 123));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::irect src{{10, 15}, {20, 20}};
+    const auto angle = 17;
+
+    const cen::irect dst_i{{35, 92}, {15, 23}};
+    const cen::frect dst_f{{67.1f, 43.3f}, {77.4f, 23.4f}};
+
+    CHECK_NOTHROW(renderer.render_t(texture, src, dst_i, angle));
+    CHECK_NOTHROW(renderer.render_t(texture, src, dst_f, angle));
+  });
 }
 
-TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, double, FPoint&)",
-          "[Renderer]")
+TEST_CASE("render_t: src/dst rectangles, rotation and center-of-rotation",
+          "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture,
-                                  {{10, 15}, {20, 20}},
-                                  {{99, 35}, {185, 23}},
-                                  56,
-                                  FPoint{-2.4f, 14.3f}));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::irect src{{10, 15}, {20, 20}};
+    const auto angle = 23;
+
+    const cen::irect dst_i{{35, 92}, {15, 23}};
+    const cen::frect dst_f{{14.5f, 23.6f}, {126.5f, 327.8f}};
+
+    const cen::ipoint center_i{5, 9};
+    const cen::fpoint center_f{16.3f, 34.7f};
+
+    CHECK_NOTHROW(renderer.render_t(texture, src, dst_i, angle, center_i));
+    CHECK_NOTHROW(renderer.render_t(texture, src, dst_f, angle, center_f));
+  });
 }
 
-TEST_CASE("Renderer::render_f(Texture&, IRect&, FRect&, SDL_RendererFlip)",
-          "[Renderer]")
+TEST_CASE("render_t: src/dst rectangles and flip", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture,
-                                  {{10, 15}, {20, 20}},
-                                  {{-67, 3}, {93, 110.5f}},
-                                  SDL_FLIP_HORIZONTAL));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::irect src{{10, 15}, {20, 20}};
+    const SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL;
+
+    const cen::irect dst_i{{35, 92}, {15, 23}};
+    const cen::frect dst_f{{382.3f, 12.4f}, {35.6f, 238.9f}};
+
+    CHECK_NOTHROW(renderer.render_t(texture, src, dst_i, flip));
+    CHECK_NOTHROW(renderer.render_t(texture, src, dst_f, flip));
+  });
 }
 
-TEST_CASE(
-    "Renderer::render_f(Texture&, IRect&, FRect&, double, "
-    "FPoint&, SDL_RendererFlip)",
-    "[Renderer]")
+TEST_CASE("render_t: src/dst rectangles, rotation, center-of-rotation and flip",
+          "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_f(texture,
-                                  {{10, 8}, {8, 9}},
-                                  {{4.0f, -34}, {88, 105.9f}},
-                                  89,
-                                  FPoint{5, 5},
-                                  SDL_FLIP_VERTICAL));
+  texture_test([](cen::renderer& renderer, const cen::texture& texture) {
+    const cen::irect src{{10, 15}, {20, 20}};
+    const SDL_RendererFlip flip = SDL_FLIP_VERTICAL;
+    const auto angle = 126;
+
+    const cen::irect dst_i{{35, 92}, {15, 23}};
+    const cen::frect dst_f{{382.3f, 12.4f}, {35.6f, 238.9f}};
+
+    const cen::ipoint center_i{5, 5};
+    const cen::fpoint center_f{74.3f, 930.3f};
+
+    CHECK_NOTHROW(
+        renderer.render_t(texture, src, dst_i, angle, center_i, flip));
+
+    CHECK_NOTHROW(
+        renderer.render_t(texture, src, dst_f, angle, center_f, flip));
+  });
 }
 
-TEST_CASE("Renderer::render_t(Texture&, IPoint)", "[Renderer]")
+TEST_CASE("renderer::set_color", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture, IPoint{-5, 410}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const auto& color = cen::colors::pale_violet_red;
+
+    renderer.set_color(color);
+    CHECK(color == renderer.get_color());
+  });
 }
 
-TEST_CASE("Renderer::render_t(Texture&, IRect&)", "[Renderer]")
+TEST_CASE("renderer::set_viewport", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture, {{65, -35}, {124, 99}}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const cen::irect viewport{{50, 33}, {768, 453}};
+
+    renderer.set_viewport(viewport);
+    CHECK(viewport == renderer.viewport());
+  });
 }
 
-TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&)", "[Renderer]")
+TEST_CASE("renderer::set_logical_size", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(
-      renderer.render_t(texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const cen::iarea size{842, 253};
+
+    renderer.set_logical_size(size);
+
+    CHECK(renderer.logical_width() == size.width);
+    CHECK(renderer.logical_height() == size.height);
+  });
 }
 
-TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, double)", "[Renderer]")
+TEST_CASE("renderer::set_scale", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(
-      texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}, 17));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const auto xScale = 0.8f;
+    const auto yScale = 0.4f;
+    renderer.set_scale(xScale, yScale);
+
+    CHECK(renderer.x_scale() == xScale);
+    CHECK(renderer.y_scale() == yScale);
+  });
 }
 
-TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, double, IPoint&)",
-          "[Renderer]")
+TEST_CASE("renderer::x_scale", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(
-      texture, {{10, 15}, {20, 20}}, {{35, 92}, {15, 23}}, 17, IPoint{5, 9}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK(renderer.x_scale() == 1);
+  });
 }
 
-TEST_CASE("Renderer::render_t(Texture&, IRect&, IRect&, SDL_RendererFlip)",
-          "[Renderer]")
+TEST_CASE("renderer::y_scale", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture,
-                                  {{10, 15}, {20, 20}},
-                                  {{35, 92}, {15, 23}},
-                                  SDL_FLIP_HORIZONTAL));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK(renderer.y_scale() == 1);
+  });
 }
 
-TEST_CASE(
-    "Renderer::render_t(Texture&, IRect&, IRect&, double, "
-    "IPoint&,SDL_RendererFlip)",
-    "[Renderer]")
+TEST_CASE("renderer::get_render_target", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_t(texture,
-                                  {{10, 15}, {20, 20}},
-                                  {{35, 92}, {15, 23}},
-                                  -5,
-                                  IPoint{5, 5},
-                                  SDL_FLIP_HORIZONTAL));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK(!renderer.get_render_target());
+
+    cen::texture target{renderer,
+                        cen::pixel_format::rgba8888,
+                        cen::texture_access::target,
+                        {100, 100}};
+    REQUIRE(target.is_target());
+
+    renderer.set_target(&target);
+    REQUIRE(renderer.get_render_target());
+
+    renderer.set_target(nullptr);
+    CHECK(!renderer.get_render_target());
+  });
 }
 
-TEST_CASE("Renderer::render_tf(Texture&, FPoint)", "[Renderer]")
+TEST_CASE("renderer::logical_width", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture, FPoint{83.6f, 523.3f}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK(renderer.logical_width() == 0);
+  });
 }
 
-TEST_CASE("Renderer::render_tf(Texture&, FRect&)", "[Renderer]")
+TEST_CASE("renderer::logical_height", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture, {{146, 34}, {99, 58}}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK(renderer.logical_height() == 0);
+  });
 }
 
-TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&)", "[Renderer]")
+TEST_CASE("renderer::logical_size", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(
-      renderer.render_tf(texture, {{5, 8}, {15, 15}}, {{77, 23}, {100, 59}}));
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const cen::iarea size{732, 156};
+
+    renderer.set_logical_size(size);
+
+    const auto [width, height] = renderer.logical_size();
+    CHECK(width == size.width);
+    CHECK(height == size.height);
+  });
 }
 
-TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double)", "[Renderer]")
+TEST_CASE("renderer::info", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(
-      texture, {{1, 2}, {5, 8}}, {{774, 413}, {99, 224}}, 123));
-}
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const auto optInfo = renderer.info();
+    REQUIRE(optInfo);
 
-TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double, FPoint&)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture,
-                                   {{10, 15}, {20, 20}},
-                                   {{99, 35}, {185, 23}},
-                                   56,
-                                   FPoint{-2.4f, 14.3f}));
-}
-
-TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, SDL_RendererFlip)",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture,
-                                   {{10, 15}, {20, 20}},
-                                   {{-67, 3}, {93, 110.5f}},
-                                   SDL_FLIP_HORIZONTAL));
-}
-
-TEST_CASE("Renderer::render_tf(Texture&, IRect&, FRect&, double, ",
-          "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Texture texture{renderer, texturePath};
-  CHECK_NOTHROW(renderer.render_tf(texture,
-                                   {{10, 8}, {8, 9}},
-                                   {{4.0f, -34}, {88, 105.9f}},
-                                   89,
-                                   {5, 5},
-                                   SDL_FLIP_VERTICAL));
-}
-
-TEST_CASE("Renderer::set_color", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-
-  const auto& color = color::pale_violet_red;
-  renderer.set_color(color);
-
-  CHECK(color == renderer.color());
-}
-
-TEST_CASE("Renderer::set_viewport", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-
-  const IRect viewport{{50, 33}, {768, 453}};
-  renderer.set_viewport(viewport);
-
-  CHECK(viewport == renderer.viewport());
-}
-
-TEST_CASE("Renderer::set_logical_size", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-
-  const auto w = 842;
-  const auto h = 253;
-  const IArea size{w, h};
-
-  renderer.set_logical_size(size);
-
-  CHECK(renderer.logical_width() == w);
-  CHECK(renderer.logical_height() == h);
-}
-
-TEST_CASE("Renderer::set_scale", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-
-  const auto xScale = 0.8f;
-  const auto yScale = 0.4f;
-  renderer.set_scale(xScale, yScale);
-
-  CHECK(renderer.x_scale() == xScale);
-  CHECK(renderer.y_scale() == yScale);
-}
-
-TEST_CASE("Renderer::x_scale", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  CHECK(renderer.x_scale() == 1);
-}
-
-TEST_CASE("Renderer::y_scale", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  CHECK(renderer.y_scale() == 1);
-}
-
-TEST_CASE("Renderer::logical_width", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  CHECK(renderer.logical_width() == 0);
-}
-
-TEST_CASE("Renderer::logical_height", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  CHECK(renderer.logical_height() == 0);
-}
-
-TEST_CASE("Renderer::info", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-
-  auto maybeInfo = renderer.info();
-  CHECK(maybeInfo);
-
-  if (maybeInfo) {
-    auto info = *maybeInfo;
+    const SDL_RendererInfo info = *optInfo;
 
     SDL_RendererInfo sdlInfo;
-    SDL_GetRendererInfo(renderer, &sdlInfo);
+    SDL_GetRendererInfo(renderer.get(), &sdlInfo);
 
     CHECK_THAT(info.name, Catch::Equals(sdlInfo.name));
     CHECK(info.flags == sdlInfo.flags);
@@ -634,184 +543,132 @@ TEST_CASE("Renderer::info", "[Renderer]")
 
     CHECK(info.max_texture_width == sdlInfo.max_texture_width);
     CHECK(info.max_texture_height == sdlInfo.max_texture_height);
-  }
+  });
 }
 
-TEST_CASE("Renderer::output_width", "[Renderer]")
+TEST_CASE("renderer::output_width", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK(renderer.output_width() == window.width());
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK(renderer.output_width() == window.width());
+  });
 }
 
-TEST_CASE("Renderer::output_height", "[Renderer]")
+TEST_CASE("renderer::output_height", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  CHECK(renderer.output_height() == window.height());
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK(renderer.output_height() == window.height());
+  });
 }
 
-TEST_CASE("Renderer::output_size", "[Renderer]")
+TEST_CASE("renderer::output_size", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  const auto [width, height] = renderer.output_size();
-  CHECK(width == window.width());
-  CHECK(height == window.height());
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const auto [width, height] = renderer.output_size();
+    CHECK(width == window.width());
+    CHECK(height == window.height());
+  });
 }
 
-TEST_CASE("Renderer::blend_mode", "[Renderer]")
+TEST_CASE("renderer::get_blend_mode", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const auto mode = renderer.get_blend_mode();
 
-  const auto mode = renderer.blend_mode();
+    SDL_BlendMode sdlMode;
+    SDL_GetRenderDrawBlendMode(renderer.get(), &sdlMode);
 
-  SDL_BlendMode sdlMode;
-  SDL_GetRenderDrawBlendMode(renderer, &sdlMode);
-
-  CHECK(mode == sdlMode);
+    CHECK(mode == sdlMode);
+  });
 }
 
-TEST_CASE("Renderer::vsync_enabled", "[Renderer]")
+TEST_CASE("renderer::is_vsync_enabled", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-
-  const bool vsync = renderer.flags() & SDL_RENDERER_PRESENTVSYNC;
-  CHECK(vsync == renderer.vsync_enabled());
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const bool vsync = renderer.flags() & SDL_RENDERER_PRESENTVSYNC;
+    CHECK(vsync == renderer.is_vsync_enabled());
+  });
 }
 
-TEST_CASE("Renderer::accelerated", "[Renderer]")
+TEST_CASE("renderer::is_accelerated", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-
-  const bool accelerated = renderer.flags() & SDL_RENDERER_ACCELERATED;
-  CHECK(accelerated == renderer.accelerated());
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const bool accelerated = renderer.flags() & SDL_RENDERER_ACCELERATED;
+    CHECK(accelerated == renderer.is_accelerated());
+  });
 }
 
-TEST_CASE("Renderer::software_based", "[Renderer]")
+TEST_CASE("renderer::is_software_based", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-
-  const bool software = renderer.flags() & SDL_RENDERER_SOFTWARE;
-  CHECK(software == renderer.software_based());
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const bool software = renderer.flags() & SDL_RENDERER_SOFTWARE;
+    CHECK(software == renderer.is_software_based());
+  });
 }
 
-TEST_CASE("Renderer::supports_target_textures", "[Renderer]")
+TEST_CASE("renderer::supports_target_textures", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-
-  const bool targettexture = renderer.flags() & SDL_RENDERER_TARGETTEXTURE;
-  CHECK(targettexture == renderer.supports_target_textures());
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const bool targetTexture = renderer.flags() & SDL_RENDERER_TARGETTEXTURE;
+    CHECK(targetTexture == renderer.supports_target_textures());
+  });
 }
 
-TEST_CASE("Renderer::using_integer_logical_scaling", "[Renderer]")
+TEST_CASE("renderer::using_integer_logical_scaling", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
+  test([](const cen::window& window, cen::renderer& renderer) {
+    CHECK(!renderer.is_using_integer_logical_scaling());
 
-  CHECK(!renderer.using_integer_logical_scaling());
+    renderer.set_logical_integer_scale(true);
 
-  renderer.set_logical_integer_scale(true);
-
-  CHECK(renderer.using_integer_logical_scaling());
+    CHECK(renderer.is_using_integer_logical_scaling());
+  });
 }
 
-TEST_CASE("Renderer::color", "[Renderer]")
+TEST_CASE("renderer::color", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-
-  const auto color = renderer.color();
-  CHECK(color.red() == 0);
-  CHECK(color.green() == 0);
-  CHECK(color.blue() == 0);
-  CHECK(color.alpha() == 0xFF);
+  test([](const cen::window& window, cen::renderer& renderer) {
+    const auto color = renderer.get_color();
+    CHECK(color.red() == 0);
+    CHECK(color.green() == 0);
+    CHECK(color.blue() == 0);
+    CHECK(color.alpha() == 0xFF);
+  });
 }
 
-TEST_CASE("Renderer::text_blended", "[Renderer]")
+TEST_CASE("renderer::get_font", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Font font{"resources/daniel.ttf", 12};
+  test([](const cen::window& window, cen::renderer& renderer) {
+    constexpr auto id = 34;
 
-  CHECK(!renderer.text_blended(nullptr, font));
-  CHECK(!renderer.text_blended("", font));
-  CHECK(renderer.text_blended("Hello", font));
+    CHECK_THROWS(renderer.get_font(id));
+
+    renderer.add_font(id, cen::font{"resources/daniel.ttf", 12});
+
+    CHECK_NOTHROW(renderer.get_font(id));
+
+    auto& font = renderer.get_font(id);
+
+    using namespace std::string_literals;
+    CHECK(font.family_name() == "Daniel"s);
+  });
 }
 
-TEST_CASE("Renderer::text_blended_wrapped", "[Renderer]")
+TEST_CASE("renderer::viewport", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Font font{"resources/daniel.ttf", 12};
-
-  CHECK(!renderer.text_blended_wrapped(nullptr, 500, font));
-  CHECK(!renderer.text_blended_wrapped("", 500, font));
-  CHECK(renderer.text_blended_wrapped("Hello", 500, font));
-}
-
-TEST_CASE("Renderer::text_shaded", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Font font{"resources/daniel.ttf", 12};
-
-  CHECK(!renderer.text_shaded(nullptr, color::black, font));
-  CHECK(!renderer.text_shaded("", color::black, font));
-  CHECK(renderer.text_shaded("Hello", color::black, font));
-}
-
-TEST_CASE("Renderer::text_solid", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
-  Font font{"resources/daniel.ttf", 12};
-
-  CHECK(!renderer.text_solid(nullptr, font));
-  CHECK(!renderer.text_solid("", font));
-  CHECK(renderer.text_solid("Hello", font));
-}
-
-TEST_CASE("Renderer::font", "[Renderer]")
-{
-  const std::string name = "bar";
-
-  Window window;
-  Renderer renderer{window};
-
-  CHECK(!renderer.font(name));
-
-  auto font = Font::shared("resources/daniel.ttf", 12);
-  renderer.add_font(name, font);
-
-  CHECK(renderer.font(name));
-
-  auto storedFont = renderer.font(name);
-  CHECK(storedFont);
-  CHECK(font == storedFont);
-}
-
-TEST_CASE("Renderer::viewport", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
+  cen::window window;
+  cen::renderer renderer{window};
 
   const auto viewport = renderer.viewport();
   CHECK(viewport.width() == window.width());
   CHECK(viewport.height() == window.height());
 }
 
-TEST_CASE("Renderer::set_translation_viewport", "[Renderer]")
+TEST_CASE("renderer::set_translation_viewport", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
+  cen::window window;
+  cen::renderer renderer{window};
 
-  const FRect viewport{{123, 523}, {845, 541}};
+  const cen::frect viewport{{123, 523}, {845, 541}};
   renderer.set_translation_viewport(viewport);
 
   const auto rendererViewport = renderer.translation_viewport();
@@ -822,10 +679,10 @@ TEST_CASE("Renderer::set_translation_viewport", "[Renderer]")
   CHECK(rendererViewport.height() == viewport.height());
 }
 
-TEST_CASE("Renderer::translation_viewport", "[Renderer]")
+TEST_CASE("renderer::translation_viewport", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
+  cen::window window;
+  cen::renderer renderer{window};
 
   const auto viewport = renderer.translation_viewport();
 
@@ -835,24 +692,24 @@ TEST_CASE("Renderer::translation_viewport", "[Renderer]")
   CHECK(viewport.height() == 0);
 }
 
-TEST_CASE("Renderer clipping", "[Renderer]")
+TEST_CASE("Renderer clipping", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
+  cen::window window;
+  cen::renderer renderer{window};
 
   SECTION("Default values")
   {
-    CHECK(!renderer.clipping_enabled());
+    CHECK(!renderer.is_clipping_enabled());
     const auto clip = renderer.clip();
     CHECK(!clip);
   }
 
-  CHECK_NOTHROW(renderer.set_clip(tl::nullopt));
+  CHECK_NOTHROW(renderer.set_clip(std::nullopt));
 
-  const IRect clip{{5, 2}, {75, 93}};
+  const cen::irect clip{{5, 2}, {75, 93}};
 
   renderer.set_clip(clip);
-  CHECK(renderer.clipping_enabled());
+  CHECK(renderer.is_clipping_enabled());
   CHECK(renderer.clip());
 
   const auto rendererClip = *renderer.clip();
@@ -863,59 +720,48 @@ TEST_CASE("Renderer clipping", "[Renderer]")
   CHECK(clip.height() == rendererClip.height());
 }
 
-TEST_CASE("Renderer::set_target", "[Renderer]")
+TEST_CASE("renderer::set_target", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
+  cen::window window;
+  cen::renderer renderer{window};
   CHECK_NOTHROW(renderer.set_target(nullptr));
 }
 
-TEST_CASE("Renderer::to_string", "[Renderer]")
+TEST_CASE("num_render_drivers", "[renderer]")
 {
-  Window window;
-  Renderer renderer{window};
-  Log::info(Log::Category::Test, "%s", renderer.to_string().c_str());
+  CHECK(cen::num_render_drivers() == SDL_GetNumRenderDrivers());
 }
 
-TEST_CASE("Renderer::render_drivers", "[Renderer]")
+TEST_CASE("num_video_drivers", "[renderer]")
 {
-  CHECK(Renderer::render_drivers() == SDL_GetNumRenderDrivers());
+  CHECK(cen::num_video_drivers() == SDL_GetNumVideoDrivers());
 }
 
-TEST_CASE("Renderer::video_drivers", "[Renderer]")
+TEST_CASE("renderer::get_render_driver_info", "[renderer]")
 {
-  CHECK(Renderer::video_drivers() == SDL_GetNumVideoDrivers());
+  CHECK(!cen::get_render_driver_info(-1));
+  CHECK(!cen::get_render_driver_info(cen::num_render_drivers()));
 }
 
-TEST_CASE("Renderer::driver_info", "[Renderer]")
+TEST_CASE("renderer::get", "[renderer]")
 {
-  CHECK(!Renderer::driver_info(-1));
-  CHECK(!Renderer::driver_info(Renderer::render_drivers()));
-  CHECK(Renderer::driver_info(0));
-}
-
-TEST_CASE("Renderer::get", "[Renderer]")
-{
-  Window window;
-  Renderer renderer{window};
+  cen::window window;
+  cen::renderer renderer{window};
   CHECK(renderer.get());
 }
 
-TEST_CASE("Renderer to SDL_Renderer*", "[Renderer]")
+TEST_CASE("renderer to_string", "[renderer]")
 {
-  SECTION("Const")
-  {
-    Window window;
-    const Renderer renderer{window};
-    const SDL_Renderer* sdlRenderer = renderer;
-    CHECK(sdlRenderer);
-  }
+  cen::window window;
+  cen::renderer renderer{window};
 
-  SECTION("Non-const")
-  {
-    Window window;
-    Renderer renderer{window};
-    SDL_Renderer* sdlRenderer = renderer;
-    CHECK(sdlRenderer);
-  }
+  cen::log::put(cen::to_string(renderer));
+}
+
+TEST_CASE("renderer stream operator", "[renderer]")
+{
+  cen::window window;
+  cen::renderer renderer{window};
+
+  std::cout << "COUT: " << renderer << '\n';
 }

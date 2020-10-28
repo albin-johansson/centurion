@@ -1,12 +1,10 @@
-#include "controller_device_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
+#include "event.hpp"
 
-TEST_CASE("ControllerDeviceEvent::set_which", "[ControllerDeviceEvent]")
+TEST_CASE("controller_device_event::set_which", "[controller_device_event]")
 {
-  ControllerDeviceEvent event;
+  cen::controller_device_event event;
 
   const auto which = 7;
   event.set_which(which);
@@ -14,16 +12,16 @@ TEST_CASE("ControllerDeviceEvent::set_which", "[ControllerDeviceEvent]")
   CHECK(which == event.which());
 }
 
-TEST_CASE("ControllerDeviceEvent::which", "[ControllerDeviceEvent]")
+TEST_CASE("controller_device_event::which", "[controller_device_event]")
 {
   SDL_ControllerDeviceEvent sdlEvent;
   sdlEvent.which = 11;
-  ControllerDeviceEvent event{sdlEvent};
+  cen::controller_device_event event{sdlEvent};
 
   CHECK(event.which() == 11);
 }
 
-TEST_CASE("ControllerDeviceEvent()", "[ControllerDeviceEvent]")
+TEST_CASE("controller_device_event()", "[controller_device_event]")
 {
-  CHECK_NOTHROW(ControllerDeviceEvent{{}});
+  CHECK_NOTHROW(cen::controller_device_event{{}});
 }

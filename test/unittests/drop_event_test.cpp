@@ -1,17 +1,15 @@
-#include "drop_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
+#include "event.hpp"
 
-TEST_CASE("DropEvent move constructor", "[DropEvent]")
+TEST_CASE("drop_event move constructor", "[drop_event]")
 {
-  CHECK_NOTHROW(DropEvent{{}});
+  CHECK_NOTHROW(cen::drop_event{{}});
 }
 
-TEST_CASE("DropEvent::set_will_free_file", "[DropEvent]")
+TEST_CASE("drop_event::set_will_free_file", "[drop_event]")
 {
-  DropEvent event;
+  cen::drop_event event;
 
   event.set_will_free_file(true);
   CHECK(event.will_free_file());
@@ -20,21 +18,21 @@ TEST_CASE("DropEvent::set_will_free_file", "[DropEvent]")
   CHECK(!event.will_free_file());
 }
 
-TEST_CASE("DropEvent::set_file", "[DropEvent]")
+TEST_CASE("drop_event::set_file", "[drop_event]")
 {
-  DropEvent event;
+  cen::drop_event event;
   CHECK_NOTHROW(event.set_file(nullptr));
 
-  // This is the only time in the tests that a DropEvent should free the file,
+  // This is the only time in the tests that a drop_event should free the file,
   // check the code coverage reports in order to see if it's freed.
   auto* file = static_cast<char*>(SDL_malloc(sizeof(char)));
   event.set_file(file);
   event.set_will_free_file(true);
 }
 
-TEST_CASE("DropEvent::set_window_id", "[DropEvent]")
+TEST_CASE("drop_event::set_window_id", "[drop_event]")
 {
-  DropEvent event;
+  cen::drop_event event;
 
   const auto id = 84;
   event.set_window_id(id);
@@ -42,31 +40,31 @@ TEST_CASE("DropEvent::set_window_id", "[DropEvent]")
   CHECK(event.window_id() == id);
 }
 
-TEST_CASE("DropEvent::will_free_file", "[DropEvent]")
+TEST_CASE("drop_event::will_free_file", "[drop_event]")
 {
-  DropEvent event;
+  cen::drop_event event;
   CHECK(!event.will_free_file());
 }
 
-TEST_CASE("DropEvent::file", "[DropEvent]")
+TEST_CASE("drop_event::file", "[drop_event]")
 {
   char file = '1';  // pretend this is some raw data
   SDL_DropEvent sdlEvent;
   sdlEvent.file = &file;  // shouldn't be deleted, otherwise we're in trouble
 
-  DropEvent event{sdlEvent};
+  cen::drop_event event{sdlEvent};
 
   CHECK(event.file());
   CHECK(*event.file() == file);
 }
 
-TEST_CASE("DropEvent::window_id", "[DropEvent]")
+TEST_CASE("drop_event::window_id", "[drop_event]")
 {
   SDL_DropEvent sdlEvent{};
   sdlEvent.windowID = 32;
   sdlEvent.file = nullptr;
 
-  DropEvent event{sdlEvent};
+  cen::drop_event event{sdlEvent};
 
   CHECK(event.window_id() == sdlEvent.windowID);
 }

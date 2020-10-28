@@ -1,14 +1,12 @@
-#include "common_event.h"
-
 #include <catch.hpp>
 
-using namespace centurion::event;
+#include "event.hpp"
 
-using DummyType = SDL_QuitEvent;
+using dummy_t = SDL_QuitEvent;
 
-TEST_CASE("CommonEvent::set_time", "[CommonEvent]")
+TEST_CASE("common_event::set_time", "[common_event]")
 {
-  CommonEvent<DummyType> event;
+  cen::common_event<dummy_t> event;
 
   const auto time = 8934;
   event.set_time(time);
@@ -16,46 +14,45 @@ TEST_CASE("CommonEvent::set_time", "[CommonEvent]")
   CHECK(event.time() == time);
 }
 
-TEST_CASE("CommonEvent::set_type", "[CommonEvent]")
+TEST_CASE("common_event::set_type", "[common_event]")
 {
-  CommonEvent<DummyType> event;
+  cen::common_event<dummy_t> event;
 
-  const auto type = EventType::AppLowMemory;
+  const auto type = cen::event_type::app_low_memory;
   event.set_type(type);
 
   CHECK(event.type() == type);
 }
 
-TEST_CASE("CommonEvent::time", "[CommonEvent]")
+TEST_CASE("common_event::time", "[common_event]")
 {
   const auto time = 735;
 
-  DummyType dummy;
+  dummy_t dummy;
   dummy.timestamp = time;
 
-  CommonEvent<DummyType> event{dummy};
+  cen::common_event<dummy_t> event{dummy};
 
   CHECK(event.time() == time);
 }
 
-TEST_CASE("CommonEvent::type", "[CommonEvent]")
+TEST_CASE("common_event::type", "[common_event]")
 {
-  DummyType dummy;
+  dummy_t dummy;
   dummy.type = SDL_MOUSEMOTION;
 
-  CommonEvent<DummyType> event{dummy};
+  cen::common_event<dummy_t> event{dummy};
 
-  CHECK(event.type() == EventType::MouseMotion);
+  CHECK(event.type() == cen::event_type::mouse_motion);
 }
 
-TEST_CASE("CommonEvent conversions", "[CommonEvent]")
+TEST_CASE("common_event conversions", "[common_event]")
 {
-  STATIC_REQUIRE(std::is_convertible_v<CommonEvent<DummyType>, DummyType>);
-  STATIC_REQUIRE(std::is_convertible_v<CommonEvent<DummyType>, DummyType&>);
+  dummy_t dummy;
+  dummy.type = SDL_MOUSEMOTION;
 
-  STATIC_REQUIRE(
-      std::is_convertible_v<CommonEvent<DummyType>, const DummyType&>);
+  cen::common_event<dummy_t> event{dummy};
+  const auto internal = event.get();
 
-  STATIC_REQUIRE(
-      !std::is_convertible_v<CommonEvent<const DummyType>, DummyType&>);
+  CHECK(internal.type == dummy.type);
 }

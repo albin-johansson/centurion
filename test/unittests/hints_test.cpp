@@ -1,24 +1,21 @@
-#include "hints.h"
+#include "hints.hpp"
 
 #include <catch.hpp>
 
-#include "centurion_utils.h"
-#include "window.h"
-
-using namespace centurion;
-using namespace hint;
+#include "detail/utils.hpp"
+#include "window.hpp"
 
 namespace {
 
 template <typename Hint, typename Lambda>
 void test_hint(Lambda&& lambda)
 {
-  const auto optPrev = get_hint<Hint>();
+  const auto optPrev = cen::get_hint<Hint>();
 
   lambda();
 
   if (optPrev) {
-    set_hint<Hint, Prio::Default>(*optPrev);
+    cen::set_hint<Hint, cen::hint_priority::low>(*optPrev);
   }
 }
 
@@ -26,671 +23,659 @@ template <typename Hint>
 void test_bool_hint()
 {
   test_hint<Hint>([] {
-    CHECK(set_hint<Hint>(true));
-    CHECK(get_hint<Hint>().value());
+    CHECK(cen::set_hint<Hint>(true));
+    CHECK(cen::get_hint<Hint>().value());
 
-    CHECK(set_hint<Hint>(false));
-    CHECK(!get_hint<Hint>().value());
+    CHECK(cen::set_hint<Hint>(false));
+    CHECK(!cen::get_hint<Hint>().value());
   });
+}
+
+TEMPLATE_TEST_CASE("set_hint boolean hints",
+                   "[hint]",
+                   cen::hint::double_buffer,
+                   cen::hint::accelerometer_as_joystick,
+                   cen::hint::allow_top_most,
+                   cen::hint::bmp_save_legacy_format,
+                   cen::hint::enable_steam_controllers,
+                   cen::hint::grab_keyboard,
+                   cen::hint::idle_timer_disabled,
+                   cen::hint::ime_internal_editing,
+                   cen::hint::no_signal_handlers,
+                   cen::hint::enable_opengl_shaders,
+                   cen::hint::opengl_es_driver,
+                   cen::hint::allow_screensaver,
+                   cen::hint::video_external_context,
+                   cen::hint::disable_high_dpi,
+                   cen::hint::minimize_on_focus_loss,
+                   cen::hint::window_frame_usable_while_cursor_hidden,
+                   cen::hint::mouse_touch_events,
+                   cen::hint::render_batching,
+                   cen::hint::return_key_hides_ime,
+                   cen::hint::touch_mouse_events,
+                   cen::hint::tv_remote_as_joystick,
+                   cen::hint::appletv::controller_ui_events,
+                   cen::hint::appletv::remote_allow_rotation,
+                   cen::hint::xinput::is_enabled,
+                   cen::hint::xinput::use_old_joystick_mapping,
+                   cen::hint::mouse::focus_clickthrough,
+                   cen::hint::mouse::relative_mode_warp,
+                   cen::hint::d3d::v11_debug,
+                   cen::hint::d3d::thread_safe,
+                   cen::hint::gamecontroller::use_button_labels,
+                   cen::hint::winrt::handle_back_button,
+                   cen::hint::windows::no_thread_naming,
+                   cen::hint::windows::enable_message_loop,
+                   cen::hint::windows::no_close_on_alt_f4,
+                   cen::hint::mac::background_app,
+                   cen::hint::mac::ctrl_click_emulate_right_click,
+                   cen::hint::mac::fullscreen_spaces,
+                   cen::hint::android::block_on_pause,
+                   cen::hint::android::trap_back_button,
+                   cen::hint::joystick::allow_background_events,
+                   cen::hint::joystick::use_hidapi,
+                   cen::hint::joystick::use_hidapi_ps4,
+                   cen::hint::joystick::use_hidapi_ps4_rumble,
+                   cen::hint::joystick::use_hidapi_steam,
+                   cen::hint::joystick::use_hidapi_switch,
+                   cen::hint::joystick::use_hidapi_xbox,
+                   cen::hint::joystick::use_hidapi_game_cube,
+                   cen::hint::x11::net_wm_ping,
+                   cen::hint::x11::net_wm_bypass_compositor,
+                   cen::hint::x11::force_egl,
+                   cen::hint::x11::xinerama,
+                   cen::hint::x11::xrandr,
+                   cen::hint::x11::xvidmode)
+{
+  test_bool_hint<TestType>();
 }
 
 }  // namespace
 
-TEST_CASE("HintPrio", "[Hints]")
+TEST_CASE("hint_prio", "[hint]")
 {
-  CHECK(Prio::Default == static_cast<Prio>(SDL_HINT_DEFAULT));
-  CHECK(Prio::Normal == static_cast<Prio>(SDL_HINT_NORMAL));
-  CHECK(Prio::Override == static_cast<Prio>(SDL_HINT_OVERRIDE));
+  using prio = cen::hint_priority;
+  CHECK(prio::low == static_cast<prio>(SDL_HINT_DEFAULT));
+  CHECK(prio::normal == static_cast<prio>(SDL_HINT_NORMAL));
+  CHECK(prio::override == static_cast<prio>(SDL_HINT_OVERRIDE));
 
-  CHECK(static_cast<Prio>(SDL_HINT_DEFAULT) == Prio::Default);
-  CHECK(static_cast<Prio>(SDL_HINT_NORMAL) == Prio::Normal);
-  CHECK(static_cast<Prio>(SDL_HINT_OVERRIDE) == Prio::Override);
+  CHECK(static_cast<prio>(SDL_HINT_DEFAULT) == prio::low);
+  CHECK(static_cast<prio>(SDL_HINT_NORMAL) == prio::normal);
+  CHECK(static_cast<prio>(SDL_HINT_OVERRIDE) == prio::override);
 }
 
-TEST_CASE("set_hint", "[Hints]")
+TEST_CASE("set_hint", "[hint]")
 {
-  SECTION("AccelerometerAsJoystick")
+  SECTION("audio_resampling_mode")
   {
-    test_bool_hint<AccelerometerAsJoystick>();
-  }
+    using hint = cen::hint::audio_resampling_mode;
+    using value = hint::value;
+    test_hint<hint>([] {
+      cen::set_hint<hint>(value::normal);
+      CHECK(cen::get_hint<hint>().value() == value::normal);
 
-  SECTION("AllowTopMost") { test_bool_hint<AllowTopMost>(); }
+      cen::set_hint<hint>(value::fast);
+      CHECK(cen::get_hint<hint>().value() == value::fast);
 
-  SECTION("AudioResamplingMode")
-  {
-    using Event = AudioResamplingMode;
-    test_hint<Event>([] {
-      set_hint<Event>(Event::Default);
-      CHECK(get_hint<Event>().value() == Event::Default);
+      cen::set_hint<hint>(value::medium);
+      CHECK(cen::get_hint<hint>().value() == value::medium);
 
-      set_hint<Event>(Event::Fast);
-      CHECK(get_hint<Event>().value() == Event::Fast);
-
-      set_hint<Event>(Event::Medium);
-      CHECK(get_hint<Event>().value() == Event::Medium);
-
-      set_hint<Event>(Event::Best);
-      CHECK(get_hint<Event>().value() == Event::Best);
+      cen::set_hint<hint>(value::best);
+      CHECK(cen::get_hint<hint>().value() == value::best);
     });
   }
 
-  SECTION("AndroidBlockOnPause") { test_bool_hint<AndroidBlockOnPause>(); }
-
-  SECTION("AndroidTrapBackButton") { test_bool_hint<AndroidTrapBackButton>(); }
-
-  SECTION("AndroidAPKExpansionMainFileVersion")
+  SECTION("audio_category")
   {
-    using AndroidMainFile = AndroidAPKExpansionMainFileVersion;
-    test_hint<AndroidMainFile>([] {
-      CHECK(set_hint<AndroidMainFile>(1));
-      CHECK(get_hint<AndroidMainFile>() == 1);
+    using cen::hint::audio_category;
+    using value = audio_category::value;
+    test_hint<audio_category>([] {
+      CHECK(cen::set_hint<audio_category>(value::ambient));
+      CHECK(cen::get_hint<audio_category>() == value::ambient);
+
+      CHECK(cen::set_hint<audio_category>(value::playback));
+      CHECK(cen::get_hint<audio_category>() == value::playback);
     });
   }
 
-  SECTION("AndroidAPKExpansionPatchFileVersion")
+  SECTION("display_usable_bounds")
   {
-    using AndroidPatchFile = AndroidAPKExpansionPatchFileVersion;
-    test_hint<AndroidPatchFile>([] {
-      CHECK(set_hint<AndroidPatchFile>(1));
-      CHECK(get_hint<AndroidPatchFile>() == 1);
-    });
-  }
-
-  SECTION("AudioCategory")
-  {
-    test_hint<AudioCategory>([] {
-      CHECK(set_hint<AudioCategory>(AudioCategory::Ambient));
-      CHECK(get_hint<AudioCategory>() == AudioCategory::Ambient);
-
-      CHECK(set_hint<AudioCategory>(AudioCategory::Playback));
-      CHECK(get_hint<AudioCategory>() == AudioCategory::Playback);
-    });
-  }
-
-  SECTION("AppleTVControllerUIEvents")
-  {
-    test_bool_hint<AppleTVControllerUIEvents>();
-  }
-
-  SECTION("AppleTVRemoteAllowRotation")
-  {
-    test_bool_hint<AppleTVRemoteAllowRotation>();
-  }
-
-  SECTION("BMPSaveLegacyFormat") { test_bool_hint<BMPSaveLegacyFormat>(); }
-
-  SECTION("DoubleBuffer") { test_bool_hint<DoubleBuffer>(); }
-
-  SECTION("DisplayUsableBounds")
-  {
-    test_hint<DisplayUsableBounds>([] {
-      const CZString str = "10, 20, 30, 40";
-      CHECK(set_hint<DisplayUsableBounds>(str));
-      CHECK_THAT(get_hint<DisplayUsableBounds>().value(), Catch::Equals(str));
-    });
-  }
-
-  SECTION("EmscriptenKeyboardElement")
-  {
-    using Hint = EmscriptenKeyboardElement;
-    test_hint<Hint>([] {
-      CHECK(set_hint<Hint>("#window"));
-      CHECK_THAT(get_hint<Hint>().value(), Catch::Equals("#window"));
-
-      CHECK(set_hint<Hint>("#document"));
-      CHECK_THAT(get_hint<Hint>().value(), Catch::Equals("#document"));
-
-      CHECK(set_hint<Hint>("#screen"));
-      CHECK_THAT(get_hint<Hint>().value(), Catch::Equals("#screen"));
-
-      CHECK(set_hint<Hint>("#canvas"));
-      CHECK_THAT(get_hint<Hint>().value(), Catch::Equals("#canvas"));
-    });
-  }
-
-  SECTION("EnableSteamControllers")
-  {
-    test_bool_hint<EnableSteamControllers>();
-  }
-
-  SECTION("EventLogging")
-  {
-    test_hint<EventLogging>([] {
-      set_hint<EventLogging>(0);
-      CHECK(get_hint<EventLogging>().value() == 0);
-
-      set_hint<EventLogging>(1);
-      CHECK(get_hint<EventLogging>().value() == 1);
-
-      set_hint<EventLogging>(2);
-      CHECK(get_hint<EventLogging>().value() == 2);
-    });
-
-    set_hint<EventLogging>(0);
-  }
-
-  SECTION("FramebufferAcceleration")
-  {
-    using Hint = FramebufferAcceleration;
-    test_hint<Hint>([] {
-      set_hint<Hint>(Hint::Off);
-      CHECK(get_hint<Hint>().value() == Hint::Off);
-
-      set_hint<Hint>(Hint::On);
-      CHECK(get_hint<Hint>().value() == Hint::On);
-
-      set_hint<Hint>(Hint::OpenGL);
-      CHECK(get_hint<Hint>().value() == Hint::OpenGL);
-
-      set_hint<Hint>(Hint::OpenGLES);
-      CHECK(get_hint<Hint>().value() == Hint::OpenGLES);
-
-      set_hint<Hint>(Hint::OpenGLES2);
-      CHECK(get_hint<Hint>().value() == Hint::OpenGLES2);
-
-      set_hint<Hint>(Hint::Direct3D);
-      CHECK(get_hint<Hint>().value() == Hint::Direct3D);
-
-      set_hint<Hint>(Hint::Metal);
-      CHECK(get_hint<Hint>().value() == Hint::Metal);
-
-      set_hint<Hint>(Hint::Software);
-      CHECK(get_hint<Hint>().value() == Hint::Software);
-    });
-  }
-
-  SECTION("GameControllerUseButtonLabels")
-  {
-    test_bool_hint<GameControllerUseButtonLabels>();
-  }
-
-  SECTION("GameControllerType")
-  {
-    test_hint<GameControllerType>([] {
-      const CZString str = "0x00FD/0xAAC3=PS4";
-      set_hint<GameControllerType>(str);
-      CHECK_THAT(get_hint<GameControllerType>().value(), Catch::Equals(str));
-    });
-  }
-
-  SECTION("GameControllerConfig")
-  {
-    test_hint<GameControllerConfig>([] {
-      const CZString str = "asd\nasd";
-      set_hint<GameControllerConfig>(str);
-      CHECK_THAT(get_hint<GameControllerConfig>().value(), Catch::Equals(str));
-    });
-  }
-
-  SECTION("GameControllerConfigFile")
-  {
-    test_hint<GameControllerConfigFile>([] {
-      const CZString str = "foo";
-      set_hint<GameControllerConfigFile>(str);
-      CHECK_THAT(get_hint<GameControllerConfigFile>().value(),
+    using cen::hint::display_usable_bounds;
+    test_hint<display_usable_bounds>([] {
+      cen::czstring str = "10, 20, 30, 40";
+      CHECK(cen::set_hint<display_usable_bounds>(str));
+      CHECK_THAT(cen::get_hint<display_usable_bounds>().value(),
                  Catch::Equals(str));
     });
   }
 
-  SECTION("GameControllerIgnoreDevices")
+  SECTION("event_logging")
   {
-    test_hint<GameControllerIgnoreDevices>([] {
-      const CZString str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
-      set_hint<GameControllerIgnoreDevices>(str);
-      CHECK_THAT(get_hint<GameControllerIgnoreDevices>().value(),
-                 Catch::Equals(str));
+    using cen::hint::event_logging;
+    test_hint<event_logging>([] {
+      cen::set_hint<event_logging>(0);
+      CHECK(cen::get_hint<event_logging>().value() == 0);
+
+      cen::set_hint<event_logging>(1);
+      CHECK(cen::get_hint<event_logging>().value() == 1);
+
+      cen::set_hint<event_logging>(2);
+      CHECK(cen::get_hint<event_logging>().value() == 2);
+    });
+
+    cen::set_hint<event_logging>(0);
+  }
+
+  SECTION("framebuffer_acceleration")
+  {
+    using hint = cen::hint::framebuffer_acceleration;
+    using value = hint::value;
+    test_hint<hint>([] {
+      cen::set_hint<hint>(value::off);
+      CHECK(cen::get_hint<hint>().value() == value::off);
+
+      cen::set_hint<hint>(value::on);
+      CHECK(cen::get_hint<hint>().value() == value::on);
+
+      cen::set_hint<hint>(value::opengl);
+      CHECK(cen::get_hint<hint>().value() == value::opengl);
+
+      cen::set_hint<hint>(value::opengles);
+      CHECK(cen::get_hint<hint>().value() == value::opengles);
+
+      cen::set_hint<hint>(value::opengles2);
+      CHECK(cen::get_hint<hint>().value() == value::opengles2);
+
+      cen::set_hint<hint>(value::direct3d);
+      CHECK(cen::get_hint<hint>().value() == value::direct3d);
+
+      cen::set_hint<hint>(value::metal);
+      CHECK(cen::get_hint<hint>().value() == value::metal);
+
+      cen::set_hint<hint>(value::software);
+      CHECK(cen::get_hint<hint>().value() == value::software);
     });
   }
 
-  SECTION("GameControllerIgnoreDevicesExcept")
+  SECTION("logical_size_mode")
   {
-    test_hint<GameControllerIgnoreDevicesExcept>([] {
-      const CZString str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
-      set_hint<GameControllerIgnoreDevicesExcept>(str);
-      CHECK_THAT(get_hint<GameControllerIgnoreDevicesExcept>().value(),
-                 Catch::Equals(str));
+    using cen::hint::logical_size_mode;
+    using value = logical_size_mode::value;
+    test_hint<logical_size_mode>([] {
+      CHECK(cen::set_hint<logical_size_mode>(value::letterbox));
+      CHECK(cen::get_hint<logical_size_mode>().value() == value::letterbox);
+
+      CHECK(cen::set_hint<logical_size_mode>(value::overscan));
+      CHECK(cen::get_hint<logical_size_mode>().value() == value::overscan);
     });
   }
 
-  SECTION("GrabKeyboard") { test_bool_hint<GrabKeyboard>(); }
-
-  SECTION("FramebufferAcceleration")
+  SECTION("orientations")
   {
-    //    test_bool_hint<FramebufferAcceleration>();
-  }
-
-  SECTION("IdleTimerDisabled") { test_bool_hint<IdleTimerDisabled>(); }
-
-  SECTION("IMEInternalEditing") { test_bool_hint<IMEInternalEditing>(); }
-
-  SECTION("JoystickAllowBackgroundEvents")
-  {
-    test_bool_hint<JoystickAllowBackgroundEvents>();
-  }
-
-  SECTION("JoystickUseHIDAPI") { test_bool_hint<JoystickUseHIDAPI>(); }
-
-  SECTION("JoystickUseHIDAPIPS4") { test_bool_hint<JoystickUseHIDAPIPS4>(); }
-
-  SECTION("JoystickUseHIDAPISteam")
-  {
-    test_bool_hint<JoystickUseHIDAPISteam>();
-  }
-
-  SECTION("JoystickUseHIDAPISwitch")
-  {
-    test_bool_hint<JoystickUseHIDAPISwitch>();
-  }
-
-  SECTION("JoystickUseHIDAPIXbox") { test_bool_hint<JoystickUseHIDAPIXbox>(); }
-
-  SECTION("JoystickUseHIDAPIGameCube")
-  {
-    test_bool_hint<JoystickUseHIDAPIGameCube>();
-  }
-
-  SECTION("LogicalSizeMode")
-  {
-    test_hint<LogicalSizeMode>([] {
-      CHECK(set_hint<LogicalSizeMode>(LogicalSizeMode::Letterbox));
-      CHECK(get_hint<LogicalSizeMode>().value() == LogicalSizeMode::Letterbox);
-
-      CHECK(set_hint<LogicalSizeMode>(LogicalSizeMode::Overscan));
-      CHECK(get_hint<LogicalSizeMode>().value() == LogicalSizeMode::Overscan);
-    });
-  }
-
-  SECTION("MacBackgroundApp") { test_bool_hint<MacBackgroundApp>(); }
-
-  SECTION("MacCTRLClickEmulateRightClick")
-  {
-    test_bool_hint<MacCTRLClickEmulateRightClick>();
-  }
-
-  SECTION("MouseFocusClickthrough")
-  {
-    test_bool_hint<MouseFocusClickthrough>();
-  }
-
-  SECTION("MouseRelativeModeWarp") { test_bool_hint<MouseRelativeModeWarp>(); }
-
-  SECTION("MouseDoubleClickRadius")
-  {
-    test_hint<MouseDoubleClickRadius>([] {
-      set_hint<MouseDoubleClickRadius>(5);
-      CHECK(get_hint<MouseDoubleClickRadius>().value() == 5);
-
-      set_hint<MouseDoubleClickRadius>(20);
-      CHECK(get_hint<MouseDoubleClickRadius>().value() == 20);
-    });
-  }
-
-  SECTION("MouseDoubleClickTime")
-  {
-    test_hint<MouseDoubleClickTime>([] {
-      set_hint<MouseDoubleClickTime>(25);
-      CHECK(get_hint<MouseDoubleClickTime>().value() == 25);
-
-      set_hint<MouseDoubleClickTime>(178);
-      CHECK(get_hint<MouseDoubleClickTime>().value() == 178);
-    });
-  }
-
-  SECTION("NoSignalHandlers") { test_bool_hint<NoSignalHandlers>(); };
-
-  SECTION("Direct3D11Debug") { test_bool_hint<Direct3D11Debug>(); };
-
-  SECTION("Direct3DThreadSafe") { test_bool_hint<Direct3DThreadSafe>(); };
-
-  SECTION("EnableOpenGLShaders") { test_bool_hint<EnableOpenGLShaders>(); };
-
-  SECTION("OpenGLESDriver") { test_bool_hint<OpenGLESDriver>(); };
-
-  SECTION("Orientations")
-  {
-    test_hint<Orientations>([] {
-      CHECK(set_hint<Orientations>("LandscapeLeft"));
-      CHECK_THAT(get_hint<Orientations>().value(),
+    using cen::hint::orientations;
+    test_hint<orientations>([] {
+      CHECK(cen::set_hint<orientations>("LandscapeLeft"));
+      CHECK_THAT(cen::get_hint<orientations>().value(),
                  Catch::Equals("LandscapeLeft"));
 
-      CHECK(set_hint<Orientations>("LandscapeRight"));
-      CHECK_THAT(get_hint<Orientations>().value(),
+      CHECK(cen::set_hint<orientations>("LandscapeRight"));
+      CHECK_THAT(cen::get_hint<orientations>().value(),
                  Catch::Equals("LandscapeRight"));
 
-      CHECK(set_hint<Orientations>("Portrait"));
-      CHECK_THAT(get_hint<Orientations>().value(), Catch::Equals("Portrait"));
+      CHECK(cen::set_hint<orientations>("Portrait"));
+      CHECK_THAT(cen::get_hint<orientations>().value(),
+                 Catch::Equals("Portrait"));
 
-      CHECK(set_hint<Orientations>("PortraitUpsideDown"));
-      CHECK_THAT(get_hint<Orientations>().value(),
+      CHECK(cen::set_hint<orientations>("PortraitUpsideDown"));
+      CHECK_THAT(cen::get_hint<orientations>().value(),
                  Catch::Equals("PortraitUpsideDown"));
 
-      CHECK(set_hint<Orientations>("PortraitUpsideDown LandscapeRight"));
-      CHECK_THAT(get_hint<Orientations>().value(),
+      CHECK(cen::set_hint<orientations>("PortraitUpsideDown LandscapeRight"));
+      CHECK_THAT(cen::get_hint<orientations>().value(),
                  Catch::Equals("PortraitUpsideDown LandscapeRight"));
-    });
-  };
-
-  SECTION("EnableVSync")
-  {
-    test_bool_hint<EnableVSync>();
-    set_hint<EnableVSync>(true);
-  };
-
-  SECTION("ScaleQuality")
-  {
-    test_hint<ScaleQuality>([] {
-      set_hint<ScaleQuality>(ScaleQuality::Nearest);
-      CHECK(get_hint<ScaleQuality>() == ScaleQuality::Nearest);
-
-      set_hint<ScaleQuality>(ScaleQuality::Linear);
-      CHECK(get_hint<ScaleQuality>() == ScaleQuality::Linear);
-
-      set_hint<ScaleQuality>(ScaleQuality::Best);
-      CHECK(get_hint<ScaleQuality>() == ScaleQuality::Best);
-    });
-  };
-
-  SECTION("AllowScreensaver") { test_bool_hint<AllowScreensaver>(); };
-
-  SECTION("VideoExternalContext") { test_bool_hint<VideoExternalContext>(); };
-
-  SECTION("DisableHighDPI") { test_bool_hint<DisableHighDPI>(); };
-
-  SECTION("MacFullscreenSpaces") { test_bool_hint<MacFullscreenSpaces>(); };
-
-  SECTION("MinimizeOnFocusLoss") { test_bool_hint<MinimizeOnFocusLoss>(); };
-
-  SECTION("X11NetWMPing") { test_bool_hint<X11NetWMPing>(); };
-
-  SECTION("X11XNetWMBypassCompositor")
-  {
-    test_bool_hint<X11XNetWMBypassCompositor>();
-  };
-
-  SECTION("X11ForceEGL") { test_bool_hint<X11ForceEGL>(); };
-
-  SECTION("X11Xinerama") { test_bool_hint<X11Xinerama>(); };
-
-  SECTION("X11XRandR") { test_bool_hint<X11XRandR>(); };
-
-  SECTION("X11XVidMode") { test_bool_hint<X11XVidMode>(); };
-
-  SECTION("X11WindowVisualID")
-  {
-    test_hint<X11WindowVisualID>([] {
-      CHECK(set_hint<X11WindowVisualID>("foo"));
-      CHECK_THAT(get_hint<X11WindowVisualID>().value(), Catch::Equals("foo"));
-
-      set_hint<X11WindowVisualID>("");
-    });
-  };
-
-  SECTION("WAVERIFFChunkSize")
-  {
-    test_hint<WAVERIFFChunkSize>([] {
-      CHECK(set_hint<WAVERIFFChunkSize>(WAVERIFFChunkSize::Force));
-      CHECK(get_hint<WAVERIFFChunkSize>() == WAVERIFFChunkSize::Force);
-
-      CHECK(set_hint<WAVERIFFChunkSize>(WAVERIFFChunkSize::IgnoreZero));
-      CHECK(get_hint<WAVERIFFChunkSize>() == WAVERIFFChunkSize::IgnoreZero);
-
-      CHECK(set_hint<WAVERIFFChunkSize>(WAVERIFFChunkSize::Ignore));
-      CHECK(get_hint<WAVERIFFChunkSize>() == WAVERIFFChunkSize::Ignore);
-
-      CHECK(set_hint<WAVERIFFChunkSize>(WAVERIFFChunkSize::Maximum));
-      CHECK(get_hint<WAVERIFFChunkSize>() == WAVERIFFChunkSize::Maximum);
-    });
-  };
-
-  SECTION("WAVETruncation")
-  {
-    test_hint<WAVETruncation>([] {
-      CHECK(set_hint<WAVETruncation>(WAVETruncation::VeryStrict));
-      CHECK(get_hint<WAVETruncation>() == WAVETruncation::VeryStrict);
-
-      CHECK(set_hint<WAVETruncation>(WAVETruncation::Strict));
-      CHECK(get_hint<WAVETruncation>() == WAVETruncation::Strict);
-
-      CHECK(set_hint<WAVETruncation>(WAVETruncation::DropFrame));
-      CHECK(get_hint<WAVETruncation>() == WAVETruncation::DropFrame);
-
-      CHECK(set_hint<WAVETruncation>(WAVETruncation::DropBlock));
-      CHECK(get_hint<WAVETruncation>() == WAVETruncation::DropBlock);
-    });
-  };
-
-  SECTION("WAVEFactChunk")
-  {
-    test_hint<WAVEFactChunk>([] {
-      CHECK(set_hint<WAVEFactChunk>(WAVEFactChunk::Truncate));
-      CHECK(get_hint<WAVEFactChunk>() == WAVEFactChunk::Truncate);
-
-      CHECK(set_hint<WAVEFactChunk>(WAVEFactChunk::Ignore));
-      CHECK(get_hint<WAVEFactChunk>() == WAVEFactChunk::Ignore);
-
-      CHECK(set_hint<WAVEFactChunk>(WAVEFactChunk::IgnoreZero));
-      CHECK(get_hint<WAVEFactChunk>() == WAVEFactChunk::IgnoreZero);
-
-      CHECK(set_hint<WAVEFactChunk>(WAVEFactChunk::Strict));
-      CHECK(get_hint<WAVEFactChunk>() == WAVEFactChunk::Strict);
-    });
-  };
-
-  SECTION("WindowsDisableThreadNaming")
-  {
-    test_bool_hint<WindowsDisableThreadNaming>();
-  };
-
-  SECTION("WindowsIntResourceIcon")
-  {
-    test_hint<WindowsIntResourceIcon>([] {
-      CHECK(set_hint<WindowsIntResourceIcon>("foo"));
-      CHECK_THAT(get_hint<WindowsIntResourceIcon>().value(),
-                 Catch::Equals("foo"));
-
-      set_hint<WindowsIntResourceIcon>("");
-    });
-  };
-
-  SECTION("WindowsIntResourceIconSmall")
-  {
-    test_hint<WindowsIntResourceIcon>([] {
-      CHECK(set_hint<WindowsIntResourceIcon>("bar"));
-      CHECK_THAT(get_hint<WindowsIntResourceIcon>().value(),
-                 Catch::Equals("bar"));
-
-      set_hint<WindowsIntResourceIcon>("");
-    });
-  };
-
-  SECTION("WinD3DCompiler")
-  {
-    test_hint<WinD3DCompiler>([] {
-      CHECK(set_hint<WinD3DCompiler>(WinD3DCompiler::None));
-      CHECK(get_hint<WinD3DCompiler>() == WinD3DCompiler::None);
-
-      CHECK(set_hint<WinD3DCompiler>(WinD3DCompiler::D3DCompiler46));
-      CHECK(get_hint<WinD3DCompiler>() == WinD3DCompiler::D3DCompiler46);
-
-      CHECK(set_hint<WinD3DCompiler>(WinD3DCompiler::D3DCompiler43));
-      CHECK(get_hint<WinD3DCompiler>() == WinD3DCompiler::D3DCompiler43);
     });
   }
 
-  SECTION("WindowsEnableMessageLoop")
+  SECTION("vsync")
   {
-    test_bool_hint<WindowsEnableMessageLoop>();
-  };
+    using cen::hint::vsync;
+    test_bool_hint<vsync>();
+    cen::set_hint<vsync>(true);
+  }
 
-  SECTION("WindowsNoCloseOnAltF4") { test_bool_hint<WindowsNoCloseOnAltF4>(); };
-
-  SECTION("WindowSharePixelFormat")
+  SECTION("scale_quality")
   {
-    test_hint<WindowSharePixelFormat>([] {
-      Window window;
-      const auto str = centurion::detail::address_of(window.get());
+    using cen::hint::scale_quality;
+    using value = scale_quality::value;
+    test_hint<scale_quality>([] {
+      cen::set_hint<scale_quality>(value::nearest);
+      CHECK(cen::get_hint<scale_quality>() == value::nearest);
 
-      CHECK(set_hint<WindowSharePixelFormat>(str.c_str()));
-      CHECK_THAT(get_hint<WindowSharePixelFormat>().value(),
-                 Catch::Equals(str.c_str()));
+      cen::set_hint<scale_quality>(value::linear);
+      CHECK(cen::get_hint<scale_quality>() == value::linear);
+
+      cen::set_hint<scale_quality>(value::best);
+      CHECK(cen::get_hint<scale_quality>() == value::best);
     });
-  };
+  }
 
-  SECTION("WindowFrameUsableWhileCursorHidden")
+  SECTION("wave_riff_chunk_size")
   {
-    test_bool_hint<WindowFrameUsableWhileCursorHidden>();
-  };
+    using cen::hint::wave_riff_chunk_size;
+    using value = wave_riff_chunk_size::value;
+    test_hint<wave_riff_chunk_size>([] {
+      CHECK(cen::set_hint<wave_riff_chunk_size>(value::force));
+      CHECK(cen::get_hint<wave_riff_chunk_size>() == value::force);
 
-  SECTION("WinRTPrivacyPolicyLabel")
+      CHECK(cen::set_hint<wave_riff_chunk_size>(value::ignore_zero));
+      CHECK(cen::get_hint<wave_riff_chunk_size>() == value::ignore_zero);
+
+      CHECK(cen::set_hint<wave_riff_chunk_size>(value::ignore));
+      CHECK(cen::get_hint<wave_riff_chunk_size>() == value::ignore);
+
+      CHECK(cen::set_hint<wave_riff_chunk_size>(value::maximum));
+      CHECK(cen::get_hint<wave_riff_chunk_size>() == value::maximum);
+    });
+  }
+
+  SECTION("wave_truncation")
   {
-    test_hint<WinRTPrivacyPolicyLabel>([] {
-      const CZString str = "Hello this is GDPR speaking";
-      set_hint<WinRTPrivacyPolicyLabel>(str);
-      CHECK_THAT(get_hint<WinRTPrivacyPolicyLabel>().value(),
+    using cen::hint::wave_truncation;
+    using value = wave_truncation::value;
+    test_hint<wave_truncation>([] {
+      CHECK(cen::set_hint<wave_truncation>(value::very_strict));
+      CHECK(cen::get_hint<wave_truncation>() == value::very_strict);
+
+      CHECK(cen::set_hint<wave_truncation>(value::strict));
+      CHECK(cen::get_hint<wave_truncation>() == value::strict);
+
+      CHECK(cen::set_hint<wave_truncation>(value::drop_frame));
+      CHECK(cen::get_hint<wave_truncation>() == value::drop_frame);
+
+      CHECK(cen::set_hint<wave_truncation>(value::drop_block));
+      CHECK(cen::get_hint<wave_truncation>() == value::drop_block);
+    });
+  }
+
+  SECTION("wave_fact_chunk")
+  {
+    using cen::hint::wave_fact_chunk;
+    using value = wave_fact_chunk::value;
+    test_hint<wave_fact_chunk>([] {
+      CHECK(cen::set_hint<wave_fact_chunk>(value::truncate));
+      CHECK(cen::get_hint<wave_fact_chunk>() == value::truncate);
+
+      CHECK(cen::set_hint<wave_fact_chunk>(value::ignore));
+      CHECK(cen::get_hint<wave_fact_chunk>() == value::ignore);
+
+      CHECK(cen::set_hint<wave_fact_chunk>(value::ignore_zero));
+      CHECK(cen::get_hint<wave_fact_chunk>() == value::ignore_zero);
+
+      CHECK(cen::set_hint<wave_fact_chunk>(value::strict));
+      CHECK(cen::get_hint<wave_fact_chunk>() == value::strict);
+    });
+  }
+
+  SECTION("window_share_pixel_format")
+  {
+    using cen::hint::window_share_pixel_format;
+    test_hint<window_share_pixel_format>([] {
+      cen::window window;
+      const auto str = cen::detail::address_of(window.get());
+
+      CHECK(cen::set_hint<window_share_pixel_format>(str.c_str()));
+      CHECK_THAT(cen::get_hint<window_share_pixel_format>().value(),
                  Catch::Equals(str));
     });
   }
 
-  SECTION("WinRTPrivacyPolicyURL")
+  SECTION("thread_stack_size")
   {
-    test_hint<WinRTPrivacyPolicyURL>([] {
-      const CZString str = "Hello this is GDPR URL speaking";
-      set_hint<WinRTPrivacyPolicyURL>(str);
-      CHECK_THAT(get_hint<WinRTPrivacyPolicyURL>().value(), Catch::Equals(str));
+    using cen::hint::thread_stack_size;
+    test_hint<thread_stack_size>([] {
+      CHECK(cen::set_hint<thread_stack_size>(47U));
+      CHECK(cen::get_hint<thread_stack_size>().value() == 47U);
+
+      cen::set_hint<thread_stack_size>(0U);
     });
   }
 
-  SECTION("MouseTouchEvents") { test_bool_hint<MouseTouchEvents>(); };
-
-  SECTION("MouseNormalSpeedScale")
+  SECTION("timer_resolution")
   {
-    test_hint<MouseNormalSpeedScale>([] {
-      CHECK(set_hint<MouseNormalSpeedScale>(2.3f));
-      CHECK(get_hint<MouseNormalSpeedScale>().value() == 2.3f);
+    using cen::hint::timer_resolution;
+    test_hint<timer_resolution>([] {
+      CHECK(cen::set_hint<timer_resolution>(68U));
+      CHECK(cen::get_hint<timer_resolution>().value() == 68U);
+
+      cen::set_hint<timer_resolution>(1U);
     });
-  };
+  }
 
-  SECTION("MouseRelativeSpeedScale")
+  SECTION("render_driver")
   {
-    test_hint<MouseRelativeSpeedScale>([] {
-      CHECK(set_hint<MouseRelativeSpeedScale>(6.7f));
-      CHECK(get_hint<MouseRelativeSpeedScale>().value() == 6.7f);
-    });
-  };
+    using cen::hint::render_driver;
+    test_hint<render_driver>([] {
+      CHECK(cen::set_hint<render_driver>(render_driver::value::opengl));
+      CHECK(cen::get_hint<render_driver>().value() ==
+            render_driver::value::opengl);
 
-  SECTION("RaspberryPIVideoLayer")
-  {
-    test_hint<RaspberryPIVideoLayer>([] {
-      CHECK(set_hint<RaspberryPIVideoLayer>(8'000));
-      CHECK(get_hint<RaspberryPIVideoLayer>().value() == 8'000);
-    });
-  };
+      CHECK(cen::set_hint<render_driver>(render_driver::value::opengles));
+      CHECK(cen::get_hint<render_driver>().value() ==
+            render_driver::value::opengles);
 
-  SECTION("RenderBatching") { test_bool_hint<RenderBatching>(); };
+      CHECK(cen::set_hint<render_driver>(render_driver::value::opengles2));
+      CHECK(cen::get_hint<render_driver>().value() ==
+            render_driver::value::opengles2);
 
-  SECTION("ReturnKeyHidesIME") { test_bool_hint<ReturnKeyHidesIME>(); };
+      CHECK(cen::set_hint<render_driver>(render_driver::value::metal));
+      CHECK(cen::get_hint<render_driver>().value() ==
+            render_driver::value::metal);
 
-  SECTION("TouchMouseEvents") { test_bool_hint<TouchMouseEvents>(); };
+      CHECK(cen::set_hint<render_driver>(render_driver::value::direct3d));
+      CHECK(cen::get_hint<render_driver>().value() ==
+            render_driver::value::direct3d);
 
-  SECTION("ThreadStackSize")
-  {
-    test_hint<ThreadStackSize>([] {
-      CHECK(set_hint<ThreadStackSize>(47U));
-      CHECK(get_hint<ThreadStackSize>().value() == 47U);
-
-      set_hint<ThreadStackSize>(0U);
-    });
-  };
-
-  SECTION("TimerResolution")
-  {
-    test_hint<TimerResolution>([] {
-      CHECK(set_hint<TimerResolution>(68U));
-      CHECK(get_hint<TimerResolution>().value() == 68U);
-
-      set_hint<TimerResolution>(1U);
-    });
-  };
-
-  SECTION("TVRemoteAsJoystick") { test_bool_hint<TVRemoteAsJoystick>(); };
-
-  SECTION("QtWaylandContentOrientation")
-  {
-    using Hint = QtWaylandContentOrientation;
-    test_hint<QtWaylandContentOrientation>([] {
-      CHECK(set_hint<Hint>(Hint::Primary));
-      CHECK(get_hint<Hint>() == Hint::Primary);
-
-      CHECK(set_hint<Hint>(Hint::Portrait));
-      CHECK(get_hint<Hint>() == Hint::Portrait);
-
-      CHECK(set_hint<Hint>(Hint::Landscape));
-      CHECK(get_hint<Hint>() == Hint::Landscape);
-
-      CHECK(set_hint<Hint>(Hint::InvertedPortrait));
-      CHECK(get_hint<Hint>() == Hint::InvertedPortrait);
-
-      CHECK(set_hint<Hint>(Hint::InvertedLandscape));
-      CHECK(get_hint<Hint>() == Hint::InvertedLandscape);
-    });
-  };
-
-  SECTION("QtWaylandWindowFlags")
-  {
-    using Hint = QtWaylandWindowFlags;
-    test_hint<QtWaylandWindowFlags>([] {
-      CHECK(set_hint<Hint>("OverridesSystemGestures StaysOnTop"));
-      CHECK_THAT(get_hint<Hint>().value(),
-                 Catch::Equals("OverridesSystemGestures StaysOnTop"));
-
-      CHECK(set_hint<Hint>("BypassWindowManager"));
-      CHECK_THAT(get_hint<Hint>().value(),
-                 Catch::Equals("BypassWindowManager"));
-
-      CHECK(set_hint<Hint>(""));
-    });
-  };
-
-  SECTION("XinputEnabled") { test_bool_hint<XinputEnabled>(); };
-
-  SECTION("XinputUseOldJoystickMapping")
-  {
-    test_bool_hint<XinputUseOldJoystickMapping>();
-  };
-
-  SECTION("RenderDriver")
-  {
-    test_hint<RenderDriver>([] {
-      CHECK(set_hint<RenderDriver>(RenderDriver::OpenGL));
-      CHECK(get_hint<RenderDriver>().value() == RenderDriver::OpenGL);
-
-      CHECK(set_hint<RenderDriver>(RenderDriver::OpenGLES));
-      CHECK(get_hint<RenderDriver>().value() == RenderDriver::OpenGLES);
-
-      CHECK(set_hint<RenderDriver>(RenderDriver::OpenGLES2));
-      CHECK(get_hint<RenderDriver>().value() == RenderDriver::OpenGLES2);
-
-      CHECK(set_hint<RenderDriver>(RenderDriver::Metal));
-      CHECK(get_hint<RenderDriver>().value() == RenderDriver::Metal);
-
-      CHECK(set_hint<RenderDriver>(RenderDriver::Direct3D));
-      CHECK(get_hint<RenderDriver>().value() == RenderDriver::Direct3D);
-
-      CHECK(set_hint<RenderDriver>(RenderDriver::Software));
-      CHECK(get_hint<RenderDriver>().value() == RenderDriver::Software);
+      CHECK(cen::set_hint<render_driver>(render_driver::value::software));
+      CHECK(cen::get_hint<render_driver>().value() ==
+            render_driver::value::software);
     });
 
-    set_hint<RenderDriver>(RenderDriver::OpenGL);
+    cen::set_hint<render_driver>(render_driver::value::opengl);
+  }
+
+  SECTION("raspberrypi::")
+  {
+    SECTION("video_layer")
+    {
+      using cen::hint::raspberrypi::video_layer;
+      test_hint<video_layer>([] {
+        CHECK(cen::set_hint<video_layer>(8'000));
+        CHECK(cen::get_hint<video_layer>().value() == 8'000);
+      });
+    }
+  }
+
+  SECTION("emscripten::")
+  {
+    SECTION("keyboard_element")
+    {
+      using cen::hint::emscripten::keyboard_element;
+      test_hint<keyboard_element>([] {
+        CHECK(cen::set_hint<keyboard_element>("#window"));
+        CHECK_THAT(cen::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#window"));
+
+        CHECK(cen::set_hint<keyboard_element>("#document"));
+        CHECK_THAT(cen::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#document"));
+
+        CHECK(cen::set_hint<keyboard_element>("#screen"));
+        CHECK_THAT(cen::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#screen"));
+
+        CHECK(cen::set_hint<keyboard_element>("#canvas"));
+        CHECK_THAT(cen::get_hint<keyboard_element>().value(),
+                   Catch::Equals("#canvas"));
+      });
+    }
+  }
+
+  SECTION("qtwayland::")
+  {
+    SECTION("content_orientation")
+    {
+      using hint = cen::hint::qtwayland::content_orientation;
+      using value = hint::value;
+      test_hint<hint>([] {
+        CHECK(cen::set_hint<hint>(value::primary));
+        CHECK(cen::get_hint<hint>() == value::primary);
+
+        CHECK(cen::set_hint<hint>(value::portrait));
+        CHECK(cen::get_hint<hint>() == value::portrait);
+
+        CHECK(cen::set_hint<hint>(value::landscape));
+        CHECK(cen::get_hint<hint>() == value::landscape);
+
+        CHECK(cen::set_hint<hint>(value::inverted_portrait));
+        CHECK(cen::get_hint<hint>() == value::inverted_portrait);
+
+        CHECK(cen::set_hint<hint>(value::inverted_landscape));
+        CHECK(cen::get_hint<hint>() == value::inverted_landscape);
+      });
+    }
+
+    SECTION("window_flags")
+    {
+      using hint = cen::hint::qtwayland::window_flags;
+      test_hint<hint>([] {
+        CHECK(cen::set_hint<hint>("OverridesSystemGestures StaysOnTop"));
+        CHECK_THAT(cen::get_hint<hint>().value(),
+                   Catch::Equals("OverridesSystemGestures StaysOnTop"));
+
+        CHECK(cen::set_hint<hint>("BypassWindowManager"));
+        CHECK_THAT(cen::get_hint<hint>().value(),
+                   Catch::Equals("BypassWindowManager"));
+
+        CHECK(cen::set_hint<hint>(""));
+      });
+    }
+  }
+
+  SECTION("mouse::")
+  {
+    SECTION("normal_speed_scale")
+    {
+      using cen::hint::mouse::normal_speed_scale;
+      test_hint<normal_speed_scale>([] {
+        CHECK(cen::set_hint<normal_speed_scale>(2.3f));
+        CHECK(cen::get_hint<normal_speed_scale>().value() == 2.3f);
+      });
+    }
+
+    SECTION("relative_speed_scale")
+    {
+      using cen::hint::mouse::relative_speed_scale;
+      test_hint<relative_speed_scale>([] {
+        CHECK(cen::set_hint<relative_speed_scale>(6.7f));
+        CHECK(cen::get_hint<relative_speed_scale>().value() == 6.7f);
+      });
+    }
+
+    SECTION("double_click_radius")
+    {
+      using cen::hint::mouse::double_click_radius;
+      test_hint<double_click_radius>([] {
+        cen::set_hint<double_click_radius>(5);
+        CHECK(cen::get_hint<double_click_radius>().value() == 5);
+
+        cen::set_hint<double_click_radius>(20);
+        CHECK(cen::get_hint<double_click_radius>().value() == 20);
+      });
+    }
+
+    SECTION("double_click_time")
+    {
+      using cen::hint::mouse::double_click_time;
+      test_hint<double_click_time>([] {
+        cen::set_hint<double_click_time>(25);
+        CHECK(cen::get_hint<double_click_time>().value() == 25);
+
+        cen::set_hint<double_click_time>(178);
+        CHECK(cen::get_hint<double_click_time>().value() == 178);
+      });
+    }
+  }
+
+  SECTION("gamecontroller::")
+  {
+    SECTION("type")
+    {
+      using cen::hint::gamecontroller::type;
+      test_hint<type>([] {
+        cen::czstring str = "0x00FD/0xAAC3=PS4";
+        cen::set_hint<type>(str);
+        CHECK_THAT(cen::get_hint<type>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("config")
+    {
+      using cen::hint::gamecontroller::config;
+      test_hint<config>([] {
+        cen::czstring str = "asd\nasd";
+        cen::set_hint<config>(str);
+        CHECK_THAT(cen::get_hint<config>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("config_file")
+    {
+      using cen::hint::gamecontroller::config_file;
+      test_hint<config_file>([] {
+        cen::czstring str = "foo";
+        cen::set_hint<config_file>(str);
+        CHECK_THAT(cen::get_hint<config_file>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("ignore_devices")
+    {
+      using cen::hint::gamecontroller::ignore_devices;
+      test_hint<ignore_devices>([] {
+        cen::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+        cen::set_hint<ignore_devices>(str);
+        CHECK_THAT(cen::get_hint<ignore_devices>().value(), Catch::Equals(str));
+      });
+    }
+
+    SECTION("ignore_devices_except")
+    {
+      using cen::hint::gamecontroller::ignore_devices_except;
+      test_hint<ignore_devices_except>([] {
+        cen::czstring str = "0xAAAA/0xBBBB, 0xCCCC/0xDDDD";
+        cen::set_hint<ignore_devices_except>(str);
+        CHECK_THAT(cen::get_hint<ignore_devices_except>().value(),
+                   Catch::Equals(str));
+      });
+    }
+  }
+
+  SECTION("winrt::")
+  {
+    SECTION("privacy_policy_label")
+    {
+      using cen::hint::winrt::privacy_policy_label;
+      test_hint<privacy_policy_label>([] {
+        cen::czstring str = "Hello this is GDPR speaking";
+        cen::set_hint<privacy_policy_label>(str);
+        CHECK_THAT(cen::get_hint<privacy_policy_label>().value(),
+                   Catch::Equals(str));
+      });
+    }
+
+    SECTION("privacy_policy_url")
+    {
+      using cen::hint::winrt::privacy_policy_url;
+      test_hint<privacy_policy_url>([] {
+        cen::czstring str = "Hello this is GDPR URL speaking";
+        cen::set_hint<privacy_policy_url>(str);
+        CHECK_THAT(cen::get_hint<privacy_policy_url>().value(),
+                   Catch::Equals(str));
+      });
+    }
+  }
+
+  SECTION("windows::")
+  {
+    SECTION("d3d_compiler")
+    {
+      using cen::hint::windows::d3d_compiler;
+      using value = d3d_compiler::value;
+      test_hint<d3d_compiler>([] {
+        CHECK(cen::set_hint<d3d_compiler>(value::none));
+        CHECK(cen::get_hint<d3d_compiler>() == value::none);
+
+        CHECK(cen::set_hint<d3d_compiler>(value::v46));
+        CHECK(cen::get_hint<d3d_compiler>() == value::v46);
+
+        CHECK(cen::set_hint<d3d_compiler>(value::v43));
+        CHECK(cen::get_hint<d3d_compiler>() == value::v43);
+      });
+    }
+
+    SECTION("int_resource_icon")
+    {
+      using cen::hint::windows::int_resource_icon;
+      test_hint<int_resource_icon>([] {
+        CHECK(cen::set_hint<int_resource_icon>("foo"));
+        CHECK_THAT(cen::get_hint<int_resource_icon>().value(),
+                   Catch::Equals("foo"));
+
+        cen::set_hint<int_resource_icon>("");
+      });
+    }
+
+    SECTION("int_resource_icon_small")
+    {
+      using cen::hint::windows::int_resource_icon_small;
+      test_hint<int_resource_icon_small>([] {
+        CHECK(cen::set_hint<int_resource_icon_small>("bar"));
+        CHECK_THAT(cen::get_hint<int_resource_icon_small>().value(),
+                   Catch::Equals("bar"));
+
+        cen::set_hint<int_resource_icon_small>("");
+      });
+    }
+  }
+
+  SECTION("android::")
+  {
+    SECTION("apk_expansion_main_file_version")
+    {
+      using cen::hint::android::apk_expansion_main_file_version;
+      test_hint<apk_expansion_main_file_version>([] {
+        CHECK(cen::set_hint<apk_expansion_main_file_version>(1));
+        CHECK(cen::get_hint<apk_expansion_main_file_version>() == 1);
+      });
+    }
+
+    SECTION("apk_expansion_patch_file_version")
+    {
+      using cen::hint::android::apk_expansion_patch_file_version;
+      test_hint<apk_expansion_patch_file_version>([] {
+        CHECK(cen::set_hint<apk_expansion_patch_file_version>(1));
+        CHECK(cen::get_hint<apk_expansion_patch_file_version>() == 1);
+      });
+    }
+  }
+
+  SECTION("x11::")
+  {
+    SECTION("window_visual_id")
+    {
+      using cen::hint::x11::window_visual_id;
+      test_hint<window_visual_id>([] {
+        CHECK(cen::set_hint<window_visual_id>("foo"));
+        CHECK_THAT(cen::get_hint<window_visual_id>().value(),
+                   Catch::Equals("foo"));
+
+        cen::set_hint<window_visual_id>("");
+      });
+    }
   }
 }
 
-TEST_CASE("add_callback", "[Hints]")
+TEST_CASE("add_hint_callback", "[hint]")
 {
-  set_hint<RenderDriver>(RenderDriver::Software);
+  using cen::hint::render_driver;
+  cen::set_hint<render_driver>(render_driver::value::software);
 
   int data = 7;
-  auto handle = add_callback<RenderDriver>(
-      [](void* data, CZString hint, CZString oldVal, CZString newVal) {
+  auto handle = cen::add_hint_callback<render_driver>(
+      [](void* data,
+         cen::czstring hint,
+         cen::czstring oldVal,
+         cen::czstring newVal) {
         static bool first = true;
         if (first) {
           first = false;
@@ -704,22 +689,30 @@ TEST_CASE("add_callback", "[Hints]")
       },
       &data);
 
-  set_hint<RenderDriver, Prio::Override>(RenderDriver::Software);
+  cen::set_hint<render_driver, cen::hint_priority::override>(
+      render_driver::value::software);
 
   handle.disconnect();
 
-  set_hint<RenderDriver, Prio::Override>(RenderDriver::OpenGL);
+  cen::set_hint<render_driver, cen::hint_priority::override>(
+      render_driver::value::opengl);
 }
 
-TEST_CASE("clear_all", "[Hints]")
+TEST_CASE("clear_hints", "[hint]")
 {
-  CHECK_NOTHROW(clear_all());
+  CHECK_NOTHROW(cen::clear_hints());
 }
 
-TEST_CASE("user_data", "[hint::Callback]")
+TEST_CASE("hint user data", "[hint]")
 {
+  using cen::hint::render_driver;
+
   int i = 123;
-  Callback<RenderDriver> callback{[](void*, CZString, CZString, CZString) {},
-                                  &i};
+
+  cen::hint_callback<render_driver> callback{
+      [](void*, cen::czstring, cen::czstring, cen::czstring) {
+      },
+      &i};
+
   CHECK(callback.user_data() == &i);
 }

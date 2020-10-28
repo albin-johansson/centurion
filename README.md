@@ -1,41 +1,34 @@
-# <img src="meta/centurion.png" alt="Centurion" width="200"/> [![version](https://img.shields.io/badge/version-4.3.0-blue.svg)](https://semver.org) [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) [![codecov](https://codecov.io/gh/albin-johansson/Centurion/branch/master/graph/badge.svg)](https://codecov.io/gh/albin-johansson/Centurion) [![Language](https://img.shields.io/badge/C%2B%2B-11/14/17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/albin-johansson/Centurion) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/Centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+# <img src="meta/centurion.png" alt="Centurion" width="200"/> 
+[![version](https://img.shields.io/badge/version-5.0.0-blue.svg)](https://semver.org) [![Language](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/Centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+|  Latest Build    |  Status       |
+| ---------------- | ------------- |
+| Ubuntu 20.04 w/ GCC 9.3.0 | [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) |
+| Windows 10 w/ MSVC 19.27 | [![Build status](https://ci.appveyor.com/api/projects/status/h0er6nobyf3c8jsu?svg=true)](https://ci.appveyor.com/project/AlbinJohansson/centurion) |
+| Read-the-Docs | [![Documentation Status](https://readthedocs.org/projects/centurion/badge/?version=latest)](https://centurion.readthedocs.io/en/latest/?badge=latest) |
+| Code coverage | [![codecov](https://codecov.io/gh/albin-johansson/Centurion/branch/dev/graph/badge.svg)](https://codecov.io/gh/albin-johansson/Centurion) |
 
 ## What is Centurion?
 
-Centurion is a modern C++ library built on top of SDL2 in order to improve type-safety, memory safety and overall ease-of-use. It can be used for creating windows, 2D-rendering, keyboard input, mouse input, sound effects, music, etc. In other words, most of the things you can do with SDL2. In addition to this, all Centurion components are built to support being used alongside the SDL2 components so that you can use SDL2 for the things that Centurion doesn't cover.
+Centurion is a multimedia-library built on top of SDL2, written in modern C++. It provides abstractions for window-management, 2D hardware-accelerated rendering, sound effects, music, game controllers, keyboard and mouse input, multi-threading, system information and much more. The overall goal of Centurion is to serve as an easy-to-use alternative to SDL2 that provides much better type- and memory-safety.
 
-## Why use Centurion?
+## Why Centurion?
 
-Centurion is written in modern C++17 (and supports being used in C++11 and C++14 environments) and as such is much more intuitive and easy to use that raw SDL2, which is written in C. No need to worry about memory leaks and ownership of resources! By using Centurion you will write code that is type-safe, clear and efficient.
+As a result of Centurion utilizing the power of C++17, the library is much more intuitive and easy to use that raw SDL2. Centurion will take care of the memory management for you and protect you from silly type-errors. Furthermore, unlike other wrapper libraries for SDL2, Centurion actively tries to improve the SDL APIs, instead of just mirroring them.
 
-## How do I install Centurion?
+## Documentation
 
-There are two ways of installing the Centurion library in your project.
+No matter how well-written a library is, there's always a need for great documentation. Centurion features detailed in-source documentation using Doxygen, which should be detected by any modern IDE. The Doxygen documentation for the latest stable version is hosted [here](https://albin-johansson.github.io/Centurion/).
 
-- You can simply link against Centurion as a shared library, just like you would with any other library. This is the recommended approach for using the Centurion library.
-
-- You can use the library as a pseudo-"header-only" library, by defining the macro `CENTURION_HEADER_ONLY` in the file `centurion_cfg.h`. Note that you'll need to include the `.cpp` files as well if you want to go for this option.
-  
-Since Centurion is built on top of SDL2, you'll need to install SDL2! In order to be able use everything in Centurion, you'll need to install SDL2, SDL2_image, SDL2_ttf and SDL2_mixer. Don't worry! It's easy when you get the hang of it. Furthermore, Centurion comes bundled with two dependencies, `gsl-lite` and `optional`.
-
-## How do I use Centurion?
-
-Before you can get started with using the Centurion components, you must initialize the library. Here's how to do just that. Refer the in-source documentation or generated Doxygen documentation for more information about the library. :closed_book:
-
-```C++
-#include <centurion.h>
-
-using namespace centurion;
-
-int main(int, char**)
-{
-  Centurion c;
-  // TODO start using Centurion!
-}
-```
+Furthermore, the library features a Read-the-Docs site that features tutorials, examples and various tips-and-tricks for an overview of the library. It can be found [here](https://centurion.readthedocs.io/en/latest/)!
 
 Happy coding! :heart:
 
-## Author
+## Relevant resources
 
-- __Albin Johansson__ - _Software engineering student_ - [GitHub](https://github.com/albin-johansson)
+* [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
+* [SDL2 Wiki](https://wiki.libsdl.org/FrontPage)
+* [SDL2](https://www.libsdl.org/index.php)
+* [SDL2_image](https://www.libsdl.org/projects/SDL_image/)
+* [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/)
+* [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/)

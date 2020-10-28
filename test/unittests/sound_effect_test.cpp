@@ -1,37 +1,33 @@
-#ifndef CENTURION_NOAUDIO
-
-#include "sound_effect.h"
+#include "sound_effect.hpp"
 
 #include <catch.hpp>
+#include <iostream>
 
-#include "centurion_exception.h"
-#include "log.h"
-#include "timer.h"
-
-using namespace centurion;
+#include "exception.hpp"
+#include "log.hpp"
+#include "thread.hpp"
 
 static constexpr auto path = "resources/click.wav";
 
-TEST_CASE("SoundEffect(CZString)", "[SoundEffect]")
+TEST_CASE("sound_effect(nn_czstring)", "[sound_effect]")
 {
-  CHECK_THROWS_AS(SoundEffect("somebadpath"), CenturionException);
-  CHECK_THROWS_AS(SoundEffect(nullptr), CenturionException);
+  CHECK_THROWS_AS(cen::sound_effect("somebadpath"), cen::mix_error);
 }
 
-TEST_CASE("SoundEffect(SoundEffect&&)", "[SoundEffect]")
+TEST_CASE("sound_effect(sound_effect&&)", "[sound_effect]")
 {
-  SoundEffect sound{path};
-  SoundEffect other{std::move(sound)};
+  cen::sound_effect sound{path};
+  cen::sound_effect other{std::move(sound)};
 
   CHECK(!sound.get());
   CHECK(other.get());
 }
 
-TEST_CASE("SoundEffect::operator=(SoundEffect&&)", "[SoundEffect]")
+TEST_CASE("sound_effect::operator=(sound_effect&&)", "[sound_effect]")
 {
   SECTION("Self-assignment")
   {
-    SoundEffect sound{path};
+    cen::sound_effect sound{path};
 
     sound = std::move(sound);
     CHECK(sound.get());
@@ -39,8 +35,8 @@ TEST_CASE("SoundEffect::operator=(SoundEffect&&)", "[SoundEffect]")
 
   SECTION("Normal usage")
   {
-    SoundEffect sound{path};
-    SoundEffect other{path};
+    cen::sound_effect sound{path};
+    cen::sound_effect other{path};
 
     other = std::move(sound);
 
@@ -49,91 +45,85 @@ TEST_CASE("SoundEffect::operator=(SoundEffect&&)", "[SoundEffect]")
   }
 }
 
-TEST_CASE("SoundEffect smart pointer factory methods", "[SoundEffect]")
+TEST_CASE("sound_effect::play", "[sound_effect]")
 {
-  CHECK(SoundEffect::unique(path));
-  CHECK(SoundEffect::shared(path));
-  CHECK_THROWS_AS(SoundEffect::unique(""), CenturionException);
-  CHECK_THROWS_AS(SoundEffect::unique(nullptr), CenturionException);
-  CHECK_THROWS_AS(SoundEffect::shared(""), CenturionException);
-  CHECK_THROWS_AS(SoundEffect::shared(nullptr), CenturionException);
-}
+  cen::sound_effect sound{path};
 
-TEST_CASE("SoundEffect::play", "[SoundEffect]")
-{
-  SoundEffect sound{path};
-
-  CHECK(!sound.playing());
+  CHECK(!sound.is_playing());
 
   sound.play();
-  CHECK(sound.playing());
+  CHECK(sound.is_playing());
 
   sound.stop();
-  CHECK(!sound.playing());
+  CHECK(!sound.is_playing());
 
   sound.play(5);
-  CHECK(sound.playing());
+  CHECK(sound.is_playing());
 }
 
-TEST_CASE("SoundEffect looping", "[SoundEffect]")
+TEST_CASE("sound_effect looping", "[sound_effect]")
 {
-  SoundEffect sound{path};
+  cen::sound_effect sound{path};
   sound.set_volume(1);
 
   sound.play(10);
-  CHECK(sound.playing());
+  CHECK(sound.is_playing());
   sound.stop();
 
-  CHECK(SoundEffect::loopForever < 0);
+  CHECK(cen::sound_effect::loopForever < 0);
 
-  CHECK_NOTHROW(sound.play(SoundEffect::loopForever));
-  CHECK(sound.playing());
+  CHECK_NOTHROW(sound.play(cen::sound_effect::loopForever));
+  CHECK(sound.is_playing());
 
   sound.stop();
-  CHECK(!sound.playing());
+  CHECK(!sound.is_playing());
 }
 
-TEST_CASE("SoundEffect::stop", "[SoundEffect]")
+TEST_CASE("sound_effect::stop", "[sound_effect]")
 {
-  SoundEffect sound{path};
+  cen::sound_effect sound{path};
 
   sound.play();
   sound.stop();
-  CHECK(!sound.playing());
+  CHECK(!sound.is_playing());
 }
 
-TEST_CASE("SoundEffect::fade_in", "[SoundEffect]")
+TEST_CASE("sound_effect::fade_in", "[sound_effect]")
 {
-  SoundEffect sound{path};
+  cen::sound_effect sound{path};
 
-  sound.fade_in(-1);
+  using ms = cen::milliseconds<int>;
+
+  CHECK_NOTHROW(sound.fade_in(ms{-1}));
   sound.stop();
 
-  CHECK_NOTHROW(sound.fade_in(0));
-  CHECK(!sound.playing());
+  CHECK_NOTHROW(sound.fade_in(ms{0}));
+  CHECK(!sound.is_playing());
 
-  sound.fade_in(100);
-  CHECK(sound.playing());
+  sound.fade_in(ms{100});
+  CHECK(sound.is_playing());
 }
 
-TEST_CASE("SoundEffect::fade_out", "[SoundEffect]")
+TEST_CASE("sound_effect::fade_out", "[sound_effect]")
 {
-  SoundEffect sound{path};
+  cen::sound_effect sound{path};
 
-  CHECK_NOTHROW(sound.fade_out(0));
-  CHECK(!sound.playing());
+  using ms = cen::milliseconds<int>;
+
+  CHECK_NOTHROW(sound.fade_out(ms{0}));
+  CHECK(!sound.is_playing());
 
   sound.play();
-  sound.fade_out(10);
-  CHECK(sound.playing());
+  sound.fade_out(ms{50});
+  CHECK(sound.is_playing());
 
-  Timer::delay(1000);
-  CHECK(!sound.playing());
+  cen::thread::sleep(cen::seconds<cen::u32>(1));
+  CHECK(!sound.is_playing());
 }
 
-TEST_CASE("SoundEffect:set_volume", "[SoundEffect]")
+TEST_CASE("sound_effect:set_volume", "[sound_effect]")
 {
-  SoundEffect sound{path};
+  cen::sound_effect sound{path};
 
   SECTION("Valid volume")
   {
@@ -151,38 +141,57 @@ TEST_CASE("SoundEffect:set_volume", "[SoundEffect]")
 
   SECTION("Volume overflow")
   {
-    const auto volume = SoundEffect::maxVolume + 1;
+    const auto volume = cen::sound_effect::max_volume() + 1;
     sound.set_volume(volume);
-    CHECK(sound.volume() == SoundEffect::maxVolume);
+    CHECK(sound.volume() == cen::sound_effect::max_volume());
   }
 }
 
-TEST_CASE("SoundEffect::volume", "[SoundEffect]")
+TEST_CASE("sound_effect::volume", "[sound_effect]")
 {
-  SoundEffect sound{path};
-  CHECK(sound.volume() == SoundEffect::maxVolume);
+  cen::sound_effect sound{path};
+  CHECK(sound.volume() == cen::sound_effect::max_volume());
   CHECK(sound.volume() == 128);  // because of the documentation guarantee
-  CHECK(SoundEffect::maxVolume == MIX_MAX_VOLUME);
+  CHECK(cen::sound_effect::max_volume() == MIX_MAX_VOLUME);
 }
 
-TEST_CASE("SoundEffect::playing", "[SoundEffect]")
+TEST_CASE("sound_effect::is_playing", "[sound_effect]")
 {
-  SoundEffect sound{path};
+  cen::sound_effect sound{path};
 
-  CHECK(!sound.playing());
+  CHECK(!sound.is_playing());
   sound.play(2);
-  CHECK(sound.playing());
+  CHECK(sound.is_playing());
 }
 
-TEST_CASE("SoundEffect::to_string", "[SoundEffect]")
+TEST_CASE("sound_effect::is_fading", "[sound_effect]")
 {
-  SoundEffect sound{path};
-  Log::info(Log::Category::Test, "%s", sound.to_string().c_str());
+  cen::sound_effect sound{path};
+
+  CHECK(!sound.is_fading());
+
+  sound.play(2);
+  CHECK(!sound.is_fading());
+
+  sound.stop();
+  sound.fade_in(cen::milliseconds<int>{100});
+  CHECK(sound.is_fading());
+  CHECK(sound.is_playing());
 }
 
-TEST_CASE("SoundEffect::max_volume", "[SoundEffect]")
+TEST_CASE("sound_effect to_string", "[sound_effect]")
 {
-  CHECK(SoundEffect::max_volume() == MIX_MAX_VOLUME);
+  const cen::sound_effect sound{path};
+  cen::log::put(cen::to_string(sound));
 }
 
-#endif
+TEST_CASE("sound_effect stream operator", "[sound_effect]")
+{
+  const cen::sound_effect sound{path};
+  std::cout << "COUT: " << sound << '\n';
+}
+
+TEST_CASE("sound_effect::max_volume", "[sound_effect]")
+{
+  CHECK(cen::sound_effect::max_volume() == MIX_MAX_VOLUME);
+}

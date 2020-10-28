@@ -131,7 +131,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename U = T, detail::is_owner<U> = true>
+  template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
   basic_texture(const Renderer& renderer, nn_czstring path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
@@ -153,7 +153,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename U = T, detail::is_owner<U> = true>
+  template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
   basic_texture(const Renderer& renderer, const surface& surface)
       : m_texture{SDL_CreateTextureFromSurface(renderer.get(), surface.get())}
   {
@@ -177,7 +177,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename U = T, detail::is_owner<U> = true>
+  template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
   basic_texture(const Renderer& renderer,
                 pixel_format format,
                 texture_access access,
@@ -213,7 +213,7 @@ class basic_texture final
    *
    * \since 4.0.0
    */
-  template <typename Renderer, typename U = T, detail::is_owner<U> = true>
+  template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
                                       nn_czstring path,
                                       pixel_format format) -> basic_texture
@@ -225,10 +225,10 @@ class basic_texture final
       return source.convert(format);
     };
     const auto surface = createSurface(path, format);
-    auto tex = texture{renderer,
-                       format,
-                       texture_access::streaming,
-                       {surface.width(), surface.height()}};
+    auto tex = basic_texture{renderer,
+                             format,
+                             texture_access::streaming,
+                             {surface.width(), surface.height()}};
     tex.set_blend_mode(blendMode);
 
     u32* pixels = nullptr;

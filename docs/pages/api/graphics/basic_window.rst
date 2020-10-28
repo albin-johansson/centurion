@@ -31,6 +31,16 @@ Interface
 Related functions
 -----------------
 
+The following functions are located in the ``window_utils.hpp`` header.
+
+.. doxygenfunction:: mouse_focus_window() noexcept -> window_handle
+  :outline:
+  :no-link:
+
+.. doxygenfunction:: keyboard_focus_window() noexcept -> window_handle
+  :outline:
+  :no-link:
+
 .. doxygenfunction:: get_renderer(const basic_window<T> &window) noexcept -> renderer_handle
   :outline:
   :no-link:

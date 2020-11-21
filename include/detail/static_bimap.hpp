@@ -26,10 +26,10 @@
 #define CENTURION_DETAIL_STATIC_BIMAP_HEADER
 
 #include <array>    // array
+#include <ranges>   // find_if
 #include <utility>  // pair
 
 #include "centurion_api.hpp"
-#include "detail/algorithm.hpp"
 #include "exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -69,23 +69,29 @@ class static_bimap final
 
   constexpr auto find(const Key& key) const -> const Value&
   {
-    for (const pair_type& pair : data) {
-      if (pair.first == key) {
-        return pair.second;
-      }
+    const auto it = std::ranges::find_if(data, [&](const pair_type& pair) {
+      return pair.first == key;
+    });
+
+    if (it != data.end()) {
+      return it->second;
+    } else {
+      throw exception{"Failed to find element in static map!"};
     }
-    throw exception{"Failed to find element in static map!"};
   }
 
   constexpr auto key_from(const Value& value) const -> const Key&
   {
-    ValueCmp compare{};
-    for (const pair_type& pair : data) {
-      if (compare(pair.second, value)) {
-        return pair.first;
-      }
+    const auto it = std::ranges::find_if(data, [&](const pair_type& pair) {
+      ValueCmp predicate;
+      return predicate(pair.second, value);
+    });
+
+    if (it != data.end()) {
+      return it->first;
+    } else {
+      throw exception{"Failed to find key in static map!"};
     }
-    throw exception{"Failed to find key in static map!"};
   }
 };
 

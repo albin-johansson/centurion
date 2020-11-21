@@ -130,18 +130,21 @@ class thread final
    * \brief Creates and runs a thread.
    *
    * \details This constructor takes a function object that takes no parameters
-   * that may return either something convertible to `int` or `void`. The thread
-   * is created with the name "thread".
+   * that may return either something convertible to `int` or `void`.
    *
    * \tparam T the type of the function object.
+   *
+   * \param name the name of the thread, cannot be null.
    *
    * \throws sdl_error if the thread could not be created.
    *
    * \since 6.0.0
    */
   template <simple_thread_task T>
-  explicit thread(T&&)
+  explicit thread(T&&, czstring name = "thread")
   {
+    assert(name);
+
     const auto wrapper = [](void*) -> int {
       using return_t = std::invoke_result_t<std::decay_t<T>>;
 
@@ -154,32 +157,37 @@ class thread final
       }
     };
 
-    m_thread = SDL_CreateThread(wrapper, "thread", nullptr);
+    m_thread = SDL_CreateThread(wrapper, name, nullptr);
     if (!m_thread) {
       throw sdl_error{"Failed to create thread"};
     }
   }
+
+  // clang-format off
 
   /**
    * \brief Creates and runs a thread.
    *
    * \details This constructor takes a function object that takes a pointer of
    * the same type as the user data pointer, that may return either something
-   * convertible to `int` or `void`. The thread is created with the name
-   * "thread".
+   * convertible to `int` or `void`.
    *
    * \tparam T the type of the function object.
    * \tparam P a pointer to user data.
    *
    * \param data the user data that will be supplied to the function object.
+   * \param name the name of the thread, cannot be null.
    *
    * \throws sdl_error if the thread could not be created.
    *
    * \since 6.0.0
    */
-  template <typename T, typename P>
-  thread(T&&, P data) requires thread_task_with_arg<std::decay_t<T>, P>
+  template <typename T, typename P> requires thread_task_with_arg<std::decay_t<T>, P>
+  thread(T&&, P data, czstring name = "thread")
   {
+    // clang-format on
+    assert(name);
+
     const auto wrapper = [](void* ptr) -> int {
       using return_t = std::invoke_result_t<std::decay_t<T>, P>;
 
@@ -192,8 +200,7 @@ class thread final
       }
     };
 
-    m_thread =
-        SDL_CreateThread(wrapper, "thread", reinterpret_cast<void*>(data));
+    m_thread = SDL_CreateThread(wrapper, name, reinterpret_cast<void*>(data));
     if (!m_thread) {
       throw sdl_error{"Failed to create thread"};
     }

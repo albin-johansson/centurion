@@ -62,10 +62,8 @@
 
 #include <SDL_hints.h>
 
-#include <algorithm>    // find_if
-#include <cstring>      // strcmp
 #include <type_traits>  // is_same_v, ...
-#include <utility>      // pair
+#include <utility>      // pair, make_pair
 
 #include "centurion_api.hpp"
 #include "detail/static_bimap.hpp"
@@ -82,6 +80,9 @@ namespace cen {
 /// \cond FALSE
 
 namespace detail {
+
+template <typename Hint, typename Value>
+concept valid_arg = Hint::template valid_arg<Value>();
 
 struct string_compare final
 {
@@ -1344,9 +1345,9 @@ enum class hint_priority
  */
 template <typename Hint,
           hint_priority priority = hint_priority::normal,
-          typename Value,
-          typename = std::enable_if_t<Hint::template valid_arg<Value>()>>
-auto set_hint(const Value& value) -> bool
+          typename Value>
+auto set_hint(const Value& value)
+    -> bool requires detail::valid_arg<Hint, Value>
 {
   return static_cast<bool>(
       SDL_SetHintWithPriority(Hint::name(),

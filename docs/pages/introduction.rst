@@ -10,7 +10,7 @@ music, etc. In other words, most of the things you can do with SDL2!
 
 Why use Centurion?
 ------------------
-Centurion is written in modern C++17, which means that the API is much more
+Centurion is written in modern C++20, which means that the API is much more
 expressive, type-safe and easy-to-use than raw SDL2, which is written in C.
 By using Centurion effectively, there's no need to worry about memory leaks and
 ownership of  resources! By using Centurion you will write type-safe, expressive

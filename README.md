@@ -1,10 +1,10 @@
 # <img src="meta/centurion.png" alt="Centurion" width="200"/> 
-[![version](https://img.shields.io/badge/version-5.0.0-blue.svg)](https://semver.org) [![Language](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/Centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![version](https://img.shields.io/badge/version-6.0.0-blue.svg)](https://semver.org) [![Language](https://img.shields.io/badge/C%2B%2B-20-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/Centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 |  Latest Build    |  Status       |
 | ---------------- | ------------- |
 | Ubuntu 20.04 w/ GCC 9.3.0 | [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) |
-| Windows 10 w/ MSVC 19.27 | [![Build status](https://ci.appveyor.com/api/projects/status/h0er6nobyf3c8jsu?svg=true)](https://ci.appveyor.com/project/AlbinJohansson/centurion) |
+| Windows 10 w/ MSVC 19.28 | [![Build status](https://ci.appveyor.com/api/projects/status/h0er6nobyf3c8jsu?svg=true)](https://ci.appveyor.com/project/AlbinJohansson/centurion) |
 | Read-the-Docs | [![Documentation Status](https://readthedocs.org/projects/centurion/badge/?version=latest)](https://centurion.readthedocs.io/en/latest/?badge=latest) |
 | Code coverage | [![codecov](https://codecov.io/gh/albin-johansson/Centurion/branch/dev/graph/badge.svg)](https://codecov.io/gh/albin-johansson/Centurion) |
 
@@ -14,7 +14,7 @@ Centurion is a multimedia-library built on top of SDL2, written in modern C++. I
 
 ## Why Centurion?
 
-As a result of Centurion utilizing the power of C++17, the library is much more intuitive and easy to use that raw SDL2. Centurion will take care of the memory management for you and protect you from silly type-errors. Furthermore, unlike other wrapper libraries for SDL2, Centurion actively tries to improve the SDL APIs, instead of just mirroring them.
+As a result of Centurion utilizing the power of C++20, the library is much more intuitive and easy to use that raw SDL2. Centurion will take care of the memory management for you and protect you from silly type-errors. Furthermore, unlike other wrapper libraries for SDL2, Centurion actively tries to improve the SDL APIs, instead of just mirroring them.
 
 ## Documentation
 

@@ -172,7 +172,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
             -Wsuggest-override
             -Wduplicated-cond
             -Wconversion
-            -Wc++17-compat
             -Wno-attributes)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
@@ -186,7 +185,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
             -Wunused
             -Wuninitialized
             -Wconversion
-            -Wc++17-compat
             -Wno-c++98-compat
             -Wno-c++98-compat-pedantic
             -Wno-unused-template

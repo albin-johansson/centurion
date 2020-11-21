@@ -3,7 +3,7 @@ BasedOnStyle: Google
 IndentWidth: 2
 ---
 Language: Cpp
-Standard: c++17
+Standard: c++20
 DerivePointerAlignment: false
 PointerAlignment: Left
 AllowAllParametersOfDeclarationOnNextLine: false

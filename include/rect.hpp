@@ -33,13 +33,15 @@
 
 #include <SDL.h>
 
-#include <algorithm>
-#include <ostream>
-#include <string>
-#include <type_traits>
+#include <algorithm>    // min, max
+#include <concepts>     // convertible_to, integral, floating_point
+#include <ostream>      // ostream
+#include <string>       // string
+#include <type_traits>  // ...
 
 #include "area.hpp"
 #include "centurion_api.hpp"
+#include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "point.hpp"
 
@@ -48,6 +50,10 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
+
+template <typename T>
+concept rect_precision =
+    std::convertible_to<T, int> || std::convertible_to<T, float>;
 
 /**
  * \class rect_traits
@@ -69,9 +75,7 @@ namespace cen {
  *
  * \headerfile rect.hpp
  */
-template <typename T,
-          typename = std::enable_if_t<std::is_convertible_v<T, int> ||
-                                      std::is_convertible_v<T, float>>>
+template <rect_precision T>
 class rect_traits final
 {
  public:
@@ -82,7 +86,7 @@ class rect_traits final
    *
    * \since 5.0.0
    */
-  inline constexpr static bool isIntegral = std::is_integral_v<T>;
+  inline constexpr static bool isIntegral = std::integral<T>;
 
   /**
    * \var isFloating
@@ -92,7 +96,7 @@ class rect_traits final
    *
    * \since 5.0.0
    */
-  inline constexpr static bool isFloating = std::is_floating_point_v<T>;
+  inline constexpr static bool isFloating = std::floating_point<T>;
 
   /**
    * \typedef value_type
@@ -148,7 +152,7 @@ class rect_traits final
  *
  * \headerfile rect.hpp
  */
-template <typename T>
+template <rect_precision T>
 class basic_rect final
 {
  public:
@@ -622,7 +626,7 @@ static_assert(std::is_nothrow_destructible_v<irect>);
  *
  * \since 4.0.0
  */
-template <typename T>
+template <rect_precision T>
 [[nodiscard]] constexpr auto operator==(const basic_rect<T>& lhs,
                                         const basic_rect<T>& rhs) noexcept
     -> bool
@@ -645,7 +649,7 @@ template <typename T>
  *
  * \since 4.0.0
  */
-template <typename T>
+template <rect_precision T>
 [[nodiscard]] constexpr auto operator!=(const basic_rect<T>& lhs,
                                         const basic_rect<T>& rhs) noexcept
     -> bool
@@ -691,7 +695,7 @@ template <>
  *
  * \since 4.0.0
  */
-template <typename T>
+template <rect_precision T>
 [[nodiscard]] constexpr auto intersects(const basic_rect<T>& fst,
                                         const basic_rect<T>& snd) noexcept
     -> bool
@@ -717,7 +721,7 @@ template <typename T>
  *
  * \since 4.0.0
  */
-template <typename T>
+template <rect_precision T>
 [[nodiscard]] constexpr auto collides(const basic_rect<T>& fst,
                                       const basic_rect<T>& snd) noexcept -> bool
 {
@@ -741,7 +745,7 @@ template <typename T>
  *
  * \since 5.0.0
  */
-template <typename T>
+template <rect_precision T>
 [[nodiscard]] constexpr auto get_union(const basic_rect<T>& fst,
                                        const basic_rect<T>& snd) noexcept
     -> basic_rect<T>
@@ -778,14 +782,14 @@ template <typename T>
  *
  * \since 5.0.0
  */
-template <typename T>
+template <rect_precision T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  const auto x = std::to_string(rect.x());
-  const auto y = std::to_string(rect.y());
-  const auto w = std::to_string(rect.width());
-  const auto h = std::to_string(rect.height());
-  return "[Rect | X: " + x + ", Y: " + y + ", Width: " + w + ", Height: " + h +
+  const auto x = detail::to_string(rect.x()).value();
+  const auto y = detail::to_string(rect.y()).value();
+  const auto w = detail::to_string(rect.width()).value();
+  const auto h = detail::to_string(rect.height()).value();
+  return "[rect | x: " + x + ", y: " + y + ", width: " + w + ", height: " + h +
          "]";
 }
 
@@ -803,7 +807,7 @@ template <typename T>
  *
  * \since 5.0.0
  */
-template <typename T>
+template <rect_precision T>
 auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
     -> std::ostream&
 {

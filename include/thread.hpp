@@ -118,15 +118,6 @@ class thread final
 {
  public:
   /**
-   * \typedef id
-   *
-   * \brief The type used for thread identifiers.
-   *
-   * \since 5.0.0
-   */
-  using id = SDL_threadID;
-
-  /**
    * \brief Creates and runs a thread.
    *
    * \details This constructor takes a function object that takes no parameters
@@ -315,7 +306,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_id() const noexcept -> id
+  [[nodiscard]] auto get_id() const noexcept -> SDL_threadID
   {
     return SDL_GetThreadID(m_thread);
   }
@@ -389,7 +380,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto current_id() noexcept -> id
+  [[nodiscard]] static auto current_id() noexcept -> SDL_threadID
   {
     return SDL_ThreadID();
   }

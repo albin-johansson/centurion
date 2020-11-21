@@ -34,10 +34,11 @@
 #include <SDL.h>
 
 #include <array>        // array
+#include <concepts>     // same_as
 #include <cstring>      // strcmp
 #include <sstream>      // ostringstream
 #include <string>       // string
-#include <type_traits>  // is_enum_v, enable_if_t, true_type, false_type
+#include <type_traits>  // is_enum_v, enable_if_t, true_type, false_type, ...
 #include <utility>      // pair
 
 #include "centurion_api.hpp"
@@ -166,6 +167,9 @@ template <typename T>
 {
   return std::is_same_v<T, std::true_type>;
 }
+
+template <typename T>
+concept arithmetic = std::is_arithmetic_v<T> && !std::same_as<T, bool>;
 
 }  // namespace detail
 

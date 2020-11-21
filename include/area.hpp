@@ -25,10 +25,10 @@
 #ifndef CENTURION_AREA_HEADER
 #define CENTURION_AREA_HEADER
 
-#include <ostream>
-#include <type_traits>
+#include <ostream>  // ostream
 
 #include "centurion_api.hpp"
+#include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -42,32 +42,26 @@ namespace cen {
  *
  * \ingroup geometry
  *
- * \brief Simply represents an area with a width and height.
+ * \brief Represents an area, with a width and height.
  *
- * \tparam T the type of the components of the area. Must
- * be either an integral or floating-point type. Can't be `bool`.
- *
- * \since 4.0.0
+ * \tparam T the type of the components of the area. Must be an arithmetic type,
+ * but can't be `bool`.
  *
  * \see `iarea`
  * \see `farea`
  * \see `darea`
  *
- * \var basic_area::width
- * The width of the area. Defaults to 0.
- * \var basic_area::height
- * The height of the area. Defaults to 0.
+ * \since 4.0.0
  *
  * \headerfile area.hpp
  */
-template <typename T>
-struct basic_area
+template <detail::arithmetic T>
+struct basic_area final
 {
-  T width{0};
-  T height{0};
+  T width{0};   ///< The width of the area.
+  T height{0};  ///< The height of the area.
 
-  static_assert(std::is_integral_v<T> || std::is_floating_point_v<T>);
-  static_assert(!std::is_same_v<T, bool>);
+  [[nodiscard]] bool operator==(const basic_area&) const noexcept = default;
 };
 
 /**
@@ -104,46 +98,6 @@ using farea = basic_area<float>;
 using darea = basic_area<double>;
 
 /**
- * \brief Indicates whether or not two areas are considered to be equal.
- *
- * \ingroup geometry
- *
- * \param lhs the left-hand side area.
- * \param rhs the right-hand side area.
- *
- * \return `true` if the areas are equal; `false` otherwise.
- *
- * \since 4.1.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto operator==(const basic_area<T>& lhs,
-                                        const basic_area<T>& rhs) noexcept
-    -> bool
-{
-  return (lhs.width == rhs.width) && (lhs.height == rhs.height);
-}
-
-/**
- * \brief Indicates whether or not two areas aren't considered to be equal.
- *
- * \ingroup geometry
- *
- * \param lhs the left-hand side area.
- * \param rhs the right-hand side area.
- *
- * \return `true` if the areas aren't equal; `false` otherwise.
- *
- * \since 4.1.0
- */
-template <typename T>
-[[nodiscard]] constexpr auto operator!=(const basic_area<T>& lhs,
-                                        const basic_area<T>& rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
  * \brief Returns a textual representation of an area.
  *
  * \ingroup geometry
@@ -159,8 +113,8 @@ template <typename T>
 template <typename T>
 [[nodiscard]] auto to_string(const basic_area<T>& area) -> std::string
 {
-  const auto width = std::to_string(area.width);
-  const auto height = std::to_string(area.height);
+  const auto width = detail::to_string(area.width).value();
+  const auto height = detail::to_string(area.height).value();
   return "[area | width: " + width + ", height: " + height + "]";
 }
 

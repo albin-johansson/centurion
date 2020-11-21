@@ -67,8 +67,7 @@ template <std::size_t bufferSize = 16, typename T>
   const auto [ptr, err] =
       std::to_chars(buffer.data(), buffer.data() + buffer.size(), value);
   if (err == std::errc{}) {
-    const auto len = static_cast<std::size_t>(ptr - buffer.data());
-    return std::string{buffer.data(), len};
+    return std::string{buffer.data(), ptr};
   } else {
     return std::nullopt;
   }

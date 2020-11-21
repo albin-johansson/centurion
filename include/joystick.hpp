@@ -65,6 +65,8 @@ class basic_joystick final
   using owner_t = basic_joystick<std::true_type>;
   using handle_t = basic_joystick<std::false_type>;
 
+  template <typename X> friend class basic_controller;
+
  public:
   /**
    * \enum power

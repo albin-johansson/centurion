@@ -116,7 +116,6 @@ set(SOURCE_FILES
         event/text_editing_event.cpp
         event/text_input_event.cpp
 
-        thread/thread.cpp
         thread/scoped_lock.cpp
         thread/mutex.cpp
         thread/condition.cpp

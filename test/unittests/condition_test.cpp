@@ -18,22 +18,17 @@ TEST_CASE("condition::broadcast", "[condition]")
 
 TEST_CASE("condition::wait(mutex&)", "[condition]")
 {
+  using namespace cen::literals;
+
   cen::mutex mutex;
   cen::condition cond;
 
   REQUIRE(mutex.lock());
 
-  cen::thread thread{[](void* data) {
-                       auto* cond = reinterpret_cast<cen::condition*>(data);
-
-                       using ms = cen::milliseconds<cen::u32>;
-                       cen::thread::sleep(ms{100});
-
-                       cond->signal();
-
-                       return 0;
+  cen::thread thread{[](cen::condition* condition) {
+                       cen::thread::sleep(100_ms);
+                       condition->signal();
                      },
-                     "thread",
                      &cond};
 
   CHECK(cond.wait(mutex));

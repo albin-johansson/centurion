@@ -37,12 +37,17 @@
 
 #include <SDL.h>
 
-#include <memory>
-#include <ostream>
-#include <string>
+#include <cassert>   // assert
+#include <concepts>  // invocable
+#include <memory>    // unique_ptr
+#include <ostream>   // ostream
+#include <string>    // string
 #include <type_traits>
 
 #include "centurion_api.hpp"
+#include "detail/to_string.hpp"
+#include "detail/utils.hpp"
+#include "exception.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -76,6 +81,21 @@ enum class thread_priority
       SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< For timing-critical processing.
 };
 
+// clang-format off
+template <typename T>
+concept simple_thread_task = std::copyable<T> &&
+                             std::invocable<T> &&
+                             (std::convertible_to<std::invoke_result_t<T>, int> ||
+                              std::convertible_to<std::invoke_result_t<T>, void>);
+
+template <typename T, typename P>
+concept thread_task_with_arg = std::is_pointer_v<P> &&
+                               std::copyable<T> &&
+                               std::invocable<T, P> &&
+                               (std::convertible_to<std::invoke_result_t<T, P>, int> ||
+                                std::convertible_to<std::invoke_result_t<T, P>, void>);
+// clang-format on
+
 /**
  * \class thread
  *
@@ -92,23 +112,11 @@ enum class thread_priority
  *
  * \since 5.0.0
  *
- * \todo Centurion 6 (C++20): Support templated user data instead of just
- * `void*`.
- *
  * \headerfile thread.hpp
  */
 class thread final
 {
  public:
-  /**
-   * \typedef task_type
-   *
-   * \brief The signature of the function object that will be executed.
-   *
-   * \since 5.0.0
-   */
-  using task_type = SDL_ThreadFunction;
-
   /**
    * \typedef id
    *
@@ -119,21 +127,77 @@ class thread final
   using id = SDL_threadID;
 
   /**
-   * \brief Creates a thread and starts executing it.
+   * \brief Creates and runs a thread.
    *
-   * \param task the task that will be performed.
-   * \param name the name of the thread, cannot be null.
-   * \param data a pointer to optional user data that will be supplied to the
-   * task function object.
+   * \details This constructor takes a function object that takes no parameters
+   * that may return either something convertible to `int` or `void`. The thread
+   * is created with the name "thread".
    *
-   * \throws sdl_error if the thread cannot be created.
+   * \tparam T the type of the function object.
    *
-   * \since 5.0.0
+   * \throws sdl_error if the thread could not be created.
+   *
+   * \since 6.0.0
    */
-  CENTURION_API
-  explicit thread(task_type task,
-                  nn_czstring name = "thread",
-                  void* data = nullptr);
+  template <simple_thread_task T>
+  explicit thread(T&&)
+  {
+    const auto wrapper = [](void*) -> int {
+      using return_t = std::invoke_result_t<std::decay_t<T>>;
+
+      std::decay_t<T> task;
+      if constexpr (std::convertible_to<return_t, int>) {
+        return task();
+      } else {
+        task();
+        return 0;
+      }
+    };
+
+    m_thread = SDL_CreateThread(wrapper, "thread", nullptr);
+    if (!m_thread) {
+      throw sdl_error{"Failed to create thread"};
+    }
+  }
+
+  /**
+   * \brief Creates and runs a thread.
+   *
+   * \details This constructor takes a function object that takes a pointer of
+   * the same type as the user data pointer, that may return either something
+   * convertible to `int` or `void`. The thread is created with the name
+   * "thread".
+   *
+   * \tparam T the type of the function object.
+   * \tparam P a pointer to user data.
+   *
+   * \param data the user data that will be supplied to the function object.
+   *
+   * \throws sdl_error if the thread could not be created.
+   *
+   * \since 6.0.0
+   */
+  template <typename T, typename P>
+  thread(T&&, P data) requires thread_task_with_arg<std::decay_t<T>, P>
+  {
+    const auto wrapper = [](void* ptr) -> int {
+      using return_t = std::invoke_result_t<std::decay_t<T>, P>;
+
+      std::decay_t<T> task;
+      if constexpr (std::convertible_to<return_t, int>) {
+        return task(reinterpret_cast<P>(ptr));
+      } else {
+        task(reinterpret_cast<P>(ptr));
+        return 0;
+      }
+    };
+
+    m_thread =
+        SDL_CreateThread(wrapper, "thread", reinterpret_cast<void*>(data));
+    if (!m_thread) {
+      throw sdl_error{"Failed to create thread"};
+    }
+  }
 
   thread(const thread&) = delete;
 
@@ -144,8 +208,12 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  ~thread() noexcept;
+  ~thread() noexcept
+  {
+    if (joinable()) {
+      join();
+    }
+  }
 
   /**
    * \brief Lets the thread terminate without having another thread join it.
@@ -155,8 +223,17 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void detach() noexcept;
+  void detach() noexcept
+  {
+    if (m_joined || m_detached) {
+      return;
+    }
+
+    SDL_DetachThread(m_thread);
+
+    m_detached = true;
+    assert(m_detached != m_joined);
+  }
 
   /**
    * \brief Waits for the thread to finish its execution.
@@ -168,8 +245,20 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto join() noexcept -> int;
+  auto join() noexcept -> int
+  {
+    if (m_joined || m_detached) {
+      return 0;
+    }
+
+    int status{};
+    SDL_WaitThread(m_thread, &status);
+
+    m_joined = true;
+    assert(m_detached != m_joined);
+
+    return status;
+  }
 
   /**
    * \brief Indicates whether or not the thread can be joined.
@@ -183,8 +272,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto joinable() const noexcept -> bool;
+  [[nodiscard]] auto joinable() const noexcept -> bool
+  {
+    return !m_joined && !m_detached;
+  }
 
   /**
    * \brief Indicates whether or not the thread was joined.
@@ -193,8 +284,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto was_joined() const noexcept -> bool;
+  [[nodiscard]] auto was_joined() const noexcept -> bool
+  {
+    return m_joined;
+  }
 
   /**
    * \brief Indicates whether or not the thread was detached.
@@ -203,8 +296,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto was_detached() const noexcept -> bool;
+  [[nodiscard]] auto was_detached() const noexcept -> bool
+  {
+    return m_detached;
+  }
 
   /**
    * \brief Returns the identifier associated with the thread.
@@ -213,8 +308,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get_id() const noexcept -> id;
+  [[nodiscard]] auto get_id() const noexcept -> id
+  {
+    return SDL_GetThreadID(m_thread);
+  }
 
   /**
    * \brief Returns the name of the thread.
@@ -225,8 +322,11 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto name() const -> std::string;
+  [[nodiscard]] auto name() const -> std::string
+  {
+    czstring name = SDL_GetThreadName(m_thread);
+    return name ? std::string{name} : std::string{};
+  }
 
   /**
    * \brief Returns a pointer to the associated SDL thread.
@@ -235,14 +335,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get() noexcept -> SDL_Thread*;
-
-  /**
-   * \copydoc get
-   */
-  CENTURION_QUERY
-  auto get() const noexcept -> const SDL_Thread*;
+  [[nodiscard]] auto get() const noexcept -> SDL_Thread*
+  {
+    return m_thread;
+  }
 
   /**
    * \brief Forces the current thread to halt for at least the specified
@@ -256,8 +352,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  static void sleep(milliseconds<u32> ms) noexcept;
+  static void sleep(milliseconds<u32> ms) noexcept
+  {
+    SDL_Delay(ms.count());
+  }
 
   /**
    * \brief Sets the priority of the current thread.
@@ -271,8 +369,11 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  static auto set_priority(thread_priority priority) noexcept -> bool;
+  static auto set_priority(thread_priority priority) noexcept -> bool
+  {
+    const auto prio = static_cast<SDL_ThreadPriority>(priority);
+    return SDL_SetThreadPriority(prio) == 0;
+  }
 
   /**
    * \brief Returns the identifier associated with the current thread.
@@ -281,8 +382,10 @@ class thread final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  static auto current_id() noexcept -> id;
+  [[nodiscard]] static auto current_id() noexcept -> id
+  {
+    return SDL_ThreadID();
+  }
 
  private:
   SDL_Thread* m_thread{};
@@ -302,8 +405,13 @@ static_assert(!std::is_copy_assignable_v<thread>);
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const thread& thread) -> std::string;
+[[nodiscard]] inline auto to_string(const thread& thread) -> std::string
+{
+  using detail::to_string;
+  return "[thread | ptr: " + detail::address_of(thread.get()) +
+         ", name: " + thread.name() +
+         ", id: " + to_string(thread.get_id()).value() + "]";
+}
 
 /**
  * \brief Prints a textual representation of a thread.
@@ -315,8 +423,12 @@ auto to_string(const thread& thread) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto operator<<(std::ostream& stream, const thread& thread) -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const thread& thread)
+    -> std::ostream&
+{
+  stream << to_string(thread);
+  return stream;
+}
 
 /**
  * \brief Indicates whether or not two thread priorities are the same.

@@ -6,20 +6,37 @@
 
 namespace {
 
-auto dummy = [](void*) noexcept -> int {
+auto dummy = [](int*) {
   using namespace cen::literals;
   cen::thread::sleep(10_ms);
-  return 0;
 };
 
 }
 
-static_assert(std::is_same_v<cen::thread::id, SDL_threadID>);
-static_assert(std::is_same_v<cen::thread::task_type, SDL_ThreadFunction>);
+TEST_CASE("thread:: ctor with no user data pointer", "[thread]")
+{
+  cen::thread t1{[] {
+  }};
+
+  cen::thread t2{[] {
+    return 0;
+  }};
+}
+
+TEST_CASE("thread:: ctor with user data pointer", "[thread]")
+{
+  auto value = std::make_unique<std::string>("foobar");
+  cen::thread thread{[](std::string* ptr) {
+                       CHECK(ptr != nullptr);
+                       CHECK(*ptr == "foobar");
+                     },
+                     value.get()};
+}
 
 TEST_CASE("thread::detach", "[thread]")
 {
-  cen::thread thread{dummy};
+  int i{};
+  cen::thread thread{dummy, &i};
 
   thread.detach();
 
@@ -32,7 +49,8 @@ TEST_CASE("thread::detach", "[thread]")
 
 TEST_CASE("thread::join", "[thread]")
 {
-  cen::thread thread{dummy};
+  int i{};
+  cen::thread thread{dummy, &i};
 
   thread.join();
 
@@ -47,7 +65,8 @@ TEST_CASE("thread::joinable", "[thread]")
 {
   SECTION("Shouldn't be joinable after join")
   {
-    cen::thread thread{dummy};
+    int i{};
+    cen::thread thread{dummy, &i};
 
     CHECK(thread.joinable());
 
@@ -58,7 +77,8 @@ TEST_CASE("thread::joinable", "[thread]")
 
   SECTION("Shouldn't be joinable after detach")
   {
-    cen::thread thread{dummy};
+    int i{};
+    cen::thread thread{dummy, &i};
 
     CHECK(thread.joinable());
 
@@ -70,7 +90,8 @@ TEST_CASE("thread::joinable", "[thread]")
 
 TEST_CASE("thread::was_joined", "[thread]")
 {
-  cen::thread thread{dummy};
+  int i{};
+  cen::thread thread{dummy, &i};
 
   CHECK(!thread.was_joined());
 
@@ -81,7 +102,8 @@ TEST_CASE("thread::was_joined", "[thread]")
 
 TEST_CASE("thread::was_detached", "[thread]")
 {
-  cen::thread thread{dummy};
+  int i{};
+  cen::thread thread{dummy, &i};
 
   CHECK(!thread.was_detached());
 
@@ -92,7 +114,8 @@ TEST_CASE("thread::was_detached", "[thread]")
 
 TEST_CASE("thread::get_id", "[thread]")
 {
-  cen::thread thread{dummy};
+  int i{};
+  cen::thread thread{dummy, &i};
 
   CHECK(thread.get_id() == SDL_GetThreadID(thread.get()));
 }
@@ -101,14 +124,15 @@ TEST_CASE("thread::name", "[thread]")
 {
   SECTION("Custom name")
   {
-    const auto name = "foobar";
-    const cen::thread thread{dummy, name};
-    CHECK(thread.name() == name);
+    //    const auto name = "foobar";
+    //    const cen::thread thread{dummy, name};
+    //    CHECK(thread.name() == name);
   }
 
   SECTION("Default name")
   {
-    const cen::thread thread{dummy};
+    int i{};
+    const cen::thread thread{dummy, &i};
     CHECK(thread.name() == "thread");
   }
 }
@@ -117,13 +141,15 @@ TEST_CASE("thread::get", "[thread]")
 {
   SECTION("Non-const")
   {
-    cen::thread thread{dummy};
+    int i{};
+    cen::thread thread{dummy, &i};
     CHECK(thread.get());
   }
 
   SECTION("Const")
   {
-    const cen::thread thread{dummy};
+    int i{};
+    cen::thread thread{dummy, &i};
     CHECK(thread.get());
   }
 }
@@ -146,14 +172,14 @@ TEST_CASE("thread::current_id", "[thread]")
 
 TEST_CASE("thread to_string", "[!mayfail][thread]")
 {
-  cen::thread thread{dummy, "myThread"};
-  std::cout << "to_string: " << cen::to_string(thread) << '\n';
+  //  cen::thread thread{dummy, "myThread"};
+  //  std::cout << "to_string: " << cen::to_string(thread) << '\n';
 }
 
 TEST_CASE("thread stream operator", "[!mayfail][thread]")
 {
-  cen::thread thread{dummy, "myThread"};
-  std::cout << "<< operator: " << thread << '\n';
+  //  cen::thread thread{dummy, "myThread"};
+  //  std::cout << "<< operator: " << thread << '\n';
 }
 
 TEST_CASE("thread_priority values", "[thread]")

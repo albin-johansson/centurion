@@ -107,7 +107,57 @@ TEST_CASE("rect::set_y", "[rect]")
   }
 }
 
-TEST_CASE("rect::move_to", "[rect]")
+TEST_CASE("rect::set_max_x", "[rect]")
+{
+  SECTION("irect")
+  {
+    cen::irect rect{{18, 93}, {341, 395}};
+
+    const auto mx = 876;
+    rect.set_max_x(mx);
+
+    CHECK(mx == rect.max_x());
+    CHECK(341 == rect.width());
+  }
+
+  SECTION("frect")
+  {
+    cen::frect rect{{12, 92}, {241, 393}};
+
+    const auto mx = 74.3f;
+    rect.set_max_x(mx);
+
+    CHECK(mx == rect.max_x());
+    CHECK(241 == rect.width());
+  }
+}
+
+TEST_CASE("rect::set_max_y", "[rect]")
+{
+  SECTION("irect")
+  {
+    cen::irect rect{{18, 93}, {341, 395}};
+
+    const auto my = 656;
+    rect.set_max_y(my);
+
+    CHECK(my == rect.max_y());
+    CHECK(395 == rect.height());
+  }
+
+  SECTION("frect")
+  {
+    cen::frect rect{{12, 92}, {241, 393}};
+
+    const auto my = 34.3f;
+    rect.set_max_y(my);
+
+    CHECK(my == Approx(rect.max_y()));
+    CHECK(393 == rect.height());
+  }
+}
+
+TEST_CASE("rect::set_position", "[rect]")
 {
   SECTION("irect")
   {
@@ -115,7 +165,7 @@ TEST_CASE("rect::move_to", "[rect]")
 
     const cen::ipoint pos{867, 654};
 
-    rect.move_to(pos);
+    rect.set_position(pos);
 
     CHECK(pos == rect.position());
   }
@@ -126,7 +176,7 @@ TEST_CASE("rect::move_to", "[rect]")
 
     const cen::fpoint pos{742.3f, 377.2f};
 
-    rect.move_to(pos);
+    rect.set_position(pos);
 
     CHECK(pos == rect.position());
   }
@@ -178,14 +228,14 @@ TEST_CASE("rect::set_height", "[rect]")
   }
 }
 
-TEST_CASE("rect::resize", "[rect]")
+TEST_CASE("rect::set_size", "[rect]")
 {
   SECTION("irect")
   {
     cen::irect rect;
 
     const cen::iarea size{8596, 9235};
-    rect.resize(size);
+    rect.set_size(size);
 
     CHECK(rect.size() == size);
   }
@@ -195,7 +245,7 @@ TEST_CASE("rect::resize", "[rect]")
     cen::frect rect;
 
     const cen::farea size{345.8f, 289.7f};
-    rect.resize(size);
+    rect.set_size(size);
 
     CHECK(rect.size() == size);
   }

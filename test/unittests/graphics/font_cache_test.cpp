@@ -53,6 +53,12 @@ class FontCacheTest : public testing::Test
     m_renderer = std::make_unique<cen::renderer>(*m_window);
   }
 
+  static void TearDownTestSuite()
+  {
+    m_renderer.reset();
+    m_window.reset();
+  }
+
   void test_store_utf_8(const normal_store_fn& store)
   {
     test_store(store, 54, "UTF-8_<!?+=");

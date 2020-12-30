@@ -9,11 +9,15 @@
 #include "colors.hpp"
 #include "log.hpp"
 
-static_assert(std::is_nothrow_move_constructible_v<cen::color>);
-static_assert(std::is_nothrow_move_assignable_v<cen::color>);
+static_assert(std::is_final_v<cen::color>);
+
+static_assert(std::is_default_constructible_v<cen::color>);
 
 static_assert(std::is_nothrow_copy_constructible_v<cen::color>);
 static_assert(std::is_nothrow_copy_assignable_v<cen::color>);
+
+static_assert(std::is_nothrow_move_constructible_v<cen::color>);
+static_assert(std::is_nothrow_move_assignable_v<cen::color>);
 
 TEST(Color, DefaultConstruction)
 {

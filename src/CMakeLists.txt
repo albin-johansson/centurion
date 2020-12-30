@@ -78,7 +78,6 @@ set(SOURCE_FILES
     graphics/message_box_color_scheme.cpp
     graphics/surface.cpp
     graphics/graphics_drivers.cpp
-    graphics/color.cpp
 
     system/base_path.cpp
     system/pref_path.cpp

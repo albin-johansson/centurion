@@ -66,3 +66,7 @@ before_build:
 build_script:
   - ninja CenturionLibrary
   - ninja CenturionTests
+
+test_script:
+  - cd test
+  - ctest

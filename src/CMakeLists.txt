@@ -70,7 +70,6 @@ set(SOURCE_FILES
 
     misc/log.cpp
 
-    graphics/font.cpp
     graphics/font_cache.cpp
     graphics/texture.cpp
     graphics/message_box.cpp

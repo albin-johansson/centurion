@@ -16,8 +16,13 @@ inline constexpr auto danielPath = "resources/daniel.ttf";
 
 }  // namespace
 
+static_assert(std::is_final_v<cen::font>);
+
 static_assert(std::is_nothrow_move_constructible_v<cen::font>);
 static_assert(std::is_nothrow_move_assignable_v<cen::font>);
+
+static_assert(!std::is_copy_constructible_v<cen::font>);
+static_assert(!std::is_copy_assignable_v<cen::font>);
 
 TEST(Font, Constructor)
 {

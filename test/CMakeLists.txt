@@ -30,9 +30,11 @@ set(TEST_FILES
 
     unittests/graphics/blend_mode_test.cpp
     unittests/graphics/color_test.cpp
+    unittests/graphics/cursor_test.cpp
     unittests/graphics/font_test.cpp
     unittests/graphics/surface_test.cpp
-    unittests/graphics/surface_handle_test.cpp)
+    unittests/graphics/surface_handle_test.cpp
+    )
 
 #if (CEN_AUDIO)
 #    set(TEST_FILES

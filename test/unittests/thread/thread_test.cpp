@@ -1,8 +1,11 @@
 #include "thread.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
+
 #include <iostream>
 #include <type_traits>
+
+#include "log.hpp"
 
 namespace {
 
@@ -17,137 +20,123 @@ auto dummy = [](void*) noexcept -> int {
 static_assert(std::is_same_v<cen::thread::id, SDL_threadID>);
 static_assert(std::is_same_v<cen::thread::task_type, SDL_ThreadFunction>);
 
-TEST_CASE("thread::detach", "[thread]")
+TEST(Thread, Detach)
 {
   cen::thread thread{dummy};
-
   thread.detach();
 
-  CHECK(!thread.joinable());
-  CHECK(!thread.was_joined());
-  CHECK(thread.was_detached());
+  EXPECT_FALSE(thread.joinable());
+  EXPECT_FALSE(thread.was_joined());
+  EXPECT_TRUE(thread.was_detached());
 
-  CHECK_NOTHROW(thread.detach());
+  EXPECT_NO_THROW(thread.detach());
 }
 
-TEST_CASE("thread::join", "[thread]")
+TEST(Thread, Join)
 {
   cen::thread thread{dummy};
-
   thread.join();
 
-  CHECK(!thread.joinable());
-  CHECK(thread.was_joined());
-  CHECK(!thread.was_detached());
+  EXPECT_FALSE(thread.joinable());
+  EXPECT_TRUE(thread.was_joined());
+  EXPECT_FALSE(thread.was_detached());
 
-  CHECK(thread.join() == 0);
+  EXPECT_EQ(thread.join(), 0);
 }
 
-TEST_CASE("thread::joinable", "[thread]")
+TEST(Thread, Joinable)
 {
-  SECTION("Shouldn't be joinable after join")
-  {
+  {  // Shouldn't be joinable after join
     cen::thread thread{dummy};
-
-    CHECK(thread.joinable());
+    EXPECT_TRUE(thread.joinable());
 
     thread.join();
-
-    CHECK(!thread.joinable());
+    EXPECT_FALSE(thread.joinable());
   }
 
-  SECTION("Shouldn't be joinable after detach")
-  {
+  {  // Shouldn't be joinable after detach
     cen::thread thread{dummy};
-
-    CHECK(thread.joinable());
+    EXPECT_TRUE(thread.joinable());
 
     thread.detach();
-
-    CHECK(!thread.joinable());
+    EXPECT_FALSE(thread.joinable());
   }
 }
 
-TEST_CASE("thread::was_joined", "[thread]")
+TEST(Thread, WasJoined)
 {
   cen::thread thread{dummy};
-
-  CHECK(!thread.was_joined());
+  EXPECT_FALSE(thread.was_joined());
 
   thread.join();
-
-  CHECK(thread.was_joined());
+  EXPECT_TRUE(thread.was_joined());
 }
 
-TEST_CASE("thread::was_detached", "[thread]")
+TEST(Thread, WasDetached)
 {
   cen::thread thread{dummy};
-
-  CHECK(!thread.was_detached());
+  EXPECT_FALSE(thread.was_detached());
 
   thread.detach();
-
-  CHECK(thread.was_detached());
+  EXPECT_TRUE(thread.was_detached());
 }
 
-TEST_CASE("thread::get_id", "[thread]")
+TEST(Thread, GetId)
 {
   cen::thread thread{dummy};
-
-  CHECK(thread.get_id() == SDL_GetThreadID(thread.get()));
+  EXPECT_EQ(thread.get_id(), SDL_GetThreadID(thread.get()));
 }
 
-TEST_CASE("thread::name", "[thread]")
+TEST(Thread, Name)
 {
-  SECTION("Custom name")
-  {
+  {  // Custom name
     const auto name = "foobar";
     const cen::thread thread{dummy, name};
-    CHECK(thread.name() == name);
+    EXPECT_EQ(thread.name(), name);
   }
 
-  SECTION("Default name")
-  {
+  {  // Default name
     const cen::thread thread{dummy};
-    CHECK(thread.name() == "thread");
+    EXPECT_EQ(thread.name(), "thread");
   }
 }
 
-TEST_CASE("thread::get", "[thread]")
+TEST(Thread, Get)
 {
-  SECTION("Non-const")
-  {
-    cen::thread thread{dummy};
-    CHECK(thread.get());
-  }
+  cen::thread thread{dummy};
+  EXPECT_TRUE(thread.get());
 
-  SECTION("Const")
-  {
-    const cen::thread thread{dummy};
-    CHECK(thread.get());
-  }
+  const auto& cThread = thread;
+  EXPECT_TRUE(cThread.get());
 }
 
-TEST_CASE("thread::sleep", "[sleep]")
+TEST(Thread, Sleep)
 {
-  CHECK_NOTHROW(cen::thread::sleep(cen::milliseconds<cen::u32>{10}));
-  CHECK_NOTHROW(cen::thread::sleep(cen::milliseconds<cen::u32>{0}));
+  using ms = cen::milliseconds<cen::u32>;
+  EXPECT_NO_THROW(cen::thread::sleep(ms{10}));
+  EXPECT_NO_THROW(cen::thread::sleep(ms{0}));
 }
 
-TEST_CASE("thread::set_priority", "[thread]")
+TEST(Thread, SetPriority)
 {
-  CHECK(cen::thread::set_priority(cen::thread_priority::low));
+  EXPECT_TRUE(cen::thread::set_priority(cen::thread_priority::low));
 }
 
-TEST_CASE("thread::current_id", "[thread]")
+TEST(Thread, CurrentId)
 {
-  CHECK_NOTHROW(cen::thread::current_id() == SDL_ThreadID());
+  EXPECT_EQ(cen::thread::current_id(), SDL_ThreadID());
 }
 
-TEST_CASE("thread to_string", "[!mayfail][thread]")
+TEST(Thread, ToString)
 {
   cen::thread thread{dummy, "myThread"};
-  std::cout << "to_string: " << cen::to_string(thread) << '\n';
+  cen::log::put(cen::to_string(thread));
+}
+
+TEST(Thread, StreamOperator)
+{
+  cen::thread thread{dummy, "myThread"};
+  std::cout << "COUT: " << cen::to_string(thread) << '\n';
 }
 
 TEST_CASE("thread stream operator", "[!mayfail][thread]")

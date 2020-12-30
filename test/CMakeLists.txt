@@ -39,6 +39,7 @@ set(TEST_FILES
     unittests/thread/mutex_test.cpp
     unittests/thread/scoped_lock_test.cpp
     unittests/thread/semaphore_test.cpp
+    unittests/thread/thread_test.cpp
     )
 
 #if (CEN_AUDIO)

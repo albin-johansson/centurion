@@ -1,9 +1,9 @@
 #include "scoped_lock.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("scoped_lock", "[scoped_lock]")
+TEST(ScopedLock, Construction)
 {
   cen::mutex mutex;
-  CHECK_NOTHROW(cen::scoped_lock{mutex});
+  EXPECT_NO_THROW(cen::scoped_lock{mutex});
 }

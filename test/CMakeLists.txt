@@ -32,6 +32,7 @@ set(TEST_FILES
     unittests/graphics/color_test.cpp
     unittests/graphics/cursor_test.cpp
     unittests/graphics/font_test.cpp
+    unittests/graphics/font_cache_test.cpp
     unittests/graphics/surface_test.cpp
     unittests/graphics/surface_handle_test.cpp
 

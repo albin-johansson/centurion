@@ -69,4 +69,4 @@ build_script:
 
 test_script:
   - cd test
-  - ctest
+  - CenturionTests.exe

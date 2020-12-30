@@ -1,27 +1,27 @@
 #include "condition.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "thread.hpp"
 
-TEST_CASE("condition::signal", "[condition]")
+TEST(Condition, Signal)
 {
   cen::condition cond;
-  CHECK(cond.signal());
+  EXPECT_TRUE(cond.signal());
 }
 
-TEST_CASE("condition::broadcast", "[condition]")
+TEST(Condition, Broadcast)
 {
   cen::condition cond;
-  CHECK(cond.broadcast());
+  EXPECT_TRUE(cond.broadcast());
 }
 
-TEST_CASE("condition::wait(mutex&)", "[condition]")
+TEST(Condition, Wait)
 {
   cen::mutex mutex;
   cen::condition cond;
 
-  REQUIRE(mutex.lock());
+  ASSERT_TRUE(mutex.lock());
 
   cen::thread thread{[](void* data) {
                        auto* cond = reinterpret_cast<cen::condition*>(data);
@@ -36,6 +36,6 @@ TEST_CASE("condition::wait(mutex&)", "[condition]")
                      "thread",
                      &cond};
 
-  CHECK(cond.wait(mutex));
-  CHECK(mutex.unlock());
+  EXPECT_TRUE(cond.wait(mutex));
+  EXPECT_TRUE(mutex.unlock());
 }

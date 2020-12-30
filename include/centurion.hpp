@@ -238,8 +238,10 @@ class library final
  *
  * \since 4.0.0
  */
-CENTURION_QUERY
-auto ttf_version() noexcept -> SDL_version;
+[[nodiscard]] constexpr auto ttf_version() noexcept -> SDL_version
+{
+  return {SDL_TTF_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
+}
 
 }  // namespace cen
 

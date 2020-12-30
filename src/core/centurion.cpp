@@ -37,13 +37,6 @@ void library::init()
   }
 }
 
-auto ttf_version() noexcept -> SDL_version
-{
-  SDL_version version;
-  SDL_TTF_VERSION(&version)
-  return version;
-}
-
 library::sdl::sdl(u32 flags)
 {
   const auto result = SDL_Init(flags);

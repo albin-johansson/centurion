@@ -18,6 +18,7 @@ add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 
 set(TEST_FILES
     unittests/test_main.cpp
+    unittests/area_test.cpp
     unittests/to_string_test.cpp)
 
 #if (CEN_AUDIO)

@@ -1,78 +1,73 @@
 #include "area.hpp"
 
-#include <catch.hpp>
-#include <iostream>
+#include <gtest/gtest.h>
+
+#include <iostream>  // cout
 
 #include "log.hpp"
 
-TEST_CASE("Construction", "[area]")
+TEST(Area, DefaultConstruction)
 {
-  SECTION("Default values")
-  {
-    const cen::iarea area;
-    CHECK(area.width == 0);
-    CHECK(area.height == 0);
-  }
-
-  const auto w = 7353;
-  const auto h = 8395;
-  const cen::iarea area{w, h};
-
-  CHECK(area.width == w);
-  CHECK(area.height == h);
+  const cen::iarea area;
+  EXPECT_EQ(area.width, 0);
+  EXPECT_EQ(area.height, 0);
 }
 
-TEST_CASE("area operator==", "[area]")
+TEST(Area, Construction)
 {
-  SECTION("Reflexivity")
-  {
-    const cen::iarea area{234, 12};
-    CHECK(area == area);
-  }
+  const auto width = 7353;
+  const auto height = 8395;
+  const cen::iarea area{width, height};
 
-  SECTION("Equal")
-  {
-    const cen::iarea first{47, 9123};
-    const cen::iarea second{first};
-    CHECK(first == second);
-    CHECK(second == first);
-  }
-
-  SECTION("Different")
-  {
-    const cen::iarea first{1238, 594};
-    const cen::iarea second{8882, 123};
-    CHECK_FALSE(first == second);
-    CHECK_FALSE(second == first);
-  }
+  EXPECT_EQ(area.width, width);
+  EXPECT_EQ(area.height, height);
 }
 
-TEST_CASE("area operator!=", "[area]")
+TEST(Area, EqComparisonReflexivity)
 {
-  SECTION("Self")
-  {
-    const cen::iarea area{234, 12};
-    CHECK_FALSE(area != area);
-  }
-
-  SECTION("Equal")
-  {
-    const cen::iarea first{47, 9123};
-    const cen::iarea second{first};
-    CHECK_FALSE(first != second);
-    CHECK_FALSE(second != first);
-  }
-
-  SECTION("Different")
-  {
-    const cen::iarea first{1238, 594};
-    const cen::iarea second{8882, 123};
-    CHECK(first != second);
-    CHECK(second != first);
-  }
+  const cen::iarea area{234, 12};
+  EXPECT_EQ(area, area);
 }
 
-TEST_CASE("area to_string", "[area]")
+TEST(Area, EqComparisonSame)
+{
+  const cen::iarea first{47, 9123};
+  const cen::iarea second{first};
+  EXPECT_EQ(first, second);
+  EXPECT_EQ(second, first);
+}
+
+TEST(Area, EqComparisonDifferent)
+{
+  const cen::iarea first{1238, 594};
+  const cen::iarea second{8882, 123};
+  EXPECT_NE(first, second);
+  EXPECT_NE(second, first);
+}
+
+TEST(Area, NotEqComparisonSelf)
+{
+  const cen::iarea area{234, 12};
+  EXPECT_FALSE(area != area);
+}
+
+TEST(Area, NotEqComparisonSame)
+{
+  const cen::iarea first{47, 9123};
+  const cen::iarea second{first};
+  EXPECT_FALSE(first != second);
+  EXPECT_FALSE(second != first);
+}
+
+TEST(Area, NotEqComparisonDifferent)
+{
+  const cen::iarea first{1238, 594};
+  const cen::iarea second{8882, 123};
+  EXPECT_NE(first, second);
+  EXPECT_NE(second, first);
+}
+
+TEST(Area, ToString)
 {
   constexpr cen::iarea ia{123, 456};
   constexpr cen::farea fa{78.9f, 23.4f};
@@ -81,7 +76,7 @@ TEST_CASE("area to_string", "[area]")
   cen::log::put(cen::to_string(fa));
 }
 
-TEST_CASE("area stream operator", "[area]")
+TEST(Area, StreamOperator)
 {
   constexpr cen::iarea ia{123, 456};
   constexpr cen::farea fa{12.3f, 45.6f};

@@ -1,18 +1,18 @@
 #include "clipboard.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("clipboard::has_text", "[clipboard]")
+TEST(Clipboard, HasText)
 {
-  cen::clipboard::set_text("");
-  CHECK(!cen::clipboard::has_text());
+  EXPECT_TRUE(cen::clipboard::set_text(""));
+  EXPECT_FALSE(cen::clipboard::has_text());
 
-  cen::clipboard::set_text("foobar");
-  CHECK(cen::clipboard::has_text());
+  EXPECT_TRUE(cen::clipboard::set_text("foobar"));
+  EXPECT_TRUE(cen::clipboard::has_text());
 }
 
-TEST_CASE("clipboard::set_text", "[clipboard]")
+TEST(Clipboard, SetText)
 {
-  cen::clipboard::set_text("foo");
-  CHECK(cen::clipboard::get_text() == "foo");
+  EXPECT_TRUE(cen::clipboard::set_text("foo"));
+  EXPECT_EQ(cen::clipboard::get_text(), "foo");
 }

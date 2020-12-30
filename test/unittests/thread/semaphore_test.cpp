@@ -1,56 +1,53 @@
 #include "semaphore.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("semaphore::acquire()", "[semaphore]")
+TEST(Semaphore, Acquire)
 {
   cen::semaphore semaphore{1};
 
-  REQUIRE(semaphore.acquire());
-  CHECK(semaphore.tokens() == 0);
+  ASSERT_TRUE(semaphore.acquire());
+  EXPECT_EQ(semaphore.tokens(), 0);
 
-  REQUIRE(semaphore.release());
-  CHECK(semaphore.tokens() == 1);
+  ASSERT_TRUE(semaphore.release());
+  EXPECT_EQ(semaphore.tokens(), 1);
 }
 
-TEST_CASE("semaphore::acquire(milliseconds)", "[semaphore]")
+TEST(Semaphore, AcquireMilliseconds)
 {
-  cen::semaphore semaphore{0};
-
   using ms = cen::milliseconds<cen::u32>;
 
-  REQUIRE(semaphore.acquire(ms{1}) == cen::lock_status::timed_out);
+  cen::semaphore semaphore{0};
 
-  REQUIRE(semaphore.release());
+  EXPECT_EQ(semaphore.acquire(ms{1}), cen::lock_status::timed_out);
+  EXPECT_TRUE(semaphore.release());
 
-  REQUIRE(semaphore.acquire(ms{1}) == cen::lock_status::success);
+  EXPECT_EQ(semaphore.acquire(ms{1}), cen::lock_status::success);
 }
 
-TEST_CASE("semaphore::try_acquire", "[semaphore]")
+TEST(Semaphore, TryAcquire)
 {
   cen::semaphore semaphore{0};
 
-  REQUIRE(semaphore.try_acquire() == cen::lock_status::timed_out);
+  EXPECT_EQ(semaphore.try_acquire(), cen::lock_status::timed_out);
+  EXPECT_TRUE(semaphore.release());
 
-  REQUIRE(semaphore.release());
-
-  REQUIRE(semaphore.try_acquire() == cen::lock_status::success);
+  EXPECT_EQ(semaphore.try_acquire(), cen::lock_status::success);
 }
 
-TEST_CASE("semaphore::release", "[semaphore]")
+TEST(Semaphore, Release)
 {
   cen::semaphore semaphore{0};
 
-  CHECK(semaphore.tokens() == 0);
-
-  semaphore.release();
-  CHECK(semaphore.tokens() == 1);
+  EXPECT_EQ(semaphore.tokens(), 0);
+  EXPECT_TRUE(semaphore.release());
+  EXPECT_EQ(semaphore.tokens(), 1);
 }
 
-TEST_CASE("semaphore::tokens", "[semaphore]")
+TEST(Semaphore, Tokens)
 {
-  const auto tokens = 32;
+  constexpr auto tokens = 32;
 
-  cen::semaphore semaphore{32};
-  CHECK(semaphore.tokens() == 32);
+  cen::semaphore semaphore{tokens};
+  EXPECT_EQ(semaphore.tokens(), tokens);
 }

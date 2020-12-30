@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
 
 project(Centurion
-        VERSION 5.0.0
-        HOMEPAGE_URL "https://github.com/albin-johansson/Centurion"
-        LANGUAGES CXX)
+    VERSION 5.0.0
+    HOMEPAGE_URL "https://github.com/albin-johansson/Centurion"
+    LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
@@ -27,11 +27,11 @@ set(CENTURION_LIB_TARGET CenturionLibrary)
 set(CENTURION_TEST_TARGET CenturionTests)
 
 if (UNIX)
-    set(CENTURION_DYNAMIC_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_SHARED_LIBRARY_PREFIX}Centurion${CMAKE_SHARED_LIBRARY_SUFFIX})
-    set(CENTURION_IMPORT_LIB ${CENTURION_DYNAMIC_LIB})
+  set(CENTURION_DYNAMIC_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_SHARED_LIBRARY_PREFIX}Centurion${CMAKE_SHARED_LIBRARY_SUFFIX})
+  set(CENTURION_IMPORT_LIB ${CENTURION_DYNAMIC_LIB})
 else ()
-    set(CENTURION_DYNAMIC_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_SHARED_LIBRARY_PREFIX}Centurion${CMAKE_SHARED_LIBRARY_SUFFIX})
-    set(CENTURION_IMPORT_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion${CMAKE_IMPORT_LIBRARY_SUFFIX})
+  set(CENTURION_DYNAMIC_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_SHARED_LIBRARY_PREFIX}Centurion${CMAKE_SHARED_LIBRARY_SUFFIX})
+  set(CENTURION_IMPORT_LIB ${CMAKE_BINARY_DIR}/src/${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion${CMAKE_IMPORT_LIBRARY_SUFFIX})
 endif ()
 
 message("Centurion dynamic library: ${CENTURION_DYNAMIC_LIB}")
@@ -53,13 +53,13 @@ find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
 if (DEFINED ENV{ENABLE_COVERAGE})
-    include(CodeCoverage)
-    append_coverage_compiler_flags()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
+  include(CodeCoverage)
+  append_coverage_compiler_flags()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
 endif ()
 
 add_subdirectory(src)
 if (CEN_TESTS)
-    enable_testing()
-    add_subdirectory(test)
+  enable_testing()
+  add_subdirectory(test)
 endif ()

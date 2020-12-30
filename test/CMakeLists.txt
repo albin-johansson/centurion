@@ -23,6 +23,7 @@ set(TEST_FILES
     unittests/blend_mode_test.cpp
     unittests/color_test.cpp
     unittests/clipboard_test.cpp
+    unittests/font_test.cpp
     unittests/to_string_test.cpp)
 
 #if (CEN_AUDIO)

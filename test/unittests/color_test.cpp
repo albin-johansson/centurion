@@ -1,276 +1,220 @@
 #include "color.hpp"
 
-#include <catch.hpp>
-#include <iostream>
-#include <utility>
+#include <gtest/gtest.h>
+
+#include <iostream>     // cout
+#include <type_traits>  // is_nothrow_X...
+#include <utility>      // move
 
 #include "colors.hpp"
 #include "log.hpp"
 
-TEST_CASE("color()", "[color]")
+static_assert(std::is_nothrow_move_constructible_v<cen::color>);
+static_assert(std::is_nothrow_move_assignable_v<cen::color>);
+
+static_assert(std::is_nothrow_copy_constructible_v<cen::color>);
+static_assert(std::is_nothrow_copy_assignable_v<cen::color>);
+
+TEST(Color, DefaultConstruction)
 {
-  cen::color c;
-  CHECK(0 == c.red());
-  CHECK(0 == c.red());
-  CHECK(0 == c.red());
-  CHECK(0xFF == c.alpha());
+  constexpr cen::color color;
+  EXPECT_EQ(color.red(), 0);
+  EXPECT_EQ(color.red(), 0);
+  EXPECT_EQ(color.red(), 0);
+  EXPECT_EQ(color.alpha(), cen::color::max());
 }
 
-TEST_CASE("color(color&&)", "[color]")
+TEST(Color, ValueConstruction)
 {
-  const auto r = 0xAE;
-  const auto g = 0xDD;
-  const auto b = 0xC5;
-  const auto a = 0x38;
-  cen::color color{r, g, b, a};
-  cen::color other{std::move(color)};
-  CHECK(r == other.red());
-  CHECK(g == other.green());
-  CHECK(b == other.blue());
-  CHECK(a == other.alpha());
+  constexpr auto red = 0xA5;
+  constexpr auto green = 0xB3;
+  constexpr auto blue = 0x29;
+  constexpr auto alpha = 0xCC;
+
+  constexpr cen::color color{red, green, blue, alpha};
+
+  EXPECT_EQ(color.red(), red);
+  EXPECT_EQ(color.green(), green);
+  EXPECT_EQ(color.blue(), blue);
+  EXPECT_EQ(color.alpha(), alpha);
 }
 
-TEST_CASE("color(u8, u8, u8, u8)", "[color]")
+TEST(Color, ValueConstructionDefaultedAlpha)
 {
-  const auto r = 0xA5;
-  const auto g = 0xB3;
-  const auto b = 0x29;
-  const auto a = 0xCC;
+  constexpr auto red = 0x2C;
+  constexpr auto green = 0xE2;
+  constexpr auto blue = 0x08;
 
-  SECTION("Full ctor")
-  {
-    const cen::color c{r, g, b, a};
+  constexpr cen::color color{red, green, blue};
 
-    CHECK(r == c.red());
-    CHECK(g == c.green());
-    CHECK(b == c.blue());
-    CHECK(a == c.alpha());
-  }
-
-  SECTION("Defaulted alpha value")
-  {
-    const cen::color c{r, g, b};
-
-    CHECK(r == c.red());
-    CHECK(g == c.green());
-    CHECK(b == c.blue());
-    CHECK(c.alpha() == cen::color::max());
-  }
+  EXPECT_EQ(red, color.red());
+  EXPECT_EQ(green, color.green());
+  EXPECT_EQ(blue, color.blue());
+  EXPECT_EQ(color.alpha(), cen::color::max());
 }
 
-TEST_CASE("color::operator=(color&)", "[color]")
+TEST(Color, FromSDLColor)
 {
-  cen::color color{0xFE, 0x13, 0xA8, 0xCA};
-  const cen::color other{0xBE, 0x44, 0xAC, 0xFD};
+  constexpr SDL_Color sdlColor{0x3F, 0x9A, 0xCC, 0x17};
+  constexpr cen::color color{sdlColor};
 
-  REQUIRE(color != other);
-
-  color = other;
-
-  CHECK(color == other);
+  EXPECT_EQ(color.red(), sdlColor.r);
+  EXPECT_EQ(color.green(), sdlColor.g);
+  EXPECT_EQ(color.blue(), sdlColor.b);
+  EXPECT_EQ(color.alpha(), sdlColor.a);
 }
 
-TEST_CASE("color::operator=(color&&)", "[color]")
+TEST(Color, FromSDLMessageBoxColor)
 {
-  cen::color color{0xFE, 0x13, 0xA8, 0xCA};
-  const auto r = 0xCC;
-  const auto g = 0xCE;
-  const auto b = 0x71;
-  const auto a = 0x99;
+  constexpr SDL_MessageBoxColor msgColor{0xDA, 0x5E, 0x81};
+  constexpr cen::color color{msgColor};
 
-  color = cen::color{r, g, b, a};
+  EXPECT_EQ(color.red(), msgColor.r);
+  EXPECT_EQ(color.green(), msgColor.g);
+  EXPECT_EQ(color.blue(), msgColor.b);
 
-  CHECK(r == color.red());
-  CHECK(g == color.green());
-  CHECK(b == color.blue());
-  CHECK(a == color.alpha());
+  // SDL_MessageBoxColor has no alpha component
+  EXPECT_EQ(color.alpha(), cen::color::max());
 }
 
-TEST_CASE("color from SDL_Color", "[color]")
+TEST(Color, EqualityOperatorReflexivity)
 {
-  const auto sc = SDL_Color{0x3F, 0x9A, 0xCC, 0x17};
-
-  SECTION("Copy constructor")
-  {
-    const cen::color c{sc};
-    CHECK(c == sc);
-    CHECK(c.red() == sc.r);
-    CHECK(c.green() == sc.g);
-    CHECK(c.blue() == sc.b);
-    CHECK(c.alpha() == sc.a);
-  }
-
-  SECTION("Move constructor")
-  {
-    const cen::color c{SDL_Color{sc.r, sc.g, sc.b, sc.a}};
-    CHECK(c == sc);
-    CHECK(c.red() == sc.r);
-    CHECK(c.green() == sc.g);
-    CHECK(c.blue() == sc.b);
-    CHECK(c.alpha() == sc.a);
-  }
+  const cen::color color{10, 20, 30, 40};
+  EXPECT_EQ(color, color);
+  EXPECT_FALSE(color != color);
 }
 
-TEST_CASE("color from SDL_MessageBoxColor", "[color]")
+TEST(Color, EqualityOperatorComparison)
 {
-  const SDL_MessageBoxColor sc{0xDA, 0x5E, 0x81};
+  const auto red = 0x43;
+  const auto green = 0x8A;
+  const auto blue = 0x14;
+  const auto alpha = 0x86;
 
-  SECTION("Copy constructor")
-  {
-    const auto c = cen::color{sc};
-    CHECK(c == sc);
-    CHECK(c.red() == sc.r);
-    CHECK(c.green() == sc.g);
-    CHECK(c.blue() == sc.b);
-  }
+  constexpr SDL_Color sdlColor{red, green, blue, alpha};
+  constexpr SDL_MessageBoxColor msgColor{red, green, blue};
+  constexpr cen::color color{red, green, blue, alpha};
 
-  SECTION("Move constructor")
-  {
-    const cen::color c{SDL_MessageBoxColor{sc.r, sc.g, sc.b}};
-    CHECK(c == sc);
-    CHECK(c.red() == sc.r);
-    CHECK(c.green() == sc.g);
-    CHECK(c.blue() == sc.b);
-  }
+  EXPECT_EQ(color, sdlColor);
+  EXPECT_EQ(sdlColor, color);
+
+  EXPECT_EQ(color, msgColor);
+  EXPECT_EQ(msgColor, color);
 }
 
-TEST_CASE("Equality operators", "[color]")
+TEST(Color, EqualityOperatorComparisonWithDifferentColors)
 {
-  SECTION("Reflexivity")
-  {
-    const cen::color color{10, 20, 30, 40};
-    CHECK(color == color);
-    CHECK(!(color != color));
-  }
+  const cen::color color{0x34, 0xD2, 0xCA, 0xDE};
+  const SDL_Color sdlColor{0x84, 0x45, 0x11, 0xFA};
+  const SDL_MessageBoxColor msgColor{0xAA, 0x57, 0x99};
 
-  SECTION("Equal colors")
-  {
-    const auto r = 0x43;
-    const auto g = 0x8A;
-    const auto b = 0x14;
-    const auto a = 0x86;
+  EXPECT_NE(color, sdlColor);
+  EXPECT_NE(sdlColor, color);
 
-    const SDL_Color sdlColor{r, g, b, a};
-    const SDL_MessageBoxColor msgColor{r, g, b};
-    const cen::color color{r, g, b, a};
-
-    CHECK(color == sdlColor);
-    CHECK(sdlColor == color);
-
-    CHECK(color == msgColor);
-    CHECK(msgColor == color);
-  }
-
-  SECTION("Non-equal colors")
-  {
-    const cen::color color{0x34, 0xD2, 0xCA, 0xDE};
-    const SDL_Color sdlColor{0x84, 0x45, 0x11, 0xFA};
-    const SDL_MessageBoxColor msgColor{0xAA, 0x57, 0x99};
-
-    CHECK(color != sdlColor);
-    CHECK(sdlColor != color);
-
-    CHECK(color != msgColor);
-    CHECK(msgColor != color);
-  }
+  EXPECT_NE(color, msgColor);
+  EXPECT_NE(msgColor, color);
 }
 
-TEST_CASE("color setters", "[color]")
+TEST(Color, SetRed)
 {
-  cen::color c;
-  SECTION("Red")
-  {
-    const auto r = 0x3C;
-    c.set_red(r);
-    CHECK(r == c.red());
-  }
+  cen::color color;
 
-  SECTION("Green")
-  {
-    const auto g = 0x79;
-    c.set_green(g);
-    CHECK(g == c.green());
-  }
+  constexpr auto red = 0x3C;
+  color.set_red(red);
 
-  SECTION("Blue")
-  {
-    const auto b = 0xEE;
-    c.set_blue(b);
-    CHECK(b == c.blue());
-  }
-
-  SECTION("Alpha")
-  {
-    const auto a = 0x28;
-    c.set_alpha(a);
-    CHECK(a == c.alpha());
-  }
+  EXPECT_EQ(color.red(), red);
 }
 
-TEST_CASE("color::with_alpha", "[color]")
+TEST(Color, SetGreen)
 {
-  const auto& other = cen::colors::maroon;
-  const auto color = other.with_alpha(0x12);
+  cen::color color;
 
-  CHECK(color.red() == other.red());
-  CHECK(color.green() == other.green());
-  CHECK(color.blue() == other.blue());
-  CHECK(color.alpha() == 0x12);
+  constexpr auto green = 0x79;
+  color.set_green(green);
+
+  EXPECT_EQ(color.green(), green);
 }
 
-TEST_CASE("color conversions", "[color]")
+TEST(Color, SetBlue)
 {
-  SECTION("Convert to SDL_Color")
-  {
-    const auto& color = cen::colors::dark_orchid;
-    const auto sdlColor = static_cast<SDL_Color>(color);
+  cen::color color;
 
-    CHECK(color == sdlColor);
-    CHECK(sdlColor == color);
+  constexpr auto blue = 0xEE;
+  color.set_blue(blue);
 
-    CHECK(color.red() == sdlColor.r);
-    CHECK(color.green() == sdlColor.g);
-    CHECK(color.blue() == sdlColor.b);
-    CHECK(color.alpha() == sdlColor.a);
-  }
-
-  SECTION("Convert to SDL_MessageBoxColor")
-  {
-    const auto& color = cen::colors::dark_orchid;
-    const auto msgColor = static_cast<SDL_MessageBoxColor>(color);
-
-    CHECK(color == msgColor);
-    CHECK(msgColor == color);
-
-    CHECK(color.red() == msgColor.r);
-    CHECK(color.green() == msgColor.g);
-    CHECK(color.blue() == msgColor.b);
-  }
-
-  SECTION("Reinterpret to SDL_Color*")
-  {
-    const cen::color color = cen::colors::bisque;
-    const auto* sdlColor = static_cast<const SDL_Color*>(color);
-
-    const void* adr = &color;
-    const void* sdlAdr = sdlColor;
-    CHECK(adr == sdlAdr);
-
-    CHECK(color.red() == sdlColor->r);
-    CHECK(color.green() == sdlColor->g);
-    CHECK(color.blue() == sdlColor->b);
-    CHECK(color.alpha() == sdlColor->a);
-  }
+  EXPECT_EQ(color.blue(), blue);
 }
 
-TEST_CASE("color to_string", "[color]")
+TEST(Color, SetAlpha)
 {
-  const cen::color color{0x12, 0xFA, 0xCC, 0xAD};
+  cen::color color;
+
+  constexpr auto alpha = 0x28;
+  color.set_alpha(alpha);
+
+  EXPECT_EQ(color.alpha(), alpha);
+}
+
+TEST(Color, WithAlpha)
+{
+  constexpr auto other = cen::colors::maroon;
+  constexpr auto color = other.with_alpha(0x12);
+
+  EXPECT_EQ(color.red(), other.red());
+  EXPECT_EQ(color.green(), other.green());
+  EXPECT_EQ(color.blue(), other.blue());
+  EXPECT_EQ(color.alpha(), 0x12);
+}
+
+TEST(Color, ConversionToSDLColor)
+{
+  constexpr auto color = cen::colors::dark_orchid;
+  constexpr auto sdlColor = static_cast<SDL_Color>(color);
+
+  EXPECT_EQ(color, sdlColor);
+  EXPECT_EQ(sdlColor, color);
+
+  EXPECT_EQ(color.red(), sdlColor.r);
+  EXPECT_EQ(color.green(), sdlColor.g);
+  EXPECT_EQ(color.blue(), sdlColor.b);
+  EXPECT_EQ(color.alpha(), sdlColor.a);
+}
+
+TEST(Color, ConversionToSDLMessageBoxColor)
+{
+  constexpr auto color = cen::colors::dark_orchid;
+  constexpr auto msgColor = static_cast<SDL_MessageBoxColor>(color);
+
+  EXPECT_EQ(color, msgColor);
+  EXPECT_EQ(msgColor, color);
+
+  EXPECT_EQ(color.red(), msgColor.r);
+  EXPECT_EQ(color.green(), msgColor.g);
+  EXPECT_EQ(color.blue(), msgColor.b);
+}
+
+TEST(Color, ConversionToSDLColorPointer)
+{
+  const cen::color color = cen::colors::bisque;
+  const auto* sdlColor = static_cast<const SDL_Color*>(color);
+
+  const void* colorAdr = &color;
+  EXPECT_EQ(sdlColor, colorAdr);
+
+  EXPECT_EQ(color.red(), sdlColor->r);
+  EXPECT_EQ(color.green(), sdlColor->g);
+  EXPECT_EQ(color.blue(), sdlColor->b);
+  EXPECT_EQ(color.alpha(), sdlColor->a);
+}
+
+TEST(Color, ToString)
+{
+  constexpr cen::color color{0x12, 0xFA, 0xCC, 0xAD};
   cen::log::put(cen::to_string(color));
 }
 
-TEST_CASE("color stream operator", "[color]")
+TEST(Color, StreamOperator)
 {
-  const cen::color color{0xAA, 0xBB, 0xCC, 0xDD};
+  constexpr cen::color color{0xAA, 0xBB, 0xCC, 0xDD};
   std::cout << "COUT: " << color << '\n';
 }

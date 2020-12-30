@@ -1,5 +1,6 @@
 # <img src="meta/centurion.png" alt="Centurion" width="200"/> 
-[![version](https://img.shields.io/badge/version-5.0.0-blue.svg)](https://semver.org) [![Language](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/Centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![version](https://img.shields.io/badge/version-5.1.0-blue.svg)](https://semver.org) [!
+[Language](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/Centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 |  Latest Build    |  Status       |
 | ---------------- | ------------- |

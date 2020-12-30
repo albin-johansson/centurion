@@ -21,6 +21,7 @@ set(TEST_FILES
 
     unittests/geometry/area_test.cpp
     unittests/geometry/rect_test.cpp
+    unittests/geometry/point_test.cpp
 
     unittests/bool_converter_test.cpp
     unittests/blend_mode_test.cpp

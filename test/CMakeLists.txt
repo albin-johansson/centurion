@@ -36,6 +36,7 @@ set(TEST_FILES
     unittests/graphics/surface_handle_test.cpp
 
     unittests/thread/condition_test.cpp
+    unittests/thread/mutex_test.cpp
     )
 
 #if (CEN_AUDIO)

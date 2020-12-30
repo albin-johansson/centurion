@@ -1,27 +1,25 @@
 #include "mutex.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-#include "scoped_lock.hpp"
-
-TEST_CASE("mutex lock/unlock", "[mutex]")
+TEST(Mutex, LockAndUnlock)
 {
-  cen::mutex m;
+  cen::mutex mutex;
 
-  CHECK(m.lock());
-  CHECK(m.unlock());
+  EXPECT_TRUE(mutex.lock());
+  EXPECT_TRUE(mutex.unlock());
 }
 
-TEST_CASE("mutex::try_lock", "[mutex]")
+TEST(Mutex, TryLock)
 {
-  cen::mutex m;
+  cen::mutex mutex;
 
-  CHECK(m.try_lock() == cen::lock_status::success);
-  CHECK(m.unlock());
+  EXPECT_EQ(mutex.try_lock(), cen::lock_status::success);
+  EXPECT_TRUE(mutex.unlock());
 }
 
-TEST_CASE("mutex::get", "[mutex]")
+TEST(Mutex, Get)
 {
-  cen::mutex m;
-  CHECK(m.get());
+  cen::mutex mutex;
+  EXPECT_TRUE(mutex.get());
 }

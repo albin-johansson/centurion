@@ -19,18 +19,20 @@ add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 set(TEST_FILES
     unittests/test_main.cpp
 
+    unittests/detail/bool_converter_test.cpp
+    unittests/detail/to_string_test.cpp
+
+    unittests/system/clipboard_test.cpp
+
     unittests/geometry/area_test.cpp
     unittests/geometry/rect_test.cpp
     unittests/geometry/point_test.cpp
 
-    unittests/bool_converter_test.cpp
-    unittests/blend_mode_test.cpp
-    unittests/color_test.cpp
-    unittests/clipboard_test.cpp
-    unittests/font_test.cpp
-    unittests/surface_test.cpp
-    unittests/surface_handle_test.cpp
-    unittests/to_string_test.cpp)
+    unittests/graphics/blend_mode_test.cpp
+    unittests/graphics/color_test.cpp
+    unittests/graphics/font_test.cpp
+    unittests/graphics/surface_test.cpp
+    unittests/graphics/surface_handle_test.cpp)
 
 #if (CEN_AUDIO)
 #    set(TEST_FILES

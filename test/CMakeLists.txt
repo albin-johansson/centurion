@@ -2,85 +2,19 @@ cmake_minimum_required(VERSION 3.15)
 
 project(CenturionTest)
 
+set(GOOGLETEST_VERSION 1.10)
+add_subdirectory(lib/gtest)
+
 set(TEST_FILES
         unittests/test_main.cpp
-        unittests/window_test.cpp
-        unittests/bool_converter_test.cpp
-        unittests/font_test.cpp
-        unittests/texture_test.cpp
-        unittests/renderer_test.cpp
-        unittests/log_test.cpp
-        unittests/battery_test.cpp
-        unittests/blend_mode_test.cpp
-        unittests/message_box_test.cpp
-        unittests/color_test.cpp
-        unittests/point_test.cpp
-        unittests/key_state_test.cpp
-        unittests/mouse_state_test.cpp
-        unittests/rect_test.cpp
-        unittests/exception_test.cpp
-        unittests/counter_test.cpp
-        unittests/paths_test.cpp
-        unittests/platform_test.cpp
-        unittests/cpu_test.cpp
-        unittests/ram_test.cpp
-        unittests/screen_test.cpp
-        unittests/surface_test.cpp
-        unittests/pixel_format_test.cpp
-        unittests/cursor_test.cpp
-        unittests/window_event_test.cpp
-        unittests/keyboard_event_test.cpp
-        unittests/common_event_test.cpp
-        unittests/audio_device_event_test.cpp
-        unittests/controller_axis_event_test.cpp
-        unittests/controller_button_event_test.cpp
-        unittests/controller_button_test.cpp
-        unittests/controller_axis_test.cpp
-        unittests/controller_device_event_test.cpp
-        unittests/dollar_gesture_event_test.cpp
-        unittests/drop_event_test.cpp
-        unittests/touch_finger_event_test.cpp
-        unittests/joy_axis_event_test.cpp
-        unittests/joy_ball_event_test.cpp
-        unittests/joy_hat_event_test.cpp
-        unittests/joy_button_event_test.cpp
-        unittests/event_test.cpp
-        unittests/joy_device_event_test.cpp
-        unittests/mouse_button_test.cpp
-        unittests/mouse_motion_event_test.cpp
-        unittests/mouse_button_event_test.cpp
-        unittests/mouse_wheel_event_test.cpp
-        unittests/multi_gesture_event_test.cpp
-        unittests/text_editing_event_test.cpp
-        unittests/text_input_event_test.cpp
-        unittests/quit_event_test.cpp
-        unittests/area_test.cpp
-        unittests/hints_test.cpp
-        unittests/joystick_test.cpp
-        unittests/touch_test.cpp
-        unittests/scan_code_tests.cpp
-        unittests/key_code_tests.cpp
-        unittests/font_cache_test.cpp
-        unittests/unicode_string_test.cpp
-        unittests/window_handle_test.cpp
-        unittests/renderer_handle_test.cpp
-        unittests/thread_test.cpp
-        unittests/mutex_test.cpp
-        unittests/scoped_lock_test.cpp
-        unittests/try_lock_test.cpp
-        unittests/semaphore_test.cpp
-        unittests/condition_test.cpp
-        unittests/clipboard_test.cpp
-        unittests/sdl_string_test.cpp
-        unittests/controller_test.cpp
         unittests/to_string_test.cpp)
 
-if (CEN_AUDIO)
-    set(TEST_FILES
-            ${TEST_FILES}
-            unittests/sound_effect_test.cpp
-            unittests/music_test.cpp)
-endif ()
+#if (CEN_AUDIO)
+#    set(TEST_FILES
+#            ${TEST_FILES}
+#            unittests/sound_effect_test.cpp
+#            unittests/music_test.cpp)
+#endif ()
 
 if (WIN32)
     add_executable(${CENTURION_TEST_TARGET} WIN32 ${TEST_FILES})
@@ -93,12 +27,7 @@ if (CEN_AUDIO)
             PUBLIC CEN_AUDIO)
 endif ()
 
-add_header_only_lib(Catch2 catch2 catch2/catch.hpp)
-
 include(CTest)
-include(Catch)
-
-add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET}
         PUBLIC unittests
@@ -106,7 +35,9 @@ target_include_directories(${CENTURION_TEST_TARGET}
         SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
         SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
         SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-        SYSTEM PUBLIC ${CEN_INCLUDE_DIR})
+        SYSTEM PUBLIC ${CEN_INCLUDE_DIR}
+        SYSTEM PUBLIC ${gtest_SOURCE_DIR}/include
+        SYSTEM PUBLIC ${gtest_SOURCE_DIR})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
@@ -133,9 +64,9 @@ target_link_libraries(${CENTURION_TEST_TARGET}
         PUBLIC ${SDL2_MIXER_LIBRARIES}
         PUBLIC ${SDL2_TTF_LIBRARIES}
         PUBLIC ${CENTURION_IMPORT_LIB}
-        PUBLIC Catch2)
+        PUBLIC gtest)
 
-catch_discover_tests(${CENTURION_TEST_TARGET})
+add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 
 copy_directory_post_build(
         ${CENTURION_TEST_TARGET}

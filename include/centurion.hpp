@@ -240,7 +240,7 @@ class library final
  */
 [[nodiscard]] constexpr auto ttf_version() noexcept -> SDL_version
 {
-  return {SDL_TTF_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
+  return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
 }
 
 }  // namespace cen

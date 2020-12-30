@@ -139,30 +139,18 @@ TEST(Thread, StreamOperator)
   std::cout << "COUT: " << cen::to_string(thread) << '\n';
 }
 
-TEST_CASE("thread stream operator", "[!mayfail][thread]")
+TEST(Thread, ThreadPriorityValues)
 {
-  cen::thread thread{dummy, "myThread"};
-  std::cout << "<< operator: " << thread << '\n';
-}
+  EXPECT_EQ(cen::thread_priority::low, SDL_THREAD_PRIORITY_LOW);
+  EXPECT_EQ(cen::thread_priority::normal, SDL_THREAD_PRIORITY_NORMAL);
+  EXPECT_EQ(cen::thread_priority::high, SDL_THREAD_PRIORITY_HIGH);
+  EXPECT_EQ(cen::thread_priority::critical, SDL_THREAD_PRIORITY_TIME_CRITICAL);
 
-TEST_CASE("thread_priority values", "[thread]")
-{
-  SECTION("==")
-  {
-    CHECK(cen::thread_priority::low == SDL_THREAD_PRIORITY_LOW);
-    CHECK(cen::thread_priority::normal == SDL_THREAD_PRIORITY_NORMAL);
-    CHECK(cen::thread_priority::high == SDL_THREAD_PRIORITY_HIGH);
-    CHECK(cen::thread_priority::critical == SDL_THREAD_PRIORITY_TIME_CRITICAL);
+  EXPECT_EQ(SDL_THREAD_PRIORITY_LOW, cen::thread_priority::low);
+  EXPECT_EQ(SDL_THREAD_PRIORITY_NORMAL, cen::thread_priority::normal);
+  EXPECT_EQ(SDL_THREAD_PRIORITY_HIGH, cen::thread_priority::high);
+  EXPECT_EQ(SDL_THREAD_PRIORITY_TIME_CRITICAL, cen::thread_priority::critical);
 
-    CHECK(SDL_THREAD_PRIORITY_LOW == cen::thread_priority::low);
-    CHECK(SDL_THREAD_PRIORITY_NORMAL == cen::thread_priority::normal);
-    CHECK(SDL_THREAD_PRIORITY_HIGH == cen::thread_priority::high);
-    CHECK(SDL_THREAD_PRIORITY_TIME_CRITICAL == cen::thread_priority::critical);
-  }
-
-  SECTION("!=")
-  {
-    CHECK(cen::thread_priority::high != SDL_THREAD_PRIORITY_TIME_CRITICAL);
-    CHECK(SDL_THREAD_PRIORITY_LOW != cen::thread_priority::normal);
-  }
+  EXPECT_NE(cen::thread_priority::high, SDL_THREAD_PRIORITY_TIME_CRITICAL);
+  EXPECT_NE(SDL_THREAD_PRIORITY_LOW, cen::thread_priority::normal);
 }

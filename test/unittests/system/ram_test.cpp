@@ -1,13 +1,13 @@
 #include "ram.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("amount_mb", "[ram]")
+TEST(RAM, AmountMB)
 {
-  CHECK(cen::ram::amount_mb() == SDL_GetSystemRAM());
+  EXPECT_EQ(SDL_GetSystemRAM(), cen::ram::amount_mb());
 }
 
-TEST_CASE("amount_gb", "[ram]")
+TEST(RAM, AmountGB)
 {
-  CHECK(cen::ram::amount_gb() == SDL_GetSystemRAM() / 1'000);
+  EXPECT_EQ(SDL_GetSystemRAM() / 1'000, cen::ram::amount_gb());
 }

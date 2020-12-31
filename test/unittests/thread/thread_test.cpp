@@ -20,6 +20,9 @@ auto dummy = [](void*) noexcept -> int {
 static_assert(std::is_same_v<cen::thread::id, SDL_threadID>);
 static_assert(std::is_same_v<cen::thread::task_type, SDL_ThreadFunction>);
 
+static_assert(!std::is_copy_constructible_v<cen::thread>);
+static_assert(!std::is_copy_assignable_v<cen::thread>);
+
 TEST(Thread, Detach)
 {
   cen::thread thread{dummy};

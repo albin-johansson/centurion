@@ -88,7 +88,6 @@ set(SOURCE_FILES
     input/key_code.cpp
     input/scan_code.cpp
 
-    thread/thread.cpp
     thread/scoped_lock.cpp
     thread/mutex.cpp
     thread/condition.cpp

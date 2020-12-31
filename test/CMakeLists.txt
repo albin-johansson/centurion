@@ -50,6 +50,7 @@ set(TEST_FILES
     unittests/event/common_event_test.cpp
     unittests/event/controller_axis_event_test.cpp
     unittests/event/controller_button_event_test.cpp
+    unittests/event/controller_device_event_test.cpp
     )
 
 #if (CEN_AUDIO)

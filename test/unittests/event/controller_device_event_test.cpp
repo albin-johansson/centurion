@@ -1,27 +1,30 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("controller_device_event::set_which", "[controller_device_event]")
+TEST(ControllerDeviceEvent, Constructors)
+{
+  EXPECT_NO_THROW(cen::controller_device_event{});
+
+  SDL_ControllerDeviceEvent e;
+  EXPECT_NO_THROW(cen::controller_device_event{e});
+}
+
+TEST(ControllerDeviceEvent, SetWhich)
 {
   cen::controller_device_event event;
 
-  const auto which = 7;
+  constexpr auto which = 4;
   event.set_which(which);
 
-  CHECK(which == event.which());
+  EXPECT_EQ(which, event.which());
 }
 
-TEST_CASE("controller_device_event::which", "[controller_device_event]")
+TEST(ControllerDeviceEvent, Which)
 {
-  SDL_ControllerDeviceEvent sdlEvent;
-  sdlEvent.which = 11;
-  cen::controller_device_event event{sdlEvent};
+  SDL_ControllerDeviceEvent sdl;
+  sdl.which = 11;
 
-  CHECK(event.which() == 11);
-}
-
-TEST_CASE("controller_device_event()", "[controller_device_event]")
-{
-  CHECK_NOTHROW(cen::controller_device_event{{}});
+  const cen::controller_device_event event{sdl};
+  EXPECT_EQ(11, event.which());
 }

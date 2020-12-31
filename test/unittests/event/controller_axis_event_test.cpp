@@ -1,66 +1,68 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("controller_axis_event constructors", "[controller_axis_event]")
+TEST(ControllerAxisEvent, Constructors)
 {
-  CHECK_NOTHROW(cen::controller_axis_event{});
-  CHECK_NOTHROW(cen::controller_axis_event{{}});
+  EXPECT_NO_THROW(cen::controller_axis_event{});
+
+  SDL_ControllerAxisEvent e;
+  EXPECT_NO_THROW(cen::controller_axis_event{e});
 }
 
-TEST_CASE("controller_axis_event::set_which", "[controller_axis_event]")
+TEST(ControllerAxisEvent, SetWhich)
 {
   cen::controller_axis_event event;
 
   const SDL_JoystickID id = 53;
   event.set_which(id);
 
-  CHECK(event.which() == id);
+  EXPECT_EQ(id, event.which());
 }
 
-TEST_CASE("controller_axis_event::set_axis", "[controller_axis_event]")
+TEST(ControllerAxisEvent, SetAxis)
 {
   cen::controller_axis_event event;
 
   const auto axis = cen::controller_axis::trigger_right;
   event.set_axis(axis);
 
-  CHECK(event.axis() == axis);
+  EXPECT_EQ(axis, event.axis());
 }
 
-TEST_CASE("controller_axis_event::set_value", "[controller_axis_event]")
+TEST(ControllerAxisEvent, SetValue)
 {
   cen::controller_axis_event event;
 
   const auto value = 4576;
   event.set_value(value);
 
-  CHECK(event.value() == value);
+  EXPECT_EQ(value, event.value());
 }
 
-TEST_CASE("controller_axis_event::which", "[controller_axis_event]")
+TEST(ControllerAxisEvent, Which)
 {
-  SDL_ControllerAxisEvent sdlEvent;
-  sdlEvent.which = 54;
-  cen::controller_axis_event event{sdlEvent};
+  SDL_ControllerAxisEvent sdl;
+  sdl.which = 54;
 
-  CHECK(event.which() == sdlEvent.which);
+  cen::controller_axis_event event{sdl};
+  EXPECT_EQ(sdl.which, event.which());
 }
 
-TEST_CASE("controller_axis_event::axis", "[controller_axis_event]")
+TEST(ControllerAxisEvent, Axis)
 {
-  SDL_ControllerAxisEvent sdlEvent;
-  sdlEvent.axis = SDL_CONTROLLER_AXIS_INVALID;
-  cen::controller_axis_event event{sdlEvent};
+  SDL_ControllerAxisEvent sdl;
+  sdl.axis = SDL_CONTROLLER_AXIS_INVALID;
 
-  CHECK(event.axis() == static_cast<SDL_GameControllerAxis>(sdlEvent.axis));
+  cen::controller_axis_event event{sdl};
+  EXPECT_EQ(sdl.axis, static_cast<cen::u8>(event.axis()));
 }
 
-TEST_CASE("controller_axis_event::value", "[controller_axis_event]")
+TEST(ControllerAxisEvent, Value)
 {
-  SDL_ControllerAxisEvent sdlEvent;
-  sdlEvent.value = 1234;
-  cen::controller_axis_event event{sdlEvent};
+  SDL_ControllerAxisEvent sdl;
+  sdl.value = 1234;
 
-  CHECK(event.value() == sdlEvent.value);
+  cen::controller_axis_event event{sdl};
+  EXPECT_EQ(sdl.value, event.value());
 }

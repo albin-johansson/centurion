@@ -71,6 +71,8 @@ set(TEST_FILES
     unittests/event/text_editing_event_test.cpp
     unittests/event/text_input_event_test.cpp
     unittests/event/touch_finger_event_test.cpp
+    unittests/event/window_event_test.cpp
+    unittests/event/window_event_id_test.cpp
     )
 
 #if (CEN_AUDIO)

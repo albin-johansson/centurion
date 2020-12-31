@@ -1,125 +1,98 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("mouse_wheel_direction operator==", "[mouse_wheel_direction]")
-{
-  CHECK(cen::mouse_wheel_direction::normal == SDL_MOUSEWHEEL_NORMAL);
-  CHECK(cen::mouse_wheel_direction::flipped == SDL_MOUSEWHEEL_FLIPPED);
-
-  CHECK(SDL_MOUSEWHEEL_NORMAL == cen::mouse_wheel_direction::normal);
-  CHECK(SDL_MOUSEWHEEL_FLIPPED == cen::mouse_wheel_direction::flipped);
-
-  CHECK_FALSE(cen::mouse_wheel_direction::normal == SDL_MOUSEWHEEL_FLIPPED);
-}
-
-TEST_CASE("mouse_wheel_direction operator!=", "[mouse_wheel_direction]")
-{
-  CHECK(cen::mouse_wheel_direction::normal != SDL_MOUSEWHEEL_FLIPPED);
-  CHECK(cen::mouse_wheel_direction::flipped != SDL_MOUSEWHEEL_NORMAL);
-
-  CHECK(SDL_MOUSEWHEEL_NORMAL != cen::mouse_wheel_direction::flipped);
-  CHECK(SDL_MOUSEWHEEL_FLIPPED != cen::mouse_wheel_direction::normal);
-
-  CHECK_FALSE(cen::mouse_wheel_direction::flipped != SDL_MOUSEWHEEL_FLIPPED);
-}
-
-TEST_CASE("mouse_wheel_event::set_window_id", "[mouse_wheel_event]")
+TEST(MouseWheelEvent, SetWindowId)
 {
   cen::mouse_wheel_event event;
 
-  const auto id = 32;
+  constexpr auto id = 32;
   event.set_window_id(id);
 
-  CHECK(event.window_id() == id);
+  EXPECT_EQ(id, event.window_id());
 }
 
-TEST_CASE("mouse_wheel_event::set_which", "[mouse_wheel_event]")
+TEST(MouseWheelEvent, SetWhich)
 {
   cen::mouse_wheel_event event;
 
-  const auto which = 32;
+  constexpr auto which = 32;
   event.set_which(which);
 
-  CHECK(event.which() == which);
+  EXPECT_EQ(which, event.which());
 }
 
-TEST_CASE("mouse_wheel_event::set_x_scroll", "[mouse_wheel_event]")
+TEST(MouseWheelEvent, SetXScroll)
 {
   cen::mouse_wheel_event event;
 
-  const auto xScroll = -545;
+  constexpr auto xScroll = -545;
   event.set_x_scroll(xScroll);
 
-  CHECK(event.x_scroll() == xScroll);
+  EXPECT_EQ(xScroll, event.x_scroll());
 }
 
-TEST_CASE("mouse_wheel_event::set_y_scroll", "[mouse_wheel_event]")
+TEST(MouseWheelEvent, SetYScroll)
 {
   cen::mouse_wheel_event event;
 
-  const auto yScroll = 725;
+  constexpr auto yScroll = 725;
   event.set_y_scroll(yScroll);
 
-  CHECK(event.y_scroll() == yScroll);
+  EXPECT_EQ(yScroll, event.y_scroll());
 }
 
-TEST_CASE("mouse_wheel_event::set_direction", "[mouse_wheel_event]")
+TEST(MouseWheelEvent, SetDirection)
 {
   cen::mouse_wheel_event event;
 
-  const auto direction = cen::mouse_wheel_direction::flipped;
+  constexpr auto direction = cen::mouse_wheel_direction::flipped;
   event.set_direction(direction);
 
-  CHECK(event.direction() == direction);
+  EXPECT_EQ(direction, event.direction());
 }
 
-TEST_CASE("mouse_wheel_event::window_id", "[mouse_wheel_event]")
+TEST(MouseWheelEvent, WindowId)
 {
-  SDL_MouseWheelEvent sdlEvent;
-  sdlEvent.windowID = 12;
+  SDL_MouseWheelEvent sdl;
+  sdl.windowID = 12;
 
-  cen::mouse_wheel_event event{sdlEvent};
-
-  CHECK(event.window_id() == sdlEvent.windowID);
+  const cen::mouse_wheel_event event{sdl};
+  EXPECT_EQ(sdl.windowID, event.window_id());
 }
 
-TEST_CASE("mouse_wheel_event::which", "[mouse_wheel_event]")
+TEST(MouseWheelEvent, Which)
 {
-  SDL_MouseWheelEvent sdlEvent;
-  sdlEvent.windowID = 12;
+  SDL_MouseWheelEvent sdl;
+  sdl.windowID = 12;
 
-  cen::mouse_wheel_event event{sdlEvent};
-
-  CHECK(event.window_id() == sdlEvent.windowID);
+  const cen::mouse_wheel_event event{sdl};
+  EXPECT_EQ(sdl.windowID, event.window_id());
 }
 
-TEST_CASE("mouse_wheel_event::x_scroll", "[mouse_wheel_event]")
+TEST(MouseWheelEvent, XScroll)
 {
-  SDL_MouseWheelEvent sdlEvent;
-  sdlEvent.x = 455;
+  SDL_MouseWheelEvent sdl;
+  sdl.x = 455;
 
-  cen::mouse_wheel_event event{sdlEvent};
-
-  CHECK(event.x_scroll() == sdlEvent.x);
+  const cen::mouse_wheel_event event{sdl};
+  EXPECT_EQ(sdl.x, event.x_scroll());
 }
 
-TEST_CASE("mouse_wheel_event::y_scroll", "[mouse_wheel_event]")
+TEST(MouseWheelEvent, YScroll)
 {
-  SDL_MouseWheelEvent sdlEvent;
-  sdlEvent.y = -123;
+  SDL_MouseWheelEvent sdl;
+  sdl.y = -123;
 
-  cen::mouse_wheel_event event{sdlEvent};
-
-  CHECK(event.y_scroll() == sdlEvent.y);
+  const cen::mouse_wheel_event event{sdl};
+  EXPECT_EQ(sdl.y, event.y_scroll());
 }
 
-TEST_CASE("mouse_wheel_event::direction", "[mouse_wheel_event]")
+TEST(MouseWheelEvent, Direction)
 {
-  SDL_MouseWheelEvent sdlEvent;
-  sdlEvent.direction = SDL_MOUSEWHEEL_NORMAL;
+  SDL_MouseWheelEvent sdl;
+  sdl.direction = SDL_MOUSEWHEEL_NORMAL;
 
-  cen::mouse_wheel_event event{sdlEvent};
-
-  CHECK(event.direction() == cen::mouse_wheel_direction::normal);
+  const cen::mouse_wheel_event event{sdl};
+  EXPECT_EQ(cen::mouse_wheel_direction::normal, event.direction());
 }

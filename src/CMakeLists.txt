@@ -88,7 +88,6 @@ set(SOURCE_FILES
     input/key_code.cpp
     input/scan_code.cpp
 
-    thread/scoped_lock.cpp
     thread/try_lock.cpp
     thread/semaphore.cpp)
 

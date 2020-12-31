@@ -89,7 +89,6 @@ set(SOURCE_FILES
     input/scan_code.cpp
 
     thread/scoped_lock.cpp
-    thread/mutex.cpp
     thread/try_lock.cpp
     thread/semaphore.cpp)
 

@@ -202,5 +202,12 @@
    ...
 }
 
-
+{
+   SDL_CreatePixmapCursor_Leak
+   Memcheck:Leak
+   match-leak-kinds: definite
+   ...
+   fun:X11_CreatePixmapCursor
+   ...
+}
 

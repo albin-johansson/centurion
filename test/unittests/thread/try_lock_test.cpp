@@ -1,31 +1,31 @@
 #include "try_lock.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("try_lock", "[try_lock]")
+TEST(TryLock, BasicUsage)
 {
   cen::mutex mutex;
   cen::try_lock lock{mutex};
 
-  CHECK(lock.success());
+  EXPECT_TRUE(lock.success());
 }
 
-TEST_CASE("try_lock::get_status", "[try_lock]")
+TEST(TryLock, GetStatus)
 {
   cen::mutex mutex;
   cen::try_lock lock{mutex};
 
-  CHECK(lock.get_status() == cen::lock_status::success);
+  EXPECT_EQ(cen::lock_status::success, lock.get_status());
 
-  CHECK(lock.success());
-  CHECK(!lock.timed_out());
-  CHECK(!lock.error());
+  EXPECT_TRUE(lock.success());
+  EXPECT_FALSE(lock.timed_out());
+  EXPECT_FALSE(lock.error());
 }
 
-TEST_CASE("try_lock operator bool", "[try_lock]")
+TEST(TryLock, BoolConversion)
 {
   cen::mutex mutex;
   cen::try_lock lock{mutex};
 
-  CHECK(lock);
+  EXPECT_TRUE(lock);
 }

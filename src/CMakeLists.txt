@@ -90,7 +90,6 @@ set(SOURCE_FILES
 
     thread/scoped_lock.cpp
     thread/mutex.cpp
-    thread/condition.cpp
     thread/try_lock.cpp
     thread/semaphore.cpp)
 

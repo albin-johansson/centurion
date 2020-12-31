@@ -1,14 +1,11 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("quit_event()", "[quit_event]")
+TEST(QuitEvent, Construction)
 {
-  CHECK_NOTHROW(cen::quit_event{});
-}
+  EXPECT_NO_THROW(cen::quit_event{});
 
-TEST_CASE("quit_event(const SDL_QuitEvent&)", "[quit_event]")
-{
-  SDL_QuitEvent qEvent;
-  CHECK_NOTHROW(cen::quit_event{qEvent});
+  SDL_QuitEvent e;
+  EXPECT_NO_THROW(cen::quit_event{e});
 }

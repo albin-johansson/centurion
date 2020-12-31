@@ -1,117 +1,117 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("dollar_gesture_event::set_touch_id", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, SetTouchId)
 {
   cen::dollar_gesture_event event;
 
-  const auto id = 4;
+  constexpr auto id = 4;
   event.set_touch_id(id);
 
-  CHECK(event.touch_id() == id);
+  EXPECT_EQ(id, event.touch_id());
 }
 
-TEST_CASE("dollar_gesture_event::set_gesture_id", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, SetGestureId)
 {
   cen::dollar_gesture_event event;
 
-  const auto id = 81;
+  constexpr auto id = 81;
   event.set_gesture_id(id);
 
-  CHECK(event.gesture_id() == id);
+  EXPECT_EQ(id, event.gesture_id());
 }
 
-TEST_CASE("dollar_gesture_event::set_fingers", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, SetFingers)
 {
   cen::dollar_gesture_event event;
 
-  const auto fingers = 2;
+  constexpr auto fingers = 2;
   event.set_fingers(fingers);
 
-  CHECK(event.fingers() == fingers);
+  EXPECT_EQ(fingers, event.fingers());
 }
 
-TEST_CASE("dollar_gesture_event::set_error", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, SetError)
 {
   cen::dollar_gesture_event event;
 
-  const auto error = 5.1f;
+  constexpr auto error = 5.1f;
   event.set_error(error);
 
-  CHECK(event.error() == error);
+  EXPECT_EQ(error, event.error());
 }
 
-TEST_CASE("dollar_gesture_event::set_x", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, SetX)
 {
   cen::dollar_gesture_event event;
 
-  const auto x = 24.8f;
+  constexpr auto x = 24.8f;
   event.set_x(x);
 
-  CHECK(event.x() == x);
+  EXPECT_EQ(x, event.x());
 }
 
-TEST_CASE("dollar_gesture_event::set_y", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, SetY)
 {
   cen::dollar_gesture_event event;
 
-  const auto y = -12.9f;
+  constexpr auto y = -12.9f;
   event.set_y(y);
 
-  CHECK(event.y() == y);
+  EXPECT_EQ(y, event.y());
 }
 
-TEST_CASE("dollar_gesture_event::touch_id", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, TouchId)
 {
-  SDL_DollarGestureEvent sdlEvent;
-  sdlEvent.touchId = 9;
-  cen::dollar_gesture_event event{sdlEvent};
+  SDL_DollarGestureEvent sdl;
+  sdl.touchId = 9;
 
-  CHECK(event.touch_id() == sdlEvent.touchId);
+  const cen::dollar_gesture_event event{sdl};
+  EXPECT_EQ(sdl.touchId, event.touch_id());
 }
 
-TEST_CASE("dollar_gesture_event::gesture_id", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, GestureId)
 {
-  SDL_DollarGestureEvent sdlEvent;
-  sdlEvent.gestureId = 1;
-  cen::dollar_gesture_event event{sdlEvent};
+  SDL_DollarGestureEvent sdl;
+  sdl.gestureId = 1;
 
-  CHECK(event.gesture_id() == sdlEvent.gestureId);
+  const cen::dollar_gesture_event event{sdl};
+  EXPECT_EQ(sdl.gestureId, event.gesture_id());
 }
 
-TEST_CASE("dollar_gesture_event::fingers", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, Fingers)
 {
-  SDL_DollarGestureEvent sdlEvent;
-  sdlEvent.numFingers = 3;
-  cen::dollar_gesture_event event{sdlEvent};
+  SDL_DollarGestureEvent sdl;
+  sdl.numFingers = 3;
 
-  CHECK(event.fingers() == sdlEvent.numFingers);
+  const cen::dollar_gesture_event event{sdl};
+  EXPECT_EQ(sdl.numFingers, event.fingers());
 }
 
-TEST_CASE("dollar_gesture_event::error", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, Error)
 {
-  SDL_DollarGestureEvent sdlEvent;
-  sdlEvent.error = 7.4f;
-  cen::dollar_gesture_event event{sdlEvent};
+  SDL_DollarGestureEvent sdl;
+  sdl.error = 7.4f;
 
-  CHECK(event.error() == sdlEvent.error);
+  const cen::dollar_gesture_event event{sdl};
+  EXPECT_EQ(sdl.error, event.error());
 }
 
-TEST_CASE("dollar_gesture_event::x", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, X)
 {
-  SDL_DollarGestureEvent sdlEvent;
-  sdlEvent.x = 56.8f;
-  cen::dollar_gesture_event event{sdlEvent};
+  SDL_DollarGestureEvent sdl;
+  sdl.x = 56.8f;
 
-  CHECK(event.x() == sdlEvent.x);
+  const cen::dollar_gesture_event event{sdl};
+  EXPECT_EQ(sdl.x, event.x());
 }
 
-TEST_CASE("dollar_gesture_event::y", "[dollar_gesture_event]")
+TEST(DollarGestureEvent, Y)
 {
-  SDL_DollarGestureEvent sdlEvent;
-  sdlEvent.y = 92.3f;
-  cen::dollar_gesture_event event{sdlEvent};
+  SDL_DollarGestureEvent sdl;
+  sdl.y = 92.3f;
 
-  CHECK(event.y() == sdlEvent.y);
+  const cen::dollar_gesture_event event{sdl};
+  EXPECT_EQ(sdl.y, event.y());
 }

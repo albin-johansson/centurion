@@ -1,83 +1,79 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("joy_ball_event::set_which", "[joy_ball_event]")
+TEST(JoyBallEvent, SetWhich)
 {
   cen::joy_ball_event event;
 
-  const auto which = 3;
+  constexpr auto which = 3;
   event.set_which(which);
 
-  CHECK(event.which() == which);
+  EXPECT_EQ(which, event.which());
 }
 
-TEST_CASE("joy_ball_event::set_ball", "[joy_ball_event]")
+TEST(JoyBallEvent, SetBall)
 {
   cen::joy_ball_event event;
 
-  const auto ball = 7;
+  constexpr auto ball = 7;
   event.set_ball(ball);
 
-  CHECK(event.ball() == ball);
+  EXPECT_EQ(ball, event.ball());
 }
 
-TEST_CASE("joy_ball_event::set_dx", "[joy_ball_event]")
+TEST(JoyBallEvent, SetDx)
 {
   cen::joy_ball_event event;
 
-  const auto dx = 173;
+  constexpr auto dx = 173;
   event.set_dx(dx);
 
-  CHECK(event.dx() == dx);
+  EXPECT_EQ(dx, event.dx());
 }
 
-TEST_CASE("joy_ball_event::set_dy", "[joy_ball_event]")
+TEST(JoyBallEvent, SetDy)
 {
   cen::joy_ball_event event;
 
-  const auto dy = -57;
+  constexpr auto dy = -57;
   event.set_dy(dy);
 
-  CHECK(event.dy() == dy);
+  EXPECT_EQ(dy, event.dy());
 }
 
-TEST_CASE("joy_ball_event::which", "[joy_ball_event]")
+TEST(JoyBallEvent, Which)
 {
-  SDL_JoyBallEvent sdlEvent;
-  sdlEvent.which = 5;
+  SDL_JoyBallEvent sdl;
+  sdl.which = 5;
 
-  cen::joy_ball_event event{sdlEvent};
-
-  CHECK(event.which() == sdlEvent.which);
+  const cen::joy_ball_event event{sdl};
+  EXPECT_EQ(sdl.which, event.which());
 }
 
-TEST_CASE("joy_ball_event::ball", "[joy_ball_event]")
+TEST(JoyBallEvent, Ball)
 {
-  SDL_JoyBallEvent sdlEvent;
-  sdlEvent.ball = 17;
+  SDL_JoyBallEvent sdl;
+  sdl.ball = 17;
 
-  cen::joy_ball_event event{sdlEvent};
-
-  CHECK(event.ball() == sdlEvent.ball);
+  const cen::joy_ball_event event{sdl};
+  EXPECT_EQ(sdl.ball, event.ball());
 }
 
-TEST_CASE("joy_ball_event::dx", "[joy_ball_event]")
+TEST(JoyBallEvent, Dx)
 {
-  SDL_JoyBallEvent sdlEvent;
-  sdlEvent.xrel = 723;
+  SDL_JoyBallEvent sdl;
+  sdl.xrel = 723;
 
-  cen::joy_ball_event event{sdlEvent};
-
-  CHECK(event.dx() == sdlEvent.xrel);
+  const cen::joy_ball_event event{sdl};
+  EXPECT_EQ(sdl.xrel, event.dx());
 }
 
-TEST_CASE("joy_ball_event::dy", "[joy_ball_event]")
+TEST(JoyBallEvent, Dy)
 {
-  SDL_JoyBallEvent sdlEvent;
-  sdlEvent.yrel = 5933;
+  SDL_JoyBallEvent sdl;
+  sdl.yrel = 5933;
 
-  cen::joy_ball_event event{sdlEvent};
-
-  CHECK(event.dy() == sdlEvent.yrel);
+  const cen::joy_ball_event event{sdl};
+  EXPECT_EQ(sdl.yrel, event.dy());
 }

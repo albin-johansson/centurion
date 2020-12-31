@@ -56,6 +56,7 @@ set(TEST_FILES
     unittests/event/event_test.cpp
     unittests/event/event_type_test.cpp
     unittests/event/joy_axis_event_test.cpp
+    unittests/event/joy_ball_event_test.cpp
     )
 
 #if (CEN_AUDIO)

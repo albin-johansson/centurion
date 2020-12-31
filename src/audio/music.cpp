@@ -1,9 +1,9 @@
 #include "music.hpp"
 
-#include <algorithm>
 #include <type_traits>
 
 #include "detail/to_string.hpp"
+#include "detail/utils.hpp"
 #include "exception.hpp"
 
 namespace cen {
@@ -70,7 +70,7 @@ void music::fade_out(milliseconds<int> ms) noexcept
 
 void music::set_volume(int volume) noexcept
 {
-  Mix_VolumeMusic(std::clamp(volume, 0, MIX_MAX_VOLUME));
+  Mix_VolumeMusic(detail::clamp(volume, 0, MIX_MAX_VOLUME));
 }
 
 auto music::is_playing() noexcept -> bool

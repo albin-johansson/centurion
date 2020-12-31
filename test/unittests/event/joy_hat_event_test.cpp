@@ -1,60 +1,41 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("JoyHatValue enum values", "[joy_hat_event]")
-{
-  CHECK(static_cast<cen::u8>(cen::joy_hat_position::left_up) == SDL_HAT_LEFTUP);
-  CHECK(static_cast<cen::u8>(cen::joy_hat_position::left) == SDL_HAT_LEFT);
-  CHECK(static_cast<cen::u8>(cen::joy_hat_position::left_down) ==
-        SDL_HAT_LEFTDOWN);
-  CHECK(static_cast<cen::u8>(cen::joy_hat_position::up) == SDL_HAT_UP);
-  CHECK(static_cast<cen::u8>(cen::joy_hat_position::centered) ==
-        SDL_HAT_CENTERED);
-  CHECK(static_cast<cen::u8>(cen::joy_hat_position::down) == SDL_HAT_DOWN);
-  CHECK(static_cast<cen::u8>(cen::joy_hat_position::right_up) ==
-        SDL_HAT_RIGHTUP);
-  CHECK(static_cast<cen::u8>(cen::joy_hat_position::right) == SDL_HAT_RIGHT);
-  CHECK(static_cast<cen::u8>(cen::joy_hat_position::right_down) ==
-        SDL_HAT_RIGHTDOWN);
-}
-
-TEST_CASE("joy_hat_event::set_hat", "[joy_hat_event]")
+TEST(JoyHatEvent, SetHat)
 {
   cen::joy_hat_event event;
 
-  const auto hat = 7;
+  constexpr auto hat = 7;
   event.set_hat(hat);
 
-  CHECK(event.hat() == hat);
+  EXPECT_EQ(hat, event.hat());
 }
 
-TEST_CASE("joy_hat_event::set_position", "[joy_hat_event]")
+TEST(JoyHatEvent, SetPosition)
 {
   cen::joy_hat_event event;
 
-  const auto position = cen::joy_hat_position::right;
+  constexpr auto position = cen::joy_hat_position::right;
   event.set_position(position);
 
-  CHECK(event.position() == position);
+  EXPECT_EQ(position, event.position());
 }
 
-TEST_CASE("joy_hat_event::hat", "[joy_hat_event]")
+TEST(JoyHatEvent, Hat)
 {
-  SDL_JoyHatEvent sdlEvent;
-  sdlEvent.hat = 2;
+  SDL_JoyHatEvent sdl;
+  sdl.hat = 2;
 
-  cen::joy_hat_event event{sdlEvent};
-
-  CHECK(event.hat() == sdlEvent.hat);
+  const cen::joy_hat_event event{sdl};
+  EXPECT_EQ(sdl.hat, event.hat());
 }
 
-TEST_CASE("joy_hat_event::position", "[joy_hat_event]")
+TEST(JoyHatEvent, Position)
 {
-  SDL_JoyHatEvent sdlEvent;
-  sdlEvent.value = SDL_HAT_LEFT;
+  SDL_JoyHatEvent sdl;
+  sdl.value = SDL_HAT_LEFT;
 
-  cen::joy_hat_event event{sdlEvent};
-
-  CHECK(event.position() == cen::joy_hat_position::left);
+  const cen::joy_hat_event event{sdl};
+  EXPECT_EQ(cen::joy_hat_position::left, event.position());
 }

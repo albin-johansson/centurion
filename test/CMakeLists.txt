@@ -35,6 +35,10 @@ set(TEST_FILES
     unittests/graphics/font_cache_test.cpp
     unittests/graphics/surface_test.cpp
     unittests/graphics/surface_handle_test.cpp
+    unittests/graphics/texture_test.cpp
+    unittests/graphics/texture_handle_test.cpp
+    unittests/graphics/texture_access_test.cpp
+    unittests/graphics/scale_mode_test.cpp
 
     unittests/thread/condition_test.cpp
     unittests/thread/mutex_test.cpp

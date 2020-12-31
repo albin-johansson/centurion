@@ -434,9 +434,23 @@ class basic_texture final
    *
    * \return `true` if the texture has static texture access.
    *
+   * \deprecated Use `is_no_lock()` instead.
+   *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_static() const noexcept -> bool
+  [[nodiscard, deprecated]] auto is_static() const noexcept -> bool
+  {
+    return is_no_lock();
+  }
+
+  /**
+   * \brief Indicates whether or not the texture has static texture access.
+   *
+   * \return `true` if the texture has static texture access; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_no_lock() const noexcept -> bool
   {
     return access() == texture_access::no_lock;
   }

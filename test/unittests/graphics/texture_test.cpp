@@ -1,9 +1,11 @@
 #include "texture.hpp"
 
 #include <SDL_image.h>
+#include <gtest/gtest.h>
 
-#include <catch.hpp>
-#include <iostream>
+#include <iostream>  // cout
+#include <memory>    // unique_ptr
+#include <type_traits>
 
 #include "colors.hpp"
 #include "exception.hpp"
@@ -11,400 +13,261 @@
 #include "renderer.hpp"
 #include "window.hpp"
 
-static constexpr auto* pandaPath = "resources/panda.png";
-static constexpr int pandaWidth = 200;
-static constexpr int pandaHeight = 150;
+static_assert(std::is_final_v<cen::texture>);
 
-namespace {
+static_assert(std::is_nothrow_move_constructible_v<cen::texture>);
+static_assert(std::is_nothrow_move_assignable_v<cen::texture>);
 
-template <typename Lambda>
-inline void test(Lambda&& lambda)
+static_assert(!std::is_copy_constructible_v<cen::texture>);
+static_assert(!std::is_copy_assignable_v<cen::texture>);
+
+class TextureTest : public testing::Test
 {
-  cen::window window;
-  cen::renderer renderer{window};
-  lambda(renderer);
-}
-
-template <typename Lambda>
-inline void test_with_window(Lambda&& lambda)
-{
-  cen::window window;
-  cen::renderer renderer{window};
-  lambda(renderer, window);
-}
-
-}  // namespace
-
-TEST_CASE("texture_access enum values", "[texture]")
-{
-  CHECK(cen::texture_access::no_lock == SDL_TEXTUREACCESS_STATIC);
-  CHECK(cen::texture_access::streaming == SDL_TEXTUREACCESS_STREAMING);
-  CHECK(cen::texture_access::target == SDL_TEXTUREACCESS_TARGET);
-
-  CHECK(SDL_TEXTUREACCESS_STATIC == cen::texture_access::no_lock);
-  CHECK(SDL_TEXTUREACCESS_STREAMING == cen::texture_access::streaming);
-  CHECK(SDL_TEXTUREACCESS_TARGET == cen::texture_access::target);
-
-  CHECK(cen::texture_access::no_lock != SDL_TEXTUREACCESS_STREAMING);
-  CHECK(SDL_TEXTUREACCESS_STREAMING != cen::texture_access::no_lock);
-}
-
-TEST_CASE("texture::scale_mode enum values", "[texture]")
-{
-  CHECK(cen::scale_mode::linear == SDL_ScaleModeLinear);
-  CHECK(cen::scale_mode::nearest == SDL_ScaleModeNearest);
-  CHECK(cen::scale_mode::best == SDL_ScaleModeBest);
-
-  CHECK(SDL_ScaleModeLinear == cen::scale_mode::linear);
-  CHECK(SDL_ScaleModeNearest == cen::scale_mode::nearest);
-  CHECK(SDL_ScaleModeBest == cen::scale_mode::best);
-
-  CHECK(cen::scale_mode::linear != SDL_ScaleModeNearest);
-  CHECK(SDL_ScaleModeBest != cen::scale_mode::nearest);
-}
-
-TEST_CASE("texture_handle from texture", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-    cen::texture_handle handle{texture};
-    CHECK(handle);
-    CHECK(handle.get());
-  });
-}
-
-TEST_CASE("texture_handle from raw pointer", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture_handle bad{nullptr};
-    CHECK(!bad);
-    CHECK(!bad.get());
-
-    auto* src = IMG_LoadTexture(renderer.get(), pandaPath);
-    cen::texture_handle good{src};
-    CHECK(good);
-    CHECK(good.get());
-    SDL_DestroyTexture(src);
-  });
-}
-
-TEST_CASE("texture(SDL_Texture*)", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    CHECK_NOTHROW(cen::texture(IMG_LoadTexture(renderer.get(), pandaPath)));
-    CHECK_THROWS_AS(cen::texture(nullptr), cen::exception);
-  });
-}
-
-TEST_CASE("texture(renderer&, nn_czstring)", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    CHECK_THROWS_AS(cen::texture(renderer, "badpath"), cen::img_error);
-
-    cen::texture texture{renderer, pandaPath};
-    CHECK(texture.width() == pandaWidth);
-    CHECK(texture.height() == pandaHeight);
-  });
-}
-
-TEST_CASE("texture(renderer&, surface&)", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::surface surface{pandaPath};
-    CHECK_NOTHROW(cen::texture{renderer, surface});
-  });
-}
-
-TEST_CASE("texture(renderer&, pixel_format, access, int, int)", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    const auto pixelFormat = cen::pixel_format::rgba32;
-    const auto access = cen::texture_access::no_lock;
-    const auto width = 145;
-    const auto height = 85;
-
-    cen::texture texture{renderer, pixelFormat, access, {width, height}};
-
-    CHECK(pixelFormat == texture.format());
-    CHECK(access == texture.access());
-    CHECK(width == texture.width());
-    CHECK(height == texture.height());
-  });
-}
-
-TEST_CASE("texture(texture&&)", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-    cen::texture other = std::move(texture);
-
-    CHECK(!texture.get());
-    CHECK(other.get());
-  });
-}
-
-TEST_CASE("texture::operator=(texture&&)", "[texture]")
-{
-  SECTION("Self-assignment")
+ protected:
+  static void SetUpTestSuite()
   {
-    test([](cen::renderer& renderer) {
-      cen::texture texture{renderer, pandaPath};
-
-      texture = std::move(texture);
-      CHECK(texture.get());
-    });
+    m_window = std::make_unique<cen::window>();
+    m_renderer = std::make_unique<cen::renderer>(*m_window);
+    m_texture = std::make_unique<cen::texture>(*m_renderer, m_path);
   }
 
-  SECTION("Normal usage")
+  static void TearDownTestSuite()
   {
-    test([](cen::renderer& renderer) {
-      cen::texture texture{renderer, pandaPath};
-      cen::texture other{renderer, pandaPath};
-
-      other = std::move(texture);
-
-      CHECK(!texture.get());
-      CHECK(other.get());
-    });
-  }
-}
-
-TEST_CASE("texture::streaming", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    const auto pixelFormat = cen::pixel_format::rgba8888;
-    auto texture = cen::texture::streaming(renderer, pandaPath, pixelFormat);
-
-    CHECK(texture.format() == pixelFormat);
-
-    CHECK_THROWS_AS(
-        cen::texture::streaming(renderer, "", cen::pixel_format::yuy2),
-        cen::exception);
-  });
-}
-
-TEST_CASE("texture::set_pixel", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    auto texture = cen::texture::streaming(renderer,
-                                           pandaPath,
-                                           cen::pixel_format::rgba8888);
-
-    const auto [width, height] = texture.size();
-
-    CHECK_NOTHROW(texture.set_pixel({-1, -1}, cen::colors::black));
-    CHECK_NOTHROW(texture.set_pixel({-1, 0}, cen::colors::black));
-    CHECK_NOTHROW(texture.set_pixel({0, -1}, cen::colors::black));
-    CHECK_NOTHROW(texture.set_pixel({width, 0}, cen::colors::black));
-    CHECK_NOTHROW(texture.set_pixel({0, height}, cen::colors::black));
-    CHECK_NOTHROW(texture.set_pixel({width, height}, cen::colors::black));
-
-    CHECK_NOTHROW(texture.set_pixel({45, 23}, cen::colors::orange));
-  });
-}
-
-TEST_CASE("texture::set_blend_mode", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-
-    const auto mode = cen::blend_mode::blend;
-    texture.set_blend_mode(mode);
-
-    CHECK(mode == texture.get_blend_mode());
-  });
-}
-
-TEST_CASE("texture::set_alpha", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-
-    const auto alpha = 0x3A;
-    texture.set_alpha(alpha);
-
-    CHECK(alpha == texture.alpha());
-  });
-}
-
-TEST_CASE("texture::set_color_mod", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-
-    const auto color = cen::colors::misty_rose;
-    texture.set_color_mod(color);
-
-    const auto actual = texture.color_mod();
-    CHECK(color.red() == actual.red());
-    CHECK(color.green() == actual.green());
-    CHECK(color.blue() == actual.blue());
-    CHECK(color.alpha() == actual.alpha());
-  });
-}
-
-TEST_CASE("texture::set_scale_mode", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-
-    texture.set_scale_mode(cen::scale_mode::nearest);
-    CHECK(texture.get_scale_mode() == cen::scale_mode::nearest);
-
-    texture.set_scale_mode(cen::scale_mode::linear);
-    CHECK(texture.get_scale_mode() == cen::scale_mode::linear);
-
-    texture.set_scale_mode(cen::scale_mode::best);
-    CHECK(texture.get_scale_mode() == cen::scale_mode::best);
-  });
-}
-
-TEST_CASE("texture::is_static", "[texture]")
-{
-  test_with_window([](cen::renderer& renderer, const cen::window& window) {
-    cen::texture texture{renderer,
-                         window.get_pixel_format(),
-                         cen::texture_access::no_lock,
-                         {10, 10}};
-    CHECK(texture.is_static());
-  });
-}
-
-TEST_CASE("texture::is_streaming", "[texture]")
-{
-  test_with_window([](cen::renderer& renderer, const cen::window& window) {
-    cen::texture texture{renderer,
-                         window.get_pixel_format(),
-                         cen::texture_access::streaming,
-                         {10, 10}};
-    CHECK(texture.is_streaming());
-  });
-}
-
-TEST_CASE("texture::is_target", "[texture]")
-{
-  test_with_window([](cen::renderer& renderer, const cen::window& window) {
-    cen::texture texture{renderer,
-                         window.get_pixel_format(),
-                         cen::texture_access::target,
-                         {10, 10}};
-    CHECK(texture.is_target());
-  });
-}
-
-TEST_CASE("texture to_string", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-    cen::log::put(cen::to_string(texture));
-  });
-}
-
-TEST_CASE("texture stream operator", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-    std::cout << "COUT: " << texture << '\n';
-  });
-}
-
-TEST_CASE("texture::get", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-    CHECK(texture.get());
-  });
-}
-
-TEST_CASE("texture::format", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-    SDL_Texture* sdlTexture = texture.get();
-
-    cen::u32 format = 0;
-    SDL_QueryTexture(sdlTexture, &format, nullptr, nullptr, nullptr);
-
-    CHECK(texture.format() == static_cast<cen::pixel_format>(format));
-  });
-}
-
-TEST_CASE("texture::access", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-    SDL_Texture* sdlTexture = texture.get();
-
-    int access = 0;
-    SDL_QueryTexture(sdlTexture, nullptr, &access, nullptr, nullptr);
-
-    CHECK(texture.access() == static_cast<cen::texture_access>(access));
-  });
-}
-
-TEST_CASE("texture::color_mod", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-
-    CHECK(texture.color_mod() == cen::colors::white);
-  });
-}
-
-TEST_CASE("texture::get_scale_mode", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-
-    SDL_ScaleMode mode;
-    SDL_GetTextureScaleMode(texture.get(), &mode);
-    CHECK(static_cast<SDL_ScaleMode>(texture.get_scale_mode()) == mode);
-  });
-}
-
-TEST_CASE("texture::width", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture(renderer, pandaPath);
-    SDL_Texture* sdlTexture = texture.get();
-
-    CHECK(texture.width() == pandaWidth);
-
-    int width = 0;
-    SDL_QueryTexture(sdlTexture, nullptr, nullptr, &width, nullptr);
-    CHECK(texture.width() == width);
-  });
-}
-
-TEST_CASE("texture::height", "[texture]")
-{
-  test([](cen::renderer& renderer) {
-    cen::texture texture{renderer, pandaPath};
-    SDL_Texture* sdlTexture = texture.get();
-
-    CHECK(texture.height() == pandaHeight);
-
-    int height = 0;
-    SDL_QueryTexture(sdlTexture, nullptr, nullptr, nullptr, &height);
-    CHECK(texture.height() == height);
-  });
-}
-
-TEST_CASE("texture to SDL_Texture*", "[texture]")
-{
-  SECTION("Const")
-  {
-    test([](cen::renderer& renderer) {
-      const cen::texture texture{renderer, pandaPath};
-      CHECK(texture.operator const SDL_Texture*());
-    });
+    m_texture.reset();
+    m_renderer.reset();
+    m_window.reset();
   }
 
-  SECTION("Non-const")
-  {
-    test([](cen::renderer& renderer) {
-      cen::texture texture{renderer, pandaPath};
-      CHECK(texture.operator SDL_Texture*());
-    });
-  }
+  inline static std::unique_ptr<cen::window> m_window;
+  inline static std::unique_ptr<cen::renderer> m_renderer;
+  inline static std::unique_ptr<cen::texture> m_texture;
+
+  inline constexpr static auto m_path = "resources/panda.png";
+  inline constexpr static int m_imgWidth = 200;
+  inline constexpr static int m_imgHeight = 150;
+};
+
+TEST_F(TextureTest, PointerConstructor)
+{
+  EXPECT_THROW(cen::texture{nullptr}, cen::exception);
+
+  cen::texture texture{IMG_LoadTexture(m_renderer->get(), m_path)};
+  EXPECT_TRUE(texture.get());
+}
+
+TEST_F(TextureTest, PathConstructor)
+{
+  EXPECT_THROW(cen::texture(*m_renderer, "badpath"), cen::img_error);
+
+  EXPECT_EQ(m_imgWidth, m_texture->width());
+  EXPECT_EQ(m_imgHeight, m_texture->height());
+}
+
+TEST_F(TextureTest, SurfaceConstructor)
+{
+  const cen::surface surface{m_path};
+  EXPECT_NO_THROW(cen::texture(*m_renderer, surface));
+}
+
+TEST_F(TextureTest, CustomizationConstructor)
+{
+  constexpr auto format = cen::pixel_format::rgba32;
+  constexpr auto access = cen::texture_access::no_lock;
+  constexpr auto width = 145;
+  constexpr auto height = 85;
+  constexpr cen::iarea size{width, height};
+
+  const cen::texture texture{*m_renderer, format, access, size};
+
+  EXPECT_EQ(format, texture.format());
+  EXPECT_EQ(access, texture.access());
+  EXPECT_EQ(size, texture.size());
+  EXPECT_EQ(width, texture.width());
+  EXPECT_EQ(height, texture.height());
+}
+
+TEST_F(TextureTest, Streaming)
+{
+  const auto format = m_window->get_pixel_format();
+
+  EXPECT_THROW(cen::texture::streaming(*m_renderer, "abc", format),
+               cen::exception);
+
+  auto texture = cen::texture::streaming(*m_renderer, m_path, format);
+  EXPECT_EQ(format, texture.format());
+  EXPECT_EQ(cen::texture_access::streaming, texture.access());
+  EXPECT_TRUE(texture.is_streaming());
+}
+
+TEST_F(TextureTest, SetPixel)
+{
+  constexpr auto format = cen::pixel_format::rgba8888;
+  constexpr auto color = cen::colors::black;
+
+  auto texture = cen::texture::streaming(*m_renderer, m_path, format);
+  const auto [width, height] = texture.size();
+
+  EXPECT_NO_THROW(texture.set_pixel({-1, -1}, color));
+  EXPECT_NO_THROW(texture.set_pixel({-1, 0}, color));
+  EXPECT_NO_THROW(texture.set_pixel({0, -1}, color));
+  EXPECT_NO_THROW(texture.set_pixel({width, 0}, color));
+  EXPECT_NO_THROW(texture.set_pixel({0, height}, color));
+  EXPECT_NO_THROW(texture.set_pixel({width, height}, color));
+  EXPECT_NO_THROW(texture.set_pixel({45, 23}, color));
+}
+
+TEST_F(TextureTest, SetBlendMode)
+{
+  const auto previous = m_texture->get_blend_mode();
+
+  constexpr auto mode = cen::blend_mode::blend;
+  m_texture->set_blend_mode(mode);
+
+  EXPECT_EQ(mode, m_texture->get_blend_mode());
+
+  m_texture->set_blend_mode(previous);
+}
+
+TEST_F(TextureTest, SetAlpha)
+{
+  const auto previous = m_texture->alpha();
+
+  constexpr auto alpha = 0x3A;
+  m_texture->set_alpha(alpha);
+
+  EXPECT_EQ(alpha, m_texture->alpha());
+
+  m_texture->set_alpha(previous);
+}
+
+TEST_F(TextureTest, SetColorMod)
+{
+  const auto previous = m_texture->color_mod();
+
+  constexpr auto color = cen::colors::misty_rose;
+  m_texture->set_color_mod(color);
+
+  const auto actualColor = m_texture->color_mod();
+  EXPECT_EQ(color, actualColor);
+
+  m_texture->set_color_mod(previous);
+}
+
+TEST_F(TextureTest, SetScaleMode)
+{
+  const auto previous = m_texture->get_scale_mode();
+
+  m_texture->set_scale_mode(cen::scale_mode::nearest);
+  EXPECT_EQ(cen::scale_mode::nearest, m_texture->get_scale_mode());
+
+  m_texture->set_scale_mode(cen::scale_mode::linear);
+  EXPECT_EQ(cen::scale_mode::linear, m_texture->get_scale_mode());
+
+  m_texture->set_scale_mode(cen::scale_mode::best);
+  EXPECT_EQ(cen::scale_mode::best, m_texture->get_scale_mode());
+
+  m_texture->set_scale_mode(previous);
+}
+
+TEST_F(TextureTest, IsStatic)
+{
+  const cen::texture texture{*m_renderer,
+                             m_window->get_pixel_format(),
+                             cen::texture_access::no_lock,
+                             {10, 10}};
+  EXPECT_TRUE(texture.is_static());
+}
+
+TEST_F(TextureTest, IsStreaming)
+{
+  EXPECT_FALSE(m_texture->is_streaming());
+
+  const auto format = m_window->get_pixel_format();
+  const cen::texture streamingTexture =
+      cen::texture::streaming(*m_renderer, m_path, format);
+  EXPECT_TRUE(streamingTexture.is_streaming());
+}
+
+TEST_F(TextureTest, IsTarget)
+{
+  EXPECT_FALSE(m_texture->is_target());
+
+  const auto format = m_window->get_pixel_format();
+  const cen::texture target{*m_renderer,
+                            format,
+                            cen::texture_access::target,
+                            {10, 10}};
+  EXPECT_TRUE(target.is_target());
+}
+
+TEST_F(TextureTest, Format)
+{
+  cen::u32 format{};
+  SDL_QueryTexture(m_texture->get(), &format, nullptr, nullptr, nullptr);
+
+  const auto actual = static_cast<cen::pixel_format>(format);
+  EXPECT_EQ(actual, m_texture->format());
+}
+
+TEST_F(TextureTest, Access)
+{
+  int access{};
+  SDL_QueryTexture(m_texture->get(), nullptr, &access, nullptr, nullptr);
+
+  const auto actual = static_cast<cen::texture_access>(access);
+  EXPECT_EQ(actual, m_texture->access());
+}
+
+TEST_F(TextureTest, ColorMod)
+{
+  EXPECT_EQ(cen::colors::white, m_texture->color_mod());
+}
+
+TEST_F(TextureTest, GetScaleMode)
+{
+  SDL_ScaleMode mode;
+  SDL_GetTextureScaleMode(m_texture->get(), &mode);
+
+  EXPECT_EQ(mode, static_cast<SDL_ScaleMode>(m_texture->get_scale_mode()));
+}
+
+TEST_F(TextureTest, Width)
+{
+  EXPECT_EQ(m_imgWidth, m_texture->width());
+
+  int width{};
+  SDL_QueryTexture(m_texture->get(), nullptr, nullptr, &width, nullptr);
+
+  EXPECT_EQ(width, m_texture->width());
+}
+
+TEST_F(TextureTest, Height)
+{
+  EXPECT_EQ(m_imgHeight, m_texture->height());
+
+  int height{};
+  SDL_QueryTexture(m_texture->get(), nullptr, nullptr, nullptr, &height);
+
+  EXPECT_EQ(height, m_texture->height());
+}
+
+TEST_F(TextureTest, ConversionToPointer)
+{
+  EXPECT_TRUE(m_texture->operator SDL_Texture*());
+  EXPECT_TRUE(m_texture->operator const SDL_Texture*());
+}
+
+TEST_F(TextureTest, Get)
+{
+  EXPECT_TRUE(m_texture->get());
+}
+
+TEST_F(TextureTest, ToString)
+{
+  cen::log::put(cen::to_string(*m_texture));
+}
+
+TEST_F(TextureTest, StreamOperator)
+{
+  std::cout << "COUT: " << *m_texture << '\n';
 }

@@ -11,7 +11,7 @@ namespace {
 
 auto dummy = [](void*) noexcept -> int {
   using namespace cen::literals;
-  cen::thread::sleep(10_ms);
+  cen::thread::sleep(2_ms);
   return 0;
 };
 
@@ -116,7 +116,7 @@ TEST(Thread, Get)
 TEST(Thread, Sleep)
 {
   using ms = cen::milliseconds<cen::u32>;
-  EXPECT_NO_THROW(cen::thread::sleep(ms{10}));
+  EXPECT_NO_THROW(cen::thread::sleep(ms{2}));
   EXPECT_NO_THROW(cen::thread::sleep(ms{0}));
 }
 

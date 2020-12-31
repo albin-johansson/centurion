@@ -1,6 +1,5 @@
 #include "sound_effect.hpp"
 
-#include <algorithm>
 #include <type_traits>
 
 #include "detail/to_string.hpp"
@@ -71,7 +70,7 @@ void sound_effect::fade_out(milliseconds<int> ms) noexcept  // NOLINT
 
 void sound_effect::set_volume(int volume) noexcept
 {
-  Mix_VolumeChunk(m_chunk.get(), std::clamp(volume, 0, max_volume()));
+  Mix_VolumeChunk(m_chunk.get(), detail::clamp(volume, 0, max_volume()));
 }
 
 auto sound_effect::is_playing() const noexcept -> bool

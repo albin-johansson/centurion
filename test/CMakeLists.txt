@@ -65,6 +65,7 @@ if (CEN_AUDIO)
       PUBLIC CEN_AUDIO)
 endif ()
 
+add_header_only_lib(libFFF lib/fff lib/fff/fff.h)
 include(CTest)
 
 target_include_directories(${CENTURION_TEST_TARGET}
@@ -107,7 +108,8 @@ target_link_libraries(${CENTURION_TEST_TARGET}
     PUBLIC ${SDL2_TTF_LIBRARIES}
     PUBLIC ${CENTURION_IMPORT_LIB}
     PUBLIC gtest
-    PUBLIC gmock)
+    PUBLIC gmock
+    PUBLIC libFFF)
 
 add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 

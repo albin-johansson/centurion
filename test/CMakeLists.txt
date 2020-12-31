@@ -69,6 +69,7 @@ set(TEST_FILES
     unittests/event/multi_gesture_event_test.cpp
     unittests/event/quit_event_test.cpp
     unittests/event/text_editing_event_test.cpp
+    unittests/event/text_input_event_test.cpp
     )
 
 #if (CEN_AUDIO)

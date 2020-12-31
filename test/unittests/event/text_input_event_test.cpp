@@ -1,33 +1,30 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("text_input_event::set_window_id", "[text_input_event]")
+TEST(TextInputEvent, SetWindowId)
 {
   cen::text_input_event event;
 
-  const auto id = 23;
+  constexpr auto id = 23;
   event.set_window_id(id);
 
-  CHECK(event.window_id() == id);
+  EXPECT_EQ(id, event.window_id());
 }
 
-TEST_CASE("text_input_event::window_id", "[text_input_event]")
+TEST(TextInputEvent, WindowId)
 {
-  SDL_TextInputEvent sdlEvent{SDL_TEXTINPUT, 0, 8};
-  cen::text_input_event event{sdlEvent};
+  SDL_TextInputEvent sdl{};
+  sdl.type = SDL_TEXTINPUT;
+  sdl.windowID = 8;
 
-  CHECK(event.window_id() == sdlEvent.windowID);
+  const cen::text_input_event event{sdl};
+  EXPECT_EQ(sdl.windowID, event.window_id());
 }
 
-TEST_CASE("text_input_event::text_utf8", "[text_input_event]")
+TEST(TextInputEvent, TextUtf8)
 {
-  SDL_TextInputEvent sdlEvent{SDL_TEXTINPUT, 1, 1, "hello"};
-  cen::text_input_event event{sdlEvent};
-  CHECK_THAT(event.text_utf8().data(), Catch::Equals("hello"));
-}
-
-TEST_CASE("text_input_event()", "[text_input_event]")
-{
-  CHECK_NOTHROW(cen::text_input_event{{}});
+  const SDL_TextInputEvent sdl{SDL_TEXTINPUT, 1, 1, "hello"};
+  const cen::text_input_event event{sdl};
+  EXPECT_EQ("hello", event.text_utf8());
 }

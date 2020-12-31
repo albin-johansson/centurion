@@ -1,149 +1,149 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("mouse_motion_event::set_window_id", "[mouse_motion_event]")
+TEST(MouseMotionEvent, SetWindowId)
 {
   cen::mouse_motion_event event;
 
-  const auto id = 8;
+  constexpr auto id = 8;
   event.set_window_id(id);
 
-  CHECK(event.window_id() == id);
+  EXPECT_EQ(id, event.window_id());
 }
 
-TEST_CASE("mouse_motion_event::set_which", "[mouse_motion_event]")
+TEST(MouseMotionEvent, SetWhich)
 {
   cen::mouse_motion_event event;
 
-  const auto which = 65;
+  constexpr auto which = 65;
   event.set_which(which);
 
-  CHECK(event.which() == which);
+  EXPECT_EQ(which, event.which());
 }
 
-TEST_CASE("mouse_motion_event::set_state", "[mouse_motion_event]")
+TEST(MouseMotionEvent, SetState)
 {
   cen::mouse_motion_event event;
 
-  const auto state = SDL_BUTTON_LMASK | SDL_BUTTON_RMASK;
+  constexpr auto state = SDL_BUTTON_LMASK | SDL_BUTTON_RMASK;
   event.set_state(state);
 
-  CHECK(event.state() == state);
+  EXPECT_EQ(state, event.state());
 }
 
-TEST_CASE("mouse_motion_event::set_x", "[mouse_motion_event]")
+TEST(MouseMotionEvent, SetX)
 {
   cen::mouse_motion_event event;
 
-  const auto x = 745;
+  constexpr auto x = 745;
   event.set_x(x);
 
-  CHECK(event.x() == x);
+  EXPECT_EQ(x, event.x());
 }
 
-TEST_CASE("mouse_motion_event::set_y", "[mouse_motion_event]")
+TEST(MouseMotionEvent, SetY)
 {
   cen::mouse_motion_event event;
 
-  const auto y = 123;
+  constexpr auto y = 123;
   event.set_y(y);
 
-  CHECK(event.y() == y);
+  EXPECT_EQ(y, event.y());
 }
 
-TEST_CASE("mouse_motion_event::set_dx", "[mouse_motion_event]")
+TEST(MouseMotionEvent, SetDx)
 {
   cen::mouse_motion_event event;
 
-  const auto dx = -456;
+  constexpr auto dx = -456;
   event.set_dx(dx);
 
-  CHECK(event.dx() == dx);
+  EXPECT_EQ(dx, event.dx());
 }
 
-TEST_CASE("mouse_motion_event::set_dy", "[mouse_motion_event]")
+TEST(MouseMotionEvent, SetDy)
 {
   cen::mouse_motion_event event;
 
-  const auto dy = 835;
+  constexpr auto dy = 835;
   event.set_dy(dy);
 
-  CHECK(event.dy() == dy);
+  EXPECT_EQ(dy, event.dy());
 }
 
-TEST_CASE("mouse_motion_event::pressed", "[mouse_motion_event]")
+TEST(MouseMotionEvent, Pressed)
 {
   cen::mouse_motion_event event;
   event.set_state(SDL_BUTTON_LMASK | SDL_BUTTON_MMASK);
 
-  CHECK(event.pressed(cen::mouse_button::left));
-  CHECK(event.pressed(cen::mouse_button::middle));
+  EXPECT_TRUE(event.pressed(cen::mouse_button::left));
+  EXPECT_TRUE(event.pressed(cen::mouse_button::middle));
 
-  CHECK(!event.pressed(cen::mouse_button::right));
-  CHECK(!event.pressed(cen::mouse_button::x1));
-  CHECK(!event.pressed(cen::mouse_button::x2));
+  EXPECT_FALSE(event.pressed(cen::mouse_button::right));
+  EXPECT_FALSE(event.pressed(cen::mouse_button::x1));
+  EXPECT_FALSE(event.pressed(cen::mouse_button::x2));
 }
 
-TEST_CASE("mouse_motion_event::window_id", "[mouse_motion_event]")
+TEST(MouseMotionEvent, WindowId)
 {
-  SDL_MouseMotionEvent sdlEvent;
-  sdlEvent.windowID = 45;
-  cen::mouse_motion_event event{sdlEvent};
+  SDL_MouseMotionEvent sdl;
+  sdl.windowID = 45;
 
-  CHECK(event.window_id() == sdlEvent.windowID);
+  const cen::mouse_motion_event event{sdl};
+  EXPECT_EQ(sdl.windowID, event.window_id());
 }
 
-TEST_CASE("mouse_motion_event::which", "[mouse_motion_event]")
+TEST(MouseMotionEvent, Which)
 {
-  SDL_MouseMotionEvent sdlEvent;
-  sdlEvent.which = 77;
-  cen::mouse_motion_event event{sdlEvent};
+  SDL_MouseMotionEvent sdl;
+  sdl.which = 77;
 
-  CHECK(event.which() == sdlEvent.which);
+  const cen::mouse_motion_event event{sdl};
+  EXPECT_EQ(sdl.which, event.which());
 }
 
-TEST_CASE("mouse_motion_event::state", "[mouse_motion_event]")
+TEST(MouseMotionEvent, State)
 {
-  SDL_MouseMotionEvent sdlEvent;
-  sdlEvent.state = SDL_BUTTON_LMASK;
-  cen::mouse_motion_event event{sdlEvent};
+  SDL_MouseMotionEvent sdl;
+  sdl.state = SDL_BUTTON_LMASK;
 
-  CHECK(event.state() == sdlEvent.state);
+  const cen::mouse_motion_event event{sdl};
+  EXPECT_EQ(sdl.state, event.state());
 }
 
-TEST_CASE("mouse_motion_event::x", "[mouse_motion_event]")
+TEST(MouseMotionEvent, X)
 {
-  SDL_MouseMotionEvent sdlEvent;
-  sdlEvent.x = 1867;
-  cen::mouse_motion_event event{sdlEvent};
+  SDL_MouseMotionEvent sdl;
+  sdl.x = 1'867;
 
-  CHECK(event.x() == sdlEvent.x);
+  const cen::mouse_motion_event event{sdl};
+  EXPECT_EQ(sdl.x, event.x());
 }
 
-TEST_CASE("mouse_motion_event::y", "[mouse_motion_event]")
+TEST(MouseMotionEvent, Y)
 {
-  SDL_MouseMotionEvent sdlEvent;
-  sdlEvent.y = 454;
-  cen::mouse_motion_event event{sdlEvent};
+  SDL_MouseMotionEvent sdl;
+  sdl.y = 454;
 
-  CHECK(event.y() == sdlEvent.y);
+  const cen::mouse_motion_event event{sdl};
+  EXPECT_EQ(sdl.y, event.y());
 }
 
-TEST_CASE("mouse_motion_event::dx", "[mouse_motion_event]")
+TEST(MouseMotionEvent, Dx)
 {
-  SDL_MouseMotionEvent sdlEvent;
-  sdlEvent.xrel = 78;
-  cen::mouse_motion_event event{sdlEvent};
+  SDL_MouseMotionEvent sdl;
+  sdl.xrel = 78;
 
-  CHECK(event.dx() == sdlEvent.xrel);
+  const cen::mouse_motion_event event{sdl};
+  EXPECT_EQ(sdl.xrel, event.dx());
 }
 
-TEST_CASE("mouse_motion_event::dy", "[mouse_motion_event]")
+TEST(MouseMotionEvent, Dy)
 {
-  SDL_MouseMotionEvent sdlEvent;
-  sdlEvent.yrel = -564;
-  cen::mouse_motion_event event{sdlEvent};
+  SDL_MouseMotionEvent sdl;
+  sdl.yrel = -564;
 
-  CHECK(event.dy() == sdlEvent.yrel);
+  const cen::mouse_motion_event event{sdl};
+  EXPECT_EQ(sdl.yrel, event.dy());
 }

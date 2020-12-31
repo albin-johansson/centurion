@@ -84,7 +84,7 @@ class common_event
   common_event() noexcept = default;
 
   /**
-   * \brief Creates a CommonEvent and copies the supplied event.
+   * \brief Creates a common_event and copies the supplied event.
    *
    * \param event the event that will be copied.
    *
@@ -94,7 +94,7 @@ class common_event
   {}
 
   /**
-   * \brief Creates a CommonEvent and moves the contents of the supplied event.
+   * \brief Creates a common_event and moves the contents of the supplied event.
    *
    * \param event the event that will be moved.
    *
@@ -102,13 +102,6 @@ class common_event
    */
   explicit common_event(T&& event) : m_event{std::move(event)}
   {}
-
-  /**
-   * \brief Default virtual destructor.
-   *
-   * \since 4.0.0
-   */
-  ~common_event() noexcept = default;
 
   /**
    * \brief Sets the timestamp that is associated with the creation of the
@@ -119,7 +112,7 @@ class common_event
    *
    * \since 4.0.0
    */
-  void set_time(u32 timestamp) noexcept
+  void set_time(const u32 timestamp) noexcept
   {
     m_event.timestamp = timestamp;
   }
@@ -131,7 +124,7 @@ class common_event
    *
    * \since 4.0.0
    */
-  void set_type(event_type type) noexcept
+  void set_type(const event_type type) noexcept
   {
     m_event.type = static_cast<u32>(type);
   }
@@ -1151,7 +1144,7 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
   joy_button_event() noexcept;
 
   /**
-   * \brief Creates a JoyButtonEvent based on the supplied event.
+   * \brief Creates a joy_button_event based on the supplied event.
    *
    * \param event the event that will be copied.
    *
@@ -1270,7 +1263,7 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
   joy_device_event() noexcept;
 
   /**
-   * \brief Creates a JoyDeviceEvent that is based on the supplied SDL event.
+   * \brief Creates a joy_device_event that is based on the supplied SDL event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -1713,7 +1706,8 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
   mouse_button_event() noexcept;
 
   /**
-   * \brief Creates a MouseButtonEvent that is based on the supplied SDL event.
+   * \brief Creates a mouse_button_event that is based on the supplied SDL
+   * event.
    *
    * \param event the SDL event that will be copied.
    *
@@ -2943,8 +2937,8 @@ static_assert(validate_event<touch_finger_event, SDL_TouchFingerEvent>());
  *
  * \brief Mirrors the `SDL_WindowEventID` enum.
  *
- * \details Depending on the event ID of a `WindowEvent` instance, the
- * `WindowEvent::data_1()` and `WindowEvent::data_2()` methods have special
+ * \details Depending on the event ID of a `window_event` instance, the
+ * `window_event::data_1()` and `window_event::data_2()` methods have special
  * meanings.
  *
  * <table style="width:100%">
@@ -3371,7 +3365,7 @@ class event final
    * \details This method is useful for checking the event type before
    * calling `get<T>`, to avoid exceptions being thrown.
    *
-   * \tparam T the event type that will be checked, e.g. `WindowEvent`.
+   * \tparam T the event type that will be checked, e.g. `window_event`.
    *
    * \return `true` if the event is of the specified type; `false` otherwise.
    *

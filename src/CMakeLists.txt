@@ -65,8 +65,6 @@ set(SOURCE_FILES
     ../include/detail/to_string.hpp
     ../include/detail/stack_resource.hpp
 
-    core/exception.cpp
-
     misc/log.cpp
 
     graphics/texture.cpp

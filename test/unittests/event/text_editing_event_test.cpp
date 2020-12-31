@@ -1,98 +1,84 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("text_editing_event::set_window_id", "[text_editing_event]")
+TEST(TextEditingEvent, SetWindowId)
 {
-  cen::text_editing_event event{};
+  cen::text_editing_event event;
 
-  const auto id = 8;
+  constexpr auto id = 8;
   event.set_window_id(id);
 
-  CHECK(event.window_id() == id);
+  EXPECT_EQ(id, event.window_id());
 }
 
-TEST_CASE("text_editing_event::set_start", "[text_editing_event]")
+TEST(TextEditingEvent, SetStart)
 {
-  cen::text_editing_event event{};
+  cen::text_editing_event event;
 
-  const auto start = 4;
+  constexpr auto start = 4;
   event.set_start(start);
 
-  CHECK(event.start() == start);
+  EXPECT_EQ(start, event.start());
 }
 
-TEST_CASE("text_editing_event::set_length", "[text_editing_event]")
+TEST(TextEditingEvent, SetLength)
 {
-  cen::text_editing_event event{};
+  cen::text_editing_event event;
 
-  const auto length = 9;
+  constexpr auto length = 9;
   event.set_length(length);
 
-  CHECK(event.length() == length);
+  EXPECT_EQ(length, event.length());
 
-  SECTION("Value less than 0")
-  {
-    event.set_length(-1);
-    CHECK(event.length() == 0);
-  }
+  event.set_length(-1);
+  EXPECT_EQ(0, event.length());
 
-  SECTION("Value greater than 32")
-  {
-    event.set_length(33);
-    CHECK(event.length() == 32);
-  }
+  event.set_length(33);
+  EXPECT_EQ(32, event.length());
 }
 
-TEST_CASE("text_editing_event::window_id", "[text_editing_event]")
+TEST(TextEditingEvent, WindowId)
 {
-  SDL_TextEditingEvent sdlEvent{};
-  sdlEvent.windowID = 7;
-  cen::text_editing_event event{sdlEvent};
+  SDL_TextEditingEvent sdl{};
+  sdl.windowID = 7;
 
-  CHECK(event.window_id() == sdlEvent.windowID);
+  const cen::text_editing_event event{sdl};
+  EXPECT_EQ(sdl.windowID, event.window_id());
 }
 
-TEST_CASE("text_editing_event::start", "[text_editing_event]")
+TEST(TextEditingEvent, Start)
 {
-  SDL_TextEditingEvent sdlEvent{};
-  sdlEvent.start = 4;
-  cen::text_editing_event event{sdlEvent};
+  SDL_TextEditingEvent sdl{};
+  sdl.start = 4;
 
-  CHECK(event.start() == sdlEvent.start);
+  const cen::text_editing_event event{sdl};
+  EXPECT_EQ(sdl.start, event.start());
 }
 
-TEST_CASE("text_editing_event::length", "[text_editing_event]")
+TEST(TextEditingEvent, Length)
 {
-  SECTION("Good length")
-  {
-    SDL_TextEditingEvent sdlEvent{};
-    sdlEvent.length = 4;
-    cen::text_editing_event event{sdlEvent};
+  {  // Good length
+    SDL_TextEditingEvent sdl{};
+    sdl.length = 4;
 
-    CHECK(event.length() == sdlEvent.length);
+    const cen::text_editing_event event{sdl};
+    EXPECT_EQ(sdl.length, event.length());
   }
 
-  SECTION("Underflow length")
-  {
-    SDL_TextEditingEvent sdlEvent{};
-    sdlEvent.length = -1;
-    cen::text_editing_event event{sdlEvent};
+  {  // Underflow length
+    SDL_TextEditingEvent sdl{};
+    sdl.length = -1;
 
-    CHECK(event.length() == 0);
+    const cen::text_editing_event event{sdl};
+    EXPECT_EQ(0, event.length());
   }
 
-  SECTION("Overflow length")
-  {
-    SDL_TextEditingEvent sdlEvent{};
-    sdlEvent.length = 33;
-    cen::text_editing_event event{sdlEvent};
+  {  // Overflow length
+    SDL_TextEditingEvent sdl{};
+    sdl.length = 33;
 
-    CHECK(event.length() == 32);
+    const cen::text_editing_event event{sdl};
+    EXPECT_EQ(32, event.length());
   }
-}
-
-TEST_CASE("text_editing_event()", "[text_editing_event]")
-{
-  CHECK_NOTHROW(cen::text_editing_event{{}});
 }

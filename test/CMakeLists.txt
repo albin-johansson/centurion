@@ -53,6 +53,8 @@ set(TEST_FILES
     unittests/event/controller_device_event_test.cpp
     unittests/event/dollar_gesture_event_test.cpp
     unittests/event/drop_event_test.cpp
+    unittests/event/event_test.cpp
+    unittests/event/event_type_test.cpp
     )
 
 #if (CEN_AUDIO)

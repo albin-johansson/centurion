@@ -3474,9 +3474,24 @@ class event final
    *
    * \return `true` if there is no internal event; `false` otherwise.
    *
+   * \deprecated Use `is_empty()` instead.
+   *
    * \since 5.0.0
    */
-  [[nodiscard]] auto empty() const noexcept -> bool
+  [[nodiscard, deprecated]] auto empty() const noexcept -> bool
+  {
+    return is_empty();
+  }
+
+  /**
+   * \brief Indicates whether or not there is an internal event stored in the
+   * instance.
+   *
+   * \return `true` if there is no internal event; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_empty() const noexcept -> bool
   {
     return is<std::monostate>();
   }

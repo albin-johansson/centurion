@@ -66,6 +66,7 @@ set(TEST_FILES
     unittests/event/mouse_motion_event_test.cpp
     unittests/event/mouse_wheel_event_test.cpp
     unittests/event/mouse_wheel_direction_test.cpp
+    unittests/event/multi_gesture_event_test.cpp
     )
 
 #if (CEN_AUDIO)

@@ -1,117 +1,117 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("multi_gesture_event::set_touch_id", "[multi_gesture_event]")
+TEST(MultiGestureEvent, SetTouchId)
 {
   cen::multi_gesture_event event;
 
-  const auto id = 3;
+  constexpr auto id = 3;
   event.set_touch_id(id);
 
-  CHECK(event.touch_id() == id);
+  EXPECT_EQ(id, event.touch_id());
 }
 
-TEST_CASE("multi_gesture_event::set_delta_theta", "[multi_gesture_event]")
+TEST(MultiGestureEvent, SetDeltaTheta)
 {
   cen::multi_gesture_event event;
 
-  const auto dTheta = 65;
+  constexpr auto dTheta = 65;
   event.set_delta_theta(dTheta);
 
-  CHECK(event.delta_theta() == dTheta);
+  EXPECT_EQ(dTheta, event.delta_theta());
 }
 
-TEST_CASE("multi_gesture_event::set_delta_distance", "[multi_gesture_event]")
+TEST(MultiGestureEvent, SetDeltaDistance)
 {
   cen::multi_gesture_event event;
 
-  const auto dDistance = -79;
+  constexpr auto dDistance = -79;
   event.set_delta_distance(dDistance);
 
-  CHECK(event.delta_distance() == dDistance);
+  EXPECT_EQ(dDistance, event.delta_distance());
 }
 
-TEST_CASE("multi_gesture_event::set_center_x", "[multi_gesture_event]")
+TEST(MultiGestureEvent, SetCenterX)
 {
   cen::multi_gesture_event event;
 
-  const auto centerX = 154;
+  constexpr auto centerX = 154;
   event.set_center_x(centerX);
 
-  CHECK(event.center_x() == centerX);
+  EXPECT_EQ(centerX, event.center_x());
 }
 
-TEST_CASE("multi_gesture_event::set_center_y", "[multi_gesture_event]")
+TEST(MultiGestureEvent, SetCenterY)
 {
   cen::multi_gesture_event event;
 
-  const auto centerY = 867;
+  constexpr auto centerY = 867;
   event.set_center_y(centerY);
 
-  CHECK(event.center_y() == centerY);
+  EXPECT_EQ(centerY, event.center_y());
 }
 
-TEST_CASE("multi_gesture_event::set_fingers", "[multi_gesture_event]")
+TEST(MultiGestureEvent, SetFingers)
 {
   cen::multi_gesture_event event;
 
-  const auto fingers = 3;
+  constexpr auto fingers = 3;
   event.set_fingers(fingers);
 
-  CHECK(event.fingers() == fingers);
+  EXPECT_EQ(fingers, event.fingers());
 }
 
-TEST_CASE("multi_gesture_event::touch_id", "[multi_gesture_event]")
+TEST(MultiGestureEvent, TouchId)
 {
-  SDL_MultiGestureEvent sdlEvent;
-  sdlEvent.touchId = 54;
-  cen::multi_gesture_event event{sdlEvent};
+  SDL_MultiGestureEvent sdl;
+  sdl.touchId = 54;
 
-  CHECK(event.touch_id() == sdlEvent.touchId);
+  const cen::multi_gesture_event event{sdl};
+  EXPECT_EQ(sdl.touchId, event.touch_id());
 }
 
-TEST_CASE("multi_gesture_event::delta_theta", "[multi_gesture_event]")
+TEST(MultiGestureEvent, DeltaTheta)
 {
-  SDL_MultiGestureEvent sdlEvent;
-  sdlEvent.dTheta = 98;
-  cen::multi_gesture_event event{sdlEvent};
+  SDL_MultiGestureEvent sdl;
+  sdl.dTheta = 98;
 
-  CHECK(event.delta_theta() == sdlEvent.dTheta);
+  const cen::multi_gesture_event event{sdl};
+  EXPECT_EQ(sdl.dTheta, event.delta_theta());
 }
 
-TEST_CASE("multi_gesture_event::delta_distance", "[multi_gesture_event]")
+TEST(MultiGestureEvent, DeltaDistance)
 {
-  SDL_MultiGestureEvent sdlEvent;
-  sdlEvent.dDist = -87;
-  cen::multi_gesture_event event{sdlEvent};
+  SDL_MultiGestureEvent sdl;
+  sdl.dDist = -87;
 
-  CHECK(event.delta_distance() == sdlEvent.dDist);
+  const cen::multi_gesture_event event{sdl};
+  EXPECT_EQ(sdl.dDist, event.delta_distance());
 }
 
-TEST_CASE("multi_gesture_event::center_x", "[multi_gesture_event]")
+TEST(MultiGestureEvent, CenterX)
 {
-  SDL_MultiGestureEvent sdlEvent;
-  sdlEvent.x = 564;
-  cen::multi_gesture_event event{sdlEvent};
+  SDL_MultiGestureEvent sdl;
+  sdl.x = 564;
 
-  CHECK(event.center_x() == sdlEvent.x);
+  const cen::multi_gesture_event event{sdl};
+  EXPECT_EQ(sdl.x, event.center_x());
 }
 
-TEST_CASE("multi_gesture_event::center_y", "[multi_gesture_event]")
+TEST(MultiGestureEvent, CenterY)
 {
-  SDL_MultiGestureEvent sdlEvent;
-  sdlEvent.y = 913;
-  cen::multi_gesture_event event{sdlEvent};
+  SDL_MultiGestureEvent sdl;
+  sdl.y = 913;
 
-  CHECK(event.center_y() == sdlEvent.y);
+  const cen::multi_gesture_event event{sdl};
+  EXPECT_EQ(sdl.y, event.center_y());
 }
 
-TEST_CASE("multi_gesture_event::fingers", "[multi_gesture_event]")
+TEST(MultiGestureEvent, Fingers)
 {
-  SDL_MultiGestureEvent sdlEvent;
-  sdlEvent.numFingers = 2;
-  cen::multi_gesture_event event{sdlEvent};
+  SDL_MultiGestureEvent sdl;
+  sdl.numFingers = 2;
 
-  CHECK(event.fingers() == sdlEvent.numFingers);
+  const cen::multi_gesture_event event{sdl};
+  EXPECT_EQ(sdl.numFingers, event.fingers());
 }

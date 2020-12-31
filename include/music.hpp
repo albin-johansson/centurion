@@ -73,8 +73,8 @@ enum class fade_status
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(fade_status lhs,
-                                               Mix_Fading rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(fade_status lhs,
+                                        Mix_Fading rhs) noexcept -> bool
 {
   return static_cast<Mix_Fading>(lhs) == rhs;
 }
@@ -84,8 +84,8 @@ enum class fade_status
  *
  * \ingroup audio
  */
-[[nodiscard]] inline constexpr auto operator==(Mix_Fading lhs,
-                                               fade_status rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(Mix_Fading lhs,
+                                        fade_status rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -104,8 +104,8 @@ enum class fade_status
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(fade_status lhs,
-                                               Mix_Fading rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(fade_status lhs,
+                                        Mix_Fading rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -115,8 +115,8 @@ enum class fade_status
  *
  * \ingroup audio
  */
-[[nodiscard]] inline constexpr auto operator!=(Mix_Fading lhs,
-                                               Mix_Fading rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(Mix_Fading lhs, Mix_Fading rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);  // NOLINT
 }
@@ -157,9 +157,8 @@ enum class music_type
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(music_type lhs,
-                                               Mix_MusicType rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(music_type lhs,
+                                        Mix_MusicType rhs) noexcept -> bool
 {
   return static_cast<Mix_MusicType>(lhs) == rhs;
 }
@@ -169,8 +168,8 @@ enum class music_type
  *
  * \ingroup audio
  */
-[[nodiscard]] inline constexpr auto operator==(Mix_MusicType lhs,
-                                               music_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(Mix_MusicType lhs,
+                                        music_type rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -187,9 +186,8 @@ enum class music_type
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(music_type lhs,
-                                               Mix_MusicType rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(music_type lhs,
+                                        Mix_MusicType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -199,8 +197,8 @@ enum class music_type
  *
  * \ingroup audio
  */
-[[nodiscard]] inline constexpr auto operator!=(Mix_MusicType lhs,
-                                               music_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(Mix_MusicType lhs,
+                                        music_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

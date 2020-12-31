@@ -283,9 +283,8 @@ auto operator<<(std::ostream& stream, const scan_code& scanCode)
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(const scan_code& lhs,
-                                               const scan_code& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const scan_code& lhs,
+                                        const scan_code& rhs) noexcept -> bool
 {
   return lhs.get() == rhs.get();
 }
@@ -302,9 +301,8 @@ auto operator<<(std::ostream& stream, const scan_code& scanCode)
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(const scan_code& lhs,
-                                               const scan_code& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const scan_code& lhs,
+                                        const scan_code& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

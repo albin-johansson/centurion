@@ -81,8 +81,8 @@ enum class device_type
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator==(device_type lhs,
-                                               SDL_TouchDeviceType rhs) noexcept
+[[nodiscard]] constexpr auto operator==(device_type lhs,
+                                        SDL_TouchDeviceType rhs) noexcept
     -> bool
 {
   return static_cast<SDL_TouchDeviceType>(lhs) == rhs;
@@ -91,8 +91,8 @@ enum class device_type
 /**
  * \copydoc operator==(device_type, SDL_TouchDeviceType)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_TouchDeviceType lhs,
-                                               device_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(SDL_TouchDeviceType lhs,
+                                        device_type rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -107,8 +107,8 @@ enum class device_type
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator!=(device_type lhs,
-                                               SDL_TouchDeviceType rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(device_type lhs,
+                                        SDL_TouchDeviceType rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -117,8 +117,8 @@ enum class device_type
 /**
  * \copydoc operator!=(device_type, SDL_TouchDeviceType)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_TouchDeviceType lhs,
-                                               device_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_TouchDeviceType lhs,
+                                        device_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -192,7 +192,7 @@ auto get_finger(SDL_TouchID id, int index) noexcept
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto touch_mouse_id() noexcept -> u32
+[[nodiscard]] constexpr auto touch_mouse_id() noexcept -> u32
 {
   return SDL_TOUCH_MOUSEID;
 }
@@ -205,7 +205,7 @@ auto get_finger(SDL_TouchID id, int index) noexcept
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto mouse_touch_id() noexcept -> SDL_TouchID
+[[nodiscard]] constexpr auto mouse_touch_id() noexcept -> SDL_TouchID
 {
   return SDL_MOUSE_TOUCHID;
 }

@@ -349,9 +349,8 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(const color& lhs,
-                                               const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs,
+                                        const color& rhs) noexcept -> bool
 {
   return (lhs.red() == rhs.red()) && (lhs.green() == rhs.green()) &&
          (lhs.blue() == rhs.blue()) && (lhs.alpha() == rhs.alpha());
@@ -362,9 +361,8 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator==(const color& lhs,
-                                               const SDL_Color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs,
+                                        const SDL_Color& rhs) noexcept -> bool
 {
   return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) &&
          (lhs.blue() == rhs.b) && (lhs.alpha() == rhs.a);
@@ -375,9 +373,8 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator==(const SDL_Color& lhs,
-                                               const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_Color& lhs,
+                                        const color& rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -396,9 +393,9 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(
-    const color& lhs,
-    const SDL_MessageBoxColor& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const color& lhs,
+                                        const SDL_MessageBoxColor& rhs) noexcept
+    -> bool
 {
   return (lhs.red() == rhs.r) && (lhs.green() == rhs.g) &&
          (lhs.blue() == rhs.b);
@@ -409,9 +406,8 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator==(const SDL_MessageBoxColor& lhs,
-                                               const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_MessageBoxColor& lhs,
+                                        const color& rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -428,9 +424,8 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(const color& lhs,
-                                               const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs,
+                                        const color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -440,9 +435,8 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator!=(const color& lhs,
-                                               const SDL_Color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs,
+                                        const SDL_Color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -452,9 +446,8 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator!=(const SDL_Color& lhs,
-                                               const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_Color& lhs,
+                                        const color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -473,9 +466,9 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(
-    const color& lhs,
-    const SDL_MessageBoxColor& rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const color& lhs,
+                                        const SDL_MessageBoxColor& rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -485,9 +478,8 @@ inline auto operator<<(std::ostream& stream, const color& color)
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator!=(const SDL_MessageBoxColor& lhs,
-                                               const color& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_MessageBoxColor& lhs,
+                                        const color& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

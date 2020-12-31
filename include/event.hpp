@@ -193,7 +193,7 @@ class common_event
  * \since 4.0.0
  */
 template <typename T, typename E>
-[[nodiscard]] inline constexpr auto validate_event() noexcept -> bool
+[[nodiscard]] constexpr auto validate_event() noexcept -> bool
 {
   return !std::has_virtual_destructor_v<T> &&
          std::is_nothrow_copy_constructible_v<T> &&
@@ -3077,9 +3077,8 @@ enum class window_event_id
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(window_event_id lhs,
-                                               SDL_WindowEventID rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(window_event_id lhs,
+                                        SDL_WindowEventID rhs) noexcept -> bool
 {
   return static_cast<SDL_WindowEventID>(lhs) == rhs;
 }
@@ -3089,9 +3088,8 @@ enum class window_event_id
  *
  * \ingroup event
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_WindowEventID lhs,
-                                               window_event_id rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(SDL_WindowEventID lhs,
+                                        window_event_id rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -3109,9 +3107,8 @@ enum class window_event_id
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(window_event_id lhs,
-                                               SDL_WindowEventID rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(window_event_id lhs,
+                                        SDL_WindowEventID rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -3121,9 +3118,8 @@ enum class window_event_id
  *
  * \ingroup event
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_WindowEventID lhs,
-                                               window_event_id rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_WindowEventID lhs,
+                                        window_event_id rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

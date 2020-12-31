@@ -125,8 +125,8 @@ enum class pixel_format
  *
  * \since 3.1.0
  */
-[[nodiscard]] inline constexpr auto operator==(pixel_format lhs,
-                                               SDL_PixelFormatEnum rhs) noexcept
+[[nodiscard]] constexpr auto operator==(pixel_format lhs,
+                                        SDL_PixelFormatEnum rhs) noexcept
     -> bool
 {
   return static_cast<SDL_PixelFormatEnum>(lhs) == rhs;
@@ -137,9 +137,8 @@ enum class pixel_format
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_PixelFormatEnum lhs,
-                                               pixel_format rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(SDL_PixelFormatEnum lhs,
+                                        pixel_format rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -156,8 +155,8 @@ enum class pixel_format
  *
  * \since 3.1.0
  */
-[[nodiscard]] inline constexpr auto operator!=(pixel_format lhs,
-                                               SDL_PixelFormatEnum rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(pixel_format lhs,
+                                        SDL_PixelFormatEnum rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -168,9 +167,8 @@ enum class pixel_format
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_PixelFormatEnum lhs,
-                                               pixel_format rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_PixelFormatEnum lhs,
+                                        pixel_format rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

@@ -84,9 +84,8 @@ enum class system_cursor
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(system_cursor lhs,
-                                               SDL_SystemCursor rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(system_cursor lhs,
+                                        SDL_SystemCursor rhs) noexcept -> bool
 {
   return static_cast<SDL_SystemCursor>(lhs) == rhs;
 }
@@ -96,9 +95,8 @@ enum class system_cursor
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_SystemCursor lhs,
-                                               system_cursor rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(SDL_SystemCursor lhs,
+                                        system_cursor rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -116,9 +114,8 @@ enum class system_cursor
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(system_cursor lhs,
-                                               SDL_SystemCursor rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(system_cursor lhs,
+                                        SDL_SystemCursor rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -128,9 +125,8 @@ enum class system_cursor
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_SystemCursor lhs,
-                                               system_cursor rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_SystemCursor lhs,
+                                        system_cursor rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

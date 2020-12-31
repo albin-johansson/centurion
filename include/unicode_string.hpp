@@ -386,7 +386,7 @@ namespace literals {
  *
  * \since 5.0.0
  */
-inline constexpr auto operator""_uni(char c) noexcept -> unicode
+constexpr auto operator""_uni(char c) noexcept -> unicode
 {
   return static_cast<unicode>(c);
 }
@@ -400,8 +400,7 @@ inline constexpr auto operator""_uni(char c) noexcept -> unicode
  *
  * \since 5.0.0
  */
-inline constexpr auto operator""_uni(unsigned long long int i) noexcept
-    -> unicode
+constexpr auto operator""_uni(unsigned long long int i) noexcept -> unicode
 {
   return static_cast<unicode>(i);
 }

@@ -932,9 +932,9 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator==(
-    joystick::power lhs,
-    SDL_JoystickPowerLevel rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(joystick::power lhs,
+                                        SDL_JoystickPowerLevel rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
 }
@@ -951,9 +951,8 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_JoystickPowerLevel lhs,
-                                               joystick::power rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(SDL_JoystickPowerLevel lhs,
+                                        joystick::power rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -970,9 +969,9 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator!=(
-    joystick::power lhs,
-    SDL_JoystickPowerLevel rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(joystick::power lhs,
+                                        SDL_JoystickPowerLevel rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -989,9 +988,8 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_JoystickPowerLevel lhs,
-                                               joystick::power rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_JoystickPowerLevel lhs,
+                                        joystick::power rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -1008,9 +1006,8 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator==(joystick::type lhs,
-                                               SDL_JoystickType rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(joystick::type lhs,
+                                        SDL_JoystickType rhs) noexcept -> bool
 {
   return static_cast<SDL_JoystickType>(lhs) == rhs;
 }
@@ -1027,9 +1024,8 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_JoystickType lhs,
-                                               joystick::type rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(SDL_JoystickType lhs,
+                                        joystick::type rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -1046,9 +1042,8 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator!=(joystick::type lhs,
-                                               SDL_JoystickType rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(joystick::type lhs,
+                                        SDL_JoystickType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -1065,9 +1060,8 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_JoystickType lhs,
-                                               joystick::type rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_JoystickType lhs,
+                                        joystick::type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

@@ -473,9 +473,8 @@ auto get_priority(category category) noexcept -> log::priority;
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(priority lhs,
-                                               SDL_LogPriority rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(priority lhs,
+                                        SDL_LogPriority rhs) noexcept -> bool
 {
   return static_cast<SDL_LogPriority>(lhs) == rhs;
 }
@@ -483,8 +482,8 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * \copydoc operator==(priority, SDL_LogPriority)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_LogPriority lhs,
-                                               priority rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(SDL_LogPriority lhs,
+                                        priority rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -500,9 +499,8 @@ auto get_priority(category category) noexcept -> log::priority;
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(priority lhs,
-                                               SDL_LogPriority rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(priority lhs,
+                                        SDL_LogPriority rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -510,8 +508,8 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * \copydoc operator!=(priority, SDL_LogPriority)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_LogPriority lhs,
-                                               priority rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_LogPriority lhs,
+                                        priority rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -526,9 +524,8 @@ auto get_priority(category category) noexcept -> log::priority;
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(category lhs,
-                                               SDL_LogCategory rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(category lhs,
+                                        SDL_LogCategory rhs) noexcept -> bool
 {
   return static_cast<SDL_LogCategory>(lhs) == rhs;
 }
@@ -536,8 +533,8 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * \copydoc operator==(category, SDL_LogCategory)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_LogCategory lhs,
-                                               category rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(SDL_LogCategory lhs,
+                                        category rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -552,9 +549,8 @@ auto get_priority(category category) noexcept -> log::priority;
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(category lhs,
-                                               SDL_LogCategory rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(category lhs,
+                                        SDL_LogCategory rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -562,8 +558,8 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * \copydoc operator!=(category, SDL_LogCategory)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_LogCategory lhs,
-                                               category rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_LogCategory lhs,
+                                        category rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

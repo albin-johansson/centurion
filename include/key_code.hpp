@@ -329,9 +329,8 @@ auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(const key_code& lhs,
-                                               const key_code& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const key_code& lhs,
+                                        const key_code& rhs) noexcept -> bool
 {
   return lhs.get() == rhs.get();
 }
@@ -348,9 +347,8 @@ auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(const key_code& lhs,
-                                               const key_code& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const key_code& lhs,
+                                        const key_code& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

@@ -1,64 +1,63 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("audio_device_event constructors", "[audio_device_event]")
+TEST(AudioDeviceEvent, Constructors)
 {
-  CHECK_NOTHROW(cen::audio_device_event{{}});
+  EXPECT_NO_THROW(cen::audio_device_event{});
 
   SDL_AudioDeviceEvent e;
-  CHECK_NOTHROW(cen::audio_device_event{e});
+  EXPECT_NO_THROW(cen::audio_device_event{e});
 }
 
-TEST_CASE("audio_device_event::set_which", "[audio_device_event]")
+TEST(AudioDeviceEvent, SetWhich)
 {
   cen::audio_device_event event;
 
   const auto which = 7;
   event.set_which(which);
 
-  CHECK(event.which() == which);
+  EXPECT_EQ(which, event.which());
 }
 
-TEST_CASE("audio_device_event::set_capture", "[audio_device_event]")
+TEST(AudioDeviceEvent, SetCapture)
 {
   cen::audio_device_event event;
 
   event.set_capture(true);
-  CHECK(event.capture());
-  CHECK(!event.output());
+  EXPECT_TRUE(event.capture());
+  EXPECT_FALSE(event.output());
 
   event.set_capture(false);
-  CHECK(!event.capture());
-  CHECK(event.output());
+  EXPECT_FALSE(event.capture());
+  EXPECT_TRUE(event.output());
 }
 
-TEST_CASE("audio_device_event::which", "[audio_device_event]")
+TEST(AudioDeviceEvent, Which)
 {
   SDL_AudioDeviceEvent sdl;
   sdl.which = 23;
 
   cen::audio_device_event event{sdl};
-
-  CHECK(event.which() == sdl.which);
+  EXPECT_EQ(sdl.which, event.which());
 }
 
-TEST_CASE("audio_device_event::output", "[audio_device_event]")
+TEST(AudioDeviceEvent, Output)
 {
   SDL_AudioDeviceEvent sdl;
-  sdl.iscapture = 0;
+  sdl.iscapture = SDL_FALSE;
 
   cen::audio_device_event event{sdl};
-
-  CHECK(event.output());
+  EXPECT_TRUE(event.output());
+  EXPECT_FALSE(event.capture());
 }
 
-TEST_CASE("audio_device_event::capture", "[audio_device_event]")
+TEST(AudioDeviceEvent, Capture)
 {
   SDL_AudioDeviceEvent sdl;
-  sdl.iscapture = 1;
+  sdl.iscapture = SDL_TRUE;
 
   cen::audio_device_event event{sdl};
-
-  CHECK(event.capture());
+  EXPECT_TRUE(event.capture());
+  EXPECT_FALSE(event.output());
 }

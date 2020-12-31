@@ -45,6 +45,8 @@ set(TEST_FILES
     unittests/thread/scoped_lock_test.cpp
     unittests/thread/semaphore_test.cpp
     unittests/thread/thread_test.cpp
+
+    unittests/event/audio_device_event_test.cpp
     )
 
 #if (CEN_AUDIO)

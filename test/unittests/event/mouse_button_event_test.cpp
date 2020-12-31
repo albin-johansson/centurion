@@ -1,154 +1,154 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("mouse_button_event::set_window_id", "[mouse_button_event]")
+TEST(MouseButtonEvent, SetWindowId)
 {
   cen::mouse_button_event event;
 
-  const auto id = 64;
+  constexpr auto id = 64;
   event.set_window_id(id);
 
-  CHECK(event.window_id() == id);
+  EXPECT_EQ(id, event.window_id());
 }
 
-TEST_CASE("mouse_button_event::set_which", "[mouse_button_event]")
+TEST(MouseButtonEvent, SetWhich)
 {
   cen::mouse_button_event event;
 
-  const auto which = 17;
+  constexpr auto which = 17;
   event.set_which(which);
 
-  CHECK(event.which() == which);
+  EXPECT_EQ(which, event.which());
 }
 
-TEST_CASE("mouse_button_event::set_button", "[mouse_button_event]")
+TEST(MouseButtonEvent, SetButton)
 {
   cen::mouse_button_event event;
 
-  const auto button = cen::mouse_button::right;
+  constexpr auto button = cen::mouse_button::right;
   event.set_button(button);
 
-  CHECK(event.button() == button);
+  EXPECT_EQ(button, event.button());
 }
 
-TEST_CASE("mouse_button_event::set_state", "[mouse_button_event]")
+TEST(MouseButtonEvent, SetState)
 {
   cen::mouse_button_event event;
 
-  const auto state = cen::button_state::released;
+  constexpr auto state = cen::button_state::released;
   event.set_state(state);
 
-  CHECK(event.state() == state);
+  EXPECT_EQ(state, event.state());
 }
 
-TEST_CASE("mouse_button_event::set_clicks", "[mouse_button_event]")
+TEST(MouseButtonEvent, SetClicks)
 {
   cen::mouse_button_event event;
 
-  const auto clicks = 2;
+  constexpr auto clicks = 2;
   event.set_clicks(clicks);
 
-  CHECK(event.clicks() == clicks);
+  EXPECT_EQ(clicks, event.clicks());
 }
 
-TEST_CASE("mouse_button_event::set_x", "[mouse_button_event]")
+TEST(MouseButtonEvent, SetX)
 {
   cen::mouse_button_event event;
 
-  const auto x = 645;
+  constexpr auto x = 645;
   event.set_x(x);
 
-  CHECK(event.x() == x);
+  EXPECT_EQ(x, event.x());
 }
 
-TEST_CASE("mouse_button_event::set_y", "[mouse_button_event]")
+TEST(MouseButtonEvent, SetY)
 {
   cen::mouse_button_event event;
 
-  const auto y = 177;
+  constexpr auto y = 177;
   event.set_y(y);
 
-  CHECK(event.y() == y);
+  EXPECT_EQ(y, event.y());
 }
 
-TEST_CASE("mouse_button_event::window_id", "[mouse_button_event]")
+TEST(MouseButtonEvent, WindowId)
 {
-  SDL_MouseButtonEvent sdlEvent;
-  sdlEvent.windowID = 75;
-  cen::mouse_button_event event{sdlEvent};
+  SDL_MouseButtonEvent sdl;
+  sdl.windowID = 75;
 
-  CHECK(event.window_id() == sdlEvent.windowID);
+  const cen::mouse_button_event event{sdl};
+  EXPECT_EQ(sdl.windowID, event.window_id());
 }
 
-TEST_CASE("mouse_button_event::which", "[mouse_button_event]")
+TEST(MouseButtonEvent, Which)
 {
-  SDL_MouseButtonEvent sdlEvent;
-  sdlEvent.which = 23;
-  cen::mouse_button_event event{sdlEvent};
+  SDL_MouseButtonEvent sdl;
+  sdl.which = 23;
 
-  CHECK(event.which() == sdlEvent.which);
+  const cen::mouse_button_event event{sdl};
+  EXPECT_EQ(sdl.which, event.which());
 }
 
-TEST_CASE("mouse_button_event::button", "[mouse_button_event]")
+TEST(MouseButtonEvent, Button)
 {
-  SDL_MouseButtonEvent sdlEvent;
-  sdlEvent.button = SDL_BUTTON_X1;
-  cen::mouse_button_event event{sdlEvent};
+  SDL_MouseButtonEvent sdl;
+  sdl.button = SDL_BUTTON_X1;
 
-  CHECK(event.button() == static_cast<cen::mouse_button>(sdlEvent.button));
+  const cen::mouse_button_event event{sdl};
+  EXPECT_EQ(sdl.button, static_cast<cen::u8>(event.button()));
 }
 
-TEST_CASE("mouse_button_event::state", "[mouse_button_event]")
+TEST(MouseButtonEvent, State)
 {
-  SDL_MouseButtonEvent sdlEvent;
-  sdlEvent.state = SDL_PRESSED;
-  cen::mouse_button_event event{sdlEvent};
+  SDL_MouseButtonEvent sdl;
+  sdl.state = SDL_PRESSED;
 
-  CHECK(event.state() == static_cast<cen::button_state>(sdlEvent.state));
+  const cen::mouse_button_event event{sdl};
+  EXPECT_EQ(sdl.state, static_cast<cen::u8>(event.state()));
 }
 
-TEST_CASE("mouse_button_event::pressed", "[mouse_button_event]")
+TEST(MouseButtonEvent, Pressed)
 {
-  SDL_MouseButtonEvent sdlEvent;
-  sdlEvent.state = SDL_PRESSED;
-  cen::mouse_button_event event{sdlEvent};
+  SDL_MouseButtonEvent sdl;
+  sdl.state = SDL_PRESSED;
 
-  CHECK(event.pressed());
+  const cen::mouse_button_event event{sdl};
+  EXPECT_TRUE(event.pressed());
 }
 
-TEST_CASE("mouse_button_event::released", "[mouse_button_event]")
+TEST(MouseButtonEvent, Released)
 {
-  SDL_MouseButtonEvent sdlEvent;
-  sdlEvent.state = SDL_RELEASED;
-  cen::mouse_button_event event{sdlEvent};
+  SDL_MouseButtonEvent sdl;
+  sdl.state = SDL_RELEASED;
 
-  CHECK(event.released());
+  const cen::mouse_button_event event{sdl};
+  EXPECT_TRUE(event.released());
 }
 
-TEST_CASE("mouse_button_event::clicks", "[mouse_button_event]")
+TEST(MouseButtonEvent, Clicks)
 {
-  SDL_MouseButtonEvent sdlEvent;
-  sdlEvent.clicks = 2;
-  cen::mouse_button_event event{sdlEvent};
+  SDL_MouseButtonEvent sdl;
+  sdl.clicks = 2;
 
-  CHECK(event.clicks() == sdlEvent.clicks);
+  const cen::mouse_button_event event{sdl};
+  EXPECT_EQ(sdl.clicks, event.clicks());
 }
 
-TEST_CASE("mouse_button_event::x", "[mouse_button_event]")
+TEST(MouseButtonEvent, X)
 {
-  SDL_MouseButtonEvent sdlEvent;
-  sdlEvent.x = 467;
-  cen::mouse_button_event event{sdlEvent};
+  SDL_MouseButtonEvent sdl;
+  sdl.x = 467;
 
-  CHECK(event.x() == sdlEvent.x);
+  const cen::mouse_button_event event{sdl};
+  EXPECT_EQ(sdl.x, event.x());
 }
 
-TEST_CASE("mouse_button_event::y", "[mouse_button_event]")
+TEST(MouseButtonEvent, Y)
 {
-  SDL_MouseButtonEvent sdlEvent;
-  sdlEvent.y = 887;
-  cen::mouse_button_event event{sdlEvent};
+  SDL_MouseButtonEvent sdl;
+  sdl.y = 887;
 
-  CHECK(event.y() == sdlEvent.y);
+  const cen::mouse_button_event event{sdl};
+  EXPECT_EQ(sdl.y, event.y());
 }

@@ -1,58 +1,57 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-using dummy_t = SDL_QuitEvent;
+using sdl_event = SDL_QuitEvent;  // A simple SDL event type for testing
+using common_event = cen::common_event<sdl_event>;
 
-TEST_CASE("common_event::set_time", "[common_event]")
+TEST(CommonEvent, SetTime)
 {
-  cen::common_event<dummy_t> event;
+  common_event event;
 
-  const auto time = 8934;
+  constexpr auto time = 8'934;
   event.set_time(time);
 
-  CHECK(event.time() == time);
+  EXPECT_EQ(time, event.time());
 }
 
-TEST_CASE("common_event::set_type", "[common_event]")
+TEST(CommonEvent, SetType)
 {
-  cen::common_event<dummy_t> event;
+  common_event event;
 
   const auto type = cen::event_type::app_low_memory;
   event.set_type(type);
 
-  CHECK(event.type() == type);
+  EXPECT_EQ(type, event.type());
 }
 
-TEST_CASE("common_event::time", "[common_event]")
+TEST(CommonEvent, Time)
 {
-  const auto time = 735;
+  constexpr auto time = 8'321;
 
-  dummy_t dummy;
-  dummy.timestamp = time;
+  sdl_event sdl;
+  sdl.timestamp = time;
 
-  cen::common_event<dummy_t> event{dummy};
-
-  CHECK(event.time() == time);
+  const common_event event{sdl};
+  EXPECT_EQ(time, event.time());
 }
 
-TEST_CASE("common_event::type", "[common_event]")
+TEST(CommonEvent, Type)
 {
-  dummy_t dummy;
-  dummy.type = SDL_MOUSEMOTION;
+  sdl_event sdl;
+  sdl.type = SDL_MOUSEMOTION;
 
-  cen::common_event<dummy_t> event{dummy};
-
-  CHECK(event.type() == cen::event_type::mouse_motion);
+  const common_event event{sdl};
+  EXPECT_EQ(cen::event_type::mouse_motion, event.type());
 }
 
-TEST_CASE("common_event conversions", "[common_event]")
+TEST(CommonEvent, Get)
 {
-  dummy_t dummy;
-  dummy.type = SDL_MOUSEMOTION;
+  sdl_event sdl;
+  sdl.type = SDL_MOUSEMOTION;
 
-  cen::common_event<dummy_t> event{dummy};
-  const auto internal = event.get();
+  const common_event event{sdl};
+  const auto& internal = event.get();
 
-  CHECK(internal.type == dummy.type);
+  EXPECT_EQ(sdl.type, internal.type);
 }

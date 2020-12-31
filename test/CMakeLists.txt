@@ -47,6 +47,7 @@ set(TEST_FILES
     unittests/thread/thread_test.cpp
 
     unittests/event/audio_device_event_test.cpp
+    unittests/event/common_event_test.cpp
     )
 
 #if (CEN_AUDIO)

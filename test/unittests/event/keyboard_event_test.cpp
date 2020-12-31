@@ -1,448 +1,386 @@
-#include <SDL.h>
-
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-namespace {
-
-auto get_events_one_mod_active(cen::key_modifier leftMod,
-                               cen::key_modifier rightMod) noexcept
-    -> std::pair<cen::keyboard_event, cen::keyboard_event>
-{
-  const auto createEvent = [](cen::key_modifier modifier) noexcept {
-    SDL_KeyboardEvent sdlEvent{};
-    sdlEvent.keysym.mod = static_cast<int>(modifier);
-    return cen::keyboard_event{sdlEvent};
-  };
-
-  const auto left = createEvent(leftMod);
-  const auto right = createEvent(rightMod);
-  return {left, right};
-}
-
-auto get_event_mod_flags(int modifierFlags) noexcept -> cen::keyboard_event
-{
-  SDL_KeyboardEvent sdlEvent{};
-  sdlEvent.keysym.mod = modifierFlags;
-  return cen::keyboard_event{sdlEvent};
-}
-
-}  // namespace
-
-TEST_CASE("keyboard_event::set_scan_code", "[keyboard_event]")
+TEST(KeyboardEvent, SetScanCode)
 {
   cen::keyboard_event event;
 
-  event.set_scan_code(SDL_SCANCODE_B);
-
-  CHECK(event.get_scan_code() == SDL_SCANCODE_B);
+  event.set_scan_code(cen::scancodes::b);
+  EXPECT_EQ(cen::scancodes::b, event.get_scan_code());
 }
 
-TEST_CASE("keyboard_event::set_key_code", "[keyboard_event]")
+TEST(KeyboardEvent, SetKeyCode)
 {
   cen::keyboard_event event;
 
-  event.set_key_code(SDLK_n);
-
-  CHECK(event.get_key_code() == SDLK_n);
+  event.set_key_code(cen::keycodes::n);
+  EXPECT_EQ(cen::keycodes::n, event.get_key_code());
 }
 
-TEST_CASE("keyboard_event::set_modifier", "[keyboard_event]")
+TEST(KeyboardEvent, SetModifier)
 {
   cen::keyboard_event event;
 
-  const auto shift = cen::key_modifier::left_shift;
-  const auto caps = cen::key_modifier::caps;
+  constexpr auto shift = cen::key_modifier::left_shift;
+  constexpr auto caps = cen::key_modifier::caps;
 
   event.set_modifier(shift, true);
-  CHECK(event.modifier_active(shift));
+  EXPECT_TRUE(event.modifier_active(shift));
 
   event.set_modifier(caps, true);
-
-  CHECK(event.modifier_active(shift));
-  CHECK(event.modifier_active(caps));
+  EXPECT_TRUE(event.modifier_active(shift));
+  EXPECT_TRUE(event.modifier_active(caps));
 
   event.set_modifier(shift, false);
-  CHECK(!event.modifier_active(shift));
-  CHECK(event.modifier_active(caps));
+  EXPECT_FALSE(event.modifier_active(shift));
+  EXPECT_TRUE(event.modifier_active(caps));
 }
 
-TEST_CASE("keyboard_event::set_repeated", "[keyboard_event]")
+TEST(KeyboardEvent, SetRepeated)
 {
   cen::keyboard_event event;
 
   event.set_repeated(true);
-  CHECK(event.repeated());
+  EXPECT_TRUE(event.repeated());
 
   event.set_repeated(false);
-  CHECK(!event.repeated());
+  EXPECT_FALSE(event.repeated());
 }
 
-TEST_CASE("keyboard_event::set_window_id", "[keyboard_event]")
+TEST(KeyboardEvent, SetWindowId)
 {
   cen::keyboard_event event;
 
-  const auto id = 79U;
+  constexpr auto id = 79;
   event.set_window_id(id);
 
-  CHECK(event.window_id() == id);
+  EXPECT_EQ(id, event.window_id());
 }
 
-TEST_CASE("keyboard_event::is_active", "[keyboard_event]")
+TEST(KeyboardEvent, IsActive)
 {
-  const auto createEvent = [](SDL_Scancode scancode,
-                              SDL_KeyCode keyCode) noexcept {
-    SDL_KeyboardEvent keyboardEvent{};
-    keyboardEvent.keysym.scancode = scancode;
-    keyboardEvent.keysym.sym = keyCode;
-    return keyboardEvent;
-  };
+  SDL_KeyboardEvent sdl{};
+  sdl.keysym.scancode = SDL_SCANCODE_Q;
+  sdl.keysym.sym = SDLK_d;
 
-  const cen::keyboard_event event{createEvent(SDL_SCANCODE_Q, SDLK_q)};
+  const cen::keyboard_event event{sdl};
 
-  CHECK(event.is_active(SDLK_q));
-  CHECK(event.is_active(SDL_SCANCODE_Q));
+  EXPECT_TRUE(event.is_active(cen::keycodes::d));
+  EXPECT_TRUE(event.is_active(cen::scancodes::q));
 
-  CHECK(!event.is_active(SDLK_e));
-  CHECK(!event.is_active(SDL_SCANCODE_E));
+  EXPECT_FALSE(event.is_active(cen::keycodes::x));
+  EXPECT_FALSE(event.is_active(cen::scancodes::o));
 }
 
-TEST_CASE("keyboard_event::modifier_active", "[keyboard_event]")
+TEST(KeyboardEvent, ModifierActive)
 {
-  const auto createEvent = []() noexcept {
-    SDL_KeyboardEvent event{};
+  SDL_KeyboardEvent sdl{};
+
+  SDL_Keysym keysym{};
+  keysym.mod = KMOD_LALT | KMOD_CAPS;
+
+  sdl.keysym = keysym;
+
+  const cen::keyboard_event event{sdl};
+
+  // Check that multiple key modifiers can be active at the same time
+  EXPECT_TRUE(event.modifier_active(cen::key_modifier::left_alt));
+  EXPECT_TRUE(event.modifier_active(cen::key_modifier::caps));
+}
+
+TEST(KeyboardEvent, ShiftActive)
+{
+  {  // No modifiers
+    const cen::keyboard_event event;
+    EXPECT_FALSE(event.shift_active());
+  }
+
+  {  // One modifier (Both LSHIFT and RSHIFT)
+    SDL_KeyboardEvent sdl{};
+
     SDL_Keysym keysym{};
-    keysym.mod = KMOD_LALT | KMOD_CAPS;
-    event.keysym = keysym;
-    return event;
-  };
+    keysym.mod = KMOD_SHIFT;
 
-  const cen::keyboard_event event{createEvent()};
+    sdl.keysym = keysym;
 
-  SECTION("Check that multiple key modifiers can be active at the same time")
-  {
-    CHECK(event.modifier_active(cen::key_modifier::left_alt));
-    CHECK(event.modifier_active(cen::key_modifier::caps));
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.shift_active());
+  }
+
+  {  // With other modifiers
+    SDL_KeyboardEvent sdl{};
+
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_RSHIFT | KMOD_CAPS | KMOD_LGUI;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.shift_active());
   }
 }
 
-TEST_CASE("keyboard_event::shift_active", "[keyboard_event]")
+TEST(KeyboardEvent, CtrlActive)
 {
-  SECTION("No modifiers")
-  {
-    const cen::keyboard_event event{{}};
-    CHECK(!event.shift_active());
+  {  // No modifiers
+    const cen::keyboard_event event;
+    EXPECT_FALSE(event.ctrl_active());
   }
 
-  SECTION("One active modifier")
-  {
-    const auto [left, right] =
-        get_events_one_mod_active(cen::key_modifier::left_shift,
-                                  cen::key_modifier::right_shift);
-    CHECK(left.shift_active());
-    CHECK(right.shift_active());
+  {  // One modifier (Both LCTRL and RCTRL)
+    SDL_KeyboardEvent sdl{};
+
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_CTRL;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.ctrl_active());
   }
 
-  SECTION("Both modifiers active")
-  {
-    const cen::keyboard_event event =
-        get_event_mod_flags(KMOD_LSHIFT | KMOD_RSHIFT);
-    CHECK(event.shift_active());
-  }
+  {  // With other modifiers
+    SDL_KeyboardEvent sdl{};
 
-  SECTION("With noise (other modifiers)")
-  {
-    const cen::keyboard_event event =
-        get_event_mod_flags(KMOD_LSHIFT | KMOD_RSHIFT | KMOD_CAPS | KMOD_LGUI);
-    CHECK(event.shift_active());
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_LCTRL | KMOD_ALT | KMOD_LGUI;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.ctrl_active());
   }
 }
 
-TEST_CASE("keyboard_event::ctrl_active", "[keyboard_event]")
+TEST(KeyboardEvent, AltActive)
 {
-  SECTION("No modifiers")
-  {
-    const cen::keyboard_event event{{}};
-    CHECK(!event.ctrl_active());
+  {  // No modifiers
+    const cen::keyboard_event event;
+    EXPECT_FALSE(event.alt_active());
   }
 
-  SECTION("One active modifier")
-  {
-    const auto [left, right] =
-        get_events_one_mod_active(cen::key_modifier::left_ctrl,
-                                  cen::key_modifier::right_ctrl);
-    CHECK(left.ctrl_active());
-    CHECK(right.ctrl_active());
+  {  // One modifier (Both LALT and RALT)
+    SDL_KeyboardEvent sdl{};
+
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_ALT;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.alt_active());
   }
 
-  SECTION("Both modifiers active")
-  {
-    const cen::keyboard_event event =
-        get_event_mod_flags(KMOD_LCTRL | KMOD_RCTRL);
-    CHECK(event.ctrl_active());
-  }
+  {  // With other modifiers
+    SDL_KeyboardEvent sdl{};
 
-  SECTION("With noise (other modifiers)")
-  {
-    const cen::keyboard_event event =
-        get_event_mod_flags(KMOD_LCTRL | KMOD_RCTRL | KMOD_CAPS | KMOD_LSHIFT);
-    CHECK(event.ctrl_active());
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_RALT | KMOD_RSHIFT | KMOD_CAPS;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.alt_active());
   }
 }
 
-TEST_CASE("keyboard_event::alt_active", "[keyboard_event]")
+TEST(KeyboardEvent, GuiActive)
 {
-  SECTION("No modifiers")
-  {
-    const cen::keyboard_event event{{}};
-    CHECK(!event.alt_active());
+  {  // No modifiers
+    const cen::keyboard_event event;
+    EXPECT_FALSE(event.gui_active());
   }
 
-  SECTION("One active modifier")
-  {
-    const auto [left, right] =
-        get_events_one_mod_active(cen::key_modifier::left_alt,
-                                  cen::key_modifier::right_alt);
-    CHECK(left.alt_active());
-    CHECK(right.alt_active());
+  {  // One modifier (Both LGUI and RGUI)
+    SDL_KeyboardEvent sdl{};
+
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_GUI;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.gui_active());
   }
 
-  SECTION("Both modifiers active")
-  {
-    const cen::keyboard_event event =
-        get_event_mod_flags(KMOD_LALT | KMOD_RALT);
-    CHECK(event.alt_active());
-  }
+  {  // With other modifiers
+    SDL_KeyboardEvent sdl{};
 
-  SECTION("With noise (other modifiers)")
-  {
-    const cen::keyboard_event event =
-        get_event_mod_flags(KMOD_LALT | KMOD_RALT | KMOD_RCTRL | KMOD_RGUI);
-    CHECK(event.alt_active());
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_LGUI | KMOD_RSHIFT | KMOD_CAPS;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.gui_active());
   }
 }
 
-TEST_CASE("keyboard_event::gui_active", "[keyboard_event]")
+TEST(KeyboardEvent, CapsActive)
 {
-  SECTION("No modifiers")
-  {
-    const cen::keyboard_event event{{}};
-    CHECK(!event.gui_active());
+  {  // No modifiers
+    const cen::keyboard_event event;
+    EXPECT_FALSE(event.caps_active());
   }
 
-  SECTION("One active modifier")
-  {
-    const auto [left, right] =
-        get_events_one_mod_active(cen::key_modifier::left_gui,
-                                  cen::key_modifier::right_gui);
-    CHECK(left.gui_active());
-    CHECK(right.gui_active());
+  {  // One modifier
+    SDL_KeyboardEvent sdl{};
+
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_CAPS;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.caps_active());
   }
 
-  SECTION("Both modifiers active")
-  {
-    const cen::keyboard_event event =
-        get_event_mod_flags(KMOD_LGUI | KMOD_RGUI);
-    CHECK(event.gui_active());
-  }
+  {  // With other modifiers
+    SDL_KeyboardEvent sdl{};
 
-  SECTION("With noise (other modifiers)")
-  {
-    const cen::keyboard_event event =
-        get_event_mod_flags(KMOD_LGUI | KMOD_RGUI | KMOD_RCTRL | KMOD_RSHIFT);
-    CHECK(event.gui_active());
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_CAPS | KMOD_RSHIFT | KMOD_LCTRL;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.caps_active());
   }
 }
 
-TEST_CASE("keyboard_event::caps_active", "[keyboard_event]")
+TEST(KeyboardEvent, NumActive)
 {
-  SECTION("No modifiers")
-  {
-    const cen::keyboard_event event{{}};
-    CHECK(!event.caps_active());
+  {  // No modifiers
+    const cen::keyboard_event event;
+    EXPECT_FALSE(event.num_active());
   }
 
-  SECTION("Active")
-  {
-    cen::keyboard_event event;
-    event.set_modifier(cen::key_modifier::caps, true);
-    CHECK(event.caps_active());
+  {  // One modifier
+    SDL_KeyboardEvent sdl{};
+
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_NUM;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.num_active());
   }
 
-  SECTION("With noise (other modifiers)")
-  {
-    const cen::keyboard_event event =
-        get_event_mod_flags(KMOD_RCTRL | KMOD_RSHIFT | KMOD_CAPS);
-    CHECK(event.caps_active());
+  {  // With other modifiers
+    SDL_KeyboardEvent sdl{};
+
+    SDL_Keysym keysym{};
+    keysym.mod = KMOD_NUM | KMOD_RSHIFT | KMOD_LCTRL;
+
+    sdl.keysym = keysym;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.num_active());
   }
 }
 
-TEST_CASE("keyboard_event::num_active", "[keyboard_event]")
+TEST(KeyboardEvent, Repeated)
 {
-  SECTION("No modifiers")
-  {
-    const cen::keyboard_event event{{}};
-    CHECK(!event.num_active());
-  }
-
-  SECTION("Active")
-  {
-    cen::keyboard_event event;
-    event.set_modifier(cen::key_modifier::num, true);
-    CHECK(event.num_active());
-  }
-
-  SECTION("With noise (other modifiers)")
-  {
-    const cen::keyboard_event event =
-        get_event_mod_flags(KMOD_RGUI | KMOD_RSHIFT | KMOD_NUM);
-    CHECK(event.num_active());
-  }
-}
-
-TEST_CASE("keyboard_event::repeated", "[keyboard_event]")
-{
-  const auto createEvent = [](int repeats) noexcept {
-    SDL_KeyboardEvent sdlEvent{};
-    sdlEvent.repeat = repeats;
-    return cen::keyboard_event{sdlEvent};
+  const auto createEvent = [](const int repeats) noexcept {
+    SDL_KeyboardEvent sdl{};
+    sdl.repeat = repeats;
+    return cen::keyboard_event{sdl};
   };
 
   const auto noRepeat = createEvent(0);
   const auto oneRepeat = createEvent(1);
   const auto twoRepeats = createEvent(2);
 
-  CHECK(!noRepeat.repeated());
-  CHECK(oneRepeat.repeated());
-  CHECK(twoRepeats.repeated());
+  EXPECT_FALSE(noRepeat.repeated());
+  EXPECT_TRUE(oneRepeat.repeated());
+  EXPECT_TRUE(twoRepeats.repeated());
 }
 
-TEST_CASE("keyboard_event::state", "[keyboard_event]")
+TEST(KeyboardEvent, State)
 {
-  SECTION("Check valid state")
-  {
-    const auto createEvent = []() noexcept {
-      SDL_KeyboardEvent event{};
-
-      event.keysym.sym = SDLK_ESCAPE;
-      event.state = SDL_PRESSED;
-
-      return cen::keyboard_event{event};
-    };
-
-    const auto event = createEvent();
-    CHECK(event.state() == cen::button_state::pressed);
+  {  // Default button state
+    const cen::keyboard_event event;
+    EXPECT_EQ(cen::button_state::released, event.state());
   }
 
-  SECTION("Default button state")
-  {
-    const cen::keyboard_event event{{}};
-    CHECK(event.state() == cen::button_state::released);
+  {  // Check valid state
+    SDL_KeyboardEvent sdl{};
+
+    sdl.keysym.sym = SDLK_ESCAPE;
+    sdl.state = SDL_PRESSED;
+
+    const cen::keyboard_event event{sdl};
+    EXPECT_EQ(cen::button_state::pressed, event.state());
   }
 }
 
-TEST_CASE("keyboard_event::released", "[keyboard_event]")
+TEST(KeyboardEvent, Released)
 {
-  SECTION("Check released")
-  {
-    const auto createEvent = []() noexcept {
-      SDL_KeyboardEvent event{};
+  {  // Released
+    SDL_KeyboardEvent sdl{};
+    sdl.state = SDL_RELEASED;
 
-      event.keysym.sym = SDLK_g;
-      event.keysym.scancode = SDL_SCANCODE_G;
-      event.state = SDL_RELEASED;
-
-      return cen::keyboard_event{event};
-    };
-
-    const auto event = createEvent();
-    CHECK(event.released());
-    CHECK(event.state() == cen::button_state::released);
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.released());
+    EXPECT_EQ(cen::button_state::released, event.state());
   }
 
-  SECTION("Not released")
-  {
-    const auto createEvent = []() noexcept {
-      SDL_KeyboardEvent event{};
+  {  // Not released
+    SDL_KeyboardEvent sdl{};
+    sdl.state = SDL_PRESSED;
 
-      event.state = SDL_PRESSED;
-
-      return cen::keyboard_event{event};
-    };
-
-    const auto event = createEvent();
-    CHECK(!event.released());
-    CHECK(event.pressed());
+    const cen::keyboard_event event{sdl};
+    EXPECT_FALSE(event.released());
   }
 }
 
-TEST_CASE("keyboard_event::pressed", "[keyboard_event]")
+TEST(KeyboardEvent, Pressed)
 {
-  SECTION("Check pressed")
-  {
-    const auto createEvent = []() noexcept {
-      SDL_KeyboardEvent event{};
+  {  // Pressed
+    SDL_KeyboardEvent sdl{};
+    sdl.state = SDL_PRESSED;
 
-      event.keysym.sym = SDLK_o;
-      event.keysym.scancode = SDL_SCANCODE_O;
-      event.state = SDL_PRESSED;
-
-      return cen::keyboard_event{event};
-    };
-
-    const auto event = createEvent();
-    CHECK(event.pressed());
-    CHECK(event.state() == cen::button_state::pressed);
+    const cen::keyboard_event event{sdl};
+    EXPECT_TRUE(event.pressed());
+    EXPECT_EQ(cen::button_state::pressed, event.state());
   }
 
-  SECTION("Not pressed")
-  {
-    const auto createEvent = []() noexcept {
-      SDL_KeyboardEvent event{};
+  {  // Not pressed
+    SDL_KeyboardEvent sdl{};
+    sdl.state = SDL_RELEASED;
 
-      event.state = SDL_RELEASED;
-
-      return cen::keyboard_event{event};
-    };
-
-    const auto event = createEvent();
-    CHECK(!event.pressed());
-    CHECK(event.released());
+    const cen::keyboard_event event{sdl};
+    EXPECT_FALSE(event.pressed());
   }
 }
 
-TEST_CASE("keyboard_event::get_scan_code", "[keyboard_event]")
+TEST(KeyboardEvent, GetScanCode)
 {
   cen::keyboard_event event;
-  const cen::scan_code original{SDL_SCANCODE_Q};
 
-  event.set_scan_code(original);
-  const auto code = event.get_scan_code();
+  constexpr auto code = cen::scancodes::q;
+  event.set_scan_code(code);
 
-  CHECK(original == code);
+  EXPECT_EQ(code, event.get_scan_code());
 }
 
-TEST_CASE("keyboard_event::get_key_code", "[keyboard_event]")
+TEST(KeyboardEvent, GetKeyCode)
 {
   cen::keyboard_event event;
-  const cen::key_code original{SDLK_x};
 
-  event.set_key_code(original);
-  const auto code = event.get_key_code();
+  constexpr auto code = cen::keycodes::x;
+  event.set_key_code(code);
 
-  CHECK(original == code);
+  EXPECT_EQ(code, event.get_key_code());
 }
 
-TEST_CASE("keyboard_event::window_id", "[keyboard_event]")
+TEST(KeyboardEvent, WindowId)
 {
-  const auto windowID = 72;
-  const auto createEvent = [windowID]() noexcept {
-    SDL_KeyboardEvent sdlEvent{};
-    sdlEvent.windowID = windowID;
-    return cen::keyboard_event{sdlEvent};
-  };
+  SDL_KeyboardEvent sdl{};
+  sdl.windowID = 72;
 
-  const auto event = createEvent();
-  CHECK(event.window_id() == windowID);
+  const cen::keyboard_event event{sdl};
+  EXPECT_EQ(sdl.windowID, event.window_id());
 }

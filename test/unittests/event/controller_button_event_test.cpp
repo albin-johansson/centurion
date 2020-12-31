@@ -1,83 +1,88 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("controller_button_event::set_button", "[controller_button_event]")
+TEST(ControllerButtonEvent, Constructors)
+{
+  EXPECT_NO_THROW(cen::controller_button_event{});
+
+  SDL_ControllerButtonEvent e;
+  EXPECT_NO_THROW(cen::controller_button_event{e});
+}
+
+TEST(ControllerButtonEvent, SetButton)
 {
   cen::controller_button_event event;
 
-  const auto button = cen::controller_button::a;
+  constexpr auto button = cen::controller_button::a;
   event.set_button(button);
 
-  CHECK(event.button() == button);
+  EXPECT_EQ(button, event.button());
 }
 
-TEST_CASE("controller_button_event::set_state", "[controller_button_event]")
+TEST(ControllerButtonEvent, SetState)
 {
   cen::controller_button_event event;
 
-  const auto state = cen::button_state::pressed;
+  constexpr auto state = cen::button_state::pressed;
   event.set_state(state);
 
-  CHECK(event.state() == state);
+  EXPECT_EQ(state, event.state());
 }
 
-TEST_CASE("controller_button_event::set_which", "[controller_button_event]")
+TEST(ControllerButtonEvent, SetWhich)
 {
   cen::controller_button_event event;
 
-  const auto which = 7;
+  constexpr auto which = 7;
   event.set_which(which);
 
-  CHECK(event.which() == which);
+  EXPECT_EQ(which, event.which());
 }
 
-TEST_CASE("controller_button_event::button", "[controller_button_event]")
+TEST(ControllerButtonEvent, Button)
 {
-  SDL_ControllerButtonEvent sdlEvent;
-  sdlEvent.button = SDL_CONTROLLER_BUTTON_A;
+  SDL_ControllerButtonEvent sdl;
+  sdl.button = SDL_CONTROLLER_BUTTON_A;
 
-  cen::controller_button_event event{sdlEvent};
-  CHECK(event.button() == cen::controller_button::a);
+  const cen::controller_button_event event{sdl};
+  EXPECT_EQ(cen::controller_button::a, event.button());
 }
 
-TEST_CASE("controller_button_event::state", "[controller_button_event]")
+TEST(ControllerButtonEvent, State)
 {
-  SDL_ControllerButtonEvent sdlEvent;
-  sdlEvent.state = SDL_RELEASED;
+  SDL_ControllerButtonEvent sdl;
+  sdl.state = SDL_RELEASED;
 
-  cen::controller_button_event event{sdlEvent};
-  CHECK(event.state() == cen::button_state::released);
+  const cen::controller_button_event event{sdl};
+  EXPECT_EQ(cen::button_state::released, event.state());
 }
 
-TEST_CASE("controller_button_event::released", "[controller_button_event]")
+TEST(ControllerButtonEvent, Released)
 {
-  SDL_ControllerButtonEvent sdlEvent;
-  sdlEvent.state = SDL_RELEASED;
+  SDL_ControllerButtonEvent sdl;
+  sdl.state = SDL_RELEASED;
 
-  cen::controller_button_event event{sdlEvent};
-  CHECK(event.released());
+  const cen::controller_button_event event{sdl};
+  EXPECT_TRUE(event.released());
+  EXPECT_FALSE(event.pressed());
 }
 
-TEST_CASE("controller_button_event::pressed", "[controller_button_event]")
+TEST(ControllerButtonEvent, Pressed)
 {
-  SDL_ControllerButtonEvent sdlEvent;
-  sdlEvent.state = SDL_PRESSED;
+  SDL_ControllerButtonEvent sdl;
+  sdl.state = SDL_PRESSED;
 
-  cen::controller_button_event event{sdlEvent};
-  CHECK(event.pressed());
+  const cen::controller_button_event event{sdl};
+  EXPECT_TRUE(event.pressed());
+  EXPECT_FALSE(event.released());
 }
 
-TEST_CASE("controller_button_event::which", "[controller_button_event]")
+TEST(ControllerButtonEvent, Which)
 {
-  SDL_ControllerButtonEvent sdlEvent;
-  sdlEvent.which = 16;
+  SDL_ControllerButtonEvent sdl;
+  sdl.which = 16;
 
-  cen::controller_button_event event{sdlEvent};
-  CHECK(event.which() == 16);
-}
-
-TEST_CASE("controller_button_event()", "[controller_button_event]")
-{
-  CHECK_NOTHROW(cen::controller_button_event{{}});
+  const cen::controller_button_event event{sdl};
+  EXPECT_EQ(16, event.which());
 }

@@ -26,6 +26,7 @@ set(TEST_FILES
     unittests/system/battery_test.cpp
     unittests/system/clipboard_test.cpp
     unittests/system/counter_test.cpp
+    unittests/system/cpu_test.cpp
 
     unittests/geometry/area_test.cpp
     unittests/geometry/rect_test.cpp

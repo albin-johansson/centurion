@@ -1,98 +1,98 @@
 #include "cpu.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("cpu::cache_line_size", "[cpu]")
+TEST(CPU, CacheLineSize)
 {
-  CHECK(cen::cpu::cache_line_size() == SDL_GetCPUCacheLineSize());
+  EXPECT_EQ(SDL_GetCPUCacheLineSize(), cen::cpu::cache_line_size());
 }
 
-TEST_CASE("cpu::cores", "[cpu]")
+TEST(CPU, Cores)
 {
-  CHECK(cen::cpu::cores() == SDL_GetCPUCount());
+  EXPECT_EQ(SDL_GetCPUCount(), cen::cpu::cores());
 }
 
-TEST_CASE("cpu::is_little_endian", "[cpu]")
+TEST(CPU, IsLittleEndian)
 {
-  CHECK(cen::cpu::is_little_endian() == (SDL_BYTEORDER == SDL_LIL_ENDIAN));
+  EXPECT_EQ(SDL_BYTEORDER == SDL_LIL_ENDIAN, cen::cpu::is_little_endian());
 }
 
-TEST_CASE("cpu::is_big_endian", "[cpu]")
+TEST(CPU, IsBigEndian)
 {
-  CHECK(cen::cpu::is_big_endian() == (SDL_BYTEORDER == SDL_BIG_ENDIAN));
+  EXPECT_EQ(SDL_BYTEORDER == SDL_BIG_ENDIAN, cen::cpu::is_big_endian());
 }
 
-TEST_CASE("cpu::has_rdtsc", "[cpu]")
+TEST(CPU, HasRDTSC)
 {
-  CHECK(cen::cpu::has_rdtsc() == static_cast<bool>(SDL_HasRDTSC()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasRDTSC()), cen::cpu::has_rdtsc());
 }
 
-TEST_CASE("cpu::has_altivec", "[cpu]")
+TEST(CPU, HasAltiVec)
 {
-  CHECK(cen::cpu::has_altivec() == static_cast<bool>(SDL_HasAltiVec()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasAltiVec()), cen::cpu::has_altivec());
 }
 
-TEST_CASE("cpu::has_mmx", "[cpu]")
+TEST(CPU, HasMMX)
 {
-  CHECK(cen::cpu::has_mmx() == static_cast<bool>(SDL_HasMMX()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasMMX()), cen::cpu::has_mmx());
 }
 
-TEST_CASE("cpu::has_3dnow", "[cpu]")
+TEST(CPU, Has3DNow)
 {
-  CHECK(cen::cpu::has_3dnow() == static_cast<bool>(SDL_Has3DNow()));
+  EXPECT_EQ(static_cast<bool>(SDL_Has3DNow()), cen::cpu::has_3dnow());
 }
 
-TEST_CASE("cpu::has_sse", "[cpu]")
+TEST(CPU, HasSSE)
 {
-  CHECK(cen::cpu::has_sse() == static_cast<bool>(SDL_HasSSE()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasSSE()), cen::cpu::has_sse());
 }
 
-TEST_CASE("cpu::has_sse2", "[cpu]")
+TEST(CPU, HasSSE2)
 {
-  CHECK(cen::cpu::has_sse2() == static_cast<bool>(SDL_HasSSE2()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasSSE2()), cen::cpu::has_sse2());
 }
 
-TEST_CASE("cpu::has_sse3", "[cpu]")
+TEST(CPU, HasSSE3)
 {
-  CHECK(cen::cpu::has_sse3() == static_cast<bool>(SDL_HasSSE3()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasSSE3()), cen::cpu::has_sse3());
 }
 
-TEST_CASE("cpu::has_sse41", "[cpu]")
+TEST(CPU, HasSSE41)
 {
-  CHECK(cen::cpu::has_sse41() == static_cast<bool>(SDL_HasSSE41()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasSSE41()), cen::cpu::has_sse41());
 }
 
-TEST_CASE("cpu::has_sse42", "[cpu]")
+TEST(CPU, HasSSE42)
 {
-  CHECK(cen::cpu::has_sse42() == static_cast<bool>(SDL_HasSSE42()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasSSE42()), cen::cpu::has_sse42());
 }
 
-TEST_CASE("cpu::has_avx", "[cpu]")
+TEST(CPU, HasAVX)
 {
-  CHECK(cen::cpu::has_avx() == static_cast<bool>(SDL_HasAVX()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasAVX()), cen::cpu::has_avx());
 }
 
-TEST_CASE("cpu::has_avx2", "[cpu]")
+TEST(CPU, HasAVX2)
 {
-  CHECK(cen::cpu::has_avx2() == static_cast<bool>(SDL_HasAVX2()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasAVX2()), cen::cpu::has_avx2());
 }
 
-TEST_CASE("cpu::has_avx512f", "[cpu]")
+TEST(CPU, HasAVX512f)
 {
-  CHECK(cen::cpu::has_avx512f() == static_cast<bool>(SDL_HasAVX512F()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasAVX512F()), cen::cpu::has_avx512f());
 }
 
-TEST_CASE("cpu::has_neon", "[cpu]")
+TEST(CPU, HasNEON)
 {
-  CHECK(cen::cpu::has_neon() == static_cast<bool>(SDL_HasNEON()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasNEON()), cen::cpu::has_neon());
 }
 
-TEST_CASE("cpu::has_arm_simd", "[cpu]")
+TEST(CPU, HasARMSIMD)
 {
-  CHECK(cen::cpu::has_arm_simd() == static_cast<bool>(SDL_HasARMSIMD()));
+  EXPECT_EQ(static_cast<bool>(SDL_HasARMSIMD()), cen::cpu::has_arm_simd());
 }
 
-TEST_CASE("cpu::simd_alignment", "[cpu]")
+TEST(CPU, SIMDAlignment)
 {
-  CHECK(cen::cpu::simd_alignment() == SDL_SIMDGetAlignment());
+  EXPECT_EQ(SDL_SIMDGetAlignment(), cen::cpu::simd_alignment());
 }

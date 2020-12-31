@@ -28,6 +28,7 @@ set(TEST_FILES
     unittests/system/clipboard_test.cpp
     unittests/system/counter_test.cpp
     unittests/system/cpu_test.cpp
+    unittests/system/platform_test.cpp
     unittests/system/pref_path_test.cpp
 
     unittests/geometry/area_test.cpp

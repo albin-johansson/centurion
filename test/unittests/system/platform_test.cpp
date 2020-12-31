@@ -1,54 +1,55 @@
 #include "platform.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
+
 #include <string>
 
-TEST_CASE("platform::id", "[platform]")
+TEST(Platform, Id)
 {
-  CHECK_NOTHROW(cen::platform::id());
+  EXPECT_NO_THROW(cen::platform::id());
 
 #ifdef __WIN32
-  CHECK(cen::platform::id() == cen::platform::platform_id::windows);
+  EXPECT_EQ(cen::platform::platform_id::windows, cen::platform::id());
 #elif __APPLE__
-  CHECK(cen::platform::id() == cen::platform::platform_id::mac_osx);
+  EXPECT_EQ(cen::platform::platform_id::mac_osx, cen::platform::id());
 #elif __linux__
-  CHECK(cen::platform::id() == cen::platform::platform_id::linuxx);
+  EXPECT_EQ(cen::platform::platform_id::linuxx, cen::platform::id());
 #elif __ANDROID__
-  CHECK(cen::platform::id() == cen::platform::platform_id::android);
+  EXPECT_EQ(cen::platform::platform_id::android, cen::platform::id());
 #endif
 }
 
-TEST_CASE("platform::is_windows", "[platform]")
+TEST(Platform, IsWindows)
 {
-  CHECK(cen::platform::is_windows() ==
-        (cen::platform::id() == cen::platform::platform_id::windows));
+  EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::windows,
+            cen::platform::is_windows());
 }
 
-TEST_CASE("platform::is_mac_osx", "[platform]")
+TEST(Platform, IsMacOSX)
 {
-  CHECK(cen::platform::is_mac_osx() ==
-        (cen::platform::id() == cen::platform::platform_id::mac_osx));
+  EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::mac_osx,
+            cen::platform::is_mac_osx());
 }
 
-TEST_CASE("platform::is_linux", "[platform]")
+TEST(Platform, IsLinux)
 {
-  CHECK(cen::platform::is_linux() ==
-        (cen::platform::id() == cen::platform::platform_id::linuxx));
+  EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::linuxx,
+            cen::platform::is_linux());
 }
 
-TEST_CASE("platform::is_ios", "[platform]")
+TEST(Platform, IsIOS)
 {
-  CHECK(cen::platform::is_ios() ==
-        (cen::platform::id() == cen::platform::platform_id::ios));
+  EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::ios,
+            cen::platform::is_ios());
 }
 
-TEST_CASE("platform::is_android", "[platform]")
+TEST(Platform, IsAndroid)
 {
-  CHECK(cen::platform::is_android() ==
-        (cen::platform::id() == cen::platform::platform_id::android));
+  EXPECT_EQ(cen::platform::id() == cen::platform::platform_id::android,
+            cen::platform::is_android());
 }
 
-TEST_CASE("platform::name", "[platform]")
+TEST(Platform, Name)
 {
-  CHECK(*cen::platform::name() == std::string{SDL_GetPlatform()});
+  EXPECT_EQ(std::string{SDL_GetPlatform()}, *cen::platform::name());
 }

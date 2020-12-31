@@ -1,70 +1,63 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("drop_event move constructor", "[drop_event]")
-{
-  CHECK_NOTHROW(cen::drop_event{{}});
-}
-
-TEST_CASE("drop_event::set_will_free_file", "[drop_event]")
+TEST(DropEvent, SetWillFreeFile)
 {
   cen::drop_event event;
 
   event.set_will_free_file(true);
-  CHECK(event.will_free_file());
+  EXPECT_TRUE(event.will_free_file());
 
   event.set_will_free_file(false);
-  CHECK(!event.will_free_file());
+  EXPECT_FALSE(event.will_free_file());
 }
 
-TEST_CASE("drop_event::set_file", "[drop_event]")
+TEST(DropEvent, SetFile)
 {
   cen::drop_event event;
-  CHECK_NOTHROW(event.set_file(nullptr));
+  EXPECT_NO_THROW(event.set_file(nullptr));
 
   // This is the only time in the tests that a drop_event should free the file,
   // check the code coverage reports in order to see if it's freed.
-  auto* file = static_cast<char*>(SDL_malloc(sizeof(char)));
-  event.set_file(file);
+  event.set_file(static_cast<char*>(SDL_malloc(sizeof(char))));
   event.set_will_free_file(true);
 }
 
-TEST_CASE("drop_event::set_window_id", "[drop_event]")
+TEST(DropEvent, SetWindowId)
 {
   cen::drop_event event;
 
-  const auto id = 84;
+  constexpr auto id = 84;
   event.set_window_id(id);
 
-  CHECK(event.window_id() == id);
+  EXPECT_EQ(id, event.window_id());
 }
 
-TEST_CASE("drop_event::will_free_file", "[drop_event]")
+TEST(DropEvent, WillFreeFile)
 {
-  cen::drop_event event;
-  CHECK(!event.will_free_file());
+  const cen::drop_event event;
+  EXPECT_FALSE(event.will_free_file());
 }
 
-TEST_CASE("drop_event::file", "[drop_event]")
+TEST(DropEvent, File)
 {
   char file = '1';  // pretend this is some raw data
-  SDL_DropEvent sdlEvent;
-  sdlEvent.file = &file;  // shouldn't be deleted, otherwise we're in trouble
 
-  cen::drop_event event{sdlEvent};
+  SDL_DropEvent sdl;
+  sdl.file = &file;  // shouldn't be deleted, otherwise we're in trouble
 
-  CHECK(event.file());
-  CHECK(*event.file() == file);
+  const cen::drop_event event{sdl};
+
+  ASSERT_TRUE(event.file());
+  EXPECT_EQ(file, *event.file());
 }
 
-TEST_CASE("drop_event::window_id", "[drop_event]")
+TEST(DropEvent, WindowId)
 {
-  SDL_DropEvent sdlEvent{};
-  sdlEvent.windowID = 32;
-  sdlEvent.file = nullptr;
+  SDL_DropEvent sdl{};
+  sdl.windowID = 32;
 
-  cen::drop_event event{sdlEvent};
-
-  CHECK(event.window_id() == sdlEvent.windowID);
+  const cen::drop_event event{sdl};
+  EXPECT_EQ(sdl.windowID, event.window_id());
 }

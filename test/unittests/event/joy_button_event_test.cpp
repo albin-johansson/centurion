@@ -1,83 +1,78 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("joy_button_event::set_which", "[joy_button_event]")
+TEST(JoyButtonEvent, SetWhich)
 {
   cen::joy_button_event event;
 
-  const auto which = 92;
+  constexpr auto which = 92;
   event.set_which(which);
 
-  CHECK(event.which() == which);
+  EXPECT_EQ(which, event.which());
 }
 
-TEST_CASE("joy_button_event::set_button", "[joy_button_event]")
+TEST(JoyButtonEvent, SetButton)
 {
   cen::joy_button_event event;
 
-  const auto button = 44;
+  constexpr auto button = 44;
   event.set_button(button);
 
-  CHECK(event.button() == button);
+  EXPECT_EQ(button, event.button());
 }
 
-TEST_CASE("joy_button_event::set_state", "[joy_button_event]")
+TEST(JoyButtonEvent, SetState)
 {
   cen::joy_button_event event;
 
-  const auto state = cen::button_state::pressed;
+  constexpr auto state = cen::button_state::pressed;
   event.set_state(state);
 
-  CHECK(event.state() == state);
+  EXPECT_EQ(state, event.state());
 }
 
-TEST_CASE("joy_button_event::which", "[joy_button_event]")
+TEST(JoyButtonEvent, Which)
 {
-  SDL_JoyButtonEvent sdlEvent;
-  sdlEvent.which = 27;
+  SDL_JoyButtonEvent sdl;
+  sdl.which = 27;
 
-  cen::joy_button_event event{sdlEvent};
-
-  CHECK(event.which() == sdlEvent.which);
+  const cen::joy_button_event event{sdl};
+  EXPECT_EQ(sdl.which, event.which());
 }
 
-TEST_CASE("joy_button_event::button", "[joy_button_event]")
+TEST(JoyButtonEvent, Button)
 {
-  SDL_JoyButtonEvent sdlEvent;
-  sdlEvent.button = 99;
+  SDL_JoyButtonEvent sdl;
+  sdl.button = 99;
 
-  cen::joy_button_event event{sdlEvent};
-
-  CHECK(event.button() == sdlEvent.button);
+  const cen::joy_button_event event{sdl};
+  EXPECT_EQ(sdl.button, event.button());
 }
 
-TEST_CASE("joy_button_event::state", "[joy_button_event]")
+TEST(JoyButtonEvent, State)
 {
-  SDL_JoyButtonEvent sdlEvent;
-  sdlEvent.state = SDL_RELEASED;
+  SDL_JoyButtonEvent sdl;
+  sdl.state = SDL_RELEASED;
 
-  cen::joy_button_event event{sdlEvent};
-
-  CHECK(event.state() == cen::button_state::released);
+  const cen::joy_button_event event{sdl};
+  EXPECT_EQ(cen::button_state::released, event.state());
 }
 
-TEST_CASE("joy_button_event::pressed", "[joy_button_event]")
+TEST(JoyButtonEvent, Pressed)
 {
-  SDL_JoyButtonEvent sdlEvent;
-  sdlEvent.state = SDL_PRESSED;
+  SDL_JoyButtonEvent sdl;
+  sdl.state = SDL_PRESSED;
 
-  cen::joy_button_event event{sdlEvent};
-
-  CHECK(event.pressed());
+  const cen::joy_button_event event{sdl};
+  EXPECT_TRUE(event.pressed());
 }
 
-TEST_CASE("joy_button_event::released", "[joy_button_event]")
+TEST(JoyButtonEvent, Released)
 {
-  SDL_JoyButtonEvent sdlEvent;
-  sdlEvent.state = SDL_RELEASED;
+  SDL_JoyButtonEvent sdl;
+  sdl.state = SDL_RELEASED;
 
-  cen::joy_button_event event{sdlEvent};
-
-  CHECK(event.released());
+  const cen::joy_button_event event{sdl};
+  EXPECT_TRUE(event.released());
 }

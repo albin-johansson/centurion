@@ -33,11 +33,11 @@
 
 #include <SDL_events.h>
 
-#include <optional>
-#include <string_view>
-#include <type_traits>
-#include <utility>
-#include <variant>
+#include <algorithm>    // clamp
+#include <optional>     // optional
+#include <string_view>  // string_view
+#include <utility>      // move
+#include <variant>      // variant, holds_alternative, monostate, get, get_if
 
 #include "centurion_api.hpp"
 #include "controller.hpp"
@@ -172,31 +172,6 @@ class common_event
 };
 
 /**
- * \brief Indicates whether or not a Centurion event type fulfills the event
- * type specification.
- *
- * \ingroup event
- *
- * \tparam T the Centurion event type that will be checked.
- * \tparam E the SDL event type that the Centurion event is mirroring.
- *
- * \return `true` if the supplied event type passed the requirements; `false`
- * otherwise.
- *
- * \since 4.0.0
- */
-template <typename T, typename E>
-[[nodiscard]] constexpr auto validate_event() noexcept -> bool
-{
-  return !std::has_virtual_destructor_v<T> &&
-         std::is_nothrow_copy_constructible_v<T> &&
-         std::is_nothrow_copy_assignable_v<T> &&
-         std::is_nothrow_move_constructible_v<T> &&
-         std::is_nothrow_move_assignable_v<T> &&
-         std::is_nothrow_constructible_v<T, E> && std::is_final_v<T>;
-}
-
-/**
  * \class audio_device_event
  *
  * \ingroup event
@@ -218,8 +193,8 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  audio_device_event() noexcept;
+  audio_device_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a audio device event based on the supplied SDL event.
@@ -228,8 +203,9 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept;
+  explicit audio_device_event(const SDL_AudioDeviceEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the audio device ID that is associated with the event.
@@ -238,8 +214,10 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(u32 which) noexcept;
+  void set_which(const u32 which) noexcept
+  {
+    m_event.which = which;
+  }
 
   /**
    * \brief Sets whether or not the audio device event is associated with a
@@ -250,8 +228,10 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_capture(bool capture) noexcept;
+  void set_capture(const bool capture) noexcept
+  {
+    m_event.iscapture = capture;
+  }
 
   /**
    * \brief Returns the audio device ID associated with the event.
@@ -260,8 +240,10 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> u32;
+  [[nodiscard]] auto which() const noexcept -> u32
+  {
+    return m_event.which;
+  }
 
   /**
    * \brief Indicates whether or not the audio device event is associated with
@@ -272,8 +254,10 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto output() const noexcept -> bool;
+  [[nodiscard]] auto output() const noexcept -> bool
+  {
+    return !capture();
+  }
 
   /**
    * \brief Indicates whether or not the audio device event is associated with
@@ -284,11 +268,11 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto capture() const noexcept -> bool;
+  [[nodiscard]] auto capture() const noexcept -> bool
+  {
+    return m_event.iscapture;
+  }
 };
-
-static_assert(validate_event<audio_device_event, SDL_AudioDeviceEvent>());
 
 /**
  * \class controller_axis_event
@@ -309,8 +293,8 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  controller_axis_event() noexcept;
+  controller_axis_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a controller axis event that is based on the supplied SDL
@@ -320,8 +304,9 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit controller_axis_event(const SDL_ControllerAxisEvent& event) noexcept;
+  explicit controller_axis_event(const SDL_ControllerAxisEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -331,8 +316,10 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(SDL_JoystickID which) noexcept;
+  void set_which(const SDL_JoystickID which) noexcept
+  {
+    m_event.which = which;
+  }
 
   /**
    * \brief Sets the game controller axis value associated with the event.
@@ -341,8 +328,10 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_axis(controller_axis axis) noexcept;
+  void set_axis(const controller_axis axis) noexcept
+  {
+    m_event.axis = static_cast<u8>(axis);
+  }
 
   /**
    * \brief Sets the axis value associated with the event.
@@ -351,8 +340,10 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_value(i16 value) noexcept;
+  void set_value(const i16 value) noexcept
+  {
+    m_event.value = value;
+  }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -361,8 +352,10 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> SDL_JoystickID;
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
 
   /**
    * \brief Returns the game controller axis value associated with the event.
@@ -373,8 +366,10 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto axis() const noexcept -> controller_axis;
+  [[nodiscard]] auto axis() const noexcept -> controller_axis
+  {
+    return static_cast<controller_axis>(m_event.axis);
+  }
 
   /**
    * \brief Returns the axis value associated with the event.
@@ -383,11 +378,11 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto value() const noexcept -> i16;
+  [[nodiscard]] auto value() const noexcept -> i16
+  {
+    return m_event.value;
+  }
 };
-
-static_assert(validate_event<controller_axis_event, SDL_ControllerAxisEvent>());
 
 /**
  * \class controller_button_event
@@ -412,8 +407,8 @@ class controller_button_event final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  controller_button_event() noexcept;
+  controller_button_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a controller button event that is based on the supplied SDL
@@ -423,9 +418,10 @@ class controller_button_event final
    *
    * \since 4.0.0
    */
-  CENTURION_API
   explicit controller_button_event(
-      const SDL_ControllerButtonEvent& event) noexcept;
+      const SDL_ControllerButtonEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the game controller button associated with the event.
@@ -434,8 +430,10 @@ class controller_button_event final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_button(controller_button button) noexcept;
+  void set_button(const controller_button button) noexcept
+  {
+    m_event.button = static_cast<u8>(button);
+  }
 
   /**
    * \brief Sets the button state associated with the event.
@@ -444,8 +442,10 @@ class controller_button_event final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_state(button_state state) noexcept;
+  void set_state(const button_state state) noexcept
+  {
+    m_event.state = static_cast<u8>(state);
+  }
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -455,8 +455,10 @@ class controller_button_event final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(SDL_JoystickID id) noexcept;
+  void set_which(const SDL_JoystickID id) noexcept
+  {
+    m_event.which = id;
+  }
 
   /**
    * \brief Returns the game controller button associated with the event.
@@ -465,8 +467,10 @@ class controller_button_event final
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto button() const noexcept -> controller_button;
+  [[nodiscard]] auto button() const noexcept -> controller_button
+  {
+    return static_cast<controller_button>(m_event.button);
+  }
 
   /**
    * \brief Returns the button state associated with the event.
@@ -475,8 +479,10 @@ class controller_button_event final
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto state() const noexcept -> button_state;
+  [[nodiscard]] auto state() const noexcept -> button_state
+  {
+    return static_cast<button_state>(m_event.state);
+  }
 
   /**
    * \brief Indicates whether or not the associated button is pressed.
@@ -485,8 +491,10 @@ class controller_button_event final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto pressed() const noexcept -> bool;
+  [[nodiscard]] auto pressed() const noexcept -> bool
+  {
+    return state() == button_state::pressed;
+  }
 
   /**
    * \brief Indicates whether or not the associated button is released.
@@ -495,8 +503,10 @@ class controller_button_event final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto released() const noexcept -> bool;
+  [[nodiscard]] auto released() const noexcept -> bool
+  {
+    return state() == button_state::released;
+  }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -505,12 +515,11 @@ class controller_button_event final
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> SDL_JoystickID;
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
 };
-
-static_assert(
-    validate_event<controller_button_event, SDL_ControllerButtonEvent>());
 
 /**
  * \class controller_device_event
@@ -535,8 +544,8 @@ class controller_device_event final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  controller_device_event() noexcept;
+  controller_device_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a controller device event that is based on the supplied SDL
@@ -546,9 +555,10 @@ class controller_device_event final
    *
    * \since 4.0.0
    */
-  CENTURION_API
   explicit controller_device_event(
-      const SDL_ControllerDeviceEvent& event) noexcept;
+      const SDL_ControllerDeviceEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the joystick device index or instance ID.
@@ -561,8 +571,10 @@ class controller_device_event final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(i32 which) noexcept;
+  void set_which(const i32 which) noexcept
+  {
+    m_event.which = which;
+  }
 
   /**
    * \brief Returns the joystick device index or instance ID.
@@ -575,12 +587,11 @@ class controller_device_event final
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> i32;
+  [[nodiscard]] auto which() const noexcept -> i32
+  {
+    return m_event.which;
+  }
 };
-
-static_assert(
-    validate_event<controller_device_event, SDL_ControllerDeviceEvent>());
 
 /**
  * \class dollar_gesture_event
@@ -603,8 +614,8 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  dollar_gesture_event() noexcept;
+  dollar_gesture_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a dollar gesture event that is based on the supplied SDL
@@ -614,8 +625,9 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit dollar_gesture_event(const SDL_DollarGestureEvent& event) noexcept;
+  explicit dollar_gesture_event(const SDL_DollarGestureEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the touch device ID associated with the event.
@@ -624,8 +636,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_touch_id(SDL_TouchID id) noexcept;
+  void set_touch_id(const SDL_TouchID id) noexcept
+  {
+    m_event.touchId = id;
+  }
 
   /**
    * \brief Sets the gesture ID associated with the event.
@@ -634,8 +648,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_gesture_id(SDL_GestureID id) noexcept;
+  void set_gesture_id(const SDL_GestureID id) noexcept
+  {
+    m_event.gestureId = id;
+  }
 
   /**
    * \brief Sets the amount of fingers used to draw the stroke.
@@ -644,8 +660,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_fingers(u32 fingers) noexcept;
+  void set_fingers(const u32 fingers) noexcept
+  {
+    m_event.numFingers = fingers;
+  }
 
   /**
    * \brief Sets the error value for the performed stroke compared with the
@@ -653,8 +671,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_error(float error) noexcept;
+  void set_error(const float error) noexcept
+  {
+    m_event.error = error;
+  }
 
   /**
    * \brief Sets the normalized x-coordinate of the center of the gesture.
@@ -663,8 +683,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_x(float x) noexcept;
+  void set_x(const float x) noexcept
+  {
+    m_event.x = x;
+  }
 
   /**
    * \brief Sets the normalized y-coordinate of the center of the gesture.
@@ -673,8 +695,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_y(float y) noexcept;
+  void set_y(const float y) noexcept
+  {
+    m_event.y = y;
+  }
 
   /**
    * \brief Returns the touch device ID associated with the event.
@@ -683,8 +707,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto touch_id() const noexcept -> SDL_TouchID;
+  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID
+  {
+    return m_event.touchId;
+  }
 
   /**
    * \brief Returns the unique ID of the closest gesture to the performed
@@ -694,8 +720,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto gesture_id() const noexcept -> SDL_GestureID;
+  [[nodiscard]] auto gesture_id() const noexcept -> SDL_GestureID
+  {
+    return m_event.gestureId;
+  }
 
   /**
    * \brief Returns the amount of fingers used to draw the stroke.
@@ -704,8 +732,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto fingers() const noexcept -> u32;
+  [[nodiscard]] auto fingers() const noexcept -> u32
+  {
+    return m_event.numFingers;
+  }
 
   /**
    * \brief Returns the difference between the gesture template and the
@@ -718,8 +748,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto error() const noexcept -> float;
+  [[nodiscard]] auto error() const noexcept -> float
+  {
+    return m_event.error;
+  }
 
   /**
    * \brief Returns the x-coordinate of the normalized center of the gesture.
@@ -728,8 +760,10 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto x() const noexcept -> float;
+  [[nodiscard]] auto x() const noexcept -> float
+  {
+    return m_event.x;
+  }
 
   /**
    * \brief Returns the y-coordinate of the normalized center of the gesture.
@@ -738,11 +772,11 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto y() const noexcept -> float;
+  [[nodiscard]] auto y() const noexcept -> float
+  {
+    return m_event.y;
+  }
 };
-
-static_assert(validate_event<dollar_gesture_event, SDL_DollarGestureEvent>());
 
 /**
  * \class drop_event
@@ -765,8 +799,8 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  drop_event() noexcept;
+  drop_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a drop event based on the supplied event.
@@ -775,18 +809,8 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit drop_event(const SDL_DropEvent& event) noexcept;
-
-  /**
-   * \brief Creates a drop event based on the supplied event.
-   *
-   * \param event the SDL drop event that will be moved.
-   *
-   * \since 4.0.0
-   */
-  CENTURION_API
-  explicit drop_event(SDL_DropEvent&& event) noexcept;
+  explicit drop_event(const SDL_DropEvent& event) noexcept : common_event{event}
+  {}
 
   /**
    * \brief Destroys the drop event.
@@ -796,8 +820,12 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  ~drop_event() noexcept;
+  ~drop_event() noexcept
+  {
+    if (m_event.file && m_willFreeFile) {
+      SDL_free(m_event.file);
+    }
+  }
 
   /**
    * \brief Sets whether or not the associated file will be freed by this event.
@@ -811,8 +839,10 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_will_free_file(bool freeFile) noexcept;
+  void set_will_free_file(const bool freeFile) noexcept
+  {
+    m_willFreeFile = freeFile;
+  }
 
   /**
    * \brief Sets the file associated with the drop event.
@@ -836,8 +866,13 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_file(char* file) noexcept;
+  void set_file(char* file) noexcept
+  {
+    if (m_event.file && m_willFreeFile) {
+      SDL_free(m_event.file);
+    }
+    m_event.file = file;
+  }
 
   /**
    * \brief Sets the ID of the window that is the target of the drop event.
@@ -846,8 +881,10 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_window_id(u32 id) noexcept;
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
 
   /**
    * \brief Indicates whether or not the associated file will be freed by
@@ -860,8 +897,10 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto will_free_file() const noexcept -> bool;
+  [[nodiscard]] auto will_free_file() const noexcept -> bool
+  {
+    return m_willFreeFile;
+  }
 
   /**
    * \brief Returns a pointer to the associated file.
@@ -876,8 +915,10 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto file() const noexcept -> char*;
+  [[nodiscard]] auto file() const noexcept -> char*
+  {
+    return m_event.file;
+  }
 
   /**
    * \brief Returns the ID of the window that is the target of the drop
@@ -887,14 +928,14 @@ class drop_event final : public common_event<SDL_DropEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto window_id() const noexcept -> u32;
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
 
  private:
   bool m_willFreeFile{false};
 };
-
-static_assert(validate_event<drop_event, SDL_DropEvent>());
 
 /**
  * \class joy_axis_event
@@ -918,8 +959,8 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  joy_axis_event() noexcept;
+  joy_axis_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a joy axis event based on the supplied SDL joy axis event.
@@ -928,8 +969,9 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept;
+  explicit joy_axis_event(const SDL_JoyAxisEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -938,8 +980,10 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(SDL_JoystickID which) noexcept;
+  void set_which(const SDL_JoystickID which) noexcept
+  {
+    m_event.which = which;
+  }
 
   /**
    * \brief Sets the joystick axis index associated with the event.
@@ -948,8 +992,10 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_axis(u8 axis) noexcept;
+  void set_axis(const u8 axis) noexcept
+  {
+    m_event.axis = axis;
+  }
 
   /**
    * \brief Sets the joystick axis value associated with the event.
@@ -958,8 +1004,10 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_value(i16 value) noexcept;
+  void set_value(const i16 value) noexcept
+  {
+    m_event.value = value;
+  }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -968,8 +1016,10 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> SDL_JoystickID;
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
 
   /**
    * \brief Returns the joystick axis index associated with the event.
@@ -978,8 +1028,10 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto axis() const noexcept -> u8;
+  [[nodiscard]] auto axis() const noexcept -> u8
+  {
+    return m_event.axis;
+  }
 
   /**
    * \brief Returns the joystick axis value associated with the event.
@@ -988,11 +1040,11 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto value() const noexcept -> i16;
+  [[nodiscard]] auto value() const noexcept -> i16
+  {
+    return m_event.value;
+  }
 };
-
-static_assert(validate_event<joy_axis_event, SDL_JoyAxisEvent>());
 
 /**
  * \class joy_ball_event
@@ -1016,8 +1068,8 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  joy_ball_event() noexcept;
+  joy_ball_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a joy ball event based on the supplied SDL joy ball event.
@@ -1026,8 +1078,9 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept;
+  explicit joy_ball_event(const SDL_JoyBallEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -1036,8 +1089,10 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(SDL_JoystickID which) noexcept;
+  void set_which(const SDL_JoystickID which) noexcept
+  {
+    m_event.which = which;
+  }
 
   /**
    * \brief Sets the joystick trackball index associated with the event.
@@ -1046,8 +1101,10 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_ball(u8 ball) noexcept;
+  void set_ball(const u8 ball) noexcept
+  {
+    m_event.ball = ball;
+  }
 
   /**
    * \brief Sets the relative motion along the x-axis associated with the event.
@@ -1056,8 +1113,10 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_dx(i16 dx) noexcept;
+  void set_dx(const i16 dx) noexcept
+  {
+    m_event.xrel = dx;
+  }
 
   /**
    * \brief Sets the relative motion along the y-axis associated with the event.
@@ -1066,8 +1125,10 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_dy(i16 dy) noexcept;
+  void set_dy(const i16 dy) noexcept
+  {
+    m_event.yrel = dy;
+  }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -1076,8 +1137,10 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> SDL_JoystickID;
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
 
   /**
    * \brief Returns the joystick trackball index associated with the event.
@@ -1086,8 +1149,10 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto ball() const noexcept -> u8;
+  [[nodiscard]] auto ball() const noexcept -> u8
+  {
+    return m_event.ball;
+  }
 
   /**
    * \brief Returns the relative motion along the x-axis.
@@ -1099,8 +1164,10 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto dx() const noexcept -> i16;
+  [[nodiscard]] auto dx() const noexcept -> i16
+  {
+    return m_event.xrel;
+  }
 
   /**
    * \brief Returns the relative motion along the y-axis.
@@ -1112,11 +1179,11 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto dy() const noexcept -> i16;
+  [[nodiscard]] auto dy() const noexcept -> i16
+  {
+    return m_event.yrel;
+  }
 };
-
-static_assert(validate_event<joy_ball_event, SDL_JoyBallEvent>());
 
 /**
  * \class joy_button_event
@@ -1140,8 +1207,8 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  joy_button_event() noexcept;
+  joy_button_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a joy_button_event based on the supplied event.
@@ -1150,8 +1217,9 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept;
+  explicit joy_button_event(const SDL_JoyButtonEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the joystick instance ID associated with the event.
@@ -1160,8 +1228,10 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(SDL_JoystickID which) noexcept;
+  void set_which(const SDL_JoystickID which) noexcept
+  {
+    m_event.which = which;
+  }
 
   /**
    * \brief Sets the button index associated with the event.
@@ -1170,8 +1240,10 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_button(u8 button) noexcept;
+  void set_button(const u8 button) noexcept
+  {
+    m_event.button = button;
+  }
 
   /**
    * \brief Sets the button state that is associated with the button that
@@ -1182,8 +1254,10 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_state(button_state state) noexcept;
+  void set_state(const button_state state) noexcept
+  {
+    m_event.state = static_cast<u8>(state);
+  }
 
   /**
    * \brief Returns the joystick instance ID associated with the event.
@@ -1192,8 +1266,10 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> SDL_JoystickID;
+  [[nodiscard]] auto which() const noexcept -> SDL_JoystickID
+  {
+    return m_event.which;
+  }
 
   /**
    * \brief Returns the index of the button that changed.
@@ -1202,8 +1278,10 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto button() const noexcept -> u8;
+  [[nodiscard]] auto button() const noexcept -> u8
+  {
+    return m_event.button;
+  }
 
   /**
    * \brief Returns the state of the button associated with the event.
@@ -1212,8 +1290,10 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto state() const noexcept -> button_state;
+  [[nodiscard]] auto state() const noexcept -> button_state
+  {
+    return static_cast<button_state>(m_event.state);
+  }
 
   /**
    * \brief Indicates whether or not the associated button is pressed.
@@ -1222,8 +1302,10 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto pressed() const noexcept -> bool;
+  [[nodiscard]] auto pressed() const noexcept -> bool
+  {
+    return state() == button_state::pressed;
+  }
 
   /**
    * \brief Indicates whether or not the associated button is released.
@@ -1232,11 +1314,11 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto released() const noexcept -> bool;
+  [[nodiscard]] auto released() const noexcept -> bool
+  {
+    return state() == button_state::released;
+  }
 };
-
-static_assert(validate_event<joy_button_event, SDL_JoyButtonEvent>());
 
 /**
  * \class joy_device_event
@@ -1259,8 +1341,8 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  joy_device_event() noexcept;
+  joy_device_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a joy_device_event that is based on the supplied SDL event.
@@ -1269,8 +1351,9 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept;
+  explicit joy_device_event(const SDL_JoyDeviceEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the joystick device index or instance ID, depending on the type
@@ -1280,8 +1363,10 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(i32 which) noexcept;
+  void set_which(const i32 which) noexcept
+  {
+    m_event.which = which;
+  }
 
   /**
    * \brief Returns the joystick device index or instance ID.
@@ -1294,11 +1379,11 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> i32;
+  [[nodiscard]] auto which() const noexcept -> i32
+  {
+    return m_event.which;
+  }
 };
-
-static_assert(validate_event<joy_device_event, SDL_JoyDeviceEvent>());
 
 /**
  * \enum joy_hat_position
@@ -1344,8 +1429,8 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  joy_hat_event() noexcept;
+  joy_hat_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a joy hat event based on the supplied SDL event.
@@ -1354,8 +1439,9 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept;
+  explicit joy_hat_event(const SDL_JoyHatEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the hat index associated with the event.
@@ -1364,8 +1450,10 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_hat(u8 hat) noexcept;
+  void set_hat(const u8 hat) noexcept
+  {
+    m_event.hat = hat;
+  }
 
   /**
    * \brief Sets the joystick hat position associated with the event.
@@ -1374,8 +1462,10 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_position(joy_hat_position value) noexcept;
+  void set_position(const joy_hat_position value) noexcept
+  {
+    m_event.value = static_cast<u8>(value);
+  }
 
   /**
    * \brief Returns the index of the hat that changed.
@@ -1384,8 +1474,10 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto hat() const noexcept -> u8;
+  [[nodiscard]] auto hat() const noexcept -> u8
+  {
+    return m_event.hat;
+  }
 
   /**
    * \brief Returns the position of the associated joystick hat.
@@ -1394,11 +1486,11 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto position() const noexcept -> joy_hat_position;
+  [[nodiscard]] auto position() const noexcept -> joy_hat_position
+  {
+    return static_cast<joy_hat_position>(m_event.value);
+  }
 };
-
-static_assert(validate_event<joy_hat_event, SDL_JoyHatEvent>());
 
 /**
  * \class keyboard_event
@@ -1422,8 +1514,8 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  keyboard_event() noexcept;
+  keyboard_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a keyboard event based on the supplied SDL event.
@@ -1432,8 +1524,9 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept;
+  explicit keyboard_event(const SDL_KeyboardEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the scan code that is associated with the event.
@@ -1442,8 +1535,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void set_scan_code(const scan_code& code) noexcept;
+  void set_scan_code(const scan_code& code) noexcept
+  {
+    m_event.keysym.scancode = code.get();
+  }
 
   /**
    * \brief Sets the key code that is associated with the event.
@@ -1452,8 +1547,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void set_key_code(const key_code& code) noexcept;
+  void set_key_code(const key_code& code) noexcept
+  {
+    m_event.keysym.sym = code.get();
+  }
 
   /**
    * \brief Sets the button state associated with the event.
@@ -1462,8 +1559,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void set_button_state(button_state state) noexcept;
+  void set_button_state(const button_state state) noexcept
+  {
+    m_event.state = static_cast<u8>(state);
+  }
 
   /**
    * \brief Sets the status of a key modifier.
@@ -1473,8 +1572,14 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_modifier(key_modifier modifier, bool active) noexcept;
+  void set_modifier(const key_modifier modifier, const bool active) noexcept
+  {
+    if (active) {
+      m_event.keysym.mod |= static_cast<u16>(modifier);
+    } else {
+      m_event.keysym.mod &= ~static_cast<u16>(modifier);
+    }
+  }
 
   /**
    * \brief Sets the flag that indicates whether or not the key associated with
@@ -1485,8 +1590,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_repeated(bool repeated) noexcept;
+  void set_repeated(const bool repeated) noexcept
+  {
+    m_event.repeat = repeated;
+  }
 
   /**
    * \brief Sets the window ID that is associated with this key event.
@@ -1495,8 +1602,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_window_id(u32 id) noexcept;
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
 
   /**
    * \brief Indicates whether or not the event is associated with the
@@ -1509,8 +1618,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto is_active(const scan_code& code) const noexcept -> bool;
+  [[nodiscard]] auto is_active(const scan_code& code) const noexcept -> bool
+  {
+    return m_event.keysym.scancode == code.get();
+  }
 
   /**
    * \brief Indicates whether or not the event is associated with the
@@ -1523,8 +1634,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto is_active(const key_code& code) const noexcept -> bool;
+  [[nodiscard]] auto is_active(const key_code& code) const noexcept -> bool
+  {
+    return static_cast<SDL_KeyCode>(m_event.keysym.sym) == code.get();
+  }
 
   /**
    * \brief Indicates whether or not the specified key modifier is active.
@@ -1537,8 +1650,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto modifier_active(key_modifier modifier) const noexcept -> bool;
+  [[nodiscard]] auto modifier_active(const key_modifier modifier) const noexcept
+      -> bool
+  {
+    return m_event.keysym.mod & static_cast<u16>(modifier);
+  }
 
   /**
    * \brief Indicates whether or not any of the SHIFT modifiers are active.
@@ -1547,8 +1663,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto shift_active() const noexcept -> bool;
+  [[nodiscard]] auto shift_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::left_shift) ||
+           modifier_active(key_modifier::right_shift);
+  }
 
   /**
    * \brief Indicates whether or not any of the CTRL modifiers are active.
@@ -1557,8 +1676,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto ctrl_active() const noexcept -> bool;
+  [[nodiscard]] auto ctrl_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::left_ctrl) ||
+           modifier_active(key_modifier::right_ctrl);
+  }
 
   /**
    * \brief Indicates whether or not any of the ALT modifiers are active.
@@ -1567,8 +1689,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto alt_active() const noexcept -> bool;
+  [[nodiscard]] auto alt_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::left_alt) ||
+           modifier_active(key_modifier::right_alt);
+  }
 
   /**
    * \brief Indicates whether or not any of the GUI modifiers are active.
@@ -1577,8 +1702,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto gui_active() const noexcept -> bool;
+  [[nodiscard]] auto gui_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::left_gui) ||
+           modifier_active(key_modifier::right_gui);
+  }
 
   /**
    * \brief Indicates whether or not the CAPS modifier is active.
@@ -1587,8 +1715,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto caps_active() const noexcept -> bool;
+  [[nodiscard]] auto caps_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::caps);
+  }
 
   /**
    * \brief Indicates whether or not the NUM modifier is active.
@@ -1597,8 +1727,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto num_active() const noexcept -> bool;
+  [[nodiscard]] auto num_active() const noexcept -> bool
+  {
+    return modifier_active(key_modifier::num);
+  }
 
   /**
    * \brief Indicates whether or not the key associated with this key event has
@@ -1609,8 +1741,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto repeated() const noexcept -> bool;
+  [[nodiscard]] auto repeated() const noexcept -> bool
+  {
+    return m_event.repeat;
+  }
 
   /**
    * \brief Returns the button state of the key associated with the event.
@@ -1619,8 +1753,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto state() const noexcept -> button_state;
+  [[nodiscard]] auto state() const noexcept -> button_state
+  {
+    return static_cast<button_state>(m_event.state);
+  }
 
   /**
    * \brief Indicates whether or not the event is associated with the release
@@ -1632,8 +1768,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto released() const noexcept -> bool;
+  [[nodiscard]] auto released() const noexcept -> bool
+  {
+    return state() == button_state::released;
+  }
 
   /**
    * \brief Indicates whether or not the event is associated with the press
@@ -1645,8 +1783,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto pressed() const noexcept -> bool;
+  [[nodiscard]] auto pressed() const noexcept -> bool
+  {
+    return state() == button_state::pressed;
+  }
 
   /**
    * \brief Returns the scan code that is associated with the event.
@@ -1655,8 +1795,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get_scan_code() const noexcept -> scan_code;
+  [[nodiscard]] auto get_scan_code() const noexcept -> scan_code
+  {
+    return m_event.keysym.scancode;
+  }
 
   /**
    * \brief Returns the key code that is associated with the event.
@@ -1665,8 +1807,10 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get_key_code() const noexcept -> key_code;
+  [[nodiscard]] auto get_key_code() const noexcept -> key_code
+  {
+    return static_cast<SDL_KeyCode>(m_event.keysym.sym);
+  }
 
   /**
    * \brief Returns the ID of the window associated with the event.
@@ -1675,11 +1819,11 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto window_id() const noexcept -> u32;
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
 };
-
-static_assert(validate_event<keyboard_event, SDL_KeyboardEvent>());
 
 /**
  * \class mouse_button_event
@@ -1702,8 +1846,8 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  mouse_button_event() noexcept;
+  mouse_button_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a mouse_button_event that is based on the supplied SDL
@@ -1713,8 +1857,9 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept;
+  explicit mouse_button_event(const SDL_MouseButtonEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the window ID associated with the event.
@@ -1723,8 +1868,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_window_id(u32 id) noexcept;
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
 
   /**
    * \brief Sets the mouse instance ID.
@@ -1733,8 +1880,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(u32 which) noexcept;
+  void set_which(const u32 which) noexcept
+  {
+    m_event.which = which;
+  }
 
   /**
    * \brief Sets the mouse button associated with the event.
@@ -1743,8 +1892,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_button(mouse_button button) noexcept;
+  void set_button(const mouse_button button) noexcept
+  {
+    m_event.button = static_cast<u8>(button);
+  }
 
   /**
    * \brief Sets the button state associated with the event.
@@ -1753,8 +1904,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_state(button_state state) noexcept;
+  void set_state(const button_state state) noexcept
+  {
+    m_event.state = static_cast<u8>(state);
+  }
 
   /**
    * \brief Sets the amount of clicks associated with the event.
@@ -1763,8 +1916,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_clicks(u8 clicks) noexcept;
+  void set_clicks(const u8 clicks) noexcept
+  {
+    m_event.clicks = clicks;
+  }
 
   /**
    * \brief Sets the x-coordinate of the mouse relative to the window.
@@ -1773,8 +1928,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_x(i32 x) noexcept;
+  void set_x(const i32 x) noexcept
+  {
+    m_event.x = x;
+  }
 
   /**
    * \brief Sets the y-coordinate of the mouse relative to the window.
@@ -1783,8 +1940,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_y(i32 y) noexcept;
+  void set_y(const i32 y) noexcept
+  {
+    m_event.y = y;
+  }
 
   /**
    * \brief Returns the ID of the window associated with the event.
@@ -1793,8 +1952,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto window_id() const noexcept -> u32;
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
 
   /**
    * \brief Returns the mouse instance ID, or SDL_TOUCH_MOUSEID if the event was
@@ -1804,8 +1965,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> u32;
+  [[nodiscard]] auto which() const noexcept -> u32
+  {
+    return m_event.which;
+  }
 
   /**
    * \brief Returns the mouse button associated with the event.
@@ -1814,8 +1977,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto button() const noexcept -> mouse_button;
+  [[nodiscard]] auto button() const noexcept -> mouse_button
+  {
+    return static_cast<mouse_button>(m_event.button);
+  }
 
   /**
    * \brief Returns the state of the mouse button associated with the event.
@@ -1824,8 +1989,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto state() const noexcept -> button_state;
+  [[nodiscard]] auto state() const noexcept -> button_state
+  {
+    return static_cast<button_state>(m_event.state);
+  }
 
   /**
    * \brief Indicates whether or not the associated button is pressed.
@@ -1834,8 +2001,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto pressed() const noexcept -> bool;
+  [[nodiscard]] auto pressed() const noexcept -> bool
+  {
+    return state() == button_state::pressed;
+  }
 
   /**
    * \brief Indicates whether or not the associated button is released.
@@ -1844,8 +2013,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto released() const noexcept -> bool;
+  [[nodiscard]] auto released() const noexcept -> bool
+  {
+    return state() == button_state::released;
+  }
 
   /**
    * \brief Returns the number of mouse clicks associated with the event.
@@ -1854,8 +2025,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto clicks() const noexcept -> u8;
+  [[nodiscard]] auto clicks() const noexcept -> u8
+  {
+    return m_event.clicks;
+  }
 
   /**
    * \brief Returns the x-coordinate of the mouse relative to the window.
@@ -1864,8 +2037,10 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto x() const noexcept -> i32;
+  [[nodiscard]] auto x() const noexcept -> i32
+  {
+    return m_event.x;
+  }
 
   /**
    * \brief Returns the y-coordinate of the mouse relative to the window.
@@ -1874,11 +2049,11 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto y() const noexcept -> i32;
+  [[nodiscard]] auto y() const noexcept -> i32
+  {
+    return m_event.y;
+  }
 };
-
-static_assert(validate_event<mouse_button_event, SDL_MouseButtonEvent>());
 
 /**
  * \class mouse_motion_event
@@ -1901,8 +2076,8 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  mouse_motion_event() noexcept;
+  mouse_motion_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a `MouseMotionEvent` that is based on the supplied SDL
@@ -1912,8 +2087,9 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept;
+  explicit mouse_motion_event(const SDL_MouseMotionEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the window ID associated with the event.
@@ -1922,8 +2098,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_window_id(u32 id) noexcept;
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
 
   /**
    * \brief Sets the mouse instance ID.
@@ -1932,8 +2110,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(u32 which) noexcept;
+  void set_which(const u32 which) noexcept
+  {
+    m_event.which = which;
+  }
 
   /**
    * \brief Sets the mouse button state associated with the event.
@@ -1946,8 +2126,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_state(u32 state) noexcept;
+  void set_state(const u32 state) noexcept
+  {
+    m_event.state = state;
+  }
 
   /**
    * \brief Sets the x-coordinate of the mouse relative to the mouse that is
@@ -1957,8 +2139,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_x(i32 x) noexcept;
+  void set_x(const i32 x) noexcept
+  {
+    m_event.x = x;
+  }
 
   /**
    * \brief Sets the y-coordinate of the mouse relative to the mouse that is
@@ -1968,8 +2152,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_y(i32 y) noexcept;
+  void set_y(const i32 y) noexcept
+  {
+    m_event.y = y;
+  }
 
   /**
    * \brief Sets the value of the relative motion of the mouse along the x-axis.
@@ -1978,8 +2164,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_dx(i32 dx) noexcept;
+  void set_dx(const i32 dx) noexcept
+  {
+    m_event.xrel = dx;
+  }
 
   /**
    * \brief Sets the value of the relative motion of the mouse along the y-axis.
@@ -1988,8 +2176,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_dy(i32 dy) noexcept;
+  void set_dy(const i32 dy) noexcept
+  {
+    m_event.yrel = dy;
+  }
 
   /**
    * \brief Returns the window ID associated with the event.
@@ -1998,8 +2188,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto window_id() const noexcept -> u32;
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
 
   /**
    * \brief Returns the mouse instance ID, or `SDL_TOUCH_MOUSEID`.
@@ -2011,8 +2203,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> u32;
+  [[nodiscard]] auto which() const noexcept -> u32
+  {
+    return m_event.which;
+  }
 
   /**
    * \brief Returns a bitmask for the current mouse button state.
@@ -2025,8 +2219,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto state() const noexcept -> u32;
+  [[nodiscard]] auto state() const noexcept -> u32
+  {
+    return m_event.state;
+  }
 
   /**
    * \brief Indicates whether or not a mouse button is pressed.
@@ -2037,8 +2233,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto pressed(mouse_button button) const noexcept -> bool;
+  [[nodiscard]] auto pressed(const mouse_button button) const noexcept -> bool
+  {
+    return m_event.state & SDL_BUTTON(static_cast<u32>(button));
+  }
 
   /**
    * \brief Returns the x-coordinate of the mouse relative to the window.
@@ -2047,8 +2245,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto x() const noexcept -> i32;
+  [[nodiscard]] auto x() const noexcept -> i32
+  {
+    return m_event.x;
+  }
 
   /**
    * \brief Returns the y-coordinate of the mouse relative to the window.
@@ -2057,8 +2257,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto y() const noexcept -> i32;
+  [[nodiscard]] auto y() const noexcept -> i32
+  {
+    return m_event.y;
+  }
 
   /**
    * \brief Returns the relative motion of the mouse along the x-axis.
@@ -2067,8 +2269,10 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto dx() const noexcept -> i32;
+  [[nodiscard]] auto dx() const noexcept -> i32
+  {
+    return m_event.xrel;
+  }
 
   /**
    * \brief Returns the relative motion of the mouse along the y-axis.
@@ -2077,11 +2281,11 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto dy() const noexcept -> i32;
+  [[nodiscard]] auto dy() const noexcept -> i32
+  {
+    return m_event.yrel;
+  }
 };
-
-static_assert(validate_event<mouse_motion_event, SDL_MouseMotionEvent>());
 
 /**
  * \enum mouse_wheel_direction
@@ -2101,57 +2305,6 @@ enum class mouse_wheel_direction
   normal = SDL_MOUSEWHEEL_NORMAL,   ///< The scroll direction is normal
   flipped = SDL_MOUSEWHEEL_FLIPPED  ///< The scroll direction is flipped natural
 };
-
-/**
- * \brief Indicates whether or not two mouse wheel direction values are equal.
- *
- * \ingroup event
- *
- * \param lhs the left-hand side mouse wheel direction value.
- * \param rhs the right-hand side mouse wheel direction value.
- *
- * \return `true` if the two values are equal; `false` otherwise.
- *
- * \since 4.0.0
- */
-CENTURION_QUERY
-auto operator==(mouse_wheel_direction lhs, SDL_MouseWheelDirection rhs) noexcept
-    -> bool;
-
-/**
- * \copydoc operator==(mouse_wheel_direction, SDL_MouseWheelDirection)
- *
- * \ingroup event
- */
-CENTURION_QUERY
-auto operator==(SDL_MouseWheelDirection lhs, mouse_wheel_direction rhs) noexcept
-    -> bool;
-
-/**
- * \brief Indicates whether or not two mouse wheel direction values aren't
- * equal.
- *
- * \ingroup event
- *
- * \param lhs the left-hand side mouse wheel direction value.
- * \param rhs the right-hand side mouse wheel direction value.
- *
- * \return `true` if the two values aren't equal; `false` otherwise.
- *
- * \since 4.0.0
- */
-CENTURION_QUERY
-auto operator!=(mouse_wheel_direction lhs, SDL_MouseWheelDirection rhs) noexcept
-    -> bool;
-
-/**
- * \copydoc operator!=(mouse_wheel_direction, SDL_MouseWheelDirection)
- *
- * \ingroup event
- */
-CENTURION_QUERY
-auto operator!=(SDL_MouseWheelDirection lhs, mouse_wheel_direction rhs) noexcept
-    -> bool;
 
 /**
  * \class mouse_wheel_event
@@ -2174,8 +2327,8 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  mouse_wheel_event() noexcept;
+  mouse_wheel_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a `MouseMotionEvent` that is based on the supplied SDL
@@ -2185,8 +2338,9 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept;
+  explicit mouse_wheel_event(const SDL_MouseWheelEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the window ID associated with the event.
@@ -2195,8 +2349,10 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_window_id(u32 id) noexcept;
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
 
   /**
    * \brief Sets the mouse instance ID.
@@ -2205,8 +2361,10 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_which(u32 which) noexcept;
+  void set_which(const u32 which) noexcept
+  {
+    m_event.which = which;
+  }
 
   /**
    * \brief Sets the horizontally scrolled distance.
@@ -2218,8 +2376,10 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_x_scroll(i32 xScroll) noexcept;
+  void set_x_scroll(const i32 xScroll) noexcept
+  {
+    m_event.x = xScroll;
+  }
 
   /**
    * \brief Sets the vertically scrolled distance.
@@ -2231,8 +2391,10 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_y_scroll(i32 yScroll) noexcept;
+  void set_y_scroll(const i32 yScroll) noexcept
+  {
+    m_event.y = yScroll;
+  }
 
   /**
    * \brief Sets the mouse wheel direction mode associated with the event.
@@ -2241,8 +2403,10 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_direction(mouse_wheel_direction direction) noexcept;
+  void set_direction(const mouse_wheel_direction direction) noexcept
+  {
+    m_event.direction = static_cast<u32>(direction);
+  }
 
   /**
    * \brief Returns the ID of the window associated with the event.
@@ -2251,8 +2415,10 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto window_id() const noexcept -> u32;
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
 
   /**
    * \brief Returns the mouse instance ID, or `SDL_TOUCH_MOUSEID` if the event
@@ -2262,8 +2428,10 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto which() const noexcept -> u32;
+  [[nodiscard]] auto which() const noexcept -> u32
+  {
+    return m_event.which;
+  }
 
   /**
    * \brief Returns the horizontally scrolled distance
@@ -2275,8 +2443,10 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto x_scroll() const noexcept -> i32;
+  [[nodiscard]] auto x_scroll() const noexcept -> i32
+  {
+    return m_event.x;
+  }
 
   /**
    * \brief Returns the vertically scrolled distance.
@@ -2288,8 +2458,10 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto y_scroll() const noexcept -> i32;
+  [[nodiscard]] auto y_scroll() const noexcept -> i32
+  {
+    return m_event.y;
+  }
 
   /**
    * \brief Returns the mouse wheel direction mode associated with the event.
@@ -2298,11 +2470,11 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto direction() const noexcept -> mouse_wheel_direction;
+  [[nodiscard]] auto direction() const noexcept -> mouse_wheel_direction
+  {
+    return static_cast<mouse_wheel_direction>(m_event.direction);
+  }
 };
-
-static_assert(validate_event<mouse_wheel_event, SDL_MouseWheelEvent>());
 
 /**
  * \class multi_gesture_event
@@ -2326,8 +2498,8 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  multi_gesture_event() noexcept;
+  multi_gesture_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a `MultiGestureEvent` that is based on the supplied SDL
@@ -2337,8 +2509,9 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit multi_gesture_event(const SDL_MultiGestureEvent& event) noexcept;
+  explicit multi_gesture_event(const SDL_MultiGestureEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the touch device ID associated with the event.
@@ -2347,8 +2520,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_touch_id(SDL_TouchID id) noexcept;
+  void set_touch_id(const SDL_TouchID id) noexcept
+  {
+    m_event.touchId = id;
+  }
 
   /**
    * \brief Sets the amount that the fingers rotated during the gesture
@@ -2358,8 +2533,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_delta_theta(float dTheta) noexcept;
+  void set_delta_theta(const float dTheta) noexcept
+  {
+    m_event.dTheta = dTheta;
+  }
 
   /**
    * \brief Sets the amount that the fingers pinched during the gesture
@@ -2369,8 +2546,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_delta_distance(float dDistance) noexcept;
+  void set_delta_distance(const float dDistance) noexcept
+  {
+    m_event.dDist = dDistance;
+  }
 
   /**
    * \brief Sets the x-coordinate of the normalized center of the gesture
@@ -2381,8 +2560,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_center_x(float centerX) noexcept;
+  void set_center_x(const float centerX) noexcept
+  {
+    m_event.x = centerX;
+  }
 
   /**
    * \brief Sets the y-coordinate of the normalized center of the gesture
@@ -2393,8 +2574,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_center_y(float centerY) noexcept;
+  void set_center_y(const float centerY) noexcept
+  {
+    m_event.y = centerY;
+  }
 
   /**
    * \brief Sets the number of fingers that was used in the gesture associated
@@ -2404,8 +2587,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_fingers(u16 nFingers) noexcept;
+  void set_fingers(const u16 nFingers) noexcept
+  {
+    m_event.numFingers = nFingers;
+  }
 
   /**
    * \brief Returns the touch device ID associated with the event.
@@ -2414,8 +2599,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto touch_id() const noexcept -> SDL_TouchID;
+  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID
+  {
+    return m_event.touchId;
+  }
 
   /**
    * \brief Returns the amount that the fingers rotated during the gesture
@@ -2425,8 +2612,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto delta_theta() const noexcept -> float;
+  [[nodiscard]] auto delta_theta() const noexcept -> float
+  {
+    return m_event.dTheta;
+  }
 
   /**
    * \brief Returns the amount that the fingers pinched during the gesture
@@ -2436,8 +2625,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto delta_distance() const noexcept -> float;
+  [[nodiscard]] auto delta_distance() const noexcept -> float
+  {
+    return m_event.dDist;
+  }
 
   /**
    * \brief Returns the x-coordinate of the normalized center of gesture
@@ -2448,8 +2639,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto center_x() const noexcept -> float;
+  [[nodiscard]] auto center_x() const noexcept -> float
+  {
+    return m_event.x;
+  }
 
   /**
    * \brief Returns the y-coordinate of the normalized center of gesture
@@ -2460,8 +2653,10 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto center_y() const noexcept -> float;
+  [[nodiscard]] auto center_y() const noexcept -> float
+  {
+    return m_event.y;
+  }
 
   /**
    * \brief Returns the amount of fingers used in the gesture associated with
@@ -2472,11 +2667,11 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto fingers() const noexcept -> float;
+  [[nodiscard]] auto fingers() const noexcept -> float
+  {
+    return m_event.numFingers;
+  }
 };
-
-static_assert(validate_event<multi_gesture_event, SDL_MultiGestureEvent>());
 
 /**
  * \class quit_event
@@ -2500,8 +2695,8 @@ class quit_event final : public common_event<SDL_QuitEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  quit_event() noexcept;
+  quit_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a quit event based on the supplied SDL event.
@@ -2510,11 +2705,9 @@ class quit_event final : public common_event<SDL_QuitEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit quit_event(const SDL_QuitEvent& event) noexcept;
+  explicit quit_event(const SDL_QuitEvent& event) noexcept : common_event{event}
+  {}
 };
-
-static_assert(validate_event<quit_event, SDL_QuitEvent>());
 
 /**
  * \class text_editing_event
@@ -2540,8 +2733,10 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  text_editing_event() noexcept;
+  text_editing_event() noexcept : common_event{}
+  {
+    check_length();
+  }
 
   /**
    * \brief Creates a `TextEditingEvent` that is based on the supplied SDL
@@ -2551,8 +2746,11 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept;
+  explicit text_editing_event(const SDL_TextEditingEvent& event) noexcept
+      : common_event{event}
+  {
+    check_length();
+  }
 
   /**
    * \brief Sets the window ID associated with the event.
@@ -2561,8 +2759,10 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_window_id(u32 id) noexcept;
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
 
   /**
    * \brief Sets the location to begin editing from.
@@ -2571,8 +2771,10 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_start(i32 start) noexcept;
+  void set_start(const i32 start) noexcept
+  {
+    m_event.start = start;
+  }
 
   /**
    * \brief Sets the number of characters to edit from the start point.
@@ -2583,8 +2785,10 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_length(i32 length) noexcept;
+  void set_length(const i32 length) noexcept
+  {
+    m_event.length = detail::clamp(length, 0, 32);
+  }
 
   /**
    * \brief Returns the window ID associated with the event.
@@ -2593,8 +2797,10 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto window_id() const noexcept -> u32;
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
 
   /**
    * \brief Returns the text that will be used, as a null-terminated string in
@@ -2604,8 +2810,10 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto text() const noexcept -> std::string_view;
+  [[nodiscard]] auto text() const noexcept -> std::string_view
+  {
+    return std::string_view{static_cast<czstring>(m_event.text)};
+  }
 
   /**
    * \brief Returns the location to begin editing from.
@@ -2614,8 +2822,10 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto start() const noexcept -> i32;
+  [[nodiscard]] auto start() const noexcept -> i32
+  {
+    return m_event.start;
+  }
 
   /**
    * \brief Returns the number of characters to edit from the start point.
@@ -2626,14 +2836,17 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto length() const noexcept -> i32;
+  [[nodiscard]] auto length() const noexcept -> i32
+  {
+    return m_event.length;
+  }
 
  private:
-  void check_length() noexcept;
+  void check_length() noexcept
+  {
+    m_event.length = detail::clamp(m_event.length, 0, 32);
+  }
 };
-
-static_assert(validate_event<text_editing_event, SDL_TextEditingEvent>());
 
 /**
  * \class text_input_event
@@ -2656,8 +2869,8 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  text_input_event() noexcept;
+  text_input_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a `TextInputEvent` that is based on the supplied SDL event.
@@ -2666,8 +2879,9 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit text_input_event(const SDL_TextInputEvent& event) noexcept;
+  explicit text_input_event(const SDL_TextInputEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the window ID associated with the event.
@@ -2676,8 +2890,10 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_window_id(u32 id) noexcept;
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
 
   /**
    * \brief Returns the window ID associated with the event.
@@ -2686,8 +2902,10 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto window_id() const noexcept -> u32;
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
 
   /**
    * Returns the text that will be used, as a null-terminated string in UTF-8
@@ -2696,11 +2914,11 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
    * \return the text that will be used.
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto text_utf8() const noexcept -> std::string_view;
+  [[nodiscard]] auto text_utf8() const noexcept -> std::string_view
+  {
+    return std::string_view{static_cast<czstring>(m_event.text)};
+  }
 };
-
-static_assert(validate_event<text_input_event, SDL_TextInputEvent>());
 
 /**
  * \class touch_finger_event
@@ -2723,8 +2941,8 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  touch_finger_event() noexcept;
+  touch_finger_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a touch finger event that is based on the supplied SDL
@@ -2734,8 +2952,9 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept;
+  explicit touch_finger_event(const SDL_TouchFingerEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Sets the ID of the associated touch device.
@@ -2744,8 +2963,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_touch_id(SDL_TouchID id) noexcept;
+  void set_touch_id(const SDL_TouchID id) noexcept
+  {
+    m_event.touchId = id;
+  }
 
   /**
    * \brief Sets the finger ID associated with the event.
@@ -2754,8 +2975,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_finger_id(SDL_FingerID id) noexcept;
+  void set_finger_id(const SDL_FingerID id) noexcept
+  {
+    m_event.fingerId = id;
+  }
 
   /**
    * \brief Sets the window ID of the window under the finger.
@@ -2764,8 +2987,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_window_id(u32 id) noexcept;
+  void set_window_id(const u32 id) noexcept
+  {
+    m_event.windowID = id;
+  }
 
   /**
    * \brief Sets the normalized x-coordinate of the location of the event.
@@ -2777,8 +3002,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_x(float x) noexcept;
+  void set_x(const float x) noexcept
+  {
+    m_event.x = detail::clamp(x, 0.0f, 1.0f);
+  }
 
   /**
    * \brief Sets the normalized y-coordinate of the location of the event.
@@ -2790,8 +3017,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_y(float y) noexcept;
+  void set_y(const float y) noexcept
+  {
+    m_event.y = detail::clamp(y, 0.0f, 1.0f);
+  }
 
   /**
    * \brief Sets the normalized distance moved along the x-axis.
@@ -2803,8 +3032,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_dx(float dx) noexcept;
+  void set_dx(const float dx) noexcept
+  {
+    m_event.dx = detail::clamp(dx, -1.0f, 1.0f);
+  }
 
   /**
    * \brief Sets the normalized distance moved along the y-axis.
@@ -2816,8 +3047,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_dy(float dy) noexcept;
+  void set_dy(const float dy) noexcept
+  {
+    m_event.dy = detail::clamp(dy, -1.0f, 1.0f);
+  }
 
   /**
    * \brief Sets the normalized pressure associated with the event.
@@ -2829,8 +3062,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  void set_pressure(float pressure) noexcept;
+  void set_pressure(const float pressure) noexcept
+  {
+    m_event.pressure = detail::clamp(pressure, 0.0f, 1.0f);
+  }
 
   /**
    * \brief Returns the touch device ID associated with the event.
@@ -2839,8 +3074,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto touch_id() const noexcept -> SDL_TouchID;
+  [[nodiscard]] auto touch_id() const noexcept -> SDL_TouchID
+  {
+    return m_event.touchId;
+  }
 
   /**
    * \brief Returns the finger ID associated with the event.
@@ -2849,8 +3086,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto finger_id() const noexcept -> SDL_FingerID;
+  [[nodiscard]] auto finger_id() const noexcept -> SDL_FingerID
+  {
+    return m_event.fingerId;
+  }
 
   /**
    * \brief Returns the window ID of the window under the finger.
@@ -2859,8 +3098,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto window_id() const noexcept -> u32;
+  [[nodiscard]] auto window_id() const noexcept -> u32
+  {
+    return m_event.windowID;
+  }
 
   /**
    * \brief Returns the normalized x-coordinate of the location of the event.
@@ -2872,8 +3113,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto x() const noexcept -> float;
+  [[nodiscard]] auto x() const noexcept -> float
+  {
+    return m_event.x;
+  }
 
   /**
    * \brief Returns the normalized y-coordinate of the location of the event.
@@ -2885,8 +3128,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto y() const noexcept -> float;
+  [[nodiscard]] auto y() const noexcept -> float
+  {
+    return m_event.y;
+  }
 
   /**
    * \brief Returns the normalized distance moved along the x-axis.
@@ -2898,8 +3143,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto dx() const noexcept -> float;
+  [[nodiscard]] auto dx() const noexcept -> float
+  {
+    return m_event.dx;
+  }
 
   /**
    * \brief Returns the normalized distance moved along the y-axis.
@@ -2911,8 +3158,10 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto dy() const noexcept -> float;
+  [[nodiscard]] auto dy() const noexcept -> float
+  {
+    return m_event.dy;
+  }
 
   /**
    * \brief Returns the normalized pressure associated with the event.
@@ -2924,11 +3173,11 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto pressure() const noexcept -> float;
+  [[nodiscard]] auto pressure() const noexcept -> float
+  {
+    return m_event.pressure;
+  }
 };
-
-static_assert(validate_event<touch_finger_event, SDL_TouchFingerEvent>());
 
 /**
  * \enum window_event_id
@@ -3060,65 +3309,6 @@ enum class window_event_id
 };
 
 /**
- * \brief Indicates whether or not two window event ID values are the same.
- *
- * \ingroup event
- *
- * \param lhs the left-hand side window event ID value.
- * \param rhs the right-hand side window event ID value.
- *
- * \return `true` if the window event ID values are the same; `false` otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator==(window_event_id lhs,
-                                        SDL_WindowEventID rhs) noexcept -> bool
-{
-  return static_cast<SDL_WindowEventID>(lhs) == rhs;
-}
-
-/**
- * \copydoc operator==(window_event_id, SDL_WindowEventID)
- *
- * \ingroup event
- */
-[[nodiscard]] constexpr auto operator==(SDL_WindowEventID lhs,
-                                        window_event_id rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not two window event ID values aren't the same.
- *
- * \ingroup event
- *
- * \param lhs the left-hand side window event ID value.
- * \param rhs the right-hand side window event ID value.
- *
- * \return `true` if the window event ID values aren't the same; `false`
- * otherwise.
- *
- * \since 4.0.0
- */
-[[nodiscard]] constexpr auto operator!=(window_event_id lhs,
-                                        SDL_WindowEventID rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \copydoc operator!=(window_event_id, SDL_WindowEventID)
- *
- * \ingroup event
- */
-[[nodiscard]] constexpr auto operator!=(SDL_WindowEventID lhs,
-                                        window_event_id rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
  * \class window_event
  *
  * \ingroup event
@@ -3140,8 +3330,8 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  window_event() noexcept;
+  window_event() noexcept : common_event{}
+  {}
 
   /**
    * \brief Creates a window event based on the supplied SDL window event.
@@ -3150,8 +3340,9 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit window_event(const SDL_WindowEvent& event) noexcept;
+  explicit window_event(const SDL_WindowEvent& event) noexcept
+      : common_event{event}
+  {}
 
   /**
    * \brief Returns the event ID of this window event.
@@ -3163,8 +3354,10 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto event_id() const noexcept -> window_event_id;
+  [[nodiscard]] auto event_id() const noexcept -> window_event_id
+  {
+    return static_cast<window_event_id>(m_event.event);
+  }
 
   /**
    * \brief Returns the value of the first data value.
@@ -3181,8 +3374,10 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto data_1() const noexcept -> i32;
+  [[nodiscard]] auto data_1() const noexcept -> i32
+  {
+    return m_event.data1;
+  }
 
   /**
    * \brief Returns the value of the second data value.
@@ -3199,11 +3394,11 @@ class window_event final : public common_event<SDL_WindowEvent>
    *
    * \since 4.0.0
    */
-  CENTURION_QUERY
-  auto data_2() const noexcept -> i32;
+  [[nodiscard]] auto data_2() const noexcept -> i32
+  {
+    return m_event.data2;
+  }
 };
-
-static_assert(validate_event<window_event, SDL_WindowEvent>());
 
 /**
  * \class event
@@ -3226,8 +3421,7 @@ class event final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  event() noexcept;
+  event() noexcept = default;
 
   /**
    * \brief Creates an event based on the supplied event.
@@ -3236,18 +3430,10 @@ class event final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit event(const SDL_Event& event) noexcept;
-
-  /**
-   * \brief Creates an event based on the supplied event.
-   *
-   * \param event the event that will be moved.
-   *
-   * \since 4.0.0
-   */
-  CENTURION_API
-  explicit event(SDL_Event&& event) noexcept;
+  explicit event(const SDL_Event& event) noexcept : m_event{event}
+  {
+    update_data();
+  }
 
   /**
    * \brief Refresh the event loop, gathering events from the input devices.
@@ -3258,8 +3444,10 @@ class event final
    *
    * \since 3.1.0
    */
-  CENTURION_API
-  static void refresh() noexcept;
+  static void refresh() noexcept
+  {
+    SDL_PumpEvents();
+  }
 
   /**
    * \brief Pushes an event onto the event queue.
@@ -3268,8 +3456,11 @@ class event final
    *
    * \since 3.1.0
    */
-  CENTURION_API
-  static void push(event& event) noexcept;
+  static void push(event& event) noexcept
+  {
+    auto& sdlEvent = event.m_event;
+    SDL_PushEvent(&sdlEvent);
+  }
 
   /**
    * \brief Flushes all current events from the event queue.
@@ -3278,8 +3469,10 @@ class event final
    *
    * \since 3.1.0
    */
-  CENTURION_API
-  static void flush() noexcept;
+  static void flush() noexcept
+  {
+    SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+  }
 
   /**
    * Flushes all of the current events from the event queue, including pending
@@ -3287,8 +3480,11 @@ class event final
    *
    * \since 3.1.0
    */
-  CENTURION_API
-  static void flush_all() noexcept;
+  static void flush_all() noexcept
+  {
+    SDL_PumpEvents();
+    SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+  }
 
   /**
    * \brief Polls the next available event, if there is one.
@@ -3299,8 +3495,14 @@ class event final
    *
    * \since 3.1.0
    */
-  CENTURION_QUERY
-  auto poll() noexcept -> bool;
+  auto poll() noexcept -> bool
+  {
+    const bool result = SDL_PollEvent(&m_event);
+
+    update_data();
+
+    return result;
+  }
 
   /**
    * \brief Returns the type of the event.
@@ -3311,8 +3513,10 @@ class event final
    *
    * \since 3.1.0
    */
-  CENTURION_QUERY
-  auto type() const noexcept -> event_type;
+  [[nodiscard]] auto type() const noexcept -> event_type
+  {
+    return static_cast<event_type>(m_event.type);
+  }
 
   /**
    * \brief Returns the number of events in the event queue.
@@ -3347,7 +3551,7 @@ class event final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto num_queued(event_type type) noexcept
+  [[nodiscard]] static auto num_queued(const event_type type) noexcept
       -> std::optional<int>
   {
     const auto id = static_cast<u32>(type);
@@ -3514,8 +3718,207 @@ class event final
                window_event>
       m_data{};
 
-  void update_data() noexcept;
+  void update_data() noexcept
+  {
+    const auto t = type();
+
+    if (t == event_type::quit) {
+      m_data.emplace<quit_event>(m_event.quit);
+
+    } else if (t == event_type::audio_device_added ||
+               t == event_type::audio_device_removed) {
+      m_data.emplace<audio_device_event>(m_event.adevice);
+
+    } else if (t == event_type::controller_axis_motion) {
+      m_data.emplace<controller_axis_event>(m_event.caxis);
+
+    } else if (t == event_type::controller_button_down ||
+               t == event_type::controller_button_up) {
+      m_data.emplace<controller_button_event>(m_event.cbutton);
+
+    } else if (t == event_type::controller_device_added ||
+               t == event_type::controller_device_removed ||
+               t == event_type::controller_device_remapped) {
+      m_data.emplace<controller_device_event>(m_event.cdevice);
+
+    } else if (t == event_type::dollar_gesture ||
+               t == event_type::dollar_record) {
+      m_data.emplace<dollar_gesture_event>(m_event.dgesture);
+
+    } else if (t == event_type::drop_begin || t == event_type::drop_complete ||
+               t == event_type::drop_file || t == event_type::drop_text) {
+      m_data.emplace<drop_event>(m_event.drop);
+
+    } else if (t == event_type::joystick_axis_motion) {
+      m_data.emplace<joy_axis_event>(m_event.jaxis);
+
+    } else if (t == event_type::joystick_ball_motion) {
+      m_data.emplace<joy_ball_event>(m_event.jball);
+
+    } else if (t == event_type::joystick_button_up ||
+               t == event_type::joystick_button_down) {
+      m_data.emplace<joy_button_event>(m_event.jbutton);
+
+    } else if (t == event_type::joystick_device_added ||
+               t == event_type::joystick_device_removed) {
+      m_data.emplace<joy_device_event>(m_event.jdevice);
+
+    } else if (t == event_type::joystick_hat_motion) {
+      m_data.emplace<joy_hat_event>(m_event.jhat);
+
+    } else if (t == event_type::key_down || t == event_type::key_up) {
+      m_data.emplace<keyboard_event>(m_event.key);
+
+    } else if (t == event_type::mouse_button_up ||
+               t == event_type::mouse_button_down) {
+      m_data.emplace<mouse_button_event>(m_event.button);
+
+    } else if (t == event_type::mouse_motion) {
+      m_data.emplace<mouse_motion_event>(m_event.motion);
+
+    } else if (t == event_type::mouse_wheel) {
+      m_data.emplace<mouse_wheel_event>(m_event.wheel);
+
+    } else if (t == event_type::multi_gesture) {
+      m_data.emplace<multi_gesture_event>(m_event.mgesture);
+
+    } else if (t == event_type::text_editing) {
+      m_data.emplace<text_editing_event>(m_event.edit);
+
+    } else if (t == event_type::text_input) {
+      m_data.emplace<text_input_event>(m_event.text);
+
+    } else if (t == event_type::touch_motion || t == event_type::touch_down ||
+               t == event_type::touch_up) {
+      m_data.emplace<touch_finger_event>(m_event.tfinger);
+
+    } else if (t == event_type::window) {
+      m_data.emplace<window_event>(m_event.window);
+    }
+  }
 };
+
+/**
+ * \brief Indicates whether or not two mouse wheel direction values are equal.
+ *
+ * \ingroup event
+ *
+ * \param lhs the left-hand side mouse wheel direction value.
+ * \param rhs the right-hand side mouse wheel direction value.
+ *
+ * \return `true` if the two values are equal; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(mouse_wheel_direction lhs,
+                                        SDL_MouseWheelDirection rhs) noexcept
+    -> bool
+{
+  return lhs == static_cast<mouse_wheel_direction>(rhs);
+}
+
+/**
+ * \copydoc operator==(mouse_wheel_direction, SDL_MouseWheelDirection)
+ *
+ * \ingroup event
+ */
+[[nodiscard]] constexpr auto operator==(SDL_MouseWheelDirection lhs,
+                                        mouse_wheel_direction rhs) noexcept
+    -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two mouse wheel direction values aren't
+ * equal.
+ *
+ * \ingroup event
+ *
+ * \param lhs the left-hand side mouse wheel direction value.
+ * \param rhs the right-hand side mouse wheel direction value.
+ *
+ * \return `true` if the two values aren't equal; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(mouse_wheel_direction lhs,
+                                        SDL_MouseWheelDirection rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(mouse_wheel_direction, SDL_MouseWheelDirection)
+ *
+ * \ingroup event
+ */
+[[nodiscard]] constexpr auto operator!=(SDL_MouseWheelDirection lhs,
+                                        mouse_wheel_direction rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \brief Indicates whether or not two window event ID values are the same.
+ *
+ * \ingroup event
+ *
+ * \param lhs the left-hand side window event ID value.
+ * \param rhs the right-hand side window event ID value.
+ *
+ * \return `true` if the window event ID values are the same; `false` otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator==(window_event_id lhs,
+                                        SDL_WindowEventID rhs) noexcept -> bool
+{
+  return static_cast<SDL_WindowEventID>(lhs) == rhs;
+}
+
+/**
+ * \copydoc operator==(window_event_id, SDL_WindowEventID)
+ *
+ * \ingroup event
+ */
+[[nodiscard]] constexpr auto operator==(SDL_WindowEventID lhs,
+                                        window_event_id rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not two window event ID values aren't the same.
+ *
+ * \ingroup event
+ *
+ * \param lhs the left-hand side window event ID value.
+ * \param rhs the right-hand side window event ID value.
+ *
+ * \return `true` if the window event ID values aren't the same; `false`
+ * otherwise.
+ *
+ * \since 4.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(window_event_id lhs,
+                                        SDL_WindowEventID rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(window_event_id, SDL_WindowEventID)
+ *
+ * \ingroup event
+ */
+[[nodiscard]] constexpr auto operator!=(SDL_WindowEventID lhs,
+                                        window_event_id rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 }  // namespace cen
 

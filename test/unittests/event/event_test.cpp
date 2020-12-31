@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+#include <type_traits>
+
 namespace {
 
 [[nodiscard]] auto create_event(cen::u32 type) -> cen::event
@@ -11,7 +13,56 @@ namespace {
   return cen::event{sdlEvent};
 }
 
+/**
+ * \brief Indicates whether or not a Centurion event type fulfills the event
+ * type specification.
+ *
+ * \ingroup event
+ *
+ * \tparam T the Centurion event type that will be checked.
+ * \tparam E the SDL event type that the Centurion event is mirroring.
+ *
+ * \return `true` if the supplied event type passed the requirements; `false`
+ * otherwise.
+ *
+ * \since 4.0.0
+ */
+template <typename T, typename E>
+[[nodiscard]] constexpr auto validate_event() noexcept -> bool
+{
+  return !std::has_virtual_destructor_v<T> &&
+         std::is_nothrow_copy_constructible_v<T> &&
+         std::is_nothrow_copy_assignable_v<T> &&
+         std::is_nothrow_move_constructible_v<T> &&
+         std::is_nothrow_move_assignable_v<T> &&
+         std::is_nothrow_constructible_v<T, E> && std::is_final_v<T>;
+}
+
 }  // namespace
+
+// clang-format off
+static_assert(validate_event<cen::audio_device_event, SDL_AudioDeviceEvent>());
+static_assert(validate_event<cen::controller_axis_event, SDL_ControllerAxisEvent>());
+static_assert(validate_event<cen::controller_button_event, SDL_ControllerButtonEvent>());
+static_assert(validate_event<cen::controller_device_event, SDL_ControllerDeviceEvent>());
+static_assert(validate_event<cen::dollar_gesture_event, SDL_DollarGestureEvent>());
+static_assert(validate_event<cen::drop_event, SDL_DropEvent>());
+static_assert(validate_event<cen::joy_axis_event, SDL_JoyAxisEvent>());
+static_assert(validate_event<cen::joy_ball_event, SDL_JoyBallEvent>());
+static_assert(validate_event<cen::joy_button_event, SDL_JoyButtonEvent>());
+static_assert(validate_event<cen::joy_device_event, SDL_JoyDeviceEvent>());
+static_assert(validate_event<cen::joy_hat_event, SDL_JoyHatEvent>());
+static_assert(validate_event<cen::keyboard_event, SDL_KeyboardEvent>());
+static_assert(validate_event<cen::mouse_button_event, SDL_MouseButtonEvent>());
+static_assert(validate_event<cen::mouse_motion_event, SDL_MouseMotionEvent>());
+static_assert(validate_event<cen::mouse_wheel_event, SDL_MouseWheelEvent>());
+static_assert(validate_event<cen::multi_gesture_event, SDL_MultiGestureEvent>());
+static_assert(validate_event<cen::quit_event, SDL_QuitEvent>());
+static_assert(validate_event<cen::text_editing_event, SDL_TextEditingEvent>());
+static_assert(validate_event<cen::text_input_event, SDL_TextInputEvent>());
+static_assert(validate_event<cen::touch_finger_event, SDL_TouchFingerEvent>());
+static_assert(validate_event<cen::window_event, SDL_WindowEvent>());
+// clang-format on
 
 // TODO this class is suitable for mocking tests
 
@@ -332,4 +383,3 @@ TEST(Event, TryGet)
   EXPECT_TRUE(cEvent.try_get<cen::mouse_motion_event>());
   EXPECT_FALSE(cEvent.try_get<cen::window_event>());
 }
-

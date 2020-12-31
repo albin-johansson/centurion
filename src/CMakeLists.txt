@@ -88,29 +88,6 @@ set(SOURCE_FILES
     input/key_code.cpp
     input/scan_code.cpp
 
-    event/event.cpp
-    event/quit_event.cpp
-    event/window_event.cpp
-    event/keyboard_event.cpp
-    event/audio_device_event.cpp
-    event/controller_axis_event.cpp
-    event/controller_button_event.cpp
-    event/controller_device_event.cpp
-    event/dollar_gesture_event.cpp
-    event/drop_event.cpp
-    event/touch_finger_event.cpp
-    event/joy_axis_event.cpp
-    event/joy_ball_event.cpp
-    event/joy_hat_event.cpp
-    event/joy_button_event.cpp
-    event/joy_device_event.cpp
-    event/mouse_motion_event.cpp
-    event/mouse_button_event.cpp
-    event/mouse_wheel_event.cpp
-    event/multi_gesture_event.cpp
-    event/text_editing_event.cpp
-    event/text_input_event.cpp
-
     thread/thread.cpp
     thread/scoped_lock.cpp
     thread/mutex.cpp

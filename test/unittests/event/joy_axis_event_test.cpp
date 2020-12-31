@@ -1,63 +1,60 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("joy_axis_event::set_which", "[joy_axis_event]")
+TEST(JoyAxisEvent, SetWhich)
 {
   cen::joy_axis_event event;
 
-  const auto which = 3;
+  constexpr auto which = 3;
   event.set_which(which);
 
-  CHECK(event.which() == which);
+  EXPECT_EQ(which, event.which());
 }
 
-TEST_CASE("joy_axis_event::set_axis", "[joy_axis_event]")
+TEST(JoyAxisEvent, SetAxis)
 {
   cen::joy_axis_event event;
 
-  const auto axis = 7;
+  constexpr auto axis = 7;
   event.set_axis(axis);
 
-  CHECK(event.axis() == axis);
+  EXPECT_EQ(axis, event.axis());
 }
 
-TEST_CASE("joy_axis_event::set_value", "[joy_axis_event]")
+TEST(JoyAxisEvent, SetValue)
 {
   cen::joy_axis_event event;
 
-  const auto value = 4'234;
+  constexpr auto value = 4'234;
   event.set_value(value);
 
-  CHECK(event.value() == value);
+  EXPECT_EQ(value, event.value());
 }
 
-TEST_CASE("joy_axis_event::which", "[joy_axis_event]")
+TEST(JoyAxisEvent, Which)
 {
-  SDL_JoyAxisEvent sdlEvent;
-  sdlEvent.which = 23;
+  SDL_JoyAxisEvent sdl;
+  sdl.which = 23;
 
-  cen::joy_axis_event event{sdlEvent};
-
-  CHECK(event.which() == sdlEvent.which);
+  const cen::joy_axis_event event{sdl};
+  EXPECT_EQ(sdl.which, event.which());
 }
 
-TEST_CASE("joy_axis_event::axis", "[joy_axis_event]")
+TEST(JoyAxisEvent, Axis)
 {
-  SDL_JoyAxisEvent sdlEvent;
-  sdlEvent.axis = 5;
+  SDL_JoyAxisEvent sdl;
+  sdl.axis = 5;
 
-  cen::joy_axis_event event{sdlEvent};
-
-  CHECK(event.axis() == sdlEvent.axis);
+  const cen::joy_axis_event event{sdl};
+  EXPECT_EQ(sdl.axis, event.axis());
 }
 
-TEST_CASE("joy_axis_event::value", "[joy_axis_event]")
+TEST(JoyAxisEvent, Value)
 {
-  SDL_JoyAxisEvent sdlEvent;
-  sdlEvent.value = 1864;
+  SDL_JoyAxisEvent sdl;
+  sdl.value = 1'864;
 
-  cen::joy_axis_event event{sdlEvent};
-
-  CHECK(event.value() == sdlEvent.value);
+  const cen::joy_axis_event event{sdl};
+  EXPECT_EQ(sdl.value, event.value());
 }

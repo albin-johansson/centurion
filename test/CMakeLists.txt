@@ -23,10 +23,12 @@ set(TEST_FILES
     unittests/detail/bool_converter_test.cpp
     unittests/detail/to_string_test.cpp
 
+    unittests/system/base_path_test.cpp
     unittests/system/battery_test.cpp
     unittests/system/clipboard_test.cpp
     unittests/system/counter_test.cpp
     unittests/system/cpu_test.cpp
+    unittests/system/pref_path_test.cpp
 
     unittests/geometry/area_test.cpp
     unittests/geometry/rect_test.cpp
@@ -77,8 +79,7 @@ set(TEST_FILES
     unittests/event/text_input_event_test.cpp
     unittests/event/touch_finger_event_test.cpp
     unittests/event/window_event_test.cpp
-    unittests/event/window_event_id_test.cpp
-    )
+    unittests/event/window_event_id_test.cpp)
 
 #if (CEN_AUDIO)
 #    set(TEST_FILES

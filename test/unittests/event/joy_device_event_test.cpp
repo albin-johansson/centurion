@@ -1,23 +1,22 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("JoyDeviceEvent::set_which", "[JoyDeviceEvent]")
+TEST(JoyDeviceEvent, SetWhich)
 {
   cen::joy_device_event event;
 
-  const auto which = 84;
+  constexpr auto which = 84;
   event.set_which(which);
 
-  CHECK(event.which() == which);
+  EXPECT_EQ(which, event.which());
 }
 
-TEST_CASE("JoyDeviceEvent::which", "[JoyDeviceEvent]")
+TEST(JoyDeviceEvent, Which)
 {
-  SDL_JoyDeviceEvent sdlEvent;
-  sdlEvent.which = 27;
+  SDL_JoyDeviceEvent sdl;
+  sdl.which = 27;
 
-  cen::joy_device_event event{sdlEvent};
-
-  CHECK(event.which() == sdlEvent.which);
+  const cen::joy_device_event event{sdl};
+  EXPECT_EQ(sdl.which, event.which());
 }

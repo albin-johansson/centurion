@@ -1,230 +1,215 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "event.hpp"
 
-TEST_CASE("touch_finger_event::set_touch_id", "[touch_finger_event]")
+TEST(TouchFingerEvent, SetTouchId)
 {
   cen::touch_finger_event event;
 
-  const auto id = 8;
+  constexpr auto id = 8;
   event.set_touch_id(id);
 
-  CHECK(event.touch_id() == id);
+  EXPECT_EQ(id, event.touch_id());
 }
 
-TEST_CASE("touch_finger_event::set_finger_id", "[touch_finger_event]")
+TEST(TouchFingerEvent, SetFingerId)
 {
   cen::touch_finger_event event;
 
-  const auto id = 14;
+  constexpr auto id = 14;
   event.set_finger_id(id);
 
-  CHECK(event.finger_id() == id);
+  EXPECT_EQ(id, event.finger_id());
 }
 
-TEST_CASE("touch_finger_event::set_window_id", "[touch_finger_event]")
+TEST(TouchFingerEvent, SetWindowId)
 {
   cen::touch_finger_event event;
 
-  const auto id = 32;
+  constexpr auto id = 32;
   event.set_window_id(id);
 
-  CHECK(event.window_id() == id);
+  EXPECT_EQ(id, event.window_id());
 }
 
-TEST_CASE("touch_finger_event::set_x", "[touch_finger_event]")
+TEST(TouchFingerEvent, SetX)
 {
   cen::touch_finger_event event;
 
-  SECTION("Overflow")
-  {
+  {  // Overflow
     event.set_x(1.1f);
-    CHECK(event.x() == 1);
+    EXPECT_EQ(1, event.x());
   }
 
-  SECTION("Underflow")
-  {
+  {  // Underflow
     event.set_x(-0.1f);
-    CHECK(event.x() == 0);
+    EXPECT_EQ(0, event.x());
   }
 
-  SECTION("Good value")
-  {
-    const auto x = 0.4f;
+  {  // Good value
+    constexpr auto x = 0.4f;
     event.set_x(x);
-    CHECK(event.x() == x);
+
+    EXPECT_EQ(x, event.x());
   }
 }
 
-TEST_CASE("touch_finger_event::set_y", "[touch_finger_event]")
+TEST(TouchFingerEvent, SetY)
 {
   cen::touch_finger_event event;
 
-  SECTION("Overflow")
-  {
+  {  // Overflow
     event.set_y(1.1f);
-    CHECK(event.y() == 1);
+    EXPECT_EQ(1, event.y());
   }
 
-  SECTION("Underflow")
-  {
+  {  // Underflow
     event.set_y(-0.1f);
-    CHECK(event.y() == 0);
+    EXPECT_EQ(0, event.y());
   }
 
-  SECTION("Good value")
-  {
-    const auto y = 0.9f;
+  {  // Good value
+    constexpr auto y = 0.9f;
     event.set_y(y);
-    CHECK(event.y() == y);
+
+    EXPECT_EQ(y, event.y());
   }
 }
 
-TEST_CASE("touch_finger_event::set_dx", "[touch_finger_event]")
+TEST(TouchFingerEvent, SetDx)
 {
   cen::touch_finger_event event;
 
-  SECTION("Overflow")
-  {
+  {  // Overflow
     event.set_dx(1.1f);
-    CHECK(event.dx() == 1);
+    EXPECT_EQ(1, event.dx());
   }
 
-  SECTION("Underflow")
-  {
+  {  // Underflow
     event.set_dx(-1.1f);
-    CHECK(event.dx() == -1);
+    EXPECT_EQ(-1, event.dx());
   }
 
-  SECTION("Good value")
-  {
-    const auto dx = -0.4f;
+  {  // Good value
+    constexpr auto dx = -0.4f;
     event.set_dx(dx);
-    CHECK(event.dx() == dx);
+
+    EXPECT_EQ(dx, event.dx());
   }
 }
 
-TEST_CASE("touch_finger_event::set_dy", "[touch_finger_event]")
+TEST(TouchFingerEvent, SetDy)
 {
   cen::touch_finger_event event;
 
-  SECTION("Overflow")
-  {
+  {  // Overflow
     event.set_dy(1.1f);
-    CHECK(event.dy() == 1);
+    EXPECT_EQ(1, event.dy());
   }
 
-  SECTION("Underflow")
-  {
+  {  // Underflow
     event.set_dy(-1.1f);
-    CHECK(event.dy() == -1);
+    EXPECT_EQ(-1, event.dy());
   }
 
-  SECTION("Good value")
-  {
-    const auto dy = 0.75f;
+  {  // Good value
+    constexpr auto dy = 0.75f;
     event.set_dy(dy);
-    CHECK(event.dy() == dy);
+
+    EXPECT_EQ(dy, event.dy());
   }
 }
 
-TEST_CASE("touch_finger_event::set_pressure", "[touch_finger_event]")
+TEST(TouchFingerEvent, SetPressure)
 {
   cen::touch_finger_event event;
 
-  SECTION("Overflow")
-  {
+  {  // Overflow
     event.set_pressure(1.1f);
-    CHECK(event.pressure() == 1);
+    EXPECT_EQ(1, event.pressure());
   }
 
-  SECTION("Underflow")
-  {
+  {  // Underflow
     event.set_pressure(-0.1f);
-    CHECK(event.pressure() == 0);
+    EXPECT_EQ(0, event.pressure());
   }
 
-  SECTION("Good value")
-  {
-    const auto pressure = 0.75f;
+  {  // Good value
+    constexpr auto pressure = 0.75f;
     event.set_pressure(pressure);
-    CHECK(event.pressure() == pressure);
+
+    EXPECT_EQ(pressure, event.pressure());
   }
 }
 
-TEST_CASE("touch_finger_event::touch_id", "[touch_finger_event]")
+TEST(TouchFingerEvent, TouchId)
 {
-  SDL_TouchFingerEvent sdlEvent{};
-  sdlEvent.touchId = 4;
-  cen::touch_finger_event event{sdlEvent};
+  SDL_TouchFingerEvent sdl{};
+  sdl.touchId = 4;
 
-  CHECK(event.touch_id() == sdlEvent.touchId);
+  const cen::touch_finger_event event{sdl};
+  EXPECT_EQ(sdl.touchId, event.touch_id());
 }
 
-TEST_CASE("touch_finger_event::finger_id", "[touch_finger_event]")
+TEST(TouchFingerEvent, FingerId)
 {
-  SDL_TouchFingerEvent sdlEvent{};
-  sdlEvent.fingerId = 18;
-  cen::touch_finger_event event{sdlEvent};
+  SDL_TouchFingerEvent sdl{};
+  sdl.fingerId = 18;
 
-  CHECK(event.finger_id() == sdlEvent.fingerId);
+  const cen::touch_finger_event event{sdl};
+  EXPECT_EQ(sdl.fingerId, event.finger_id());
 }
 
-TEST_CASE("touch_finger_event::window_id", "[touch_finger_event]")
+TEST(TouchFingerEvent, WindowId)
 {
-  SDL_TouchFingerEvent sdlEvent{};
-  sdlEvent.windowID = 7;
-  cen::touch_finger_event event{sdlEvent};
+  SDL_TouchFingerEvent sdl{};
+  sdl.windowID = 7;
 
-  CHECK(event.window_id() == sdlEvent.windowID);
+  const cen::touch_finger_event event{sdl};
+  EXPECT_EQ(sdl.windowID, event.window_id());
 }
 
-TEST_CASE("touch_finger_event::x", "[touch_finger_event]")
+TEST(TouchFingerEvent, X)
 {
-  SDL_TouchFingerEvent sdlEvent{};
-  sdlEvent.x = 0.4f;
-  cen::touch_finger_event event{sdlEvent};
+  SDL_TouchFingerEvent sdl{};
+  sdl.x = 0.4f;
 
-  CHECK(event.x() == sdlEvent.x);
+  const cen::touch_finger_event event{sdl};
+  EXPECT_EQ(sdl.x, event.x());
 }
 
-TEST_CASE("touch_finger_event::y", "[touch_finger_event]")
+TEST(TouchFingerEvent, Y)
 {
-  SDL_TouchFingerEvent sdlEvent{};
-  sdlEvent.y = 0.8f;
-  cen::touch_finger_event event{sdlEvent};
+  SDL_TouchFingerEvent sdl{};
+  sdl.y = 0.8f;
 
-  CHECK(event.y() == sdlEvent.y);
+  const cen::touch_finger_event event{sdl};
+  EXPECT_EQ(sdl.y, event.y());
 }
 
-TEST_CASE("touch_finger_event::dx", "[touch_finger_event]")
+TEST(TouchFingerEvent, Dx)
 {
-  SDL_TouchFingerEvent sdlEvent{};
-  sdlEvent.dx = -0.9f;
-  cen::touch_finger_event event{sdlEvent};
+  SDL_TouchFingerEvent sdl{};
+  sdl.dx = -0.9f;
 
-  CHECK(event.dx() == sdlEvent.dx);
+  const cen::touch_finger_event event{sdl};
+  EXPECT_EQ(sdl.dx, event.dx());
 }
 
-TEST_CASE("touch_finger_event::dy", "[touch_finger_event]")
+TEST(TouchFingerEvent, Dy)
 {
-  SDL_TouchFingerEvent sdlEvent{};
-  sdlEvent.dy = 0.2f;
-  cen::touch_finger_event event{sdlEvent};
+  SDL_TouchFingerEvent sdl{};
+  sdl.dy = 0.2f;
 
-  CHECK(event.dy() == sdlEvent.dy);
+  const cen::touch_finger_event event{sdl};
+  EXPECT_EQ(sdl.dy, event.dy());
 }
 
-TEST_CASE("touch_finger_event::pressure", "[touch_finger_event]")
+TEST(TouchFingerEvent, Pressure)
 {
-  SDL_TouchFingerEvent sdlEvent{};
-  sdlEvent.pressure = 0.6f;
-  cen::touch_finger_event event{sdlEvent};
+  SDL_TouchFingerEvent sdl{};
+  sdl.pressure = 0.6f;
 
-  CHECK(event.pressure() == sdlEvent.pressure);
-}
-
-TEST_CASE("touch_finger_event()", "[touch_finger_event]")
-{
-  CHECK_NOTHROW(cen::touch_finger_event{{}});
+  const cen::touch_finger_event event{sdl};
+  EXPECT_EQ(sdl.pressure, event.pressure());
 }

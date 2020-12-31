@@ -31,6 +31,7 @@ set(TEST_FILES
     unittests/system/platform_test.cpp
     unittests/system/pref_path_test.cpp
     unittests/system/ram_test.cpp
+    unittests/system/screen_test.cpp
 
     unittests/geometry/area_test.cpp
     unittests/geometry/rect_test.cpp

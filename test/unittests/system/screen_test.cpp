@@ -1,187 +1,188 @@
 #include "screen.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("screen::orientation enum", "[screen]")
+TEST(Screen, SetScreenSaverEnabled)
 {
-  using sdl_orientation = SDL_DisplayOrientation;
-  using cen::screen::orientation;
-  CHECK(static_cast<sdl_orientation>(orientation::unknown) ==
-        SDL_ORIENTATION_UNKNOWN);
-  CHECK(static_cast<sdl_orientation>(orientation::landscape) ==
-        SDL_ORIENTATION_LANDSCAPE);
-  CHECK(static_cast<sdl_orientation>(orientation::landscape_flipped) ==
-        SDL_ORIENTATION_LANDSCAPE_FLIPPED);
-  CHECK(static_cast<sdl_orientation>(orientation::portrait) ==
-        SDL_ORIENTATION_PORTRAIT);
-  CHECK(static_cast<sdl_orientation>(orientation::portrait_flipped) ==
-        SDL_ORIENTATION_PORTRAIT_FLIPPED);
-}
-
-TEST_CASE("screen::set_screen_saver_enabled", "[screen]")
-{
-  CHECK(!cen::screen::screen_saver_enabled());
+  EXPECT_FALSE(cen::screen::screen_saver_enabled());
 
   cen::screen::set_screen_saver_enabled(true);
-  CHECK(cen::screen::screen_saver_enabled());
+  EXPECT_TRUE(cen::screen::screen_saver_enabled());
 
   cen::screen::set_screen_saver_enabled(false);
-  CHECK(!cen::screen::screen_saver_enabled());
+  EXPECT_FALSE(cen::screen::screen_saver_enabled());
 }
 
-TEST_CASE("screen::dpi", "[screen]")
+TEST(Screen, DPI)
 {
-  SECTION("Default screen")
-  {
+  {  // Default display
     const auto dpi = cen::screen::dpi();
-    REQUIRE(dpi.has_value());
+    ASSERT_TRUE(dpi.has_value());
 
     float diagonal{};
     float horizontal{};
     float vertical{};
     SDL_GetDisplayDPI(0, &diagonal, &horizontal, &vertical);
 
-    CHECK(dpi->diagonal == diagonal);
-    CHECK(dpi->horizontal == horizontal);
-    CHECK(dpi->vertical == vertical);
+    EXPECT_EQ(diagonal, dpi->diagonal);
+    EXPECT_EQ(horizontal, dpi->horizontal);
+    EXPECT_EQ(vertical, dpi->vertical);
   }
 
-  SECTION("With explicit display index")
-  {
+  {  // Explicit display index
     const auto amount = cen::screen::amount();
-    CHECK(!cen::screen::dpi(amount));
-    CHECK(cen::screen::dpi(amount - 1));
+    EXPECT_FALSE(cen::screen::dpi(amount));
+    EXPECT_TRUE(cen::screen::dpi(amount - 1).has_value());
   }
 }
 
-TEST_CASE("screen::diagonal_dpi", "[screen]")
+TEST(Screen, DiagonalDPI)
 {
   const auto diagonal = cen::screen::diagonal_dpi();
-  REQUIRE(diagonal.has_value());
+  ASSERT_TRUE(diagonal.has_value());
 
   float expected{};
   SDL_GetDisplayDPI(0, &expected, nullptr, nullptr);
 
-  CHECK(*diagonal == expected);
-  CHECK_FALSE(cen::screen::diagonal_dpi(cen::screen::amount()));
+  EXPECT_EQ(expected, *diagonal);
+  EXPECT_FALSE(cen::screen::diagonal_dpi(cen::screen::amount()));
 }
 
-TEST_CASE("screen::horizontal_dpi", "[screen]")
+TEST(Screen, HorizontalDPI)
 {
   const auto horizontal = cen::screen::horizontal_dpi();
-  REQUIRE(horizontal.has_value());
+  ASSERT_TRUE(horizontal.has_value());
 
   float expected{};
   SDL_GetDisplayDPI(0, nullptr, &expected, nullptr);
 
-  CHECK(*horizontal == expected);
-  CHECK_FALSE(cen::screen::horizontal_dpi(cen::screen::amount()));
+  EXPECT_EQ(expected, *horizontal);
+  EXPECT_FALSE(cen::screen::diagonal_dpi(cen::screen::amount()));
 }
 
-TEST_CASE("screen::vertical_dpi", "[screen]")
+TEST(Screen, VerticalDPI)
 {
   const auto vertical = cen::screen::vertical_dpi();
-  REQUIRE(vertical.has_value());
+  ASSERT_TRUE(vertical.has_value());
 
   float expected{};
   SDL_GetDisplayDPI(0, nullptr, nullptr, &expected);
 
-  CHECK(*vertical == expected);
-  CHECK_FALSE(cen::screen::vertical_dpi(cen::screen::amount()));
+  EXPECT_EQ(expected, *vertical);
+  EXPECT_FALSE(cen::screen::diagonal_dpi(cen::screen::amount()));
 }
 
-TEST_CASE("screen::bounds", "[screen]")
+TEST(Screen, Bounds)
 {
   const auto bounds = cen::screen::bounds();
-  REQUIRE(bounds.has_value());
+  ASSERT_TRUE(bounds.has_value());
 
   SDL_Rect rect{};
-  CHECK(SDL_GetDisplayBounds(0, &rect) == 0);
+  EXPECT_EQ(0, SDL_GetDisplayBounds(0, &rect));
 
-  CHECK(bounds->x() == rect.x);
-  CHECK(bounds->y() == rect.y);
-  CHECK(bounds->width() == rect.w);
-  CHECK(bounds->height() == rect.h);
+  EXPECT_EQ(rect.x, bounds->x());
+  EXPECT_EQ(rect.y, bounds->y());
+  EXPECT_EQ(rect.w, bounds->width());
+  EXPECT_EQ(rect.h, bounds->height());
 
-  CHECK_FALSE(cen::screen::bounds(cen::screen::amount()).has_value());
+  EXPECT_FALSE(cen::screen::bounds(cen::screen::amount()).has_value());
 }
 
-TEST_CASE("screen::usable_bounds", "[screen]")
+TEST(Screen, UsableBounds)
 {
   const auto bounds = cen::screen::usable_bounds();
-  REQUIRE(bounds.has_value());
+  ASSERT_TRUE(bounds.has_value());
 
   SDL_Rect rect{};
-  CHECK(SDL_GetDisplayUsableBounds(0, &rect) == 0);
+  EXPECT_EQ(0, SDL_GetDisplayUsableBounds(0, &rect));
 
-  CHECK(bounds->x() == rect.x);
-  CHECK(bounds->y() == rect.y);
-  CHECK(bounds->width() == rect.w);
-  CHECK(bounds->height() == rect.h);
+  EXPECT_EQ(rect.x, bounds->x());
+  EXPECT_EQ(rect.y, bounds->y());
+  EXPECT_EQ(rect.w, bounds->width());
+  EXPECT_EQ(rect.h, bounds->height());
 
-  CHECK_FALSE(cen::screen::usable_bounds(cen::screen::amount()).has_value());
+  EXPECT_FALSE(cen::screen::usable_bounds(cen::screen::amount()).has_value());
 }
 
-TEST_CASE("screen::get_orientation", "[screen]")
+TEST(Screen, GetOrientation)
 {
-  SECTION("Default index")
-  {
+  {  // Default index
     const auto orientation = cen::screen::get_orientation();
-    CHECK(static_cast<SDL_DisplayOrientation>(orientation) ==
-          SDL_GetDisplayOrientation(0));
+    EXPECT_EQ(SDL_GetDisplayOrientation(0),
+              static_cast<SDL_DisplayOrientation>(orientation));
   }
 
-  CHECK(cen::screen::get_orientation(cen::screen::amount()) ==
-        cen::screen::orientation::unknown);
+  EXPECT_EQ(cen::screen::orientation::unknown,
+            cen::screen::get_orientation(cen::screen::amount()));
 }
 
-TEST_CASE("screen::amount", "[screen]")
+TEST(Screen, Amount)
 {
-  CHECK(cen::screen::amount() == SDL_GetNumVideoDisplays());
+  EXPECT_EQ(SDL_GetNumVideoDisplays(), cen::screen::amount());
 }
 
-TEST_CASE("screen::name", "[screen]")
+TEST(Screen, Name)
 {
-  const auto name = cen::screen::name();
-  CHECK(std::strcmp(SDL_GetDisplayName(0), name) == 0);
-  CHECK_FALSE(cen::screen::name(cen::screen::amount()));
+  EXPECT_STREQ(SDL_GetDisplayName(0), cen::screen::name());
+  EXPECT_FALSE(cen::screen::name(cen::screen::amount()));
 }
 
-TEST_CASE("screen::width", "[screen]")
-{
-  SDL_DisplayMode mode;
-  SDL_GetDesktopDisplayMode(0, &mode);
-  CHECK(cen::screen::width() == mode.w);
-}
-
-TEST_CASE("screen::height", "[screen]")
+TEST(Screen, Width)
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  CHECK(cen::screen::height() == mode.h);
+  EXPECT_EQ(mode.w, cen::screen::width());
 }
 
-TEST_CASE("screen::size", "[screen]")
+TEST(Screen, Height)
+{
+  SDL_DisplayMode mode;
+  SDL_GetDesktopDisplayMode(0, &mode);
+  EXPECT_EQ(mode.h, cen::screen::height());
+}
+
+TEST(Screen, Size)
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
 
   const auto size = cen::screen::size();
-  CHECK(size.width == mode.w);
-  CHECK(size.height == mode.h);
+  EXPECT_EQ(mode.w, size.width);
+  EXPECT_EQ(mode.h, size.height);
 }
 
-TEST_CASE("screen::refresh_rate", "[screen]")
+TEST(Screen, RefreshRate)
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  CHECK(cen::screen::refresh_rate() == mode.refresh_rate);
+  EXPECT_EQ(mode.refresh_rate, cen::screen::refresh_rate());
 }
 
-TEST_CASE("screen::get_pixel_format", "[screen]")
+TEST(Screen, GetPixelFormat)
 {
   SDL_DisplayMode mode;
   SDL_GetDesktopDisplayMode(0, &mode);
-  CHECK(cen::screen::get_pixel_format() ==
-        static_cast<cen::pixel_format>(mode.format));
+  EXPECT_EQ(static_cast<cen::pixel_format>(mode.format),
+            cen::screen::get_pixel_format());
+}
+
+TEST(Screen, OrientationEnum)
+{
+  using sdl_orientation = SDL_DisplayOrientation;
+  using cen::screen::orientation;
+
+  EXPECT_EQ(SDL_ORIENTATION_UNKNOWN,
+            static_cast<sdl_orientation>(orientation::unknown));
+
+  EXPECT_EQ(SDL_ORIENTATION_LANDSCAPE,
+            static_cast<sdl_orientation>(orientation::landscape));
+
+  EXPECT_EQ(SDL_ORIENTATION_LANDSCAPE_FLIPPED,
+            static_cast<sdl_orientation>(orientation::landscape_flipped));
+
+  EXPECT_EQ(SDL_ORIENTATION_PORTRAIT,
+            static_cast<sdl_orientation>(orientation::portrait));
+
+  EXPECT_EQ(SDL_ORIENTATION_PORTRAIT_FLIPPED,
+            static_cast<sdl_orientation>(orientation::portrait_flipped));
 }

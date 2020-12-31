@@ -4,165 +4,168 @@
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
+#include <memory>    // unique_ptr
 #include <utility>   // move
 
 #include "colors.hpp"
 #include "exception.hpp"
 #include "log.hpp"
 
-namespace {
-inline constexpr auto path = "resources/panda.png";
-}
+class SurfaceTest : public testing::Test
+{
+ protected:
+  static void SetUpTestSuite()
+  {
+    m_surface = std::make_unique<cen::surface>(m_path);
+  }
 
-TEST(Surface, PathConstructor)
+  static void TearDownTestSuite()
+  {
+    m_surface.reset();
+  }
+
+  inline constexpr static auto m_path = "resources/panda.png";
+  inline static std::unique_ptr<cen::surface> m_surface;
+};
+
+TEST_F(SurfaceTest, PathConstructor)
 {
   EXPECT_THROW(cen::surface(""), cen::exception);
-  EXPECT_NO_THROW(cen::surface{path});
+  EXPECT_NO_THROW(cen::surface{m_path});
 }
 
-TEST(Surface, FromSDLSurfaceConstructor)
+TEST_F(SurfaceTest, FromSDLSurfaceConstructor)
 {
-  EXPECT_NO_THROW(cen::surface(IMG_Load(path)));
+  EXPECT_NO_THROW(cen::surface(IMG_Load(m_path)));
 
   SDL_Surface* ptr{};
   EXPECT_THROW(cen::surface{ptr}, cen::exception);
 }
 
-TEST(Surface, CopyConstructor)
+TEST_F(SurfaceTest, CopyConstructor)
 {
-  const cen::surface source{path};
-  const cen::surface copy{source};
+  const cen::surface copy{*m_surface};
 
-  EXPECT_NE(source.get(), copy.get());
-  EXPECT_TRUE(source.get());
+  EXPECT_NE(m_surface->get(), copy.get());
+  EXPECT_TRUE(m_surface->get());
   EXPECT_TRUE(copy.get());
 }
 
-TEST(Surface, MoveConstructor)
+TEST_F(SurfaceTest, MoveConstructor)
 {
-  cen::surface surface{path};
+  cen::surface surface{*m_surface};
   const cen::surface other{std::move(surface)};
 
   EXPECT_FALSE(surface.get());
   EXPECT_TRUE(other.get());
 }
 
-TEST(Surface, CopyAssignment)
+TEST_F(SurfaceTest, CopyAssignment)
 {
-  const cen::surface source{path};
-  cen::surface destination{path};
+  cen::surface destination = *m_surface;
 
-  destination = source;
-
-  EXPECT_NE(source.get(), destination.get());
-  EXPECT_TRUE(source.get());
+  EXPECT_NE(m_surface->get(), destination.get());
+  EXPECT_TRUE(m_surface->get());
   EXPECT_TRUE(destination.get());
 }
 
-TEST(Surface, MoveSelfAssignment)
+TEST_F(SurfaceTest, MoveSelfAssignment)
 {
-  cen::surface surface{path};
-
-  surface = std::move(surface);
-  EXPECT_TRUE(surface.get());
+  *m_surface = std::move(*m_surface);
+  EXPECT_TRUE(m_surface->get());
 }
 
-TEST(Surface, MoveAssignment)
+TEST_F(SurfaceTest, MoveAssignment)
 {
-  cen::surface source{path};
-  cen::surface destination{path};
-
-  destination = std::move(source);
+  cen::surface source{*m_surface};
+  cen::surface destination = std::move(source);
 
   EXPECT_FALSE(source.get());
   EXPECT_TRUE(destination.get());
 }
 
-TEST(Surface, SetPixel)
+TEST_F(SurfaceTest, SetPixel)
 {
-  cen::surface surface{path};
-
   constexpr auto color = cen::colors::red;
 
-  EXPECT_NO_THROW(surface.set_pixel({-1, 0}, color));
-  EXPECT_NO_THROW(surface.set_pixel({0, -1}, color));
-  EXPECT_NO_THROW(surface.set_pixel({surface.width(), 0}, color));
-  EXPECT_NO_THROW(surface.set_pixel({0, surface.height()}, color));
+  EXPECT_NO_THROW(m_surface->set_pixel({-1, 0}, color));
+  EXPECT_NO_THROW(m_surface->set_pixel({0, -1}, color));
+  EXPECT_NO_THROW(m_surface->set_pixel({m_surface->width(), 0}, color));
+  EXPECT_NO_THROW(m_surface->set_pixel({0, m_surface->height()}, color));
 
-  EXPECT_NO_THROW(surface.set_pixel({43, 12}, color));
+  EXPECT_NO_THROW(m_surface->set_pixel({43, 12}, color));
 }
 
-TEST(Surface, SetAlpha)
+TEST_F(SurfaceTest, SetAlpha)
 {
-  cen::surface surface{path};
+  const auto previous = m_surface->alpha();
 
   constexpr auto alpha = 0xCF;
-  surface.set_alpha(alpha);
+  m_surface->set_alpha(alpha);
 
-  EXPECT_EQ(surface.alpha(), alpha);
+  EXPECT_EQ(alpha, m_surface->alpha());
+
+  m_surface->set_alpha(previous);
 }
 
-TEST(Surface, SetColorMod)
+TEST_F(SurfaceTest, SetColorMod)
 {
-  cen::surface surface{path};
+  const auto previous = m_surface->color_mod();
 
   constexpr auto color = cen::colors::hot_pink;
-  surface.set_color_mod(color);
+  m_surface->set_color_mod(color);
 
-  EXPECT_EQ(surface.color_mod(), color);
+  EXPECT_EQ(color, m_surface->color_mod());
+
+  m_surface->set_color_mod(previous);
 }
 
-TEST(Surface, SetBlendMode)
+TEST_F(SurfaceTest, SetBlendMode)
 {
-  cen::surface surface{path};
+  const auto previous = m_surface->get_blend_mode();
 
   constexpr auto mode = cen::blend_mode::mod;
-  surface.set_blend_mode(mode);
+  m_surface->set_blend_mode(mode);
 
-  EXPECT_EQ(surface.get_blend_mode(), mode);
+  EXPECT_EQ(mode, m_surface->get_blend_mode());
+
+  m_surface->set_blend_mode(previous);
 }
 
-TEST(Surface, Width)
+TEST_F(SurfaceTest, Width)
 {
-  const cen::surface surface{path};
-  EXPECT_EQ(surface.width(), 200);
+  EXPECT_EQ(200, m_surface->width());
 }
 
-TEST(Surface, Height)
+TEST_F(SurfaceTest, Height)
 {
-  const cen::surface surface{path};
-  EXPECT_EQ(surface.height(), 150);
+  EXPECT_EQ(150, m_surface->height());
 }
 
-TEST(Surface, Pitch)
+TEST_F(SurfaceTest, Pitch)
 {
-  const cen::surface surface{path};
-  EXPECT_EQ(surface.pitch(), 4 * surface.width());
+  EXPECT_EQ(4 * m_surface->width(), m_surface->pitch());
 }
 
-TEST(Surface, Clip)
+TEST_F(SurfaceTest, Clip)
 {
   constexpr cen::irect rect{{48, 29}, {34, 89}};
 
-  cen::surface surface{path};
-  SDL_Surface* ptr = surface.get();
-
-  ptr->clip_rect = rect.get();
-  EXPECT_EQ(surface.clip(), rect);
+  m_surface->get()->clip_rect = rect.get();
+  EXPECT_EQ(rect, m_surface->clip());
 }
 
-TEST(Surface, Pixels)
+TEST_F(SurfaceTest, Pixels)
 {
-  cen::surface surface{path};
-  EXPECT_TRUE(surface.pixels());
+  EXPECT_TRUE(m_surface->pixels());
 
-  const auto& cSurface = surface;
+  const auto& cSurface = *m_surface;
   EXPECT_TRUE(cSurface.pixels());
 }
 
-TEST(Surface, Convert)
+TEST_F(SurfaceTest, Convert)
 {
-  cen::surface source{path};
+  cen::surface source{m_path};
   source.set_blend_mode(cen::blend_mode::blend);
   source.set_alpha(0xAE);
   source.set_color_mod(cen::colors::red);
@@ -175,27 +178,23 @@ TEST(Surface, Convert)
   EXPECT_EQ(source.color_mod(), converted.color_mod());
 }
 
-TEST(Surface, Get)
+TEST_F(SurfaceTest, Get)
 {
-  const cen::surface surface{path};
-  EXPECT_TRUE(surface.get());
+  EXPECT_TRUE(m_surface->get());
 }
 
-TEST(Surface, ConvertToPointer)
+TEST_F(SurfaceTest, ConvertToPointer)
 {
-  cen::surface surface{path};
-  EXPECT_TRUE(surface.operator SDL_Surface*());
-  EXPECT_TRUE(surface.operator const SDL_Surface*());
+  EXPECT_TRUE(m_surface->operator SDL_Surface*());
+  EXPECT_TRUE(m_surface->operator const SDL_Surface*());
 }
 
-TEST(Surface, ToString)
+TEST_F(SurfaceTest, ToString)
 {
-  const cen::surface surface{path};
-  cen::log::put(cen::to_string(surface));
+  cen::log::put(cen::to_string(*m_surface));
 }
 
-TEST(Surface, StreamOperator)
+TEST_F(SurfaceTest, StreamOperator)
 {
-  const cen::surface surface{path};
-  std::cout << "COUT: " << surface << '\n';
+  std::cout << "COUT: " << *m_surface << '\n';
 }

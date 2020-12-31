@@ -25,10 +25,14 @@
 #ifndef CENTURION_EXCEPTION_HEADER
 #define CENTURION_EXCEPTION_HEADER
 
-#include <exception>
-#include <string_view>
-#include <type_traits>
-#include <utility>  // move
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
+#include <exception>    // exception
+#include <string_view>  // string_view
+#include <utility>      // move
 
 #include "centurion_api.hpp"
 #include "types.hpp"
@@ -96,11 +100,6 @@ class exception : public std::exception
   std::string m_what{"N/A"};
 };
 
-static_assert(std::has_virtual_destructor_v<exception>);
-static_assert(std::is_default_constructible_v<exception>);
-static_assert(std::is_nothrow_move_constructible_v<exception>);
-static_assert(std::is_nothrow_destructible_v<exception>);
-
 /**
  * \class sdl_error
  *
@@ -125,8 +124,11 @@ class sdl_error final : public exception
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit sdl_error(std::string_view what);
+  explicit sdl_error(std::string_view what)
+  {
+    using namespace std::string_literals;
+    set_what(what.data() + ": "s + SDL_GetError());
+  }
 };
 
 /**
@@ -153,8 +155,11 @@ class img_error final : public exception
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit img_error(std::string_view what);
+  explicit img_error(std::string_view what)
+  {
+    using namespace std::string_literals;
+    set_what(what.data() + ": "s + IMG_GetError());
+  }
 };
 
 /**
@@ -181,8 +186,11 @@ class ttf_error final : public exception
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit ttf_error(std::string_view what);
+  explicit ttf_error(std::string_view what)
+  {
+    using namespace std::string_literals;
+    set_what(what.data() + ": "s + TTF_GetError());
+  }
 };
 
 /**
@@ -209,8 +217,11 @@ class mix_error final : public exception
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit mix_error(std::string_view what);
+  explicit mix_error(std::string_view what)
+  {
+    using namespace std::string_literals;
+    set_what(what.data() + ": "s + Mix_GetError());
+  }
 };
 
 }  // namespace cen

@@ -19,6 +19,7 @@ add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 set(TEST_FILES
     unittests/test_main.cpp
     unittests/centurion_test.cpp
+    unittests/exception_test.cpp
 
     unittests/detail/bool_converter_test.cpp
     unittests/detail/to_string_test.cpp

@@ -1,34 +1,31 @@
 #include "exception.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
+
 #include <string>
+#include <type_traits>
 
-TEST_CASE("exception(czstring)", "[exception]")
+static_assert(std::has_virtual_destructor_v<cen::exception>);
+static_assert(std::is_default_constructible_v<cen::exception>);
+static_assert(std::is_nothrow_move_constructible_v<cen::exception>);
+static_assert(std::is_nothrow_destructible_v<cen::exception>);
+
+TEST(Exception, CStringConstructor)
 {
-  SECTION("Null string")
-  {
-    cen::exception ce{nullptr};
-    CHECK_THAT(ce.what(), Catch::Equals("N/A"));
+  {  // Null string
+    cen::exception exception{nullptr};
+    EXPECT_STREQ("N/A", exception.what());
   }
 
-  SECTION("Normal argument")
-  {
-    const auto* msg = "Foo";
-    cen::exception ce{msg};
-    CHECK_THAT(ce.what(), Catch::Equals(msg));
+  {  // Normal argument
+    const cen::exception exception{"Foo"};
+    EXPECT_STREQ("Foo", exception.what());
   }
 }
 
-TEST_CASE("exception(std::string)", "[exception]")
+TEST(Exception, StdStringConstructor)
 {
-  const std::string msg{"Hello"};
-  cen::exception ce{msg};
-  CHECK_THAT(ce.what(), Catch::Equals(msg));
-}
-
-TEST_CASE("exception(exception&)", "[exception]")
-{
-  const cen::exception ce{"message"};
-  const cen::exception ce2{ce};
-  CHECK_THAT(ce.what(), Catch::Equals(ce2.what()));
+  const std::string str{"foobar"};
+  const cen::exception exception{str};
+  EXPECT_EQ(str, exception.what());
 }

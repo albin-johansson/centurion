@@ -1,81 +1,106 @@
 #include "battery.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("power_state enum values", "[battery]")
+using cen::battery::power_state;
+
+TEST(Battery, Percentage)
 {
-  using namespace cen::battery;
-  CHECK(power_state::unknown == SDL_POWERSTATE_UNKNOWN);
-  CHECK(power_state::on_battery == SDL_POWERSTATE_ON_BATTERY);
-  CHECK(power_state::no_battery == SDL_POWERSTATE_NO_BATTERY);
-  CHECK(power_state::charging == SDL_POWERSTATE_CHARGING);
-  CHECK(power_state::charged == SDL_POWERSTATE_CHARGED);
-
-  CHECK(SDL_POWERSTATE_UNKNOWN == power_state::unknown);
-  CHECK(SDL_POWERSTATE_ON_BATTERY == power_state::on_battery);
-  CHECK(SDL_POWERSTATE_NO_BATTERY == power_state::no_battery);
-  CHECK(SDL_POWERSTATE_CHARGING == power_state::charging);
-  CHECK(SDL_POWERSTATE_CHARGED == power_state::charged);
-
-  CHECK(power_state::charged != SDL_POWERSTATE_ON_BATTERY);
-  CHECK(SDL_POWERSTATE_CHARGING != power_state::unknown);
-}
-
-TEST_CASE("battery::percentage", "[battery]")
-{
-  CHECK_NOTHROW(cen::battery::percentage());
+  EXPECT_NO_THROW(cen::battery::percentage());
 
   const auto percentage = cen::battery::percentage();
+  EXPECT_EQ(percentage.has_value(), cen::battery::is_available());
+
   if (percentage) {
     int actual = -1;
     SDL_GetPowerInfo(nullptr, &actual);
-    CHECK(percentage == actual);
+
+    EXPECT_EQ(actual, percentage);
   }
 }
 
-TEST_CASE("battery::seconds_left", "[battery]")
+TEST(Battery, SecondsLeft)
 {
-  CHECK_NOTHROW(cen::battery::seconds_left());
+  EXPECT_NO_THROW(cen::battery::seconds_left());
 
-  int actual = 0;
-
-  const auto secs = cen::battery::seconds_left();
+  int actual = -1;
   SDL_GetPowerInfo(&actual, nullptr);
 
+  const auto secs = cen::battery::seconds_left();
+  EXPECT_EQ(secs.has_value(), cen::battery::is_available());
+
   if (secs) {
-    const cen::seconds<int> actualSeconds{actual};
-    CHECK(secs.value() == actualSeconds);
+    EXPECT_EQ(cen::seconds<int>{actual}, secs.value());
   }
 }
 
-TEST_CASE("battery::minutes_left", "[battery]")
+TEST(Battery, MinutesLeft)
 {
-  CHECK_NOTHROW(cen::battery::minutes_left());
+  EXPECT_NO_THROW(cen::battery::minutes_left());
 
   const auto minutes = cen::battery::minutes_left();
+  EXPECT_EQ(minutes.has_value(), cen::battery::is_available());
+
   if (minutes) {
-    int secs = -1;
-    SDL_GetPowerInfo(&secs, nullptr);
+    int actual = -1;
+    SDL_GetPowerInfo(&actual, nullptr);
 
-    const cen::seconds<int> seconds{secs};
-
-    CHECK(minutes.value() == seconds);
+    EXPECT_EQ(cen::seconds<int>{actual}, minutes.value());
   }
 }
 
-TEST_CASE("battery::state", "[battery]")
+TEST(Battery, State)
 {
-  CHECK_NOTHROW(cen::battery::state());
+  EXPECT_NO_THROW(cen::battery::state());
 
   const auto state = cen::battery::state();
-  const auto actual = static_cast<cen::battery::power_state>(
-      SDL_GetPowerInfo(nullptr, nullptr));
+  const auto actual = SDL_GetPowerInfo(nullptr, nullptr);
 
-  CHECK(state == actual);
+  EXPECT_EQ(actual, static_cast<SDL_PowerState>(state));
 }
 
-TEST_CASE("battery::exists", "[battery]")
+TEST(Battery, Exists)
 {
-  CHECK(cen::battery::exists() ==
-        (cen::battery::state() == cen::battery::power_state::on_battery));
+  const auto state = cen::battery::state();
+  const auto exists = state == power_state::on_battery ||
+                      state == power_state::charged ||
+                      state == power_state::charging;
+  EXPECT_EQ(exists, cen::battery::exists());
+}
+
+TEST(Battery, IsCharging)
+{
+  EXPECT_EQ(cen::battery::state() == power_state::charging,
+            cen::battery::is_charging());
+}
+
+TEST(Battery, IsCharged)
+{
+  EXPECT_EQ(cen::battery::state() == power_state::charged,
+            cen::battery::is_charged());
+}
+
+TEST(Battery, IsAvailable)
+{
+  const auto state = cen::battery::state();
+  EXPECT_EQ(state != power_state::unknown && state != power_state::no_battery,
+            cen::battery::is_available());
+}
+
+TEST(Battery, PowerStateEnum)
+{
+  EXPECT_EQ(power_state::unknown, SDL_POWERSTATE_UNKNOWN);
+  EXPECT_EQ(power_state::on_battery, SDL_POWERSTATE_ON_BATTERY);
+  EXPECT_EQ(power_state::no_battery, SDL_POWERSTATE_NO_BATTERY);
+  EXPECT_EQ(power_state::charging, SDL_POWERSTATE_CHARGING);
+  EXPECT_EQ(power_state::charged, SDL_POWERSTATE_CHARGED);
+
+  EXPECT_EQ(SDL_POWERSTATE_UNKNOWN, power_state::unknown);
+  EXPECT_EQ(SDL_POWERSTATE_ON_BATTERY, power_state::on_battery);
+  EXPECT_EQ(SDL_POWERSTATE_NO_BATTERY, power_state::no_battery);
+  EXPECT_EQ(SDL_POWERSTATE_CHARGING, power_state::charging);
+  EXPECT_EQ(SDL_POWERSTATE_CHARGED, power_state::charged);
+
+  EXPECT_NE(power_state::charged, SDL_POWERSTATE_ON_BATTERY);
+  EXPECT_NE(SDL_POWERSTATE_CHARGING, power_state::unknown);
 }

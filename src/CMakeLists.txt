@@ -80,7 +80,6 @@ set(SOURCE_FILES
     system/base_path.cpp
     system/pref_path.cpp
     system/platform.cpp
-    system/battery.cpp
     system/screen.cpp
     system/clipboard.cpp
 

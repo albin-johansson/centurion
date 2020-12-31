@@ -22,6 +22,7 @@ set(TEST_FILES
     unittests/detail/bool_converter_test.cpp
     unittests/detail/to_string_test.cpp
 
+    unittests/system/battery_test.cpp
     unittests/system/clipboard_test.cpp
 
     unittests/geometry/area_test.cpp

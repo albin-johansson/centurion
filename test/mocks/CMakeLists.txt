@@ -4,7 +4,8 @@ project(centurion-test-mocks LANGUAGES CXX)
 
 set(TEST_FILES
     test_main.cpp
-    controller_test.cpp
+
+    input/controller_test.cpp
     )
 
 add_executable(${CENTURION_MOCK_TARGET} ${TEST_FILES})

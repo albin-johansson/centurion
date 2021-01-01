@@ -110,6 +110,13 @@ TEST(KeyCode, Get)
   EXPECT_EQ(SDLK_8, code.get());
 }
 
+TEST(KeyCode, ToScanCode)
+{
+  const auto key = cen::keycodes::p;
+  const auto scancode = key.to_scan_code();
+  EXPECT_EQ(SDL_GetScancodeFromKey(key.get()), scancode);
+}
+
 TEST(KeyCode, SDLKeycodeConversion)
 {
   cen::key_code code;
@@ -178,6 +185,16 @@ TEST(KeyCode, InequalityOperator)
     EXPECT_NE(fst, snd);
     EXPECT_NE(snd, fst);
   }
+}
+
+TEST(KeyCode, ToString)
+{
+  cen::log::put(cen::to_string(cen::keycodes::a));
+}
+
+TEST(KeyCode, StreamOperator)
+{
+  std::cout << "COUT: " << cen::keycodes::a << '\n';
 }
 
 TEST(KeyCode, Constants)
@@ -261,14 +278,4 @@ TEST(KeyCode, Constants)
   EXPECT_EQ(SDLK_RALT, cen::keycodes::right_alt);
   EXPECT_EQ(SDLK_LGUI, cen::keycodes::left_gui);
   EXPECT_EQ(SDLK_RGUI, cen::keycodes::right_gui);
-}
-
-TEST(KeyCode, ToString)
-{
-  cen::log::put(cen::to_string(cen::keycodes::a));
-}
-
-TEST(KeyCode, StreamOperator)
-{
-  std::cout << "COUT: " << cen::keycodes::a << '\n';
 }

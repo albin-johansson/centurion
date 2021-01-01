@@ -233,6 +233,20 @@ class key_code final
   }
 
   /**
+   * \brief Returns the corresponding `SDL_Scancode`.
+   *
+   * \return the scan code associated with the internal key code.
+   *
+   * \see `SDL_GetScancodeFromKey`
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto to_scan_code() const noexcept -> SDL_Scancode
+  {
+    return SDL_GetScancodeFromKey(m_key);
+  }
+
+  /**
    * \brief Returns the internal key code.
    *
    * \return the internal key code.
@@ -281,7 +295,7 @@ class key_code final
    */
   explicit operator SDL_Scancode() const noexcept
   {
-    return SDL_GetScancodeFromKey(m_key);
+    return to_scan_code();
   }
 
  private:

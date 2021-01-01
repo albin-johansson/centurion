@@ -16,6 +16,8 @@ FAKE_VALUE_FUNC(int, SDL_RenderFillRectF, SDL_Renderer*, const SDL_FRect*)
 FAKE_VALUE_FUNC(int, SDL_GetRendererOutputSize, SDL_Renderer*, int*, int*)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawLine, SDL_Renderer*, int, int, int, int)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawLineF, SDL_Renderer*, float, float, float, float)
+FAKE_VALUE_FUNC(int, SDL_RenderDrawLines, SDL_Renderer*, const SDL_Point*, int)
+FAKE_VALUE_FUNC(int, SDL_RenderDrawLinesF, SDL_Renderer*, const SDL_FPoint*, int)
 }
 // clang-format on
 
@@ -35,6 +37,8 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_GetRendererOutputSize);
     RESET_FAKE(SDL_RenderDrawLine);
     RESET_FAKE(SDL_RenderDrawLineF);
+    RESET_FAKE(SDL_RenderDrawLines);
+    RESET_FAKE(SDL_RenderDrawLinesF);
   }
 
   cen::renderer_handle m_renderer{nullptr};
@@ -115,25 +119,56 @@ TEST_F(RendererTest, FillWith)
 
 TEST_F(RendererTest, DrawLine)
 {
-  const cen::ipoint iStart{12, 34};
-  const cen::ipoint iEnd{56, 78};
-  m_renderer.draw_line(iStart, iEnd);
-  EXPECT_EQ(1, SDL_RenderDrawLine_fake.call_count);
-  EXPECT_EQ(0, SDL_RenderDrawLineF_fake.call_count);
+  {
+    const cen::ipoint start{12, 34};
+    const cen::ipoint end{56, 78};
+    m_renderer.draw_line(start, end);
+    EXPECT_EQ(1, SDL_RenderDrawLine_fake.call_count);
+    EXPECT_EQ(0, SDL_RenderDrawLineF_fake.call_count);
 
-  EXPECT_EQ(iStart.x(), SDL_RenderDrawLine_fake.arg1_val);
-  EXPECT_EQ(iStart.y(), SDL_RenderDrawLine_fake.arg2_val);
-  EXPECT_EQ(iEnd.x(), SDL_RenderDrawLine_fake.arg3_val);
-  EXPECT_EQ(iEnd.y(), SDL_RenderDrawLine_fake.arg4_val);
+    EXPECT_EQ(start.x(), SDL_RenderDrawLine_fake.arg1_val);
+    EXPECT_EQ(start.y(), SDL_RenderDrawLine_fake.arg2_val);
+    EXPECT_EQ(end.x(), SDL_RenderDrawLine_fake.arg3_val);
+    EXPECT_EQ(end.y(), SDL_RenderDrawLine_fake.arg4_val);
+  }
 
-  const cen::fpoint fStart{12, 34};
-  const cen::fpoint fEnd{56, 78};
-  m_renderer.draw_line(fStart, fEnd);
-  EXPECT_EQ(1, SDL_RenderDrawLine_fake.call_count);
-  EXPECT_EQ(1, SDL_RenderDrawLineF_fake.call_count);
+  {
+    const cen::fpoint start{12, 34};
+    const cen::fpoint end{56, 78};
+    m_renderer.draw_line(start, end);
+    EXPECT_EQ(1, SDL_RenderDrawLine_fake.call_count);
+    EXPECT_EQ(1, SDL_RenderDrawLineF_fake.call_count);
 
-  EXPECT_EQ(fStart.x(), SDL_RenderDrawLineF_fake.arg1_val);
-  EXPECT_EQ(fStart.y(), SDL_RenderDrawLineF_fake.arg2_val);
-  EXPECT_EQ(fEnd.x(), SDL_RenderDrawLineF_fake.arg3_val);
-  EXPECT_EQ(fEnd.y(), SDL_RenderDrawLineF_fake.arg4_val);
+    EXPECT_EQ(start.x(), SDL_RenderDrawLineF_fake.arg1_val);
+    EXPECT_EQ(start.y(), SDL_RenderDrawLineF_fake.arg2_val);
+    EXPECT_EQ(end.x(), SDL_RenderDrawLineF_fake.arg3_val);
+    EXPECT_EQ(end.y(), SDL_RenderDrawLineF_fake.arg4_val);
+  }
+}
+
+TEST_F(RendererTest, DrawLines)
+{
+  {
+    std::array<cen::ipoint, 3> points{{{11, 22}, {33, 44}, {55, 66}}};
+    m_renderer.draw_lines(points);
+    EXPECT_EQ(1, SDL_RenderDrawLines_fake.call_count);
+    EXPECT_EQ(0, SDL_RenderDrawLinesF_fake.call_count);
+
+    for (auto i = 0; i < points.size(); ++i) {
+      EXPECT_EQ(points.at(i).x(), SDL_RenderDrawLines_fake.arg1_val[i].x);
+      EXPECT_EQ(points.at(i).y(), SDL_RenderDrawLines_fake.arg1_val[i].y);
+    }
+  }
+
+  {
+    std::array<cen::fpoint, 3> points{{{11, 22}, {33, 44}, {55, 66}}};
+    m_renderer.draw_lines(points);
+    EXPECT_EQ(1, SDL_RenderDrawLines_fake.call_count);
+    EXPECT_EQ(1, SDL_RenderDrawLinesF_fake.call_count);
+
+    for (auto i = 0; i < points.size(); ++i) {
+      EXPECT_EQ(points.at(i).x(), SDL_RenderDrawLinesF_fake.arg1_val[i].x);
+      EXPECT_EQ(points.at(i).y(), SDL_RenderDrawLinesF_fake.arg1_val[i].y);
+    }
+  }
 }

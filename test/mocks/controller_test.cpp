@@ -39,6 +39,10 @@ FAKE_VALUE_FUNC(SDL_GameControllerButtonBind, SDL_GameControllerGetBindForButton
 
 FAKE_VALUE_FUNC(SDL_Joystick*, SDL_GameControllerGetJoystick, SDL_GameController*)
 
+FAKE_VALUE_FUNC(int, SDL_GameControllerAddMapping, const char*)
+
+FAKE_VALUE_FUNC(const char*, SDL_GetError)
+
 }
 // clang-format on
 
@@ -78,6 +82,10 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerGetBindForButton);
 
     RESET_FAKE(SDL_GameControllerGetJoystick);
+
+    RESET_FAKE(SDL_GameControllerAddMapping);
+
+    RESET_FAKE(SDL_GetError);
   }
 
   /**
@@ -242,6 +250,18 @@ TEST_F(ControllerTest, GetAxis)
 TEST_F(ControllerTest, GetJoystick)
 {
   EXPECT_NO_THROW(m_handle.get_joystick());
+}
+
+TEST_F(ControllerTest, AddMapping)
+{
+  std::array<int, 3> values{1, 0, -1};
+  SET_RETURN_SEQ(SDL_GameControllerAddMapping, values.data(), values.size());
+
+  EXPECT_TRUE(m_handle.add_mapping("foo"));
+  EXPECT_FALSE(m_handle.add_mapping("foo"));
+
+  SDL_GetError_fake.return_val = "";
+  EXPECT_ANY_THROW(m_handle.add_mapping("foo"));
 }
 
 TEST_F(ControllerTest, GetButton)

@@ -28,6 +28,7 @@ FAKE_VALUE_FUNC(int, SDL_RenderCopyEx, SDL_Renderer*, SDL_Texture*, const SDL_Re
 FAKE_VALUE_FUNC(int, SDL_RenderCopyExF, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_FRect*, double, const SDL_FPoint*, SDL_RendererFlip)
 FAKE_VALUE_FUNC(int, SDL_QueryTexture, SDL_Texture*, Uint32*, int*, int*, int*)
 FAKE_VALUE_FUNC(int, SDL_RenderSetClipRect, SDL_Renderer*, const SDL_Rect*)
+FAKE_VALUE_FUNC(int, SDL_RenderSetViewport, SDL_Renderer*, const SDL_Rect*)
 }
 // clang-format on
 
@@ -55,6 +56,7 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_RenderCopyExF);
     RESET_FAKE(SDL_QueryTexture);
     RESET_FAKE(SDL_RenderSetClipRect);
+    RESET_FAKE(SDL_RenderSetViewport);
   }
 
   cen::renderer_handle m_renderer{nullptr};
@@ -410,4 +412,16 @@ TEST_F(RendererTest, SetClip)
   m_renderer.set_clip(std::nullopt);
   EXPECT_EQ(2, SDL_RenderSetClipRect_fake.call_count);
   EXPECT_EQ(nullptr, SDL_RenderSetClipRect_fake.arg1_val);
+}
+
+TEST_F(RendererTest, SetViewport)
+{
+  constexpr cen::irect viewport{{12, 34}, {56, 78}};
+  m_renderer.set_viewport(viewport);
+
+  EXPECT_EQ(viewport.x(), SDL_RenderSetViewport_fake.arg1_val->x);
+  EXPECT_EQ(viewport.y(), SDL_RenderSetViewport_fake.arg1_val->y);
+  EXPECT_EQ(viewport.width(), SDL_RenderSetViewport_fake.arg1_val->w);
+  EXPECT_EQ(viewport.height(), SDL_RenderSetViewport_fake.arg1_val->h);
+  EXPECT_EQ(1, SDL_RenderSetViewport_fake.call_count);
 }

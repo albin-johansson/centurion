@@ -5,6 +5,8 @@ project(centurion-test-mocks LANGUAGES CXX)
 set(TEST_FILES
     test_main.cpp
 
+    graphics/renderer_test.cpp
+
     input/controller_test.cpp
     )
 

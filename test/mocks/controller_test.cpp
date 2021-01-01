@@ -21,6 +21,8 @@ FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerGetAttached, SDL_GameController*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
 
 FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
+FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerTypeForIndex, int)
+
 FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
 
 FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
@@ -31,6 +33,7 @@ FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForButton, SDL_GameContr
 
 FAKE_VALUE_FUNC(SDL_GameControllerButtonBind, SDL_GameControllerGetBindForAxis, SDL_GameController*, SDL_GameControllerAxis)
 FAKE_VALUE_FUNC(SDL_GameControllerButtonBind, SDL_GameControllerGetBindForButton, SDL_GameController*, SDL_GameControllerButton)
+
 }
 // clang-format on
 
@@ -53,6 +56,8 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_IsGameController);
 
     RESET_FAKE(SDL_GameControllerGetType);
+    RESET_FAKE(SDL_GameControllerTypeForIndex);
+
     RESET_FAKE(SDL_GameControllerName);
 
     RESET_FAKE(SDL_GameControllerGetAxisFromString);
@@ -162,6 +167,16 @@ TEST_F(ControllerTest, Type)
   EXPECT_EQ(cen::controller_type::unknown, m_handle.type());
   EXPECT_EQ(cen::controller_type::xbox_360, m_handle.type());
   EXPECT_EQ(cen::controller_type::ps4, m_handle.type());
+}
+
+TEST_F(ControllerTest, TypeWithIndex)
+{
+  std::array<SDL_GameControllerType, 2> values{SDL_CONTROLLER_TYPE_UNKNOWN,
+                                               SDL_CONTROLLER_TYPE_XBOXONE};
+  SET_RETURN_SEQ(SDL_GameControllerTypeForIndex, values.data(), values.size());
+
+  EXPECT_EQ(cen::controller_type::unknown, cen::controller::type(0));
+  EXPECT_EQ(cen::controller_type::xbox_one, cen::controller::type(0));
 }
 
 TEST_F(ControllerTest, GetAxis)

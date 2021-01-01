@@ -84,10 +84,7 @@ set(SOURCE_FILES
     input/mouse_state.cpp
     input/touch.cpp
     input/key_code.cpp
-    input/scan_code.cpp
-
-    thread/try_lock.cpp
-    )
+    input/scan_code.cpp)
 
 if (CEN_AUDIO)
   set(SOURCE_FILES

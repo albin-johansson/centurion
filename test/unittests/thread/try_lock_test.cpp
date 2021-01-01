@@ -2,6 +2,11 @@
 
 #include <gtest/gtest.h>
 
+#include <type_traits>
+
+static_assert(!std::is_copy_constructible_v<cen::try_lock>);
+static_assert(!std::is_copy_assignable_v<cen::try_lock>);
+
 TEST(TryLock, BasicUsage)
 {
   cen::mutex mutex;

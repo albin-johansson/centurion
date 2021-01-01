@@ -75,7 +75,6 @@ set(SOURCE_FILES
     graphics/graphics_drivers.cpp
 
     system/pref_path.cpp
-    system/platform.cpp
     system/screen.cpp
 
     input/key_state.cpp

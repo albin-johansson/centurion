@@ -10,6 +10,37 @@
 #include "renderer.hpp"
 #include "window.hpp"
 
+TEST(Controller, PointerConstructor)
+{
+  EXPECT_THROW(cen::controller{nullptr}, cen::exception);
+}
+
+TEST(Controller, IndexConstructor)
+{
+  EXPECT_THROW(cen::controller{0}, cen::sdl_error);
+}
+
+TEST(Controller, FromJoystick)
+{
+  EXPECT_THROW(cen::controller::from_joystick(0), cen::sdl_error);
+}
+
+TEST(Controller, FromIndex)
+{
+  EXPECT_THROW(cen::controller::from_index(0), cen::sdl_error);
+}
+
+TEST(Controller, LoadMappings)
+{
+  const auto path = "resources/gamecontrollerdb.txt";
+  EXPECT_GT(cen::controller::load_mappings(path), 0);
+}
+
+TEST(ControllerTest, NumMappings)
+{
+  EXPECT_EQ(SDL_GameControllerNumMappings(), cen::controller::num_mappings());
+}
+
 TEST(Controller, ControllerTypeEnum)
 {
   using type = cen::controller_type;
@@ -100,17 +131,6 @@ TEST(Controller, ControllerBindTypeEnum)
 
   EXPECT_NE(bind_type::axis, SDL_CONTROLLER_BINDTYPE_HAT);
   EXPECT_NE(SDL_CONTROLLER_BINDTYPE_BUTTON, bind_type::none);
-}
-
-TEST(Controller, LoadMappings)
-{
-  const auto path = "resources/gamecontrollerdb.txt";
-  EXPECT_GT(cen::controller::load_mappings(path), 0);
-}
-
-TEST(ControllerTest, NumMappings)
-{
-  EXPECT_EQ(SDL_GameControllerNumMappings(), cen::controller::num_mappings());
 }
 
 namespace cen {

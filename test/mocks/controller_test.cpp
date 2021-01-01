@@ -47,6 +47,8 @@ FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForDeviceIndex, int)
 FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForGUID, SDL_JoystickGUID)
 FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForIndex, int)
 
+FAKE_VALUE_FUNC(int, SDL_GameControllerEventState, int)
+
 FAKE_VALUE_FUNC(SDL_RWops*, SDL_RWFromFile, const char*, const char*)
 
 FAKE_VALUE_FUNC(const char*, SDL_GetError)
@@ -99,6 +101,8 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerMappingForDeviceIndex);
     RESET_FAKE(SDL_GameControllerMappingForGUID);
     RESET_FAKE(SDL_GameControllerMappingForIndex);
+
+    RESET_FAKE(SDL_GameControllerEventState);
 
     RESET_FAKE(SDL_RWFromFile);
 
@@ -393,4 +397,15 @@ TEST_F(ControllerTest, IsSupported)
 {
   const auto supported = cen::controller::is_supported(0);
   EXPECT_EQ(1, SDL_IsGameController_fake.call_count);
+}
+
+TEST_F(ControllerTest, SetPolling)
+{
+  cen::controller::set_polling(true);
+  EXPECT_EQ(1, SDL_GameControllerEventState_fake.call_count);
+  EXPECT_EQ(1, SDL_GameControllerEventState_fake.arg0_val);
+
+  cen::controller::set_polling(false);
+  EXPECT_EQ(2, SDL_GameControllerEventState_fake.call_count);
+  EXPECT_EQ(0, SDL_GameControllerEventState_fake.arg0_val);
 }

@@ -25,6 +25,8 @@ FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
 
 FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
 FAKE_VALUE_FUNC(SDL_GameControllerButton, SDL_GameControllerGetButtonFromString, const char*)
+
+FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForAxis, SDL_GameControllerAxis)
 }
 // clang-format on
 
@@ -51,6 +53,8 @@ class ControllerTest : public testing::Test
 
     RESET_FAKE(SDL_GameControllerGetAxisFromString);
     RESET_FAKE(SDL_GameControllerGetButtonFromString);
+
+    RESET_FAKE(SDL_GameControllerGetStringForAxis);
   }
 
   /**
@@ -174,6 +178,17 @@ TEST_F(ControllerTest, GetButton)
 
   EXPECT_EQ(cen::controller_button::invalid, cen::controller::get_button(""));
   EXPECT_EQ(cen::controller_button::b, cen::controller::get_button(""));
+}
+
+TEST_F(ControllerTest, StringifyWithAxis)
+{
+  std::array<const char*, 2> values{nullptr, "foo"};
+  SET_RETURN_SEQ(SDL_GameControllerGetStringForAxis,
+                 values.data(),
+                 values.size());
+
+  EXPECT_EQ(nullptr, cen::controller::stringify(cen::controller_axis::left_y));
+  EXPECT_STREQ("foo", cen::controller::stringify(cen::controller_axis::left_y));
 }
 
 TEST_F(ControllerTest, Update)

@@ -14,6 +14,8 @@ FAKE_VALUE_FUNC(int, SDL_RenderDrawRectF, SDL_Renderer*, const SDL_FRect*)
 FAKE_VALUE_FUNC(int, SDL_RenderFillRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderFillRectF, SDL_Renderer*, const SDL_FRect*)
 FAKE_VALUE_FUNC(int, SDL_GetRendererOutputSize, SDL_Renderer*, int*, int*)
+FAKE_VALUE_FUNC(int, SDL_RenderDrawLine, SDL_Renderer*, int, int, int, int)
+FAKE_VALUE_FUNC(int, SDL_RenderDrawLineF, SDL_Renderer*, float, float, float, float)
 }
 // clang-format on
 
@@ -31,6 +33,8 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_RenderFillRect);
     RESET_FAKE(SDL_RenderFillRectF);
     RESET_FAKE(SDL_GetRendererOutputSize);
+    RESET_FAKE(SDL_RenderDrawLine);
+    RESET_FAKE(SDL_RenderDrawLineF);
   }
 
   cen::renderer_handle m_renderer{nullptr};
@@ -107,4 +111,29 @@ TEST_F(RendererTest, FillWith)
   EXPECT_EQ(0xBB, SDL_SetRenderDrawColor_fake.arg2_history[0]);
   EXPECT_EQ(0xCC, SDL_SetRenderDrawColor_fake.arg3_history[0]);
   EXPECT_EQ(0xDD, SDL_SetRenderDrawColor_fake.arg4_history[0]);
+}
+
+TEST_F(RendererTest, DrawLine)
+{
+  const cen::ipoint iStart{12, 34};
+  const cen::ipoint iEnd{56, 78};
+  m_renderer.draw_line(iStart, iEnd);
+  EXPECT_EQ(1, SDL_RenderDrawLine_fake.call_count);
+  EXPECT_EQ(0, SDL_RenderDrawLineF_fake.call_count);
+
+  EXPECT_EQ(iStart.x(), SDL_RenderDrawLine_fake.arg1_val);
+  EXPECT_EQ(iStart.y(), SDL_RenderDrawLine_fake.arg2_val);
+  EXPECT_EQ(iEnd.x(), SDL_RenderDrawLine_fake.arg3_val);
+  EXPECT_EQ(iEnd.y(), SDL_RenderDrawLine_fake.arg4_val);
+
+  const cen::fpoint fStart{12, 34};
+  const cen::fpoint fEnd{56, 78};
+  m_renderer.draw_line(fStart, fEnd);
+  EXPECT_EQ(1, SDL_RenderDrawLine_fake.call_count);
+  EXPECT_EQ(1, SDL_RenderDrawLineF_fake.call_count);
+
+  EXPECT_EQ(fStart.x(), SDL_RenderDrawLineF_fake.arg1_val);
+  EXPECT_EQ(fStart.y(), SDL_RenderDrawLineF_fake.arg2_val);
+  EXPECT_EQ(fEnd.x(), SDL_RenderDrawLineF_fake.arg3_val);
+  EXPECT_EQ(fEnd.y(), SDL_RenderDrawLineF_fake.arg4_val);
 }

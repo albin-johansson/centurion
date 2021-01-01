@@ -16,6 +16,7 @@ class RendererTest : public testing::Test
   void SetUp() override
   {
     RESET_FAKE(SDL_RenderClear);
+    RESET_FAKE(SDL_RenderPresent);
   }
 
   cen::renderer_handle m_renderer{nullptr};

@@ -11,6 +11,8 @@ FAKE_VALUE_FUNC(int, SDL_GetRenderDrawColor, SDL_Renderer*, Uint8*, Uint8*, Uint
 FAKE_VOID_FUNC(SDL_RenderPresent, SDL_Renderer*)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawRectF, SDL_Renderer*, const SDL_FRect*)
+FAKE_VALUE_FUNC(int, SDL_RenderFillRect, SDL_Renderer*, const SDL_Rect*)
+FAKE_VALUE_FUNC(int, SDL_RenderFillRectF, SDL_Renderer*, const SDL_FRect*)
 }
 // clang-format on
 
@@ -25,6 +27,8 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_RenderPresent);
     RESET_FAKE(SDL_RenderDrawRect);
     RESET_FAKE(SDL_RenderDrawRectF);
+    RESET_FAKE(SDL_RenderFillRect);
+    RESET_FAKE(SDL_RenderFillRectF);
   }
 
   cen::renderer_handle m_renderer{nullptr};
@@ -67,4 +71,17 @@ TEST_F(RendererTest, DrawRect)
   m_renderer.draw_rect(frect);
   EXPECT_EQ(1, SDL_RenderDrawRect_fake.call_count);
   EXPECT_EQ(1, SDL_RenderDrawRectF_fake.call_count);
+}
+
+TEST_F(RendererTest, FillRect)
+{
+  constexpr cen::irect irect;
+  m_renderer.fill_rect(irect);
+  EXPECT_EQ(1, SDL_RenderFillRect_fake.call_count);
+  EXPECT_EQ(0, SDL_RenderFillRectF_fake.call_count);
+
+  constexpr cen::frect frect;
+  m_renderer.fill_rect(frect);
+  EXPECT_EQ(1, SDL_RenderFillRect_fake.call_count);
+  EXPECT_EQ(1, SDL_RenderFillRectF_fake.call_count);
 }

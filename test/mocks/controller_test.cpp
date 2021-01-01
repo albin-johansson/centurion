@@ -37,6 +37,8 @@ FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForButton, SDL_GameContr
 FAKE_VALUE_FUNC(SDL_GameControllerButtonBind, SDL_GameControllerGetBindForAxis, SDL_GameController*, SDL_GameControllerAxis)
 FAKE_VALUE_FUNC(SDL_GameControllerButtonBind, SDL_GameControllerGetBindForButton, SDL_GameController*, SDL_GameControllerButton)
 
+FAKE_VALUE_FUNC(SDL_Joystick*, SDL_GameControllerGetJoystick, SDL_GameController*)
+
 }
 // clang-format on
 
@@ -74,6 +76,8 @@ class ControllerTest : public testing::Test
 
     RESET_FAKE(SDL_GameControllerGetBindForAxis);
     RESET_FAKE(SDL_GameControllerGetBindForButton);
+
+    RESET_FAKE(SDL_GameControllerGetJoystick);
   }
 
   /**
@@ -233,6 +237,11 @@ TEST_F(ControllerTest, GetAxis)
 
   EXPECT_EQ(123, m_handle.get_axis(cen::controller_axis::left_x));
   EXPECT_EQ(321, m_handle.get_axis(cen::controller_axis::left_x));
+}
+
+TEST_F(ControllerTest, GetJoystick)
+{
+  EXPECT_NO_THROW(m_handle.get_joystick());
 }
 
 TEST_F(ControllerTest, GetButton)

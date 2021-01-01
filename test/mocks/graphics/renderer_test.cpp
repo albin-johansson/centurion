@@ -27,6 +27,7 @@ FAKE_VALUE_FUNC(int, SDL_RenderCopyF, SDL_Renderer*, SDL_Texture*, const SDL_Rec
 FAKE_VALUE_FUNC(int, SDL_RenderCopyEx, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_Rect*, double, const SDL_Point*, SDL_RendererFlip)
 FAKE_VALUE_FUNC(int, SDL_RenderCopyExF, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_FRect*, double, const SDL_FPoint*, SDL_RendererFlip)
 FAKE_VALUE_FUNC(int, SDL_QueryTexture, SDL_Texture*, Uint32*, int*, int*, int*)
+FAKE_VALUE_FUNC(int, SDL_RenderSetClipRect, SDL_Renderer*, const SDL_Rect*)
 }
 // clang-format on
 
@@ -53,6 +54,7 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_RenderCopyEx);
     RESET_FAKE(SDL_RenderCopyExF);
     RESET_FAKE(SDL_QueryTexture);
+    RESET_FAKE(SDL_RenderSetClipRect);
   }
 
   cen::renderer_handle m_renderer{nullptr};
@@ -395,4 +397,17 @@ TEST_F(RendererTest, SetColor)
   EXPECT_EQ(color.green(), SDL_SetRenderDrawColor_fake.arg2_val);
   EXPECT_EQ(color.blue(), SDL_SetRenderDrawColor_fake.arg3_val);
   EXPECT_EQ(color.alpha(), SDL_SetRenderDrawColor_fake.arg4_val);
+}
+
+TEST_F(RendererTest, SetClip)
+{
+  constexpr cen::irect clip{{12, 34}, {56, 78}};
+  m_renderer.set_clip(clip);
+
+  EXPECT_EQ(1, SDL_RenderSetClipRect_fake.call_count);
+  EXPECT_NE(nullptr, SDL_RenderSetClipRect_fake.arg1_val);
+
+  m_renderer.set_clip(std::nullopt);
+  EXPECT_EQ(2, SDL_RenderSetClipRect_fake.call_count);
+  EXPECT_EQ(nullptr, SDL_RenderSetClipRect_fake.arg1_val);
 }

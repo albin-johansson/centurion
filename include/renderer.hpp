@@ -120,7 +120,7 @@ class basic_renderer final
    */
   template <typename Window, typename T_ = T, detail::is_owner<T_> = true>
   explicit basic_renderer(const Window& window,
-                          SDL_RendererFlags flags = default_flags())
+                          const SDL_RendererFlags flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
     if (!get()) {
@@ -384,7 +384,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto render_blended_wrapped_utf8(nn_czstring str,
                                                  const font& font,
-                                                 u32 wrap) -> texture
+                                                 const u32 wrap) -> texture
   {
     return render_text(
         TTF_RenderUTF8_Blended_Wrapped(font.get(),
@@ -523,7 +523,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto render_blended_wrapped_latin1(nn_czstring str,
                                                    const font& font,
-                                                   u32 wrap) -> texture
+                                                   const u32 wrap) -> texture
   {
     return render_text(
         TTF_RenderText_Blended_Wrapped(font.get(),
@@ -658,7 +658,7 @@ class basic_renderer final
    */
   [[nodiscard]] auto render_blended_wrapped_unicode(const unicode_string& str,
                                                     const font& font,
-                                                    u32 wrap) -> texture
+                                                    const u32 wrap) -> texture
   {
     return render_text(
         TTF_RenderUNICODE_Blended_Wrapped(font.get(),
@@ -748,7 +748,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   auto render_glyph(const font_cache& cache,
-                    unicode glyph,
+                    const unicode glyph,
                     const ipoint& position) -> int
   {
     const auto& [texture, glyphMetrics] = cache.at(glyph);
@@ -920,7 +920,7 @@ class basic_renderer final
   void render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<P>& destination,
-              double angle) noexcept
+              const double angle) noexcept
   {
     if constexpr (basic_rect<P>::isFloating) {
       SDL_RenderCopyExF(get(),
@@ -962,7 +962,7 @@ class basic_renderer final
   void render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<R>& destination,
-              double angle,
+              const double angle,
               const basic_point<P>& center) noexcept
   {
     static_assert(std::is_same_v<typename basic_rect<R>::value_type,
@@ -1011,9 +1011,9 @@ class basic_renderer final
   void render(const basic_texture<U>& texture,
               const irect& source,
               const basic_rect<R>& destination,
-              double angle,
+              const double angle,
               const basic_point<P>& center,
-              SDL_RendererFlip flip) noexcept
+              const SDL_RendererFlip flip) noexcept
   {
     static_assert(std::is_same_v<typename basic_rect<R>::value_type,
                                  typename basic_point<P>::value_type>,
@@ -1219,7 +1219,7 @@ class basic_renderer final
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<P>& destination,
-                double angle) noexcept
+                const double angle) noexcept
   {
     render(texture, source, translate(destination), angle);
   }
@@ -1253,7 +1253,7 @@ class basic_renderer final
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
-                double angle,
+                const double angle,
                 const basic_point<P>& center) noexcept
   {
     render(texture, source, translate(destination), angle, center);
@@ -1286,9 +1286,9 @@ class basic_renderer final
   void render_t(const basic_texture<U>& texture,
                 const irect& source,
                 const basic_rect<R>& destination,
-                double angle,
+                const double angle,
                 const basic_point<P>& center,
-                SDL_RendererFlip flip) noexcept
+                const SDL_RendererFlip flip) noexcept
   {
     render(texture, source, translate(destination), angle, center, flip);
   }
@@ -1313,7 +1313,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  void add_font(font_id id, font&& font)
+  void add_font(const font_id id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
     if (fonts.find(id) != fonts.end()) {
@@ -1336,7 +1336,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename... Args, typename T_ = T, detail::is_owner<T_> = true>
-  void emplace_font(font_id id, Args&&... args)
+  void emplace_font(const font_id id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
     if (fonts.find(id) != fonts.end()) {
@@ -1356,7 +1356,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  void remove_font(font_id id)
+  void remove_font(const font_id id)
   {
     m_renderer.fonts.erase(id);
   }
@@ -1373,7 +1373,7 @@ class basic_renderer final
    * \since 5.0.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  [[nodiscard]] auto get_font(font_id id) -> font&
+  [[nodiscard]] auto get_font(const font_id id) -> font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -1382,7 +1382,7 @@ class basic_renderer final
    * \copydoc get_font
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  [[nodiscard]] auto get_font(font_id id) const -> const font&
+  [[nodiscard]] auto get_font(const font_id id) const -> const font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -1399,7 +1399,7 @@ class basic_renderer final
    * \since 4.1.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  [[nodiscard]] auto has_font(font_id id) const noexcept -> bool
+  [[nodiscard]] auto has_font(const font_id id) const noexcept -> bool
   {
     return static_cast<bool>(m_renderer.fonts.count(id));
   }
@@ -1431,7 +1431,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void set_clip(std::optional<irect> area) noexcept
+  void set_clip(const std::optional<irect> area) noexcept
   {
     if (area) {
       SDL_RenderSetClipRect(get(), static_cast<const SDL_Rect*>(*area));
@@ -1459,7 +1459,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void set_blend_mode(blend_mode mode) noexcept
+  void set_blend_mode(const blend_mode mode) noexcept
   {
     SDL_SetRenderDrawBlendMode(get(), static_cast<SDL_BlendMode>(mode));
   }
@@ -1495,7 +1495,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void set_scale(float xScale, float yScale) noexcept
+  void set_scale(const float xScale, const float yScale) noexcept
   {
     if ((xScale > 0) && (yScale > 0)) {
       SDL_RenderSetScale(get(), xScale, yScale);
@@ -1534,7 +1534,7 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void set_logical_integer_scale(bool enabled) noexcept
+  void set_logical_integer_scale(const bool enabled) noexcept
   {
     SDL_RenderSetIntegerScale(get(), detail::convert_bool(enabled));
   }

@@ -87,7 +87,7 @@ set(SOURCE_FILES
     input/scan_code.cpp
 
     thread/try_lock.cpp
-    thread/semaphore.cpp)
+    )
 
 if (CEN_AUDIO)
   set(SOURCE_FILES

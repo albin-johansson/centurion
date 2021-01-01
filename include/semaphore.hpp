@@ -27,9 +27,10 @@
 
 #include <SDL_mutex.h>
 
-#include <memory>
+#include <memory>  // unique_ptr
 
 #include "centurion_api.hpp"
+#include "exception.hpp"
 #include "mutex.hpp"
 #include "types.hpp"
 
@@ -63,8 +64,13 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  explicit semaphore(u32 tokens);
+  explicit semaphore(const u32 tokens)
+      : m_semaphore{SDL_CreateSemaphore(tokens)}
+  {
+    if (!m_semaphore) {
+      throw sdl_error{"Failed to create semaphore"};
+    }
+  }
 
   /**
    * \brief Acquires a token from the semaphore.
@@ -75,8 +81,10 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto acquire() noexcept -> bool;
+  auto acquire() noexcept -> bool
+  {
+    return SDL_SemWait(m_semaphore.get()) == 0;
+  }
 
   /**
    * \brief Attempts to acquire a token from the semaphore.
@@ -88,8 +96,11 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto acquire(milliseconds<u32> ms) noexcept -> lock_status;
+  auto acquire(const milliseconds<u32> ms) noexcept -> lock_status
+  {
+    return static_cast<lock_status>(
+        SDL_SemWaitTimeout(m_semaphore.get(), ms.count()));
+  }
 
   /**
    * \brief Attempts to acquire a token from the semaphore.
@@ -99,8 +110,10 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto try_acquire() noexcept -> lock_status;
+  auto try_acquire() noexcept -> lock_status
+  {
+    return static_cast<lock_status>(SDL_SemTryWait(m_semaphore.get()));
+  }
 
   /**
    * \brief Returns a token to the semaphore and notifies waiting threads.
@@ -109,8 +122,10 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto release() noexcept -> bool;
+  auto release() noexcept -> bool
+  {
+    return SDL_SemPost(m_semaphore.get()) == 0;
+  }
 
   /**
    * \brief Returns the amount of available tokens.
@@ -119,8 +134,10 @@ class semaphore final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto tokens() const noexcept -> u32;
+  [[nodiscard]] auto tokens() const noexcept -> u32
+  {
+    return SDL_SemValue(m_semaphore.get());
+  }
 
  private:
   struct deleter final

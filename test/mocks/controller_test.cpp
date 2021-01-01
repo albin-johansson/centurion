@@ -23,6 +23,7 @@ FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
 FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
 FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerTypeForIndex, int)
 
+FAKE_VALUE_FUNC(Uint8, SDL_GameControllerGetButton, SDL_GameController*, SDL_GameControllerButton)
 FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
 
 FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
@@ -58,6 +59,7 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerGetType);
     RESET_FAKE(SDL_GameControllerTypeForIndex);
 
+    RESET_FAKE(SDL_GameControllerGetButton);
     RESET_FAKE(SDL_GameControllerName);
 
     RESET_FAKE(SDL_GameControllerGetAxisFromString);
@@ -177,6 +179,17 @@ TEST_F(ControllerTest, TypeWithIndex)
 
   EXPECT_EQ(cen::controller_type::unknown, cen::controller::type(0));
   EXPECT_EQ(cen::controller_type::xbox_one, cen::controller::type(0));
+}
+
+TEST_F(ControllerTest, GetState)
+{
+  std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
+  SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), values.size());
+
+  EXPECT_EQ(cen::button_state::released,
+            m_handle.get_state(cen::controller_button::a));
+  EXPECT_EQ(cen::button_state::pressed,
+            m_handle.get_state(cen::controller_button::a));
 }
 
 TEST_F(ControllerTest, GetAxis)

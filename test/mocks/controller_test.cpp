@@ -409,3 +409,15 @@ TEST_F(ControllerTest, SetPolling)
   EXPECT_EQ(2, SDL_GameControllerEventState_fake.call_count);
   EXPECT_EQ(0, SDL_GameControllerEventState_fake.arg0_val);
 }
+
+TEST_F(ControllerTest, IsPolling)
+{
+  std::array<int, 2> values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerEventState, values.data(), values.size());
+
+  EXPECT_FALSE(cen::controller::is_polling());
+  EXPECT_EQ(SDL_QUERY, SDL_GameControllerEventState_fake.arg0_val);
+
+  EXPECT_TRUE(cen::controller::is_polling());
+  EXPECT_EQ(SDL_QUERY, SDL_GameControllerEventState_fake.arg0_val);
+}

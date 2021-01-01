@@ -29,14 +29,15 @@ set(UNIT_TEST_FILES
     graphics/blend_mode_test.cpp
     graphics/color_test.cpp
     graphics/cursor_test.cpp
-    graphics/font_test.cpp
     graphics/font_cache_test.cpp
+    graphics/font_test.cpp
+    graphics/renderer_test.cpp
+    graphics/scale_mode_test.cpp
     graphics/surface_test.cpp
     graphics/surface_handle_test.cpp
     graphics/texture_test.cpp
     graphics/texture_handle_test.cpp
     graphics/texture_access_test.cpp
-    graphics/scale_mode_test.cpp
 
     input/controller_axis_test.cpp
     input/controller_button_test.cpp

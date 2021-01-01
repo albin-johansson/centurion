@@ -1,569 +1,274 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
+
 #include <iostream>
 
 #include "key_code.hpp"
 #include "log.hpp"
 
-TEST_CASE("key_code default value", "[key_code]")
+TEST(KeyCode, DefaultValue)
 {
   cen::key_code code;
-  CHECK(code.get() == SDLK_UNKNOWN);
+  EXPECT_EQ(SDLK_UNKNOWN, code.get());
 }
 
-TEST_CASE("key_code::key_code(SDL_Keycode)", "[key_code]")
+TEST(KeyCode, SDLKeycodeContructor)
 {
-  const auto expected = SDL_SCANCODE_BACKSPACE;
-  const cen::key_code code{expected};
-  CHECK(code.get() == SDL_GetKeyFromScancode(expected));
+  const auto key = SDLK_x;
+  const cen::key_code code{key};
+  EXPECT_EQ(key, code.get());
 }
 
-TEST_CASE("key_code::key_code(SDL_Scancode)", "[key_code]")
+TEST(KeyCode, SDLScancodeContructor)
 {
-  const auto expected = SDL_SCANCODE_C;
-  const cen::key_code code{expected};
-  CHECK(code.get() == SDLK_c);
+  const auto scan = SDL_SCANCODE_Y;
+  const cen::key_code code{scan};
+  EXPECT_EQ(scan, code.operator SDL_Scancode());
 }
 
-TEST_CASE("key_code::key_code(czstring)", "[key_code]")
+TEST(KeyCode, StringConstructor)
 {
-  SECTION("Good name")
-  {
-    cen::czstring name = "5";
+  {  // Good name
+    const auto name = "5";
     const cen::key_code code{name};
-    CHECK(code.get() == SDLK_5);
-    CHECK(code.name() == name);
+    EXPECT_EQ(SDLK_5, code.get());
+    EXPECT_EQ(cen::keycodes::five, code);
+    EXPECT_EQ(name, code.name());
   }
-  SECTION("Bad name")
-  {
-    cen::czstring bad = "foobar";
-    const cen::key_code code{bad};
-    CHECK(code.get() == SDLK_UNKNOWN);
-    CHECK(code.unknown());
+
+  {  // Bad name
+    const auto name = "foobar";
+    const cen::key_code code{name};
+    EXPECT_EQ(SDLK_UNKNOWN, code.get());
+    EXPECT_EQ(cen::keycodes::unknown, code);
+    EXPECT_TRUE(code.name().empty());
+    EXPECT_TRUE(code.unknown());
   }
 }
 
-TEST_CASE("key_code::operator=(SDL_Keycode)", "[key_code]")
+TEST(KeyCode, SDLKeycodeAssignmentOperator)
 {
   cen::key_code code;
+  code = SDLK_o;
 
-  const auto expected = SDLK_n;
-  code = expected;
-
-  CHECK(code.get() == expected);
+  EXPECT_EQ(SDLK_o, code.get());
+  EXPECT_EQ(cen::keycodes::o, code);
 }
 
-TEST_CASE("key_code::operator=(SDL_Scancode)", "[key_code]")
+TEST(KeyCode, SDLScancodeAssignmentOperator)
 {
   cen::key_code code;
+  code = SDL_SCANCODE_U;
 
-  const auto expected = SDL_SCANCODE_T;
-  code = expected;
-
-  CHECK(code.get() == SDLK_t);
+  EXPECT_EQ(SDL_GetKeyFromScancode(SDL_SCANCODE_U), code.get());
 }
 
-TEST_CASE("key_code::operator=(czstring)", "[key_code]")
+TEST(KeyCode, StringAssignmentOperator)
 {
-  SECTION("Good name")
-  {
+  {  // Good name
     cen::key_code code;
+    code = "Tab";
 
-    const auto name = "Tab";
-    code = name;
-
-    CHECK(code.get() == SDLK_TAB);
-    CHECK(code.name() == "Tab");
+    EXPECT_EQ(SDLK_TAB, code.get());
+    EXPECT_EQ(cen::keycodes::tab, code);
+    EXPECT_EQ("Tab", code.name());
   }
 
-  SECTION("Bad name")
-  {
+  {  // Bad name
     cen::key_code code;
+    code = "qwerty";
 
-    const auto name = "qwerty";
-    code = name;
-
-    CHECK(code.get() == SDLK_UNKNOWN);
-    CHECK(code.unknown());
+    EXPECT_EQ(SDLK_UNKNOWN, code.get());
+    EXPECT_EQ(cen::keycodes::unknown, code);
+    EXPECT_TRUE(code.unknown());
   }
 }
 
-TEST_CASE("key_code::unknown", "[key_code]")
+TEST(KeyCode, Unknown)
 {
   cen::key_code code;
-  CHECK(code.unknown());
+  EXPECT_TRUE(code.unknown());
 
-  code = SDLK_l;
-  CHECK(!code.unknown());
+  code = cen::keycodes::w;
+  EXPECT_FALSE(code.unknown());
 }
 
-TEST_CASE("key_code::name", "[key_code]")
+TEST(KeyCode, Name)
 {
   cen::key_code code;
-  CHECK(code.name().empty());
+  EXPECT_TRUE(code.name().empty());
 
   code = SDLK_z;
-  CHECK(code.name() == "Z");
+  EXPECT_EQ("Z", code.name());
 }
 
-TEST_CASE("key_code::get", "[key_code]")
+TEST(KeyCode, Get)
 {
   cen::key_code code;
-  CHECK(code.get() == SDLK_UNKNOWN);
+  EXPECT_EQ(SDLK_UNKNOWN, code.get());
 
   code = SDLK_8;
-  CHECK(code.get() == SDLK_8);
+  EXPECT_EQ(SDLK_8, code.get());
 }
 
-TEST_CASE("key_code::operator SDL_Keycode", "[key_code]")
+TEST(KeyCode, SDLKeycodeConversion)
 {
   cen::key_code code;
 
   const auto unknown = static_cast<SDL_Keycode>(code);
-  CHECK(unknown == SDLK_UNKNOWN);
+  EXPECT_EQ(SDLK_UNKNOWN, unknown);
 
   code = SDLK_f;
 
   const auto f = static_cast<SDL_Keycode>(code);
-  CHECK(f == SDLK_f);
+  EXPECT_EQ(SDLK_f, f);
 }
 
-TEST_CASE("key_code::operator SDL_Scancode", "[key_code]")
+TEST(KeyCode, SDLScancodeConversion)
 {
   cen::key_code code;
 
   const auto unknown = static_cast<SDL_Scancode>(code);
-  CHECK(unknown == SDL_SCANCODE_UNKNOWN);
+  EXPECT_EQ(SDL_SCANCODE_UNKNOWN, unknown);
 
   code = SDLK_RSHIFT;
 
   const auto rshift = static_cast<SDL_Scancode>(code);
-  CHECK(rshift == SDL_SCANCODE_RSHIFT);
+  EXPECT_EQ(SDL_SCANCODE_RSHIFT, rshift);
 }
 
-TEST_CASE("operator==(const key_code&, const key_code&)", "[key_code]")
+TEST(KeyCode, EqualityOperator)
 {
-  SECTION("Default initialized scan codes")
   {
-    const cen::key_code fst;
-    const cen::key_code snd;
-    CHECK(fst == snd);
-    CHECK(snd == fst);
+    const cen::key_code code;
+    EXPECT_EQ(code, code);
   }
 
-  SECTION("Same assigned scan codes")
   {
     const cen::key_code fst{SDLK_i};
     const cen::key_code snd{fst};
-    CHECK(fst == snd);
-    CHECK(snd == fst);
+    EXPECT_EQ(fst, snd);
+    EXPECT_EQ(snd, fst);
   }
 
-  SECTION("Not same")
   {
     const cen::key_code fst{SDLK_e};
     const cen::key_code snd{SDLK_y};
-    CHECK_FALSE(fst == snd);
-    CHECK_FALSE(snd == fst);
+    EXPECT_NE(fst, snd);
+    EXPECT_NE(snd, fst);
   }
 }
 
-TEST_CASE("operator!=(const key_code&, const key_code&)", "[key_code]")
+TEST(KeyCode, InequalityOperator)
 {
-  SECTION("Default initialized scan codes")
   {
-    const cen::key_code fst;
-    const cen::key_code snd;
-    CHECK_FALSE(fst != snd);
-    CHECK_FALSE(snd != fst);
+    const cen::key_code code;
+    EXPECT_FALSE(code != code);
   }
 
-  SECTION("Same assigned scan codes")
   {
     const cen::key_code fst{SDLK_w};
     const cen::key_code snd{fst};
-    CHECK_FALSE(fst != snd);
-    CHECK_FALSE(snd != fst);
+    EXPECT_FALSE(fst != snd);
+    EXPECT_FALSE(snd != fst);
   }
 
-  SECTION("Not same")
   {
     const cen::key_code fst{SDLK_a};
     const cen::key_code snd{SDLK_5};
-    CHECK(fst != snd);
-    CHECK(snd != fst);
+    EXPECT_NE(fst, snd);
+    EXPECT_NE(snd, fst);
   }
 }
 
-TEST_CASE("key_code constants", "[key_code]")
+TEST(KeyCode, Constants)
 {
-  const auto test_key = [](const cen::key_code& constant,
-                           SDL_KeyCode keycode) noexcept {
-    const cen::key_code code{keycode};
-    CHECK(constant == code);
-  };
-
-  SECTION("Unknown")
-  {
-    test_key(cen::keycodes::unknown, SDLK_UNKNOWN);
-  }
-
-  SECTION("Alphabetical keys")
-  {
-    SECTION("a")
-    {
-      test_key(cen::keycodes::a, SDLK_a);
-    }
-
-    SECTION("b")
-    {
-      test_key(cen::keycodes::b, SDLK_b);
-    }
-
-    SECTION("c")
-    {
-      test_key(cen::keycodes::c, SDLK_c);
-    }
-
-    SECTION("d")
-    {
-      test_key(cen::keycodes::d, SDLK_d);
-    }
-
-    SECTION("e")
-    {
-      test_key(cen::keycodes::e, SDLK_e);
-    }
-
-    SECTION("f")
-    {
-      test_key(cen::keycodes::f, SDLK_f);
-    }
-
-    SECTION("g")
-    {
-      test_key(cen::keycodes::g, SDLK_g);
-    }
-
-    SECTION("h")
-    {
-      test_key(cen::keycodes::h, SDLK_h);
-    }
-
-    SECTION("i")
-    {
-      test_key(cen::keycodes::i, SDLK_i);
-    }
-
-    SECTION("j")
-    {
-      test_key(cen::keycodes::j, SDLK_j);
-    }
-
-    SECTION("k")
-    {
-      test_key(cen::keycodes::k, SDLK_k);
-    }
-
-    SECTION("l")
-    {
-      test_key(cen::keycodes::l, SDLK_l);
-    }
-
-    SECTION("m")
-    {
-      test_key(cen::keycodes::m, SDLK_m);
-    }
-
-    SECTION("n")
-    {
-      test_key(cen::keycodes::n, SDLK_n);
-    }
-
-    SECTION("o")
-    {
-      test_key(cen::keycodes::o, SDLK_o);
-    }
-
-    SECTION("p")
-    {
-      test_key(cen::keycodes::p, SDLK_p);
-    }
-
-    SECTION("q")
-    {
-      test_key(cen::keycodes::q, SDLK_q);
-    }
-
-    SECTION("r")
-    {
-      test_key(cen::keycodes::r, SDLK_r);
-    }
-
-    SECTION("s")
-    {
-      test_key(cen::keycodes::s, SDLK_s);
-    }
-
-    SECTION("t")
-    {
-      test_key(cen::keycodes::t, SDLK_t);
-    }
-
-    SECTION("u")
-    {
-      test_key(cen::keycodes::u, SDLK_u);
-    }
-
-    SECTION("v")
-    {
-      test_key(cen::keycodes::v, SDLK_v);
-    }
-
-    SECTION("w")
-    {
-      test_key(cen::keycodes::w, SDLK_w);
-    }
-
-    SECTION("x")
-    {
-      test_key(cen::keycodes::x, SDLK_x);
-    }
-
-    SECTION("y")
-    {
-      test_key(cen::keycodes::y, SDLK_y);
-    }
-
-    SECTION("z")
-    {
-      test_key(cen::keycodes::z, SDLK_z);
-    }
-  }
-
-  SECTION("Numerical keys")
-  {
-    SECTION("1")
-    {
-      test_key(cen::keycodes::one, SDLK_1);
-    }
-
-    SECTION("2")
-    {
-      test_key(cen::keycodes::two, SDLK_2);
-    }
-
-    SECTION("3")
-    {
-      test_key(cen::keycodes::three, SDLK_3);
-    }
-
-    SECTION("4")
-    {
-      test_key(cen::keycodes::four, SDLK_4);
-    }
-
-    SECTION("5")
-    {
-      test_key(cen::keycodes::five, SDLK_5);
-    }
-
-    SECTION("6")
-    {
-      test_key(cen::keycodes::six, SDLK_6);
-    }
-
-    SECTION("7")
-    {
-      test_key(cen::keycodes::seven, SDLK_7);
-    }
-
-    SECTION("8")
-    {
-      test_key(cen::keycodes::eight, SDLK_8);
-    }
-
-    SECTION("9")
-    {
-      test_key(cen::keycodes::nine, SDLK_9);
-    }
-
-    SECTION("0")
-    {
-      test_key(cen::keycodes::zero, SDLK_0);
-    }
-  }
-
-  SECTION("Function keys")
-  {
-    SECTION("F1")
-    {
-      test_key(cen::keycodes::f1, SDLK_F1);
-    }
-
-    SECTION("F2")
-    {
-      test_key(cen::keycodes::f2, SDLK_F2);
-    }
-
-    SECTION("F3")
-    {
-      test_key(cen::keycodes::f3, SDLK_F3);
-    }
-
-    SECTION("F4")
-    {
-      test_key(cen::keycodes::f4, SDLK_F4);
-    }
-
-    SECTION("F5")
-    {
-      test_key(cen::keycodes::f5, SDLK_F5);
-    }
-
-    SECTION("F6")
-    {
-      test_key(cen::keycodes::f6, SDLK_F6);
-    }
-
-    SECTION("F7")
-    {
-      test_key(cen::keycodes::f7, SDLK_F7);
-    }
-
-    SECTION("F8")
-    {
-      test_key(cen::keycodes::f8, SDLK_F8);
-    }
-
-    SECTION("F9")
-    {
-      test_key(cen::keycodes::f9, SDLK_F9);
-    }
-
-    SECTION("F10")
-    {
-      test_key(cen::keycodes::f10, SDLK_F10);
-    }
-
-    SECTION("F11")
-    {
-      test_key(cen::keycodes::f11, SDLK_F11);
-    }
-
-    SECTION("F12")
-    {
-      test_key(cen::keycodes::f12, SDLK_F12);
-    }
-  }
-
-  SECTION("Arrow keys")
-  {
-    SECTION("Left")
-    {
-      test_key(cen::keycodes::left, SDLK_LEFT);
-    }
-
-    SECTION("Right")
-    {
-      test_key(cen::keycodes::right, SDLK_RIGHT);
-    }
-
-    SECTION("Up")
-    {
-      test_key(cen::keycodes::up, SDLK_UP);
-    }
-
-    SECTION("Down")
-    {
-      test_key(cen::keycodes::down, SDLK_DOWN);
-    }
-  }
-
-  SECTION("Special action keys")
-  {
-    SECTION("Space")
-    {
-      test_key(cen::keycodes::space, SDLK_SPACE);
-    }
-
-    SECTION("Enter")
-    {
-      test_key(cen::keycodes::enter, SDLK_RETURN);
-    }
-
-    SECTION("Escape")
-    {
-      test_key(cen::keycodes::escape, SDLK_ESCAPE);
-    }
-
-    SECTION("Backspace")
-    {
-      test_key(cen::keycodes::backspace, SDLK_BACKSPACE);
-    }
-
-    SECTION("Tab")
-    {
-      test_key(cen::keycodes::tab, SDLK_TAB);
-    }
-
-    SECTION("Caps")
-    {
-      test_key(cen::keycodes::caps_lock, SDLK_CAPSLOCK);
-    }
-  }
-
-  SECTION("Modifiers")
-  {
-    SECTION("LSHIFT")
-    {
-      test_key(cen::keycodes::left_shift, SDLK_LSHIFT);
-    }
-
-    SECTION("RSHIFT")
-    {
-      test_key(cen::keycodes::right_shift, SDLK_RSHIFT);
-    }
-
-    SECTION("LCTRL")
-    {
-      test_key(cen::keycodes::left_ctrl, SDLK_LCTRL);
-    }
-
-    SECTION("RCTRL")
-    {
-      test_key(cen::keycodes::right_ctrl, SDLK_RCTRL);
-    }
-
-    SECTION("LALT")
-    {
-      test_key(cen::keycodes::left_alt, SDLK_LALT);
-    }
-
-    SECTION("RALT")
-    {
-      test_key(cen::keycodes::right_alt, SDLK_RALT);
-    }
-
-    SECTION("LGUI")
-    {
-      test_key(cen::keycodes::left_gui, SDLK_LGUI);
-    }
-
-    SECTION("RGUI")
-    {
-      test_key(cen::keycodes::right_gui, SDLK_RGUI);
-    }
-  }
+  EXPECT_EQ(SDLK_UNKNOWN, cen::keycodes::unknown);
+
+  // Alphabetical keys
+  EXPECT_EQ(SDLK_a, cen::keycodes::a);
+  EXPECT_EQ(SDLK_b, cen::keycodes::b);
+  EXPECT_EQ(SDLK_c, cen::keycodes::c);
+  EXPECT_EQ(SDLK_d, cen::keycodes::d);
+  EXPECT_EQ(SDLK_e, cen::keycodes::e);
+  EXPECT_EQ(SDLK_f, cen::keycodes::f);
+  EXPECT_EQ(SDLK_g, cen::keycodes::g);
+  EXPECT_EQ(SDLK_h, cen::keycodes::h);
+  EXPECT_EQ(SDLK_i, cen::keycodes::i);
+  EXPECT_EQ(SDLK_j, cen::keycodes::j);
+  EXPECT_EQ(SDLK_k, cen::keycodes::k);
+  EXPECT_EQ(SDLK_l, cen::keycodes::l);
+  EXPECT_EQ(SDLK_m, cen::keycodes::m);
+  EXPECT_EQ(SDLK_n, cen::keycodes::n);
+  EXPECT_EQ(SDLK_o, cen::keycodes::o);
+  EXPECT_EQ(SDLK_p, cen::keycodes::p);
+  EXPECT_EQ(SDLK_q, cen::keycodes::q);
+  EXPECT_EQ(SDLK_r, cen::keycodes::r);
+  EXPECT_EQ(SDLK_s, cen::keycodes::s);
+  EXPECT_EQ(SDLK_t, cen::keycodes::t);
+  EXPECT_EQ(SDLK_u, cen::keycodes::u);
+  EXPECT_EQ(SDLK_v, cen::keycodes::v);
+  EXPECT_EQ(SDLK_w, cen::keycodes::w);
+  EXPECT_EQ(SDLK_x, cen::keycodes::x);
+  EXPECT_EQ(SDLK_y, cen::keycodes::y);
+  EXPECT_EQ(SDLK_z, cen::keycodes::z);
+
+  // Numerical keys
+  EXPECT_EQ(SDLK_1, cen::keycodes::one);
+  EXPECT_EQ(SDLK_2, cen::keycodes::two);
+  EXPECT_EQ(SDLK_3, cen::keycodes::three);
+  EXPECT_EQ(SDLK_4, cen::keycodes::four);
+  EXPECT_EQ(SDLK_5, cen::keycodes::five);
+  EXPECT_EQ(SDLK_6, cen::keycodes::six);
+  EXPECT_EQ(SDLK_7, cen::keycodes::seven);
+  EXPECT_EQ(SDLK_8, cen::keycodes::eight);
+  EXPECT_EQ(SDLK_9, cen::keycodes::nine);
+  EXPECT_EQ(SDLK_0, cen::keycodes::zero);
+
+  // Function keys
+  EXPECT_EQ(SDLK_F1, cen::keycodes::f1);
+  EXPECT_EQ(SDLK_F2, cen::keycodes::f2);
+  EXPECT_EQ(SDLK_F3, cen::keycodes::f3);
+  EXPECT_EQ(SDLK_F4, cen::keycodes::f4);
+  EXPECT_EQ(SDLK_F5, cen::keycodes::f5);
+  EXPECT_EQ(SDLK_F6, cen::keycodes::f6);
+  EXPECT_EQ(SDLK_F7, cen::keycodes::f7);
+  EXPECT_EQ(SDLK_F8, cen::keycodes::f8);
+  EXPECT_EQ(SDLK_F9, cen::keycodes::f9);
+  EXPECT_EQ(SDLK_F10, cen::keycodes::f10);
+  EXPECT_EQ(SDLK_F11, cen::keycodes::f11);
+  EXPECT_EQ(SDLK_F12, cen::keycodes::f12);
+
+  // Arrow keys
+  EXPECT_EQ(SDLK_LEFT, cen::keycodes::left);
+  EXPECT_EQ(SDLK_RIGHT, cen::keycodes::right);
+  EXPECT_EQ(SDLK_UP, cen::keycodes::up);
+  EXPECT_EQ(SDLK_DOWN, cen::keycodes::down);
+
+  // Special keys
+  EXPECT_EQ(SDLK_SPACE, cen::keycodes::space);
+  EXPECT_EQ(SDLK_RETURN, cen::keycodes::enter);
+  EXPECT_EQ(SDLK_ESCAPE, cen::keycodes::escape);
+  EXPECT_EQ(SDLK_BACKSPACE, cen::keycodes::backspace);
+  EXPECT_EQ(SDLK_TAB, cen::keycodes::tab);
+  EXPECT_EQ(SDLK_CAPSLOCK, cen::keycodes::caps_lock);
+
+  // Modifiers
+  EXPECT_EQ(SDLK_LSHIFT, cen::keycodes::left_shift);
+  EXPECT_EQ(SDLK_RSHIFT, cen::keycodes::right_shift);
+  EXPECT_EQ(SDLK_LCTRL, cen::keycodes::left_ctrl);
+  EXPECT_EQ(SDLK_RCTRL, cen::keycodes::right_ctrl);
+  EXPECT_EQ(SDLK_LALT, cen::keycodes::left_alt);
+  EXPECT_EQ(SDLK_RALT, cen::keycodes::right_alt);
+  EXPECT_EQ(SDLK_LGUI, cen::keycodes::left_gui);
+  EXPECT_EQ(SDLK_RGUI, cen::keycodes::right_gui);
 }
 
-TEST_CASE("key_code to_string", "[key_code]")
+TEST(KeyCode, ToString)
 {
-  const cen::key_code kc{SDLK_r};
-  cen::log::put(cen::to_string(kc));
+  cen::log::put(cen::to_string(cen::keycodes::a));
 }
 
-TEST_CASE("key_code stream operator", "[key_code]")
+TEST(KeyCode, StreamOperator)
 {
-  const cen::key_code kc{SDLK_q};
-  std::cout << "COUT: " << kc << '\n';
+  std::cout << "COUT: " << cen::keycodes::a << '\n';
 }

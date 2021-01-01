@@ -1518,7 +1518,7 @@ class basic_renderer final
    */
   void set_logical_size(const iarea& size) noexcept
   {
-    if ((size.width > 0) && (size.height > 0)) {
+    if ((size.width >= 0) && (size.height >= 0)) {
       SDL_RenderSetLogicalSize(get(), size.width, size.height);
     }
   }

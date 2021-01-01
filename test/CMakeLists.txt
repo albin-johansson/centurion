@@ -21,6 +21,7 @@ set(TEST_FILES
     unittests/centurion_test.cpp
     unittests/exception_test.cpp
     unittests/log_test.cpp
+    unittests/sdl_string_test.cpp
 
     unittests/detail/bool_converter_test.cpp
     unittests/detail/to_string_test.cpp

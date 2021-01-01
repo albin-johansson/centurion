@@ -103,6 +103,7 @@ script:
   - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCEN_AUDIO=OFF -GNinja
   - ninja CenturionLibrary
   - ninja CenturionTests
+  - ninja CenturionMocks
 
   - cd test/unittests
   - ctest

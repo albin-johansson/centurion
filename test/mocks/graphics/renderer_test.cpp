@@ -29,6 +29,7 @@ FAKE_VALUE_FUNC(int, SDL_RenderCopyExF, SDL_Renderer*, SDL_Texture*, const SDL_R
 FAKE_VALUE_FUNC(int, SDL_QueryTexture, SDL_Texture*, Uint32*, int*, int*, int*)
 FAKE_VALUE_FUNC(int, SDL_RenderSetClipRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderSetViewport, SDL_Renderer*, const SDL_Rect*)
+FAKE_VALUE_FUNC(int, SDL_SetRenderDrawBlendMode, SDL_Renderer*, SDL_BlendMode)
 }
 // clang-format on
 
@@ -57,6 +58,7 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_QueryTexture);
     RESET_FAKE(SDL_RenderSetClipRect);
     RESET_FAKE(SDL_RenderSetViewport);
+    RESET_FAKE(SDL_SetRenderDrawBlendMode);
   }
 
   cen::renderer_handle m_renderer{nullptr};
@@ -424,4 +426,10 @@ TEST_F(RendererTest, SetViewport)
   EXPECT_EQ(viewport.width(), SDL_RenderSetViewport_fake.arg1_val->w);
   EXPECT_EQ(viewport.height(), SDL_RenderSetViewport_fake.arg1_val->h);
   EXPECT_EQ(1, SDL_RenderSetViewport_fake.call_count);
+}
+
+TEST_F(RendererTest, SetBlendMode)
+{
+  m_renderer.set_blend_mode(cen::blend_mode::blend);
+  EXPECT_EQ(1, SDL_SetRenderDrawBlendMode_fake.call_count);
 }

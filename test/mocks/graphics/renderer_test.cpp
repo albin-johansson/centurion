@@ -384,3 +384,15 @@ TEST_F(RendererTest, RenderWithSourceDestinationAngleCenterFlip)
   EXPECT_EQ(1, SDL_RenderCopyEx_fake.call_count);
   EXPECT_EQ(1, SDL_RenderCopyExF_fake.call_count);
 }
+
+TEST_F(RendererTest, SetColor)
+{
+  constexpr auto color = cen::colors::magenta;
+  m_renderer.set_color(color);
+
+  EXPECT_EQ(1, SDL_SetRenderDrawColor_fake.call_count);
+  EXPECT_EQ(color.red(), SDL_SetRenderDrawColor_fake.arg1_val);
+  EXPECT_EQ(color.green(), SDL_SetRenderDrawColor_fake.arg2_val);
+  EXPECT_EQ(color.blue(), SDL_SetRenderDrawColor_fake.arg3_val);
+  EXPECT_EQ(color.alpha(), SDL_SetRenderDrawColor_fake.arg4_val);
+}

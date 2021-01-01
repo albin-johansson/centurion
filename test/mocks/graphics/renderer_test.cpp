@@ -3,6 +3,7 @@
 #include <fff.h>
 #include <gtest/gtest.h>
 
+#include <array>   // array
 // clang-format off
 extern "C" {
 FAKE_VALUE_FUNC(int, SDL_RenderClear, SDL_Renderer*)
@@ -18,6 +19,9 @@ FAKE_VALUE_FUNC(int, SDL_RenderDrawLine, SDL_Renderer*, int, int, int, int)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawLineF, SDL_Renderer*, float, float, float, float)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawLines, SDL_Renderer*, const SDL_Point*, int)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawLinesF, SDL_Renderer*, const SDL_FPoint*, int)
+FAKE_VALUE_FUNC(int, SDL_RenderCopy, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_Rect*)
+FAKE_VALUE_FUNC(int, SDL_RenderCopyF, SDL_Renderer*, SDL_Texture*, const SDL_Rect*, const SDL_FRect*)
+FAKE_VALUE_FUNC(int, SDL_QueryTexture, SDL_Texture*, Uint32*, int*, int*, int*)
 }
 // clang-format on
 
@@ -39,9 +43,13 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_RenderDrawLineF);
     RESET_FAKE(SDL_RenderDrawLines);
     RESET_FAKE(SDL_RenderDrawLinesF);
+    RESET_FAKE(SDL_RenderCopy);
+    RESET_FAKE(SDL_RenderCopyF);
+    RESET_FAKE(SDL_QueryTexture);
   }
 
   cen::renderer_handle m_renderer{nullptr};
+  cen::texture_handle m_texture{nullptr};
 };
 
 TEST_F(RendererTest, Clear)
@@ -170,5 +178,22 @@ TEST_F(RendererTest, DrawLines)
       EXPECT_EQ(points.at(i).x(), SDL_RenderDrawLinesF_fake.arg1_val[i].x);
       EXPECT_EQ(points.at(i).y(), SDL_RenderDrawLinesF_fake.arg1_val[i].y);
     }
+  }
+}
+
+TEST_F(RendererTest, Render)
+{
+  {
+    const cen::ipoint pos{12, 34};
+    m_renderer.render(m_texture, pos);
+    EXPECT_EQ(1, SDL_RenderCopy_fake.call_count);
+    EXPECT_EQ(0, SDL_RenderCopyF_fake.call_count);
+  }
+
+  {
+    const cen::fpoint pos{12, 34};
+    m_renderer.render(m_texture, pos);
+    EXPECT_EQ(1, SDL_RenderCopy_fake.call_count);
+    EXPECT_EQ(1, SDL_RenderCopyF_fake.call_count);
   }
 }

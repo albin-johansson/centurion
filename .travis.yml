@@ -104,7 +104,7 @@ script:
   - ninja CenturionLibrary
   - ninja CenturionTests
 
-  - cd test
+  - cd test/unittests
   - ctest
 
   - valgrind --gen-suppressions=all --suppressions=../../meta/linux_sdl_gl.sup --leak-check=yes ./CenturionTests

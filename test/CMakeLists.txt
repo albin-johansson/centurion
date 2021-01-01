@@ -52,6 +52,8 @@ set(TEST_FILES
     unittests/graphics/texture_access_test.cpp
     unittests/graphics/scale_mode_test.cpp
 
+    unittests/input/controller_axis_test.cpp
+
     unittests/thread/condition_test.cpp
     unittests/thread/mutex_test.cpp
     unittests/thread/scoped_lock_test.cpp

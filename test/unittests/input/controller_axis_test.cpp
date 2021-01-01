@@ -1,35 +1,34 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
 #include "controller.hpp"
 
-TEST_CASE("controller_axis operator==", "[controller_axis]")
-{
-  CHECK(SDL_CONTROLLER_AXIS_INVALID == cen::controller_axis::invalid);
-  CHECK(SDL_CONTROLLER_AXIS_LEFTX == cen::controller_axis::left_x);
-  CHECK(SDL_CONTROLLER_AXIS_LEFTY == cen::controller_axis::left_y);
-  CHECK(SDL_CONTROLLER_AXIS_RIGHTX == cen::controller_axis::right_x);
-  CHECK(SDL_CONTROLLER_AXIS_RIGHTY == cen::controller_axis::right_y);
-  CHECK(SDL_CONTROLLER_AXIS_TRIGGERLEFT == cen::controller_axis::trigger_left);
-  CHECK(SDL_CONTROLLER_AXIS_TRIGGERRIGHT ==
-        cen::controller_axis::trigger_right);
-  CHECK(SDL_CONTROLLER_AXIS_MAX == cen::controller_axis::max);
+using axis = cen::controller_axis;
 
-  CHECK(cen::controller_axis::invalid == SDL_CONTROLLER_AXIS_INVALID);
-  CHECK(cen::controller_axis::left_x == SDL_CONTROLLER_AXIS_LEFTX);
-  CHECK(cen::controller_axis::left_y == SDL_CONTROLLER_AXIS_LEFTY);
-  CHECK(cen::controller_axis::right_x == SDL_CONTROLLER_AXIS_RIGHTX);
-  CHECK(cen::controller_axis::right_y == SDL_CONTROLLER_AXIS_RIGHTY);
-  CHECK(cen::controller_axis::trigger_left == SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-  CHECK(cen::controller_axis::trigger_right ==
-        SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-  CHECK(cen::controller_axis::max == SDL_CONTROLLER_AXIS_MAX);
+TEST(ControllerAxis, EqualityOperator)
+{
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_INVALID, axis::invalid);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_LEFTX, axis::left_x);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_LEFTY, axis::left_y);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_RIGHTX, axis::right_x);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_RIGHTY, axis::right_y);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_TRIGGERLEFT, axis::trigger_left);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_TRIGGERRIGHT, axis::trigger_right);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_MAX, axis::max);
+
+  EXPECT_EQ(axis::invalid, SDL_CONTROLLER_AXIS_INVALID);
+  EXPECT_EQ(axis::left_x, SDL_CONTROLLER_AXIS_LEFTX);
+  EXPECT_EQ(axis::left_y, SDL_CONTROLLER_AXIS_LEFTY);
+  EXPECT_EQ(axis::right_x, SDL_CONTROLLER_AXIS_RIGHTX);
+  EXPECT_EQ(axis::right_y, SDL_CONTROLLER_AXIS_RIGHTY);
+  EXPECT_EQ(axis::trigger_left, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+  EXPECT_EQ(axis::trigger_right, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+  EXPECT_EQ(axis::max, SDL_CONTROLLER_AXIS_MAX);
 }
 
-TEST_CASE("controller_axis operator!=", "[controller_axis]")
+TEST(ControllerAxis, InequalityOperator)
 {
-  CHECK(SDL_CONTROLLER_AXIS_INVALID != cen::controller_axis::right_x);
-  CHECK(cen::controller_axis::max != SDL_CONTROLLER_AXIS_LEFTX);
+  EXPECT_NE(SDL_CONTROLLER_AXIS_INVALID, axis::right_x);
+  EXPECT_NE(axis::max, SDL_CONTROLLER_AXIS_LEFTX);
 
-  CHECK(!(SDL_CONTROLLER_AXIS_TRIGGERRIGHT !=
-          cen::controller_axis::trigger_right));
+  EXPECT_FALSE(SDL_CONTROLLER_AXIS_TRIGGERRIGHT != axis::trigger_right);
 }

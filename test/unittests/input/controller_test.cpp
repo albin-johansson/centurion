@@ -108,6 +108,11 @@ TEST(Controller, LoadMappings)
   EXPECT_GT(cen::controller::load_mappings(path), 0);
 }
 
+TEST(ControllerTest, NumMappings)
+{
+  EXPECT_EQ(SDL_GameControllerNumMappings(), cen::controller::num_mappings());
+}
+
 namespace cen {
 
 class controller_handler  // TODO worth adding?

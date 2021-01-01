@@ -95,21 +95,9 @@ if (CEN_AUDIO)
       PUBLIC CEN_AUDIO)
 endif ()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
-      -Wno-unused-result)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
-      /EHsc)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  target_compile_options(${CENTURION_TEST_TARGET} PRIVATE
-      /EHsc
-      /MP
-      /W3)
-endif ()
+cen_set_compiler_options(${CENTURION_TEST_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET}
-    PUBLIC .
     SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
     SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
     SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
@@ -130,8 +118,7 @@ target_link_libraries(${CENTURION_TEST_TARGET}
 
 add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 
-copy_directory_post_build(
-    ${CENTURION_TEST_TARGET}
+copy_directory_post_build(${CENTURION_TEST_TARGET}
     ${CEN_RESOURCES_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/resources)
 

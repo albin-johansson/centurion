@@ -403,11 +403,11 @@ TEST_F(ControllerTest, SetPolling)
 {
   cen::controller::set_polling(true);
   EXPECT_EQ(1, SDL_GameControllerEventState_fake.call_count);
-  EXPECT_EQ(1, SDL_GameControllerEventState_fake.arg0_val);
+  EXPECT_EQ(SDL_TRUE, SDL_GameControllerEventState_fake.arg0_val);
 
   cen::controller::set_polling(false);
   EXPECT_EQ(2, SDL_GameControllerEventState_fake.call_count);
-  EXPECT_EQ(0, SDL_GameControllerEventState_fake.arg0_val);
+  EXPECT_EQ(SDL_FALSE, SDL_GameControllerEventState_fake.arg0_val);
 }
 
 TEST_F(ControllerTest, IsPolling)

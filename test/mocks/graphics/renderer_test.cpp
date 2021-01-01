@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 
 #include <array>   // array
+
 // clang-format off
 extern "C" {
 FAKE_VALUE_FUNC(int, SDL_RenderClear, SDL_Renderer*)

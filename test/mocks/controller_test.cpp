@@ -192,6 +192,24 @@ TEST_F(ControllerTest, GetState)
             m_handle.get_state(cen::controller_button::a));
 }
 
+TEST_F(ControllerTest, IsPressed)
+{
+  std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
+  SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), values.size());
+
+  EXPECT_FALSE(m_handle.is_pressed(cen::controller_button::a));
+  EXPECT_TRUE(m_handle.is_pressed(cen::controller_button::a));
+}
+
+TEST_F(ControllerTest, IsReleased)
+{
+  std::array<Uint8, 2> values{SDL_RELEASED, SDL_PRESSED};
+  SET_RETURN_SEQ(SDL_GameControllerGetButton, values.data(), values.size());
+
+  EXPECT_TRUE(m_handle.is_released(cen::controller_button::a));
+  EXPECT_FALSE(m_handle.is_released(cen::controller_button::a));
+}
+
 TEST_F(ControllerTest, GetAxis)
 {
   std::array<SDL_GameControllerAxis, 2> values{SDL_CONTROLLER_AXIS_INVALID,

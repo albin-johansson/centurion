@@ -12,8 +12,16 @@ FAKE_VOID_FUNC(SDL_GameControllerSetPlayerIndex, SDL_GameController*, int)
 
 FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProduct, SDL_GameController*)
 FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetVendor, SDL_GameController*)
+FAKE_VALUE_FUNC(Uint16, SDL_GameControllerGetProductVersion, SDL_GameController*)
+
+FAKE_VALUE_FUNC(int, SDL_GameControllerGetPlayerIndex, SDL_GameController*)
 FAKE_VALUE_FUNC(int, SDL_GameControllerRumble, SDL_GameController*, Uint16, Uint16, Uint32)
+
+FAKE_VALUE_FUNC(SDL_bool, SDL_GameControllerGetAttached, SDL_GameController*)
 FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
+
+FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
+FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
 }
 // clang-format on
 
@@ -27,8 +35,16 @@ class ControllerTest : public testing::Test
 
     RESET_FAKE(SDL_GameControllerGetProduct);
     RESET_FAKE(SDL_GameControllerGetVendor);
+    RESET_FAKE(SDL_GameControllerGetProductVersion);
+
+    RESET_FAKE(SDL_GameControllerGetPlayerIndex);
     RESET_FAKE(SDL_GameControllerRumble);
+
+    RESET_FAKE(SDL_GameControllerGetAttached);
     RESET_FAKE(SDL_IsGameController);
+
+    RESET_FAKE(SDL_GameControllerGetType);
+    RESET_FAKE(SDL_GameControllerName);
   }
 
   /**
@@ -76,6 +92,58 @@ TEST_F(ControllerTest, Vendor)
 
   EXPECT_FALSE(m_handle.vendor().has_value());
   EXPECT_EQ(7, m_handle.vendor().value());
+}
+
+TEST_F(ControllerTest, ProductVersion)
+{
+  std::array<Uint16, 2> values{0, 4};
+  SET_RETURN_SEQ(SDL_GameControllerGetProductVersion,
+                 values.data(),
+                 values.size());
+
+  EXPECT_FALSE(m_handle.product_version().has_value());
+  EXPECT_EQ(4, m_handle.product_version().value());
+}
+
+TEST_F(ControllerTest, Index)
+{
+  std::array<int, 2> values{-1, 6};
+  SET_RETURN_SEQ(SDL_GameControllerGetPlayerIndex,
+                 values.data(),
+                 values.size());
+
+  EXPECT_FALSE(m_handle.index().has_value());
+  EXPECT_EQ(6, m_handle.index().value());
+}
+
+TEST_F(ControllerTest, IsConnected)
+{
+  std::array<SDL_bool, 2> values{SDL_FALSE, SDL_TRUE};
+  SET_RETURN_SEQ(SDL_GameControllerGetAttached, values.data(), values.size());
+
+  EXPECT_FALSE(m_handle.is_connected());
+  EXPECT_TRUE(m_handle.is_connected());
+}
+
+TEST_F(ControllerTest, Name)
+{
+  std::array<cen::czstring, 2> values{nullptr, "foobar"};
+  SET_RETURN_SEQ(SDL_GameControllerName, values.data(), values.size());
+
+  EXPECT_EQ(nullptr, m_handle.name());
+  EXPECT_STREQ("foobar", m_handle.name());
+}
+
+TEST_F(ControllerTest, Type)
+{
+  std::array<SDL_GameControllerType, 3> values{SDL_CONTROLLER_TYPE_UNKNOWN,
+                                               SDL_CONTROLLER_TYPE_XBOX360,
+                                               SDL_CONTROLLER_TYPE_PS4};
+  SET_RETURN_SEQ(SDL_GameControllerGetType, values.data(), values.size());
+
+  EXPECT_EQ(cen::controller_type::unknown, m_handle.type());
+  EXPECT_EQ(cen::controller_type::xbox_360, m_handle.type());
+  EXPECT_EQ(cen::controller_type::ps4, m_handle.type());
 }
 
 TEST_F(ControllerTest, Update)

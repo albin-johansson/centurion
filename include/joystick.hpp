@@ -65,6 +65,16 @@ class basic_joystick final
   using owner_t = basic_joystick<std::true_type>;
   using handle_t = basic_joystick<std::false_type>;
 
+  [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
+  {
+    return std::is_same_v<T, std::true_type>;
+  }
+
+  [[nodiscard]] constexpr static auto is_handle() noexcept -> bool
+  {
+    return std::is_same_v<T, std::false_type>;
+  }
+
  public:
   /**
    * \enum power
@@ -151,6 +161,16 @@ class basic_joystick final
     int dx;
     int dy;
   };
+
+  explicit basic_joystick(SDL_Joystick* joystick) noexcept(is_handle())
+      : m_joystick{joystick}
+  {
+    if constexpr (is_owning()) {
+      if (!m_joystick) {
+        throw exception{"Cannot create joystick from null pointer!"};
+      }
+    }
+  }
 
   template <typename U = T, detail::is_owner<U> = true>
   explicit basic_joystick(int deviceIndex)
@@ -880,26 +900,6 @@ class basic_joystick final
                                    std::unique_ptr<SDL_Joystick, deleter>,
                                    SDL_Joystick*>;
   rep_t m_joystick;
-
-  [[nodiscard]] constexpr static auto is_owning() noexcept -> bool
-  {
-    return std::is_same_v<T, std::true_type>;
-  }
-
-  [[nodiscard]] constexpr static auto is_handle() noexcept -> bool
-  {
-    return std::is_same_v<T, std::false_type>;
-  }
-
-  explicit basic_joystick(SDL_Joystick* joystick) noexcept(is_handle())
-      : m_joystick{joystick}
-  {
-    if constexpr (is_owning()) {
-      if (!m_joystick) {
-        throw exception{"Cannot create joystick from null pointer!"};
-      }
-    }
-  }
 };
 
 /**

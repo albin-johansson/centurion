@@ -27,6 +27,8 @@ FAKE_VALUE_FUNC(Uint8, SDL_GameControllerGetButton, SDL_GameController*, SDL_Gam
 FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
 
 FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
+FAKE_VALUE_FUNC(Sint16, SDL_GameControllerGetAxis, SDL_GameController*, SDL_GameControllerAxis)
+
 FAKE_VALUE_FUNC(SDL_GameControllerButton, SDL_GameControllerGetButtonFromString, const char*)
 
 FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForAxis, SDL_GameControllerAxis)
@@ -62,7 +64,9 @@ class ControllerTest : public testing::Test
     RESET_FAKE(SDL_GameControllerGetButton);
     RESET_FAKE(SDL_GameControllerName);
 
+    RESET_FAKE(SDL_GameControllerGetAxis);
     RESET_FAKE(SDL_GameControllerGetAxisFromString);
+
     RESET_FAKE(SDL_GameControllerGetButtonFromString);
 
     RESET_FAKE(SDL_GameControllerGetStringForAxis);
@@ -210,7 +214,7 @@ TEST_F(ControllerTest, IsReleased)
   EXPECT_FALSE(m_handle.is_released(cen::controller_button::a));
 }
 
-TEST_F(ControllerTest, GetAxis)
+TEST_F(ControllerTest, GetAxisFromString)
 {
   std::array<SDL_GameControllerAxis, 2> values{SDL_CONTROLLER_AXIS_INVALID,
                                                SDL_CONTROLLER_AXIS_RIGHTX};
@@ -220,6 +224,15 @@ TEST_F(ControllerTest, GetAxis)
 
   EXPECT_EQ(cen::controller_axis::invalid, cen::controller::get_axis(""));
   EXPECT_EQ(cen::controller_axis::right_x, cen::controller::get_axis(""));
+}
+
+TEST_F(ControllerTest, GetAxis)
+{
+  std::array<Sint16, 2> values{123, 321};
+  SET_RETURN_SEQ(SDL_GameControllerGetAxis, values.data(), values.size());
+
+  EXPECT_EQ(123, m_handle.get_axis(cen::controller_axis::left_x));
+  EXPECT_EQ(321, m_handle.get_axis(cen::controller_axis::left_x));
 }
 
 TEST_F(ControllerTest, GetButton)

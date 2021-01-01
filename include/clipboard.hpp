@@ -27,9 +27,10 @@
 
 #include <SDL_clipboard.h>
 
-#include <string>
+#include <string>  // string
 
 #include "centurion_api.hpp"
+#include "sdl_string.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -57,8 +58,10 @@ namespace cen::clipboard {
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto has_text() noexcept -> bool;
+[[nodiscard]] inline auto has_text() noexcept -> bool
+{
+  return SDL_HasClipboardText();
+}
 
 /**
  * \brief Returns the current text in the clipboard.
@@ -70,8 +73,11 @@ auto has_text() noexcept -> bool;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto get_text() -> std::string;
+[[nodiscard]] inline auto get_text() -> std::string
+{
+  const sdl_string text{SDL_GetClipboardText()};
+  return text.copy();
+}
 
 /**
  * \brief Sets the current clipboard text.
@@ -82,8 +88,10 @@ auto get_text() -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto set_text(nn_czstring text) noexcept -> bool;
+inline auto set_text(nn_czstring text) noexcept -> bool
+{
+  return SDL_SetClipboardText(text) == 0;
+}
 
 }  // namespace cen::clipboard
 

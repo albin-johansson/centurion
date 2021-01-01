@@ -622,7 +622,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_axis(const controller_axis axis) const noexcept -> i32
+  [[nodiscard]] auto get_axis(const controller_axis axis) const noexcept -> i16
   {
     return SDL_GameControllerGetAxis(get(),
                                      static_cast<SDL_GameControllerAxis>(axis));

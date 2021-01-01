@@ -28,6 +28,8 @@ FAKE_VALUE_FUNC(SDL_GameControllerButton, SDL_GameControllerGetButtonFromString,
 
 FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForAxis, SDL_GameControllerAxis)
 FAKE_VALUE_FUNC(const char*, SDL_GameControllerGetStringForButton, SDL_GameControllerButton)
+
+FAKE_VALUE_FUNC(SDL_GameControllerButtonBind, SDL_GameControllerGetBindForAxis, SDL_GameController*, SDL_GameControllerAxis)
 }
 // clang-format on
 
@@ -57,6 +59,8 @@ class ControllerTest : public testing::Test
 
     RESET_FAKE(SDL_GameControllerGetStringForAxis);
     RESET_FAKE(SDL_GameControllerGetStringForButton);
+
+    RESET_FAKE(SDL_GameControllerGetBindForAxis);
   }
 
   /**
@@ -202,6 +206,23 @@ TEST_F(ControllerTest, StringifyWithButton)
 
   EXPECT_EQ(nullptr, cen::controller::stringify(cen::controller_button::x));
   EXPECT_STREQ("foo", cen::controller::stringify(cen::controller_button::x));
+}
+
+TEST_F(ControllerTest, GetBinding)
+{
+  SDL_GameControllerButtonBind first{};
+  first.bindType = SDL_CONTROLLER_BINDTYPE_NONE;
+
+  SDL_GameControllerButtonBind second{};
+  second.bindType = SDL_CONTROLLER_BINDTYPE_AXIS;
+
+  std::array<SDL_GameControllerButtonBind, 2> values{first, second};
+  SET_RETURN_SEQ(SDL_GameControllerGetBindForAxis,
+                 values.data(),
+                 values.size());
+
+  EXPECT_FALSE(m_handle.get_binding(cen::controller_axis::right_x).has_value());
+  EXPECT_TRUE(m_handle.get_binding(cen::controller_axis::right_x).has_value());
 }
 
 TEST_F(ControllerTest, Update)

@@ -41,9 +41,16 @@ FAKE_VALUE_FUNC(SDL_Joystick*, SDL_GameControllerGetJoystick, SDL_GameController
 
 FAKE_VALUE_FUNC(int, SDL_GameControllerAddMapping, const char*)
 FAKE_VALUE_FUNC(int, SDL_GameControllerAddMappingsFromRW, SDL_RWops*, int)
+
+FAKE_VALUE_FUNC(char*, SDL_GameControllerMapping, SDL_GameController*)
+FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForDeviceIndex, int)
+FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForGUID, SDL_JoystickGUID)
+FAKE_VALUE_FUNC(char*, SDL_GameControllerMappingForIndex, int)
+
 FAKE_VALUE_FUNC(SDL_RWops*, SDL_RWFromFile, const char*, const char*)
 
 FAKE_VALUE_FUNC(const char*, SDL_GetError)
+FAKE_VOID_FUNC(SDL_free, void*)
 
 }
 // clang-format on
@@ -87,9 +94,16 @@ class ControllerTest : public testing::Test
 
     RESET_FAKE(SDL_GameControllerAddMapping);
     RESET_FAKE(SDL_GameControllerAddMappingsFromRW);
+
+    RESET_FAKE(SDL_GameControllerMapping);
+    RESET_FAKE(SDL_GameControllerMappingForDeviceIndex);
+    RESET_FAKE(SDL_GameControllerMappingForGUID);
+    RESET_FAKE(SDL_GameControllerMappingForIndex);
+
     RESET_FAKE(SDL_RWFromFile);
 
     RESET_FAKE(SDL_GetError);
+    RESET_FAKE(SDL_free);
   }
 
   /**
@@ -278,6 +292,27 @@ TEST_F(ControllerTest, LoadMappings)
   SDL_GetError_fake.return_val = "";
   EXPECT_THROW(cen::controller::load_mappings("foo"), cen::sdl_error);
   EXPECT_EQ(7, cen::controller::load_mappings("foo"));
+}
+
+TEST_F(ControllerTest, Mapping)
+{
+  EXPECT_EQ(nullptr, m_handle.mapping().get());
+}
+
+TEST_F(ControllerTest, MappingJoystickIndex)
+{
+  EXPECT_EQ(nullptr, m_handle.mapping(0).get());
+}
+
+TEST_F(ControllerTest, MappingJoystickGUID)
+{
+  SDL_JoystickGUID id{};
+  EXPECT_EQ(nullptr, m_handle.mapping(id).get());
+}
+
+TEST_F(ControllerTest, MappingByIndex)
+{
+  EXPECT_EQ(nullptr, m_handle.mapping_by_index(0).get());
 }
 
 TEST_F(ControllerTest, GetButton)

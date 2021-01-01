@@ -13,6 +13,7 @@ FAKE_VALUE_FUNC(int, SDL_RenderDrawRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderDrawRectF, SDL_Renderer*, const SDL_FRect*)
 FAKE_VALUE_FUNC(int, SDL_RenderFillRect, SDL_Renderer*, const SDL_Rect*)
 FAKE_VALUE_FUNC(int, SDL_RenderFillRectF, SDL_Renderer*, const SDL_FRect*)
+FAKE_VALUE_FUNC(int, SDL_GetRendererOutputSize, SDL_Renderer*, int*, int*)
 }
 // clang-format on
 
@@ -29,6 +30,7 @@ class RendererTest : public testing::Test
     RESET_FAKE(SDL_RenderDrawRectF);
     RESET_FAKE(SDL_RenderFillRect);
     RESET_FAKE(SDL_RenderFillRectF);
+    RESET_FAKE(SDL_GetRendererOutputSize);
   }
 
   cen::renderer_handle m_renderer{nullptr};
@@ -84,4 +86,25 @@ TEST_F(RendererTest, FillRect)
   m_renderer.fill_rect(frect);
   EXPECT_EQ(1, SDL_RenderFillRect_fake.call_count);
   EXPECT_EQ(1, SDL_RenderFillRectF_fake.call_count);
+}
+
+TEST_F(RendererTest, Fill)
+{
+  m_renderer.fill();
+  EXPECT_EQ(1, SDL_GetRendererOutputSize_fake.call_count);
+  EXPECT_EQ(1, SDL_RenderFillRect_fake.call_count);
+}
+
+TEST_F(RendererTest, FillWith)
+{
+  m_renderer.fill_with(cen::color{0xAA, 0xBB, 0xCC, 0xDD});
+  EXPECT_EQ(1, SDL_GetRenderDrawColor_fake.call_count);
+  EXPECT_EQ(2, SDL_SetRenderDrawColor_fake.call_count);
+  EXPECT_EQ(1, SDL_GetRendererOutputSize_fake.call_count);
+  EXPECT_EQ(1, SDL_RenderFillRect_fake.call_count);
+
+  EXPECT_EQ(0xAA, SDL_SetRenderDrawColor_fake.arg1_history[0]);
+  EXPECT_EQ(0xBB, SDL_SetRenderDrawColor_fake.arg2_history[0]);
+  EXPECT_EQ(0xCC, SDL_SetRenderDrawColor_fake.arg3_history[0]);
+  EXPECT_EQ(0xDD, SDL_SetRenderDrawColor_fake.arg4_history[0]);
 }

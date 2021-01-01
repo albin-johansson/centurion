@@ -22,6 +22,9 @@ FAKE_VALUE_FUNC(SDL_bool, SDL_IsGameController, int)
 
 FAKE_VALUE_FUNC(SDL_GameControllerType, SDL_GameControllerGetType, SDL_GameController*)
 FAKE_VALUE_FUNC(const char*, SDL_GameControllerName, SDL_GameController*)
+
+FAKE_VALUE_FUNC(SDL_GameControllerAxis, SDL_GameControllerGetAxisFromString, const char*)
+FAKE_VALUE_FUNC(SDL_GameControllerButton, SDL_GameControllerGetButtonFromString, const char*)
 }
 // clang-format on
 
@@ -45,6 +48,9 @@ class ControllerTest : public testing::Test
 
     RESET_FAKE(SDL_GameControllerGetType);
     RESET_FAKE(SDL_GameControllerName);
+
+    RESET_FAKE(SDL_GameControllerGetAxisFromString);
+    RESET_FAKE(SDL_GameControllerGetButtonFromString);
   }
 
   /**
@@ -144,6 +150,30 @@ TEST_F(ControllerTest, Type)
   EXPECT_EQ(cen::controller_type::unknown, m_handle.type());
   EXPECT_EQ(cen::controller_type::xbox_360, m_handle.type());
   EXPECT_EQ(cen::controller_type::ps4, m_handle.type());
+}
+
+TEST_F(ControllerTest, GetAxis)
+{
+  std::array<SDL_GameControllerAxis, 2> values{SDL_CONTROLLER_AXIS_INVALID,
+                                               SDL_CONTROLLER_AXIS_RIGHTX};
+  SET_RETURN_SEQ(SDL_GameControllerGetAxisFromString,
+                 values.data(),
+                 values.size());
+
+  EXPECT_EQ(cen::controller_axis::invalid, cen::controller::get_axis(""));
+  EXPECT_EQ(cen::controller_axis::right_x, cen::controller::get_axis(""));
+}
+
+TEST_F(ControllerTest, GetButton)
+{
+  std::array<SDL_GameControllerButton, 2> values{SDL_CONTROLLER_BUTTON_INVALID,
+                                                 SDL_CONTROLLER_BUTTON_B};
+  SET_RETURN_SEQ(SDL_GameControllerGetButtonFromString,
+                 values.data(),
+                 values.size());
+
+  EXPECT_EQ(cen::controller_button::invalid, cen::controller::get_button(""));
+  EXPECT_EQ(cen::controller_button::b, cen::controller::get_button(""));
 }
 
 TEST_F(ControllerTest, Update)

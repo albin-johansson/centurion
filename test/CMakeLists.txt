@@ -53,6 +53,7 @@ set(TEST_FILES
     unittests/graphics/scale_mode_test.cpp
 
     unittests/input/controller_axis_test.cpp
+    unittests/input/controller_button_test.cpp
 
     unittests/thread/condition_test.cpp
     unittests/thread/mutex_test.cpp

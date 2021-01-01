@@ -25,6 +25,8 @@
 #ifndef CENTURION_BASE_PATH_HEADER
 #define CENTURION_BASE_PATH_HEADER
 
+#include <SDL.h>
+
 #include <ostream>  // ostream
 #include <string>   // string
 
@@ -61,8 +63,8 @@ class base_path final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  base_path();
+  base_path() : m_path{SDL_GetBasePath()}
+  {}
 
   /**
    * \brief Indicates whether or not there is a non-null string in the base path
@@ -107,8 +109,11 @@ class base_path final
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const base_path& path) -> std::string;
+[[nodiscard]] inline auto to_string(const base_path& path) -> std::string
+{
+  const std::string str = path ? path.get() : "N/A";
+  return "[base_path | path: \"" + str + "\"]";
+}
 
 /**
  * \brief Prints a textual representation of a base path.
@@ -122,8 +127,12 @@ auto to_string(const base_path& path) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto operator<<(std::ostream& stream, const base_path& path) -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const base_path& path)
+    -> std::ostream&
+{
+  stream << to_string(path);
+  return stream;
+}
 
 }  // namespace cen
 

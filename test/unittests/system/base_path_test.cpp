@@ -3,8 +3,17 @@
 #include <gtest/gtest.h>
 
 #include <iostream>  // cout
+#include <type_traits>
 
 #include "log.hpp"
+
+static_assert(std::is_default_constructible_v<cen::base_path>);
+
+static_assert(std::is_nothrow_move_constructible_v<cen::base_path>);
+static_assert(std::is_nothrow_move_assignable_v<cen::base_path>);
+
+static_assert(!std::is_copy_constructible_v<cen::base_path>);
+static_assert(!std::is_copy_assignable_v<cen::base_path>);
 
 TEST(BasePath, Constructor)
 {

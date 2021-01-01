@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.15)
 project(centurion-test-mocks LANGUAGES CXX)
 
 set(TEST_FILES
-    test_main.cpp)
+    test_main.cpp
+    controller_test.cpp
+    )
 
 add_executable(${CENTURION_MOCK_TARGET} ${TEST_FILES})
 

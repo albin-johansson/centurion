@@ -118,7 +118,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  constexpr key_code(SDL_KeyCode key) noexcept : m_key{key}
+  constexpr /*implicit*/ key_code(SDL_KeyCode key) noexcept : m_key{key}
   {}
 
   /**

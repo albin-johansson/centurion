@@ -86,7 +86,8 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  constexpr scan_code(SDL_Scancode scancode) noexcept : m_code{scancode}
+  constexpr /*implicit*/ scan_code(SDL_Scancode scancode) noexcept
+      : m_code{scancode}
   {}
 
   /**
@@ -200,6 +201,20 @@ class scan_code final
   }
 
   /**
+   * \brief Returns the corresponding `SDL_KeyCode`.
+   *
+   * \return the key code associated with the internal scan code.
+   *
+   * \see `SDL_GetKeyFromScancode`
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto to_key_code() const noexcept -> SDL_KeyCode
+  {
+    return static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(m_code));
+  }
+
+  /**
    * \brief Returns the internal scan code.
    *
    * \return the internal scan code.
@@ -234,7 +249,7 @@ class scan_code final
    */
   explicit operator SDL_KeyCode() const noexcept
   {
-    return static_cast<SDL_KeyCode>(SDL_GetKeyFromScancode(m_code));
+    return to_key_code();
   }
 
  private:

@@ -1,6 +1,8 @@
 #include "controller.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
+
+#include <array>
 #include <utility>
 #include <vector>
 
@@ -8,128 +10,102 @@
 #include "renderer.hpp"
 #include "window.hpp"
 
-TEST_CASE("controller_type enum values", "[controller]")
+TEST(Controller, ControllerTypeEnum)
 {
-  SECTION("operator==")
-  {
-    CHECK(cen::controller_type::unknown == SDL_CONTROLLER_TYPE_UNKNOWN);
-    CHECK(cen::controller_type::xbox_360 == SDL_CONTROLLER_TYPE_XBOX360);
-    CHECK(cen::controller_type::xbox_one == SDL_CONTROLLER_TYPE_XBOXONE);
-    CHECK(cen::controller_type::ps3 == SDL_CONTROLLER_TYPE_PS3);
-    CHECK(cen::controller_type::ps4 == SDL_CONTROLLER_TYPE_PS4);
-    CHECK(cen::controller_type::nintendo_switch_pro ==
-          SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
+  using type = cen::controller_type;
 
-    CHECK(SDL_CONTROLLER_TYPE_UNKNOWN == cen::controller_type::unknown);
-    CHECK(SDL_CONTROLLER_TYPE_XBOX360 == cen::controller_type::xbox_360);
-    CHECK(SDL_CONTROLLER_TYPE_XBOXONE == cen::controller_type::xbox_one);
-    CHECK(SDL_CONTROLLER_TYPE_PS3 == cen::controller_type::ps3);
-    CHECK(SDL_CONTROLLER_TYPE_PS4 == cen::controller_type::ps4);
-    CHECK(SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO ==
-          cen::controller_type::nintendo_switch_pro);
-  }
+  EXPECT_EQ(type::unknown, SDL_CONTROLLER_TYPE_UNKNOWN);
+  EXPECT_EQ(type::xbox_360, SDL_CONTROLLER_TYPE_XBOX360);
+  EXPECT_EQ(type::xbox_one, SDL_CONTROLLER_TYPE_XBOXONE);
+  EXPECT_EQ(type::ps3, SDL_CONTROLLER_TYPE_PS3);
+  EXPECT_EQ(type::ps4, SDL_CONTROLLER_TYPE_PS4);
+  EXPECT_EQ(type::nintendo_switch_pro, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
 
-  SECTION("operator!=")
-  {
-    CHECK(cen::controller_type::ps4 != SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
-    CHECK(SDL_CONTROLLER_TYPE_XBOX360 != cen::controller_type::unknown);
-  }
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_UNKNOWN, type::unknown);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_XBOX360, type::xbox_360);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_XBOXONE, type::xbox_one);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS3, type::ps3);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_PS4, type::ps4);
+  EXPECT_EQ(SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO, type::nintendo_switch_pro);
+
+  EXPECT_NE(type::ps4, SDL_CONTROLLER_TYPE_NINTENDO_SWITCH_PRO);
+  EXPECT_NE(SDL_CONTROLLER_TYPE_XBOX360, type::unknown);
 }
 
-TEST_CASE("controller_axis enum values", "[controller]")
+TEST(Controller, ControllerAxisEnum)
 {
-  SECTION("operator==")
-  {
-    CHECK(cen::controller_axis::invalid == SDL_CONTROLLER_AXIS_INVALID);
-    CHECK(cen::controller_axis::left_x == SDL_CONTROLLER_AXIS_LEFTX);
-    CHECK(cen::controller_axis::left_y == SDL_CONTROLLER_AXIS_LEFTY);
-    CHECK(cen::controller_axis::right_x == SDL_CONTROLLER_AXIS_RIGHTX);
-    CHECK(cen::controller_axis::right_y == SDL_CONTROLLER_AXIS_RIGHTY);
-    CHECK(cen::controller_axis::trigger_left ==
-          SDL_CONTROLLER_AXIS_TRIGGERLEFT);
-    CHECK(cen::controller_axis::trigger_right ==
-          SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
-    CHECK(cen::controller_axis::max == SDL_CONTROLLER_AXIS_MAX);
+  using axis = cen::controller_axis;
 
-    CHECK(SDL_CONTROLLER_AXIS_INVALID == cen::controller_axis::invalid);
-    CHECK(SDL_CONTROLLER_AXIS_LEFTX == cen::controller_axis::left_x);
-    CHECK(SDL_CONTROLLER_AXIS_LEFTY == cen::controller_axis::left_y);
-    CHECK(SDL_CONTROLLER_AXIS_RIGHTX == cen::controller_axis::right_x);
-    CHECK(SDL_CONTROLLER_AXIS_RIGHTY == cen::controller_axis::right_y);
-    CHECK(SDL_CONTROLLER_AXIS_TRIGGERLEFT ==
-          cen::controller_axis::trigger_left);
-    CHECK(SDL_CONTROLLER_AXIS_TRIGGERRIGHT ==
-          cen::controller_axis::trigger_right);
-    CHECK(SDL_CONTROLLER_AXIS_MAX == cen::controller_axis::max);
-  }
+  EXPECT_EQ(axis::invalid, SDL_CONTROLLER_AXIS_INVALID);
+  EXPECT_EQ(axis::left_x, SDL_CONTROLLER_AXIS_LEFTX);
+  EXPECT_EQ(axis::left_y, SDL_CONTROLLER_AXIS_LEFTY);
+  EXPECT_EQ(axis::right_x, SDL_CONTROLLER_AXIS_RIGHTX);
+  EXPECT_EQ(axis::right_y, SDL_CONTROLLER_AXIS_RIGHTY);
+  EXPECT_EQ(axis::trigger_left, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+  EXPECT_EQ(axis::trigger_right, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+  EXPECT_EQ(axis::max, SDL_CONTROLLER_AXIS_MAX);
 
-  SECTION("operator!=")
-  {
-    CHECK(cen::controller_axis::left_x != SDL_CONTROLLER_AXIS_MAX);
-    CHECK(SDL_CONTROLLER_AXIS_TRIGGERLEFT != cen::controller_axis::right_x);
-  }
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_INVALID, axis::invalid);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_LEFTX, axis::left_x);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_LEFTY, axis::left_y);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_RIGHTX, axis::right_x);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_RIGHTY, axis::right_y);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_TRIGGERLEFT, axis::trigger_left);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_TRIGGERRIGHT, axis::trigger_right);
+  EXPECT_EQ(SDL_CONTROLLER_AXIS_MAX, axis::max);
+
+  EXPECT_NE(axis::left_x, SDL_CONTROLLER_AXIS_MAX);
+  EXPECT_NE(SDL_CONTROLLER_AXIS_TRIGGERLEFT, axis::right_x);
 }
 
-TEST_CASE("controller_button enum values", "[controller]")
+TEST(Controller, ControllerButtonEnum)
 {
-  SECTION("operator==")
-  {
-    CHECK(cen::controller_button::invalid == SDL_CONTROLLER_BUTTON_INVALID);
-    CHECK(cen::controller_button::a == SDL_CONTROLLER_BUTTON_A);
-    CHECK(cen::controller_button::b == SDL_CONTROLLER_BUTTON_B);
-    CHECK(cen::controller_button::x == SDL_CONTROLLER_BUTTON_X);
-    CHECK(cen::controller_button::y == SDL_CONTROLLER_BUTTON_Y);
-    CHECK(cen::controller_button::back == SDL_CONTROLLER_BUTTON_BACK);
-    CHECK(cen::controller_button::guide == SDL_CONTROLLER_BUTTON_GUIDE);
-    CHECK(cen::controller_button::start == SDL_CONTROLLER_BUTTON_START);
-    CHECK(cen::controller_button::left_stick ==
-          SDL_CONTROLLER_BUTTON_LEFTSTICK);
-    CHECK(cen::controller_button::right_stick ==
-          SDL_CONTROLLER_BUTTON_RIGHTSTICK);
-    CHECK(cen::controller_button::left_shoulder ==
-          SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-    CHECK(cen::controller_button::right_shoulder ==
-          SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
-    CHECK(cen::controller_button::dpad_up == SDL_CONTROLLER_BUTTON_DPAD_UP);
-    CHECK(cen::controller_button::dpad_down == SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-    CHECK(cen::controller_button::dpad_right ==
-          SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-    CHECK(cen::controller_button::dpad_left == SDL_CONTROLLER_BUTTON_DPAD_LEFT);
-    CHECK(cen::controller_button::max == SDL_CONTROLLER_BUTTON_MAX);
-  }
+  using button = cen::controller_button;
 
-  SECTION("operator!=")
-  {
-    CHECK(cen::controller_button::right_stick != SDL_CONTROLLER_BUTTON_DPAD_UP);
-    CHECK(SDL_CONTROLLER_BUTTON_B != cen::controller_button::guide);
-  }
+  EXPECT_EQ(button::invalid, SDL_CONTROLLER_BUTTON_INVALID);
+  EXPECT_EQ(button::a, SDL_CONTROLLER_BUTTON_A);
+  EXPECT_EQ(button::b, SDL_CONTROLLER_BUTTON_B);
+  EXPECT_EQ(button::x, SDL_CONTROLLER_BUTTON_X);
+  EXPECT_EQ(button::y, SDL_CONTROLLER_BUTTON_Y);
+  EXPECT_EQ(button::back, SDL_CONTROLLER_BUTTON_BACK);
+  EXPECT_EQ(button::guide, SDL_CONTROLLER_BUTTON_GUIDE);
+  EXPECT_EQ(button::start, SDL_CONTROLLER_BUTTON_START);
+  EXPECT_EQ(button::left_stick, SDL_CONTROLLER_BUTTON_LEFTSTICK);
+  EXPECT_EQ(button::right_stick, SDL_CONTROLLER_BUTTON_RIGHTSTICK);
+  EXPECT_EQ(button::left_shoulder, SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+  EXPECT_EQ(button::right_shoulder, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+  EXPECT_EQ(button::dpad_up, SDL_CONTROLLER_BUTTON_DPAD_UP);
+  EXPECT_EQ(button::dpad_down, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+  EXPECT_EQ(button::dpad_right, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+  EXPECT_EQ(button::dpad_left, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+  EXPECT_EQ(button::max, SDL_CONTROLLER_BUTTON_MAX);
+
+  EXPECT_NE(button::right_stick, SDL_CONTROLLER_BUTTON_DPAD_UP);
+  EXPECT_NE(SDL_CONTROLLER_BUTTON_B, button::guide);
 }
 
-TEST_CASE("controller_bind_type enum values", "[controller]")
+TEST(Controller, ControllerBindTypeEnum)
 {
-  SECTION("operator==")
-  {
-    CHECK(cen::controller_bind_type::axis == SDL_CONTROLLER_BINDTYPE_AXIS);
-    CHECK(cen::controller_bind_type::button == SDL_CONTROLLER_BINDTYPE_BUTTON);
-    CHECK(cen::controller_bind_type::none == SDL_CONTROLLER_BINDTYPE_NONE);
-    CHECK(cen::controller_bind_type::hat == SDL_CONTROLLER_BINDTYPE_HAT);
+  using bind_type = cen::controller_bind_type;
 
-    CHECK(SDL_CONTROLLER_BINDTYPE_AXIS == cen::controller_bind_type::axis);
-    CHECK(SDL_CONTROLLER_BINDTYPE_BUTTON == cen::controller_bind_type::button);
-    CHECK(SDL_CONTROLLER_BINDTYPE_NONE == cen::controller_bind_type::none);
-    CHECK(SDL_CONTROLLER_BINDTYPE_HAT == cen::controller_bind_type::hat);
-  }
+  EXPECT_EQ(bind_type::axis, SDL_CONTROLLER_BINDTYPE_AXIS);
+  EXPECT_EQ(bind_type::button, SDL_CONTROLLER_BINDTYPE_BUTTON);
+  EXPECT_EQ(bind_type::none, SDL_CONTROLLER_BINDTYPE_NONE);
+  EXPECT_EQ(bind_type::hat, SDL_CONTROLLER_BINDTYPE_HAT);
 
-  SECTION("operator!=")
-  {
-    CHECK(cen::controller_bind_type::axis != SDL_CONTROLLER_BINDTYPE_HAT);
-    CHECK(SDL_CONTROLLER_BINDTYPE_BUTTON != cen::controller_bind_type::none);
-  }
+  EXPECT_EQ(SDL_CONTROLLER_BINDTYPE_AXIS, bind_type::axis);
+  EXPECT_EQ(SDL_CONTROLLER_BINDTYPE_BUTTON, bind_type::button);
+  EXPECT_EQ(SDL_CONTROLLER_BINDTYPE_NONE, bind_type::none);
+  EXPECT_EQ(SDL_CONTROLLER_BINDTYPE_HAT, bind_type::hat);
+
+  EXPECT_NE(bind_type::axis, SDL_CONTROLLER_BINDTYPE_HAT);
+  EXPECT_NE(SDL_CONTROLLER_BINDTYPE_BUTTON, bind_type::none);
 }
 
-TEST_CASE("controller load_mappings", "[!mayfail][controller]")
+TEST(Controller, LoadMappings)
 {
-  CHECK(cen::controller::load_mappings("resources/gamecontrollerdb.txt") > 0);
+  const auto path = "resources/gamecontrollerdb.txt";
+  EXPECT_GT(cen::controller::load_mappings(path), 0);
 }
 
 namespace cen {
@@ -193,7 +169,7 @@ class controller_handler  // TODO worth adding?
 
 }  // namespace cen
 
-TEST_CASE("Interactive game controller test", "[.controller]")
+TEST(Controller, DISABLED_InteractiveTest)
 {
   cen::window window{"Game controller demo"};
   cen::renderer renderer{window};

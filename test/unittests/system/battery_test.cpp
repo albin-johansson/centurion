@@ -45,7 +45,9 @@ TEST(Battery, MinutesLeft)
     int actual = -1;
     SDL_GetPowerInfo(&actual, nullptr);
 
-    EXPECT_EQ(cen::seconds<int>{actual}, minutes.value());
+    const cen::seconds<int> s{actual};
+    EXPECT_EQ(std::chrono::duration_cast<cen::minutes<int>>(s),
+              minutes.value());
   }
 }
 

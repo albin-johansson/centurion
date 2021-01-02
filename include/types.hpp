@@ -87,9 +87,11 @@ using zstring = char*;
  *
  * \brief Alias for a C-style null-terminated string that cannot be null.
  *
+ * \deprecated Prefer `not_null` alias template.
+ *
  * \since 5.0.0
  */
-using nn_czstring = not_null<czstring>;
+using nn_czstring [[deprecated]] = not_null<czstring>;
 
 using font_id = std::size_t;
 

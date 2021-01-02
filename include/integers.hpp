@@ -22,30 +22,12 @@
  * SOFTWARE.
  */
 
-/**
- * \file types.hpp
- *
- * \deprecated Since 5.1.0, use more explicit includes instead.
- */
+#ifndef CENTURION_INTEGERS_HEADER
+#define CENTURION_INTEGERS_HEADER
 
-#ifndef CENTURION_TYPES_HEADER
-#define CENTURION_TYPES_HEADER
-
-#include <SDL_stdinc.h>
-
-#include <array>        // array
-#include <chrono>       // duration
-#include <cstddef>      // byte
-#include <optional>     // optional
-#include <type_traits>  // enable_if, is_pointer
+#include <SDL.h>
 
 #include "centurion_api.hpp"
-#include "czstring.hpp"
-#include "integers.hpp"
-#include "not_null.hpp"
-#include "owner.hpp"
-#include "time.hpp"
-#include "unicode_string.hpp"  // for unicode alias
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -53,21 +35,62 @@
 
 namespace cen {
 
-using font_id [[deprecated]] = std::size_t;
+/**
+ * \typedef u64
+ *
+ * \brief Alias for a 64-bit unsigned integer.
+ */
+using u64 = Uint64;
 
 /**
- * \typedef buffer
+ * \typedef u32
  *
- * \brief Alias for an array of `std::byte` instances, meant to be used with
- * `pmr` containers.
- *
- * \deprecated Since 5.1.0.
- *
- * \since 5.0.0
+ * \brief Alias for a 32-bit unsigned integer.
  */
-template <std::size_t size>
-using buffer [[deprecated]] = std::array<std::byte, size>;
+using u32 = Uint32;
+
+/**
+ * \typedef u16
+ *
+ * \brief Alias for a 16-bit unsigned integer.
+ */
+using u16 = Uint16;
+
+/**
+ * \typedef u8
+ *
+ * \brief Alias for an 8-bit unsigned integer.
+ */
+using u8 = Uint8;
+
+/**
+ * \typedef i64
+ *
+ * \brief Alias for a 64-bit signed integer.
+ */
+using i64 = Sint64;
+
+/**
+ * \typedef i32
+ *
+ * \brief Alias for a 32-bit signed integer.
+ */
+using i32 = Sint32;
+
+/**
+ * \typedef i16
+ *
+ * \brief Alias for a 16-bit signed integer.
+ */
+using i16 = Sint16;
+
+/**
+ * \typedef i8
+ *
+ * \brief Alias for an 8-bit signed integer.
+ */
+using i8 = Sint8;
 
 }  // namespace cen
 
-#endif  // CENTURION_TYPES_HEADER
+#endif  // CENTURION_INTEGERS_HEADER

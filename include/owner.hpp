@@ -22,30 +22,12 @@
  * SOFTWARE.
  */
 
-/**
- * \file types.hpp
- *
- * \deprecated Since 5.1.0, use more explicit includes instead.
- */
+#ifndef CENTURION_OWNER_HEADER
+#define CENTURION_OWNER_HEADER
 
-#ifndef CENTURION_TYPES_HEADER
-#define CENTURION_TYPES_HEADER
-
-#include <SDL_stdinc.h>
-
-#include <array>        // array
-#include <chrono>       // duration
-#include <cstddef>      // byte
-#include <optional>     // optional
-#include <type_traits>  // enable_if, is_pointer
+#include <type_traits>  // enable_if_t, is_pointer_v
 
 #include "centurion_api.hpp"
-#include "czstring.hpp"
-#include "integers.hpp"
-#include "not_null.hpp"
-#include "owner.hpp"
-#include "time.hpp"
-#include "unicode_string.hpp"  // for unicode alias
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -53,21 +35,18 @@
 
 namespace cen {
 
-using font_id [[deprecated]] = std::size_t;
-
 /**
- * \typedef buffer
+ * \typedef owner
  *
- * \brief Alias for an array of `std::byte` instances, meant to be used with
- * `pmr` containers.
+ * \brief Tag used to denote ownership of raw pointers directly in code.
  *
- * \deprecated Since 5.1.0.
- *
- * \since 5.0.0
+ * \details If a function takes an `owner<T*>` as a parameter, then the
+ * function will claim ownership of that pointer. Subsequently, if a function
+ * returns an `owner<T*>`, then ownership is transferred to the caller.
  */
-template <std::size_t size>
-using buffer [[deprecated]] = std::array<std::byte, size>;
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
+using owner = T;
 
 }  // namespace cen
 
-#endif  // CENTURION_TYPES_HEADER
+#endif  // CENTURION_OWNER_HEADER

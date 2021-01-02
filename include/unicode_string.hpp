@@ -30,13 +30,21 @@
 #include <vector>
 
 #include "centurion_api.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
+
+/**
+ * \typedef unicode
+ *
+ * \brief The representation of Unicode glyphs.
+ *
+ * \since 5.0.0
+ */
+using unicode = u16;
 
 /**
  * \class unicode_string

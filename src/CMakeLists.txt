@@ -22,6 +22,7 @@ set(SOURCE_FILES
     ../include/counter.hpp
     ../include/cpu.hpp
     ../include/cursor.hpp
+    ../include/czstring.hpp
 
     ../include/event_type.hpp
     ../include/event.hpp
@@ -33,6 +34,8 @@ set(SOURCE_FILES
     ../include/graphics_drivers.hpp
 
     ../include/hints.hpp
+
+    ../include/integers.hpp
 
     ../include/joystick.hpp
 
@@ -46,6 +49,10 @@ set(SOURCE_FILES
     ../include/mouse_button.hpp
     ../include/mouse_state.hpp
     ../include/mutex.hpp
+
+    ../include/not_null.hpp
+
+    ../include/owner.hpp
 
     ../include/pixel_format.hpp
     ../include/platform.hpp
@@ -67,6 +74,7 @@ set(SOURCE_FILES
     ../include/texture.hpp
     ../include/texture_access.hpp
     ../include/thread.hpp
+    ../include/time.hpp
     ../include/touch.hpp
     ../include/try_lock.hpp
     ../include/types.hpp

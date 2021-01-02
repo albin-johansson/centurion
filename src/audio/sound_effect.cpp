@@ -2,8 +2,8 @@
 
 #include <type_traits>
 
+#include "detail/clamp.hpp"
 #include "detail/to_string.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
 
 namespace cen {

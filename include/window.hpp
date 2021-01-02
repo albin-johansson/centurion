@@ -35,6 +35,7 @@
 
 #include "area.hpp"
 #include "centurion_api.hpp"
+#include "detail/at_least.hpp"
 #include "detail/to_string.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"

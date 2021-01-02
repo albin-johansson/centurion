@@ -27,7 +27,7 @@ TEST(Condition, Wait)
                        auto* cond = reinterpret_cast<cen::condition*>(data);
 
                        using ms = cen::milliseconds<cen::u32>;
-                       cen::thread::sleep(ms{100});
+                       cen::thread::sleep(ms{50});
 
                        cond->signal();
 

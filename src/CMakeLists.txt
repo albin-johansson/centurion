@@ -115,7 +115,6 @@ if (CEN_AUDIO)
       ${SOURCE_FILES}
       ${CEN_INCLUDE_DIR}/sound_effect.hpp
       ${CEN_INCLUDE_DIR}/music.hpp
-      audio/sound_effect.cpp
       audio/music.cpp)
 endif ()
 

@@ -9,50 +9,11 @@ set(UNIT_TEST_FILES
     log_test.cpp
     sdl_string_test.cpp
 
+    audio/sound_effect_test.cpp
+
     detail/any_eq_test.cpp
     detail/convert_bool_test.cpp
     detail/to_string_test.cpp
-
-    system/base_path_test.cpp
-    system/battery_test.cpp
-    system/clipboard_test.cpp
-    system/counter_test.cpp
-    system/cpu_test.cpp
-    system/platform_test.cpp
-    system/pref_path_test.cpp
-    system/ram_test.cpp
-    system/screen_test.cpp
-
-    geometry/area_test.cpp
-    geometry/rect_test.cpp
-    geometry/point_test.cpp
-
-    graphics/blend_mode_test.cpp
-    graphics/color_test.cpp
-    graphics/cursor_test.cpp
-    graphics/font_cache_test.cpp
-    graphics/font_test.cpp
-    graphics/renderer_test.cpp
-    graphics/scale_mode_test.cpp
-    graphics/surface_test.cpp
-    graphics/surface_handle_test.cpp
-    graphics/texture_test.cpp
-    graphics/texture_handle_test.cpp
-    graphics/texture_access_test.cpp
-
-    input/controller_axis_test.cpp
-    input/controller_button_test.cpp
-    input/controller_test.cpp
-    input/key_code_tests.cpp
-    input/key_state_test.cpp
-    input/scan_code_tests.cpp
-
-    thread/condition_test.cpp
-    thread/mutex_test.cpp
-    thread/scoped_lock_test.cpp
-    thread/try_lock_test.cpp
-    thread/semaphore_test.cpp
-    thread/thread_test.cpp
 
     event/audio_device_event_test.cpp
     event/common_event_test.cpp
@@ -80,7 +41,48 @@ set(UNIT_TEST_FILES
     event/text_input_event_test.cpp
     event/touch_finger_event_test.cpp
     event/window_event_test.cpp
-    event/window_event_id_test.cpp)
+    event/window_event_id_test.cpp
+
+    geometry/area_test.cpp
+    geometry/rect_test.cpp
+    geometry/point_test.cpp
+
+    graphics/blend_mode_test.cpp
+    graphics/color_test.cpp
+    graphics/cursor_test.cpp
+    graphics/font_cache_test.cpp
+    graphics/font_test.cpp
+    graphics/renderer_test.cpp
+    graphics/scale_mode_test.cpp
+    graphics/surface_test.cpp
+    graphics/surface_handle_test.cpp
+    graphics/texture_test.cpp
+    graphics/texture_handle_test.cpp
+    graphics/texture_access_test.cpp
+
+    input/controller_axis_test.cpp
+    input/controller_button_test.cpp
+    input/controller_test.cpp
+    input/key_code_tests.cpp
+    input/key_state_test.cpp
+    input/scan_code_tests.cpp
+
+    system/base_path_test.cpp
+    system/battery_test.cpp
+    system/clipboard_test.cpp
+    system/counter_test.cpp
+    system/cpu_test.cpp
+    system/platform_test.cpp
+    system/pref_path_test.cpp
+    system/ram_test.cpp
+    system/screen_test.cpp
+
+    thread/condition_test.cpp
+    thread/mutex_test.cpp
+    thread/scoped_lock_test.cpp
+    thread/try_lock_test.cpp
+    thread/semaphore_test.cpp
+    thread/thread_test.cpp)
 
 #if (CEN_AUDIO)
 #    set(UNIT_TEST_FILES

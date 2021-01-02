@@ -1,197 +1,150 @@
 #include "sound_effect.hpp"
 
-#include <catch.hpp>
-#include <iostream>
+#include <gtest/gtest.h>
+
+#include <iostream>  // cout
+#include <memory>    // unique_ptr
 
 #include "exception.hpp"
 #include "log.hpp"
-#include "thread.hpp"
 
-static constexpr auto path = "resources/click.wav";
+using ms = cen::milliseconds<int>;
 
-TEST_CASE("sound_effect(nn_czstring)", "[sound_effect]")
+inline constexpr auto path = "resources/click.wav";
+
+class SoundEffect : public testing::Test
 {
-  CHECK_THROWS_AS(cen::sound_effect("somebadpath"), cen::mix_error);
-}
-
-TEST_CASE("sound_effect(sound_effect&&)", "[sound_effect]")
-{
-  cen::sound_effect sound{path};
-  cen::sound_effect other{std::move(sound)};
-
-  CHECK(!sound.get());
-  CHECK(other.get());
-}
-
-TEST_CASE("sound_effect::operator=(sound_effect&&)", "[sound_effect]")
-{
-  SECTION("Self-assignment")
+ protected:
+  static void SetUpTestSuite()
   {
-    cen::sound_effect sound{path};
-
-    sound = std::move(sound);
-    CHECK(sound.get());
+    m_sound = std::make_unique<cen::sound_effect>(path);
   }
 
-  SECTION("Normal usage")
+  static void TearDownTestSuite()
   {
-    cen::sound_effect sound{path};
-    cen::sound_effect other{path};
-
-    other = std::move(sound);
-
-    CHECK(!sound.get());
-    CHECK(other.get());
+    m_sound.reset();
   }
+
+  inline static std::unique_ptr<cen::sound_effect> m_sound;
+};
+
+TEST_F(SoundEffect, Constructor)
+{
+  EXPECT_THROW(cen::sound_effect("foobar"), cen::mix_error);
 }
 
-TEST_CASE("sound_effect::play", "[sound_effect]")
+TEST_F(SoundEffect, PlayAndStop)
 {
-  cen::sound_effect sound{path};
+  EXPECT_FALSE(m_sound->is_playing());
 
-  CHECK(!sound.is_playing());
+  m_sound->play();
+  EXPECT_TRUE(m_sound->is_playing());
 
-  sound.play();
-  CHECK(sound.is_playing());
+  m_sound->stop();
+  EXPECT_FALSE(m_sound->is_playing());
 
-  sound.stop();
-  CHECK(!sound.is_playing());
+  m_sound->play(5);
+  EXPECT_TRUE(m_sound->is_playing());
 
-  sound.play(5);
-  CHECK(sound.is_playing());
+  m_sound->stop();
 }
 
-TEST_CASE("sound_effect looping", "[sound_effect]")
+TEST_F(SoundEffect, Looping)
 {
-  cen::sound_effect sound{path};
-  sound.set_volume(1);
+  const auto oldVolume = m_sound->volume();
 
-  sound.play(10);
-  CHECK(sound.is_playing());
-  sound.stop();
+  m_sound->set_volume(1);
 
-  CHECK(cen::sound_effect::loopForever < 0);
+  m_sound->play(10);
+  EXPECT_TRUE(m_sound->is_playing());
 
-  CHECK_NOTHROW(sound.play(cen::sound_effect::loopForever));
-  CHECK(sound.is_playing());
+  m_sound->stop();
 
-  sound.stop();
-  CHECK(!sound.is_playing());
+  EXPECT_LT(cen::sound_effect::loopForever, 0);
+  EXPECT_NO_THROW(m_sound->play(cen::sound_effect::loopForever));
+
+  EXPECT_TRUE(m_sound->is_playing());
+
+  m_sound->stop();
+  EXPECT_FALSE(m_sound->is_playing());
+
+  m_sound->set_volume(oldVolume);
 }
 
-TEST_CASE("sound_effect::stop", "[sound_effect]")
+TEST_F(SoundEffect, FadeIn)
 {
-  cen::sound_effect sound{path};
+  EXPECT_NO_THROW(m_sound->fade_in(ms{-1}));
+  m_sound->stop();
 
-  sound.play();
-  sound.stop();
-  CHECK(!sound.is_playing());
+  EXPECT_NO_THROW(m_sound->fade_in(ms::zero()));
+  EXPECT_FALSE(m_sound->is_fading());
+  EXPECT_FALSE(m_sound->is_playing());
+
+  m_sound->fade_in(ms{100});
+  EXPECT_TRUE(m_sound->is_fading());
+  EXPECT_TRUE(m_sound->is_playing());
+
+  m_sound->stop();
 }
 
-TEST_CASE("sound_effect::fade_in", "[sound_effect]")
+TEST_F(SoundEffect, FadeOut)
 {
-  cen::sound_effect sound{path};
+  EXPECT_NO_THROW(m_sound->fade_out(ms::zero()));
+  EXPECT_FALSE(m_sound->is_playing());
 
-  using ms = cen::milliseconds<int>;
+  m_sound->play();
+  m_sound->fade_out(ms{5});
+  EXPECT_TRUE(m_sound->is_fading());
+  EXPECT_TRUE(m_sound->is_playing());
 
-  CHECK_NOTHROW(sound.fade_in(ms{-1}));
-  sound.stop();
-
-  CHECK_NOTHROW(sound.fade_in(ms{0}));
-  CHECK(!sound.is_playing());
-
-  sound.fade_in(ms{100});
-  CHECK(sound.is_playing());
+  m_sound->stop();
+  EXPECT_FALSE(m_sound->is_fading());
+  EXPECT_FALSE(m_sound->is_playing());
 }
 
-TEST_CASE("sound_effect::fade_out", "[sound_effect]")
+TEST_F(SoundEffect, SetVolume)
 {
-  cen::sound_effect sound{path};
+  const auto oldVolume = m_sound->volume();
 
-  using ms = cen::milliseconds<int>;
-
-  CHECK_NOTHROW(sound.fade_out(ms{0}));
-  CHECK(!sound.is_playing());
-
-  sound.play();
-  sound.fade_out(ms{50});
-  CHECK(sound.is_playing());
-
-  cen::thread::sleep(cen::seconds<cen::u32>(1));
-  CHECK(!sound.is_playing());
-}
-
-TEST_CASE("sound_effect:set_volume", "[sound_effect]")
-{
-  cen::sound_effect sound{path};
-
-  SECTION("Valid volume")
-  {
+  {  // Valid volume
     const auto volume = 27;
-    sound.set_volume(volume);
-    CHECK(volume == sound.volume());
+    m_sound->set_volume(volume);
+    EXPECT_EQ(volume, m_sound->volume());
   }
 
-  SECTION("Volume underflow")
-  {
+  {  // Volume underflow
     const auto volume = -1;
-    sound.set_volume(volume);
-    CHECK(sound.volume() == 0);
+    m_sound->set_volume(volume);
+    EXPECT_EQ(0, m_sound->volume());
   }
 
-  SECTION("Volume overflow")
-  {
+  {  // Volume overflow
     const auto volume = cen::sound_effect::max_volume() + 1;
-    sound.set_volume(volume);
-    CHECK(sound.volume() == cen::sound_effect::max_volume());
+    m_sound->set_volume(volume);
+    EXPECT_EQ(cen::sound_effect::max_volume(), m_sound->volume());
   }
+
+  m_sound->set_volume(oldVolume);
 }
 
-TEST_CASE("sound_effect::volume", "[sound_effect]")
+TEST_F(SoundEffect, Volume)
 {
-  cen::sound_effect sound{path};
-  CHECK(sound.volume() == cen::sound_effect::max_volume());
-  CHECK(sound.volume() == 128);  // because of the documentation guarantee
-  CHECK(cen::sound_effect::max_volume() == MIX_MAX_VOLUME);
+  EXPECT_EQ(cen::sound_effect::max_volume(), m_sound->volume());
+  EXPECT_EQ(128, m_sound->volume());  // because of the documentation guarantee
+  EXPECT_EQ(MIX_MAX_VOLUME, cen::sound_effect::max_volume());
 }
 
-TEST_CASE("sound_effect::is_playing", "[sound_effect]")
+TEST_F(SoundEffect, ToString)
 {
-  cen::sound_effect sound{path};
-
-  CHECK(!sound.is_playing());
-  sound.play(2);
-  CHECK(sound.is_playing());
+  cen::log::put(cen::to_string(*m_sound));
 }
 
-TEST_CASE("sound_effect::is_fading", "[sound_effect]")
+TEST_F(SoundEffect, StreamOperator)
 {
-  cen::sound_effect sound{path};
-
-  CHECK(!sound.is_fading());
-
-  sound.play(2);
-  CHECK(!sound.is_fading());
-
-  sound.stop();
-  sound.fade_in(cen::milliseconds<int>{100});
-  CHECK(sound.is_fading());
-  CHECK(sound.is_playing());
+  std::cout << "COUT: " << *m_sound << '\n';
 }
 
-TEST_CASE("sound_effect to_string", "[sound_effect]")
+TEST_F(SoundEffect, MaxVolume)
 {
-  const cen::sound_effect sound{path};
-  cen::log::put(cen::to_string(sound));
-}
-
-TEST_CASE("sound_effect stream operator", "[sound_effect]")
-{
-  const cen::sound_effect sound{path};
-  std::cout << "COUT: " << sound << '\n';
-}
-
-TEST_CASE("sound_effect::max_volume", "[sound_effect]")
-{
-  CHECK(cen::sound_effect::max_volume() == MIX_MAX_VOLUME);
+  EXPECT_EQ(MIX_MAX_VOLUME, cen::sound_effect::max_volume());
 }

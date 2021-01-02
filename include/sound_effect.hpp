@@ -39,6 +39,10 @@
 
 #include "centurion_api.hpp"
 #include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/clamp.hpp"
+#include "detail/to_string.hpp"
+#include "exception.hpp"
 #include "not_null.hpp"
 #include "time.hpp"
 
@@ -96,8 +100,12 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  explicit sound_effect(not_null<czstring> file);
+  explicit sound_effect(not_null<czstring> file) : m_chunk{Mix_LoadWAV(file)}
+  {
+    if (!m_chunk) {
+      throw mix_error{"Failed to load sound effect from file"};
+    }
+  }
 
   /**
    * \brief Plays the sound effect.
@@ -111,16 +119,26 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void play(int nLoops = 0) noexcept;
+  void play(int nLoops = 0) noexcept
+  {
+    if (nLoops < 0) {
+      nLoops = -1;
+    }  // TODO at_least
+    activate(nLoops);
+  }
 
   /**
    * \brief Stops the sound effect from playing.
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void stop() noexcept;
+  void stop() noexcept
+  {
+    if (is_playing()) {
+      Mix_Pause(m_channel);
+      m_channel = undefined_channel();
+    }
+  }
 
   /**
    * \brief Fades in the sound effect.
@@ -132,8 +150,20 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void fade_in(milliseconds<int> ms) noexcept;
+  void fade_in(const milliseconds<int> ms) noexcept
+  {
+    if (ms.count() > 0 && !is_playing()) {
+      if (m_channel != undefined_channel()) {
+        Mix_FadeInChannelTimed(m_channel, m_chunk.get(), 0, ms.count(), -1);
+      } else {
+        m_channel = Mix_FadeInChannelTimed(undefined_channel(),
+                                           m_chunk.get(),
+                                           0,
+                                           ms.count(),
+                                           -1);
+      }
+    }
+  }
 
   /**
    * \brief Fades out the sound effect.
@@ -145,8 +175,12 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void fade_out(milliseconds<int> ms) noexcept;
+  void fade_out(const milliseconds<int> ms) noexcept  // NOLINT not const
+  {
+    if ((ms.count() > 0) && is_playing()) {
+      Mix_FadeOutChannel(m_channel, ms.count());
+    }
+  }
 
   /**
    * \brief Sets the volume of the sound effect.
@@ -159,8 +193,10 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void set_volume(int volume) noexcept;
+  void set_volume(const int volume) noexcept
+  {
+    Mix_VolumeChunk(m_chunk.get(), detail::clamp(volume, 0, max_volume()));
+  }
 
   /**
    * \brief Indicates whether or not the sound effect is currently playing.
@@ -169,8 +205,10 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto is_playing() const noexcept -> bool;
+  [[nodiscard]] auto is_playing() const noexcept -> bool
+  {
+    return (m_channel != undefined_channel()) && Mix_Playing(m_channel);
+  }
 
   /**
    * \brief Indicates whether or not the sound effect is being faded.
@@ -183,8 +221,10 @@ class sound_effect final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto is_fading() const noexcept -> bool;
+  [[nodiscard]] auto is_fading() const noexcept -> bool
+  {
+    return is_playing() && Mix_FadingChannel(m_channel);
+  }
 
   /**
    * \brief Returns the current volume of the sound effect.
@@ -277,7 +317,14 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  void activate(int nLoops) noexcept;
+  void activate(const int nLoops) noexcept
+  {
+    if (m_channel != undefined_channel()) {
+      Mix_PlayChannel(m_channel, m_chunk.get(), nLoops);
+    } else {
+      m_channel = Mix_PlayChannel(undefined_channel(), m_chunk.get(), nLoops);
+    }
+  }
 };
 
 /**
@@ -291,8 +338,13 @@ class sound_effect final
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const sound_effect& sound) -> std::string;
+[[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
+{
+  using namespace std::string_literals;
+  using detail::to_string;
+  return "[sound_effect | data: "s + detail::address_of(sound.get()) +
+         ", volume: "s + to_string(sound.volume()).value() + "]"s;
+}
 
 /**
  * \brief Prints a textual representation of a sound effect.
@@ -304,9 +356,12 @@ auto to_string(const sound_effect& sound) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto operator<<(std::ostream& stream, const sound_effect& sound)
-    -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const sound_effect& sound)
+    -> std::ostream&
+{
+  stream << to_string(sound);
+  return stream;
+}
 
 }  // namespace cen
 

@@ -25,11 +25,9 @@
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
+#include <SDL.h>
 #include <SDL_image.h>
-#include <SDL_render.h>
-#include <SDL_video.h>
 
-#include <cstring>      // memcpy
 #include <memory>       // unique_ptr
 #include <ostream>      // ostream
 #include <string>       // string
@@ -210,32 +208,35 @@ class basic_texture final
                                       not_null<czstring> path,
                                       pixel_format format) -> basic_texture
   {
-    const auto blendMode = blend_mode::blend;
-    const auto createSurface = [=](czstring path, pixel_format format) {
+    constexpr auto blendMode = blend_mode::blend;
+
+    const auto createSurface = [blendMode](czstring path,
+                                           const pixel_format format) {
       surface source{path};
       source.set_blend_mode(blendMode);
       return source.convert(format);
     };
+
     const auto surface = createSurface(path, format);
-    auto tex = basic_texture{renderer,
-                             format,
-                             texture_access::streaming,
-                             {surface.width(), surface.height()}};
-    tex.set_blend_mode(blendMode);
+    basic_texture texture{renderer,
+                          format,
+                          texture_access::streaming,
+                          {surface.width(), surface.height()}};
+    texture.set_blend_mode(blendMode);
 
     u32* pixels = nullptr;
-    const auto success = tex.lock(&pixels);
+    const auto success = texture.lock(&pixels);
     if (!success) {
       throw exception{"Failed to lock texture!"};
     }
 
     const auto maxCount = static_cast<size_t>(surface.pitch()) *
                           static_cast<size_t>(surface.height());
-    std::memcpy(pixels, surface.pixels(), maxCount);
+    SDL_memcpy(pixels, surface.pixels(), maxCount);
 
-    tex.unlock();
+    texture.unlock();
 
-    return tex;
+    return texture;
   }
 
   /**

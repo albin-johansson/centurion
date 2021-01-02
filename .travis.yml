@@ -107,7 +107,7 @@ script:
 
   # Run mocked tests
   - cd test/mocks
-  - ctest
+  - ./CenturionMocks
 
   # Run unit tests that use real SDL2 functions
   - cd ..

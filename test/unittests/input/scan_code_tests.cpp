@@ -79,6 +79,11 @@ TEST(ScanCode, StringAssignmentOperator)
   }
 }
 
+TEST(ScanCode, Count)
+{
+  EXPECT_EQ(static_cast<int>(SDL_NUM_SCANCODES), cen::scan_code::count());
+}
+
 TEST(ScanCode, Unknown)
 {
   cen::scan_code code;

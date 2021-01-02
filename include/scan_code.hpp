@@ -175,6 +175,18 @@ class scan_code final
   }
 
   /**
+   * \brief Returns the total amount of scan codes.
+   *
+   * \return the amount of scan codes.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] constexpr static auto count() noexcept -> int
+  {
+    return static_cast<int>(SDL_NUM_SCANCODES);
+  }
+
+  /**
    * \brief Indicates whether or not the stored scan code is
    * `SDL_SCANCODE_UNKNOWN`.
    *

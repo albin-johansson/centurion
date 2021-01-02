@@ -14,6 +14,12 @@ set(TEST_FILES
     input/key_state_test.cpp
     )
 
+if (CEN_MOCK_FRIENDLY_MODE MATCHES ON)
+  set(TEST_FILES
+      ${TEST_FILES}
+      audio/sound_effect_test.cpp)
+endif ()
+
 add_executable(${CENTURION_MOCK_TARGET} ${TEST_FILES})
 
 if (CEN_MOCK_FRIENDLY_MODE MATCHES ON)

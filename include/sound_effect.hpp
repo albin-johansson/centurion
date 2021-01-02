@@ -323,6 +323,11 @@ class sound_effect final
       m_channel = Mix_PlayChannel(undefined_channel(), m_chunk.get(), nLoops);
     }
   }
+
+#ifdef CEN_MOCK_FRIENDLY_MODE
+ public:
+  sound_effect() = default;
+#endif  // CENTURION_RELAX_CLASS_INVARIANTS_FOR_MOCK_TEST
 };
 
 /**

@@ -33,7 +33,9 @@
 #include <type_traits>
 
 #include "centurion_api.hpp"
-#include "types.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
+#include "time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -254,7 +256,7 @@ class music final
    * \since 3.0.0
    */
   CENTURION_API
-  explicit music(nn_czstring file);
+  explicit music(not_null<czstring> file);
 
   /**
    * \brief Plays the music associated with this instance.

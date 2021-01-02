@@ -102,7 +102,6 @@ set(SOURCE_FILES
     system/pref_path.cpp
     system/screen.cpp
 
-    input/scan_code.cpp
     input/touch.cpp)
 
 if (CEN_AUDIO)

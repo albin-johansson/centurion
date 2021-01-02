@@ -280,8 +280,10 @@ class scan_code final
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const scan_code& scanCode) -> std::string;
+[[nodiscard]] inline auto to_string(const scan_code& scanCode) -> std::string
+{
+  return "[scan_code | key: " + scanCode.name() + "]";
+}
 
 /**
  * \brief Prints a scan code using a stream.
@@ -295,9 +297,12 @@ auto to_string(const scan_code& scanCode) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto operator<<(std::ostream& stream, const scan_code& scanCode)
-    -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const scan_code& scanCode)
+    -> std::ostream&
+{
+  stream << to_string(scanCode);
+  return stream;
+}
 
 /**
  * \brief Indicates whether or not two scan codes are the same.

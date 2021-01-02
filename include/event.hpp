@@ -800,7 +800,9 @@ class drop_event final : public common_event<SDL_DropEvent>
    * \since 4.0.0
    */
   drop_event() noexcept : common_event{}
-  {}
+  {
+    m_event.file = nullptr;  // Silences Valgrind warning about destructor
+  }
 
   /**
    * \brief Creates a drop event based on the supplied event.

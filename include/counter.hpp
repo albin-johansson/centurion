@@ -28,7 +28,7 @@
 #include <SDL_timer.h>
 
 #include "centurion_api.hpp"
-#include "types.hpp"
+#include "time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

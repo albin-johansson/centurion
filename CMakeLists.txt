@@ -40,8 +40,9 @@ message("Centurion import library: ${CENTURION_IMPORT_LIB}")
 
 unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
 
-option(CEN_TESTS "Build the Centurion test project" ON)
-option(CEN_AUDIO "Build audio components" ON)
+option(CEN_AUDIO "Include audio components" ON)
+option(CEN_TESTS "Build the Centurion tests" ON)
+option(CEN_MOCK_FRIENDLY_MODE "Enable more mocked tests" ON)
 
 find_env_var(SDL2DIR SDL2)
 find_env_var(SDL2IMAGEDIR SDL2_image)

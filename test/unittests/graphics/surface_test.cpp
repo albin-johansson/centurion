@@ -5,11 +5,24 @@
 
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
-#include <utility>   // move
+#include <type_traits>
+#include <utility>  // move
 
 #include "colors.hpp"
 #include "exception.hpp"
 #include "log.hpp"
+
+static_assert(std::is_copy_constructible_v<cen::surface>);
+static_assert(std::is_copy_assignable_v<cen::surface>);
+
+static_assert(std::is_nothrow_move_constructible_v<cen::surface>);
+static_assert(std::is_nothrow_move_assignable_v<cen::surface>);
+
+static_assert(std::is_copy_constructible_v<cen::surface_handle>);
+static_assert(std::is_copy_assignable_v<cen::surface_handle>);
+
+static_assert(std::is_nothrow_move_constructible_v<cen::surface_handle>);
+static_assert(std::is_nothrow_move_assignable_v<cen::surface_handle>);
 
 class SurfaceTest : public testing::Test
 {

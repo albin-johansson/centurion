@@ -103,25 +103,6 @@ template <typename T>
   }
 }
 
-/**
- * \brief Indicates whether or not two C-style strings are equal.
- *
- * \param lhs the left-hand side string, can safely be null.
- * \param rhs the right-hand side string, can safely be null.
- *
- * \return `true` if the strings are equal; `false` otherwise.
- *
- * \since 4.1.0
- */
-[[nodiscard]] inline auto equal(czstring lhs, czstring rhs) noexcept -> bool
-{
-  if (lhs && rhs) {
-    return std::strcmp(lhs, rhs) == 0;
-  } else {
-    return false;
-  }
-}
-
 template <typename T>
 using is_owner = std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
 

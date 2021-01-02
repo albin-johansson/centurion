@@ -37,6 +37,7 @@
 #include <string>    // string
 
 #include "centurion_api.hpp"
+#include "detail/czstring_eq.hpp"
 #include "detail/utils.hpp"
 #include "pixel_format.hpp"
 
@@ -92,22 +93,22 @@ enum class platform_id
  */
 [[nodiscard]] inline auto id() noexcept -> platform_id
 {
-  using detail::equal;
+  using detail::czstring_eq;
 
   czstring platform = SDL_GetPlatform();
-  if (equal(platform, "Windows")) {
+  if (czstring_eq(platform, "Windows")) {
     return platform_id::windows;
 
-  } else if (equal(platform, "Mac OS X")) {
+  } else if (czstring_eq(platform, "Mac OS X")) {
     return platform_id::mac_osx;
 
-  } else if (equal(platform, "Linux")) {
+  } else if (czstring_eq(platform, "Linux")) {
     return platform_id::linuxx;
 
-  } else if (equal(platform, "iOS")) {
+  } else if (czstring_eq(platform, "iOS")) {
     return platform_id::ios;
 
-  } else if (equal(platform, "Android")) {
+  } else if (czstring_eq(platform, "Android")) {
     return platform_id::android;
 
   } else {

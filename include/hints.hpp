@@ -68,6 +68,7 @@
 #include <utility>      // pair
 
 #include "centurion_api.hpp"
+#include "detail/czstring_eq.hpp"
 #include "detail/static_bimap.hpp"
 #include "detail/utils.hpp"
 #include "exception.hpp"
@@ -87,7 +88,7 @@ struct string_compare final
 {
   auto operator()(czstring lhs, czstring rhs) const noexcept
   {
-    return detail::equal(lhs, rhs);
+    return detail::czstring_eq(lhs, rhs);
   }
 };
 

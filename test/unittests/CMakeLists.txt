@@ -9,9 +9,6 @@ set(UNIT_TEST_FILES
     log_test.cpp
     sdl_string_test.cpp
 
-    audio/sound_effect_test.cpp
-    audio/music_test.cpp
-
     detail/any_eq_test.cpp
     detail/clamp_test.cpp
     detail/convert_bool_test.cpp
@@ -89,12 +86,12 @@ set(UNIT_TEST_FILES
     thread/semaphore_test.cpp
     thread/thread_test.cpp)
 
-#if (CEN_AUDIO)
-#    set(UNIT_TEST_FILES
-#            ${UNIT_TEST_FILES}
-#            unittests/sound_effect_test.cpp
-#            unittests/music_test.cpp)
-#endif ()
+if (CEN_AUDIO)
+  set(UNIT_TEST_FILES
+      ${UNIT_TEST_FILES}
+      audio/sound_effect_test.cpp
+      audio/music_test.cpp)
+endif ()
 
 if (WIN32)
   add_executable(${CENTURION_TEST_TARGET} WIN32 ${UNIT_TEST_FILES})

@@ -312,8 +312,10 @@ class key_code final
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const key_code& keyCode) -> std::string;
+[[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
+{
+  return "[key_code | key: " + keyCode.name() + "]";
+}
 
 /**
  * \brief Prints a key code using a stream.
@@ -327,8 +329,12 @@ auto to_string(const key_code& keyCode) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const key_code& keyCode)
+    -> std::ostream&
+{
+  stream << to_string(keyCode);
+  return stream;
+}
 
 /**
  * \brief Indicates whether or not two key codes are the same.

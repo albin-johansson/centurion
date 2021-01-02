@@ -40,26 +40,6 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
-namespace detail {
-
-/**
- * \brief Used to enable a template if a type is a floating-point type, such as
- * float and double.
- *
- * \since 4.0.0
- */
-template <typename T>
-using if_floating_t = std::enable_if_t<std::is_floating_point_v<T>>;
-
-/**
- * \brief Used to enable a template if two types are the same.
- *
- * \since 4.0.0
- */
-template <typename T, typename U>
-using if_same_t = typename std::enable_if_t<std::is_same_v<T, U>>;
-
-}  // namespace detail
 
 /// \addtogroup misc
 /// \{

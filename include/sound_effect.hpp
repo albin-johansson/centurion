@@ -38,7 +38,9 @@
 #include <string>
 
 #include "centurion_api.hpp"
-#include "types.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
+#include "time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -95,7 +97,7 @@ class sound_effect final
    * \since 3.0.0
    */
   CENTURION_API
-  explicit sound_effect(nn_czstring file);
+  explicit sound_effect(not_null<czstring> file);
 
   /**
    * \brief Plays the sound effect.

@@ -69,6 +69,7 @@ set(UNIT_TEST_FILES
     input/controller_test.cpp
     input/key_code_tests.cpp
     input/key_state_test.cpp
+    input/mouse_state_test.cpp
     input/scan_code_tests.cpp
 
     system/base_path_test.cpp

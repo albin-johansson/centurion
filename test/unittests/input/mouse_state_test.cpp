@@ -1,30 +1,36 @@
 #include "mouse_state.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("mouse_state()", "[mouse_state]")
+#include <type_traits>
+
+static_assert(std::is_final_v<cen::mouse_state>);
+
+static_assert(std::is_nothrow_move_constructible_v<cen::mouse_state>);
+static_assert(std::is_nothrow_move_assignable_v<cen::mouse_state>);
+
+static_assert(std::is_nothrow_copy_constructible_v<cen::mouse_state>);
+static_assert(std::is_nothrow_copy_assignable_v<cen::mouse_state>);
+
+TEST(MouseState, Defaults)
 {
   const cen::mouse_state state;
-  CHECK(state.logical_width() == 1);
-  CHECK(state.logical_height() == 1);
-  CHECK(state.mouse_x() == 0);
-  CHECK(state.mouse_y() == 0);
-  CHECK(state.mouse_pos() == cen::ipoint{0, 0});
+  EXPECT_EQ(1, state.logical_width());
+  EXPECT_EQ(1, state.logical_height());
+
+  EXPECT_EQ(0, state.mouse_x());
+  EXPECT_EQ(0, state.mouse_y());
+
+  EXPECT_EQ(cen::ipoint{}, state.mouse_pos());
 }
 
-TEST_CASE("mouse_state::update", "[mouse_state]")
+TEST(MouseState, Update)
 {
   cen::mouse_state state;
-
-  CHECK_NOTHROW(state.update(12, 632));
-
-  state.set_logical_width(234);
-  state.set_logical_height(35);
-
-  CHECK_NOTHROW(state.update());
+  EXPECT_NO_THROW(state.update(12, 632));
 }
 
-TEST_CASE("mouse_state::reset", "[mouse_state]")
+TEST(MouseState, Reset)
 {
   cen::mouse_state state;
 
@@ -33,31 +39,31 @@ TEST_CASE("mouse_state::reset", "[mouse_state]")
 
   state.reset();
 
-  CHECK(state.logical_width() == 1);
-  CHECK(state.logical_height() == 1);
+  EXPECT_EQ(1, state.logical_width());
+  EXPECT_EQ(1, state.logical_height());
 }
 
-TEST_CASE("mouse_state::set_logical_width", "[mouse_state]")
+TEST(MouseState, SetLogicalWidth)
 {
   cen::mouse_state state;
 
   const auto width = 821;
   state.set_logical_width(width);
 
-  CHECK(width == state.logical_width());
+  EXPECT_EQ(width, state.logical_width());
 }
 
-TEST_CASE("mouse_state::set_logical_height", "[mouse_state]")
+TEST(MouseState, SetLogicalHeight)
 {
   cen::mouse_state state;
 
   const auto height = 219;
   state.set_logical_height(height);
 
-  CHECK(height == state.logical_height());
+  EXPECT_EQ(height, state.logical_height());
 }
 
-TEST_CASE("mouse_state::logical_size", "[mouse_state]")
+TEST(MouseState, LogicalSize)
 {
   cen::mouse_state state;
 
@@ -68,36 +74,36 @@ TEST_CASE("mouse_state::logical_size", "[mouse_state]")
   state.set_logical_height(height);
 
   const auto [actualWidth, actualHeight] = state.logical_size();
-  CHECK(actualWidth == width);
-  CHECK(actualHeight == height);
+  EXPECT_EQ(width, actualWidth);
+  EXPECT_EQ(height, actualHeight);
 }
 
-TEST_CASE("mouse_state::is_left_button_pressed", "[mouse_state]")
+TEST(MouseState, IsLeftButtonPressed)
 {
-  cen::mouse_state state;
-  CHECK(!state.is_left_button_pressed());
+  const cen::mouse_state state;
+  EXPECT_FALSE(state.is_left_button_pressed());
 }
 
-TEST_CASE("mouse_state::is_right_button_pressed", "[mouse_state]")
+TEST(MouseState, IsRightButtonPressed)
 {
-  cen::mouse_state state;
-  CHECK(!state.is_right_button_pressed());
+  const cen::mouse_state state;
+  EXPECT_FALSE(state.is_right_button_pressed());
 }
 
-TEST_CASE("mouse_state::was_left_button_released", "[mouse_state]")
+TEST(MouseState, WasLeftButtonReleased)
 {
-  cen::mouse_state state;
-  CHECK(!state.was_left_button_released());
+  const cen::mouse_state state;
+  EXPECT_FALSE(state.was_left_button_released());
 }
 
-TEST_CASE("mouse_state::was_right_button_released", "[mouse_state]")
+TEST(MouseState, WasRightButtonReleased)
 {
-  cen::mouse_state state;
-  CHECK(!state.was_right_button_released());
+  const cen::mouse_state state;
+  EXPECT_FALSE(state.was_right_button_released());
 }
 
-TEST_CASE("mouse_state::was_mouse_moved", "[mouse_state]")
+TEST(MouseState, WasMouseMoved)
 {
-  cen::mouse_state state;
-  CHECK(!state.was_mouse_moved());
+  const cen::mouse_state state;
+  EXPECT_FALSE(state.was_mouse_moved());
 }

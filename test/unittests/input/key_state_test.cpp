@@ -4,11 +4,6 @@
 
 #include <type_traits>
 
-#include "key_code.hpp"
-#include "scan_code.hpp"
-
-// TODO mock: update
-
 static_assert(std::is_final_v<cen::key_state>);
 
 static_assert(std::is_default_constructible_v<cen::key_state>);
@@ -19,6 +14,12 @@ static_assert(std::is_nothrow_move_assignable_v<cen::key_state>);
 
 static_assert(std::is_nothrow_copy_constructible_v<cen::key_state>);
 static_assert(std::is_nothrow_copy_assignable_v<cen::key_state>);
+
+TEST(KeyState, Update)
+{
+  cen::key_state state;
+  EXPECT_NO_THROW(state.update());
+}
 
 TEST(KeyState, IsPressed)
 {

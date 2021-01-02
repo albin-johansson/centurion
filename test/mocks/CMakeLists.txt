@@ -8,7 +8,7 @@ set(TEST_FILES
     graphics/renderer_test.cpp
 
     input/controller_test.cpp
-    )
+    input/key_state_test.cpp)
 
 add_executable(${CENTURION_MOCK_TARGET} ${TEST_FILES})
 

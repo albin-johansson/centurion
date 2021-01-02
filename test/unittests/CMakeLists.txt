@@ -13,6 +13,7 @@ set(UNIT_TEST_FILES
     audio/music_test.cpp
 
     detail/any_eq_test.cpp
+    detail/clamp_test.cpp
     detail/convert_bool_test.cpp
     detail/max_test.cpp
     detail/to_string_test.cpp

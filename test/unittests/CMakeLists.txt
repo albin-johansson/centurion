@@ -10,6 +10,7 @@ set(UNIT_TEST_FILES
     sdl_string_test.cpp
 
     audio/sound_effect_test.cpp
+    audio/music_test.cpp
 
     detail/any_eq_test.cpp
     detail/convert_bool_test.cpp

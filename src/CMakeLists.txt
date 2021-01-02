@@ -113,9 +113,8 @@ set(SOURCE_FILES
 if (CEN_AUDIO)
   set(SOURCE_FILES
       ${SOURCE_FILES}
-      ${CEN_INCLUDE_DIR}/sound_effect.hpp
-      ${CEN_INCLUDE_DIR}/music.hpp
-      audio/music.cpp)
+      ../include/sound_effect.hpp
+      ../include/music.hpp)
 endif ()
 
 add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})

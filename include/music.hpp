@@ -27,13 +27,18 @@
 
 #include <SDL_mixer.h>
 
-#include <memory>
-#include <ostream>
-#include <string>
-#include <type_traits>
+#include <memory>   // unique_ptr
+#include <ostream>  // ostream
+#include <string>   // string
 
 #include "centurion_api.hpp"
 #include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/any_eq.hpp"
+#include "detail/at_least.hpp"
+#include "detail/clamp.hpp"
+#include "detail/to_string.hpp"
+#include "exception.hpp"
 #include "not_null.hpp"
 #include "time.hpp"
 
@@ -62,67 +67,6 @@ enum class fade_status
 };
 
 /**
- * \brief Indicates whether or not the fading status values represent are the
- * same.
- *
- * \ingroup audio
- *
- * \param lhs the left-hand side fading status value.
- * \param rhs the right-hand side fading status value.
- *
- * \return `true` if the fading status values are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(fade_status lhs,
-                                        Mix_Fading rhs) noexcept -> bool
-{
-  return static_cast<Mix_Fading>(lhs) == rhs;
-}
-
-/**
- * \copydoc operator==(fade_status, Mix_Fading)
- *
- * \ingroup audio
- */
-[[nodiscard]] constexpr auto operator==(Mix_Fading lhs,
-                                        fade_status rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the fading status values represent aren't the
- * same.
- *
- * \ingroup audio
- *
- * \param lhs the left-hand side fading status value.
- * \param rhs the right-hand side fading status value.
- *
- * \return `true` if the fading status values aren't the same; `false`
- * otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(fade_status lhs,
-                                        Mix_Fading rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \copydoc operator!=(fade_status, Mix_Fading)
- *
- * \ingroup audio
- */
-[[nodiscard]] constexpr auto operator!=(Mix_Fading lhs, Mix_Fading rhs) noexcept
-    -> bool
-{
-  return !(lhs == rhs);  // NOLINT
-}
-
-/**
  * \enum music_type
  *
  * \ingroup audio
@@ -145,64 +89,6 @@ enum class music_type
   flac = MUS_FLAC,
   opus = MUS_OPUS
 };
-
-/**
- * \brief Indicates whether or not the music type values are the same.
- *
- * \ingroup audio
- *
- * \param lhs the left-hand side music type value.
- * \param rhs the right-hand side music type value.
- *
- * \return `true` if the music type values are the same; `false` otherwise.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto operator==(music_type lhs,
-                                        Mix_MusicType rhs) noexcept -> bool
-{
-  return static_cast<Mix_MusicType>(lhs) == rhs;
-}
-
-/**
- * \copydoc operator==(music_type, Mix_MusicType)
- *
- * \ingroup audio
- */
-[[nodiscard]] constexpr auto operator==(Mix_MusicType lhs,
-                                        music_type rhs) noexcept -> bool
-{
-  return rhs == lhs;
-}
-
-/**
- * \brief Indicates whether or not the music type values aren't the same.
- *
- * \ingroup audio
- *
- * \param lhs the left-hand side music type value.
- * \param rhs the right-hand side music type value.
- *
- * \return `true` if the music type values aren't the same; `false` otherwise.
- *
- * \since 5.0.0
- */
-[[nodiscard]] constexpr auto operator!=(music_type lhs,
-                                        Mix_MusicType rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
-
-/**
- * \copydoc operator!=(music_type, Mix_MusicType)
- *
- * \ingroup audio
- */
-[[nodiscard]] constexpr auto operator!=(Mix_MusicType lhs,
-                                        music_type rhs) noexcept -> bool
-{
-  return !(lhs == rhs);
-}
 
 /**
  * \class music
@@ -255,8 +141,12 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  explicit music(not_null<czstring> file);
+  explicit music(not_null<czstring> file) : m_music{Mix_LoadMUS(file)}
+  {
+    if (!m_music) {
+      throw mix_error{"Failed to load music from file"};
+    }
+  }
 
   /**
    * \brief Plays the music associated with this instance.
@@ -275,8 +165,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void play(int nLoops = 1) noexcept;
+  void play(const int nLoops = 1) noexcept
+  {
+    Mix_PlayMusic(m_music.get(), detail::at_least(nLoops, -1));
+  }
 
   /**
    * \brief Resumes playing the music.
@@ -286,8 +178,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  static void resume() noexcept;
+  static void resume() noexcept
+  {
+    Mix_ResumeMusic();
+  }
 
   /**
    * \brief Pauses any currently playing music.
@@ -297,8 +191,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  static void pause() noexcept;
+  static void pause() noexcept
+  {
+    Mix_PauseMusic();
+  }
 
   /**
    * \brief Stops ALL currently playing and fading music.
@@ -307,8 +203,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  static void halt() noexcept;
+  static void halt() noexcept
+  {
+    Mix_HaltMusic();
+  }
 
   /**
    * \brief Plays the music by fading it in by the specified amount of time.
@@ -332,8 +230,12 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  void fade_in(milliseconds<int> ms, int nLoops = 1) noexcept;
+  void fade_in(const milliseconds<int> ms, const int nLoops = 1) noexcept
+  {
+    Mix_FadeInMusic(m_music.get(),
+                    detail::at_least(nLoops, -1),
+                    detail::at_least(ms, milliseconds<int>::zero()).count());
+  }
 
   /**
    * \brief Fades out any currently playing music over the specified amount of
@@ -348,8 +250,14 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  static void fade_out(milliseconds<int> ms) noexcept;
+  static void fade_out(const milliseconds<int> ms) noexcept
+  {
+    if (is_fading()) {
+      return;
+    }
+
+    Mix_FadeOutMusic(detail::at_least(ms, milliseconds<int>::zero()).count());
+  }
 
   /**
    * \brief Sets the volume of all music.
@@ -360,8 +268,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  static void set_volume(int volume) noexcept;
+  static void set_volume(const int volume) noexcept
+  {
+    Mix_VolumeMusic(detail::clamp(volume, 0, MIX_MAX_VOLUME));
+  }
 
   /**
    * \brief Indicates whether or not any music is currently playing.
@@ -370,8 +280,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  static auto is_playing() noexcept -> bool;
+  [[nodiscard]] static auto is_playing() noexcept -> bool
+  {
+    return Mix_PlayingMusic();
+  }
 
   /**
    * \brief Indicates whether or not any music is paused.
@@ -380,8 +292,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  static auto is_paused() noexcept -> bool;
+  [[nodiscard]] static auto is_paused() noexcept -> bool
+  {
+    return Mix_PausedMusic();
+  }
 
   /**
    * \brief Indicates whether or not any music is currently being faded in or
@@ -392,8 +306,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  static auto is_fading() noexcept -> bool;
+  [[nodiscard]] static auto is_fading() noexcept -> bool
+  {
+    return detail::any_eq(get_fade_status(), fade_status::in, fade_status::out);
+  }
 
   /**
    * \brief Returns the volume of the music.
@@ -404,8 +320,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  static auto volume() noexcept -> int;
+  [[nodiscard]] static auto volume() noexcept -> int
+  {
+    return Mix_VolumeMusic(-1);
+  }
 
   /**
    * \brief Returns the current fade status of the music playback.
@@ -414,8 +332,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  static auto get_fade_status() noexcept -> fade_status;
+  [[nodiscard]] static auto get_fade_status() noexcept -> fade_status
+  {
+    return static_cast<fade_status>(Mix_FadingMusic());
+  }
 
   /**
    * \brief Returns the type of the music.
@@ -424,8 +344,10 @@ class music final
    *
    * \since 3.0.0
    */
-  CENTURION_QUERY
-  auto type() const noexcept -> music_type;
+  [[nodiscard]] auto type() const noexcept -> music_type
+  {
+    return static_cast<music_type>(Mix_GetMusicType(m_music.get()));
+  }
 
   /**
    * \brief Returns a pointer to the associated `Mix_Music`.
@@ -502,8 +424,11 @@ class music final
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const music& music) -> std::string;
+[[nodiscard]] inline auto to_string(const music& music) -> std::string
+{
+  return "[music | data: " + detail::address_of(music.get()) +
+         ", volume: " + detail::to_string(music::volume()).value() + "]";
+}
 
 /**
  * \brief Prints a textual representation of a `music` instance.
@@ -517,8 +442,133 @@ auto to_string(const music& music) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto operator<<(std::ostream& stream, const music& music) -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const music& music)
+    -> std::ostream&
+{
+  stream << to_string(music);
+  return stream;
+}
+
+/**
+ * \brief Indicates whether or not the fading status values represent are the
+ * same.
+ *
+ * \ingroup audio
+ *
+ * \param lhs the left-hand side fading status value.
+ * \param rhs the right-hand side fading status value.
+ *
+ * \return `true` if the fading status values are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const fade_status lhs,
+                                        const Mix_Fading rhs) noexcept -> bool
+{
+  return static_cast<Mix_Fading>(lhs) == rhs;
+}
+
+/**
+ * \copydoc operator==(fade_status, Mix_Fading)
+ *
+ * \ingroup audio
+ */
+[[nodiscard]] constexpr auto operator==(const Mix_Fading lhs,
+                                        const fade_status rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the fading status values represent aren't the
+ * same.
+ *
+ * \ingroup audio
+ *
+ * \param lhs the left-hand side fading status value.
+ * \param rhs the right-hand side fading status value.
+ *
+ * \return `true` if the fading status values aren't the same; `false`
+ * otherwise.
+ *
+ * \since 5.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const fade_status lhs,
+                                        const Mix_Fading rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(fade_status, Mix_Fading)
+ *
+ * \ingroup audio
+ */
+[[nodiscard]] constexpr auto operator!=(const Mix_Fading lhs,
+                                        const Mix_Fading rhs) noexcept -> bool
+{
+  return !(lhs == rhs);  // NOLINT
+}
+
+/**
+ * \brief Indicates whether or not the music type values are the same.
+ *
+ * \ingroup audio
+ *
+ * \param lhs the left-hand side music type value.
+ * \param rhs the right-hand side music type value.
+ *
+ * \return `true` if the music type values are the same; `false` otherwise.
+ *
+ * \since 3.0.0
+ */
+[[nodiscard]] constexpr auto operator==(const music_type lhs,
+                                        const Mix_MusicType rhs) noexcept
+    -> bool
+{
+  return static_cast<Mix_MusicType>(lhs) == rhs;
+}
+
+/**
+ * \copydoc operator==(music_type, Mix_MusicType)
+ *
+ * \ingroup audio
+ */
+[[nodiscard]] constexpr auto operator==(const Mix_MusicType lhs,
+                                        const music_type rhs) noexcept -> bool
+{
+  return rhs == lhs;
+}
+
+/**
+ * \brief Indicates whether or not the music type values aren't the same.
+ *
+ * \ingroup audio
+ *
+ * \param lhs the left-hand side music type value.
+ * \param rhs the right-hand side music type value.
+ *
+ * \return `true` if the music type values aren't the same; `false` otherwise.
+ *
+ * \since 5.0.0
+ */
+[[nodiscard]] constexpr auto operator!=(const music_type lhs,
+                                        const Mix_MusicType rhs) noexcept
+    -> bool
+{
+  return !(lhs == rhs);
+}
+
+/**
+ * \copydoc operator!=(music_type, Mix_MusicType)
+ *
+ * \ingroup audio
+ */
+[[nodiscard]] constexpr auto operator!=(const Mix_MusicType lhs,
+                                        const music_type rhs) noexcept -> bool
+{
+  return !(lhs == rhs);
+}
 
 }  // namespace cen
 

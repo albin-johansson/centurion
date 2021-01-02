@@ -9,6 +9,7 @@ set(UNIT_TEST_FILES
     log_test.cpp
     sdl_string_test.cpp
 
+    detail/any_eq_test.cpp
     detail/bool_converter_test.cpp
     detail/to_string_test.cpp
 

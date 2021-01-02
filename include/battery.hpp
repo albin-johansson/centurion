@@ -31,6 +31,7 @@
 #include <optional>  // optional
 
 #include "centurion_api.hpp"
+#include "detail/any_eq.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -146,9 +147,10 @@ enum class power_state
  */
 [[nodiscard]] inline auto exists() noexcept -> bool
 {
-  const auto current = state();
-  return current == power_state::on_battery ||
-         current == power_state::charged || current == power_state::charging;
+  return detail::any_eq(state(),
+                        power_state::on_battery,
+                        power_state::charged,
+                        power_state::charging);
 }
 
 /**

@@ -78,6 +78,7 @@ set(SOURCE_FILES
     input/touch.cpp
     input/key_code.cpp
     input/scan_code.cpp)
+    ../include/detail/any_eq.hpp)
 
 if (CEN_AUDIO)
   set(SOURCE_FILES

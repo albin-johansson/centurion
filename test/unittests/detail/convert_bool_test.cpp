@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "detail/utils.hpp"
+#include "detail/convert_bool.hpp"
 
 TEST(ConvertBool, Conversion)
 {

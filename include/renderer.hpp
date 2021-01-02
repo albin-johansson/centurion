@@ -38,6 +38,7 @@
 #include "centurion_api.hpp"
 #include "color.hpp"
 #include "colors.hpp"
+#include "detail/convert_bool.hpp"
 #include "detail/utils.hpp"
 #include "font.hpp"
 #include "font_cache.hpp"

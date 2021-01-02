@@ -63,21 +63,6 @@ namespace cen {
 namespace detail {
 
 /**
- * \brief Returns the corresponding `SDL_bool` value for the supplied boolean
- * value.
- *
- * \param b the boolean value that will be converted.
- *
- * \return `SDL_TRUE` for `true`; `SDL_FALSE` for `false`.
- *
- * \since 3.0.0
- */
-[[nodiscard]] constexpr auto convert_bool(bool b) noexcept -> SDL_bool
-{
-  return b ? SDL_TRUE : SDL_FALSE;
-}
-
-/**
  * \brief Returns a string that represents the memory address of the supplied
  * pointer.
  *

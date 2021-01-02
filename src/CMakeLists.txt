@@ -79,6 +79,7 @@ set(SOURCE_FILES
     ../include/detail/any_eq.hpp
     ../include/detail/at_least.hpp
     ../include/detail/clamp.hpp
+    ../include/detail/convert_bool.hpp
     ../include/detail/czstring_eq.hpp
     ../include/detail/stack_resource.hpp
     ../include/detail/static_bimap.hpp

@@ -10,7 +10,7 @@ set(UNIT_TEST_FILES
     sdl_string_test.cpp
 
     detail/any_eq_test.cpp
-    detail/bool_converter_test.cpp
+    detail/convert_bool_test.cpp
     detail/to_string_test.cpp
 
     system/base_path_test.cpp

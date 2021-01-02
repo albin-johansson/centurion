@@ -38,7 +38,6 @@
 #include <array>      // array
 
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
 #include "key_code.hpp"
 #include "key_modifier.hpp"
 #include "scan_code.hpp"

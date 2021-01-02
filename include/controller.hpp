@@ -38,6 +38,7 @@
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/owner_handle_api.hpp"
+#include "exception.hpp"
 #include "joystick.hpp"
 #include "not_null.hpp"
 #include "sdl_string.hpp"
@@ -658,7 +659,7 @@ class basic_controller final
    * \since 5.0.0
    */
   static auto add_mapping(not_null<czstring> mapping) -> bool
-  {
+  {  // TODO don't throw, return optional
     const auto result = SDL_GameControllerAddMapping(mapping);
     if (result == 1) {
       return true;
@@ -692,7 +693,7 @@ class basic_controller final
    * \since 5.0.0
    */
   static auto load_mappings(not_null<czstring> file) -> int
-  {
+  {  // TODO don't throw, return optional
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
     if (result != -1) {
       return result;

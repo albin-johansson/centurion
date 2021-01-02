@@ -35,6 +35,7 @@
 #include "centurion_api.hpp"
 #include "czstring.hpp"
 #include "detail/owner_handle_api.hpp"
+#include "exception.hpp"
 #include "integers.hpp"
 #include "not_null.hpp"
 #include "time.hpp"

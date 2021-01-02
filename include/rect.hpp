@@ -39,8 +39,8 @@
 #include <type_traits>
 
 #include "area.hpp"
+#include "cast.hpp"
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
 #include "point.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

@@ -33,8 +33,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "cast.hpp"
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

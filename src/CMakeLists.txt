@@ -3,82 +3,99 @@ cmake_minimum_required(VERSION 3.15)
 project(CenturionSrc)
 
 set(SOURCE_FILES
-    ../include/centurion_cfg.hpp
-    ../include/types.hpp
-    ../include/graphics_drivers.hpp
-    ../include/window.hpp
-    ../include/window_utils.hpp
-    ../include/font.hpp
-    ../include/renderer.hpp
-    ../include/joystick.hpp
-    ../include/texture.hpp
-    ../include/exception.hpp
-    ../include/centurion_api.hpp
-    ../include/centurion.hpp
-    ../include/colors.hpp
-    ../include/pref_path.hpp
+    ../include/area.hpp
+
     ../include/base_path.hpp
-    ../include/platform.hpp
-    ../include/counter.hpp
-    ../include/log.hpp
-    ../include/blend_mode.hpp
-    ../include/message_box.hpp
-    ../include/color.hpp
-    ../include/rect.hpp
-    ../include/point.hpp
-    ../include/key_state.hpp
-    ../include/mouse_state.hpp
-    ../include/surface.hpp
-    ../include/pixel_format.hpp
-    ../include/cursor.hpp
-    ../include/cpu.hpp
-    ../include/ram.hpp
     ../include/battery.hpp
-    ../include/screen.hpp
-    ../include/scan_code.hpp
-    ../include/touch.hpp
-    ../include/mouse_button.hpp
+    ../include/blend_mode.hpp
+    ../include/button_state.hpp
+
+    ../include/cast.hpp
+    ../include/centurion.hpp
+    ../include/centurion_api.hpp
+    ../include/centurion_cfg.hpp
+    ../include/clipboard.hpp
+    ../include/color.hpp
+    ../include/colors.hpp
+    ../include/condition.hpp
+    ../include/controller.hpp
+    ../include/counter.hpp
+    ../include/cpu.hpp
+    ../include/cursor.hpp
+
     ../include/event_type.hpp
     ../include/event.hpp
-    ../include/button_state.hpp
-    ../include/controller.hpp
-    ../include/area.hpp
-    ../include/key_modifier.hpp
-    ../include/hints.hpp
-    ../include/touch.hpp
-    ../include/font_cache.hpp
-    ../include/unicode_string.hpp
-    ../include/scale_mode.hpp
-    ../include/thread.hpp
-    ../include/mutex.hpp
-    ../include/scoped_lock.hpp
-    ../include/try_lock.hpp
-    ../include/condition.hpp
-    ../include/semaphore.hpp
-    ../include/clipboard.hpp
-    ../include/sdl_string.hpp
-    ../include/texture_access.hpp
+    ../include/exception.hpp
 
+    ../include/font.hpp
+    ../include/font_cache.hpp
+
+    ../include/graphics_drivers.hpp
+
+    ../include/hints.hpp
+
+    ../include/joystick.hpp
+
+    ../include/key_code.hpp
+    ../include/key_modifier.hpp
+    ../include/key_state.hpp
+
+    ../include/log.hpp
+
+    ../include/message_box.hpp
+    ../include/mouse_button.hpp
+    ../include/mouse_state.hpp
+    ../include/mutex.hpp
+
+    ../include/pixel_format.hpp
+    ../include/platform.hpp
+    ../include/point.hpp
+    ../include/pref_path.hpp
+
+    ../include/ram.hpp
+    ../include/rect.hpp
+    ../include/renderer.hpp
+
+    ../include/scale_mode.hpp
+    ../include/scan_code.hpp
+    ../include/scoped_lock.hpp
+    ../include/screen.hpp
+    ../include/sdl_string.hpp
+    ../include/semaphore.hpp
+    ../include/surface.hpp
+
+    ../include/texture.hpp
+    ../include/texture_access.hpp
+    ../include/thread.hpp
+    ../include/touch.hpp
+    ../include/try_lock.hpp
+    ../include/types.hpp
+
+    ../include/unicode_string.hpp
+
+    ../include/window.hpp
+    ../include/window_utils.hpp
+
+    ../include/detail/any_eq.hpp
     ../include/detail/utils.hpp
+    ../include/detail/stack_resource.hpp
     ../include/detail/static_bimap.hpp
     ../include/detail/to_string.hpp
-    ../include/detail/stack_resource.hpp
 
-    graphics/texture.cpp
+    graphics/graphics_drivers.cpp
     graphics/message_box.cpp
     graphics/message_box_button.cpp
     graphics/message_box_color_scheme.cpp
     graphics/surface.cpp
-    graphics/graphics_drivers.cpp
+    graphics/texture.cpp
 
     system/pref_path.cpp
     system/screen.cpp
 
-    input/mouse_state.cpp
-    input/touch.cpp
     input/key_code.cpp
-    input/scan_code.cpp)
-    ../include/detail/any_eq.hpp)
+    input/mouse_state.cpp
+    input/scan_code.cpp
+    input/touch.cpp)
 
 if (CEN_AUDIO)
   set(SOURCE_FILES

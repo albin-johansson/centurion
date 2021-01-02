@@ -40,8 +40,8 @@
 #include "centurion_api.hpp"
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
-#include "detail/at_least.hpp"
 #include "detail/clamp.hpp"
+#include "detail/max.hpp"
 #include "detail/to_string.hpp"
 #include "exception.hpp"
 #include "not_null.hpp"
@@ -122,7 +122,7 @@ class sound_effect final
    */
   void play(const int nLoops = 0) noexcept
   {
-    activate(detail::at_least(nLoops, -1));
+    activate(detail::max(nLoops, -1));
   }
 
   /**

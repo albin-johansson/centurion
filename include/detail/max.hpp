@@ -37,10 +37,10 @@ namespace cen::detail {
 // clang-format off
 
 template <typename T>
-[[nodiscard]] constexpr auto at_least(const T& value, const T& least)
-    noexcept(noexcept(value < least)) -> T
+[[nodiscard]] constexpr auto max(const T& left, const T& right)
+    noexcept(noexcept(left < right)) -> T
 {
-  return (value < least) ? least : value;
+  return (left < right) ? right : left;
 }
 
 // clang-format on

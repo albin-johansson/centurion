@@ -35,8 +35,8 @@
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/any_eq.hpp"
-#include "detail/at_least.hpp"
 #include "detail/clamp.hpp"
+#include "detail/max.hpp"
 #include "detail/to_string.hpp"
 #include "exception.hpp"
 #include "not_null.hpp"
@@ -167,7 +167,7 @@ class music final
    */
   void play(const int nLoops = 1) noexcept
   {
-    Mix_PlayMusic(m_music.get(), detail::at_least(nLoops, -1));
+    Mix_PlayMusic(m_music.get(), detail::max(nLoops, -1));
   }
 
   /**
@@ -233,8 +233,8 @@ class music final
   void fade_in(const milliseconds<int> ms, const int nLoops = 1) noexcept
   {
     Mix_FadeInMusic(m_music.get(),
-                    detail::at_least(nLoops, -1),
-                    detail::at_least(ms, milliseconds<int>::zero()).count());
+                    detail::max(nLoops, -1),
+                    detail::max(ms, milliseconds<int>::zero()).count());
   }
 
   /**
@@ -256,7 +256,7 @@ class music final
       return;
     }
 
-    Mix_FadeOutMusic(detail::at_least(ms, milliseconds<int>::zero()).count());
+    Mix_FadeOutMusic(detail::max(ms, milliseconds<int>::zero()).count());
   }
 
   /**

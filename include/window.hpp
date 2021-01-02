@@ -37,8 +37,8 @@
 #include "centurion_api.hpp"
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
-#include "detail/at_least.hpp"
 #include "detail/convert_bool.hpp"
+#include "detail/max.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/to_string.hpp"
 #include "exception.hpp"
@@ -305,7 +305,7 @@ class basic_window final
    */
   void set_width(int width) noexcept
   {
-    SDL_SetWindowSize(get(), detail::at_least(width, 1), height());
+    SDL_SetWindowSize(get(), detail::max(width, 1), height());
   }
 
   /**
@@ -319,7 +319,7 @@ class basic_window final
    */
   void set_height(int height) noexcept
   {
-    SDL_SetWindowSize(get(), width(), detail::at_least(height, 1));
+    SDL_SetWindowSize(get(), width(), detail::max(height, 1));
   }
 
   /**
@@ -334,8 +334,8 @@ class basic_window final
    */
   void set_size(const iarea& size) noexcept
   {
-    const auto width = detail::at_least(size.width, 1);
-    const auto height = detail::at_least(size.height, 1);
+    const auto width = detail::max(size.width, 1);
+    const auto height = detail::max(size.height, 1);
     SDL_SetWindowSize(get(), width, height);
   }
 

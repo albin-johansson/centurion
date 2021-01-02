@@ -82,6 +82,7 @@ set(SOURCE_FILES
     ../include/detail/clamp.hpp
     ../include/detail/convert_bool.hpp
     ../include/detail/czstring_eq.hpp
+    ../include/detail/owner_handle_api.hpp
     ../include/detail/stack_resource.hpp
     ../include/detail/static_bimap.hpp
     ../include/detail/to_string.hpp
@@ -99,7 +100,7 @@ set(SOURCE_FILES
     input/key_code.cpp
     input/mouse_state.cpp
     input/scan_code.cpp
-    input/touch.cpp ../include/detail/owner_handle_api.hpp)
+    input/touch.cpp)
 
 if (CEN_AUDIO)
   set(SOURCE_FILES

@@ -99,7 +99,6 @@ set(SOURCE_FILES
     graphics/message_box.cpp
     graphics/message_box_button.cpp
     graphics/message_box_color_scheme.cpp
-    graphics/texture.cpp
 
     system/pref_path.cpp
     system/screen.cpp

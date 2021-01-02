@@ -38,7 +38,6 @@
 
 #include "centurion_api.hpp"
 #include "detail/czstring_eq.hpp"
-#include "detail/utils.hpp"
 #include "pixel_format.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

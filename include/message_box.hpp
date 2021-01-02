@@ -36,7 +36,6 @@
 
 #include "centurion_api.hpp"
 #include "color.hpp"
-#include "detail/utils.hpp"
 #include "types.hpp"
 #include "window.hpp"
 

@@ -70,7 +70,6 @@
 #include "centurion_api.hpp"
 #include "detail/czstring_eq.hpp"
 #include "detail/static_bimap.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
 #include "log.hpp"
 

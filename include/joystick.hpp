@@ -32,7 +32,7 @@
 
 #include "button_state.hpp"
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

@@ -40,7 +40,7 @@
 #include "colors.hpp"
 #include "detail/address_of.hpp"
 #include "detail/convert_bool.hpp"
-#include "detail/utils.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "font.hpp"
 #include "font_cache.hpp"
 #include "rect.hpp"

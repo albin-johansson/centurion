@@ -35,6 +35,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
+/// \cond FALSE
 namespace cen::detail {
 
 /**
@@ -89,5 +90,6 @@ class static_bimap final
 };
 
 }  // namespace cen::detail
+/// \endcond
 
 #endif  // CENTURION_DETAIL_STATIC_BIMAP_HEADER

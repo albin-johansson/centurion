@@ -38,7 +38,6 @@
 #include <string>
 
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

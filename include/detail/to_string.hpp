@@ -34,6 +34,7 @@
 
 #include "centurion_api.hpp"
 
+/// \cond FALSE
 namespace cen::detail {
 
 /**
@@ -76,5 +77,6 @@ template <std::size_t bufferSize = 16, typename T>
 }
 
 }  // namespace cen::detail
+/// \endcond
 
 #endif  // CENTURION_DETAIL_TO_STRING_HEADER

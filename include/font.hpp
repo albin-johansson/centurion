@@ -36,7 +36,6 @@
 #include "centurion_api.hpp"
 #include "detail/address_of.hpp"
 #include "detail/to_string.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
 #include "types.hpp"
 #include "unicode_string.hpp"

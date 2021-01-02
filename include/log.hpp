@@ -27,10 +27,11 @@
 
 #include <SDL_log.h>
 
+#include <string>   // string
 #include <utility>  // forward
 
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

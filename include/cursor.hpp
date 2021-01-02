@@ -31,7 +31,7 @@
 #include <type_traits>  // enable_if_t, conditional_t, true_type, false_type
 
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "point.hpp"
 #include "surface.hpp"
 

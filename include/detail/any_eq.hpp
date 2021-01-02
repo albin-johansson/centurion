@@ -31,6 +31,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
+/// \cond FALSE
 namespace cen::detail {
 
 // clang-format off
@@ -61,5 +62,6 @@ template <typename T, typename... Args>
 // clang-format on
 
 }  // namespace cen::detail
+/// \endcond
 
 #endif  // CENTURION_DETAIL_ANY_EQ_HEADER

@@ -31,7 +31,6 @@
 #include <string>
 
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
 #include "sdl_string.hpp"
 #include "types.hpp"
 

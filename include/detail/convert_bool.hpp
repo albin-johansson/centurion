@@ -33,6 +33,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
+/// \cond FALSE
 namespace cen::detail {
 
 /**
@@ -51,5 +52,6 @@ namespace cen::detail {
 }
 
 }  // namespace cen::detail
+/// \endcond
 
 #endif  // CENTURION_DETAIL_CONVERT_BOOL_HEADER

@@ -25,10 +25,12 @@
 #ifndef CENTURION_TOUCH_HEADER
 #define CENTURION_TOUCH_HEADER
 
-#include <SDL_touch.h>
+#include <SDL.h>
+
+#include <optional>  // optional
 
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once

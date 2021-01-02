@@ -2,9 +2,9 @@
 
 #include <type_traits>
 
+#include "detail/address_of.hpp"
 #include "detail/clamp.hpp"
 #include "detail/to_string.hpp"
-#include "detail/address_of.hpp"
 #include "exception.hpp"
 
 namespace cen {

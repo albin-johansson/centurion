@@ -22,45 +22,19 @@
  * SOFTWARE.
  */
 
-/**
- * \defgroup misc Miscellaneous
- *
- * \brief Provides miscellaneous components used throughout the library.
- */
+#ifndef CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
+#define CENTURION_DETAIL_OWNER_HANDLE_API_HEADER
 
-#ifndef CENTURION_CENTURION_UTILS_HEADER
-#define CENTURION_CENTURION_UTILS_HEADER
-
-#include <SDL.h>
-
-#include <array>        // array
-#include <cstring>      // strcmp
-#include <sstream>      // ostringstream
-#include <string>       // string
-#include <type_traits>  // is_enum_v, enable_if_t, true_type, false_type
-#include <utility>      // pair
+#include <type_traits>  // enable_if_t, is_same_v, true_type, false_type
 
 #include "centurion_api.hpp"
-#include "exception.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace cen {
-
 /// \cond FALSE
-
-/**
- * \namespace cen::detail
- *
- * \brief The main namespace used for implementation details of the library.
- *
- * \warning Do not use anything that resides in this namespace, the contents
- * may change at any time without warning.
- */
-namespace detail {
+namespace cen::detail {
 
 template <typename T>
 using is_owner = std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
@@ -74,10 +48,7 @@ template <typename T>
   return std::is_same_v<T, std::true_type>;
 }
 
-}  // namespace detail
-
+}  // namespace cen::detail
 /// \endcond
 
-}  // namespace cen
-
-#endif  // CENTURION_CENTURION_UTILS_HEADER
+#endif  // CENTURION_DETAIL_OWNER_HANDLE_API_HEADER

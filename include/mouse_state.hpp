@@ -27,7 +27,6 @@
 
 #include "area.hpp"
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
 #include "point.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

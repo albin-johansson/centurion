@@ -31,6 +31,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
+/// \cond FALSE
 namespace cen::detail {
 
 // clang-format off
@@ -45,5 +46,6 @@ template <typename T>
 // clang-format on
 
 }  // namespace cen::detail
+/// \endcond
 
 #endif  // CENTURION_DETAIL_AT_LEAST_HEADER

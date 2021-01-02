@@ -34,6 +34,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
+/// \cond FALSE
 namespace cen::detail {
 
 /**
@@ -63,5 +64,6 @@ template <typename T>
 }
 
 }  // namespace cen::detail
+/// \endcond
 
 #endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER

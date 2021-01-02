@@ -5,6 +5,8 @@
 
 #include <array>  // array
 
+#include "exception.hpp"
+
 // clang-format off
 extern "C" {
 FAKE_VOID_FUNC(SDL_GameControllerUpdate)

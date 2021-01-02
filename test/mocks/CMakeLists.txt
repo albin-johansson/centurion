@@ -10,6 +10,7 @@ set(TEST_FILES
     graphics/renderer_test.cpp
 
     input/controller_test.cpp
+    input/joystick_test.cpp
     input/key_state_test.cpp
     )
 

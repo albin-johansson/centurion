@@ -28,6 +28,7 @@
 #include <SDL_joystick.h>
 
 #include <memory>       // unique_ptr
+#include <optional>     // optional
 #include <type_traits>  // enable_if_t, true_type, false_type, is_same_v
 
 #include "button_state.hpp"
@@ -176,7 +177,7 @@ class basic_joystick final
   }
 
   template <typename U = T, detail::is_owner<U> = true>
-  explicit basic_joystick(int deviceIndex)
+  explicit basic_joystick(const int deviceIndex)
       : m_joystick{SDL_JoystickOpen(deviceIndex)}
   {
     if (!m_joystick) {
@@ -202,7 +203,7 @@ class basic_joystick final
    * \since 5.0.0
    */
   template <typename U = T, detail::is_handle<U> = true>
-  [[nodiscard]] static auto from_instance_id(SDL_JoystickID id) noexcept
+  [[nodiscard]] static auto from_instance_id(const SDL_JoystickID id) noexcept
       -> handle_t
   {
     return handle_t{SDL_JoystickFromInstanceID(id)};
@@ -221,7 +222,7 @@ class basic_joystick final
    * \since 5.0.0
    */
   template <typename U = T, detail::is_handle<U> = true>
-  [[nodiscard]] static auto from_player_index(int playerIndex) noexcept
+  [[nodiscard]] static auto from_player_index(const int playerIndex) noexcept
       -> handle_t
   {
     return handle_t{SDL_JoystickFromPlayerIndex(playerIndex)};
@@ -239,7 +240,9 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  void rumble(u16 lowFreq, u16 highFreq, milliseconds<u32> duration) noexcept
+  void rumble(const u16 lowFreq,
+              const u16 highFreq,
+              const milliseconds<u32> duration) noexcept
   {
     SDL_JoystickRumble(get(), lowFreq, highFreq, duration.count());
   }
@@ -251,7 +254,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  void set_player_index(int index) noexcept
+  void set_player_index(const int index) noexcept
   {
     SDL_JoystickSetPlayerIndex(get(), index);
   }
@@ -289,7 +292,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto player_index(int deviceIndex) noexcept
+  [[nodiscard]] static auto player_index(const int deviceIndex) noexcept
       -> std::optional<int>
   {
     const auto index = SDL_JoystickGetDevicePlayerIndex(deviceIndex);
@@ -322,7 +325,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto get_type(int deviceIndex) noexcept -> type
+  [[nodiscard]] static auto get_type(const int deviceIndex) noexcept -> type
   {
     return static_cast<type>(SDL_JoystickGetDeviceType(deviceIndex));
   }
@@ -356,7 +359,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto vendor(int deviceIndex) noexcept
+  [[nodiscard]] static auto vendor(const int deviceIndex) noexcept
       -> std::optional<u16>
   {
     const auto vendor = SDL_JoystickGetDeviceVendor(deviceIndex);
@@ -396,7 +399,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto product(int deviceIndex) noexcept
+  [[nodiscard]] static auto product(const int deviceIndex) noexcept
       -> std::optional<u16>
   {
     const auto product = SDL_JoystickGetDeviceProduct(deviceIndex);
@@ -436,7 +439,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto product_version(int deviceIndex) noexcept
+  [[nodiscard]] static auto product_version(const int deviceIndex) noexcept
       -> std::optional<u16>
   {
     const auto version = SDL_JoystickGetDeviceProductVersion(deviceIndex);
@@ -460,7 +463,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto get_ball_axis_change(int ball) const noexcept
+  [[nodiscard]] auto get_ball_axis_change(const int ball) const noexcept
       -> std::optional<ball_axis_change>
   {
     ball_axis_change change{};
@@ -489,7 +492,8 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_pos(int axis) const noexcept -> std::optional<i16>
+  [[nodiscard]] auto axis_pos(const int axis) const noexcept
+      -> std::optional<i16>
   {
     const auto result = SDL_JoystickGetAxis(get(), axis);
     if (result == 0) {
@@ -509,7 +513,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto axis_initial_state(int axis) const noexcept
+  [[nodiscard]] auto axis_initial_state(const int axis) const noexcept
       -> std::optional<i16>
   {
     i16 state{};
@@ -605,7 +609,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto instance_id(int deviceIndex) noexcept
+  [[nodiscard]] static auto instance_id(const int deviceIndex) noexcept
       -> std::optional<SDL_JoystickID>
   {
     const auto id = SDL_JoystickGetDeviceInstanceID(deviceIndex);
@@ -644,7 +648,8 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto guid(int deviceIndex) noexcept -> SDL_JoystickGUID
+  [[nodiscard]] static auto guid(const int deviceIndex) noexcept
+      -> SDL_JoystickGUID
   {
     return SDL_JoystickGetDeviceGUID(deviceIndex);
   }
@@ -675,7 +680,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] static auto name(int deviceIndex) noexcept -> czstring
+  [[nodiscard]] static auto name(const int deviceIndex) noexcept -> czstring
   {
     return SDL_JoystickNameForIndex(deviceIndex);
   }
@@ -701,7 +706,8 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  [[nodiscard]] auto get_button_state(int button) const noexcept -> button_state
+  [[nodiscard]] auto get_button_state(const int button) const noexcept
+      -> button_state
   {
     return static_cast<button_state>(SDL_JoystickGetButton(get(), button));
   }
@@ -717,7 +723,7 @@ class basic_joystick final
    *
    * \see `joystick::HatState`
    */
-  [[nodiscard]] auto get_hat_state(int hat) const noexcept -> hat_state
+  [[nodiscard]] auto get_hat_state(const int hat) const noexcept -> hat_state
   {
     return static_cast<hat_state>(SDL_JoystickGetHat(get(), hat));
   }
@@ -778,7 +784,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  static void set_polling(bool enabled) noexcept
+  static void set_polling(const bool enabled) noexcept
   {
     SDL_JoystickEventState(enabled ? SDL_ENABLE : SDL_DISABLE);
   }
@@ -790,7 +796,7 @@ class basic_joystick final
    *
    * \since 4.2.0
    */
-  static auto is_polling() noexcept -> bool
+  [[nodiscard]] static auto is_polling() noexcept -> bool
   {
     return SDL_JoystickEventState(SDL_QUERY);
   }
@@ -935,9 +941,9 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto operator==(joystick::power lhs,
-                                        SDL_JoystickPowerLevel rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(
+    const joystick::power lhs,
+    const SDL_JoystickPowerLevel rhs) noexcept -> bool
 {
   return static_cast<SDL_JoystickPowerLevel>(lhs) == rhs;
 }
@@ -954,8 +960,9 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto operator==(SDL_JoystickPowerLevel lhs,
-                                        joystick::power rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_JoystickPowerLevel lhs,
+                                        const joystick::power rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -972,9 +979,9 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto operator!=(joystick::power lhs,
-                                        SDL_JoystickPowerLevel rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(
+    const joystick::power lhs,
+    const SDL_JoystickPowerLevel rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -991,8 +998,9 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto operator!=(SDL_JoystickPowerLevel lhs,
-                                        joystick::power rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_JoystickPowerLevel lhs,
+                                        const joystick::power rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -1009,8 +1017,9 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto operator==(joystick::type lhs,
-                                        SDL_JoystickType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const joystick::type lhs,
+                                        const SDL_JoystickType rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_JoystickType>(lhs) == rhs;
 }
@@ -1027,8 +1036,9 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto operator==(SDL_JoystickType lhs,
-                                        joystick::type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_JoystickType lhs,
+                                        const joystick::type rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -1045,8 +1055,9 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto operator!=(joystick::type lhs,
-                                        SDL_JoystickType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const joystick::type lhs,
+                                        const SDL_JoystickType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -1063,8 +1074,9 @@ using joystick_handle = basic_joystick<std::false_type>;
  *
  * \since 4.3.0
  */
-[[nodiscard]] constexpr auto operator!=(SDL_JoystickType lhs,
-                                        joystick::type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_JoystickType lhs,
+                                        const joystick::type rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

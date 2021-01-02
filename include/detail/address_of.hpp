@@ -22,62 +22,46 @@
  * SOFTWARE.
  */
 
-/**
- * \defgroup misc Miscellaneous
- *
- * \brief Provides miscellaneous components used throughout the library.
- */
+#ifndef CENTURION_DETAIL_ADDRESS_OF_HEADER
+#define CENTURION_DETAIL_ADDRESS_OF_HEADER
 
-#ifndef CENTURION_CENTURION_UTILS_HEADER
-#define CENTURION_CENTURION_UTILS_HEADER
-
-#include <SDL.h>
-
-#include <array>        // array
-#include <cstring>      // strcmp
-#include <sstream>      // ostringstream
-#include <string>       // string
-#include <type_traits>  // is_enum_v, enable_if_t, true_type, false_type
-#include <utility>      // pair
+#include <sstream>  // ostringstream
+#include <string>   // string
 
 #include "centurion_api.hpp"
-#include "exception.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
-namespace cen {
-
-/// \cond FALSE
+namespace cen::detail {
 
 /**
- * \namespace cen::detail
+ * \brief Returns a string that represents the memory address of the supplied
+ * pointer.
  *
- * \brief The main namespace used for implementation details of the library.
+ * \details The empty string is returned if the supplied pointer is null.
  *
- * \warning Do not use anything that resides in this namespace, the contents
- * may change at any time without warning.
+ * \tparam T the type of the pointer.
+ * \param ptr the pointer that will be converted.
+ *
+ * \return a string that represents the memory address of the supplied
+ * pointer.
+ *
+ * \since 3.0.0
  */
-namespace detail {
-
 template <typename T>
-using is_owner = std::enable_if_t<std::is_same_v<T, std::true_type>, bool>;
-
-template <typename T>
-using is_handle = std::enable_if_t<std::is_same_v<T, std::false_type>, bool>;
-
-template <typename T>
-[[nodiscard]] constexpr auto is_owning() noexcept -> bool
+[[nodiscard]] auto address_of(T* ptr) -> std::string
 {
-  return std::is_same_v<T, std::true_type>;
+  if (ptr) {
+    std::ostringstream address;
+    address << static_cast<const void*>(ptr);
+    return address.str();
+  } else {
+    return std::string{};
+  }
 }
 
-}  // namespace detail
+}  // namespace cen::detail
 
-/// \endcond
-
-}  // namespace cen
-
-#endif  // CENTURION_CENTURION_UTILS_HEADER
+#endif  // CENTURION_DETAIL_ADDRESS_OF_HEADER

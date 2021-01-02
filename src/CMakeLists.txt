@@ -76,6 +76,7 @@ set(SOURCE_FILES
     ../include/window.hpp
     ../include/window_utils.hpp
 
+    ../include/detail/address_of.hpp
     ../include/detail/any_eq.hpp
     ../include/detail/at_least.hpp
     ../include/detail/clamp.hpp

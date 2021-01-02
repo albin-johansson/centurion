@@ -35,6 +35,7 @@
 
 #include "area.hpp"
 #include "centurion_api.hpp"
+#include "detail/address_of.hpp"
 #include "detail/at_least.hpp"
 #include "detail/convert_bool.hpp"
 #include "detail/to_string.hpp"

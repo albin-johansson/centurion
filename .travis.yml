@@ -115,7 +115,7 @@ script:
   - ctest
 
   # Only run Valgrind on unit test executable
-  - valgrind --gen-suppressions=all --suppressions=../../../meta/linux_sdl_gl.sup --leak-check=yes ./CenturionTests
+#  - valgrind --gen-suppressions=all --suppressions=../../../meta/linux_sdl_gl.sup --leak-check=yes ./CenturionTests
 
 deploy:
   provider: pages

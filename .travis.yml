@@ -112,7 +112,7 @@ script:
   # Run unit tests that use real SDL2 functions
   - cd ..
   - cd unittests
-  - ctest
+  - ./CenturionTests
 
   # Only run Valgrind on unit test executable
 #  - valgrind --gen-suppressions=all --suppressions=../../../meta/linux_sdl_gl.sup --leak-check=yes ./CenturionTests

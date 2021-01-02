@@ -29,6 +29,7 @@
 #include <SDL_render.h>
 #include <SDL_video.h>
 
+#include <cstring>      // memcpy
 #include <memory>       // unique_ptr
 #include <ostream>      // ostream
 #include <string>       // string

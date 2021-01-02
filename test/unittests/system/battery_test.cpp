@@ -26,10 +26,7 @@ TEST(Battery, SecondsLeft)
   int actual = -1;
   SDL_GetPowerInfo(&actual, nullptr);
 
-  const auto secs = cen::battery::seconds_left();
-  EXPECT_EQ(secs.has_value(), cen::battery::is_available());
-
-  if (secs) {
+  if (const auto secs = cen::battery::seconds_left()) {
     EXPECT_EQ(cen::seconds<int>{actual}, secs.value());
   }
 }
@@ -38,10 +35,7 @@ TEST(Battery, MinutesLeft)
 {
   EXPECT_NO_THROW(cen::battery::minutes_left());
 
-  const auto minutes = cen::battery::minutes_left();
-  EXPECT_EQ(minutes.has_value(), cen::battery::is_available());
-
-  if (minutes) {
+  if (const auto minutes = cen::battery::minutes_left()) {
     int actual = -1;
     SDL_GetPowerInfo(&actual, nullptr);
 

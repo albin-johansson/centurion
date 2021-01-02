@@ -60,7 +60,6 @@ set(SOURCE_FILES
     ../include/texture_access.hpp
 
     ../include/detail/utils.hpp
-    ../include/detail/algorithm.hpp
     ../include/detail/static_bimap.hpp
     ../include/detail/to_string.hpp
     ../include/detail/stack_resource.hpp

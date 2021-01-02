@@ -29,7 +29,6 @@
 #include <utility>  // pair
 
 #include "centurion_api.hpp"
-#include "detail/algorithm.hpp"
 #include "exception.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE

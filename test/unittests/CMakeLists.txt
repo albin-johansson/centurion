@@ -43,6 +43,7 @@ set(UNIT_TEST_FILES
     input/controller_button_test.cpp
     input/controller_test.cpp
     input/key_code_tests.cpp
+    input/key_state_test.cpp
     input/scan_code_tests.cpp
 
     thread/condition_test.cpp

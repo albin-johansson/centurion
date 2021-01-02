@@ -75,7 +75,6 @@ set(SOURCE_FILES
     system/pref_path.cpp
     system/screen.cpp
 
-    input/key_state.cpp
     input/mouse_state.cpp
     input/touch.cpp
     input/key_code.cpp

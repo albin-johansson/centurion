@@ -64,8 +64,6 @@ static_assert(validate_event<cen::touch_finger_event, SDL_TouchFingerEvent>());
 static_assert(validate_event<cen::window_event, SDL_WindowEvent>());
 // clang-format on
 
-// TODO this class is suitable for mocking tests
-
 TEST(Event, Refresh)
 {
   EXPECT_NO_THROW(cen::event::refresh());

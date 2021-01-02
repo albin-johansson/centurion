@@ -5,10 +5,13 @@ project(centurion-test-mocks LANGUAGES CXX)
 set(TEST_FILES
     test_main.cpp
 
+    event/event_test.cpp
+
     graphics/renderer_test.cpp
 
     input/controller_test.cpp
-    input/key_state_test.cpp)
+    input/key_state_test.cpp
+    )
 
 add_executable(${CENTURION_MOCK_TARGET} ${TEST_FILES})
 

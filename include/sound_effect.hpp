@@ -40,6 +40,7 @@
 #include "centurion_api.hpp"
 #include "czstring.hpp"
 #include "detail/address_of.hpp"
+#include "detail/at_least.hpp"
 #include "detail/clamp.hpp"
 #include "detail/to_string.hpp"
 #include "exception.hpp"
@@ -119,12 +120,9 @@ class sound_effect final
    *
    * \since 3.0.0
    */
-  void play(int nLoops = 0) noexcept
+  void play(const int nLoops = 0) noexcept
   {
-    if (nLoops < 0) {
-      nLoops = -1;
-    }  // TODO at_least
-    activate(nLoops);
+    activate(detail::at_least(nLoops, -1));
   }
 
   /**

@@ -30,8 +30,9 @@
 #include <string>  // string
 
 #include "centurion_api.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 #include "sdl_string.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -82,13 +83,15 @@ namespace cen::clipboard {
 /**
  * \brief Sets the current clipboard text.
  *
+ * \pre `text` cannot be null.
+ *
  * \param text the text that will be stored in the clipboard.
  *
  * \return `true` if the clipboard text was successfully set; `false` otherwise.
  *
  * \since 5.0.0
  */
-inline auto set_text(nn_czstring text) noexcept -> bool
+inline auto set_text(not_null<czstring> text) noexcept -> bool
 {
   return SDL_SetClipboardText(text) == 0;
 }

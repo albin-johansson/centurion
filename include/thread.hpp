@@ -42,10 +42,11 @@
 #include <string>   // string
 
 #include "centurion_api.hpp"
+#include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/to_string.hpp"
 #include "exception.hpp"
-#include "types.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -133,7 +134,7 @@ class thread final
    * \since 5.0.0
    */
   explicit thread(task_type task,
-                  nn_czstring name = "thread",
+                  not_null<czstring> name = "thread",
                   void* data = nullptr)
       : m_thread{SDL_CreateThread(task, name, data)}
   {

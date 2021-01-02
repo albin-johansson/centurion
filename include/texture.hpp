@@ -38,16 +38,18 @@
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "color.hpp"
+#include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/to_string.hpp"
 #include "exception.hpp"
+#include "not_null.hpp"
+#include "owner.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
 #include "scale_mode.hpp"
 #include "surface.hpp"
 #include "texture_access.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -121,7 +123,7 @@ class basic_texture final
    * \since 4.0.0
    */
   template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
-  basic_texture(const Renderer& renderer, nn_czstring path)
+  basic_texture(const Renderer& renderer, not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!m_texture) {
@@ -204,7 +206,7 @@ class basic_texture final
    */
   template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
-                                      nn_czstring path,
+                                      not_null<czstring> path,
                                       pixel_format format) -> basic_texture
   {
     const auto blendMode = blend_mode::blend;

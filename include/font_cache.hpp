@@ -31,10 +31,11 @@
 #include <utility>        // move, forward
 
 #include "centurion_api.hpp"
+#include "czstring.hpp"
 #include "font.hpp"
+#include "not_null.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
-#include "types.hpp"
 #include "unicode_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -143,7 +144,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_blended_utf8(const id_type id,
-                          nn_czstring string,
+                          not_null<czstring> string,
                           Renderer& renderer)
   {
     store(id, renderer.render_blended_utf8(string, get_font()));
@@ -169,7 +170,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_blended_wrapped_utf8(const id_type id,
-                                  nn_czstring string,
+                                  not_null<czstring> string,
                                   Renderer& renderer,
                                   const u32 wrap)
   {
@@ -196,7 +197,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_shaded_utf8(const id_type id,
-                         nn_czstring string,
+                         not_null<czstring> string,
                          Renderer& renderer,
                          const color& background)
   {
@@ -222,7 +223,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_solid_utf8(const id_type id,
-                        nn_czstring string,
+                        not_null<czstring> string,
                         Renderer& renderer)
   {
     store(id, renderer.render_solid_utf8(string, get_font()));
@@ -247,7 +248,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_blended_latin1(const id_type id,
-                            nn_czstring string,
+                            not_null<czstring> string,
                             Renderer& renderer)
   {
     store(id, renderer.render_blended_latin1(string, get_font()));
@@ -273,7 +274,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_blended_wrapped_latin1(const id_type id,
-                                    nn_czstring string,
+                                    not_null<czstring> string,
                                     Renderer& renderer,
                                     const u32 wrap)
   {
@@ -300,7 +301,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_shaded_latin1(const id_type id,
-                           nn_czstring string,
+                           not_null<czstring> string,
                            Renderer& renderer,
                            const color& background)
   {
@@ -326,7 +327,7 @@ class font_cache final
    */
   template <typename Renderer>
   void store_solid_latin1(const id_type id,
-                          nn_czstring string,
+                          not_null<czstring> string,
                           Renderer& renderer)
   {
     store(id, renderer.render_solid_latin1(string, get_font()));

@@ -15,7 +15,7 @@ static_assert(std::is_nothrow_move_assignable_v<sound_effect>);
 static_assert(!std::is_copy_constructible_v<sound_effect>);
 static_assert(!std::is_copy_assignable_v<sound_effect>);
 
-sound_effect::sound_effect(nn_czstring file) : m_chunk{Mix_LoadWAV(file)}
+sound_effect::sound_effect(not_null<czstring> file) : m_chunk{Mix_LoadWAV(file)}
 {
   if (!m_chunk) {
     throw mix_error{"Failed to load sound effect from file"};

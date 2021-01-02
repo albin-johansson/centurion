@@ -25,14 +25,13 @@
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 
-#include <SDL_keyboard.h>
-#include <SDL_keycode.h>
-#include <SDL_scancode.h>
+#include <SDL.h>
 
 #include <ostream>
 
 #include "centurion_api.hpp"
-#include "types.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -149,7 +148,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  explicit key_code(nn_czstring name) noexcept
+  explicit key_code(not_null<czstring> name) noexcept
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
@@ -201,7 +200,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  auto operator=(nn_czstring name) noexcept -> key_code&
+  auto operator=(not_null<czstring> name) noexcept -> key_code&
   {
     m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name));
     return *this;

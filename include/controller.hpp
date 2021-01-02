@@ -35,11 +35,12 @@
 
 #include "button_state.hpp"
 #include "centurion_api.hpp"
+#include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "joystick.hpp"
+#include "not_null.hpp"
 #include "sdl_string.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -451,7 +452,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto get_axis(nn_czstring str) noexcept
+  [[nodiscard]] static auto get_axis(not_null<czstring> str) noexcept
       -> controller_axis
   {
     return static_cast<controller_axis>(
@@ -656,7 +657,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static auto add_mapping(nn_czstring mapping) -> bool
+  static auto add_mapping(not_null<czstring> mapping) -> bool
   {
     const auto result = SDL_GameControllerAddMapping(mapping);
     if (result == 1) {
@@ -690,7 +691,7 @@ class basic_controller final
    *
    * \since 5.0.0
    */
-  static auto load_mappings(nn_czstring file) -> int
+  static auto load_mappings(not_null<czstring> file) -> int
   {
     const auto result = SDL_GameControllerAddMappingsFromFile(file);
     if (result != -1) {

@@ -38,6 +38,7 @@
 #include <array>      // array
 
 #include "centurion_api.hpp"
+#include "integers.hpp"
 #include "key_code.hpp"
 #include "key_modifier.hpp"
 #include "scan_code.hpp"

@@ -31,8 +31,9 @@
 #include <string>
 
 #include "centurion_api.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 #include "sdl_string.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -73,7 +74,7 @@ class pref_path final
    * \since 3.0.0
    */
   CENTURION_API
-  pref_path(nn_czstring org, nn_czstring app);
+  pref_path(not_null<czstring> org, not_null<czstring> app);
 
   /**
    * \brief Indicates whether or not the instance holds a non-null path.

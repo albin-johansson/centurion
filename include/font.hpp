@@ -34,10 +34,11 @@
 
 #include "area.hpp"
 #include "centurion_api.hpp"
+#include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/to_string.hpp"
 #include "exception.hpp"
-#include "types.hpp"
+#include "not_null.hpp"
 #include "unicode_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -112,7 +113,7 @@ class font final
    *
    * \since 3.0.0
    */
-  font(nn_czstring file, const int size) : m_size{size}
+  font(not_null<czstring> file, const int size) : m_size{size}
   {
     if (size <= 0) {
       throw exception{"Bad font size!"};
@@ -613,7 +614,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_width(nn_czstring str) const noexcept -> int
+  [[nodiscard]] auto string_width(not_null<czstring> str) const noexcept -> int
   {
     int width{};
     TTF_SizeText(m_font.get(), str, &width, nullptr);
@@ -631,7 +632,7 @@ class font final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto string_height(nn_czstring str) const noexcept -> int
+  [[nodiscard]] auto string_height(not_null<czstring> str) const noexcept -> int
   {
     int height{};
     TTF_SizeText(m_font.get(), str, nullptr, &height);
@@ -648,7 +649,7 @@ class font final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto string_size(nn_czstring str) const noexcept -> iarea
+  [[nodiscard]] auto string_size(not_null<czstring> str) const noexcept -> iarea
   {
     int width{};
     int height{};

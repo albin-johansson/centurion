@@ -32,8 +32,11 @@
 
 #include "button_state.hpp"
 #include "centurion_api.hpp"
+#include "czstring.hpp"
 #include "detail/owner_handle_api.hpp"
-#include "types.hpp"
+#include "integers.hpp"
+#include "not_null.hpp"
+#include "time.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -820,7 +823,7 @@ class basic_joystick final
    * \see `SDL_JoystickGetGUIDFromString`
    * \since 4.2.0
    */
-  [[nodiscard]] static auto guid_from_string(nn_czstring str) noexcept
+  [[nodiscard]] static auto guid_from_string(not_null<czstring> str) noexcept
       -> SDL_JoystickGUID
   {
     return SDL_JoystickGetGUIDFromString(str);

@@ -11,7 +11,7 @@ static_assert(std::is_nothrow_move_assignable_v<pref_path>);
 static_assert(!std::is_copy_constructible_v<pref_path>);
 static_assert(!std::is_copy_assignable_v<pref_path>);
 
-pref_path::pref_path(nn_czstring org, nn_czstring app)
+pref_path::pref_path(not_null<czstring> org, not_null<czstring> app)
     : m_path{SDL_GetPrefPath(org, app)}
 {}
 

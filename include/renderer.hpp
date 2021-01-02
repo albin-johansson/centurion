@@ -38,11 +38,13 @@
 #include "centurion_api.hpp"
 #include "color.hpp"
 #include "colors.hpp"
+#include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/convert_bool.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "font.hpp"
 #include "font_cache.hpp"
+#include "not_null.hpp"
 #include "rect.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
@@ -347,8 +349,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_utf8(nn_czstring str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_utf8(not_null<czstring> str,
+                                         const font& font) -> texture
   {
     return render_text(
         TTF_RenderUTF8_Blended(font.get(),
@@ -384,7 +386,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_wrapped_utf8(nn_czstring str,
+  [[nodiscard]] auto render_blended_wrapped_utf8(not_null<czstring> str,
                                                  const font& font,
                                                  const u32 wrap) -> texture
   {
@@ -420,7 +422,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_shaded_utf8(nn_czstring str,
+  [[nodiscard]] auto render_shaded_utf8(not_null<czstring> str,
                                         const font& font,
                                         const color& background) -> texture
   {
@@ -454,7 +456,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_utf8(nn_czstring str, const font& font)
+  [[nodiscard]] auto render_solid_utf8(not_null<czstring> str, const font& font)
       -> texture
   {
     return render_text(
@@ -486,8 +488,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_latin1(nn_czstring str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_latin1(not_null<czstring> str,
+                                           const font& font) -> texture
   {
     return render_text(
         TTF_RenderText_Blended(font.get(),
@@ -523,7 +525,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_wrapped_latin1(nn_czstring str,
+  [[nodiscard]] auto render_blended_wrapped_latin1(not_null<czstring> str,
                                                    const font& font,
                                                    const u32 wrap) -> texture
   {
@@ -559,7 +561,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_shaded_latin1(nn_czstring str,
+  [[nodiscard]] auto render_shaded_latin1(not_null<czstring> str,
                                           const font& font,
                                           const color& background) -> texture
   {
@@ -593,8 +595,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_latin1(nn_czstring str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_latin1(not_null<czstring> str,
+                                         const font& font) -> texture
   {
     return render_text(
         TTF_RenderText_Solid(font.get(),

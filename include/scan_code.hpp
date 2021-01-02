@@ -33,7 +33,8 @@
 #include <string>
 
 #include "centurion_api.hpp"
-#include "types.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -116,7 +117,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  explicit scan_code(nn_czstring name) noexcept
+  explicit scan_code(not_null<czstring> name) noexcept
       : m_code{SDL_GetScancodeFromName(name)}
   {}
 
@@ -168,7 +169,7 @@ class scan_code final
    *
    * \since 5.0.0
    */
-  auto operator=(nn_czstring name) noexcept -> scan_code&
+  auto operator=(not_null<czstring> name) noexcept -> scan_code&
   {
     m_code = SDL_GetScancodeFromName(name);
     return *this;

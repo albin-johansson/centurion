@@ -35,16 +35,17 @@
 
 #include "area.hpp"
 #include "centurion_api.hpp"
+#include "czstring.hpp"
 #include "detail/address_of.hpp"
 #include "detail/at_least.hpp"
 #include "detail/convert_bool.hpp"
 #include "detail/owner_handle_api.hpp"
 #include "detail/to_string.hpp"
 #include "exception.hpp"
+#include "not_null.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 #include "surface.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -113,7 +114,8 @@ class basic_window final
    * \since 3.0.0
    */
   template <typename U = T, detail::is_owner<U> = true>
-  explicit basic_window(nn_czstring title, const iarea& size = default_size())
+  explicit basic_window(not_null<czstring> title,
+                        const iarea& size = default_size())
   {
     if ((size.width < 1) || (size.height < 1)) {
       throw exception{"Invalid width or height!"};
@@ -356,7 +358,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_title(nn_czstring title) noexcept
+  void set_title(not_null<czstring> title) noexcept
   {
     SDL_SetWindowTitle(get(), title);
   }

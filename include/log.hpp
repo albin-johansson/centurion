@@ -31,7 +31,8 @@
 #include <utility>  // forward
 
 #include "centurion_api.hpp"
-#include "types.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -144,7 +145,7 @@ enum class category
 template <typename... Args>
 void msg(const priority priority,
          const category category,
-         nn_czstring fmt,
+         not_null<czstring> fmt,
          Args&&... args) noexcept
 {
   const auto sdlCategory = static_cast<SDL_LogCategory>(category);
@@ -167,7 +168,9 @@ void msg(const priority priority,
  * \since 4.0.0
  */
 template <typename... Args>
-void info(const category category, nn_czstring fmt, Args&&... args) noexcept
+void info(const category category,
+          not_null<czstring> fmt,
+          Args&&... args) noexcept
 {
   log::msg(priority::info, category, fmt, std::forward<Args>(args)...);
 }
@@ -186,7 +189,7 @@ void info(const category category, nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void info(nn_czstring fmt, Args&&... args) noexcept
+void info(not_null<czstring> fmt, Args&&... args) noexcept
 {
   log::info(category::app, fmt, std::forward<Args>(args)...);
 }
@@ -206,7 +209,9 @@ void info(nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(const category category, nn_czstring fmt, Args&&... args) noexcept
+void warn(const category category,
+          not_null<czstring> fmt,
+          Args&&... args) noexcept
 {
   log::msg(priority::warn, category, fmt, std::forward<Args>(args)...);
 }
@@ -225,7 +230,7 @@ void warn(const category category, nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(nn_czstring fmt, Args&&... args) noexcept
+void warn(not_null<czstring> fmt, Args&&... args) noexcept
 {
   log::warn(category::app, fmt, std::forward<Args>(args)...);
 }
@@ -245,7 +250,9 @@ void warn(nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(const category category, nn_czstring fmt, Args&&... args) noexcept
+void verbose(const category category,
+             not_null<czstring> fmt,
+             Args&&... args) noexcept
 {
   log::msg(priority::verbose, category, fmt, std::forward<Args>(args)...);
 }
@@ -264,7 +271,7 @@ void verbose(const category category, nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(nn_czstring fmt, Args&&... args) noexcept
+void verbose(not_null<czstring> fmt, Args&&... args) noexcept
 {
   log::verbose(category::app, fmt, std::forward<Args>(args)...);
 }
@@ -284,7 +291,9 @@ void verbose(nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(const category category, nn_czstring fmt, Args&&... args) noexcept
+void debug(const category category,
+           not_null<czstring> fmt,
+           Args&&... args) noexcept
 {
   log::msg(priority::debug, category, fmt, std::forward<Args>(args)...);
 }
@@ -303,7 +312,7 @@ void debug(const category category, nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(nn_czstring fmt, Args&&... args) noexcept
+void debug(not_null<czstring> fmt, Args&&... args) noexcept
 {
   log::debug(category::app, fmt, std::forward<Args>(args)...);
 }
@@ -342,7 +351,7 @@ void critical(const category category, czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(nn_czstring fmt, Args&&... args) noexcept
+void critical(not_null<czstring> fmt, Args&&... args) noexcept
 {
   log::critical(category::app, fmt, std::forward<Args>(args)...);
 }
@@ -379,7 +388,7 @@ void error(const category category, czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void error(nn_czstring fmt, Args&&... args) noexcept
+void error(not_null<czstring> fmt, Args&&... args) noexcept
 {
   log::error(category::app, fmt, std::forward<Args>(args)...);
 }
@@ -403,7 +412,7 @@ inline void put(const std::string& str) noexcept
 /**
  * \copydoc put(const std::string&)
  */
-inline void put(nn_czstring str) noexcept
+inline void put(not_null<czstring> str) noexcept
 {
   log::info("%s", str);
 }

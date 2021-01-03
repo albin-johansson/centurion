@@ -104,7 +104,6 @@ Welcome to Centurion's documentation!
    :maxdepth: 1
    :caption: Tutorials
 
-   pages/tutorials/installation
-   pages/tutorials/building_on_windows
-   pages/tutorials/building_on_ubuntu
+   pages/tutorials/installation_ubuntu
+   pages/tutorials/installation_windows
    pages/tutorials/hello_centurion

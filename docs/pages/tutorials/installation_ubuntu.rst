@@ -1,10 +1,11 @@
-Building Centurion (Ubuntu)
-===========================
+Installation (Ubuntu)
+=====================
 
-**Synopsis:** Demonstrates how to build the Centurion library on Ubuntu.
+**Synopsis:** Demonstrates how install SDL2 and Centurion on Ubuntu.
 
-Firstly, Centurion requires SDL2 to be installed. SDL2 and the required related
-packages can be installed with the following commands.
+Firstly, Centurion is of course dependent on SDL2. So we need to install the 
+SDL libraries. SDL2 and the required related packages can be installed with the
+following commands.
 
 .. code-block:: bash
 
@@ -53,17 +54,6 @@ be executed where you'd like to install your libraries, e.g. ``~/sdl2/``.
   make
   sudo make install
 
-By this point, SDL2 should be installed and usable. The following is how you'd
-download and compile the latest stable version (the main branch) of the Centurion 
-library.
-
-.. code-block::
-
-  git clone https://github.com/albin-johansson/Centurion.git centurion
-  cd centurion
-  mkdir build
-  cd build
-  cmake .. -GNinja
-  ninja
-
-And that's it! You've successfully built the Centurion library.
+By this point, SDL2 should be installed and usable. Since Centurion is header-only, we
+only need to download the latest available headers and add them to our project. Just 
+grab the ``include`` folder and include its contents and you should be ready to go!

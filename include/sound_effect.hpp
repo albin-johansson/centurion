@@ -209,6 +209,19 @@ class sound_effect final
   }
 
   /**
+   * \brief Indicates whether or not any sound effects are currently playing.
+   *
+   * \return `true` if any sound effect is playing on some channel; `false`
+   * otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] static auto is_any_playing() noexcept -> bool
+  {
+    return Mix_Playing(undefined_channel());
+  }
+
+  /**
    * \brief Indicates whether or not the sound effect is being faded.
    *
    * \note If the sound effect is being faded, it's also playing so

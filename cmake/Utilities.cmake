@@ -46,6 +46,8 @@ function(copy_directory_post_build target from to)
       ${to})
 endfunction()
 
+# Sets appropriate compiler options depending on the current platform.
+#   target: the associated target.
 function(cen_set_compiler_options target)
   if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(${target} PRIVATE

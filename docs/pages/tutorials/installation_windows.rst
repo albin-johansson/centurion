@@ -49,6 +49,8 @@ In the end you should end up with something along the lines of the following in 
     PUBLIC ${SDL2_TTF_LIBRARIES}
     PUBLIC ${SDL2_LIBRARY})
 
-An important detail is that you'll need to make sure that the SDL runtime binaries 
-are available to your generated executable. This can be automated, refer to the aforementioned
-example to see it in action.
+.. note::
+
+  You'll need to make sure that the SDL runtime binaries are available to your 
+  generated executable. This can be automated, refer to the aforementioned
+  example to see it in action.

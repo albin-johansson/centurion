@@ -83,7 +83,6 @@ TEST_F(SoundEffect, Looping)
 
 TEST_F(SoundEffect, FadeIn)
 {
-  EXPECT_NO_THROW(m_sound->fade_in(ms{-1}));
   m_sound->stop();
 
   EXPECT_FALSE(m_sound->is_fading());

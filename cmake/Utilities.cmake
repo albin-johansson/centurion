@@ -65,3 +65,49 @@ function(cen_set_compiler_options target)
 
   endif ()
 endfunction()
+
+# Adds an executable associated with the target, will be created using WIN32 on windows.
+#   target: the associated target.
+function(cen_create_executable name files)
+  if (WIN32)
+    add_executable(${name} WIN32 ${files})
+  else ()
+    add_executable(${name} ${files})
+  endif ()
+endfunction()
+
+# Includes Centurion and SDL2 headers.
+#   target: the associated target.
+function(cen_include_centurion_headers target)
+  target_include_directories(${target}
+      SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
+      SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
+      SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
+      SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
+      SYSTEM PUBLIC ${CEN_INCLUDE_DIR})
+endfunction()
+
+# Links against Centurion and SDL2 libraries.
+#   target: the associated target.
+function(cen_link_against_centurion target)
+  target_link_libraries(${target}
+      PUBLIC ${SDL2_LIBRARY}
+      PUBLIC ${SDL2_IMAGE_LIBRARIES}
+      PUBLIC ${SDL2_MIXER_LIBRARIES}
+      PUBLIC ${SDL2_TTF_LIBRARIES}
+      PUBLIC ${CENTURION_IMPORT_LIB})
+endfunction()
+
+# Copies runtime binaries to current binary dir. This is only necessary on Windows.
+#   target: the associated target.
+function(cen_copy_runtime_binaries target)
+  copy_file_post_build(
+      ${target}
+      ${CENTURION_DYNAMIC_LIB}
+      ${CMAKE_CURRENT_BINARY_DIR})
+
+  copy_directory_post_build(
+      ${target}
+      ${CEN_BINARIES_DIR}
+      ${CMAKE_CURRENT_BINARY_DIR})
+endfunction()

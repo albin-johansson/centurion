@@ -3,7 +3,7 @@ Introduction
 
 About Centurion
 ---------------
-Centurion is a modern C++ library built on top of SDL2 in order to improve
+Centurion is a modern C++ header-only library built on top of SDL2 in order to improve
 type-safety, memory safety and overall ease-of-use. It can be used for
 creating windows, 2D-rendering, keyboard input, mouse input, sound effects,
 music, etc. In other words, most of the things you can do with SDL2!

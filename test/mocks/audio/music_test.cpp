@@ -138,3 +138,17 @@ TEST_F(MusicTest, Type)
   const auto type [[maybe_unused]] = music.type();
   EXPECT_EQ(1, Mix_GetMusicType_fake.call_count);
 }
+
+using MusicDeathTest = MusicTest;
+
+TEST_F(MusicDeathTest, FadeIn)
+{
+  cen::music music;
+  EXPECT_DEBUG_DEATH(music.fade_in(cen::milliseconds<int>::zero()), "");
+}
+
+TEST_F(MusicDeathTest, FadeOut)
+{
+  cen::music music;
+  EXPECT_DEBUG_DEATH(music.fade_out(cen::milliseconds<int>::zero()), "");
+}

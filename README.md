@@ -18,7 +18,7 @@ As a result of Centurion utilizing the power of C++17, the library is much more 
 
 ## Documentation
 
-No matter how well-written a library is, there's always a need for great documentation. Centurion features detailed in-source documentation using Doxygen, which should be detected by any modern IDE. The Doxygen documentation for the latest stable version is hosted [here](https://albin-johansson.github.io/Centurion/).
+No matter how well-written a library is, there's always a need for great documentation. Centurion features detailed in-source documentation using Doxygen, which should be detected by any modern IDE. The Doxygen documentation for the latest stable version is hosted [here](https://albin-johansson.github.io/centurion/).
 
 Furthermore, the library features a Read-the-Docs site that features tutorials, examples and various tips-and-tricks for an overview of the library. It can be found [here](https://centurion.readthedocs.io/en/latest/)!
 

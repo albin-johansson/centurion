@@ -7,6 +7,7 @@ set(SOURCE_FILES
 
     event/event_test.cpp
 
+    graphics/message_box_test.cpp
     graphics/renderer_test.cpp
 
     input/controller_test.cpp

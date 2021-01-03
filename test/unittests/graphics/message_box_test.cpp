@@ -1,214 +1,192 @@
 #include "message_box.hpp"
 
-#include <catch.hpp>
-#include <string>
+#include <gtest/gtest.h>
+
+#include <type_traits>
 
 #include "colors.hpp"
 
-TEST_CASE("message_box member show", "[.message_box]")
+static_assert(std::is_final_v<cen::message_box>);
+static_assert(std::is_default_constructible_v<cen::message_box>);
+
+TEST(MessageBox, TitleMessageConstructor)
 {
-  using namespace std::string_literals;
-
-  cen::message_box mb;
-
-  mb.set_title("Member show"s);
-  mb.set_message("Created with member show"s);
-
-  mb.add_button(0, "Foo", cen::message_box::default_button::return_key);
-  mb.add_button(1, "Bar", cen::message_box::default_button::escape_key);
-
-  CHECK(mb.has_button(0));
-  CHECK(mb.has_button(1));
-
-  mb.show();
+  const cen::message_box mb{"foo", "bar"};
+  EXPECT_EQ("foo", mb.get_title());
+  EXPECT_EQ("bar", mb.get_message());
 }
 
-TEST_CASE("message_box static show", "[.message_box]")
-{
-  using namespace std::string_literals;
-
-  cen::message_box::show("Static show"s,
-                         "Created with static show"s,
-                         cen::message_box::type::warning);
-}
-
-TEST_CASE("message_box(string, string)", "[message_box]")
-{
-  using namespace std::string_literals;
-
-  const auto title = "foo"s;
-  const auto message = "bar"s;
-
-  const cen::message_box mb{title, message};
-
-  CHECK(mb.get_title() == title);
-  CHECK(mb.get_message() == message);
-}
-
-TEST_CASE("message_box::add_button", "[message_box]")
+TEST(MessageBox, AddButton)
 {
   cen::message_box mb;
 
-  const cen::message_box::button_id id{3};
-
+  constexpr auto id{3};
   mb.add_button(id, "Foo");
 
-  CHECK(mb.has_button(id));
+  EXPECT_TRUE(mb.has_button(id));
 }
 
-TEST_CASE("message_box::set_title", "[message_box]")
+TEST(MessageBox, SetTitle)
 {
-  using namespace std::string_literals;
-  const auto title = "This is a title"s;
-
   cen::message_box mb;
-  mb.set_title(title);
 
-  CHECK(title == mb.get_title());
+  mb.set_title("foobar");
+  EXPECT_EQ("foobar", mb.get_title());
 }
 
-TEST_CASE("message_box::set_message", "[message_box]")
+TEST(MessageBox, SetMessage)
 {
-  using namespace std::string_literals;
-  const auto message = "This is a message"s;
-
   cen::message_box mb;
-  mb.set_message(message);
 
-  CHECK(message == mb.get_message());
+  mb.set_message("barfoo");
+  EXPECT_EQ("barfoo", mb.get_message());
 }
 
-TEST_CASE("message_box::set_type", "[message_box]")
+TEST(MessageBox, SetColorScheme)
+{
+  cen::message_box mb;
+  cen::message_box::color_scheme scheme;
+  EXPECT_NO_THROW(mb.set_color_scheme(scheme));
+}
+
+TEST(MessageBox, SetType)
 {
   using type = cen::message_box::type;
-
   cen::message_box mb;
 
   mb.set_type(type::information);
-  CHECK(mb.get_type() == type::information);
+  EXPECT_EQ(type::information, mb.get_type());
 
   mb.set_type(type::warning);
-  CHECK(mb.get_type() == type::warning);
+  EXPECT_EQ(type::warning, mb.get_type());
 
   mb.set_type(type::error);
-  CHECK(mb.get_type() == type::error);
+  EXPECT_EQ(type::error, mb.get_type());
 }
 
-TEST_CASE("message_box::set_button_order", "[message_box]")
+TEST(MessageBox, SetButtonOrder)
 {
   using order = cen::message_box::button_order;
-
   cen::message_box mb;
 
   mb.set_button_order(order::left_to_right);
-  CHECK(mb.get_button_order() == order::left_to_right);
+  EXPECT_EQ(order::left_to_right, mb.get_button_order());
 
   mb.set_button_order(order::right_to_left);
-  CHECK(mb.get_button_order() == order::right_to_left);
+  EXPECT_EQ(order::right_to_left, mb.get_button_order());
 }
 
-TEST_CASE("message_box::has_button", "[message_box]")
+TEST(MessageBox, HasButton)
 {
   cen::message_box mb;
 
-  const auto id = 4;
-
-  CHECK(!mb.has_button(id));
+  constexpr auto id = 7;
+  EXPECT_FALSE(mb.has_button(id));
 
   mb.add_button(id, "foo");
-
-  CHECK(mb.has_button(id));
+  EXPECT_TRUE(mb.has_button(id));
 }
 
-TEST_CASE("message_box::get_title", "[message_box]")
+TEST(MessageBox, GetTitle)
 {
-  using namespace std::string_literals;
-
-  cen::message_box mb;
-  CHECK(mb.get_title() == "Message box"s);
+  const cen::message_box mb;
+  EXPECT_EQ("Message box", mb.get_title());
 }
 
-TEST_CASE("message_box::get_message", "[message_box]")
+TEST(MessageBox, GetMessage)
 {
-  using namespace std::string_literals;
-
-  cen::message_box mb;
-  CHECK(mb.get_message() == "N/A"s);
+  const cen::message_box mb;
+  EXPECT_EQ("N/A", mb.get_message());
 }
 
-TEST_CASE("message_box::get_type", "[message_box]")
+TEST(MessageBox, GetType)
 {
-  cen::message_box mb;
-  CHECK(mb.get_type() == cen::message_box::type::information);
+  const cen::message_box mb;
+  EXPECT_EQ(cen::message_box::type::information, mb.get_type());
 }
 
-TEST_CASE("message_box::get_button_order", "[message_box]")
+TEST(MessageBox, GetButtonOrder)
 {
-  cen::message_box mb;
-  CHECK(mb.get_button_order() == cen::message_box::button_order::left_to_right);
+  const cen::message_box mb;
+  EXPECT_EQ(cen::message_box::button_order::left_to_right,
+            mb.get_button_order());
 }
 
-TEST_CASE("message_box::color_scheme", "[message_box]")
+TEST(MessageBox, ButtonOrderEnum)
 {
-  SECTION("Defaults")
-  {
-    using cen::colors::white;
+  using order = cen::message_box::button_order;
+  EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
+            static_cast<int>(order::left_to_right));
+  EXPECT_EQ(SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT,
+            static_cast<int>(order::right_to_left));
+}
 
+TEST(MessageBox, TypeEnum)
+{
+  using type = cen::message_box::type;
+  EXPECT_EQ(SDL_MESSAGEBOX_INFORMATION, static_cast<int>(type::information));
+  EXPECT_EQ(SDL_MESSAGEBOX_WARNING, static_cast<int>(type::warning));
+  EXPECT_EQ(SDL_MESSAGEBOX_ERROR, static_cast<int>(type::error));
+}
+
+TEST(MessageBox, ColorSchemeClass)
+{
+  {  // Defaults
     cen::message_box::color_scheme scheme;
-    const auto sdlScheme = scheme.get();
+    const auto* ptr = scheme.get();
 
-    CHECK(sdlScheme->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND] == white);
-    CHECK(sdlScheme->colors[SDL_MESSAGEBOX_COLOR_TEXT] == white);
-    CHECK(sdlScheme->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER] == white);
-    CHECK(sdlScheme->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND] == white);
-    CHECK(sdlScheme->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED] == white);
+    using cen::colors::white;
+    EXPECT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BACKGROUND]);
+    EXPECT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_TEXT]);
+    EXPECT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BORDER]);
+    EXPECT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND]);
+    EXPECT_EQ(white, ptr->colors[SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED]);
   }
 
-  cen::message_box::color_scheme scheme;
+  {  // Custom scheme
+    cen::message_box::color_scheme scheme;
 
-  const auto testColor = [&](cen::message_box::color_id id,
-                             const cen::color& color) {
-    scheme.set_color(id, color);
+    const auto check = [&](cen::message_box::color_id id,
+                           const cen::color& color) {
+      scheme.set_color(id, color);
+      EXPECT_EQ(color, scheme.get()->colors[static_cast<cen::u32>(id)]);
+    };
 
-    const auto sdlScheme = scheme.get();
-
-    CHECK(sdlScheme->colors[static_cast<cen::u32>(id)] == color);
-  };
-
-  testColor(cen::message_box::color_id::background, cen::colors::pink);
-  testColor(cen::message_box::color_id::text, cen::colors::salmon);
-  testColor(cen::message_box::color_id::button_background, cen::colors::violet);
-  testColor(cen::message_box::color_id::button_border, cen::colors::alice_blue);
-  testColor(cen::message_box::color_id::button_selected, cen::colors::wheat);
+    check(cen::message_box::color_id::background, cen::colors::pink);
+    check(cen::message_box::color_id::text, cen::colors::salmon);
+    check(cen::message_box::color_id::button_background, cen::colors::violet);
+    check(cen::message_box::color_id::button_border, cen::colors::alice_blue);
+    check(cen::message_box::color_id::button_selected, cen::colors::wheat);
+  }
 }
 
-TEST_CASE("message_box::button_flags enum values", "[message_box]")
+TEST(MessageBox, DefaultButtonEnum)
 {
-  using flags = cen::message_box::default_button;
+  using button = cen::message_box::default_button;
 
-  CHECK(flags::return_key == SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
-  CHECK(flags::escape_key == SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
+  EXPECT_EQ(button::return_key, SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT);
+  EXPECT_EQ(button::escape_key, SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT);
 
-  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT == flags::return_key);
-  CHECK(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT == flags::escape_key);
+  EXPECT_EQ(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, button::return_key);
+  EXPECT_EQ(SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, button::escape_key);
 
-  CHECK(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT != flags::escape_key);
+  EXPECT_NE(SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, button::escape_key);
 }
 
-TEST_CASE("message_box::color_id enum values", "[message_box]")
+TEST(MessageBox, ColorIdEnum)
 {
-  using mb_cid = cen::message_box::color_id;
+  using id = cen::message_box::color_id;
 
-  CHECK(mb_cid::button_selected == SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
-  CHECK(mb_cid::button_background == SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
-  CHECK(mb_cid::button_border == SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);
-  CHECK(mb_cid::background == SDL_MESSAGEBOX_COLOR_BACKGROUND);
+  EXPECT_EQ(id::button_selected, SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED);
+  EXPECT_EQ(id::button_background, SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
+  EXPECT_EQ(id::button_border, SDL_MESSAGEBOX_COLOR_BUTTON_BORDER);
+  EXPECT_EQ(id::background, SDL_MESSAGEBOX_COLOR_BACKGROUND);
 
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED == mb_cid::button_selected);
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND == mb_cid::button_background);
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER == mb_cid::button_border);
-  CHECK(SDL_MESSAGEBOX_COLOR_BACKGROUND == mb_cid::background);
+  EXPECT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED, id::button_selected);
+  EXPECT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND, id::button_background);
+  EXPECT_EQ(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER, id::button_border);
+  EXPECT_EQ(SDL_MESSAGEBOX_COLOR_BACKGROUND, id::background);
 
-  CHECK(mb_cid::background != SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
-  CHECK(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER != mb_cid::button_selected);
+  EXPECT_NE(id::background, SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND);
+  EXPECT_NE(SDL_MESSAGEBOX_COLOR_BUTTON_BORDER, id::button_selected);
 }

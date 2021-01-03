@@ -95,10 +95,6 @@ set(SOURCE_FILES
     ../include/detail/static_bimap.hpp
     ../include/detail/to_string.hpp
 
-    graphics/message_box.cpp
-    graphics/message_box_button.cpp
-    graphics/message_box_color_scheme.cpp
-
     input/touch.cpp)
 
 if (CEN_AUDIO)

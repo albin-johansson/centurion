@@ -27,16 +27,18 @@
 
 #include <SDL.h>
 
-#include <memory>
-#include <optional>
-#include <string>
-#include <string_view>
-#include <type_traits>
-#include <vector>
+#include <algorithm>    // max, any_of
+#include <optional>     // optional
+#include <string>       // string
+#include <string_view>  // string_view
+#include <utility>      // move
+#include <vector>       // vector
 
 #include "centurion_api.hpp"
 #include "color.hpp"
-#include "types.hpp"
+#include "colors.hpp"
+#include "detail/stack_resource.hpp"
+#include "exception.hpp"
 #include "window.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -45,10 +47,8 @@
 
 namespace cen {
 
-/**
- * \addtogroup graphics
- * \{
- */
+/// \addtogroup graphics
+/// \{
 
 /**
  * \class message_box
@@ -84,8 +84,8 @@ class message_box final
    */
   enum class button_order
   {
-    left_to_right,
-    right_to_left
+    left_to_right = SDL_MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT,
+    right_to_left = SDL_MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT
   };
 
   /**
@@ -155,8 +155,14 @@ class message_box final
      *
      * \since 5.0.0
      */
-    CENTURION_API
-    color_scheme() noexcept;
+    color_scheme() noexcept
+    {
+      set_color(color_id::background, colors::white);
+      set_color(color_id::text, colors::white);
+      set_color(color_id::button_background, colors::white);
+      set_color(color_id::button_border, colors::white);
+      set_color(color_id::button_selected, colors::white);
+    }
 
     /**
      * \brief Sets the color associated with the specified ID.
@@ -166,8 +172,11 @@ class message_box final
      *
      * \since 5.0.0
      */
-    CENTURION_API
-    void set_color(color_id id, const color& color) noexcept;
+    void set_color(const color_id id, const color& color) noexcept
+    {
+      m_scheme.colors[static_cast<int>(id)] =
+          static_cast<SDL_MessageBoxColor>(color);
+    }
 
     /**
      * \brief Returns a pointer to the internal `SDL_MessageBoxColorScheme`.
@@ -176,8 +185,10 @@ class message_box final
      *
      * \since 5.0.0
      */
-    CENTURION_QUERY
-    auto get() noexcept -> SDL_MessageBoxColorScheme*;
+    [[nodiscard]] auto get() noexcept -> SDL_MessageBoxColorScheme*
+    {
+      return &m_scheme;
+    }
 
    private:
     SDL_MessageBoxColorScheme m_scheme{};
@@ -198,8 +209,10 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  message_box(std::string title, std::string message);
+  message_box(std::string title, std::string message)
+      : m_title{std::move(title)}
+      , m_message{std::move(message)}
+  {}
 
   /**
    * \brief Displays a message box.
@@ -221,8 +234,11 @@ class message_box final
   static void show(const basic_window<T>& parent,
                    const std::string& title,
                    const std::string& message,
-                   type type = default_type(),
-                   button_order buttonOrder = default_order());
+                   const type type = default_type(),
+                   const button_order buttonOrder = default_order())
+  {
+    show(parent.ptr(), title, message, type, buttonOrder);
+  }
 
   /**
    * \brief Displays a message box.
@@ -237,11 +253,13 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_API
   static void show(const std::string& title,
                    const std::string& message,
-                   type type = default_type(),
-                   button_order buttonOrder = default_order());
+                   const type type = default_type(),
+                   const button_order buttonOrder = default_order())
+  {
+    show(nullptr, title, message, type, buttonOrder);
+  }
 
   /**
    * \brief Displays a message box.
@@ -258,7 +276,10 @@ class message_box final
    * \since 5.0.0
    */
   template <typename T>
-  auto show(const basic_window<T>& parent) -> std::optional<button_id>;
+  auto show(const basic_window<T>& parent) -> std::optional<button_id>
+  {
+    return show(parent.get());
+  }
 
   /**
    * \brief Displays a message box.
@@ -273,8 +294,10 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  auto show() -> std::optional<button_id>;
+  auto show() -> std::optional<button_id>
+  {
+    return show(nullptr);
+  }
 
   /**
    * \brief Adds a button to the message box.
@@ -287,10 +310,14 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void add_button(button_id id,
+  void add_button(const button_id id,
                   std::string text,
-                  default_button button = default_button::return_key);
+                  const default_button button = default_button::return_key)
+  {
+    m_buttons.emplace_back(id, std::move(text), button);
+  }
+
+  void set_title(std::nullptr_t) = delete;
 
   /**
    * \brief Sets the title of the message box.
@@ -299,10 +326,10 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void set_title(std::string title);
-
-  void set_title(std::nullptr_t) = delete;
+  void set_title(std::string title)
+  {
+    m_title = std::move(title);
+  }
 
   /**
    * \brief Sets the message of the message box.
@@ -311,8 +338,10 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void set_message(std::string message);
+  void set_message(std::string message)
+  {
+    m_message = std::move(message);
+  }
 
   void set_message(std::nullptr_t) = delete;
 
@@ -322,12 +351,14 @@ class message_box final
    * \note This is not supported on all platforms, so this property is simply
    * not set by default.
    *
-   * \param colorScheme the color scheme that will be used.
+   * \param scheme the color scheme that will be used.
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void set_color_scheme(const color_scheme& colorScheme) noexcept;
+  void set_color_scheme(const color_scheme& scheme) noexcept
+  {
+    m_colorScheme = scheme;
+  }
 
   /**
    * \brief Sets the type of the message box.
@@ -336,8 +367,10 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void set_type(type type) noexcept;
+  void set_type(const type type) noexcept
+  {
+    m_type = type;
+  }
 
   /**
    * \brief Sets the button order of the message box.
@@ -346,8 +379,10 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_API
-  void set_button_order(button_order order) noexcept;
+  void set_button_order(const button_order order) noexcept
+  {
+    m_buttonOrder = order;
+  }
 
   /**
    * \brief Indicates whether or not the message box has a button associated
@@ -360,8 +395,14 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto has_button(button_id id) const noexcept -> bool;
+  [[nodiscard]] auto has_button(const button_id id) const -> bool
+  {
+    return std::any_of(m_buttons.begin(),
+                       m_buttons.end(),
+                       [id](const button& button) noexcept {
+                         return button.id() == id;
+                       });
+  }
 
   /**
    * \brief Returns the title of the message box.
@@ -370,10 +411,28 @@ class message_box final
    *
    * \return the title of the message box.
    *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto title() const -> std::string_view
+  {
+    return m_title;
+  }
+
+  /**
+   * \brief Returns the title of the message box.
+   *
+   * \details The default title is "Message box".
+   *
+   * \return the title of the message box.
+   *
+   * \deprecated Use `title()` instead.
+   *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get_title() const -> std::string_view;
+  [[nodiscard, deprecated]] auto get_title() const -> std::string_view
+  {
+    return title();
+  }
 
   /**
    * \brief Returns the message of the message box.
@@ -382,10 +441,28 @@ class message_box final
    *
    * \return the message of the message box.
    *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto message() const -> std::string_view
+  {
+    return m_message;
+  }
+
+  /**
+   * \brief Returns the message of the message box.
+   *
+   * \details The default message is "N/A".
+   *
+   * \return the message of the message box.
+   *
+   * \deprecated Use `message()` instead.
+   *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get_message() const -> std::string_view;
+  [[nodiscard, deprecated]] auto get_message() const -> std::string_view
+  {
+    return message();
+  }
 
   /**
    * \brief Returns the type of the message box.
@@ -396,8 +473,10 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get_type() const noexcept -> type;
+  [[nodiscard]] auto get_type() const noexcept -> type
+  {
+    return m_type;
+  }
 
   /**
    * \brief Returns the button order of the message box.
@@ -408,8 +487,10 @@ class message_box final
    *
    * \since 5.0.0
    */
-  CENTURION_QUERY
-  auto get_button_order() const noexcept -> button_order;
+  [[nodiscard]] auto get_button_order() const noexcept -> button_order
+  {
+    return m_buttonOrder;
+  }
 
  private:
   /**
@@ -418,8 +499,13 @@ class message_box final
   class button final
   {
    public:
-    CENTURION_API
-    button(button_id id, std::string text, default_button defaultButton);
+    button(const button_id id,
+           std::string text,
+           const default_button defaultButton)
+        : m_id{id}
+        , m_defaultButton{defaultButton}
+        , m_text{std::move(text)}
+    {}
 
     /**
      * \brief Returns the ID associated with the button.
@@ -428,8 +514,10 @@ class message_box final
      *
      * \since 5.0.0
      */
-    CENTURION_QUERY
-    auto id() const noexcept -> button_id;
+    [[nodiscard]] auto id() const noexcept -> button_id
+    {
+      return m_id;
+    }
 
     /**
      * \brief Returns an `SDL_MessageBoxButtonData` instance that corresponds
@@ -443,8 +531,16 @@ class message_box final
      *
      * \since 5.0.0
      */
-    CENTURION_QUERY
-    auto convert() const noexcept -> SDL_MessageBoxButtonData;
+    [[nodiscard]] auto convert() const noexcept -> SDL_MessageBoxButtonData
+    {
+      SDL_MessageBoxButtonData result{};
+
+      result.flags = static_cast<u32>(m_defaultButton);
+      result.buttonid = m_id;
+      result.text = m_text.c_str();
+
+      return result;
+    }
 
    private:
     button_id m_id;
@@ -459,12 +555,6 @@ class message_box final
   type m_type{default_type()};
   button_order m_buttonOrder{default_order()};
 
-  [[nodiscard]] constexpr static auto default_flags() noexcept -> u32
-  {
-    return static_cast<u32>(default_button::return_key) |
-           static_cast<u32>(button_order::left_to_right);
-  }
-
   [[nodiscard]] constexpr static auto default_type() noexcept -> type
   {
     return type::information;
@@ -476,42 +566,65 @@ class message_box final
   }
 
   [[nodiscard]] constexpr static auto to_flags(
-      type type,
-      button_order buttonOrder) noexcept -> u32
+      const type type,
+      const button_order buttonOrder) noexcept -> u32
   {
     return static_cast<u32>(type) | static_cast<u32>(buttonOrder);
   }
 
-  CENTURION_API
   static void show(SDL_Window* parent,
                    const std::string& title,
                    const std::string& message,
-                   type type,
-                   button_order buttonOrder);
+                   const type type,
+                   const button_order buttonOrder)
+  {
+    if (const auto result =
+            SDL_ShowSimpleMessageBox(to_flags(type, buttonOrder),
+                                     title.c_str(),
+                                     message.c_str(),
+                                     parent);
+        result == -1) {
+      throw sdl_error{"Failed to show message box"};
+    }
+  }
 
-  CENTURION_API
-  auto show(SDL_Window* parent) -> std::optional<button_id>;
+  auto show(SDL_Window* parent) -> std::optional<button_id>
+  {
+    SDL_MessageBoxData data{};
+
+    data.window = parent;
+    data.title = m_title.c_str();
+    data.message = m_message.c_str();
+    data.flags = to_flags(m_type, m_buttonOrder);
+    data.colorScheme = m_colorScheme ? m_colorScheme->get() : nullptr;
+
+    // Realistically 1-3 buttons, stack buffer for 8 buttons, just in case.
+    detail::stack_resource<8 * sizeof(SDL_MessageBoxButtonData)> resource;
+    std::pmr::vector<SDL_MessageBoxButtonData> buttonData{resource.get()};
+
+    if (m_buttons.empty()) {
+      add_button(0, "OK", default_button::return_key);
+    }
+
+    for (const auto& button : m_buttons) {
+      buttonData.emplace_back(button.convert());
+    }
+
+    data.buttons = buttonData.data();
+    data.numbuttons = static_cast<int>(buttonData.size());
+
+    button_id button{-1};
+    if (SDL_ShowMessageBox(&data, &button) == -1) {
+      throw sdl_error{"Failed to show message box"};
+    }
+
+    if (button != -1) {
+      return button;
+    } else {
+      return std::nullopt;
+    }
+  }
 };
-
-template <typename T>
-void message_box::show(const basic_window<T>& parent,
-                       const std::string& title,
-                       const std::string& message,
-                       type type,
-                       button_order buttonOrder)
-{
-  show(parent.ptr(), title, message, type, buttonOrder);
-}
-
-template <typename T>
-auto message_box::show(const basic_window<T>& parent)
-    -> std::optional<button_id>
-{
-  return show(parent.ptr());
-}
-
-static_assert(std::is_default_constructible_v<message_box>);
-static_assert(std::is_final_v<message_box>);
 
 /**
  * \brief Indicates whether or not the flags represent the same value.
@@ -523,9 +636,9 @@ static_assert(std::is_final_v<message_box>);
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(message_box::default_button lhs,
-                                        SDL_MessageBoxButtonFlags rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(
+    const message_box::default_button lhs,
+    const SDL_MessageBoxButtonFlags rhs) noexcept -> bool
 {
   return static_cast<SDL_MessageBoxButtonFlags>(lhs) == rhs;
 }
@@ -534,8 +647,8 @@ static_assert(std::is_final_v<message_box>);
  * \copydoc operator==(message_box::default_button, SDL_MessageBoxButtonFlags)
  */
 [[nodiscard]] constexpr auto operator==(
-    SDL_MessageBoxButtonFlags lhs,
-    message_box::default_button rhs) noexcept -> bool
+    const SDL_MessageBoxButtonFlags lhs,
+    const message_box::default_button rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -550,9 +663,9 @@ static_assert(std::is_final_v<message_box>);
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(message_box::default_button lhs,
-                                        SDL_MessageBoxButtonFlags rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(
+    const message_box::default_button lhs,
+    const SDL_MessageBoxButtonFlags rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -561,8 +674,8 @@ static_assert(std::is_final_v<message_box>);
  * \copydoc operator!=(message_box::default_button, SDL_MessageBoxButtonFlags)
  */
 [[nodiscard]] constexpr auto operator!=(
-    SDL_MessageBoxButtonFlags lhs,
-    message_box::default_button rhs) noexcept -> bool
+    const SDL_MessageBoxButtonFlags lhs,
+    const message_box::default_button rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -577,9 +690,9 @@ static_assert(std::is_final_v<message_box>);
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator==(SDL_MessageBoxColorType lhs,
-                                        message_box::color_id rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(
+    const SDL_MessageBoxColorType lhs,
+    const message_box::color_id rhs) noexcept -> bool
 {
   return lhs == static_cast<SDL_MessageBoxColorType>(rhs);
 }
@@ -587,9 +700,9 @@ static_assert(std::is_final_v<message_box>);
 /**
  * \copydoc operator==(SDL_MessageBoxColorType, message_box::color_id)
  */
-[[nodiscard]] constexpr auto operator==(message_box::color_id lhs,
-                                        SDL_MessageBoxColorType rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(
+    const message_box::color_id lhs,
+    const SDL_MessageBoxColorType rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -604,9 +717,9 @@ static_assert(std::is_final_v<message_box>);
  *
  * \since 3.0.0
  */
-[[nodiscard]] constexpr auto operator!=(SDL_MessageBoxColorType lhs,
-                                        message_box::color_id rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(
+    const SDL_MessageBoxColorType lhs,
+    const message_box::color_id rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -614,9 +727,9 @@ static_assert(std::is_final_v<message_box>);
 /**
  * \copydoc operator!=(SDL_MessageBoxColorType, message_box::color_id)
  */
-[[nodiscard]] constexpr auto operator!=(message_box::color_id lhs,
-                                        SDL_MessageBoxColorType rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(
+    const message_box::color_id lhs,
+    const SDL_MessageBoxColorType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

@@ -2,7 +2,7 @@ basic_window
 ============
 
 The ``basic_window`` class represents an operating system window. The aliases ``window`` and ``window_handle`` represent 
-owning and non-owning versions windows, respectively.
+owning and non-owning version windows, respectively.
 
 General information
 -------------------
@@ -107,7 +107,7 @@ features a ``SDL_Window*`` parameter.
 
 .. note::
 
-  It's very cheap to create an instance of ``window_view``, it's just a copy of a pointer!
+  It's very cheap to create an instance of ``window_handle``, it's just a copy of a pointer!
 
 .. code-block:: c++
 

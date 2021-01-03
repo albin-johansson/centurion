@@ -114,11 +114,6 @@ endfunction()
 # Copies runtime binaries to current binary dir. This is only necessary on Windows.
 #   target: the associated target.
 function(cen_copy_runtime_binaries target)
-  copy_file_post_build(
-      ${target}
-      ${CENTURION_DYNAMIC_LIB}
-      ${CMAKE_CURRENT_BINARY_DIR})
-
   copy_directory_post_build(
       ${target}
       ${CEN_BINARIES_DIR}

@@ -128,3 +128,5 @@ add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 copy_directory_post_build(${CENTURION_TEST_TARGET}
     ${CEN_RESOURCES_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/resources)
+
+cen_copy_runtime_binaries(${CENTURION_TEST_TARGET})

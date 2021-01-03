@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,22 +27,24 @@
 
 #include <SDL_video.h>
 
-#include <concepts>     // same_as
 #include <memory>       // unique_ptr
 #include <optional>     // optional
 #include <ostream>      // ostream
-#include <ranges>       // contiguous_range
 #include <string>       // string
 #include <type_traits>  // enable_if_t, true_type, false_type, conditional_t
-#include <utility>      // pair, forward
+#include <utility>      // pair
 
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "color.hpp"
 #include "colors.hpp"
-#include "detail/utils.hpp"
+#include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/convert_bool.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "font.hpp"
 #include "font_cache.hpp"
+#include "not_null.hpp"
 #include "rect.hpp"
 #include "surface.hpp"
 #include "texture.hpp"
@@ -75,9 +77,7 @@ namespace cen {
 template <typename T>
 class basic_renderer final
 {
-  inline constexpr static bool isOwner = detail::is_owning<T>();
-  inline constexpr static bool isHandle = !isOwner;
-  using owning_renderer = basic_renderer<std::true_type>;
+  using owner_t = basic_renderer<std::true_type>;
 
   [[nodiscard]] constexpr static auto default_flags() noexcept
       -> SDL_RendererFlags
@@ -88,24 +88,26 @@ class basic_renderer final
 
  public:
   // clang-format off
-
   /**
    * \brief Creates a renderer based on a pointer to an SDL renderer.
    *
-   * \param renderer a pointer to the associated SDL renderer, ownership is
-   * claimed by the created renderer.
+   * \note The supplied pointer might be claimed by the renderer if the created
+   * renderer is owning.
    *
-   * \throws exception if the renderer cannot be created.
+   * \param renderer a pointer to the associated SDL renderer.
    *
-   * \since 6.0.0
+   * \since 3.0.0
    */
-  explicit basic_renderer(owner<SDL_Renderer*> renderer) requires isOwner
+  explicit basic_renderer(SDL_Renderer* renderer) noexcept(!detail::is_owning<T>())
       : m_renderer{renderer}
   {
-    if (!get()) {
-      throw exception{"Cannot create renderer from null pointer!"};
+    if constexpr (detail::is_owning<T>()) {
+      if (!get()) {
+        throw exception{"Cannot create renderer from null pointer!"};
+      }
     }
   }
+  // clang-format on
 
   /**
    * \brief Creates an owning renderer based on the supplied window.
@@ -120,9 +122,9 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename Window>
+  template <typename Window, typename T_ = T, detail::is_owner<T_> = true>
   explicit basic_renderer(const Window& window,
-                          const SDL_RendererFlags flags = default_flags()) requires isOwner
+                          const SDL_RendererFlags flags = default_flags())
       : m_renderer{SDL_CreateRenderer(window.get(), -1, flags)}
   {
     if (!get()) {
@@ -134,26 +136,10 @@ class basic_renderer final
     set_logical_integer_scale(false);
   }
 
-  /**
-   * \brief Creates a renderer handle.
-   *
-   * \param renderer a pointer to the associated SDL renderer.
-   *
-   * \since 3.0.0
-   */
-  explicit basic_renderer(SDL_Renderer* renderer) noexcept requires isHandle
-      : m_renderer{renderer}
-  {}
-
-  explicit basic_renderer(const owning_renderer& renderer) noexcept requires isHandle
+  template <typename T_ = T, detail::is_handle<T_> = true>
+  explicit basic_renderer(const owner_t& renderer) noexcept
       : m_renderer{renderer.get()}
   {}
-
-  // clang-format on
-
-  basic_renderer(basic_renderer&&) noexcept = default;
-
-  auto operator=(basic_renderer&&) noexcept -> basic_renderer& = default;
 
   /**
    * \brief Clears the rendering target with the currently selected color.
@@ -209,7 +195,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U>
+  template <typename U>
   void draw_rect(const basic_rect<U>& rect) noexcept
   {
     if constexpr (basic_rect<U>::isIntegral) {
@@ -228,7 +214,7 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U>
+  template <typename U>
   void fill_rect(const basic_rect<U>& rect) noexcept
   {
     if constexpr (basic_rect<U>::isIntegral) {
@@ -236,6 +222,38 @@ class basic_renderer final
     } else {
       SDL_RenderFillRectF(get(), static_cast<const SDL_FRect*>(rect));
     }
+  }
+
+  /**
+   * \brief Fills the entire rendering target with the currently selected color.
+   *
+   * \details This function is different from `clear()` and `clear_with()` in
+   * that it can be used as an intermediate rendering command (just like all
+   * rendering functions). An example of a use case of this function could be
+   * for rendering a transparent background for game menus.
+   *
+   * \since 5.1.0
+   */
+  void fill() noexcept
+  {
+    fill_rect<int>({{}, output_size()});
+  }
+
+  /**
+   * \brief Fills the entire rendering target with the specified color.
+   *
+   * \note This function does not affect the currently set color.
+   *
+   * \copydetails fill()
+   */
+  void fill_with(const color& color) noexcept
+  {
+    const auto oldColor = get_color();
+
+    set_color(color);
+    fill();
+
+    set_color(oldColor);
   }
 
   /**
@@ -281,7 +299,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <std::ranges::contiguous_range Container>
+  template <typename Container>
   void draw_lines(const Container& container) noexcept
   {
     using point_t = typename Container::value_type;  // a point of int or float
@@ -331,8 +349,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_utf8(nn_czstring str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_utf8(not_null<czstring> str,
+                                         const font& font) -> texture
   {
     return render_text(
         TTF_RenderUTF8_Blended(font.get(),
@@ -368,7 +386,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_wrapped_utf8(nn_czstring str,
+  [[nodiscard]] auto render_blended_wrapped_utf8(not_null<czstring> str,
                                                  const font& font,
                                                  const u32 wrap) -> texture
   {
@@ -404,7 +422,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_shaded_utf8(nn_czstring str,
+  [[nodiscard]] auto render_shaded_utf8(not_null<czstring> str,
                                         const font& font,
                                         const color& background) -> texture
   {
@@ -438,7 +456,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_utf8(nn_czstring str, const font& font)
+  [[nodiscard]] auto render_solid_utf8(not_null<czstring> str, const font& font)
       -> texture
   {
     return render_text(
@@ -470,8 +488,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_latin1(nn_czstring str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_blended_latin1(not_null<czstring> str,
+                                           const font& font) -> texture
   {
     return render_text(
         TTF_RenderText_Blended(font.get(),
@@ -507,7 +525,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_blended_wrapped_latin1(nn_czstring str,
+  [[nodiscard]] auto render_blended_wrapped_latin1(not_null<czstring> str,
                                                    const font& font,
                                                    const u32 wrap) -> texture
   {
@@ -543,7 +561,7 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_shaded_latin1(nn_czstring str,
+  [[nodiscard]] auto render_shaded_latin1(not_null<czstring> str,
                                           const font& font,
                                           const color& background) -> texture
   {
@@ -577,8 +595,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto render_solid_latin1(nn_czstring str, const font& font)
-      -> texture
+  [[nodiscard]] auto render_solid_latin1(not_null<czstring> str,
+                                         const font& font) -> texture
   {
     return render_text(
         TTF_RenderText_Solid(font.get(),
@@ -830,19 +848,19 @@ class basic_renderer final
   /**
    * \brief Renders a texture according to the specified rectangle.
    *
-   * \tparam U the representation type used by the rectangle.
-   * \tparam V the ownership tag of the texture.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the rectangle.
    *
    * \param texture the texture that will be rendered.
    * \param destination the position and size of the rendered texture.
    *
    * \since 4.0.0
    */
-  template <rect_precision U, typename V>
-  void render(const basic_texture<V>& texture,
-              const basic_rect<U>& destination) noexcept
+  template <typename P, typename U>
+  void render(const basic_texture<U>& texture,
+              const basic_rect<P>& destination) noexcept
   {
-    if constexpr (basic_rect<U>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating) {
       SDL_RenderCopyF(get(),
                       texture.get(),
                       nullptr,
@@ -861,8 +879,8 @@ class basic_renderer final
    * \remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * \tparam U the representation type used by the rectangle.
-   * \tparam V the ownership tag of the texture.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the rectangle.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -870,12 +888,12 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U, typename V>
-  void render(const basic_texture<V>& texture,
+  template <typename P, typename U>
+  void render(const basic_texture<U>& texture,
               const irect& source,
-              const basic_rect<U>& destination) noexcept
+              const basic_rect<P>& destination) noexcept
   {
-    if constexpr (basic_rect<U>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating) {
       SDL_RenderCopyF(get(),
                       texture.get(),
                       static_cast<const SDL_Rect*>(source),
@@ -891,8 +909,8 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the representation type used by the rectangle.
-   * \tparam V the ownership tag of the texture.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the rectangle.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -902,13 +920,13 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U, typename V>
-  void render(const basic_texture<V>& texture,
+  template <typename P, typename U>
+  void render(const basic_texture<U>& texture,
               const irect& source,
-              const basic_rect<U>& destination,
+              const basic_rect<P>& destination,
               const double angle) noexcept
   {
-    if constexpr (basic_rect<U>::isFloating) {
+    if constexpr (basic_rect<P>::isFloating) {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         static_cast<const SDL_Rect*>(source),
@@ -930,9 +948,9 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the representation type used by the destination rectangle.
-   * \tparam V the representation type used by the center point.
-   * \tparam X the ownership tag of the texture.
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center point.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -944,19 +962,19 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U, typename V, typename X>
-  void render(const basic_texture<X>& texture,
+  template <typename R, typename P, typename U>
+  void render(const basic_texture<U>& texture,
               const irect& source,
-              const basic_rect<U>& destination,
+              const basic_rect<R>& destination,
               const double angle,
-              const basic_point<V>& center) noexcept
+              const basic_point<P>& center) noexcept
   {
-    static_assert(std::same_as<typename basic_rect<U>::value_type,
-                               typename basic_point<V>::value_type>,
+    static_assert(std::is_same_v<typename basic_rect<R>::value_type,
+                                 typename basic_point<P>::value_type>,
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<U>::isFloating) {
+    if constexpr (basic_rect<R>::isFloating) {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         static_cast<const SDL_Rect*>(source),
@@ -978,9 +996,9 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the representation type used by the destination rectangle.
-   * \tparam V the representation type used by the center point.
-   * \tparam X the ownership tag of the texture.
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center point.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -993,20 +1011,20 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U, typename V, typename X>
-  void render(const basic_texture<X>& texture,
+  template <typename R, typename P, typename U>
+  void render(const basic_texture<U>& texture,
               const irect& source,
-              const basic_rect<U>& destination,
+              const basic_rect<R>& destination,
               const double angle,
-              const basic_point<V>& center,
+              const basic_point<P>& center,
               const SDL_RendererFlip flip) noexcept
   {
-    static_assert(std::is_same_v<typename basic_rect<U>::value_type,
-                                 typename basic_point<V>::value_type>,
+    static_assert(std::is_same_v<typename basic_rect<R>::value_type,
+                                 typename basic_point<P>::value_type>,
                   "Destination rectangle and center point must have the same "
                   "value types (int or float)!");
 
-    if constexpr (basic_rect<U>::isFloating) {
+    if constexpr (basic_rect<R>::isFloating) {
       SDL_RenderCopyExF(get(),
                         texture.get(),
                         static_cast<const SDL_Rect*>(source),
@@ -1044,7 +1062,8 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  void set_translation_viewport(const frect& viewport) noexcept requires isOwner
+  template <typename T_ = T, detail::is_owner<T_> = true>
+  void set_translation_viewport(const frect& viewport) noexcept
   {
     m_renderer.translation = viewport;
   }
@@ -1058,8 +1077,8 @@ class basic_renderer final
    *
    * \since 3.0.0
    */
-  [[nodiscard]] auto translation_viewport() const noexcept
-      -> const frect& requires isOwner
+  template <typename T_ = T, detail::is_owner<T_> = true>
+  [[nodiscard]] auto translation_viewport() const noexcept -> const frect&
   {
     return m_renderer.translation;
   }
@@ -1070,14 +1089,14 @@ class basic_renderer final
    * \details The rendered rectangle will be translated using the current
    * translation viewport.
    *
-   * \tparam U the representation type used by the rectangle.
+   * \tparam R the representation type used by the rectangle.
    *
    * \param rect the rectangle that will be rendered.
    *
    * \since 4.1.0
    */
-  template <rect_precision U>
-  void draw_rect_t(const basic_rect<U>& rect) noexcept requires isOwner
+  template <typename R, typename T_ = T, detail::is_owner<T_> = true>
+  void draw_rect_t(const basic_rect<R>& rect) noexcept
   {
     draw_rect(translate(rect));
   }
@@ -1088,14 +1107,14 @@ class basic_renderer final
    * \details The rendered rectangle will be translated using the current
    * translation viewport.
    *
-   * \tparam U the representation type used by the rectangle.
+   * \tparam R the representation type used by the rectangle.
    *
    * \param rect the rectangle that will be rendered.
    *
    * \since 4.1.0
    */
-  template <rect_precision U>
-  void fill_rect_t(const basic_rect<U>& rect) noexcept requires isOwner
+  template <typename R, typename T_ = T, detail::is_owner<T_> = true>
+  void fill_rect_t(const basic_rect<R>& rect) noexcept
   {
     fill_rect(translate(rect));
   }
@@ -1114,9 +1133,12 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <typename P, typename U>
+  template <typename P,
+            typename U,
+            typename T_ = T,
+            detail::is_owner<T_> = true>
   void render_t(const basic_texture<U>& texture,
-                const basic_point<P>& position) noexcept requires isOwner
+                const basic_point<P>& position) noexcept
   {
     render(texture, translate(position));
   }
@@ -1127,8 +1149,8 @@ class basic_renderer final
    * \details The rendered texture will be translated using the translation
    * viewport.
    *
-   * \tparam U the representation type used by the destination rectangle.
-   * \tparam V the ownership tag of the texture.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the destination rectangle.
    *
    * \param texture the texture that will be rendered.
    * \param destination the position (pre-translation) and size of the
@@ -1136,9 +1158,12 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U, typename V>
-  void render_t(const basic_texture<V>& texture,
-                const basic_rect<U>& destination) noexcept requires isOwner
+  template <typename P,
+            typename U,
+            typename T_ = T,
+            detail::is_owner<T_> = true>
+  void render_t(const basic_texture<U>& texture,
+                const basic_rect<P>& destination) noexcept
   {
     render(texture, translate(destination));
   }
@@ -1152,8 +1177,8 @@ class basic_renderer final
    * \remarks This should be your preferred method of rendering textures. This
    * method is efficient and simple.
    *
-   * \tparam U the representation type used by the destination rectangle.
-   * \tparam V the ownership tag of the texture.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the destination rectangle.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -1162,10 +1187,13 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U, typename V>
-  void render_t(const basic_texture<V>& texture,
+  template <typename P,
+            typename U,
+            typename T_ = T,
+            detail::is_owner<T_> = true>
+  void render_t(const basic_texture<U>& texture,
                 const irect& source,
-                const basic_rect<U>& destination) noexcept requires isOwner
+                const basic_rect<P>& destination) noexcept
   {
     render(texture, source, translate(destination));
   }
@@ -1176,8 +1204,8 @@ class basic_renderer final
    * \details The rendered texture will be translated using the translation
    * viewport.
    *
-   * \tparam U the representation type used by the destination rectangle.
-   * \tparam V the ownership tag of the texture.
+   * \tparam U the ownership tag of the texture.
+   * \tparam P the representation type used by the destination rectangle.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -1188,11 +1216,14 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U, typename V>
-  void render_t(const basic_texture<V>& texture,
+  template <typename P,
+            typename U,
+            typename T_ = T,
+            detail::is_owner<T_> = true>
+  void render_t(const basic_texture<U>& texture,
                 const irect& source,
-                const basic_rect<U>& destination,
-                const double angle) noexcept requires isOwner
+                const basic_rect<P>& destination,
+                const double angle) noexcept
   {
     render(texture, source, translate(destination), angle);
   }
@@ -1203,9 +1234,9 @@ class basic_renderer final
    * \details The rendered texture will be translated using the translation
    * viewport.
    *
-   * \tparam U the representation type used by the destination rectangle.
-   * \tparam V the representation type used by the center-of-rotation point.
-   * \tparam X the ownership tag of the texture.
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center-of-rotation point.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -1218,12 +1249,16 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U, typename V, typename X>
-  void render_t(const basic_texture<X>& texture,
+  template <typename R,
+            typename P,
+            typename U,
+            typename T_ = T,
+            detail::is_owner<T_> = true>
+  void render_t(const basic_texture<U>& texture,
                 const irect& source,
-                const basic_rect<U>& destination,
+                const basic_rect<R>& destination,
                 const double angle,
-                const basic_point<V>& center) noexcept requires isOwner
+                const basic_point<P>& center) noexcept
   {
     render(texture, source, translate(destination), angle, center);
   }
@@ -1231,9 +1266,9 @@ class basic_renderer final
   /**
    * \brief Renders a texture.
    *
-   * \tparam U the representation type used by the destination rectangle.
-   * \tparam V the representation type used by the center-of-rotation point.
-   * \tparam X the ownership tag of the texture.
+   * \tparam U the ownership tag of the texture.
+   * \tparam R the representation type used by the destination rectangle.
+   * \tparam P the representation type used by the center-of-rotation point.
    *
    * \param texture the texture that will be rendered.
    * \param source the cutout out of the texture that will be rendered.
@@ -1247,13 +1282,17 @@ class basic_renderer final
    *
    * \since 4.0.0
    */
-  template <rect_precision U, typename V, typename X>
-  void render_t(const basic_texture<X>& texture,
+  template <typename R,
+            typename P,
+            typename U,
+            typename T_ = T,
+            detail::is_owner<T_> = true>
+  void render_t(const basic_texture<U>& texture,
                 const irect& source,
-                const basic_rect<U>& destination,
+                const basic_rect<R>& destination,
                 const double angle,
-                const basic_point<V>& center,
-                const SDL_RendererFlip flip) noexcept requires isOwner
+                const basic_point<P>& center,
+                const SDL_RendererFlip flip) noexcept
   {
     render(texture, source, translate(destination), angle, center, flip);
   }
@@ -1277,7 +1316,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  void add_font(const font_id id, font&& font) requires isOwner
+  template <typename T_ = T, detail::is_owner<T_> = true>
+  void add_font(const font_id id, font&& font)
   {
     auto& fonts = m_renderer.fonts;
     if (fonts.find(id) != fonts.end()) {
@@ -1299,8 +1339,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  template <typename... Args>
-  void emplace_font(const font_id id, Args&&... args) requires isOwner
+  template <typename... Args, typename T_ = T, detail::is_owner<T_> = true>
+  void emplace_font(const font_id id, Args&&... args)
   {
     auto& fonts = m_renderer.fonts;
     if (fonts.find(id) != fonts.end()) {
@@ -1319,7 +1359,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  void remove_font(const font_id id) requires isOwner
+  template <typename T_ = T, detail::is_owner<T_> = true>
+  void remove_font(const font_id id)
   {
     m_renderer.fonts.erase(id);
   }
@@ -1335,7 +1376,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_font(const font_id id) -> font& requires isOwner
+  template <typename T_ = T, detail::is_owner<T_> = true>
+  [[nodiscard]] auto get_font(const font_id id) -> font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -1343,8 +1385,8 @@ class basic_renderer final
   /**
    * \copydoc get_font
    */
-  [[nodiscard]] auto get_font(const font_id id) const
-      -> const font& requires isOwner
+  template <typename T_ = T, detail::is_owner<T_> = true>
+  [[nodiscard]] auto get_font(const font_id id) const -> const font&
   {
     return m_renderer.fonts.at(id);
   }
@@ -1360,8 +1402,8 @@ class basic_renderer final
    *
    * \since 4.1.0
    */
-  [[nodiscard]] auto has_font(const font_id id) const noexcept
-      -> bool requires isOwner
+  template <typename T_ = T, detail::is_owner<T_> = true>
+  [[nodiscard]] auto has_font(const font_id id) const noexcept -> bool
   {
     return static_cast<bool>(m_renderer.fonts.count(id));
   }
@@ -1480,7 +1522,7 @@ class basic_renderer final
    */
   void set_logical_size(const iarea& size) noexcept
   {
-    if ((size.width > 0) && (size.height > 0)) {
+    if ((size.width >= 0) && (size.height >= 0)) {
       SDL_RenderSetLogicalSize(get(), size.width, size.height);
     }
   }
@@ -1865,7 +1907,8 @@ class basic_renderer final
    *
    * \since 5.0.0
    */
-  explicit operator bool() const noexcept requires isHandle
+  template <typename U = T, detail::is_handle<U> = true>
+  explicit operator bool() const noexcept
   {
     return m_renderer != nullptr;
   }
@@ -1919,9 +1962,9 @@ class basic_renderer final
     return texture;
   }
 
-  template <typename U>
+  template <typename U, typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] auto translate(const basic_point<U>& point) const noexcept
-      -> basic_point<U> requires isOwner
+      -> basic_point<U>
   {
     using value_type = typename basic_point<U>::value_type;
 
@@ -1932,9 +1975,9 @@ class basic_renderer final
     return basic_point<U>{x, y};
   }
 
-  template <rect_precision U>
+  template <typename U, typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] auto translate(const basic_rect<U>& rect) const noexcept
-      -> basic_rect<U> requires isOwner
+      -> basic_rect<U>
   {
     return basic_rect<U>{translate(rect.position()), rect.size()};
   }

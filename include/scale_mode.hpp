@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,9 +65,8 @@ enum class scale_mode
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(scale_mode lhs,
-                                               SDL_ScaleMode rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(scale_mode lhs,
+                                        SDL_ScaleMode rhs) noexcept -> bool
 {
   return static_cast<SDL_ScaleMode>(lhs) == rhs;
 }
@@ -77,8 +76,8 @@ enum class scale_mode
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_ScaleMode lhs,
-                                               scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(SDL_ScaleMode lhs,
+                                        scale_mode rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -95,9 +94,8 @@ enum class scale_mode
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(scale_mode lhs,
-                                               SDL_ScaleMode rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(scale_mode lhs,
+                                        SDL_ScaleMode rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -107,8 +105,8 @@ enum class scale_mode
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_ScaleMode lhs,
-                                               scale_mode rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_ScaleMode lhs,
+                                        scale_mode rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

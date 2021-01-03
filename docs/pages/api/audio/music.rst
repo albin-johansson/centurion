@@ -73,7 +73,7 @@ Basic playback
     cen::music::pause();
 
     // loop music forever
-    music.play(cen::music::loopForever);
+    music.play(cen::music::forever);
 
     // indicates whether or not any music is playing
     if (cen::music::is_playing()) {

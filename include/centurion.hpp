@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,9 +36,10 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-#include <optional>
+#include <optional>  // optional
 
 #include "centurion_api.hpp"
+#include "exception.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -156,8 +157,10 @@ class library final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  library();
+  library()
+  {
+    init();
+  }
 
   /**
    * \brief Initializes the library according to the supplied configuration.
@@ -174,8 +177,10 @@ class library final
    *
    * \since 4.0.0
    */
-  CENTURION_API
-  explicit library(const config& cfg);
+  explicit library(const config& cfg) : m_cfg{cfg}
+  {
+    init();
+  }
 
   library(const library&) = delete;
 
@@ -189,57 +194,173 @@ class library final
   class sdl final
   {
    public:
-    explicit sdl(u32 flags);
+    explicit sdl(const u32 flags)
+    {
+      const auto result = SDL_Init(flags);
+      if (result < 0) {
+        throw sdl_error{"Failed to initialize SDL2"};
+      }
+    }
 
-    CENTURION_API
-    ~sdl() noexcept;
+    ~sdl() noexcept
+    {
+      SDL_Quit();
+    }
   };
 
   class sdl_ttf final
   {
    public:
-    explicit sdl_ttf();
+    explicit sdl_ttf()
+    {
+      const auto result = TTF_Init();
+      if (result == -1) {
+        throw ttf_error{"Failed to initialize SDL2_ttf"};
+      }
+    }
 
-    CENTURION_API
-    ~sdl_ttf() noexcept;
+    ~sdl_ttf() noexcept
+    {
+      TTF_Quit();
+    }
   };
 
   class sdl_mixer final
   {
    public:
-    sdl_mixer(int flags, int freq, u16 format, int nChannels, int chunkSize);
+    sdl_mixer(const int flags,
+              const int freq,
+              const u16 format,
+              const int nChannels,
+              const int chunkSize)
+    {
+      if (!Mix_Init(flags)) {
+        throw mix_error{"Failed to initialize SDL2_mixer"};
+      }
 
-    CENTURION_API
-    ~sdl_mixer() noexcept;
+      if (Mix_OpenAudio(freq, format, nChannels, chunkSize) == -1) {
+        throw mix_error{"Failed to open audio"};
+      }
+    }
+
+    ~sdl_mixer() noexcept
+    {
+      Mix_CloseAudio();
+      Mix_Quit();
+    }
   };
 
   class sdl_image final
   {
    public:
-    explicit sdl_image(int flags);
+    explicit sdl_image(const int flags)
+    {
+      if (!IMG_Init(flags)) {
+        throw img_error{"Failed to initialize SDL2_image"};
+      }
+    }
 
-    CENTURION_API
-    ~sdl_image() noexcept;
+    ~sdl_image() noexcept
+    {
+      IMG_Quit();
+    }
   };
 
-  config m_cfg{};
-  std::optional<sdl> m_sdl{};
-  std::optional<sdl_image> m_img{};
-  std::optional<sdl_ttf> m_ttf{};
-  std::optional<sdl_mixer> m_mixer{};
+  config m_cfg;
+  std::optional<sdl> m_sdl;
+  std::optional<sdl_image> m_img;
+  std::optional<sdl_ttf> m_ttf;
+  std::optional<sdl_mixer> m_mixer;
 
-  void init();
+  void init()
+  {
+    if (m_cfg.initCore) {
+      m_sdl.emplace(m_cfg.coreFlags);
+    }
+
+    if (m_cfg.initImage) {
+      m_img.emplace(m_cfg.imageFlags);
+    }
+
+    if (m_cfg.initTTF) {
+      m_ttf.emplace();
+    }
+
+    if (m_cfg.initMixer) {
+      m_mixer.emplace(m_cfg.mixerFlags,
+                      m_cfg.mixerFreq,
+                      m_cfg.mixerFormat,
+                      m_cfg.mixerChannels,
+                      m_cfg.mixerChunkSize);
+    }
+  }
 };
+
+/**
+ * \brief Returns the compile-time version of SDL2 that is being used.
+ *
+ * \return the compile-time version of SDL2 that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_version() noexcept -> SDL_version
+{
+  return {SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_PATCHLEVEL};
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_image that is being used.
+ *
+ * \return the compile-time version of SDL2_image that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_image_version() noexcept -> SDL_version
+{
+  return {SDL_IMAGE_MAJOR_VERSION,
+          SDL_IMAGE_MINOR_VERSION,
+          SDL_IMAGE_PATCHLEVEL};
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_mixer that is being used.
+ *
+ * \return the compile-time version of SDL2_mixer that is being used.
+ *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_mixer_version() noexcept -> SDL_version
+{
+  return {SDL_MIXER_MAJOR_VERSION,
+          SDL_MIXER_MINOR_VERSION,
+          SDL_MIXER_PATCHLEVEL};
+}
 
 /**
  * \brief Returns the compile-time version of SDL2_ttf that is being used.
  *
  * \return the compile-time version of SDL2_ttf that is being used.
  *
+ * \since 5.1.0
+ */
+[[nodiscard]] constexpr auto sdl_ttf_version() noexcept -> SDL_version
+{
+  return {SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_PATCHLEVEL};
+}
+
+/**
+ * \brief Returns the compile-time version of SDL2_ttf that is being used.
+ *
+ * \return the compile-time version of SDL2_ttf that is being used.
+ *
+ * \deprecated Use `sdl_ttf_version()` instead.
+ *
  * \since 4.0.0
  */
-CENTURION_QUERY
-auto ttf_version() noexcept -> SDL_version;
+[[nodiscard, deprecated]] constexpr auto ttf_version() noexcept -> SDL_version
+{
+  return sdl_ttf_version();
+}
 
 }  // namespace cen
 

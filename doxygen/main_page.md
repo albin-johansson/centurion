@@ -16,5 +16,5 @@
   </div>
   
   
-  Albin Johansson | MIT License | 2019-2020
+  Albin Johansson | MIT License | 2019-2021
 </center>

@@ -1,198 +1,134 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(CenturionSrc)
+project(centurion-src)
 
 set(SOURCE_FILES
-        ../include/centurion_cfg.hpp
-        ../include/types.hpp
-        ../include/graphics_drivers.hpp
-        ../include/window.hpp
-        ../include/window_utils.hpp
-        ../include/font.hpp
-        ../include/renderer.hpp
-        ../include/joystick.hpp
-        ../include/texture.hpp
-        ../include/exception.hpp
-        ../include/centurion_api.hpp
-        ../include/centurion.hpp
-        ../include/colors.hpp
-        ../include/pref_path.hpp
-        ../include/base_path.hpp
-        ../include/platform.hpp
-        ../include/counter.hpp
-        ../include/log.hpp
-        ../include/blend_mode.hpp
-        ../include/message_box.hpp
-        ../include/color.hpp
-        ../include/rect.hpp
-        ../include/point.hpp
-        ../include/key_state.hpp
-        ../include/mouse_state.hpp
-        ../include/surface.hpp
-        ../include/pixel_format.hpp
-        ../include/cursor.hpp
-        ../include/cpu.hpp
-        ../include/ram.hpp
-        ../include/battery.hpp
-        ../include/screen.hpp
-        ../include/scan_code.hpp
-        ../include/touch.hpp
-        ../include/mouse_button.hpp
-        ../include/event_type.hpp
-        ../include/event.hpp
-        ../include/button_state.hpp
-        ../include/controller.hpp
-        ../include/area.hpp
-        ../include/key_modifier.hpp
-        ../include/hints.hpp
-        ../include/touch.hpp
-        ../include/font_cache.hpp
-        ../include/unicode_string.hpp
-        ../include/scale_mode.hpp
-        ../include/thread.hpp
-        ../include/mutex.hpp
-        ../include/scoped_lock.hpp
-        ../include/try_lock.hpp
-        ../include/condition.hpp
-        ../include/semaphore.hpp
-        ../include/clipboard.hpp
-        ../include/sdl_string.hpp
-        ../include/texture_access.hpp
+    ../include/area.hpp
 
-        ../include/detail/utils.hpp
-        ../include/detail/static_bimap.hpp
-        ../include/detail/to_string.hpp
-        ../include/detail/stack_resource.hpp
+    ../include/base_path.hpp
+    ../include/battery.hpp
+    ../include/blend_mode.hpp
+    ../include/button_state.hpp
 
-        core/centurion.cpp
-        core/exception.cpp
+    ../include/cast.hpp
+    ../include/centurion.hpp
+    ../include/centurion_api.hpp
+    ../include/centurion_cfg.hpp
+    ../include/clipboard.hpp
+    ../include/color.hpp
+    ../include/colors.hpp
+    ../include/condition.hpp
+    ../include/controller.hpp
+    ../include/counter.hpp
+    ../include/cpu.hpp
+    ../include/cursor.hpp
+    ../include/czstring.hpp
 
-        misc/log.cpp
+    ../include/event_type.hpp
+    ../include/event.hpp
+    ../include/exception.hpp
 
-        graphics/font.cpp
-        graphics/font_cache.cpp
-        graphics/texture.cpp
-        graphics/message_box.cpp
-        graphics/message_box_button.cpp
-        graphics/message_box_color_scheme.cpp
-        graphics/surface.cpp
-        graphics/graphics_drivers.cpp
-        graphics/color.cpp
+    ../include/font.hpp
+    ../include/font_cache.hpp
 
-        system/base_path.cpp
-        system/pref_path.cpp
-        system/platform.cpp
-        system/battery.cpp
-        system/screen.cpp
-        system/clipboard.cpp
+    ../include/graphics_drivers.hpp
 
-        input/key_state.cpp
-        input/mouse_state.cpp
-        input/touch.cpp
-        input/key_code.cpp
-        input/scan_code.cpp
+    ../include/hints.hpp
 
-        event/event.cpp
-        event/quit_event.cpp
-        event/window_event.cpp
-        event/keyboard_event.cpp
-        event/audio_device_event.cpp
-        event/controller_axis_event.cpp
-        event/controller_button_event.cpp
-        event/controller_device_event.cpp
-        event/dollar_gesture_event.cpp
-        event/drop_event.cpp
-        event/touch_finger_event.cpp
-        event/joy_axis_event.cpp
-        event/joy_ball_event.cpp
-        event/joy_hat_event.cpp
-        event/joy_button_event.cpp
-        event/joy_device_event.cpp
-        event/mouse_motion_event.cpp
-        event/mouse_button_event.cpp
-        event/mouse_wheel_event.cpp
-        event/multi_gesture_event.cpp
-        event/text_editing_event.cpp
-        event/text_input_event.cpp
+    ../include/integers.hpp
 
-        thread/scoped_lock.cpp
-        thread/mutex.cpp
-        thread/condition.cpp
-        thread/try_lock.cpp
-        thread/semaphore.cpp)
+    ../include/joystick.hpp
+
+    ../include/key_code.hpp
+    ../include/key_modifier.hpp
+    ../include/key_state.hpp
+
+    ../include/log.hpp
+
+    ../include/message_box.hpp
+    ../include/mouse_button.hpp
+    ../include/mouse_state.hpp
+    ../include/mutex.hpp
+
+    ../include/not_null.hpp
+
+    ../include/owner.hpp
+
+    ../include/pixel_format.hpp
+    ../include/platform.hpp
+    ../include/point.hpp
+    ../include/pref_path.hpp
+
+    ../include/ram.hpp
+    ../include/rect.hpp
+    ../include/renderer.hpp
+
+    ../include/scale_mode.hpp
+    ../include/scan_code.hpp
+    ../include/scoped_lock.hpp
+    ../include/screen.hpp
+    ../include/sdl_string.hpp
+    ../include/semaphore.hpp
+    ../include/surface.hpp
+
+    ../include/texture.hpp
+    ../include/texture_access.hpp
+    ../include/thread.hpp
+    ../include/time.hpp
+    ../include/touch.hpp
+    ../include/try_lock.hpp
+    ../include/types.hpp
+
+    ../include/unicode_string.hpp
+
+    ../include/window.hpp
+    ../include/window_utils.hpp
+
+    ../include/detail/address_of.hpp
+    ../include/detail/any_eq.hpp
+    ../include/detail/clamp.hpp
+    ../include/detail/convert_bool.hpp
+    ../include/detail/czstring_eq.hpp
+    ../include/detail/max.hpp
+    ../include/detail/owner_handle_api.hpp
+    ../include/detail/stack_resource.hpp
+    ../include/detail/static_bimap.hpp
+    ../include/detail/to_string.hpp
+
+    graphics/message_box.cpp
+    graphics/message_box_button.cpp
+    graphics/message_box_color_scheme.cpp
+
+    input/touch.cpp)
 
 if (CEN_AUDIO)
-    set(SOURCE_FILES
-            ${SOURCE_FILES}
-            ${CEN_INCLUDE_DIR}/sound_effect.hpp
-            ${CEN_INCLUDE_DIR}/music.hpp
-            audio/sound_effect.cpp
-            audio/music.cpp)
+  set(SOURCE_FILES
+      ${SOURCE_FILES}
+      ../include/sound_effect.hpp
+      ../include/music.hpp)
 endif ()
 
 add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})
+cen_set_compiler_options(${CENTURION_LIB_TARGET})
 
 if (WIN32)
-    add_definitions(-DWIN_EXPORT)
+  add_definitions(-DWIN_EXPORT)
 endif ()
 
 set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
-        OUTPUT_NAME ${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion
-        VERSION ${CENTURION_VERSION})
+    OUTPUT_NAME ${CMAKE_IMPORT_LIBRARY_PREFIX}Centurion
+    VERSION ${CENTURION_VERSION})
 
 target_include_directories(${CENTURION_LIB_TARGET}
-        SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
-        SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
-        SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
-        SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-        PRIVATE ${CEN_INCLUDE_DIR}
-        PRIVATE ${CEN_SOURCE_DIR}
-        SYSTEM INTERFACE ${CEN_INCLUDE_DIR})
+    PRIVATE ../include
+    SYSTEM INTERFACE ../include
+    SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
+    SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
+    SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
+    SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 
 target_link_libraries(${CENTURION_LIB_TARGET}
-        PUBLIC ${SDL2_LIBRARY}
-        PUBLIC ${SDL2_IMAGE_LIBRARIES}
-        PUBLIC ${SDL2_MIXER_LIBRARIES}
-        PUBLIC ${SDL2_TTF_LIBRARIES})
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
-            -Wall
-            -Wextra
-            -Wpedantic
-            -Wdouble-promotion
-            -Wswitch-default
-            -Wswitch-enum
-            -Wunused
-            -Wuninitialized
-            -Wsuggest-final-types
-            -Wsuggest-final-methods
-            -Wsuggest-override
-            -Wduplicated-cond
-            -Wconversion
-            -Wno-attributes)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
-            /EHsc
-            -Wall
-            -Wextra
-            -Wpedantic
-            -Wdouble-promotion
-            -Wswitch-default
-            -Wswitch-enum
-            -Wunused
-            -Wuninitialized
-            -Wconversion
-            -Wno-c++98-compat
-            -Wno-c++98-compat-pedantic
-            -Wno-unused-template
-            -Wno-unused-macros
-            -Wno-newline-eof
-            -Wno-documentation-unknown-command)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
-            /EHsc
-            /MP
-            /W3)
-endif ()
-
+    PUBLIC ${SDL2_LIBRARY}
+    PUBLIC ${SDL2_IMAGE_LIBRARIES}
+    PUBLIC ${SDL2_MIXER_LIBRARIES}
+    PUBLIC ${SDL2_TTF_LIBRARIES})

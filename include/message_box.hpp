@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,6 @@
 
 #include "centurion_api.hpp"
 #include "color.hpp"
-#include "detail/utils.hpp"
 #include "types.hpp"
 #include "window.hpp"
 
@@ -524,9 +523,9 @@ static_assert(std::is_final_v<message_box>);
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(
-    message_box::default_button lhs,
-    SDL_MessageBoxButtonFlags rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(message_box::default_button lhs,
+                                        SDL_MessageBoxButtonFlags rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_MessageBoxButtonFlags>(lhs) == rhs;
 }
@@ -534,7 +533,7 @@ static_assert(std::is_final_v<message_box>);
 /**
  * \copydoc operator==(message_box::default_button, SDL_MessageBoxButtonFlags)
  */
-[[nodiscard]] inline constexpr auto operator==(
+[[nodiscard]] constexpr auto operator==(
     SDL_MessageBoxButtonFlags lhs,
     message_box::default_button rhs) noexcept -> bool
 {
@@ -551,9 +550,9 @@ static_assert(std::is_final_v<message_box>);
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(
-    message_box::default_button lhs,
-    SDL_MessageBoxButtonFlags rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(message_box::default_button lhs,
+                                        SDL_MessageBoxButtonFlags rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -561,7 +560,7 @@ static_assert(std::is_final_v<message_box>);
 /**
  * \copydoc operator!=(message_box::default_button, SDL_MessageBoxButtonFlags)
  */
-[[nodiscard]] inline constexpr auto operator!=(
+[[nodiscard]] constexpr auto operator!=(
     SDL_MessageBoxButtonFlags lhs,
     message_box::default_button rhs) noexcept -> bool
 {
@@ -578,9 +577,9 @@ static_assert(std::is_final_v<message_box>);
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(
-    SDL_MessageBoxColorType lhs,
-    message_box::color_id rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(SDL_MessageBoxColorType lhs,
+                                        message_box::color_id rhs) noexcept
+    -> bool
 {
   return lhs == static_cast<SDL_MessageBoxColorType>(rhs);
 }
@@ -588,9 +587,9 @@ static_assert(std::is_final_v<message_box>);
 /**
  * \copydoc operator==(SDL_MessageBoxColorType, message_box::color_id)
  */
-[[nodiscard]] inline constexpr auto operator==(
-    message_box::color_id lhs,
-    SDL_MessageBoxColorType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(message_box::color_id lhs,
+                                        SDL_MessageBoxColorType rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
@@ -605,9 +604,9 @@ static_assert(std::is_final_v<message_box>);
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(
-    SDL_MessageBoxColorType lhs,
-    message_box::color_id rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_MessageBoxColorType lhs,
+                                        message_box::color_id rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -615,9 +614,9 @@ static_assert(std::is_final_v<message_box>);
 /**
  * \copydoc operator!=(SDL_MessageBoxColorType, message_box::color_id)
  */
-[[nodiscard]] inline constexpr auto operator!=(
-    message_box::color_id lhs,
-    SDL_MessageBoxColorType rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(message_box::color_id lhs,
+                                        SDL_MessageBoxColorType rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }

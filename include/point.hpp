@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,8 +33,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "cast.hpp"
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
 #include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -444,58 +444,50 @@ template <typename T>
   }
 }
 
-[[nodiscard]] inline constexpr auto operator+(const fpoint& lhs,
-                                              const fpoint& rhs) noexcept
-    -> fpoint
+[[nodiscard]] constexpr auto operator+(const fpoint& lhs,
+                                       const fpoint& rhs) noexcept -> fpoint
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
-[[nodiscard]] inline constexpr auto operator-(const fpoint& lhs,
-                                              const fpoint& rhs) noexcept
-    -> fpoint
+[[nodiscard]] constexpr auto operator-(const fpoint& lhs,
+                                       const fpoint& rhs) noexcept -> fpoint
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
 
-[[nodiscard]] inline constexpr auto operator+(const ipoint& lhs,
-                                              const ipoint& rhs) noexcept
-    -> ipoint
+[[nodiscard]] constexpr auto operator+(const ipoint& lhs,
+                                       const ipoint& rhs) noexcept -> ipoint
 {
   return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
 }
 
-[[nodiscard]] inline constexpr auto operator-(const ipoint& lhs,
-                                              const ipoint& rhs) noexcept
-    -> ipoint
+[[nodiscard]] constexpr auto operator-(const ipoint& lhs,
+                                       const ipoint& rhs) noexcept -> ipoint
 {
   return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
 }
 
-[[nodiscard]] inline constexpr auto operator==(const ipoint& lhs,
-                                               const ipoint& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const ipoint& lhs,
+                                        const ipoint& rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] inline constexpr auto operator==(const fpoint& lhs,
-                                               const fpoint& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const fpoint& lhs,
+                                        const fpoint& rhs) noexcept -> bool
 {
   return (lhs.x() == rhs.x()) && (lhs.y() == rhs.y());
 }
 
-[[nodiscard]] inline constexpr auto operator!=(const ipoint& lhs,
-                                               const ipoint& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const ipoint& lhs,
+                                        const ipoint& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
-[[nodiscard]] inline constexpr auto operator!=(const fpoint& lhs,
-                                               const fpoint& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const fpoint& lhs,
+                                        const fpoint& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

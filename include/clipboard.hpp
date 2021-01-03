@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,10 +27,12 @@
 
 #include <SDL_clipboard.h>
 
-#include <string>
+#include <string>  // string
 
 #include "centurion_api.hpp"
-#include "types.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
+#include "sdl_string.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -57,8 +59,10 @@ namespace cen::clipboard {
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto has_text() noexcept -> bool;
+[[nodiscard]] inline auto has_text() noexcept -> bool
+{
+  return SDL_HasClipboardText();
+}
 
 /**
  * \brief Returns the current text in the clipboard.
@@ -70,11 +74,16 @@ auto has_text() noexcept -> bool;
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto get_text() -> std::string;
+[[nodiscard]] inline auto get_text() -> std::string
+{
+  const sdl_string text{SDL_GetClipboardText()};
+  return text.copy();
+}
 
 /**
  * \brief Sets the current clipboard text.
+ *
+ * \pre `text` cannot be null.
  *
  * \param text the text that will be stored in the clipboard.
  *
@@ -82,8 +91,10 @@ auto get_text() -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto set_text(nn_czstring text) noexcept -> bool;
+inline auto set_text(not_null<czstring> text) noexcept -> bool
+{
+  return SDL_SetClipboardText(text) == 0;
+}
 
 }  // namespace cen::clipboard
 

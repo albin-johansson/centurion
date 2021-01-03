@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,9 +36,12 @@
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "color.hpp"
+#include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "detail/to_string.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
+#include "not_null.hpp"
 #include "pixel_format.hpp"
 #include "rect.hpp"
 
@@ -97,7 +100,7 @@ class basic_surface final
    * \since 4.0.0
    */
   template <typename T_ = T, detail::is_owner<T_> = true>
-  explicit basic_surface(nn_czstring file) : m_surface{IMG_Load(file)}
+  explicit basic_surface(not_null<czstring> file) : m_surface{IMG_Load(file)}
   {
     if (!m_surface) {
       throw img_error{"Failed to create surface from file"};

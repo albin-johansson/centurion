@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,13 +30,21 @@
 #include <vector>
 
 #include "centurion_api.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
+
+/**
+ * \typedef unicode
+ *
+ * \brief The representation of Unicode glyphs.
+ *
+ * \since 5.0.0
+ */
+using unicode = u16;
 
 /**
  * \class unicode_string
@@ -386,7 +394,7 @@ namespace literals {
  *
  * \since 5.0.0
  */
-inline constexpr auto operator""_uni(char c) noexcept -> unicode
+constexpr auto operator""_uni(char c) noexcept -> unicode
 {
   return static_cast<unicode>(c);
 }
@@ -400,8 +408,7 @@ inline constexpr auto operator""_uni(char c) noexcept -> unicode
  *
  * \since 5.0.0
  */
-inline constexpr auto operator""_uni(unsigned long long int i) noexcept
-    -> unicode
+constexpr auto operator""_uni(unsigned long long int i) noexcept -> unicode
 {
   return static_cast<unicode>(i);
 }

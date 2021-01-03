@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,14 +25,13 @@
 #ifndef CENTURION_KEY_CODE_HEADER
 #define CENTURION_KEY_CODE_HEADER
 
-#include <SDL_keyboard.h>
-#include <SDL_keycode.h>
-#include <SDL_scancode.h>
+#include <SDL.h>
 
 #include <ostream>
 
 #include "centurion_api.hpp"
-#include "types.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -118,7 +117,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  constexpr key_code(SDL_KeyCode key) noexcept : m_key{key}
+  constexpr /*implicit*/ key_code(SDL_KeyCode key) noexcept : m_key{key}
   {}
 
   /**
@@ -149,7 +148,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  explicit key_code(nn_czstring name) noexcept
+  explicit key_code(not_null<czstring> name) noexcept
       : m_key{static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name))}
   {}
 
@@ -201,7 +200,7 @@ class key_code final
    *
    * \since 5.0.0
    */
-  auto operator=(nn_czstring name) noexcept -> key_code&
+  auto operator=(not_null<czstring> name) noexcept -> key_code&
   {
     m_key = static_cast<SDL_KeyCode>(SDL_GetKeyFromName(name));
     return *this;
@@ -230,6 +229,20 @@ class key_code final
   [[nodiscard]] auto name() const -> std::string
   {
     return SDL_GetKeyName(m_key);
+  }
+
+  /**
+   * \brief Returns the corresponding `SDL_Scancode`.
+   *
+   * \return the scan code associated with the internal key code.
+   *
+   * \see `SDL_GetScancodeFromKey`
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto to_scan_code() const noexcept -> SDL_Scancode
+  {
+    return SDL_GetScancodeFromKey(m_key);
   }
 
   /**
@@ -281,7 +294,7 @@ class key_code final
    */
   explicit operator SDL_Scancode() const noexcept
   {
-    return SDL_GetScancodeFromKey(m_key);
+    return to_scan_code();
   }
 
  private:
@@ -299,8 +312,10 @@ class key_code final
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const key_code& keyCode) -> std::string;
+[[nodiscard]] inline auto to_string(const key_code& keyCode) -> std::string
+{
+  return "[key_code | key: " + keyCode.name() + "]";
+}
 
 /**
  * \brief Prints a key code using a stream.
@@ -314,8 +329,12 @@ auto to_string(const key_code& keyCode) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const key_code& keyCode)
+    -> std::ostream&
+{
+  stream << to_string(keyCode);
+  return stream;
+}
 
 /**
  * \brief Indicates whether or not two key codes are the same.
@@ -329,9 +348,8 @@ auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(const key_code& lhs,
-                                               const key_code& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(const key_code& lhs,
+                                        const key_code& rhs) noexcept -> bool
 {
   return lhs.get() == rhs.get();
 }
@@ -348,9 +366,8 @@ auto operator<<(std::ostream& stream, const key_code& keyCode) -> std::ostream&;
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(const key_code& lhs,
-                                               const key_code& rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(const key_code& lhs,
+                                        const key_code& rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

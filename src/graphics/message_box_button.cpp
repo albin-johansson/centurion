@@ -7,9 +7,9 @@ namespace cen {
 message_box::button::button(button_id id,
                             std::string text,
                             default_button defaultButton)
-    : m_id{id},
-      m_defaultButton{defaultButton},
-      m_text{std::move(text)}
+    : m_id{id}
+    , m_defaultButton{defaultButton}
+    , m_text{std::move(text)}
 {}
 
 auto message_box::button::id() const noexcept -> button_id

@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@
 #include <type_traits>  // enable_if_t, conditional_t, true_type, false_type
 
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "point.hpp"
 #include "surface.hpp"
 
@@ -84,9 +84,8 @@ enum class system_cursor
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(system_cursor lhs,
-                                               SDL_SystemCursor rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(system_cursor lhs,
+                                        SDL_SystemCursor rhs) noexcept -> bool
 {
   return static_cast<SDL_SystemCursor>(lhs) == rhs;
 }
@@ -96,9 +95,8 @@ enum class system_cursor
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_SystemCursor lhs,
-                                               system_cursor rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(SDL_SystemCursor lhs,
+                                        system_cursor rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -116,9 +114,8 @@ enum class system_cursor
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(system_cursor lhs,
-                                               SDL_SystemCursor rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(system_cursor lhs,
+                                        SDL_SystemCursor rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -128,9 +125,8 @@ enum class system_cursor
  *
  * \ingroup graphics
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_SystemCursor lhs,
-                                               system_cursor rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_SystemCursor lhs,
+                                        system_cursor rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

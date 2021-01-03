@@ -11,6 +11,7 @@
 #pragma once
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
+/// \cond FALSE
 namespace cen::detail {
 
 template <std::size_t bufferSize>
@@ -31,5 +32,6 @@ class stack_resource final
 };
 
 }  // namespace cen::detail
+/// \endcond
 
 #endif  // CENTURION_DETAIL_STACK_RESOURCE_HEADER

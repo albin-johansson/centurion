@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,16 +33,14 @@
 
 #include <SDL.h>
 
-#include <algorithm>    // min, max
-#include <concepts>     // convertible_to, integral, floating_point
-#include <ostream>      // ostream
-#include <string>       // string
-#include <type_traits>  // ...
+#include <algorithm>
+#include <ostream>
+#include <string>
+#include <type_traits>
 
 #include "area.hpp"
+#include "cast.hpp"
 #include "centurion_api.hpp"
-#include "detail/to_string.hpp"
-#include "detail/utils.hpp"
 #include "point.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
@@ -50,10 +48,6 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
-
-template <typename T>
-concept rect_precision =
-    std::convertible_to<T, int> || std::convertible_to<T, float>;
 
 /**
  * \class rect_traits
@@ -75,7 +69,9 @@ concept rect_precision =
  *
  * \headerfile rect.hpp
  */
-template <rect_precision T>
+template <typename T,
+          typename = std::enable_if_t<std::is_convertible_v<T, int> ||
+                                      std::is_convertible_v<T, float>>>
 class rect_traits final
 {
  public:
@@ -86,7 +82,7 @@ class rect_traits final
    *
    * \since 5.0.0
    */
-  inline constexpr static bool isIntegral = std::integral<T>;
+  inline constexpr static bool isIntegral = std::is_integral_v<T>;
 
   /**
    * \var isFloating
@@ -96,7 +92,7 @@ class rect_traits final
    *
    * \since 5.0.0
    */
-  inline constexpr static bool isFloating = std::floating_point<T>;
+  inline constexpr static bool isFloating = std::is_floating_point_v<T>;
 
   /**
    * \typedef value_type
@@ -152,7 +148,7 @@ class rect_traits final
  *
  * \headerfile rect.hpp
  */
-template <rect_precision T>
+template <typename T>
 class basic_rect final
 {
  public:
@@ -213,7 +209,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_x(const value_type x) noexcept
+  constexpr void set_x(value_type x) noexcept
   {
     m_rect.x = x;
   }
@@ -225,54 +221,9 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_y(const value_type y) noexcept
+  constexpr void set_y(value_type y) noexcept
   {
     m_rect.y = y;
-  }
-
-  /**
-   * \brief Sets the maximum x-coordinate of the rectangle.
-   *
-   * \note This function preserves the width of the rectangle.
-   *
-   * \param maxX the new maximum x-coordinate of the rectangle.
-   *
-   * \since 6.0.0
-   */
-  constexpr void set_max_x(const value_type maxX) noexcept
-  {
-    m_rect.x = maxX - m_rect.w;
-  }
-
-  /**
-   * \brief Sets the maximum y-coordinate of the rectangle.
-   *
-   * \note This function preserves the height of the rectangle.
-   *
-   * \param maxX the new maximum y-coordinate of the rectangle.
-   *
-   * \since 6.0.0
-   */
-  constexpr void set_max_y(const value_type maxY) noexcept
-  {
-    m_rect.y = maxY - m_rect.h;
-  }
-
-  /**
-   * \brief Sets the position of the rectangle.
-   *
-   * \note Some frameworks have this kind of method change the size of the
-   * rectangle. However, this method does *not* change the size of the
-   * rectangle.
-   *
-   * \param pos the new position of the rectangle.
-   *
-   * \since 6.0.0
-   */
-  constexpr void set_position(const point_type& pos) noexcept
-  {
-    m_rect.x = pos.x();
-    m_rect.y = pos.y();
   }
 
   /**
@@ -284,13 +235,12 @@ class basic_rect final
    *
    * \param pos the new position of the rectangle.
    *
-   * \deprecated in favor of `set_position()`.
-   *
    * \since 4.2.0
    */
-  [[deprecated]] constexpr void move_to(const point_type& pos) noexcept
+  constexpr void move_to(const point_type& pos) noexcept
   {
-    set_position(pos);
+    m_rect.x = pos.x();
+    m_rect.y = pos.y();
   }
 
   /**
@@ -300,7 +250,7 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_width(const value_type width) noexcept
+  constexpr void set_width(value_type width) noexcept
   {
     m_rect.w = width;
   }
@@ -312,36 +262,22 @@ class basic_rect final
    *
    * \since 4.0.0
    */
-  constexpr void set_height(const value_type height) noexcept
+  constexpr void set_height(value_type height) noexcept
   {
     m_rect.h = height;
   }
-
-  /**
-   * \brief Sets the size of the rectangle.
-   *
-   * \param size the new size of the rectangle.
-   *
-   * \since 6.0.0
-   */
-  constexpr void set_size(const area_type& size) noexcept
-  {
-    m_rect.w = size.width;
-    m_rect.h = size.height;
-  };
 
   /**
    * \brief Changes the size of the rectangle.
    *
    * \param size the new size of the rectangle.
    *
-   * \deprecated in favor of `set_size()`.
-   *
    * \since 4.2.0
    */
-  [[deprecated]] constexpr void resize(const area_type& size) noexcept
+  constexpr void resize(const area_type& size) noexcept
   {
-    set_size(size);
+    m_rect.w = size.width;
+    m_rect.h = size.height;
   };
 
   /**
@@ -626,7 +562,7 @@ static_assert(std::is_nothrow_destructible_v<irect>);
  *
  * \since 4.0.0
  */
-template <rect_precision T>
+template <typename T>
 [[nodiscard]] constexpr auto operator==(const basic_rect<T>& lhs,
                                         const basic_rect<T>& rhs) noexcept
     -> bool
@@ -649,7 +585,7 @@ template <rect_precision T>
  *
  * \since 4.0.0
  */
-template <rect_precision T>
+template <typename T>
 [[nodiscard]] constexpr auto operator!=(const basic_rect<T>& lhs,
                                         const basic_rect<T>& rhs) noexcept
     -> bool
@@ -695,7 +631,7 @@ template <>
  *
  * \since 4.0.0
  */
-template <rect_precision T>
+template <typename T>
 [[nodiscard]] constexpr auto intersects(const basic_rect<T>& fst,
                                         const basic_rect<T>& snd) noexcept
     -> bool
@@ -721,7 +657,7 @@ template <rect_precision T>
  *
  * \since 4.0.0
  */
-template <rect_precision T>
+template <typename T>
 [[nodiscard]] constexpr auto collides(const basic_rect<T>& fst,
                                       const basic_rect<T>& snd) noexcept -> bool
 {
@@ -745,7 +681,7 @@ template <rect_precision T>
  *
  * \since 5.0.0
  */
-template <rect_precision T>
+template <typename T>
 [[nodiscard]] constexpr auto get_union(const basic_rect<T>& fst,
                                        const basic_rect<T>& snd) noexcept
     -> basic_rect<T>
@@ -782,14 +718,14 @@ template <rect_precision T>
  *
  * \since 5.0.0
  */
-template <rect_precision T>
+template <typename T>
 [[nodiscard]] auto to_string(const basic_rect<T>& rect) -> std::string
 {
-  const auto x = detail::to_string(rect.x()).value();
-  const auto y = detail::to_string(rect.y()).value();
-  const auto w = detail::to_string(rect.width()).value();
-  const auto h = detail::to_string(rect.height()).value();
-  return "[rect | x: " + x + ", y: " + y + ", width: " + w + ", height: " + h +
+  const auto x = std::to_string(rect.x());
+  const auto y = std::to_string(rect.y());
+  const auto w = std::to_string(rect.width());
+  const auto h = std::to_string(rect.height());
+  return "[Rect | X: " + x + ", Y: " + y + ", Width: " + w + ", Height: " + h +
          "]";
 }
 
@@ -807,7 +743,7 @@ template <rect_precision T>
  *
  * \since 5.0.0
  */
-template <rect_precision T>
+template <typename T>
 auto operator<<(std::ostream& stream, const basic_rect<T>& rect)
     -> std::ostream&
 {

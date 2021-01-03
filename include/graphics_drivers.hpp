@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,19 +22,14 @@
  * SOFTWARE.
  */
 
-#ifndef CENTURION_VIDEO_HEADER
-#define CENTURION_VIDEO_HEADER
+#ifndef CENTURION_GRAPHICS_DRIVERS_HEADER
+#define CENTURION_GRAPHICS_DRIVERS_HEADER
 
-#include <SDL_render.h>
-#include <SDL_video.h>
+#include <SDL.h>
 
-#include <memory>
-#include <optional>
-#include <string>
-#include <type_traits>
+#include <optional>  // optional
 
 #include "centurion_api.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -84,10 +79,18 @@ namespace cen {
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto get_render_driver_info(int index) noexcept
-    -> std::optional<SDL_RendererInfo>;
+[[nodiscard]] inline auto get_render_driver_info(const int index) noexcept
+    -> std::optional<SDL_RendererInfo>
+{
+  SDL_RendererInfo info{};
+  const auto result = SDL_GetRenderDriverInfo(index, &info);
+  if (result == 0) {
+    return info;
+  } else {
+    return std::nullopt;
+  }
+}
 
 }  // namespace cen
 
-#endif  // CENTURION_VIDEO_HEADER
+#endif  // CENTURION_GRAPHICS_DRIVERS_HEADER

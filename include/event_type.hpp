@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -127,9 +127,8 @@ enum class event_type
  *
  * \since 3.1.0
  */
-[[nodiscard]] inline constexpr auto operator==(event_type lhs,
-                                               SDL_EventType rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(event_type lhs,
+                                        SDL_EventType rhs) noexcept -> bool
 {
   return static_cast<SDL_EventType>(lhs) == rhs;
 }
@@ -139,8 +138,8 @@ enum class event_type
  *
  * \ingroup event
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_EventType lhs,
-                                               event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(SDL_EventType lhs,
+                                        event_type rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -157,9 +156,8 @@ enum class event_type
  *
  * \since 3.1.0
  */
-[[nodiscard]] inline constexpr auto operator!=(event_type lhs,
-                                               SDL_EventType rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(event_type lhs,
+                                        SDL_EventType rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -169,8 +167,8 @@ enum class event_type
  *
  * \ingroup event
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_EventType lhs,
-                                               event_type rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(SDL_EventType lhs,
+                                        event_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

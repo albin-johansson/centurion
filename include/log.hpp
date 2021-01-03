@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,8 +27,12 @@
 
 #include <SDL_log.h>
 
+#include <string>   // string
+#include <utility>  // forward
+
 #include "centurion_api.hpp"
-#include "detail/utils.hpp"
+#include "czstring.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -139,14 +143,14 @@ enum class category
  * \since 4.0.0
  */
 template <typename... Args>
-void msg(log::priority priority,
-         log::category category,
-         nn_czstring fmt,
+void msg(const priority priority,
+         const category category,
+         not_null<czstring> fmt,
          Args&&... args) noexcept
 {
   const auto sdlCategory = static_cast<SDL_LogCategory>(category);
   const auto prio = static_cast<SDL_LogPriority>(priority);
-  SDL_LogMessage(sdlCategory, prio, fmt, args...);
+  SDL_LogMessage(sdlCategory, prio, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -164,9 +168,11 @@ void msg(log::priority priority,
  * \since 4.0.0
  */
 template <typename... Args>
-void info(category category, nn_czstring fmt, Args&&... args) noexcept
+void info(const category category,
+          not_null<czstring> fmt,
+          Args&&... args) noexcept
 {
-  log::msg(log::priority::info, category, fmt, args...);
+  log::msg(priority::info, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -183,9 +189,9 @@ void info(category category, nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void info(nn_czstring fmt, Args&&... args) noexcept
+void info(not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::info(log::category::app, fmt, args...);
+  log::info(category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -203,9 +209,11 @@ void info(nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(category category, nn_czstring fmt, Args&&... args) noexcept
+void warn(const category category,
+          not_null<czstring> fmt,
+          Args&&... args) noexcept
 {
-  log::msg(priority::warn, category, fmt, args...);
+  log::msg(priority::warn, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -222,9 +230,9 @@ void warn(category category, nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void warn(nn_czstring fmt, Args&&... args) noexcept
+void warn(not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::warn(category::app, fmt, args...);
+  log::warn(category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -242,9 +250,11 @@ void warn(nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(category category, nn_czstring fmt, Args&&... args) noexcept
+void verbose(const category category,
+             not_null<czstring> fmt,
+             Args&&... args) noexcept
 {
-  log::msg(priority::verbose, category, fmt, args...);
+  log::msg(priority::verbose, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -261,9 +271,9 @@ void verbose(category category, nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void verbose(nn_czstring fmt, Args&&... args) noexcept
+void verbose(not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::verbose(category::app, fmt, args...);
+  log::verbose(category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -281,9 +291,11 @@ void verbose(nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(category category, nn_czstring fmt, Args&&... args) noexcept
+void debug(const category category,
+           not_null<czstring> fmt,
+           Args&&... args) noexcept
 {
-  log::msg(priority::debug, category, fmt, args...);
+  log::msg(priority::debug, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -300,9 +312,9 @@ void debug(category category, nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void debug(nn_czstring fmt, Args&&... args) noexcept
+void debug(not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::debug(category::app, fmt, args...);
+  log::debug(category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -320,9 +332,9 @@ void debug(nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(category category, czstring fmt, Args&&... args) noexcept
+void critical(const category category, czstring fmt, Args&&... args) noexcept
 {
-  log::msg(priority::critical, category, fmt, args...);
+  log::msg(priority::critical, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -339,9 +351,9 @@ void critical(category category, czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void critical(nn_czstring fmt, Args&&... args) noexcept
+void critical(not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::critical(category::app, fmt, args...);
+  log::critical(category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -359,9 +371,9 @@ void critical(nn_czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void error(category category, czstring fmt, Args&&... args) noexcept
+void error(const category category, czstring fmt, Args&&... args) noexcept
 {
-  log::msg(priority::error, category, fmt, args...);
+  log::msg(priority::error, category, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -376,9 +388,9 @@ void error(category category, czstring fmt, Args&&... args) noexcept
  * \since 4.0.0
  */
 template <typename... Args>
-void error(nn_czstring fmt, Args&&... args) noexcept
+void error(not_null<czstring> fmt, Args&&... args) noexcept
 {
-  log::error(category::app, fmt, args...);
+  log::error(category::app, fmt, std::forward<Args>(args)...);
 }
 
 /**
@@ -400,7 +412,7 @@ inline void put(const std::string& str) noexcept
 /**
  * \copydoc put(const std::string&)
  */
-inline void put(nn_czstring str) noexcept
+inline void put(not_null<czstring> str) noexcept
 {
   log::info("%s", str);
 }
@@ -410,8 +422,10 @@ inline void put(nn_czstring str) noexcept
  *
  * \since 3.0.0
  */
-CENTURION_API
-void reset_priorities() noexcept;
+inline void reset_priorities() noexcept
+{
+  SDL_LogResetPriorities();
+}
 
 /**
  * \brief Sets the priority of all categories.
@@ -420,8 +434,14 @@ void reset_priorities() noexcept;
  *
  * \since 3.0.0
  */
-CENTURION_API
-void set_priority(priority prio) noexcept;
+inline void set_priority(const priority prio) noexcept
+{
+  const auto p = static_cast<SDL_LogPriority>(prio);
+  SDL_LogSetAllPriority(p);
+
+  // Apparently not set by SDL
+  SDL_LogSetPriority(SDL_LOG_CATEGORY_TEST, p);
+}
 
 /**
  * \brief Sets the priority of the specified category.
@@ -431,8 +451,11 @@ void set_priority(priority prio) noexcept;
  *
  * \since 3.0.0
  */
-CENTURION_API
-void set_priority(category category, priority prio) noexcept;
+inline void set_priority(const category category, const priority prio) noexcept
+{
+  SDL_LogSetPriority(static_cast<int>(category),
+                     static_cast<SDL_LogPriority>(prio));
+}
 
 /**
  * \brief Returns the priority of the specified category.
@@ -442,8 +465,11 @@ void set_priority(category category, priority prio) noexcept;
  *
  * \since 3.0.0
  */
-CENTURION_QUERY
-auto get_priority(category category) noexcept -> log::priority;
+[[nodiscard]] inline auto get_priority(const category category) noexcept
+    -> priority
+{
+  return static_cast<priority>(SDL_LogGetPriority(static_cast<int>(category)));
+}
 
 /**
  * \brief Returns the maximum size, i.e the maximum amount of characters that
@@ -473,8 +499,8 @@ auto get_priority(category category) noexcept -> log::priority;
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(priority lhs,
-                                               SDL_LogPriority rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const priority lhs,
+                                        const SDL_LogPriority rhs) noexcept
     -> bool
 {
   return static_cast<SDL_LogPriority>(lhs) == rhs;
@@ -483,8 +509,8 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * \copydoc operator==(priority, SDL_LogPriority)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_LogPriority lhs,
-                                               priority rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_LogPriority lhs,
+                                        const priority rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -500,8 +526,8 @@ auto get_priority(category category) noexcept -> log::priority;
  *
  * \since 3.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(priority lhs,
-                                               SDL_LogPriority rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const priority lhs,
+                                        const SDL_LogPriority rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -510,8 +536,8 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * \copydoc operator!=(priority, SDL_LogPriority)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_LogPriority lhs,
-                                               priority rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_LogPriority lhs,
+                                        const priority rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
@@ -526,8 +552,8 @@ auto get_priority(category category) noexcept -> log::priority;
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(category lhs,
-                                               SDL_LogCategory rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const category lhs,
+                                        const SDL_LogCategory rhs) noexcept
     -> bool
 {
   return static_cast<SDL_LogCategory>(lhs) == rhs;
@@ -536,8 +562,8 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * \copydoc operator==(category, SDL_LogCategory)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_LogCategory lhs,
-                                               category rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_LogCategory lhs,
+                                        const category rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -552,8 +578,8 @@ auto get_priority(category category) noexcept -> log::priority;
  *
  * \since 4.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(category lhs,
-                                               SDL_LogCategory rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const category lhs,
+                                        const SDL_LogCategory rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -562,8 +588,8 @@ auto get_priority(category category) noexcept -> log::priority;
 /**
  * \copydoc operator!=(category, SDL_LogCategory)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_LogCategory lhs,
-                                               category rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_LogCategory lhs,
+                                        const category rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }

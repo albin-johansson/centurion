@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,18 +37,16 @@
 
 #include <SDL.h>
 
-#include <cassert>   // assert
-#include <concepts>  // invocable
-#include <memory>    // unique_ptr
-#include <ostream>   // ostream
-#include <string>    // string
-#include <type_traits>
+#include <cassert>  // assert
+#include <ostream>  // ostream
+#include <string>   // string
 
 #include "centurion_api.hpp"
+#include "czstring.hpp"
+#include "detail/address_of.hpp"
 #include "detail/to_string.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
-#include "types.hpp"
+#include "not_null.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -81,21 +79,6 @@ enum class thread_priority
       SDL_THREAD_PRIORITY_TIME_CRITICAL  ///< For timing-critical processing.
 };
 
-// clang-format off
-template <typename T>
-concept simple_thread_task = std::copyable<T> &&
-                             std::invocable<T> &&
-                             (std::convertible_to<std::invoke_result_t<T>, int> ||
-                              std::convertible_to<std::invoke_result_t<T>, void>);
-
-template <typename T, typename P>
-concept thread_task_with_arg = std::is_pointer_v<P> &&
-                               std::copyable<T> &&
-                               std::invocable<T, P> &&
-                               (std::convertible_to<std::invoke_result_t<T, P>, int> ||
-                                std::convertible_to<std::invoke_result_t<T, P>, void>);
-// clang-format on
-
 /**
  * \class thread
  *
@@ -112,86 +95,49 @@ concept thread_task_with_arg = std::is_pointer_v<P> &&
  *
  * \since 5.0.0
  *
+ * \todo Centurion 6 (C++20): Support templated user data instead of just
+ * `void*`.
+ *
  * \headerfile thread.hpp
  */
 class thread final
 {
  public:
   /**
-   * \brief Creates and runs a thread.
+   * \typedef task_type
    *
-   * \details This constructor takes a function object that takes no parameters
-   * that may return either something convertible to `int` or `void`.
+   * \brief The signature of the function object that will be executed.
    *
-   * \tparam T the type of the function object.
-   *
-   * \param name the name of the thread, cannot be null.
-   *
-   * \throws sdl_error if the thread could not be created.
-   *
-   * \since 6.0.0
+   * \since 5.0.0
    */
-  template <simple_thread_task T>
-  explicit thread(T&&, czstring name = "thread")
-  {
-    assert(name);
-
-    const auto wrapper = [](void*) -> int {
-      using return_t = std::invoke_result_t<std::decay_t<T>>;
-
-      std::decay_t<T> task;
-      if constexpr (std::convertible_to<return_t, int>) {
-        return task();
-      } else {
-        task();
-        return 0;
-      }
-    };
-
-    m_thread = SDL_CreateThread(wrapper, name, nullptr);
-    if (!m_thread) {
-      throw sdl_error{"Failed to create thread"};
-    }
-  }
-
-  // clang-format off
+  using task_type = SDL_ThreadFunction;
 
   /**
-   * \brief Creates and runs a thread.
+   * \typedef id
    *
-   * \details This constructor takes a function object that takes a pointer of
-   * the same type as the user data pointer, that may return either something
-   * convertible to `int` or `void`.
+   * \brief The type used for thread identifiers.
    *
-   * \tparam T the type of the function object.
-   * \tparam P a pointer to user data.
-   *
-   * \param data the user data that will be supplied to the function object.
-   * \param name the name of the thread, cannot be null.
-   *
-   * \throws sdl_error if the thread could not be created.
-   *
-   * \since 6.0.0
+   * \since 5.0.0
    */
-  template <typename T, typename P> requires thread_task_with_arg<std::decay_t<T>, P>
-  thread(T&&, P data, czstring name = "thread")
+  using id = SDL_threadID;
+
+  /**
+   * \brief Creates a thread and starts executing it.
+   *
+   * \param task the task that will be performed.
+   * \param name the name of the thread, cannot be null.
+   * \param data a pointer to optional user data that will be supplied to the
+   * task function object.
+   *
+   * \throws sdl_error if the thread cannot be created.
+   *
+   * \since 5.0.0
+   */
+  explicit thread(task_type task,
+                  not_null<czstring> name = "thread",
+                  void* data = nullptr)
+      : m_thread{SDL_CreateThread(task, name, data)}
   {
-    // clang-format on
-    assert(name);
-
-    const auto wrapper = [](void* ptr) -> int {
-      using return_t = std::invoke_result_t<std::decay_t<T>, P>;
-
-      std::decay_t<T> task;
-      if constexpr (std::convertible_to<return_t, int>) {
-        return task(reinterpret_cast<P>(ptr));
-      } else {
-        task(reinterpret_cast<P>(ptr));
-        return 0;
-      }
-    };
-
-    m_thread = SDL_CreateThread(wrapper, name, reinterpret_cast<void*>(data));
     if (!m_thread) {
       throw sdl_error{"Failed to create thread"};
     }
@@ -306,7 +252,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get_id() const noexcept -> SDL_threadID
+  [[nodiscard]] auto get_id() const noexcept -> id
   {
     return SDL_GetThreadID(m_thread);
   }
@@ -322,8 +268,7 @@ class thread final
    */
   [[nodiscard]] auto name() const -> std::string
   {
-    czstring name = SDL_GetThreadName(m_thread);
-    return name ? std::string{name} : std::string{};
+    return SDL_GetThreadName(m_thread);
   }
 
   /**
@@ -333,7 +278,15 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] auto get() const noexcept -> SDL_Thread*
+  [[nodiscard]] auto get() noexcept -> SDL_Thread*
+  {
+    return m_thread;
+  }
+
+  /**
+   * \copydoc get
+   */
+  [[nodiscard]] auto get() const noexcept -> const SDL_Thread*
   {
     return m_thread;
   }
@@ -350,7 +303,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  static void sleep(milliseconds<u32> ms) noexcept
+  static void sleep(const milliseconds<u32> ms) noexcept
   {
     SDL_Delay(ms.count());
   }
@@ -367,7 +320,8 @@ class thread final
    *
    * \since 5.0.0
    */
-  static auto set_priority(thread_priority priority) noexcept -> bool
+  [[nodiscard]] static auto set_priority(
+      const thread_priority priority) noexcept -> bool
   {
     const auto prio = static_cast<SDL_ThreadPriority>(priority);
     return SDL_SetThreadPriority(prio) == 0;
@@ -380,7 +334,7 @@ class thread final
    *
    * \since 5.0.0
    */
-  [[nodiscard]] static auto current_id() noexcept -> SDL_threadID
+  [[nodiscard]] static auto current_id() noexcept -> id
   {
     return SDL_ThreadID();
   }
@@ -390,9 +344,6 @@ class thread final
   bool m_joined{false};
   bool m_detached{false};
 };
-
-static_assert(!std::is_copy_constructible_v<thread>);
-static_assert(!std::is_copy_assignable_v<thread>);
 
 /**
  * \brief Returns a textual representation of a thread.
@@ -438,8 +389,8 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator==(thread_priority lhs,
-                                               SDL_ThreadPriority rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const thread_priority lhs,
+                                        const SDL_ThreadPriority rhs) noexcept
     -> bool
 {
   return static_cast<SDL_ThreadPriority>(lhs) == rhs;
@@ -448,8 +399,8 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
 /**
  * \copydoc operator==(thread_priority, SDL_ThreadPriority)
  */
-[[nodiscard]] inline constexpr auto operator==(SDL_ThreadPriority lhs,
-                                               thread_priority rhs) noexcept
+[[nodiscard]] constexpr auto operator==(const SDL_ThreadPriority lhs,
+                                        const thread_priority rhs) noexcept
     -> bool
 {
   return rhs == lhs;
@@ -465,8 +416,8 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
  *
  * \since 5.0.0
  */
-[[nodiscard]] inline constexpr auto operator!=(thread_priority lhs,
-                                               SDL_ThreadPriority rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const thread_priority lhs,
+                                        const SDL_ThreadPriority rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);
@@ -475,8 +426,8 @@ inline auto operator<<(std::ostream& stream, const thread& thread)
 /**
  * \copydoc operator!=(thread_priority, SDL_ThreadPriority)
  */
-[[nodiscard]] inline constexpr auto operator!=(SDL_ThreadPriority lhs,
-                                               thread_priority rhs) noexcept
+[[nodiscard]] constexpr auto operator!=(const SDL_ThreadPriority lhs,
+                                        const thread_priority rhs) noexcept
     -> bool
 {
   return !(lhs == rhs);

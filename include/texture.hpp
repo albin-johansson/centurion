@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019-2020 Albin Johansson
+ * Copyright (c) 2019-2021 Albin Johansson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,8 @@
 #ifndef CENTURION_TEXTURE_HEADER
 #define CENTURION_TEXTURE_HEADER
 
+#include <SDL.h>
 #include <SDL_image.h>
-#include <SDL_render.h>
-#include <SDL_video.h>
 
 #include <memory>       // unique_ptr
 #include <ostream>      // ostream
@@ -38,15 +37,18 @@
 #include "blend_mode.hpp"
 #include "centurion_api.hpp"
 #include "color.hpp"
+#include "czstring.hpp"
+#include "detail/address_of.hpp"
+#include "detail/owner_handle_api.hpp"
 #include "detail/to_string.hpp"
-#include "detail/utils.hpp"
 #include "exception.hpp"
+#include "not_null.hpp"
+#include "owner.hpp"
 #include "pixel_format.hpp"
 #include "point.hpp"
 #include "scale_mode.hpp"
 #include "surface.hpp"
 #include "texture_access.hpp"
-#include "types.hpp"
 
 #ifdef CENTURION_USE_PRAGMA_ONCE
 #pragma once
@@ -120,7 +122,7 @@ class basic_texture final
    * \since 4.0.0
    */
   template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
-  basic_texture(const Renderer& renderer, nn_czstring path)
+  basic_texture(const Renderer& renderer, not_null<czstring> path)
       : m_texture{IMG_LoadTexture(renderer.get(), path)}
   {
     if (!m_texture) {
@@ -203,35 +205,38 @@ class basic_texture final
    */
   template <typename Renderer, typename T_ = T, detail::is_owner<T_> = true>
   [[nodiscard]] static auto streaming(const Renderer& renderer,
-                                      nn_czstring path,
+                                      not_null<czstring> path,
                                       pixel_format format) -> basic_texture
   {
-    const auto blendMode = blend_mode::blend;
-    const auto createSurface = [=](czstring path, pixel_format format) {
+    constexpr auto blendMode = blend_mode::blend;
+
+    const auto createSurface = [blendMode](czstring path,
+                                           const pixel_format format) {
       surface source{path};
       source.set_blend_mode(blendMode);
       return source.convert(format);
     };
+
     const auto surface = createSurface(path, format);
-    auto tex = basic_texture{renderer,
-                             format,
-                             texture_access::streaming,
-                             {surface.width(), surface.height()}};
-    tex.set_blend_mode(blendMode);
+    basic_texture texture{renderer,
+                          format,
+                          texture_access::streaming,
+                          {surface.width(), surface.height()}};
+    texture.set_blend_mode(blendMode);
 
     u32* pixels = nullptr;
-    const auto success = tex.lock(&pixels);
+    const auto success = texture.lock(&pixels);
     if (!success) {
       throw exception{"Failed to lock texture!"};
     }
 
     const auto maxCount = static_cast<size_t>(surface.pitch()) *
                           static_cast<size_t>(surface.height());
-    std::memcpy(pixels, surface.pixels(), maxCount);
+    SDL_memcpy(pixels, surface.pixels(), maxCount);
 
-    tex.unlock();
+    texture.unlock();
 
-    return tex;
+    return texture;
   }
 
   /**
@@ -434,9 +439,23 @@ class basic_texture final
    *
    * \return `true` if the texture has static texture access.
    *
+   * \deprecated Use `is_no_lock()` instead.
+   *
    * \since 3.0.0
    */
-  [[nodiscard]] auto is_static() const noexcept -> bool
+  [[nodiscard, deprecated]] auto is_static() const noexcept -> bool
+  {
+    return is_no_lock();
+  }
+
+  /**
+   * \brief Indicates whether or not the texture has static texture access.
+   *
+   * \return `true` if the texture has static texture access; `false` otherwise.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto is_no_lock() const noexcept -> bool
   {
     return access() == texture_access::no_lock;
   }

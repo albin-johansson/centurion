@@ -86,7 +86,6 @@ TEST_F(SoundEffect, FadeIn)
   EXPECT_NO_THROW(m_sound->fade_in(ms{-1}));
   m_sound->stop();
 
-  EXPECT_NO_THROW(m_sound->fade_in(ms::zero()));
   EXPECT_FALSE(m_sound->is_fading());
   EXPECT_FALSE(m_sound->is_playing());
 
@@ -99,7 +98,6 @@ TEST_F(SoundEffect, FadeIn)
 
 TEST_F(SoundEffect, FadeOut)
 {
-  EXPECT_NO_THROW(m_sound->fade_out(ms::zero()));
   EXPECT_FALSE(m_sound->is_playing());
 
   m_sound->play();

@@ -27,8 +27,8 @@
 
 #include <SDL.h>
 
-#include <ostream>
-#include <string>
+#include <ostream>  // ostream
+#include <string>   // string
 
 #include "centurion_api.hpp"
 #include "czstring.hpp"
@@ -73,8 +73,9 @@ class pref_path final
    *
    * \since 3.0.0
    */
-  CENTURION_API
-  pref_path(not_null<czstring> org, not_null<czstring> app);
+  pref_path(not_null<czstring> org, not_null<czstring> app)
+      : m_path{SDL_GetPrefPath(org, app)}
+  {}
 
   /**
    * \brief Indicates whether or not the instance holds a non-null path.
@@ -115,8 +116,11 @@ class pref_path final
  *
  * \since 5.0.0
  */
-CENTURION_QUERY
-auto to_string(const pref_path& path) -> std::string;
+[[nodiscard]] inline auto to_string(const pref_path& path) -> std::string
+{
+  const std::string str = path ? path.get() : "N/A";
+  return "[pref_path | path: \"" + str + "\"]";
+}
 
 /**
  * \brief Prints a textual representation of a pref path.
@@ -130,8 +134,12 @@ auto to_string(const pref_path& path) -> std::string;
  *
  * \since 5.0.0
  */
-CENTURION_API
-auto operator<<(std::ostream& stream, const pref_path& path) -> std::ostream&;
+inline auto operator<<(std::ostream& stream, const pref_path& path)
+    -> std::ostream&
+{
+  stream << to_string(path);
+  return stream;
+}
 
 }  // namespace cen
 

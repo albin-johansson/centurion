@@ -2,9 +2,16 @@
 
 #include <gtest/gtest.h>
 
-#include <iostream>
+#include <iostream>  // cout
+#include <type_traits>
 
 #include "log.hpp"
+
+static_assert(std::is_nothrow_move_constructible_v<cen::pref_path>);
+static_assert(std::is_nothrow_move_assignable_v<cen::pref_path>);
+
+static_assert(!std::is_copy_constructible_v<cen::pref_path>);
+static_assert(!std::is_copy_assignable_v<cen::pref_path>);
 
 TEST(PrefPath, Constructor)
 {

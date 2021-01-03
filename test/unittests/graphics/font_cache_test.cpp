@@ -4,10 +4,8 @@
 
 #include <functional>   // function
 #include <memory>       // unique_ptr
-#include <string>       // string
 #include <string_view>  // string_view
 
-#include "event.hpp"
 #include "font.hpp"
 #include "renderer.hpp"
 #include "window.hpp"
@@ -348,86 +346,4 @@ TEST_F(FontCacheTest, GetFont)
 {
   const auto& font = m_cache.get_font();
   EXPECT_EQ(font.family_name(), std::string("Daniel"));
-}
-
-TEST_F(FontCacheTest, DISABLED_Interactive)
-{
-  using cen::unicode;
-
-  constexpr auto id1 = 72;
-  constexpr auto id2 = 23;
-
-  {
-    m_renderer->set_color(cen::colors::white);
-    m_cache.add_latin1(*m_renderer);
-
-    m_renderer->set_color(cen::colors::magenta);
-    m_cache.store_blended_latin1(id1, "cool string! <|>", *m_renderer);
-
-    const cen::unicode_string cool = {0x2192, 0x2665, 0x2190, 0x263A};
-    m_cache.store_blended_unicode(id2, cool, *m_renderer);
-  }
-
-  const cen::unicode_string str = {'c',
-                                   'o',
-                                   'o',
-                                   'l',
-                                   ' ',
-                                   's',
-                                   't',
-                                   'r',
-                                   'i',
-                                   'n',
-                                   'g',
-                                   '!',
-                                   ' ',
-                                   '<',
-                                   '|',
-                                   '>'};
-
-  std::string changingStr;
-
-  cen::event event;
-  bool running = true;
-
-  m_window->show();
-  while (running) {
-    while (event.poll()) {
-      if (event.is<cen::quit_event>()) {
-        running = false;
-        break;
-      } else if (const auto* key = event.try_get<cen::keyboard_event>(); key) {
-        if (key->state() == cen::button_state::released) {
-          if (key->is_active(SDL_SCANCODE_ESCAPE)) {
-            running = false;
-            break;
-          }
-        } else {
-          if (key->is_active(SDL_SCANCODE_BACKSPACE)) {
-            if (!changingStr.empty()) {
-              changingStr.pop_back();
-            }
-          }
-        }
-
-      } else if (const auto* text = event.try_get<cen::text_input_event>();
-                 text) {
-        changingStr += text->text_utf8();
-      }
-    }
-
-    m_renderer->clear_with(cen::colors::black);
-
-    using namespace std::string_view_literals;
-
-    m_renderer->render_text(m_cache, "abcdefghijklmnopqrstuvwxyz"sv, {50, 10});
-    m_renderer->render_text(m_cache, changingStr, {50, 150});
-    m_renderer->render_text(m_cache, str, {50, 100});
-
-    m_renderer->render(m_cache.get_stored(id1), cen::ipoint{50, 200});
-    m_renderer->render(m_cache.get_stored(id2), cen::ipoint{300, 400});
-
-    m_renderer->present();
-  }
-  m_window->hide();
 }

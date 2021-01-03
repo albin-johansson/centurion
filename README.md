@@ -26,7 +26,7 @@ Happy coding! :heart:
 
 ## Requirements
 
-* C++17
+* C++17 (C++20 should work just as fine as well)
 * SDL2 (2.0.12 or later)
 * SDL2_image (2.0.5 or later)
 * SDL2_ttf (2.0.4 or later)

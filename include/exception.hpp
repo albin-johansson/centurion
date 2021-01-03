@@ -31,6 +31,7 @@
 #include <SDL_ttf.h>
 
 #include <exception>    // exception
+#include <string>       // string
 #include <string_view>  // string_view
 #include <utility>      // move
 

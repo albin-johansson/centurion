@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(centurion-test-unittests LANGUAGES CXX)
 
-set(UNIT_TEST_FILES
+set(SOURCE_FILES
     test_main.cpp
     centurion_test.cpp
     exception_test.cpp
@@ -88,24 +88,19 @@ set(UNIT_TEST_FILES
     thread/thread_test.cpp)
 
 if (CEN_AUDIO)
-  set(UNIT_TEST_FILES
-      ${UNIT_TEST_FILES}
+  set(SOURCE_FILES
+      ${SOURCE_FILES}
       audio/sound_effect_test.cpp
       audio/music_test.cpp)
 endif ()
 
-if (WIN32)
-  add_executable(${CENTURION_TEST_TARGET} WIN32 ${UNIT_TEST_FILES})
-else ()
-  add_executable(${CENTURION_TEST_TARGET} ${UNIT_TEST_FILES})
-endif ()
+cen_create_executable(${CENTURION_TEST_TARGET} "${SOURCE_FILES}")
+cen_set_compiler_options(${CENTURION_TEST_TARGET})
 
 if (CEN_AUDIO)
   target_compile_definitions(${CENTURION_TEST_TARGET}
       PUBLIC CEN_AUDIO)
 endif ()
-
-cen_set_compiler_options(${CENTURION_TEST_TARGET})
 
 target_include_directories(${CENTURION_TEST_TARGET}
     SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
@@ -133,13 +128,5 @@ copy_directory_post_build(${CENTURION_TEST_TARGET}
     ${CMAKE_CURRENT_BINARY_DIR}/resources)
 
 if (WIN32)
-  copy_file_post_build(
-      ${CENTURION_TEST_TARGET}
-      ${CENTURION_DYNAMIC_LIB}
-      ${CMAKE_CURRENT_BINARY_DIR})
-
-  copy_directory_post_build(
-      ${CENTURION_TEST_TARGET}
-      ${CEN_BINARIES_DIR}
-      ${CMAKE_CURRENT_BINARY_DIR})
+  cen_copy_runtime_binaries(${CENTURION_TEST_TARGET})
 endif ()

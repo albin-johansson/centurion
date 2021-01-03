@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(centurion-test-interactive-audio-music LANGUAGES CXX)
 
-cen_create_executable(InteractiveMusic interactive_music.cpp)
+cen_create_executable(InteractiveMusic "interactive_music.cpp")
 cen_set_compiler_options(InteractiveMusic)
 
 cen_include_centurion_headers(InteractiveMusic)

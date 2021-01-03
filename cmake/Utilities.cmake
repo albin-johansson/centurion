@@ -49,26 +49,40 @@ endfunction()
 # Sets appropriate compiler options depending on the current platform.
 #   target: the associated target.
 function(cen_set_compiler_options target)
-  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(${target} PRIVATE
-        -Wno-unused-result)
-
-  elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(${target} PRIVATE
-        /EHsc)
-
-  elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(${target} PRIVATE
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
         /EHsc
         /MP
         /W3)
 
+  elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
+        /EHsc)
+
+  elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wdouble-promotion
+        -Wswitch-default
+        -Wswitch-enum
+        -Wunused
+        -Wuninitialized
+        -Wsuggest-final-types
+        -Wsuggest-final-methods
+        -Wsuggest-override
+        -Wduplicated-cond
+        -Wconversion
+        -Wc++17-compat
+        -Wno-attributes)
   endif ()
 endfunction()
 
 # Adds an executable associated with the target, will be created using WIN32 on windows.
 #   target: the associated target.
 function(cen_create_executable name files)
+  #message("Creating executable from: ${files}")
   if (WIN32)
     add_executable(${name} WIN32 ${files})
   else ()

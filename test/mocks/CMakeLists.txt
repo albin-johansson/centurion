@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(centurion-test-mocks LANGUAGES CXX)
 
-set(TEST_FILES
+set(SOURCE_FILES
     test_main.cpp
 
     event/event_test.cpp
@@ -15,12 +15,12 @@ set(TEST_FILES
     )
 
 if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
-  set(TEST_FILES
-      ${TEST_FILES}
+  set(SOURCE_FILES
+      ${SOURCE_FILES}
       audio/sound_effect_test.cpp)
 endif ()
 
-add_executable(${CENTURION_MOCK_TARGET} ${TEST_FILES})
+add_executable(${CENTURION_MOCK_TARGET} ${SOURCE_FILES})
 
 if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
   target_compile_definitions(${CENTURION_MOCK_TARGET}

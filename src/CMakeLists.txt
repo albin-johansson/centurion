@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(CenturionSrc)
+project(centurion-src)
 
 set(SOURCE_FILES
     ../include/area.hpp
@@ -111,6 +111,7 @@ if (CEN_AUDIO)
 endif ()
 
 add_library(${CENTURION_LIB_TARGET} SHARED ${SOURCE_FILES})
+cen_set_compiler_options(${CENTURION_LIB_TARGET})
 
 if (WIN32)
   add_definitions(-DWIN_EXPORT)
@@ -121,60 +122,15 @@ set_target_properties(${CENTURION_LIB_TARGET} PROPERTIES
     VERSION ${CENTURION_VERSION})
 
 target_include_directories(${CENTURION_LIB_TARGET}
+    PRIVATE ../include
+    SYSTEM INTERFACE ../include
     SYSTEM PUBLIC ${SDL2_INCLUDE_DIR}
     SYSTEM PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS}
     SYSTEM PUBLIC ${SDL2_MIXER_INCLUDE_DIRS}
-    SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS}
-    PRIVATE ${CEN_INCLUDE_DIR}
-    PRIVATE ${CEN_SOURCE_DIR}
-    SYSTEM INTERFACE ${CEN_INCLUDE_DIR})
+    SYSTEM PUBLIC ${SDL2_TTF_INCLUDE_DIRS})
 
 target_link_libraries(${CENTURION_LIB_TARGET}
     PUBLIC ${SDL2_LIBRARY}
     PUBLIC ${SDL2_IMAGE_LIBRARIES}
     PUBLIC ${SDL2_MIXER_LIBRARIES}
     PUBLIC ${SDL2_TTF_LIBRARIES})
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
-      -Wall
-      -Wextra
-      -Wpedantic
-      -Wdouble-promotion
-      -Wswitch-default
-      -Wswitch-enum
-      -Wunused
-      -Wuninitialized
-      -Wsuggest-final-types
-      -Wsuggest-final-methods
-      -Wsuggest-override
-      -Wduplicated-cond
-      -Wconversion
-      -Wc++17-compat
-      -Wno-attributes)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
-      /EHsc
-      -Wall
-      -Wextra
-      -Wpedantic
-      -Wdouble-promotion
-      -Wswitch-default
-      -Wswitch-enum
-      -Wunused
-      -Wuninitialized
-      -Wconversion
-      -Wc++17-compat
-      -Wno-c++98-compat
-      -Wno-c++98-compat-pedantic
-      -Wno-unused-template
-      -Wno-unused-macros
-      -Wno-newline-eof
-      -Wno-documentation-unknown-command)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
-      /EHsc
-      /MP
-      /W3)
-endif ()
-

@@ -41,26 +41,30 @@ message("Centurion import library: ${CENTURION_IMPORT_LIB}")
 unset(SDL2_BUILDING_LIBRARY) # Force linking to SDL2main
 
 option(CEN_AUDIO "Include audio components" ON)
+option(CEN_COVERAGE "Enable coverage data" OFF)
 option(CEN_TESTS "Build the Centurion tests" ON)
 option(CENTURION_MOCK_FRIENDLY_MODE "Enable more mocked tests" ON)
 
-find_env_var(SDL2DIR SDL2)
-find_env_var(SDL2IMAGEDIR SDL2_image)
-find_env_var(SDL2MIXERDIR SDL2_mixer)
-find_env_var(SDL2TTFDIR SDL2_ttf)
+if (WIN32)
+  find_env_var(SDL2DIR SDL2)
+  find_env_var(SDL2IMAGEDIR SDL2_image)
+  find_env_var(SDL2MIXERDIR SDL2_mixer)
+  find_env_var(SDL2TTFDIR SDL2_ttf)
+endif ()
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-if (DEFINED ENV{ENABLE_COVERAGE})
+if (CEN_COVERAGE MATCHES ON)
   include(CodeCoverage)
   append_coverage_compiler_flags()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 --coverage")
 endif ()
 
 add_subdirectory(src)
+
 if (CEN_TESTS)
   enable_testing()
   add_subdirectory(test)

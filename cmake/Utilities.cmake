@@ -50,17 +50,17 @@ endfunction()
 #   target: the associated target.
 function(cen_set_compiler_options target)
   if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
+    target_compile_options(${target} PRIVATE
         /EHsc
         /MP
         /W3)
 
   elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
+    target_compile_options(${target} PRIVATE
         /EHsc)
 
   elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(${CENTURION_LIB_TARGET} PRIVATE
+    target_compile_options(${target} PRIVATE
         -Wall
         -Wextra
         -Wpedantic

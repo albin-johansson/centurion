@@ -89,9 +89,18 @@ class sound_effect final
   /**
    * \brief Indicates that an audio snippet should be looped indefinitely.
    *
+   * \since 5.1.0
+   */
+  inline constexpr static int forever = -1;
+
+  /**
+   * \brief Indicates that an audio snippet should be looped indefinitely.
+   *
+   * \deprecated Use `sound_effect::forever` instead.
+   *
    * \since 4.0.0
    */
-  inline constexpr static int loopForever = -1;
+  [[deprecated]] inline constexpr static int loopForever = forever;
 
   /**
    * \brief Creates a sound effect based on the audio file at the specified
@@ -116,15 +125,16 @@ class sound_effect final
    * \note A negative value indicates that the sound effect should be looped
    * forever.
    *
-   * \param nLoops the amount of loops, can be negative.
+   * \param nLoops the amount of loops, `sound_effect::forever` can be used to
+   * loop the sound effect indefinitely.
    *
-   * \see `sound_effect::loopForever`
+   * \see `sound_effect::forever`
    *
    * \since 3.0.0
    */
   void play(const int nLoops = 0) noexcept
   {
-    activate(detail::max(nLoops, -1));
+    activate(detail::max(nLoops, forever));
   }
 
   /**

@@ -70,8 +70,8 @@ TEST_F(SoundEffect, Looping)
 
   m_sound->stop();
 
-  EXPECT_LT(cen::sound_effect::loopForever, 0);
-  EXPECT_NO_THROW(m_sound->play(cen::sound_effect::loopForever));
+  EXPECT_LT(cen::sound_effect::forever, 0);
+  EXPECT_NO_THROW(m_sound->play(cen::sound_effect::forever));
 
   EXPECT_TRUE(m_sound->is_playing());
 
@@ -149,6 +149,11 @@ TEST_F(SoundEffect, ToString)
 TEST_F(SoundEffect, StreamOperator)
 {
   std::cout << "COUT: " << *m_sound << '\n';
+}
+
+TEST_F(SoundEffect, Forever)
+{
+  EXPECT_EQ(-1, cen::sound_effect::forever);
 }
 
 TEST_F(SoundEffect, MaxVolume)

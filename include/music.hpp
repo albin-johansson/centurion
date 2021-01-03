@@ -27,6 +27,7 @@
 
 #include <SDL_mixer.h>
 
+#include <cassert>  // assert
 #include <memory>   // unique_ptr
 #include <ostream>  // ostream
 #include <string>   // string
@@ -124,12 +125,22 @@ class music final
 {
  public:
   /**
+   * \brief A constant that indicates that the music should be looped
+   * indefinitely.
+   *
+   * \since 5.1.0
+   */
+  inline constexpr static int forever = -1;
+
+  /**
    * \brief A constant that indicates that an audio snippet should be looped
    * indefinitely.
    *
+   * \deprecated Use `music::forever` instead.
+   *
    * \since 4.0.0
    */
-  inline constexpr static int loopForever = -1;
+  [[deprecated]] inline constexpr static int loopForever = forever;
 
   /**
    * \brief Creates a `music` instance based on the file at the specified path.
@@ -160,14 +171,16 @@ class music final
    * played *one time*. Except for these "special" values, the method behaves as
    * expected.
    *
-   * \param nLoops the number of times to loop the music, a negative value is
-   * indicates that the music should be looped forever. The default value is 1.
+   * \param nLoops the number of times to loop the music, `music::forever` can
+   * be supplied to loop the music indefinitely.
+   *
+   * \see `music::forever`
    *
    * \since 3.0.0
    */
   void play(const int nLoops = 1) noexcept
   {
-    Mix_PlayMusic(m_music.get(), detail::max(nLoops, -1));
+    Mix_PlayMusic(m_music.get(), detail::max(nLoops, forever));
   }
 
   /**
@@ -211,6 +224,8 @@ class music final
   /**
    * \brief Plays the music by fading it in by the specified amount of time.
    *
+   * \pre `ms` must be greater than zero.
+   *
    * \details The fade effect is only applied to the first iteration of
    * the playback of the music. Any previously playing music will be halted.
    * However, if other music is currently being faded out, this music will
@@ -222,41 +237,41 @@ class music final
    * played *one time*. Except for these "special" values, the method behaves as
    * expected.
    *
-   * \param ms the amount of time for the fade to complete, in milliseconds. A
-   * negative value is clamped to 0.
+   * \param ms the amount of time it takes for the fade to complete.
    *
-   * \param nLoops the number of iterations to play the music, a negative value
-   * indicates that the music should be looped forever.
+   * \param nLoops the number of iterations to play the music, `music::forever`
+   * can be supplied to loop the music indefinitely.
+   *
+   * \see `music::forever`
    *
    * \since 3.0.0
    */
   void fade_in(const milliseconds<int> ms, const int nLoops = 1) noexcept
   {
-    Mix_FadeInMusic(m_music.get(),
-                    detail::max(nLoops, -1),
-                    detail::max(ms, milliseconds<int>::zero()).count());
+    assert(ms.count() > 0);
+    Mix_FadeInMusic(m_music.get(), detail::max(nLoops, forever), ms.count());
   }
 
   /**
    * \brief Fades out any currently playing music over the specified amount of
    * time.
    *
+   * \pre `ms` must be greater than zero.
+   *
    * \details This method only affects music that is currently playing and
    * not currently fading out. In other words, this method has no effect if
    * music is currently being faded by the time the method is invoked.
    *
-   * \param ms the amount of time for the fade to complete, in milliseconds. A
-   * negative value is clamped to zero.
+   * \param ms the amount of time for the fade to complete, in milliseconds.
    *
    * \since 3.0.0
    */
   static void fade_out(const milliseconds<int> ms) noexcept
   {
-    if (is_fading()) {
-      return;
+    assert(ms.count() > 0);
+    if (!is_fading()) {
+      Mix_FadeOutMusic(ms.count());
     }
-
-    Mix_FadeOutMusic(detail::max(ms, milliseconds<int>::zero()).count());
   }
 
   /**

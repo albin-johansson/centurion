@@ -59,7 +59,7 @@ Basic playback
     cen::thread::sleep(ms{50});
 
     // loops forever
-    sound.play(cen::sound_effect::loopForever);
+    sound.play(cen::sound_effect::forever);
 
     // checks whether or not the sound effect is currently being played
     if (sound.is_playing()) {

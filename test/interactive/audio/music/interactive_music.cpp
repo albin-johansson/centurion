@@ -118,7 +118,7 @@ class interactive_music final
           m_click.play(2);
 
         } else if (key->is_active(cen::scancodes::nine)) {
-          m_click.play(-1);
+          m_click.play(cen::music::forever);
 
         } else if (key->is_active(cen::scancodes::f)) {
           m_song.fade_in(cen::seconds<int>{5});

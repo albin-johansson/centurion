@@ -32,6 +32,11 @@ class MusicTest : public testing::Test
   inline static std::unique_ptr<cen::music> m_music;
 };
 
+TEST_F(MusicTest, Forever)
+{
+  EXPECT_EQ(-1, cen::music::forever);
+}
+
 TEST_F(MusicTest, Constructor)
 {
   EXPECT_THROW(cen::music{"foobar"}, cen::mix_error);
@@ -47,7 +52,7 @@ TEST_F(MusicTest, Play)
 
   cen::music::halt();
 
-  m_music->play(cen::music::loopForever);
+  m_music->play(cen::music::forever);
   EXPECT_TRUE(cen::music::is_playing());
   EXPECT_FALSE(cen::music::is_fading());
   EXPECT_FALSE(cen::music::is_paused());
@@ -110,8 +115,6 @@ TEST_F(MusicTest, FadeIn)
 {
   EXPECT_FALSE(cen::music::is_fading());
 
-  EXPECT_NO_THROW(m_music->fade_in(cen::milliseconds<int>{-1}));
-
   cen::music::halt();
 
   m_music->fade_in(cen::milliseconds<int>{100});
@@ -125,7 +128,6 @@ TEST_F(MusicTest, FadeOut)
   EXPECT_FALSE(cen::music::is_fading());
 
   EXPECT_NO_THROW(cen::music::fade_out(cen::milliseconds<int>{100}));
-  EXPECT_NO_THROW(cen::music::fade_out(cen::milliseconds<int>{-1}));
 
   m_music->fade_in(cen::milliseconds<int>{100});
   EXPECT_TRUE(cen::music::is_fading());

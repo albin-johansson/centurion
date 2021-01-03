@@ -33,9 +33,11 @@
 
 #include <SDL_mixer.h>
 
-#include <memory>
-#include <ostream>
-#include <string>
+#include <cassert>   // assert
+#include <memory>    // unique_ptr
+#include <optional>  // optional
+#include <ostream>   // ostream
+#include <string>    // string
 
 #include "centurion_api.hpp"
 #include "czstring.hpp"
@@ -141,8 +143,10 @@ class sound_effect final
   /**
    * \brief Fades in the sound effect.
    *
-   * \details This method has no effect if the supplied duration isn't greater
-   * than zero or if the sound effect is currently playing.
+   * \pre `ms` must be greater than zero.
+   *
+   * \details This method has no effect if the sound effect is currently
+   * playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
@@ -150,24 +154,19 @@ class sound_effect final
    */
   void fade_in(const milliseconds<int> ms) noexcept
   {
-    if (ms.count() > 0 && !is_playing()) {
-      if (m_channel != undefined_channel()) {
-        Mix_FadeInChannelTimed(m_channel, m_chunk.get(), 0, ms.count(), -1);
-      } else {
-        m_channel = Mix_FadeInChannelTimed(undefined_channel(),
-                                           m_chunk.get(),
-                                           0,
-                                           ms.count(),
-                                           -1);
-      }
+    assert(ms.count() > 0);
+    if (!is_playing()) {
+      m_channel = Mix_FadeInChannel(m_channel, get(), 0, ms.count());
     }
   }
 
   /**
    * \brief Fades out the sound effect.
    *
-   * \details This method has no effect if the supplied duration isn't greater
-   * than zero or if the sound effect isn't currently playing.
+   * \pre `ms` must be greater than zero.
+   *
+   * \details This method has no effect if the sound effect isn't currently
+   * playing.
    *
    * \param ms the duration to fade in, in milliseconds.
    *
@@ -175,7 +174,8 @@ class sound_effect final
    */
   void fade_out(const milliseconds<int> ms) noexcept  // NOLINT not const
   {
-    if ((ms.count() > 0) && is_playing()) {
+    assert(ms.count() > 0);
+    if (is_playing()) {
       Mix_FadeOutChannel(m_channel, ms.count());
     }
   }
@@ -249,6 +249,26 @@ class sound_effect final
   [[nodiscard]] auto volume() const noexcept -> int
   {
     return m_chunk->volume;
+  }
+
+  /**
+   * \brief Returns the channel associated with the sound effect, if any.
+   *
+   * \note Channels are not associated with sound effects for long, and might
+   * change in between playbacks.
+   *
+   * \return the channel currently associated with the sound effect;
+   * `std::nullopt` if there is none.
+   *
+   * \since 5.1.0
+   */
+  [[nodiscard]] auto channel() const noexcept -> std::optional<int>
+  {
+    if (m_channel != undefined_channel()) {
+      return m_channel;
+    } else {
+      return std::nullopt;
+    }
   }
 
   /**

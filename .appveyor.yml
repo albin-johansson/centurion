@@ -72,8 +72,3 @@ test_script:
   - cd test/mocks
   - dir
   - CenturionMocks.exe
-
-  - cd ..
-  - cd unittests
-  - dir
-  - CenturionTests.exe

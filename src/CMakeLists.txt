@@ -99,8 +99,6 @@ set(SOURCE_FILES
     graphics/message_box_button.cpp
     graphics/message_box_color_scheme.cpp
 
-    system/screen.cpp
-
     input/touch.cpp)
 
 if (CEN_AUDIO)

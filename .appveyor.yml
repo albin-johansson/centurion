@@ -69,8 +69,10 @@ build_script:
 
 test_script:
   - cd test/mocks
-  - CenturionMocks
+  - dir
+  - CenturionMocks.exe
 
   - cd ..
   - cd unittests
-  - CenturionTests
+  - dir
+  - CenturionTests.exe

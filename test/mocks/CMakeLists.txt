@@ -13,7 +13,7 @@ set(SOURCE_FILES
     input/controller_test.cpp
     input/joystick_test.cpp
     input/key_state_test.cpp
-    )
+    input/touch_test.cpp)
 
 if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
   set(SOURCE_FILES

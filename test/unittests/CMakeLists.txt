@@ -71,6 +71,7 @@ set(SOURCE_FILES
     input/key_state_test.cpp
     input/mouse_state_test.cpp
     input/scan_code_tests.cpp
+    input/touch_test.cpp
 
     system/base_path_test.cpp
     system/battery_test.cpp
@@ -120,7 +121,6 @@ target_link_libraries(${CENTURION_TEST_TARGET}
     PUBLIC ${SDL2_IMAGE_LIBRARIES}
     PUBLIC ${SDL2_MIXER_LIBRARIES}
     PUBLIC ${SDL2_TTF_LIBRARIES}
-    PUBLIC ${CENTURION_IMPORT_LIB}
     PUBLIC gtest)
 
 add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
@@ -128,7 +128,3 @@ add_test(NAME ${CENTURION_TEST_TARGET} COMMAND ${CENTURION_TEST_TARGET})
 copy_directory_post_build(${CENTURION_TEST_TARGET}
     ${CEN_RESOURCES_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/resources)
-
-if (WIN32)
-  cen_copy_runtime_binaries(${CENTURION_TEST_TARGET})
-endif ()

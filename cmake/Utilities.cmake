@@ -101,15 +101,14 @@ function(cen_include_centurion_headers target)
       SYSTEM PUBLIC ${CEN_INCLUDE_DIR})
 endfunction()
 
-# Links against Centurion and SDL2 libraries.
+# Links against the SDL2 libraries.
 #   target: the associated target.
-function(cen_link_against_centurion target)
+function(cen_link_against_sdl target)
   target_link_libraries(${target}
       PUBLIC ${SDL2_LIBRARY}
       PUBLIC ${SDL2_IMAGE_LIBRARIES}
       PUBLIC ${SDL2_MIXER_LIBRARIES}
-      PUBLIC ${SDL2_TTF_LIBRARIES}
-      PUBLIC ${CENTURION_IMPORT_LIB})
+      PUBLIC ${SDL2_TTF_LIBRARIES})
 endfunction()
 
 # Copies runtime binaries to current binary dir. This is only necessary on Windows.

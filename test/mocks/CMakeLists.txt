@@ -14,7 +14,7 @@ set(TEST_FILES
     input/key_state_test.cpp
     )
 
-if (CEN_MOCK_FRIENDLY_MODE MATCHES ON)
+if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
   set(TEST_FILES
       ${TEST_FILES}
       audio/sound_effect_test.cpp)
@@ -22,9 +22,9 @@ endif ()
 
 add_executable(${CENTURION_MOCK_TARGET} ${TEST_FILES})
 
-if (CEN_MOCK_FRIENDLY_MODE MATCHES ON)
+if (CENTURION_MOCK_FRIENDLY_MODE MATCHES ON)
   target_compile_definitions(${CENTURION_MOCK_TARGET}
-      PUBLIC CEN_MOCK_FRIENDLY_MODE)
+      PUBLIC CENTURION_MOCK_FRIENDLY_MODE)
 endif ()
 
 add_header_only_lib(libFFF ../lib/fff ../lib/fff/fff.h)

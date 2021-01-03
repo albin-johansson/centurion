@@ -324,10 +324,15 @@ class sound_effect final
     }
   }
 
-#ifdef CEN_MOCK_FRIENDLY_MODE
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
  public:
   sound_effect() = default;
-#endif  // CEN_MOCK_FRIENDLY_MODE
+
+  void set_channel(const int channel) noexcept
+  {
+    m_channel = channel;
+  }
+#endif  // CENTURION_MOCK_FRIENDLY_MODE
 };
 
 /**

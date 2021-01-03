@@ -1,6 +1,4 @@
-#include <SDL.h>
-
-#include <utility>   // move
+#include <utility>  // move
 
 #include "centurion.hpp"
 #include "event.hpp"
@@ -83,7 +81,7 @@ class interactive_music final
 
     bool running = true;
     while (running) {
-      handle_input(running);
+      running = handle_input();
       render(msgs);
     }
 
@@ -97,13 +95,12 @@ class interactive_music final
   cen::music m_click;
   cen::font m_font;
 
-  void handle_input(bool& running)
+  [[nodiscard]] auto handle_input() -> bool
   {
     cen::event event;
     while (event.poll()) {
       if (event.is<cen::quit_event>()) {
-        running = false;
-        break;
+        return false;
       }
 
       if (const auto* key = event.try_get<cen::keyboard_event>();
@@ -128,6 +125,8 @@ class interactive_music final
         }
       }
     }
+
+    return true;
   }
 
   void render(const messages& msgs)

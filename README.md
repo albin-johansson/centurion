@@ -1,7 +1,7 @@
 # <img src="meta/centurion.png" alt="Centurion" width="200"/> 
 [![version](https://img.shields.io/badge/version-5.1.0-blue.svg)](https://semver.org) [![Language](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) ![GitHub repo size](https://img.shields.io/github/repo-size/albin-johansson/Centurion) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-|  Latest Build    |  Status       |
+|  Build           |  Status       |
 | ---------------- | ------------- |
 | Ubuntu 20.04 w/ GCC 9.3.0 | [![Build Status](https://travis-ci.org/albin-johansson/Centurion.svg?branch=master)](https://travis-ci.org/albin-johansson/Centurion) |
 | Windows 10 w/ MSVC 19.28 | [![Build status](https://ci.appveyor.com/api/projects/status/h0er6nobyf3c8jsu?svg=true)](https://ci.appveyor.com/project/AlbinJohansson/centurion) |

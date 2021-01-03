@@ -4,9 +4,19 @@
 
 #include <iostream>  // cout
 #include <memory>    // unique_ptr
+#include <type_traits>
 
 #include "exception.hpp"
 #include "log.hpp"
+
+static_assert(std::is_final_v<cen::sound_effect>);
+static_assert(!std::is_default_constructible_v<cen::sound_effect>);
+
+static_assert(std::is_nothrow_move_constructible_v<cen::sound_effect>);
+static_assert(std::is_nothrow_move_assignable_v<cen::sound_effect>);
+
+static_assert(!std::is_copy_constructible_v<cen::sound_effect>);
+static_assert(!std::is_copy_assignable_v<cen::sound_effect>);
 
 using ms = cen::milliseconds<int>;
 

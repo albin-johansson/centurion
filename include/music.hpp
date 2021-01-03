@@ -178,7 +178,7 @@ class music final
    *
    * \since 3.0.0
    */
-  void play(const int nLoops = 1) noexcept
+  void play(const int nLoops = 0) noexcept
   {
     Mix_PlayMusic(m_music.get(), detail::max(nLoops, forever));
   }
@@ -246,7 +246,7 @@ class music final
    *
    * \since 3.0.0
    */
-  void fade_in(const milliseconds<int> ms, const int nLoops = 1) noexcept
+  void fade_in(const milliseconds<int> ms, const int nLoops = 0) noexcept
   {
     assert(ms.count() > 0);
     Mix_FadeInMusic(m_music.get(), detail::max(nLoops, forever), ms.count());
@@ -426,6 +426,11 @@ class music final
   };
 
   std::unique_ptr<Mix_Music, deleter> m_music;
+
+#ifdef CENTURION_MOCK_FRIENDLY_MODE
+ public:
+  music() = default;
+#endif
 };
 
 /**

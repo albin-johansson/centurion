@@ -54,6 +54,7 @@ set(SOURCE_FILES
     graphics/font_test.cpp
     graphics/graphics_drivers_test.cpp
     graphics/message_box_test.cpp
+    graphics/pixel_format_test.cpp
     graphics/renderer_test.cpp
     graphics/scale_mode_test.cpp
     graphics/surface_test.cpp

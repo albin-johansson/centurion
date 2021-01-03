@@ -327,7 +327,7 @@ class sound_effect final
 #ifdef CEN_MOCK_FRIENDLY_MODE
  public:
   sound_effect() = default;
-#endif  // CENTURION_RELAX_CLASS_INVARIANTS_FOR_MOCK_TEST
+#endif  // CEN_MOCK_FRIENDLY_MODE
 };
 
 /**

@@ -9,6 +9,7 @@ FAKE_VOID_FUNC(Mix_FreeChunk, Mix_Chunk*)
 FAKE_VOID_FUNC(Mix_Pause, int)
 FAKE_VALUE_FUNC(int, Mix_PlayChannelTimed, int, Mix_Chunk*, int, int)
 FAKE_VALUE_FUNC(int, Mix_FadeInChannelTimed, int, Mix_Chunk*, int, int, int)
+FAKE_VALUE_FUNC(int, Mix_FadeOutChannel, int, int)
 FAKE_VALUE_FUNC(int, Mix_Playing, int)
 FAKE_VALUE_FUNC(int, Mix_VolumeChunk, Mix_Chunk*, int)
 }
@@ -23,6 +24,7 @@ class SoundEffectTest : public testing::Test
     RESET_FAKE(Mix_Pause);
     RESET_FAKE(Mix_PlayChannelTimed);
     RESET_FAKE(Mix_FadeInChannelTimed);
+    RESET_FAKE(Mix_FadeOutChannel);
     RESET_FAKE(Mix_Playing);
     RESET_FAKE(Mix_VolumeChunk);
   }
@@ -83,6 +85,25 @@ TEST_F(SoundEffectTest, FadeIn)
   EXPECT_EQ(2, Mix_FadeInChannelTimed_fake.call_count);
 }
 
+TEST_F(SoundEffectTest, FadeOut)
+{
+  cen::sound_effect sound;
+
+  // Not playing
+  sound.fade_out(cen::milliseconds<int>{5});
+  EXPECT_EQ(0, Mix_FadeOutChannel_fake.call_count);
+
+  // Not playing but with an associated channel
+  sound.set_channel(7);
+  sound.fade_out(cen::milliseconds<int>{5});
+  EXPECT_EQ(0, Mix_FadeOutChannel_fake.call_count);
+
+  // Playing
+  Mix_Playing_fake.return_val = 1;
+  sound.fade_out(cen::milliseconds<int>{5});
+  EXPECT_EQ(1, Mix_FadeOutChannel_fake.call_count);
+}
+
 TEST_F(SoundEffectTest, SetVolume)
 {
   cen::sound_effect sound;
@@ -119,4 +140,10 @@ TEST_F(SoundEffectDeathTest, FadeIn)
 {
   cen::sound_effect sound;
   EXPECT_DEBUG_DEATH(sound.fade_in(cen::milliseconds<int>::zero()), "");
+}
+
+TEST_F(SoundEffectDeathTest, FadeOut)
+{
+  cen::sound_effect sound;
+  EXPECT_DEBUG_DEATH(sound.fade_out(cen::milliseconds<int>::zero()), "");
 }

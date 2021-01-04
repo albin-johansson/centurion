@@ -25,7 +25,7 @@
 #ifndef CENTURION_JOYSTICK_HEADER
 #define CENTURION_JOYSTICK_HEADER
 
-#include <SDL_joystick.h>
+#include <SDL.h>
 
 #include <memory>       // unique_ptr
 #include <optional>     // optional
@@ -45,6 +45,9 @@
 #endif  // CENTURION_USE_PRAGMA_ONCE
 
 namespace cen {
+
+/// \addtogroup input
+/// \{
 
 /**
  * \class basic_joystick
@@ -933,8 +936,6 @@ using joystick_handle = basic_joystick<std::false_type>;
 /**
  * \brief Indicates whether or not two joystick power values are the same.
  *
- * \ingroup input
- *
  * \param lhs the left-hand side power type.
  * \param rhs the right-hand side power type.
  *
@@ -951,8 +952,6 @@ using joystick_handle = basic_joystick<std::false_type>;
 
 /**
  * \brief Indicates whether or not two joystick power values are the same.
- *
- * \ingroup input
  *
  * \param lhs the left-hand side power type.
  * \param rhs the right-hand side power type.
@@ -971,8 +970,6 @@ using joystick_handle = basic_joystick<std::false_type>;
 /**
  * \brief Indicates whether or not two joystick power values aren't the same.
  *
- * \ingroup input
- *
  * \param lhs the left-hand side power type.
  * \param rhs the right-hand side power type.
  *
@@ -989,8 +986,6 @@ using joystick_handle = basic_joystick<std::false_type>;
 
 /**
  * \brief Indicates whether or not two joystick power values aren't the same.
- *
- * \ingroup input
  *
  * \param lhs the left-hand side power type.
  * \param rhs the right-hand side power type.
@@ -1009,8 +1004,6 @@ using joystick_handle = basic_joystick<std::false_type>;
 /**
  * \brief Indicates whether or not two joystick type values are the same.
  *
- * \ingroup input
- *
  * \param lhs the left-hand side joystick type value.
  * \param rhs the right-hand side joystick type value.
  *
@@ -1027,8 +1020,6 @@ using joystick_handle = basic_joystick<std::false_type>;
 
 /**
  * \brief Indicates whether or not two joystick type values are the same.
- *
- * \ingroup input
  *
  * \param lhs the left-hand side joystick type value.
  * \param rhs the right-hand side joystick type value.
@@ -1047,8 +1038,6 @@ using joystick_handle = basic_joystick<std::false_type>;
 /**
  * \brief Indicates whether or not two joystick type values aren't the same.
  *
- * \ingroup input
- *
  * \param lhs the left-hand side joystick type value.
  * \param rhs the right-hand side joystick type value.
  *
@@ -1066,8 +1055,6 @@ using joystick_handle = basic_joystick<std::false_type>;
 /**
  * \brief Indicates whether or not two joystick type values aren't the same.
  *
- * \ingroup input
- *
  * \param lhs the left-hand side joystick type value.
  * \param rhs the right-hand side joystick type value.
  *
@@ -1081,6 +1068,8 @@ using joystick_handle = basic_joystick<std::false_type>;
 {
   return !(lhs == rhs);
 }
+
+/// \}
 
 }  // namespace cen
 

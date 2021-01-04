@@ -37,10 +37,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \brief Returns the number of available rendering drivers.
- *
- * \ingroup graphics
  *
  * \note Usually there is only one available rendering driver.
  *
@@ -56,8 +57,6 @@ namespace cen {
 /**
  * \brief Returns the number of available video drivers compiled into SDL.
  *
- * \ingroup graphics
- *
  * \return the number of available video drivers compiled into SDL.
  *
  * \since 5.0.0
@@ -69,8 +68,6 @@ namespace cen {
 
 /**
  * \brief Returns the information associated with a rendering driver.
- *
- * \ingroup graphics
  *
  * \param index the index of the rendering driver to query.
  *
@@ -90,6 +87,8 @@ namespace cen {
     return std::nullopt;
   }
 }
+
+/// \}
 
 }  // namespace cen
 

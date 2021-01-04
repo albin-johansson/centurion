@@ -247,8 +247,6 @@ class float_hint : public crtp_hint<float_hint<Hint>, float>
 /**
  * \namespace cen::hint
  *
- *
- *
  * \brief Contains all hint types.
  *
  * \since 4.1.0

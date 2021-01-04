@@ -56,10 +56,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \class basic_texture
- *
- * \ingroup graphics
  *
  * \brief Represents an hardware-accelerated image.
  *
@@ -648,8 +649,6 @@ using texture_handle = basic_texture<std::false_type>;
 /**
  * \brief Returns a textual representation of a texture.
  *
- * \ingroup graphics
- *
  * \param texture the texture that will be converted.
  *
  * \return a string that represents the texture.
@@ -659,16 +658,13 @@ using texture_handle = basic_texture<std::false_type>;
 template <typename T>
 [[nodiscard]] auto to_string(const basic_texture<T>& texture) -> std::string
 {
-  using detail::to_string;
   return "[texture | ptr: " + detail::address_of(texture.get()) +
-         ", width: " + to_string(texture.width()).value() +
-         ", height: " + to_string(texture.height()).value() + "]";
+         ", width: " + detail::to_string(texture.width()).value() +
+         ", height: " + detail::to_string(texture.height()).value() + "]";
 }
 
 /**
  * \brief Prints a textual representation of a texture.
- *
- * \ingroup graphics
  *
  * \param stream the stream that will be used.
  * \param texture
@@ -684,6 +680,8 @@ auto operator<<(std::ostream& stream, const basic_texture<T>& texture)
   stream << to_string(texture);
   return stream;
 }
+
+/// \}
 
 }  // namespace cen
 

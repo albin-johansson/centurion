@@ -55,10 +55,11 @@
 
 namespace cen {
 
+/// \addtogroup audio
+/// \{
+
 /**
  * \class sound_effect
- *
- * \ingroup audio
  *
  * \brief Represents a sound effect.
  *
@@ -381,8 +382,6 @@ class sound_effect final
 /**
  * \brief Returns a textual representation of a sound effect.
  *
- * \ingroup audio
- *
  * \param sound the sound effect that will be converted.
  *
  * \return a string that represents the sound effect.
@@ -391,10 +390,9 @@ class sound_effect final
  */
 [[nodiscard]] inline auto to_string(const sound_effect& sound) -> std::string
 {
-  using namespace std::string_literals;
   using detail::to_string;
-  return "[sound_effect | data: "s + detail::address_of(sound.get()) +
-         ", volume: "s + to_string(sound.volume()).value() + "]"s;
+  return "[sound_effect | data: " + detail::address_of(sound.get()) +
+         ", volume: " + detail::to_string(sound.volume()).value() + "]";
 }
 
 /**
@@ -413,6 +411,8 @@ inline auto operator<<(std::ostream& stream, const sound_effect& sound)
   stream << to_string(sound);
   return stream;
 }
+
+/// \}
 
 }  // namespace cen
 

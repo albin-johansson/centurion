@@ -92,22 +92,20 @@ enum class platform_id
  */
 [[nodiscard]] inline auto id() noexcept -> platform_id
 {
-  using detail::czstring_eq;
-
   czstring platform = SDL_GetPlatform();
-  if (czstring_eq(platform, "Windows")) {
+  if (detail::czstring_eq(platform, "Windows")) {
     return platform_id::windows;
 
-  } else if (czstring_eq(platform, "Mac OS X")) {
+  } else if (detail::czstring_eq(platform, "Mac OS X")) {
     return platform_id::mac_osx;
 
-  } else if (czstring_eq(platform, "Linux")) {
+  } else if (detail::czstring_eq(platform, "Linux")) {
     return platform_id::linuxx;
 
-  } else if (czstring_eq(platform, "iOS")) {
+  } else if (detail::czstring_eq(platform, "iOS")) {
     return platform_id::ios;
 
-  } else if (czstring_eq(platform, "Android")) {
+  } else if (detail::czstring_eq(platform, "Android")) {
     return platform_id::android;
 
   } else {
@@ -186,10 +184,10 @@ enum class platform_id
 [[nodiscard]] inline auto name() -> std::optional<std::string>
 {
   const std::string name{SDL_GetPlatform()};
-  if (name == "Unknown") {
-    return std::nullopt;
-  } else {
+  if (name != "Unknown") {
     return name;
+  } else {
+    return std::nullopt;
   }
 }
 

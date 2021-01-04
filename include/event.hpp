@@ -56,10 +56,11 @@
 
 namespace cen {
 
+/// \addtogroup event
+/// \{
+
 /**
  * \class common_event
- *
- * \ingroup event
  *
  * \brief The templated base class of all Centurion events.
  *
@@ -174,8 +175,6 @@ class common_event
 /**
  * \class audio_device_event
  *
- * \ingroup event
- *
  * \brief Represents an event that is associated with some sort of audio
  * device, either capture of output.
  *
@@ -276,8 +275,6 @@ class audio_device_event final : public common_event<SDL_AudioDeviceEvent>
 
 /**
  * \class controller_axis_event
- *
- * \ingroup event
  *
  * \brief Represents an event triggered by game controller axis motion.
  *
@@ -386,8 +383,6 @@ class controller_axis_event final : public common_event<SDL_ControllerAxisEvent>
 
 /**
  * \class controller_button_event
- *
- * \ingroup event
  *
  * \brief Represents events associated with the state of buttons of a game
  * controller.
@@ -524,8 +519,6 @@ class controller_button_event final
 /**
  * \class controller_device_event
  *
- * \ingroup event
- *
  * \brief Represents events related to game controller devices such as adding
  * or removing game controller devices.
  *
@@ -595,8 +588,6 @@ class controller_device_event final
 
 /**
  * \class dollar_gesture_event
- *
- * \ingroup event
  *
  * \brief Provides information about dollar gestures from touch events.
  *
@@ -781,8 +772,6 @@ class dollar_gesture_event final : public common_event<SDL_DollarGestureEvent>
 /**
  * \class drop_event
  *
- * \ingroup event
- *
  * \brief Represents the event of requesting a file to be opened.
  *
  * \see `SDL_DropEvent`
@@ -940,8 +929,6 @@ class drop_event final : public common_event<SDL_DropEvent>
 /**
  * \class joy_axis_event
  *
- * \ingroup event
- *
  * \brief Represents an event that occurs whenever a user moves an axis on a
  * joystick.
  *
@@ -1048,8 +1035,6 @@ class joy_axis_event final : public common_event<SDL_JoyAxisEvent>
 
 /**
  * \class joy_ball_event
- *
- * \ingroup event
  *
  * \brief Represents the event that is triggered when a user moves a
  * trackball on a joystick.
@@ -1188,8 +1173,6 @@ class joy_ball_event final : public common_event<SDL_JoyBallEvent>
 /**
  * \class joy_button_event
  *
- * \ingroup event
- *
  * \brief Represents an event associated with the press or release of a
  * joystick button.
  *
@@ -1323,8 +1306,6 @@ class joy_button_event final : public common_event<SDL_JoyButtonEvent>
 /**
  * \class joy_device_event
  *
- * \ingroup event
- *
  * \brief Represents an event triggered by adding or removing a joystick device.
  *
  * \see `SDL_JoyDeviceEvent`
@@ -1388,8 +1369,6 @@ class joy_device_event final : public common_event<SDL_JoyDeviceEvent>
 /**
  * \enum joy_hat_position
  *
- * \ingroup event
- *
  * \brief Serves as a wrapper for the `SDL_HAT_x` macro values.
  *
  * \since 4.0.0
@@ -1409,8 +1388,6 @@ enum class joy_hat_position
 
 /**
  * \class joy_hat_event
- *
- * \ingroup event
  *
  * \brief Represents an event that is triggered whenever a user moves a hat
  * on a joystick.
@@ -1494,8 +1471,6 @@ class joy_hat_event final : public common_event<SDL_JoyHatEvent>
 
 /**
  * \class keyboard_event
- *
- * \ingroup event
  *
  * \brief Represents an event associated with some sort of key action, such
  * as the release or pressing of a key.
@@ -1828,8 +1803,6 @@ class keyboard_event final : public common_event<SDL_KeyboardEvent>
 /**
  * \class mouse_button_event
  *
- * \ingroup event
- *
  * \brief Represents an event triggered by mouse button presses or releases.
  *
  * \see `SDL_MouseButtonEvent`
@@ -2057,8 +2030,6 @@ class mouse_button_event final : public common_event<SDL_MouseButtonEvent>
 
 /**
  * \class mouse_motion_event
- *
- * \ingroup event
  *
  * \brief Represents events that are triggered by the movement of the mouse.
  *
@@ -2290,8 +2261,6 @@ class mouse_motion_event final : public common_event<SDL_MouseMotionEvent>
 /**
  * \enum mouse_wheel_direction
  *
- * \ingroup event
- *
  * \brief Mirrors the the `SDL_MouseWheelDirection` enum.
  *
  * \see `SDL_MouseWheelDirection`
@@ -2308,8 +2277,6 @@ enum class mouse_wheel_direction
 
 /**
  * \class mouse_wheel_event
- *
- * \ingroup event
  *
  * \brief Represents events triggered when a user moves the mouse wheel.
  *
@@ -2478,8 +2445,6 @@ class mouse_wheel_event final : public common_event<SDL_MouseWheelEvent>
 
 /**
  * \class multi_gesture_event
- *
- * \ingroup event
  *
  * \brief Provides information about events related to touch events triggered
  * by multiple fingers.
@@ -2676,8 +2641,6 @@ class multi_gesture_event final : public common_event<SDL_MultiGestureEvent>
 /**
  * \class quit_event
  *
- * \ingroup event
- *
  * \brief Represents the event of the user wanting to close the application,
  * usually by pressing the "X"-button on the window frame.
  *
@@ -2711,8 +2674,6 @@ class quit_event final : public common_event<SDL_QuitEvent>
 
 /**
  * \class text_editing_event
- *
- * \ingroup event
  *
  * \brief Represents an event triggered by keyboard text editing.
  *
@@ -2851,8 +2812,6 @@ class text_editing_event final : public common_event<SDL_TextEditingEvent>
 /**
  * \class text_input_event
  *
- * \ingroup event
- *
  * \brief Provides information about keyboard text input events.
  *
  * \see `SDL_TextInputEvent`
@@ -2922,8 +2881,6 @@ class text_input_event final : public common_event<SDL_TextInputEvent>
 
 /**
  * \class touch_finger_event
- *
- * \ingroup event
  *
  * \brief Represents an event related to touch screen actions.
  *
@@ -3182,8 +3139,6 @@ class touch_finger_event final : public common_event<SDL_TouchFingerEvent>
 /**
  * \enum window_event_id
  *
- * \ingroup event
- *
  * \brief Mirrors the `SDL_WindowEventID` enum.
  *
  * \details Depending on the event ID of a `window_event` instance, the
@@ -3311,8 +3266,6 @@ enum class window_event_id
 /**
  * \class window_event
  *
- * \ingroup event
- *
  * \brief Represents an event that is associated with an action related to a
  * window.
  *
@@ -3402,8 +3355,6 @@ class window_event final : public common_event<SDL_WindowEvent>
 
 /**
  * \class event
- *
- * \ingroup event
  *
  * \brief Serves as the main interface for dealing with events.
  *
@@ -3801,8 +3752,6 @@ class event final
 /**
  * \brief Indicates whether or not two mouse wheel direction values are equal.
  *
- * \ingroup event
- *
  * \param lhs the left-hand side mouse wheel direction value.
  * \param rhs the right-hand side mouse wheel direction value.
  *
@@ -3810,9 +3759,9 @@ class event final
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(mouse_wheel_direction lhs,
-                                        SDL_MouseWheelDirection rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(
+    const mouse_wheel_direction lhs,
+    const SDL_MouseWheelDirection rhs) noexcept -> bool
 {
   return lhs == static_cast<mouse_wheel_direction>(rhs);
 }
@@ -3820,11 +3769,10 @@ class event final
 /**
  * \copydoc operator==(mouse_wheel_direction, SDL_MouseWheelDirection)
  *
- * \ingroup event
  */
-[[nodiscard]] constexpr auto operator==(SDL_MouseWheelDirection lhs,
-                                        mouse_wheel_direction rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator==(
+    const SDL_MouseWheelDirection lhs,
+    const mouse_wheel_direction rhs) noexcept -> bool
 {
   return rhs == lhs;
 }
@@ -3833,8 +3781,6 @@ class event final
  * \brief Indicates whether or not two mouse wheel direction values aren't
  * equal.
  *
- * \ingroup event
- *
  * \param lhs the left-hand side mouse wheel direction value.
  * \param rhs the right-hand side mouse wheel direction value.
  *
@@ -3842,29 +3788,25 @@ class event final
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(mouse_wheel_direction lhs,
-                                        SDL_MouseWheelDirection rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(
+    const mouse_wheel_direction lhs,
+    const SDL_MouseWheelDirection rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
  * \copydoc operator!=(mouse_wheel_direction, SDL_MouseWheelDirection)
- *
- * \ingroup event
  */
-[[nodiscard]] constexpr auto operator!=(SDL_MouseWheelDirection lhs,
-                                        mouse_wheel_direction rhs) noexcept
-    -> bool
+[[nodiscard]] constexpr auto operator!=(
+    const SDL_MouseWheelDirection lhs,
+    const mouse_wheel_direction rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
  * \brief Indicates whether or not two window event ID values are the same.
- *
- * \ingroup event
  *
  * \param lhs the left-hand side window event ID value.
  * \param rhs the right-hand side window event ID value.
@@ -3873,27 +3815,25 @@ class event final
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(window_event_id lhs,
-                                        SDL_WindowEventID rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const window_event_id lhs,
+                                        const SDL_WindowEventID rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_WindowEventID>(lhs) == rhs;
 }
 
 /**
  * \copydoc operator==(window_event_id, SDL_WindowEventID)
- *
- * \ingroup event
  */
-[[nodiscard]] constexpr auto operator==(SDL_WindowEventID lhs,
-                                        window_event_id rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_WindowEventID lhs,
+                                        const window_event_id rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
 
 /**
  * \brief Indicates whether or not two window event ID values aren't the same.
- *
- * \ingroup event
  *
  * \param lhs the left-hand side window event ID value.
  * \param rhs the right-hand side window event ID value.
@@ -3903,22 +3843,24 @@ class event final
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(window_event_id lhs,
-                                        SDL_WindowEventID rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const window_event_id lhs,
+                                        const SDL_WindowEventID rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
  * \copydoc operator!=(window_event_id, SDL_WindowEventID)
- *
- * \ingroup event
  */
-[[nodiscard]] constexpr auto operator!=(SDL_WindowEventID lhs,
-                                        window_event_id rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_WindowEventID lhs,
+                                        const window_event_id rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
+
+/// \}
 
 }  // namespace cen
 

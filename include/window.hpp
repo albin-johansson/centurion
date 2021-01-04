@@ -25,8 +25,7 @@
 #ifndef CENTURION_WINDOW_HEADER
 #define CENTURION_WINDOW_HEADER
 
-#include <SDL_render.h>
-#include <SDL_video.h>
+#include <SDL.h>
 
 #include <memory>       // unique_ptr
 #include <ostream>      // ostream
@@ -240,7 +239,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_fullscreen(bool fullscreen) noexcept
+  void set_fullscreen(const bool fullscreen) noexcept
   {
     const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN);
     SDL_SetWindowFullscreen(get(), fullscreen ? flag : 0);
@@ -260,7 +259,7 @@ class basic_window final
    *
    * \since 4.0.0
    */
-  void set_fullscreen_desktop(bool fullscreen) noexcept
+  void set_fullscreen_desktop(const bool fullscreen) noexcept
   {
     const auto flag = static_cast<unsigned>(SDL_WINDOW_FULLSCREEN_DESKTOP);
     SDL_SetWindowFullscreen(get(), fullscreen ? flag : 0);
@@ -276,7 +275,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_decorated(bool decorated) noexcept
+  void set_decorated(const bool decorated) noexcept
   {
     SDL_SetWindowBordered(get(), detail::convert_bool(decorated));
   }
@@ -289,7 +288,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_resizable(bool resizable) noexcept
+  void set_resizable(const bool resizable) noexcept
   {
     SDL_SetWindowResizable(get(), detail::convert_bool(resizable));
   }
@@ -303,7 +302,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_width(int width) noexcept
+  void set_width(const int width) noexcept
   {
     SDL_SetWindowSize(get(), detail::max(width, 1), height());
   }
@@ -317,7 +316,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_height(int height) noexcept
+  void set_height(const int height) noexcept
   {
     SDL_SetWindowSize(get(), width(), detail::max(height, 1));
   }
@@ -373,7 +372,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_opacity(float opacity) noexcept
+  void set_opacity(const float opacity) noexcept
   {
     SDL_SetWindowOpacity(get(), opacity);
   }
@@ -435,7 +434,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_grab_mouse(bool grabMouse) noexcept
+  void set_grab_mouse(const bool grabMouse) noexcept
   {
     SDL_SetWindowGrab(get(), detail::convert_bool(grabMouse));
   }
@@ -453,7 +452,7 @@ class basic_window final
    *
    * \since 3.0.0
    */
-  void set_brightness(float brightness) noexcept
+  void set_brightness(const float brightness) noexcept
   {
     if (is_fullscreen()) {
       SDL_SetWindowBrightness(get(), std::clamp(brightness, 0.0f, 1.0f));
@@ -473,7 +472,7 @@ class basic_window final
    *
    * \since 5.0.0
    */
-  static void set_capturing_mouse(bool capturingMouse) noexcept
+  static void set_capturing_mouse(const bool capturingMouse) noexcept
   {
     SDL_CaptureMouse(detail::convert_bool(capturingMouse));
   }
@@ -862,7 +861,7 @@ class basic_window final
    *
    * \since 4.0.0
    */
-  [[nodiscard]] auto check_flag(SDL_WindowFlags flag) const noexcept -> bool
+  [[nodiscard]] auto check_flag(const SDL_WindowFlags flag) const noexcept -> bool
   {
     return static_cast<bool>(flags() & flag);
   }

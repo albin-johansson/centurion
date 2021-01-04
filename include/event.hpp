@@ -31,7 +31,7 @@
 #ifndef CENTURION_EVENT_HEADER
 #define CENTURION_EVENT_HEADER
 
-#include <SDL_events.h>
+#include <SDL.h>
 
 #include <algorithm>    // clamp
 #include <optional>     // optional

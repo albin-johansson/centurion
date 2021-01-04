@@ -41,10 +41,11 @@
 
 namespace cen {
 
+/// \addtogroup graphics
+/// \{
+
 /**
  * \enum system_cursor
- *
- * \ingroup graphics
  *
  * \brief Represents the various available system cursors.
  *
@@ -75,8 +76,6 @@ enum class system_cursor
 /**
  * \brief Indicates whether or not two system cursor values are the same.
  *
- * \ingroup graphics
- *
  * \param lhs the left-hand side system cursor value.
  * \param rhs the right-hand side system cursor value.
  *
@@ -84,27 +83,25 @@ enum class system_cursor
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator==(system_cursor lhs,
-                                        SDL_SystemCursor rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const system_cursor lhs,
+                                        const SDL_SystemCursor rhs) noexcept
+    -> bool
 {
   return static_cast<SDL_SystemCursor>(lhs) == rhs;
 }
 
 /**
  * \copydoc operator==(system_cursor, SDL_SystemCursor)
- *
- * \ingroup graphics
  */
-[[nodiscard]] constexpr auto operator==(SDL_SystemCursor lhs,
-                                        system_cursor rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator==(const SDL_SystemCursor lhs,
+                                        const system_cursor rhs) noexcept
+    -> bool
 {
   return rhs == lhs;
 }
 
 /**
  * \brief Indicates whether or not two system cursor values aren't the same.
- *
- * \ingroup graphics
  *
  * \param lhs the left-hand side system cursor value.
  * \param rhs the right-hand side system cursor value.
@@ -114,19 +111,19 @@ enum class system_cursor
  *
  * \since 4.0.0
  */
-[[nodiscard]] constexpr auto operator!=(system_cursor lhs,
-                                        SDL_SystemCursor rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const system_cursor lhs,
+                                        const SDL_SystemCursor rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
 
 /**
  * \copydoc operator!=(system_cursor, SDL_SystemCursor)
- *
- * \ingroup graphics
  */
-[[nodiscard]] constexpr auto operator!=(SDL_SystemCursor lhs,
-                                        system_cursor rhs) noexcept -> bool
+[[nodiscard]] constexpr auto operator!=(const SDL_SystemCursor lhs,
+                                        const system_cursor rhs) noexcept
+    -> bool
 {
   return !(lhs == rhs);
 }
@@ -165,7 +162,7 @@ class basic_cursor final
    * \since 4.0.0
    */
   template <typename U = T, detail::is_owner<U> = true>
-  explicit basic_cursor(system_cursor cursor)
+  explicit basic_cursor(const system_cursor cursor)
       : m_cursor{SDL_CreateSystemCursor(static_cast<SDL_SystemCursor>(cursor))}
   {
     if (!m_cursor) {
@@ -304,7 +301,7 @@ class basic_cursor final
    *
    * \since 4.0.0
    */
-  static void set_visible(bool visible) noexcept
+  static void set_visible(const bool visible) noexcept
   {
     SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
   }
@@ -402,6 +399,8 @@ using cursor = basic_cursor<std::true_type>;
  * \since 5.0.0
  */
 using cursor_handle = basic_cursor<std::false_type>;
+
+/// \}
 
 }  // namespace cen
 

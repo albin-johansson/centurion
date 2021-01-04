@@ -25,7 +25,7 @@
 #ifndef CENTURION_EVENT_TYPE_HEADER
 #define CENTURION_EVENT_TYPE_HEADER
 
-#include <SDL_events.h>
+#include <SDL.h>
 
 #include "centurion_api.hpp"
 
@@ -35,10 +35,11 @@
 
 namespace cen {
 
+/// \addtogroup event
+/// \{
+
 /**
  * \enum event_type
- *
- * \ingroup event
  *
  * \brief Mirrors the `SDL_EventType` enum.
  *
@@ -118,8 +119,6 @@ enum class event_type
 /**
  * \brief Indicates whether or not two event type values are the same.
  *
- * \ingroup event
- *
  * \param lhs the left-hand side event type value
  * \param rhs the right-hand side event type value
  *
@@ -135,8 +134,6 @@ enum class event_type
 
 /**
  * \copydoc operator==(event_type, SDL_EventType)
- *
- * \ingroup event
  */
 [[nodiscard]] constexpr auto operator==(SDL_EventType lhs,
                                         event_type rhs) noexcept -> bool
@@ -146,8 +143,6 @@ enum class event_type
 
 /**
  * \brief Indicates whether or not two event type values aren't the same.
- *
- * \ingroup event
  *
  * \param lhs the left-hand side event type value
  * \param rhs the right-hand side event type value
@@ -164,14 +159,14 @@ enum class event_type
 
 /**
  * \copydoc operator!=(event_type, SDL_EventType)
- *
- * \ingroup event
  */
 [[nodiscard]] constexpr auto operator!=(SDL_EventType lhs,
                                         event_type rhs) noexcept -> bool
 {
   return !(lhs == rhs);
 }
+
+/// \}
 
 }  // namespace cen
 

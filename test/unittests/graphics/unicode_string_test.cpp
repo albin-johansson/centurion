@@ -1,265 +1,229 @@
 #include "unicode_string.hpp"
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("unicode_string default constructor", "[unicode_string]")
+using namespace cen::literals;
+
+TEST(UnicodeString, Defaults)
 {
   const cen::unicode_string str;
-  CHECK(str.size() == 0);  // NOLINT
-  CHECK(str.empty());
+  EXPECT_EQ(0, str.size());
+  EXPECT_TRUE(str.empty());
 
-  CHECK(str.at(0) == 0);  // null-terminator
+  EXPECT_EQ(0, str.at(0));  // null-terminator
 }
 
-TEST_CASE("unicode_string from std::initializer_list", "[unicode_string]")
+TEST(UnicodeString, InitializerListConstructor)
 {
   const cen::unicode_string str = {'a', 'b', 'c'};
-  CHECK(str.size() == 3);
-  CHECK_FALSE(str.empty());
+  EXPECT_EQ(3, str.size());
+  EXPECT_FALSE(str.empty());
 
-  CHECK(str.at(0) == 'a');
-  CHECK(str.at(1) == 'b');
-  CHECK(str.at(2) == 'c');
-  CHECK(str.at(3) == 0);  // null-terminator
+  EXPECT_EQ('a', str.at(0));
+  EXPECT_EQ('b', str.at(1));
+  EXPECT_EQ('c', str.at(2));
+  EXPECT_EQ(0, str.at(3));  // null-terminator
 
-  CHECK(str[0] == 'a');
-  CHECK(str[1] == 'b');
-  CHECK(str[2] == 'c');
+  EXPECT_EQ('a', str[0]);
+  EXPECT_EQ('b', str[1]);
+  EXPECT_EQ('c', str[2]);
 }
 
-TEST_CASE("unicode_string iteration", "[unicode_string]")
+TEST(UnicodeString, Iteration)
 {
   const cen::unicode_string str = {'a', 'b', 'c'};
 
-  REQUIRE(str.end() - str.begin() == 3);
+  ASSERT_EQ(3, str.end() - str.begin());
 
   int count = 0;
   for (const auto ch : str) {
-    CHECK(ch != 0);
+    EXPECT_NE(0, ch);
     ++count;
   }
 
-  CHECK(count == 3);
-  CHECK(str.at(3) == 0);  // null-terminator
+  EXPECT_EQ(3, count);
+  EXPECT_EQ(0, str.at(3));  // null-terminator
 }
 
-TEST_CASE("unicode_string::append", "[unicode_string]")
+TEST(UnicodeString, Append)
 {
-  using namespace cen::literals;
-
   cen::unicode_string str;
 
   str.append('A'_uni);
-
-  CHECK(str.size() == 1);
-  CHECK(str.at(0) == 'A'_uni);
+  EXPECT_EQ(1, str.size());
+  EXPECT_EQ('A'_uni, str.at(0));
 
   str.append(0x1F308_uni);
-  CHECK(str.size() == 2);
-  CHECK(str.at(1) == 0x1F308_uni);
+  EXPECT_EQ(2, str.size());
+  EXPECT_EQ(0x1F308_uni, str.at(1));
 }
 
-TEST_CASE("unicode_string::variadic append", "[unicode_string]")
+TEST(UnicodeString, AppendVariadic)
 {
-  using namespace cen::literals;
-
   cen::unicode_string str;
 
   str.append('B'_uni, 'A'_uni, 'R'_uni);
-
-  CHECK(str.size() == 3);
-  CHECK(str.at(0) == 'B'_uni);
-  CHECK(str.at(1) == 'A'_uni);
-  CHECK(str.at(2) == 'R'_uni);
+  EXPECT_EQ(3, str.size());
+  EXPECT_EQ('B'_uni, str.at(0));
+  EXPECT_EQ('A'_uni, str.at(1));
+  EXPECT_EQ('R'_uni, str.at(2));
 }
 
-TEST_CASE("unicode_string::operator +=", "[unicode_string]")
+TEST(UnicodeString, AdditionAssignmentOperator)
 {
-  using namespace cen::literals;
-
   cen::unicode_string str;
 
   str += 'Z'_uni;
-
-  CHECK(str.size() == 1);
-  CHECK(str.at(0) == 'Z'_uni);
+  EXPECT_EQ(1, str.size());
+  EXPECT_EQ('Z'_uni, str.at(0));
 
   str += 'Q'_uni;
-
-  CHECK(str.size() == 2);
-  CHECK(str.at(1) == 'Q'_uni);
+  EXPECT_EQ(2, str.size());
+  EXPECT_EQ('Q'_uni, str.at(1));
 }
 
-TEST_CASE("unicode_string::pop_back", "[unicode_string]")
+TEST(UnicodeString, PopBack)
 {
-  using namespace cen::literals;
-
   cen::unicode_string str;
 
   str += 'A'_uni;
-
-  CHECK(!str.empty());
-  CHECK(str.size() == 1);
+  EXPECT_FALSE(str.empty());
+  EXPECT_EQ(1, str.size());
 
   str.pop_back();
+  EXPECT_TRUE(str.empty());
+  EXPECT_EQ(0, str.size());  // NOLINT
+  EXPECT_EQ(0, str.at(0));   // null-terminator
 
-  CHECK(str.empty());
-  CHECK(str.size() == 0);  // NOLINT
-  CHECK(str.at(0) == 0);   // null-terminator
+  EXPECT_NO_THROW(str.pop_back());
+  EXPECT_NO_THROW(str.pop_back());
+  EXPECT_NO_THROW(str.pop_back());
 
-  CHECK_NOTHROW(str.pop_back());
-  CHECK_NOTHROW(str.pop_back());
-  CHECK_NOTHROW(str.pop_back());
-
-  CHECK(str.empty());
-  CHECK(str.size() == 0);  // NOLINT
-  CHECK(str.at(0) == 0);   // null-terminator
+  EXPECT_TRUE(str.empty());
+  EXPECT_EQ(0, str.size());  // NOLINT
+  EXPECT_EQ(0, str.at(0));   // null-terminator
 }
 
-TEST_CASE("unicode_string::at", "[unicode_string]")
+TEST(UnicodeString, At)
 {
-  using namespace cen::literals;
-
   cen::unicode_string str;
 
-  CHECK_NOTHROW(str.at(0));  // null-terminator
-  CHECK_THROWS(str.at(-1));
-  CHECK_THROWS(str.at(1));
+  EXPECT_NO_THROW(str.at(0));  // null-terminator
+  EXPECT_ANY_THROW(str.at(-1));
+  EXPECT_ANY_THROW(str.at(1));
 
   str += 'T'_uni;
-  CHECK(str.at(0) == 'T'_uni);
+  EXPECT_EQ('T'_uni, str.at(0));
 }
 
-TEST_CASE("unicode_string::data", "[unicode_string]")
+TEST(UnicodeString, Data)
 {
-  using namespace cen::literals;
-
   cen::unicode_string str;
-  const auto& cstr = str;
+  const auto& cStr = str;
 
-  REQUIRE(str.data());
-  REQUIRE(cstr.data());
+  ASSERT_TRUE(str.data());
+  ASSERT_TRUE(cStr.data());
 
-  CHECK(*str.data() == 0);
+  EXPECT_EQ(0, *str.data());
 
   str += 'b'_uni;
 
-  REQUIRE(str.data());
-  CHECK(*str.data() == 'b'_uni);
-  CHECK(str.data()[1] == 0);
+  ASSERT_TRUE(str.data());
+  EXPECT_EQ('b'_uni, *str.data());
+  EXPECT_EQ(0, str.data()[1]);
 }
 
-TEST_CASE("unicode_string::empty", "[unicode_string]")
+TEST(UnicodeString, Empty)
 {
-  using namespace cen::literals;
-
   cen::unicode_string str;
-
-  CHECK(str.empty());
+  EXPECT_TRUE(str.empty());
 
   str += 'A'_uni;
-
-  CHECK(!str.empty());
+  EXPECT_FALSE(str.empty());
 }
 
-TEST_CASE("unicode_string::reserve", "[unicode_string]")
+TEST(UnicodeString, Reserve)
 {
   cen::unicode_string str;
 
-  str.reserve(10);
-  CHECK(str.capacity() == 10);
+  str.reserve(10u);
+  EXPECT_EQ(10u, str.capacity());
 }
 
-TEST_CASE("unicode_string::operator==", "[unicode_string]")
+TEST(UnicodeString, EqualityOperator)
 {
-  SECTION("Self")
-  {
+  {  // Reflexivity
     const cen::unicode_string str;
-    CHECK(str == str);
+    EXPECT_EQ(str, str);
   }
 
-  SECTION("Two default constructed strings")
-  {
+  {  // Two default constructed strings
     const cen::unicode_string fst;
     const cen::unicode_string snd;
-    CHECK(fst == snd);
-    CHECK(snd == fst);
+    EXPECT_EQ(fst, snd);
+    EXPECT_EQ(snd, fst);
   }
 
-  SECTION("Two equal strings")
-  {
-    using namespace cen::literals;
+  {  // Two equal strings
     const cen::unicode_string fst{'A'_uni, 'B'_uni, 'C'_uni};
     const cen::unicode_string snd{fst};  // NOLINT
 
-    CHECK(fst == snd);
-    CHECK(snd == fst);
+    EXPECT_EQ(fst, snd);
+    EXPECT_EQ(snd, fst);
   }
 
-  SECTION("Two different strings")
-  {
-    using namespace cen::literals;
+  {  // Two different strings
     const cen::unicode_string fst{'F'_uni, 'O'_uni, 'O'_uni};
     const cen::unicode_string snd{'B'_uni, 'A'_uni, 'R'_uni};
 
-    CHECK_FALSE(fst == snd);
-    CHECK_FALSE(snd == fst);
+    EXPECT_FALSE(fst == snd);
+    EXPECT_FALSE(snd == fst);
   }
 
-  SECTION("Different size strings")
-  {
-    using namespace cen::literals;
+  {  // Different size strings
     const cen::unicode_string fst{'A'_uni, 'B'_uni};
-    const cen::unicode_string snd{'C'_uni, 'D'_uni, 'E'_uni};
+    const cen::unicode_string snd{'A'_uni, 'B'_uni, 'C'_uni};
 
-    CHECK_FALSE(fst == snd);
-    CHECK_FALSE(snd == fst);
+    EXPECT_FALSE(fst == snd);
+    EXPECT_FALSE(snd == fst);
   }
 }
 
-TEST_CASE("unicode_string::operator!=", "[unicode_string]")
+TEST(UnicodeString, InequalityOperator)
 {
-  SECTION("Self")
-  {
+  {  // Self
     const cen::unicode_string str;
-    CHECK_FALSE(str != str);
+    EXPECT_FALSE(str != str);
   }
 
-  SECTION("Two default constructed strings")
-  {
+  {  // Two default constructed strings
     const cen::unicode_string fst;
     const cen::unicode_string snd;
-    CHECK_FALSE(fst != snd);
-    CHECK_FALSE(snd != fst);
+    EXPECT_FALSE(fst != snd);
+    EXPECT_FALSE(snd != fst);
   }
 
-  SECTION("Two equal strings")
-  {
-    using namespace cen::literals;
-    const cen::unicode_string fst{'S'_uni, 'A'_uni, 'M'_uni};
+  {  // Two equal strings
+    const cen::unicode_string fst{'A'_uni, 'B'_uni, 'C'_uni};
     const cen::unicode_string snd{fst};  // NOLINT
 
-    CHECK_FALSE(fst != snd);
-    CHECK_FALSE(snd != fst);
+    EXPECT_FALSE(fst != snd);
+    EXPECT_FALSE(snd != fst);
   }
 
-  SECTION("Two different strings")
-  {
-    using namespace cen::literals;
+  {  // Two different strings
     const cen::unicode_string fst{'F'_uni, 'O'_uni, 'O'_uni};
     const cen::unicode_string snd{'B'_uni, 'A'_uni, 'R'_uni};
 
-    CHECK(fst != snd);
-    CHECK(snd != fst);
+    EXPECT_NE(fst, snd);
+    EXPECT_NE(snd, fst);
   }
 
-  SECTION("Different size strings")
-  {
-    using namespace cen::literals;
-    const cen::unicode_string fst{'B'_uni, 'B'_uni};
-    const cen::unicode_string snd{'B'_uni, 'B'_uni, 'B'_uni};
+  {  // Different size strings
+    const cen::unicode_string fst{'A'_uni, 'B'_uni};
+    const cen::unicode_string snd{'A'_uni, 'B'_uni, 'C'_uni};
 
-    CHECK(fst != snd);
-    CHECK(snd != fst);
+    EXPECT_NE(fst, snd);
+    EXPECT_NE(snd, fst);
   }
 }

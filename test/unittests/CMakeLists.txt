@@ -61,6 +61,7 @@ set(SOURCE_FILES
     graphics/surface_test.cpp
     graphics/surface_handle_test.cpp
     graphics/texture_test.cpp
+    graphics/unicode_string_test.cpp
     graphics/texture_handle_test.cpp
     graphics/texture_access_test.cpp
     graphics/window_test.cpp
